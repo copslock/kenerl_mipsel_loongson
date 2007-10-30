@@ -1,227 +1,189 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Oct 2007 20:04:08 +0000 (GMT)
-Received: from dns0.mips.com ([63.167.95.198]:22485 "EHLO dns0.mips.com")
-	by ftp.linux-mips.org with ESMTP id S28575265AbXJ3UEA (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 30 Oct 2007 20:04:00 +0000
-Received: from mercury.mips.com (mercury [192.168.64.101])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id l9UJtrPa026006;
-	Tue, 30 Oct 2007 11:55:54 -0800 (PST)
-Received: from exchange.MIPS.COM (exchange [192.168.20.29])
-	by mercury.mips.com (8.13.5/8.13.5) with ESMTP id l9UJuJbQ010416;
-	Tue, 30 Oct 2007 12:56:20 -0700 (PDT)
-X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Oct 2007 20:04:37 +0000 (GMT)
+Received: from py-out-1112.google.com ([64.233.166.179]:45637 "EHLO
+	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S28575286AbXJ3UEM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 30 Oct 2007 20:04:12 +0000
+Received: by py-out-1112.google.com with SMTP id p76so4054751pyb
+        for <linux-mips@linux-mips.org>; Tue, 30 Oct 2007 13:04:00 -0700 (PDT)
+Received: by 10.64.241.3 with SMTP id o3mr16128512qbh.1193774638875;
+        Tue, 30 Oct 2007 13:03:58 -0700 (PDT)
+Received: by 10.65.123.7 with HTTP; Tue, 30 Oct 2007 13:03:58 -0700 (PDT)
+Message-ID: <dd7dc2bc0710301303j6006a53cp1dffd45d00cf635@mail.gmail.com>
+Date:	Wed, 31 Oct 2007 05:03:58 +0900
+From:	"Hyon Lim" <alex@alexlab.net>
+To:	"Uhler, Mike" <uhler@mips.com>
+Subject: Re: implementation of software suspend on MIPS.
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <692AB3595F5D76428B34B9BEFE20BC1FDD0219@Exchange.mips.com>
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----_=_NextPart_001_01C81B2E.DEB3E9FC"
-Subject: RE: implementation of software suspend on MIPS.
-Date:	Tue, 30 Oct 2007 12:55:42 -0700
-Message-ID: <692AB3595F5D76428B34B9BEFE20BC1FDD0219@Exchange.mips.com>
-In-Reply-To: <dd7dc2bc0710301212s7b364392n39a149764a4117cf@mail.gmail.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: implementation of software suspend on MIPS.
-Thread-Index: AcgbKOiSjXA7DQJBSe+Vt70kzq/RnwABcTDQ
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_503_26428855.1193774638869"
 References: <dd7dc2bc0710301212s7b364392n39a149764a4117cf@mail.gmail.com>
-From:	"Uhler, Mike" <uhler@mips.com>
-To:	"Hyon Lim" <alex@alexlab.net>, <linux-mips@linux-mips.org>
-Return-Path: <uhler@mips.com>
+	 <692AB3595F5D76428B34B9BEFE20BC1FDD0219@Exchange.mips.com>
+Return-Path: <alex@alexlab.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17320
+X-archive-position: 17321
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: uhler@mips.com
+X-original-sender: alex@alexlab.net
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
+------=_Part_503_26428855.1193774638869
+Content-Type: text/plain; charset=EUC-KR
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
 
-------_=_NextPart_001_01C81B2E.DEB3E9FC
-Content-Type: text/plain;
-	charset="ks_c_5601-1987"
-Content-Transfer-Encoding: quoted-printable
+VGhhbmsgeW91IHZlcnkgbXVjaC4gSSB0aGluayBteSB3b3JrIGlzIGZpcnN0IGNvbnRyaWJ1dGlv
+biBhYm91dCBzb2Z0d2FyZQpzdXNwZW5kIG9uIG1pcHMuCkkgY2Fubm90IGZpbmQgYW55IGhpc3Rv
+cnkgcmVsYXRlZCB0byBteSB3b3JrIG9uIHRoaXMgbGlzdC4KSSdtIGxvb2tpbmcgZm9yd2FyZCB0
+byByZWNlaXZpbmcgeW91ciBhbnN3ZXIuCgpPbiAxMC8zMS8wNywgVWhsZXIsIE1pa2UgPHVobGVy
+QG1pcHMuY29tPiB3cm90ZToKPgo+ICBJJ3ZlIGFza2VkIG91ciBzb2Z0d2FyZSB0ZWFtIHRvIGZv
+bGxvdyB1cCB3aXRoIHlvdSBvbiB5b3VyIHF1ZXN0aW9ucy4KPgo+Cj4gL2dtdQo+IC0tLQo+IE1p
+Y2hhZWwgVWhsZXIsIFZQIEFyY2hpdGVjdHVyZSwgU29mdHdhcmUgYW5kIFBsYXRmb3JtIEVuZ2lu
+ZWVyaW5nCj4gTUlQUyBUZWNobm9sb2dpZXMsIEluYy4gICBFbWFpbDogdWhsZXIgQVQgbWlwcy5j
+b20KPiAxMjI1IENoYXJsZXN0b24gUm9hZCAgICAgIFZvaWNlOiAgKDY1MCk1NjctNTAyNQo+IE1v
+dW50YWluIFZpZXcsIENBIDk0MDQzCj4KPgo+Cj4KPiAgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tCj4gKkZyb206KiBsaW51eC1taXBzLWJvdW5jZUBsaW51eC1taXBzLm9yZyBbbWFpbHRv
+Ogo+IGxpbnV4LW1pcHMtYm91bmNlQGxpbnV4LW1pcHMub3JnXSAqT24gQmVoYWxmIE9mICpIeW9u
+IExpbQo+ICpTZW50OiogVHVlc2RheSwgT2N0b2JlciAzMCwgMjAwNyAxMjoxMyBQTQo+ICpUbzoq
+IGxpbnV4LW1pcHNAbGludXgtbWlwcy5vcmcKPiAqU3ViamVjdDoqICBpbXBsZW1lbnRhdGlvbiBv
+ZiBzb2Z0d2FyZSBzdXNwZW5kIG9uIE1JUFMuCj4gKkltcG9ydGFuY2U6KiBMb3cKPgo+Cj4gIEhl
+bGxvLiAgSSBuZWVkIGEgaGVscCBmb3IgbXkgaW1wbGVtZW50YXRpb24gd29yayBvbiBNSVBTIHNv
+ZnR3YXJlCj4gc3VzcGVuZC4KPiBGcm9tIDNtb250aCBhZ28sIEkndmUgYmVlbiBjb2Rpbmcgc29m
+dHdhcmUgc3VzcGVuZChzd3N1c3ApIG9uIE1JUFMgYXJjaC4KPiBJJ20gZGV2ZWxvcGluZyB3aXRo
+IE1JUFMzMiA0S0VjIGVtYmVkZGVkIHByb2Nlc3NvciBmb3IgZGlnaXRhbCBhcHBsaWFuY2UuCj4K
+PiBTd3N1c3AgaGFzIHR3byBwcm9jZWR1cmUuIHRoZSBvbmUgaXMgc3VzcGVuZGluZyBwcm9jZWR1
+cmUgYW5kIG90aGVyIG9uZSBpcwo+IHJlc3VtZSBwcm9jZWR1cmUuCj4gWWVzdGVyZGF5LCBJIGNv
+bmZpcm1lZCBzdXNwZW5kaW5nIHByb2NlZHVyZSB3b3JraW5nLgo+IFRoaXMgaXMgYSBwb3J0aW5n
+IGd1aWRlIG9mIHN3c3VzcCAoCj4gaHR0cDovL3RyZWUuY2VsaW51eGZvcnVtLm9yZy9DZWxmUHVi
+V2lraS9Td1N1c3BlbmRQb3J0aW5nTm90ZXMpCj4gSSByZWZlcmVkIHRoaXMgYXJ0aWNsZS4KPgo+
+IFRoZSBwcm9ibGVtIEkgZmFjZWQgaXMgYXNzZW1ibHkgbGFuZ3VhZ2UgZm9yIE1JUFMuCj4gT2Yg
+Y291cnNlLCB0aGVyZSBhcmUgbWFueSBtYW51YWxzIGZvciB0aGlzIHdvcmsgYnV0LCBJIG5lZWQg
+YSBoZWxwIGZyb20KPiBNSVBTIGV4cGVydC4KPgo+IFRoaXMgcHNldWRvIGNvZGUgc2hvdWxkIGJl
+IGltcGxlbWVudGVkIGJ5IE1JUFMgYXNtLgo+Cj4gICAgICAgICBmb3IgKGogPSBucl9jb3B5X3Bh
+Z2VzOyBqPjA7IGotLSkgewo+ICAgICAgICAgICAgIHNyYyA9IHBhZ2VkaXJfbm9zYXZlW2pdLnNy
+YzsKPiAgICAgICAgICAgICBkc3QgPSBwYWdlZGlyX25vc2F2ZVtqXS5kc3Q7Cj4gICAgICAgICAg
+ICAgZm9yIChpPTA7aTwxMDI0O2krKykgewo+ICAgICAgICAgICAgICAgICAqZHN0KysgPSAqc3Jj
+Kys7Cj4gICAgICAgICAgICAgfQo+ICAgICAgICAgfQo+Cj4gbnJfY29weV9wYWdlcyBpcyB1bnNp
+Z25lZCBsb25nIHZhcmlhYmxlLgo+IGFuZCBwYWdlZGlyX25vc2F2ZSBpcyBhIHN1c3BlbmRfcGFn
+ZWRpcl90PGh0dHA6Ly9seHIubGludXgubm8vc291cmNlL2tlcm5lbC9wb3dlci9pZGVudD92PTIu
+Ni4xMDtpPXN1c3BlbmRfcGFnZWRpcl90PnR5cGUgc3RydWN0dXJlIGFycmF5KHBvaW50ZXIpLiAo
+eW91IGNhbiByZWZlciBmb2xsb3dpbmcgdXJsLiBMaW5lIDEwMS4gOgo+IGh0dHA6Ly9seHIubGlu
+dXgubm8vc291cmNlL2tlcm5lbC9wb3dlci9zd3N1c3AuYz92PTIuNi4xMCkKPiBjb2RlIHNrZWxl
+dG9uIG9yIHVzZWZ1bCBtYXRlcmlhbCB3aWxsIGJlIHdlbGNvbWVkLiAod2hhdGV2ZXIgeW91IGhh
+dmUuKQo+Cj4gVGhlIHNlY29uZCBwcm9ibGVtIGlzCj4gIiB3aGljaCByZWdpc3RlciBzaG91bGQg
+YmUgcHJldmVudGVkPyAiCj4KPiBJIHNhdmVkICR2MC12MS4gJGEwLSRhMy4gJHQwLXQ3LiAkczAt
+czcuICR0OC10OS4gJGdwLHNwLGZwLHJhLgo+Cj4gLS0KPiBIeW9uIExpbSAowNPH9ikKPiBNb2Jp
+bGUuIDAxMC04MjEyLTEyNDAgKEludGwnIENhbGwgOiArODItMTAtODIxMi0xMjQwKQo+IEZheC4g
+MDMyLTIzMi0wNTc4IChJbnRsJyBBdmFpbGFibGUpCj4gSG9tZXBhZ2UgOiBodHRwOi8vd3d3LmFs
+ZXhsYWIubmV0Cj4gQmxvZyA6IGh0dHA6Ly93d3cuYWxleGxhYi5uZXQvYmxvZwo+Cj4KCgotLSAK
+SHlvbiBMaW0gKMDTx/YpCk1vYmlsZS4gMDEwLTgyMTItMTI0MCAoSW50bCcgQ2FsbCA6ICs4Mi0x
+MC04MjEyLTEyNDApCkZheC4gMDMyLTIzMi0wNTc4IChJbnRsJyBBdmFpbGFibGUpCkhvbWVwYWdl
+IDogaHR0cDovL3d3dy5hbGV4bGFiLm5ldApCbG9nIDogaHR0cDovL3d3dy5hbGV4bGFiLm5ldC9i
+bG9nCg==
+------=_Part_503_26428855.1193774638869
+Content-Type: text/html; charset=EUC-KR
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
 
-I've asked our software team to follow up with you on your questions.
-=20
-/gmu
----
-Michael Uhler, VP Architecture, Software and Platform Engineering
-MIPS Technologies, Inc.   Email: uhler AT mips.com
-1225 Charleston Road      Voice:  (650)567-5025
-Mountain View, CA 94043
- =20
-
-
-________________________________
-
-	From: linux-mips-bounce@linux-mips.org =
-[mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Hyon Lim
-	Sent: Tuesday, October 30, 2007 12:13 PM
-	To: linux-mips@linux-mips.org
-	Subject:  implementation of software suspend on MIPS.
-	Importance: Low
-=09
-=09
-	Hello.  I need a help for my implementation work on MIPS software =
-suspend.
-	From 3month ago, I've been coding software suspend(swsusp) on MIPS =
-arch.
-	I'm developing with MIPS32 4KEc embedded processor for digital =
-appliance.
-	=20
-	Swsusp has two procedure. the one is suspending procedure and other one =
-is resume procedure.
-	Yesterday, I confirmed suspending procedure working.
-	This is a porting guide of swsusp =
-(http://tree.celinuxforum.org/CelfPubWiki/SwSuspendPortingNotes)
-	I refered this article.
-	=20
-	The problem I faced is assembly language for MIPS.
-	Of course, there are many manuals for this work but, I need a help from =
-MIPS expert.
-	=20
-	This pseudo code should be implemented by MIPS asm.
-	=20
-	        for (j =3D nr_copy_pages; j>0; j--) {=20
-	            src =3D pagedir_nosave[j].src;=20
-	            dst =3D pagedir_nosave[j].dst;=20
-	            for (i=3D0;i<1024;i++) {=20
-	                *dst++ =3D *src++;=20
-	            }=20
-	        }=20
-	=20
-	nr_copy_pages is unsigned long variable.
-	and pagedir_nosave is a suspend_pagedir_t =
-<http://lxr.linux.no/source/kernel/power/ident?v=3D2.6.10;i=3Dsuspend_pag=
-edir_t>  type structure array(pointer). (you can refer following url. =
-Line 101. : http://lxr.linux.no/source/kernel/power/swsusp.c?v=3D2.6.10)
-	code skeleton or useful material will be welcomed. (whatever you have.)
-	=20
-	The second problem is
-	" which register should be prevented? "
-	=20
-	I saved $v0-v1. $a0-$a3. $t0-t7. $s0-s7. $t8-t9. $gp,sp,fp,ra.
-
-	--=20
-	Hyon Lim (=C0=D3=C7=F6)
-	Mobile. 010-8212-1240 (Intl' Call : +82-10-8212-1240)
-	Fax. 032-232-0578 (Intl' Available)
-	Homepage : http://www.alexlab.net
-	Blog : http://www.alexlab.net/blog=20
-
-
-------_=_NextPart_001_01C81B2E.DEB3E9FC
-Content-Type: text/html;
-	charset="ks_c_5601-1987"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META http-equiv=3DContent-Type content=3D"text/html; =
-charset=3Dks_c_5601-1987">
-<META content=3D"MSHTML 6.00.6000.16544" name=3DGENERATOR></HEAD>
-<BODY>
-<DIV dir=3Dltr align=3Dleft><FONT face=3DArial color=3D#0000ff =
-size=3D2><SPAN=20
-class=3D037285419-30102007>I've asked our software team to follow up =
-with you on=20
-your questions.</SPAN></FONT></DIV>
-<DIV><FONT size=3D2></FONT>&nbsp;</DIV>
-<DIV><FONT size=3D2><!-- Converted from text/plain format -->
-<P><FONT size=3D2>/gmu<BR>---<BR>Michael Uhler, VP Architecture, =
-Software and=20
-Platform Engineering<BR>MIPS Technologies, Inc.&nbsp;&nbsp; Email: uhler =
-AT=20
-mips.com<BR>1225 Charleston Road&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
-Voice:&nbsp;=20
-(650)567-5025<BR>Mountain View, CA=20
-94043<BR>&nbsp;</FONT>&nbsp;</FONT><BR></P></DIV>
-<BLOCKQUOTE dir=3Dltr=20
-style=3D"PADDING-LEFT: 5px; MARGIN-LEFT: 5px; BORDER-LEFT: #0000ff 2px =
-solid; MARGIN-RIGHT: 0px">
-  <DIV class=3DOutlookMessageHeader lang=3Den-us dir=3Dltr align=3Dleft>
-  <HR tabIndex=3D-1>
-  <FONT face=3DTahoma size=3D2><B>From:</B> =
-linux-mips-bounce@linux-mips.org=20
-  [mailto:linux-mips-bounce@linux-mips.org] <B>On Behalf Of </B>Hyon=20
-  Lim<BR><B>Sent:</B> Tuesday, October 30, 2007 12:13 PM<BR><B>To:</B>=20
-  linux-mips@linux-mips.org<BR><B>Subject:</B>&nbsp; implementation of =
-software=20
-  suspend on MIPS.<BR><B>Importance:</B> Low<BR></FONT><BR></DIV>
-  <DIV></DIV>
-  <DIV>Hello.&nbsp; I need a help for my implementation work on MIPS =
-software=20
-  suspend.</DIV>
-  <DIV>From 3month ago, I've been coding software suspend(swsusp) on =
-MIPS=20
-  arch.</DIV>
-  <DIV>I'm developing with MIPS32 4KEc embedded processor for digital=20
-  appliance.</DIV>
-  <DIV>&nbsp;</DIV>
-  <DIV>Swsusp has two procedure. the one is suspending procedure and =
-other one=20
-  is resume procedure.</DIV>
-  <DIV>Yesterday, I confirmed suspending procedure working.</DIV>
-  <DIV>This is a porting guide of swsusp (<A=20
-  =
-href=3D"http://tree.celinuxforum.org/CelfPubWiki/SwSuspendPortingNotes">h=
-ttp://tree.celinuxforum.org/CelfPubWiki/SwSuspendPortingNotes</A>)</DIV>
-  <DIV>I refered this article.</DIV>
-  <DIV>&nbsp;</DIV>
-  <DIV>The problem I faced is assembly language for MIPS.</DIV>
-  <DIV>Of course, there are many manuals for this work but, I need a =
-help from=20
-  MIPS expert.</DIV>
-  <DIV>&nbsp;</DIV>
-  <DIV>This pseudo code should be implemented by MIPS asm.</DIV>
-  <DIV>&nbsp;</DIV>
-  <DIV>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (j =3D =
-nr_copy_pages;=20
-  j&gt;0; j--) {=20
-  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
-src =3D=20
-  pagedir_nosave[j].src;=20
-  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
-dst =3D=20
-  pagedir_nosave[j].dst;=20
-  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
-for=20
-  (i=3D0;i&lt;1024;i++) {=20
-  =
-<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
-sp;&nbsp;&nbsp;&nbsp;=20
-  *dst++ =3D *src++;=20
-  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
-}=20
-  <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } <BR>&nbsp;</DIV>
-  <DIV>nr_copy_pages is unsigned long variable.</DIV>
-  <DIV>and pagedir_nosave is a <A=20
-  =
-href=3D"http://lxr.linux.no/source/kernel/power/ident?v=3D2.6.10;i=3Dsusp=
-end_pagedir_t">suspend_pagedir_t</A>=20
-  type structure array(pointer). (you can refer following url. Line =
-101.&nbsp;:=20
-  <A=20
-  =
-href=3D"http://lxr.linux.no/source/kernel/power/swsusp.c?v=3D2.6.10">http=
-://lxr.linux.no/source/kernel/power/swsusp.c?v=3D2.6.10</A>)</DIV>
-  <DIV>code skeleton or useful material will be welcomed. (whatever you=20
-  have.)</DIV>
-  <DIV>&nbsp;</DIV>
-  <DIV>The second problem is</DIV>
-  <DIV>" which register should be prevented? "</DIV>
-  <DIV>&nbsp;</DIV>
-  <DIV>I saved $v0-v1. $a0-$a3. $t0-t7. $s0-s7. $t8-t9. =
-$gp,sp,fp,ra.</DIV>
-  <DIV><BR>-- <BR>Hyon Lim (=C0=D3=C7=F6)<BR>Mobile. 010-8212-1240 =
-(Intl' Call :=20
-  +82-10-8212-1240)<BR>Fax. 032-232-0578 (Intl' Available)<BR>Homepage : =
-<A=20
-  href=3D"http://www.alexlab.net">http://www.alexlab.net</A><BR>Blog : =
-<A=20
-  href=3D"http://www.alexlab.net/blog">http://www.alexlab.net/blog</A>=20
-</DIV></BLOCKQUOTE></BODY></HTML>
-
-------_=_NextPart_001_01C81B2E.DEB3E9FC--
+PGRpdj5UaGFuayB5b3UgdmVyeSBtdWNoLiBJIHRoaW5rIG15IHdvcmsgaXMgZmlyc3QgY29udHJp
+YnV0aW9uIGFib3V0IHNvZnR3YXJlIHN1c3BlbmQgb24gbWlwcy48L2Rpdj4KPGRpdj5JIGNhbm5v
+dCBmaW5kIGFueSBoaXN0b3J5IHJlbGF0ZWQgdG8gbXkgd29yayBvbiB0aGlzIGxpc3QuPC9kaXY+
+CjxkaXY+SSYjMzk7bSBsb29raW5nIGZvcndhcmQgdG8gcmVjZWl2aW5nIHlvdXIgYW5zd2VyLjxi
+cj4mbmJzcDs8L2Rpdj4KPGRpdj48c3BhbiBjbGFzcz0iZ21haWxfcXVvdGUiPk9uIDEwLzMxLzA3
+LCA8YiBjbGFzcz0iZ21haWxfc2VuZGVybmFtZSI+VWhsZXIsIE1pa2U8L2I+ICZsdDs8YSBocmVm
+PSJtYWlsdG86dWhsZXJAbWlwcy5jb20iPnVobGVyQG1pcHMuY29tPC9hPiZndDsgd3JvdGU6PC9z
+cGFuPgo8YmxvY2txdW90ZSBjbGFzcz0iZ21haWxfcXVvdGUiIHN0eWxlPSJQQURESU5HLUxFRlQ6
+IDFleDsgTUFSR0lOOiAwcHggMHB4IDBweCAwLjhleDsgQk9SREVSLUxFRlQ6ICNjY2MgMXB4IHNv
+bGlkIj4KPGRpdj4KPGRpdiBkaXI9Imx0ciIgYWxpZ249ImxlZnQiPjxmb250IGZhY2U9IkFyaWFs
+IiBjb2xvcj0iIzAwMDBmZiIgc2l6ZT0iMiI+PHNwYW4+SSYjMzk7dmUgYXNrZWQgb3VyIHNvZnR3
+YXJlIHRlYW0gdG8gZm9sbG93IHVwIHdpdGggeW91IG9uIHlvdXIgcXVlc3Rpb25zLjwvc3Bhbj48
+L2ZvbnQ+PC9kaXY+CjxkaXY+PGZvbnQgc2l6ZT0iMiI+PC9mb250PiZuYnNwOzwvZGl2Pgo8ZGl2
+Pjxmb250IHNpemU9IjIiPgo8cD48Zm9udCBzaXplPSIyIj4vZ211PGJyPi0tLTxicj5NaWNoYWVs
+IFVobGVyLCBWUCBBcmNoaXRlY3R1cmUsIFNvZnR3YXJlIGFuZCBQbGF0Zm9ybSBFbmdpbmVlcmlu
+Zzxicj5NSVBTIFRlY2hub2xvZ2llcywgSW5jLiZuYnNwOyZuYnNwOyBFbWFpbDogdWhsZXIgQVQg
+PGEgb25jbGljaz0icmV0dXJuIHRvcC5qcy5PcGVuRXh0TGluayh3aW5kb3csZXZlbnQsdGhpcyki
+IGhyZWY9Imh0dHA6Ly9taXBzLmNvbS8iIHRhcmdldD0iX2JsYW5rIj4KbWlwcy5jb208L2E+PGJy
+PjEyMjUgQ2hhcmxlc3RvbiBSb2FkJm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7IFZvaWNl
+OiZuYnNwOyAoNjUwKTU2Ny01MDI1PGJyPk1vdW50YWluIFZpZXcsIENBIDk0MDQzPGJyPiZuYnNw
+OzwvZm9udD4mbmJzcDs8L3A+PC9mb250Pjxicj4mbmJzcDs8L2Rpdj4KPGJsb2NrcXVvdGUgZGly
+PSJsdHIiIHN0eWxlPSJQQURESU5HLUxFRlQ6IDVweDsgTUFSR0lOLUxFRlQ6IDVweDsgQk9SREVS
+LUxFRlQ6ICMwMDAwZmYgMnB4IHNvbGlkOyBNQVJHSU4tUklHSFQ6IDBweCI+CjxkaXYgbGFuZz0i
+ZW4tdXMiIGRpcj0ibHRyIiBhbGlnbj0ibGVmdCI+Cjxocj4KPGZvbnQgZmFjZT0iVGFob21hIiBz
+aXplPSIyIj48Yj5Gcm9tOjwvYj4gPGEgb25jbGljaz0icmV0dXJuIHRvcC5qcy5PcGVuRXh0TGlu
+ayh3aW5kb3csZXZlbnQsdGhpcykiIGhyZWY9Im1haWx0bzpsaW51eC1taXBzLWJvdW5jZUBsaW51
+eC1taXBzLm9yZyIgdGFyZ2V0PSJfYmxhbmsiPmxpbnV4LW1pcHMtYm91bmNlQGxpbnV4LW1pcHMu
+b3JnPC9hPiBbbWFpbHRvOjxhIG9uY2xpY2s9InJldHVybiB0b3AuanMuT3BlbkV4dExpbmsod2lu
+ZG93LGV2ZW50LHRoaXMpIiBocmVmPSJtYWlsdG86bGludXgtbWlwcy1ib3VuY2VAbGludXgtbWlw
+cy5vcmciIHRhcmdldD0iX2JsYW5rIj4KbGludXgtbWlwcy1ib3VuY2VAbGludXgtbWlwcy5vcmc8
+L2E+XSA8Yj5PbiBCZWhhbGYgT2YgPC9iPkh5b24gTGltPGJyPjxiPlNlbnQ6PC9iPiBUdWVzZGF5
+LCBPY3RvYmVyIDMwLCAyMDA3IDEyOjEzIFBNPGJyPjxiPlRvOjwvYj4gPGEgb25jbGljaz0icmV0
+dXJuIHRvcC5qcy5PcGVuRXh0TGluayh3aW5kb3csZXZlbnQsdGhpcykiIGhyZWY9Im1haWx0bzps
+aW51eC1taXBzQGxpbnV4LW1pcHMub3JnIiB0YXJnZXQ9Il9ibGFuayI+CmxpbnV4LW1pcHNAbGlu
+dXgtbWlwcy5vcmc8L2E+PGJyPjxiPlN1YmplY3Q6PC9iPiZuYnNwOyBpbXBsZW1lbnRhdGlvbiBv
+ZiBzb2Z0d2FyZSBzdXNwZW5kIG9uIE1JUFMuPGJyPjxiPkltcG9ydGFuY2U6PC9iPiBMb3c8YnI+
+PC9mb250Pjxicj4mbmJzcDs8L2Rpdj4KPGRpdj48c3BhbiBjbGFzcz0iZSIgaWQ9InFfMTE1ZjI3
+Yzc3ZjQwYWZmMF8xIj4KPGRpdj48L2Rpdj4KPGRpdj5IZWxsby4mbmJzcDsgSSBuZWVkIGEgaGVs
+cCBmb3IgbXkgaW1wbGVtZW50YXRpb24gd29yayBvbiBNSVBTIHNvZnR3YXJlIHN1c3BlbmQuPC9k
+aXY+CjxkaXY+RnJvbSAzbW9udGggYWdvLCBJJiMzOTt2ZSBiZWVuIGNvZGluZyBzb2Z0d2FyZSBz
+dXNwZW5kKHN3c3VzcCkgb24gTUlQUyBhcmNoLjwvZGl2Pgo8ZGl2PkkmIzM5O20gZGV2ZWxvcGlu
+ZyB3aXRoIE1JUFMzMiA0S0VjIGVtYmVkZGVkIHByb2Nlc3NvciBmb3IgZGlnaXRhbCBhcHBsaWFu
+Y2UuPC9kaXY+CjxkaXY+Jm5ic3A7PC9kaXY+CjxkaXY+U3dzdXNwIGhhcyB0d28gcHJvY2VkdXJl
+LiB0aGUgb25lIGlzIHN1c3BlbmRpbmcgcHJvY2VkdXJlIGFuZCBvdGhlciBvbmUgaXMgcmVzdW1l
+IHByb2NlZHVyZS48L2Rpdj4KPGRpdj5ZZXN0ZXJkYXksIEkgY29uZmlybWVkIHN1c3BlbmRpbmcg
+cHJvY2VkdXJlIHdvcmtpbmcuPC9kaXY+CjxkaXY+VGhpcyBpcyBhIHBvcnRpbmcgZ3VpZGUgb2Yg
+c3dzdXNwICg8YSBvbmNsaWNrPSJyZXR1cm4gdG9wLmpzLk9wZW5FeHRMaW5rKHdpbmRvdyxldmVu
+dCx0aGlzKSIgaHJlZj0iaHR0cDovL3RyZWUuY2VsaW51eGZvcnVtLm9yZy9DZWxmUHViV2lraS9T
+d1N1c3BlbmRQb3J0aW5nTm90ZXMiIHRhcmdldD0iX2JsYW5rIj5odHRwOi8vdHJlZS5jZWxpbnV4
+Zm9ydW0ub3JnL0NlbGZQdWJXaWtpL1N3U3VzcGVuZFBvcnRpbmdOb3Rlcwo8L2E+KTwvZGl2Pgo8
+ZGl2PkkgcmVmZXJlZCB0aGlzIGFydGljbGUuPC9kaXY+CjxkaXY+Jm5ic3A7PC9kaXY+CjxkaXY+
+VGhlIHByb2JsZW0gSSBmYWNlZCBpcyBhc3NlbWJseSBsYW5ndWFnZSBmb3IgTUlQUy48L2Rpdj4K
+PGRpdj5PZiBjb3Vyc2UsIHRoZXJlIGFyZSBtYW55IG1hbnVhbHMgZm9yIHRoaXMgd29yayBidXQs
+IEkgbmVlZCBhIGhlbHAgZnJvbSBNSVBTIGV4cGVydC48L2Rpdj4KPGRpdj4mbmJzcDs8L2Rpdj4K
+PGRpdj5UaGlzIHBzZXVkbyBjb2RlIHNob3VsZCBiZSBpbXBsZW1lbnRlZCBieSBNSVBTIGFzbS48
+L2Rpdj4KPGRpdj4mbmJzcDs8L2Rpdj4KPGRpdj4mbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJz
+cDsmbmJzcDsmbmJzcDsgZm9yIChqID0gbnJfY29weV9wYWdlczsgaiZndDswOyBqLS0pIHsgPGJy
+PiZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
+YnNwOyZuYnNwOyBzcmMgPSBwYWdlZGlyX25vc2F2ZVtqXS5zcmM7IDxicj4mbmJzcDsmbmJzcDsm
+bmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsgZHN0
+ID0gcGFnZWRpcl9ub3NhdmVbal0uZHN0OyA8YnI+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
+c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7IGZvciAoaT0wO2kmbHQ7MTAy
+NDtpKyspIHsgPGJyPiZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
+YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyAqZHN0KysgPSAq
+c3JjKys7IAo8YnI+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5i
+c3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7IH0gPGJyPiZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
+OyZuYnNwOyZuYnNwOyB9IDxicj4mbmJzcDs8L2Rpdj4KPGRpdj5ucl9jb3B5X3BhZ2VzIGlzIHVu
+c2lnbmVkIGxvbmcgdmFyaWFibGUuPC9kaXY+CjxkaXY+YW5kIHBhZ2VkaXJfbm9zYXZlIGlzIGEg
+PGEgb25jbGljaz0icmV0dXJuIHRvcC5qcy5PcGVuRXh0TGluayh3aW5kb3csZXZlbnQsdGhpcyki
+IGhyZWY9Imh0dHA6Ly9seHIubGludXgubm8vc291cmNlL2tlcm5lbC9wb3dlci9pZGVudD92PTIu
+Ni4xMDtpPXN1c3BlbmRfcGFnZWRpcl90IiB0YXJnZXQ9Il9ibGFuayI+c3VzcGVuZF9wYWdlZGly
+X3Q8L2E+IHR5cGUgc3RydWN0dXJlIGFycmF5KHBvaW50ZXIpLiAoeW91IGNhbiByZWZlciBmb2xs
+b3dpbmcgdXJsLiBMaW5lIDEwMS4mbmJzcDs6IAo8YSBvbmNsaWNrPSJyZXR1cm4gdG9wLmpzLk9w
+ZW5FeHRMaW5rKHdpbmRvdyxldmVudCx0aGlzKSIgaHJlZj0iaHR0cDovL2x4ci5saW51eC5uby9z
+b3VyY2Uva2VybmVsL3Bvd2VyL3N3c3VzcC5jP3Y9Mi42LjEwIiB0YXJnZXQ9Il9ibGFuayI+aHR0
+cDovL2x4ci5saW51eC5uby9zb3VyY2Uva2VybmVsL3Bvd2VyL3N3c3VzcC5jP3Y9Mi42LjEwPC9h
+Pik8L2Rpdj4KPGRpdj5jb2RlIHNrZWxldG9uIG9yIHVzZWZ1bCBtYXRlcmlhbCB3aWxsIGJlIHdl
+bGNvbWVkLiAod2hhdGV2ZXIgeW91IGhhdmUuKTwvZGl2Pgo8ZGl2PiZuYnNwOzwvZGl2Pgo8ZGl2
+PlRoZSBzZWNvbmQgcHJvYmxlbSBpczwvZGl2Pgo8ZGl2PiZxdW90OyB3aGljaCByZWdpc3RlciBz
+aG91bGQgYmUgcHJldmVudGVkPyAmcXVvdDs8L2Rpdj4KPGRpdj4mbmJzcDs8L2Rpdj4KPGRpdj5J
+IHNhdmVkICR2MC12MS4gJGEwLSRhMy4gJHQwLXQ3LiAkczAtczcuICR0OC10OS4gJGdwLHNwLGZw
+LHJhLjwvZGl2Pgo8ZGl2Pjxicj4tLSA8YnI+SHlvbiBMaW0gKMDTx/YpPGJyPk1vYmlsZS4gMDEw
+LTgyMTItMTI0MCAoSW50bCYjMzk7IENhbGwgOiArODItMTAtODIxMi0xMjQwKTxicj5GYXguIDAz
+Mi0yMzItMDU3OCAoSW50bCYjMzk7IEF2YWlsYWJsZSk8YnI+SG9tZXBhZ2UgOiA8YSBvbmNsaWNr
+PSJyZXR1cm4gdG9wLmpzLk9wZW5FeHRMaW5rKHdpbmRvdyxldmVudCx0aGlzKSIgaHJlZj0iaHR0
+cDovL3d3dy5hbGV4bGFiLm5ldC8iIHRhcmdldD0iX2JsYW5rIj4KaHR0cDovL3d3dy5hbGV4bGFi
+Lm5ldDwvYT48YnI+QmxvZyA6IDxhIG9uY2xpY2s9InJldHVybiB0b3AuanMuT3BlbkV4dExpbmso
+d2luZG93LGV2ZW50LHRoaXMpIiBocmVmPSJodHRwOi8vd3d3LmFsZXhsYWIubmV0L2Jsb2ciIHRh
+cmdldD0iX2JsYW5rIj5odHRwOi8vd3d3LmFsZXhsYWIubmV0L2Jsb2c8L2E+IDwvZGl2Pjwvc3Bh
+bj48L2Rpdj48L2Jsb2NrcXVvdGU+PC9kaXY+PC9ibG9ja3F1b3RlPgo8L2Rpdj48YnI+PGJyIGNs
+ZWFyPSJhbGwiPjxicj4tLSA8YnI+SHlvbiBMaW0gKMDTx/YpPGJyPk1vYmlsZS4gMDEwLTgyMTIt
+MTI0MCAoSW50bCYjMzk7IENhbGwgOiArODItMTAtODIxMi0xMjQwKTxicj5GYXguIDAzMi0yMzIt
+MDU3OCAoSW50bCYjMzk7IEF2YWlsYWJsZSk8YnI+SG9tZXBhZ2UgOiA8YSBocmVmPSJodHRwOi8v
+d3d3LmFsZXhsYWIubmV0Ij5odHRwOi8vd3d3LmFsZXhsYWIubmV0CjwvYT48YnI+QmxvZyA6IDxh
+IGhyZWY9Imh0dHA6Ly93d3cuYWxleGxhYi5uZXQvYmxvZyI+aHR0cDovL3d3dy5hbGV4bGFiLm5l
+dC9ibG9nPC9hPiAK
+------=_Part_503_26428855.1193774638869--

@@ -1,43 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Oct 2007 20:53:41 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:32173 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28574403AbXJ2Uxj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 29 Oct 2007 20:53:39 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9TKrcl0002148;
-	Mon, 29 Oct 2007 20:53:38 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9TKrbEh002147;
-	Mon, 29 Oct 2007 20:53:37 GMT
-Date:	Mon, 29 Oct 2007 20:53:37 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Binod Roay <binodroay@yahoo.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Question related to Linux Kernel and MIPS
-Message-ID: <20071029205337.GB2075@linux-mips.org>
-References: <423926.37963.qm@web37907.mail.mud.yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Oct 2007 07:34:18 +0000 (GMT)
+Received: from sorrow.cyrius.com ([65.19.161.204]:60432 "EHLO
+	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
+	id S20023491AbXJ3HeK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 30 Oct 2007 07:34:10 +0000
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id 24BBED8C8; Tue, 30 Oct 2007 07:34:04 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id B829B54501; Tue, 30 Oct 2007 08:33:49 +0100 (CET)
+Date:	Tue, 30 Oct 2007 08:33:49 +0100
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: Re: [PATCH] IP22: Disable EARLY PRINTK, because it breaks serial
+	console
+Message-ID: <20071030073349.GA15984@deprecation.cyrius.com>
+References: <20070911104459.GB7624@alpha.franken.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <423926.37963.qm@web37907.mail.mud.yahoo.com>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20070911104459.GB7624@alpha.franken.de>
+User-Agent: Mutt/1.5.16 (2007-06-11)
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17301
+X-archive-position: 17302
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Oct 28, 2007 at 08:24:15AM -0700, Binod Roay wrote:
+* Thomas Bogendoerfer <tsbogend@alpha.franken.de> [2007-09-11 12:44]:
+> Disable EARLY PRINTK, because it breaks serial console
 
-> Could I please know is it possible run the Linux
-> Kernel on MIPS from KUSEG ?
+Ralf, at the moment IP22 output stops after "Serial: IP22 Zilog driver
+(1 chips).".  Can you put this patch in until there's a real fix?
 
-You'd have to port UML to MIPS for something like this.
+Tested-by: Martin Michlmayr <tbm@cyrius.com>
 
-  Ralf
+> Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> ---
+>  arch/mips/Kconfig |    1 -
+>  1 files changed, 0 insertions(+), 1 deletions(-)
+> 
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 3b807b4..1f0502d 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -334,7 +334,6 @@ config SGI_IP22
+>  	select SWAP_IO_SPACE
+>  	select SYS_HAS_CPU_R4X00
+>  	select SYS_HAS_CPU_R5000
+> -	select SYS_HAS_EARLY_PRINTK
+>  	select SYS_SUPPORTS_32BIT_KERNEL
+>  	select SYS_SUPPORTS_64BIT_KERNEL
+>  	select SYS_SUPPORTS_BIG_ENDIAN
+> -- 
+> 1.4.4.4
+> 
+> -- 
+> Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+> good idea.                                                [ RFC1925, 2.3 ]
+
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

@@ -1,232 +1,115 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Oct 2007 16:20:35 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:11204 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20025008AbXJ3QU1 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 30 Oct 2007 16:20:27 +0000
-Received: from localhost (p5091-ipad31funabasi.chiba.ocn.ne.jp [221.189.129.91])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id E935A9981; Wed, 31 Oct 2007 01:19:04 +0900 (JST)
-Date:	Wed, 31 Oct 2007 01:21:03 +0900 (JST)
-Message-Id: <20071031.012103.128619208.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Oct 2007 19:12:59 +0000 (GMT)
+Received: from py-out-1112.google.com ([64.233.166.179]:29062 "EHLO
+	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20024080AbXJ3TMu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 30 Oct 2007 19:12:50 +0000
+Received: by py-out-1112.google.com with SMTP id p76so4024647pyb
+        for <linux-mips@linux-mips.org>; Tue, 30 Oct 2007 12:12:38 -0700 (PDT)
+Received: by 10.65.96.6 with SMTP id y6mr16032719qbl.1193771556881;
+        Tue, 30 Oct 2007 12:12:36 -0700 (PDT)
+Received: by 10.65.123.7 with HTTP; Tue, 30 Oct 2007 12:12:36 -0700 (PDT)
+Message-ID: <dd7dc2bc0710301212s7b364392n39a149764a4117cf@mail.gmail.com>
+Date:	Wed, 31 Oct 2007 04:12:36 +0900
+From:	"Hyon Lim" <alex@alexlab.net>
 To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] More time cleanup
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Subject: implementation of software suspend on MIPS.
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_299_25130707.1193771556826"
+Return-Path: <alex@alexlab.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17317
+X-archive-position: 17318
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: alex@alexlab.net
 Precedence: bulk
 X-list: linux-mips
 
-* Do not include unnecessary headers.
-* Do not mention time.README.
-* Do not mention mips_timer_ack.
-* Make clocksource_mips static.  It is now dedicated to c0_timer.
-* Initialize clocksource_mips.read statically.
-* Remove null_hpt_read.
-* Remove an argument of plat_timer_setup.  It is just a placeholder.
+------=_Part_299_25130707.1193771556826
+Content-Type: text/plain; charset=EUC-KR
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
 
- arch/mips/kernel/time.c                |   57 ++++++-------------------------
- arch/mips/qemu/q-irq.c                 |    1 +
- include/asm-mips/time.h                |   13 -------
- 3 files changed, 12 insertions(+), 59 deletions(-)
+SGVsbG8uICBJIG5lZWQgYSBoZWxwIGZvciBteSBpbXBsZW1lbnRhdGlvbiB3b3JrIG9uIE1JUFMg
+c29mdHdhcmUgc3VzcGVuZC4KRnJvbSAzbW9udGggYWdvLCBJJ3ZlIGJlZW4gY29kaW5nIHNvZnR3
+YXJlIHN1c3BlbmQoc3dzdXNwKSBvbiBNSVBTIGFyY2guCkknbSBkZXZlbG9waW5nIHdpdGggTUlQ
+UzMyIDRLRWMgZW1iZWRkZWQgcHJvY2Vzc29yIGZvciBkaWdpdGFsIGFwcGxpYW5jZS4KClN3c3Vz
+cCBoYXMgdHdvIHByb2NlZHVyZS4gdGhlIG9uZSBpcyBzdXNwZW5kaW5nIHByb2NlZHVyZSBhbmQg
+b3RoZXIgb25lIGlzCnJlc3VtZSBwcm9jZWR1cmUuClllc3RlcmRheSwgSSBjb25maXJtZWQgc3Vz
+cGVuZGluZyBwcm9jZWR1cmUgd29ya2luZy4KVGhpcyBpcyBhIHBvcnRpbmcgZ3VpZGUgb2Ygc3dz
+dXNwICgKaHR0cDovL3RyZWUuY2VsaW51eGZvcnVtLm9yZy9DZWxmUHViV2lraS9Td1N1c3BlbmRQ
+b3J0aW5nTm90ZXMpCkkgcmVmZXJlZCB0aGlzIGFydGljbGUuCgpUaGUgcHJvYmxlbSBJIGZhY2Vk
+IGlzIGFzc2VtYmx5IGxhbmd1YWdlIGZvciBNSVBTLgpPZiBjb3Vyc2UsIHRoZXJlIGFyZSBtYW55
+IG1hbnVhbHMgZm9yIHRoaXMgd29yayBidXQsIEkgbmVlZCBhIGhlbHAgZnJvbSBNSVBTCmV4cGVy
+dC4KClRoaXMgcHNldWRvIGNvZGUgc2hvdWxkIGJlIGltcGxlbWVudGVkIGJ5IE1JUFMgYXNtLgoK
+ICAgICAgICBmb3IgKGogPSBucl9jb3B5X3BhZ2VzOyBqPjA7IGotLSkgewogICAgICAgICAgICBz
+cmMgPSBwYWdlZGlyX25vc2F2ZVtqXS5zcmM7CiAgICAgICAgICAgIGRzdCA9IHBhZ2VkaXJfbm9z
+YXZlW2pdLmRzdDsKICAgICAgICAgICAgZm9yIChpPTA7aTwxMDI0O2krKykgewogICAgICAgICAg
+ICAgICAgKmRzdCsrID0gKnNyYysrOwogICAgICAgICAgICB9CiAgICAgICAgfQoKbnJfY29weV9w
+YWdlcyBpcyB1bnNpZ25lZCBsb25nIHZhcmlhYmxlLgphbmQgcGFnZWRpcl9ub3NhdmUgaXMgYQpz
+dXNwZW5kX3BhZ2VkaXJfdDxodHRwOi8vbHhyLmxpbnV4Lm5vL3NvdXJjZS9rZXJuZWwvcG93ZXIv
+aWRlbnQ/dj0yLjYuMTA7aT1zdXNwZW5kX3BhZ2VkaXJfdD50eXBlCnN0cnVjdHVyZSBhcnJheShw
+b2ludGVyKS4gKHlvdSBjYW4gcmVmZXIgZm9sbG93aW5nIHVybC4gTGluZSAxMDEuIDoKaHR0cDov
+L2x4ci5saW51eC5uby9zb3VyY2Uva2VybmVsL3Bvd2VyL3N3c3VzcC5jP3Y9Mi42LjEwKQpjb2Rl
+IHNrZWxldG9uIG9yIHVzZWZ1bCBtYXRlcmlhbCB3aWxsIGJlIHdlbGNvbWVkLiAod2hhdGV2ZXIg
+eW91IGhhdmUuKQoKVGhlIHNlY29uZCBwcm9ibGVtIGlzCiIgd2hpY2ggcmVnaXN0ZXIgc2hvdWxk
+IGJlIHByZXZlbnRlZD8gIgoKSSBzYXZlZCAkdjAtdjEuICRhMC0kYTMuICR0MC10Ny4gJHMwLXM3
+LiAkdDgtdDkuICRncCxzcCxmcCxyYS4KCi0tIApIeW9uIExpbSAowNPH9ikKTW9iaWxlLiAwMTAt
+ODIxMi0xMjQwIChJbnRsJyBDYWxsIDogKzgyLTEwLTgyMTItMTI0MCkKRmF4LiAwMzItMjMyLTA1
+NzggKEludGwnIEF2YWlsYWJsZSkKSG9tZXBhZ2UgOiBodHRwOi8vd3d3LmFsZXhsYWIubmV0CkJs
+b2cgOiBodHRwOi8vd3d3LmFsZXhsYWIubmV0L2Jsb2cK
+------=_Part_299_25130707.1193771556826
+Content-Type: text/html; charset=EUC-KR
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
 
-diff --git a/arch/mips/kernel/time.c b/arch/mips/kernel/time.c
-index 622379b..3284b9b 100644
---- a/arch/mips/kernel/time.c
-+++ b/arch/mips/kernel/time.c
-@@ -3,8 +3,7 @@
-  * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
-  * Copyright (c) 2003, 2004  Maciej W. Rozycki
-  *
-- * Common time service routines for MIPS machines. See
-- * Documentation/mips/time.README.
-+ * Common time service routines for MIPS machines.
-  *
-  * This program is free software; you can redistribute  it and/or modify it
-  * under  the terms of  the GNU General  Public License as published by the
-@@ -18,28 +17,17 @@
- #include <linux/init.h>
- #include <linux/sched.h>
- #include <linux/param.h>
--#include <linux/profile.h>
- #include <linux/time.h>
- #include <linux/timex.h>
- #include <linux/smp.h>
--#include <linux/kernel_stat.h>
- #include <linux/spinlock.h>
--#include <linux/interrupt.h>
- #include <linux/module.h>
--#include <linux/kallsyms.h>
- 
--#include <asm/bootinfo.h>
--#include <asm/cache.h>
--#include <asm/compiler.h>
--#include <asm/cpu.h>
- #include <asm/cpu-features.h>
- #include <asm/div64.h>
--#include <asm/sections.h>
- #include <asm/smtc_ipi.h>
- #include <asm/time.h>
- 
--#include <irq.h>
--
- /*
-  * forward reference
-  */
-@@ -63,14 +51,6 @@ int update_persistent_clock(struct timespec now)
- }
- 
- /*
-- * Null high precision timer functions for systems lacking one.
-- */
--static cycle_t null_hpt_read(void)
--{
--	return 0;
--}
--
--/*
-  * High precision timer functions for a R4k-compatible timer.
-  */
- static cycle_t c0_hpt_read(void)
-@@ -104,6 +84,13 @@ EXPORT_SYMBOL(perf_irq);
- 
- unsigned int mips_hpt_frequency;
- 
-+static struct clocksource clocksource_mips = {
-+	.name		= "MIPS",
-+	.read		= c0_hpt_read,
-+	.mask		= CLOCKSOURCE_MASK(32),
-+	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
-+};
-+
- static unsigned int __init calibrate_hpt(void)
- {
- 	cycle_t frequency, hpt_start, hpt_end, hpt_count, hz;
-@@ -146,12 +133,6 @@ static unsigned int __init calibrate_hpt(void)
- 	return frequency >> log_2_loops;
- }
- 
--struct clocksource clocksource_mips = {
--	.name		= "MIPS",
--	.mask		= CLOCKSOURCE_MASK(32),
--	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
--};
--
- void __init clocksource_set_clock(struct clocksource *cs, unsigned int clock)
- {
- 	u64 temp;
-@@ -187,9 +168,6 @@ void __cpuinit clockevent_set_clock(struct clock_event_device *cd,
- 
- static void __init init_mips_clocksource(void)
- {
--	if (!mips_hpt_frequency || clocksource_mips.read == null_hpt_read)
--		return;
--
- 	/* Calclate a somewhat reasonable rating value */
- 	clocksource_mips.rating = 200 + mips_hpt_frequency / 10000000;
- 
-@@ -211,7 +189,7 @@ void __init __weak plat_time_init(void)
-  * setup_irq calls and each clock_event_device should use its own
-  * struct irqrequest.
-  */
--void __init plat_timer_setup(struct irqaction *irq)
-+void __init plat_timer_setup(void)
- {
- 	BUG();
- }
-@@ -220,21 +198,8 @@ void __init time_init(void)
- {
- 	plat_time_init();
- 
--	/* Choose appropriate high precision timer routines.  */
--	if (!cpu_has_counter && !clocksource_mips.read)
--		/* No high precision timer -- sorry.  */
--		clocksource_mips.read = null_hpt_read;
--	else if (!mips_hpt_frequency && !mips_timer_state) {
--		/* A high precision timer of unknown frequency.  */
--		if (!clocksource_mips.read)
--			/* No external high precision timer -- use R4k.  */
--			clocksource_mips.read = c0_hpt_read;
--	} else {
-+	if (cpu_has_counter && (mips_hpt_frequency || mips_timer_state)) {
- 		/* We know counter frequency.  Or we can get it.  */
--		if (!clocksource_mips.read) {
--			/* No external high precision timer -- use R4k.  */
--			clocksource_mips.read = c0_hpt_read;
--		}
- 		if (!mips_hpt_frequency)
- 			mips_hpt_frequency = calibrate_hpt();
- 
-@@ -242,8 +207,8 @@ void __init time_init(void)
- 		printk("Using %u.%03u MHz high precision timer.\n",
- 		       ((mips_hpt_frequency + 500) / 1000) / 1000,
- 		       ((mips_hpt_frequency + 500) / 1000) % 1000);
-+		init_mips_clocksource();
- 	}
- 
--	init_mips_clocksource();
- 	mips_clockevent_init();
- }
-diff --git a/arch/mips/qemu/q-irq.c b/arch/mips/qemu/q-irq.c
-index 4681757..11f9847 100644
---- a/arch/mips/qemu/q-irq.c
-+++ b/arch/mips/qemu/q-irq.c
-@@ -1,4 +1,5 @@
- #include <linux/init.h>
-+#include <linux/interrupt.h>
- #include <linux/linkage.h>
- 
- #include <asm/i8259.h>
-diff --git a/include/asm-mips/time.h b/include/asm-mips/time.h
-index a45f24a..ee1663e 100644
---- a/include/asm-mips/time.h
-+++ b/include/asm-mips/time.h
-@@ -10,15 +10,10 @@
-  * under  the terms of  the GNU General  Public License as published by the
-  * Free Software Foundation;  either version 2 of the  License, or (at your
-  * option) any later version.
-- *
-- * Please refer to Documentation/mips/time.README.
-  */
- #ifndef _ASM_TIME_H
- #define _ASM_TIME_H
- 
--#include <linux/interrupt.h>
--#include <linux/linkage.h>
--#include <linux/ptrace.h>
- #include <linux/rtc.h>
- #include <linux/spinlock.h>
- #include <linux/clockchips.h>
-@@ -38,20 +33,12 @@ extern int rtc_mips_set_mmss(unsigned long);
- /*
-  * Timer interrupt functions.
-  * mips_timer_state is needed for high precision timer calibration.
-- * mips_timer_ack may be NULL if the interrupt is self-recoverable.
-  */
- extern int (*mips_timer_state)(void);
- 
- /*
-- * High precision timer clocksource.
-- * If .read is NULL, an R4k-compatible timer setup is attempted.
-- */
--extern struct clocksource clocksource_mips;
--
--/*
-  * board specific routines required by time_init().
-  */
--struct irqaction;
- extern void plat_time_init(void);
- 
- /*
+PGRpdj5IZWxsby4mbmJzcDsgSSBuZWVkIGEgaGVscCBmb3IgbXkgaW1wbGVtZW50YXRpb24gd29y
+ayBvbiBNSVBTIHNvZnR3YXJlIHN1c3BlbmQuPC9kaXY+CjxkaXY+RnJvbSAzbW9udGggYWdvLCBJ
+JiMzOTt2ZSBiZWVuIGNvZGluZyBzb2Z0d2FyZSBzdXNwZW5kKHN3c3VzcCkgb24gTUlQUyBhcmNo
+LjwvZGl2Pgo8ZGl2PkkmIzM5O20gZGV2ZWxvcGluZyB3aXRoIE1JUFMzMiA0S0VjIGVtYmVkZGVk
+IHByb2Nlc3NvciBmb3IgZGlnaXRhbCBhcHBsaWFuY2UuPC9kaXY+CjxkaXY+Jm5ic3A7PC9kaXY+
+CjxkaXY+U3dzdXNwIGhhcyB0d28gcHJvY2VkdXJlLiB0aGUgb25lIGlzIHN1c3BlbmRpbmcgcHJv
+Y2VkdXJlIGFuZCBvdGhlciBvbmUgaXMgcmVzdW1lIHByb2NlZHVyZS48L2Rpdj4KPGRpdj5ZZXN0
+ZXJkYXksIEkgY29uZmlybWVkIHN1c3BlbmRpbmcgcHJvY2VkdXJlIHdvcmtpbmcuPC9kaXY+Cjxk
+aXY+VGhpcyBpcyBhIHBvcnRpbmcgZ3VpZGUgb2Ygc3dzdXNwICg8YSBocmVmPSJodHRwOi8vdHJl
+ZS5jZWxpbnV4Zm9ydW0ub3JnL0NlbGZQdWJXaWtpL1N3U3VzcGVuZFBvcnRpbmdOb3RlcyI+aHR0
+cDovL3RyZWUuY2VsaW51eGZvcnVtLm9yZy9DZWxmUHViV2lraS9Td1N1c3BlbmRQb3J0aW5nTm90
+ZXM8L2E+KTwvZGl2Pgo8ZGl2PkkgcmVmZXJlZCB0aGlzIGFydGljbGUuPC9kaXY+CjxkaXY+Jm5i
+c3A7PC9kaXY+CjxkaXY+VGhlIHByb2JsZW0gSSBmYWNlZCBpcyBhc3NlbWJseSBsYW5ndWFnZSBm
+b3IgTUlQUy48L2Rpdj4KPGRpdj5PZiBjb3Vyc2UsIHRoZXJlIGFyZSBtYW55IG1hbnVhbHMgZm9y
+IHRoaXMgd29yayBidXQsIEkgbmVlZCBhIGhlbHAgZnJvbSBNSVBTIGV4cGVydC48L2Rpdj4KPGRp
+dj4mbmJzcDs8L2Rpdj4KPGRpdj5UaGlzIHBzZXVkbyBjb2RlIHNob3VsZCBiZSBpbXBsZW1lbnRl
+ZCBieSBNSVBTIGFzbS48L2Rpdj4KPGRpdj4mbmJzcDs8L2Rpdj4KPGRpdj4mbmJzcDsmbmJzcDsm
+bmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsgZm9yIChqID0gbnJfY29weV9wYWdlczsgaiZn
+dDswOyBqLS0pIHsgPGJyPiZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
+OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyBzcmMgPSBwYWdlZGlyX25vc2F2ZVtqXS5zcmM7IDxi
+cj4mbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsmbmJzcDsm
+bmJzcDsmbmJzcDsgZHN0ID0gcGFnZWRpcl9ub3NhdmVbal0uZHN0OyA8YnI+Jm5ic3A7Jm5ic3A7
+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7IGZv
+ciAoaT0wO2kmbHQ7MTAyNDtpKyspIHsgPGJyPiZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNw
+OyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZu
+YnNwOyAqZHN0KysgPSAqc3JjKys7IAo8YnI+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7
+Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7Jm5ic3A7IH0gPGJyPiZuYnNwOyZuYnNwOyZu
+YnNwOyZuYnNwOyZuYnNwOyZuYnNwOyZuYnNwOyB9IDxicj4mbmJzcDs8L2Rpdj4KPGRpdj5ucl9j
+b3B5X3BhZ2VzIGlzIHVuc2lnbmVkIGxvbmcgdmFyaWFibGUuPC9kaXY+CjxkaXY+YW5kIHBhZ2Vk
+aXJfbm9zYXZlIGlzIGEgPGEgaHJlZj0iaHR0cDovL2x4ci5saW51eC5uby9zb3VyY2Uva2VybmVs
+L3Bvd2VyL2lkZW50P3Y9Mi42LjEwO2k9c3VzcGVuZF9wYWdlZGlyX3QiPnN1c3BlbmRfcGFnZWRp
+cl90PC9hPiB0eXBlIHN0cnVjdHVyZSBhcnJheShwb2ludGVyKS4gKHlvdSBjYW4gcmVmZXIgZm9s
+bG93aW5nIHVybC4gTGluZSAxMDEuJm5ic3A7OiA8YSBocmVmPSJodHRwOi8vbHhyLmxpbnV4Lm5v
+L3NvdXJjZS9rZXJuZWwvcG93ZXIvc3dzdXNwLmM/dj0yLjYuMTAiPgpodHRwOi8vbHhyLmxpbnV4
+Lm5vL3NvdXJjZS9rZXJuZWwvcG93ZXIvc3dzdXNwLmM/dj0yLjYuMTA8L2E+KTwvZGl2Pgo8ZGl2
+PmNvZGUgc2tlbGV0b24gb3IgdXNlZnVsIG1hdGVyaWFsIHdpbGwgYmUgd2VsY29tZWQuICh3aGF0
+ZXZlciB5b3UgaGF2ZS4pPC9kaXY+CjxkaXY+Jm5ic3A7PC9kaXY+CjxkaXY+VGhlIHNlY29uZCBw
+cm9ibGVtIGlzPC9kaXY+CjxkaXY+JnF1b3Q7IHdoaWNoIHJlZ2lzdGVyIHNob3VsZCBiZSBwcmV2
+ZW50ZWQ/ICZxdW90OzwvZGl2Pgo8ZGl2PiZuYnNwOzwvZGl2Pgo8ZGl2Pkkgc2F2ZWQgJHYwLXYx
+LiAkYTAtJGEzLiAkdDAtdDcuICRzMC1zNy4gJHQ4LXQ5LiAkZ3Asc3AsZnAscmEuPC9kaXY+Cjxk
+aXY+PGJyPi0tIDxicj5IeW9uIExpbSAowNPH9ik8YnI+TW9iaWxlLiAwMTAtODIxMi0xMjQwIChJ
+bnRsJiMzOTsgQ2FsbCA6ICs4Mi0xMC04MjEyLTEyNDApPGJyPkZheC4gMDMyLTIzMi0wNTc4IChJ
+bnRsJiMzOTsgQXZhaWxhYmxlKTxicj5Ib21lcGFnZSA6IDxhIGhyZWY9Imh0dHA6Ly93d3cuYWxl
+eGxhYi5uZXQiPmh0dHA6Ly93d3cuYWxleGxhYi5uZXQ8L2E+PGJyPkJsb2cgOiA8YSBocmVmPSJo
+dHRwOi8vd3d3LmFsZXhsYWIubmV0L2Jsb2ciPgpodHRwOi8vd3d3LmFsZXhsYWIubmV0L2Jsb2c8
+L2E+IDwvZGl2Pgo=
+------=_Part_299_25130707.1193771556826--

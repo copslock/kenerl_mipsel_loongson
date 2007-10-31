@@ -1,48 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2007 13:37:25 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:12165 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20025281AbXJaNhX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 31 Oct 2007 13:37:23 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9VDb7MI015414;
-	Wed, 31 Oct 2007 13:37:07 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9VDb7T1015413;
-	Wed, 31 Oct 2007 13:37:07 GMT
-Date:	Wed, 31 Oct 2007 13:37:07 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] More time cleanup
-Message-ID: <20071031133707.GB15332@linux-mips.org>
-References: <20071031.012103.128619208.anemo@mba.ocn.ne.jp>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20071031.012103.128619208.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2007 14:59:06 +0000 (GMT)
+Received: from host148-217-dynamic.16-79-r.retail.telecomitalia.it ([79.16.217.148]:61380
+	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
+	id S28575956AbXJaO66 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 31 Oct 2007 14:58:58 +0000
+Received: from 89-96-243-184.ip14.fastwebnet.it ([89.96.243.184] helo=[192.168.215.30])
+	by eppesuigoccas.homedns.org with esmtpsa (TLS-1.0:RSA_ARCFOUR_MD5:16)
+	(Exim 4.63)
+	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
+	id 1InF1x-000358-Jz
+	for linux-mips@linux-mips.org; Wed, 31 Oct 2007 15:58:55 +0100
+Subject: Re: Preliminary patch for ip32 ttyS* device
+From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+To:	mips kernel list <linux-mips@linux-mips.org>
+In-Reply-To: <20071031130828.GE14187@linux-mips.org>
+References: <20071030214015.050b7950.giuseppe@eppesuigoccas.homedns.org>
+	 <20071031130828.GE14187@linux-mips.org>
+Content-Type: text/plain
+Date:	Wed, 31 Oct 2007 15:59:26 +0100
+Message-Id: <1193842766.16429.7.camel@scarafaggio>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.10.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <giuseppe@eppesuigoccas.homedns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17330
+X-archive-position: 17331
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: giuseppe@eppesuigoccas.homedns.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 31, 2007 at 01:21:03AM +0900, Atsushi Nemoto wrote:
+Il giorno mer, 31/10/2007 alle 13.08 +0000, Ralf Baechle ha scritto:
+> On Tue, Oct 30, 2007 at 09:40:15PM +0100, Giuseppe Sacco wrote:
+[...]
+> > diff --git a/drivers/serial/serial_core.c b/drivers/serial/serial_core.c
+> > index 3bb5d24..7caa877 100644
+> > --- a/drivers/serial/serial_core.c
+> > +++ b/drivers/serial/serial_core.c
+> > @@ -2455,6 +2455,8 @@ int uart_match_port(struct uart_port *port1, struct uart_port *port2)
+> >  	case UPIO_AU:
+> >  	case UPIO_TSI:
+> >  	case UPIO_DWAPB:
+> > +		if (port1->mapbase==0 && port2->mapbase==0)
+> > +			return (port1->membase == port2->membase);
+> 
+> This hack is only needed because ->mapbase is not initialized.
 
-> * Do not include unnecessary headers.
-> * Do not mention time.README.
-> * Do not mention mips_timer_ack.
-> * Make clocksource_mips static.  It is now dedicated to c0_timer.
-> * Initialize clocksource_mips.read statically.
-> * Remove null_hpt_read.
-> * Remove an argument of plat_timer_setup.  It is just a placeholder.
+Right, for a few days I tried to correctly initialise mapbase and
+setting UPF_IOREMAP in order to let this code calculate membase:
 
-Thanks, applied.
+up->port.membase = ioremap(up->port.mapbase, size);
 
-  Ralf
+(drivers/serial/8250.c, function serial8250_request_std_resource)
+
+but maybe we can just leave mapbase == 0 and change uart_match_port() as
+in my patch.
+
+Any other option?

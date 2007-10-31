@@ -1,82 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2007 10:22:58 +0000 (GMT)
-Received: from web7911.mail.in.yahoo.com ([202.86.4.87]:55379 "HELO
-	web7911.mail.in.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20025490AbXJaKWs (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 31 Oct 2007 10:22:48 +0000
-Received: (qmail 50104 invoked by uid 60001); 31 Oct 2007 10:21:40 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.co.in;
-  h=X-YMail-OSG:Received:Date:From:Subject:To:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
-  b=OMr1j68/GNKk6XX8bUPO6WUjILO/aDDB1MFOfIkyi7yyrOI6bux5FghxCdvMSBeaEN4mBIHfdHeWwptkgP+ESIKIHkwyjVQ7XICqYfp+u+mqxx+zHIQWIDawSJ4wJxbqyci6zb3VTujIHD6pKLVUw5Rq2CGEEsQfkLfjDRC2Khc=;
-X-YMail-OSG: pEPN2y8VM1nePujhlcxKoH25vleqajzVOlzH30nIv27uLQBCpwH6Or6xG1jXe9c2ig--
-Received: from [199.239.167.162] by web7911.mail.in.yahoo.com via HTTP; Wed, 31 Oct 2007 10:21:40 GMT
-Date:	Wed, 31 Oct 2007 10:21:40 +0000 (GMT)
-From:	sathesh babu <sathesh_edara2003@yahoo.co.in>
-Subject: Re: Unknown Synbol:__gp_disp
-To:	kaka <share.kt@gmail.com>, linux-mips@linux-mips.org,
-	uclinux-dev@uclinux.org, linux-fbdev-users@lists.sourceforge.net
-In-Reply-To: <eea8a9c90710300215l2fdd9bf6u2238f1f9d8f1d66e@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2007 10:35:45 +0000 (GMT)
+Received: from ug-out-1314.google.com ([66.249.92.175]:60782 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20025627AbXJaKfg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 31 Oct 2007 10:35:36 +0000
+Received: by ug-out-1314.google.com with SMTP id u2so296745uge
+        for <linux-mips@linux-mips.org>; Wed, 31 Oct 2007 03:35:18 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
+        bh=baI3t/1XaOdOa7dCTrwnAK2AQs2sW8J1miBiix7ToXo=;
+        b=rw7T9BrBM/GgO/pZtgWQUNFwFigdPN1f5UXrBn8xf6b92TpNJGvFdXsg1dpN/Y0UAf4/hX8fLQVaaOS09RG34GzE+U83CVkc9swgjt6Ejm9XlC82qkOJ84BHQ4A6uBhSV+G+q35Xv2HIuAAaYzk1z/6czVticQ2yUKrSsYCcZYY=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:mime-version:content-type;
+        b=sg91a1c8z1gr6RvOEeZ3vWKy6tGgaJWQyic+qUkm9NN7He4f0IWVzZoC/yWb82G65R+R7juhWKkN/yW+C68BUHuRqxjLZPkM8vIL3ImqbOdASUrzWxu/VZJf7nbcWMU/eq2h1zL2jW35+g/iXadij2vvfT0T8gr/e2wH9NRsShc=
+Received: by 10.67.115.9 with SMTP id s9mr1849708ugm.1193826918529;
+        Wed, 31 Oct 2007 03:35:18 -0700 (PDT)
+Received: by 10.66.254.5 with HTTP; Wed, 31 Oct 2007 03:35:18 -0700 (PDT)
+Message-ID: <eea8a9c90710310335mdee2749i2c1758eb6b8f1041@mail.gmail.com>
+Date:	Wed, 31 Oct 2007 16:05:18 +0530
+From:	kaka <share.kt@gmail.com>
+To:	linux-mips@linux-mips.org, uclinux-dev@uclinux.org,
+	linux-fbdev-users@lists.sourceforge.net
+Subject: Unknown Synbol:__make_dp
 MIME-Version: 1.0
-Content-Type: multipart/alternative; boundary="0-847549657-1193826100=:49894"
-Content-Transfer-Encoding: 8bit
-Message-ID: <168352.49894.qm@web7911.mail.in.yahoo.com>
-Return-Path: <sathesh_edara2003@yahoo.co.in>
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_5828_2492604.1193826918525"
+Return-Path: <share.kt@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17325
+X-archive-position: 17326
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sathesh_edara2003@yahoo.co.in
+X-original-sender: share.kt@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
---0-847549657-1193826100=:49894
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
+------=_Part_5828_2492604.1193826918525
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Hi,
-    Please use "-mno-pic -mno-abicalls -G 0" cflags along with kernel  cflags  to build the your  module.
-   
-  Regards,
-  Sathesh
-  
+Hi All,
 
-kaka <share.kt@gmail.com> wrote:
-    Hi All,
-   
-  While installing the driver by insmod cmd. i am getting the above error, Unknown Synbol:__gp_disp,
-  I have added ``-fno-pic -mno-abicalls'' option in the make file as 
-   
-    $(BCM_OBJ_DIR)/%.o: %.c
-  @echo '$(CC) -c $(notdir $<)'
-  @$(CC) -fno-pic -mno-abicalls -MMD -c $(CFLAGS) $< -o $@
-   
-  I tried by adding those symbols in the CFLAGS
-  CFLAGS += -fno-pic -mno-abicalls.
-  But it didn't help my cause.
-  Could anybody plz look in to the error and reply?
-  Thanks in advance
+ While installing the  linux framebuffer driver by insmod cmd. i am getting
+the above error,
+Unknown Synbol:__make_dp
 
+Can anybody throw some light on it , kow to remove it?
+Thanks in advance.
 
 -- 
 Thanks & Regards,
-kaka 
+kaka
 
+------=_Part_5828_2492604.1193826918525
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
+<div>Hi All,</div>
+<div>&nbsp;</div>
+<div>
+<div>While installing the&nbsp; linux framebuffer driver by insmod cmd. i am getting the above error, </div>
+<div>Unknown Synbol:__make_dp</div>
+<div><font color="#550055"></font>&nbsp;</div>
+<div><font color="#550055">Can anybody throw some light on it , kow to remove it?</font></div>
+<div><font color="#550055">Thanks in advance.</font></div></div><br>-- <br>Thanks &amp; Regards,<br>kaka 
 
-
-       
----------------------------------
- Bring your gang together - do your thing.  Start your group.
---0-847549657-1193826100=:49894
-Content-Type: text/html; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-
-<div>Hi,</div>  <div>&nbsp; Please use "<FONT size=2>-mno-pic -mno-abicalls -G 0" cflags along with </FONT>kernel &nbsp;cflags&nbsp; to build the your &nbsp;module.</div>  <div>&nbsp;</div>  <div>Regards,</div>  <div>Sathesh<FONT size=2></div>  <div></FONT><BR><BR><B><I>kaka &lt;share.kt@gmail.com&gt;</I></B> wrote:</div>  <BLOCKQUOTE class=replbq style="PADDING-LEFT: 5px; MARGIN-LEFT: 5px; BORDER-LEFT: #1010ff 2px solid">  <DIV>Hi All,</DIV>  <DIV>&nbsp;</DIV>  <DIV>While installing the driver by insmod cmd. i am getting the above error, Unknown Synbol:__gp_disp,</DIV>  <DIV>I have added ``-fno-pic -mno-abicalls'' option in the make file as </DIV>  <DIV>&nbsp;</DIV>  <DIV><FONT size=2>  <div>$(BCM_OBJ_DIR)/%.o: %.c</div>  <div>@echo '$(CC) -c $(notdir $&lt;)'</div>  <div>@$(CC) -fno-pic -mno-abicalls -MMD -c $(CFLAGS) $&lt; -o $@</div>  <div>&nbsp;</div>  <div>I tried by adding those symbols in the CFLAGS</div><FONT size=2>  <div>CFLAGS +=&nbsp;-fno-pic
- -mno-abicalls.</div>  <div>But it didn't help my cause.</div>  <div>Could anybody plz look in to the error and reply?</div>  <div>Thanks in advance</div></FONT></FONT><BR clear=all><BR>-- <BR>Thanks &amp; Regards,<BR>kaka </DIV><BR clear=all><BR></BLOCKQUOTE><BR><p>&#32;
-
-
-      <!--2--><hr size=1></hr> Bring your gang together - do your thing. <a href="http://in.rd.yahoo.com/tagline_groups_2/*http://in.promos.yahoo.com/groups"> Start your group.</a>
---0-847549657-1193826100=:49894--
+------=_Part_5828_2492604.1193826918525--

@@ -1,111 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2007 18:15:33 +0000 (GMT)
-Received: from nz-out-0506.google.com ([64.233.162.239]:52323 "EHLO
-	nz-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S28576493AbXJaSPZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 31 Oct 2007 18:15:25 +0000
-Received: by nz-out-0506.google.com with SMTP id n1so172556nzf
-        for <linux-mips@linux-mips.org>; Wed, 31 Oct 2007 11:15:14 -0700 (PDT)
-Received: by 10.114.209.1 with SMTP id h1mr1601903wag.1193854511505;
-        Wed, 31 Oct 2007 11:15:11 -0700 (PDT)
-Received: by 10.65.123.7 with HTTP; Wed, 31 Oct 2007 11:15:11 -0700 (PDT)
-Message-ID: <dd7dc2bc0710311115x51dfab0bt97cdd810d21d120c@mail.gmail.com>
-Date:	Thu, 1 Nov 2007 03:15:11 +0900
-From:	"Hyon Lim" <alex@alexlab.net>
-To:	"Ralf Baechle" <ralf@linux-mips.org>
-Subject: Re: implementation of software suspend on MIPS. (system log)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2007 18:30:29 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:49570 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S28576517AbXJaSa1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 31 Oct 2007 18:30:27 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id l9VIU7Nm031583;
+	Wed, 31 Oct 2007 18:30:07 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id l9VIU6HF031582;
+	Wed, 31 Oct 2007 18:30:06 GMT
+Date:	Wed, 31 Oct 2007 18:30:06 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Hyon Lim <alex@alexlab.net>
 Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20071031132553.GF14187@linux-mips.org>
+Subject: Re: implementation of software suspend on MIPS. (system log)
+Message-ID: <20071031183006.GA30155@linux-mips.org>
+References: <dd7dc2bc0710301215m1a5b8d7at85c9afc7976dc21d@mail.gmail.com> <20071031132553.GF14187@linux-mips.org> <dd7dc2bc0710311115x51dfab0bt97cdd810d21d120c@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_5276_23103341.1193854511405"
-References: <dd7dc2bc0710301215m1a5b8d7at85c9afc7976dc21d@mail.gmail.com>
-	 <20071031132553.GF14187@linux-mips.org>
-Return-Path: <alex@alexlab.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dd7dc2bc0710311115x51dfab0bt97cdd810d21d120c@mail.gmail.com>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17339
+X-archive-position: 17340
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@alexlab.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_5276_23103341.1193854511405
-Content-Type: text/plain; charset=EUC-KR
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
+On Thu, Nov 01, 2007 at 03:15:11AM +0900, Hyon Lim wrote:
 
-VGhlIHByb2JsZW0gaXMgcmVzdW1lIHByb2Nlc3MuClNvbWUgcGFnZSBjb3B5IGFuZCBvdGhlciBy
-ZW1haW5pbmcgcHJvY2VzcyB3YXNuJ3QgaW1wbGVtZW50ZWQuClRoZSBjb2RlIG9mIHJlc3VtZSBw
-cm9jZXNzIHNob3VsZCBiZSBpbXBsZW1lbnRlZCBvbiBhcmNoL3h4eC9wb3dlci9zd3N1c3AuUwpT
-byBpdCBzaG91bGQgYmUgaW1wbGVtZW50ZWQgYnkgYXNzZW1ibHkuClRoYXQncyB0aGUgcHJvYmxl
-bS4uLgpJJ3ZlIG5vIGlkZWEgYWJvdXQgY29tcGxleCBhc3NlbWJseSBwcm9ncmFtbWluZy4gOi0p
-CkNvdWxkIHlvdSByZWNvbW1lbmQgYW55IHBkZiBvciB3ZWJzaXRlPwoKT24gMTAvMzEvMDcsIFJh
-bGYgQmFlY2hsZSA8cmFsZkBsaW51eC1taXBzLm9yZz4gd3JvdGU6Cj4KPiBPbiBXZWQsIE9jdCAz
-MSwgMjAwNyBhdCAwNDoxNTo1N0FNICswOTAwLCBIeW9uIExpbSB3cm90ZToKPgo+ID4gW0RFQlVH
-XSBTd3N1c3Bfd3JpdGUoKSBAIGtlcm5lbC9wb3dlci9zd3N1c3AuYyw4NzQKPiA+IFtERUJVR10g
-d3JpdGVfc3VzcGVuZF9pbWFnZSgpLCBrZXJuZWwvcG93ZXIvc3dzdXNwLmMsNDA3Cj4gPiBbREVC
-VUddIGluaXRfaGVhZGVyKCksIGtlcm5lbC9wb3dlci9zd3N1c3AuYywzMzcKPiA+IFtERUJVR10g
-ZHVtcF9pbmZvKCksIGtlcm5lbC9wb3dlci9zd3N1c3AuYywzMjEKPiA+ICBzd3N1c3A6IFZlcnNp
-b246IDEzMjYxOAo+ID4gIHN3c3VzcDogTnVtIFBhZ2VzOiA4MTkyCj4gPiAgc3dzdXNwOiBVVFMg
-U3lzOiBMaW51eAo+ID4gIHN3c3VzcDogVVRTIE5vZGU6IChub25lKQo+ID4gIHN3c3VzcDogVVRT
-IFJlbGVhc2U6IDIuNi4xMF9TRUxQX01JUFMKPiA+ICBzd3N1c3A6IFVUUyBWZXJzaW9uOiAjOTUg
-V2VkIE9jdCAzMCAwMzo0NjozNSBLU1QgMjAwNwo+ID4gIHN3c3VzcDogVVRTIE1hY2hpbmU6IG1p
-cHMKPiA+ICBzd3N1c3A6IFVUUyBEb21haW46IChub25lKQo+ID4gIHN3c3VzcDogQ1BVczogMQo+
-ID4gIHN3c3VzcDogSW1hZ2U6IDE4OTYgUGFnZXMKPiA+ICBzd3N1c3A6IFBhZ2VkaXI6IDAgUGFn
-ZXMKPiA+IFtERUJVR10gZGF0YV93cml0ZSgpLCBrZXJuZWwvcG93ZXIvc3dzdXNwLmMsMzAzCj4g
-PiBXcml0aW5nIGRhdGEgdG8gc3dhcCAoMTg5NiBwYWdlcykuLi4gZG9uZQo+ID4gV3JpdGluZyBw
-YWdlZGlyICg4IHBhZ2VzKQo+ID4gU3wKPiA+IFBvd2VyaW5nIG9mZiBzeXN0ZW0KPiA+IENvbGQg
-cmVzZXQKPiA+Cj4gPiBUaGlzIGlzIHN5c3RlbSBsb2cgb2YgbXkgaW1wbGVtZW50YXRpb24uCj4K
-PiBFeGNlbGxlbnQsIHRoaXMgaXMgbG9va2luZyBwcm9taXNpbmcuCj4KPiBEbyB5b3Ugc3RpbGwg
-bmVlZCBhbnkgaGVscD8KPgo+IFJhbGYKPgoKCgotLSAKSHlvbiBMaW0gKMDTx/YpCk1vYmlsZS4g
-MDEwLTgyMTItMTI0MCAoSW50bCcgQ2FsbCA6ICs4Mi0xMC04MjEyLTEyNDApCkZheC4gMDMyLTIz
-Mi0wNTc4IChJbnRsJyBBdmFpbGFibGUpCkhvbWVwYWdlIDogaHR0cDovL3d3dy5hbGV4bGFiLm5l
-dApCbG9nIDogaHR0cDovL3d3dy5hbGV4bGFiLm5ldC9ibG9nCg==
-------=_Part_5276_23103341.1193854511405
-Content-Type: text/html; charset=EUC-KR
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
+> The problem is resume process.
+> Some page copy and other remaining process wasn't implemented.
+> The code of resume process should be implemented on arch/xxx/power/swsusp.S
+> So it should be implemented by assembly.
+> That's the problem...
+> I've no idea about complex assembly programming. :-)
+> Could you recommend any pdf or website?
 
-PGRpdj5UaGUgcHJvYmxlbSBpcyByZXN1bWUgcHJvY2Vzcy48L2Rpdj4KPGRpdj5Tb21lIHBhZ2Ug
-Y29weSBhbmQgb3RoZXIgcmVtYWluaW5nIHByb2Nlc3Mgd2FzbiYjMzk7dCBpbXBsZW1lbnRlZC48
-L2Rpdj4KPGRpdj5UaGUgY29kZSBvZiByZXN1bWUgcHJvY2VzcyBzaG91bGQgYmUgaW1wbGVtZW50
-ZWQgb24gYXJjaC94eHgvcG93ZXIvc3dzdXNwLlM8L2Rpdj4KPGRpdj5TbyBpdCBzaG91bGQgYmUg
-aW1wbGVtZW50ZWQgYnkgYXNzZW1ibHkuPC9kaXY+CjxkaXY+VGhhdCYjMzk7cyB0aGUgcHJvYmxl
-bS4uLjwvZGl2Pgo8ZGl2PkkmIzM5O3ZlIG5vIGlkZWEgYWJvdXQgY29tcGxleCBhc3NlbWJseSBw
-cm9ncmFtbWluZy4gOi0pPC9kaXY+CjxkaXY+Q291bGQgeW91IHJlY29tbWVuZCBhbnkgcGRmIG9y
-IHdlYnNpdGU/PGJyPiZuYnNwOzwvZGl2Pgo8ZGl2PjxzcGFuIGNsYXNzPSJnbWFpbF9xdW90ZSI+
-T24gMTAvMzEvMDcsIDxiIGNsYXNzPSJnbWFpbF9zZW5kZXJuYW1lIj5SYWxmIEJhZWNobGU8L2I+
-ICZsdDs8YSBocmVmPSJtYWlsdG86cmFsZkBsaW51eC1taXBzLm9yZyI+cmFsZkBsaW51eC1taXBz
-Lm9yZzwvYT4mZ3Q7IHdyb3RlOjwvc3Bhbj4KPGJsb2NrcXVvdGUgY2xhc3M9ImdtYWlsX3F1b3Rl
-IiBzdHlsZT0iUEFERElORy1MRUZUOiAxZXg7IE1BUkdJTjogMHB4IDBweCAwcHggMC44ZXg7IEJP
-UkRFUi1MRUZUOiAjY2NjIDFweCBzb2xpZCI+T24gV2VkLCBPY3QgMzEsIDIwMDcgYXQgMDQ6MTU6
-NTdBTSArMDkwMCwgSHlvbiBMaW0gd3JvdGU6PGJyPjxicj4mZ3Q7IFtERUJVR10gU3dzdXNwX3dy
-aXRlKCkgQCBrZXJuZWwvcG93ZXIvc3dzdXNwLmMsODc0Cjxicj4mZ3Q7IFtERUJVR10gd3JpdGVf
-c3VzcGVuZF9pbWFnZSgpLCBrZXJuZWwvcG93ZXIvc3dzdXNwLmMsNDA3PGJyPiZndDsgW0RFQlVH
-XSBpbml0X2hlYWRlcigpLCBrZXJuZWwvcG93ZXIvc3dzdXNwLmMsMzM3PGJyPiZndDsgW0RFQlVH
-XSBkdW1wX2luZm8oKSwga2VybmVsL3Bvd2VyL3N3c3VzcC5jLDMyMTxicj4mZ3Q7Jm5ic3A7Jm5i
-c3A7c3dzdXNwOiBWZXJzaW9uOiAxMzI2MTg8YnI+Jmd0OyZuYnNwOyZuYnNwO3N3c3VzcDogTnVt
-IFBhZ2VzOiA4MTkyCjxicj4mZ3Q7Jm5ic3A7Jm5ic3A7c3dzdXNwOiBVVFMgU3lzOiBMaW51eDxi
-cj4mZ3Q7Jm5ic3A7Jm5ic3A7c3dzdXNwOiBVVFMgTm9kZTogKG5vbmUpPGJyPiZndDsmbmJzcDsm
-bmJzcDtzd3N1c3A6IFVUUyBSZWxlYXNlOiAyLjYuMTBfU0VMUF9NSVBTPGJyPiZndDsmbmJzcDsm
-bmJzcDtzd3N1c3A6IFVUUyBWZXJzaW9uOiAjOTUgV2VkIE9jdCAzMCAwMzo0NjozNSBLU1QgMjAw
-Nzxicj4mZ3Q7Jm5ic3A7Jm5ic3A7c3dzdXNwOiBVVFMgTWFjaGluZTogbWlwczxicj4mZ3Q7Jm5i
-c3A7Jm5ic3A7c3dzdXNwOiBVVFMgRG9tYWluOiAobm9uZSkKPGJyPiZndDsmbmJzcDsmbmJzcDtz
-d3N1c3A6IENQVXM6IDE8YnI+Jmd0OyZuYnNwOyZuYnNwO3N3c3VzcDogSW1hZ2U6IDE4OTYgUGFn
-ZXM8YnI+Jmd0OyZuYnNwOyZuYnNwO3N3c3VzcDogUGFnZWRpcjogMCBQYWdlczxicj4mZ3Q7IFtE
-RUJVR10gZGF0YV93cml0ZSgpLCBrZXJuZWwvcG93ZXIvc3dzdXNwLmMsMzAzPGJyPiZndDsgV3Jp
-dGluZyBkYXRhIHRvIHN3YXAgKDE4OTYgcGFnZXMpLi4uIGRvbmU8YnI+Jmd0OyBXcml0aW5nIHBh
-Z2VkaXIgKDggcGFnZXMpCjxicj4mZ3Q7IFN8PGJyPiZndDsgUG93ZXJpbmcgb2ZmIHN5c3RlbTxi
-cj4mZ3Q7IENvbGQgcmVzZXQ8YnI+Jmd0Ozxicj4mZ3Q7IFRoaXMgaXMgc3lzdGVtIGxvZyBvZiBt
-eSBpbXBsZW1lbnRhdGlvbi48YnI+PGJyPkV4Y2VsbGVudCwgdGhpcyBpcyBsb29raW5nIHByb21p
-c2luZy48YnI+PGJyPkRvIHlvdSBzdGlsbCBuZWVkIGFueSBoZWxwPzxicj48YnI+UmFsZjxicj48
-L2Jsb2NrcXVvdGU+CjwvZGl2Pjxicj48YnIgY2xlYXI9ImFsbCI+PGJyPi0tIDxicj5IeW9uIExp
-bSAowNPH9ik8YnI+TW9iaWxlLiAwMTAtODIxMi0xMjQwIChJbnRsJiMzOTsgQ2FsbCA6ICs4Mi0x
-MC04MjEyLTEyNDApPGJyPkZheC4gMDMyLTIzMi0wNTc4IChJbnRsJiMzOTsgQXZhaWxhYmxlKTxi
-cj5Ib21lcGFnZSA6IDxhIGhyZWY9Imh0dHA6Ly93d3cuYWxleGxhYi5uZXQiPmh0dHA6Ly93d3cu
-YWxleGxhYi5uZXQKPC9hPjxicj5CbG9nIDogPGEgaHJlZj0iaHR0cDovL3d3dy5hbGV4bGFiLm5l
-dC9ibG9nIj5odHRwOi8vd3d3LmFsZXhsYWIubmV0L2Jsb2c8L2E+IAo=
-------=_Part_5276_23103341.1193854511405--
+See MIPS Run (ISBN 0120884216) is _the_ best book on this topic.  Maybe
+a library near you already has it, it's the de facto standard book on
+the topic.
+
+  Ralf

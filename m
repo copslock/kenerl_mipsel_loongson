@@ -1,62 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2007 14:59:06 +0000 (GMT)
-Received: from host148-217-dynamic.16-79-r.retail.telecomitalia.it ([79.16.217.148]:61380
-	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
-	id S28575956AbXJaO66 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 31 Oct 2007 14:58:58 +0000
-Received: from 89-96-243-184.ip14.fastwebnet.it ([89.96.243.184] helo=[192.168.215.30])
-	by eppesuigoccas.homedns.org with esmtpsa (TLS-1.0:RSA_ARCFOUR_MD5:16)
-	(Exim 4.63)
-	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
-	id 1InF1x-000358-Jz
-	for linux-mips@linux-mips.org; Wed, 31 Oct 2007 15:58:55 +0100
-Subject: Re: Preliminary patch for ip32 ttyS* device
-From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
-To:	mips kernel list <linux-mips@linux-mips.org>
-In-Reply-To: <20071031130828.GE14187@linux-mips.org>
-References: <20071030214015.050b7950.giuseppe@eppesuigoccas.homedns.org>
-	 <20071031130828.GE14187@linux-mips.org>
-Content-Type: text/plain
-Date:	Wed, 31 Oct 2007 15:59:26 +0100
-Message-Id: <1193842766.16429.7.camel@scarafaggio>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2007 15:47:20 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:36584 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20025680AbXJaPrL (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 31 Oct 2007 15:47:11 +0000
+Received: from localhost (p7013-ipad26funabasi.chiba.ocn.ne.jp [220.104.93.13])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP id 9F11A9F50
+	for <linux-mips@linux-mips.org>; Thu,  1 Nov 2007 00:47:06 +0900 (JST)
+Date:	Thu, 01 Nov 2007 00:49:06 +0900 (JST)
+Message-Id: <20071101.004906.106263529.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Subject: WAIT vs. tickless kernel
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-X-Mailer: Evolution 2.10.3 
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <giuseppe@eppesuigoccas.homedns.org>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17331
+X-archive-position: 17332
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giuseppe@eppesuigoccas.homedns.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Il giorno mer, 31/10/2007 alle 13.08 +0000, Ralf Baechle ha scritto:
-> On Tue, Oct 30, 2007 at 09:40:15PM +0100, Giuseppe Sacco wrote:
-[...]
-> > diff --git a/drivers/serial/serial_core.c b/drivers/serial/serial_core.c
-> > index 3bb5d24..7caa877 100644
-> > --- a/drivers/serial/serial_core.c
-> > +++ b/drivers/serial/serial_core.c
-> > @@ -2455,6 +2455,8 @@ int uart_match_port(struct uart_port *port1, struct uart_port *port2)
-> >  	case UPIO_AU:
-> >  	case UPIO_TSI:
-> >  	case UPIO_DWAPB:
-> > +		if (port1->mapbase==0 && port2->mapbase==0)
-> > +			return (port1->membase == port2->membase);
-> 
-> This hack is only needed because ->mapbase is not initialized.
+On some CPUs, there is a small window in the idle task which might
+cause a large latency to wakeup a process.
 
-Right, for a few days I tried to correctly initialise mapbase and
-setting UPF_IOREMAP in order to let this code calculate membase:
+http://www.linux-mips.org/archives/linux-mips/2005-11/msg00114.html
 
-up->port.membase = ioremap(up->port.mapbase, size);
+This can be avoided on some CPUs which can use xxx_wait_irqoff(), but
+still there are many CPUs out of luck.
 
-(drivers/serial/8250.c, function serial8250_request_std_resource)
+And now we have dyntick/tickless kernel.  On tickless kernel the
+problem might become more serious.  We cannot know the worst latency
+time.  Theoretically a task can lose wakeup-event forever.
 
-but maybe we can just leave mapbase == 0 and change uart_match_port() as
-in my patch.
+Of course "nowait" kernel option will help, but are there any other
+good solutions?
 
-Any other option?
+Just an idea: If we put an WAIT in hazard area of the MTC0 which
+enables interrupts, can we accomplish something like
+atomic-test-and-wait operation?
+
+void r4k_wait_bulletproof(void)
+{
+	local_irq_disable();
+	if (!need_resched())
+		__asm__(
+		"	.set	push		\n"
+		"	.set	mips3		\n"
+		"	.set	noat		\n"
+		"	.align	4		\n" /* avoid stall on wait */
+		"	mfc0	$1, $12		\n"
+		"	ori	$1, 1		\n"
+		"	mtc0	$1, $12		\n"
+		"	wait			\n"
+		"	xori	$1, 1		\n"
+		"	mtc0	$1, $12		\n"
+		"	.set	pop		\n");
+	local_irq_enable();
+}
+
+If this work as expected?  Comments from pipeline gurus are welcome ;)
+
+---
+Atsushi Nemoto

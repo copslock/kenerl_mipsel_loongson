@@ -1,160 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2007 14:38:15 +0000 (GMT)
-Received: from py-out-1112.google.com ([64.233.166.182]:20766 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20026888AbXKAOiG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 1 Nov 2007 14:38:06 +0000
-Received: by py-out-1112.google.com with SMTP id p76so976851pyb
-        for <linux-mips@linux-mips.org>; Thu, 01 Nov 2007 07:37:52 -0700 (PDT)
-Received: by 10.65.96.6 with SMTP id y6mr3930917qbl.1193927871792;
-        Thu, 01 Nov 2007 07:37:51 -0700 (PDT)
-Received: by 10.65.123.7 with HTTP; Thu, 1 Nov 2007 07:37:51 -0700 (PDT)
-Message-ID: <dd7dc2bc0711010737m7d0d1586w894d5500d1d8500b@mail.gmail.com>
-Date:	Thu, 1 Nov 2007 23:37:51 +0900
-From:	"Hyon Lim" <alex@alexlab.net>
-To:	"J. Scott Kasten" <jscottkasten@yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2007 15:00:45 +0000 (GMT)
+Received: from smtp106.plus.mail.re1.yahoo.com ([69.147.102.69]:18769 "HELO
+	smtp106.plus.mail.re1.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20026930AbXKAPAg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 1 Nov 2007 15:00:36 +0000
+Received: (qmail 10656 invoked from network); 1 Nov 2007 15:00:30 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Received:X-YMail-OSG:Date:From:X-X-Sender:To:cc:Subject:In-Reply-To:Message-ID:References:MIME-Version:Content-Type;
+  b=EBFOrolZBocMn8McaG2ExegTffcjMVjPQ8yBhoOmjp+5S/VW/ezO8OJJDXdTppj3OrFrjZa5YzAtflIQT1lRiexg0WrMZz8Jh40oFrASs6zrzsafCtqaV8VLfNeXToPDnxSQV3lrrmg8kW2o1OSfo2R25PpJ6Lg/sIoYzYgh7xI=  ;
+Received: from unknown (HELO ?192.168.254.6?) (jscottkasten@72.185.69.24 with login)
+  by smtp106.plus.mail.re1.yahoo.com with SMTP; 1 Nov 2007 15:00:30 -0000
+X-YMail-OSG: a_skwBwVM1lDLX9Eiw7mHFe1PhNU6DRh7hVnit2aM9C9pX21nK_b1ex0bIgsfNDPPkUtWwgTWw--
+Date:	Thu, 1 Nov 2007 11:00:20 -0400 (EDT)
+From:	"J. Scott Kasten" <jscottkasten@yahoo.com>
+X-X-Sender: jsk@pixie.tetracon-eng.net
+To:	Hyon Lim <alex@alexlab.net>
+cc:	linux-mips@linux-mips.org
 Subject: Re: implementation of software suspend on MIPS. (system log)
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <Pine.LNX.4.64.0711010908090.11339@pixie.tetracon-eng.net>
-MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_8886_6312604.1193927871785"
+In-Reply-To: <dd7dc2bc0711010737m7d0d1586w894d5500d1d8500b@mail.gmail.com>
+Message-ID: <Pine.LNX.4.64.0711011058410.11401@pixie.tetracon-eng.net>
 References: <DDAE9570F73FC744918E843E20BE598B096E8E@server1.RightHand.righthandtech.com>
-	 <dd7dc2bc0710311846ve03e03eued4ed72c89b06e4f@mail.gmail.com>
-	 <Pine.SGI.4.60.0710312221360.4697@zeus.tetracon-eng.net>
-	 <dd7dc2bc0711010211k530296a4u8dc9272673075248@mail.gmail.com>
-	 <Pine.LNX.4.64.0711010908090.11339@pixie.tetracon-eng.net>
-Return-Path: <alex@alexlab.net>
+  <dd7dc2bc0710311846ve03e03eued4ed72c89b06e4f@mail.gmail.com> 
+ <Pine.SGI.4.60.0710312221360.4697@zeus.tetracon-eng.net> 
+ <dd7dc2bc0711010211k530296a4u8dc9272673075248@mail.gmail.com> 
+ <Pine.LNX.4.64.0711010908090.11339@pixie.tetracon-eng.net>
+ <dd7dc2bc0711010737m7d0d1586w894d5500d1d8500b@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
+Return-Path: <jscottkasten@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17357
+X-archive-position: 17358
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@alexlab.net
+X-original-sender: jscottkasten@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_8886_6312604.1193927871785
-Content-Type: text/plain; charset=EUC-KR
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
 
-VGhhbmsgeW91IGZvciBjb21tZW50cy4KVGhlIHJlbWFpbiB3b3JrIG9mIG15IHNvZnR3YXJlIHN1
-c3BlbmQgb24gTUlQUyBwcm9qZWN0IGlzIHJlc3VtZSBwcm9jZWR1cmUuCkkgYWxyZWFkeSBjb25m
-aXJtZWQgdGhhdCBzdXNwZW5kIGZ1bmN0aW9uIHdhcyB3b3JrLiAoU2VlIG15IHBvc3Qgd2hpY2gK
-Y29udGFpbnMgc3lzdGVtIGxvZykuCgpJbiBhbiBpMzg2IGltcGxlbWVudGF0aW9uLCB0aGVyZSBh
-cmUgb25seSBmZXcgYXNzZW1ibHkgY29kZSBmb3Igc3VzcGVuZCBhbmQKcmVzdW1lIHByb2NlZHVy
-ZS4KKFlvdSBjYW4gcmVmZXIgOgpodHRwOi8vbHhyLmxpbnV4Lm5vL3NvdXJjZS9hcmNoL2kzODYv
-cG93ZXIvc3dzdXNwLlM/dj0yLjYuMTApClNvLCBteSB3b3JrIHdpbGwgYmUgc2ltaWxhciB3aXRo
-IGkzODYgaW1wbGVtZW50YXRpb24uIEFzc2VtYmx5IGNvZGUgdXNlZCBpbgppMzg2IGltcGxlbWVu
-dGF0aW9uIGFyZSBzZXZlcmFsIHByb2Nlc3NvciBjb250ZXh0IHJlbGF0ZWQgam9iCmFuZCBjb3B5
-IHNhdmVkIHBhZ2UgdG8gbWVtb3J5LiBJbnN0cnVjdGlvbiB1c2VkIGluIG15IE1JUFMgaW1wbGVt
-ZW50YXRpb24Kd2lsbCBiZSBjb21wYXRpYmxlIHRvIG1vc3Qgb2YgTUlQUyBwcm9jZXNzb3IuCkJl
-Y2F1c2UgdGhlIGluc3RydWN0aW9uIHVzZWQgaW4gaW1wbGVtZW50YXRpb24gaXMgdmVyeSBiYXNp
-YyAoc3RvcmUgYW5kIGxvYWQKYW5kIGJyYW5jaCkuCgpJIGFncmVlIHlvdXIgb3BpbmlvbiByZWxh
-dGVkIHRvIG1haW50YWluYWJpbGl0eSBhbmQgcmVhZGFiaWxpdHkuIFNvIEkKaW1wbGVtZW50IG15
-IHdvcmsgd2l0aCBDIGFuZCBmZXcgYXNzZW1ibHkgY29kZS4KVGhhbmsgeW91IGZvciBhZHZpY2Uu
-CgpPbiAxMS8xLzA3LCBKLiBTY290dCBLYXN0ZW4gPGpzY290dGthc3RlbkB5YWhvby5jb20+IHdy
-b3RlOgo+Cj4KPgo+IE9uIFRodSwgMSBOb3YgMjAwNywgSHlvbiBMaW0gd3JvdGU6Cj4KPiA+IEkg
-dGhpbmsgdGhlIHJlYXNvbiBvZiBhc3NlbWJseSBpbXBsZW1lbnRhdGlvbiBpcyBwcm9jZXNzb3Ig
-Y29udGV4dAo+ID4gcmVwbGFjZW1lbnQuCj4KPiBVbmRlcnN0b29kLiAgQXNzZW1ibHkgbWF5IGlu
-ZGVlZCBiZSByZXF1aXJlZCBmb3Igc3BlY2lmaWMgdGhpbmdzIGxpa2UKPiByZXN0b3JpbmcgcmVn
-aXN0ZXIgc3RhdGUgb3IgZmlkZGxpbmcgd2l0aCB0aGUgY2FjaGUgaWYgdGhlcmUgYXJlbid0Cj4g
-YWxyZWFkeSBtYWNyb3Mgb3IgZnVuY3Rpb25zIGluIHRoZSBrZXJuZWwgdGhhdCBkbyBleGFjdGx5
-IHdoYXQgeW91IG5lZWQuCj4KPiA+IFRoZSBzZWNvbmQgcmVhc29uIHRoYXQgSSB0aGlua2luZyBp
-cyBjYWxsaW5nIGNvbnZlbnRpb24gb2YgQyBsYW5ndWFnZS4KPgo+IEl0J3Mgbm90IHVuY29tbW9u
-IGF0IGFsbCB0byBoYXZlIGFzc2VtYmx5IGxhbmd1YWdlIGdsdWUsIHNheSBiZXR3ZWVuIGEKPiBC
-SU9TIGNhbGxiYWNrIGFuZCB0aGUgQyBsYW5ndWFnZSByb3V0aW5lIHRoYXQgZG9lcyB0aGUgd29y
-ay4KPgo+IEluIHlvdXIgb3JpZ2luYWwgcG9zdCwgeW91IG1lbnRpb25lZCB0cmFja2luZyB2YXJp
-YWJsZXMgYW5kIHRoaW5ncyB0aGF0Cj4gc3VnZ2VzdGVkIGEgbW9kdWxlIHRoYXQgZG9lcyBtdWNo
-IG1vcmUgdGhhdCBqdXN0IGxvYWQgc29tZSBvZGQgcmVnaXN0ZXJzCj4gb3IgZmxpcCBhcm91bmQg
-YSBmdW5jdGlvbiBjYWxsIHN0YWNrLiAgSWYgdGhhdCBpcyBpbmRlZWQgdGhlIGNhc2UsIHRoZW4K
-PiBmb3Igc2FrZSBvZiBtYWludGFpbmFibGlsaXR5IGFuZCByZWFkYWJpbGl0eSwgb25lIHdvdWxk
-IGJlIHN0cm9uZ2x5Cj4gZW5jb3VyYWdlZCB0byB3cml0ZSB0aGUgY29yZSBzdHVmZiBpbiBwbGFp
-biBvbGQgQyBhbmQgc3ByaW5rbGUgaW4gYXNzZW1ibHkKPiBnbHVlIGNvZGUgYXMgcmVxdWlyZWQu
-Cj4KPiBUaGluayBhYm91dCBpdCB0aGlzIHdheS4gIE1JUFMgaXMgYSBwcmV0dHkgbGFyZ2UgZmFt
-aWx5IG9mIENQVXMsIGVhY2ggd2l0aAo+IGl0J3Mgb3duIHN0cmFuZ2UgYmVoYXZpb3JzLiAgU2V2
-ZXJhbCBvZiB0aG9zZSBwZW9wbGUgb24gdGhpcyBsaXN0IHNwZW5kIGEKPiBsb3Qgb2YgdGltZSB0
-d2Vla2luZyB0aGF0IGFzc2VtYmx5IHRvIG1ha2UgaXQgd29yayBjbGVhbmx5IGFjcm9zcyB2YXJp
-b3VzCj4gQ1BVcy4gIEl0J3MgYSBsb3QgZWFzaWVyIHRvIHVuZGVyc3RhbmQgMjUgbGluZXMgb2Yg
-YXNzZW1ibHkgaW50ZXJmYWNlIGNvZGUKPiBhbmQgMjAwIGxpbmVzIG9mIEMgY29kZSwgdGhhbiBh
-biBlbnRpcmUgMTAwMCBsaW5lIG1vZHVsZSB3cml0dGVuIGluCj4gYXNzZW1ibHkuICBJdCdzIGFs
-c28gYSBsb3QgZWFzaWVyIHdoZW4geW91IGNhbiBzaG92ZSBtb3N0IG9mIHRoZSB3b3JrIG92ZXIK
-PiB0byB0aGUgY29tcGlsZXIsIGVzcGVjaWFsbHkgaWYgb3RoZXJzIGxpa2UgeW91ciB3b3JrIGFu
-ZCB3YW50IHRvCj4gZ2VuZXJhbGl6ZSBpdCBmb3IgdXNlIG9uIG1hbnkgb3RoZXIgTUlQUyBDUFVz
-Lgo+Cj4gSSBndWVzcyB0aGUgcmVhbCBxdWVzdGlvbiBoZXJlIGlzIGhvdyBjb21wbGV4IGRvIHlv
-dSB0aGluayB5b3VyIGNvZGUgbmVlZHMKPiB0byBiZT8gIFRoYXQgc2hvdWxkIGRldGVybWluZSB5
-b3VyIHBhdGguCj4KPiBSZWdhcmRzLAo+Cj4gLVMtCj4KCgoKLS0gCkh5b24gTGltICjA08f2KQpN
-b2JpbGUuIDAxMC04MjEyLTEyNDAgKEludGwnIENhbGwgOiArODItMTAtODIxMi0xMjQwKQpGYXgu
-IDAzMi0yMzItMDU3OCAoSW50bCcgQXZhaWxhYmxlKQpIb21lcGFnZSA6IGh0dHA6Ly93d3cuYWxl
-eGxhYi5uZXQKQmxvZyA6IGh0dHA6Ly93d3cuYWxleGxhYi5uZXQvYmxvZwo=
-------=_Part_8886_6312604.1193927871785
-Content-Type: text/html; charset=EUC-KR
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
+On Thu, 1 Nov 2007, Hyon Lim wrote:
 
-PGRpdj5UaGFuayB5b3UgZm9yIGNvbW1lbnRzLjwvZGl2Pgo8ZGl2PlRoZSByZW1haW4gd29yayBv
-ZiBteSBzb2Z0d2FyZSBzdXNwZW5kIG9uIE1JUFMgcHJvamVjdCBpcyByZXN1bWUgcHJvY2VkdXJl
-LjwvZGl2Pgo8ZGl2PkkgYWxyZWFkeSBjb25maXJtZWQgdGhhdCBzdXNwZW5kIGZ1bmN0aW9uIHdh
-cyB3b3JrLiAoU2VlIG15IHBvc3Qgd2hpY2ggY29udGFpbnMgc3lzdGVtIGxvZykuPC9kaXY+Cjxk
-aXY+Jm5ic3A7PC9kaXY+CjxkaXY+SW4gYW4gaTM4NiBpbXBsZW1lbnRhdGlvbiwgdGhlcmUgYXJl
-IG9ubHkgZmV3IGFzc2VtYmx5IGNvZGUgZm9yIHN1c3BlbmQgYW5kIHJlc3VtZSBwcm9jZWR1cmUu
-PC9kaXY+CjxkaXY+KFlvdSBjYW4gcmVmZXImbmJzcDs6IDxhIGhyZWY9Imh0dHA6Ly9seHIubGlu
-dXgubm8vc291cmNlL2FyY2gvaTM4Ni9wb3dlci9zd3N1c3AuUz92PTIuNi4xMCI+aHR0cDovL2x4
-ci5saW51eC5uby9zb3VyY2UvYXJjaC9pMzg2L3Bvd2VyL3N3c3VzcC5TP3Y9Mi42LjEwPC9hPik8
-L2Rpdj4KPGRpdj5TbywgbXkgd29yayB3aWxsIGJlIHNpbWlsYXIgd2l0aCBpMzg2IGltcGxlbWVu
-dGF0aW9uLiBBc3NlbWJseSBjb2RlIHVzZWQgaW4gaTM4NiBpbXBsZW1lbnRhdGlvbiBhcmUgc2V2
-ZXJhbCBwcm9jZXNzb3IgY29udGV4dCByZWxhdGVkIGpvYjwvZGl2Pgo8ZGl2PmFuZCBjb3B5IHNh
-dmVkIHBhZ2UgdG8gbWVtb3J5LiBJbnN0cnVjdGlvbiB1c2VkJm5ic3A7aW4gbXkgTUlQUyZuYnNw
-O2ltcGxlbWVudGF0aW9uIHdpbGwgYmUgY29tcGF0aWJsZSB0byBtb3N0IG9mIE1JUFMgcHJvY2Vz
-c29yLjwvZGl2Pgo8ZGl2PkJlY2F1c2UgdGhlIGluc3RydWN0aW9uIHVzZWQgaW4gaW1wbGVtZW50
-YXRpb24gaXMgdmVyeSBiYXNpYyAoc3RvcmUgYW5kIGxvYWQgYW5kIGJyYW5jaCkuPC9kaXY+Cjxk
-aXY+Jm5ic3A7PC9kaXY+CjxkaXY+SSBhZ3JlZSB5b3VyIG9waW5pb24gcmVsYXRlZCB0byBtYWlu
-dGFpbmFiaWxpdHkgYW5kIHJlYWRhYmlsaXR5LiBTbyBJIGltcGxlbWVudCBteSB3b3JrIHdpdGgg
-QyBhbmQgZmV3IGFzc2VtYmx5IGNvZGUuPC9kaXY+CjxkaXY+VGhhbmsgeW91IGZvciBhZHZpY2Uu
-PGJyPiZuYnNwOzwvZGl2Pgo8ZGl2PjxzcGFuIGNsYXNzPSJnbWFpbF9xdW90ZSI+T24gMTEvMS8w
-NywgPGIgY2xhc3M9ImdtYWlsX3NlbmRlcm5hbWUiPkouIFNjb3R0IEthc3RlbjwvYj4gJmx0Ozxh
-IGhyZWY9Im1haWx0bzpqc2NvdHRrYXN0ZW5AeWFob28uY29tIj5qc2NvdHRrYXN0ZW5AeWFob28u
-Y29tPC9hPiZndDsgd3JvdGU6PC9zcGFuPgo8YmxvY2txdW90ZSBjbGFzcz0iZ21haWxfcXVvdGUi
-IHN0eWxlPSJQQURESU5HLUxFRlQ6IDFleDsgTUFSR0lOOiAwcHggMHB4IDBweCAwLjhleDsgQk9S
-REVSLUxFRlQ6ICNjY2MgMXB4IHNvbGlkIj48YnI+PGJyPk9uIFRodSwgMSBOb3YgMjAwNywgSHlv
-biBMaW0gd3JvdGU6PGJyPjxicj4mZ3Q7IEkgdGhpbmsgdGhlIHJlYXNvbiBvZiBhc3NlbWJseSBp
-bXBsZW1lbnRhdGlvbiBpcyBwcm9jZXNzb3IgY29udGV4dAo8YnI+Jmd0OyByZXBsYWNlbWVudC48
-YnI+PGJyPlVuZGVyc3Rvb2QuJm5ic3A7Jm5ic3A7QXNzZW1ibHkgbWF5IGluZGVlZCBiZSByZXF1
-aXJlZCBmb3Igc3BlY2lmaWMgdGhpbmdzIGxpa2U8YnI+cmVzdG9yaW5nIHJlZ2lzdGVyIHN0YXRl
-IG9yIGZpZGRsaW5nIHdpdGggdGhlIGNhY2hlIGlmIHRoZXJlIGFyZW4mIzM5O3Q8YnI+YWxyZWFk
-eSBtYWNyb3Mgb3IgZnVuY3Rpb25zIGluIHRoZSBrZXJuZWwgdGhhdCBkbyBleGFjdGx5IHdoYXQg
-eW91IG5lZWQuCjxicj48YnI+Jmd0OyBUaGUgc2Vjb25kIHJlYXNvbiB0aGF0IEkgdGhpbmtpbmcg
-aXMgY2FsbGluZyBjb252ZW50aW9uIG9mIEMgbGFuZ3VhZ2UuPGJyPjxicj5JdCYjMzk7cyBub3Qg
-dW5jb21tb24gYXQgYWxsIHRvIGhhdmUgYXNzZW1ibHkgbGFuZ3VhZ2UgZ2x1ZSwgc2F5IGJldHdl
-ZW4gYTxicj5CSU9TIGNhbGxiYWNrIGFuZCB0aGUgQyBsYW5ndWFnZSByb3V0aW5lIHRoYXQgZG9l
-cyB0aGUgd29yay4KPGJyPjxicj5JbiB5b3VyIG9yaWdpbmFsIHBvc3QsIHlvdSBtZW50aW9uZWQg
-dHJhY2tpbmcgdmFyaWFibGVzIGFuZCB0aGluZ3MgdGhhdDxicj5zdWdnZXN0ZWQgYSBtb2R1bGUg
-dGhhdCBkb2VzIG11Y2ggbW9yZSB0aGF0IGp1c3QgbG9hZCBzb21lIG9kZCByZWdpc3RlcnM8YnI+
-b3IgZmxpcCBhcm91bmQgYSBmdW5jdGlvbiBjYWxsIHN0YWNrLiZuYnNwOyZuYnNwO0lmIHRoYXQg
-aXMgaW5kZWVkIHRoZSBjYXNlLCB0aGVuCjxicj5mb3Igc2FrZSBvZiBtYWludGFpbmFibGlsaXR5
-IGFuZCByZWFkYWJpbGl0eSwgb25lIHdvdWxkIGJlIHN0cm9uZ2x5PGJyPmVuY291cmFnZWQgdG8g
-d3JpdGUgdGhlIGNvcmUgc3R1ZmYgaW4gcGxhaW4gb2xkIEMgYW5kIHNwcmlua2xlIGluIGFzc2Vt
-Ymx5PGJyPmdsdWUgY29kZSBhcyByZXF1aXJlZC48YnI+PGJyPlRoaW5rIGFib3V0IGl0IHRoaXMg
-d2F5LiZuYnNwOyZuYnNwO01JUFMgaXMgYSBwcmV0dHkgbGFyZ2UgZmFtaWx5IG9mIENQVXMsIGVh
-Y2ggd2l0aAo8YnI+aXQmIzM5O3Mgb3duIHN0cmFuZ2UgYmVoYXZpb3JzLiZuYnNwOyZuYnNwO1Nl
-dmVyYWwgb2YgdGhvc2UgcGVvcGxlIG9uIHRoaXMgbGlzdCBzcGVuZCBhPGJyPmxvdCBvZiB0aW1l
-IHR3ZWVraW5nIHRoYXQgYXNzZW1ibHkgdG8gbWFrZSBpdCB3b3JrIGNsZWFubHkgYWNyb3NzIHZh
-cmlvdXM8YnI+Q1BVcy4mbmJzcDsmbmJzcDtJdCYjMzk7cyBhIGxvdCBlYXNpZXIgdG8gdW5kZXJz
-dGFuZCAyNSBsaW5lcyBvZiBhc3NlbWJseSBpbnRlcmZhY2UgY29kZQo8YnI+YW5kIDIwMCBsaW5l
-cyBvZiBDIGNvZGUsIHRoYW4gYW4gZW50aXJlIDEwMDAgbGluZSBtb2R1bGUgd3JpdHRlbiBpbjxi
-cj5hc3NlbWJseS4mbmJzcDsmbmJzcDtJdCYjMzk7cyBhbHNvIGEgbG90IGVhc2llciB3aGVuIHlv
-dSBjYW4gc2hvdmUgbW9zdCBvZiB0aGUgd29yayBvdmVyPGJyPnRvIHRoZSBjb21waWxlciwgZXNw
-ZWNpYWxseSBpZiBvdGhlcnMgbGlrZSB5b3VyIHdvcmsgYW5kIHdhbnQgdG8KPGJyPmdlbmVyYWxp
-emUgaXQgZm9yIHVzZSBvbiBtYW55IG90aGVyIE1JUFMgQ1BVcy48YnI+PGJyPkkgZ3Vlc3MgdGhl
-IHJlYWwgcXVlc3Rpb24gaGVyZSBpcyBob3cgY29tcGxleCBkbyB5b3UgdGhpbmsgeW91ciBjb2Rl
-IG5lZWRzPGJyPnRvIGJlPyZuYnNwOyZuYnNwO1RoYXQgc2hvdWxkIGRldGVybWluZSB5b3VyIHBh
-dGguPGJyPjxicj5SZWdhcmRzLDxicj48YnI+LVMtPGJyPjwvYmxvY2txdW90ZT48L2Rpdj4KPGJy
-PjxiciBjbGVhcj0iYWxsIj48YnI+LS0gPGJyPkh5b24gTGltICjA08f2KTxicj5Nb2JpbGUuIDAx
-MC04MjEyLTEyNDAgKEludGwmIzM5OyBDYWxsIDogKzgyLTEwLTgyMTItMTI0MCk8YnI+RmF4LiAw
-MzItMjMyLTA1NzggKEludGwmIzM5OyBBdmFpbGFibGUpPGJyPkhvbWVwYWdlIDogPGEgaHJlZj0i
-aHR0cDovL3d3dy5hbGV4bGFiLm5ldCI+aHR0cDovL3d3dy5hbGV4bGFiLm5ldDwvYT4KPGJyPkJs
-b2cgOiA8YSBocmVmPSJodHRwOi8vd3d3LmFsZXhsYWIubmV0L2Jsb2ciPmh0dHA6Ly93d3cuYWxl
-eGxhYi5uZXQvYmxvZzwvYT4gCg==
-------=_Part_8886_6312604.1193927871785--
+> Thank you for comments.
+> The remain work of my software suspend on MIPS project is resume procedure.
+> I already confirmed that suspend function was work. (See my post which
+> contains system log).
+>
+> In an i386 implementation, there are only few assembly code for suspend and
+> resume procedure.
+> (You can refer :
+> http://lxr.linux.no/source/arch/i386/power/swsusp.S?v=2.6.10)
+> So, my work will be similar with i386 implementation. Assembly code used in
+> i386 implementation are several processor context related job
+> and copy saved page to memory. Instruction used in my MIPS implementation
+> will be compatible to most of MIPS processor.
+> Because the instruction used in implementation is very basic (store and load
+> and branch).
+>
+> I agree your opinion related to maintainability and readability. So I
+> implement my work with C and few assembly code.
+> Thank you for advice.
+>
+
+I look forward to your eventual success. :)

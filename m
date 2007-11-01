@@ -1,57 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2007 12:53:14 +0000 (GMT)
-Received: from mo31.po.2iij.net ([210.128.50.54]:20772 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20026790AbXKAMwp (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 1 Nov 2007 12:52:45 +0000
-Received: by mo.po.2iij.net (mo31) id lA1CpQqH060965; Thu, 1 Nov 2007 21:51:26 +0900 (JST)
-Received: from delta (221.25.30.125.dy.iij4u.or.jp [125.30.25.221])
-	by mbox.po.2iij.net (po-mbox302) id lA1CpN13031798
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Thu, 1 Nov 2007 21:51:24 +0900
-Date:	Thu, 1 Nov 2007 21:51:23 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][MIPS] fix Cobalt IRQ comment
-Message-Id: <20071101215123.5e65eee6.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed 2.4.5 (GTK+ 2.12.0; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2007 13:04:18 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:42701 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20026785AbXKANEQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 1 Nov 2007 13:04:16 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lA1D3tFB012467;
+	Thu, 1 Nov 2007 13:03:55 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lA1D3qEo012466;
+	Thu, 1 Nov 2007 13:03:52 GMT
+Date:	Thu, 1 Nov 2007 13:03:52 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH][MIPS] bcm47xx: remove unneeded clear_c0_status()
+Message-ID: <20071101130352.GA18642@linux-mips.org>
+References: <20071101213036.c383957f.yoichi_yuasa@tripeaks.co.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20071101213036.c383957f.yoichi_yuasa@tripeaks.co.jp>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17351
+X-archive-position: 17352
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Fixed Cobalt IRQ comment.
-Cobalt kernel uses CP0 counter now.
+On Thu, Nov 01, 2007 at 09:30:36PM +0900, Yoichi Yuasa wrote:
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+> Remove unneeded clear_c0_status().
+> irq_cpu routines take care of it.
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/mach-cobalt/irq.h mips/include/asm-mips/mach-cobalt/irq.h
---- mips-orig/include/asm-mips/mach-cobalt/irq.h	2007-10-27 17:13:58.239256750 +0900
-+++ mips/include/asm-mips/mach-cobalt/irq.h	2007-10-27 17:17:45.905485000 +0900
-@@ -35,7 +35,7 @@
-  *	4 - ethernet
-  *	5 - 16550 UART
-  *	6 - cascade i8259
-- *	7 - CP0 counter (unused)
-+ *	7 - CP0 counter
-  */
- #define MIPS_CPU_IRQ_BASE		16
- 
-@@ -48,7 +48,6 @@
- #define SCSI_IRQ			(MIPS_CPU_IRQ_BASE + 5)
- #define I8259_CASCADE_IRQ		(MIPS_CPU_IRQ_BASE + 6)
- 
--
- #define GT641XX_IRQ_BASE		24
- 
- #include <asm/irq_gt641xx.h>
+Actually this write is plain nonsense; it has no effect.  The only time
+acknowledging an interrupt in c0_cause is needed is for the two software
+interrupts but the only user of these is SMTC.
+
+  Ralf

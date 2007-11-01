@@ -1,89 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2007 01:46:22 +0000 (GMT)
-Received: from nz-out-0506.google.com ([64.233.162.235]:509 "EHLO
-	nz-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S28576769AbXKABqN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 1 Nov 2007 01:46:13 +0000
-Received: by nz-out-0506.google.com with SMTP id n1so251627nzf
-        for <linux-mips@linux-mips.org>; Wed, 31 Oct 2007 18:46:02 -0700 (PDT)
-Received: by 10.65.240.17 with SMTP id s17mr2544359qbr.1193881561244;
-        Wed, 31 Oct 2007 18:46:01 -0700 (PDT)
-Received: by 10.65.123.7 with HTTP; Wed, 31 Oct 2007 18:46:01 -0700 (PDT)
-Message-ID: <dd7dc2bc0710311846ve03e03eued4ed72c89b06e4f@mail.gmail.com>
-Date:	Thu, 1 Nov 2007 10:46:01 +0900
-From:	"Hyon Lim" <alex@alexlab.net>
-To:	"Andrew Dyer" <adyer@righthandtech.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2007 02:28:54 +0000 (GMT)
+Received: from smtp109.plus.mail.re1.yahoo.com ([69.147.102.72]:6818 "HELO
+	smtp109.plus.mail.re1.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S28576807AbXKAC2p (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 1 Nov 2007 02:28:45 +0000
+Received: (qmail 49570 invoked from network); 1 Nov 2007 02:27:39 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Received:X-YMail-OSG:Date:From:X-X-Sender:To:cc:Subject:In-Reply-To:Message-ID:References:MIME-Version:Content-Type;
+  b=VeJJhY2mLtbp9GND6o0+eblWWNAD72OGWlAqdRja6wQwfuxmyGt72OgTSlT3mSoPc76uAM1cp2sBl+OKp0PQGMf0Z73whct4+VsTSlVuMEw3a1/Tjsd8O2/KWxNnREq3eWsrc/ktAvdd9Ga+7K/Sd/aNWI1Fu+tukjDpvvjtpeg=  ;
+Received: from unknown (HELO zeus.tetracon-eng.net) (jscottkasten@72.185.69.24 with login)
+  by smtp109.plus.mail.re1.yahoo.com with SMTP; 1 Nov 2007 02:27:38 -0000
+X-YMail-OSG: gdlf6UwVM1n07P_vX.NsPycmeVKluZxOQVc5j.l6IJpG1sJ2qXh0T3_Cx5MPnk_8.UdIbut6Ag--
+Date:	Wed, 31 Oct 2007 22:27:31 -0400
+From:	"J. Scott Kasten" <jscottkasten@yahoo.com>
+X-X-Sender: jsk@zeus.tetracon-eng.net
+To:	Hyon Lim <alex@alexlab.net>
+cc:	linux-mips@linux-mips.org
 Subject: Re: implementation of software suspend on MIPS. (system log)
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <DDAE9570F73FC744918E843E20BE598B096E8E@server1.RightHand.righthandtech.com>
-MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_7167_25384525.1193881561234"
+In-Reply-To: <dd7dc2bc0710311846ve03e03eued4ed72c89b06e4f@mail.gmail.com>
+Message-ID: <Pine.SGI.4.60.0710312221360.4697@zeus.tetracon-eng.net>
 References: <DDAE9570F73FC744918E843E20BE598B096E8E@server1.RightHand.righthandtech.com>
-Return-Path: <alex@alexlab.net>
+ <dd7dc2bc0710311846ve03e03eued4ed72c89b06e4f@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
+Return-Path: <jscottkasten@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17343
+X-archive-position: 17344
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@alexlab.net
+X-original-sender: jscottkasten@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_7167_25384525.1193881561234
-Content-Type: text/plain; charset=EUC-KR
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
 
-WWVzLiB5b3UncmUgcmlnaHQuIEkgZGlkIHNhbWUgYXMgeW91IHNhaWQuCkhvd2V2ZXIsIGlzIHRo
-ZXJlIGFueSBvcHRpb25zIGZvciBkaXNhc3NlbWJseSB3aXRoIHZhcmlhYmxlIG5hbWU/Ck9mdGVu
-IEkgY2Fubm90IGZpbmQgdGhhdCB2YXJpYWJsZSdzIGFsbG9jYXRlZCByZWdpc3Rlci4KVGhlcmUg
-aXMgb25seSByMCxyMS4uLiBidXQgSSB3YW50IGEgY29tbWVudCBmb3IgdmFyaWFibGUgYXNzaWdu
-bWVudCBzdGF0dXMuCgpPbiAxMS8xLzA3LCBBbmRyZXcgRHllciA8YWR5ZXJAcmlnaHRoYW5kdGVj
-aC5jb20+IHdyb3RlOgo+Cj4gPiBUaGUgY29kZSBvZiByZXN1bWUgcHJvY2VzcyBzaG91bGQgYmUg
-aW1wbGVtZW50ZWQgb24KPiBhcmNoL3h4eC9wb3dlci9zd3N1c3AuUwo+ID4gU28gaXQgc2hvdWxk
-IGJlIGltcGxlbWVudGVkIGJ5IGFzc2VtYmx5Lgo+ID4gVGhhdCdzIHRoZSBwcm9ibGVtLi4uCj4g
-PiBJJ3ZlIG5vIGlkZWEgYWJvdXQgY29tcGxleCBhc3NlbWJseSBwcm9ncmFtbWluZy4gOi0pCj4g
-PiBDb3VsZCB5b3UgcmVjb21tZW5kIGFueSBwZGYgb3Igd2Vic2l0ZT8KPgo+IFdoZW5ldmVyIEkg
-aGF2ZSB0byBkbyBzb21ldGhpbmcgbW9kZXJhdGVseSBjb21wbGV4IGluIGFzc3kuIGxhbmd1YWdl
-LCBJCj4gb2Z0ZW4gZmluZCBpdCBoZWxwZnVsIHRvIGNvZGUgdGhlIHRoaW5nIGluIEMgYW5kIHJ1
-biBpdCB0aHJvdWdoIHRoZSBjb21waWxlcgo+IGFuZCBsb29rIGF0IHRoZSBnZW5lcmF0ZWQgYXNz
-eS4gbGFuZ3VhZ2UuICBPZnRlbnRpbWVzIHlvdSBjYW4gbW9kaWZ5IHRoZQo+IG91dHB1dCBvZiB0
-aGUgY29tcGlsZXIgd2l0aG91dCB0b28gbXVjaCB0cm91YmxlLgo+Cj4KCgotLSAKSHlvbiBMaW0g
-KMDTx/YpCk1vYmlsZS4gMDEwLTgyMTItMTI0MCAoSW50bCcgQ2FsbCA6ICs4Mi0xMC04MjEyLTEy
-NDApCkZheC4gMDMyLTIzMi0wNTc4IChJbnRsJyBBdmFpbGFibGUpCkhvbWVwYWdlIDogaHR0cDov
-L3d3dy5hbGV4bGFiLm5ldApCbG9nIDogaHR0cDovL3d3dy5hbGV4bGFiLm5ldC9ibG9nCg==
-------=_Part_7167_25384525.1193881561234
-Content-Type: text/html; charset=EUC-KR
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
+On Thu, 1 Nov 2007, Hyon Lim wrote:
 
-PGRpdj5ZZXMuIHlvdSYjMzk7cmUgcmlnaHQuIEkgZGlkIHNhbWUgYXMgeW91IHNhaWQuPC9kaXY+
-CjxkaXY+SG93ZXZlciwgaXMgdGhlcmUgYW55IG9wdGlvbnMgZm9yIGRpc2Fzc2VtYmx5IHdpdGgg
-dmFyaWFibGUgbmFtZT88L2Rpdj4KPGRpdj5PZnRlbiBJIGNhbm5vdCBmaW5kJm5ic3A7dGhhdCB2
-YXJpYWJsZSYjMzk7cyBhbGxvY2F0ZWQmbmJzcDtyZWdpc3Rlci48L2Rpdj4KPGRpdj5UaGVyZSBp
-cyBvbmx5IHIwLHIxLi4uIGJ1dCBJIHdhbnQgYSBjb21tZW50IGZvciB2YXJpYWJsZSBhc3NpZ25t
-ZW50IHN0YXR1cy48YnI+Jm5ic3A7PC9kaXY+CjxkaXY+PHNwYW4gY2xhc3M9ImdtYWlsX3F1b3Rl
-Ij5PbiAxMS8xLzA3LCA8YiBjbGFzcz0iZ21haWxfc2VuZGVybmFtZSI+QW5kcmV3IER5ZXI8L2I+
-ICZsdDs8YSBocmVmPSJtYWlsdG86YWR5ZXJAcmlnaHRoYW5kdGVjaC5jb20iPmFkeWVyQHJpZ2h0
-aGFuZHRlY2guY29tPC9hPiZndDsgd3JvdGU6PC9zcGFuPgo8YmxvY2txdW90ZSBjbGFzcz0iZ21h
-aWxfcXVvdGUiIHN0eWxlPSJQQURESU5HLUxFRlQ6IDFleDsgTUFSR0lOOiAwcHggMHB4IDBweCAw
-LjhleDsgQk9SREVSLUxFRlQ6ICNjY2MgMXB4IHNvbGlkIj4mZ3Q7IFRoZSBjb2RlIG9mIHJlc3Vt
-ZSBwcm9jZXNzIHNob3VsZCBiZSBpbXBsZW1lbnRlZCBvbiBhcmNoL3h4eC9wb3dlci9zd3N1c3Au
-Uzxicj4mZ3Q7IFNvIGl0IHNob3VsZCBiZSBpbXBsZW1lbnRlZCBieSBhc3NlbWJseS4KPGJyPiZn
-dDsgVGhhdCYjMzk7cyB0aGUgcHJvYmxlbS4uLjxicj4mZ3Q7IEkmIzM5O3ZlIG5vIGlkZWEgYWJv
-dXQgY29tcGxleCBhc3NlbWJseSBwcm9ncmFtbWluZy4gOi0pPGJyPiZndDsgQ291bGQgeW91IHJl
-Y29tbWVuZCBhbnkgcGRmIG9yIHdlYnNpdGU/PGJyPjxicj5XaGVuZXZlciBJIGhhdmUgdG8gZG8g
-c29tZXRoaW5nIG1vZGVyYXRlbHkgY29tcGxleCBpbiBhc3N5LiBsYW5ndWFnZSwgSSBvZnRlbiBm
-aW5kIGl0IGhlbHBmdWwgdG8gY29kZSB0aGUgdGhpbmcgaW4gQyBhbmQgcnVuIGl0IHRocm91Z2gg
-dGhlIGNvbXBpbGVyIGFuZCBsb29rIGF0IHRoZSBnZW5lcmF0ZWQgYXNzeS4gbGFuZ3VhZ2UuJm5i
-c3A7Jm5ic3A7T2Z0ZW50aW1lcyB5b3UgY2FuIG1vZGlmeSB0aGUgb3V0cHV0IG9mIHRoZSBjb21w
-aWxlciB3aXRob3V0IHRvbyBtdWNoIHRyb3VibGUuCjxicj48YnI+PC9ibG9ja3F1b3RlPjwvZGl2
-Pjxicj48YnIgY2xlYXI9ImFsbCI+PGJyPi0tIDxicj5IeW9uIExpbSAowNPH9ik8YnI+TW9iaWxl
-LiAwMTAtODIxMi0xMjQwIChJbnRsJiMzOTsgQ2FsbCA6ICs4Mi0xMC04MjEyLTEyNDApPGJyPkZh
-eC4gMDMyLTIzMi0wNTc4IChJbnRsJiMzOTsgQXZhaWxhYmxlKTxicj5Ib21lcGFnZSA6IDxhIGhy
-ZWY9Imh0dHA6Ly93d3cuYWxleGxhYi5uZXQiPgpodHRwOi8vd3d3LmFsZXhsYWIubmV0PC9hPjxi
-cj5CbG9nIDogPGEgaHJlZj0iaHR0cDovL3d3dy5hbGV4bGFiLm5ldC9ibG9nIj5odHRwOi8vd3d3
-LmFsZXhsYWIubmV0L2Jsb2c8L2E+IAo=
-------=_Part_7167_25384525.1193881561234--
+> Yes. you're right. I did same as you said.
+> However, is there any options for disassembly with variable name?
+> Often I cannot find that variable's allocated register.
+> There is only r0,r1... but I want a comment for variable assignment 
+> status.
+
+I just have to ask the question, but is it really necessary to code the 
+whole thing in assembly?  I understand that the interface probably does 
+need to be, but the main body of the function?  If it's very large or 
+complicated, it would seem simpler to use C and write assembly glue to 
+pull it all together rather than trying to debug hand assembly.  Many of 
+us here have spent hours before tracking down problems with stale data in 
+branch delay slots.  The compiler is a tad more convienient.
+
+Regards,
+
+-S-

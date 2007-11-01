@@ -1,105 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2007 09:12:18 +0000 (GMT)
-Received: from py-out-1112.google.com ([64.233.166.180]:50634 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20026518AbXKAJMJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 1 Nov 2007 09:12:09 +0000
-Received: by py-out-1112.google.com with SMTP id p76so832821pyb
-        for <linux-mips@linux-mips.org>; Thu, 01 Nov 2007 02:11:52 -0700 (PDT)
-Received: by 10.64.131.4 with SMTP id e4mr3352081qbd.1193908311335;
-        Thu, 01 Nov 2007 02:11:51 -0700 (PDT)
-Received: by 10.65.123.7 with HTTP; Thu, 1 Nov 2007 02:11:51 -0700 (PDT)
-Message-ID: <dd7dc2bc0711010211k530296a4u8dc9272673075248@mail.gmail.com>
-Date:	Thu, 1 Nov 2007 18:11:51 +0900
-From:	"Hyon Lim" <alex@alexlab.net>
-To:	"J. Scott Kasten" <jscottkasten@yahoo.com>
-Subject: Re: implementation of software suspend on MIPS. (system log)
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <Pine.SGI.4.60.0710312221360.4697@zeus.tetracon-eng.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2007 10:40:03 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:58551 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20026568AbXKAKjy (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 1 Nov 2007 10:39:54 +0000
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1InXPo-0003Sa-00; Thu, 01 Nov 2007 11:36:44 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 66B02FA733; Thu,  1 Nov 2007 11:36:42 +0100 (CET)
+Date:	Thu, 1 Nov 2007 11:36:42 +0100
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] SNI: register a02r clockevent; don't use PIT timer
+Message-ID: <20071101103642.GA28146@alpha.franken.de>
 MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_7971_20847680.1193908311329"
-References: <DDAE9570F73FC744918E843E20BE598B096E8E@server1.RightHand.righthandtech.com>
-	 <dd7dc2bc0710311846ve03e03eued4ed72c89b06e4f@mail.gmail.com>
-	 <Pine.SGI.4.60.0710312221360.4697@zeus.tetracon-eng.net>
-Return-Path: <alex@alexlab.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17345
+X-archive-position: 17346
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@alexlab.net
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_7971_20847680.1193908311329
-Content-Type: text/plain; charset=EUC-KR
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
+Register A20R clockevent
+Remove PIT timer setup because it doesn't work 
 
-SSB0aGluayB0aGUgcmVhc29uIG9mIGFzc2VtYmx5IGltcGxlbWVudGF0aW9uIGlzIHByb2Nlc3Nv
-ciBjb250ZXh0CnJlcGxhY2VtZW50LgpQcm9jZXNzb3IgY29udGV4dCBzaG91bGQgYmUgcmVwbGFj
-ZWQgd2hlbiBzdXNwZW5kIG9yIHJlc3VtZSBwcm9jZXNzLgpTbyBJIHRoaW5rIHRoYXQgY29kZSBz
-aG91bGQgYmUgaW1wbGVtZW50ZWQgdXNpbmcgYXNzZW1ibHkgbGFuZ3VhZ2UuClRoZSBzZWNvbmQg
-cmVhc29uIHRoYXQgSSB0aGlua2luZyBpcyBjYWxsaW5nIGNvbnZlbnRpb24gb2YgQyBsYW5ndWFn
-ZS4KSG93IGRvIHlvdSB0aGluaz8KCk9uIDExLzEvMDcsIEouIFNjb3R0IEthc3RlbiA8anNjb3R0
-a2FzdGVuQHlhaG9vLmNvbT4gd3JvdGU6Cj4KPgo+IE9uIFRodSwgMSBOb3YgMjAwNywgSHlvbiBM
-aW0gd3JvdGU6Cj4KPiA+IFllcy4geW91J3JlIHJpZ2h0LiBJIGRpZCBzYW1lIGFzIHlvdSBzYWlk
-Lgo+ID4gSG93ZXZlciwgaXMgdGhlcmUgYW55IG9wdGlvbnMgZm9yIGRpc2Fzc2VtYmx5IHdpdGgg
-dmFyaWFibGUgbmFtZT8KPiA+IE9mdGVuIEkgY2Fubm90IGZpbmQgdGhhdCB2YXJpYWJsZSdzIGFs
-bG9jYXRlZCByZWdpc3Rlci4KPiA+IFRoZXJlIGlzIG9ubHkgcjAscjEuLi4gYnV0IEkgd2FudCBh
-IGNvbW1lbnQgZm9yIHZhcmlhYmxlIGFzc2lnbm1lbnQKPiA+IHN0YXR1cy4KPgo+IEkganVzdCBo
-YXZlIHRvIGFzayB0aGUgcXVlc3Rpb24sIGJ1dCBpcyBpdCByZWFsbHkgbmVjZXNzYXJ5IHRvIGNv
-ZGUgdGhlCj4gd2hvbGUgdGhpbmcgaW4gYXNzZW1ibHk/ICBJIHVuZGVyc3RhbmQgdGhhdCB0aGUg
-aW50ZXJmYWNlIHByb2JhYmx5IGRvZXMKPiBuZWVkIHRvIGJlLCBidXQgdGhlIG1haW4gYm9keSBv
-ZiB0aGUgZnVuY3Rpb24/ICBJZiBpdCdzIHZlcnkgbGFyZ2Ugb3IKPiBjb21wbGljYXRlZCwgaXQg
-d291bGQgc2VlbSBzaW1wbGVyIHRvIHVzZSBDIGFuZCB3cml0ZSBhc3NlbWJseSBnbHVlIHRvCj4g
-cHVsbCBpdCBhbGwgdG9nZXRoZXIgcmF0aGVyIHRoYW4gdHJ5aW5nIHRvIGRlYnVnIGhhbmQgYXNz
-ZW1ibHkuICBNYW55IG9mCj4gdXMgaGVyZSBoYXZlIHNwZW50IGhvdXJzIGJlZm9yZSB0cmFja2lu
-ZyBkb3duIHByb2JsZW1zIHdpdGggc3RhbGUgZGF0YSBpbgo+IGJyYW5jaCBkZWxheSBzbG90cy4g
-IFRoZSBjb21waWxlciBpcyBhIHRhZCBtb3JlIGNvbnZpZW5pZW50Lgo+Cj4gUmVnYXJkcywKPgo+
-IC1TLQo+Cj4KCgotLSAKSHlvbiBMaW0gKMDTx/YpCk1vYmlsZS4gMDEwLTgyMTItMTI0MCAoSW50
-bCcgQ2FsbCA6ICs4Mi0xMC04MjEyLTEyNDApCkZheC4gMDMyLTIzMi0wNTc4IChJbnRsJyBBdmFp
-bGFibGUpCkhvbWVwYWdlIDogaHR0cDovL3d3dy5hbGV4bGFiLm5ldApCbG9nIDogaHR0cDovL3d3
-dy5hbGV4bGFiLm5ldC9ibG9nCg==
-------=_Part_7971_20847680.1193908311329
-Content-Type: text/html; charset=EUC-KR
-Content-Transfer-Encoding: base64
-Content-Disposition: inline
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+---
 
-PGRpdj5JIHRoaW5rIHRoZSByZWFzb24gb2YgYXNzZW1ibHkgaW1wbGVtZW50YXRpb24gaXMgcHJv
-Y2Vzc29yJm5ic3A7Y29udGV4dCByZXBsYWNlbWVudC48L2Rpdj4KPGRpdj5Qcm9jZXNzb3IgY29u
-dGV4dCBzaG91bGQgYmUgcmVwbGFjZWQgd2hlbiBzdXNwZW5kIG9yIHJlc3VtZSBwcm9jZXNzLjwv
-ZGl2Pgo8ZGl2PlNvIEkgdGhpbmsgdGhhdCBjb2RlIHNob3VsZCBiZSBpbXBsZW1lbnRlZCB1c2lu
-ZyBhc3NlbWJseSBsYW5ndWFnZS48L2Rpdj4KPGRpdj5UaGUgc2Vjb25kIHJlYXNvbiB0aGF0IEkg
-dGhpbmtpbmcgaXMgY2FsbGluZyBjb252ZW50aW9uIG9mIEMgbGFuZ3VhZ2UuPC9kaXY+CjxkaXY+
-SG93IGRvIHlvdSB0aGluaz88YnI+Jm5ic3A7PC9kaXY+CjxkaXY+PHNwYW4gY2xhc3M9ImdtYWls
-X3F1b3RlIj5PbiAxMS8xLzA3LCA8YiBjbGFzcz0iZ21haWxfc2VuZGVybmFtZSI+Si4gU2NvdHQg
-S2FzdGVuPC9iPiAmbHQ7PGEgaHJlZj0ibWFpbHRvOmpzY290dGthc3RlbkB5YWhvby5jb20iPmpz
-Y290dGthc3RlbkB5YWhvby5jb208L2E+Jmd0OyB3cm90ZTo8L3NwYW4+CjxibG9ja3F1b3RlIGNs
-YXNzPSJnbWFpbF9xdW90ZSIgc3R5bGU9IlBBRERJTkctTEVGVDogMWV4OyBNQVJHSU46IDBweCAw
-cHggMHB4IDAuOGV4OyBCT1JERVItTEVGVDogI2NjYyAxcHggc29saWQiPjxicj5PbiBUaHUsIDEg
-Tm92IDIwMDcsIEh5b24gTGltIHdyb3RlOjxicj48YnI+Jmd0OyBZZXMuIHlvdSYjMzk7cmUgcmln
-aHQuIEkgZGlkIHNhbWUgYXMgeW91IHNhaWQuPGJyPiZndDsgSG93ZXZlciwgaXMgdGhlcmUgYW55
-IG9wdGlvbnMgZm9yIGRpc2Fzc2VtYmx5IHdpdGggdmFyaWFibGUgbmFtZT8KPGJyPiZndDsgT2Z0
-ZW4gSSBjYW5ub3QgZmluZCB0aGF0IHZhcmlhYmxlJiMzOTtzIGFsbG9jYXRlZCByZWdpc3Rlci48
-YnI+Jmd0OyBUaGVyZSBpcyBvbmx5IHIwLHIxLi4uIGJ1dCBJIHdhbnQgYSBjb21tZW50IGZvciB2
-YXJpYWJsZSBhc3NpZ25tZW50PGJyPiZndDsgc3RhdHVzLjxicj48YnI+SSBqdXN0IGhhdmUgdG8g
-YXNrIHRoZSBxdWVzdGlvbiwgYnV0IGlzIGl0IHJlYWxseSBuZWNlc3NhcnkgdG8gY29kZSB0aGUK
-PGJyPndob2xlIHRoaW5nIGluIGFzc2VtYmx5PyZuYnNwOyZuYnNwO0kgdW5kZXJzdGFuZCB0aGF0
-IHRoZSBpbnRlcmZhY2UgcHJvYmFibHkgZG9lczxicj5uZWVkIHRvIGJlLCBidXQgdGhlIG1haW4g
-Ym9keSBvZiB0aGUgZnVuY3Rpb24/Jm5ic3A7Jm5ic3A7SWYgaXQmIzM5O3MgdmVyeSBsYXJnZSBv
-cjxicj5jb21wbGljYXRlZCwgaXQgd291bGQgc2VlbSBzaW1wbGVyIHRvIHVzZSBDIGFuZCB3cml0
-ZSBhc3NlbWJseSBnbHVlIHRvCjxicj5wdWxsIGl0IGFsbCB0b2dldGhlciByYXRoZXIgdGhhbiB0
-cnlpbmcgdG8gZGVidWcgaGFuZCBhc3NlbWJseS4mbmJzcDsmbmJzcDtNYW55IG9mPGJyPnVzIGhl
-cmUgaGF2ZSBzcGVudCBob3VycyBiZWZvcmUgdHJhY2tpbmcgZG93biBwcm9ibGVtcyB3aXRoIHN0
-YWxlIGRhdGEgaW48YnI+YnJhbmNoIGRlbGF5IHNsb3RzLiZuYnNwOyZuYnNwO1RoZSBjb21waWxl
-ciBpcyBhIHRhZCBtb3JlIGNvbnZpZW5pZW50Ljxicj4KPGJyPlJlZ2FyZHMsPGJyPjxicj4tUy08
-YnI+PGJyPjwvYmxvY2txdW90ZT48L2Rpdj48YnI+PGJyIGNsZWFyPSJhbGwiPjxicj4tLSA8YnI+
-SHlvbiBMaW0gKMDTx/YpPGJyPk1vYmlsZS4gMDEwLTgyMTItMTI0MCAoSW50bCYjMzk7IENhbGwg
-OiArODItMTAtODIxMi0xMjQwKTxicj5GYXguIDAzMi0yMzItMDU3OCAoSW50bCYjMzk7IEF2YWls
-YWJsZSk8YnI+SG9tZXBhZ2UgOiA8YSBocmVmPSJodHRwOi8vd3d3LmFsZXhsYWIubmV0Ij4KaHR0
-cDovL3d3dy5hbGV4bGFiLm5ldDwvYT48YnI+QmxvZyA6IDxhIGhyZWY9Imh0dHA6Ly93d3cuYWxl
-eGxhYi5uZXQvYmxvZyI+aHR0cDovL3d3dy5hbGV4bGFiLm5ldC9ibG9nPC9hPiAK
-------=_Part_7971_20847680.1193908311329--
+diff --git a/arch/mips/sni/time.c b/arch/mips/sni/time.c
+index 60bc62e..6f339af 100644
+--- a/arch/mips/sni/time.c
++++ b/arch/mips/sni/time.c
+@@ -1,6 +1,7 @@
+ #include <linux/types.h>
+ #include <linux/interrupt.h>
+ #include <linux/time.h>
++#include <linux/clockchips.h>
+ 
+ #include <asm/i8253.h>
+ #include <asm/sni.h>
+@@ -80,7 +81,7 @@ static void __init sni_a20r_timer_setup(void)
+ 	unsigned int cpu = smp_processor_id();
+ 
+ 	cd->cpumask             = cpumask_of_cpu(cpu);
+-
++	clockevents_register_device(cd);
+ 	action->dev_id = cd;
+ 	setup_irq(SNI_A20R_IRQ_TIMER, &a20r_irqaction);
+ }
+@@ -169,8 +170,6 @@ void __init plat_time_init(void)
+ 
+ 	mips_hpt_frequency = r4k_tick * HZ;
+ 
+-	setup_pit_timer();
+-
+ 	switch (sni_brd_type) {
+ 	case SNI_BRD_10:
+ 	case SNI_BRD_10NEW:
+
+
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

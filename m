@@ -1,72 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2007 10:40:03 +0000 (GMT)
-Received: from elvis.franken.de ([193.175.24.41]:58551 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S20026568AbXKAKjy (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 1 Nov 2007 10:39:54 +0000
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1InXPo-0003Sa-00; Thu, 01 Nov 2007 11:36:44 +0100
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id 66B02FA733; Thu,  1 Nov 2007 11:36:42 +0100 (CET)
-Date:	Thu, 1 Nov 2007 11:36:42 +0100
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] SNI: register a02r clockevent; don't use PIT timer
-Message-ID: <20071101103642.GA28146@alpha.franken.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2007 12:30:55 +0000 (GMT)
+Received: from mo31.po.2iij.net ([210.128.50.54]:46408 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20026775AbXKAMaq (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 1 Nov 2007 12:30:46 +0000
+Received: by mo.po.2iij.net (mo31) id lA1CUgdq048730; Thu, 1 Nov 2007 21:30:42 +0900 (JST)
+Received: from delta (221.25.30.125.dy.iij4u.or.jp [125.30.25.221])
+	by mbox.po.2iij.net (po-mbox305) id lA1CUb5E020131
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Thu, 1 Nov 2007 21:30:37 +0900
+Date:	Thu, 1 Nov 2007 21:30:36 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] bcm47xx: remove unneeded clear_c0_status()
+Message-Id: <20071101213036.c383957f.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed 2.4.5 (GTK+ 2.12.0; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17346
+X-archive-position: 17347
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Register A20R clockevent
-Remove PIT timer setup because it doesn't work 
+Remove unneeded clear_c0_status().
+irq_cpu routines take care of it.
 
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
----
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-diff --git a/arch/mips/sni/time.c b/arch/mips/sni/time.c
-index 60bc62e..6f339af 100644
---- a/arch/mips/sni/time.c
-+++ b/arch/mips/sni/time.c
-@@ -1,6 +1,7 @@
- #include <linux/types.h>
- #include <linux/interrupt.h>
- #include <linux/time.h>
-+#include <linux/clockchips.h>
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/bcm47xx/irq.c mips/arch/mips/bcm47xx/irq.c
+--- mips-orig/arch/mips/bcm47xx/irq.c	2007-10-26 23:35:58.630600250 +0900
++++ mips/arch/mips/bcm47xx/irq.c	2007-10-26 23:40:22.587096500 +0900
+@@ -33,8 +33,6 @@ void plat_irq_dispatch(void)
  
- #include <asm/i8253.h>
- #include <asm/sni.h>
-@@ -80,7 +81,7 @@ static void __init sni_a20r_timer_setup(void)
- 	unsigned int cpu = smp_processor_id();
+ 	cause = read_c0_cause() & read_c0_status() & CAUSEF_IP;
  
- 	cd->cpumask             = cpumask_of_cpu(cpu);
+-	clear_c0_status(cause);
 -
-+	clockevents_register_device(cd);
- 	action->dev_id = cd;
- 	setup_irq(SNI_A20R_IRQ_TIMER, &a20r_irqaction);
- }
-@@ -169,8 +170,6 @@ void __init plat_time_init(void)
- 
- 	mips_hpt_frequency = r4k_tick * HZ;
- 
--	setup_pit_timer();
--
- 	switch (sni_brd_type) {
- 	case SNI_BRD_10:
- 	case SNI_BRD_10NEW:
-
-
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+ 	if (cause & CAUSEF_IP7)
+ 		do_IRQ(7);
+ 	if (cause & CAUSEF_IP2)

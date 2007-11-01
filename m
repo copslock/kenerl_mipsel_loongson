@@ -1,95 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 31 Oct 2007 21:12:04 +0000 (GMT)
-Received: from mail.onstor.com ([66.201.51.107]:9873 "EHLO mail.onstor.com")
-	by ftp.linux-mips.org with ESMTP id S28576631AbXJaVLz (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 31 Oct 2007 21:11:55 +0000
-Received: from onstor-exch02.onstor.net ([66.201.51.106]) by mail.onstor.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 31 Oct 2007 14:11:27 -0700
-Received: from ripper.onstor.net ([10.0.0.42]) by onstor-exch02.onstor.net with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 31 Oct 2007 14:11:26 -0700
-Date:	Wed, 31 Oct 2007 14:11:24 -0700
-From:	Andrew Sharp <andy.sharp@onstor.com>
-To:	linux-mips <linux-mips@linux-mips.org>
-Cc:	Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH] Put cast inside macro instead of all the callers
-Message-ID: <20071031141124.185599da@ripper.onstor.net>
-Organization: Onstor
-X-Mailer: Sylpheed-Claws 2.6.0 (GTK+ 2.8.20; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 31 Oct 2007 21:11:26.0887 (UTC) FILETIME=[99616B70:01C81C02]
-Return-Path: <andy.sharp@onstor.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 Nov 2007 01:46:22 +0000 (GMT)
+Received: from nz-out-0506.google.com ([64.233.162.235]:509 "EHLO
+	nz-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S28576769AbXKABqN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 1 Nov 2007 01:46:13 +0000
+Received: by nz-out-0506.google.com with SMTP id n1so251627nzf
+        for <linux-mips@linux-mips.org>; Wed, 31 Oct 2007 18:46:02 -0700 (PDT)
+Received: by 10.65.240.17 with SMTP id s17mr2544359qbr.1193881561244;
+        Wed, 31 Oct 2007 18:46:01 -0700 (PDT)
+Received: by 10.65.123.7 with HTTP; Wed, 31 Oct 2007 18:46:01 -0700 (PDT)
+Message-ID: <dd7dc2bc0710311846ve03e03eued4ed72c89b06e4f@mail.gmail.com>
+Date:	Thu, 1 Nov 2007 10:46:01 +0900
+From:	"Hyon Lim" <alex@alexlab.net>
+To:	"Andrew Dyer" <adyer@righthandtech.com>
+Subject: Re: implementation of software suspend on MIPS. (system log)
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <DDAE9570F73FC744918E843E20BE598B096E8E@server1.RightHand.righthandtech.com>
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_7167_25384525.1193881561234"
+References: <DDAE9570F73FC744918E843E20BE598B096E8E@server1.RightHand.righthandtech.com>
+Return-Path: <alex@alexlab.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17342
+X-archive-position: 17343
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andy.sharp@onstor.com
+X-original-sender: alex@alexlab.net
 Precedence: bulk
 X-list: linux-mips
 
-Resend: I tried sending this a couple of days ago but haven't seen it.
-Wondering if it got stuck in a spam filter or our lovely exchange
-server or something.
+------=_Part_7167_25384525.1193881561234
+Content-Type: text/plain; charset=EUC-KR
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
 
-Since all the callers of the PHYS_TO_XKPHYS macro call with a constant,
-put the cast to LL inside the macro where it really should be rather
-than in all the callers.  This makes macros like PHYS_TO_XKSEG_UNCACHED
-work without gcc whining.
+WWVzLiB5b3UncmUgcmlnaHQuIEkgZGlkIHNhbWUgYXMgeW91IHNhaWQuCkhvd2V2ZXIsIGlzIHRo
+ZXJlIGFueSBvcHRpb25zIGZvciBkaXNhc3NlbWJseSB3aXRoIHZhcmlhYmxlIG5hbWU/Ck9mdGVu
+IEkgY2Fubm90IGZpbmQgdGhhdCB2YXJpYWJsZSdzIGFsbG9jYXRlZCByZWdpc3Rlci4KVGhlcmUg
+aXMgb25seSByMCxyMS4uLiBidXQgSSB3YW50IGEgY29tbWVudCBmb3IgdmFyaWFibGUgYXNzaWdu
+bWVudCBzdGF0dXMuCgpPbiAxMS8xLzA3LCBBbmRyZXcgRHllciA8YWR5ZXJAcmlnaHRoYW5kdGVj
+aC5jb20+IHdyb3RlOgo+Cj4gPiBUaGUgY29kZSBvZiByZXN1bWUgcHJvY2VzcyBzaG91bGQgYmUg
+aW1wbGVtZW50ZWQgb24KPiBhcmNoL3h4eC9wb3dlci9zd3N1c3AuUwo+ID4gU28gaXQgc2hvdWxk
+IGJlIGltcGxlbWVudGVkIGJ5IGFzc2VtYmx5Lgo+ID4gVGhhdCdzIHRoZSBwcm9ibGVtLi4uCj4g
+PiBJJ3ZlIG5vIGlkZWEgYWJvdXQgY29tcGxleCBhc3NlbWJseSBwcm9ncmFtbWluZy4gOi0pCj4g
+PiBDb3VsZCB5b3UgcmVjb21tZW5kIGFueSBwZGYgb3Igd2Vic2l0ZT8KPgo+IFdoZW5ldmVyIEkg
+aGF2ZSB0byBkbyBzb21ldGhpbmcgbW9kZXJhdGVseSBjb21wbGV4IGluIGFzc3kuIGxhbmd1YWdl
+LCBJCj4gb2Z0ZW4gZmluZCBpdCBoZWxwZnVsIHRvIGNvZGUgdGhlIHRoaW5nIGluIEMgYW5kIHJ1
+biBpdCB0aHJvdWdoIHRoZSBjb21waWxlcgo+IGFuZCBsb29rIGF0IHRoZSBnZW5lcmF0ZWQgYXNz
+eS4gbGFuZ3VhZ2UuICBPZnRlbnRpbWVzIHlvdSBjYW4gbW9kaWZ5IHRoZQo+IG91dHB1dCBvZiB0
+aGUgY29tcGlsZXIgd2l0aG91dCB0b28gbXVjaCB0cm91YmxlLgo+Cj4KCgotLSAKSHlvbiBMaW0g
+KMDTx/YpCk1vYmlsZS4gMDEwLTgyMTItMTI0MCAoSW50bCcgQ2FsbCA6ICs4Mi0xMC04MjEyLTEy
+NDApCkZheC4gMDMyLTIzMi0wNTc4IChJbnRsJyBBdmFpbGFibGUpCkhvbWVwYWdlIDogaHR0cDov
+L3d3dy5hbGV4bGFiLm5ldApCbG9nIDogaHR0cDovL3d3dy5hbGV4bGFiLm5ldC9ibG9nCg==
+------=_Part_7167_25384525.1193881561234
+Content-Type: text/html; charset=EUC-KR
+Content-Transfer-Encoding: base64
+Content-Disposition: inline
 
-Hopefully this will apply ok.
-
-
-Signed-off-by: Andrew Sharp <andy.sharp@onstor.com>
----
- arch/mips/lib/uncached.c     |   12 ++++++------
- include/asm-mips/addrspace.h |    2 +-
- 2 files changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/arch/mips/lib/uncached.c b/arch/mips/lib/uncached.c
-index 2388f7f..bbca1ea 100644
---- a/arch/mips/lib/uncached.c
-+++ b/arch/mips/lib/uncached.c
-@@ -45,9 +45,9 @@ unsigned long __init run_uncached(void *func)
- 	if (sp >= (long)CKSEG0 && sp < (long)CKSEG2)
- 		usp = CKSEG1ADDR(sp);
- #ifdef CONFIG_64BIT
--	else if ((long long)sp >= (long long)PHYS_TO_XKPHYS(0LL, 0) &&
--		 (long long)sp < (long long)PHYS_TO_XKPHYS(8LL, 0))
--		usp = PHYS_TO_XKPHYS((long long)K_CALG_UNCACHED,
-+	else if ((long long)sp >= (long long)PHYS_TO_XKPHYS(0, 0) &&
-+		 (long long)sp < (long long)PHYS_TO_XKPHYS(8, 0))
-+		usp = PHYS_TO_XKPHYS(K_CALG_UNCACHED,
- 				     XKPHYS_TO_PHYS((long long)sp));
- #endif
- 	else {
-@@ -57,9 +57,9 @@ unsigned long __init run_uncached(void *func)
- 	if (lfunc >= (long)CKSEG0 && lfunc < (long)CKSEG2)
- 		ufunc = CKSEG1ADDR(lfunc);
- #ifdef CONFIG_64BIT
--	else if ((long long)lfunc >= (long long)PHYS_TO_XKPHYS(0LL, 0) &&
--		 (long long)lfunc < (long long)PHYS_TO_XKPHYS(8LL, 0))
--		ufunc = PHYS_TO_XKPHYS((long long)K_CALG_UNCACHED,
-+	else if ((long long)lfunc >= (long long)PHYS_TO_XKPHYS(0, 0) &&
-+		 (long long)lfunc < (long long)PHYS_TO_XKPHYS(8, 0))
-+		ufunc = PHYS_TO_XKPHYS(K_CALG_UNCACHED,
- 				       XKPHYS_TO_PHYS((long long)lfunc));
- #endif
- 	else {
-diff --git a/include/asm-mips/addrspace.h b/include/asm-mips/addrspace.h
-index 964c5ed..1bc23e8 100644
---- a/include/asm-mips/addrspace.h
-+++ b/include/asm-mips/addrspace.h
-@@ -127,7 +127,7 @@
- #define PHYS_TO_XKSEG_CACHED(p)		PHYS_TO_XKPHYS(K_CALG_COH_SHAREABLE,(p))
- #define XKPHYS_TO_PHYS(p)		((p) & TO_PHYS_MASK)
- #define PHYS_TO_XKPHYS(cm,a)		(_CONST64_(0x8000000000000000) | \
--					 ((cm)<<59) | (a))
-+					 (_CONST64_(cm)<<59) | (a))
- 
- #if defined (CONFIG_CPU_R4300)						\
-     || defined (CONFIG_CPU_R4X00)					\
--- 
-1.4.4.4
+PGRpdj5ZZXMuIHlvdSYjMzk7cmUgcmlnaHQuIEkgZGlkIHNhbWUgYXMgeW91IHNhaWQuPC9kaXY+
+CjxkaXY+SG93ZXZlciwgaXMgdGhlcmUgYW55IG9wdGlvbnMgZm9yIGRpc2Fzc2VtYmx5IHdpdGgg
+dmFyaWFibGUgbmFtZT88L2Rpdj4KPGRpdj5PZnRlbiBJIGNhbm5vdCBmaW5kJm5ic3A7dGhhdCB2
+YXJpYWJsZSYjMzk7cyBhbGxvY2F0ZWQmbmJzcDtyZWdpc3Rlci48L2Rpdj4KPGRpdj5UaGVyZSBp
+cyBvbmx5IHIwLHIxLi4uIGJ1dCBJIHdhbnQgYSBjb21tZW50IGZvciB2YXJpYWJsZSBhc3NpZ25t
+ZW50IHN0YXR1cy48YnI+Jm5ic3A7PC9kaXY+CjxkaXY+PHNwYW4gY2xhc3M9ImdtYWlsX3F1b3Rl
+Ij5PbiAxMS8xLzA3LCA8YiBjbGFzcz0iZ21haWxfc2VuZGVybmFtZSI+QW5kcmV3IER5ZXI8L2I+
+ICZsdDs8YSBocmVmPSJtYWlsdG86YWR5ZXJAcmlnaHRoYW5kdGVjaC5jb20iPmFkeWVyQHJpZ2h0
+aGFuZHRlY2guY29tPC9hPiZndDsgd3JvdGU6PC9zcGFuPgo8YmxvY2txdW90ZSBjbGFzcz0iZ21h
+aWxfcXVvdGUiIHN0eWxlPSJQQURESU5HLUxFRlQ6IDFleDsgTUFSR0lOOiAwcHggMHB4IDBweCAw
+LjhleDsgQk9SREVSLUxFRlQ6ICNjY2MgMXB4IHNvbGlkIj4mZ3Q7IFRoZSBjb2RlIG9mIHJlc3Vt
+ZSBwcm9jZXNzIHNob3VsZCBiZSBpbXBsZW1lbnRlZCBvbiBhcmNoL3h4eC9wb3dlci9zd3N1c3Au
+Uzxicj4mZ3Q7IFNvIGl0IHNob3VsZCBiZSBpbXBsZW1lbnRlZCBieSBhc3NlbWJseS4KPGJyPiZn
+dDsgVGhhdCYjMzk7cyB0aGUgcHJvYmxlbS4uLjxicj4mZ3Q7IEkmIzM5O3ZlIG5vIGlkZWEgYWJv
+dXQgY29tcGxleCBhc3NlbWJseSBwcm9ncmFtbWluZy4gOi0pPGJyPiZndDsgQ291bGQgeW91IHJl
+Y29tbWVuZCBhbnkgcGRmIG9yIHdlYnNpdGU/PGJyPjxicj5XaGVuZXZlciBJIGhhdmUgdG8gZG8g
+c29tZXRoaW5nIG1vZGVyYXRlbHkgY29tcGxleCBpbiBhc3N5LiBsYW5ndWFnZSwgSSBvZnRlbiBm
+aW5kIGl0IGhlbHBmdWwgdG8gY29kZSB0aGUgdGhpbmcgaW4gQyBhbmQgcnVuIGl0IHRocm91Z2gg
+dGhlIGNvbXBpbGVyIGFuZCBsb29rIGF0IHRoZSBnZW5lcmF0ZWQgYXNzeS4gbGFuZ3VhZ2UuJm5i
+c3A7Jm5ic3A7T2Z0ZW50aW1lcyB5b3UgY2FuIG1vZGlmeSB0aGUgb3V0cHV0IG9mIHRoZSBjb21w
+aWxlciB3aXRob3V0IHRvbyBtdWNoIHRyb3VibGUuCjxicj48YnI+PC9ibG9ja3F1b3RlPjwvZGl2
+Pjxicj48YnIgY2xlYXI9ImFsbCI+PGJyPi0tIDxicj5IeW9uIExpbSAowNPH9ik8YnI+TW9iaWxl
+LiAwMTAtODIxMi0xMjQwIChJbnRsJiMzOTsgQ2FsbCA6ICs4Mi0xMC04MjEyLTEyNDApPGJyPkZh
+eC4gMDMyLTIzMi0wNTc4IChJbnRsJiMzOTsgQXZhaWxhYmxlKTxicj5Ib21lcGFnZSA6IDxhIGhy
+ZWY9Imh0dHA6Ly93d3cuYWxleGxhYi5uZXQiPgpodHRwOi8vd3d3LmFsZXhsYWIubmV0PC9hPjxi
+cj5CbG9nIDogPGEgaHJlZj0iaHR0cDovL3d3dy5hbGV4bGFiLm5ldC9ibG9nIj5odHRwOi8vd3d3
+LmFsZXhsYWIubmV0L2Jsb2c8L2E+IAo=
+------=_Part_7167_25384525.1193881561234--

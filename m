@@ -1,55 +1,116 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Nov 2007 12:58:26 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:9447 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20030414AbXKBM6X (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 2 Nov 2007 12:58:23 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lA2CvsEu014497;
-	Fri, 2 Nov 2007 12:57:54 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lA2Cvr69014496;
-	Fri, 2 Nov 2007 12:57:53 GMT
-Date:	Fri, 2 Nov 2007 12:57:53 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	kalyan tejaswi <kalyanatejaswi@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Nov 2007 16:45:09 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:32458 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20030140AbXKBQo7 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 2 Nov 2007 16:44:59 +0000
+Received: from localhost (p3147-ipad212funabasi.chiba.ocn.ne.jp [58.91.167.147])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 2723C9FB6; Sat,  3 Nov 2007 01:44:48 +0900 (JST)
+Date:	Sat, 03 Nov 2007 01:46:49 +0900 (JST)
+Message-Id: <20071103.014649.122254137.anemo@mba.ocn.ne.jp>
+To:	ralf@linux-mips.org
 Cc:	linux-mips@linux-mips.org
-Subject: Re: Oops with kernel 2.6.8
-Message-ID: <20071102125753.GB14106@linux-mips.org>
-References: <9dd3c65d0711012245r4a1f2061r126d34a907b640cd@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9dd3c65d0711012245r4a1f2061r126d34a907b640cd@mail.gmail.com>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Subject: Re: WAIT vs. tickless kernel
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20071031163900.GB22871@linux-mips.org>
+References: <20071031161333.GA22871@linux-mips.org>
+	<20071101.013124.108121433.anemo@mba.ocn.ne.jp>
+	<20071031163900.GB22871@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17375
+X-archive-position: 17376
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Nov 02, 2007 at 11:15:51AM +0530, kalyan tejaswi wrote:
-
-> Hi all,
-> I am using Malta-4Kc with kernel 2.6.8(from linux-mips.org) compiled with
-> gcc 3.4.4.
+On Wed, 31 Oct 2007 16:39:00 +0000, Ralf Baechle <ralf@linux-mips.org> wrote:
+> > > The only safe but ugly workaround is to change the return from exception
+> > > code to detect if the EPC is in the range startin from the condition
+> > > check in the idle loop to including the WAIT instruction and if so to
+> > > patch the EPC to resume execution at the condition check or the
+> > > instruction following the WAIT.
+> > 
+> > I'm also thinking of this approach.  Still wondering if it is worth to
+> > implement.
 > 
-> I can not boot over NFS.
-> 
-> The console log is attached.
-> 
-> Any hints are greatly appreciated.
+> The tickless kernel is very interesting for the low power fraction.  And
+> it's especially those users who would suffer most the loss of the ability
+> to use the WAIT instruction.  For a system running from two AAA cells the
+> tradeoff is clear ...  So I think it's become a must.
 
-2.6.8 is really old, over 3 years now.  So forgive if memory of the bugs
-in that kernel is fading.  I think the one you're seeing was was caused
-by memory prefetching beyond the end of memory.  The easy fix is to disable
-prefetching.  See a  modern memcpy for how to do that.  There are several
-other interesting issues hidden in 2.6.8 so I think you really should
-upgrade.
+Then, something like this?  Selecting in build-time is not so good,
+but there are some CPUs which do not need this hack at all.
+Synthesizing the ret_from_irq() at runtime might satisfy everyone?
 
-  Ralf
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index c8c47a2..621130c 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -51,12 +51,17 @@ static void r39xx_wait(void)
+  * But it is implementation-dependent wheter the pipelie restarts when
+  * a non-enabled interrupt is requested.
+  */
++#ifdef CONFIG_ROLLBACK_CPU_WAIT
++extern void cpu_wait_rollback(void);
++#define r4k_wait cpu_wait_rollback
++#else
+ static void r4k_wait(void)
+ {
+ 	__asm__("	.set	mips3			\n"
+ 		"	wait				\n"
+ 		"	.set	mips0			\n");
+ }
++#endif
+ 
+ /*
+  * This variant is preferable as it allows testing need_resched and going to
+diff --git a/arch/mips/kernel/entry.S b/arch/mips/kernel/entry.S
+index e29598a..ffa043c 100644
+--- a/arch/mips/kernel/entry.S
++++ b/arch/mips/kernel/entry.S
+@@ -27,6 +27,20 @@
+ #endif
+ 
+ 	.text
++#ifdef CONFIG_ROLLBACK_CPU_WAIT
++	.align	6
++FEXPORT(cpu_wait_rollback)
++	LONG_L	t0, TI_FLAGS($28)
++	andi	t0, _TIF_NEED_RESCHED
++	bnez	t0, 1f
++	.set	mips3
++	wait
++	.set	mips0
++1:
++	jr	ra
++	.align	6
++cpu_wait_rollback_end:
++#endif
+ 	.align	5
+ #ifndef CONFIG_PREEMPT
+ FEXPORT(ret_from_exception)
+@@ -35,6 +49,14 @@ FEXPORT(ret_from_exception)
+ #endif
+ FEXPORT(ret_from_irq)
+ 	LONG_S	s0, TI_REGS($28)
++#ifdef CONFIG_ROLLBACK_CPU_WAIT
++	LONG_L	t0, PT_EPC(sp)
++	ori	t0, 0x3f
++	xori	t0, 0x3f
++	PTR_LA	t1, cpu_wait_rollback
++	bne	t0, t1, __ret_from_irq
++	LONG_S	t0, PT_EPC(sp)			# return to cpu_wait_rollback
++#endif
+ FEXPORT(__ret_from_irq)
+ 	LONG_L	t0, PT_STATUS(sp)		# returning to kernel mode?
+ 	andi	t0, t0, KU_USER

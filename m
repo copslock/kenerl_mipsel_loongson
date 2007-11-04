@@ -1,52 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Nov 2007 10:06:30 +0000 (GMT)
-Received: from elvis.franken.de ([193.175.24.41]:52669 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S20022636AbXKDKGV (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 4 Nov 2007 10:06:21 +0000
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1IocN2-0002Cu-00; Sun, 04 Nov 2007 11:06:20 +0100
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id A1AD3C2250; Sun,  4 Nov 2007 11:05:27 +0100 (CET)
-Date:	Sun, 4 Nov 2007 11:05:27 +0100
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] JAZZ: disable PIT; cleanup R4030 clockevent
-Message-ID: <20071104100527.GA5391@alpha.franken.de>
-References: <20071101125236.GA16577@alpha.franken.de> <20071101150741.GA8570@linux-mips.org> <20071101160210.GA20366@linux-mips.org> <20071102101713.GA9110@alpha.franken.de> <20071102122001.GC22829@linux-mips.org> <20071102220819.GA20792@alpha.franken.de> <20071104003338.GB28717@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Nov 2007 11:27:31 +0000 (GMT)
+Received: from smtp3.infineon.com ([203.126.106.229]:39448 "EHLO
+	smtp3.infineon.com") by ftp.linux-mips.org with ESMTP
+	id S20024851AbXKDL1X convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 4 Nov 2007 11:27:23 +0000
+X-SBRS:	None
+Received: from unknown (HELO sinse301.ap.infineon.com) ([172.20.70.22])
+  by smtp3.infineon.com with ESMTP; 04 Nov 2007 19:26:13 +0800
+Received: from sinse303.ap.infineon.com ([172.20.70.24]) by sinse301.ap.infineon.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Sun, 4 Nov 2007 19:26:13 +0800
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20071104003338.GB28717@linux-mips.org>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: Get stuck in wake_up_process(rq->migration_thread);
+Date:	Sun, 4 Nov 2007 19:26:12 +0800
+Message-ID: <31E09F73562D7A4D82119D7F6C17298602B11510@sinse303.ap.infineon.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Get stuck in wake_up_process(rq->migration_thread);
+Thread-Index: Acge1YErxPuWjyVPRty8t31LfT16Jg==
+From:	<KokHow.Teh@infineon.com>
+To:	<linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 04 Nov 2007 11:26:13.0981 (UTC) FILETIME=[821C28D0:01C81ED5]
+Return-Path: <KokHow.Teh@infineon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17385
+X-archive-position: 17386
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: KokHow.Teh@infineon.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Nov 04, 2007 at 12:33:38AM +0000, Ralf Baechle wrote:
-> On Fri, Nov 02, 2007 at 11:08:19PM +0100, Thomas Bogendoerfer wrote:
-> 
-> > On Fri, Nov 02, 2007 at 12:20:01PM +0000, Ralf Baechle wrote:
-> > > One thing I'm still wondering about, does the kernel actually go tickless
-> > > for you?
-> > 
-> > a kernel with CONFIG_NO_HZ boots and acts normal. But it looks like
-> > the PIT is still ticking at the selected 100HZ...
-> 
-> I think this happens because the R4030 clockevent device has a rather
+Hi;
+	I have a linux-2.6.20 kernel configured with CONFIG_MIPS_MT_SMP
+(SMVPE) running on a MIPS34KC processor emulation platform. Everything
+goes fine until the scheduler gets stuck in trying to wake up the
+migration thread. I configured the kernel with max_cache_size=2097152,
+having no idea of what the variable is all about. Putting debug messages
+in kernel/sched.c tells me that the the migration_thread() routine has
+gone to sleep calling schedul() function and set_cpus_allowed() function
+gets stuck in wake_up_process(rq->migration_thread); 
+	Any insight is appreciated.
 
-r4030 is of course disabled in my test.
-
-Thomas.
-
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+Regards.
+KH

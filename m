@@ -1,79 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Nov 2007 08:30:20 +0000 (GMT)
-Received: from mu-out-0910.google.com ([209.85.134.190]:458 "EHLO
-	mu-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20027003AbXKDIaM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 4 Nov 2007 08:30:12 +0000
-Received: by mu-out-0910.google.com with SMTP id g7so1254206muf
-        for <linux-mips@linux-mips.org>; Sun, 04 Nov 2007 01:30:11 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        bh=uaygN2JDcMA9z53Vkfu/fThIq+UgfiWdVKAEhk1udf8=;
-        b=pvT6fsXwrkR7QW8njbTYlImPNeyOcaF68qfdBzmHq9KZwYXPakKgyotHqDIM9rpKMXaRcqQeoFQyNy+NiZqHBuVyOdaPCuKN812Fwo7xsnzDZebTySsLRXMHaPL/MtgfSDHL1iMXIhRXRzttdIyrHr0/e+DA7gdQIWn6qvTxk2g=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=gaWT+o+wL++VSe60THnU+OQjmYenYEAcAKqEeEjg270epE5rN/tdAGzah+T1xg8ks8NGcJhQ2l9xbVSRNw2UxyfQqxCI+iZ9Fb48QtOc3ucuxjh8ZLwSXNn5oW9LKAKXCtySEZdijENtFYntw0BnHuBpgGY/3ZGQ1AyZzW+kJTI=
-Received: by 10.86.66.1 with SMTP id o1mr2379265fga.1194165011740;
-        Sun, 04 Nov 2007 01:30:11 -0700 (PDT)
-Received: from ?192.168.0.1? ( [82.235.205.153])
-        by mx.google.com with ESMTPS id f31sm9311814fkf.2007.11.04.01.30.08
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 04 Nov 2007 01:30:09 -0700 (PDT)
-Message-ID: <472D82D1.1050401@gmail.com>
-Date:	Sun, 04 Nov 2007 09:29:05 +0100
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Nov 2007 09:11:12 +0000 (GMT)
+Received: from mail.gmx.net ([213.165.64.20]:27831 "HELO mail.gmx.net")
+	by ftp.linux-mips.org with SMTP id S20027427AbXKDJLD (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 4 Nov 2007 09:11:03 +0000
+Received: (qmail invoked by alias); 04 Nov 2007 09:10:58 -0000
+Received: from unknown (EHLO localhost.localdomain) [86.56.7.149]
+  by mail.gmx.net (mp024) with SMTP; 04 Nov 2007 10:10:58 +0100
+X-Authenticated: #2913508
+X-Provags-ID: V01U2FsdGVkX1+ZoKpoaY6ZGIeZ/Dh+B5X9SkxZYtMgmseHfulkfa
+	Kwz9B3GNbdHQmK
+Date:	Sun, 04 Nov 2007 10:10:57 +0100
+To:	linux-mips@linux-mips.org
+Subject: "Bad eraseblock"-problem with au1550nd-NAND-driver after kernel update to 2.6.23.1
+From:	"Thorsten Schulz" <stehbrettsegeln@gmx.de>
+Content-Type: text/plain; charset=utf-8
 MIME-Version: 1.0
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-CC:	Ralf Baechle <ralf@linux-mips.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [RFC] Add __initbss section
-References: <470DF25E.60009@gmail.com> <Pine.LNX.4.64N.0710111307180.16370@blysk.ds.pg.gda.pl> <4712738A.5000703@gmail.com> <Pine.LNX.4.64N.0710151311350.16262@blysk.ds.pg.gda.pl> <4713C840.8080206@gmail.com> <Pine.LNX.4.64N.0710161123110.22596@blysk.ds.pg.gda.pl> <4717C1FB.4030602@gmail.com> <Pine.LNX.4.64N.0710191239490.13279@blysk.ds.pg.gda.pl>
-In-Reply-To: <Pine.LNX.4.64N.0710191239490.13279@blysk.ds.pg.gda.pl>
-Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Return-Path: <vagabon.xyz@gmail.com>
+Message-ID: <op.t09fsjv333s53m@localhost.localdomain>
+User-Agent: Opera Mail/9.24 (Linux)
+X-Y-GMX-Trusted: 0
+Return-Path: <stehbrettsegeln@gmx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17383
+X-archive-position: 17384
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: stehbrettsegeln@gmx.de
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
-> On Thu, 18 Oct 2007, Franck Bui-Huu wrote:
->> After spending some fun time trying several different configurations
->> with gcc and ld, I noticed that gcc makes a section with @nobits
->> attribute if the section name starts with .bss.*
-> 
->  Exactly how GCC sets section flags is mostly determined by 
-> default_section_type_flags() in gcc/varasm.c; some flags are set elsewhere 
-> too.  This is with HEAD of GCC.
-> 
+Hi,
 
-It seems that we can rely on this behaviour. I looked at gcc 4.1.2/3.2
-sources and they made a section part of .bss if the section name starts
-with ".bss.".
+I am fiddeling around with an Au1550-System (Lippert CoolMoteMaster).
+After I updated the Kernel from 2.6.17.7 to 2.6.23.1 the flash driver complaints about Bad eraseblocks at kernel start:
 
->> Another test I did is to put .init.bss (not .bss.init) section right
->> before .bss section in order to have only one segment to load. And it
->> makes magically ld do the right thing. I must admit that I don't
->> understand why, and the lack of documentation doesn't help...
-> 
->  Hmm, isn't what `info ld' says enough?
+[17179570.224000] NAND device: Manufacturer ID: 0x20, Chip ID: 0xda (ST Micro NAND 256MiB 3,3V 8-bit)
+[17179570.232000] Scanning device for bad blocks
+[17179570.236000] Bad eraseblock 0 at 0x00000000
+[17179570.240000] Bad eraseblock 1 at 0x00020000
+[17179570.248000] Bad eraseblock 2 at 0x00040000
+[..]
+[17179579.748000] Bad eraseblock 2046 at 0x0ffc0000
+[17179579.752000] Bad eraseblock 2047 at 0x0ffe0000
+[17179579.756000] Creating 1 MTD partitions on "NAND 256MiB 3,3V 8-bit":
+[17179579.760000] 0x00000000-0x10000000 : "NAND FS 0"
+[17179579.772000] au1xxx-ohci au1xxx-ohci.0: Au1xxx OHCI
+[..]
+I get the same output from the .17.7. kernel apart from the 'Bad'-messages. The size seems correct, as I should get one 256MB-flash-device. I did use the patch from Lippert to set their platform data, which was intended for 2.6.17.7. With small changes it also succeeds on 2.6.23.1 but this doesn't mean that it's correct ;)
+The 2.6.17.7 kernel still runs fine with that flash.
 
-Hmm, I'm must be blind but I missed that each time I read it. Could
-you point out the section number please ?
+I am quite new to kernel hacking and after some cause searching I'm still lost. Were there any changes in the necessary configuration / platform setup that I am missing? Any ideas / hints what I can look for? Any common mistakes?
 
-OK, I think the best thing to do now is to respin the patchset and
-submit it linux arch mailing list.
-
-thanks,
-
-		Franck
+ciao,
+Thorsten

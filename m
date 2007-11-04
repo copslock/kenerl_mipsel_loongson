@@ -1,46 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Nov 2007 12:03:25 +0000 (GMT)
-Received: from smtp-out3.tiscali.nl ([195.241.79.178]:43214 "EHLO
-	smtp-out3.tiscali.nl") by ftp.linux-mips.org with ESMTP
-	id S20024033AbXKDMDQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 4 Nov 2007 12:03:16 +0000
-Received: from [82.171.216.234] (helo=[192.168.1.2])
-	by smtp-out3.tiscali.nl with esmtp (Tiscali http://www.tiscali.nl)
-	id 1Ioe99-0007uf-Cx
-	for <linux-mips@linux-mips.org>; Sun, 04 Nov 2007 13:00:07 +0100
-Message-ID: <472DB446.3020804@tiscali.nl>
-Date:	Sun, 04 Nov 2007 13:00:06 +0100
-From:	Roel Kluin <12o3l@tiscali.nl>
-User-Agent: Thunderbird 2.0.0.6 (X11/20070728)
-MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: [PATCH] iounmap if in vr41xx_pciu_init() pci clock is over 33MHz
-Content-Type: text/plain; charset=ISO-8859-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Nov 2007 15:41:36 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:54775 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20029687AbXKDPl2 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 4 Nov 2007 15:41:28 +0000
+Received: from localhost (p5165-ipad307funabasi.chiba.ocn.ne.jp [123.217.183.165])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 80BDC9937; Mon,  5 Nov 2007 00:40:06 +0900 (JST)
+Date:	Mon, 05 Nov 2007 00:42:08 +0900 (JST)
+Message-Id: <20071105.004208.74752504.anemo@mba.ocn.ne.jp>
+To:	fbuihuu@gmail.com
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Kill __bzero() 
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <472D8058.5080209@gmail.com>
+References: <472D8058.5080209@gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <12o3l@tiscali.nl>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17387
+X-archive-position: 17388
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: 12o3l@tiscali.nl
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-iounmap if pci clock is over 33MHz
+On Sun, 04 Nov 2007 09:18:32 +0100, Franck Bui-Huu <fbuihuu@gmail.com> wrote:
+>   2/ For the caller, it makes no difference to call memset instead
+>   since it has to setup the second parameter of __bzero to 0.
 
-Signed-off-by: Roel Kluin <12o3l@tiscali.nl>
+__bzero() does not clobber v0 but memset() does.  I don't know if gcc
+does some magical thing to protect v0, but it would be safer to add v0
+explicitly to clobber-list of __clear_user().
+
 ---
-diff --git a/arch/mips/pci/pci-vr41xx.c b/arch/mips/pci/pci-vr41xx.c
-index 240df9e..33c4f68 100644
---- a/arch/mips/pci/pci-vr41xx.c
-+++ b/arch/mips/pci/pci-vr41xx.c
-@@ -154,6 +154,7 @@ static int __init vr41xx_pciu_init(void)
- 		pciu_write(PCICLKSELREG, QUARTER_VTCLOCK);
- 	else {
- 		printk(KERN_ERR "PCI Clock is over 33MHz.\n");
-+		iounmap(pciu_base);
- 		return -EINVAL;
- 	}
- 
+Atsushi Nemoto

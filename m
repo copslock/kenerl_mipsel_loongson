@@ -1,72 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Nov 2007 18:59:36 +0000 (GMT)
-Received: from mx.mips.com ([63.167.95.198]:43002 "EHLO dns0.mips.com")
-	by ftp.linux-mips.org with ESMTP id S20030957AbXKDS71 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 4 Nov 2007 18:59:27 +0000
-Received: from mercury.mips.com (mercury [192.168.64.101])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id lA4IwmeC006509;
-	Sun, 4 Nov 2007 10:58:48 -0800 (PST)
-Received: from Ulysses (vpn123 [192.168.3.123])
-	by mercury.mips.com (8.13.5/8.13.5) with SMTP id lA4IxFhN024897;
-	Sun, 4 Nov 2007 10:59:15 -0800 (PST)
-Message-ID: <002801c81f14$ddda0900$7b03a8c0@Ulysses>
-From:	"Kevin D. Kissell" <KevinK@mips.com>
-To:	<KokHow.Teh@infineon.com>, <linux-mips@linux-mips.org>
-References: <31E09F73562D7A4D82119D7F6C17298602B11510@sinse303.ap.infineon.com>
-Subject: Re: Get stuck in wake_up_process(rq->migration_thread);
-Date:	Sun, 4 Nov 2007 10:59:45 -0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Nov 2007 20:04:25 +0000 (GMT)
+Received: from nf-out-0910.google.com ([64.233.182.184]:26161 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20031057AbXKDUEP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 4 Nov 2007 20:04:15 +0000
+Received: by nf-out-0910.google.com with SMTP id c10so980591nfd
+        for <linux-mips@linux-mips.org>; Sun, 04 Nov 2007 12:04:05 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        bh=773ZBL/AJovEwPAGlxLJafYre52Kq2ruKRg+HmH4sOg=;
+        b=khg2A+zXFJOj1cQvu9zY9ZrpaEDXHdq+UsM+dHc8HL1BP4Hg80MgRHMRcDSZi3+Y2hCsI6pikhbV1FM598RFkhyZtESZK71BQyNN9VgaXPDDvhhkL9CiR2ZQBwOXusTbFslWpnbmrp0yx7lN0KzsdiMJmGRuTlz1cFWqqaficX4=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        b=I/Ehm+gkbvkSDpP1WpMgSfdx6qNIq8Y3iD/YX2PO7H61t2vCdOn7s+ulRpLsuqruemT/HRAnRV34B3bxUr0hy3lIn0j84n9iQIzIBdWO8fyzgjosGtOnbEBQEd7QvXppHMmTPKPvSIhqX4LluTzeAm5Lim7lOOL9WiIaQ8/AzQU=
+Received: by 10.86.60.7 with SMTP id i7mr2782252fga.1194206645645;
+        Sun, 04 Nov 2007 12:04:05 -0800 (PST)
+Received: from ?192.168.0.1? ( [82.235.205.153])
+        by mx.google.com with ESMTPS id f31sm10567379fkf.2007.11.04.12.04.04
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sun, 04 Nov 2007 12:04:05 -0800 (PST)
+Message-ID: <472E2570.3020403@gmail.com>
+Date:	Sun, 04 Nov 2007 21:02:56 +0100
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Kill __bzero()
+References: <472D8058.5080209@gmail.com> <20071105.004208.74752504.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20071105.004208.74752504.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1807
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1896
-Return-Path: <KevinK@mips.com>
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17390
+X-archive-position: 17391
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: KevinK@mips.com
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Your description isn't much to go on, but the first thing I'd look at
-in such a situation would be the state of the Cause and Status registers
-on the two VPEs. Cross-VPE scheduling interrupts on the standard
-emulation platform, which lacks hardware support for cross-VPE
-interrupts, sends IPIs by reaching across using MTTR instructions
-and setting a software interrupt bit on the other VPE.  Other uses
-of the same software interrupt (SW1 by default), or manipulations
-in other kernel code that might clear its IM bit in the Status register,
-could cause that mechanism to break down and cease processing
-interprocessor interrupts.  It's a common failure mode if one botches
-a mod to SMTC, and I've seen it on an SMVP port as well.
-
-            Kevin K.
-
------ Original Message ----- 
-From: <KokHow.Teh@infineon.com>
-To: <linux-mips@linux-mips.org>
-Sent: Sunday, November 04, 2007 3:26 AM
-Subject: Get stuck in wake_up_process(rq->migration_thread);
-
-
-> Hi;
-> I have a linux-2.6.20 kernel configured with CONFIG_MIPS_MT_SMP
-> (SMVPE) running on a MIPS34KC processor emulation platform. Everything
-> goes fine until the scheduler gets stuck in trying to wake up the
-> migration thread. I configured the kernel with max_cache_size=2097152,
-> having no idea of what the variable is all about. Putting debug messages
-> in kernel/sched.c tells me that the the migration_thread() routine has
-> gone to sleep calling schedul() function and set_cpus_allowed() function
-> gets stuck in wake_up_process(rq->migration_thread); 
-> Any insight is appreciated.
+Atsushi Nemoto wrote:
+> On Sun, 04 Nov 2007 09:18:32 +0100, Franck Bui-Huu <fbuihuu@gmail.com> wrote:
+>>   2/ For the caller, it makes no difference to call memset instead
+>>   since it has to setup the second parameter of __bzero to 0.
 > 
-> Regards.
-> KH
+> __bzero() does not clobber v0 but memset() does.  I don't know if gcc
+> does some magical thing to protect v0, but it would be safer to add v0
+> explicitly to clobber-list of __clear_user().
 > 
-> 
+
+good catch ! I'll do it.
+
+thanks
+		Franck

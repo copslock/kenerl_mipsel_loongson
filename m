@@ -1,52 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Nov 2007 17:47:28 +0000 (GMT)
-Received: from relay01.mx.bawue.net ([193.7.176.67]:28639 "EHLO
-	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
-	id S20030801AbXKDRrU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 4 Nov 2007 17:47:20 +0000
-Received: from lagash (88-106-176-50.dynamic.dsl.as9105.com [88.106.176.50])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by relay01.mx.bawue.net (Postfix) with ESMTP id B974148F89;
-	Sun,  4 Nov 2007 17:34:11 +0100 (CET)
-Received: from ths by lagash with local (Exim 4.68)
-	(envelope-from <ths@networkno.de>)
-	id 1IojZ0-0003Ga-R2; Sun, 04 Nov 2007 17:47:10 +0000
-Date:	Sun, 4 Nov 2007 17:47:10 +0000
-From:	Thiemo Seufer <ths@networkno.de>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	Nigel Stephens <nigel@mips.com>,
-	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] mm/pg-r4k.c: Dump the generated code
-Message-ID: <20071104174710.GA9363@networkno.de>
-References: <47126EDC.1060305@gmail.com> <20071014195324.GT3379@networkno.de> <4713C11F.3010903@gmail.com> <4713C958.8080805@mips.com> <47147551.1010004@gmail.com> <4714B58E.8020005@mips.com> <4715C039.7090603@gmail.com> <20071017123046.GY3379@networkno.de> <47160D31.5080201@mips.com> <472D8110.2080506@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Nov 2007 18:59:36 +0000 (GMT)
+Received: from mx.mips.com ([63.167.95.198]:43002 "EHLO dns0.mips.com")
+	by ftp.linux-mips.org with ESMTP id S20030957AbXKDS71 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 4 Nov 2007 18:59:27 +0000
+Received: from mercury.mips.com (mercury [192.168.64.101])
+	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id lA4IwmeC006509;
+	Sun, 4 Nov 2007 10:58:48 -0800 (PST)
+Received: from Ulysses (vpn123 [192.168.3.123])
+	by mercury.mips.com (8.13.5/8.13.5) with SMTP id lA4IxFhN024897;
+	Sun, 4 Nov 2007 10:59:15 -0800 (PST)
+Message-ID: <002801c81f14$ddda0900$7b03a8c0@Ulysses>
+From:	"Kevin D. Kissell" <KevinK@mips.com>
+To:	<KokHow.Teh@infineon.com>, <linux-mips@linux-mips.org>
+References: <31E09F73562D7A4D82119D7F6C17298602B11510@sinse303.ap.infineon.com>
+Subject: Re: Get stuck in wake_up_process(rq->migration_thread);
+Date:	Sun, 4 Nov 2007 10:59:45 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <472D8110.2080506@gmail.com>
-User-Agent: Mutt/1.5.16 (2007-06-11)
-Return-Path: <ths@networkno.de>
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1807
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1896
+Return-Path: <KevinK@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17389
+X-archive-position: 17390
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: KevinK@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Franck Bui-Huu wrote:
-> Nigel Stephens wrote:
-> > Aha, that probably explains it. Franck is using the "SDE for Linux
-> > v6.05" toolchain, and in that version of GCC -march=mips32r2 implies a
+Your description isn't much to go on, but the first thing I'd look at
+in such a situation would be the state of the Cause and Status registers
+on the two VPEs. Cross-VPE scheduling interrupts on the standard
+emulation platform, which lacks hardware support for cross-VPE
+interrupts, sends IPIs by reaching across using MTTR instructions
+and setting a software interrupt bit on the other VPE.  Other uses
+of the same software interrupt (SW1 by default), or manipulations
+in other kernel code that might clear its IM bit in the Status register,
+could cause that mechanism to break down and cease processing
+interprocessor interrupts.  It's a common failure mode if one botches
+a mod to SMTC, and I've seen it on an SMVP port as well.
+
+            Kevin K.
+
+----- Original Message ----- 
+From: <KokHow.Teh@infineon.com>
+To: <linux-mips@linux-mips.org>
+Sent: Sunday, November 04, 2007 3:26 AM
+Subject: Get stuck in wake_up_process(rq->migration_thread);
+
+
+> Hi;
+> I have a linux-2.6.20 kernel configured with CONFIG_MIPS_MT_SMP
+> (SMVPE) running on a MIPS34KC processor emulation platform. Everything
+> goes fine until the scheduler gets stuck in trying to wake up the
+> migration thread. I configured the kernel with max_cache_size=2097152,
+> having no idea of what the variable is all about. Putting debug messages
+> in kernel/sched.c tells me that the the migration_thread() routine has
+> gone to sleep calling schedul() function and set_cpus_allowed() function
+> gets stuck in wake_up_process(rq->migration_thread); 
+> Any insight is appreciated.
 > 
-> [snip]
+> Regards.
+> KH
 > 
-> BTW, are there any other toolchains out there that support smartmips ASE ?
-
-Latest GCC upstream supports it (in SVN since 2007-07-05).
-
-
-Thiemo
+> 

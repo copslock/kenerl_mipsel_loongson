@@ -1,140 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2007 12:25:12 +0000 (GMT)
-Received: from mail.lysator.liu.se ([130.236.254.3]:8593 "EHLO
-	mail.lysator.liu.se") by ftp.linux-mips.org with ESMTP
-	id S20029907AbXKEMZD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 5 Nov 2007 12:25:03 +0000
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.lysator.liu.se (Postfix) with ESMTP id 47498200A24A;
-	Mon,  5 Nov 2007 13:24:59 +0100 (CET)
-Received: from mail.lysator.liu.se ([127.0.0.1])
-	by localhost (lenin.lysator.liu.se [127.0.0.1]) (amavisd-new, port 10024)
-	with LMTP id 21638-01-99; Mon, 5 Nov 2007 13:24:56 +0100 (CET)
-Received: from [192.168.27.65] (6.240.216.81.static.lk.siwnet.net [81.216.240.6])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.lysator.liu.se (Postfix) with ESMTP id E3BA9200A229;
-	Mon,  5 Nov 2007 13:24:55 +0100 (CET)
-Message-ID: <472F0B96.4080205@27m.se>
-Date:	Mon, 05 Nov 2007 13:24:54 +0100
-From:	Markus Gothe <markus.gothe@27m.se>
-User-Agent: Icedove 1.5.0.14pre (X11/20071020)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2007 12:38:52 +0000 (GMT)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:13998 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20029944AbXKEMio (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 5 Nov 2007 12:38:44 +0000
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 8B7D64003B;
+	Mon,  5 Nov 2007 13:38:14 +0100 (CET)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id wiQkQxpME0b2; Mon,  5 Nov 2007 13:38:08 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id B989E400A6;
+	Mon,  5 Nov 2007 13:38:07 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id lA5Cc9Dl024326;
+	Mon, 5 Nov 2007 13:38:10 +0100
+Date:	Mon, 5 Nov 2007 12:38:06 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+cc:	Ralf Baechle <ralf@linux-mips.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [RFC] Add __initbss section
+In-Reply-To: <472D82D1.1050401@gmail.com>
+Message-ID: <Pine.LNX.4.64N.0711051234230.857@blysk.ds.pg.gda.pl>
+References: <470DF25E.60009@gmail.com> <Pine.LNX.4.64N.0710111307180.16370@blysk.ds.pg.gda.pl>
+ <4712738A.5000703@gmail.com> <Pine.LNX.4.64N.0710151311350.16262@blysk.ds.pg.gda.pl>
+ <4713C840.8080206@gmail.com> <Pine.LNX.4.64N.0710161123110.22596@blysk.ds.pg.gda.pl>
+ <4717C1FB.4030602@gmail.com> <Pine.LNX.4.64N.0710191239490.13279@blysk.ds.pg.gda.pl>
+ <472D82D1.1050401@gmail.com>
 MIME-Version: 1.0
-To:	veerasena reddy <veerasena_b@yahoo.co.in>
-Cc:	uclibc@uclibc.org, linux-mips <linux-mips@linux-mips.org>,
-	"linux-kernel.org" <linux-kernel@vger.kernel.org>,
-	buildroot@uclibc.org
-Subject: Re: NPTL support
-References: <279675.30374.qm@web8411.mail.in.yahoo.com>
-In-Reply-To: <279675.30374.qm@web8411.mail.in.yahoo.com>
-X-Enigmail-Version: 0.94.2.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at lysator.liu.se
-Return-Path: <markus.gothe@27m.se>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4673/Sun Nov  4 23:22:25 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17400
+X-archive-position: 17401
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markus.gothe@27m.se
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+On Sun, 4 Nov 2007, Franck Bui-Huu wrote:
 
-I don't use neither buildroot nor uClibc-nptl, due to uClibc-nptl is a
-(dev-)branch and not a release. It differs quite a lot from the 0.9.29
-release.
+> >  Hmm, isn't what `info ld' says enough?
+> 
+> Hmm, I'm must be blind but I missed that each time I read it. Could
+> you point out the section number please ?
 
-//Markus
+ That's section 3.8, I would guess, but if what you are looking for is not 
+there, then perhaps the description could be improved.
 
-veerasena reddy wrote:
-> Hi Markus,
->
-> thanks for the information.
->
-> i checked out uclibc-nptl (version 0.9.29). is it a stable release?
->  If i want to build toolchain using buildroot with nptl support for
-> linux kernel 2.6.18.8, could you please guide us the right version
-> of buildroot, binutils, and gcc to be used.
->
-> Thanks & Regards, Veerasena.
->
-> ----- Original Message ---- From: Markus Gothe
-> <markus.gothe@27m.se> To: veerasena reddy
-> <veerasena_b@yahoo..co.in> Cc: uclibc@uclibc.org; linux-mips
-> <linux-mips@linux-mips.org>; linux-kernel.org
-> <linux-kernel@vger.kernel.org>; buildroot@uclibc.org Sent: Friday,
-> 2 November, 2007 6:01:41 PM Subject: Re: NPTL support
->
-> You'll have to use the uClibc-nptl branch on their svn. In 0.9.28,
-> no.
->
-> //Markus
->
-> On 2 Nov 2007, at 06:03, veerasena reddy wrote:
->
->> Hi,
->>
->> I am trying to build the toolchain for MIPS processor using
->> buildroot. I am using gcc version of 3.4.3, binutils-2.15,
->> uclibc-0.9.28 and linux-2.6.18.8 kernel.
->>
->> Basically i need to enable NPTL feature support in my toolchain.
->> does uclibc-0.9.28 has the support for NPTL? If not, how can i
->> get it enabled for my above build configuration?
->>
->> I see there is separate branch "uclibc-nptl" in uclibc. Do i need
->> to use this (uclibc-nptl) to meet my requirement?
->>
->> Could you please suggest me right approach to succssfully enable
->> NPTL?
->>
->> Thanks in advance.
->>
->> Regards, Veerasena.
->>
->>
->> Why delete messages? Unlimited storage is just a click away. Go
->> to http://help.yahoo.com/l/in/yahoo/mail/yahoomail/tools/
->> tools-08.html
->>
->>
->
-> _______________________________________
->
-> Mr Markus Gothe Software Engineer
->
-> Phone: +46 (0)13 21 81 20 (ext. 1046) Fax: +46 (0)13 21 21 15
-> Mobile: +46 (0)73 718 72 80 Diskettgatan 11, SE-583 35 Linköping,
-> Sweden www.27m.com
->
->
-> Did you know? You can CHAT without downloading messenger. Go to
-> http://in.messenger.yahoo.com/webmessengerpromo.php/
->
->
-
-
-- --
-_______________________________________
-
-Mr Markus Gothe
-Software Engineer
-
-Phone: +46 (0)13 21 81 20 (ext. 1046)
-Fax: +46 (0)13 21 21 15
-Mobile: +46 (0)73 718 72 80
-Diskettgatan 11, SE-583 35 Linköping, Sweden
-www.27m.com
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.6 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
-
-iD8DBQFHLwuS6I0XmJx2NrwRCLRDAJ9O5mtOAtncebZ9yTZoZpWQLD7hKwCghfdz
-IlaSKs6XX+dD6dqC5YFYbRY=
-=/Kz+
------END PGP SIGNATURE-----
+  Maciej

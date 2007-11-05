@@ -1,70 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2007 16:01:38 +0000 (GMT)
-Received: from dmz.mips-uk.com ([194.74.144.194]:39941 "EHLO dmz.mips-uk.com")
-	by ftp.linux-mips.org with ESMTP id S20030388AbXKEQBa (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 5 Nov 2007 16:01:30 +0000
-Received: from internal-mx1 ([192.168.192.240] helo=ukservices1.mips.com)
-	by dmz.mips-uk.com with esmtp (Exim 3.35 #1 (Debian))
-	id 1Ip4LD-00041K-00; Mon, 05 Nov 2007 15:58:19 +0000
-Received: from ukcvpn18.mips-uk.com ([192.168.193.18])
-	by ukservices1.mips.com with esmtp (Exim 3.36 #1 (Debian))
-	id 1Ip4L6-0002kv-00; Mon, 05 Nov 2007 15:58:12 +0000
-Message-ID: <472F3D93.1070400@mips.com>
-Date:	Mon, 05 Nov 2007 15:58:11 +0000
-From:	Nigel Stephens <nigel@mips.com>
-User-Agent: IceDove 1.5.0.12 (X11/20070607)
-MIME-Version: 1.0
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-CC:	Thiemo Seufer <ths@networkno.de>,
-	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] mm/pg-r4k.c: Dump the generated code
-References: <47126EDC.1060305@gmail.com> <20071014195324.GT3379@networkno.de> <4713C11F.3010903@gmail.com> <4713C958.8080805@mips.com> <47147551.1010004@gmail.com> <4714B58E.8020005@mips.com> <4715C039.7090603@gmail.com> <20071017123046.GY3379@networkno.de> <47160D31.5080201@mips.com> <472D8110.2080506@gmail.com> <20071104174710.GA9363@networkno.de> <472E2955.3000803@gmail.com>
-In-Reply-To: <472E2955.3000803@gmail.com>
-X-Enigmail-Version: 0.94.2.0
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2007 16:59:55 +0000 (GMT)
+Received: from host94-201-dynamic.14-87-r.retail.telecomitalia.it ([87.14.201.94]:37760
+	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
+	id S20030567AbXKEQ7r (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 5 Nov 2007 16:59:47 +0000
+Received: from casa ([192.168.2.34] helo=eppesuigoccas.homedns.org)
+	by eppesuigoccas.homedns.org with esmtps (TLS-1.0:RSA_AES_256_CBC_SHA1:32)
+	(Exim 4.63)
+	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
+	id 1Ip5Fa-00011e-Gi
+	for linux-mips@linux-mips.org; Mon, 05 Nov 2007 17:56:36 +0100
+Received: from giuseppe by eppesuigoccas.homedns.org with local (Exim 4.63)
+	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
+	id 1Ip5E3-00016H-Qs
+	for linux-mips@linux-mips.org; Mon, 05 Nov 2007 17:54:59 +0100
+Subject: Re: 2.6.24-rc1 does not boot on SGI
+From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+To:	linux-mips@linux-mips.org
+In-Reply-To: <1194268551.4842.3.camel@scarafaggio>
+References: <1193468825.7474.6.camel@scarafaggio>
+	 <20071029.000713.59464443.anemo@mba.ocn.ne.jp>
+	 <1193599031.14874.1.camel@scarafaggio>
+	 <20071029150625.GB4165@linux-mips.org>
+	 <1194268551.4842.3.camel@scarafaggio>
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-MIPS-Technologies-UK-MailScanner: Found to be clean
-X-MIPS-Technologies-UK-MailScanner-From: nigel@mips.com
-Return-Path: <nigel@mips.com>
+Date:	Mon, 05 Nov 2007 17:54:59 +0100
+Message-Id: <1194281699.4192.3.camel@casa>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.6.3 
+Return-Path: <giuseppe@eppesuigoccas.homedns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17405
+X-archive-position: 17406
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nigel@mips.com
+X-original-sender: giuseppe@eppesuigoccas.homedns.org
 Precedence: bulk
 X-list: linux-mips
 
+Il giorno lun, 05/11/2007 alle 14.15 +0100, Giuseppe Sacco ha scritto:
+[...]
+> The latest git update, gave a bootable 2.6.24-rc1 but now, while
+> booting, the system start looping and calling function print_irq_desc()
+> from kernel/irq/internals.h. I can only read "...count:...unhandled:..."
+[...]
+
+Here it is:
+
+sr0: scsi-1 drive
+Uniform CD-ROM driver Revision: 3.20
+sr 0:0:4:0: Attached scsi CD-ROM sr0
+mice: PS/2 mouse device common for all mice
+irq 13, desc: ffffffff804486e0, depth: 1, count: 0, unhandled: 0
+->handle_irq():  ffffffff800663c0, handle_bad_irq+0x0/0x2c0
+->chip(): ffffffff8043e320, 0xffffffff8043e320
+->action(): 0000000000000000
+  IRQ_DISABLED set
+unexpected IRQ # 13
+irq 13, desc: ffffffff804486e0, depth: 1, count: 0, unhandled: 0
+->handle_irq():  ffffffff800663c0, handle_bad_irq+0x0/0x2c0
+->chip(): ffffffff8043e320, 0xffffffff8043e320
+->action(): 0000000000000000
+  IRQ_DISABLED set
+unexpected IRQ # 13
 
 
-Franck Bui-Huu wrote:
-> Thiemo Seufer wrote:
->   
->> Latest GCC upstream supports it (in SVN since 2007-07-05).
->>
->>     
->
-> Good news although gcc 4.3 release is planed for end of January.
->   
+and keep printing about interrupt #13. The log from the start is
+available here
+http://eppesuigoccas.homedns.org/~giuseppe/debian/sgi-2.6.24-rc1-unexpted-irq13.log.bz
 
-Franck
-
-A supported toolchain which now includes SmartMIPS support is the 
-CodeSourcery MIPS Linux toolchain, based on gcc-4.2, see 
-http://www.codesourcery.com/store/catalogue/c3/p17
-> Is SDE gcc going to be obsolete after this release ?
->   
-
-A pre-built "bare-iron" SDE configuration of GCC will probably continue 
-to exist as part of the MIPS cross-development tools, but we are working 
-to ensure that as many as possible of the SDE changes are available 
-upstream for use by other Linux or GNU toolchain vendors, and/or those 
-who wish to roll their own toolchain.
-
-Nigel
-
--- 
-Nigel Stephens    | 7200 Cambridge Research Park | t:[+44|0]1223 203110
-MIPS Technologies | Cambridge, England  CB25 9TL | f:[+44|0]1223 203181
+Bye,
+Giuseppe

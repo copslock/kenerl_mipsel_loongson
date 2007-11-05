@@ -1,96 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2007 21:53:11 +0000 (GMT)
-Received: from fk-out-0910.google.com ([209.85.128.184]:5750 "EHLO
-	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S28576552AbXKEVxD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 5 Nov 2007 21:53:03 +0000
-Received: by fk-out-0910.google.com with SMTP id f40so1753014fka
-        for <linux-mips@linux-mips.org>; Mon, 05 Nov 2007 13:53:02 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        bh=inh8iKzawZia56oMbQDxyWoH94RvI7v6wBeNxKsNI80=;
-        b=Ar9EFX2MyWpKmn6kgDkM4y2KMjNF9gMTCw6fHBUwd1NeOKXz02tuOAXjsrb0RR5p81UWxCqqtpSu5IC4Hp97tjkSER7Kh63bzL0xiHQIqlIX5kqi0If0cHw/No7n6EDRZ+nHRLibN3r7i4/oKCBj40OCQ0QZpR6dpLyRcAS9z4Q=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=mhOwj1nqf5cbOBnLmxrac63BOSlDjl6uMQAzTpFz4ZIzSX+Pvac2SmSp/+vz0A5azpfwL01eoc3RmpH4F5QKAju27EUzCH47LXXZToSdMGXSgktF2+zPBgg0Vz7ueDYW5x1UTYK5se5pZ0oBUguqq+gpBynMWkLUBkSYAB422II=
-Received: by 10.82.114.3 with SMTP id m3mr9670823buc.1194299581591;
-        Mon, 05 Nov 2007 13:53:01 -0800 (PST)
-Received: from ?192.168.0.1? ( [82.235.205.153])
-        by mx.google.com with ESMTPS id j9sm15788325mue.2007.11.05.13.53.00
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 05 Nov 2007 13:53:00 -0800 (PST)
-Message-ID: <472F906F.7080205@gmail.com>
-Date:	Mon, 05 Nov 2007 22:51:43 +0100
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Franck Bui-Huu <fbuihuu@gmail.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Nov 2007 23:18:23 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:39094 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S28577428AbXKEXSV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 5 Nov 2007 23:18:21 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lA5NIIqR024424;
+	Mon, 5 Nov 2007 23:18:18 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lA5NIIjL024423;
+	Mon, 5 Nov 2007 23:18:18 GMT
+Date:	Mon, 5 Nov 2007 23:18:18 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Cc:	Franck Bui-Huu <fbuihuu@gmail.com>,
 	linux-mips <linux-mips@linux-mips.org>
 Subject: Re: [PATCH] Kill __bzero()
-References: <472D8058.5080209@gmail.com> <20071105112429.GC27893@linux-mips.org>
-In-Reply-To: <20071105112429.GC27893@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <vagabon.xyz@gmail.com>
+Message-ID: <20071105231818.GA18820@linux-mips.org>
+References: <472D8058.5080209@gmail.com> <20071105112429.GC27893@linux-mips.org> <472F906F.7080205@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <472F906F.7080205@gmail.com>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17410
+X-archive-position: 17411
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
+On Mon, Nov 05, 2007 at 10:51:43PM +0100, Franck Bui-Huu wrote:
+
+> > Memset is almost always only ever invoked with a zero argument.  So the
+> > idea was to have something like this:
+> > 
+> > extern void *__memset(void *__s, int __c, size_t __count);
+> > extern void *bzero(void *__s, size_t __count);
+> > 
+> > static inline void *memset(void *s, int c, size_t count)
+> > {
+> > 	if (__builtin_constant_p(c) && c == 0) {
+> > 		bzero(s, count);
+> > 		return s;
+> > 	} else
+> > 		return __memset(s, __c, count);
+> > }
+> > 
+> > But that was never quite implemented like this as you noticed.
 > 
-> Memset is almost always only ever invoked with a zero argument.  So the
-> idea was to have something like this:
+> Well I'm not sure we really need this. bzero() is not part of the
+> Linux string API, so it can only be used by MIPS specific code. And
+> with the current implementation of bzero(), $a1 needs to be setup to 0
+> anyway. That's why I simply killed it...
 > 
-> extern void *__memset(void *__s, int __c, size_t __count);
-> extern void *bzero(void *__s, size_t __count);
+> BTW, can memset() be an inlined function ?
+
+It can be anything, macro, inline or outline function.  In the kernel
+there are fewer restrictions than for a standards compliant library in
+userspace.
+
+You may take the i386 implementation in include/asm-x86/string_32.h as
+an extreme example.
+
+Older gcc used to generate significantly worse code for inline functions
+than for macros so Linux became a fairly excessive user of macros.  This
+has very much improved since, so these days inlines are prefered over
+macros where possible.
+
+> Yes I noticed this. Actually I'm wondering if we couldn't add a new
+> function, fill_user() like the following:
 > 
-> static inline void *memset(void *s, int c, size_t count)
-> {
-> 	if (__builtin_constant_p(c) && c == 0) {
-> 		bzero(s, count);
-> 		return s;
-> 	} else
-> 		return __memset(s, __c, count);
-> }
+> extern size_t fill_user(void __user *to, int c, size_t len);
+
+That's much better function name than the old __bzero - except that
+__bzero effectivly took a long argument for the 2nd argument so 32-bit
+on 32-bit kernels and 64-bit on 64-bit kernels.
+
+> This could be used by both memset() and clear_user():
 > 
-> But that was never quite implemented like this as you noticed.
-
-Well I'm not sure we really need this. bzero() is not part of the
-Linux string API, so it can only be used by MIPS specific code. And
-with the current implementation of bzero(), $a1 needs to be setup to 0
-anyway. That's why I simply killed it...
-
-BTW, can memset() be an inlined function ?
-
+> #define memset(s,c,l)	({ (void)fill(s,c,l); s; })
+> #define clear_user(t,l)	fill_user(t,0,l)
 > 
-> As for the differences in the return value, they're because of of
-> clear_user and __clear_user which return the number of bytes that could
-> _not_ be cleared in $a2.  Memset being invoked through the normal C calling
-> conventions ignores this value while it's the actual result of interest for
-> __clear_user.
-> 
+> Therefore the definition of clear_user() could be saner.
 
-Yes I noticed this. Actually I'm wondering if we couldn't add a new
-function, fill_user() like the following:
+Looks alot nicer that way though an inline is probably preferable as
+expressed above.
 
-extern size_t fill_user(void __user *to, int c, size_t len);
-
-This could be used by both memset() and clear_user():
-
-#define memset(s,c,l)	({ (void)fill(s,c,l); s; })
-#define clear_user(t,l)	fill_user(t,0,l)
-
-Therefore the definition of clear_user() could be saner.
-
-What do you think ?
-
-		Franck 
+  Ralf

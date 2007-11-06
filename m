@@ -1,62 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Nov 2007 15:59:10 +0000 (GMT)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.134]:23992 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20022947AbXKFP7B (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 6 Nov 2007 15:59:01 +0000
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id E83EB3103BA;
-	Tue,  6 Nov 2007 15:59:09 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Tue,  6 Nov 2007 15:59:09 +0000 (UTC)
-Received: from jennifer.localdomain ([192.168.7.224]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 6 Nov 2007 07:58:57 -0800
-Message-ID: <47308F36.2070200@avtrex.com>
-Date:	Tue, 06 Nov 2007 07:58:46 -0800
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070727)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Nov 2007 16:02:25 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:43764 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20021819AbXKFQCQ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 6 Nov 2007 16:02:16 +0000
+Received: from localhost (p4065-ipad306funabasi.chiba.ocn.ne.jp [123.217.174.65])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 274188A69; Wed,  7 Nov 2007 01:00:56 +0900 (JST)
+Date:	Wed, 07 Nov 2007 01:02:59 +0900 (JST)
+Message-Id: <20071107.010259.25478892.anemo@mba.ocn.ne.jp>
+To:	ddaney@avtrex.com
 Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
 Subject: Re: WAIT vs. tickless kernel
-References: <20071101.013124.108121433.anemo@mba.ocn.ne.jp>	<20071031163900.GB22871@linux-mips.org>	<20071103.014649.122254137.anemo@mba.ocn.ne.jp> <20071107.003925.74752709.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20071107.003925.74752709.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <47308F36.2070200@avtrex.com>
+References: <20071103.014649.122254137.anemo@mba.ocn.ne.jp>
+	<20071107.003925.74752709.anemo@mba.ocn.ne.jp>
+	<47308F36.2070200@avtrex.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 06 Nov 2007 15:58:57.0615 (UTC) FILETIME=[F06C0DF0:01C8208D]
-Return-Path: <ddaney@avtrex.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17421
+X-archive-position: 17422
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> +LEAF(r4k_wait)
-> +	.set	push
-> +	.set	noreorder
-> +	/* start of rollback region */
-> +	LONG_L	t0, TI_FLAGS($28)
-> +	nop
-> +	andi	t0, _TIF_NEED_RESCHED
-> +	bnez	t0, 1f
-> +	 nop
-> +	nop
-> +	nop
-> +	.set	mips3
-> +	wait
-> +	.set	mips0
-> +	/* end of rollback region (the region size must be power of two) */
-> +	.set	pop
->   
+On Tue, 06 Nov 2007 07:58:46 -0800, David Daney <ddaney@avtrex.com> wrote:
+> > +	.set	mips0
+> > +	/* end of rollback region (the region size must be power of two) */
+> > +	.set	pop
+> >   
+> 
+> The .set mips0 is redundant as .set pop immediately follows.
 
-The .set mips0 is redundant as .set pop immediately follows.
+Oh yes.  I'll drop it on next revision.  Thanks.
 
-David Daney
+---
+Atsushi Nemoto

@@ -1,65 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Nov 2007 17:21:41 +0000 (GMT)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:7136 "EHLO
-	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20029312AbXKGRVc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 7 Nov 2007 17:21:32 +0000
-Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 412B44007F;
-	Wed,  7 Nov 2007 18:21:33 +0100 (CET)
-X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
-	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id ikCVI9WG9jEO; Wed,  7 Nov 2007 18:21:23 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 979434007E;
-	Wed,  7 Nov 2007 18:21:23 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id lA7HLRAl027110;
-	Wed, 7 Nov 2007 18:21:28 +0100
-Date:	Wed, 7 Nov 2007 17:21:22 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
-cc:	mips kernel list <linux-mips@linux-mips.org>
-Subject: Re: Preliminary patch for ip32 ttyS* device
-In-Reply-To: <1194446585.5849.21.camel@scarafaggio>
-Message-ID: <Pine.LNX.4.64N.0711071716470.14970@blysk.ds.pg.gda.pl>
-References: <20071030214015.050b7950.giuseppe@eppesuigoccas.homedns.org> 
- <20071031130828.GE14187@linux-mips.org> <1194446585.5849.21.camel@scarafaggio>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Nov 2007 19:37:05 +0000 (GMT)
+Received: from mms3.broadcom.com ([216.31.210.19]:34566 "EHLO
+	MMS3.broadcom.com") by ftp.linux-mips.org with ESMTP
+	id S20032268AbXKGTg5 convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 7 Nov 2007 19:36:57 +0000
+Received: from [10.10.64.154] by MMS3.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.3.1)); Wed, 07 Nov 2007 11:36:40 -0800
+X-Server-Uuid: 20144BB6-FB76-4F11-80B6-E6B2900CA0D7
+Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
+ 981772AF; Wed, 7 Nov 2007 11:36:40 -0800 (PST)
+Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.10.64.221]) by
+ mail-irva-10.broadcom.com (Postfix) with ESMTP id 83FB62AE; Wed, 7 Nov
+ 2007 11:36:40 -0800 (PST)
+Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
+ [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.5a-GA) with ESMTP
+ id FXL41467; Wed, 7 Nov 2007 11:36:40 -0800 (PST)
+Received: from NT-SJCA-0751.brcm.ad.broadcom.com (nt-sjca-0751
+ [10.16.192.221]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
+ C536920501; Wed, 7 Nov 2007 11:36:39 -0800 (PST)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.2/4691/Wed Nov  7 06:39:41 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Subject: RE: Deleting read-only environment variable on Sibyte board.
+Date:	Wed, 7 Nov 2007 11:36:38 -0800
+Message-ID: <03235919BBDE634289BB6A0758A20B36025B79F4@NT-SJCA-0751.brcm.ad.broadcom.com>
+In-Reply-To: <20071106222834.GA4079@linux-mips.org>
+Thread-Topic: Deleting read-only environment variable on Sibyte board.
+Thread-Index: AcggxGuHpOTKGJIQQ0qeipED5zRbugAq0JnA
+From:	"Manoj Ekbote" <manoj.ekbote@broadcom.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+cc:	linux-mips@linux-mips.org
+X-WSS-ID: 6B2CCC424QC16690235-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Transfer-Encoding: 8BIT
+Return-Path: <manoj.ekbote@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17438
+X-archive-position: 17439
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: manoj.ekbote@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 7 Nov 2007, Giuseppe Sacco wrote:
+It looks like the variable was set with 'setenv -ro' command. This will
+need a manual delete.
+Bad news -  This would probably require a new firmware build.  There is
+no current command to remove -ro variables (non-existing feature).
 
-> I have been investigating about it for one week and I am still not
-> convinced that mapbase must be initialised. I tried to understand the
-> meaning of mapbase and membase, but I am unsure about the value I should
-> set mapbase to.
-> 
-> I learnt that when specifying mapbase its region would be registered and
-> reserved using request_mem_region(). Otherwise, if you do not specify
-> mapbase, the region is not reserved. Apart from reserving the memory
-> region, mapbase isn't use anymore. Is mapbase mandatory? 
-> 
-> If mapbase isn't mandatory, the second part of my patch is probably
-> right and fixes a bug.
-
- You ought to use mapbase and ioremap() with new code as you are not 
-allowed to use readb()/writeb()/etc. on addresses obtained otherwise than 
-by calling ioremap().  The use of request_mem_region(), etc. is not 
-strictly mandatory, but it is nice to have.  Many serial drivers use these 
-functions, so I cannot see a reason why it would be a hassle for ip32.
-
-  Maciej
+>-----Original Message-----
+>From: Ralf Baechle [mailto:ralf@linux-mips.org] 
+>Sent: Tuesday, November 06, 2007 2:29 PM
+>To: Manoj Ekbote
+>Cc: linux-mips@linux-mips.org
+>Subject: Re: Deleting read-only environment variable on Sibyte board.
+>
+>On Tue, Nov 06, 2007 at 12:18:51PM -0800, Manoj Ekbote wrote:
+>
+>> Hi Ralf,
+>>  
+>> Can you try 'Unsetenv [NAME]'?
+>
+>I'm getting an error message, something about the variable 
+>being read-only.
+>
+>Thanks anyway,
+>
+>  Ralf
+>
+>

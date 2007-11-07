@@ -1,69 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Nov 2007 14:08:45 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:60381 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20023949AbXKGOIg (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 7 Nov 2007 14:08:36 +0000
-Received: from localhost (p5186-ipad203funabasi.chiba.ocn.ne.jp [222.146.84.186])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id A28D89225; Wed,  7 Nov 2007 23:08:32 +0900 (JST)
-Date:	Wed, 07 Nov 2007 23:10:36 +0900 (JST)
-Message-Id: <20071107.231036.75185559.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Nov 2007 14:18:00 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:44768 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20032164AbXKGOR6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 7 Nov 2007 14:17:58 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lA7EHvcV001868;
+	Wed, 7 Nov 2007 14:17:57 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lA7EHvbx001867;
+	Wed, 7 Nov 2007 14:17:57 GMT
+Date:	Wed, 7 Nov 2007 14:17:57 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
 Subject: Re: [MIPS] Fix and cleanup the MIPS part of the (ab)use of
- CLOCK_TICK_RATE.
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <S20025770AbXKAPqq/20071101154646Z+4363@ftp.linux-mips.org>
-References: <S20025770AbXKAPqq/20071101154646Z+4363@ftp.linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+	CLOCK_TICK_RATE.
+Message-ID: <20071107141757.GB1022@linux-mips.org>
+References: <S20025770AbXKAPqq/20071101154646Z+4363@ftp.linux-mips.org> <20071107.231036.75185559.anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20071107.231036.75185559.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17431
+X-archive-position: 17432
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 01 Nov 2007 15:46:41 +0000, linux-mips@linux-mips.org wrote:
-> Author: Ralf Baechle <ralf@linux-mips.org> Thu Nov 1 15:45:37 2007 +0000
-> Commit: 0a354a30fe552b78a4db0873c19d8936551cc158
-> Gitweb: http://www.linux-mips.org/g/linux/0a354a30
-> Branch: master
+On Wed, Nov 07, 2007 at 11:10:36PM +0900, Atsushi Nemoto wrote:
+
+> The CLOCK_TICK_RATE is used for ACTHZ, TICK_NSEC, etc.
 > 
-> This is the clock rate of the i8253 PIT.  A MIPS system may not have
-> a PIT by the symbol is used all over the kernel including some APIs.
-> So keeping it defined to the number for the PIT is the only sane thing
-> for now.
+> At least for i8253-free platforms, It looks a value multiple of HZ
+> would be better for such constants, assuming we have dyntick or
+> accurate HZ clockevents.
+> 
+> How about something like this?
+> 
+> diff --git a/include/asm-mips/timex.h b/include/asm-mips/timex.h
+> index 5816ad1..e9622b6 100644
+> --- a/include/asm-mips/timex.h
+> +++ b/include/asm-mips/timex.h
+> @@ -18,7 +18,11 @@
+>   * So keeping it defined to the number for the PIT is the only sane thing
+>   * for now.
+>   */
+> +#ifdef CONFIG_I8253
+>  #define CLOCK_TICK_RATE 1193182
+> +#else
+> +#define CLOCK_TICK_RATE 1024000	/* multiple of HZ */
+> +#endif
 
-The CLOCK_TICK_RATE is used for ACTHZ, TICK_NSEC, etc.
+kernel/time/ntp.c:#define CLOCK_TICK_OVERFLOW   (LATCH * HZ - CLOCK_TICK_RATE)
+kernel/time/ntp.c:                                      (s64)CLOCK_TICK_RATE)
 
-At least for i8253-free platforms, It looks a value multiple of HZ
-would be better for such constants, assuming we have dyntick or
-accurate HZ clockevents.
+drivers/char/vt_ioctl.c:                        arg = CLOCK_TICK_RATE / arg;
+drivers/char/vt_ioctl.c:                        count = CLOCK_TICK_RATE / count;
 
-How about something like this?
+There is so much abuse of this variable, it's not even funny.  It really
+deserve to be taken out and shot.  And that's just two cases.
 
-diff --git a/include/asm-mips/timex.h b/include/asm-mips/timex.h
-index 5816ad1..e9622b6 100644
---- a/include/asm-mips/timex.h
-+++ b/include/asm-mips/timex.h
-@@ -18,7 +18,11 @@
-  * So keeping it defined to the number for the PIT is the only sane thing
-  * for now.
-  */
-+#ifdef CONFIG_I8253
- #define CLOCK_TICK_RATE 1193182
-+#else
-+#define CLOCK_TICK_RATE 1024000	/* multiple of HZ */
-+#endif
- 
- /*
-  * Standard way to access the cycle counter.
+  Ralf

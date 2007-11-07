@@ -1,239 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Nov 2007 22:03:19 +0000 (GMT)
-Received: from ogre.sisk.pl ([217.79.144.158]:1466 "EHLO ogre.sisk.pl")
-	by ftp.linux-mips.org with ESMTP id S20032344AbXKGWDL (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 7 Nov 2007 22:03:11 +0000
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by ogre.sisk.pl (Postfix) with ESMTP id 54F54692D1;
-	Wed,  7 Nov 2007 22:51:11 +0100 (CET)
-Received: from ogre.sisk.pl ([127.0.0.1])
- by localhost (ogre.sisk.pl [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
- id 01312-03; Wed,  7 Nov 2007 22:51:00 +0100 (CET)
-Received: from [192.168.100.100] (nat-be3.aster.pl [212.76.37.200])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by ogre.sisk.pl (Postfix) with ESMTP id 5E518693E0;
-	Wed,  7 Nov 2007 22:50:49 +0100 (CET)
-From:	"Rafael J. Wysocki" <rjw@sisk.pl>
-To:	Johannes Berg <johannes@sipsolutions.net>
-Subject: Re: [PATCH (2.6.25) 2/2] suspend: clean up Kconfig
-Date:	Wed, 7 Nov 2007 23:19:18 +0100
-User-Agent: KMail/1.9.6 (enterprise 20070904.708012)
-Cc:	linux-pm@lists.linux-foundation.org, linuxppc-dev@ozlabs.org,
-	Guennadi Liakhovetski <g.liakhovetski@gmx.de>,
-	Scott Wood <scottwood@freescale.com>,
-	David Howells <dhowells@redhat.com>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	Paul Mundt <lethal@linux-sh.org>,
-	Bryan Wu <bryan.wu@analog.com>,
-	Russell King <rmk@arm.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	LKML <linux-kernel@vger.kernel.org>
-References: <20071107135758.100171000@sipsolutions.net> <20071107135849.207149000@sipsolutions.net>
-In-Reply-To: <20071107135849.207149000@sipsolutions.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Nov 2007 22:04:49 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:31898 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20032348AbXKGWEl (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 7 Nov 2007 22:04:41 +0000
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1Ipt0q-000136-00; Wed, 07 Nov 2007 23:04:40 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 3E6E3C2256; Wed,  7 Nov 2007 22:54:23 +0100 (CET)
+Date:	Wed, 7 Nov 2007 22:54:23 +0100
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Martin Michlmayr <tbm@cyrius.com>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] IP22: Disable EARLY PRINTK, because it breaks serial console
+Message-ID: <20071107215423.GA11915@alpha.franken.de>
+References: <20070911104459.GB7624@alpha.franken.de> <20071030073349.GA15984@deprecation.cyrius.com> <Pine.LNX.4.64N.0711071648040.14970@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-15"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200711072319.20224.rjw@sisk.pl>
-X-Virus-Scanned: amavisd-new at ogre.sisk.pl using MkS_Vir for Linux
-Return-Path: <rjw@sisk.pl>
+In-Reply-To: <Pine.LNX.4.64N.0711071648040.14970@blysk.ds.pg.gda.pl>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17441
+X-archive-position: 17442
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rjw@sisk.pl
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-On Wednesday, 7 of November 2007, Johannes Berg wrote:
-> This cleans up the suspend Kconfig and removes the need to
-> declare centrally which architectures support suspend. All
-> architectures that currently support suspend are modified
-> accordingly.
+On Wed, Nov 07, 2007 at 04:55:10PM +0000, Maciej W. Rozycki wrote:
+> On Tue, 30 Oct 2007, Martin Michlmayr wrote:
 > 
-> Signed-off-by: Johannes Berg <johannes@sipsolutions.net>
+> > * Thomas Bogendoerfer <tsbogend@alpha.franken.de> [2007-09-11 12:44]:
+> > > Disable EARLY PRINTK, because it breaks serial console
+> > 
+> > Ralf, at the moment IP22 output stops after "Serial: IP22 Zilog driver
+> > (1 chips).".  Can you put this patch in until there's a real fix?
+> 
+>  Is it by any chance the same problem that I noticed with the DECstation 
+> and reported in the thread starting at: 
 
-Acked-by: Rafael J. Wysocki <rjw@sisk.pl>
+it's the same problem
 
-> Cc: linuxppc-dev@ozlabs.org
-> Cc: linux-pm@lists.linux-foundation.org
-> Cc: Guennadi Liakhovetski <g.liakhovetski@gmx.de>
-> Cc: Scott Wood <scottwood@freescale.com>
-> Cc: David Howells <dhowells@redhat.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: linux-mips@linux-mips.org
-> Cc: Paul Mundt <lethal@linux-sh.org>
-> Cc: Bryan Wu <bryan.wu@analog.com>
-> Cc: Russell King <rmk@arm.linux.org.uk>
-> ---
-> Architecture maintainers should evaluate whether their
-> ARCH_SUSPEND_POSSIBLE symbol should be set only under
-> stricter circumstances like I've done for powerpc.
-> 
-> Always setting it is not usually a problem, however, since the
-> infrastructure is only available for use after suspend_set_ops().
-> 
->  arch/arm/Kconfig      |    3 +++
->  arch/blackfin/Kconfig |    4 ++++
->  arch/frv/Kconfig      |    5 +++++
->  arch/i386/Kconfig     |    4 ++++
->  arch/mips/Kconfig     |    4 ++++
->  arch/powerpc/Kconfig  |    4 ++++
->  arch/sh/Kconfig       |    4 ++++
->  arch/x86_64/Kconfig   |    3 +++
->  kernel/power/Kconfig  |   21 +++------------------
->  9 files changed, 34 insertions(+), 18 deletions(-)
-> 
-> --- everything.orig/arch/i386/Kconfig	2007-11-07 14:45:28.591544215 +0100
-> +++ everything/arch/i386/Kconfig	2007-11-07 14:45:28.631515461 +0100
-> @@ -1323,3 +1323,7 @@ config KTIME_SCALAR
->  config ARCH_HIBERNATION_POSSIBLE
->  	def_bool y
->  	depends on !SMP || !X86_VOYAGER
-> +
-> +config ARCH_SUSPEND_POSSIBLE
-> +	def_bool y
-> +	depends on !X86_VOYAGER
-> --- everything.orig/arch/x86_64/Kconfig	2007-11-07 14:45:28.591544215 +0100
-> +++ everything/arch/x86_64/Kconfig	2007-11-07 14:45:28.631515461 +0100
-> @@ -716,6 +716,9 @@ menu "Power management options"
->  
->  source kernel/power/Kconfig
->  
-> +config ARCH_SUSPEND_POSSIBLE
-> +	def_bool y
-> +
->  config ARCH_HIBERNATION_POSSIBLE
->  	def_bool y
->  
-> --- everything.orig/kernel/power/Kconfig	2007-11-07 14:45:28.591544215 +0100
-> +++ everything/kernel/power/Kconfig	2007-11-07 14:45:28.641531465 +0100
-> @@ -64,7 +64,7 @@ config PM_TRACE
->  config PM_SLEEP_SMP
->  	bool
->  	depends on SMP
-> -	depends on SUSPEND_SMP_POSSIBLE || ARCH_HIBERNATION_POSSIBLE
-> +	depends on ARCH_SUSPEND_POSSIBLE || ARCH_HIBERNATION_POSSIBLE
->  	depends on PM_SLEEP
->  	select HOTPLUG_CPU
->  	default y
-> @@ -74,29 +74,14 @@ config PM_SLEEP
->  	depends on SUSPEND || HIBERNATION
->  	default y
->  
-> -config SUSPEND_UP_POSSIBLE
-> -	bool
-> -	depends on (X86 && !X86_VOYAGER) || PPC || ARM || BLACKFIN || MIPS \
-> -		   || SUPERH || FRV
-> -	depends on !SMP
-> -	default y
-> -
-> -config SUSPEND_SMP_POSSIBLE
-> -	bool
-> -	depends on (X86 && !X86_VOYAGER) \
-> -		   || (PPC && (PPC_PSERIES || PPC_PMAC)) || ARM
-> -	depends on SMP
-> -	default y
-> -
->  config SUSPEND
->  	bool "Suspend to RAM and standby"
-> -	depends on PM
-> -	depends on SUSPEND_UP_POSSIBLE || SUSPEND_SMP_POSSIBLE
-> +	depends on PM && ARCH_SUSPEND_POSSIBLE
->  	default y
->  	---help---
->  	  Allow the system to enter sleep states in which main memory is
->  	  powered and thus its contents are preserved, such as the
-> -	  suspend-to-RAM state (i.e. the ACPI S3 state).
-> +	  suspend-to-RAM state (e.g. the ACPI S3 state).
->  
->  config HIBERNATION
->  	bool "Hibernation (aka 'suspend to disk')"
-> --- everything.orig/arch/blackfin/Kconfig	2007-11-07 14:44:55.551521971 +0100
-> +++ everything/arch/blackfin/Kconfig	2007-11-07 14:45:28.641531465 +0100
-> @@ -993,6 +993,10 @@ endmenu
->  menu "Power management options"
->  source "kernel/power/Kconfig"
->  
-> +config ARCH_SUSPEND_POSSIBLE
-> +	def_bool y
-> +	depends on !SMP
-> +
->  choice
->  	prompt "Select PM Wakeup Event Source"
->  	default PM_WAKEUP_GPIO_BY_SIC_IWR
-> --- everything.orig/arch/arm/Kconfig	2007-11-07 14:44:55.651522948 +0100
-> +++ everything/arch/arm/Kconfig	2007-11-07 14:45:28.641531465 +0100
-> @@ -977,6 +977,9 @@ menu "Power management options"
->  
->  source "kernel/power/Kconfig"
->  
-> +config ARCH_SUSPEND_POSSIBLE
-> +	def_bool y
-> +
->  endmenu
->  
->  source "net/Kconfig"
-> --- everything.orig/arch/mips/Kconfig	2007-11-07 14:44:55.701522460 +0100
-> +++ everything/arch/mips/Kconfig	2007-11-07 14:45:28.641531465 +0100
-> @@ -1999,6 +1999,10 @@ endmenu
->  
->  menu "Power management options"
->  
-> +config ARCH_SUSPEND_POSSIBLE
-> +	def_bool y
-> +	depends on !SMP
-> +
->  source "kernel/power/Kconfig"
->  
->  endmenu
-> --- everything.orig/arch/sh/Kconfig	2007-11-07 14:44:55.801520344 +0100
-> +++ everything/arch/sh/Kconfig	2007-11-07 14:45:28.651528536 +0100
-> @@ -748,6 +748,10 @@ endmenu
->  menu "Power management options (EXPERIMENTAL)"
->  depends on EXPERIMENTAL && SYS_SUPPORTS_PM
->  
-> +config ARCH_SUSPEND_POSSIBLE
-> +	def_bool y
-> +	depends on !SMP
-> +
->  source kernel/power/Kconfig
->  
->  endmenu
-> --- everything.orig/arch/frv/Kconfig	2007-11-07 14:44:55.861520941 +0100
-> +++ everything/arch/frv/Kconfig	2007-11-07 14:45:28.651528536 +0100
-> @@ -357,6 +357,11 @@ source "drivers/pcmcia/Kconfig"
->  #	  should probably wait a while.
->  
->  menu "Power management options"
-> +
-> +config ARCH_SUSPEND_POSSIBLE
-> +	def_bool y
-> +	depends on !SMP
-> +
->  source kernel/power/Kconfig
->  endmenu
->  
-> --- everything.orig/arch/powerpc/Kconfig	2007-11-07 14:45:28.591544215 +0100
-> +++ everything/arch/powerpc/Kconfig	2007-11-07 14:45:28.651528536 +0100
-> @@ -155,6 +155,10 @@ config ARCH_HIBERNATION_POSSIBLE
->  	depends on (PPC64 && HIBERNATE_64) || (PPC32 && HIBERNATE_32)
->  	default y
->  
-> +config ARCH_SUSPEND_POSSIBLE
-> +	def_bool y
-> +	depends on ADB_PMU || PPC_EFIKA || PPC_LITE5200
-> +
->  config PPC_DCR_NATIVE
->  	bool
->  	default n
-> 
+> "http://marc.info/?l=linux-kernel&m=119030963931879&w=2"?  If so, there is 
+> a fix for the DECstation provided somewhere down the discussion which you 
+> may consider porting to IP22.  I think the change to the serial core by 
+> RMK mentioned there has already been applied upstream.
 
+I ported your fix, but it didn't work for me. Maybe because the
+IP22 zilog driver is still a little bit different than the DEC one.
 
+>  Ideally, of course, all the SCC drivers should get merged eventually, but 
+> due to subtle (and sometimes broken, as it is the case with the 
+> DECstation) differences in wiring for various systems it may never really 
+> happen, sigh...
+
+having a more generic zilog driver with platform backends is quite high on
+my todo list. But I won't make promisses when this happens...
+
+Thomas.
 
 -- 
-"Premature optimization is the root of all evil." - Donald Knuth
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

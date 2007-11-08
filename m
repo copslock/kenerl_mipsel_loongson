@@ -1,87 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Nov 2007 15:27:12 +0000 (GMT)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:2470 "EHLO
-	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20023702AbXKHP1D (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 8 Nov 2007 15:27:03 +0000
-Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id CF01D40092;
-	Thu,  8 Nov 2007 16:26:33 +0100 (CET)
-X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
-	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id c3UUcOo4ouni; Thu,  8 Nov 2007 16:26:27 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 310F44007E;
-	Thu,  8 Nov 2007 16:26:27 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id lA8FQVYL012887;
-	Thu, 8 Nov 2007 16:26:31 +0100
-Date:	Thu, 8 Nov 2007 15:26:26 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	Ulrich Eckhardt <eckhardt@satorlaser.com>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] Put cast inside macro instead of all the callers
-In-Reply-To: <20071101174705.GA23917@linux-mips.org>
-Message-ID: <Pine.LNX.4.64N.0711081506560.23511@blysk.ds.pg.gda.pl>
-References: <20071031141124.185599da@ripper.onstor.net>
- <200711011704.01079.eckhardt@satorlaser.com> <20071101174705.GA23917@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Nov 2007 21:09:27 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:16806 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20024998AbXKHVJR (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 8 Nov 2007 21:09:17 +0000
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1IqEcn-0000kC-00; Thu, 08 Nov 2007 22:09:17 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id F138CDE005; Thu,  8 Nov 2007 22:09:11 +0100 (CET)
+Date:	Thu, 8 Nov 2007 22:09:11 +0100
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] SNI PCIT CPLUS: workaround for messed up PCI irq wiring
+Message-ID: <20071108210911.GA19753@alpha.franken.de>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.2/4708/Thu Nov  8 07:07:54 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17451
+X-archive-position: 17452
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 1 Nov 2007, Ralf Baechle wrote:
 
-> > I'm not sure if this is always a compile-time constant so that you can adorn
-> > it with a LL. However, note that this is not a cast, a cast is at runtime.
-> 
-> No.  The compiler can evaluate the cast of a constant value at compile
-> time and that exactly is what the code is exploiting here.
+SNI PCIT CPLUS: workaround for messed up irq wiring for onboard PCI bus 1 
 
- Except that some versions of GCC "forget" to stop a warning here as 
-irrelevant after the cast, hence the need for the stupid "#ifdef", sigh...
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+---
 
-> > >  	if (sp >= (long)CKSEG0 && sp < (long)CKSEG2)
-> > >  		usp = CKSEG1ADDR(sp);
-> > >  #ifdef CONFIG_64BIT
-> > > -	else if ((long long)sp >= (long long)PHYS_TO_XKPHYS(0LL, 0) &&
-> > > -		 (long long)sp < (long long)PHYS_TO_XKPHYS(8LL, 0))
-> > > -		usp = PHYS_TO_XKPHYS((long long)K_CALG_UNCACHED,
-> > > +	else if ((long long)sp >= (long long)PHYS_TO_XKPHYS(0, 0) &&
-> > > +		 (long long)sp < (long long)PHYS_TO_XKPHYS(8, 0))
-> > > +		usp = PHYS_TO_XKPHYS(K_CALG_UNCACHED,
-> > >  				     XKPHYS_TO_PHYS((long long)sp));
-> > 
-> > I'd say this code is broken in way too many aspects:
-> > 1. A plethora of casts. PHYS_TO_XKPHYS() should return a physical address 
-> > (i.e. 32 or 64 bits unsigned integer) already, so casting its result should 
-> > not be necessary.
-> 
-> No argument about the beauty of the whole thing.
-
- The casts were an attempt by myself to shut up GCC warning about 
-comparisons giving a predictable result because of a limited size of the 
-data type used.  Of course this is no longer true with "long long", but 
-GCC does not care and warns regardless.
-
- A possible workaround would be using auxiliary variables of the "long 
-long" type, but I recall it making GCC produce worse code for some cases.  
-I can check it again, since it has been a while, and if a recent version 
-of GCC produces reasonable code, then I can try to recheck this approach.
-
- Please note this code changes quite wildly depending on the exact 
-configuration, so chances are GCC may warn with one, but not another.
-
-  Maciej
+diff --git a/arch/mips/pci/fixup-sni.c b/arch/mips/pci/fixup-sni.c
+index a45bedd..5c8a79b 100644
+--- a/arch/mips/pci/fixup-sni.c
++++ b/arch/mips/pci/fixup-sni.c
+@@ -113,6 +113,16 @@ static char irq_tab_pcit[13][5] __initdata = {
+ 	{     0,  INTA,  INTB,  INTC,  INTD },	/* Slot 5 */
+ };
+ 
++static char irq_tab_pcit_cplus[13][5] __initdata = {
++	/*       INTA  INTB  INTC  INTD */
++	{     0,     0,     0,     0,     0 },	/* HOST bridge */
++	{     0,  INTB,  INTC,  INTD,  INTA },	/* PCI Slot 9 */
++	{     0,     0,     0,     0,     0 },	/* PCI-EISA */
++	{     0,     0,     0,     0,     0 },	/* Unused */
++	{     0,  INTA,  INTB,  INTC,  INTD },	/* PCI-PCI bridge */
++	{     0,  INTB,  INTC,  INTD,  INTA },	/* fixup */
++};
++
+ static inline int is_rm300_revd(void)
+ {
+ 	unsigned char csmsr = *(volatile unsigned char *)PCIMT_CSMSR;
+@@ -123,8 +133,19 @@ static inline int is_rm300_revd(void)
+ int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	switch (sni_brd_type) {
+-	case SNI_BRD_PCI_TOWER:
+ 	case SNI_BRD_PCI_TOWER_CPLUS:
++		if (slot == 4) {
++			/*
++			 * SNI messed up interrupt wiring for onboard
++			 * PCI bus 1; we need to fix this up here
++			 */
++			while (dev && dev->bus->number != 1)
++				dev = dev->bus->self;
++			if (dev && dev->devfn >= PCI_DEVFN(4, 0))
++				slot = 5;
++		}
++		return irq_tab_pcit_cplus[slot][pin];
++	case SNI_BRD_PCI_TOWER:
+ 	        return irq_tab_pcit[slot][pin];
+ 
+ 	case SNI_BRD_PCI_MTOWER:
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

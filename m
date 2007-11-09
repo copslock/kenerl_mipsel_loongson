@@ -1,123 +1,187 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Nov 2007 09:08:11 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:33425 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20021637AbXKIJIJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 9 Nov 2007 09:08:09 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lA9988cB013181;
-	Fri, 9 Nov 2007 09:08:08 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lA997v3b013180;
-	Fri, 9 Nov 2007 09:07:57 GMT
-Date:	Fri, 9 Nov 2007 09:07:57 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Andrew Sharp <andy.sharp@onstor.com>
-Cc:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: gdb chokes on core from 64-bit kernel (patch)
-Message-ID: <20071109090757.GA12469@linux-mips.org>
-References: <20071108140322.7bf03aa9@ripper.onstor.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20071108140322.7bf03aa9@ripper.onstor.net>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Nov 2007 09:44:10 +0000 (GMT)
+Received: from mo32.po.2iij.NET ([210.128.50.17]:15434 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20021646AbXKIJoB (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 9 Nov 2007 09:44:01 +0000
+Received: by mo.po.2iij.net (mo32) id lA99gWXv095126; Fri, 9 Nov 2007 18:42:32 +0900 (JST)
+Received: from localhost (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (po-mbox301) id lA99gVuY016643
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Fri, 9 Nov 2007 18:42:31 +0900
+Date:	Fri, 9 Nov 2007 18:42:35 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] fix LASAT IRQ overlap
+Message-Id: <20071109184235.d87433e6.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 2.3.0beta5 (GTK+ 2.8.20; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17454
+X-archive-position: 17455
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Nov 08, 2007 at 02:03:22PM -0800, Andrew Sharp wrote:
+The range of MIPS_CPU IRQ and the range of LASAT IRQ overlap.
+This patch has fixed it.
 
-> The gdb from debian etch (6.4.90-debian) doesn't like core files
-> produced by 64-bit kernel it seems.  I've got this patch which seems
-> to do the job, but I'm unclear on what other implications it might have,
-> if any.
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-> diff --git a/arch/mips/kernel/binfmt_elfo32.c b/arch/mips/kernel/binfmt_elfo32.c
-> index 993f7ec..58533dc 100644
-> --- a/arch/mips/kernel/binfmt_elfo32.c
-> +++ b/arch/mips/kernel/binfmt_elfo32.c
-> @@ -54,9 +54,13 @@ typedef elf_fpreg_t elf_fpregset_t[ELF_NFPREG];
->  
->  #include <asm/processor.h>
->  #include <linux/module.h>
-> -#include <linux/elfcore.h>
->  #include <linux/compat.h>
->  
-> +void elf32_core_copy_regs(elf_gregset_t grp, struct pt_regs *regs);
-> +#undef ELF_CORE_COPY_REGS
-> +#define ELF_CORE_COPY_REGS(_dest,_regs) elf32_core_copy_regs(_dest,_regs);
-> +#include <linux/elfcore.h>
-> +
->  #define elf_prstatus elf_prstatus32
->  struct elf_prstatus32
->  {
-> @@ -109,9 +113,6 @@ jiffies_to_compat_timeval(unsigned long jiffies, struct comp
->         value->tv_usec = rem / NSEC_PER_USEC;
->  }
->  
-> -#undef ELF_CORE_COPY_REGS
-> -#define ELF_CORE_COPY_REGS(_dest,_regs) elf32_core_copy_regs(_dest,_regs);
-> -
->  void elf32_core_copy_regs(elf_gregset_t grp, struct pt_regs *regs)
->  {
->         int i;
-
-Looks like it's a larger change than needed.
-
-> diff --git a/include/asm-mips/reg.h b/include/asm-mips/reg.h
-> index 634b55d..b44b308 100644
-> --- a/include/asm-mips/reg.h
-> +++ b/include/asm-mips/reg.h
-> @@ -12,7 +12,7 @@
->  #ifndef __ASM_MIPS_REG_H
->  #define __ASM_MIPS_REG_H
->  
-> -
-> +#define WANT_COMPAT_REG_H
->  #if defined(CONFIG_32BIT) || defined(WANT_COMPAT_REG_H)
->  
->  #define EF_R0                  6
-> @@ -69,7 +69,7 @@
->  
->  #endif
->  
-> -#ifdef CONFIG_64BIT
-> +#if defined(CONFIG_64BIT) && !defined(WANT_COMPAT_REG_H)
->  
->  #define EF_R0                   0
->  #define EF_R1                   1
-
-This change breaks the native 64-bit and N32 ptrace and core dumpers.
-
-I suggest something more minimal like the below patch.  Does that one do
-the trick for you?
-
-  Ralf
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
- arch/mips/kernel/ptrace32.c |    3 +++
- 1 files changed, 3 insertions(+), 0 deletions(-)
-
-diff --git a/arch/mips/kernel/ptrace32.c b/arch/mips/kernel/ptrace32.c
-index 76818be..44109fb 100644
---- a/arch/mips/kernel/ptrace32.c
-+++ b/arch/mips/kernel/ptrace32.c
-@@ -14,6 +14,9 @@
-  * At this time Linux/MIPS64 only supports syscall tracing, even for 32-bit
-  * binaries.
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/lasat/interrupt.c mips/arch/mips/lasat/interrupt.c
+--- mips-orig/arch/mips/lasat/interrupt.c	2007-11-09 07:54:54.572826750 +0900
++++ mips/arch/mips/lasat/interrupt.c	2007-11-09 08:15:06.752835750 +0900
+@@ -19,17 +19,14 @@
+  * Lasat boards.
   */
+ #include <linux/init.h>
+-#include <linux/irq.h>
+-#include <linux/sched.h>
+-#include <linux/slab.h>
+ #include <linux/interrupt.h>
+-#include <linux/kernel_stat.h>
++#include <linux/irq.h>
+ 
+ #include <asm/bootinfo.h>
+ #include <asm/irq_cpu.h>
+ #include <asm/lasat/lasatint.h>
+-#include <asm/time.h>
+-#include <asm/gdb-stub.h>
 +
-+#define WANT_COMPAT_REG_H
++#include <irq.h>
+ 
+ static volatile int *lasat_int_status;
+ static volatile int *lasat_int_mask;
+@@ -97,12 +94,18 @@ asmlinkage void plat_irq_dispatch(void)
+ 
+ 	/* if int_status == 0, then the interrupt has already been cleared */
+ 	if (int_status) {
+-		irq = LASATINT_BASE + ls1bit32(int_status);
++		irq = LASAT_IRQ_BASE + ls1bit32(int_status);
+ 
+ 		do_IRQ(irq);
+ 	}
+ }
+ 
++static struct irqaction cascade = {
++	.handler	= no_action,
++	.mask		= CPU_MASK_NONE,
++	.name		= "cascade",
++};
 +
- #include <linux/compiler.h>
- #include <linux/kernel.h>
- #include <linux/sched.h>
+ void __init arch_init_irq(void)
+ {
+ 	int i;
+@@ -127,6 +130,9 @@ void __init arch_init_irq(void)
+ 	}
+ 
+ 	mips_cpu_irq_init();
+-	for (i = LASATINT_BASE; i <= LASATINT_END; i++)
++
++	for (i = LASAT_IRQ_BASE; i <= LASAT_IRQ_END; i++)
+ 		set_irq_chip_and_handler(i, &lasat_irq_type, handle_level_irq);
++
++	setup_irq(LASAT_CASCADE_IRQ, &cascade);
+ }
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/pci/pci-lasat.c mips/arch/mips/pci/pci-lasat.c
+--- mips-orig/arch/mips/pci/pci-lasat.c	2007-11-09 07:54:55.596890750 +0900
++++ mips/arch/mips/pci/pci-lasat.c	2007-11-09 08:33:30.421810750 +0900
+@@ -5,12 +5,14 @@
+  *
+  * Copyright (C) 2000, 2001, 04 Keith M Wesolowski
+  */
+-#include <linux/kernel.h>
+ #include <linux/init.h>
++#include <linux/kernel.h>
+ #include <linux/pci.h>
+ #include <linux/types.h>
++
+ #include <asm/bootinfo.h>
+-#include <asm/lasat/lasatint.h>
++
++#include <irq.h>
+ 
+ extern struct pci_ops nile4_pci_ops;
+ extern struct pci_ops gt64xxx_pci0_ops;
+@@ -55,15 +57,15 @@ static int __init lasat_pci_setup(void)
+ 
+ arch_initcall(lasat_pci_setup);
+ 
+-#define LASATINT_ETH1   (LASATINT_BASE + 0)
+-#define LASATINT_ETH0   (LASATINT_BASE + 1)
+-#define LASATINT_HDC    (LASATINT_BASE + 2)
+-#define LASATINT_COMP   (LASATINT_BASE + 3)
+-#define LASATINT_HDLC   (LASATINT_BASE + 4)
+-#define LASATINT_PCIA   (LASATINT_BASE + 5)
+-#define LASATINT_PCIB   (LASATINT_BASE + 6)
+-#define LASATINT_PCIC   (LASATINT_BASE + 7)
+-#define LASATINT_PCID   (LASATINT_BASE + 8)
++#define LASAT_IRQ_ETH1   (LASAT_IRQ_BASE + 0)
++#define LASAT_IRQ_ETH0   (LASAT_IRQ_BASE + 1)
++#define LASAT_IRQ_HDC    (LASAT_IRQ_BASE + 2)
++#define LASAT_IRQ_COMP   (LASAT_IRQ_BASE + 3)
++#define LASAT_IRQ_HDLC   (LASAT_IRQ_BASE + 4)
++#define LASAT_IRQ_PCIA   (LASAT_IRQ_BASE + 5)
++#define LASAT_IRQ_PCIB   (LASAT_IRQ_BASE + 6)
++#define LASAT_IRQ_PCIC   (LASAT_IRQ_BASE + 7)
++#define LASAT_IRQ_PCID   (LASAT_IRQ_BASE + 8)
+ 
+ int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
+ {
+@@ -71,13 +73,13 @@ int __init pcibios_map_irq(const struct 
+ 	case 1:
+ 	case 2:
+ 	case 3:
+-		return LASATINT_PCIA + (((slot-1) + (pin-1)) % 4);
++		return LASAT_IRQ_PCIA + (((slot-1) + (pin-1)) % 4);
+ 	case 4:
+-		return LASATINT_ETH1;   /* Ethernet 1 (LAN 2) */
++		return LASAT_IRQ_ETH1;   /* Ethernet 1 (LAN 2) */
+ 	case 5:
+-		return LASATINT_ETH0;   /* Ethernet 0 (LAN 1) */
++		return LASAT_IRQ_ETH0;   /* Ethernet 0 (LAN 1) */
+ 	case 6:
+-		return LASATINT_HDC;    /* IDE controller */
++		return LASAT_IRQ_HDC;    /* IDE controller */
+ 	default:
+ 		return 0xff;            /* Illegal */
+ 	}
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/lasat/lasatint.h mips/include/asm-mips/lasat/lasatint.h
+--- mips-orig/include/asm-mips/lasat/lasatint.h	2007-11-09 07:57:42.283308000 +0900
++++ mips/include/asm-mips/lasat/lasatint.h	2007-11-09 08:04:47.862157500 +0900
+@@ -1,11 +1,6 @@
+ #ifndef __ASM_LASAT_LASATINT_H
+ #define __ASM_LASAT_LASATINT_H
+ 
+-#include <linux/irq.h>
+-
+-#define LASATINT_BASE	MIPS_CPU_IRQ_BASE
+-#define LASATINT_END	(LASATINT_BASE + 16)
+-
+ /* lasat 100 */
+ #define LASAT_INT_STATUS_REG_100	(KSEG1ADDR(0x1c880000))
+ #define LASAT_INT_MASK_REG_100		(KSEG1ADDR(0x1c890000))
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/mach-lasat/irq.h mips/include/asm-mips/mach-lasat/irq.h
+--- mips-orig/include/asm-mips/mach-lasat/irq.h	1970-01-01 09:00:00.000000000 +0900
++++ mips/include/asm-mips/mach-lasat/irq.h	2007-11-09 08:13:55.012352250 +0900
+@@ -0,0 +1,13 @@
++#ifndef _ASM_MACH_LASAT_IRQ_H
++#define _ASM_MACH_LASAT_IRQ_H
++
++#define LASAT_CASCADE_IRQ	(MIPS_CPU_IRQ_BASE + 0)
++
++#define LASAT_IRQ_BASE		8
++#define LASAT_IRQ_END		23
++
++#define NR_IRQS			24
++
++#include_next <irq.h>
++
++#endif /* _ASM_MACH_LASAT_IRQ_H */

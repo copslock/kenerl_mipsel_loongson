@@ -1,58 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Nov 2007 14:33:08 +0000 (GMT)
-Received: from elvis.franken.de ([193.175.24.41]:38299 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S20026821AbXKKOdA (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 11 Nov 2007 14:33:00 +0000
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1IrDrv-0004ny-00
-	for linux-mips@linux-mips.org; Sun, 11 Nov 2007 15:32:59 +0100
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id A4598C2144; Sun, 11 Nov 2007 15:33:02 +0100 (CET)
-Date:	Sun, 11 Nov 2007 15:33:02 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Nov 2007 16:04:40 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:36833 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20023178AbXKKQEb (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 11 Nov 2007 16:04:31 +0000
+Received: from localhost (p5137-ipad310funabasi.chiba.ocn.ne.jp [123.217.207.137])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id F38568EEB; Mon, 12 Nov 2007 01:03:09 +0900 (JST)
+Date:	Mon, 12 Nov 2007 01:05:16 +0900 (JST)
+Message-Id: <20071112.010516.126571959.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
-Subject: problem with 64bit kernel, BOOT_ELF32 and memory outside CKSEG0
-Message-ID: <20071111143302.GA26458@alpha.franken.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] Move kernel/time/Kconfig menu to appropriate place
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17462
+X-archive-position: 17463
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-I tried to get a working 64bit kernel for SNI RM. Most of things
-to fix were quite obvious, but there is one thing, which I haven't
-understood yet.
+CONFIG_NO_HZ, CONFIG_HIGH_RES_TIMERS should be selected in "Kernel
+type" menu, not in "CPU selection" menu.
 
-The firmware is only able to boot ELF32 images, which mean I need to
-use BOOT_ELF32.
-
-RM machines have 256MB memory mapped to KSEG0, anything else is outside.
-To me that would mean I need to use the default spaces from
-mach-generic/spaces.h. A kernel built that way will hang after calling
-schedule() in rest_init() (init/main.c). Has anybody seen this
-as well ?
-
-Before digging into schedule() I decided to try mach-ip22/spaces.h
-and limit the installed memory to 256MB. This kernel boots and
-runs fine.
-
-Then I booted that kernel with all memory (512MB) and it died, when
-init had troubles mapping libc. That result didn't surprise me
-that much, since the kernel probably tried to map memory > 256MB
-via CKSEG0, which won't work. Correct ?
-
-Thomas.
-
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 2f2ce0c..2ee0330 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -961,8 +961,6 @@ config BOOT_ELF64
+ 
+ menu "CPU selection"
+ 
+-source "kernel/time/Kconfig"
+-
+ choice
+ 	prompt "CPU type"
+ 	default CPU_R4X00
+@@ -1734,6 +1732,8 @@ config NR_CPUS
+ 	  performance should round up your number of processors to the next
+ 	  power of two.
+ 
++source "kernel/time/Kconfig"
++
+ #
+ # Timer Interrupt Frequency Configuration
+ #

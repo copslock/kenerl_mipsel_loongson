@@ -1,75 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Nov 2007 13:59:53 +0000 (GMT)
-Received: from nf-out-0910.google.com ([64.233.182.188]:5358 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20026792AbXKKN7o (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 11 Nov 2007 13:59:44 +0000
-Received: by nf-out-0910.google.com with SMTP id c10so747391nfd
-        for <linux-mips@linux-mips.org>; Sun, 11 Nov 2007 05:59:43 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        bh=neVcTXFPSfP8rSxdiGkkgDRfYwjtnGilTTLB0FRC0Zw=;
-        b=O2assTj2ZeBG+/xHaYobd6oAyxTSOnmGnxX5lAxXnTO3fQc6alGkE3voIyW24Bek0ExrnSjmlWoXIpGTJ5L1AIVEYWc5IAA+VXsIU0yf8XiThWwSqbchPKGVyi8bZTYIAuKIdiQScdn2o0qqYgWO1pwq+CjIMLFcarrnucnqtqA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=iqIGVVvcqbTGS4kg/JVYznnMMmkN4yrI1/viyPntTJpkqHmqiu72NW9UgltX2Wyp4WgtPEqhdjUYXDA7Chr2WiPgPuWKuwuQYreg0mMY0VXlEK4LoN/34YnQwvG895HlcwK9x/JxdNMWpRi11eY/SvI85XewOMRrXSIE0CTnEho=
-Received: by 10.86.49.13 with SMTP id w13mr3543323fgw.1194789583605;
-        Sun, 11 Nov 2007 05:59:43 -0800 (PST)
-Received: from ?192.168.0.1? ( [82.235.205.153])
-        by mx.google.com with ESMTPS id e32sm518447fke.2007.11.11.05.59.42
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 11 Nov 2007 05:59:42 -0800 (PST)
-Message-ID: <47370A5C.8060200@gmail.com>
-Date:	Sun, 11 Nov 2007 14:57:48 +0100
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Nov 2007 14:33:08 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:38299 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20026821AbXKKOdA (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 11 Nov 2007 14:33:00 +0000
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1IrDrv-0004ny-00
+	for linux-mips@linux-mips.org; Sun, 11 Nov 2007 15:32:59 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id A4598C2144; Sun, 11 Nov 2007 15:33:02 +0100 (CET)
+Date:	Sun, 11 Nov 2007 15:33:02 +0100
+To:	linux-mips@linux-mips.org
+Subject: problem with 64bit kernel, BOOT_ELF32 and memory outside CKSEG0
+Message-ID: <20071111143302.GA26458@alpha.franken.de>
 MIME-Version: 1.0
-To:	Thiemo Seufer <ths@networkno.de>
-CC:	Ralf Baechle <ralf@linux-mips.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] Introduce __fill_user() and kill __bzero()
-References: <4736C1EA.2050009@gmail.com> <20071111130130.GB8363@networkno.de>
-In-Reply-To: <20071111130130.GB8363@networkno.de>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <vagabon.xyz@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17461
+X-archive-position: 17462
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-Thiemo Seufer wrote:
->>  /*
->> - * memset(void *s, int c, size_t n)
->> + * An outline version of memset, which should be used either by gcc or
->> + * by assembly code.
->> + */
->> +NESTED(memset, 24, ra)
->> +	PTR_ADDU	sp, sp, -24
->> +	LONG_S		a0, 16(sp)
->> +	LONG_S		ra, 20(sp)
->> +	jal		__fill_user
->> +	LONG_L		v0, 16(sp)
->> +	LONG_L		ra, 20(sp)
->> +	PTR_ADDU	sp, sp, 24
->> +	jr		ra
->> +END(memset)
-> 
-> This will break on 64bit kernels.
-> 
+I tried to get a working 64bit kernel for SNI RM. Most of things
+to fix were quite obvious, but there is one thing, which I haven't
+understood yet.
 
-Obviously...
+The firmware is only able to boot ELF32 images, which mean I need to
+use BOOT_ELF32.
 
-Looks like I should find a good place to implement it in C... or do
-you know a sane way (without too many #ifdef) to do that in assembly
-code ?
+RM machines have 256MB memory mapped to KSEG0, anything else is outside.
+To me that would mean I need to use the default spaces from
+mach-generic/spaces.h. A kernel built that way will hang after calling
+schedule() in rest_init() (init/main.c). Has anybody seen this
+as well ?
 
-thanks,
-		Franck
+Before digging into schedule() I decided to try mach-ip22/spaces.h
+and limit the installed memory to 256MB. This kernel boots and
+runs fine.
+
+Then I booted that kernel with all memory (512MB) and it died, when
+init had troubles mapping libc. That result didn't surprise me
+that much, since the kernel probably tried to map memory > 256MB
+via CKSEG0, which won't work. Correct ?
+
+Thomas.
+
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

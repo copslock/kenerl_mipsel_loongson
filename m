@@ -1,89 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Nov 2007 13:57:48 +0000 (GMT)
-Received: from mail.lysator.liu.se ([130.236.254.3]:5271 "EHLO
-	mail.lysator.liu.se") by ftp.linux-mips.org with ESMTP
-	id S28576873AbXKLN5j (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 12 Nov 2007 13:57:39 +0000
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.lysator.liu.se (Postfix) with ESMTP id 53019200A205;
-	Mon, 12 Nov 2007 14:57:02 +0100 (CET)
-Received: from mail.lysator.liu.se ([127.0.0.1])
-	by localhost (lenin.lysator.liu.se [127.0.0.1]) (amavisd-new, port 10024)
-	with LMTP id 12657-01-19; Mon, 12 Nov 2007 14:57:01 +0100 (CET)
-Received: from [192.168.27.65] (6.240.216.81.static.lk.siwnet.net [81.216.240.6])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.lysator.liu.se (Postfix) with ESMTP id C10DA200A2DB;
-	Mon, 12 Nov 2007 14:56:58 +0100 (CET)
-Message-ID: <47385B75.2010700@27m.se>
-Date:	Mon, 12 Nov 2007 14:56:05 +0100
-From:	Markus Gothe <markus.gothe@27m.se>
-User-Agent: Icedove 1.5.0.14pre (X11/20071020)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Nov 2007 17:31:42 +0000 (GMT)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:44207 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S28577229AbXKLRbe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 12 Nov 2007 17:31:34 +0000
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id EB6F64008C;
+	Mon, 12 Nov 2007 18:31:04 +0100 (CET)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id P823hnEXYEEr; Mon, 12 Nov 2007 18:30:59 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id A61E0400CE;
+	Mon, 12 Nov 2007 18:30:59 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id lACHV4a0009743;
+	Mon, 12 Nov 2007 18:31:04 +0100
+Date:	Mon, 12 Nov 2007 17:30:52 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	linux-mips@linux-mips.org
+Subject: [PATCH] arch/mips/Makefile: Fix canonical system names
+Message-ID: <Pine.LNX.4.64N.0711121727000.30102@blysk.ds.pg.gda.pl>
 MIME-Version: 1.0
-To:	Martin Michlmayr <tbm@cyrius.com>, linux-mips@linux-mips.org
-Subject: Re: [SPAM] Re: Donation of an Indigo 2 R4K@250
-References: <Pine.LNX.4.58.0711051413270.16253@nora.oreilly.de> <20071105141248.GQ6244@deprecation.cyrius.com> <20071111110752.GA21220@deprecation.cyrius.com>
-In-Reply-To: <20071111110752.GA21220@deprecation.cyrius.com>
-X-Enigmail-Version: 0.94.2.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at lysator.liu.se
-Return-Path: <markus.gothe@27m.se>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4755/Mon Nov 12 15:41:11 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17470
+X-archive-position: 17471
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markus.gothe@27m.se
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+ The GNU `config.guess' uses "linux-gnu" as the canonical system name.  
+Fix the list of compiler prefixes checked to spell it correctly.
 
-Which graphics option? A 'hinv -v' would be appreciated.
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+---
+ I am assuming the current names are a result of a typo and that the extra 
+spaces used here are for readability, so I have not removed them.
 
-//Markus
+ Please apply.
 
-Martin Michlmayr wrote:
-> Anyone interested?
->
-> * Martin Michlmayr <tbm@cyrius.com> [2007-11-05 15:12]:
->> If anyone is interested in an Indigo 2 located in Cologne,
->> Germany, please let me know.
->>
->>> I would like to donate the MIPS porters an SGI Indigo 2
->>> R4K@250Mhz. Fully working, keyboard/mouse/monitor included, but
->>> no IRIX.
->>>
->>> The machine is located in Cologne/Germany - pickup preferred...
->>>
->> -- Martin Michlmayr http://www.cyrius.com/
->>
->>
->> -- To UNSUBSCRIBE, email to debian-mips-REQUEST@lists.debian.org
->> with a subject of "unsubscribe". Trouble? Contact
->> listmaster@lists.debian.org
->
+  Maciej
 
-
-- --
-_______________________________________
-
-Mr Markus Gothe
-Software Engineer
-
-Phone: +46 (0)13 21 81 20 (ext. 1046)
-Fax: +46 (0)13 21 21 15
-Mobile: +46 (0)73 718 72 80
-Diskettgatan 11, SE-583 35 Linköping, Sweden
-www.27m.com
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.6 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
-
-iD8DBQFHOFtz6I0XmJx2NrwRCEEdAJ9CTkdzTVA+hg+2SFEYn88730L92ACgmRyd
-SwTUpX6k+hwNFTyuqaNTc0U=
-=dy8N
------END PGP SIGNATURE-----
+patch-mips-2.6.23-20071023-mips-linux-gnu-0
+diff -up --recursive --new-file linux-mips-2.6.23-20071023.macro/arch/mips/Makefile linux-mips-2.6.23-20071023/arch/mips/Makefile
+--- linux-mips-2.6.23-20071023.macro/arch/mips/Makefile	2007-10-23 04:57:23.000000000 +0000
++++ linux-mips-2.6.23-20071023/arch/mips/Makefile	2007-11-11 19:04:39.000000000 +0000
+@@ -44,7 +44,7 @@ endif
+ 
+ ifneq ($(SUBARCH),$(ARCH))
+   ifeq ($(CROSS_COMPILE),)
+-    CROSS_COMPILE := $(call cc-cross-prefix, $(tool-archpref)-linux-  $(tool-archpref)-gnu-linux-  $(tool-archpref)-unknown-gnu-linux-)
++    CROSS_COMPILE := $(call cc-cross-prefix, $(tool-archpref)-linux-  $(tool-archpref)-linux-gnu-  $(tool-archpref)-unknown-linux-gnu-)
+   endif
+ endif
+ 

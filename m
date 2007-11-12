@@ -1,42 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Nov 2007 18:23:00 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:26516 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20025532AbXKLSW5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 12 Nov 2007 18:22:57 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lACIMCaE007066;
-	Mon, 12 Nov 2007 18:22:37 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lACIMCSm007065;
-	Mon, 12 Nov 2007 18:22:12 GMT
-Date:	Mon, 12 Nov 2007 18:22:12 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Nov 2007 22:31:28 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:30399 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S28578773AbXKLWbU (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 12 Nov 2007 22:31:20 +0000
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1IrhoN-0006yJ-00; Mon, 12 Nov 2007 23:31:19 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 578BAC2AD8; Mon, 12 Nov 2007 23:31:04 +0100 (CET)
+Date:	Mon, 12 Nov 2007 23:31:04 +0100
+To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] sni/pcimt.c: s/achknowledge/acknowledge
-Message-ID: <20071112182212.GB7019@linux-mips.org>
-References: <Pine.LNX.4.64N.0711121731090.30102@blysk.ds.pg.gda.pl>
+Subject: Re: problem with 64bit kernel, BOOT_ELF32 and memory outside CKSEG0
+Message-ID: <20071112223104.GA7900@alpha.franken.de>
+References: <20071111143302.GA26458@alpha.franken.de> <20071111213127.GA26297@linux-mips.org> <20071112083242.GA6065@alpha.franken.de> <20071112104423.GA27588@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64N.0711121731090.30102@blysk.ds.pg.gda.pl>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20071112104423.GA27588@linux-mips.org>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17474
+X-archive-position: 17475
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Nov 12, 2007 at 05:32:48PM +0000, Maciej W. Rozycki wrote:
+On Mon, Nov 12, 2007 at 10:44:23AM +0000, Ralf Baechle wrote:
+> But even if you get that wrong the expected failure mode is different ...
 
-Applied as well.
+Ralf and me had an debug session on IRC and I finally figured out
+what caused the problem: CONFIG_EARLY_PRINTK via prom calls.
 
-Thanks,
+I simply used call_o32.S from the decstation part and missed the
+fact, that it simply uses the normal kernel stack when calling
+firmware. This works quite good until the first kernel thread
+gets scheduled, which has a kernel stack via a CAC_BASE address.
+So after switching stack the next call to prom_putchar() killed the
+machine. Simply disabling EARLY_PRINTK gives me a working 64bit
+kernel, which sees the whole 512MB RAM :-)
 
-  Ralf
+Thomas.
+
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

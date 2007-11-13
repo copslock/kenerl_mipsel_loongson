@@ -1,75 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Nov 2007 11:49:36 +0000 (GMT)
-Received: from mtaout02-winn.ispmail.ntl.com ([81.103.221.48]:28796 "EHLO
-	mtaout02-winn.ispmail.ntl.com") by ftp.linux-mips.org with ESMTP
-	id S20026039AbXKMLt1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 13 Nov 2007 11:49:27 +0000
-Received: from aamtaout04-winn.ispmail.ntl.com ([81.103.221.35])
-          by mtaout02-winn.ispmail.ntl.com with ESMTP
-          id <20071113114904.NWUS25022.mtaout02-winn.ispmail.ntl.com@aamtaout04-winn.ispmail.ntl.com>;
-          Tue, 13 Nov 2007 11:49:04 +0000
-Received: from zebedee.littlepinkcloud.COM ([82.6.106.47])
-          by aamtaout04-winn.ispmail.ntl.com with ESMTP
-          id <20071113114904.BWRN29112.aamtaout04-winn.ispmail.ntl.com@zebedee.littlepinkcloud.COM>;
-          Tue, 13 Nov 2007 11:49:04 +0000
-Received: from littlepinkcloud.COM (localhost.localdomain [127.0.0.1])
-	by zebedee.littlepinkcloud.COM (8.13.8/8.13.5) with ESMTP id lADBmtbf001051;
-	Tue, 13 Nov 2007 11:48:55 GMT
-Received: (from aph@localhost)
-	by littlepinkcloud.COM (8.13.8/8.13.5/Submit) id lADBmrBn001047;
-	Tue, 13 Nov 2007 11:48:53 GMT
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Nov 2007 12:11:06 +0000 (GMT)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:59033 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20026085AbXKMMK6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 13 Nov 2007 12:10:58 +0000
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 160574016E;
+	Tue, 13 Nov 2007 13:10:58 +0100 (CET)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id Nv4NKY7sgdrB; Tue, 13 Nov 2007 13:10:48 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id B6CFD4008C;
+	Tue, 13 Nov 2007 13:10:48 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id lADCApmq018676;
+	Tue, 13 Nov 2007 13:10:51 +0100
+Date:	Tue, 13 Nov 2007 12:10:44 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: problem with 64bit kernel, BOOT_ELF32 and memory outside CKSEG0
+In-Reply-To: <20071112223104.GA7900@alpha.franken.de>
+Message-ID: <Pine.LNX.4.64N.0711131203110.5550@blysk.ds.pg.gda.pl>
+References: <20071111143302.GA26458@alpha.franken.de> <20071111213127.GA26297@linux-mips.org>
+ <20071112083242.GA6065@alpha.franken.de> <20071112104423.GA27588@linux-mips.org>
+ <20071112223104.GA7900@alpha.franken.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <18233.36645.232058.964652@zebedee.pink>
-Date:	Tue, 13 Nov 2007 11:48:53 +0000
-From:	Andrew Haley <aph-gcc@littlepinkcloud.COM>
-To:	David Daney <ddaney@avtrex.com>
-Cc:	linux-mips@linux-mips.org,
-	Richard Sandiford <rsandifo@nildram.co.uk>, gcc@gcc.gnu.org
-Subject: Re: Cannot unwind through MIPS signal frames with ICACHE_REFILLS_WORKAROUND_WAR
-In-Reply-To: <473957B6.3030202@avtrex.com>
-References: <473957B6.3030202@avtrex.com>
-X-Mailer: VM 7.19 under Emacs 22.0.93.1
-Return-Path: <aph@littlepinkcloud.COM>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4762/Tue Nov 13 11:42:30 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17478
+X-archive-position: 17479
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aph-gcc@littlepinkcloud.COM
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-David Daney writes:
- > With the current kernel (2.6.23.1) in my R5000 based O2 it seems 
- > impossible for GCC's exception unwinding machinery to unwind through 
- > signal frames.  The cause of the problems is the 
- > ICACHE_REFILLS_WORKAROUND_WAR which puts the sigcontext at an almost 
- > impossible to determine offset from the signal return trampoline.  The 
- > unwinder depends on being able to find the sigcontext given a known 
- > location of the trampoline.
- > 
- > It seems there are a couple of possible solutions:
- > 
- > 1) The comments in war.h indicate the problem only exists in R7000
- > and E9000 processors.  We could turn off the workaround if the
- > kernel is configured for R5000.  That would help me, but not those
- > with the effected systems.
- > 
- > 2) In the non-workaround case, the siginfo immediately follows the
- > trampoline and the first member is the signal number.  For the
- > workaround case the first word following the trampoline is zero.
- > We could replace this with the offset to the sigcontext which is
- > always a small negative value.  The unwinder could then distinguish
- > the two cases (signal numbers are positive and the offset
- > negative).  If we did this, the change would have to be coordinated
- > with GCC's unwinder (in libgcc_s.so.1).
- > 
- > Thoughts?
+On Mon, 12 Nov 2007, Thomas Bogendoerfer wrote:
 
-The best solution is to put the unwinder info in the kernel.  Does
-MIPS use a vDSO ?
+> I simply used call_o32.S from the decstation part and missed the
+> fact, that it simply uses the normal kernel stack when calling
+> firmware. This works quite good until the first kernel thread
+> gets scheduled, which has a kernel stack via a CAC_BASE address.
 
-Andrew.
+ You could do stack switching in call_o32() -- I just figured there was no 
+point in adding this complication as the DECstation always runs from KSEG0 
+-- it has the maximum of 480MB of RAM mapped linearly starting from 0.
+
+  Maciej

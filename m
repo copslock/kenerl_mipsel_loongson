@@ -1,52 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Nov 2007 22:31:28 +0000 (GMT)
-Received: from elvis.franken.de ([193.175.24.41]:30399 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S28578773AbXKLWbU (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 12 Nov 2007 22:31:20 +0000
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1IrhoN-0006yJ-00; Mon, 12 Nov 2007 23:31:19 +0100
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id 578BAC2AD8; Mon, 12 Nov 2007 23:31:04 +0100 (CET)
-Date:	Mon, 12 Nov 2007 23:31:04 +0100
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: problem with 64bit kernel, BOOT_ELF32 and memory outside CKSEG0
-Message-ID: <20071112223104.GA7900@alpha.franken.de>
-References: <20071111143302.GA26458@alpha.franken.de> <20071111213127.GA26297@linux-mips.org> <20071112083242.GA6065@alpha.franken.de> <20071112104423.GA27588@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Nov 2007 07:53:39 +0000 (GMT)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:57061 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S20022719AbXKMHxb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 13 Nov 2007 07:53:31 +0000
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 4468F310125;
+	Tue, 13 Nov 2007 07:52:53 +0000 (UTC)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [67.116.42.147])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
+	Tue, 13 Nov 2007 07:52:53 +0000 (UTC)
+Received: from jennifer.localdomain ([192.168.7.228]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 12 Nov 2007 23:52:47 -0800
+Message-ID: <473957B6.3030202@avtrex.com>
+Date:	Mon, 12 Nov 2007 23:52:22 -0800
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 2.0.0.5 (X11/20070727)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20071112104423.GA27588@linux-mips.org>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+To:	linux-mips@linux-mips.org
+Cc:	Richard Sandiford <rsandifo@nildram.co.uk>, gcc@gcc.gnu.org
+Subject: Cannot unwind through MIPS signal frames with ICACHE_REFILLS_WORKAROUND_WAR
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 13 Nov 2007 07:52:47.0443 (UTC) FILETIME=[2E894A30:01C825CA]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17475
+X-archive-position: 17476
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Nov 12, 2007 at 10:44:23AM +0000, Ralf Baechle wrote:
-> But even if you get that wrong the expected failure mode is different ...
+With the current kernel (2.6.23.1) in my R5000 based O2 it seems 
+impossible for GCC's exception unwinding machinery to unwind through 
+signal frames.  The cause of the problems is the 
+ICACHE_REFILLS_WORKAROUND_WAR which puts the sigcontext at an almost 
+impossible to determine offset from the signal return trampoline.  The 
+unwinder depends on being able to find the sigcontext given a known 
+location of the trampoline.
 
-Ralf and me had an debug session on IRC and I finally figured out
-what caused the problem: CONFIG_EARLY_PRINTK via prom calls.
+It seems there are a couple of possible solutions:
 
-I simply used call_o32.S from the decstation part and missed the
-fact, that it simply uses the normal kernel stack when calling
-firmware. This works quite good until the first kernel thread
-gets scheduled, which has a kernel stack via a CAC_BASE address.
-So after switching stack the next call to prom_putchar() killed the
-machine. Simply disabling EARLY_PRINTK gives me a working 64bit
-kernel, which sees the whole 512MB RAM :-)
+1) The comments in war.h indicate the problem only exists in R7000 and 
+E9000 processors.  We could turn off the workaround if the kernel is 
+configured for R5000.  That would help me, but not those with the 
+effected systems.
 
-Thomas.
+2) In the non-workaround case, the siginfo immediately follows the 
+trampoline and the first member is the signal number.  For the 
+workaround case the first word following the trampoline is zero.  We 
+could replace this with the offset to the sigcontext which is always a 
+small negative value.  The unwinder could then distinguish the two cases 
+(signal numbers are positive and the offset negative).  If we did this, 
+the change would have to be coordinated with GCC's unwinder (in 
+libgcc_s.so.1).
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+Thoughts?
+
+David Daney

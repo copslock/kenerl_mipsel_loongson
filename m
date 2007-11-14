@@ -1,90 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2007 11:58:24 +0000 (GMT)
-Received: from relay01.mx.bawue.net ([193.7.176.67]:48561 "EHLO
-	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
-	id S20026069AbXKNL6P (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 14 Nov 2007 11:58:15 +0000
-Received: from lagash (intrt.mips-uk.com [194.74.144.130])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by relay01.mx.bawue.net (Postfix) with ESMTP id 75E9C48BCB;
-	Wed, 14 Nov 2007 11:43:45 +0100 (CET)
-Received: from ths by lagash with local (Exim 4.68)
-	(envelope-from <ths@networkno.de>)
-	id 1IsGsi-0006AR-4m; Wed, 14 Nov 2007 11:58:08 +0000
-Date:	Wed, 14 Nov 2007 11:58:08 +0000
-From:	Thiemo Seufer <ths@networkno.de>
-To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2007 12:37:02 +0000 (GMT)
+Received: from fk-out-0910.google.com ([209.85.128.188]:3784 "EHLO
+	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20026277AbXKNMgx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 14 Nov 2007 12:36:53 +0000
+Received: by fk-out-0910.google.com with SMTP id f40so152892fka
+        for <linux-mips@linux-mips.org>; Wed, 14 Nov 2007 04:36:43 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        bh=L4ZWNm9CS0TIPtCphL9PcZWzzLlJTsrXCIPOndF6TeM=;
+        b=UiKq1F3KoZY/D6W7ILacMgAajmlK7KiZI0AclyWGfHocx9l686sAp7mQsH0hI8OFcPjfXD3MyHri1sZFxOUVR5zxcILaSDAWc/WbcbmK35pBgfvvqDGa1+hf4BhcfT3VGQKZUNhv3hgYPRh2LGwIRYVbUw8gABTebeRBWQQYuBQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        b=RUE+s1wvDlOed4b198HJ76I5dmJsflqdqpGCEPNxshmtjWD2/DGq/zNmwpsPaGs9pN56kg77SxEs162QVw3MdnmcJBFyZU/dkPZPcA/rrrmC18zN+YOtUjNLPJ5VtOuH8mmUh9j+nSmWvMQy1Y8IkrDkUxViNMdH8IgTUy6lGjc=
+Received: by 10.82.190.2 with SMTP id n2mr121460buf.1195043803161;
+        Wed, 14 Nov 2007 04:36:43 -0800 (PST)
+Received: from ?192.168.0.1? ( [82.235.205.153])
+        by mx.google.com with ESMTPS id j9sm1010829mue.2007.11.14.04.36.41
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 14 Nov 2007 04:36:42 -0800 (PST)
+Message-ID: <473AEB52.40501@gmail.com>
+Date:	Wed, 14 Nov 2007 13:34:26 +0100
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
+MIME-Version: 1.0
+To:	Thiemo Seufer <ths@networkno.de>
+CC:	Ralf Baechle <ralf@linux-mips.org>,
 	linux-mips <linux-mips@linux-mips.org>
 Subject: Re: [PATCH] Introduce __fill_user() and kill __bzero()
-Message-ID: <20071114115807.GL8363@networkno.de>
-References: <4736C1EA.2050009@gmail.com> <20071111130130.GB8363@networkno.de> <473AB0B6.2070208@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <473AB0B6.2070208@gmail.com>
-User-Agent: Mutt/1.5.16 (2007-06-11)
-Return-Path: <ths@networkno.de>
+References: <4736C1EA.2050009@gmail.com> <20071111130130.GB8363@networkno.de> <473AB0B6.2070208@gmail.com> <20071114115807.GL8363@networkno.de>
+In-Reply-To: <20071114115807.GL8363@networkno.de>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17497
+X-archive-position: 17498
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Franck Bui-Huu wrote:
-> Thiemo Seufer wrote:
-> > Franck Bui-Huu wrote:
-> >>  /*
-> >> - * memset(void *s, int c, size_t n)
-> >> + * An outline version of memset, which should be used either by gcc or
-> >> + * by assembly code.
-> >> + */
-> >> +NESTED(memset, 24, ra)
-> >> +	PTR_ADDU	sp, sp, -24
-> >> +	LONG_S		a0, 16(sp)
-> >> +	LONG_S		ra, 20(sp)
-> >> +	jal		__fill_user
-> >> +	LONG_L		v0, 16(sp)
-> >> +	LONG_L		ra, 20(sp)
-> >> +	PTR_ADDU	sp, sp, 24
-> >> +	jr		ra
-> >> +END(memset)
-> > 
-> > This will break on 64bit kernels.
-> > 
+Thiemo Seufer wrote:
+> In general we do (think of stack unwinding etc.).  I believe this
+> implementation should move to C, as it doesn't need an assembler
+> implementation:
 > 
-> Is the following correct ?
+> void *memset (void *s, int c, kernel_size_t n)
+> {
+> 	__fill_user(s, c, n);
+> 	return s;
+> }
 > 
-> NESTED(memset, 16, ra)
->         PTR_ADDU        sp, sp, -16
->         LONG_S          a0,  8(sp)
->         LONG_S          ra, 16(sp)
->         jal             __fill_user
->         LONG_L          v0,  8(sp)
->         LONG_L          ra, 16(sp)
->         PTR_ADDU        sp, sp, 16
->         jr              ra
-> END(memset)
+> It looks much nicer that way. :-)
 > 
-> I know it doesn't respect any mips ABI but in this case do
-> we really care ?
 
-In general we do (think of stack unwinding etc.).  I believe this
-implementation should move to C, as it doesn't need an assembler
-implementation:
+Sure but memset.S was a really good place to implement memset(), wasn't
+it ?
 
-void *memset (void *s, int c, kernel_size_t n)
-{
-	__fill_user(s, c, n);
-	return s;
-}
+And since the implementation should have been trivial, I thought it was
+ok to implement in assembly.
 
-It looks much nicer that way. :-)
+Ok, I'll look for another place.
 
-
-Thiemo
+Thanks,
+		Franck

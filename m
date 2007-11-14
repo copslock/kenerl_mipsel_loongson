@@ -1,87 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2007 08:26:54 +0000 (GMT)
-Received: from fk-out-0910.google.com ([209.85.128.186]:1806 "EHLO
-	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20024865AbXKNI0q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 14 Nov 2007 08:26:46 +0000
-Received: by fk-out-0910.google.com with SMTP id f40so95874fka
-        for <linux-mips@linux-mips.org>; Wed, 14 Nov 2007 00:26:36 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        bh=D8tQCcUSeg1/mPL6dfvMfUtk2xFcplY1Vow7KaTLBZQ=;
-        b=aDSglRRJWel5Igc12je8wLumoIOj67U93htaZp6j69GivXseozv50MPL3YAxx44IWxRRd5bvjKQl9usgUhfYs0Rle6L3XtKQstDWMrILEaXcgjo1V16buRjnlww+lVRhu/01aCaDDy96lLjRW+Xwn7VT7KerLgSJeVhsARnkqgI=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=cztoGC4SuySmtC0lRfYRBoh+39VFObhSFXuIxlb6fvzbRGRWJJEwK21l8HvoxCDHyiSvfX74+tJWL3ABiRraSQ6P437AA53NcjQrvEDN/t4vVvhdXYtHe0YvM+YbJh7dx7KytWJqI4lNwx5AkZVUcW61rQACJ9EZgHd09c1c8so=
-Received: by 10.82.119.17 with SMTP id r17mr3638701buc.1195028795532;
-        Wed, 14 Nov 2007 00:26:35 -0800 (PST)
-Received: from ?192.168.0.1? ( [82.235.205.153])
-        by mx.google.com with ESMTPS id g1sm616777muf.2007.11.14.00.26.34
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2007 08:45:17 +0000 (GMT)
+Received: from wa-out-1112.google.com ([209.85.146.180]:24374 "EHLO
+	wa-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20024951AbXKNIpJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 14 Nov 2007 08:45:09 +0000
+Received: by wa-out-1112.google.com with SMTP id m16so116879waf
+        for <linux-mips@linux-mips.org>; Wed, 14 Nov 2007 00:44:51 -0800 (PST)
+Received: by 10.114.166.1 with SMTP id o1mr510380wae.1195029891869;
+        Wed, 14 Nov 2007 00:44:51 -0800 (PST)
+Received: from ?192.168.1.154? ( [203.198.58.230])
+        by mx.google.com with ESMTPS id k24sm916182waf.2007.11.14.00.44.38
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 14 Nov 2007 00:26:34 -0800 (PST)
-Message-ID: <473AB0B6.2070208@gmail.com>
-Date:	Wed, 14 Nov 2007 09:24:22 +0100
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
+        Wed, 14 Nov 2007 00:44:50 -0800 (PST)
+Message-ID: <473AB56B.2070107@entone.com>
+Date:	Wed, 14 Nov 2007 16:44:27 +0800
+From:	David Kuk <david.kuk@entone.com>
+User-Agent: Thunderbird 2.0.0.6 (Windows/20070728)
 MIME-Version: 1.0
-To:	Thiemo Seufer <ths@networkno.de>
-CC:	Ralf Baechle <ralf@linux-mips.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] Introduce __fill_user() and kill __bzero()
-References: <4736C1EA.2050009@gmail.com> <20071111130130.GB8363@networkno.de>
-In-Reply-To: <20071111130130.GB8363@networkno.de>
-Content-Type: text/plain; charset=ISO-8859-1
+To:	linux-mips@linux-mips.org
+Subject: smp8634 add memory at dram1
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <vagabon.xyz@gmail.com>
+Return-Path: <david.kuk@entone.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17494
+X-archive-position: 17495
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: david.kuk@entone.com
 Precedence: bulk
 X-list: linux-mips
 
-Thiemo Seufer wrote:
-> Franck Bui-Huu wrote:
->>  /*
->> - * memset(void *s, int c, size_t n)
->> + * An outline version of memset, which should be used either by gcc or
->> + * by assembly code.
->> + */
->> +NESTED(memset, 24, ra)
->> +	PTR_ADDU	sp, sp, -24
->> +	LONG_S		a0, 16(sp)
->> +	LONG_S		ra, 20(sp)
->> +	jal		__fill_user
->> +	LONG_L		v0, 16(sp)
->> +	LONG_L		ra, 20(sp)
->> +	PTR_ADDU	sp, sp, 24
->> +	jr		ra
->> +END(memset)
-> 
-> This will break on 64bit kernels.
-> 
+After study about the memory configuration of sigma smp8634, i found 
+some difficult to accomplish the task.
 
-Is the following correct ?
+so my question is if have two 128MB ram separately under dram0 and dram1 
+controller, where dram0 for linux and dram1 for video decoding. Now the 
+situation is the memory for linux is not enough and video decoding can 
+not use all of it's 128MB at dram1, what we plan to do is to share 64MB 
+at dram1 to the linux kernel as high memory, and only reserved 64MB at 
+dram1 for the video decoding.
 
-NESTED(memset, 16, ra)
-        PTR_ADDU        sp, sp, -16
-        LONG_S          a0,  8(sp)
-        LONG_S          ra, 16(sp)
-        jal             __fill_user
-        LONG_L          v0,  8(sp)
-        LONG_L          ra, 16(sp)
-        PTR_ADDU        sp, sp, 16
-        jr              ra
-END(memset)
+first, in MIPS architecture, we found that the kseg0 and kseg1 are 
+mapped to 0x00000000-0x20000000, which include only dram0 controller, so 
+we wish to add the dram1 memory manually to the kernel using function 
+add_memory_region at setup.c , after booting up result the warning that 
+the memory larger than 512 need to configured the kernel support high 
+memory.
 
-I know it doesn't respect any mips ABI but in this case do
-we really care ?
+then when we configure the kernel to support high memory at menu 
+configure, the kernel when booting up will remind us our CPU do not 
+support high memory due to cache aliases.
 
-thanks.
-
-		Franck
+Both way will lead the linux can not boot up normally, so what should we 
+do, is there any mis-understanding about the hardware implementation or 
+MIPS design? \

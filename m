@@ -1,80 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2007 16:10:21 +0000 (GMT)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:4825 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20029619AbXKNQKM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 14 Nov 2007 16:10:12 +0000
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id EC17130FF5A;
-	Wed, 14 Nov 2007 16:10:08 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Wed, 14 Nov 2007 16:10:08 +0000 (UTC)
-Received: from jennifer.localdomain ([192.168.7.223]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 14 Nov 2007 08:09:54 -0800
-Message-ID: <473B1DD0.2090903@avtrex.com>
-Date:	Wed, 14 Nov 2007 08:09:52 -0800
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070727)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2007 20:41:13 +0000 (GMT)
+Received: from kuber.nabble.com ([216.139.236.158]:27581 "EHLO
+	kuber.nabble.com") by ftp.linux-mips.org with ESMTP
+	id S20030736AbXKNUlF convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 14 Nov 2007 20:41:05 +0000
+Received: from isper.nabble.com ([192.168.236.156])
+	by kuber.nabble.com with esmtp (Exim 4.63)
+	(envelope-from <lists@nabble.com>)
+	id 1IsOzh-0003ol-Sx
+	for linux-mips@linux-mips.org; Wed, 14 Nov 2007 12:37:53 -0800
+Message-ID: <13755803.post@talk.nabble.com>
+Date:	Wed, 14 Nov 2007 12:37:53 -0800 (PST)
+From:	Jiju George T <jijuktm@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Re: MIPS assembly directives in GCC
+In-Reply-To: <dd7dc2bc0711010536l18f9f2f6gbda4e9ef1158da61@mail.gmail.com>
 MIME-Version: 1.0
-To:	David Kuk <david.kuk@entone.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: smp8634 add memory at dram1
-References: <473AB56B.2070107@entone.com>
-In-Reply-To: <473AB56B.2070107@entone.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 14 Nov 2007 16:09:55.0013 (UTC) FILETIME=[CB910750:01C826D8]
-Return-Path: <ddaney@avtrex.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Nabble-From: jijuktm@gmail.com
+References: <dd7dc2bc0711010536l18f9f2f6gbda4e9ef1158da61@mail.gmail.com>
+Return-Path: <lists@nabble.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17502
+X-archive-position: 17503
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: jijuktm@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-David Kuk wrote:
-> After study about the memory configuration of sigma smp8634, i found 
-> some difficult to accomplish the task.
->
-> so my question is if have two 128MB ram separately under dram0 and 
-> dram1 controller, where dram0 for linux and dram1 for video decoding. 
-> Now the situation is the memory for linux is not enough and video 
-> decoding can not use all of it's 128MB at dram1, what we plan to do is 
-> to share 64MB at dram1 to the linux kernel as high memory, and only 
-> reserved 64MB at dram1 for the video decoding.
->
-> first, in MIPS architecture, we found that the kseg0 and kseg1 are 
-> mapped to 0x00000000-0x20000000, which include only dram0 controller, 
-> so we wish to add the dram1 memory manually to the kernel using 
-> function add_memory_region at setup.c , after booting up result the 
-> warning that the memory larger than 512 need to configured the kernel 
-> support high memory.
->
-> then when we configure the kernel to support high memory at menu 
-> configure, the kernel when booting up will remind us our CPU do not 
-> support high memory due to cache aliases.
->
-> Both way will lead the linux can not boot up normally, so what should 
-> we do, is there any mis-understanding about the hardware 
-> implementation or MIPS design?
 
-I think your understanding of the 8634 is at least close to correct.
+See Chapter 8 of
+http://www.cs.unibo.it/~solmi/teaching/arch_2002-2003/AssemblyLanguageProgDoc.pdf
 
-It may be possible (but I have not tried it yet) to use the remapping
-registers to move dram1 into the first 512MB of the memory space.  If it
-is possible, you would then have to modify the gbus access functions
-accordingly.  Also the 8634 media drivers would probably have to be
-changed as well.  I am not sure about the microcode for the media DSPs,
-but if it is dependent on the mapping of the DRAM, then you would
-probably have to get the vendor's help.
+Regards,
+Jiju
 
-Let me know if you are successful.
 
-Thanks,
-David Daney
+Hyon Lim wrote:
+> 
+> I investigated kernel assembly source code in my kernel (2.6.10).
+> I found that there are a lot of assembly directives (e.g., .align, .set
+> reorder, .cpload, .frame etc.).
+> Is there any documents which explains those directives? (not only I
+> described above. All of directives)
+> 
+> -- 
+> Hyon Lim (임현)
+> Mobile. 010-8212-1240 (Intl' Call : +82-10-8212-1240)
+> Fax. 032-232-0578 (Intl' Available)
+> Homepage : http://www.alexlab.net
+> Blog : http://www.alexlab.net/blog
+> 
+> 
+
+-- 
+View this message in context: http://www.nabble.com/MIPS-assembly-directives-in-GCC-tf4731041.html#a13755803
+Sent from the linux-mips main mailing list archive at Nabble.com.

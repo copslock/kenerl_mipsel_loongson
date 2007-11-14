@@ -1,58 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2007 15:14:12 +0000 (GMT)
-Received: from nf-out-0910.google.com ([64.233.182.189]:10706 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20029183AbXKNPOD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 14 Nov 2007 15:14:03 +0000
-Received: by nf-out-0910.google.com with SMTP id c10so175712nfd
-        for <linux-mips@linux-mips.org>; Wed, 14 Nov 2007 07:13:53 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        bh=nu8LxLXgH/BlThpSYnwMCbWIuDgR54wTRkgcoZ4bJ3E=;
-        b=YldHWVxNyxZwxoYE/gURzOUAu06Za/YPsdBU7umpFkLA5K5W7QHPMla7piWAJzRDBUBPKzBPUhLnDSjT9Wa1YSI/nhR0iwZoaiT+OQTwA2V2eujRTF9fJzB4sfbG4iDA/mens42vIBQa61rczLgoYF/TcebXc6qI9hZZIM9eEiQ=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=nEOcRsoHCt7PjwsvtLkxw23iuVoMPMPVF8bXBkCuFb8GsK/1+3owtSpU7Lwz2yeRdQwCq1n6fMJwW+IBHjYZ3fS4wUC9FvSjeMEjYiD9wq2kY1K4GjBxHTT08fuiTATSltWzrVnClOmzwM1ZlJeaYIvF3oCIJjSNcnM6jlfKRrc=
-Received: by 10.78.167.12 with SMTP id p12mr8166935hue.1195053230606;
-        Wed, 14 Nov 2007 07:13:50 -0800 (PST)
-Received: by 10.78.179.18 with HTTP; Wed, 14 Nov 2007 07:13:50 -0800 (PST)
-Message-ID: <cda58cb80711140713r701c5e56hf80741cd70122714@mail.gmail.com>
-Date:	Wed, 14 Nov 2007 16:13:50 +0100
-From:	"Franck Bui-Huu" <vagabon.xyz@gmail.com>
-To:	"Thiemo Seufer" <ths@networkno.de>
-Subject: Re: [PATCH] Introduce __fill_user() and kill __bzero()
-Cc:	"Ralf Baechle" <ralf@linux-mips.org>,
-	linux-mips <linux-mips@linux-mips.org>
-In-Reply-To: <20071114134840.GN8363@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2007 16:10:21 +0000 (GMT)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:4825 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S20029619AbXKNQKM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 14 Nov 2007 16:10:12 +0000
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id EC17130FF5A;
+	Wed, 14 Nov 2007 16:10:08 +0000 (UTC)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [67.116.42.147])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
+	Wed, 14 Nov 2007 16:10:08 +0000 (UTC)
+Received: from jennifer.localdomain ([192.168.7.223]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 14 Nov 2007 08:09:54 -0800
+Message-ID: <473B1DD0.2090903@avtrex.com>
+Date:	Wed, 14 Nov 2007 08:09:52 -0800
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 2.0.0.5 (X11/20070727)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+To:	David Kuk <david.kuk@entone.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: smp8634 add memory at dram1
+References: <473AB56B.2070107@entone.com>
+In-Reply-To: <473AB56B.2070107@entone.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <4736C1EA.2050009@gmail.com> <20071111130130.GB8363@networkno.de>
-	 <473AB0B6.2070208@gmail.com> <20071114115807.GL8363@networkno.de>
-	 <473AEB52.40501@gmail.com> <20071114134840.GN8363@networkno.de>
-Return-Path: <vagabon.xyz@gmail.com>
+X-OriginalArrivalTime: 14 Nov 2007 16:09:55.0013 (UTC) FILETIME=[CB910750:01C826D8]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17501
+X-archive-position: 17502
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Nov 14, 2007 2:48 PM, Thiemo Seufer <ths@networkno.de> wrote:
-> What about using memset.c and fill_user.S ?
+David Kuk wrote:
+> After study about the memory configuration of sigma smp8634, i found 
+> some difficult to accomplish the task.
 >
+> so my question is if have two 128MB ram separately under dram0 and 
+> dram1 controller, where dram0 for linux and dram1 for video decoding. 
+> Now the situation is the memory for linux is not enough and video 
+> decoding can not use all of it's 128MB at dram1, what we plan to do is 
+> to share 64MB at dram1 to the linux kernel as high memory, and only 
+> reserved 64MB at dram1 for the video decoding.
+>
+> first, in MIPS architecture, we found that the kseg0 and kseg1 are 
+> mapped to 0x00000000-0x20000000, which include only dram0 controller, 
+> so we wish to add the dram1 memory manually to the kernel using 
+> function add_memory_region at setup.c , after booting up result the 
+> warning that the memory larger than 512 need to configured the kernel 
+> support high memory.
+>
+> then when we configure the kernel to support high memory at menu 
+> configure, the kernel when booting up will remind us our CPU do not 
+> support high memory due to cache aliases.
+>
+> Both way will lead the linux can not boot up normally, so what should 
+> we do, is there any mis-understanding about the hardware 
+> implementation or MIPS design?
 
-Quite frankly, I don't know if we could create memset.c and put inside
-a function of 2 lines. And I don't think we're going to add some stuff in
-it later.
+I think your understanding of the 8634 is at least close to correct.
 
-What about implementing fill_user() in C ?
+It may be possible (but I have not tried it yet) to use the remapping
+registers to move dram1 into the first 512MB of the memory space.  If it
+is possible, you would then have to modify the gbus access functions
+accordingly.  Also the 8634 media drivers would probably have to be
+changed as well.  I am not sure about the microcode for the media DSPs,
+but if it is dependent on the mapping of the DRAM, then you would
+probably have to get the vendor's help.
 
--- 
-               Franck
+Let me know if you are successful.
+
+Thanks,
+David Daney

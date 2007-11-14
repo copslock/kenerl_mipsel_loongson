@@ -1,61 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2007 20:41:13 +0000 (GMT)
-Received: from kuber.nabble.com ([216.139.236.158]:27581 "EHLO
-	kuber.nabble.com") by ftp.linux-mips.org with ESMTP
-	id S20030736AbXKNUlF convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 14 Nov 2007 20:41:05 +0000
-Received: from isper.nabble.com ([192.168.236.156])
-	by kuber.nabble.com with esmtp (Exim 4.63)
-	(envelope-from <lists@nabble.com>)
-	id 1IsOzh-0003ol-Sx
-	for linux-mips@linux-mips.org; Wed, 14 Nov 2007 12:37:53 -0800
-Message-ID: <13755803.post@talk.nabble.com>
-Date:	Wed, 14 Nov 2007 12:37:53 -0800 (PST)
-From:	Jiju George T <jijuktm@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: Re: MIPS assembly directives in GCC
-In-Reply-To: <dd7dc2bc0711010536l18f9f2f6gbda4e9ef1158da61@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2007 23:20:20 +0000 (GMT)
+Received: from mail.zeugmasystems.com ([192.139.122.66]:51862 "EHLO
+	zeugmasystems.com") by ftp.linux-mips.org with ESMTP
+	id S20031007AbXKNXUL convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 14 Nov 2007 23:20:11 +0000
+x-mimeole: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain;
+	charset="us-ascii"
 Content-Transfer-Encoding: 8BIT
-X-Nabble-From: jijuktm@gmail.com
-References: <dd7dc2bc0711010536l18f9f2f6gbda4e9ef1158da61@mail.gmail.com>
-Return-Path: <lists@nabble.com>
+Subject: "exportfs -a" -> stale NFS filehandle
+Date:	Wed, 14 Nov 2007 15:19:43 -0800
+Message-ID: <DDFD17CC94A9BD49A82147DDF7D545C547AF5B@exchange.ZeugmaSystems.local>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: "exportfs -a" -> stale NFS filehandle
+Thread-Index: AcgnFNbW97dDhBWkQhSAn9o02emXvQ==
+From:	"Kaz Kylheku" <kaz@zeugmasystems.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <kaz@zeugmasystems.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17503
+X-archive-position: 17504
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jijuktm@gmail.com
+X-original-sender: kaz@zeugmasystems.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi all,
 
-See Chapter 8 of
-http://www.cs.unibo.it/~solmi/teaching/arch_2002-2003/AssemblyLanguageProgDoc.pdf
+I have an NFS problem on a multi-node MIPS system running kernel
+2.6.17.7. NFS utils is 1.1.0. ABI is n32.
 
-Regards,
-Jiju
+One node (call it primary) exports a directory which is mounted by
+several others (the secondaries) as their root filesystem.
 
+If I run "exportfs -a" on the primary, the secondary nodes lose their
+root filesystem and so everything stops working.
 
-Hyon Lim wrote:
-> 
-> I investigated kernel assembly source code in my kernel (2.6.10).
-> I found that there are a lot of assembly directives (e.g., .align, .set
-> reorder, .cpload, .frame etc.).
-> Is there any documents which explains those directives? (not only I
-> described above. All of directives)
-> 
-> -- 
-> Hyon Lim (임현)
-> Mobile. 010-8212-1240 (Intl' Call : +82-10-8212-1240)
-> Fax. 032-232-0578 (Intl' Available)
-> Homepage : http://www.alexlab.net
-> Blog : http://www.alexlab.net/blog
-> 
-> 
+I turned on all NFS debugging on a secondary node (sysctl -w
+sunrpc.nfs_debug=65535). What is happening is that NFS operations
+suddenly start returning error -151 (stale NFS filehandle).
 
--- 
-View this message in context: http://www.nabble.com/MIPS-assembly-directives-in-GCC-tf4731041.html#a13755803
-Sent from the linux-mips main mailing list archive at Nabble.com.
+I don't see exportfs causing this problem on other systems. If I run
+"exportfs -a" on a big NFS server (Fedora Core 5, i686) which has lots
+of diskless clients, nothing bad happens. (And some of those diskless
+clients are MIPS systems just like this one!)
+
+I'm pretty sure that exportfs -a shouldn't screw up the existing mounted
+clients.
+
+Could there be some ABI problem that corrupts up the effect of the
+re-exporting operation on the server?
+
+(This issure reproduces always. Something which reproduces rarely is a
+kernel crash on a secondary node, inside the nfsd process, also
+apparently in response to the "exportfs -a". I don't yet have enough
+information about that one, such as a call trace, etc. That one I can
+drill into, if I have a program counter and call stack.)

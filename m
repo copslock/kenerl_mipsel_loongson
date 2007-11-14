@@ -1,86 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2007 07:56:14 +0000 (GMT)
-Received: from tool.snarl.nl ([82.95.241.19]:54542 "EHLO tool.snarl.nl")
-	by ftp.linux-mips.org with ESMTP id S20024522AbXKNH4C (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 14 Nov 2007 07:56:02 +0000
-Received: from localhost (tool.local.snarl.nl [127.0.0.1])
-	by tool.snarl.nl (Postfix) with ESMTP id C1F1E5DFB2;
-	Wed, 14 Nov 2007 08:55:55 +0100 (CET)
-Received: from tool.snarl.nl ([127.0.0.1])
-	by localhost (tool.local.snarl.nl [127.0.0.1]) (amavisd-new, port 10024)
-	with LMTP id RTPR0YIu5NJz; Wed, 14 Nov 2007 08:55:54 +0100 (CET)
-Received: by tool.snarl.nl (Postfix, from userid 1000)
-	id 0B7675DFAF; Wed, 14 Nov 2007 08:55:54 +0100 (CET)
-Date:	Wed, 14 Nov 2007 08:55:53 +0100
-From:	Freddy Spierenburg <freddy@dusktilldawn.nl>
-To:	David Kuk <david.kuk@entone.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: hello
-Message-ID: <20071114075552.GR2391@dusktilldawn.nl>
-References: <473A72DC.1020900@entone.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Nov 2007 08:26:54 +0000 (GMT)
+Received: from fk-out-0910.google.com ([209.85.128.186]:1806 "EHLO
+	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20024865AbXKNI0q (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 14 Nov 2007 08:26:46 +0000
+Received: by fk-out-0910.google.com with SMTP id f40so95874fka
+        for <linux-mips@linux-mips.org>; Wed, 14 Nov 2007 00:26:36 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        bh=D8tQCcUSeg1/mPL6dfvMfUtk2xFcplY1Vow7KaTLBZQ=;
+        b=aDSglRRJWel5Igc12je8wLumoIOj67U93htaZp6j69GivXseozv50MPL3YAxx44IWxRRd5bvjKQl9usgUhfYs0Rle6L3XtKQstDWMrILEaXcgjo1V16buRjnlww+lVRhu/01aCaDDy96lLjRW+Xwn7VT7KerLgSJeVhsARnkqgI=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        b=cztoGC4SuySmtC0lRfYRBoh+39VFObhSFXuIxlb6fvzbRGRWJJEwK21l8HvoxCDHyiSvfX74+tJWL3ABiRraSQ6P437AA53NcjQrvEDN/t4vVvhdXYtHe0YvM+YbJh7dx7KytWJqI4lNwx5AkZVUcW61rQACJ9EZgHd09c1c8so=
+Received: by 10.82.119.17 with SMTP id r17mr3638701buc.1195028795532;
+        Wed, 14 Nov 2007 00:26:35 -0800 (PST)
+Received: from ?192.168.0.1? ( [82.235.205.153])
+        by mx.google.com with ESMTPS id g1sm616777muf.2007.11.14.00.26.34
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 14 Nov 2007 00:26:34 -0800 (PST)
+Message-ID: <473AB0B6.2070208@gmail.com>
+Date:	Wed, 14 Nov 2007 09:24:22 +0100
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="nVYOjVWOcH+Ezkzp"
-Content-Disposition: inline
-In-Reply-To: <473A72DC.1020900@entone.com>
-X-User-Agent-Feature: All mail clients suck. This one just sucks less.
-X-GPG-Key: http://snarl.nl/~freddy/keys/freddyPublicKey.gpg
-User-Agent: Mutt/1.5.16 (2007-06-11)
-Return-Path: <freddy@dusktilldawn.nl>
+To:	Thiemo Seufer <ths@networkno.de>
+CC:	Ralf Baechle <ralf@linux-mips.org>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] Introduce __fill_user() and kill __bzero()
+References: <4736C1EA.2050009@gmail.com> <20071111130130.GB8363@networkno.de>
+In-Reply-To: <20071111130130.GB8363@networkno.de>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17493
+X-archive-position: 17494
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: freddy@dusktilldawn.nl
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
+Thiemo Seufer wrote:
+> Franck Bui-Huu wrote:
+>>  /*
+>> - * memset(void *s, int c, size_t n)
+>> + * An outline version of memset, which should be used either by gcc or
+>> + * by assembly code.
+>> + */
+>> +NESTED(memset, 24, ra)
+>> +	PTR_ADDU	sp, sp, -24
+>> +	LONG_S		a0, 16(sp)
+>> +	LONG_S		ra, 20(sp)
+>> +	jal		__fill_user
+>> +	LONG_L		v0, 16(sp)
+>> +	LONG_L		ra, 20(sp)
+>> +	PTR_ADDU	sp, sp, 24
+>> +	jr		ra
+>> +END(memset)
+> 
+> This will break on 64bit kernels.
+> 
 
---nVYOjVWOcH+Ezkzp
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Is the following correct ?
 
-Hi David,
+NESTED(memset, 16, ra)
+        PTR_ADDU        sp, sp, -16
+        LONG_S          a0,  8(sp)
+        LONG_S          ra, 16(sp)
+        jal             __fill_user
+        LONG_L          v0,  8(sp)
+        LONG_L          ra, 16(sp)
+        PTR_ADDU        sp, sp, 16
+        jr              ra
+END(memset)
 
-On Wed, Nov 14, 2007 at 12:00:28PM +0800, David Kuk wrote:
-> I am a new guy for both linux and mips, may i ask questions here ??
+I know it doesn't respect any mips ABI but in this case do
+we really care ?
 
-If your question is Linux kernel and MIPS related, go ahead! You
-don't need to ask if you may ask a question, just fire it up!
+thanks.
 
-If it is more user-land related in the sense of how can I unpack
-a tarball or the like, you might wander of to some other places
-like http://www.linuxquestions.org/.
-
-As a general rule of thumb; look at the small description of a
-list on a page like:
-http://www.linux-mips.org/wiki/Net_Resources#Mailing_lists
-and see what kind of questions other people ask on the list
-archive: http://www.linux-mips.org/archives/
-This is true not only for the linux-mips community, but for the
-rest too. Good luck!
-
-
---=20
-$ cat ~/.signature
-Freddy Spierenburg <freddy@dusktilldawn.nl>  http://freddy.snarl.nl/
-GnuPG: 0x7941D1E1=3DC948 5851 26D2 FA5C 39F1  E588 6F17 FD5D 7941 D1E1
-$ # Please read http://www.ietf.org/rfc/rfc2015.txt before complain!
-
---nVYOjVWOcH+Ezkzp
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.6 (GNU/Linux)
-
-iD4DBQFHOqoIbxf9XXlB0eERArbQAKCTsXZNnKlFknhe0PiBQ+QNLbqt7ACY6hKv
-19gg9Hhl2xcz+F36v2sVkQ==
-=fMKm
------END PGP SIGNATURE-----
-
---nVYOjVWOcH+Ezkzp--
+		Franck

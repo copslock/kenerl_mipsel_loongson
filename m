@@ -1,80 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Nov 2007 00:49:26 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:48090 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20031102AbXKOAtY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 15 Nov 2007 00:49:24 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lAF0mMR9032364;
-	Thu, 15 Nov 2007 00:48:47 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lAF0mLLw032363;
-	Thu, 15 Nov 2007 00:48:21 GMT
-Date:	Thu, 15 Nov 2007 00:48:21 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Kaz Kylheku <kaz@zeugmasystems.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: "exportfs -a" -> stale NFS filehandle
-Message-ID: <20071115004821.GA32332@linux-mips.org>
-References: <DDFD17CC94A9BD49A82147DDF7D545C547AF5B@exchange.ZeugmaSystems.local>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Nov 2007 08:46:50 +0000 (GMT)
+Received: from nf-out-0910.google.com ([64.233.182.190]:31084 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20023678AbXKOIqm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 15 Nov 2007 08:46:42 +0000
+Received: by nf-out-0910.google.com with SMTP id c10so390314nfd
+        for <linux-mips@linux-mips.org>; Thu, 15 Nov 2007 00:46:32 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        bh=3V45Wj6xgswpitHtIwmcrgKRmENTDowigN2H9FkfzTM=;
+        b=WsEZlysWLGn2lOJDbIW4vsbwz0hdUNvLlWkSE3q+JfZyp5Jd12ot0hAYxWv4HS1U+CcXYNbVH4lqjsRgJj9axOCklIbablg8SbNk0nhMAbOMTeJRKVz+sSV6t9lsXE181/VL4D+n37kCw8i/PorTVzDjD6YMRXFQuYJ0wjfjLOM=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        b=k2rFG1wQWYZ30bbZGaSY3Opf9VJ+n7Dt12pQV6H6gPLnFMvjs6u8T7TCN9kIc486pz7g2p0qhWd8sah4hrOhsLCIAbzn8HbgKvka0SFzSxPKmdon+QdxsoOZM4Z7W2LVMoAkrmfKXLXZbWJs4uyOImiyGfJK0U1wHrA3HGClOuk=
+Received: by 10.86.9.8 with SMTP id 8mr414907fgi.1195116392123;
+        Thu, 15 Nov 2007 00:46:32 -0800 (PST)
+Received: from ?192.168.0.1? ( [82.235.205.153])
+        by mx.google.com with ESMTPS id 22sm2295435fkr.2007.11.15.00.46.30
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 15 Nov 2007 00:46:31 -0800 (PST)
+Message-ID: <473C0761.1040205@gmail.com>
+Date:	Thu, 15 Nov 2007 09:46:25 +0100
+From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DDFD17CC94A9BD49A82147DDF7D545C547AF5B@exchange.ZeugmaSystems.local>
-User-Agent: Mutt/1.5.14 (2007-02-12)
-Return-Path: <ralf@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	linux-mips@linux-mips.org
+Subject: Re: Cannot unwind through MIPS signal frames with	ICACHE_REFILLS_WORKAROUND_WAR
+References: <473957B6.3030202@avtrex.com> <18233.36645.232058.964652@zebedee.pink> <20071113121036.GA6582@linux-mips.org>
+In-Reply-To: <20071113121036.GA6582@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <vagabon.xyz@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17505
+X-archive-position: 17506
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: vagabon.xyz@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 14, 2007 at 03:19:43PM -0800, Kaz Kylheku wrote:
+Ralf Baechle wrote:
+> Another reason is to get rid of the classic trampoline the kernel installs
+> on the stack.  On some multiprocessor systems it requires a cacheflush
 
-> I have an NFS problem on a multi-node MIPS system running kernel
-> 2.6.17.7. NFS utils is 1.1.0. ABI is n32.
-> 
-> One node (call it primary) exports a directory which is mounted by
-> several others (the secondaries) as their root filesystem.
-> 
-> If I run "exportfs -a" on the primary, the secondary nodes lose their
-> root filesystem and so everything stops working.
-> 
-> I turned on all NFS debugging on a secondary node (sysctl -w
-> sunrpc.nfs_debug=65535). What is happening is that NFS operations
-> suddenly start returning error -151 (stale NFS filehandle).
-> 
-> I don't see exportfs causing this problem on other systems. If I run
-> "exportfs -a" on a big NFS server (Fedora Core 5, i686) which has lots
-> of diskless clients, nothing bad happens. (And some of those diskless
-> clients are MIPS systems just like this one!)
-> 
-> I'm pretty sure that exportfs -a shouldn't screw up the existing mounted
-> clients.
-> 
-> Could there be some ABI problem that corrupts up the effect of the
-> re-exporting operation on the server?
+BTW, could we get rid of the trampoline so easily ? I mean won't we have
+to keep it for backward compatibility reasons ?
 
-Can you test below patch?
-
-  Ralf
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
-diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
-index 118be24..01993ec 100644
---- a/arch/mips/kernel/scall64-n32.S
-+++ b/arch/mips/kernel/scall64-n32.S
-@@ -293,7 +293,7 @@ EXPORT(sysn32_call_table)
- 	PTR	sys_ni_syscall			/* 6170, was get_kernel_syms */
- 	PTR	sys_ni_syscall			/* was query_module */
- 	PTR	sys_quotactl
--	PTR	sys_nfsservctl
-+	PTR	compat_sys_nfsservctl
- 	PTR	sys_ni_syscall			/* res. for getpmsg */
- 	PTR	sys_ni_syscall			/* 6175  for putpmsg */
- 	PTR	sys_ni_syscall			/* res. for afs_syscall */
+		Franck

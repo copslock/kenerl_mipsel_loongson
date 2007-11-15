@@ -1,69 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Nov 2007 10:51:47 +0000 (GMT)
-Received: from mail153.messagelabs.com ([216.82.253.51]:37750 "HELO
-	mail153.messagelabs.com") by ftp.linux-mips.org with SMTP
-	id S20025588AbXKOKvi convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 15 Nov 2007 10:51:38 +0000
-X-VirusChecked:	Checked
-X-Env-Sender: marcus.gustafsson@motorola.com
-X-Msg-Ref: server-7.tower-153.messagelabs.com!1195123771!13775708!1
-X-StarScan-Version: 5.5.12.14.2; banners=-,-,-
-X-Originating-IP: [129.188.136.8]
-Received: (qmail 31562 invoked from network); 15 Nov 2007 10:49:31 -0000
-Received: from motgate8.mot.com (HELO motgate8.mot.com) (129.188.136.8)
-  by server-7.tower-153.messagelabs.com with SMTP; 15 Nov 2007 10:49:31 -0000
-Received: from il06exr02.mot.com (il06exr02.mot.com [129.188.137.132])
-	by motgate8.mot.com (8.12.11/Motorola) with ESMTP id lAFAnQ29020904
-	for <linux-mips@linux-mips.org>; Thu, 15 Nov 2007 03:49:30 -0700 (MST)
-Received: from il06vts02.mot.com (il06vts02.mot.com [129.188.137.142])
-	by il06exr02.mot.com (8.13.1/Vontu) with SMTP id lAFAnQMM020809
-	for <linux-mips@linux-mips.org>; Thu, 15 Nov 2007 04:49:26 -0600 (CST)
-Received: from zuk35exm65.ds.mot.com (zuk35exm65.ea.mot.com [10.178.4.21])
-	by il06exr02.mot.com (8.13.1/8.13.0) with ESMTP id lAFAnOqI020799
-	for <linux-mips@linux-mips.org>; Thu, 15 Nov 2007 04:49:25 -0600 (CST)
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Nov 2007 11:53:56 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:16325 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20025259AbXKOLxy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 15 Nov 2007 11:53:54 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lAFBrpY6005214;
+	Thu, 15 Nov 2007 11:53:52 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lAFBrpoN005213;
+	Thu, 15 Nov 2007 11:53:51 GMT
+Date:	Thu, 15 Nov 2007 11:53:51 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Franck Bui-Huu <vagabon.xyz@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Cannot unwind through MIPS signal frames with
+	ICACHE_REFILLS_WORKAROUND_WAR
+Message-ID: <20071115115351.GA4973@linux-mips.org>
+References: <473957B6.3030202@avtrex.com> <18233.36645.232058.964652@zebedee.pink> <20071113121036.GA6582@linux-mips.org> <473C0761.1040205@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: smp8634 add memory at dram1
-Date:	Thu, 15 Nov 2007 10:49:23 -0000
-Message-ID: <8D20BBB55F590E42AADF592A815E86170155CEB0@zuk35exm65.ds.mot.com>
-In-Reply-To: <473B1DD0.2090903@avtrex.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: smp8634 add memory at dram1
-Thread-Index: Acgm2QB4xn+6fb3YRXGJOOt6dN86XAAm96dA
-From:	"Gustafsson Marcus-MGU001" <marcus.gustafsson@motorola.com>
-To:	<linux-mips@linux-mips.org>
-X-CFilter-Loop:	Reflected
-Return-Path: <marcus.gustafsson@motorola.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <473C0761.1040205@gmail.com>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17507
+X-archive-position: 17508
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marcus.gustafsson@motorola.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
- 
-David Daney wrote
-> I think your understanding of the 8634 is at least close to correct.
-> 
-> It may be possible (but I have not tried it yet) to use the 
-> remapping registers to move dram1 into the first 512MB of the 
-> memory space.  If it is possible, you would then have to 
-> modify the gbus access functions accordingly.  Also the 8634 
-> media drivers would probably have to be changed as well.  I 
-> am not sure about the microcode for the media DSPs, but if it 
-> is dependent on the mapping of the DRAM, then you would 
-> probably have to get the vendor's help.
-> 
-> Let me know if you are successful.
-AFAIK the memory bandwith available is not enough for supporting video
-decoding and Linux usage at the same dram controller.
+On Thu, Nov 15, 2007 at 09:46:25AM +0100, Franck Bui-Huu wrote:
 
-/Marcus Gustafsson
+> Ralf Baechle wrote:
+> > Another reason is to get rid of the classic trampoline the kernel installs
+> > on the stack.  On some multiprocessor systems it requires a cacheflush
+> 
+> BTW, could we get rid of the trampoline so easily ? I mean won't we have
+> to keep it for backward compatibility reasons ?
+
+The trampolines are an implementation detail.  Little software needs to
+know about it, so while I expect some slight colateral damage from getting
+rid of trampolines it's not going to be painful.  GDB is the primary piece
+of software that will need to change.
+
+Some of the other architectures have an sa_restorer field in struct
+sigaction but we don't have that on MIPS.
+
+One way to deal with this would be to do a similar as IRIX where the
+sigaction(2) takes a 4th argument which takes the role of sa_restorer.
+For backward compatibility an SA_RESTORER field.  So if the SA_RESTORER
+is clear we'd be using a classic trampoline, if it's set the value of
+the 4th argument.
+
+Or slightly crazier, put a kernel address into the $ra register of the
+invoked signal handler.  So the signal handler will cause an address
+error exception which then can be trapped.  Additional advantage - some of
+the "Don't let your children do this ..." sections of code can go away ;-)
+
+  Ralf

@@ -1,321 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Nov 2007 12:43:48 +0000 (GMT)
-Received: from fk-out-0910.google.com ([209.85.128.187]:7047 "EHLO
-	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20031792AbXKPMnj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 16 Nov 2007 12:43:39 +0000
-Received: by fk-out-0910.google.com with SMTP id f40so877629fka
-        for <linux-mips@linux-mips.org>; Fri, 16 Nov 2007 04:43:39 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:x-enigmail-version:content-type:content-transfer-encoding;
-        bh=/ChyIysmlntpM+gH5nYHv9L/fI8kdtyNENbO3Sf/Z9I=;
-        b=CnRP5KLyv5wTl7IJ+lUFyhOyhjLgXIlK9/wkkq9+4Rexd/TIqbQn7FT5UVerbusIz5vlvmfUApbh2dvPB3gRUeFFpI8qrMzXRk55hKf3dUXsk57r8jVcgfqLAfdX+LGGvN4VBfKxk8HdJM/MIo2fnrzzUbXhZg0BO9SEtafkH6A=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:x-enigmail-version:content-type:content-transfer-encoding;
-        b=Np6i8V/26289kSJb0/ka5gsz2k3Y5ywY1UprCOHignGgBYFdUI1qoPK4RsXpC6pQZSlx0nwg/LBLH2AY/W184lUSU2TUnwVTW3bEHwFKdiZdLDn+1jtobrFiUfc7UofDq+N4An1IUmPdsF8dYoA897NZNqMNHHBqoBFi97xAtrM=
-Received: by 10.82.119.17 with SMTP id r17mr5041276buc.1195217018537;
-        Fri, 16 Nov 2007 04:43:38 -0800 (PST)
-Received: from ?192.168.0.1? ( [82.235.205.153])
-        by mx.google.com with ESMTPS id e9sm5265714muf.2007.11.16.04.43.36
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 16 Nov 2007 04:43:37 -0800 (PST)
-Message-ID: <473D9072.1070209@gmail.com>
-Date:	Fri, 16 Nov 2007 13:43:30 +0100
-From:	Franck Bui-Huu <fbuihuu@gmail.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Nov 2007 23:53:20 +0000 (GMT)
+Received: from mail.zeugmasystems.com ([70.79.96.174]:10058 "EHLO
+	zeugmasystems.com") by ftp.linux-mips.org with ESMTP
+	id S28573704AbXKPXw4 convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 16 Nov 2007 23:52:56 +0000
+x-mimeole: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Thiemo Seufer <ths@networkno.de>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] Introduce __fill_user() and kill __bzero() [take #3]
-X-Enigmail-Version: 0.95.2
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <fbuihuu@gmail.com>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: futex_wake_op deadlock?
+Date:	Fri, 16 Nov 2007 15:52:47 -0800
+Message-ID: <DDFD17CC94A9BD49A82147DDF7D545C54DCBD2@exchange.ZeugmaSystems.local>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: futex_wake_op deadlock?
+Thread-Index: Acgoq8nWvia3iCW7T1uI/ViIlK+6Mw==
+From:	"Kaz Kylheku" <kaz@zeugmasystems.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <kaz@zeugmasystems.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17520
+X-archive-position: 17521
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fbuihuu@gmail.com
+X-original-sender: kaz@zeugmasystems.com
 Precedence: bulk
 X-list: linux-mips
 
-Currently memset() is used to fill a user space area (clear_user) or
-kernel one (memset). These two functions don't have the same
-prototype, the former returning the number of bytes not copied and the
-latter returning the start address of the area to clear. This forces
-memset() to actually returns two values in an unconventional way ie
-the number of bytes not copied is given by $a2. Therefore clear_user()
-needs to call memset() using inline assembly.
+Hey everyone,
 
-Instead this patch creates __fill_user() which is the same as memset()
-except it always returns the number of bytes not copied. This simplify
-clear_user() and makes its definition saner. This patch also renames
-memset.S into fill_user.S as suggested by Thiemo.
+From time to time, on 2.6.17.7, I see a deadlock situation go off. The
+soft lockup tick occurs in the middle of do_futex, which is heavily
+inlined.  The system is actually hosed; it's not one of those
+recoverable CPU busy situations that can sometimes trigger the lockup
+detector.
 
-Also an out of line version of memset is given because gcc generates
-some calls to it since builtin functions have been disabled. It allows
-assembly code to call it too. It has been put into a new file called
-string.c.
+The instruction that is interrupted by the soft lockup tick appears to
+be in the assembly code (__futex_atomic_op) used by the futex_wake_op
+function; the case is FUTEX_OP_SET.  It's the instruction just before
+the load-linked; i.e. the interrupt is outside of the ll/sc loop.
 
-Eventually __bzero() has been removed because it's not part of the
-Linux uaccess API. And the nano-optimization it brings is not
-worthing.
+I can't figure out how the code would get into a loop here. The ll/sc
+logic should eventually succeed. There is a large loop in the overall
+futex operation, but that is bounded by an interation variable
+(attempt++).
 
-Signed-off-by: Franck Bui-Huu <fbuihuu@gmail.com>
----
+(I checked the 2.6.17 head, but there doesn't appear to be any
+futex-related work).
 
- Ralf,
+This lockup has reproduced more than once for us. Once at bootup, and
+several times on shutdown.
 
- Since you use git, this patch has been generated with rename detection
- enabled. It makes the review a lot easier.
+The call stack always includes several do_futex frames, and a
+compat_sys_futex/handle_sysn32 at the top of the chain.
 
- Please consider,
+This is from syslog (the unusual format is due to running metalog rather
+than syslog in our distribution, and the human-readable time in the
+square-bracketed printk timestamps is a locally developed patch):
 
-		Franck
+Jan  3 02:47:02 [kernel] [02:47:02.953075]  [<ffffffff8016de8c>]
+softlockup_tick+0x1bc/0x208
+Jan  3 02:47:02 [kernel] [02:47:02.953121]  [<ffffffff8014cc54>]
+update_process_times+0x9c/0xe8
+Jan  3 02:47:02 [kernel] [02:47:02.953158]  [<ffffffff801098bc>]
+ll_local_timer_interrupt+0x94/0xa8
+Jan  3 02:47:02 [kernel] [02:47:02.953194]  [<ffffffff801026a0>]
+plat_irq_dispatch+0x120/0x1a0
+Jan  3 02:47:02 [kernel] [02:47:02.953221]  [<ffffffff80163758>]
+do_futex+0x870/0xb58
+Jan  3 02:47:02 [kernel] [02:47:02.953251]  [<ffffffff801637e0>]
+do_futex+0x8f8/0xb58
+Jan  3 02:47:02 [kernel] [02:47:02.953275]  [<ffffffff8047b16c>]
+__lock_text_end+0x1b3c/0x474c
+Jan  3 02:47:02 [kernel] [02:47:02.953312]  [<ffffffff8036fc40>]
+sys_sendto+0xe8/0x140
+Jan  3 02:47:02 [kernel] [02:47:02.953345]  [<ffffffff80163fac>]
+compat_sys_futex+0x84/0x188
+Jan  3 02:47:02 [kernel] [02:47:02.953372]  [<ffffffff80116314>]
+handle_sysn32+0x54/0xb0
 
- arch/mips/kernel/mips_ksyms.c           |    2 +-
- arch/mips/lib/Makefile                  |    4 +-
- arch/mips/lib/csum_partial.S            |    2 +-
- arch/mips/lib/{memset.S => fill_user.S} |   34 +++++++++++++++---------------
- arch/mips/lib/memcpy.S                  |    2 +-
- arch/mips/lib/string.c                  |   13 +++++++++++
- include/asm-mips/string.h               |    7 +++++-
- include/asm-mips/uaccess.h              |   17 ++------------
- 8 files changed, 44 insertions(+), 37 deletions(-)
- rename arch/mips/lib/{memset.S => fill_user.S} (90%)
- create mode 100644 arch/mips/lib/string.c
+The sys_sendto is a red herring, since the backtrace function dumps
+every single word on the stack as an address, not having any frame
+pointers to go by.
 
-diff --git a/arch/mips/kernel/mips_ksyms.c b/arch/mips/kernel/mips_ksyms.c
-index 225755d..c7613d3 100644
---- a/arch/mips/kernel/mips_ksyms.c
-+++ b/arch/mips/kernel/mips_ksyms.c
-@@ -38,7 +38,7 @@ EXPORT_SYMBOL(kernel_thread);
-  */
- EXPORT_SYMBOL(__copy_user);
- EXPORT_SYMBOL(__copy_user_inatomic);
--EXPORT_SYMBOL(__bzero);
-+EXPORT_SYMBOL(__fill_user);
- EXPORT_SYMBOL(__strncpy_from_user_nocheck_asm);
- EXPORT_SYMBOL(__strncpy_from_user_asm);
- EXPORT_SYMBOL(__strlen_user_nocheck_asm);
-diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
-index 8810dfb..1c3fea4 100644
---- a/arch/mips/lib/Makefile
-+++ b/arch/mips/lib/Makefile
-@@ -2,8 +2,8 @@
- # Makefile for MIPS-specific library files..
- #
- 
--lib-y	+= csum_partial.o memcpy.o memcpy-inatomic.o memset.o strlen_user.o \
--	   strncpy_user.o strnlen_user.o uncached.o
-+lib-y	+= csum_partial.o fill_user.o memcpy.o memcpy-inatomic.o string.o \
-+	   strlen_user.o strncpy_user.o strnlen_user.o uncached.o
- 
- obj-y			+= iomap.o
- obj-$(CONFIG_PCI)	+= iomap-pci.o
-diff --git a/arch/mips/lib/csum_partial.S b/arch/mips/lib/csum_partial.S
-index c0a77fe..8d3fa1e 100644
---- a/arch/mips/lib/csum_partial.S
-+++ b/arch/mips/lib/csum_partial.S
-@@ -694,7 +694,7 @@ l_exc:
- 	ADD	dst, t0			# compute start address in a1
- 	SUB	dst, src
- 	/*
--	 * Clear len bytes starting at dst.  Can't call __bzero because it
-+	 * Clear len bytes starting at dst.  Can't call memset because it
- 	 * might modify len.  An inefficient loop for these rare times...
- 	 */
- 	beqz	len, done
-diff --git a/arch/mips/lib/memset.S b/arch/mips/lib/fill_user.S
-similarity index 90%
-rename from arch/mips/lib/memset.S
-rename to arch/mips/lib/fill_user.S
-index 3f8b8b3..4329811 100644
---- a/arch/mips/lib/memset.S
-+++ b/arch/mips/lib/fill_user.S
-@@ -46,17 +46,19 @@
- 	.endm
- 
- /*
-- * memset(void *s, int c, size_t n)
-+ * __kernel_size_t __fill_user(void __user *s, long c, __kernel_size_t n)
-  *
-  * a0: start of area to clear
-  * a1: char to fill with
-  * a2: size of area to clear
-+ *
-+ * Returns the number of bytes NOT set or 0 on success.
-  */
- 	.set	noreorder
- 	.align	5
--LEAF(memset)
-+LEAF(__fill_user)
- 	beqz		a1, 1f
--	 move		v0, a0			/* result */
-+	 move		v0, zero		/* result */
- 
- 	andi		a1, 0xff		/* spread fillword */
- 	LONG_SLL		t1, a1, 8
-@@ -68,8 +70,6 @@ LEAF(memset)
- #endif
- 	or		a1, t1
- 1:
--
--FEXPORT(__bzero)
- 	sltiu		t0, a2, LONGSIZE	/* very small region? */
- 	bnez		t0, small_memset
- 	 andi		t0, a0, LONGMASK	/* aligned? */
-@@ -127,7 +127,7 @@ memset_partial:
- 	EX(LONG_S_L, a1, -1(a0), last_fixup)
- #endif
- 1:	jr		ra
--	 move		a2, zero
-+	 nop
- 
- small_memset:
- 	beqz		a2, 2f
-@@ -138,29 +138,29 @@ small_memset:
- 	 sb		a1, -1(a0)
- 
- 2:	jr		ra			/* done */
--	 move		a2, zero
--	END(memset)
-+	 nop
-+END(__fill_user)
- 
- first_fixup:
--	jr	ra
--	 nop
-+	jr		ra
-+	 move		v0, a2
- 
- fwd_fixup:
- 	PTR_L		t0, TI_TASK($28)
- 	LONG_L		t0, THREAD_BUADDR(t0)
--	andi		a2, 0x3f
--	LONG_ADDU	a2, t1
-+	andi		v0, a2, 0x3f
-+	LONG_ADDU	v0, t1
- 	jr		ra
--	 LONG_SUBU	a2, t0
-+	 LONG_SUBU	v0, t0
- 
- partial_fixup:
- 	PTR_L		t0, TI_TASK($28)
- 	LONG_L		t0, THREAD_BUADDR(t0)
--	andi		a2, LONGMASK
--	LONG_ADDU	a2, t1
-+	andi		v0, a2, LONGMASK
-+	LONG_ADDU	v0, t1
- 	jr		ra
--	 LONG_SUBU	a2, t0
-+	 LONG_SUBU	v0, t0
- 
- last_fixup:
- 	jr		ra
--	 andi		v1, a2, LONGMASK
-+	 andi		v0, a2, LONGMASK
-diff --git a/arch/mips/lib/memcpy.S b/arch/mips/lib/memcpy.S
-index a526c62..425f2c3 100644
---- a/arch/mips/lib/memcpy.S
-+++ b/arch/mips/lib/memcpy.S
-@@ -443,7 +443,7 @@ l_exc:
- 	ADD	dst, t0			# compute start address in a1
- 	SUB	dst, src
- 	/*
--	 * Clear len bytes starting at dst.  Can't call __bzero because it
-+	 * Clear len bytes starting at dst.  Can't call memset because it
- 	 * might modify len.  An inefficient loop for these rare times...
- 	 */
- 	beqz	len, done
-diff --git a/arch/mips/lib/string.c b/arch/mips/lib/string.c
-new file mode 100644
-index 0000000..42fb613
---- /dev/null
-+++ b/arch/mips/lib/string.c
-@@ -0,0 +1,13 @@
-+#include <linux/kernel.h>
-+
-+#include <asm/uaccess.h>
-+
-+/*
-+ * An outline version of memset, which should be used either by gcc or
-+ * by assembly code.
-+ */
-+void *memset(void *s, int c, __kernel_size_t len)
-+{
-+	__fill_user(s, c, len);
-+	return s;
-+}
-diff --git a/include/asm-mips/string.h b/include/asm-mips/string.h
-index 436e3ad..2bba927 100644
---- a/include/asm-mips/string.h
-+++ b/include/asm-mips/string.h
-@@ -10,6 +10,7 @@
- #ifndef _ASM_STRING_H
- #define _ASM_STRING_H
- 
-+#include <asm/uaccess.h>	/* __fill_user() */
- 
- /*
-  * Most of the inline functions are rather naive implementations so I just
-@@ -132,7 +133,11 @@ strncmp(__const__ char *__cs, __const__ char *__ct, size_t __count)
- #endif /* CONFIG_32BIT */
- 
- #define __HAVE_ARCH_MEMSET
--extern void *memset(void *__s, int __c, size_t __count);
-+extern inline void *memset(void *s, int c, size_t count)
-+{
-+	__fill_user(s, c, count);
-+	return s;
-+}
- 
- #define __HAVE_ARCH_MEMCPY
- extern void *memcpy(void *__to, __const__ void *__from, size_t __n);
-diff --git a/include/asm-mips/uaccess.h b/include/asm-mips/uaccess.h
-index c30c718..8c0d226 100644
---- a/include/asm-mips/uaccess.h
-+++ b/include/asm-mips/uaccess.h
-@@ -11,7 +11,6 @@
- 
- #include <linux/kernel.h>
- #include <linux/errno.h>
--#include <linux/thread_info.h>
- #include <asm-generic/uaccess.h>
- 
- /*
-@@ -633,23 +632,13 @@ extern size_t __copy_user_inatomic(void *__to, const void *__from, size_t __n);
-  * Returns number of bytes that could not be cleared.
-  * On success, this will be zero.
-  */
-+extern __kernel_size_t __fill_user(void __user *s, long c, __kernel_size_t n);
-+
- static inline __kernel_size_t
- __clear_user(void __user *addr, __kernel_size_t size)
- {
--	__kernel_size_t res;
--
- 	might_sleep();
--	__asm__ __volatile__(
--		"move\t$4, %1\n\t"
--		"move\t$5, $0\n\t"
--		"move\t$6, %2\n\t"
--		__MODULE_JAL(__bzero)
--		"move\t%0, $6"
--		: "=r" (res)
--		: "r" (addr), "r" (size)
--		: "$4", "$5", "$6", __UA_t0, __UA_t1, "$31");
--
--	return res;
-+	return __fill_user(addr, 0, size);
- }
- 
- #define clear_user(addr,n)						\
--- 
-1.5.3.5
+The code surrounding ffffffff80163758:
+
+ffffffff8016374c:	00023000 	sll	a2,v0,0x0
+ffffffff80163750:	08058c77 	j	ffffffff801631dc
+<do_futex+0x2f4>
+ffffffff80163754:	00034000 	sll	a4,v1,0x0
+ffffffff80163758:	0000102d 	move	v0,zero      <----<<
+ffffffff8016375c:	c2030000 	ll	v1,0(s0)
+ffffffff80163760:	00a0082d 	move	at,a1
+ffffffff80163764:	e2010000 	sc	at,0(s0)
+ffffffff80163768:	1020fffc 	beqz	at,ffffffff8016375c
+<do_futex+0x874>
+ffffffff8016376c:	00000000 	nop
+ffffffff80163770:	0000000f 	sync
+ffffffff80163774:	8f870024 	lw	a3,36(gp)
+ffffffff80163778:	00023000 	sll	a2,v0,0x0
+ffffffff8016377c:	08058c77 	j	ffffffff801631dc
+<do_futex+0x2f4>
+
+You can tell from the "move at, a1" that it's the FUTEX_OP_SET case.

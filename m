@@ -1,499 +1,138 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Nov 2007 22:29:31 +0000 (GMT)
-Received: from relay01.mx.bawue.net ([193.7.176.67]:52151 "EHLO
-	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
-	id S20024364AbXKQW3W (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 17 Nov 2007 22:29:22 +0000
-Received: from lagash (88-106-143-223.dynamic.dsl.as9105.com [88.106.143.223])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by relay01.mx.bawue.net (Postfix) with ESMTP id 6FD9348BD0;
-	Sat, 17 Nov 2007 23:30:59 +0100 (CET)
-Received: from ths by lagash with local (Exim 4.68)
-	(envelope-from <ths@networkno.de>)
-	id 1ItWA5-0001Xl-T9; Sat, 17 Nov 2007 22:29:14 +0000
-Date:	Sat, 17 Nov 2007 22:29:13 +0000
-From:	Thiemo Seufer <ths@networkno.de>
-To:	netdev@vger.kernel.org
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: [PATCH, REPOST] Fix/Rewrite of the mipsnet driver
-Message-ID: <20071117222913.GB11996@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Nov 2007 18:23:16 +0000 (GMT)
+Received: from spamgate.koyote.com ([204.11.24.49]:61592 "EHLO
+	spamgate.koyote.com") by ftp.linux-mips.org with ESMTP
+	id S20022867AbXKRSXG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 18 Nov 2007 18:23:06 +0000
+Received: from localhost (test [127.0.0.1])
+	by spamgate.koyote.com (Postfix) with ESMTP id 57329CBF8D
+	for <linux-mips@linux-mips.org>; Sun, 18 Nov 2007 12:21:06 -0600 (CST)
+Received: from spamgate.koyote.com ([127.0.0.1])
+	by localhost (spamgate.koyote.com [127.0.0.1]) (amavisd-new, port 10026)
+	with LMTP id PG9luhf4f5wI for <linux-mips@linux-mips.org>;
+	Sun, 18 Nov 2007 12:21:04 -0600 (CST)
+Received: from mail.localdomain (mail.enetonline.net [204.11.24.29])
+	by spamgate.koyote.com (Postfix) with ESMTP id 261D8CBC7D
+	for <linux-mips@linux-mips.org>; Sun, 18 Nov 2007 12:21:04 -0600 (CST)
+Received: from mythtv.ewol.com (unknown [66.209.47.173])
+	by mail.localdomain (Postfix) with ESMTP id 3ECDE3F8A4D
+	for <linux-mips@linux-mips.org>; Sun, 18 Nov 2007 12:23:02 -0600 (CST)
+Message-ID: <47408305.5090804@cortland.com>
+Date:	Sun, 18 Nov 2007 13:23:01 -0500
+From:	Steve Brown <sbrown@cortland.com>
+User-Agent: Thunderbird 2.0.0.5 (X11/20070727)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.16 (2007-06-11)
-Return-Path: <ths@networkno.de>
+To:	linux-mips@linux-mips.org
+Subject: ohci-ssb driver on a Broadcom BCM5354
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sbrown@cortland.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17524
+X-archive-position: 17525
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: sbrown@cortland.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello All,
+The 5354 has a dual ohci/ehci usb core. It's in an ASUS WL520gu wifi 
+router. The ohci hcd driver registers, but times out reading a 
+descriptor from the device.
 
-currently the mipsnet driver fails after transmitting a number of
-packages because SKBs are allocated but never freed. I fixed that
-and coudn't refrain from removing the most egregious warts.
+Any suggestions on how to track down the problem?
 
-- mipsnet.h folded into mipsnet.c, as it doesn't provide any
-  useful external interface.
-- Free SKB after transmission.
-- Call free_irq in mipsnet_close, to balance the request_irq in
-  mipsnet_open.
-- Removed duplicate read of rxDataCount.
-- Some identifiers are now less verbose.
-- Removed dead and/or unnecessarily complex code.
-- Code formatting fixes.
+I'm using 2.6.32.1 kernel from the openwrt project with the "ohci SSB 
+bus glue" and "Fix ohci-ssb with !CONFIG_PM" patches from linux-mips.  
+If there is a better test frame, let me know and I'll build it and test 
+that.
 
-Tested on Qemu's mipssim emulation, with this patch it can boot a
-Debian NFSroot.
+Is this driver known to work with some combination of Broadcom hardware?
+
+The ohci/usb interface does work w/ the software provided with the WL520gu.
+
+Steve
+
+usbcore: registered new interface driver 
+usbfs                                                                                                         
+
+usbcore: registered new interface driver 
+hub                                                                                                           
+
+usbcore: registered new device driver 
+usb                                                                                                              
+
+ohci_hcd ssb0:1: SSB OHCI 
+Controller                                                                                                                   
+
+ohci_hcd ssb0:1: new USB bus registered, assigned bus number 
+1                                                                                         
+
+ohci_hcd ssb0:1: irq 5, io mem 
+0x18003000                                                                                                              
+
+usb usb1: configuration #1 chosen from 1 
+choice                                                                                                        
+
+hub 1-0:1.0: USB hub 
+found                                                                                                                             
+
+hub 1-0:1.0: 2 ports 
+detected                                                                                                                          
+
+USB Universal Host Controller Interface driver 
+v3.0                                                                                                    
+
+Initializing USB Mass Storage 
+driver...                                                                                                                
+
+usbcore: registered new interface driver 
+usb-storage                                                                                                   
+
+USB Mass Storage support registered.   
+usb 1-1: new full speed USB device using ohci_hcd and address 
+2                                                                                        
+
+usb 1-1: device descriptor read/64, error 
+-145                                                                                                         
 
 
-Thiemo
+===================
 
-
-Signed-off-by: Thiemo Seufer <ths@networkno.de>
----
- b/drivers/net/mipsnet.c |  201 ++++++++++++++++++++++++++++++++----------------
- drivers/net/mipsnet.h   |  112 --------------------------
- 2 files changed, 134 insertions(+), 179 deletions(-)
-
-diff --git a/drivers/net/mipsnet.c b/drivers/net/mipsnet.c
-index aafc3ce..6d343ef 100644
---- a/drivers/net/mipsnet.c
-+++ b/drivers/net/mipsnet.c
-@@ -4,8 +4,6 @@
-  * for more details.
-  */
- 
--#define DEBUG
--
- #include <linux/init.h>
- #include <linux/io.h>
- #include <linux/kernel.h>
-@@ -15,11 +13,93 @@
- #include <linux/platform_device.h>
- #include <asm/mips-boards/simint.h>
- 
--#include "mipsnet.h"		/* actual device IO mapping */
-+#define MIPSNET_VERSION "2007-11-17"
-+
-+/*
-+ * Net status/control block as seen by sw in the core.
-+ */
-+struct mipsnet_regs {
-+	/*
-+	 * Device info for probing, reads as MIPSNET%d where %d is some
-+	 * form of version.
-+	 */
-+	u64 devId;		/*0x00 */
- 
--#define MIPSNET_VERSION "2005-06-20"
-+	/*
-+	 * read only busy flag.
-+	 * Set and cleared by the Net Device to indicate that an rx or a tx
-+	 * is in progress.
-+	 */
-+	u32 busy;		/*0x08 */
- 
--#define mipsnet_reg_address(dev, field) (dev->base_addr + field_offset(field))
-+	/*
-+	 * Set by the Net Device.
-+	 * The device will set it once data has been received.
-+	 * The value is the number of bytes that should be read from
-+	 * rxDataBuffer.  The value will decrease till 0 until all the data
-+	 * from rxDataBuffer has been read.
-+	 */
-+	u32 rxDataCount;	/*0x0c */
-+#define MIPSNET_MAX_RXTX_DATACOUNT (1 << 16)
-+
-+	/*
-+	 * Settable from the MIPS core, cleared by the Net Device.
-+	 * The core should set the number of bytes it wants to send,
-+	 * then it should write those bytes of data to txDataBuffer.
-+	 * The device will clear txDataCount has been processed (not
-+	 * necessarily sent).
-+	 */
-+	u32 txDataCount;	/*0x10 */
-+
-+	/*
-+	 * Interrupt control
-+	 *
-+	 * Used to clear the interrupted generated by this dev.
-+	 * Write a 1 to clear the interrupt. (except bit31).
-+	 *
-+	 * Bit0 is set if it was a tx-done interrupt.
-+	 * Bit1 is set when new rx-data is available.
-+	 *    Until this bit is cleared there will be no other RXs.
-+	 *
-+	 * Bit31 is used for testing, it clears after a read.
-+	 *    Writing 1 to this bit will cause an interrupt to be generated.
-+	 *    To clear the test interrupt, write 0 to this register.
-+	 */
-+	u32 interruptControl;	/*0x14 */
-+#define MIPSNET_INTCTL_TXDONE     (1u << 0)
-+#define MIPSNET_INTCTL_RXDONE     (1u << 1)
-+#define MIPSNET_INTCTL_TESTBIT    (1u << 31)
-+
-+	/*
-+	 * Readonly core-specific interrupt info for the device to signal
-+	 * the core. The meaning of the contents of this field might change.
-+	 */
-+	/* XXX: the whole memIntf interrupt scheme is messy: the device
-+	 * should have no control what so ever of what VPE/register set is
-+	 * being used.
-+	 * The MemIntf should only expose interrupt lines, and something in
-+	 * the config should be responsible for the line<->core/vpe bindings.
-+	 */
-+	u32 interruptInfo;	/*0x18 */
-+
-+	/*
-+	 * This is where the received data is read out.
-+	 * There is more data to read until rxDataReady is 0.
-+	 * Only 1 byte at this regs offset is used.
-+	 */
-+	u32 rxDataBuffer;	/*0x1c */
-+
-+	/*
-+	 * This is where the data to transmit is written.
-+	 * Data should be written for the amount specified in the
-+	 * txDataCount register.
-+	 * Only 1 byte at this regs offset is used.
-+	 */
-+	u32 txDataBuffer;	/*0x20 */
-+};
-+
-+#define regaddr(dev, field) \
-+  (dev->base_addr + offsetof(struct mipsnet_regs, field))
- 
- static char mipsnet_string[] = "mipsnet";
- 
-@@ -29,32 +109,27 @@ static char mipsnet_string[] = "mipsnet";
- static int ioiocpy_frommipsnet(struct net_device *dev, unsigned char *kdata,
- 			int len)
- {
--	uint32_t available_len = inl(mipsnet_reg_address(dev, rxDataCount));
--
--	if (available_len < len)
--		return -EFAULT;
--
- 	for (; len > 0; len--, kdata++)
--		*kdata = inb(mipsnet_reg_address(dev, rxDataBuffer));
-+		*kdata = inb(regaddr(dev, rxDataBuffer));
- 
--	return inl(mipsnet_reg_address(dev, rxDataCount));
-+	return inl(regaddr(dev, rxDataCount));
- }
- 
--static inline ssize_t mipsnet_put_todevice(struct net_device *dev,
-+static inline void mipsnet_put_todevice(struct net_device *dev,
- 	struct sk_buff *skb)
- {
- 	int count_to_go = skb->len;
- 	char *buf_ptr = skb->data;
- 
--	outl(skb->len, mipsnet_reg_address(dev, txDataCount));
-+	outl(skb->len, regaddr(dev, txDataCount));
- 
- 	for (; count_to_go; buf_ptr++, count_to_go--)
--		outb(*buf_ptr, mipsnet_reg_address(dev, txDataBuffer));
-+		outb(*buf_ptr, regaddr(dev, txDataBuffer));
- 
- 	dev->stats.tx_packets++;
- 	dev->stats.tx_bytes += skb->len;
- 
--	return skb->len;
-+	dev_kfree_skb(skb);
- }
- 
- static int mipsnet_xmit(struct sk_buff *skb, struct net_device *dev)
-@@ -69,18 +144,20 @@ static int mipsnet_xmit(struct sk_buff *skb, struct net_device *dev)
- 	return 0;
- }
- 
--static inline ssize_t mipsnet_get_fromdev(struct net_device *dev, size_t count)
-+static inline ssize_t mipsnet_get_fromdev(struct net_device *dev, size_t len)
- {
- 	struct sk_buff *skb;
--	size_t len = count;
- 
--	skb = alloc_skb(len + 2, GFP_KERNEL);
-+	if (!len)
-+		return len;
-+
-+	skb = dev_alloc_skb(len + NET_IP_ALIGN);
- 	if (!skb) {
- 		dev->stats.rx_dropped++;
- 		return -ENOMEM;
- 	}
- 
--	skb_reserve(skb, 2);
-+	skb_reserve(skb, NET_IP_ALIGN);
- 	if (ioiocpy_frommipsnet(dev, skb_put(skb, len), len))
- 		return -EFAULT;
- 
-@@ -92,50 +169,42 @@ static inline ssize_t mipsnet_get_fromdev(struct net_device *dev, size_t count)
- 	dev->stats.rx_packets++;
- 	dev->stats.rx_bytes += len;
- 
--	return count;
-+	return len;
- }
- 
- static irqreturn_t mipsnet_interrupt(int irq, void *dev_id)
- {
- 	struct net_device *dev = dev_id;
--
--	irqreturn_t retval = IRQ_NONE;
--	uint64_t interruptFlags;
--
--	if (irq == dev->irq) {
--		retval = IRQ_HANDLED;
--
--		interruptFlags =
--		    inl(mipsnet_reg_address(dev, interruptControl));
--
--		if (interruptFlags & MIPSNET_INTCTL_TXDONE) {
--			outl(MIPSNET_INTCTL_TXDONE,
--			     mipsnet_reg_address(dev, interruptControl));
--			/* only one packet at a time, we are done. */
--			netif_wake_queue(dev);
--		} else if (interruptFlags & MIPSNET_INTCTL_RXDONE) {
--			mipsnet_get_fromdev(dev,
--				    inl(mipsnet_reg_address(dev, rxDataCount)));
--			outl(MIPSNET_INTCTL_RXDONE,
--			     mipsnet_reg_address(dev, interruptControl));
--
--		} else if (interruptFlags & MIPSNET_INTCTL_TESTBIT) {
--			/*
--			 * TESTBIT is cleared on read.
--			 * And takes effect after a write with 0
--			 */
--			outl(0, mipsnet_reg_address(dev, interruptControl));
--		} else {
--			/* Maybe shared IRQ, just ignore, no clearing. */
--			retval = IRQ_NONE;
--		}
--
--	} else {
--		printk(KERN_INFO "%s: %s(): irq %d for unknown device\n",
--		       dev->name, __FUNCTION__, irq);
--		retval = IRQ_NONE;
-+	u32 int_flags;
-+	irqreturn_t ret = IRQ_NONE;
-+
-+	if (irq != dev->irq)
-+		goto out_badirq;
-+
-+	/* TESTBIT is cleared on read. */
-+	int_flags = inl(regaddr(dev, interruptControl));
-+	if (int_flags & MIPSNET_INTCTL_TESTBIT) {
-+		/* TESTBIT takes effect after a write with 0. */
-+		outl(0, regaddr(dev, interruptControl));
-+		ret = IRQ_HANDLED;
-+	} else if (int_flags & MIPSNET_INTCTL_TXDONE) {
-+		/* Only one packet at a time, we are done. */
-+		dev->stats.tx_packets++;
-+		netif_wake_queue(dev);
-+		outl(MIPSNET_INTCTL_TXDONE,
-+		     regaddr(dev, interruptControl));
-+		ret = IRQ_HANDLED;
-+	} else if (int_flags & MIPSNET_INTCTL_RXDONE) {
-+		mipsnet_get_fromdev(dev, inl(regaddr(dev, rxDataCount)));
-+		outl(MIPSNET_INTCTL_RXDONE, regaddr(dev, interruptControl));
-+		ret = IRQ_HANDLED;
- 	}
--	return retval;
-+	return ret;
-+
-+out_badirq:
-+	printk(KERN_INFO "%s: %s(): irq %d for unknown device\n",
-+	       dev->name, __FUNCTION__, irq);
-+	return ret;
- }
- 
- static int mipsnet_open(struct net_device *dev)
-@@ -144,18 +213,15 @@ static int mipsnet_open(struct net_device *dev)
- 
- 	err = request_irq(dev->irq, &mipsnet_interrupt,
- 			  IRQF_SHARED, dev->name, (void *) dev);
--
- 	if (err) {
--		release_region(dev->base_addr, MIPSNET_IO_EXTENT);
-+		release_region(dev->base_addr, sizeof(struct mipsnet_regs));
- 		return err;
- 	}
- 
- 	netif_start_queue(dev);
- 
- 	/* test interrupt handler */
--	outl(MIPSNET_INTCTL_TESTBIT,
--	     mipsnet_reg_address(dev, interruptControl));
--
-+	outl(MIPSNET_INTCTL_TESTBIT, regaddr(dev, interruptControl));
- 
- 	return 0;
- }
-@@ -163,7 +229,7 @@ static int mipsnet_open(struct net_device *dev)
- static int mipsnet_close(struct net_device *dev)
- {
- 	netif_stop_queue(dev);
--
-+	free_irq(dev->irq, dev);
- 	return 0;
- }
- 
-@@ -194,10 +260,11 @@ static int __init mipsnet_probe(struct device *dev)
- 	 */
- 	netdev->base_addr = 0x4200;
- 	netdev->irq = MIPS_CPU_IRQ_BASE + MIPSCPU_INT_MB0 +
--		      inl(mipsnet_reg_address(netdev, interruptInfo));
-+		      inl(regaddr(netdev, interruptInfo));
- 
- 	/* Get the io region now, get irq on open() */
--	if (!request_region(netdev->base_addr, MIPSNET_IO_EXTENT, "mipsnet")) {
-+	if (!request_region(netdev->base_addr, sizeof(struct mipsnet_regs),
-+			    "mipsnet")) {
- 		err = -EBUSY;
- 		goto out_free_netdev;
- 	}
-@@ -217,7 +284,7 @@ static int __init mipsnet_probe(struct device *dev)
- 	return 0;
- 
- out_free_region:
--	release_region(netdev->base_addr, MIPSNET_IO_EXTENT);
-+	release_region(netdev->base_addr, sizeof(struct mipsnet_regs));
- 
- out_free_netdev:
- 	free_netdev(netdev);
-@@ -231,7 +298,7 @@ static int __devexit mipsnet_device_remove(struct device *device)
- 	struct net_device *dev = dev_get_drvdata(device);
- 
- 	unregister_netdev(dev);
--	release_region(dev->base_addr, MIPSNET_IO_EXTENT);
-+	release_region(dev->base_addr, sizeof(struct mipsnet_regs));
- 	free_netdev(dev);
- 	dev_set_drvdata(device, NULL);
- 
-diff --git a/drivers/net/mipsnet.h b/drivers/net/mipsnet.h
-deleted file mode 100644
-index 0132c67..0000000
---- a/drivers/net/mipsnet.h
-+++ /dev/null
-@@ -1,112 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- */
--#ifndef __MIPSNET_H
--#define __MIPSNET_H
--
--/*
-- *  Id of this Net device, as seen by the core.
-- */
--#define MIPS_NET_DEV_ID ((uint64_t)	   \
--			     ((uint64_t) 'M' <<  0)| \
--			     ((uint64_t) 'I' <<  8)| \
--			     ((uint64_t) 'P' << 16)| \
--			     ((uint64_t) 'S' << 24)| \
--			     ((uint64_t) 'N' << 32)| \
--			     ((uint64_t) 'E' << 40)| \
--			     ((uint64_t) 'T' << 48)| \
--			     ((uint64_t) '0' << 56))
--
--/*
-- * Net status/control block as seen by sw in the core.
-- * (Why not use bit fields? can't be bothered with cross-platform struct
-- *  packing.)
-- */
--struct net_control_block {
--	/*
--	 * dev info for probing
--	 * reads as MIPSNET%d where %d is some form of version
--	 */
--	uint64_t devId;		/* 0x00 */
--
--	/*
--	 * read only busy flag.
--	 * Set and cleared by the Net Device to indicate that an rx or a tx
--	 * is in progress.
--	 */
--	uint32_t busy;		/* 0x08 */
--
--	/*
--	 * Set by the Net Device.
--	 * The device will set it once data has been received.
--	 * The value is the number of bytes that should be read from
--	 * rxDataBuffer.  The value will decrease till 0 until all the data
--	 * from rxDataBuffer has been read.
--	 */
--	uint32_t rxDataCount;	/* 0x0c */
--#define MIPSNET_MAX_RXTX_DATACOUNT (1<<16)
--
--	/*
--	 * Settable from the MIPS core, cleared by the Net Device.  The core
--	 * should set the number of bytes it wants to send, then it should
--	 * write those bytes of data to txDataBuffer.  The device will clear
--	 * txDataCount has been processed (not necessarily sent).
--	 */
--	uint32_t txDataCount;	/* 0x10 */
--
--	/*
--	 * Interrupt control
--	 *
--	 * Used to clear the interrupted generated by this dev.
--	 * Write a 1 to clear the interrupt. (except bit31).
--	 *
--	 * Bit0 is set if it was a tx-done interrupt.
--	 * Bit1 is set when new rx-data is available.
--	 *      Until this bit is cleared there will be no other RXs.
--	 *
--	 * Bit31 is used for testing, it clears after a read.
--	 *    Writing 1 to this bit will cause an interrupt to be generated.
--	 *    To clear the test interrupt, write 0 to this register.
--	 */
--	uint32_t interruptControl;	/*0x14 */
--#define MIPSNET_INTCTL_TXDONE     ((uint32_t)(1 <<  0))
--#define MIPSNET_INTCTL_RXDONE     ((uint32_t)(1 <<  1))
--#define MIPSNET_INTCTL_TESTBIT    ((uint32_t)(1 << 31))
--#define MIPSNET_INTCTL_ALLSOURCES	(MIPSNET_INTCTL_TXDONE | \
--					 MIPSNET_INTCTL_RXDONE | \
--					 MIPSNET_INTCTL_TESTBIT)
--
--	/*
--	 * Readonly core-specific interrupt info for the device to signal the
--	 * core.  The meaning of the contents of this field might change.
--	 *
--	 * TODO: the whole memIntf interrupt scheme is messy: the device should
--	 *       have no control what so ever of what VPE/register set is being
--	 *       used.  The MemIntf should only expose interrupt lines, and
--	 *       something in the config should be responsible for the
--	 *       line<->core/vpe bindings.
--	 */
--	uint32_t interruptInfo;	/* 0x18 */
--
--	/*
--	 *  This is where the received data is read out.
--	 *  There is more data to read until rxDataReady is 0.
--	 *  Only 1 byte at this regs offset is used.
--	 */
--	uint32_t rxDataBuffer;	/* 0x1c */
--
--	/*
--	 * This is where the data to transmit is written.  Data should be
--	 * written for the amount specified in the txDataCount register.  Only
--	 * 1 byte at this regs offset is used.
--	 */
--	uint32_t txDataBuffer;	/* 0x20 */
--};
--
--#define MIPSNET_IO_EXTENT 0x40	/* being generous */
--
--#define field_offset(field) (offsetof(struct net_control_block, field))
--
--#endif /* __MIPSNET_H */
+> root@OpenWrt:/# cat 
+> /proc/bus/usb/devices                                                                                                             
+>  
+>                                                                                                                                                       
+>  
+> T:  Bus=01 Lev=00 Prnt=00 Port=00 Cnt=00 Dev#=  1 Spd=12  MxCh= 
+> 2                                                                                     
+>  
+> B:  Alloc=  0/900 us ( 0%), #Int=  0, #Iso=  
+> 0                                                                                                        
+>  
+> D:  Ver= 1.10 Cls=09(hub  ) Sub=00 Prot=00 MxPS=64 #Cfgs=  
+> 1                                                                                          
+>  
+> P:  Vendor=0000 ProdID=0000 Rev= 
+> 2.06                                                                                                                 
+>  
+> S:  Manufacturer=Linux 2.6.23.1 
+> ssb-usb-ohci                                                                                                          
+>  
+> S:  Product=SSB OHCI 
+> Controller                                                                                                                       
+>  
+> S:  
+> SerialNumber=ssb0:1                                                                                                                               
+>  
+> C:* #Ifs= 1 Cfg#= 1 Atr=e0 MxPwr=  
+> 0mA                                                                                                                
+>  
+> I:* If#= 0 Alt= 0 #EPs= 1 Cls=09(hub  ) Sub=00 Prot=00 
+> Driver=hub                                                                                     
+>  
+> E:  Ad=81(I) Atr=03(Int.) MxPS=   2 
+> Ivl=255ms                                                                                                         
+>  
+                                                             

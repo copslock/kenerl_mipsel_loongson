@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Nov 2007 21:43:00 +0000 (GMT)
-Received: from mail.zeugmasystems.com ([70.79.96.174]:7851 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Nov 2007 22:27:01 +0000 (GMT)
+Received: from mail.zeugmasystems.com ([70.79.96.174]:1967 "EHLO
 	zeugmasystems.com") by ftp.linux-mips.org with ESMTP
-	id S20034829AbXKSVmv convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 19 Nov 2007 21:42:51 +0000
+	id S20034930AbXKSW0w convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 19 Nov 2007 22:26:52 +0000
 x-mimeole: Produced By Microsoft Exchange V6.5
 Content-class: urn:content-classes:message
 MIME-Version: 1.0
 Content-Type: text/plain;
 	charset="us-ascii"
 Content-Transfer-Encoding: 8BIT
-Subject: RE: futex_wake_op deadlock?
-Date:	Mon, 19 Nov 2007 13:42:23 -0800
-Message-ID: <DDFD17CC94A9BD49A82147DDF7D545C54DCDF6@exchange.ZeugmaSystems.local>
-In-Reply-To: <DDFD17CC94A9BD49A82147DDF7D545C54DCDE2@exchange.ZeugmaSystems.local>
+Subject: RE: "exportfs -a" -> stale NFS filehandle
+Date:	Mon, 19 Nov 2007 14:26:24 -0800
+Message-ID: <DDFD17CC94A9BD49A82147DDF7D545C54DCE34@exchange.ZeugmaSystems.local>
+In-Reply-To: <DDFD17CC94A9BD49A82147DDF7D545C54DC8F6@exchange.ZeugmaSystems.local>
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-Thread-Topic: futex_wake_op deadlock?
-Thread-Index: Acgq3M3SscB26V6iT9WqOzIqyKCfJAAFKJyAAACnbWA=
+Thread-Topic: "exportfs -a" -> stale NFS filehandle
+Thread-Index: AcgnwCCtCdy5qIVVTMaI/zfLoW8HSAAAB8CwAM5jgNA=
 From:	"Kaz Kylheku" <kaz@zeugmasystems.com>
 To:	"Ralf Baechle" <ralf@linux-mips.org>
 Cc:	<linux-mips@linux-mips.org>
@@ -24,7 +24,7 @@ Return-Path: <kaz@zeugmasystems.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17535
+X-archive-position: 17536
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,57 +32,57 @@ X-original-sender: kaz@zeugmasystems.com
 Precedence: bulk
 X-list: linux-mips
 
-Earlier, I wrote:
-> I have hacked up little a test program which hosed my board within
-> seconds. The system is not completely hung. However:
+Last week, I wrote:
+> Ralf Baechle wrote:
+>> On Thu, Nov 15, 2007 at 11:26:06AM -0800, Kaz Kylheku wrote:
+>> 
+>>> After backing out the nfsutils patch, the diskless node does boot.
+>>> 
+>>> However, the original "exportfs -a" problem comes back!
+>>> 
+>>> So this problem is not resolved simply by using the correct compat
+>>> routine; it's deeper. 
+>>> 
+>>> Sigh.
+>> 
+>> Thanks for testing anyway!
 > 
-> - I can't kill the test program with Ctrl-C.
-> - I can log into the box with telnet.
-> - If I run "ps aux" to see all processes, the ps command hangs partway
-> through the table, and cannot be killed with Ctrl-C.
-> - System hangs on soft reboot attempt; requires hard reset.
+> I'm continuing to dig into the problem.
+> 
+> The export logic doesn't even go through nfsctl() anyway,
+> which is why I
+> originally hadn't even suspected that syscall.
+> 
+> The nfsexport() function in nfsutils first tries opening
+> "/proc/net/rpc/nfsd.fh./channel". If that works, it uses that, via a
+> text-based protocol. Only if that interface doesn't exist does it fall
+> back on the nfsctl(NFSCTL_EXPORT, ...) interface.
 
-Furthermore: my console loglevel was too high to see the crash on the
-serial console, but, surely enough, the syslog has this:
+Basically, the export table is being mismanaged. Simply restarting NFS
+(service nfs restart) will cause this problem to appear.
 
-Nov 19 14:19:57 [kernel] [14:19:57.846017] BUG: soft lockup detected on
-CPU#1!
-Nov 19 14:19:57 [kernel] [14:19:57.846051] Call Trace:
-Nov 19 14:19:58 [kernel] [14:19:57.846069]  [<ffffffff8016de8c>]
-softlockup_tick+0x1bc/0x208
-Nov 19 14:19:58 [kernel] [14:19:57.846112]  [<ffffffff8014cc54>]
-update_process_times+0x9c/0xe8
-Nov 19 14:19:58 [kernel] [14:19:57.846147]  [<ffffffff801098bc>]
-ll_local_timer_interrupt+0x94/0xa8
-Nov 19 14:19:58 [kernel] [14:19:57.846180]  [<ffffffff801098bc>]
-ll_local_timer_interrupt+0x94/0xa8
-Nov 19 14:19:58 [kernel] [14:19:57.846205]  [<ffffffff801026a0>]
-plat_irq_dispatch+0x120/0x1a0
-Nov 19 14:19:58 [kernel] [14:19:57.846232]  [<ffffffff80163f28>]
-compat_sys_futex+0x0/0x188
-Nov 19 14:19:58 [kernel] [14:19:57.846258]  [<ffffffff801637e0>]
-do_futex+0x8f8/0xb58
-Nov 19 14:19:58 [kernel] [14:19:57.846281]  [<ffffffff8011db28>]
-tlb_do_page_fault_1+0x110/0x128
-Nov 19 14:19:58 [kernel] [14:19:57.846317]  [<ffffffff80163758>]
-do_futex+0x870/0xb58
-Nov 19 14:19:58 [kernel] [14:19:57.846339]  [<ffffffff80163f28>]
-compat_sys_futex+0x0/0x188
-Nov 19 14:19:58 [kernel] [14:19:57.846364]  [<ffffffff80163170>]
-do_futex+0x288/0xb58
-Nov 19 14:19:58 [kernel] [14:19:57.846385]  [<ffffffff801637e0>]
-do_futex+0x8f8/0xb58
-Nov 19 14:19:58 [kernel] [14:19:57.846407]  [<ffffffff80163764>]
-do_futex+0x87c/0xb58
-Nov 19 14:19:58 [kernel] [14:19:57.846430]  [<ffffffff80177500>]
-__alloc_pages+0x70/0x398
-Nov 19 14:19:58 [kernel] [14:19:57.846456]  [<ffffffff80130d1c>]
-try_to_wake_up+0x3c4/0x4f8
-Nov 19 14:19:58 [kernel] [14:19:57.846489]  [<ffffffff802f3c28>]
-__up_read+0xe8/0x130
-Nov 19 14:19:58 [kernel] [14:19:57.846528]  [<ffffffff80163fac>]
-compat_sys_futex+0x84/0x188
-Nov 19 14:19:58 [kernel] [14:19:57.846552]  [<ffffffff80116314>]
-handle_sysn32+0x54/0xb0
-Nov 19 14:19:58 [kernel] [14:19:57.846578]  [<ffffffff80163f28>]
-compat_sys_futex+0x0/0x188
+When the system is first booted up and NFS is started in runlevel 3 by
+the nfs init script, the exportfs command correctly populates the export
+table based on the /etc/exports file.
+
+However, after that, further management of the export table fails. Doing
+an "exportfs -a" clears it out. You can see the table in
+/proc/net/rpc/nfsd.export/content. Before the operation, the table has
+valid entries. After the operation, it simply clears out and stays
+empty. 
+
+This is in spite of the fact that the exportfs command seems to be doing
+exactly what it did the first time when NFS was successfully started
+(i.e. it's a kernel problem; user space is doing the same thing that
+worked before).
+
+I verified that by turning on various additional tracing with sysctl
+(sunrpc.nfsd_debug), and I added some extra traces to the function that
+adds exports (svc_export_parse) to view the messages that are coming
+down the nfsd.fh/channel pipe in /proc.
+
+So the summary is that this problem appears to be some kind of
+corruption of the RPC cache for exports.
+
+I did see the kernel crash with an alignment exception once upon
+reproducing the problem, but haven't been able to repro that.

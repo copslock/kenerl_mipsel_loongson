@@ -1,47 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2007 08:19:05 +0000 (GMT)
-Received: from elvis.franken.de ([193.175.24.41]:50057 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S20026053AbXKTIS4 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Nov 2007 08:18:56 +0000
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1IuOJo-00069F-00; Tue, 20 Nov 2007 09:18:52 +0100
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id 47953C2DE7; Tue, 20 Nov 2007 09:18:35 +0100 (CET)
-Date:	Tue, 20 Nov 2007 09:18:35 +0100
-To:	Markus Gothe <markus.gothe@27m.se>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Florian Lohoff <flo@rfc822.org>, linux-mips@linux-mips.org
-Subject: Re: [SPAM] Re: IP22 64Bit arcboot - current git crashes on 3 machines at different points
-Message-ID: <20071120081834.GA8627@alpha.franken.de>
-References: <20071119160954.GA12244@paradigm.rfc822.org> <20071119193137.GA27317@linux-mips.org> <775F4404-2D0A-4E65-9401-E2193B96DBDC@27m.se>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2007 08:33:09 +0000 (GMT)
+Received: from directfb.org ([212.227.87.76]:31483 "EHLO www.directfb.org")
+	by ftp.linux-mips.org with ESMTP id S20026795AbXKTIdA (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Nov 2007 08:33:00 +0000
+Received: from [88.134.87.7] (helo=[10.1.1.6])
+	by www.directfb.org with esmtpsa (TLS-1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+	(Exim 4.63)
+	(envelope-from <dok@directfb.org>)
+	id 1IuOUI-0006z5-Ri; Tue, 20 Nov 2007 09:29:42 +0100
+Message-ID: <47429AEF.3010403@directfb.org>
+Date:	Tue, 20 Nov 2007 09:29:35 +0100
+From:	Denis Oliver Kropp <dok@directfb.org>
+User-Agent: Thunderbird 2.0.0.6 (X11/20070803)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <775F4404-2D0A-4E65-9401-E2193B96DBDC@27m.se>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+To:	kaka <share.kt@gmail.com>
+CC:	linux-mips@linux-mips.org, uclinux-dev@uclinux.org,
+	celinux-dev@tree.celinuxforum.org,
+	linux-fbdev-users@lists.sourceforge.net,
+	directfb-users@directfb.org, directfb-dev@directfb.org
+Subject: Re: [directfb-dev] Usage of mmap command
+References: <eea8a9c90711192239q6009cbb8y76790fa73bc4a5b7@mail.gmail.com>
+In-Reply-To: <eea8a9c90711192239q6009cbb8y76790fa73bc4a5b7@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <dok@directfb.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17543
+X-archive-position: 17544
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: dok@directfb.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 20, 2007 at 03:49:07AM +0100, Markus Gothe wrote:
-> Afaik R4x00 is just semi-64bit in contrast to the R5K, which derives  
-> from the R10K.
+kaka wrote:
+> Hi All,
+> 
+> void *mmap(void *start, size_t length, int prot, int flags,           int
+> fd, off_t offset);
+> 
+> I am providing 16,00,000 as length parameter in mmap command.
+> It is giving me error as Can't mmap region. on the other hand when i am
+> providing 9,00,000 as length parameter in mmap command.
+> It is successful.
+> This mmap command is being issued from User space.
+> 
+> On the other hand in the framebuffer driver in the kernel spce i have
+> specified the length of mmio in the ioremap as 16,00,000.
 
-how about reading documents ? Early R4k have ugly bugs in 64bit mode,
-but starting with rev5 they run 64bit code pretty well. And R5k does
-in no way derive from R10k.
-
-Thomas.
+The ioremap() is independent of the values propagated to user space
+and fbmem.c via fix.mmio_start and fix.mmio_len, please check these.
 
 -- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+Best regards,
+  Denis Oliver Kropp
+
+.------------------------------------------.
+| DirectFB - Hardware accelerated graphics |
+| http://www.directfb.org/                 |
+"------------------------------------------"

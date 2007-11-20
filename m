@@ -1,68 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2007 11:39:35 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:32977 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20029049AbXKTLjd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 20 Nov 2007 11:39:33 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lAKBdWA2012585;
-	Tue, 20 Nov 2007 11:39:32 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lAKBdVZt012584;
-	Tue, 20 Nov 2007 11:39:31 GMT
-Date:	Tue, 20 Nov 2007 11:39:31 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Markus Gothe <markus.gothe@27m.se>
-Cc:	Florian Lohoff <flo@rfc822.org>, linux-mips@linux-mips.org
-Subject: Re: [SPAM] Re: IP22 64Bit arcboot - current git crashes on 3
-	machines at different points
-Message-ID: <20071120113931.GA12018@linux-mips.org>
-References: <20071119160954.GA12244@paradigm.rfc822.org> <20071119193137.GA27317@linux-mips.org> <775F4404-2D0A-4E65-9401-E2193B96DBDC@27m.se>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2007 13:05:37 +0000 (GMT)
+Received: from relay01.mx.bawue.net ([193.7.176.67]:33760 "EHLO
+	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
+	id S20039490AbXKTNF3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 20 Nov 2007 13:05:29 +0000
+Received: from lagash (intrt.mips-uk.com [194.74.144.130])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by relay01.mx.bawue.net (Postfix) with ESMTP id 651DE48BD9;
+	Tue, 20 Nov 2007 14:04:53 +0100 (CET)
+Received: from ths by lagash with local (Exim 4.68)
+	(envelope-from <ths@networkno.de>)
+	id 1IuSmZ-00030Q-Vs; Tue, 20 Nov 2007 13:04:51 +0000
+Date:	Tue, 20 Nov 2007 13:04:51 +0000
+From:	Thiemo Seufer <ths@networkno.de>
+To:	zhuzhenhua <zzh.hust@gmail.com>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: how to use memory before kernel load address?
+Message-ID: <20071120130451.GI11996@networkno.de>
+References: <50c9a2250711191706g40744ab2w2027124c4bc8dbbb@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <775F4404-2D0A-4E65-9401-E2193B96DBDC@27m.se>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <50c9a2250711191706g40744ab2w2027124c4bc8dbbb@mail.gmail.com>
+User-Agent: Mutt/1.5.16 (2007-06-11)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17548
+X-archive-position: 17549
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 20, 2007 at 03:49:07AM +0100, Markus Gothe wrote:
+zhuzhenhua wrote:
+> hello,all
+>           i want to place my kernel loadaddr=0x81008000 and set
+> EBASE=0x81000000, it workes.
+>          but there is still some memory usable before 0x81000000, for
+> example from 0x80100000 ~ 0x80200000
 
-> Afaik R4x00 is just semi-64bit in contrast to the R5K, which derives from 
-> the R10K.
+The obvious thing to do seems to set LOARADDR to 0x80208000.
 
-Total rubbish.  The R4x00 family hardly is a family but just happens to
-have similar type numbers.
+>          i have try to pass param as mem=1M@1M mem=16M@16M  to the kernel,
+> it seems only take the 0x8000000 ~ kernel_end as reserved.
+>          is there any other options to set the memory useable? ( my kernel
+> version is 2.6.14)
+>          thanks for any hints
 
-  o R4000/R4400 are very close related, 64-bit databus
-  o R4100, R4200, R4300 series only have 32-bit databus and are low end
-    embedded stuff.  All these have 32-bit external busses only.
-  o R4600 was designed by Qed shortly after the R4000 was developed by
-    MIPS.  It has a much shorted pipeline, consumes less power and performs
-    better except for the most heavy FP apps.  The R4700 is a slightly
-    improved version of the R4600 and catches up on FP too but was rarely
-    used.
-  o R5000 has alot of similarities to the R4600/R4700 and was also designed
-    by QED.  Not sure if it really should be considered a derivate of these.
-    The RM7000 and RM9000 family eventually continued this line of evolution.
-  o R10000 is a no-prisoners-taken from scratch OOO CPU design released in
-    '94 and to become SGI's highend processor.  The architecture is
-    aggressive to the point where it even today looks complex - but that
-    also means that the R10000 implementation have hardly any similarity
-    with their predecessors.   The R12000 is a slightly beefed up shrink of
-    the R10000, the R14000 is the same to the R12000 and the R16000 is one
-    more shrink.  Conventional wisdom is that the 2nd shrink already going
-    to return diminishing returns but it seems to have worked for SGI.
+AFAIR the kernel assumes to occupy the lowest addresses of the usable RAM.
 
-And of course all these are are MIPS III/MIPS IV processors, so modulo
-bugs and sanity fully 64-bit software capable.
 
-  Ralf
+Thiemo

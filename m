@@ -1,113 +1,121 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2007 10:46:38 +0000 (GMT)
-Received: from directfb.org ([212.227.87.76]:44506 "EHLO www.directfb.org")
-	by ftp.linux-mips.org with ESMTP id S20029764AbXKTKqK (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Nov 2007 10:46:10 +0000
-Received: from [88.134.87.7] (helo=[10.1.1.6])
-	by www.directfb.org with esmtpsa (TLS-1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-	(Exim 4.63)
-	(envelope-from <dok@directfb.org>)
-	id 1IuQZB-0003PJ-7V; Tue, 20 Nov 2007 11:42:53 +0100
-Message-ID: <4742BA25.9070208@directfb.org>
-Date:	Tue, 20 Nov 2007 11:42:45 +0100
-From:	Denis Oliver Kropp <dok@directfb.org>
-User-Agent: Thunderbird 2.0.0.6 (X11/20070803)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2007 11:22:09 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:42219 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20032015AbXKTLWH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 20 Nov 2007 11:22:07 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lAKBLHGo012079;
+	Tue, 20 Nov 2007 11:21:17 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lAKBL3VI012023;
+	Tue, 20 Nov 2007 11:21:03 GMT
+Date:	Tue, 20 Nov 2007 11:21:03 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Kaz Kylheku <kaz@zeugmasystems.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: futex_wake_op deadlock?
+Message-ID: <20071120112051.GB30675@linux-mips.org>
+References: <20071119184837.GA12287@linux-mips.org> <DDFD17CC94A9BD49A82147DDF7D545C54DCDE2@exchange.ZeugmaSystems.local>
 MIME-Version: 1.0
-To:	kaka <share.kt@gmail.com>
-CC:	linux-mips@linux-mips.org, uclinux-dev@uclinux.org,
-	celinux-dev@tree.celinuxforum.org,
-	linux-fbdev-users@lists.sourceforge.net,
-	directfb-users@directfb.org, directfb-dev@directfb.org
-Subject: Re: Usage of mmap command
-References: <eea8a9c90711192239q6009cbb8y76790fa73bc4a5b7@mail.gmail.com>	 <47429AEF.3010403@directfb.org> <eea8a9c90711200140w46bda8cek6ee1a1817db9ae0d@mail.gmail.com>
-In-Reply-To: <eea8a9c90711200140w46bda8cek6ee1a1817db9ae0d@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <dok@directfb.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DDFD17CC94A9BD49A82147DDF7D545C54DCDE2@exchange.ZeugmaSystems.local>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17546
+X-archive-position: 17547
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dok@directfb.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-kaka wrote:
-> Hi Denis,
+On Mon, Nov 19, 2007 at 01:27:37PM -0800, Kaz Kylheku wrote:
+
+> >> From time to time, on 2.6.17.7, I see a deadlock situation go off.
+> >> The soft lockup tick occurs in the middle of do_futex, which is
+> >> heavily inlined.  The system is actually hosed; it's not one of those
+> >> recoverable CPU busy situations that can sometimes trigger the lockup
+> >> detector.
+> > 
+> > Can you reproduce thing hang also if you're not running in a
+> > binary compat
+> > mode, that is either running o32 binaries on a 32-bit kernel or
+> > 64-bit binaries on a 64-bit kernel? 
 > 
-> Thanks for the reply.
-> I am writing gfxdriver for directFB library for broadcom chip.
-> I have also written a frambuffer driver for broadcom chip.
+> I have hacked up little a test program which hosed my board within
+> seconds.
+> The system is not completely hung. However:
 
-Directly for broadcom or at another company?
+Cute.  So looking again at the futex code this morning it was quite
+obvious what happened.  The ll/sc loops in __futex_atomic_op() had the
+usual fixups necessary for memory acccesses to userspace from kernel
+space installed:
 
-> In directFB code,
-> 
-> static volatile void *
-> system_map_mmio( unsigned int    offset,
->                  int             length )
-> {
->      void *addr;
-> 
->      if (length <= 0)
->           length = dfb_fbdev->shared->fix.mmio_len;
-> 
->      addr = mmap( NULL, length, PROT_READ | PROT_WRITE, MAP_SHARED,
->                   dfb_fbdev->fd, dfb_fbdev->shared->fix.smem_len + offset );
->      if ((int)(addr) == -1) {
->           D_PERROR( "DirectFB/FBDev: Could not mmap MMIO region "
->                      "(offset %d, length %d)!\n", offset, length );
->           return NULL;
->      }
-> 
->      return(volatile void*) ((u8*) addr + (dfb_fbdev->shared->fix.mmio_start&
->                                            dfb_fbdev->shared->page_mask));
-> }
+        __asm__ __volatile__(
+        "       .set    push                            \n"
+        "       .set    noat                            \n"
+        "       .set    mips3                           \n"
+        "1:     ll      %1, %4  # __futex_atomic_op     \n"
+        "       .set    mips0                           \n"
+        "       " insn  "                               \n"
+        "       .set    mips3                           \n"
+        "2:     sc      $1, %2                          \n"
+        "       beqz    $1, 1b                          \n"
+        __WEAK_LLSC_MB
+        "3:                                             \n"
+        "       .set    pop                             \n"
+        "       .set    mips0                           \n"
+        "       .section .fixup,\"ax\"                  \n"
+        "4:     li      %0, %6                          \n"
+        "       j       2b                              \n"	<-----
+        "       .previous                               \n"
+        "       .section __ex_table,\"a\"               \n"
+        "       "__UA_ADDR "\t1b, 4b                    \n"
+        "       "__UA_ADDR "\t2b, 4b                    \n"
+        "       .previous                               \n"
+        : "=r" (ret), "=&r" (oldval), "=R" (*uaddr)
+        : "0" (0), "R" (*uaddr), "Jr" (oparg), "i" (-EFAULT)
+        : "memory");
 
-Can you add printfs to show dfb_fbdev->shared->fix.mmio_start, mmio_len,
-smem_start and smem_len?
+Notice the branch at the end of the fixup code, it goes back to the
+SC instruction.  The SC instruction took an exception so it will not have
+changed $1 so the loop will continue endless unless by coincidence the
+value to be stored from $1 happened to be zero.
 
-> the length and offset i am providing as 0 and -1.
+Obviously this one was MIPS specific and may hit all supported ABIs.  So
+my initial suspicion this might be the issue David Miller recently
+discovered in the binary compat code isn't true.  And it's a local DoS
+probably for all of 2.6.16 and up.
 
-You mean offset 0 and length -1?
+Patch below.  It fixes your test case on a 32-bit kernel for me.
 
-> It is throwing me error as Could not mmap MMIO region.
-> length coming from dfb_fbdev->shared->fix.smem_len is 16,00,000.
+  Ralf
 
-1600000 = 1.6MB?
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
-> When i change the code to  addr = mmap( NULL, 900000, PROT_READ |
-> PROT_WRITE, MAP_SHARED, dfb_fbdev->fd, dfb_fbdev->shared->fix.smem_len +
-> offset );
-
-You changed the length to 900000, but you need to use this to map offset
-900000:
-
-addr = mmap( NULL, length, PROT_READ | PROT_WRITE, MAP_SHARED,
-dfb_fbdev->fd, 900000 );
-
-But it should work if you set smem_len to 900000 in the fb driver.
-
-> Then it works fine but it is not allowing me to write to addresses with
-> offset greater than 900000.
-
-Segfault?
-
-> My requirement is to write in to the MMIO registers with offset between
-> 900000 and 16 00 000.
-
-What exactly is your frame buffer size and physical MMIO address?
-
-You need to put the frame buffer size into smem_len and the physical
-MMIO address into mmio_start, the length into mmio_len.
-
--- 
-Best regards,
-  Denis Oliver Kropp
-
-.------------------------------------------.
-| DirectFB - Hardware accelerated graphics |
-| http://www.directfb.org/                 |
-"------------------------------------------"
+diff --git a/include/asm-mips/futex.h b/include/asm-mips/futex.h
+index 3e7e30d..17f082c 100644
+--- a/include/asm-mips/futex.h
++++ b/include/asm-mips/futex.h
+@@ -35,7 +35,7 @@
+ 		"	.set	mips0				\n"	\
+ 		"	.section .fixup,\"ax\"			\n"	\
+ 		"4:	li	%0, %6				\n"	\
+-		"	j	2b				\n"	\
++		"	j	3b				\n"	\
+ 		"	.previous				\n"	\
+ 		"	.section __ex_table,\"a\"		\n"	\
+ 		"	"__UA_ADDR "\t1b, 4b			\n"	\
+@@ -61,7 +61,7 @@
+ 		"	.set	mips0				\n"	\
+ 		"	.section .fixup,\"ax\"			\n"	\
+ 		"4:	li	%0, %6				\n"	\
+-		"	j	2b				\n"	\
++		"	j	3b				\n"	\
+ 		"	.previous				\n"	\
+ 		"	.section __ex_table,\"a\"		\n"	\
+ 		"	"__UA_ADDR "\t1b, 4b			\n"	\

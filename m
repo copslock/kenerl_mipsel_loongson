@@ -1,58 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Nov 2007 19:00:46 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:1231 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022090AbXKTTAo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 20 Nov 2007 19:00:44 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lAKJ0grk028865;
-	Tue, 20 Nov 2007 19:00:42 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lAKJ0fYL028864;
-	Tue, 20 Nov 2007 19:00:41 GMT
-Date:	Tue, 20 Nov 2007 19:00:41 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	David Daney <ddaney@avtrex.com>
-Cc:	Kaz Kylheku <kaz@zeugmasystems.com>, linux-mips@linux-mips.org
-Subject: Re: futex_wake_op deadlock?
-Message-ID: <20071120190041.GA18138@linux-mips.org>
-References: <20071119184837.GA12287@linux-mips.org> <DDFD17CC94A9BD49A82147DDF7D545C54DCDE2@exchange.ZeugmaSystems.local> <20071120112051.GB30675@linux-mips.org> <4743279B.7070402@avtrex.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Nov 2007 03:58:54 +0000 (GMT)
+Received: from wa-out-1112.google.com ([209.85.146.181]:39736 "EHLO
+	wa-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20024767AbXKUD6p (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 21 Nov 2007 03:58:45 +0000
+Received: by wa-out-1112.google.com with SMTP id m16so2629546waf
+        for <linux-mips@linux-mips.org>; Tue, 20 Nov 2007 19:58:32 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        bh=O+nUE8QUxPfgIN8hH6BJhfnLyDSYLLUhCt8arwODF9o=;
+        b=JNZPuRvstc7OmGtV/DS0HMkMmakkU7kN4CcrRrvGzIGVjFolXyQAlf8cBLHUspzsYzlXDD7ye9XEUR1TBeBlUPVkVA37VsT7BRLN3+/w10Idnl0KY3/nIyKYWDV+U54+sVan64U+/F64IQWmK515HePnlh55VKwVOHIoVClRgSE=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=Zqxa1NCogHrRc25eFSUG6TEwYIJgmbDN5UBgbNvjlEXKrWu9Fw4UpusaMisVxQBLwC2RqafXs2UzCVqqBFllY3v+zGewZQemdKOPtPwsmd7mo2ONnMdtnFpiLv1hHRqnXcPikBAUldIZHv6DwbZZMf/dE6OzrIOVtgURkKaQw7o=
+Received: by 10.114.177.1 with SMTP id z1mr615336wae.1195617512856;
+        Tue, 20 Nov 2007 19:58:32 -0800 (PST)
+Received: by 10.114.168.15 with HTTP; Tue, 20 Nov 2007 19:58:32 -0800 (PST)
+Message-ID: <50c9a2250711201958j5b825f9p5b56f841813fa788@mail.gmail.com>
+Date:	Wed, 21 Nov 2007 11:58:32 +0800
+From:	zhuzhenhua <zzh.hust@gmail.com>
+To:	"Thiemo Seufer" <ths@networkno.de>
+Subject: Re: how to use memory before kernel load address?
+Cc:	linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <20071120130451.GI11996@networkno.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <4743279B.7070402@avtrex.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+References: <50c9a2250711191706g40744ab2w2027124c4bc8dbbb@mail.gmail.com>
+	 <20071120130451.GI11996@networkno.de>
+Return-Path: <zzh.hust@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17555
+X-archive-position: 17556
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: zzh.hust@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 20, 2007 at 10:29:47AM -0800, David Daney wrote:
-
->> Notice the branch at the end of the fixup code, it goes back to the
->> SC instruction.  The SC instruction took an exception so it will not have
->> changed $1 so the loop will continue endless unless by coincidence the
->> value to be stored from $1 happened to be zero.
->>
->> Obviously this one was MIPS specific and may hit all supported ABIs.  So
->> my initial suspicion this might be the issue David Miller recently
->> discovered in the binary compat code isn't true.  And it's a local DoS
->> probably for all of 2.6.16 and up.
->>
+On 11/20/07, Thiemo Seufer <ths@networkno.de> wrote:
+> zhuzhenhua wrote:
+> > hello,all
+> >           i want to place my kernel loadaddr=0x81008000 and set
+> > EBASE=0x81000000, it workes.
+> >          but there is still some memory usable before 0x81000000, for
+> > example from 0x80100000 ~ 0x80200000
 >
-> I mostly similar code is in 2.6.15, so I think it is effected as well. 
-> 2.6.12 on the other hand doesn't seem to have futex.h
+> The obvious thing to do seems to set LOARADDR to 0x80208000.
+>
+> >          i have try to pass param as mem=1M@1M mem=16M@16M  to the kernel,
+> > it seems only take the 0x8000000 ~ kernel_end as reserved.
+> >          is there any other options to set the memory useable? ( my kernel
+> > version is 2.6.14)
+> >          thanks for any hints
+>
+> AFAIR the kernel assumes to occupy the lowest addresses of the usable RAM.
+>
+>
+> Thiemo
+>
 
-It originally appeared in the lmo kernel for 2.6.14-rc1 and a little
-after the 2.6.14 release in kernel.org.
+i have resolve it, by modify as follow:
 
-If I say 2.6.16 then it's simply that I don't ever look at anything that
-doesn't have a -stable branch.
+in arch/mips/kernel/setup.c
 
-  Ralf
+static inline void bootmem_init(void)
+.....
+	if (curr_pfn < start_pfn)                    // just change the judgement
+			curr_pfn = start_pfn;
+                 ....
+		/* Register lowmem ranges */
+		free_bootmem(PFN_PHYS(curr_pfn), PFN_PHYS(size));
+
+thanks all.
+
+zzh

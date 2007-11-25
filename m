@@ -1,87 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Nov 2007 13:02:34 +0000 (GMT)
-Received: from sorrow.cyrius.com ([65.19.161.204]:63755 "EHLO
-	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S20032878AbXKYNC0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 25 Nov 2007 13:02:26 +0000
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id 5EA1CD8E5; Sun, 25 Nov 2007 13:01:49 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 32A69544F2; Sun, 25 Nov 2007 14:01:35 +0100 (CET)
-Date:	Sun, 25 Nov 2007 14:01:35 +0100
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	linux-mips@linux-mips.org
-Cc:	manoj.ekbote@broadcom.com, mark.e.mason@broadcom.com
-Subject: Re: BigSur: oops loading ramdisk
-Message-ID: <20071125130135.GM20922@deprecation.cyrius.com>
-References: <20071125125229.GJ20922@deprecation.cyrius.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20071125125229.GJ20922@deprecation.cyrius.com>
-User-Agent: Mutt/1.5.16 (2007-06-11)
-Return-Path: <tbm@cyrius.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Nov 2007 13:27:21 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:42988 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20033066AbXKYN1N (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 25 Nov 2007 13:27:13 +0000
+Received: from localhost (p8217-ipad401funabasi.chiba.ocn.ne.jp [123.217.242.217])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 91BAC8655; Sun, 25 Nov 2007 22:25:50 +0900 (JST)
+Date:	Sun, 25 Nov 2007 22:28:03 +0900 (JST)
+Message-Id: <20071125.222803.25909189.anemo@mba.ocn.ne.jp>
+To:	tbm@cyrius.com
+Cc:	linux-mips@linux-mips.org, manoj.ekbote@broadcom.com,
+	mark.e.mason@broadcom.com
+Subject: Re: BigSur: garbled characters during boot
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20071125124842.GA32479@deprecation.cyrius.com>
+References: <20071125124842.GA32479@deprecation.cyrius.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17576
+X-archive-position: 17577
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-* Martin Michlmayr <tbm@cyrius.com> [2007-11-25 13:52]:
-> With a 32 bit kernel (current git) on BigSur, I get an oops while
-> trying to load the ramdisk:
-
-With a 64 bit kernel I get:
-
-RAMDISK: Compressed image found at block 0
-VFS: Mounted root (cramfs filesystem) readonly.
-Freeing unused kernel memory: 144k freed
-Warning: unable to open an initial console.
-Error -3 while decompressing!
-ffffffff804f2028(7120)->a800000000516000(4096)
-Error -3 while decompressing!
-ffffffff804f1280(7026)->a800000000515000(4096)
-request_module: runaway loop modprobe binfmt-0000
-request_module: runaway loop modprobe binfmt-0000
-request_module: runaway loop modprobe binfmt-0000
-request_module: runaway loop modprobe binfmt-0000
-request_module: runaway loop modprobe binfmt-0000
-
-I have the following in my .config:
-
-CONFIG_BINFMT_ELF=y
-# CONFIG_BINFMT_MISC is not set
-CONFIG_MIPS32_COMPAT=y
-CONFIG_COMPAT=y
-CONFIG_SYSVIPC_COMPAT=y
-CONFIG_MIPS32_O32=y
-CONFIG_MIPS32_N32=y
-CONFIG_BINFMT_ELF32=y
-
-With 2.6.22 (64 bit) I get:
-
-Linux version 2.6.22-3-sb1a-bcm91480b (Debian 2.6.22-6) (maks@debian.org) (gcc version 4.1.3 20071019 (prerelease) (Debian 4.1.2-17)) #1 SMP Thu Nov 15 10:51:13 UTC 2007
-...
-RAMDISK: Compressed image found at block 0
-VFS: Mounted root (cramfs filesystem) readonly.
-[ delay of a few seconds here -- tbm ]
-[DL2?]
-[DL2D]
-[DC ?]
-[DC D]
-[HELO]
-[L1CI]
-[L2CI]
-[CPU3]
-[cpu3]
-[CPU2]
-[cpu2]
-...
-
--- 
-Martin Michlmayr
-http://www.cyrius.com/
+T24gU3VuLCAyNSBOb3YgMjAwNyAxMzo0ODo0MiArMDEwMCwgTWFydGluIE1pY2hsbWF5ciA8dGJt
+QGN5cml1cy5jb20+IHdyb3RlOg0KPiBXaGVuIEkgYm9vdCBhIGN1cnJlbnQga2VybmVsIGZyb20g
+Z2l0IG9uIGEgQmlnU3VyIGJvYXJkIEkgZ2V0IHNvbWUNCj4gZ2FyYmxlZCBjaGFyYWN0ZXJzOg0K
+PiANCj4gU3ludGhlc2l6ZWQgVExCIHN0b3JlIGhhbmRsZXIgZmFzdHBhdGggKDMxIGluc3RydWN0
+aW9ucykuDQo+IFN5bnRoZXNpemVkIFRMQiBtb2RpZnkgaGFuZGxlciBmYXN0cGF0aCAoMzAgaW5z
+dHJ1Y3Rpb25zKS4NCj4g77+977+9zaHvv73Rhe+/ve+/ve+/ve+/ve+/ve+/ve+/vcml77+977+9
+6YGa77+977+977+977+9QnrJke+/ve+/vemBqmLvv73vv73vv73vv73vv73vv73vv73Rlc2lNVLv
+v71Jbm9kZS1jYWNoZSBoYXNoIHRhYmxlIGVudHJpZXM6IDE2Mzg0IChvcmRlcjogNCwgNjU1MzYg
+Ynl0ZXMpDQo+IE1lbW9yeTogMjUwNDM2ay8yNTc1NjhrIGF2YWlsYWJsZSAoMjU2MWsga2VybmVs
+IGNvZGUsIDY5NDBrIHJlc2VydmVkLCA4MjZrIGRhdGEsIDEzMmsgaW5pdCwgMGsgaGlnaG1lbSkN
+Cj4gTW91bnQtY2FjaGUgaGFzaCB0YWJsZSBlbnRyaWVzOiA1MTINCj4gDQo+IEFueSBpZGVhIHdo
+YXQgdGhpcyBtaWdodCBiZT8NCg0KRG8geW91IGVuYWJsZSBFQVJMWV9QUklOVEs/ICBJZiBzbywg
+dGhpcyBtaWdodCBiZSB0aGUgY29uc29sZS1oYW5kb3Zlcg0KaXNzdWUuICBPbiB0aGUgaGFuZG92
+ZXIsICJjb25zb2xlIGhhbmRvdmVyOiBib290IC4uLiIgbWVzc2FnZSB3aWxsIGJlDQpwcmludGVk
+IGJvdGggZWFybHkgY29uc29sZSBhbmQgbmV3IGNvbnNvbGUuICBJZiB0aGV5IHdlcmUgc2FtZSBk
+ZXZpY2UsDQpkcml2ZXJzIG1pZ2h0IGJlIGNvbmZ1c2VkLg0KDQpJSVJDIE1hY2llaiBoYXZlIHRy
+aWVkIHRvIGZpeCB0aGlzIGlzc3VlIGEgd2hpbGUgYWdvIG9uIExLTUwuDQoNCi0tLQ0KQXRzdXNo
+aSBOZW1vdG8NCg==

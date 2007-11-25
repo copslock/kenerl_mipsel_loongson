@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Nov 2007 22:41:57 +0000 (GMT)
-Received: from elvis.franken.de ([193.175.24.41]:50150 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S28573740AbXKZWkS (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Nov 2007 22:42:21 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:49638 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S28573742AbXKZWkS (ORCPT
 	<rfc822;linux-mips@linux-mips.org>); Mon, 26 Nov 2007 22:40:18 +0000
 Received: from uucp (helo=solo.franken.de)
 	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1Iwmch-0006QN-01; Mon, 26 Nov 2007 23:40:15 +0100
+	id 1Iwmch-0006QN-05; Mon, 26 Nov 2007 23:40:15 +0100
 Received: by solo.franken.de (Postfix, from userid 1000)
-	id A566CC2B26; Mon, 26 Nov 2007 23:39:21 +0100 (CET)
+	id 9BAAAC2B26; Mon, 26 Nov 2007 23:39:55 +0100 (CET)
 From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To:	linux-scsi@vger.kernel.org, linux-mips@linux-mips.org
-cc:	ralf@linux-mips.org, James.Bottomley@HansenPartnership.com
-Date:	Mon, 26 Nov 2007 18:41:15 +0100
-Subject: [PATCH] SGIWD93: use cached memory access to make driver work on IP28
-Message-Id: <20071126223921.A566CC2B26@solo.franken.de>
+To:	linux-mips@linux-mips.org
+cc:	ralf@linux-mips.org
+Date:	Sun, 25 Nov 2007 11:47:56 +0100
+Subject: [PATCH] IP28: added cache barrier to assembly routines
+Message-Id: <20071126223955.9BAAAC2B26@solo.franken.de>
 Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17598
+X-archive-position: 17599
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -25,208 +25,174 @@ X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-Following patch is 2.6.25 material needed to get SGI IP28 machines
-supported.
+IP28 needs special treatment to avoid speculative accesses. gcc
+takes care for .c code, but for assembly code we need to do it
+manually.
 
-Thomas.
-
-SGI IP28 machines would need special treatment (enable adding addtional
-wait states) when accessing memory uncached. To avoid this pain I
-changed the driver to use only cached access to memory.
+This is taken from Peter Fuersts IP28 patches.
 
 Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 ---
- drivers/scsi/sgiwd93.c |   68 ++++++++++++++++++++++++++++++-----------------
- 1 files changed, 43 insertions(+), 25 deletions(-)
+ arch/mips/lib/memcpy.S       |   10 ++++++++++
+ arch/mips/lib/memset.S       |    5 +++++
+ arch/mips/lib/strncpy_user.S |    1 +
+ include/asm-mips/asm.h       |    8 ++++++++
+ 4 files changed, 24 insertions(+), 0 deletions(-)
 
-diff --git a/drivers/scsi/sgiwd93.c b/drivers/scsi/sgiwd93.c
-index eef8275..d4e6468 100644
---- a/drivers/scsi/sgiwd93.c
-+++ b/drivers/scsi/sgiwd93.c
-@@ -33,19 +33,27 @@
- 
- struct ip22_hostdata {
- 	struct WD33C93_hostdata wh;
--	struct hpc_data {
--		dma_addr_t      dma;
--		void		*cpu;
--	} hd;
-+	dma_addr_t dma;
-+	void *cpu;
-+	void *dev;
- };
- 
- #define host_to_hostdata(host) ((struct ip22_hostdata *)((host)->hostdata))
- 
- struct hpc_chunk {
- 	struct hpc_dma_desc desc;
--	u32 _padding;	/* align to quadword boundary */
-+	u32 _padding[128/4 - 3];	/* align to biggest cache line size */
- };
- 
-+/* space for hpc dma descriptors */
-+#define HPC_DMA_SIZE   (4 * PAGE_SIZE)
-+
-+/* we only need to sync the dma descriptor */
-+#define DMA_HPC_SYNC(dev, hcp, dir) \
-+	dma_cache_sync(dev, hcp, sizeof(struct hpc_dma_desc), dir)
-+
-+#define DMA_DIR(d)   ((d == DATA_OUT_DIR) ? DMA_TO_DEVICE : DMA_FROM_DEVICE)
-+
- static irqreturn_t sgiwd93_intr(int irq, void *dev_id)
- {
- 	struct Scsi_Host * host = dev_id;
-@@ -59,14 +67,14 @@ static irqreturn_t sgiwd93_intr(int irq, void *dev_id)
- }
- 
- static inline
--void fill_hpc_entries(struct hpc_chunk *hcp, struct scsi_cmnd *cmd, int datainp)
-+void fill_hpc_entries(void *dev, struct hpc_chunk *hcp, struct scsi_cmnd *cmd, int datainp)
- {
- 	unsigned long len = cmd->SCp.this_residual;
- 	void *addr = cmd->SCp.ptr;
- 	dma_addr_t physaddr;
- 	unsigned long count;
- 
--	physaddr = dma_map_single(NULL, addr, len, cmd->sc_data_direction);
-+	physaddr = dma_map_single(dev, addr, len, DMA_DIR(datainp));
- 	cmd->SCp.dma_handle = physaddr;
- 
- 	while (len) {
-@@ -77,6 +85,7 @@ void fill_hpc_entries(struct hpc_chunk *hcp, struct scsi_cmnd *cmd, int datainp)
- 		count = len > 8192 ? 8192 : len;
- 		hcp->desc.pbuf = physaddr;
- 		hcp->desc.cntinfo = count;
-+		DMA_HPC_SYNC(dev, hcp, DMA_TO_DEVICE);
- 		hcp++;
- 		len -= count;
- 		physaddr += count;
-@@ -89,6 +98,7 @@ void fill_hpc_entries(struct hpc_chunk *hcp, struct scsi_cmnd *cmd, int datainp)
+diff --git a/arch/mips/lib/memcpy.S b/arch/mips/lib/memcpy.S
+index a526c62..054399d 100644
+--- a/arch/mips/lib/memcpy.S
++++ b/arch/mips/lib/memcpy.S
+@@ -194,6 +194,7 @@ FEXPORT(__copy_user)
  	 */
- 	hcp->desc.pbuf = 0;
- 	hcp->desc.cntinfo = HPCDMA_EOX;
-+	DMA_HPC_SYNC(dev, hcp, DMA_TO_DEVICE);
- }
+ #define rem t8
  
- static int dma_setup(struct scsi_cmnd *cmd, int datainp)
-@@ -96,7 +106,7 @@ static int dma_setup(struct scsi_cmnd *cmd, int datainp)
- 	struct ip22_hostdata *hdata = host_to_hostdata(cmd->device->host);
- 	struct hpc3_scsiregs *hregs =
- 		(struct hpc3_scsiregs *) cmd->device->host->base;
--	struct hpc_chunk *hcp = (struct hpc_chunk *) hdata->hd.cpu;
-+	struct hpc_chunk *hcp = (struct hpc_chunk *)hdata->cpu;
++	R10KCBARRIER(0(ra))
+ 	/*
+ 	 * The "issue break"s below are very approximate.
+ 	 * Issue delays for dcache fills will perturb the schedule, as will
+@@ -226,6 +227,7 @@ both_aligned:
+ 	PREF(	1, 3*32(dst) )
+ 	.align	4
+ 1:
++	R10KCBARRIER(0(ra))
+ EXC(	LOAD	t0, UNIT(0)(src),	l_exc)
+ EXC(	LOAD	t1, UNIT(1)(src),	l_exc_copy)
+ EXC(	LOAD	t2, UNIT(2)(src),	l_exc_copy)
+@@ -267,6 +269,7 @@ EXC(	LOAD	t2, UNIT(2)(src),	l_exc_copy)
+ EXC(	LOAD	t3, UNIT(3)(src),	l_exc_copy)
+ 	SUB	len, len, 4*NBYTES
+ 	ADD	src, src, 4*NBYTES
++	R10KCBARRIER(0(ra))
+ EXC(	STORE	t0, UNIT(0)(dst),	s_exc_p4u)
+ EXC(	STORE	t1, UNIT(1)(dst),	s_exc_p3u)
+ EXC(	STORE	t2, UNIT(2)(dst),	s_exc_p2u)
+@@ -280,6 +283,7 @@ less_than_4units:
+ 	beq	rem, len, copy_bytes
+ 	 nop
+ 1:
++	R10KCBARRIER(0(ra))
+ EXC(	LOAD	t0, 0(src),		l_exc)
+ 	ADD	src, src, NBYTES
+ 	SUB	len, len, NBYTES
+@@ -325,6 +329,7 @@ EXC(	LDFIRST	t3, FIRST(0)(src),	l_exc)
+ EXC(	LDREST	t3, REST(0)(src),	l_exc_copy)
+ 	SUB	t2, t2, t1	# t2 = number of bytes copied
+ 	xor	match, t0, t1
++	R10KCBARRIER(0(ra))
+ EXC(	STFIRST t3, FIRST(0)(dst),	s_exc)
+ 	beq	len, t2, done
+ 	 SUB	len, len, t2
+@@ -345,6 +350,7 @@ src_unaligned_dst_aligned:
+  * It's OK to load FIRST(N+1) before REST(N) because the two addresses
+  * are to the same unit (unless src is aligned, but it's not).
+  */
++	R10KCBARRIER(0(ra))
+ EXC(	LDFIRST	t0, FIRST(0)(src),	l_exc)
+ EXC(	LDFIRST	t1, FIRST(1)(src),	l_exc_copy)
+ 	SUB     len, len, 4*NBYTES
+@@ -373,6 +379,7 @@ cleanup_src_unaligned:
+ 	beq	rem, len, copy_bytes
+ 	 nop
+ 1:
++	R10KCBARRIER(0(ra))
+ EXC(	LDFIRST t0, FIRST(0)(src),	l_exc)
+ EXC(	LDREST	t0, REST(0)(src),	l_exc_copy)
+ 	ADD	src, src, NBYTES
+@@ -386,6 +393,7 @@ copy_bytes_checklen:
+ 	 nop
+ copy_bytes:
+ 	/* 0 < len < NBYTES  */
++	R10KCBARRIER(0(ra))
+ #define COPY_BYTE(N)			\
+ EXC(	lb	t0, N(src), l_exc);	\
+ 	SUB	len, len, 1;		\
+@@ -498,6 +506,7 @@ LEAF(__rmemcpy)					/* a0=dst a1=src a2=len */
+ 	ADD	a1, a2				# src = src + len
  
- 	pr_debug("dma_setup: datainp<%d> hcp<%p> ", datainp, hcp);
+ r_end_bytes:
++	R10KCBARRIER(0(ra))
+ 	lb	t0, -1(a1)
+ 	SUB	a2, a2, 0x1
+ 	sb	t0, -1(a0)
+@@ -510,6 +519,7 @@ r_out:
+ 	 move	a2, zero
  
-@@ -111,12 +121,12 @@ static int dma_setup(struct scsi_cmnd *cmd, int datainp)
- 	if (cmd->SCp.ptr == NULL || cmd->SCp.this_residual == 0)
- 		return 1;
+ r_end_bytes_up:
++	R10KCBARRIER(0(ra))
+ 	lb	t0, (a1)
+ 	SUB	a2, a2, 0x1
+ 	sb	t0, (a0)
+diff --git a/arch/mips/lib/memset.S b/arch/mips/lib/memset.S
+index 3f8b8b3..aad0639 100644
+--- a/arch/mips/lib/memset.S
++++ b/arch/mips/lib/memset.S
+@@ -77,6 +77,7 @@ FEXPORT(__bzero)
+ 	beqz		t0, 1f
+ 	 PTR_SUBU	t0, LONGSIZE		/* alignment in bytes */
  
--	fill_hpc_entries(hcp, cmd, datainp);
-+	fill_hpc_entries(hdata->dev, hcp, cmd, datainp);
++	R10KCBARRIER(0(ra))
+ #ifdef __MIPSEB__
+ 	EX(LONG_S_L, a1, (a0), first_fixup)	/* make word/dword aligned */
+ #endif
+@@ -94,11 +95,13 @@ FEXPORT(__bzero)
+ 	PTR_ADDU	t1, a0			/* end address */
+ 	.set		reorder
+ 1:	PTR_ADDIU	a0, 64
++	R10KCBARRIER(0(ra))
+ 	f_fill64 a0, -64, a1, fwd_fixup
+ 	bne		t1, a0, 1b
+ 	.set		noreorder
  
- 	pr_debug(" HPCGO\n");
+ memset_partial:
++	R10KCBARRIER(0(ra))
+ 	PTR_LA		t1, 2f			/* where to start */
+ #if LONGSIZE == 4
+ 	PTR_SUBU	t1, t0
+@@ -120,6 +123,7 @@ memset_partial:
  
- 	/* Start up the HPC. */
--	hregs->ndptr = hdata->hd.dma;
-+	hregs->ndptr = hdata->dma;
- 	if (datainp)
- 		hregs->ctrl = HPC3_SCTRL_ACTIVE;
- 	else
-@@ -134,6 +144,9 @@ static void dma_stop(struct Scsi_Host *instance, struct scsi_cmnd *SCpnt,
- 	if (!SCpnt)
- 		return;
+ 	beqz		a2, 1f
+ 	 PTR_ADDU	a0, a2			/* What's left */
++	R10KCBARRIER(0(ra))
+ #ifdef __MIPSEB__
+ 	EX(LONG_S_R, a1, -1(a0), last_fixup)
+ #endif
+@@ -134,6 +138,7 @@ small_memset:
+ 	 PTR_ADDU	t1, a0, a2
  
-+	if (SCpnt->SCp.ptr == NULL || SCpnt->SCp.this_residual == 0)
-+		return;
+ 1:	PTR_ADDIU	a0, 1			/* fill bytewise */
++	R10KCBARRIER(0(ra))
+ 	bne		t1, a0, 1b
+ 	 sb		a1, -1(a0)
+ 
+diff --git a/arch/mips/lib/strncpy_user.S b/arch/mips/lib/strncpy_user.S
+index d16c76f..8fd21d5 100644
+--- a/arch/mips/lib/strncpy_user.S
++++ b/arch/mips/lib/strncpy_user.S
+@@ -38,6 +38,7 @@ FEXPORT(__strncpy_from_user_nocheck_asm)
+ 	.set		noreorder
+ 1:	EX(lbu, t0, (v1), fault)
+ 	PTR_ADDIU	v1, 1
++	R10KCBARRIER(0(ra))
+ 	beqz		t0, 2f
+ 	 sb		t0, (a0)
+ 	PTR_ADDIU	v0, 1
+diff --git a/include/asm-mips/asm.h b/include/asm-mips/asm.h
+index 12e1758..608cfcf 100644
+--- a/include/asm-mips/asm.h
++++ b/include/asm-mips/asm.h
+@@ -398,4 +398,12 @@ symbol		=	value
+ 
+ #define SSNOP		sll zero, zero, 1
+ 
++#ifdef CONFIG_SGI_IP28
++/* Inhibit speculative stores to volatile (e.g.DMA) or invalid addresses. */
++#include <asm/cacheops.h>
++#define R10KCBARRIER(addr)  cache   Cache_Barrier, addr;
++#else
++#define R10KCBARRIER(addr)
++#endif
 +
- 	hregs = (struct hpc3_scsiregs *) SCpnt->device->host->base;
- 
- 	pr_debug("dma_stop: status<%d> ", status);
-@@ -145,8 +158,9 @@ static void dma_stop(struct Scsi_Host *instance, struct scsi_cmnd *SCpnt,
- 			barrier();
- 	}
- 	hregs->ctrl = 0;
--	dma_unmap_single(NULL, SCpnt->SCp.dma_handle, SCpnt->SCp.this_residual,
--	                 SCpnt->sc_data_direction);
-+	dma_unmap_single(hdata->dev, SCpnt->SCp.dma_handle,
-+			 SCpnt->SCp.this_residual,
-+			 DMA_DIR(hdata->wh.dma_dir));
- 
- 	pr_debug("\n");
- }
-@@ -160,22 +174,25 @@ void sgiwd93_reset(unsigned long base)
- 	hregs->ctrl = 0;
- }
- 
--static inline void init_hpc_chain(struct hpc_data *hd)
-+static inline void init_hpc_chain(void *dev, struct ip22_hostdata *hdata)
- {
--	struct hpc_chunk *hcp = (struct hpc_chunk *) hd->cpu;
--	struct hpc_chunk *dma = (struct hpc_chunk *) hd->dma;
-+	struct hpc_chunk *hcp = (struct hpc_chunk *)hdata->cpu;
-+	dma_addr_t dma = hdata->dma;
- 	unsigned long start, end;
- 
- 	start = (unsigned long) hcp;
--	end = start + PAGE_SIZE;
-+	end = start + (4 * PAGE_SIZE);
- 	while (start < end) {
--		hcp->desc.pnext = (u32) (dma + 1);
-+		hcp->desc.pnext = (u32) (dma + sizeof(struct hpc_chunk));
- 		hcp->desc.cntinfo = HPCDMA_EOX;
--		hcp++; dma++;
-+		DMA_HPC_SYNC(dev, hcp, DMA_TO_DEVICE);
-+		hcp++;
-+		dma += sizeof(struct hpc_chunk);
- 		start += sizeof(struct hpc_chunk);
- 	};
- 	hcp--;
--	hcp->desc.pnext = hd->dma;
-+	hcp->desc.pnext = hdata->dma;
-+	DMA_HPC_SYNC(dev, hcp, DMA_TO_DEVICE);
- }
- 
- static int sgiwd93_bus_reset(struct scsi_cmnd *cmd)
-@@ -234,16 +251,17 @@ static int __init sgiwd93_probe(struct platform_device *pdev)
- 	host->irq = irq;
- 
- 	hdata = host_to_hostdata(host);
--	hdata->hd.cpu = dma_alloc_coherent(&pdev->dev, PAGE_SIZE,
--	                                   &hdata->hd.dma, GFP_KERNEL);
--	if (!hdata->hd.cpu) {
-+	hdata->dev = &pdev->dev;
-+	hdata->cpu = dma_alloc_noncoherent(&pdev->dev, HPC_DMA_SIZE,
-+					   &hdata->dma, GFP_KERNEL);
-+	if (!hdata->cpu) {
- 		printk(KERN_WARNING "sgiwd93: Could not allocate memory for "
- 		       "host %d buffer.\n", unit);
- 		err = -ENOMEM;
- 		goto out_put;
- 	}
- 
--	init_hpc_chain(&hdata->hd);
-+	init_hpc_chain(&pdev->dev, hdata);
- 
- 	regs.SASR = wdregs + 3;
- 	regs.SCMD = wdregs + 7;
-@@ -273,7 +291,7 @@ static int __init sgiwd93_probe(struct platform_device *pdev)
- out_irq:
- 	free_irq(irq, host);
- out_free:
--	dma_free_coherent(NULL, PAGE_SIZE, hdata->hd.cpu, hdata->hd.dma);
-+	dma_free_noncoherent(NULL, HPC_DMA_SIZE, hdata->cpu, hdata->dma);
- out_put:
- 	scsi_host_put(host);
- out:
-@@ -289,7 +307,7 @@ static void __exit sgiwd93_remove(struct platform_device *pdev)
- 
- 	scsi_remove_host(host);
- 	free_irq(pd->irq, host);
--	dma_free_coherent(&pdev->dev, PAGE_SIZE, hdata->hd.cpu, hdata->hd.dma);
-+	dma_free_noncoherent(&pdev->dev, HPC_DMA_SIZE, hdata->cpu, hdata->dma);
- 	scsi_host_put(host);
- }
- 
+ #endif /* __ASM_ASM_H */
 -- 
 1.4.4.4

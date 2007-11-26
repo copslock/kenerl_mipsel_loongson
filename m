@@ -1,65 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Nov 2007 11:35:53 +0000 (GMT)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:37348 "EHLO
-	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20038904AbXKZLfn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 26 Nov 2007 11:35:43 +0000
-Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 5BE2B40003;
-	Mon, 26 Nov 2007 12:35:13 +0100 (CET)
-X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
-	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id tVArfQIO7xjT; Mon, 26 Nov 2007 12:34:55 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 6B3A3400AB;
-	Mon, 26 Nov 2007 12:34:55 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id lAQBYv9s024818;
-	Mon, 26 Nov 2007 12:34:57 +0100
-Date:	Mon, 26 Nov 2007 11:34:50 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Martin Michlmayr <tbm@cyrius.com>
-cc:	linux-mips@linux-mips.org, manoj.ekbote@broadcom.com,
-	mark.e.mason@broadcom.com
-Subject: Re: BigSur: garbled characters during boot
-In-Reply-To: <20071125134333.GO20922@deprecation.cyrius.com>
-Message-ID: <Pine.LNX.4.64N.0711261127190.20797@blysk.ds.pg.gda.pl>
-References: <20071125124842.GA32479@deprecation.cyrius.com>
- <20071125.222803.25909189.anemo@mba.ocn.ne.jp> <20071125134333.GO20922@deprecation.cyrius.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Nov 2007 14:18:03 +0000 (GMT)
+Received: from static-ip-62-75-166-246.inaddr.intergenia.de ([62.75.166.246]:35270
+	"EHLO vs166246.vserver.de") by ftp.linux-mips.org with ESMTP
+	id S20038971AbXKZORw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 26 Nov 2007 14:17:52 +0000
+Received: from t0b61.t.pppool.de ([89.55.11.97] helo=powermac.local)
+	by vs166246.vserver.de with esmtpa (Exim 4.63)
+	(envelope-from <mb@bu3sch.de>)
+	id 1Iwela-00036c-1t; Mon, 26 Nov 2007 14:16:54 +0000
+From:	Michael Buesch <mb@bu3sch.de>
+To:	Steve Brown <sbrown@cortland.com>
+Subject: Re: ohci-ssb driver on a Broadcom BCM5354
+Date:	Mon, 26 Nov 2007 15:15:42 +0100
+User-Agent: KMail/1.9.6
+Cc:	"John W. Linville" <linville@tuxdriver.com>,
+	linux-mips@linux-mips.org
+References: <47408305.5090804@cortland.com> <200711191923.56471.mb@bu3sch.de> <474AA87D.7000509@cortland.com>
+In-Reply-To: <474AA87D.7000509@cortland.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.2/4923/Mon Nov 26 11:46:15 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200711261515.42501.mb@bu3sch.de>
+Return-Path: <mb@bu3sch.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17586
+X-archive-position: 17587
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: mb@bu3sch.de
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 25 Nov 2007, Martin Michlmayr wrote:
-
-> > IIRC Maciej have tried to fix this issue a while ago on LKML.
+On Monday 26 November 2007 12:05:33 Steve Brown wrote:
+> Michael Buesch wrote:
+> > On Sunday 18 November 2007 23:47:52 John W. Linville wrote:
+> >   
+> >> You probably want to make Michael Buesch aware of this issue.
+> >>     
+> >
+> > I'm not sure anyone really tested this beyond some insmod tests.
+> > I did not test this, as I don't have such a device.
+> > So if you have any patches to fix this, please send them. I'm
+> > certainly the wrong person who can fix this. ;)
+> >
+> >   
+> Adding the following at the end of ssb_ohci_attach seems to fix the problem.
 > 
-> Right, I think I remember that discussion.  Did anything come out
-> of it?
+>  if (ssb_dma_set_mask(dev, DMA_32BIT_MASK))
+>    return -EOPNOTSUPP;
+> 
+> I guessed at the dma mask. Would the code in the b43 driver that selects 
+> a dma mask be appropriate here?
 
- The exact mess encountered is specific to the chip/board used.  I haven't 
-seen too much of clutter on my SWARM, so I just disregarded the issue.  
-If this is found problematic, I may have a look at the driver to see if 
-anything can be done.  At least CFE sources are available, so if it turns 
-out to be an issue there, it can be fixed too.  All the relevant registers 
-in the DUART are r/w, so the state can easily be examined and preserved if 
-need be.
+I have no idea. If it makes it work, yeah. Cool. Let's add this.
 
- But please feel free to complain to the author of the change -- I am not 
-sure if the amount of breakage throughout systems is justified by the gain 
-from the additional message.  And there may be a way to implement it in a 
-less intrusive way.
-
-  Maciej
+-- 
+Greetings Michael.

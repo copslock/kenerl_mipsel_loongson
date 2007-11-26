@@ -1,70 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Nov 2007 19:54:53 +0000 (GMT)
-Received: from mx.mips.com ([63.167.95.198]:65266 "EHLO dns0.mips.com")
-	by ftp.linux-mips.org with ESMTP id S20039613AbXKZTyn convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 26 Nov 2007 19:54:43 +0000
-Received: from mercury.mips.com (mercury [192.168.64.101])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id lAQJs5HN022411;
-	Mon, 26 Nov 2007 11:54:05 -0800 (PST)
-Received: from exchange.MIPS.COM (exchange [192.168.20.29])
-	by mercury.mips.com (8.13.5/8.13.5) with ESMTP id lAQJsZsN027248;
-	Mon, 26 Nov 2007 11:54:36 -0800 (PST)
-X-MimeOLE: Produced By Microsoft Exchange V6.5.7226.0
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Nov 2007 22:40:25 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:48870 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S28573735AbXKZWkQ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 26 Nov 2007 22:40:16 +0000
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1Iwmch-0006QN-00
+	for linux-mips@linux-mips.org; Mon, 26 Nov 2007 23:40:15 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 86229C2B24; Mon, 26 Nov 2007 23:38:14 +0100 (CET)
+Date:	Mon, 26 Nov 2007 23:38:14 +0100
+To:	linux-mips@linux-mips.org
+Subject: SGI IP28 support
+Message-ID: <20071126223814.GA21339@alpha.franken.de>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: Tool chain for linux using mips
-Date:	Mon, 26 Nov 2007 11:54:58 -0800
-Message-ID: <3CB54817FDF733459B230DD27C690CEC04FCB3FF@Exchange.mips.com>
-In-Reply-To: <4749C258.8020400@saville.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Tool chain for linux using mips
-Thread-Index: Acgvk0DVQs4q6TYjQQaAW9CUn5ew3gA0jXAQ
-From:	"Mitchell, Earl" <earlm@mips.com>
-To:	"Wink Saville" <wink@saville.com>, <linux-mips@linux-mips.org>
-Return-Path: <earlm@mips.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17594
+X-archive-position: 17595
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: earlm@mips.com
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
+I finally cleaned up Peter Fuerst's IP28 patches and solved some of
+the IP28 issues in an IMHO more eye-friendly way (no ip26ucmem).
+My IP28 boots with these patches from an Debian sarge NFS root and
+is able to dd data from the harddrive. I'm going to send this patches
+to this list and the subsystem maintainers.
 
-Few months ago I was able to successfully build using 
-crosstools-0.43. I used demo-mipsel.sh to build c,c++ using 
-the following command line ... 
+There is one change missing to get a working SCSI driver, because
+a proper fix will be done in 2.6.25. The quick&dirty workaround is
+below. The workaround makes sure that the sense_buffer lives in
+its own cache line by aligning and extendin it.
 
-eval `cat mips.dat gcc-3.4.5-glibc-2.3.6-tls.dat` sh all.sh --notest --gdb
+The patch "Use real cache invalidate" still contains one problem.
+It will not flush the cache correctly, if the given size is bigger
+than the second level cache. The problem is, that there is no index
+invalidate cache operation available. I have two ideas to solve that.
+One is to always do a range invalidate (maybe just by using this only
+for R10k machines, which usually have quite big caches) or scan through
+the cache and use the tag informations to do hit invalidate. If anybody
+has a better idea please speak up :-)
 
--earlm
+Have fun with the patches,
+Thomas.
 
-> -----Original Message-----
-> From: linux-mips-bounce@linux-mips.org
-> [mailto:linux-mips-bounce@linux-mips.org]On Behalf Of Wink Saville
-> Sent: Sunday, November 25, 2007 10:44 AM
-> To: linux-mips@linux-mips.org
-> Subject: Tool chain for linux using mips
-> 
-> 
-> Hello,
-> 
-> I was wondering which MIPS tool chains people are
-> using and recommend, prebuilt and/or roll-your-own.
->  From http://www.kegel.com/crosstool/crosstool-0.43/buildlogs/
-> there doesn't seem to be any combination that builds cleanly
-> for the mips/mipsel.
-> 
-> Regards,
-> 
-> Wink Saville
-> 
-> 
-> 
+
+diff --git a/include/scsi/scsi_cmnd.h b/include/scsi/scsi_cmnd.h
+index 3f47e52..3f3d7aa 100644
+--- a/include/scsi/scsi_cmnd.h
++++ b/include/scsi/scsi_cmnd.h
+@@ -87,11 +87,13 @@ struct scsi_cmnd {
+ 	struct request *request;	/* The command we are
+ 				   	   working on */
+ 
++	unsigned char xxx1[0x48];
+ #define SCSI_SENSE_BUFFERSIZE 	96
+ 	unsigned char sense_buffer[SCSI_SENSE_BUFFERSIZE];
+ 				/* obtained by REQUEST SENSE when
+ 				 * CHECK CONDITION is received on original
+ 				 * command (auto-sense) */
++	unsigned char xxx2[32];
+ 
+ 	/* Low-level done function - can be used by low-level driver to point
+ 	 *        to completion function.  Not used by mid/upper level code. */
+
+
+
+
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

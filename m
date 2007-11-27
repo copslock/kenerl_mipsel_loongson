@@ -1,58 +1,158 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Nov 2007 16:33:15 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:9434 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20027368AbXK0QdN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 27 Nov 2007 16:33:13 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lARGX8cX027202;
-	Tue, 27 Nov 2007 16:33:09 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lARGWvp8027176;
-	Tue, 27 Nov 2007 16:32:57 GMT
-Date:	Tue, 27 Nov 2007 16:32:57 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc:	netdev@vger.kernel.org, linux-mips@linux-mips.org,
-	jgarzik@pobox.com
-Subject: Re: [PATCH] SGISEEQ: use cached memory access to make driver work
-	on IP28
-Message-ID: <20071127163257.GB23642@linux-mips.org>
-References: <20071126223934.84BE7C2B26@solo.franken.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Nov 2007 17:18:23 +0000 (GMT)
+Received: from nz-out-0506.google.com ([64.233.162.227]:26758 "EHLO
+	nz-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S28574667AbXK0RSO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 27 Nov 2007 17:18:14 +0000
+Received: by nz-out-0506.google.com with SMTP id n1so821153nzf
+        for <linux-mips@linux-mips.org>; Tue, 27 Nov 2007 09:17:57 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:mime-version:content-type:content-transfer-encoding:content-disposition;
+        bh=gZVMtXh9Rt8ioZJhplxrp/Buij2F1uuaAHrOT74zDPk=;
+        b=T9QQD31OSP9As+NalYIb1yko4BEWghZzL37qpyylg3kMvUKKv462MBcsLewwxgJrLRs1rk8HmuCDqYAWm8wVA8u9WW3Z4MYMfNvsq9Fc82Xqzl7AQcEoEwSeEgyTpII5wqo2u7iPGAI+ABNmDrkjjKanEMuNKzGn6Bk8vL57S4o=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=received:message-id:date:from:to:subject:cc:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=uClNNziPgAY8c3Xyf88PS29QLJGItrnLOpEN0GwxBkZKTZlZstpnh0J+ROO6GF5lePMH9crIvSHJaauz0ko0eegzAX47cK3s2Fy80Mi4vNihuxqb1iONGLW0cQuFrK8zfywO5m7XdWPQAr676FF11V3YYsJNGFWqi2foov1peqQ=
+Received: by 10.142.132.2 with SMTP id f2mr1065636wfd.1196183877179;
+        Tue, 27 Nov 2007 09:17:57 -0800 (PST)
+Received: by 10.64.179.11 with HTTP; Tue, 27 Nov 2007 09:17:57 -0800 (PST)
+Message-ID: <43e72e890711270917o309441a0g99ac435a629b6d5e@mail.gmail.com>
+Date:	Tue, 27 Nov 2007 12:17:57 -0500
+From:	"Luis R. Rodriguez" <mcgrof@gmail.com>
+To:	loswillios <loswillios@gmail.com>
+Subject: prism54 - MIPS do_be() trap caught
+Cc:	kyle@mcmartin.ca, linux-wireless@vger.kernel.org,
+	developers@islsm.org, linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <20071126223934.84BE7C2B26@solo.franken.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <mcgrof@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17614
+X-archive-position: 17615
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mcgrof@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Nov 24, 2007 at 01:29:19PM +0100, Thomas Bogendoerfer wrote:
+Changing subject, CC'ing linux-mips, perhaps they can help.
 
-> Following patch is clearly 2.6.25 material and is needed to get SGI IP28
-> machines supported.
-> 
-> Thomas.
-> 
-> SGI IP28 machines would need special treatment (enable adding addtional
-> wait states) when accessing memory uncached. To avoid this pain I changed
-> the driver to use only cached access to memory.
-> 
-> Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+On Nov 26, 2007 7:54 PM, loswillios <loswillios@gmail.com> wrote:
+> Jan Willies wrote:
+> > Luis R. Rodriguez wrote:
+> >> Actually I've been informed this is not unaligned access problem but
+> >> instead it occurs on do_be() or ip22_be_interrupt() on MIPS. I'll have
+> >> to check how that works, I do not yet understand how this is reached.
+> >
+> > I will try a new build with prism54 in the next days and let you know if
+> > that issue is still present.
+>
+> Still the same problem with 2.6.23.1:
+>
+> root@OpenWrt:/# ifconfig eth1 up
+> eth1: resetting device...
+> eth1: uploading firmware...
+> eth1: firmware version: 1.0.4.3
+> eth1: firmware upload complete
+> eth1: interface reset complete
+>
+> root@OpenWrt:/# iwlist eth1 scanning
+> Data bus error, epc == c011518c, ra == c01146cc
+> Oops[#1]:
+> Cpu 0
+> $ 0   : 00000000 1000b800 abad0000 00000032
+> $ 4   : 00000001 c00c8000 00000013 00000001
+> $ 8   : 0000003c 80102bd4 ffffffff 81e2101c
+> $12   : ffffffff 00000580 2ab8af24 00000498
+> $16   : 81e21680 000000fa 81339380 0000004a
+> $20   : 81339380 00000000 a1e80000 81339000
+> $24   : 00000000 2abd55e0
+> $28   : 813b4000 813b5cc8 00000019 c01146cc
+> Hi    : 00000000
+> Lo    : 00000580
+> epc   : c011518c     Not tainted
+> ra    : c01146cc Status: 1000b803    KERNEL EXL IE
+> Cause : 0000001c
+> PrId  : 00029007
 
-IP28 is clearly a maximum weirdo beast.  Technically the patch looks fine
-it's just a few stilistic issues such as there no reason for
-DMA_SYNC_DESC_CPU and DMA_SYNC_DESC_DEV being macros so why not using
-inlines.
+I can see that this comes from arch/mips/kernel/traps.c do_be() but I
+fail to see when this is triggered. Perhaps someone from linux-mips
+might be able to help shed some light here. I tried looking into the
+stack trace before but I couldn't find any code that made me suspect
+of a possible big endian problem (it seems that may be the problem?).
+The stack trace used to look like this:
 
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
+Call Trace:
+[<c007e16c>] isl38xx_trigger_device+0xc/0x60 [prism54]
+[<c007d6c0>] islpci_mgt_transaction+0x380/0x614 [prism54]
+[<c0086cd0>] mgt_get_request+0x100/0x2ec [prism54]
+[<c0081628>] prism54_set_mac_address+0x1a0/0xfd8 [prism54]
 
-  Ralf
+
+> Modules linked in: prism54 ehci_hcd ohci_hcd nf_nat_tftp
+> nf_conntrack_tftp nf_nat_irc nf_conntrack_irc nf_nat_ftp
+> nf_conntrack_ftp ppp_async ppp_generic slhc crc_ccitt usbcore arc4 aes
+> deflate ecb cbc blkcipher crypto_hash cryptomgr crypto_algapi
+> switch_robo switch_core diag
+> Process iwlist (pid: 680, threadinfo=813b4000, task=810a10c8)
+> Stack : ffffff9c 2ab3549b 80074a50 7fd23300 00000000 810a10c8 8003cac4
+> 81339710
+>          81339710 8008c054 0000003e 00000000 00000000 813b5e60 00000060
+> 17000012
+>          81339380 813b5d78 00000498 c011dce0 81052920 00000000 17000012
+> 00000009
+>          0000003e 813b5d30 00000000 81052920 813b5e70 802a6000 802a6000
+> 813b5e60
+>          813b5e70 00000000 81339380 00008b0b c01187ec 00008b0b 81047360
+> 000080d0
+>          ...
+> Call
+> Trace:[<80074a50>][<8003cac4>][<8008c054>][<c011dce0>][<c01187ec>][<c01186a4>][<801ec8ec>][<8005ecc4>][<8005ecc4>][<800cbc34>][<80118d8c>][<c01186a4>][<801ecb10>][<80060f6c>][<80164b28>][<8008d4a8>][<8008630c>][<8008661c>][<8008669c>][<8000c12c>][<80003a00>]
+>
+> Code: 10800014  24020002  3c02abad <8ca30010> 3442face  1462000f
+> 24020008  08045470  00000000
+> Segmentation fault
+
+Can you enable KALLSYMS again?
+
+> Sometimes I even get this weird stuff:
+>
+> root@OpenWrt:/# ifconfig eth1 up
+> eth1: resetting device...
+> eth1: uploading firmware...
+> eth1: firmware version: 1.0.4.3
+> eth1: firmware upload complete
+> eth1: no 'reset complete' IRQ seen - retrying
+> eth1: no 'reset complete' IRQ seen - retrying
+> eth1: interface reset failure
+> prism54: Your card/socket may be faulty, or IRQ line too busy :(
+> ifconfig: SIOCSIFFLAGS: Timer expired
+
+Hm, seems schedule_timeout_uninterruptible() and the time remaining
+was misused.  This just is a stupid way to wait, not sure why the
+check on islpci_reset_if() is used that way. I'll also test something
+later with actual hardware. If anyone has some spare fullmac cards
+please send one, all of mine except one which I've put on Orbit for
+anyone to use have died. Pasting a quick patch for this, sorry, you
+may need to edit manually. I need to get an inline append plugin for
+firefox...
+
+diff --git a/drivers/net/wireless/prism54/islpci_dev.c
+b/drivers/net/wireless/prism54/islpci_dev.c
+index 0847953..62d1797 100644
+--- a/drivers/net/wireless/prism54/islpci_dev.c
++++ b/drivers/net/wireless/prism54/islpci_dev.c
+@@ -491,7 +491,7 @@ islpci_reset_if(islpci_private *priv)
+
+                remaining = schedule_timeout_uninterruptible(HZ);
+
+-               if(remaining > 0) {
++               if(remaining >= 0) {
+                        result = 0;
+                        break;
+                }

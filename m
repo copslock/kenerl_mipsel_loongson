@@ -1,76 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Nov 2007 02:32:03 +0000 (GMT)
-Received: from mail1.pearl-online.net ([62.159.194.147]:57350 "EHLO
-	mail1.pearl-online.net") by ftp.linux-mips.org with ESMTP
-	id S28574210AbXK0Cby (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 27 Nov 2007 02:31:54 +0000
-Received: from SNaIlmail.Peter (77.47.3.174.static.cablesurf.de [77.47.3.174])
-	by mail1.pearl-online.net (Postfix) with ESMTP id B0166B370;
-	Tue, 27 Nov 2007 03:31:49 +0100 (CET)
-Received: from Opal.Peter (Opal.Peter [192.168.1.1])
-	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id lAR2Uwvb001969;
-	Tue, 27 Nov 2007 03:30:58 +0100
-Received: from Opal.Peter (localhost [127.0.0.1])
-	by Opal.Peter (8.12.11.Beta0/8.12.11.Beta0/Sendmail/Linux 2.4.24-1-386) with ESMTP id lAR2UmO7002804;
-	Tue, 27 Nov 2007 03:30:49 +0100
-Received: from localhost (pf@localhost)
-	by Opal.Peter (8.12.11.Beta0/8.12.11.Beta0/Debian-1) with ESMTP id lAR2UmGH002800;
-	Tue, 27 Nov 2007 03:30:48 +0100
-X-Authentication-Warning: Opal.Peter: pf owned process doing -bs
-Date:	Tue, 27 Nov 2007 03:30:48 +0100 (CET)
-From:	post@pfrst.de
-X-Sender: pf@Opal.Peter
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Nov 2007 08:28:25 +0000 (GMT)
+Received: from hoboe2bl1.telenet-ops.be ([195.130.137.73]:38542 "EHLO
+	hoboe2bl1.telenet-ops.be") by ftp.linux-mips.org with ESMTP
+	id S20022456AbXK0I2Q (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 27 Nov 2007 08:28:16 +0000
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by hoboe2bl1.telenet-ops.be (Postfix) with SMTP id 483EA12408A;
+	Tue, 27 Nov 2007 09:28:16 +0100 (CET)
+Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
+	by hoboe2bl1.telenet-ops.be (Postfix) with ESMTP id DEF9E124037;
+	Tue, 27 Nov 2007 09:28:15 +0100 (CET)
+Received: from anakin.of.borg (localhost [127.0.0.1])
+	by anakin.of.borg (8.14.1/8.14.1/Debian-9) with ESMTP id lAR8SF8f014982
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Tue, 27 Nov 2007 09:28:15 +0100
+Received: from localhost (geert@localhost)
+	by anakin.of.borg (8.14.1/8.14.1/Submit) with ESMTP id lAR8SE37014979;
+	Tue, 27 Nov 2007 09:28:15 +0100
+X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
+Date:	Tue, 27 Nov 2007 09:28:14 +0100 (CET)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
 To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: SGI IP28 support
-In-Reply-To: <20071126230127.GA21970@alpha.franken.de>
-Message-ID: <Pine.LNX.4.21.0711270315070.2765-100000@Opal.Peter>
+Cc:	linux-scsi@vger.kernel.org, linux-mips@linux-mips.org,
+	ralf@linux-mips.org, James.Bottomley@HansenPartnership.com
+Subject: Re: [PATCH] SGIWD93: use cached memory access to make driver work
+ on IP28
+In-Reply-To: <20071126223921.A566CC2B26@solo.franken.de>
+Message-ID: <Pine.LNX.4.64.0711270927370.22167@anakin>
+References: <20071126223921.A566CC2B26@solo.franken.de>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <post@pfrst.de>
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17605
+X-archive-position: 17606
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: post@pfrst.de
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
+On Mon, 26 Nov 2007, Thomas Bogendoerfer wrote:
+> --- a/drivers/scsi/sgiwd93.c
+> +++ b/drivers/scsi/sgiwd93.c
+> @@ -33,19 +33,27 @@
+>  
+>  struct ip22_hostdata {
+>  	struct WD33C93_hostdata wh;
+> -	struct hpc_data {
+> -		dma_addr_t      dma;
+> -		void		*cpu;
+> -	} hd;
+> +	dma_addr_t dma;
+> +	void *cpu;
+> +	void *dev;
+>  };
+>  
+>  #define host_to_hostdata(host) ((struct ip22_hostdata *)((host)->hostdata))
+>  
+>  struct hpc_chunk {
+>  	struct hpc_dma_desc desc;
+> -	u32 _padding;	/* align to quadword boundary */
+> +	u32 _padding[128/4 - 3];	/* align to biggest cache line size */
+                     ^^^^^^^^^
+(128 - sizeof(struct hpc_dma_desc))/4?
 
-Hi!
+Gr{oetje,eeting}s,
 
-On Tue, 27 Nov 2007, Thomas Bogendoerfer wrote:
+						Geert
 
-> Date: Tue, 27 Nov 2007 00:01:27 +0100
-> From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> To: linux-mips@linux-mips.org
-> Subject: Re: SGI IP28 support
-> 
-> On Mon, Nov 26, 2007 at 11:38:14PM +0100, Thomas Bogendoerfer wrote:
-> > [..]
-> 
-> There is one thing I forgot: You need a special gcc, which will generate
-> cache barriers to avoid speculative stores done by the R10k. Peter
-> had some patches submitted to the gcc maintainers, which I used to
-> build my own gcc 4.2.1 cross compiler. Does anybody know, if Peter's
-> paches are already intergrated in newer gcc versions ?
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-They hardly are. At least i didn't undertake a second attempt yet. Nor
-did i hear of the Gentoo-folks or someone else taking this unpleasant
-job.
-
-> 
-> Thomas.
-> 
-> -- 
-> Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-> good idea.                                                [ RFC1925, 2.3 ]
-> 
-> 
-> 
-
-kind regards
-
-peter
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

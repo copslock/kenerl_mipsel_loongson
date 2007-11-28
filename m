@@ -1,59 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Nov 2007 14:48:20 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:22694 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20025720AbXK1OsR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 28 Nov 2007 14:48:17 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lASEmF2L002893;
-	Wed, 28 Nov 2007 14:48:15 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lASEmE8V002866;
-	Wed, 28 Nov 2007 14:48:14 GMT
-Date:	Wed, 28 Nov 2007 14:48:14 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	tsbogend@alpha.franken.de, linux-mips@linux-mips.org
-Subject: Re: [PATCH] IP28: added cache barrier to assembly routines
-Message-ID: <20071128144814.GA29715@linux-mips.org>
-References: <20071126223955.9BAAAC2B26@solo.franken.de> <20071128.234142.106261815.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Nov 2007 15:18:19 +0000 (GMT)
+Received: from rn-out-0910.google.com ([64.233.170.189]:54578 "EHLO
+	rn-out-0102.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021521AbXK1PSJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 28 Nov 2007 15:18:09 +0000
+Received: by rn-out-0102.google.com with SMTP id e25so1048574rng
+        for <linux-mips@linux-mips.org>; Wed, 28 Nov 2007 07:17:04 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:mime-version:content-type:content-transfer-encoding:content-disposition;
+        bh=LI9boRHSkwvsjEuyhEMmC6SDbF5MmAMnUhFcWoeo3ik=;
+        b=er5F0X+4NN1bsCQcjVpI7NDcwTgdLbzWEdwCHijjA0oS5uERH+1Z56B9+cARpNelwHtE7VUoHd4ER+xEAd3vYEVpd/T7ySnC1wWOGI82S5XEZi9/W6VU7LArnfkCY1u38LzPA7BQBhy8yHbiEp48d5zJQUIrvAxnnE9TFiTdwvQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=received:message-id:date:from:to:subject:cc:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=JBKeviMqF3+Min/I55pFFDv1ovxTJR0S6I4clL7QI1F7HWQXQHbW8n8U6u0Owll+SjmzrbqX3M93i8Uk84MdknGfSwONDeLrJGkbkBMAWdHBM7IH8+5KANPvlwbohC0+9tu1xryH6tkWZYa0pEDYvYfWuN+iIfZ12OLnDZ9oBw0=
+Received: by 10.142.212.19 with SMTP id k19mr1413693wfg.1196263023345;
+        Wed, 28 Nov 2007 07:17:03 -0800 (PST)
+Received: by 10.142.214.9 with HTTP; Wed, 28 Nov 2007 07:17:03 -0800 (PST)
+Message-ID: <73cd086a0711280717q6468b635wa75f3228350338f1@mail.gmail.com>
+Date:	Wed, 28 Nov 2007 18:17:03 +0300
+From:	"Pavel Kiryukhin" <vksavl@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: [PATCH] disable date alarm for malta rtc.
+Cc:	vksavl@gmail.com
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <20071128.234142.106261815.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <vksavl@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17631
+X-archive-position: 17632
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: vksavl@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 28, 2007 at 11:41:42PM +0900, Atsushi Nemoto wrote:
+RTC test that can be found in linux/Documentation/rtc.txt generally
+hangs for malta boards.
+Actually it waits for alarm interrupt that doesn't occure. Cause of
+this -  Date alarm setting is not supported in rtc.c driver API. Some
+chips (e.g. Intel82371 Southbridge RTC) supports this feature and uses
+control register D for setting day of month. Just write "don't care"
+(==0) value to this register.
 
-> On Sun, 25 Nov 2007 11:47:56 +0100, Thomas Bogendoerfer <tsbogend@alpha.franken.de> wrote:
-> > IP28 needs special treatment to avoid speculative accesses. gcc
-> > takes care for .c code, but for assembly code we need to do it
-> > manually.
-> > 
-> > This is taken from Peter Fuersts IP28 patches.
-> > 
-> > Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> > ---
-> >  arch/mips/lib/memcpy.S       |   10 ++++++++++
-> >  arch/mips/lib/memset.S       |    5 +++++
-> >  arch/mips/lib/strncpy_user.S |    1 +
-> >  include/asm-mips/asm.h       |    8 ++++++++
-> >  4 files changed, 24 insertions(+), 0 deletions(-)
-> 
-> I do not know details of this patch at all, but in general,
-> memcpy-inatomic.S and csum_pertial.S are candidates if you changed
-> memcpy.S.
+Signed-off-by: Pavel Kiryukhin <vksavl@gmail.com>
+---
+diff --git a/arch/mips/mips-boards/generic/time.c
+b/arch/mips/mips-boards/generic/time.c
+index f02ce63..1c8043a 100644
+--- a/arch/mips/mips-boards/generic/time.c
++++ b/arch/mips/mips-boards/generic/time.c
+@@ -170,6 +170,10 @@ void __init plat_time_init(void)
+         /* Set Data mode - binary. */
+         CMOS_WRITE(CMOS_READ(RTC_CONTROL) | RTC_DM_BINARY, RTC_CONTROL);
 
-tlbex.c may also need modifications.
++#ifdef CONFIG_MIPS_MALTA
++       /*we don't support Date Alarm*/
++       CMOS_WRITE(0, RTC_REG_D);
++#endif
+        est_freq = estimate_cpu_frequency();
 
-  Ralf
+        printk("CPU frequency %d.%02d MHz\n", est_freq/1000000,

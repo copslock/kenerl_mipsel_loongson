@@ -1,67 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Nov 2007 15:18:19 +0000 (GMT)
-Received: from rn-out-0910.google.com ([64.233.170.189]:54578 "EHLO
-	rn-out-0102.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021521AbXK1PSJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 28 Nov 2007 15:18:09 +0000
-Received: by rn-out-0102.google.com with SMTP id e25so1048574rng
-        for <linux-mips@linux-mips.org>; Wed, 28 Nov 2007 07:17:04 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:mime-version:content-type:content-transfer-encoding:content-disposition;
-        bh=LI9boRHSkwvsjEuyhEMmC6SDbF5MmAMnUhFcWoeo3ik=;
-        b=er5F0X+4NN1bsCQcjVpI7NDcwTgdLbzWEdwCHijjA0oS5uERH+1Z56B9+cARpNelwHtE7VUoHd4ER+xEAd3vYEVpd/T7ySnC1wWOGI82S5XEZi9/W6VU7LArnfkCY1u38LzPA7BQBhy8yHbiEp48d5zJQUIrvAxnnE9TFiTdwvQ=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=received:message-id:date:from:to:subject:cc:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=JBKeviMqF3+Min/I55pFFDv1ovxTJR0S6I4clL7QI1F7HWQXQHbW8n8U6u0Owll+SjmzrbqX3M93i8Uk84MdknGfSwONDeLrJGkbkBMAWdHBM7IH8+5KANPvlwbohC0+9tu1xryH6tkWZYa0pEDYvYfWuN+iIfZ12OLnDZ9oBw0=
-Received: by 10.142.212.19 with SMTP id k19mr1413693wfg.1196263023345;
-        Wed, 28 Nov 2007 07:17:03 -0800 (PST)
-Received: by 10.142.214.9 with HTTP; Wed, 28 Nov 2007 07:17:03 -0800 (PST)
-Message-ID: <73cd086a0711280717q6468b635wa75f3228350338f1@mail.gmail.com>
-Date:	Wed, 28 Nov 2007 18:17:03 +0300
-From:	"Pavel Kiryukhin" <vksavl@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Nov 2007 18:54:00 +0000 (GMT)
+Received: from mx02.hansenet.de ([213.191.73.26]:7352 "EHLO
+	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
+	id S20022117AbXK1Sxw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 28 Nov 2007 18:53:52 +0000
+Received: from [213.39.153.175] (213.39.153.175) by webmail.hansenet.de (7.3.118.12) (authenticated as mbx20228207@koeller-hh.org)
+        id 4746D82200B8A510 for linux-mips@linux-mips.org; Wed, 28 Nov 2007 19:50:32 +0100
+Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
+	by mail.koeller.dyndns.org (Postfix) with ESMTP id D534C47A5F
+	for <linux-mips@linux-mips.org>; Wed, 28 Nov 2007 19:50:46 +0100 (CET)
+From:	Thomas Koeller <thomas@koeller.dyndns.org>
 To:	linux-mips@linux-mips.org
-Subject: [PATCH] disable date alarm for malta rtc.
-Cc:	vksavl@gmail.com
+Subject: git problem
+Date:	Wed, 28 Nov 2007 19:50:46 +0100
+User-Agent: KMail/1.9.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain;
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Return-Path: <vksavl@gmail.com>
+Message-Id: <200711281950.46472.thomas@koeller.dyndns.org>
+Return-Path: <thomas@koeller.dyndns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17632
+X-archive-position: 17633
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vksavl@gmail.com
+X-original-sender: thomas@koeller.dyndns.org
 Precedence: bulk
 X-list: linux-mips
 
-RTC test that can be found in linux/Documentation/rtc.txt generally
-hangs for malta boards.
-Actually it waits for alarm interrupt that doesn't occure. Cause of
-this -  Date alarm setting is not supported in rtc.c driver API. Some
-chips (e.g. Intel82371 Southbridge RTC) supports this feature and uses
-control register D for setting day of month. Just write "don't care"
-(==0) value to this register.
+Hi,
 
-Signed-off-by: Pavel Kiryukhin <vksavl@gmail.com>
----
-diff --git a/arch/mips/mips-boards/generic/time.c
-b/arch/mips/mips-boards/generic/time.c
-index f02ce63..1c8043a 100644
---- a/arch/mips/mips-boards/generic/time.c
-+++ b/arch/mips/mips-boards/generic/time.c
-@@ -170,6 +170,10 @@ void __init plat_time_init(void)
-         /* Set Data mode - binary. */
-         CMOS_WRITE(CMOS_READ(RTC_CONTROL) | RTC_DM_BINARY, RTC_CONTROL);
+on my machine I have clones of both the linux-mips and
+Linus' kernel tree. I recently found that git-describe
+behaves differently in those trees:
 
-+#ifdef CONFIG_MIPS_MALTA
-+       /*we don't support Date Alarm*/
-+       CMOS_WRITE(0, RTC_REG_D);
-+#endif
-        est_freq = estimate_cpu_frequency();
+bash-3.2$ cd linux-2.6.git/
+bash-3.2$ git-status
+# On branch master
+nothing to commit (working directory clean)
+bash-3.2$ git-describe bd71c182d5a02337305fc381831c11029dd17d64
+v2.6.21-2747-gbd71c18
+bash-3.2$ cd ../excite.git/
+bash-3.2$ git-status
+# On branch master
+nothing to commit (working directory clean)
+bash-3.2$ git-describe bd71c182d5a02337305fc381831c11029dd17d64
+fatal: cannot describe 'bd71c182d5a02337305fc381831c11029dd17d64'
 
-        printk("CPU frequency %d.%02d MHz\n", est_freq/1000000,
+The commit is of course present in both trees. AFAIK the
+'cannot describe' error shows if there are no tags at all,
+but this is not the case; .git/refs/tags is fully populated.
+Has anybody got a clue as to what may be wrong here?
+-- 
+Thomas Koeller
+thomas at koeller dot dyndns dot org

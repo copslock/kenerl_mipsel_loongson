@@ -1,70 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Nov 2007 11:33:06 +0000 (GMT)
-Received: from nf-out-0910.google.com ([64.233.182.190]:50028 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20029148AbXK2Lc5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 29 Nov 2007 11:32:57 +0000
-Received: by nf-out-0910.google.com with SMTP id c10so1612997nfd
-        for <linux-mips@linux-mips.org>; Thu, 29 Nov 2007 03:32:46 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        bh=hxq5upnqLwhP8uFt8VF1eRBF4smBil9lUJq46czdxPI=;
-        b=R/0i9LWcFcg+rGV7YZOZOgBN9fkMh7Eyu4fhOFhfhdJhdWOE7Cjm8tP/u25Q7xgAXSwtnQUQeD8im4QcwtK+/rmYmeleucsfaxXP5wxPKWeCFuxYMdKNx7BCWWSJOywVUYbHHof9DZKK9Nwo2BdAq/R4TgrkQYDKgNu4KW4m654=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=received:message-id:date:from:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=dep0A47qXOh2dqaVtOVOfT9D/z2wwuz2/xCPZ9nFfyBK2q68X4biiT41gCKgsGUbw4ByU/WgDffP8NsR1XU9Yzhz4coVwKubuNSzJrIUA1dxhk7PhGwqICU2Km+nIGyYOq9SoxsDHGcFGM7N9KgZBUh/ASDOVxqecPnfMyiIthI=
-Received: by 10.86.79.19 with SMTP id c19mr6015423fgb.1196335966460;
-        Thu, 29 Nov 2007 03:32:46 -0800 (PST)
-Received: from ?192.168.0.1? ( [82.235.205.153])
-        by mx.google.com with ESMTPS id v23sm7427379fkd.2007.11.29.03.32.44
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 29 Nov 2007 03:32:44 -0800 (PST)
-Message-ID: <474EA356.3070303@gmail.com>
-Date:	Thu, 29 Nov 2007 12:32:38 +0100
-From:	Franck Bui-Huu <vagabon.xyz@gmail.com>
-User-Agent: Thunderbird 2.0.0.5 (X11/20070719)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Nov 2007 12:16:10 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:2961 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20029255AbXK2MQI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 29 Nov 2007 12:16:08 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lATCFv1u010565;
+	Thu, 29 Nov 2007 12:15:58 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lATCFvK7010564;
+	Thu, 29 Nov 2007 12:15:57 GMT
+Date:	Thu, 29 Nov 2007 12:15:57 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] IP28 support
+Message-ID: <20071129121557.GA10522@linux-mips.org>
+References: <20071126224004.D885AC2B26@solo.franken.de> <20071128143459.GA22943@linux-mips.org> <20071129095844.GA9106@alpha.franken.de>
 MIME-Version: 1.0
-To:	Thomas Koeller <thomas@koeller.dyndns.org>
-CC:	linux-mips@linux-mips.org
-Subject: Re: git problem
-References: <200711281950.46472.thomas@koeller.dyndns.org>
-In-Reply-To: <200711281950.46472.thomas@koeller.dyndns.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <vagabon.xyz@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20071129095844.GA9106@alpha.franken.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17639
+X-archive-position: 17640
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vagabon.xyz@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Thomas Koeller wrote:
-> on my machine I have clones of both the linux-mips and
-> Linus' kernel tree. I recently found that git-describe
-> behaves differently in those trees:
- 
-[snip]
+On Thu, Nov 29, 2007 at 10:58:44AM +0100, Thomas Bogendoerfer wrote:
 
-> The commit is of course present in both trees. AFAIK the
-> 'cannot describe' error shows if there are no tags at all,
-> but this is not the case; .git/refs/tags is fully populated.
+> I've changed that in the updated IP28 patch. I don't see a way to
+> support ISA busmaster devices, because they will generate a physical
+> address between 0 and 0x1000000, which will only hit the 512 KB
+> mirrored RAM. Anything which uses ISA slave DMA is able to address
+> the full 32bit address space.
 
-Not really, it can happen if the commit you're trying to describe and
-all of its parents are not tagged.
+Those 512kB could be used as a fairly claustrophobic ZONE_DMA.  Not
+pretty though.
 
-> Has anybody got a clue as to what may be wrong here?
-
-Is the commit originally part of Linus' tree and was pulled later by
-Ralf ?
-
-If so, it probably means that the commits committed by Ralf in his
-tree, which are the tagged ones, have no relationship with the ones
-pulled from Linus.
-
-		Franck
+  Ralf

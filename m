@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Dec 2007 11:13:47 +0000 (GMT)
-Received: from elvis.franken.de ([193.175.24.41]:6113 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S20022282AbXLBLNj (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 2 Dec 2007 11:13:39 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Dec 2007 11:14:12 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:7137 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20022363AbXLBLNn (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 2 Dec 2007 11:13:43 +0000
 Received: from uucp (helo=solo.franken.de)
 	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1IymiQ-0000XZ-00; Sun, 02 Dec 2007 12:10:26 +0100
+	id 1IymiQ-0000XZ-01; Sun, 02 Dec 2007 12:10:26 +0100
 Received: by solo.franken.de (Postfix, from userid 1000)
-	id 6A926C2EB4; Sun,  2 Dec 2007 11:33:09 +0100 (CET)
+	id 75E51C2EB5; Sun,  2 Dec 2007 11:33:12 +0100 (CET)
 From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To:	linux-scsi@vger.kernel.org, linux-mips@linux-mips.org
-cc:	ralf@linux-mips.org, James.Bottomley@HansenPartnership.com
-Subject: [UPDATED PATCH] SGIWD93: use cached memory access to make driver work on IP28
-Message-Id: <20071202103309.6A926C2EB4@solo.franken.de>
-Date:	Sun,  2 Dec 2007 11:33:09 +0100 (CET)
+To:	netdev@vger.kernel.org, linux-mips@linux-mips.org
+cc:	ralf@linux-mips.org, jgarzik@pobox.com
+Subject: [UPDATED PATCH] SGISEEQ: use cached memory access to make driver work on IP28
+Message-Id: <20071202103312.75E51C2EB5@solo.franken.de>
+Date:	Sun,  2 Dec 2007 11:33:12 +0100 (CET)
 Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17657
+X-archive-position: 17658
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -26,209 +26,508 @@ Precedence: bulk
 X-list: linux-mips
 
 SGI IP28 machines would need special treatment (enable adding addtional
-wait states) when accessing memory uncached. To avoid this pain I
-changed the driver to use only cached access to memory.
+wait states) when accessing memory uncached. To avoid this pain I changed
+the driver to use only cached access to memory.
 
 Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 ---
 
 Changes to last version:
-
+- Use inline functions for dma_sync_* instead of macros (suggested by Ralf)
 - added Kconfig change to make selection for similair SGI boxes easier
 
- drivers/scsi/Kconfig   |    2 +-
- drivers/scsi/sgiwd93.c |   64 +++++++++++++++++++++++++++++------------------
- 2 files changed, 40 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/scsi/Kconfig b/drivers/scsi/Kconfig
-index a6676be..2a071b0 100644
---- a/drivers/scsi/Kconfig
-+++ b/drivers/scsi/Kconfig
-@@ -345,7 +345,7 @@ config ISCSI_TCP
+ drivers/net/Kconfig   |    2 +-
+ drivers/net/sgiseeq.c |  243 ++++++++++++++++++++++++++++++++++---------------
+ 2 files changed, 171 insertions(+), 74 deletions(-)
+
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index 7a55bc1..9cbd5de 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -1795,7 +1795,7 @@ config DE620
  
- config SGIWD93_SCSI
- 	tristate "SGI WD93C93 SCSI Driver"
--	depends on SGI_IP22 && SCSI
-+	depends on SGI_HAS_WD93 && SCSI
-   	help
- 	  If you have a Western Digital WD93 SCSI controller on
- 	  an SGI MIPS system, say Y.  Otherwise, say N.
-diff --git a/drivers/scsi/sgiwd93.c b/drivers/scsi/sgiwd93.c
-index eef8275..e64ddee 100644
---- a/drivers/scsi/sgiwd93.c
-+++ b/drivers/scsi/sgiwd93.c
-@@ -33,10 +33,9 @@
+ config SGISEEQ
+ 	tristate "SGI Seeq ethernet controller support"
+-	depends on SGI_IP22
++	depends on SGI_HAS_SEEQ
+ 	help
+ 	  Say Y here if you have an Seeq based Ethernet network card. This is
+ 	  used in many Silicon Graphics machines.
+diff --git a/drivers/net/sgiseeq.c b/drivers/net/sgiseeq.c
+index ff40563..c69bb8b 100644
+--- a/drivers/net/sgiseeq.c
++++ b/drivers/net/sgiseeq.c
+@@ -12,7 +12,6 @@
+ #include <linux/init.h>
+ #include <linux/types.h>
+ #include <linux/interrupt.h>
+-#include <linux/slab.h>
+ #include <linux/string.h>
+ #include <linux/delay.h>
+ #include <linux/netdevice.h>
+@@ -53,14 +52,27 @@ static char *sgiseeqstr = "SGI Seeq8003";
+ 			    sp->tx_old + (SEEQ_TX_BUFFERS - 1) - sp->tx_new : \
+ 			    sp->tx_old - sp->tx_new - 1)
  
- struct ip22_hostdata {
- 	struct WD33C93_hostdata wh;
--	struct hpc_data {
--		dma_addr_t      dma;
--		void		*cpu;
--	} hd;
-+	dma_addr_t dma;
-+	void *cpu;
-+	void *dev;
++#define VIRT_TO_DMA(sp, v) ((sp)->srings_dma +                                 \
++				  (dma_addr_t)((unsigned long)(v) -            \
++					       (unsigned long)((sp)->rx_desc)))
++
++/* Copy frames shorter than rx_copybreak, otherwise pass on up in
++ * a full sized sk_buff.  Value of 100 stolen from tulip.c (!alpha).
++ */
++static int rx_copybreak = 100;
++
++#define PAD_SIZE    (128 - sizeof(struct hpc_dma_desc) - sizeof(void *))
++
+ struct sgiseeq_rx_desc {
+ 	volatile struct hpc_dma_desc rdma;
+-	volatile signed int buf_vaddr;
++	u8 padding[PAD_SIZE];
++	struct sk_buff *skb;
  };
  
- #define host_to_hostdata(host) ((struct ip22_hostdata *)((host)->hostdata))
-@@ -46,6 +45,11 @@ struct hpc_chunk {
- 	u32 _padding;	/* align to quadword boundary */
+ struct sgiseeq_tx_desc {
+ 	volatile struct hpc_dma_desc tdma;
+-	volatile signed int buf_vaddr;
++	u8 padding[PAD_SIZE];
++	struct sk_buff *skb;
  };
  
-+/* space for hpc dma descriptors */
-+#define HPC_DMA_SIZE   PAGE_SIZE
+ /*
+@@ -96,6 +108,18 @@ struct sgiseeq_private {
+ 	spinlock_t tx_lock;
+ };
+ 
++static inline void dma_sync_desc_cpu(struct net_device *dev, void *addr)
++{
++	dma_cache_sync(dev->dev.parent, addr, sizeof(struct sgiseeq_rx_desc),
++		       DMA_FROM_DEVICE);
++}
 +
-+#define DMA_DIR(d)   ((d == DATA_OUT_DIR) ? DMA_TO_DEVICE : DMA_FROM_DEVICE)
-+
- static irqreturn_t sgiwd93_intr(int irq, void *dev_id)
- {
- 	struct Scsi_Host * host = dev_id;
-@@ -59,15 +63,17 @@ static irqreturn_t sgiwd93_intr(int irq, void *dev_id)
- }
- 
- static inline
--void fill_hpc_entries(struct hpc_chunk *hcp, struct scsi_cmnd *cmd, int datainp)
-+void fill_hpc_entries(struct ip22_hostdata *hd, struct scsi_cmnd *cmd, int din)
- {
- 	unsigned long len = cmd->SCp.this_residual;
- 	void *addr = cmd->SCp.ptr;
- 	dma_addr_t physaddr;
- 	unsigned long count;
-+	struct hpc_chunk *hcp;
- 
--	physaddr = dma_map_single(NULL, addr, len, cmd->sc_data_direction);
-+	physaddr = dma_map_single(hd->dev, addr, len, DMA_DIR(din));
- 	cmd->SCp.dma_handle = physaddr;
-+	hcp = hd->cpu;
- 
- 	while (len) {
- 		/*
-@@ -89,6 +95,9 @@ void fill_hpc_entries(struct hpc_chunk *hcp, struct scsi_cmnd *cmd, int datainp)
- 	 */
- 	hcp->desc.pbuf = 0;
- 	hcp->desc.cntinfo = HPCDMA_EOX;
-+	dma_cache_sync(hd->dev, hd->cpu,
-+		       (unsigned long)(hcp + 1) - (unsigned long)hd->cpu,
++static inline void dma_sync_desc_dev(struct net_device *dev, void *addr)
++{
++	dma_cache_sync(dev->dev.parent, addr, sizeof(struct sgiseeq_rx_desc),
 +		       DMA_TO_DEVICE);
- }
- 
- static int dma_setup(struct scsi_cmnd *cmd, int datainp)
-@@ -96,9 +105,8 @@ static int dma_setup(struct scsi_cmnd *cmd, int datainp)
- 	struct ip22_hostdata *hdata = host_to_hostdata(cmd->device->host);
- 	struct hpc3_scsiregs *hregs =
- 		(struct hpc3_scsiregs *) cmd->device->host->base;
--	struct hpc_chunk *hcp = (struct hpc_chunk *) hdata->hd.cpu;
- 
--	pr_debug("dma_setup: datainp<%d> hcp<%p> ", datainp, hcp);
-+	pr_debug("dma_setup: datainp<%d> hcp<%p> ", datainp, hdata->cpu);
- 
- 	hdata->wh.dma_dir = datainp;
- 
-@@ -111,12 +119,12 @@ static int dma_setup(struct scsi_cmnd *cmd, int datainp)
- 	if (cmd->SCp.ptr == NULL || cmd->SCp.this_residual == 0)
- 		return 1;
- 
--	fill_hpc_entries(hcp, cmd, datainp);
-+	fill_hpc_entries(hdata, cmd, datainp);
- 
- 	pr_debug(" HPCGO\n");
- 
- 	/* Start up the HPC. */
--	hregs->ndptr = hdata->hd.dma;
-+	hregs->ndptr = hdata->dma;
- 	if (datainp)
- 		hregs->ctrl = HPC3_SCTRL_ACTIVE;
- 	else
-@@ -134,6 +142,9 @@ static void dma_stop(struct Scsi_Host *instance, struct scsi_cmnd *SCpnt,
- 	if (!SCpnt)
- 		return;
- 
-+	if (SCpnt->SCp.ptr == NULL || SCpnt->SCp.this_residual == 0)
-+		return;
++}
 +
- 	hregs = (struct hpc3_scsiregs *) SCpnt->device->host->base;
- 
- 	pr_debug("dma_stop: status<%d> ", status);
-@@ -145,8 +156,9 @@ static void dma_stop(struct Scsi_Host *instance, struct scsi_cmnd *SCpnt,
- 			barrier();
- 	}
- 	hregs->ctrl = 0;
--	dma_unmap_single(NULL, SCpnt->SCp.dma_handle, SCpnt->SCp.this_residual,
--	                 SCpnt->sc_data_direction);
-+	dma_unmap_single(hdata->dev, SCpnt->SCp.dma_handle,
-+			 SCpnt->SCp.this_residual,
-+			 DMA_DIR(hdata->wh.dma_dir));
- 
- 	pr_debug("\n");
- }
-@@ -160,22 +172,23 @@ void sgiwd93_reset(unsigned long base)
- 	hregs->ctrl = 0;
- }
- 
--static inline void init_hpc_chain(struct hpc_data *hd)
-+static inline void init_hpc_chain(void *dev, struct ip22_hostdata *hdata)
+ static inline void hpc3_eth_reset(struct hpc3_ethregs *hregs)
  {
--	struct hpc_chunk *hcp = (struct hpc_chunk *) hd->cpu;
--	struct hpc_chunk *dma = (struct hpc_chunk *) hd->dma;
-+	struct hpc_chunk *hcp = (struct hpc_chunk *)hdata->cpu;
-+	dma_addr_t dma = hdata->dma;
- 	unsigned long start, end;
+ 	hregs->reset = HPC3_ERST_CRESET | HPC3_ERST_CLRIRQ;
+@@ -163,35 +187,55 @@ static int seeq_init_ring(struct net_device *dev)
  
- 	start = (unsigned long) hcp;
--	end = start + PAGE_SIZE;
-+	end = start + HPC_DMA_SIZE;
- 	while (start < end) {
--		hcp->desc.pnext = (u32) (dma + 1);
-+		hcp->desc.pnext = (u32) (dma + sizeof(struct hpc_chunk));
- 		hcp->desc.cntinfo = HPCDMA_EOX;
--		hcp++; dma++;
-+		hcp++;
-+		dma += sizeof(struct hpc_chunk);
- 		start += sizeof(struct hpc_chunk);
- 	};
- 	hcp--;
--	hcp->desc.pnext = hd->dma;
-+	hcp->desc.pnext = hdata->dma;
- }
- 
- static int sgiwd93_bus_reset(struct scsi_cmnd *cmd)
-@@ -234,16 +247,17 @@ static int __init sgiwd93_probe(struct platform_device *pdev)
- 	host->irq = irq;
- 
- 	hdata = host_to_hostdata(host);
--	hdata->hd.cpu = dma_alloc_coherent(&pdev->dev, PAGE_SIZE,
--	                                   &hdata->hd.dma, GFP_KERNEL);
--	if (!hdata->hd.cpu) {
-+	hdata->dev = &pdev->dev;
-+	hdata->cpu = dma_alloc_noncoherent(&pdev->dev, HPC_DMA_SIZE,
-+					   &hdata->dma, GFP_KERNEL);
-+	if (!hdata->cpu) {
- 		printk(KERN_WARNING "sgiwd93: Could not allocate memory for "
- 		       "host %d buffer.\n", unit);
- 		err = -ENOMEM;
- 		goto out_put;
+ 	/* Setup tx ring. */
+ 	for(i = 0; i < SEEQ_TX_BUFFERS; i++) {
+-		if (!sp->tx_desc[i].tdma.pbuf) {
+-			unsigned long buffer;
+-
+-			buffer = (unsigned long) kmalloc(PKT_BUF_SZ, GFP_KERNEL);
+-			if (!buffer)
+-				return -ENOMEM;
+-			sp->tx_desc[i].buf_vaddr = CKSEG1ADDR(buffer);
+-			sp->tx_desc[i].tdma.pbuf = CPHYSADDR(buffer);
+-		}
+ 		sp->tx_desc[i].tdma.cntinfo = TCNTINFO_INIT;
++		dma_sync_desc_dev(dev, &sp->tx_desc[i]);
  	}
  
--	init_hpc_chain(&hdata->hd);
-+	init_hpc_chain(&pdev->dev, hdata);
+ 	/* And now the rx ring. */
+ 	for (i = 0; i < SEEQ_RX_BUFFERS; i++) {
+ 		if (!sp->rx_desc[i].rdma.pbuf) {
+-			unsigned long buffer;
++			dma_addr_t dma_addr;
++			struct sk_buff *skb = netdev_alloc_skb(dev, PKT_BUF_SZ);
  
- 	regs.SASR = wdregs + 3;
- 	regs.SCMD = wdregs + 7;
-@@ -273,7 +287,7 @@ static int __init sgiwd93_probe(struct platform_device *pdev)
- out_irq:
- 	free_irq(irq, host);
- out_free:
--	dma_free_coherent(NULL, PAGE_SIZE, hdata->hd.cpu, hdata->hd.dma);
-+	dma_free_noncoherent(NULL, HPC_DMA_SIZE, hdata->cpu, hdata->dma);
- out_put:
- 	scsi_host_put(host);
- out:
-@@ -289,7 +303,7 @@ static void __exit sgiwd93_remove(struct platform_device *pdev)
- 
- 	scsi_remove_host(host);
- 	free_irq(pd->irq, host);
--	dma_free_coherent(&pdev->dev, PAGE_SIZE, hdata->hd.cpu, hdata->hd.dma);
-+	dma_free_noncoherent(&pdev->dev, HPC_DMA_SIZE, hdata->cpu, hdata->dma);
- 	scsi_host_put(host);
+-			buffer = (unsigned long) kmalloc(PKT_BUF_SZ, GFP_KERNEL);
+-			if (!buffer)
++			if (skb == NULL)
+ 				return -ENOMEM;
+-			sp->rx_desc[i].buf_vaddr = CKSEG1ADDR(buffer);
+-			sp->rx_desc[i].rdma.pbuf = CPHYSADDR(buffer);
++			skb_reserve(skb, 2);
++			dma_addr = dma_map_single(dev->dev.parent,
++						  skb->data - 2,
++						  PKT_BUF_SZ, DMA_FROM_DEVICE);
++			sp->rx_desc[i].skb = skb;
++			sp->rx_desc[i].rdma.pbuf = dma_addr;
+ 		}
+ 		sp->rx_desc[i].rdma.cntinfo = RCNTINFO_INIT;
++		dma_sync_desc_dev(dev, &sp->rx_desc[i]);
+ 	}
+ 	sp->rx_desc[i - 1].rdma.cntinfo |= HPCDMA_EOR;
++	dma_sync_desc_dev(dev, &sp->rx_desc[i - 1]);
+ 	return 0;
  }
+ 
++static void seeq_purge_ring(struct net_device *dev)
++{
++	struct sgiseeq_private *sp = netdev_priv(dev);
++	int i;
++
++	/* clear tx ring. */
++	for (i = 0; i < SEEQ_TX_BUFFERS; i++) {
++		if (sp->tx_desc[i].skb) {
++			dev_kfree_skb(sp->tx_desc[i].skb);
++			sp->tx_desc[i].skb = NULL;
++		}
++	}
++
++	/* And now the rx ring. */
++	for (i = 0; i < SEEQ_RX_BUFFERS; i++) {
++		if (sp->rx_desc[i].skb) {
++			dev_kfree_skb(sp->rx_desc[i].skb);
++			sp->rx_desc[i].skb = NULL;
++		}
++	}
++}
++
+ #ifdef DEBUG
+ static struct sgiseeq_private *gpriv;
+ static struct net_device *gdev;
+@@ -258,8 +302,8 @@ static int init_seeq(struct net_device *dev, struct sgiseeq_private *sp,
+ 		sregs->tstat = TSTAT_INIT_SEEQ;
+ 	}
+ 
+-	hregs->rx_ndptr = CPHYSADDR(sp->rx_desc);
+-	hregs->tx_ndptr = CPHYSADDR(sp->tx_desc);
++	hregs->rx_ndptr = VIRT_TO_DMA(sp, sp->rx_desc);
++	hregs->tx_ndptr = VIRT_TO_DMA(sp, sp->tx_desc);
+ 
+ 	seeq_go(sp, hregs, sregs);
+ 	return 0;
+@@ -283,69 +327,90 @@ static inline void rx_maybe_restart(struct sgiseeq_private *sp,
+ 				    struct sgiseeq_regs *sregs)
+ {
+ 	if (!(hregs->rx_ctrl & HPC3_ERXCTRL_ACTIVE)) {
+-		hregs->rx_ndptr = CPHYSADDR(sp->rx_desc + sp->rx_new);
++		hregs->rx_ndptr = VIRT_TO_DMA(sp, sp->rx_desc + sp->rx_new);
+ 		seeq_go(sp, hregs, sregs);
+ 	}
+ }
+ 
+-#define for_each_rx(rd, sp) for((rd) = &(sp)->rx_desc[(sp)->rx_new]; \
+-				!((rd)->rdma.cntinfo & HPCDMA_OWN); \
+-				(rd) = &(sp)->rx_desc[(sp)->rx_new])
+-
+ static inline void sgiseeq_rx(struct net_device *dev, struct sgiseeq_private *sp,
+ 			      struct hpc3_ethregs *hregs,
+ 			      struct sgiseeq_regs *sregs)
+ {
+ 	struct sgiseeq_rx_desc *rd;
+ 	struct sk_buff *skb = NULL;
++	struct sk_buff *newskb;
+ 	unsigned char pkt_status;
+-	unsigned char *pkt_pointer = NULL;
+ 	int len = 0;
+ 	unsigned int orig_end = PREV_RX(sp->rx_new);
+ 
+ 	/* Service every received packet. */
+-	for_each_rx(rd, sp) {
++	rd = &sp->rx_desc[sp->rx_new];
++	dma_sync_desc_cpu(dev, rd);
++	while (!(rd->rdma.cntinfo & HPCDMA_OWN)) {
+ 		len = PKT_BUF_SZ - (rd->rdma.cntinfo & HPCDMA_BCNT) - 3;
+-		pkt_pointer = (unsigned char *)(long)rd->buf_vaddr;
+-		pkt_status = pkt_pointer[len + 2];
+-
++		dma_unmap_single(dev->dev.parent, rd->rdma.pbuf,
++				 PKT_BUF_SZ, DMA_FROM_DEVICE);
++		pkt_status = rd->skb->data[len];
+ 		if (pkt_status & SEEQ_RSTAT_FIG) {
+ 			/* Packet is OK. */
+-			skb = dev_alloc_skb(len + 2);
+-
+-			if (skb) {
+-				skb_reserve(skb, 2);
+-				skb_put(skb, len);
+-
+-				/* Copy out of kseg1 to avoid silly cache flush. */
+-				skb_copy_to_linear_data(skb, pkt_pointer + 2, len);
+-				skb->protocol = eth_type_trans(skb, dev);
+-
+-				/* We don't want to receive our own packets */
+-				if (memcmp(eth_hdr(skb)->h_source, dev->dev_addr, ETH_ALEN)) {
++			/* We don't want to receive our own packets */
++			if (memcmp(rd->skb->data + 6, dev->dev_addr, ETH_ALEN)) {
++				if (len > rx_copybreak) {
++					skb = rd->skb;
++					newskb = netdev_alloc_skb(dev, PKT_BUF_SZ);
++					if (!newskb) {
++						newskb = skb;
++						skb = NULL;
++						goto memory_squeeze;
++					}
++					skb_reserve(newskb, 2);
++				} else {
++					skb = netdev_alloc_skb(dev, len + 2);
++					if (skb) {
++						skb_reserve(skb, 2);
++						skb_copy_to_linear_data(skb, rd->skb->data, len);
++					}
++					newskb = rd->skb;
++				}
++memory_squeeze:
++				if (skb) {
++					skb_put(skb, len);
++					skb->protocol = eth_type_trans(skb, dev);
+ 					netif_rx(skb);
+ 					dev->last_rx = jiffies;
+ 					dev->stats.rx_packets++;
+ 					dev->stats.rx_bytes += len;
+ 				} else {
+-					/* Silently drop my own packets */
+-					dev_kfree_skb_irq(skb);
++					printk(KERN_NOTICE "%s: Memory squeeze, deferring packet.\n",
++						dev->name);
++					dev->stats.rx_dropped++;
+ 				}
+ 			} else {
+-				printk (KERN_NOTICE "%s: Memory squeeze, deferring packet.\n",
+-					dev->name);
+-				dev->stats.rx_dropped++;
++				/* Silently drop my own packets */
++				newskb = rd->skb;
+ 			}
+ 		} else {
+ 			record_rx_errors(dev, pkt_status);
++			newskb = rd->skb;
+ 		}
++		rd->skb = newskb;
++		rd->rdma.pbuf = dma_map_single(dev->dev.parent,
++					       newskb->data - 2,
++					       PKT_BUF_SZ, DMA_FROM_DEVICE);
+ 
+ 		/* Return the entry to the ring pool. */
+ 		rd->rdma.cntinfo = RCNTINFO_INIT;
+ 		sp->rx_new = NEXT_RX(sp->rx_new);
++		dma_sync_desc_dev(dev, rd);
++		rd = &sp->rx_desc[sp->rx_new];
++		dma_sync_desc_cpu(dev, rd);
+ 	}
++	dma_sync_desc_cpu(dev, &sp->rx_desc[orig_end]);
+ 	sp->rx_desc[orig_end].rdma.cntinfo &= ~(HPCDMA_EOR);
++	dma_sync_desc_dev(dev, &sp->rx_desc[orig_end]);
++	dma_sync_desc_cpu(dev, &sp->rx_desc[PREV_RX(sp->rx_new)]);
+ 	sp->rx_desc[PREV_RX(sp->rx_new)].rdma.cntinfo |= HPCDMA_EOR;
++	dma_sync_desc_dev(dev, &sp->rx_desc[PREV_RX(sp->rx_new)]);
+ 	rx_maybe_restart(sp, hregs, sregs);
+ }
+ 
+@@ -358,20 +423,29 @@ static inline void tx_maybe_reset_collisions(struct sgiseeq_private *sp,
+ 	}
+ }
+ 
+-static inline void kick_tx(struct sgiseeq_tx_desc *td,
++static inline void kick_tx(struct net_device *dev,
++			   struct sgiseeq_private *sp,
+ 			   struct hpc3_ethregs *hregs)
+ {
++	struct sgiseeq_tx_desc *td;
++	int i = sp->tx_old;
++
+ 	/* If the HPC aint doin nothin, and there are more packets
+ 	 * with ETXD cleared and XIU set we must make very certain
+ 	 * that we restart the HPC else we risk locking up the
+ 	 * adapter.  The following code is only safe iff the HPCDMA
+ 	 * is not active!
+ 	 */
++	td = &sp->tx_desc[i];
++	dma_sync_desc_cpu(dev, td);
+ 	while ((td->tdma.cntinfo & (HPCDMA_XIU | HPCDMA_ETXD)) ==
+-	      (HPCDMA_XIU | HPCDMA_ETXD))
+-		td = (struct sgiseeq_tx_desc *)(long) CKSEG1ADDR(td->tdma.pnext);
++	      (HPCDMA_XIU | HPCDMA_ETXD)) {
++		i = NEXT_TX(i);
++		td = &sp->tx_desc[i];
++		dma_sync_desc_cpu(dev, td);
++	}
+ 	if (td->tdma.cntinfo & HPCDMA_XIU) {
+-		hregs->tx_ndptr = CPHYSADDR(td);
++		hregs->tx_ndptr = VIRT_TO_DMA(sp, td);
+ 		hregs->tx_ctrl = HPC3_ETXCTRL_ACTIVE;
+ 	}
+ }
+@@ -400,11 +474,12 @@ static inline void sgiseeq_tx(struct net_device *dev, struct sgiseeq_private *sp
+ 	for (j = sp->tx_old; j != sp->tx_new; j = NEXT_TX(j)) {
+ 		td = &sp->tx_desc[j];
+ 
++		dma_sync_desc_cpu(dev, td);
+ 		if (!(td->tdma.cntinfo & (HPCDMA_XIU)))
+ 			break;
+ 		if (!(td->tdma.cntinfo & (HPCDMA_ETXD))) {
+ 			if (!(status & HPC3_ETXCTRL_ACTIVE)) {
+-				hregs->tx_ndptr = CPHYSADDR(td);
++				hregs->tx_ndptr = VIRT_TO_DMA(sp, td);
+ 				hregs->tx_ctrl = HPC3_ETXCTRL_ACTIVE;
+ 			}
+ 			break;
+@@ -413,6 +488,11 @@ static inline void sgiseeq_tx(struct net_device *dev, struct sgiseeq_private *sp
+ 		sp->tx_old = NEXT_TX(sp->tx_old);
+ 		td->tdma.cntinfo &= ~(HPCDMA_XIU | HPCDMA_XIE);
+ 		td->tdma.cntinfo |= HPCDMA_EOX;
++		if (td->skb) {
++			dev_kfree_skb_any(td->skb);
++			td->skb = NULL;
++		}
++		dma_sync_desc_dev(dev, td);
+ 	}
+ }
+ 
+@@ -480,6 +560,7 @@ static int sgiseeq_close(struct net_device *dev)
+ 	/* Shutdown the Seeq. */
+ 	reset_hpc3_and_seeq(sp->hregs, sregs);
+ 	free_irq(irq, dev);
++	seeq_purge_ring(dev);
+ 
+ 	return 0;
+ }
+@@ -506,16 +587,22 @@ static int sgiseeq_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	struct hpc3_ethregs *hregs = sp->hregs;
+ 	unsigned long flags;
+ 	struct sgiseeq_tx_desc *td;
+-	int skblen, len, entry;
++	int len, entry;
+ 
+ 	spin_lock_irqsave(&sp->tx_lock, flags);
+ 
+ 	/* Setup... */
+-	skblen = skb->len;
+-	len = (skblen <= ETH_ZLEN) ? ETH_ZLEN : skblen;
++	len = skb->len;
++	if (len < ETH_ZLEN) {
++		if (skb_padto(skb, ETH_ZLEN))
++			return 0;
++		len = ETH_ZLEN;
++	}
++
+ 	dev->stats.tx_bytes += len;
+ 	entry = sp->tx_new;
+ 	td = &sp->tx_desc[entry];
++	dma_sync_desc_cpu(dev, td);
+ 
+ 	/* Create entry.  There are so many races with adding a new
+ 	 * descriptor to the chain:
+@@ -530,25 +617,27 @@ static int sgiseeq_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	 *    entry and the HPC got to the end of the chain before we
+ 	 *    added this new entry and restarted it.
+ 	 */
+-	skb_copy_from_linear_data(skb, (char *)(long)td->buf_vaddr, skblen);
+-	if (len != skblen)
+-		memset((char *)(long)td->buf_vaddr + skb->len, 0, len-skblen);
++	td->skb = skb;
++	td->tdma.pbuf = dma_map_single(dev->dev.parent, skb->data,
++				       len, DMA_TO_DEVICE);
+ 	td->tdma.cntinfo = (len & HPCDMA_BCNT) |
+ 	                   HPCDMA_XIU | HPCDMA_EOXP | HPCDMA_XIE | HPCDMA_EOX;
++	dma_sync_desc_dev(dev, td);
+ 	if (sp->tx_old != sp->tx_new) {
+ 		struct sgiseeq_tx_desc *backend;
+ 
+ 		backend = &sp->tx_desc[PREV_TX(sp->tx_new)];
++		dma_sync_desc_cpu(dev, backend);
+ 		backend->tdma.cntinfo &= ~HPCDMA_EOX;
++		dma_sync_desc_dev(dev, backend);
+ 	}
+ 	sp->tx_new = NEXT_TX(sp->tx_new); /* Advance. */
+ 
+ 	/* Maybe kick the HPC back into motion. */
+ 	if (!(hregs->tx_ctrl & HPC3_ETXCTRL_ACTIVE))
+-		kick_tx(&sp->tx_desc[sp->tx_old], hregs);
++		kick_tx(dev, sp, hregs);
+ 
+ 	dev->trans_start = jiffies;
+-	dev_kfree_skb(skb);
+ 
+ 	if (!TX_BUFFS_AVAIL(sp))
+ 		netif_stop_queue(dev);
+@@ -586,33 +675,41 @@ static void sgiseeq_set_multicast(struct net_device *dev)
+ 		sgiseeq_reset(dev);
+ }
+ 
+-static inline void setup_tx_ring(struct sgiseeq_tx_desc *buf, int nbufs)
++static inline void setup_tx_ring(struct net_device *dev,
++				 struct sgiseeq_tx_desc *buf,
++				 int nbufs)
+ {
++	struct sgiseeq_private *sp = netdev_priv(dev);
+ 	int i = 0;
+ 
+ 	while (i < (nbufs - 1)) {
+-		buf[i].tdma.pnext = CPHYSADDR(buf + i + 1);
++		buf[i].tdma.pnext = VIRT_TO_DMA(sp, buf + i + 1);
+ 		buf[i].tdma.pbuf = 0;
++		dma_sync_desc_dev(dev, &buf[i]);
+ 		i++;
+ 	}
+-	buf[i].tdma.pnext = CPHYSADDR(buf);
++	buf[i].tdma.pnext = VIRT_TO_DMA(sp, buf);
++	dma_sync_desc_dev(dev, &buf[i]);
+ }
+ 
+-static inline void setup_rx_ring(struct sgiseeq_rx_desc *buf, int nbufs)
++static inline void setup_rx_ring(struct net_device *dev,
++				 struct sgiseeq_rx_desc *buf,
++				 int nbufs)
+ {
++	struct sgiseeq_private *sp = netdev_priv(dev);
+ 	int i = 0;
+ 
+ 	while (i < (nbufs - 1)) {
+-		buf[i].rdma.pnext = CPHYSADDR(buf + i + 1);
++		buf[i].rdma.pnext = VIRT_TO_DMA(sp, buf + i + 1);
+ 		buf[i].rdma.pbuf = 0;
++		dma_sync_desc_dev(dev, &buf[i]);
+ 		i++;
+ 	}
+ 	buf[i].rdma.pbuf = 0;
+-	buf[i].rdma.pnext = CPHYSADDR(buf);
++	buf[i].rdma.pnext = VIRT_TO_DMA(sp, buf);
++	dma_sync_desc_dev(dev, &buf[i]);
+ }
+ 
+-#define ALIGNED(x)  ((((unsigned long)(x)) + 0xf) & ~(0xf))
+-
+ static int __init sgiseeq_probe(struct platform_device *pdev)
+ {
+ 	struct sgiseeq_platform_data *pd = pdev->dev.platform_data;
+@@ -621,7 +718,7 @@ static int __init sgiseeq_probe(struct platform_device *pdev)
+ 	unsigned int irq = pd->irq;
+ 	struct sgiseeq_private *sp;
+ 	struct net_device *dev;
+-	int err, i;
++	int err;
+ 	DECLARE_MAC_BUF(mac);
+ 
+ 	dev = alloc_etherdev(sizeof (struct sgiseeq_private));
+@@ -635,7 +732,7 @@ static int __init sgiseeq_probe(struct platform_device *pdev)
+ 	sp = netdev_priv(dev);
+ 
+ 	/* Make private data page aligned */
+-	sr = dma_alloc_coherent(&pdev->dev, sizeof(*sp->srings),
++	sr = dma_alloc_noncoherent(&pdev->dev, sizeof(*sp->srings),
+ 				&sp->srings_dma, GFP_KERNEL);
+ 	if (!sr) {
+ 		printk(KERN_ERR "Sgiseeq: Page alloc failed, aborting.\n");
+@@ -647,8 +744,8 @@ static int __init sgiseeq_probe(struct platform_device *pdev)
+ 	sp->tx_desc = sp->srings->txvector;
+ 
+ 	/* A couple calculations now, saves many cycles later. */
+-	setup_rx_ring(sp->rx_desc, SEEQ_RX_BUFFERS);
+-	setup_tx_ring(sp->tx_desc, SEEQ_TX_BUFFERS);
++	setup_rx_ring(dev, sp->rx_desc, SEEQ_RX_BUFFERS);
++	setup_tx_ring(dev, sp->tx_desc, SEEQ_TX_BUFFERS);
+ 
+ 	memcpy(dev->dev_addr, pd->mac, ETH_ALEN);
+ 
+@@ -716,8 +813,8 @@ static int __exit sgiseeq_remove(struct platform_device *pdev)
+ 	struct sgiseeq_private *sp = netdev_priv(dev);
+ 
+ 	unregister_netdev(dev);
+-	dma_free_coherent(&pdev->dev, sizeof(*sp->srings), sp->srings,
+-	                  sp->srings_dma);
++	dma_free_noncoherent(&pdev->dev, sizeof(*sp->srings), sp->srings,
++			     sp->srings_dma);
+ 	free_netdev(dev);
+ 	platform_set_drvdata(pdev, NULL);
  

@@ -1,48 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Dec 2007 14:14:42 +0000 (GMT)
-Received: from relay01.mx.bawue.net ([193.7.176.67]:7043 "EHLO
-	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
-	id S20023388AbXLCOOe (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 3 Dec 2007 14:14:34 +0000
-Received: from lagash (intrt.mips-uk.com [194.74.144.130])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by relay01.mx.bawue.net (Postfix) with ESMTP id 3931F48BE4;
-	Mon,  3 Dec 2007 15:14:28 +0100 (CET)
-Received: from ths by lagash with local (Exim 4.68)
-	(envelope-from <ths@networkno.de>)
-	id 1IzC42-0005OA-Uq; Mon, 03 Dec 2007 14:14:26 +0000
-Date:	Mon, 3 Dec 2007 14:14:26 +0000
-From:	Thiemo Seufer <ths@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Dec 2007 14:19:24 +0000 (GMT)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:17080 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20023388AbXLCOTQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 3 Dec 2007 14:19:16 +0000
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id D7BB340095;
+	Mon,  3 Dec 2007 15:18:46 +0100 (CET)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id g9SYV-I9mriz; Mon,  3 Dec 2007 15:18:41 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 4EDB640003;
+	Mon,  3 Dec 2007 15:18:41 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id lB3EIidB009318;
+	Mon, 3 Dec 2007 15:18:45 +0100
+Date:	Mon, 3 Dec 2007 14:18:35 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
 To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org, linux-serial@vger.kernel.org
+cc:	linux-mips@linux-mips.org, linux-serial@linux-mips.org
 Subject: Re: Rename Sibyte duart devices?
-Message-ID: <20071203141426.GI617@networkno.de>
-References: <20071203130818.GA6466@linux-mips.org>
+In-Reply-To: <20071203130512.GA6320@linux-mips.org>
+Message-ID: <Pine.LNX.4.64N.0712031414070.19235@blysk.ds.pg.gda.pl>
+References: <20071203130512.GA6320@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20071203130818.GA6466@linux-mips.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ths@networkno.de>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.91.2/4980/Mon Dec  3 03:28:55 2007 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17670
+X-archive-position: 17671
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
+On Mon, 3 Dec 2007, Ralf Baechle wrote:
+
 > Devices created by udev have been named duart? instead of the common
 > ttyS?.  This is a nuisance because it requires changes to all sorts of
 > config files such as /etc/inittab, /etc/securetty etc. to work.  I
 > suggest to kill the problem by the root by something like the below
 > patch.  Comments?
 
-Debian uses such a patch since forever to avoid all the trouble.
+ Well, there is no problem with naming your device nodes in the filesystem 
+however you like and the only place that only cares is the "console=" 
+command line option.  I think the root is ttyS devices should really be 
+only used for 8250-based devices and if you plug a standard PC serial 
+option card into one of the PCI slots, then all the hell will break loose.  
+I might be wrong though and the issue I am referring to may have gone now.
 
-
-Thiemo
+  Maciej

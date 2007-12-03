@@ -1,53 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Dec 2007 13:35:58 +0000 (GMT)
-Received: from mo31.po.2iij.NET ([210.128.50.54]:33099 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20024469AbXLCNfu (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 3 Dec 2007 13:35:50 +0000
-Received: by mo.po.2iij.net (mo31) id lB3DYLFh055260; Mon, 3 Dec 2007 22:34:21 +0900 (JST)
-Received: from delta (95.26.30.125.dy.iij4u.or.jp [125.30.26.95])
-	by mbox.po.2iij.net (po-mbox303) id lB3DYJCt013684
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Mon, 3 Dec 2007 22:34:19 +0900
-Date:	Mon, 3 Dec 2007 22:34:18 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Martin Michlmayr <tbm@cyrius.com>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org,
-	Richard Purdie <rpurdie@rpsys.net>
-Subject: Re: CONFIG_LEDS_COBALT_RAQ not as module
-Message-Id: <20071203223418.2fec44a9.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20071130163258.GA10006@deprecation.cyrius.com>
-References: <20071130163258.GA10006@deprecation.cyrius.com>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed 2.4.5 (GTK+ 2.12.0; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Dec 2007 14:14:42 +0000 (GMT)
+Received: from relay01.mx.bawue.net ([193.7.176.67]:7043 "EHLO
+	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
+	id S20023388AbXLCOOe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 3 Dec 2007 14:14:34 +0000
+Received: from lagash (intrt.mips-uk.com [194.74.144.130])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by relay01.mx.bawue.net (Postfix) with ESMTP id 3931F48BE4;
+	Mon,  3 Dec 2007 15:14:28 +0100 (CET)
+Received: from ths by lagash with local (Exim 4.68)
+	(envelope-from <ths@networkno.de>)
+	id 1IzC42-0005OA-Uq; Mon, 03 Dec 2007 14:14:26 +0000
+Date:	Mon, 3 Dec 2007 14:14:26 +0000
+From:	Thiemo Seufer <ths@networkno.de>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, linux-serial@vger.kernel.org
+Subject: Re: Rename Sibyte duart devices?
+Message-ID: <20071203141426.GI617@networkno.de>
+References: <20071203130818.GA6466@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20071203130818.GA6466@linux-mips.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17669
+X-archive-position: 17670
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Ralf Baechle wrote:
+> Devices created by udev have been named duart? instead of the common
+> ttyS?.  This is a nuisance because it requires changes to all sorts of
+> config files such as /etc/inittab, /etc/securetty etc. to work.  I
+> suggest to kill the problem by the root by something like the below
+> patch.  Comments?
 
-On Fri, 30 Nov 2007 17:32:58 +0100
-Martin Michlmayr <tbm@cyrius.com> wrote:
+Debian uses such a patch since forever to avoid all the trouble.
 
-> Hi Yoichi,
-> 
-> Is there are good reason why LEDS_COBALT_QUBE is a tristate while
-> LEDS_COBALT_RAQ is a bool?  I don't see why the RAQ LED driver
-> couldn't be modular.
 
-RAQ LED driver support power off trigger.
-Power off trigger is generated at the end of all.
-
-This is the reason why RAQ LED driver doesn't have module_exit function.
-Moreover, this is the reason why it is bool.
-
-Yoichi
+Thiemo

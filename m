@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Dec 2007 13:06:46 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:8111 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Dec 2007 13:10:06 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:39047 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022380AbXLCNGo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 3 Dec 2007 13:06:44 +0000
+	id S20023380AbXLCNKE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 3 Dec 2007 13:10:04 +0000
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lB3D5DtN006431;
-	Mon, 3 Dec 2007 13:05:38 GMT
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lB3D8Ik2006474;
+	Mon, 3 Dec 2007 13:08:38 GMT
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lB3D5DC5006430;
-	Mon, 3 Dec 2007 13:05:13 GMT
-Date:	Mon, 3 Dec 2007 13:05:13 +0000
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lB3D8IXo006473;
+	Mon, 3 Dec 2007 13:08:18 GMT
+Date:	Mon, 3 Dec 2007 13:08:18 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	linux-mips@linux-mips.org, linux-serial@linux-mips.org
+To:	linux-mips@linux-mips.org, linux-serial@vger.kernel.org
 Subject: Rename Sibyte duart devices?
-Message-ID: <20071203130512.GA6320@linux-mips.org>
+Message-ID: <20071203130818.GA6466@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -22,7 +22,7 @@ Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17667
+X-archive-position: 17668
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

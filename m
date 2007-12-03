@@ -1,60 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Dec 2007 14:31:07 +0000 (GMT)
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:20438 "EHLO
-	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
-	id S20024652AbXLCOa6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 3 Dec 2007 14:30:58 +0000
-Received: from localhost (unknown [127.0.0.17])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 3003340095;
-	Mon,  3 Dec 2007 15:30:59 +0100 (CET)
-X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
-Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
-	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
-	with ESMTP id fzxSSMXOw8hG; Mon,  3 Dec 2007 15:30:53 +0100 (CET)
-Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
-	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id AFE1240003;
-	Mon,  3 Dec 2007 15:30:53 +0100 (CET)
-Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
-	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id lB3EUv0Z011443;
-	Mon, 3 Dec 2007 15:30:57 +0100
-Date:	Mon, 3 Dec 2007 14:30:47 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	linux-mips@linux-mips.org, linux-serial@vger.kernel.org
-Subject: Re: Rename Sibyte duart devices?
-In-Reply-To: <20071203130818.GA6466@linux-mips.org>
-Message-ID: <Pine.LNX.4.64N.0712031430050.19235@blysk.ds.pg.gda.pl>
-References: <20071203130818.GA6466@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Dec 2007 17:01:13 +0000 (GMT)
+Received: from mga02.intel.com ([134.134.136.20]:35318 "EHLO mga02.intel.com")
+	by ftp.linux-mips.org with ESMTP id S20026145AbXLCRBF convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 3 Dec 2007 17:01:05 +0000
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga101.jf.intel.com with ESMTP; 03 Dec 2007 09:00:57 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.23,244,1194249600"; 
+   d="scan'208";a="286035360"
+Received: from fmsmsx334.amr.corp.intel.com ([132.233.42.1])
+  by orsmga001.jf.intel.com with ESMTP; 03 Dec 2007 09:00:57 -0800
+Received: from scsmsx411.amr.corp.intel.com ([10.3.90.30]) by fmsmsx334.amr.corp.intel.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 3 Dec 2007 09:00:50 -0800
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: ClamAV 0.91.2/4980/Mon Dec  3 03:28:55 2007 on piorun.ds.pg.gda.pl
-X-Virus-Status:	Clean
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: [PATCH 2/2] MIPS: vmlinux.lds.S: handle .{init,exit}.bss sections
+Date:	Mon, 3 Dec 2007 09:00:49 -0800
+Message-ID: <617E1C2C70743745A92448908E030B2A030FE4C2@scsmsx411.amr.corp.intel.com>
+In-Reply-To: <1196543586-6698-3-git-send-email-fbuihuu@gmail.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: [PATCH 2/2] MIPS: vmlinux.lds.S: handle .{init,exit}.bss sections
+Thread-Index: Acg0Xwu30WWAvFsLTfOiwZEntWZUcQBblNdw
+References: <1196543586-6698-1-git-send-email-fbuihuu@gmail.com> <1196543586-6698-3-git-send-email-fbuihuu@gmail.com>
+From:	"Luck, Tony" <tony.luck@intel.com>
+To:	"Franck Bui-Huu" <fbuihuu@gmail.com>, <linux-arch@vger.kernel.org>
+Cc:	<macro@linux-mips.org>, <linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 03 Dec 2007 17:00:50.0677 (UTC) FILETIME=[0EBB9A50:01C835CE]
+Return-Path: <tony.luck@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17672
+X-archive-position: 17673
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: tony.luck@intel.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 3 Dec 2007, Ralf Baechle wrote:
++	/*
++	 * We keep init/exit bss sections here to have only one
++	 * segment to load. Note that .bss.exit is also discarded
++	 * at runtime for the same reason as above.
++	 */
++	.exit.bss : {
++		*(.bss.exit)
++	}
 
-> Devices created by udev have been named duart? instead of the common
-> ttyS?.  This is a nuisance because it requires changes to all sorts of
-> config files such as /etc/inittab, /etc/securetty etc. to work.  I
-> suggest to kill the problem by the root by something like the below
-> patch.  Comments?
+This change would also require an audit of the bootloader or early
+kernel initialization code (whichever handles zeroing of .bss space)
+to make sure that it understands that the kernel will now have an
+extra block of memory that needs to be cleared.  Perhaps nothing
+needs to be done if the code already handled the general case of
+loading an ELF binary with some sections that have an in-memory
+size bigger than the on-disk size.  But worth looking at in case
+the code makes an assumption about what needs to be zeroed.
 
- Well, there is no problem with naming your device nodes in the filesystem
-however you like and the only place that only cares is the "console="
-command line option.  I think the root is ttyS devices should really be
-only used for 8250-based devices and if you plug a standard PC serial
-option card into one of the PCI slots, then all the hell will break loose.
-I might be wrong though and the issue I am referring to may have gone now.
-
- [Sent twice to reach linux-serial.]
-
-  Maciej
+-Tony

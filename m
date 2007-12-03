@@ -1,67 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Dec 2007 13:10:06 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:39047 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20023380AbXLCNKE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 3 Dec 2007 13:10:04 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lB3D8Ik2006474;
-	Mon, 3 Dec 2007 13:08:38 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lB3D8IXo006473;
-	Mon, 3 Dec 2007 13:08:18 GMT
-Date:	Mon, 3 Dec 2007 13:08:18 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	linux-mips@linux-mips.org, linux-serial@vger.kernel.org
-Subject: Rename Sibyte duart devices?
-Message-ID: <20071203130818.GA6466@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Dec 2007 13:35:58 +0000 (GMT)
+Received: from mo31.po.2iij.NET ([210.128.50.54]:33099 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20024469AbXLCNfu (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 3 Dec 2007 13:35:50 +0000
+Received: by mo.po.2iij.net (mo31) id lB3DYLFh055260; Mon, 3 Dec 2007 22:34:21 +0900 (JST)
+Received: from delta (95.26.30.125.dy.iij4u.or.jp [125.30.26.95])
+	by mbox.po.2iij.net (po-mbox303) id lB3DYJCt013684
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Mon, 3 Dec 2007 22:34:19 +0900
+Date:	Mon, 3 Dec 2007 22:34:18 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Martin Michlmayr <tbm@cyrius.com>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org,
+	Richard Purdie <rpurdie@rpsys.net>
+Subject: Re: CONFIG_LEDS_COBALT_RAQ not as module
+Message-Id: <20071203223418.2fec44a9.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20071130163258.GA10006@deprecation.cyrius.com>
+References: <20071130163258.GA10006@deprecation.cyrius.com>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed 2.4.5 (GTK+ 2.12.0; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17668
+X-archive-position: 17669
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Devices created by udev have been named duart? instead of the common
-ttyS?.  This is a nuisance because it requires changes to all sorts of
-config files such as /etc/inittab, /etc/securetty etc. to work.  I
-suggest to kill the problem by the root by something like the below
-patch.  Comments?
+Hi,
 
-  Ralf
+On Fri, 30 Nov 2007 17:32:58 +0100
+Martin Michlmayr <tbm@cyrius.com> wrote:
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+> Hi Yoichi,
+> 
+> Is there are good reason why LEDS_COBALT_QUBE is a tristate while
+> LEDS_COBALT_RAQ is a bool?  I don't see why the RAQ LED driver
+> couldn't be modular.
 
- drivers/serial/sb1250-duart.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+RAQ LED driver support power off trigger.
+Power off trigger is generated at the end of all.
 
-diff --git a/drivers/serial/sb1250-duart.c b/drivers/serial/sb1250-duart.c
-index 2d6c08b..0defbd6 100644
---- a/drivers/serial/sb1250-duart.c
-+++ b/drivers/serial/sb1250-duart.c
-@@ -897,7 +897,7 @@ static int __init sbd_console_setup(struct console *co, char *options)
- 
- static struct uart_driver sbd_reg;
- static struct console sbd_console = {
--	.name	= "duart",
-+	.name	= "ttyS",
- 	.write	= sbd_console_write,
- 	.device	= uart_console_device,
- 	.setup	= sbd_console_setup,
-@@ -925,7 +925,7 @@ console_initcall(sbd_serial_console_init);
- static struct uart_driver sbd_reg = {
- 	.owner		= THIS_MODULE,
- 	.driver_name	= "serial",
--	.dev_name	= "duart",
-+	.dev_name	= "ttyS",
- 	.major		= TTY_MAJOR,
- 	.minor		= SB1250_DUART_MINOR_BASE,
- 	.nr		= DUART_MAX_CHIP * DUART_MAX_SIDE,
+This is the reason why RAQ LED driver doesn't have module_exit function.
+Moreover, this is the reason why it is bool.
+
+Yoichi

@@ -1,48 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Dec 2007 20:18:17 +0000 (GMT)
-Received: from srv5.dvmed.net ([207.36.208.214]:10720 "EHLO mail.dvmed.net")
-	by ftp.linux-mips.org with ESMTP id S20032961AbXLDUSB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 4 Dec 2007 20:18:01 +0000
-Received: from cpe-069-134-071-233.nc.res.rr.com ([69.134.71.233] helo=core.yyz.us)
-	by mail.dvmed.net with esmtpsa (Exim 4.63 #1 (Red Hat Linux))
-	id 1IzeAJ-0004lD-SE; Tue, 04 Dec 2007 20:14:48 +0000
-Message-ID: <4755B536.8070003@pobox.com>
-Date:	Tue, 04 Dec 2007 15:14:46 -0500
-From:	Jeff Garzik <jgarzik@pobox.com>
-User-Agent: Thunderbird 2.0.0.9 (X11/20071115)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Dec 2007 21:07:37 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:60325 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20033005AbXLDVHf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 4 Dec 2007 21:07:35 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lB4L5W2i000992;
+	Tue, 4 Dec 2007 21:05:57 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lB4L5VNx000991;
+	Tue, 4 Dec 2007 21:05:31 GMT
+Date:	Tue, 4 Dec 2007 21:05:31 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Jeff Garzik <jgarzik@pobox.com>
+Cc:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	netdev@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [UPDATED PATCH] SGISEEQ: use cached memory access to make
+	driver work on IP28
+Message-ID: <20071204210531.GB775@linux-mips.org>
+References: <20071202103312.75E51C2EB5@solo.franken.de> <4755B536.8070003@pobox.com>
 MIME-Version: 1.0
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-CC:	netdev@vger.kernel.org, linux-mips@linux-mips.org,
-	ralf@linux-mips.org
-Subject: Re: [UPDATED PATCH] SGISEEQ: use cached memory access to make driver
- work on IP28
-References: <20071202103312.75E51C2EB5@solo.franken.de>
-In-Reply-To: <20071202103312.75E51C2EB5@solo.franken.de>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <jgarzik@pobox.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4755B536.8070003@pobox.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17690
+X-archive-position: 17691
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jgarzik@pobox.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Thomas Bogendoerfer wrote:
-> SGI IP28 machines would need special treatment (enable adding addtional
-> wait states) when accessing memory uncached. To avoid this pain I changed
-> the driver to use only cached access to memory.
-> 
-> Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> ---
-> 
-> Changes to last version:
-> - Use inline functions for dma_sync_* instead of macros (suggested by Ralf)
-> - added Kconfig change to make selection for similair SGI boxes easier
+On Tue, Dec 04, 2007 at 03:14:46PM -0500, Jeff Garzik wrote:
 
-Has Ralf ACK'd this updated version?
+>> Changes to last version:
+>> - Use inline functions for dma_sync_* instead of macros (suggested by Ralf)
+>> - added Kconfig change to make selection for similair SGI boxes easier
+>
+> Has Ralf ACK'd this updated version?
 
-This is for 2.6.25 (i.e. not a bug fix for 2.6.24-rc) I presume?
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
+
+> This is for 2.6.25 (i.e. not a bug fix for 2.6.24-rc) I presume?
+
+Yes.  IP28 support it scheduled to be merged for 2.6.25.
+
+  Ralf

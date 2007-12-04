@@ -1,89 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Dec 2007 00:02:56 +0000 (GMT)
-Received: from pentafluge.infradead.org ([213.146.154.40]:59333 "EHLO
-	pentafluge.infradead.org") by ftp.linux-mips.org with ESMTP
-	id S20030551AbXLDACq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 4 Dec 2007 00:02:46 +0000
-Received: from [192.102.209.1] (helo=laptopd505.fenrus.org)
-	by pentafluge.infradead.org with esmtpsa (Exim 4.68 #1 (Red Hat Linux))
-	id 1IzLCD-0002Sy-Ot; Mon, 03 Dec 2007 23:59:30 +0000
-Date:	Mon, 3 Dec 2007 15:57:46 -0800
-From:	Arjan van de Ven <arjan@infradead.org>
-To:	Andrew Morton <akpm@linux-foundation.org>
-Cc:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-	Andy Whitcroft <apw@shadowen.org>,
-	Alan Cox <alan@lxorguk.ukuu.org.uk>
-Subject: Re: [PATCH] SC26XX: New serial driver for SC2681 uarts
-Message-ID: <20071203155746.2dc4506d@laptopd505.fenrus.org>
-In-Reply-To: <20071203155317.772231f9.akpm@linux-foundation.org>
-References: <20071202194346.36E3FDE4C4@solo.franken.de>
-	<20071203155317.772231f9.akpm@linux-foundation.org>
-Organization: Intel
-X-Mailer: Claws Mail 3.0.2 (GTK+ 2.12.1; i386-redhat-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <arjan@infradead.org> by pentafluge.infradead.org
-	See http://www.infradead.org/rpr.html
-Return-Path: <SRS0+dd00f2f123ee515c5e23+1562+infradead.org+arjan@pentafluge.srs.infradead.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Dec 2007 02:22:57 +0000 (GMT)
+Received: from wa-out-1112.google.com ([209.85.146.180]:63517 "EHLO
+	wa-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20030690AbXLDCWt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 4 Dec 2007 02:22:49 +0000
+Received: by wa-out-1112.google.com with SMTP id m16so5567078waf
+        for <linux-mips@linux-mips.org>; Mon, 03 Dec 2007 18:22:36 -0800 (PST)
+Received: by 10.142.72.21 with SMTP id u21mr10479wfa.1196734956458;
+        Mon, 03 Dec 2007 18:22:36 -0800 (PST)
+Received: by 10.142.169.11 with HTTP; Mon, 3 Dec 2007 18:22:35 -0800 (PST)
+Message-ID: <fb2fec70712031822q36b1834fq99a96406390409b8@mail.gmail.com>
+Date:	Tue, 4 Dec 2007 10:22:35 +0800
+From:	"David Kuk" <david.kuk@entone.com>
+To:	"YH Lin" <YH_Lin@sdesigns.com>
+Subject: Re: smp8634 add memory at dram1
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <5DF100B598199744B111FCEA5222E78A01CB9F5F@sigma-exch1.sdesigns.com>
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_14758_19589160.1196734956430"
+References: <5DF100B598199744B111FCEA5222E78A01CB9F5F@sigma-exch1.sdesigns.com>
+Return-Path: <david.kuk@entone.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17684
+X-archive-position: 17685
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: arjan@infradead.org
+X-original-sender: david.kuk@entone.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 3 Dec 2007 15:53:17 -0800
-Andrew Morton <akpm@linux-foundation.org> wrote:
+------=_Part_14758_19589160.1196734956430
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-> On Sun,  2 Dec 2007 20:43:46 +0100 (CET)
-> Thomas Bogendoerfer <tsbogend@alpha.franken.de> wrote:
-> 
-> > New serial driver for SC2681/SC2691 uarts. Older SNI RM400 machines
-> > are using these chips for onboard serial ports.
-> > 
-> 
-> Little things...
-> 
-> > --- /dev/null
-> > +++ b/drivers/serial/sc26xx.c
-> > @@ -0,0 +1,757 @@
-> > +/*
-> > + * SC268xx.c: Serial driver for Philiphs SC2681/SC2692 devices.
-> > + *
-> > + * Copyright (C) 2006,2007 Thomas Bogend__rfer
-> > (tsbogend@alpha.franken.de)
-> > + */
-> > +
-> > +#include <linux/module.h>
-> > +#include <linux/kernel.h>
-> > +#include <linux/errno.h>
-> > +#include <linux/tty.h>
-> > +#include <linux/tty_flip.h>
-> > +#include <linux/major.h>
-> > +#include <linux/circ_buf.h>
-> > +#include <linux/serial.h>
-> > +#include <linux/sysrq.h>
-> > +#include <linux/console.h>
-> > +#include <linux/spinlock.h>
-> > +#include <linux/slab.h>
-> > +#include <linux/delay.h>
-> > +#include <linux/init.h>
-> > +#include <linux/platform_device.h>
-> > +#include <linux/irq.h>
-> > +
-> > +#if defined(CONFIG_MAGIC_SYSRQ)
-> > +#define SUPPORT_SYSRQ
-> > +#endif
-> > +
-> > +#include <linux/serial_core.h>
-> > +
-> > +#define SC26XX_MAJOR         204
-> > +#define SC26XX_MINOR_START   205
-> > +#define SC26XX_NR            2
+Dear YH
 
-did lanana assign these numbers officially?
+I am sorry i have been disturbed by other issues, the memory problem seems
+little bit difficult to me. In our case, i saw that in prom.c under
+mips/tango2, the function prom_init , it shows that :
+memcfg_t *m=(memcfg_t*)KSEG1ADDR(MEM_BASE_dram_controller_0+FM_MEMCFG);
+
+it's seems the kernel has hard coded to point the starting memory to DRAM
+controller 0's starting address, if now, i have remap 64mb memory at DRAM
+controller 1 at remap register 4, The problem is come, the kernel will
+ignore any memory before dram controller 0's starting address. Even i have
+add 0x0c000000--0x10000000 as boot memory, it still think it's first usable
+pfn is at 0x10000000.
+
+my solution is 3 steps
+
+1, modify the compiler, let the linux start address moved to 0x0c000000,
+2. modify the YAMON, and map the DRAM 1 controller to remap register4 in
+YAMON stage
+3, modify the linux, to set the two piece of memory to the kernel as boot
+memory .
+
+it's this possible, or it have other better solution ?
+
+thx a lot for your kindly help !
+
+
+best wishes
+David
+
+------=_Part_14758_19589160.1196734956430
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+Dear YH<br><br>I am sorry i have been disturbed by other issues, the memory problem seems little bit difficult to me. In our case, i saw that in prom.c under mips/tango2, the function prom_init , it shows that :<br>memcfg_t *m=(memcfg_t*)KSEG1ADDR(MEM_BASE_dram_controller_0+FM_MEMCFG);
+<br><br>it&#39;s seems the kernel has hard coded to point the starting memory to DRAM controller 0&#39;s starting address, if now, i have remap 64mb memory at DRAM controller 1 at remap register 4, The problem is come, the kernel will ignore any memory before dram controller 0&#39;s starting address. Even i have add 0x0c000000--0x10000000 as boot memory, it still think it&#39;s first usable pfn is at 0x10000000.
+<br><br>my solution is 3 steps<br><br>1, modify the compiler, let the linux start address moved to 0x0c000000, <br>2. modify the YAMON, and map the DRAM 1 controller to remap register4 in YAMON stage<br>3, modify the linux, to set the two piece of memory to the kernel as boot memory .
+<br><br>it&#39;s this possible, or it have other better solution ?<br><br>thx a lot for your kindly help !<br><br><br>best wishes<br>David<br><br><br>
+
+------=_Part_14758_19589160.1196734956430--

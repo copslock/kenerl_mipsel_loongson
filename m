@@ -1,58 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Dec 2007 03:51:21 +0000 (GMT)
-Received: from mail.zeugmasystems.com ([70.79.96.174]:6708 "EHLO
-	zeugmasystems.com") by ftp.linux-mips.org with ESMTP
-	id S20033763AbXLEDuu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 5 Dec 2007 03:50:50 +0000
-Received: from rocktron ([10.18.28.223]) by zeugmasystems.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 4 Dec 2007 19:50:42 -0800
-Message-ID: <34AF8F83DE89424F94243BB80944B175@rocktron>
-From:	"Kaz Kylheku" <kaz@zeugmasystems.com>
-To:	<linux-mips@linux-mips.org>
-References: <20071203181658.GA26631@onstor.com> <20071203230828.GA17960@linux-mips.org>
-In-Reply-To: <20071203230828.GA17960@linux-mips.org>
-Subject: Re: [PATCH] Add support for SB1 hardware watchdog.
-Date:	Tue, 4 Dec 2007 19:50:42 -0800
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Dec 2007 06:16:36 +0000 (GMT)
+Received: from qmta07.emeryville.ca.mail.comcast.net ([76.96.30.64]:31155 "EHLO
+	QMTA07.emeryville.ca.mail.comcast.net") by ftp.linux-mips.org
+	with ESMTP id S20022337AbXLEGQ2 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 5 Dec 2007 06:16:28 +0000
+Received: from OMTA01.emeryville.ca.mail.comcast.net ([76.96.30.11])
+	by QMTA07.emeryville.ca.mail.comcast.net with comcast
+	id LsFa1Y00B0EPcho0A09Z00; Wed, 05 Dec 2007 06:16:20 +0000
+Received: from [192.168.1.4] ([69.140.18.238])
+	by OMTA01.emeryville.ca.mail.comcast.net with comcast
+	id LuGJ1Y00258Be2l0800000; Wed, 05 Dec 2007 06:16:19 +0000
+X-Authority-Analysis: v=1.0 c=1 a=iutXgmbQ7ULgJeHD0VAA:9 a=VsqEP6V0iwlQwqG2ykgORS65Xd8A:4 a=QJAqVYndk0IA:10
+Message-ID: <4756422D.6070305@gentoo.org>
+Date:	Wed, 05 Dec 2007 01:16:13 -0500
+From:	Kumba <kumba@gentoo.org>
+User-Agent: Thunderbird 2.0.0.9 (Windows/20071031)
 MIME-Version: 1.0
-Content-Type: text/plain;
-	format=flowed;
-	charset="iso-8859-1";
-	reply-type=original
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Windows Mail 6.0.6000.16480
-X-MimeOLE: Produced By Microsoft MimeOLE V6.0.6000.16545
-X-OriginalArrivalTime: 05 Dec 2007 03:50:42.0950 (UTC) FILETIME=[025A0A60:01C836F2]
-Return-Path: <kaz@zeugmasystems.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-mips@linux-mips.org
+Subject: Re: [UPDATED PATCH] IP28 support
+References: <20071129095442.C6679C2B39@solo.franken.de> <20071129130130.GA14655@linux-mips.org>
+In-Reply-To: <20071129130130.GA14655@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17696
+X-archive-position: 17697
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kaz@zeugmasystems.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Dec 03, 2007, Ralf Baechle wrote:
-> On Mon, Dec 03, 2007 at 10:17:04AM -0800, Andrew Sharp wrote:
->
->> +   Watchdog driver for the built in watchdog hardware in Sibyte
->> +   SoC processors.  There are apparently two watchdog timers
->> +   on such processors; this driver supports only the first one,
->> +   because currently Linux only supports exporting one watchdog
->> +   to userspace.
->
-> And even four watchdogs in the BCM1480.
->
-> You'd think they'd trust their hardware more than that ;-)
+Ralf Baechle wrote:
+> On Thu, Nov 29, 2007 at 10:54:42AM +0100, Thomas Bogendoerfer wrote:
+> 
+>> Add support for SGI IP28 machines (Indigo 2 with R10k CPUs)
+>> This work is mainly based on Peter Fuersts work.
+> 
+> Queued for 2.6.25.  There clearly is work remaining to be done but the
+> code is now in an acceptable shape and the best way to push it forward
+> is integrating it.  Thanks for all the work and especially to Peter
+> Fürst for the initial heavyweight lifting!
+> 
+>   Ralf
 
-Maybe the dogs can be daisy-chained together. After all, who watches the 
-watcher? And who watches him?
+Seconded.  Peter is made of Win.
 
-Did I ever tell you how lucky you are?
+I've been out of it lately -- did the gcc side of things ever make it in, or do 
+we need to go push on that some more?
 
-http://www.drseussart.com/beewatcher.html
 
-http://www.webpages.ttu.edu/sbaugues/fin4323/dr.seuss.pdf
+--Kumba
+
+-- 
+Gentoo/MIPS Team Lead
+
+"Such is oft the course of deeds that move the wheels of the world: small hands 
+do them because they must, while the eyes of the great are elsewhere."  --Elrond

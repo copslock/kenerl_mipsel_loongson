@@ -1,101 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Dec 2007 08:09:06 +0000 (GMT)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:44298 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S20022323AbXLFII4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 6 Dec 2007 08:08:56 +0000
-Received: (qmail 20550 invoked by uid 1000); 6 Dec 2007 09:07:55 +0100
-Date:	Thu, 6 Dec 2007 09:07:55 +0100
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	linux-mips@linux-mips.org
-Subject: [RFC PATCH] Alchemy: Au1210/Au1250 CPU support
-Message-ID: <20071206080755.GA20485@roarinelk.homelinux.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 06 Dec 2007 11:41:36 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:64650 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20022989AbXLFLle (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 6 Dec 2007 11:41:34 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lB6Bf4GE006748;
+	Thu, 6 Dec 2007 11:41:05 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lB6Bf3FU006747;
+	Thu, 6 Dec 2007 11:41:03 GMT
+Date:	Thu, 6 Dec 2007 11:41:03 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	peter fuerst <pf@pfrst.de>
+Cc:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Kumba <kumba@gentoo.org>, linux-mips@linux-mips.org
+Subject: Re: [UPDATED PATCH] IP28 support
+Message-ID: <20071206114103.GA6498@linux-mips.org>
+References: <20071205093938.GA6848@alpha.franken.de> <Pine.LNX.4.21.0712051841520.1354@Opal.Peter>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <mano@roarinelk.homelinux.net>
+In-Reply-To: <Pine.LNX.4.21.0712051841520.1354@Opal.Peter>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17715
+X-archive-position: 17716
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch adds IDs fornew Au1200 variants: Au1210 and Au1250.
-They are essentially identical to the Au1200 except for the Au1210
-which has a different SoC-ID in the PRId register [bits 31:24].
-The Au1250 is a "Au1200 V0.2".
+On Wed, Dec 05, 2007 at 08:49:53PM +0100, peter fuerst wrote:
 
-Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
+> > there seems to be a missing understanding, why the cache
+> > barriers are needed. I guess the patch could be improved
+> > by pointing directly to the errata section of the R10k
+> > user manual. Or even better copy the text out of the user
+> > manual. That should make clear why this patch is needed.
+> 
+> Better copy, i guess. (Assuming copying whole paragraphs is still proper
+> citation ;-) Along with the initial patch (.../2006-03.msg00090.html) as
+> well as in the last letter so far (.../2006-05/msg01446.html) i pointed
+> to the corresponding chapter in the R10k User's Manual and to the entry
+> in the NetBSD eMail archive. In the last letter i tried to augment these
+> by a summarizing explanation, but it seems i'm not very good at that...
 
---- linux-2.6.24-rc4/include/asm-mips/cpu.h	2007-12-04 08:33:33.143002000 +0100
-+++ linux-2.6.24-rc4-work/include/asm-mips/cpu.h	2007-12-06 16:28:48.000000000 +0100
-@@ -195,8 +195,8 @@ enum cpu_type_enum {
- 	 * MIPS32 class processors
- 	 */
- 	CPU_4KC, CPU_4KEC, CPU_4KSC, CPU_24K, CPU_34K, CPU_74K, CPU_AU1000,
--	CPU_AU1100, CPU_AU1200, CPU_AU1500, CPU_AU1550, CPU_PR4450,
--	CPU_BCM3302, CPU_BCM4710,
-+	CPU_AU1100, CPU_AU1200, CPU_AU1210, CPU_AU1250, CPU_AU1500, CPU_AU1550,
-+	CPU_PR4450, CPU_BCM3302, CPU_BCM4710,
- 
- 	/*
- 	 * MIPS64 class processors
---- linux-2.6.24-rc4/arch/mips/kernel/cpu-probe.c	2007-12-04 08:33:00.793002000 +0100
-+++ linux-2.6.24-rc4-work/arch/mips/kernel/cpu-probe.c	2007-12-06 16:27:06.000000000 +0100
-@@ -188,6 +188,8 @@ static inline void check_wait(void)
- 	case CPU_AU1500:
- 	case CPU_AU1550:
- 	case CPU_AU1200:
-+	case CPU_AU1210:
-+	case CPU_AU1250:
- 		if (allow_au1k_wait)
- 			cpu_wait = au1k_wait;
- 		break;
-@@ -733,6 +735,11 @@ static inline void cpu_probe_alchemy(str
- 			break;
- 		case 4:
- 			c->cputype = CPU_AU1200;
-+			if (2 == (c->processor_id & 0xff))
-+				c->cputype = CPU_AU1250;
-+			break;
-+		case 5:
-+			c->cputype = CPU_AU1210;
- 			break;
- 		default:
- 			panic("Unknown Au Core!");
-@@ -858,6 +865,8 @@ static __init const char *cpu_to_name(st
- 	case CPU_AU1100:	name = "Au1100"; break;
- 	case CPU_AU1550:	name = "Au1550"; break;
- 	case CPU_AU1200:	name = "Au1200"; break;
-+	case CPU_AU1210:	name = "Au1210"; break;
-+	case CPU_AU1250:	name = "Au1250"; break;
- 	case CPU_4KEC:		name = "MIPS 4KEc"; break;
- 	case CPU_4KSC:		name = "MIPS 4KSc"; break;
- 	case CPU_VR41XX:	name = "NEC Vr41xx"; break;
---- linux-2.6.24-rc4/arch/mips/mm/c-r4k.c	2007-12-04 08:33:00.963002000 +0100
-+++ linux-2.6.24-rc4-work/arch/mips/mm/c-r4k.c	2007-12-06 16:44:07.000000000 +0100
-@@ -989,6 +989,8 @@ static void __init probe_pcache(void)
- 	case CPU_AU1100:
- 	case CPU_AU1550:
- 	case CPU_AU1200:
-+	case CPU_AU1210:
-+	case CPU_AU1250:
- 		c->icache.flags |= MIPS_CACHE_IC_F_DC;
- 		break;
- 	}
---- linux-2.6.24-rc4/arch/mips/mm/tlbex.c	2007-12-04 08:33:00.983002000 +0100
-+++ linux-2.6.24-rc4-work/arch/mips/mm/tlbex.c	2007-12-06 16:44:30.000000000 +0100
-@@ -894,6 +894,8 @@ static __init void build_tlb_write_entry
- 	case CPU_AU1500:
- 	case CPU_AU1550:
- 	case CPU_AU1200:
-+	case CPU_AU1210:
-+	case CPU_AU1250:
- 	case CPU_PR4450:
- 		i_nop(p);
- 		tlbw(p);
+I'm not sure how far "fair use" of the R10000 manual text can be stretched.
+But afair Bill Earl (wje@sgi.com) posted a reasonable explanation which
+also for the purposes of the gcc manual is much easier to understand.
+
+  Ralf

@@ -1,82 +1,125 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Dec 2007 23:40:13 +0000 (GMT)
-Received: from mail.zeugmasystems.com ([192.139.122.66]:17454 "EHLO
-	zeugmasystems.com") by ftp.linux-mips.org with ESMTP
-	id S20024047AbXLGXkF convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 7 Dec 2007 23:40:05 +0000
-Content-class: urn:content-classes:message
-Subject: RE: SiByte 1480 & Branch Likely instructions?
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Dec 2007 17:52:19 +0000 (GMT)
+Received: from smtp.nildram.co.uk ([195.112.4.54]:24338 "EHLO
+	smtp.nildram.co.uk") by ftp.linux-mips.org with ESMTP
+	id S20026287AbXLHRwI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 8 Dec 2007 17:52:08 +0000
+Received: from firetop.home (85-211-134-127.dyn.gotadsl.co.uk [85.211.134.127])
+	by smtp.nildram.co.uk (Postfix) with ESMTP id 5B63B2B5F05;
+	Sat,  8 Dec 2007 17:52:04 +0000 (GMT)
+Received: from richard by firetop.home with local (Exim 4.63)
+	(envelope-from <rsandifo@nildram.co.uk>)
+	id 1J13qR-0006pZ-0X; Sat, 08 Dec 2007 17:52:07 +0000
+From:	Richard Sandiford <rsandifo@nildram.co.uk>
+To:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Mail-Followup-To: tsbogend@alpha.franken.de (Thomas Bogendoerfer),Kumba <kumba@gentoo.org>,  Ralf Baechle <ralf@linux-mips.org>,  linux-mips@linux-mips.org, rsandifo@nildram.co.uk
+Cc:	Kumba <kumba@gentoo.org>, Ralf Baechle <ralf@linux-mips.org>,
+	linux-mips@linux-mips.org
+Subject: Re: [UPDATED PATCH] IP28 support
+References: <20071129095442.C6679C2B39@solo.franken.de>
+	<20071129130130.GA14655@linux-mips.org> <4756422D.6070305@gentoo.org>
+	<20071205093938.GA6848@alpha.franken.de>
+Date:	Sat, 08 Dec 2007 17:52:06 +0000
+In-Reply-To: <20071205093938.GA6848@alpha.franken.de> (Thomas Bogendoerfer's
+	message of "Wed\, 5 Dec 2007 10\:39\:38 +0100")
+Message-ID: <87ejdx6pmh.fsf@firetop.home>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Date:	Fri, 7 Dec 2007 15:39:57 -0800
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Message-ID: <DDFD17CC94A9BD49A82147DDF7D545C5590D6B@exchange.ZeugmaSystems.local>
-In-Reply-To: <DDFD17CC94A9BD49A82147DDF7D545C5590CF0@exchange.ZeugmaSystems.local>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: SiByte 1480 & Branch Likely instructions?
-Thread-Index: Acg5G75nLX9OzGDLQf6iiyb7ttVemwADrN7Q
-From:	"Kaz Kylheku" <kaz@zeugmasystems.com>
-To:	<linux-mips@linux-mips.org>
-Return-Path: <kaz@zeugmasystems.com>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <rsandifo@nildram.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17730
+X-archive-position: 17731
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kaz@zeugmasystems.com
+X-original-sender: rsandifo@nildram.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-Kaz wrote:
-> Hi All,
-> 
-> Not really a kernel-related question. I've discovered that GCC 4.1.1
-> (which I'm not using for kernel compiling, but user space) generates
-> branch likely instructions by default, even though the documentation
-> says that their use is off by default for MIPS32 and MIPS64, because
+tsbogend@alpha.franken.de (Thomas Bogendoerfer) writes:
+> On Wed, Dec 05, 2007 at 01:16:13AM -0500, Kumba wrote:
+>> I've been out of it lately -- did the gcc side of things ever make it in, 
+>> or do we need to go push on that some more?
+>
+> We need push on that. Looking at 
+>
+> http://gcc.gnu.org/ml/gcc-patches/2006-04/msg00291.html
+>
+> there seems to be a missing understanding, why the cache
+> barriers are needed.
 
-That's because the compiler is not configured correctly. The default CPU
-string "from-abi" ends up being used, and so the target ISA is MIPS III.
+Heh.  Quite probably.  Which bit of my message don't you agree with?
 
-> In parallel with writing some tests, I thought I would ask whether
-> anyone happens know whether or not these instructions are known to
-> actually work correctly on the SB1480 silicon (and perhaps any
-> additional details, like what revisions, etc)?
+FWIW, I was going off the original message as posted here:
 
-A basic sanity test does find bnezl working.
+    http://gcc.gnu.org/ml/gcc-patches/2006-03/msg00090.html
 
-#include <stdio.h>
-#include <stdlib.h>
+The explanation of the chosen workaround seemed to be left to this bit
+of http://mail-index.netbsd.org/port-sgimips/2000/06/29/0006.html:
 
-static int branch_likely_works(void)
-{
-    int one = 1;
-    int result;
+    All is well with coherent IO systems.  On non coherent
+    systems like Indigo2 and O2 this creates a race
+    condition with DMA reads (IO->mem) where a stale
+    cached data can be written back over the DMAed data.
 
-    __asm__ __volatile__
-    ("        .set push\n"
-     "        .set noreorder\n"
-     "1:      move %0, $0\n"
-     "        bnezl %0, 1b\n"
-     "        lw %0, %1\n"
-     "        .set pop\n"
-     : "=r" (result)
-     : "m" (one));
+    R10K Indigo2:
 
-     return result == 0;
-}
+    This issue was figured out late the the R10K I2
+    design cycle.  The problem was fixed by modifying
+    the compiler and assembler to issue a cache barrier
+    instruction to address 0(sp) as the first instruction
+    in basic blocks that contain stores to registers
+    other than $0 and $sp.
 
-int main(void)
-{
-    if (branch_likely_works()) {
-        puts("branch-likely instruction bnezl correctly annuls delay
-slot");
-        return 0;
-    } 
-    puts("branch-likely instruction bnezl fails to annul delay slot");
-    return EXIT_FAILURE;
-}
+and from a compiler point of view, it would be nice to know
+_why_ that was a reasonable workaround.  What I was really
+looking for was: (a) a short description of the problem,
+(b) a list of assumptions that the compiler is going to
+make when working around the problem and (c) a description
+of what said workarounds are.
+
+My understanding of (a) is that, if a store is speculatively executed,
+the target of the store might be fetched into cache and marked dirty.
+We therefore want to avoid the speculative execution of stores if:
+
+  (1) the addressed memory might be the target of a later DMA operation.
+      If the DMA completes before the "dirty" cache line is flushed,
+      the cached data might overwrite the DMAed data.
+
+  (2) the addressed memory might be to IO-mapped cached memory
+      (usually through the address being garbage).  The cached
+      data will be written back to the IO region when flushed.
+
+We also want to avoid speculative execution of loads if:
+
+  (3) the addressed memory might be to load-sensitive IO-mapped cached
+      memory (usually through the address being garbage).  The hardware
+      would "see" loads that aren't actually executed.
+
+Is that vaguely accurate?
+
+I tried to piece together (b) by asking questions in the reviews,
+but it would be great to have a single explanation.
+
+The idea behind (c) is simple, of course: we insert a cache barrier
+before the potentially-problematic stores (and, for certain
+configurations, loads, although the original gcc patch had the
+associated macro hard-wired to false).  The key is explaining how,
+from a compiler internals viewpoint, we decide what is "potentially-
+problematic".  This ties in with the assumptions for (b).
+
+I'm sure my attempt at (a) above can be improved upon even if it's
+vaguely right.  But...
+
+> I guess the patch could be improved
+> by pointing directly to the errata section of the R10k
+> user manual.
+
+...I think an integrated explanation of (a), (b) and (c) above
+would be better than quoting large parts of the processor manual.
+The processor manual is aimed at a much broader audience and has
+a lot of superfluous info.  It also doesn't explain what _our_
+assumptions are and what our chosen workaround is.
+
+Richard

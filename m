@@ -1,106 +1,124 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Dec 2007 23:33:15 +0000 (GMT)
-Received: from smtp.nildram.co.uk ([195.112.4.54]:55559 "EHLO
-	smtp.nildram.co.uk") by ftp.linux-mips.org with ESMTP
-	id S20022522AbXLHXdG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 8 Dec 2007 23:33:06 +0000
-Received: from firetop.home (85-211-134-127.dyn.gotadsl.co.uk [85.211.134.127])
-	by smtp.nildram.co.uk (Postfix) with ESMTP id 35A502C9E98;
-	Sat,  8 Dec 2007 23:24:00 +0000 (GMT)
-Received: from richard by firetop.home with local (Exim 4.63)
-	(envelope-from <rsandifo@nildram.co.uk>)
-	id 1J191f-00010V-NA; Sat, 08 Dec 2007 23:24:03 +0000
-From:	Richard Sandiford <rsandifo@nildram.co.uk>
-To:	post@pfrst.de
-Mail-Followup-To: post@pfrst.de,Ralf Baechle <ralf@linux-mips.org>,  Thomas Bogendoerfer <tsbogend@alpha.franken.de>,  Kumba <kumba@gentoo.org>,  linux-mips@linux-mips.org, rsandifo@nildram.co.uk
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Kumba <kumba@gentoo.org>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Dec 2007 04:38:44 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:37297 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20021932AbXLIEim (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 9 Dec 2007 04:38:42 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lB94cMt7017247;
+	Sun, 9 Dec 2007 04:38:27 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lB94cLWp017246;
+	Sun, 9 Dec 2007 04:38:21 GMT
+Date:	Sun, 9 Dec 2007 04:38:21 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Kumba <kumba@gentoo.org>, linux-mips@linux-mips.org,
+	rsandifo@nildram.co.uk
 Subject: Re: [UPDATED PATCH] IP28 support
-References: <20071129095442.C6679C2B39@solo.franken.de>
-	<20071129130130.GA14655@linux-mips.org> <4756422D.6070305@gentoo.org>
-	<20071205093938.GA6848@alpha.franken.de> <87ejdx6pmh.fsf@firetop.home>
-	<20071208192405.GA29208@linux-mips.org> <871w9x6j9g.fsf@firetop.home>
-	<Pine.LNX.4.58.0712082217370.14975@Indigo2.Peter>
-Date:	Sat, 08 Dec 2007 23:24:03 +0000
-In-Reply-To: <Pine.LNX.4.58.0712082217370.14975@Indigo2.Peter> (peter fuerst's
-	message of "Sat\, 8 Dec 2007 22\:25\:01 +0100 \(CET\)")
-Message-ID: <87wsro6a98.fsf@firetop.home>
-User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
+Message-ID: <20071209043821.GB13729@linux-mips.org>
+References: <20071129095442.C6679C2B39@solo.franken.de> <20071129130130.GA14655@linux-mips.org> <4756422D.6070305@gentoo.org> <20071205093938.GA6848@alpha.franken.de> <87ejdx6pmh.fsf@firetop.home> <20071208192405.GA29208@linux-mips.org> <871w9x6j9g.fsf@firetop.home>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Return-Path: <rsandifo@nildram.co.uk>
+Content-Disposition: inline
+In-Reply-To: <871w9x6j9g.fsf@firetop.home>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17737
+X-archive-position: 17738
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rsandifo@nildram.co.uk
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-peter fuerst <post@pfrst.de> writes:
-> could text like this help to pin the assumptions down (from
-> "http://gcc.gnu.org/ml/gcc-patches/2006-05/msg01446.html") ?
->
->   "...
->   What cases of $N can be exempted from this measure?
->   - Stack-addresses and constant (static) addresses ("sd $M,symbol+n") will not
->     be used for DMA, since DMA-buffers are allocated at runtime.
->   - Uncached accesses will not be done speculatively, but they fall under the
->     "constant"-case already or will not be recognized at compile-time.
->
->   Besides the DMA-problem, depending on the mis-speculation path (up to four
->   branches deep), one of the frequently reused multi-purpose registers $N
->   will contain some "random" value, which may be a legal but invalid kernel-
->   address (say a800000061234567), reaching the memory-controller...
->   However, there are cases where a register $N's content is well defined, no
->   matter what (mis-)speculation path took us to this instruction:
->   - The stack-pointer points to the stack from kernel-initializtion on.
->   - Constant addresses ("symbol+n") are well defined "per se".
->   (Luckily, legal-but-invalid doesn't occur in user mode, where no cache-
->   barriers can be used. There we get either an address-error or a TLB-miss,
->   leaving memory/bus untouched.)
->   ..."
+On Sat, Dec 08, 2007 at 08:09:31PM +0000, Richard Sandiford wrote:
 
-Well, the explanation of the exceptions doesn't really address the
-corner cases I was trying to draw attention to in the message you
-replied to.  What about top of the stack + X?  Do we guarantee that
-the code will never cause the compiler to generate a store to such
-an address, even with an always-false guard?  Or do we guarantee
-that stores and loads to [top-of-stack, top-of-stack + 0x7fff] can
-be speculated safely?  Do we guarantee that every store and load to
-a cached constant address in the kernel image will not result in
-a harmful IO access on any target that the image supports?
+> Ralf Baechle <ralf@linux-mips.org> writes:
+> > On Sat, Dec 08, 2007 at 05:52:06PM +0000, Richard Sandiford wrote:
+> >> I tried to piece together (b) by asking questions in the reviews,
+> >> but it would be great to have a single explanation.
+> >> 
+> >> The idea behind (c) is simple, of course: we insert a cache barrier
+> >> before the potentially-problematic stores (and, for certain
+> >> configurations, loads, although the original gcc patch had the
+> >> associated macro hard-wired to false).  The key is explaining how,
+> >> from a compiler internals viewpoint, we decide what is "potentially-
+> >> problematic".  This ties in with the assumptions for (b).
+> >
+> > The principle for the compiler is a store is problematic unless proven
+> > otherwise.  A speculative store relative to the stack pointer, frame
+> > pointer or global pointer for example is harmless.
+> 
+> Right.  But just so we're on the same page (and I think we probably are),
+> my point was that those rules aren't intrinsically obvious.  They're
+> based on assumptions about how the code is written.  For example,
+> it assumes there's no DMAing into stack variables.  Maybe obvious,
+> but I think it needs to be stated explicitly.
 
-Perhaps we should just turn this around slightly and instead say:
-what must the compiler do, and when must it do it?  The reasons why
-aren't that important from the compiler's perspective.  So if we can
-just phrase it as:
+Can't harm to be explicit.  Linux forbids DMA to the stack.  In that past
+DMA to the stack has caused alot of grief for Linux ports on some
+architectures.
 
--mr10k-cache-barrier=load-store
-  Insert a cache barrier at the beginning of any sequentially-executed
-  series of instructions that contains a load or store.  For the purposes
-  of this option, GCC can ignore loads and stores that it can prove:
+> Then there's the language-lawyerly code I gave to Peter on gcc-patches@:
+> 
+>      void foo (int x)
+>      {
+>        int array[1];
+>        if (x)
+>          bar (array[0x1fff]);
+>      }
+> 
+> This function is valid if x is never true, so we cannot assume that all
+> accesses off the stack and frame pointers are actually in-frame.  You're
+> assuming either (i) the kernel doesn't use code like that or (ii) that
+> "garbage" addresses in the range [$sp - 0x8000, $sp + 0x7fff] will not
+> trigger the problem.  I imagine both are reasonable assumptions, and I'm
+> perfectly happy for us to make them.  But they're the kind of assumption
+> we need to state explicitly.
 
-  (a) access a region in the range [-0x8000 + bottom of stack frame,
-      0x7fff + top of stack frame]; or
-  (b) access a link-time-constant address.
+Interesting test case.  I've been thinking about it myself but in the end
+decieded to believe Peter's analysis since he's banged the head for longer
+to the wall about this problem that I have ;-)  I'm quite but not absolutely
+certain that this case cannot happen for realworld code, so I'd rather
+err on the side of caution.
 
-  Here, a ``sequentially-executed series'' is one in which calls,
-  jumps and branches occur only as the last instruction.
+Peter & Thomas - we could make the stack thing bullet proof by vmallocing
+stacks and ensuring a sufficient virtual address gap exists around the stack
+such that the stack is the only addressable thing in the range of
+$sp +0x7fff / -0x8000?
 
--mr10k-cache-barrier=store
-  Like -mr10k-cache-barrier=load-store, but ignore all loads.
+A -mr10k-cache-barrier=sp-is-safe option?
 
--mr10k-cache-barrier=none
-  ...
+> Peter's patch also treated accesses to constant integer and symbolic
+> addresses as safe.  Again, this involves making assumptions about how
+> constant integer and symbolic addresses are used, and this is a much
+> less obvious assumption than the stack one.
 
-And if you guys are willing to make sure that's safe, and change
-the kernel whenever you find instances that it isn't safe, then
-that should be enough.  (Bear in mind that there's ongoing work
-to do link-time optimisation in gcc, so translation-unit separation
-is no real guarantee.)
+The latter assumption is also needed for -msym32 kernels, so it's well
+proven to be valid.  The former hold, too.
 
-Richard
+>  Again, I understand that
+> it's a reasonable assumption to make in the linux context, but it's one
+> we need to pin down.  E.g. there must be no run-time guarding of
+> target-specific constant integer IO-mapped addresses in cases where
+> those addresses might trigger the problem on other systems that the
+> same kernel image supports.
+
+In case of a hypothetic multi-platform kernel of which at least one needs
+the R10000 workarounds, all code would be uniformly compiled with the
+magic -mr10k-cache-barrier option and all source level workaround would
+be enabled.
+
+> Despite appearances, I'm not trying to be awkward here ;)  I just think
+> the assumptions are too loosely-defined at the moment (or at least too
+> scattered around).  It would be nice to have some self-contained
+> description, targetted specifically at gcc and linux, that contains
+> anything a gcc hacker or user needs to know about the gcc patch.
+
+Your help is certainly appreciated and trying to find the potencial holes
+here will only help.
+
+  Ralf

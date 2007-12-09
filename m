@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Dec 2007 12:21:08 +0000 (GMT)
-Received: from mo31.po.2iij.net ([210.128.50.54]:12295 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20026275AbXLIMVA (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 9 Dec 2007 12:21:00 +0000
-Received: by mo.po.2iij.net (mo31) id lB9CJdG4059733; Sun, 9 Dec 2007 21:19:39 +0900 (JST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Dec 2007 12:22:21 +0000 (GMT)
+Received: from mo32.po.2iij.NET ([210.128.50.17]:57929 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20026275AbXLIMWM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 9 Dec 2007 12:22:12 +0000
+Received: by mo.po.2iij.net (mo32) id lB9CMAxM079061; Sun, 9 Dec 2007 21:22:10 +0900 (JST)
 Received: from delta (224.24.30.125.dy.iij4u.or.jp [125.30.24.224])
-	by mbox.po.2iij.net (po-mbox301) id lB9CJbKS031840
+	by mbox.po.2iij.net (po-mbox303) id lB9CM5vg003794
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Sun, 9 Dec 2007 21:19:37 +0900
-Date:	Sun, 9 Dec 2007 21:19:36 +0900
+	Sun, 9 Dec 2007 21:22:05 +0900
+Date:	Sun, 9 Dec 2007 21:22:04 +0900
 From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][MIPS] remove mips_timer_state()
-Message-Id: <20071209211936.05b97163.yoichi_yuasa@tripeaks.co.jp>
+Subject: [PATCH][MIPS] set up Cobalt's mips_hpt_frequency
+Message-Id: <20071209212204.5e50a697.yoichi_yuasa@tripeaks.co.jp>
 Organization: TriPeaks Corporation
 X-Mailer: Sylpheed 2.4.5 (GTK+ 2.12.0; i486-pc-linux-gnu)
 Mime-Version: 1.0
@@ -22,7 +22,7 @@ Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17741
+X-archive-position: 17742
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,56 +30,40 @@ X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Remove mips_timer_state().
-It is not used at all.
+Set up Cobalt's mips_hpt_frequency.
 
 Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/dec/time.c mips/arch/mips/dec/time.c
---- mips-orig/arch/mips/dec/time.c	2007-12-06 18:27:03.461092000 +0900
-+++ mips/arch/mips/dec/time.c	2007-12-09 20:55:08.231255000 +0900
-@@ -161,7 +161,6 @@ static cycle_t dec_ioasic_hpt_read(void)
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/cobalt/time.c mips/arch/mips/cobalt/time.c
+--- mips-orig/arch/mips/cobalt/time.c	2007-12-06 18:27:02.689043750 +0900
++++ mips/arch/mips/cobalt/time.c	2007-12-09 17:13:37.916769000 +0900
+@@ -27,9 +27,28 @@
  
  void __init plat_time_init(void)
  {
--	mips_timer_state = dec_timer_state;
- 	mips_timer_ack = dec_timer_ack;
++	u32 start, end;
++	int i = HZ / 10;
++
+ 	setup_pit_timer();
  
- 	if (!cpu_has_counter && IOASIC)
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/kernel/time.c mips/arch/mips/kernel/time.c
---- mips-orig/arch/mips/kernel/time.c	2007-12-06 18:27:04.629165000 +0900
-+++ mips/arch/mips/kernel/time.c	2007-12-09 20:52:04.111748250 +0900
-@@ -50,8 +50,6 @@ int update_persistent_clock(struct times
- 	return rtc_mips_set_mmss(now.tv_sec);
+ 	gt641xx_set_base_clock(GT641XX_BASE_CLOCK);
+ 
+-	mips_timer_state = gt641xx_timer0_state;
++	/*
++	 * MIPS counter frequency is measured between 100msec 
++	 * using GT64111 timer0.
++	 */
++	while (!gt641xx_timer0_state())
++		;
++
++	start = read_c0_count();
++
++	while (i--)
++		while (!gt641xx_timer0_state())
++			;
++
++	end = read_c0_count();
++
++	mips_hpt_frequency = (end - start) * 10;
++	printk(KERN_INFO "MIPS counter frequency %dHz\n", mips_hpt_frequency);
  }
- 
--int (*mips_timer_state)(void);
--
- int null_perf_irq(void)
- {
- 	return 0;
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/time.h mips/include/asm-mips/time.h
---- mips-orig/include/asm-mips/time.h	2007-12-06 18:30:02.548284250 +0900
-+++ mips/include/asm-mips/time.h	2007-12-09 20:54:28.116748000 +0900
-@@ -31,20 +31,13 @@ extern int rtc_mips_set_time(unsigned lo
- extern int rtc_mips_set_mmss(unsigned long);
- 
- /*
-- * Timer interrupt functions.
-- * mips_timer_state is needed for high precision timer calibration.
-- */
--extern int (*mips_timer_state)(void);
--
--/*
-  * board specific routines required by time_init().
-  */
- extern void plat_time_init(void);
- 
- /*
-  * mips_hpt_frequency - must be set if you intend to use an R4k-compatible
-- * counter as a timer interrupt source; otherwise it can be set up
-- * automagically with an aid of mips_timer_state.
-+ * counter as a timer interrupt source.
-  */
- extern unsigned int mips_hpt_frequency;
- 

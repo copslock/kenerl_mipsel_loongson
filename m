@@ -1,99 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Dec 2007 05:26:34 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:11398 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022153AbXLIF0c (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 9 Dec 2007 05:26:32 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lB95QN88027144;
-	Sun, 9 Dec 2007 05:26:24 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lB95QNOU027143;
-	Sun, 9 Dec 2007 05:26:23 GMT
-Date:	Sun, 9 Dec 2007 05:26:23 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Kaz Kylheku <kaz@zeugmasystems.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: SiByte 1480 & Branch Likely instructions?
-Message-ID: <20071209052623.GC18181@linux-mips.org>
-References: <DDFD17CC94A9BD49A82147DDF7D545C5590CF0@exchange.ZeugmaSystems.local> <DDFD17CC94A9BD49A82147DDF7D545C5590D6B@exchange.ZeugmaSystems.local>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DDFD17CC94A9BD49A82147DDF7D545C5590D6B@exchange.ZeugmaSystems.local>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Dec 2007 12:21:08 +0000 (GMT)
+Received: from mo31.po.2iij.net ([210.128.50.54]:12295 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20026275AbXLIMVA (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 9 Dec 2007 12:21:00 +0000
+Received: by mo.po.2iij.net (mo31) id lB9CJdG4059733; Sun, 9 Dec 2007 21:19:39 +0900 (JST)
+Received: from delta (224.24.30.125.dy.iij4u.or.jp [125.30.24.224])
+	by mbox.po.2iij.net (po-mbox301) id lB9CJbKS031840
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Sun, 9 Dec 2007 21:19:37 +0900
+Date:	Sun, 9 Dec 2007 21:19:36 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] remove mips_timer_state()
+Message-Id: <20071209211936.05b97163.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed 2.4.5 (GTK+ 2.12.0; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17740
+X-archive-position: 17741
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Dec 07, 2007 at 03:39:57PM -0800, Kaz Kylheku wrote:
+Remove mips_timer_state().
+It is not used at all.
 
-> > Not really a kernel-related question. I've discovered that GCC 4.1.1
-> > (which I'm not using for kernel compiling, but user space) generates
-> > branch likely instructions by default, even though the documentation
-> > says that their use is off by default for MIPS32 and MIPS64, because
-> 
-> That's because the compiler is not configured correctly. The default CPU
-> string "from-abi" ends up being used, and so the target ISA is MIPS III.
-> 
-> > In parallel with writing some tests, I thought I would ask whether
-> > anyone happens know whether or not these instructions are known to
-> > actually work correctly on the SB1480 silicon (and perhaps any
-> > additional details, like what revisions, etc)?
-> 
-> A basic sanity test does find bnezl working.
-> 
-> #include <stdio.h>
-> #include <stdlib.h>
-> 
-> static int branch_likely_works(void)
-> {
->     int one = 1;
->     int result;
-> 
->     __asm__ __volatile__
->     ("        .set push\n"
->      "        .set noreorder\n"
->      "1:      move %0, $0\n"
->      "        bnezl %0, 1b\n"
->      "        lw %0, %1\n"
->      "        .set pop\n"
->      : "=r" (result)
->      : "m" (one));
-> 
->      return result == 0;
-> }
-> 
-> int main(void)
-> {
->     if (branch_likely_works()) {
->         puts("branch-likely instruction bnezl correctly annuls delay
-> slot");
->         return 0;
->     } 
->     puts("branch-likely instruction bnezl fails to annul delay slot");
->     return EXIT_FAILURE;
-> }
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-That's a very basic test and it'd be very unlikely for the CPU to fail
-such a simple test.
-
-But think of scenarios like a load in the delay slot of a branch likely
-where the load instruction is on a different page than the branch and a
-tlb exception is getting caused.  There are many other special cases
-which might be improperly implemented.
-
-But honestly - branch likely instructions were introduced into the MIPS
-architecture by the MIPS II R6000 in '89.  And the SB1 core is 2000
-vintage so I'd assume by now have figured out how to get it right.  And
-branch likely is used in existing binaries.  So I'd be surprised if it
-was broken.
-
-  Ralf
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/dec/time.c mips/arch/mips/dec/time.c
+--- mips-orig/arch/mips/dec/time.c	2007-12-06 18:27:03.461092000 +0900
++++ mips/arch/mips/dec/time.c	2007-12-09 20:55:08.231255000 +0900
+@@ -161,7 +161,6 @@ static cycle_t dec_ioasic_hpt_read(void)
+ 
+ void __init plat_time_init(void)
+ {
+-	mips_timer_state = dec_timer_state;
+ 	mips_timer_ack = dec_timer_ack;
+ 
+ 	if (!cpu_has_counter && IOASIC)
+diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/kernel/time.c mips/arch/mips/kernel/time.c
+--- mips-orig/arch/mips/kernel/time.c	2007-12-06 18:27:04.629165000 +0900
++++ mips/arch/mips/kernel/time.c	2007-12-09 20:52:04.111748250 +0900
+@@ -50,8 +50,6 @@ int update_persistent_clock(struct times
+ 	return rtc_mips_set_mmss(now.tv_sec);
+ }
+ 
+-int (*mips_timer_state)(void);
+-
+ int null_perf_irq(void)
+ {
+ 	return 0;
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/time.h mips/include/asm-mips/time.h
+--- mips-orig/include/asm-mips/time.h	2007-12-06 18:30:02.548284250 +0900
++++ mips/include/asm-mips/time.h	2007-12-09 20:54:28.116748000 +0900
+@@ -31,20 +31,13 @@ extern int rtc_mips_set_time(unsigned lo
+ extern int rtc_mips_set_mmss(unsigned long);
+ 
+ /*
+- * Timer interrupt functions.
+- * mips_timer_state is needed for high precision timer calibration.
+- */
+-extern int (*mips_timer_state)(void);
+-
+-/*
+  * board specific routines required by time_init().
+  */
+ extern void plat_time_init(void);
+ 
+ /*
+  * mips_hpt_frequency - must be set if you intend to use an R4k-compatible
+- * counter as a timer interrupt source; otherwise it can be set up
+- * automagically with an aid of mips_timer_state.
++ * counter as a timer interrupt source.
+  */
+ extern unsigned int mips_hpt_frequency;
+ 

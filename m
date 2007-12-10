@@ -1,74 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Dec 2007 01:55:46 +0000 (GMT)
-Received: from rv-out-0910.google.com ([209.85.198.191]:28527 "EHLO
-	rv-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S28573982AbXLJBzg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 10 Dec 2007 01:55:36 +0000
-Received: by rv-out-0910.google.com with SMTP id l15so1277696rvb
-        for <linux-mips@linux-mips.org>; Sun, 09 Dec 2007 17:55:23 -0800 (PST)
-Received: by 10.141.167.5 with SMTP id u5mr3928560rvo.1197251723015;
-        Sun, 09 Dec 2007 17:55:23 -0800 (PST)
-Received: from mythtv.cortland.com ( [209.162.137.90])
-        by mx.google.com with ESMTPS id f13sm4662373rvb.2007.12.09.17.55.22
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 09 Dec 2007 17:55:22 -0800 (PST)
-Message-ID: <475C9C80.4030708@cortland.com>
-Date:	Sun, 09 Dec 2007 17:55:12 -0800
-From:	Steve Brown <sbrown@cortland.com>
-User-Agent: Thunderbird 2.0.0.9 (X11/20071115)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Dec 2007 10:25:54 +0000 (GMT)
+Received: from hall.aurel32.net ([88.191.38.19]:7089 "EHLO hall.aurel32.net")
+	by ftp.linux-mips.org with ESMTP id S20024102AbXLJKZq (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 10 Dec 2007 10:25:46 +0000
+Received: from aurel32 by hall.aurel32.net with local (Exim 4.63)
+	(envelope-from <aurel32@hall.aurel32.net>)
+	id 1J1fmS-0002e3-5f; Mon, 10 Dec 2007 11:22:32 +0100
+Date:	Mon, 10 Dec 2007 11:22:32 +0100
+From:	Aurelien Jarno <aurelien@aurel32.net>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: [PATCH][MIPS] Enable SSB_DRIVER_EXTIF on BCM47XX platform
+Message-ID: <20071210102232.GA10145@hall.aurel32.net>
 MIME-Version: 1.0
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: SSB Bus: Need advice representing 2 devices in a core (BCM5354 USB2.0
- core)
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sbrown@cortland.com>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+X-Mailer: Mutt 1.5.13 (2006-08-11)
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <aurel32@hall.aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17748
+X-archive-position: 17749
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sbrown@cortland.com
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 X-list: linux-mips
 
-I'm posting to this list because I think this is basically a ssb bus 
-issue. If it doesn't belong here, where should I go?
+Hi,
 
-The USB 2.0 core in the BCM5354 is both a OHCI & EHCI device. I now have 
-a OHCI & EHCI driver. The former is essentially the current ohci-ssb.c 
-w/ a dma mask fix and the latter I derived from ohci-ssb and ehci-pci. 
-Either one, but not both, will attach to the USB 2.0 core and mostly work.
+arch/mips/bcm47xx/gpio.c uses ssb_extif_* functions. The patch below 
+makes sure those functions are available on the BCM47XX platform.
 
-1. Multiple devices per core
+Aurelien
 
-The ssb bus code seems to expect only one device per core. I modified 
-drivers/ssb/scan.c to add an additional identical device in the case of 
-the USB 2.0 core.  However, once a driver binds to one device, the other 
-seems to no longer be available either. When the second driver loads, 
-ssb_bus_match never sees the second device. I haven't figured out what's 
-happening yet.
+Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
 
-I also considered modifying drivers/ssb/scan.c to add a phony additional 
-core/device for SSB_DEV_USB20_HOST and then add that phony core to the 
-OHCI device list. But, this seems really ugly.
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index c6fc405..e46b076 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -59,6 +59,7 @@ config BCM47XX
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select SSB
+ 	select SSB_DRIVER_MIPS
++	select SSB_DRIVER_EXTIF
+ 	select GENERIC_GPIO
+ 	select SYS_HAS_EARLY_PRINTK
+ 	select CFE
 
-2. Avoiding multiple core initializations
-
-I also need a way to determine if the core is already enabled, as I 
-can't initialize it more than once. The initialization gets done in the 
-probe code in ohci-ssb and ehci-ssb.  The first one loaded does that and 
-the second driver needs to skip the initialization. Does the following 
-look like a safe test for a reset core?
-
-(ssb_read32(dev, SSB_TMSLOW) & SSB_TMSLOW_RESET)
-
-As ssb_enable always first resets the core, maybe this test isn't always 
-reliable. If it isn't, should I just add a flag to the ssb_device 
-structure that follows ssb_enable/ssb_disable?
-
-Any suggestions are appreciated. As I'm probably less than qualified to 
-be doing this, I'll accept that as advice as well.
-
-Steve
+-- 
+  .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
+ : :' :  Debian developer           | Electrical Engineer
+ `. `'   aurel32@debian.org         | aurelien@aurel32.net
+   `-    people.debian.org/~aurel32 | www.aurel32.net

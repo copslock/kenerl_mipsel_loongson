@@ -1,230 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Dec 2007 17:43:46 +0000 (GMT)
-Received: from blu139-omc1-s2.blu139.hotmail.com ([65.55.175.142]:39560 "EHLO
-	blu139-omc1-s2.blu139.hotmail.com") by ftp.linux-mips.org with ESMTP
-	id S20025054AbXLJRnh convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 10 Dec 2007 17:43:37 +0000
-Received: from BLU127-W16 ([65.55.162.181]) by blu139-omc1-s2.blu139.hotmail.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 10 Dec 2007 09:43:09 -0800
-Message-ID: <BLU127-W1655DCD5A946AF12DE533E8A6B0@phx.gbl>
-X-Originating-IP: [157.185.36.161]
-From:	Nathan Eggan <nathan_eggan@live.com>
-To:	linux-mips mailing list <linux-mips@linux-mips.org>
-Subject: RE: [PATCH] Alchemy: fix PCI resource conflict (take 2)
-Date:	Mon, 10 Dec 2007 17:43:09 +0000
-Importance: Normal
-In-Reply-To: <200712102028.51448.sshtylyov@ru.mvista.com>
-References: <200712102028.51448.sshtylyov@ru.mvista.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Dec 2007 21:55:40 +0000 (GMT)
+Received: from rs26s12.datacenter.cha.cantv.net ([200.44.33.42]:20163 "EHLO
+	rs26s12.datacenter.cha.cantv.net") by ftp.linux-mips.org with ESMTP
+	id S20022240AbXLJVzc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 10 Dec 2007 21:55:32 +0000
+Received: from [192.168.0.2] (dC9D088C0.dslam-04-10-6-02-1-01.apr.dsl.cantv.net [201.208.136.192])
+	by rs26s12.datacenter.cha.cantv.net (8.13.8/8.13.0/3.0) with ESMTP id lBALtCLh007514;
+	Mon, 10 Dec 2007 17:25:14 -0430
+X-Matched-Lists: []
+Message-ID: <475D7FE2.7080703@kanux.com>
+Date:	Mon, 10 Dec 2007 14:05:22 -0400
+From:	Ricardo Mendoza <ricmm@kanux.com>
+User-Agent: Thunderbird 2.0.0.0 (X11/20070601)
 MIME-Version: 1.0
-X-OriginalArrivalTime: 10 Dec 2007 17:43:09.0186 (UTC) FILETIME=[20B19620:01C83B54]
-Return-Path: <nathan_eggan@live.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17762
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nathan_eggan@live.com
-Precedence: bulk
-X-list: linux-mips
-
-
-
-Any chance this will help fix my Au1x00 serial + USB issues?  I know the old PCI bus code used to not work with the USB - at least the two could not run together.  It's been a while since I looked at those issues, so that may have been resolved long ago.
-
-Just curious,
-Thanks!
-Nate
-
-----------------------------------------
-> From: sshtylyov@ru.mvista.com
-> To: ralf@linux-mips.org
-> Subject: [PATCH] Alchemy: fix PCI resource conflict (take 2)
-> Date: Mon, 10 Dec 2007 20:28:51 +0300
-> CC: linux-mips@linux-mips.org
-> 
-> ... by getting the PCI resources back into the 32-bit range -- there's no need
-> therefore for CONFIG_RESOURCES_64BIT either. This makes Alchemy PCI work again
-> while currently the kernel skips the bus scan.
-> 
-> Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
-> 
-> ---
->  arch/mips/au1000/Kconfig              |    9 ---------
->  arch/mips/au1000/common/pci.c         |    8 ++++----
->  include/asm-mips/mach-au1x00/au1000.h |    9 +++++----
->  3 files changed, 9 insertions(+), 17 deletions(-)
-> 
-> Index: linux-2.6/arch/mips/au1000/Kconfig
-> ===================================================================
-> --- linux-2.6.orig/arch/mips/au1000/Kconfig
-> +++ linux-2.6/arch/mips/au1000/Kconfig
-> @@ -7,7 +7,6 @@ config MIPS_MTX1
->  	bool "4G Systems MTX-1 board"
->  	select DMA_NONCOHERENT
->  	select HW_HAS_PCI
-> -	select RESOURCES_64BIT if PCI
->  	select SOC_AU1500
->  	select SYS_SUPPORTS_LITTLE_ENDIAN
->  
-> @@ -22,7 +21,6 @@ config MIPS_DB1000
->  	select SOC_AU1000
->  	select DMA_NONCOHERENT
->  	select HW_HAS_PCI
-> -	select RESOURCES_64BIT if PCI
->  	select SYS_SUPPORTS_LITTLE_ENDIAN
->  
->  config MIPS_DB1100
-> @@ -44,7 +42,6 @@ config MIPS_DB1500
->  	select DMA_NONCOHERENT
->  	select HW_HAS_PCI
->  	select MIPS_DISABLE_OBSOLETE_IDE
-> -	select RESOURCES_64BIT if PCI
->  	select SYS_SUPPORTS_BIG_ENDIAN
->  	select SYS_SUPPORTS_LITTLE_ENDIAN
->  
-> @@ -54,7 +51,6 @@ config MIPS_DB1550
->  	select HW_HAS_PCI
->  	select DMA_NONCOHERENT
->  	select MIPS_DISABLE_OBSOLETE_IDE
-> -	select RESOURCES_64BIT if PCI
->  	select SYS_SUPPORTS_LITTLE_ENDIAN
->  
->  config MIPS_MIRAGE
-> @@ -68,7 +64,6 @@ config MIPS_PB1000
->  	select SOC_AU1000
->  	select DMA_NONCOHERENT
->  	select HW_HAS_PCI
-> -	select RESOURCES_64BIT if PCI
->  	select SWAP_IO_SPACE
->  	select SYS_SUPPORTS_LITTLE_ENDIAN
->  
-> @@ -77,7 +72,6 @@ config MIPS_PB1100
->  	select SOC_AU1100
->  	select DMA_NONCOHERENT
->  	select HW_HAS_PCI
-> -	select RESOURCES_64BIT if PCI
->  	select SWAP_IO_SPACE
->  	select SYS_SUPPORTS_LITTLE_ENDIAN
->  
-> @@ -86,7 +80,6 @@ config MIPS_PB1200
->  	select SOC_AU1200
->  	select DMA_NONCOHERENT
->  	select MIPS_DISABLE_OBSOLETE_IDE
-> -	select RESOURCES_64BIT if PCI
->  	select SYS_SUPPORTS_LITTLE_ENDIAN
->  
->  config MIPS_PB1500
-> @@ -94,7 +87,6 @@ config MIPS_PB1500
->  	select SOC_AU1500
->  	select DMA_NONCOHERENT
->  	select HW_HAS_PCI
-> -	select RESOURCES_64BIT if PCI
->  	select SYS_SUPPORTS_LITTLE_ENDIAN
->  
->  config MIPS_PB1550
-> @@ -103,7 +95,6 @@ config MIPS_PB1550
->  	select DMA_NONCOHERENT
->  	select HW_HAS_PCI
->  	select MIPS_DISABLE_OBSOLETE_IDE
-> -	select RESOURCES_64BIT if PCI
->  	select SYS_SUPPORTS_LITTLE_ENDIAN
->  
->  config MIPS_XXS1500
-> Index: linux-2.6/arch/mips/au1000/common/pci.c
-> ===================================================================
-> --- linux-2.6.orig/arch/mips/au1000/common/pci.c
-> +++ linux-2.6/arch/mips/au1000/common/pci.c
-> @@ -39,15 +39,15 @@
->  
->  /* TBD */
->  static struct resource pci_io_resource = {
-> -	.start	= (resource_size_t)PCI_IO_START,
-> -	.end	= (resource_size_t)PCI_IO_END,
-> +	.start	= PCI_IO_START,
-> +	.end	= PCI_IO_END,
->  	.name	= "PCI IO space",
->  	.flags	= IORESOURCE_IO
->  };
->  
->  static struct resource pci_mem_resource = {
-> -	.start	= (resource_size_t)PCI_MEM_START,
-> -	.end	= (resource_size_t)PCI_MEM_END,
-> +	.start	= PCI_MEM_START,
-> +	.end	= PCI_MEM_END,
->  	.name	= "PCI memory space",
->  	.flags	= IORESOURCE_MEM
->  };
-> Index: linux-2.6/include/asm-mips/mach-au1x00/au1000.h
-> ===================================================================
-> --- linux-2.6.orig/include/asm-mips/mach-au1x00/au1000.h
-> +++ linux-2.6/include/asm-mips/mach-au1x00/au1000.h
-> @@ -1680,10 +1680,11 @@ enum soc_au1200_ints {
->  #define Au1500_PCI_MEM_START      0x440000000ULL
->  #define Au1500_PCI_MEM_END        0x44FFFFFFFULL
->  
-> -#define PCI_IO_START    (Au1500_PCI_IO_START + 0x1000)
-> -#define PCI_IO_END      (Au1500_PCI_IO_END)
-> -#define PCI_MEM_START   (Au1500_PCI_MEM_START)
-> -#define PCI_MEM_END     (Au1500_PCI_MEM_END)
-> +#define PCI_IO_START	0x00001000
-> +#define PCI_IO_END	0x000FFFFF
-> +#define PCI_MEM_START	0x40000000
-> +#define PCI_MEM_END	0x4FFFFFFF
-> +
->  #define PCI_FIRST_DEVFN (0<<3)
->  #define PCI_LAST_DEVFN  (19<<3)
->  
-> 
-> 
-
-_________________________________________________________________
-Connect and share in new ways with Windows Live.
-http://www.windowslive.com/connect.html?ocid=TXT_TAGLM_Wave2_newways_112007
-From sshtylyov@ru.mvista.com Mon Dec 10 17:47:46 2007
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Dec 2007 17:47:55 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:61635 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20025092AbXLJRrq (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 10 Dec 2007 17:47:46 +0000
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 7C24D3ECD; Mon, 10 Dec 2007 09:47:43 -0800 (PST)
-Message-ID: <475D7BD4.1050505@ru.mvista.com>
-Date:	Mon, 10 Dec 2007 20:48:04 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Nathan Eggan <nathan_eggan@live.com>
-Cc:	linux-mips mailing list <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] Alchemy: fix PCI resource conflict (take 2)
-References: <200712102028.51448.sshtylyov@ru.mvista.com> <BLU127-W1655DCD5A946AF12DE533E8A6B0@phx.gbl>
-In-Reply-To: <BLU127-W1655DCD5A946AF12DE533E8A6B0@phx.gbl>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+To:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+CC:	linux-mips@linux-mips.org
+Subject: Re: 2.6.24-rc1 does not boot on SGI
+References: <1193468825.7474.6.camel@scarafaggio>	 <20071029.000713.59464443.anemo@mba.ocn.ne.jp>	 <1193599031.14874.1.camel@scarafaggio>	 <20071029150625.GB4165@linux-mips.org>	 <1194268551.4842.3.camel@scarafaggio>  <1194281699.4192.3.camel@casa> <1197287929.17265.6.camel@scarafaggio>
+In-Reply-To: <1197287929.17265.6.camel@scarafaggio>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+X-Virus-Scanned: ClamAV version 0.91.2, clamav-milter version 0.91.2 on 10.128.1.89
+X-Virus-Status:	Clean
+Return-Path: <ricmm@kanux.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17763
+X-archive-position: 17764
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ricmm@kanux.com
 Precedence: bulk
 X-list: linux-mips
 
-Nathan Eggan wrote:
+Giuseppe Sacco wrote:
+> I reply to my own message, providing more details, hoping that anyone
+> here could give a hint or the solution.
+> 
+> During bootup on ip32, since 2.4.24-rc1, the system loop printing a
+> message about unexpected interrupt #13. (see transcript below.)
+> 
+> I enabled more debug in the kernel, and studied the code. What I
+> understood is that interrupt #13 from CRIME means that the system should
+> check on MACEISA for the real interrupt.
+> 
+> The interrupt start appearing just after executing the code
+> psmouse_init() that enable ps2 drivers for keyboard and mouse. Keyboard
+> interrupt #49 is enabled first and mouse interrupt #51 is enabled later.
+> 
+> When initialising the keyboard interrupt (it is a MACEISA interrupt),
+> the interrupt start appearing, so I am pretty sure that interrupt #13 is
+> related to the keyboard interrupt.
+> 
+> When the system receive interrupt #13, it correctly detect it is a
+> MACEISA interrupt, and check for mace->perif.ctrl.istat value. The
+> problem seems to be that this value is zero instead of having bit #9 on
+> (that would mean, interrupt #49, keyboard).
+> 
+> So, either the interrupt #49 is not correctly enabled, or maceisa
+> interrupt aren't correctly checked.
+> 
+> Does this description ring a bell to anyone?
+> 
+> Bye,
+> Giuseppe
+> 
+> Calling initcall 0xffffffff80496ca0: serport_init+0x0/0x48()
+> initcall 0xffffffff80496ca0: serport_init+0x0/0x48() returned 0.
+> initcall 0xffffffff80496ca0 ran for 0 msecs: serport_init+0x0/0x48()
+> Calling initcall 0xffffffff80496ce8: maceps2_init+0x0/0xe0()
+> initcall 0xffffffff80496ce8: maceps2_init+0x0/0xe0() returned 0.
+> initcall 0xffffffff80496ce8 ran for 1 msecs: maceps2_init+0x0/0xe0()
+> Calling initcall 0xffffffff80496dc8: serio_raw_init+0x0/0x18()
+> initcall 0xffffffff80496dc8: serio_raw_init+0x0/0x18() returned 0.
+> initcall 0xffffffff80496dc8 ran for 1 msecs: serio_raw_init+0x0/0x18()
+> Calling initcall 0xffffffff80496f40: mousedev_init+0x0/0xd0()
+> mice: PS/2 mouse device common for all mice
+> initcall 0xffffffff80496f40: mousedev_init+0x0/0xd0() returned 0.
+> initcall 0xffffffff80496f40 ran for 16 msecs: mousedev_init+0x0/0xd0()
+> Calling initcall 0xffffffff80497010: atkbd_init+0x0/0x18()
+> initcall 0xffffffff80497010: atkbd_init+0x0/0x18() returned 0.
+> initcall 0xffffffff80497010 ran for 0 msecs: atkbd_init+0x0/0x18()
+> Calling initcall 0xffffffff80497028: psmouse_init+0x0/0x90()
+> maceisa enable: 49
+> crime_int 00000020 enabled
+> *irq 13, crime_int=00002000, crime_mask=003003a0, mace_int=00000000*
+> irq 13, desc: ffffffff80448390, depth: 1, count: 0, unhandled: 0
+> ->handle_irq():  ffffffff80065eb0, handle_bad_irq+0x0/0x2c0
+> ->chip(): ffffffff8043e320, 0xffffffff8043e320
+> ->action(): 0000000000000000
+>   IRQ_DISABLED set
 
-> Any chance this will help fix my Au1x00 serial + USB issues?
+I recommend you pull latest git. Looks like some issue that Ralf and I
+fixed a few weeks ago.
 
-    I don't think so.
 
-> I know the old PCI bus code used to not work with the USB - at least the two could not run together.
-
-    There are some chip errata connected with USB and PCI...
-
-WBR, Sergei
+     Ricardo

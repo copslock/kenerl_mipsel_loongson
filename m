@@ -1,136 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Dec 2007 11:01:19 +0000 (GMT)
-Received: from smtp.nildram.co.uk ([195.112.4.54]:42763 "EHLO
-	smtp.nildram.co.uk") by ftp.linux-mips.org with ESMTP
-	id S20024131AbXLJLBK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 10 Dec 2007 11:01:10 +0000
-Received: from firetop.home (85-211-134-127.dyn.gotadsl.co.uk [85.211.134.127])
-	by smtp.nildram.co.uk (Postfix) with ESMTP id 3931C2B7945;
-	Mon, 10 Dec 2007 11:00:53 +0000 (GMT)
-Received: from richard by firetop.home with local (Exim 4.63)
-	(envelope-from <rsandifo@nildram.co.uk>)
-	id 1J1gNa-0004Lz-IN; Mon, 10 Dec 2007 11:00:54 +0000
-From:	Richard Sandiford <rsandifo@nildram.co.uk>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Mail-Followup-To: Ralf Baechle <ralf@linux-mips.org>,Thomas Bogendoerfer <tsbogend@alpha.franken.de>,  Kumba <kumba@gentoo.org>,  linux-mips@linux-mips.org, rsandifo@nildram.co.uk
-Cc:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Kumba <kumba@gentoo.org>, linux-mips@linux-mips.org
-Subject: Re: [UPDATED PATCH] IP28 support
-References: <20071129095442.C6679C2B39@solo.franken.de>
-	<20071129130130.GA14655@linux-mips.org> <4756422D.6070305@gentoo.org>
-	<20071205093938.GA6848@alpha.franken.de> <87ejdx6pmh.fsf@firetop.home>
-	<20071208192405.GA29208@linux-mips.org> <871w9x6j9g.fsf@firetop.home>
-	<20071209043821.GB13729@linux-mips.org>
-Date:	Mon, 10 Dec 2007 11:00:54 +0000
-In-Reply-To: <20071209043821.GB13729@linux-mips.org> (Ralf Baechle's message
-	of "Sun\, 9 Dec 2007 04\:38\:21 +0000")
-Message-ID: <871w9u24rd.fsf@firetop.home>
-User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <rsandifo@nildram.co.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Dec 2007 11:58:26 +0000 (GMT)
+Received: from host188-210-dynamic.20-79-r.retail.telecomitalia.it ([79.20.210.188]:51899
+	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
+	id S20024298AbXLJL6R (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 10 Dec 2007 11:58:17 +0000
+Received: from eppesuig3 ([192.168.2.50])
+	by eppesuigoccas.homedns.org with esmtpsa (TLS-1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+	(Exim 4.63)
+	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
+	id 1J1hH2-00014H-ET
+	for linux-mips@linux-mips.org; Mon, 10 Dec 2007 12:58:14 +0100
+Subject: Re: 2.6.24-rc1 does not boot on SGI
+From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+To:	linux-mips@linux-mips.org
+In-Reply-To: <1194281699.4192.3.camel@casa>
+References: <1193468825.7474.6.camel@scarafaggio>
+	 <20071029.000713.59464443.anemo@mba.ocn.ne.jp>
+	 <1193599031.14874.1.camel@scarafaggio>
+	 <20071029150625.GB4165@linux-mips.org>
+	 <1194268551.4842.3.camel@scarafaggio>  <1194281699.4192.3.camel@casa>
+Content-Type: text/plain
+Date:	Mon, 10 Dec 2007 12:58:49 +0100
+Message-Id: <1197287929.17265.6.camel@scarafaggio>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.10.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <giuseppe@eppesuigoccas.homedns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17750
+X-archive-position: 17751
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rsandifo@nildram.co.uk
+X-original-sender: giuseppe@eppesuigoccas.homedns.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle <ralf@linux-mips.org> writes:
->> Then there's the language-lawyerly code I gave to Peter on gcc-patches@:
->> 
->>      void foo (int x)
->>      {
->>        int array[1];
->>        if (x)
->>          bar (array[0x1fff]);
->>      }
->> 
->> This function is valid if x is never true, so we cannot assume that all
->> accesses off the stack and frame pointers are actually in-frame.  You're
->> assuming either (i) the kernel doesn't use code like that or (ii) that
->> "garbage" addresses in the range [$sp - 0x8000, $sp + 0x7fff] will not
->> trigger the problem.  I imagine both are reasonable assumptions, and I'm
->> perfectly happy for us to make them.  But they're the kind of assumption
->> we need to state explicitly.
->
-> Interesting test case.  I've been thinking about it myself but in the end
-> decieded to believe Peter's analysis since he's banged the head for longer
-> to the wall about this problem that I have ;-)  I'm quite but not absolutely
-> certain that this case cannot happen for realworld code, so I'd rather
-> err on the side of caution.
->
-> Peter & Thomas - we could make the stack thing bullet proof by vmallocing
-> stacks and ensuring a sufficient virtual address gap exists around the stack
-> such that the stack is the only addressable thing in the range of
-> $sp +0x7fff / -0x8000?
+I reply to my own message, providing more details, hoping that anyone
+here could give a hint or the solution.
 
-FWIW, my first cut at the option restrictions were based on what
-the patch exempts (and doesn't exempt).  We could instead get gcc
-to only exempt accesses that it can prove are either to the current
-function's stack frame or to its stack arguments.  I.e. rather than
-consider every $sp-based access to be safe, we'd instead do some
-bounds checking on the value.  (We could also use MEM_ATTRS to
-pick up cases where a stack variable is acceesed via something
-other than the stack or frame pointers, as happens for large frames.)
+During bootup on ip32, since 2.4.24-rc1, the system loop printing a
+message about unexpected interrupt #13. (see transcript below.)
 
->> Peter's patch also treated accesses to constant integer and symbolic
->> addresses as safe.  Again, this involves making assumptions about how
->> constant integer and symbolic addresses are used, and this is a much
->> less obvious assumption than the stack one.
->
-> The latter assumption is also needed for -msym32 kernels, so it's well
-> proven to be valid.  The former hold, too.
->
->>  Again, I understand that
->> it's a reasonable assumption to make in the linux context, but it's one
->> we need to pin down.  E.g. there must be no run-time guarding of
->> target-specific constant integer IO-mapped addresses in cases where
->> those addresses might trigger the problem on other systems that the
->> same kernel image supports.
->
-> In case of a hypothetic multi-platform kernel of which at least one needs
-> the R10000 workarounds, all code would be uniformly compiled with the
-> magic -mr10k-cache-barrier option and all source level workaround would
-> be enabled.
+I enabled more debug in the kernel, and studied the code. What I
+understood is that interrupt #13 from CRIME means that the system should
+check on MACEISA for the real interrupt.
 
-Hmm.  This probably shows I am misunderstanding the problem, but I was
-thinking about the IO-mapped case.  I thought one of the problems was
-that if you had a cached speculative load or store to an access-sensitive
-IO-mapped address, the IO-mapped device might "see" that access even if it
-doesn't take place.  Could you not have a situation where a KSEG0 or
-XKSEG0 access is access-sensitive on one machine and not another?
-The patch won't insert countermeasures before symbolic and constant
-addresses, because it believes all such addresses to be safe.
+The interrupt start appearing just after executing the code
+psmouse_init() that enable ps2 drivers for keyboard and mouse. Keyboard
+interrupt #49 is enabled first and mouse interrupt #51 is enabled later.
 
-I'm also a little worried that the compiler is free to make up accesses
-that didn't exist in the original program, provided that those accesses
-are never actually performed in cases where they'd be wrong.  So how about:
+When initialising the keyboard interrupt (it is a MACEISA interrupt),
+the interrupt start appearing, so I am pretty sure that interrupt #13 is
+related to the keyboard interrupt.
 
--mr10k-cache-barrier=load-store
-  Insert a cache barrier at the beginning of any sequentially-executed
-  series of instructions that contains a load or store.  For the purposes
-  of this option, GCC can ignore loads and stores that it can prove
-  are an in-range access to:
+When the system receive interrupt #13, it correctly detect it is a
+MACEISA interrupt, and check for mace->perif.ctrl.istat value. The
+problem seems to be that this value is zero instead of having bit #9 on
+(that would mean, interrupt #49, keyboard).
 
-  (a) the current function's stack frame;
-  (b) an incoming stack argument;
-  (b) an object with a link-time-constant address; or
-  (c) a block of uncached memory
+So, either the interrupt #49 is not correctly enabled, or maceisa
+interrupt aren't correctly checked.
 
-  It can also ignore sequences that are always immediately preceded by
-  an untaken branch-likely instruction.
+Does this description ring a bell to anyone?
 
-  Here, a ``sequentially-executed series'' is one in which calls,
-  jumps and branches occur only as the last instruction.
+Bye,
+Giuseppe
 
--mr10k-cache-barrier=store
-  Like -mr10k-cache-barrier=load-store, but ignore all loads.
-
--mr10k-cache-barrier=none
-  ...
-
-Richard
+Calling initcall 0xffffffff80496ca0: serport_init+0x0/0x48()
+initcall 0xffffffff80496ca0: serport_init+0x0/0x48() returned 0.
+initcall 0xffffffff80496ca0 ran for 0 msecs: serport_init+0x0/0x48()
+Calling initcall 0xffffffff80496ce8: maceps2_init+0x0/0xe0()
+initcall 0xffffffff80496ce8: maceps2_init+0x0/0xe0() returned 0.
+initcall 0xffffffff80496ce8 ran for 1 msecs: maceps2_init+0x0/0xe0()
+Calling initcall 0xffffffff80496dc8: serio_raw_init+0x0/0x18()
+initcall 0xffffffff80496dc8: serio_raw_init+0x0/0x18() returned 0.
+initcall 0xffffffff80496dc8 ran for 1 msecs: serio_raw_init+0x0/0x18()
+Calling initcall 0xffffffff80496f40: mousedev_init+0x0/0xd0()
+mice: PS/2 mouse device common for all mice
+initcall 0xffffffff80496f40: mousedev_init+0x0/0xd0() returned 0.
+initcall 0xffffffff80496f40 ran for 16 msecs: mousedev_init+0x0/0xd0()
+Calling initcall 0xffffffff80497010: atkbd_init+0x0/0x18()
+initcall 0xffffffff80497010: atkbd_init+0x0/0x18() returned 0.
+initcall 0xffffffff80497010 ran for 0 msecs: atkbd_init+0x0/0x18()
+Calling initcall 0xffffffff80497028: psmouse_init+0x0/0x90()
+maceisa enable: 49
+crime_int 00000020 enabled
+*irq 13, crime_int=00002000, crime_mask=003003a0, mace_int=00000000*
+irq 13, desc: ffffffff80448390, depth: 1, count: 0, unhandled: 0
+->handle_irq():  ffffffff80065eb0, handle_bad_irq+0x0/0x2c0
+->chip(): ffffffff8043e320, 0xffffffff8043e320
+->action(): 0000000000000000
+  IRQ_DISABLED set

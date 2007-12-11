@@ -1,96 +1,138 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Dec 2007 18:14:40 +0000 (GMT)
-Received: from outbound-blu.frontbridge.com ([65.55.251.16]:12393 "EHLO
-	outbound9-blu-R.bigfish.com") by ftp.linux-mips.org with ESMTP
-	id S20030427AbXLKSOb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 11 Dec 2007 18:14:31 +0000
-Received: from outbound9-blu.bigfish.com (localhost.localdomain [127.0.0.1])
-	by outbound9-blu-R.bigfish.com (Postfix) with ESMTP id 99EAAD0BA42;
-	Tue, 11 Dec 2007 18:13:24 +0000 (UTC)
-Received: from mail19-blu-R.bigfish.com (unknown [10.1.252.3])
-	by outbound9-blu.bigfish.com (Postfix) with ESMTP id 867D417E005A;
-	Tue, 11 Dec 2007 18:13:24 +0000 (UTC)
-Received: from mail19-blu (localhost.localdomain [127.0.0.1])
-	by mail19-blu-R.bigfish.com (Postfix) with ESMTP id E5C36178812E;
-	Tue, 11 Dec 2007 18:13:23 +0000 (UTC)
-X-BigFish: V
-X-MS-Exchange-Organization-Antispam-Report: OrigIP: 160.33.66.75;Service: EHS
-Received: by mail19-blu (MessageSwitch) id 1197396802965085_1845; Tue, 11 Dec 2007 18:13:22 +0000 (UCT)
-Received: from mail8.fw-sd.sony.com (mail8.fw-sd.sony.com [160.33.66.75])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail19-blu.bigfish.com (Postfix) with ESMTP id 610361F009A;
-	Tue, 11 Dec 2007 18:13:21 +0000 (UTC)
-Received: from mail3.sjc.in.sel.sony.com (mail3.sjc.in.sel.sony.com [43.134.1.211])
-	by mail8.fw-sd.sony.com (8.12.11/8.12.11) with ESMTP id lBBIDJ2F020817;
-	Tue, 11 Dec 2007 18:13:19 GMT
-Received: from USSDIXIM02.am.sony.com (ussdixim02.am.sony.com [43.130.140.34])
-	by mail3.sjc.in.sel.sony.com (8.12.11/8.12.11) with ESMTP id lBBIDJ9E001405;
-	Tue, 11 Dec 2007 18:13:19 GMT
-Received: from ussdixms03.am.sony.com ([43.130.140.23]) by USSDIXIM02.am.sony.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Tue, 11 Dec 2007 10:13:19 -0800
-Received: from [43.135.148.200] ([43.135.148.200]) by ussdixms03.am.sony.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Tue, 11 Dec 2007 10:13:18 -0800
-Subject: [PATCH] RBTX4927: linux-2.6.24-rc4 hang on boot
-From:	Frank Rowand <frank.rowand@am.sony.com>
-Reply-To: frank.rowand@am.sony.com
-To:	linux-mips@linux-mips.org
-Cc:	frank.rowand@am.sony.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Dec 2007 18:41:22 +0000 (GMT)
+Received: from emh05.mail.saunalahti.fi ([62.142.5.111]:2955 "EHLO
+	emh05.mail.saunalahti.fi") by ftp.linux-mips.org with ESMTP
+	id S20022146AbXLKSlN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 11 Dec 2007 18:41:13 +0000
+Received: from saunalahti-vams (vs3-11.mail.saunalahti.fi [62.142.5.95])
+	by emh05-2.mail.saunalahti.fi (Postfix) with SMTP id 847498CD47;
+	Tue, 11 Dec 2007 20:41:12 +0200 (EET)
+Received: from emh01.mail.saunalahti.fi ([62.142.5.107])
+	by vs3-11.mail.saunalahti.fi ([62.142.5.95])
+	with SMTP (gateway) id A029327FA7D; Tue, 11 Dec 2007 20:41:12 +0200
+Received: from [192.168.0.102] (a91-153-17-113.elisa-laajakaista.fi [91.153.17.113])
+	by emh01.mail.saunalahti.fi (Postfix) with ESMTP id 0FEC84C0DE;
+	Tue, 11 Dec 2007 20:41:06 +0200 (EET)
+Subject: CFP for embedded room at FOSDEM
+From:	Philippe De Swert <philippedeswert@scarlet.be>
+To:	philippedeswert@gmail.com
 Content-Type: text/plain
-Date:	Tue, 11 Dec 2007 10:16:27 -0500
-Message-Id: <1197386187.5610.18.camel@localhost.localdomain>
+Date:	Tue, 11 Dec 2007 20:40:15 +0200
+Message-Id: <1197398415.2341.22.camel@localhost.localdomain>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.12.1 (2.12.1-3.fc8) 
+X-Mailer: Evolution 2.6.3 
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 11 Dec 2007 18:13:18.0948 (UTC) FILETIME=[81CF1A40:01C83C21]
-Return-Path: <Frank_Rowand@sonyusa.com>
+X-Antivirus: VAMS
+Return-Path: <philippedeswert@scarlet.be>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17776
+X-archive-position: 17777
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: frank.rowand@am.sony.com
+X-original-sender: philippedeswert@scarlet.be
 Precedence: bulk
 X-list: linux-mips
 
-In linux-2.6.24-rc4 the Toshiba RBTX4927 hangs on boot.
+Hi,
 
-The cause is that plat_time_init() from arch/mips/tx4927/common/tx4927_setup.c
-does not override the __weak plat_time_init() from arch/mips/kernel/time.c.
-This is due to a compiler bug in gcc 4.1.1.  The bug is reported to not exist
-in earlier versions of gcc, and to be fixed in 4.1.2.  The problem is that
-the __weak plat_time_init() is empty and thus gets optimized out of
-existence (thus the linker is never given the option to replace the
-__weak function).
+This might be of interest to developers in the Free Software/Open Source
+world. FOSDEM is looking for speakers for the embedded track again.
+Anyone who thinks he/she has somebody interesting to share with other
+embedded developers please take a look at the call for papers.
 
-For more info on the gcc bug see
+Cheers,
 
-   http://gcc.gnu.org/bugzilla/show_bug.cgi?id=27781
+Philippe 
 
-The attached patch is one workaround.  Another possible workaround
-would be to change the __weak plat_time_init() to be a non-empty
-function.
+CALL FOR PAPERS for the 6th EMBEDDED track at FOSDEM 2008
+=========================================================
 
+sat 23 - sun 24 February 2008, Brussels
 
-Signed-off-by: Frank Rowand <frank.rowand@am.sony.com>
+Call for papers
+----------------
 
----
- arch/mips/kernel/Makefile |    4 	4 +	0 -	0 !
- 1 files changed, 4 insertions(+)
+The 2008 edition of FOSDEM (Free and Open Source Developers' European
+Meeting; http://www.fosdem.org) will take place in Brussels, Belgium
+on 23 and 24 February 2008. For the sixth time, a track on Embedded
+Systems and Operating Systems will be organized. The fourth edition
+was quite succesful and attracted up to 150 attendants for certain
+topics.
 
-Index: linux-2.6.24-rc4/arch/mips/kernel/Makefile
-===================================================================
---- linux-2.6.24-rc4.orig/arch/mips/kernel/Makefile
-+++ linux-2.6.24-rc4/arch/mips/kernel/Makefile
-@@ -83,6 +83,10 @@ obj-$(CONFIG_EARLY_PRINTK)	+= early_prin
- 
- CFLAGS_cpu-bugs64.o	= $(shell if $(CC) $(KBUILD_CFLAGS) -Wa,-mdaddi -c -o /dev/null -xc /dev/null >/dev/null 2>&1; then echo "-DHAVE_AS_SET_DADDI"; fi)
- 
-+# workaround for http://gcc.gnu.org/bugzilla/show_bug.cgi?id=27781,
-+# which impacts plat_time_init() for tx4927, gcc 4.1.1
-+CFLAGS_time.o			+= -fno-unit-at-a-time
-+
- obj-$(CONFIG_HAVE_STD_PC_SERIAL_PORT)	+= 8250-platform.o
- 
- EXTRA_CFLAGS += -Werror
+For last year's program see:
+http://archive.fosdem.org/2007/schedule/tracks/embedded
+
+The use of Free Software in the infrastructure of Embedded Systems
+is booming, e.g. by the use of Linux, uClinux, eCos, RedBoot, RTEMS
+and many other Free Software components. More companies are supporting
+Embedded Free Software every day because of the reliability and cheap
+licensing. This can be confirmed from looking at some high profile
+releases of embedded GNU/Linux systems. Some examples are the Nokia 770
+& N800,some models of Motorola's smartphones and Archos media players.
+Not to forget the popular TomTom navigation system, the numerous SOHO
+routers and NAS devices based on linux.
+
+Operating System development has always been a very important topic in
+Free Software.
+As embedded and real-time systems typically have special OS
+requirements, we organise this Free Embedded and OS development track at
+FOSDEM to give people the opportunity to present their (or their teams)
+achievements.
+
+This track at FOSDEM provides a remarkable opportunity to present and
+discuss the ongoing work in these areas, and we invite developers to
+present their current projects. Technical topics of the conference
+include but are not limited to :
+
+* OS Development : kernel architecture and implementation, libraries,
+power
+   management, TIPC, boot time and memory usage optimizations
+  (e.g. Linux, BSD, uClinux, uClibc, newlib, slob allocator,...)
+
+* Practical experiences in implementing Free Software in embedded
+systems  (e.g. reverse engineering, porting  to (and adapting of)
+commercial devices like the Ipaq, linksys WRT54G, nlsu2 .... )
+
+* Toolchain, performance testing and build environment
+  (e.g. crosstool, emdebian, openembedded, PTX dist, packaging,
+scratchbox, Eclipse, Valgrind,...)
+
+* GUIs for embedded systems
+  (Gtk, Qt-(embedded), GPE, Qtopia, UI design with touchscreen,
+   Hildon GUI extensions, OpenMoko, OpenGL ES, ...)
+
+* Multimedia applications for embedded systems
+  (e.g. integer only decoders, Opieplayer, gstreamer... )
+
+* Real-time extensions, nanokernels and hardware virtualization software
+  (e.g. RTAI, Adeos, KURT, L4, Qemu, User Mode Linux, VirtualLogix,
+   high resolution timers, ...)
+
+* Hard real-time OS's
+  (eCos, RTEMS, Real Time Linux,...)
+
+* Open hardware, DSP, softcores and general hardware management
+  (e.g opencores.org, OpenRISC, leonSparc, FPGA's, specific design
+restrictions for free systems, DSP, Power management...)
+
+* Safety and security certifications applied to Free software
+   (e.g. security measures in Embedded systems, TPM, SELinux
+    for embedded, TrustZone, ...)
+
+* Tools and techniques for programming multicore systems
+
+* Free software licenses and embedded systems
+
+Authors that wish to present a topic are requested to submit their
+abstracts online to embedded@fosdem.org before 23/01/2008. Notification
+of receipt will be sent within 48 hours. Authors wishing to submit a
+full paper (between 6 and 12 A4 pages), can do so in PS or PDF format.
+
+The Program Committee will evaluate the abstracts and consists of:
+
+* Geert Uytterhoeven, Sony NSCE, Belgium
+* Peter De Schrijver (p2), Nokia (OSSO), Finland
+* Philippe De Swert, Nokia (OSSO), Finland
+* Klaas van Gend, MontaVista Software, The Netherlands
+* Michael Opdenacker, Free Electrons, France

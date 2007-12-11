@@ -1,48 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Dec 2007 12:20:28 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:32741 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20026963AbXLKMUV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 11 Dec 2007 12:20:21 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lBBCJpYV011364;
-	Tue, 11 Dec 2007 12:19:51 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lBBCJor6011363;
-	Tue, 11 Dec 2007 12:19:50 GMT
-Date:	Tue, 11 Dec 2007 12:19:50 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Alchemy: fix off by two error in __fixup_bigphys_addr()
-Message-ID: <20071211121950.GB11039@linux-mips.org>
-References: <200712102036.50247.sshtylyov@ru.mvista.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <200712102036.50247.sshtylyov@ru.mvista.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Dec 2007 14:41:57 +0000 (GMT)
+Received: from mo30.po.2iij.NET ([210.128.50.53]:19009 "EHLO mo30.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20027092AbXLKOlr (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 11 Dec 2007 14:41:47 +0000
+Received: by mo.po.2iij.net (mo30) id lBBEeSYL091296; Tue, 11 Dec 2007 23:40:28 +0900 (JST)
+Received: from delta (224.24.30.125.dy.iij4u.or.jp [125.30.24.224])
+	by mbox.po.2iij.net (po-mbox301) id lBBEeQXH005253
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Tue, 11 Dec 2007 23:40:27 +0900
+Date:	Tue, 11 Dec 2007 23:40:26 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org
+Subject: Re: Cobalt fixes
+Message-Id: <20071211234026.f3de7e7f.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20071211121220.GA10870@linux-mips.org>
+References: <20071211121220.GA10870@linux-mips.org>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed 2.4.5 (GTK+ 2.12.0; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17770
+X-archive-position: 17771
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Dec 10, 2007 at 08:36:50PM +0300, Sergei Shtylyov wrote:
+On Tue, 11 Dec 2007 12:12:20 +0000
+Ralf Baechle <ralf@linux-mips.org> wrote:
 
-> he PCI specific code in this function doesn't check for the address range being
-> under the upper bound of the PCI memory window correctly -- fix this, somewhat
-> beautifying the code around the check, while at it...
+> Some may have been following the beginning of this thread on linux-kernel,
+> see for example
 > 
-> Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+>   http://www.opensubscriber.com/message/linux-kernel@vger.kernel.org/8161812.html
+> 
+> for non-subscribers.  Linus has reverted the offending patch
+> fd6e732186ab522c812ab19c2c5e5befb8ec8115 in question so now the PCI and
+> I/O port code needs to be fixed up to be able to handle such a setup.
+> 
+> A test report of this patch which is meant to be applied on top of
+> today's lmo git kernel on a Cobalt would be appreciated.
 
-Applied, too.
+It breaks all I/O port device(LCD, tulip, VIA ata) drivers.
 
-Thanks,
-
-  Ralf
+Yoichi

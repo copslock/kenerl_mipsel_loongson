@@ -1,50 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Dec 2007 17:16:54 +0000 (GMT)
-Received: from rs25s9.datacenter.cha.cantv.net ([200.44.33.40]:49838 "EHLO
-	rs25s9.datacenter.cha.cantv.net") by ftp.linux-mips.org with ESMTP
-	id S20030205AbXLKRQq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 11 Dec 2007 17:16:46 +0000
-Received: from [192.168.0.2] (dC9D088C0.dslam-04-10-6-02-1-01.apr.dsl.cantv.net [201.208.136.192])
-	by rs25s9.datacenter.cha.cantv.net (8.13.8/8.13.0/3.0) with ESMTP id lBBHGK5t013393;
-	Tue, 11 Dec 2007 12:46:20 -0430
-X-Matched-Lists: []
-Message-ID: <475E9012.1010504@kanux.com>
-Date:	Tue, 11 Dec 2007 09:26:42 -0400
-From:	Ricardo Mendoza <ricmm@kanux.com>
-User-Agent: Thunderbird 2.0.0.0 (X11/20070601)
-MIME-Version: 1.0
-To:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
-CC:	linux-mips@linux-mips.org
-Subject: Re: Still no 2.6.24 on ip32 [was: Re: 2.6.24-rc1 does not boot on
- SGI]
-References: <1193468825.7474.6.camel@scarafaggio>	 <20071029.000713.59464443.anemo@mba.ocn.ne.jp>	 <1193599031.14874.1.camel@scarafaggio>	 <20071029150625.GB4165@linux-mips.org>	 <1194268551.4842.3.camel@scarafaggio>  <1194281699.4192.3.camel@casa>	 <1197287929.17265.6.camel@scarafaggio>  <475D7FE2.7080703@kanux.com> <1197371095.7889.24.camel@scarafaggio>
-In-Reply-To: <1197371095.7889.24.camel@scarafaggio>
-Content-Type: text/plain; charset=ISO-8859-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Dec 2007 18:14:40 +0000 (GMT)
+Received: from outbound-blu.frontbridge.com ([65.55.251.16]:12393 "EHLO
+	outbound9-blu-R.bigfish.com") by ftp.linux-mips.org with ESMTP
+	id S20030427AbXLKSOb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 11 Dec 2007 18:14:31 +0000
+Received: from outbound9-blu.bigfish.com (localhost.localdomain [127.0.0.1])
+	by outbound9-blu-R.bigfish.com (Postfix) with ESMTP id 99EAAD0BA42;
+	Tue, 11 Dec 2007 18:13:24 +0000 (UTC)
+Received: from mail19-blu-R.bigfish.com (unknown [10.1.252.3])
+	by outbound9-blu.bigfish.com (Postfix) with ESMTP id 867D417E005A;
+	Tue, 11 Dec 2007 18:13:24 +0000 (UTC)
+Received: from mail19-blu (localhost.localdomain [127.0.0.1])
+	by mail19-blu-R.bigfish.com (Postfix) with ESMTP id E5C36178812E;
+	Tue, 11 Dec 2007 18:13:23 +0000 (UTC)
+X-BigFish: V
+X-MS-Exchange-Organization-Antispam-Report: OrigIP: 160.33.66.75;Service: EHS
+Received: by mail19-blu (MessageSwitch) id 1197396802965085_1845; Tue, 11 Dec 2007 18:13:22 +0000 (UCT)
+Received: from mail8.fw-sd.sony.com (mail8.fw-sd.sony.com [160.33.66.75])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail19-blu.bigfish.com (Postfix) with ESMTP id 610361F009A;
+	Tue, 11 Dec 2007 18:13:21 +0000 (UTC)
+Received: from mail3.sjc.in.sel.sony.com (mail3.sjc.in.sel.sony.com [43.134.1.211])
+	by mail8.fw-sd.sony.com (8.12.11/8.12.11) with ESMTP id lBBIDJ2F020817;
+	Tue, 11 Dec 2007 18:13:19 GMT
+Received: from USSDIXIM02.am.sony.com (ussdixim02.am.sony.com [43.130.140.34])
+	by mail3.sjc.in.sel.sony.com (8.12.11/8.12.11) with ESMTP id lBBIDJ9E001405;
+	Tue, 11 Dec 2007 18:13:19 GMT
+Received: from ussdixms03.am.sony.com ([43.130.140.23]) by USSDIXIM02.am.sony.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Tue, 11 Dec 2007 10:13:19 -0800
+Received: from [43.135.148.200] ([43.135.148.200]) by ussdixms03.am.sony.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Tue, 11 Dec 2007 10:13:18 -0800
+Subject: [PATCH] RBTX4927: linux-2.6.24-rc4 hang on boot
+From:	Frank Rowand <frank.rowand@am.sony.com>
+Reply-To: frank.rowand@am.sony.com
+To:	linux-mips@linux-mips.org
+Cc:	frank.rowand@am.sony.com
+Content-Type: text/plain
+Date:	Tue, 11 Dec 2007 10:16:27 -0500
+Message-Id: <1197386187.5610.18.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.12.1 (2.12.1-3.fc8) 
 Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: ClamAV version 0.91.2, clamav-milter version 0.91.2 on 10.128.1.89
-X-Virus-Status:	Clean
-Return-Path: <ricmm@kanux.com>
+X-OriginalArrivalTime: 11 Dec 2007 18:13:18.0948 (UTC) FILETIME=[81CF1A40:01C83C21]
+Return-Path: <Frank_Rowand@sonyusa.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17775
+X-archive-position: 17776
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ricmm@kanux.com
+X-original-sender: frank.rowand@am.sony.com
 Precedence: bulk
 X-list: linux-mips
 
-Giuseppe Sacco wrote:
+In linux-2.6.24-rc4 the Toshiba RBTX4927 hangs on boot.
 
-> I just checked that my repository is up to date, so my problem is still
-> there (thus I don't know if it is the same problem you fixed).
-> 
-> BTW, what was the problem you fixed? I would like to have a look to it,
-> to better understand what's going on there.
+The cause is that plat_time_init() from arch/mips/tx4927/common/tx4927_setup.c
+does not override the __weak plat_time_init() from arch/mips/kernel/time.c.
+This is due to a compiler bug in gcc 4.1.1.  The bug is reported to not exist
+in earlier versions of gcc, and to be fixed in 4.1.2.  The problem is that
+the __weak plat_time_init() is empty and thus gets optimized out of
+existence (thus the linker is never given the option to replace the
+__weak function).
 
-Well I just updated to see if anything had broken in the past few days,
-but I don't seem to be hitting that error of yours. Could you send your
-config to see if I can reproduce it?
+For more info on the gcc bug see
+
+   http://gcc.gnu.org/bugzilla/show_bug.cgi?id=27781
+
+The attached patch is one workaround.  Another possible workaround
+would be to change the __weak plat_time_init() to be a non-empty
+function.
 
 
-     Ricardo
+Signed-off-by: Frank Rowand <frank.rowand@am.sony.com>
+
+---
+ arch/mips/kernel/Makefile |    4 	4 +	0 -	0 !
+ 1 files changed, 4 insertions(+)
+
+Index: linux-2.6.24-rc4/arch/mips/kernel/Makefile
+===================================================================
+--- linux-2.6.24-rc4.orig/arch/mips/kernel/Makefile
++++ linux-2.6.24-rc4/arch/mips/kernel/Makefile
+@@ -83,6 +83,10 @@ obj-$(CONFIG_EARLY_PRINTK)	+= early_prin
+ 
+ CFLAGS_cpu-bugs64.o	= $(shell if $(CC) $(KBUILD_CFLAGS) -Wa,-mdaddi -c -o /dev/null -xc /dev/null >/dev/null 2>&1; then echo "-DHAVE_AS_SET_DADDI"; fi)
+ 
++# workaround for http://gcc.gnu.org/bugzilla/show_bug.cgi?id=27781,
++# which impacts plat_time_init() for tx4927, gcc 4.1.1
++CFLAGS_time.o			+= -fno-unit-at-a-time
++
+ obj-$(CONFIG_HAVE_STD_PC_SERIAL_PORT)	+= 8250-platform.o
+ 
+ EXTRA_CFLAGS += -Werror

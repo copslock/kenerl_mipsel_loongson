@@ -1,45 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2007 18:22:34 +0000 (GMT)
-Received: from smtp.nildram.co.uk ([195.112.4.54]:35334 "EHLO
-	smtp.nildram.co.uk") by ftp.linux-mips.org with ESMTP
-	id S20034756AbXLLSWZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 12 Dec 2007 18:22:25 +0000
-Received: from firetop.home (85-211-134-127.dyn.gotadsl.co.uk [85.211.134.127])
-	by smtp.nildram.co.uk (Postfix) with ESMTP id 760A52B7BE8;
-	Wed, 12 Dec 2007 18:22:22 +0000 (GMT)
-Received: from richard by firetop.home with local (Exim 4.63)
-	(envelope-from <rsandifo@nildram.co.uk>)
-	id 1J2WDx-00021s-79; Wed, 12 Dec 2007 18:22:25 +0000
-From:	Richard Sandiford <rsandifo@nildram.co.uk>
-To:	peter fuerst <pf@pfrst.de>
-Mail-Followup-To: peter fuerst <pf@pfrst.de>,Ralf Baechle <ralf@linux-mips.org>,  Thomas Bogendoerfer <tsbogend@alpha.franken.de>,  Kumba <kumba@gentoo.org>,  linux-mips@linux-mips.org, rsandifo@nildram.co.uk
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Kumba <kumba@gentoo.org>, linux-mips@linux-mips.org
-Subject: Re: [UPDATED PATCH] IP28 support
-References: <Pine.LNX.3.96.1071211004847.199A@PCD-4H>
-	<87hcinlr8k.fsf@firetop.home>
-Date:	Wed, 12 Dec 2007 18:22:25 +0000
-In-Reply-To: <87hcinlr8k.fsf@firetop.home> (Richard Sandiford's message of
-	"Wed\, 12 Dec 2007 18\:09\:31 +0000")
-Message-ID: <878x3zlqn2.fsf@firetop.home>
-User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/21.4 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Dec 2007 18:42:19 +0000 (GMT)
+Received: from zrtps0kn.nortel.com ([47.140.192.55]:51342 "EHLO
+	zrtps0kn.nortel.com") by ftp.linux-mips.org with ESMTP
+	id S20034876AbXLLSmL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 12 Dec 2007 18:42:11 +0000
+Received: from zcarhxs1.corp.nortel.com (zcarhxs1.corp.nortel.com [47.129.230.89])
+	by zrtps0kn.nortel.com (Switch-2.2.6/Switch-2.2.0) with ESMTP id lBCIYXA28791;
+	Wed, 12 Dec 2007 18:34:33 GMT
+Received: from [47.9.29.61] ([47.9.29.61] RDNS failed) by zcarhxs1.corp.nortel.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 12 Dec 2007 13:34:22 -0500
+Message-ID: <476029AB.80702@nortel.com>
+Date:	Wed, 12 Dec 2007 12:34:19 -0600
+From:	"Chris Friesen" <cfriesen@nortel.com>
+User-Agent: Mozilla Thunderbird 1.0.2-6 (X11/20050513)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <rsandifo@nildram.co.uk>
+To:	David Daney <ddaney@avtrex.com>
+CC:	linux-mips@linux-mips.org
+Subject: Re: questions on struct sigcontext
+References: <47601DEE.4090200@nortel.com> <47602471.9080706@avtrex.com>
+In-Reply-To: <47602471.9080706@avtrex.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 12 Dec 2007 18:34:22.0171 (UTC) FILETIME=[9D2962B0:01C83CED]
+Return-Path: <CFRIESEN@nortel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17797
+X-archive-position: 17798
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rsandifo@nildram.co.uk
+X-original-sender: cfriesen@nortel.com
 Precedence: bulk
 X-list: linux-mips
 
-Richard Sandiford <rsandifo@nildram.co.uk> writes:
-> through KSEG2 or an uncached XKPHYS address, is it not also physically
+David Daney wrote:
 
-er, I meant KSEG1 of course.  Same mistake later.
+> Most of the information is available.  The si_addr and si_code of the 
+> sigcontext are populated as well as the ucontext at the fault.
 
-Richard
+I assume this should be siginfo rather than sigcontext?
+
+> Given all this and the code at $pc when the fault occurred, it is a 
+> simple matter to determine what happened.
+
+Okay.  I'll pass that information on and see if it's sufficient.
+
+Thanks,
+
+Chris

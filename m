@@ -1,61 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Dec 2007 12:58:52 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:61149 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28575685AbXLMM6t (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 13 Dec 2007 12:58:49 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lBDCwm14001441;
-	Thu, 13 Dec 2007 12:58:49 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lBDCwlx5001440;
-	Thu, 13 Dec 2007 12:58:47 GMT
-Date:	Thu, 13 Dec 2007 12:58:47 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Nilanjan Roychowdhury <Nilanjan.Roychowdhury@gnss.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Inter processor synchronization
-Message-ID: <20071213125847.GA1352@linux-mips.org>
-References: <9D98C51005D80D43A19A3DF329A61D690106A282@INDEXCH2003.gmi.domain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Dec 2007 19:45:36 +0000 (GMT)
+Received: from NaN.false.org ([208.75.86.248]:48021 "EHLO nan.false.org")
+	by ftp.linux-mips.org with ESMTP id S20033224AbXLMTp1 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 13 Dec 2007 19:45:27 +0000
+Received: from nan.false.org (localhost [127.0.0.1])
+	by nan.false.org (Postfix) with ESMTP id 9C33D98052;
+	Thu, 13 Dec 2007 15:36:22 +0000 (GMT)
+Received: from caradoc.them.org (22.svnf5.xdsl.nauticom.net [209.195.183.55])
+	by nan.false.org (Postfix) with ESMTP id 7F3C998021;
+	Thu, 13 Dec 2007 15:36:22 +0000 (GMT)
+Received: from drow by caradoc.them.org with local (Exim 4.68)
+	(envelope-from <drow@caradoc.them.org>)
+	id 1J2q6n-0008U8-Ls; Thu, 13 Dec 2007 10:36:21 -0500
+Date:	Thu, 13 Dec 2007 10:36:21 -0500
+From:	Daniel Jacobowitz <dan@debian.org>
+To:	Chris Friesen <cfriesen@nortel.com>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: questions on struct sigcontext
+Message-ID: <20071213153621.GA32600@caradoc.them.org>
+References: <47601DEE.4090200@nortel.com> <20071212190032.GA30506@caradoc.them.org> <47607327.5090709@nortel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9D98C51005D80D43A19A3DF329A61D690106A282@INDEXCH2003.gmi.domain>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <47607327.5090709@nortel.com>
+User-Agent: Mutt/1.5.17 (2007-12-11)
+Return-Path: <drow@false.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17806
+X-archive-position: 17807
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Dec 13, 2007 at 09:07:20AM +0530, Nilanjan Roychowdhury wrote:
+On Wed, Dec 12, 2007 at 05:47:51PM -0600, Chris Friesen wrote:
+> If the cause/badvaddr entries in struct sigcontext were filled in by the  
+> exception handler in the kernel, wouldn't the values in that struct be  
+> completely valid even if the registers themselves were changed before  
+> userspace could handle the signal?
 
-> I have a scenario where two images of the same Linux kernel are running
-> on two MIPS cores. One is 24K and another is 4KEC. What is the best way
-> to achieve inter processor synchronization between them?
-> 
-> I guess the locks for LL/SC are local to a particular core and can not
-> be extended across a multi core system. 
+Yeah, my reply didn't make much sense.  Trust Ralf's instead.
 
-4K and 24K cores don't support cache coherency.  So SMP is out of question.
-This is a _total_ showstopper for SMP, don't waste your time thinking on
-possible workarounds.
-
-The you could do is some sort of clusting, running two OS images, one
-on the 4K and one on the 24K which would communicate through a carefully
-cache managed or even uncached shared memory region.
-
-> Will it be easier for me if both of them becomes same core ( like both
-> 24k) and I run the SMP version of Linux.
-
-
-Within limits Linux supports mixing different CPU types such as R4000MC /
-R4400MC and R10000 / R12000 / R14000 mixes because those processors are
-similar enough
-
-  Ralf
+-- 
+Daniel Jacobowitz
+CodeSourcery

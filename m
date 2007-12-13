@@ -1,74 +1,184 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Dec 2007 00:07:11 +0000 (GMT)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:5544 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20035415AbXLMAHD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 13 Dec 2007 00:07:03 +0000
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id CC6193111CE;
-	Thu, 13 Dec 2007 00:06:37 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Thu, 13 Dec 2007 00:06:37 +0000 (UTC)
-Received: from [192.168.7.26] ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 12 Dec 2007 16:06:14 -0800
-Message-ID: <47607775.4020907@avtrex.com>
-Date:	Wed, 12 Dec 2007 16:06:13 -0800
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 1.5.0.12 (X11/20071019)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Dec 2007 03:38:02 +0000 (GMT)
+Received: from mail.gnss.com ([209.47.22.10]:38916 "EHLO tormf01.gmi.domain")
+	by ftp.linux-mips.org with ESMTP id S20035727AbXLMDhx (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 13 Dec 2007 03:37:53 +0000
+Received: from tormf01.gmi.domain (127.0.0.1) by tormf01.gmi.domain (MlfMTA v3.2r9) id hc2kh20171s3 for <linux-mips@linux-mips.org>; Wed, 12 Dec 2007 22:37:22 -0500 (envelope-from <Nilanjan.Roychowdhury@gnss.com>)
+Received: from INDEXCH2003.gmi.domain ([10.41.1.181])
+	by tormf01.gmi.domain (SonicWALL 6.0.1.9157)
+	with ESMTP; Wed, 12 Dec 2007 22:37:22 -0500
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-To:	Chris Friesen <cfriesen@nortel.com>
-Cc:	Daniel Jacobowitz <dan@debian.org>, linux-mips@linux-mips.org,
-	ralf@linux-mips.org
-Subject: Re: questions on struct sigcontext
-References: <47601DEE.4090200@nortel.com> <20071212190032.GA30506@caradoc.them.org> <47607327.5090709@nortel.com>
-In-Reply-To: <47607327.5090709@nortel.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 13 Dec 2007 00:06:14.0296 (UTC) FILETIME=[F9B68980:01C83D1B]
-Return-Path: <ddaney@avtrex.com>
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C83D39.7724DEF1"
+Subject: Inter processor synchronization
+Date:	Thu, 13 Dec 2007 09:07:20 +0530
+Message-ID: <9D98C51005D80D43A19A3DF329A61D690106A282@INDEXCH2003.gmi.domain>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Inter processor synchronization
+Thread-Index: Acg9OXc4eZ2or01CQpavhNXQtClAVQ==
+From:	"Nilanjan Roychowdhury" <Nilanjan.Roychowdhury@gnss.com>
+To:	<linux-mips@linux-mips.org>
+X-Mlf-Version: 6.0.1.9157
+X-Mlf-UniqueId:	o200712130337200048605
+Return-Path: <Nilanjan.Roychowdhury@gnss.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17804
+X-archive-position: 17805
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: Nilanjan.Roychowdhury@gnss.com
 Precedence: bulk
 X-list: linux-mips
 
-Chris Friesen wrote:
-> Daniel Jacobowitz wrote:
-> 
->> There used to be slots for badvaddr and cause.  You'll have to ask
->> Ralf why he decided to clobber them for DSP state, I don't remember
->> :-)  I suspect they may never have held useful information for you;
->> we don't context switch them for userspace, so an intervening fault
->> in kernel space or in another thread could change them.
-> 
-> I'm a bit confused as to how they would never have held useful 
-> information--did you mean the registers themselves, or the entries in 
-> struct sigcontext?
+This is a multi-part message in MIME format.
 
-The entries in the sigcontext.  As Ralf said, they never held valid values.
+------_=_NextPart_001_01C83D39.7724DEF1
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> If the cause/badvaddr entries in struct sigcontext were filled in by the 
-> exception handler in the kernel,
+Hi,
 
-It would appear that they are not.
+I have a scenario where two images of the same Linux kernel are running
+on two MIPS cores. One is 24K and another is 4KEC. What is the best way
+to achieve inter processor synchronization between them?
 
-> wouldn't the values in that struct be 
-> completely valid even if the registers themselves were changed before 
-> userspace could handle the signal?
-> 
-> If this is not the case then it seems like si_addr/si_code wouldn't be 
-> trustworthy either.
+I guess the locks for LL/SC are local to a particular core and can not
+be extended across a multi core system.=20
 
-This I am not sure about :(, However knowing the values of all registers 
-(and perhaps /proc/self/maps) and $pc you can easily derive what happened.
+=20
+
+Will it be easier for me if both of them becomes same core ( like both
+24k) and I run the SMP version of Linux.
+
+Please throw some light.
+
+=20
+
+Thanks,
+
+Nilanjan
+
+=20
+
+=20
 
 
-David Daney
+------_=_NextPart_001_01C83D39.7724DEF1
+Content-Type: text/html;
+	charset="US-ASCII"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+<meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"MS Mincho";
+	panose-1:2 2 6 9 4 2 5 8 3 4;}
+@font-face
+	{font-family:"\@MS Mincho";
+	panose-1:0 0 0 0 0 0 0 0 0 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Hi,<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>I have a scenario where two images of the same Linux =
+kernel
+are running on two MIPS cores. One is 24K and another is 4KEC. What is =
+the best
+way to achieve inter processor synchronization between =
+them?<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>I guess the locks for LL/SC are local to a particular =
+core
+and can not be extended across a multi core system. =
+<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Will it be easier for me if both of them becomes same =
+core (
+like both 24k) and I run the SMP version of =
+Linux.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Please throw some light.<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Thanks,<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Nilanjan<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------_=_NextPart_001_01C83D39.7724DEF1--

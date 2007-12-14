@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Dec 2007 12:55:44 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:42980 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Dec 2007 16:26:43 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:41880 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20026671AbXLNMxt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 14 Dec 2007 12:53:49 +0000
+	id S20030442AbXLNQ0l (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 14 Dec 2007 16:26:41 +0000
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lBECrX3w029660;
-	Fri, 14 Dec 2007 12:53:40 GMT
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lBEGQT9a006511;
+	Fri, 14 Dec 2007 16:26:29 GMT
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lBE03mWZ019698;
-	Fri, 14 Dec 2007 00:03:48 GMT
-Date:	Fri, 14 Dec 2007 00:03:48 +0000
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lBEGQTvT006510;
+	Fri, 14 Dec 2007 16:26:29 GMT
+Date:	Fri, 14 Dec 2007 16:26:29 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Frank Rowand <frank.rowand@am.sony.com>
+To:	Mikael Starvik <mikael.starvik@axis.com>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] RBTX4927: linux-2.6.24-rc4 hang on boot
-Message-ID: <20071214000348.GA12983@linux-mips.org>
-References: <1197386187.5610.18.camel@localhost.localdomain>
+Subject: Re: GCC 3.4.5 and mftc0
+Message-ID: <20071214162629.GC30137@linux-mips.org>
+References: <BFECAF9E178F144FAEF2BF4CE739C6680557B0DB@exmail1.se.axis.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1197386187.5610.18.camel@localhost.localdomain>
+In-Reply-To: <BFECAF9E178F144FAEF2BF4CE739C6680557B0DB@exmail1.se.axis.com>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17818
+X-archive-position: 17819
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,32 +33,37 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Dec 11, 2007 at 10:16:27AM -0500, Frank Rowand wrote:
+On Fri, Dec 14, 2007 at 10:49:40AM +0100, Mikael Starvik wrote:
 
-> In linux-2.6.24-rc4 the Toshiba RBTX4927 hangs on boot.
+> mftc0() is implemented as
+>  
+>  .word ...
+>   move %0, $1
 > 
-> The cause is that plat_time_init() from arch/mips/tx4927/common/tx4927_setup.c
-> does not override the __weak plat_time_init() from arch/mips/kernel/time.c.
-> This is due to a compiler bug in gcc 4.1.1.  The bug is reported to not exist
-> in earlier versions of gcc, and to be fixed in 4.1.2.  The problem is that
-> the __weak plat_time_init() is empty and thus gets optimized out of
-> existence (thus the linker is never given the option to replace the
-> __weak function).
+> With at least gcc 3.4.5 the move is implemented as an addu %0, $1, $0.
+> But in the MIPS sumulator this fails and %0 gets the value 0xffffffff.
+> Implementing this as a or %0, $1, $0 instead gives the expected result.
 
-You meant the call to plat_time_init() from time_init() gets optimized away.
+I wonder what "sumulator" you're using ...
 
-> For more info on the gcc bug see
-> 
->    http://gcc.gnu.org/bugzilla/show_bug.cgi?id=27781
-> 
-> The attached patch is one workaround.  Another possible workaround
-> would be to change the __weak plat_time_init() to be a non-empty
-> function.
+Addu is a perfectly fine implementation of move for 32-bit code.  It's not
+for 64-bit code but that's beside the point here.  The or method is also
+correct but historically the add instruction has been prefered, also
+because some processor - the R4300 afair - processes arithmetic instructions
+(add, sub that is not mul / div) faster than logic operations.
 
-The __weak definition of plat_time_init was only ever meant to be a
-migration helper to keep platforms that don't have a plat_time_init
-compiling.  A few greps says that all platforms now supply their own
-plat_time_init() so the weak definition is no longer needed.  So I
-instead delete it.
+> Any suggestions where the problem is and what the correct solution is?
+
+Fix the sumulator.
+
+> After fixing this my next problem is that IPIs doesn't reach all TCs
+> correctly (it seams like the code doesn't detect IXMT status correctly,
+> but I am still investigating). It is likely that it is caused by
+> something similar to the problem above.
+
+The code certainly works on real silicon, so the cause must be something
+local to your environment.
+
+Cheers,
 
   Ralf

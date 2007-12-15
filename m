@@ -1,119 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Dec 2007 21:13:27 +0000 (GMT)
-Received: from host.infinivid.com ([64.119.179.76]:50560 "EHLO
-	host.infinivid.com") by ftp.linux-mips.org with ESMTP
-	id S28576429AbXLNVNS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 14 Dec 2007 21:13:18 +0000
-Received: (qmail 15912 invoked from network); 14 Dec 2007 21:12:16 -0000
-Received: from adsl-232-70-239.asm.bellsouth.net (HELO ?10.41.13.3?) (74.232.70.239)
-  by host.infinivid.com with (RC4-MD5 encrypted) SMTP; 14 Dec 2007 14:12:16 -0700
-Subject: Re: PCI resource unavailable on mips
-From:	Jon Dufresne <jon.dufresne@infinitevideocorporation.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-In-Reply-To: <20071214093945.GA25186@linux-mips.org>
-References: <1197557806.3370.7.camel@microwave.infinitevideocorporation.com>
-	 <20071214093945.GA25186@linux-mips.org>
-Content-Type: text/plain
-Date:	Fri, 14 Dec 2007 16:12:15 -0500
-Message-Id: <1197666735.3800.1.camel@microwave.infinitevideocorporation.com>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.8.3 (2.8.3-2.fc6) 
-Content-Transfer-Encoding: 7bit
-Return-Path: <jon.dufresne@infinitevideocorporation.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Dec 2007 20:11:15 +0000 (GMT)
+Received: from host140-217-dynamic.16-79-r.retail.telecomitalia.it ([79.16.217.140]:40358
+	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
+	id S20026001AbXLOULG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 15 Dec 2007 20:11:06 +0000
+Received: from giuseppe by eppesuigoccas.homedns.org with local (Exim 4.63)
+	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
+	id 1J3dIY-00012b-JI; Sat, 15 Dec 2007 21:07:46 +0100
+Date:	Sat, 15 Dec 2007 21:07:46 +0100
+From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+To:	Ricardo Mendoza <ricmm@kanux.com>, linux-mips@linux-mips.org
+Subject: Re: Still no 2.6.24 on ip32
+Message-ID: <20071215200746.GA3989@eppesuigoccas.homedns.org>
+References: <1193599031.14874.1.camel@scarafaggio> <20071029150625.GB4165@linux-mips.org> <1194268551.4842.3.camel@scarafaggio> <1194281699.4192.3.camel@casa> <1197287929.17265.6.camel@scarafaggio> <475D7FE2.7080703@kanux.com> <1197371095.7889.24.camel@scarafaggio> <475E9012.1010504@kanux.com> <20071211204437.GA14243@eppesuigoccas.homedns.org> <475EC648.8030906@kanux.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <475EC648.8030906@kanux.com>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <giuseppe@eppesuigoccas.homedns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17822
+X-archive-position: 17823
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jon.dufresne@infinitevideocorporation.com
+X-original-sender: giuseppe@eppesuigoccas.homedns.org
 Precedence: bulk
 X-list: linux-mips
 
+Hi Ricardo,
 
-> Odd.  I knew the resource allocation stuff has it's issues for some
-> non-trivial configuration but that one is a new one.  Which makes me
-> wonder if your platform runs the PCI code in probe-only mode where it
-> will not actually assign resources but only inherit the whole PCI setup
-> except interrupt routing from the firmware.
-
-
-Hmm, I found more strange behavior with the bars that may or may not be
-related. I wrote a function that does another sanity check. It does an
-ioremap on one of the working bars, then reads one address for
-correctness. This is just to confirm that iomem is working. This is what
-the function looks like:
-
-> void dump_mmio(struct pci_dev *dev)
-> {
-> 	unsigned long phys, size;
-> 	struct resource *mem_region;
-> 	void __iomem *mmio;
-> 	u32 dword;
+On Tue, Dec 11, 2007 at 01:18:00PM -0400, Ricardo Mendoza wrote:
+> Giuseppe Sacco wrote:
+> > On Tue, Dec 11, 2007 at 09:26:42AM -0400, Ricardo Mendoza wrote:
+> >> Giuseppe Sacco wrote:
+> >>
+> >>> I just checked that my repository is up to date, so my problem is still
+> >>> there (thus I don't know if it is the same problem you fixed).
+> >>>
+> >>> BTW, what was the problem you fixed? I would like to have a look to it,
+> >>> to better understand what's going on there.
+> >> Well I just updated to see if anything had broken in the past few days,
+> >> but I don't seem to be hitting that error of yours. Could you send your
+> >> config to see if I can reproduce it?
+> > 
+> > Yes, sure: http://eppesuigoccas.homedns.org/~giuseppe/debian/config-2.6.24-rc4-ip32.bz2
+> > but please note that the problem is present in every kernel since 2.6.24-rc1
+> > 
+> > my boot stanza in arcboot is:
+> > 
+> > label=test
+> >   image=/boot/vmlinux-2.6.24-rc4-gs1
+> >   append="root=/dev/sda1 ro video=gbefb:1024x768-16@60 debug initcall_debug console=tty0 console=ttyS1,115200"
 > 
-> 	phys = pci_resource_start(dev, 1);
-> 	size = pci_resource_len(dev, 1);
-> 
-> 	mem_region = request_mem_region(phys, size, MODULENAME);
-> 	BUG_ON(!mem_region);
-> 	mmio = ioremap_nocache(phys, size);
-> 	BUG_ON(!mmio);
-> 
-> 	printk("******************MMIO*************************************\n");
-> 	printk("mmio=0x%p phys=0x%08lx size=0x%08lx\n", mmio, phys, size);
-> 	dword = ioread32(mmio + PCI_MMIO_BASE + 0x40);
-> 	printk("dword=%x\n", dword);
-> 	printk("***********************************************************\n");
-> 
-> 	iounmap(mmio);
-> 	release_mem_region(phys, size);
-> }
+> Ran it without problems, can't get into much detail right now but I the
+> problem you are seeing is more than likely caused by your other patch to
+> serial_core.c.
 
-on x86 this prints out what I would expect with the correct value which
-is:
+I made a few run, recompiled everything from scratch, without my patch,
+but I always had the system loop on IRQ #13 while booting.
 
-> ******************MMIO*************************************
-> mmio=0xf8e80000 phys=0xefa00000 size=0x00200000
-> dword=54061131
-> ***********************************************************
-
-on mips however this crashes the kernel with a "Data bus error" the
-exact output is below:
-
-> ******************MMIO*************************************
-> mmio=0xc0300000 phys=0x24000000 size=0x00200000
-> Data bus error, epc == c0279a00, ra == c02799f4
-> Oops[#1]:
-> Cpu 0
-> $ 0   : 00000000 10008400 c0340040 802e031c
-> $ 4   : 802e031c 802e0000 00000001 8019f924
-> $ 8   : 802e0000 0000020b 80320000 80320000
-> $12   : 80320000 00000001 83031be6 8031c960
-> $16   : 80086994 c0300000 24000000 00200000
-> $20   : 802e0000 802e1ae4 c025a000 8008cde4
-> $24   : 00000006 00000000                  
-> $28   : 83030000 83031d20 c0288aec c02799f4
-> Hi    : 00000051
-> Lo    : eb851f00
-> epc   : c0279a00     Tainted: P     
-> ra    : c02799f4 Status: 10008403    KERNEL EXL IE 
-> Cause : 1080001c
-> PrId  : 00061200
-> Modules linked in: tmman1700(P) mousedev usbhid usb_storage phStbFB(P) phStbFBRead(P) phStbVideoRenderer(P) phStbVe
-> Process insmod (pid: 785, threadinfo=83030000, task=8109f8e8)
-> Stack : c0288b28 c0300000 24000000 00200000 810b9c54 00000003 c0290000 810b9c00
->         c0288b28 c0279ae4 83031d48 00000002 00000000 00000000 810b9c00 c0288510
->         00000000 80373480 80177520 801774e4 810b9d1c c0288544 80177574 829f6066
->         810b9d1c 810b9c48 c0288544 801a3d40 810b9d1c 801a4538 81091c00 8011fc70
->         810b9d1c 810b9c48 c0288544 c0288544 801a475c 801a475c 801a2810 80168e08
->         ...
-> Call Trace:[<c0279ae4>][<80177520>][<801774e4>][<80177574>][<801a3d40>][<801a4538>][<8011fc70>][<801a475c>][<801a4]
-> 
-> Code: 3c020004  34420040  02221021 <8c450000> 3c04c028  0200f809  24845164  3c04c028  0200f809 
-> Segmentation fault
-
-The data bus error occurs whenever I do a ioreadX on the ioremapped area. Any idea why this doesn't work on the mips?
+Do you test on ip32? SGI O2 R5000@200? I would like to know any difference
+between our test environments.
 
 Thanks,
-Jon
+Gisueppe

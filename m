@@ -1,80 +1,124 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Dec 2007 13:57:56 +0000 (GMT)
-Received: from mo31.po.2iij.NET ([210.128.50.54]:35890 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20025214AbXLPN5R (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 16 Dec 2007 13:57:17 +0000
-Received: by mo.po.2iij.net (mo31) id lBGDtvPu047041; Sun, 16 Dec 2007 22:55:57 +0900 (JST)
-Received: from delta (224.24.30.125.dy.iij4u.or.jp [125.30.24.224])
-	by mbox.po.2iij.net (po-mbox302) id lBGDtttv023716
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Sun, 16 Dec 2007 22:55:55 +0900
-Date:	Sun, 16 Dec 2007 22:53:00 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][1/2][MIPS] remove unused struct bootloader_header
-Message-Id: <20071216225300.6069fe55.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed 2.4.5 (GTK+ 2.12.0; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Dec 2007 22:49:41 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:5076 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20032415AbXLPWtj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 16 Dec 2007 22:49:39 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lBGMkI04019948;
+	Sun, 16 Dec 2007 22:46:18 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lBGMkH2Y019947;
+	Sun, 16 Dec 2007 22:46:17 GMT
+Date:	Sun, 16 Dec 2007 22:46:17 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Jon Dufresne <jon.dufresne@infinitevideocorporation.com>
+Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: PCI resource unavailable on mips
+Message-ID: <20071216224617.GA18613@linux-mips.org>
+References: <1197557806.3370.7.camel@microwave.infinitevideocorporation.com> <20071214093945.GA25186@linux-mips.org> <1197666735.3800.1.camel@microwave.infinitevideocorporation.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1197666735.3800.1.camel@microwave.infinitevideocorporation.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17825
+X-archive-position: 17826
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Removed unused struct bootloader_header.
+On Fri, Dec 14, 2007 at 04:12:15PM -0500, Jon Dufresne wrote:
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+> Hmm, I found more strange behavior with the bars that may or may not be
+> related. I wrote a function that does another sanity check. It does an
+> ioremap on one of the working bars, then reads one address for
+> correctness. This is just to confirm that iomem is working. This is what
+> the function looks like:
+> 
+> > void dump_mmio(struct pci_dev *dev)
+> > {
+> > 	unsigned long phys, size;
+> > 	struct resource *mem_region;
+> > 	void __iomem *mmio;
+> > 	u32 dword;
+> > 
+> > 	phys = pci_resource_start(dev, 1);
+> > 	size = pci_resource_len(dev, 1);
+> > 
+> > 	mem_region = request_mem_region(phys, size, MODULENAME);
+> > 	BUG_ON(!mem_region);
+> > 	mmio = ioremap_nocache(phys, size);
+> > 	BUG_ON(!mmio);
+> > 
+> > 	printk("******************MMIO*************************************\n");
+> > 	printk("mmio=0x%p phys=0x%08lx size=0x%08lx\n", mmio, phys, size);
+> > 	dword = ioread32(mmio + PCI_MMIO_BASE + 0x40);
+> > 	printk("dword=%x\n", dword);
+> > 	printk("***********************************************************\n");
+> > 
+> > 	iounmap(mmio);
+> > 	release_mem_region(phys, size);
+> > }
+> 
+> on x86 this prints out what I would expect with the correct value which
+> is:
+> 
+> > ******************MMIO*************************************
+> > mmio=0xf8e80000 phys=0xefa00000 size=0x00200000
+> > dword=54061131
+> > ***********************************************************
+> 
+> on mips however this crashes the kernel with a "Data bus error" the
+> exact output is below:
+> 
+> > ******************MMIO*************************************
+> > mmio=0xc0300000 phys=0x24000000 size=0x00200000
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/lasat/image/head.S mips/arch/mips/lasat/image/head.S
---- mips-orig/arch/mips/lasat/image/head.S	2007-11-05 08:41:37.923119250 +0900
-+++ mips/arch/mips/lasat/image/head.S	2007-11-05 08:31:39.865743000 +0900
-@@ -1,4 +1,5 @@
--#include <asm/lasat/head.h>
-+#define LASAT_K_MAGIC0_VAL	0xfedeabba
-+#define LASAT_K_MAGIC1_VAL	0xbedead
- 
- 	.text
- 	.section .text.start, "ax"
-@@ -21,7 +22,6 @@
- 	.word	_kernel_entry
- 
- 	/* Here we have room for future flags */
--
- 	.org	0x40
- reldate:
- 	.word	TIMESTAMP
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/lasat/head.h mips/include/asm-mips/lasat/head.h
---- mips-orig/include/asm-mips/lasat/head.h	2007-11-05 08:41:37.991123500 +0900
-+++ mips/include/asm-mips/lasat/head.h	1970-01-01 09:00:00.000000000 +0900
-@@ -1,22 +0,0 @@
--/*
-- * Image header stuff
-- */
--#ifndef _HEAD_H
--#define _HEAD_H
--
--#define LASAT_K_MAGIC0_VAL	0xfedeabba
--#define LASAT_K_MAGIC1_VAL	0x00bedead
--
--#ifndef _LANGUAGE_ASSEMBLY
--#include <linux/types.h>
--struct bootloader_header {
--	u32 magic[2];
--	u32 version;
--	u32 image_start;
--	u32 image_size;
--	u32 kernel_start;
--	u32 kernel_entry;
--};
--#endif
--
--#endif /* _HEAD_H */
+The virtual address 0xc0300000 looks sensible and the physical address
+0x24000000 is consistent with what you found in the BAR registers.  So that
+all looks reasonable but that only means not obviously wrong.  So next I
+wonder what the value of PCI_MMIO_BASE is ...
+
+> > Cpu 0
+> > $ 0   : 00000000 10008400 c0340040 802e031c
+> > $ 4   : 802e031c 802e0000 00000001 8019f924
+> > $ 8   : 802e0000 0000020b 80320000 80320000
+> > $12   : 80320000 00000001 83031be6 8031c960
+> > $16   : 80086994 c0300000 24000000 00200000
+> > $20   : 802e0000 802e1ae4 c025a000 8008cde4
+> > $24   : 00000006 00000000                  
+> > $28   : 83030000 83031d20 c0288aec c02799f4
+> > Hi    : 00000051
+> > Lo    : eb851f00
+> > epc   : c0279a00     Tainted: P     
+> > ra    : c02799f4 Status: 10008403    KERNEL EXL IE 
+> > Cause : 1080001c
+> > PrId  : 00061200
+> > Modules linked in: tmman1700(P) mousedev usbhid usb_storage phStbFB(P) phStbFBRead(P) phStbVideoRenderer(P) phStbVe
+> > Process insmod (pid: 785, threadinfo=83030000, task=8109f8e8)
+> > Stack : c0288b28 c0300000 24000000 00200000 810b9c54 00000003 c0290000 810b9c00
+> >         c0288b28 c0279ae4 83031d48 00000002 00000000 00000000 810b9c00 c0288510
+> >         00000000 80373480 80177520 801774e4 810b9d1c c0288544 80177574 829f6066
+> >         810b9d1c 810b9c48 c0288544 801a3d40 810b9d1c 801a4538 81091c00 8011fc70
+> >         810b9d1c 810b9c48 c0288544 c0288544 801a475c 801a475c 801a2810 80168e08
+> >         ...
+> > Call Trace:[<c0279ae4>][<80177520>][<801774e4>][<80177574>][<801a3d40>][<801a4538>][<8011fc70>][<801a475c>][<801a4]
+> > 
+> > Code: 3c020004  34420040  02221021 <8c450000> 3c04c028  0200f809  24845164  3c04c028  0200f809 
+> > Segmentation fault
+> 
+> The data bus error occurs whenever I do a ioreadX on the ioremapped area. Any idea why this doesn't work on the mips?
+
+A bus error is an exception which is signalled by agent external (often
+called system controller) to the CPU core to signal a fatal error during a
+read or write bus transaction, for example after a bus timeout or if the
+address of the read/write isn't assigned to any device.  PCI master abort
+also is often mapped to a bus error exception.
+
+  Ralf

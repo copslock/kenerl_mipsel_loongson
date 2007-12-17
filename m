@@ -1,77 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Dec 2007 13:18:11 +0000 (GMT)
-Received: from nz-out-0506.google.com ([64.233.162.238]:54919 "EHLO
-	nz-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20026800AbXLQNSD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 17 Dec 2007 13:18:03 +0000
-Received: by nz-out-0506.google.com with SMTP id n1so805480nzf.24
-        for <linux-mips@linux-mips.org>; Mon, 17 Dec 2007 05:17:49 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:mime-version:content-type:content-transfer-encoding:content-disposition;
-        bh=YeW/VmpMHXbDLWNTjGYJidpIolxjDKcJRZJhK0L8yXM=;
-        b=Vacn1WW2qjErAje1O0a3J/U2hnZm5juGde/bhMEk6Zb/ma040Rj1xsuceSC3QYlXBz8iDxEplIfcOOxHCp5VNj9Ci3CGPkU+2EZI9UIfjffgoZLkf1wP12qhjeXxCwAVhxNLym9WKKX9/kENXN54alYsSRsNAX3Zsw7eDyDklYE=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:cc:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=BmJ2VV/2fF3MiglboTJRlhH3D4w+27tROQX8goCCPQ/56FPVMt3Ocpcg/Ke9soL9NU8ZrwDOzUVuNlv7g9rkZ4XbK/C8TYSHaAB/7R+O3uFTvHn8OKHIzy7gtaXzUBOS6sVdO8M6gJxg5eONEJ0jx+5LGZx/rzerZVLu30UkYoI=
-Received: by 10.142.229.4 with SMTP id b4mr509758wfh.118.1197897468747;
-        Mon, 17 Dec 2007 05:17:48 -0800 (PST)
-Received: by 10.142.214.9 with HTTP; Mon, 17 Dec 2007 05:17:48 -0800 (PST)
-Message-ID: <73cd086a0712170517i146a452exea775f3942c1d5da@mail.gmail.com>
-Date:	Mon, 17 Dec 2007 16:17:48 +0300
-From:	"Pavel Kiryukhin" <vksavl@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: [PATCH][MIPS] fix user_cpus_allowed assignment
-Cc:	vksavl@gmail.com
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Dec 2007 15:16:44 +0000 (GMT)
+Received: from host.infinivid.com ([64.119.179.76]:61591 "EHLO
+	host.infinivid.com") by ftp.linux-mips.org with ESMTP
+	id S20027487AbXLQPQf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 17 Dec 2007 15:16:35 +0000
+Received: (qmail 14086 invoked from network); 17 Dec 2007 15:16:33 -0000
+Received: from adsl-232-70-239.asm.bellsouth.net (HELO ?10.41.13.3?) (74.232.70.239)
+  by host.infinivid.com with (RC4-MD5 encrypted) SMTP; 17 Dec 2007 08:16:32 -0700
+Subject: Re: PCI resource unavailable on mips
+From:	Jon Dufresne <jon.dufresne@infinitevideocorporation.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
+In-Reply-To: <20071216224617.GA18613@linux-mips.org>
+References: <1197557806.3370.7.camel@microwave.infinitevideocorporation.com>
+	 <20071214093945.GA25186@linux-mips.org>
+	 <1197666735.3800.1.camel@microwave.infinitevideocorporation.com>
+	 <20071216224617.GA18613@linux-mips.org>
+Content-Type: text/plain
+Date:	Mon, 17 Dec 2007 10:16:31 -0500
+Message-Id: <1197904591.3351.5.camel@microwave.infinitevideocorporation.com>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.8.3 (2.8.3-2.fc6) 
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Return-Path: <vksavl@gmail.com>
+Return-Path: <jon.dufresne@infinitevideocorporation.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17830
+X-archive-position: 17831
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vksavl@gmail.com
+X-original-sender: jon.dufresne@infinitevideocorporation.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-there seems to be a bug in affinity handling for CONFIG_MIPS_MT_FPAFF=y.
-It can be easily reproduced - for two-cpus system set new mask to 4.
-Call fails, but next sched_getaffinity() call returns 0 as current
-mask.
-Simple fix is below.
+I did a bit more work and investigation on this and it turns out I could
+not read the mmio in kernel space because I had not done a
+pci_enable_device_bars() on the device. I had never done this on x86 so
+I didn't realize it was necessary.
 
-Signed-off-by: Pavel Kiryukhin <vksavl@gmail.com>
+> The virtual address 0xc0300000 looks sensible and the physical address
+> 0x24000000 is consistent with what you found in the BAR registers.  So that
+> all looks reasonable but that only means not obviously wrong.  So next I
+> wonder what the value of PCI_MMIO_BASE is ...
 
-diff --git a/arch/mips/kernel/mips-mt-fpaff.c
-b/arch/mips/kernel/mips-mt-fpaff.cindex 892665b..774f91e 100644
---- a/arch/mips/kernel/mips-mt-fpaff.c
-+++ b/arch/mips/kernel/mips-mt-fpaff.c
-@@ -87,9 +87,6 @@ asmlinkage long mipsmt_sys_sched_setaffinity(pid_t
-pid, unsigned int len,
-        if (retval)
-                goto out_unlock;
+The PCI_MMIO_BASE is a defined as:
 
--       /* Record new user-specified CPU set for future reference */
--       p->thread.user_cpus_allowed = new_mask;
--
-        /* Unlock the task list */
-        read_unlock(&tasklist_lock);
 
-@@ -104,6 +101,10 @@ asmlinkage long
-mipsmt_sys_sched_setaffinity(pid_t pid, unsigned int len,
-                retval = set_cpus_allowed(p, new_mask);
-        }
+> #define PCI_MMIO_BASE            (0x00040000)
 
-+        /* Record new user-specified CPU set for future reference */
-+       if (!retval)
-+               p->thread.user_cpus_allowed = new_mask;
-+
- out_unlock:
-        put_task_struct(p);
-        unlock_cpu_hotplug();
+This is define in the technical documentation as the offset to access
+pci config space from the mmio. I am using this because I know what the
+values should be so it provides a nice sanity check.
+
+
+> A bus error is an exception which is signalled by agent external (often
+> called system controller) to the CPU core to signal a fatal error during a
+> read or write bus transaction, for example after a bus timeout or if the
+> address of the read/write isn't assigned to any device.  PCI master abort
+> also is often mapped to a bus error exception.
+
+So after doing pci_enable_bars() I can now access this mmio region in
+kernel space. However, if I try to mmap this into user space I still
+receive the bus error. I am mapping this into user space using the
+example for LDD which says to use the remap_pfn_range() function. I've
+tested this on the x86 and it works as expected, however every time I
+access the mmio from user space using the mips, I continue to get the
+bus error I previously received in kernel space.
+
+Any idea what I might be doing wrong? How can I access this from user
+space?
+
+Thanks,
+Jon

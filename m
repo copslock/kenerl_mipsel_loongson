@@ -1,178 +1,172 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Dec 2007 18:40:21 +0000 (GMT)
-Received: from wa-out-1112.google.com ([209.85.146.179]:61136 "EHLO
-	wa-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20031811AbXLQSkM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 17 Dec 2007 18:40:12 +0000
-Received: by wa-out-1112.google.com with SMTP id m16so3345194waf.20
-        for <linux-mips@linux-mips.org>; Mon, 17 Dec 2007 10:40:00 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:references;
-        bh=Q0aNLBuxfgiX7g/CjPAS9TEtOi5pA6oHDUxDhydDeGs=;
-        b=xKxHYQ9Eugxl8qEH0wFZJIbrFBhuIPwuaXC5nGODyVykGfN3qWol3QxQegORF7eQSt8XMTg2JFV22qGDzoeTKLDsb6AZv9rHFCdLrWhcG05b2A3hkjEveF+G0dwb9WhVkECplwJZkimI64tSNfEzCPk4MF7Eaq6U339x/et6SGA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:references;
-        b=STgQVr5NUxZrUHEAt2/jKZXWB1HQc4Q6wpYen3j3iy7S+xszWKB1Mqhui+xIYcLBa+r12Enj3h9uqA1ruukDsUoMi3W2eZOXOCH0qru/ttTM92qJlPa/8H1u2i95njg11sYewfQHSqxXfLUJpqHk8hsUwl1JmywESMpwdZp353g=
-Received: by 10.114.181.1 with SMTP id d1mr3505880waf.10.1197916800597;
-        Mon, 17 Dec 2007 10:40:00 -0800 (PST)
-Received: by 10.114.135.8 with HTTP; Mon, 17 Dec 2007 10:40:00 -0800 (PST)
-Message-ID: <eea8a9c90712171040n4b5814b5vf5e0b88a61cd71c6@mail.gmail.com>
-Date:	Tue, 18 Dec 2007 00:10:00 +0530
-From:	kaka <share.kt@gmail.com>
-To:	"Denis Oliver Kropp" <dok@directfb.org>
-Subject: Re: [directfb-dev] Error in running gtk example on cross compiled GTK with DirectFB on MIPS board
-Cc:	linux-mips@linux-mips.org, uclinux-dev@uclinux.org,
-	celinux-dev@tree.celinuxforum.org,
-	linux-fbdev-users@lists.sourceforge.net,
-	directfb-users@directfb.org, directfb-dev@directfb.org
-In-Reply-To: <4766B149.5050109@directfb.org>
-MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_7619_17142918.1197916800588"
-References: <eea8a9c90712170031i62e4ac4ak687a198200f59920@mail.gmail.com>
-	 <4766B149.5050109@directfb.org>
-Return-Path: <share.kt@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Dec 2007 19:32:35 +0000 (GMT)
+Received: from DSL022.labridge.com ([206.117.136.22]:5900 "EHLO perches.com")
+	by ftp.linux-mips.org with ESMTP id S20026548AbXLQTc1 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 17 Dec 2007 19:32:27 +0000
+Received: from localhost.localdomain (192-168-1-128.LABridge.com [192.168.1.128] (may be forged))
+	by perches.com (8.9.3/8.9.3) with ESMTP id KAA32725;
+	Mon, 17 Dec 2007 10:43:12 -0800
+From:	Joe Perches <joe@perches.com>
+To:	linux-kernel@vger.kernel.org
+Cc:	Andrew Morton <akpm@linux-foundation.org>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH] arch/mips/: Spelling fixes
+Date:	Mon, 17 Dec 2007 11:30:08 -0800
+Message-Id: <1197919875-5288-9-git-send-email-joe@perches.com>
+X-Mailer: git-send-email 1.5.3.7.949.g2221a6
+Message-Id: <5703e57f925f31fc0eb38873bd7f10fc44f99cb4.1197918889.git.joe@perches.com>
+Return-Path: <joe@perches.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17835
+X-archive-position: 17836
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: share.kt@gmail.com
+X-original-sender: joe@perches.com
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_7619_17142918.1197916800588
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
 
-Hi Denis,
+Signed-off-by: Joe Perches <joe@perches.com>
+---
+ arch/mips/au1000/mtx-1/board_setup.c |    2 +-
+ arch/mips/kernel/binfmt_elfn32.c     |    2 +-
+ arch/mips/kernel/binfmt_elfo32.c     |    2 +-
+ arch/mips/kernel/kspd.c              |    2 +-
+ arch/mips/kernel/setup.c             |    4 ++--
+ arch/mips/kernel/smtc.c              |    6 +++---
+ arch/mips/mm/c-r4k.c                 |    2 +-
+ arch/mips/sgi-ip27/ip27-hubio.c      |    2 +-
+ 8 files changed, 11 insertions(+), 11 deletions(-)
 
-Thanks for the reply.
-I am running same example on X86 and it is running successfully and
-displaying image.
-On the other hand when i am running the same example on MIPS(GTK over
-DirecTFB)
-image is not being displayed.
-
-Could u plz provide some clue on it.
-Thanks.
-
-Kaka
-
-
-On 12/17/07, Denis Oliver Kropp <dok@directfb.org> wrote:
->
-> kaka wrote:
-> > HI ALL,
-> >
-> > We have successfully cross compiled GTK and DIRECTFB with all its
-> > dependencies for MIPS board.
-> > On running the basic test example of GTK, it is getting struck in the
-> thread
-> > loop infinitely.
-> > We had put the  "debug printf"  statement in the gtkmain.c and debugged
-> the
-> > test example.
-> > It is getting struck in the * g_main_loop_run (loop);* given below is
-> > the  code(code
-> > snippet from gtkmain.c)
-> >
-> > void
-> > gtk_main (void)
-> > {
-> >   GList *tmp_list;
-> >   GList *functions;
-> >   GtkInitFunction *init;
-> >   GMainLoop *loop;
-> > printf("\n%s :: %d\n",__FILE__,__LINE__);
-> >   gtk_main_loop_level++;
-> >
-> >   loop = g_main_loop_new (NULL, TRUE);
-> >   main_loops = g_slist_prepend (main_loops, loop);
-> > printf("\n%s :: %d\n",__FILE__,__LINE__);
-> >   tmp_list = functions = init_functions;
-> >   init_functions = NULL;
-> >
-> >   while (tmp_list)
-> >     {
-> >       init = tmp_list->data;
-> >       tmp_list = tmp_list->next;
-> >
-> >       (* init->function) (init->data);
-> >       g_free (init);
-> >     }
-> >   g_list_free (functions);
-> > printf("\n%s :: %d\n",__FILE__,__LINE__);
-> >   if (g_main_loop_is_running (main_loops->data))
-> >     {
-> >    * printf("\n%s :: %d\n",__FILE__,__LINE__);
-> >       GDK_THREADS_LEAVE ();
-> >       g_main_loop_run (loop);
-> >       GDK_THREADS_ENTER ();
-> > *      printf("\n%s :: %d\n",__FILE__,__LINE__);
->
-> That's normal. If you want runtime you have to create a timer or register
-> idle or timeout functions.
->
-> >       gtk_container_add (GTK_CONTAINER (window), pMainWidget);
-> >  printf("\n\n\ngtk_container_add (GTK_CONTAINER (window),
-> > pMainWidget);\n\n\n") ;
-> >       gtk_widget_show (window);
-> > printf("\n\n\nABHISHEK START OF gtk_main\n\n\n");
-> >       gtk_main ();
-> > printf("\n\n\nABHISHEK END OF gtk_main\n\n\n");
-> >       return 0;
->
-> Simply/weakly put: it should not return before the application is quit.
->
-> --
-> Best regards,
-> Denis Oliver Kropp
->
-> .------------------------------------------.
-> | DirectFB - Hardware accelerated graphics |
-> | http://www.directfb.org/                 |
-> "------------------------------------------"
->
-
-
-
+diff --git a/arch/mips/au1000/mtx-1/board_setup.c b/arch/mips/au1000/mtx-1/board_setup.c
+index abfc4bc..310d5df 100644
+--- a/arch/mips/au1000/mtx-1/board_setup.c
++++ b/arch/mips/au1000/mtx-1/board_setup.c
+@@ -99,7 +99,7 @@ mtx1_pci_idsel(unsigned int devsel, int assert)
+ #endif
+ 
+        if (assert && devsel != 0) {
+-               // supress signal to cardbus
++               // suppress signal to cardbus
+                au_writel( 0x00000002, SYS_OUTPUTCLR ); // set EXT_IO3 OFF
+        }
+        else {
+diff --git a/arch/mips/kernel/binfmt_elfn32.c b/arch/mips/kernel/binfmt_elfn32.c
+index 9b34238..77db347 100644
+--- a/arch/mips/kernel/binfmt_elfn32.c
++++ b/arch/mips/kernel/binfmt_elfn32.c
+@@ -98,7 +98,7 @@ static __inline__ void
+ jiffies_to_compat_timeval(unsigned long jiffies, struct compat_timeval *value)
+ {
+ 	/*
+-	 * Convert jiffies to nanoseconds and seperate with
++	 * Convert jiffies to nanoseconds and separate with
+ 	 * one divide.
+ 	 */
+ 	u64 nsec = (u64)jiffies * TICK_NSEC;
+diff --git a/arch/mips/kernel/binfmt_elfo32.c b/arch/mips/kernel/binfmt_elfo32.c
+index da41eac..08f4cd7 100644
+--- a/arch/mips/kernel/binfmt_elfo32.c
++++ b/arch/mips/kernel/binfmt_elfo32.c
+@@ -100,7 +100,7 @@ static inline void
+ jiffies_to_compat_timeval(unsigned long jiffies, struct compat_timeval *value)
+ {
+ 	/*
+-	 * Convert jiffies to nanoseconds and seperate with
++	 * Convert jiffies to nanoseconds and separate with
+ 	 * one divide.
+ 	 */
+ 	u64 nsec = (u64)jiffies * TICK_NSEC;
+diff --git a/arch/mips/kernel/kspd.c b/arch/mips/kernel/kspd.c
+index d2c2e00..1630784 100644
+--- a/arch/mips/kernel/kspd.c
++++ b/arch/mips/kernel/kspd.c
+@@ -222,7 +222,7 @@ void sp_work_handle_request(void)
+ 		}
+ 	}
+ 
+-	/* Run the syscall at the priviledge of the user who loaded the
++	/* Run the syscall at the privilege of the user who loaded the
+ 	   SP program */
+ 
+ 	if (vpe_getuid(tclimit))
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 7f6ddcb..ddc2d6d 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -423,13 +423,13 @@ static void __init bootmem_init(void)
+ #endif	/* CONFIG_SGI_IP27 */
+ 
+ /*
+- * arch_mem_init - initialize memory managment subsystem
++ * arch_mem_init - initialize memory management subsystem
+  *
+  *  o plat_mem_setup() detects the memory configuration and will record detected
+  *    memory areas using add_memory_region.
+  *
+  * At this stage the memory configuration of the system is known to the
+- * kernel but generic memory managment system is still entirely uninitialized.
++ * kernel but generic memory management system is still entirely uninitialized.
+  *
+  *  o bootmem_init()
+  *  o sparse_init()
+diff --git a/arch/mips/kernel/smtc.c b/arch/mips/kernel/smtc.c
+index 9c92d42..37ee189 100644
+--- a/arch/mips/kernel/smtc.c
++++ b/arch/mips/kernel/smtc.c
+@@ -66,7 +66,7 @@ asiduse smtc_live_asid[MAX_SMTC_TLBS][MAX_SMTC_ASIDS];
+ static atomic_t ipi_timer_latch[NR_CPUS];
+ 
+ /*
+- * Number of InterProcessor Interupt (IPI) message buffers to allocate
++ * Number of InterProcessor Interrupt (IPI) message buffers to allocate
+  */
+ 
+ #define IPIBUF_PER_CPU 4
+@@ -781,7 +781,7 @@ void smtc_send_ipi(int cpu, int type, unsigned int action)
+ 	if (cpu_data[cpu].vpe_id != cpu_data[smp_processor_id()].vpe_id) {
+ 		if (type == SMTC_CLOCK_TICK)
+ 			atomic_inc(&ipi_timer_latch[cpu]);
+-		/* If not on same VPE, enqueue and send cross-VPE interupt */
++		/* If not on same VPE, enqueue and send cross-VPE interrupt */
+ 		smtc_ipi_nq(&IPIQ[cpu], pipi);
+ 		LOCK_CORE_PRA();
+ 		settc(cpu_data[cpu].tc_id);
+@@ -1064,7 +1064,7 @@ static void setup_cross_vpe_interrupts(unsigned int nvpe)
+ 		return;
+ 
+ 	if (!cpu_has_vint)
+-		panic("SMTC Kernel requires Vectored Interupt support");
++		panic("SMTC Kernel requires Vectored Interrupt support");
+ 
+ 	set_vi_handler(MIPS_CPU_IPI_IRQ, ipi_irq_dispatch);
+ 
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 9355f1c..049ba7f 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -1108,7 +1108,7 @@ static void __init setup_scache(void)
+ 	/*
+ 	 * Do the probing thing on R4000SC and R4400SC processors.  Other
+ 	 * processors don't have a S-cache that would be relevant to the
+-	 * Linux memory managment.
++	 * Linux memory management.
+ 	 */
+ 	switch (c->cputype) {
+ 	case CPU_R4000SC:
+diff --git a/arch/mips/sgi-ip27/ip27-hubio.c b/arch/mips/sgi-ip27/ip27-hubio.c
+index 524b371..a1fa4ab 100644
+--- a/arch/mips/sgi-ip27/ip27-hubio.c
++++ b/arch/mips/sgi-ip27/ip27-hubio.c
+@@ -168,7 +168,7 @@ static void hub_set_piomode(nasid_t nasid)
+ }
+ 
+ /*
+- * hub_pio_init  -  PIO-related hub initalization
++ * hub_pio_init  -  PIO-related hub initialization
+  *
+  * @hub:	hubinfo structure for our hub
+  */
 -- 
-Thanks & Regards,
-kaka
-
-------=_Part_7619_17142918.1197916800588
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-<div>Hi Denis,</div>
-<div>&nbsp;</div>
-<div>Thanks for the reply.</div>
-<div>I am running same example on X86 and it is running successfully and displaying image.</div>
-<div>On the other hand when i am running the same example on MIPS(GTK over DirecTFB)</div>
-<div>image is not being displayed.</div>
-<div>&nbsp;</div>
-<div>Could u plz provide some clue on it.</div>
-<div>Thanks.</div>
-<div>&nbsp;</div>
-<div>Kaka<br><br>&nbsp;</div>
-<div><span class="gmail_quote">On 12/17/07, <b class="gmail_sendername">Denis Oliver Kropp</b> &lt;<a href="mailto:dok@directfb.org">dok@directfb.org</a>&gt; wrote:</span>
-<blockquote class="gmail_quote" style="PADDING-LEFT: 1ex; MARGIN: 0px 0px 0px 0.8ex; BORDER-LEFT: #ccc 1px solid">kaka wrote:<br>&gt; HI ALL,<br>&gt;<br>&gt; We have successfully cross compiled GTK and DIRECTFB with all its
-<br>&gt; dependencies for MIPS board.<br>&gt; On running the basic test example of GTK, it is getting struck in the thread<br>&gt; loop infinitely.<br>&gt; We had put the&nbsp;&nbsp;&quot;debug printf&quot;&nbsp;&nbsp;statement in the gtkmain.c
- and debugged the<br>&gt; test example.<br>&gt; It is getting struck in the * g_main_loop_run (loop);* given below is<br>&gt; the&nbsp;&nbsp;code(code<br>&gt; snippet from gtkmain.c)<br>&gt;<br>&gt; void<br>&gt; gtk_main (void)<br>
-&gt; {<br>&gt;&nbsp;&nbsp; GList *tmp_list;<br>&gt;&nbsp;&nbsp; GList *functions;<br>&gt;&nbsp;&nbsp; GtkInitFunction *init;<br>&gt;&nbsp;&nbsp; GMainLoop *loop;<br>&gt; printf(&quot;\n%s :: %d\n&quot;,__FILE__,__LINE__);<br>&gt;&nbsp;&nbsp; gtk_main_loop_level++;<br>&gt;
-<br>&gt;&nbsp;&nbsp; loop = g_main_loop_new (NULL, TRUE);<br>&gt;&nbsp;&nbsp; main_loops = g_slist_prepend (main_loops, loop);<br>&gt; printf(&quot;\n%s :: %d\n&quot;,__FILE__,__LINE__);<br>&gt;&nbsp;&nbsp; tmp_list = functions = init_functions;<br>&gt;&nbsp;&nbsp; init_functions = NULL;
-<br>&gt;<br>&gt;&nbsp;&nbsp; while (tmp_list)<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp; {<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; init = tmp_list-&gt;data;<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tmp_list = tmp_list-&gt;next;<br>&gt;<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (* init-&gt;function) (init-&gt;data);<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; g_free (init);
-<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp; }<br>&gt;&nbsp;&nbsp; g_list_free (functions);<br>&gt; printf(&quot;\n%s :: %d\n&quot;,__FILE__,__LINE__);<br>&gt;&nbsp;&nbsp; if (g_main_loop_is_running (main_loops-&gt;data))<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp; {<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;* printf(&quot;\n%s :: %d\n&quot;,__FILE__,__LINE__);
-<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GDK_THREADS_LEAVE ();<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; g_main_loop_run (loop);<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GDK_THREADS_ENTER ();<br>&gt; *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(&quot;\n%s :: %d\n&quot;,__FILE__,__LINE__);<br><br>That&#39;s normal. If you want runtime you have to create a timer or register idle or timeout functions.
-<br><br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gtk_container_add (GTK_CONTAINER (window), pMainWidget);<br>&gt;&nbsp;&nbsp;printf(&quot;\n\n\ngtk_container_add (GTK_CONTAINER (window),<br>&gt; pMainWidget);\n\n\n&quot;) ;<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gtk_widget_show (window);
-<br>&gt; printf(&quot;\n\n\nABHISHEK START OF gtk_main\n\n\n&quot;);<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gtk_main ();<br>&gt; printf(&quot;\n\n\nABHISHEK END OF gtk_main\n\n\n&quot;);<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return 0;<br><br>Simply/weakly put: it should not return before the application is quit.
-<br><br>--<br>Best regards,<br>Denis Oliver Kropp<br><br>.------------------------------------------.<br>| DirectFB - Hardware accelerated graphics |<br>| <a href="http://www.directfb.org/">http://www.directfb.org/</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
-<br>&quot;------------------------------------------&quot;<br></blockquote></div><br><br clear="all"><br>-- <br>Thanks &amp; Regards,<br>kaka 
-
-------=_Part_7619_17142918.1197916800588--
+1.5.3.7.949.g2221a6

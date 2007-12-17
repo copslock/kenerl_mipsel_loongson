@@ -1,58 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Dec 2007 20:02:43 +0000 (GMT)
-Received: from DSL022.labridge.com ([206.117.136.22]:19469 "EHLO perches.com")
-	by ftp.linux-mips.org with ESMTP id S20029065AbXLQUCg (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 17 Dec 2007 20:02:36 +0000
-Received: from [192.168.1.128] (192-168-1-128.LABridge.com [192.168.1.128] (may be forged))
-	by perches.com (8.9.3/8.9.3) with ESMTP id LAA00757;
-	Mon, 17 Dec 2007 11:13:56 -0800
-Subject: Re: [PATCH] include/asm-mips/: Spelling fixes
-From:	Joe Perches <joe@perches.com>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-In-Reply-To: <4766D3BE.7070509@ru.mvista.com>
-References: <1197919875-5288-10-git-send-email-joe@perches.com>
-	 <4766D3BE.7070509@ru.mvista.com>
-Content-Type: text/plain
-Date:	Mon, 17 Dec 2007 12:02:09 -0800
-Message-Id: <1197921729.27386.13.camel@localhost>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.12.0-2mdv2008.0 
-Content-Transfer-Encoding: 7bit
-Return-Path: <joe@perches.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Dec 2007 21:12:15 +0000 (GMT)
+Received: from astoria.ccjclearline.com ([64.235.106.9]:31673 "EHLO
+	astoria.ccjclearline.com") by ftp.linux-mips.org with ESMTP
+	id S20033659AbXLQVMH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 17 Dec 2007 21:12:07 +0000
+Received: from [142.161.33.250] (helo=crashcourse.ca)
+	by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+	(Exim 4.68)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1J4NCq-0000An-1A
+	for linux-mips@linux-mips.org; Mon, 17 Dec 2007 16:08:56 -0500
+Date:	Mon, 17 Dec 2007 16:08:49 -0500 (EST)
+From:	"Robert P. J. Day" <rpjday@crashcourse.ca>
+X-X-Sender: rpjday@localhost.localdomain
+To:	linux-mips@linux-mips.org
+Subject: [OT?] is there something strange about __builtin_ffs these days?
+Message-ID: <alpine.LFD.0.9999.0712171602090.13289@localhost.localdomain>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - astoria.ccjclearline.com
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <rpjday@crashcourse.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17839
+X-archive-position: 17840
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joe@perches.com
+X-original-sender: rpjday@crashcourse.ca
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 2007-12-17 at 22:53 +0300, Sergei Shtylyov wrote:
-> > - * PCI interrupts will come in on either the INTA or INTD interrups lines,
-> > + * PCI interrupts will come in on either the INTA or INTD interrupts lines,
->     "interrupt" here.
 
-Quite right.
-I did them by script and inspected, but didn't notice that one.
-cheers, Joe
+  i'm hoping i'm not abusing this list overly by asking for some help
+with debugging an OpenWRT issue.  the trac ticket is here:
 
-Signed-off-by: Joe Perches <joe@perches.com>
----
-diff --git a/include/asm-mips/mach-wrppmc/mach-gt64120.h b/include/asm-mips/mach-wrppmc/mach-gt64120.h
-index 00d8bf6..465234a 100644
---- a/include/asm-mips/mach-wrppmc/mach-gt64120.h
-+++ b/include/asm-mips/mach-wrppmc/mach-gt64120.h
-@@ -45,7 +45,7 @@
- #define GT_PCI_IO_SIZE	0x02000000UL
- 
- /*
-- * PCI interrupts will come in on either the INTA or INTD interrups lines,
-+ * PCI interrupts will come in on either the INTA or INTD interrupt lines,
-  * which are mapped to the #2 and #5 interrupt pins of the MIPS.  On our
-  * boards, they all either come in on IntD or they all come in on IntA, they
-  * aren't mixed. There can be numerous PCI interrupts, so we keep a list of the
+https://dev.openwrt.org/ticket/2735
+
+and involves cross-compiling an image for the MIPS-based linksys
+WRT54GL router.  i've verified that this error still exists in the
+latest svn update of openwrt and, in a nutshell, it involves the claim
+that "__builtin_ffs" is undefined:
+
+...
+ CC [M]  /home/openwrt/builds/trunk_brcm47xx/build_dir/linux-brcm47xx/spca5xx-le/spca_core.o
+/home/openwrt/builds/trunk_brcm47xx/build_dir/linux-brcm47xx/spca5xx-le/spca_core.c:538:5:
+  warning: "__builtin_ffs" is not defined
+/home/openwrt/builds/trunk_brcm47xx/build_dir/linux-brcm47xx/spca5xx-le/spca_core.c:538:5:
+  error: missing binary operator before token "("
+...
+
+  that line in the source file is simply:
+
+   #if PUD_SHIFT
+
+i have no idea what the problem is here and, as you can see from the
+trac ticket, this seems to have started because of the kernel version
+upgrade from 2.6.22 to 2.6.23.  but what about that would affect the
+usage of __builtin_ffs?
+
+  does anyone have an idea why something this basic might be going
+wrong now?  any suggestions appreciated.  thanks.
+
+rday
+--
+========================================================================
+Robert P. J. Day
+Linux Consulting, Training and Annoying Kernel Pedantry
+Waterloo, Ontario, CANADA
+
+http://crashcourse.ca
+========================================================================

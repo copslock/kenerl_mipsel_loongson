@@ -1,48 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Dec 2007 10:30:27 +0000 (GMT)
-Received: from elvis.franken.de ([193.175.24.41]:14740 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S28578256AbXLRKaS (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 18 Dec 2007 10:30:18 +0000
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1J4ZiI-00075G-00; Tue, 18 Dec 2007 11:30:14 +0100
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id E9764E3030; Tue, 18 Dec 2007 11:30:06 +0100 (CET)
-Date:	Tue, 18 Dec 2007 11:30:06 +0100
-To:	Jeff Garzik <jgarzik@pobox.com>
-Cc:	netdev@vger.kernel.org, linux-mips@linux-mips.org,
-	ralf@linux-mips.org
-Subject: Re: [UPDATED PATCH] SGISEEQ: use cached memory access to make driver work on IP28
-Message-ID: <20071218103006.GA18598@alpha.franken.de>
-References: <20071202103312.75E51C2EB5@solo.franken.de> <47671FEE.90103@pobox.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Dec 2007 10:54:10 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:25995 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S28578333AbXLRKyI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 18 Dec 2007 10:54:08 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lBIAmxgN019554;
+	Tue, 18 Dec 2007 10:49:24 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lBIAmYqq019552;
+	Tue, 18 Dec 2007 11:48:34 +0100
+Date:	Tue, 18 Dec 2007 11:48:34 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Thomas Koeller <thomas@koeller.dyndns.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: timer irq setup
+Message-ID: <20071218104834.GA19316@linux-mips.org>
+References: <200712171135.24569.thomas@koeller.dyndns.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <47671FEE.90103@pobox.com>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+In-Reply-To: <200712171135.24569.thomas@koeller.dyndns.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17848
+X-archive-position: 17849
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Dec 17, 2007 at 08:18:38PM -0500, Jeff Garzik wrote:
-> >Changes to last version:
-> >- Use inline functions for dma_sync_* instead of macros (suggested by Ralf)
-> >- added Kconfig change to make selection for similair SGI boxes easier
-> 
-> hrm, could you rediff?  it doesn't seem to apply
+On Mon, Dec 17, 2007 at 11:35:22AM +0100, Thomas Koeller wrote:
 
-sure, against which tree ? I tried netdev-2.6 and it applies without fuzz...
+> In arch/mips/kernel/traps.c, per_cpu_trap_init() contains
+> code to set up the global cp0_compare_irq variable. Does
+> this make sense? I'd say that either the irq setup should
+> be moved to trap_init(), or cp0_compare_irq should be
+> changed to a per-cpu variable, depending on what the original
+> intention was.
 
-Thomas.
+Technically it would be legal to route the timer interrupt to a different
+interrupt for each of possibly multiple processors, that's why it's done
+in per_cpu_trap_init().
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+Obviously the rest of the code isn't quite there and also to best of my
+knowledge all actual implementations use the same interrupt across all
+cores.  So something like a global variable and a paranoia check in
+per_cpu_trap_init() to ensure all CPUs really use the same interrupt
+would seem reasonable.
+
+  Ralf

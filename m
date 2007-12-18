@@ -1,79 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Dec 2007 21:45:20 +0000 (GMT)
-Received: from relay01.mx.bawue.net ([193.7.176.67]:194 "EHLO
-	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
-	id S20034152AbXLQVpK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 17 Dec 2007 21:45:10 +0000
-Received: from lagash (88-106-143-223.dynamic.dsl.as9105.com [88.106.143.223])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by relay01.mx.bawue.net (Postfix) with ESMTP id 1B380481E5;
-	Mon, 17 Dec 2007 22:45:04 +0100 (CET)
-Received: from ths by lagash with local (Exim 4.68)
-	(envelope-from <ths@networkno.de>)
-	id 1J4Nln-00081z-C4; Mon, 17 Dec 2007 21:45:03 +0000
-Date:	Mon, 17 Dec 2007 21:45:03 +0000
-From:	Thiemo Seufer <ths@networkno.de>
-To:	"Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [OT?] is there something strange about __builtin_ffs these
-	days?
-Message-ID: <20071217214503.GB17397@networkno.de>
-References: <alpine.LFD.0.9999.0712171602090.13289@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Dec 2007 00:32:16 +0000 (GMT)
+Received: from mx01.hansenet.de ([213.191.73.25]:35001 "EHLO
+	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
+	id S28577066AbXLRAcH convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 18 Dec 2007 00:32:07 +0000
+Received: from [213.39.184.147] (213.39.184.147) by webmail.hansenet.de (7.3.118.12) (authenticated as mbx20228207@koeller-hh.org)
+        id 4761398E00AECD15; Tue, 18 Dec 2007 01:31:47 +0100
+Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
+	by mail.koeller.dyndns.org (Postfix) with ESMTP id D9ADE47C10;
+	Tue, 18 Dec 2007 01:31:40 +0100 (CET)
+From:	Thomas Koeller <thomas.koeller@baslerweb.com>
+Organization: Basler AG
+To:	linux-mips@linux-mips.org
+Subject: excite patches
+Date:	Tue, 18 Dec 2007 01:31:21 +0100
+User-Agent: KMail/1.9.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alpine.LFD.0.9999.0712171602090.13289@localhost.localdomain>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ths@networkno.de>
+Cc:	ralf@linux-mips.org
+Content-Type: text/plain;
+  charset="iso-8859-15"
+Content-Transfer-Encoding: 8BIT
+Message-Id: <200712180131.22459.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17841
+X-archive-position: 17842
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-Robert P. J. Day wrote:
-> 
->   i'm hoping i'm not abusing this list overly by asking for some help
-> with debugging an OpenWRT issue.  the trac ticket is here:
-> 
-> https://dev.openwrt.org/ticket/2735
-> 
-> and involves cross-compiling an image for the MIPS-based linksys
-> WRT54GL router.  i've verified that this error still exists in the
-> latest svn update of openwrt and, in a nutshell, it involves the claim
-> that "__builtin_ffs" is undefined:
-> 
-> ...
->  CC [M]  /home/openwrt/builds/trunk_brcm47xx/build_dir/linux-brcm47xx/spca5xx-le/spca_core.o
-> /home/openwrt/builds/trunk_brcm47xx/build_dir/linux-brcm47xx/spca5xx-le/spca_core.c:538:5:
->   warning: "__builtin_ffs" is not defined
-> /home/openwrt/builds/trunk_brcm47xx/build_dir/linux-brcm47xx/spca5xx-le/spca_core.c:538:5:
->   error: missing binary operator before token "("
-> ...
-> 
->   that line in the source file is simply:
-> 
->    #if PUD_SHIFT
-> 
-> i have no idea what the problem is here and, as you can see from the
-> trac ticket, this seems to have started because of the kernel version
-> upgrade from 2.6.22 to 2.6.23.  but what about that would affect the
-> usage of __builtin_ffs?
-> 
->   does anyone have an idea why something this basic might be going
-> wrong now?  any suggestions appreciated.  thanks.
+Here is a series of patches to bring the excite platform up to date. In
+order to achieve this, I had to apply a couple of changes to some
+non-platform code as well:
 
-The compiler should never attempt to use __builtin_ffs by itself, because
-the kernel makefile adds -ffreestanding to CFLAGS. So either your compiler
-is broken, or the makefile of your kernel tree is incorrect, or somewhere
-in your kernel tree there's a explicit call to __builtin_ffs (which is
-also incorrect, as the compiler may invoke library functions to implement
-it.)
+Patch 1/4:
+This one introduces a new configuration parameter named GPI_RM9000, used
+to enable devices that depend on RM9000-style GPI hardware. This is a
+re-submit, I submitted this patch before, but it has not been applied yet.
 
+Patch 2/4:
+The RM9000 hazards in include/asm-mips/hazards.h were apparently wrong; I
+could not get c0_compare_int_usable() in arch/mips/kernel/cevt-r4k.c to
+work. The RM9122 manual says, "When a CP0 register is changed by an MTC0
+or CTC0 instruction, the contents of the changed register must not be used
+for 4 cycles after the MTC0 or CTC0 is issued. Specifically, if a CP0
+register is loaded, its contents must not be read back or otherwise used
+until 4 cycles later." I guess this also covers the case of observing
+the result of writing to a CP0 register by reading the contents of
+another CP0 register, as in this case.
 
-Thiemo
+Patch 3/4:
+Since the excite platform uses the RM9000's alternate timer interrupt, I
+had to rework the compare interrupt setup. I changed the existing
+get_c0_compare_int() hook to be called earlier than before, so that
+cp0_compare_irq contains the correct value right from the start, and
+functions like c0_compare_int_pending() and c0_compare_int_usable()
+continue to function without any need for modifications. Then I added a
+get_c0_perfcounter_int() hook to complement it. I also did some
+minor modifications, like adding 'const' in some places, and outputting
+an error message if the compare interrupt is found to be non-functional,
+a condition that certainly deserves such a message.
+
+Since the get_c0_compare_int() hook is used in 
+arch/mips/mips-boards/generic/time.c,
+users of this file might theoretically be affected by this change. I do not 
+have
+access to these boards, so I could not check, however, I believe the
+change does not cause any breakage here.
+
+Patch 4/4:
+Finally, the excite platform has to supply the alternate compare irq, which
+this patch is for.
+
+tk
+
+-- 
+_______________________________
+
+Thomas Köller, Software Developer
+
+Basler Vision Technologies
+An der Strusbek 60-62
+22926 Ahrensburg
+Germany
+
+Tel. +49 (0) 4102 - 463 390
+Fax +49 (0) 4102 - 463 390
+
+mailto:thomas.koeller@baslerweb.com
+http://www.baslerweb.com
+
+Vorstand: Dr.-Ing. Dietmar Ley (Vorsitzender) · John P. Jennings · Peter 
+Krumhoff · Aufsichtsratsvorsitzender: Norbert Basler
+Basler AG · Amtsgericht Ahrensburg HRB 4090 · Ust-IdNr.: DE 135 098 121 · 
+Steuer-Nr.: 30 292 04497
+
+_______________________________

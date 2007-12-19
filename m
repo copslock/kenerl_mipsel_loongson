@@ -1,51 +1,242 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Dec 2007 00:38:30 +0000 (GMT)
-Received: from srv5.dvmed.net ([207.36.208.214]:55949 "EHLO mail.dvmed.net")
-	by ftp.linux-mips.org with ESMTP id S28575968AbXLSAiW (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 19 Dec 2007 00:38:22 +0000
-Received: from cpe-069-134-071-233.nc.res.rr.com ([69.134.71.233] helo=core.yyz.us)
-	by mail.dvmed.net with esmtpsa (Exim 4.63 #1 (Red Hat Linux))
-	id 1J4mwz-0007uV-S3; Wed, 19 Dec 2007 00:38:18 +0000
-Message-ID: <476867F5.3070006@pobox.com>
-Date:	Tue, 18 Dec 2007 19:38:13 -0500
-From:	Jeff Garzik <jgarzik@pobox.com>
-User-Agent: Thunderbird 2.0.0.9 (X11/20071115)
-MIME-Version: 1.0
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-CC:	netdev@vger.kernel.org, linux-mips@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Dec 2007 12:46:14 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:23222 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20024609AbXLSMqF (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 19 Dec 2007 12:46:05 +0000
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1J4yGA-0005o9-00; Wed, 19 Dec 2007 13:42:50 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 2F7A0C2EE1; Wed, 19 Dec 2007 13:42:36 +0100 (CET)
+Date:	Wed, 19 Dec 2007 13:42:36 +0100
+To:	Jeff Garzik <jgarzik@pobox.com>
+Cc:	netdev@vger.kernel.org, linux-mips@linux-mips.org,
 	ralf@linux-mips.org
-Subject: Re: [UPDATED PATCH] SGISEEQ: use cached memory access to make driver
- work on IP28
-References: <20071202103312.75E51C2EB5@solo.franken.de> <47671FEE.90103@pobox.com> <20071218103006.GA18598@alpha.franken.de>
-In-Reply-To: <20071218103006.GA18598@alpha.franken.de>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <jgarzik@pobox.com>
+Subject: Re: [UPDATED PATCH] SGISEEQ: use cached memory access to make driver work on IP28
+Message-ID: <20071219124235.GA7550@alpha.franken.de>
+References: <20071202103312.75E51C2EB5@solo.franken.de> <47671FEE.90103@pobox.com> <20071218103006.GA18598@alpha.franken.de> <476867F5.3070006@pobox.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <476867F5.3070006@pobox.com>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17858
+X-archive-position: 17859
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jgarzik@pobox.com
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-Thomas Bogendoerfer wrote:
-> On Mon, Dec 17, 2007 at 08:18:38PM -0500, Jeff Garzik wrote:
->>> Changes to last version:
->>> - Use inline functions for dma_sync_* instead of macros (suggested by Ralf)
->>> - added Kconfig change to make selection for similair SGI boxes easier
->> hrm, could you rediff?  it doesn't seem to apply
-> 
-> sure, against which tree ? I tried netdev-2.6 and it applies without fuzz...
+- Use inline functions for dma_sync_* instead of macros 
+- added Kconfig change to make selection for similair SGI boxes easier
 
-It needs to be the 'upstream' branch of netdev-2.6.
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+---
 
-The default netdev-2.6.git branch, master, is a 100% vanilla duplicate 
-of Linus's git repository.
+ drivers/net/Kconfig   |    2 +-
+ drivers/net/sgiseeq.c |   64 ++++++++++++++++++++++++++-----------------------
+ 2 files changed, 35 insertions(+), 31 deletions(-)
 
-(this permits a common practice of presenting logs and diffs using git's 
-branch..branch notation)
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index 84df799..f816798 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -1807,7 +1807,7 @@ config DE620
+ 
+ config SGISEEQ
+ 	tristate "SGI Seeq ethernet controller support"
+-	depends on SGI_IP22
++	depends on SGI_HAS_SEEQ
+ 	help
+ 	  Say Y here if you have an Seeq based Ethernet network card. This is
+ 	  used in many Silicon Graphics machines.
+diff --git a/drivers/net/sgiseeq.c b/drivers/net/sgiseeq.c
+index 3145ca1..c69bb8b 100644
+--- a/drivers/net/sgiseeq.c
++++ b/drivers/net/sgiseeq.c
+@@ -56,14 +56,6 @@ static char *sgiseeqstr = "SGI Seeq8003";
+ 				  (dma_addr_t)((unsigned long)(v) -            \
+ 					       (unsigned long)((sp)->rx_desc)))
+ 
+-#define DMA_SYNC_DESC_CPU(dev, addr) \
+-	do { dma_cache_sync((dev)->dev.parent, (void *)addr, \
+-	     sizeof(struct sgiseeq_rx_desc), DMA_FROM_DEVICE); } while (0)
+-
+-#define DMA_SYNC_DESC_DEV(dev, addr) \
+-	do { dma_cache_sync((dev)->dev.parent, (void *)addr, \
+-	     sizeof(struct sgiseeq_rx_desc), DMA_TO_DEVICE); } while (0)
+-
+ /* Copy frames shorter than rx_copybreak, otherwise pass on up in
+  * a full sized sk_buff.  Value of 100 stolen from tulip.c (!alpha).
+  */
+@@ -116,6 +108,18 @@ struct sgiseeq_private {
+ 	spinlock_t tx_lock;
+ };
+ 
++static inline void dma_sync_desc_cpu(struct net_device *dev, void *addr)
++{
++	dma_cache_sync(dev->dev.parent, addr, sizeof(struct sgiseeq_rx_desc),
++		       DMA_FROM_DEVICE);
++}
++
++static inline void dma_sync_desc_dev(struct net_device *dev, void *addr)
++{
++	dma_cache_sync(dev->dev.parent, addr, sizeof(struct sgiseeq_rx_desc),
++		       DMA_TO_DEVICE);
++}
++
+ static inline void hpc3_eth_reset(struct hpc3_ethregs *hregs)
+ {
+ 	hregs->reset = HPC3_ERST_CRESET | HPC3_ERST_CLRIRQ;
+@@ -184,7 +188,7 @@ static int seeq_init_ring(struct net_device *dev)
+ 	/* Setup tx ring. */
+ 	for(i = 0; i < SEEQ_TX_BUFFERS; i++) {
+ 		sp->tx_desc[i].tdma.cntinfo = TCNTINFO_INIT;
+-		DMA_SYNC_DESC_DEV(dev, &sp->tx_desc[i]);
++		dma_sync_desc_dev(dev, &sp->tx_desc[i]);
+ 	}
+ 
+ 	/* And now the rx ring. */
+@@ -203,10 +207,10 @@ static int seeq_init_ring(struct net_device *dev)
+ 			sp->rx_desc[i].rdma.pbuf = dma_addr;
+ 		}
+ 		sp->rx_desc[i].rdma.cntinfo = RCNTINFO_INIT;
+-		DMA_SYNC_DESC_DEV(dev, &sp->rx_desc[i]);
++		dma_sync_desc_dev(dev, &sp->rx_desc[i]);
+ 	}
+ 	sp->rx_desc[i - 1].rdma.cntinfo |= HPCDMA_EOR;
+-	DMA_SYNC_DESC_DEV(dev, &sp->rx_desc[i - 1]);
++	dma_sync_desc_dev(dev, &sp->rx_desc[i - 1]);
+ 	return 0;
+ }
+ 
+@@ -341,7 +345,7 @@ static inline void sgiseeq_rx(struct net_device *dev, struct sgiseeq_private *sp
+ 
+ 	/* Service every received packet. */
+ 	rd = &sp->rx_desc[sp->rx_new];
+-	DMA_SYNC_DESC_CPU(dev, rd);
++	dma_sync_desc_cpu(dev, rd);
+ 	while (!(rd->rdma.cntinfo & HPCDMA_OWN)) {
+ 		len = PKT_BUF_SZ - (rd->rdma.cntinfo & HPCDMA_BCNT) - 3;
+ 		dma_unmap_single(dev->dev.parent, rd->rdma.pbuf,
+@@ -397,16 +401,16 @@ memory_squeeze:
+ 		/* Return the entry to the ring pool. */
+ 		rd->rdma.cntinfo = RCNTINFO_INIT;
+ 		sp->rx_new = NEXT_RX(sp->rx_new);
+-		DMA_SYNC_DESC_DEV(dev, rd);
++		dma_sync_desc_dev(dev, rd);
+ 		rd = &sp->rx_desc[sp->rx_new];
+-		DMA_SYNC_DESC_CPU(dev, rd);
++		dma_sync_desc_cpu(dev, rd);
+ 	}
+-	DMA_SYNC_DESC_CPU(dev, &sp->rx_desc[orig_end]);
++	dma_sync_desc_cpu(dev, &sp->rx_desc[orig_end]);
+ 	sp->rx_desc[orig_end].rdma.cntinfo &= ~(HPCDMA_EOR);
+-	DMA_SYNC_DESC_DEV(dev, &sp->rx_desc[orig_end]);
+-	DMA_SYNC_DESC_CPU(dev, &sp->rx_desc[PREV_RX(sp->rx_new)]);
++	dma_sync_desc_dev(dev, &sp->rx_desc[orig_end]);
++	dma_sync_desc_cpu(dev, &sp->rx_desc[PREV_RX(sp->rx_new)]);
+ 	sp->rx_desc[PREV_RX(sp->rx_new)].rdma.cntinfo |= HPCDMA_EOR;
+-	DMA_SYNC_DESC_DEV(dev, &sp->rx_desc[PREV_RX(sp->rx_new)]);
++	dma_sync_desc_dev(dev, &sp->rx_desc[PREV_RX(sp->rx_new)]);
+ 	rx_maybe_restart(sp, hregs, sregs);
+ }
+ 
+@@ -433,12 +437,12 @@ static inline void kick_tx(struct net_device *dev,
+ 	 * is not active!
+ 	 */
+ 	td = &sp->tx_desc[i];
+-	DMA_SYNC_DESC_CPU(dev, td);
++	dma_sync_desc_cpu(dev, td);
+ 	while ((td->tdma.cntinfo & (HPCDMA_XIU | HPCDMA_ETXD)) ==
+ 	      (HPCDMA_XIU | HPCDMA_ETXD)) {
+ 		i = NEXT_TX(i);
+ 		td = &sp->tx_desc[i];
+-		DMA_SYNC_DESC_CPU(dev, td);
++		dma_sync_desc_cpu(dev, td);
+ 	}
+ 	if (td->tdma.cntinfo & HPCDMA_XIU) {
+ 		hregs->tx_ndptr = VIRT_TO_DMA(sp, td);
+@@ -470,7 +474,7 @@ static inline void sgiseeq_tx(struct net_device *dev, struct sgiseeq_private *sp
+ 	for (j = sp->tx_old; j != sp->tx_new; j = NEXT_TX(j)) {
+ 		td = &sp->tx_desc[j];
+ 
+-		DMA_SYNC_DESC_CPU(dev, td);
++		dma_sync_desc_cpu(dev, td);
+ 		if (!(td->tdma.cntinfo & (HPCDMA_XIU)))
+ 			break;
+ 		if (!(td->tdma.cntinfo & (HPCDMA_ETXD))) {
+@@ -488,7 +492,7 @@ static inline void sgiseeq_tx(struct net_device *dev, struct sgiseeq_private *sp
+ 			dev_kfree_skb_any(td->skb);
+ 			td->skb = NULL;
+ 		}
+-		DMA_SYNC_DESC_DEV(dev, td);
++		dma_sync_desc_dev(dev, td);
+ 	}
+ }
+ 
+@@ -598,7 +602,7 @@ static int sgiseeq_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	dev->stats.tx_bytes += len;
+ 	entry = sp->tx_new;
+ 	td = &sp->tx_desc[entry];
+-	DMA_SYNC_DESC_CPU(dev, td);
++	dma_sync_desc_cpu(dev, td);
+ 
+ 	/* Create entry.  There are so many races with adding a new
+ 	 * descriptor to the chain:
+@@ -618,14 +622,14 @@ static int sgiseeq_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 				       len, DMA_TO_DEVICE);
+ 	td->tdma.cntinfo = (len & HPCDMA_BCNT) |
+ 	                   HPCDMA_XIU | HPCDMA_EOXP | HPCDMA_XIE | HPCDMA_EOX;
+-	DMA_SYNC_DESC_DEV(dev, td);
++	dma_sync_desc_dev(dev, td);
+ 	if (sp->tx_old != sp->tx_new) {
+ 		struct sgiseeq_tx_desc *backend;
+ 
+ 		backend = &sp->tx_desc[PREV_TX(sp->tx_new)];
+-		DMA_SYNC_DESC_CPU(dev, backend);
++		dma_sync_desc_cpu(dev, backend);
+ 		backend->tdma.cntinfo &= ~HPCDMA_EOX;
+-		DMA_SYNC_DESC_DEV(dev, backend);
++		dma_sync_desc_dev(dev, backend);
+ 	}
+ 	sp->tx_new = NEXT_TX(sp->tx_new); /* Advance. */
+ 
+@@ -681,11 +685,11 @@ static inline void setup_tx_ring(struct net_device *dev,
+ 	while (i < (nbufs - 1)) {
+ 		buf[i].tdma.pnext = VIRT_TO_DMA(sp, buf + i + 1);
+ 		buf[i].tdma.pbuf = 0;
+-		DMA_SYNC_DESC_DEV(dev, &buf[i]);
++		dma_sync_desc_dev(dev, &buf[i]);
+ 		i++;
+ 	}
+ 	buf[i].tdma.pnext = VIRT_TO_DMA(sp, buf);
+-	DMA_SYNC_DESC_DEV(dev, &buf[i]);
++	dma_sync_desc_dev(dev, &buf[i]);
+ }
+ 
+ static inline void setup_rx_ring(struct net_device *dev,
+@@ -698,12 +702,12 @@ static inline void setup_rx_ring(struct net_device *dev,
+ 	while (i < (nbufs - 1)) {
+ 		buf[i].rdma.pnext = VIRT_TO_DMA(sp, buf + i + 1);
+ 		buf[i].rdma.pbuf = 0;
+-		DMA_SYNC_DESC_DEV(dev, &buf[i]);
++		dma_sync_desc_dev(dev, &buf[i]);
+ 		i++;
+ 	}
+ 	buf[i].rdma.pbuf = 0;
+ 	buf[i].rdma.pnext = VIRT_TO_DMA(sp, buf);
+-	DMA_SYNC_DESC_DEV(dev, &buf[i]);
++	dma_sync_desc_dev(dev, &buf[i]);
+ }
+ 
+ static int __init sgiseeq_probe(struct platform_device *pdev)
 
-	Jeff
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

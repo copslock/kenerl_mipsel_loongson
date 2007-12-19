@@ -1,242 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Dec 2007 12:46:14 +0000 (GMT)
-Received: from elvis.franken.de ([193.175.24.41]:23222 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S20024609AbXLSMqF (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 19 Dec 2007 12:46:05 +0000
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1J4yGA-0005o9-00; Wed, 19 Dec 2007 13:42:50 +0100
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id 2F7A0C2EE1; Wed, 19 Dec 2007 13:42:36 +0100 (CET)
-Date:	Wed, 19 Dec 2007 13:42:36 +0100
-To:	Jeff Garzik <jgarzik@pobox.com>
-Cc:	netdev@vger.kernel.org, linux-mips@linux-mips.org,
-	ralf@linux-mips.org
-Subject: Re: [UPDATED PATCH] SGISEEQ: use cached memory access to make driver work on IP28
-Message-ID: <20071219124235.GA7550@alpha.franken.de>
-References: <20071202103312.75E51C2EB5@solo.franken.de> <47671FEE.90103@pobox.com> <20071218103006.GA18598@alpha.franken.de> <476867F5.3070006@pobox.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Dec 2007 15:00:44 +0000 (GMT)
+Received: from rn-out-0910.google.com ([64.233.170.189]:23900 "EHLO
+	rn-out-0102.google.com") by ftp.linux-mips.org with ESMTP
+	id S20025044AbXLSOys (ORCPT <rfc822;linux-mips@ftp.linux-mips.org>);
+	Wed, 19 Dec 2007 14:54:48 +0000
+Received: by rn-out-0102.google.com with SMTP id i19so834236rng.2
+        for <linux-mips@ftp.linux-mips.org>; Wed, 19 Dec 2007 06:53:46 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:sender:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references:x-google-sender-auth;
+        bh=jPs5rW1WFs0vdW38MGlxY1JcBw3C7UB1uctW/K1fuII=;
+        b=Qm8BozsdFV40s4eY+wYKeOHgJKbpR02usmG+cIDj+9Fv2KyBu15CxbswIhns+fjbrRJAkwLrOqWAmNmOLF6uy1VzjaczK8PNLHx52pMTXNErRvc2rRYcyLypH/bL7eM9WA39Cel8uafDang0wJcHhpnFQ57wnFtVqOrkZZ+42+4=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:sender:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references:x-google-sender-auth;
+        b=sbl4sZQ4PLKVTedQODrgyFEPjYz/aZJwnFL0gxMapJLtutYu94Uqs+FWSwp+CjgqdWnA6I4RPlaYj/8nMaO3v37fSY+kx0VkZSBOOxm7OltunPqtcRpUvyKOcuJ3TtzEA3YrPzOEViVMvwpsIzyT4MhVo4E0ueJre3zn/VyoDkM=
+Received: by 10.150.195.21 with SMTP id s21mr1181191ybf.9.1198076025287;
+        Wed, 19 Dec 2007 06:53:45 -0800 (PST)
+Received: by 10.150.96.3 with HTTP; Wed, 19 Dec 2007 06:53:45 -0800 (PST)
+Message-ID: <c58a7a270712190653i56644c5ei469b171cb9bd016a@mail.gmail.com>
+Date:	Wed, 19 Dec 2007 14:53:45 +0000
+From:	"Alex Gonzalez" <alex@langabe.org>
+To:	linux-mips@ftp.linux-mips.org
+Subject: Re: [MIPS] Build an embedded initramfs into mips kernel
+In-Reply-To: <20071218224702.GI15227@1wt.eu>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <476867F5.3070006@pobox.com>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+References: <9e0cf0bf0712181208m7f16b9acpf3dba67f3556a613@mail.gmail.com>
+	 <47683B2D.9030608@zytor.com>
+	 <9e0cf0bf0712181409p2475e1fdk779fdee4fa274722@mail.gmail.com>
+	 <20071218224702.GI15227@1wt.eu>
+X-Google-Sender-Auth: 2209a145c5657f04
+Return-Path: <langabe@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17859
+X-Orcpt: rfc822;linux-mips@ftp.linux-mips.org
+Original-Recipient: rfc822;linux-mips@ftp.linux-mips.org
+X-archive-position: 17860
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: alex@langabe.org
 Precedence: bulk
 X-list: linux-mips
 
-- Use inline functions for dma_sync_* instead of macros 
-- added Kconfig change to make selection for similair SGI boxes easier
+Hi,
 
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
----
+I have a detailed description of the process I went through at my blog
+http://www.langabe.org/2007/10/adding-initramfs-support-to-linux.html
 
- drivers/net/Kconfig   |    2 +-
- drivers/net/sgiseeq.c |   64 ++++++++++++++++++++++++++-----------------------
- 2 files changed, 35 insertions(+), 31 deletions(-)
+It might help you to compare notes.
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 84df799..f816798 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -1807,7 +1807,7 @@ config DE620
- 
- config SGISEEQ
- 	tristate "SGI Seeq ethernet controller support"
--	depends on SGI_IP22
-+	depends on SGI_HAS_SEEQ
- 	help
- 	  Say Y here if you have an Seeq based Ethernet network card. This is
- 	  used in many Silicon Graphics machines.
-diff --git a/drivers/net/sgiseeq.c b/drivers/net/sgiseeq.c
-index 3145ca1..c69bb8b 100644
---- a/drivers/net/sgiseeq.c
-+++ b/drivers/net/sgiseeq.c
-@@ -56,14 +56,6 @@ static char *sgiseeqstr = "SGI Seeq8003";
- 				  (dma_addr_t)((unsigned long)(v) -            \
- 					       (unsigned long)((sp)->rx_desc)))
- 
--#define DMA_SYNC_DESC_CPU(dev, addr) \
--	do { dma_cache_sync((dev)->dev.parent, (void *)addr, \
--	     sizeof(struct sgiseeq_rx_desc), DMA_FROM_DEVICE); } while (0)
--
--#define DMA_SYNC_DESC_DEV(dev, addr) \
--	do { dma_cache_sync((dev)->dev.parent, (void *)addr, \
--	     sizeof(struct sgiseeq_rx_desc), DMA_TO_DEVICE); } while (0)
--
- /* Copy frames shorter than rx_copybreak, otherwise pass on up in
-  * a full sized sk_buff.  Value of 100 stolen from tulip.c (!alpha).
-  */
-@@ -116,6 +108,18 @@ struct sgiseeq_private {
- 	spinlock_t tx_lock;
- };
- 
-+static inline void dma_sync_desc_cpu(struct net_device *dev, void *addr)
-+{
-+	dma_cache_sync(dev->dev.parent, addr, sizeof(struct sgiseeq_rx_desc),
-+		       DMA_FROM_DEVICE);
-+}
-+
-+static inline void dma_sync_desc_dev(struct net_device *dev, void *addr)
-+{
-+	dma_cache_sync(dev->dev.parent, addr, sizeof(struct sgiseeq_rx_desc),
-+		       DMA_TO_DEVICE);
-+}
-+
- static inline void hpc3_eth_reset(struct hpc3_ethregs *hregs)
- {
- 	hregs->reset = HPC3_ERST_CRESET | HPC3_ERST_CLRIRQ;
-@@ -184,7 +188,7 @@ static int seeq_init_ring(struct net_device *dev)
- 	/* Setup tx ring. */
- 	for(i = 0; i < SEEQ_TX_BUFFERS; i++) {
- 		sp->tx_desc[i].tdma.cntinfo = TCNTINFO_INIT;
--		DMA_SYNC_DESC_DEV(dev, &sp->tx_desc[i]);
-+		dma_sync_desc_dev(dev, &sp->tx_desc[i]);
- 	}
- 
- 	/* And now the rx ring. */
-@@ -203,10 +207,10 @@ static int seeq_init_ring(struct net_device *dev)
- 			sp->rx_desc[i].rdma.pbuf = dma_addr;
- 		}
- 		sp->rx_desc[i].rdma.cntinfo = RCNTINFO_INIT;
--		DMA_SYNC_DESC_DEV(dev, &sp->rx_desc[i]);
-+		dma_sync_desc_dev(dev, &sp->rx_desc[i]);
- 	}
- 	sp->rx_desc[i - 1].rdma.cntinfo |= HPCDMA_EOR;
--	DMA_SYNC_DESC_DEV(dev, &sp->rx_desc[i - 1]);
-+	dma_sync_desc_dev(dev, &sp->rx_desc[i - 1]);
- 	return 0;
- }
- 
-@@ -341,7 +345,7 @@ static inline void sgiseeq_rx(struct net_device *dev, struct sgiseeq_private *sp
- 
- 	/* Service every received packet. */
- 	rd = &sp->rx_desc[sp->rx_new];
--	DMA_SYNC_DESC_CPU(dev, rd);
-+	dma_sync_desc_cpu(dev, rd);
- 	while (!(rd->rdma.cntinfo & HPCDMA_OWN)) {
- 		len = PKT_BUF_SZ - (rd->rdma.cntinfo & HPCDMA_BCNT) - 3;
- 		dma_unmap_single(dev->dev.parent, rd->rdma.pbuf,
-@@ -397,16 +401,16 @@ memory_squeeze:
- 		/* Return the entry to the ring pool. */
- 		rd->rdma.cntinfo = RCNTINFO_INIT;
- 		sp->rx_new = NEXT_RX(sp->rx_new);
--		DMA_SYNC_DESC_DEV(dev, rd);
-+		dma_sync_desc_dev(dev, rd);
- 		rd = &sp->rx_desc[sp->rx_new];
--		DMA_SYNC_DESC_CPU(dev, rd);
-+		dma_sync_desc_cpu(dev, rd);
- 	}
--	DMA_SYNC_DESC_CPU(dev, &sp->rx_desc[orig_end]);
-+	dma_sync_desc_cpu(dev, &sp->rx_desc[orig_end]);
- 	sp->rx_desc[orig_end].rdma.cntinfo &= ~(HPCDMA_EOR);
--	DMA_SYNC_DESC_DEV(dev, &sp->rx_desc[orig_end]);
--	DMA_SYNC_DESC_CPU(dev, &sp->rx_desc[PREV_RX(sp->rx_new)]);
-+	dma_sync_desc_dev(dev, &sp->rx_desc[orig_end]);
-+	dma_sync_desc_cpu(dev, &sp->rx_desc[PREV_RX(sp->rx_new)]);
- 	sp->rx_desc[PREV_RX(sp->rx_new)].rdma.cntinfo |= HPCDMA_EOR;
--	DMA_SYNC_DESC_DEV(dev, &sp->rx_desc[PREV_RX(sp->rx_new)]);
-+	dma_sync_desc_dev(dev, &sp->rx_desc[PREV_RX(sp->rx_new)]);
- 	rx_maybe_restart(sp, hregs, sregs);
- }
- 
-@@ -433,12 +437,12 @@ static inline void kick_tx(struct net_device *dev,
- 	 * is not active!
- 	 */
- 	td = &sp->tx_desc[i];
--	DMA_SYNC_DESC_CPU(dev, td);
-+	dma_sync_desc_cpu(dev, td);
- 	while ((td->tdma.cntinfo & (HPCDMA_XIU | HPCDMA_ETXD)) ==
- 	      (HPCDMA_XIU | HPCDMA_ETXD)) {
- 		i = NEXT_TX(i);
- 		td = &sp->tx_desc[i];
--		DMA_SYNC_DESC_CPU(dev, td);
-+		dma_sync_desc_cpu(dev, td);
- 	}
- 	if (td->tdma.cntinfo & HPCDMA_XIU) {
- 		hregs->tx_ndptr = VIRT_TO_DMA(sp, td);
-@@ -470,7 +474,7 @@ static inline void sgiseeq_tx(struct net_device *dev, struct sgiseeq_private *sp
- 	for (j = sp->tx_old; j != sp->tx_new; j = NEXT_TX(j)) {
- 		td = &sp->tx_desc[j];
- 
--		DMA_SYNC_DESC_CPU(dev, td);
-+		dma_sync_desc_cpu(dev, td);
- 		if (!(td->tdma.cntinfo & (HPCDMA_XIU)))
- 			break;
- 		if (!(td->tdma.cntinfo & (HPCDMA_ETXD))) {
-@@ -488,7 +492,7 @@ static inline void sgiseeq_tx(struct net_device *dev, struct sgiseeq_private *sp
- 			dev_kfree_skb_any(td->skb);
- 			td->skb = NULL;
- 		}
--		DMA_SYNC_DESC_DEV(dev, td);
-+		dma_sync_desc_dev(dev, td);
- 	}
- }
- 
-@@ -598,7 +602,7 @@ static int sgiseeq_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	dev->stats.tx_bytes += len;
- 	entry = sp->tx_new;
- 	td = &sp->tx_desc[entry];
--	DMA_SYNC_DESC_CPU(dev, td);
-+	dma_sync_desc_cpu(dev, td);
- 
- 	/* Create entry.  There are so many races with adding a new
- 	 * descriptor to the chain:
-@@ -618,14 +622,14 @@ static int sgiseeq_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 				       len, DMA_TO_DEVICE);
- 	td->tdma.cntinfo = (len & HPCDMA_BCNT) |
- 	                   HPCDMA_XIU | HPCDMA_EOXP | HPCDMA_XIE | HPCDMA_EOX;
--	DMA_SYNC_DESC_DEV(dev, td);
-+	dma_sync_desc_dev(dev, td);
- 	if (sp->tx_old != sp->tx_new) {
- 		struct sgiseeq_tx_desc *backend;
- 
- 		backend = &sp->tx_desc[PREV_TX(sp->tx_new)];
--		DMA_SYNC_DESC_CPU(dev, backend);
-+		dma_sync_desc_cpu(dev, backend);
- 		backend->tdma.cntinfo &= ~HPCDMA_EOX;
--		DMA_SYNC_DESC_DEV(dev, backend);
-+		dma_sync_desc_dev(dev, backend);
- 	}
- 	sp->tx_new = NEXT_TX(sp->tx_new); /* Advance. */
- 
-@@ -681,11 +685,11 @@ static inline void setup_tx_ring(struct net_device *dev,
- 	while (i < (nbufs - 1)) {
- 		buf[i].tdma.pnext = VIRT_TO_DMA(sp, buf + i + 1);
- 		buf[i].tdma.pbuf = 0;
--		DMA_SYNC_DESC_DEV(dev, &buf[i]);
-+		dma_sync_desc_dev(dev, &buf[i]);
- 		i++;
- 	}
- 	buf[i].tdma.pnext = VIRT_TO_DMA(sp, buf);
--	DMA_SYNC_DESC_DEV(dev, &buf[i]);
-+	dma_sync_desc_dev(dev, &buf[i]);
- }
- 
- static inline void setup_rx_ring(struct net_device *dev,
-@@ -698,12 +702,12 @@ static inline void setup_rx_ring(struct net_device *dev,
- 	while (i < (nbufs - 1)) {
- 		buf[i].rdma.pnext = VIRT_TO_DMA(sp, buf + i + 1);
- 		buf[i].rdma.pbuf = 0;
--		DMA_SYNC_DESC_DEV(dev, &buf[i]);
-+		dma_sync_desc_dev(dev, &buf[i]);
- 		i++;
- 	}
- 	buf[i].rdma.pbuf = 0;
- 	buf[i].rdma.pnext = VIRT_TO_DMA(sp, buf);
--	DMA_SYNC_DESC_DEV(dev, &buf[i]);
-+	dma_sync_desc_dev(dev, &buf[i]);
- }
- 
- static int __init sgiseeq_probe(struct platform_device *pdev)
+Alex
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+On Dec 18, 2007 10:47 PM, Willy Tarreau <w@1wt.eu> wrote:
+> On Wed, Dec 19, 2007 at 12:09:46AM +0200, Alon Bar-Lev wrote:
+> > On 12/18/07, H. Peter Anvin <hpa@zytor.com> wrote:
+> > > Make sure your /init doesn't depend on an interpreter or library which
+> > > isn't available.
+> >
+> > Thank you for your answer.
+> >
+> > I already checked.
+> >
+> > /init is hardlink to busybox, it depends on libc.so.0 which is available at /lib
+>
+> Are you sure that libc.so.0 is enough and that you don't need any ld.so ?
+>
+> > But shouldn't I get a different error code if this is the case?
+>
+> If it does not find part of the dynamic linker or libraries, this error
+> makes sense to me.
+>
+> You should try to build a static init with any stupid thing such as a
+> hello world to ensure that the problem really comes from the init and
+> nothing else.
+>
+> Regards,
+> Willy
+>
+>
+>

@@ -1,90 +1,189 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Dec 2007 18:47:04 +0000 (GMT)
-Received: from ug-out-1314.google.com ([66.249.92.172]:43727 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S28581735AbXLSSq5 (ORCPT <rfc822;linux-mips@ftp.linux-mips.org>);
-	Wed, 19 Dec 2007 18:46:57 +0000
-Received: by ug-out-1314.google.com with SMTP id k3so336189ugf.38
-        for <linux-mips@ftp.linux-mips.org>; Wed, 19 Dec 2007 10:46:46 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Dec 2007 18:09:16 +0000 (GMT)
+Received: from nz-out-0506.google.com ([64.233.162.227]:39087 "EHLO
+	nz-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S28583882AbXLTSJH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 20 Dec 2007 18:09:07 +0000
+Received: by nz-out-0506.google.com with SMTP id n1so1711871nzf.24
+        for <linux-mips@linux-mips.org>; Thu, 20 Dec 2007 10:08:54 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        bh=SLMmRrTckla286sGvvaUhAbsjLQ4JakEImd3agdLa00=;
-        b=Xvqpw/kA/E5F9jfDGaJyCujLYjoodnGmnHWob0m1uvoPEDXf0t7G9JjvndWDxJOt5cheNNAn5se2hDH/MULrGD9tCync67D0LpPGB9jTJwPFdTCDYRJ/faPStjl2dBGOw7MTa4fM2jJKD+9+tKvyVh+dW5vbRm00BNlGDCgkTSQ=
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:references;
+        bh=+g6WenyiBCk9D0+heMpoopfxEp9mpC2ZpRYJHftUdII=;
+        b=KCVVKrmO8pslTmnPfDu408Ksu0/qgAi7NN/xU4tlZoAllUEvXAzmgVbx5P9dcsTCautlfm8/h761Fw12DTiBKKdyoFw6biUt8gcv2VW4/2AvYSwFb3dEnQg11OLW8iP51MAgVm0tOPZjLJgIwklB+U2rND0zJ/tyVaN6iRaL7Q0=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=W+6XGkLPXx4O3VCNPZaU+JgVNj16fdkTs5gU8yH/Iszf/1O1Spnu6eFzNQq9oCRnbjY5G9PAy+UyFSbrSkq+9C5C36x3yk0JxbsZtI8hwMMxm7K7BeQCjYSlNEz6Atyq7fCQDZGS7Gatv0FVCC7/xmYEytFZo/RqTAwxCVyO/G4=
-Received: by 10.66.254.15 with SMTP id b15mr1658711ugi.76.1198090006807;
-        Wed, 19 Dec 2007 10:46:46 -0800 (PST)
-Received: by 10.67.117.17 with HTTP; Wed, 19 Dec 2007 10:46:46 -0800 (PST)
-Message-ID: <9e0cf0bf0712191046q702eefb0vdd0526360eceddc1@mail.gmail.com>
-Date:	Wed, 19 Dec 2007 20:46:46 +0200
-From:	"Alon Bar-Lev" <alon.barlev@gmail.com>
-To:	"Willy Tarreau" <w@1wt.eu>
-Subject: Re: [MIPS] Build an embedded initramfs into mips kernel
-Cc:	"H. Peter Anvin" <hpa@zytor.com>, linux-mips@ftp.linux-mips.org,
-	LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20071218224702.GI15227@1wt.eu>
+        h=message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:references;
+        b=TPk+iKLiAIB2w1lhPb6LNc3y3Tx18irkZEWQMie5r4ThueKqXtYobeUwKBUwl/PV1oumPf+Os7KYHKqFIPCtAqPmipKYOalCBxAHbcaUJBxV0RfO/I+P6kP9nUxKA4gqku65ZJyxvVc4KyeLYd+swmQpUSQfbHsnyNZ2VCrgodg=
+Received: by 10.115.55.1 with SMTP id h1mr288171wak.69.1198174134057;
+        Thu, 20 Dec 2007 10:08:54 -0800 (PST)
+Received: by 10.114.135.8 with HTTP; Thu, 20 Dec 2007 10:08:54 -0800 (PST)
+Message-ID: <eea8a9c90712201008n37a9a759j6dcee5ee067f918a@mail.gmail.com>
+Date:	Thu, 20 Dec 2007 23:38:54 +0530
+From:	kaka <share.kt@gmail.com>
+To:	"Denis Oliver Kropp" <dok@directfb.org>
+Subject: Re: [directfb-dev] Error in running gtk example on cross compiled GTK with DirectFB on MIPS board
+Cc:	linux-mips@linux-mips.org, uclinux-dev@uclinux.org,
+	celinux-dev@tree.celinuxforum.org,
+	linux-fbdev-users@lists.sourceforge.net,
+	directfb-users@directfb.org, directfb-dev@directfb.org
+In-Reply-To: <4766B149.5050109@directfb.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <9e0cf0bf0712181208m7f16b9acpf3dba67f3556a613@mail.gmail.com>
-	 <47683B2D.9030608@zytor.com>
-	 <9e0cf0bf0712181409p2475e1fdk779fdee4fa274722@mail.gmail.com>
-	 <20071218224702.GI15227@1wt.eu>
-Return-Path: <alon.barlev@gmail.com>
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_18098_26786107.1198174134052"
+References: <eea8a9c90712170031i62e4ac4ak687a198200f59920@mail.gmail.com>
+	 <4766B149.5050109@directfb.org>
+Return-Path: <share.kt@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@ftp.linux-mips.org
-Original-Recipient: rfc822;linux-mips@ftp.linux-mips.org
-X-archive-position: 17862
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 17863
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alon.barlev@gmail.com
+X-original-sender: share.kt@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Thank you for your help.
-Indeed the dynamic loader of uclibc is the cause.
-I upgraded to latest uclibc-0.9.29, and finally the files was linked
-against uclibc's ld.
-But it did not work...
-Tried to run a dynamic linked executable via static shell, and got
-floating point exception.
-Tried to compile toolchain and uclibc with softfloat, but still did not work.
-So I moved to glibc and all works correctly.
+------=_Part_18098_26786107.1198174134052
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Thank you for quick response!
-I will continue the discussion at uclibc lists.
+Hi Denis,
 
-Best Regards,
-Alon Bar-Lev.
+I am writing gfx driver for DirectFB on BroadCom chip.
+Right now i am using FBdev system to display graphics on BCM chip(MIPS
+platform)  which should use software fallbacks from DirectFB.Later on i 'll
+add hardware accelerartion also.
+My framebuffer driver for BCM chip is working fine. I have checked it by
+running a small example. Also the gfxdriver for directFB is working fine for
+Video and Image.
+The problem which i am facing right now is that i am running the fill
+rectangle example.
+IT is not filling any color in the rectangle. I am always getting the black
+screen.
 
-On 12/19/07, Willy Tarreau <w@1wt.eu> wrote:
-> On Wed, Dec 19, 2007 at 12:09:46AM +0200, Alon Bar-Lev wrote:
-> > On 12/18/07, H. Peter Anvin <hpa@zytor.com> wrote:
-> > > Make sure your /init doesn't depend on an interpreter or library which
-> > > isn't available.
+Could you plz provide some clue on it ?
+Also could you plz specify the file name and function in which directFB
+library is writing into the framebuffer memory the color pixel information?
+
+Thanks in Advance.
+kaka
+
+
+
+On 12/17/07, Denis Oliver Kropp <dok@directfb.org> wrote:
+>
+> kaka wrote:
+> > HI ALL,
 > >
-> > Thank you for your answer.
+> > We have successfully cross compiled GTK and DIRECTFB with all its
+> > dependencies for MIPS board.
+> > On running the basic test example of GTK, it is getting struck in the
+> thread
+> > loop infinitely.
+> > We had put the  "debug printf"  statement in the gtkmain.c and debugged
+> the
+> > test example.
+> > It is getting struck in the * g_main_loop_run (loop);* given below is
+> > the  code(code
+> > snippet from gtkmain.c)
 > >
-> > I already checked.
+> > void
+> > gtk_main (void)
+> > {
+> >   GList *tmp_list;
+> >   GList *functions;
+> >   GtkInitFunction *init;
+> >   GMainLoop *loop;
+> > printf("\n%s :: %d\n",__FILE__,__LINE__);
+> >   gtk_main_loop_level++;
 > >
-> > /init is hardlink to busybox, it depends on libc.so.0 which is available at /lib
+> >   loop = g_main_loop_new (NULL, TRUE);
+> >   main_loops = g_slist_prepend (main_loops, loop);
+> > printf("\n%s :: %d\n",__FILE__,__LINE__);
+> >   tmp_list = functions = init_functions;
+> >   init_functions = NULL;
+> >
+> >   while (tmp_list)
+> >     {
+> >       init = tmp_list->data;
+> >       tmp_list = tmp_list->next;
+> >
+> >       (* init->function) (init->data);
+> >       g_free (init);
+> >     }
+> >   g_list_free (functions);
+> > printf("\n%s :: %d\n",__FILE__,__LINE__);
+> >   if (g_main_loop_is_running (main_loops->data))
+> >     {
+> >    * printf("\n%s :: %d\n",__FILE__,__LINE__);
+> >       GDK_THREADS_LEAVE ();
+> >       g_main_loop_run (loop);
+> >       GDK_THREADS_ENTER ();
+> > *      printf("\n%s :: %d\n",__FILE__,__LINE__);
 >
-> Are you sure that libc.so.0 is enough and that you don't need any ld.so ?
+> That's normal. If you want runtime you have to create a timer or register
+> idle or timeout functions.
 >
-> > But shouldn't I get a different error code if this is the case?
+> >       gtk_container_add (GTK_CONTAINER (window), pMainWidget);
+> >  printf("\n\n\ngtk_container_add (GTK_CONTAINER (window),
+> > pMainWidget);\n\n\n") ;
+> >       gtk_widget_show (window);
+> > printf("\n\n\nABHISHEK START OF gtk_main\n\n\n");
+> >       gtk_main ();
+> > printf("\n\n\nABHISHEK END OF gtk_main\n\n\n");
+> >       return 0;
 >
-> If it does not find part of the dynamic linker or libraries, this error
-> makes sense to me.
+> Simply/weakly put: it should not return before the application is quit.
 >
-> You should try to build a static init with any stupid thing such as a
-> hello world to ensure that the problem really comes from the init and
-> nothing else.
+> --
+> Best regards,
+> Denis Oliver Kropp
 >
-> Regards,
-> Willy
+> .------------------------------------------.
+> | DirectFB - Hardware accelerated graphics |
+> | http://www.directfb.org/                 |
+> "------------------------------------------"
 >
->
+
+
+
+-- 
+Thanks & Regards,
+kaka
+
+------=_Part_18098_26786107.1198174134052
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+<div>Hi Denis,</div>
+<div>&nbsp;</div>
+<div>I am writing gfx driver for DirectFB on&nbsp;BroadCom chip.</div>
+<div>Right now i am using&nbsp;FBdev system to display graphics on BCM chip(MIPS platform) &nbsp;which should use&nbsp;software fallbacks from DirectFB.Later on i &#39;ll add hardware accelerartion also.&nbsp;</div>
+<div>My framebuffer driver for BCM chip is working fine. I have checked it by running a small example. Also the gfxdriver for directFB is working fine for Video and Image.</div>
+<div>The problem which i am facing right now is that i am running the fill rectangle example.</div>
+<div>IT is not filling any color in the rectangle. I am always getting the black screen.</div>
+<div>&nbsp;</div>
+<div>Could you plz provide some clue on it ?</div>
+<div>Also could you plz specify the file name and function in which directFB library is writing into the framebuffer memory the color pixel information?</div>
+<div>&nbsp;</div>
+<div>Thanks in Advance.</div>
+<div>kaka</div>
+<div><br><br>&nbsp;</div>
+<div><span class="gmail_quote">On 12/17/07, <b class="gmail_sendername">Denis Oliver Kropp</b> &lt;<a href="mailto:dok@directfb.org">dok@directfb.org</a>&gt; wrote:</span>
+<blockquote class="gmail_quote" style="PADDING-LEFT: 1ex; MARGIN: 0px 0px 0px 0.8ex; BORDER-LEFT: #ccc 1px solid">kaka wrote:<br>&gt; HI ALL,<br>&gt;<br>&gt; We have successfully cross compiled GTK and DIRECTFB with all its
+<br>&gt; dependencies for MIPS board.<br>&gt; On running the basic test example of GTK, it is getting struck in the thread<br>&gt; loop infinitely.<br>&gt; We had put the&nbsp;&nbsp;&quot;debug printf&quot;&nbsp;&nbsp;statement in the gtkmain.c
+ and debugged the<br>&gt; test example.<br>&gt; It is getting struck in the * g_main_loop_run (loop);* given below is<br>&gt; the&nbsp;&nbsp;code(code<br>&gt; snippet from gtkmain.c)<br>&gt;<br>&gt; void<br>&gt; gtk_main (void)<br>
+&gt; {<br>&gt;&nbsp;&nbsp; GList *tmp_list;<br>&gt;&nbsp;&nbsp; GList *functions;<br>&gt;&nbsp;&nbsp; GtkInitFunction *init;<br>&gt;&nbsp;&nbsp; GMainLoop *loop;<br>&gt; printf(&quot;\n%s :: %d\n&quot;,__FILE__,__LINE__);<br>&gt;&nbsp;&nbsp; gtk_main_loop_level++;<br>&gt;
+<br>&gt;&nbsp;&nbsp; loop = g_main_loop_new (NULL, TRUE);<br>&gt;&nbsp;&nbsp; main_loops = g_slist_prepend (main_loops, loop);<br>&gt; printf(&quot;\n%s :: %d\n&quot;,__FILE__,__LINE__);<br>&gt;&nbsp;&nbsp; tmp_list = functions = init_functions;<br>&gt;&nbsp;&nbsp; init_functions = NULL;
+<br>&gt;<br>&gt;&nbsp;&nbsp; while (tmp_list)<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp; {<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; init = tmp_list-&gt;data;<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tmp_list = tmp_list-&gt;next;<br>&gt;<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (* init-&gt;function) (init-&gt;data);<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; g_free (init);
+<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp; }<br>&gt;&nbsp;&nbsp; g_list_free (functions);<br>&gt; printf(&quot;\n%s :: %d\n&quot;,__FILE__,__LINE__);<br>&gt;&nbsp;&nbsp; if (g_main_loop_is_running (main_loops-&gt;data))<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp; {<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;* printf(&quot;\n%s :: %d\n&quot;,__FILE__,__LINE__);
+<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GDK_THREADS_LEAVE ();<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; g_main_loop_run (loop);<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GDK_THREADS_ENTER ();<br>&gt; *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf(&quot;\n%s :: %d\n&quot;,__FILE__,__LINE__);<br><br>That&#39;s normal. If you want runtime you have to create a timer or register idle or timeout functions.
+<br><br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gtk_container_add (GTK_CONTAINER (window), pMainWidget);<br>&gt;&nbsp;&nbsp;printf(&quot;\n\n\ngtk_container_add (GTK_CONTAINER (window),<br>&gt; pMainWidget);\n\n\n&quot;) ;<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gtk_widget_show (window);
+<br>&gt; printf(&quot;\n\n\nABHISHEK START OF gtk_main\n\n\n&quot;);<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gtk_main ();<br>&gt; printf(&quot;\n\n\nABHISHEK END OF gtk_main\n\n\n&quot;);<br>&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return 0;<br><br>Simply/weakly put: it should not return before the application is quit.
+<br><br>--<br>Best regards,<br>Denis Oliver Kropp<br><br>.------------------------------------------.<br>| DirectFB - Hardware accelerated graphics |<br>| <a href="http://www.directfb.org/">http://www.directfb.org/</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+<br>&quot;------------------------------------------&quot;<br></blockquote></div><br><br clear="all"><br>-- <br>Thanks &amp; Regards,<br>kaka 
+
+------=_Part_18098_26786107.1198174134052--

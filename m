@@ -1,52 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Dec 2007 01:24:39 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:24968 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28584306AbXLUBYh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 21 Dec 2007 01:24:37 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lBL1BOlt015515;
-	Fri, 21 Dec 2007 02:11:49 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lBL1BMuf015514;
-	Fri, 21 Dec 2007 02:11:22 +0100
-Date:	Fri, 21 Dec 2007 02:11:22 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Kevin D. Kissell" <kevink@mips.com>
-Cc:	Pavel Kiryukhin <vksavl@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH][MIPS] fix user_cpus_allowed assignment
-Message-ID: <20071221011122.GB14926@linux-mips.org>
-References: <73cd086a0712170517i146a452exea775f3942c1d5da@mail.gmail.com> <017c01c840cb$7a5049c0$10eca8c0@grendel>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Dec 2007 17:39:32 +0000 (GMT)
+Received: from hellhawk.shadowen.org ([80.68.90.175]:2057 "EHLO
+	hellhawk.shadowen.org") by ftp.linux-mips.org with ESMTP
+	id S20029906AbXLURjW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 21 Dec 2007 17:39:22 +0000
+Received: from localhost ([127.0.0.1] helo=pinky)
+	by hellhawk.shadowen.org with esmtp (Exim 4.63)
+	(envelope-from <apw@shadowen.org>)
+	id 1J5ln4-0005eb-Gs; Fri, 21 Dec 2007 17:36:06 +0000
+Date:	Fri, 21 Dec 2007 17:36:01 +0000
+From:	Andy Whitcroft <apw@shadowen.org>
+To:	Andrew Morton <akpm@linux-foundation.org>
+Cc:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	Alan Cox <alan@lxorguk.ukuu.org.uk>
+Subject: Re: [PATCH] SC26XX: New serial driver for SC2681 uarts
+Message-ID: <20071221173601.GR13186@shadowen.org>
+References: <20071202194346.36E3FDE4C4@solo.franken.de> <20071203155317.772231f9.akpm@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <017c01c840cb$7a5049c0$10eca8c0@grendel>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20071203155317.772231f9.akpm@linux-foundation.org>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <apw@shadowen.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17866
+X-archive-position: 17867
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: apw@shadowen.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Dec 17, 2007 at 05:40:03PM +0100, Kevin D. Kissell wrote:
+On Mon, Dec 03, 2007 at 03:53:17PM -0800, Andrew Morton wrote:
+> > +#define READ_SC(p, r)        readb ((p)->membase + RD_##r)
+> > +#define WRITE_SC(p, r, v)    writeb ((v), (p)->membase + WR_##r)
+> 
+> No space before the (.  checkpatch misses this.
 
-> This looks to be a correct fix.  Long term, we really do need to convince
-> the scheduler maintainer to provide hooks that will allow hardware-driven
-> affinity to be integrated with application-driven affinity in a sensible way,
-> without requiring replication (and replicated maintenence) of the system
-> call code in private copies like this.  I asked for such hooks in sched.c
-> when it first became apparent that dynamic FPU affinity was desirable,
-> but was blown off at that time, so, with regret, I perpetrated the local copy
-> hack.  But it's silly, and MIPS can't possibly be the only architecture where 
-> Linux is used in systems with assymmetric resources where adaptive affinity 
-> is useful.
+Yep, over careful in the special case for the parameters for #define
+macros, which have different spacing rules.  This will be fixed in 0.13:
 
-I dare to speculate that the new job of a certain Mike Uhler may increase
-the need for such a scheduler feature :-)
+WARNING: no space between function name and open parenthesis '('
+#1: FILE: Z45.c:1:
++#define WRITE_SC(p, r, v)    writeb ((v), (p)->membase + WR_##r)
 
-  Ralf
+-apw

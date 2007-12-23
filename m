@@ -1,72 +1,107 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Dec 2007 18:22:32 +0000 (GMT)
-Received: from ug-out-1314.google.com ([66.249.92.168]:5893 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20032895AbXLWSWX (ORCPT <rfc822;linux-mips@ftp.linux-mips.org>);
-	Sun, 23 Dec 2007 18:22:23 +0000
-Received: by ug-out-1314.google.com with SMTP id k3so976678ugf.38
-        for <linux-mips@ftp.linux-mips.org>; Sun, 23 Dec 2007 10:22:13 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        bh=FUHfUCzrO0wUM4wc5uS21wJjp2RnX8jYLCNSmVeDzCU=;
-        b=XI2H8UWj6N4OUVt9adMY6IirJDJjiSAapTF1O0GdXx/4iCoYH4tlM3Am0udESGgPRzVBRYWBMc9FoZw7QhSJ+Mckv2OgF44jlgS9guRde91L1ytYynUyVvUHtspkLwtHDf+ndhrbaA8Zt2m9Dw305bBJkMaqvTJEpZQP4uzUupQ=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=CLo4Ki64M1JomDp8m4J4hUji2rmcGAXyDJtzk/FK/wlsqHbuwMTdcykhaSLTKGKWKE3pLUNa0+DmvFe+wagYlTjVCCh0CThbY9YreGd/TSUpCtRsIO7wF96YE8OOXPwb1vlLblD3Z+PsfY1/YcRyvIYCYoephekDdGYCc8GVylQ=
-Received: by 10.67.116.2 with SMTP id t2mr2085074ugm.62.1198434133079;
-        Sun, 23 Dec 2007 10:22:13 -0800 (PST)
-Received: by 10.67.117.17 with HTTP; Sun, 23 Dec 2007 10:22:13 -0800 (PST)
-Message-ID: <9e0cf0bf0712231022o4a282e70i8cecd70ecc452505@mail.gmail.com>
-Date:	Sun, 23 Dec 2007 20:22:13 +0200
-From:	"Alon Bar-Lev" <alon.barlev@gmail.com>
-To:	linux-mips@ftp.linux-mips.org, LKML <linux-kernel@vger.kernel.org>,
-	ppopov@mvista.com
-Subject: Re: [MIPS] MEM_SDREFCFG is not defined for Alchemy DB1550 (compile fail)
-In-Reply-To: <9e0cf0bf0712230733o3dfd54fcp4962ebf3f84cdff@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Dec 2007 19:55:22 +0000 (GMT)
+Received: from hydra.gt.owl.de ([195.71.99.218]:7577 "EHLO hydra.gt.owl.de")
+	by ftp.linux-mips.org with ESMTP id S20033703AbXLWTzO (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 23 Dec 2007 19:55:14 +0000
+Received: by hydra.gt.owl.de (Postfix, from userid 1000)
+	id 93E1793701; Sun, 23 Dec 2007 20:54:42 +0100 (CET)
+Date:	Sun, 23 Dec 2007 20:54:42 +0100
+From:	Florian Lohoff <flo@rfc822.org>
+To:	linux-mips@linux-mips.org
+Subject: IP28 Installation Success report Was: [UPDATED PATCH] IP28 support
+Message-ID: <20071223195442.GA17311@paradigm.rfc822.org>
+References: <20071202120032.2A477C2EB6@solo.franken.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="6TrnltStXW4iwmi0"
 Content-Disposition: inline
-References: <9e0cf0bf0712230733o3dfd54fcp4962ebf3f84cdff@mail.gmail.com>
-Return-Path: <alon.barlev@gmail.com>
+In-Reply-To: <20071202120032.2A477C2EB6@solo.franken.de>
+Organization: rfc822 - pure communication
+X-SpiderMe: mh-200712232045@listme.rfc822.org
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <flo@rfc822.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@ftp.linux-mips.org
-Original-Recipient: rfc822;linux-mips@ftp.linux-mips.org
-X-archive-position: 17872
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 17873
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alon.barlev@gmail.com
+X-original-sender: flo@rfc822.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
 
-Forgot to write that I checked mips & linus gits, and the problem still exists.
+--6TrnltStXW4iwmi0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Best Regards,
-Alon Bar-Lev.
+On Sun, Dec 02, 2007 at 01:00:32PM +0100, Thomas Bogendoerfer wrote:
+> Add support for SGI IP28 machines (Indigo 2 with R10k CPUs)
+> This work is mainly based on Peter Fuersts work.
 
-On 12/23/07, Alon Bar-Lev <alon.barlev@gmail.com> wrote:
-> Hello,
->
-> When I have:
-> CONFIG_MIPS_DB1550
-> CONFIG_SOC_AU1550
-> CONFIG_SOC_AU1X00
-> CONFIG_PM
->
-> MEM_SDREFCFG is used at:
-> arch/mips/au1000/common/power.c::pm_do_freq()
->
-> While the MEM_SDREFCFG constant is declare only for CONFIG_SOC_AU1000,
-> CONFIG_SOC_AU1500, CONFIG_SOC_AU1100 at:
-> include/asm-mips/mach-au1x00/au1000.h
->
-> Maybe MEM_SDREFCFG should be defined for CONFIG_SOC_AU1X00?
-> Or there should be #ifdef for its usage in power.c?
->
-> Best Regards,
-> Alon Bar-Lev.
->
+I thought an installation success report is sometimes nice to have:
+
+flo@ip28:~$ cat /proc/cpuinfo=20
+system type             : SGI Indigo2
+processor               : 0
+cpu model               : R10000 V2.5  FPU V0.0
+BogoMIPS                : 194.04
+wait instruction        : no
+microsecond timers      : yes
+tlb_entries             : 64
+extra interrupt vector  : no
+hardware watchpoint     : yes
+ASEs implemented        :
+shadow register sets    : 1
+VCED exceptions         : not available
+VCEI exceptions         : not available
+
+flo@ip28:~$ uptime
+ 19:49:15 up 4 days,  9:09,  2 users,  load average: 0.00, 0.00, 0.00
+flo@ip28:~$ uname -a
+Linux ip28 2.6.24-rc5-g8b3ba06b-dirty #21 Tue Dec 18 12:48:29 CET 2007 mips=
+64 GNU/Linux
+flo@ip28:~$ cat /proc/interrupts=20
+           CPU0      =20
+  0:          1          XT-PIC  timer
+  2:          0          XT-PIC  cascade
+ 18:          0            MIPS  local0 cascade
+ 19:          0            MIPS  local1 cascade
+ 22:          1            MIPS  Bus Error
+ 23:   94680570            MIPS  timer
+ 25:    3863916    IP22 local 0  SGI WD93
+ 26:          7    IP22 local 0  SGI WD93
+ 27:     677582    IP22 local 0  SGI Seeq8003
+ 31:          0    IP22 local 0  mapable0 cascade
+ 33:          0    IP22 local 1  Front Panel
+ 43:          1    IP22 local 2  EISA
+ 44:          5    IP22 local 2  i8042, i8042
+ 45:    6462546    IP22 local 2  IP22-Zilog
+
+ERR:          0
+
+The maschine successfully compiled multiple gcc version and had no hickups
+so far ...
+
+Peter and Thomas did great work ....
+
+Flo
+--=20
+Florian Lohoff                  flo@rfc822.org             +49-171-2280134
+          security shall soon have neither - Benjamin Franklin
+
+--6TrnltStXW4iwmi0
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
+
+iD8DBQFHbr0CUaz2rXW+gJcRAop2AKCuNMfz+1N8CeFPui/169qNTg5ZdgCfVyoo
+xCwssQKevt24/Oj3ehEK1ic=
+=Or13
+-----END PGP SIGNATURE-----
+
+--6TrnltStXW4iwmi0--

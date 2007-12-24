@@ -1,107 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Dec 2007 19:55:22 +0000 (GMT)
-Received: from hydra.gt.owl.de ([195.71.99.218]:7577 "EHLO hydra.gt.owl.de")
-	by ftp.linux-mips.org with ESMTP id S20033703AbXLWTzO (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 23 Dec 2007 19:55:14 +0000
-Received: by hydra.gt.owl.de (Postfix, from userid 1000)
-	id 93E1793701; Sun, 23 Dec 2007 20:54:42 +0100 (CET)
-Date:	Sun, 23 Dec 2007 20:54:42 +0100
-From:	Florian Lohoff <flo@rfc822.org>
-To:	linux-mips@linux-mips.org
-Subject: IP28 Installation Success report Was: [UPDATED PATCH] IP28 support
-Message-ID: <20071223195442.GA17311@paradigm.rfc822.org>
-References: <20071202120032.2A477C2EB6@solo.franken.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Dec 2007 00:47:26 +0000 (GMT)
+Received: from [84.159.79.95] ([84.159.79.95]:11947 "EHLO
+	p549F4F5F.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
+	id S20024732AbXLYArS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 25 Dec 2007 00:47:18 +0000
+Received: from mail1.pearl-online.net ([62.159.194.147]:58659 "EHLO
+	mail1.pearl-online.net") by lappi.linux-mips.net with ESMTP
+	id S1096297AbXLXAkS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 24 Dec 2007 01:40:18 +0100
+Received: from SNaIlmail.Peter (unknown [77.47.54.40])
+	by mail1.pearl-online.net (Postfix) with ESMTP id 6B55FC863;
+	Mon, 24 Dec 2007 01:39:32 +0100 (CET)
+Received: from Opal.Peter (Opal.Peter [192.168.1.1])
+	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id lBO0dLOA000772;
+	Mon, 24 Dec 2007 01:39:22 +0100
+Received: from Opal.Peter (localhost [127.0.0.1])
+	by Opal.Peter (8.12.11.Beta0/8.12.11.Beta0/Sendmail/Linux 2.4.24-1-386) with ESMTP id lBO0dA2Y001993;
+	Mon, 24 Dec 2007 01:39:11 +0100
+Received: from localhost (pf@localhost)
+	by Opal.Peter (8.12.11.Beta0/8.12.11.Beta0/Debian-1) with ESMTP id lBO0dAlS001989;
+	Mon, 24 Dec 2007 01:39:10 +0100
+X-Authentication-Warning: Opal.Peter: pf owned process doing -bs
+Date:	Mon, 24 Dec 2007 01:39:10 +0100 (CET)
+From:	post@pfrst.de
+X-Sender: pf@Opal.Peter
+To:	Richard Sandiford <rsandifo@nildram.co.uk>
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Kumba <kumba@gentoo.org>, linux-mips@linux-mips.org
+Subject: Re: [UPDATED PATCH] IP28 support
+In-Reply-To: <871w9d7nsf.fsf@firetop.home>
+Message-ID: <Pine.LNX.4.21.0712240126560.1977-100000@Opal.Peter>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="6TrnltStXW4iwmi0"
-Content-Disposition: inline
-In-Reply-To: <20071202120032.2A477C2EB6@solo.franken.de>
-Organization: rfc822 - pure communication
-X-SpiderMe: mh-200712232045@listme.rfc822.org
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <flo@rfc822.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <post@pfrst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17873
+X-archive-position: 17874
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: flo@rfc822.org
+X-original-sender: post@pfrst.de
 Precedence: bulk
 X-list: linux-mips
 
 
---6TrnltStXW4iwmi0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Dec 02, 2007 at 01:00:32PM +0100, Thomas Bogendoerfer wrote:
-> Add support for SGI IP28 machines (Indigo 2 with R10k CPUs)
-> This work is mainly based on Peter Fuersts work.
+On Sun, 23 Dec 2007, Richard Sandiford wrote:
 
-I thought an installation success report is sometimes nice to have:
+> Date: Sun, 23 Dec 2007 09:39:28 +0000
+> From: Richard Sandiford <rsandifo@nildram.co.uk>
+> To: peter fuerst <post@pfrst.de>
+> Cc: Ralf Baechle <ralf@linux-mips.org>,
+>      Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+>      Kumba <kumba@gentoo.org>, linux-mips@linux-mips.org
+> Subject: Re: [UPDATED PATCH] IP28 support
+> 
+> ...
+> Ah, OK.  That's what I was missing, thanks.  (I suspect you and Ralf
+> have explained that to me before, but it hadn't sunk in.  Sorry!)
 
-flo@ip28:~$ cat /proc/cpuinfo=20
-system type             : SGI Indigo2
-processor               : 0
-cpu model               : R10000 V2.5  FPU V0.0
-BogoMIPS                : 194.04
-wait instruction        : no
-microsecond timers      : yes
-tlb_entries             : 64
-extra interrupt vector  : no
-hardware watchpoint     : yes
-ASEs implemented        :
-shadow register sets    : 1
-VCED exceptions         : not available
-VCEI exceptions         : not available
+Missed to explain that in time... Sorry!
 
-flo@ip28:~$ uptime
- 19:49:15 up 4 days,  9:09,  2 users,  load average: 0.00, 0.00, 0.00
-flo@ip28:~$ uname -a
-Linux ip28 2.6.24-rc5-g8b3ba06b-dirty #21 Tue Dec 18 12:48:29 CET 2007 mips=
-64 GNU/Linux
-flo@ip28:~$ cat /proc/interrupts=20
-           CPU0      =20
-  0:          1          XT-PIC  timer
-  2:          0          XT-PIC  cascade
- 18:          0            MIPS  local0 cascade
- 19:          0            MIPS  local1 cascade
- 22:          1            MIPS  Bus Error
- 23:   94680570            MIPS  timer
- 25:    3863916    IP22 local 0  SGI WD93
- 26:          7    IP22 local 0  SGI WD93
- 27:     677582    IP22 local 0  SGI Seeq8003
- 31:          0    IP22 local 0  mapable0 cascade
- 33:          0    IP22 local 1  Front Panel
- 43:          1    IP22 local 2  EISA
- 44:          5    IP22 local 2  i8042, i8042
- 45:    6462546    IP22 local 2  IP22-Zilog
+> ...
 
-ERR:          0
+kind regards
 
-The maschine successfully compiled multiple gcc version and had no hickups
-so far ...
-
-Peter and Thomas did great work ....
-
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-171-2280134
-          security shall soon have neither - Benjamin Franklin
-
---6TrnltStXW4iwmi0
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.6 (GNU/Linux)
-
-iD8DBQFHbr0CUaz2rXW+gJcRAop2AKCuNMfz+1N8CeFPui/169qNTg5ZdgCfVyoo
-xCwssQKevt24/Oj3ehEK1ic=
-=Or13
------END PGP SIGNATURE-----
-
---6TrnltStXW4iwmi0--
+peter

@@ -1,71 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Dec 2007 14:33:17 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:38885 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28576160AbXLYOdO (ORCPT <rfc822;linux-mips@ftp.linux-mips.org>);
-	Tue, 25 Dec 2007 14:33:14 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id lBPEWiJG000605;
-	Tue, 25 Dec 2007 15:32:44 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id lBPEWf3Y000604;
-	Tue, 25 Dec 2007 15:32:41 +0100
-Date:	Tue, 25 Dec 2007 15:32:41 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	Alon Bar-Lev <alon.barlev@gmail.com>,
-	linux-mips@ftp.linux-mips.org, LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [MIPS] MEM_SDREFCFG is not defined for Alchemy DB1550 (compile
-	fail)
-Message-ID: <20071225143240.GA29231@linux-mips.org>
-References: <9e0cf0bf0712230733o3dfd54fcp4962ebf3f84cdff@mail.gmail.com> <4770DE51.5000205@ru.mvista.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Dec 2007 17:04:34 +0000 (GMT)
+Received: from ug-out-1314.google.com ([66.249.92.169]:2290 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S28576521AbXLYREZ (ORCPT <rfc822;linux-mips@ftp.linux-mips.org>);
+	Tue, 25 Dec 2007 17:04:25 +0000
+Received: by ug-out-1314.google.com with SMTP id k3so1306217ugf.38
+        for <linux-mips@ftp.linux-mips.org>; Tue, 25 Dec 2007 09:04:14 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        bh=Ixh6lv2cB14se4hLyU3fB1oJyY/anfBTFv0bMmHDQwQ=;
+        b=fbYoZW2UT1QP7yo3TzVUNOwc2bgxXBrWabUoIrZdQ/DF86Rvr8W7z0jcH2rkMTvjDfvwazkuOqJhqC8IvaV6uhfy3huZZ53UGY6cTvPUnVidjwwJ02BEwZjxc/7iCrjDz+4oZSa397zCkAfhbkw7GXWNnWXPAo6LIORi1mDl7Qo=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=HNG+6OslokDP9P41l0iHfbGQqUkqaf0ePKiH1fmn1xnnluiXc0LxiRv0K7CHSQxyv9OrkhVs2CJ4TEeYW2r1Rkr67A0UzGOX1qOCX7JvAZ5FruPfbapv77Fy4rOFp/hEmGoHOA2T2QE1OTSAzKW8jGmANHyz5gfbbi3QU6d/4kM=
+Received: by 10.67.116.9 with SMTP id t9mr4765344ugm.77.1198602254626;
+        Tue, 25 Dec 2007 09:04:14 -0800 (PST)
+Received: by 10.67.117.17 with HTTP; Tue, 25 Dec 2007 09:04:14 -0800 (PST)
+Message-ID: <9e0cf0bf0712250904t213d623bp977db54b6be5e3e@mail.gmail.com>
+Date:	Tue, 25 Dec 2007 19:04:14 +0200
+From:	"Alon Bar-Lev" <alon.barlev@gmail.com>
+To:	"Sergei Shtylyov" <sshtylyov@ru.mvista.com>
+Subject: Re: [MIPS] MEM_SDREFCFG is not defined for Alchemy DB1550 (compile fail)
+Cc:	linux-mips@ftp.linux-mips.org, LKML <linux-kernel@vger.kernel.org>,
+	"Ralf Baechle" <ralf@linux-mips.org>
 In-Reply-To: <4770DE51.5000205@ru.mvista.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <9e0cf0bf0712230733o3dfd54fcp4962ebf3f84cdff@mail.gmail.com>
+	 <4770DE51.5000205@ru.mvista.com>
+Return-Path: <alon.barlev@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@ftp.linux-mips.org
 Original-Recipient: rfc822;linux-mips@ftp.linux-mips.org
-X-archive-position: 17876
+X-archive-position: 17877
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: alon.barlev@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Dec 25, 2007 at 01:41:21PM +0300, Sergei Shtylyov wrote:
+Thank you for your reply!
 
->> When I have:
->> CONFIG_MIPS_DB1550
->> CONFIG_SOC_AU1550
->> CONFIG_SOC_AU1X00
->> CONFIG_PM
->
->> MEM_SDREFCFG is used at:
->> arch/mips/au1000/common/power.c::pm_do_freq()
->
->    PM code is generally broken and unmaintained, so no wonder. I don't 
-> remember if anyone has fixed CPU context restoration code (it uses a 
-> "skewed" stack frame).
->
->> While the MEM_SDREFCFG constant is declare only for CONFIG_SOC_AU1000,
->> CONFIG_SOC_AU1500, CONFIG_SOC_AU1100 at:
->> include/asm-mips/mach-au1x00/au1000.h
->
->> Maybe MEM_SDREFCFG should be defined for CONFIG_SOC_AU1X00?
->
->    I've just looked into the Au1550 datasheet and indeed it doesn't have 
-> such register; its SDDRAM controller is not compatible with older SoCs.
->
->> Or there should be #ifdef for its usage in power.c?
->
->    Looks like you'll have to invent something... ;-)
->
->> Best Regards,
->> Alon Bar-Lev.
+On 12/25/07, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
+>     PM code is generally broken and unmaintained, so no wonder. I don't
+> remember if anyone has fixed CPU context restoration code (it uses a "skewed"
+> stack frame).
 
-So I guess it's time to mark the whole PM stuff as BROKEN?
+So suspend modes on these boards are not supported?
+Only "Always On" configuration is supported?
+Or there is another method to preserve power?
 
-  Ralf
+Best Regards,
+Alon Bar-Lev.

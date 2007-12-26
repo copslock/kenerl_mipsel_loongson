@@ -1,170 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Dec 2007 18:00:26 +0000 (GMT)
-Received: from rtsoft3.corbina.net ([85.21.88.6]:26200 "EHLO
-	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
-	id S28576632AbXLYSAR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 25 Dec 2007 18:00:17 +0000
-Received: from wasted.dev.rtsoft.ru (unknown [10.150.0.9])
-	by buildserver.ru.mvista.com (Postfix) with ESMTP
-	id 3BD5A8816; Tue, 25 Dec 2007 23:00:16 +0400 (SAMT)
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-To:	ralf@linux-mips.org
-Subject: [PATCH] Alchemy: fix modpost warning
-Date:	Tue, 25 Dec 2007 21:00:45 +0300
-User-Agent: KMail/1.5
-Cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Dec 2007 06:38:34 +0000 (GMT)
+Received: from hs-out-0708.google.com ([64.233.178.243]:1322 "EHLO
+	hs-out-2122.google.com") by ftp.linux-mips.org with ESMTP
+	id S20025627AbXLZGi0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 26 Dec 2007 06:38:26 +0000
+Received: by hs-out-2122.google.com with SMTP id l65so1671460hsc.0
+        for <linux-mips@linux-mips.org>; Tue, 25 Dec 2007 22:38:25 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
+        bh=i1QMaUx7s5Jrdzp4N3BGtRjr7ocTU5iOoJmbJjxZ26I=;
+        b=WmJqEtDU6q2c6k3nz5RUjnrbfEDY+ds6xquoBKq3VTR+FLUGTSlL2hGHSJsYipaA7smWejJx+Isp1YQdc0NrVavYF5a9x4/fLzoXkK2vK9p+Q7f6caqCX860C7+KN9pD9j9qTgkxCEBom4+7BU6KCJAvZsINLEtevKtrfsNSTII=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:mime-version:content-type;
+        b=f3R5g/uHWUWUqJPwU0J//uthDoWGNPG5ZMgul3Ngt2p/75IzD686A9ZPmTu8pLlHsBqFRXsv7FGeHutsOfPJBHfH9YLsOaMcU6AaIUjV1gjYouzhBBDvL0zw0cw8+KZMrlUhpSuVtL12+r1NDtjyzB/DnnaiHzvhlQRZjtEKivA=
+Received: by 10.150.157.11 with SMTP id f11mr1602162ybe.108.1198651104817;
+        Tue, 25 Dec 2007 22:38:24 -0800 (PST)
+Received: by 10.150.51.3 with HTTP; Tue, 25 Dec 2007 22:38:24 -0800 (PST)
+Message-ID: <47f174260712252238x80b76arafa15a0153d3f40d@mail.gmail.com>
+Date:	Wed, 26 Dec 2007 14:38:24 +0800
+From:	"Zhou YaJin" <zyj001et@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: admulator: a simulator of adm5120
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200712252100.47365.sshtylyov@ru.mvista.com>
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_2875_25263922.1198651104811"
+Return-Path: <zyj001et@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17880
+X-archive-position: 17881
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: zyj001et@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-WARNING: vmlinux.o(.text+0x1ca608): Section mismatch: reference to .init.text:
-add_wired_entry (between 'config_access' and 'config_read')
+------=_Part_2875_25263922.1198651104811
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-by refactoring the code calling add_wired_entry() from config_access() to
-a separate function which is called from aau1x_pci_setup(). While at it:
+Hi everyone, I am glad to release admulator-a simulator of adm5120.
+Currently it can run linux 2.6 kernel and openwrt.
+website:
+http://admulator.sf.net
+If you have any question about admulator, please contact me. Thanks :)
 
-- make some unnecassarily global variables 'static';
+Admulator is a full system simulator of adm5120 soc. It simulates a mips32
+cpu core and other devices. Currently it can run linux 2.6 kernel and
+openwrt for adm5120. The entire source code of admulator is distributed
+under GPL.
 
-- fix the letter case, whitespace, etc. in the comments...
+Some of the features include:
 
-Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+   - full system simulation. the ability to run unmodified linux kernel
+   and openwrt.
+   - mips32 cpu core without fpu support
+   - 4Mbytes flash simulation(including CFI Interface)
+   - duart simulation
+   - gdb interface
 
- arch/mips/au1000/common/pci.c |    8 ++++--
- arch/mips/pci/ops-au1000.c    |   53 ++++++++++++++++++++----------------------
- 2 files changed, 32 insertions(+), 29 deletions(-)
+Missing features :
 
-Index: linux-2.6/arch/mips/au1000/common/pci.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/pci.c
-+++ linux-2.6/arch/mips/au1000/common/pci.c
-@@ -1,8 +1,8 @@
- /*
-  * BRIEF MODULE DESCRIPTION
-- *	Alchemy/AMD Au1x00 pci support.
-+ *	Alchemy/AMD Au1x00 PCI support.
-  *
-- * Copyright 2001,2002,2003 MontaVista Software Inc.
-+ * Copyright 2001-2003, 2007 MontaVista Software Inc.
-  * Author: MontaVista Software, Inc.
-  *         	ppopov@mvista.com or source@mvista.com
-  *
-@@ -66,6 +66,8 @@ static unsigned long virt_io_addr;
- 
- static int __init au1x_pci_setup(void)
- {
-+	extern void au1x_pci_cfg_init(void);
-+
- #if defined(CONFIG_SOC_AU1500) || defined(CONFIG_SOC_AU1550)
- 	virt_io_addr = (unsigned long)ioremap(Au1500_PCI_IO_START,
- 			Au1500_PCI_IO_END - Au1500_PCI_IO_START + 1);
-@@ -94,6 +96,8 @@ static int __init au1x_pci_setup(void)
- 	set_io_port_base(virt_io_addr);
- #endif
- 
-+	au1x_pci_cfg_init();
-+
- 	register_pci_controller(&au1x_controller);
- 	return 0;
- }
-Index: linux-2.6/arch/mips/pci/ops-au1000.c
-===================================================================
---- linux-2.6.orig/arch/mips/pci/ops-au1000.c
-+++ linux-2.6/arch/mips/pci/ops-au1000.c
-@@ -1,8 +1,8 @@
- /*
-  * BRIEF MODULE DESCRIPTION
-- *	Alchemy/AMD Au1x00 pci support.
-+ *	Alchemy/AMD Au1x00 PCI support.
-  *
-- * Copyright 2001,2002,2003 MontaVista Software Inc.
-+ * Copyright 2001-2003, 2007 MontaVista Software Inc.
-  * Author: MontaVista Software, Inc.
-  *         	ppopov@mvista.com or source@mvista.com
-  *
-@@ -69,10 +69,27 @@ void mod_wired_entry(int entry, unsigned
- 	write_c0_pagemask(old_pagemask);
- }
- 
--struct vm_struct *pci_cfg_vm;
-+static struct vm_struct *pci_cfg_vm;
- static int pci_cfg_wired_entry;
--static int first_cfg = 1;
--unsigned long last_entryLo0, last_entryLo1;
-+static unsigned long last_entryLo0, last_entryLo1;
-+
-+/*
-+ * We can't ioremap the entire pci config space because it's too large.
-+ * Nor can we call ioremap dynamically because some device drivers use
-+ * the PCI config routines from within interrupt handlers and that
-+ * becomes a problem in get_vm_area().  We use one wired TLB to handle
-+ * all config accesses for all busses.
-+ */
-+void __init au1x_pci_cfg_init(void)
-+{
-+	/* Reserve a wired entry for PCI config accesses */
-+	pci_cfg_vm = get_vm_area(0x2000, VM_IOREMAP);
-+	if (!pci_cfg_vm)
-+		panic(KERN_ERR "PCI unable to get vm area\n");
-+	pci_cfg_wired_entry = read_c0_wired();
-+	add_wired_entry(0, 0, (unsigned long)pci_cfg_vm->addr, PM_4K);
-+	last_entryLo0 = last_entryLo1 = 0xffffffff;
-+}
- 
- static int config_access(unsigned char access_type, struct pci_bus *bus,
- 			 unsigned int dev_fn, unsigned char where,
-@@ -97,27 +114,6 @@ static int config_access(unsigned char a
- 			Au1500_PCI_STATCMD);
- 	au_sync_udelay(1);
- 
--	/*
--	 * We can't ioremap the entire pci config space because it's
--	 * too large. Nor can we call ioremap dynamically because some
--	 * device drivers use the pci config routines from within
--	 * interrupt handlers and that becomes a problem in get_vm_area().
--	 * We use one wired tlb to handle all config accesses for all
--	 * busses. To improve performance, if the current device
--	 * is the same as the last device accessed, we don't touch the
--	 * tlb.
--	 */
--	if (first_cfg) {
--		/* reserve a wired entry for pci config accesses */
--		first_cfg = 0;
--		pci_cfg_vm = get_vm_area(0x2000, VM_IOREMAP);
--		if (!pci_cfg_vm)
--			panic(KERN_ERR "PCI unable to get vm area\n");
--		pci_cfg_wired_entry = read_c0_wired();
--		add_wired_entry(0, 0, (unsigned long)pci_cfg_vm->addr, PM_4K);
--		last_entryLo0  = last_entryLo1 = 0xffffffff;
--	}
--
- 	/* Allow board vendors to implement their own off-chip idsel.
- 	 * If it doesn't succeed, may as well bail out at this point.
- 	 */
-@@ -144,9 +140,12 @@ static int config_access(unsigned char a
- 	/* page boundary */
- 	cfg_base = cfg_base & PAGE_MASK;
- 
-+	/*
-+	 * To improve performance, if the current device is the same as
-+	 * the last device accessed, we don't touch the TLB.
-+	 */
- 	entryLo0 = (6 << 26)  | (cfg_base >> 6) | (2 << 3) | 7;
- 	entryLo1 = (6 << 26)  | (cfg_base >> 6) | (0x1000 >> 6) | (2 << 3) | 7;
--
- 	if ((entryLo0 != last_entryLo0) || (entryLo1 != last_entryLo1)) {
- 		mod_wired_entry(pci_cfg_wired_entry, entryLo0, entryLo1,
- 				(unsigned long)pci_cfg_vm->addr, PM_4K);
+   - no switch core simulation in current release
+   - no binary translation
+
+------=_Part_2875_25263922.1198651104811
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+Hi everyone, I am glad to release admulator-a simulator of adm5120. Currently it can run linux 2.6 kernel and openwrt.<br>website: <br><a href="http://admulator.sf.net">http://admulator.sf.net</a><br>If you have any question about admulator, please contact me. Thanks :)
+<br><p>Admulator is a full system simulator of adm5120 soc. It simulates a
+mips32 cpu core and other devices. Currently it can run linux 2.6
+kernel and openwrt for adm5120. The entire source code of admulator is
+distributed under GPL.
+</p><p>Some of the features include:
+</p>
+<ul><li> full system simulation. the ability to run unmodified linux kernel and openwrt.
+</li><li> mips32 cpu core without fpu support
+</li><li> 4Mbytes flash simulation(including CFI Interface)
+</li><li> duart simulation
+</li><li> gdb interface
+</li></ul>
+<p>Missing features&nbsp;:
+</p>
+<ul><li> no switch core simulation in current release
+</li><li> no binary translation
+</li></ul><br><br><br><br>
+
+------=_Part_2875_25263922.1198651104811--

@@ -1,78 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Dec 2007 05:24:54 +0000 (GMT)
-Received: from py-out-1112.google.com ([64.233.166.183]:39622 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022717AbXL1FYp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 28 Dec 2007 05:24:45 +0000
-Received: by py-out-1112.google.com with SMTP id p76so8480573pyb.5
-        for <linux-mips@linux-mips.org>; Thu, 27 Dec 2007 21:24:34 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
-        bh=u7JdXJoen1pQKPXeaEtSII4+Zqh5ICSuLGJNrHSNu/g=;
-        b=Jf21DsVhcqZ2ryrhDxC4End0ewJ3sY7ZGaa/wtn6CMNw8WZfpsAEc7Fbm6joXEbSsXHDGF6vW+5WYLJiwUYfPleDdHq0yKQFLKNT44YM/bISDWssVmOl0yTBaT8JH1yCI1n1MgjX+lD34EeBXiOfTjGd4m/1rTx8wa9CRcgFwhI=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:mime-version:content-type;
-        b=XLJxT1K7ZDSMlAJXMNq5Od2B1noWfRPFaaboEou6aSDRBrBML9fMkmGUMM34Op3G/F55YmXxAAPhoehuqFQttBvFFGXfcu5Brqb7cJRGAPMziUA1bcSE2PWornvXlCPdSokI2wltIpHWHHUshGqDJpRZqGQPO0/2CPGGW8ZrARQ=
-Received: by 10.35.90.1 with SMTP id s1mr10514102pyl.53.1198819474163;
-        Thu, 27 Dec 2007 21:24:34 -0800 (PST)
-Received: by 10.35.103.8 with HTTP; Thu, 27 Dec 2007 21:24:34 -0800 (PST)
-Message-ID: <50c9a2250712272124y13037169w7a85ad10d8eb4c61@mail.gmail.com>
-Date:	Fri, 28 Dec 2007 13:24:34 +0800
-From:	zhuzhenhua <zzh.hust@gmail.com>
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: is CONFIG_CPU_MIPS32_R2 workable for linux-2.6.14?
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Dec 2007 12:13:40 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:4636 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20024574AbXL1MNb (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 28 Dec 2007 12:13:31 +0000
+Received: from [192.168.1.234] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id A28AD3EC9; Fri, 28 Dec 2007 04:12:56 -0800 (PST)
+Message-ID: <4774E865.2000608@ru.mvista.com>
+Date:	Fri, 28 Dec 2007 15:13:25 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_8322_6751167.1198819474160"
-Return-Path: <zzh.hust@gmail.com>
+To:	Matteo Croce <technoboy85@gmail.com>
+Cc:	linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>,
+	Felix Fietkau <nbd@openwrt.org>,
+	Nicolas Thill <nico@openwrt.org>, linux-serial@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH][MIPS][5/6]: AR7: serial hack
+References: <200712271919.23577.technoboy85@gmail.com> <200712271927.06146.technoboy85@gmail.com>
+In-Reply-To: <200712271927.06146.technoboy85@gmail.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17895
+X-archive-position: 17896
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zzh.hust@gmail.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_8322_6751167.1198819474160
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Matteo Croce wrote:
 
-hello, all
-            i work at linux-2.6.14, it  support CONFIG_CPU_MIPS32_R2,  and i
-use CONFIG_CPU_MIPS32_R1 well.
-but the kernel img compiled with my toolchain(gcc 3.4.4 + binutils2.15) is
-not workable. after search the maillist and other resource,
-i found someone said need to patch gcc, others said to patch binutils, and i
-even found a patch for kernel itself.
-is there a correct way to make  CONFIG_CPU_MIPS32_R2 workable? patch gcc or
-binutils?
-thanks for any hints.
-Best Regards
+> Signed-off-by: Matteo Croce <technoboy85@gmail.com>
+> Signed-off-by: Florian Fainelli <florian@openwrt.org>
+> Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+> Signed-off-by: Nicolas Thill <nico@openwrt.org>
 
-zzh
+> diff --git a/drivers/serial/8250.c b/drivers/serial/8250.c
+> index f94109c..94253b7 100644
+> --- a/drivers/serial/8250.c
+> +++ b/drivers/serial/8250.c
+[...]
+> @@ -2453,7 +2460,11 @@ static void serial8250_console_putchar(struct uart_port *port, int ch)
+>  {
+>  	struct uart_8250_port *up = (struct uart_8250_port *)port;
+>  
+> +#ifdef CONFIG_AR7
 
-------=_Part_8322_6751167.1198819474160
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+    No board specific #ifdef's here please. You should use the driver's bug 
+mechanism for this.
 
-hello, all<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i
-work at linux-2.6.14, it&nbsp; support CONFIG_CPU_MIPS32_R2,&nbsp; and
-i use CONFIG_CPU_MIPS32_R1 well.<br>
-but the kernel img compiled with my toolchain(gcc 3.4.4 + binutils2.15)
-is not workable. after search the maillist and other resource,<br>
-i found someone said need to patch gcc, others said to patch binutils, and i even found a patch for kernel itself.<br>
-is there a correct way to make&nbsp; CONFIG_CPU_MIPS32_R2 workable? patch gcc or binutils?<br>
-thanks for any hints.<br>
-Best Regards<br>
-<br>
-zzh &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <span style="text-decoration: underline;"><br>
-</span>
+> +	wait_for_xmitr(up, BOTH_EMPTY);
+> +#else
+>  	wait_for_xmitr(up, UART_LSR_THRE);
+> +#endif
+>  	serial_out(up, UART_TX, ch);
+>  }
+>  
+> diff --git a/include/linux/serialP.h b/include/linux/serialP.h
+> index e811a61..cf71de9 100644
+> --- a/include/linux/serialP.h
+> +++ b/include/linux/serialP.h
+> @@ -135,6 +135,10 @@ struct rs_multiport_struct {
+>   * the interrupt line _up_ instead of down, so if we register the IRQ
+>   * while the UART is in that state, we die in an IRQ storm. */
+>  #define ALPHA_KLUDGE_MCR (UART_MCR_OUT2)
+> +#elif defined(CONFIG_AR7)
+> +/* This is how it is set up by bootloader... */
+> +#define ALPHA_KLUDGE_MCR (UART_MCR_OUT2 | UART_MCR_OUT1 \
+> +			| UART_MCR_RTS | UART_MCR_DTR)
 
-------=_Part_8322_6751167.1198819474160--
+    I don't think you should load the driver with forced RTS and DTR.
+
+>  #else
+>  #define ALPHA_KLUDGE_MCR 0
+>  #endif
+> diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
+> index 9963f81..10af5a2 100644
+> --- a/include/linux/serial_core.h
+> +++ b/include/linux/serial_core.h
+> @@ -40,6 +40,7 @@
+>  #define PORT_NS16550A	14
+>  #define PORT_XSCALE	15
+>  #define PORT_RM9000	16	/* PMC-Sierra RM9xxx internal UART */
+> +#define PORT_AR7	16
+
+    Obviously, this should have been 16. :-)
+
+WBR, Sergei

@@ -1,174 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Jan 2008 01:19:31 +0000 (GMT)
-Received: from mail.zeugmasystems.com ([192.139.122.66]:51303 "EHLO
-	zeugmasystems.com") by ftp.linux-mips.org with ESMTP
-	id S20022105AbYADBTW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 4 Jan 2008 01:19:22 +0000
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Jan 2008 01:28:10 +0000 (GMT)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:47051 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S20024116AbYADB2A (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 4 Jan 2008 01:28:00 +0000
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 0799F311B0A;
+	Fri,  4 Jan 2008 01:28:07 +0000 (UTC)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [67.116.42.147])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
+	Fri,  4 Jan 2008 01:28:06 +0000 (UTC)
+Received: from [192.168.7.26] ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 3 Jan 2008 17:27:44 -0800
+Message-ID: <477D8B90.9020701@avtrex.com>
+Date:	Thu, 03 Jan 2008 17:27:44 -0800
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 1.5.0.12 (X11/20071019)
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----_=_NextPart_001_01C84E6F.A6F04519"
-Subject: BUG: BUS error while returning from read() in /dev/oprofile/buffer
-Date:	Thu, 3 Jan 2008 17:18:01 -0800
-Message-ID: <DDFD17CC94A9BD49A82147DDF7D545C56440FC@exchange.ZeugmaSystems.local>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: BUG: BUS error while returning from read() in /dev/oprofile/buffer
-Thread-Index: AchOb6YezCF8sxJbR7Ou5yLm8ezCzg==
-From:	"Anirban Sinha" <ASinha@zeugmasystems.com>
-To:	<linux-mips@linux-mips.org>, "Ralf Baechle" <ralf@linux-mips.org>
-Return-Path: <ASinha@zeugmasystems.com>
+To:	Anirban Sinha <ASinha@zeugmasystems.com>
+Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: BUG: BUS error while returning from read() in /dev/oprofile/buffer
+References: <DDFD17CC94A9BD49A82147DDF7D545C56440FC@exchange.ZeugmaSystems.local>
+In-Reply-To: <DDFD17CC94A9BD49A82147DDF7D545C56440FC@exchange.ZeugmaSystems.local>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 04 Jan 2008 01:27:44.0793 (UTC) FILETIME=[01C3A890:01C84E71]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17909
+X-archive-position: 17910
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ASinha@zeugmasystems.com
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
+Anirban Sinha wrote:
+> Hi:
+> 
+>  
+> 
+> I have been trying to hunt down this bug for several days now. What 
+> mainly happens is that when oprofiled wakes up from read() in 
+> /dev/oprofile/buffer on receiving a signal USR1 (i.e, when someone does 
+> opcontrol –start after doing opcontrol—start-daemon), it somehow gets 
+> SIGBUS within glibc read().  We are using a mips machine with Sybyte SB1 
+> processor. On intel, this error does not show up. Interestingly, when I 
+> tried running a small test program that simply reads 
+> /dev/oprofile/buffer, the error can’t be reproduced!
+> 
+>  
+> 
+> Ralf and others, any insights, suggestions or useful comments from 
+> experience will be really really appreciated. I am spending a lot of 
+> time trying to fix this bug.
+> 
 
-------_=_NextPart_001_01C84E6F.A6F04519
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Likely you did a cross build of bash and your signal numbers are incorrect.
 
-Hi:
+On the system where you built bash, SIGUSR1 is 10.
 
-=20
+On the mips-linux target signal 10 is SIGBUS so when the bash kill 
+builtin thinks it is sending SIGUSR1 it is really sending SIGBUS.
 
-I have been trying to hunt down this bug for several days now. What
-mainly happens is that when oprofiled wakes up from read() in
-/dev/oprofile/buffer on receiving a signal USR1 (i.e, when someone does
-opcontrol -start after doing opcontrol-start-daemon), it somehow gets
-SIGBUS within glibc read().  We are using a mips machine with Sybyte SB1
-processor. On intel, this error does not show up. Interestingly, when I
-tried running a small test program that simply reads
-/dev/oprofile/buffer, the error can't be reproduced!=20
-
-=20
-
-Ralf and others, any insights, suggestions or useful comments from
-experience will be really really appreciated. I am spending a lot of
-time trying to fix this bug.
-
-=20
-
-Cheers,
-
-=20
-
-Ani
-
-=20
-
-
-------_=_NextPart_001_01C84E6F.A6F04519
-Content-Type: text/html;
-	charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-
-<html xmlns:v=3D"urn:schemas-microsoft-com:vml" =
-xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
-xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
-xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" =
-xmlns=3D"http://www.w3.org/TR/REC-html40">
-
-<head>
-<meta http-equiv=3DContent-Type content=3D"text/html; =
-charset=3Dus-ascii">
-<meta name=3DGenerator content=3D"Microsoft Word 12 (filtered medium)">
-<style>
-<!--
- /* Font Definitions */
- @font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}
-@font-face
-	{font-family:Calibri;
-	panose-1:2 15 5 2 2 2 4 3 2 4;}
- /* Style Definitions */
- p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0in;
-	margin-bottom:.0001pt;
-	font-size:11.0pt;
-	font-family:"Calibri","sans-serif";}
-a:link, span.MsoHyperlink
-	{mso-style-priority:99;
-	color:blue;
-	text-decoration:underline;}
-a:visited, span.MsoHyperlinkFollowed
-	{mso-style-priority:99;
-	color:purple;
-	text-decoration:underline;}
-span.EmailStyle17
-	{mso-style-type:personal-compose;
-	font-family:"Calibri","sans-serif";
-	color:windowtext;}
-.MsoChpDefault
-	{mso-style-type:export-only;}
-@page Section1
-	{size:8.5in 11.0in;
-	margin:1.0in 1.0in 1.0in 1.0in;}
-div.Section1
-	{page:Section1;}
--->
-</style>
-<!--[if gte mso 9]><xml>
- <o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
-</xml><![endif]--><!--[if gte mso 9]><xml>
- <o:shapelayout v:ext=3D"edit">
-  <o:idmap v:ext=3D"edit" data=3D"1" />
- </o:shapelayout></xml><![endif]-->
-</head>
-
-<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
-
-<div class=3DSection1>
-
-<p class=3DMsoNormal>Hi:<o:p></o:p></p>
-
-<p class=3DMsoNormal><o:p>&nbsp;</o:p></p>
-
-<p class=3DMsoNormal>I have been trying to hunt down this bug for =
-several days
-now. What mainly happens is that when oprofiled wakes up from read() in
-/dev/oprofile/buffer on receiving a signal USR1 (i.e, when someone does
-opcontrol &#8211;start after doing opcontrol&#8212;start-daemon), it =
-somehow
-gets SIGBUS within glibc read(). &nbsp;We are using a mips machine with =
-Sybyte
-SB1 processor. On intel, this error does not show up. Interestingly, =
-when I
-tried running a small test program that simply reads =
-/dev/oprofile/buffer, the
-error can&#8217;t be reproduced! <o:p></o:p></p>
-
-<p class=3DMsoNormal><o:p>&nbsp;</o:p></p>
-
-<p class=3DMsoNormal>Ralf and others, any insights, suggestions or =
-useful
-comments from experience will be really really appreciated. I am =
-spending a lot
-of time trying to fix this bug.<o:p></o:p></p>
-
-<p class=3DMsoNormal><o:p>&nbsp;</o:p></p>
-
-<p class=3DMsoNormal>Cheers,<o:p></o:p></p>
-
-<p class=3DMsoNormal><o:p>&nbsp;</o:p></p>
-
-<p class=3DMsoNormal>Ani<o:p></o:p></p>
-
-<p class=3DMsoNormal><o:p>&nbsp;</o:p></p>
-
-</div>
-
-</body>
-
-</html>
-
-------_=_NextPart_001_01C84E6F.A6F04519--
+David Daney

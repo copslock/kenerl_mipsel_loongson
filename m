@@ -1,69 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Jan 2008 01:28:10 +0000 (GMT)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:47051 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20024116AbYADB2A (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 4 Jan 2008 01:28:00 +0000
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 0799F311B0A;
-	Fri,  4 Jan 2008 01:28:07 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Fri,  4 Jan 2008 01:28:06 +0000 (UTC)
-Received: from [192.168.7.26] ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Thu, 3 Jan 2008 17:27:44 -0800
-Message-ID: <477D8B90.9020701@avtrex.com>
-Date:	Thu, 03 Jan 2008 17:27:44 -0800
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 1.5.0.12 (X11/20071019)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Jan 2008 16:45:26 +0000 (GMT)
+Received: from fig.raritan.com ([12.144.63.197]:50919 "EHLO fig.raritan.com")
+	by ftp.linux-mips.org with ESMTP id S20023566AbYADQpR (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 4 Jan 2008 16:45:17 +0000
+Received: from [192.168.32.225] ([192.168.32.225]) by fig.raritan.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 4 Jan 2008 11:45:10 -0500
+Message-ID: <477E6296.7090605@raritan.com>
+Date:	Fri, 04 Jan 2008 11:45:10 -0500
+From:	Gregor Waltz <gregor.waltz@raritan.com>
+User-Agent: Thunderbird 1.5.0.10 (X11/20070403)
 MIME-Version: 1.0
-To:	Anirban Sinha <ASinha@zeugmasystems.com>
-Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: BUG: BUS error while returning from read() in /dev/oprofile/buffer
-References: <DDFD17CC94A9BD49A82147DDF7D545C56440FC@exchange.ZeugmaSystems.local>
-In-Reply-To: <DDFD17CC94A9BD49A82147DDF7D545C56440FC@exchange.ZeugmaSystems.local>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 04 Jan 2008 01:27:44.0793 (UTC) FILETIME=[01C3A890:01C84E71]
-Return-Path: <ddaney@avtrex.com>
+To:	linux-mips@linux-mips.org
+Subject: Toshiba JMR 3927 working setup?
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 04 Jan 2008 16:45:10.0813 (UTC) FILETIME=[2BBFBCD0:01C84EF1]
+Return-Path: <Gregor.Waltz@raritan.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17910
+X-archive-position: 17911
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: gregor.waltz@raritan.com
 Precedence: bulk
 X-list: linux-mips
 
-Anirban Sinha wrote:
-> Hi:
-> 
->  
-> 
-> I have been trying to hunt down this bug for several days now. What 
-> mainly happens is that when oprofiled wakes up from read() in 
-> /dev/oprofile/buffer on receiving a signal USR1 (i.e, when someone does 
-> opcontrol –start after doing opcontrol—start-daemon), it somehow gets 
-> SIGBUS within glibc read().  We are using a mips machine with Sybyte SB1 
-> processor. On intel, this error does not show up. Interestingly, when I 
-> tried running a small test program that simply reads 
-> /dev/oprofile/buffer, the error can’t be reproduced!
-> 
->  
-> 
-> Ralf and others, any insights, suggestions or useful comments from 
-> experience will be really really appreciated. I am spending a lot of 
-> time trying to fix this bug.
-> 
+I have been working on a JMR 3927 based system for a number of years. 
+For all of that time, we have been running:
+binutils 2.11.90.0.1
+gcc 2.95.3
+glibc 2.2.1
+linux 2.4.12
 
-Likely you did a cross build of bash and your signal numbers are incorrect.
 
-On the system where you built bash, SIGUSR1 is 10.
+We want to update to a 2.6 kernel, recent build tools, and saner system 
+libraries. Although, it seems that the JMR 3927 is still technically 
+supported, I have not found any info on whether anybody is still running 
+Linux on it and what combination of software they are using. Any idea?
+Is there a combination of software versions that are known to work on 
+this hardware?
 
-On the mips-linux target signal 10 is SIGBUS so when the bash kill 
-builtin thinks it is sending SIGUSR1 it is really sending SIGBUS.
 
-David Daney
+I have used crosstool 0.43 to build:
+binutils 2.15
+gcc 3.4.5
+glibc 2.3.6
+
+I cannot get these kernels to build:
+linux-2.6.13
+linux-2.6.15
+linux-2.6.16.57
+linux-2.6.17.14
+linux-2.6.9
+
+My colleague and I have built these:
+linux-2.6.21.7
+linux-2.6.23.9
+linux-2.6.23.12
+
+However, they all yield a TLBL exception similar to the following:
+
+Exception! EPC=80056eb4 CAUSE=30000008(TLBL)
+80056eb4 8ce4000c lw      a0,12(a3)                         # 0xc
+
+Each build has different exception values. The values are the same each 
+attempt with the same build.
+
+Is this a problem in the kernel code or the build tools?
+Any ideas on how to make it run?
+
+Using the recently built tools, I am currently trying to build the 
+2.4.12 kernel that is known to work, which is proving difficult. If I 
+can get it to build, I am hoping to see whether the tools are able to 
+build a functioning kernel.
+
+Thanks

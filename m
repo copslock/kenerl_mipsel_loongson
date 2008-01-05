@@ -1,48 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Jan 2008 15:46:19 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:52986 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20031404AbYAEPqK (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 5 Jan 2008 15:46:10 +0000
-Received: from localhost (p8226-ipad401funabasi.chiba.ocn.ne.jp [123.217.242.226])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 72A1D9A25; Sun,  6 Jan 2008 00:46:06 +0900 (JST)
-Date:	Sun, 06 Jan 2008 00:48:34 +0900 (JST)
-Message-Id: <20080106.004834.96687248.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: Re: [MIPS] Fix modpost warning in raw binary builds.
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <S20039888AbXJPTFk/20071016190540Z+81757@ftp.linux-mips.org>
-References: <S20039888AbXJPTFk/20071016190540Z+81757@ftp.linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Jan 2008 17:05:56 +0000 (GMT)
+Received: from relay01.mx.bawue.net ([193.7.176.67]:46722 "EHLO
+	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
+	id S20025260AbYAERFr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 5 Jan 2008 17:05:47 +0000
+Received: from lagash (88-106-143-223.dynamic.dsl.as9105.com [88.106.143.223])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by relay01.mx.bawue.net (Postfix) with ESMTP id D6DC548905;
+	Sat,  5 Jan 2008 18:05:41 +0100 (CET)
+Received: from ths by lagash with local (Exim 4.68)
+	(envelope-from <ths@networkno.de>)
+	id 1JBCSw-0002Cj-8Q; Sat, 05 Jan 2008 17:05:46 +0000
+Date:	Sat, 5 Jan 2008 17:05:46 +0000
+From:	Thiemo Seufer <ths@networkno.de>
+To:	KokHow.Teh@infineon.com
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Arch/mips/kernel/vpe.c
+Message-ID: <20080105170546.GG22809@networkno.de>
+References: <31E09F73562D7A4D82119D7F6C1729860320EADA@sinse303.ap.infineon.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <31E09F73562D7A4D82119D7F6C1729860320EADA@sinse303.ap.infineon.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17928
+X-archive-position: 17929
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 16 Oct 2007 20:05:35 +0100, linux-mips@linux-mips.org wrote:
-> Author: Ralf Baechle <ralf@linux-mips.org> Tue Oct 16 20:05:18 2007 +0100
-> Commit: 017e3a492683b32d17dcd1b13b279745cc656073
-> Gitweb: http://www.linux-mips.org/g/linux/017e3a49
-> Branch: master
-> 
->   MODPOST vmlinux.o
-> WARNING: vmlinux.o(.text+0x478): Section mismatch: reference to .init.text:start_kernel (between '_stext' and 'run_init_process')
+KokHow.Teh@infineon.com wrote:
+> Hi;
+> 	I am working on MIPS34KC with APRP kernel and I use uclibc
+> gccc-3.4.4 to build applications to run on VPE1. The present
+> implementation of VPE loader is limited to a few relocation types which
+> are used when mips_sde compiler is used. However, the relocatable binary
+> churn out from my uclibc-gcc-3.4.4 has more other relocation types than
+> the ones defined in arch/mips/kernel/vpe.c, especially those with GOT
+> relocation types. I have taken a look at the System V ABI Third Edition
+> but if anybody has any code reference and pointers to how each
+> relocation types should be implemented in C-code, it would be very
+> helpful.
 
-This commit should break CONFIG_BOOT_RAW.  Since I do not have any
-good idea to avoid this warning, reverting this commit would be the
-best for now.  The warning is just a false positive anyway.
+The most likely place to look at would be the binutils source code. That
+said, you can probably get away without enhancing the VPE loader by using
+  a) fully linked (non-relocatable) executables, or
+  b) non-PIC code, like SDE does
 
----
-Atsushi Nemoto
+Regardless of your choice, you will have to make sure the uclibc toolchain
+doesn't use any libraries which need Linux facilities, as the bare-metal
+environment on VPE1 doesn't provide them. For that reason I believe you
+are better of with SDE or a similiar mips*-elf configured toolchain.
+
+
+Thiemo

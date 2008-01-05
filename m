@@ -1,101 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Jan 2008 14:45:43 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:48874 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20030589AbYAEOpk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 5 Jan 2008 14:45:40 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m05Ejamk013054;
-	Sat, 5 Jan 2008 15:45:36 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m05EjZI4013053;
-	Sat, 5 Jan 2008 15:45:35 +0100
-Date:	Sat, 5 Jan 2008 15:45:35 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Gregor Waltz <gregor.waltz@raritan.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Jan 2008 15:05:10 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:35544 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20030802AbYAEPFB (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 5 Jan 2008 15:05:01 +0000
+Received: from localhost (p8226-ipad401funabasi.chiba.ocn.ne.jp [123.217.242.226])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 8FFD19838; Sun,  6 Jan 2008 00:04:57 +0900 (JST)
+Date:	Sun, 06 Jan 2008 00:07:25 +0900 (JST)
+Message-Id: <20080106.000725.75184768.anemo@mba.ocn.ne.jp>
+To:	gregor.waltz@raritan.com
 Cc:	linux-mips@linux-mips.org
 Subject: Re: Toshiba JMR 3927 working setup?
-Message-ID: <20080105144535.GA12824@linux-mips.org>
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <477E7DAE.2080005@raritan.com>
 References: <477E6296.7090605@raritan.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <477E6296.7090605@raritan.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+	<20080104172136.GD22809@networkno.de>
+	<477E7DAE.2080005@raritan.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17926
+X-archive-position: 17927
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jan 04, 2008 at 11:45:10AM -0500, Gregor Waltz wrote:
-
-> We want to update to a 2.6 kernel, recent build tools, and saner system 
-> libraries. Although, it seems that the JMR 3927 is still technically 
-> supported, I have not found any info on whether anybody is still running 
-> Linux on it and what combination of software they are using. Any idea?
-> Is there a combination of software versions that are known to work on this 
-> hardware?
-
-It's years since I last had a report of the JMR3927.  Since that time
-the code is maintained without the possibility of testing.
-
-> I have used crosstool 0.43 to build:
-> binutils 2.15
-> gcc 3.4.5
-> glibc 2.3.6
->
-> I cannot get these kernels to build:
-> linux-2.6.13
-> linux-2.6.15
-> linux-2.6.16.57
-> linux-2.6.17.14
-> linux-2.6.9
-
-These themselves are rather old.
-
-> My colleague and I have built these:
-> linux-2.6.21.7
-> linux-2.6.23.9
-> linux-2.6.23.12
-
-The build since we tried to fix the JMR3927 as good as possible without
-having access to hardware.  Which of course means almost certainly the
-one or other buglet is left in the code ...
-
-> However, they all yield a TLBL exception similar to the following:
->
+On Fri, 04 Jan 2008 13:40:46 -0500, Gregor Waltz <gregor.waltz@raritan.com> wrote:
+> sendRRQ vmlinux.bin
+> load linux length 0x34408a
+> Checking CRC on downloaded RAM image
+>  /
+> CRC Check passed
+> Image Started At Address 0x80020000.
+> Image Length = 3424394 (0x34408a).
 > Exception! EPC=80056eb4 CAUSE=30000008(TLBL)
 > 80056eb4 8ce4000c lw      a0,12(a3)                         # 0xc
->
-> Each build has different exception values. The values are the same each 
-> attempt with the same build.
 
-... quod erat demonstrandum.
+Are you loading an ELF binary or a raw binary image?  If your loader
+does not handle ELF headers, you should do some trick to start running
+your kernel at correct address.
 
-> Is this a problem in the kernel code or the build tools?
+If you were using 2.6.23, CONFIG_BOOT_RAW might help you.
 
-Well possible a bit of both ...
+But it seems CONFIG_BOOT_RAW is broken on current git again.  It will
+be an another story... :-<
 
-> Any ideas on how to make it run?
-
-You may want to switch to a recent binutils like 2.18 and gcc 4.2.2.
-
-There was a change related to linker scripts and I think that change
-requires a recent binutils version.
-
-> Using the recently built tools, I am currently trying to build the 2.4.12 
-> kernel that is known to work, which is proving difficult. If I can get it 
-> to build, I am hoping to see whether the tools are able to build a 
-> functioning kernel.
-
-2.4.12 had various alergies against modern toolchains.  So you may want
-to retain a copy of your old toolchain for use with 2.4.12.  later 2.4
-versions have been fixed to build with recent toolchains.
-
-  Ralf
+---
+Atsushi Nemoto

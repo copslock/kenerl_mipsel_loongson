@@ -1,62 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Jan 2008 17:05:56 +0000 (GMT)
-Received: from relay01.mx.bawue.net ([193.7.176.67]:46722 "EHLO
-	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
-	id S20025260AbYAERFr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 5 Jan 2008 17:05:47 +0000
-Received: from lagash (88-106-143-223.dynamic.dsl.as9105.com [88.106.143.223])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by relay01.mx.bawue.net (Postfix) with ESMTP id D6DC548905;
-	Sat,  5 Jan 2008 18:05:41 +0100 (CET)
-Received: from ths by lagash with local (Exim 4.68)
-	(envelope-from <ths@networkno.de>)
-	id 1JBCSw-0002Cj-8Q; Sat, 05 Jan 2008 17:05:46 +0000
-Date:	Sat, 5 Jan 2008 17:05:46 +0000
-From:	Thiemo Seufer <ths@networkno.de>
-To:	KokHow.Teh@infineon.com
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Arch/mips/kernel/vpe.c
-Message-ID: <20080105170546.GG22809@networkno.de>
-References: <31E09F73562D7A4D82119D7F6C1729860320EADA@sinse303.ap.infineon.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <31E09F73562D7A4D82119D7F6C1729860320EADA@sinse303.ap.infineon.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ths@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Jan 2008 22:49:14 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:21428 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20032773AbYAEWtE (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 5 Jan 2008 22:49:04 +0000
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1JBHp4-0004BX-00; Sat, 05 Jan 2008 23:48:58 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 78EDCC2EFB; Sat,  5 Jan 2008 23:48:42 +0100 (CET)
+From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To:	netdev@vger.kernel.org, linux-mips@linux-mips.org
+cc:	ralf@linux-mips.org, jgarzik@pobox.com
+Subject: [PATCH] METH: fix MAC address handling
+Message-Id: <20080105224842.78EDCC2EFB@solo.franken.de>
+Date:	Sat,  5 Jan 2008 23:48:42 +0100 (CET)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17929
+X-archive-position: 17930
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-KokHow.Teh@infineon.com wrote:
-> Hi;
-> 	I am working on MIPS34KC with APRP kernel and I use uclibc
-> gccc-3.4.4 to build applications to run on VPE1. The present
-> implementation of VPE loader is limited to a few relocation types which
-> are used when mips_sde compiler is used. However, the relocatable binary
-> churn out from my uclibc-gcc-3.4.4 has more other relocation types than
-> the ones defined in arch/mips/kernel/vpe.c, especially those with GOT
-> relocation types. I have taken a look at the System V ABI Third Edition
-> but if anybody has any code reference and pointers to how each
-> relocation types should be implemented in C-code, it would be very
-> helpful.
+meth didn't set a valid mac address during probing, but later during
+open. Newer kernel refuse to open device with 00:00:00:00:00:00 as
+mac address -> dead ethernet. This patch sets the mac address in
+the probe function and uses only the mac address from the netdevice
+struct when setting up the hardware.
 
-The most likely place to look at would be the binutils source code. That
-said, you can probably get away without enhancing the VPE loader by using
-  a) fully linked (non-relocatable) executables, or
-  b) non-PIC code, like SDE does
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+---
 
-Regardless of your choice, you will have to make sure the uclibc toolchain
-doesn't use any libraries which need Linux facilities, as the bare-metal
-environment on VPE1 doesn't provide them. For that reason I believe you
-are better of with SDE or a similiar mips*-elf configured toolchain.
+ drivers/net/meth.c |   10 +++++++---
+ 1 files changed, 7 insertions(+), 3 deletions(-)
 
-
-Thiemo
+diff --git a/drivers/net/meth.c b/drivers/net/meth.c
+index 0c89b02..cdaa8fc 100644
+--- a/drivers/net/meth.c
++++ b/drivers/net/meth.c
+@@ -95,11 +95,14 @@ static inline void load_eaddr(struct net_device *dev)
+ {
+ 	int i;
+ 	DECLARE_MAC_BUF(mac);
++	u64 macaddr;
+ 
+-	for (i = 0; i < 6; i++)
+-		dev->dev_addr[i] = o2meth_eaddr[i];
+ 	DPRINTK("Loading MAC Address: %s\n", print_mac(mac, dev->dev_addr));
+-	mace->eth.mac_addr = (*(unsigned long*)o2meth_eaddr) >> 16;
++	macaddr = 0;
++	for (i = 0; i < 6; i++)
++		macaddr |= dev->dev_addr[i] << ((5 - i) * 8);
++
++	mace->eth.mac_addr = macaddr;
+ }
+ 
+ /*
+@@ -794,6 +797,7 @@ static int __init meth_probe(struct platform_device *pdev)
+ #endif
+ 	dev->irq	     = MACE_ETHERNET_IRQ;
+ 	dev->base_addr	     = (unsigned long)&mace->eth;
++	memcpy(dev->dev_addr, o2meth_eaddr, 6);
+ 
+ 	priv = netdev_priv(dev);
+ 	spin_lock_init(&priv->meth_lock);

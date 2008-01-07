@@ -1,68 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Jan 2008 15:53:14 +0000 (GMT)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:486 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20027231AbYAGPxG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 7 Jan 2008 15:53:06 +0000
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 9038C311BBD;
-	Mon,  7 Jan 2008 15:53:03 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Mon,  7 Jan 2008 15:53:03 +0000 (UTC)
-Received: from [192.168.7.229] ([192.168.7.229]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Mon, 7 Jan 2008 07:52:50 -0800
-Message-ID: <47824ACF.7050003@avtrex.com>
-Date:	Mon, 07 Jan 2008 07:52:47 -0800
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 1.5.0.12 (X11/20071019)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Jan 2008 16:19:02 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:7117 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S28574287AbYAGQTA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 7 Jan 2008 16:19:00 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m07GIbZM001042;
+	Mon, 7 Jan 2008 16:18:37 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m07GIZKT001041;
+	Mon, 7 Jan 2008 16:18:35 GMT
+Date:	Mon, 7 Jan 2008 16:18:35 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Thiemo Seufer <ths@networkno.de>
+Cc:	KokHow.Teh@infineon.com, linux-mips@linux-mips.org
+Subject: Re: Arch/mips/kernel/vpe.c
+Message-ID: <20080107161835.GB674@linux-mips.org>
+References: <31E09F73562D7A4D82119D7F6C1729860320EADA@sinse303.ap.infineon.com> <20080105170546.GG22809@networkno.de>
 MIME-Version: 1.0
-To:	Jorgen Lundman <lundman@lundman.net>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: MIPS 4KEc with 2.6.15
-References: <478174C1.2090708@lundman.net>
-In-Reply-To: <478174C1.2090708@lundman.net>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 07 Jan 2008 15:52:51.0879 (UTC) FILETIME=[5C09AB70:01C85145]
-Return-Path: <ddaney@avtrex.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20080105170546.GG22809@networkno.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17943
+X-archive-position: 17944
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Jorgen Lundman wrote:
->
-> Hello list,
->
-> I have an embedded device running 2.6.15 kernel on a MIPS 4KEc 300MHz
-> CPU. It was configured for Sigma's tango2 board, which I know nothing
-> about, so I picked a mips-board by random, "atlas", and found I can
-> produce working kernel module compiles.
->
-> However, when I compiled FUSE kernel module, it behaves erratically in
-> a way making the FUSE developer think I may have come across the cache
-> coherency bug in arm and mips, fixed sometime around 2.6.17.
->
-> Since I can not change the kernel that is running, I was looking for
-> alternate solutions. FUSE itself has a work around, that calls
-> flush_cache_page(), but I found that mips-board atlas does not have
-> this defined:
->
-> fuse: Unknown symbol flush_cache_page
+On Sat, Jan 05, 2008 at 05:05:46PM +0000, Thiemo Seufer wrote:
 
-There are cache coherency issues on the 8634.  You should be using the
-vendor's very most recent kernels.  For me they seem to have resolved
-the cache issues.
+> > 	I am working on MIPS34KC with APRP kernel and I use uclibc
+> > gccc-3.4.4 to build applications to run on VPE1. The present
+> > implementation of VPE loader is limited to a few relocation types which
+> > are used when mips_sde compiler is used. However, the relocatable binary
+> > churn out from my uclibc-gcc-3.4.4 has more other relocation types than
+> > the ones defined in arch/mips/kernel/vpe.c, especially those with GOT
+> > relocation types. I have taken a look at the System V ABI Third Edition
+> > but if anybody has any code reference and pointers to how each
+> > relocation types should be implemented in C-code, it would be very
+> > helpful.
+> 
+> The most likely place to look at would be the binutils source code. That
+> said, you can probably get away without enhancing the VPE loader by using
+>   a) fully linked (non-relocatable) executables, or
+>   b) non-PIC code, like SDE does
+> 
+> Regardless of your choice, you will have to make sure the uclibc toolchain
+> doesn't use any libraries which need Linux facilities, as the bare-metal
+> environment on VPE1 doesn't provide them. For that reason I believe you
+> are better of with SDE or a similiar mips*-elf configured toolchain.
 
-Also as noted by others, you need the exact kernel sources if you are
-going to build working modules.
+I'm tempted to replace the existing vpe loader with something like the 2.4
+version of insmod which does all the relocation handling in userspace and a
+device file which make the vpe memory available to userspace for the loader
+to write to.  Or something like spufs.
 
-David Daney
+  Ralf

@@ -1,72 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Jan 2008 00:39:45 +0000 (GMT)
-Received: from mail.lundman.net ([210.172.146.197]:35985 "EHLO
-	mail.lundman.net") by ftp.linux-mips.org with ESMTP
-	id S20027277AbYAGAjh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 7 Jan 2008 00:39:37 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Jan 2008 01:20:30 +0000 (GMT)
+Received: from 74-93-104-97-Washington.hfc.comcastbusiness.net ([74.93.104.97]:19842
+	"EHLO sunset.davemloft.net") by ftp.linux-mips.org with ESMTP
+	id S20028933AbYAGBUU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 7 Jan 2008 01:20:20 +0000
 Received: from localhost (localhost [127.0.0.1])
-	by mail.lundman.net (Postfix) with ESMTP id E1BC4299F3
-	for <linux-mips@linux-mips.org>; Mon,  7 Jan 2008 09:39:30 +0900 (JST)
-X-Virus-Scanned: amavisd-new at lundman.net
-Received: from mail.lundman.net ([127.0.0.1])
-	by localhost (eyot.interq.or.jp [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id IpV-6fnZIlvi for <linux-mips@linux-mips.org>;
-	Mon,  7 Jan 2008 09:39:29 +0900 (JST)
-Received: from shinken.interq.or.jp (shinken.interq.or.jp [210.172.146.228])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.lundman.net (Postfix) with ESMTP id A8D56299E7
-	for <linux-mips@linux-mips.org>; Mon,  7 Jan 2008 09:39:29 +0900 (JST)
-Message-ID: <478174C1.2090708@lundman.net>
-Date:	Mon, 07 Jan 2008 09:39:29 +0900
-From:	Jorgen Lundman <lundman@lundman.net>
-User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en-US; rv:1.8.1.5) Gecko/20070725 SeaMonkey/1.1.3
-MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: MIPS 4KEc with 2.6.15
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+	by sunset.davemloft.net (Postfix) with ESMTP id 0824DC8C183;
+	Sun,  6 Jan 2008 17:20:19 -0800 (PST)
+Date:	Sun, 06 Jan 2008 17:20:18 -0800 (PST)
+Message-Id: <20080106.172018.39803221.davem@davemloft.net>
+To:	tsbogend@alpha.franken.de
+Cc:	netdev@vger.kernel.org, linux-mips@linux-mips.org,
+	ralf@linux-mips.org, jgarzik@pobox.com
+Subject: Re: [PATCH] METH: fix MAC address handling
+From:	David Miller <davem@davemloft.net>
+In-Reply-To: <20080106113815.GA6140@alpha.franken.de>
+References: <20080105224842.78EDCC2EFB@solo.franken.de>
+	<20080106.002305.99653155.davem@davemloft.net>
+	<20080106113815.GA6140@alpha.franken.de>
+X-Mailer: Mew version 5.2 on Emacs 22.1 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <lundman@lundman.net>
+Return-Path: <davem@davemloft.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17935
+X-archive-position: 17936
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lundman@lundman.net
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 X-list: linux-mips
 
+From: tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Date: Sun, 6 Jan 2008 12:38:16 +0100
 
-Hello list,
+> On Sun, Jan 06, 2008 at 12:23:05AM -0800, David Miller wrote:
+> > I know that this whole driver is full of assumptions about
+> > the endianness of the system this chip is found on, so
+> > I'm only interested in if the transformation is equivalent
+> > and the driver will keep working properly.
+> 
+> I've tested the driver and it's still working :-)
 
-I have an embedded device running 2.6.15 kernel on a MIPS 4KEc 300MHz 
-CPU. It was configured for Sigma's tango2 board, which I know nothing 
-about, so I picked a mips-board by random, "atlas", and found I can 
-produce working kernel module compiles.
-
-However, when I compiled FUSE kernel module, it behaves erratically in a 
-way making the FUSE developer think I may have come across the cache 
-coherency bug in arm and mips, fixed sometime around 2.6.17.
-
-Since I can not change the kernel that is running, I was looking for 
-alternate solutions. FUSE itself has a work around, that calls 
-flush_cache_page(), but I found that mips-board atlas does not have this 
-defined:
-
-fuse: Unknown symbol flush_cache_page
-
-Should I try other mips-boards that may have this function call defined? 
-Do I have other ways to avoid the cache coherence bug?
-
-The /proc/ksyms is gone, so I do not think I am able to check what 
-symbols their kernel has.
-
-Lund
-
-
--- 
-Jorgen Lundman       | <lundman@lundman.net>
-Unix Administrator   | +81 (0)3 -5456-2687 ext 1017 (work)
-Shibuya-ku, Tokyo    | +81 (0)90-5578-8500          (cell)
-Japan                | +81 (0)3 -3375-1767          (home)
+Great :)

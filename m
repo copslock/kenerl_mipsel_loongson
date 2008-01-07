@@ -1,78 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Jan 2008 13:25:56 +0000 (GMT)
-Received: from mail.lundman.net ([210.172.146.197]:32132 "EHLO
-	mail.lundman.net") by ftp.linux-mips.org with ESMTP
-	id S20025497AbYAGNZs (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 7 Jan 2008 13:25:48 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by mail.lundman.net (Postfix) with ESMTP id DFE34299F3
-	for <linux-mips@linux-mips.org>; Mon,  7 Jan 2008 22:25:45 +0900 (JST)
-X-Virus-Scanned: amavisd-new at lundman.net
-Received: from mail.lundman.net ([127.0.0.1])
-	by localhost (eyot.interq.or.jp [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id MkMz3L9h7np0 for <linux-mips@linux-mips.org>;
-	Mon,  7 Jan 2008 22:25:40 +0900 (JST)
-Received: from shinken.interq.or.jp (shinken.interq.or.jp [210.172.146.228])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.lundman.net (Postfix) with ESMTP id 8ED43299E7
-	for <linux-mips@linux-mips.org>; Mon,  7 Jan 2008 22:25:40 +0900 (JST)
-Message-ID: <47822854.1010108@lundman.net>
-Date:	Mon, 07 Jan 2008 22:25:40 +0900
-From:	Jorgen Lundman <lundman@lundman.net>
-User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en-US; rv:1.8.1.5) Gecko/20070725 SeaMonkey/1.1.3
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Jan 2008 14:58:45 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:2439 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S28574195AbYAGO6n (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 7 Jan 2008 14:58:43 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m07EwNFU030776;
+	Mon, 7 Jan 2008 14:58:23 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m07EwMwS030775;
+	Mon, 7 Jan 2008 14:58:22 GMT
+Date:	Mon, 7 Jan 2008 14:58:22 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [MIPS] Fix modpost warning in raw binary builds.
+Message-ID: <20080107145822.GA14955@linux-mips.org>
+References: <S20039888AbXJPTFk/20071016190540Z+81757@ftp.linux-mips.org> <20080106.004834.96687248.anemo@mba.ocn.ne.jp>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Re: MIPS 4KEc with 2.6.15
-References: <478174C1.2090708@lundman.net> <20080107120852.GA24700@linux-mips.org>
-In-Reply-To: <20080107120852.GA24700@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <lundman@lundman.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20080106.004834.96687248.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17939
+X-archive-position: 17940
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lundman@lundman.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Sorry, I should have said, I grabbed 2.6.15.7 to use. And after the 
-issues, I even tried the exact 2.6.15 tarball off Sigmas FTP with the 
-same results. It does not define flush_cache_pages for Atlas board, only 
-SGI IPxx from what I can tell.
+On Sun, Jan 06, 2008 at 12:48:34AM +0900, Atsushi Nemoto wrote:
 
-Ralf Baechle wrote:
-> On Mon, Jan 07, 2008 at 09:39:29AM +0900, Jorgen Lundman wrote:
+> > 
+> >   MODPOST vmlinux.o
+> > WARNING: vmlinux.o(.text+0x478): Section mismatch: reference to .init.text:start_kernel (between '_stext' and 'run_init_process')
 > 
->> I have an embedded device running 2.6.15 kernel on a MIPS 4KEc 300MHz CPU. 
->> It was configured for Sigma's tango2 board, which I know nothing about, so 
->> I picked a mips-board by random, "atlas", and found I can produce working 
->> kernel module compiles.
->>
->> However, when I compiled FUSE kernel module, it behaves erratically in a 
->> way making the FUSE developer think I may have come across the cache 
->> coherency bug in arm and mips, fixed sometime around 2.6.17.
->>
->> Since I can not change the kernel that is running, I was looking for 
->> alternate solutions. FUSE itself has a work around, that calls 
->> flush_cache_page(), but I found that mips-board atlas does not have this 
->> defined:
-> 
-> While you may not be able to change the kernel running on your board,
-> you should be building any modules against kernel headers of the exact
-> kernel running and configured for the platform and CPU you're using.
-> 
-> Mixing and matching different versions and configurations may work but
-> frequently it will fail silently.
-> 
->   Ralf
-> 
+> This commit should break CONFIG_BOOT_RAW.  Since I do not have any
+> good idea to avoid this warning, reverting this commit would be the
+> best for now.  The warning is just a false positive anyway.
 
--- 
-Jorgen Lundman       | <lundman@lundman.net>
-Unix Administrator   | +81 (0)3 -5456-2687 ext 1017 (work)
-Shibuya-ku, Tokyo    | +81 (0)90-5578-8500          (cell)
-Japan                | +81 (0)3 -3375-1767          (home)
+But a somewhat nervragging one and it'd be easy to fix now that
+__INIT_REFOK is in the kernel, something like the below patch should do
+the trick.
+
+  Ralf
+
+diff --git a/arch/mips/kernel/head.S b/arch/mips/kernel/head.S
+index 2367687..50be56c 100644
+--- a/arch/mips/kernel/head.S
++++ b/arch/mips/kernel/head.S
+@@ -136,7 +136,8 @@ EXPORT(_stext)
+ 	 * kernel load address.  This is needed because this platform does
+ 	 * not have a ELF loader yet.
+ 	 */
+-	__INIT
++FEXPORT(__kernel_entry)
++	j	kernel_entry
+ #endif
+ 
+ 	__INIT_REFOK

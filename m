@@ -1,65 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Jan 2008 14:58:45 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:2439 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28574195AbYAGO6n (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 7 Jan 2008 14:58:43 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m07EwNFU030776;
-	Mon, 7 Jan 2008 14:58:23 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m07EwMwS030775;
-	Mon, 7 Jan 2008 14:58:22 GMT
-Date:	Mon, 7 Jan 2008 14:58:22 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [MIPS] Fix modpost warning in raw binary builds.
-Message-ID: <20080107145822.GA14955@linux-mips.org>
-References: <S20039888AbXJPTFk/20071016190540Z+81757@ftp.linux-mips.org> <20080106.004834.96687248.anemo@mba.ocn.ne.jp>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080106.004834.96687248.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Jan 2008 15:32:20 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:29143 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S28574265AbYAGPcL (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 7 Jan 2008 15:32:11 +0000
+Received: from localhost (p7144-ipad210funabasi.chiba.ocn.ne.jp [58.88.126.144])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id E69DE95A9; Tue,  8 Jan 2008 00:32:05 +0900 (JST)
+Date:	Tue, 08 Jan 2008 00:34:35 +0900 (JST)
+Message-Id: <20080108.003435.126573280.anemo@mba.ocn.ne.jp>
+To:	ralf@linux-mips.org
+Cc:	gregor.waltz@raritan.com, linux-mips@linux-mips.org
+Subject: Re: Toshiba JMR 3927 working setup?
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20080107122156.GB24700@linux-mips.org>
+References: <477EB2EA.7060009@raritan.com>
+	<20080105.234256.25910407.anemo@mba.ocn.ne.jp>
+	<20080107122156.GB24700@linux-mips.org>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17940
+X-archive-position: 17941
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Jan 06, 2008 at 12:48:34AM +0900, Atsushi Nemoto wrote:
+On Mon, 7 Jan 2008 12:21:56 +0000, Ralf Baechle <ralf@linux-mips.org> wrote:
+> Well, is mmiowb() needed at all on JMR3927 - or R3000 in general?  Mmiowb()
+> is meant to deal with weak ordering which only matters to a few SMP
+> configurations.
 
-> > 
-> >   MODPOST vmlinux.o
-> > WARNING: vmlinux.o(.text+0x478): Section mismatch: reference to .init.text:start_kernel (between '_stext' and 'run_init_process')
-> 
-> This commit should break CONFIG_BOOT_RAW.  Since I do not have any
-> good idea to avoid this warning, reverting this commit would be the
-> best for now.  The warning is just a false positive anyway.
+Well, serial_txx9 driver (mis)use mmiowb() to flush write buffer.
 
-But a somewhat nervragging one and it'd be easy to fix now that
-__INIT_REFOK is in the kernel, something like the below patch should do
-the trick.
+But I was wrong.  TX39H2 core _has_ SYNC instruction.  So the patch I
+mentioned is not required for JMR3927 platform anyway.  Sorry for
+confusion.
 
-  Ralf
-
-diff --git a/arch/mips/kernel/head.S b/arch/mips/kernel/head.S
-index 2367687..50be56c 100644
---- a/arch/mips/kernel/head.S
-+++ b/arch/mips/kernel/head.S
-@@ -136,7 +136,8 @@ EXPORT(_stext)
- 	 * kernel load address.  This is needed because this platform does
- 	 * not have a ELF loader yet.
- 	 */
--	__INIT
-+FEXPORT(__kernel_entry)
-+	j	kernel_entry
- #endif
- 
- 	__INIT_REFOK
+---
+Atsushi Nemoto

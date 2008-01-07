@@ -1,76 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Jan 2008 15:38:57 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:46792 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S28574254AbYAGPis (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 7 Jan 2008 15:38:48 +0000
-Received: from localhost (p7144-ipad210funabasi.chiba.ocn.ne.jp [58.88.126.144])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 65D344137; Tue,  8 Jan 2008 00:38:44 +0900 (JST)
-Date:	Tue, 08 Jan 2008 00:41:13 +0900 (JST)
-Message-Id: <20080108.004113.126142686.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: Re: [MIPS] 64-bit Sibyte kernels need DMA32.
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20071228.014321.41630007.anemo@mba.ocn.ne.jp>
-References: <S20038938AbXKZMRu/20071126121750Z+44508@ftp.linux-mips.org>
-	<20071228.014321.41630007.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Jan 2008 15:53:14 +0000 (GMT)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:486 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S20027231AbYAGPxG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 7 Jan 2008 15:53:06 +0000
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 9038C311BBD;
+	Mon,  7 Jan 2008 15:53:03 +0000 (UTC)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [67.116.42.147])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
+	Mon,  7 Jan 2008 15:53:03 +0000 (UTC)
+Received: from [192.168.7.229] ([192.168.7.229]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 7 Jan 2008 07:52:50 -0800
+Message-ID: <47824ACF.7050003@avtrex.com>
+Date:	Mon, 07 Jan 2008 07:52:47 -0800
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 1.5.0.12 (X11/20071019)
+MIME-Version: 1.0
+To:	Jorgen Lundman <lundman@lundman.net>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: MIPS 4KEc with 2.6.15
+References: <478174C1.2090708@lundman.net>
+In-Reply-To: <478174C1.2090708@lundman.net>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+X-OriginalArrivalTime: 07 Jan 2008 15:52:51.0879 (UTC) FILETIME=[5C09AB70:01C85145]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17942
+X-archive-position: 17943
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 28 Dec 2007 01:43:21 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> This commit breaks platforms which have real prom_free_prom_memory().
-> ...
-> If I reverted the commit, this crash does not happen.  How I can fix this?
+Jorgen Lundman wrote:
+>
+> Hello list,
+>
+> I have an embedded device running 2.6.15 kernel on a MIPS 4KEc 300MHz
+> CPU. It was configured for Sigma's tango2 board, which I know nothing
+> about, so I picked a mips-board by random, "atlas", and found I can
+> produce working kernel module compiles.
+>
+> However, when I compiled FUSE kernel module, it behaves erratically in
+> a way making the FUSE developer think I may have come across the cache
+> coherency bug in arm and mips, fixed sometime around 2.6.17.
+>
+> Since I can not change the kernel that is running, I was looking for
+> alternate solutions. FUSE itself has a work around, that calls
+> flush_cache_page(), but I found that mips-board atlas does not have
+> this defined:
+>
+> fuse: Unknown symbol flush_cache_page
 
-I see malta disabled prom_free_prom_memory for now, but it seems some
-other boards are affected by this problem too.
+There are cache coherency issues on the 8634.  You should be using the
+vendor's very most recent kernels.  For me they seem to have resolved
+the cache issues.
 
-How about this fix?
+Also as noted by others, you need the exact kernel sources if you are
+going to build working modules.
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index 7f6ddcb..f8a535a 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -269,7 +269,7 @@ static void __init bootmem_init(void)
- 
- static void __init bootmem_init(void)
- {
--	unsigned long init_begin, reserved_end;
-+	unsigned long reserved_end;
- 	unsigned long mapstart = ~0UL;
- 	unsigned long bootmap_size;
- 	int i;
-@@ -344,7 +344,6 @@ static void __init bootmem_init(void)
- 					 min_low_pfn, max_low_pfn);
- 
- 
--	init_begin = PFN_UP(__pa_symbol(&__init_begin));
- 	for (i = 0; i < boot_mem_map.nr_map; i++) {
- 		unsigned long start, end;
- 
-@@ -352,8 +351,8 @@ static void __init bootmem_init(void)
- 		end = PFN_DOWN(boot_mem_map.map[i].addr
- 				+ boot_mem_map.map[i].size);
- 
--		if (start <= init_begin)
--			start = init_begin;
-+		if (start <= min_low_pfn)
-+			start = min_low_pfn;
- 		if (start >= end)
- 			continue;
- 
+David Daney

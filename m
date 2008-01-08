@@ -1,60 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Jan 2008 18:59:12 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:62621 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20033046AbYAHS7K (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 8 Jan 2008 18:59:10 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m08Ix3qP024035;
-	Tue, 8 Jan 2008 18:59:03 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m08Ix3Aw024034;
-	Tue, 8 Jan 2008 18:59:03 GMT
-Date:	Tue, 8 Jan 2008 18:59:03 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc:	lovecentry <lovecentry@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: kseg1 uncache access issue
-Message-ID: <20080108185903.GC30643@linux-mips.org>
-References: <4783a652.1cef600a.2530.fffffe31@mx.google.com> <20080108170206.GA8777@alpha.franken.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Jan 2008 22:02:17 +0000 (GMT)
+Received: from wa-out-1112.google.com ([209.85.146.182]:4988 "EHLO
+	wa-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20024307AbYAHWCJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 8 Jan 2008 22:02:09 +0000
+Received: by wa-out-1112.google.com with SMTP id m16so12278679waf.20
+        for <linux-mips@linux-mips.org>; Tue, 08 Jan 2008 14:02:08 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        bh=7qAlExXd1KhfKHKRNSZvqy1YAyvY8ymWnmaYZdNPbaY=;
+        b=vWTClYSr5nJfry0Vyu/YOU1K7UZRfpG6aQyoRC/5tIY3MO4Ke8E30bg7dYjYTVYoqc7DhIpGy0HThl3kj64T79o4pwUO2CDeIo4uJP6Jcy22qXMfNP0bQERL+tj7wHJtbdW414eH+NPMge5Pa/CoNUW4l1yD9w3HlYUEB7WADhI=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=llkWI/yJOR5N9Km/THJdlRsj0GnLLr0seSqfZ2xeRKXGFMbJyoD7AaaiOpZ0V2koUF08+fM1n23rjJG0OZvmAcDya2ag/L4SxFXqDBL8G/U1sgoOqwnIGDXxoVf8qN0y0XIbWmlfCPbJS5ikVDBJnjnf/arWgAYcWOUO84ia778=
+Received: by 10.114.192.1 with SMTP id p1mr6602702waf.47.1199829727954;
+        Tue, 08 Jan 2008 14:02:07 -0800 (PST)
+Received: by 10.115.110.5 with HTTP; Tue, 8 Jan 2008 14:02:07 -0800 (PST)
+Message-ID: <24f397b0801081402j24f7000cr841090ba5ab9bcc1@mail.gmail.com>
+Date:	Tue, 8 Jan 2008 17:02:07 -0500
+From:	"Mark Lin" <lin.mark@gmail.com>
+To:	"Jorgen Lundman" <lundman@lundman.net>
+Subject: Re: MIPS 4KEc with 2.6.15
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <47824ACF.7050003@avtrex.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <20080108170206.GA8777@alpha.franken.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+References: <478174C1.2090708@lundman.net> <47824ACF.7050003@avtrex.com>
+Return-Path: <lin.mark@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17956
+X-archive-position: 17957
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: lin.mark@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jan 08, 2008 at 06:02:06PM +0100, Thomas Bogendoerfer wrote:
+Jorgen,
 
-> On Wed, Jan 09, 2008 at 12:35:06AM +0800, lovecentry wrote:
-> > As we know in mips achitecture if current pc falls into kseg1 segment, any
-> > memory reference will bypass cache and fetch directly from dram. But for
-> > some prcoessor such like mips R10K it has off chip L2 cache. I haven't found
-> 
-> why do you think so ? R10k L2 cache controller is inside CPU and any
-> access with uncached attribute will go directly to memory. The only
-> systems, where this might be different are systems with caches unknown
-> to the cpu. But even those usually obey that uncached accesses are
-> going directly to memory.
+You should not be using the atlas definition.  Try the tangox one instead.
 
-It should also be mentioned that some R10000 machines do odd stuff with
-uncached addresses.
+With the flush_cache_page changes, FUSE works fine for me using 2.6.15
+and Sigma's tango2 board.
 
-IP27 class machines reuse the entire physical address space several times
-to map different things.  The selection of the four uncached address
-spaces id done by the uncached attribute which is specified either in
-the TLB or or as as bit 59..60 of a virtual address in XKPHYS.
+Mark Lin
 
-The memory controller of the Indigo 2 R10000 needs to be switched to a
-special slower mode to allow uncached accesses first.
-
-  Ralf
+On Jan 7, 2008 10:52 AM, David Daney <ddaney@avtrex.com> wrote:
+> Jorgen Lundman wrote:
+> >
+> > Hello list,
+> >
+> > I have an embedded device running 2.6.15 kernel on a MIPS 4KEc 300MHz
+> > CPU. It was configured for Sigma's tango2 board, which I know nothing
+> > about, so I picked a mips-board by random, "atlas", and found I can
+> > produce working kernel module compiles.
+> >
+> > However, when I compiled FUSE kernel module, it behaves erratically in
+> > a way making the FUSE developer think I may have come across the cache
+> > coherency bug in arm and mips, fixed sometime around 2.6.17.
+> >
+> > Since I can not change the kernel that is running, I was looking for
+> > alternate solutions. FUSE itself has a work around, that calls
+> > flush_cache_page(), but I found that mips-board atlas does not have
+> > this defined:
+> >
+> > fuse: Unknown symbol flush_cache_page
+>
+> There are cache coherency issues on the 8634.  You should be using the
+> vendor's very most recent kernels.  For me they seem to have resolved
+> the cache issues.
+>
+> Also as noted by others, you need the exact kernel sources if you are
+> going to build working modules.
+>
+> David Daney
+>
+>

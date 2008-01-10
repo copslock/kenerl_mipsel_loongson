@@ -1,69 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jan 2008 04:06:29 +0000 (GMT)
-Received: from mail.lundman.net ([210.172.146.197]:4855 "EHLO mail.lundman.net")
-	by ftp.linux-mips.org with ESMTP id S20028965AbYAJEGV (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 10 Jan 2008 04:06:21 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by mail.lundman.net (Postfix) with ESMTP id 4072C299E7
-	for <linux-mips@linux-mips.org>; Thu, 10 Jan 2008 13:06:14 +0900 (JST)
-X-Virus-Scanned: amavisd-new at lundman.net
-Received: from mail.lundman.net ([127.0.0.1])
-	by localhost (eyot.interq.or.jp [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id CvfQJnLcckIO for <linux-mips@linux-mips.org>;
-	Thu, 10 Jan 2008 13:06:13 +0900 (JST)
-Received: from shinken.interq.or.jp (shinken.interq.or.jp [210.172.146.228])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.lundman.net (Postfix) with ESMTP id 361C629864
-	for <linux-mips@linux-mips.org>; Thu, 10 Jan 2008 13:06:13 +0900 (JST)
-Message-ID: <478599B5.4060207@lundman.net>
-Date:	Thu, 10 Jan 2008 13:06:13 +0900
-From:	Jorgen Lundman <lundman@lundman.net>
-User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en-US; rv:1.8.1.5) Gecko/20070725 SeaMonkey/1.1.3
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jan 2008 11:39:47 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:14762 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S28577108AbYAJLjp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 10 Jan 2008 11:39:45 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m0ABdWhW005904;
+	Thu, 10 Jan 2008 11:39:32 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m0ABdV5Q005903;
+	Thu, 10 Jan 2008 11:39:31 GMT
+Date:	Thu, 10 Jan 2008 11:39:31 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Jon Dufresne <jon.dufresne@infinitevideocorporation.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Linux mips and DMA
+Message-ID: <20080110113931.GA4774@linux-mips.org>
+References: <1199905038.3572.8.camel@microwave.infinitevideocorporation.com>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Re: MIPS 4KEc with 2.6.15
-References: <478174C1.2090708@lundman.net> <47824ACF.7050003@avtrex.com> <24f397b0801081402j24f7000cr841090ba5ab9bcc1@mail.gmail.com> <4784008A.1020106@lundman.net> <47853CA4.9020503@avtrex.com>
-In-Reply-To: <47853CA4.9020503@avtrex.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <lundman@lundman.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1199905038.3572.8.camel@microwave.infinitevideocorporation.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17965
+X-archive-position: 17966
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lundman@lundman.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Wed, Jan 09, 2008 at 01:57:17PM -0500, Jon Dufresne wrote:
 
-Sure, and I agree. We both know how often than happens, or how quickly. 
-So, while we hold our breath for that to happen, mean while, I am hoping 
-to find the TangoX mips-board details somewhere...
-
-
-
-
-David Daney wrote:
-> Jorgen Lundman wrote:
->> Yeha I would love to use tangox, but there is none with Linux, at
->> least no tarball of the kernel I have found?
->>
->> Where can I get tangox?
->>
->> Lund
->>
-> The Linux kernel is GPL, whoever gave you the board and the kernel
-> should give you the kernel source.
+> I am in the process of porting a known working linux driver for a pci
+> device from an x86 machine to a mips machine. This is my first time
+> developing a driver under mips (but not the first time with x86) so I am
+> learning some of the differences and gotchas that exist when porting a
+> driver like this.
 > 
-> David Daney
+> My most recent problem exists when setting up dma between the host and
+> the device. I am using the following two websites as guides for doing
+> this:
 > 
-> 
+> https://lwn.net/Articles/28230/
+> https://lwn.net/Articles/28092/
 
--- 
-Jorgen Lundman       | <lundman@lundman.net>
-Unix Administrator   | +81 (0)3 -5456-2687 ext 1017 (work)
-Shibuya-ku, Tokyo    | +81 (0)90-5578-8500          (cell)
-Japan                | +81 (0)3 -3375-1767          (home)
+The articles are fairly old and the APIs and their documentation are
+occasionally changing.  I suggest you use Documentation/DMA-mapping.txt
+as the primary documentation - though as usual Jonathan Corbet's article
+is very well written.
+
+> In addition I am using LDD.
+> 
+> To create the dma memory area I am using the function
+> "pci_alloc_consistent". When I pass the "dma_handle" (as I understand it
+> the host's physical address of the dma memory), to the pci device, the
+> device in the x86 box correctly access this memory, not so in the mips
+> box.
+> 
+> Not sure if this is helpful, but the fuction returns the following
+> addresses on the mips when I use it:
+> 
+> dma_handle=0x026f0000 size=0x00010000 cpu_addr=0xa26f0000
+> 
+> Does this physical address seem abnormally low? It is well outside the
+> range of the PCI BARs which exist around 0x20000000.
+
+There is no relation to the PCI bars whatsoever.  pci_alloc_consistent
+works on a memory that is RAM range.  0xa26f0000 is an uncached address
+in KSEG1 and 0x026f0000 the equivalent physical address.
+
+All these numbers look sane which suggest your problem may be elsewhere.
+
+One potencial problem might be that bus addresses as used on the PCI bus
+and physical addresses as use by the CPU are not identical.  The
+return value of pci_alloc_consistent shows that your kernel is setup
+to assume that both addresses are identical.  Which is true on most
+x86 and MIPS platforms but not all.
+
+Note you may not touch a cached mapping of this range for example
+0x826f0000 in KSEG0 or any other cached mapping you may have created or
+data corruption will happen.
+
+> Anything I should know about using pci_alloc_consistent on a mips?
+
+MIPS hardware is different so pci_alloc_consistent is implemented
+differently.  For correct use however this should not matter.  Any bugs
+you may find porting to MIPS were already bugs on x86.
+
+(Or in pci_alloc_consistent but I'm optimistic ;-)
+
+  Ralf

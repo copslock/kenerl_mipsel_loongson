@@ -1,59 +1,106 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jan 2008 16:10:05 +0000 (GMT)
-Received: from mail.windriver.com ([147.11.1.11]:17847 "EHLO mail.wrs.com")
-	by ftp.linux-mips.org with ESMTP id S28579714AbYAKQJ5 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 11 Jan 2008 16:09:57 +0000
-Received: from localhost.localdomain (yow-pgortmak-d1.ottawa.windriver.com [128.224.146.65])
-	by mail.wrs.com (8.13.6/8.13.6) with ESMTP id m0BG9ZjC011536;
-	Fri, 11 Jan 2008 08:09:36 -0800 (PST)
-From:	Paul Gortmaker <paul.gortmaker@windriver.com>
-To:	linux-mips@linux-mips.org
-Cc:	Paul Gortmaker <paul.gortmaker@windriver.com>
-Subject: [PATCH] mips: fail if DMA coherency is unspecified
-Date:	Fri, 11 Jan 2008 11:09:35 -0500
-Message-Id: <12000677752237-git-send-email-paul.gortmaker@windriver.com>
-X-Mailer: git-send-email 1.5.0.rc1.gf4b6c
-Return-Path: <paul.gortmaker@windriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jan 2008 17:02:10 +0000 (GMT)
+Received: from pasmtpb.tele.dk ([80.160.77.98]:56811 "EHLO pasmtpB.tele.dk")
+	by ftp.linux-mips.org with ESMTP id S20024287AbYAKRCB (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 11 Jan 2008 17:02:01 +0000
+Received: from ravnborg.org (0x535d98d8.vgnxx8.adsl-dhcp.tele.dk [83.93.152.216])
+	by pasmtpB.tele.dk (Postfix) with ESMTP id 21C50E30805;
+	Fri, 11 Jan 2008 18:01:58 +0100 (CET)
+Received: by ravnborg.org (Postfix, from userid 500)
+	id 39476580D2; Fri, 11 Jan 2008 18:02:04 +0100 (CET)
+Date:	Fri, 11 Jan 2008 18:02:04 +0100
+From:	Sam Ravnborg <sam@ravnborg.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	WANG Cong <xiyou.wangcong@gmail.com>,
+	Andreas Schwab <schwab@suse.de>,
+	LKML <linux-kernel@vger.kernel.org>,
+	linux-kbuild@vger.kernel.org, Andrew Morton <akpm@osdl.org>,
+	linux-mips@linux-mips.org
+Subject: Re: (Try #3) [Patch 2/8] MIPS: Remove 'TOPDIR' from Makefiles
+Message-ID: <20080111170204.GA28299@uranus.ravnborg.org>
+References: <20080101071311.GA2496@hacking> <20080101072238.GC2496@hacking> <20080101101540.GB28913@uranus.ravnborg.org> <jefxxhlkxb.fsf@sykes.suse.de> <20080101175754.GC31575@uranus.ravnborg.org> <20080102062135.GE2493@hacking> <20080111141754.GC19900@linux-mips.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20080111141754.GC19900@linux-mips.org>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <sam@ravnborg.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17990
+X-archive-position: 17991
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.gortmaker@windriver.com
+X-original-sender: sam@ravnborg.org
 Precedence: bulk
 X-list: linux-mips
 
-Currently, if the DMA coherency is unspecified, you simply get a
-warning about no return in a function returning int, which can be
-easily overlooked.  This makes sure that if the platform hasn't
-specified it, that it will get the required visibility.
+On Fri, Jan 11, 2008 at 02:17:54PM +0000, Ralf Baechle wrote:
+> On Wed, Jan 02, 2008 at 02:21:36PM +0800, WANG Cong wrote:
+> 
+> > >> Shouldn't that use $(LINUXINCLUDE), or $(KBUILD_CPPFLAGS)?
+> > >It would be better to use $(LINUXINCLUDE) as we then pull in all config
+> > >symbols too and do not have to hardcode kbuild internal names (include2).
+> > 
+> > OK. Refine this patch.
+> 
+> LDSCRIPT also needed fixing to get builds in a separate object directory
+> working again.
+> 
+> I've applied below fix.
 
-Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
----
- include/asm-mips/mach-generic/dma-coherence.h |    8 +++++---
- 1 files changed, 5 insertions(+), 3 deletions(-)
+Great - I will drop it from my tree. 
 
-diff --git a/include/asm-mips/mach-generic/dma-coherence.h b/include/asm-mips/mach-generic/dma-coherence.h
-index 76e04e7..02492a6 100644
---- a/include/asm-mips/mach-generic/dma-coherence.h
-+++ b/include/asm-mips/mach-generic/dma-coherence.h
-@@ -34,11 +34,13 @@ static inline void plat_unmap_dma_mem(dma_addr_t dma_addr)
- 
- static inline int plat_device_is_coherent(struct device *dev)
- {
--#ifdef CONFIG_DMA_COHERENT
-+#if defined(CONFIG_DMA_COHERENT)
- 	return 1;
--#endif
--#ifdef CONFIG_DMA_NONCOHERENT
-+#elif defined(CONFIG_DMA_NONCOHERENT)
- 	return 0;
-+#else
-+#error DMA coherency of platform is not defined.
-+	return 0xbad;
- #endif
- }
- 
--- 
-1.5.0.rc1.gf4b6c
+See small comment below.
+
+	Sam
+
+
+>   Ralf
+> 
+> From 8babf06e1265214116fb8ffc634c04df85597c52 Mon Sep 17 00:00:00 2001
+> From: WANG Cong <xiyou.wangcong@gmail.com>
+> Date: Wed, 2 Jan 2008 14:21:36 +0800
+> Subject: [PATCH] [MIPS] Lasat: Fix built in separate object directory.
+> 
+> Signed-off-by: WANG Cong <xiyou.wangcong@gmail.com>
+> 
+> [Ralf: The LDSCRIPT script needed fixing, too]
+> 
+> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+> 
+> diff --git a/arch/mips/lasat/image/Makefile b/arch/mips/lasat/image/Makefile
+> index 5332449..7ccd40d 100644
+> --- a/arch/mips/lasat/image/Makefile
+> +++ b/arch/mips/lasat/image/Makefile
+> @@ -12,11 +12,11 @@ endif
+>  
+>  MKLASATIMG = mklasatimg
+>  MKLASATIMG_ARCH = mq2,mqpro,sp100,sp200
+> -KERNEL_IMAGE = $(TOPDIR)/vmlinux
+> +KERNEL_IMAGE = vmlinux
+>  KERNEL_START = $(shell $(NM) $(KERNEL_IMAGE) | grep " _text" | cut -f1 -d\ )
+>  KERNEL_ENTRY = $(shell $(NM) $(KERNEL_IMAGE) | grep kernel_entry | cut -f1 -d\ )
+>  
+> -LDSCRIPT= -L$(obj) -Tromscript.normal
+> +LDSCRIPT= -L$(srctree)/$(obj) -Tromscript.normal
+
+This needs to read:
+> +LDSCRIPT= -L$(srctree)/$(src) -Tromscript.normal
+
+
+(There is no difference between src and obj in normal cases but to be consistent
+it shuld be like above).
+
+>  
+>  HEAD_DEFINES := -D_kernel_start=0x$(KERNEL_START) \
+>  		-D_kernel_entry=0x$(KERNEL_ENTRY) \
+> @@ -24,7 +24,7 @@ HEAD_DEFINES := -D_kernel_start=0x$(KERNEL_START) \
+>  		-D TIMESTAMP=$(shell date +%s)
+>  
+>  $(obj)/head.o: $(obj)/head.S $(KERNEL_IMAGE)
+> -	$(CC) -fno-pic $(HEAD_DEFINES) -I$(TOPDIR)/include -c -o $@ $<
+> +	$(CC) -fno-pic $(HEAD_DEFINES) $(LINUXINCLUDE) -c -o $@ $<
+>  
+>  OBJECTS = head.o kImage.o
+>  

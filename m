@@ -1,151 +1,155 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jan 2008 17:04:57 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:47799 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20023841AbYAJREu (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 10 Jan 2008 17:04:50 +0000
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id A3D143EC9; Thu, 10 Jan 2008 09:04:47 -0800 (PST)
-Message-ID: <47865063.7060208@ru.mvista.com>
-Date:	Thu, 10 Jan 2008 20:05:39 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Vitaly Wool <vitalywool@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: pnx8xxx: move to clocksource
-References: <4786273D.7010006@gmail.com> <478645FD.2090708@ru.mvista.com> <20080110162744.GA16880@linux-mips.org>
-In-Reply-To: <20080110162744.GA16880@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jan 2008 04:58:25 +0000 (GMT)
+Received: from gateway-1237.mvista.com ([63.81.120.158]:49127 "EHLO
+	dwalker1.mvista.com") by ftp.linux-mips.org with ESMTP
+	id S20023569AbYAKE6R (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 11 Jan 2008 04:58:17 +0000
+Received: from dwalker1.mvista.com (localhost.localdomain [127.0.0.1])
+	by dwalker1.mvista.com (8.14.1/8.14.1) with ESMTP id m0B4rnZn005773;
+	Thu, 10 Jan 2008 20:53:49 -0800
+Received: (from dwalker@localhost)
+	by dwalker1.mvista.com (8.14.1/8.14.1/Submit) id m0B4rmHJ005772;
+	Thu, 10 Jan 2008 20:53:48 -0800
+X-Authentication-Warning: dwalker1.mvista.com: dwalker set sender to dwalker@mvista.com using -f
+Message-Id: <20080111045348.085971795@mvista.com>
+User-Agent: quilt/0.46-1
+Date:	Thu, 10 Jan 2008 20:53:48 -0800
+Message-Id: <20080111045321.274084894@mvista.com>
+User-Agent: quilt/0.46-1
+Date:	Thu, 10 Jan 2008 20:53:21 -0800
+From:	Daniel Walker <dwalker@mvista.com>
+To:	brian@murphy.dk
+Cc:	mingo@elte.hu
+Cc:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org
+Subject: [PATCH] mips: picvue: pvc_sem semaphore to mutex
+Return-Path: <dwalker@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17978
+X-archive-position: 17979
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: dwalker@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
+This semaphore conforms to the new struct mutex, so I've converted it
+to use that new API.
 
-> On Thu, Jan 10, 2008 at 07:21:17PM +0300, Sergei Shtylyov wrote:
+I also changed the name to pvc_mutex, and moved the define to the file
+it's used in which allows it to be static.
 
->>>Index: linux-2.6/arch/mips/philips/pnx8550/common/time.c
->>>===================================================================
->>>--- linux-2.6.orig/arch/mips/philips/pnx8550/common/time.c
->>>+++ linux-2.6/arch/mips/philips/pnx8550/common/time.c
->>>@@ -22,7 +22,6 @@
->>>#include <linux/kernel_stat.h>
->>>#include <linux/spinlock.h>
->>>#include <linux/interrupt.h>
->>>-#include <linux/module.h>
->>>
->>>#include <asm/bootinfo.h>
->>>#include <asm/cpu.h>
->>>@@ -41,11 +40,60 @@ static cycle_t hpt_read(void)
->>>    return read_c0_count2();
->>>}
->>
->>>+static struct clocksource pnx_clocksource = {
->>>+    .name        = "pnx8xxx",
->>>+    .rating        = 200,
->>>+    .read        = hpt_read,
->>>+    .flags        = CLOCK_SOURCE_IS_CONTINUOUS,
->>>+};
+Signed-off-by: Daniel Walker <dwalker@mvista.com>
 
->>   Something probably have converted tabs to 8 spaces...
+---
+ arch/mips/lasat/picvue.c      |    2 --
+ arch/mips/lasat/picvue.h      |    3 ---
+ arch/mips/lasat/picvue_proc.c |   18 ++++++++++--------
+ 3 files changed, 10 insertions(+), 13 deletions(-)
 
-> Only 3 of them?
+Index: linux-2.6.23/arch/mips/lasat/picvue.c
+===================================================================
+--- linux-2.6.23.orig/arch/mips/lasat/picvue.c
++++ linux-2.6.23/arch/mips/lasat/picvue.c
+@@ -22,8 +22,6 @@
+ 
+ struct pvc_defs *picvue;
+ 
+-DECLARE_MUTEX(pvc_sem);
+-
+ static void pvc_reg_write(u32 val)
+ {
+ 	*picvue->reg = val;
+Index: linux-2.6.23/arch/mips/lasat/picvue.h
+===================================================================
+--- linux-2.6.23.orig/arch/mips/lasat/picvue.h
++++ linux-2.6.23/arch/mips/lasat/picvue.h
+@@ -4,8 +4,6 @@
+  * Brian Murphy <brian.murphy@eicon.com>
+  *
+  */
+-#include <asm/semaphore.h>
+-
+ struct pvc_defs {
+ 	volatile u32 *reg;
+ 	u32 data_shift;
+@@ -45,4 +43,3 @@ void pvc_move(u8 cmd);
+ void pvc_clear(void);
+ void pvc_home(void);
+ 
+-extern struct semaphore pvc_sem;
+Index: linux-2.6.23/arch/mips/lasat/picvue_proc.c
+===================================================================
+--- linux-2.6.23.orig/arch/mips/lasat/picvue_proc.c
++++ linux-2.6.23/arch/mips/lasat/picvue_proc.c
+@@ -13,9 +13,11 @@
+ #include <linux/interrupt.h>
+ 
+ #include <linux/timer.h>
++#include <linux/mutex.h>
+ 
+ #include "picvue.h"
+ 
++static DEFINE_MUTEX(pvc_mutex);
+ static char pvc_lines[PVC_NLINES][PVC_LINELEN+1];
+ static int pvc_linedata[PVC_NLINES];
+ static struct proc_dir_entry *pvc_display_dir;
+@@ -48,9 +50,9 @@ static int pvc_proc_read_line(char *page
+ 		return 0;
+ 	}
+ 
+-	down(&pvc_sem);
++	mutex_lock(&pvc_mutex);
+ 	page += sprintf(page, "%s\n", pvc_lines[lineno]);
+-	up(&pvc_sem);
++	mutex_unlock(&pvc_mutex);
+ 
+ 	return page - origpage;
+ }
+@@ -73,10 +75,10 @@ static int pvc_proc_write_line(struct fi
+ 	if (buffer[count-1] == '\n')
+ 		count--;
+ 
+-	down(&pvc_sem);
++	mutex_lock(&pvc_mutex);
+ 	strncpy(pvc_lines[lineno], buffer, count);
+ 	pvc_lines[lineno][count] = '\0';
+-	up(&pvc_sem);
++	mutex_unlock(&pvc_mutex);
+ 
+ 	tasklet_schedule(&pvc_display_tasklet);
+ 
+@@ -89,7 +91,7 @@ static int pvc_proc_write_scroll(struct 
+ 	int origcount = count;
+ 	int cmd = simple_strtol(buffer, NULL, 10);
+ 
+-	down(&pvc_sem);
++	mutex_lock(&pvc_mutex);
+ 	if (scroll_interval != 0)
+ 		del_timer(&timer);
+ 
+@@ -106,7 +108,7 @@ static int pvc_proc_write_scroll(struct 
+ 		}
+ 		add_timer(&timer);
+ 	}
+-	up(&pvc_sem);
++	mutex_unlock(&pvc_mutex);
+ 
+ 	return origcount;
+ }
+@@ -117,9 +119,9 @@ static int pvc_proc_read_scroll(char *pa
+ {
+ 	char *origpage = page;
+ 
+-	down(&pvc_sem);
++	mutex_lock(&pvc_mutex);
+ 	page += sprintf(page, "%d\n", scroll_dir * scroll_interval);
+-	up(&pvc_sem);
++	mutex_unlock(&pvc_mutex);
+ 
+ 	return page - origpage;
+ }
+-- 
 
-    Erm, it's format=flowed that spoils the tabs for Mozilla which renders 
-them to 4 spaces, so it's actually hard to see which tabs are actually tabs 
-and which are not... :-/
-
->>   I would have done it otherwise -- using timer 1 as a generic MIPS 
->>clocksource (just hooking the IRQ to reload the comparator to all ones), 
->>and timer 2 as clockevent...
-
->>>static void timer_ack(void)
->>>{
->>>    write_c0_compare(cpj);
->>>}
-
->>   Do we still need this function? I don't think so -- mips_timer_ack() is 
->>dead...
-
-> It's only used on initialization.
-
-    Could have put the call inline, or loaded the comparator with all ones 
-just like timer 2 -- we don't need 'cpj' variable any more as well...
-
->>[...]
-
->>>+static struct clock_event_device pnx8xxx_clockevent = {
->>>+    .name        = "pnx8xxx_clockevent",
->>>+    .features    = CLOCK_EVT_FEAT_ONESHOT,
-
->>   Aren't PNX8550 timers actually periodic in nature?
-
-> All I recall is they were odd ;-)
-
-> The hardware nature of timers and how to declare them to the Linux timer
-> code is not always the same.  CLOCK_EVT_FEAT_ONESHOT be used if the
-> time to the next shot can be programmed.
-
-    I meant that both modes should have been indicated by the flags.
-And actually, shouldn't we disable the timer after expiry if in one-shot mode.
-Writing to the comparator doesn't clear the counter, AFAICS -- so, isn't the 
-explicit counter clearing to 0 needed in set_next_event() method?
-
->>>__init void plat_time_init(void)
->>>{
->>>+    unsigned int             configPR;
-
->>  Something has definitely spoilt all the tabs in the patch...
-
-> I fixed the three checkpatch.pl was bitching about.
-
-    All the others were due to the way format=flowed is rendered by Mozilla it 
-seems...
-
->>>    unsigned int             n;
->>>    unsigned int             m;
->>>    unsigned int             p;
->>>    unsigned int             pow2p;
->>>
->>>+    clockevents_register_device(&pnx8xxx_clockevent);
->>>+    clocksource_register(&pnx_clocksource);
->>>+
->>>+    setup_irq(PNX8550_INT_TIMER1, &pnx8xxx_timer_irq);
->>>+    setup_irq(PNX8550_INT_TIMER2, &monotonic_irqaction);
->>>+
->>>+    /* Timer 1 start */
->>>+    configPR = read_c0_config7();
->>>+    configPR &= ~0x00000008;
->>>+    write_c0_config7(configPR);
->>>+
->>>+    /* Timer 2 start */
->>>+    configPR = read_c0_config7();
->>>+    configPR &= ~0x00000010;
->>>+    write_c0_config7(configPR);
->>>+
->>>+    /* Timer 3 stop */
->>>+    configPR = read_c0_config7();
->>>+    configPR |= 0x00000020;
->>>+    write_c0_config7(configPR);
-
->>   Enabling timers before they are actually set up? :-|
-
-> Are the additional timers used at all?
-
-    Additional == timer 3? It's not used, only 1 and 2 are -- and their 
-count/compare registers are initialized further in this function...
-
->   Ralf
-
-WBR, Sergei
+-- 

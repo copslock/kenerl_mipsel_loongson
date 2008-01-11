@@ -1,155 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jan 2008 04:58:25 +0000 (GMT)
-Received: from gateway-1237.mvista.com ([63.81.120.158]:49127 "EHLO
-	dwalker1.mvista.com") by ftp.linux-mips.org with ESMTP
-	id S20023569AbYAKE6R (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 11 Jan 2008 04:58:17 +0000
-Received: from dwalker1.mvista.com (localhost.localdomain [127.0.0.1])
-	by dwalker1.mvista.com (8.14.1/8.14.1) with ESMTP id m0B4rnZn005773;
-	Thu, 10 Jan 2008 20:53:49 -0800
-Received: (from dwalker@localhost)
-	by dwalker1.mvista.com (8.14.1/8.14.1/Submit) id m0B4rmHJ005772;
-	Thu, 10 Jan 2008 20:53:48 -0800
-X-Authentication-Warning: dwalker1.mvista.com: dwalker set sender to dwalker@mvista.com using -f
-Message-Id: <20080111045348.085971795@mvista.com>
-User-Agent: quilt/0.46-1
-Date:	Thu, 10 Jan 2008 20:53:48 -0800
-Message-Id: <20080111045321.274084894@mvista.com>
-User-Agent: quilt/0.46-1
-Date:	Thu, 10 Jan 2008 20:53:21 -0800
-From:	Daniel Walker <dwalker@mvista.com>
-To:	brian@murphy.dk
-Cc:	mingo@elte.hu
-Cc:	ralf@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jan 2008 08:28:31 +0000 (GMT)
+Received: from hall.aurel32.net ([88.191.38.19]:62160 "EHLO hall.aurel32.net")
+	by ftp.linux-mips.org with ESMTP id S20030008AbYAKI2X (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 11 Jan 2008 08:28:23 +0000
+Received: from aurel32 by hall.aurel32.net with local (Exim 4.63)
+	(envelope-from <aurel32@hall.aurel32.net>)
+	id 1JDFFR-0004re-PS; Fri, 11 Jan 2008 09:28:17 +0100
+Date:	Fri, 11 Jan 2008 09:28:17 +0100
+From:	Aurelien Jarno <aurelien@aurel32.net>
+To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	linux-mips@linux-mips.org
-Subject: [PATCH] mips: picvue: pvc_sem semaphore to mutex
-Return-Path: <dwalker@mvista.com>
+Subject: Re: [PATCH][MIPS] Kconfig fixes for BCM47XX platform
+Message-ID: <20080111082817.GR18495@hall.aurel32.net>
+References: <20071210102232.GA10145@hall.aurel32.net> <20071211103034.GA11972@hall.aurel32.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+In-Reply-To: <20071211103034.GA11972@hall.aurel32.net>
+X-Mailer: Mutt 1.5.13 (2006-08-11)
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <aurel32@hall.aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 17979
+X-archive-position: 17980
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dwalker@mvista.com
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 X-list: linux-mips
 
-This semaphore conforms to the new struct mutex, so I've converted it
-to use that new API.
+On Tue, Dec 11, 2007 at 11:30:34AM +0100, Aurelien Jarno wrote:
+> Hi,
+> 
+> The patch below fixes two problems for Kconfig on the BCM47xx platform:
+> - arch/mips/bcm47xx/gpio.c uses ssb_extif_* functions. Selecting 
+>   SSB_DRIVER_EXTIF makes sure those functions are available.
+> - arch/mips/pci/pci.c needs, when enabled, platform specific functions,
+>   which are defined when SSB_PCICORE_HOSTMODE is enabled.
+> 
+> This patch replaces the one called "Enable SSB_DRIVER_EXTIF on BCM47XX
+> platform" posted yesterday.
+> 
+> Aurelien
+> 
+> Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+> 
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index c6fc405..b4ffcae 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -59,6 +59,8 @@ config BCM47XX
+>  	select SYS_SUPPORTS_LITTLE_ENDIAN
+>  	select SSB
+>  	select SSB_DRIVER_MIPS
+> +	select SSB_DRIVER_EXTIF
+> +	select SSB_PCICORE_HOSTMODE if PCI
+>  	select GENERIC_GPIO
+>  	select SYS_HAS_EARLY_PRINTK
+>  	select CFE
+> 
 
-I also changed the name to pvc_mutex, and moved the define to the file
-it's used in which allows it to be static.
-
-Signed-off-by: Daniel Walker <dwalker@mvista.com>
-
----
- arch/mips/lasat/picvue.c      |    2 --
- arch/mips/lasat/picvue.h      |    3 ---
- arch/mips/lasat/picvue_proc.c |   18 ++++++++++--------
- 3 files changed, 10 insertions(+), 13 deletions(-)
-
-Index: linux-2.6.23/arch/mips/lasat/picvue.c
-===================================================================
---- linux-2.6.23.orig/arch/mips/lasat/picvue.c
-+++ linux-2.6.23/arch/mips/lasat/picvue.c
-@@ -22,8 +22,6 @@
- 
- struct pvc_defs *picvue;
- 
--DECLARE_MUTEX(pvc_sem);
--
- static void pvc_reg_write(u32 val)
- {
- 	*picvue->reg = val;
-Index: linux-2.6.23/arch/mips/lasat/picvue.h
-===================================================================
---- linux-2.6.23.orig/arch/mips/lasat/picvue.h
-+++ linux-2.6.23/arch/mips/lasat/picvue.h
-@@ -4,8 +4,6 @@
-  * Brian Murphy <brian.murphy@eicon.com>
-  *
-  */
--#include <asm/semaphore.h>
--
- struct pvc_defs {
- 	volatile u32 *reg;
- 	u32 data_shift;
-@@ -45,4 +43,3 @@ void pvc_move(u8 cmd);
- void pvc_clear(void);
- void pvc_home(void);
- 
--extern struct semaphore pvc_sem;
-Index: linux-2.6.23/arch/mips/lasat/picvue_proc.c
-===================================================================
---- linux-2.6.23.orig/arch/mips/lasat/picvue_proc.c
-+++ linux-2.6.23/arch/mips/lasat/picvue_proc.c
-@@ -13,9 +13,11 @@
- #include <linux/interrupt.h>
- 
- #include <linux/timer.h>
-+#include <linux/mutex.h>
- 
- #include "picvue.h"
- 
-+static DEFINE_MUTEX(pvc_mutex);
- static char pvc_lines[PVC_NLINES][PVC_LINELEN+1];
- static int pvc_linedata[PVC_NLINES];
- static struct proc_dir_entry *pvc_display_dir;
-@@ -48,9 +50,9 @@ static int pvc_proc_read_line(char *page
- 		return 0;
- 	}
- 
--	down(&pvc_sem);
-+	mutex_lock(&pvc_mutex);
- 	page += sprintf(page, "%s\n", pvc_lines[lineno]);
--	up(&pvc_sem);
-+	mutex_unlock(&pvc_mutex);
- 
- 	return page - origpage;
- }
-@@ -73,10 +75,10 @@ static int pvc_proc_write_line(struct fi
- 	if (buffer[count-1] == '\n')
- 		count--;
- 
--	down(&pvc_sem);
-+	mutex_lock(&pvc_mutex);
- 	strncpy(pvc_lines[lineno], buffer, count);
- 	pvc_lines[lineno][count] = '\0';
--	up(&pvc_sem);
-+	mutex_unlock(&pvc_mutex);
- 
- 	tasklet_schedule(&pvc_display_tasklet);
- 
-@@ -89,7 +91,7 @@ static int pvc_proc_write_scroll(struct 
- 	int origcount = count;
- 	int cmd = simple_strtol(buffer, NULL, 10);
- 
--	down(&pvc_sem);
-+	mutex_lock(&pvc_mutex);
- 	if (scroll_interval != 0)
- 		del_timer(&timer);
- 
-@@ -106,7 +108,7 @@ static int pvc_proc_write_scroll(struct 
- 		}
- 		add_timer(&timer);
- 	}
--	up(&pvc_sem);
-+	mutex_unlock(&pvc_mutex);
- 
- 	return origcount;
- }
-@@ -117,9 +119,9 @@ static int pvc_proc_read_scroll(char *pa
- {
- 	char *origpage = page;
- 
--	down(&pvc_sem);
-+	mutex_lock(&pvc_mutex);
- 	page += sprintf(page, "%d\n", scroll_dir * scroll_interval);
--	up(&pvc_sem);
-+	mutex_unlock(&pvc_mutex);
- 
- 	return page - origpage;
- }
--- 
+Any news about this patch?
 
 -- 
+  .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
+ : :' :  Debian developer           | Electrical Engineer
+ `. `'   aurel32@debian.org         | aurelien@aurel32.net
+   `-    people.debian.org/~aurel32 | www.aurel32.net

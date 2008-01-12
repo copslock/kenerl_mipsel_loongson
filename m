@@ -1,56 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Jan 2008 20:40:43 +0000 (GMT)
-Received: from an-out-0708.google.com ([209.85.132.240]:57898 "EHLO
-	an-out-0708.google.com") by ftp.linux-mips.org with ESMTP
-	id S20034237AbYALUke (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 12 Jan 2008 20:40:34 +0000
-Received: by an-out-0708.google.com with SMTP id d26so357188and.64
-        for <linux-mips@linux-mips.org>; Sat, 12 Jan 2008 12:40:32 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        bh=ekxrB6WPXo2tXThk7f9GIetdRHImOtqrqP+XiQChU6E=;
-        b=dXAjDE/hF/fa7cEp67sfqDg4VYwR4dzqKJBD7sceK9s0whV3bO+PY1AWfwDL8sHJHyZKCkC7XayNeZ0/mMdgEhduo8YA1NGkCVXS+Ad+9eUahHn6MCKx6PMGUg9qp1yPOC3W6Waktk4m4/6Zb699tQghXesi7dfQyHI7BL9mrf0=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=SVy07FQPsAcRpZfEg/oy4WPHKdQ+KtZx8l76ytAnXK5GdRpq0wcUGaVqHTWL+AX+gEMrXFgAcHvKbOZ0yr1IUivG+RW+DHImgRjLjPk2YmXIxOtdii95/VKnVHd8+wPPG6AKsAa5My4Z7DMsr4Jjrj7dUo/rernuwVlT3vCFM+U=
-Received: by 10.100.231.16 with SMTP id d16mr10088589anh.64.1200170432867;
-        Sat, 12 Jan 2008 12:40:32 -0800 (PST)
-Received: by 10.100.163.14 with HTTP; Sat, 12 Jan 2008 12:40:32 -0800 (PST)
-Message-ID: <acd2a5930801121240o164f0d54pf24b3e0b126ae148@mail.gmail.com>
-Date:	Sat, 12 Jan 2008 23:40:32 +0300
-From:	"Vitaly Wool" <vitalywool@gmail.com>
-To:	"Sergei Shtylyov" <sshtylyov@ru.mvista.com>
-Subject: Re: [patch] pnx8xxx clocksource cleanups
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-In-Reply-To: <4788F6FE.6000803@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 12 Jan 2008 22:23:57 +0000 (GMT)
+Received: from srv5.dvmed.net ([207.36.208.214]:44701 "EHLO mail.dvmed.net")
+	by ftp.linux-mips.org with ESMTP id S20034637AbYALWXs (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 12 Jan 2008 22:23:48 +0000
+Received: from cpe-069-134-071-233.nc.res.rr.com ([69.134.71.233] helo=core.yyz.us)
+	by mail.dvmed.net with esmtpsa (Exim 4.66 #1 (Red Hat Linux))
+	id 1JDolU-00034I-A0; Sat, 12 Jan 2008 22:23:44 +0000
+Message-ID: <47893DEE.1050807@pobox.com>
+Date:	Sat, 12 Jan 2008 17:23:42 -0500
+From:	Jeff Garzik <jgarzik@pobox.com>
+User-Agent: Thunderbird 2.0.0.9 (X11/20071115)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+CC:	netdev@vger.kernel.org, linux-mips@linux-mips.org,
+	ralf@linux-mips.org
+Subject: Re: [UPDATED PATCH] SGISEEQ: use cached memory access to make driver
+ work on IP28
+References: <20071202103312.75E51C2EB5@solo.franken.de> <47671FEE.90103@pobox.com> <20071218103006.GA18598@alpha.franken.de> <476867F5.3070006@pobox.com> <20071219124235.GA7550@alpha.franken.de>
+In-Reply-To: <20071219124235.GA7550@alpha.franken.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <4788BAAC.3020908@gmail.com> <4788F6FE.6000803@ru.mvista.com>
-Return-Path: <vitalywool@gmail.com>
+Return-Path: <jgarzik@pobox.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18003
+X-archive-position: 18004
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vitalywool@gmail.com
+X-original-sender: jgarzik@pobox.com
 Precedence: bulk
 X-list: linux-mips
 
-> > +static inline void timer_ack(void)
-> > +{
-> > +    write_c0_compare(cpj);
-> > +}
->
->     I still don't understand why you need this function at all, and the 'cpj'
-> variable as well -- clockevents core will set the comparator to a needed
-> value.  Also, I don't see much value in moving that function...
+Thomas Bogendoerfer wrote:
+> - Use inline functions for dma_sync_* instead of macros 
+> - added Kconfig change to make selection for similair SGI boxes easier
+> 
+> Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> ---
+> 
+>  drivers/net/Kconfig   |    2 +-
+>  drivers/net/sgiseeq.c |   64 ++++++++++++++++++++++++++-----------------------
+>  2 files changed, 35 insertions(+), 31 deletions(-)
 
-Well, it's explicitly made inline and it has been moved closer to the
-calling function.
-
-Vitaly
+applied

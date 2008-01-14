@@ -1,56 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jan 2008 14:16:09 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:12462 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20030015AbYANOQH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 14 Jan 2008 14:16:07 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m0EEEPmp031022;
-	Mon, 14 Jan 2008 14:14:50 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m0EEEOPF031021;
-	Mon, 14 Jan 2008 14:14:24 GMT
-Date:	Mon, 14 Jan 2008 14:14:24 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] prom_free_prom_memory for QEMU
-Message-ID: <20080114141424.GB22344@linux-mips.org>
-References: <20080114.212253.126142719.anemo@mba.ocn.ne.jp> <20080114133701.GA16555@linux-mips.org> <478B6AA3.2070402@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jan 2008 14:23:22 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:56867 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20030050AbYANOXO (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 14 Jan 2008 14:23:14 +0000
+Received: from [192.168.1.234] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id D68A33EC9; Mon, 14 Jan 2008 06:23:10 -0800 (PST)
+Message-ID: <478B7084.8030401@ru.mvista.com>
+Date:	Mon, 14 Jan 2008 17:24:04 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <478B6AA3.2070402@gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] IP28 fixes
+References: <20080112230051.AE10EC2F34@solo.franken.de> <20080114001014.GC20115@linux-mips.org>
+In-Reply-To: <20080114001014.GC20115@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18025
+X-archive-position: 18026
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jan 14, 2008 at 04:58:59PM +0300, Dmitri Vorobiev wrote:
+Ralf Baechle wrote:
 
-> > I was actually planning to remove the Qemu platform for 2.6.25.  The
-> > Malta emulation has become so good that there is no more point in having
-> > the underfeatured synthetic platform that CONFIG_QEMU is.
-> 
-> I wholeheartedly agree with that. It is a godsend to me that I can use
-> identical configs to build the kernels for QEMU and for a physical Malta.
-> Emulation is more convenient to me because QEMU boots and runs faster
-> than the board I'm working with. Many thanks for that to QEMU developers.
-> 
-> Off the topic, how about the plans to remove Atlas support?
+>>- ISA DMA is broken on IP28
+>>- bus error handler improved to not issue bus errors for
+>>  speculative accesses to CPU and GIO addresses. We now
+>>  treat CSTAT_ADDR and GSTAT_TIME errors as non fatal, when
+>>  they are issues via MC error interrupt. For real (non
+>>  speculative) bus errors a DBE will be issued, which is
+>>  lethal as before. Handling the issue this way gets rid
+>>  of decoding instructions
 
-Maciej is promising to fix it up since a few years ;-)  Aside of that it's
-safe to say the Atlas is dead like a coffin nail.
+>>Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
-The main problem with the Atlas is the SAA9730 SOC which is broken in an
-infinite number of totally pervert ways, I'm told.  I know of no systems
-other than the Atlas using it.
+> Folded into the "[MIPS] IP28 support" patch for 2.6.28.
 
-  Ralf
+   Poor IP32 will have to wait couple of years? ;-)
+
+> Thanks,
+
+>   Ralf
+
+WBR, Sergei

@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jan 2008 00:10:21 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:60127 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jan 2008 00:18:45 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:29322 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20035125AbYANAKT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 14 Jan 2008 00:10:19 +0000
+	id S28573709AbYANASn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 14 Jan 2008 00:18:43 +0000
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m0E0AEji022497;
-	Mon, 14 Jan 2008 00:10:15 GMT
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m0E0IbDw031035;
+	Mon, 14 Jan 2008 00:18:38 GMT
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m0E0AEtG022496;
-	Mon, 14 Jan 2008 00:10:14 GMT
-Date:	Mon, 14 Jan 2008 00:10:14 +0000
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m0E0IaRg031034;
+	Mon, 14 Jan 2008 00:18:36 GMT
+Date:	Mon, 14 Jan 2008 00:18:36 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] IP28 fixes
-Message-ID: <20080114001014.GC20115@linux-mips.org>
-References: <20080112230051.AE10EC2F34@solo.franken.de>
+To:	Vitaly Wool <vitalywool@gmail.com>
+Cc:	sshtylyov@ru.mvista.com, linux-mips@linux-mips.org
+Subject: Re: [patch] pnx8xxx clocksource cleanups
+Message-ID: <20080114001836.GA26562@linux-mips.org>
+References: <4788BAAC.3020908@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20080112230051.AE10EC2F34@solo.franken.de>
+In-Reply-To: <4788BAAC.3020908@gmail.com>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18015
+X-archive-position: 18016
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,21 +33,10 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Jan 13, 2008 at 12:00:51AM +0100, Thomas Bogendoerfer wrote:
+On Sat, Jan 12, 2008 at 04:03:40PM +0300, Vitaly Wool wrote:
 
-> - ISA DMA is broken on IP28
-> - bus error handler improved to not issue bus errors for
->   speculative accesses to CPU and GIO addresses. We now
->   treat CSTAT_ADDR and GSTAT_TIME errors as non fatal, when
->   they are issues via MC error interrupt. For real (non
->   speculative) bus errors a DBE will be issued, which is
->   lethal as before. Handling the issue this way gets rid
->   of decoding instructions
-> 
-> Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> This patch does some PNX8XXX clocksource cleanups.
 
-Folded into the "[MIPS] IP28 support" patch for 2.6.28.
-
-Thanks,
+Queued for 2.6.25.
 
   Ralf

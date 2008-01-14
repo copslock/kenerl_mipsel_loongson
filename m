@@ -1,109 +1,111 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jan 2008 04:19:53 +0000 (GMT)
-Received: from mail.lundman.net ([210.172.146.197]:40370 "EHLO
-	mail.lundman.net") by ftp.linux-mips.org with ESMTP
-	id S20021856AbYANETo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 14 Jan 2008 04:19:44 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by mail.lundman.net (Postfix) with ESMTP id 6AA57299F0
-	for <linux-mips@linux-mips.org>; Mon, 14 Jan 2008 13:19:41 +0900 (JST)
-X-Virus-Scanned: amavisd-new at lundman.net
-Received: from mail.lundman.net ([127.0.0.1])
-	by localhost (eyot.interq.or.jp [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id WdCBpq5FkJ8b for <linux-mips@linux-mips.org>;
-	Mon, 14 Jan 2008 13:19:38 +0900 (JST)
-Received: from shinken.interq.or.jp (shinken.interq.or.jp [210.172.146.228])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.lundman.net (Postfix) with ESMTP id E5486299E7
-	for <linux-mips@linux-mips.org>; Mon, 14 Jan 2008 13:19:37 +0900 (JST)
-Message-ID: <478AE2D9.5040303@lundman.net>
-Date:	Mon, 14 Jan 2008 13:19:37 +0900
-From:	Jorgen Lundman <lundman@lundman.net>
-User-Agent: Mozilla/5.0 (Macintosh; U; Intel Mac OS X; en-US; rv:1.8.1.5) Gecko/20070725 SeaMonkey/1.1.3
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jan 2008 06:27:39 +0000 (GMT)
+Received: from ag-out-0708.google.com ([72.14.246.250]:95 "EHLO
+	ag-out-0708.google.com") by ftp.linux-mips.org with ESMTP
+	id S20023627AbYANG1b (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 14 Jan 2008 06:27:31 +0000
+Received: by ag-out-0708.google.com with SMTP id 22so1361239agd.7
+        for <linux-mips@linux-mips.org>; Sun, 13 Jan 2008 22:27:29 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:date:from:to:cc:subject:message-id:reply-to:references:mime-version:content-type:content-disposition:in-reply-to:user-agent;
+        bh=eVczlcz1j/XOUyCFiMx6zGZEkFIbcfYVgtXghvD7dMY=;
+        b=WGPzlWW+BzFXbd7Z0UYJVjBxKOFbQAul+jGm3WaTpGmH8UcKhgUiuxuv4NqXxDsV6Ur2yOg60XKAB/+fEsbtf6b3MAr0c2hkw8SGskJVp8zE5dK4/2ZJLt1AJ/73Fg8uZoI1czTvlYMgeInSbh2S6ZEMwXfgliCnMop571yDbsc=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=date:from:to:cc:subject:message-id:reply-to:references:mime-version:content-type:content-disposition:in-reply-to:user-agent;
+        b=fFCnCwZhkYH/j2lhO7J2o0S41AMcmuN8CNRjXFo/RY6MfwaVqgNQlIud7kD2gAe0jgNQpKFMwX7tamoWN84nS33ebouhez4MeAs5Uz8SFOkW/UirA1O6j9B4U7CiSaSG5W52jTxNeGtIyVUz/tVhaYszEGygl4mqr7eNmkLqj8g=
+Received: by 10.100.232.13 with SMTP id e13mr13335661anh.61.1200292049401;
+        Sun, 13 Jan 2008 22:27:29 -0800 (PST)
+Received: from localhost ( [123.128.42.225])
+        by mx.google.com with ESMTPS id 34sm11669465nza.33.2008.01.13.22.27.20
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Sun, 13 Jan 2008 22:27:28 -0800 (PST)
+Date:	Mon, 14 Jan 2008 14:26:34 +0800
+From:	WANG Cong <xiyou.wangcong@gmail.com>
+To:	Sam Ravnborg <sam@ravnborg.org>
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
+	WANG Cong <xiyou.wangcong@gmail.com>,
+	Andreas Schwab <schwab@suse.de>,
+	LKML <linux-kernel@vger.kernel.org>,
+	linux-kbuild@vger.kernel.org, Andrew Morton <akpm@osdl.org>,
+	linux-mips@linux-mips.org
+Subject: Re: (Try #3) [Patch 2/8] MIPS: Remove 'TOPDIR' from Makefiles
+Message-ID: <20080114062634.GB2537@hacking>
+Reply-To: WANG Cong <xiyou.wangcong@gmail.com>
+References: <20080101071311.GA2496@hacking> <20080101072238.GC2496@hacking> <20080101101540.GB28913@uranus.ravnborg.org> <jefxxhlkxb.fsf@sykes.suse.de> <20080101175754.GC31575@uranus.ravnborg.org> <20080102062135.GE2493@hacking> <20080111141754.GC19900@linux-mips.org> <20080111170204.GA28299@uranus.ravnborg.org>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Re: [SPAM] flush_cache_page
-References: <478999C4.3040708@lundman.net> <DF375560-30CA-44EF-A571-437BB4B08D31@27m.se>
-In-Reply-To: <DF375560-30CA-44EF-A571-437BB4B08D31@27m.se>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <lundman@lundman.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20080111170204.GA28299@uranus.ravnborg.org>
+User-Agent: Mutt/1.5.14 (2007-02-12)
+Return-Path: <xiyou.wangcong@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18017
+X-archive-position: 18018
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lundman@lundman.net
+X-original-sender: xiyou.wangcong@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
+On Fri, Jan 11, 2008 at 06:02:04PM +0100, Sam Ravnborg wrote:
+>On Fri, Jan 11, 2008 at 02:17:54PM +0000, Ralf Baechle wrote:
+>> On Wed, Jan 02, 2008 at 02:21:36PM +0800, WANG Cong wrote:
+>> 
+>> > >> Shouldn't that use $(LINUXINCLUDE), or $(KBUILD_CPPFLAGS)?
+>> > >It would be better to use $(LINUXINCLUDE) as we then pull in all config
+>> > >symbols too and do not have to hardcode kbuild internal names (include2).
+>> > 
+>> > OK. Refine this patch.
+>> 
+>> LDSCRIPT also needed fixing to get builds in a separate object directory
+>> working again.
+>> 
+>> I've applied below fix.
+>
+>Great - I will drop it from my tree. 
+>
+>See small comment below.
+>
+>	Sam
+>
+>
+>>   Ralf
+>> 
+>> From 8babf06e1265214116fb8ffc634c04df85597c52 Mon Sep 17 00:00:00 2001
+>> From: WANG Cong <xiyou.wangcong@gmail.com>
+>> Date: Wed, 2 Jan 2008 14:21:36 +0800
+>> Subject: [PATCH] [MIPS] Lasat: Fix built in separate object directory.
+>> 
+>> Signed-off-by: WANG Cong <xiyou.wangcong@gmail.com>
+>> 
+>> [Ralf: The LDSCRIPT script needed fixing, too]
+>> 
+>> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+>> 
+>> diff --git a/arch/mips/lasat/image/Makefile b/arch/mips/lasat/image/Makefile
+>> index 5332449..7ccd40d 100644
+>> --- a/arch/mips/lasat/image/Makefile
+>> +++ b/arch/mips/lasat/image/Makefile
+>> @@ -12,11 +12,11 @@ endif
+>>  
+>>  MKLASATIMG = mklasatimg
+>>  MKLASATIMG_ARCH = mq2,mqpro,sp100,sp200
+>> -KERNEL_IMAGE = $(TOPDIR)/vmlinux
+>> +KERNEL_IMAGE = vmlinux
+>>  KERNEL_START = $(shell $(NM) $(KERNEL_IMAGE) | grep " _text" | cut -f1 -d\ )
+>>  KERNEL_ENTRY = $(shell $(NM) $(KERNEL_IMAGE) | grep kernel_entry | cut -f1 -d\ )
+>>  
+>> -LDSCRIPT= -L$(obj) -Tromscript.normal
+>> +LDSCRIPT= -L$(srctree)/$(obj) -Tromscript.normal
+>
+>This needs to read:
+>> +LDSCRIPT= -L$(srctree)/$(src) -Tromscript.normal
+>
+>
+>(There is no difference between src and obj in normal cases but to be consistent
+>it shuld be like above).
 
-
-Markus Gothe wrote:
-> Man, 2.6.15 is like 2-3 years old....
-
-Thank you, that is very useful. And if you can let me know how I do the 
-signature, and which AES keys I need to encrypt the kernel with to be 
-able to boot it on the SMP8634 I could upgrade.
-
-But for now, I can not change what the device runs, only try to work 
-around its limitations.
-
-Lund
-
-
-
-> 
-> On 13 Jan 2008, at 05:55, Jorgen Lundman wrote:
-> 
->>
->> Due to cache coherence bugs, Fuse has an extra call to work around it;
->>
->>        flush_cache_page(vma, cs->addr, page_to_pfn(cs->pg));
->>
->>
->> But my kernel (2.6.15 for mips 4KEc Tangox board) does not have a 
->> flush_cache_page().
->>
->> If I use kangox_flush_all() Fuse works rather well, but the 
->> performance is abysmal. Can I simulate this call using one of the 
->> calls I do have;
->>
->> __flush_dcache_page
->> flush_data_cache_page
->> tangox_flush_cache_all
->> cache_flush
->> kc_flush_cache
->>
->> Or alternatively, does anyone have the source for flush_cache_page() 
->> for said CPU?
->>
->>
->>
->> -- 
->> Jorgen Lundman       | <lundman@lundman.net <mailto:lundman@lundman.net>>
->> Unix Administrator   | +81 (0)3 -5456-2687 ext 1017 (work)
->> Shibuya-ku, Tokyo    | +81 (0)90-5578-8500          (cell)
->> Japan                | +81 (0)3 -3375-1767          (home)
->>
-> 
-> _______________________________________
-> 
-> Mr Markus Gothe
-> Software Engineer
-> 
-> Phone: +46 (0)13 21 81 20 (ext. 1046)
-> Fax: +46 (0)13 21 21 15
-> Mobile: +46 (0)73 718 72 80
-> Diskettgatan 11, SE-583 35 Linköping, Sweden
-> www.27m.com <http://www.27m.com>
-> 
-> 
-
--- 
-Jorgen Lundman       | <lundman@lundman.net>
-Unix Administrator   | +81 (0)3 -5456-2687 ext 1017 (work)
-Shibuya-ku, Tokyo    | +81 (0)90-5578-8500          (cell)
-Japan                | +81 (0)3 -3375-1767          (home)
+Agreed. Thank you!

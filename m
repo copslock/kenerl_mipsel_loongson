@@ -1,74 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jan 2008 20:25:51 +0000 (GMT)
-Received: from wr-out-0506.google.com ([64.233.184.234]:17544 "EHLO
-	wr-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20033141AbYANUZm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 14 Jan 2008 20:25:42 +0000
-Received: by wr-out-0506.google.com with SMTP id 67so698129wri.6
-        for <linux-mips@linux-mips.org>; Mon, 14 Jan 2008 12:25:41 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jan 2008 21:15:10 +0000 (GMT)
+Received: from fg-out-1718.google.com ([72.14.220.159]:39995 "EHLO
+	fg-out-1718.google.com") by ftp.linux-mips.org with ESMTP
+	id S20035239AbYANVPC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 14 Jan 2008 21:15:02 +0000
+Received: by fg-out-1718.google.com with SMTP id d23so2263089fga.32
+        for <linux-mips@linux-mips.org>; Mon, 14 Jan 2008 13:15:01 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        bh=IB0LSjV53TIzZmR6t0KCmRosOyPsSLVh/sLGBckmc+Y=;
-        b=lVcDIQLEEDOYyI68Avty+btgLVwj20e81h2KbezdFS/y3kibKns0r0vFSdvRhz+2YZv/mXMZ4JqMaXCNoZypgeuJ5V9UNL+WjGcMWq7dWirpmapASOa/l4xNxcozNucwVqEncyTEebLiq7o/qvfY7k6cndq4wRm4g0PTpiQ0n00=
+        h=domainkey-signature:received:received:message-id:date:from:organization:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding;
+        bh=+gyUYqrNLcov+1WpdS0lSAIXnTivwZKZx+xbGVLz+YA=;
+        b=qKwaJg5GXpdmPul0LyNTEFPkgT/BWSqC/UaLcgGtRRLSbOn3TTc7VabefZudPCP5hXcVszkepre9EDh7SipldbaniTwa+xbWD+Ywg0YJdWs0WJv91XsqmRcvESWXJ8Zce7FG99irideBJDQ3WqI1GH3IbH5Lpe0u5JDkAS3d/ME=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=t0ALF6RJxuhnvsYHk2xi3sMov8YnD/oACZPAZ8Nstx/QuEoHyLBll53EWoisXnv5jAv/lCNlJiLKTC0DQ+jbMb3G3kKzFuimMtN16xE1y78eljFe0scsmJjFbHJ1XHmFHjxlXGq4WpQ/eytYKhQaOI8RH8szKW0jQJm9QhN2QUE=
-Received: by 10.142.103.6 with SMTP id a6mr2774726wfc.21.1200342340181;
-        Mon, 14 Jan 2008 12:25:40 -0800 (PST)
-Received: by 10.142.140.11 with HTTP; Mon, 14 Jan 2008 12:25:40 -0800 (PST)
-Message-ID: <1a18fe6d0801141225u2395ae6dj39d268014019b4a1@mail.gmail.com>
-Date:	Mon, 14 Jan 2008 21:25:40 +0100
-From:	"The Engineer" <lper.home@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: Cache aliasing issues using 4K pages.
+        h=message-id:date:from:organization:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding;
+        b=rOBqYYn/oWtQ3cmbwzd47Idqf79xqUTdGxQQ/wqsPpSE/H80sHOtgchbIFK4w0vahryq1BfBB0kdzDL1T4S+QRUDBRtpiZFyvfFhtoTPxytI2OvBNU1ZnRa/8j+3qWBJ2rDykcNK14AkI1YJjSle1R9mpQQGMCopFNWkjYdMsZQ=
+Received: by 10.86.51.2 with SMTP id y2mr6668131fgy.6.1200345301731;
+        Mon, 14 Jan 2008 13:15:01 -0800 (PST)
+Received: from ?192.168.1.3? ( [91.76.31.85])
+        by mx.google.com with ESMTPS id e11sm5522660fga.5.2008.01.14.13.15.00
+        (version=SSLv3 cipher=RC4-MD5);
+        Mon, 14 Jan 2008 13:15:01 -0800 (PST)
+Message-ID: <478BD0D2.2060004@gmail.com>
+Date:	Tue, 15 Jan 2008 00:14:58 +0300
+From:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
+Organization: DmVo Home
+User-Agent: Thunderbird 1.5.0.14pre (X11/20071022)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+To:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+CC:	Linux-kernel <linux-kernel@vger.kernel.org>
+Subject: [PATCH][MIPS] Add Atlas to feature-removal-schedule.
+Content-Type: text/plain; charset=KOI8-R
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Return-Path: <lper.home@gmail.com>
+Return-Path: <dmitri.vorobiev@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18038
+X-archive-position: 18039
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lper.home@gmail.com
+X-original-sender: dmitri.vorobiev@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-We are working with a 2.6.12 kernel on a dual-core mips architecture.
-In this dual-core system, one core is running the linux kernel and the
-other is used for some real-time handling (not directly controlled by
-Linux)
-We had different stability issues, which could be pinpointed to be
-related with cache aliasing problems.
-Cache aliasing happens when the same physical memory can be cached
-twice as it is accessed by two different virtual addresses.
-Indeed, for the index to select the correct cache line the virtual
-address is used. If some bits of the virtual page address are used in
-the cache index, aliasing can occur.
+Ralf Baechle on Atlas board support in the linux-mips mailing list:
 
+Maciej is promising to fix it up since a few years ;-)  Aside of that it's
+safe to say the Atlas is dead like a coffin nail.
 
-As there is no hardware solution in the mips to recover from this
-(which would provide some cache coherency, even for one core), the
-only intrinsic safe solution is to enlarge the page size, so that
-cache indexing is only done by the offset address in the page (thus
-the physical part of the address).
-Another solution is to flush the cache if a page is being remapped to
-an aliased address (but in our case linux does not has control on the
-second core, which can cause issues with shared data between both
-cores).
-Currently the second solution is used in the kernel, but we found
-different issues with it (for instance: we had to merge more recent
-mips kernels, to get a reliable copy-on-write behaviour after
-forks...).
+Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
+---
+ Documentation/feature-removal-schedule.txt |    8 ++++++++
+ 1 files changed, 8 insertions(+), 0 deletions(-)
 
-Therefore some questions:
-- Are there still some known issues with cache aliasing in the MIPS kernel?
-- Are there known issues when using 16KB pages (8KB pages seems not be
-possible due to tlb issues).
-
-Thanks in advance,
-Luc
+diff --git a/Documentation/feature-removal-schedule.txt b/Documentation/feature-removal-schedule.txt
+index 20c4c8b..c053318 100644
+--- a/Documentation/feature-removal-schedule.txt
++++ b/Documentation/feature-removal-schedule.txt
+@@ -333,3 +333,11 @@ Why:	This driver has been marked obsolete for many years.
+ Who:	Stephen Hemminger <shemminger@linux-foundation.org>
+ 
+ ---------------------------
++
++What:	Support for MIPS Technologies' Altas evaluation board
++When:	March 2008
++Why:	Apparently there is no user base left for this platform.
++	Hardware out of production since several years.
++Who:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
++
++---------------------------
+-- 
+1.5.3

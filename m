@@ -1,89 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jan 2008 17:23:07 +0000 (GMT)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:18055 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20031109AbYANRW4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 14 Jan 2008 17:22:56 +0000
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 18D6D31219C;
-	Mon, 14 Jan 2008 17:22:57 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Mon, 14 Jan 2008 17:22:56 +0000 (UTC)
-Received: from [192.168.7.26] ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Mon, 14 Jan 2008 09:22:42 -0800
-Message-ID: <478B9A62.7000401@avtrex.com>
-Date:	Mon, 14 Jan 2008 09:22:42 -0800
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 1.5.0.12 (X11/20071019)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jan 2008 17:47:31 +0000 (GMT)
+Received: from fg-out-1718.google.com ([72.14.220.152]:23864 "EHLO
+	fg-out-1718.google.com") by ftp.linux-mips.org with ESMTP
+	id S20031567AbYANRrX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 14 Jan 2008 17:47:23 +0000
+Received: by fg-out-1718.google.com with SMTP id d23so2207898fga.32
+        for <linux-mips@linux-mips.org>; Mon, 14 Jan 2008 09:47:22 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:organization:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        bh=1OgS/vuSY8NpjXgAlXy5ptWekgKb96xHSgtPUXyGvlg=;
+        b=qJd3W/DX4NudroHoo6nezKB2SMmcxV9ARWq4/uLxtcobUxjbesDIT5FLVQTUky8/16B29Usw8A0a+Kyp8XCR3RrdRh64Aey/hBrvwwXcUXVKtWCLyZ1r+GGN408aegEtuMiJapUFUppBUmTC+qDSmXB4jvdaBCCRrB22V0P943I=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:organization:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
+        b=ISEEcSHgryd28UYD760e2IgWK12NnTph3BA0PDPESkFz8uZVxCkOfOwqL1slHPNEDi4SCKRDE/CwrslWo0nk3ZHJvn9xUvGEdx0OYms+NK8GS5bPgqzv8K02E5mByT7lnbSsfmKzaL1cMKHRenXFOPQeKI5seZ2IiZzEkl9qrQs=
+Received: by 10.86.95.20 with SMTP id s20mr5361375fgb.67.1200332842803;
+        Mon, 14 Jan 2008 09:47:22 -0800 (PST)
+Received: from ?192.168.1.3? ( [91.76.31.85])
+        by mx.google.com with ESMTPS id l19sm6719775fgb.3.2008.01.14.09.47.21
+        (version=SSLv3 cipher=RC4-MD5);
+        Mon, 14 Jan 2008 09:47:21 -0800 (PST)
+Message-ID: <478BA01E.7050701@gmail.com>
+Date:	Mon, 14 Jan 2008 20:47:10 +0300
+From:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
+Organization: DmVo Home
+User-Agent: Thunderbird 1.5.0.14pre (X11/20071022)
 MIME-Version: 1.0
-To:	Noah Meyerhans <frodo@morgul.net>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: memory related kernel bug on cobalt raq2
-References: <20080114153114.GN3899@morgul.net>
-In-Reply-To: <20080114153114.GN3899@morgul.net>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] prom_free_prom_memory for QEMU
+References: <20080114.212253.126142719.anemo@mba.ocn.ne.jp> <20080114133701.GA16555@linux-mips.org> <478B6AA3.2070402@gmail.com> <20080114141424.GB22344@linux-mips.org> <478B9120.1020500@gmail.com> <20080114165759.GA2894@linux-mips.org>
+In-Reply-To: <20080114165759.GA2894@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 14 Jan 2008 17:22:42.0813 (UTC) FILETIME=[122D2AD0:01C856D2]
-Return-Path: <ddaney@avtrex.com>
+Return-Path: <dmitri.vorobiev@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18034
+X-archive-position: 18035
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: dmitri.vorobiev@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Noah Meyerhans wrote:
-> Hi all.  I know this has come up in the past, but in case it's helpful, I
-> figured I'd report that the kernel bug previously reported at (at least)
-> http://www.linux-mips.org/archives/linux-mips/2007-10/msg00093.html is still
-> present in current git kernels (more recently observed in
-> 2.6.24-rc7-raq2-gaeb7040e-dirty).  Here's the kernel output:
+Ralf Baechle wrote:
+> On Mon, Jan 14, 2008 at 07:43:12PM +0300, Dmitri Vorobiev wrote:
 > 
-> Kernel bug detected[#1]:
-> Cpu 0
-> $ 0   : 00000000 b000ec00 00000001 00000004
-> $ 4   : 81107760 7fb60f09 0000000e 83fb6000
-> $ 8   : 00000f09 7fb60f09 800f5fe8 00000000
-> $12   : 00000000 00000000 83ea6cc0 004038b4
-> $16   : 81107760 0000000e 83fb6000 7fb60f09
-> $20   : 803c0000 8fdf2cc0 00000000 86015e28
-> $24   : 00000006 8008d480
-> $28   : 86014000 86015de0 86015e2c 8008b2cc
-> Hi    : 00000000
-> Lo    : 00000000
-> epc   : 8008af9c kmap_coherent+0xc/0xe0     Not tainted
-> ra    : 8008b2cc copy_from_user_page+0xb0/0xe4
-> Status: b000ec03    KERNEL EXL IE
-> Cause : 00800034
-> PrId  : 000028a0 (Nevada)
-> Process cat (pid: 5739, threadinfo=86014000, task=804b9178)
-> Stack : 8fdf2cc0 7fb60f09 83fb6000 0000000e 0000000e 7fb60f09 83fb6000 00000000
->         0000000e 800e0484 8fc75178 804b9178 000800d0 00000000 883bbf09 0000000e
->         86015e2c 86015e28 8fe0dbfc 81107760 8fdf2cf4 00000000 8fdf2cc0 00000000
->         0000000e 83fb6000 00000400 8fc75178 00001000 0052c7c8 00000000 80133f5c
->         8fc75178 8fa26704 83fb6000 86015f18 00000000 0052c7c8 8fc75178 83fb6000
->         ...
-> Call Trace:
-> [<8008af9c>] kmap_coherent+0xc/0xe0
-> [<8008b2cc>] copy_from_user_page+0xb0/0xe4
-> [<800e0484>] access_process_vm+0x178/0x21c
-> [<80133f5c>] proc_pid_cmdline+0xa4/0x14c
-> [<80136300>] proc_info_read+0x104/0x144
-> [<800f5a7c>] vfs_read+0xc0/0x160
-> [<800f603c>] sys_read+0x54/0xa0
-> [<80088cac>] stack_done+0x20/0x3c
+>>>>> I was actually planning to remove the Qemu platform for 2.6.25.  The
+>>>>> Malta emulation has become so good that there is no more point in having
+>>>>> the underfeatured synthetic platform that CONFIG_QEMU is.
+>>>> I wholeheartedly agree with that. It is a godsend to me that I can use
+>>>> identical configs to build the kernels for QEMU and for a physical Malta.
+>>>> Emulation is more convenient to me because QEMU boots and runs faster
+>>>> than the board I'm working with. Many thanks for that to QEMU developers.
+>>>>
+>>>> Off the topic, how about the plans to remove Atlas support?
+>>> Maciej is promising to fix it up since a few years ;-)  Aside of that it's
+>>> safe to say the Atlas is dead like a coffin nail.
+>> Well, I could do the proper cleanup, if you give your sayso. As I wrote here
+>> yesterday, I noticed that Malta code was screaming for being put into proper
+>> shape. If MIPS maintainers are interested in applying such janitorial patches,
+>> I could simultaneously wipe the Atlas support off.
+>>
+>> So?
 > 
+> Of course janitorial patches will be considered.
 
-Yes, this would seem to be the same problem as:
+I'm rolling up the sleeves.
 
-http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=20071211221327.GB2150%40paradigm.rfc822.org
+> 
+> The Malta code used to scream even way louder.  I made an opportunistic
+> attempt at fixing the one or other corner over time, whenever something
+> was getting in my way for some reason.
 
-There is a similar problem in  2.6.23.
+I see. Actually, I am teaching system programming at the premises of the Moscow
+State University and I am now working on a lab assignment where a Malta board
+will be involved. In the classes, I insist that my students follow the coding
+style rules to the letter, that's why I really want the Malta code to be 
+worthy of imitation.  :)
 
-David Daney
+> 
+>   Ralf
+> 

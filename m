@@ -1,78 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jan 2008 21:28:00 +0000 (GMT)
-Received: from fg-out-1718.google.com ([72.14.220.157]:35735 "EHLO
-	fg-out-1718.google.com") by ftp.linux-mips.org with ESMTP
-	id S20035259AbYANV1u (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 14 Jan 2008 21:27:50 +0000
-Received: by fg-out-1718.google.com with SMTP id d23so2266620fga.32
-        for <linux-mips@linux-mips.org>; Mon, 14 Jan 2008 13:27:50 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:organization:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding;
-        bh=9gHP/UwVKtlJ1tt5ddt7JSH5pnwBCu06IviSuMwFA1o=;
-        b=QXR+yS08R/WcggWqmbqc05SPfULcP7tgbkW4D7doV9+Hj0Y2bCKtWXTmuBQIgzVrgEQ1afQkJs9Vkz59Iog/Dh8o5u1Hj0W9UVF8vKTpXSkcsR5T6cYIbmOtU/uv67vI35tAKbRIthgiuCPDdh2/GnC9QySmV4n48CbpXS1vvqc=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:organization:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding;
-        b=LuyAKMIMMQpWjx2ZOwB/DrBNqxf0b9Ea0Z2vD7U9mLxkhMaIb6mNpDi84fojbyHdBKZpd+vTwJOQHBqeSJnSJ/G1W/KnDxAqGvoMBgYe1E4qGEbic9BJNqY/I5TIlOtDXCxNKL2jU/FFiPIn83swLT371ya+xU7aCC9T+Id4w5w=
-Received: by 10.86.25.17 with SMTP id 17mr4797889fgy.15.1200346069896;
-        Mon, 14 Jan 2008 13:27:49 -0800 (PST)
-Received: from ?192.168.1.3? ( [91.76.31.85])
-        by mx.google.com with ESMTPS id l12sm5568077fgb.9.2008.01.14.13.27.48
-        (version=SSLv3 cipher=RC4-MD5);
-        Mon, 14 Jan 2008 13:27:49 -0800 (PST)
-Message-ID: <478BD3D2.3060807@gmail.com>
-Date:	Tue, 15 Jan 2008 00:27:46 +0300
-From:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
-Organization: DmVo Home
-User-Agent: Thunderbird 1.5.0.14pre (X11/20071022)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jan 2008 22:02:26 +0000 (GMT)
+Received: from harold.telenet-ops.be ([195.130.133.65]:5771 "EHLO
+	harold.telenet-ops.be") by ftp.linux-mips.org with ESMTP
+	id S20035518AbYANWCS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 14 Jan 2008 22:02:18 +0000
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by harold.telenet-ops.be (Postfix) with SMTP id E27C030082;
+	Mon, 14 Jan 2008 23:02:17 +0100 (CET)
+Received: from anakin (d54C15D55.access.telenet.be [84.193.93.85])
+	by harold.telenet-ops.be (Postfix) with ESMTP id C756930083;
+	Mon, 14 Jan 2008 23:02:17 +0100 (CET)
+Received: from anakin.of.borg (localhost [127.0.0.1])
+	by anakin (8.14.1/8.14.1/Debian-9) with ESMTP id m0EM2HEE004010
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Mon, 14 Jan 2008 23:02:17 +0100
+Received: from localhost (geert@localhost)
+	by anakin.of.borg (8.14.1/8.14.1/Submit) with ESMTP id m0EM2HaO004007;
+	Mon, 14 Jan 2008 23:02:17 +0100
+X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
+Date:	Mon, 14 Jan 2008 23:02:17 +0100 (CET)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
+cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	Linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [SPAM] [PATCH][MIPS] Add Atlas to feature-removal-schedule.
+In-Reply-To: <478BD0D2.2060004@gmail.com>
+Message-ID: <Pine.LNX.4.64.0801142302001.2335@anakin>
+References: <478BD0D2.2060004@gmail.com>
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-CC:	Linux-kernel <linux-kernel@vger.kernel.org>
-Subject: [PATCH][MIPS] Malta: Fix reading the PCI clock frequency on big-endian
-Content-Type: text/plain; charset=KOI8-R
-Content-Transfer-Encoding: 7bit
-Return-Path: <dmitri.vorobiev@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18040
+X-archive-position: 18041
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@gmail.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-The JMPRS register on Malta boards keeps a 32-bit CPU-endian
-value. The readw() function assumes that the value it reads is a
-little-endian 16-bit number. Therefore, using readw() to obtain
-the value of the JMPRS register is a mistake. This error leads
-to incorrect reading of the PCI clock frequency on big-endian
-during board start-up.
+On Tue, 15 Jan 2008, Dmitri Vorobiev wrote:
+> Ralf Baechle on Atlas board support in the linux-mips mailing list:
+> 
+> Maciej is promising to fix it up since a few years ;-)  Aside of that it's
+> safe to say the Atlas is dead like a coffin nail.
+> 
+> Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
+> ---
+>  Documentation/feature-removal-schedule.txt |    8 ++++++++
+>  1 files changed, 8 insertions(+), 0 deletions(-)
+> 
+> diff --git a/Documentation/feature-removal-schedule.txt b/Documentation/feature-removal-schedule.txt
+> index 20c4c8b..c053318 100644
+> --- a/Documentation/feature-removal-schedule.txt
+> +++ b/Documentation/feature-removal-schedule.txt
+> @@ -333,3 +333,11 @@ Why:	This driver has been marked obsolete for many years.
+>  Who:	Stephen Hemminger <shemminger@linux-foundation.org>
+>  
+>  ---------------------------
+> +
+> +What:	Support for MIPS Technologies' Altas evaluation board
+                                               ^^^^^
+					       Atlas
 
-Change readw() to __raw_readl().
+Gr{oetje,eeting}s,
 
-This was tested by injecting a call to printk() and verifying
-that the value of the jmpr variable was consistent with current
-setting of the JP4 "PCI CLK" jumper.
+						Geert
 
-Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
----
- arch/mips/mips-boards/malta/malta_setup.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-diff --git a/arch/mips/mips-boards/malta/malta_setup.c b/arch/mips/mips-boards/malta/malta_setup.c
-index 9a2636e..bc43a5c 100644
---- a/arch/mips/mips-boards/malta/malta_setup.c
-+++ b/arch/mips/mips-boards/malta/malta_setup.c
-@@ -149,7 +149,7 @@ void __init plat_mem_setup(void)
- 	/* Check PCI clock */
- 	{
- 		unsigned int __iomem *jmpr_p = (unsigned int *) ioremap(MALTA_JMPRS_REG, sizeof(unsigned int));
--		int jmpr = (readw(jmpr_p) >> 2) & 0x07;
-+		int jmpr = (__raw_readl(jmpr_p) >> 2) & 0x07;
- 		static const int pciclocks[] __initdata = {
- 			33, 20, 25, 30, 12, 16, 37, 10
- 		};
--- 
-1.5.3
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

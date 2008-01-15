@@ -1,88 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jan 2008 11:57:02 +0000 (GMT)
-Received: from relay01.mx.bawue.net ([193.7.176.67]:10915 "EHLO
-	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
-	id S20036634AbYAOL4x (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 15 Jan 2008 11:56:53 +0000
-Received: from lagash (intrt.mips-uk.com [194.74.144.130])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by relay01.mx.bawue.net (Postfix) with ESMTP id 7623E48917;
-	Tue, 15 Jan 2008 12:56:47 +0100 (CET)
-Received: from ths by lagash with local (Exim 4.68)
-	(envelope-from <ths@networkno.de>)
-	id 1JEkPy-0008CL-3p; Tue, 15 Jan 2008 11:57:22 +0000
-Date:	Tue, 15 Jan 2008 11:57:22 +0000
-From:	Thiemo Seufer <ths@networkno.de>
-To:	Luc Perneel <lper.home@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Cache aliasing issues using 4K pages.
-Message-ID: <20080115115721.GA31107@networkno.de>
-References: <1a18fe6d0801141225u2395ae6dj39d268014019b4a1@mail.gmail.com> <20080115015814.GF9693@networkno.de> <1a18fe6d0801142250h7ce58675i2bce7cb2e2db2669@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jan 2008 12:03:57 +0000 (GMT)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:6017 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S20036865AbYAOMDs (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 15 Jan 2008 12:03:48 +0000
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id AABF3400B8;
+	Tue, 15 Jan 2008 13:03:48 +0100 (CET)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id Ai4ZZrB2p1JR; Tue, 15 Jan 2008 13:03:46 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 4F07F400BD;
+	Tue, 15 Jan 2008 13:03:46 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id m0FC3loo031621;
+	Tue, 15 Jan 2008 13:03:48 +0100
+Date:	Tue, 15 Jan 2008 12:03:41 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
+cc:	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	Linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [SPAM] [PATCH][MIPS] Add Atlas to feature-removal-schedule.
+In-Reply-To: <478BEDD7.6070100@gmail.com>
+Message-ID: <Pine.LNX.4.64N.0801151156460.23975@blysk.ds.pg.gda.pl>
+References: <478BD0D2.2060004@gmail.com> <Pine.LNX.4.64.0801142302001.2335@anakin>
+ <478BEDD7.6070100@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1a18fe6d0801142250h7ce58675i2bce7cb2e2db2669@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-12-11)
-Return-Path: <ths@networkno.de>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.92/5483/Mon Jan 14 15:45:01 2008 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18051
+X-archive-position: 18052
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Luc Perneel wrote:
-> On Jan 15, 2008 2:58 AM, Thiemo Seufer <ths@networkno.de> wrote:
+On Tue, 15 Jan 2008, Dmitri Vorobiev wrote:
+
+> >> +
+> >> +What:	Support for MIPS Technologies' Altas evaluation board
+> >                                                ^^^^^
+> > 					       Atlas
 > 
-> > The Engineer wrote:
-> > > We are working with a 2.6.12 kernel on a dual-core mips architecture.
-> > > In this dual-core system, one core is running the linux kernel and the
-> > > other is used for some real-time handling (not directly controlled by
-> > > Linux)
-> > > We had different stability issues, which could be pinpointed to be
-> > > related with cache aliasing problems.
-> > > Cache aliasing happens when the same physical memory can be cached
-> > > twice as it is accessed by two different virtual addresses.
-> > > Indeed, for the index to select the correct cache line the virtual
-> > > address is used. If some bits of the virtual page address are used in
-> > > the cache index, aliasing can occur.
-> > >
-> > >
-> > > As there is no hardware solution in the mips to recover from this
-> > > (which would provide some cache coherency, even for one core), the
-> > > only intrinsic safe solution is to enlarge the page size, so that
-> > > cache indexing is only done by the offset address in the page (thus
-> > > the physical part of the address).
-> > > Another solution is to flush the cache if a page is being remapped to
-> > > an aliased address (but in our case linux does not has control on the
-> > > second core, which can cause issues with shared data between both
-> > > cores).
-> > > Currently the second solution is used in the kernel, but we found
-> > > different issues with it (for instance: we had to merge more recent
-> > > mips kernels, to get a reliable copy-on-write behaviour after
-> > > forks...).
-> > >
-> > > Therefore some questions:
-> > > - Are there still some known issues with cache aliasing in the MIPS
-> > kernel?
-> > > - Are there known issues when using 16KB pages (8KB pages seems not be
-> > > possible due to tlb issues).
-> >
-> > With recent kernels and toolchains 16k pages work ok IME. With a 2.6.12
-> > kernel however you'll have to backport a serious amount of bugfixes
-> > before 16k pages can work. Upgrading the kernel is probably less work.
-> >
-> > Thiemo
-> >
-> Thanks for the info, any idea from which kernel this works ok?
+> This is what happens when doing things in a rush. Thanks, Geert.
 
-I believe the linux-2.6.22-stable branch from www.linux-mips.org is the
-best version to use. I don't recall if the earlier branches got all the
-necessary fixes.
+ Hmm, I wonder why you'd be in such a rush to remove my pet project... ;-) 
+The last time I tried it worked; unfortunately I have since been taken 
+away my second serial port that I used as a terminal device for the Atlas 
+lying next to me and the first port I have in continuous use.  I'll see if 
+I can give it a hit before March though -- any issues with the port should 
+be minimal.
 
-
-Thiemo
+  Maciej

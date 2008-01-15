@@ -1,78 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jan 2008 16:14:41 +0000 (GMT)
-Received: from relay01.mx.bawue.net ([193.7.176.67]:2468 "EHLO
-	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
-	id S20037338AbYAOQO2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 15 Jan 2008 16:14:28 +0000
-Received: from lagash (intrt.mips-uk.com [194.74.144.130])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by relay01.mx.bawue.net (Postfix) with ESMTP id 87BE348916;
-	Tue, 15 Jan 2008 17:14:22 +0100 (CET)
-Received: from ths by lagash with local (Exim 4.68)
-	(envelope-from <ths@networkno.de>)
-	id 1JEoRF-0004VO-ML; Tue, 15 Jan 2008 16:14:57 +0000
-Date:	Tue, 15 Jan 2008 16:14:57 +0000
-From:	Thiemo Seufer <ths@networkno.de>
-To:	Gregor Waltz <gregor.waltz@raritan.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Toshiba JMR 3927 working setup?
-Message-ID: <20080115161457.GB31107@networkno.de>
-References: <477E7DAE.2080005@raritan.com> <20080106.000725.75184768.anemo@mba.ocn.ne.jp> <4787AC3D.2020604@raritan.com> <20080112.211749.25909440.anemo@mba.ocn.ne.jp> <478CD639.3040307@raritan.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jan 2008 17:42:24 +0000 (GMT)
+Received: from vervifontaine.sonytel.be ([80.88.33.193]:22991 "EHLO
+	vervifontaine.sonycom.com") by ftp.linux-mips.org with ESMTP
+	id S20037677AbYAORmP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 15 Jan 2008 17:42:15 +0000
+Received: from vixen.sonytel.be (piraat.sonytel.be [43.221.60.197])
+	by vervifontaine.sonycom.com (Postfix) with ESMTP id 04BF958ADF;
+	Tue, 15 Jan 2008 18:41:56 +0100 (MET)
+Date:	Tue, 15 Jan 2008 18:41:55 +0100 (CET)
+From:	Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+To:	Karsten Merker <merker@debian.org>,
+	Thiemo Seufer <ths@networkno.de>
+cc:	Linux/MIPS Development <linux-mips@linux-mips.org>
+Subject: pmag-aa-fb
+Message-ID: <Pine.LNX.4.64.0801151831370.12445@vixen.sonytel.be>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <478CD639.3040307@raritan.com>
-User-Agent: Mutt/1.5.17 (2007-12-11)
-Return-Path: <ths@networkno.de>
+Content-Type: MULTIPART/MIXED; BOUNDARY="-584349381-111773905-1200418915=:12445"
+Return-Path: <Geert.Uytterhoeven@sonycom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18060
+X-archive-position: 18061
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: Geert.Uytterhoeven@sonycom.com
 Precedence: bulk
 X-list: linux-mips
 
-Gregor Waltz wrote:
-> Atsushi Nemoto wrote:
->> On Fri, 11 Jan 2008 12:49:49 -0500, Gregor Waltz <gregor.waltz@raritan.com> wrote:
->>   
->>> I built linux-2.6.23.9 with the above, but the results are still the  
->>> same and the EPC is not in System.map.
->>>     
->>
->> Are you searching the exact EPC value in System.map?
->> Usually you should find a function symbol which contains the EPC value in it.
->>
->> Or you can do "mipsel-linux-objdump -d vmlinux" and search the EPC value.
->>   
->
->
-> The current error is:
-> Exception! EPC=80026290 CAUSE=00000020(Sys)
-> 80026290 0000000c syscall
->
-> 80026290 is not in System.map, however, the objdump is much more  
-> informative and does contain that value. That particular syscall is in:
->
-> 8002628c <kernel_execve>:
-> 8002628c:       24020fab        li      v0,4011
-> 80026290:       0000000c        syscall
-> 80026294:       00401821        move    v1,v0
-> 80026298:       14e00003        bnez    a3,800262a8 <kernel_execve+0x1c>
-> 8002629c:       00000000        nop
-> 800262a0:       03e00008        jr      ra
-> 800262a4:       00601021        move    v0,v1
-> 800262a8:       03e00008        jr      ra
-> 800262ac:       00031023        negu    v0,v1
->
-> Does that provide any clues?
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-The kernel failed to set up the general exception handler correctly.
-It should have done that before attempting to start the first kernel
-thread.
+---584349381-111773905-1200418915=:12445
+Content-Type: TEXT/PLAIN; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 
+I've just noticed drivers/video/pmag-aa-fb.c is the single remaining frame
+buffer device driver that still uses the old 2.4 API (all others have been
+converted or removed). So it doesn't work anymore.
 
-Thiemo
+Does anyone still care about it?
+
+With kind regards,
+
+Geert Uytterhoeven
+Software Architect
+
+Sony Network and Software Technology Center Europe
+The Corporate Village · Da Vincilaan 7-D1 · B-1935 Zaventem · Belgium
+
+Phone:    +32 (0)2 700 8453
+Fax:      +32 (0)2 700 8622
+E-mail:   Geert.Uytterhoeven@sonycom.com
+Internet: http://www.sony-europe.com/
+
+Sony Network and Software Technology Center Europe
+A division of Sony Service Centre (Europe) N.V.
+Registered office: Technologielaan 7 · B-1840 Londerzeel · Belgium
+VAT BE 0413.825.160 · RPR Brussels
+Fortis Bank Zaventem · Swift GEBABEBB08A · IBAN BE39001382358619
+---584349381-111773905-1200418915=:12445--

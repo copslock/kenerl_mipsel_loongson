@@ -1,69 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jan 2008 23:25:11 +0000 (GMT)
-Received: from fg-out-1718.google.com ([72.14.220.154]:16880 "EHLO
-	fg-out-1718.google.com") by ftp.linux-mips.org with ESMTP
-	id S20035795AbYANXZC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 14 Jan 2008 23:25:02 +0000
-Received: by fg-out-1718.google.com with SMTP id d23so2298715fga.32
-        for <linux-mips@linux-mips.org>; Mon, 14 Jan 2008 15:25:02 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:organization:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding;
-        bh=MDdcqzlTvkeNtLNrcjT7cTeAo6gu4ptBERJDdw0avA0=;
-        b=Ud128pWOfGiYPOvm9GmVhWLkDRgWASiroJnEd1rT9valIeXjMHhX5pZWI1RuFcjtvDsf/d67ms6HxEPzOAheFa3UJEtv5C6VX5sEWBmXTbkVngh0uIhUWwJ2qo43VBqqqZsVu3S/OaSpx2DJOhz5GGEliysA5M7mgFDFdjEFC48=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:organization:user-agent:mime-version:to:cc:subject:content-type:content-transfer-encoding;
-        b=Mo071wRkXbBFpybYmco+4WR7qO0MpwD0T2lD2cu/a/3Af82I6pT7hKklVNJ1LdOeIWz8kXo0ibdf83BTlRN6KyGqibHfvQHADJPBZpXI5wXAhAmbGPbCOINmEyqlqCokMC/SNn8Nf31pWwbHMCcJwQAtvDMG+Cyz23SMvycO1MI=
-Received: by 10.86.84.5 with SMTP id h5mr6732686fgb.75.1200353102089;
-        Mon, 14 Jan 2008 15:25:02 -0800 (PST)
-Received: from ?192.168.1.3? ( [91.76.28.153])
-        by mx.google.com with ESMTPS id l19sm7097316fgb.3.2008.01.14.15.25.00
-        (version=SSLv3 cipher=RC4-MD5);
-        Mon, 14 Jan 2008 15:25:01 -0800 (PST)
-Message-ID: <478BEF4A.80805@gmail.com>
-Date:	Tue, 15 Jan 2008 02:24:58 +0300
-From:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
-Organization: DmVo Home
-User-Agent: Thunderbird 1.5.0.14pre (X11/20071022)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jan 2008 01:57:59 +0000 (GMT)
+Received: from relay01.mx.bawue.net ([193.7.176.67]:37775 "EHLO
+	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
+	id S20035995AbYAOB5u (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 15 Jan 2008 01:57:50 +0000
+Received: from lagash (88-106-221-90.dynamic.dsl.as9105.com [88.106.221.90])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by relay01.mx.bawue.net (Postfix) with ESMTP id DB96D48916;
+	Tue, 15 Jan 2008 02:57:44 +0100 (CET)
+Received: from ths by lagash with local (Exim 4.68)
+	(envelope-from <ths@networkno.de>)
+	id 1JEb4A-0007lk-D0; Tue, 15 Jan 2008 01:58:14 +0000
+Date:	Tue, 15 Jan 2008 01:58:14 +0000
+From:	Thiemo Seufer <ths@networkno.de>
+To:	The Engineer <lper.home@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Cache aliasing issues using 4K pages.
+Message-ID: <20080115015814.GF9693@networkno.de>
+References: <1a18fe6d0801141225u2395ae6dj39d268014019b4a1@mail.gmail.com>
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-CC:	Linux-kernel <linux-kernel@vger.kernel.org>
-Subject: [PATCH -v2][MIPS] Add Atlas to feature-removal-schedule.txt
-Content-Type: text/plain; charset=KOI8-R
-Content-Transfer-Encoding: 7bit
-Return-Path: <dmitri.vorobiev@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1a18fe6d0801141225u2395ae6dj39d268014019b4a1@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-12-11)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18044
+X-archive-position: 18045
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@gmail.com
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle on Atlas board support in the linux-mips mailing list:
+The Engineer wrote:
+> We are working with a 2.6.12 kernel on a dual-core mips architecture.
+> In this dual-core system, one core is running the linux kernel and the
+> other is used for some real-time handling (not directly controlled by
+> Linux)
+> We had different stability issues, which could be pinpointed to be
+> related with cache aliasing problems.
+> Cache aliasing happens when the same physical memory can be cached
+> twice as it is accessed by two different virtual addresses.
+> Indeed, for the index to select the correct cache line the virtual
+> address is used. If some bits of the virtual page address are used in
+> the cache index, aliasing can occur.
+> 
+> 
+> As there is no hardware solution in the mips to recover from this
+> (which would provide some cache coherency, even for one core), the
+> only intrinsic safe solution is to enlarge the page size, so that
+> cache indexing is only done by the offset address in the page (thus
+> the physical part of the address).
+> Another solution is to flush the cache if a page is being remapped to
+> an aliased address (but in our case linux does not has control on the
+> second core, which can cause issues with shared data between both
+> cores).
+> Currently the second solution is used in the kernel, but we found
+> different issues with it (for instance: we had to merge more recent
+> mips kernels, to get a reliable copy-on-write behaviour after
+> forks...).
+> 
+> Therefore some questions:
+> - Are there still some known issues with cache aliasing in the MIPS kernel?
+> - Are there known issues when using 16KB pages (8KB pages seems not be
+> possible due to tlb issues).
 
-> Maciej is promising to fix it up since a few years ;-)  Aside of that it's
-> safe to say the Atlas is dead like a coffin nail.
+With recent kernels and toolchains 16k pages work ok IME. With a 2.6.12
+kernel however you'll have to backport a serious amount of bugfixes
+before 16k pages can work. Upgrading the kernel is probably less work.
 
-Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
 
----
-diff --git a/Documentation/feature-removal-schedule.txt b/Documentation/feature-removal-schedule.txt
-index 20c4c8b..2693ebc 100644
---- a/Documentation/feature-removal-schedule.txt
-+++ b/Documentation/feature-removal-schedule.txt
-@@ -333,3 +333,11 @@ Why:	This driver has been marked obsolet
- Who:	Stephen Hemminger <shemminger@linux-foundation.org>
- 
- ---------------------------
-+
-+What:	Support for MIPS Technologies' Atlas evaluation board
-+When:	March 2008
-+Why:	Apparently there is no user base left for this platform.
-+	Hardware out of production since several years.
-+Who:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
-+
-+---------------------------
+Thiemo

@@ -1,112 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jan 2008 22:39:11 +0000 (GMT)
-Received: from outbound-sin.frontbridge.com ([207.46.51.80]:2459 "EHLO
-	outbound5-sin-R.bigfish.com") by ftp.linux-mips.org with ESMTP
-	id S20039413AbYAOWjB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 15 Jan 2008 22:39:01 +0000
-Received: from outbound5-sin.bigfish.com (localhost.localdomain [127.0.0.1])
-	by outbound5-sin-R.bigfish.com (Postfix) with ESMTP id 56884F100DC;
-	Tue, 15 Jan 2008 22:35:57 +0000 (UTC)
-Received: from mail206-sin-R.bigfish.com (unknown [10.3.40.3])
-	by outbound5-sin.bigfish.com (Postfix) with ESMTP id 3F47A8B805E;
-	Tue, 15 Jan 2008 22:35:57 +0000 (UTC)
-Received: from mail206-sin (localhost.localdomain [127.0.0.1])
-	by mail206-sin-R.bigfish.com (Postfix) with ESMTP id 27F7C4C011E;
-	Tue, 15 Jan 2008 22:35:57 +0000 (UTC)
-X-BigFish: V
-X-MS-Exchange-Organization-Antispam-Report: OrigIP: 160.33.66.75;Service: EHS
-Received: by mail206-sin (MessageSwitch) id 1200436557143523_24849; Tue, 15 Jan 2008 22:35:57 +0000 (UCT)
-Received: from mail8.fw-sd.sony.com (mail8.fw-sd.sony.com [160.33.66.75])
-	by mail206-sin.bigfish.com (Postfix) with ESMTP id A5F9181005B;
-	Tue, 15 Jan 2008 22:35:56 +0000 (UTC)
-Received: from mail1.bc.in.sel.sony.com (mail1.bc.in.sel.sony.com [43.144.65.111])
-	by mail8.fw-sd.sony.com (8.12.11/8.12.11) with ESMTP id m0FMZtLh029257;
-	Tue, 15 Jan 2008 22:35:55 GMT
-Received: from USBMAXIM02.am.sony.com ([43.145.108.26])
-	by mail1.bc.in.sel.sony.com (8.12.11/8.12.11) with ESMTP id m0FMZsqt008477;
-	Tue, 15 Jan 2008 22:35:54 GMT
-Received: from usbmaxms05.am.sony.com ([43.145.108.36]) by USBMAXIM02.am.sony.com with Microsoft SMTPSVC(5.0.2195.6713);
-	 Tue, 15 Jan 2008 17:35:54 -0500
-Received: from [43.135.148.120] ([43.135.148.120]) by usbmaxms05.am.sony.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 15 Jan 2008 17:35:54 -0500
-Subject: [PATCH 4/4] invoke kgdb via magic sysrq
-From:	Frank Rowand <frank.rowand@am.sony.com>
-Reply-To: frank.rowand@am.sony.com
-To:	ralf@linux-mips.org, linux-mips@linux-mips.org
-In-Reply-To: <1200436139.4092.30.camel@bx740>
-References: <1200436139.4092.30.camel@bx740>
-Content-Type: text/plain
-Date:	Tue, 15 Jan 2008 14:34:54 -0800
-Message-Id: <1200436494.4092.39.camel@bx740>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.12.1 (2.12.1-3.fc8) 
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 15 Jan 2008 22:35:54.0145 (UTC) FILETIME=[FD18A110:01C857C6]
-Return-Path: <Frank_Rowand@sonyusa.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jan 2008 23:13:57 +0000 (GMT)
+Received: from relay01.mx.bawue.net ([193.7.176.67]:37335 "EHLO
+	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
+	id S20039479AbYAOXNs convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 15 Jan 2008 23:13:48 +0000
+Received: from lagash (88-106-203-79.dynamic.dsl.as9105.com [88.106.203.79])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by relay01.mx.bawue.net (Postfix) with ESMTP id 1648A48916;
+	Wed, 16 Jan 2008 00:13:43 +0100 (CET)
+Received: from ths by lagash with local (Exim 4.68)
+	(envelope-from <ths@networkno.de>)
+	id 1JEuz7-0008AA-8f; Tue, 15 Jan 2008 23:14:21 +0000
+Date:	Tue, 15 Jan 2008 23:14:21 +0000
+From:	Thiemo Seufer <ths@networkno.de>
+To:	Gregor Waltz <gregor.waltz@raritan.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Toshiba JMR 3927 working setup?
+Message-ID: <20080115231421.GB9767@networkno.de>
+References: <477E7DAE.2080005@raritan.com> <20080106.000725.75184768.anemo@mba.ocn.ne.jp> <4787AC3D.2020604@raritan.com> <20080112.211749.25909440.anemo@mba.ocn.ne.jp> <478CD639.3040307@raritan.com> <20080115161457.GB31107@networkno.de> <478D121C.4020701@raritan.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 8BIT
+In-Reply-To: <478D121C.4020701@raritan.com>
+User-Agent: Mutt/1.5.17 (2007-12-11)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18072
+X-archive-position: 18073
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: frank.rowand@am.sony.com
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-From: Frank Rowand <frank.rowand@am.sony.com>
+Gregor Waltz wrote:
+[snip]
+> From where in the kernel image should execution begin?
 
-Add hooks so that the host can connect to KGDB or asynchronously invoke an
-already connected KGDB via a magic sysrq.  This should work for most MIPS
-targets that support KGDB, though it has only been tested on the Toshiba
-RBTX4927.  This can be useful to invoke an already connected KGDB for some
-types of system hang.  It also allows normally booting without connecting
-to KGDB, then later connecting to KGDB if kernel debugging is desired.
+Normally from kernel_entry, but your boot loader appears to start
+from the begin of the code segment it loaded.
 
-This functionality exists for PowerPC and sh.
+> Presuming that the output of "objdump -d" reflects the disassembled  
+> binary from the beginning in order, it looks like my 2.6 kernel is  
+> running straight into run_init_process as the first real code executed.  
+> From what I have seen in the kernel code, run_init_process should be  
+> jumped to far later in the boot process. If what I am thinking is  
+> correct, then it also explains why the failure happens in kernel_execve.
+>
+> I have also included the start of my working kernel, which has _ftext  
+> with non-zero data as its first entry. Is the _ftext the ELF header or  
+> some other info for the boot loader?
 
-Signed-off-by: Frank Rowand <frank.rowand@am.sony.com>
----
- arch/mips/kernel/gdb-stub.c |   26 	26 +	0 -	0 !
- 1 files changed, 26 insertions(+)
+This is likely code which jumps to kernel_entry (but the disassembler
+doesn't know since it sees no function symbol, so it defaults to data).
 
-Index: linux-2.6.24-rc7/arch/mips/kernel/gdb-stub.c
-===================================================================
---- linux-2.6.24-rc7.orig/arch/mips/kernel/gdb-stub.c
-+++ linux-2.6.24-rc7/arch/mips/kernel/gdb-stub.c
-@@ -131,6 +131,7 @@
- #include <linux/spinlock.h>
- #include <linux/slab.h>
- #include <linux/reboot.h>
-+#include <linux/sysrq.h>
- 
- #include <asm/asm.h>
- #include <asm/cacheflush.h>
-@@ -1154,3 +1155,28 @@ static int __init register_gdb_console(v
- console_initcall(register_gdb_console);
- 
- #endif
-+
-+#ifdef CONFIG_MAGIC_SYSRQ
-+static void sysrq_handle_gdb(int key, struct tty_struct *tty)
-+{
-+	if (!initialized) {
-+		printk(KERN_ALERT "Wait for gdb client connection ...\n");
-+		set_debug_traps();
-+	}
-+
-+	breakpoint();
-+}
-+static struct sysrq_key_op sysrq_gdb_op = {
-+	.handler        = sysrq_handle_gdb,
-+	.help_msg       = "Gdb",
-+	.action_msg     = "GDB",
-+};
-+
-+static int gdb_register_sysrq(void)
-+{
-+	printk(KERN_INFO "Registering GDB sysrq handler\n");
-+	register_sysrq_key('g', &sysrq_gdb_op);
-+	return 0;
-+}
-+module_init(gdb_register_sysrq);
-+#endif
+> Thanks
+>
+>
+> linux-2.6.23.9/vmlinux:     file format elf32-tradlittlemips
+>
+> Disassembly of section .text:
+>
+> 80020000 <run_init_process-0x400>:
+>        ...
+
+Enabling CONFIG_BOOT_RAW, as Atsushi already suggested, would have
+added a jump to kernel_entry in this place.
+
+> 80020400 <run_init_process>:
+> 80020400:       3c028033        lui     v0,0x8033
+> 80020404:       3c068033        lui     a2,0x8033
+> 80020408:       244594dc        addiu   a1,v0,-27428
+
+
+Thiemo

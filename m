@@ -1,49 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jan 2008 15:28:52 +0000 (GMT)
-Received: from fig.raritan.com ([12.144.63.197]:44597 "EHLO fig.raritan.com")
-	by ftp.linux-mips.org with ESMTP id S20024559AbYAPP2n (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 16 Jan 2008 15:28:43 +0000
-Received: from [192.168.32.222] ([192.168.32.222]) by fig.raritan.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 16 Jan 2008 10:28:37 -0500
-Message-ID: <478E22A4.4070604@raritan.com>
-Date:	Wed, 16 Jan 2008 10:28:36 -0500
-From:	Gregor Waltz <gregor.waltz@raritan.com>
-User-Agent: Thunderbird 1.5.0.10 (X11/20070403)
-MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Re: Toshiba JMR 3927 working setup?
-References: <477E7DAE.2080005@raritan.com> <20080106.000725.75184768.anemo@mba.ocn.ne.jp> <4787AC3D.2020604@raritan.com> <20080112.211749.25909440.anemo@mba.ocn.ne.jp> <478CD639.3040307@raritan.com> <20080115161457.GB31107@networkno.de> <478D121C.4020701@raritan.com> <20080115231421.GB9767@networkno.de>
-In-Reply-To: <20080115231421.GB9767@networkno.de>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jan 2008 15:47:33 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:46067 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20026234AbYAPPrY (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 16 Jan 2008 15:47:24 +0000
+Received: from localhost (p6085-ipad307funabasi.chiba.ocn.ne.jp [123.217.184.85])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 387369CEC; Thu, 17 Jan 2008 00:47:20 +0900 (JST)
+Date:	Thu, 17 Jan 2008 00:47:16 +0900 (JST)
+Message-Id: <20080117.004716.59650985.anemo@mba.ocn.ne.jp>
+To:	frank.rowand@am.sony.com
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 3/4] serial_txx9 driver support
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <1200436432.4092.38.camel@bx740>
+References: <1200436139.4092.30.camel@bx740>
+	<1200436432.4092.38.camel@bx740>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 16 Jan 2008 15:28:37.0506 (UTC) FILETIME=[76E1B620:01C85854]
-Return-Path: <Gregor.Waltz@raritan.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18078
+X-archive-position: 18079
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregor.waltz@raritan.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Thiemo Seufer wrote:
-> Enabling CONFIG_BOOT_RAW, as Atsushi already suggested, would have
-> added a jump to kernel_entry in this place.
->   
-Yes, I tried that, but it made no difference at the time and Atsushi 
-also said that it was broken in git as of 01/05/2008 (I have 2.6.23.9).
-The kernel config operations (oldconfig, menuconfig, et al) obliterate 
-CONFIG_BOOT_RAW from the .config.
+On Tue, 15 Jan 2008 14:33:52 -0800, Frank Rowand <frank.rowand@am.sony.com> wrote:
+> Add polled debug driver support to serial_txx9.c for kgdb, and initialize
+> the driver for the Toshiba RBTX4927.
 
-I double checked today and found that even the vmlinux make target 
-removes that option from .config.
-Is there another way to set that option?
+I think Jason Wessel's kgdb patchset is a way to go.
 
-I saw the option used only in arch/mips/kernel/head.S, so I commented 
-out the __INIT. Now, I see kernel_entry at the start of the kernel and 
-the kernel does not cause an exception, however, it reboots instead 
-saying "Rebooting..."
+Anyway, some comments below.
 
-Thanks
+> +int kgdb_initialized;
+
+Should be static.
+
+> +void txx9_sio_kgdb_hook(unsigned int port, unsigned int baud_rate)
+
+Should be static.  The baud_rate is not used.
+
+> +void
+> +txx9_sio_kdbg_init(unsigned int port_number)
+> +{
+> +	if (port_number == 1) {
+> +		txx9_sio_kgdb_hook(port_number, 38400);
+> +		kgdb_initialized = 1;
+> +	} else {
+> +		printk(KERN_ERR
+> +			"txx9_sio_kdbg_init(): Bad Port Number [%u] != [1]\n",
+> +			port_number);
+> +	}
+> +
+> +	return;
+> +}
+
+Why port_number other than 1 is bad?
+
+The "return" at the end of the function is redundant.
+
+> +u8
+> +txx9_sio_kdbg_rd(void)
+> +{
+> +	unsigned int status, ch;
+> +	struct uart_txx9_port *up = &serial_txx9_ports[1];
+
+Oh this assumes port number 1.  The gdb port number should be customizable.
+
+> +			sio_out(up, TXX9_SITFIFO, (u32)ch);
+
+The cast is not needed.
+
+---
+Atsushi Nemoto

@@ -1,54 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jan 2008 16:05:15 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:51677 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S28574545AbYAPQFG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 16 Jan 2008 16:05:06 +0000
-Received: from localhost (p6085-ipad307funabasi.chiba.ocn.ne.jp [123.217.184.85])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 2207C96FE; Thu, 17 Jan 2008 01:05:03 +0900 (JST)
-Date:	Thu, 17 Jan 2008 01:04:59 +0900 (JST)
-Message-Id: <20080117.010459.51867104.anemo@mba.ocn.ne.jp>
-To:	gregor.waltz@raritan.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jan 2008 16:23:36 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:13763 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S28574961AbYAPQXe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 16 Jan 2008 16:23:34 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m0GGNVdB010367;
+	Wed, 16 Jan 2008 16:23:31 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m0GGNVdw010366;
+	Wed, 16 Jan 2008 16:23:31 GMT
+Date:	Wed, 16 Jan 2008 16:23:31 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Frank Rowand <frank.rowand@am.sony.com>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: Toshiba JMR 3927 working setup?
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <478E22A4.4070604@raritan.com>
-References: <478D121C.4020701@raritan.com>
-	<20080115231421.GB9767@networkno.de>
-	<478E22A4.4070604@raritan.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Subject: Re: [PATCH] kernel make error - smtc_ipi.h irq flags, 2.6.24-rc7
+Message-ID: <20080116162331.GA9918@linux-mips.org>
+References: <1200436004.4092.26.camel@bx740>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1200436004.4092.26.camel@bx740>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18081
+X-archive-position: 18082
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 16 Jan 2008 10:28:36 -0500, Gregor Waltz <gregor.waltz@raritan.com> wrote:
-> I double checked today and found that even the vmlinux make target 
-> removes that option from .config.
-> Is there another way to set that option?
+On Tue, Jan 15, 2008 at 02:26:44PM -0800, Frank Rowand wrote:
 
-The CONFIG_BOOT_RAW is not user-selectable.  You must add "select
-BOOT_RAW" to TOSHIBA_JMR3927 block in arch/mips/Kconfig.
+> From: Frank Rowand <frank.rowand@am.sony.com>
+> 
+> Fix compile warning (which becomes compile error due to -Werror).  Type of
+> argument "flags" for spin_lock_irqsave() was incorrect in some functions.
 
-> I saw the option used only in arch/mips/kernel/head.S, so I commented 
-> out the __INIT. Now, I see kernel_entry at the start of the kernel and 
-> the kernel does not cause an exception, however, it reboots instead 
-> saying "Rebooting..."
+Thanks, applied.
 
-Hmm.  The puts() in arch/mips/jmr3927/common/puts.c looks usable even
-on kernel entry.  You can verify if it can really be used on
-start_kernel(), then start tracking down the problem.
-
----
-Atsushi Nemoto
+  Ralf

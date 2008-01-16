@@ -1,79 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jan 2008 23:13:57 +0000 (GMT)
-Received: from relay01.mx.bawue.net ([193.7.176.67]:37335 "EHLO
-	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
-	id S20039479AbYAOXNs convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 15 Jan 2008 23:13:48 +0000
-Received: from lagash (88-106-203-79.dynamic.dsl.as9105.com [88.106.203.79])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by relay01.mx.bawue.net (Postfix) with ESMTP id 1648A48916;
-	Wed, 16 Jan 2008 00:13:43 +0100 (CET)
-Received: from ths by lagash with local (Exim 4.68)
-	(envelope-from <ths@networkno.de>)
-	id 1JEuz7-0008AA-8f; Tue, 15 Jan 2008 23:14:21 +0000
-Date:	Tue, 15 Jan 2008 23:14:21 +0000
-From:	Thiemo Seufer <ths@networkno.de>
-To:	Gregor Waltz <gregor.waltz@raritan.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Toshiba JMR 3927 working setup?
-Message-ID: <20080115231421.GB9767@networkno.de>
-References: <477E7DAE.2080005@raritan.com> <20080106.000725.75184768.anemo@mba.ocn.ne.jp> <4787AC3D.2020604@raritan.com> <20080112.211749.25909440.anemo@mba.ocn.ne.jp> <478CD639.3040307@raritan.com> <20080115161457.GB31107@networkno.de> <478D121C.4020701@raritan.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jan 2008 02:54:59 +0000 (GMT)
+Received: from py-out-1112.google.com ([64.233.166.180]:52940 "EHLO
+	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20039730AbYAPCyu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 16 Jan 2008 02:54:50 +0000
+Received: by py-out-1112.google.com with SMTP id a73so106478pye.22
+        for <linux-mips@linux-mips.org>; Tue, 15 Jan 2008 18:54:49 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
+        bh=mpSWffPSRaSc0yMeAOZushleVxANbho3E8j6HpWaaB0=;
+        b=trJHemmWkJWHhaWgiRthyKqmiqDv6qpCCKL5j6kniy+VBnR50ySvRmA6ZQAtJxO9t5xkaOqYacTLULFlyd/XjAa4d7UfRyo5KrYUTDKYUdTE6dxyMWCIgFJ0sz4YQSHimsP8eD4Hex0FsTyDE4qCD1OYsuCKL5ReXENEhJ7CiXE=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:mime-version:content-type;
+        b=oqGCiycN9u5cMv31sZLN9YlIJBGQafefmqptnpqqOJbHQ0bTnjxTuAKQrYYXBPx7KCHTUoaX+9DamuIW4sMNklwpPy8kuGBAu+OFcaJkJgN68g58OnE0aQzrghjnvNb+HtRCOrdFsIh4rRmMlUxCB/PeB+e5ESINOfODujwl57I=
+Received: by 10.35.69.11 with SMTP id w11mr245932pyk.60.1200452088774;
+        Tue, 15 Jan 2008 18:54:48 -0800 (PST)
+Received: by 10.35.16.3 with HTTP; Tue, 15 Jan 2008 18:54:48 -0800 (PST)
+Message-ID: <50c9a2250801151854i92164c5lcf45fa57d47014dd@mail.gmail.com>
+Date:	Wed, 16 Jan 2008 10:54:48 +0800
+From:	zhuzhenhua <zzh.hust@gmail.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: does anyone get mpatrol work on linux for mips?
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 8BIT
-In-Reply-To: <478D121C.4020701@raritan.com>
-User-Agent: Mutt/1.5.17 (2007-12-11)
-Return-Path: <ths@networkno.de>
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_12289_1728144.1200452088770"
+Return-Path: <zzh.hust@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18073
+X-archive-position: 18074
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: zzh.hust@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Gregor Waltz wrote:
-[snip]
-> From where in the kernel image should execution begin?
+------=_Part_12289_1728144.1200452088770
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Normally from kernel_entry, but your boot loader appears to start
-from the begin of the code segment it loaded.
+hello,all
+          because valgrind not support mips now, i try to get mpatrol work
+on our board(with linux-2.6.14)
+          i download the src, after compile and run a simple test programme
+calling MP_MALLOC
+          it get a "Segmentation Fault" error.
+          then i add some print in the mpatrol lib, found that
+         something seemes wrong at calling "__mp_frameinfo" in
+mpatrol/src/stack.c
+        does anyone run mpatrol success on linux for mips?
 
-> Presuming that the output of "objdump -d" reflects the disassembled  
-> binary from the beginning in order, it looks like my 2.6 kernel is  
-> running straight into run_init_process as the first real code executed.  
-> From what I have seen in the kernel code, run_init_process should be  
-> jumped to far later in the boot process. If what I am thinking is  
-> correct, then it also explains why the failure happens in kernel_execve.
->
-> I have also included the start of my working kernel, which has _ftext  
-> with non-zero data as its first entry. Is the _ftext the ELF header or  
-> some other info for the boot loader?
+        thanks for any hints
 
-This is likely code which jumps to kernel_entry (but the disassembler
-doesn't know since it sees no function symbol, so it defaults to data).
+Best Regards
 
-> Thanks
->
->
-> linux-2.6.23.9/vmlinux:     file format elf32-tradlittlemips
->
-> Disassembly of section .text:
->
-> 80020000 <run_init_process-0x400>:
->        ...
+zzh
 
-Enabling CONFIG_BOOT_RAW, as Atsushi already suggested, would have
-added a jump to kernel_entry in this place.
+------=_Part_12289_1728144.1200452088770
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-> 80020400 <run_init_process>:
-> 80020400:       3c028033        lui     v0,0x8033
-> 80020404:       3c068033        lui     a2,0x8033
-> 80020408:       244594dc        addiu   a1,v0,-27428
+hello,all<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; because valgrind not support mips now, i try to get mpatrol work on our board(with linux-2.6.14)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i download the src, after compile and run a simple test programme&nbsp; calling MP_MALLOC<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; it get a &quot;Segmentation Fault&quot; error.
+<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; then i add some print in the mpatrol lib, found that<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; something seemes wrong at calling &quot;__mp_frameinfo&quot; in mpatrol/src/stack.c<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; does anyone run mpatrol success on linux for mips?
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; thanks for any hints<br><br>Best Regards<br><br>zzh<br>
 
-
-Thiemo
+------=_Part_12289_1728144.1200452088770--

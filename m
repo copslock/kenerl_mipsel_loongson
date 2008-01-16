@@ -1,51 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jan 2008 15:27:43 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:30416 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20024559AbYAPP1f (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 16 Jan 2008 15:27:35 +0000
-Received: from localhost (p6085-ipad307funabasi.chiba.ocn.ne.jp [123.217.184.85])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 8F0F095A0; Thu, 17 Jan 2008 00:27:27 +0900 (JST)
-Date:	Thu, 17 Jan 2008 00:27:23 +0900 (JST)
-Message-Id: <20080117.002723.05598602.anemo@mba.ocn.ne.jp>
-To:	frank.rowand@am.sony.com
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/4] early_printk
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <1200436287.4092.33.camel@bx740>
-References: <1200436139.4092.30.camel@bx740>
-	<1200436287.4092.33.camel@bx740>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jan 2008 15:28:52 +0000 (GMT)
+Received: from fig.raritan.com ([12.144.63.197]:44597 "EHLO fig.raritan.com")
+	by ftp.linux-mips.org with ESMTP id S20024559AbYAPP2n (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 16 Jan 2008 15:28:43 +0000
+Received: from [192.168.32.222] ([192.168.32.222]) by fig.raritan.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 16 Jan 2008 10:28:37 -0500
+Message-ID: <478E22A4.4070604@raritan.com>
+Date:	Wed, 16 Jan 2008 10:28:36 -0500
+From:	Gregor Waltz <gregor.waltz@raritan.com>
+User-Agent: Thunderbird 1.5.0.10 (X11/20070403)
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: Re: Toshiba JMR 3927 working setup?
+References: <477E7DAE.2080005@raritan.com> <20080106.000725.75184768.anemo@mba.ocn.ne.jp> <4787AC3D.2020604@raritan.com> <20080112.211749.25909440.anemo@mba.ocn.ne.jp> <478CD639.3040307@raritan.com> <20080115161457.GB31107@networkno.de> <478D121C.4020701@raritan.com> <20080115231421.GB9767@networkno.de>
+In-Reply-To: <20080115231421.GB9767@networkno.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+X-OriginalArrivalTime: 16 Jan 2008 15:28:37.0506 (UTC) FILETIME=[76E1B620:01C85854]
+Return-Path: <Gregor.Waltz@raritan.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18077
+X-archive-position: 18078
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: gregor.waltz@raritan.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 15 Jan 2008 14:31:27 -0800, Frank Rowand <frank.rowand@am.sony.com> wrote:
-> Implement early printk in the serial_txx9 driver, and enable for the
-> Toshiba RBTX4927 board.  This is needed for the connect to GDB console
-> message.
-> 
-> Signed-off-by: Frank Rowand <frank.rowand@am.sony.com>
-> ---
->  arch/mips/Kconfig                                          |    1 	1 +	0 -	0 !
->  arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c |    6 	6 +	0 -	0 !
->  drivers/serial/serial_txx9.c                               |   39 	39 +	0 -	0 !
->  3 files changed, 46 insertions(+)
+Thiemo Seufer wrote:
+> Enabling CONFIG_BOOT_RAW, as Atsushi already suggested, would have
+> added a jump to kernel_entry in this place.
+>   
+Yes, I tried that, but it made no difference at the time and Atsushi 
+also said that it was broken in git as of 01/05/2008 (I have 2.6.23.9).
+The kernel config operations (oldconfig, menuconfig, et al) obliterate 
+CONFIG_BOOT_RAW from the .config.
 
-Please do not add MIPS local prom_putchar() to the serial_txx9 driver.
-This driver is used on some powerpc platform too.
+I double checked today and found that even the vmlinux make target 
+removes that option from .config.
+Is there another way to set that option?
 
----
-Atsushi Nemoto
+I saw the option used only in arch/mips/kernel/head.S, so I commented 
+out the __INIT. Now, I see kernel_entry at the start of the kernel and 
+the kernel does not cause an exception, however, it reboots instead 
+saying "Rebooting..."
+
+Thanks

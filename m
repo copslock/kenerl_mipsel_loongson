@@ -1,53 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jan 2008 15:13:24 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:7121 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20022245AbYAQPNV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 17 Jan 2008 15:13:21 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m0HFAsFH013717;
-	Thu, 17 Jan 2008 15:10:54 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m0HFArnS013716;
-	Thu, 17 Jan 2008 15:10:53 GMT
-Date:	Thu, 17 Jan 2008 15:10:52 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Florian Lohoff <flo@rfc822.org>
-Cc:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	linux-mips@linux-mips.org, debian-mips@lists.debian.org
-Subject: Re: Tester with IP27/IP30 needed
-Message-ID: <20080117151052.GA12457@linux-mips.org>
-References: <20080115112420.GA7347@alpha.franken.de> <20080115112719.GB7920@paradigm.rfc822.org> <20080117004054.GA12051@alpha.franken.de> <20080117082741.GA2586@paradigm.rfc822.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jan 2008 16:50:48 +0000 (GMT)
+Received: from fig.raritan.com ([12.144.63.197]:52672 "EHLO fig.raritan.com")
+	by ftp.linux-mips.org with ESMTP id S28583899AbYAQQuk (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 17 Jan 2008 16:50:40 +0000
+Received: from [10.0.0.150] ([74.46.20.65]) by fig.raritan.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 17 Jan 2008 11:50:33 -0500
+Message-ID: <478F8758.1010105@raritan.com>
+Date:	Thu, 17 Jan 2008 11:50:32 -0500
+From:	Gregor Waltz <gregor.waltz@raritan.com>
+User-Agent: Thunderbird 1.5.0.10 (X11/20070403)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080117082741.GA2586@paradigm.rfc822.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+To:	linux-mips@linux-mips.org
+Subject: Re: Toshiba JMR 3927 working setup?
+References: <478D121C.4020701@raritan.com>	<20080115231421.GB9767@networkno.de>	<478E22A4.4070604@raritan.com> <20080117.010459.51867104.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20080117.010459.51867104.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 17 Jan 2008 16:50:33.0909 (UTC) FILETIME=[13B30650:01C85929]
+Return-Path: <Gregor.Waltz@raritan.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18090
+X-archive-position: 18091
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: gregor.waltz@raritan.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jan 17, 2008 at 09:27:41AM +0100, Florian Lohoff wrote:
+Atsushi Nemoto wrote:
+> Hmm.  The puts() in arch/mips/jmr3927/common/puts.c looks usable even
+> on kernel entry.  You can verify if it can really be used on
+> start_kernel(), then start tracking down the problem.
+>
+> ---
+> Atsushi Nemoto
+>   
 
-> > this kills my IP28 after a few seconds. If I drop rdhwr or sync the
-> > machine hasn't locked up after running for several minutes. Looks
-> > like we are hiting a strange condition.
-> > 
-> > This sort of code could be found in glibc 2.7 all over the place...
-> > 
-> > Thomas.
-> > 
-> > PS: Using rdhwr_noopt doesn't make a difference...
-> 
-> Kills my ip28 after 2 seconds ...
+puts() has helped, but I wish that I had something to dump the stack. Is 
+kgdb easy to set up?
 
-Doesn't harm IP27.  I even tried running two copies running in parallel.
+In main.c, init_IRQ() eventually uses kmalloc:
+arch_init_irq() -> txx9_irq_init() -> ioremap() -> __get_vm_area_node() 
+-> kmalloc_node()...
+malloc_sizes is not yet initialized, though, which means that cs_cachep 
+is zero for all entries. My system reboots when it reaches 
+cpu_cache_get() in mm/slab.c where cachep is zero.
 
-  Ralf
+It seems to me that kmem_cache_init() ought to be run before any 
+kmallocs. kmem_cache_init() seems to require mem_init(). After I moved 
+mem_init and kmem_cache_init before init_IRQ(), it gets down to 
+pidhash_init() before rebooting, which I am looking into now.
+
+
+What ought to be done to fix the init_IRQ()/kmalloc problem?
+
+Thanks

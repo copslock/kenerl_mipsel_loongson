@@ -1,52 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Jan 2008 16:57:17 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:23511 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S28583927AbYAQQ5I (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 17 Jan 2008 16:57:08 +0000
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id A94F03EC9; Thu, 17 Jan 2008 08:57:04 -0800 (PST)
-Message-ID: <478F8915.4060808@ru.mvista.com>
-Date:	Thu, 17 Jan 2008 19:57:57 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	frank.rowand@am.sony.com
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH 3/4] serial_txx9 driver support
-References: <1200436139.4092.30.camel@bx740>	 <1200436432.4092.38.camel@bx740>	 <20080117.004716.59650985.anemo@mba.ocn.ne.jp> <1200527181.3939.12.camel@bx740>
-In-Reply-To: <1200527181.3939.12.camel@bx740>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jan 2008 01:05:17 +0000 (GMT)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:30346 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S28585249AbYARBFI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 18 Jan 2008 01:05:08 +0000
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [194.74.144.162]) with ESMTP; Fri, 18 Jan 2008 10:05:06 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 5DCF142B6D;
+	Fri, 18 Jan 2008 10:05:02 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 5238942B63;
+	Fri, 18 Jan 2008 10:05:02 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id m0I151AF096003;
+	Fri, 18 Jan 2008 10:05:01 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Fri, 18 Jan 2008 10:05:01 +0900 (JST)
+Message-Id: <20080118.100501.07644721.nemoto@toshiba-tops.co.jp>
+To:	gregor.waltz@raritan.com
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: Toshiba JMR 3927 working setup?
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <478F8758.1010105@raritan.com>
+References: <478E22A4.4070604@raritan.com>
+	<20080117.010459.51867104.anemo@mba.ocn.ne.jp>
+	<478F8758.1010105@raritan.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18092
+X-archive-position: 18093
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hello Frank. :-)
+On Thu, 17 Jan 2008 11:50:32 -0500, Gregor Waltz <gregor.waltz@raritan.com> wrote:
+> What ought to be done to fix the init_IRQ()/kmalloc problem?
 
->>>Add polled debug driver support to serial_txx9.c for kgdb, and initialize
->>>the driver for the Toshiba RBTX4927.
+Oops, that was my mistake.  The txx9_irq_init() assumes its baseaddr
+can be remapped without TLB.  This is true but plat_ioremap for
+jmr3927 was wrong.
 
->>I think Jason Wessel's kgdb patchset is a way to go.
+Could you try this patch?  (can be used for 2.6.23 and current git)
 
-> Somehow I overlooked Jason's patchset.  Yes, I agree that is the way to go,
 
-    BTW, that patchset already has TX[34]9xx KGDB serial driver...
+Subject: [MIPS] Fix plat_ioremap for JMR3927
 
-> so my four patches should not be applied.
+TX39XX's "reserved" segment in CKSEG3 area is 0xff000000-0xfffeffff.
 
-    Well, it's not in the mainline yet anyway...
-
-> -Frank
-
-WBR, Sergei
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+diff --git a/include/asm-mips/mach-jmr3927/ioremap.h b/include/asm-mips/mach-jmr3927/ioremap.h
+index aa131ad..ac3be35 100644
+--- a/include/asm-mips/mach-jmr3927/ioremap.h
++++ b/include/asm-mips/mach-jmr3927/ioremap.h
+@@ -25,7 +25,7 @@ static inline void __iomem *plat_ioremap(phys_t offset, unsigned long size,
+ {
+ #define TXX9_DIRECTMAP_BASE	0xff000000ul
+ 	if (offset >= TXX9_DIRECTMAP_BASE &&
+-	    offset < TXX9_DIRECTMAP_BASE + 0xf0000)
++	    offset < TXX9_DIRECTMAP_BASE + 0xff000)
+ 		return (void __iomem *)offset;
+ 	return NULL;
+ }

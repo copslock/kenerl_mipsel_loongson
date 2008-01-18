@@ -1,50 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jan 2008 16:59:05 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:9663 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20030569AbYARQ7D (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 18 Jan 2008 16:59:03 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m0IGx2Rb019321;
-	Fri, 18 Jan 2008 16:59:02 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m0IGx1BB019320;
-	Fri, 18 Jan 2008 16:59:01 GMT
-Date:	Fri, 18 Jan 2008 16:59:01 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org, jeff@garzik.org
-Subject: Re: [PATCH] tc35815: Use irq number for tc35815-mac platform
-	device id
-Message-ID: <20080118165901.GA19235@linux-mips.org>
-References: <20080119.011552.41196389.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jan 2008 20:02:02 +0000 (GMT)
+Received: from srv5.dvmed.net ([207.36.208.214]:8430 "EHLO mail.dvmed.net")
+	by ftp.linux-mips.org with ESMTP id S20032350AbYARUBx (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 18 Jan 2008 20:01:53 +0000
+Received: from cpe-069-134-071-233.nc.res.rr.com ([69.134.71.233] helo=core.yyz.us)
+	by mail.dvmed.net with esmtpsa (Exim 4.66 #1 (Red Hat Linux))
+	id 1JFxPS-0007UA-4y; Fri, 18 Jan 2008 20:01:50 +0000
+Message-ID: <479105AD.6060201@garzik.org>
+Date:	Fri, 18 Jan 2008 15:01:49 -0500
+From:	Jeff Garzik <jeff@garzik.org>
+User-Agent: Thunderbird 2.0.0.9 (X11/20071115)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080119.011552.41196389.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+CC:	netdev@vger.kernel.org, linux-mips@linux-mips.org,
+	ralf@linux-mips.org, jgarzik@pobox.com
+Subject: Re: [PATCH] SGISEEQ: fix oops when doing ifconfig down; ifconfig
+ up
+References: <20080112230847.1EB3EC2F35@solo.franken.de>
+In-Reply-To: <20080112230847.1EB3EC2F35@solo.franken.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <jeff@garzik.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18095
+X-archive-position: 18096
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: jeff@garzik.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Jan 19, 2008 at 01:15:52AM +0900, Atsushi Nemoto wrote:
-
-> The tc35815-mac platform device used a pci bus number and a devfn to
-> identify its target device, but the pci bus number may vary if some
-> bus-bridges are found.  Use irq number which is be unique for embedded
-> controllers.
+Thomas Bogendoerfer wrote:
+> When doing init_ring checking whether a new skb needs to be allocated
+> was wrong.
 > 
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> ---
+> 
+> This is a bug fix for the 2.6.25 driver.
+> 
+>  drivers/net/sgiseeq.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/net/sgiseeq.c b/drivers/net/sgiseeq.c
+> index c69bb8b..78994ed 100644
+> --- a/drivers/net/sgiseeq.c
+> +++ b/drivers/net/sgiseeq.c
+> @@ -193,7 +193,7 @@ static int seeq_init_ring(struct net_device *dev)
+>  
+>  	/* And now the rx ring. */
+>  	for (i = 0; i < SEEQ_RX_BUFFERS; i++) {
+> -		if (!sp->rx_desc[i].rdma.pbuf) {
+> +		if (!sp->rx_desc[i].skb) {
+>  			dma_addr_t dma_addr;
+>  			struct sk_buff *skb = netdev_alloc_skb(dev, PKT_BUF_SZ);
 
-Looks ok and seems to be 2.6.24 stuff.
-
-Gotta hash out with Jeff who will merge it.
-
-  Ralf
+applied

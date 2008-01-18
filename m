@@ -1,55 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jan 2008 23:21:10 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:45028 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28575202AbYARXVH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 18 Jan 2008 23:21:07 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m0INKs11026393;
-	Fri, 18 Jan 2008 23:20:57 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m0INKluf026391;
-	Fri, 18 Jan 2008 23:20:47 GMT
-Date:	Fri, 18 Jan 2008 23:20:47 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Jeff Garzik <jeff@garzik.org>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] tc35815: Use irq number for tc35815-mac platform
-	device id
-Message-ID: <20080118232047.GA23265@linux-mips.org>
-References: <20080119.011552.41196389.anemo@mba.ocn.ne.jp> <479105DE.4040407@garzik.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <479105DE.4040407@garzik.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jan 2008 23:45:55 +0000 (GMT)
+Received: from outbound-sin.frontbridge.com ([207.46.51.80]:25290 "EHLO
+	outbound5-sin-R.bigfish.com") by ftp.linux-mips.org with ESMTP
+	id S20033158AbYARXpp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 18 Jan 2008 23:45:45 +0000
+Received: from outbound5-sin.bigfish.com (localhost.localdomain [127.0.0.1])
+	by outbound5-sin-R.bigfish.com (Postfix) with ESMTP id 33EDF1B28CD5;
+	Fri, 18 Jan 2008 23:45:22 +0000 (UTC)
+Received: from mail87-sin-R.bigfish.com (unknown [10.3.40.3])
+	by outbound5-sin.bigfish.com (Postfix) with ESMTP id 13E768B8060;
+	Fri, 18 Jan 2008 23:45:22 +0000 (UTC)
+Received: from mail87-sin (localhost.localdomain [127.0.0.1])
+	by mail87-sin-R.bigfish.com (Postfix) with ESMTP id CFE7FCE8100;
+	Fri, 18 Jan 2008 23:45:21 +0000 (UTC)
+X-BigFish: V
+X-MS-Exchange-Organization-Antispam-Report: OrigIP: 160.33.98.75;Service: EHS
+Received: by mail87-sin (MessageSwitch) id 1200699920758599_22561; Fri, 18 Jan 2008 23:45:20 +0000 (UCT)
+Received: from mail8.fw-bc.sony.com (mail8.fw-bc.sony.com [160.33.98.75])
+	by mail87-sin.bigfish.com (Postfix) with ESMTP id C86574A804D;
+	Fri, 18 Jan 2008 23:45:19 +0000 (UTC)
+Received: from mail1.bc.in.sel.sony.com (mail1.bc.in.sel.sony.com [43.144.65.111])
+	by mail8.fw-bc.sony.com (8.12.11/8.12.11) with ESMTP id m0INjI70004806;
+	Fri, 18 Jan 2008 23:45:18 GMT
+Received: from USBMAXIM02.am.sony.com ([43.145.108.26])
+	by mail1.bc.in.sel.sony.com (8.12.11/8.12.11) with ESMTP id m0INjI72006003;
+	Fri, 18 Jan 2008 23:45:18 GMT
+Received: from usbmaxms05.am.sony.com ([43.145.108.36]) by USBMAXIM02.am.sony.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Fri, 18 Jan 2008 18:45:18 -0500
+Received: from [43.135.148.120] ([43.135.148.120]) by usbmaxms05.am.sony.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 18 Jan 2008 18:45:17 -0500
+Subject: Re: [PATCH 3/4] serial_txx9 driver support
+From:	Frank Rowand <frank.rowand@am.sony.com>
+Reply-To: frank.rowand@am.sony.com
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <1200436432.4092.38.camel@bx740>
+References: <1200436139.4092.30.camel@bx740>
+	 <1200436432.4092.38.camel@bx740>
+Content-Type: text/plain
+Date:	Fri, 18 Jan 2008 15:44:01 -0800
+Message-Id: <1200699841.3570.6.camel@bx740>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.12.1 (2.12.1-3.fc8) 
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 18 Jan 2008 23:45:17.0548 (UTC) FILETIME=[2DEAC2C0:01C85A2C]
+Return-Path: <Frank_Rowand@sonyusa.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18098
+X-archive-position: 18099
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: frank.rowand@am.sony.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jan 18, 2008 at 03:02:38PM -0500, Jeff Garzik wrote:
 
-> Atsushi Nemoto wrote:
->> The tc35815-mac platform device used a pci bus number and a devfn to
->> identify its target device, but the pci bus number may vary if some
->> bus-bridges are found.  Use irq number which is be unique for embedded
->> controllers.
->>
->> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
->> ---
->>  arch/mips/tx4938/toshiba_rbtx4938/setup.c |    4 ++--
->>  drivers/net/tc35815.c                     |    2 +-
->>  2 files changed, 3 insertions(+), 3 deletions(-)
->
-> ACK, Ralf please apply through your tree...
+On Tue, 2008-01-15 at 14:33 -0800, Frank Rowand wrote:
+> From: Frank Rowand <frank.rowand@am.sony.com>
+> 
+> Add polled debug driver support to serial_txx9.c for kgdb, and initialize
+> the driver for the Toshiba RBTX4927.
+> 
+> Signed-off-by: Frank Rowand <frank.rowand@am.sony.com>
+> ---
+>  arch/mips/tx4927/toshiba_rbtx4927/toshiba_rbtx4927_setup.c |    6 	6 +	0 -	0 !
+>  drivers/serial/serial_txx9.c                               |   90 	90 +	0 -	0 !
+>  2 files changed, 96 insertions(+)
 
-Done.  Thanks Atsushi,
+Just for the record...  original attribution is very important.
 
-  Ralf
+I meant to mention in the original email, but I overlooked it, that
+the serial_txx9.c code is mostly from the kgdb patch version 2.4 at
+http://kgdb.linsyssoft.com/downloads.htm with a few slight changes.  The
+code is attributed to Ralf in the comments at the head of that patch
+file.  I suspect that Ralf recognized his code when I first sent it to
+him :-).
+
+-Frank

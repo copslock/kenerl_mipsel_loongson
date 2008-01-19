@@ -1,61 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jan 2008 19:12:57 +0000 (GMT)
-Received: from elvis.franken.de ([193.175.24.41]:51857 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S20037072AbYASTMr (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 19 Jan 2008 19:12:47 +0000
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1JGJ7U-0005h4-00; Sat, 19 Jan 2008 20:12:44 +0100
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id 0D8E0C2F85; Sat, 19 Jan 2008 20:12:41 +0100 (CET)
-Date:	Sat, 19 Jan 2008 20:12:41 +0100
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Florian Lohoff <flo@rfc822.org>, linux-mips@linux-mips.org,
-	debian-mips@lists.debian.org
-Subject: Re: Tester with IP27/IP30 needed
-Message-ID: <20080119191240.GA17902@alpha.franken.de>
-References: <20080115112420.GA7347@alpha.franken.de> <20080115112719.GB7920@paradigm.rfc822.org> <20080117004054.GA12051@alpha.franken.de> <20080117082741.GA2586@paradigm.rfc822.org> <20080117151052.GA12457@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jan 2008 23:56:42 +0000 (GMT)
+Received: from mail1.pearl-online.net ([62.159.194.147]:29271 "EHLO
+	mail1.pearl-online.net") by ftp.linux-mips.org with ESMTP
+	id S28576697AbYASX4d (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 19 Jan 2008 23:56:33 +0000
+Received: from SNaIlmail.Peter (unknown [77.47.51.43])
+	by mail1.pearl-online.net (Postfix) with ESMTP id A2CC9BBC8;
+	Sun, 20 Jan 2008 00:56:31 +0100 (CET)
+Received: from Opal.Peter (Opal.Peter [192.168.1.1])
+	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id m0JNufn6000671;
+	Sun, 20 Jan 2008 00:56:42 +0100
+Received: from Opal.Peter (localhost [127.0.0.1])
+	by Opal.Peter (8.12.11.Beta0/8.12.11.Beta0/Sendmail/Linux 2.4.24-1-386) with ESMTP id m0JNuO9C004142;
+	Sun, 20 Jan 2008 00:56:24 +0100
+Received: from localhost (pf@localhost)
+	by Opal.Peter (8.12.11.Beta0/8.12.11.Beta0/Debian-1) with ESMTP id m0JNuNDh004138;
+	Sun, 20 Jan 2008 00:56:23 +0100
+X-Authentication-Warning: Opal.Peter: pf owned process doing -bs
+Date:	Sun, 20 Jan 2008 00:56:23 +0100 (CET)
+From:	post@pfrst.de
+X-Sender: pf@Opal.Peter
+To:	Richard Sandiford <rsandifo@nildram.co.uk>
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Kumba <kumba@gentoo.org>, linux-mips@linux-mips.org
+Subject: Re: [UPDATED PATCH] IP28 support
+In-Reply-To: <87sl0tsy0l.fsf@firetop.home>
+Message-ID: <Pine.LNX.4.21.0801200048080.4120-100000@Opal.Peter>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080117151052.GA12457@linux-mips.org>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <post@pfrst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18102
+X-archive-position: 18103
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: post@pfrst.de
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jan 17, 2008 at 03:10:52PM +0000, Ralf Baechle wrote:
-> On Thu, Jan 17, 2008 at 09:27:41AM +0100, Florian Lohoff wrote:
+
+
+Ok,
+
+i'll apply proposed changes as of 2006-05.msg01446 to the last sent
+patch (2006-04.msg00084), so we have a slightly better starting point.
+
+kind regards
+
+peter
+
+
+On Sat, 19 Jan 2008, Richard Sandiford wrote:
+
+> Date: Sat, 19 Jan 2008 14:14:34 +0000
+> From: Richard Sandiford <rsandifo@nildram.co.uk>
+> To: post@pfrst.de
+> Cc: Ralf Baechle <ralf@linux-mips.org>,
+>      Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+>      Kumba <kumba@gentoo.org>, linux-mips@linux-mips.org
+> Subject: Re: [UPDATED PATCH] IP28 support
 > 
-> > > this kills my IP28 after a few seconds. If I drop rdhwr or sync the
-> > > machine hasn't locked up after running for several minutes. Looks
-> > > like we are hiting a strange condition.
-> > > 
-> > > This sort of code could be found in glibc 2.7 all over the place...
-> > > 
-> > > Thomas.
-> > > 
-> > > PS: Using rdhwr_noopt doesn't make a difference...
-> > 
-> > Kills my ip28 after 2 seconds ...
+> peter fuerst <post@pfrst.de> writes:
+> > what next step do you suggest ?
 > 
-> Doesn't harm IP27.  I even tried running two copies running in parallel.
-
-IP28 only locks up if spin() spans two I-cache lines. The lockup also
-happens if I use a different reserved instruction and skip it via 
-SIGILL handler. As I don't have a working compiler/assembler for Irix
-I couldn't check, if this lockup also happens with Irix.
-
-Thomas.
-
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+> Sorry, I've been busy with gcc stage 3 stuff recently, so haven't had
+> chance to get to this.  Have you done any more on the patch since the
+> version you last posted to gcc-patches?  If not, I can take that and
+> convert it to what we discussed.
+> 
+> Richard
+> 
+> 

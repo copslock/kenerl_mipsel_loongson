@@ -1,115 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jan 2008 21:07:31 +0000 (GMT)
-Received: from poczta.ibb.waw.pl ([212.87.28.201]:36028 "EHLO ibb.waw.pl")
-	by ftp.linux-mips.org with ESMTP id S28590584AbYAVVHW (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 22 Jan 2008 21:07:22 +0000
-Received: from gigo (helo=localhost)
-	by ibb.waw.pl with local-esmtp (Exim 4.63)
-	(envelope-from <gigo@poczta.ibb.waw.pl>)
-	id 1JHQOD-0000oM-8Q
-	for linux-mips@linux-mips.org; Tue, 22 Jan 2008 22:10:37 +0100
-Date:	Tue, 22 Jan 2008 22:10:37 +0100 (CET)
-From:	gigo@poczta.ibb.waw.pl
-To:	linux-mips@linux-mips.org
-Subject: Old Indy, 64-bit setup
-Message-ID: <Pine.LNX.4.64.0801222106460.31014@poczta.ibb.waw.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jan 2008 22:34:36 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:20670 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S28590996AbYAVWe2 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 22 Jan 2008 22:34:28 +0000
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1JHRhL-0000s8-00; Tue, 22 Jan 2008 23:34:27 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 6026EC2F86; Tue, 22 Jan 2008 23:33:32 +0100 (CET)
+Date:	Tue, 22 Jan 2008 23:33:32 +0100
+To:	gigo@poczta.ibb.waw.pl
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Old Indy, 64-bit setup
+Message-ID: <20080122223332.GA11444@alpha.franken.de>
+References: <Pine.LNX.4.64.0801222106460.31014@poczta.ibb.waw.pl>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII; format=flowed
-Return-Path: <gigo@poczta.ibb.waw.pl>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.64.0801222106460.31014@poczta.ibb.waw.pl>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18117
+X-archive-position: 18118
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gigo@poczta.ibb.waw.pl
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-  Hello,
-Just a silly question. Is there any working 64-bit kernel configuration 
-for my r4k 100MHz Indy? From time to time i compile another new kernel for 
-64-bit... and see the thing dying. Recently it looked pretty well like 
-Indy r4k 100MHz (BROTHER!?!?!) crash shown in 
-http://www.linux-mips.org/archives/linux-mips/2007-11/msg00186.html
-Everything but the kernel is debian stable: binutils 2.17
-gcc 4.1.2 20061115 (prerelease) (Debian 4.1.1-21)...
+On Tue, Jan 22, 2008 at 10:10:37PM +0100, gigo@poczta.ibb.waw.pl wrote:
+> Just a silly question. Is there any working 64-bit kernel configuration 
+> for my r4k 100MHz Indy? From time to time i compile another new kernel for 
+> 64-bit... and see the thing dying. Recently it looked pretty well like 
 
-I would be very happy to give you any more info/do any test, if 
-you are interested.
+your CPU needs a special gcc to avoid triggering 64bit CPU bugs. There
+are also some kernel workarounds missing, which are scheduled for 2.6.25.
+No idea about the gcc part.
 
-These are taken on 32-bit (usually working) 2.6.23.14 from linux-mips.org.
-/proc/cpuinfo:
-system type             : SGI Indy
-processor               : 0
-cpu model               : R4000PC V3.0  FPU V0.0
-BogoMIPS                : 45.68
-wait instruction        : no
-microsecond timers      : yes
-tlb_entries             : 48
-extra interrupt vector  : no
-hardware watchpoint     : yes
-ASEs implemented        :
-shadow register sets    : 1
-VCED exceptions         : 0
-VCEI exceptions         : 0
+Thomas.
 
-dmesg:
-Linux version 2.6.23.14 (root@indyk) (gcc version 4.1.2 20061115 
-(prerelease) (Debian 4.1.1-21)) #2 PREEMPT Fri Jan 18 13:00:11 CET 2008
-ARCH: SGI-IP22
-PROMLIB: ARC firmware Version 1 Revision 10
-console [early0] enabled
-CPU revision is: 00000430
-FPU revision is: 00000500
-MC: SGI memory controller Revision 3
-MC: Probing memory configuration:
-  bank0:  32M @ 08000000
-  bank1:  32M @ 0a000000
-Determined physical RAM map:
-  memory: 04000000 @ 08000000 (usable)
-Wasting 1048576 bytes for tracking 32768 unused pages
-On node 0 totalpages: 49152
-   Normal zone: 384 pages used for memmap
-   Normal zone: 0 pages reserved
-   Normal zone: 48768 pages, LIFO batch:15
-   Movable zone: 0 pages used for memmap
-Built 1 zonelists in Zone order.  Total pages: 48768
-Kernel command line: root=/dev/sda1 auto
-Primary instruction cache 8kB, physically tagged, direct mapped, linesize 16 bytes.
-Primary data cache 8kB, direct mapped, linesize 16 bytes.
-Synthesized TLB refill handler (21 instructions).
-Synthesized TLB load handler fastpath (33 instructions).
-Synthesized TLB store handler fastpath (33 instructions).
-Synthesized TLB modify handler fastpath (32 instructions).
-PID hash table entries: 1024 (order: 10, 4096 bytes)
-Calibrating system timer... 48800 [100.0000 MHz CPU]
-Using 49.971 MHz high precision timer.
-NG1: Revision 3, 8 bitplanes, REX3 revision B, VC2 revision A, xmap9 
-revision A, cmap revision C, bt445 revision A
-NG1: Screensize 1296x1024
-Console: colour SGI Newport 162x64
-console handover: boot [early0] -> real [tty0]
-Dentry cache hash table entries: 32768 (order: 5, 131072 bytes)
-Inode-cache hash table entries: 16384 (order: 4, 65536 bytes)
-Memory: 60896k/65536k available (2158k kernel code, 4484k reserved, 325k 
-data, 104k init, 0k highmem)
-Calibrating delay loop... 45.68 BogoMIPS (lpj=22272)
-(...)
-Time: MIPS clocksource has been installed.
-(...)
-io scheduler cfq registered (default)
-DS1286 Real Time Clock Driver v1.0
-(...)
-wd33c93-0: chip=WD33c93B/13 no_sync=0xff no_dma=0 debug_flags=0x00
-            setup_args=,,,,,,,,,,
-            Version 1.26++ - 10/Feb/2007, Compiled Jan 18 2008 at 06:02:09
-scsi0 : SGI WD93
-  sending SDTR 010301320c 010301320c sync_xfer=2c
-(...)
-
-
-
-Regards,
-
-Grzegorz Wieczorek
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

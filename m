@@ -1,75 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jan 2008 09:53:25 +0000 (GMT)
-Received: from hydra.gt.owl.de ([195.71.99.218]:23015 "EHLO hydra.gt.owl.de")
-	by ftp.linux-mips.org with ESMTP id S20030859AbYAWJxR (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 23 Jan 2008 09:53:17 +0000
-Received: by hydra.gt.owl.de (Postfix, from userid 1000)
-	id 143DB32DFF; Wed, 23 Jan 2008 10:51:13 +0100 (CET)
-Date:	Wed, 23 Jan 2008 10:51:13 +0100
-From:	Florian Lohoff <flo@rfc822.org>
-To:	gigo@poczta.ibb.waw.pl
-Cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jan 2008 21:09:52 +0000 (GMT)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:15045 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S28593101AbYAWVJn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 23 Jan 2008 21:09:43 +0000
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 6F9A34023F;
+	Wed, 23 Jan 2008 22:09:44 +0100 (CET)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id oWTlCQf2WagM; Wed, 23 Jan 2008 22:09:35 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 4F0C441481;
+	Wed, 23 Jan 2008 18:53:18 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id m0NHrNCG025246;
+	Wed, 23 Jan 2008 18:53:23 +0100
+Date:	Wed, 23 Jan 2008 17:53:11 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+cc:	gigo@poczta.ibb.waw.pl, linux-mips@linux-mips.org
 Subject: Re: Old Indy, 64-bit setup
-Message-ID: <20080123095113.GA30081@paradigm.rfc822.org>
+In-Reply-To: <20080122223332.GA11444@alpha.franken.de>
+Message-ID: <Pine.LNX.4.64N.0801231052581.6944@blysk.ds.pg.gda.pl>
 References: <Pine.LNX.4.64.0801222106460.31014@poczta.ibb.waw.pl>
+ <20080122223332.GA11444@alpha.franken.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="9jxsPFA5p3P2qPhR"
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64.0801222106460.31014@poczta.ibb.waw.pl>
-Organization: rfc822 - pure communication
-X-SpiderMe: mh-200801230916@listme.rfc822.org
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <flo@rfc822.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.92/5531/Wed Jan 23 11:32:09 2008 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18121
+X-archive-position: 18122
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: flo@rfc822.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Tue, 22 Jan 2008, Thomas Bogendoerfer wrote:
 
---9jxsPFA5p3P2qPhR
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> > Just a silly question. Is there any working 64-bit kernel configuration 
+> > for my r4k 100MHz Indy? From time to time i compile another new kernel for 
+> > 64-bit... and see the thing dying. Recently it looked pretty well like 
+> 
+> your CPU needs a special gcc to avoid triggering 64bit CPU bugs. There
+> are also some kernel workarounds missing, which are scheduled for 2.6.25.
+> No idea about the gcc part.
 
-On Tue, Jan 22, 2008 at 10:10:37PM +0100, gigo@poczta.ibb.waw.pl wrote:
->  Hello,
-> Just a silly question. Is there any working 64-bit kernel configuration=
-=20
-> for my r4k 100MHz Indy? From time to time i compile another new kernel fo=
-r=20
-> 64-bit... and see the thing dying. Recently it looked pretty well like=20
-> Indy r4k 100MHz (BROTHER!?!?!) crash shown in=20
-> http://www.linux-mips.org/archives/linux-mips/2007-11/msg00186.html
-> Everything but the kernel is debian stable: binutils 2.17
-> gcc 4.1.2 20061115 (prerelease) (Debian 4.1.1-21)...
+ I have made suitable GCC packages available at:
 
-There are CPU Bug workarounds needed which are not yet complete in
-kernel and gcc. I am running my 100Mhz Indy with an 32Bit Kernel built
-=66rom the debian source package just by replacing the 64BIT ...
+ftp://ftp3.ds.pg.gda.pl/people/macro/RPMS/
 
-Flo
---=20
-Florian Lohoff                  flo@rfc822.org             +49-171-2280134
-	Those who would give up a little freedom to get a little=20
-          security shall soon have neither - Benjamin Franklin
+I have just updated the archive and you need at least revision 5 of GCC 
+4.1.2 packages available there.  You also need at least revision 2 of 
+binutils 2.18 packages to complement your setup.  Pick whichever 
+architecture suits you (there are native packages for MIPS configurations 
+as well as cross-tools from i386 there) or alternatively grab the 
+corresponding source packages from:
 
---9jxsPFA5p3P2qPhR
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
+ftp://ftp3.ds.pg.gda.pl/people/macro/SRPMS/
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.6 (GNU/Linux)
+and build binaries yourself (that may require some trickery, but you can 
+also apply patches manually and use your usual procedure).
 
-iD8DBQFHlw4RUaz2rXW+gJcRAkTbAJ9BdVfp/iU/SbyfkQfYJhe6x7CusACfSPpC
-yNcH4TH0Nkv9WnOAYaKMdcc=
-=I18C
------END PGP SIGNATURE-----
+ Please note that the relevant kernel changes have only been tested with a 
+DECstation, which in particular means little endianness only.  You will 
+also have to add this fragment:
 
---9jxsPFA5p3P2qPhR--
+select CPU_DADDI_WORKAROUNDS if 64BIT
+select CPU_R4000_WORKAROUNDS if 64BIT
+select CPU_R4400_WORKAROUNDS if 64BIT
+
+to the right part of the Kconfig file relevant for your machine.  See the 
+MACH_DECSTATION section in arch/mips/Kconfig for a reference.  Finally, 
+running the kernel from the XPHYS segment is not supported with these 
+workarounds enabled, which may worth noting for some platforms, though may 
+not necessarily be relevant for yours.
+
+ I plan to update GCC and the associated patches to version 4.2 at some 
+point in the future, but I have not decided yet when it is going to happen 
+as I am going to stick with 4.1 for a while due to some other work.
+
+ I'll be pleased to get some feedback and good luck!
+
+  Maciej

@@ -1,68 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jan 2008 08:49:08 +0000 (GMT)
-Received: from mail1.pearl-online.net ([62.159.194.147]:36616 "EHLO
-	mail1.pearl-online.net") by ftp.linux-mips.org with ESMTP
-	id S20030074AbYAWIs7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 23 Jan 2008 08:48:59 +0000
-Received: from SNaIlmail.Peter (77.47.0.56.static.cablesurf.de [77.47.0.56])
-	by mail1.pearl-online.net (Postfix) with ESMTP id 99052CA41;
-	Wed, 23 Jan 2008 09:48:58 +0100 (CET)
-Received: from Indigo2.Peter (Indigo2.Peter [192.168.1.28])
-	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id m0N8lkia000586;
-	Wed, 23 Jan 2008 09:47:47 +0100
-Received: from Indigo2.Peter (localhost [127.0.0.1])
-	by Indigo2.Peter (8.12.6/8.12.6/Sendmail/Linux 2.6.14-rc2-ip28) with ESMTP id m0N8lkOm000411;
-	Wed, 23 Jan 2008 09:47:46 +0100
-Received: from localhost (pf@localhost)
-	by Indigo2.Peter (8.12.6/8.12.6/Submit) with ESMTP id m0N8lkld000408;
-	Wed, 23 Jan 2008 09:47:46 +0100
-X-Authentication-Warning: Indigo2.Peter: pf owned process doing -bs
-Date:	Wed, 23 Jan 2008 09:47:46 +0100 (CET)
-From:	peter fuerst <post@pfrst.de>
-X-X-Sender: pf@Indigo2.Peter
-Reply-To: post@pfrst.de
-To:	Kumba <kumba@gentoo.org>
-Cc:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Florian Lohoff <flo@rfc822.org>, linux-mips@linux-mips.org,
-	debian-mips@lists.debian.org
-Subject: Re: Tester with IP27/IP30 needed
-In-Reply-To: <479609A6.2020204@gentoo.org>
-Message-ID: <Pine.LNX.4.58.0801230936110.395@Indigo2.Peter>
-References: <20080115112420.GA7347@alpha.franken.de> <20080115112719.GB7920@paradigm.rfc822.org>
- <20080117004054.GA12051@alpha.franken.de> <479609A6.2020204@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jan 2008 09:53:25 +0000 (GMT)
+Received: from hydra.gt.owl.de ([195.71.99.218]:23015 "EHLO hydra.gt.owl.de")
+	by ftp.linux-mips.org with ESMTP id S20030859AbYAWJxR (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 23 Jan 2008 09:53:17 +0000
+Received: by hydra.gt.owl.de (Postfix, from userid 1000)
+	id 143DB32DFF; Wed, 23 Jan 2008 10:51:13 +0100 (CET)
+Date:	Wed, 23 Jan 2008 10:51:13 +0100
+From:	Florian Lohoff <flo@rfc822.org>
+To:	gigo@poczta.ibb.waw.pl
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Old Indy, 64-bit setup
+Message-ID: <20080123095113.GA30081@paradigm.rfc822.org>
+References: <Pine.LNX.4.64.0801222106460.31014@poczta.ibb.waw.pl>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <post@pfrst.de>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="9jxsPFA5p3P2qPhR"
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.64.0801222106460.31014@poczta.ibb.waw.pl>
+Organization: rfc822 - pure communication
+X-SpiderMe: mh-200801230916@listme.rfc822.org
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <flo@rfc822.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18120
+X-archive-position: 18121
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: post@pfrst.de
+X-original-sender: flo@rfc822.org
 Precedence: bulk
 X-list: linux-mips
 
 
+--9jxsPFA5p3P2qPhR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 22 Jan 2008, Kumba wrote:
+On Tue, Jan 22, 2008 at 10:10:37PM +0100, gigo@poczta.ibb.waw.pl wrote:
+>  Hello,
+> Just a silly question. Is there any working 64-bit kernel configuration=
+=20
+> for my r4k 100MHz Indy? From time to time i compile another new kernel fo=
+r=20
+> 64-bit... and see the thing dying. Recently it looked pretty well like=20
+> Indy r4k 100MHz (BROTHER!?!?!) crash shown in=20
+> http://www.linux-mips.org/archives/linux-mips/2007-11/msg00186.html
+> Everything but the kernel is debian stable: binutils 2.17
+> gcc 4.1.2 20061115 (prerelease) (Debian 4.1.1-21)...
 
-> Date: Tue, 22 Jan 2008 10:20:06 -0500
-> From: Kumba <kumba@gentoo.org>
-> To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> Cc: Florian Lohoff <flo@rfc822.org>, linux-mips@linux-mips.org,
->      debian-mips@lists.debian.org
-> Subject: Re: Tester with IP27/IP30 needed
->
-> ...
-> else changes?  Generally reserved for kernel stuff, but Peter once speculated
-> userland might have a use for it.
+There are CPU Bug workarounds needed which are not yet complete in
+kernel and gcc. I am running my 100Mhz Indy with an 32Bit Kernel built
+=66rom the debian source package just by replacing the 64BIT ...
 
-Oh, not userland. I must have used some misunderstandable formulation
-somewhere...  :-(
+Flo
+--=20
+Florian Lohoff                  flo@rfc822.org             +49-171-2280134
+	Those who would give up a little freedom to get a little=20
+          security shall soon have neither - Benjamin Franklin
 
-> ...
+--9jxsPFA5p3P2qPhR
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
 
-kind regards
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
 
-peter
+iD8DBQFHlw4RUaz2rXW+gJcRAkTbAJ9BdVfp/iU/SbyfkQfYJhe6x7CusACfSPpC
+yNcH4TH0Nkv9WnOAYaKMdcc=
+=I18C
+-----END PGP SIGNATURE-----
+
+--9jxsPFA5p3P2qPhR--

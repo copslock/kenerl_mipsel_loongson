@@ -1,41 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Jan 2008 20:38:53 +0000 (GMT)
-Received: from smtp-out25.alice.it ([85.33.2.25]:50954 "EHLO
-	smtp-out25.alice.it") by ftp.linux-mips.org with ESMTP
-	id S20037695AbYAXUip (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 24 Jan 2008 20:38:45 +0000
-Received: from FBCMMO03.fbc.local ([192.168.68.197]) by smtp-out25.alice.it with Microsoft SMTPSVC(6.0.3790.1830);
-	 Thu, 24 Jan 2008 21:38:39 +0100
-Received: from FBCMCL01B05.fbc.local ([192.168.69.86]) by FBCMMO03.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
-	 Thu, 24 Jan 2008 21:38:38 +0100
-Received: from [192.168.0.3] ([80.181.98.58]) by FBCMCL01B05.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
-	 Thu, 24 Jan 2008 21:38:35 +0100
-From:	Matteo Croce <rootkit85@yahoo.it>
-To:	linux-mips@linux-mips.org
-Subject: last post
-Date:	Thu, 24 Jan 2008 21:38:23 +0100
-User-Agent: KMail/1.9.6 (enterprise 0.20080118.763038)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Jan 2008 11:56:59 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:54701 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S28574377AbYAYL45 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 25 Jan 2008 11:56:57 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m0PBuv8E010904;
+	Fri, 25 Jan 2008 11:56:57 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m0PBuuh8010903;
+	Fri, 25 Jan 2008 11:56:56 GMT
+Date:	Fri, 25 Jan 2008 11:56:56 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Matteo Croce <rootkit85@yahoo.it>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: last post
+Message-ID: <20080125115656.GA8754@linux-mips.org>
+References: <200801242138.23693.rootkit85@yahoo.it>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200801242138.23693.rootkit85@yahoo.it>
-X-OriginalArrivalTime: 24 Jan 2008 20:38:39.0028 (UTC) FILETIME=[198EB740:01C85EC9]
-Return-Path: <rootkit85@yahoo.it>
+In-Reply-To: <200801242138.23693.rootkit85@yahoo.it>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18143
+X-archive-position: 18144
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rootkit85@yahoo.it
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-sorry, used a broken mail client
+On Thu, Jan 24, 2008 at 09:38:23PM +0100, Matteo Croce wrote:
 
-Cheers,
-Matteo
+> PS. AR7 is still in development, i'm just waiting the 2.6.24 kernel for the new PHY API
 
-PS. AR7 is still in development, i'm just waiting the 2.6.24 kernel for the new PHY API
+Delivered as asked for, 2.6.24 is out ;-)
+
+  Ralf

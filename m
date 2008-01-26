@@ -1,73 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Jan 2008 03:13:06 +0000 (GMT)
-Received: from qmta03.westchester.pa.mail.comcast.net ([76.96.62.32]:53130
-	"EHLO QMTA03.westchester.pa.mail.comcast.net") by ftp.linux-mips.org
-	with ESMTP id S20039030AbYAZDM5 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 26 Jan 2008 03:12:57 +0000
-Received: from OMTA09.westchester.pa.mail.comcast.net ([76.96.62.20])
-	by QMTA03.westchester.pa.mail.comcast.net with comcast
-	id hdAP1Y00B0SCNGk050AZ00; Sat, 26 Jan 2008 03:12:51 +0000
-Received: from [192.168.1.4] ([69.140.18.238])
-	by OMTA09.westchester.pa.mail.comcast.net with comcast
-	id hfCq1Y00A58Be2l3V00000; Sat, 26 Jan 2008 03:12:51 +0000
-X-Authority-Analysis: v=1.0 c=1 a=d3G3_sfZAon2kaaokJgA:9 a=KafzyCGZcZfgMJqINtQnTsMJ9A0A:4 a=QJAqVYndk0IA:10
-Message-ID: <479AA532.5040603@gentoo.org>
-Date:	Fri, 25 Jan 2008 22:12:50 -0500
-From:	Kumba <kumba@gentoo.org>
-User-Agent: Thunderbird 2.0.0.9 (Windows/20071031)
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Florian Lohoff <flo@rfc822.org>, linux-mips@linux-mips.org,
-	debian-mips@lists.debian.org
-Subject: Re: Tester with IP27/IP30 needed
-References: <20080115112420.GA7347@alpha.franken.de> <20080115112719.GB7920@paradigm.rfc822.org> <20080117004054.GA12051@alpha.franken.de> <479609A6.2020204@gentoo.org> <20080122154958.GA29108@linux-mips.org>
-In-Reply-To: <20080122154958.GA29108@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Jan 2008 05:08:16 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:37115 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022142AbYAZFII (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 26 Jan 2008 05:08:08 +0000
+Received: from localhost (p8236-ipad210funabasi.chiba.ocn.ne.jp [58.88.127.236])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id C19579C53; Sat, 26 Jan 2008 14:07:59 +0900 (JST)
+Date:	Sat, 26 Jan 2008 14:08:02 +0900 (JST)
+Message-Id: <20080126.140802.126142689.anemo@mba.ocn.ne.jp>
+To:	okumoto@ucsd.edu
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: Toshiba JMR 3927 working setup?
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <479A134D.7090206@ucsd.edu>
+References: <479A134D.7090206@ucsd.edu>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18146
+X-archive-position: 18147
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> 
-> It's a cache instruction so priviledged which means userspace can't execute
-> it.  It's also entirely unclear if a cache barrier instruction would make a
-> difference at all.
+On Fri, 25 Jan 2008 08:50:21 -0800, Max Okumoto <okumoto@ucsd.edu> wrote:
+> I have a JMR3927 based system and I got it to work with the 2.6.23.14 kernel, but
+> used 0xff0000 instead of 0xff000.  The offset passed in was 0xfffec000 which isn't
+> within the 0xff000000 - 0xff0ff000.
 
-The cache barrier has an interesting effect.  I built three binaries: f, f2, and 
-f3 (I'm cheap on the names):
+Thank you for good news.  (and excuse my double fault...)
 
-f  - cache barriers on load and stores (-mr10k-cache-barrier=2)
-f2 - cache barriers on loads only (-mr10k-cache-barrier=1)
-f3 - no cache barriers (flag omitted from gcc)
-
-Running 'f' and 'f2' generates an "Illegal instruction" error, then drops back 
-to the command line, while 'f3' hangs the box.  This is an IP28 running on 
-2.6.23.9, using Thomas' patches backported to fit (plus Peter's Impact code and 
-two sgiseeq patches from upstream).
-
-This is similar to using a gentoo stage3 in a chroot environment that was built 
-back in May of 2007, so I think this hang up pre-dates glibc-2.7 by some degree, 
-as that chroot uses glibc-2.5.  Chroot into this userland, and run our 
-"env-update" script, and you'll hang the box.
-
-FYI, CPU rev in this machine is R10000 v2.5.  I think that's the same for all 
-IP28 systems.
+Ralf, please apply this to 2.6.23-stable and 2.6.24-stable.
 
 
+Subject: [MIPS] Fix plat_ioremap for JMR3927 (take 2)
 
---Kumba
+TX39XX's "reserved" segment in CKSEG3 area is 0xff000000-0xfffeffff.
 
--- 
-Gentoo/MIPS Team Lead
-
-"Such is oft the course of deeds that move the wheels of the world: small hands 
-do them because they must, while the eyes of the great are elsewhere."  --Elrond
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+diff --git a/include/asm-mips/mach-jmr3927/ioremap.h b/include/asm-mips/mach-jmr3927/ioremap.h
+index aa131ad..29989ff 100644
+--- a/include/asm-mips/mach-jmr3927/ioremap.h
++++ b/include/asm-mips/mach-jmr3927/ioremap.h
+@@ -25,7 +25,7 @@ static inline void __iomem *plat_ioremap(phys_t offset, unsigned long size,
+ {
+ #define TXX9_DIRECTMAP_BASE	0xff000000ul
+ 	if (offset >= TXX9_DIRECTMAP_BASE &&
+-	    offset < TXX9_DIRECTMAP_BASE + 0xf0000)
++	    offset < TXX9_DIRECTMAP_BASE + 0xff0000)
+ 		return (void __iomem *)offset;
+ 	return NULL;
+ }

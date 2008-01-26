@@ -1,121 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Jan 2008 16:50:35 +0000 (GMT)
-Received: from outbound2.ucsd.edu ([132.239.1.206]:49384 "EHLO
-	outbound2.ucsd.edu") by ftp.linux-mips.org with ESMTP
-	id S28580387AbYAYQuZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 25 Jan 2008 16:50:25 +0000
-Received: from smtp.ucsd.edu (smtp.ucsd.edu [132.239.1.49])
-	by outbound2.ucsd.edu (8.13.6/8.13.6) with ESMTP id m0PGoMV5056544
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=OK);
-	Fri, 25 Jan 2008 08:50:23 -0800 (PST)
-DomainKey-Signature: a=rsa-sha1; s=2007001; d=ucsd.edu; c=simple; q=dns;
-	b=FCbiml47klKjrEbCwdIT6Y62rkKICnhI3xySIYWckfLEz4SY8PwNZVLFuiuVtzTdL
-	bcjB3zgHbW56o4tJJmo9A==
-Received: from wave.wire.home (adsl-75-36-52-211.dsl.sndg02.sbcglobal.net [75.36.52.211])
-	(authenticated bits=0)
-	by smtp.ucsd.edu (8.13.6/8.13.6) with ESMTP id m0PGoL6T017834
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-	Fri, 25 Jan 2008 08:50:22 -0800 (PST)
-X-Authentication-Warning: smtp.ucsd.edu: Host adsl-75-36-52-211.dsl.sndg02.sbcglobal.net [75.36.52.211] claimed to be wave.wire.home
-Message-ID: <479A134D.7090206@ucsd.edu>
-Date:	Fri, 25 Jan 2008 08:50:21 -0800
-From:	Max Okumoto <okumoto@ucsd.edu>
-User-Agent: Thunderbird 2.0.0.9 (X11/20071115)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Jan 2008 03:13:06 +0000 (GMT)
+Received: from qmta03.westchester.pa.mail.comcast.net ([76.96.62.32]:53130
+	"EHLO QMTA03.westchester.pa.mail.comcast.net") by ftp.linux-mips.org
+	with ESMTP id S20039030AbYAZDM5 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 26 Jan 2008 03:12:57 +0000
+Received: from OMTA09.westchester.pa.mail.comcast.net ([76.96.62.20])
+	by QMTA03.westchester.pa.mail.comcast.net with comcast
+	id hdAP1Y00B0SCNGk050AZ00; Sat, 26 Jan 2008 03:12:51 +0000
+Received: from [192.168.1.4] ([69.140.18.238])
+	by OMTA09.westchester.pa.mail.comcast.net with comcast
+	id hfCq1Y00A58Be2l3V00000; Sat, 26 Jan 2008 03:12:51 +0000
+X-Authority-Analysis: v=1.0 c=1 a=d3G3_sfZAon2kaaokJgA:9 a=KafzyCGZcZfgMJqINtQnTsMJ9A0A:4 a=QJAqVYndk0IA:10
+Message-ID: <479AA532.5040603@gentoo.org>
+Date:	Fri, 25 Jan 2008 22:12:50 -0500
+From:	Kumba <kumba@gentoo.org>
+User-Agent: Thunderbird 2.0.0.9 (Windows/20071031)
 MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	linux-mips@linux-mips.org
-Subject: Re: Toshiba JMR 3927 working setup?
-Content-Type: multipart/alternative;
- boundary="------------050509010606030400050101"
-Return-Path: <okumoto@ucsd.edu>
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Florian Lohoff <flo@rfc822.org>, linux-mips@linux-mips.org,
+	debian-mips@lists.debian.org
+Subject: Re: Tester with IP27/IP30 needed
+References: <20080115112420.GA7347@alpha.franken.de> <20080115112719.GB7920@paradigm.rfc822.org> <20080117004054.GA12051@alpha.franken.de> <479609A6.2020204@gentoo.org> <20080122154958.GA29108@linux-mips.org>
+In-Reply-To: <20080122154958.GA29108@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18145
+X-archive-position: 18146
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: okumoto@ucsd.edu
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------050509010606030400050101
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Ralf Baechle wrote:
+> 
+> It's a cache instruction so priviledged which means userspace can't execute
+> it.  It's also entirely unclear if a cache barrier instruction would make a
+> difference at all.
 
-Hi,
+The cache barrier has an interesting effect.  I built three binaries: f, f2, and 
+f3 (I'm cheap on the names):
 
-I have a JMR3927 based system and I got it to work with the 2.6.23.14 kernel, but
-used 0xff0000 instead of 0xff000.  The offset passed in was 0xfffec000 which isn't
-within the 0xff000000 - 0xff0ff000.
+f  - cache barriers on load and stores (-mr10k-cache-barrier=2)
+f2 - cache barriers on loads only (-mr10k-cache-barrier=1)
+f3 - no cache barriers (flag omitted from gcc)
 
-     Max 
+Running 'f' and 'f2' generates an "Illegal instruction" error, then drops back 
+to the command line, while 'f3' hangs the box.  This is an IP28 running on 
+2.6.23.9, using Thomas' patches backported to fit (plus Peter's Impact code and 
+two sgiseeq patches from upstream).
 
-    Subject: [MIPS] Fix plat_ioremap for JMR3927
+This is similar to using a gentoo stage3 in a chroot environment that was built 
+back in May of 2007, so I think this hang up pre-dates glibc-2.7 by some degree, 
+as that chroot uses glibc-2.5.  Chroot into this userland, and run our 
+"env-update" script, and you'll hang the box.
 
-    TX39XX's "reserved" segment in CKSEG3 area is 0xff000000-0xfffeffff.
-
-    Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-    ---
-    diff --git a/include/asm-mips/mach-jmr3927/ioremap.h
-    b/include/asm-mips/mach-jmr3927/ioremap.h
-    index aa131ad..ac3be35 100644
-    --- a/include/asm-mips/mach-jmr3927/ioremap.h
-    +++ b/include/asm-mips/mach-jmr3927/ioremap.h
-    @@ -25,7 +25,7 @@ static inline void __iomem *plat_ioremap(phys_t
-    offset,
-    unsigned long size,
-    {
-    #define TXX9_DIRECTMAP_BASE 0xff000000ul
-    if (offset >= TXX9_DIRECTMAP_BASE &&
-    - offset < TXX9_DIRECTMAP_BASE + 0xf0000)
-    + offset < TXX9_DIRECTMAP_BASE + 0xff000)
-    return (void __iomem *)offset;
-    return NULL;
-    }
+FYI, CPU rev in this machine is R10000 v2.5.  I think that's the same for all 
+IP28 systems.
 
 
---------------050509010606030400050101
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-</head>
-<body bgcolor="#ffffff" text="#000000">
-<pre>Hi,
+--Kumba
 
-I have a JMR3927 based system and I got it to work with the 2.6.23.14 kernel, but
-used 0xff0000 instead of 0xff000.  The offset passed in was 0xfffec000 which isn't
-within the <tt>0xff000000 - </tt>0xff0ff000.
+-- 
+Gentoo/MIPS Team Lead
 
-     Max 
-</pre>
-<blockquote><tt>Subject: [MIPS] Fix plat_ioremap for JMR3927<br>
-  <br>
-TX39XX's "reserved" segment in CKSEG3 area is 0xff000000-0xfffeffff.<br>
-  <br>
-Signed-off-by: Atsushi Nemoto <a class="moz-txt-link-rfc2396E" href="mailto:anemo@mba.ocn.ne.jp">&lt;anemo@mba.ocn.ne.jp&gt;</a><br>
----<br>
-diff --git a/include/asm-mips/mach-jmr3927/ioremap.h <br>
-b/include/asm-mips/mach-jmr3927/ioremap.h<br>
-index aa131ad..ac3be35 100644<br>
---- a/include/asm-mips/mach-jmr3927/ioremap.h<br>
-+++ b/include/asm-mips/mach-jmr3927/ioremap.h<br>
-@@ -25,7 +25,7 @@ static inline void __iomem *plat_ioremap(phys_t
-offset, <br>
-unsigned long size,<br>
-{<br>
-#define TXX9_DIRECTMAP_BASE 0xff000000ul<br>
-if (offset &gt;= TXX9_DIRECTMAP_BASE &amp;&amp;<br>
-- offset &lt; TXX9_DIRECTMAP_BASE + 0xf0000)<br>
-+ offset &lt; TXX9_DIRECTMAP_BASE + 0xff000)<br>
-return (void __iomem *)offset;<br>
-return NULL;<br>
-}</tt><br>
-</blockquote>
-</body>
-</html>
-
---------------050509010606030400050101--
+"Such is oft the course of deeds that move the wheels of the world: small hands 
+do them because they must, while the eyes of the great are elsewhere."  --Elrond

@@ -1,61 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jan 2008 14:36:40 +0000 (GMT)
-Received: from fg-out-1718.google.com ([72.14.220.153]:15303 "EHLO
-	fg-out-1718.google.com") by ftp.linux-mips.org with ESMTP
-	id S20029203AbYA1Oga (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 28 Jan 2008 14:36:30 +0000
-Received: by fg-out-1718.google.com with SMTP id d23so1696958fga.32
-        for <linux-mips@linux-mips.org>; Mon, 28 Jan 2008 06:36:29 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:organization:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        bh=HPMiAYdqQm9UVrXNZdbi4xim2RO2ZJemBuvRzmNMBe4=;
-        b=FaLlUG0ypRxZ6cjgrCv74LPZJpAgDw37O6Jqk57Lz3bYJKvmTZLALiWX36A4csfX4WEd9M6XCVuKQtQRk3gCWDGMViUjSyl3To7oV+KungiS7l0RqYeHA8Iy0OlaOGhDb1sqKsMaJ7eSHrjvwbYeYVK85HhI/WBOmPS7hd2r21c=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:organization:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=W0Abdt3GQrKRcIowkzI5KT+pLC307VuCtkbcL8WCesjNvJbUF+fLZKELPHwptgZtxj02sucTeqMNIyCjU35KTUthaNGtjDlzNRrj5bt0yBnXXdCfKAFyfPba6PFDEmHiyjSB4MpgxHlVtoIvPFpk2KO9dBao83rzT2+eT9QaXDA=
-Received: by 10.86.86.12 with SMTP id j12mr5248869fgb.50.1201530989623;
-        Mon, 28 Jan 2008 06:36:29 -0800 (PST)
-Received: from ?192.168.1.3? ( [91.76.30.56])
-        by mx.google.com with ESMTPS id d4sm5942331fga.2.2008.01.28.06.36.27
-        (version=SSLv3 cipher=RC4-MD5);
-        Mon, 28 Jan 2008 06:36:27 -0800 (PST)
-Message-ID: <479DE866.4040709@gmail.com>
-Date:	Mon, 28 Jan 2008 17:36:22 +0300
-From:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
-Organization: DmVo Home
-User-Agent: Thunderbird 1.5.0.14pre (X11/20071022)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jan 2008 16:36:45 +0000 (GMT)
+Received: from fig.raritan.com ([12.144.63.197]:57232 "EHLO fig.raritan.com")
+	by ftp.linux-mips.org with ESMTP id S28576678AbYA1Qgh (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 28 Jan 2008 16:36:37 +0000
+Received: from [192.168.32.206] ([192.168.32.206]) by fig.raritan.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 28 Jan 2008 11:36:24 -0500
+Message-ID: <479E0488.7070408@raritan.com>
+Date:	Mon, 28 Jan 2008 11:36:24 -0500
+From:	Gregor Waltz <gregor.waltz@raritan.com>
+User-Agent: Thunderbird 1.5.0.10 (X11/20070403)
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 00/17] [MIPS] Malta: massive code cleanup
-References: <1201193577-4261-1-git-send-email-dmitri.vorobiev@gmail.com> <20080128143300.GA376@linux-mips.org>
-In-Reply-To: <20080128143300.GA376@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <dmitri.vorobiev@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Re: Toshiba JMR 3927 working setup?
+References: <479A134D.7090206@ucsd.edu> <20080126.140802.126142689.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20080126.140802.126142689.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 28 Jan 2008 16:36:24.0910 (UTC) FILETIME=[EC334EE0:01C861CB]
+Return-Path: <Gregor.Waltz@raritan.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18151
+X-archive-position: 18152
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@gmail.com
+X-original-sender: gregor.waltz@raritan.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle пишет:
-> On Thu, Jan 24, 2008 at 07:52:40PM +0300, Dmitri Vorobiev wrote:
-> 
-> Whole series queued for 2.6.25.
+Atsushi Nemoto wrote:
+> On Fri, 25 Jan 2008 08:50:21 -0800, Max Okumoto <okumoto@ucsd.edu> wrote:
+>   
+>> I have a JMR3927 based system and I got it to work with the 2.6.23.14 kernel, but
+>> used 0xff0000 instead of 0xff000.  The offset passed in was 0xfffec000 which isn't
+>> within the 0xff000000 - 0xff0ff000.
+>>     
+>
+> Thank you for good news.  (and excuse my double fault...)
+>
+> Ralf, please apply this to 2.6.23-stable and 2.6.24-stable.
+>   
 
-OK, thanks.
+The change does appear to work for me also, however, I still see no 
+kernel messages at all. The only way that I can get any output is via 
+puts() and prom_putchar() (the latter I put into emit_log_char(char c) 
+of printk.c).
 
-Dmitri
+I have not gotten past the root mounting stage because I have not 
+attached an image yet, which I will try as soon as I get some time again.
 
-> 
-> Thanks,
-> 
->   Ralf
-> 
+Thanks for your help

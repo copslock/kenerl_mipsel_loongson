@@ -1,62 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jan 2008 14:14:14 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:3731 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28579874AbYA3OOM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 30 Jan 2008 14:14:12 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m0UEE9Ui012693;
-	Wed, 30 Jan 2008 14:14:09 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m0UEE88K012692;
-	Wed, 30 Jan 2008 14:14:08 GMT
-Date:	Wed, 30 Jan 2008 14:14:08 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Sam Ravnborg <sam@ravnborg.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [PATCH] Remove __INIT_REFOK and __INITDATA_REFOK
-Message-ID: <20080130141408.GA6116@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 31 Jan 2008 18:26:00 +0000 (GMT)
+Received: from zcars04f.nortel.com ([47.129.242.57]:15810 "EHLO
+	zcars04f.nortel.com") by ftp.linux-mips.org with ESMTP
+	id S20027062AbYAaSZw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 31 Jan 2008 18:25:52 +0000
+Received: from zcarhxs1.corp.nortel.com (zcarhxs1.corp.nortel.com [47.129.230.89])
+	by zcars04f.nortel.com (Switch-2.2.6/Switch-2.2.0) with ESMTP id m0VIPiP17842
+	for <linux-mips@linux-mips.org>; Thu, 31 Jan 2008 18:25:44 GMT
+Received: from [47.130.24.28] ([47.130.24.28] RDNS failed) by zcarhxs1.corp.nortel.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 31 Jan 2008 13:25:13 -0500
+Message-ID: <47A21286.3020009@nortel.com>
+Date:	Thu, 31 Jan 2008 12:25:10 -0600
+From:	"Chris Friesen" <cfriesen@nortel.com>
+User-Agent: Mozilla Thunderbird 1.0.2-6 (X11/20050513)
+X-Accept-Language: en-us, en
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+To:	linux-mips@linux-mips.org
+Subject: kexec on SMP mips64?
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 31 Jan 2008 18:25:13.0401 (UTC) FILETIME=[9EB93A90:01C86436]
+Return-Path: <CFRIESEN@nortel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18161
+X-archive-position: 18162
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: cfriesen@nortel.com
 Precedence: bulk
 X-list: linux-mips
 
-Commit 312b1485fb509c9bc32eda28ad29537896658cb8 made __INIT_REFOK expand
-into .section .section ".ref.text", "ax".  Since the assembler doesn't
-tolerate stuttering in the source that broke all MIPS builds.
 
-Since with this change Sam downgraded __INIT_REFOK to just a backward
-compat thing and there being only a single use in the MIPS arch code the
-best solution is to delete both of __INIT_REFOK and __INITDATA_REFOK (which
-was equally broken) being unused anyway these can be deleted.
+Hi all,
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
----
+We're starting work on an embedded highly-available product using dual 
+Octeon cpus, and I'm looking into the possibility of using kexec/kdump 
+as a "flight recorder" to dump fault information to a persistant storage 
+location.
 
-I'll send out the MIPS bits as part of my next pull request to Linus.
+I saw the patch adding initial support for kexec, but I was curious 
+about the current status.  Is anyone using kexec for mips64 SMP systems? 
+  Is it known to be broken?  I'm just trying to get a feel for how much 
+work might be involved.
 
-diff --git a/include/linux/init.h b/include/linux/init.h
-index 2efbda0..90cdbbb 100644
---- a/include/linux/init.h
-+++ b/include/linux/init.h
-@@ -124,9 +124,6 @@
- #define __REF            .section       ".ref.text", "ax"
- #define __REFDATA        .section       ".ref.data", "aw"
- #define __REFCONST       .section       ".ref.rodata", "aw"
--/* backward compatibility */
--#define __INIT_REFOK     .section	__REF
--#define __INITDATA_REFOK .section	__REFDATA
- 
- #ifndef __ASSEMBLY__
- /*
+Thanks,
+
+Chris

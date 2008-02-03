@@ -1,59 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 Feb 2008 22:08:50 +0000 (GMT)
-Received: from qmta07.emeryville.ca.mail.comcast.net ([76.96.30.64]:58780 "EHLO
-	QMTA07.emeryville.ca.mail.comcast.net") by ftp.linux-mips.org
-	with ESMTP id S20031130AbYBBWIm (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 2 Feb 2008 22:08:42 +0000
-Received: from OMTA13.emeryville.ca.mail.comcast.net ([76.96.30.52])
-	by QMTA07.emeryville.ca.mail.comcast.net with comcast
-	id kd4v1Y00F17UAYkA70X900; Sat, 02 Feb 2008 22:08:32 +0000
-Received: from [192.168.1.4] ([69.140.18.238])
-	by OMTA13.emeryville.ca.mail.comcast.net with comcast
-	id km8Y1Y00E58Be2l8Z00000; Sat, 02 Feb 2008 22:08:35 +0000
-X-Authority-Analysis: v=1.0 c=1 a=NO_UjUUC5dBMtSl9ZVQA:9
- a=pljzPeXGaX0wzBsF5R0A:7 a=WgWhcjP_WEcGfe5YBQNgxSYBjIcA:4 a=XF7b4UCPwd8A:10
-Message-ID: <47A4E9DF.5070603@gentoo.org>
-Date:	Sat, 02 Feb 2008 17:08:31 -0500
-From:	Kumba <kumba@gentoo.org>
-User-Agent: Thunderbird 2.0.0.9 (Windows/20071031)
-MIME-Version: 1.0
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-CC:	Ralf Baechle <ralf@linux-mips.org>,
-	Florian Lohoff <flo@rfc822.org>, linux-mips@linux-mips.org,
-	debian-mips@lists.debian.org
-Subject: Re: Tester with IP27/IP30 needed
-References: <20080115112420.GA7347@alpha.franken.de> <20080115112719.GB7920@paradigm.rfc822.org> <20080117004054.GA12051@alpha.franken.de> <479609A6.2020204@gentoo.org> <20080122154958.GA29108@linux-mips.org> <479AA532.5040603@gentoo.org> <20080126143949.GA6579@alpha.franken.de>
-In-Reply-To: <20080126143949.GA6579@alpha.franken.de>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 Feb 2008 01:29:16 +0000 (GMT)
+Received: from chilli.pcug.org.au ([203.10.76.44]:15562 "EHLO smtps.tip.net.au")
+	by ftp.linux-mips.org with ESMTP id S20031848AbYBCB3G (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 3 Feb 2008 01:29:06 +0000
+Received: from ash.ozlabs.ibm.com (ta-1-1.tip.net.au [203.11.71.1])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(Client did not present a certificate)
+	by smtps.tip.net.au (Postfix) with ESMTP id 9EE15368003;
+	Sun,  3 Feb 2008 12:29:02 +1100 (EST)
+Date:	Sun, 3 Feb 2008 12:29:06 +1100
+From:	Stephen Rothwell <sfr@canb.auug.org.au>
+To:	macro@linux-mips.org
+Cc:	linux-mips@linux-mips.org
+Subject: [PATCH] [TRIVIAL] sm1250: constify three stings.
+Message-Id: <20080203122906.eefb3ac4.sfr@canb.auug.org.au>
+X-Mailer: Sylpheed 2.4.8 (GTK+ 2.12.5; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Return-Path: <sfr@canb.auug.org.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18167
+X-archive-position: 18168
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: sfr@canb.auug.org.au
 Precedence: bulk
 X-list: linux-mips
 
-Thomas Bogendoerfer wrote:
-> no suprise here. As Ralf already noted cache barrier is a restricted
-> instruction, it will always cause a illegal instruction when used
-> in user space. Nevertheless it looks like all IP28 are affected
-> by the simple exploit. Flo built glibc 2.7 with LLSC war workaround
-> and this avoids triggering the hang.
+This was noticed because sbmac_string is passed to
+platform_device_register_simple() which now takes a "const char *"
+as it first argument.
 
-Ah, didn't know the 'cache' instructions was kernel-mode only.  Explains why it 
-survived then :)
+Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+---
+ drivers/net/sb1250-mac.c |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
 
-How does one enable the LLSC war workaround in glibc?
+This has not even been compiled, but is fairly trivial.
 
-
---Kumba
+diff --git a/drivers/net/sb1250-mac.c b/drivers/net/sb1250-mac.c
+index 7b53d65..d83471a 100644
+--- a/drivers/net/sb1250-mac.c
++++ b/drivers/net/sb1250-mac.c
+@@ -350,10 +350,10 @@ static int sbmac_mii_write(struct mii_bus *bus, int phyaddr, int regidx,
+  *  Globals
+  ********************************************************************* */
+ 
+-static char sbmac_string[] = "sb1250-mac";
+-static char sbmac_pretty[] = "SB1250 MAC";
++static const char sbmac_string[] = "sb1250-mac";
++static const char sbmac_pretty[] = "SB1250 MAC";
+ 
+-static char sbmac_mdio_string[] = "sb1250-mac-mdio";
++static const char sbmac_mdio_string[] = "sb1250-mac-mdio";
+ 
+ 
+ /**********************************************************************
+-- 
+1.5.3.8
 
 -- 
-Gentoo/MIPS Team Lead
-
-"Such is oft the course of deeds that move the wheels of the world: small hands 
-do them because they must, while the eyes of the great are elsewhere."  --Elrond
+Cheers,
+Stephen Rothwell                    sfr@canb.auug.org.au
+http://www.canb.auug.org.au/~sfr/

@@ -1,143 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Feb 2008 02:17:01 +0000 (GMT)
-Received: from hall.aurel32.net ([88.191.38.19]:61385 "EHLO hall.aurel32.net")
-	by ftp.linux-mips.org with ESMTP id S20036629AbYBGCQx (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Feb 2008 02:16:53 +0000
-Received: from volta.aurel32.net ([2002:52e8:2fb:1:216:d3ff:fe17:fd00])
-	by hall.aurel32.net with esmtpsa (TLS-1.0:RSA_AES_256_CBC_SHA1:32)
-	(Exim 4.63)
-	(envelope-from <aurelien@aurel32.net>)
-	id 1JMwJj-0006HT-N8; Thu, 07 Feb 2008 03:16:47 +0100
-Received: from aurel32 by volta.aurel32.net with local (Exim 4.68)
-	(envelope-from <aurelien@aurel32.net>)
-	id 1JMwKC-0000vM-Kc; Thu, 07 Feb 2008 03:17:16 +0100
-Date:	Thu, 7 Feb 2008 03:17:16 +0100
-From:	Aurelien Jarno <aurelien@aurel32.net>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: [PATCH] [MIPS] Add platform MTD support for the WGT634U machine
-Message-ID: <20080207021716.GA3350@volta.aurel32.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Feb 2008 05:30:56 +0000 (GMT)
+Received: from qmta01.westchester.pa.mail.comcast.net ([76.96.62.16]:17358
+	"EHLO QMTA01.westchester.pa.mail.comcast.net") by ftp.linux-mips.org
+	with ESMTP id S20022204AbYBGFas (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Feb 2008 05:30:48 +0000
+Received: from OMTA07.westchester.pa.mail.comcast.net ([76.96.62.59])
+	by QMTA01.westchester.pa.mail.comcast.net with comcast
+	id mLrh1Y02U1GhbT8510Ja00; Thu, 07 Feb 2008 05:30:35 +0000
+Received: from [192.168.1.4] ([69.140.18.238])
+	by OMTA07.westchester.pa.mail.comcast.net with comcast
+	id mVWf1Y00G58Be2l3T00000; Thu, 07 Feb 2008 05:30:40 +0000
+X-Authority-Analysis: v=1.0 c=1 a=8rNRuJ1kDQyzUA1EHfYA:9
+ a=ZluIzpL3rFPDPbGnU7FQLa_zARIA:4 a=GZmr5YlNZX8A:10
+Message-ID: <47AA977E.5000205@gentoo.org>
+Date:	Thu, 07 Feb 2008 00:30:38 -0500
+From:	Kumba <kumba@gentoo.org>
+User-Agent: Thunderbird 2.0.0.9 (Windows/20071031)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-X-Mailer: Mutt 1.5.17 (2007-12-11)
-User-Agent: Mutt/1.5.17 (2007-12-11)
-Return-Path: <aurelien@aurel32.net>
+To:	Florian Lohoff <flo@rfc822.org>
+CC:	Thiemo Seufer <ths@networkno.de>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-mips@linux-mips.org, debian-mips@lists.debian.org
+Subject: Re: Tester with IP27/IP30 needed
+References: <479609A6.2020204@gentoo.org> <20080122154958.GA29108@linux-mips.org> <479AA532.5040603@gentoo.org> <20080126143949.GA6579@alpha.franken.de> <47A4E9DF.5070603@gentoo.org> <20080203021647.GA15910@linux-mips.org> <20080203062711.GA28394@paradigm.rfc822.org> <47A80C0A.4040106@gentoo.org> <20080205122211.GA24136@networkno.de> <47A928BF.5000302@gentoo.org> <20080206085610.GA20751@paradigm.rfc822.org>
+In-Reply-To: <20080206085610.GA20751@paradigm.rfc822.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18185
+X-archive-position: 18186
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-The patch below adds MTD support for the WGT634U machine by defining a
-new platform_device for the flash.
+Florian Lohoff wrote:
+> No - the very same GLIBC does not work on mips1 machines and vice versa.
+> Might by okay for gentoo but debian needs a run everywhere glibc which
+> means some ld.so tricks like with the libc6-i686 to load a different
+> glibc from my understanding.
 
-Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
----
- arch/mips/bcm47xx/wgt634u.c |   69 +++++++++++++++++++++++++++++++++++++++++--
- 1 files changed, 66 insertions(+), 3 deletions(-)
+While I could test this easily on gentoo, I was thinking of it more as an 
+upstream fix.  I suppose one of those configure switches could be included to 
+skip the check as well, with the default being on.  Figured I'd see what you 
+guys thought, since it does seem to be a bug that should to be addressed somehow 
+rather than patched forever in one of the distros.
 
-diff --git a/arch/mips/bcm47xx/wgt634u.c b/arch/mips/bcm47xx/wgt634u.c
-index 5a017ea..997e540 100644
---- a/arch/mips/bcm47xx/wgt634u.c
-+++ b/arch/mips/bcm47xx/wgt634u.c
-@@ -9,6 +9,7 @@
- #include <linux/platform_device.h>
- #include <linux/module.h>
- #include <linux/leds.h>
-+#include <linux/mtd/physmap.h>
- #include <linux/ssb/ssb.h>
- #include <asm/mach-bcm47xx/bcm47xx.h>
- 
-@@ -43,6 +44,61 @@ static struct platform_device wgt634u_gpio_leds = {
- 	}
- };
- 
-+
-+/* 8MiB flash. The struct mtd_partition matches original Netgear WGT634U
-+   firmware. */
-+static struct mtd_partition wgt634u_partitions[] = {
-+	{
-+		.name       = "cfe",
-+		.offset     = 0,
-+		.size       = 0x60000,		/* 384k */
-+		.mask_flags = MTD_WRITEABLE 	/* force read-only */
-+	},
-+	{
-+		.name   = "config",
-+		.offset = 0x60000,
-+		.size   = 0x20000		/* 128k */
-+	},
-+	{
-+		.name   = "linux",
-+		.offset = 0x80000,
-+		.size   = 0x140000 		/* 1280k */
-+	},
-+	{
-+		.name   = "jffs",
-+		.offset = 0x1c0000,
-+		.size   = 0x620000 		/* 6272k */
-+	},
-+	{
-+		.name   = "nvram",
-+		.offset = 0x7e0000,
-+		.size   = 0x20000		/* 128k */
-+	},
-+};
-+
-+static struct physmap_flash_data wgt634u_flash_data = {
-+	.parts    = wgt634u_partitions,
-+	.nr_parts = ARRAY_SIZE(wgt634u_partitions)
-+};
-+
-+static struct resource wgt634u_flash_resource = {
-+	.flags = IORESOURCE_MEM,
-+};
-+
-+static struct platform_device wgt634u_flash = {
-+	.name          = "physmap-flash",
-+	.id            = 0,
-+	.dev           = { .platform_data = &wgt634u_flash_data, },
-+	.resource      = &wgt634u_flash_resource,
-+	.num_resources = 1,
-+};
-+
-+/* Platform devices */
-+static struct platform_device *wgt634u_devices[] __initdata = {
-+	&wgt634u_flash,
-+	&wgt634u_gpio_leds,
-+};
-+
- static int __init wgt634u_init(void)
- {
- 	/* There is no easy way to detect that we are running on a WGT634U
-@@ -54,9 +110,16 @@ static int __init wgt634u_init(void)
- 
- 	if (et0mac[0] == 0x00 &&
- 	    ((et0mac[1] == 0x09 && et0mac[2] == 0x5b) ||
--	     (et0mac[1] == 0x0f && et0mac[2] == 0xb5)))
--		return platform_device_register(&wgt634u_gpio_leds);
--	else
-+	     (et0mac[1] == 0x0f && et0mac[2] == 0xb5))) {
-+		struct ssb_mipscore *mcore = &ssb_bcm47xx.mipscore;
-+		wgt634u_flash_data.width = mcore->flash_buswidth;
-+		wgt634u_flash_resource.start = mcore->flash_window;
-+		wgt634u_flash_resource.end = mcore->flash_window
-+					   + mcore->flash_window_size
-+					   - 1;
-+		return platform_add_devices(wgt634u_devices,
-+					    ARRAY_SIZE(wgt634u_devices));
-+	} else
- 		return -ENODEV;
- }
- 
+
+--Kumba
 
 -- 
-  .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
- : :' :  Debian developer           | Electrical Engineer
- `. `'   aurel32@debian.org         | aurelien@aurel32.net
-   `-    people.debian.org/~aurel32 | www.aurel32.net
+Gentoo/MIPS Team Lead
+
+"Such is oft the course of deeds that move the wheels of the world: small hands 
+do them because they must, while the eyes of the great are elsewhere."  --Elrond

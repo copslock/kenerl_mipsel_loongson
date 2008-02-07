@@ -1,65 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Feb 2008 19:04:13 +0000 (GMT)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:49052 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20038717AbYBGTEE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 7 Feb 2008 19:04:04 +0000
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id D585E31222D;
-	Thu,  7 Feb 2008 19:04:05 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Thu,  7 Feb 2008 19:04:05 +0000 (UTC)
-Received: from dl2.hq2.avtrex.com ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Thu, 7 Feb 2008 11:03:49 -0800
-Message-ID: <47AB5614.5010804@avtrex.com>
-Date:	Thu, 07 Feb 2008 11:03:48 -0800
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 2.0.0.9 (X11/20071115)
-MIME-Version: 1.0
-To:	Andi <opencode@gmx.net>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Problems booting Linux kernel on Sigma SMP8634
-References: <47AB50DD.2050504@gmx.net>
-In-Reply-To: <47AB50DD.2050504@gmx.net>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Feb 2008 20:33:38 +0000 (GMT)
+Received: from host.infinivid.com ([64.119.179.76]:41187 "EHLO
+	host.infinivid.com") by ftp.linux-mips.org with ESMTP
+	id S20038975AbYBGUda (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 7 Feb 2008 20:33:30 +0000
+Received: (qmail 32425 invoked from network); 7 Feb 2008 20:33:28 -0000
+Received: from unknown (HELO ?10.41.13.129?) (38.101.235.133)
+  by host.infinivid.com with (RC4-MD5 encrypted) SMTP; 7 Feb 2008 13:33:28 -0700
+Subject: Re: iomemory causing a data bus error
+From:	Jon Dufresne <jon.dufresne@infinitevideocorporation.com>
+To:	linux-mips@linux-mips.org
+In-Reply-To: <1202397602.3298.25.camel@localhost>
+References: <1202397602.3298.25.camel@localhost>
+Content-Type: text/plain
+Date:	Thu, 07 Feb 2008 15:32:56 -0500
+Message-Id: <1202416377.3298.44.camel@localhost>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.8.3 (2.8.3-2.fc6) 
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 07 Feb 2008 19:03:49.0862 (UTC) FILETIME=[2C556060:01C869BC]
-Return-Path: <ddaney@avtrex.com>
+Return-Path: <jon.dufresne@infinitevideocorporation.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18196
+X-archive-position: 18197
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: jon.dufresne@infinitevideocorporation.com
 Precedence: bulk
 X-list: linux-mips
 
-Andi wrote:
-> Hey Folks,
-> 
-> we are working on a SMP8634-based box to get Linux running on it.
-> Since we don't have any documentation, neither hardware nor software,
-> there is a lot of re-engineering work to be done.
-> However, we managed it to let the box load a Linux kernel .. but it
-> still fails at a certain point.
-> It's right before the kernel loads the "NET: .."-stuff. I got this from
-> an other SMP8634-based box, which runs the same kernel.
-> 
-> Any hints about what might doesn't work?
-> 
+I took some time and wrote a VERY simplified driver. The driver is now
+doing only the required steps to test this error. I figured this would
+localize the problem as much as possible. When I run this new driver. I
+now see the following error:
 
-You need symbols so that you can interpret the stack trace.  It is 
-impossible to tell anything without that.
-.
-.
-.
-> Determined physical RAM map:
->  memory: 05ee0000 @ 10020000 (usable)
+ohci_hcd 0000:00:09.0: OHCI Unrecoverable Error, disabled
+ohci_hcd 0000:00:09.0: HC died; cleaning up
+irq 55: nobody cared (try booting with the "irqpoll" option)
+Call
+Trace:[<8006926c>][<8006926c>][<800ab1cc>][<800ab434>][<800aa27c>][<800aa27c>][<800aa3b8>][<8007faac>][<80085e9c>][<80085e70>][<8006386c>][<80061310>][<8009e3c4>][<8019d278>][<80062040>][<80062040>][<800]
+handlers:
+[<801dd630>]
+[<801ecce8>]
+[<801ecce8>]
+[<801ecce8>]
+[<801ae6c8>]
+Disabling IRQ #55
 
-This seems like an odd value.  I would expect either 03fe0000 or 07fe0000
+It looks to me like there is a problem with the USB driver. An
+interesting note is that my device's interrupt is also irq 55. I have
+tried this simplified driver both requesting the interrupt, in which
+case it is never triggered, and not requesting the interrupt. Both cases
+end the same way. After I get that message the system is still running,
+but extremely slowly.
 
-David Daney
+Any ideas?
+
+Thanks,
+Jon

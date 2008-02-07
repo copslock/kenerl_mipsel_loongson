@@ -1,69 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Feb 2008 12:43:01 +0000 (GMT)
-Received: from mail1.pearl-online.net ([62.159.194.147]:44573 "EHLO
-	mail1.pearl-online.net") by ftp.linux-mips.org with ESMTP
-	id S20024640AbYBGMmw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 7 Feb 2008 12:42:52 +0000
-Received: from SNaIlmail.Peter (85.233.39.216.static.cablesurf.de [85.233.39.216])
-	by mail1.pearl-online.net (Postfix) with ESMTP id E9FE0B186;
-	Thu,  7 Feb 2008 13:42:55 +0100 (CET)
-Received: from Indigo2.Peter (Indigo2.Peter [192.168.1.28])
-	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id m1621vZM000748;
-	Wed, 6 Feb 2008 03:01:58 +0100
-Received: from Indigo2.Peter (localhost [127.0.0.1])
-	by Indigo2.Peter (8.12.6/8.12.6/Sendmail/Linux 2.6.14-rc2-ip28) with ESMTP id m17CfTb5000410;
-	Thu, 7 Feb 2008 13:41:29 +0100
-Received: from localhost (pf@localhost)
-	by Indigo2.Peter (8.12.6/8.12.6/Submit) with ESMTP id m17CfTQw000407;
-	Thu, 7 Feb 2008 13:41:29 +0100
-X-Authentication-Warning: Indigo2.Peter: pf owned process doing -bs
-Date:	Thu, 7 Feb 2008 13:41:29 +0100 (CET)
-From:	peter fuerst <post@pfrst.de>
-X-X-Sender: pf@Indigo2.Peter
-Reply-To: post@pfrst.de
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Feb 2008 13:45:30 +0000 (GMT)
+Received: from mo31.po.2iij.NET ([210.128.50.54]:49470 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20037395AbYBGNpV (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Feb 2008 13:45:21 +0000
+Received: by mo.po.2iij.net (mo31) id m17DjH6n000642; Thu, 7 Feb 2008 22:45:17 +0900 (JST)
+Received: from delta (224.24.30.125.dy.iij4u.or.jp [125.30.24.224])
+	by mbox.po.2iij.net (po-mbox303) id m17DjF0j026628
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Thu, 7 Feb 2008 22:45:16 +0900
+Date:	Thu, 7 Feb 2008 22:27:17 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: [PATCH] [MIPS]: fix CAC_ADDR/UNCAC_ADDR
-In-Reply-To: <Pine.LNX.4.64.0801222042100.5722@fbirervta.pbzchgretzou.qr>
-Message-ID: <Pine.LNX.4.58.0802071337440.402@Indigo2.Peter>
-References: <54038cd4f87a03884e4f59f8f3697889dfb63c54.1201030614.git.jengelh@computergmbh.de>
- <Pine.LNX.4.64.0801222042100.5722@fbirervta.pbzchgretzou.qr>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <post@pfrst.de>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][2/5][MIPS] remove lasat unused definitions
+Message-Id: <20080207222717.7d58f50a.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20080207222601.def26d7d.yoichi_yuasa@tripeaks.co.jp>
+References: <20080207222601.def26d7d.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed 2.4.5 (GTK+ 2.12.0; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18187
+X-archive-position: 18188
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: post@pfrst.de
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
+Removed unused lasat definitions.
 
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-With commit db38501511a7513ec4f0ae9922d847c135cf3c78 PAGE_OFFSET was
-redefined as CAC_BASE+PHYS_OFFSET, but [UN]CAC_ADDR - which are used
-in dma_alloc_coherent() and dma_free_coherent() respectively, and in
-drivers/video/au1100fb.c - were not adjusted accordingly.
-
-with kind regards
-
-
-Signed-off-by: peter fuerst <post@pfrst.de>
-
-
---- a/linux-2.6.24/include/asm-mips/page.h	Fri Jan 25 12:23:51 2008
-+++ b/linux-2.6.24/include/asm-mips/page.h	Wed Feb  6 23:26:31 2008
-@@ -184,8 +184,8 @@
- #define VM_DATA_DEFAULT_FLAGS	(VM_READ | VM_WRITE | VM_EXEC | \
- 				 VM_MAYREAD | VM_MAYWRITE | VM_MAYEXEC)
-
--#define UNCAC_ADDR(addr)	((addr) - PAGE_OFFSET + UNCAC_BASE)
--#define CAC_ADDR(addr)		((addr) - UNCAC_BASE + PAGE_OFFSET)
-+#define UNCAC_ADDR(addr)	((addr) - PAGE_OFFSET + PHYS_OFFSET + UNCAC_BASE)
-+#define CAC_ADDR(addr)		((addr) - UNCAC_BASE + PAGE_OFFSET - PHYS_OFFSET)
-
- #include <asm-generic/memory_model.h>
- #include <asm-generic/page.h>
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/lasat/lasat.h mips/include/asm-mips/lasat/lasat.h
+--- mips-orig/include/asm-mips/lasat/lasat.h	2007-12-11 23:12:53.674363750 +0900
++++ mips/include/asm-mips/lasat/lasat.h	2007-12-12 00:14:56.073369250 +0900
+@@ -245,9 +245,6 @@ static inline void lasat_ndelay(unsigned
+ #define LASAT_SERVICEMODE_MAGIC_1     0xdeadbeef
+ #define LASAT_SERVICEMODE_MAGIC_2     0xfedeabba
+ 
+-/* Lasat 100 boards */
+-#define LASAT_GT_BASE           (KSEG1ADDR(0x14000000))
+-
+ /* Lasat 200 boards */
+ #define Vrc5074_PHYS_BASE       0x1fa00000
+ #define Vrc5074_BASE            (KSEG1ADDR(Vrc5074_PHYS_BASE))
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/mach-lasat/mach-gt64120.h mips/include/asm-mips/mach-lasat/mach-gt64120.h
+--- mips-orig/include/asm-mips/mach-lasat/mach-gt64120.h	2007-12-11 23:12:54.162394250 +0900
++++ mips/include/asm-mips/mach-lasat/mach-gt64120.h	2007-12-12 00:13:39.216566000 +0900
+@@ -11,17 +11,6 @@
+ /*
+  *   GT64120 config space base address on Lasat 100
+  */
+-#define GT64120_BASE	(KSEG1ADDR(0x14000000))
+-
+-/*
+- *   PCI Bus allocation
+- *
+- *   (Guessing ...)
+- */
+-#define GT_PCI_MEM_BASE	0x12000000UL
+-#define GT_PCI_MEM_SIZE	0x02000000UL
+-#define GT_PCI_IO_BASE	0x10000000UL
+-#define GT_PCI_IO_SIZE	0x02000000UL
+-#define GT_ISA_IO_BASE	PCI_IO_BASE
++#define GT64120_BASE	KSEG1ADDR(GT_DEF_BASE)
+ 
+ #endif /* _ASM_GT64120_LASAT_GT64120_DEP_H */

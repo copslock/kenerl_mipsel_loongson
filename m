@@ -1,183 +1,149 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Feb 2008 13:47:33 +0000 (GMT)
-Received: from mo30.po.2iij.NET ([210.128.50.53]:64563 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20037430AbYBGNpb (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Feb 2008 13:45:31 +0000
-Received: by mo.po.2iij.net (mo30) id m17DjRPc018661; Thu, 7 Feb 2008 22:45:27 +0900 (JST)
-Received: from delta (224.24.30.125.dy.iij4u.or.jp [125.30.24.224])
-	by mbox.po.2iij.net (po-mbox302) id m17DjJfx000906
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Thu, 7 Feb 2008 22:45:19 +0900
-Date:	Thu, 7 Feb 2008 22:44:54 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][5/5][MIPS] cleanup lasat reset functions
-Message-Id: <20080207224454.1f4254f0.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20080207224140.30878819.yoichi_yuasa@tripeaks.co.jp>
-References: <20080207222601.def26d7d.yoichi_yuasa@tripeaks.co.jp>
-	<20080207222717.7d58f50a.yoichi_yuasa@tripeaks.co.jp>
-	<20080207223945.32f20b2d.yoichi_yuasa@tripeaks.co.jp>
-	<20080207224140.30878819.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed 2.4.5 (GTK+ 2.12.0; i486-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Feb 2008 15:20:45 +0000 (GMT)
+Received: from host.infinivid.com ([64.119.179.76]:1231 "EHLO
+	host.infinivid.com") by ftp.linux-mips.org with ESMTP
+	id S20037787AbYBGPUg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 7 Feb 2008 15:20:36 +0000
+Received: (qmail 8093 invoked from network); 7 Feb 2008 15:20:34 -0000
+Received: from unknown (HELO ?10.41.13.129?) (38.101.235.133)
+  by host.infinivid.com with (RC4-MD5 encrypted) SMTP; 7 Feb 2008 08:20:33 -0700
+Subject: iomemory causing a data bus error
+From:	Jon Dufresne <jon.dufresne@infinitevideocorporation.com>
+To:	linux-mips@linux-mips.org
+Content-Type: text/plain
+Date:	Thu, 07 Feb 2008 10:20:02 -0500
+Message-Id: <1202397602.3298.25.camel@localhost>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-Mailer: Evolution 2.8.3 (2.8.3-2.fc6) 
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Return-Path: <jon.dufresne@infinitevideocorporation.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18192
+X-archive-position: 18193
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: jon.dufresne@infinitevideocorporation.com
 Precedence: bulk
 X-list: linux-mips
 
-Clean up lasat reset functions
+Hi,
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+I am writing a linux mips device driver for a PCI device. I am currently
+running into a strange problem when writing a lot of data to iomemory.
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/lasat/reset.c mips/arch/mips/lasat/reset.c
---- mips-orig/arch/mips/lasat/reset.c	2007-12-13 10:20:15.537626250 +0900
-+++ mips/arch/mips/lasat/reset.c	2007-12-13 10:17:32.751452750 +0900
-@@ -17,18 +17,21 @@
-  *
-  * Reset the LASAT board.
-  */
--#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/io.h>
-+#include <linux/irqflags.h>
- #include <linux/pm.h>
- 
-+#include <asm/bootinfo.h>
- #include <asm/reboot.h>
--#include <asm/system.h>
- #include <asm/lasat/lasat.h>
- 
--#include "picvue.h"
- #include "prom.h"
- 
--static void lasat_machine_restart(char *command);
--static void lasat_machine_halt(void);
-+#define LASAT_SERVICEMODE_MAGIC_1	0xdeadbeef
-+#define LASAT_SERVICEMODE_MAGIC_2	0xfedeabba
-+
-+static void __iomem *reset_reg;
- 
- /* Used to set machine to boot in service mode via /proc interface */
- int lasat_boot_to_service;
-@@ -38,10 +41,13 @@ static void lasat_machine_restart(char *
- 	local_irq_disable();
- 
- 	if (lasat_boot_to_service) {
--		*(volatile unsigned int *)0xa0000024 = 0xdeadbeef;
--		*(volatile unsigned int *)0xa00000fc = 0xfedeabba;
-+		writel(LASAT_SERVICEMODE_MAGIC_1,
-+		       (void __iomem *)KSEG1ADDR(0x24));
-+		writel(LASAT_SERVICEMODE_MAGIC_2,
-+		       (void __iomem *)KSEG1ADDR(0xfc));
- 	}
--	*lasat_misc->reset_reg = 0xbedead;
-+
-+	writel(0xbedead, reset_reg);
- 	for (;;) ;
- }
- 
-@@ -53,9 +59,25 @@ static void lasat_machine_halt(void)
- 	for (;;) ;
- }
- 
--void lasat_reboot_setup(void)
-+static int lasat_reboot_setup(void)
- {
-+	switch (mips_machtype) {
-+	case MACH_LASAT_100:
-+		reset_reg = (void __iomem *)KSEG1ADDR(0x1c840000);
-+		break;
-+	case MACH_LASAT_200:
-+		reset_reg = (void __iomem *)KSEG1ADDR(0x11080000);
-+		break;
-+	default:
-+		printk(KERN_ERR "Unknown LASAT board\n");
-+		return -EINVAL;
-+	}
-+
- 	_machine_restart = lasat_machine_restart;
- 	_machine_halt = lasat_machine_halt;
- 	pm_power_off = lasat_machine_halt;
-+
-+	return 0;
- }
-+
-+arch_initcall(lasat_reboot_setup);
-diff -pruN -X mips/Documentation/dontdiff mips-orig/arch/mips/lasat/setup.c mips/arch/mips/lasat/setup.c
---- mips-orig/arch/mips/lasat/setup.c	2007-12-13 10:20:15.553627250 +0900
-+++ mips/arch/mips/lasat/setup.c	2007-12-13 10:17:32.755453000 +0900
-@@ -46,20 +46,6 @@
- 
- #include "prom.h"
- 
--extern void lasat_reboot_setup(void);
--
--struct lasat_misc lasat_misc_info[N_MACHTYPES] = {
--	{
--		.reset_reg	= (void *)KSEG1ADDR(0x1c840000),
--		.flash_wp_reg	= (void *)KSEG1ADDR(0x1c800000), 2
--	}, {
--		.reset_reg	= (void *)KSEG1ADDR(0x11080000),
--		.flash_wp_reg	= (void *)KSEG1ADDR(0x11000000), 6
--	}
--};
--
--struct lasat_misc *lasat_misc;
--
- #ifdef CONFIG_DS1603
- static struct ds_defs ds_defs[N_MACHTYPES] = {
- 	{ (void *)DS1603_REG_100, (void *)DS1603_REG_100,
-@@ -121,7 +107,7 @@ void __init plat_time_init(void)
- void __init plat_mem_setup(void)
- {
- 	int i;
--	lasat_misc  = &lasat_misc_info[mips_machtype];
-+
- #ifdef CONFIG_PICVUE
- 	picvue = &pvc_defs[mips_machtype];
- #endif
-@@ -131,8 +117,6 @@ void __init plat_mem_setup(void)
- 		atomic_notifier_chain_register(&panic_notifier_list,
- 				&lasat_panic_block[i]);
- 
--	lasat_reboot_setup();
--
- #ifdef CONFIG_DS1603
- 	ds1603 = &ds_defs[mips_machtype];
- #endif
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/lasat/lasat.h mips/include/asm-mips/lasat/lasat.h
---- mips-orig/include/asm-mips/lasat/lasat.h	2007-12-13 10:20:15.569628250 +0900
-+++ mips/include/asm-mips/lasat/lasat.h	2007-12-13 10:17:32.755453000 +0900
-@@ -24,12 +24,6 @@
- 
- #ifndef _LANGUAGE_ASSEMBLY
- 
--extern struct lasat_misc {
--	volatile u32 *reset_reg;
--	volatile u32 *flash_wp_reg;
--	u32 flash_wp_bit;
--} *lasat_misc;
--
- enum lasat_mtdparts {
- 	LASAT_MTD_BOOTLOADER,
- 	LASAT_MTD_SERVICE,
-@@ -242,9 +236,6 @@ static inline void lasat_ndelay(unsigned
- 
- #endif /* !defined (_LANGUAGE_ASSEMBLY) */
- 
--#define LASAT_SERVICEMODE_MAGIC_1     0xdeadbeef
--#define LASAT_SERVICEMODE_MAGIC_2     0xfedeabba
--
- /* Lasat 200 boards */
- #define Vrc5074_PHYS_BASE       0x1fa00000
- #define Vrc5074_BASE            (KSEG1ADDR(Vrc5074_PHYS_BASE))
+I have written a test function that looks like this:
+
+void test_iomem(struct pci_dev *dev)
+{
+	void __iomem *mem;
+	unsigned long start;
+	unsigned long size;
+
+	start = pci_resource_start(dev, 0);
+	size = pci_resource_len(dev, 0);
+
+	printk("start=%08lx size=%08lx\n", start, size);
+	mem = ioremap(start, size);
+	while(1) {
+		printk("memset %p\n", mem);
+		memset_io(mem, 0, 10000);
+	}
+}
+
+This function is just being used to test the iomemory. If this works, it
+should just keep writing 0's to the iomemory forever (at least as I
+understand it). When I run insmod on this device driver I see the
+following output:
+
+start=20000000 size=04000000
+memset c0580000
+memset c0580000
+memset c0580000
+...
+...
+...
+
+And this goes on for quite some time. Eventually it will stop, moments
+later I will see a kernel panic with the following output:
+
+
+> memset c0580000
+> memset c0580000
+> memset c0580000
+> Data bus error, epc == c027a64c, ra == 800aa27c
+> Oops[#1]:
+> Cpu 0
+> $ 0   : 00000000 10008400 c0363050 00063050
+> $ 4   : 00000037 82937800 8109d000 10008401
+> $ 8   : 10008400 1000001f 80320000 80320000
+> $12   : 80320000 00000001 83133bf8 8031c960
+> $16   : 8311c600 00000080 00000001 00000037
+> $20   : c02815e8 802e1ae4 c025a000 8008cde4
+> $24   : 00000008 00000000                  
+> $28   : 83132000 83133be8 c02815ac 800aa27c
+> Hi    : 00000000
+> Lo    : 00000800
+> epc   : c027a64c     Tainted: P     
+> ra    : 800aa27c Status: 10008403    KERNEL EXL IE 
+> Cause : 1080801c
+> PrId  : 00061200
+> Modules linked in: tmman1700(P) mousedev usbhid usb_storage phStbFB(P) phStbFBRead(P) phStbVideoRenderer(P) phStbVideoRenderer_Layer(P) phStbStreamingSystem(P) phStbDraw(P) snd_usb_audio snd_usb_lib snd_rawmie
+> Process insmod (pid: 790, threadinfo=83132000, task=833e1278)
+> Stack : 801ecd20 801ecd20 00000000 00000037 8311c600 00000080 00000001 800aa27c
+>         00000000 8008c23c 0000004f 810b9c00 802f7dc0 810c3c00 00000037 810b9c00
+>         800aa398 800aa340 10008400 8008c31c 80320000 80320000 00000000 04000000
+>         c0280000 8006386c 80320000 c027e814 10008401 8031c570 80061310 802e1ae4
+>         c025a000 8008cde4 00000008 00000000 00000000 80062040 83132000 83133ca8
+>         ...
+> Call Trace:[<801ecd20>][<801ecd20>][<800aa27c>][<8008c23c>][<800aa398>][<800aa340>][<8008c31c>][<8006386c>][<80061310>][<8008cde4>][<80062040>][<80086918>][<8019f924>][<8008cde4>][<c02746d0>][<8017039c>][<801]
+> 
+> Code: 3c030006  34633050  00431021 <8c430000> 2402ffff  1062002e  00a08821  38620001  30420001 
+> Kernel panic - not syncing: Fatal exception in interrupt
+
+I am at a complete loss as to what could be causing this to occur. Any
+ideas about why this would crash? In case it helps this is what my PCI
+configuration space looks like:
+
+00: 31 11 06 54 02 00 90 02 00 00 80 04 00 40 00 00
+10: 08 00 00 20 00 00 00 24 00 00 00 1c 00 00 00 00
+20: 00 00 00 00 00 00 00 00 00 00 00 00 36 11 17 00
+30: 00 00 00 00 40 00 00 00 00 00 00 00 00 01 09 18
+40: 01 00 02 00 00 00 00 00 00 00 00 00 00 00 00 00
+50: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+60: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+70: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+90: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+I thought the command register and latency timer looked wrong, so I did
+modify them before running the above function. And now it looks like the
+following:
+
+00: 31 11 06 54 16 01 90 02 00 00 80 04 00 40 00 00
+10: 08 00 00 20 00 00 00 24 00 00 00 1c 00 00 00 00
+20: 00 00 00 00 00 00 00 00 00 00 00 00 36 11 17 00
+30: 00 00 00 00 40 00 00 00 00 00 00 00 00 01 09 18
+40: 01 00 02 00 00 00 00 00 00 00 00 00 00 00 00 00
+50: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+60: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+70: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+90: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+a0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
+Still no luck. Anyone have an idea?
+
+Thanks,
+Jon

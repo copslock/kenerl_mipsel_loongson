@@ -1,20 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Feb 2008 13:45:30 +0000 (GMT)
-Received: from mo31.po.2iij.NET ([210.128.50.54]:49470 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20037395AbYBGNpV (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Feb 2008 13:45:54 +0000 (GMT)
+Received: from mo31.po.2iij.NET ([210.128.50.54]:50494 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20037335AbYBGNpV (ORCPT
 	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Feb 2008 13:45:21 +0000
-Received: by mo.po.2iij.net (mo31) id m17DjH6n000642; Thu, 7 Feb 2008 22:45:17 +0900 (JST)
+Received: by mo.po.2iij.net (mo31) id m17DjIV9000651; Thu, 7 Feb 2008 22:45:18 +0900 (JST)
 Received: from delta (224.24.30.125.dy.iij4u.or.jp [125.30.24.224])
-	by mbox.po.2iij.net (po-mbox303) id m17DjF0j026628
+	by mbox.po.2iij.net (po-mbox301) id m17DjGwW020650
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Thu, 7 Feb 2008 22:45:16 +0900
-Date:	Thu, 7 Feb 2008 22:27:17 +0900
+	Thu, 7 Feb 2008 22:45:17 +0900
+Date:	Thu, 7 Feb 2008 22:39:45 +0900
 From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][2/5][MIPS] remove lasat unused definitions
-Message-Id: <20080207222717.7d58f50a.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20080207222601.def26d7d.yoichi_yuasa@tripeaks.co.jp>
+Subject: [PATCH][3/5][MIPS] fix LASAT_CASCADE_IRQ
+Message-Id: <20080207223945.32f20b2d.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20080207222717.7d58f50a.yoichi_yuasa@tripeaks.co.jp>
 References: <20080207222601.def26d7d.yoichi_yuasa@tripeaks.co.jp>
+	<20080207222717.7d58f50a.yoichi_yuasa@tripeaks.co.jp>
 Organization: TriPeaks Corporation
 X-Mailer: Sylpheed 2.4.5 (GTK+ 2.12.0; i486-pc-linux-gnu)
 Mime-Version: 1.0
@@ -24,7 +25,7 @@ Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18188
+X-archive-position: 18189
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,42 +33,19 @@ X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Removed unused lasat definitions.
+Fixed LASAT_CASCADE_IRQ
 
 Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/lasat/lasat.h mips/include/asm-mips/lasat/lasat.h
---- mips-orig/include/asm-mips/lasat/lasat.h	2007-12-11 23:12:53.674363750 +0900
-+++ mips/include/asm-mips/lasat/lasat.h	2007-12-12 00:14:56.073369250 +0900
-@@ -245,9 +245,6 @@ static inline void lasat_ndelay(unsigned
- #define LASAT_SERVICEMODE_MAGIC_1     0xdeadbeef
- #define LASAT_SERVICEMODE_MAGIC_2     0xfedeabba
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/mach-lasat/irq.h mips/include/asm-mips/mach-lasat/irq.h
+--- mips-orig/include/asm-mips/mach-lasat/irq.h	2008-01-13 16:43:14.160048268 +0900
++++ mips/include/asm-mips/mach-lasat/irq.h	2008-01-14 21:27:55.180821709 +0900
+@@ -1,7 +1,7 @@
+ #ifndef _ASM_MACH_LASAT_IRQ_H
+ #define _ASM_MACH_LASAT_IRQ_H
  
--/* Lasat 100 boards */
--#define LASAT_GT_BASE           (KSEG1ADDR(0x14000000))
--
- /* Lasat 200 boards */
- #define Vrc5074_PHYS_BASE       0x1fa00000
- #define Vrc5074_BASE            (KSEG1ADDR(Vrc5074_PHYS_BASE))
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/mach-lasat/mach-gt64120.h mips/include/asm-mips/mach-lasat/mach-gt64120.h
---- mips-orig/include/asm-mips/mach-lasat/mach-gt64120.h	2007-12-11 23:12:54.162394250 +0900
-+++ mips/include/asm-mips/mach-lasat/mach-gt64120.h	2007-12-12 00:13:39.216566000 +0900
-@@ -11,17 +11,6 @@
- /*
-  *   GT64120 config space base address on Lasat 100
-  */
--#define GT64120_BASE	(KSEG1ADDR(0x14000000))
--
--/*
-- *   PCI Bus allocation
-- *
-- *   (Guessing ...)
-- */
--#define GT_PCI_MEM_BASE	0x12000000UL
--#define GT_PCI_MEM_SIZE	0x02000000UL
--#define GT_PCI_IO_BASE	0x10000000UL
--#define GT_PCI_IO_SIZE	0x02000000UL
--#define GT_ISA_IO_BASE	PCI_IO_BASE
-+#define GT64120_BASE	KSEG1ADDR(GT_DEF_BASE)
+-#define LASAT_CASCADE_IRQ	(MIPS_CPU_IRQ_BASE + 0)
++#define LASAT_CASCADE_IRQ	(MIPS_CPU_IRQ_BASE + 2)
  
- #endif /* _ASM_GT64120_LASAT_GT64120_DEP_H */
+ #define LASAT_IRQ_BASE		8
+ #define LASAT_IRQ_END		23

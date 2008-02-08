@@ -1,168 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Feb 2008 14:51:51 +0000 (GMT)
-Received: from hall.aurel32.net ([88.191.38.19]:61844 "EHLO hall.aurel32.net")
-	by ftp.linux-mips.org with ESMTP id S28575779AbYBHOvn (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 8 Feb 2008 14:51:43 +0000
-Received: from aurel32 by hall.aurel32.net with local (Exim 4.63)
-	(envelope-from <aurel32@hall.aurel32.net>)
-	id 1JNUZm-0001i4-4E; Fri, 08 Feb 2008 15:51:38 +0100
-Date:	Fri, 8 Feb 2008 15:51:38 +0100
-From:	Aurelien Jarno <aurelien@aurel32.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Feb 2008 15:03:41 +0000 (GMT)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:21455 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S28575868AbYBHPDd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 8 Feb 2008 15:03:33 +0000
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 37D1A400A9;
+	Fri,  8 Feb 2008 16:03:33 +0100 (CET)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id qPTWq6ior5QK; Fri,  8 Feb 2008 16:03:23 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 529AE40044;
+	Fri,  8 Feb 2008 16:03:23 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id m18F3RHE003487;
+	Fri, 8 Feb 2008 16:03:27 +0100
+Date:	Fri, 8 Feb 2008 15:03:18 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
 To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: [PATCH] [MIPS] Scan PCI busses when they are registered
-Message-ID: <20080208145138.GA6301@hall.aurel32.net>
+cc:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Florian Fainelli <florian.fainelli@telecomint.eu>,
+	linux-mips@linux-mips.org
+Subject: Re: early_ioremap for MIPS
+In-Reply-To: <20080208144417.GA22331@linux-mips.org>
+Message-ID: <Pine.LNX.4.64N.0802081500290.7017@blysk.ds.pg.gda.pl>
+References: <200802071932.23965.florian.fainelli@telecomint.eu>
+ <Pine.LNX.4.64N.0802081058350.7017@blysk.ds.pg.gda.pl>
+ <20080208122858.GA8267@alpha.franken.de> <20080208144417.GA22331@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-X-Mailer: Mutt 1.5.13 (2006-08-11)
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <aurel32@hall.aurel32.net>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.92/5739/Fri Feb  8 11:19:58 2008 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18204
+X-archive-position: 18205
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-The patch below changes register_pci_controller() such that controllers
-being added after pcibios_init() has run are be scanned immediately.
+On Fri, 8 Feb 2008, Ralf Baechle wrote:
 
-This is needed for example by the BCM47xx PCI controller, which is
-located on the SSB bus, which is now initialized after the PCI
-subsystem.
+> > Jazz has the same problem. Right now it's solved by using wired tlb
+> > entries. Which is sort of an early_ioremap.
+> 
+> One with a totally awkward API requiring the user having to know about
+> the underlying TLB organization.  A better implementation wouldn't be
+> hard to do, for anything that's outside of KSEG1's address range grab
+> a new TLB entry if needed and wire an entry into it.  Use the same
+> API as good old ioremap() and call the result early_ioremap().
 
-Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
----
- arch/mips/pci/pci.c |   80 +++++++++++++++++++++++++++++++++-----------------
- 1 files changed, 53 insertions(+), 27 deletions(-)
+ And presumably by the time paging has been set up for real, all the early 
+allocations could get automatically graduated to ordinary ones, freeing up 
+all the wired TLB entries set up so far and keeping the values of cookies 
+obtained intact.
 
-diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
-index 6e6981f..ef37876 100644
---- a/arch/mips/pci/pci.c
-+++ b/arch/mips/pci/pci.c
-@@ -35,6 +35,8 @@ struct pci_controller *pci_isa_hose;
- unsigned long PCIBIOS_MIN_IO	= 0x0000;
- unsigned long PCIBIOS_MIN_MEM	= 0;
- 
-+static int pci_initialized;
-+
- /*
-  * We need to avoid collisions with `mirrored' VGA ports
-  * and other strange ISA hardware, so we always want the
-@@ -75,6 +77,42 @@ pcibios_align_resource(void *data, struct resource *res,
- 	res->start = start;
- }
- 
-+static void __devinit pcibios_scanbus(struct pci_controller *hose)
-+{
-+	static int next_busno;
-+	static int need_domain_info;
-+	struct pci_bus *bus;
-+
-+	if (!hose->iommu)
-+		PCI_DMA_BUS_IS_PHYS = 1;
-+
-+	if (hose->get_busno && pci_probe_only)
-+		next_busno = (*hose->get_busno)();
-+
-+	bus = pci_scan_bus(next_busno, hose->pci_ops, hose);
-+	hose->bus = bus;
-+
-+	need_domain_info = need_domain_info || hose->index;
-+	hose->need_domain_info = need_domain_info;
-+	if (bus) {
-+		next_busno = bus->subordinate + 1;
-+		/* Don't allow 8-bit bus number overflow inside the hose -
-+		   reserve some space for bridges. */
-+		if (next_busno > 224) {
-+			next_busno = 0;
-+			need_domain_info = 1;
-+		}
-+
-+		if (!pci_probe_only) {
-+			pci_bus_size_bridges(bus);
-+			pci_bus_assign_resources(bus);
-+			pci_enable_bridges(bus);
-+		}
-+	}
-+}
-+
-+static DEFINE_MUTEX(pci_scan_mutex);
-+
- void __devinit register_pci_controller(struct pci_controller *hose)
- {
- 	if (request_resource(&iomem_resource, hose->mem_resource) < 0)
-@@ -94,6 +132,17 @@ void __devinit register_pci_controller(struct pci_controller *hose)
- 		printk(KERN_WARNING
- 		       "registering PCI controller with io_map_base unset\n");
- 	}
-+
-+	/*
-+	 * Scan the bus if it is register after the PCI subsystem
-+	 * initialization.
-+	 */
-+	if (pci_initialized) {
-+		mutex_lock(&pci_scan_mutex);
-+		pcibios_scanbus(hose);
-+		mutex_unlock(&pci_scan_mutex);
-+	}
-+
- 	return;
- 
- out:
-@@ -126,38 +175,15 @@ static u8 __init common_swizzle(struct pci_dev *dev, u8 *pinp)
- static int __init pcibios_init(void)
- {
- 	struct pci_controller *hose;
--	struct pci_bus *bus;
--	int next_busno;
--	int need_domain_info = 0;
- 
- 	/* Scan all of the recorded PCI controllers.  */
--	for (next_busno = 0, hose = hose_head; hose; hose = hose->next) {
--
--		if (!hose->iommu)
--			PCI_DMA_BUS_IS_PHYS = 1;
--
--		if (hose->get_busno && pci_probe_only)
--			next_busno = (*hose->get_busno)();
--
--		bus = pci_scan_bus(next_busno, hose->pci_ops, hose);
--		hose->bus = bus;
--		need_domain_info = need_domain_info || hose->index;
--		hose->need_domain_info = need_domain_info;
--		if (bus) {
--			next_busno = bus->subordinate + 1;
--			/* Don't allow 8-bit bus number overflow inside the hose -
--			   reserve some space for bridges. */
--			if (next_busno > 224) {
--				next_busno = 0;
--				need_domain_info = 1;
--			}
--		}
--	}
-+	for (hose = hose_head; hose; hose = hose->next)
-+		pcibios_scanbus(hose);
- 
--	if (!pci_probe_only)
--		pci_assign_unassigned_resources();
- 	pci_fixup_irqs(common_swizzle, pcibios_map_irq);
- 
-+	pci_initialized = 1;
-+
- 	return 0;
- }
- 
--- 
-1.5.3.8
-
-
--- 
-  .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
- : :' :  Debian developer           | Electrical Engineer
- `. `'   aurel32@debian.org         | aurelien@aurel32.net
-   `-    people.debian.org/~aurel32 | www.aurel32.net
+  Maciej

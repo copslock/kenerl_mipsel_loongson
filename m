@@ -1,67 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Feb 2008 09:24:25 +0000 (GMT)
-Received: from mail.gmx.net ([213.165.64.20]:15068 "HELO mail.gmx.net")
-	by ftp.linux-mips.org with SMTP id S20022283AbYBHJYP (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 8 Feb 2008 09:24:15 +0000
-Received: (qmail invoked by alias); 08 Feb 2008 09:24:09 -0000
-Received: from vpn79.rz.tu-ilmenau.de (EHLO [192.168.1.100]) [141.24.172.79]
-  by mail.gmx.net (mp003) with SMTP; 08 Feb 2008 10:24:09 +0100
-X-Authenticated: #44099387
-X-Provags-ID: V01U2FsdGVkX19XcKYArHFXuG56mY5feqTD5e6uhcGEBdnJRO2rvS
-	IWkk1F+P+r1kFa
-Message-ID: <47AC1FB5.4060208@gmx.net>
-Date:	Fri, 08 Feb 2008 10:24:05 +0100
-From:	Andi <opencode@gmx.net>
-User-Agent: Thunderbird 2.0.0.6 (X11/20071022)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Feb 2008 11:05:31 +0000 (GMT)
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18]:24450 "EHLO
+	cerber.ds.pg.gda.pl") by ftp.linux-mips.org with ESMTP
+	id S28575405AbYBHLFX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 8 Feb 2008 11:05:23 +0000
+Received: from localhost (unknown [127.0.0.17])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id 5FEF040044;
+	Fri,  8 Feb 2008 12:05:22 +0100 (CET)
+X-Virus-Scanned: amavisd-new at cerber.ds.pg.gda.pl
+Received: from cerber.ds.pg.gda.pl ([153.19.208.18])
+	by localhost (cerber.ds.pg.gda.pl [153.19.208.18]) (amavisd-new, port 10024)
+	with ESMTP id mMUlYh5B2G0D; Fri,  8 Feb 2008 12:05:15 +0100 (CET)
+Received: from piorun.ds.pg.gda.pl (piorun.ds.pg.gda.pl [153.19.208.8])
+	by cerber.ds.pg.gda.pl (Postfix) with ESMTP id AA0E6400BE;
+	Fri,  8 Feb 2008 12:05:15 +0100 (CET)
+Received: from blysk.ds.pg.gda.pl (macro@blysk.ds.pg.gda.pl [153.19.208.6])
+	by piorun.ds.pg.gda.pl (8.13.8/8.13.8) with ESMTP id m18B5II7000451;
+	Fri, 8 Feb 2008 12:05:18 +0100
+Date:	Fri, 8 Feb 2008 11:05:12 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Florian Fainelli <florian.fainelli@telecomint.eu>
+cc:	linux-mips@linux-mips.org
+Subject: Re: early_ioremap for MIPS
+In-Reply-To: <200802071932.23965.florian.fainelli@telecomint.eu>
+Message-ID: <Pine.LNX.4.64N.0802081058350.7017@blysk.ds.pg.gda.pl>
+References: <200802071932.23965.florian.fainelli@telecomint.eu>
 MIME-Version: 1.0
-CC:	linux-mips@linux-mips.org
-Subject: Re: Problems booting Linux kernel on Sigma SMP8634
-References: <47AB50DD.2050504@gmx.net> <47AB5614.5010804@avtrex.com>
-In-Reply-To: <47AB5614.5010804@avtrex.com>
-X-Enigmail-Version: 0.95.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-Y-GMX-Trusted: 0
-To:	unlisted-recipients:; (no To-header on input)
-Return-Path: <opencode@gmx.net>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: ClamAV 0.92/5739/Fri Feb  8 11:19:58 2008 on piorun.ds.pg.gda.pl
+X-Virus-Status:	Clean
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18200
+X-archive-position: 18201
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: opencode@gmx.net
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hey David,
+On Thu, 7 Feb 2008, Florian Fainelli wrote:
 
-> You need symbols so that you can interpret the stack trace.  It is
-> impossible to tell anything without that.
+> Is there any need for early_ioremap on MIPS ? Seems like only x86_64 is 
+> implementing it for now.
 
-Unfortunately, we don't have much more than just the binary kernel
-image. No sources. No memory map.
-How can I find out which functions do correspondent to these addresses?
+ There is hardly any need as generally KSEG0/KSEG1 and XPHYS mappings 
+fulfil the need and are always available, even before paging has been 
+initialised.  Some 32-bit systems with devices outside low 512MB of 
+physical address space could potentially benefit though.  I recall some 
+Alchemy systems may fall into this category.
 
-
-I thought about that this might be a common problem, if one doesn't load
-a certain ucode, maybe the interrupt-handler or so ..
-
-
->> Determined physical RAM map:
->>  memory: 05ee0000 @ 10020000 (usable)
-> 
-> This seems like an odd value.  I would expect either 03fe0000 or 07fe0000
-
-This was also my first guess. But this seems to be ok, as you can see on
-the "reference" output here:
-http://www.networkedmediatank.com/viewtopic.php?t=457
-
-This box has a total of 128MB of memory ..
-
-> 
-> David Daney
-> 
-
-Regards,
-	Andi
+  Maciej

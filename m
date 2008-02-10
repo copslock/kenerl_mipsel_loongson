@@ -1,47 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 Feb 2008 19:30:01 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:13038 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28576485AbYBHT37 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 8 Feb 2008 19:29:59 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m18JTw9Z023042;
-	Fri, 8 Feb 2008 19:29:58 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m18JTvfx023041;
-	Fri, 8 Feb 2008 19:29:57 GMT
-Date:	Fri, 8 Feb 2008 19:29:57 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Florian Lohoff <flo@rfc822.org>
-Cc:	Kumba <kumba@gentoo.org>, Thiemo Seufer <ths@networkno.de>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	linux-mips@linux-mips.org, debian-mips@lists.debian.org
-Subject: Re: Tester with IP27/IP30 needed
-Message-ID: <20080208192957.GA18947@linux-mips.org>
-References: <20080126143949.GA6579@alpha.franken.de> <47A4E9DF.5070603@gentoo.org> <20080203021647.GA15910@linux-mips.org> <20080203062711.GA28394@paradigm.rfc822.org> <47A80C0A.4040106@gentoo.org> <20080205122211.GA24136@networkno.de> <47A928BF.5000302@gentoo.org> <20080206085610.GA20751@paradigm.rfc822.org> <20080206142217.GA7633@linux-mips.org> <20080208172316.GD25893@paradigm.rfc822.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080208172316.GD25893@paradigm.rfc822.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 Feb 2008 19:32:04 +0000 (GMT)
+Received: from bes.recconet.de ([212.227.59.164]:43923 "EHLO bes.recconet.de")
+	by ftp.linux-mips.org with ESMTP id S20029073AbYBJTb4 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 10 Feb 2008 19:31:56 +0000
+Received: from trinity.recco.de (trinity.intern.recconet.de [192.168.11.241])
+	by bes.recconet.de (8.13.1/8.13.1/Recconet-2005031001) with ESMTP id m1AJVbDQ007339;
+	Sun, 10 Feb 2008 20:31:55 +0100
+Received: from [172.16.135.104] (galileo.recco.de [172.16.135.104])
+	(authenticated bits=0)
+	by trinity.recco.de (8.13.1/8.13.1/Reccoware-2005061101) with ESMTP id m1AJVXEp032277;
+	Sun, 10 Feb 2008 20:31:34 +0100
+Subject: [PATCH] [MIPS] Fix ids in Alchemy db dma device table (Repost in
+	hopefully correct format)
+From:	Wolfgang Ocker <weo@reccoware.de>
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org
+Content-Type: text/plain
+Organization: Reccoware Systems
+Date:	Sun, 10 Feb 2008 20:31:33 +0100
+Message-Id: <1202671893.3384.20.camel@galileo.recco.de>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.12.3 (2.12.3-1.fc8) 
+Content-Transfer-Encoding: 7bit
+Return-Path: <weo@reccoware.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18209
+X-archive-position: 18210
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: weo@reccoware.de
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Feb 08, 2008 at 06:23:16PM +0100, Florian Lohoff wrote:
+From: Wolfgang Ocker <weo@reccoware.de>
 
-> You mean a single page in every processes address space or some
-> /proc/sys/kernel/libatomic.so which would be a really cool hack?
+0 is a valid device id (DSCR_CMD0_UART0_TX), so we can't use it to mark
+an empty entry in the device table. Use ~0 instead and search for id ~0
+when looking for a free entry.
 
-The way it's being done on x86 doesn't work for MIPS unless we use
-supervisor mode but supervisor mode is not implemented on all CPUs and
-also of interest for virtualization.
+Signed-off-by: Wolfgang Ocker <weo@reccoware.de>
+---
 
-  Ralf
+diff -up linux-2.6.24/arch/mips/au1000/common/dbdma.c.devtab_fix linux-2.6.24/arch/mips/au1000/common/dbdma.c
+--- linux-2.6.24/arch/mips/au1000/common/dbdma.c.devtab_fix	2008-01-24 23:58:37.000000000 +0100
++++ linux-2.6.24/arch/mips/au1000/common/dbdma.c	2008-02-06 11:51:16.000000000 +0100
+@@ -161,22 +161,22 @@ static dbdev_tab_t dbdev_tab[] = {
+ 	{ DSCR_CMD0_ALWAYS, DEV_FLAGS_ANYUSE, 0, 0, 0x00000000, 0, 0 },
+ 
+ 	/* Provide 16 user definable device types */
+-	{ 0, 0, 0, 0, 0, 0, 0 },
+-	{ 0, 0, 0, 0, 0, 0, 0 },
+-	{ 0, 0, 0, 0, 0, 0, 0 },
+-	{ 0, 0, 0, 0, 0, 0, 0 },
+-	{ 0, 0, 0, 0, 0, 0, 0 },
+-	{ 0, 0, 0, 0, 0, 0, 0 },
+-	{ 0, 0, 0, 0, 0, 0, 0 },
+-	{ 0, 0, 0, 0, 0, 0, 0 },
+-	{ 0, 0, 0, 0, 0, 0, 0 },
+-	{ 0, 0, 0, 0, 0, 0, 0 },
+-	{ 0, 0, 0, 0, 0, 0, 0 },
+-	{ 0, 0, 0, 0, 0, 0, 0 },
+-	{ 0, 0, 0, 0, 0, 0, 0 },
+-	{ 0, 0, 0, 0, 0, 0, 0 },
+-	{ 0, 0, 0, 0, 0, 0, 0 },
+-	{ 0, 0, 0, 0, 0, 0, 0 },
++	{ ~0, 0, 0, 0, 0, 0, 0 },
++	{ ~0, 0, 0, 0, 0, 0, 0 },
++	{ ~0, 0, 0, 0, 0, 0, 0 },
++	{ ~0, 0, 0, 0, 0, 0, 0 },
++	{ ~0, 0, 0, 0, 0, 0, 0 },
++	{ ~0, 0, 0, 0, 0, 0, 0 },
++	{ ~0, 0, 0, 0, 0, 0, 0 },
++	{ ~0, 0, 0, 0, 0, 0, 0 },
++	{ ~0, 0, 0, 0, 0, 0, 0 },
++	{ ~0, 0, 0, 0, 0, 0, 0 },
++	{ ~0, 0, 0, 0, 0, 0, 0 },
++	{ ~0, 0, 0, 0, 0, 0, 0 },
++	{ ~0, 0, 0, 0, 0, 0, 0 },
++	{ ~0, 0, 0, 0, 0, 0, 0 },
++	{ ~0, 0, 0, 0, 0, 0, 0 },
++	{ ~0, 0, 0, 0, 0, 0, 0 },
+ };
+ 
+ #define DBDEV_TAB_SIZE (sizeof(dbdev_tab) / sizeof(dbdev_tab_t))
+@@ -209,7 +209,7 @@ au1xxx_ddma_add_device(dbdev_tab_t *dev)
+ 	dbdev_tab_t *p=NULL;
+ 	static u16 new_id=0x1000;
+ 
+-	p = find_dbdev_id(0);
++	p = find_dbdev_id(~0);
+ 	if ( NULL != p )
+ 	{
+ 		memcpy(p, dev, sizeof(dbdev_tab_t));

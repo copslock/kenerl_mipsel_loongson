@@ -1,41 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Feb 2008 14:59:43 +0000 (GMT)
-Received: from host.infinivid.com ([64.119.179.76]:62656 "EHLO
-	host.infinivid.com") by ftp.linux-mips.org with ESMTP
-	id S20030130AbYBKO7f (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 11 Feb 2008 14:59:35 +0000
-Received: (qmail 25886 invoked from network); 11 Feb 2008 14:59:32 -0000
-Received: from unknown (HELO ?10.41.13.129?) (38.101.235.133)
-  by host.infinivid.com with (RC4-MD5 encrypted) SMTP; 11 Feb 2008 07:59:31 -0700
-Subject: cache line size for a PCI device
-From:	Jon Dufresne <jon.dufresne@infinitevideocorporation.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 Feb 2008 22:40:58 +0000 (GMT)
+Received: from mx02.hansenet.de ([213.191.73.26]:46007 "EHLO
+	webmail.hansenet.de") by ftp.linux-mips.org with ESMTP
+	id S20030784AbYBKWks (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 11 Feb 2008 22:40:48 +0000
+Received: from [80.171.60.123] (80.171.60.123) by webmail.hansenet.de (7.3.118.12) (authenticated as mbx20228207@koeller-hh.org)
+        id 47AC550E00878C83; Mon, 11 Feb 2008 23:40:42 +0100
+Received: from localhost.koeller.dyndns.org (localhost.koeller.dyndns.org [127.0.0.1])
+	by mail.koeller.dyndns.org (Postfix) with ESMTP id 000AF47C14;
+	Mon, 11 Feb 2008 23:42:13 +0100 (CET)
+From:	Thomas Koeller <thomas.koeller@baslerweb.com>
+Date:	Mon, 11 Feb 2008 23:42:12 +0100
+Subject: [PATCH] [MIPS] Fix broken rm7000/rm9000 interrupt handling
+X-Length: 1223
+X-UID:	22
 To:	linux-mips@linux-mips.org
-Content-Type: text/plain
-Date:	Mon, 11 Feb 2008 09:59:00 -0500
-Message-Id: <1202741940.3298.80.camel@localhost>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.8.3 (2.8.3-2.fc6) 
+Cc:	ralf@linux-mips.org
+MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Return-Path: <jon.dufresne@infinitevideocorporation.com>
+Content-Disposition: inline
+Message-Id: <200802112342.13435.thomas.koeller@baslerweb.com>
+Return-Path: <thomas.koeller@baslerweb.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18213
+X-archive-position: 18214
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jon.dufresne@infinitevideocorporation.com
+X-original-sender: thomas.koeller@baslerweb.com
 Precedence: bulk
 X-list: linux-mips
 
-Should the cache line size of a PCI device be set by the system BIOS,
-the linux kernel, or by the device driver? My device currently has the
-cache line size set to 0 on my mips box. Is this a bug with the BIOS or
-should I be setting this myself. If I should be setting this myself,
-what is the best strategy to determine what the cache line size should
-be? Right now the best I can do is mimic the PCI configuration space of
-my x86 box, but I'm not sure if this is the best way to go or not.
+Properly acknowledge RM7K and RM9K interrupts. Before this,
+interrupts were permanently masked after their first occurrence,
+making them non-functional.
 
-The same thing goes for latency timer.
+Signed-off-by: Thomas Koeller <thomas.koeller@baslerweb.com>
 
-Thanks for any help,
-Jon
+diff --git a/arch/mips/kernel/irq-rm7000.c b/arch/mips/kernel/irq-rm7000.c
+index 971adf6..fb50cc7 100644
+--- a/arch/mips/kernel/irq-rm7000.c
++++ b/arch/mips/kernel/irq-rm7000.c
+@@ -33,6 +33,7 @@ static struct irq_chip rm7k_irq_controller = {
+ 	.mask = mask_rm7k_irq,
+ 	.mask_ack = mask_rm7k_irq,
+ 	.unmask = unmask_rm7k_irq,
++	.eoi	= unmask_rm7k_irq
+ };
+ 
+ void __init rm7k_cpu_irq_init(void)
+diff --git a/arch/mips/kernel/irq-rm9000.c b/arch/mips/kernel/irq-rm9000.c
+index 7b04583..ed9febe 100644
+--- a/arch/mips/kernel/irq-rm9000.c
++++ b/arch/mips/kernel/irq-rm9000.c
+@@ -75,6 +75,7 @@ static struct irq_chip rm9k_irq_controller = {
+ 	.mask = mask_rm9k_irq,
+ 	.mask_ack = mask_rm9k_irq,
+ 	.unmask = unmask_rm9k_irq,
++	.eoi	= unmask_rm9k_irq
+ };
+ 
+ static struct irq_chip rm9k_perfcounter_irq = {
+-- 
+1.5.3.6

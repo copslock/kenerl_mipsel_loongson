@@ -1,31 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Feb 2008 14:32:51 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:26760 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Feb 2008 14:48:20 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:8613 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20031162AbYBLOct (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 12 Feb 2008 14:32:49 +0000
+	id S20031202AbYBLOsS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 12 Feb 2008 14:48:18 +0000
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m1CEWkbL001058;
-	Tue, 12 Feb 2008 14:32:46 GMT
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m1CEmFXd001432;
+	Tue, 12 Feb 2008 14:48:15 GMT
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m1CEWkjO001057;
-	Tue, 12 Feb 2008 14:32:46 GMT
-Date:	Tue, 12 Feb 2008 14:32:46 +0000
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m1CEmERv001431;
+	Tue, 12 Feb 2008 14:48:14 GMT
+Date:	Tue, 12 Feb 2008 14:48:14 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Ben Hodgens <ben@hodgens.net>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: General info on kernel status for vr4121/MobilePro 780
-Message-ID: <20080212143246.GA499@linux-mips.org>
-References: <47B0F164.8080401@hodgens.net>
+To:	"M. Warner Losh" <imp@bsdimp.com>
+Cc:	macro@linux-mips.org, florian.fainelli@telecomint.eu,
+	linux-mips@linux-mips.org
+Subject: Re: early_ioremap for MIPS
+Message-ID: <20080212144814.GB499@linux-mips.org>
+References: <200802071932.23965.florian.fainelli@telecomint.eu> <Pine.LNX.4.64N.0802081058350.7017@blysk.ds.pg.gda.pl> <20080210.154401.1655407815.imp@bsdimp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <47B0F164.8080401@hodgens.net>
+In-Reply-To: <20080210.154401.1655407815.imp@bsdimp.com>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18218
+X-archive-position: 18219
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,14 +34,16 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Feb 11, 2008 at 06:07:48PM -0700, Ben Hodgens wrote:
+On Sun, Feb 10, 2008 at 03:44:01PM -0700, M. Warner Losh wrote:
 
-> * The Linux VR project's "latest" kernel, circa 2001 or something like that 
-> - linux-vr-0.1.1.tar.bz2. This does not actually have an option for the 
-> MobilePro 780 in the kernel config, though there is the 770.
+> The Acer Pica machines, as well as the Deskstation Tynes, had devices
+> mapped outside of this range...  Of course Ralf will be able to say
+> more, if he chooses to jump into the way-back machine...
 
-LinuxVR is a defunct project which is archived on linux-mips.org to avoid
-losing the project's history and also in case anything hasn't merged into
-Linux/MIPS or the other projects LinuxVR is based on.
+Yes, I recall.  Unfortunately I don't have my PICA anymore; it's been a
+hell of a machine by the standards of its days.  Anyway, designs which
+just like the PICA need some ioremap - and preferably available early
+during bootup - have been developed after the PICA and are still being
+developped.
 
   Ralf

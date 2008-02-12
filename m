@@ -1,49 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Feb 2008 14:48:20 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:8613 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20031202AbYBLOsS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 12 Feb 2008 14:48:18 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m1CEmFXd001432;
-	Tue, 12 Feb 2008 14:48:15 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m1CEmERv001431;
-	Tue, 12 Feb 2008 14:48:14 GMT
-Date:	Tue, 12 Feb 2008 14:48:14 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"M. Warner Losh" <imp@bsdimp.com>
-Cc:	macro@linux-mips.org, florian.fainelli@telecomint.eu,
-	linux-mips@linux-mips.org
-Subject: Re: early_ioremap for MIPS
-Message-ID: <20080212144814.GB499@linux-mips.org>
-References: <200802071932.23965.florian.fainelli@telecomint.eu> <Pine.LNX.4.64N.0802081058350.7017@blysk.ds.pg.gda.pl> <20080210.154401.1655407815.imp@bsdimp.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Feb 2008 16:23:34 +0000 (GMT)
+Received: from rtsoft3.corbina.net ([85.21.88.6]:30752 "EHLO
+	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
+	id S20031258AbYBLQXZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 12 Feb 2008 16:23:25 +0000
+Received: from localhost.localdomain (unknown [10.150.0.9])
+	by buildserver.ru.mvista.com (Postfix) with ESMTP id D999D8818
+	for <linux-mips@linux-mips.org>; Tue, 12 Feb 2008 21:23:33 +0400 (SAMT)
+Message-ID: <47B1C739.1080509@ru.mvista.com>
+Date:	Tue, 12 Feb 2008 19:20:09 +0300
+From:	Dmitry Antipov <antipov@ru.mvista.com>
+User-Agent: Thunderbird 2.0.0.9 (X11/20071115)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080210.154401.1655407815.imp@bsdimp.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+To:	linux-mips@linux-mips.org
+Subject: Export exception cause register to userspace ?
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <antipov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18219
+X-archive-position: 18220
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: antipov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Feb 10, 2008 at 03:44:01PM -0700, M. Warner Losh wrote:
+Hello,
 
-> The Acer Pica machines, as well as the Deskstation Tynes, had devices
-> mapped outside of this range...  Of course Ralf will be able to say
-> more, if he chooses to jump into the way-back machine...
+I'm working on a debugging software which should be able to determine an
+exact reason of exception which may (and should) be processed within user
+space - SIGTRAP, for example. This information should be extracted from
+cause register (CP0 register 13, select 0), which is cp0_cause of pt_regs.
+But this register is not stored within sigcontext of signal frame, so
+it's value is not available from signal handler. Is it a good idea to add a
+dedicated sigcontext field to store cause register ?
 
-Yes, I recall.  Unfortunately I don't have my PICA anymore; it's been a
-hell of a machine by the standards of its days.  Anyway, designs which
-just like the PICA need some ioremap - and preferably available early
-during bootup - have been developed after the PICA and are still being
-developped.
-
-  Ralf
+Dmitry

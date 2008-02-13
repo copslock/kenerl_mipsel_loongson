@@ -1,47 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Feb 2008 16:21:39 +0000 (GMT)
-Received: from [85.33.2.28] ([85.33.2.28]:52235 "EHLO smtp-out28.alice.it")
-	by ftp.linux-mips.org with ESMTP id S20024522AbYBMQVa (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 13 Feb 2008 16:21:30 +0000
-Received: from FBCMMO03.fbc.local ([192.168.68.197]) by smtp-out28.alice.it with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 13 Feb 2008 17:21:14 +0100
-Received: from FBCMCL01B08.fbc.local ([192.168.171.46]) by FBCMMO03.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 13 Feb 2008 17:21:12 +0100
-Received: from [192.168.0.3] ([79.19.188.10]) by FBCMCL01B08.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 13 Feb 2008 17:21:04 +0100
-From:	Matteo Croce <technoboy85@gmail.com>
-To:	David Daney <ddaney@avtrex.com>
-Subject: Re: Can't execute any MIPS  binary
-Date:	Wed, 13 Feb 2008 17:21:11 +0100
-User-Agent: KMail/1.9.6 (enterprise 0.20080118.763038)
-References: <200802130034.25052.rootkit85@yahoo.it> <47B231AD.5050809@avtrex.com>
-In-Reply-To: <47B231AD.5050809@avtrex.com>
-X-Face:	0AUq?,0sKh2O65+R5#[nTCS'~}"m)9|g3Tsi=g7A9q69S+=M!BY)=?utf-8?q?Zdmwo2u!i=5CUylx=26=27D+=0A=09=5B7u=26z1=27s=7E=5B=3F+=24=27w?=
- =?utf-8?q?O6+?="'WWcr5Jy,]}8namg8NP:9<E,o^21xGB~/HRhB(u^@
- =?utf-8?q?ZB=2EXLP0swe=0A=09r9M=7EL?=<b1=^'4cv*_N1tNJ$`9Ot*KL/;8oXFdrT@r|-Ki2wCQI"R(X(
- =?utf-8?q?73r=3A=3BmnNPoA2a=5D=7EZ=0A=092n2sUh?=,B|bt;ys*hv.QR>a]{m
-Cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Feb 2008 17:31:53 +0000 (GMT)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:8872 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S20025498AbYBMRbp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 13 Feb 2008 17:31:45 +0000
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 9BBFB313D31;
+	Wed, 13 Feb 2008 17:31:44 +0000 (UTC)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [67.116.42.147])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
+	Wed, 13 Feb 2008 17:31:44 +0000 (UTC)
+Received: from dl2.hq2.avtrex.com ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 13 Feb 2008 09:31:30 -0800
+Message-ID: <47B32971.1000509@avtrex.com>
+Date:	Wed, 13 Feb 2008 09:31:29 -0800
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 2.0.0.9 (X11/20071115)
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
+To:	Matteo Croce <technoboy85@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Can't execute any MIPS  binary
+References: <200802130034.25052.rootkit85@yahoo.it> <47B231AD.5050809@avtrex.com> <200802131721.11392.technoboy85@gmail.com>
+In-Reply-To: <200802131721.11392.technoboy85@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200802131721.11392.technoboy85@gmail.com>
-X-OriginalArrivalTime: 13 Feb 2008 16:21:05.0109 (UTC) FILETIME=[6E90D050:01C86E5C]
-Return-Path: <technoboy85@gmail.com>
+X-OriginalArrivalTime: 13 Feb 2008 17:31:30.0759 (UTC) FILETIME=[453FD570:01C86E66]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18224
+X-archive-position: 18225
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: technoboy85@gmail.com
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-Il Wednesday 13 February 2008 00:54:21 hai scritto:
-> You should be able to run the binary if run a binary editor on it and 
-> clear the mips32 flag (i.e. change the flags from 0x50001007 to just 
-> 0x1007).
+Matteo Croce wrote:
+> Il Wednesday 13 February 2008 00:54:21 hai scritto:
+>> You should be able to run the binary if run a binary editor on it and 
+>> clear the mips32 flag (i.e. change the flags from 0x50001007 to just 
+>> 0x1007).
+> 
+> Solved by changing flags from 0x50001007 to 0x5, thanks :)
 
-Solved by changing flags from 0x50001007 to 0x5, thanks :)
+I think that you only want to clear the mips32 part (that is the part 
+keeping the elf exec from working).  I would leave all the other bits as 
+they were.
+
+In other words, probably the flags should be 0x1007, instead of 0x5.
+
+Although it may not really matter.  It has been several years since I 
+studied the code.
+
+David Daney

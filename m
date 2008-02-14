@@ -1,58 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Feb 2008 17:31:53 +0000 (GMT)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:8872 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20025498AbYBMRbp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 13 Feb 2008 17:31:45 +0000
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 9BBFB313D31;
-	Wed, 13 Feb 2008 17:31:44 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Wed, 13 Feb 2008 17:31:44 +0000 (UTC)
-Received: from dl2.hq2.avtrex.com ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 13 Feb 2008 09:31:30 -0800
-Message-ID: <47B32971.1000509@avtrex.com>
-Date:	Wed, 13 Feb 2008 09:31:29 -0800
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 2.0.0.9 (X11/20071115)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Feb 2008 16:58:42 +0000 (GMT)
+Received: from relay01.mx.bawue.net ([193.7.176.67]:36505 "EHLO
+	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
+	id S20025129AbYBNQ6d (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 14 Feb 2008 16:58:33 +0000
+Received: from lagash (intrt.mips-uk.com [194.74.144.130])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by relay01.mx.bawue.net (Postfix) with ESMTP id 4C85E48916;
+	Thu, 14 Feb 2008 17:58:27 +0100 (CET)
+Received: from ths by lagash with local (Exim 4.69)
+	(envelope-from <ths@networkno.de>)
+	id 1JPhPl-0000hi-H2; Thu, 14 Feb 2008 16:58:25 +0000
+Date:	Thu, 14 Feb 2008 16:58:25 +0000
+From:	Thiemo Seufer <ths@networkno.de>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] Fix build failure for 64-bit SB-1 kernels
+Message-ID: <20080214165825.GE29497@networkno.de>
 MIME-Version: 1.0
-To:	Matteo Croce <technoboy85@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Can't execute any MIPS  binary
-References: <200802130034.25052.rootkit85@yahoo.it> <47B231AD.5050809@avtrex.com> <200802131721.11392.technoboy85@gmail.com>
-In-Reply-To: <200802131721.11392.technoboy85@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 13 Feb 2008 17:31:30.0759 (UTC) FILETIME=[453FD570:01C86E66]
-Return-Path: <ddaney@avtrex.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.17+20080114 (2008-01-14)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18225
+X-archive-position: 18226
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-Matteo Croce wrote:
-> Il Wednesday 13 February 2008 00:54:21 hai scritto:
->> You should be able to run the binary if run a binary editor on it and 
->> clear the mips32 flag (i.e. change the flags from 0x50001007 to just 
->> 0x1007).
-> 
-> Solved by changing flags from 0x50001007 to 0x5, thanks :)
+Fix type mismatch warnings for 64-bit kernel builds which trigger -Werror.
+The problem affects only SB-1 kernels with CONFIG_SIBYTE_DMA_PAGEOPS enabled.
 
-I think that you only want to clear the mips32 part (that is the part 
-keeping the elf exec from working).  I would leave all the other bits as 
-they were.
 
-In other words, probably the flags should be 0x1007, instead of 0x5.
+Signed-off-by: Thiemo Seufer <ths@networkno.de>
+---
 
-Although it may not really matter.  It has been several years since I 
-studied the code.
-
-David Daney
+Index: linux.git/arch/mips/mm/pg-sb1.c
+===================================================================
+--- linux.git.orig/arch/mips/mm/pg-sb1.c	2008-02-12 00:14:34.000000000 +0000
++++ linux.git/arch/mips/mm/pg-sb1.c	2008-02-12 00:29:36.000000000 +0000
+@@ -216,7 +216,7 @@
+ 	int i;
+ 
+ 	for (i = 0; i < DM_NUM_CHANNELS; i++) {
+-		const u64 base_val = CPHYSADDR(&page_descr[i]) |
++		const u64 base_val = CPHYSADDR((unsigned long)&page_descr[i]) |
+ 				     V_DM_DSCR_BASE_RINGSZ(1);
+ 		void *base_reg = IOADDR(A_DM_REGISTER(i, R_DM_DSCR_BASE));
+ 
+@@ -228,11 +228,11 @@
+ 
+ void clear_page(void *page)
+ {
+-	u64 to_phys = CPHYSADDR(page);
++	u64 to_phys = CPHYSADDR((unsigned long)page);
+ 	unsigned int cpu = smp_processor_id();
+ 
+ 	/* if the page is not in KSEG0, use old way */
+-	if ((long)KSEGX(page) != (long)CKSEG0)
++	if ((long)KSEGX((unsigned long)page) != (long)CKSEG0)
+ 		return clear_page_cpu(page);
+ 
+ 	page_descr[cpu].dscr_a = to_phys | M_DM_DSCRA_ZERO_MEM |
+@@ -252,13 +252,13 @@
+ 
+ void copy_page(void *to, void *from)
+ {
+-	u64 from_phys = CPHYSADDR(from);
+-	u64 to_phys = CPHYSADDR(to);
++	u64 from_phys = CPHYSADDR((unsigned long)from);
++	u64 to_phys = CPHYSADDR((unsigned long)to);
+ 	unsigned int cpu = smp_processor_id();
+ 
+ 	/* if any page is not in KSEG0, use old way */
+-	if ((long)KSEGX(to) != (long)CKSEG0
+-	    || (long)KSEGX(from) != (long)CKSEG0)
++	if ((long)KSEGX((unsigned long)to) != (long)CKSEG0
++	    || (long)KSEGX((unsigned long)from) != (long)CKSEG0)
+ 		return copy_page_cpu(to, from);
+ 
+ 	page_descr[cpu].dscr_a = to_phys | M_DM_DSCRA_L2C_DEST |

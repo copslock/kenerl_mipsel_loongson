@@ -1,67 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Feb 2008 11:20:09 +0000 (GMT)
-Received: from vs166246.vserver.de ([62.75.166.246]:3772 "EHLO
-	vs166246.vserver.de") by ftp.linux-mips.org with ESMTP
-	id S20025911AbYBQLUG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 17 Feb 2008 11:20:06 +0000
-Received: from t343f.t.pppool.de ([89.55.52.63] helo=powermac.local)
-	by vs166246.vserver.de with esmtpa (Exim 4.63)
-	(envelope-from <mb@bu3sch.de>)
-	id 1JQhYx-00055U-HT; Sun, 17 Feb 2008 11:20:03 +0000
-From:	Michael Buesch <mb@bu3sch.de>
-To:	Andrew Sharp <andy.sharp@onstor.com>
-Subject: Re: Linux MIPS PCI resource sanity check
-Date:	Sun, 17 Feb 2008 12:19:41 +0100
-User-Agent: KMail/1.9.6 (enterprise 0.20070907.709405)
-Cc:	Sergei Shtylyov <sshtylyov@ru.mvista.com>, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
-References: <200802161139.10791.mb@bu3sch.de> <47B6BFD4.5050404@ru.mvista.com> <20080216153530.7a426a73@ripper.onstor.net>
-In-Reply-To: <20080216153530.7a426a73@ripper.onstor.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Feb 2008 20:10:06 +0000 (GMT)
+Received: from smtp6.pp.htv.fi ([213.243.153.40]:59112 "EHLO smtp6.pp.htv.fi")
+	by ftp.linux-mips.org with ESMTP id S20036001AbYBQUKE (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 17 Feb 2008 20:10:04 +0000
+Received: from cs181133002.pp.htv.fi (cs181133002.pp.htv.fi [82.181.133.2])
+	by smtp6.pp.htv.fi (Postfix) with ESMTP id 4A0A75BC03D;
+	Sun, 17 Feb 2008 22:10:03 +0200 (EET)
+Date:	Sun, 17 Feb 2008 22:09:35 +0200
+From:	Adrian Bunk <bunk@stusta.de>
+To:	Dmitry Torokhov <dtor@mail.ru>, ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: cobalt_btns.c <-> struct platform_device compile error
+Message-ID: <20080217200935.GE1403@cs181133002.pp.htv.fi>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Message-Id: <200802171219.42251.mb@bu3sch.de>
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Return-Path: <mb@bu3sch.de>
+User-Agent: Mutt/1.5.17+20080114 (2008-01-14)
+Return-Path: <bunk@stusta.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18232
+X-archive-position: 18233
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mb@bu3sch.de
+X-original-sender: bunk@stusta.de
 Precedence: bulk
 X-list: linux-mips
 
-On Sunday 17 February 2008 00:35:30 Andrew Sharp wrote:
-> Actually, IIRC, resources are based on what the device requested, so a
-> device behind a bridge could request a resource starting at 0.  I had
-> to change this for a system as well.  I changed it to
-> 
-> if (!r->start && !r->end) {
-> 
-> because I couldn't see anything in the code that made r->start == 0 an
-> improper thing.  Not to mention I couldn't access the device any other
-> way.  Both being 0 is definitelty bogus.
+Commit b037b08e59633d939d79f1df9c43c6625f8db904 broke the compilation of 
+cobalt_btns.c:
 
-I think what's happening for me is the following:
-I have a PCI bridge and behind that bridge is one device.
-This has a fixed location and fixed size memory window (hardwired).
+<--  snip  -->
 
-register_pci_controller() requires me to pass some io_resource
-and mem_resource in the controller struct. So I pass the memory window
-which is assigned to the controller and the devices behind it.
-Later I fixup the bases and sizes for each resource in the
-pcibios_plat_dev_init() routine.
+...
+  CC      drivers/input/misc/cobalt_btns.o
+...
+/home/bunk/linux/kernel-2.6/git/linux-2.6/drivers/input/misc/cobalt_btns.c: In function 'cobalt_buttons_probe':
+/home/bunk/linux/kernel-2.6/git/linux-2.6/drivers/input/misc/cobalt_btns.c:101: error: 'struct platform_device' has no member named 'keymap'
+/home/bunk/linux/kernel-2.6/git/linux-2.6/drivers/input/misc/cobalt_btns.c:102: error: 'struct platform_device' has no member named 'keymap'
+/home/bunk/linux/kernel-2.6/git/linux-2.6/drivers/input/misc/cobalt_btns.c:102: error: 'struct platform_device' has no member named 'keymap'
+/home/bunk/linux/kernel-2.6/git/linux-2.6/drivers/input/misc/cobalt_btns.c:102: error: 'struct platform_device' has no member named 'keymap'
+/home/bunk/linux/kernel-2.6/git/linux-2.6/drivers/input/misc/cobalt_btns.c:102: error: 'struct platform_device' has no member named 'keymap'
+...
+make[4]: *** [drivers/input/misc/cobalt_btns.o] Error 1
 
-So, well. I still don't know where the mips PCI subsystem would
-detect this resource conflict and what that means to me.
-If I simply rip out the check everything works fine, as I fixup
-the addresses and sizes later anyway. (I fixup more stuff like the
-IRQ routing an so on, too).
+<--  snip  -->
 
-The code is in drivers/ssb/driver_pcicore.c
+cu
+Adrian
 
 -- 
-Greetings Michael.
+
+       "Is there not promise of rain?" Ling Tan asked suddenly out
+        of the darkness. There had been need of rain for many days.
+       "Only a promise," Lao Er said.
+                                       Pearl S. Buck - Dragon Seed

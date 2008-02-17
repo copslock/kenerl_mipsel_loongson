@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Feb 2008 20:10:31 +0000 (GMT)
-Received: from smtp4.pp.htv.fi ([213.243.153.38]:57808 "EHLO smtp4.pp.htv.fi")
-	by ftp.linux-mips.org with ESMTP id S20036010AbYBQUKK (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 17 Feb 2008 20:10:10 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Feb 2008 20:10:57 +0000 (GMT)
+Received: from smtp5.pp.htv.fi ([213.243.153.39]:43948 "EHLO smtp5.pp.htv.fi")
+	by ftp.linux-mips.org with ESMTP id S20036015AbYBQUKP (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 17 Feb 2008 20:10:15 +0000
 Received: from cs181133002.pp.htv.fi (cs181133002.pp.htv.fi [82.181.133.2])
-	by smtp4.pp.htv.fi (Postfix) with ESMTP id ED0CA5BC016;
-	Sun, 17 Feb 2008 22:10:09 +0200 (EET)
-Date:	Sun, 17 Feb 2008 22:09:42 +0200
+	by smtp5.pp.htv.fi (Postfix) with ESMTP id 116C95BC021;
+	Sun, 17 Feb 2008 22:10:15 +0200 (EET)
+Date:	Sun, 17 Feb 2008 22:09:47 +0200
 From:	Adrian Bunk <bunk@kernel.org>
-To:	Dmitry Torokhov <dtor@mail.ru>, ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org, linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: cdev removal broke cobalt_btns.c compilation
-Message-ID: <20080217200942.GF1403@cs181133002.pp.htv.fi>
+To:	Larry Finger <Larry.Finger@lwfinger.net>,
+	"John W. Linville" <linville@tuxdriver.com>, ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: mips/bcm47xx/setup.c compile error
+Message-ID: <20080217200947.GH1403@cs181133002.pp.htv.fi>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
@@ -20,7 +20,7 @@ Return-Path: <bunk@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18234
+X-archive-position: 18235
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,18 +28,21 @@ X-original-sender: bunk@kernel.org
 Precedence: bulk
 X-list: linux-mips
 
-Commit 0c1efd365306c9b04df5abdd41e9b4dc721e84fb broke the compilation of 
-cobalt_btns.c:
+Commit d3c319f9c8d9ee2c042c60b8a1bbd909dcc42782 causes the following 
+compile error:
 
 <--  snip  -->
 
 ...
-  CC      drivers/input/misc/cobalt_btns.o
-/home/bunk/linux/kernel-2.6/git/linux-2.6/drivers/input/misc/cobalt_btns.c: In function 'cobalt_buttons_probe':
-/home/bunk/linux/kernel-2.6/git/linux-2.6/drivers/input/misc/cobalt_btns.c:100: error: 'struct input_dev' has no member named 'cdev'
-...
-make[4]: *** [drivers/input/misc/cobalt_btns.o] Error 1
-...
+  CC      arch/mips/bcm47xx/setup.o
+/home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/bcm47xx/setup.c: In function 'bcm47xx_get_invariants':
+/home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/bcm47xx/setup.c:95: error: 'struct ssb_sprom' has no member named 'r1'
+/home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/bcm47xx/setup.c:97: error: 'struct ssb_sprom' has no member named 'r1'
+/home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/bcm47xx/setup.c:99: error: 'struct ssb_sprom' has no member named 'r1'
+/home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/bcm47xx/setup.c:101: error: 'struct ssb_sprom' has no member named 'r1'
+/home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/bcm47xx/setup.c:103: error: 'struct ssb_sprom' has no member named 'r1'
+/home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/bcm47xx/setup.c:105: error: 'struct ssb_sprom' has no member named 'r1'
+make[2]: *** [arch/mips/bcm47xx/setup.o] Error 1
 
 <--  snip  -->
 

@@ -1,76 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 Feb 2008 23:35:45 +0000 (GMT)
-Received: from mail.onstor.com ([66.201.51.107]:4220 "EHLO mail.onstor.com")
-	by ftp.linux-mips.org with ESMTP id S20034599AbYBPXfm (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 16 Feb 2008 23:35:42 +0000
-Received: from onstor-exch02.onstor.net ([66.201.51.106]) by mail.onstor.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Sat, 16 Feb 2008 15:35:35 -0800
-Received: from ripper.onstor.net ([10.0.0.42]) by onstor-exch02.onstor.net with Microsoft SMTPSVC(6.0.3790.1830);
-	 Sat, 16 Feb 2008 15:35:34 -0800
-Date:	Sat, 16 Feb 2008 15:35:30 -0800
-From:	Andrew Sharp <andy.sharp@onstor.com>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	Michael Buesch <mb@bu3sch.de>, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Feb 2008 11:20:09 +0000 (GMT)
+Received: from vs166246.vserver.de ([62.75.166.246]:3772 "EHLO
+	vs166246.vserver.de") by ftp.linux-mips.org with ESMTP
+	id S20025911AbYBQLUG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 17 Feb 2008 11:20:06 +0000
+Received: from t343f.t.pppool.de ([89.55.52.63] helo=powermac.local)
+	by vs166246.vserver.de with esmtpa (Exim 4.63)
+	(envelope-from <mb@bu3sch.de>)
+	id 1JQhYx-00055U-HT; Sun, 17 Feb 2008 11:20:03 +0000
+From:	Michael Buesch <mb@bu3sch.de>
+To:	Andrew Sharp <andy.sharp@onstor.com>
 Subject: Re: Linux MIPS PCI resource sanity check
-Message-ID: <20080216153530.7a426a73@ripper.onstor.net>
-In-Reply-To: <47B6BFD4.5050404@ru.mvista.com>
-References: <200802161139.10791.mb@bu3sch.de>
-	<47B6BFD4.5050404@ru.mvista.com>
-Organization: Onstor
-X-Mailer: Sylpheed-Claws 2.6.0 (GTK+ 2.8.20; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Date:	Sun, 17 Feb 2008 12:19:41 +0100
+User-Agent: KMail/1.9.6 (enterprise 0.20070907.709405)
+Cc:	Sergei Shtylyov <sshtylyov@ru.mvista.com>, ralf@linux-mips.org,
+	linux-mips@linux-mips.org
+References: <200802161139.10791.mb@bu3sch.de> <47B6BFD4.5050404@ru.mvista.com> <20080216153530.7a426a73@ripper.onstor.net>
+In-Reply-To: <20080216153530.7a426a73@ripper.onstor.net>
+MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <200802171219.42251.mb@bu3sch.de>
+Content-Type: text/plain;
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 16 Feb 2008 23:35:34.0951 (UTC) FILETIME=[A0A44370:01C870F4]
-Return-Path: <andy.sharp@onstor.com>
+Return-Path: <mb@bu3sch.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18231
+X-archive-position: 18232
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andy.sharp@onstor.com
+X-original-sender: mb@bu3sch.de
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 16 Feb 2008 13:49:56 +0300 Sergei Shtylyov
-<sshtylyov@ru.mvista.com> wrote:
-
-> Michael Buesch wrote:
+On Sunday 17 February 2008 00:35:30 Andrew Sharp wrote:
+> Actually, IIRC, resources are based on what the device requested, so a
+> device behind a bridge could request a resource starting at 0.  I had
+> to change this for a system as well.  I changed it to
 > 
-> > There's a sanity check in pcibios_enable_resources() that looks
-> > like this:
+> if (!r->start && !r->end) {
 > 
-> > 	r = &dev->resource[idx];
-> > 	if (!r->start && r->end) {
-> > 		printk(KERN_ERR "PCI: Device %s not available
-> > because of resource collisions\n", pci_name(dev)); return -EINVAL;
-> > 	}
-> > 
-> > What is this check actually doing?
-> 
->    It makes sure that a PCI resource is allocated (base of 0 means
-> that it's unallocated due to previously detected resource conlict (or
-> some other reason).
+> because I couldn't see anything in the code that made r->start == 0 an
+> improper thing.  Not to mention I couldn't access the device any other
+> way.  Both being 0 is definitelty bogus.
 
+I think what's happening for me is the following:
+I have a PCI bridge and behind that bridge is one device.
+This has a fixed location and fixed size memory window (hardwired).
 
-Actually, IIRC, resources are based on what the device requested, so a
-device behind a bridge could request a resource starting at 0.  I had
-to change this for a system as well.  I changed it to
+register_pci_controller() requires me to pass some io_resource
+and mem_resource in the controller struct. So I pass the memory window
+which is assigned to the controller and the devices behind it.
+Later I fixup the bases and sizes for each resource in the
+pcibios_plat_dev_init() routine.
 
-if (!r->start && !r->end) {
+So, well. I still don't know where the mips PCI subsystem would
+detect this resource conflict and what that means to me.
+If I simply rip out the check everything works fine, as I fixup
+the addresses and sizes later anyway. (I fixup more stuff like the
+IRQ routing an so on, too).
 
-because I couldn't see anything in the code that made r->start == 0 an
-improper thing.  Not to mention I couldn't access the device any other
-way.  Both being 0 is definitelty bogus.
+The code is in drivers/ssb/driver_pcicore.c
 
-> > It triggers for me on a BCM4318 device which is behind a BCM4710
-> > PCI bridge. r->start is 0 and r->end is 0x1FFF when this triggers.
-> > If I simply comment out that check the device is detected correctly
-> > and seems to initialize just fine.
-> 
->     No, that failnig resource should be relocated.
-> 
-> WBR, Sergei
-> 
+-- 
+Greetings Michael.

@@ -1,63 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Feb 2008 13:54:43 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:14542 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S28573929AbYBRNyl (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 18 Feb 2008 13:54:41 +0000
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 2EC303EC9; Mon, 18 Feb 2008 05:54:38 -0800 (PST)
-Message-ID: <47B98E5D.2030301@ru.mvista.com>
-Date:	Mon, 18 Feb 2008 16:55:41 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Andrew Sharp <andy.sharp@onstor.com>
-Cc:	Michael Buesch <mb@bu3sch.de>, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
-Subject: Re: Linux MIPS PCI resource sanity check
-References: <200802161139.10791.mb@bu3sch.de>	<47B6BFD4.5050404@ru.mvista.com> <20080216153530.7a426a73@ripper.onstor.net>
-In-Reply-To: <20080216153530.7a426a73@ripper.onstor.net>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Feb 2008 14:05:07 +0000 (GMT)
+Received: from mo32.po.2iij.net ([210.128.50.17]:16430 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S28573943AbYBROFE (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 18 Feb 2008 14:05:04 +0000
+Received: by mo.po.2iij.net (mo32) id m1IE51rE009848; Mon, 18 Feb 2008 23:05:01 +0900 (JST)
+Received: from delta (224.24.30.125.dy.iij4u.or.jp [125.30.24.224])
+	by mbox.po.2iij.net (po-mbox304) id m1IE4xuS005073
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Mon, 18 Feb 2008 23:05:00 +0900
+Date:	Mon, 18 Feb 2008 23:04:59 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] fix the installation condition of MIPS clocksource
+Message-Id: <20080218230459.35c2204b.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed 2.4.5 (GTK+ 2.12.0; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18253
+X-archive-position: 18254
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Andrew Sharp wrote:
+Hi Ralf,
 
->>>There's a sanity check in pcibios_enable_resources() that looks
->>>like this:
+MIPS clocksource has been installed on DEC 5000/200(R3000).
+The installation condition of MIPS clocksource is wrong.
 
->>>	r = &dev->resource[idx];
->>>	if (!r->start && r->end) {
->>>		printk(KERN_ERR "PCI: Device %s not available
->>>because of resource collisions\n", pci_name(dev)); return -EINVAL;
->>>	}
+Yoichi
 
->>>What is this check actually doing?
+Fixed the installation condition of MIPS clocksource.
 
->>   It makes sure that a PCI resource is allocated (base of 0 means
->>that it's unallocated due to previously detected resource conlict (or
->>some other reason).
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-> Actually, IIRC, resources are based on what the device requested, so a
-> device behind a bridge could request a resource starting at 0.  I had
-
-    Zero value in BAR was considered unallocated resource in the PCI 2.2 spec...
-
-> to change this for a system as well.  I changed it to
-
-> if (!r->start && !r->end) {
-
-    r->end can't be 0.
-
-WBR, Sergei
+diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/arch/mips/kernel/time.c linux/arch/mips/kernel/time.c
+--- linux-orig/arch/mips/kernel/time.c	2008-02-14 12:00:11.592089539 +0900
++++ linux/arch/mips/kernel/time.c	2008-02-14 17:14:42.619488102 +0900
+@@ -157,6 +157,6 @@ void __init time_init(void)
+ {
+ 	plat_time_init();
+ 
+-	if (mips_clockevent_init() || !cpu_has_mfc0_count_bug())
++	if (!cpu_has_mfc0_count_bug() && !mips_clockevent_init())
+ 		init_mips_clocksource();
+ }

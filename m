@@ -1,52 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Feb 2008 17:51:35 +0000 (GMT)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:26275 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S28574146AbYBRRvd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 18 Feb 2008 17:51:33 +0000
-Received: (qmail 10556 invoked by uid 1000); 18 Feb 2008 18:51:32 +0100
-Date:	Mon, 18 Feb 2008 18:51:32 +0100
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	Jean Delvare <khali@linux-fr.org>
-Cc:	Adrian Bunk <bunk@kernel.org>, ralf@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Feb 2008 18:11:30 +0000 (GMT)
+Received: from vs166246.vserver.de ([62.75.166.246]:18886 "EHLO
+	vs166246.vserver.de") by ftp.linux-mips.org with ESMTP
+	id S28574212AbYBRSL1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 18 Feb 2008 18:11:27 +0000
+Received: from t1be0.t.pppool.de ([89.55.27.224] helo=powermac.local)
+	by vs166246.vserver.de with esmtpa (Exim 4.63)
+	(envelope-from <mb@bu3sch.de>)
+	id 1JRASJ-00011W-Sw; Mon, 18 Feb 2008 18:11:08 +0000
+From:	Michael Buesch <mb@bu3sch.de>
+To:	Aurelien Jarno <aurelien@aurel32.net>
+Subject: Re: [PATCH] [SSB] PCI core driver: use new SPROM data structure
+Date:	Mon, 18 Feb 2008 19:10:46 +0100
+User-Agent: KMail/1.9.6 (enterprise 0.20070907.709405)
+Cc:	Adrian Bunk <bunk@kernel.org>,
+	Larry Finger <Larry.Finger@lwfinger.net>,
+	"John W. Linville" <linville@tuxdriver.com>, ralf@linux-mips.org,
 	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: mips SMBUS_PSC_BASE compile errors
-Message-ID: <20080218175132.GA10548@roarinelk.homelinux.net>
-References: <20080217200953.GJ1403@cs181133002.pp.htv.fi> <20080218102146.GA7282@roarinelk.homelinux.net> <20080218124947.2a768c05@hyperion.delvare>
+References: <20080217200947.GH1403@cs181133002.pp.htv.fi> <20080218100126.GA22519@hall.aurel32.net> <20080218100257.GB22519@hall.aurel32.net>
+In-Reply-To: <20080218100257.GB22519@hall.aurel32.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+  charset="iso-8859-15"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <20080218124947.2a768c05@hyperion.delvare>
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <mano@roarinelk.homelinux.net>
+Message-Id: <200802181910.46581.mb@bu3sch.de>
+Return-Path: <mb@bu3sch.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18255
+X-archive-position: 18256
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: mb@bu3sch.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi Jean,
+On Monday 18 February 2008 11:02:57 Aurelien Jarno wrote:
+> Switch the SSB PCI core driver to the new SPROM data structure now that
+> the old one has been removed.
+> 
+> Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
 
-On Mon, Feb 18, 2008 at 12:49:47PM +0100, Jean Delvare wrote:
-> On Mon, 18 Feb 2008 11:21:46 +0100, Manuel Lauss wrote:
-> > > ...
-> > >   CC      arch/mips/au1000/common/platform.o
-> > > /home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/au1000/common/platform.c:277: error: 'PSC0_BASE_ADDR' undeclared here (not in a function)
-> > > /home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/au1000/common/platform.c:314: warning: no previous prototype for 'au1xxx_platform_init'
-> > > make[2]: *** [arch/mips/au1000/common/platform.o] Error 1
-> > 
-> > Thanks, here's a patch. The db1200/pb1550 defconfigs (+ i2c enabled) compile
+Acked-by: Michael Buesch <mb@bu3sch.de>
 
-[...]
+John, can you please apply this?
 
-> As the breakage came through my i2c tree, I guess I am supposed to push
-> this fix as well?
+> ---
+>  drivers/ssb/driver_pcicore.c |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/ssb/driver_pcicore.c b/drivers/ssb/driver_pcicore.c
+> index 2faaa90..191db7a 100644
+> --- a/drivers/ssb/driver_pcicore.c
+> +++ b/drivers/ssb/driver_pcicore.c
+> @@ -362,7 +362,7 @@ static int pcicore_is_in_hostmode(struct ssb_pcicore *pc)
+>  	    chipid_top != 0x5300)
+>  		return 0;
+>  
+> -	if (bus->sprom.r1.boardflags_lo & SSB_PCICORE_BFL_NOPCI)
+> +	if (bus->sprom.boardflags_lo & SSB_PCICORE_BFL_NOPCI)
+>  		return 0;
+>  
+>  	/* The 200-pin BCM4712 package does not bond out PCI. Even when
+> -- 
+> 1.5.4.1
+> 
 
-Yes, please do.
 
-Thank you!
-	Manuel Lauss
+
+-- 
+Greetings Michael.

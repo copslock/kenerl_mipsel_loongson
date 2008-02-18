@@ -1,51 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Feb 2008 12:23:40 +0000 (GMT)
-Received: from elvis.franken.de ([193.175.24.41]:6875 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S20036208AbYBRMXM (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 18 Feb 2008 12:23:12 +0000
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1JR51a-0003Je-01; Mon, 18 Feb 2008 13:23:10 +0100
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id 4511DC2AE2; Mon, 18 Feb 2008 13:23:02 +0100 (CET)
-Date:	Mon, 18 Feb 2008 13:23:02 +0100
-To:	Adrian Bunk <adrian.bunk@movial.fi>
-Cc:	linux-mips@linux-mips.org, Aurelien Jarno <aurelien@aurel32.net>
-Subject: Re: mips: compile testing of 2.6.25-rc2
-Message-ID: <20080218122302.GB13080@alpha.franken.de>
-References: <20080218010314.GO1403@cs181133002.pp.htv.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Feb 2008 13:54:43 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:14542 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S28573929AbYBRNyl (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 18 Feb 2008 13:54:41 +0000
+Received: from [192.168.1.234] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 2EC303EC9; Mon, 18 Feb 2008 05:54:38 -0800 (PST)
+Message-ID: <47B98E5D.2030301@ru.mvista.com>
+Date:	Mon, 18 Feb 2008 16:55:41 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080218010314.GO1403@cs181133002.pp.htv.fi>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+To:	Andrew Sharp <andy.sharp@onstor.com>
+Cc:	Michael Buesch <mb@bu3sch.de>, ralf@linux-mips.org,
+	linux-mips@linux-mips.org
+Subject: Re: Linux MIPS PCI resource sanity check
+References: <200802161139.10791.mb@bu3sch.de>	<47B6BFD4.5050404@ru.mvista.com> <20080216153530.7a426a73@ripper.onstor.net>
+In-Reply-To: <20080216153530.7a426a73@ripper.onstor.net>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18252
+X-archive-position: 18253
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Feb 18, 2008 at 03:03:14AM +0200, Adrian Bunk wrote:
-> CONFIG_SGI_IP28
->   CALL    /home/bunk/linux/kernel-2.6/git/linux-2.6/scripts/checksyscalls.sh
-> cc1: error: unrecognized command line option "-mr10k-cache-barrier=1"
-> 
-> I tried with a plain gcc 4.2.3, and grep'ed in the gcc SVN head.
-> I don't know which special gcc versions have these options added, but 
-> when they are used by the kernel they should also go into upstream gcc.
+Andrew Sharp wrote:
 
-getting the gcc patches upstream is work in progress. If you only want to
-check builds, you could just drop that option. I'll send a ip28 defconfig
-later.
+>>>There's a sanity check in pcibios_enable_resources() that looks
+>>>like this:
 
-Thomas.
+>>>	r = &dev->resource[idx];
+>>>	if (!r->start && r->end) {
+>>>		printk(KERN_ERR "PCI: Device %s not available
+>>>because of resource collisions\n", pci_name(dev)); return -EINVAL;
+>>>	}
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+>>>What is this check actually doing?
+
+>>   It makes sure that a PCI resource is allocated (base of 0 means
+>>that it's unallocated due to previously detected resource conlict (or
+>>some other reason).
+
+> Actually, IIRC, resources are based on what the device requested, so a
+> device behind a bridge could request a resource starting at 0.  I had
+
+    Zero value in BAR was considered unallocated resource in the PCI 2.2 spec...
+
+> to change this for a system as well.  I changed it to
+
+> if (!r->start && !r->end) {
+
+    r->end can't be 0.
+
+WBR, Sergei

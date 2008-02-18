@@ -1,17 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Feb 2008 22:00:19 +0000 (GMT)
-Received: from smtp4.pp.htv.fi ([213.243.153.38]:39653 "EHLO smtp4.pp.htv.fi")
-	by ftp.linux-mips.org with ESMTP id S20036186AbYBQWAQ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 17 Feb 2008 22:00:16 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Feb 2008 00:43:18 +0000 (GMT)
+Received: from smtp5.pp.htv.fi ([213.243.153.39]:51666 "EHLO smtp5.pp.htv.fi")
+	by ftp.linux-mips.org with ESMTP id S20036429AbYBRAnP (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 18 Feb 2008 00:43:15 +0000
 Received: from cs181133002.pp.htv.fi (cs181133002.pp.htv.fi [82.181.133.2])
-	by smtp4.pp.htv.fi (Postfix) with ESMTP id 51B115BC002;
-	Mon, 18 Feb 2008 00:00:16 +0200 (EET)
-Date:	Sun, 17 Feb 2008 23:59:48 +0200
+	by smtp5.pp.htv.fi (Postfix) with ESMTP id F21845BC016;
+	Mon, 18 Feb 2008 02:43:14 +0200 (EET)
+Date:	Mon, 18 Feb 2008 02:42:46 +0200
 From:	Adrian Bunk <bunk@kernel.org>
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Ralf Baechle <ralf@linux-mips.org>
+To:	Christoph Lameter <clameter@sgi.com>, ralf@linux-mips.org
 Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [2.6.25 patch] mips: fix SNI_RM EISA=n compilation
-Message-ID: <20080217215948.GL1403@cs181133002.pp.htv.fi>
+Subject: mips yosemite_defconfig compile error
+Message-ID: <20080218004246.GN1403@cs181133002.pp.htv.fi>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
@@ -20,7 +19,7 @@ Return-Path: <bunk@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18238
+X-archive-position: 18239
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,42 +27,29 @@ X-original-sender: bunk@kernel.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch fixes the following build error with CONFIG_EISA=n caused by 
-commit 231a35d37293ab88d325a9cb94e5474c156282c0:
-
-<--  snip -->
-
-...
-  LD      .tmp_vmlinux1
-arch/mips/sni/built-in.o: In function `snirm_a20r_setup_devinit':
-a20r.c:(.init.text+0x42c): undefined reference to `sni_eisa_root_init'
-a20r.c:(.init.text+0x42c): relocation truncated to fit: R_MIPS_26 against `sni_eisa_root_init'
-arch/mips/sni/built-in.o: In function `snirm_setup_devinit':
-rm200.c:(.init.text+0x52c): undefined reference to `sni_eisa_root_init'
-rm200.c:(.init.text+0x52c): relocation truncated to fit: R_MIPS_26 against `sni_eisa_root_init'
-make[1]: *** [.tmp_vmlinux1] Error 1
+Commit 9e2779fa281cfda13ac060753d674bbcaa23367e also broke the
+mips yosemite_defconfig:
 
 <--  snip  -->
 
-Signed-off-by: Adrian Bunk <bunk@kernel.org>
+...
+  CC      arch/mips/kernel/asm-offsets.s
+In file included from 
+/home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/kernel/asm-offsets.c:14:
+/home/bunk/linux/kernel-2.6/git/linux-2.6/include/linux/mm.h: In function 'is_vmalloc_addr':
+/home/bunk/linux/kernel-2.6/git/linux-2.6/include/linux/mm.h:243: error: 'PKMAP_BASE' undeclared (first use in this function)
+/home/bunk/linux/kernel-2.6/git/linux-2.6/include/linux/mm.h:243: error: (Each undeclared identifier is reported only once
+/home/bunk/linux/kernel-2.6/git/linux-2.6/include/linux/mm.h:243: error: for each function it appears in.)
+make[2]: *** [arch/mips/kernel/asm-offsets.s] Error 1
 
----
-f6a6c34454cbe463e2d8d567d9e0659161a82a72 diff --git a/include/asm-mips/sni.h b/include/asm-mips/sni.h
-index e716447..8c1eb02 100644
---- a/include/asm-mips/sni.h
-+++ b/include/asm-mips/sni.h
-@@ -228,7 +228,14 @@ extern void sni_pcimt_irq_init(void);
- extern void sni_cpu_time_init(void);
- 
- /* eisa init for RM200/400 */
-+#ifdef CONFIG_EISA
- extern int sni_eisa_root_init(void);
-+#else
-+static inline int sni_eisa_root_init(void)
-+{
-+	return 0;
-+}
-+#endif
- 
- /* common irq stuff */
- extern void (*sni_hwint)(void);
+<--  snip  -->
+
+cu
+Adrian
+
+-- 
+
+       "Is there not promise of rain?" Ling Tan asked suddenly out
+        of the darkness. There had been need of rain for many days.
+       "Only a promise," Lao Er said.
+                                       Pearl S. Buck - Dragon Seed

@@ -1,52 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Feb 2008 12:59:22 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:9951 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20030035AbYBTM7U (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 20 Feb 2008 12:59:20 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m1KCxJee025065;
-	Wed, 20 Feb 2008 12:59:19 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m1KCxJOK025064;
-	Wed, 20 Feb 2008 12:59:19 GMT
-Date:	Wed, 20 Feb 2008 12:59:19 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Wolfgang Ocker <weo@reccoware.de>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] [MIPS] Fix ids in Alchemy db dma device table (Repost
-	in hopefully correct format)
-Message-ID: <20080220125919.GA24984@linux-mips.org>
-References: <1202671893.3384.20.camel@galileo.recco.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1202671893.3384.20.camel@galileo.recco.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Feb 2008 14:12:02 +0000 (GMT)
+Received: from mo32.po.2iij.net ([210.128.50.17]:45074 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20030254AbYBTOMA (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 20 Feb 2008 14:12:00 +0000
+Received: by mo.po.2iij.net (mo32) id m1KEBuHX029787; Wed, 20 Feb 2008 23:11:56 +0900 (JST)
+Received: from delta (224.24.30.125.dy.iij4u.or.jp [125.30.24.224])
+	by mbox.po.2iij.net (po-mbox304) id m1KEBsq4030889
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Wed, 20 Feb 2008 23:11:54 +0900
+Date:	Wed, 20 Feb 2008 23:11:53 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] fix LASAT_CASCADE_IRQ
+Message-Id: <20080220231153.77d7723a.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed 2.4.5 (GTK+ 2.12.0; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18276
+X-archive-position: 18277
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Feb 10, 2008 at 08:31:33PM +0100, Wolfgang Ocker wrote:
+Fixed LASAT_CASCADE_IRQ
 
-> Subject: [PATCH] [MIPS] Fix ids in Alchemy db dma device table (Repost in
-> 	hopefully correct format)
-> Content-Type: text/plain
-> 
-> From: Wolfgang Ocker <weo@reccoware.de>
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-Kudos for resending in The Right Format (TM) before I had a chance to beg
-for it :-)  It seems though you were generating an unclean or maybe simply
-older version of the tree to generate this patch.  Git didn't like it and
-patch only with fuzz.
-
-Applied,
-
-  Ralf
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/mach-lasat/irq.h mips/include/asm-mips/mach-lasat/irq.h
+--- mips-orig/include/asm-mips/mach-lasat/irq.h	2008-01-13 16:43:14.160048268 +0900
++++ mips/include/asm-mips/mach-lasat/irq.h	2008-01-14 21:27:55.180821709 +0900
+@@ -1,7 +1,7 @@
+ #ifndef _ASM_MACH_LASAT_IRQ_H
+ #define _ASM_MACH_LASAT_IRQ_H
+ 
+-#define LASAT_CASCADE_IRQ	(MIPS_CPU_IRQ_BASE + 0)
++#define LASAT_CASCADE_IRQ	(MIPS_CPU_IRQ_BASE + 2)
+ 
+ #define LASAT_IRQ_BASE		8
+ #define LASAT_IRQ_END		23

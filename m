@@ -1,75 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Feb 2008 22:09:11 +0000 (GMT)
-Received: from ug-out-1314.google.com ([66.249.92.172]:9701 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20029618AbYBSWJI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 19 Feb 2008 22:09:08 +0000
-Received: by ug-out-1314.google.com with SMTP id u2so699949uge.39
-        for <linux-mips@linux-mips.org>; Tue, 19 Feb 2008 14:09:07 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:organization:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        bh=BXWoEQiiKvM56WHhwbM2D7ozmXuA7ZCYBSswilx5gAY=;
-        b=qA1HZVpLYVu6SJUwtqQU/sDU/5k9FCYlZod/2NlN+2e0E3/5XcAzDQsg0ld0E29IUINsaaJ1H55ggNsYJDpGA98JqycJA4zvSTvBCD+qMZ2zYusUlF/xpAqFznev/GUXE6LK5xKT5fHOt05HsqJoHLD+KlriCOCI/TjE+CjxyKo=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:organization:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=jLdGnDeuRMHXtClNu9awwmxjlNg5Js+AeJphdybIjaTzGjgNvx0i9lE73qKdUH9uCW0XUXNILXWeDZI31pGn1FeZ7JDbKbwJwzPteeTHtyOUjXzexIIO+gNmdc/6SbfmzM7a89FaSBKRWTKtAd9to1Sjb+MT6cetJkq3nBwXPrA=
-Received: by 10.67.116.4 with SMTP id t4mr5086398ugm.68.1203458946797;
-        Tue, 19 Feb 2008 14:09:06 -0800 (PST)
-Received: from ?192.168.1.3? ( [85.140.8.186])
-        by mx.google.com with ESMTPS id f31sm341998fkf.15.2008.02.19.14.09.05
-        (version=SSLv3 cipher=RC4-MD5);
-        Tue, 19 Feb 2008 14:09:05 -0800 (PST)
-Message-ID: <47BB537F.7030801@gmail.com>
-Date:	Wed, 20 Feb 2008 01:09:03 +0300
-From:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
-Organization: DmVo Home
-User-Agent: Thunderbird 1.5.0.14pre (X11/20071022)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Feb 2008 04:09:56 +0000 (GMT)
+Received: from sj-iport-5.cisco.com ([171.68.10.87]:12939 "EHLO
+	sj-iport-5.cisco.com") by ftp.linux-mips.org with ESMTP
+	id S20022075AbYBTEJx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 20 Feb 2008 04:09:53 +0000
+X-IronPort-AV: E=Sophos;i="4.25,379,1199692800"; 
+   d="scan'208";a="13623622"
+Received: from sj-dkim-4.cisco.com ([171.71.179.196])
+  by sj-iport-5.cisco.com with ESMTP; 19 Feb 2008 20:09:47 -0800
+Received: from sj-core-1.cisco.com (sj-core-1.cisco.com [171.71.177.237])
+	by sj-dkim-4.cisco.com (8.12.11/8.12.11) with ESMTP id m1K49lcY017767
+	for <linux-mips@linux-mips.org>; Tue, 19 Feb 2008 20:09:47 -0800
+Received: from cliff.cisco.com (cliff.cisco.com [171.69.11.141])
+	by sj-core-1.cisco.com (8.12.10/8.12.6) with ESMTP id m1K49kJg000969
+	for <linux-mips@linux-mips.org>; Wed, 20 Feb 2008 04:09:46 GMT
+Received: from cuplxvomd01.corp.sa.net ([64.100.148.205]) by cliff.cisco.com (8.6.12/8.6.5) with ESMTP id EAA22289 for <linux-mips@linux-mips.org>; Wed, 20 Feb 2008 04:09:45 GMT
+Message-ID: <47BBA809.3050505@cisco.com>
+Date:	Tue, 19 Feb 2008 20:09:45 -0800
+From:	David VomLehn <dvomlehn@cisco.com>
+Reply-To: dvomlehn@cisco.com
+User-Agent: Thunderbird 2.0.0.9 (X11/20071031)
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] [MIPS] Enable the timerfd_*() o32 system calls
-References: <1203368557-32356-1-git-send-email-dmitri.vorobiev@gmail.com> <20080219141940.GA14991@linux-mips.org>
-In-Reply-To: <20080219141940.GA14991@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <dmitri.vorobiev@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Does HIGHMEM work on 32-bit MIPS ports?
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=621; t=1203480587; x=1204344587;
+	c=relaxed/simple; s=sjdkim4002;
+	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
+	d=cisco.com; i=dvomlehn@cisco.com;
+	z=From:=20David=20VomLehn=20<dvomlehn@cisco.com>
+	|Subject:=20Does=20HIGHMEM=20work=20on=2032-bit=20MIPS=20po
+	rts?
+	|Sender:=20;
+	bh=dfZtjsVYpzGueoXkb0NCcdKJuLlHxI2Gdvla2g0EqFM=;
+	b=ZOxbcvdtvM3v6Gj1BCXhePpfUd6vDbBq1L6Ap+jW/WBK/1/fMhyHnzhvjc
+	7z5YyqRtB8i/y59E4Tfvpknsr484l0H7usdrWuCmXGlVV5QNGlh4M1rBr8IU
+	einMjBYEY3;
+Authentication-Results:	sj-dkim-4; header.From=dvomlehn@cisco.com; dkim=pass (
+	sig from cisco.com/sjdkim4002 verified; ); 
+Return-Path: <dvomlehn@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18274
+X-archive-position: 18275
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@gmail.com
+X-original-sender: dvomlehn@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle пишет:
-> On Tue, Feb 19, 2008 at 12:02:37AM +0300, Dmitri Vorobiev wrote:
-> 
->> This patch enables the system calls timerfd_create(), timerfd_settime()
->> and timerfd_gettime() for MIPS architecture.
->>
->> Please see the following Bugzilla entry for more details:
->>
->> http://bugzilla.kernel.org/show_bug.cgi?id=10038
->>
->> This was tested using a Malta 4Kc board in both little-endian and
->> big-endian modes. The unit test program is available from the URL
->> above.
->>
->> Note that only the "o32"-style system calls have been added. This is
->> due to the fact that I have no suitable equipment to test the other
->> flavors of MIPS ABI.
-> 
-> Thanks.  I added the missing bits for the others ABIs and applied the
-> combined patch.
+As we continue to investigate using high memory on MIPS, we keep coming 
+up with odd results. The basic mapping of high memory seems to be 
+working correctly, and if we use an INITRAMFS root filesystem, things 
+seem to work. Things also seem to work with an NFS root filesystem if we 
+disable preemption, though we get someone squirrelly behavior in some 
+minor ways. Has anyone else successfully been able to use high memory on 
+a 32-bit MIPS Linux port?
 
-Thank you, Ralf!
+Any feedback would be helpful.
 
-Dmitri
-
-> 
->   Ralf
-> 
+-- 
+David VomLehn, dvomlehn@cisco.com
+The opinions expressed herein are likely mine, but might not be my employer's...

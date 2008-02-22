@@ -1,48 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Feb 2008 12:32:08 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:19145 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28577432AbYBVMcG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 22 Feb 2008 12:32:06 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m1MCW55B018128;
-	Fri, 22 Feb 2008 12:32:06 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m1MCW5rZ018127;
-	Fri, 22 Feb 2008 12:32:05 GMT
-Date:	Fri, 22 Feb 2008 12:32:05 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Anirban Sinha <ASinha@zeugmasystems.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: kdb patches?!
-Message-ID: <20080222123205.GC17312@linux-mips.org>
-References: <DDFD17CC94A9BD49A82147DDF7D545C5842C91@exchange.ZeugmaSystems.local>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Feb 2008 19:02:12 +0000 (GMT)
+Received: from NaN.false.org ([208.75.86.248]:42914 "EHLO nan.false.org")
+	by ftp.linux-mips.org with ESMTP id S28578404AbYBVTCK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 22 Feb 2008 19:02:10 +0000
+Received: from nan.false.org (localhost [127.0.0.1])
+	by nan.false.org (Postfix) with ESMTP id D5FD098259;
+	Fri, 22 Feb 2008 19:02:08 +0000 (GMT)
+Received: from caradoc.them.org (22.svnf5.xdsl.nauticom.net [209.195.183.55])
+	by nan.false.org (Postfix) with ESMTP id C089C981FC;
+	Fri, 22 Feb 2008 19:02:08 +0000 (GMT)
+Received: from drow by caradoc.them.org with local (Exim 4.69)
+	(envelope-from <drow@caradoc.them.org>)
+	id 1JSd9s-0002H6-6U; Fri, 22 Feb 2008 14:02:08 -0500
+Date:	Fri, 22 Feb 2008 14:02:08 -0500
+From:	Daniel Jacobowitz <dan@debian.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	robert song <robertsong.linux@gmail.com>, linux-mips@linux-mips.org
+Subject: Re: MIPS section alignment of object file
+Message-ID: <20080222190208.GA8697@caradoc.them.org>
+References: <3e004f8e0802210812k723a11f5ve9fa816d83bb082b@mail.gmail.com> <20080222122926.GB17312@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DDFD17CC94A9BD49A82147DDF7D545C5842C91@exchange.ZeugmaSystems.local>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20080222122926.GB17312@linux-mips.org>
+User-Agent: Mutt/1.5.17 (2007-12-11)
+Return-Path: <drow@false.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18289
+X-archive-position: 18290
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Feb 21, 2008 at 01:08:26PM -0800, Anirban Sinha wrote:
+On Fri, Feb 22, 2008 at 12:29:26PM +0000, Ralf Baechle wrote:
+> The minimum alignment technically required is the largest alignment of
+> any type contained in a section.  Due to the possibility of relocatable
+> links the assembler can't know what the largest aligment is, so it has
+> to make a reasonable guess which would be 8 bytes, the size of a double
+> floating point.
 
-> I know this has been previously discussed in the mailing list but since
-> the last relevant post I see was Sept 2005, I ask again:
-> 
-> Has anyone done any work regarding porting kdb (*not* kgdb) patches to
-> mips? Is there any recent (or hope of any future) work in this space? 
+That's not really true.  The compiler is responsible for emitting
+appropriate .align directives to communicate this.  I don't remember
+where the hack in gas came from, but I bet it's required for IRIX.
 
-I've taken a stab at porting kdb in late 2004.  I still have the patches
-sitting somewhere.  Various others seem tohave taken a stab at porting
-kdn later on.
-
-  Ralf
+-- 
+Daniel Jacobowitz
+CodeSourcery

@@ -1,64 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 Feb 2008 13:17:58 +0000 (GMT)
-Received: from hall.aurel32.net ([88.191.38.19]:24968 "EHLO hall.aurel32.net")
-	by ftp.linux-mips.org with ESMTP id S28582197AbYBXNRp (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 24 Feb 2008 13:17:45 +0000
-Received: from ctse16.ulb.ac.be ([164.15.3.4] helo=volta.aurel32.net)
-	by hall.aurel32.net with esmtpsa (TLS-1.0:RSA_AES_256_CBC_SHA1:32)
-	(Exim 4.63)
-	(envelope-from <aurelien@aurel32.net>)
-	id 1JTGjb-0001sg-MJ; Sun, 24 Feb 2008 14:17:40 +0100
-Received: from aurel32 by volta.aurel32.net with local (Exim 4.69)
-	(envelope-from <aurelien@aurel32.net>)
-	id 1JTCa1-0001Ht-65; Sun, 24 Feb 2008 09:51:29 +0100
-Date:	Sun, 24 Feb 2008 09:51:29 +0100
-From:	Aurelien Jarno <aurelien@aurel32.net>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: [PATCH] [MIPS] WGT634U: Add machine detection message
-Message-ID: <20080224085129.GA4842@volta.aurel32.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Feb 2008 10:06:56 +0000 (GMT)
+Received: from mx1.minet.net ([157.159.40.25]:60397 "EHLO mx1.minet.net")
+	by ftp.linux-mips.org with ESMTP id S20036039AbYBYKGy (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 25 Feb 2008 10:06:54 +0000
+Received: from localhost (spam.minet.net [192.168.1.97])
+	by mx1.minet.net (Postfix) with ESMTP id C4C6D5CD36;
+	Mon, 25 Feb 2008 11:06:46 +0100 (CET)
+X-Virus-Scanned: by amavisd-new using ClamAV at minet.net
+Received: from smtp.minet.net (imap.minet.net [192.168.1.27])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mx1.minet.net (Postfix) with ESMTP id 14C8C5CD29;
+	Mon, 25 Feb 2008 11:06:41 +0100 (CET)
+Received: from ibook (unknown [77.192.17.45])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: florian)
+	by smtp.minet.net (Postfix) with ESMTP id 1DF9C12FF0;
+	Mon, 25 Feb 2008 11:07:05 +0100 (CET)
+From:	Florian Fainelli <florian.fainelli@telecomint.eu>
+Date:	Mon, 25 Feb 2008 11:06:23 +0100
+Subject: [PATCH] Remove references to BCM947XX
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
+X-UID:	301
+X-Length: 1640
+To:	linux-mips@linux-mips.org
+Cc:	Aurelien Jarno <aurelien@aurel32.net>
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-X-Mailer: Mutt 1.5.17+20080114 (2008-01-14)
-User-Agent: Mutt/1.5.17+20080114 (2008-01-14)
-Return-Path: <aurelien@aurel32.net>
+Message-Id: <200802251106.24886.florian.fainelli@telecomint.eu>
+Return-Path: <florian.fainelli@telecomint.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18292
+X-archive-position: 18293
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: florian.fainelli@telecomint.eu
 Precedence: bulk
 X-list: linux-mips
 
-This adds a printk message when a WGT634U machine is detected.
+This patch removes the remaining reference
+to the BCM947xx development board codename.
 
-Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+Signed-off-by: Florian Fainelli <florian.fainelli@telecomint.eu>
 ---
- arch/mips/bcm47xx/wgt634u.c |    3 +++
- 1 files changed, 3 insertions(+), 0 deletions(-)
-
-diff --git a/arch/mips/bcm47xx/wgt634u.c b/arch/mips/bcm47xx/wgt634u.c
-index d1d90c9..f9e309a 100644
---- a/arch/mips/bcm47xx/wgt634u.c
-+++ b/arch/mips/bcm47xx/wgt634u.c
-@@ -112,6 +112,9 @@ static int __init wgt634u_init(void)
- 	    ((et0mac[1] == 0x09 && et0mac[2] == 0x5b) ||
- 	     (et0mac[1] == 0x0f && et0mac[2] == 0xb5))) {
- 		struct ssb_mipscore *mcore = &ssb_bcm47xx.mipscore;
-+
-+		printk(KERN_INFO "WGT634U machine detected.\n");
-+
- 		wgt634u_flash_data.width = mcore->flash_buswidth;
- 		wgt634u_flash_resource.start = mcore->flash_window;
- 		wgt634u_flash_resource.end = mcore->flash_window
--- 
-1.5.4.2
-
--- 
-  .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
- : :' :  Debian developer           | Electrical Engineer
- `. `'   aurel32@debian.org         | aurelien@aurel32.net
-   `-    people.debian.org/~aurel32 | www.aurel32.net
+diff --git a/include/asm-mips/mach-bcm47xx/war.h b/include/asm-mips/mach-bcm47xx/war.h
+index 4a2b798..87cd465 100644
+--- a/include/asm-mips/mach-bcm47xx/war.h
++++ b/include/asm-mips/mach-bcm47xx/war.h
+@@ -5,8 +5,8 @@
+  *
+  * Copyright (C) 2002, 2004, 2007 by Ralf Baechle <ralf@linux-mips.org>
+  */
+-#ifndef __ASM_MIPS_MACH_BCM947XX_WAR_H
+-#define __ASM_MIPS_MACH_BCM947XX_WAR_H
++#ifndef __ASM_MIPS_MACH_BCM47XX_WAR_H
++#define __ASM_MIPS_MACH_BCM47XX_WAR_H
+ 
+ #define R4600_V1_INDEX_ICACHEOP_WAR	0
+ #define R4600_V1_HIT_CACHEOP_WAR	0
+@@ -22,4 +22,4 @@
+ #define R10000_LLSC_WAR			0
+ #define MIPS34K_MISSED_ITLB_WAR		0
+ 
+-#endif /* __ASM_MIPS_MACH_BCM947XX_WAR_H */
++#endif /* __ASM_MIPS_MACH_BCM47XX_WAR_H */

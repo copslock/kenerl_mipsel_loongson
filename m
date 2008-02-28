@@ -1,59 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Feb 2008 03:38:51 +0000 (GMT)
-Received: from koto.vergenet.net ([210.128.90.7]:7087 "EHLO koto.vergenet.net")
-	by ftp.linux-mips.org with ESMTP id S28590358AbYB1Dit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 28 Feb 2008 03:38:49 +0000
-Received: from tabatha.lab.ultramonkey.org (vagw.valinux.co.jp [210.128.90.14])
-	by koto.vergenet.net (Postfix) with ESMTP id 9BEA0341A0;
-	Thu, 28 Feb 2008 12:38:39 +0900 (JST)
-Received: by tabatha.lab.ultramonkey.org (Postfix, from userid 7100)
-	id 5DB7E4F786; Thu, 28 Feb 2008 12:38:38 +0900 (JST)
-Date:	Thu, 28 Feb 2008 12:38:39 +0900
-From:	Simon Horman <horms@verge.net.au>
-To:	Tomasz Chmielewski <mangoo@wpkg.org>
-Cc:	Francesco Chiechi <francesco.chiechi@colibre.it>,
-	kexec@lists.infradead.org, linux-mips@linux-mips.org
-Subject: Re: [patch 0/7] kexec-tools: mipsel port
-Message-ID: <20080228033837.GC16840@verge.net.au>
-References: <20080227103536.406746333@vergenet.net> <47C5DC5B.3020202@wpkg.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Feb 2008 07:59:21 +0000 (GMT)
+Received: from eth-75.36-homell.natm.ru ([89.252.75.36]:31504 "EHLO
+	666-e00d2dd4975") by ftp.linux-mips.org with ESMTP
+	id S28590356AbYB1H7T (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 28 Feb 2008 07:59:19 +0000
+Message-ID: <01c879f8$f6d40700$244bfc59@crisplyud3>
+From:	"Giovanni Carney" <crisplyud3@ljfrankpc.com>
+To:	<linux-mips@linux-mips.org>
+Subject: Microsoft Windows Vista Ultimate includes
+Date:	Thu, 28 Feb 2008 10:59:18 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <47C5DC5B.3020202@wpkg.org>
-User-Agent: Mutt/1.5.17+20080114 (2008-01-14)
-Return-Path: <horms@verge.net.au>
+Content-Type: text/plain;
+	format=flowed;
+	charset="iso-8859-1";
+	reply-type=original
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2741.2600
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2741.2600
+X-Spam:	Not detected
+Return-Path: <crisplyud3@ljfrankpc.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18309
+X-archive-position: 18310
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: horms@verge.net.au
+X-original-sender: crisplyud3@ljfrankpc.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Feb 27, 2008 at 10:55:39PM +0100, Tomasz Chmielewski wrote:
-> Simon Horman schrieb:
->> Hi,
->>
->> After some recent questions by Tomasz Chmielewski I have dug up
->> the mipsel port of kexec-tool and up-ported it to the lastest
->> release of kexec-tools-testing, v20080227
->>
->>   ftp://ftp.kernel.org/pub/linux/kernel/people/horms/kexec-tools/
->>   http://lists.infradead.org/pipermail/kexec/2008-February/001346.html
->
-> (...)
->
->> I would really appreciate it if someone could test this code.
->> And I would appreciate it even more if someone could help
->> fix it up to a mergable state. Or alternatively, point me in
->> the right direction to find people who want to help with this.
->
-> Added CC: to linux-mips mailing list since it might be of some interest  
-> there, too.
+Microsoft Windows Vista Ultimate new features:
+• Mobility-based operating system meets all your computing needs whether you're working from home, working on the road, or searching for entertainment options
+• Combines all the features of a business-focused operating system, all the efficiency features of a mobility-focused operating system, and all of the digital entertainment features of a consumer-focused operating system
 
-I'll try to do the same for future posts.
+http://cherikreiserge.blogspot.com
 
--- 
-Horms
+System Requirements
+
+• 1-gigahertz (GHz) 32-bit (x86) processor or 1-GHz 64-bit (x64) processor
+• 1 GB RAM
+• 40-GB hard disk that has 15 GB of free hard disk space (the 15GB of free space provides room for temporary file storage during the install or upgrade.)
+• Internal or external DVD-burning hardware device

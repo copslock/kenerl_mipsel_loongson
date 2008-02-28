@@ -1,67 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Feb 2008 15:03:46 +0000 (GMT)
-Received: from ra.tuxdriver.com ([70.61.120.52]:54542 "EHLO ra.tuxdriver.com")
-	by ftp.linux-mips.org with ESMTP id S28591247AbYB1PDn (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 28 Feb 2008 15:03:43 +0000
-Received: from ra.tuxdriver.com (ra.tuxdriver.com [127.0.0.1])
-	by ra.tuxdriver.com (8.14.0/8.13.7) with ESMTP id m1SF1x27029163
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-	Thu, 28 Feb 2008 10:02:14 -0500
-Received: (from uucp@localhost)
-	by ra.tuxdriver.com (8.14.0/8.14.0/Submit) with UUCP id m1SEk4se029014;
-	Thu, 28 Feb 2008 09:46:04 -0500
-Received: from linville-t43.mobile (localhost.localdomain [127.0.0.1])
-	by linville-t43.mobile (8.14.1/8.13.8) with ESMTP id m1SEfw1v002361;
-	Thu, 28 Feb 2008 09:41:58 -0500
-Received: (from linville@localhost)
-	by linville-t43.mobile (8.14.1/8.14.1/Submit) id m1SEfwwX002360;
-	Thu, 28 Feb 2008 09:41:58 -0500
-Date:	Thu, 28 Feb 2008 09:41:58 -0500
-From:	"John W. Linville" <linville@tuxdriver.com>
-To:	Aurelien Jarno <aurelien@aurel32.net>
-Cc:	Michael Buesch <mb@bu3sch.de>, Adrian Bunk <bunk@kernel.org>,
-	Larry Finger <Larry.Finger@lwfinger.net>, ralf@linux-mips.org,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] [SSB] PCI core driver: use new SPROM data structure
-Message-ID: <20080228144158.GC3063@tuxdriver.com>
-References: <20080217200947.GH1403@cs181133002.pp.htv.fi> <20080218100126.GA22519@hall.aurel32.net> <20080218100257.GB22519@hall.aurel32.net> <200802181910.46581.mb@bu3sch.de> <47C6C10E.9000300@aurel32.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <47C6C10E.9000300@aurel32.net>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <linville@tuxdriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Feb 2008 16:01:18 +0000 (GMT)
+Received: from bsdimp.com ([199.45.160.85]:23281 "EHLO harmony.bsdimp.com")
+	by ftp.linux-mips.org with ESMTP id S28591454AbYB1QBQ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 28 Feb 2008 16:01:16 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by harmony.bsdimp.com (8.14.2/8.14.1) with ESMTP id m1SG0PD4061282;
+	Thu, 28 Feb 2008 09:00:26 -0700 (MST)
+	(envelope-from imp@bsdimp.com)
+Date:	Thu, 28 Feb 2008 09:00:58 -0700 (MST)
+Message-Id: <20080228.090058.-126817608.imp@bsdimp.com>
+To:	ralf@linux-mips.org
+Cc:	daniel.j.laird@nxp.com, linux-mips@linux-mips.org
+Subject: Re: Move arch/mips/philips to arch/mips/nxp
+From:	"M. Warner Losh" <imp@bsdimp.com>
+In-Reply-To: <20080228094240.GD2750@linux-mips.org>
+References: <64660ef00802270250sae0cd4of9512f13f400dfc6@mail.gmail.com>
+	<20080228094240.GD2750@linux-mips.org>
+X-Mailer: Mew version 5.2 on Emacs 21.3 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <imp@bsdimp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18317
+X-archive-position: 18318
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linville@tuxdriver.com
+X-original-sender: imp@bsdimp.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Feb 28, 2008 at 03:11:26PM +0100, Aurelien Jarno wrote:
-> Michael Buesch a écrit :
-> > On Monday 18 February 2008 11:02:57 Aurelien Jarno wrote:
-> >> Switch the SSB PCI core driver to the new SPROM data structure now that
-> >> the old one has been removed.
-> >>
-> >> Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
-> > 
-> > Acked-by: Michael Buesch <mb@bu3sch.de>
-> > 
-> > John, can you please apply this?
-> 
-> John, any news about this patch?
+In message: <20080228094240.GD2750@linux-mips.org>
+            Ralf Baechle <ralf@linux-mips.org> writes:
+: The usual pointer here: http://www.linux-mips.org/wiki/The_perfect_patch
 
-I'm sorry, I must have missed it.  I have to respin the pull request
-I sent to Dave M. yesterday anyway, so I'll include it in that.
+Are the references to BitKeeper still relevant here?
 
-Thanks for reminding me!
+>> Bear in mind that the Subject: of your email becomes a
+>> globally-unique identifier for that patch. It propagates all the
+>> way into BitKeeper. The Subject: may later be used in developer
+------------^^^^^^^^^
+>> discussions which refer to the patch. People will want to google
+>> for the patch's Subject: to read discussion regarding that patch.
 
-John
--- 
-John W. Linville
-linville@tuxdriver.com
+and
+
+>> Do not refer to earlier patches when changelogging a new version of
+>> a patch. It's not very useful to have a bitkeeper changelog which
+-------------------------------------------^^^^^^^^^
+>> says "OK, this fixes the things you mentioned yesterday". Each
+>> iteration of the patch should contain a standalone changelog. This
+>> implies that you need a patch management system which maintains
+>> changelogs. See below.
+
+and
+
+>> Don't bother mentioning what version of the kernel the patch
+>> applies to ("applies to 2.6.8-rc1"). This is not interesting
+>> information - once the patch is in bitkeeper, of _course_ it
+--------------------------------------^^^^^^^^^
+>> applied, and it'll probably be merged into a later kernel than the
+>> one which you wrote it for.
+
+Warner

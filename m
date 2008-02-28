@@ -1,74 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Feb 2008 13:05:21 +0000 (GMT)
-Received: from smtp-vbr4.xs4all.nl ([194.109.24.24]:56328 "EHLO
-	smtp-vbr4.xs4all.nl") by ftp.linux-mips.org with ESMTP
-	id S28590890AbYB1NFT convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 28 Feb 2008 13:05:19 +0000
-Received: from dealogic.nl (a62-251-87-113.adsl.xs4all.nl [62.251.87.113])
-	by smtp-vbr4.xs4all.nl (8.13.8/8.13.8) with ESMTP id m1SD5CBq042677
-	for <linux-mips@linux-mips.org>; Thu, 28 Feb 2008 14:05:17 +0100 (CET)
-	(envelope-from ncoesel@DEALogic.nl)
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Feb 2008 14:11:49 +0000 (GMT)
+Received: from hall.aurel32.net ([88.191.38.19]:1001 "EHLO hall.aurel32.net")
+	by ftp.linux-mips.org with ESMTP id S28591014AbYB1OLr (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 28 Feb 2008 14:11:47 +0000
+Received: from anguille.univ-lyon1.fr ([134.214.4.207])
+	by hall.aurel32.net with esmtpsa (TLS-1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+	(Exim 4.63)
+	(envelope-from <aurelien@aurel32.net>)
+	id 1JUjTv-0006d5-LG; Thu, 28 Feb 2008 15:11:31 +0100
+Message-ID: <47C6C10E.9000300@aurel32.net>
+Date:	Thu, 28 Feb 2008 15:11:26 +0100
+From:	Aurelien Jarno <aurelien@aurel32.net>
+User-Agent: IceDove 1.5.0.14pre (X11/20080208)
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: PNX8550 Broken on Linux 2.6.24 - Interrupt issues?
-Date:	Thu, 28 Feb 2008 14:05:11 +0100
-Message-ID: <19CA9E279FDA5246B7D7A1C91A4AF7F40EF68E@dealogicserver.DEALogic.nl>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: PNX8550 Broken on Linux 2.6.24 - Interrupt issues?
-thread-index: Ach6CZPq+1tVfxp4SauI+uOFteL44QAAL6mg
-From:	"Nico Coesel" <ncoesel@DEALogic.nl>
-To:	<linux-mips@linux-mips.org>
-X-Virus-Scanned: by XS4ALL Virus Scanner
-Return-Path: <ncoesel@DEALogic.nl>
+To:	"John W. Linville" <linville@tuxdriver.com>
+CC:	Michael Buesch <mb@bu3sch.de>, Adrian Bunk <bunk@kernel.org>,
+	Larry Finger <Larry.Finger@lwfinger.net>, ralf@linux-mips.org,
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] [SSB] PCI core driver: use new SPROM data structure
+References: <20080217200947.GH1403@cs181133002.pp.htv.fi> <20080218100126.GA22519@hall.aurel32.net> <20080218100257.GB22519@hall.aurel32.net> <200802181910.46581.mb@bu3sch.de>
+In-Reply-To: <200802181910.46581.mb@bu3sch.de>
+Content-Type: text/plain; charset=ISO-8859-15
+Content-Transfer-Encoding: 8bit
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18315
+X-archive-position: 18316
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ncoesel@DEALogic.nl
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 X-list: linux-mips
 
-Daniel,
-I've had similar problems on the AU1100 platform. It turned out the
-interrupt enumeration was faulty. You might want to check this.
+Michael Buesch a écrit :
+> On Monday 18 February 2008 11:02:57 Aurelien Jarno wrote:
+>> Switch the SSB PCI core driver to the new SPROM data structure now that
+>> the old one has been removed.
+>>
+>> Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+> 
+> Acked-by: Michael Buesch <mb@bu3sch.de>
+> 
+> John, can you please apply this?
 
-Nico Coesel
- 
+John, any news about this patch?
 
-> -----Oorspronkelijk bericht-----
-> Van: linux-mips-bounce@linux-mips.org 
-> [mailto:linux-mips-bounce@linux-mips.org] Namens Daniel Laird
-> Verzonden: donderdag 28 februari 2008 13:58
-> Aan: linux-mips@linux-mips.org
-> Onderwerp: PNX8550 Broken on Linux 2.6.24 - Interrupt issues?
-> 
-> Hi all.
-> 
-> I have been happily using Linux 2.6.22.1 for ages on PNX8550 (STB810).
->  I have recently decided to step up and move onto Linux 2.6.24 series.
-> However I am not getting very far. :-(
-> It seems that all the clock stuff has changed again (since 
-> 2.6.22.1) and this is causing issues.
-> The board crashes as soon as local_irq_enable is called in main.c
-> 
-> I was wondering if anyone out there might also be running on 
-> an STB810/JBS PNX8550 based system and have any ideas as to 
-> why I am crashing.
-> I know that PNX8550 does not enable the R4K Clock source 
-> stuff as the chip is a bit 'special' and requires the two 
-> timers to be used instead of one.
-> 
-> As far as I can see I think my interrupts are not being setup.
-> 
-> Any help, ideas etc are appreciated.
-> 
-> Daniel Laird
+>> ---
+>>  drivers/ssb/driver_pcicore.c |    2 +-
+>>  1 files changed, 1 insertions(+), 1 deletions(-)
+>>
+>> diff --git a/drivers/ssb/driver_pcicore.c b/drivers/ssb/driver_pcicore.c
+>> index 2faaa90..191db7a 100644
+>> --- a/drivers/ssb/driver_pcicore.c
+>> +++ b/drivers/ssb/driver_pcicore.c
+>> @@ -362,7 +362,7 @@ static int pcicore_is_in_hostmode(struct ssb_pcicore *pc)
+>>  	    chipid_top != 0x5300)
+>>  		return 0;
+>>  
+>> -	if (bus->sprom.r1.boardflags_lo & SSB_PCICORE_BFL_NOPCI)
+>> +	if (bus->sprom.boardflags_lo & SSB_PCICORE_BFL_NOPCI)
+>>  		return 0;
+>>  
+>>  	/* The 200-pin BCM4712 package does not bond out PCI. Even when
+>> -- 
+>> 1.5.4.1
+>>
 > 
 > 
+> 
+
+
+-- 
+  .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
+ : :' :  Debian developer           | Electrical Engineer
+ `. `'   aurel32@debian.org         | aurelien@aurel32.net
+   `-    people.debian.org/~aurel32 | www.aurel32.net

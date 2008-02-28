@@ -1,78 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Feb 2008 14:11:49 +0000 (GMT)
-Received: from hall.aurel32.net ([88.191.38.19]:1001 "EHLO hall.aurel32.net")
-	by ftp.linux-mips.org with ESMTP id S28591014AbYB1OLr (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 28 Feb 2008 14:11:47 +0000
-Received: from anguille.univ-lyon1.fr ([134.214.4.207])
-	by hall.aurel32.net with esmtpsa (TLS-1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-	(Exim 4.63)
-	(envelope-from <aurelien@aurel32.net>)
-	id 1JUjTv-0006d5-LG; Thu, 28 Feb 2008 15:11:31 +0100
-Message-ID: <47C6C10E.9000300@aurel32.net>
-Date:	Thu, 28 Feb 2008 15:11:26 +0100
-From:	Aurelien Jarno <aurelien@aurel32.net>
-User-Agent: IceDove 1.5.0.14pre (X11/20080208)
-MIME-Version: 1.0
-To:	"John W. Linville" <linville@tuxdriver.com>
-CC:	Michael Buesch <mb@bu3sch.de>, Adrian Bunk <bunk@kernel.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Feb 2008 15:03:46 +0000 (GMT)
+Received: from ra.tuxdriver.com ([70.61.120.52]:54542 "EHLO ra.tuxdriver.com")
+	by ftp.linux-mips.org with ESMTP id S28591247AbYB1PDn (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 28 Feb 2008 15:03:43 +0000
+Received: from ra.tuxdriver.com (ra.tuxdriver.com [127.0.0.1])
+	by ra.tuxdriver.com (8.14.0/8.13.7) with ESMTP id m1SF1x27029163
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Thu, 28 Feb 2008 10:02:14 -0500
+Received: (from uucp@localhost)
+	by ra.tuxdriver.com (8.14.0/8.14.0/Submit) with UUCP id m1SEk4se029014;
+	Thu, 28 Feb 2008 09:46:04 -0500
+Received: from linville-t43.mobile (localhost.localdomain [127.0.0.1])
+	by linville-t43.mobile (8.14.1/8.13.8) with ESMTP id m1SEfw1v002361;
+	Thu, 28 Feb 2008 09:41:58 -0500
+Received: (from linville@localhost)
+	by linville-t43.mobile (8.14.1/8.14.1/Submit) id m1SEfwwX002360;
+	Thu, 28 Feb 2008 09:41:58 -0500
+Date:	Thu, 28 Feb 2008 09:41:58 -0500
+From:	"John W. Linville" <linville@tuxdriver.com>
+To:	Aurelien Jarno <aurelien@aurel32.net>
+Cc:	Michael Buesch <mb@bu3sch.de>, Adrian Bunk <bunk@kernel.org>,
 	Larry Finger <Larry.Finger@lwfinger.net>, ralf@linux-mips.org,
 	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] [SSB] PCI core driver: use new SPROM data structure
-References: <20080217200947.GH1403@cs181133002.pp.htv.fi> <20080218100126.GA22519@hall.aurel32.net> <20080218100257.GB22519@hall.aurel32.net> <200802181910.46581.mb@bu3sch.de>
-In-Reply-To: <200802181910.46581.mb@bu3sch.de>
-Content-Type: text/plain; charset=ISO-8859-15
+Message-ID: <20080228144158.GC3063@tuxdriver.com>
+References: <20080217200947.GH1403@cs181133002.pp.htv.fi> <20080218100126.GA22519@hall.aurel32.net> <20080218100257.GB22519@hall.aurel32.net> <200802181910.46581.mb@bu3sch.de> <47C6C10E.9000300@aurel32.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Return-Path: <aurelien@aurel32.net>
+In-Reply-To: <47C6C10E.9000300@aurel32.net>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <linville@tuxdriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18316
+X-archive-position: 18317
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: linville@tuxdriver.com
 Precedence: bulk
 X-list: linux-mips
 
-Michael Buesch a écrit :
-> On Monday 18 February 2008 11:02:57 Aurelien Jarno wrote:
->> Switch the SSB PCI core driver to the new SPROM data structure now that
->> the old one has been removed.
->>
->> Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+On Thu, Feb 28, 2008 at 03:11:26PM +0100, Aurelien Jarno wrote:
+> Michael Buesch a écrit :
+> > On Monday 18 February 2008 11:02:57 Aurelien Jarno wrote:
+> >> Switch the SSB PCI core driver to the new SPROM data structure now that
+> >> the old one has been removed.
+> >>
+> >> Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+> > 
+> > Acked-by: Michael Buesch <mb@bu3sch.de>
+> > 
+> > John, can you please apply this?
 > 
-> Acked-by: Michael Buesch <mb@bu3sch.de>
-> 
-> John, can you please apply this?
+> John, any news about this patch?
 
-John, any news about this patch?
+I'm sorry, I must have missed it.  I have to respin the pull request
+I sent to Dave M. yesterday anyway, so I'll include it in that.
 
->> ---
->>  drivers/ssb/driver_pcicore.c |    2 +-
->>  1 files changed, 1 insertions(+), 1 deletions(-)
->>
->> diff --git a/drivers/ssb/driver_pcicore.c b/drivers/ssb/driver_pcicore.c
->> index 2faaa90..191db7a 100644
->> --- a/drivers/ssb/driver_pcicore.c
->> +++ b/drivers/ssb/driver_pcicore.c
->> @@ -362,7 +362,7 @@ static int pcicore_is_in_hostmode(struct ssb_pcicore *pc)
->>  	    chipid_top != 0x5300)
->>  		return 0;
->>  
->> -	if (bus->sprom.r1.boardflags_lo & SSB_PCICORE_BFL_NOPCI)
->> +	if (bus->sprom.boardflags_lo & SSB_PCICORE_BFL_NOPCI)
->>  		return 0;
->>  
->>  	/* The 200-pin BCM4712 package does not bond out PCI. Even when
->> -- 
->> 1.5.4.1
->>
-> 
-> 
-> 
+Thanks for reminding me!
 
-
+John
 -- 
-  .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
- : :' :  Debian developer           | Electrical Engineer
- `. `'   aurel32@debian.org         | aurelien@aurel32.net
-   `-    people.debian.org/~aurel32 | www.aurel32.net
+John W. Linville
+linville@tuxdriver.com

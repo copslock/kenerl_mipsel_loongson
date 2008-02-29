@@ -1,269 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Feb 2008 01:30:26 +0000 (GMT)
-Received: from relay01.mx.bawue.net ([193.7.176.67]:50617 "EHLO
-	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
-	id S28593144AbYB2BaX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 29 Feb 2008 01:30:23 +0000
-Received: from lagash (88-106-132-201.dynamic.dsl.as9105.com [88.106.132.201])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by relay01.mx.bawue.net (Postfix) with ESMTP id 36F9C48916;
-	Fri, 29 Feb 2008 02:30:18 +0100 (CET)
-Received: from ths by lagash with local (Exim 4.69)
-	(envelope-from <ths@networkno.de>)
-	id 1JUu4n-0003Qs-4X; Fri, 29 Feb 2008 01:30:17 +0000
-Date:	Fri, 29 Feb 2008 01:30:17 +0000
-From:	Thiemo Seufer <ths@networkno.de>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] Fix PIO IDE on Broadcom SWARM
-Message-ID: <20080229013017.GB18731@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Feb 2008 15:40:43 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:58247 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S28594800AbYB2Pkl (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 29 Feb 2008 15:40:41 +0000
+Received: from [192.168.1.234] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 10CAC3EC9; Fri, 29 Feb 2008 07:40:37 -0800 (PST)
+Message-ID: <47C827B8.5050209@ru.mvista.com>
+Date:	Fri, 29 Feb 2008 18:41:44 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.17+20080114 (2008-01-14)
-Return-Path: <ths@networkno.de>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Daniel Laird <daniel.j.laird@nxp.com>, linux-mips@linux-mips.org
+Subject: Re: PNX8550 Broken on Linux 2.6.24 - Interrupt issues?
+References: <64660ef00802280457i3eef020chd70f85c011c5a770@mail.gmail.com> <20080228222638.GB25013@linux-mips.org>
+In-Reply-To: <20080228222638.GB25013@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18323
+X-archive-position: 18324
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-This patch marks pages tainted by PIO IDE as dirty, instead of trying
-to flush them right away. This
+Hello.
 
-a) fixes PIO IDE for systems without dcache aliases (which lacked
-   the necessary cache flush so far)
-b) improves performance a bit, since some pages may never need a
-   cache flush
-c) obsoletes local_flush_data_cache_page
+Ralf Baechle wrote:
 
+>>I have been happily using Linux 2.6.22.1 for ages on PNX8550 (STB810).
+>> I have recently decided to step up and move onto Linux 2.6.24 series.
+>>However I am not getting very far. :-(
 
-Signed-off-by: Thiemo Seufer <ths@networkno.de>
+    Heh, Daniel, you're not alone -- the Alchemy code got much more breakage 
+before 2.6.24... :-)
 
-Index: linux.git/include/asm-mips/mach-generic/ide.h
-===================================================================
---- linux.git.orig/include/asm-mips/mach-generic/ide.h	2008-02-29 00:16:03.000000000 +0000
-+++ linux.git/include/asm-mips/mach-generic/ide.h	2008-02-29 00:23:59.000000000 +0000
-@@ -107,107 +107,66 @@
- #endif
- 
- /* MIPS port and memory-mapped I/O string operations.  */
--static inline void __ide_flush_prologue(void)
-+static inline void __ide_set_pages_dirty(void *addr, unsigned long size)
- {
--#ifdef CONFIG_SMP
--	if (cpu_has_dc_aliases)
--		preempt_disable();
--#endif
--}
-+	unsigned long end = addr + size;
- 
--static inline void __ide_flush_epilogue(void)
--{
--#ifdef CONFIG_SMP
--	if (cpu_has_dc_aliases)
--		preempt_enable();
--#endif
--}
--
--static inline void __ide_flush_dcache_range(unsigned long addr, unsigned long size)
--{
--	if (cpu_has_dc_aliases) {
--		unsigned long end = addr + size;
--
--		while (addr < end) {
--			local_flush_data_cache_page((void *)addr);
--			addr += PAGE_SIZE;
--		}
-+	while (addr < end) {
-+		SetPageDcacheDirty(virt_to_page(addr));
-+		addr += PAGE_SIZE;
- 	}
- }
- 
--/*
-- * insw() and gang might be called with interrupts disabled, so we can't
-- * send IPIs for flushing due to the potencial of deadlocks, see the comment
-- * above smp_call_function() in arch/mips/kernel/smp.c.  We work around the
-- * problem by disabling preemption so we know we actually perform the flush
-- * on the processor that actually has the lines to be flushed which hopefully
-- * is even better for performance anyway.
-- */
- static inline void __ide_insw(unsigned long port, void *addr,
- 	unsigned int count)
- {
--	__ide_flush_prologue();
- 	insw(port, addr, count);
--	__ide_flush_dcache_range((unsigned long)addr, count * 2);
--	__ide_flush_epilogue();
-+	__ide_set_pages_dirty(addr, count * 2);
- }
- 
--static inline void __ide_insl(unsigned long port, void *addr, unsigned int count)
-+static inline void __ide_insl(unsigned long port, void *addr,
-+	unsigned int count)
- {
--	__ide_flush_prologue();
- 	insl(port, addr, count);
--	__ide_flush_dcache_range((unsigned long)addr, count * 4);
--	__ide_flush_epilogue();
-+	__ide_set_pages_dirty(addr, count * 4);
- }
- 
- static inline void __ide_outsw(unsigned long port, const void *addr,
- 	unsigned long count)
- {
--	__ide_flush_prologue();
- 	outsw(port, addr, count);
--	__ide_flush_dcache_range((unsigned long)addr, count * 2);
--	__ide_flush_epilogue();
-+	__ide_set_pages_dirty(addr, count * 2);
- }
- 
- static inline void __ide_outsl(unsigned long port, const void *addr,
- 	unsigned long count)
- {
--	__ide_flush_prologue();
- 	outsl(port, addr, count);
--	__ide_flush_dcache_range((unsigned long)addr, count * 4);
--	__ide_flush_epilogue();
-+	__ide_set_pages_dirty(addr, count * 4);
- }
- 
- static inline void __ide_mm_insw(void __iomem *port, void *addr, u32 count)
- {
--	__ide_flush_prologue();
- 	readsw(port, addr, count);
--	__ide_flush_dcache_range((unsigned long)addr, count * 2);
--	__ide_flush_epilogue();
-+	__ide_set_pages_dirty(addr, count * 2);
- }
- 
- static inline void __ide_mm_insl(void __iomem *port, void *addr, u32 count)
- {
--	__ide_flush_prologue();
- 	readsl(port, addr, count);
--	__ide_flush_dcache_range((unsigned long)addr, count * 4);
--	__ide_flush_epilogue();
-+	__ide_set_pages_dirty(addr, count * 4);
- }
- 
- static inline void __ide_mm_outsw(void __iomem *port, void *addr, u32 count)
- {
--	__ide_flush_prologue();
- 	writesw(port, addr, count);
--	__ide_flush_dcache_range((unsigned long)addr, count * 2);
--	__ide_flush_epilogue();
-+	__ide_set_pages_dirty(addr, count * 2);
- }
- 
- static inline void __ide_mm_outsl(void __iomem * port, void *addr, u32 count)
- {
--	__ide_flush_prologue();
- 	writesl(port, addr, count);
--	__ide_flush_dcache_range((unsigned long)addr, count * 4);
--	__ide_flush_epilogue();
-+	__ide_set_pages_dirty(addr, count * 4);
- }
- 
- /* ide_insw calls insw, not __ide_insw.  Why? */
-Index: linux.git/arch/mips/mm/c-r3k.c
-===================================================================
---- linux.git.orig/arch/mips/mm/c-r3k.c	2008-02-29 00:53:35.000000000 +0000
-+++ linux.git/arch/mips/mm/c-r3k.c	2008-02-29 00:53:55.000000000 +0000
-@@ -266,10 +266,6 @@
- 		r3k_flush_icache_range(kaddr, kaddr + PAGE_SIZE);
- }
- 
--static void local_r3k_flush_data_cache_page(void *addr)
--{
--}
--
- static void r3k_flush_data_cache_page(unsigned long addr)
- {
- }
-@@ -322,7 +318,6 @@
- 	flush_icache_range = r3k_flush_icache_range;
- 
- 	flush_cache_sigtramp = r3k_flush_cache_sigtramp;
--	local_flush_data_cache_page = local_r3k_flush_data_cache_page;
- 	flush_data_cache_page = r3k_flush_data_cache_page;
- 
- 	_dma_cache_wback_inv = r3k_dma_cache_wback_inv;
-Index: linux.git/arch/mips/mm/c-r4k.c
-===================================================================
---- linux.git.orig/arch/mips/mm/c-r4k.c	2008-02-29 00:53:34.000000000 +0000
-+++ linux.git/arch/mips/mm/c-r4k.c	2008-02-29 00:55:47.000000000 +0000
-@@ -1289,7 +1289,6 @@
- 
- 	flush_cache_sigtramp	= r4k_flush_cache_sigtramp;
- 	flush_icache_all	= r4k_flush_icache_all;
--	local_flush_data_cache_page	= local_r4k_flush_data_cache_page;
- 	flush_data_cache_page	= r4k_flush_data_cache_page;
- 	flush_icache_range	= r4k_flush_icache_range;
- 
-Index: linux.git/arch/mips/mm/c-tx39.c
-===================================================================
---- linux.git.orig/arch/mips/mm/c-tx39.c	2008-02-29 00:53:34.000000000 +0000
-+++ linux.git/arch/mips/mm/c-tx39.c	2008-02-29 00:54:46.000000000 +0000
-@@ -210,11 +210,6 @@
- 		tx39_blast_icache_page_indexed(page);
- }
- 
--static void local_tx39_flush_data_cache_page(void * addr)
--{
--	tx39_blast_dcache_page((unsigned long)addr);
--}
--
- static void tx39_flush_data_cache_page(unsigned long addr)
- {
- 	tx39_blast_dcache_page(addr);
-@@ -352,7 +347,6 @@
- 		flush_icache_range	= (void *) tx39h_flush_icache_all;
- 
- 		flush_cache_sigtramp	= (void *) tx39h_flush_icache_all;
--		local_flush_data_cache_page	= (void *) tx39h_flush_icache_all;
- 		flush_data_cache_page	= (void *) tx39h_flush_icache_all;
- 
- 		_dma_cache_wback_inv	= tx39h_dma_cache_wback_inv;
-@@ -377,7 +371,6 @@
- 		flush_icache_range = tx39_flush_icache_range;
- 
- 		flush_cache_sigtramp = tx39_flush_cache_sigtramp;
--		local_flush_data_cache_page = local_tx39_flush_data_cache_page;
- 		flush_data_cache_page = tx39_flush_data_cache_page;
- 
- 		_dma_cache_wback_inv = tx39_dma_cache_wback_inv;
-Index: linux.git/arch/mips/mm/cache.c
-===================================================================
---- linux.git.orig/arch/mips/mm/cache.c	2008-02-29 00:53:34.000000000 +0000
-+++ linux.git/arch/mips/mm/cache.c	2008-02-29 00:56:58.000000000 +0000
-@@ -32,11 +32,9 @@
- 
- /* MIPS specific cache operations */
- void (*flush_cache_sigtramp)(unsigned long addr);
--void (*local_flush_data_cache_page)(void * addr);
- void (*flush_data_cache_page)(unsigned long addr);
- void (*flush_icache_all)(void);
- 
--EXPORT_SYMBOL_GPL(local_flush_data_cache_page);
- EXPORT_SYMBOL(flush_data_cache_page);
- 
- #ifdef CONFIG_DMA_NONCOHERENT
-Index: linux.git/include/asm-mips/cacheflush.h
-===================================================================
---- linux.git.orig/include/asm-mips/cacheflush.h	2008-02-29 00:53:34.000000000 +0000
-+++ linux.git/include/asm-mips/cacheflush.h	2008-02-29 00:57:12.000000000 +0000
-@@ -76,7 +76,6 @@
- 
- extern void (*flush_cache_sigtramp)(unsigned long addr);
- extern void (*flush_icache_all)(void);
--extern void (*local_flush_data_cache_page)(void * addr);
- extern void (*flush_data_cache_page)(unsigned long addr);
- 
- /*
+>>The board crashes as soon as local_irq_enable is called in main.c
+
+>>I was wondering if anyone out there might also be running on an
+>>STB810/JBS PNX8550 based system and have any ideas as to why I am
+>>crashing.
+>>I know that PNX8550 does not enable the R4K Clock source stuff as the
+>>chip is a bit 'special' and requires the two timers to be used instead
+>>of one.
+
+> csrc-r4k.c and cevt-r4k.c assume a standard compliant R4000-style
+> c0_count and c0_compare register.  The PNX chips violate the expected
+> behaviour badly so can't use these functions.
+
+> But that's not very much of a problem.  The timer code is module and
+> it is easy to write something like csrc-pnx.c and cevt-pnx.c to drive
+> a PNX style count/compare timer.
+
+    The PNX counter 0 can still be used as the standards clocksource with some 
+ad-hockery (setting comparator to all ones and hooking the interrupt to clear 
+it) but Vitaly went another way using counter 1 for clocksource, and counter 0 
+as clockevent...
+
+> Will look over the code to see if I can spot what crashes the PNXes.
+
+>   Ralf
+
+WBR, Sergei

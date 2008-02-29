@@ -1,71 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Feb 2008 15:40:43 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:58247 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S28594800AbYB2Pkl (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 29 Feb 2008 15:40:41 +0000
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 10CAC3EC9; Fri, 29 Feb 2008 07:40:37 -0800 (PST)
-Message-ID: <47C827B8.5050209@ru.mvista.com>
-Date:	Fri, 29 Feb 2008 18:41:44 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Feb 2008 23:12:39 +0000 (GMT)
+Received: from mail.lysator.liu.se ([130.236.254.3]:31633 "EHLO
+	mail.lysator.liu.se") by ftp.linux-mips.org with ESMTP
+	id S28596154AbYB2XMh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 29 Feb 2008 23:12:37 +0000
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.lysator.liu.se (Postfix) with ESMTP id 5E0E7200A237
+	for <linux-mips@linux-mips.org>; Sat,  1 Mar 2008 00:12:31 +0100 (CET)
+Received: from mail.lysator.liu.se ([127.0.0.1])
+	by localhost (lenin.lysator.liu.se [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id 22954-01-78 for <linux-mips@linux-mips.org>;
+	Sat, 1 Mar 2008 00:12:31 +0100 (CET)
+Received: from [192.168.27.166] (152-186-96-87.cust.blixtvik.se [87.96.186.152])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.lysator.liu.se (Postfix) with ESMTP id F3584200A236
+	for <linux-mips@linux-mips.org>; Sat,  1 Mar 2008 00:12:30 +0100 (CET)
+Message-ID: <47C89064.7000202@27m.se>
+Date:	Sat, 01 Mar 2008 00:08:20 +0100
+From:	Markus Gothe <markus.gothe@27m.se>
+User-Agent: Thunderbird 2.0.0.12 (X11/20080227)
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Daniel Laird <daniel.j.laird@nxp.com>, linux-mips@linux-mips.org
-Subject: Re: PNX8550 Broken on Linux 2.6.24 - Interrupt issues?
-References: <64660ef00802280457i3eef020chd70f85c011c5a770@mail.gmail.com> <20080228222638.GB25013@linux-mips.org>
-In-Reply-To: <20080228222638.GB25013@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+To:	linux-mips@linux-mips.org
+Subject: Fix for dummy-keyboard and virtual console on 2.4.36.1
+X-Enigmail-Version: 0.95.0
+Content-Type: multipart/mixed;
+ boundary="------------060309040604080906070304"
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at lysator.liu.se
+Return-Path: <markus.gothe@27m.se>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18324
+X-archive-position: 18325
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: markus.gothe@27m.se
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+This is a multi-part message in MIME format.
+--------------060309040604080906070304
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Ralf Baechle wrote:
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
->>I have been happily using Linux 2.6.22.1 for ages on PNX8550 (STB810).
->> I have recently decided to step up and move onto Linux 2.6.24 series.
->>However I am not getting very far. :-(
+See attached patch... For some reason gcc 3.4 complains.
 
-    Heh, Daniel, you're not alone -- the Alchemy code got much more breakage 
-before 2.6.24... :-)
+Regards,
+Markus Gothe
 
->>The board crashes as soon as local_irq_enable is called in main.c
+- --
+_______________________________________
 
->>I was wondering if anyone out there might also be running on an
->>STB810/JBS PNX8550 based system and have any ideas as to why I am
->>crashing.
->>I know that PNX8550 does not enable the R4K Clock source stuff as the
->>chip is a bit 'special' and requires the two timers to be used instead
->>of one.
+Mr Markus Gothe
+Software Engineer
 
-> csrc-r4k.c and cevt-r4k.c assume a standard compliant R4000-style
-> c0_count and c0_compare register.  The PNX chips violate the expected
-> behaviour badly so can't use these functions.
+Phone: +46 (0)13 21 81 20 (ext. 1046)
+Fax: +46 (0)13 21 21 15
+Mobile: +46 (0)70 348 44 35
+Diskettgatan 11, SE-583 35 Linköping, Sweden
+www.27m.com
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
 
-> But that's not very much of a problem.  The timer code is module and
-> it is easy to write something like csrc-pnx.c and cevt-pnx.c to drive
-> a PNX style count/compare timer.
+iD8DBQFHyJBi6I0XmJx2NrwRCO05AJ92Bi4K0NEizm2rRruyjC93hW00cACguw+u
+kHm6vINYnEw3rgxfnv+8eV4=
+=u7Vb
+-----END PGP SIGNATURE-----
 
-    The PNX counter 0 can still be used as the standards clocksource with some 
-ad-hockery (setting comparator to all ones and hooking the interrupt to clear 
-it) but Vitaly went another way using counter 1 for clocksource, and counter 0 
-as clockevent...
 
-> Will look over the code to see if I can spot what crashes the PNXes.
+--------------060309040604080906070304
+Content-Type: text/x-patch;
+ name="keyboard_h-fix.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="keyboard_h-fix.patch"
 
->   Ralf
+--- linux-2.4.36.1.orig/include/asm-mips/keyboard.orig.h	2008-02-29 22:25:05.000000000 +0100
++++ linux-2.4.36.1/include/asm-mips/keyboard.h	2008-02-29 22:24:40.000000000 +0100
+@@ -85,7 +85,7 @@
+ extern char kbd_unexpected_up(unsigned char keycode);
+ extern void kbd_leds(unsigned char leds);
+ extern void kbd_init_hw(void);
+-extern unsigned char *kbd_sysrq_xlate;
++extern unsigned char kbd_sysrq_xlate[];
+ 
+ extern unsigned char kbd_sysrq_key;
+ #define SYSRQ_KEY kbd_sysrq_key
 
-WBR, Sergei
+--------------060309040604080906070304--

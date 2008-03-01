@@ -1,47 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Feb 2008 23:42:49 +0000 (GMT)
-Received: from post2.wesleyan.edu ([129.133.6.128]:18662 "EHLO
-	post2.wesleyan.edu") by ftp.linux-mips.org with ESMTP
-	id S28596238AbYB2Xmr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 29 Feb 2008 23:42:47 +0000
-Received: from webmail.wesleyan.edu (pony2.wesleyan.edu [129.133.6.193])
-	by courier2.wesleyan.edu (8.13.6/8.13.6) with ESMTP id m1TNgdqK026734
-	for <linux-mips@linux-mips.org>; Fri, 29 Feb 2008 18:42:39 -0500
-Received: from 69.183.100.66
-        (SquirrelMail authenticated user sknauert)
-        by webmail.wesleyan.edu with HTTP;
-        Sat, 1 Mar 2008 00:42:39 +0100 (CET)
-Message-ID: <40668.69.183.100.66.1204328559.squirrel@webmail.wesleyan.edu>
-Date:	Sat, 1 Mar 2008 00:42:39 +0100 (CET)
-Subject: Kernel mode-setting and PCI video on MIPS?
-From:	sknauert@wesleyan.edu
-To:	linux-mips@linux-mips.org
-User-Agent: SquirrelMail/1.4.10a
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Mar 2008 00:02:52 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:11976 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S28596315AbYCAACu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 1 Mar 2008 00:02:50 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m2102mfN028235;
+	Sat, 1 Mar 2008 00:02:49 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m2102l4U028233;
+	Sat, 1 Mar 2008 00:02:47 GMT
+Date:	Sat, 1 Mar 2008 00:02:47 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Thiemo Seufer <ths@networkno.de>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Fix typo in comment
+Message-ID: <20080301000247.GA28191@linux-mips.org>
+References: <20080229004347.GA18731@networkno.de>
 MIME-Version: 1.0
-Content-Type: text/plain;charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Priority: 3 (Normal)
-Importance: Normal
-X-Wesleyan-MailScanner-Information: Please contact the ISP for more information
-X-Wesleyan-MailScanner:	Found to be clean
-X-Originating-IP: 129.133.6.193
-X-MailScanner-From: sknauert@wesleyan.edu
-Return-Path: <sknauert@wesleyan.edu>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20080229004347.GA18731@networkno.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18326
+X-archive-position: 18327
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sknauert@wesleyan.edu
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-I saw some of the recent work in trying to get graphics setup out of the X
-server and into the kernel. I was wondering if that work (which is planned
-for 2.6.26) would mean that any card with a supported kernel part could
-then be used by an X server that supported the new kernel API.
+On Fri, Feb 29, 2008 at 12:43:47AM +0000, Thiemo Seufer wrote:
 
-Also, since this mode-setting directly addresses the hardware and does not
-rely on BIOS, if this means it would effectively be cross-platform (or at
-least easily portable).
+Applied.  Thanks,
+
+  Ralf

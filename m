@@ -1,275 +1,397 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Mar 2008 12:52:37 +0000 (GMT)
-Received: from relay01.mx.bawue.net ([193.7.176.67]:45245 "EHLO
-	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
-	id S28601036AbYCCMwe (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 3 Mar 2008 12:52:34 +0000
-Received: from lagash (intrt.mips-uk.com [194.74.144.130])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by relay01.mx.bawue.net (Postfix) with ESMTP id EC22348918;
-	Mon,  3 Mar 2008 13:52:28 +0100 (CET)
-Received: from ths by lagash with local (Exim 4.69)
-	(envelope-from <ths@networkno.de>)
-	id 1JWA9c-0006dX-4M; Mon, 03 Mar 2008 12:52:28 +0000
-Date:	Mon, 3 Mar 2008 12:52:28 +0000
-From:	Thiemo Seufer <ths@networkno.de>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: Re: [PATCH] Fix PIO IDE on Broadcom SWARM
-Message-ID: <20080303125228.GD25396@networkno.de>
-References: <20080229013017.GB18731@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 04 Mar 2008 00:14:13 +0000 (GMT)
+Received: from dotcorporate.com ([67.50.105.12]:54975 "EHLO
+	dotexchange.dotcorporation.com") by ftp.linux-mips.org with ESMTP
+	id S28601221AbYCDAOL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 4 Mar 2008 00:14:11 +0000
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080229013017.GB18731@networkno.de>
-User-Agent: Mutt/1.5.17+20080114 (2008-01-14)
-Return-Path: <ths@networkno.de>
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C87D8C.AABEC29A"
+Subject: Re: smp8634 add memory at dram1
+Date:	Mon, 3 Mar 2008 16:14:09 -0800
+Message-ID: <2D30722FBBDE6749973243F4F01BE984A242CA@dotexchange.dotcorporation.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Re: smp8634 add memory at dram1
+Thread-Index: Ach9jKrAm1qYdsZ0S3224VXIW+0Tqg==
+From:	"James Zipperer" <jamesz@modsystems.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <jamesz@modsystems.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18328
+X-archive-position: 18329
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: jamesz@modsystems.com
 Precedence: bulk
 X-list: linux-mips
 
-This patch marks pages tainted by PIO IDE as dirty, instead of trying
-to flush them right away. This
+This is a multi-part message in MIME format.
 
-a) fixes PIO IDE for systems without dcache aliases (which lacked
-   the necessary cache flush so far)
-b) improves performance a bit, since some pages may never need a
-   cache flush
-c) obsoletes local_flush_data_cache_page
+------_=_NextPart_001_01C87D8C.AABEC29A
+Content-Type: text/plain;
+	charset="US-ASCII"
+Content-Transfer-Encoding: quoted-printable
+
+=20
+David Kuk" <david.kuk@entone.com <mailto:david.kuk%40entone.com> >
+wrote:
+> Dear YH
+>=20
+> I am sorry i have been disturbed by other issues, the memory problem
+seems little bit difficult
+> to me. In our case, i saw that in prom.c under mips/tango2, the
+function prom_init , it shows
+> that :
+> memcfg_t
+> *m=3D(memcfg_t*)KSEG1ADDR(MEM_BASE_dram_controller_0+FM_MEMCFG);=20
 
 
-Signed-off-by: Thiemo Seufer <ths@networkno.de>
----
+> it's seems the kernel has hard coded to point the starting memory to
+DRAM controller 0's
+> starting address, if now, i have remap 64mb memory at DRAM controller
+1 at remap register
+> 4, The problem is come, the kernel will ignore any memory before dram
+controller 0's starting
+> address. Even i have add 0x0c000000--0x10000000 as boot memory, it
+still think it's first
+> usable pfn is at 0x10000000.=20
+>=20
+> my solution is 3 steps
+>=20
+> 1, modify the compiler, let the linux start address moved to
+0x0c000000,=20
+> 2. modify the YAMON, and map the DRAM 1 controller to remap register4
+in YAMON stage
+> 3, modify the linux, to set the two piece of memory to the kernel as
+boot memory .=20
+>=20
+> it's this possible, or it have other better solution ?
+>=20
+> thx a lot for your kindly help !
+>=20
+>=20
+> best wishes
+> David
+=20
+I'm running out of memory in linux on the smp86xx and attempting to
+implement this solution.  Did you ever get it to work?  No luck for me
+yet.  I'm still a bit unclear why you must switch linux to run off DRAM
+1 instead of leaving it on DRAM 0 and adding an additional call to
+add_memory_region in prom_init for DRAM 1.  But then again, I haven't
+gotten that to work yet either :)
+=20
+Any info/patches are greatly appreciated.  Thanks!
+=20
+-James
+=20
 
-Changed to avoid some compiler warnings.
+------_=_NextPart_001_01C87D8C.AABEC29A
+Content-Type: text/html;
+	charset="US-ASCII"
+Content-Transfer-Encoding: quoted-printable
 
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
 
-Index: linux.git/include/asm-mips/mach-generic/ide.h
-===================================================================
---- linux.git.orig/include/asm-mips/mach-generic/ide.h	2008-03-02 20:15:24.000000000 +0000
-+++ linux.git/include/asm-mips/mach-generic/ide.h	2008-03-02 21:52:46.000000000 +0000
-@@ -107,107 +107,66 @@
- #endif
- 
- /* MIPS port and memory-mapped I/O string operations.  */
--static inline void __ide_flush_prologue(void)
-+static inline void __ide_set_pages_dirty(const void *addr, unsigned long size)
- {
--#ifdef CONFIG_SMP
--	if (cpu_has_dc_aliases)
--		preempt_disable();
--#endif
--}
-+	unsigned long end = (unsigned long)addr + size;
- 
--static inline void __ide_flush_epilogue(void)
--{
--#ifdef CONFIG_SMP
--	if (cpu_has_dc_aliases)
--		preempt_enable();
--#endif
--}
--
--static inline void __ide_flush_dcache_range(unsigned long addr, unsigned long size)
--{
--	if (cpu_has_dc_aliases) {
--		unsigned long end = addr + size;
--
--		while (addr < end) {
--			local_flush_data_cache_page((void *)addr);
--			addr += PAGE_SIZE;
--		}
-+	while ((unsigned long)addr < end) {
-+		SetPageDcacheDirty(virt_to_page(addr));
-+		addr += PAGE_SIZE;
- 	}
- }
- 
--/*
-- * insw() and gang might be called with interrupts disabled, so we can't
-- * send IPIs for flushing due to the potencial of deadlocks, see the comment
-- * above smp_call_function() in arch/mips/kernel/smp.c.  We work around the
-- * problem by disabling preemption so we know we actually perform the flush
-- * on the processor that actually has the lines to be flushed which hopefully
-- * is even better for performance anyway.
-- */
- static inline void __ide_insw(unsigned long port, void *addr,
- 	unsigned int count)
- {
--	__ide_flush_prologue();
- 	insw(port, addr, count);
--	__ide_flush_dcache_range((unsigned long)addr, count * 2);
--	__ide_flush_epilogue();
-+	__ide_set_pages_dirty(addr, count * 2);
- }
- 
--static inline void __ide_insl(unsigned long port, void *addr, unsigned int count)
-+static inline void __ide_insl(unsigned long port, void *addr,
-+	unsigned int count)
- {
--	__ide_flush_prologue();
- 	insl(port, addr, count);
--	__ide_flush_dcache_range((unsigned long)addr, count * 4);
--	__ide_flush_epilogue();
-+	__ide_set_pages_dirty(addr, count * 4);
- }
- 
- static inline void __ide_outsw(unsigned long port, const void *addr,
- 	unsigned long count)
- {
--	__ide_flush_prologue();
- 	outsw(port, addr, count);
--	__ide_flush_dcache_range((unsigned long)addr, count * 2);
--	__ide_flush_epilogue();
-+	__ide_set_pages_dirty(addr, count * 2);
- }
- 
- static inline void __ide_outsl(unsigned long port, const void *addr,
- 	unsigned long count)
- {
--	__ide_flush_prologue();
- 	outsl(port, addr, count);
--	__ide_flush_dcache_range((unsigned long)addr, count * 4);
--	__ide_flush_epilogue();
-+	__ide_set_pages_dirty(addr, count * 4);
- }
- 
- static inline void __ide_mm_insw(void __iomem *port, void *addr, u32 count)
- {
--	__ide_flush_prologue();
- 	readsw(port, addr, count);
--	__ide_flush_dcache_range((unsigned long)addr, count * 2);
--	__ide_flush_epilogue();
-+	__ide_set_pages_dirty(addr, count * 2);
- }
- 
- static inline void __ide_mm_insl(void __iomem *port, void *addr, u32 count)
- {
--	__ide_flush_prologue();
- 	readsl(port, addr, count);
--	__ide_flush_dcache_range((unsigned long)addr, count * 4);
--	__ide_flush_epilogue();
-+	__ide_set_pages_dirty(addr, count * 4);
- }
- 
- static inline void __ide_mm_outsw(void __iomem *port, void *addr, u32 count)
- {
--	__ide_flush_prologue();
- 	writesw(port, addr, count);
--	__ide_flush_dcache_range((unsigned long)addr, count * 2);
--	__ide_flush_epilogue();
-+	__ide_set_pages_dirty(addr, count * 2);
- }
- 
- static inline void __ide_mm_outsl(void __iomem * port, void *addr, u32 count)
- {
--	__ide_flush_prologue();
- 	writesl(port, addr, count);
--	__ide_flush_dcache_range((unsigned long)addr, count * 4);
--	__ide_flush_epilogue();
-+	__ide_set_pages_dirty(addr, count * 4);
- }
- 
- /* ide_insw calls insw, not __ide_insw.  Why? */
-Index: linux.git/arch/mips/mm/c-r3k.c
-===================================================================
---- linux.git.orig/arch/mips/mm/c-r3k.c	2008-03-02 20:15:24.000000000 +0000
-+++ linux.git/arch/mips/mm/c-r3k.c	2008-03-02 21:42:33.000000000 +0000
-@@ -266,10 +266,6 @@
- 		r3k_flush_icache_range(kaddr, kaddr + PAGE_SIZE);
- }
- 
--static void local_r3k_flush_data_cache_page(void *addr)
--{
--}
--
- static void r3k_flush_data_cache_page(unsigned long addr)
- {
- }
-@@ -322,7 +318,6 @@
- 	flush_icache_range = r3k_flush_icache_range;
- 
- 	flush_cache_sigtramp = r3k_flush_cache_sigtramp;
--	local_flush_data_cache_page = local_r3k_flush_data_cache_page;
- 	flush_data_cache_page = r3k_flush_data_cache_page;
- 
- 	_dma_cache_wback_inv = r3k_dma_cache_wback_inv;
-Index: linux.git/arch/mips/mm/c-r4k.c
-===================================================================
---- linux.git.orig/arch/mips/mm/c-r4k.c	2008-03-02 21:33:29.000000000 +0000
-+++ linux.git/arch/mips/mm/c-r4k.c	2008-03-02 21:42:33.000000000 +0000
-@@ -1296,7 +1296,6 @@
- 
- 	flush_cache_sigtramp	= r4k_flush_cache_sigtramp;
- 	flush_icache_all	= r4k_flush_icache_all;
--	local_flush_data_cache_page	= local_r4k_flush_data_cache_page;
- 	flush_data_cache_page	= r4k_flush_data_cache_page;
- 	flush_icache_range	= r4k_flush_icache_range;
- 
-Index: linux.git/arch/mips/mm/c-tx39.c
-===================================================================
---- linux.git.orig/arch/mips/mm/c-tx39.c	2008-03-02 20:15:24.000000000 +0000
-+++ linux.git/arch/mips/mm/c-tx39.c	2008-03-02 21:42:33.000000000 +0000
-@@ -210,11 +210,6 @@
- 		tx39_blast_icache_page_indexed(page);
- }
- 
--static void local_tx39_flush_data_cache_page(void * addr)
--{
--	tx39_blast_dcache_page((unsigned long)addr);
--}
--
- static void tx39_flush_data_cache_page(unsigned long addr)
- {
- 	tx39_blast_dcache_page(addr);
-@@ -352,7 +347,6 @@
- 		flush_icache_range	= (void *) tx39h_flush_icache_all;
- 
- 		flush_cache_sigtramp	= (void *) tx39h_flush_icache_all;
--		local_flush_data_cache_page	= (void *) tx39h_flush_icache_all;
- 		flush_data_cache_page	= (void *) tx39h_flush_icache_all;
- 
- 		_dma_cache_wback_inv	= tx39h_dma_cache_wback_inv;
-@@ -377,7 +371,6 @@
- 		flush_icache_range = tx39_flush_icache_range;
- 
- 		flush_cache_sigtramp = tx39_flush_cache_sigtramp;
--		local_flush_data_cache_page = local_tx39_flush_data_cache_page;
- 		flush_data_cache_page = tx39_flush_data_cache_page;
- 
- 		_dma_cache_wback_inv = tx39_dma_cache_wback_inv;
-Index: linux.git/arch/mips/mm/cache.c
-===================================================================
---- linux.git.orig/arch/mips/mm/cache.c	2008-03-02 20:15:24.000000000 +0000
-+++ linux.git/arch/mips/mm/cache.c	2008-03-02 21:42:33.000000000 +0000
-@@ -32,11 +32,9 @@
- 
- /* MIPS specific cache operations */
- void (*flush_cache_sigtramp)(unsigned long addr);
--void (*local_flush_data_cache_page)(void * addr);
- void (*flush_data_cache_page)(unsigned long addr);
- void (*flush_icache_all)(void);
- 
--EXPORT_SYMBOL_GPL(local_flush_data_cache_page);
- EXPORT_SYMBOL(flush_data_cache_page);
- 
- #ifdef CONFIG_DMA_NONCOHERENT
-Index: linux.git/include/asm-mips/cacheflush.h
-===================================================================
---- linux.git.orig/include/asm-mips/cacheflush.h	2008-03-02 20:15:24.000000000 +0000
-+++ linux.git/include/asm-mips/cacheflush.h	2008-03-02 21:42:33.000000000 +0000
-@@ -76,7 +76,6 @@
- 
- extern void (*flush_cache_sigtramp)(unsigned long addr);
- extern void (*flush_icache_all)(void);
--extern void (*local_flush_data_cache_page)(void * addr);
- extern void (*flush_data_cache_page)(unsigned long addr);
- 
- /*
+<head>
+<meta http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Dus-ascii">
+<meta name=3DProgId content=3DWord.Document>
+<meta name=3DGenerator content=3D"Microsoft Word 10">
+<meta name=3DOriginator content=3D"Microsoft Word 10">
+<link rel=3DFile-List href=3D"cid:filelist.xml@01C87D49.9C9ABB90">
+<!--[if gte mso 9]><xml>
+ <o:OfficeDocumentSettings>
+  <o:DoNotRelyOnCSS/>
+ </o:OfficeDocumentSettings>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <w:WordDocument>
+  <w:View>Normal</w:View>
+  <w:SpellingState>Clean</w:SpellingState>
+  <w:GrammarState>Clean</w:GrammarState>
+  <w:DocumentKind>DocumentEmail</w:DocumentKind>
+  <w:EnvelopeVis/>
+  <w:Compatibility>
+   <w:BreakWrappedTables/>
+   <w:SnapToGridInCell/>
+   <w:WrapTextWithPunct/>
+   <w:UseAsianBreakRules/>
+  </w:Compatibility>
+  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+ </w:WordDocument>
+</xml><![endif]-->
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-parent:"";
+	margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	mso-fareast-font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+p.MsoPlainText, li.MsoPlainText, div.MsoPlainText
+	{margin:0in;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Courier New";
+	mso-fareast-font-family:"Times New Roman";}
+span.SpellE
+	{mso-style-name:"";
+	mso-spl-e:yes;}
+span.GramE
+	{mso-style-name:"";
+	mso-gram-e:yes;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 77.95pt 1.0in 77.95pt;
+	mso-header-margin:.5in;
+	mso-footer-margin:.5in;
+	mso-paper-source:0;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+<!--[if gte mso 10]>
+<style>
+ /* Style Definitions */=20
+ table.MsoNormalTable
+	{mso-style-name:"Table Normal";
+	mso-tstyle-rowband-size:0;
+	mso-tstyle-colband-size:0;
+	mso-style-noshow:yes;
+	mso-style-parent:"";
+	mso-padding-alt:0in 5.4pt 0in 5.4pt;
+	mso-para-margin:0in;
+	mso-para-margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:10.0pt;
+	font-family:"Times New Roman";}
+</style>
+<![endif]-->
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple =
+style=3D'tab-interval:.5in'>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>David <span class=3DSpellE>Kuk</span>&quot; &lt;<a
+href=3D"mailto:david.kuk%40entone.com">david.kuk@entone.com</a>&gt; =
+wrote:<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; Dear YH<br>
+&gt; <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; I am sorry <span class=3DSpellE>i</span> have been =
+disturbed by
+other issues, the memory problem seems little bit =
+difficult<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; <span class=3DGramE>to</span> me. In our case, <span =
+class=3DSpellE>i</span>
+saw that in <span class=3DSpellE>prom.c</span> under mips/tango2, the =
+function <span
+class=3DSpellE>prom_<span class=3DGramE>init</span></span><span =
+class=3DGramE> ,</span>
+it shows<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; <span class=3DGramE>that =
+:</span><o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; <span =
+class=3DSpellE>memcfg_t</span><o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; *m<span class=3DGramE>=3D(</span><span =
+class=3DSpellE>memcfg_t</span>*)KSEG1ADDR(MEM_BASE_dram_controller_0+FM_M=
+EMCFG);
+<br style=3D'mso-special-character:line-break'>
+<![if !supportLineBreakNewLine]><br =
+style=3D'mso-special-character:line-break'>
+<![endif]><o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; <span class=3DGramE>it's</span> seems the kernel has hard =
+coded to
+point the starting memory to DRAM controller =
+0's<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; starting address, if now, <span class=3DSpellE>i</span> =
+have remap
+64mb memory at DRAM controller 1 at remap =
+register<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; 4, <span class=3DGramE>The</span> problem is come, the =
+kernel will
+ignore any memory before dram controller 0's =
+starting<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; address. Even <span class=3DSpellE>i</span> have add
+0x0c000000--0x10000000 as boot memory, it still think it's =
+first<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; <span class=3DGramE>usable</span> <span =
+class=3DSpellE>pfn</span> is
+at 0x10000000. <br>
+&gt; <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; <span class=3DGramE>my</span> solution is 3 steps<br>
+&gt; <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; 1, modify the compiler, let the <span =
+class=3DSpellE>linux</span>
+start address moved to 0x0c000000, <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; 2. <span class=3DGramE>modify</span> the YAMON, and map the =
+DRAM 1
+controller to remap register4 in YAMON =
+stage<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; 3, modify the <span class=3DSpellE>linux</span>, to set the =
+two
+piece of memory to the kernel as boot <span class=3DGramE>memory =
+.</span> <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; <span class=3DGramE>it's</span> this possible, or it have =
+other
+better solution ?<br>
+&gt; <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; thx a lot for your kindly <span class=3DGramE>help =
+!</span><o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; <span class=3DGramE>best</span> =
+wishes<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 face=3D"Times New Roman"><span =
+style=3D'font-size:
+12.0pt'>&gt; David<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 color=3Dblack face=3D"Times New =
+Roman"><span
+style=3D'font-size:12.0pt;color:black'><o:p>&nbsp;</o:p></span></font></p=
+>
+
+<p class=3DMsoNormal><font size=3D3 color=3Dblack face=3D"Times New =
+Roman"><span
+style=3D'font-size:12.0pt;color:black'>I'm running out of memory in =
+<span
+class=3DSpellE>linux</span> on the smp86xx and attempting to implement =
+this
+solution.<span style=3D'mso-spacerun:yes'>&nbsp; </span>Did you ever get =
+it to
+work?<span style=3D'mso-spacerun:yes'>&nbsp; </span>No luck for me =
+yet.<span
+style=3D'mso-spacerun:yes'>&nbsp; </span>I'm still a bit unclear why you =
+must
+switch <span class=3DSpellE>linux</span> to run off DRAM 1 instead of =
+leaving it
+on DRAM 0 and adding an additional call to <span =
+class=3DSpellE>add_memory_region</span>
+in <span class=3DSpellE>prom_init</span> for DRAM 1.<span
+style=3D'mso-spacerun:yes'>&nbsp; </span>But then again, I haven't =
+gotten that to
+work yet either :)<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 color=3Dblack face=3D"Times New =
+Roman"><span
+style=3D'font-size:12.0pt;color:black'><o:p>&nbsp;</o:p></span></font></p=
+>
+
+<p class=3DMsoNormal><font size=3D3 color=3Dblack face=3D"Times New =
+Roman"><span
+style=3D'font-size:12.0pt;color:black'>Any info/patches are greatly =
+appreciated.<span
+style=3D'mso-spacerun:yes'>&nbsp; =
+</span>Thanks!<o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D3 color=3Dblack face=3D"Times New =
+Roman"><span
+style=3D'font-size:12.0pt;color:black'><o:p>&nbsp;</o:p></span></font></p=
+>
+
+<p class=3DMsoNormal><font size=3D3 color=3Dblack face=3D"Times New =
+Roman"><span
+style=3D'font-size:12.0pt;color:black'>-James<o:p></o:p></span></font></p=
+>
+
+<p class=3DMsoNormal><font size=3D3 color=3Dblack face=3D"Times New =
+Roman"><span
+style=3D'font-size:12.0pt;color:black'><o:p>&nbsp;</o:p></span></font></p=
+>
+
+</div>
+
+</body>
+
+</html>
+=00
+------_=_NextPart_001_01C87D8C.AABEC29A--

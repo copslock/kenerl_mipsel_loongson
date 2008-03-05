@@ -1,95 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Mar 2008 17:03:33 +0000 (GMT)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:55465 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S28602383AbYCERDb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 5 Mar 2008 17:03:31 +0000
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 207183153C9;
-	Wed,  5 Mar 2008 17:03:30 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Wed,  5 Mar 2008 17:03:29 +0000 (UTC)
-Received: from dl2.hq2.avtrex.com ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 5 Mar 2008 09:03:15 -0800
-Message-ID: <47CED252.20800@avtrex.com>
-Date:	Wed, 05 Mar 2008 09:03:14 -0800
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 2.0.0.12 (X11/20080226)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Mar 2008 18:25:29 +0000 (GMT)
+Received: from mail.gmx.net ([213.165.64.20]:45504 "HELO mail.gmx.net")
+	by ftp.linux-mips.org with SMTP id S28603017AbYCESZ0 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 5 Mar 2008 18:25:26 +0000
+Received: (qmail invoked by alias); 05 Mar 2008 18:25:20 -0000
+Received: from vpn27.rz.tu-ilmenau.de (EHLO [192.168.1.100]) [141.24.172.27]
+  by mail.gmx.net (mp047) with SMTP; 05 Mar 2008 19:25:20 +0100
+X-Authenticated: #44099387
+X-Provags-ID: V01U2FsdGVkX18ywJsmrzYydDPYR/YZLIVkeDgiCCg7zLKa3icl4n
+	Z0AsugO2yLUOZ6
+Message-ID: <47CEE58C.7020507@gmx.net>
+Date:	Wed, 05 Mar 2008 19:25:16 +0100
+From:	Andi <opencode@gmx.net>
+User-Agent: Thunderbird 2.0.0.12 (X11/20080227)
 MIME-Version: 1.0
-To:	Andi <opencode@gmx.net>
-Cc:	linux-mips@linux-mips.org
+To:	David Daney <ddaney@avtrex.com>
+CC:	linux-mips@linux-mips.org
 Subject: Re: Problems booting Linux kernel on Sigma SMP8634 #2
-References: <47CE9388.9050808@gmx.net>
-In-Reply-To: <47CE9388.9050808@gmx.net>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+References: <47CE9388.9050808@gmx.net> <47CED252.20800@avtrex.com>
+In-Reply-To: <47CED252.20800@avtrex.com>
+X-Enigmail-Version: 0.95.0
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 05 Mar 2008 17:03:15.0676 (UTC) FILETIME=[CD9371C0:01C87EE2]
-Return-Path: <ddaney@avtrex.com>
+X-Y-GMX-Trusted: 0
+Return-Path: <opencode@gmx.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18336
+X-archive-position: 18337
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: opencode@gmx.net
 Precedence: bulk
 X-list: linux-mips
 
-Andi wrote:
-> Hey folks,
+Hi,
+
+> I build and successfully run kernels on the 8634 every day, so I don't
+> think it is a problem with the 8634 port in general.
 > 
-> first of all, sorry for _waisting_ the list with that topic again and again!
+> You should probably ask for technical support from whomever supplied
+> your hardware.  They would know the technical details about how to
+> configure the memory controller, the amount and location of the RAM on
+> the board, etc.
+
+Thats right. And I would really like to do so. But unfortunately there
+is not much information around about the hardware. Since the box
+originally runs a wince system, this project is more like a _free time_
+projects of some Linux enthusiasts.
+
+You can get a overview about this here: http://www.t-hack.com/wiki/
+There is also a forum, but unfortunately most posts are in German ..
+
+>> I am sure there some more guys around using the smp8634.
 > 
-> this question is related to that one here, posted sooner on this list:
-> http://www.linux-mips.org/archives/linux-mips/2008-02/msg00032.html
-> 
-> I spent a bit more time on this topic and found out that there is
-> seriously something going wrong with memory initialization and/or
-> handling during Linux startup.
-> 
-> I simply add "mem=32m" to the kernel command line, and the kernel runs
-> longer, at least a bit. However, it than stops with nearly the same
-> issue: Unable to handle kernel paging request at virtual address, but
-> different addresses. Tried "16m, 64m" and other values, all behave in
-> different way. Resulting to a crash at the position w/o any parameter or
->  a bit later on.
-> 
-> Since I am not so familiar MIPS and especially the fact that our hard-
-> and software is more than closed, I am asking you guys to point me where
-> to spend more time on in order to get this issue fixed and fire up a
-> kernel on this box.
+> Likely there are.  It is used in many blu-ray disk players, among other
+> things.
 
-I build and successfully run kernels on the 8634 every day, so I don't 
-think it is a problem with the 8634 port in general.
+Ok, there is not much information about the smp8634 out there, which is
+really a pity. I know that Sigma is not really interested in publishing
+there specifications. Even the gpl part is not published, but I am sure
+you already know this :-)
 
-You should probably ask for technical support from whomever supplied 
-your hardware.  They would know the technical details about how to 
-configure the memory controller, the amount and location of the RAM on 
-the board, etc.
+Do you know how to get some more detailed information about the smp8634?
 
-> 
-> I am sure there some more guys around using the smp8634.
-
-Likely there are.  It is used in many blu-ray disk players, among other 
-things.
-
-> Is it necessary
-> to load the microcode in order to get the kernel starting up?
-
-No.
+Ok, there are some parts that are not equal, like memory and flash! But
+this is a SoC, so most parts are the same.
 
 
-> Maybe we don't need the audio/video-ucode but irq-handler-ucode looks
-> very usefull ;-) Do we just have to copy this code at a certain memory
-> address?
+> N/A, the kernel does not rely on any microcode.
 
-N/A, the kernel does not rely on any microcode.
+Ok, thanks, so we can cancel this on our todo-list ..
 
-The drivers for the audio/video handling hardware on the 8634 do require 
-  microcode, but in many cases it is loaded after the kernel is running. 
-  But the microcode is not needed for just running a bare bones kernel.
 
-David Daney
+
+Regards,
+	Andi

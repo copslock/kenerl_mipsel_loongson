@@ -1,47 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Mar 2008 00:19:57 +0000 (GMT)
-Received: from mo31.po.2iij.NET ([210.128.50.54]:54532 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S28643179AbYCHATy (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 8 Mar 2008 00:19:54 +0000
-Received: by mo.po.2iij.net (mo31) id m280JoZD082221; Sat, 8 Mar 2008 09:19:50 +0900 (JST)
-Received: from delta (224.24.30.125.dy.iij4u.or.jp [125.30.24.224])
-	by mbox.po.2iij.net (po-mbox305) id m280JmH5025633
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Sat, 8 Mar 2008 09:19:48 +0900
-Date:	Sat, 8 Mar 2008 09:19:47 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Mar 2008 00:29:01 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:53670 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S28643159AbYCHA26 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 8 Mar 2008 00:28:58 +0000
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1JXmvq-0005Wi-00; Sat, 08 Mar 2008 01:28:58 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 19DE2E31BE; Sat,  8 Mar 2008 01:28:54 +0100 (CET)
+Date:	Sat, 8 Mar 2008 01:28:54 +0100
 To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org
+Cc:	linux-mips@linux-mips.org
 Subject: Re: Cobalt build error
-Message-Id: <20080308091947.4dc7a756.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20080307153256.GA8851@linux-mips.org>
+Message-ID: <20080308002854.GA10446@alpha.franken.de>
 References: <20080307153256.GA8851@linux-mips.org>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed 2.4.5 (GTK+ 2.12.0; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20080307153256.GA8851@linux-mips.org>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18359
+X-archive-position: 18360
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-
-On Fri, 7 Mar 2008 15:32:56 +0000
-Ralf Baechle <ralf@linux-mips.org> wrote:
-
+On Fri, Mar 07, 2008 at 03:32:56PM +0000, Ralf Baechle wrote:
 > Maybe some Cobalt hacker can sort out these issues in the latest kernel.
 > I could try to fix the build but don't have any Cobalt kit for testing ...
 
-I already sent the patch to Dmitry Torokhov.
-He said I will apply it.
-But, it has not been applied yet.
+the patch below fixes the compile breakage, but is untested ...
 
-Yoichi
+Thomas.
+
+
+Fix breakage introduced by commit b037b08e59633d939d79f1df9c43c6625f8db904
+
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+---
+
+ drivers/input/misc/cobalt_btns.c |    9 ++++-----
+ 1 files changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/input/misc/cobalt_btns.c b/drivers/input/misc/cobalt_btns.c
+index 4833b1a..b554047 100644
+--- a/drivers/input/misc/cobalt_btns.c
++++ b/drivers/input/misc/cobalt_btns.c
+@@ -97,16 +97,15 @@ static int __devinit cobalt_buttons_probe(struct platform_device *pdev)
+ 	input->name = "Cobalt buttons";
+ 	input->phys = "cobalt/input0";
+ 	input->id.bustype = BUS_HOST;
+-	input->cdev.dev = &pdev->dev;
+ 
+-	input->keycode = pdev->keymap;
+-	input->keycodemax = ARRAY_SIZE(pdev->keymap);
++	input->keycode = bdev->keymap;
++	input->keycodemax = ARRAY_SIZE(bdev->keymap);
+ 	input->keycodesize = sizeof(unsigned short);
+ 
+ 	input_set_capability(input, EV_MSC, MSC_SCAN);
+ 	__set_bit(EV_KEY, input->evbit);
+-	for (i = 0; i < ARRAY_SIZE(buttons_map); i++)
+-		__set_bit(input->keycode[i], input->keybit);
++	for (i = 0; i < ARRAY_SIZE(cobalt_map); i++)
++		__set_bit(cobalt_map[i], input->keybit);
+ 	__clear_bit(KEY_RESERVED, input->keybit);
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

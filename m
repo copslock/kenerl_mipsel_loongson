@@ -1,20 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Mar 2008 16:56:37 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:52943 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Mar 2008 16:58:37 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:465 "EHLO
 	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28645914AbYCHQ4f (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 8 Mar 2008 16:56:35 +0000
+	id S28645950AbYCHQ6f (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 8 Mar 2008 16:58:35 +0000
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m28GuYtX008613;
-	Sat, 8 Mar 2008 16:56:34 GMT
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m28GwYXS008674;
+	Sat, 8 Mar 2008 16:58:34 GMT
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m28GuXUl008612;
-	Sat, 8 Mar 2008 16:56:33 GMT
-Date:	Sat, 8 Mar 2008 16:56:33 +0000
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m28GwXcu008663;
+	Sat, 8 Mar 2008 16:58:33 GMT
+Date:	Sat, 8 Mar 2008 16:58:33 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	jgarik@linux-mips.org, Andrew Morton <akpm@linux-foundation.org>,
+To:	Jeff Garzik <jeff@garzik.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	netdev@vger.kernel.org, linux-mips@linux-mips.org
 Subject: [IOC3] Fix section missmatch
-Message-ID: <20080308165633.GA13996@linux-mips.org>
+Message-ID: <20080308165833.GA8625@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -23,7 +24,7 @@ Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18363
+X-archive-position: 18364
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,6 +42,9 @@ annotation or the annotation of ioc3_serial_probe is wrong.
 
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
+---
+Resend, this time with Jeff's address corrected.
+
 diff --git a/drivers/net/ioc3-eth.c b/drivers/net/ioc3-eth.c
 index 373f72c..1f25263 100644
 --- a/drivers/net/ioc3-eth.c
@@ -55,3 +59,7 @@ index 373f72c..1f25263 100644
  {
  	unsigned int sw_physid1, sw_physid2;
  	struct net_device *dev = NULL;
+
+----- End forwarded message -----
+
+  Ralf

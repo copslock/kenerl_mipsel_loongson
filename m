@@ -1,51 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Mar 2008 18:52:46 +0000 (GMT)
-Received: from elvis.franken.de ([193.175.24.41]:20422 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S28646296AbYCHSwo (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 8 Mar 2008 18:52:44 +0000
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1JY49z-00022v-00; Sat, 08 Mar 2008 19:52:43 +0100
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id BA791E31BE; Sat,  8 Mar 2008 19:51:55 +0100 (CET)
-From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH] BCM1480: Init pci controller io_map_base
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 09 Mar 2008 14:36:17 +0000 (GMT)
+Received: from [79.20.211.194] ([79.20.211.194]:61839 "EHLO
+	eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
+	id S28651396AbYCIOgP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 9 Mar 2008 14:36:15 +0000
+Received: from localhost ([127.0.0.1] helo=sgi)
+	by eppesuigoccas.homedns.org with smtp (Exim 4.63)
+	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
+	id 1JYMd7-00023d-41
+	for linux-mips@linux-mips.org; Sun, 09 Mar 2008 15:36:03 +0100
+Date:	Sun, 9 Mar 2008 15:35:59 +0100
+From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
 To:	linux-mips@linux-mips.org
-cc:	ralf@linux-mips.org
-Message-Id: <20080308185155.BA791E31BE@solo.franken.de>
-Date:	Sat,  8 Mar 2008 19:51:55 +0100 (CET)
-Return-Path: <tsbogend@alpha.franken.de>
+Subject: How to find source of a panic event?
+Message-Id: <20080309153559.2d58c9f5.giuseppe@eppesuigoccas.homedns.org>
+X-Mailer: Sylpheed version 2.3.0beta5 (GTK+ 2.8.20; mips-unknown-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <giuseppe@eppesuigoccas.homedns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18365
+X-archive-position: 18366
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: giuseppe@eppesuigoccas.homedns.org
 Precedence: bulk
 X-list: linux-mips
 
-BCM1480: Init pci controller io_map_base
+Hi all,
+I am testing new kernels on a spare O2. Since I see some strange behaviour, I would like to ask you for a comment on this subject.
 
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
----
+What happens is that when the kernel is loaded and then started, the led immediately start blinking red/green and the machine power off after 120 seconds.
 
- arch/mips/pci/pci-bcm1480.c |    5 +++--
- 1 files changed, 3 insertions(+), 2 deletions(-)
+Looking at arch/mips/sgi-ip32/ip32-reset.c I found that when setting up the system, a new interrupt is requested, MACEISA_RTC_IRQ, and a notifier_block structure is setup in order to be used when a panic action is triggered. When this happens, the panic action uses the interrupt to wait two minutes and power off the machine.
 
-diff --git a/arch/mips/pci/pci-bcm1480.c b/arch/mips/pci/pci-bcm1480.c
-index 30ed361..ab68c43 100644
---- a/arch/mips/pci/pci-bcm1480.c
-+++ b/arch/mips/pci/pci-bcm1480.c
-@@ -249,8 +249,9 @@ static int __init bcm1480_pcibios_init(void)
- 	 * XXX ehs: Should this happen in PCI Device mode?
- 	 */
- 
--	set_io_port_base((unsigned long)
--		ioremap(A_BCM1480_PHYS_PCI_IO_MATCH_BYTES, 65536));
-+	bcm1480_controller.io_map_base = (unsigned long)
-+		ioremap(A_BCM1480_PHYS_PCI_IO_MATCH_BYTES, 65536);
-+	set_io_port_base(bcm1480_controller.io_map_base);
- 	isa_slot_offset = (unsigned long)
- 		ioremap(A_BCM1480_PHYS_PCI_MEM_MATCH_BYTES, 1024*1024);
- 
+So I wonder how to find the source calling this panic_action.
+
+Thanks to all,
+Giuseppe

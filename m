@@ -1,18 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Mar 2008 23:06:08 +0000 (GMT)
-Received: from mo31.po.2iij.NET ([210.128.50.54]:53012 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S28578449AbYCKXGF (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Mar 2008 23:06:33 +0000 (GMT)
+Received: from mo32.po.2iij.NET ([210.128.50.17]:58924 "EHLO mo32.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S28578450AbYCKXGF (ORCPT
 	<rfc822;linux-mips@linux-mips.org>); Tue, 11 Mar 2008 23:06:05 +0000
-Received: by mo.po.2iij.net (mo31) id m2BN62YP096078; Wed, 12 Mar 2008 08:06:02 +0900 (JST)
+Received: by mo.po.2iij.net (mo32) id m2BN6198038928; Wed, 12 Mar 2008 08:06:01 +0900 (JST)
 Received: from localhost (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (po-mbox301) id m2BN5uFm019082
+	by mbox.po.2iij.net (po-mbox302) id m2BN5tIF020874
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Wed, 12 Mar 2008 08:05:56 +0900
-Date:	Wed, 12 Mar 2008 08:05:10 +0900
+	Wed, 12 Mar 2008 08:05:55 +0900
+Date:	Wed, 12 Mar 2008 08:04:36 +0900
 From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH 2.6.25][MIPS] fix LASAT_CASCADE_IRQ number
-Message-Id: <20080312080510.6aef9a0d.yoichi_yuasa@tripeaks.co.jp>
+Subject: [PATCH 2.6.25][MIPS]fix the installation condition of MIPS
+ clocksource
+Message-Id: <20080312080436.5a0b170a.yoichi_yuasa@tripeaks.co.jp>
 Organization: TriPeaks Corporation
 X-Mailer: Sylpheed version 2.3.0beta5 (GTK+ 2.8.20; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
@@ -22,7 +23,7 @@ Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18368
+X-archive-position: 18369
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,25 +33,25 @@ X-list: linux-mips
 
 Hi Ralf,
 
-The patch has fixed LASAT_CASCADE_IRQ number.
+MIPS clocksource has been installed on DEC 5000/200(R3000).
+The installation condition of MIPS clocksource is wrong.
 
 This is 2.6.25 stuff.
 
 Yoichi
 
-Fix LASAT_CASCADE_IRQ number.
+Fixed the installation condition of MIPS clocksource.
 
 Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/mach-lasat/irq.h mips/include/asm-mips/mach-lasat/irq.h
---- mips-orig/include/asm-mips/mach-lasat/irq.h	2008-01-13 16:43:14.160048268 +0900
-+++ mips/include/asm-mips/mach-lasat/irq.h	2008-01-14 21:27:55.180821709 +0900
-@@ -1,7 +1,7 @@
- #ifndef _ASM_MACH_LASAT_IRQ_H
- #define _ASM_MACH_LASAT_IRQ_H
+diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/arch/mips/kernel/time.c linux/arch/mips/kernel/time.c
+--- linux-orig/arch/mips/kernel/time.c	2008-02-14 12:00:11.592089539 +0900
++++ linux/arch/mips/kernel/time.c	2008-02-14 17:14:42.619488102 +0900
+@@ -157,6 +157,6 @@ void __init time_init(void)
+ {
+ 	plat_time_init();
  
--#define LASAT_CASCADE_IRQ	(MIPS_CPU_IRQ_BASE + 0)
-+#define LASAT_CASCADE_IRQ	(MIPS_CPU_IRQ_BASE + 2)
- 
- #define LASAT_IRQ_BASE		8
- #define LASAT_IRQ_END		23
+-	if (mips_clockevent_init() || !cpu_has_mfc0_count_bug())
++	if (!cpu_has_mfc0_count_bug() && !mips_clockevent_init())
+ 		init_mips_clocksource();
+ }

@@ -1,45 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Mar 2008 16:28:29 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:19898 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20026495AbYCJQ20 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 10 Mar 2008 16:28:26 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m2AGSQxt001026;
-	Mon, 10 Mar 2008 16:28:26 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m2AGSPk8001025;
-	Mon, 10 Mar 2008 16:28:25 GMT
-Date:	Mon, 10 Mar 2008 16:28:25 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] BCM1480: Init pci controller io_map_base
-Message-ID: <20080310162825.GE31420@linux-mips.org>
-References: <20080308185155.BA791E31BE@solo.franken.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080308185155.BA791E31BE@solo.franken.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Mar 2008 23:06:08 +0000 (GMT)
+Received: from mo31.po.2iij.NET ([210.128.50.54]:53012 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S28578449AbYCKXGF (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 11 Mar 2008 23:06:05 +0000
+Received: by mo.po.2iij.net (mo31) id m2BN62YP096078; Wed, 12 Mar 2008 08:06:02 +0900 (JST)
+Received: from localhost (65.126.232.202.bf.2iij.net [202.232.126.65])
+	by mbox.po.2iij.net (po-mbox301) id m2BN5uFm019082
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Wed, 12 Mar 2008 08:05:56 +0900
+Date:	Wed, 12 Mar 2008 08:05:10 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH 2.6.25][MIPS] fix LASAT_CASCADE_IRQ number
+Message-Id: <20080312080510.6aef9a0d.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed version 2.3.0beta5 (GTK+ 2.8.20; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18367
+X-archive-position: 18368
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Mar 08, 2008 at 07:51:55PM +0100, Thomas Bogendoerfer wrote:
+Hi Ralf,
 
-> BCM1480: Init pci controller io_map_base
+The patch has fixed LASAT_CASCADE_IRQ number.
 
-Thanks, applied.  But this patch only solves the problem for the BCM1480's
-native PCI bus.  Support for PCI behind HT still needs to be fixed and I'm
-not quite sure where the ports of such devices and busses are getting
-mapped to.
+This is 2.6.25 stuff.
 
-  Ralf
+Yoichi
+
+Fix LASAT_CASCADE_IRQ number.
+
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+
+diff -pruN -X mips/Documentation/dontdiff mips-orig/include/asm-mips/mach-lasat/irq.h mips/include/asm-mips/mach-lasat/irq.h
+--- mips-orig/include/asm-mips/mach-lasat/irq.h	2008-01-13 16:43:14.160048268 +0900
++++ mips/include/asm-mips/mach-lasat/irq.h	2008-01-14 21:27:55.180821709 +0900
+@@ -1,7 +1,7 @@
+ #ifndef _ASM_MACH_LASAT_IRQ_H
+ #define _ASM_MACH_LASAT_IRQ_H
+ 
+-#define LASAT_CASCADE_IRQ	(MIPS_CPU_IRQ_BASE + 0)
++#define LASAT_CASCADE_IRQ	(MIPS_CPU_IRQ_BASE + 2)
+ 
+ #define LASAT_IRQ_BASE		8
+ #define LASAT_IRQ_END		23

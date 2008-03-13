@@ -1,82 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2008 16:17:06 +0000 (GMT)
-Received: from smtp-vbr11.xs4all.nl ([194.109.24.31]:10767 "EHLO
-	smtp-vbr11.xs4all.nl") by ftp.linux-mips.org with ESMTP
-	id S28582958AbYCMQRE convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 13 Mar 2008 16:17:04 +0000
-Received: from dealogic.nl (a62-251-87-113.adsl.xs4all.nl [62.251.87.113])
-	by smtp-vbr11.xs4all.nl (8.13.8/8.13.8) with ESMTP id m2DGH4Qd094869
-	for <linux-mips@linux-mips.org>; Thu, 13 Mar 2008 17:17:04 +0100 (CET)
-	(envelope-from ncoesel@DEALogic.nl)
-Content-class: urn:content-classes:message
-Subject: FW: Alchemy power managment code.
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2008 16:43:55 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:27268 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S28583266AbYCMQnx (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 13 Mar 2008 16:43:53 +0000
+Received: from [192.168.1.234] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 02D553EC9; Thu, 13 Mar 2008 09:43:50 -0700 (PDT)
+Message-ID: <47D95A16.7090708@ru.mvista.com>
+Date:	Thu, 13 Mar 2008 19:45:10 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Date:	Thu, 13 Mar 2008 17:16:37 +0100
-Message-ID: <19CA9E279FDA5246B7D7A1C91A4AF7F40EF804@dealogicserver.DEALogic.nl>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Alchemy power managment code.
-thread-index: AciFEhe6VQdP6xzqSLqyFGOAP4S1YAAAHiBwAATATJA=
-From:	"Nico Coesel" <ncoesel@DEALogic.nl>
-To:	<linux-mips@linux-mips.org>
-X-Virus-Scanned: by XS4ALL Virus Scanner
-Return-Path: <ncoesel@DEALogic.nl>
+To:	Nico Coesel <ncoesel@DEALogic.nl>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: FW: Alchemy power managment code.
+References: <19CA9E279FDA5246B7D7A1C91A4AF7F40EF804@dealogicserver.DEALogic.nl>
+In-Reply-To: <19CA9E279FDA5246B7D7A1C91A4AF7F40EF804@dealogicserver.DEALogic.nl>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18393
+X-archive-position: 18394
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ncoesel@DEALogic.nl
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf,
-Funny you ask because I tried this yesterday on a AU1100 system with the
-2.6.24 kernel (from kernel.org). I'm afraid I must say the kernel
-crashes when I enable power management. The reason I want to use power
-management is because I need to send the CPU to sleep when the system
-shuts down. I hacked power.c and reset.c a bit so au_sleep() is called
-when the system is shut down. Perhaps someone can confirm the
-powermanagement can be made to work with some fixes (it didn't work with
-2.6.21-rc4 either).
+Hello.
 
-The CPU frequency switching stuff isn't very usefull since it is
-possible to derive various pheripheral frequencies from it. For
-instance, on our board the LCD frequency is derived from the CPU
-frequency. The auxilary frequency cannot by divided to provide the
-refreshrate we need. So changing the CPU frequency would 'break' our LCD
-display.
+Nico Coesel wrote:
 
-Nico Coesel 
+> Ralf,
+> Funny you ask because I tried this yesterday on a AU1100 system with the
+> 2.6.24 kernel (from kernel.org). I'm afraid I must say the kernel
+> crashes when I enable power management. The reason I want to use power
+> management is because I need to send the CPU to sleep when the system
+> shuts down. I hacked power.c and reset.c a bit so au_sleep() is called
+> when the system is shut down. Perhaps someone can confirm the
+> powermanagement can be made to work with some fixes (it didn't work with
+> 2.6.21-rc4 either).
 
-> -----Oorspronkelijk bericht-----
-> Van: linux-mips-bounce@linux-mips.org 
-> [mailto:linux-mips-bounce@linux-mips.org] Namens Ralf Baechle
-> Verzonden: donderdag 13 maart 2008 14:56
-> Aan: linux-mips@linux-mips.org
-> Onderwerp: Alchemy power managment code.
-> 
-> The Alchemy code in arch/mips/au1000/common/power.c is one of the last
+    BTW, if you look at sleeper.S you'll find that save_and_sleep() trashes 
+registers $1 and $2 because of reusing their stackframe slots to save Status 
+and Context CP0 registers:
 
-> remaining users of pm_send_all() which happens to be a nop call 
-> because nothing registers callbacks with pm_register.  So the 
-> pm_send_all() calls can be removed.
-> 
-> Which leaves pm_do_suspend with no sensible code, so it can be 
-> removed.
-> And ripped like this pm_do_sleep looks it it may well no longer be 
-> functioning.
-> 
-> So, anybody still using that stuff, does it provide any useful 
-> functionality?  Does the CPU frequency stuff actually work?
-> 
->   Ralf
-> 
-> PS: You should hear the engine of my chainsaw warming up ...
-> 
-> 
+         sw      $1, PT_R1(sp)
+         sw      $2, PT_R2(sp)
+
+         mfc0    k0, CP0_STATUS
+         sw      k0, 0x20(sp)		# equals PT_R2
+         mfc0    k0, CP0_CONTEXT
+         sw      k0, 0x1c(sp)		# equals PT_R1
+
+> Nico Coesel 
+
+WBR, Sergei

@@ -1,114 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2008 15:15:17 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:47797 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28583623AbYCMPPP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 13 Mar 2008 15:15:15 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m2DFFEII021367;
-	Thu, 13 Mar 2008 15:15:14 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m2DFFDG4021366;
-	Thu, 13 Mar 2008 15:15:13 GMT
-Date:	Thu, 13 Mar 2008 15:15:13 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"tiejun.chen" <tiejun.chen@windriver.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] MT-VPE : Fix the usage of kmalloc
-Message-ID: <20080313151513.GA4368@linux-mips.org>
-References: <47D8BDDC.9010607@windriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2008 16:17:06 +0000 (GMT)
+Received: from smtp-vbr11.xs4all.nl ([194.109.24.31]:10767 "EHLO
+	smtp-vbr11.xs4all.nl") by ftp.linux-mips.org with ESMTP
+	id S28582958AbYCMQRE convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 13 Mar 2008 16:17:04 +0000
+Received: from dealogic.nl (a62-251-87-113.adsl.xs4all.nl [62.251.87.113])
+	by smtp-vbr11.xs4all.nl (8.13.8/8.13.8) with ESMTP id m2DGH4Qd094869
+	for <linux-mips@linux-mips.org>; Thu, 13 Mar 2008 17:17:04 +0100 (CET)
+	(envelope-from ncoesel@DEALogic.nl)
+Content-class: urn:content-classes:message
+Subject: FW: Alchemy power managment code.
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <47D8BDDC.9010607@windriver.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Date:	Thu, 13 Mar 2008 17:16:37 +0100
+Message-ID: <19CA9E279FDA5246B7D7A1C91A4AF7F40EF804@dealogicserver.DEALogic.nl>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Alchemy power managment code.
+thread-index: AciFEhe6VQdP6xzqSLqyFGOAP4S1YAAAHiBwAATATJA=
+From:	"Nico Coesel" <ncoesel@DEALogic.nl>
+To:	<linux-mips@linux-mips.org>
+X-Virus-Scanned: by XS4ALL Virus Scanner
+Return-Path: <ncoesel@DEALogic.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18392
+X-archive-position: 18393
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ncoesel@DEALogic.nl
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Mar 13, 2008 at 01:38:36PM +0800, tiejun.chen wrote:
+Ralf,
+Funny you ask because I tried this yesterday on a AU1100 system with the
+2.6.24 kernel (from kernel.org). I'm afraid I must say the kernel
+crashes when I enable power management. The reason I want to use power
+management is because I need to send the CPU to sleep when the system
+shuts down. I hacked power.c and reset.c a bit so au_sleep() is called
+when the system is shut down. Perhaps someone can confirm the
+powermanagement can be made to work with some fixes (it didn't work with
+2.6.21-rc4 either).
 
-> The return value of kmalloc() should be check, otherwise it is potential
-> risk.
+The CPU frequency switching stuff isn't very usefull since it is
+possible to derive various pheripheral frequencies from it. For
+instance, on our board the LCD frequency is derived from the CPU
+frequency. The auxilary frequency cannot by divided to provide the
+refreshrate we need. So changing the CPU frequency would 'break' our LCD
+display.
+
+Nico Coesel 
+
+> -----Oorspronkelijk bericht-----
+> Van: linux-mips-bounce@linux-mips.org 
+> [mailto:linux-mips-bounce@linux-mips.org] Namens Ralf Baechle
+> Verzonden: donderdag 13 maart 2008 14:56
+> Aan: linux-mips@linux-mips.org
+> Onderwerp: Alchemy power managment code.
 > 
-> Signed-off-by: Tiejun Chen <tiejun.chen@windriver.com>
-> ---
->  vpe.c |    4 ++++
->  1 file changed, 4 insertions(+)
+> The Alchemy code in arch/mips/au1000/common/power.c is one of the last
+
+> remaining users of pm_send_all() which happens to be a nop call 
+> because nothing registers callbacks with pm_register.  So the 
+> pm_send_all() calls can be removed.
+> 
+> Which leaves pm_do_suspend with no sensible code, so it can be 
+> removed.
+> And ripped like this pm_do_sleep looks it it may well no longer be 
+> functioning.
+> 
+> So, anybody still using that stuff, does it provide any useful 
+> functionality?  Does the CPU frequency stuff actually work?
+> 
+>   Ralf
+> 
+> PS: You should hear the engine of my chainsaw warming up ...
 > 
 > 
-> diff --git a/arch/mips/kernel/vpe.c b/arch/mips/kernel/vpe.c
-> index c06eb81..35767de 100644
-> --- a/arch/mips/kernel/vpe.c
-> +++ b/arch/mips/kernel/vpe.c
-> @@ -885,6 +885,10 @@ static int vpe_elfload(struct vpe * v)
->         }
->  
->         v->load_addr = alloc_progmem(mod.core_size);
-> +#ifndef CONFIG_MIPS_VPE_LOADER_TOM
-> +       if (!(v->load_addr))
-> +               return -ENOMEM;
-> +#endif
-
-Your mailer converted the tabs into whitespace so the patch doesn't apply.
-
-Anyway, I fixed things in a slightly different way which hopefully
-avoids throwing in more #ifdefs and will safe a little code for the
-!CONFIG_MIPS_VPE_LOADER_TOM case.
-
-Thanks,
-
-  Ralf
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
-diff --git a/arch/mips/kernel/vpe.c b/arch/mips/kernel/vpe.c
-index eed2dc4..39804c5 100644
---- a/arch/mips/kernel/vpe.c
-+++ b/arch/mips/kernel/vpe.c
-@@ -262,13 +262,21 @@ void dump_mtregs(void)
- /* Find some VPE program space  */
- static void *alloc_progmem(unsigned long len)
- {
-+	void *addr;
-+
- #ifdef CONFIG_MIPS_VPE_LOADER_TOM
--	/* this means you must tell linux to use less memory than you physically have */
--	return pfn_to_kaddr(max_pfn);
-+	/*
-+	 * This means you must tell Linux to use less memory than you
-+	 * physically have, for example by passing a mem= boot argument.
-+	 */
-+	addr = pfn_to_kaddr(max_pfn);
-+	memset(addr, 0, len);
- #else
--	// simple grab some mem for now
--	return kmalloc(len, GFP_KERNEL);
-+	/* simple grab some mem for now */
-+	addr = kzalloc(len, GFP_KERNEL);
- #endif
-+
-+	return addr;
- }
- 
- static void release_progmem(void *ptr)
-@@ -884,9 +892,10 @@ static int vpe_elfload(struct vpe * v)
- 	}
- 
- 	v->load_addr = alloc_progmem(mod.core_size);
--	memset(v->load_addr, 0, mod.core_size);
-+	if (!v->load_addr)
-+		return -ENOMEM;
- 
--	printk("VPE loader: loading to %p\n", v->load_addr);
-+	pr_info("VPE loader: loading to %p\n", v->load_addr);
- 
- 	if (relocate) {
- 		for (i = 0; i < hdr->e_shnum; i++) {

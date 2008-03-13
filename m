@@ -1,57 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2008 05:40:15 +0000 (GMT)
-Received: from mail.windriver.com ([147.11.1.11]:30907 "EHLO mail.wrs.com")
-	by ftp.linux-mips.org with ESMTP id S28581011AbYCMFkN (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 13 Mar 2008 05:40:13 +0000
-Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
-	by mail.wrs.com (8.13.6/8.13.6) with ESMTP id m2D5e6QB002803
-	for <linux-mips@linux-mips.org>; Wed, 12 Mar 2008 22:40:06 -0700 (PDT)
-Received: from ism-mail02.corp.ad.wrs.com ([128.224.200.19]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 12 Mar 2008 22:40:05 -0700
-Received: from [128.224.162.181] ([128.224.162.181]) by ism-mail02.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Thu, 13 Mar 2008 06:40:02 +0100
-Message-ID: <47D8BDDC.9010607@windriver.com>
-Date:	Thu, 13 Mar 2008 13:38:36 +0800
-From:	"tiejun.chen" <tiejun.chen@windriver.com>
-User-Agent: Thunderbird 2.0.0.12 (X11/20080227)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2008 09:04:57 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:62950 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S28581691AbYCMJEz (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 13 Mar 2008 09:04:55 +0000
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1JZjMs-000321-00; Thu, 13 Mar 2008 10:04:54 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id E0416DE5B3; Thu, 13 Mar 2008 09:45:26 +0100 (CET)
+Date:	Thu, 13 Mar 2008 09:45:26 +0100
+To:	Matteo Croce <technoboy85@gmail.com>
+Cc:	linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>,
+	Felix Fietkau <nbd@openwrt.org>,
+	Nicolas Thill <nico@openwrt.org>, linux-serial@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH][MIPS][5/6]: AR7: serial hack
+Message-ID: <20080313084526.GA6012@alpha.franken.de>
+References: <200803120221.25044.technoboy85@gmail.com> <200803120230.06420.technoboy85@gmail.com> <20080312093145.GA6270@alpha.franken.de> <200803130138.55582.technoboy85@gmail.com>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: [PATCH] MT-VPE : Fix the usage of kmalloc
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 13 Mar 2008 05:40:03.0147 (UTC) FILETIME=[AF6DE9B0:01C884CC]
-Return-Path: <Tiejun.Chen@windriver.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <200803130138.55582.technoboy85@gmail.com>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18387
+X-archive-position: 18388
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tiejun.chen@windriver.com
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-The return value of kmalloc() should be check, otherwise it is potential
-risk.
+On Thu, Mar 13, 2008 at 01:38:55AM +0100, Matteo Croce wrote:
+> Il Wednesday 12 March 2008 10:31:46 Thomas Bogendoerfer ha scritto:
+> > > diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
+> > > index 289942f..869b6df 100644
+> > > --- a/include/linux/serial_core.h
+> > > +++ b/include/linux/serial_core.h
+> > > @@ -40,6 +40,7 @@
+> > >  #define PORT_NS16550A	14
+> > >  #define PORT_XSCALE	15
+> > >  #define PORT_RM9000	16	/* PMC-Sierra RM9xxx internal UART */
+> > > +#define PORT_AR7	16
+> > 
+> > this doesn't look correct.
+> > 
+> > Thomas.
+> > 
+> 
+> Isn't it 16?
 
-Signed-off-by: Tiejun Chen <tiejun.chen@windriver.com>
----
- vpe.c |    4 ++++
- 1 file changed, 4 insertions(+)
+PORT_RM9000 is 16, how could PORT_AR7 be 16 as well ? And the 16 for 
+PORT_RM9000 is correct in my counting.
 
+Thomas.
 
-diff --git a/arch/mips/kernel/vpe.c b/arch/mips/kernel/vpe.c
-index c06eb81..35767de 100644
---- a/arch/mips/kernel/vpe.c
-+++ b/arch/mips/kernel/vpe.c
-@@ -885,6 +885,10 @@ static int vpe_elfload(struct vpe * v)
-        }
- 
-        v->load_addr = alloc_progmem(mod.core_size);
-+#ifndef CONFIG_MIPS_VPE_LOADER_TOM
-+       if (!(v->load_addr))
-+               return -ENOMEM;
-+#endif
-        memset(v->load_addr, 0, mod.core_size);
- 
-        printk("VPE loader: loading to %p\n", v->load_addr);
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

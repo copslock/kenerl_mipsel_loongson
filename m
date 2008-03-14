@@ -1,62 +1,117 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Mar 2008 16:43:55 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:27268 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S28583266AbYCMQnx (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 13 Mar 2008 16:43:53 +0000
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 02D553EC9; Thu, 13 Mar 2008 09:43:50 -0700 (PDT)
-Message-ID: <47D95A16.7090708@ru.mvista.com>
-Date:	Thu, 13 Mar 2008 19:45:10 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Mar 2008 15:46:25 +0000 (GMT)
+Received: from smtp-out114.alice.it ([85.37.17.114]:54282 "EHLO
+	smtp-out114.alice.it") by ftp.linux-mips.org with ESMTP
+	id S28590671AbYCNPqW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 14 Mar 2008 15:46:22 +0000
+Received: from FBCMMO03.fbc.local ([192.168.68.197]) by smtp-out114.alice.it with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 14 Mar 2008 16:46:14 +0100
+Received: from FBCMCL01B02.fbc.local ([192.168.69.83]) by FBCMMO03.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 14 Mar 2008 16:46:13 +0100
+Received: from raver.openwrt ([79.26.114.120]) by FBCMCL01B02.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 14 Mar 2008 16:46:13 +0100
+From:	Matteo Croce <technoboy85@gmail.com>
+To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: Re: [PATCH][MIPS][5/6]: AR7: serial hack
+Date:	Fri, 14 Mar 2008 16:46:09 +0100
+User-Agent: KMail/1.9.9
+Cc:	linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>,
+	Felix Fietkau <nbd@openwrt.org>,
+	Nicolas Thill <nico@openwrt.org>, linux-serial@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+References: <200803120221.25044.technoboy85@gmail.com> <200803130138.55582.technoboy85@gmail.com> <20080313084526.GA6012@alpha.franken.de>
+In-Reply-To: <20080313084526.GA6012@alpha.franken.de>
+X-Face:	0AUq?,0sKh2O65+R5#[nTCS'~}"m)9|g3Tsi=g7A9q69S+=M!BY)=?utf-8?q?Zdmwo2u!i=5CUylx=26=27D+=0A=09=5B7u=26z1=27s=7E=5B=3F+=24=27w?=
+ =?utf-8?q?O6+?="'WWcr5Jy,]}8namg8NP:9<E,o^21xGB~/HRhB(u^@
+ =?utf-8?q?ZB=2EXLP0swe=0A=09r9M=7EL?=<b1=^'4cv*_N1tNJ$`9Ot*KL/;8oXFdrT@r|-Ki2wCQI"R(X(
+ =?utf-8?q?73r=3A=3BmnNPoA2a=5D=7EZ=0A=092n2sUh?=,B|bt;ys*hv.QR>a]{m
 MIME-Version: 1.0
-To:	Nico Coesel <ncoesel@DEALogic.nl>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: FW: Alchemy power managment code.
-References: <19CA9E279FDA5246B7D7A1C91A4AF7F40EF804@dealogicserver.DEALogic.nl>
-In-Reply-To: <19CA9E279FDA5246B7D7A1C91A4AF7F40EF804@dealogicserver.DEALogic.nl>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain;
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Disposition: inline
+Message-Id: <200803141646.09645.technoboy85@gmail.com>
+X-OriginalArrivalTime: 14 Mar 2008 15:46:13.0660 (UTC) FILETIME=[885B85C0:01C885EA]
+Return-Path: <technoboy85@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18394
+X-archive-position: 18395
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: technoboy85@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+Il Thursday 13 March 2008 09:45:26 Thomas Bogendoerfer ha scritto:
+> On Thu, Mar 13, 2008 at 01:38:55AM +0100, Matteo Croce wrote:
+> > Il Wednesday 12 March 2008 10:31:46 Thomas Bogendoerfer ha scritto:
+> > > > diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
+> > > > index 289942f..869b6df 100644
+> > > > --- a/include/linux/serial_core.h
+> > > > +++ b/include/linux/serial_core.h
+> > > > @@ -40,6 +40,7 @@
+> > > >  #define PORT_NS16550A	14
+> > > >  #define PORT_XSCALE	15
+> > > >  #define PORT_RM9000	16	/* PMC-Sierra RM9xxx internal UART */
+> > > > +#define PORT_AR7	16
+> > > 
+> > > this doesn't look correct.
+> > > 
+> > > Thomas.
+> > > 
+> > 
+> > Isn't it 16?
+> 
+> PORT_RM9000 is 16, how could PORT_AR7 be 16 as well ? And the 16 for 
+> PORT_RM9000 is correct in my counting.
+> 
+> Thomas.
+> 
 
-Nico Coesel wrote:
+This is a bit better
 
-> Ralf,
-> Funny you ask because I tried this yesterday on a AU1100 system with the
-> 2.6.24 kernel (from kernel.org). I'm afraid I must say the kernel
-> crashes when I enable power management. The reason I want to use power
-> management is because I need to send the CPU to sleep when the system
-> shuts down. I hacked power.c and reset.c a bit so au_sleep() is called
-> when the system is shut down. Perhaps someone can confirm the
-> powermanagement can be made to work with some fixes (it didn't work with
-> 2.6.21-rc4 either).
-
-    BTW, if you look at sleeper.S you'll find that save_and_sleep() trashes 
-registers $1 and $2 because of reusing their stackframe slots to save Status 
-and Context CP0 registers:
-
-         sw      $1, PT_R1(sp)
-         sw      $2, PT_R2(sp)
-
-         mfc0    k0, CP0_STATUS
-         sw      k0, 0x20(sp)		# equals PT_R2
-         mfc0    k0, CP0_CONTEXT
-         sw      k0, 0x1c(sp)		# equals PT_R1
-
-> Nico Coesel 
-
-WBR, Sergei
+diff --git a/drivers/serial/8250.c b/drivers/serial/8250.c
+index 77f7a7f..a3a271d 100644
+--- a/drivers/serial/8250.c
++++ b/drivers/serial/8250.c
+@@ -267,6 +267,13 @@ static const struct serial8250_config uart_config[] = {
+ 		.fcr		= UART_FCR_ENABLE_FIFO | UART_FCR_R_TRIG_10,
+ 		.flags		= UART_CAP_FIFO,
+ 	},
++	[PORT_AR7] = {
++		.name		= "TI-AR7",
++		.fifo_size	= 16,
++		.tx_loadsz	= 16,
++		.fcr		= UART_FCR_ENABLE_FIFO | UART_FCR_R_TRIG_00,
++		.flags		= UART_CAP_FIFO | UART_CAP_AFE,
++	},
+ };
+ 
+ #if defined (CONFIG_SERIAL_8250_AU1X00)
+@@ -2455,7 +2462,11 @@ static void serial8250_console_putchar(struct uart_port *port, int ch)
+ {
+ 	struct uart_8250_port *up = (struct uart_8250_port *)port;
+ 
++#ifdef CONFIG_AR7
++	wait_for_xmitr(up, BOTH_EMPTY);
++#else
+ 	wait_for_xmitr(up, UART_LSR_THRE);
++#endif
+ 	serial_out(up, UART_TX, ch);
+ }
+ 
+diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
+index 289942f..15e76c8 100644
+--- a/include/linux/serial_core.h
++++ b/include/linux/serial_core.h
+@@ -40,7 +40,8 @@
+ #define PORT_NS16550A	14
+ #define PORT_XSCALE	15
+ #define PORT_RM9000	16	/* PMC-Sierra RM9xxx internal UART */
+-#define PORT_MAX_8250	16	/* max port ID */
++#define PORT_AR7	17
++#define PORT_MAX_8250	17	/* max port ID */
+ 
+ /*
+  * ARM specific type numbers.  These are not currently guaranteed

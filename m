@@ -1,32 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Mar 2008 10:42:07 +0000 (GMT)
-Received: from elvis.franken.de ([193.175.24.41]:4004 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S28591578AbYCOKmE (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 15 Mar 2008 10:42:04 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 15 Mar 2008 11:29:00 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:23978 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S28590947AbYCOL25 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 15 Mar 2008 11:28:57 +0000
 Received: from uucp (helo=solo.franken.de)
 	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1JaTpx-0004g3-00; Sat, 15 Mar 2008 11:42:01 +0100
+	id 1JaUZM-0004ow-00; Sat, 15 Mar 2008 12:28:56 +0100
 Received: by solo.franken.de (Postfix, from userid 1000)
-	id A5B81C235E; Sat, 15 Mar 2008 11:40:09 +0100 (CET)
-Date:	Sat, 15 Mar 2008 11:40:09 +0100
-To:	Matteo Croce <technoboy85@gmail.com>
-Cc:	linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>,
-	Felix Fietkau <nbd@openwrt.org>,
-	Nicolas Thill <nico@openwrt.org>, linux-serial@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH][MIPS][5/6]: AR7: serial hack
-Message-ID: <20080315104009.GA6533@alpha.franken.de>
-References: <200803120221.25044.technoboy85@gmail.com> <200803130138.55582.technoboy85@gmail.com> <20080313084526.GA6012@alpha.franken.de> <200803141646.09645.technoboy85@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <200803141646.09645.technoboy85@gmail.com>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+	id 55750C2360; Sat, 15 Mar 2008 12:28:51 +0100 (CET)
+From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH] check for gcc r10k-cache-barrier support
+To:	linux-mips@linux-mips.org
+cc:	ralf@linux-mips.org
+Message-Id: <20080315112851.55750C2360@solo.franken.de>
+Date:	Sat, 15 Mar 2008 12:28:51 +0100 (CET)
 Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18397
+X-archive-position: 18398
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,21 +25,33 @@ X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Mar 14, 2008 at 04:46:09PM +0100, Matteo Croce wrote:
-> This is a bit better
+Check whether gcc supports -mr10-cache-barrier=1 and issue a cleaner
+error message if not. This option is needed to build working SGI IP28
+kernels.
 
-is it possible to try without the serial changes first ?
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+---
 
-Use 
+ arch/mips/Makefile |    7 +++++--
+ 1 files changed, 5 insertions(+), 2 deletions(-)
 
-       uart_port[0].type = PORT_16550A;
-
-in arch/mips/ar7/platform.c.
-
-Does it work ?
-
-Thomas.
-
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 72097da..1c62381 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -482,10 +482,13 @@ endif
+ # be 16kb aligned or the handling of the current variable will break.
+ # Simplified: what IP22 does at 128MB+ in ksegN, IP28 does at 512MB+ in xkphys
+ #
+-#core-$(CONFIG_SGI_IP28)		+= arch/mips/sgi-ip22/ arch/mips/arc/arc_con.o
++ifdef CONFIG_SGI_IP28
++  ifeq ($(call cc-option-yn,-mr10k-cache-barrier=1), n)
++      $(error gcc doesn't support needed option -mr10k-cache-barrier=1)
++  endif
++endif
+ core-$(CONFIG_SGI_IP28)		+= arch/mips/sgi-ip22/
+ cflags-$(CONFIG_SGI_IP28)	+= -mr10k-cache-barrier=1 -Iinclude/asm-mips/mach-ip28
+-#cflags-$(CONFIG_SGI_IP28)	+= -Iinclude/asm-mips/mach-ip28
+ load-$(CONFIG_SGI_IP28)		+= 0xa800000020004000
+ 
+ #

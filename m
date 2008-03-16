@@ -1,87 +1,123 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Mar 2008 15:49:40 +0000 (GMT)
-Received: from smtp-out25.alice.it ([85.33.2.25]:4102 "EHLO
-	smtp-out25.alice.it") by ftp.linux-mips.org with ESMTP
-	id S28597321AbYCPPti (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 16 Mar 2008 15:49:38 +0000
-Received: from FBCMMO03.fbc.local ([192.168.68.197]) by smtp-out25.alice.it with Microsoft SMTPSVC(6.0.3790.1830);
-	 Sun, 16 Mar 2008 16:49:33 +0100
-Received: from FBCMCL01B07.fbc.local ([192.168.171.45]) by FBCMMO03.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
-	 Sun, 16 Mar 2008 16:49:33 +0100
-Received: from raver.openwrt ([79.19.114.153]) by FBCMCL01B07.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
-	 Sun, 16 Mar 2008 16:47:59 +0100
-From:	Matteo Croce <technoboy85@gmail.com>
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: Re: [PATCH][MIPS][5/6]: AR7: serial hack
-Date:	Sun, 16 Mar 2008 16:49:30 +0100
-User-Agent: KMail/1.9.9
-Cc:	Alan Cox <alan@lxorguk.ukuu.org.uk>, linux-mips@linux-mips.org,
-	Florian Fainelli <florian@openwrt.org>,
-	Felix Fietkau <nbd@openwrt.org>,
-	Nicolas Thill <nico@openwrt.org>, linux-serial@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>
-References: <200803120221.25044.technoboy85@gmail.com> <200803130131.54570.technoboy85@gmail.com> <20080313090109.GB6012@alpha.franken.de>
-In-Reply-To: <20080313090109.GB6012@alpha.franken.de>
-X-Face:	0AUq?,0sKh2O65+R5#[nTCS'~}"m)9|g3Tsi=g7A9q69S+=M!BY)=?utf-8?q?Zdmwo2u!i=5CUylx=26=27D+=0A=09=5B7u=26z1=27s=7E=5B=3F+=24=27w?=
- =?utf-8?q?O6+?="'WWcr5Jy,]}8namg8NP:9<E,o^21xGB~/HRhB(u^@
- =?utf-8?q?ZB=2EXLP0swe=0A=09r9M=7EL?=<b1=^'4cv*_N1tNJ$`9Ot*KL/;8oXFdrT@r|-Ki2wCQI"R(X(
- =?utf-8?q?73r=3A=3BmnNPoA2a=5D=7EZ=0A=092n2sUh?=,B|bt;ys*hv.QR>a]{m
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200803161649.30531.technoboy85@gmail.com>
-X-OriginalArrivalTime: 16 Mar 2008 15:48:00.0250 (UTC) FILETIME=[1CB75DA0:01C8877D]
-Return-Path: <technoboy85@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 16 Mar 2008 17:14:39 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:20643 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S28597542AbYCPROg (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 16 Mar 2008 17:14:36 +0000
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1JawRQ-0006Tt-00; Sun, 16 Mar 2008 18:14:36 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 18556C226C; Sun, 16 Mar 2008 18:14:16 +0100 (CET)
+From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH] BCM1480: Fix PCI/HT IO access
+To:	linux-mips@linux-mips.org
+cc:	ralf@linux-mips.org
+Message-Id: <20080316171416.18556C226C@solo.franken.de>
+Date:	Sun, 16 Mar 2008 18:14:16 +0100 (CET)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18404
+X-archive-position: 18405
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: technoboy85@gmail.com
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-Il Thursday 13 March 2008 10:01:09 Thomas Bogendoerfer ha scritto:
-> On Thu, Mar 13, 2008 at 01:31:54AM +0100, Matteo Croce wrote:
-> > Il Wednesday 12 March 2008 12:16:29 Alan Cox ha scritto:
-> > > On Wed, 12 Mar 2008 02:30:06 +0100
-> > > Matteo Croce <technoboy85@gmail.com> wrote:
-> > > 
-> > > > Ugly but we need it
-> > > 
-> > > Too ugly - NAK
-> > > 
-> > > However please send an explanation of the problem and lets find a nicer
-> > > way to do it or bury it in arch code.
-> > > 
-> > > 
-> > 
-> > This is my problem:
-> > 
-> > ffi_cmdset_000: DDisabling erae-ssuspend-progrm ddue to code bokeenness.
-> > cmdlinparrt partition arssing not avaiabll
-> > RedBoo ppartition parsngg not availabl
-> > NET: Rgiistered protocl  family 1
-> > NET: Regsteered protocol ammily 10
-> > IPv6 overIPPv4 tunnelingdriiver
-> > NET: Regsteered protocolfammily 17
-> > FS:: Mounted roo (ssquashfs filessttem) readonly.
-> > Freeing nuused kernel meorry: 120k freed
-> > 
-> > I'll try to find a nicer way to fix it
-> 
-> don't use AFE mode and treat it like a normal 16550 (PORT_16550A). You
-> could also try to use UPIO_MEM32. That's how my console driver
-> (different OS) works for AR7 without the hack to wait for LSR_TEMP and 
-> LSR_THRE.
-> 
-> Thomas.
-> 
+- removed check for enable HT-PCI bridges, because some CFE version
+  init only the needed one and scanning works even with disabled HT
+  links
+- implemented I/O access behind HT PCI busses
+- fixed pci_map for IO resource behind PCI bridge
 
-What do you mean by don't using AFE? Just removing UART_CAP_AFE from the .fcr field?
-I've tried but it doesn't work.
+Tested with E100 and Tulip driver.
 
-I tried also UPIO_MEM32 instead of UPIO_MEM (with PORT_AR7) but it doesn't works
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+---
+
+ arch/mips/pci/pci-bcm1480.c   |    6 ++++--
+ arch/mips/pci/pci-bcm1480ht.c |   21 +++++++--------------
+ 2 files changed, 11 insertions(+), 16 deletions(-)
+
+diff --git a/arch/mips/pci/pci-bcm1480.c b/arch/mips/pci/pci-bcm1480.c
+index ab68c43..87e2c8f 100644
+--- a/arch/mips/pci/pci-bcm1480.c
++++ b/arch/mips/pci/pci-bcm1480.c
+@@ -185,8 +185,8 @@ static struct resource bcm1480_mem_resource = {
+ 
+ static struct resource bcm1480_io_resource = {
+ 	.name	= "BCM1480 PCI I/O",
+-	.start	= 0x2c000000UL,
+-	.end	= 0x2dffffffUL,
++	.start	= A_BCM1480_PHYS_PCI_IO_MATCH_BYTES,
++	.end	= A_BCM1480_PHYS_PCI_IO_MATCH_BYTES + 0x1ffffffUL,
+ 	.flags	= IORESOURCE_IO,
+ };
+ 
+@@ -194,6 +194,7 @@ struct pci_controller bcm1480_controller = {
+ 	.pci_ops	= &bcm1480_pci_ops,
+ 	.mem_resource	= &bcm1480_mem_resource,
+ 	.io_resource	= &bcm1480_io_resource,
++	.io_offset      = A_BCM1480_PHYS_PCI_IO_MATCH_BYTES,
+ };
+ 
+ 
+@@ -251,6 +252,7 @@ static int __init bcm1480_pcibios_init(void)
+ 
+ 	bcm1480_controller.io_map_base = (unsigned long)
+ 		ioremap(A_BCM1480_PHYS_PCI_IO_MATCH_BYTES, 65536);
++	bcm1480_controller.io_map_base -= bcm1480_controller.io_offset;
+ 	set_io_port_base(bcm1480_controller.io_map_base);
+ 	isa_slot_offset = (unsigned long)
+ 		ioremap(A_BCM1480_PHYS_PCI_MEM_MATCH_BYTES, 1024*1024);
+diff --git a/arch/mips/pci/pci-bcm1480ht.c b/arch/mips/pci/pci-bcm1480ht.c
+index 005e7fe..f54f454 100644
+--- a/arch/mips/pci/pci-bcm1480ht.c
++++ b/arch/mips/pci/pci-bcm1480ht.c
+@@ -180,8 +180,8 @@ static struct resource bcm1480ht_mem_resource = {
+ 
+ static struct resource bcm1480ht_io_resource = {
+ 	.name	= "BCM1480 HT I/O",
+-	.start	= 0x00000000UL,
+-	.end	= 0x01ffffffUL,
++	.start	= A_BCM1480_PHYS_HT_IO_MATCH_BYTES,
++	.end	= A_BCM1480_PHYS_HT_IO_MATCH_BYTES + 0x01ffffffUL,
+ 	.flags	= IORESOURCE_IO,
+ };
+ 
+@@ -191,29 +191,22 @@ struct pci_controller bcm1480ht_controller = {
+ 	.io_resource	= &bcm1480ht_io_resource,
+ 	.index		= 1,
+ 	.get_busno	= bcm1480ht_pcibios_get_busno,
++	.io_offset      = A_BCM1480_PHYS_HT_IO_MATCH_BYTES,
+ };
+ 
+ static int __init bcm1480ht_pcibios_init(void)
+ {
+-	uint32_t cmdreg;
+-
+ 	ht_cfg_space = ioremap(A_BCM1480_PHYS_HT_CFG_MATCH_BITS, 16*1024*1024);
+ 
+-	/*
+-	 * See if the PCI bus has been configured by the firmware.
+-	 */
+-	cmdreg = READCFG32(CFGOFFSET(0, PCI_DEVFN(PCI_BRIDGE_DEVICE, 0),
+-				     PCI_COMMAND));
+-	if (!(cmdreg & PCI_COMMAND_MASTER)) {
+-		printk("HT: Skipping HT probe. Bus is not initialized.\n");
+-		iounmap(ht_cfg_space);
+-		return 1; /* XXX */
+-	}
++	/* CFE doesn't always init all HT paths, so we always scan */
+ 	bcm1480ht_bus_status |= PCI_BUS_ENABLED;
+ 
+ 	ht_eoi_space = (unsigned long)
+ 		ioremap(A_BCM1480_PHYS_HT_SPECIAL_MATCH_BYTES,
+ 			4 * 1024 * 1024);
++	bcm1480ht_controller.io_map_base = (unsigned long)
++		ioremap(A_BCM1480_PHYS_HT_IO_MATCH_BYTES, 65536);
++	bcm1480ht_controller.io_map_base -= bcm1480ht_controller.io_offset;
+ 
+ 	register_pci_controller(&bcm1480ht_controller);
+ 

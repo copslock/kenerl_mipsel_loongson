@@ -1,47 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Mar 2008 12:13:32 +0000 (GMT)
-Received: from srv5.dvmed.net ([207.36.208.214]:18920 "EHLO mail.dvmed.net")
-	by ftp.linux-mips.org with ESMTP id S28599971AbYCQMNa (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 17 Mar 2008 12:13:30 +0000
-Received: from cpe-069-134-071-233.nc.res.rr.com ([69.134.71.233] helo=core.yyz.us)
-	by mail.dvmed.net with esmtpsa (Exim 4.68 #1 (Red Hat Linux))
-	id 1JbEDY-0006Mp-2o; Mon, 17 Mar 2008 12:13:28 +0000
-Message-ID: <47DE6067.6070500@garzik.org>
-Date:	Mon, 17 Mar 2008 08:13:27 -0400
-From:	Jeff Garzik <jeff@garzik.org>
-User-Agent: Thunderbird 2.0.0.12 (X11/20080226)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Mar 2008 13:05:23 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:53190 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S28600158AbYCQNFV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 17 Mar 2008 13:05:21 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m2HD5K9m015952;
+	Mon, 17 Mar 2008 13:05:21 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m2HD5Jmv015951;
+	Mon, 17 Mar 2008 13:05:19 GMT
+Date:	Mon, 17 Mar 2008 13:05:19 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH][MIPS] fix the installation condition of MIPS
+	clocksource
+Message-ID: <20080317130519.GA15629@linux-mips.org>
+References: <20080218230459.35c2204b.yoichi_yuasa@tripeaks.co.jp> <20080312140201.GA25986@linux-mips.org> <20080312235002.c717dde3.yoichi_yuasa@tripeaks.co.jp>
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Andrew Morton <akpm@linux-foundation.org>, netdev@vger.kernel.org,
-	linux-mips@linux-mips.org
-Subject: Re: [IOC3] Fix section missmatch
-References: <20080308165833.GA8625@linux-mips.org>
-In-Reply-To: <20080308165833.GA8625@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <jeff@garzik.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20080312235002.c717dde3.yoichi_yuasa@tripeaks.co.jp>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18414
+X-archive-position: 18415
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jeff@garzik.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
->   LD      drivers/net/built-in.o
-> WARNING: drivers/net/built-in.o(.text+0x3468): Section mismatch in reference fro
-> m the function ioc3_probe() to the function .devinit.text:ioc3_serial_probe()
-> The function ioc3_probe() references
-> the function __devinit ioc3_serial_probe().
-> This is often because ioc3_probe lacks a __devinit 
-> annotation or the annotation of ioc3_serial_probe is wrong.
-> 
-> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-> 
-> ---
-> Resend, this time with Jeff's address corrected.
+On Wed, Mar 12, 2008 at 11:50:02PM +0900, Yoichi Yuasa wrote:
 
-applied
+> I think it has a one more bug.
+
+Applied.
+
+  Ralf

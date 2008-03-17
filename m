@@ -1,51 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Mar 2008 14:32:29 +0000 (GMT)
-Received: from elvis.franken.de ([193.175.24.41]:64468 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S28600504AbYCQOc1 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 17 Mar 2008 14:32:27 +0000
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1JbGO0-0004QJ-00; Mon, 17 Mar 2008 15:32:24 +0100
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id E4361C2360; Mon, 17 Mar 2008 15:32:15 +0100 (CET)
-Date:	Mon, 17 Mar 2008 15:32:15 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Mar 2008 14:50:14 +0000 (GMT)
+Received: from mo31.po.2iij.NET ([210.128.50.54]:9741 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S28600547AbYCQOuM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 17 Mar 2008 14:50:12 +0000
+Received: by mo.po.2iij.net (mo31) id m2HEo86q009421; Mon, 17 Mar 2008 23:50:08 +0900 (JST)
+Received: from delta (61.25.30.125.dy.iij4u.or.jp [125.30.25.61])
+	by mbox.po.2iij.net (po-mbox300) id m2HEo2eM019042
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Mon, 17 Mar 2008 23:50:03 +0900
+Date:	Mon, 17 Mar 2008 23:49:42 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>,
-	linux-mips@linux-mips.org
-Subject: Re: Compiler error? [was: Re: new kernel oops in recent kernels]
-Message-ID: <20080317143215.GA11497@alpha.franken.de>
-References: <1205664563.3050.4.camel@localhost> <1205699257.4159.14.camel@casa> <20080316233619.GA29511@alpha.franken.de> <1205741142.3515.2.camel@localhost> <20080317141828.GA25798@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080317141828.GA25798@linux-mips.org>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH 2/2][MIPS] add irq_disable_hazard() before
+ c0_compare_int_pending()
+Message-Id: <20080317234942.37ebfcee.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20080317234740.705a8a34.yoichi_yuasa@tripeaks.co.jp>
+References: <20080317234740.705a8a34.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed 2.4.5 (GTK+ 2.12.0; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18418
+X-archive-position: 18419
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Mar 17, 2008 at 02:18:28PM +0000, Ralf Baechle wrote:
-> On Mon, Mar 17, 2008 at 09:05:42AM +0100, Giuseppe Sacco wrote:
-> 
-> > The patch you proposed, that use a larger buffer, does not seems to
-> > trigger the bug.
-> 
-> It may help but doesn't have a chance to be accepted upstream.  So
-> this is no more than an useful litmus test.
+Add irq_disable_hazard() before c0_compare_int_pending().
 
-sure, that's why I called it a hack. It was just to make sure, that I'm
-on the right track.
+VR41xx sometime fails at this point.
+It can be fix this patch.
 
-Thomas.
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/arch/mips/kernel/cevt-r4k.c linux/arch/mips/kernel/cevt-r4k.c
+--- linux-orig/arch/mips/kernel/cevt-r4k.c	2008-03-12 16:37:31.317624763 +0900
++++ linux/arch/mips/kernel/cevt-r4k.c	2008-03-12 16:37:39.894113510 +0900
+@@ -205,6 +205,7 @@ static int c0_compare_int_usable(void)
+ 	while ((int)(read_c0_count() - cnt) <= 0)
+ 		;	/* Wait for expiry  */
+ 
++	irq_disable_hazard();
+ 	if (!c0_compare_int_pending())
+ 		return 0;
+ 

@@ -1,62 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Mar 2008 06:52:30 +0000 (GMT)
-Received: from ms4.Sony.CO.JP ([211.125.136.198]:5766 "EHLO ms4.sony.co.jp")
-	by ftp.linux-mips.org with ESMTP id S28604064AbYCRGw2 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 18 Mar 2008 06:52:28 +0000
-Received: from mta5.sony.co.jp (mta5.Sony.CO.JP [137.153.71.6])
- by ms4.sony.co.jp (R8/Sony) with ESMTP id m2I6qFwm003207
- for <linux-mips@linux-mips.org>; Tue, 18 Mar 2008 15:52:15 +0900 (JST)
-Received: from mta5.sony.co.jp (localhost [127.0.0.1])
- by mta5.sony.co.jp (R8/Sony) with ESMTP id m2I6qFdw014273
- for <linux-mips@linux-mips.org>; Tue, 18 Mar 2008 15:52:15 +0900 (JST)
-Received: from smail1.sm.sony.co.jp (smail1.sm.sony.co.jp [43.11.253.1])
- by mta5.sony.co.jp (R8/Sony) with ESMTP id m2I6qFXm014268
- for <linux-mips@linux-mips.org>; Tue, 18 Mar 2008 15:52:15 +0900 (JST)
-Received: from imail.sm.sony.co.jp (imail.sm.sony.co.jp [43.4.141.32]) by smail1.sm.sony.co.jp (8.11.6p2/8.11.6) with ESMTP id m2I6qFP01703 for <linux-mips@linux-mips.org>; Tue, 18 Mar 2008 15:52:15 +0900 (JST)
-Received: from localhost (tidal.sm.sony.co.jp [43.4.145.112])
-	by imail.sm.sony.co.jp (8.12.11/3.7W) with ESMTP id m2I6qDr3015696
-	for <linux-mips@linux-mips.org>; Tue, 18 Mar 2008 15:52:13 +0900 (JST)
-Date:	Tue, 18 Mar 2008 15:47:01 +0900 (JST)
-Message-Id: <20080318.154701.74743177.kaminaga@sm.sony.co.jp>
-To:	linux-mips@linux-mips.org
-Subject: MIPS prelink question
-From:	Hiroki Kaminaga <kaminaga@sm.sony.co.jp>
-X-Mailer: Mew version 4.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <kaminaga@sm.sony.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Mar 2008 11:19:46 +0000 (GMT)
+Received: from relay01.mx.bawue.net ([193.7.176.67]:53683 "EHLO
+	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
+	id S28604729AbYCRLTn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 18 Mar 2008 11:19:43 +0000
+Received: from lagash (intrt.mips-uk.com [194.74.144.130])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by relay01.mx.bawue.net (Postfix) with ESMTP id E3A6148916;
+	Tue, 18 Mar 2008 12:19:36 +0100 (CET)
+Received: from ths by lagash with local (Exim 4.69)
+	(envelope-from <ths@networkno.de>)
+	id 1JbZqd-0004Er-1I; Tue, 18 Mar 2008 11:19:15 +0000
+Date:	Tue, 18 Mar 2008 11:19:15 +0000
+From:	Thiemo Seufer <ths@networkno.de>
+To:	Hiroki Kaminaga <kaminaga@sm.sony.co.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: MIPS prelink question
+Message-ID: <20080318111914.GH26619@networkno.de>
+References: <20080318.154701.74743177.kaminaga@sm.sony.co.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20080318.154701.74743177.kaminaga@sm.sony.co.jp>
+User-Agent: Mutt/1.5.17+20080114 (2008-01-14)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18423
+X-archive-position: 18424
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kaminaga@sm.sony.co.jp
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
+Hiroki Kaminaga wrote:
+> 
+> Hi!
+> 
+> I'm not sure if this is the right ML to ask, but since I've found
+> discussion about MIPS prelink here, I'm posting here...
 
-Hi!
+The binutils list would be a better place.
 
-I'm not sure if this is the right ML to ask, but since I've found
-discussion about MIPS prelink here, I'm posting here...
+> In the below thread, patch for MIPS prelink was posted.
+> http://www.linux-mips.org/archives/linux-mips/2006-11/msg00034.html
+> 
+> I've tried this patch, but I got below error when I tried to do prelink.
+> 
+> 	No space in ELF segment table to add new ELF segment
 
-In the below thread, patch for MIPS prelink was posted.
-http://www.linux-mips.org/archives/linux-mips/2006-11/msg00034.html
+A bit more of the output would help with isolating the problem.
+Anyway, IIRC there are two effects which cause this error:
+ - Linking in binary objects which were built by a toolchain without
+   prelink support, probably one of the compiler-internal startup files.
+ - Use of an older version on binutils (from the time when the prelink
+   patches went in), which still had a few issues with handling the
+   additional segment.
 
-I've tried this patch, but I got below error when I tried to do prelink.
+> On the montavista pro 5.0 note, I found that they have fixed above
+> prelink error, but I could not find the patch. Could someone give
+> me pointer to address this issue?
 
-	No space in ELF segment table to add new ELF segment
-
-On the montavista pro 5.0 note, I found that they have fixed above
-prelink error, but I could not find the patch. Could someone give
-me pointer to address this issue?
-
-
-Thanks in Advance,
+I believe binutils 2.18 works fine WRT prelinking. I don't remember
+the particular patches to watch out for, though.
 
 
-(Hiroki Kaminaga)
-t
---
+Thiemo

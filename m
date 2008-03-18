@@ -1,70 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Mar 2008 13:27:12 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:6619 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28639340AbYCRN1K (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 18 Mar 2008 13:27:10 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m2IDRAqA013484;
-	Tue, 18 Mar 2008 13:27:10 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m2IDR9vc013483;
-	Tue, 18 Mar 2008 13:27:09 GMT
-Date:	Tue, 18 Mar 2008 13:27:09 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 1/2][MIPS] replace c0_compare acknowledge by
-	c0_timer_ack()
-Message-ID: <20080318132709.GC11382@linux-mips.org>
-References: <20080317234740.705a8a34.yoichi_yuasa@tripeaks.co.jp> <20080317161635.GA25549@linux-mips.org> <200803180447.m2I4lJ40005091@po-mbox301.hop.2iij.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Mar 2008 13:30:31 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:6289 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S28639346AbYCRNa2 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 18 Mar 2008 13:30:28 +0000
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1Jbbta-0007vs-00; Tue, 18 Mar 2008 14:30:26 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 7294EC2783; Tue, 18 Mar 2008 14:30:15 +0100 (CET)
+Date:	Tue, 18 Mar 2008 14:30:15 +0100
+To:	Matteo Croce <technoboy85@gmail.com>
+Cc:	linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>,
+	Felix Fietkau <nbd@openwrt.org>,
+	Nicolas Thill <nico@openwrt.org>, linux-serial@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH][MIPS][5/6]: AR7: serial hack
+Message-ID: <20080318133015.GA7239@alpha.franken.de>
+References: <200803120221.25044.technoboy85@gmail.com> <200803141646.09645.technoboy85@gmail.com> <20080315104009.GA6533@alpha.franken.de> <200803161645.06364.technoboy85@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <200803180447.m2I4lJ40005091@po-mbox301.hop.2iij.net>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <200803161645.06364.technoboy85@gmail.com>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18426
+X-archive-position: 18427
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Mar 18, 2008 at 01:47:20PM +0900, Yoichi Yuasa wrote:
-
-> On Mon, 17 Mar 2008 16:16:35 +0000
-> Ralf Baechle <ralf@linux-mips.org> wrote:
-> 
-> > On Mon, Mar 17, 2008 at 11:47:40PM +0900, Yoichi Yuasa wrote:
+On Sun, Mar 16, 2008 at 04:45:06PM +0100, Matteo Croce wrote:
+> Il Saturday 15 March 2008 11:40:09 Thomas Bogendoerfer ha scritto:
+> > On Fri, Mar 14, 2008 at 04:46:09PM +0100, Matteo Croce wrote:
+> > > This is a bit better
 > > 
-> > > VR41xx, CP0 hazard is necessary between read_c0_count() and write_c0_compare().
+> > is it possible to try without the serial changes first ?
 > > 
-> > Interesting.  I wonder why you need this patch but nobody else?
+> > Use 
+> > 
+> >        uart_port[0].type = PORT_16550A;
+> > 
+> > in arch/mips/ar7/platform.c.
+> > 
+> > Does it work ?
+> > 
 > 
-> Three NOP are necessary on the TB0287(VR4131 board).
+> Tried I get teh usual broken serial output:
 
-That much was obvious from your patch.  I was more wondering about this
-change:
+I just checked the latest AR7/UR8 source, I have, and they don't need
+special hacks. This is a 2.6.10 based tree. At that time there was
+no serial8250_console_putchar(), console output was done via
+serial8250_console_write() without any helper. Before writing to 
+the UART_TX, wait_for_xmitr() is called. And this wait_for_xmitr() does
+check for BOTH_EMPTY.
 
--               write_c0_compare(read_c0_count());
-+               c0_timer_ack();
+Is there a good reason, why we don't check for BOTH_EMPTY in
+serial8250_console_putchar() ? To match the 2.6.10 behaviour we
+would need that and this would fix the AR7 case without any
+special handling.
 
-c0_timer_ack is defined as
+Thomas.
 
-static void c0_timer_ack(void)
-{
-        write_c0_compare(read_c0_compare());
-}
-
-so your patch does a functional change there - even though it should not
-actually matter.  So I was wondering if for some reason you need that
-change.
-
-Just interested - it looks a bit cleaner so I'm leaning to apply this
-change anyway.
-
-  Ralf
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

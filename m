@@ -1,50 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Mar 2008 04:47:27 +0000 (GMT)
-Received: from mo31.po.2iij.NET ([210.128.50.54]:24343 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S28603871AbYCRErZ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 18 Mar 2008 04:47:25 +0000
-Received: by mo.po.2iij.net (mo31) id m2I4lLTk064335; Tue, 18 Mar 2008 13:47:21 +0900 (JST)
-Received: from localhost (65.126.232.202.bf.2iij.net [202.232.126.65])
-	by mbox.po.2iij.net (po-mbox301) id m2I4lJ40005091
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Tue, 18 Mar 2008 13:47:19 +0900
-Message-Id: <200803180447.m2I4lJ40005091@po-mbox301.hop.2iij.net>
-Date:	Tue, 18 Mar 2008 13:47:20 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 1/2][MIPS] replace c0_compare acknowledge by
- c0_timer_ack()
-In-Reply-To: <20080317161635.GA25549@linux-mips.org>
-References: <20080317234740.705a8a34.yoichi_yuasa@tripeaks.co.jp>
-	<20080317161635.GA25549@linux-mips.org>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed version 2.3.0beta5 (GTK+ 2.8.20; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Mar 2008 06:52:30 +0000 (GMT)
+Received: from ms4.Sony.CO.JP ([211.125.136.198]:5766 "EHLO ms4.sony.co.jp")
+	by ftp.linux-mips.org with ESMTP id S28604064AbYCRGw2 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 18 Mar 2008 06:52:28 +0000
+Received: from mta5.sony.co.jp (mta5.Sony.CO.JP [137.153.71.6])
+ by ms4.sony.co.jp (R8/Sony) with ESMTP id m2I6qFwm003207
+ for <linux-mips@linux-mips.org>; Tue, 18 Mar 2008 15:52:15 +0900 (JST)
+Received: from mta5.sony.co.jp (localhost [127.0.0.1])
+ by mta5.sony.co.jp (R8/Sony) with ESMTP id m2I6qFdw014273
+ for <linux-mips@linux-mips.org>; Tue, 18 Mar 2008 15:52:15 +0900 (JST)
+Received: from smail1.sm.sony.co.jp (smail1.sm.sony.co.jp [43.11.253.1])
+ by mta5.sony.co.jp (R8/Sony) with ESMTP id m2I6qFXm014268
+ for <linux-mips@linux-mips.org>; Tue, 18 Mar 2008 15:52:15 +0900 (JST)
+Received: from imail.sm.sony.co.jp (imail.sm.sony.co.jp [43.4.141.32]) by smail1.sm.sony.co.jp (8.11.6p2/8.11.6) with ESMTP id m2I6qFP01703 for <linux-mips@linux-mips.org>; Tue, 18 Mar 2008 15:52:15 +0900 (JST)
+Received: from localhost (tidal.sm.sony.co.jp [43.4.145.112])
+	by imail.sm.sony.co.jp (8.12.11/3.7W) with ESMTP id m2I6qDr3015696
+	for <linux-mips@linux-mips.org>; Tue, 18 Mar 2008 15:52:13 +0900 (JST)
+Date:	Tue, 18 Mar 2008 15:47:01 +0900 (JST)
+Message-Id: <20080318.154701.74743177.kaminaga@sm.sony.co.jp>
+To:	linux-mips@linux-mips.org
+Subject: MIPS prelink question
+From:	Hiroki Kaminaga <kaminaga@sm.sony.co.jp>
+X-Mailer: Mew version 4.2 on Emacs 21.2 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Return-Path: <kaminaga@sm.sony.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18422
+X-archive-position: 18423
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: kaminaga@sm.sony.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
 
-On Mon, 17 Mar 2008 16:16:35 +0000
-Ralf Baechle <ralf@linux-mips.org> wrote:
+Hi!
 
-> On Mon, Mar 17, 2008 at 11:47:40PM +0900, Yoichi Yuasa wrote:
-> 
-> > VR41xx, CP0 hazard is necessary between read_c0_count() and write_c0_compare().
-> 
-> Interesting.  I wonder why you need this patch but nobody else?
+I'm not sure if this is the right ML to ask, but since I've found
+discussion about MIPS prelink here, I'm posting here...
 
-Three NOP are necessary on the TB0287(VR4131 board).
+In the below thread, patch for MIPS prelink was posted.
+http://www.linux-mips.org/archives/linux-mips/2006-11/msg00034.html
 
-Yoichi
+I've tried this patch, but I got below error when I tried to do prelink.
+
+	No space in ELF segment table to add new ELF segment
+
+On the montavista pro 5.0 note, I found that they have fixed above
+prelink error, but I could not find the patch. Could someone give
+me pointer to address this issue?
+
+
+Thanks in Advance,
+
+
+(Hiroki Kaminaga)
+t
+--

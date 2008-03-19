@@ -1,79 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Mar 2008 09:35:32 +0000 (GMT)
-Received: from smtp-vbr6.xs4all.nl ([194.109.24.26]:29446 "EHLO
-	smtp-vbr6.xs4all.nl") by ftp.linux-mips.org with ESMTP
-	id S20022308AbYCSJfa convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 19 Mar 2008 09:35:30 +0000
-Received: from dealogic.nl (a62-251-87-113.adsl.xs4all.nl [62.251.87.113])
-	by smtp-vbr6.xs4all.nl (8.13.8/8.13.8) with ESMTP id m2J9Yvnh072533
-	for <linux-mips@linux-mips.org>; Wed, 19 Mar 2008 10:35:29 +0100 (CET)
-	(envelope-from ncoesel@DEALogic.nl)
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Mar 2008 10:52:21 +0000 (GMT)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:21985 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S20022352AbYCSKwS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 19 Mar 2008 10:52:18 +0000
+Received: (qmail 29940 invoked by uid 1000); 19 Mar 2008 11:52:17 +0100
+Date:	Wed, 19 Mar 2008 11:52:17 +0100
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+To:	Nico Coesel <ncoesel@DEALogic.nl>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Serial console on Au1100
+Message-ID: <20080319105217.GA28497@roarinelk.homelinux.net>
+References: <19CA9E279FDA5246B7D7A1C91A4AF7F40EF86E@dealogicserver.DEALogic.nl>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Subject: RE: Serial console on Au1100 
-Content-Transfer-Encoding: 8BIT
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Date:	Wed, 19 Mar 2008 10:34:40 +0100
-Message-ID: <19CA9E279FDA5246B7D7A1C91A4AF7F40EF86E@dealogicserver.DEALogic.nl>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Serial console on Au1100 
-thread-index: AciJFwlBP+AX6P9zTxeBRyzJE78jKAAgAbig
-From:	"Nico Coesel" <ncoesel@DEALogic.nl>
-To:	<linux-mips@linux-mips.org>
-X-Virus-Scanned: by XS4ALL Virus Scanner
-Return-Path: <ncoesel@DEALogic.nl>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <19CA9E279FDA5246B7D7A1C91A4AF7F40EF86E@dealogicserver.DEALogic.nl>
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18440
+X-archive-position: 18441
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ncoesel@DEALogic.nl
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-Sergei,
-I'm using kernel 2.6.24 now (before I used 2.6.21-rc4). I do see the
-console messages on the framebuffer device.
+On Wed, Mar 19, 2008 at 10:34:40AM +0100, Nico Coesel wrote:
+> Sergei,
+> I'm using kernel 2.6.24 now (before I used 2.6.21-rc4). I do see the
+> console messages on the framebuffer device.
+> 
+> Kernel options:
+> console=ttyS0 root=/dev/mtdblock0 rootfstype=jffs2 rw
 
-Kernel options:
-console=ttyS0 root=/dev/mtdblock0 rootfstype=jffs2 rw
-video=au1100fb:panel:KERN_AU1100 tsdev.xres=320 tsdev.yres=234
-console=tty0
+try adding a baudrate to the commandline, like so:
+ console=ttyS0,115200
 
-If I omit console=tty0, then there is no output on the framebuffer
-device or the serial port. I also tried setting the I/O address and so
-on, but no luck.
-
-Nico Coesel
- 
-
-> -----Oorspronkelijk bericht-----
-> Van: Sergei Shtylyov [mailto:sshtylyov@ru.mvista.com] 
-> Verzonden: dinsdag 18 maart 2008 17:44
-> Aan: Nico Coesel
-> CC: linux-mips@linux-mips.org
-> Onderwerp: Serial console on Au1100 
-> 
-> Hello.
-> 
-> Nico Coesel wrote:
-> 
-> > Hello all,
-> > I didn't follow the entire discussion, but I might have similar 
-> > problems on the AU1100 SoC. The AU1100 also has 16550 style serial 
-> > ports. The serial console doesn't work even though I specify 
-> > console=/dev/ttyS0 on the kernel command line. Once a getty is 
-> > started, the serial port is active and working fine.
-> 
->     This is not at all related to the discussed issue, so 
-> I've changed the subject. The console works like charm 
-> (seemingly for everybody, which kernel version are you using?
-> 
-> > Nico
-> 
-> WBR, Sergei
-> 
+-- 
+ Manuel Lauss

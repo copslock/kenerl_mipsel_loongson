@@ -1,52 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Mar 2008 12:20:58 +0000 (GMT)
-Received: from elvis.franken.de ([193.175.24.41]:39871 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S20022558AbYCSMUv (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 19 Mar 2008 12:20:51 +0000
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1JbxHm-0008Ju-00; Wed, 19 Mar 2008 13:20:50 +0100
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id 65662C28E1; Wed, 19 Mar 2008 13:20:42 +0100 (CET)
-Date:	Wed, 19 Mar 2008 13:20:42 +0100
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] BCM1480: Init pci controller io_map_base
-Message-ID: <20080319122042.GA6194@alpha.franken.de>
-References: <20080308185155.BA791E31BE@solo.franken.de> <20080310162825.GE31420@linux-mips.org> <alpine.SOC.1.00.0803191111570.17546@piorun>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Mar 2008 17:58:19 +0000 (GMT)
+Received: from rtsoft3.corbina.net ([85.21.88.6]:41653 "EHLO
+	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
+	id S28575438AbYCTR6Q (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 20 Mar 2008 17:58:16 +0000
+Received: from wasted.dev.rtsoft.ru (unknown [10.150.0.9])
+	by buildserver.ru.mvista.com (Postfix) with ESMTP
+	id 6CC408816; Thu, 20 Mar 2008 22:58:33 +0400 (SAMT)
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+To:	ralf@linux-mips.org
+Subject: [PATCH] Make KGDB compile on UP
+Date:	Thu, 20 Mar 2008 20:59:34 +0300
+User-Agent: KMail/1.5
+Cc:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <alpine.SOC.1.00.0803191111570.17546@piorun>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+Message-Id: <200803202059.37857.sshtylyov@ru.mvista.com>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18443
+X-archive-position: 18444
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Mar 19, 2008 at 11:12:23AM +0000, Maciej W. Rozycki wrote:
-> On Mon, 10 Mar 2008, Ralf Baechle wrote:
-> 
-> > Thanks, applied.  But this patch only solves the problem for the BCM1480's
-> > native PCI bus.  Support for PCI behind HT still needs to be fixed and I'm
-> > not quite sure where the ports of such devices and busses are getting
-> > mapped to.
-> 
->  Hmm, A_BCM1480_PHYS_HT_IO_MATCH_BYTES?
+Building UP kernel with KGDB enabled produces the following errors and warning
+(fatal due to -Werror in arch/mips/kernel/Makefile):
 
-we could switch to IO_MATCH_BITS, but then we need to disable software
-swapping and use address mangling. I personaly prefer to do swapping
-in software.
+In file included from arch/mips/kernel/gdb-stub.c:142:
+include/asm/smp.h:25:1: "raw_smp_processor_id" redefined
+In file included from include/linux/sched.h:69,
+                 from arch/mips/kernel/gdb-stub.c:126:
+include/linux/smp.h:88:1: this is the location of the previous definition
+In file included from arch/mips/kernel/gdb-stub.c:142:
+include/asm/smp.h:62: error: redefinition of 'smp_send_reschedule'
+include/linux/smp.h:102: error: previous definition of 'smp_send_reschedule' was here
+include/asm/smp.h: In function `smp_send_reschedule':
+include/asm/smp.h:65: error: dereferencing pointer to incomplete type
+arch/mips/kernel/gdb-stub.c: At top level:
+arch/mips/kernel/gdb-stub.c:660: warning: 'kgdb_wait' defined but not used
 
-Thomas.
+Fix the errors by not directly including <asm/smp.h> (which is already included
+by <linux/smp.h>) and the warning by enclosing kgdb_wait() in #ifdef CONFIG_SMP.
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+---
+This should be applied to 2.6.23+ stable branches since -Werror was introduced
+in 2.6.23-rc2; the errors only started occuring after 2.6.24...
+
+ arch/mips/kernel/gdb-stub.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletion(-)
+
+Index: linux-2.6/arch/mips/kernel/gdb-stub.c
+===================================================================
+--- linux-2.6.orig/arch/mips/kernel/gdb-stub.c
++++ linux-2.6/arch/mips/kernel/gdb-stub.c
+@@ -139,7 +139,6 @@
+ #include <asm/system.h>
+ #include <asm/gdb-stub.h>
+ #include <asm/inst.h>
+-#include <asm/smp.h>
+ 
+ /*
+  * external low-level support routines
+@@ -656,6 +655,7 @@ void set_async_breakpoint(unsigned long 
+ 	*epc = (unsigned long)async_breakpoint;
+ }
+ 
++#ifdef CONFIG_SMP
+ static void kgdb_wait(void *arg)
+ {
+ 	unsigned flags;
+@@ -668,6 +668,7 @@ static void kgdb_wait(void *arg)
+ 
+ 	local_irq_restore(flags);
+ }
++#endif
+ 
+ /*
+  * GDB stub needs to call kgdb_wait on all processor with interrupts

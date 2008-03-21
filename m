@@ -1,71 +1,135 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Mar 2008 21:16:42 +0000 (GMT)
-Received: from mail1.pearl-online.net ([62.159.194.147]:52498 "EHLO
-	mail1.pearl-online.net") by ftp.linux-mips.org with ESMTP
-	id S28578682AbYCUVQk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 21 Mar 2008 21:16:40 +0000
-Received: from SNaIlmail.Peter (85.233.32.210.static.cablesurf.de [85.233.32.210])
-	by mail1.pearl-online.net (Postfix) with ESMTP id D408EC0D9;
-	Fri, 21 Mar 2008 22:16:34 +0100 (CET)
-Received: from Indigo2.Peter (Indigo2.Peter [192.168.1.28])
-	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id m2L0gGfM001336;
-	Fri, 21 Mar 2008 01:42:16 +0100
-Received: from Indigo2.Peter (localhost [127.0.0.1])
-	by Indigo2.Peter (8.12.6/8.12.6/Sendmail/Linux 2.6.14-rc2-ip28) with ESMTP id m2LL7cFS000532;
-	Fri, 21 Mar 2008 22:07:38 +0100
-Received: from localhost (pf@localhost)
-	by Indigo2.Peter (8.12.6/8.12.6/Submit) with ESMTP id m2LL7cQb000529;
-	Fri, 21 Mar 2008 22:07:38 +0100
-X-Authentication-Warning: Indigo2.Peter: pf owned process doing -bs
-Date:	Fri, 21 Mar 2008 22:07:38 +0100 (CET)
-From:	peter fuerst <post@pfrst.de>
-X-X-Sender: pf@Indigo2.Peter
-Reply-To: post@pfrst.de
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] IP28: fix MC GIOPAR setting
-In-Reply-To: <20080321194737.GA8398@alpha.franken.de>
-Message-ID: <Pine.LNX.4.58.0803212125050.523@Indigo2.Peter>
-References: <Pine.LNX.4.58.0803211535570.423@Indigo2.Peter>
- <20080321194737.GA8398@alpha.franken.de>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <post@pfrst.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Mar 2008 21:27:02 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:23964 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S28578399AbYCUV1A (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 21 Mar 2008 21:27:00 +0000
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1JcolP-0000Ni-00; Fri, 21 Mar 2008 22:26:59 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 6F769C2DF8; Fri, 21 Mar 2008 22:25:43 +0100 (CET)
+From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To:	linux-scsi@vger.kernel.org, linux-mips@linux-mips.org
+cc:	ralf@linux-mips.org, James.Bottomley@HansenPartnership.com
+Subject: [PATCH] WD33C93: let platform stub override no_sync/fast/dma_mode
+Message-Id: <20080321212543.6F769C2DF8@solo.franken.de>
+Date:	Fri, 21 Mar 2008 22:25:43 +0100 (CET)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18457
+X-archive-position: 18458
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: post@pfrst.de
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
+SGI machines with WD33C93 allow usage of burst mode DMA, which increases
+performance noticable. To make this selectable by the sgiwd93 stub,
+setting the values for no_sync, fast and dma_mode has been moved to the
+individual platform stubs.
 
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+---
 
-On Fri, 21 Mar 2008, Thomas Bogendoerfer wrote:
+Please apply for 2.6.26
 
-> Date: Fri, 21 Mar 2008 20:47:37 +0100
-> From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> To: peter fuerst <post@pfrst.de>
-> Cc: linux-mips@linux-mips.org, ralf@linux-mips.org
-> Subject: Re: [PATCH] IP28: fix MC GIOPAR setting
->
-> On Fri, Mar 21, 2008 at 04:03:16PM +0100, peter fuerst wrote:
-> > We must not omit the MASTERGFX setting, unless we want Impact DMA to hang ;-)
->
-> is there a reason to restrict this to IP28 only ?
+ drivers/scsi/a2091.c   |    3 +++
+ drivers/scsi/a3000.c   |    3 +++
+ drivers/scsi/gvp11.c   |    3 +++
+ drivers/scsi/mvme147.c |    3 +++
+ drivers/scsi/sgiwd93.c |    7 ++++---
+ drivers/scsi/wd33c93.c |    3 ---
+ 6 files changed, 16 insertions(+), 6 deletions(-)
 
-Would indeed be most surprising, if this isn't appropriate for any Indigo2-
-Impact, but don't know for sure.  And can't check, whether it at least doesn't
-hurt Non-Impact Indigo2.  Of course, being able to avoid '#ifdef' at all would
-be the prettiest alternative.
-
->
-> Thomas.
->
-> --
-> Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-> good idea.                                                [ RFC1925, 2.3 ]
->
->
+diff --git a/drivers/scsi/a2091.c b/drivers/scsi/a2091.c
+index 5ac3a3e..1d1bb25 100644
+--- a/drivers/scsi/a2091.c
++++ b/drivers/scsi/a2091.c
+@@ -179,6 +179,9 @@ int __init a2091_detect(struct scsi_host_template *tpnt)
+ 	DMA(instance)->DAWR = DAWR_A2091;
+ 	regs.SASR = &(DMA(instance)->SASR);
+ 	regs.SCMD = &(DMA(instance)->SCMD);
++	HDATA(a3000_host)->no_sync = 0xff;
++	HDATA(a3000_host)->fast = 0;
++	HDATA(a3000_host)->dma_mode = CTRL_DMA;
+ 	wd33c93_init(instance, regs, dma_setup, dma_stop, WD33C93_FS_8_10);
+ 	request_irq(IRQ_AMIGA_PORTS, a2091_intr, IRQF_SHARED, "A2091 SCSI",
+ 		    instance);
+diff --git a/drivers/scsi/a3000.c b/drivers/scsi/a3000.c
+index 3aeec96..8b449d8 100644
+--- a/drivers/scsi/a3000.c
++++ b/drivers/scsi/a3000.c
+@@ -178,6 +178,9 @@ int __init a3000_detect(struct scsi_host_template *tpnt)
+     DMA(a3000_host)->DAWR = DAWR_A3000;
+     regs.SASR = &(DMA(a3000_host)->SASR);
+     regs.SCMD = &(DMA(a3000_host)->SCMD);
++    HDATA(a3000_host)->no_sync = 0xff;
++    HDATA(a3000_host)->fast = 0;
++    HDATA(a3000_host)->dma_mode = CTRL_DMA;
+     wd33c93_init(a3000_host, regs, dma_setup, dma_stop, WD33C93_FS_12_15);
+     if (request_irq(IRQ_AMIGA_PORTS, a3000_intr, IRQF_SHARED, "A3000 SCSI",
+ 		    a3000_intr))
+diff --git a/drivers/scsi/gvp11.c b/drivers/scsi/gvp11.c
+index 91f8522..e75a7ba 100644
+--- a/drivers/scsi/gvp11.c
++++ b/drivers/scsi/gvp11.c
+@@ -322,6 +322,9 @@ int __init gvp11_detect(struct scsi_host_template *tpnt)
+ 	 */
+ 	regs.SASR = &(DMA(instance)->SASR);
+ 	regs.SCMD = &(DMA(instance)->SCMD);
++	HDATA(a3000_host)->no_sync = 0xff;
++	HDATA(a3000_host)->fast = 0;
++	HDATA(a3000_host)->dma_mode = CTRL_DMA;
+ 	wd33c93_init(instance, regs, dma_setup, dma_stop,
+ 		     (epc & GVP_SCSICLKMASK) ? WD33C93_FS_8_10
+ 					     : WD33C93_FS_12_15);
+diff --git a/drivers/scsi/mvme147.c b/drivers/scsi/mvme147.c
+index be41aad..6a8cf17 100644
+--- a/drivers/scsi/mvme147.c
++++ b/drivers/scsi/mvme147.c
+@@ -82,6 +82,9 @@ int mvme147_detect(struct scsi_host_template *tpnt)
+     mvme147_host->irq = MVME147_IRQ_SCSI_PORT;
+     regs.SASR = (volatile unsigned char *)0xfffe4000;
+     regs.SCMD = (volatile unsigned char *)0xfffe4001;
++    HDATA(a3000_host)->no_sync = 0xff;
++    HDATA(a3000_host)->fast = 0;
++    HDATA(a3000_host)->dma_mode = CTRL_DMA;
+     wd33c93_init(mvme147_host, regs, dma_setup, dma_stop, WD33C93_FS_8_10);
+ 
+     if (request_irq(MVME147_IRQ_SCSI_PORT, mvme147_intr, 0, "MVME147 SCSI PORT", mvme147_intr))
+diff --git a/drivers/scsi/sgiwd93.c b/drivers/scsi/sgiwd93.c
+index 26cfc56..03e3596 100644
+--- a/drivers/scsi/sgiwd93.c
++++ b/drivers/scsi/sgiwd93.c
+@@ -263,10 +263,11 @@ static int __init sgiwd93_probe(struct platform_device *pdev)
+ 	regs.SASR = wdregs + 3;
+ 	regs.SCMD = wdregs + 7;
+ 
+-	wd33c93_init(host, regs, dma_setup, dma_stop, WD33C93_FS_MHZ(20));
++	hdata->wh.no_sync = 0;
++	hdata->wh.fast = 1;
++	hdata->wh.dma_mode = CTRL_BURST;
+ 
+-	if (hdata->wh.no_sync == 0xff)
+-		hdata->wh.no_sync = 0;
++	wd33c93_init(host, regs, dma_setup, dma_stop, WD33C93_FS_MHZ(20));
+ 
+ 	err = request_irq(irq, sgiwd93_intr, 0, "SGI WD93", host);
+ 	if (err) {
+diff --git a/drivers/scsi/wd33c93.c b/drivers/scsi/wd33c93.c
+index f286c37..5fda881 100644
+--- a/drivers/scsi/wd33c93.c
++++ b/drivers/scsi/wd33c93.c
+@@ -1973,10 +1973,7 @@ wd33c93_init(struct Scsi_Host *instance, const wd33c93_regs regs,
+ 	hostdata->incoming_ptr = 0;
+ 	hostdata->outgoing_len = 0;
+ 	hostdata->default_sx_per = DEFAULT_SX_PER;
+-	hostdata->no_sync = 0xff;	/* sync defaults to off */
+ 	hostdata->no_dma = 0;	/* default is DMA enabled */
+-	hostdata->fast = 0;	/* default is Fast SCSI transfers disabled */
+-	hostdata->dma_mode = CTRL_DMA;	/* default is Single Byte DMA */
+ 
+ #ifdef PROC_INTERFACE
+ 	hostdata->proc = PR_VERSION | PR_INFO | PR_STATISTICS |

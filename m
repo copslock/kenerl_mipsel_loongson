@@ -1,77 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Mar 2008 16:01:16 +0000 (GMT)
-Received: from web38810.mail.mud.yahoo.com ([209.191.125.101]:52654 "HELO
-	web38810.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S28577473AbYCUQBO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 21 Mar 2008 16:01:14 +0000
-Received: (qmail 92359 invoked by uid 60001); 21 Mar 2008 16:00:52 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=X-YMail-OSG:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
-  b=ry3zeCwfTyvu1WL+CLM07sOhFdfQrvcR6SF34NSP27XCHaiDYSKANCd+V9HALSZLT/HOmD6v3VRh3hRb55luSvPbkQTVu6shEaJQPKNPdZNvEr636/DQ+rujXh+5pfzC2r3QyW0RoN4e8KYjJxuRHONt/wPlFmgW/tuPMZhqcTM=;
-X-YMail-OSG: 45DGeD8VM1lA_zSuzCBvUHobPt.7j6n9Wz6VZbSFZyGggDvggU7.3ODfVc4Sk.bKqvV1.eLjj8TgZve4iF55vpSD6xTBZVkVTstfzc9c2wiONQPn5Z2CtINeR69Vzw--
-Received: from [68.236.82.170] by web38810.mail.mud.yahoo.com via HTTP; Fri, 21 Mar 2008 09:00:52 PDT
-Date:	Fri, 21 Mar 2008 09:00:52 -0700 (PDT)
-From:	Larry Stefani <lstefani@yahoo.com>
-Subject: Extraneous line in interrupt.h in 2.6.16.60 kernel?
-To:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Mar 2008 16:22:48 +0000 (GMT)
+Received: from [85.37.17.112] ([85.37.17.112]:45835 "EHLO smtp-out112.alice.it")
+	by ftp.linux-mips.org with ESMTP id S28577343AbYCUQWq (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 21 Mar 2008 16:22:46 +0000
+Received: from FBCMMO01.fbc.local ([192.168.68.195]) by smtp-out112.alice.it with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 21 Mar 2008 17:22:31 +0100
+Received: from FBCMCL01B06.fbc.local ([192.168.69.87]) by FBCMMO01.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 21 Mar 2008 17:22:30 +0100
+Received: from [192.168.1.200] ([82.48.161.252]) by FBCMCL01B06.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 21 Mar 2008 17:22:29 +0100
+Message-ID: <47E3E0C2.9070404@tin.it>
+Date:	Fri, 21 Mar 2008 17:22:26 +0100
+From:	LD <memorylost@tin.it>
+User-Agent: Thunderbird 2.0.0.6 (X11/20071022)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Message-ID: <582735.81620.qm@web38810.mail.mud.yahoo.com>
-Return-Path: <lstefani@yahoo.com>
+To:	linux-mips@linux-mips.org
+Subject: AU1100 2.4.21-pre4 flash disks problems
+X-Enigmail-Version: 0.95.6
+Content-Type: text/plain; charset=ISO-8859-15; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 21 Mar 2008 16:22:30.0105 (UTC) FILETIME=[C282EC90:01C88B6F]
+Return-Path: <memorylost@tin.it>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18451
+X-archive-position: 18452
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lstefani@yahoo.com
+X-original-sender: memorylost@tin.it
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
 
-Back in 2.6.16.29, there were a lot changes made to
-support MT_SMTC.  Among them were changes to the
-include/asm-mips/interrupt.h:
+Hi all,
+I am working on an AU1100 system, using a 2.4.21-pre4 kernel. Filesystem
+is jffs2, uclibc libraries.
 
-__asm__ (
-  " .macro  local_irq_enable        \n"
-  " .set  push            \n"
-  " .set  reorder           \n"
-  " .set  noat            \n"
-#ifdef CONFIG_CPU_MIPSR2
-  " .set  mips32r2          \n"
-#ifdef CONFIG_MIPS_MT_SMTC
-  "mfc0 $1, $2, 1 # SMTC - clear TCStatus.IXMT    \n"
-  "ori  $1, 0x400           \n"
-  "xori $1, 0x400           \n"
-  "mtc0 $1, $2, 1           \n"
-#else
-  " .set  mips32r2          \n"
-  " ei              \n"
-  " .set  mips0           \n"
-#endif
-#else
-  " mfc0  $1,$12            \n"
-  " ori $1,0x1f           \n"
-  " xori  $1,0x1e           \n"
-  " mtc0  $1,$12            \n"
-#endif
-  " irq_enable_hazard         \n"
-  " .set  pop           \n"
-  " .endm");
+I have a couple of problems with USB flash disk handling:
 
+1) it seems that my system does not "see" disks larger than 512 MB. 1GB
+disks or more cannot be mounted. This is becoming a problem because
+512MB disks are going out of the market.
 
-Am I missing something, or is the second ".set 
-mips32r2  \n" (line 51) redundant?
+2) Given two flash disks of different sizes (for example: one 128 MB,
+one 512 MB), if I mount/umount one of them -> I cannot then mount the
+other and vice versa.
+Example:
 
-Thanks,
-Larry Stefani
-lstefani@yahoo.com
+- - mount the 128 MB one, then umount. Try to mount the 512MB ->fail.
+- - reset the device
+- - mount the 512MB device, ok. Umount. Try to mount the 128MB -> fail.
 
+Disks are vfat formatted ; did not try with other filesystem types.
 
-      ____________________________________________________________________________________
-Be a better friend, newshound, and 
-know-it-all with Yahoo! Mobile.  Try it now.  http://mobile.yahoo.com/;_ylt=Ahu06i62sR8HDtDypao8Wcj9tAcJ
+Tried to use a 2.6.x kernel and no problem ; I am planning to switch all
+to 2.6.x kernel, but in this moment for me is better (if possible)
+fixing this problem, because I have a number of applications and drivers
+running on 2.4.21 and the switching to 2.6.x means revising and
+re-testing a lot of things.
+
+Back to 2.4.21...
+If I try to dmesg I see a "Partition check:" message missing when I put
+in the second disk ; I am investigating on this (maybe some piece of
+software is called checking for partitions on the first disk but is not
+called again when I change disk type).
+
+Any suggestions are welcome,
+
+best regards
+
+Lucio Dona'
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+
+iD8DBQFH4+DCvxHCsvXy9okRApudAJwON54jwrtPtgKd2zImEjmYbPbpRwCgsnWr
+4nWlOjZbQtNDzqFUcfRRltI=
+=vh3N
+-----END PGP SIGNATURE-----

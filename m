@@ -1,43 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Mar 2008 19:09:30 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:32043 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S28581274AbYCVTJ2 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 22 Mar 2008 19:09:28 +0000
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 5E1AD3ECA; Sat, 22 Mar 2008 12:09:24 -0700 (PDT)
-Message-ID: <47E559B6.9010001@ru.mvista.com>
-Date:	Sat, 22 Mar 2008 22:10:46 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Mar 2008 23:40:19 +0000 (GMT)
+Received: from host194-211-dynamic.20-79-r.retail.telecomitalia.it ([79.20.211.194]:28651
+	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
+	id S28642771AbYCVXkR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 22 Mar 2008 23:40:17 +0000
+Received: from casa ([192.168.2.34])
+	by eppesuigoccas.homedns.org with esmtpsa (TLS-1.0:RSA_ARCFOUR_MD5:16)
+	(Exim 4.63)
+	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
+	id 1JdDJn-0001YG-6X
+	for linux-mips@linux-mips.org; Sun, 23 Mar 2008 00:40:09 +0100
+Subject: Re: Compiler error? [was: Re: new kernel oops in recent kernels]
+From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
 To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: Where's C0 count/.compare IRQ is unmasked??
-Content-Type: text/plain; charset=us-ascii; format=flowed
+In-Reply-To: <20080321230010.GA31135@alpha.franken.de>
+References: <1205664563.3050.4.camel@localhost>
+	 <1205699257.4159.14.camel@casa> <20080316233619.GA29511@alpha.franken.de>
+	 <1205741142.3515.2.camel@localhost> <20080317141828.GA25798@linux-mips.org>
+	 <20080317143215.GA11497@alpha.franken.de>
+	 <20080321230010.GA31135@alpha.franken.de>
+Content-Type: text/plain
+Date:	Sun, 23 Mar 2008 00:39:58 +0100
+Message-Id: <1206229198.4075.12.camel@casa>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.6.3 
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Return-Path: <giuseppe@eppesuigoccas.homedns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18466
+X-archive-position: 18467
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: giuseppe@eppesuigoccas.homedns.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+Hi Thomas,
 
-    I'm dazed and confused -- please forget my ignorance but I fail to see 
-where the count/compare interrupt is enabled by the most platforms but Alchemy 
-(which does it in arch_init_irq() -- which is causing me trouble). I'd 
-expected this to happev in cevr-r4k.c but no, it doesn't (unlike cevt-sb1250.c 
-for example). I'd expected this to happen in the platform code but most 
-platforms disable (or ignore) this IRQ in arch_init_irq() and ignore it in 
-plat_time_init() (probably correctly)? Could anyone shed some light on this? 
-Where is a proper place to do it?
+Il giorno sab, 22/03/2008 alle 00.00 +0100, Thomas Bogendoerfer ha
+scritto:
+[...]
+> below is a patch, which replaces all buffers on the stack, which are
+> passed to the scsi layer with kmalloced ones.
+> 
+> Giuseppe, could you please check if this fixes your problem, and
+> doesn't cause new regressions ? 
 
-WBR, Sergei
+I rebuilt a kernel (pulling latest code from git) with your patch. Now I
+do not get anymore the Oops at boot time, moreover I may mount a CDROM
+and copying data from that CDROM to local SCSI disk.
+
+Bye,
+Giuseppe

@@ -1,78 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Mar 2008 23:54:48 +0000 (GMT)
-Received: from mail1.pearl-online.net ([62.159.194.147]:18715 "EHLO
-	mail1.pearl-online.net") by ftp.linux-mips.org with ESMTP
-	id S28578898AbYCUXyq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 21 Mar 2008 23:54:46 +0000
-Received: from SNaIlmail.Peter (85.233.32.210.static.cablesurf.de [85.233.32.210])
-	by mail1.pearl-online.net (Postfix) with ESMTP id 29058CA17;
-	Sat, 22 Mar 2008 00:54:41 +0100 (CET)
-Received: from Indigo2.Peter (Indigo2.Peter [192.168.1.28])
-	by SNaIlmail.Peter (8.12.6/8.12.6/Sendmail/Linux 2.0.32) with ESMTP id m2L3KMfM001807;
-	Fri, 21 Mar 2008 04:20:22 +0100
-Received: from Indigo2.Peter (localhost [127.0.0.1])
-	by Indigo2.Peter (8.12.6/8.12.6/Sendmail/Linux 2.6.14-rc2-ip28) with ESMTP id m2LNj3FS000629;
-	Sat, 22 Mar 2008 00:45:03 +0100
-Received: from localhost (pf@localhost)
-	by Indigo2.Peter (8.12.6/8.12.6/Submit) with ESMTP id m2LNj3rB000626;
-	Sat, 22 Mar 2008 00:45:03 +0100
-X-Authentication-Warning: Indigo2.Peter: pf owned process doing -bs
-Date:	Sat, 22 Mar 2008 00:45:03 +0100 (CET)
-From:	peter fuerst <post@pfrst.de>
-X-X-Sender: pf@Indigo2.Peter
-Reply-To: post@pfrst.de
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc:	linux-scsi@vger.kernel.org, linux-mips@linux-mips.org,
-	ralf@linux-mips.org, James.Bottomley@HansenPartnership.com
-Subject: Re: [PATCH] WD33C93: let platform stub override no_sync/fast/dma_mode
-In-Reply-To: <20080321230424.GA31455@alpha.franken.de>
-Message-ID: <Pine.LNX.4.58.0803220038510.622@Indigo2.Peter>
-References: <20080321212543.6F769C2DF8@solo.franken.de>
- <Pine.LNX.4.58.0803212302190.564@Indigo2.Peter> <20080321230424.GA31455@alpha.franken.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Mar 2008 19:09:30 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:32043 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S28581274AbYCVTJ2 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 22 Mar 2008 19:09:28 +0000
+Received: from [192.168.1.234] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 5E1AD3ECA; Sat, 22 Mar 2008 12:09:24 -0700 (PDT)
+Message-ID: <47E559B6.9010001@ru.mvista.com>
+Date:	Sat, 22 Mar 2008 22:10:46 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <post@pfrst.de>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: Where's C0 count/.compare IRQ is unmasked??
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18465
+X-archive-position: 18466
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: post@pfrst.de
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
+Hello.
 
+    I'm dazed and confused -- please forget my ignorance but I fail to see 
+where the count/compare interrupt is enabled by the most platforms but Alchemy 
+(which does it in arch_init_irq() -- which is causing me trouble). I'd 
+expected this to happev in cevr-r4k.c but no, it doesn't (unlike cevt-sb1250.c 
+for example). I'd expected this to happen in the platform code but most 
+platforms disable (or ignore) this IRQ in arch_init_irq() and ignore it in 
+plat_time_init() (probably correctly)? Could anyone shed some light on this? 
+Where is a proper place to do it?
 
-On Sat, 22 Mar 2008, Thomas Bogendoerfer wrote:
-
-> Date: Sat, 22 Mar 2008 00:04:24 +0100
-> From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> To: peter fuerst <post@pfrst.de>
-> Cc: linux-scsi@vger.kernel.org, linux-mips@linux-mips.org,
->      ralf@linux-mips.org, James.Bottomley@HansenPartnership.com
-> Subject: Re: [PATCH] WD33C93: let platform stub override
->     no_sync/fast/dma_mode
->
-> On Fri, Mar 21, 2008 at 11:20:07PM +0100, peter fuerst wrote:
-> > ...
->
-> this hack is IMHO no longer needed. If the user wants to override no_sync
-> via kernel command line, it works as before. If the user doesn't no_sync
-> will be 0 (now set in sgiwd93.c before calling wd33c93_init()) and the
-> driver will try to do sync transfers for all devices. It works like before.
-
-It works cleaner than before :-)
-
-> Or did I miss something ?
-
-No. As already said, just forget it, i missed to look at the whole patch in time.
-
->
-> Thomas
->
-> --
-> Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-> good idea.                                                [ RFC1925, 2.3 ]
->
->
+WBR, Sergei

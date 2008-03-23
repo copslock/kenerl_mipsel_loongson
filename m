@@ -1,55 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Mar 2008 23:40:19 +0000 (GMT)
-Received: from host194-211-dynamic.20-79-r.retail.telecomitalia.it ([79.20.211.194]:28651
-	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
-	id S28642771AbYCVXkR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 22 Mar 2008 23:40:17 +0000
-Received: from casa ([192.168.2.34])
-	by eppesuigoccas.homedns.org with esmtpsa (TLS-1.0:RSA_ARCFOUR_MD5:16)
-	(Exim 4.63)
-	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
-	id 1JdDJn-0001YG-6X
-	for linux-mips@linux-mips.org; Sun, 23 Mar 2008 00:40:09 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Mar 2008 11:16:28 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:27588 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20024773AbYCWLQZ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 23 Mar 2008 11:16:25 +0000
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1JdOBc-0004SP-01; Sun, 23 Mar 2008 12:16:24 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id CBF39C2DFF; Sun, 23 Mar 2008 12:16:10 +0100 (CET)
+Date:	Sun, 23 Mar 2008 12:16:10 +0100
+To:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+Cc:	linux-mips@linux-mips.org
 Subject: Re: Compiler error? [was: Re: new kernel oops in recent kernels]
-From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
-To:	linux-mips@linux-mips.org
-In-Reply-To: <20080321230010.GA31135@alpha.franken.de>
-References: <1205664563.3050.4.camel@localhost>
-	 <1205699257.4159.14.camel@casa> <20080316233619.GA29511@alpha.franken.de>
-	 <1205741142.3515.2.camel@localhost> <20080317141828.GA25798@linux-mips.org>
-	 <20080317143215.GA11497@alpha.franken.de>
-	 <20080321230010.GA31135@alpha.franken.de>
-Content-Type: text/plain
-Date:	Sun, 23 Mar 2008 00:39:58 +0100
-Message-Id: <1206229198.4075.12.camel@casa>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.6.3 
-Content-Transfer-Encoding: 7bit
-Return-Path: <giuseppe@eppesuigoccas.homedns.org>
+Message-ID: <20080323111610.GA8660@alpha.franken.de>
+References: <1205664563.3050.4.camel@localhost> <1205699257.4159.14.camel@casa> <20080316233619.GA29511@alpha.franken.de> <1205741142.3515.2.camel@localhost> <20080317141828.GA25798@linux-mips.org> <20080317143215.GA11497@alpha.franken.de> <20080321230010.GA31135@alpha.franken.de> <1206229198.4075.12.camel@casa>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1206229198.4075.12.camel@casa>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18467
+X-archive-position: 18468
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giuseppe@eppesuigoccas.homedns.org
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi Thomas,
-
-Il giorno sab, 22/03/2008 alle 00.00 +0100, Thomas Bogendoerfer ha
-scritto:
-[...]
-> below is a patch, which replaces all buffers on the stack, which are
-> passed to the scsi layer with kmalloced ones.
+On Sun, Mar 23, 2008 at 12:39:58AM +0100, Giuseppe Sacco wrote:
+> > Giuseppe, could you please check if this fixes your problem, and
+> > doesn't cause new regressions ? 
 > 
-> Giuseppe, could you please check if this fixes your problem, and
-> doesn't cause new regressions ? 
+> I rebuilt a kernel (pulling latest code from git) with your patch. Now I
+> do not get anymore the Oops at boot time, moreover I may mount a CDROM
+> and copying data from that CDROM to local SCSI disk.
 
-I rebuilt a kernel (pulling latest code from git) with your patch. Now I
-do not get anymore the Oops at boot time, moreover I may mount a CDROM
-and copying data from that CDROM to local SCSI disk.
+great, thank you for testing. I'll submit the patch to the maintainer.
 
-Bye,
-Giuseppe
+Thomas.
+
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

@@ -1,70 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Mar 2008 14:00:41 +0000 (GMT)
-Received: from web38802.mail.mud.yahoo.com ([209.191.125.93]:17010 "HELO
-	web38802.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20027156AbYCXOAj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 24 Mar 2008 14:00:39 +0000
-Received: (qmail 82702 invoked by uid 60001); 24 Mar 2008 14:00:16 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=X-YMail-OSG:Received:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
-  b=Et/Zpi+bUeZaxs8HG/OOzgkv+DrVVDWhb7pJL2X0Rcum4XOw4wQ3axG6/KwrXUixGKdJb2TaL2bNfoSSRtK1FKpsDBCmCWc3phlAC6L3amIQd4YQTt2jH0S/8KuplJ+6cUmWUL3G14SOaVL2v/8VOw0zEi8C5AYqmX1ewJ/f5/Y=;
-X-YMail-OSG: V_Z0prMVM1l1d8NSGbuwhuBXKoIj61lrMeC0WGlodmqgzK2BOwcUwKhAC4_o.Lg6pIk_zSBcPtP20HWlnqrHxltU7UCQ6vbY3lrjH7ZHlbfJCCIKQEM-
-Received: from [68.236.82.170] by web38802.mail.mud.yahoo.com via HTTP; Mon, 24 Mar 2008 07:00:15 PDT
-Date:	Mon, 24 Mar 2008 07:00:15 -0700 (PDT)
-From:	Larry Stefani <lstefani@yahoo.com>
-Subject: SB1250 locking up in init on current 2.6.16 kernel
-To:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Mar 2008 14:22:20 +0000 (GMT)
+Received: from rtsoft3.corbina.net ([85.21.88.6]:64739 "EHLO
+	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
+	id S20027184AbYCXOWS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 24 Mar 2008 14:22:18 +0000
+Received: from [192.168.1.234] (unknown [10.150.0.9])
+	by buildserver.ru.mvista.com (Postfix) with ESMTP
+	id 796728814; Mon, 24 Mar 2008 19:22:35 +0400 (SAMT)
+Message-ID: <47E7B970.30105@ru.mvista.com>
+Date:	Mon, 24 Mar 2008 17:23:44 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Message-ID: <15031.81072.qm@web38802.mail.mud.yahoo.com>
-Return-Path: <lstefani@yahoo.com>
+To:	Nico Coesel <ncoesel@DEALogic.nl>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: FW: Alchemy power managment code.
+References: <19CA9E279FDA5246B7D7A1C91A4AF7F40EF804@dealogicserver.DEALogic.nl>
+In-Reply-To: <19CA9E279FDA5246B7D7A1C91A4AF7F40EF804@dealogicserver.DEALogic.nl>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18473
+X-archive-position: 18474
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lstefani@yahoo.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Hello.
 
-I've been trying to upgrade from 2.6.16.18 to
-2.6.16.60, but am seeing a hard lockup right before
-"INIT: version 2.78 booting" on my SB1250-based board.
+Nico Coesel wrote:
 
-I found a related discussion on the Debian mailing
-list:
+> Ralf,
+> Funny you ask because I tried this yesterday on a AU1100 system with the
+> 2.6.24 kernel (from kernel.org). I'm afraid I must say the kernel
+> crashes when I enable power management. The reason I want to use power
+> management is because I need to send the CPU to sleep when the system
+> shuts down. I hacked power.c and reset.c a bit so au_sleep() is called
+> when the system is shut down. Perhaps someone can confirm the
+> powermanagement can be made to work with some fixes (it didn't work with
+> 2.6.21-rc4 either).
 
-http://groups.google.com/group/linux.debian.bugs.dist/browse_thread/thread/b7159ee25106c7f9
+    The TOY cpunter 0 clockevent driver is also need to be written for the 
+recent kernel as CP0 timer stops ticking after wait insn is executed -- see 
+arch/mips/au1000/common/time.c...
 
-However, after applying Thiemo's patch to mark pages
-tainted by PIO IDE as dirty, the lockup still occurs.
-
-I narrowed the file changes to
-
-     arch/mips/mm/c-sb1.c
-     arch/mips/mm/cache.c
-     arch/mips/mm/init.c
-     include/asm-mips/cache-flush.h
-     include/asm-mips/page.h
-
-between 2.6.16.27 and 2.6.16.29.  There was no
-2.6.16.28 tarball posted on linux-mips.org, so I
-basically brought .27 to .29 until I found the
-offending files.
-
-Is anyone running a 2.6.16 kernel (after 2.6.16.27) on
-a SB1250-based board?
-
-Thanks,
-Larry Stefani
-lstefani@yahoo.com
-
-
-      ____________________________________________________________________________________
-Be a better friend, newshound, and 
-know-it-all with Yahoo! Mobile.  Try it now.  http://mobile.yahoo.com/;_ylt=Ahu06i62sR8HDtDypao8Wcj9tAcJ
+WBR, Sergei

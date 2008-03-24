@@ -1,85 +1,138 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Mar 2008 03:31:44 +0000 (GMT)
-Received: from py-out-1112.google.com ([64.233.166.182]:43728 "EHLO
-	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S28644041AbYCXDbm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 24 Mar 2008 03:31:42 +0000
-Received: by py-out-1112.google.com with SMTP id d32so3064482pye.22
-        for <linux-mips@linux-mips.org>; Sun, 23 Mar 2008 20:31:41 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
-        bh=PEX87JKfVOQTTly2Sh/18FJgeFaN6KEHMPYpIeTyVzA=;
-        b=TnwMhtujcXn2vSa8knQVqC1fFH7GpuhNw4GSaJ4tPr78Gs6OPzOt+7WNCqFHuNqeFokentS7NB6ZAlKwlmUiIiv9xl6JEMqPCuzpcD5FrldhsjRIbrpYUXgILQln5eGbKwreIoCYL5zTrGXi0cPVsENdOD2Kf/hsHty+bQDgBsM=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=message-id:date:from:to:subject:mime-version:content-type;
-        b=cR1BZNPFts/a3VOM3h32dgyR3uv8DpyntQoBPsfTeuizeI1tpK+l5AKPoyeLzYaD1eXa08MSYo57bOrL8FXYjJEyjdnOQNgseYFbQAfpIfS911WCunCEvZft/CjDYwN4y+0dQg5JYN5VfP2ulXRsmT22H+A+O+qXd792BfBQWrc=
-Received: by 10.35.102.1 with SMTP id e1mr7485236pym.61.1206329501161;
-        Sun, 23 Mar 2008 20:31:41 -0700 (PDT)
-Received: by 10.35.16.3 with HTTP; Sun, 23 Mar 2008 20:31:41 -0700 (PDT)
-Message-ID: <50c9a2250803232031o5033ce15o5ab843a9181e4e12@mail.gmail.com>
-Date:	Mon, 24 Mar 2008 11:31:41 +0800
-From:	zhuzhenhua <zzh.hust@gmail.com>
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: is uClibc-nptl stable for MIPS now?
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Mar 2008 05:40:38 +0000 (GMT)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:25488 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S20022130AbYCXFkf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 24 Mar 2008 05:40:35 +0000
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 62511315D4B
+	for <linux-mips@linux-mips.org>; Mon, 24 Mar 2008 05:40:26 +0000 (UTC)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [67.116.42.147])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP
+	for <linux-mips@linux-mips.org>; Mon, 24 Mar 2008 05:40:26 +0000 (UTC)
+Received: from jennifer.localdomain ([192.168.7.225]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Sun, 23 Mar 2008 22:40:23 -0700
+Message-ID: <47E73EC5.1080507@avtrex.com>
+Date:	Sun, 23 Mar 2008 22:40:21 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 2.0.0.12 (X11/20080226)
 MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_4695_32279597.1206329501152"
-Return-Path: <zzh.hust@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: SGI Indy looking for a home...
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 24 Mar 2008 05:40:23.0475 (UTC) FILETIME=[8E16F830:01C88D71]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18470
+X-archive-position: 18471
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zzh.hust@gmail.com
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_4695_32279597.1206329501152
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+I have an SGI Indy located in San Jose, CA that is looking for a home.  
+Gratis to anyone that will take it away and make good use of it.
 
-hello,all
-         recently, i want to switch my toolchain from glibc to uClibc,. and
-with buildroot, i succeed in toolchain with pthread_old.
-         i try to build a uClibc-nptl toolchain, but failed( i have used the
-gcc-4.2.1 and binutils-2.17 version). i wonder whether there
-         is a stable version for uClibc-nptl on MIPS.   if someone get it
-work, please give some info about the version.
-         thanks for any hints.
+This bad boy has a whopping 256MB RAM (The maximum for an Indy I think), 
+and a 1GB + 2GB disks.  It also sports an adapter so that you can attach 
+a standard VGA monitor (must have sync on green, Samgung flat panels 
+seem to work, but not my Cornerstone CRT).  Hook up standard PS-2 mouse 
+and keyboard (not included), and you are ready to go with this fine 
+MIPS64 system.
+
+Currently it is running Debian, I am not sure the exact clock speed 
+(probably 150MHz) as I don't have a monitor attached to view hwinv.  But 
+here is the info I have handy:
+
+daney@indy:~$ cat /proc/cpuinfo
+system type             : SGI Indy
+processor               : 0
+cpu model               : R4400SC V5.0  FPU V0.0
+BogoMIPS                : 74.49
+wait instruction        : no
+microsecond timers      : yes
+tlb_entries             : 48
+extra interrupt vector  : no
+hardware watchpoint     : yes
+ASEs implemented        :
+VCED exceptions         : 476805
+VCEI exceptions         : 4876
+
+daney@indy:~$ dmesg
+Linux version 2.6.18-4-r4k-ip22 (Debian 2.6.18.dfsg.1-12etch2) 
+(dannf@debian.org) (gcc version 4.1.2 20061115 (prerelease) (Debian 
+4.1.1-21)) #1 Tue May 8 03:48:00 UTC 2007
+ARCH: SGI-IP22
+PROMLIB: ARC firmware Version 1 Revision 10
+CPU revision is: 00000450
+FPU revision is: 00000500
+MC: SGI memory controller Revision 3
+MC: Probing memory configuration:
+ bank0: 128M @ 08000000
+ bank1: 128M @ 10000000
+Determined physical RAM map:
+ memory: 0000000010000000 @ 0000000008000000 (usable)
+
+.
+.
+.
+Calibrating system timer... 300000 [150.0000 MHz CPU]
+Using 75.000 MHz high precision timer.
+NG1: Revision 6, 24 bitplanes, REX3 revision B, VC2 revision A, xmap9 
+revision A, cmap revision C, bt445 revision D
+NG1: Screensize 1024x768
+Console: colour SGI Newport 128x48
+.
+.
+.
+eth0: SGI Seeq8003 08:00:69:07:94:d1
+wd33c93-0: chip=WD33c93B/13 no_sync=0xff no_dma=0 debug_flags=0x00
+           setup_args=,,,,,,,,,
+           Version 1.26 - 22/Feb/2003, Compiled May  8 2007 at 03:26:34
+scsi0 : SGI WD93
+ sending SDTR 0103013f0csync_xfer=2c<5>  Vendor: SGI       Model: 
+SEAGATE ST31230N  Rev: 0272
+  Type:   Direct-Access                      ANSI SCSI revision: 02
+ sending SDTR 0103013f0csync_xfer=2c<5>  Vendor: SGI       Model: 
+SEAGATE ST32430N  Rev: 0272
+  Type:   Direct-Access                      ANSI SCSI revision: 02
+SCSI device sda: 2070235 512-byte hdwr sectors (1060 MB)
+sda: Write Protect is off
+sda: Mode Sense: 87 00 10 08
+SCSI device sda: drive cache: write through w/ FUA
+SCSI device sda: 2070235 512-byte hdwr sectors (1060 MB)
+sda: Write Protect is off
+sda: Mode Sense: 87 00 10 08
+SCSI device sda: drive cache: write through w/ FUA
+ sda: sda1 sda2 sda9 sda11
+sd 0:0:1:0: Attached scsi disk sda
+SCSI device sdb: 4197405 512-byte hdwr sectors (2149 MB)
+sdb: Write Protect is off
+sdb: Mode Sense: 87 00 10 08
+SCSI device sdb: drive cache: write through w/ FUA
+SCSI device sdb: 4197405 512-byte hdwr sectors (2149 MB)
+sdb: Write Protect is off
+sdb: Mode Sense: 87 00 10 08
+SCSI device sdb: drive cache: write through w/ FUA
+ sdb: sdb1 sdb2 sdb9 sdb11
+sd 0:0:2:0: Attached scsi disk sdb
 
 
-Best Regards
+daney@indy:~$ cat /proc/partitions
+major minor  #blocks  name
 
-
-
-zzh
-
-------=_Part_4695_32279597.1206329501152
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-hello,all<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; recently, i want to
-switch my toolchain from glibc to uClibc,. and with buildroot, i
-succeed in toolchain with pthread_old. <br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i try to build a
-uClibc-nptl toolchain, but failed( i have used the gcc-4.2.1 and
-binutils-2.17 version). i wonder whether there<br>
-&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; is a stable version for uClibc-nptl
-on MIPS.&nbsp;&nbsp; if someone get it work, please give some info
-about the version.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; thanks for any hints.<br>
-<br>
-<br>
-Best Regards<br>
-<br>
-<br>
-<br>
-zzh<br>
-
-------=_Part_4695_32279597.1206329501152--
+   8     0    1035117 sda
+   8     1     851136 sda1
+   8     2     130944 sda2
+   8     9      52173 sda9
+   8    11    1034253 sda11
+   8    16    2098702 sdb
+   8    17    1966167 sdb1
+   8    18     130625 sdb2
+   8    25       1567 sdb9
+   8    27    2098360 sdb11

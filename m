@@ -1,98 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 23 Mar 2008 19:56:05 +0000 (GMT)
-Received: from mordac.selfhost.de ([82.98.82.6]:33940 "EHLO mordac.selfhost.de")
-	by ftp.linux-mips.org with ESMTP id S20026640AbYCWT4D (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 23 Mar 2008 19:56:03 +0000
-Received: (qmail 32550 invoked from network); 23 Mar 2008 19:55:53 -0000
-Received: from unknown (HELO belisama.gimme-th.at) (postmaster@gimme-th.at@84.146.149.186)
-  by mailout.selfhost.de with SMTP; 23 Mar 2008 19:55:53 -0000
-Received: by belisama.gimme-th.at (Postfix, from userid 5001)
-	id 4AF4B4B991; Sun, 23 Mar 2008 20:52:10 +0100 (CET)
-Received: from hey-dude.gimme-th.at (localhost [127.0.0.1])
-	by belisama.gimme-th.at (Postfix) with ESMTP id BE5264B987
-	for <linux-mips@linux-mips.org>; Sun, 23 Mar 2008 20:52:05 +0100 (CET)
-Received: from 84.146.149.186
-        (SquirrelMail authenticated user mrre@gimme-th.at)
-        by hey-dude.gimme-th.at with HTTP;
-        Sun, 23 Mar 2008 20:52:05 +0100 (CET)
-Message-ID: <61692.84.146.149.186.1206301925.squirrel@hey-dude.gimme-th.at>
-Date:	Sun, 23 Mar 2008 20:52:05 +0100 (CET)
-Subject: Problem with compiling kernel on Octance R10K
-From:	mrre@gimme-th.at
-To:	linux-mips@linux-mips.org
-User-Agent: SquirrelMail/1.4.12
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Mar 2008 03:31:44 +0000 (GMT)
+Received: from py-out-1112.google.com ([64.233.166.182]:43728 "EHLO
+	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S28644041AbYCXDbm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 24 Mar 2008 03:31:42 +0000
+Received: by py-out-1112.google.com with SMTP id d32so3064482pye.22
+        for <linux-mips@linux-mips.org>; Sun, 23 Mar 2008 20:31:41 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=beta;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
+        bh=PEX87JKfVOQTTly2Sh/18FJgeFaN6KEHMPYpIeTyVzA=;
+        b=TnwMhtujcXn2vSa8knQVqC1fFH7GpuhNw4GSaJ4tPr78Gs6OPzOt+7WNCqFHuNqeFokentS7NB6ZAlKwlmUiIiv9xl6JEMqPCuzpcD5FrldhsjRIbrpYUXgILQln5eGbKwreIoCYL5zTrGXi0cPVsENdOD2Kf/hsHty+bQDgBsM=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=beta;
+        h=message-id:date:from:to:subject:mime-version:content-type;
+        b=cR1BZNPFts/a3VOM3h32dgyR3uv8DpyntQoBPsfTeuizeI1tpK+l5AKPoyeLzYaD1eXa08MSYo57bOrL8FXYjJEyjdnOQNgseYFbQAfpIfS911WCunCEvZft/CjDYwN4y+0dQg5JYN5VfP2ulXRsmT22H+A+O+qXd792BfBQWrc=
+Received: by 10.35.102.1 with SMTP id e1mr7485236pym.61.1206329501161;
+        Sun, 23 Mar 2008 20:31:41 -0700 (PDT)
+Received: by 10.35.16.3 with HTTP; Sun, 23 Mar 2008 20:31:41 -0700 (PDT)
+Message-ID: <50c9a2250803232031o5033ce15o5ab843a9181e4e12@mail.gmail.com>
+Date:	Mon, 24 Mar 2008 11:31:41 +0800
+From:	zhuzhenhua <zzh.hust@gmail.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: is uClibc-nptl stable for MIPS now?
 MIME-Version: 1.0
-Content-Type: text/plain;charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-X-Priority: 3 (Normal)
-Importance: Normal
-Return-Path: <mrre@gimme-th.at>
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_4695_32279597.1206329501152"
+Return-Path: <zzh.hust@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18469
+X-archive-position: 18470
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mrre@gimme-th.at
+X-original-sender: zzh.hust@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+------=_Part_4695_32279597.1206329501152
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-I am not quite sure, whether I am at the right point to put this question.
-But, maybe someone can help me
+hello,all
+         recently, i want to switch my toolchain from glibc to uClibc,. and
+with buildroot, i succeed in toolchain with pthread_old.
+         i try to build a uClibc-nptl toolchain, but failed( i have used the
+gcc-4.2.1 and binutils-2.17 version). i wonder whether there
+         is a stable version for uClibc-nptl on MIPS.   if someone get it
+work, please give some info about the version.
+         thanks for any hints.
 
-I recently aquired a SGI Octane with R10k-processor. I tried to install
-gentoo on it, as described here:
-http://www.gentoo.org/doc/en/handbook/handbook-mips.xml
 
-I was using this gentoo-kernel: linux-2.6.22.6-20070902.ip30
+Best Regards
 
-It ended up with this failure-message:
 
-  UPD     include/linux/compile.h
-  CC      init/version.o
-  LD      init/built-in.o
-  LD      .tmp_vmlinux1
-arch/mips/sgi-ip30/built-in.o: In function `mask_and_ack_heart_irq':
-ip30-irq.c:(.text+0x57c): undefined reference to `ip30_irq_bridge'
-ip30-irq.c:(.text+0x580): undefined reference to `ip30_irq_bridge'
-ip30-irq.c:(.text+0x584): undefined reference to `ip30_irq_bridge'
-ip30-irq.c:(.text+0x588): undefined reference to `ip30_irq_bridge'
-arch/mips/sgi-ip30/built-in.o: In function `startup_heart_irq':
-ip30-irq.c:(.text+0x760): undefined reference to `ip30_irq_bridge'
-arch/mips/sgi-ip30/built-in.o:ip30-irq.c:(.text+0x764): more undefined
-references to `ip30_irq_bridge' follow
-arch/mips/sgi-ip30/built-in.o: In function `startup_heart_irq':
-ip30-irq.c:(.text+0x794): undefined reference to `ip30_irq_in_bridge'
-ip30-irq.c:(.text+0x798): undefined reference to `ip30_irq_in_bridge'
-ip30-irq.c:(.text+0x79c): undefined reference to `ip30_irq_in_bridge'
-ip30-irq.c:(.text+0x7a0): undefined reference to `ip30_irq_in_bridge'
-arch/mips/sgi-ip30/built-in.o: In function `shutdown_heart_irq':
-ip30-irq.c:(.text+0x910): undefined reference to `ip30_irq_in_bridge'
-arch/mips/sgi-ip30/built-in.o:ip30-irq.c:(.text+0x914): more undefined
-references to `ip30_irq_in_bridge' follow
-arch/mips/sgi-ip30/built-in.o: In function `shutdown_heart_irq':
-ip30-irq.c:(.text+0x938): undefined reference to `ip30_irq_bridge'
-ip30-irq.c:(.text+0x93c): undefined reference to `ip30_irq_bridge'
-ip30-irq.c:(.text+0x940): undefined reference to `ip30_irq_bridge'
-ip30-irq.c:(.text+0x944): undefined reference to `ip30_irq_bridge'
-arch/mips/sgi-ip30/built-in.o: In function `ip30_xtalk_setup':
-: undefined reference to `bridge_probe'
-arch/mips/sgi-ip30/built-in.o: In function `ip30_xtalk_setup':
-: relocation truncated to fit: R_MIPS_26 against `bridge_probe'
-arch/mips/mm/built-in.o: In function `free_initmem':
-: undefined reference to `prom_free_prom_memory'
-arch/mips/mm/built-in.o: In function `free_initmem':
-: relocation truncated to fit: R_MIPS_26 against `prom_free_prom_memory'
-arch/mips/arc/lib.a(init.o): In function `prom_init':
-init.c:(.init.text+0x130): undefined reference to `prom_meminit'
-init.c:(.init.text+0x130): relocation truncated to fit: R_MIPS_26 against
-`prom_meminit'
-make: *** [.tmp_vmlinux1] Error 1
 
-Does anybody know, what I might do, to correct this problem?
+zzh
 
-Thank you in advance,
+------=_Part_4695_32279597.1206329501152
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Markus
+hello,all<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; recently, i want to
+switch my toolchain from glibc to uClibc,. and with buildroot, i
+succeed in toolchain with pthread_old. <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i try to build a
+uClibc-nptl toolchain, but failed( i have used the gcc-4.2.1 and
+binutils-2.17 version). i wonder whether there<br>
+&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; is a stable version for uClibc-nptl
+on MIPS.&nbsp;&nbsp; if someone get it work, please give some info
+about the version.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; thanks for any hints.<br>
+<br>
+<br>
+Best Regards<br>
+<br>
+<br>
+<br>
+zzh<br>
+
+------=_Part_4695_32279597.1206329501152--

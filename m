@@ -1,135 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Mar 2008 20:14:27 +0000 (GMT)
-Received: from rtsoft3.corbina.net ([85.21.88.6]:36839 "EHLO
-	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
-	id S28582890AbYCXUOZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 24 Mar 2008 20:14:25 +0000
-Received: from wasted.dev.rtsoft.ru (unknown [10.150.0.9])
-	by buildserver.ru.mvista.com (Postfix) with ESMTP
-	id 347188810; Tue, 25 Mar 2008 01:14:42 +0400 (SAMT)
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-To:	ralf@linux-mips.org
-Subject: [PATCH] Alchemy: don't unmask timer IRQ early
-Date:	Mon, 24 Mar 2008 23:15:50 +0300
-User-Agent: KMail/1.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Mar 2008 20:33:16 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:34747 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S28582943AbYCXUdM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 24 Mar 2008 20:33:12 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m2OKXBYp016310;
+	Mon, 24 Mar 2008 20:33:11 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m2OKXBHo016308;
+	Mon, 24 Mar 2008 20:33:11 GMT
+Date:	Mon, 24 Mar 2008 20:33:11 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Larry Stefani <lstefani@yahoo.com>
 Cc:	linux-mips@linux-mips.org
+Subject: Re: SB1250 locking up in init on current 2.6.16 kernel
+Message-ID: <20080324203311.GB15294@linux-mips.org>
+References: <15031.81072.qm@web38802.mail.mud.yahoo.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200803242315.50423.sshtylyov@ru.mvista.com>
-Return-Path: <sshtylyov@ru.mvista.com>
+In-Reply-To: <15031.81072.qm@web38802.mail.mud.yahoo.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18478
+X-archive-position: 18479
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Defer the unmasking of the count/compare interrupt (IRQ5) till the clockevent
-driver initialization:
+On Mon, Mar 24, 2008 at 07:00:15AM -0700, Larry Stefani wrote:
 
-- only enable the cascaded IRQs 0 thru 4 in arch_init_irq(); kill the ALLINTS
-  macro -- this change is blessed by AMD as I saw it in their own patch; :-)
+> I've been trying to upgrade from 2.6.16.18 to
+> 2.6.16.60, but am seeing a hard lockup right before
+> "INIT: version 2.78 booting" on my SB1250-based board.
+> 
+> I found a related discussion on the Debian mailing
+> list:
+> 
+> http://groups.google.com/group/linux.debian.bugs.dist/browse_thread/thread/b7159ee25106c7f9
+> 
+> However, after applying Thiemo's patch to mark pages
+> tainted by PIO IDE as dirty, the lockup still occurs.
 
-- do not force IRQ5 enabled in plat_time_init() if PM is enabled and there's
-  no 32 KHz crystal.
+It's a bug which should be fixed but nevertheless I can highly recommend
+something like a SiliconImage SATA controller - the onboard PIO PATA
+controller is so slow.
 
-Update the copyrights (taking into account my prior changes), also removing
-Pete Popov's old email...
+> I narrowed the file changes to
+> 
+>      arch/mips/mm/c-sb1.c
+>      arch/mips/mm/cache.c
+>      arch/mips/mm/init.c
+>      include/asm-mips/cache-flush.h
+>      include/asm-mips/page.h
+> 
+> between 2.6.16.27 and 2.6.16.29.  There was no
+> 2.6.16.28 tarball posted on linux-mips.org, so I
+> basically brought .27 to .29 until I found the
+> offending files.
 
-Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+I've pushed the tag again so now there is a tarball.
 
----
-The current code only caused me issues with interrupts prematurely enabled,
-so the patch may be considered a cleanup...
+If you need to track something like this you're probably best with
+git bisect which should bring you right to the offending commit.
 
- arch/mips/au1000/common/irq.c         |    7 +++----
- arch/mips/au1000/common/time.c        |    8 ++------
- include/asm-mips/mach-au1x00/au1000.h |   12 ++----------
- 3 files changed, 7 insertions(+), 20 deletions(-)
+> Is anyone running a 2.6.16 kernel (after 2.6.16.27) on
+> a SB1250-based board?
 
-Index: linux-2.6/arch/mips/au1000/common/irq.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/irq.c
-+++ linux-2.6/arch/mips/au1000/common/irq.c
-@@ -1,7 +1,6 @@
- /*
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: MontaVista Software, Inc.
-- *		ppopov@mvista.com or source@mvista.com
-+ * Copyright 2001, 2007-2008 MontaVista Software Inc.
-+ * Author: MontaVista Software, Inc. <source@mvista.com>
-  *
-  * Copyright (C) 2007 Ralf Baechle (ralf@linux-mips.org)
-  *
-@@ -591,7 +590,7 @@ void __init arch_init_irq(void)
- 		imp++;
- 	}
- 
--	set_c0_status(ALLINTS);
-+	set_c0_status(IE_IRQ0 | IE_IRQ1 | IE_IRQ2 | IE_IRQ3 | IE_IRQ4);
- 
- 	/* Board specific IRQ initialization.
- 	*/
-Index: linux-2.6/arch/mips/au1000/common/time.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/time.c
-+++ linux-2.6/arch/mips/au1000/common/time.c
-@@ -1,6 +1,6 @@
- /*
-  *
-- * Copyright (C) 2001 MontaVista Software, ppopov@mvista.com
-+ * Copyright (C) 2001, 2006, 2008 MontaVista Software, <source@mvista.com>
-  * Copied and modified Carsten Langgaard's time.c
-  *
-  * Carsten Langgaard, carstenl@mips.com
-@@ -261,12 +261,8 @@ void __init plat_time_init(void)
- 	 * Check to ensure we really have a 32KHz oscillator before
- 	 * we do this.
- 	 */
--	if (no_au1xxx_32khz) {
-+	if (no_au1xxx_32khz)
- 		printk("WARNING: no 32KHz clock found.\n");
--
--		/* Ensure we get CPO_COUNTER interrupts.  */
--		set_c0_status(IE_IRQ5);
--	}
- 	else {
- 		while (au_readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_C0S);
- 		au_writel(0, SYS_TOYWRITE);
-Index: linux-2.6/include/asm-mips/mach-au1x00/au1000.h
-===================================================================
---- linux-2.6.orig/include/asm-mips/mach-au1x00/au1000.h
-+++ linux-2.6/include/asm-mips/mach-au1x00/au1000.h
-@@ -3,9 +3,8 @@
-  * BRIEF MODULE DESCRIPTION
-  *	Include file for Alchemy Semiconductor's Au1k CPU.
-  *
-- * Copyright 2000,2001 MontaVista Software Inc.
-- * Author: MontaVista Software, Inc.
-- *         	ppopov@mvista.com or source@mvista.com
-+ * Copyright 2000-2001, 2006-2008 MontaVista Software Inc.
-+ * Author: MontaVista Software, Inc. <source@mvista.com>
-  *
-  *  This program is free software; you can redistribute  it and/or modify it
-  *  under  the terms of  the GNU General  Public License as published by the
-@@ -117,13 +116,6 @@ extern struct au1xxx_irqmap au1xxx_irq_m
- 
- #endif /* !defined (_LANGUAGE_ASSEMBLY) */
- 
--#ifdef CONFIG_PM
--/* no CP0 timer irq */
--#define ALLINTS (IE_IRQ0 | IE_IRQ1 | IE_IRQ2 | IE_IRQ3 | IE_IRQ4)
--#else
--#define ALLINTS (IE_IRQ0 | IE_IRQ1 | IE_IRQ2 | IE_IRQ3 | IE_IRQ4 | IE_IRQ5)
--#endif
--
- /*
-  * SDRAM Register Offsets
-  */
+Later kernels do run on bcm1480 which is close enough.
+
+  Ralf

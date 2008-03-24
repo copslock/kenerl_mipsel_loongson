@@ -1,45 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Mar 2008 17:58:04 +0000 (GMT)
-Received: from rtsoft3.corbina.net ([85.21.88.6]:9190 "EHLO
-	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
-	id S28581922AbYCXR6C (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 24 Mar 2008 17:58:02 +0000
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by buildserver.ru.mvista.com (Postfix) with ESMTP
-	id 42E628810; Mon, 24 Mar 2008 22:58:19 +0400 (SAMT)
-Message-ID: <47E7EBFF.6020406@ru.mvista.com>
-Date:	Mon, 24 Mar 2008 20:59:27 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Mar 2008 19:55:57 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:42640 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S28582640AbYCXTzz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 24 Mar 2008 19:55:55 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m2OJtsll015618;
+	Mon, 24 Mar 2008 19:55:54 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m2OJtrCs015616;
+	Mon, 24 Mar 2008 19:55:53 GMT
+Date:	Mon, 24 Mar 2008 19:55:53 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
 To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: Re: Where's C0 count/.compare IRQ is unmasked??
-References: <47E559B6.9010001@ru.mvista.com>
-In-Reply-To: <47E559B6.9010001@ru.mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Cc:	linux-kernel@vger.kernel.org
+Subject: Re: [ADMIN] Linux-mips.org moving to new site
+Message-ID: <20080324195553.GA15294@linux-mips.org>
+References: <20080324075822.GB11880@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20080324075822.GB11880@linux-mips.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18476
+X-archive-position: 18477
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi, I wrote:
+On Mon, Mar 24, 2008 at 07:58:22AM +0000, Ralf Baechle wrote:
 
->    I'm dazed and confused -- please forget my ignorance but I fail to 
-> see where the count/compare interrupt is enabled by the most platforms 
-> but Alchemy (which does it in arch_init_irq() -- which is causing me 
-> trouble). I'd expected this to happev in cevr-r4k.c but no, it doesn't 
-> (unlike cevt-sb1250.c for example).
+> On Tuesday, 25th March the linux-mips.org server machine will be moved from
+> it's current location just outside of Cambridge, England (old) to a new site
+> in Lisboa, Portugal.  This is expected to result in a downtime of up to a
+> week.  During this time I will try to maintain services at some reduced
+> level - and very much reduced bandwidth.
+> 
+> Git users are reminded that an uptodate copy of the Linux/MIPS git
+> repository is available on kernel.org which also has several thousand times
+> more bandwidth available.  The repository URLs are:
+> 
+>   gitweb: http://git.kernel.org/?p=linux/kernel/git/ralf/linux.git;a=summary
+>   git:    git://git.kernel.org/pub/scm/linux/kernel/git/ralf/linux.git
+>           http://www.kernel.org/pub/scm/linux/kernel/git/ralf/linux.git
+>           rsync://rsync.kernel.org/pub/scm/linux/kernel/git/ralf/linux.git
 
-    In fact, it does, via setup_irq(), so ignorant I am. :-[
+So now that the third person has already asked - no I'm not planning to move
+to Portugal even though my still-employer is going to close his UK office
+by the end of the month.
 
-WBR, Sergei
+  Ralf

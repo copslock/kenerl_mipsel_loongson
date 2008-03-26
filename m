@@ -1,191 +1,192 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Mar 2008 21:26:15 +0100 (CET)
-Received: from rtsoft3.corbina.net ([85.21.88.6]:14601 "EHLO
-	buildserver.ru.mvista.com") by lappi.linux-mips.net with ESMTP
-	id S1102145AbYCZU0L (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 26 Mar 2008 21:26:11 +0100
-Received: from wasted.dev.rtsoft.ru (unknown [10.150.0.9])
-	by buildserver.ru.mvista.com (Postfix) with ESMTP
-	id 3D8658817; Thu, 27 Mar 2008 01:25:59 +0400 (SAMT)
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-To:	ralf@linux-mips.org
-Subject: [PATCH] Alchemy: work around clock misdetection on eraly Au1000
-Date:	Wed, 26 Mar 2008 23:27:03 +0300
-User-Agent: KMail/1.5
-Cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Mar 2008 21:53:59 +0100 (CET)
+Received: from web38810.mail.mud.yahoo.com ([209.191.125.101]:882 "HELO
+	web38810.mail.mud.yahoo.com") by lappi.linux-mips.net with SMTP
+	id S1102490AbYCZUxv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 26 Mar 2008 21:53:51 +0100
+Received: (qmail 30632 invoked by uid 60001); 26 Mar 2008 20:52:43 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=X-YMail-OSG:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
+  b=SIy4aSxtdi6BpAQIL0pAu6d3GtMukhoOeZ7ZKI5TSdhwnP2KcWKnjc39hwY1l7YVZgTnwwU0dIAltnZhu6HEdijflA7A02Y328WXSjHNTbypYUGEdZ0OjInFtwDHnd9ZcCUYL3Lv20efyIT53JULZthC/4C0O/7gR1btQkQhPkk=;
+X-YMail-OSG: MndwsfYVM1kps35.Fk2AfEasnYAwkn0B9imQNf7cCLgFVKzh3riOPjDvKVBMOvG_x4eYTClpI33DNImliiiM6EcKbqANyEipIvNbHFJ4JZAnOehnt44-
+Received: from [68.236.82.170] by web38810.mail.mud.yahoo.com via HTTP; Wed, 26 Mar 2008 13:52:42 PDT
+Date:	Wed, 26 Mar 2008 13:52:42 -0700 (PDT)
+From:	Larry Stefani <lstefani@yahoo.com>
+Subject: Re: SB1250 locking up in init on current 2.6.16 kernel
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, anemo@mba.ocn.ne.jp, ths@networkno.de,
+	flo@rfc822.org
+In-Reply-To: <20080324203311.GB15294@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200803262327.03262.sshtylyov@ru.mvista.com>
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Message-ID: <926775.30590.qm@web38810.mail.mud.yahoo.com>
+Return-Path: <lstefani@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18657
+X-archive-position: 18658
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: lstefani@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Work around the CPU clock miscalculation on Au1000DA/HA/HB due the sys_cpupll
-register being write-only, i.e. actually do what the comment before cal_r4off()
-function advertised for years but code failed at.  This is achieved by simply
-giving user a chance to define the clock explicitly in the board config. via
-CONFIG_SOC_AU1X00_FREQUENCY option, defaulting to 396 MHz if the option is not
-given...
+Hi Ralf,
 
-The patch is based on the AMD's own unpublished patch, the issue seems to be an
-undocumented errata (or feature :-)...
+I used git bisect and narrowed the lockup to the
+"[MIPS] Retire flush_icache_page from mm use." patch
+(see git results below).  This is consistent with my
+earlier testing and what Thiemo reported March 3 on
+the linux.debian.kernel list.  I tried his patch (mark
+pages tainted by PIO IDE as dirty) on 2.6.16.60, but
+it didn't prevent the lockup.
 
-Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Regards,
+Larry Stefani
+lstefani@yahoo.com
 
----
-That's what comes of a dozen line change when you do it properly. ;-)
+======================================================
+/testkernels/linux> git bisect bad
+Bisecting: 0 revisions left to test after this
+[3a57f2ad7436d27dfa90717921b921fc3a168504] [MIPS]
+Retire flush_icache_page from mm use.
+/testkernels/linux> git bisect bad
+3a57f2ad7436d27dfa90717921b921fc3a168504 is first bad
+commit
+commit 3a57f2ad7436d27dfa90717921b921fc3a168504
+Author: Ralf Baechle <ralf@linux-mips.org>
+Date:   Sat Aug 12 16:40:08 2006 +0100
 
- arch/mips/au1000/common/cputable.c    |   36 +++++++++++++++++-----------------
- arch/mips/au1000/common/setup.c       |   18 +++++++++++------
- arch/mips/au1000/common/time.c        |   24 +++++++++++++---------
- include/asm-mips/mach-au1x00/au1000.h |    1 
- 4 files changed, 45 insertions(+), 34 deletions(-)
+    [MIPS] Retire flush_icache_page from mm use.
 
-Index: linux-2.6/arch/mips/au1000/common/cputable.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/cputable.c
-+++ linux-2.6/arch/mips/au1000/common/cputable.c
-@@ -22,24 +22,24 @@ struct cpu_spec* cur_cpu_spec[NR_CPUS];
- /* With some thought, we can probably use the mask to reduce the
-  * size of the table.
-  */
--struct cpu_spec	cpu_specs[] = {
--    { 0xffffffff, 0x00030100, "Au1000 DA", 1, 0 },
--    { 0xffffffff, 0x00030201, "Au1000 HA", 1, 0 },
--    { 0xffffffff, 0x00030202, "Au1000 HB", 1, 0 },
--    { 0xffffffff, 0x00030203, "Au1000 HC", 1, 1 },
--    { 0xffffffff, 0x00030204, "Au1000 HD", 1, 1 },
--    { 0xffffffff, 0x01030200, "Au1500 AB", 1, 1 },
--    { 0xffffffff, 0x01030201, "Au1500 AC", 0, 1 },
--    { 0xffffffff, 0x01030202, "Au1500 AD", 0, 1 },
--    { 0xffffffff, 0x02030200, "Au1100 AB", 1, 1 },
--    { 0xffffffff, 0x02030201, "Au1100 BA", 1, 1 },
--    { 0xffffffff, 0x02030202, "Au1100 BC", 1, 1 },
--    { 0xffffffff, 0x02030203, "Au1100 BD", 0, 1 },
--    { 0xffffffff, 0x02030204, "Au1100 BE", 0, 1 },
--    { 0xffffffff, 0x03030200, "Au1550 AA", 0, 1 },
--    { 0xffffffff, 0x04030200, "Au1200 AB", 0, 0 },
--    { 0xffffffff, 0x04030201, "Au1200 AC", 1, 0 },
--    { 0x00000000, 0x00000000, "Unknown Au1xxx", 1, 0 },
-+struct cpu_spec cpu_specs[] = {
-+	{ 0xffffffff, 0x00030100, "Au1000 DA", 1, 0, 1 },
-+	{ 0xffffffff, 0x00030201, "Au1000 HA", 1, 0, 1 },
-+	{ 0xffffffff, 0x00030202, "Au1000 HB", 1, 0, 1 },
-+	{ 0xffffffff, 0x00030203, "Au1000 HC", 1, 1, 0 },
-+	{ 0xffffffff, 0x00030204, "Au1000 HD", 1, 1, 0 },
-+	{ 0xffffffff, 0x01030200, "Au1500 AB", 1, 1, 0 },
-+	{ 0xffffffff, 0x01030201, "Au1500 AC", 0, 1, 0 },
-+	{ 0xffffffff, 0x01030202, "Au1500 AD", 0, 1, 0 },
-+	{ 0xffffffff, 0x02030200, "Au1100 AB", 1, 1, 0 },
-+	{ 0xffffffff, 0x02030201, "Au1100 BA", 1, 1, 0 },
-+	{ 0xffffffff, 0x02030202, "Au1100 BC", 1, 1, 0 },
-+	{ 0xffffffff, 0x02030203, "Au1100 BD", 0, 1, 0 },
-+	{ 0xffffffff, 0x02030204, "Au1100 BE", 0, 1, 0 },
-+	{ 0xffffffff, 0x03030200, "Au1550 AA", 0, 1, 0 },
-+	{ 0xffffffff, 0x04030200, "Au1200 AB", 0, 0, 0 },
-+	{ 0xffffffff, 0x04030201, "Au1200 AC", 1, 0, 0 },
-+	{ 0x00000000, 0x00000000, "Unknown Au1xxx", 1, 0, 0 }
- };
- 
- void
-Index: linux-2.6/arch/mips/au1000/common/setup.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/setup.c
-+++ linux-2.6/arch/mips/au1000/common/setup.c
-@@ -1,7 +1,6 @@
- /*
-- * Copyright 2000 MontaVista Software Inc.
-- * Author: MontaVista Software, Inc.
-- *         	ppopov@mvista.com or source@mvista.com
-+ * Copyright (C) 2000, 2007-2008 MontaVista Software Inc.
-+ * Author: MontaVista Software, Inc. <source@mvista.com>
-  *
-  * Updates to 2.6, Pete Popov, Embedded Alley Solutions, Inc.
-  *
-@@ -57,7 +56,7 @@ void __init plat_mem_setup(void)
- {
- 	struct	cpu_spec *sp;
- 	char *argptr;
--	unsigned long prid, cpupll, bclk = 1;
-+	unsigned long prid, cpufreq, bclk = 1;
- 
- 	set_cpuspec();
- 	sp = cur_cpu_spec[0];
-@@ -65,8 +64,15 @@ void __init plat_mem_setup(void)
- 	board_setup();  /* board specific setup */
- 
- 	prid = read_c0_prid();
--	cpupll = (au_readl(0xB1900060) & 0x3F) * 12;
--	printk("(PRId %08lx) @ %ldMHZ\n", prid, cpupll);
-+	if (cur_cpu_spec[0]->cpu_pll_wo)
-+#ifdef CONFIG_SOC_AU1X00_FREQUENCY
-+		cpufreq = CONFIG_SOC_AU1X00_FREQUENCY / 1000000;
-+#else
-+		cpufreq = 396;
-+#endif
-+	else
-+		cpufreq = (au_readl(SYS_CPUPLL) & 0x3F) * 12;
-+	printk(KERN_INFO "(PRID %08lx) @ %ld MHz\n", prid, cpufreq);
- 
- 	bclk = sp->cpu_bclk;
- 	if (bclk)
-Index: linux-2.6/arch/mips/au1000/common/time.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/time.c
-+++ linux-2.6/arch/mips/au1000/common/time.c
-@@ -209,18 +209,22 @@ unsigned long cal_r4koff(void)
- 		while (au_readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_C1S);
- 		au_writel(0, SYS_TOYWRITE);
- 		while (au_readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_C1S);
-+	} else
-+		no_au1xxx_32khz = 1;
- 
--		cpu_speed = (au_readl(SYS_CPUPLL) & 0x0000003f) *
--			AU1000_SRC_CLK;
--	}
--	else {
--		/* The 32KHz oscillator isn't running, so assume there
--		 * isn't one and grab the processor speed from the PLL.
--		 * NOTE: some old silicon doesn't allow reading the PLL.
--		 */
-+	/*
-+	 * On early Au1000, sys_cpupll was write-only. Since these
-+	 * silicon versions of Au1000 are not sold by AMD, we don't bend
-+	 * over backwards trying to determine the frequency.
-+	 */
-+	if (cur_cpu_spec[0]->cpu_pll_wo)
-+#ifdef CONFIG_SOC_AU1X00_FREQUENCY
-+		cpu_speed = CONFIG_SOC_AU1X00_FREQUENCY;
-+#else
-+		cpu_speed = 396000000;
-+#endif
-+	else
- 		cpu_speed = (au_readl(SYS_CPUPLL) & 0x0000003f) * AU1000_SRC_CLK;
--		no_au1xxx_32khz = 1;
--	}
- 	mips_hpt_frequency = cpu_speed;
- 	// Equation: Baudrate = CPU / (SD * 2 * CLKDIV * 16)
- 	set_au1x00_uart_baud_base(cpu_speed / (2 * ((int)(au_readl(SYS_POWERCTRL)&0x03) + 2) * 16));
-Index: linux-2.6/include/asm-mips/mach-au1x00/au1000.h
-===================================================================
---- linux-2.6.orig/include/asm-mips/mach-au1x00/au1000.h
-+++ linux-2.6/include/asm-mips/mach-au1x00/au1000.h
-@@ -1778,6 +1778,7 @@ struct cpu_spec {
- 	char		*cpu_name;
- 	unsigned char	cpu_od;		/* Set Config[OD] */
- 	unsigned char	cpu_bclk;	/* Enable BCLK switching */
-+	unsigned char	cpu_pll_wo;	/* sys_cpupll reg. write-only */
- };
- 
- extern struct cpu_spec		cpu_specs[];
+    On the 34K the redundant cache operations were
+causing excessive stalls
+    resulting in realtime code running on the second
+VPE missing its deadline.
+    For all other platforms this patch is just a
+significant performance
+    improvment as illustrated by below benchmark
+numbers.
+
+    Processor, Processes - times in microseconds -
+smaller is better
+   
+------------------------------------------------------------------------------
+    Host                 OS  Mhz null null      open
+slct sig  sig  fork exec sh
+                                 call  I/O stat clos
+TCP  inst hndl proc proc proc
+    --------- ------------- ---- ---- ---- ---- ----
+---- ---- ---- ---- ---- ----
+    25Kf      2.6.18-rc4     533 0.49 1.16 7.57 33.4
+30.5 1.34 12.4 5497 17.K 54.K
+    25Kf      2.6.18-rc4-p   533 0.49 1.16 6.68 23.0
+30.7 1.36 8.55 5030 16.K 48.K
+    4Kc       2.6.18-rc4      80 4.21 15.0 131. 289.
+261. 16.5 258. 18.K 70.K 227K
+    4Kc       2.6.18-rc4-p    80 4.34 13.1 128. 285.
+262. 18.2 258. 12.K 52.K 176K
+    34Kc      2.6.18-rc4      40 5.01 14.0 61.6 90.0
+477. 17.9 94.7 29.K 108K 342K
+    34Kc      2.6.18-rc4-p    40 4.98 13.9 61.2 89.7
+475. 17.6 93.7 8758 44.K 158K
+    BCM1480   2.6.18-rc4     700 0.28 0.60 3.68 5.92
+16.0 0.78 5.08 931. 3163 15.K
+    BCM1480   2.6.18-rc4-p   700 0.28 0.61 3.65 5.85
+16.0 0.79 5.20 395. 1464 8385
+    TX49-16K  2.6.18-rc3     197 0.73 2.41 19.0 37.8
+82.9 2.94 17.5 4438 14.K 56.K
+    TX49-16K  2.6.18-rc3-p   197 0.73 2.40 19.9 36.3
+82.9 2.94 23.4 2577 9103 38.K
+    TX49-32K  2.6.18-rc3     396 0.36 1.19 6.80 11.8
+41.0 1.46 8.17 2738 8465 32.K
+    TX49-32K  2.6.18-rc3-p   396 0.36 1.19 6.82 10.2
+41.0 1.46 8.18 1330 4638 18.K
+
+    Original patch by me with enhancements by Atsushi
+Nemoto.
+
+    Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+    Signed-off-by: Atsushi Nemoto
+<anemo@mba.ocn.ne.jp>
+    (cherry picked from
+4bbd62a93a1ab4b7d8a5b402b0c78ac265b35661 commit)
+
+:040000 040000
+6b4aeaca51e1f8974394f5c85c36cfcbf40984c9
+2af41ed07f6c83962f9a4871812adb6f7c0dbee7 M      arch
+:040000 040000
+c2fb4be66f03aed2a1746d30f0e17922086eefdd
+ab8cb20f7da9b97e72742946adfb5ab927dc777a M     
+include
+=====================================================
+
+
+
+--- Ralf Baechle <ralf@linux-mips.org> wrote:
+
+> On Mon, Mar 24, 2008 at 07:00:15AM -0700, Larry
+> Stefani wrote:
+> 
+> > I've been trying to upgrade from 2.6.16.18 to
+> > 2.6.16.60, but am seeing a hard lockup right
+> before
+> > "INIT: version 2.78 booting" on my SB1250-based
+> board.
+> > 
+> > I found a related discussion on the Debian mailing
+> > list:
+> > 
+> >
+>
+http://groups.google.com/group/linux.debian.bugs.dist/browse_thread/thread/b7159ee25106c7f9
+> > 
+> > However, after applying Thiemo's patch to mark
+> pages
+> > tainted by PIO IDE as dirty, the lockup still
+> occurs.
+> 
+> It's a bug which should be fixed but nevertheless I
+> can highly recommend
+> something like a SiliconImage SATA controller - the
+> onboard PIO PATA
+> controller is so slow.
+> 
+> > I narrowed the file changes to
+> > 
+> >      arch/mips/mm/c-sb1.c
+> >      arch/mips/mm/cache.c
+> >      arch/mips/mm/init.c
+> >      include/asm-mips/cache-flush.h
+> >      include/asm-mips/page.h
+> > 
+> > between 2.6.16.27 and 2.6.16.29.  There was no
+> > 2.6.16.28 tarball posted on linux-mips.org, so I
+> > basically brought .27 to .29 until I found the
+> > offending files.
+> 
+> I've pushed the tag again so now there is a tarball.
+> 
+> If you need to track something like this you're
+> probably best with
+> git bisect which should bring you right to the
+> offending commit.
+> 
+> > Is anyone running a 2.6.16 kernel (after
+> 2.6.16.27) on
+> > a SB1250-based board?
+> 
+> Later kernels do run on bcm1480 which is close
+> enough.
+> 
+>   Ralf
+> 
+
+
+
+
+      ____________________________________________________________________________________
+Be a better friend, newshound, and 
+know-it-all with Yahoo! Mobile.  Try it now.  http://mobile.yahoo.com/;_ylt=Ahu06i62sR8HDtDypao8Wcj9tAcJ

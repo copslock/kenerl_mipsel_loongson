@@ -1,18 +1,18 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Mar 2008 22:14:49 +0100 (CET)
-Received: from smtp-out26.alice.it ([85.33.2.26]:61196 "EHLO
-	smtp-out26.alice.it") by lappi.linux-mips.net with ESMTP
-	id S527089AbYC0VOp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 27 Mar 2008 22:14:45 +0100
-Received: from FBCMMO02.fbc.local ([192.168.68.196]) by smtp-out26.alice.it with Microsoft SMTPSVC(6.0.3790.1830);
-	 Thu, 27 Mar 2008 22:14:22 +0100
-Received: from FBCMCL01B06.fbc.local ([192.168.69.87]) by FBCMMO02.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
-	 Thu, 27 Mar 2008 22:14:22 +0100
-Received: from raver.openwrt ([79.19.115.152]) by FBCMCL01B06.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
-	 Thu, 27 Mar 2008 22:14:21 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Mar 2008 22:17:57 +0100 (CET)
+Received: from smtp-OUT05A.alice.it ([85.33.3.5]:31243 "EHLO
+	smtp-OUT05A.alice.it") by lappi.linux-mips.net with ESMTP
+	id S1103459AbYC0VRt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 27 Mar 2008 22:17:49 +0100
+Received: from FBCMMO01.fbc.local ([192.168.68.195]) by smtp-OUT05A.alice.it with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 27 Mar 2008 22:17:25 +0100
+Received: from FBCMCL01B08.fbc.local ([192.168.171.46]) by FBCMMO01.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 27 Mar 2008 22:17:17 +0100
+Received: from raver.openwrt ([79.19.115.152]) by FBCMCL01B08.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 27 Mar 2008 22:16:53 +0100
 From:	Matteo Croce <technoboy85@gmail.com>
 To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Subject: Re: [PATCH][MIPS][5/6]: AR7: serial hack
-Date:	Thu, 27 Mar 2008 22:14:21 +0100
+Date:	Thu, 27 Mar 2008 22:17:16 +0100
 User-Agent: KMail/1.9.9
 Cc:	linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>,
 	Felix Fietkau <nbd@openwrt.org>,
@@ -29,13 +29,13 @@ Content-Type: text/plain;
   charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200803272214.21456.technoboy85@gmail.com>
-X-OriginalArrivalTime: 27 Mar 2008 21:14:21.0484 (UTC) FILETIME=[8695CEC0:01C8904F]
+Message-Id: <200803272217.16589.technoboy85@gmail.com>
+X-OriginalArrivalTime: 27 Mar 2008 21:16:53.0703 (UTC) FILETIME=[E1509570:01C8904F]
 Return-Path: <technoboy85@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18681
+X-archive-position: 18682
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

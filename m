@@ -1,123 +1,165 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Mar 2008 20:05:15 +0100 (CET)
-Received: from rtsoft3.corbina.net ([85.21.88.6]:38922 "EHLO
-	buildserver.ru.mvista.com") by lappi.linux-mips.net with ESMTP
-	id S526844AbYC0TFJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 27 Mar 2008 20:05:09 +0100
-Received: from wasted.dev.rtsoft.ru (unknown [10.150.0.9])
-	by buildserver.ru.mvista.com (Postfix) with ESMTP
-	id 1A2E78810; Fri, 28 Mar 2008 00:04:54 +0400 (SAMT)
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-To:	ralf@linux-mips.org
-Subject: [PATCH] Alchemy: kill useless time variables
-Date:	Thu, 27 Mar 2008 22:05:57 +0300
-User-Agent: KMail/1.5
-Cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Mar 2008 22:14:49 +0100 (CET)
+Received: from smtp-out26.alice.it ([85.33.2.26]:61196 "EHLO
+	smtp-out26.alice.it") by lappi.linux-mips.net with ESMTP
+	id S527089AbYC0VOp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 27 Mar 2008 22:14:45 +0100
+Received: from FBCMMO02.fbc.local ([192.168.68.196]) by smtp-out26.alice.it with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 27 Mar 2008 22:14:22 +0100
+Received: from FBCMCL01B06.fbc.local ([192.168.69.87]) by FBCMMO02.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 27 Mar 2008 22:14:22 +0100
+Received: from raver.openwrt ([79.19.115.152]) by FBCMCL01B06.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 27 Mar 2008 22:14:21 +0100
+From:	Matteo Croce <technoboy85@gmail.com>
+To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: Re: [PATCH][MIPS][5/6]: AR7: serial hack
+Date:	Thu, 27 Mar 2008 22:14:21 +0100
+User-Agent: KMail/1.9.9
+Cc:	linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>,
+	Felix Fietkau <nbd@openwrt.org>,
+	Nicolas Thill <nico@openwrt.org>, linux-serial@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+References: <200803120221.25044.technoboy85@gmail.com> <200803161645.06364.technoboy85@gmail.com> <20080321015540.GA30988@alpha.franken.de>
+In-Reply-To: <20080321015540.GA30988@alpha.franken.de>
+X-Face:	0AUq?,0sKh2O65+R5#[nTCS'~}"m)9|g3Tsi=g7A9q69S+=M!BY)=?utf-8?q?Zdmwo2u!i=5CUylx=26=27D+=0A=09=5B7u=26z1=27s=7E=5B=3F+=24=27w?=
+ =?utf-8?q?O6+?="'WWcr5Jy,]}8namg8NP:9<E,o^21xGB~/HRhB(u^@
+ =?utf-8?q?ZB=2EXLP0swe=0A=09r9M=7EL?=<b1=^'4cv*_N1tNJ$`9Ot*KL/;8oXFdrT@r|-Ki2wCQI"R(X(
+ =?utf-8?q?73r=3A=3BmnNPoA2a=5D=7EZ=0A=092n2sUh?=,B|bt;ys*hv.QR>a]{m
 MIME-Version: 1.0
 Content-Type: text/plain;
-  charset="us-ascii"
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200803272205.57531.sshtylyov@ru.mvista.com>
-Return-Path: <sshtylyov@ru.mvista.com>
+Message-Id: <200803272214.21456.technoboy85@gmail.com>
+X-OriginalArrivalTime: 27 Mar 2008 21:14:21.0484 (UTC) FILETIME=[8695CEC0:01C8904F]
+Return-Path: <technoboy85@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18678
+X-archive-position: 18681
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: technoboy85@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Since the commit 91a2fcc88634663e9e13dcdfad0e4a860e64aeee ([MIPS] Consolidate
-all variants of MIPS cp0 timer interrupt handlers) removed the Alchemy specific
-timer handler, 'r4k_offset' and 'r4k_cur' variables became practically useless,
-so get rid of them at last, renaming cal_r4off() function into calc_clock() and
-making it return CPU frequency. Also, make 'no_au1xxx_32khz' variable static...
+Il Friday 21 March 2008 02:55:40 Thomas Bogendoerfer ha scritto:
+> On Sun, Mar 16, 2008 at 04:45:06PM +0100, Matteo Croce wrote:
+> > Tried I get teh usual broken serial output:
+> > 
+> > IP6 oover IPv4 tuneliing driver
+> > NET: eggistered protooll family 17
+> > VFS: Monteed root (squahfss filesystem)reaadonly.
+> 
+> Linux version 2.6.25-rc6-00000-g151de9e-dirty (tsbogend@solo.franken.de)
+> (gcc version 3.3.3 (Debian 20040320)) #29 Fri Mar 21 02:40:21 CET 2008
+> console [early0] enabled
+> CPU revision is: 00018448 (MIPS 4KEc)
+> TI AR7 (Unknown), ID: 0x5700, Revision: 0x00
+> Determined physical RAM map:
+>  memory: 02000000 @ 14000000 (usable)
+> Zone PFN ranges:
+>   Normal      81920 ->    90112
+> Movable zone start PFN for each node
+> early_node_map[1] active PFN ranges
+>     0:    81920 ->    90112
+> Built 1 zonelists in Zone order, mobility grouping on.  Total pages:
+> 8128
+> Kernel command line: console=ttyS0,115200
+> Primary instruction cache 16kB, VIPT, 4-way, linesize 16 bytes.
+> Primary data cache 16kB, 4-way, VIPT, no aliases, linesize 16 bytes
+> Synthesized clear page handler (26 instructions).
+> Synthesized copy page handler (46 instructions).
+> PID hash table entries: 128 (order: 7, 512 bytes)
+> Dentry cache hash table entries: 4096 (order: 2, 16384 bytes)
+> Inode-cache hash table entries: 2048 (order: 1, 8192 bytes)
+> Memory: 29700k/32768k available (2075k kernel code, 3068k reserved, 466k
+> data, 136k init, 0k highmem)
+> Mount-cache hash table entries: 512
+> net_namespace: 152 bytes
+> NET: Registered protocol family 16
+> SCSI subsystem initialized
+> NET: Registered protocol family 2
+> Time: MIPS clocksource has been installed.
+> IP route cache hash table entries: 1024 (order: 0, 4096 bytes)
+> TCP established hash table entries: 1024 (order: 1, 8192 bytes)
+> TCP bind hash table entries: 1024 (order: 0, 4096 bytes)
+> TCP: Hash tables configured (established 1024 bind 1024)
+> TCP reno registered
+> io scheduler noop registered
+> io scheduler anticipatory registered (default)
+> io scheduler deadline registered
+> Serial: 8250/16550 driver $Revision: 1.90 $ 2 ports, IRQ sharing
+> disabled
+> serial8250: ttyS0 at MMIO 0x8610e03 (irq = 15) is a 16550A
+> console handover: boot [early0] -> real [ttyS0]
+> serial8250: ttyS1 at MMIO 0x8610f03 (irq = 16) is a 16550A
+> loop: module loaded
+> Fixed MDIO Bus: probed
+> ar7_wdt: failed to unlock WDT disable reg
+> ar7_wdt: failed to unlock WDT prescale reg
+> ar7_wdt: failed to unlock WDT change reg
+> ar7_wdt: timer margin 59 seconds (prescale 65535, change 57180, freq
+> 62500000)
+> TCP cubic registered
+> NET: Registered protocol family 1
+> NET: Registered protocol family 17
+> RPC: Registered udp transport module.
+> RPC: Registered tcp transport module.
+> Root-NFS: No NFS server available, giving up.
+> VFS: Unable to mount root fs via NFS, trying floppy.
+> List of all partitions:
+> No filesystem could mount root, tried:
+> Kernel panic - not syncing: VFS: Unable to mount root fs on
+> unknown-block(2,0)
+> Rebooting in 3 seconds..
+> 
+> I don't see any problems with using PORT_16550A. What I'm still
+> wondering how your kernel could work at all, since there is a
+> missing case for setting up the TLB refill handler. Something like
+> the patch below.
+> 
+> And most of the AR7 device driver code will not work for big endian. 
+> The log above is from a big endian AR7 system, where I needed
+> to disable CPMAC to get it booting that far.
+> 
+> Thomas.
+> 
+> 
+> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+> index 3a93d4c..382738c 100644
+> --- a/arch/mips/mm/tlbex.c
+> +++ b/arch/mips/mm/tlbex.c
+> @@ -307,6 +307,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
+>  	case CPU_R12000:
+>  	case CPU_R14000:
+>  	case CPU_4KC:
+> +	case CPU_4KEC:
+>  	case CPU_SB1:
+>  	case CPU_SB1A:
+>  	case CPU_4KSC:
+> 
+> 
 
-Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Actually we use this for 2.6.24:
 
- arch/mips/au1000/common/dbg_io.c |    4 ++--
- arch/mips/au1000/common/time.c   |   19 ++++---------------
- 2 files changed, 6 insertions(+), 17 deletions(-)
-
-Index: linux-2.6/arch/mips/au1000/common/dbg_io.c
+Index: linux-2.6.24/arch/mips/mm/tlbex.c
 ===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/dbg_io.c
-+++ linux-2.6/arch/mips/au1000/common/dbg_io.c
-@@ -56,7 +56,7 @@ typedef         unsigned int  uint32;
- #define UART16550_WRITE(y, z) (au_writel(z&0xff, DEBUG_BASE + y))
+--- linux-2.6.24/arch/mips/mm/tlbex.c	2007-10-10 04:31:38.000000000 +0800
++++ linux-2.6.24/arch/mips/mm/tlbex.c	2007-10-10 13:52:34.000000000 +0800
+@@ -902,7 +902,6 @@
+ 	case CPU_R10000:
+ 	case CPU_R12000:
+ 	case CPU_R14000:
+-	case CPU_4KC:
+ 	case CPU_SB1:
+ 	case CPU_SB1A:
+ 	case CPU_4KSC:
+@@ -933,6 +932,7 @@
+ 		tlbw(p);
+ 		break;
  
- extern unsigned long get_au1x00_uart_baud_base(void);
--extern unsigned long cal_r4koff(void);
-+extern unsigned long calc_clock(void);
- 
- void debugInit(uint32 baud, uint8 data, uint8 parity, uint8 stop)
- {
-@@ -64,7 +64,7 @@ void debugInit(uint32 baud, uint8 data, 
- 	if (UART16550_READ(UART_MOD_CNTRL) != 0x3) {
- 		UART16550_WRITE(UART_MOD_CNTRL, 3);
- 	}
--	cal_r4koff();
-+	calc_clock();
- 
- 	/* disable interrupts */
- 	UART16550_WRITE(UART_IER, 0);
-Index: linux-2.6/arch/mips/au1000/common/time.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/time.c
-+++ linux-2.6/arch/mips/au1000/common/time.c
-@@ -48,9 +48,7 @@
- #include <linux/mc146818rtc.h>
- #include <linux/timex.h>
- 
--static unsigned long r4k_offset; /* Amount to increment compare reg each time */
--static unsigned long r4k_cur;    /* What counter should be at next timer irq */
--int	no_au1xxx_32khz;
-+static int no_au1xxx_32khz;
- extern int allow_au1k_wait; /* default off for CP0 Counter */
- 
- #ifdef CONFIG_PM
-@@ -184,7 +182,7 @@ wakeup_counter0_set(int ticks)
-  * "wait" is enabled, and we need to detect if the 32KHz isn't present
-  * but requested......got it? :-)		-- Dan
-  */
--unsigned long cal_r4koff(void)
-+unsigned long calc_clock(void)
- {
- 	unsigned long cpu_speed;
- 	unsigned long flags;
-@@ -229,19 +227,13 @@ unsigned long cal_r4koff(void)
- 	// Equation: Baudrate = CPU / (SD * 2 * CLKDIV * 16)
- 	set_au1x00_uart_baud_base(cpu_speed / (2 * ((int)(au_readl(SYS_POWERCTRL)&0x03) + 2) * 16));
- 	spin_unlock_irqrestore(&time_lock, flags);
--	return (cpu_speed / HZ);
-+	return cpu_speed;
- }
- 
- void __init plat_time_init(void)
- {
--	unsigned int est_freq;
-+	unsigned int est_freq = calc_clock();
- 
--	printk("calculating r4koff... ");
--	r4k_offset = cal_r4koff();
--	printk("%08lx(%d)\n", r4k_offset, (int) r4k_offset);
--
--	//est_freq = 2*r4k_offset*HZ;
--	est_freq = r4k_offset*HZ;
- 	est_freq += 5000;    /* round */
- 	est_freq -= est_freq%10000;
- 	printk("CPU frequency %d.%02d MHz\n", est_freq/1000000,
-@@ -249,9 +241,6 @@ void __init plat_time_init(void)
-  	set_au1x00_speed(est_freq);
-  	set_au1x00_lcd_clock(); // program the LCD clock
- 
--	r4k_cur = (read_c0_count() + r4k_offset);
--	write_c0_compare(r4k_cur);
--
- #ifdef CONFIG_PM
- 	/*
- 	 * setup counter 0, since it keeps ticking after a
++	case CPU_4KC:
+ 	case CPU_4KEC:
+ 	case CPU_24K:
+ 	case CPU_34K:

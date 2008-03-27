@@ -1,61 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Mar 2008 14:16:21 +0100 (CET)
-Received: from h155.mvista.com ([63.81.120.155]:47150 "EHLO imap.sh.mvista.com")
-	by lappi.linux-mips.net with ESMTP id S523995AbYC0NQR (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 27 Mar 2008 14:16:17 +0100
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 6B61B3EC9; Thu, 27 Mar 2008 06:15:44 -0700 (PDT)
-Message-ID: <47EB9E55.4040800@ru.mvista.com>
-Date:	Thu, 27 Mar 2008 16:17:09 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Mar 2008 14:34:45 +0100 (CET)
+Received: from oss.sgi.com ([192.48.170.157]:38335 "EHLO oss.sgi.com")
+	by lappi.linux-mips.net with ESMTP id S524408AbYC0Nel (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 27 Mar 2008 14:34:41 +0100
+Received: from dl5rb.ham-radio-op.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.12.11.20060308/8.12.11/SuSE Linux 0.7) with ESMTP id m2RDY1S9001874
+	for <linux-mips@linux-mips.org>; Thu, 27 Mar 2008 06:34:02 -0700
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m2RDYYVI019481;
+	Thu, 27 Mar 2008 13:34:35 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m2RDYX1S019480;
+	Thu, 27 Mar 2008 13:34:33 GMT
+Date:	Thu, 27 Mar 2008 13:34:33 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
 To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Alchemy: work around clock misdetection on early Au1000
- (take 2)
-References: <200803271609.31772.sshtylyov@ru.mvista.com>
-In-Reply-To: <200803271609.31772.sshtylyov@ru.mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Alchemy: work around clock misdetection on early
+	Au1000 (take 2)
+Message-ID: <20080327133433.GA19381@linux-mips.org>
+References: <200803271609.31772.sshtylyov@ru.mvista.com> <47EB9E55.4040800@ru.mvista.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <47EB9E55.4040800@ru.mvista.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Virus-Scanned: ClamAV 0.91.2/6021/Wed Feb 27 15:55:48 2008 on oss.sgi.com
+X-Virus-Status:	Clean
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18670
+X-archive-position: 18671
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-I just wrote:
+On Thu, Mar 27, 2008 at 04:17:09PM +0300, Sergei Shtylyov wrote:
 
-> Index: linux-2.6/arch/mips/au1000/common/setup.c
-> ===================================================================
-> --- linux-2.6.orig/arch/mips/au1000/common/setup.c
-> +++ linux-2.6/arch/mips/au1000/common/setup.c
-> @@ -57,7 +57,7 @@ void __init plat_mem_setup(void)
->  {
->  	struct	cpu_spec *sp;
->  	char *argptr;
-> -	unsigned long prid, cpupll, bclk = 1;
-> +	unsigned long prid, cpufreq, bclk = 1;
->  
->  	set_cpuspec();
->  	sp = cur_cpu_spec[0];
-> @@ -65,8 +65,15 @@ void __init plat_mem_setup(void)
->  	board_setup();  /* board specific setup */
->  
->  	prid = read_c0_prid();
-> -	cpupll = (au_readl(0xB1900060) & 0x3F) * 12;
-> -	printk("(PRId %08lx) @ %ldMHZ\n", prid, cpupll);
-> +	if (cur_cpu_spec[0]->cpu_pll_wo)
+>    Oops! Ralf, could you change 'cur_cpu_spec[0]' to just 'sp' here before 
+> committing?
 
-    Oops! Ralf, could you change 'cur_cpu_spec[0]' to just 'sp' here before 
-committing?
+wilco
 
-WBR, Sergei
+  Ralf

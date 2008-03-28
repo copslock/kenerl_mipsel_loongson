@@ -1,58 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Mar 2008 12:39:11 +0100 (CET)
-Received: from h155.mvista.com ([63.81.120.155]:14188 "EHLO imap.sh.mvista.com")
-	by lappi.linux-mips.net with ESMTP id S528498AbYC1LjG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 28 Mar 2008 12:39:06 +0100
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 113EE3EC9; Fri, 28 Mar 2008 04:38:34 -0700 (PDT)
-Message-ID: <47ECD90E.2020903@ru.mvista.com>
-Date:	Fri, 28 Mar 2008 14:39:58 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Nico Coesel <ncoesel@DEALogic.nl>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Mar 2008 14:32:58 +0100 (CET)
+Received: from oss.sgi.com ([192.48.170.157]:4796 "EHLO oss.sgi.com")
+	by lappi.linux-mips.net with ESMTP id S528708AbYC1Ncw (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 28 Mar 2008 14:32:52 +0100
+Received: from dl5rb.ham-radio-op.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.12.11.20060308/8.12.11/SuSE Linux 0.7) with ESMTP id m2SDWCHJ007905
+	for <linux-mips@linux-mips.org>; Fri, 28 Mar 2008 06:32:13 -0700
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m2SDWjkO007437;
+	Fri, 28 Mar 2008 13:32:45 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m2SDWhfS007436;
+	Fri, 28 Mar 2008 13:32:43 GMT
+Date:	Fri, 28 Mar 2008 13:32:43 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Cc:	linux-mips@linux-mips.org, Nico Coesel <ncoesel@DEALogic.nl>
 Subject: Re: FW: Alchemy power managment code.
-References: <19CA9E279FDA5246B7D7A1C91A4AF7F40EF804@dealogicserver.DEALogic.nl> <47EA7A7B.8020602@ru.mvista.com> <20080327223247.GB26997@linux-mips.org>
-In-Reply-To: <20080327223247.GB26997@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Message-ID: <20080328133243.GA7429@linux-mips.org>
+References: <19CA9E279FDA5246B7D7A1C91A4AF7F40EF804@dealogicserver.DEALogic.nl> <47E7B970.30105@ru.mvista.com> <47E7BB4B.3080507@ru.mvista.com> <20080327223134.GA26997@linux-mips.org> <47ECD828.8090600@ru.mvista.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <47ECD828.8090600@ru.mvista.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Virus-Scanned: ClamAV 0.91.2/6021/Wed Feb 27 15:55:48 2008 on oss.sgi.com
+X-Virus-Status:	Clean
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18690
+X-archive-position: 18692
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
+On Fri, Mar 28, 2008 at 02:36:08PM +0300, Sergei Shtylyov wrote:
 
->>>Funny you ask because I tried this yesterday on a AU1100 system with the
->>>2.6.24 kernel (from kernel.org). I'm afraid I must say the kernel
->>>crashes when I enable power management. The reason I want to use power
->>>management is because I need to send the CPU to sleep when the system
->>>shuts down. I hacked power.c and reset.c a bit so au_sleep() is called
->>>when the system is shut down. Perhaps someone can confirm the
->>>powermanagement can be made to work with some fixes (it didn't work with
->>>2.6.21-rc4 either).
+>    The Alchemy code doesn't even try to use CP0 counter when CONFIG_PM=y if 
+> you look into arch/mips/au1000/common/time.c... or at least it didn't 
+> before Atsushi removed do_fast_pm_gettimeoffset().
 
->>   BTW, for anybody interested in Alchemy PM code, here's the interesting
->>link: [ftp|http]://ftp.enneenne.com/pub/misc/au1100-patches/linux/.
->>   It contains  a lot of unmerged PM patches by Rodolfo Giometti (and not
->>only that) from around 2.6.17 time.
+That decission is now done by the generic time.c based only on the
+availability of a counter and the mfc0 $count bug.
 
-> Anybody interested in reviewing these patches and polishing them to be
-> applied to a recent kernel?
-
-    I am, at least to some extent. But I'm not sure I'll have enough time from 
-now on. Should have started earlier...
-
->   Ralf
-
-WBR, Sergei
+  Ralf

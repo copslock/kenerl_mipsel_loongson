@@ -1,87 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Mar 2008 17:12:25 +0100 (CET)
-Received: from h155.mvista.com ([63.81.120.155]:26489 "EHLO imap.sh.mvista.com")
-	by lappi.linux-mips.net with ESMTP id S528891AbYC1QMT (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 28 Mar 2008 17:12:19 +0100
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id D81153ECA; Fri, 28 Mar 2008 09:11:44 -0700 (PDT)
-Message-ID: <47ED1915.6040506@ru.mvista.com>
-Date:	Fri, 28 Mar 2008 19:13:09 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Mar 2008 17:39:21 +0100 (CET)
+Received: from web38813.mail.mud.yahoo.com ([209.191.125.104]:28782 "HELO
+	web38813.mail.mud.yahoo.com") by lappi.linux-mips.net with SMTP
+	id S528921AbYC1QjR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 28 Mar 2008 17:39:17 +0100
+Received: (qmail 71770 invoked by uid 60001); 28 Mar 2008 16:38:12 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=X-YMail-OSG:Received:Date:From:Subject:To:Cc:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
+  b=Fmv1M4lH6f87HeG+Na6+WyCIKzNkWqBYwmXAvY7VJM9ZlEBda57wFaHIKFDEiBcKObkvGoKoxsIMMHoMoKeaZqswoEoEqdIGJfef8cigj8l724hJ6BAONvUT0GNTbX1vjfLIMyhInxE4r3Is2IX2Ekb2dLEOILVrCDJd0oD8Bac=;
+X-YMail-OSG: 9H.BJv4VM1lFrrM7I7gYqqm_1eu1EURTDzRmGZZF
+Received: from [68.236.82.170] by web38813.mail.mud.yahoo.com via HTTP; Fri, 28 Mar 2008 09:38:11 PDT
+Date:	Fri, 28 Mar 2008 09:38:11 -0700 (PDT)
+From:	Larry Stefani <lstefani@yahoo.com>
+Subject: Re: SB1250 locking up in init on current 2.6.16 kernel
+To:	Thiemo Seufer <ths@networkno.de>
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <20080328134317.GA21099@networkno.de>
 MIME-Version: 1.0
-To:	Nico Coesel <ncoesel@DEALogic.nl>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
-Subject: Re: Alchemy power managment code.
-References: <19CA9E279FDA5246B7D7A1C91A4AF7F40EF9A2@dealogicserver.DEALogic.nl>
-In-Reply-To: <19CA9E279FDA5246B7D7A1C91A4AF7F40EF9A2@dealogicserver.DEALogic.nl>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Message-ID: <54971.71316.qm@web38813.mail.mud.yahoo.com>
+Return-Path: <lstefani@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18697
+X-archive-position: 18698
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: lstefani@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Nico Coesel wrote:
+Hi Thiemo,
 
->>>>>Correct - and cevt-r4k won't be usable either.  I guess that means 
->>>>>you leave the user the choice between either these two or using wait.  
+I applied your patch (from
+http://www.linux-mips.org/archives/linux-mips/2008-03/msg00001.html)
+on 2.6.16.60, and also patched arch/mips/mm/c-sb1.c to
+remove:
 
->>>>>Not nice but ...
+          local_flush_data_cache_page = (void *)
+sb1_nop;
 
->>>>   The Alchemy code doesn't even try to use CP0 counter when 
->>>>CONFIG_PM=y if you look into 
+in order to compile after your changes to cache.c and
+cacheflush.h.  However, this did not work on my board,
+and I experienced the same lockup as before.
 
->>arch/mips/au1000/common/time.c... or at 
+>>Keep in mind that this is a crude workaround on top
+of other cache code hacks for the SB-1.
 
->>>>least it didn't before Atsushi removed do_fast_pm_gettimeoffset().
+What other "cache code hacks for SB-1"?  Are there
+additional changes required to 2.6.16.60 to make SB1
+work properly?  Did you post those hacks somewhere?
 
->>>Oh, yes. At that time I tried to implement clocksource drivers for 
->>>non-standard timers, but it seems I had missied Alchemy PM=y case.
+Thanks,
+Larry
 
->>>The driver would be something like this?  Completely untested ;-)
 
->>>static cycle_t au1000_hpt_read(void)
->>>{
->>>	return au_readl(SYS_TOYREAD);
->>>}
+--- Thiemo Seufer <ths@networkno.de> wrote:
 
->>>struct clocksource au1000_clocksource = {
->>>	.name	= "au1000-counter",
->>>	.rating	= 200,
+> Larry Stefani wrote:
+> > Hi Ralf,
+> > 
+> > I used git bisect and narrowed the lockup to the
+> > "[MIPS] Retire flush_icache_page from mm use."
+> patch
+> > (see git results below).  This is consistent with
+> my
+> > earlier testing and what Thiemo reported March 3
+> on
+> > the linux.debian.kernel list.  I tried his patch
+> (mark
+> > pages tainted by PIO IDE as dirty) on 2.6.16.60,
+> but
+> > it didn't prevent the lockup.
+> 
+> ISTR I got 2.6.16.60 to work by always enabling the
+> cache flush in
+> ide.h (it is currently only run to clean out
+> aliases). Keep in mind
+> that this is a crude workaround on top of other
+> cache code hacks for
+> the SB-1.
+> 
+> 
+> Thiemo
+> 
 
->>    Rating should be greater than that of CP0 counter...
 
->>>	.read	= au1000_hpt_read,
->>>	.mask	= CLOCKSOURCE_MASK(32),
->>>	.flags	= CLOCK_SOURCE_IS_CONTINUOUS,
->>>};
 
->>>void __init au1000_clocksource_init(unsinged long cpu_speed) {
->>>	struct clocksource *cs = &au1000_clocksource;
->>>
->>>	clocksource_set_clock(cs, cpu_speed);
-
->>    Not really, it's clocked by 32768 Hz input, so probably 
->>not very good as a clocksource.
-
-> Why not? If a 32768Hz watch crystal is connected then you'll have a
-> stable clocksource. IIRC watch crystals are more precise than the
-> crystals used to generate the core frequency.
-
-    32 KHz is too low a frequency. The same goes about using TOY as a 
-clockevent -- HRT boasts microsecond resoultion which TOY can't provide.
-
-> Nico Coesel
-
-WBR, Sergei
+      ____________________________________________________________________________________
+Never miss a thing.  Make Yahoo your home page. 
+http://www.yahoo.com/r/hs

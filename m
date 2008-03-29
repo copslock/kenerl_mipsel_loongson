@@ -1,30 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Mar 2008 10:59:50 +0100 (CET)
-Received: from hydra.gt.owl.de ([195.71.99.218]:38336 "EHLO hydra.gt.owl.de")
-	by lappi.linux-mips.net with ESMTP id S529923AbYC2J7p (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 29 Mar 2008 10:59:45 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Mar 2008 11:35:03 +0100 (CET)
+Received: from hydra.gt.owl.de ([195.71.99.218]:27619 "EHLO hydra.gt.owl.de")
+	by lappi.linux-mips.net with ESMTP id S529939AbYC2Ke6 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 29 Mar 2008 11:34:58 +0100
 Received: by hydra.gt.owl.de (Postfix, from userid 1000)
-	id B812C32EC6; Sat, 29 Mar 2008 10:59:14 +0100 (CET)
-Date:	Sat, 29 Mar 2008 10:59:14 +0100
+	id 3925A32ED3; Sat, 29 Mar 2008 11:34:27 +0100 (CET)
+Date:	Sat, 29 Mar 2008 11:34:27 +0100
 From:	Florian Lohoff <flo@rfc822.org>
 To:	Matteo Croce <technoboy85@gmail.com>
-Cc:	linux-mips@linux-mips.org, Eugene Konev <ejka@imfi.kspu.ru>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH][MIPS][3/6]: AR7: VLYNQ bus
-Message-ID: <20080329095914.GA18263@paradigm.rfc822.org>
-References: <200803120221.25044.technoboy85@gmail.com> <200803120226.42795.technoboy85@gmail.com>
+Cc:	linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>,
+	Felix Fietkau <nbd@openwrt.org>,
+	Eugene Konev <ejka@imfi.kspu.ru>,
+	Nicolas Thill <nico@openwrt.org>, ralf@linux-mips.org
+Subject: Re: [PATCH][MIPS][1/6]: AR7: core
+Message-ID: <20080329103427.GA19501@paradigm.rfc822.org>
+References: <200803120221.25044.technoboy85@gmail.com> <200803121906.25546.technoboy85@gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="qDbXVdCdHGoSgWSk"
+	protocol="application/pgp-signature"; boundary="NzB8fVQJ5HfG6fxh"
 Content-Disposition: inline
-In-Reply-To: <200803120226.42795.technoboy85@gmail.com>
+In-Reply-To: <200803121906.25546.technoboy85@gmail.com>
 Organization: rfc822 - pure communication
-X-SpiderMe: mh-200803291051@listme.rfc822.org
+X-SpiderMe: mh-200803291103@listme.rfc822.org
 User-Agent: Mutt/1.5.13 (2006-08-11)
 Return-Path: <flo@rfc822.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18702
+X-archive-position: 18703
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,50 +35,80 @@ Precedence: bulk
 X-list: linux-mips
 
 
---qDbXVdCdHGoSgWSk
+--NzB8fVQJ5HfG6fxh
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
+Hi,
 
-Hi Matteo,
+On Wed, Mar 12, 2008 at 07:06:25PM +0100, Matteo Croce wrote:
+>=20
+> Sorry but the linux-mips mailing list can't accept this patch for unknown=
+ reasons.
+> I'll send a gz file, that will work
 
-On Wed, Mar 12, 2008 at 02:26:42AM +0100, Matteo Croce wrote:
-> +	switch (dev->divisor) {
-> +	case vlynq_div_auto:
-> +		/* Only try locally supplied clock, others cause problems */
+i have a plattform AR7VWi which has a High Active reset for the
+vlynq_low so the code is not sufficient to get the ACX up and running
 
-i have a platform (AR7VWi - Leonardo Board) which has an external
-supplied clock from an ACX111 so the div_auto autoprobing will not work.
++static struct plat_vlynq_data vlynq_low_data =3D {
++       .ops.on =3D vlynq_on,
++       .ops.off =3D vlynq_off,
++       .reset_bit =3D 20,
++       .gpio_bit =3D 18,
++};
++
++static struct plat_vlynq_data vlynq_high_data =3D {
++       .ops.on =3D vlynq_on,
++       .ops.off =3D vlynq_off,
++       .reset_bit =3D 16,
++       .gpio_bit =3D 19,
++};
 
-I put the vlynq_div_external code in front of this which should
-simply listen on the vlynq if there is a clock and use it. This solved
-one of the issues for me. Can you elaborate on the above comment where
-caused problems? I have seen multiple implementations of this, all of
-them did autoprobing first by listening on the remote clock first.
+The gpio_bit's are okay but they are high active so the generic code:
 
-> +		vlynq_reg_write(dev->remote->control, 0);
-> +		for (i =3D vlynq_ldiv2; i <=3D vlynq_ldiv8; i++) {
-> +			vlynq_reg_write(dev->local->control,
-> +					VLYNQ_CTRL_CLOCK_INT |
-> +					VLYNQ_CTRL_CLOCK_DIV(i - vlynq_ldiv1));
-> +			if (vlynq_linked(dev)) {
-> +				printk(KERN_DEBUG
-> +				       "%s: using local clock divisor %d\n",
-> +				       dev->dev.bus_id, i - vlynq_ldiv1 + 1);
-> +				dev->divisor =3D i;
-> +				return 0;
-> +			}
-> +		}
++static int vlynq_on(struct vlynq_device *dev)
++{
++       int result;
++       struct plat_vlynq_data *pdata =3D dev->dev.platform_data;
++
++       if ((result =3D gpio_request(pdata->gpio_bit, "vlynq")))
++               goto out;
++
++       ar7_device_reset(pdata->reset_bit);
++
++       if ((result =3D ar7_gpio_disable(pdata->gpio_bit)))
++               goto out_enabled;
++
++       if ((result =3D ar7_gpio_enable(pdata->gpio_bit)))
++               goto out_enabled;
++
++       if ((result =3D gpio_direction_output(pdata->gpio_bit, 0)))
++               goto out_gpio_enabled;
++
++       mdelay(50);
++
++       gpio_set_value(pdata->gpio_bit, 1);
 
-What i found in the TI code is that FIRST the local->control needs to
-get set before issueing a remote access so shouldnd the=20
+Is not enough here - gpios might be reverse polarity ... The right thing
+to actually reset a device would need a toggle not a static state.
 
-	vlynq_reg_write(dev->remote ... )
++       mdelay(50);
++
++       return 0;
 
-move behind the dev->local ? I mean the logic is to set a local clock
-divisor - try to access something on the remote end and see if the link
-got up ?!?
+
++static void vlynq_off(struct vlynq_device *dev)
++{
++       struct plat_vlynq_data *pdata =3D dev->dev.platform_data;
++       ar7_gpio_disable(pdata->gpio_bit);
++       gpio_free(pdata->gpio_bit);
++       ar7_device_disable(pdata->reset_bit);
++}
+
+gpio_disable to gpio_bit will put the gpio to tristate or special function
+which will lead to unpredicted results. So gpio_set_value would be needed
+and then the same as for vlynq_on applies concerning the reverse polarity.
 
 Flo
 --=20
@@ -84,7 +116,7 @@ Florian Lohoff                  flo@rfc822.org             +49-171-2280134
 	Those who would give up a little freedom to get a little=20
           security shall soon have neither - Benjamin Franklin
 
---qDbXVdCdHGoSgWSk
+--NzB8fVQJ5HfG6fxh
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: Digital signature
 Content-Disposition: inline
@@ -92,9 +124,9 @@ Content-Disposition: inline
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.6 (GNU/Linux)
 
-iD8DBQFH7hLyUaz2rXW+gJcRAvm3AKCkLYLyJHPf+Z6xQ6VQYPMt20QNxQCdHEsZ
-70YFvI1TMCRmgJORfmW9zuo=
-=spvi
+iD8DBQFH7hszUaz2rXW+gJcRAgFiAKCHUgxHWb+gKMtdoFVFPkWeO5XGVACgtSqI
+XEmQ8hLk+gbC4nAJ63HnEP8=
+=qLLm
 -----END PGP SIGNATURE-----
 
---qDbXVdCdHGoSgWSk--
+--NzB8fVQJ5HfG6fxh--

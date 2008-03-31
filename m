@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Apr 2008 00:07:37 +0200 (CEST)
-Received: from smtp02.mtu.ru ([62.5.255.49]:10456 "EHLO smtp02.mtu.ru")
-	by lappi.linux-mips.net with ESMTP id S1100128AbYCaWHG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 1 Apr 2008 00:07:06 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Apr 2008 00:08:46 +0200 (CEST)
+Received: from smtp02.mtu.ru ([62.5.255.49]:15832 "EHLO smtp02.mtu.ru")
+	by lappi.linux-mips.net with ESMTP id S1100129AbYCaWHH (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 1 Apr 2008 00:07:07 +0200
 Received: from smtp02.mtu.ru (localhost [127.0.0.1])
-	by smtp02.mtu.ru (Postfix) with ESMTP id A412E456AF;
-	Tue,  1 Apr 2008 02:05:16 +0400 (MSD)
+	by smtp02.mtu.ru (Postfix) with ESMTP id 6A49945350;
+	Tue,  1 Apr 2008 02:05:25 +0400 (MSD)
 Received: from localhost.localdomain (ppp85-140-79-111.pppoe.mtu-net.ru [85.140.79.111])
-	by smtp02.mtu.ru (Postfix) with ESMTP id 1CC7B4470B;
-	Tue,  1 Apr 2008 02:03:41 +0400 (MSD)
+	by smtp02.mtu.ru (Postfix) with ESMTP id 5ECE6439E1;
+	Tue,  1 Apr 2008 02:03:30 +0400 (MSD)
 From:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
 To:	linux-mips@linux-mips.org, ralf@linux-mips.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 6/6] [MIPS] malta_int.c: make 4 variables static
-Date:	Tue,  1 Apr 2008 02:03:25 +0400
-Message-Id: <1207001005-2633-7-git-send-email-dmitri.vorobiev@gmail.com>
+Subject: [PATCH 3/6] [MIPS] make mdesc and prom_getmdesc() static
+Date:	Tue,  1 Apr 2008 02:03:22 +0400
+Message-Id: <1207001005-2633-4-git-send-email-dmitri.vorobiev@gmail.com>
 X-Mailer: git-send-email 1.5.3.6
 In-Reply-To: <1207001005-2633-1-git-send-email-dmitri.vorobiev@gmail.com>
 References: <1207001005-2633-1-git-send-email-dmitri.vorobiev@gmail.com>
@@ -22,7 +22,7 @@ Return-Path: <dmitri.vorobiev@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18723
+X-archive-position: 18724
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,9 +30,8 @@ X-original-sender: dmitri.vorobiev@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-The following variables defined in arch/mips/mips-boards/malta/malta_int.c
-can become static: msc_irqmap[], msc_nr_irqs, msc_eicirqmap[], and
-msc_nr_eicirqs. This patch makes them static.
+Neither the mdesc[] array nor the prom_getmdesc() function need to
+be global. This patch makes them static.
 
 Successfully build-tested using default configs for Malta, Atlas
 and SEAD boards.
@@ -42,38 +41,30 @@ up to the shell prompt.
 
 Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
 ---
- arch/mips/mips-boards/malta/malta_int.c |    8 ++++----
- 1 files changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/mips-boards/generic/memory.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/mips-boards/malta/malta_int.c b/arch/mips/mips-boards/malta/malta_int.c
-index dbe60eb..b51a70b 100644
---- a/arch/mips/mips-boards/malta/malta_int.c
-+++ b/arch/mips/mips-boards/malta/malta_int.c
-@@ -273,13 +273,13 @@ static struct irqaction corehi_irqaction = {
- 	.name = "CoreHi"
+diff --git a/arch/mips/mips-boards/generic/memory.c b/arch/mips/mips-boards/generic/memory.c
+index dc272c1..5e443bb 100644
+--- a/arch/mips/mips-boards/generic/memory.c
++++ b/arch/mips/mips-boards/generic/memory.c
+@@ -37,7 +37,7 @@ enum yamon_memtypes {
+ 	yamon_prom,
+ 	yamon_free,
  };
+-struct prom_pmemblock mdesc[PROM_MAX_PMEMBLOCKS];
++static struct prom_pmemblock mdesc[PROM_MAX_PMEMBLOCKS];
  
--msc_irqmap_t __initdata msc_irqmap[] = {
-+static msc_irqmap_t __initdata msc_irqmap[] = {
- 	{MSC01C_INT_TMR,		MSC01_IRQ_EDGE, 0},
- 	{MSC01C_INT_PCI,		MSC01_IRQ_LEVEL, 0},
- };
--int __initdata msc_nr_irqs = ARRAY_SIZE(msc_irqmap);
-+static int __initdata msc_nr_irqs = ARRAY_SIZE(msc_irqmap);
+ #ifdef DEBUG
+ static char *mtypes[3] = {
+@@ -50,7 +50,7 @@ static char *mtypes[3] = {
+ /* determined physical memory size, not overridden by command line args  */
+ unsigned long physical_memsize = 0L;
  
--msc_irqmap_t __initdata msc_eicirqmap[] = {
-+static msc_irqmap_t __initdata msc_eicirqmap[] = {
- 	{MSC01E_INT_SW0,		MSC01_IRQ_LEVEL, 0},
- 	{MSC01E_INT_SW1,		MSC01_IRQ_LEVEL, 0},
- 	{MSC01E_INT_I8259A,		MSC01_IRQ_LEVEL, 0},
-@@ -291,7 +291,7 @@ msc_irqmap_t __initdata msc_eicirqmap[] = {
- 	{MSC01E_INT_PERFCTR,		MSC01_IRQ_LEVEL, 0},
- 	{MSC01E_INT_CPUCTR,		MSC01_IRQ_LEVEL, 0}
- };
--int __initdata msc_nr_eicirqs = ARRAY_SIZE(msc_eicirqmap);
-+static int __initdata msc_nr_eicirqs = ARRAY_SIZE(msc_eicirqmap);
- 
- void __init arch_init_irq(void)
+-struct prom_pmemblock * __init prom_getmdesc(void)
++static struct prom_pmemblock * __init prom_getmdesc(void)
  {
+ 	char *memsize_str;
+ 	unsigned int memsize;
 -- 
 1.5.3

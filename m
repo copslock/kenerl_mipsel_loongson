@@ -1,91 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Apr 2008 19:15:36 +0200 (CEST)
-Received: from smtp4.pp.htv.fi ([213.243.153.38]:24800 "EHLO smtp4.pp.htv.fi")
-	by lappi.linux-mips.net with ESMTP id S1102060AbYDARP1 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 1 Apr 2008 19:15:27 +0200
-Received: from cs181133002.pp.htv.fi (cs181133002.pp.htv.fi [82.181.133.2])
-	by smtp4.pp.htv.fi (Postfix) with ESMTP id 4969C5BC08F;
-	Tue,  1 Apr 2008 19:38:34 +0300 (EEST)
-Date:	Tue, 1 Apr 2008 19:38:29 +0300
-From:	Adrian Bunk <bunk@kernel.org>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	Florian Fainelli <florian.fainelli@telecomint.eu>,
-	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] Fix xss1500 compilation
-Message-ID: <20080401163829.GB32269@cs181133002.pp.htv.fi>
-References: <200804011553.25850.florian.fainelli@telecomint.eu> <20080401155515.GA32269@cs181133002.pp.htv.fi> <47F25FE7.5000406@ru.mvista.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <47F25FE7.5000406@ru.mvista.com>
-User-Agent: Mutt/1.5.17+20080114 (2008-01-14)
-Return-Path: <bunk@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Apr 2008 01:59:24 +0200 (CEST)
+Received: from smtp03.mtu.ru ([62.5.255.50]:45818 "EHLO smtp03.mtu.ru")
+	by lappi.linux-mips.net with ESMTP id S1103045AbYDAX7S (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 2 Apr 2008 01:59:18 +0200
+Received: from smtp03.mtu.ru (localhost.mtu.ru [127.0.0.1])
+	by smtp03.mtu.ru (Postfix) with ESMTP id CD3751870750;
+	Wed,  2 Apr 2008 03:58:46 +0400 (MSD)
+Received: from localhost.localdomain (ppp91-76-28-42.pppoe.mtu-net.ru [91.76.28.42])
+	by smtp03.mtu.ru (Postfix) with ESMTP id B30B2187084B;
+	Wed,  2 Apr 2008 03:58:38 +0400 (MSD)
+From:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
+To:	linux-mips@linux-mips.org, ralf@linux-mips.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/5] [MIPS] unexport a few symbols in MIPS-specific code
+Date:	Wed,  2 Apr 2008 03:58:33 +0400
+Message-Id: <1207094318-21748-1-git-send-email-dmitri.vorobiev@gmail.com>
+X-Mailer: git-send-email 1.5.3.6
+X-DCC-STREAM-Metrics: smtp03.mtu.ru 10002; Body=0 Fuz1=0 Fuz2=0
+Return-Path: <dmitri.vorobiev@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18749
+X-archive-position: 18754
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bunk@kernel.org
+X-original-sender: dmitri.vorobiev@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Apr 01, 2008 at 08:16:39PM +0400, Sergei Shtylyov wrote:
-> Adrian Bunk wrote:
->
->>> This patch fixes the compilation of the Au1000 XSS1500
->>> board setup and irqmap code.
->>> ...
->
->> Another compile error for this platform is:
->>
->> <--  snip  -->
->
->> ...
->>   CC [M]  drivers/pcmcia/au1000_xxs1500.o
->> /tmp/linux-2.6.25-rc7/drivers/pcmcia/au1000_xxs1500.c:33:26: error: linux/tqueue.h: No such file or directory
->> /tmp/linux-2.6.25-rc7/drivers/pcmcia/au1000_xxs1500.c:44:28: error: pcmcia/bus_ops.h: No such file or directory
->> /tmp/linux-2.6.25-rc7/drivers/pcmcia/au1000_xxs1500.c:51:24: error: asm/au1000.h: No such file or directory
->> /tmp/linux-2.6.25-rc7/drivers/pcmcia/au1000_xxs1500.c:52:31: error: asm/au1000_pcmcia.h: No such file or directory
->> ...
->> make[3]: *** [drivers/pcmcia/au1000_xxs1500.o] Error 1
->
->> <--  snip  -->
->
->> include/linux/tqueue.h was removed on Sep 30, 2002 (sic) which was even 
->> before 2.6.0 .
->
->> Obviously no 2.6 kernel ever ran on these boards.
->
->    Not true -- there have been 2.6 patches from MyCable, the board vendor.
+Hi Ralf,
 
-When I talk about a "2.6 kernel" I'm talking about what is on
-ftp.kernel.org, not what is hidden in some vendor patches.
+A few exported symbols in MIPS-specific code can be unexported,
+and this series of patches does so.
 
-> According to them, the last version supported version (on request) was 2.6.22.
+This series was tested using a custom config that was produced
+by running `make allmodconfig', after which the CONFIG_VORTEX
+option was manually turned off. The patches I am submitting do
+not touch the code affected by this option, however. Setting
+this options on leads to unbuildable kernel independently of
+whether the patches are applied.
 
-Why is it not being submitted, and how much does it actually have in 
-common with the code currently in the kernel?
+Additionally, the entire patchset was tested at runtime by
+booting the Malta 4Kc board up to the shell prompt and
+inserting the `oprofile.ko' kernel module. The tests were
+successful.
 
-After all, e.g. the pcmcia driver was added in 2003 with the
-#include <linux/tqueue.h> and a "Copyright 2003 MontaVista Software Inc.".
-
-And 2003 is one year *after* include/linux/tqueue.h was removed.
-
-If MyCable submits their patches for 2.6.22 (adapted to 2.6.25 if 
-required) that would be great.
-
-But otherwise there's simply no point in trying to fix the compilation 
-of this kernel 2.4 code that was dumped into kernel 2.6.
-
-> WBR, Sergei
-
-cu
-Adrian
-
--- 
-
-       "Is there not promise of rain?" Ling Tan asked suddenly out
-        of the darkness. There had been need of rain for many days.
-       "Only a promise," Lao Er said.
-                                       Pearl S. Buck - Dragon Seed
+Thanks,
+Dmitri

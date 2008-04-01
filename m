@@ -1,65 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Apr 2008 10:55:20 +0200 (CEST)
-Received: from fg-out-1718.google.com ([72.14.220.155]:33682 "EHLO
-	fg-out-1718.google.com") by lappi.linux-mips.net with ESMTP
-	id S1101071AbYDAIzP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 1 Apr 2008 10:55:15 +0200
-Received: by fg-out-1718.google.com with SMTP id d23so1697050fga.32
-        for <linux-mips@linux-mips.org>; Tue, 01 Apr 2008 01:54:55 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=beta;
-        h=domainkey-signature:received:received:message-id:date:from:organization:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        bh=/3SZO9gQbpC22nXXyoHj5CmlDcgOZsYarHs7NOyElKo=;
-        b=s868a4oQRJv982BPuxsPAwaybsXeQ6EhsfzW/fV7PupxZ9xkh24jTgyee9Q97IBqAlp5xtobhrsUfSwBOYF1L7POb7uymB1SxuzGVHyKNWjO+m/SCkBQXoif4H/mDPYcK7WsZzBHBIeE0jir9UXpfiv0ramiELNhngTMIHEH9lA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=beta;
-        h=message-id:date:from:organization:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=P4HIC5hzxlW28h02xOYD4+KsXEQUO+/knykhd+U6n5UcM1CTDOKt4I0e+jZrDKAhLnM/Z/Ke+n0z02RE3a1dDwDRiKew1TeG0l21foeEjdusH6BJvDagcDsglW5NB4RHF93MP1HHkKctBJD4/dRBHCEVdVsrS1KgXbs8KDWe25M=
-Received: by 10.86.97.7 with SMTP id u7mr5223454fgb.54.1207040095561;
-        Tue, 01 Apr 2008 01:54:55 -0700 (PDT)
-Received: from ?192.168.1.3? ( [85.140.79.111])
-        by mx.google.com with ESMTPS id e11sm6644026fga.5.2008.04.01.01.54.51
-        (version=SSLv3 cipher=RC4-MD5);
-        Tue, 01 Apr 2008 01:54:51 -0700 (PDT)
-Message-ID: <47F1F859.6020305@gmail.com>
-Date:	Tue, 01 Apr 2008 12:54:49 +0400
-From:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
-Organization: DmVo Home
-User-Agent: Thunderbird 1.5.0.14pre (X11/20071022)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Apr 2008 15:49:48 +0200 (CEST)
+Received: from [157.159.40.25] ([157.159.40.25]:12692 "EHLO mx1.minet.net")
+	by lappi.linux-mips.net with ESMTP id S1101510AbYDANtf (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 1 Apr 2008 15:49:35 +0200
+Received: from localhost (spam.minet.net [192.168.1.97])
+	by mx1.minet.net (Postfix) with ESMTP id 26B7260CFA;
+	Tue,  1 Apr 2008 15:49:29 +0200 (CEST)
+X-Virus-Scanned: by amavisd-new using ClamAV at minet.net
+Received: from smtp.minet.net (imap.minet.net [192.168.1.27])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mx1.minet.net (Postfix) with ESMTP id E758A60CFB;
+	Tue,  1 Apr 2008 15:49:14 +0200 (CEST)
+Received: from ibook (mla78-1-82-240-17-188.fbx.proxad.net [82.240.17.188])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: florian)
+	by smtp.minet.net (Postfix) with ESMTP id 866C215B59;
+	Tue,  1 Apr 2008 15:48:33 +0200 (CEST)
+From:	Florian Fainelli <florian.fainelli@telecomint.eu>
+Date:	Tue, 1 Apr 2008 15:53:25 +0200
+Subject: [PATCH] Fix xss1500 compilation
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/6] [MIPS] make some functions and variables static
-References: <1207001005-2633-1-git-send-email-dmitri.vorobiev@gmail.com> <20080331224143.GA28473@linux-mips.org>
-In-Reply-To: <20080331224143.GA28473@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <dmitri.vorobiev@gmail.com>
+X-UID:	946
+X-Length: 1931
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org, Adrian Bunk <bunk@kernel.org>
+Content-Disposition: inline
+Message-Id: <200804011553.25850.florian.fainelli@telecomint.eu>
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Return-Path: <florian.fainelli@telecomint.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18734
+X-archive-position: 18737
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@gmail.com
+X-original-sender: florian.fainelli@telecomint.eu
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle пишет:
-> On Tue, Apr 01, 2008 at 02:03:19AM +0400, Dmitri Vorobiev wrote:
-> 
->> I noticed that a few functions and variables in the MIPS-specific
->> code can become static, and this series of patches cleans up the
->> kernel global name space a little bit.
-> 
-> I've queued the whole series for 2.6.26.
+This patch fixes the compilation of the Au1000 XSS1500
+board setup and irqmap code.
 
-Thank you, Ralf.
-
-Dmitri
-
-> 
-> Thanks,
-> 
->   Ralf
-> 
+Signed-off-by: Florian Fainelli <florian.fainelli@telecomint.eu>
+---
+diff --git a/arch/mips/au1000/xxs1500/board_setup.c 
+b/arch/mips/au1000/xxs1500/board_setup.c
+index a9237f4..b2e413e 100644
+--- a/arch/mips/au1000/xxs1500/board_setup.c
++++ b/arch/mips/au1000/xxs1500/board_setup.c
+@@ -33,11 +33,10 @@
+ #include <asm/cpu.h>
+ #include <asm/bootinfo.h>
+ #include <asm/irq.h>
+-#include <asm/keyboard.h>
+ #include <asm/mipsregs.h>
+ #include <asm/reboot.h>
+ #include <asm/pgtable.h>
+-#include <asm/au1000.h>
++#include <asm/mach-au1x00/au1000.h>
+ 
+ void board_reset(void)
+ {
+diff --git a/arch/mips/au1000/xxs1500/irqmap.c 
+b/arch/mips/au1000/xxs1500/irqmap.c
+index 3893492..a343da1 100644
+--- a/arch/mips/au1000/xxs1500/irqmap.c
++++ b/arch/mips/au1000/xxs1500/irqmap.c
+@@ -45,7 +45,7 @@
+ #include <asm/io.h>
+ #include <asm/mipsregs.h>
+ #include <asm/system.h>
+-#include <asm/au1000.h>
++#include <asm/mach-au1x00/au1000.h>
+ 
+ struct au1xxx_irqmap __initdata au1xxx_irq_map[] = {
+ 	{ AU1500_GPIO_204, INTC_INT_HIGH_LEVEL, 0},

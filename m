@@ -1,64 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Apr 2008 17:51:44 +0200 (CEST)
-Received: from smtp03.mtu.ru ([62.5.255.50]:4291 "EHLO smtp03.mtu.ru")
-	by lappi.linux-mips.net with ESMTP id S525390AbYDBPvh (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 2 Apr 2008 17:51:37 +0200
-Received: from smtp03.mtu.ru (localhost.mtu.ru [127.0.0.1])
-	by smtp03.mtu.ru (Postfix) with ESMTP id 74A76187078E;
-	Wed,  2 Apr 2008 19:51:06 +0400 (MSD)
-Received: from localhost.localdomain (ppp91-76-28-42.pppoe.mtu-net.ru [91.76.28.42])
-	by smtp03.mtu.ru (Postfix) with ESMTP id 59765187077A;
-	Wed,  2 Apr 2008 19:51:06 +0400 (MSD)
-From:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
-To:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6/5] [MIPS] op_model_mipsxx.c: make the save_perf_irq variable static
-Date:	Wed,  2 Apr 2008 19:51:05 +0400
-Message-Id: <1207151465-29257-1-git-send-email-dmitri.vorobiev@gmail.com>
-X-Mailer: git-send-email 1.5.3.6
-In-Reply-To: <1207094318-21748-1-git-send-email-dmitri.vorobiev@gmail.com>
-References: <1207094318-21748-1-git-send-email-dmitri.vorobiev@gmail.com>
-X-DCC-STREAM-Metrics: smtp03.mtu.ru 10001; Body=0 Fuz1=0 Fuz2=0
-Return-Path: <dmitri.vorobiev@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Apr 2008 20:32:11 +0200 (CEST)
+Received: from hydra.gt.owl.de ([195.71.99.218]:11463 "EHLO hydra.gt.owl.de")
+	by lappi.linux-mips.net with ESMTP id S1102616AbYDBScD (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 2 Apr 2008 20:32:03 +0200
+Received: by hydra.gt.owl.de (Postfix, from userid 1000)
+	id 2BC3832CEB; Wed,  2 Apr 2008 20:31:14 +0200 (CEST)
+Date:	Wed, 2 Apr 2008 20:31:14 +0200
+From:	Florian Lohoff <flo@rfc822.org>
+To:	Matteo Croce <technoboy85@gmail.com>
+Cc:	linux-mips@linux-mips.org, Eugene Konev <ejka@imfi.kspu.ru>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH][MIPS][3/6]: AR7: VLYNQ bus
+Message-ID: <20080402183114.GA371@paradigm.rfc822.org>
+References: <200803120221.25044.technoboy85@gmail.com> <200803120226.42795.technoboy85@gmail.com> <20080329095914.GA18263@paradigm.rfc822.org> <200804021456.44472.technoboy85@gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="ZGiS0Q5IWpPtfppv"
+Content-Disposition: inline
+In-Reply-To: <200804021456.44472.technoboy85@gmail.com>
+Organization: rfc822 - pure communication
+X-SpiderMe: mh-200804022026@listme.rfc822.org
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <flo@rfc822.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18774
+X-archive-position: 18776
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@gmail.com
+X-original-sender: flo@rfc822.org
 Precedence: bulk
 X-list: linux-mips
 
-The function pointer save_perf_irq introduced by the previous
-patch in this series can become static.
 
-Thanks for Atsushi Nemoto for pointing out the possibility.
+--ZGiS0Q5IWpPtfppv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
----
-Hi Ralf,
+On Wed, Apr 02, 2008 at 02:56:44PM +0200, Matteo Croce wrote:
+>=20
+> Works fine for my AR7 which has an interlan clock.
+>=20
 
-If you find that the series is worth it, please pick up this
-patch too. Thank you.
+Its doesnt for me with an external clock - thats what i mean - Auto
+probing should first try to listen for an external clock before letting
+clocks run against each other. This is the hunk of a patch on top of
+yours ...
 
-Dmitri
+@@ -371,12 +371,20 @@ static int __vlynq_enable_device(struct=20
+=20
+        switch (dev->divisor) {
+        case vlynq_div_auto:
+-               /* Only try locally supplied clock, others cause problems */
++      =20
++               vlynq_reg_write(dev->local->control, 0);
+                vlynq_reg_write(dev->remote->control, 0);
++               if (vlynq_linked(dev)) {
++                       printk(KERN_DEBUG "%s: using external clock\n",
++                              dev->dev.bus_id);
++                       return 0;
++               }
++
+                for (i =3D vlynq_ldiv2; i <=3D vlynq_ldiv8; i++) {
+                        vlynq_reg_write(dev->local->control,
+                                        VLYNQ_CTRL_CLOCK_INT |
+                                        VLYNQ_CTRL_CLOCK_DIV(i - vlynq_ldiv=
+1));
++                       vlynq_reg_write(dev->remote->control, 0);
+                        if (vlynq_linked(dev)) {
+                                printk(KERN_DEBUG
+                                       "%s: using local clock divisor %d\n",
 
- arch/mips/oprofile/op_model_mipsxx.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+Flo
+--=20
+Florian Lohoff                  flo@rfc822.org             +49-171-2280134
+	Those who would give up a little freedom to get a little=20
+          security shall soon have neither - Benjamin Franklin
 
-diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
-index 12e840f..0a11727 100644
---- a/arch/mips/oprofile/op_model_mipsxx.c
-+++ b/arch/mips/oprofile/op_model_mipsxx.c
-@@ -31,7 +31,7 @@
- 
- #define M_COUNTER_OVERFLOW		(1UL      << 31)
- 
--int (*save_perf_irq)(void);
-+static int (*save_perf_irq)(void);
- 
- #ifdef CONFIG_MIPS_MT_SMP
- #define WHAT		(M_TC_EN_VPE | M_PERFCTL_VPEID(smp_processor_id()))
--- 
-1.5.3
+--ZGiS0Q5IWpPtfppv
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
+
+iD8DBQFH89DyUaz2rXW+gJcRAmkrAKCHy18gvEz0YZyWRsIKSaapLwPACgCgln1W
+ASQxBkyXowNvoXqegMq9VxQ=
+=qKwm
+-----END PGP SIGNATURE-----
+
+--ZGiS0Q5IWpPtfppv--

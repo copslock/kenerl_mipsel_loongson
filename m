@@ -1,105 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Apr 2008 02:04:08 +0200 (CEST)
-Received: from smtp03.mtu.ru ([62.5.255.50]:25083 "EHLO smtp03.mtu.ru")
-	by lappi.linux-mips.net with ESMTP id S1103057AbYDAX7t (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 2 Apr 2008 01:59:49 +0200
-Received: from smtp03.mtu.ru (localhost.mtu.ru [127.0.0.1])
-	by smtp03.mtu.ru (Postfix) with ESMTP id 9688218708B3;
-	Wed,  2 Apr 2008 03:58:47 +0400 (MSD)
-Received: from localhost.localdomain (ppp91-76-28-42.pppoe.mtu-net.ru [91.76.28.42])
-	by smtp03.mtu.ru (Postfix) with ESMTP id 72F0718708AC;
-	Wed,  2 Apr 2008 03:58:47 +0400 (MSD)
-From:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
-To:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 5/5] [MIPS] unexport null_perf_irq() and make it static
-Date:	Wed,  2 Apr 2008 03:58:38 +0400
-Message-Id: <1207094318-21748-6-git-send-email-dmitri.vorobiev@gmail.com>
-X-Mailer: git-send-email 1.5.3.6
-In-Reply-To: <1207094318-21748-1-git-send-email-dmitri.vorobiev@gmail.com>
-References: <1207094318-21748-1-git-send-email-dmitri.vorobiev@gmail.com>
-X-DCC-STREAM-Metrics: smtp03.mtu.ru 10002; Body=0 Fuz1=0 Fuz2=0
-Return-Path: <dmitri.vorobiev@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Apr 2008 09:17:13 +0200 (CEST)
+Received: from edna.telenet-ops.be ([195.130.132.58]:60600 "EHLO
+	edna.telenet-ops.be") by lappi.linux-mips.net with ESMTP
+	id S1102566AbYDBHRG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 2 Apr 2008 09:17:06 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by edna.telenet-ops.be (Postfix) with SMTP id 6AAFDE400A;
+	Wed,  2 Apr 2008 09:16:55 +0200 (CEST)
+Received: from anakin.of.borg (d54C15D55.access.telenet.be [84.193.93.85])
+	by edna.telenet-ops.be (Postfix) with ESMTP id 3A2BDE405B;
+	Wed,  2 Apr 2008 09:16:55 +0200 (CEST)
+Received: from anakin.of.borg (localhost [127.0.0.1])
+	by anakin.of.borg (8.14.2/8.14.2/Debian-3) with ESMTP id m327GsXj011687
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Wed, 2 Apr 2008 09:16:54 +0200
+Received: from localhost (geert@localhost)
+	by anakin.of.borg (8.14.2/8.14.2/Submit) with ESMTP id m327GrpJ011684;
+	Wed, 2 Apr 2008 09:16:54 +0200
+X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
+Date:	Wed, 2 Apr 2008 09:16:52 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	"Kevin D. Kissell" <kevink@mips.com>
+cc:	Linux/MIPS Development <linux-mips@linux-mips.org>,
+	Linux Kernel Development <linux-kernel@vger.kernel.org>,
+	linux-arch@vger.kernel.org
+Subject: Re: max_pfn: Uninitialized, or Deprecated?
+In-Reply-To: <47F1F349.7010503@mips.com>
+Message-ID: <Pine.LNX.4.64.0804020910290.14383@anakin>
+References: <47F1F349.7010503@mips.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18759
+X-archive-position: 18762
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@gmail.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch unexports the null_perf_irq() symbol, and simultaneously
-makes this function static.
+On Tue, 1 Apr 2008, Kevin D. Kissell wrote:
+> Once upon a time, the global max_pfn value was set up as part of
+> bootmem_init(), but this seems to have been dropped in favor of
+> establishing max_low_pfn, I suppose to be clear that it's the max
+> non-highmem PFN.  However, the global max_pfn gets used in
+> the MIPS APRP support code,  and also in places like
+> block/blk-settings.c.  Is the use of max_pfn supposed to be
+> deprecated, such that we consider blk-settings.c to be broken
+> and change arch/mips/kernel/vpe.c to use max_low_pfn, or
+> ought we assign  max_pfn = max_low_pfn in bootmem_init()?
 
-Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
----
- arch/mips/kernel/time.c              |    4 +---
- arch/mips/oprofile/op_impl.h         |    1 -
- arch/mips/oprofile/op_model_mipsxx.c |    5 ++++-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+I noticed this too when investigating why initrds no longer worked on
+m68k (Fix in http://lkml.org/lkml/2007/12/23/36, still not in mainline).
 
-diff --git a/arch/mips/kernel/time.c b/arch/mips/kernel/time.c
-index d70ce5c..1f467d5 100644
---- a/arch/mips/kernel/time.c
-+++ b/arch/mips/kernel/time.c
-@@ -49,13 +49,11 @@ int update_persistent_clock(struct timespec now)
- 	return rtc_mips_set_mmss(now.tv_sec);
- }
- 
--int null_perf_irq(void)
-+static int null_perf_irq(void)
- {
- 	return 0;
- }
- 
--EXPORT_SYMBOL(null_perf_irq);
--
- int (*perf_irq)(void) = null_perf_irq;
- 
- EXPORT_SYMBOL(perf_irq);
-diff --git a/arch/mips/oprofile/op_impl.h b/arch/mips/oprofile/op_impl.h
-index fa6b4aa..2bfc17c 100644
---- a/arch/mips/oprofile/op_impl.h
-+++ b/arch/mips/oprofile/op_impl.h
-@@ -10,7 +10,6 @@
- #ifndef OP_IMPL_H
- #define OP_IMPL_H 1
- 
--extern int null_perf_irq(void);
- extern int (*perf_irq)(void);
- 
- /* Per-counter configuration as set via oprofilefs.  */
-diff --git a/arch/mips/oprofile/op_model_mipsxx.c b/arch/mips/oprofile/op_model_mipsxx.c
-index ccbea22..12e840f 100644
---- a/arch/mips/oprofile/op_model_mipsxx.c
-+++ b/arch/mips/oprofile/op_model_mipsxx.c
-@@ -31,6 +31,8 @@
- 
- #define M_COUNTER_OVERFLOW		(1UL      << 31)
- 
-+int (*save_perf_irq)(void);
-+
- #ifdef CONFIG_MIPS_MT_SMP
- #define WHAT		(M_TC_EN_VPE | M_PERFCTL_VPEID(smp_processor_id()))
- #define vpe_id()	smp_processor_id()
-@@ -355,6 +357,7 @@ static int __init mipsxx_init(void)
- 		return -ENODEV;
- 	}
- 
-+	save_perf_irq = perf_irq;
- 	perf_irq = mipsxx_perfcount_handler;
- 
- 	return 0;
-@@ -367,7 +370,7 @@ static void mipsxx_exit(void)
- 	counters = counters_per_cpu_to_total(counters);
- 	reset_counters(counters);
- 
--	perf_irq = null_perf_irq;
-+	perf_irq = save_perf_irq;
- }
- 
- struct op_mips_model op_model_mipsxx_ops = {
--- 
-1.5.3
+Apparently a value of max_pfn = 0 is OK, as several architectures
+(including MIPS and m68k) don't touch it?
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

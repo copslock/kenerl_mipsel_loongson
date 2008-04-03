@@ -1,77 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Apr 2008 23:58:06 +0200 (CEST)
-Received: from sj-iport-1.cisco.com ([171.71.176.70]:28993 "EHLO
-	sj-iport-1.cisco.com") by lappi.linux-mips.net with ESMTP
-	id S525971AbYDBV6B (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 2 Apr 2008 23:58:01 +0200
-Received: from sj-dkim-1.cisco.com ([171.71.179.21])
-  by sj-iport-1.cisco.com with ESMTP; 02 Apr 2008 14:56:58 -0700
-Received: from sj-core-1.cisco.com (sj-core-1.cisco.com [171.71.177.237])
-	by sj-dkim-1.cisco.com (8.12.11/8.12.11) with ESMTP id m32Luwg2013460;
-	Wed, 2 Apr 2008 14:56:58 -0700
-Received: from cliff.cisco.com (cliff.cisco.com [171.69.11.141])
-	by sj-core-1.cisco.com (8.13.8/8.13.8) with ESMTP id m32LuwTf020080;
-	Wed, 2 Apr 2008 21:56:58 GMT
-Received: from [127.0.0.1] ([64.100.150.211]) by cliff.cisco.com (8.6.12/8.6.5) with ESMTP id VAA16875; Wed, 2 Apr 2008 21:56:52 GMT
-Message-ID: <47F4011F.9020604@cisco.com>
-Date:	Wed, 02 Apr 2008 14:56:47 -0700
-From:	David VomLehn <dvomlehn@cisco.com>
-User-Agent: Thunderbird 2.0.0.12 (Windows/20080213)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Apr 2008 02:19:36 +0200 (CEST)
+Received: from smtp-out112.alice.it ([85.37.17.112]:8966 "EHLO
+	smtp-out112.alice.it") by lappi.linux-mips.net with ESMTP
+	id S526274AbYDCAT3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 3 Apr 2008 02:19:29 +0200
+Received: from FBCMMO01.fbc.local ([192.168.68.195]) by smtp-out112.alice.it with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 3 Apr 2008 02:19:05 +0200
+Received: from FBCMCL01B02.fbc.local ([192.168.69.83]) by FBCMMO01.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 3 Apr 2008 02:19:04 +0200
+Received: from [192.168.1.3] ([87.7.112.40]) by FBCMCL01B02.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 3 Apr 2008 02:19:04 +0200
+From:	Matteo Croce <technoboy85@gmail.com>
+To:	Florian Lohoff <flo@rfc822.org>
+Subject: Re: [PATCH][MIPS][3/6]: AR7: VLYNQ bus
+Date:	Thu, 3 Apr 2008 02:19:03 +0200
+User-Agent: KMail/1.9.9
+Cc:	linux-mips@linux-mips.org, Eugene Konev <ejka@imfi.kspu.ru>,
+	Andrew Morton <akpm@linux-foundation.org>
+References: <200803120221.25044.technoboy85@gmail.com> <200804021456.44472.technoboy85@gmail.com> <20080402183114.GA371@paradigm.rfc822.org>
+In-Reply-To: <20080402183114.GA371@paradigm.rfc822.org>
+X-Face:	0AUq?,0sKh2O65+R5#[nTCS'~}"m)9|g3Tsi=g7A9q69S+=M!BY)=?utf-8?q?Zdmwo2u!i=5CUylx=26=27D+=0A=09=5B7u=26z1=27s=7E=5B=3F+=24=27w?=
+ =?utf-8?q?O6+?="'WWcr5Jy,]}8namg8NP:9<E,o^21xGB~/HRhB(u^@
+ =?utf-8?q?ZB=2EXLP0swe=0A=09r9M=7EL?=<b1=^'4cv*_N1tNJ$`9Ot*KL/;8oXFdrT@r|-Ki2wCQI"R(X(
+ =?utf-8?q?73r=3A=3BmnNPoA2a=5D=7EZ=0A=092n2sUh?=,B|bt;ys*hv.QR>a]{m
 MIME-Version: 1.0
-To:	"Jon Fraser [jfraser"@broadcom.com], linux-mips@linux-mips.org
-Illegal-Object:	Syntax error in To: address found on lappi.linux-mips.net:
-	To:	"Jon Fraser [jfraser"@broadcom.com]
-							  ^-missing end of address
-Subject: Re: [PATCH 2.6.24][MIPS]Work in progress: fix HIGHMEM-enabled dcache
- flushing on 32-bit processor
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Type: text/plain;
+  charset="utf-8"
 Content-Transfer-Encoding: 7bit
-DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=1118; t=1207173418; x=1208037418;
-	c=relaxed/simple; s=sjdkim1004;
-	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
-	d=cisco.com; i=dvomlehn@cisco.com;
-	z=From:=20David=20VomLehn=20<dvomlehn@cisco.com>
-	|Subject:=20Re=3A=20[PATCH=202.6.24][MIPS]Work=20in=20progr
-	ess=3A=20fix=20HIGHMEM-enabled=20dcache=0A=20flushing=20on=2
-	032-bit=20processor
-	|Sender:=20;
-	bh=uOYvlErAfqKD8lrMpRH3pKnur3snz1z8iQ1zzvUcals=;
-	b=LY4psVsAnXhwZ5irV2eOvLCprFnXsorilOAPUJqng7iRlw8wZkyqGzNdC2
-	EClFNI7A/vLQk111JTCcU9cBEjllmQa8mmYZiu4HEct1bdzU35/4YmS19YnO
-	6cZ5+43yqZaB6iCAZbwD2XTEwHKEHqWcPP7q3FX9zhsH46KktHxhw=;
-Authentication-Results:	sj-dkim-1; header.From=dvomlehn@cisco.com; dkim=pass (
-	sig from cisco.com/sjdkim1004 verified; ); 
-Return-Path: <dvomlehn@cisco.com>
+Content-Disposition: inline
+Message-Id: <200804030219.03335.technoboy85@gmail.com>
+X-OriginalArrivalTime: 03 Apr 2008 00:19:04.0633 (UTC) FILETIME=[5322A290:01C89520]
+Return-Path: <technoboy85@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18782
+X-archive-position: 18783
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvomlehn@cisco.com
+X-original-sender: technoboy85@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-> Did this fix your NFS problem?
+Il Wednesday 02 April 2008 20:31:14 Florian Lohoff ha scritto:
+> On Wed, Apr 02, 2008 at 02:56:44PM +0200, Matteo Croce wrote:
+> > 
+> > Works fine for my AR7 which has an interlan clock.
+> > 
 > 
-> I'm working on discontiguous memory platforms as well.
+> Its doesnt for me with an external clock - thats what i mean - Auto
+> probing should first try to listen for an external clock before letting
+> clocks run against each other. This is the hunk of a patch on top of
+> yours ...
 > 
-> Jon Fraser
+> @@ -371,12 +371,20 @@ static int __vlynq_enable_device(struct 
+>  
+>         switch (dev->divisor) {
+>         case vlynq_div_auto:
+> -               /* Only try locally supplied clock, others cause problems */
+> +       
+> +               vlynq_reg_write(dev->local->control, 0);
+>                 vlynq_reg_write(dev->remote->control, 0);
+> +               if (vlynq_linked(dev)) {
+> +                       printk(KERN_DEBUG "%s: using external clock\n",
+> +                              dev->dev.bus_id);
+> +                       return 0;
+> +               }
+> +
+>                 for (i = vlynq_ldiv2; i <= vlynq_ldiv8; i++) {
+>                         vlynq_reg_write(dev->local->control,
+>                                         VLYNQ_CTRL_CLOCK_INT |
+>                                         VLYNQ_CTRL_CLOCK_DIV(i - vlynq_ldiv1));
+> +                       vlynq_reg_write(dev->remote->control, 0);
+>                         if (vlynq_linked(dev)) {
+>                                 printk(KERN_DEBUG
+>                                        "%s: using local clock divisor %d\n",
 > 
-> On Wed, 2008-03-12 at 19:31 -0700, David VomLehn wrote:
->> This patch is a work in progress, per Ralf's suggestion from last 
->> week. It is intended to fix dcache flushing issues when using HIGHMEM 
->> support. We get much better results with this patch applied, but I 
->> would not characterize our 2.6.24 port as stable, yet, so there may be other HIGHMEM-related issues.
+> Flo
 
-Yes, we are able to boot using NFS with this patch. There are some other minor 
-changes that appear necessary for correct cache flushing but which don't seem to 
-be causing any actual issues. (Cache stuff just works that way--you don't know 
-you've got a problem until you get into some obscure corner case). I'll post 
-these as soon as I can get to it.
-
-I can't say whether these are all the changes required for high memory support, 
-but we sure get a lot farther when we use them...
--- 
-David VomLehn, dvomlehn@cisco.com
-The opinions expressed herein are likely mine, but might not be my employer's...
+isn't this what I do in my last patch?

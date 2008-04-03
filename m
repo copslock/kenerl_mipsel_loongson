@@ -1,45 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Apr 2008 19:08:47 +0200 (CEST)
-Received: from h155.mvista.com ([63.81.120.155]:6077 "EHLO imap.sh.mvista.com")
-	by lappi.linux-mips.net with ESMTP id S532902AbYDCMlE (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 3 Apr 2008 14:41:04 +0200
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 91F913EC9; Thu,  3 Apr 2008 05:40:16 -0700 (PDT)
-Message-ID: <47F4D006.4090200@ru.mvista.com>
-Date:	Thu, 03 Apr 2008 16:39:34 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Apr 2008 19:10:25 +0200 (CEST)
+Received: from [192.48.170.157] ([192.48.170.157]:49876 "EHLO oss.sgi.com")
+	by lappi.linux-mips.net with ESMTP id S1101209AbYDCRBW (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 3 Apr 2008 19:01:22 +0200
+Received: from dl5rb.ham-radio-op.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.12.11.20060308/8.12.11/SuSE Linux 0.7) with ESMTP id m33GwvZ6018930
+	for <linux-mips@linux-mips.org>; Thu, 3 Apr 2008 09:59:01 -0700
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m33CpOAj026139;
+	Thu, 3 Apr 2008 13:51:24 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m33CpOEt026138;
+	Thu, 3 Apr 2008 13:51:24 +0100
+Date:	Thu, 3 Apr 2008 13:51:24 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
 To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] PbAu1200: fix header breakage
-References: <200804022353.19379.sshtylyov@ru.mvista.com>
-In-Reply-To: <200804022353.19379.sshtylyov@ru.mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Alchemy: kill useless #include's and extern's
+Message-ID: <20080403125124.GB20775@linux-mips.org>
+References: <200804022332.08317.sshtylyov@ru.mvista.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <200804022332.08317.sshtylyov@ru.mvista.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Virus-Scanned: ClamAV 0.91.2/6021/Wed Feb 27 15:55:48 2008 on oss.sgi.com
+X-Virus-Status:	Clean
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18787
+X-archive-position: 18788
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello, I wrote:
+On Wed, Apr 02, 2008 at 11:32:08PM +0400, Sergei Shtylyov wrote:
 
+> Go thru the Alchemy code and hunt down every unneeded #include and extern
+> (some of which refer to already long dead functions).
+> 
 > Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
-> ---
-> Looks like nobody ever cared since the code was merged -- there's no defconfig.
+Thanks, queued for 2.6.26.
 
-    Er, no... the breakage has been introduced by the commit 
-95c4eb3ef4484ca85da5c98780d358cffd546b90 ([MIPS] Alchemy: Renumber interrupts 
-so irq_cpu can work.), so thanks go to its hasty author. ;-)
-
-WBR, Sergei
+  Ralf

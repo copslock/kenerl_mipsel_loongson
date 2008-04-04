@@ -1,283 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2008 15:35:09 +0200 (CEST)
-Received: from rtsoft3.corbina.net ([85.21.88.6]:28788 "EHLO
-	buildserver.ru.mvista.com") by lappi.linux-mips.net with ESMTP
-	id S527951AbYDDNfA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 4 Apr 2008 15:35:00 +0200
-Received: from wasted.dev.rtsoft.ru (unknown [10.150.0.9])
-	by buildserver.ru.mvista.com (Postfix) with ESMTP
-	id 0B6228810; Fri,  4 Apr 2008 19:34:48 +0500 (SAMST)
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-To:	ralf@linux-mips.org
-Subject: [PATCH] Alchemy: move UART platform code to its proper place (take 2)
-Date:	Fri, 4 Apr 2008 17:33:45 +0400
-User-Agent: KMail/1.5
-Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-MIME-Version: 1.0
-Content-Disposition: inline
-Content-Type: text/plain;
-  charset="iso-8859-1"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2008 17:56:03 +0200 (CEST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:16607 "EHLO smtp.mba.ocn.ne.jp")
+	by lappi.linux-mips.net with ESMTP id S529355AbYDDPz6 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 4 Apr 2008 17:55:58 +0200
+Received: from localhost (p2014-ipad306funabasi.chiba.ocn.ne.jp [123.217.172.14])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id E4291AB76; Sat,  5 Apr 2008 00:54:36 +0900 (JST)
+Date:	Sat, 05 Apr 2008 00:55:24 +0900 (JST)
+Message-Id: <20080405.005524.108306693.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH 1/4] make fallback gpio.h gpiolib-friendly
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Message-Id: <200804041733.45170.sshtylyov@ru.mvista.com>
-Return-Path: <sshtylyov@ru.mvista.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18814
+X-archive-position: 18815
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Move the code registering the Alchemy UART platform devices from drivers/serial
-to its proper place, into the Alchemy platform code.  Fix the related Kconfig
-entry, while at it...
+If gpiolib was selected, asm-generic/gpio.h provides some prototypes
+for gpio API and implementation helpers.  With this patch, platform
+code can implement its GPIO API using gpiolib without custom gpio.h
+file.
 
-Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
-
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
-Note that we don't register UART platform devices if CONFIG_SERIAL_8250_AU1X00
-is defined (the same way that the old code behaved) since if the 8250.c driver
-is built without this option, it won't be able to correctly access the Alchemy
-UART registers.
-
-Ralf, please update the patch in your queue...
-
- drivers/serial/8250_au1x00.c       |  100 -------------------------------------
- arch/mips/au1000/common/platform.c |   57 +++++++++++++++++++++
- drivers/serial/Kconfig             |    8 +-
- drivers/serial/Makefile            |    1 
- 4 files changed, 61 insertions(+), 105 deletions(-)
-
-Index: linux-2.6/arch/mips/au1000/common/platform.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/platform.c
-+++ linux-2.6/arch/mips/au1000/common/platform.c
-@@ -3,16 +3,65 @@
-  *
-  * Copyright 2004, Matt Porter <mporter@kernel.crashing.org>
-  *
-+ * (C) Copyright Embedded Alley Solutions, Inc 2005
-+ * Author: Pantelis Antoniou <pantelis@embeddedalley.com>
-+ *
-  * This file is licensed under the terms of the GNU General Public
-  * License version 2.  This program is licensed "as is" without any
-  * warranty of any kind, whether express or implied.
-  */
+diff --git a/include/asm-mips/mach-generic/gpio.h b/include/asm-mips/mach-generic/gpio.h
+index 6eaf5ef..e6b376b 100644
+--- a/include/asm-mips/mach-generic/gpio.h
++++ b/include/asm-mips/mach-generic/gpio.h
+@@ -1,12 +1,18 @@
+ #ifndef __ASM_MACH_GENERIC_GPIO_H
+ #define __ASM_MACH_GENERIC_GPIO_H
  
- #include <linux/platform_device.h>
-+#include <linux/serial_8250.h>
- #include <linux/init.h>
- 
- #include <asm/mach-au1x00/au1xxx.h>
- 
-+#define PORT(_base, _irq)				\
-+	{						\
-+		.iobase		= _base,		\
-+		.membase	= (void __iomem *)_base,\
-+		.mapbase	= CPHYSADDR(_base),	\
-+		.irq		= _irq,			\
-+		.regshift	= 2,			\
-+		.iotype		= UPIO_AU,		\
-+		.flags		= UPF_SKIP_TEST 	\
-+	}
-+
-+static struct plat_serial8250_port au1x00_uart_data[] = {
-+#if defined(CONFIG_SERIAL_8250_AU1X00)
-+#if defined(CONFIG_SOC_AU1000)
-+	PORT(UART0_ADDR, AU1000_UART0_INT),
-+	PORT(UART1_ADDR, AU1000_UART1_INT),
-+	PORT(UART2_ADDR, AU1000_UART2_INT),
-+	PORT(UART3_ADDR, AU1000_UART3_INT),
-+#elif defined(CONFIG_SOC_AU1500)
-+	PORT(UART0_ADDR, AU1500_UART0_INT),
-+	PORT(UART3_ADDR, AU1500_UART3_INT),
-+#elif defined(CONFIG_SOC_AU1100)
-+	PORT(UART0_ADDR, AU1100_UART0_INT),
-+	PORT(UART1_ADDR, AU1100_UART1_INT),
-+	PORT(UART3_ADDR, AU1100_UART3_INT),
-+#elif defined(CONFIG_SOC_AU1550)
-+	PORT(UART0_ADDR, AU1550_UART0_INT),
-+	PORT(UART1_ADDR, AU1550_UART1_INT),
-+	PORT(UART3_ADDR, AU1550_UART3_INT),
-+#elif defined(CONFIG_SOC_AU1200)
-+	PORT(UART0_ADDR, AU1200_UART0_INT),
-+	PORT(UART1_ADDR, AU1200_UART1_INT),
++#ifdef CONFIG_HAVE_GPIO_LIB
++#define gpio_get_value	__gpio_get_value
++#define gpio_set_value	__gpio_set_value
++#define gpio_cansleep	__gpio_cansleep
++#else
+ int gpio_request(unsigned gpio, const char *label);
+ void gpio_free(unsigned gpio);
+ int gpio_direction_input(unsigned gpio);
+ int gpio_direction_output(unsigned gpio, int value);
+ int gpio_get_value(unsigned gpio);
+ void gpio_set_value(unsigned gpio, int value);
 +#endif
-+#endif	/* CONFIG_SERIAL_8250_AU1X00 */
-+	{ },
-+};
-+
-+static struct platform_device au1xx0_uart_device = {
-+	.name			= "serial8250",
-+	.id			= PLAT8250_DEV_AU1X00,
-+	.dev			= {
-+		.platform_data	= au1x00_uart_data,
-+	},
-+};
-+
- /* OHCI (USB full speed host controller) */
- static struct resource au1xxx_usb_ohci_resources[] = {
- 	[0] = {
-@@ -287,6 +336,7 @@ static struct platform_device pbdb_smbus
- #endif
+ int gpio_to_irq(unsigned gpio);
+ int irq_to_gpio(unsigned irq);
  
- static struct platform_device *au1xxx_platform_devices[] __initdata = {
-+	&au1xx0_uart_device,
- 	&au1xxx_usb_ohci_device,
- 	&au1x00_pcmcia_device,
- #ifdef CONFIG_FB_AU1100
-@@ -310,6 +360,13 @@ static struct platform_device *au1xxx_pl
- 
- int __init au1xxx_platform_init(void)
- {
-+	unsigned int uartclk = get_au1x00_uart_baud_base() * 16;
-+	int i;
-+
-+	/* Fill up uartclk. */
-+	for (i = 0; au1x00_uart_data[i].flags ; i++)
-+		au1x00_uart_data[i].uartclk = uartclk;
-+
- 	return platform_add_devices(au1xxx_platform_devices, ARRAY_SIZE(au1xxx_platform_devices));
- }
- 
-Index: linux-2.6/drivers/serial/8250_au1x00.c
-===================================================================
---- linux-2.6.orig/drivers/serial/8250_au1x00.c
-+++ /dev/null
-@@ -1,100 +0,0 @@
--/*
-- * Serial Device Initialisation for Au1x00
-- *
-- * (C) Copyright Embedded Alley Solutions, Inc 2005
-- * Author: Pantelis Antoniou <pantelis@embeddedalley.com>
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License as published by
-- * the Free Software Foundation; either version 2 of the License, or
-- * (at your option) any later version.
-- */
--
--#include <linux/errno.h>
--#include <linux/init.h>
--#include <linux/interrupt.h>
--#include <linux/ioport.h>
--#include <linux/module.h>
--#include <linux/serial_core.h>
--#include <linux/signal.h>
--#include <linux/slab.h>
--#include <linux/types.h>
--
--#include <linux/serial_8250.h>
--
--#include <asm/mach-au1x00/au1000.h>
--
--#include "8250.h"
--
--#define PORT(_base, _irq)				\
--	{						\
--		.iobase		= _base,		\
--		.membase	= (void __iomem *)_base,\
--		.mapbase	= CPHYSADDR(_base),	\
--		.irq		= _irq,			\
--		.uartclk	= 0,	/* filled */	\
--		.regshift	= 2,			\
--		.iotype		= UPIO_AU,		\
--		.flags		= UPF_SKIP_TEST 	\
--	}
--
--static struct plat_serial8250_port au1x00_data[] = {
--#if defined(CONFIG_SOC_AU1000)
--	PORT(UART0_ADDR, AU1000_UART0_INT),
--	PORT(UART1_ADDR, AU1000_UART1_INT),
--	PORT(UART2_ADDR, AU1000_UART2_INT),
--	PORT(UART3_ADDR, AU1000_UART3_INT),
--#elif defined(CONFIG_SOC_AU1500)
--	PORT(UART0_ADDR, AU1500_UART0_INT),
--	PORT(UART3_ADDR, AU1500_UART3_INT),
--#elif defined(CONFIG_SOC_AU1100)
--	PORT(UART0_ADDR, AU1100_UART0_INT),
--	PORT(UART1_ADDR, AU1100_UART1_INT),
--	/* The internal UART2 does not exist on the AU1100 processor. */
--	PORT(UART3_ADDR, AU1100_UART3_INT),
--#elif defined(CONFIG_SOC_AU1550)
--	PORT(UART0_ADDR, AU1550_UART0_INT),
--	PORT(UART1_ADDR, AU1550_UART1_INT),
--	PORT(UART3_ADDR, AU1550_UART3_INT),
--#elif defined(CONFIG_SOC_AU1200)
--	PORT(UART0_ADDR, AU1200_UART0_INT),
--	PORT(UART1_ADDR, AU1200_UART1_INT),
--#endif
--	{ },
--};
--
--static struct platform_device au1x00_device = {
--	.name			= "serial8250",
--	.id			= PLAT8250_DEV_AU1X00,
--	.dev			= {
--		.platform_data	= au1x00_data,
--	},
--};
--
--static int __init au1x00_init(void)
--{
--	int i;
--	unsigned int uartclk;
--
--	/* get uart clock */
--	uartclk = get_au1x00_uart_baud_base() * 16;
--
--	/* fill up uartclk */
--	for (i = 0; au1x00_data[i].flags ; i++)
--		au1x00_data[i].uartclk = uartclk;
--
--	return platform_device_register(&au1x00_device);
--}
--
--/* XXX: Yes, I know this doesn't yet work. */
--static void __exit au1x00_exit(void)
--{
--	platform_device_unregister(&au1x00_device);
--}
--
--module_init(au1x00_init);
--module_exit(au1x00_exit);
--
--MODULE_AUTHOR("Pantelis Antoniou <pantelis@embeddedalley.com>");
--MODULE_DESCRIPTION("8250 serial probe module for Au1x000 cards");
--MODULE_LICENSE("GPL");
-Index: linux-2.6/drivers/serial/Kconfig
-===================================================================
---- linux-2.6.orig/drivers/serial/Kconfig
-+++ linux-2.6/drivers/serial/Kconfig
-@@ -262,12 +262,12 @@ config SERIAL_8250_ACORN
- 	  cards.  If unsure, say N.
- 
- config SERIAL_8250_AU1X00
--	bool "AU1X00 serial port support"
-+	bool "Au1x00 serial port support"
- 	depends on SERIAL_8250 != n && SOC_AU1X00
- 	help
--	  If you have an Au1x00 board and want to use the serial port, say Y
--	  to this option.  The driver can handle 1 or 2 serial ports.
--	  If unsure, say N.
-+	  If you have an Au1x00 SOC based board and want to use the serial port,
-+	  say Y to this option. The driver can handle up to 4 serial ports,
-+	  depending on the SOC. If unsure, say N.
- 
- config SERIAL_8250_RM9K
- 	bool "Support for MIPS RM9xxx integrated serial port"
-Index: linux-2.6/drivers/serial/Makefile
-===================================================================
---- linux-2.6.orig/drivers/serial/Makefile
-+++ linux-2.6/drivers/serial/Makefile
-@@ -20,7 +20,6 @@ obj-$(CONFIG_SERIAL_8250_BOCA) += 8250_b
- obj-$(CONFIG_SERIAL_8250_EXAR_ST16C554) += 8250_exar_st16c554.o
- obj-$(CONFIG_SERIAL_8250_HUB6) += 8250_hub6.o
- obj-$(CONFIG_SERIAL_8250_MCA) += 8250_mca.o
--obj-$(CONFIG_SERIAL_8250_AU1X00) += 8250_au1x00.o
- obj-$(CONFIG_SERIAL_AMBA_PL010) += amba-pl010.o
- obj-$(CONFIG_SERIAL_AMBA_PL011) += amba-pl011.o
- obj-$(CONFIG_SERIAL_CLPS711X) += clps711x.o

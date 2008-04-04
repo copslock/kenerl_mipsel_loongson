@@ -1,60 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2008 08:41:41 +0200 (CEST)
-Received: from smtp1.linux-foundation.org ([140.211.169.13]:36517 "EHLO
-	smtp1.linux-foundation.org") by lappi.linux-mips.net with ESMTP
-	id S525092AbYDDGlg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 4 Apr 2008 08:41:36 +0200
-Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [140.211.169.55])
-	by smtp1.linux-foundation.org (8.14.2/8.13.5/Debian-3ubuntu1.1) with ESMTP id m346euVd013763
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-	Thu, 3 Apr 2008 23:40:57 -0700
-Received: from y.localdomain (localhost [127.0.0.1])
-	by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with SMTP id m346Yejc009935;
-	Thu, 3 Apr 2008 23:34:40 -0700
-Date:	Thu, 3 Apr 2008 23:34:40 -0700
-From:	Andrew Morton <akpm@linux-foundation.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Alchemy: move UART platform code to its proper place
-Message-Id: <20080403233440.9b920466.akpm@linux-foundation.org>
-In-Reply-To: <20080404062924.GA12086@linux-mips.org>
-References: <200804040002.53757.sshtylyov@ru.mvista.com>
-	<20080404062924.GA12086@linux-mips.org>
-X-Mailer: Sylpheed 2.4.8 (GTK+ 2.12.5; x86_64-redhat-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-MIMEDefang-Filter: lf$Revision: 1.188 $
-X-Scanned-By: MIMEDefang 2.63 on 140.211.169.13
-Return-Path: <akpm@linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 04 Apr 2008 09:11:57 +0200 (CEST)
+Received: from smtp-vbr12.xs4all.nl ([194.109.24.32]:7944 "EHLO
+	smtp-vbr12.xs4all.nl") by lappi.linux-mips.net with ESMTP
+	id S525882AbYDDHLw convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 4 Apr 2008 09:11:52 +0200
+Received: from dealogic.nl (a62-251-87-113.adsl.xs4all.nl [62.251.87.113])
+	by smtp-vbr12.xs4all.nl (8.13.8/8.13.8) with ESMTP id m347B4IE009580
+	for <linux-mips@linux-mips.org>; Fri, 4 Apr 2008 09:11:21 +0200 (CEST)
+	(envelope-from ncoesel@DEALogic.nl)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: [PATCH] Fix xss1500 compilation
+Date:	Fri, 4 Apr 2008 09:06:29 +0200
+Message-ID: <19CA9E279FDA5246B7D7A1C91A4AF7F40EFAA3@dealogicserver.DEALogic.nl>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: [PATCH] Fix xss1500 compilation
+thread-index: AciVwPeSIL8Q3NchQmO23q+AJU8R/QAYAQEA
+From:	"Nico Coesel" <ncoesel@DEALogic.nl>
+To:	<linux-mips@linux-mips.org>
+X-Virus-Scanned: by XS4ALL Virus Scanner
+Return-Path: <ncoesel@DEALogic.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18803
+X-archive-position: 18804
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: ncoesel@DEALogic.nl
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 4 Apr 2008 07:29:25 +0100 Ralf Baechle <ralf@linux-mips.org> wrote:
+I just looked at some other AU1x00 PCMCIA drivers. My guess is that if
+someone wants to use PCMCIA on the XXS1500 board it is pretty simple to
+create a new driver based on the pb1x00 or db1x00 board drivers
+-assuming these work and compile well-.
 
-> On Fri, Apr 04, 2008 at 12:02:53AM +0400, Sergei Shtylyov wrote:
-> 
-> > Move the code registering the Alchemy UART platform devices from drivers/serial/
-> > to its proper place, into the Alchemy platform code.  Fix the related Kconfig
-> > entry, while at it...
-> > 
-> > Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
-> > 
-> > ---
-> > Ralf, could you take this patch thru your queue -- it ahould apply atop of my
-> > former #include /extern cleanup?
-> > 
-> > I don't know how the platform code ended up accepted into the serial drivers in
-> > the first place -- it's high time to amend this.
-> 
-> Andrew, I'd like to queue this patch, ok?
+Nico Coesel
 
-Sure..
+> -----Oorspronkelijk bericht-----
+> Van: linux-mips-bounce@linux-mips.org 
+> [mailto:linux-mips-bounce@linux-mips.org] Namens Adrian Bunk
+> Verzonden: dinsdag 1 april 2008 17:55
+> Aan: Florian Fainelli
+> CC: linux-mips@linux-mips.org; ralf@linux-mips.org
+> Onderwerp: Re: [PATCH] Fix xss1500 compilation
+> 
+> On Tue, Apr 01, 2008 at 03:53:25PM +0200, Florian Fainelli wrote:
+> > This patch fixes the compilation of the Au1000 XSS1500  board setup 
+> >and irqmap code.
+> >...
+> 
+> Another compile error for this platform is:
+> 
+> <--  snip  -->
+> 
+> ...
+>   CC [M]  drivers/pcmcia/au1000_xxs1500.o
+> /tmp/linux-2.6.25-rc7/drivers/pcmcia/au1000_xxs1500.c:33:26: 
+> error: linux/tqueue.h: No such file or directory
+> /tmp/linux-2.6.25-rc7/drivers/pcmcia/au1000_xxs1500.c:44:28: 
+> error: pcmcia/bus_ops.h: No such file or directory
+> /tmp/linux-2.6.25-rc7/drivers/pcmcia/au1000_xxs1500.c:51:24: 
+> error: asm/au1000.h: No such file or directory
+> /tmp/linux-2.6.25-rc7/drivers/pcmcia/au1000_xxs1500.c:52:31: 
+> error: asm/au1000_pcmcia.h: No such file or directory ...
+> make[3]: *** [drivers/pcmcia/au1000_xxs1500.o] Error 1
+> 
+> <--  snip  -->
+> 
+> include/linux/tqueue.h was removed on Sep 30, 2002 (sic) 
+> which was even before 2.6.0 .
+> 
+> Obviously no 2.6 kernel ever ran on these boards.
+> 
+> If you have such a board and want to run kernel 2.6 on it 
+> that's fine with me, but otherwise i don't see much point in 
+> keeping the support for this board.
+> 
+> cu
+> Adrian
+> 
+> -- 
+> 
+>        "Is there not promise of rain?" Ling Tan asked suddenly out
+>         of the darkness. There had been need of rain for many days.
+>        "Only a promise," Lao Er said.
+>                                        Pearl S. Buck - Dragon Seed
+> 
+> 
+> 

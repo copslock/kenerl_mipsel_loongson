@@ -1,64 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Apr 2008 03:31:05 +0200 (CEST)
-Received: from mu-out-0910.google.com ([209.85.134.186]:22434 "EHLO
-	mu-out-0910.google.com") by lappi.linux-mips.net with ESMTP
-	id S530157AbYDEBbA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 5 Apr 2008 03:31:00 +0200
-Received: by mu-out-0910.google.com with SMTP id w8so520264mue.1
-        for <linux-mips@linux-mips.org>; Fri, 04 Apr 2008 18:30:37 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:organization:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        bh=mNT7ngrm7pW7uNfLdzVudrb2vv44lRkMTZmGI7fZG3c=;
-        b=kDdBd3p3/tar/cAgRZcx3+cvN887wS3ClcF5tLLZT6plbS46JNRRI/KZR5kjcbACJtMsj1tLhcr/2yfJginVx87x9JzJUxuO8O+clAHgBHbFHAHu+TlCD4+jIgK0zksp5DGmdgOPrAHAhjc5J9GyNT7tvaeH4lOiRVzKRVo8WsQ=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:organization:user-agent:mime-version:to:cc:subject:references:in-reply-to:content-type:content-transfer-encoding;
-        b=dVtnn6SNOcpXF7kZw6/FZDmECjSdW/It9fZZS2HG+muIpzpqNSljbRBFKhtKKN+lvkEN6FpBiToPQY/PPdwir4jnWqhyYhiiot7tX8nV2y3N2tQmvpaAVVnx7aHsFkkXIHl5C8cmpkeROG91MoAbEKMl1zMj4T8xS85kz+1zIJM=
-Received: by 10.78.145.16 with SMTP id s16mr5959660hud.23.1207359037827;
-        Fri, 04 Apr 2008 18:30:37 -0700 (PDT)
-Received: from ?92.36.11.113? ( [92.36.11.113])
-        by mx.google.com with ESMTPS id d25sm9022690nfh.33.2008.04.04.18.30.23
-        (version=SSLv3 cipher=RC4-MD5);
-        Fri, 04 Apr 2008 18:30:36 -0700 (PDT)
-Message-ID: <47F6D611.5080402@gmail.com>
-Date:	Sat, 05 Apr 2008 05:29:53 +0400
-From:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
-Organization: DmVo Home
-User-Agent: Thunderbird 1.5.0.14ubu (X11/20080306)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Apr 2008 20:17:41 +0200 (CEST)
+Received: from rtsoft3.corbina.net ([85.21.88.6]:36483 "EHLO
+	buildserver.ru.mvista.com") by lappi.linux-mips.net with ESMTP
+	id S533091AbYDESRg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 5 Apr 2008 20:17:36 +0200
+Received: from wasted.dev.rtsoft.ru (unknown [10.150.0.9])
+	by buildserver.ru.mvista.com (Postfix) with ESMTP
+	id DA0538810; Sun,  6 Apr 2008 00:17:24 +0500 (SAMST)
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+To:	linux-mips@linux-mips.org, i2c@lm-sensors.org
+Subject: [PATCH] Alchemy: SMBus resource fix
+Date:	Sat, 5 Apr 2008 22:16:21 +0400
+User-Agent: KMail/1.5
+Cc:	ralf@linux-mips.org
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/5] [MIPS] unexport null_perf_irq() and make it static
-References: <1207094318-21748-1-git-send-email-dmitri.vorobiev@gmail.com> <1207094318-21748-6-git-send-email-dmitri.vorobiev@gmail.com> <20080404072048.GF12086@linux-mips.org>
-In-Reply-To: <20080404072048.GF12086@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Return-Path: <dmitri.vorobiev@gmail.com>
+Content-Disposition: inline
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Message-Id: <200804052216.21699.sshtylyov@ru.mvista.com>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18828
+X-archive-position: 18832
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@gmail.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle пишет:
-> On Wed, Apr 02, 2008 at 03:58:38AM +0400, Dmitri Vorobiev wrote:
-> 
->> This patch unexports the null_perf_irq() symbol, and simultaneously
->> makes this function static.
->>
->> Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
-> 
-> Queued for 2.6.26 with your static fix folded in.  Thanks,
+The Alchemy platform code registers the SMBus device using the virtual address
+of its registers instead of the physical one -- fix this, taking into account
+that actually the whole megabyte is decoded by any of the programmable serial
+controllers (one of which is SMBus), and that all the Alchemy peripherals are
+directly mappable into KSEG1 kernel space and therefore ioremap() call would
+just boil down to CKSEG1ADDR() invocation.
 
-Thanks for picking the patches up.
+Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
-Dmitri
+---
+I'm not sure thru which tree this should go -- probably thru Linux/MIPS one...
 
-> 
->   Ralf
-> 
+ arch/mips/au1000/common/platform.c |    4 ++--
+ drivers/i2c/busses/i2c-au1550.c    |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+Index: linux-2.6/arch/mips/au1000/common/platform.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/common/platform.c
++++ linux-2.6/arch/mips/au1000/common/platform.c
+@@ -274,8 +274,8 @@ static struct platform_device smc91x_dev
+ #ifdef SMBUS_PSC_BASE
+ static struct resource pbdb_smbus_resources[] = {
+ 	{
+-		.start	= SMBUS_PSC_BASE,
+-		.end	= SMBUS_PSC_BASE + 0x24 - 1,
++		.start	= CPHYSADDR(SMBUS_PSC_BASE),
++		.end	= CPHYSADDR(SMBUS_PSC_BASE + 0xfffff),
+ 		.flags	= IORESOURCE_MEM,
+ 	},
+ };
+Index: linux-2.6/drivers/i2c/busses/i2c-au1550.c
+===================================================================
+--- linux-2.6.orig/drivers/i2c/busses/i2c-au1550.c
++++ linux-2.6/drivers/i2c/busses/i2c-au1550.c
+@@ -335,7 +335,7 @@ i2c_au1550_probe(struct platform_device 
+ 		goto out_mem;
+ 	}
+ 
+-	priv->psc_base = r->start;
++	priv->psc_base = CKSEG1ADDR(r->start);
+ 	priv->xfer_timeout = 200;
+ 	priv->ack_timeout = 200;
+ 

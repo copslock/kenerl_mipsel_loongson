@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Apr 2008 20:17:41 +0200 (CEST)
-Received: from rtsoft3.corbina.net ([85.21.88.6]:36483 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Apr 2008 21:00:49 +0200 (CEST)
+Received: from rtsoft3.corbina.net ([85.21.88.6]:65411 "EHLO
 	buildserver.ru.mvista.com") by lappi.linux-mips.net with ESMTP
-	id S533091AbYDESRg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 5 Apr 2008 20:17:36 +0200
+	id S533222AbYDETAo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 5 Apr 2008 21:00:44 +0200
 Received: from wasted.dev.rtsoft.ru (unknown [10.150.0.9])
 	by buildserver.ru.mvista.com (Postfix) with ESMTP
-	id DA0538810; Sun,  6 Apr 2008 00:17:24 +0500 (SAMST)
+	id A73DA8810; Sun,  6 Apr 2008 01:00:33 +0500 (SAMST)
 From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
 Organization: MontaVista Software Inc.
-To:	linux-mips@linux-mips.org, i2c@lm-sensors.org
-Subject: [PATCH] Alchemy: SMBus resource fix
-Date:	Sat, 5 Apr 2008 22:16:21 +0400
+To:	ralf@linux-mips.org
+Subject: [PATCH] Pb1000: bury the remnants of the PCI code
+Date:	Sat, 5 Apr 2008 22:59:29 +0400
 User-Agent: KMail/1.5
-Cc:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Disposition: inline
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Message-Id: <200804052216.21699.sshtylyov@ru.mvista.com>
+Content-Disposition: inline
+Message-Id: <200804052259.29959.sshtylyov@ru.mvista.com>
 Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18832
+X-archive-position: 18833
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,47 +31,108 @@ X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-The Alchemy platform code registers the SMBus device using the virtual address
-of its registers instead of the physical one -- fix this, taking into account
-that actually the whole megabyte is decoded by any of the programmable serial
-controllers (one of which is SMBus), and that all the Alchemy peripherals are
-directly mappable into KSEG1 kernel space and therefore ioremap() call would
-just boil down to CKSEG1ADDR() invocation.
+PCI support for the Pb1000 board was ectomized by Pete Popov four years ago.
+Unfortunately,  the header file  wasn't cleansed, so the remnants still get
+in the way of the kernel build (due to macro redefinitions).
 
 Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
 ---
-I'm not sure thru which tree this should go -- probably thru Linux/MIPS one...
+See the commit 709c5032ee77a340e56441f922d76f0b9bd28ed0 in the Linux/MIPS tree
+for the original Pete's patch
 
- arch/mips/au1000/common/platform.c |    4 ++--
- drivers/i2c/busses/i2c-au1550.c    |    2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ include/asm-mips/mach-pb1x00/pb1000.h |   83 ----------------------------------
+ 1 files changed, 83 deletions(-)
 
-Index: linux-2.6/arch/mips/au1000/common/platform.c
+Index: linux-2.6/include/asm-mips/mach-pb1x00/pb1000.h
 ===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/platform.c
-+++ linux-2.6/arch/mips/au1000/common/platform.c
-@@ -274,8 +274,8 @@ static struct platform_device smc91x_dev
- #ifdef SMBUS_PSC_BASE
- static struct resource pbdb_smbus_resources[] = {
- 	{
--		.start	= SMBUS_PSC_BASE,
--		.end	= SMBUS_PSC_BASE + 0x24 - 1,
-+		.start	= CPHYSADDR(SMBUS_PSC_BASE),
-+		.end	= CPHYSADDR(SMBUS_PSC_BASE + 0xfffff),
- 		.flags	= IORESOURCE_MEM,
- 	},
- };
-Index: linux-2.6/drivers/i2c/busses/i2c-au1550.c
-===================================================================
---- linux-2.6.orig/drivers/i2c/busses/i2c-au1550.c
-+++ linux-2.6/drivers/i2c/busses/i2c-au1550.c
-@@ -335,7 +335,7 @@ i2c_au1550_probe(struct platform_device 
- 		goto out_mem;
- 	}
- 
--	priv->psc_base = r->start;
-+	priv->psc_base = CKSEG1ADDR(r->start);
- 	priv->xfer_timeout = 200;
- 	priv->ack_timeout = 200;
- 
+--- linux-2.6.orig/include/asm-mips/mach-pb1x00/pb1000.h
++++ linux-2.6/include/asm-mips/mach-pb1x00/pb1000.h
+@@ -86,87 +86,4 @@
+ /* VPP/VCC */
+ #define SET_VCC_VPP(VCC, VPP, SLOT)\
+ 	((((VCC)<<2) | ((VPP)<<0)) << ((SLOT)*8))
+-
+-
+-/* PCI PB1000 specific defines */
+-/* The reason these defines are here instead of au1000.h is because
+- * the Au1000 does not have a PCI bus controller so the PCI implementation
+- * on the some of the older Pb1000 boards was very board specific.
+- */
+-#define PCI_CONFIG_BASE   0xBA020000 /* the only external slot */
+-
+-#define SDRAM_DEVID       0xBA010000
+-#define SDRAM_CMD         0xBA010004
+-#define SDRAM_CLASS       0xBA010008
+-#define SDRAM_MISC        0xBA01000C
+-#define SDRAM_MBAR        0xBA010010
+-
+-#define PCI_IO_DATA_PORT  0xBA800000
+-
+-#define PCI_IO_ADDR       0xBE00001C
+-#define PCI_INT_ACK       0xBBC00000
+-#define PCI_IO_READ       0xBBC00020
+-#define PCI_IO_WRITE      0xBBC00030
+-
+-#define PCI_BRIDGE_CONFIG 0xBE000018
+-
+-#define PCI_IO_START      0x10000000
+-#define PCI_IO_END        0x1000ffff
+-#define PCI_MEM_START     0x18000000
+-#define PCI_MEM_END       0x18ffffff
+-
+-#define PCI_FIRST_DEVFN   0
+-#define PCI_LAST_DEVFN    1
+-
+-static inline u8 au_pci_io_readb(u32 addr)
+-{
+-	writel(addr, PCI_IO_ADDR);
+-	writel((readl(PCI_BRIDGE_CONFIG) & 0xffffcfff) | (1<<12), PCI_BRIDGE_CONFIG);
+-	return (readl(PCI_IO_DATA_PORT) & 0xff);
+-}
+-
+-static inline u16 au_pci_io_readw(u32 addr)
+-{
+-	writel(addr, PCI_IO_ADDR);
+-	writel((readl(PCI_BRIDGE_CONFIG) & 0xffffcfff) | (1<<13), PCI_BRIDGE_CONFIG);
+-	return (readl(PCI_IO_DATA_PORT) & 0xffff);
+-}
+-
+-static inline u32 au_pci_io_readl(u32 addr)
+-{
+-	writel(addr, PCI_IO_ADDR);
+-	writel((readl(PCI_BRIDGE_CONFIG) & 0xffffcfff), PCI_BRIDGE_CONFIG);
+-	return readl(PCI_IO_DATA_PORT);
+-}
+-
+-static inline void au_pci_io_writeb(u8 val, u32 addr)
+-{
+-	writel(addr, PCI_IO_ADDR);
+-	writel((readl(PCI_BRIDGE_CONFIG) & 0xffffcfff) | (1<<12), PCI_BRIDGE_CONFIG);
+-	writel(val, PCI_IO_DATA_PORT);
+-}
+-
+-static inline void au_pci_io_writew(u16 val, u32 addr)
+-{
+-	writel(addr, PCI_IO_ADDR);
+-	writel((readl(PCI_BRIDGE_CONFIG) & 0xffffcfff) | (1<<13), PCI_BRIDGE_CONFIG);
+-	writel(val, PCI_IO_DATA_PORT);
+-}
+-
+-static inline void au_pci_io_writel(u32 val, u32 addr)
+-{
+-	writel(addr, PCI_IO_ADDR);
+-	writel(readl(PCI_BRIDGE_CONFIG) & 0xffffcfff, PCI_BRIDGE_CONFIG);
+-	writel(val, PCI_IO_DATA_PORT);
+-}
+-
+-static inline void set_sdram_extbyte(void)
+-{
+-	writel(readl(PCI_BRIDGE_CONFIG) & 0xffffff00, PCI_BRIDGE_CONFIG);
+-}
+-
+-static inline void set_slot_extbyte(void)
+-{
+-	writel((readl(PCI_BRIDGE_CONFIG) & 0xffffbf00) | 0x18, PCI_BRIDGE_CONFIG);
+-}
+ #endif /* __ASM_PB1000_H */

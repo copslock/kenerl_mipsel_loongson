@@ -1,59 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Apr 2008 14:32:41 +0100 (BST)
-Received: from mx.mips.com ([63.167.95.198]:31702 "EHLO dns0.mips.com")
-	by ftp.linux-mips.org with ESMTP id S20023684AbYDPNci (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 16 Apr 2008 14:32:38 +0100
-Received: from mercury.mips.com (mercury [192.168.64.101])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id m3GDVW0V029103
-	for <linux-mips@linux-mips.org>; Wed, 16 Apr 2008 06:31:32 -0700 (PDT)
-Received: from [192.168.236.12] (cthulhu [192.168.236.12])
-	by mercury.mips.com (8.13.5/8.13.5) with ESMTP id m3GDWMOB009908
-	for <linux-mips@linux-mips.org>; Wed, 16 Apr 2008 06:32:28 -0700 (PDT)
-Message-ID: <4805FFE6.5080903@mips.com>
-Date:	Wed, 16 Apr 2008 15:32:22 +0200
-From:	"Kevin D. Kissell" <kevink@mips.com>
-User-Agent: Thunderbird 2.0.0.12 (X11/20080226)
-MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Patches for 34K APRP
-Content-Type: multipart/mixed;
- boundary="------------030103020306010003010808"
-Return-Path: <kevink@mips.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18934
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
-Precedence: bulk
-X-list: linux-mips
+From: Kevin D. Kissell <kevink@mips.com>
+Date: Thu, 10 Apr 2008 02:07:38 +0200
+Subject: [PATCH] Fixes necessary for non-SMP kernels and non-relocatable binaries
+Message-ID: <20080410000738.dEM5WWGPRJFqjDuR6fNaG0TUxVui9W3yc6CPtQaEvLA@z>
 
-This is a multi-part message in MIME format.
---------------030103020306010003010808
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
 
-APRP operation of the 34K has been multiply broken
-in 2.6.24.4.  The following patch set gets things
-working seemingly reliably. The first two were previously
-submitted to Ralf as essential to get RP programs to launch
-safely. The larger third patch is new, and gets the Linux
-I/O  services for the RP working again, and fixes formatting
-in a few places.
+Signed-off-by: Kevin D. Kissell <kevink@mips.com>
+---
+ arch/mips/kernel/vpe.c |   22 ++++++++++++++--------
+ 1 files changed, 14 insertions(+), 8 deletions(-)
 
-Note that SMTC has scheduling problems in 2.6.24,
-so testing under SMTC has been limited to boots with
-only one TC acting as a Linux CPU.
+diff --git a/arch/mips/kernel/vpe.c b/arch/mips/kernel/vpe.c
+index 95446fa..4515f1e 100644
+--- a/arch/mips/kernel/vpe.c
++++ b/arch/mips/kernel/vpe.c
+@@ -782,10 +782,15 @@ static int vpe_run(struct vpe * v)
+ 	/* take system out of configuration state */
+ 	clear_c0_mvpcontrol(MVPCONTROL_VPC);
+ 
++	/* 
++ 	 * SMTC/SMVP kernels manage VPE enable independently,
++ 	 * but uniprocessor kernels need to turn it on, even
++ 	 * if that wasn't the pre-dvpe() state.
++ 	 */
+ #ifdef CONFIG_SMP
+-	evpe(EVPE_ENABLE);
+-#else
+ 	evpe(vpeflags);
++#else
++	evpe(EVPE_ENABLE);
+ #endif
+ 	emt(dmt_flag);
+ 	local_irq_restore(flags);
+@@ -948,12 +953,13 @@ static int vpe_elfload(struct vpe * v)
+ 		struct elf_phdr *phdr = (struct elf_phdr *) ((char *)hdr + hdr->e_phoff);
+ 
+ 		for (i = 0; i < hdr->e_phnum; i++) {
+-			if (phdr->p_type != PT_LOAD)
+-				continue;
+-
+-			memcpy((void *)phdr->p_paddr, (char *)hdr + phdr->p_offset, phdr->p_filesz);
+-			memset((void *)phdr->p_paddr + phdr->p_filesz, 0, phdr->p_memsz - phdr->p_filesz);
+-			phdr++;
++		    if (phdr->p_type == PT_LOAD) {
++			memcpy((void *)phdr->p_paddr, 
++				(char *)hdr + phdr->p_offset, phdr->p_filesz);
++			memset((void *)phdr->p_paddr + phdr->p_filesz, 
++				0, phdr->p_memsz - phdr->p_filesz);
++		    }
++		    phdr++;
+ 		}
+ 
+ 		for (i = 0; i < hdr->e_shnum; i++) {
+-- 
+1.5.3.3
 
-	Regards,
-
-	Kevin K.
 
 --------------030103020306010003010808
 Content-Type: text/x-patch;
- name="0001-Fixes-necessary-for-non-SMP-kernels-and-non-relocata.patch"
+ name="0002-Propagate-max_low_pfn-as-max_pfn-for-compatibility-w.patch"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline;
- filename*0="0001-Fixes-necessary-for-non-SMP-kernels-and-non-relocata.pa";
+ filename*0="0002-Propagate-max_low_pfn-as-max_pfn-for-compatibility-w.pa";
  filename*1="tch"

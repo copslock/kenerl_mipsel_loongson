@@ -1,61 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Apr 2008 06:49:20 +0100 (BST)
-Received: from wf-out-1314.google.com ([209.85.200.175]:28637 "EHLO
-	wf-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022654AbYDNFtS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 14 Apr 2008 06:49:18 +0100
-Received: by wf-out-1314.google.com with SMTP id 23so1940531wfg.21
-        for <linux-mips@linux-mips.org>; Sun, 13 Apr 2008 22:49:15 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
-        bh=KbLVxW0NSqTpGlRXl3eNqHZnM+4dKhBcFB81/UGtOSU=;
-        b=PUqITdF7uCQY8o61ViAKHT8nUq1azuS5TjOySI0e9zDA9F7boqpzeSAOQF4J1vF79CEC7+Cfzk1UKGaZXCJaO1v7ocPGzge9V7h9vaZO7CSggcVRGUjBaYGDdxHKGjA0xySfVcwsdyG4sqJHvS0UvE0YHUPeMQZILIFo6OVIFLk=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:mime-version:content-type;
-        b=hi/RDJIIPeg9tTvvvBJKZgVEiBstNy1kZHD037pNAgrI6UzldXzI5ixJK8PbIhQw9UzDWJTkVIvGjcx0h40XFVatz4br2m3zBPcjVPwgOfJUH9vUNVJ41yK2prCsKF1XmtKodfk1K9VQR2nerbwY6pnxY40L1qInOk99GPtibhU=
-Received: by 10.142.180.17 with SMTP id c17mr1684151wff.83.1208152155765;
-        Sun, 13 Apr 2008 22:49:15 -0700 (PDT)
-Received: by 10.143.122.4 with HTTP; Sun, 13 Apr 2008 22:49:15 -0700 (PDT)
-Message-ID: <b5c34db00804132249v6b2f904gef0a52fca81c7ed9@mail.gmail.com>
-Date:	Mon, 14 Apr 2008 11:19:15 +0530
-From:	umeshyv <umeshyv@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: co processor in mips regarded
-MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_10688_32623342.1208152155770"
-Return-Path: <umeshyv@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Apr 2008 09:56:48 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:7244 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20022890AbYDNI4q (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 14 Apr 2008 09:56:46 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for [213.58.128.207] [213.58.128.207]) with ESMTP; Mon, 14 Apr 2008 17:56:43 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 5583247294;
+	Mon, 14 Apr 2008 17:56:34 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 41F3E4728D;
+	Mon, 14 Apr 2008 17:56:34 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id m3E8uWAF052958;
+	Mon, 14 Apr 2008 17:56:33 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Mon, 14 Apr 2008 17:56:32 +0900 (JST)
+Message-Id: <20080414.175632.128440098.nemoto@toshiba-tops.co.jp>
+To:	ths@networkno.de
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] Reimplement clear_page/copy_page
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20080218193249.GD4747@networkno.de>
+References: <20080218193249.GD4747@networkno.de>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18907
+X-archive-position: 18908
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: umeshyv@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_10688_32623342.1208152155770
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+On Mon, 18 Feb 2008 19:32:49 +0000, Thiemo Seufer <ths@networkno.de> wrote:
+> Fold the SB-1 specific implementation of clear_page/copy_page in the
+> generic version, and rewrite that one in tlbex style. The immediate
+> benefits:
+>   - It converts the compile-time workaround for SB-1 pass 1 prefetches
+>     to a more efficient run-time check.
+>   - It allows adjustment of loop unfolling, which helps to reduce the
+>     number of redundant cdex cache ops.
+>   - It fixes some esoteric cornercases (the cache line length calculations
+>     can go wrong, and support for 64k pages without prefetch instructions
+>     will overflow the addiu immediate).
+>   - Somewhat better guesses of "good" prefetch values.
+> 
+> 
+> Signed-off-by: Thiemo Seufer <ths@networkno.de>
 
-Hi to all,
-How can I read / write to co processor registers in au1200 processor and i
-need to do some small modules in  it for my basic understanding could anyone
-help me how to carry on in linux.waiting for valuable responses
+With this patch, on platforms do not have prefetch instruction, a
+first instruction of clear_page and copy_page would be something like:
 
-Regards
-Umesh
+	ori a2, a0, PAGE_SIZE
 
-------=_Part_10688_32623342.1208152155770
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Of course this does not work for odd pages.  Please fold this fix into
+your patch.
 
-Hi to all,<br>How can I read / write to co processor registers in au1200 processor and i need to do some small modules in&nbsp; it for my basic understanding could anyone help me how to carry on in linux.waiting for valuable responses<br>
-<br>Regards<br>Umesh<br>
-
-------=_Part_10688_32623342.1208152155770--
+diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
+index e763101..d827d61 100644
+--- a/arch/mips/mm/page.c
++++ b/arch/mips/mm/page.c
+@@ -302,7 +302,7 @@ void __cpuinit build_clear_page(void)
+ 	BUG_ON(PAGE_SIZE < pref_bias_clear_store);
+ 
+ 	off = PAGE_SIZE - pref_bias_clear_store;
+-	if (off > 0xffff)
++	if (off > 0xffff || !pref_bias_clear_store)
+ 		pg_addiu(&buf, A2, A0, off);
+ 	else
+ 		uasm_i_ori(&buf, A2, A0, off);
+@@ -446,7 +446,7 @@ void __cpuinit build_copy_page(void)
+ 	BUG_ON(pref_bias_copy_store > pref_bias_copy_load);
+ 
+ 	off = PAGE_SIZE - pref_bias_copy_load;
+-	if (off > 0xffff)
++	if (off > 0xffff || !pref_bias_copy_load)
+ 		pg_addiu(&buf, A2, A0, off);
+ 	else
+ 		uasm_i_ori(&buf, A2, A0, off);

@@ -1,68 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Apr 2008 01:50:35 +0100 (BST)
-Received: from p549F7144.dip.t-dialin.net ([84.159.113.68]:39589 "EHLO
-	p549F7144.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
-	id S20023344AbYDNAuc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 14 Apr 2008 01:50:32 +0100
-Received: from mba.ocn.ne.jp ([122.1.235.107]:960 "EHLO smtp.mba.ocn.ne.jp")
-	by lappi.linux-mips.net with ESMTP id S1788957AbYDLPK7 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 12 Apr 2008 17:10:59 +0200
-Received: from localhost (p4038-ipad205funabasi.chiba.ocn.ne.jp [222.146.99.38])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 0A2DBAB59; Sun, 13 Apr 2008 00:10:54 +0900 (JST)
-Date:	Sun, 13 Apr 2008 00:11:46 +0900 (JST)
-Message-Id: <20080413.001146.25909265.anemo@mba.ocn.ne.jp>
-To:	jeff@garzik.org, Andy Fleming <afleming@freescale.com>
-Cc:	linux-mips@linux-mips.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 1/6] tc35815: Statistics cleanup
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <48007A41.2000803@garzik.org>
-References: <20080411.002412.03977557.anemo@mba.ocn.ne.jp>
-	<48007A41.2000803@garzik.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Apr 2008 06:49:20 +0100 (BST)
+Received: from wf-out-1314.google.com ([209.85.200.175]:28637 "EHLO
+	wf-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022654AbYDNFtS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 14 Apr 2008 06:49:18 +0100
+Received: by wf-out-1314.google.com with SMTP id 23so1940531wfg.21
+        for <linux-mips@linux-mips.org>; Sun, 13 Apr 2008 22:49:15 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
+        bh=KbLVxW0NSqTpGlRXl3eNqHZnM+4dKhBcFB81/UGtOSU=;
+        b=PUqITdF7uCQY8o61ViAKHT8nUq1azuS5TjOySI0e9zDA9F7boqpzeSAOQF4J1vF79CEC7+Cfzk1UKGaZXCJaO1v7ocPGzge9V7h9vaZO7CSggcVRGUjBaYGDdxHKGjA0xySfVcwsdyG4sqJHvS0UvE0YHUPeMQZILIFo6OVIFLk=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:mime-version:content-type;
+        b=hi/RDJIIPeg9tTvvvBJKZgVEiBstNy1kZHD037pNAgrI6UzldXzI5ixJK8PbIhQw9UzDWJTkVIvGjcx0h40XFVatz4br2m3zBPcjVPwgOfJUH9vUNVJ41yK2prCsKF1XmtKodfk1K9VQR2nerbwY6pnxY40L1qInOk99GPtibhU=
+Received: by 10.142.180.17 with SMTP id c17mr1684151wff.83.1208152155765;
+        Sun, 13 Apr 2008 22:49:15 -0700 (PDT)
+Received: by 10.143.122.4 with HTTP; Sun, 13 Apr 2008 22:49:15 -0700 (PDT)
+Message-ID: <b5c34db00804132249v6b2f904gef0a52fca81c7ed9@mail.gmail.com>
+Date:	Mon, 14 Apr 2008 11:19:15 +0530
+From:	umeshyv <umeshyv@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: co processor in mips regarded
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_10688_32623342.1208152155770"
+Return-Path: <umeshyv@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18906
+X-archive-position: 18907
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: umeshyv@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 12 Apr 2008 05:00:49 -0400, Jeff Garzik <jeff@garzik.org> wrote:
-> applied 1-6
+------=_Part_10688_32623342.1208152155770
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Thanks.
+Hi to all,
+How can I read / write to co processor registers in au1200 processor and i
+need to do some small modules in  it for my basic understanding could anyone
+help me how to carry on in linux.waiting for valuable responses
 
-Could you apply this too, or hopufully fold into Andy Fleming's "phy:
-Change mii_bus id field to a string" patch (commit c69fedae) ?
+Regards
+Umesh
 
-------------------------------------------------------
-Subject: [PATCH] tc35815: build fix
+------=_Part_10688_32623342.1208152155770
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Fix build failure caused by Andy Fleming's "phy: Change mii_bus id
-field to a string" patch.
+Hi to all,<br>How can I read / write to co processor registers in au1200 processor and i need to do some small modules in&nbsp; it for my basic understanding could anyone help me how to carry on in linux.waiting for valuable responses<br>
+<br>Regards<br>Umesh<br>
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
-diff --git a/drivers/net/tc35815.c b/drivers/net/tc35815.c
-index 744f11f..10e4e85 100644
---- a/drivers/net/tc35815.c
-+++ b/drivers/net/tc35815.c
-@@ -766,7 +766,8 @@ static int tc_mii_init(struct net_device *dev)
- 	lp->mii_bus.name = "tc35815_mii_bus";
- 	lp->mii_bus.read = tc_mdio_read;
- 	lp->mii_bus.write = tc_mdio_write;
--	lp->mii_bus.id = (lp->pci_dev->bus->number << 8) | lp->pci_dev->devfn;
-+	snprintf(lp->mii_bus.id, MII_BUS_ID_SIZE, "%x",
-+		 (lp->pci_dev->bus->number << 8) | lp->pci_dev->devfn);
- 	lp->mii_bus.priv = dev;
- 	lp->mii_bus.dev = &lp->pci_dev->dev;
- 	lp->mii_bus.irq = kmalloc(sizeof(int) * PHY_MAX_ADDR, GFP_KERNEL);
+------=_Part_10688_32623342.1208152155770--

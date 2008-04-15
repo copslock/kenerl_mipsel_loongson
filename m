@@ -1,78 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Apr 2008 19:26:59 +0100 (BST)
-Received: from rtsoft3.corbina.net ([85.21.88.6]:50438 "EHLO
-	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
-	id S28575188AbYDOS05 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 15 Apr 2008 19:26:57 +0100
-Received: from wasted.dev.rtsoft.ru (unknown [10.150.0.9])
-	by buildserver.ru.mvista.com (Postfix) with ESMTP
-	id D58108810; Tue, 15 Apr 2008 23:26:55 +0500 (SAMST)
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-To:	ralf@linux-mips.org
-Subject: [PATCH 2/2] Pb1200: do register SMC 91C111
-Date:	Tue, 15 Apr 2008 22:26:18 +0400
-User-Agent: KMail/1.5
-Cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Apr 2008 22:19:59 +0100 (BST)
+Received: from fk-out-0910.google.com ([209.85.128.190]:13796 "EHLO
+	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20026534AbYDOVT5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 15 Apr 2008 22:19:57 +0100
+Received: by fk-out-0910.google.com with SMTP id f40so4215339fka.0
+        for <linux-mips@linux-mips.org>; Tue, 15 Apr 2008 14:19:56 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:subject:date:user-agent:cc:references:in-reply-to:mime-version:content-disposition:message-id:content-type:content-transfer-encoding;
+        bh=baOtjHGeW11SJ1cEGq6bP/dSCU8Afhqi/omkh/Noy3Q=;
+        b=B3wYvDgGoahgpTs/yGQAwzLrBRVLu54fTGviARvA/PhyRSkBeTHBxdx/EzIViS/KgLnBYFzcw6mXMuJo9htL8HB54NgLt7BWf8hzBGERnGkcDOvIiiq7FR43cD/i4tGmv+WcM0q8G+aegiWdLeDt8VJyMPvk6qig/hhd5t/H7eQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:subject:date:user-agent:cc:references:in-reply-to:mime-version:content-disposition:message-id:content-type:content-transfer-encoding;
+        b=SEVyqf7TcHLEkt9oHt/v+JgFASaw5oQ8QXdfJoP4s6BAfGsfYjEm+BTfNE3a9cxveJ0LCsrcAhEMPcGDn2Hn+Tnf96J48o0BfwQNJCKQKKs/Mf8HHndyEylncSx5qatd+KIsVDCUTvkh5ZYPUcjpfsj01Gxam4cwtsHN9aFnjI0=
+Received: by 10.82.151.14 with SMTP id y14mr5550251bud.62.1208294395444;
+        Tue, 15 Apr 2008 14:19:55 -0700 (PDT)
+Received: from ?192.168.123.7? ( [81.18.197.216])
+        by mx.google.com with ESMTPS id s10sm11503456mue.15.2008.04.15.14.19.53
+        (version=TLSv1/SSLv3 cipher=OTHER);
+        Tue, 15 Apr 2008 14:19:54 -0700 (PDT)
+From:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Subject: Re: [PATCH] Pb1200/DBAu1200: fix bad IDE resource size
+Date:	Tue, 15 Apr 2008 23:09:11 +0200
+User-Agent: KMail/1.9.9
+Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
+	ralf@linux-mips.org
+References: <200804152044.32912.sshtylyov@ru.mvista.com>
+In-Reply-To: <200804152044.32912.sshtylyov@ru.mvista.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200804152226.18762.sshtylyov@ru.mvista.com>
-Return-Path: <sshtylyov@ru.mvista.com>
+Message-Id: <200804152309.11471.bzolnier@gmail.com>
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Return-Path: <bzolnier@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18927
+X-archive-position: 18928
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: bzolnier@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Pb1200 does have SMC 91C111 Ethernet chip on board but the platform code did
-not register it, so one couldn't mount NFS...
+On Tuesday 15 April 2008, Sergei Shtylyov wrote:
+> The header files for the Pb1200/DBAu1200 boards have wrong definition for the
+> IDE interface's  decoded range length -- it should be 512 bytes according to
+> what the IDE driver does.  In addition, the IDE platform device claims 1 byte
+> too many for its memory resource -- fix the platform code and the IDE driver
+> in accordance.
+> 
+> Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+> 
+> ---
+> I'm not sure thru which tree this should go -- probably thru Linux/MIPS one...
 
-Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Well, since I've been already merging the other au1xxx-ide patches
+to IDE tree I've also applied this one while at it...
 
----
-This is definitely a bad place for the board #ifdef's, so I'm going to submit
-a patch moving IDE and 91C111 registration into arch/mips/au1000/pb1200/...
-
- arch/mips/au1000/common/platform.c |    8 +++-----
- 1 files changed, 3 insertions(+), 5 deletions(-)
-
-Index: linux-2.6/arch/mips/au1000/common/platform.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/platform.c
-+++ linux-2.6/arch/mips/au1000/common/platform.c
-@@ -245,8 +245,7 @@ static struct platform_device au1x00_pcm
- 	.id 		= 0,
- };
- 
--#ifdef CONFIG_MIPS_DB1200
--
-+#if defined(CONFIG_MIPS_DB1200) || defined(CONFIG_MIPS_PB1200)
- static struct resource smc91x_resources[] = {
- 	[0] = {
- 		.name	= "smc91x-regs",
-@@ -267,8 +266,7 @@ static struct platform_device smc91x_dev
- 	.num_resources	= ARRAY_SIZE(smc91x_resources),
- 	.resource	= smc91x_resources,
- };
--
--#endif
-+#endif /* defined(CONFIG_MIPS_DB1200) || defined(CONFIG_MIPS_PB1200) */
- 
- /* All Alchemy demoboards with I2C have this #define in their headers */
- #ifdef SMBUS_PSC_BASE
-@@ -302,7 +300,7 @@ static struct platform_device *au1xxx_pl
- 	&au1200_ide0_device,
- 	&au1xxx_mmc_device,
- #endif
--#ifdef CONFIG_MIPS_DB1200
-+#if defined(CONFIG_MIPS_DB1200) || defined(CONFIG_MIPS_PB1200)
- 	&smc91x_device,
- #endif
- #ifdef SMBUS_PSC_BASE
+>  arch/mips/au1000/common/platform.c    |    2 +-
+>  drivers/ide/mips/au1xxx-ide.c         |    7 ++++---
+>  include/asm-mips/mach-db1x00/db1200.h |    4 ++--
+>  include/asm-mips/mach-pb1x00/pb1200.h |    4 ++--
+>  4 files changed, 9 insertions(+), 8 deletions(-)

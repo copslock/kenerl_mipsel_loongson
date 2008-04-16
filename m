@@ -1,63 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Apr 2008 10:16:09 +0100 (BST)
-Received: from elvis.franken.de ([193.175.24.41]:46296 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S20026422AbYDPJQG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 16 Apr 2008 10:16:06 +0100
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1Jm3kJ-0002nj-00; Wed, 16 Apr 2008 11:16:03 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id EED88C3E3D; Wed, 16 Apr 2008 11:15:54 +0200 (CEST)
-Date:	Wed, 16 Apr 2008 11:15:54 +0200
-To:	Roel Kluin <12o3l@tiscali.nl>
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org,
-	lkml <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/6] MIPS: ip27-timer: fix unsigned irq < 0
-Message-ID: <20080416091554.GA6026@alpha.franken.de>
-References: <480559DC.2060807@tiscali.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Apr 2008 14:32:41 +0100 (BST)
+Received: from mx.mips.com ([63.167.95.198]:31702 "EHLO dns0.mips.com")
+	by ftp.linux-mips.org with ESMTP id S20023684AbYDPNci (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 16 Apr 2008 14:32:38 +0100
+Received: from mercury.mips.com (mercury [192.168.64.101])
+	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id m3GDVW0V029103
+	for <linux-mips@linux-mips.org>; Wed, 16 Apr 2008 06:31:32 -0700 (PDT)
+Received: from [192.168.236.12] (cthulhu [192.168.236.12])
+	by mercury.mips.com (8.13.5/8.13.5) with ESMTP id m3GDWMOB009908
+	for <linux-mips@linux-mips.org>; Wed, 16 Apr 2008 06:32:28 -0700 (PDT)
+Message-ID: <4805FFE6.5080903@mips.com>
+Date:	Wed, 16 Apr 2008 15:32:22 +0200
+From:	"Kevin D. Kissell" <kevink@mips.com>
+User-Agent: Thunderbird 2.0.0.12 (X11/20080226)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <480559DC.2060807@tiscali.nl>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+To:	linux-mips@linux-mips.org
+Subject: Patches for 34K APRP
+Content-Type: multipart/mixed;
+ boundary="------------030103020306010003010808"
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18933
+X-archive-position: 18934
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Apr 16, 2008 at 03:43:56AM +0200, Roel Kluin wrote:
-> irq is unsigned, cast to signed to evaluate the allocate_irqno() return value,
->     
-> Signed-off-by: Roel Kluin <12o3l@tiscali.nl>
-> ---   
-> diff --git a/arch/mips/sgi-ip27/ip27-timer.c b/arch/mips/sgi-ip27/ip27-timer.c
-> index 25d3baf..3c08afd 100644
-> --- a/arch/mips/sgi-ip27/ip27-timer.c
-> +++ b/arch/mips/sgi-ip27/ip27-timer.c
-> @@ -222,19 +222,19 @@ static void __init hub_rt_clock_event_global_init(void)
->  	unsigned int irq;
->  
->  	do {
->  		smp_wmb();
->  		irq = rt_timer_irq;
->  		if (irq)
->  			break;
->  
->  		irq = allocate_irqno();
-> -		if (irq < 0)
-> +		if ((int) irq < 0)
+This is a multi-part message in MIME format.
+--------------030103020306010003010808
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Why don't you just make irq and rt_timer_irq an int ?
+APRP operation of the 34K has been multiply broken
+in 2.6.24.4.  The following patch set gets things
+working seemingly reliably. The first two were previously
+submitted to Ralf as essential to get RP programs to launch
+safely. The larger third patch is new, and gets the Linux
+I/O  services for the RP working again, and fixes formatting
+in a few places.
 
-Thomas.
+Note that SMTC has scheduling problems in 2.6.24,
+so testing under SMTC has been limited to boots with
+only one TC acting as a Linux CPU.
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+	Regards,
+
+	Kevin K.
+
+--------------030103020306010003010808
+Content-Type: text/x-patch;
+ name="0001-Fixes-necessary-for-non-SMP-kernels-and-non-relocata.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename*0="0001-Fixes-necessary-for-non-SMP-kernels-and-non-relocata.pa";
+ filename*1="tch"

@@ -1,81 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Apr 2008 20:40:22 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.191]:41900 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20030142AbYDPTkU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 16 Apr 2008 20:40:20 +0100
-Received: by nf-out-0910.google.com with SMTP id b11so758404nfh.14
-        for <linux-mips@linux-mips.org>; Wed, 16 Apr 2008 12:40:13 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:date:from:to:cc:subject:message-id:references:mime-version:content-type:content-disposition:in-reply-to:user-agent;
-        bh=LeU4640JuXOAT3alpUq4Dlf3VUA2GyhCHU9wHSqaM2g=;
-        b=KnPUDvoxbuP6LdL1l7S3xI2lmAaPzXCIfaqjFMmsP5Kza9IXjbTmgS85JF64tC3BhsNz3gZDqekD9qB3IIE3R1oWTtmoUppfzamz9hTZvQCNrX6cSVGdMD9feor6se/WPdPFMi32d9QLiJf2plgTKf6f63SsSRY3m43Hgn+rdzA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=date:from:to:cc:subject:message-id:references:mime-version:content-type:content-disposition:in-reply-to:user-agent;
-        b=WLp8gMTRHhY2RUld/XToVJfOZt84n7OFrWfp85w4iTSrM2T4hZEFt6hjg0KTMK9z7gxrHj3Xf58VqYsPoJUZDabuUg8gq25kcJggayby7ZT341cKk/CDt3UH6D0GzB3rhFSHPSMDp9fTgVqD99Y8OiCz9D8tnkVUfmltjGLB5gk=
-Received: by 10.78.100.2 with SMTP id x2mr709796hub.52.1208374813223;
-        Wed, 16 Apr 2008 12:40:13 -0700 (PDT)
-Received: from @ ( [91.94.225.201])
-        by mx.google.com with ESMTPS id d25sm14166788nfh.33.2008.04.16.12.40.03
-        (version=TLSv1/SSLv3 cipher=OTHER);
-        Wed, 16 Apr 2008 12:40:12 -0700 (PDT)
-Date:	Wed, 16 Apr 2008 21:39:44 +0200
-From:	Marcin Slusarz <marcin.slusarz@gmail.com>
-To:	Roel Kluin <12o3l@tiscali.nl>
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org,
-	lkml <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/6] MIPS: irixelf: fix test unsigned var < 0
-Message-ID: <20080416193941.GB6264@joi>
-References: <480558CA.7090800@tiscali.nl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Apr 2008 21:12:54 +0100 (BST)
+Received: from fmmailgate03.web.de ([217.72.192.234]:63617 "EHLO
+	fmmailgate03.web.de") by ftp.linux-mips.org with ESMTP
+	id S20030350AbYDPUMw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 16 Apr 2008 21:12:52 +0100
+Received: from smtp05.web.de (fmsmtp05.dlan.cinetic.de [172.20.4.166])
+	by fmmailgate03.web.de (Postfix) with ESMTP id 6AABDD74FFD0;
+	Wed, 16 Apr 2008 22:12:43 +0200 (CEST)
+Received: from [77.178.173.29] (helo=merkur.sol.de)
+	by smtp05.web.de with asmtp (TLSv1:AES256-SHA:256)
+	(WEB.DE 4.109 #226)
+	id 1JmDzn-0007wa-00; Wed, 16 Apr 2008 22:12:43 +0200
+Received: from jens by merkur.sol.de with local (Exim 4.63)
+	(envelope-from <tux-master@web.de>)
+	id 1JmDsd-0005dw-4n; Wed, 16 Apr 2008 22:05:19 +0200
+Date:	Wed, 16 Apr 2008 22:05:19 +0200
+From:	Jens Seidel <jensseidel@users.sf.net>
+To:	linux-mips@linux-mips.org,
+	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Subject: Re: [PATCH] Alchemy: kill useless #include's, #define's and extern's (take 3)
+Message-ID: <20080416200517.GA21402@merkur.sol.de>
+References: <200804162115.59620.sshtylyov@ru.mvista.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <480558CA.7090800@tiscali.nl>
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <marcin.slusarz@gmail.com>
+In-Reply-To: <200804162115.59620.sshtylyov@ru.mvista.com>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+X-Sender: tux-master@web.de
+X-Provags-ID: V01U2FsdGVkX1/99qTNxT3eGWA3/Cp5LnB7txU2eRKN0jGLU/lt
+	w6cONwVsMu5T8sf1UtodlIOHhmQTcxE3qXrEMLo8dgnVhlsRNj
+	zHXdTcK3A=
+Return-Path: <tux-master@web.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18941
+X-archive-position: 18942
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: marcin.slusarz@gmail.com
+X-original-sender: jensseidel@users.sf.net
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Apr 16, 2008 at 03:39:22AM +0200, Roel Kluin wrote:
-> v is unsigned, cast to signed to evaluate the do_brk() return value,
->     
-> Signed-off-by: Roel Kluin <12o3l@tiscali.nl>
-> ---
-> diff --git a/arch/mips/kernel/irixelf.c b/arch/mips/kernel/irixelf.c
-> index 290d8e3..fad2a2a 100644
-> --- a/arch/mips/kernel/irixelf.c
-> +++ b/arch/mips/kernel/irixelf.c
-> @@ -583,15 +583,15 @@ static void irix_map_prda_page(void)
->  	unsigned long v;
->  	struct prda *pp;
->  
->  	down_write(&current->mm->mmap_sem);
->  	v =  do_brk(PRDA_ADDRESS, PAGE_SIZE);
->  	up_write(&current->mm->mmap_sem);
->  
-> -	if (v < 0)
-> +	if ((long) v < 0)
-maybe cast it earlier (to struct prda *) and check error with IS_ERR?
+Hi Sergei,
 
->  		return;
->  
->  	pp = (struct prda *) v;
->  	pp->prda_sys.t_pid  = task_pid_vnr(current);
->  	pp->prda_sys.t_prid = read_c0_prid();
->  	pp->prda_sys.t_rpid = task_pid_vnr(current);
->  
-> 
-> --
-> To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
-> the body of a message to majordomo@vger.kernel.org
-> More majordomo info at  http://vger.kernel.org/majordomo-info.html
-> Please read the FAQ at  http://www.tux.org/lkml/
+On Wed, Apr 16, 2008 at 09:15:59PM +0400, Sergei Shtylyov wrote:
+> Go thru the Alchemy code and hunt down every unneeded #include, #define, and
+> extern (some of which refer to already long dead functions).
+
+that's an impressive patch! Did you created it manually or do you have a
+script which does the checks for you?
+
+I have a program which would probably profit from it as well.
+
+Jens

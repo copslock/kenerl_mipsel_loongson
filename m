@@ -1,70 +1,1038 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Apr 2008 16:10:10 +0100 (BST)
-Received: from smtp-out2.tiscali.nl ([195.241.79.177]:38018 "EHLO
-	smtp-out2.tiscali.nl") by ftp.linux-mips.org with ESMTP
-	id S20029160AbYDPPKF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 16 Apr 2008 16:10:05 +0100
-Received: from [82.171.187.43] (helo=[192.168.1.2])
-	by smtp-out2.tiscali.nl with esmtp (Tiscali http://www.tiscali.nl)
-	id 1Jm9Gp-0004Ui-Gj; Wed, 16 Apr 2008 17:09:59 +0200
-Message-ID: <480616C6.3080203@tiscali.nl>
-Date:	Wed, 16 Apr 2008 17:09:58 +0200
-From:	Roel Kluin <12o3l@tiscali.nl>
-User-Agent: Thunderbird 2.0.0.9 (X11/20071031)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Apr 2008 18:16:43 +0100 (BST)
+Received: from rtsoft3.corbina.net ([85.21.88.6]:46351 "EHLO
+	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
+	id S20029654AbYDPRQk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 16 Apr 2008 18:16:40 +0100
+Received: from wasted.dev.rtsoft.ru (unknown [10.150.0.9])
+	by buildserver.ru.mvista.com (Postfix) with ESMTP
+	id 367198815; Wed, 16 Apr 2008 22:16:37 +0500 (SAMST)
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+To:	ralf@linux-mips.org
+Subject: [PATCH] Alchemy: kill useless #include's, #define's and extern's (take 3)
+Date:	Wed, 16 Apr 2008 21:15:59 +0400
+User-Agent: KMail/1.5
+Cc:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-CC:	ralf@linux-mips.org, linux-mips@linux-mips.org,
-	lkml <linux-kernel@vger.kernel.org>
-Subject: [PATCH 2/6 v2] MIPS: ip27-timer: unsigned irq to evaluate allocate_irqno()
-References: <480559DC.2060807@tiscali.nl> <20080416091554.GA6026@alpha.franken.de>
-In-Reply-To: <20080416091554.GA6026@alpha.franken.de>
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Disposition: inline
+Content-Type: text/plain;
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Return-Path: <12o3l@tiscali.nl>
+Message-Id: <200804162115.59620.sshtylyov@ru.mvista.com>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18936
+X-archive-position: 18937
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: 12o3l@tiscali.nl
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Thomas Bogendoerfer wrote:
-> On Wed, Apr 16, 2008 at 03:43:56AM +0200, Roel Kluin wrote:
->> irq is unsigned, cast to signed to evaluate the allocate_irqno() return value,
- 
->> +		if ((int) irq < 0)
-> 
-> Why don't you just make irq and rt_timer_irq an int ?
+Go thru the Alchemy code and hunt down every unneeded #include, #define, and
+extern (some of which refer to already long dead functions).
 
-Ok, thanks, It should be right, but I cannot test this (no hardware).
----
-when allocate_irqno() returns a negative error value, but is stored in an
-unsigned variable 'irq', the test '(irq < 0)' won't work.
+Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
-Signed-off-by: Roel Kluin <12o3l@tiscali.nl>
 ---
-diff --git a/arch/mips/sgi-ip27/ip27-timer.c b/arch/mips/sgi-ip27/ip27-timer.c
-index 25d3baf..9cebc9e 100644
---- a/arch/mips/sgi-ip27/ip27-timer.c
-+++ b/arch/mips/sgi-ip27/ip27-timer.c
-@@ -158,7 +158,7 @@ static void rt_set_mode(enum clock_event_mode mode,
- 	}
- }
+Killed #include <au1xxx_dbdma.h> and couple #define's in
+arch/mips/au1000/pb1200/board_setup.c...
+
+Please update the queued patch, hopefully the last time. :-)
+
+ arch/mips/au1000/common/cputable.c     |    5 +----
+ arch/mips/au1000/common/dbdma.c        |    6 ------
+ arch/mips/au1000/common/dbg_io.c       |    1 -
+ arch/mips/au1000/common/dma.c          |    5 +----
+ arch/mips/au1000/common/gpio.c         |    5 -----
+ arch/mips/au1000/common/irq.c          |    1 -
+ arch/mips/au1000/common/pci.c          |    2 +-
+ arch/mips/au1000/common/platform.c     |    4 +---
+ arch/mips/au1000/common/power.c        |    9 +--------
+ arch/mips/au1000/common/prom.c         |    2 +-
+ arch/mips/au1000/common/puts.c         |    1 -
+ arch/mips/au1000/common/reset.c        |    8 +-------
+ arch/mips/au1000/common/setup.c        |   11 +----------
+ arch/mips/au1000/common/sleeper.S      |    2 +-
+ arch/mips/au1000/common/time.c         |    8 --------
+ arch/mips/au1000/db1x00/board_setup.c  |   15 ++-------------
+ arch/mips/au1000/db1x00/init.c         |    5 -----
+ arch/mips/au1000/db1x00/irqmap.c       |   21 ++-------------------
+ arch/mips/au1000/mtx-1/board_setup.c   |   14 ++------------
+ arch/mips/au1000/mtx-1/init.c          |    6 +-----
+ arch/mips/au1000/mtx-1/irqmap.c        |   19 +------------------
+ arch/mips/au1000/mtx-1/platform.c      |    1 -
+ arch/mips/au1000/pb1000/board_setup.c  |   11 +----------
+ arch/mips/au1000/pb1000/init.c         |    6 +-----
+ arch/mips/au1000/pb1000/irqmap.c       |   18 +-----------------
+ arch/mips/au1000/pb1100/board_setup.c  |   11 +----------
+ arch/mips/au1000/pb1100/init.c         |    6 +-----
+ arch/mips/au1000/pb1100/irqmap.c       |   19 +------------------
+ arch/mips/au1000/pb1200/board_setup.c  |   20 +-------------------
+ arch/mips/au1000/pb1200/init.c         |    6 +-----
+ arch/mips/au1000/pb1200/irqmap.c       |   20 ++------------------
+ arch/mips/au1000/pb1500/board_setup.c  |   11 +----------
+ arch/mips/au1000/pb1500/init.c         |    6 +-----
+ arch/mips/au1000/pb1500/irqmap.c       |   19 +------------------
+ arch/mips/au1000/pb1550/board_setup.c  |   15 ++-------------
+ arch/mips/au1000/pb1550/init.c         |    6 +-----
+ arch/mips/au1000/pb1550/irqmap.c       |   19 +------------------
+ arch/mips/au1000/xxs1500/board_setup.c |   11 +----------
+ arch/mips/au1000/xxs1500/init.c        |    6 +-----
+ arch/mips/au1000/xxs1500/irqmap.c      |   19 +------------------
+ arch/mips/pci/fixup-au1000.c           |    5 +----
+ 41 files changed, 38 insertions(+), 347 deletions(-)
+
+Index: linux-2.6/arch/mips/au1000/common/cputable.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/common/cputable.c
++++ linux-2.6/arch/mips/au1000/common/cputable.c
+@@ -11,10 +11,7 @@
+  *  as published by the Free Software Foundation; either version
+  *  2 of the License, or (at your option) any later version.
+  */
+-#include <linux/string.h>
+-#include <linux/sched.h>
+-#include <linux/threads.h>
+-#include <linux/init.h>
++
+ #include <asm/mach-au1x00/au1000.h>
  
--unsigned int rt_timer_irq;
-+int rt_timer_irq;
+ struct cpu_spec* cur_cpu_spec[NR_CPUS];
+Index: linux-2.6/arch/mips/au1000/common/dbdma.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/common/dbdma.c
++++ linux-2.6/arch/mips/au1000/common/dbdma.c
+@@ -31,18 +31,12 @@
+  */
  
- static irqreturn_t hub_rt_counter_handler(int irq, void *dev_id)
- {
-@@ -219,7 +219,7 @@ static void __cpuinit hub_rt_clock_event_init(void)
+ #include <linux/kernel.h>
+-#include <linux/errno.h>
+-#include <linux/sched.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
+-#include <linux/string.h>
+-#include <linux/delay.h>
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
+ #include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-au1x00/au1xxx_dbdma.h>
+-#include <asm/system.h>
+-
  
- static void __init hub_rt_clock_event_global_init(void)
- {
--	unsigned int irq;
-+	int irq;
+ #if defined(CONFIG_SOC_AU1550) || defined(CONFIG_SOC_AU1200)
  
- 	do {
- 		smp_wmb();
+Index: linux-2.6/arch/mips/au1000/common/dbg_io.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/common/dbg_io.c
++++ linux-2.6/arch/mips/au1000/common/dbg_io.c
+@@ -1,5 +1,4 @@
+ 
+-#include <asm/io.h>
+ #include <asm/mach-au1x00/au1000.h>
+ 
+ #ifdef CONFIG_KGDB
+Index: linux-2.6/arch/mips/au1000/common/dma.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/common/dma.c
++++ linux-2.6/arch/mips/au1000/common/dma.c
+@@ -33,12 +33,9 @@
+ #include <linux/module.h>
+ #include <linux/kernel.h>
+ #include <linux/errno.h>
+-#include <linux/sched.h>
+ #include <linux/spinlock.h>
+-#include <linux/string.h>
+-#include <linux/delay.h>
+ #include <linux/interrupt.h>
+-#include <asm/system.h>
++
+ #include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-au1x00/au1000_dma.h>
+ 
+Index: linux-2.6/arch/mips/au1000/common/gpio.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/common/gpio.c
++++ linux-2.6/arch/mips/au1000/common/gpio.c
+@@ -27,13 +27,8 @@
+  * 	others have a second one : GPIO2
+  */
+ 
+-#include <linux/init.h>
+-#include <linux/io.h>
+-#include <linux/types.h>
+ #include <linux/module.h>
+ 
+-#include <asm/addrspace.h>
+-
+ #include <asm/mach-au1x00/au1000.h>
+ #include <asm/gpio.h>
+ 
+Index: linux-2.6/arch/mips/au1000/common/irq.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/common/irq.c
++++ linux-2.6/arch/mips/au1000/common/irq.c
+@@ -26,7 +26,6 @@
+  */
+ #include <linux/bitops.h>
+ #include <linux/init.h>
+-#include <linux/io.h>
+ #include <linux/interrupt.h>
+ #include <linux/irq.h>
+ 
+Index: linux-2.6/arch/mips/au1000/common/pci.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/common/pci.c
++++ linux-2.6/arch/mips/au1000/common/pci.c
+@@ -30,7 +30,7 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+-#include <linux/types.h>
++
+ #include <linux/pci.h>
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+Index: linux-2.6/arch/mips/au1000/common/platform.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/common/platform.c
++++ linux-2.6/arch/mips/au1000/common/platform.c
+@@ -7,11 +7,9 @@
+  * License version 2.  This program is licensed "as is" without any
+  * warranty of any kind, whether express or implied.
+  */
+-#include <linux/device.h>
++
+ #include <linux/platform_device.h>
+-#include <linux/kernel.h>
+ #include <linux/init.h>
+-#include <linux/resource.h>
+ 
+ #include <asm/mach-au1x00/au1xxx.h>
+ 
+Index: linux-2.6/arch/mips/au1000/common/power.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/common/power.c
++++ linux-2.6/arch/mips/au1000/common/power.c
+@@ -29,17 +29,14 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
++
+ #include <linux/init.h>
+ #include <linux/pm.h>
+ #include <linux/pm_legacy.h>
+-#include <linux/slab.h>
+ #include <linux/sysctl.h>
+ #include <linux/jiffies.h>
+ 
+-#include <asm/string.h>
+ #include <asm/uaccess.h>
+-#include <asm/io.h>
+-#include <asm/system.h>
+ #include <asm/cacheflush.h>
+ #include <asm/mach-au1x00/au1000.h>
+ 
+@@ -54,10 +51,6 @@
+ 
+ static void au1000_calibrate_delay(void);
+ 
+-extern void set_au1x00_speed(unsigned int new_freq);
+-extern unsigned int get_au1x00_speed(void);
+-extern unsigned long get_au1x00_uart_baud_base(void);
+-extern void set_au1x00_uart_baud_base(unsigned long new_baud_base);
+ extern unsigned long save_local_and_disable(int controller);
+ extern void restore_local_and_enable(int controller, unsigned long mask);
+ extern void local_enable_irq(unsigned int irq_nr);
+Index: linux-2.6/arch/mips/au1000/common/prom.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/common/prom.c
++++ linux-2.6/arch/mips/au1000/common/prom.c
+@@ -33,8 +33,8 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
++
+ #include <linux/module.h>
+-#include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/string.h>
+ 
+Index: linux-2.6/arch/mips/au1000/common/puts.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/common/puts.c
++++ linux-2.6/arch/mips/au1000/common/puts.c
+@@ -28,7 +28,6 @@
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+ 
+-#include <linux/types.h>
+ #include <asm/mach-au1x00/au1000.h>
+ 
+ #define SERIAL_BASE   UART_BASE
+Index: linux-2.6/arch/mips/au1000/common/reset.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/common/reset.c
++++ linux-2.6/arch/mips/au1000/common/reset.c
+@@ -27,13 +27,7 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+-#include <linux/sched.h>
+-#include <linux/mm.h>
+-#include <asm/io.h>
+-#include <asm/pgtable.h>
+-#include <asm/processor.h>
+-#include <asm/reboot.h>
+-#include <asm/system.h>
++
+ #include <asm/mach-au1x00/au1000.h>
+ 
+ extern int au_sleep(void);
+Index: linux-2.6/arch/mips/au1000/common/setup.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/common/setup.c
++++ linux-2.6/arch/mips/au1000/common/setup.c
+@@ -25,21 +25,14 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
++
+ #include <linux/init.h>
+-#include <linux/sched.h>
+ #include <linux/ioport.h>
+-#include <linux/mm.h>
+-#include <linux/delay.h>
+-#include <linux/interrupt.h>
+ #include <linux/module.h>
+ #include <linux/pm.h>
+ 
+-#include <asm/cpu.h>
+-#include <asm/bootinfo.h>
+-#include <asm/irq.h>
+ #include <asm/mipsregs.h>
+ #include <asm/reboot.h>
+-#include <asm/pgtable.h>
+ #include <asm/time.h>
+ 
+ #include <au1000.h>
+@@ -49,8 +42,6 @@ extern void __init board_setup(void);
+ extern void au1000_restart(char *);
+ extern void au1000_halt(void);
+ extern void au1000_power_off(void);
+-extern void au1x_time_init(void);
+-extern void au1x_timer_setup(struct irqaction *irq);
+ extern void set_cpuspec(void);
+ 
+ void __init plat_mem_setup(void)
+Index: linux-2.6/arch/mips/au1000/common/sleeper.S
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/common/sleeper.S
++++ linux-2.6/arch/mips/au1000/common/sleeper.S
+@@ -9,9 +9,9 @@
+  * Free Software Foundation;  either version 2 of the  License, or (at your
+  * option) any later version.
+  */
++
+ #include <asm/asm.h>
+ #include <asm/mipsregs.h>
+-#include <asm/addrspace.h>
+ #include <asm/regdef.h>
+ #include <asm/stackframe.h>
+ 
+Index: linux-2.6/arch/mips/au1000/common/time.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/common/time.c
++++ linux-2.6/arch/mips/au1000/common/time.c
+@@ -34,20 +34,12 @@
+ 
+ #include <linux/types.h>
+ #include <linux/init.h>
+-#include <linux/kernel_stat.h>
+-#include <linux/sched.h>
+ #include <linux/spinlock.h>
+-#include <linux/hardirq.h>
+ 
+-#include <asm/compiler.h>
+ #include <asm/mipsregs.h>
+ #include <asm/time.h>
+-#include <asm/div64.h>
+ #include <asm/mach-au1x00/au1000.h>
+ 
+-#include <linux/mc146818rtc.h>
+-#include <linux/timex.h>
+-
+ static int no_au1xxx_32khz;
+ extern int allow_au1k_wait; /* default off for CP0 Counter */
+ 
+Index: linux-2.6/arch/mips/au1000/db1x00/board_setup.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/db1x00/board_setup.c
++++ linux-2.6/arch/mips/au1000/db1x00/board_setup.c
+@@ -27,20 +27,9 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
++
+ #include <linux/init.h>
+-#include <linux/sched.h>
+-#include <linux/ioport.h>
+-#include <linux/mm.h>
+-#include <linux/console.h>
+-#include <linux/mc146818rtc.h>
+-#include <linux/delay.h>
+-
+-#include <asm/cpu.h>
+-#include <asm/bootinfo.h>
+-#include <asm/irq.h>
+-#include <asm/mipsregs.h>
+-#include <asm/reboot.h>
+-#include <asm/pgtable.h>
++
+ #include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-db1x00/db1x00.h>
+ 
+Index: linux-2.6/arch/mips/au1000/db1x00/init.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/db1x00/init.c
++++ linux-2.6/arch/mips/au1000/db1x00/init.c
+@@ -28,13 +28,8 @@
+  */
+ 
+ #include <linux/init.h>
+-#include <linux/mm.h>
+-#include <linux/sched.h>
+-#include <linux/bootmem.h>
+-#include <linux/string.h>
+ #include <linux/kernel.h>
+ 
+-#include <asm/addrspace.h>
+ #include <asm/bootinfo.h>
+ 
+ #include <prom.h>
+Index: linux-2.6/arch/mips/au1000/db1x00/irqmap.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/db1x00/irqmap.c
++++ linux-2.6/arch/mips/au1000/db1x00/irqmap.c
+@@ -25,26 +25,9 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+-#include <linux/errno.h>
++
+ #include <linux/init.h>
+-#include <linux/irq.h>
+-#include <linux/kernel_stat.h>
+-#include <linux/module.h>
+-#include <linux/signal.h>
+-#include <linux/sched.h>
+-#include <linux/types.h>
+-#include <linux/interrupt.h>
+-#include <linux/ioport.h>
+-#include <linux/timex.h>
+-#include <linux/slab.h>
+-#include <linux/random.h>
+-#include <linux/delay.h>
+-#include <linux/bitops.h>
+-
+-#include <asm/bootinfo.h>
+-#include <asm/io.h>
+-#include <asm/mipsregs.h>
+-#include <asm/system.h>
++
+ #include <asm/mach-au1x00/au1000.h>
+ 
+ #ifdef CONFIG_MIPS_DB1500
+Index: linux-2.6/arch/mips/au1000/mtx-1/board_setup.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/mtx-1/board_setup.c
++++ linux-2.6/arch/mips/au1000/mtx-1/board_setup.c
+@@ -28,19 +28,9 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
++
+ #include <linux/init.h>
+-#include <linux/sched.h>
+-#include <linux/ioport.h>
+-#include <linux/mm.h>
+-#include <linux/console.h>
+-#include <linux/delay.h>
+-
+-#include <asm/cpu.h>
+-#include <asm/bootinfo.h>
+-#include <asm/irq.h>
+-#include <asm/mipsregs.h>
+-#include <asm/reboot.h>
+-#include <asm/pgtable.h>
++
+ #include <asm/mach-au1x00/au1000.h>
+ 
+ extern int (*board_pci_idsel)(unsigned int devsel, int assert);
+Index: linux-2.6/arch/mips/au1000/mtx-1/init.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/mtx-1/init.c
++++ linux-2.6/arch/mips/au1000/mtx-1/init.c
+@@ -28,14 +28,10 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+-#include <linux/string.h>
++
+ #include <linux/kernel.h>
+-#include <linux/sched.h>
+ #include <linux/init.h>
+-#include <linux/mm.h>
+-#include <linux/bootmem.h>
+ 
+-#include <asm/addrspace.h>
+ #include <asm/bootinfo.h>
+ 
+ #include <prom.h>
+Index: linux-2.6/arch/mips/au1000/mtx-1/irqmap.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/mtx-1/irqmap.c
++++ linux-2.6/arch/mips/au1000/mtx-1/irqmap.c
+@@ -25,26 +25,9 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+-#include <linux/errno.h>
++
+ #include <linux/init.h>
+-#include <linux/irq.h>
+-#include <linux/kernel_stat.h>
+-#include <linux/module.h>
+-#include <linux/signal.h>
+-#include <linux/sched.h>
+-#include <linux/types.h>
+-#include <linux/interrupt.h>
+-#include <linux/ioport.h>
+-#include <linux/timex.h>
+-#include <linux/slab.h>
+-#include <linux/random.h>
+-#include <linux/delay.h>
+-#include <linux/bitops.h>
+ 
+-#include <asm/bootinfo.h>
+-#include <asm/io.h>
+-#include <asm/mipsregs.h>
+-#include <asm/system.h>
+ #include <asm/mach-au1x00/au1000.h>
+ 
+ char irq_tab_alchemy[][5] __initdata = {
+Index: linux-2.6/arch/mips/au1000/mtx-1/platform.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/mtx-1/platform.c
++++ linux-2.6/arch/mips/au1000/mtx-1/platform.c
+@@ -19,7 +19,6 @@
+  */
+ 
+ #include <linux/init.h>
+-#include <linux/types.h>
+ #include <linux/platform_device.h>
+ #include <linux/leds.h>
+ #include <linux/gpio_keys.h>
+Index: linux-2.6/arch/mips/au1000/pb1000/board_setup.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/pb1000/board_setup.c
++++ linux-2.6/arch/mips/au1000/pb1000/board_setup.c
+@@ -23,19 +23,10 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
++
+ #include <linux/init.h>
+-#include <linux/sched.h>
+-#include <linux/ioport.h>
+-#include <linux/mm.h>
+-#include <linux/console.h>
+ #include <linux/delay.h>
+ 
+-#include <asm/cpu.h>
+-#include <asm/bootinfo.h>
+-#include <asm/irq.h>
+-#include <asm/mipsregs.h>
+-#include <asm/reboot.h>
+-#include <asm/pgtable.h>
+ #include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-pb1x00/pb1000.h>
+ 
+Index: linux-2.6/arch/mips/au1000/pb1000/init.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/pb1000/init.c
++++ linux-2.6/arch/mips/au1000/pb1000/init.c
+@@ -26,14 +26,10 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
++
+ #include <linux/init.h>
+-#include <linux/mm.h>
+-#include <linux/sched.h>
+-#include <linux/bootmem.h>
+-#include <linux/string.h>
+ #include <linux/kernel.h>
+ 
+-#include <asm/addrspace.h>
+ #include <asm/bootinfo.h>
+ 
+ #include <prom.h>
+Index: linux-2.6/arch/mips/au1000/pb1000/irqmap.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/pb1000/irqmap.c
++++ linux-2.6/arch/mips/au1000/pb1000/irqmap.c
+@@ -25,26 +25,10 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+-#include <linux/errno.h>
++
+ #include <linux/init.h>
+-#include <linux/irq.h>
+-#include <linux/kernel_stat.h>
+-#include <linux/module.h>
+-#include <linux/signal.h>
+-#include <linux/sched.h>
+-#include <linux/types.h>
+ #include <linux/interrupt.h>
+-#include <linux/ioport.h>
+-#include <linux/timex.h>
+-#include <linux/slab.h>
+-#include <linux/random.h>
+-#include <linux/delay.h>
+-#include <linux/bitops.h>
+ 
+-#include <asm/bootinfo.h>
+-#include <asm/io.h>
+-#include <asm/mipsregs.h>
+-#include <asm/system.h>
+ #include <asm/mach-au1x00/au1000.h>
+ 
+ struct au1xxx_irqmap __initdata au1xxx_irq_map[] = {
+Index: linux-2.6/arch/mips/au1000/pb1100/board_setup.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/pb1100/board_setup.c
++++ linux-2.6/arch/mips/au1000/pb1100/board_setup.c
+@@ -23,19 +23,10 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
++
+ #include <linux/init.h>
+-#include <linux/sched.h>
+-#include <linux/ioport.h>
+-#include <linux/mm.h>
+-#include <linux/console.h>
+ #include <linux/delay.h>
+ 
+-#include <asm/cpu.h>
+-#include <asm/bootinfo.h>
+-#include <asm/irq.h>
+-#include <asm/mipsregs.h>
+-#include <asm/reboot.h>
+-#include <asm/pgtable.h>
+ #include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-pb1x00/pb1100.h>
+ 
+Index: linux-2.6/arch/mips/au1000/pb1100/init.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/pb1100/init.c
++++ linux-2.6/arch/mips/au1000/pb1100/init.c
+@@ -27,14 +27,10 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
++
+ #include <linux/init.h>
+-#include <linux/mm.h>
+-#include <linux/sched.h>
+-#include <linux/bootmem.h>
+-#include <linux/string.h>
+ #include <linux/kernel.h>
+ 
+-#include <asm/addrspace.h>
+ #include <asm/bootinfo.h>
+ 
+ #include <prom.h>
+Index: linux-2.6/arch/mips/au1000/pb1100/irqmap.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/pb1100/irqmap.c
++++ linux-2.6/arch/mips/au1000/pb1100/irqmap.c
+@@ -25,26 +25,9 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+-#include <linux/errno.h>
++
+ #include <linux/init.h>
+-#include <linux/irq.h>
+-#include <linux/kernel_stat.h>
+-#include <linux/module.h>
+-#include <linux/signal.h>
+-#include <linux/sched.h>
+-#include <linux/types.h>
+-#include <linux/interrupt.h>
+-#include <linux/ioport.h>
+-#include <linux/timex.h>
+-#include <linux/slab.h>
+-#include <linux/random.h>
+-#include <linux/delay.h>
+-#include <linux/bitops.h>
+ 
+-#include <asm/bootinfo.h>
+-#include <asm/io.h>
+-#include <asm/mipsregs.h>
+-#include <asm/system.h>
+ #include <asm/mach-au1x00/au1000.h>
+ 
+ struct au1xxx_irqmap __initdata au1xxx_irq_map[] = {
+Index: linux-2.6/arch/mips/au1000/pb1200/board_setup.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/pb1200/board_setup.c
++++ linux-2.6/arch/mips/au1000/pb1200/board_setup.c
+@@ -23,27 +23,11 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
++
+ #include <linux/init.h>
+ #include <linux/sched.h>
+-#include <linux/ioport.h>
+-#include <linux/mm.h>
+-#include <linux/console.h>
+-#include <linux/mc146818rtc.h>
+-#include <linux/delay.h>
+-
+-#if defined(CONFIG_BLK_DEV_IDE_AU1XXX)
+-#include <linux/ide.h>
+-#endif
+-
+-#include <asm/cpu.h>
+-#include <asm/bootinfo.h>
+-#include <asm/irq.h>
+-#include <asm/mipsregs.h>
+-#include <asm/reboot.h>
+-#include <asm/pgtable.h>
+ 
+ #include <au1000.h>
+-#include <au1xxx_dbdma.h>
+ #include <prom.h>
+ 
+ #ifdef CONFIG_MIPS_PB1200
+@@ -52,8 +36,6 @@
+ 
+ #ifdef CONFIG_MIPS_DB1200
+ #include <asm/mach-db1x00/db1200.h>
+-#define PB1200_ETH_INT DB1200_ETH_INT
+-#define PB1200_IDE_INT DB1200_IDE_INT
+ #endif
+ 
+ extern void _board_init_irq(void);
+Index: linux-2.6/arch/mips/au1000/pb1200/init.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/pb1200/init.c
++++ linux-2.6/arch/mips/au1000/pb1200/init.c
+@@ -27,14 +27,10 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
++
+ #include <linux/init.h>
+-#include <linux/mm.h>
+-#include <linux/sched.h>
+-#include <linux/bootmem.h>
+-#include <linux/string.h>
+ #include <linux/kernel.h>
+ 
+-#include <asm/addrspace.h>
+ #include <asm/bootinfo.h>
+ 
+ #include <prom.h>
+Index: linux-2.6/arch/mips/au1000/pb1200/irqmap.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/pb1200/irqmap.c
++++ linux-2.6/arch/mips/au1000/pb1200/irqmap.c
+@@ -22,26 +22,10 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+-#include <linux/errno.h>
++
+ #include <linux/init.h>
+-#include <linux/irq.h>
+-#include <linux/kernel_stat.h>
+-#include <linux/module.h>
+-#include <linux/signal.h>
+-#include <linux/sched.h>
+-#include <linux/types.h>
+ #include <linux/interrupt.h>
+-#include <linux/ioport.h>
+-#include <linux/timex.h>
+-#include <linux/slab.h>
+-#include <linux/random.h>
+-#include <linux/delay.h>
+-#include <linux/bitops.h>
+-
+-#include <asm/bootinfo.h>
+-#include <asm/io.h>
+-#include <asm/mipsregs.h>
+-#include <asm/system.h>
++
+ #include <asm/mach-au1x00/au1000.h>
+ 
+ #ifdef CONFIG_MIPS_PB1200
+Index: linux-2.6/arch/mips/au1000/pb1500/board_setup.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/pb1500/board_setup.c
++++ linux-2.6/arch/mips/au1000/pb1500/board_setup.c
+@@ -23,19 +23,10 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
++
+ #include <linux/init.h>
+-#include <linux/sched.h>
+-#include <linux/ioport.h>
+-#include <linux/mm.h>
+-#include <linux/console.h>
+ #include <linux/delay.h>
+ 
+-#include <asm/cpu.h>
+-#include <asm/bootinfo.h>
+-#include <asm/irq.h>
+-#include <asm/mipsregs.h>
+-#include <asm/reboot.h>
+-#include <asm/pgtable.h>
+ #include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-pb1x00/pb1500.h>
+ 
+Index: linux-2.6/arch/mips/au1000/pb1500/init.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/pb1500/init.c
++++ linux-2.6/arch/mips/au1000/pb1500/init.c
+@@ -27,14 +27,10 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
++
+ #include <linux/init.h>
+-#include <linux/mm.h>
+-#include <linux/sched.h>
+-#include <linux/bootmem.h>
+-#include <linux/string.h>
+ #include <linux/kernel.h>
+ 
+-#include <asm/addrspace.h>
+ #include <asm/bootinfo.h>
+ 
+ #include <prom.h>
+Index: linux-2.6/arch/mips/au1000/pb1500/irqmap.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/pb1500/irqmap.c
++++ linux-2.6/arch/mips/au1000/pb1500/irqmap.c
+@@ -25,26 +25,9 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+-#include <linux/errno.h>
++
+ #include <linux/init.h>
+-#include <linux/irq.h>
+-#include <linux/kernel_stat.h>
+-#include <linux/module.h>
+-#include <linux/signal.h>
+-#include <linux/sched.h>
+-#include <linux/types.h>
+-#include <linux/interrupt.h>
+-#include <linux/ioport.h>
+-#include <linux/timex.h>
+-#include <linux/slab.h>
+-#include <linux/random.h>
+-#include <linux/delay.h>
+-#include <linux/bitops.h>
+ 
+-#include <asm/bootinfo.h>
+-#include <asm/io.h>
+-#include <asm/mipsregs.h>
+-#include <asm/system.h>
+ #include <asm/mach-au1x00/au1000.h>
+ 
+ char irq_tab_alchemy[][5] __initdata = {
+Index: linux-2.6/arch/mips/au1000/pb1550/board_setup.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/pb1550/board_setup.c
++++ linux-2.6/arch/mips/au1000/pb1550/board_setup.c
+@@ -27,20 +27,9 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
++
+ #include <linux/init.h>
+-#include <linux/sched.h>
+-#include <linux/ioport.h>
+-#include <linux/mm.h>
+-#include <linux/console.h>
+-#include <linux/mc146818rtc.h>
+-#include <linux/delay.h>
+-
+-#include <asm/cpu.h>
+-#include <asm/bootinfo.h>
+-#include <asm/irq.h>
+-#include <asm/mipsregs.h>
+-#include <asm/reboot.h>
+-#include <asm/pgtable.h>
++
+ #include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-pb1x00/pb1550.h>
+ 
+Index: linux-2.6/arch/mips/au1000/pb1550/init.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/pb1550/init.c
++++ linux-2.6/arch/mips/au1000/pb1550/init.c
+@@ -27,14 +27,10 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
++
+ #include <linux/init.h>
+-#include <linux/mm.h>
+-#include <linux/sched.h>
+-#include <linux/bootmem.h>
+-#include <linux/string.h>
+ #include <linux/kernel.h>
+ 
+-#include <asm/addrspace.h>
+ #include <asm/bootinfo.h>
+ 
+ #include <prom.h>
+Index: linux-2.6/arch/mips/au1000/pb1550/irqmap.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/pb1550/irqmap.c
++++ linux-2.6/arch/mips/au1000/pb1550/irqmap.c
+@@ -25,26 +25,9 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+-#include <linux/errno.h>
++
+ #include <linux/init.h>
+-#include <linux/irq.h>
+-#include <linux/kernel_stat.h>
+-#include <linux/module.h>
+-#include <linux/signal.h>
+-#include <linux/sched.h>
+-#include <linux/types.h>
+-#include <linux/interrupt.h>
+-#include <linux/ioport.h>
+-#include <linux/timex.h>
+-#include <linux/slab.h>
+-#include <linux/random.h>
+-#include <linux/delay.h>
+-#include <linux/bitops.h>
+ 
+-#include <asm/bootinfo.h>
+-#include <asm/io.h>
+-#include <asm/mipsregs.h>
+-#include <asm/system.h>
+ #include <asm/mach-au1x00/au1000.h>
+ 
+ char irq_tab_alchemy[][5] __initdata = {
+Index: linux-2.6/arch/mips/au1000/xxs1500/board_setup.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/xxs1500/board_setup.c
++++ linux-2.6/arch/mips/au1000/xxs1500/board_setup.c
+@@ -23,19 +23,10 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
++
+ #include <linux/init.h>
+-#include <linux/sched.h>
+-#include <linux/ioport.h>
+-#include <linux/mm.h>
+-#include <linux/console.h>
+ #include <linux/delay.h>
+ 
+-#include <asm/cpu.h>
+-#include <asm/bootinfo.h>
+-#include <asm/irq.h>
+-#include <asm/mipsregs.h>
+-#include <asm/reboot.h>
+-#include <asm/pgtable.h>
+ #include <asm/mach-au1x00/au1000.h>
+ 
+ void board_reset(void)
+Index: linux-2.6/arch/mips/au1000/xxs1500/init.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/xxs1500/init.c
++++ linux-2.6/arch/mips/au1000/xxs1500/init.c
+@@ -26,14 +26,10 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
++
+ #include <linux/init.h>
+-#include <linux/mm.h>
+-#include <linux/sched.h>
+-#include <linux/bootmem.h>
+-#include <linux/string.h>
+ #include <linux/kernel.h>
+ 
+-#include <asm/addrspace.h>
+ #include <asm/bootinfo.h>
+ 
+ #include <prom.h>
+Index: linux-2.6/arch/mips/au1000/xxs1500/irqmap.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/xxs1500/irqmap.c
++++ linux-2.6/arch/mips/au1000/xxs1500/irqmap.c
+@@ -25,26 +25,9 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+-#include <linux/errno.h>
++
+ #include <linux/init.h>
+-#include <linux/irq.h>
+-#include <linux/kernel_stat.h>
+-#include <linux/module.h>
+-#include <linux/signal.h>
+-#include <linux/sched.h>
+-#include <linux/types.h>
+-#include <linux/interrupt.h>
+-#include <linux/ioport.h>
+-#include <linux/timex.h>
+-#include <linux/slab.h>
+-#include <linux/random.h>
+-#include <linux/delay.h>
+-#include <linux/bitops.h>
+ 
+-#include <asm/bootinfo.h>
+-#include <asm/io.h>
+-#include <asm/mipsregs.h>
+-#include <asm/system.h>
+ #include <asm/mach-au1x00/au1000.h>
+ 
+ struct au1xxx_irqmap __initdata au1xxx_irq_map[] = {
+Index: linux-2.6/arch/mips/pci/fixup-au1000.c
+===================================================================
+--- linux-2.6.orig/arch/mips/pci/fixup-au1000.c
++++ linux-2.6/arch/mips/pci/fixup-au1000.c
+@@ -26,13 +26,10 @@
+  *  with this program; if not, write  to the Free Software Foundation, Inc.,
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+-#include <linux/types.h>
++
+ #include <linux/pci.h>
+-#include <linux/kernel.h>
+ #include <linux/init.h>
+ 
+-#include <asm/mach-au1x00/au1000.h>
+-
+ extern char irq_tab_alchemy[][5];
+ 
+ int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)

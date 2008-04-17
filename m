@@ -1,61 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Apr 2008 12:00:13 +0100 (BST)
-Received: from oss.sgi.com ([192.48.170.157]:54444 "EHLO oss.sgi.com")
-	by ftp.linux-mips.org with ESMTP id S28576665AbYDQLAK (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 17 Apr 2008 12:00:10 +0100
-Received: from dl5rb.ham-radio-op.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.11.20060308/8.12.11/SuSE Linux 0.7) with ESMTP id m3HAxJhW013035
-	for <linux-mips@linux-mips.org>; Thu, 17 Apr 2008 03:59:20 -0700
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m3HAxsMK028752;
-	Thu, 17 Apr 2008 11:59:55 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m3HAxr4m028739;
-	Thu, 17 Apr 2008 11:59:53 +0100
-Date:	Thu, 17 Apr 2008 11:59:52 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc:	Roel Kluin <12o3l@tiscali.nl>, linux-mips@linux-mips.org,
-	lkml <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/6 v2] MIPS: ip27-timer: unsigned irq to evaluate
-	allocate_irqno()
-Message-ID: <20080417105930.GA28713@linux-mips.org>
-References: <480559DC.2060807@tiscali.nl> <20080416091554.GA6026@alpha.franken.de> <480616C6.3080203@tiscali.nl> <20080416222755.GA18832@alpha.franken.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 17 Apr 2008 12:34:44 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:56501 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S28576737AbYDQLem (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 17 Apr 2008 12:34:42 +0100
+Received: from [192.168.1.234] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 3DE843EC9; Thu, 17 Apr 2008 04:34:38 -0700 (PDT)
+Message-ID: <480735A8.8010900@ru.mvista.com>
+Date:	Thu, 17 Apr 2008 15:34:00 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080416222755.GA18832@alpha.franken.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Virus-Scanned: ClamAV 0.91.2/6021/Wed Feb 27 15:55:48 2008 on oss.sgi.com
-X-Virus-Status:	Clean
-Return-Path: <ralf@linux-mips.org>
+To:	Jens Seidel <jensseidel@users.sf.net>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Alchemy: kill useless #include's, #define's and extern's
+ (take 3)
+References: <200804162115.59620.sshtylyov@ru.mvista.com> <20080416200517.GA21402@merkur.sol.de>
+In-Reply-To: <20080416200517.GA21402@merkur.sol.de>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18946
+X-archive-position: 18947
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Apr 17, 2008 at 12:27:56AM +0200, Thomas Bogendoerfer wrote:
+Jens Seidel wrote:
 
-> On Wed, Apr 16, 2008 at 05:09:58PM +0200, Roel Kluin wrote:
-> > Thomas Bogendoerfer wrote:
-> > > On Wed, Apr 16, 2008 at 03:43:56AM +0200, Roel Kluin wrote:
-> > >> irq is unsigned, cast to signed to evaluate the allocate_irqno() return value,
-> >  
-> > >> +		if ((int) irq < 0)
-> > > 
-> > > Why don't you just make irq and rt_timer_irq an int ?
-> > 
-> > Ok, thanks, It should be right, but I cannot test this (no hardware).
-> 
-> I've tested it on real hardware.
-> 
-> Acked-By: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+>>Go thru the Alchemy code and hunt down every unneeded #include, #define, and
+>>extern (some of which refer to already long dead functions).
 
-Thanks, applied.
+> that's an impressive patch! Did you created it manually or do you have a
+> script which does the checks for you?
 
-  Ralf
+    All hand work. :-)
+
+WBR, Sergei

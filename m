@@ -1,29 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Apr 2008 23:33:44 +0100 (BST)
-Received: from hall2.aurel32.net ([91.121.138.14]:42958 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Apr 2008 23:49:56 +0100 (BST)
+Received: from hall2.aurel32.net ([91.121.138.14]:44930 "EHLO
 	hall2.aurel32.net") by ftp.linux-mips.org with ESMTP
-	id S20036890AbYDTWdm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 20 Apr 2008 23:33:42 +0100
-Received: from aurel32 by hall2.aurel32.net with local (Exim 4.63)
+	id S20037073AbYDTWty (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 20 Apr 2008 23:49:54 +0100
+Received: from volta.aurel32.net ([2002:52e8:2fb:1:21e:8cff:feb0:693b])
+	by hall2.aurel32.net with esmtpsa (TLS-1.0:RSA_AES_256_CBC_SHA1:32)
+	(Exim 4.63)
 	(envelope-from <aurelien@aurel32.net>)
-	id 1Jni6Q-0002ar-33; Mon, 21 Apr 2008 00:33:42 +0200
-Date:	Mon, 21 Apr 2008 00:33:42 +0200
+	id 1JniLv-000317-0o; Mon, 21 Apr 2008 00:49:43 +0200
+Received: from aurel32 by volta.aurel32.net with local (Exim 4.69)
+	(envelope-from <aurelien@aurel32.net>)
+	id 1JniLu-0005TC-Jf; Mon, 21 Apr 2008 00:49:42 +0200
+Date:	Mon, 21 Apr 2008 00:49:42 +0200
 From:	Aurelien Jarno <aurelien@aurel32.net>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: [PATCH 4/4] Add WGT634U reset button support
-Message-ID: <20080420223342.GD9783@hall2.aurel32.net>
-References: <20080420223028.GA9282@hall2.aurel32.net> <20080420223115.GA9783@hall2.aurel32.net> <20080420223159.GB9783@hall2.aurel32.net> <20080420223308.GC9783@hall2.aurel32.net>
+To:	Michael Buesch <mb@bu3sch.de>
+Cc:	Adrian Bunk <bunk@kernel.org>,
+	"John W. Linville" <linville@tuxdriver.com>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: mips BCM47XX compile error
+Message-ID: <20080420224942.GA21009@volta.aurel32.net>
+Mail-Followup-To: Aurelien Jarno <aurelien@aurel32.net>,
+	Michael Buesch <mb@bu3sch.de>, Adrian Bunk <bunk@kernel.org>,
+	"John W. Linville" <linville@tuxdriver.com>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org
+References: <20080420100347.GH1595@cs181133002.pp.htv.fi> <200804201214.46936.mb@bu3sch.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-15
 Content-Disposition: inline
-In-Reply-To: <20080420223308.GC9783@hall2.aurel32.net>
-X-Mailer: Mutt 1.5.13 (2006-08-11)
-User-Agent: Mutt/1.5.13 (2006-08-11)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <200804201214.46936.mb@bu3sch.de>
+User-Agent: Mozilla-Thunderbird 2.0.0.12 (X11/20080405)
 Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18973
+X-archive-position: 18974
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,79 +44,34 @@ X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 X-list: linux-mips
 
-This patch adds support for the reset button of WGT634U machine, using
-GPIO interrupts. Based on a patch from Michel Lespinasse.
+Michael Buesch a écrit :
+> On Sunday 20 April 2008 12:03:47 Adrian Bunk wrote:
+>> Commit aab547ce0d1493d400b6468c521a0137cd8c1edf
+>> (ssb: Add Gigabit Ethernet driver) causes the following
+>> build error with bcm47xx_defconfig:
+>>
+>> <--  snip  -->
+>>
+>> ...
+>>   LD      .tmp_vmlinux1
+>> arch/mips/pci/built-in.o: In function `pcibios_enable_device':
+>> (.text+0x1f8): undefined reference to `pcibios_plat_dev_init'
+>> arch/mips/pci/built-in.o: In function `pcibios_enable_device':
+>> (.text+0x1f8): relocation truncated to fit: R_MIPS_26 against `pcibios_plat_dev_init'
+>> arch/mips/pci/built-in.o: In function `pcibios_init':
+>> pci.c:(.init.text+0x14c): undefined reference to `pcibios_map_irq'
+>> pci.c:(.init.text+0x158): undefined reference to `pcibios_map_irq'
+>> make[1]: *** [.tmp_vmlinux1] Error 1
+> 
+> Some parts of the new 47xx arch code are not ported, yet.
 
-Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
----
- arch/mips/bcm47xx/wgt634u.c |   37 +++++++++++++++++++++++++++++++++++++
- 1 files changed, 37 insertions(+), 0 deletions(-)
+It would have been nice at least to warn before breaking a platform.
 
-diff --git a/arch/mips/bcm47xx/wgt634u.c b/arch/mips/bcm47xx/wgt634u.c
-index f9e309a..db1a72f 100644
---- a/arch/mips/bcm47xx/wgt634u.c
-+++ b/arch/mips/bcm47xx/wgt634u.c
-@@ -11,6 +11,9 @@
- #include <linux/leds.h>
- #include <linux/mtd/physmap.h>
- #include <linux/ssb/ssb.h>
-+#include <linux/interrupt.h>
-+#include <linux/reboot.h>
-+#include <asm/gpio.h>
- #include <asm/mach-bcm47xx/bcm47xx.h>
- 
- /* GPIO definitions for the WGT634U */
-@@ -99,6 +102,30 @@ static struct platform_device *wgt634u_devices[] __initdata = {
- 	&wgt634u_gpio_leds,
- };
- 
-+static irqreturn_t gpio_interrupt(int irq, void *ignored)
-+{
-+	int state;
-+
-+	/* Interrupts are shared, check if the current one is
-+	   a GPIO interrupt. */
-+	if (!ssb_chipco_irq_status(&ssb_bcm47xx.chipco,
-+				   SSB_CHIPCO_IRQ_GPIO))
-+		return IRQ_NONE;
-+
-+	state = gpio_get_value(WGT634U_GPIO_RESET);
-+
-+	/* Interrupt are level triggered, revert the interrupt polarity
-+	   to clear the interrupt. */
-+	gpio_polarity(WGT634U_GPIO_RESET, state);
-+
-+	if (!state) {
-+		printk(KERN_INFO "Reset button pressed");
-+		ctrl_alt_del();
-+	}
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int __init wgt634u_init(void)
- {
- 	/* There is no easy way to detect that we are running on a WGT634U
-@@ -115,6 +142,16 @@ static int __init wgt634u_init(void)
- 
- 		printk(KERN_INFO "WGT634U machine detected.\n");
- 
-+		if (!request_irq(gpio_to_irq(WGT634U_GPIO_RESET),
-+				 gpio_interrupt, IRQF_SHARED,
-+				 "WGT634U GPIO", &ssb_bcm47xx.chipco)) {
-+			gpio_direction_input(WGT634U_GPIO_RESET);
-+			gpio_intmask(WGT634U_GPIO_RESET, 1);
-+			ssb_chipco_irq_mask(&ssb_bcm47xx.chipco,
-+					    SSB_CHIPCO_IRQ_GPIO,
-+					    SSB_CHIPCO_IRQ_GPIO);
-+		}
-+
- 		wgt634u_flash_data.width = mcore->flash_buswidth;
- 		wgt634u_flash_resource.start = mcore->flash_window;
- 		wgt634u_flash_resource.end = mcore->flash_window
--- 
-1.5.5
+> Somebody should port all the new code from openwrt SVN over to mainline.
+> I don't really have time for that, at the moment, though.
 
+I gave a quick look at openwrt SVN, and only find 2.6.23 patches. I
+can't find a possible fix among them. Do you have a better pointer?
 
 -- 
   .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73

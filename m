@@ -1,75 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Apr 2008 19:38:32 +0100 (BST)
-Received: from courier.cs.helsinki.fi ([128.214.9.1]:12437 "EHLO
-	mail.cs.helsinki.fi") by ftp.linux-mips.org with ESMTP
-	id S20035928AbYDTSia (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 20 Apr 2008 19:38:30 +0100
-Received: from wrl-59.cs.helsinki.fi (wrl-59.cs.helsinki.fi [128.214.166.179])
-  (AUTH: PLAIN cs-relay, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
-  by mail.cs.helsinki.fi with esmtp; Sun, 20 Apr 2008 21:38:28 +0300
-  id 00068138.480B8DA4.00005025
-Received: by wrl-59.cs.helsinki.fi (Postfix, from userid 50795)
-	id 89DC1A0092; Sun, 20 Apr 2008 21:38:28 +0300 (EEST)
-Received: from localhost (localhost [127.0.0.1])
-	by wrl-59.cs.helsinki.fi (Postfix) with ESMTP id 786C1A006C;
-	Sun, 20 Apr 2008 21:38:28 +0300 (EEST)
-Date:	Sun, 20 Apr 2008 21:38:28 +0300 (EEST)
-From:	"=?ISO-8859-1?Q?Ilpo_J=E4rvinen?=" <ilpo.jarvinen@helsinki.fi>
-X-X-Sender: ijjarvin@wrl-59.cs.helsinki.fi
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Apr 2008 23:30:31 +0100 (BST)
+Received: from hall2.aurel32.net ([91.121.138.14]:5517 "EHLO hall2.aurel32.net")
+	by ftp.linux-mips.org with ESMTP id S20036868AbYDTWa3 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 20 Apr 2008 23:30:29 +0100
+Received: from aurel32 by hall2.aurel32.net with local (Exim 4.63)
+	(envelope-from <aurelien@aurel32.net>)
+	id 1Jni3I-0002Xh-1c; Mon, 21 Apr 2008 00:30:28 +0200
+Date:	Mon, 21 Apr 2008 00:30:28 +0200
+From:	Aurelien Jarno <aurelien@aurel32.net>
 To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] [MIPS] Fix order of BRK_BUG in case
-In-Reply-To: <20080420112417.GA21078@linux-mips.org>
-Message-ID: <Pine.LNX.4.64.0804202132010.4083@wrl-59.cs.helsinki.fi>
-References: <Pine.LNX.4.64.0804192310460.20623@wrl-59.cs.helsinki.fi>
- <20080420112417.GA21078@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: [PATCH 0/4] MIPS BCM47xx patches (resend)
+Message-ID: <20080420223028.GA9282@hall2.aurel32.net>
 MIME-Version: 1.0
-Content-Type: MULTIPART/MIXED; BOUNDARY="-696208474-2054475427-1208716708=:4083"
-Return-Path: <ilpo.jarvinen@helsinki.fi>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+X-Mailer: Mutt 1.5.13 (2006-08-11)
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18968
+X-archive-position: 18969
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ilpo.jarvinen@helsinki.fi
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 X-list: linux-mips
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+The following 4 patches have been sent 2 months ago, but they haven't
+been been merged yet and I haven't received any comment. I am resending 
+them again, in the hope to see them merged for 2.6.26.
 
----696208474-2054475427-1208716708=:4083
-Content-Type: TEXT/PLAIN; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-
-On Sun, 20 Apr 2008, Ralf Baechle wrote:
-
-> On Sat, Apr 19, 2008 at 11:16:36PM +0300, Ilpo Järvinen wrote:
-> 
-> > diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-> > index 984c0d0..4dfcd61 100644
-> > --- a/arch/mips/kernel/traps.c
-> > +++ b/arch/mips/kernel/traps.c
-> > @@ -694,7 +694,7 @@ asmlinkage void do_bp(struct pt_regs *regs)
-> >  		info.si_addr = (void __user *) regs->cp0_epc;
-> >  		force_sig_info(SIGFPE, &info, current);
-> >  		break;
-> > -	case BRK_BUG:
-> > +	case BRK_BUG << 10:
-> >  		die("Kernel bug detected", regs);
->                 ^^^
-> 
-> Now what will be happening if with your patch applied a "break BRK_BUG"
-> instruction is executed in userspace?
-
-I suppose you know better, I can only guess :-). Like I said, I have no 
-idea about mips code, maybe one would want die_if_kernel() kernel 
-instead...? My main point was that the conversion made by commit 63dc68a8 
-here seems questionable (resulted in dead code and would that not have 
-been dead code the question you asked would apply to that code fragment), 
-what is the right thing to do, you sure know better than I do :-).
+The first patch is really important to make PCI working again on this
+platform (broken since 2.6.24).
 
 -- 
- i.
----696208474-2054475427-1208716708=:4083--
+  .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
+ : :' :  Debian developer           | Electrical Engineer
+ `. `'   aurel32@debian.org         | aurelien@aurel32.net
+   `-    people.debian.org/~aurel32 | www.aurel32.net

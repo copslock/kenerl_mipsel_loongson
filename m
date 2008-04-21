@@ -1,62 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Apr 2008 16:48:08 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:56209 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20040458AbYDUPsG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 21 Apr 2008 16:48:06 +0100
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id C3CF4318AFC;
-	Mon, 21 Apr 2008 15:49:26 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Mon, 21 Apr 2008 15:49:26 +0000 (UTC)
-Received: from dl2.hq2.avtrex.com ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Mon, 21 Apr 2008 08:47:52 -0700
-Message-ID: <480CB728.7060402@avtrex.com>
-Date:	Mon, 21 Apr 2008 08:47:52 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 2.0.0.12 (X11/20080226)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Apr 2008 17:12:54 +0100 (BST)
+Received: from oss.sgi.com ([192.48.170.157]:58804 "EHLO oss.sgi.com")
+	by ftp.linux-mips.org with ESMTP id S20040672AbYDUQMv (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 21 Apr 2008 17:12:51 +0100
+Received: from dl5rb.ham-radio-op.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.12.11.20060308/8.12.11/SuSE Linux 0.7) with ESMTP id m3LGBrp8001253
+	for <linux-mips@linux-mips.org>; Mon, 21 Apr 2008 09:12:00 -0700
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m3LGCNMr004515;
+	Mon, 21 Apr 2008 17:12:23 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m3LGCLag004501;
+	Mon, 21 Apr 2008 17:12:21 +0100
+Date:	Mon, 21 Apr 2008 17:12:21 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	David Daney <ddaney@avtrex.com>
+Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
 Subject: Re: [MIPS] Fix handling of trap and breakpoint instructions
-References: <S20041689AbYDUAiN/20080421003813Z+6727@ftp.linux-mips.org> <20080421.100721.07644724.nemoto@toshiba-tops.co.jp>
-In-Reply-To: <20080421.100721.07644724.nemoto@toshiba-tops.co.jp>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 21 Apr 2008 15:47:52.0947 (UTC) FILETIME=[0F3C0430:01C8A3C7]
-Return-Path: <ddaney@avtrex.com>
+Message-ID: <20080421161221.GA21641@linux-mips.org>
+References: <S20041689AbYDUAiN/20080421003813Z+6727@ftp.linux-mips.org> <20080421.100721.07644724.nemoto@toshiba-tops.co.jp> <480CB728.7060402@avtrex.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <480CB728.7060402@avtrex.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Virus-Scanned: ClamAV 0.91.2/6021/Wed Feb 27 15:55:48 2008 on oss.sgi.com
+X-Virus-Status:	Clean
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18982
+X-archive-position: 18983
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
->> Author: Ralf Baechle <ralf@linux-mips.org> Sun Apr 20 16:28:54 2008 +0100
->> Commit: 5881bb0de64887a60f7f49922cf73a3b4d40fc01
->> Gitweb: http://www.linux-mips.org/g/linux/5881bb0d
->> Branch: master
-> 
-> You must drop left shift of this line too.
-> 
-> 		if (bcode == (BRK_DIVZERO << 10))
-> 
+On Mon, Apr 21, 2008 at 08:47:52AM -0700, David Daney wrote:
 
-Note that there has been some confusion about break codes in gas over 
-the years.  Ancient versions (I am not sure which) generated different 
-break codes than recent versions.
+> Note that there has been some confusion about break codes in gas over the 
+> years.  Ancient versions (I am not sure which) generated different break 
+> codes than recent versions.
+>
+> Before changing it make sure that you don't break existing user space code.
+>
+> One problem (fixed around 2.4.25 or so) was the integer division by zero in 
+> user space would result in SIGTRAP instead of SIGFPE.   If you change the 
+> break code handling you should verify that you don't break this.
 
-Before changing it make sure that you don't break existing user space code.
+Not quite correct.  Very old and recent binutils are bug compatible.  It's
+middle age gcc which unfortunately fixed the bug creating a bug ;-)
 
-One problem (fixed around 2.4.25 or so) was the integer division by zero 
-in user space would result in SIGTRAP instead of SIGFPE.   If you change 
-the break code handling you should verify that you don't break this.
-
-David Daney
+  Ralf

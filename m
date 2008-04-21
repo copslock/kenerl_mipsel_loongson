@@ -1,49 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Apr 2008 17:16:51 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:20004 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20040685AbYDUQQs (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 21 Apr 2008 17:16:48 +0100
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id AA7773EC9; Mon, 21 Apr 2008 09:16:43 -0700 (PDT)
-Message-ID: <480CBDC8.9090500@ru.mvista.com>
-Date:	Mon, 21 Apr 2008 20:16:08 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2008 00:21:06 +0100 (BST)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:5603 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S20042941AbYDUXVD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 22 Apr 2008 00:21:03 +0100
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 93131318CA0;
+	Mon, 21 Apr 2008 23:22:30 +0000 (UTC)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [67.116.42.147])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
+	Mon, 21 Apr 2008 23:22:30 +0000 (UTC)
+Received: from [192.168.7.54] ([192.168.7.54]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 21 Apr 2008 16:20:50 -0700
+Message-ID: <480D2151.2020701@avtrex.com>
+Date:	Mon, 21 Apr 2008 16:20:49 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 1.5.0.12 (X11/20071019)
 MIME-Version: 1.0
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/2] Pb1200: do register SMC 91C111
-References: <200804152226.18762.sshtylyov@ru.mvista.com>
-In-Reply-To: <200804152226.18762.sshtylyov@ru.mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+To:	linux-mips@linux-mips.org
+Cc:	linux-kernel@vger.kernel.org
+Subject: [Patch 0/6] MIPS Hardware watchpoint support for gdb.
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+X-OriginalArrivalTime: 21 Apr 2008 23:20:50.0131 (UTC) FILETIME=[56193230:01C8A406]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18984
+X-archive-position: 18985
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello, I wrote:
+This series of patches adds hardware watch register support for MIPS to
+the kernel.  This is kind of a chicken-and-egg type of problem as you
+need gdb support to test it, but you cannot test gdb until the kernel
+support is present.  These kernel patches are preliminary and
+undoubtedly will need some tweaking.
 
-> Pb1200 does have SMC 91C111 Ethernet chip on board but the platform code did
-> not register it, so one couldn't mount NFS...
+If you want to test this out, you will need to build a suitable gdb
+using the patch here:
 
-> Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+http://sourceware.org/ml/gdb-patches/2008-04/msg00439.html
 
-> ---
-> This is definitely a bad place for the board #ifdef's, so I'm going to submit
-> a patch moving IDE and 91C111 registration into arch/mips/au1000/pb1200/...
+The patches are against current linux-mips.org (commit
+096bc9f852d4e782b318218d82181f4b09bac63f)
 
-    Err, Ralf, since these 2 patches haven't got merged and haven't got into 
-2.6.25 anyway, maybe it makes sense to ignore them, so that I do these change 
-along with moving the code into arch/mips/au1000/pb1200/platform.c?
+My main test platform only runs 2.6.15, so I could not fully test them
+in the current kernel.  I did test under Qemu, but since it lacks full
+watch register support in mips, I could not verify that it really works
+there.
 
-WBR, Sergei
+Well without further ado, here they come.
+
+David Daney

@@ -1,53 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Apr 2008 10:30:25 +0100 (BST)
-Received: from oss.sgi.com ([192.48.170.157]:49389 "EHLO oss.sgi.com")
-	by ftp.linux-mips.org with ESMTP id S20022898AbYDUJaX (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 21 Apr 2008 10:30:23 +0100
-Received: from dl5rb.ham-radio-op.net (localhost [127.0.0.1])
-	by oss.sgi.com (8.12.11.20060308/8.12.11/SuSE Linux 0.7) with ESMTP id m3L9TZsJ031213
-	for <linux-mips@linux-mips.org>; Mon, 21 Apr 2008 02:29:35 -0700
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m3L9UGC0017252;
-	Mon, 21 Apr 2008 10:30:16 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m3L9UFVC017243;
-	Mon, 21 Apr 2008 10:30:15 +0100
-Date:	Mon, 21 Apr 2008 10:30:15 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [MIPS] Fix handling of trap and breakpoint instructions
-Message-ID: <20080421093015.GA26982@linux-mips.org>
-References: <S20041689AbYDUAiN/20080421003813Z+6727@ftp.linux-mips.org> <20080421.100721.07644724.nemoto@toshiba-tops.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Apr 2008 14:49:23 +0100 (BST)
+Received: from vs166246.vserver.de ([62.75.166.246]:32171 "EHLO
+	vs166246.vserver.de") by ftp.linux-mips.org with ESMTP
+	id S20028882AbYDUNtV convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 21 Apr 2008 14:49:21 +0100
+Received: from t4f38.t.pppool.de ([89.55.79.56] helo=powermac.local)
+	by vs166246.vserver.de with esmtpa (Exim 4.63)
+	(envelope-from <mb@bu3sch.de>)
+	id 1JnwO7-0002Y5-3H; Mon, 21 Apr 2008 13:48:55 +0000
+From:	Michael Buesch <mb@bu3sch.de>
+To:	Aurelien Jarno <aurelien@aurel32.net>
+Subject: Re: mips BCM47XX compile error
+Date:	Mon, 21 Apr 2008 15:48:33 +0200
+User-Agent: KMail/1.9.6 (enterprise 0.20070907.709405)
+Cc:	Adrian Bunk <bunk@kernel.org>,
+	"John W. Linville" <linville@tuxdriver.com>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org
+References: <20080420100347.GH1595@cs181133002.pp.htv.fi> <200804201214.46936.mb@bu3sch.de> <20080420224942.GA21009@volta.aurel32.net>
+In-Reply-To: <20080420224942.GA21009@volta.aurel32.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+  charset="iso-8859-15"
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <20080421.100721.07644724.nemoto@toshiba-tops.co.jp>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Virus-Scanned: ClamAV 0.91.2/6021/Wed Feb 27 15:55:48 2008 on oss.sgi.com
-X-Virus-Status:	Clean
-Return-Path: <ralf@linux-mips.org>
+Message-Id: <200804211548.33769.mb@bu3sch.de>
+Return-Path: <mb@bu3sch.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18979
+X-archive-position: 18980
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mb@bu3sch.de
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Apr 21, 2008 at 10:07:21AM +0900, Atsushi Nemoto wrote:
-
-> > Author: Ralf Baechle <ralf@linux-mips.org> Sun Apr 20 16:28:54 2008 +0100
-> > Commit: 5881bb0de64887a60f7f49922cf73a3b4d40fc01
-> > Gitweb: http://www.linux-mips.org/g/linux/5881bb0d
-> > Branch: master
+On Monday 21 April 2008 00:49:42 Aurelien Jarno wrote:
+> Michael Buesch a écrit :
+> > On Sunday 20 April 2008 12:03:47 Adrian Bunk wrote:
+> >> Commit aab547ce0d1493d400b6468c521a0137cd8c1edf
+> >> (ssb: Add Gigabit Ethernet driver) causes the following
+> >> build error with bcm47xx_defconfig:
+> >>
+> >> <--  snip  -->
+> >>
+> >> ...
+> >>   LD      .tmp_vmlinux1
+> >> arch/mips/pci/built-in.o: In function `pcibios_enable_device':
+> >> (.text+0x1f8): undefined reference to `pcibios_plat_dev_init'
+> >> arch/mips/pci/built-in.o: In function `pcibios_enable_device':
+> >> (.text+0x1f8): relocation truncated to fit: R_MIPS_26 against `pcibios_plat_dev_init'
+> >> arch/mips/pci/built-in.o: In function `pcibios_init':
+> >> pci.c:(.init.text+0x14c): undefined reference to `pcibios_map_irq'
+> >> pci.c:(.init.text+0x158): undefined reference to `pcibios_map_irq'
+> >> make[1]: *** [.tmp_vmlinux1] Error 1
+> > 
+> > Some parts of the new 47xx arch code are not ported, yet.
 > 
-> You must drop left shift of this line too.
+> It would have been nice at least to warn before breaking a platform.
+
+You know, I intentionally did this, because I'm evil...
+
+> > Somebody should port all the new code from openwrt SVN over to mainline.
+> > I don't really have time for that, at the moment, though.
 > 
-> 		if (bcode == (BRK_DIVZERO << 10))
+> I gave a quick look at openwrt SVN, and only find 2.6.23 patches. I
+> can't find a possible fix among them. Do you have a better pointer?
 
-Sigh, damn code duplication.  Will fix and cleanup.
+It's fixed in the plain files that are copied to the build directory.
 
-  Ralf
+-- 
+Greetings Michael.

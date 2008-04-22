@@ -1,60 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2008 15:58:43 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:9209 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S28578514AbYDVO6l (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 22 Apr 2008 15:58:41 +0100
-Received: from localhost (p7186-ipad207funabasi.chiba.ocn.ne.jp [222.145.89.186])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 78A1AC1DA; Tue, 22 Apr 2008 23:58:30 +0900 (JST)
-Date:	Tue, 22 Apr 2008 23:59:30 +0900 (JST)
-Message-Id: <20080422.235930.75184305.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] rbtx4938: minor cleanup
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2008 17:23:51 +0100 (BST)
+Received: from NaN.false.org ([208.75.86.248]:42962 "EHLO nan.false.org")
+	by ftp.linux-mips.org with ESMTP id S28578959AbYDVQXt (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 22 Apr 2008 17:23:49 +0100
+Received: from nan.false.org (localhost [127.0.0.1])
+	by nan.false.org (Postfix) with ESMTP id 744D4983DB;
+	Tue, 22 Apr 2008 16:23:44 +0000 (GMT)
+Received: from caradoc.them.org (22.svnf5.xdsl.nauticom.net [209.195.183.55])
+	by nan.false.org (Postfix) with ESMTP id 39E9398060;
+	Tue, 22 Apr 2008 16:23:44 +0000 (GMT)
+Received: from drow by caradoc.them.org with local (Exim 4.69)
+	(envelope-from <drow@caradoc.them.org>)
+	id 1JoLHT-00040t-EI; Tue, 22 Apr 2008 12:23:43 -0400
+Date:	Tue, 22 Apr 2008 12:23:43 -0400
+From:	Daniel Jacobowitz <dan@debian.org>
+To:	David Daney <ddaney@avtrex.com>
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [Patch 6/6] Ptrace support for HARDWARE_WATCHPOINTS.
+Message-ID: <20080422162343.GA14790@caradoc.them.org>
+Mail-Followup-To: David Daney <ddaney@avtrex.com>,
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+References: <480D2151.2020701@avtrex.com> <480D33EB.30808@avtrex.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <480D33EB.30808@avtrex.com>
+User-Agent: Mutt/1.5.17 (2007-12-11)
+Return-Path: <drow@false.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18992
+X-archive-position: 18993
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: dan@debian.org
 Precedence: bulk
 X-list: linux-mips
 
-* Do not initialize res->parent for platform device.
+On Mon, Apr 21, 2008 at 05:40:11PM -0700, David Daney wrote:
+> +struct mips32_watch_regs {
+> +	unsigned int num_valid;
+> +	unsigned int reg_mask;
+> +	unsigned int irw_mask;
+> +	unsigned long watchlo[8];
+> +	unsigned int watchhi[8];
+> +};
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
-Patch against linux-queue tree.
+Please do not use long in new ptrace interfaces.  Use either
+uint32_t or uint64_t as appropriate so that it doesn't depend
+on how the kernel or debugger was built.
 
- arch/mips/tx4938/toshiba_rbtx4938/setup.c |    2 --
- 1 files changed, 0 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/tx4938/toshiba_rbtx4938/setup.c b/arch/mips/tx4938/toshiba_rbtx4938/setup.c
-index 2fbf7d4..3a3659e 100644
---- a/arch/mips/tx4938/toshiba_rbtx4938/setup.c
-+++ b/arch/mips/tx4938/toshiba_rbtx4938/setup.c
-@@ -1026,7 +1026,6 @@ static void __init txx9_spi_init(unsigned long base, int irq)
- 			.start	= base,
- 			.end	= base + 0x20 - 1,
- 			.flags	= IORESOURCE_MEM,
--			.parent	= &tx4938_reg_resource,
- 		}, {
- 			.start	= irq,
- 			.flags	= IORESOURCE_IRQ,
-@@ -1078,7 +1077,6 @@ static int __init txx9_wdt_init(unsigned long base)
- 		.start	= base,
- 		.end	= base + 0x100 - 1,
- 		.flags	= IORESOURCE_MEM,
--		.parent	= &tx4938_reg_resource,
- 	};
- 	struct platform_device *dev =
- 		platform_device_register_simple("txx9wdt", -1, &res, 1);
+-- 
+Daniel Jacobowitz
+CodeSourcery

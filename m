@@ -1,199 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2008 01:40:24 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:6536 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20043709AbYDVAkV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 22 Apr 2008 01:40:21 +0100
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id BC9B9318C66;
-	Tue, 22 Apr 2008 00:41:54 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Tue, 22 Apr 2008 00:41:54 +0000 (UTC)
-Received: from dl2.hq2.avtrex.com ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Mon, 21 Apr 2008 17:40:12 -0700
-Message-ID: <480D33EB.30808@avtrex.com>
-Date:	Mon, 21 Apr 2008 17:40:11 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 2.0.0.12 (X11/20080226)
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2008 15:58:43 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:9209 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S28578514AbYDVO6l (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 22 Apr 2008 15:58:41 +0100
+Received: from localhost (p7186-ipad207funabasi.chiba.ocn.ne.jp [222.145.89.186])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 78A1AC1DA; Tue, 22 Apr 2008 23:58:30 +0900 (JST)
+Date:	Tue, 22 Apr 2008 23:59:30 +0900 (JST)
+Message-Id: <20080422.235930.75184305.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
-Cc:	linux-kernel@vger.kernel.org
-Subject: [Patch 6/6] Ptrace support for HARDWARE_WATCHPOINTS.
-References: <480D2151.2020701@avtrex.com>
-In-Reply-To: <480D2151.2020701@avtrex.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] rbtx4938: minor cleanup
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 22 Apr 2008 00:40:12.0792 (UTC) FILETIME=[6CDD9780:01C8A411]
-Return-Path: <ddaney@avtrex.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18991
+X-archive-position: 18992
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-This is the final part of the patch.  Here we add ptrace support so that
-gdb can read and set the watch register values.
+* Do not initialize res->parent for platform device.
 
-We add two new ptrace requests PTRACE_GET_WATCH_REGS, and
-PTRACE_SET_WATCH_REGS to access the watch registers.  Since MIPS has more
-than one format for watch registers, the data structure is a union, the
-first structure member is an enum that tells us which layout is in use.
-For this first cut at the patch, I only support mips32 style registers.
-
-Signed-off-by: David Daney <ddaney@avtrex.com>
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
- arch/mips/kernel/ptrace.c |   81 +++++++++++++++++++++++++++++++++++++++++++++
- include/asm-mips/ptrace.h |   23 +++++++++++++
- 2 files changed, 104 insertions(+), 0 deletions(-)
+Patch against linux-queue tree.
 
-diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
-index 35234b9..d6dece8 100644
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -46,7 +46,12 @@
-  */
- void ptrace_disable(struct task_struct *child)
- {
-+#ifdef CONFIG_HARDWARE_WATCHPOINTS
-+	/* Don't load the watchpoint registers for the ex-child. */
-+	clear_tsk_thread_flag(child, TIF_LOAD_WATCH);
-+#else
- 	/* Nothing to do.. */
-+#endif
- }
- 
- /*
-@@ -167,6 +172,72 @@ int ptrace_setfpregs(struct task_struct *child, __u32 __user *data)
- 	return 0;
- }
- 
-+#ifdef CONFIG_HARDWARE_WATCHPOINTS
-+int ptrace_get_watch_regs(struct task_struct *child,
-+			  struct pt_watch_regs __user *addr)
-+{
-+	int i;
-+
-+	if (!cpu_has_watch)
-+		return -EIO;
-+	if (!access_ok(VERIFY_WRITE, addr, sizeof(struct pt_watch_regs)))
-+		return -EIO;
-+
-+	__put_user (pt_watch_style_mips32, &addr->style);
-+	__put_user (current_cpu_data.watch_reg_count, &addr->mips32.num_valid);
-+	__put_user (current_cpu_data.watch_reg_mask, &addr->mips32.reg_mask);
-+	__put_user (current_cpu_data.watch_reg_irw, &addr->mips32.irw_mask);
-+	for (i = 0; i < current_cpu_data.watch_reg_count; i++) {
-+		__put_user (child->thread.watch.mips32.watchlo[i],
-+			    &addr->mips32.watchlo[i]);
-+		__put_user (child->thread.watch.mips32.watchhi[i] & 0xfff,
-+			    &addr->mips32.watchhi[i]);
-+	}
-+
-+	return 0;
-+}
-+
-+int ptrace_set_watch_regs(struct task_struct *child,
-+			  struct pt_watch_regs __user *addr)
-+{
-+	int i;
-+	int watch_active = 0;
-+	unsigned long lt[NUM_WATCH_REGS];
-+	unsigned int ht[NUM_WATCH_REGS];
-+
-+	if (!cpu_has_watch)
-+		return -EIO;
-+	if (!access_ok(VERIFY_READ, addr, sizeof(struct pt_watch_regs)))
-+		return -EIO;
-+	/* Check the values. */
-+	for (i = 0; i < NUM_WATCH_REGS; i++) {
-+		__get_user(lt[i], &addr->mips32.watchlo[i]);
-+		if (lt[i] & __UA_LIMIT)
-+			return -EINVAL;
-+
-+		__get_user(ht[i], &addr->mips32.watchhi[i]);
-+		if (ht[i] & ~0xff8)
-+			return -EINVAL;
-+	}
-+	/* Install them. */
-+	for (i = 0; i < NUM_WATCH_REGS; i++) {
-+		if (lt[i] & 7)
-+			watch_active = 1;
-+		child->thread.watch.mips32.watchlo[i] = lt[i];
-+		/* Set the G bit. */
-+		child->thread.watch.mips32.watchhi[i] = ht[i] | 0x40000000;
-+	}
-+
-+	if (watch_active)
-+		set_tsk_thread_flag(child, TIF_LOAD_WATCH);
-+	else
-+		clear_tsk_thread_flag(child, TIF_LOAD_WATCH);
-+
-+	return 0;
-+}
-+
-+#endif
-+
- long arch_ptrace(struct task_struct *child, long request, long addr, long data)
- {
- 	int ret;
-@@ -439,7 +510,17 @@ long arch_ptrace(struct task_struct *child, long request, long addr, long data)
- 		ret = put_user(task_thread_info(child)->tp_value,
- 				(unsigned long __user *) data);
- 		break;
-+#ifdef CONFIG_HARDWARE_WATCHPOINTS
-+	case PTRACE_GET_WATCH_REGS:
-+		ret = ptrace_get_watch_regs(child,
-+					(struct pt_watch_regs __user *) addr);
-+		break;
- 
-+	case PTRACE_SET_WATCH_REGS:
-+		ret = ptrace_set_watch_regs(child,
-+					(struct pt_watch_regs __user *) addr);
-+		break;
-+#endif
- 	default:
- 		ret = ptrace_request(child, request, addr, data);
- 		break;
-diff --git a/include/asm-mips/ptrace.h b/include/asm-mips/ptrace.h
-index 786f7e3..8fb1bcc 100644
---- a/include/asm-mips/ptrace.h
-+++ b/include/asm-mips/ptrace.h
-@@ -71,6 +71,29 @@ struct pt_regs {
- #define PTRACE_POKEDATA_3264	0xc3
- #define PTRACE_GET_THREAD_AREA_3264	0xc4
- 
-+/* Read and write watchpoint registers.  */
-+enum pt_watch_style {
-+	pt_watch_style_mips32,
-+	pt_watch_style_mips64
-+};
-+struct mips32_watch_regs {
-+	unsigned int num_valid;
-+	unsigned int reg_mask;
-+	unsigned int irw_mask;
-+	unsigned long watchlo[8];
-+	unsigned int watchhi[8];
-+};
-+
-+struct pt_watch_regs {
-+	enum pt_watch_style style;
-+	union {
-+		struct mips32_watch_regs mips32;
-+	};
-+};
-+
-+#define PTRACE_GET_WATCH_REGS	0xd0
-+#define PTRACE_SET_WATCH_REGS	0xd1
-+
- #ifdef __KERNEL__
- 
- #include <linux/linkage.h>
--- 
-1.5.5
+ arch/mips/tx4938/toshiba_rbtx4938/setup.c |    2 --
+ 1 files changed, 0 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/tx4938/toshiba_rbtx4938/setup.c b/arch/mips/tx4938/toshiba_rbtx4938/setup.c
+index 2fbf7d4..3a3659e 100644
+--- a/arch/mips/tx4938/toshiba_rbtx4938/setup.c
++++ b/arch/mips/tx4938/toshiba_rbtx4938/setup.c
+@@ -1026,7 +1026,6 @@ static void __init txx9_spi_init(unsigned long base, int irq)
+ 			.start	= base,
+ 			.end	= base + 0x20 - 1,
+ 			.flags	= IORESOURCE_MEM,
+-			.parent	= &tx4938_reg_resource,
+ 		}, {
+ 			.start	= irq,
+ 			.flags	= IORESOURCE_IRQ,
+@@ -1078,7 +1077,6 @@ static int __init txx9_wdt_init(unsigned long base)
+ 		.start	= base,
+ 		.end	= base + 0x100 - 1,
+ 		.flags	= IORESOURCE_MEM,
+-		.parent	= &tx4938_reg_resource,
+ 	};
+ 	struct platform_device *dev =
+ 		platform_device_register_simple("txx9wdt", -1, &res, 1);

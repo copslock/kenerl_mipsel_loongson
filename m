@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2008 01:33:17 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:5357 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2008 01:40:24 +0100 (BST)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:6536 "EHLO
 	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20043690AbYDVAdP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 22 Apr 2008 01:33:15 +0100
+	id S20043709AbYDVAkV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 22 Apr 2008 01:40:21 +0100
 Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 142E7318F62;
-	Tue, 22 Apr 2008 00:34:49 +0000 (UTC)
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id BC9B9318C66;
+	Tue, 22 Apr 2008 00:41:54 +0000 (UTC)
 X-Authenticated-Name: js.dnsmadeeasy
 X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
 Received: from avtrex.com (unknown [67.116.42.147])
 	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Tue, 22 Apr 2008 00:34:48 +0000 (UTC)
+	Tue, 22 Apr 2008 00:41:54 +0000 (UTC)
 Received: from dl2.hq2.avtrex.com ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Mon, 21 Apr 2008 17:33:05 -0700
-Message-ID: <480D3240.5050106@avtrex.com>
-Date:	Mon, 21 Apr 2008 17:33:04 -0700
+	 Mon, 21 Apr 2008 17:40:12 -0700
+Message-ID: <480D33EB.30808@avtrex.com>
+Date:	Mon, 21 Apr 2008 17:40:11 -0700
 From:	David Daney <ddaney@avtrex.com>
 User-Agent: Thunderbird 2.0.0.12 (X11/20080226)
 MIME-Version: 1.0
 To:	linux-mips@linux-mips.org
 Cc:	linux-kernel@vger.kernel.org
-Subject: [Patch 5/6] Scheduler support for HARDWARE_WATCHPOINTS.
+Subject: [Patch 6/6] Ptrace support for HARDWARE_WATCHPOINTS.
 References: <480D2151.2020701@avtrex.com>
 In-Reply-To: <480D2151.2020701@avtrex.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 22 Apr 2008 00:33:05.0654 (UTC) FILETIME=[6E458160:01C8A410]
+X-OriginalArrivalTime: 22 Apr 2008 00:40:12.0792 (UTC) FILETIME=[6CDD9780:01C8A411]
 Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18990
+X-archive-position: 18991
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,37 +38,162 @@ X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-This is the meat of the patch.  Here we install the watch register values when we
-schedule a new thread.
+This is the final part of the patch.  Here we add ptrace support so that
+gdb can read and set the watch register values.
 
-The implemtation of __restore_watch() is in asm/watch.h.  In the case where there
-are no watch registers to install (the normal case) the overhead is 5 machine
-instructions with gcc-3.4.3.
+We add two new ptrace requests PTRACE_GET_WATCH_REGS, and
+PTRACE_SET_WATCH_REGS to access the watch registers.  Since MIPS has more
+than one format for watch registers, the data structure is a union, the
+first structure member is an enum that tells us which layout is in use.
+For this first cut at the patch, I only support mips32 style registers.
 
 Signed-off-by: David Daney <ddaney@avtrex.com>
 ---
- include/asm-mips/system.h |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+ arch/mips/kernel/ptrace.c |   81 +++++++++++++++++++++++++++++++++++++++++++++
+ include/asm-mips/ptrace.h |   23 +++++++++++++
+ 2 files changed, 104 insertions(+), 0 deletions(-)
 
-diff --git a/include/asm-mips/system.h b/include/asm-mips/system.h
-index a944eda..cd30f83 100644
---- a/include/asm-mips/system.h
-+++ b/include/asm-mips/system.h
-@@ -20,6 +20,7 @@
- #include <asm/cmpxchg.h>
- #include <asm/cpu-features.h>
- #include <asm/dsp.h>
-+#include <asm/watch.h>
- #include <asm/war.h>
+diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
+index 35234b9..d6dece8 100644
+--- a/arch/mips/kernel/ptrace.c
++++ b/arch/mips/kernel/ptrace.c
+@@ -46,7 +46,12 @@
+  */
+ void ptrace_disable(struct task_struct *child)
+ {
++#ifdef CONFIG_HARDWARE_WATCHPOINTS
++	/* Don't load the watchpoint registers for the ex-child. */
++	clear_tsk_thread_flag(child, TIF_LOAD_WATCH);
++#else
+ 	/* Nothing to do.. */
++#endif
+ }
  
+ /*
+@@ -167,6 +172,72 @@ int ptrace_setfpregs(struct task_struct *child, __u32 __user *data)
+ 	return 0;
+ }
  
-@@ -76,6 +77,7 @@ do {									\
- 		__restore_dsp(current);					\
- 	if (cpu_has_userlocal)						\
- 		write_c0_userlocal(current_thread_info()->tp_value);	\
-+	__restore_watch();						\
- } while (0)
++#ifdef CONFIG_HARDWARE_WATCHPOINTS
++int ptrace_get_watch_regs(struct task_struct *child,
++			  struct pt_watch_regs __user *addr)
++{
++	int i;
++
++	if (!cpu_has_watch)
++		return -EIO;
++	if (!access_ok(VERIFY_WRITE, addr, sizeof(struct pt_watch_regs)))
++		return -EIO;
++
++	__put_user (pt_watch_style_mips32, &addr->style);
++	__put_user (current_cpu_data.watch_reg_count, &addr->mips32.num_valid);
++	__put_user (current_cpu_data.watch_reg_mask, &addr->mips32.reg_mask);
++	__put_user (current_cpu_data.watch_reg_irw, &addr->mips32.irw_mask);
++	for (i = 0; i < current_cpu_data.watch_reg_count; i++) {
++		__put_user (child->thread.watch.mips32.watchlo[i],
++			    &addr->mips32.watchlo[i]);
++		__put_user (child->thread.watch.mips32.watchhi[i] & 0xfff,
++			    &addr->mips32.watchhi[i]);
++	}
++
++	return 0;
++}
++
++int ptrace_set_watch_regs(struct task_struct *child,
++			  struct pt_watch_regs __user *addr)
++{
++	int i;
++	int watch_active = 0;
++	unsigned long lt[NUM_WATCH_REGS];
++	unsigned int ht[NUM_WATCH_REGS];
++
++	if (!cpu_has_watch)
++		return -EIO;
++	if (!access_ok(VERIFY_READ, addr, sizeof(struct pt_watch_regs)))
++		return -EIO;
++	/* Check the values. */
++	for (i = 0; i < NUM_WATCH_REGS; i++) {
++		__get_user(lt[i], &addr->mips32.watchlo[i]);
++		if (lt[i] & __UA_LIMIT)
++			return -EINVAL;
++
++		__get_user(ht[i], &addr->mips32.watchhi[i]);
++		if (ht[i] & ~0xff8)
++			return -EINVAL;
++	}
++	/* Install them. */
++	for (i = 0; i < NUM_WATCH_REGS; i++) {
++		if (lt[i] & 7)
++			watch_active = 1;
++		child->thread.watch.mips32.watchlo[i] = lt[i];
++		/* Set the G bit. */
++		child->thread.watch.mips32.watchhi[i] = ht[i] | 0x40000000;
++	}
++
++	if (watch_active)
++		set_tsk_thread_flag(child, TIF_LOAD_WATCH);
++	else
++		clear_tsk_thread_flag(child, TIF_LOAD_WATCH);
++
++	return 0;
++}
++
++#endif
++
+ long arch_ptrace(struct task_struct *child, long request, long addr, long data)
+ {
+ 	int ret;
+@@ -439,7 +510,17 @@ long arch_ptrace(struct task_struct *child, long request, long addr, long data)
+ 		ret = put_user(task_thread_info(child)->tp_value,
+ 				(unsigned long __user *) data);
+ 		break;
++#ifdef CONFIG_HARDWARE_WATCHPOINTS
++	case PTRACE_GET_WATCH_REGS:
++		ret = ptrace_get_watch_regs(child,
++					(struct pt_watch_regs __user *) addr);
++		break;
  
- static inline unsigned long __xchg_u32(volatile int * m, unsigned int val)
++	case PTRACE_SET_WATCH_REGS:
++		ret = ptrace_set_watch_regs(child,
++					(struct pt_watch_regs __user *) addr);
++		break;
++#endif
+ 	default:
+ 		ret = ptrace_request(child, request, addr, data);
+ 		break;
+diff --git a/include/asm-mips/ptrace.h b/include/asm-mips/ptrace.h
+index 786f7e3..8fb1bcc 100644
+--- a/include/asm-mips/ptrace.h
++++ b/include/asm-mips/ptrace.h
+@@ -71,6 +71,29 @@ struct pt_regs {
+ #define PTRACE_POKEDATA_3264	0xc3
+ #define PTRACE_GET_THREAD_AREA_3264	0xc4
+ 
++/* Read and write watchpoint registers.  */
++enum pt_watch_style {
++	pt_watch_style_mips32,
++	pt_watch_style_mips64
++};
++struct mips32_watch_regs {
++	unsigned int num_valid;
++	unsigned int reg_mask;
++	unsigned int irw_mask;
++	unsigned long watchlo[8];
++	unsigned int watchhi[8];
++};
++
++struct pt_watch_regs {
++	enum pt_watch_style style;
++	union {
++		struct mips32_watch_regs mips32;
++	};
++};
++
++#define PTRACE_GET_WATCH_REGS	0xd0
++#define PTRACE_SET_WATCH_REGS	0xd1
++
+ #ifdef __KERNEL__
+ 
+ #include <linux/linkage.h>
 -- 
 1.5.5

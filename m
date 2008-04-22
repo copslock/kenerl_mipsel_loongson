@@ -1,47 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2008 22:57:01 +0100 (BST)
-Received: from po-out-1718.google.com ([72.14.252.159]:31252 "EHLO
-	po-out-1718.google.com") by ftp.linux-mips.org with ESMTP
-	id S28580657AbYDVV47 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 22 Apr 2008 22:56:59 +0100
-Received: by po-out-1718.google.com with SMTP id y22so3738755pof.4
-        for <linux-mips@linux-mips.org>; Tue, 22 Apr 2008 14:56:55 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        bh=Mst0dGHjSFY2OAmV5Ct1HhKRXNi1QdYKlvNOpgEK1tM=;
-        b=UYjGGPS7OY1JqeZVoUVVwqcymoJkfVGepGZvOLtB58xM8dZXwTYUN1AXnFVrGy10u5fn0ODfDMVIWu3Qx7LdMhy6/G5ELzq8BIz6oFyeEO8uuSW58kEA9cQDx670GN58F9hSTTRiN/jr4Bd7QH84EjHjK17ABKejQbk5NFe0rzs=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
-        b=Rigwrm8aW6EzVp1ROYJl4/4hkm4rokY3LLqAEdusdH9hzdLjfWtiFLAzOTp9YGQxZlx91NttyXzlIKVczUsIiE+PcG2vdt1Tk3m4dhETQiqiQgoLTXxMiRzMexBwKgi1Vxn6N0VfPrXVoaIEOirKyYGb6I1xUlZaBlFV6BteVqc=
-Received: by 10.141.71.8 with SMTP id y8mr105037rvk.63.1208901414678;
-        Tue, 22 Apr 2008 14:56:54 -0700 (PDT)
-Received: by 10.140.158.7 with HTTP; Tue, 22 Apr 2008 14:56:52 -0700 (PDT)
-Message-ID: <5a802f680804221456g107d2044ve0f0e4ee1499875b@mail.gmail.com>
-Date:	Wed, 23 Apr 2008 05:56:52 +0800
-From:	"=?BIG5?B?qkyqbLTy?=" <rzo2b7m1uh@gmail.com>
-To:	twesamedm1@gmail.com
-Subject: =?BIG5?B?MjAwOC80LzIzIC0gNTo1Ng==?= =?BIG5?B?OjQxIKRz4L6s7KfeuvSttrNdrXAgzNOpR6HP?=
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Apr 2008 00:14:09 +0100 (BST)
+Received: from oss.sgi.com ([192.48.170.157]:41103 "EHLO oss.sgi.com")
+	by ftp.linux-mips.org with ESMTP id S28581317AbYDVXOH (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 23 Apr 2008 00:14:07 +0100
+Received: from dl5rb.ham-radio-op.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.12.11.20060308/8.12.11/SuSE Linux 0.7) with ESMTP id m3MNDID4022227
+	for <linux-mips@linux-mips.org>; Tue, 22 Apr 2008 16:13:19 -0700
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m3MNE0lO031358;
+	Wed, 23 Apr 2008 00:14:00 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m3MNDxGL031351;
+	Wed, 23 Apr 2008 00:13:59 +0100
+Date:	Wed, 23 Apr 2008 00:13:59 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Alchemy: kill unused PCI_IRQ_TABLE_LOOKUP macro
+Message-ID: <20080422231359.GC27728@linux-mips.org>
+References: <200804222328.57098.sshtylyov@ru.mvista.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=BIG5
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <rzo2b7m1uh@gmail.com>
+In-Reply-To: <200804222328.57098.sshtylyov@ru.mvista.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Virus-Scanned: ClamAV 0.91.2/6021/Wed Feb 27 15:55:48 2008 on oss.sgi.com
+X-Virus-Status:	Clean
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18996
+X-archive-position: 18997
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rzo2b7m1uh@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-MjAwOC00LTIzICAtICA1OjU2Cgqkc+C+rOyn3rr0rbazXa1wCgqn2q3MqrqpdqauoUeryKThqrqo
-Q6O4pfOkcKjGsaGhQbOjrE+kc+C+qrqkaqjGsaEKCqfarcyye6ZiscClWKX4t36nzrZIuvSvuKVd
-p3SrZaV4uvSttqz8pHUrq+GleLresnq1e6ahCgqtra7Jra22cbFNrte7+aV1rW4kMjQsOTAwICAo
-pmKwZaO4pn4xMDBNQqSjra2sebZxuvSvuKrFtqEpCgqn2q3MsLWquqSjpXWsT7r0r7ihQabTrE+x
-eqX4t36quqRKpGYKCqO4rdOmbqq6pfi3frr0r7i46q7Gp1muyafzt3OqurN0q9esT6vcrautbqq6
-Cgql+Ld+ou2kxrCqq3696LnOtqShQaW0s3mxeqq6uvS49Kr5rbEKCr/vvtykc+C+pqi0TrF6qrq5
-2rdRCgrFd6rvqNO5cayiuN+2wLFNrfuhRzA5ODAxMTk4MTIKCjVZMFZGNGc2bWlXNwo=
+On Tue, Apr 22, 2008 at 11:28:57PM +0400, Sergei Shtylyov wrote:
+
+> Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+
+Thanks, applied.
+
+  Ralf

@@ -1,64 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2008 20:29:37 +0100 (BST)
-Received: from rtsoft3.corbina.net ([85.21.88.6]:63574 "EHLO
-	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
-	id S20045096AbYDVT3e (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 22 Apr 2008 20:29:34 +0100
-Received: from wasted.dev.rtsoft.ru (unknown [10.150.0.9])
-	by buildserver.ru.mvista.com (Postfix) with ESMTP
-	id 8E9088815; Wed, 23 Apr 2008 00:29:32 +0500 (SAMST)
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-To:	ralf@linux-mips.org
-Subject: Alchemy: kill unused PCI_IRQ_TABLE_LOOKUP macro
-Date:	Tue, 22 Apr 2008 23:28:57 +0400
-User-Agent: KMail/1.5
-Cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Apr 2008 22:57:01 +0100 (BST)
+Received: from po-out-1718.google.com ([72.14.252.159]:31252 "EHLO
+	po-out-1718.google.com") by ftp.linux-mips.org with ESMTP
+	id S28580657AbYDVV47 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 22 Apr 2008 22:56:59 +0100
+Received: by po-out-1718.google.com with SMTP id y22so3738755pof.4
+        for <linux-mips@linux-mips.org>; Tue, 22 Apr 2008 14:56:55 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        bh=Mst0dGHjSFY2OAmV5Ct1HhKRXNi1QdYKlvNOpgEK1tM=;
+        b=UYjGGPS7OY1JqeZVoUVVwqcymoJkfVGepGZvOLtB58xM8dZXwTYUN1AXnFVrGy10u5fn0ODfDMVIWu3Qx7LdMhy6/G5ELzq8BIz6oFyeEO8uuSW58kEA9cQDx670GN58F9hSTTRiN/jr4Bd7QH84EjHjK17ABKejQbk5NFe0rzs=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:mime-version:content-type:content-transfer-encoding:content-disposition;
+        b=Rigwrm8aW6EzVp1ROYJl4/4hkm4rokY3LLqAEdusdH9hzdLjfWtiFLAzOTp9YGQxZlx91NttyXzlIKVczUsIiE+PcG2vdt1Tk3m4dhETQiqiQgoLTXxMiRzMexBwKgi1Vxn6N0VfPrXVoaIEOirKyYGb6I1xUlZaBlFV6BteVqc=
+Received: by 10.141.71.8 with SMTP id y8mr105037rvk.63.1208901414678;
+        Tue, 22 Apr 2008 14:56:54 -0700 (PDT)
+Received: by 10.140.158.7 with HTTP; Tue, 22 Apr 2008 14:56:52 -0700 (PDT)
+Message-ID: <5a802f680804221456g107d2044ve0f0e4ee1499875b@mail.gmail.com>
+Date:	Wed, 23 Apr 2008 05:56:52 +0800
+From:	"=?BIG5?B?qkyqbLTy?=" <rzo2b7m1uh@gmail.com>
+To:	twesamedm1@gmail.com
+Subject: =?BIG5?B?MjAwOC80LzIzIC0gNTo1Ng==?= =?BIG5?B?OjQxIKRz4L6s7KfeuvSttrNdrXAgzNOpR6HP?=
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=BIG5
+Content-Transfer-Encoding: base64
 Content-Disposition: inline
-Message-Id: <200804222328.57098.sshtylyov@ru.mvista.com>
-Return-Path: <sshtylyov@ru.mvista.com>
+Return-Path: <rzo2b7m1uh@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 18995
+X-archive-position: 18996
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: rzo2b7m1uh@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
-
----
- include/asm-mips/mach-au1x00/au1000.h |   14 --------------
- 1 files changed, 14 deletions(-)
-
-Index: linux-2.6/include/asm-mips/mach-au1x00/au1000.h
-===================================================================
---- linux-2.6.orig/include/asm-mips/mach-au1x00/au1000.h
-+++ linux-2.6/include/asm-mips/mach-au1x00/au1000.h
-@@ -1685,20 +1685,6 @@ enum soc_au1200_ints {
- #define IOMEM_RESOURCE_START  0x10000000
- #define IOMEM_RESOURCE_END    0xffffffff
- 
--  /*
--   * Borrowed from the PPC arch:
--   * The following macro is used to lookup irqs in a standard table
--   * format for those PPC systems that do not already have PCI
--   * interrupts properly routed.
--   */
--  /* FIXME - double check this from asm-ppc/pci-bridge.h */
--#define PCI_IRQ_TABLE_LOOKUP                            \
--  ({ long _ctl_ = -1;                                 \
--      if (idsel >= min_idsel && idsel <= max_idsel && pin <= irqs_per_slot)    \
--	       _ctl_ = pci_irq_table[idsel - min_idsel][pin-1];               \
--		      _ctl_; })
--
--
- #else /* Au1000 and Au1100 and Au1200 */
- 
- /* don't allow any legacy ports probing */
+MjAwOC00LTIzICAtICA1OjU2Cgqkc+C+rOyn3rr0rbazXa1wCgqn2q3MqrqpdqauoUeryKThqrqo
+Q6O4pfOkcKjGsaGhQbOjrE+kc+C+qrqkaqjGsaEKCqfarcyye6ZiscClWKX4t36nzrZIuvSvuKVd
+p3SrZaV4uvSttqz8pHUrq+GleLresnq1e6ahCgqtra7Jra22cbFNrte7+aV1rW4kMjQsOTAwICAo
+pmKwZaO4pn4xMDBNQqSjra2sebZxuvSvuKrFtqEpCgqn2q3MsLWquqSjpXWsT7r0r7ihQabTrE+x
+eqX4t36quqRKpGYKCqO4rdOmbqq6pfi3frr0r7i46q7Gp1muyafzt3OqurN0q9esT6vcrautbqq6
+Cgql+Ld+ou2kxrCqq3696LnOtqShQaW0s3mxeqq6uvS49Kr5rbEKCr/vvtykc+C+pqi0TrF6qrq5
+2rdRCgrFd6rvqNO5cayiuN+2wLFNrfuhRzA5ODAxMTk4MTIKCjVZMFZGNGc2bWlXNwo=

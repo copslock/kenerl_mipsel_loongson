@@ -1,46 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Apr 2008 15:08:01 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:32706 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S28780189AbYDXOH6 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 24 Apr 2008 15:07:58 +0100
-Received: from localhost (p8067-ipad312funabasi.chiba.ocn.ne.jp [123.217.226.67])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id B578799BC; Thu, 24 Apr 2008 23:07:54 +0900 (JST)
-Date:	Thu, 24 Apr 2008 23:08:55 +0900 (JST)
-Message-Id: <20080424.230855.18313404.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] kill unnecessary include
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Apr 2008 16:07:35 +0100 (BST)
+Received: from oss.sgi.com ([192.48.170.157]:38287 "EHLO oss.sgi.com")
+	by ftp.linux-mips.org with ESMTP id S28782868AbYDXPHc (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 24 Apr 2008 16:07:32 +0100
+Received: from dl5rb.ham-radio-op.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.12.11.20060308/8.12.11/SuSE Linux 0.7) with ESMTP id m3OF6fid027813
+	for <linux-mips@linux-mips.org>; Thu, 24 Apr 2008 08:06:43 -0700
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m3OF7NBn008786;
+	Thu, 24 Apr 2008 16:07:23 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m3OF7M1b008779;
+	Thu, 24 Apr 2008 16:07:22 +0100
+Date:	Thu, 24 Apr 2008 16:07:22 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] kill unnecessary include
+Message-ID: <20080424150721.GA20852@linux-mips.org>
+References: <20080424.230855.18313404.anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20080424.230855.18313404.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Virus-Scanned: ClamAV 0.91.2/6021/Wed Feb 27 15:55:48 2008 on oss.sgi.com
+X-Virus-Status:	Clean
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19012
+X-archive-position: 19013
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
-diff --git a/arch/mips/kernel/cevt-gt641xx.c b/arch/mips/kernel/cevt-gt641xx.c
-index c367726..6e2f585 100644
---- a/arch/mips/kernel/cevt-gt641xx.c
-+++ b/arch/mips/kernel/cevt-gt641xx.c
-@@ -25,8 +25,6 @@
- #include <asm/gt64120.h>
- #include <asm/time.h>
- 
--#include <irq.h>
--
- static DEFINE_SPINLOCK(gt641xx_timer_lock);
- static unsigned int gt641xx_base_clock;
- 
+On Thu, Apr 24, 2008 at 11:08:55PM +0900, Atsushi Nemoto wrote:
+> From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> Date: Thu, 24 Apr 2008 23:08:55 +0900 (JST)
+> To: linux-mips@linux-mips.org
+> Cc: ralf@linux-mips.org
+> Subject: [PATCH] kill unnecessary include
+> Content-Type: Text/Plain; charset=us-ascii
+> 
+> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+
+Applied.  Thanks,
+
+   Ralf

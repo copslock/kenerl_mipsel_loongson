@@ -1,333 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Apr 2008 04:11:53 +0100 (BST)
-Received: from mo32.po.2iij.net ([210.128.50.17]:31778 "EHLO mo32.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20022724AbYDYDLu (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 25 Apr 2008 04:11:50 +0100
-Received: by mo.po.2iij.net (mo32) id m3P3BlYm070382; Fri, 25 Apr 2008 12:11:47 +0900 (JST)
-Received: from delta (61.25.30.125.dy.iij4u.or.jp [125.30.25.61])
-	by mbox.po.2iij.net (po-mbox304) id m3P3Bj0X021390
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Fri, 25 Apr 2008 12:11:45 +0900
-Date:	Fri, 25 Apr 2008 12:11:44 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp,
-	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH v3] [MIPS] add DS1287 clockevent
-Message-Id: <20080425121144.5321fa4e.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed 2.4.5 (GTK+ 2.12.0; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Apr 2008 07:53:03 +0100 (BST)
+Received: from oss.sgi.com ([192.48.170.157]:9152 "EHLO oss.sgi.com")
+	by ftp.linux-mips.org with ESMTP id S28599470AbYDYGxA (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 25 Apr 2008 07:53:00 +0100
+Received: from dl5rb.ham-radio-op.net (localhost [127.0.0.1])
+	by oss.sgi.com (8.12.11.20060308/8.12.11/SuSE Linux 0.7) with ESMTP id m3P6pwFn005088
+	for <linux-mips@linux-mips.org>; Thu, 24 Apr 2008 23:52:05 -0700
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m3P6qfmu010993
+	for <linux-mips@linux-mips.org>; Fri, 25 Apr 2008 07:52:41 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m3P6qfdn010992
+	for linux-mips@linux-mips.org; Fri, 25 Apr 2008 07:52:41 +0100
+Date:	Fri, 25 Apr 2008 07:52:41 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	linux-mips@linux-mips.org
+Subject: [ADMIN] linux-mips.org mailing lists
+Message-ID: <20080425065241.GA5986@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Virus-Scanned: ClamAV 0.91.2/6021/Wed Feb 27 15:55:48 2008 on oss.sgi.com
+X-Virus-Status:	Clean
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19016
+X-archive-position: 19017
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Add DS1287 clockevent
+Yesterday finally the reverse lookups for the linux-mips.org server were
+fixed.  This means allowing for a day for propagation of DNS entries
+some subscriber who were unable to receive the linux-mips list in the
+past weeks should now begin to receive postings again.
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+I'd also like to remind people of the lists archives at
 
-diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/arch/mips/Kconfig linux/arch/mips/Kconfig
---- linux-orig/arch/mips/Kconfig	2008-04-25 12:06:12.342742587 +0900
-+++ linux/arch/mips/Kconfig	2008-04-25 12:04:25.496653774 +0900
-@@ -81,6 +81,7 @@ config MIPS_COBALT
- config MACH_DECSTATION
- 	bool "DECstations"
- 	select BOOT_ELF32
-+	select CEVT_DS1287
- 	select CEVT_R4K
- 	select CSRC_IOASIC
- 	select CSRC_R4K
-@@ -769,6 +770,9 @@ config BOOT_RAW
- config CEVT_BCM1480
- 	bool
- 
-+config CEVT_DS1287
-+	bool
-+
- config CEVT_GT641XX
- 	bool
- 
-diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/arch/mips/dec/time.c linux/arch/mips/dec/time.c
---- linux-orig/arch/mips/dec/time.c	2008-04-25 12:06:12.342742587 +0900
-+++ linux/arch/mips/dec/time.c	2008-04-25 12:04:25.720666540 +0900
-@@ -9,30 +9,15 @@
-  *
-  */
- #include <linux/bcd.h>
--#include <linux/errno.h>
- #include <linux/init.h>
--#include <linux/interrupt.h>
--#include <linux/kernel.h>
- #include <linux/mc146818rtc.h>
--#include <linux/mm.h>
--#include <linux/module.h>
- #include <linux/param.h>
--#include <linux/sched.h>
--#include <linux/string.h>
--#include <linux/time.h>
--#include <linux/types.h>
--
--#include <asm/bootinfo.h>
--#include <asm/cpu.h>
--#include <asm/io.h>
--#include <asm/irq.h>
--#include <asm/mipsregs.h>
--#include <asm/sections.h>
--#include <asm/time.h>
- 
-+#include <asm/cpu-features.h>
-+#include <asm/ds1287.h>
-+#include <asm/time.h>
- #include <asm/dec/interrupts.h>
- #include <asm/dec/ioasic.h>
--#include <asm/dec/ioasic_addrs.h>
- #include <asm/dec/machtype.h>
- 
- unsigned long read_persistent_clock(void)
-@@ -139,42 +124,32 @@ int rtc_mips_set_mmss(unsigned long nowt
- 	return retval;
- }
- 
--static int dec_timer_state(void)
-+void __init plat_time_init(void)
- {
--	return (CMOS_READ(RTC_REG_C) & RTC_PF) != 0;
--}
-+	u32 start, end;
-+	int i = HZ / 10;
- 
--static void dec_timer_ack(void)
--{
--	CMOS_READ(RTC_REG_C);			/* Ack the RTC interrupt.  */
--}
-+	/* Set up the rate of periodic DS1287 interrupts. */
-+	ds1287_set_base_clock(HZ);
- 
--static cycle_t dec_ioasic_hpt_read(void)
--{
--	/*
--	 * The free-running counter is 32-bit which is good for about
--	 * 2 minutes, 50 seconds at possible count rates of up to 25MHz.
--	 */
--	return ioasic_read(IO_REG_FCTR);
--}
-+	if (cpu_has_counter) {
-+		while (!ds1287_timer_state())
-+			;
- 
-+		start = read_c0_count();
- 
--void __init plat_time_init(void)
--{
--	mips_timer_ack = dec_timer_ack;
-+		while (i--)
-+			while (!ds1287_timer_state())
-+				;
-+
-+		end = read_c0_count();
- 
--	if (!cpu_has_counter && IOASIC)
-+		mips_hpt_frequency = (end - start) * 10;
-+		printk(KERN_INFO "MIPS counter frequency %dHz\n",
-+			mips_hpt_frequency);
-+	} else if (IOASIC)
- 		/* For pre-R4k systems we use the I/O ASIC's counter.  */
- 		dec_ioasic_clocksource_init();
- 
--	/* Set up the rate of periodic DS1287 interrupts.  */
--	CMOS_WRITE(RTC_REF_CLCK_32KHZ | (16 - __ffs(HZ)), RTC_REG_A);
--}
--
--void __init plat_timer_setup(struct irqaction *irq)
--{
--	setup_irq(dec_interrupt[DEC_IRQ_RTC], irq);
--
--	/* Enable periodic DS1287 interrupts.  */
--	CMOS_WRITE(CMOS_READ(RTC_REG_B) | RTC_PIE, RTC_REG_B);
-+	ds1287_clockevent_init(dec_interrupt[DEC_IRQ_RTC]);
- }
-diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/arch/mips/kernel/Makefile linux/arch/mips/kernel/Makefile
---- linux-orig/arch/mips/kernel/Makefile	2008-04-25 12:06:12.342742587 +0900
-+++ linux/arch/mips/kernel/Makefile	2008-04-25 12:04:25.720666540 +0900
-@@ -10,6 +10,7 @@ obj-y		+= cpu-probe.o branch.o entry.o g
- 
- obj-$(CONFIG_CEVT_BCM1480)	+= cevt-bcm1480.o
- obj-$(CONFIG_CEVT_R4K)		+= cevt-r4k.o
-+obj-$(CONFIG_CEVT_DS1287)	+= cevt-ds1287.o
- obj-$(CONFIG_CEVT_GT641XX)	+= cevt-gt641xx.o
- obj-$(CONFIG_CEVT_SB1250)	+= cevt-sb1250.o
- obj-$(CONFIG_CEVT_TXX9)		+= cevt-txx9.o
-diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/arch/mips/kernel/cevt-ds1287.c linux/arch/mips/kernel/cevt-ds1287.c
---- linux-orig/arch/mips/kernel/cevt-ds1287.c	1970-01-01 09:00:00.000000000 +0900
-+++ linux/arch/mips/kernel/cevt-ds1287.c	2008-04-25 12:04:38.169375953 +0900
-@@ -0,0 +1,129 @@
-+/*
-+ *  DS1287 clockevent driver
-+ *
-+ *  Copyright (C) 2008  Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, write to the Free Software
-+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
-+ */
-+#include <linux/clockchips.h>
-+#include <linux/init.h>
-+#include <linux/interrupt.h>
-+#include <linux/mc146818rtc.h>
-+
-+#include <asm/time.h>
-+
-+int ds1287_timer_state(void)
-+{
-+	return (CMOS_READ(RTC_REG_C) & RTC_PF) != 0;
-+}
-+
-+int ds1287_set_base_clock(unsigned int hz)
-+{
-+	u8 rate;
-+
-+	switch (hz) {
-+	case 128:
-+		rate = 0x9;
-+		break;
-+	case 256:
-+		rate = 0x8;
-+		break;
-+	case 1024:
-+		rate = 0x6;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	CMOS_WRITE(RTC_REF_CLCK_32KHZ | rate, RTC_REG_A);
-+
-+	return 0;
-+}
-+
-+static int ds1287_set_next_event(unsigned long delta,
-+				 struct clock_event_device *evt)
-+{
-+	return -EINVAL;
-+}
-+
-+static void ds1287_set_mode(enum clock_event_mode mode,
-+			    struct clock_event_device *evt)
-+{
-+	u8 val;
-+
-+	spin_lock(&rtc_lock);
-+
-+	val = CMOS_READ(RTC_REG_B);
-+
-+	switch (mode) {
-+	case CLOCK_EVT_MODE_PERIODIC:
-+		val |= RTC_PIE;
-+		break;
-+	default:
-+		val &= ~RTC_PIE;
-+		break;
-+	}
-+
-+	CMOS_WRITE(val, RTC_REG_B);
-+
-+	spin_unlock(&rtc_lock);
-+}
-+
-+static void ds1287_event_handler(struct clock_event_device *dev)
-+{
-+}
-+
-+static struct clock_event_device ds1287_clockevent = {
-+	.name		= "ds1287",
-+	.features	= CLOCK_EVT_FEAT_PERIODIC,
-+	.cpumask	= CPU_MASK_CPU0,
-+	.set_next_event	= ds1287_set_next_event,
-+	.set_mode	= ds1287_set_mode,
-+	.event_handler	= ds1287_event_handler,
-+};
-+
-+static irqreturn_t ds1287_interrupt(int irq, void *dev_id)
-+{
-+	struct clock_event_device *cd = &ds1287_clockevent;
-+
-+	/* Ack the RTC interrupt. */
-+	CMOS_READ(RTC_REG_C);
-+
-+	cd->event_handler(cd);
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static struct irqaction ds1287_irqaction = {
-+	.handler	= ds1287_interrupt,
-+	.flags		= IRQF_DISABLED | IRQF_PERCPU,
-+	.name		= "ds1287",
-+};
-+
-+int __init ds1287_clockevent_init(int irq)
-+{
-+	struct clock_event_device *cd;
-+
-+	cd = &ds1287_clockevent;
-+	cd->rating = 100;
-+	cd->irq = irq;
-+	clockevent_set_clock(cd, 32768);
-+	cd->max_delta_ns = clockevent_delta2ns(0x7fffffff, cd);
-+	cd->min_delta_ns = clockevent_delta2ns(0x300, cd);
-+
-+	clockevents_register_device(&ds1287_clockevent);
-+
-+	return setup_irq(irq, &ds1287_irqaction);
-+}
-diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/include/asm-mips/ds1287.h linux/include/asm-mips/ds1287.h
---- linux-orig/include/asm-mips/ds1287.h	1970-01-01 09:00:00.000000000 +0900
-+++ linux/include/asm-mips/ds1287.h	2008-04-25 12:04:25.868674974 +0900
-@@ -0,0 +1,27 @@
-+/*
-+ *  DS1287 timer functions.
-+ *
-+ *  Copyright (C) 2008  Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, write to the Free Software
-+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
-+ */
-+#ifndef __ASM_DS1287_H
-+#define __ASM_DS1287_H
-+
-+extern int ds1287_timer_state(void);
-+extern void ds1287_set_base_clock(unsigned int clock);
-+extern int ds1287_clockevent_init(int irq);
-+
-+#endif
+  http://www.linux-mips.org/archives
+
+so a bunch of lost postings is not the end of the world ;-)
+
+  Ralf

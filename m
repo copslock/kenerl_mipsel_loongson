@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Apr 2008 20:14:20 +0100 (BST)
-Received: from rtsoft3.corbina.net ([85.21.88.6]:64140 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Apr 2008 20:22:26 +0100 (BST)
+Received: from rtsoft3.corbina.net ([85.21.88.6]:3469 "EHLO
 	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
-	id S62089391AbYDZTOO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 26 Apr 2008 20:14:14 +0100
+	id S62090094AbYDZTWX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 26 Apr 2008 20:22:23 +0100
 Received: from wasted.dev.rtsoft.ru (unknown [10.150.0.9])
 	by buildserver.ru.mvista.com (Postfix) with ESMTP
-	id 690A58815; Sun, 27 Apr 2008 00:14:12 +0500 (SAMST)
+	id 0D9198815; Sun, 27 Apr 2008 00:22:23 +0500 (SAMST)
 From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
 Organization: MontaVista Software Inc.
 To:	ralf@linux-mips.org
-Subject: [PATCH] Pb1200/DBAu1200: move platform code to its proper place
-Date:	Sat, 26 Apr 2008 23:13:35 +0400
+Subject: [PATCH] Pb1200/DBAu1200: move platform code to its proper place (take 2)
+Date:	Sat, 26 Apr 2008 23:21:46 +0400
 User-Agent: KMail/1.5
 Cc:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="us-ascii"
-Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200804262313.35710.sshtylyov@ru.mvista.com>
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Message-Id: <200804262321.46298.sshtylyov@ru.mvista.com>
 Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19022
+X-archive-position: 19023
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,11 +32,13 @@ Precedence: bulk
 X-list: linux-mips
 
 Since both the IDE interface and SMC 91C111 Ethernet chip are on-board devices,
-move the platform device registration form the commin to board specific code.
+move the platform device registration form the common to board specific code.
 
-While at it, perform some cosmetic changes:
+While at it, do some renaming:
 
 - change 'au1200_ide0_' variable name prefix to the mere 'ide_';
+
+- change 'smc91x_' variable name prefix to 'smc91c111_';
 
 - drop 'AU1XXX_' prefix from the macro names;
 
@@ -49,6 +51,7 @@ While at it, perform some cosmetic changes:
 Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
 ---
+Oops, needed one more rename. :-)
 This patch is atop of my two recent SMC 91C1111 platform device fixes.
 It has only been compile tested...
 
@@ -215,7 +218,7 @@ Index: linux-2.6/arch/mips/au1000/pb1200/platform.c
 +	.resource	= ide_resources
 +};
 +
-+static struct resource smc91111_resources[] = {
++static struct resource smc91c111_resources[] = {
 +	[0] = {
 +		.name	= "smc91x-regs",
 +		.start	= SMC91C111_PHYS_ADDR,
@@ -229,16 +232,16 @@ Index: linux-2.6/arch/mips/au1000/pb1200/platform.c
 +	},
 +};
 +
-+static struct platform_device smc91111_device = {
++static struct platform_device smc91c111_device = {
 +	.name		= "smc91x",
 +	.id		= -1,
-+	.num_resources	= ARRAY_SIZE(smc91111_resources),
-+	.resource	= smc91111_resources
++	.num_resources	= ARRAY_SIZE(smc91c111_resources),
++	.resource	= smc91c111_resources
 +};
 +
 +static struct platform_device *board_platform_devices[] __initdata = {
 +	&ide_device,
-+	&smc91111_device
++	&smc91c111_device
 +};
 +
 +static int __init board_register_devices(void)

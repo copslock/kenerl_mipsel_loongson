@@ -1,102 +1,342 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Apr 2008 17:54:34 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:65014 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S30625421AbYDYQyc (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 25 Apr 2008 17:54:32 +0100
-Received: from localhost (p6035-ipad308funabasi.chiba.ocn.ne.jp [123.217.192.35])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 28EF3B826; Sat, 26 Apr 2008 01:54:28 +0900 (JST)
-Date:	Sat, 26 Apr 2008 01:55:30 +0900 (JST)
-Message-Id: <20080426.015530.78704907.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] Fix some sparse warnings on traps.c and irq-msc01.c
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Apr 2008 20:14:20 +0100 (BST)
+Received: from rtsoft3.corbina.net ([85.21.88.6]:64140 "EHLO
+	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
+	id S62089391AbYDZTOO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 26 Apr 2008 20:14:14 +0100
+Received: from wasted.dev.rtsoft.ru (unknown [10.150.0.9])
+	by buildserver.ru.mvista.com (Postfix) with ESMTP
+	id 690A58815; Sun, 27 Apr 2008 00:14:12 +0500 (SAMST)
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+To:	ralf@linux-mips.org
+Subject: [PATCH] Pb1200/DBAu1200: move platform code to its proper place
+Date:	Sat, 26 Apr 2008 23:13:35 +0400
+User-Agent: KMail/1.5
+Cc:	linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Disposition: inline
+Message-Id: <200804262313.35710.sshtylyov@ru.mvista.com>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19021
+X-archive-position: 19022
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-* Declare board_bind_eic_interrupt, board_watchpoint_handler in traps.h
-* Make msc_bind_eic_interrupt static and fix its argument types.
-* Make msc_levelirq_type, msc_edgeirq_type static.
+Since both the IDE interface and SMC 91C111 Ethernet chip are on-board devices,
+move the platform device registration form the commin to board specific code.
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+While at it, perform some cosmetic changes:
+
+- change 'au1200_ide0_' variable name prefix to the mere 'ide_';
+
+- drop 'AU1XXX_' prefix from the macro names;
+
+- change 'SMC91C111_' to 'SMC91C111_', change 'IRQ' to 'INT' for consistency
+  in the Ethernet chip macro names;
+
+- change 'ATA_' to 'IDE_' and 'OFFSET' to 'SHIFT' (since this value is indeed
+  a shift count) in the IDE interface macro names.
+
+Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+
 ---
-Patch against linux-queue tree.
+This patch is atop of my two recent SMC 91C1111 platform device fixes.
+It has only been compile tested...
 
- arch/mips/kernel/irq-msc01.c |   10 ++++------
- include/asm-mips/traps.h     |    2 ++
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ arch/mips/au1000/common/platform.c    |   54 ---------------------
+ arch/mips/au1000/pb1200/Makefile      |    1 
+ arch/mips/au1000/pb1200/platform.c    |   84 ++++++++++++++++++++++++++++++++++
+ drivers/ide/mips/au1xxx-ide.c         |    8 +--
+ include/asm-mips/mach-db1x00/db1200.h |   16 +++---
+ include/asm-mips/mach-pb1x00/pb1200.h |   16 +++---
+ 6 files changed, 105 insertions(+), 74 deletions(-)
 
-diff --git a/arch/mips/kernel/irq-msc01.c b/arch/mips/kernel/irq-msc01.c
-index 4edc7e4..963c16d 100644
---- a/arch/mips/kernel/irq-msc01.c
-+++ b/arch/mips/kernel/irq-msc01.c
-@@ -17,6 +17,7 @@
- #include <asm/io.h>
- #include <asm/irq.h>
- #include <asm/msc01_ic.h>
-+#include <asm/traps.h>
- 
- static unsigned long _icctrl_msc;
- #define MSC01_IC_REG_BASE	_icctrl_msc
-@@ -98,14 +99,13 @@ void ll_msc_irq(void)
+Index: linux-2.6/arch/mips/au1000/common/platform.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/common/platform.c
++++ linux-2.6/arch/mips/au1000/common/platform.c
+@@ -233,19 +233,6 @@ static struct resource au1200_lcd_resour
  	}
- }
- 
--void
--msc_bind_eic_interrupt(unsigned int irq, unsigned int set)
-+static void msc_bind_eic_interrupt(int irq, int set)
- {
- 	MSCIC_WRITE(MSC01_IC_RAMW,
- 		    (irq<<MSC01_IC_RAMW_ADDR_SHF) | (set<<MSC01_IC_RAMW_DATA_SHF));
- }
- 
--struct irq_chip msc_levelirq_type = {
-+static struct irq_chip msc_levelirq_type = {
- 	.name = "SOC-it-Level",
- 	.ack = level_mask_and_ack_msc_irq,
- 	.mask = mask_msc_irq,
-@@ -115,7 +115,7 @@ struct irq_chip msc_levelirq_type = {
- 	.end = end_msc_irq,
  };
  
--struct irq_chip msc_edgeirq_type = {
-+static struct irq_chip msc_edgeirq_type = {
- 	.name = "SOC-it-Edge",
- 	.ack = edge_mask_and_ack_msc_irq,
- 	.mask = mask_msc_irq,
-@@ -128,8 +128,6 @@ struct irq_chip msc_edgeirq_type = {
- 
- void __init init_msc_irqs(unsigned long icubase, unsigned int irqbase, msc_irqmap_t *imp, int nirq)
- {
--	extern void (*board_bind_eic_interrupt)(unsigned int irq, unsigned int regset);
+-static struct resource au1200_ide0_resources[] = {
+-	[0] = {
+-		.start		= AU1XXX_ATA_PHYS_ADDR,
+-		.end 		= AU1XXX_ATA_PHYS_ADDR + AU1XXX_ATA_PHYS_LEN - 1,
+-		.flags		= IORESOURCE_MEM,
+-	},
+-	[1] = {
+-		.start		= AU1XXX_ATA_INT,
+-		.end		= AU1XXX_ATA_INT,
+-		.flags		= IORESOURCE_IRQ,
+-	}
+-};
 -
- 	_icctrl_msc = (unsigned long) ioremap(icubase, 0x40000);
+ static u64 au1200_lcd_dmamask = ~(u32)0;
  
- 	/* Reset interrupt controller - initialises all registers to 0 */
-diff --git a/include/asm-mips/traps.h b/include/asm-mips/traps.h
-index d02e019..e5dbde6 100644
---- a/include/asm-mips/traps.h
-+++ b/include/asm-mips/traps.h
-@@ -23,5 +23,7 @@ extern int (*board_be_handler)(struct pt_regs *regs, int is_fixup);
+ static struct platform_device au1200_lcd_device = {
+@@ -259,20 +246,6 @@ static struct platform_device au1200_lcd
+ 	.resource       = au1200_lcd_resources,
+ };
  
- extern void (*board_nmi_handler_setup)(void);
- extern void (*board_ejtag_handler_setup)(void);
-+extern void (*board_bind_eic_interrupt)(int irq, int regset);
-+extern void (*board_watchpoint_handler)(struct pt_regs *regs);
+-
+-static u64 ide0_dmamask = ~(u32)0;
+-
+-static struct platform_device au1200_ide0_device = {
+-	.name		= "au1200-ide",
+-	.id		= 0,
+-	.dev = {
+-		.dma_mask 		= &ide0_dmamask,
+-		.coherent_dma_mask	= 0xffffffff,
+-	},
+-	.num_resources = ARRAY_SIZE(au1200_ide0_resources),
+-	.resource	= au1200_ide0_resources,
+-};
+-
+ static u64 au1xxx_mmc_dmamask =  ~(u32)0;
  
- #endif /* _ASM_TRAPS_H */
+ static struct platform_device au1xxx_mmc_device = {
+@@ -292,29 +265,6 @@ static struct platform_device au1x00_pcm
+ 	.id 		= 0,
+ };
+ 
+-#if defined(CONFIG_MIPS_DB1200) || defined(CONFIG_MIPS_PB1200)
+-static struct resource smc91x_resources[] = {
+-	[0] = {
+-		.name	= "smc91x-regs",
+-		.start	= AU1XXX_SMC91111_PHYS_ADDR,
+-		.end	= AU1XXX_SMC91111_PHYS_ADDR + 0xf,
+-		.flags	= IORESOURCE_MEM,
+-	},
+-	[1] = {
+-		.start	= AU1XXX_SMC91111_IRQ,
+-		.end	= AU1XXX_SMC91111_IRQ,
+-		.flags	= IORESOURCE_IRQ,
+-	},
+-};
+-
+-static struct platform_device smc91x_device = {
+-	.name		= "smc91x",
+-	.id		= -1,
+-	.num_resources	= ARRAY_SIZE(smc91x_resources),
+-	.resource	= smc91x_resources,
+-};
+-#endif /* defined(CONFIG_MIPS_DB1200) || defined(CONFIG_MIPS_PB1200) */
+-
+ /* All Alchemy demoboards with I2C have this #define in their headers */
+ #ifdef SMBUS_PSC_BASE
+ static struct resource pbdb_smbus_resources[] = {
+@@ -345,12 +295,8 @@ static struct platform_device *au1xxx_pl
+ 	&au1xxx_usb_gdt_device,
+ 	&au1xxx_usb_otg_device,
+ 	&au1200_lcd_device,
+-	&au1200_ide0_device,
+ 	&au1xxx_mmc_device,
+ #endif
+-#if defined(CONFIG_MIPS_DB1200) || defined(CONFIG_MIPS_PB1200)
+-	&smc91x_device,
+-#endif
+ #ifdef SMBUS_PSC_BASE
+ 	&pbdb_smbus_device,
+ #endif
+Index: linux-2.6/arch/mips/au1000/pb1200/Makefile
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/pb1200/Makefile
++++ linux-2.6/arch/mips/au1000/pb1200/Makefile
+@@ -3,5 +3,6 @@
+ #
+ 
+ lib-y := init.o board_setup.o irqmap.o
++obj-y += platform.o
+ 
+ EXTRA_CFLAGS += -Werror
+Index: linux-2.6/arch/mips/au1000/pb1200/platform.c
+===================================================================
+--- /dev/null
++++ linux-2.6/arch/mips/au1000/pb1200/platform.c
+@@ -0,0 +1,84 @@
++/*
++ * Pb1200/DBAu1200 board platform device registration
++ *
++ * Copyright (C) 2008 MontaVista Software Inc. <source@mvista.com>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++#include <linux/init.h>
++#include <linux/platform_device.h>
++
++#include <asm/mach-au1x00/au1xxx.h>
++
++static struct resource ide_resources[] = {
++	[0] = {
++		.start	= IDE_PHYS_ADDR,
++		.end 	= IDE_PHYS_ADDR + IDE_PHYS_LEN - 1,
++		.flags	= IORESOURCE_MEM
++	},
++	[1] = {
++		.start	= IDE_INT,
++		.end	= IDE_INT,
++		.flags	= IORESOURCE_IRQ
++	}
++};
++
++static u64 ide_dmamask = ~(u32)0;
++
++static struct platform_device ide_device = {
++	.name		= "au1200-ide",
++	.id		= 0,
++	.dev = {
++		.dma_mask 		= &ide_dmamask,
++		.coherent_dma_mask	= 0xffffffff,
++	},
++	.num_resources	= ARRAY_SIZE(ide_resources),
++	.resource	= ide_resources
++};
++
++static struct resource smc91111_resources[] = {
++	[0] = {
++		.name	= "smc91x-regs",
++		.start	= SMC91C111_PHYS_ADDR,
++		.end	= SMC91C111_PHYS_ADDR + 0xf,
++		.flags	= IORESOURCE_MEM
++	},
++	[1] = {
++		.start	= SMC91C111_INT,
++		.end	= SMC91C111_INT,
++		.flags	= IORESOURCE_IRQ
++	},
++};
++
++static struct platform_device smc91111_device = {
++	.name		= "smc91x",
++	.id		= -1,
++	.num_resources	= ARRAY_SIZE(smc91111_resources),
++	.resource	= smc91111_resources
++};
++
++static struct platform_device *board_platform_devices[] __initdata = {
++	&ide_device,
++	&smc91111_device
++};
++
++static int __init board_register_devices(void)
++{
++	return platform_add_devices(board_platform_devices,
++				    ARRAY_SIZE(board_platform_devices));
++}
++
++arch_initcall(board_register_devices);
+Index: linux-2.6/drivers/ide/mips/au1xxx-ide.c
+===================================================================
+--- linux-2.6.orig/drivers/ide/mips/au1xxx-ide.c
++++ linux-2.6/drivers/ide/mips/au1xxx-ide.c
+@@ -389,7 +389,7 @@ static void auide_ddma_rx_callback(int i
+ static void auide_init_dbdma_dev(dbdev_tab_t *dev, u32 dev_id, u32 tsize, u32 devwidth, u32 flags)
+ {
+ 	dev->dev_id          = dev_id;
+-	dev->dev_physaddr    = (u32)AU1XXX_ATA_PHYS_ADDR;
++	dev->dev_physaddr    = (u32)IDE_PHYS_ADDR;
+ 	dev->dev_intlevel    = 0;
+ 	dev->dev_intpolarity = 0;
+ 	dev->dev_tsize       = tsize;
+@@ -418,7 +418,7 @@ static int auide_ddma_init(_auide_hwif *
+ 	u32 dev_id, tsize, devwidth, flags;
+ 	ide_hwif_t *hwif = auide->hwif;
+ 
+-	dev_id   = AU1XXX_ATA_DDMA_REQ;
++	dev_id = IDE_DDMA_REQ;
+ 
+ 	if (auide->white_list || auide->black_list) {
+ 		tsize    = 8;
+@@ -536,11 +536,11 @@ static void auide_setup_ports(hw_regs_t 
+ 
+ 	/* FIXME? */
+ 	for (i = 0; i < IDE_CONTROL_OFFSET; i++) {
+-		*ata_regs++ = ahwif->regbase + (i << AU1XXX_ATA_REG_OFFSET);
++		*ata_regs++ = ahwif->regbase + (i << IDE_REG_SHIFT);
+ 	}
+ 
+ 	/* set the Alternative Status register */
+-	*ata_regs = ahwif->regbase + (14 << AU1XXX_ATA_REG_OFFSET);
++	*ata_regs = ahwif->regbase + (14 << IDE_REG_SHIFT);
+ }
+ 
+ static const struct ide_port_info au1xxx_port_info = {
+Index: linux-2.6/include/asm-mips/mach-db1x00/db1200.h
+===================================================================
+--- linux-2.6.orig/include/asm-mips/mach-db1x00/db1200.h
++++ linux-2.6/include/asm-mips/mach-db1x00/db1200.h
+@@ -169,15 +169,15 @@ static BCSR * const bcsr = (BCSR *)BCSR_
+ #define BCSR_INT_SD0INSERT	0x1000
+ #define BCSR_INT_SD0EJECT	0x2000
+ 
+-#define AU1XXX_SMC91111_PHYS_ADDR	(0x19000300)
+-#define AU1XXX_SMC91111_IRQ			DB1200_ETH_INT
++#define SMC91C111_PHYS_ADDR	0x19000300
++#define SMC91C111_INT		DB1200_ETH_INT
+ 
+-#define AU1XXX_ATA_PHYS_ADDR		(0x18800000)
+-#define AU1XXX_ATA_REG_OFFSET		(5)
+-#define AU1XXX_ATA_PHYS_LEN		(16 << AU1XXX_ATA_REG_OFFSET)
+-#define AU1XXX_ATA_INT			DB1200_IDE_INT
+-#define AU1XXX_ATA_DDMA_REQ		DSCR_CMD0_DMA_REQ1;
+-#define AU1XXX_ATA_RQSIZE		128
++#define IDE_PHYS_ADDR		0x18800000
++#define IDE_REG_SHIFT		5
++#define IDE_PHYS_LEN		(16 << IDE_REG_SHIFT)
++#define IDE_INT 		DB1200_IDE_INT
++#define IDE_DDMA_REQ		DSCR_CMD0_DMA_REQ1
++#define IDE_RQSIZE		128
+ 
+ #define NAND_PHYS_ADDR   0x20000000
+ 
+Index: linux-2.6/include/asm-mips/mach-pb1x00/pb1200.h
+===================================================================
+--- linux-2.6.orig/include/asm-mips/mach-pb1x00/pb1200.h
++++ linux-2.6/include/asm-mips/mach-pb1x00/pb1200.h
+@@ -182,15 +182,15 @@ static BCSR * const bcsr = (BCSR *)BCSR_
+ #define SET_VCC_VPP(VCC, VPP, SLOT)\
+ 	((((VCC)<<2) | ((VPP)<<0)) << ((SLOT)*8))
+ 
+-#define AU1XXX_SMC91111_PHYS_ADDR	(0x0D000300)
+-#define AU1XXX_SMC91111_IRQ			PB1200_ETH_INT
++#define SMC91C111_PHYS_ADDR	0x0D000300
++#define SMC91C111_INT		PB1200_ETH_INT
+ 
+-#define AU1XXX_ATA_PHYS_ADDR		(0x0C800000)
+-#define AU1XXX_ATA_REG_OFFSET		(5)
+-#define AU1XXX_ATA_PHYS_LEN		(16 << AU1XXX_ATA_REG_OFFSET)
+-#define AU1XXX_ATA_INT			PB1200_IDE_INT
+-#define AU1XXX_ATA_DDMA_REQ		DSCR_CMD0_DMA_REQ1;
+-#define AU1XXX_ATA_RQSIZE		128
++#define IDE_PHYS_ADDR		0x0C800000
++#define IDE_REG_SHIFT		5
++#define IDE_PHYS_LEN		(16 << IDE_REG_SHIFT)
++#define IDE_INT 		PB1200_IDE_INT
++#define IDE_DDMA_REQ		DSCR_CMD0_DMA_REQ1
++#define IDE_RQSIZE		128
+ 
+ #define NAND_PHYS_ADDR   0x1C000000
+ 

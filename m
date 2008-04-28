@@ -1,81 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Apr 2008 19:37:20 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:55326 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20190393AbYD1ShR (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 28 Apr 2008 19:37:17 +0100
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id B475B3EC9; Mon, 28 Apr 2008 11:37:13 -0700 (PDT)
-Message-ID: <48161933.5020200@ru.mvista.com>
-Date:	Mon, 28 Apr 2008 22:36:35 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
-Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org
-Subject: Re: [PATCH] Au1200: kill IDE driver function prototypes
-References: <200804142228.51987.sshtylyov@ru.mvista.com> <4815DE95.9010107@ru.mvista.com> <200804282046.53474.bzolnier@gmail.com>
-In-Reply-To: <200804282046.53474.bzolnier@gmail.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Apr 2008 20:23:50 +0100 (BST)
+Received: from host194-211-dynamic.20-79-r.retail.telecomitalia.it ([79.20.211.194]:38043
+	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
+	id S20191241AbYD1TXs (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 28 Apr 2008 20:23:48 +0100
+Received: from localhost ([127.0.0.1] helo=sgi)
+	by eppesuigoccas.homedns.org with smtp (Exim 4.63)
+	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
+	id 1JqYwk-000890-R7
+	for linux-mips@linux-mips.org; Mon, 28 Apr 2008 21:23:34 +0200
+Date:	Mon, 28 Apr 2008 21:23:27 +0200
+From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+To:	linux-mips@linux-mips.org
+Subject: undefined reference to `copy_siginfo_from_user32'
+Message-Id: <20080428212327.47c703b6.giuseppe@eppesuigoccas.homedns.org>
+X-Mailer: Sylpheed version 2.3.0beta5 (GTK+ 2.8.20; mips-unknown-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Return-Path: <giuseppe@eppesuigoccas.homedns.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19041
+X-archive-position: 19042
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: giuseppe@eppesuigoccas.homedns.org
 Precedence: bulk
 X-list: linux-mips
 
-Bartlomiej Zolnierkiewicz wrote:
+Hi list,
+since a few days, whenever I try to recompile the latest kernel (from git) it always print this error message:
 
->>>Fix these warnings emitted when compiling drivers/ide/mips/au1xxx-ide.c:
+[...]
+  AS      arch/mips/lib/strlen_user.o
+  AS      arch/mips/lib/strncpy_user.o
+  AS      arch/mips/lib/strnlen_user.o
+  CC      arch/mips/lib/uncached.o
+  AR      arch/mips/lib/lib.a
+  LD      vmlinux.o
+  MODPOST vmlinux.o
+WARNING: modpost: Found 11 section mismatch(es).
+To see full details build your kernel with:
+'make CONFIG_DEBUG_SECTION_MISMATCH=y'
+  GEN     .version
+  CHK     include/linux/compile.h
+  UPD     include/linux/compile.h
+  CC      init/version.o
+  LD      init/built-in.o
+  LD      .tmp_vmlinux1
+kernel/built-in.o: In function `$L261':
+ptrace.c:(.text+0x13550): undefined reference to `copy_siginfo_from_user32'
+ptrace.c:(.text+0x13550): relocation truncated to fit: R_MIPS_26 against `copy_siginfo_from_user32'
+make[1]: *** [.tmp_vmlinux1] Error 1
+make[1]: Leaving directory `/usr/local/src/kernel/2.6.25'
+make: *** [debian/stamp-build-kernel] Error 2
 
->>>include/asm/mach-au1x00/au1xxx_ide.h:137: warning: 'auide_tune_drive' declared 
->>>`static' but never defined
->>>include/asm/mach-au1x00/au1xxx_ide.h:138: warning: 'auide_tune_chipset' declared
->>> `static' but never defined
+Any idea about a possible cause/solution?
 
->>>by wiping out the whole "function prototyping" section from the header file
->>><asm-mips/mach-au1x00/au1xxx_ide.h> as it mostly declared functions that are
->>>already dead in the IDE driver; move the only useful prototype into the driver.
-
->>>Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
-
->>>---
->>>I'm not sure thru which tree this should go -- probably thru Linux/MIPS one...
-
->>>Bart, au1xxx-ide-fix-mwdma-support.patch will probably need to be updated to
->>>remove that added prototype since it won't be needed anymore...
-
->>    Which you haven't done either in that patch or in 
->>au1xxx-ide-use-init_dma-method.patch. So, face the consequences:
-
->>drivers/ide/mips/au1xxx-ide.c:456: error: conflicting types for 'auide_ddma_init'
->>drivers/ide/mips/au1xxx-ide.c:51: error: previous declaration of
->>'auide_ddma_init' was here
->>drivers/ide/mips/au1xxx-ide.c:456: error: conflicting types for 'auide_ddma_init'
->>drivers/ide/mips/au1xxx-ide.c:51: error: previous declaration of
->>'auide_ddma_init' was here
->>drivers/ide/mips/au1xxx-ide.c:51: warning: 'auide_ddma_init' used but never
->>defined
-
-> Sorry for that, I remember taking a look at au1xxx-ide-fix-mwdma-support.patch
-> and it was OK
-
-    This patch was a fitting place to get rid of that proto since it removed 
-the sole call because of which that proto was needed.
-
-> (now I see that it was au1xxx-ide-use-init_dma-method.patch that
-> needed an update).  I'll fix it in today's update.
-
-    TIA.
-
-> Thanks,
-> Bart
-
-MBR, Sergei
+Thank you very mcuh,
+Giuseppe

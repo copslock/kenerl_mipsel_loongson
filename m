@@ -1,52 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Apr 2008 19:53:40 +0100 (BST)
-Received: from vigor.karmaclothing.net ([217.169.26.28]:50643 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28794116AbYD2Sxh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 29 Apr 2008 19:53:37 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m3TIrYod014624;
-	Tue, 29 Apr 2008 19:53:34 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m3TIrXvw014617;
-	Tue, 29 Apr 2008 19:53:33 +0100
-Date:	Tue, 29 Apr 2008 19:53:33 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Apr 2008 20:34:43 +0100 (BST)
+Received: from rtsoft3.corbina.net ([85.21.88.6]:437 "EHLO
+	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
+	id S28792848AbYD2Ted (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 29 Apr 2008 20:34:33 +0100
+Received: from wasted.dev.rtsoft.ru (unknown [10.150.0.9])
+	by buildserver.ru.mvista.com (Postfix) with ESMTP
+	id 443488815; Wed, 30 Apr 2008 00:34:26 +0500 (SAMST)
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+To:	ralf@linux-mips.org
+Subject: [PATCH] Pb1000: bury the remnants of the PCI code (part 2)
+Date:	Tue, 29 Apr 2008 23:33:47 +0400
+User-Agent: KMail/1.5
 Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Pb1000: bury the remnants of the PCI code
-Message-ID: <20080429185333.GB14609@linux-mips.org>
-References: <200804052259.29959.sshtylyov@ru.mvista.com> <48176D09.7030308@ru.mvista.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <48176D09.7030308@ru.mvista.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
+Message-Id: <200804292333.47099.sshtylyov@ru.mvista.com>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19052
+X-archive-position: 19053
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Apr 29, 2008 at 10:46:33PM +0400, Sergei Shtylyov wrote:
+Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
-> Hello, I wrote:
->
->> PCI support for the Pb1000 board was ectomized by Pete Popov four years ago.
->> Unfortunately,  the header file  wasn't cleansed, so the remnants still get
->> in the way of the kernel build (due to macro redefinitions).
->
->> Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
->
->    Hm looks like I have somehow missed the remanants in 
-> arch/mips/au1000/pb1000/board_setup.c... too bad that this patch has been 
-> long merged. :-/
+---
+Here's the fragment I missed in the initial patch. Combine them if possible...
 
-New patch, new luck ;-)
+ arch/mips/au1000/pb1000/board_setup.c |    7 -------
+ 1 files changed, 7 deletions(-)
 
-  Ralf
+Index: linux-2.6/arch/mips/au1000/pb1000/board_setup.c
+===================================================================
+--- linux-2.6.orig/arch/mips/au1000/pb1000/board_setup.c
++++ linux-2.6/arch/mips/au1000/pb1000/board_setup.c
+@@ -153,13 +153,6 @@ void __init board_setup(void)
+ 	au_writel(0x280E3D07, MEM_STTIME3); /* 250ns cycle time */
+ 	au_writel(0x10000000, MEM_STADDR3); /* any PCMCIA select */
+ 
+-#ifdef CONFIG_PCI
+-	au_writel(0, PCI_BRIDGE_CONFIG); // set extend byte to 0
+-	au_writel(0, SDRAM_MBAR);        // set mbar to 0
+-	au_writel(0x2, SDRAM_CMD);       // enable memory accesses
+-	au_sync_delay(1);
+-#endif
+-
+ 	/* Enable Au1000 BCLK switching - note: sed1356 must not use
+ 	 * its BCLK (Au1000 LCLK) for any timings */
+ 	switch (prid & 0x000000FF)

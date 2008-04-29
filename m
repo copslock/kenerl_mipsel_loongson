@@ -1,216 +1,166 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Apr 2008 02:43:38 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:50640 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20206265AbYD2Bnf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 29 Apr 2008 02:43:35 +0100
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 7349B319D36;
-	Tue, 29 Apr 2008 01:47:34 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Tue, 29 Apr 2008 01:47:34 +0000 (UTC)
-Received: from dl2.hq2.avtrex.com ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Mon, 28 Apr 2008 18:43:27 -0700
-Message-ID: <48167D3E.4050104@avtrex.com>
-Date:	Mon, 28 Apr 2008 18:43:26 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 2.0.0.12 (X11/20080226)
-MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Cc:	Linux kernel <linux-kernel@vger.kernel.org>
-Subject: [PATCH 6/6] Ptrace support for HARDWARE_WATCHPOINTS.
-References: <48167832.3090103@avtrex.com>
-In-Reply-To: <48167832.3090103@avtrex.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 29 Apr 2008 01:43:27.0664 (UTC) FILETIME=[6BAD5B00:01C8A99A]
-Return-Path: <ddaney@avtrex.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Apr 2008 10:01:08 +0100 (BST)
+Received: from verein.lst.de ([213.95.11.210]:6302 "EHLO verein.lst.de")
+	by ftp.linux-mips.org with ESMTP id S28642073AbYD2JBE (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 29 Apr 2008 10:01:04 +0100
+Received: from verein.lst.de (localhost [127.0.0.1])
+	by verein.lst.de (8.12.3/8.12.3/Debian-7.1) with ESMTP id m3T90dF3017148
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
+	Tue, 29 Apr 2008 11:00:39 +0200
+Received: (from hch@localhost)
+	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id m3T90dEO017146;
+	Tue, 29 Apr 2008 11:00:39 +0200
+Date:	Tue, 29 Apr 2008 11:00:39 +0200
+From:	Christoph Hellwig <hch@lst.de>
+To:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: undefined reference to `copy_siginfo_from_user32'
+Message-ID: <20080429090039.GA16616@lst.de>
+References: <20080428212327.47c703b6.giuseppe@eppesuigoccas.homedns.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20080428212327.47c703b6.giuseppe@eppesuigoccas.homedns.org>
+User-Agent: Mutt/1.3.28i
+X-Scanned-By: MIMEDefang 2.39
+Return-Path: <hch@lst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19049
+X-archive-position: 19050
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: hch@lst.de
 Precedence: bulk
 X-list: linux-mips
 
-Ptrace support for HARDWARE_WATCHPOINTS
+On Mon, Apr 28, 2008 at 09:23:27PM +0200, Giuseppe Sacco wrote:
+> Hi list,
+> since a few days, whenever I try to recompile the latest kernel (from git) it always print this error message:
 
-This is the final part of the watch register patch.  Here we hook up
-ptrace so that the user space debugger (gdb), can set and read the
-registers.
+This should be fixed in mainline.  But the right fix would be to switch
+mips to the generic compat_ptrace.  And untested (and in fact even
+uncompiled) patch ontop of the copy_siginfo_to_user32 posted to the list
+a while ago is below to sketch how this should look like:
 
-Signed-off-by: David Daney <ddaney@avtrex.com>
----
- arch/mips/kernel/ptrace.c |   93 +++++++++++++++++++++++++++++++++++++++++++++
- include/asm-mips/ptrace.h |   31 +++++++++++++++
- 2 files changed, 124 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
-index 35234b9..8e86134 100644
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -46,7 +46,12 @@
-  */
- void ptrace_disable(struct task_struct *child)
- {
-+#ifdef CONFIG_HARDWARE_WATCHPOINTS
-+	/* Don't load the watchpoint registers for the ex-child. */
-+	clear_tsk_thread_flag(child, TIF_LOAD_WATCH);
-+#else
- 	/* Nothing to do.. */
-+#endif
- }
+Index: linux-2.6/arch/mips/kernel/ptrace32.c
+===================================================================
+--- linux-2.6.orig/arch/mips/kernel/ptrace32.c	2008-04-29 10:54:44.000000000 +0200
++++ linux-2.6/arch/mips/kernel/ptrace32.c	2008-04-29 10:59:17.000000000 +0200
+@@ -42,56 +42,17 @@ int ptrace_setregs(struct task_struct *c
+ int ptrace_getfpregs(struct task_struct *child, __u32 __user *data);
+ int ptrace_setfpregs(struct task_struct *child, __u32 __user *data);
  
++
  /*
-@@ -167,6 +172,84 @@ int ptrace_setfpregs(struct task_struct *child, __u32 __user *data)
- 	return 0;
- }
- 
-+#ifdef CONFIG_HARDWARE_WATCHPOINTS
-+static int ptrace_get_watch_regs(struct task_struct *child,
-+				 struct pt_watch_regs __user *addr)
-+{
-+	enum pt_watch_style style;
-+	int i;
-+
-+	if (!cpu_has_watch)
-+		return -EIO;
-+	if (!access_ok(VERIFY_WRITE, addr, sizeof(struct pt_watch_regs)))
-+		return -EIO;
-+
-+#ifdef CONFIG_32BIT
-+	style = pt_watch_style_mips32;
-+#define WATCH_STYLE mips32
-+#else
-+	style = pt_watch_style_mips64;
-+#define WATCH_STYLE mips64
-+#endif
-+
-+	__put_user(style, &addr->style);
-+	__put_user(current_cpu_data.watch_reg_count,
-+		   &addr->WATCH_STYLE.num_valid);
-+	__put_user(current_cpu_data.watch_reg_mask,
-+		   &addr->WATCH_STYLE.reg_mask);
-+	__put_user(current_cpu_data.watch_reg_irw,
-+		   &addr->WATCH_STYLE.irw_mask);
-+	for (i = 0; i < current_cpu_data.watch_reg_count; i++) {
-+		__put_user(child->thread.watch.mips3264.watchlo[i],
-+			   &addr->WATCH_STYLE.watchlo[i]);
-+		__put_user(child->thread.watch.mips3264.watchhi[i] & 0xfff,
-+			   &addr->WATCH_STYLE.watchhi[i]);
-+	}
-+
-+	return 0;
-+}
-+
-+static int ptrace_set_watch_regs(struct task_struct *child,
-+				 struct pt_watch_regs __user *addr)
-+{
-+	int i;
-+	int watch_active = 0;
-+	unsigned long lt[NUM_WATCH_REGS];
-+	unsigned int ht[NUM_WATCH_REGS];
-+
-+	if (!cpu_has_watch)
-+		return -EIO;
-+	if (!access_ok(VERIFY_READ, addr, sizeof(struct pt_watch_regs)))
-+		return -EIO;
-+	/* Check the values. */
-+	for (i = 0; i < NUM_WATCH_REGS; i++) {
-+		__get_user(lt[i], &addr->WATCH_STYLE.watchlo[i]);
-+		if (lt[i] & __UA_LIMIT)
-+			return -EINVAL;
-+
-+		__get_user(ht[i], &addr->WATCH_STYLE.watchhi[i]);
-+		if (ht[i] & ~0xff8)
-+			return -EINVAL;
-+	}
-+	/* Install them. */
-+	for (i = 0; i < NUM_WATCH_REGS; i++) {
-+		if (lt[i] & 7)
-+			watch_active = 1;
-+		child->thread.watch.mips3264.watchlo[i] = lt[i];
-+		/* Set the G bit. */
-+		child->thread.watch.mips3264.watchhi[i] = ht[i] | 0x40000000;
-+	}
-+
-+	if (watch_active)
-+		set_tsk_thread_flag(child, TIF_LOAD_WATCH);
-+	else
-+		clear_tsk_thread_flag(child, TIF_LOAD_WATCH);
-+
-+	return 0;
-+}
-+
-+#endif /* CONFIG_HARDWARE_WATCHPOINTS */
-+
- long arch_ptrace(struct task_struct *child, long request, long addr, long data)
+  * Tracing a 32-bit process with a 64-bit strace and vice versa will not
+  * work.  I don't know how to fix this.
+  */
+-asmlinkage int sys32_ptrace(int request, int pid, int addr, int data)
++long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
++			compat_ulong_t addr, compat_ulong_t data)
  {
+-	struct task_struct *child;
  	int ret;
-@@ -439,7 +522,17 @@ long arch_ptrace(struct task_struct *child, long request, long addr, long data)
+ 
+-#if 0
+-	printk("ptrace(r=%d,pid=%d,addr=%08lx,data=%08lx)\n",
+-	       (int) request, (int) pid, (unsigned long) addr,
+-	       (unsigned long) data);
+-#endif
+-	lock_kernel();
+-	if (request == PTRACE_TRACEME) {
+-		ret = ptrace_traceme();
+-		goto out;
+-	}
+-
+-	child = ptrace_get_task_struct(pid);
+-	if (IS_ERR(child)) {
+-		ret = PTR_ERR(child);
+-		goto out;
+-	}
+-
+-	if (request == PTRACE_ATTACH) {
+-		ret = ptrace_attach(child);
+-		goto out_tsk;
+-	}
+-
+-	ret = ptrace_check_attach(child, request == PTRACE_KILL);
+-	if (ret < 0)
+-		goto out_tsk;
+-
+ 	switch (request) {
+-	/* when I and D space are separate, these will need to be fixed. */
+-	case PTRACE_PEEKTEXT: /* read word at location addr. */
+-	case PTRACE_PEEKDATA: {
+-		unsigned int tmp;
+-		int copied;
+-
+-		copied = access_process_vm(child, addr, &tmp, sizeof(tmp), 0);
+-		ret = -EIO;
+-		if (copied != sizeof(tmp))
+-			break;
+-		ret = put_user(tmp, (unsigned int __user *) (unsigned long) data);
+-		break;
+-	}
+-
+ 	/*
+ 	 * Read 4 bytes of the other process' storage
+ 	 *  data is a pointer specifying where the user wants the
+@@ -237,16 +198,6 @@ asmlinkage int sys32_ptrace(int request,
+ 		break;
+ 	}
+ 
+-	/* when I and D space are separate, this will have to be fixed. */
+-	case PTRACE_POKETEXT: /* write the word at location addr. */
+-	case PTRACE_POKEDATA:
+-		ret = 0;
+-		if (access_process_vm(child, addr, &data, sizeof(data), 1)
+-		    == sizeof(data))
+-			break;
+-		ret = -EIO;
+-		break;
+-
+ 	/*
+ 	 * Write 4 bytes into the other process' storage
+ 	 *  data is the 4 bytes that the user wants written
+@@ -400,24 +351,15 @@ asmlinkage int sys32_ptrace(int request,
+ 		ret = ptrace_detach(child, data);
+ 		break;
+ 
+-	case PTRACE_GETEVENTMSG:
+-		ret = put_user(child->ptrace_message,
+-			       (unsigned int __user *) (unsigned long) data);
+-		break;
+-
+ 	case PTRACE_GET_THREAD_AREA_3264:
  		ret = put_user(task_thread_info(child)->tp_value,
- 				(unsigned long __user *) data);
+ 				(unsigned long __user *) (unsigned long) data);
  		break;
-+#ifdef CONFIG_HARDWARE_WATCHPOINTS
-+	case PTRACE_GET_WATCH_REGS:
-+		ret = ptrace_get_watch_regs(child,
-+					(struct pt_watch_regs __user *) addr);
-+		break;
  
-+	case PTRACE_SET_WATCH_REGS:
-+		ret = ptrace_set_watch_regs(child,
-+					(struct pt_watch_regs __user *) addr);
-+		break;
-+#endif
  	default:
- 		ret = ptrace_request(child, request, addr, data);
+-		ret = ptrace_request(child, request, addr, data);
++		ret = compat_ptrace_request(child, request, addr, data);
  		break;
-diff --git a/include/asm-mips/ptrace.h b/include/asm-mips/ptrace.h
-index 786f7e3..d8d821d 100644
---- a/include/asm-mips/ptrace.h
-+++ b/include/asm-mips/ptrace.h
-@@ -71,6 +71,37 @@ struct pt_regs {
- #define PTRACE_POKEDATA_3264	0xc3
- #define PTRACE_GET_THREAD_AREA_3264	0xc4
+ 	}
  
-+/* Read and write watchpoint registers.  */
-+enum pt_watch_style {
-+	pt_watch_style_mips32,
-+	pt_watch_style_mips64
-+};
-+struct mips32_watch_regs {
-+	uint32_t watchlo[8];
-+	uint32_t watchhi[8];
-+	uint32_t num_valid;
-+	uint32_t reg_mask;
-+	uint32_t irw_mask;
-+};
-+struct mips64_watch_regs {
-+	uint64_t watchlo[8];
-+	uint32_t watchhi[8];
-+	uint32_t num_valid;
-+	uint32_t reg_mask;
-+	uint32_t irw_mask;
-+};
-+
-+struct pt_watch_regs {
-+	enum pt_watch_style style;
-+	union {
-+		struct mips32_watch_regs mips32;
-+		struct mips32_watch_regs mips64;
-+	};
-+};
-+
-+#define PTRACE_GET_WATCH_REGS	0xd0
-+#define PTRACE_SET_WATCH_REGS	0xd1
-+
- #ifdef __KERNEL__
- 
+-out_tsk:
+-	put_task_struct(child);
+-out:
+-	unlock_kernel();
+ 	return ret;
+ }
+Index: linux-2.6/include/asm-mips/ptrace.h
+===================================================================
+--- linux-2.6.orig/include/asm-mips/ptrace.h	2008-04-29 11:00:10.000000000 +0200
++++ linux-2.6/include/asm-mips/ptrace.h	2008-04-29 11:00:19.000000000 +0200
+@@ -76,6 +76,8 @@ struct pt_regs {
  #include <linux/linkage.h>
--- 
-1.5.5
+ #include <asm/isadep.h>
+ 
++#define __ARCH_WANT_COMPAT_SYS_PTRACE
++
+ /*
+  * Does the process account for user or for system time?
+  */

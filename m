@@ -1,29 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Apr 2008 20:19:32 +0100 (BST)
-Received: from rtsoft3.corbina.net ([85.21.88.6]:53953 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Apr 2008 20:19:57 +0100 (BST)
+Received: from rtsoft3.corbina.net ([85.21.88.6]:53697 "EHLO
 	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
-	id S30617817AbYD3TT1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 30 Apr 2008 20:19:27 +0100
+	id S30617806AbYD3TTe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 30 Apr 2008 20:19:34 +0100
 Received: from wasted.dev.rtsoft.ru (unknown [10.150.0.9])
 	by buildserver.ru.mvista.com (Postfix) with ESMTP
-	id 367B88816; Thu,  1 May 2008 00:19:19 +0500 (SAMST)
+	id 371A58815; Thu,  1 May 2008 00:19:13 +0500 (SAMST)
 From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
 Organization: MontaVista Software Inc.
 To:	ralf@linux-mips.org
-Subject: [PATCH 2/11] Alchemy common code style cleanup
-Date:	Wed, 30 Apr 2008 23:18:41 +0400
+Subject: [PATCH 1/11] Alchemy common headers style cleanup
+Date:	Wed, 30 Apr 2008 23:18:35 +0400
 User-Agent: KMail/1.5
 Cc:	linux-mips@linux-mips.org
 MIME-Version: 1.0
+Content-Disposition: inline
 Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200804302318.41380.sshtylyov@ru.mvista.com>
+Message-Id: <200804302318.35039.sshtylyov@ru.mvista.com>
 Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19054
+X-archive-position: 19055
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,86 +31,61 @@ X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Fix many errors and warnings given by checkpatch.pl:
-
-- use of C99 // comments;
-
-- missing space between the type and asterisk in a variable declaration;
-
-- space between the asterisk and function/variable name;
-
-- leading spaces instead of tabs;
+Fix several errors and warnings given by checkpatch.pl:
 
 - space after opening and before closing parentheses;
 
-- initialization of a 'static' variable to 0;
+- opening brace following 'struct' not on the same line;
 
-- missing spaces around assignement/comparison operator;
+- leading spaces instead of tabs;
 
-- brace not on the same line with condition (or 'else') in the 'if'/'switch'
-  statement;
+- use of C99 // comments;
 
-- missing space between 'if'/'for'/'while' and opening parenthesis;
+- macros with complex values not enclosed in parentheses;
 
-- use of assignement in 'if' statement's condition;
+- missing space between the type and asterisk in a variable declaration;
 
-- printk() without KERN_* facility level;
+- space between asterisk and function name;
 
-- EXPORT_SYMBOL() not following its function immediately;
+- including <asm/io.h> instead of <linux/io.h> and <asm/irq.h> instead of
+  <linux/irq.h>;
 
-- unnecessary braces for single-statement block;
+- use of '__inline__' instead of 'inline';
 
-- adding new 'typedef' (where including <linux/types.h> will do);
-
-- use of 'extern' in the .c file (where it can be avoided by including header);
+- space between function name and opening parenthesis;
 
 - line over 80 characters.
 
 In addition to these changes, also do the following:
 
-- insert missing space after opening brace and/or before closing brace in the
-  structure initializers;
+- remove needless parentheses;
 
 - insert spaces between operator and its operands;
 
-- put the function's result type and name/parameters on the same line;
+- replace spaces after the macro name with tabs in the #define directives and
+  after the type in the structure field declarations;
 
-- properly indent multi-line expressions;
+- remove excess tabs after the macro name in the #define directives and in the
+  'extern' variable declarations;
 
-- remove commented out code;
+- remove excess spaces between # and define for the SSI_*_MASK macros to align
+  with other such macros;
 
-- remove useless initializers and code;
+- put '||' operator on the same line with its first operand;
 
-- remove needless parentheses;
-
-- fix broken/excess indentation;
-
-- add missing spaces between operator and its operands;
-
-- insert missing and remove excess new lines;
-
-- group 'else' and 'if' together where possible;
-
-- make au1xxx_platform_init() 'static';
-
-- regroup variable declarations in pm_do_freq() for prettier look;
-
-- replace numeric literals with the matching macros;
-
-- fix printk() format specifiers mismatching the argument types;
+- properly indent multi-line function prototypes;
 
 - make the multi-line comment style consistent with the kernel style elsewhere
-  by adding empty first line and/or adding space on their left side;
+  by adding empty first line and/or adding space/asterisk on their left side;
 
 - make two-line comments that only have one line of text one-line;
 
+- convert the large multi-line comment in au1xxx_ide.h into several one-liners,
+  replace spaces with tabs there;
+
 - fix typos/errors, capitalize acronyms, etc. in the comments;
 
-- fix/remove obsolete references in the comments;
-
-- reformat some comments;
-
-- add comment about the CPU:counter clock ratio to calc_clock();
+- insert missing and remove excess new lines;
 
 - update MontaVista copyright;
 
@@ -118,2524 +93,3473 @@ In addition to these changes, also do the following:
 
 Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
- arch/mips/au1000/common/Makefile        |    7 
- arch/mips/au1000/common/au1xxx_irqmap.c |  145 +++++------
- arch/mips/au1000/common/clocks.c        |   24 -
- arch/mips/au1000/common/cputable.c      |    5 
- arch/mips/au1000/common/dbdma.c         |  387 +++++++++++++++-----------------
- arch/mips/au1000/common/dbg_io.c        |   32 --
- arch/mips/au1000/common/dma.c           |   56 ++--
- arch/mips/au1000/common/gpio.c          |    6 
- arch/mips/au1000/common/irq.c           |    6 
- arch/mips/au1000/common/pci.c           |   11 
- arch/mips/au1000/common/platform.c      |    7 
- arch/mips/au1000/common/power.c         |  166 ++++++-------
- arch/mips/au1000/common/prom.c          |   21 -
- arch/mips/au1000/common/puts.c          |   35 +-
- arch/mips/au1000/common/reset.c         |   33 +-
- arch/mips/au1000/common/setup.c         |   60 ++--
- arch/mips/au1000/common/time.c          |   78 ++----
- 17 files changed, 503 insertions(+), 576 deletions(-)
+ include/asm-mips/mach-au1x00/au1000.h       | 1680 +++++++++++++---------------
+ include/asm-mips/mach-au1x00/au1000_dma.h   |  177 +-
+ include/asm-mips/mach-au1x00/au1000_gpio.h  |   18 
+ include/asm-mips/mach-au1x00/au1550_spi.h   |    2 
+ include/asm-mips/mach-au1x00/au1xxx.h       |    4 
+ include/asm-mips/mach-au1x00/au1xxx_dbdma.h |  155 +-
+ include/asm-mips/mach-au1x00/au1xxx_ide.h   |  253 ++--
+ include/asm-mips/mach-au1x00/au1xxx_psc.h   |  129 --
+ 8 files changed, 1192 insertions(+), 1226 deletions(-)
 
-Index: linux-2.6/arch/mips/au1000/common/Makefile
+Index: linux-2.6/include/asm-mips/mach-au1x00/au1000.h
 ===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/Makefile
-+++ linux-2.6/arch/mips/au1000/common/Makefile
-@@ -1,9 +1,8 @@
- #
--#  Copyright 2000 MontaVista Software Inc.
--#  Author: MontaVista Software, Inc.
--#     	ppopov@mvista.com or source@mvista.com
-+#  Copyright 2000, 2008 MontaVista Software Inc.
-+#  Author: MontaVista Software, Inc. <source@mvista.com>
- #
--# Makefile for the Alchemy Au1000 CPU, generic files.
-+# Makefile for the Alchemy Au1xx0 CPUs, generic files.
- #
+--- linux-2.6.orig/include/asm-mips/mach-au1x00/au1000.h
++++ linux-2.6/include/asm-mips/mach-au1x00/au1000.h
+@@ -40,8 +40,8 @@
+ #include <linux/delay.h>
+ #include <linux/types.h>
  
- obj-y += prom.o irq.o puts.o time.o reset.o \
-Index: linux-2.6/arch/mips/au1000/common/au1xxx_irqmap.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/au1xxx_irqmap.c
-+++ linux-2.6/arch/mips/au1000/common/au1xxx_irqmap.c
-@@ -40,20 +40,20 @@
- struct au1xxx_irqmap __initdata au1xxx_ic0_map[] = {
+-#include <asm/io.h>
+-#include <asm/irq.h>
++#include <linux/io.h>
++#include <linux/irq.h>
  
- #if defined(CONFIG_SOC_AU1000)
--	{ AU1000_UART0_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_UART1_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_UART2_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_UART3_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_SSI0_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_SSI1_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+1, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+2, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+3, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+4, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+5, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+6, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+7, INTC_INT_HIGH_LEVEL, 0},
-+	{ AU1000_UART0_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_UART1_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_UART2_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_UART3_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_SSI0_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_SSI1_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+1, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+2, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+3, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+4, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+5, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+6, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+7, INTC_INT_HIGH_LEVEL, 0 },
- 	{ AU1000_TOY_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_TOY_MATCH0_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_TOY_MATCH1_INT, INTC_INT_RISE_EDGE, 0 },
-@@ -62,32 +62,32 @@ struct au1xxx_irqmap __initdata au1xxx_i
- 	{ AU1000_RTC_MATCH0_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_RTC_MATCH1_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_RTC_MATCH2_INT, INTC_INT_RISE_EDGE, 0 },
--	{ AU1000_IRDA_TX_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_IRDA_RX_INT, INTC_INT_HIGH_LEVEL, 0},
-+	{ AU1000_IRDA_TX_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_IRDA_RX_INT, INTC_INT_HIGH_LEVEL, 0 },
- 	{ AU1000_USB_DEV_REQ_INT, INTC_INT_HIGH_LEVEL, 0 },
- 	{ AU1000_USB_DEV_SUS_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_USB_HOST_INT, INTC_INT_LOW_LEVEL, 0 },
- 	{ AU1000_ACSYNC_INT, INTC_INT_RISE_EDGE, 0 },
--	{ AU1000_MAC0_DMA_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_MAC1_DMA_INT, INTC_INT_HIGH_LEVEL, 0},
-+	{ AU1000_MAC0_DMA_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_MAC1_DMA_INT, INTC_INT_HIGH_LEVEL, 0 },
- 	{ AU1000_AC97C_INT, INTC_INT_RISE_EDGE, 0 },
+ /* cpu pipeline flush */
+ void static inline au_sync(void)
+@@ -63,32 +63,32 @@ void static inline au_sync_delay(int ms)
  
- #elif defined(CONFIG_SOC_AU1500)
+ void static inline au_writeb(u8 val, unsigned long reg)
+ {
+-	*(volatile u8 *)(reg) = val;
++	*(volatile u8 *)reg = val;
+ }
  
--	{ AU1500_UART0_INT, INTC_INT_HIGH_LEVEL, 0},
-+	{ AU1500_UART0_INT, INTC_INT_HIGH_LEVEL, 0 },
- 	{ AU1000_PCI_INTA, INTC_INT_LOW_LEVEL, 0 },
- 	{ AU1000_PCI_INTB, INTC_INT_LOW_LEVEL, 0 },
--	{ AU1500_UART3_INT, INTC_INT_HIGH_LEVEL, 0},
-+	{ AU1500_UART3_INT, INTC_INT_HIGH_LEVEL, 0 },
- 	{ AU1000_PCI_INTC, INTC_INT_LOW_LEVEL, 0 },
- 	{ AU1000_PCI_INTD, INTC_INT_LOW_LEVEL, 0 },
--	{ AU1000_DMA_INT_BASE, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+1, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+2, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+3, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+4, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+5, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+6, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+7, INTC_INT_HIGH_LEVEL, 0},
-+	{ AU1000_DMA_INT_BASE, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+1, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+2, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+3, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+4, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+5, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+6, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+7, INTC_INT_HIGH_LEVEL, 0 },
- 	{ AU1000_TOY_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_TOY_MATCH0_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_TOY_MATCH1_INT, INTC_INT_RISE_EDGE, 0 },
-@@ -100,26 +100,26 @@ struct au1xxx_irqmap __initdata au1xxx_i
- 	{ AU1000_USB_DEV_SUS_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_USB_HOST_INT, INTC_INT_LOW_LEVEL, 0 },
- 	{ AU1000_ACSYNC_INT, INTC_INT_RISE_EDGE, 0 },
--	{ AU1500_MAC0_DMA_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1500_MAC1_DMA_INT, INTC_INT_HIGH_LEVEL, 0},
-+	{ AU1500_MAC0_DMA_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1500_MAC1_DMA_INT, INTC_INT_HIGH_LEVEL, 0 },
- 	{ AU1000_AC97C_INT, INTC_INT_RISE_EDGE, 0 },
+ void static inline au_writew(u16 val, unsigned long reg)
+ {
+-	*(volatile u16 *)(reg) = val;
++	*(volatile u16 *)reg = val;
+ }
  
- #elif defined(CONFIG_SOC_AU1100)
+ void static inline au_writel(u32 val, unsigned long reg)
+ {
+-	*(volatile u32 *)(reg) = val;
++	*(volatile u32 *)reg = val;
+ }
  
--	{ AU1100_UART0_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1100_UART1_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1100_SD_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1100_UART3_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_SSI0_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_SSI1_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+1, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+2, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+3, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+4, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+5, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+6, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_DMA_INT_BASE+7, INTC_INT_HIGH_LEVEL, 0},
-+	{ AU1100_UART0_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1100_UART1_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1100_SD_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1100_UART3_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_SSI0_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_SSI1_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+1, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+2, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+3, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+4, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+5, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+6, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_DMA_INT_BASE+7, INTC_INT_HIGH_LEVEL, 0 },
- 	{ AU1000_TOY_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_TOY_MATCH0_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_TOY_MATCH1_INT, INTC_INT_RISE_EDGE, 0 },
-@@ -128,33 +128,33 @@ struct au1xxx_irqmap __initdata au1xxx_i
- 	{ AU1000_RTC_MATCH0_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_RTC_MATCH1_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_RTC_MATCH2_INT, INTC_INT_RISE_EDGE, 0 },
--	{ AU1000_IRDA_TX_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1000_IRDA_RX_INT, INTC_INT_HIGH_LEVEL, 0},
-+	{ AU1000_IRDA_TX_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1000_IRDA_RX_INT, INTC_INT_HIGH_LEVEL, 0 },
- 	{ AU1000_USB_DEV_REQ_INT, INTC_INT_HIGH_LEVEL, 0 },
- 	{ AU1000_USB_DEV_SUS_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_USB_HOST_INT, INTC_INT_LOW_LEVEL, 0 },
- 	{ AU1000_ACSYNC_INT, INTC_INT_RISE_EDGE, 0 },
--	{ AU1100_MAC0_DMA_INT, INTC_INT_HIGH_LEVEL, 0},
--	/*{ AU1000_GPIO215_208_INT, INTC_INT_HIGH_LEVEL, 0},*/
--	{ AU1100_LCD_INT, INTC_INT_HIGH_LEVEL, 0},
-+	{ AU1100_MAC0_DMA_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	/* { AU1000_GPIO215_208_INT, INTC_INT_HIGH_LEVEL, 0 }, */
-+	{ AU1100_LCD_INT, INTC_INT_HIGH_LEVEL, 0 },
- 	{ AU1000_AC97C_INT, INTC_INT_RISE_EDGE, 0 },
+ static inline u8 au_readb(unsigned long reg)
+ {
+-	return (*(volatile u8 *)reg);
++	return *(volatile u8 *)reg;
+ }
  
- #elif defined(CONFIG_SOC_AU1550)
+ static inline u16 au_readw(unsigned long reg)
+ {
+-	return (*(volatile u16 *)reg);
++	return *(volatile u16 *)reg;
+ }
  
--	{ AU1550_UART0_INT, INTC_INT_HIGH_LEVEL, 0},
-+	{ AU1550_UART0_INT, INTC_INT_HIGH_LEVEL, 0 },
- 	{ AU1550_PCI_INTA, INTC_INT_LOW_LEVEL, 0 },
- 	{ AU1550_PCI_INTB, INTC_INT_LOW_LEVEL, 0 },
--	{ AU1550_DDMA_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1550_CRYPTO_INT, INTC_INT_HIGH_LEVEL, 0},
-+	{ AU1550_DDMA_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1550_CRYPTO_INT, INTC_INT_HIGH_LEVEL, 0 },
- 	{ AU1550_PCI_INTC, INTC_INT_LOW_LEVEL, 0 },
- 	{ AU1550_PCI_INTD, INTC_INT_LOW_LEVEL, 0 },
- 	{ AU1550_PCI_RST_INT, INTC_INT_LOW_LEVEL, 0 },
--	{ AU1550_UART1_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1550_UART3_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1550_PSC0_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1550_PSC1_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1550_PSC2_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1550_PSC3_INT, INTC_INT_HIGH_LEVEL, 0},
-+	{ AU1550_UART1_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1550_UART3_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1550_PSC0_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1550_PSC1_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1550_PSC2_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1550_PSC3_INT, INTC_INT_HIGH_LEVEL, 0 },
- 	{ AU1000_TOY_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_TOY_MATCH0_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_TOY_MATCH1_INT, INTC_INT_RISE_EDGE, 0 },
-@@ -163,26 +163,26 @@ struct au1xxx_irqmap __initdata au1xxx_i
- 	{ AU1000_RTC_MATCH0_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_RTC_MATCH1_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_RTC_MATCH2_INT, INTC_INT_RISE_EDGE, 0 },
--	{ AU1550_NAND_INT, INTC_INT_RISE_EDGE, 0},
-+	{ AU1550_NAND_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1550_USB_DEV_REQ_INT, INTC_INT_HIGH_LEVEL, 0 },
- 	{ AU1550_USB_DEV_SUS_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1550_USB_HOST_INT, INTC_INT_LOW_LEVEL, 0 },
--	{ AU1550_MAC0_DMA_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1550_MAC1_DMA_INT, INTC_INT_HIGH_LEVEL, 0},
-+	{ AU1550_MAC0_DMA_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1550_MAC1_DMA_INT, INTC_INT_HIGH_LEVEL, 0 },
+ static inline u32 au_readl(unsigned long reg)
+ {
+-	return (*(volatile u32 *)reg);
++	return *(volatile u32 *)reg;
+ }
  
- #elif defined(CONFIG_SOC_AU1200)
  
--	{ AU1200_UART0_INT, INTC_INT_HIGH_LEVEL, 0},
-+	{ AU1200_UART0_INT, INTC_INT_HIGH_LEVEL, 0 },
- 	{ AU1200_SWT_INT, INTC_INT_RISE_EDGE, 0 },
--	{ AU1200_SD_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1200_DDMA_INT, INTC_INT_HIGH_LEVEL, 0},
-+	{ AU1200_SD_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1200_DDMA_INT, INTC_INT_HIGH_LEVEL, 0 },
- 	{ AU1200_MAE_BE_INT, INTC_INT_HIGH_LEVEL, 0 },
--	{ AU1200_UART1_INT, INTC_INT_HIGH_LEVEL, 0},
-+	{ AU1200_UART1_INT, INTC_INT_HIGH_LEVEL, 0 },
- 	{ AU1200_MAE_FE_INT, INTC_INT_HIGH_LEVEL, 0 },
--	{ AU1200_PSC0_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1200_PSC1_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1200_AES_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1200_CAMERA_INT, INTC_INT_HIGH_LEVEL, 0},
-+	{ AU1200_PSC0_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1200_PSC1_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1200_AES_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1200_CAMERA_INT, INTC_INT_HIGH_LEVEL, 0 },
- 	{ AU1000_TOY_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_TOY_MATCH0_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_TOY_MATCH1_INT, INTC_INT_RISE_EDGE, 0 },
-@@ -191,10 +191,10 @@ struct au1xxx_irqmap __initdata au1xxx_i
- 	{ AU1000_RTC_MATCH0_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_RTC_MATCH1_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1000_RTC_MATCH2_INT, INTC_INT_RISE_EDGE, 0 },
--	{ AU1200_NAND_INT, INTC_INT_RISE_EDGE, 0},
-+	{ AU1200_NAND_INT, INTC_INT_RISE_EDGE, 0 },
- 	{ AU1200_USB_INT, INTC_INT_HIGH_LEVEL, 0 },
--	{ AU1200_LCD_INT, INTC_INT_HIGH_LEVEL, 0},
--	{ AU1200_MAE_BOTH_INT, INTC_INT_HIGH_LEVEL, 0},
-+	{ AU1200_LCD_INT, INTC_INT_HIGH_LEVEL, 0 },
-+	{ AU1200_MAE_BOTH_INT, INTC_INT_HIGH_LEVEL, 0 },
+@@ -117,76 +117,77 @@ extern struct au1xxx_irqmap au1xxx_irq_m
+ #endif /* !defined (_LANGUAGE_ASSEMBLY) */
  
+ /*
+- * SDRAM Register Offsets
++ * SDRAM register offsets
+  */
+-#if defined(CONFIG_SOC_AU1000) || defined(CONFIG_SOC_AU1500) || defined(CONFIG_SOC_AU1100)
+-#define MEM_SDMODE0		(0x0000)
+-#define MEM_SDMODE1		(0x0004)
+-#define MEM_SDMODE2		(0x0008)
+-#define MEM_SDADDR0		(0x000C)
+-#define MEM_SDADDR1		(0x0010)
+-#define MEM_SDADDR2		(0x0014)
+-#define MEM_SDREFCFG	(0x0018)
+-#define MEM_SDPRECMD	(0x001C)
+-#define MEM_SDAUTOREF	(0x0020)
+-#define MEM_SDWRMD0		(0x0024)
+-#define MEM_SDWRMD1		(0x0028)
+-#define MEM_SDWRMD2		(0x002C)
+-#define MEM_SDSLEEP		(0x0030)
+-#define MEM_SDSMCKE		(0x0034)
++#if defined(CONFIG_SOC_AU1000) || defined(CONFIG_SOC_AU1500) || \
++    defined(CONFIG_SOC_AU1100)
++#define MEM_SDMODE0		0x0000
++#define MEM_SDMODE1		0x0004
++#define MEM_SDMODE2		0x0008
++#define MEM_SDADDR0		0x000C
++#define MEM_SDADDR1		0x0010
++#define MEM_SDADDR2		0x0014
++#define MEM_SDREFCFG		0x0018
++#define MEM_SDPRECMD		0x001C
++#define MEM_SDAUTOREF		0x0020
++#define MEM_SDWRMD0		0x0024
++#define MEM_SDWRMD1		0x0028
++#define MEM_SDWRMD2		0x002C
++#define MEM_SDSLEEP		0x0030
++#define MEM_SDSMCKE		0x0034
+ 
+ /*
+  * MEM_SDMODE register content definitions
+  */
+-#define MEM_SDMODE_F		(1<<22)
+-#define MEM_SDMODE_SR		(1<<21)
+-#define MEM_SDMODE_BS		(1<<20)
+-#define MEM_SDMODE_RS		(3<<18)
+-#define MEM_SDMODE_CS		(7<<15)
+-#define MEM_SDMODE_TRAS		(15<<11)
+-#define MEM_SDMODE_TMRD		(3<<9)
+-#define MEM_SDMODE_TWR		(3<<7)
+-#define MEM_SDMODE_TRP		(3<<5)
+-#define MEM_SDMODE_TRCD		(3<<3)
+-#define MEM_SDMODE_TCL		(7<<0)
+-
+-#define MEM_SDMODE_BS_2Bank	(0<<20)
+-#define MEM_SDMODE_BS_4Bank	(1<<20)
+-#define MEM_SDMODE_RS_11Row	(0<<18)
+-#define MEM_SDMODE_RS_12Row	(1<<18)
+-#define MEM_SDMODE_RS_13Row	(2<<18)
+-#define MEM_SDMODE_RS_N(N)	((N)<<18)
+-#define MEM_SDMODE_CS_7Col	(0<<15)
+-#define MEM_SDMODE_CS_8Col	(1<<15)
+-#define MEM_SDMODE_CS_9Col	(2<<15)
+-#define MEM_SDMODE_CS_10Col	(3<<15)
+-#define MEM_SDMODE_CS_11Col	(4<<15)
+-#define MEM_SDMODE_CS_N(N)		((N)<<15)
+-#define MEM_SDMODE_TRAS_N(N)	((N)<<11)
+-#define MEM_SDMODE_TMRD_N(N)	((N)<<9)
+-#define MEM_SDMODE_TWR_N(N)		((N)<<7)
+-#define MEM_SDMODE_TRP_N(N)		((N)<<5)
+-#define MEM_SDMODE_TRCD_N(N)	((N)<<3)
+-#define MEM_SDMODE_TCL_N(N)		((N)<<0)
++#define MEM_SDMODE_F		(1 << 22)
++#define MEM_SDMODE_SR		(1 << 21)
++#define MEM_SDMODE_BS		(1 << 20)
++#define MEM_SDMODE_RS		(3 << 18)
++#define MEM_SDMODE_CS		(7 << 15)
++#define MEM_SDMODE_TRAS 	(15 << 11)
++#define MEM_SDMODE_TMRD 	(3 << 9)
++#define MEM_SDMODE_TWR		(3 << 7)
++#define MEM_SDMODE_TRP		(3 << 5)
++#define MEM_SDMODE_TRCD 	(3 << 3)
++#define MEM_SDMODE_TCL		(7 << 0)
++
++#define MEM_SDMODE_BS_2Bank	(0 << 20)
++#define MEM_SDMODE_BS_4Bank	(1 << 20)
++#define MEM_SDMODE_RS_11Row	(0 << 18)
++#define MEM_SDMODE_RS_12Row	(1 << 18)
++#define MEM_SDMODE_RS_13Row	(2 << 18)
++#define MEM_SDMODE_RS_N(N)	((N) << 18)
++#define MEM_SDMODE_CS_7Col	(0 << 15)
++#define MEM_SDMODE_CS_8Col	(1 << 15)
++#define MEM_SDMODE_CS_9Col	(2 << 15)
++#define MEM_SDMODE_CS_10Col	(3 << 15)
++#define MEM_SDMODE_CS_11Col	(4 << 15)
++#define MEM_SDMODE_CS_N(N)	((N) << 15)
++#define MEM_SDMODE_TRAS_N(N)	((N) << 11)
++#define MEM_SDMODE_TMRD_N(N)	((N) << 9)
++#define MEM_SDMODE_TWR_N(N)	((N) << 7)
++#define MEM_SDMODE_TRP_N(N)	((N) << 5)
++#define MEM_SDMODE_TRCD_N(N)	((N) << 3)
++#define MEM_SDMODE_TCL_N(N)	((N) << 0)
+ 
+ /*
+  * MEM_SDADDR register contents definitions
+  */
+-#define MEM_SDADDR_E			(1<<20)
+-#define MEM_SDADDR_CSBA			(0x03FF<<10)
+-#define MEM_SDADDR_CSMASK		(0x03FF<<0)
+-#define MEM_SDADDR_CSBA_N(N)	((N)&(0x03FF<<22)>>12)
+-#define MEM_SDADDR_CSMASK_N(N)	((N)&(0x03FF<<22)>>22)
++#define MEM_SDADDR_E		(1 << 20)
++#define MEM_SDADDR_CSBA 	(0x03FF << 10)
++#define MEM_SDADDR_CSMASK	(0x03FF << 0)
++#define MEM_SDADDR_CSBA_N(N)	((N) & (0x03FF << 22) >> 12)
++#define MEM_SDADDR_CSMASK_N(N)	((N)&(0x03FF << 22) >> 22)
+ 
+ /*
+  * MEM_SDREFCFG register content definitions
+  */
+-#define MEM_SDREFCFG_TRC		(15<<28)
+-#define MEM_SDREFCFG_TRPM		(3<<26)
+-#define MEM_SDREFCFG_E			(1<<25)
+-#define MEM_SDREFCFG_RE			(0x1ffffff<<0)
+-#define MEM_SDREFCFG_TRC_N(N)	((N)<<MEM_SDREFCFG_TRC)
+-#define MEM_SDREFCFG_TRPM_N(N)	((N)<<MEM_SDREFCFG_TRPM)
++#define MEM_SDREFCFG_TRC	(15 << 28)
++#define MEM_SDREFCFG_TRPM	(3 << 26)
++#define MEM_SDREFCFG_E		(1 << 25)
++#define MEM_SDREFCFG_RE 	(0x1ffffff << 0)
++#define MEM_SDREFCFG_TRC_N(N)	((N) << MEM_SDREFCFG_TRC)
++#define MEM_SDREFCFG_TRPM_N(N)	((N) << MEM_SDREFCFG_TRPM)
+ #define MEM_SDREFCFG_REF_N(N)	(N)
+ #endif
+ 
+@@ -199,25 +200,25 @@ extern struct au1xxx_irqmap au1xxx_irq_m
+ /***********************************************************************/
+ 
+ #if defined(CONFIG_SOC_AU1550) || defined(CONFIG_SOC_AU1200)
+-#define MEM_SDMODE0		(0x0800)
+-#define MEM_SDMODE1		(0x0808)
+-#define MEM_SDMODE2		(0x0810)
+-#define MEM_SDADDR0		(0x0820)
+-#define MEM_SDADDR1		(0x0828)
+-#define MEM_SDADDR2		(0x0830)
+-#define MEM_SDCONFIGA	(0x0840)
+-#define MEM_SDCONFIGB	(0x0848)
+-#define MEM_SDSTAT		(0x0850)
+-#define MEM_SDERRADDR	(0x0858)
+-#define MEM_SDSTRIDE0	(0x0860)
+-#define MEM_SDSTRIDE1	(0x0868)
+-#define MEM_SDSTRIDE2	(0x0870)
+-#define MEM_SDWRMD0		(0x0880)
+-#define MEM_SDWRMD1		(0x0888)
+-#define MEM_SDWRMD2		(0x0890)
+-#define MEM_SDPRECMD	(0x08C0)
+-#define MEM_SDAUTOREF	(0x08C8)
+-#define MEM_SDSREF		(0x08D0)
++#define MEM_SDMODE0		0x0800
++#define MEM_SDMODE1		0x0808
++#define MEM_SDMODE2		0x0810
++#define MEM_SDADDR0		0x0820
++#define MEM_SDADDR1		0x0828
++#define MEM_SDADDR2		0x0830
++#define MEM_SDCONFIGA		0x0840
++#define MEM_SDCONFIGB		0x0848
++#define MEM_SDSTAT		0x0850
++#define MEM_SDERRADDR		0x0858
++#define MEM_SDSTRIDE0		0x0860
++#define MEM_SDSTRIDE1		0x0868
++#define MEM_SDSTRIDE2		0x0870
++#define MEM_SDWRMD0		0x0880
++#define MEM_SDWRMD1		0x0888
++#define MEM_SDWRMD2		0x0890
++#define MEM_SDPRECMD		0x08C0
++#define MEM_SDAUTOREF		0x08C8
++#define MEM_SDSREF		0x08D0
+ #define MEM_SDSLEEP		MEM_SDSREF
+ 
+ #endif
+@@ -256,9 +257,9 @@ extern struct au1xxx_irqmap au1xxx_irq_m
+ #define	SSI0_PHYS_ADDR		0x11600000
+ #define	SSI1_PHYS_ADDR		0x11680000
+ #define	SYS_PHYS_ADDR		0x11900000
+-#define PCMCIA_IO_PHYS_ADDR   0xF00000000ULL
+-#define PCMCIA_ATTR_PHYS_ADDR 0xF40000000ULL
+-#define PCMCIA_MEM_PHYS_ADDR  0xF80000000ULL
++#define PCMCIA_IO_PHYS_ADDR	0xF00000000ULL
++#define PCMCIA_ATTR_PHYS_ADDR	0xF40000000ULL
++#define PCMCIA_MEM_PHYS_ADDR	0xF80000000ULL
+ #endif
+ 
+ /********************************************************************/
+@@ -290,13 +291,13 @@ extern struct au1xxx_irqmap au1xxx_irq_m
+ #define	UART3_PHYS_ADDR		0x11400000
+ #define GPIO2_PHYS_ADDR		0x11700000
+ #define	SYS_PHYS_ADDR		0x11900000
+-#define PCI_MEM_PHYS_ADDR     0x400000000ULL
+-#define PCI_IO_PHYS_ADDR      0x500000000ULL
+-#define PCI_CONFIG0_PHYS_ADDR 0x600000000ULL
+-#define PCI_CONFIG1_PHYS_ADDR 0x680000000ULL
+-#define PCMCIA_IO_PHYS_ADDR   0xF00000000ULL
+-#define PCMCIA_ATTR_PHYS_ADDR 0xF40000000ULL
+-#define PCMCIA_MEM_PHYS_ADDR  0xF80000000ULL
++#define PCI_MEM_PHYS_ADDR	0x400000000ULL
++#define PCI_IO_PHYS_ADDR	0x500000000ULL
++#define PCI_CONFIG0_PHYS_ADDR	0x600000000ULL
++#define PCI_CONFIG1_PHYS_ADDR	0x680000000ULL
++#define PCMCIA_IO_PHYS_ADDR	0xF00000000ULL
++#define PCMCIA_ATTR_PHYS_ADDR	0xF40000000ULL
++#define PCMCIA_MEM_PHYS_ADDR	0xF80000000ULL
+ #endif
+ 
+ /********************************************************************/
+@@ -333,9 +334,9 @@ extern struct au1xxx_irqmap au1xxx_irq_m
+ #define GPIO2_PHYS_ADDR		0x11700000
+ #define	SYS_PHYS_ADDR		0x11900000
+ #define LCD_PHYS_ADDR		0x15000000
+-#define PCMCIA_IO_PHYS_ADDR   0xF00000000ULL
+-#define PCMCIA_ATTR_PHYS_ADDR 0xF40000000ULL
+-#define PCMCIA_MEM_PHYS_ADDR  0xF80000000ULL
++#define PCMCIA_IO_PHYS_ADDR	0xF00000000ULL
++#define PCMCIA_ATTR_PHYS_ADDR	0xF40000000ULL
++#define PCMCIA_MEM_PHYS_ADDR	0xF80000000ULL
+ #endif
+ 
+ /***********************************************************************/
+@@ -360,17 +361,17 @@ extern struct au1xxx_irqmap au1xxx_irq_m
+ #define	SYS_PHYS_ADDR		0x11900000
+ #define	DDMA_PHYS_ADDR		0x14002000
+ #define PE_PHYS_ADDR		0x14008000
+-#define PSC0_PHYS_ADDR	 	0x11A00000
+-#define PSC1_PHYS_ADDR	 	0x11B00000
+-#define PSC2_PHYS_ADDR	 	0x10A00000
+-#define PSC3_PHYS_ADDR	 	0x10B00000
+-#define PCI_MEM_PHYS_ADDR     0x400000000ULL
+-#define PCI_IO_PHYS_ADDR      0x500000000ULL
+-#define PCI_CONFIG0_PHYS_ADDR 0x600000000ULL
+-#define PCI_CONFIG1_PHYS_ADDR 0x680000000ULL
+-#define PCMCIA_IO_PHYS_ADDR   0xF00000000ULL
+-#define PCMCIA_ATTR_PHYS_ADDR 0xF40000000ULL
+-#define PCMCIA_MEM_PHYS_ADDR  0xF80000000ULL
++#define PSC0_PHYS_ADDR		0x11A00000
++#define PSC1_PHYS_ADDR		0x11B00000
++#define PSC2_PHYS_ADDR		0x10A00000
++#define PSC3_PHYS_ADDR		0x10B00000
++#define PCI_MEM_PHYS_ADDR	0x400000000ULL
++#define PCI_IO_PHYS_ADDR	0x500000000ULL
++#define PCI_CONFIG0_PHYS_ADDR	0x600000000ULL
++#define PCI_CONFIG1_PHYS_ADDR	0x680000000ULL
++#define PCMCIA_IO_PHYS_ADDR	0xF00000000ULL
++#define PCMCIA_ATTR_PHYS_ADDR	0xF40000000ULL
++#define PCMCIA_MEM_PHYS_ADDR	0xF80000000ULL
+ #endif
+ 
+ /***********************************************************************/
+@@ -397,122 +398,121 @@ extern struct au1xxx_irqmap au1xxx_irq_m
+ #define SWCNT_PHYS_ADDR		0x1110010C
+ #define MAEFE_PHYS_ADDR		0x14012000
+ #define MAEBE_PHYS_ADDR		0x14010000
+-#define PCMCIA_IO_PHYS_ADDR   0xF00000000ULL
+-#define PCMCIA_ATTR_PHYS_ADDR 0xF40000000ULL
+-#define PCMCIA_MEM_PHYS_ADDR  0xF80000000ULL
++#define PCMCIA_IO_PHYS_ADDR	0xF00000000ULL
++#define PCMCIA_ATTR_PHYS_ADDR	0xF40000000ULL
++#define PCMCIA_MEM_PHYS_ADDR	0xF80000000ULL
+ #endif
+ 
+-
+ /* Static Bus Controller */
+-#define MEM_STCFG0                 0xB4001000
+-#define MEM_STTIME0                0xB4001004
+-#define MEM_STADDR0                0xB4001008
+-
+-#define MEM_STCFG1                 0xB4001010
+-#define MEM_STTIME1                0xB4001014
+-#define MEM_STADDR1                0xB4001018
+-
+-#define MEM_STCFG2                 0xB4001020
+-#define MEM_STTIME2                0xB4001024
+-#define MEM_STADDR2                0xB4001028
+-
+-#define MEM_STCFG3                 0xB4001030
+-#define MEM_STTIME3                0xB4001034
+-#define MEM_STADDR3                0xB4001038
++#define MEM_STCFG0		0xB4001000
++#define MEM_STTIME0		0xB4001004
++#define MEM_STADDR0		0xB4001008
++
++#define MEM_STCFG1		0xB4001010
++#define MEM_STTIME1		0xB4001014
++#define MEM_STADDR1		0xB4001018
++
++#define MEM_STCFG2		0xB4001020
++#define MEM_STTIME2		0xB4001024
++#define MEM_STADDR2		0xB4001028
++
++#define MEM_STCFG3		0xB4001030
++#define MEM_STTIME3		0xB4001034
++#define MEM_STADDR3		0xB4001038
+ 
+ #if defined(CONFIG_SOC_AU1550) || defined(CONFIG_SOC_AU1200)
+-#define MEM_STNDCTL                0xB4001100
+-#define MEM_STSTAT                 0xB4001104
++#define MEM_STNDCTL		0xB4001100
++#define MEM_STSTAT		0xB4001104
+ 
+-#define MEM_STNAND_CMD                  (0x0)
+-#define MEM_STNAND_ADDR                 (0x4)
+-#define MEM_STNAND_DATA                (0x20)
++#define MEM_STNAND_CMD		0x0
++#define MEM_STNAND_ADDR 	0x4
++#define MEM_STNAND_DATA 	0x20
+ #endif
+ 
+ /* Interrupt Controller 0 */
+-#define IC0_CFG0RD                 0xB0400040
+-#define IC0_CFG0SET                0xB0400040
+-#define IC0_CFG0CLR                0xB0400044
+-
+-#define IC0_CFG1RD                 0xB0400048
+-#define IC0_CFG1SET                0xB0400048
+-#define IC0_CFG1CLR                0xB040004C
+-
+-#define IC0_CFG2RD                 0xB0400050
+-#define IC0_CFG2SET                0xB0400050
+-#define IC0_CFG2CLR                0xB0400054
+-
+-#define IC0_REQ0INT                0xB0400054
+-#define IC0_SRCRD                  0xB0400058
+-#define IC0_SRCSET                 0xB0400058
+-#define IC0_SRCCLR                 0xB040005C
+-#define IC0_REQ1INT                0xB040005C
+-
+-#define IC0_ASSIGNRD               0xB0400060
+-#define IC0_ASSIGNSET              0xB0400060
+-#define IC0_ASSIGNCLR              0xB0400064
+-
+-#define IC0_WAKERD                 0xB0400068
+-#define IC0_WAKESET                0xB0400068
+-#define IC0_WAKECLR                0xB040006C
+-
+-#define IC0_MASKRD                 0xB0400070
+-#define IC0_MASKSET                0xB0400070
+-#define IC0_MASKCLR                0xB0400074
+-
+-#define IC0_RISINGRD               0xB0400078
+-#define IC0_RISINGCLR              0xB0400078
+-#define IC0_FALLINGRD              0xB040007C
+-#define IC0_FALLINGCLR             0xB040007C
++#define IC0_CFG0RD		0xB0400040
++#define IC0_CFG0SET		0xB0400040
++#define IC0_CFG0CLR		0xB0400044
++
++#define IC0_CFG1RD		0xB0400048
++#define IC0_CFG1SET		0xB0400048
++#define IC0_CFG1CLR		0xB040004C
++
++#define IC0_CFG2RD		0xB0400050
++#define IC0_CFG2SET		0xB0400050
++#define IC0_CFG2CLR		0xB0400054
++
++#define IC0_REQ0INT		0xB0400054
++#define IC0_SRCRD		0xB0400058
++#define IC0_SRCSET		0xB0400058
++#define IC0_SRCCLR		0xB040005C
++#define IC0_REQ1INT		0xB040005C
++
++#define IC0_ASSIGNRD		0xB0400060
++#define IC0_ASSIGNSET		0xB0400060
++#define IC0_ASSIGNCLR		0xB0400064
++
++#define IC0_WAKERD		0xB0400068
++#define IC0_WAKESET		0xB0400068
++#define IC0_WAKECLR		0xB040006C
++
++#define IC0_MASKRD		0xB0400070
++#define IC0_MASKSET		0xB0400070
++#define IC0_MASKCLR		0xB0400074
++
++#define IC0_RISINGRD		0xB0400078
++#define IC0_RISINGCLR		0xB0400078
++#define IC0_FALLINGRD		0xB040007C
++#define IC0_FALLINGCLR		0xB040007C
+ 
+-#define IC0_TESTBIT                0xB0400080
++#define IC0_TESTBIT		0xB0400080
+ 
+ /* Interrupt Controller 1 */
+-#define IC1_CFG0RD                 0xB1800040
+-#define IC1_CFG0SET                0xB1800040
+-#define IC1_CFG0CLR                0xB1800044
+-
+-#define IC1_CFG1RD                 0xB1800048
+-#define IC1_CFG1SET                0xB1800048
+-#define IC1_CFG1CLR                0xB180004C
+-
+-#define IC1_CFG2RD                 0xB1800050
+-#define IC1_CFG2SET                0xB1800050
+-#define IC1_CFG2CLR                0xB1800054
+-
+-#define IC1_REQ0INT                0xB1800054
+-#define IC1_SRCRD                  0xB1800058
+-#define IC1_SRCSET                 0xB1800058
+-#define IC1_SRCCLR                 0xB180005C
+-#define IC1_REQ1INT                0xB180005C
+-
+-#define IC1_ASSIGNRD               0xB1800060
+-#define IC1_ASSIGNSET              0xB1800060
+-#define IC1_ASSIGNCLR              0xB1800064
+-
+-#define IC1_WAKERD                 0xB1800068
+-#define IC1_WAKESET                0xB1800068
+-#define IC1_WAKECLR                0xB180006C
+-
+-#define IC1_MASKRD                 0xB1800070
+-#define IC1_MASKSET                0xB1800070
+-#define IC1_MASKCLR                0xB1800074
+-
+-#define IC1_RISINGRD               0xB1800078
+-#define IC1_RISINGCLR              0xB1800078
+-#define IC1_FALLINGRD              0xB180007C
+-#define IC1_FALLINGCLR             0xB180007C
++#define IC1_CFG0RD		0xB1800040
++#define IC1_CFG0SET		0xB1800040
++#define IC1_CFG0CLR		0xB1800044
++
++#define IC1_CFG1RD		0xB1800048
++#define IC1_CFG1SET		0xB1800048
++#define IC1_CFG1CLR		0xB180004C
++
++#define IC1_CFG2RD		0xB1800050
++#define IC1_CFG2SET		0xB1800050
++#define IC1_CFG2CLR		0xB1800054
++
++#define IC1_REQ0INT		0xB1800054
++#define IC1_SRCRD		0xB1800058
++#define IC1_SRCSET		0xB1800058
++#define IC1_SRCCLR		0xB180005C
++#define IC1_REQ1INT		0xB180005C
++
++#define IC1_ASSIGNRD            0xB1800060
++#define IC1_ASSIGNSET           0xB1800060
++#define IC1_ASSIGNCLR           0xB1800064
++
++#define IC1_WAKERD		0xB1800068
++#define IC1_WAKESET		0xB1800068
++#define IC1_WAKECLR		0xB180006C
++
++#define IC1_MASKRD		0xB1800070
++#define IC1_MASKSET		0xB1800070
++#define IC1_MASKCLR		0xB1800074
++
++#define IC1_RISINGRD		0xB1800078
++#define IC1_RISINGCLR		0xB1800078
++#define IC1_FALLINGRD		0xB180007C
++#define IC1_FALLINGCLR		0xB180007C
+ 
+-#define IC1_TESTBIT                0xB1800080
++#define IC1_TESTBIT		0xB1800080
+ 
+ /* Interrupt Configuration Modes */
+-#define INTC_INT_DISABLED                0
+-#define INTC_INT_RISE_EDGE             0x1
+-#define INTC_INT_FALL_EDGE             0x2
+-#define INTC_INT_RISE_AND_FALL_EDGE    0x3
+-#define INTC_INT_HIGH_LEVEL            0x5
+-#define INTC_INT_LOW_LEVEL             0x6
+-#define INTC_INT_HIGH_AND_LOW_LEVEL    0x7
++#define INTC_INT_DISABLED		0x0
++#define INTC_INT_RISE_EDGE		0x1
++#define INTC_INT_FALL_EDGE		0x2
++#define INTC_INT_RISE_AND_FALL_EDGE	0x3
++#define INTC_INT_HIGH_LEVEL		0x5
++#define INTC_INT_LOW_LEVEL		0x6
++#define INTC_INT_HIGH_AND_LOW_LEVEL	0x7
+ 
+ /* Interrupt Numbers */
+ /* Au1000 */
+@@ -579,18 +579,18 @@ enum soc_au1000_ints {
+ 	AU1000_GPIO_31,
+ };
+ 
+-#define UART0_ADDR                0xB1100000
+-#define UART1_ADDR                0xB1200000
+-#define UART2_ADDR                0xB1300000
+-#define UART3_ADDR                0xB1400000
+-
+-#define USB_OHCI_BASE             0x10100000 // phys addr for ioremap
+-#define USB_HOST_CONFIG           0xB017fffc
+-
+-#define AU1000_ETH0_BASE      0xB0500000
+-#define AU1000_ETH1_BASE      0xB0510000
+-#define AU1000_MAC0_ENABLE       0xB0520000
+-#define AU1000_MAC1_ENABLE       0xB0520004
++#define UART0_ADDR		0xB1100000
++#define UART1_ADDR		0xB1200000
++#define UART2_ADDR		0xB1300000
++#define UART3_ADDR		0xB1400000
++
++#define USB_OHCI_BASE		0x10100000	/* phys addr for ioremap */
++#define USB_HOST_CONFIG 	0xB017FFFC
++
++#define AU1000_ETH0_BASE	0xB0500000
++#define AU1000_ETH1_BASE	0xB0510000
++#define AU1000_MAC0_ENABLE	0xB0520000
++#define AU1000_MAC1_ENABLE	0xB0520004
+ #define NUM_ETH_INTERFACES 2
+ #endif /* CONFIG_SOC_AU1000 */
+ 
+@@ -662,16 +662,16 @@ enum soc_au1500_ints {
+ #define INTC AU1000_PCI_INTC
+ #define INTD AU1000_PCI_INTD
+ 
+-#define UART0_ADDR                0xB1100000
+-#define UART3_ADDR                0xB1400000
++#define UART0_ADDR		0xB1100000
++#define UART3_ADDR		0xB1400000
+ 
+-#define USB_OHCI_BASE             0x10100000 // phys addr for ioremap
+-#define USB_HOST_CONFIG           0xB017fffc
++#define USB_OHCI_BASE		0x10100000	/* phys addr for ioremap */
++#define USB_HOST_CONFIG 	0xB017fffc
+ 
+-#define AU1500_ETH0_BASE	  0xB1500000
+-#define AU1500_ETH1_BASE	  0xB1510000
+-#define AU1500_MAC0_ENABLE       0xB1520000
+-#define AU1500_MAC1_ENABLE       0xB1520004
++#define AU1500_ETH0_BASE	0xB1500000
++#define AU1500_ETH1_BASE	0xB1510000
++#define AU1500_MAC0_ENABLE	0xB1520000
++#define AU1500_MAC1_ENABLE	0xB1520004
+ #define NUM_ETH_INTERFACES 2
+ #endif /* CONFIG_SOC_AU1500 */
+ 
+@@ -739,15 +739,15 @@ enum soc_au1100_ints {
+ 	AU1000_GPIO_31,
+ };
+ 
+-#define UART0_ADDR                0xB1100000
+-#define UART1_ADDR                0xB1200000
+-#define UART3_ADDR                0xB1400000
++#define UART0_ADDR		0xB1100000
++#define UART1_ADDR		0xB1200000
++#define UART3_ADDR		0xB1400000
+ 
+-#define USB_OHCI_BASE             0x10100000 // phys addr for ioremap
+-#define USB_HOST_CONFIG           0xB017fffc
++#define USB_OHCI_BASE		0x10100000	/* phys addr for ioremap */
++#define USB_HOST_CONFIG 	0xB017FFFC
+ 
+-#define AU1100_ETH0_BASE	  0xB0500000
+-#define AU1100_MAC0_ENABLE       0xB0520000
++#define AU1100_ETH0_BASE	0xB0500000
++#define AU1100_MAC0_ENABLE	0xB0520000
+ #define NUM_ETH_INTERFACES 1
+ #endif /* CONFIG_SOC_AU1100 */
+ 
+@@ -826,18 +826,18 @@ enum soc_au1550_ints {
+ #define INTC AU1550_PCI_INTC
+ #define INTD AU1550_PCI_INTD
+ 
+-#define UART0_ADDR                0xB1100000
+-#define UART1_ADDR                0xB1200000
+-#define UART3_ADDR                0xB1400000
+-
+-#define USB_OHCI_BASE             0x14020000 // phys addr for ioremap
+-#define USB_OHCI_LEN              0x00060000
+-#define USB_HOST_CONFIG           0xB4027ffc
+-
+-#define AU1550_ETH0_BASE      0xB0500000
+-#define AU1550_ETH1_BASE      0xB0510000
+-#define AU1550_MAC0_ENABLE       0xB0520000
+-#define AU1550_MAC1_ENABLE       0xB0520004
++#define UART0_ADDR		0xB1100000
++#define UART1_ADDR		0xB1200000
++#define UART3_ADDR		0xB1400000
++
++#define USB_OHCI_BASE		0x14020000	/* phys addr for ioremap */
++#define USB_OHCI_LEN		0x00060000
++#define USB_HOST_CONFIG 	0xB4027ffc
++
++#define AU1550_ETH0_BASE	0xB0500000
++#define AU1550_ETH1_BASE	0xB0510000
++#define AU1550_MAC0_ENABLE	0xB0520000
++#define AU1550_MAC1_ENABLE	0xB0520004
+ #define NUM_ETH_INTERFACES 2
+ #endif /* CONFIG_SOC_AU1550 */
+ 
+@@ -911,32 +911,32 @@ enum soc_au1200_ints {
+ 	AU1000_GPIO_31,
+ };
+ 
+-#define UART0_ADDR                0xB1100000
+-#define UART1_ADDR                0xB1200000
++#define UART0_ADDR		0xB1100000
++#define UART1_ADDR		0xB1200000
+ 
+-#define USB_UOC_BASE              0x14020020
+-#define USB_UOC_LEN               0x20
+-#define USB_OHCI_BASE             0x14020100
+-#define USB_OHCI_LEN              0x100
+-#define USB_EHCI_BASE             0x14020200
+-#define USB_EHCI_LEN              0x100
+-#define USB_UDC_BASE              0x14022000
+-#define USB_UDC_LEN               0x2000
+-#define USB_MSR_BASE			  0xB4020000
+-#define USB_MSR_MCFG              4
+-#define USBMSRMCFG_OMEMEN         0
+-#define USBMSRMCFG_OBMEN          1
+-#define USBMSRMCFG_EMEMEN         2
+-#define USBMSRMCFG_EBMEN          3
+-#define USBMSRMCFG_DMEMEN         4
+-#define USBMSRMCFG_DBMEN          5
+-#define USBMSRMCFG_GMEMEN         6
+-#define USBMSRMCFG_OHCCLKEN       16
+-#define USBMSRMCFG_EHCCLKEN       17
+-#define USBMSRMCFG_UDCCLKEN       18
+-#define USBMSRMCFG_PHYPLLEN       19
+-#define USBMSRMCFG_RDCOMB         30
+-#define USBMSRMCFG_PFEN           31
++#define USB_UOC_BASE		0x14020020
++#define USB_UOC_LEN		0x20
++#define USB_OHCI_BASE		0x14020100
++#define USB_OHCI_LEN		0x100
++#define USB_EHCI_BASE		0x14020200
++#define USB_EHCI_LEN		0x100
++#define USB_UDC_BASE		0x14022000
++#define USB_UDC_LEN		0x2000
++#define USB_MSR_BASE		0xB4020000
++#define USB_MSR_MCFG		4
++#define USBMSRMCFG_OMEMEN	0
++#define USBMSRMCFG_OBMEN	1
++#define USBMSRMCFG_EMEMEN	2
++#define USBMSRMCFG_EBMEN	3
++#define USBMSRMCFG_DMEMEN	4
++#define USBMSRMCFG_DBMEN	5
++#define USBMSRMCFG_GMEMEN	6
++#define USBMSRMCFG_OHCCLKEN	16
++#define USBMSRMCFG_EHCCLKEN	17
++#define USBMSRMCFG_UDCCLKEN	18
++#define USBMSRMCFG_PHYPLLEN	19
++#define USBMSRMCFG_RDCOMB	30
++#define USBMSRMCFG_PFEN 	31
+ 
+ #endif /* CONFIG_SOC_AU1200 */
+ 
+@@ -949,259 +949,258 @@ enum soc_au1200_ints {
+ #define INTX			0xFF			/* not valid */
+ 
+ /* Programmable Counters 0 and 1 */
+-#define SYS_BASE                   0xB1900000
+-#define SYS_COUNTER_CNTRL          (SYS_BASE + 0x14)
+-#  define SYS_CNTRL_E1S            (1<<23)
+-#  define SYS_CNTRL_T1S            (1<<20)
+-#  define SYS_CNTRL_M21            (1<<19)
+-#  define SYS_CNTRL_M11            (1<<18)
+-#  define SYS_CNTRL_M01            (1<<17)
+-#  define SYS_CNTRL_C1S            (1<<16)
+-#  define SYS_CNTRL_BP             (1<<14)
+-#  define SYS_CNTRL_EN1            (1<<13)
+-#  define SYS_CNTRL_BT1            (1<<12)
+-#  define SYS_CNTRL_EN0            (1<<11)
+-#  define SYS_CNTRL_BT0            (1<<10)
+-#  define SYS_CNTRL_E0             (1<<8)
+-#  define SYS_CNTRL_E0S            (1<<7)
+-#  define SYS_CNTRL_32S            (1<<5)
+-#  define SYS_CNTRL_T0S            (1<<4)
+-#  define SYS_CNTRL_M20            (1<<3)
+-#  define SYS_CNTRL_M10            (1<<2)
+-#  define SYS_CNTRL_M00            (1<<1)
+-#  define SYS_CNTRL_C0S            (1<<0)
++#define SYS_BASE		0xB1900000
++#define SYS_COUNTER_CNTRL	(SYS_BASE + 0x14)
++#  define SYS_CNTRL_E1S 	(1 << 23)
++#  define SYS_CNTRL_T1S 	(1 << 20)
++#  define SYS_CNTRL_M21 	(1 << 19)
++#  define SYS_CNTRL_M11 	(1 << 18)
++#  define SYS_CNTRL_M01 	(1 << 17)
++#  define SYS_CNTRL_C1S 	(1 << 16)
++#  define SYS_CNTRL_BP		(1 << 14)
++#  define SYS_CNTRL_EN1 	(1 << 13)
++#  define SYS_CNTRL_BT1 	(1 << 12)
++#  define SYS_CNTRL_EN0 	(1 << 11)
++#  define SYS_CNTRL_BT0 	(1 << 10)
++#  define SYS_CNTRL_E0		(1 << 8)
++#  define SYS_CNTRL_E0S 	(1 << 7)
++#  define SYS_CNTRL_32S 	(1 << 5)
++#  define SYS_CNTRL_T0S 	(1 << 4)
++#  define SYS_CNTRL_M20 	(1 << 3)
++#  define SYS_CNTRL_M10 	(1 << 2)
++#  define SYS_CNTRL_M00 	(1 << 1)
++#  define SYS_CNTRL_C0S 	(1 << 0)
+ 
+ /* Programmable Counter 0 Registers */
+-#define SYS_TOYTRIM                 (SYS_BASE + 0)
+-#define SYS_TOYWRITE                (SYS_BASE + 4)
+-#define SYS_TOYMATCH0               (SYS_BASE + 8)
+-#define SYS_TOYMATCH1               (SYS_BASE + 0xC)
+-#define SYS_TOYMATCH2               (SYS_BASE + 0x10)
+-#define SYS_TOYREAD                 (SYS_BASE + 0x40)
++#define SYS_TOYTRIM		(SYS_BASE + 0)
++#define SYS_TOYWRITE		(SYS_BASE + 4)
++#define SYS_TOYMATCH0		(SYS_BASE + 8)
++#define SYS_TOYMATCH1		(SYS_BASE + 0xC)
++#define SYS_TOYMATCH2		(SYS_BASE + 0x10)
++#define SYS_TOYREAD		(SYS_BASE + 0x40)
+ 
+ /* Programmable Counter 1 Registers */
+-#define SYS_RTCTRIM                 (SYS_BASE + 0x44)
+-#define SYS_RTCWRITE                (SYS_BASE + 0x48)
+-#define SYS_RTCMATCH0               (SYS_BASE + 0x4C)
+-#define SYS_RTCMATCH1               (SYS_BASE + 0x50)
+-#define SYS_RTCMATCH2               (SYS_BASE + 0x54)
+-#define SYS_RTCREAD                 (SYS_BASE + 0x58)
++#define SYS_RTCTRIM		(SYS_BASE + 0x44)
++#define SYS_RTCWRITE		(SYS_BASE + 0x48)
++#define SYS_RTCMATCH0		(SYS_BASE + 0x4C)
++#define SYS_RTCMATCH1		(SYS_BASE + 0x50)
++#define SYS_RTCMATCH2		(SYS_BASE + 0x54)
++#define SYS_RTCREAD		(SYS_BASE + 0x58)
+ 
+ /* I2S Controller */
+-#define I2S_DATA                    0xB1000000
+-#  define I2S_DATA_MASK        (0xffffff)
+-#define I2S_CONFIG                0xB1000004
+-#  define I2S_CONFIG_XU        (1<<25)
+-#  define I2S_CONFIG_XO        (1<<24)
+-#  define I2S_CONFIG_RU        (1<<23)
+-#  define I2S_CONFIG_RO        (1<<22)
+-#  define I2S_CONFIG_TR        (1<<21)
+-#  define I2S_CONFIG_TE        (1<<20)
+-#  define I2S_CONFIG_TF        (1<<19)
+-#  define I2S_CONFIG_RR        (1<<18)
+-#  define I2S_CONFIG_RE        (1<<17)
+-#  define I2S_CONFIG_RF        (1<<16)
+-#  define I2S_CONFIG_PD        (1<<11)
+-#  define I2S_CONFIG_LB        (1<<10)
+-#  define I2S_CONFIG_IC        (1<<9)
+-#  define I2S_CONFIG_FM_BIT    7
+-#  define I2S_CONFIG_FM_MASK     (0x3 << I2S_CONFIG_FM_BIT)
+-#    define I2S_CONFIG_FM_I2S    (0x0 << I2S_CONFIG_FM_BIT)
+-#    define I2S_CONFIG_FM_LJ     (0x1 << I2S_CONFIG_FM_BIT)
+-#    define I2S_CONFIG_FM_RJ     (0x2 << I2S_CONFIG_FM_BIT)
+-#  define I2S_CONFIG_TN        (1<<6)
+-#  define I2S_CONFIG_RN        (1<<5)
+-#  define I2S_CONFIG_SZ_BIT    0
+-#  define I2S_CONFIG_SZ_MASK     (0x1F << I2S_CONFIG_SZ_BIT)
+-
+-#define I2S_CONTROL                0xB1000008
+-#  define I2S_CONTROL_D         (1<<1)
+-#  define I2S_CONTROL_CE        (1<<0)
++#define I2S_DATA		0xB1000000
++#  define I2S_DATA_MASK 	0xffffff
++#define I2S_CONFIG		0xB1000004
++#  define I2S_CONFIG_XU 	(1 << 25)
++#  define I2S_CONFIG_XO 	(1 << 24)
++#  define I2S_CONFIG_RU 	(1 << 23)
++#  define I2S_CONFIG_RO 	(1 << 22)
++#  define I2S_CONFIG_TR 	(1 << 21)
++#  define I2S_CONFIG_TE 	(1 << 20)
++#  define I2S_CONFIG_TF 	(1 << 19)
++#  define I2S_CONFIG_RR 	(1 << 18)
++#  define I2S_CONFIG_RE 	(1 << 17)
++#  define I2S_CONFIG_RF 	(1 << 16)
++#  define I2S_CONFIG_PD 	(1 << 11)
++#  define I2S_CONFIG_LB 	(1 << 10)
++#  define I2S_CONFIG_IC 	(1 << 9)
++#  define I2S_CONFIG_FM_BIT	7
++#  define I2S_CONFIG_FM_MASK	(0x3 << I2S_CONFIG_FM_BIT)
++#    define I2S_CONFIG_FM_I2S	(0x0 << I2S_CONFIG_FM_BIT)
++#    define I2S_CONFIG_FM_LJ	(0x1 << I2S_CONFIG_FM_BIT)
++#    define I2S_CONFIG_FM_RJ	(0x2 << I2S_CONFIG_FM_BIT)
++#  define I2S_CONFIG_TN 	(1 << 6)
++#  define I2S_CONFIG_RN 	(1 << 5)
++#  define I2S_CONFIG_SZ_BIT	0
++#  define I2S_CONFIG_SZ_MASK	(0x1F << I2S_CONFIG_SZ_BIT)
++
++#define I2S_CONTROL		0xB1000008
++#  define I2S_CONTROL_D 	(1 << 1)
++#  define I2S_CONTROL_CE	(1 << 0)
+ 
+ /* USB Host Controller */
+ #ifndef USB_OHCI_LEN
+-#define USB_OHCI_LEN              0x00100000
++#define USB_OHCI_LEN		0x00100000
+ #endif
+ 
+ #ifndef CONFIG_SOC_AU1200
+ 
+ /* USB Device Controller */
+-#define USBD_EP0RD                0xB0200000
+-#define USBD_EP0WR                0xB0200004
+-#define USBD_EP2WR                0xB0200008
+-#define USBD_EP3WR                0xB020000C
+-#define USBD_EP4RD                0xB0200010
+-#define USBD_EP5RD                0xB0200014
+-#define USBD_INTEN                0xB0200018
+-#define USBD_INTSTAT              0xB020001C
+-#  define USBDEV_INT_SOF       (1<<12)
+-#  define USBDEV_INT_HF_BIT    6
+-#  define USBDEV_INT_HF_MASK   (0x3f << USBDEV_INT_HF_BIT)
+-#  define USBDEV_INT_CMPLT_BIT  0
++#define USBD_EP0RD		0xB0200000
++#define USBD_EP0WR		0xB0200004
++#define USBD_EP2WR		0xB0200008
++#define USBD_EP3WR		0xB020000C
++#define USBD_EP4RD		0xB0200010
++#define USBD_EP5RD		0xB0200014
++#define USBD_INTEN		0xB0200018
++#define USBD_INTSTAT		0xB020001C
++#  define USBDEV_INT_SOF	(1 << 12)
++#  define USBDEV_INT_HF_BIT	6
++#  define USBDEV_INT_HF_MASK	0x3f << USBDEV_INT_HF_BIT)
++#  define USBDEV_INT_CMPLT_BIT	0
+ #  define USBDEV_INT_CMPLT_MASK (0x3f << USBDEV_INT_CMPLT_BIT)
+-#define USBD_CONFIG               0xB0200020
+-#define USBD_EP0CS                0xB0200024
+-#define USBD_EP2CS                0xB0200028
+-#define USBD_EP3CS                0xB020002C
+-#define USBD_EP4CS                0xB0200030
+-#define USBD_EP5CS                0xB0200034
+-#  define USBDEV_CS_SU         (1<<14)
+-#  define USBDEV_CS_NAK        (1<<13)
+-#  define USBDEV_CS_ACK        (1<<12)
+-#  define USBDEV_CS_BUSY       (1<<11)
+-#  define USBDEV_CS_TSIZE_BIT  1
+-#  define USBDEV_CS_TSIZE_MASK (0x3ff << USBDEV_CS_TSIZE_BIT)
+-#  define USBDEV_CS_STALL      (1<<0)
+-#define USBD_EP0RDSTAT            0xB0200040
+-#define USBD_EP0WRSTAT            0xB0200044
+-#define USBD_EP2WRSTAT            0xB0200048
+-#define USBD_EP3WRSTAT            0xB020004C
+-#define USBD_EP4RDSTAT            0xB0200050
+-#define USBD_EP5RDSTAT            0xB0200054
+-#  define USBDEV_FSTAT_FLUSH     (1<<6)
+-#  define USBDEV_FSTAT_UF        (1<<5)
+-#  define USBDEV_FSTAT_OF        (1<<4)
+-#  define USBDEV_FSTAT_FCNT_BIT  0
++#define USBD_CONFIG		0xB0200020
++#define USBD_EP0CS		0xB0200024
++#define USBD_EP2CS		0xB0200028
++#define USBD_EP3CS		0xB020002C
++#define USBD_EP4CS		0xB0200030
++#define USBD_EP5CS		0xB0200034
++#  define USBDEV_CS_SU		(1 << 14)
++#  define USBDEV_CS_NAK 	(1 << 13)
++#  define USBDEV_CS_ACK 	(1 << 12)
++#  define USBDEV_CS_BUSY	(1 << 11)
++#  define USBDEV_CS_TSIZE_BIT	1
++#  define USBDEV_CS_TSIZE_MASK	(0x3ff << USBDEV_CS_TSIZE_BIT)
++#  define USBDEV_CS_STALL	(1 << 0)
++#define USBD_EP0RDSTAT		0xB0200040
++#define USBD_EP0WRSTAT		0xB0200044
++#define USBD_EP2WRSTAT		0xB0200048
++#define USBD_EP3WRSTAT		0xB020004C
++#define USBD_EP4RDSTAT		0xB0200050
++#define USBD_EP5RDSTAT		0xB0200054
++#  define USBDEV_FSTAT_FLUSH	(1 << 6)
++#  define USBDEV_FSTAT_UF	(1 << 5)
++#  define USBDEV_FSTAT_OF	(1 << 4)
++#  define USBDEV_FSTAT_FCNT_BIT 0
+ #  define USBDEV_FSTAT_FCNT_MASK (0x0f << USBDEV_FSTAT_FCNT_BIT)
+-#define USBD_ENABLE               0xB0200058
+-#  define USBDEV_ENABLE (1<<1)
+-#  define USBDEV_CE     (1<<0)
++#define USBD_ENABLE		0xB0200058
++#  define USBDEV_ENABLE 	(1 << 1)
++#  define USBDEV_CE		(1 << 0)
+ 
+ #endif /* !CONFIG_SOC_AU1200 */
+ 
+ /* Ethernet Controllers  */
+ 
+ /* 4 byte offsets from AU1000_ETH_BASE */
+-#define MAC_CONTROL                     0x0
+-#  define MAC_RX_ENABLE               (1<<2)
+-#  define MAC_TX_ENABLE               (1<<3)
+-#  define MAC_DEF_CHECK               (1<<5)
+-#  define MAC_SET_BL(X)       (((X)&0x3)<<6)
+-#  define MAC_AUTO_PAD                (1<<8)
+-#  define MAC_DISABLE_RETRY          (1<<10)
+-#  define MAC_DISABLE_BCAST          (1<<11)
+-#  define MAC_LATE_COL               (1<<12)
+-#  define MAC_HASH_MODE              (1<<13)
+-#  define MAC_HASH_ONLY              (1<<15)
+-#  define MAC_PASS_ALL               (1<<16)
+-#  define MAC_INVERSE_FILTER         (1<<17)
+-#  define MAC_PROMISCUOUS            (1<<18)
+-#  define MAC_PASS_ALL_MULTI         (1<<19)
+-#  define MAC_FULL_DUPLEX            (1<<20)
+-#  define MAC_NORMAL_MODE                 0
+-#  define MAC_INT_LOOPBACK           (1<<21)
+-#  define MAC_EXT_LOOPBACK           (1<<22)
+-#  define MAC_DISABLE_RX_OWN         (1<<23)
+-#  define MAC_BIG_ENDIAN             (1<<30)
+-#  define MAC_RX_ALL                 (1<<31)
+-#define MAC_ADDRESS_HIGH                0x4
+-#define MAC_ADDRESS_LOW                 0x8
+-#define MAC_MCAST_HIGH                  0xC
+-#define MAC_MCAST_LOW                  0x10
+-#define MAC_MII_CNTRL                  0x14
+-#  define MAC_MII_BUSY                (1<<0)
+-#  define MAC_MII_READ                     0
+-#  define MAC_MII_WRITE               (1<<1)
+-#  define MAC_SET_MII_SELECT_REG(X)   (((X)&0x1f)<<6)
+-#  define MAC_SET_MII_SELECT_PHY(X)   (((X)&0x1f)<<11)
+-#define MAC_MII_DATA                   0x18
+-#define MAC_FLOW_CNTRL                 0x1C
+-#  define MAC_FLOW_CNTRL_BUSY         (1<<0)
+-#  define MAC_FLOW_CNTRL_ENABLE       (1<<1)
+-#  define MAC_PASS_CONTROL            (1<<2)
+-#  define MAC_SET_PAUSE(X)        (((X)&0xffff)<<16)
+-#define MAC_VLAN1_TAG                  0x20
+-#define MAC_VLAN2_TAG                  0x24
++#define MAC_CONTROL		0x0
++#  define MAC_RX_ENABLE 	(1 << 2)
++#  define MAC_TX_ENABLE 	(1 << 3)
++#  define MAC_DEF_CHECK 	(1 << 5)
++#  define MAC_SET_BL(X) 	(((X) & 0x3) << 6)
++#  define MAC_AUTO_PAD		(1 << 8)
++#  define MAC_DISABLE_RETRY	(1 << 10)
++#  define MAC_DISABLE_BCAST	(1 << 11)
++#  define MAC_LATE_COL		(1 << 12)
++#  define MAC_HASH_MODE 	(1 << 13)
++#  define MAC_HASH_ONLY 	(1 << 15)
++#  define MAC_PASS_ALL		(1 << 16)
++#  define MAC_INVERSE_FILTER	(1 << 17)
++#  define MAC_PROMISCUOUS	(1 << 18)
++#  define MAC_PASS_ALL_MULTI	(1 << 19)
++#  define MAC_FULL_DUPLEX	(1 << 20)
++#  define MAC_NORMAL_MODE	0
++#  define MAC_INT_LOOPBACK	(1 << 21)
++#  define MAC_EXT_LOOPBACK	(1 << 22)
++#  define MAC_DISABLE_RX_OWN	(1 << 23)
++#  define MAC_BIG_ENDIAN	(1 << 30)
++#  define MAC_RX_ALL		(1 << 31)
++#define MAC_ADDRESS_HIGH	0x4
++#define MAC_ADDRESS_LOW		0x8
++#define MAC_MCAST_HIGH		0xC
++#define MAC_MCAST_LOW		0x10
++#define MAC_MII_CNTRL		0x14
++#  define MAC_MII_BUSY		(1 << 0)
++#  define MAC_MII_READ		0
++#  define MAC_MII_WRITE		(1 << 1)
++#  define MAC_SET_MII_SELECT_REG(X) (((X) & 0x1f) << 6)
++#  define MAC_SET_MII_SELECT_PHY(X) (((X) & 0x1f) << 11)
++#define MAC_MII_DATA		0x18
++#define MAC_FLOW_CNTRL		0x1C
++#  define MAC_FLOW_CNTRL_BUSY	(1 << 0)
++#  define MAC_FLOW_CNTRL_ENABLE (1 << 1)
++#  define MAC_PASS_CONTROL	(1 << 2)
++#  define MAC_SET_PAUSE(X)	(((X) & 0xffff) << 16)
++#define MAC_VLAN1_TAG		0x20
++#define MAC_VLAN2_TAG		0x24
+ 
+ /* Ethernet Controller Enable */
+ 
+-#  define MAC_EN_CLOCK_ENABLE         (1<<0)
+-#  define MAC_EN_RESET0               (1<<1)
+-#  define MAC_EN_TOSS                 (0<<2)
+-#  define MAC_EN_CACHEABLE            (1<<3)
+-#  define MAC_EN_RESET1               (1<<4)
+-#  define MAC_EN_RESET2               (1<<5)
+-#  define MAC_DMA_RESET               (1<<6)
++#  define MAC_EN_CLOCK_ENABLE	(1 << 0)
++#  define MAC_EN_RESET0		(1 << 1)
++#  define MAC_EN_TOSS		(0 << 2)
++#  define MAC_EN_CACHEABLE	(1 << 3)
++#  define MAC_EN_RESET1 	(1 << 4)
++#  define MAC_EN_RESET2 	(1 << 5)
++#  define MAC_DMA_RESET 	(1 << 6)
+ 
+ /* Ethernet Controller DMA Channels */
+ 
+-#define MAC0_TX_DMA_ADDR         0xB4004000
+-#define MAC1_TX_DMA_ADDR         0xB4004200
++#define MAC0_TX_DMA_ADDR	0xB4004000
++#define MAC1_TX_DMA_ADDR	0xB4004200
+ /* offsets from MAC_TX_RING_ADDR address */
+-#define MAC_TX_BUFF0_STATUS             0x0
+-#  define TX_FRAME_ABORTED            (1<<0)
+-#  define TX_JAB_TIMEOUT              (1<<1)
+-#  define TX_NO_CARRIER               (1<<2)
+-#  define TX_LOSS_CARRIER             (1<<3)
+-#  define TX_EXC_DEF                  (1<<4)
+-#  define TX_LATE_COLL_ABORT          (1<<5)
+-#  define TX_EXC_COLL                 (1<<6)
+-#  define TX_UNDERRUN                 (1<<7)
+-#  define TX_DEFERRED                 (1<<8)
+-#  define TX_LATE_COLL                (1<<9)
+-#  define TX_COLL_CNT_MASK         (0xF<<10)
+-#  define TX_PKT_RETRY               (1<<31)
+-#define MAC_TX_BUFF0_ADDR                0x4
+-#  define TX_DMA_ENABLE               (1<<0)
+-#  define TX_T_DONE                   (1<<1)
+-#  define TX_GET_DMA_BUFFER(X)    (((X)>>2)&0x3)
+-#define MAC_TX_BUFF0_LEN                 0x8
+-#define MAC_TX_BUFF1_STATUS             0x10
+-#define MAC_TX_BUFF1_ADDR               0x14
+-#define MAC_TX_BUFF1_LEN                0x18
+-#define MAC_TX_BUFF2_STATUS             0x20
+-#define MAC_TX_BUFF2_ADDR               0x24
+-#define MAC_TX_BUFF2_LEN                0x28
+-#define MAC_TX_BUFF3_STATUS             0x30
+-#define MAC_TX_BUFF3_ADDR               0x34
+-#define MAC_TX_BUFF3_LEN                0x38
++#define MAC_TX_BUFF0_STATUS	0x0
++#  define TX_FRAME_ABORTED	(1 << 0)
++#  define TX_JAB_TIMEOUT	(1 << 1)
++#  define TX_NO_CARRIER 	(1 << 2)
++#  define TX_LOSS_CARRIER	(1 << 3)
++#  define TX_EXC_DEF		(1 << 4)
++#  define TX_LATE_COLL_ABORT	(1 << 5)
++#  define TX_EXC_COLL		(1 << 6)
++#  define TX_UNDERRUN		(1 << 7)
++#  define TX_DEFERRED		(1 << 8)
++#  define TX_LATE_COLL		(1 << 9)
++#  define TX_COLL_CNT_MASK	(0xF << 10)
++#  define TX_PKT_RETRY		(1 << 31)
++#define MAC_TX_BUFF0_ADDR	0x4
++#  define TX_DMA_ENABLE 	(1 << 0)
++#  define TX_T_DONE		(1 << 1)
++#  define TX_GET_DMA_BUFFER(X)	(((X) >> 2) & 0x3)
++#define MAC_TX_BUFF0_LEN	0x8
++#define MAC_TX_BUFF1_STATUS	0x10
++#define MAC_TX_BUFF1_ADDR	0x14
++#define MAC_TX_BUFF1_LEN	0x18
++#define MAC_TX_BUFF2_STATUS	0x20
++#define MAC_TX_BUFF2_ADDR	0x24
++#define MAC_TX_BUFF2_LEN	0x28
++#define MAC_TX_BUFF3_STATUS	0x30
++#define MAC_TX_BUFF3_ADDR	0x34
++#define MAC_TX_BUFF3_LEN	0x38
+ 
+-#define MAC0_RX_DMA_ADDR         0xB4004100
+-#define MAC1_RX_DMA_ADDR         0xB4004300
++#define MAC0_RX_DMA_ADDR	0xB4004100
++#define MAC1_RX_DMA_ADDR	0xB4004300
+ /* offsets from MAC_RX_RING_ADDR */
+-#define MAC_RX_BUFF0_STATUS              0x0
+-#  define RX_FRAME_LEN_MASK           0x3fff
+-#  define RX_WDOG_TIMER              (1<<14)
+-#  define RX_RUNT                    (1<<15)
+-#  define RX_OVERLEN                 (1<<16)
+-#  define RX_COLL                    (1<<17)
+-#  define RX_ETHER                   (1<<18)
+-#  define RX_MII_ERROR               (1<<19)
+-#  define RX_DRIBBLING               (1<<20)
+-#  define RX_CRC_ERROR               (1<<21)
+-#  define RX_VLAN1                   (1<<22)
+-#  define RX_VLAN2                   (1<<23)
+-#  define RX_LEN_ERROR               (1<<24)
+-#  define RX_CNTRL_FRAME             (1<<25)
+-#  define RX_U_CNTRL_FRAME           (1<<26)
+-#  define RX_MCAST_FRAME             (1<<27)
+-#  define RX_BCAST_FRAME             (1<<28)
+-#  define RX_FILTER_FAIL             (1<<29)
+-#  define RX_PACKET_FILTER           (1<<30)
+-#  define RX_MISSED_FRAME            (1<<31)
++#define MAC_RX_BUFF0_STATUS	0x0
++#  define RX_FRAME_LEN_MASK	0x3fff
++#  define RX_WDOG_TIMER 	(1 << 14)
++#  define RX_RUNT		(1 << 15)
++#  define RX_OVERLEN		(1 << 16)
++#  define RX_COLL		(1 << 17)
++#  define RX_ETHER		(1 << 18)
++#  define RX_MII_ERROR		(1 << 19)
++#  define RX_DRIBBLING		(1 << 20)
++#  define RX_CRC_ERROR		(1 << 21)
++#  define RX_VLAN1		(1 << 22)
++#  define RX_VLAN2		(1 << 23)
++#  define RX_LEN_ERROR		(1 << 24)
++#  define RX_CNTRL_FRAME	(1 << 25)
++#  define RX_U_CNTRL_FRAME	(1 << 26)
++#  define RX_MCAST_FRAME	(1 << 27)
++#  define RX_BCAST_FRAME	(1 << 28)
++#  define RX_FILTER_FAIL	(1 << 29)
++#  define RX_PACKET_FILTER	(1 << 30)
++#  define RX_MISSED_FRAME	(1 << 31)
+ 
+ #  define RX_ERROR (RX_WDOG_TIMER | RX_RUNT | RX_OVERLEN |  \
+-                    RX_COLL | RX_MII_ERROR | RX_CRC_ERROR | \
+-                    RX_LEN_ERROR | RX_U_CNTRL_FRAME | RX_MISSED_FRAME)
+-#define MAC_RX_BUFF0_ADDR                0x4
+-#  define RX_DMA_ENABLE               (1<<0)
+-#  define RX_T_DONE                   (1<<1)
+-#  define RX_GET_DMA_BUFFER(X)    (((X)>>2)&0x3)
+-#  define RX_SET_BUFF_ADDR(X)     ((X)&0xffffffc0)
+-#define MAC_RX_BUFF1_STATUS              0x10
+-#define MAC_RX_BUFF1_ADDR                0x14
+-#define MAC_RX_BUFF2_STATUS              0x20
+-#define MAC_RX_BUFF2_ADDR                0x24
+-#define MAC_RX_BUFF3_STATUS              0x30
+-#define MAC_RX_BUFF3_ADDR                0x34
+-
++		    RX_COLL | RX_MII_ERROR | RX_CRC_ERROR | \
++		    RX_LEN_ERROR | RX_U_CNTRL_FRAME | RX_MISSED_FRAME)
++#define MAC_RX_BUFF0_ADDR	0x4
++#  define RX_DMA_ENABLE 	(1 << 0)
++#  define RX_T_DONE		(1 << 1)
++#  define RX_GET_DMA_BUFFER(X)	(((X) >> 2) & 0x3)
++#  define RX_SET_BUFF_ADDR(X)	((X) & 0xffffffc0)
++#define MAC_RX_BUFF1_STATUS	0x10
++#define MAC_RX_BUFF1_ADDR	0x14
++#define MAC_RX_BUFF2_STATUS	0x20
++#define MAC_RX_BUFF2_ADDR	0x24
++#define MAC_RX_BUFF3_STATUS	0x30
++#define MAC_RX_BUFF3_ADDR	0x34
+ 
+ /* UARTS 0-3 */
+-#define UART_BASE                 UART0_ADDR
++#define UART_BASE		UART0_ADDR
+ #ifdef	CONFIG_SOC_AU1200
+-#define UART_DEBUG_BASE           UART1_ADDR
++#define UART_DEBUG_BASE 	UART1_ADDR
  #else
- #error "Error: Unknown Alchemy SOC"
-@@ -203,4 +203,3 @@ struct au1xxx_irqmap __initdata au1xxx_i
+-#define UART_DEBUG_BASE           UART3_ADDR
++#define UART_DEBUG_BASE 	UART3_ADDR
+ #endif
+ 
+ #define UART_RX		0	/* Receive buffer */
+@@ -1294,341 +1293,337 @@ enum soc_au1200_ints {
+ #define UART_MSR_DCTS	0x01	/* Delta CTS */
+ #define UART_MSR_ANY_DELTA 0x0F	/* Any of the delta bits! */
+ 
+-
+-
+ /* SSIO */
+-#define SSI0_STATUS                0xB1600000
+-#  define SSI_STATUS_BF              (1<<4)
+-#  define SSI_STATUS_OF              (1<<3)
+-#  define SSI_STATUS_UF              (1<<2)
+-#  define SSI_STATUS_D               (1<<1)
+-#  define SSI_STATUS_B               (1<<0)
+-#define SSI0_INT                   0xB1600004
+-#  define SSI_INT_OI                 (1<<3)
+-#  define SSI_INT_UI                 (1<<2)
+-#  define SSI_INT_DI                 (1<<1)
+-#define SSI0_INT_ENABLE            0xB1600008
+-#  define SSI_INTE_OIE               (1<<3)
+-#  define SSI_INTE_UIE               (1<<2)
+-#  define SSI_INTE_DIE               (1<<1)
+-#define SSI0_CONFIG                0xB1600020
+-#  define SSI_CONFIG_AO              (1<<24)
+-#  define SSI_CONFIG_DO              (1<<23)
+-#  define SSI_CONFIG_ALEN_BIT        20
+-#    define SSI_CONFIG_ALEN_MASK       (0x7<<20)
+-#  define SSI_CONFIG_DLEN_BIT        16
+-#    define SSI_CONFIG_DLEN_MASK       (0x7<<16)
+-#  define SSI_CONFIG_DD              (1<<11)
+-#  define SSI_CONFIG_AD              (1<<10)
+-#  define SSI_CONFIG_BM_BIT          8
+-#    define SSI_CONFIG_BM_MASK         (0x3<<8)
+-#  define SSI_CONFIG_CE              (1<<7)
+-#  define SSI_CONFIG_DP              (1<<6)
+-#  define SSI_CONFIG_DL              (1<<5)
+-#  define SSI_CONFIG_EP              (1<<4)
+-#define SSI0_ADATA                 0xB1600024
+-#  define SSI_AD_D                   (1<<24)
+-#  define SSI_AD_ADDR_BIT            16
+-#    define SSI_AD_ADDR_MASK           (0xff<<16)
+-#  define SSI_AD_DATA_BIT            0
+-#    define SSI_AD_DATA_MASK           (0xfff<<0)
+-#define SSI0_CLKDIV                0xB1600028
+-#define SSI0_CONTROL               0xB1600100
+-#  define SSI_CONTROL_CD             (1<<1)
+-#  define SSI_CONTROL_E              (1<<0)
++#define SSI0_STATUS		0xB1600000
++#  define SSI_STATUS_BF 	(1 << 4)
++#  define SSI_STATUS_OF 	(1 << 3)
++#  define SSI_STATUS_UF 	(1 << 2)
++#  define SSI_STATUS_D		(1 << 1)
++#  define SSI_STATUS_B		(1 << 0)
++#define SSI0_INT		0xB1600004
++#  define SSI_INT_OI		(1 << 3)
++#  define SSI_INT_UI		(1 << 2)
++#  define SSI_INT_DI		(1 << 1)
++#define SSI0_INT_ENABLE 	0xB1600008
++#  define SSI_INTE_OIE		(1 << 3)
++#  define SSI_INTE_UIE		(1 << 2)
++#  define SSI_INTE_DIE		(1 << 1)
++#define SSI0_CONFIG		0xB1600020
++#  define SSI_CONFIG_AO 	(1 << 24)
++#  define SSI_CONFIG_DO 	(1 << 23)
++#  define SSI_CONFIG_ALEN_BIT	20
++#  define SSI_CONFIG_ALEN_MASK	(0x7 << 20)
++#  define SSI_CONFIG_DLEN_BIT	16
++#  define SSI_CONFIG_DLEN_MASK	(0x7 << 16)
++#  define SSI_CONFIG_DD 	(1 << 11)
++#  define SSI_CONFIG_AD 	(1 << 10)
++#  define SSI_CONFIG_BM_BIT	8
++#  define SSI_CONFIG_BM_MASK	(0x3 << 8)
++#  define SSI_CONFIG_CE 	(1 << 7)
++#  define SSI_CONFIG_DP 	(1 << 6)
++#  define SSI_CONFIG_DL 	(1 << 5)
++#  define SSI_CONFIG_EP 	(1 << 4)
++#define SSI0_ADATA		0xB1600024
++#  define SSI_AD_D		(1 << 24)
++#  define SSI_AD_ADDR_BIT	16
++#  define SSI_AD_ADDR_MASK	(0xff << 16)
++#  define SSI_AD_DATA_BIT	0
++#  define SSI_AD_DATA_MASK	(0xfff << 0)
++#define SSI0_CLKDIV		0xB1600028
++#define SSI0_CONTROL		0xB1600100
++#  define SSI_CONTROL_CD	(1 << 1)
++#  define SSI_CONTROL_E 	(1 << 0)
+ 
+ /* SSI1 */
+-#define SSI1_STATUS                0xB1680000
+-#define SSI1_INT                   0xB1680004
+-#define SSI1_INT_ENABLE            0xB1680008
+-#define SSI1_CONFIG                0xB1680020
+-#define SSI1_ADATA                 0xB1680024
+-#define SSI1_CLKDIV                0xB1680028
+-#define SSI1_ENABLE                0xB1680100
++#define SSI1_STATUS		0xB1680000
++#define SSI1_INT		0xB1680004
++#define SSI1_INT_ENABLE 	0xB1680008
++#define SSI1_CONFIG		0xB1680020
++#define SSI1_ADATA		0xB1680024
++#define SSI1_CLKDIV		0xB1680028
++#define SSI1_ENABLE		0xB1680100
+ 
+ /*
+  * Register content definitions
+  */
+-#define SSI_STATUS_BF				(1<<4)
+-#define SSI_STATUS_OF				(1<<3)
+-#define SSI_STATUS_UF				(1<<2)
+-#define SSI_STATUS_D				(1<<1)
+-#define SSI_STATUS_B				(1<<0)
++#define SSI_STATUS_BF		(1 << 4)
++#define SSI_STATUS_OF		(1 << 3)
++#define SSI_STATUS_UF		(1 << 2)
++#define SSI_STATUS_D		(1 << 1)
++#define SSI_STATUS_B		(1 << 0)
+ 
+ /* SSI_INT */
+-#define SSI_INT_OI					(1<<3)
+-#define SSI_INT_UI					(1<<2)
+-#define SSI_INT_DI					(1<<1)
++#define SSI_INT_OI		(1 << 3)
++#define SSI_INT_UI		(1 << 2)
++#define SSI_INT_DI		(1 << 1)
+ 
+ /* SSI_INTEN */
+-#define SSI_INTEN_OIE				(1<<3)
+-#define SSI_INTEN_UIE				(1<<2)
+-#define SSI_INTEN_DIE				(1<<1)
+-
+-#define SSI_CONFIG_AO				(1<<24)
+-#define SSI_CONFIG_DO				(1<<23)
+-#define SSI_CONFIG_ALEN				(7<<20)
+-#define SSI_CONFIG_DLEN				(15<<16)
+-#define SSI_CONFIG_DD				(1<<11)
+-#define SSI_CONFIG_AD				(1<<10)
+-#define SSI_CONFIG_BM				(3<<8)
+-#define SSI_CONFIG_CE				(1<<7)
+-#define SSI_CONFIG_DP				(1<<6)
+-#define SSI_CONFIG_DL				(1<<5)
+-#define SSI_CONFIG_EP				(1<<4)
+-#define SSI_CONFIG_ALEN_N(N)		((N-1)<<20)
+-#define SSI_CONFIG_DLEN_N(N)		((N-1)<<16)
+-#define SSI_CONFIG_BM_HI			(0<<8)
+-#define SSI_CONFIG_BM_LO			(1<<8)
+-#define SSI_CONFIG_BM_CY			(2<<8)
+-
+-#define SSI_ADATA_D					(1<<24)
+-#define SSI_ADATA_ADDR				(0xFF<<16)
+-#define SSI_ADATA_DATA				(0x0FFF)
+-#define SSI_ADATA_ADDR_N(N)			(N<<16)
+-
+-#define SSI_ENABLE_CD				(1<<1)
+-#define SSI_ENABLE_E				(1<<0)
++#define SSI_INTEN_OIE		(1 << 3)
++#define SSI_INTEN_UIE		(1 << 2)
++#define SSI_INTEN_DIE		(1 << 1)
++
++#define SSI_CONFIG_AO		(1 << 24)
++#define SSI_CONFIG_DO		(1 << 23)
++#define SSI_CONFIG_ALEN 	(7 << 20)
++#define SSI_CONFIG_DLEN 	(15 << 16)
++#define SSI_CONFIG_DD		(1 << 11)
++#define SSI_CONFIG_AD		(1 << 10)
++#define SSI_CONFIG_BM		(3 << 8)
++#define SSI_CONFIG_CE		(1 << 7)
++#define SSI_CONFIG_DP		(1 << 6)
++#define SSI_CONFIG_DL		(1 << 5)
++#define SSI_CONFIG_EP		(1 << 4)
++#define SSI_CONFIG_ALEN_N(N)	((N-1) << 20)
++#define SSI_CONFIG_DLEN_N(N)	((N-1) << 16)
++#define SSI_CONFIG_BM_HI	(0 << 8)
++#define SSI_CONFIG_BM_LO	(1 << 8)
++#define SSI_CONFIG_BM_CY	(2 << 8)
++
++#define SSI_ADATA_D		(1 << 24)
++#define SSI_ADATA_ADDR		(0xFF << 16)
++#define SSI_ADATA_DATA		0x0FFF
++#define SSI_ADATA_ADDR_N(N)	(N << 16)
+ 
++#define SSI_ENABLE_CD		(1 << 1)
++#define SSI_ENABLE_E		(1 << 0)
+ 
+ /* IrDA Controller */
+-#define IRDA_BASE                 0xB0300000
+-#define IR_RING_PTR_STATUS        (IRDA_BASE+0x00)
+-#define IR_RING_BASE_ADDR_H       (IRDA_BASE+0x04)
+-#define IR_RING_BASE_ADDR_L       (IRDA_BASE+0x08)
+-#define IR_RING_SIZE              (IRDA_BASE+0x0C)
+-#define IR_RING_PROMPT            (IRDA_BASE+0x10)
+-#define IR_RING_ADDR_CMPR         (IRDA_BASE+0x14)
+-#define IR_INT_CLEAR              (IRDA_BASE+0x18)
+-#define IR_CONFIG_1               (IRDA_BASE+0x20)
+-#  define IR_RX_INVERT_LED        (1<<0)
+-#  define IR_TX_INVERT_LED        (1<<1)
+-#  define IR_ST                   (1<<2)
+-#  define IR_SF                   (1<<3)
+-#  define IR_SIR                  (1<<4)
+-#  define IR_MIR                  (1<<5)
+-#  define IR_FIR                  (1<<6)
+-#  define IR_16CRC                (1<<7)
+-#  define IR_TD                   (1<<8)
+-#  define IR_RX_ALL               (1<<9)
+-#  define IR_DMA_ENABLE           (1<<10)
+-#  define IR_RX_ENABLE            (1<<11)
+-#  define IR_TX_ENABLE            (1<<12)
+-#  define IR_LOOPBACK             (1<<14)
+-#  define IR_SIR_MODE	          (IR_SIR | IR_DMA_ENABLE | \
+-		                   IR_RX_ALL | IR_RX_ENABLE | IR_SF | IR_16CRC)
+-#define IR_SIR_FLAGS              (IRDA_BASE+0x24)
+-#define IR_ENABLE                 (IRDA_BASE+0x28)
+-#  define IR_RX_STATUS            (1<<9)
+-#  define IR_TX_STATUS            (1<<10)
+-#define IR_READ_PHY_CONFIG        (IRDA_BASE+0x2C)
+-#define IR_WRITE_PHY_CONFIG       (IRDA_BASE+0x30)
+-#define IR_MAX_PKT_LEN            (IRDA_BASE+0x34)
+-#define IR_RX_BYTE_CNT            (IRDA_BASE+0x38)
+-#define IR_CONFIG_2               (IRDA_BASE+0x3C)
+-#  define IR_MODE_INV             (1<<0)
+-#  define IR_ONE_PIN              (1<<1)
+-#define IR_INTERFACE_CONFIG       (IRDA_BASE+0x40)
++#define IRDA_BASE		0xB0300000
++#define IR_RING_PTR_STATUS	(IRDA_BASE + 0x00)
++#define IR_RING_BASE_ADDR_H	(IRDA_BASE + 0x04)
++#define IR_RING_BASE_ADDR_L	(IRDA_BASE + 0x08)
++#define IR_RING_SIZE		(IRDA_BASE + 0x0C)
++#define IR_RING_PROMPT		(IRDA_BASE + 0x10)
++#define IR_RING_ADDR_CMPR	(IRDA_BASE + 0x14)
++#define IR_INT_CLEAR		(IRDA_BASE + 0x18)
++#define IR_CONFIG_1		(IRDA_BASE + 0x20)
++#  define IR_RX_INVERT_LED	(1 << 0)
++#  define IR_TX_INVERT_LED	(1 << 1)
++#  define IR_ST 		(1 << 2)
++#  define IR_SF 		(1 << 3)
++#  define IR_SIR		(1 << 4)
++#  define IR_MIR		(1 << 5)
++#  define IR_FIR		(1 << 6)
++#  define IR_16CRC		(1 << 7)
++#  define IR_TD 		(1 << 8)
++#  define IR_RX_ALL		(1 << 9)
++#  define IR_DMA_ENABLE 	(1 << 10)
++#  define IR_RX_ENABLE		(1 << 11)
++#  define IR_TX_ENABLE		(1 << 12)
++#  define IR_LOOPBACK		(1 << 14)
++#  define IR_SIR_MODE		(IR_SIR | IR_DMA_ENABLE | \
++				 IR_RX_ALL | IR_RX_ENABLE | IR_SF | IR_16CRC)
++#define IR_SIR_FLAGS		(IRDA_BASE + 0x24)
++#define IR_ENABLE		(IRDA_BASE + 0x28)
++#  define IR_RX_STATUS		(1 << 9)
++#  define IR_TX_STATUS		(1 << 10)
++#define IR_READ_PHY_CONFIG	(IRDA_BASE + 0x2C)
++#define IR_WRITE_PHY_CONFIG	(IRDA_BASE + 0x30)
++#define IR_MAX_PKT_LEN		(IRDA_BASE + 0x34)
++#define IR_RX_BYTE_CNT		(IRDA_BASE + 0x38)
++#define IR_CONFIG_2		(IRDA_BASE + 0x3C)
++#  define IR_MODE_INV		(1 << 0)
++#  define IR_ONE_PIN		(1 << 1)
++#define IR_INTERFACE_CONFIG	(IRDA_BASE + 0x40)
+ 
+ /* GPIO */
+-#define SYS_PINFUNC               0xB190002C
+-#  define SYS_PF_USB			(1<<15)	/* 2nd USB device/host */
+-#  define SYS_PF_U3			(1<<14)	/* GPIO23/U3TXD */
+-#  define SYS_PF_U2			(1<<13) /* GPIO22/U2TXD */
+-#  define SYS_PF_U1			(1<<12) /* GPIO21/U1TXD */
+-#  define SYS_PF_SRC			(1<<11)	/* GPIO6/SROMCKE */
+-#  define SYS_PF_CK5			(1<<10)	/* GPIO3/CLK5 */
+-#  define SYS_PF_CK4			(1<<9)	/* GPIO2/CLK4 */
+-#  define SYS_PF_IRF			(1<<8)	/* GPIO15/IRFIRSEL */
+-#  define SYS_PF_UR3			(1<<7)	/* GPIO[14:9]/UART3 */
+-#  define SYS_PF_I2D			(1<<6)	/* GPIO8/I2SDI */
+-#  define SYS_PF_I2S			(1<<5)	/* I2S/GPIO[29:31] */
+-#  define SYS_PF_NI2			(1<<4)	/* NI2/GPIO[24:28] */
+-#  define SYS_PF_U0			(1<<3)	/* U0TXD/GPIO20 */
+-#  define SYS_PF_RD			(1<<2)	/* IRTXD/GPIO19 */
+-#  define SYS_PF_A97			(1<<1)	/* AC97/SSL1 */
+-#  define SYS_PF_S0			(1<<0)	/* SSI_0/GPIO[16:18] */
+-
+-/* Au1100 Only */
+-#  define SYS_PF_PC			(1<<18)	/* PCMCIA/GPIO[207:204] */
+-#  define SYS_PF_LCD			(1<<17)	/* extern lcd/GPIO[203:200] */
+-#  define SYS_PF_CS			(1<<16)	/* EXTCLK0/32khz to gpio2 */
+-#  define SYS_PF_EX0			(1<<9)	/* gpio2/clock */
+-
+-/* Au1550 Only.  Redefines lots of pins */
+-#  define SYS_PF_PSC2_MASK		(7 << 17)
+-#  define SYS_PF_PSC2_AC97		(0)
+-#  define SYS_PF_PSC2_SPI		(0)
+-#  define SYS_PF_PSC2_I2S		(1 << 17)
+-#  define SYS_PF_PSC2_SMBUS		(3 << 17)
+-#  define SYS_PF_PSC2_GPIO		(7 << 17)
+-#  define SYS_PF_PSC3_MASK		(7 << 20)
+-#  define SYS_PF_PSC3_AC97		(0)
+-#  define SYS_PF_PSC3_SPI		(0)
+-#  define SYS_PF_PSC3_I2S		(1 << 20)
+-#  define SYS_PF_PSC3_SMBUS		(3 << 20)
+-#  define SYS_PF_PSC3_GPIO		(7 << 20)
+-#  define SYS_PF_PSC1_S1		(1 << 1)
+-#  define SYS_PF_MUST_BE_SET		((1 << 5) | (1 << 2))
++#define SYS_PINFUNC		0xB190002C
++#  define SYS_PF_USB		(1 << 15)	/* 2nd USB device/host */
++#  define SYS_PF_U3		(1 << 14)	/* GPIO23/U3TXD */
++#  define SYS_PF_U2		(1 << 13)	/* GPIO22/U2TXD */
++#  define SYS_PF_U1		(1 << 12)	/* GPIO21/U1TXD */
++#  define SYS_PF_SRC		(1 << 11)	/* GPIO6/SROMCKE */
++#  define SYS_PF_CK5		(1 << 10)	/* GPIO3/CLK5 */
++#  define SYS_PF_CK4		(1 << 9)	/* GPIO2/CLK4 */
++#  define SYS_PF_IRF		(1 << 8)	/* GPIO15/IRFIRSEL */
++#  define SYS_PF_UR3		(1 << 7)	/* GPIO[14:9]/UART3 */
++#  define SYS_PF_I2D		(1 << 6)	/* GPIO8/I2SDI */
++#  define SYS_PF_I2S		(1 << 5)	/* I2S/GPIO[29:31] */
++#  define SYS_PF_NI2		(1 << 4)	/* NI2/GPIO[24:28] */
++#  define SYS_PF_U0		(1 << 3)	/* U0TXD/GPIO20 */
++#  define SYS_PF_RD		(1 << 2)	/* IRTXD/GPIO19 */
++#  define SYS_PF_A97		(1 << 1)	/* AC97/SSL1 */
++#  define SYS_PF_S0		(1 << 0)	/* SSI_0/GPIO[16:18] */
++
++/* Au1100 only */
++#  define SYS_PF_PC		(1 << 18)	/* PCMCIA/GPIO[207:204] */
++#  define SYS_PF_LCD		(1 << 17)	/* extern lcd/GPIO[203:200] */
++#  define SYS_PF_CS		(1 << 16)	/* EXTCLK0/32KHz to gpio2 */
++#  define SYS_PF_EX0		(1 << 9)	/* GPIO2/clock */
++
++/* Au1550 only.  Redefines lots of pins */
++#  define SYS_PF_PSC2_MASK	(7 << 17)
++#  define SYS_PF_PSC2_AC97	0
++#  define SYS_PF_PSC2_SPI	0
++#  define SYS_PF_PSC2_I2S	(1 << 17)
++#  define SYS_PF_PSC2_SMBUS	(3 << 17)
++#  define SYS_PF_PSC2_GPIO	(7 << 17)
++#  define SYS_PF_PSC3_MASK	(7 << 20)
++#  define SYS_PF_PSC3_AC97	0
++#  define SYS_PF_PSC3_SPI	0
++#  define SYS_PF_PSC3_I2S	(1 << 20)
++#  define SYS_PF_PSC3_SMBUS	(3 << 20)
++#  define SYS_PF_PSC3_GPIO	(7 << 20)
++#  define SYS_PF_PSC1_S1	(1 << 1)
++#  define SYS_PF_MUST_BE_SET	((1 << 5) | (1 << 2))
+ 
+-/* Au1200 Only */
++/* Au1200 only */
+ #ifdef CONFIG_SOC_AU1200
+-#define SYS_PINFUNC_DMA		(1<<31)
+-#define SYS_PINFUNC_S0A		(1<<30)
+-#define SYS_PINFUNC_S1A		(1<<29)
+-#define SYS_PINFUNC_LP0		(1<<28)
+-#define SYS_PINFUNC_LP1		(1<<27)
+-#define SYS_PINFUNC_LD16	(1<<26)
+-#define SYS_PINFUNC_LD8		(1<<25)
+-#define SYS_PINFUNC_LD1		(1<<24)
+-#define SYS_PINFUNC_LD0		(1<<23)
+-#define SYS_PINFUNC_P1A		(3<<21)
+-#define SYS_PINFUNC_P1B		(1<<20)
+-#define SYS_PINFUNC_FS3		(1<<19)
+-#define SYS_PINFUNC_P0A		(3<<17)
+-#define SYS_PINFUNC_CS		(1<<16)
+-#define SYS_PINFUNC_CIM		(1<<15)
+-#define SYS_PINFUNC_P1C		(1<<14)
+-#define SYS_PINFUNC_U1T		(1<<12)
+-#define SYS_PINFUNC_U1R		(1<<11)
+-#define SYS_PINFUNC_EX1		(1<<10)
+-#define SYS_PINFUNC_EX0		(1<<9)
+-#define SYS_PINFUNC_U0R		(1<<8)
+-#define SYS_PINFUNC_MC		(1<<7)
+-#define SYS_PINFUNC_S0B		(1<<6)
+-#define SYS_PINFUNC_S0C		(1<<5)
+-#define SYS_PINFUNC_P0B		(1<<4)
+-#define SYS_PINFUNC_U0T		(1<<3)
+-#define SYS_PINFUNC_S1B		(1<<2)
++#define SYS_PINFUNC_DMA 	(1 << 31)
++#define SYS_PINFUNC_S0A 	(1 << 30)
++#define SYS_PINFUNC_S1A 	(1 << 29)
++#define SYS_PINFUNC_LP0 	(1 << 28)
++#define SYS_PINFUNC_LP1 	(1 << 27)
++#define SYS_PINFUNC_LD16 	(1 << 26)
++#define SYS_PINFUNC_LD8 	(1 << 25)
++#define SYS_PINFUNC_LD1 	(1 << 24)
++#define SYS_PINFUNC_LD0 	(1 << 23)
++#define SYS_PINFUNC_P1A 	(3 << 21)
++#define SYS_PINFUNC_P1B 	(1 << 20)
++#define SYS_PINFUNC_FS3 	(1 << 19)
++#define SYS_PINFUNC_P0A 	(3 << 17)
++#define SYS_PINFUNC_CS		(1 << 16)
++#define SYS_PINFUNC_CIM 	(1 << 15)
++#define SYS_PINFUNC_P1C 	(1 << 14)
++#define SYS_PINFUNC_U1T 	(1 << 12)
++#define SYS_PINFUNC_U1R 	(1 << 11)
++#define SYS_PINFUNC_EX1 	(1 << 10)
++#define SYS_PINFUNC_EX0 	(1 << 9)
++#define SYS_PINFUNC_U0R 	(1 << 8)
++#define SYS_PINFUNC_MC		(1 << 7)
++#define SYS_PINFUNC_S0B 	(1 << 6)
++#define SYS_PINFUNC_S0C 	(1 << 5)
++#define SYS_PINFUNC_P0B 	(1 << 4)
++#define SYS_PINFUNC_U0T 	(1 << 3)
++#define SYS_PINFUNC_S1B 	(1 << 2)
+ #endif
+ 
+-#define SYS_TRIOUTRD              0xB1900100
+-#define SYS_TRIOUTCLR             0xB1900100
+-#define SYS_OUTPUTRD              0xB1900108
+-#define SYS_OUTPUTSET             0xB1900108
+-#define SYS_OUTPUTCLR             0xB190010C
+-#define SYS_PINSTATERD            0xB1900110
+-#define SYS_PININPUTEN            0xB1900110
++#define SYS_TRIOUTRD		0xB1900100
++#define SYS_TRIOUTCLR		0xB1900100
++#define SYS_OUTPUTRD		0xB1900108
++#define SYS_OUTPUTSET		0xB1900108
++#define SYS_OUTPUTCLR		0xB190010C
++#define SYS_PINSTATERD		0xB1900110
++#define SYS_PININPUTEN		0xB1900110
+ 
+ /* GPIO2, Au1500, Au1550 only */
+-#define GPIO2_BASE                0xB1700000
+-#define GPIO2_DIR                 (GPIO2_BASE + 0)
+-#define GPIO2_OUTPUT              (GPIO2_BASE + 8)
+-#define GPIO2_PINSTATE            (GPIO2_BASE + 0xC)
+-#define GPIO2_INTENABLE           (GPIO2_BASE + 0x10)
+-#define GPIO2_ENABLE              (GPIO2_BASE + 0x14)
++#define GPIO2_BASE		0xB1700000
++#define GPIO2_DIR		(GPIO2_BASE + 0)
++#define GPIO2_OUTPUT		(GPIO2_BASE + 8)
++#define GPIO2_PINSTATE		(GPIO2_BASE + 0xC)
++#define GPIO2_INTENABLE 	(GPIO2_BASE + 0x10)
++#define GPIO2_ENABLE		(GPIO2_BASE + 0x14)
+ 
+ /* Power Management */
+-#define SYS_SCRATCH0              0xB1900018
+-#define SYS_SCRATCH1              0xB190001C
+-#define SYS_WAKEMSK               0xB1900034
+-#define SYS_ENDIAN                0xB1900038
+-#define SYS_POWERCTRL             0xB190003C
+-#define SYS_WAKESRC               0xB190005C
+-#define SYS_SLPPWR                0xB1900078
+-#define SYS_SLEEP                 0xB190007C
++#define SYS_SCRATCH0		0xB1900018
++#define SYS_SCRATCH1		0xB190001C
++#define SYS_WAKEMSK		0xB1900034
++#define SYS_ENDIAN		0xB1900038
++#define SYS_POWERCTRL		0xB190003C
++#define SYS_WAKESRC		0xB190005C
++#define SYS_SLPPWR		0xB1900078
++#define SYS_SLEEP		0xB190007C
+ 
+ /* Clock Controller */
+-#define SYS_FREQCTRL0             0xB1900020
+-#  define SYS_FC_FRDIV2_BIT         22
+-#  define SYS_FC_FRDIV2_MASK        (0xff << SYS_FC_FRDIV2_BIT)
+-#  define SYS_FC_FE2                (1<<21)
+-#  define SYS_FC_FS2                (1<<20)
+-#  define SYS_FC_FRDIV1_BIT         12
+-#  define SYS_FC_FRDIV1_MASK        (0xff << SYS_FC_FRDIV1_BIT)
+-#  define SYS_FC_FE1                (1<<11)
+-#  define SYS_FC_FS1                (1<<10)
+-#  define SYS_FC_FRDIV0_BIT         2
+-#  define SYS_FC_FRDIV0_MASK        (0xff << SYS_FC_FRDIV0_BIT)
+-#  define SYS_FC_FE0                (1<<1)
+-#  define SYS_FC_FS0                (1<<0)
+-#define SYS_FREQCTRL1             0xB1900024
+-#  define SYS_FC_FRDIV5_BIT         22
+-#  define SYS_FC_FRDIV5_MASK        (0xff << SYS_FC_FRDIV5_BIT)
+-#  define SYS_FC_FE5                (1<<21)
+-#  define SYS_FC_FS5                (1<<20)
+-#  define SYS_FC_FRDIV4_BIT         12
+-#  define SYS_FC_FRDIV4_MASK        (0xff << SYS_FC_FRDIV4_BIT)
+-#  define SYS_FC_FE4                (1<<11)
+-#  define SYS_FC_FS4                (1<<10)
+-#  define SYS_FC_FRDIV3_BIT         2
+-#  define SYS_FC_FRDIV3_MASK        (0xff << SYS_FC_FRDIV3_BIT)
+-#  define SYS_FC_FE3                (1<<1)
+-#  define SYS_FC_FS3                (1<<0)
+-#define SYS_CLKSRC                0xB1900028
+-#  define SYS_CS_ME1_BIT            27
+-#  define SYS_CS_ME1_MASK           (0x7<<SYS_CS_ME1_BIT)
+-#  define SYS_CS_DE1                (1<<26)
+-#  define SYS_CS_CE1                (1<<25)
+-#  define SYS_CS_ME0_BIT            22
+-#  define SYS_CS_ME0_MASK           (0x7<<SYS_CS_ME0_BIT)
+-#  define SYS_CS_DE0                (1<<21)
+-#  define SYS_CS_CE0                (1<<20)
+-#  define SYS_CS_MI2_BIT            17
+-#  define SYS_CS_MI2_MASK           (0x7<<SYS_CS_MI2_BIT)
+-#  define SYS_CS_DI2                (1<<16)
+-#  define SYS_CS_CI2                (1<<15)
++#define SYS_FREQCTRL0		0xB1900020
++#  define SYS_FC_FRDIV2_BIT	22
++#  define SYS_FC_FRDIV2_MASK	(0xff << SYS_FC_FRDIV2_BIT)
++#  define SYS_FC_FE2		(1 << 21)
++#  define SYS_FC_FS2		(1 << 20)
++#  define SYS_FC_FRDIV1_BIT	12
++#  define SYS_FC_FRDIV1_MASK	(0xff << SYS_FC_FRDIV1_BIT)
++#  define SYS_FC_FE1		(1 << 11)
++#  define SYS_FC_FS1		(1 << 10)
++#  define SYS_FC_FRDIV0_BIT	2
++#  define SYS_FC_FRDIV0_MASK	(0xff << SYS_FC_FRDIV0_BIT)
++#  define SYS_FC_FE0		(1 << 1)
++#  define SYS_FC_FS0		(1 << 0)
++#define SYS_FREQCTRL1		0xB1900024
++#  define SYS_FC_FRDIV5_BIT	22
++#  define SYS_FC_FRDIV5_MASK	(0xff << SYS_FC_FRDIV5_BIT)
++#  define SYS_FC_FE5		(1 << 21)
++#  define SYS_FC_FS5		(1 << 20)
++#  define SYS_FC_FRDIV4_BIT	12
++#  define SYS_FC_FRDIV4_MASK	(0xff << SYS_FC_FRDIV4_BIT)
++#  define SYS_FC_FE4		(1 << 11)
++#  define SYS_FC_FS4		(1 << 10)
++#  define SYS_FC_FRDIV3_BIT	2
++#  define SYS_FC_FRDIV3_MASK	(0xff << SYS_FC_FRDIV3_BIT)
++#  define SYS_FC_FE3		(1 << 1)
++#  define SYS_FC_FS3		(1 << 0)
++#define SYS_CLKSRC		0xB1900028
++#  define SYS_CS_ME1_BIT	27
++#  define SYS_CS_ME1_MASK	(0x7 << SYS_CS_ME1_BIT)
++#  define SYS_CS_DE1		(1 << 26)
++#  define SYS_CS_CE1		(1 << 25)
++#  define SYS_CS_ME0_BIT	22
++#  define SYS_CS_ME0_MASK	(0x7 << SYS_CS_ME0_BIT)
++#  define SYS_CS_DE0		(1 << 21)
++#  define SYS_CS_CE0		(1 << 20)
++#  define SYS_CS_MI2_BIT	17
++#  define SYS_CS_MI2_MASK	(0x7 << SYS_CS_MI2_BIT)
++#  define SYS_CS_DI2		(1 << 16)
++#  define SYS_CS_CI2		(1 << 15)
+ #ifdef CONFIG_SOC_AU1100
+-#  define SYS_CS_ML_BIT             7
+-#  define SYS_CS_ML_MASK            (0x7<<SYS_CS_ML_BIT)
+-#  define SYS_CS_DL                 (1<<6)
+-#  define SYS_CS_CL                 (1<<5)
++#  define SYS_CS_ML_BIT 	7
++#  define SYS_CS_ML_MASK	(0x7 << SYS_CS_ML_BIT)
++#  define SYS_CS_DL		(1 << 6)
++#  define SYS_CS_CL		(1 << 5)
+ #else
+-#  define SYS_CS_MUH_BIT            12
+-#  define SYS_CS_MUH_MASK           (0x7<<SYS_CS_MUH_BIT)
+-#  define SYS_CS_DUH                (1<<11)
+-#  define SYS_CS_CUH                (1<<10)
+-#  define SYS_CS_MUD_BIT            7
+-#  define SYS_CS_MUD_MASK           (0x7<<SYS_CS_MUD_BIT)
+-#  define SYS_CS_DUD                (1<<6)
+-#  define SYS_CS_CUD                (1<<5)
++#  define SYS_CS_MUH_BIT	12
++#  define SYS_CS_MUH_MASK	(0x7 << SYS_CS_MUH_BIT)
++#  define SYS_CS_DUH		(1 << 11)
++#  define SYS_CS_CUH		(1 << 10)
++#  define SYS_CS_MUD_BIT	7
++#  define SYS_CS_MUD_MASK	(0x7 << SYS_CS_MUD_BIT)
++#  define SYS_CS_DUD		(1 << 6)
++#  define SYS_CS_CUD		(1 << 5)
+ #endif
+-#  define SYS_CS_MIR_BIT            2
+-#  define SYS_CS_MIR_MASK           (0x7<<SYS_CS_MIR_BIT)
+-#  define SYS_CS_DIR                (1<<1)
+-#  define SYS_CS_CIR                (1<<0)
+-
+-#  define SYS_CS_MUX_AUX            0x1
+-#  define SYS_CS_MUX_FQ0            0x2
+-#  define SYS_CS_MUX_FQ1            0x3
+-#  define SYS_CS_MUX_FQ2            0x4
+-#  define SYS_CS_MUX_FQ3            0x5
+-#  define SYS_CS_MUX_FQ4            0x6
+-#  define SYS_CS_MUX_FQ5            0x7
+-#define SYS_CPUPLL                0xB1900060
+-#define SYS_AUXPLL                0xB1900064
++#  define SYS_CS_MIR_BIT	2
++#  define SYS_CS_MIR_MASK	(0x7 << SYS_CS_MIR_BIT)
++#  define SYS_CS_DIR		(1 << 1)
++#  define SYS_CS_CIR		(1 << 0)
++
++#  define SYS_CS_MUX_AUX	0x1
++#  define SYS_CS_MUX_FQ0	0x2
++#  define SYS_CS_MUX_FQ1	0x3
++#  define SYS_CS_MUX_FQ2	0x4
++#  define SYS_CS_MUX_FQ3	0x5
++#  define SYS_CS_MUX_FQ4	0x6
++#  define SYS_CS_MUX_FQ5	0x7
++#define SYS_CPUPLL		0xB1900060
++#define SYS_AUXPLL		0xB1900064
+ 
+ /* AC97 Controller */
+-#define AC97C_CONFIG              0xB0000000
+-#  define AC97C_RECV_SLOTS_BIT  13
++#define AC97C_CONFIG		0xB0000000
++#  define AC97C_RECV_SLOTS_BIT	13
+ #  define AC97C_RECV_SLOTS_MASK (0x3ff << AC97C_RECV_SLOTS_BIT)
+-#  define AC97C_XMIT_SLOTS_BIT  3
++#  define AC97C_XMIT_SLOTS_BIT	3
+ #  define AC97C_XMIT_SLOTS_MASK (0x3ff << AC97C_XMIT_SLOTS_BIT)
+-#  define AC97C_SG              (1<<2)
+-#  define AC97C_SYNC            (1<<1)
+-#  define AC97C_RESET           (1<<0)
+-#define AC97C_STATUS              0xB0000004
+-#  define AC97C_XU              (1<<11)
+-#  define AC97C_XO              (1<<10)
+-#  define AC97C_RU              (1<<9)
+-#  define AC97C_RO              (1<<8)
+-#  define AC97C_READY           (1<<7)
+-#  define AC97C_CP              (1<<6)
+-#  define AC97C_TR              (1<<5)
+-#  define AC97C_TE              (1<<4)
+-#  define AC97C_TF              (1<<3)
+-#  define AC97C_RR              (1<<2)
+-#  define AC97C_RE              (1<<1)
+-#  define AC97C_RF              (1<<0)
+-#define AC97C_DATA                0xB0000008
+-#define AC97C_CMD                 0xB000000C
+-#  define AC97C_WD_BIT          16
+-#  define AC97C_READ            (1<<7)
+-#  define AC97C_INDEX_MASK      0x7f
+-#define AC97C_CNTRL               0xB0000010
+-#  define AC97C_RS              (1<<1)
+-#  define AC97C_CE              (1<<0)
+-
++#  define AC97C_SG		(1 << 2)
++#  define AC97C_SYNC		(1 << 1)
++#  define AC97C_RESET		(1 << 0)
++#define AC97C_STATUS		0xB0000004
++#  define AC97C_XU		(1 << 11)
++#  define AC97C_XO		(1 << 10)
++#  define AC97C_RU		(1 << 9)
++#  define AC97C_RO		(1 << 8)
++#  define AC97C_READY		(1 << 7)
++#  define AC97C_CP		(1 << 6)
++#  define AC97C_TR		(1 << 5)
++#  define AC97C_TE		(1 << 4)
++#  define AC97C_TF		(1 << 3)
++#  define AC97C_RR		(1 << 2)
++#  define AC97C_RE		(1 << 1)
++#  define AC97C_RF		(1 << 0)
++#define AC97C_DATA		0xB0000008
++#define AC97C_CMD		0xB000000C
++#  define AC97C_WD_BIT		16
++#  define AC97C_READ		(1 << 7)
++#  define AC97C_INDEX_MASK	0x7f
++#define AC97C_CNTRL		0xB0000010
++#  define AC97C_RS		(1 << 1)
++#  define AC97C_CE		(1 << 0)
+ 
+ /* Secure Digital (SD) Controller */
+ #define SD0_XMIT_FIFO	0xB0600000
+@@ -1638,73 +1633,74 @@ enum soc_au1200_ints {
+ 
+ #if defined(CONFIG_SOC_AU1500) || defined(CONFIG_SOC_AU1550)
+ /* Au1500 PCI Controller */
+-#define Au1500_CFG_BASE           0xB4005000 // virtual, kseg0 addr
+-#define Au1500_PCI_CMEM           (Au1500_CFG_BASE + 0)
+-#define Au1500_PCI_CFG            (Au1500_CFG_BASE + 4)
+-#  define PCI_ERROR ((1<<22) | (1<<23) | (1<<24) | (1<<25) | (1<<26) | (1<<27))
+-#define Au1500_PCI_B2BMASK_CCH    (Au1500_CFG_BASE + 8)
+-#define Au1500_PCI_B2B0_VID       (Au1500_CFG_BASE + 0xC)
+-#define Au1500_PCI_B2B1_ID        (Au1500_CFG_BASE + 0x10)
+-#define Au1500_PCI_MWMASK_DEV     (Au1500_CFG_BASE + 0x14)
++#define Au1500_CFG_BASE 	0xB4005000	/* virtual, KSEG1 addr */
++#define Au1500_PCI_CMEM 	(Au1500_CFG_BASE + 0)
++#define Au1500_PCI_CFG		(Au1500_CFG_BASE + 4)
++#  define PCI_ERROR		((1 << 22) | (1 << 23) | (1 << 24) | \
++				 (1 << 25) | (1 << 26) | (1 << 27))
++#define Au1500_PCI_B2BMASK_CCH	(Au1500_CFG_BASE + 8)
++#define Au1500_PCI_B2B0_VID	(Au1500_CFG_BASE + 0xC)
++#define Au1500_PCI_B2B1_ID	(Au1500_CFG_BASE + 0x10)
++#define Au1500_PCI_MWMASK_DEV	(Au1500_CFG_BASE + 0x14)
+ #define Au1500_PCI_MWBASE_REV_CCL (Au1500_CFG_BASE + 0x18)
+-#define Au1500_PCI_ERR_ADDR       (Au1500_CFG_BASE + 0x1C)
+-#define Au1500_PCI_SPEC_INTACK    (Au1500_CFG_BASE + 0x20)
+-#define Au1500_PCI_ID             (Au1500_CFG_BASE + 0x100)
+-#define Au1500_PCI_STATCMD        (Au1500_CFG_BASE + 0x104)
+-#define Au1500_PCI_CLASSREV       (Au1500_CFG_BASE + 0x108)
+-#define Au1500_PCI_HDRTYPE        (Au1500_CFG_BASE + 0x10C)
+-#define Au1500_PCI_MBAR           (Au1500_CFG_BASE + 0x110)
++#define Au1500_PCI_ERR_ADDR	(Au1500_CFG_BASE + 0x1C)
++#define Au1500_PCI_SPEC_INTACK	(Au1500_CFG_BASE + 0x20)
++#define Au1500_PCI_ID		(Au1500_CFG_BASE + 0x100)
++#define Au1500_PCI_STATCMD	(Au1500_CFG_BASE + 0x104)
++#define Au1500_PCI_CLASSREV	(Au1500_CFG_BASE + 0x108)
++#define Au1500_PCI_HDRTYPE	(Au1500_CFG_BASE + 0x10C)
++#define Au1500_PCI_MBAR 	(Au1500_CFG_BASE + 0x110)
+ 
+-#define Au1500_PCI_HDR            0xB4005100 // virtual, kseg0 addr
++#define Au1500_PCI_HDR		0xB4005100	/* virtual, KSEG1 addr */
+ 
+-/* All of our structures, like pci resource, have 32 bit members.
++/*
++ * All of our structures, like PCI resource, have 32-bit members.
+  * Drivers are expected to do an ioremap on the PCI MEM resource, but it's
+- * hard to store 0x4 0000 0000 in a 32 bit type.  We require a small patch
++ * hard to store 0x4 0000 0000 in a 32-bit type.  We require a small patch
+  * to __ioremap to check for addresses between (u32)Au1500_PCI_MEM_START and
+- * (u32)Au1500_PCI_MEM_END and change those to the full 36 bit PCI MEM
+- * addresses.  For PCI IO, it's simpler because we get to do the ioremap
++ * (u32)Au1500_PCI_MEM_END and change those to the full 36-bit PCI MEM
++ * addresses.  For PCI I/O, it's simpler because we get to do the ioremap
+  * ourselves and then adjust the device's resources.
+  */
+-#define Au1500_EXT_CFG            0x600000000ULL
+-#define Au1500_EXT_CFG_TYPE1      0x680000000ULL
+-#define Au1500_PCI_IO_START       0x500000000ULL
+-#define Au1500_PCI_IO_END         0x5000FFFFFULL
+-#define Au1500_PCI_MEM_START      0x440000000ULL
+-#define Au1500_PCI_MEM_END        0x44FFFFFFFULL
++#define Au1500_EXT_CFG		0x600000000ULL
++#define Au1500_EXT_CFG_TYPE1	0x680000000ULL
++#define Au1500_PCI_IO_START	0x500000000ULL
++#define Au1500_PCI_IO_END	0x5000FFFFFULL
++#define Au1500_PCI_MEM_START	0x440000000ULL
++#define Au1500_PCI_MEM_END	0x44FFFFFFFULL
+ 
+ #define PCI_IO_START	0x00001000
+ #define PCI_IO_END	0x000FFFFF
+ #define PCI_MEM_START	0x40000000
+ #define PCI_MEM_END	0x4FFFFFFF
+ 
+-#define PCI_FIRST_DEVFN (0<<3)
+-#define PCI_LAST_DEVFN  (19<<3)
++#define PCI_FIRST_DEVFN (0 << 3)
++#define PCI_LAST_DEVFN	(19 << 3)
+ 
+-#define IOPORT_RESOURCE_START 0x00001000 /* skip legacy probing */
+-#define IOPORT_RESOURCE_END   0xffffffff
+-#define IOMEM_RESOURCE_START  0x10000000
+-#define IOMEM_RESOURCE_END    0xffffffff
++#define IOPORT_RESOURCE_START	0x00001000	/* skip legacy probing */
++#define IOPORT_RESOURCE_END	0xffffffff
++#define IOMEM_RESOURCE_START	0x10000000
++#define IOMEM_RESOURCE_END	0xffffffff
+ 
+ #else /* Au1000 and Au1100 and Au1200 */
+ 
+-/* don't allow any legacy ports probing */
+-#define IOPORT_RESOURCE_START 0x10000000
+-#define IOPORT_RESOURCE_END   0xffffffff
+-#define IOMEM_RESOURCE_START  0x10000000
+-#define IOMEM_RESOURCE_END    0xffffffff
+-
+-#define PCI_IO_START    0
+-#define PCI_IO_END      0
+-#define PCI_MEM_START   0
+-#define PCI_MEM_END     0
++/* Don't allow any legacy ports probing */
++#define IOPORT_RESOURCE_START	0x10000000
++#define IOPORT_RESOURCE_END	0xffffffff
++#define IOMEM_RESOURCE_START	0x10000000
++#define IOMEM_RESOURCE_END	0xffffffff
++
++#define PCI_IO_START	0
++#define PCI_IO_END	0
++#define PCI_MEM_START	0
++#define PCI_MEM_END	0
+ #define PCI_FIRST_DEVFN 0
+-#define PCI_LAST_DEVFN  0
++#define PCI_LAST_DEVFN	0
+ 
+ #endif
+ 
+ #ifndef _LANGUAGE_ASSEMBLY
+-typedef volatile struct
+-{
++typedef volatile struct {
+ 	/* 0x0000 */ u32 toytrim;
+ 	/* 0x0004 */ u32 toywrite;
+ 	/* 0x0008 */ u32 toymatch0;
+@@ -1746,13 +1742,14 @@ typedef volatile struct
+ 	/* 0x010C */ u32 outputclr;
+ 	/* 0x0110 */ u32 pinstaterd;
+ #define pininputen pinstaterd
+-
+ } AU1X00_SYS;
+ 
+-static AU1X00_SYS* const sys  = (AU1X00_SYS *)SYS_BASE;
++static AU1X00_SYS * const sys = (AU1X00_SYS *)SYS_BASE;
+ 
+ #endif
+-/* Processor information base on prid.
++
++/*
++ * Processor information based on PRID.
+  * Copied from PowerPC.
+  */
+ #ifndef _LANGUAGE_ASSEMBLY
+@@ -1767,9 +1764,8 @@ struct cpu_spec {
+ 	unsigned char	cpu_pll_wo;	/* sys_cpupll reg. write-only */
  };
  
- int __initdata au1xxx_ic0_nr_irqs = ARRAY_SIZE(au1xxx_ic0_map);
+-extern struct cpu_spec		cpu_specs[];
+-extern struct cpu_spec		*cur_cpu_spec[];
++extern struct cpu_spec	cpu_specs[];
++extern struct cpu_spec	*cur_cpu_spec[];
+ #endif
+ 
+ #endif
 -
-Index: linux-2.6/arch/mips/au1000/common/clocks.c
+Index: linux-2.6/include/asm-mips/mach-au1x00/au1000_dma.h
 ===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/clocks.c
-+++ linux-2.6/arch/mips/au1000/common/clocks.c
-@@ -1,10 +1,9 @@
+--- linux-2.6.orig/include/asm-mips/mach-au1x00/au1000_dma.h
++++ linux-2.6/include/asm-mips/mach-au1x00/au1000_dma.h
+@@ -1,11 +1,10 @@
  /*
   * BRIEF MODULE DESCRIPTION
-- *	Simple Au1000 clocks routines.
-+ *	Simple Au1xx0 clocks routines.
-  *
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: MontaVista Software, Inc.
-- *		ppopov@mvista.com or source@mvista.com
-+ * Copyright 2001, 2008 MontaVista Software Inc.
-+ * Author: MontaVista Software, Inc. <source@mvista.com>
-  *
-  *  This program is free software; you can redistribute	 it and/or modify it
-  *  under  the terms of	 the GNU General  Public License as published by the
-@@ -30,8 +29,8 @@
- #include <linux/module.h>
- #include <asm/mach-au1x00/au1000.h>
- 
--static unsigned int au1x00_clock; // Hz
--static unsigned int lcd_clock;    // KHz
-+static unsigned int au1x00_clock; /*  Hz */
-+static unsigned int lcd_clock;    /* KHz */
- static unsigned long uart_baud_base;
- 
- /*
-@@ -47,8 +46,6 @@ unsigned int get_au1x00_speed(void)
- 	return au1x00_clock;
- }
- 
--
--
- /*
-  * The UART baud base is not known at compile time ... if
-  * we want to be able to use the same code on different
-@@ -73,24 +70,23 @@ void set_au1x00_uart_baud_base(unsigned 
- void set_au1x00_lcd_clock(void)
- {
- 	unsigned int static_cfg0;
--	unsigned int sys_busclk =
--		(get_au1x00_speed()/1000) /
--		((int)(au_readl(SYS_POWERCTRL)&0x03) + 2);
-+	unsigned int sys_busclk = (get_au1x00_speed() / 1000) /
-+				  ((int)(au_readl(SYS_POWERCTRL) & 0x03) + 2);
- 
- 	static_cfg0 = au_readl(MEM_STCFG0);
- 
--	if (static_cfg0 & (1<<11))
-+	if (static_cfg0 & (1 << 11))
- 		lcd_clock = sys_busclk / 5; /* note: BCLK switching fails with D5 */
- 	else
- 		lcd_clock = sys_busclk / 4;
- 
- 	if (lcd_clock > 50000) /* Epson MAX */
--		printk("warning: LCD clock too high (%d KHz)\n", lcd_clock);
-+		printk(KERN_WARNING "warning: LCD clock too high (%u KHz)\n",
-+				    lcd_clock);
- }
- 
- unsigned int get_au1x00_lcd_clock(void)
- {
- 	return lcd_clock;
- }
--
- EXPORT_SYMBOL(get_au1x00_lcd_clock);
-Index: linux-2.6/arch/mips/au1000/common/cputable.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/cputable.c
-+++ linux-2.6/arch/mips/au1000/common/cputable.c
-@@ -14,7 +14,7 @@
- 
- #include <asm/mach-au1x00/au1000.h>
- 
--struct cpu_spec* cur_cpu_spec[NR_CPUS];
-+struct cpu_spec *cur_cpu_spec[NR_CPUS];
- 
- /* With some thought, we can probably use the mask to reduce the
-  * size of the table.
-@@ -39,8 +39,7 @@ struct cpu_spec cpu_specs[] = {
- 	{ 0x00000000, 0x00000000, "Unknown Au1xxx", 1, 0, 0 }
- };
- 
--void
--set_cpuspec(void)
-+void set_cpuspec(void)
- {
- 	struct	cpu_spec *sp;
- 	u32	prid;
-Index: linux-2.6/arch/mips/au1000/common/dbdma.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/dbdma.c
-+++ linux-2.6/arch/mips/au1000/common/dbdma.c
-@@ -53,12 +53,11 @@
-  */
- static DEFINE_SPINLOCK(au1xxx_dbdma_spin_lock);
- 
--/* I couldn't find a macro that did this......
--*/
-+/* I couldn't find a macro that did this... */
- #define ALIGN_ADDR(x, a)	((((u32)(x)) + (a-1)) & ~(a-1))
- 
- static dbdma_global_t *dbdma_gptr = (dbdma_global_t *)DDMA_GLOBAL_BASE;
--static int dbdma_initialized=0;
-+static int dbdma_initialized;
- static void au1xxx_dbdma_init(void);
- 
- static dbdev_tab_t dbdev_tab[] = {
-@@ -149,7 +148,7 @@ static dbdev_tab_t dbdev_tab[] = {
- 
- 	{ DSCR_CMD0_NAND_FLASH, DEV_FLAGS_IN, 0, 0, 0x00000000, 0, 0 },
- 
--#endif // CONFIG_SOC_AU1200
-+#endif /* CONFIG_SOC_AU1200 */
- 
- 	{ DSCR_CMD0_THROTTLE, DEV_FLAGS_ANYUSE, 0, 0, 0x00000000, 0, 0 },
- 	{ DSCR_CMD0_ALWAYS, DEV_FLAGS_ANYUSE, 0, 0, 0x00000000, 0, 0 },
-@@ -177,8 +176,7 @@ static dbdev_tab_t dbdev_tab[] = {
- 
- static chan_tab_t *chan_tab_ptr[NUM_DBDMA_CHANS];
- 
--static dbdev_tab_t *
--find_dbdev_id(u32 id)
-+static dbdev_tab_t *find_dbdev_id(u32 id)
- {
- 	int i;
- 	dbdev_tab_t *p;
-@@ -190,29 +188,27 @@ find_dbdev_id(u32 id)
- 	return NULL;
- }
- 
--void * au1xxx_ddma_get_nextptr_virt(au1x_ddma_desc_t *dp)
-+void *au1xxx_ddma_get_nextptr_virt(au1x_ddma_desc_t *dp)
- {
--        return phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
-+	return phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
- }
- EXPORT_SYMBOL(au1xxx_ddma_get_nextptr_virt);
- 
--u32
--au1xxx_ddma_add_device(dbdev_tab_t *dev)
-+u32 au1xxx_ddma_add_device(dbdev_tab_t *dev)
- {
- 	u32 ret = 0;
--	dbdev_tab_t *p=NULL;
--	static u16 new_id=0x1000;
-+	dbdev_tab_t *p;
-+	static u16 new_id = 0x1000;
- 
- 	p = find_dbdev_id(~0);
--	if ( NULL != p )
--	{
-+	if (NULL != p) {
- 		memcpy(p, dev, sizeof(dbdev_tab_t));
- 		p->dev_id = DSCR_DEV2CUSTOM_ID(new_id, dev->dev_id);
- 		ret = p->dev_id;
- 		new_id++;
- #if 0
--		printk("add_device: id:%x flags:%x padd:%x\n",
--				p->dev_id, p->dev_flags, p->dev_physaddr );
-+		printk(KERN_DEBUG "add_device: id:%x flags:%x padd:%x\n",
-+				  p->dev_id, p->dev_flags, p->dev_physaddr);
- #endif
- 	}
- 
-@@ -220,10 +216,8 @@ au1xxx_ddma_add_device(dbdev_tab_t *dev)
- }
- EXPORT_SYMBOL(au1xxx_ddma_add_device);
- 
--/* Allocate a channel and return a non-zero descriptor if successful.
--*/
--u32
--au1xxx_dbdma_chan_alloc(u32 srcid, u32 destid,
-+/* Allocate a channel and return a non-zero descriptor if successful. */
-+u32 au1xxx_dbdma_chan_alloc(u32 srcid, u32 destid,
-        void (*callback)(int, void *), void *callparam)
- {
- 	unsigned long   flags;
-@@ -234,7 +228,8 @@ au1xxx_dbdma_chan_alloc(u32 srcid, u32 d
- 	chan_tab_t	*ctp;
- 	au1x_dma_chan_t *cp;
- 
--	/* We do the intialization on the first channel allocation.
-+	/*
-+	 * We do the intialization on the first channel allocation.
- 	 * We have to wait because of the interrupt handler initialization
- 	 * which can't be done successfully during board set up.
- 	 */
-@@ -242,16 +237,17 @@ au1xxx_dbdma_chan_alloc(u32 srcid, u32 d
- 		au1xxx_dbdma_init();
- 	dbdma_initialized = 1;
- 
--	if ((stp = find_dbdev_id(srcid)) == NULL)
-+	stp = find_dbdev_id(srcid);
-+	if (stp == NULL)
- 		return 0;
--	if ((dtp = find_dbdev_id(destid)) == NULL)
-+	dtp = find_dbdev_id(destid);
-+	if (dtp == NULL)
- 		return 0;
- 
- 	used = 0;
- 	rv = 0;
- 
--	/* Check to see if we can get both channels.
--	*/
-+	/* Check to see if we can get both channels. */
- 	spin_lock_irqsave(&au1xxx_dbdma_spin_lock, flags);
- 	if (!(stp->dev_flags & DEV_FLAGS_INUSE) ||
- 	     (stp->dev_flags & DEV_FLAGS_ANYUSE)) {
-@@ -261,35 +257,30 @@ au1xxx_dbdma_chan_alloc(u32 srcid, u32 d
- 		     (dtp->dev_flags & DEV_FLAGS_ANYUSE)) {
- 			/* Got destination */
- 			dtp->dev_flags |= DEV_FLAGS_INUSE;
--		}
--		else {
--			/* Can't get dest.  Release src.
--			*/
-+		} else {
-+			/* Can't get dest.  Release src. */
- 			stp->dev_flags &= ~DEV_FLAGS_INUSE;
- 			used++;
- 		}
--	}
--	else {
-+	} else
- 		used++;
--	}
- 	spin_unlock_irqrestore(&au1xxx_dbdma_spin_lock, flags);
- 
- 	if (!used) {
--		/* Let's see if we can allocate a channel for it.
--		*/
-+		/* Let's see if we can allocate a channel for it. */
- 		ctp = NULL;
- 		chan = 0;
- 		spin_lock_irqsave(&au1xxx_dbdma_spin_lock, flags);
--		for (i=0; i<NUM_DBDMA_CHANS; i++) {
-+		for (i = 0; i < NUM_DBDMA_CHANS; i++)
- 			if (chan_tab_ptr[i] == NULL) {
--				/* If kmalloc fails, it is caught below same
-+				/*
-+				 * If kmalloc fails, it is caught below same
- 				 * as a channel not available.
- 				 */
- 				ctp = kmalloc(sizeof(chan_tab_t), GFP_ATOMIC);
- 				chan_tab_ptr[i] = ctp;
- 				break;
- 			}
--		}
- 		spin_unlock_irqrestore(&au1xxx_dbdma_spin_lock, flags);
- 
- 		if (ctp != NULL) {
-@@ -304,8 +295,7 @@ au1xxx_dbdma_chan_alloc(u32 srcid, u32 d
- 			ctp->chan_callback = callback;
- 			ctp->chan_callparam = callparam;
- 
--			/* Initialize channel configuration.
--			*/
-+			/* Initialize channel configuration. */
- 			i = 0;
- 			if (stp->dev_intlevel)
- 				i |= DDMA_CFG_SED;
-@@ -326,8 +316,7 @@ au1xxx_dbdma_chan_alloc(u32 srcid, u32 d
- 			 * operations.
- 			 */
- 			rv = (u32)(&chan_tab_ptr[chan]);
--		}
--		else {
-+		} else {
- 			/* Release devices */
- 			stp->dev_flags &= ~DEV_FLAGS_INUSE;
- 			dtp->dev_flags &= ~DEV_FLAGS_INUSE;
-@@ -337,11 +326,11 @@ au1xxx_dbdma_chan_alloc(u32 srcid, u32 d
- }
- EXPORT_SYMBOL(au1xxx_dbdma_chan_alloc);
- 
--/* Set the device width if source or destination is a FIFO.
-+/*
-+ * Set the device width if source or destination is a FIFO.
-  * Should be 8, 16, or 32 bits.
-  */
--u32
--au1xxx_dbdma_set_devwidth(u32 chanid, int bits)
-+u32 au1xxx_dbdma_set_devwidth(u32 chanid, int bits)
- {
- 	u32		rv;
- 	chan_tab_t	*ctp;
-@@ -365,10 +354,8 @@ au1xxx_dbdma_set_devwidth(u32 chanid, in
- }
- EXPORT_SYMBOL(au1xxx_dbdma_set_devwidth);
- 
--/* Allocate a descriptor ring, initializing as much as possible.
--*/
--u32
--au1xxx_dbdma_ring_alloc(u32 chanid, int entries)
-+/* Allocate a descriptor ring, initializing as much as possible. */
-+u32 au1xxx_dbdma_ring_alloc(u32 chanid, int entries)
- {
- 	int			i;
- 	u32			desc_base, srcid, destid;
-@@ -378,43 +365,45 @@ au1xxx_dbdma_ring_alloc(u32 chanid, int 
- 	dbdev_tab_t		*stp, *dtp;
- 	au1x_ddma_desc_t	*dp;
- 
--	/* I guess we could check this to be within the
-+	/*
-+	 * I guess we could check this to be within the
- 	 * range of the table......
- 	 */
- 	ctp = *((chan_tab_t **)chanid);
- 	stp = ctp->chan_src;
- 	dtp = ctp->chan_dest;
- 
--	/* The descriptors must be 32-byte aligned.  There is a
-+	/*
-+	 * The descriptors must be 32-byte aligned.  There is a
- 	 * possibility the allocation will give us such an address,
- 	 * and if we try that first we are likely to not waste larger
- 	 * slabs of memory.
- 	 */
- 	desc_base = (u32)kmalloc(entries * sizeof(au1x_ddma_desc_t),
--			GFP_KERNEL|GFP_DMA);
-+				 GFP_KERNEL|GFP_DMA);
- 	if (desc_base == 0)
- 		return 0;
- 
- 	if (desc_base & 0x1f) {
--		/* Lost....do it again, allocate extra, and round
-+		/*
-+		 * Lost....do it again, allocate extra, and round
- 		 * the address base.
- 		 */
- 		kfree((const void *)desc_base);
- 		i = entries * sizeof(au1x_ddma_desc_t);
- 		i += (sizeof(au1x_ddma_desc_t) - 1);
--		if ((desc_base = (u32)kmalloc(i, GFP_KERNEL|GFP_DMA)) == 0)
-+		desc_base = (u32)kmalloc(i, GFP_KERNEL|GFP_DMA);
-+		if (desc_base == 0)
- 			return 0;
- 
- 		desc_base = ALIGN_ADDR(desc_base, sizeof(au1x_ddma_desc_t));
- 	}
- 	dp = (au1x_ddma_desc_t *)desc_base;
- 
--	/* Keep track of the base descriptor.
--	*/
-+	/* Keep track of the base descriptor. */
- 	ctp->chan_desc_base = dp;
- 
--	/* Initialize the rings with as much information as we know.
--	 */
-+	/* Initialize the rings with as much information as we know. */
- 	srcid = stp->dev_id;
- 	destid = dtp->dev_id;
- 
-@@ -426,11 +415,12 @@ au1xxx_dbdma_ring_alloc(u32 chanid, int 
- 	cmd0 |= DSCR_CMD0_IE | DSCR_CMD0_CV;
- 	cmd0 |= DSCR_CMD0_ST(DSCR_CMD0_ST_NOCHANGE);
- 
--        /* is it mem to mem transfer? */
--        if(((DSCR_CUSTOM2DEV_ID(srcid) == DSCR_CMD0_THROTTLE) || (DSCR_CUSTOM2DEV_ID(srcid) == DSCR_CMD0_ALWAYS)) &&
--           ((DSCR_CUSTOM2DEV_ID(destid) == DSCR_CMD0_THROTTLE) || (DSCR_CUSTOM2DEV_ID(destid) == DSCR_CMD0_ALWAYS))) {
--               cmd0 |= DSCR_CMD0_MEM;
--        }
-+	/* Is it mem to mem transfer? */
-+	if (((DSCR_CUSTOM2DEV_ID(srcid) == DSCR_CMD0_THROTTLE) ||
-+	     (DSCR_CUSTOM2DEV_ID(srcid) == DSCR_CMD0_ALWAYS)) &&
-+	    ((DSCR_CUSTOM2DEV_ID(destid) == DSCR_CMD0_THROTTLE) ||
-+	     (DSCR_CUSTOM2DEV_ID(destid) == DSCR_CMD0_ALWAYS)))
-+		cmd0 |= DSCR_CMD0_MEM;
- 
- 	switch (stp->dev_devwidth) {
- 	case 8:
-@@ -458,15 +448,17 @@ au1xxx_dbdma_ring_alloc(u32 chanid, int 
- 		break;
- 	}
- 
--	/* If the device is marked as an in/out FIFO, ensure it is
-+	/*
-+	 * If the device is marked as an in/out FIFO, ensure it is
- 	 * set non-coherent.
- 	 */
- 	if (stp->dev_flags & DEV_FLAGS_IN)
--		cmd0 |= DSCR_CMD0_SN;		/* Source in fifo */
-+		cmd0 |= DSCR_CMD0_SN;		/* Source in FIFO */
- 	if (dtp->dev_flags & DEV_FLAGS_OUT)
--		cmd0 |= DSCR_CMD0_DN;		/* Destination out fifo */
-+		cmd0 |= DSCR_CMD0_DN;		/* Destination out FIFO */
- 
--	/* Set up source1.  For now, assume no stride and increment.
-+	/*
-+	 * Set up source1.  For now, assume no stride and increment.
- 	 * A channel attribute update can change this later.
- 	 */
- 	switch (stp->dev_tsize) {
-@@ -485,19 +477,19 @@ au1xxx_dbdma_ring_alloc(u32 chanid, int 
- 		break;
- 	}
- 
--	/* If source input is fifo, set static address.
--	*/
-+	/* If source input is FIFO, set static address.	*/
- 	if (stp->dev_flags & DEV_FLAGS_IN) {
--		if ( stp->dev_flags & DEV_FLAGS_BURSTABLE )
-+		if (stp->dev_flags & DEV_FLAGS_BURSTABLE)
- 			src1 |= DSCR_SRC1_SAM(DSCR_xAM_BURST);
- 		else
--		src1 |= DSCR_SRC1_SAM(DSCR_xAM_STATIC);
--
-+			src1 |= DSCR_SRC1_SAM(DSCR_xAM_STATIC);
- 	}
-+
- 	if (stp->dev_physaddr)
- 		src0 = stp->dev_physaddr;
- 
--	/* Set up dest1.  For now, assume no stride and increment.
-+	/*
-+	 * Set up dest1.  For now, assume no stride and increment.
- 	 * A channel attribute update can change this later.
- 	 */
- 	switch (dtp->dev_tsize) {
-@@ -516,22 +508,24 @@ au1xxx_dbdma_ring_alloc(u32 chanid, int 
- 		break;
- 	}
- 
--	/* If destination output is fifo, set static address.
--	*/
-+	/* If destination output is FIFO, set static address. */
- 	if (dtp->dev_flags & DEV_FLAGS_OUT) {
--		if ( dtp->dev_flags & DEV_FLAGS_BURSTABLE )
--	                dest1 |= DSCR_DEST1_DAM(DSCR_xAM_BURST);
--				else
--		dest1 |= DSCR_DEST1_DAM(DSCR_xAM_STATIC);
-+		if (dtp->dev_flags & DEV_FLAGS_BURSTABLE)
-+			dest1 |= DSCR_DEST1_DAM(DSCR_xAM_BURST);
-+		else
-+			dest1 |= DSCR_DEST1_DAM(DSCR_xAM_STATIC);
- 	}
-+
- 	if (dtp->dev_physaddr)
- 		dest0 = dtp->dev_physaddr;
- 
- #if 0
--		printk("did:%x sid:%x cmd0:%x cmd1:%x source0:%x source1:%x dest0:%x dest1:%x\n",
--			dtp->dev_id, stp->dev_id, cmd0, cmd1, src0, src1, dest0, dest1 );
-+		printk(KERN_DEBUG "did:%x sid:%x cmd0:%x cmd1:%x source0:%x "
-+				  "source1:%x dest0:%x dest1:%x\n",
-+				  dtp->dev_id, stp->dev_id, cmd0, cmd1, src0,
-+				  src1, dest0, dest1);
- #endif
--	for (i=0; i<entries; i++) {
-+	for (i = 0; i < entries; i++) {
- 		dp->dscr_cmd0 = cmd0;
- 		dp->dscr_cmd1 = cmd1;
- 		dp->dscr_source0 = src0;
-@@ -545,49 +539,49 @@ au1xxx_dbdma_ring_alloc(u32 chanid, int 
- 		dp++;
- 	}
- 
--	/* Make last descrptor point to the first.
--	*/
-+	/* Make last descrptor point to the first. */
- 	dp--;
- 	dp->dscr_nxtptr = DSCR_NXTPTR(virt_to_phys(ctp->chan_desc_base));
- 	ctp->get_ptr = ctp->put_ptr = ctp->cur_ptr = ctp->chan_desc_base;
- 
--	return (u32)(ctp->chan_desc_base);
-+	return (u32)ctp->chan_desc_base;
- }
- EXPORT_SYMBOL(au1xxx_dbdma_ring_alloc);
- 
--/* Put a source buffer into the DMA ring.
-+/*
-+ * Put a source buffer into the DMA ring.
-  * This updates the source pointer and byte count.  Normally used
-  * for memory to fifo transfers.
-  */
--u32
--_au1xxx_dbdma_put_source(u32 chanid, void *buf, int nbytes, u32 flags)
-+u32 _au1xxx_dbdma_put_source(u32 chanid, void *buf, int nbytes, u32 flags)
- {
- 	chan_tab_t		*ctp;
- 	au1x_ddma_desc_t	*dp;
- 
--	/* I guess we could check this to be within the
-+	/*
-+	 * I guess we could check this to be within the
- 	 * range of the table......
- 	 */
--	ctp = *((chan_tab_t **)chanid);
-+	ctp = *(chan_tab_t **)chanid;
- 
--	/* We should have multiple callers for a particular channel,
-+	/*
-+	 * We should have multiple callers for a particular channel,
- 	 * an interrupt doesn't affect this pointer nor the descriptor,
- 	 * so no locking should be needed.
- 	 */
- 	dp = ctp->put_ptr;
- 
--	/* If the descriptor is valid, we are way ahead of the DMA
-+	/*
-+	 * If the descriptor is valid, we are way ahead of the DMA
- 	 * engine, so just return an error condition.
- 	 */
--	if (dp->dscr_cmd0 & DSCR_CMD0_V) {
-+	if (dp->dscr_cmd0 & DSCR_CMD0_V)
- 		return 0;
--	}
- 
--	/* Load up buffer address and byte count.
--	*/
-+	/* Load up buffer address and byte count. */
- 	dp->dscr_source0 = virt_to_phys(buf);
- 	dp->dscr_cmd1 = nbytes;
--	/* Check flags  */
-+	/* Check flags */
- 	if (flags & DDMA_FLAGS_IE)
- 		dp->dscr_cmd0 |= DSCR_CMD0_IE;
- 	if (flags & DDMA_FLAGS_NOIE)
-@@ -595,23 +589,21 @@ _au1xxx_dbdma_put_source(u32 chanid, voi
- 
- 	/*
- 	 * There is an errata on the Au1200/Au1550 parts that could result
--	 * in "stale" data being DMA'd. It has to do with the snoop logic on
--	 * the dache eviction buffer.  NONCOHERENT_IO is on by default for
--	 * these parts. If it is fixedin the future, these dma_cache_inv will
-+	 * in "stale" data being DMA'ed. It has to do with the snoop logic on
-+	 * the cache eviction buffer.  DMA_NONCOHERENT is on by default for
-+	 * these parts. If it is fixed in the future, these dma_cache_inv will
- 	 * just be nothing more than empty macros. See io.h.
--	 * */
-+	 */
- 	dma_cache_wback_inv((unsigned long)buf, nbytes);
--        dp->dscr_cmd0 |= DSCR_CMD0_V;        /* Let it rip */
-+	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
- 	au_sync();
- 	dma_cache_wback_inv((unsigned long)dp, sizeof(dp));
--        ctp->chan_ptr->ddma_dbell = 0;
-+	ctp->chan_ptr->ddma_dbell = 0;
- 
--	/* Get next descriptor pointer.
--	*/
-+	/* Get next descriptor pointer.	*/
- 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
- 
--	/* return something not zero.
--	*/
-+	/* Return something non-zero. */
- 	return nbytes;
- }
- EXPORT_SYMBOL(_au1xxx_dbdma_put_source);
-@@ -654,81 +646,77 @@ _au1xxx_dbdma_put_dest(u32 chanid, void 
- 	dp->dscr_dest0 = virt_to_phys(buf);
- 	dp->dscr_cmd1 = nbytes;
- #if 0
--	printk("cmd0:%x cmd1:%x source0:%x source1:%x dest0:%x dest1:%x\n",
--			dp->dscr_cmd0, dp->dscr_cmd1, dp->dscr_source0,
--			dp->dscr_source1, dp->dscr_dest0, dp->dscr_dest1 );
-+	printk(KERN_DEBUG "cmd0:%x cmd1:%x source0:%x source1:%x dest0:%x dest1:%x\n",
-+			  dp->dscr_cmd0, dp->dscr_cmd1, dp->dscr_source0,
-+			  dp->dscr_source1, dp->dscr_dest0, dp->dscr_dest1);
- #endif
- 	/*
- 	 * There is an errata on the Au1200/Au1550 parts that could result in
--	 * "stale" data being DMA'd. It has to do with the snoop logic on the
--	 * dache eviction buffer. NONCOHERENT_IO is on by default for these
--	 * parts. If it is fixedin the future, these dma_cache_inv will just
-+	 * "stale" data being DMA'ed. It has to do with the snoop logic on the
-+	 * cache eviction buffer.  DMA_NONCOHERENT is on by default for these
-+	 * parts. If it is fixed in the future, these dma_cache_inv will just
- 	 * be nothing more than empty macros. See io.h.
--	 * */
-+	 */
- 	dma_cache_inv((unsigned long)buf, nbytes);
- 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
- 	au_sync();
- 	dma_cache_wback_inv((unsigned long)dp, sizeof(dp));
--        ctp->chan_ptr->ddma_dbell = 0;
-+	ctp->chan_ptr->ddma_dbell = 0;
- 
--	/* Get next descriptor pointer.
--	*/
-+	/* Get next descriptor pointer.	*/
- 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
- 
--	/* return something not zero.
--	*/
-+	/* Return something non-zero. */
- 	return nbytes;
- }
- EXPORT_SYMBOL(_au1xxx_dbdma_put_dest);
- 
--/* Get a destination buffer into the DMA ring.
-+/*
-+ * Get a destination buffer into the DMA ring.
-  * Normally used to get a full buffer from the ring during fifo
-  * to memory transfers.  This does not set the valid bit, you will
-  * have to put another destination buffer to keep the DMA going.
-  */
--u32
--au1xxx_dbdma_get_dest(u32 chanid, void **buf, int *nbytes)
-+u32 au1xxx_dbdma_get_dest(u32 chanid, void **buf, int *nbytes)
- {
- 	chan_tab_t		*ctp;
- 	au1x_ddma_desc_t	*dp;
- 	u32			rv;
- 
--	/* I guess we could check this to be within the
-+	/*
-+	 * I guess we could check this to be within the
- 	 * range of the table......
- 	 */
- 	ctp = *((chan_tab_t **)chanid);
- 
--	/* We should have multiple callers for a particular channel,
-+	/*
-+	 * We should have multiple callers for a particular channel,
- 	 * an interrupt doesn't affect this pointer nor the descriptor,
- 	 * so no locking should be needed.
- 	 */
- 	dp = ctp->get_ptr;
- 
--	/* If the descriptor is valid, we are way ahead of the DMA
-+	/*
-+	 * If the descriptor is valid, we are way ahead of the DMA
- 	 * engine, so just return an error condition.
- 	 */
- 	if (dp->dscr_cmd0 & DSCR_CMD0_V)
- 		return 0;
- 
--	/* Return buffer address and byte count.
--	*/
-+	/* Return buffer address and byte count. */
- 	*buf = (void *)(phys_to_virt(dp->dscr_dest0));
- 	*nbytes = dp->dscr_cmd1;
- 	rv = dp->dscr_stat;
- 
--	/* Get next descriptor pointer.
--	*/
-+	/* Get next descriptor pointer.	*/
- 	ctp->get_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
- 
--	/* return something not zero.
--	*/
-+	/* Return something non-zero. */
- 	return rv;
- }
--
- EXPORT_SYMBOL_GPL(au1xxx_dbdma_get_dest);
- 
--void
--au1xxx_dbdma_stop(u32 chanid)
-+void au1xxx_dbdma_stop(u32 chanid)
- {
- 	chan_tab_t	*ctp;
- 	au1x_dma_chan_t *cp;
-@@ -743,7 +731,7 @@ au1xxx_dbdma_stop(u32 chanid)
- 		udelay(1);
- 		halt_timeout++;
- 		if (halt_timeout > 100) {
--			printk("warning: DMA channel won't halt\n");
-+			printk(KERN_WARNING "warning: DMA channel won't halt\n");
- 			break;
- 		}
- 	}
-@@ -753,12 +741,12 @@ au1xxx_dbdma_stop(u32 chanid)
- }
- EXPORT_SYMBOL(au1xxx_dbdma_stop);
- 
--/* Start using the current descriptor pointer.  If the dbdma encounters
-- * a not valid descriptor, it will stop.  In this case, we can just
-+/*
-+ * Start using the current descriptor pointer.  If the DBDMA encounters
-+ * a non-valid descriptor, it will stop.  In this case, we can just
-  * continue by adding a buffer to the list and starting again.
-  */
--void
--au1xxx_dbdma_start(u32 chanid)
-+void au1xxx_dbdma_start(u32 chanid)
- {
- 	chan_tab_t	*ctp;
- 	au1x_dma_chan_t *cp;
-@@ -773,8 +761,7 @@ au1xxx_dbdma_start(u32 chanid)
- }
- EXPORT_SYMBOL(au1xxx_dbdma_start);
- 
--void
--au1xxx_dbdma_reset(u32 chanid)
-+void au1xxx_dbdma_reset(u32 chanid)
- {
- 	chan_tab_t		*ctp;
- 	au1x_ddma_desc_t	*dp;
-@@ -784,14 +771,14 @@ au1xxx_dbdma_reset(u32 chanid)
- 	ctp = *((chan_tab_t **)chanid);
- 	ctp->get_ptr = ctp->put_ptr = ctp->cur_ptr = ctp->chan_desc_base;
- 
--	/* Run through the descriptors and reset the valid indicator.
--	*/
-+	/* Run through the descriptors and reset the valid indicator. */
- 	dp = ctp->chan_desc_base;
- 
- 	do {
- 		dp->dscr_cmd0 &= ~DSCR_CMD0_V;
--		/* reset our SW status -- this is used to determine
--		 * if a descriptor is in use by upper level SW. Since
-+		/*
-+		 * Reset our software status -- this is used to determine
-+		 * if a descriptor is in use by upper level software. Since
- 		 * posting can reset 'V' bit.
- 		 */
- 		dp->sw_status = 0;
-@@ -800,8 +787,7 @@ au1xxx_dbdma_reset(u32 chanid)
- }
- EXPORT_SYMBOL(au1xxx_dbdma_reset);
- 
--u32
--au1xxx_get_dma_residue(u32 chanid)
-+u32 au1xxx_get_dma_residue(u32 chanid)
- {
- 	chan_tab_t	*ctp;
- 	au1x_dma_chan_t *cp;
-@@ -810,18 +796,15 @@ au1xxx_get_dma_residue(u32 chanid)
- 	ctp = *((chan_tab_t **)chanid);
- 	cp = ctp->chan_ptr;
- 
--	/* This is only valid if the channel is stopped.
--	*/
-+	/* This is only valid if the channel is stopped. */
- 	rv = cp->ddma_bytecnt;
- 	au_sync();
- 
- 	return rv;
- }
--
- EXPORT_SYMBOL_GPL(au1xxx_get_dma_residue);
- 
--void
--au1xxx_dbdma_chan_free(u32 chanid)
-+void au1xxx_dbdma_chan_free(u32 chanid)
- {
- 	chan_tab_t	*ctp;
- 	dbdev_tab_t	*stp, *dtp;
-@@ -842,8 +825,7 @@ au1xxx_dbdma_chan_free(u32 chanid)
- }
- EXPORT_SYMBOL(au1xxx_dbdma_chan_free);
- 
--static irqreturn_t
--dbdma_interrupt(int irq, void *dev_id)
-+static irqreturn_t dbdma_interrupt(int irq, void *dev_id)
- {
- 	u32 intstat;
- 	u32 chan_index;
-@@ -859,13 +841,12 @@ dbdma_interrupt(int irq, void *dev_id)
- 	cp = ctp->chan_ptr;
- 	dp = ctp->cur_ptr;
- 
--	/* Reset interrupt.
--	*/
-+	/* Reset interrupt. */
- 	cp->ddma_irq = 0;
- 	au_sync();
- 
- 	if (ctp->chan_callback)
--		(ctp->chan_callback)(irq, ctp->chan_callparam);
-+		ctp->chan_callback(irq, ctp->chan_callparam);
- 
- 	ctp->cur_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
- 	return IRQ_RETVAL(1);
-@@ -890,47 +871,47 @@ static void au1xxx_dbdma_init(void)
- 
- 	if (request_irq(irq_nr, dbdma_interrupt, IRQF_DISABLED,
- 			"Au1xxx dbdma", (void *)dbdma_gptr))
--		printk("Can't get 1550 dbdma irq");
-+		printk(KERN_ERR "Can't get 1550 dbdma irq");
- }
- 
--void
--au1xxx_dbdma_dump(u32 chanid)
-+void au1xxx_dbdma_dump(u32 chanid)
- {
--	chan_tab_t		*ctp;
--	au1x_ddma_desc_t	*dp;
--	dbdev_tab_t		*stp, *dtp;
--	au1x_dma_chan_t *cp;
--		u32			i = 0;
-+	chan_tab_t	 *ctp;
-+	au1x_ddma_desc_t *dp;
-+	dbdev_tab_t	 *stp, *dtp;
-+	au1x_dma_chan_t  *cp;
-+	u32 i		 = 0;
- 
- 	ctp = *((chan_tab_t **)chanid);
- 	stp = ctp->chan_src;
- 	dtp = ctp->chan_dest;
- 	cp = ctp->chan_ptr;
- 
--	printk("Chan %x, stp %x (dev %d)  dtp %x (dev %d) \n",
--		(u32)ctp, (u32)stp, stp - dbdev_tab, (u32)dtp, dtp - dbdev_tab);
--	printk("desc base %x, get %x, put %x, cur %x\n",
--		(u32)(ctp->chan_desc_base), (u32)(ctp->get_ptr),
--		(u32)(ctp->put_ptr), (u32)(ctp->cur_ptr));
--
--	printk("dbdma chan %x\n", (u32)cp);
--	printk("cfg %08x, desptr %08x, statptr %08x\n",
--		cp->ddma_cfg, cp->ddma_desptr, cp->ddma_statptr);
--	printk("dbell %08x, irq %08x, stat %08x, bytecnt %08x\n",
--		cp->ddma_dbell, cp->ddma_irq, cp->ddma_stat, cp->ddma_bytecnt);
--
-+	printk(KERN_DEBUG "Chan %x, stp %x (dev %d)  dtp %x (dev %d) \n",
-+			  (u32)ctp, (u32)stp, stp - dbdev_tab, (u32)dtp,
-+			  dtp - dbdev_tab);
-+	printk(KERN_DEBUG "desc base %x, get %x, put %x, cur %x\n",
-+			  (u32)(ctp->chan_desc_base), (u32)(ctp->get_ptr),
-+			  (u32)(ctp->put_ptr), (u32)(ctp->cur_ptr));
-+
-+	printk(KERN_DEBUG "dbdma chan %x\n", (u32)cp);
-+	printk(KERN_DEBUG "cfg %08x, desptr %08x, statptr %08x\n",
-+			  cp->ddma_cfg, cp->ddma_desptr, cp->ddma_statptr);
-+	printk(KERN_DEBUG "dbell %08x, irq %08x, stat %08x, bytecnt %08x\n",
-+			  cp->ddma_dbell, cp->ddma_irq, cp->ddma_stat,
-+			  cp->ddma_bytecnt);
- 
--	/* Run through the descriptors
--	*/
-+	/* Run through the descriptors */
- 	dp = ctp->chan_desc_base;
- 
- 	do {
--                printk("Dp[%d]= %08x, cmd0 %08x, cmd1 %08x\n",
--                        i++, (u32)dp, dp->dscr_cmd0, dp->dscr_cmd1);
--                printk("src0 %08x, src1 %08x, dest0 %08x, dest1 %08x\n",
--                        dp->dscr_source0, dp->dscr_source1, dp->dscr_dest0, dp->dscr_dest1);
--                printk("stat %08x, nxtptr %08x\n",
--                        dp->dscr_stat, dp->dscr_nxtptr);
-+		printk(KERN_DEBUG "Dp[%d]= %08x, cmd0 %08x, cmd1 %08x\n",
-+				  i++, (u32)dp, dp->dscr_cmd0, dp->dscr_cmd1);
-+		printk(KERN_DEBUG "src0 %08x, src1 %08x, dest0 %08x, dest1 %08x\n",
-+				  dp->dscr_source0, dp->dscr_source1,
-+				  dp->dscr_dest0, dp->dscr_dest1);
-+		printk(KERN_DEBUG "stat %08x, nxtptr %08x\n",
-+				  dp->dscr_stat, dp->dscr_nxtptr);
- 		dp = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
- 	} while (dp != ctp->chan_desc_base);
- }
-@@ -938,32 +919,33 @@ au1xxx_dbdma_dump(u32 chanid)
- /* Put a descriptor into the DMA ring.
-  * This updates the source/destination pointers and byte count.
-  */
--u32
--au1xxx_dbdma_put_dscr(u32 chanid, au1x_ddma_desc_t *dscr )
-+u32 au1xxx_dbdma_put_dscr(u32 chanid, au1x_ddma_desc_t *dscr)
- {
- 	chan_tab_t *ctp;
- 	au1x_ddma_desc_t *dp;
--	u32 nbytes=0;
-+	u32 nbytes = 0;
- 
--	/* I guess we could check this to be within the
--	* range of the table......
--	*/
-+	/*
-+	 * I guess we could check this to be within the
-+	 * range of the table......
-+	 */
- 	ctp = *((chan_tab_t **)chanid);
- 
--	/* We should have multiple callers for a particular channel,
--	* an interrupt doesn't affect this pointer nor the descriptor,
--	* so no locking should be needed.
--	*/
-+	/*
-+	 * We should have multiple callers for a particular channel,
-+	 * an interrupt doesn't affect this pointer nor the descriptor,
-+	 * so no locking should be needed.
-+	 */
- 	dp = ctp->put_ptr;
- 
--	/* If the descriptor is valid, we are way ahead of the DMA
--	* engine, so just return an error condition.
--	*/
-+	/*
-+	 * If the descriptor is valid, we are way ahead of the DMA
-+	 * engine, so just return an error condition.
-+	 */
- 	if (dp->dscr_cmd0 & DSCR_CMD0_V)
- 		return 0;
- 
--	/* Load up buffer addresses and byte count.
--	*/
-+	/* Load up buffer addresses and byte count. */
- 	dp->dscr_dest0 = dscr->dscr_dest0;
- 	dp->dscr_source0 = dscr->dscr_source0;
- 	dp->dscr_dest1 = dscr->dscr_dest1;
-@@ -975,14 +957,11 @@ au1xxx_dbdma_put_dscr(u32 chanid, au1x_d
- 	dp->dscr_cmd0 |= dscr->dscr_cmd0 | DSCR_CMD0_V;
- 	ctp->chan_ptr->ddma_dbell = 0;
- 
--	/* Get next descriptor pointer.
--	*/
-+	/* Get next descriptor pointer.	*/
- 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
- 
--	/* return something not zero.
--	*/
-+	/* Return something non-zero. */
- 	return nbytes;
- }
- 
- #endif /* defined(CONFIG_SOC_AU1550) || defined(CONFIG_SOC_AU1200) */
--
-Index: linux-2.6/arch/mips/au1000/common/dbg_io.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/dbg_io.c
-+++ linux-2.6/arch/mips/au1000/common/dbg_io.c
-@@ -1,3 +1,4 @@
-+#include <linux/types.h>
- 
- #include <asm/mach-au1x00/au1000.h>
- 
-@@ -8,12 +9,6 @@
-  * uart to be used for debugging.
-  */
- #define DEBUG_BASE  UART_DEBUG_BASE
--/**/
--
--/* we need uint32 uint8 */
--/* #include "types.h" */
--typedef         unsigned char uint8;
--typedef         unsigned int  uint32;
- 
- #define         UART16550_BAUD_2400             2400
- #define         UART16550_BAUD_4800             4800
-@@ -51,17 +46,15 @@ typedef         unsigned int  uint32;
- #define UART_MOD_CNTRL	0x100	/* Module Control */
- 
- /* memory-mapped read/write of the port */
--#define UART16550_READ(y)    (au_readl(DEBUG_BASE + y) & 0xff)
--#define UART16550_WRITE(y, z) (au_writel(z&0xff, DEBUG_BASE + y))
-+#define UART16550_READ(y)     (au_readl(DEBUG_BASE + y) & 0xff)
-+#define UART16550_WRITE(y, z) (au_writel(z & 0xff, DEBUG_BASE + y))
- 
- extern unsigned long calc_clock(void);
- 
--void debugInit(uint32 baud, uint8 data, uint8 parity, uint8 stop)
-+void debugInit(u32 baud, u8 data, u8 parity, u8 stop)
- {
--
--	if (UART16550_READ(UART_MOD_CNTRL) != 0x3) {
-+	if (UART16550_READ(UART_MOD_CNTRL) != 0x3)
- 		UART16550_WRITE(UART_MOD_CNTRL, 3);
--	}
- 	calc_clock();
- 
- 	/* disable interrupts */
-@@ -69,7 +62,7 @@ void debugInit(uint32 baud, uint8 data, 
- 
- 	/* set up baud rate */
- 	{
--		uint32 divisor;
-+		u32 divisor;
- 
- 		/* set divisor */
- 		divisor = get_au1x00_uart_baud_base() / baud;
-@@ -80,9 +73,9 @@ void debugInit(uint32 baud, uint8 data, 
- 	UART16550_WRITE(UART_LCR, (data | parity | stop));
- }
- 
--static int remoteDebugInitialized = 0;
-+static int remoteDebugInitialized;
- 
--uint8 getDebugChar(void)
-+u8 getDebugChar(void)
- {
- 	if (!remoteDebugInitialized) {
- 		remoteDebugInitialized = 1;
-@@ -92,15 +85,13 @@ uint8 getDebugChar(void)
- 			  UART16550_STOP_1BIT);
- 	}
- 
--	while((UART16550_READ(UART_LSR) & 0x1) == 0);
-+	while ((UART16550_READ(UART_LSR) & 0x1) == 0);
- 	return UART16550_READ(UART_RX);
- }
- 
- 
--int putDebugChar(uint8 byte)
-+int putDebugChar(u8 byte)
- {
--//	int i;
--
- 	if (!remoteDebugInitialized) {
- 		remoteDebugInitialized = 1;
- 		debugInit(UART16550_BAUD_115200,
-@@ -109,9 +100,8 @@ int putDebugChar(uint8 byte)
- 			  UART16550_STOP_1BIT);
- 	}
- 
--	while ((UART16550_READ(UART_LSR)&0x40) == 0);
-+	while ((UART16550_READ(UART_LSR) & 0x40) == 0);
- 	UART16550_WRITE(UART_TX, byte);
--	//for (i=0;i<0xfff;i++);
- 
- 	return 1;
- }
-Index: linux-2.6/arch/mips/au1000/common/dma.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/dma.c
-+++ linux-2.6/arch/mips/au1000/common/dma.c
-@@ -1,12 +1,11 @@
- /*
-  *
-  * BRIEF MODULE DESCRIPTION
-- *      A DMA channel allocator for Au1000. API is modeled loosely off of
-+ *      A DMA channel allocator for Au1x00. API is modeled loosely off of
-  *      linux/kernel/dma.c.
+- *	Defines for using and allocating dma channels on the Alchemy
+- *      Au1000 mips processor.
++ *	Defines for using and allocating DMA channels on the Alchemy
++ *      Au1x00 MIPS processors.
   *
 - * Copyright 2000 MontaVista Software Inc.
 - * Author: MontaVista Software, Inc.
 - *         	stevel@mvista.com or source@mvista.com
 + * Copyright 2000, 2008 MontaVista Software Inc.
 + * Author: MontaVista Software, Inc. <source@mvista.com>
-  * Copyright (C) 2005 Ralf Baechle (ralf@linux-mips.org)
   *
   *  This program is free software; you can redistribute  it and/or modify it
-@@ -39,7 +38,8 @@
- #include <asm/mach-au1x00/au1000.h>
- #include <asm/mach-au1x00/au1000_dma.h>
+  *  under  the terms of  the GNU General  Public License as published by the
+@@ -31,7 +30,7 @@
+ #ifndef __ASM_AU1000_DMA_H
+ #define __ASM_AU1000_DMA_H
  
--#if defined(CONFIG_SOC_AU1000) || defined(CONFIG_SOC_AU1500) || defined(CONFIG_SOC_AU1100)
-+#if defined(CONFIG_SOC_AU1000) || defined(CONFIG_SOC_AU1500) || \
-+    defined(CONFIG_SOC_AU1100)
- /*
-  * A note on resource allocation:
-  *
-@@ -56,7 +56,6 @@
-  * returned from request_dma.
-  */
- 
+-#include <asm/io.h>		/* need byte IO */
++#include <linux/io.h>		/* need byte IO */
+ #include <linux/spinlock.h>	/* And spinlocks */
+ #include <linux/delay.h>
+ #include <asm/system.h>
+@@ -50,36 +49,36 @@
+ #define DMA_DAH_MASK		(0x0f << 20)
+ #define DMA_DID_BIT		16
+ #define DMA_DID_MASK		(0x0f << DMA_DID_BIT)
+-#define DMA_DS			(1<<15)
+-#define DMA_BE			(1<<13)
+-#define DMA_DR			(1<<12)
+-#define DMA_TS8			(1<<11)
++#define DMA_DS			(1 << 15)
++#define DMA_BE			(1 << 13)
++#define DMA_DR			(1 << 12)
++#define DMA_TS8 		(1 << 11)
+ #define DMA_DW_BIT		9
+ #define DMA_DW_MASK		(0x03 << DMA_DW_BIT)
+ #define DMA_DW8			(0 << DMA_DW_BIT)
+ #define DMA_DW16		(1 << DMA_DW_BIT)
+ #define DMA_DW32		(2 << DMA_DW_BIT)
+-#define DMA_NC			(1<<8)
+-#define DMA_IE			(1<<7)
+-#define DMA_HALT		(1<<6)
+-#define DMA_GO			(1<<5)
+-#define DMA_AB			(1<<4)
+-#define DMA_D1			(1<<3)
+-#define DMA_BE1			(1<<2)
+-#define DMA_D0			(1<<1)
+-#define DMA_BE0			(1<<0)
 -
- DEFINE_SPINLOCK(au1000_dma_spin_lock);
- 
- struct dma_chan au1000_dma_table[NUM_AU1000_DMA_CHANNELS] = {
-@@ -71,7 +70,7 @@ struct dma_chan au1000_dma_table[NUM_AU1
- };
- EXPORT_SYMBOL(au1000_dma_table);
- 
--// Device FIFO addresses and default DMA modes
-+/* Device FIFO addresses and default DMA modes */
- static const struct dma_dev {
- 	unsigned int fifo_addr;
- 	unsigned int dma_mode;
-@@ -80,8 +79,8 @@ static const struct dma_dev {
- 	{UART0_ADDR + UART_RX, 0},
- 	{0, 0},
- 	{0, 0},
--	{AC97C_DATA, DMA_DW16 },          // coherent
--	{AC97C_DATA, DMA_DR | DMA_DW16 }, // coherent
-+	{AC97C_DATA, DMA_DW16 },          /* coherent */
-+	{AC97C_DATA, DMA_DR | DMA_DW16 }, /* coherent */
- 	{UART3_ADDR + UART_TX, DMA_DW8 | DMA_NC},
- 	{UART3_ADDR + UART_RX, DMA_DR | DMA_DW8 | DMA_NC},
- 	{USBD_EP0RD, DMA_DR | DMA_DW8 | DMA_NC},
-@@ -101,10 +100,10 @@ int au1000_dma_read_proc(char *buf, char
- 	struct dma_chan *chan;
- 
- 	for (i = 0; i < NUM_AU1000_DMA_CHANNELS; i++) {
--		if ((chan = get_dma_chan(i)) != NULL) {
-+		chan = get_dma_chan(i);
-+		if (chan != NULL)
- 			len += sprintf(buf + len, "%2d: %s\n",
- 				       i, chan->dev_str);
--		}
- 	}
- 
- 	if (fpos >= len) {
-@@ -113,18 +112,19 @@ int au1000_dma_read_proc(char *buf, char
- 		return 0;
- 	}
- 	*start = buf + fpos;
--	if ((len -= fpos) > length)
-+	len -= fpos;
-+	if (len > length)
- 		return length;
- 	*eof = 1;
- 	return len;
- }
- 
--// Device FIFO addresses and default DMA modes - 2nd bank
-+/* Device FIFO addresses and default DMA modes - 2nd bank */
- static const struct dma_dev dma_dev_table_bank2[DMA_NUM_DEV_BANK2] = {
--	{SD0_XMIT_FIFO, DMA_DS | DMA_DW8},		// coherent
--	{SD0_RECV_FIFO, DMA_DS | DMA_DR | DMA_DW8},	// coherent
--	{SD1_XMIT_FIFO, DMA_DS | DMA_DW8},		// coherent
--	{SD1_RECV_FIFO, DMA_DS | DMA_DR | DMA_DW8}	// coherent
-+	{ SD0_XMIT_FIFO, DMA_DS | DMA_DW8 },		/* coherent */
-+	{ SD0_RECV_FIFO, DMA_DS | DMA_DR | DMA_DW8 },	/* coherent */
-+	{ SD1_XMIT_FIFO, DMA_DS | DMA_DW8 },		/* coherent */
-+	{ SD1_RECV_FIFO, DMA_DS | DMA_DR | DMA_DW8 }	/* coherent */
- };
- 
- void dump_au1000_dma_channel(unsigned int dmanr)
-@@ -150,7 +150,6 @@ void dump_au1000_dma_channel(unsigned in
- 	       au_readl(chan->io + DMA_BUFFER1_COUNT));
- }
- 
--
- /*
-  * Finds a free channel, and binds the requested device to it.
-  * Returns the allocated channel number, or negative on error.
-@@ -169,14 +168,14 @@ int request_au1000_dma(int dev_id, const
- 	if (dev_id < 0 || dev_id >= (DMA_NUM_DEV + DMA_NUM_DEV_BANK2))
- 		return -EINVAL;
- #else
-- 	if (dev_id < 0 || dev_id >= DMA_NUM_DEV)
-+	if (dev_id < 0 || dev_id >= DMA_NUM_DEV)
- 		return -EINVAL;
- #endif
- 
--	for (i = 0; i < NUM_AU1000_DMA_CHANNELS; i++) {
-+	for (i = 0; i < NUM_AU1000_DMA_CHANNELS; i++)
- 		if (au1000_dma_table[i].dev_id < 0)
- 			break;
--	}
+-#define DMA_PERIPHERAL_ADDR       0x00000008
+-#define DMA_BUFFER0_START         0x0000000C
+-#define DMA_BUFFER1_START         0x00000014
+-#define DMA_BUFFER0_COUNT         0x00000010
+-#define DMA_BUFFER1_COUNT         0x00000018
+-#define DMA_BAH_BIT 16
+-#define DMA_BAH_MASK (0x0f << DMA_BAH_BIT)
+-#define DMA_COUNT_BIT 0
+-#define DMA_COUNT_MASK (0xffff << DMA_COUNT_BIT)
++#define DMA_NC			(1 << 8)
++#define DMA_IE			(1 << 7)
++#define DMA_HALT		(1 << 6)
++#define DMA_GO			(1 << 5)
++#define DMA_AB			(1 << 4)
++#define DMA_D1			(1 << 3)
++#define DMA_BE1 		(1 << 2)
++#define DMA_D0			(1 << 1)
++#define DMA_BE0 		(1 << 0)
 +
- 	if (i == NUM_AU1000_DMA_CHANNELS)
- 		return -ENODEV;
++#define DMA_PERIPHERAL_ADDR	0x00000008
++#define DMA_BUFFER0_START	0x0000000C
++#define DMA_BUFFER1_START	0x00000014
++#define DMA_BUFFER0_COUNT	0x00000010
++#define DMA_BUFFER1_COUNT	0x00000018
++#define DMA_BAH_BIT	16
++#define DMA_BAH_MASK	(0x0f << DMA_BAH_BIT)
++#define DMA_COUNT_BIT	0
++#define DMA_COUNT_MASK	(0xffff << DMA_COUNT_BIT)
  
-@@ -185,15 +184,15 @@ int request_au1000_dma(int dev_id, const
- 	if (dev_id >= DMA_NUM_DEV) {
- 		dev_id -= DMA_NUM_DEV;
- 		dev = &dma_dev_table_bank2[dev_id];
--	} else {
-+	} else
- 		dev = &dma_dev_table[dev_id];
--	}
+-/* DMA Device ID's follow */
++/* DMA Device IDs follow */
+ enum {
+ 	DMA_ID_UART0_TX = 0,
+ 	DMA_ID_UART0_RX,
+@@ -110,7 +109,8 @@ enum {
+ };
  
- 	if (irqhandler) {
- 		chan->irq = AU1000_DMA_INT_BASE + i;
- 		chan->irq_dev = irq_dev_id;
--		if ((ret = request_irq(chan->irq, irqhandler, irqflags,
--				       dev_str, chan->irq_dev))) {
-+		ret = request_irq(chan->irq, irqhandler, irqflags, dev_str,
-+				  chan->irq_dev);
-+		if (ret) {
- 			chan->irq = 0;
- 			chan->irq_dev = NULL;
- 			return ret;
-@@ -203,7 +202,7 @@ int request_au1000_dma(int dev_id, const
- 		chan->irq_dev = NULL;
- 	}
+ struct dma_chan {
+-	int dev_id;		// this channel is allocated if >=0, free otherwise
++	int dev_id;		/* this channel is allocated if >= 0, */
++				/* free otherwise */
+ 	unsigned int io;
+ 	const char *dev_str;
+ 	int irq;
+@@ -132,23 +132,23 @@ extern int au1000_dma_read_proc(char *bu
+ extern void dump_au1000_dma_channel(unsigned int dmanr);
+ extern spinlock_t au1000_dma_spin_lock;
  
--	// fill it in
-+	/* fill it in */
- 	chan->io = DMA_CHANNEL_BASE + i * DMA_CHANNEL_LEN;
- 	chan->dev_id = dev_id;
- 	chan->dev_str = dev_str;
-@@ -220,8 +219,9 @@ EXPORT_SYMBOL(request_au1000_dma);
- void free_au1000_dma(unsigned int dmanr)
+-
+-static __inline__ struct dma_chan *get_dma_chan(unsigned int dmanr)
++static inline struct dma_chan *get_dma_chan(unsigned int dmanr)
+ {
+-	if (dmanr >= NUM_AU1000_DMA_CHANNELS
+-	    || au1000_dma_table[dmanr].dev_id < 0)
++	if (dmanr >= NUM_AU1000_DMA_CHANNELS ||
++	    au1000_dma_table[dmanr].dev_id < 0)
+ 		return NULL;
+ 	return &au1000_dma_table[dmanr];
+ }
+ 
+-static __inline__ unsigned long claim_dma_lock(void)
++static inline unsigned long claim_dma_lock(void)
+ {
+ 	unsigned long flags;
++
+ 	spin_lock_irqsave(&au1000_dma_spin_lock, flags);
+ 	return flags;
+ }
+ 
+-static __inline__ void release_dma_lock(unsigned long flags)
++static inline void release_dma_lock(unsigned long flags)
+ {
+ 	spin_unlock_irqrestore(&au1000_dma_spin_lock, flags);
+ }
+@@ -156,48 +156,53 @@ static __inline__ void release_dma_lock(
+ /*
+  * Set the DMA buffer enable bits in the mode register.
+  */
+-static __inline__ void enable_dma_buffer0(unsigned int dmanr)
++static inline void enable_dma_buffer0(unsigned int dmanr)
  {
  	struct dma_chan *chan = get_dma_chan(dmanr);
 +
- 	if (!chan) {
--		printk("Trying to free DMA%d\n", dmanr);
-+		printk(KERN_ERR "Error trying to free DMA%d\n", dmanr);
+ 	if (!chan)
  		return;
- 	}
- 
-@@ -235,4 +235,4 @@ void free_au1000_dma(unsigned int dmanr)
+ 	au_writel(DMA_BE0, chan->io + DMA_MODE_SET);
  }
- EXPORT_SYMBOL(free_au1000_dma);
- 
--#endif // AU1000 AU1500 AU1100
-+#endif /* AU1000 AU1500 AU1100 */
-Index: linux-2.6/arch/mips/au1000/common/gpio.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/gpio.c
-+++ linux-2.6/arch/mips/au1000/common/gpio.c
-@@ -69,7 +69,7 @@ static int au1xxx_gpio2_direction_output
- 
- static int au1xxx_gpio1_read(unsigned gpio)
- {
--	return ((gpio1->pinstaterd >> gpio) & 0x01);
-+	return (gpio1->pinstaterd >> gpio) & 0x01;
- }
- 
- static void au1xxx_gpio1_write(unsigned gpio, int value)
-@@ -104,7 +104,6 @@ int au1xxx_gpio_get_value(unsigned gpio)
- 	else
- 		return au1xxx_gpio1_read(gpio);
- }
--
- EXPORT_SYMBOL(au1xxx_gpio_get_value);
- 
- void au1xxx_gpio_set_value(unsigned gpio, int value)
-@@ -118,7 +117,6 @@ void au1xxx_gpio_set_value(unsigned gpio
- 	else
- 		au1xxx_gpio1_write(gpio, value);
- }
--
- EXPORT_SYMBOL(au1xxx_gpio_set_value);
- 
- int au1xxx_gpio_direction_input(unsigned gpio)
-@@ -132,7 +130,6 @@ int au1xxx_gpio_direction_input(unsigned
- 
- 	return au1xxx_gpio1_direction_input(gpio);
- }
--
- EXPORT_SYMBOL(au1xxx_gpio_direction_input);
- 
- int au1xxx_gpio_direction_output(unsigned gpio, int value)
-@@ -146,5 +143,4 @@ int au1xxx_gpio_direction_output(unsigne
- 
- 	return au1xxx_gpio1_direction_output(gpio, value);
- }
--
- EXPORT_SYMBOL(au1xxx_gpio_direction_output);
-Index: linux-2.6/arch/mips/au1000/common/irq.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/irq.c
-+++ linux-2.6/arch/mips/au1000/common/irq.c
-@@ -210,10 +210,8 @@ static inline void mask_and_ack_either_e
- 	au_sync();
- }
- 
--
- static inline void mask_and_ack_level_irq(unsigned int irq_nr)
- {
--
- 	local_disable_irq(irq_nr);
- 	au_sync();
- #if defined(CONFIG_MIPS_PB1000)
-@@ -263,14 +261,14 @@ void restore_local_and_enable(int contro
- 	unsigned long flags, new_mask;
- 
- 	spin_lock_irqsave(&irq_lock, flags);
--	for (i = 0; i < 32; i++) {
-+	for (i = 0; i < 32; i++)
- 		if (mask & (1 << i)) {
- 			if (controller)
- 				local_enable_irq(i + 32);
- 			else
- 				local_enable_irq(i);
- 		}
--	}
+-static __inline__ void enable_dma_buffer1(unsigned int dmanr)
 +
- 	if (controller)
- 		new_mask = au_readl(IC1_MASKSET);
- 	else
-Index: linux-2.6/arch/mips/au1000/common/pci.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/pci.c
-+++ linux-2.6/arch/mips/au1000/common/pci.c
-@@ -2,9 +2,8 @@
-  * BRIEF MODULE DESCRIPTION
-  *	Alchemy/AMD Au1x00 PCI support.
-  *
-- * Copyright 2001-2003, 2007 MontaVista Software Inc.
-- * Author: MontaVista Software, Inc.
-- *         	ppopov@mvista.com or source@mvista.com
-+ * Copyright 2001-2003, 2007-2008 MontaVista Software Inc.
-+ * Author: MontaVista Software, Inc. <source@mvista.com>
-  *
-  * Copyright (C) 2004 by Ralf Baechle (ralf@linux-mips.org)
-  *
-@@ -86,9 +85,9 @@ static int __init au1x_pci_setup(void)
- 		u32 prid = read_c0_prid();
- 
- 		if ((prid & 0xFF000000) == 0x01000000 && prid < 0x01030202) {
--		       au_writel((1 << 16) | au_readl(Au1500_PCI_CFG),
--			         Au1500_PCI_CFG);
--		       printk("Non-coherent PCI accesses enabled\n");
-+			au_writel((1 << 16) | au_readl(Au1500_PCI_CFG),
-+				  Au1500_PCI_CFG);
-+			printk(KERN_INFO "Non-coherent PCI accesses enabled\n");
- 		}
- 	}
- #endif
-Index: linux-2.6/arch/mips/au1000/common/platform.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/platform.c
-+++ linux-2.6/arch/mips/au1000/common/platform.c
-@@ -302,16 +302,17 @@ static struct platform_device *au1xxx_pl
- #endif
- };
- 
--int __init au1xxx_platform_init(void)
-+static int __init au1xxx_platform_init(void)
++static inline void enable_dma_buffer1(unsigned int dmanr)
  {
- 	unsigned int uartclk = get_au1x00_uart_baud_base() * 16;
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
++
+ 	if (!chan)
+ 		return;
+ 	au_writel(DMA_BE1, chan->io + DMA_MODE_SET);
+ }
+-static __inline__ void enable_dma_buffers(unsigned int dmanr)
++static inline void enable_dma_buffers(unsigned int dmanr)
+ {
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
++
+ 	if (!chan)
+ 		return;
+ 	au_writel(DMA_BE0 | DMA_BE1, chan->io + DMA_MODE_SET);
+ }
+ 
+-static __inline__ void start_dma(unsigned int dmanr)
++static inline void start_dma(unsigned int dmanr)
+ {
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
++
+ 	if (!chan)
+ 		return;
+-
+ 	au_writel(DMA_GO, chan->io + DMA_MODE_SET);
+ }
+ 
+ #define DMA_HALT_POLL 0x5000
+ 
+-static __inline__ void halt_dma(unsigned int dmanr)
++static inline void halt_dma(unsigned int dmanr)
+ {
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
  	int i;
- 
- 	/* Fill up uartclk. */
--	for (i = 0; au1x00_uart_data[i].flags ; i++)
-+	for (i = 0; au1x00_uart_data[i].flags; i++)
- 		au1x00_uart_data[i].uartclk = uartclk;
- 
--	return platform_add_devices(au1xxx_platform_devices, ARRAY_SIZE(au1xxx_platform_devices));
-+	return platform_add_devices(au1xxx_platform_devices,
-+				    ARRAY_SIZE(au1xxx_platform_devices));
- }
- 
- arch_initcall(au1xxx_platform_init);
-Index: linux-2.6/arch/mips/au1000/common/power.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/power.c
-+++ linux-2.6/arch/mips/au1000/common/power.c
-@@ -1,10 +1,9 @@
- /*
-  * BRIEF MODULE DESCRIPTION
-- *	Au1000 Power Management routines.
-+ *	Au1xx0 Power Management routines.
-  *
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: MontaVista Software, Inc.
-- *		ppopov@mvista.com or source@mvista.com
-+ * Copyright 2001, 2008 MontaVista Software Inc.
-+ * Author: MontaVista Software, Inc. <source@mvista.com>
-  *
-  *  Some of the routines are right out of init/main.c, whose
-  *  copyrights apply here.
-@@ -43,10 +42,10 @@
- #ifdef CONFIG_PM
- 
- #define DEBUG 1
--#ifdef DEBUG
--#  define DPRINTK(fmt, args...)	printk("%s: " fmt, __func__, ## args)
-+#ifdef	DEBUG
-+#define DPRINTK(fmt, args...)	printk(KERN_DEBUG "%s: " fmt, __func__, ## args)
- #else
--#  define DPRINTK(fmt, args...)
-+#define DPRINTK(fmt, args...)
- #endif
- 
- static void au1000_calibrate_delay(void);
-@@ -57,7 +56,8 @@ extern void local_enable_irq(unsigned in
- 
- static DEFINE_SPINLOCK(pm_lock);
- 
--/* We need to save/restore a bunch of core registers that are
-+/*
-+ * We need to save/restore a bunch of core registers that are
-  * either volatile or reset to some state across a processor sleep.
-  * If reading a register doesn't provide a proper result for a
-  * later restore, we have to provide a function for loading that
-@@ -78,24 +78,25 @@ static unsigned int	sleep_usbhost_enable
- static unsigned int	sleep_usbdev_enable;
- static unsigned int	sleep_static_memctlr[4][3];
- 
--/* Define this to cause the value you write to /proc/sys/pm/sleep to
-+/*
-+ * Define this to cause the value you write to /proc/sys/pm/sleep to
-  * set the TOY timer for the amount of time you want to sleep.
-  * This is done mainly for testing, but may be useful in other cases.
-  * The value is number of 32KHz ticks to sleep.
-  */
- #define SLEEP_TEST_TIMEOUT 1
--#ifdef SLEEP_TEST_TIMEOUT
--static	int	sleep_ticks;
-+#ifdef	SLEEP_TEST_TIMEOUT
-+static int sleep_ticks;
- void wakeup_counter0_set(int ticks);
- #endif
- 
--static void
--save_core_regs(void)
-+static void save_core_regs(void)
- {
- 	extern void save_au1xxx_intctl(void);
- 	extern void pm_eth0_shutdown(void);
- 
--	/* Do the serial ports.....these really should be a pm_*
-+	/*
-+	 * Do the serial ports.....these really should be a pm_*
- 	 * registered function by the driver......but of course the
- 	 * standard serial driver doesn't understand our Au1xxx
- 	 * unique registers.
-@@ -106,27 +107,24 @@ save_core_regs(void)
- 	sleep_uart0_clkdiv = au_readl(UART0_ADDR + UART_CLK);
- 	sleep_uart0_enable = au_readl(UART0_ADDR + UART_MOD_CNTRL);
- 
--	/* Shutdown USB host/device.
--	*/
-+	/* Shutdown USB host/device. */
- 	sleep_usbhost_enable = au_readl(USB_HOST_CONFIG);
- 
--	/* There appears to be some undocumented reset register....
--	*/
-+	/* There appears to be some undocumented reset register.... */
- 	au_writel(0, 0xb0100004); au_sync();
- 	au_writel(0, USB_HOST_CONFIG); au_sync();
- 
- 	sleep_usbdev_enable = au_readl(USBD_ENABLE);
- 	au_writel(0, USBD_ENABLE); au_sync();
- 
--	/* Save interrupt controller state.
--	*/
-+	/* Save interrupt controller state. */
- 	save_au1xxx_intctl();
- 
--	/* Clocks and PLLs.
--	*/
-+	/* Clocks and PLLs. */
- 	sleep_aux_pll_cntrl = au_readl(SYS_AUXPLL);
- 
--	/* We don't really need to do this one, but unless we
-+	/*
-+	 * We don't really need to do this one, but unless we
- 	 * write it again it won't have a valid value if we
- 	 * happen to read it.
- 	 */
-@@ -134,8 +132,7 @@ save_core_regs(void)
- 
- 	sleep_pin_function = au_readl(SYS_PINFUNC);
- 
--	/* Save the static memory controller configuration.
--	*/
-+	/* Save the static memory controller configuration. */
- 	sleep_static_memctlr[0][0] = au_readl(MEM_STCFG0);
- 	sleep_static_memctlr[0][1] = au_readl(MEM_STTIME0);
- 	sleep_static_memctlr[0][2] = au_readl(MEM_STADDR0);
-@@ -150,8 +147,7 @@ save_core_regs(void)
- 	sleep_static_memctlr[3][2] = au_readl(MEM_STADDR3);
- }
- 
--static void
--restore_core_regs(void)
-+static void restore_core_regs(void)
- {
- 	extern void restore_au1xxx_intctl(void);
- 	extern void wakeup_counter0_adjust(void);
-@@ -160,8 +156,7 @@ restore_core_regs(void)
- 	au_writel(sleep_cpu_pll_cntrl, SYS_CPUPLL); au_sync();
- 	au_writel(sleep_pin_function, SYS_PINFUNC); au_sync();
- 
--	/* Restore the static memory controller configuration.
--	*/
-+	/* Restore the static memory controller configuration. */
- 	au_writel(sleep_static_memctlr[0][0], MEM_STCFG0);
- 	au_writel(sleep_static_memctlr[0][1], MEM_STTIME0);
- 	au_writel(sleep_static_memctlr[0][2], MEM_STADDR0);
-@@ -175,7 +170,8 @@ restore_core_regs(void)
- 	au_writel(sleep_static_memctlr[3][1], MEM_STTIME3);
- 	au_writel(sleep_static_memctlr[3][2], MEM_STADDR3);
- 
--	/* Enable the UART if it was enabled before sleep.
-+	/*
-+	 * Enable the UART if it was enabled before sleep.
- 	 * I guess I should define module control bits........
- 	 */
- 	if (sleep_uart0_enable & 0x02) {
-@@ -202,7 +198,7 @@ void wakeup_from_suspend(void)
- int au_sleep(void)
- {
- 	unsigned long wakeup, flags;
--	extern	void	save_and_sleep(void);
-+	extern void save_and_sleep(void);
- 
- 	spin_lock_irqsave(&pm_lock, flags);
- 
-@@ -210,23 +206,22 @@ int au_sleep(void)
- 
- 	flush_cache_all();
- 
--	/** The code below is all system dependent and we should probably
-+	/**
-+	 ** The code below is all system dependent and we should probably
- 	 ** have a function call out of here to set this up.  You need
- 	 ** to configure the GPIO or timer interrupts that will bring
- 	 ** you out of sleep.
- 	 ** For testing, the TOY counter wakeup is useful.
- 	 **/
++
+ 	if (!chan)
+ 		return;
 -
- #if 0
- 	au_writel(au_readl(SYS_PINSTATERD) & ~(1 << 11), SYS_PINSTATERD);
- 
--	/* gpio 6 can cause a wake up event */
-+	/* GPIO 6 can cause a wake up event */
- 	wakeup = au_readl(SYS_WAKEMSK);
- 	wakeup &= ~(1 << 8);	/* turn off match20 wakeup */
--	wakeup |= 1 << 6;	/* turn on gpio 6 wakeup   */
-+	wakeup |= 1 << 6;	/* turn on  GPIO  6 wakeup */
- #else
--	/* For testing, allow match20 to wake us up.
--	*/
-+	/* For testing, allow match20 to wake us up. */
- #ifdef SLEEP_TEST_TIMEOUT
- 	wakeup_counter0_set(sleep_ticks);
- #endif
-@@ -240,7 +235,8 @@ int au_sleep(void)
- 
- 	save_and_sleep();
- 
--	/* after a wakeup, the cpu vectors back to 0x1fc00000 so
-+	/*
-+	 * After a wakeup, the cpu vectors back to 0x1fc00000, so
- 	 * it's up to the boot code to get us back here.
- 	 */
- 	restore_core_regs();
-@@ -248,8 +244,8 @@ int au_sleep(void)
- 	return 0;
- }
- 
--static int pm_do_sleep(ctl_table * ctl, int write, struct file *file,
--		       void __user *buffer, size_t * len, loff_t *ppos)
-+static int pm_do_sleep(ctl_table *ctl, int write, struct file *file,
-+		       void __user *buffer, size_t *len, loff_t *ppos)
- {
- 	int retval = 0;
- #ifdef SLEEP_TEST_TIMEOUT
-@@ -257,16 +253,14 @@ static int pm_do_sleep(ctl_table * ctl, 
- 	char buf[TMPBUFLEN2], *p;
- #endif
- 
--	if (!write) {
-+	if (!write)
- 		*len = 0;
--	} else {
-+	else {
- #ifdef SLEEP_TEST_TIMEOUT
--		if (*len > TMPBUFLEN2 - 1) {
-+		if (*len > TMPBUFLEN2 - 1)
- 			return -EFAULT;
--		}
--		if (copy_from_user(buf, buffer, *len)) {
-+		if (copy_from_user(buf, buffer, *len))
- 			return -EFAULT;
--		}
- 		buf[*len] = 0;
- 		p = buf;
- 		sleep_ticks = simple_strtoul(p, &p, 0);
-@@ -282,14 +276,14 @@ static int pm_do_sleep(ctl_table * ctl, 
- 	return retval;
- }
- 
--static int pm_do_suspend(ctl_table * ctl, int write, struct file *file,
--			 void __user *buffer, size_t * len, loff_t *ppos)
-+static int pm_do_suspend(ctl_table *ctl, int write, struct file *file,
-+			 void __user *buffer, size_t *len, loff_t *ppos)
- {
- 	int retval = 0;
- 
--	if (!write) {
-+	if (!write)
- 		*len = 0;
--	} else {
-+	else {
- 		retval = pm_send_all(PM_SUSPEND, (void *) 2);
- 		if (retval)
- 			return retval;
-@@ -300,9 +294,8 @@ static int pm_do_suspend(ctl_table * ctl
- 	return retval;
- }
- 
--
--static int pm_do_freq(ctl_table * ctl, int write, struct file *file,
--		      void __user *buffer, size_t * len, loff_t *ppos)
-+static int pm_do_freq(ctl_table *ctl, int write, struct file *file,
-+		      void __user *buffer, size_t *len, loff_t *ppos)
- {
- 	int retval = 0, i;
- 	unsigned long val, pll;
-@@ -310,14 +303,14 @@ static int pm_do_freq(ctl_table * ctl, i
- #define MAX_CPU_FREQ 396
- 	char buf[TMPBUFLEN], *p;
- 	unsigned long flags, intc0_mask, intc1_mask;
--	unsigned long old_baud_base, old_cpu_freq, baud_rate, old_clk,
--	    old_refresh;
-+	unsigned long old_baud_base, old_cpu_freq, old_clk, old_refresh;
- 	unsigned long new_baud_base, new_cpu_freq, new_clk, new_refresh;
-+	unsigned long baud_rate;
- 
- 	spin_lock_irqsave(&pm_lock, flags);
--	if (!write) {
-+	if (!write)
- 		*len = 0;
--	} else {
-+	else {
- 		/* Parse the new frequency */
- 		if (*len > TMPBUFLEN - 1) {
- 			spin_unlock_irqrestore(&pm_lock, flags);
-@@ -337,7 +330,7 @@ static int pm_do_freq(ctl_table * ctl, i
- 
- 		pll = val / 12;
- 		if ((pll > 33) || (pll < 7)) {	/* 396 MHz max, 84 MHz min */
--			/* revisit this for higher speed cpus */
-+			/* Revisit this for higher speed CPUs */
- 			spin_unlock_irqrestore(&pm_lock, flags);
- 			return -EFAULT;
- 		}
-@@ -346,30 +339,28 @@ static int pm_do_freq(ctl_table * ctl, i
- 		old_cpu_freq = get_au1x00_speed();
- 
- 		new_cpu_freq = pll * 12 * 1000000;
--	        new_baud_base =  (new_cpu_freq / (2 * ((int)(au_readl(SYS_POWERCTRL)&0x03) + 2) * 16));
-+	        new_baud_base = (new_cpu_freq / (2 * ((int)(au_readl(SYS_POWERCTRL)
-+							    & 0x03) + 2) * 16));
- 		set_au1x00_speed(new_cpu_freq);
- 		set_au1x00_uart_baud_base(new_baud_base);
- 
- 		old_refresh = au_readl(MEM_SDREFCFG) & 0x1ffffff;
--		new_refresh =
--		    ((old_refresh * new_cpu_freq) /
--		     old_cpu_freq) | (au_readl(MEM_SDREFCFG) & ~0x1ffffff);
-+		new_refresh = ((old_refresh * new_cpu_freq) / old_cpu_freq) |
-+			      (au_readl(MEM_SDREFCFG) & ~0x1ffffff);
- 
- 		au_writel(pll, SYS_CPUPLL);
- 		au_sync_delay(1);
- 		au_writel(new_refresh, MEM_SDREFCFG);
- 		au_sync_delay(1);
- 
--		for (i = 0; i < 4; i++) {
--			if (au_readl
--			    (UART_BASE + UART_MOD_CNTRL +
--			     i * 0x00100000) == 3) {
--				old_clk =
--				    au_readl(UART_BASE + UART_CLK +
--					  i * 0x00100000);
--				// baud_rate = baud_base/clk
-+		for (i = 0; i < 4; i++)
-+			if (au_readl(UART_BASE + UART_MOD_CNTRL +
-+				     i * 0x00100000) == 3) {
-+				old_clk = au_readl(UART_BASE + UART_CLK +
-+						   i * 0x00100000);
- 				baud_rate = old_baud_base / old_clk;
--				/* we won't get an exact baud rate and the error
-+				/*
-+				 * We won't get an exact baud rate and the error
- 				 * could be significant enough that our new
- 				 * calculation will result in a clock that will
- 				 * give us a baud rate that's too far off from
-@@ -384,18 +375,14 @@ static int pm_do_freq(ctl_table * ctl, i
- 				else if (baud_rate > 17000)
- 					baud_rate = 19200;
- 				else
--					(baud_rate = 9600);
--				// new_clk = new_baud_base/baud_rate
-+					baud_rate = 9600;
- 				new_clk = new_baud_base / baud_rate;
--				au_writel(new_clk,
--				       UART_BASE + UART_CLK +
--				       i * 0x00100000);
-+				au_writel(new_clk, UART_BASE + UART_CLK +
-+					  i * 0x00100000);
- 				au_sync_delay(10);
- 			}
--		}
- 	}
- 
--
- 	/*
- 	 * We don't want _any_ interrupts other than match20. Otherwise our
- 	 * au1000_calibrate_delay() calculation will be off, potentially a lot.
-@@ -461,14 +448,15 @@ static int __init pm_init(void)
- 
- __initcall(pm_init);
- 
--
- /*
-  * This is right out of init/main.c
-  */
- 
--/* This is the number of bits of precision for the loops_per_jiffy.  Each
--   bit takes on average 1.5/HZ seconds.  This (like the original) is a little
--   better than 1% */
-+/*
-+ * This is the number of bits of precision for the loops_per_jiffy.
-+ * Each bit takes on average 1.5/HZ seconds.  This (like the original)
-+ * is a little better than 1%.
-+ */
- #define LPS_PREC 8
- 
- static void au1000_calibrate_delay(void)
-@@ -476,14 +464,14 @@ static void au1000_calibrate_delay(void)
- 	unsigned long ticks, loopbit;
- 	int lps_precision = LPS_PREC;
- 
--	loops_per_jiffy = (1 << 12);
-+	loops_per_jiffy = 1 << 12;
- 
- 	while (loops_per_jiffy <<= 1) {
--		/* wait for "start of" clock tick */
-+		/* Wait for "start of" clock tick */
- 		ticks = jiffies;
- 		while (ticks == jiffies)
- 			/* nothing */ ;
--		/* Go .. */
-+		/* Go ... */
- 		ticks = jiffies;
- 		__delay(loops_per_jiffy);
- 		ticks = jiffies - ticks;
-@@ -491,8 +479,10 @@ static void au1000_calibrate_delay(void)
+ 	au_writel(DMA_GO, chan->io + DMA_MODE_CLEAR);
+-	// poll the halt bit
++
++	/* Poll the halt bit */
+ 	for (i = 0; i < DMA_HALT_POLL; i++)
+ 		if (au_readl(chan->io + DMA_MODE_READ) & DMA_HALT)
  			break;
- 	}
- 
--/* Do a binary approximation to get loops_per_jiffy set to equal one clock
--   (up to lps_precision bits) */
-+	/*
-+	 * Do a binary approximation to get loops_per_jiffy set to be equal
-+	 * one clock (up to lps_precision bits)
-+	 */
- 	loops_per_jiffy >>= 1;
- 	loopbit = loops_per_jiffy;
- 	while (lps_precision-- && (loopbit >>= 1)) {
-@@ -505,4 +495,4 @@ static void au1000_calibrate_delay(void)
- 			loops_per_jiffy &= ~loopbit;
- 	}
+@@ -205,55 +210,57 @@ static __inline__ void halt_dma(unsigned
+ 		printk(KERN_INFO "halt_dma: HALT poll expired!\n");
  }
--#endif				/* CONFIG_PM */
-+#endif	/* CONFIG_PM */
-Index: linux-2.6/arch/mips/au1000/common/prom.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/prom.c
-+++ linux-2.6/arch/mips/au1000/common/prom.c
-@@ -3,9 +3,8 @@
-  * BRIEF MODULE DESCRIPTION
-  *    PROM library initialisation code, supports YAMON and U-Boot.
-  *
-- * Copyright 2000, 2001, 2006 MontaVista Software Inc.
-- * Author: MontaVista Software, Inc.
-- *         	ppopov@mvista.com or source@mvista.com
-+ * Copyright 2000-2001, 2006, 2008 MontaVista Software Inc.
-+ * Author: MontaVista Software, Inc. <source@mvista.com>
-  *
-  * This file was derived from Carsten Langgaard's
-  * arch/mips/mips-boards/xx files.
-@@ -57,7 +56,7 @@ void prom_init_cmdline(void)
- 	actr = 1; /* Always ignore argv[0] */
- 
- 	cp = &(arcs_cmdline[0]);
--	while(actr < prom_argc) {
-+	while (actr < prom_argc) {
- 		strcpy(cp, prom_argv[actr]);
- 		cp += strlen(prom_argv[actr]);
- 		*cp++ = ' ';
-@@ -84,10 +83,8 @@ char *prom_getenv(char *envname)
- 		if (yamon) {
- 			if (strcmp(envname, *env++) == 0)
- 				return *env;
--		} else {
--			if (strncmp(envname, *env, i) == 0 && (*env)[i] == '=')
--				return *env + i + 1;
--		}
-+		} else if (strncmp(envname, *env, i) == 0 && (*env)[i] == '=')
-+			return *env + i + 1;
- 		env++;
- 	}
- 
-@@ -110,13 +107,13 @@ static inline void str2eaddr(unsigned ch
- {
- 	int i;
- 
--	for(i = 0; i < 6; i++) {
-+	for (i = 0; i < 6; i++) {
- 		unsigned char num;
- 
--		if((*str == '.') || (*str == ':'))
-+		if ((*str == '.') || (*str == ':'))
- 			str++;
--		num = str2hexnum(*str++) << 4;
--		num |= (str2hexnum(*str++));
-+		num  = str2hexnum(*str++) << 4;
-+		num |= str2hexnum(*str++);
- 		ea[i] = num;
- 	}
- }
-Index: linux-2.6/arch/mips/au1000/common/puts.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/puts.c
-+++ linux-2.6/arch/mips/au1000/common/puts.c
-@@ -1,11 +1,10 @@
- /*
-  *
-  * BRIEF MODULE DESCRIPTION
-- *	Low level uart routines to directly access a 16550 uart.
-+ *	Low level UART routines to directly access Alchemy UART.
-  *
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: MontaVista Software, Inc.
-- *         	ppopov@mvista.com or source@mvista.com
-+ * Copyright 2001, 2008 MontaVista Software Inc.
-+ * Author: MontaVista Software, Inc. <source@mvista.com>
-  *
-  *  This program is free software; you can redistribute  it and/or modify it
-  *  under  the terms of  the GNU General  Public License as published by the
-@@ -40,12 +39,12 @@
- 
- static volatile unsigned long * const com1 = (unsigned long *)SERIAL_BASE;
  
 -
- #ifdef SLOW_DOWN
- static inline void slow_down(void)
+-static __inline__ void disable_dma(unsigned int dmanr)
++static inline void disable_dma(unsigned int dmanr)
  {
--    int k;
--    for (k=0; k<10000; k++);
-+	int k;
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
 +
-+	for (k = 0; k < 10000; k++);
- }
- #else
- #define slow_down()
-@@ -54,16 +53,16 @@ static inline void slow_down(void)
- void
- prom_putchar(const unsigned char c)
- {
--    unsigned char ch;
--    int i = 0;
-+	unsigned char ch;
-+	int i = 0;
-+
-+	do {
-+		ch = com1[SER_CMD];
-+		slow_down();
-+		i++;
-+		if (i > TIMEOUT)
-+			break;
-+	} while (0 == (ch & TX_BUSY));
+ 	if (!chan)
+ 		return;
  
--    do {
--        ch = com1[SER_CMD];
--        slow_down();
--        i++;
--        if (i>TIMEOUT) {
--            break;
--        }
--    } while (0 == (ch & TX_BUSY));
--    com1[SER_DATA] = c;
-+	com1[SER_DATA] = c;
+ 	halt_dma(dmanr);
+ 
+-	// now we can disable the buffers
++	/* Now we can disable the buffers */
+ 	au_writel(~DMA_GO, chan->io + DMA_MODE_CLEAR);
  }
-Index: linux-2.6/arch/mips/au1000/common/reset.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/reset.c
-+++ linux-2.6/arch/mips/au1000/common/reset.c
-@@ -1,11 +1,10 @@
+ 
+-static __inline__ int dma_halted(unsigned int dmanr)
++static inline int dma_halted(unsigned int dmanr)
+ {
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
++
+ 	if (!chan)
+ 		return 1;
+ 	return (au_readl(chan->io + DMA_MODE_READ) & DMA_HALT) ? 1 : 0;
+ }
+ 
+-/* initialize a DMA channel */
+-static __inline__ void init_dma(unsigned int dmanr)
++/* Initialize a DMA channel. */
++static inline void init_dma(unsigned int dmanr)
+ {
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
+ 	u32 mode;
++
+ 	if (!chan)
+ 		return;
+ 
+ 	disable_dma(dmanr);
+ 
+-	// set device FIFO address
+-	au_writel(CPHYSADDR(chan->fifo_addr),
+-		  chan->io + DMA_PERIPHERAL_ADDR);
++	/* Set device FIFO address */
++	au_writel(CPHYSADDR(chan->fifo_addr), chan->io + DMA_PERIPHERAL_ADDR);
+ 
+ 	mode = chan->mode | (chan->dev_id << DMA_DID_BIT);
+ 	if (chan->irq)
+ 		mode |= DMA_IE;
+ 
+ 	au_writel(~mode, chan->io + DMA_MODE_CLEAR);
+-	au_writel(mode, chan->io + DMA_MODE_SET);
++	au_writel(mode,  chan->io + DMA_MODE_SET);
+ }
+ 
  /*
+- * set mode for a specific DMA channel
++ * Set mode for a specific DMA channel
+  */
+-static __inline__ void set_dma_mode(unsigned int dmanr, unsigned int mode)
++static inline void set_dma_mode(unsigned int dmanr, unsigned int mode)
+ {
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
++
+ 	if (!chan)
+ 		return;
+ 	/*
+@@ -266,36 +273,37 @@ static __inline__ void set_dma_mode(unsi
+ 	chan->mode |= mode;
+ }
+ 
+-static __inline__ unsigned int get_dma_mode(unsigned int dmanr)
++static inline unsigned int get_dma_mode(unsigned int dmanr)
+ {
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
++
+ 	if (!chan)
+ 		return 0;
+ 	return chan->mode;
+ }
+ 
+-static __inline__ int get_dma_active_buffer(unsigned int dmanr)
++static inline int get_dma_active_buffer(unsigned int dmanr)
+ {
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
++
+ 	if (!chan)
+ 		return -1;
+ 	return (au_readl(chan->io + DMA_MODE_READ) & DMA_AB) ? 1 : 0;
+ }
+ 
+-
+ /*
+- * set the device FIFO address for a specific DMA channel - only
++ * Set the device FIFO address for a specific DMA channel - only
+  * applicable to GPO4 and GPO5. All the other devices have fixed
+  * FIFO addresses.
+  */
+-static __inline__ void set_dma_fifo_addr(unsigned int dmanr,
+-					 unsigned int a)
++static inline void set_dma_fifo_addr(unsigned int dmanr, unsigned int a)
+ {
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
++
+ 	if (!chan)
+ 		return;
+ 
+-	if (chan->mode & DMA_DS)	/* second bank of device ids */
++	if (chan->mode & DMA_DS)	/* second bank of device IDs */
+ 		return;
+ 
+ 	if (chan->dev_id != DMA_ID_GP04 && chan->dev_id != DMA_ID_GP05)
+@@ -307,16 +315,19 @@ static __inline__ void set_dma_fifo_addr
+ /*
+  * Clear the DMA buffer done bits in the mode register.
+  */
+-static __inline__ void clear_dma_done0(unsigned int dmanr)
++static inline void clear_dma_done0(unsigned int dmanr)
+ {
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
++
+ 	if (!chan)
+ 		return;
+ 	au_writel(DMA_D0, chan->io + DMA_MODE_CLEAR);
+ }
+-static __inline__ void clear_dma_done1(unsigned int dmanr)
++
++static inline void clear_dma_done1(unsigned int dmanr)
+ {
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
++
+ 	if (!chan)
+ 		return;
+ 	au_writel(DMA_D1, chan->io + DMA_MODE_CLEAR);
+@@ -325,16 +336,17 @@ static __inline__ void clear_dma_done1(u
+ /*
+  * This does nothing - not applicable to Au1000 DMA.
+  */
+-static __inline__ void set_dma_page(unsigned int dmanr, char pagenr)
++static inline void set_dma_page(unsigned int dmanr, char pagenr)
+ {
+ }
+ 
+ /*
+  * Set Buffer 0 transfer address for specific DMA channel.
+  */
+-static __inline__ void set_dma_addr0(unsigned int dmanr, unsigned int a)
++static inline void set_dma_addr0(unsigned int dmanr, unsigned int a)
+ {
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
++
+ 	if (!chan)
+ 		return;
+ 	au_writel(a, chan->io + DMA_BUFFER0_START);
+@@ -343,9 +355,10 @@ static __inline__ void set_dma_addr0(uns
+ /*
+  * Set Buffer 1 transfer address for specific DMA channel.
+  */
+-static __inline__ void set_dma_addr1(unsigned int dmanr, unsigned int a)
++static inline void set_dma_addr1(unsigned int dmanr, unsigned int a)
+ {
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
++
+ 	if (!chan)
+ 		return;
+ 	au_writel(a, chan->io + DMA_BUFFER1_START);
+@@ -355,10 +368,10 @@ static __inline__ void set_dma_addr1(uns
+ /*
+  * Set Buffer 0 transfer size (max 64k) for a specific DMA channel.
+  */
+-static __inline__ void set_dma_count0(unsigned int dmanr,
+-				      unsigned int count)
++static inline void set_dma_count0(unsigned int dmanr, unsigned int count)
+ {
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
++
+ 	if (!chan)
+ 		return;
+ 	count &= DMA_COUNT_MASK;
+@@ -368,10 +381,10 @@ static __inline__ void set_dma_count0(un
+ /*
+  * Set Buffer 1 transfer size (max 64k) for a specific DMA channel.
+  */
+-static __inline__ void set_dma_count1(unsigned int dmanr,
+-				      unsigned int count)
++static inline void set_dma_count1(unsigned int dmanr, unsigned int count)
+ {
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
++
+ 	if (!chan)
+ 		return;
+ 	count &= DMA_COUNT_MASK;
+@@ -381,10 +394,10 @@ static __inline__ void set_dma_count1(un
+ /*
+  * Set both buffer transfer sizes (max 64k) for a specific DMA channel.
+  */
+-static __inline__ void set_dma_count(unsigned int dmanr,
+-				     unsigned int count)
++static inline void set_dma_count(unsigned int dmanr, unsigned int count)
+ {
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
++
+ 	if (!chan)
+ 		return;
+ 	count &= DMA_COUNT_MASK;
+@@ -396,35 +409,36 @@ static __inline__ void set_dma_count(uns
+  * Returns which buffer has its done bit set in the mode register.
+  * Returns -1 if neither or both done bits set.
+  */
+-static __inline__ unsigned int get_dma_buffer_done(unsigned int dmanr)
++static inline unsigned int get_dma_buffer_done(unsigned int dmanr)
+ {
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
++
+ 	if (!chan)
+ 		return 0;
+-
+-    return au_readl(chan->io + DMA_MODE_READ) & (DMA_D0 | DMA_D1);
++	return au_readl(chan->io + DMA_MODE_READ) & (DMA_D0 | DMA_D1);
+ }
+ 
+ 
+ /*
+  * Returns the DMA channel's Buffer Done IRQ number.
+  */
+-static __inline__ int get_dma_done_irq(unsigned int dmanr)
++static inline int get_dma_done_irq(unsigned int dmanr)
+ {
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
++
+ 	if (!chan)
+ 		return -1;
+-
+ 	return chan->irq;
+ }
+ 
+ /*
+  * Get DMA residue count. Returns the number of _bytes_ left to transfer.
+  */
+-static __inline__ int get_dma_residue(unsigned int dmanr)
++static inline int get_dma_residue(unsigned int dmanr)
+ {
+ 	int curBufCntReg, count;
+ 	struct dma_chan *chan = get_dma_chan(dmanr);
++
+ 	if (!chan)
+ 		return 0;
+ 
+@@ -442,4 +456,3 @@ static __inline__ int get_dma_residue(un
+ }
+ 
+ #endif /* __ASM_AU1000_DMA_H */
+-
+Index: linux-2.6/include/asm-mips/mach-au1x00/au1000_gpio.h
+===================================================================
+--- linux-2.6.orig/include/asm-mips/mach-au1x00/au1000_gpio.h
++++ linux-2.6/include/asm-mips/mach-au1x00/au1000_gpio.h
+@@ -2,12 +2,12 @@
+  * FILE NAME au1000_gpio.h
   *
   * BRIEF MODULE DESCRIPTION
-- *	Au1000 reset routines.
-+ *	Au1xx0 reset routines.
+- *	API to Alchemy Au1000 GPIO device.
++ *	API to Alchemy Au1xx0 GPIO device.
+  *
+  *  Author: MontaVista Software, Inc.  <source@mvista.com>
+- *          Steve Longerbeam <stevel@mvista.com>
++ *          Steve Longerbeam
   *
 - * Copyright 2001 MontaVista Software Inc.
-- * Author: MontaVista Software, Inc.
-- *         	ppopov@mvista.com or source@mvista.com
-+ * Copyright 2001, 2006, 2008 MontaVista Software Inc.
-+ * Author: MontaVista Software, Inc. <source@mvista.com>
++ * Copyright 2001, 2008 MontaVista Software Inc.
   *
   *  This program is free software; you can redistribute  it and/or modify it
   *  under  the terms of  the GNU General  Public License as published by the
-@@ -28,10 +27,11 @@
+@@ -37,12 +37,12 @@
+ 
+ #define AU1000GPIO_IOC_MAGIC 'A'
+ 
+-#define AU1000GPIO_IN		_IOR (AU1000GPIO_IOC_MAGIC, 0, int)
+-#define AU1000GPIO_SET		_IOW (AU1000GPIO_IOC_MAGIC, 1, int)
+-#define AU1000GPIO_CLEAR	_IOW (AU1000GPIO_IOC_MAGIC, 2, int)
+-#define AU1000GPIO_OUT		_IOW (AU1000GPIO_IOC_MAGIC, 3, int)
+-#define AU1000GPIO_TRISTATE	_IOW (AU1000GPIO_IOC_MAGIC, 4, int)
+-#define AU1000GPIO_AVAIL_MASK	_IOR (AU1000GPIO_IOC_MAGIC, 5, int)
++#define AU1000GPIO_IN		_IOR(AU1000GPIO_IOC_MAGIC, 0, int)
++#define AU1000GPIO_SET		_IOW(AU1000GPIO_IOC_MAGIC, 1, int)
++#define AU1000GPIO_CLEAR	_IOW(AU1000GPIO_IOC_MAGIC, 2, int)
++#define AU1000GPIO_OUT		_IOW(AU1000GPIO_IOC_MAGIC, 3, int)
++#define AU1000GPIO_TRISTATE	_IOW(AU1000GPIO_IOC_MAGIC, 4, int)
++#define AU1000GPIO_AVAIL_MASK	_IOR(AU1000GPIO_IOC_MAGIC, 5, int)
+ 
+ #ifdef __KERNEL__
+ extern u32 get_au1000_avail_gpio_mask(void);
+Index: linux-2.6/include/asm-mips/mach-au1x00/au1550_spi.h
+===================================================================
+--- linux-2.6.orig/include/asm-mips/mach-au1x00/au1550_spi.h
++++ linux-2.6/include/asm-mips/mach-au1x00/au1550_spi.h
+@@ -1,5 +1,5 @@
+ /*
+- * au1550_spi.h - au1550 psc spi controller driver - platform data struct
++ * au1550_spi.h - Au1550 PSC SPI controller driver - platform data structure
+  */
+ 
+ #ifndef _AU1550_SPI_H_
+Index: linux-2.6/include/asm-mips/mach-au1x00/au1xxx.h
+===================================================================
+--- linux-2.6.orig/include/asm-mips/mach-au1x00/au1xxx.h
++++ linux-2.6/include/asm-mips/mach-au1x00/au1xxx.h
+@@ -23,10 +23,10 @@
+ #ifndef _AU1XXX_H_
+ #define _AU1XXX_H_
+ 
+-
+ #include <asm/mach-au1x00/au1000.h>
+ 
+-#if defined(CONFIG_MIPS_DB1000) || defined(CONFIG_MIPS_DB1100) || defined(CONFIG_MIPS_DB1500) || defined(CONFIG_MIPS_DB1550)
++#if defined(CONFIG_MIPS_DB1000) || defined(CONFIG_MIPS_DB1100) || \
++    defined(CONFIG_MIPS_DB1500) || defined(CONFIG_MIPS_DB1550)
+ #include <asm/mach-db1x00/db1x00.h>
+ 
+ #elif defined(CONFIG_MIPS_PB1550)
+Index: linux-2.6/include/asm-mips/mach-au1x00/au1xxx_dbdma.h
+===================================================================
+--- linux-2.6.orig/include/asm-mips/mach-au1x00/au1xxx_dbdma.h
++++ linux-2.6/include/asm-mips/mach-au1x00/au1xxx_dbdma.h
+@@ -28,17 +28,18 @@
   *  675 Mass Ave, Cambridge, MA 02139, USA.
   */
  
-+#include <asm/cacheflush.h>
-+
- #include <asm/mach-au1x00/au1000.h>
- 
- extern int au_sleep(void);
--extern void (*flush_cache_all)(void);
- 
- void au1000_restart(char *command)
- {
-@@ -40,8 +40,8 @@ void au1000_restart(char *command)
- 	u32 prid = read_c0_prid();
- 
- 	printk(KERN_NOTICE "\n** Resetting Integrated Peripherals\n");
--	switch (prid & 0xFF000000)
--	{
-+
-+	switch (prid & 0xFF000000) {
- 	case 0x00000000: /* Au1000 */
- 		au_writel(0x02, 0xb0000010); /* ac97_enable */
- 		au_writel(0x08, 0xb017fffc); /* usbh_enable - early errata */
-@@ -138,9 +138,6 @@ void au1000_restart(char *command)
- 		au_writel(0x00, 0xb1900064); /* sys_auxpll */
- 		au_writel(0x00, 0xb1900100); /* sys_pininputen */
- 		break;
--
--	default:
--		break;
- 	}
- 
- 	set_c0_status(ST0_BEV | ST0_ERL);
-@@ -158,25 +155,25 @@ void au1000_restart(char *command)
- void au1000_halt(void)
- {
- #if defined(CONFIG_MIPS_PB1550) || defined(CONFIG_MIPS_DB1550)
--	/* power off system */
--	printk("\n** Powering off...\n");
--	au_writew(au_readw(0xAF00001C) | (3<<14), 0xAF00001C);
-+	/* Power off system */
-+	printk(KERN_NOTICE "\n** Powering off...\n");
-+	au_writew(au_readw(0xAF00001C) | (3 << 14), 0xAF00001C);
- 	au_sync();
--	while(1); /* should not get here */
-+	while (1); /* should not get here */
- #else
- 	printk(KERN_NOTICE "\n** You can safely turn off the power\n");
- #ifdef CONFIG_MIPS_MIRAGE
- 	au_writel((1 << 26) | (1 << 10), GPIO2_OUTPUT);
- #endif
- #ifdef CONFIG_MIPS_DB1200
--	au_writew(au_readw(0xB980001C) | (1<<14), 0xB980001C);
-+	au_writew(au_readw(0xB980001C) | (1 << 14), 0xB980001C);
- #endif
- #ifdef CONFIG_PM
- 	au_sleep();
- 
--	/* should not get here */
--	printk(KERN_ERR "Unable to put cpu in sleep mode\n");
--	while(1);
-+	/* Should not get here */
-+	printk(KERN_ERR "Unable to put CPU in sleep mode\n");
-+	while (1);
- #else
- 	while (1)
- 		__asm__(".set\tmips3\n\t"
-Index: linux-2.6/arch/mips/au1000/common/setup.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/setup.c
-+++ linux-2.6/arch/mips/au1000/common/setup.c
-@@ -1,7 +1,6 @@
- /*
-- * Copyright 2000 MontaVista Software Inc.
-- * Author: MontaVista Software, Inc.
-- *         	ppopov@mvista.com or source@mvista.com
-+ * Copyright 2000, 2007-2008 MontaVista Software Inc.
-+ * Author: MontaVista Software, Inc. <source@mvista.com
-  *
-  * Updates to 2.6, Pete Popov, Embedded Alley Solutions, Inc.
-  *
-@@ -48,7 +47,7 @@ void __init plat_mem_setup(void)
- {
- 	struct	cpu_spec *sp;
- 	char *argptr;
--	unsigned long prid, cpufreq, bclk = 1;
-+	unsigned long prid, cpufreq, bclk;
- 
- 	set_cpuspec();
- 	sp = cur_cpu_spec[0];
-@@ -66,42 +65,39 @@ void __init plat_mem_setup(void)
- 		cpufreq = (au_readl(SYS_CPUPLL) & 0x3F) * 12;
- 	printk(KERN_INFO "(PRID %08lx) @ %ld MHz\n", prid, cpufreq);
- 
--	bclk = sp->cpu_bclk;
--	if (bclk)
--	{
-+	if (sp->cpu_bclk) {
- 		/* Enable BCLK switching */
--		bclk = au_readl(0xB190003C);
--		au_writel(bclk | 0x60, 0xB190003C);
--		printk("BCLK switching enabled!\n");
-+		bclk = au_readl(SYS_POWERCTRL);
-+		au_writel(bclk | 0x60, SYS_POWERCTRL);
-+		printk(KERN_INFO "BCLK switching enabled!\n");
- 	}
- 
--	if (sp->cpu_od) {
--		/* Various early Au1000 Errata corrected by this */
--		set_c0_config(1<<19); /* Set Config[OD] */
--	}
--	else {
-+	if (sp->cpu_od)
-+		/* Various early Au1xx0 errata corrected by this */
-+		set_c0_config(1 << 19); /* Set Config[OD] */
-+	else
- 		/* Clear to obtain best system bus performance */
--		clear_c0_config(1<<19); /* Clear Config[OD] */
--	}
-+		clear_c0_config(1 << 19); /* Clear Config[OD] */
- 
- 	argptr = prom_getcmdline();
- 
- #ifdef CONFIG_SERIAL_8250_CONSOLE
--	if ((argptr = strstr(argptr, "console=")) == NULL) {
-+	argptr = strstr(argptr, "console=");
-+	if (argptr == NULL) {
- 		argptr = prom_getcmdline();
- 		strcat(argptr, " console=ttyS0,115200");
- 	}
- #endif
- 
- #ifdef CONFIG_FB_AU1100
--    if ((argptr = strstr(argptr, "video=")) == NULL) {
--        argptr = prom_getcmdline();
--        /* default panel */
--        /*strcat(argptr, " video=au1100fb:panel:Sharp_320x240_16");*/
--    }
-+	argptr = strstr(argptr, "video=");
-+	if (argptr == NULL) {
-+		argptr = prom_getcmdline();
-+		/* default panel */
-+		/*strcat(argptr, " video=au1100fb:panel:Sharp_320x240_16");*/
-+	}
- #endif
- 
--
- #if defined(CONFIG_SOUND_AU1X00) && !defined(CONFIG_SOC_AU1000)
- 	/* au1000 does not support vra, au1500 and au1100 do */
- 	strcat(argptr, " au1000_audio=vra");
-@@ -129,7 +125,7 @@ void __init plat_mem_setup(void)
- /* This routine should be valid for all Au1x based boards */
- phys_t __fixup_bigphys_addr(phys_t phys_addr, phys_t size)
- {
--	/* Don't fixup 36 bit addresses */
-+	/* Don't fixup 36-bit addresses */
- 	if ((phys_addr >> 32) != 0)
- 		return phys_addr;
- 
-@@ -145,17 +141,17 @@ phys_t __fixup_bigphys_addr(phys_t phys_
- 	}
- #endif
- 
--	/* All Au1x SOCs have a pcmcia controller */
--	/* We setup our 32 bit pseudo addresses to be equal to the
--	 * 36 bit addr >> 4, to make it easier to check the address
-+	/*
-+	 * All Au1xx0 SOCs have a PCMCIA controller.
-+	 * We setup our 32-bit pseudo addresses to be equal to the
-+	 * 36-bit addr >> 4, to make it easier to check the address
- 	 * and fix it.
--	 * The Au1x socket 0 phys attribute address is 0xF 4000 0000.
-+	 * The PCMCIA socket 0 physical attribute address is 0xF 4000 0000.
- 	 * The pseudo address we use is 0xF400 0000. Any address over
--	 * 0xF400 0000 is a pcmcia pseudo address.
-+	 * 0xF400 0000 is a PCMCIA pseudo address.
- 	 */
--	if ((phys_addr >= 0xF4000000) && (phys_addr < 0xFFFFFFFF)) {
-+	if ((phys_addr >= 0xF4000000) && (phys_addr < 0xFFFFFFFF))
- 		return (phys_t)(phys_addr << 4);
--	}
- 
- 	/* default nop */
- 	return phys_addr;
-Index: linux-2.6/arch/mips/au1000/common/time.c
-===================================================================
---- linux-2.6.orig/arch/mips/au1000/common/time.c
-+++ linux-2.6/arch/mips/au1000/common/time.c
-@@ -25,11 +25,9 @@
-  *
-  * Setting up the clock on the MIPS boards.
-  *
-- * Update.  Always configure the kernel with CONFIG_NEW_TIME_C.  This
-- * will use the user interface gettimeofday() functions from the
-- * arch/mips/kernel/time.c, and we provide the clock interrupt processing
-- * and the timer offset compute functions.  If CONFIG_PM is selected,
-- * we also ensure the 32KHz timer is available.   -- Dan
-+ * We provide the clock interrupt processing and the timer offset compute
-+ * functions.  If CONFIG_PM is selected, we also ensure the 32KHz timer is
-+ * available.  -- Dan
-  */
- 
- #include <linux/types.h>
-@@ -47,8 +45,7 @@ extern int allow_au1k_wait; /* default o
- #if HZ < 100 || HZ > 1000
- #error "unsupported HZ value! Must be in [100,1000]"
- #endif
--#define MATCH20_INC (328*100/HZ) /* magic number 328 is for HZ=100... */
--extern void startup_match20_interrupt(irq_handler_t handler);
-+#define MATCH20_INC (328 * 100 / HZ) /* magic number 328 is for HZ=100... */
- static unsigned long last_pc0, last_match20;
- #endif
- 
-@@ -61,7 +58,7 @@ static irqreturn_t counter0_irq(int irq,
- {
- 	unsigned long pc0;
- 	int time_elapsed;
--	static int jiffie_drift = 0;
-+	static int jiffie_drift;
- 
- 	if (au_readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_M20) {
- 		/* should never happen! */
-@@ -70,13 +67,11 @@ static irqreturn_t counter0_irq(int irq,
- 	}
- 
- 	pc0 = au_readl(SYS_TOYREAD);
--	if (pc0 < last_match20) {
-+	if (pc0 < last_match20)
- 		/* counter overflowed */
- 		time_elapsed = (0xffffffff - last_match20) + pc0;
--	}
--	else {
-+	else
- 		time_elapsed = pc0 - last_match20;
--	}
- 
- 	while (time_elapsed > 0) {
- 		do_timer(1);
-@@ -92,8 +87,9 @@ static irqreturn_t counter0_irq(int irq,
- 	au_writel(last_match20 + MATCH20_INC, SYS_TOYMATCH2);
- 	au_sync();
- 
--	/* our counter ticks at 10.009765625 ms/tick, we we're running
--	 * almost 10uS too slow per tick.
-+	/*
-+	 * Our counter ticks at 10.009765625 ms/tick, we we're running
-+	 * almost 10 uS too slow per tick.
- 	 */
- 
- 	if (jiffie_drift >= 999) {
-@@ -117,20 +113,17 @@ struct irqaction counter0_action = {
- /* When we wakeup from sleep, we have to "catch up" on all of the
-  * timer ticks we have missed.
-  */
--void
--wakeup_counter0_adjust(void)
-+void wakeup_counter0_adjust(void)
- {
- 	unsigned long pc0;
- 	int time_elapsed;
- 
- 	pc0 = au_readl(SYS_TOYREAD);
--	if (pc0 < last_match20) {
-+	if (pc0 < last_match20)
- 		/* counter overflowed */
- 		time_elapsed = (0xffffffff - last_match20) + pc0;
--	}
--	else {
-+	else
- 		time_elapsed = pc0 - last_match20;
--	}
- 
- 	while (time_elapsed > 0) {
- 		time_elapsed -= MATCH20_INC;
-@@ -143,10 +136,8 @@ wakeup_counter0_adjust(void)
- 
- }
- 
--/* This is just for debugging to set the timer for a sleep delay.
--*/
--void
--wakeup_counter0_set(int ticks)
-+/* This is just for debugging to set the timer for a sleep delay. */
-+void wakeup_counter0_set(int ticks)
- {
- 	unsigned long pc0;
- 
-@@ -157,21 +148,22 @@ wakeup_counter0_set(int ticks)
- }
- #endif
- 
--/* I haven't found anyone that doesn't use a 12 MHz source clock,
+-/* Specifics for the Au1xxx Descriptor-Based DMA Controllers, first
+- * seen in the AU1550 part.
 +/*
-+ * I haven't found anyone that doesn't use a 12 MHz source clock,
-  * but just in case.....
++ * Specifics for the Au1xxx Descriptor-Based DMA Controller,
++ * first seen in the AU1550 part.
   */
- #define AU1000_SRC_CLK	12000000
+ #ifndef _AU1000_DBDMA_H_
+ #define _AU1000_DBDMA_H_
+ 
+-
+ #ifndef _LANGUAGE_ASSEMBLY
+ 
+-/* The DMA base addresses.
+- * The Channels are every 256 bytes (0x0100) from the channel 0 base.
++/*
++ * The DMA base addresses.
++ * The channels are every 256 bytes (0x0100) from the channel 0 base.
+  * Interrupt status/enable is bits 15:0 for channels 15 to zero.
+  */
+ #define DDMA_GLOBAL_BASE	0xb4003000
+@@ -51,16 +52,14 @@ typedef volatile struct dbdma_global {
+ 	u32	ddma_inten;
+ } dbdma_global_t;
+ 
+-/* General Configuration.
+-*/
++/* General Configuration. */
+ #define DDMA_CONFIG_AF		(1 << 2)
+ #define DDMA_CONFIG_AH		(1 << 1)
+ #define DDMA_CONFIG_AL		(1 << 0)
+ 
+ #define DDMA_THROTTLE_EN	(1 << 31)
+ 
+-/* The structure of a DMA Channel.
+-*/
++/* The structure of a DMA Channel. */
+ typedef volatile struct au1xxx_dma_channel {
+ 	u32	ddma_cfg;	/* See below */
+ 	u32	ddma_desptr;	/* 32-byte aligned pointer to descriptor */
+@@ -69,8 +68,7 @@ typedef volatile struct au1xxx_dma_chann
+ 	u32	ddma_irq;	/* If bit 0 set, interrupt pending */
+ 	u32	ddma_stat;	/* See below */
+ 	u32	ddma_bytecnt;	/* Byte count, valid only when chan idle */
+-	/* Remainder, up to the 256 byte boundary, is reserved.
+-	*/
++	/* Remainder, up to the 256 byte boundary, is reserved. */
+ } au1x_dma_chan_t;
+ 
+ #define DDMA_CFG_SED	(1 << 9)	/* source DMA level/edge detect */
+@@ -84,7 +82,8 @@ typedef volatile struct au1xxx_dma_chann
+ #define DDMA_CFG_DBE	(1 << 1)	/* Destination big endian */
+ #define DDMA_CFG_EN	(1 << 0)	/* Channel enable */
+ 
+-/* Always set when descriptor processing done, regardless of
++/*
++ * Always set when descriptor processing done, regardless of
+  * interrupt enable state.  Reflected in global intstat, don't
+  * clear this until global intstat is read/used.
+  */
+@@ -94,7 +93,8 @@ typedef volatile struct au1xxx_dma_chann
+ #define DDMA_STAT_V	(1 << 1)	/* Descriptor valid */
+ #define DDMA_STAT_H	(1 << 0)	/* Channel Halted */
+ 
+-/* "Standard" DDMA Descriptor.
++/*
++ * "Standard" DDMA Descriptor.
+  * Must be 32-byte aligned.
+  */
+ typedef volatile struct au1xxx_ddma_desc {
+@@ -106,8 +106,9 @@ typedef volatile struct au1xxx_ddma_desc
+ 	u32	dscr_dest1;		/* See below */
+ 	u32	dscr_stat;		/* completion status */
+ 	u32	dscr_nxtptr;		/* Next descriptor pointer (mostly) */
+-	/* First 32bytes are HW specific!!!
+-	   Lets have some SW data following.. make sure its 32bytes
++	/*
++	 * First 32 bytes are HW specific!!!
++	 * Lets have some SW data following -- make sure it's 32 bytes.
+ 	 */
+ 	u32	sw_status;
+ 	u32 	sw_context;
+@@ -130,10 +131,9 @@ typedef volatile struct au1xxx_ddma_desc
+ #define DSCR_CMD0_CV		(0x1 << 2)	/* Clear Valid when done */
+ #define DSCR_CMD0_ST_MASK	(0x3 << 0)	/* Status instruction */
+ 
+-#define SW_STATUS_INUSE		(1<<0)
++#define SW_STATUS_INUSE 	(1 << 0)
+ 
+-/* Command 0 device IDs.
+-*/
++/* Command 0 device IDs. */
+ #ifdef CONFIG_SOC_AU1550
+ #define DSCR_CMD0_UART0_TX	0
+ #define DSCR_CMD0_UART0_RX	1
+@@ -198,16 +198,15 @@ typedef volatile struct au1xxx_ddma_desc
+ #define DSCR_CMD0_THROTTLE	30
+ #define DSCR_CMD0_ALWAYS	31
+ #define DSCR_NDEV_IDS		32
+-/* THis macro is used to find/create custom device types */
+-#define DSCR_DEV2CUSTOM_ID(x, d)	(((((x)&0xFFFF)<<8)|0x32000000)|((d)&0xFF))
+-#define DSCR_CUSTOM2DEV_ID(x)	((x)&0xFF)
+-
++/* This macro is used to find/create custom device types */
++#define DSCR_DEV2CUSTOM_ID(x, d) (((((x) & 0xFFFF) << 8) | 0x32000000) | \
++				  ((d) & 0xFF))
++#define DSCR_CUSTOM2DEV_ID(x)	((x) & 0xFF)
+ 
+ #define DSCR_CMD0_SID(x)	(((x) & 0x1f) << 25)
+ #define DSCR_CMD0_DID(x)	(((x) & 0x1f) << 20)
+ 
+-/* Source/Destination transfer width.
+-*/
++/* Source/Destination transfer width. */
+ #define DSCR_CMD0_BYTE		0
+ #define DSCR_CMD0_HALFWORD	1
+ #define DSCR_CMD0_WORD		2
+@@ -215,16 +214,14 @@ typedef volatile struct au1xxx_ddma_desc
+ #define DSCR_CMD0_SW(x)		(((x) & 0x3) << 18)
+ #define DSCR_CMD0_DW(x)		(((x) & 0x3) << 16)
+ 
+-/* DDMA Descriptor Type.
+-*/
++/* DDMA Descriptor Type. */
+ #define DSCR_CMD0_STANDARD	0
+ #define DSCR_CMD0_LITERAL	1
+ #define DSCR_CMD0_CMP_BRANCH	2
+ 
+ #define DSCR_CMD0_DT(x)		(((x) & 0x3) << 13)
+ 
+-/* Status Instruction.
+-*/
++/* Status Instruction. */
+ #define DSCR_CMD0_ST_NOCHANGE	0	/* Don't change */
+ #define DSCR_CMD0_ST_CURRENT	1	/* Write current status */
+ #define DSCR_CMD0_ST_CMD0	2	/* Write cmd0 with V cleared */
+@@ -232,23 +229,20 @@ typedef volatile struct au1xxx_ddma_desc
+ 
+ #define DSCR_CMD0_ST(x)		(((x) & 0x3) << 0)
+ 
+-/* Descriptor Command 1
+-*/
++/* Descriptor Command 1. */
+ #define DSCR_CMD1_SUPTR_MASK	(0xf << 28)	/* upper 4 bits of src addr */
+ #define DSCR_CMD1_DUPTR_MASK	(0xf << 24)	/* upper 4 bits of dest addr */
+ #define DSCR_CMD1_FL_MASK	(0x3 << 22)	/* Flag bits */
+ #define DSCR_CMD1_BC_MASK	(0x3fffff)	/* Byte count */
+ 
+-/* Flag description.
+-*/
++/* Flag description. */
+ #define DSCR_CMD1_FL_MEM_STRIDE0	0
+ #define DSCR_CMD1_FL_MEM_STRIDE1	1
+ #define DSCR_CMD1_FL_MEM_STRIDE2	2
+ 
+ #define DSCR_CMD1_FL(x)		(((x) & 0x3) << 22)
+ 
+-/* Source1, 1-dimensional stride.
+-*/
++/* Source1, 1-dimensional stride. */
+ #define DSCR_SRC1_STS_MASK	(3 << 30)	/* Src xfer size */
+ #define DSCR_SRC1_SAM_MASK	(3 << 28)	/* Src xfer movement */
+ #define DSCR_SRC1_SB_MASK	(0x3fff << 14)	/* Block size */
+@@ -256,8 +250,7 @@ typedef volatile struct au1xxx_ddma_desc
+ #define DSCR_SRC1_SS_MASK	(0x3fff << 0)	/* Stride */
+ #define DSCR_SRC1_SS(x)		(((x) & 0x3fff) << 0)
+ 
+-/* Dest1, 1-dimensional stride.
+-*/
++/* Dest1, 1-dimensional stride. */
+ #define DSCR_DEST1_DTS_MASK	(3 << 30)	/* Dest xfer size */
+ #define DSCR_DEST1_DAM_MASK	(3 << 28)	/* Dest xfer movement */
+ #define DSCR_DEST1_DB_MASK	(0x3fff << 14)	/* Block size */
+@@ -279,29 +272,27 @@ typedef volatile struct au1xxx_ddma_desc
+ #define DSCR_SRC1_SAM(x)	(((x) & 3) << 28)
+ #define DSCR_DEST1_DAM(x)	(((x) & 3) << 28)
+ 
+-/* The next descriptor pointer.
+-*/
++/* The next descriptor pointer. */
+ #define DSCR_NXTPTR_MASK	(0x07ffffff)
+ #define DSCR_NXTPTR(x)		((x) >> 5)
+ #define DSCR_GET_NXTPTR(x)	((x) << 5)
+ #define DSCR_NXTPTR_MS		(1 << 27)
+ 
+-/* The number of DBDMA channels.
+-*/
++/* The number of DBDMA channels. */
+ #define NUM_DBDMA_CHANS	16
  
  /*
-  * We read the real processor speed from the PLL.  This is important
-- * because it is more accurate than computing it from the 32KHz
-+ * because it is more accurate than computing it from the 32 KHz
-  * counter, if it exists.  If we don't have an accurate processor
-  * speed, all of the peripherals that derive their clocks based on
-  * this advertised speed will introduce error and sometimes not work
-  * properly.  This function is futher convoluted to still allow configurations
-  * to do that in case they have really, really old silicon with a
-- * write-only PLL register, that we need the 32KHz when power management
-- * "wait" is enabled, and we need to detect if the 32KHz isn't present
-+ * write-only PLL register, that we need the 32 KHz when power management
-+ * "wait" is enabled, and we need to detect if the 32 KHz isn't present
-  * but requested......got it? :-)		-- Dan
+- * Ddma API definitions
++ * DDMA API definitions
+  * FIXME: may not fit to this header file
   */
- unsigned long calc_clock(void)
-@@ -182,8 +174,7 @@ unsigned long calc_clock(void)
+ typedef struct dbdma_device_table {
+-	u32		dev_id;
+-	u32		dev_flags;
+-	u32		dev_tsize;
+-	u32		dev_devwidth;
+-	u32		dev_physaddr;		/* If FIFO */
+-	u32		dev_intlevel;
+-	u32		dev_intpolarity;
++	u32	dev_id;
++	u32	dev_flags;
++	u32	dev_tsize;
++	u32	dev_devwidth;
++	u32	dev_physaddr;		/* If FIFO */
++	u32	dev_intlevel;
++	u32	dev_intpolarity;
+ } dbdev_tab_t;
  
- 	spin_lock_irqsave(&time_lock, flags);
  
--	/* Power management cares if we don't have a 32KHz counter.
--	*/
-+	/* Power management cares if we don't have a 32 KHz counter. */
- 	no_au1xxx_32khz = 0;
- 	counter = au_readl(SYS_COUNTER_CNTRL);
- 	if (counter & SYS_CNTRL_E0) {
-@@ -193,7 +184,7 @@ unsigned long calc_clock(void)
+@@ -316,44 +307,41 @@ typedef struct dbdma_chan_config {
+ 	au1x_ddma_desc_t	*chan_desc_base;
+ 	au1x_ddma_desc_t	*get_ptr, *put_ptr, *cur_ptr;
+ 	void			*chan_callparam;
+-	void (*chan_callback)(int, void *);
++	void			(*chan_callback)(int, void *);
+ } chan_tab_t;
  
- 		while (au_readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_T1S);
- 		/* RTC now ticks at 32.768/16 kHz */
--		au_writel(trim_divide-1, SYS_RTCTRIM);
-+		au_writel(trim_divide - 1, SYS_RTCTRIM);
- 		while (au_readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_T1S);
+ #define DEV_FLAGS_INUSE		(1 << 0)
+ #define DEV_FLAGS_ANYUSE	(1 << 1)
+ #define DEV_FLAGS_OUT		(1 << 2)
+ #define DEV_FLAGS_IN		(1 << 3)
+-#define DEV_FLAGS_BURSTABLE (1 << 4)
++#define DEV_FLAGS_BURSTABLE	(1 << 4)
+ #define DEV_FLAGS_SYNC		(1 << 5)
+-/* end Ddma API definitions */
++/* end DDMA API definitions */
  
- 		while (au_readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_C1S);
-@@ -215,9 +206,11 @@ unsigned long calc_clock(void)
+-/* External functions for drivers to use.
+-*/
+-/* Use this to allocate a dbdma channel.  The device ids are one of the
+- * DSCR_CMD0 devices IDs, which is usually redefined to a more
+- * meaningful name.  The 'callback' is called during dma completion
++/*
++ * External functions for drivers to use.
++ * Use this to allocate a DBDMA channel.  The device IDs are one of
++ * the DSCR_CMD0 devices IDs, which is usually redefined to a more
++ * meaningful name.  The 'callback' is called during DMA completion
+  * interrupt.
+  */
+ extern u32 au1xxx_dbdma_chan_alloc(u32 srcid, u32 destid,
+-	void (*callback)(int, void *), void *callparam);
++				   void (*callback)(int, void *),
++				   void *callparam);
+ 
+ #define DBDMA_MEM_CHAN	DSCR_CMD0_ALWAYS
+ 
+-/* Set the device width of a in/out fifo.
+-*/
++/* Set the device width of an in/out FIFO. */
+ u32 au1xxx_dbdma_set_devwidth(u32 chanid, int bits);
+ 
+-/* Allocate a ring of descriptors for dbdma.
+-*/
++/* Allocate a ring of descriptors for DBDMA. */
+ u32 au1xxx_dbdma_ring_alloc(u32 chanid, int entries);
+ 
+-/* Put buffers on source/destination descriptors.
+-*/
++/* Put buffers on source/destination descriptors. */
+ u32 _au1xxx_dbdma_put_source(u32 chanid, void *buf, int nbytes, u32 flags);
+ u32 _au1xxx_dbdma_put_dest(u32 chanid, void *buf, int nbytes, u32 flags);
+ 
+-/* Get a buffer from the destination descriptor.
+-*/
++/* Get a buffer from the destination descriptor. */
+ u32 au1xxx_dbdma_get_dest(u32 chanid, void **buf, int *nbytes);
+ 
+ void au1xxx_dbdma_stop(u32 chanid);
+@@ -364,29 +352,34 @@ u32 au1xxx_get_dma_residue(u32 chanid);
+ void au1xxx_dbdma_chan_free(u32 chanid);
+ void au1xxx_dbdma_dump(u32 chanid);
+ 
+-u32 au1xxx_dbdma_put_dscr(u32 chanid, au1x_ddma_desc_t *dscr );
++u32 au1xxx_dbdma_put_dscr(u32 chanid, au1x_ddma_desc_t *dscr);
+ 
+-u32 au1xxx_ddma_add_device( dbdev_tab_t *dev );
+-void * au1xxx_ddma_get_nextptr_virt(au1x_ddma_desc_t *dp);
++u32 au1xxx_ddma_add_device(dbdev_tab_t *dev);
++void *au1xxx_ddma_get_nextptr_virt(au1x_ddma_desc_t *dp);
+ 
+ /*
+- 	Some compatibilty macros --
+-		Needed to make changes to API without breaking existing drivers
+-*/
+-#define	au1xxx_dbdma_put_source(chanid, buf, nbytes)_au1xxx_dbdma_put_source(chanid, buf, nbytes, DDMA_FLAGS_IE)
+-#define	au1xxx_dbdma_put_source_flags(chanid, buf, nbytes, flags) _au1xxx_dbdma_put_source(chanid, buf, nbytes, flags)
+-#define	put_source_flags(chanid, buf, nbytes, flags) au1xxx_dbdma_put_source_flags(chanid, buf, nbytes, flags)
+-
+-
+-#define au1xxx_dbdma_put_dest(chanid, buf, nbytes) _au1xxx_dbdma_put_dest(chanid, buf, nbytes, DDMA_FLAGS_IE)
+-#define	au1xxx_dbdma_put_dest_flags(chanid, buf, nbytes, flags) _au1xxx_dbdma_put_dest(chanid, buf, nbytes, flags)
+-#define	put_dest_flags(chanid, buf, nbytes, flags) au1xxx_dbdma_put_dest_flags(chanid, buf, nbytes, flags)
++ * Some compatibilty macros -- needed to make changes to API
++ * without breaking existing drivers.
++ */
++#define au1xxx_dbdma_put_source(chanid, buf, nbytes)			\
++	_au1xxx_dbdma_put_source(chanid, buf, nbytes, DDMA_FLAGS_IE)
++#define au1xxx_dbdma_put_source_flags(chanid, buf, nbytes, flags)	\
++	_au1xxx_dbdma_put_source(chanid, buf, nbytes, flags)
++#define put_source_flags(chanid, buf, nbytes, flags)			\
++	au1xxx_dbdma_put_source_flags(chanid, buf, nbytes, flags)
++
++#define au1xxx_dbdma_put_dest(chanid, buf, nbytes)			\
++	_au1xxx_dbdma_put_dest(chanid, buf, nbytes, DDMA_FLAGS_IE)
++#define au1xxx_dbdma_put_dest_flags(chanid, buf, nbytes, flags) 	\
++	_au1xxx_dbdma_put_dest(chanid, buf, nbytes, flags)
++#define put_dest_flags(chanid, buf, nbytes, flags)			\
++	au1xxx_dbdma_put_dest_flags(chanid, buf, nbytes, flags)
+ 
+ /*
+  *	Flags for the put_source/put_dest functions.
+  */
+-#define DDMA_FLAGS_IE	(1<<0)
+-#define DDMA_FLAGS_NOIE (1<<1)
++#define DDMA_FLAGS_IE	(1 << 0)
++#define DDMA_FLAGS_NOIE (1 << 1)
+ 
+ #endif /* _LANGUAGE_ASSEMBLY */
+ #endif /* _AU1000_DBDMA_H_ */
+Index: linux-2.6/include/asm-mips/mach-au1x00/au1xxx_ide.h
+===================================================================
+--- linux-2.6.orig/include/asm-mips/mach-au1x00/au1xxx_ide.h
++++ linux-2.6/include/asm-mips/mach-au1x00/au1xxx_ide.h
+@@ -31,167 +31,164 @@
+  */
+ 
+ #ifdef CONFIG_BLK_DEV_IDE_AU1XXX_MDMA2_DBDMA
+-        #define DMA_WAIT_TIMEOUT        100
+-        #define NUM_DESCRIPTORS         PRD_ENTRIES
++#define DMA_WAIT_TIMEOUT	100
++#define NUM_DESCRIPTORS 	PRD_ENTRIES
+ #else /* CONFIG_BLK_DEV_IDE_AU1XXX_PIO_DBDMA */
+-        #define NUM_DESCRIPTORS         2
++#define NUM_DESCRIPTORS 	2
  #endif
- 	else
- 		cpu_speed = (au_readl(SYS_CPUPLL) & 0x0000003f) * AU1000_SRC_CLK;
-+	/* On Alchemy CPU:counter ratio is 1:1 */
- 	mips_hpt_frequency = cpu_speed;
--	// Equation: Baudrate = CPU / (SD * 2 * CLKDIV * 16)
--	set_au1x00_uart_baud_base(cpu_speed / (2 * ((int)(au_readl(SYS_POWERCTRL)&0x03) + 2) * 16));
-+	/* Equation: Baudrate = CPU / (SD * 2 * CLKDIV * 16) */
-+	set_au1x00_uart_baud_base(cpu_speed / (2 * ((int)(au_readl(SYS_POWERCTRL)
-+							  & 0x03) + 2) * 16));
- 	spin_unlock_irqrestore(&time_lock, flags);
- 	return cpu_speed;
- }
-@@ -228,10 +221,10 @@ void __init plat_time_init(void)
  
- 	est_freq += 5000;    /* round */
- 	est_freq -= est_freq%10000;
--	printk("CPU frequency %d.%02d MHz\n", est_freq/1000000,
--	       (est_freq%1000000)*100/1000000);
-- 	set_au1x00_speed(est_freq);
-- 	set_au1x00_lcd_clock(); // program the LCD clock
-+	printk(KERN_INFO "CPU frequency %u.%02u MHz\n",
-+	       est_freq / 1000000, ((est_freq % 1000000) * 100) / 1000000);
-+	set_au1x00_speed(est_freq);
-+	set_au1x00_lcd_clock(); /* program the LCD clock */
+ #ifndef AU1XXX_ATA_RQSIZE
+-        #define AU1XXX_ATA_RQSIZE       128
++#define AU1XXX_ATA_RQSIZE	128
+ #endif
+ 
+ /* Disable Burstable-Support for DBDMA */
+ #ifndef CONFIG_BLK_DEV_IDE_AU1XXX_BURSTABLE_ON
+-        #define CONFIG_BLK_DEV_IDE_AU1XXX_BURSTABLE_ON  0
++#define CONFIG_BLK_DEV_IDE_AU1XXX_BURSTABLE_ON	0
+ #endif
  
  #ifdef CONFIG_PM
- 	/*
-@@ -243,30 +236,29 @@ void __init plat_time_init(void)
- 	 * counter 0 interrupt as a special irq and it doesn't show
- 	 * up under /proc/interrupts.
- 	 *
--	 * Check to ensure we really have a 32KHz oscillator before
-+	 * Check to ensure we really have a 32 KHz oscillator before
- 	 * we do this.
- 	 */
- 	if (no_au1xxx_32khz)
--		printk("WARNING: no 32KHz clock found.\n");
-+		printk(KERN_WARNING "WARNING: no 32KHz clock found.\n");
- 	else {
- 		while (au_readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_C0S);
- 		au_writel(0, SYS_TOYWRITE);
- 		while (au_readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_C0S);
+ /*
+-* This will enable the device to be powered up when write() or read()
+-* is called. If this is not defined, the driver will return -EBUSY.
+-*/
++ * This will enable the device to be powered up when write() or read()
++ * is called. If this is not defined, the driver will return -EBUSY.
++ */
+ #define WAKE_ON_ACCESS 1
  
--		au_writel(au_readl(SYS_WAKEMSK) | (1<<8), SYS_WAKEMSK);
-+		au_writel(au_readl(SYS_WAKEMSK) | (1 << 8), SYS_WAKEMSK);
- 		au_writel(~0, SYS_WAKESRC);
- 		au_sync();
- 		while (au_readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_M20);
+-typedef struct
+-{
+-        spinlock_t         lock;       /* Used to block on state transitions */
+-        au1xxx_power_dev_t *dev;       /* Power Managers device structure */
+-        unsigned	   stopped;    /* USed to signaling device is stopped */
++typedef struct {
++	spinlock_t		lock;	/* Used to block on state transitions */
++	au1xxx_power_dev_t	*dev;	/* Power Managers device structure */
++	unsigned		stopped; /* Used to signal device is stopped */
+ } pm_state;
+ #endif
  
--		/* setup match20 to interrupt once every HZ */
-+		/* Setup match20 to interrupt once every HZ */
- 		last_pc0 = last_match20 = au_readl(SYS_TOYREAD);
- 		au_writel(last_match20 + MATCH20_INC, SYS_TOYMATCH2);
- 		au_sync();
- 		while (au_readl(SYS_COUNTER_CNTRL) & SYS_CNTRL_M20);
- 		setup_irq(AU1000_TOY_MATCH2_INT, &counter0_action);
+-
+-typedef struct
+-{
+-        u32                     tx_dev_id, rx_dev_id, target_dev_id;
+-        u32                     tx_chan, rx_chan;
+-        void                    *tx_desc_head, *rx_desc_head;
+-        ide_hwif_t              *hwif;
++typedef struct {
++	u32			tx_dev_id, rx_dev_id, target_dev_id;
++	u32			tx_chan, rx_chan;
++	void			*tx_desc_head, *rx_desc_head;
++	ide_hwif_t		*hwif;
+ #ifdef CONFIG_BLK_DEV_IDE_AU1XXX_MDMA2_DBDMA
+-        ide_drive_t             *drive;
+-        struct dbdma_cmd        *dma_table_cpu;
+-        dma_addr_t              dma_table_dma;
++	ide_drive_t		*drive;
++	struct dbdma_cmd	*dma_table_cpu;
++	dma_addr_t		dma_table_dma;
+ #endif
+ 	int			irq;
+ 	u32			regbase;
+ #ifdef CONFIG_PM
+-        pm_state                pm;
++	pm_state		pm;
+ #endif
+ } _auide_hwif;
  
--		/* We can use the real 'wait' instruction.
--		*/
-+		/* We can use the real 'wait' instruction. */
- 		allow_au1k_wait = 1;
- 	}
+-/*******************************************************************************
+-* PIO Mode timing calculation :                                                *
+-*                                                                              *
+-* Static Bus Spec   ATA Spec                                                   *
+-*      Tcsoe      =   t1                                                       *
+-*      Toecs      =   t9                                                       *
+-*      Twcs       =   t9                                                       *
+-*      Tcsh       =   t2i | t2                                                 *
+-*      Tcsoff     =   t2i | t2                                                 *
+-*      Twp        =   t2                                                       *
+-*      Tcsw       =   t1                                                       *
+-*      Tpm        =   0                                                        *
+-*      Ta         =   t1+t2                                                    *
+-*******************************************************************************/
+-
+-#define TCSOE_MASK            (0x07<<29)
+-#define TOECS_MASK            (0x07<<26)
+-#define TWCS_MASK             (0x07<<28)
+-#define TCSH_MASK             (0x0F<<24)
+-#define TCSOFF_MASK           (0x07<<20)
+-#define TWP_MASK              (0x3F<<14)
+-#define TCSW_MASK             (0x0F<<10)
+-#define TPM_MASK              (0x0F<<6)
+-#define TA_MASK               (0x3F<<0)
+-#define TS_MASK               (1<<8)
++/******************************************************************************/
++/* PIO Mode timing calculation :					      */
++/*									      */
++/* Static Bus Spec   ATA Spec						      */
++/*	Tcsoe	   =	t1						      */
++/*	Toecs	   =	t9						      */
++/*	Twcs	   =	t9						      */
++/*	Tcsh	   =	t2i | t2					      */
++/*	Tcsoff	   =	t2i | t2					      */
++/*	Twp	   =	t2						      */
++/*	Tcsw	   =	t1						      */
++/*	Tpm	   =	0						      */
++/*	Ta	   =	t1+t2						      */
++/******************************************************************************/
++
++#define TCSOE_MASK		(0x07 << 29)
++#define TOECS_MASK		(0x07 << 26)
++#define TWCS_MASK		(0x07 << 28)
++#define TCSH_MASK		(0x0F << 24)
++#define TCSOFF_MASK		(0x07 << 20)
++#define TWP_MASK		(0x3F << 14)
++#define TCSW_MASK		(0x0F << 10)
++#define TPM_MASK		(0x0F << 6)
++#define TA_MASK 		(0x3F << 0)
++#define TS_MASK 		(1 << 8)
  
+ /* Timing parameters PIO mode 0 */
+-#define SBC_IDE_PIO0_TCSOE    (0x04<<29)
+-#define SBC_IDE_PIO0_TOECS    (0x01<<26)
+-#define SBC_IDE_PIO0_TWCS     (0x02<<28)
+-#define SBC_IDE_PIO0_TCSH     (0x08<<24)
+-#define SBC_IDE_PIO0_TCSOFF   (0x07<<20)
+-#define SBC_IDE_PIO0_TWP      (0x10<<14)
+-#define SBC_IDE_PIO0_TCSW     (0x04<<10)
+-#define SBC_IDE_PIO0_TPM      (0x0<<6)
+-#define SBC_IDE_PIO0_TA       (0x15<<0)
++#define SBC_IDE_PIO0_TCSOE	(0x04 << 29)
++#define SBC_IDE_PIO0_TOECS	(0x01 << 26)
++#define SBC_IDE_PIO0_TWCS	(0x02 << 28)
++#define SBC_IDE_PIO0_TCSH	(0x08 << 24)
++#define SBC_IDE_PIO0_TCSOFF	(0x07 << 20)
++#define SBC_IDE_PIO0_TWP	(0x10 << 14)
++#define SBC_IDE_PIO0_TCSW	(0x04 << 10)
++#define SBC_IDE_PIO0_TPM	(0x00 << 6)
++#define SBC_IDE_PIO0_TA 	(0x15 << 0)
+ /* Timing parameters PIO mode 1 */
+-#define SBC_IDE_PIO1_TCSOE    (0x03<<29)
+-#define SBC_IDE_PIO1_TOECS    (0x01<<26)
+-#define SBC_IDE_PIO1_TWCS     (0x01<<28)
+-#define SBC_IDE_PIO1_TCSH     (0x06<<24)
+-#define SBC_IDE_PIO1_TCSOFF   (0x06<<20)
+-#define SBC_IDE_PIO1_TWP      (0x08<<14)
+-#define SBC_IDE_PIO1_TCSW     (0x03<<10)
+-#define SBC_IDE_PIO1_TPM      (0x00<<6)
+-#define SBC_IDE_PIO1_TA       (0x0B<<0)
++#define SBC_IDE_PIO1_TCSOE	(0x03 << 29)
++#define SBC_IDE_PIO1_TOECS	(0x01 << 26)
++#define SBC_IDE_PIO1_TWCS	(0x01 << 28)
++#define SBC_IDE_PIO1_TCSH	(0x06 << 24)
++#define SBC_IDE_PIO1_TCSOFF	(0x06 << 20)
++#define SBC_IDE_PIO1_TWP	(0x08 << 14)
++#define SBC_IDE_PIO1_TCSW	(0x03 << 10)
++#define SBC_IDE_PIO1_TPM	(0x00 << 6)
++#define SBC_IDE_PIO1_TA 	(0x0B << 0)
+ /* Timing parameters PIO mode 2 */
+-#define SBC_IDE_PIO2_TCSOE    (0x05<<29)
+-#define SBC_IDE_PIO2_TOECS    (0x01<<26)
+-#define SBC_IDE_PIO2_TWCS     (0x01<<28)
+-#define SBC_IDE_PIO2_TCSH     (0x07<<24)
+-#define SBC_IDE_PIO2_TCSOFF   (0x07<<20)
+-#define SBC_IDE_PIO2_TWP      (0x1F<<14)
+-#define SBC_IDE_PIO2_TCSW     (0x05<<10)
+-#define SBC_IDE_PIO2_TPM      (0x00<<6)
+-#define SBC_IDE_PIO2_TA       (0x22<<0)
++#define SBC_IDE_PIO2_TCSOE	(0x05 << 29)
++#define SBC_IDE_PIO2_TOECS	(0x01 << 26)
++#define SBC_IDE_PIO2_TWCS	(0x01 << 28)
++#define SBC_IDE_PIO2_TCSH	(0x07 << 24)
++#define SBC_IDE_PIO2_TCSOFF	(0x07 << 20)
++#define SBC_IDE_PIO2_TWP	(0x1F << 14)
++#define SBC_IDE_PIO2_TCSW	(0x05 << 10)
++#define SBC_IDE_PIO2_TPM	(0x00 << 6)
++#define SBC_IDE_PIO2_TA 	(0x22 << 0)
+ /* Timing parameters PIO mode 3 */
+-#define SBC_IDE_PIO3_TCSOE    (0x05<<29)
+-#define SBC_IDE_PIO3_TOECS    (0x01<<26)
+-#define SBC_IDE_PIO3_TWCS     (0x01<<28)
+-#define SBC_IDE_PIO3_TCSH     (0x0D<<24)
+-#define SBC_IDE_PIO3_TCSOFF   (0x0D<<20)
+-#define SBC_IDE_PIO3_TWP      (0x15<<14)
+-#define SBC_IDE_PIO3_TCSW     (0x05<<10)
+-#define SBC_IDE_PIO3_TPM      (0x00<<6)
+-#define SBC_IDE_PIO3_TA       (0x1A<<0)
++#define SBC_IDE_PIO3_TCSOE	(0x05 << 29)
++#define SBC_IDE_PIO3_TOECS	(0x01 << 26)
++#define SBC_IDE_PIO3_TWCS	(0x01 << 28)
++#define SBC_IDE_PIO3_TCSH	(0x0D << 24)
++#define SBC_IDE_PIO3_TCSOFF	(0x0D << 20)
++#define SBC_IDE_PIO3_TWP	(0x15 << 14)
++#define SBC_IDE_PIO3_TCSW	(0x05 << 10)
++#define SBC_IDE_PIO3_TPM	(0x00 << 6)
++#define SBC_IDE_PIO3_TA 	(0x1A << 0)
+ /* Timing parameters PIO mode 4 */
+-#define SBC_IDE_PIO4_TCSOE    (0x04<<29)
+-#define SBC_IDE_PIO4_TOECS    (0x01<<26)
+-#define SBC_IDE_PIO4_TWCS     (0x01<<28)
+-#define SBC_IDE_PIO4_TCSH     (0x04<<24)
+-#define SBC_IDE_PIO4_TCSOFF   (0x04<<20)
+-#define SBC_IDE_PIO4_TWP      (0x0D<<14)
+-#define SBC_IDE_PIO4_TCSW     (0x03<<10)
+-#define SBC_IDE_PIO4_TPM      (0x00<<6)
+-#define SBC_IDE_PIO4_TA       (0x12<<0)
++#define SBC_IDE_PIO4_TCSOE	(0x04 << 29)
++#define SBC_IDE_PIO4_TOECS	(0x01 << 26)
++#define SBC_IDE_PIO4_TWCS	(0x01 << 28)
++#define SBC_IDE_PIO4_TCSH	(0x04 << 24)
++#define SBC_IDE_PIO4_TCSOFF	(0x04 << 20)
++#define SBC_IDE_PIO4_TWP	(0x0D << 14)
++#define SBC_IDE_PIO4_TCSW	(0x03 << 10)
++#define SBC_IDE_PIO4_TPM	(0x00 << 6)
++#define SBC_IDE_PIO4_TA 	(0x12 << 0)
+ /* Timing parameters MDMA mode 0 */
+-#define SBC_IDE_MDMA0_TCSOE   (0x03<<29)
+-#define SBC_IDE_MDMA0_TOECS   (0x01<<26)
+-#define SBC_IDE_MDMA0_TWCS    (0x01<<28)
+-#define SBC_IDE_MDMA0_TCSH    (0x07<<24)
+-#define SBC_IDE_MDMA0_TCSOFF  (0x07<<20)
+-#define SBC_IDE_MDMA0_TWP     (0x0C<<14)
+-#define SBC_IDE_MDMA0_TCSW    (0x03<<10)
+-#define SBC_IDE_MDMA0_TPM     (0x00<<6)
+-#define SBC_IDE_MDMA0_TA      (0x0F<<0)
++#define SBC_IDE_MDMA0_TCSOE	(0x03 << 29)
++#define SBC_IDE_MDMA0_TOECS	(0x01 << 26)
++#define SBC_IDE_MDMA0_TWCS	(0x01 << 28)
++#define SBC_IDE_MDMA0_TCSH	(0x07 << 24)
++#define SBC_IDE_MDMA0_TCSOFF	(0x07 << 20)
++#define SBC_IDE_MDMA0_TWP	(0x0C << 14)
++#define SBC_IDE_MDMA0_TCSW	(0x03 << 10)
++#define SBC_IDE_MDMA0_TPM	(0x00 << 6)
++#define SBC_IDE_MDMA0_TA	(0x0F << 0)
+ /* Timing parameters MDMA mode 1 */
+-#define SBC_IDE_MDMA1_TCSOE   (0x05<<29)
+-#define SBC_IDE_MDMA1_TOECS   (0x01<<26)
+-#define SBC_IDE_MDMA1_TWCS    (0x01<<28)
+-#define SBC_IDE_MDMA1_TCSH    (0x05<<24)
+-#define SBC_IDE_MDMA1_TCSOFF  (0x05<<20)
+-#define SBC_IDE_MDMA1_TWP     (0x0F<<14)
+-#define SBC_IDE_MDMA1_TCSW    (0x05<<10)
+-#define SBC_IDE_MDMA1_TPM     (0x00<<6)
+-#define SBC_IDE_MDMA1_TA      (0x15<<0)
++#define SBC_IDE_MDMA1_TCSOE	(0x05 << 29)
++#define SBC_IDE_MDMA1_TOECS	(0x01 << 26)
++#define SBC_IDE_MDMA1_TWCS	(0x01 << 28)
++#define SBC_IDE_MDMA1_TCSH	(0x05 << 24)
++#define SBC_IDE_MDMA1_TCSOFF	(0x05 << 20)
++#define SBC_IDE_MDMA1_TWP	(0x0F << 14)
++#define SBC_IDE_MDMA1_TCSW	(0x05 << 10)
++#define SBC_IDE_MDMA1_TPM	(0x00 << 6)
++#define SBC_IDE_MDMA1_TA	(0x15 << 0)
+ /* Timing parameters MDMA mode 2 */
+-#define SBC_IDE_MDMA2_TCSOE   (0x04<<29)
+-#define SBC_IDE_MDMA2_TOECS   (0x01<<26)
+-#define SBC_IDE_MDMA2_TWCS    (0x01<<28)
+-#define SBC_IDE_MDMA2_TCSH    (0x04<<24)
+-#define SBC_IDE_MDMA2_TCSOFF  (0x04<<20)
+-#define SBC_IDE_MDMA2_TWP     (0x0D<<14)
+-#define SBC_IDE_MDMA2_TCSW    (0x04<<10)
+-#define SBC_IDE_MDMA2_TPM     (0x00<<6)
+-#define SBC_IDE_MDMA2_TA      (0x12<<0)
++#define SBC_IDE_MDMA2_TCSOE	(0x04 << 29)
++#define SBC_IDE_MDMA2_TOECS	(0x01 << 26)
++#define SBC_IDE_MDMA2_TWCS	(0x01 << 28)
++#define SBC_IDE_MDMA2_TCSH	(0x04 << 24)
++#define SBC_IDE_MDMA2_TCSOFF	(0x04 << 20)
++#define SBC_IDE_MDMA2_TWP	(0x0D << 14)
++#define SBC_IDE_MDMA2_TCSW	(0x04 << 10)
++#define SBC_IDE_MDMA2_TPM	(0x00 << 6)
++#define SBC_IDE_MDMA2_TA	(0x12 << 0)
+ 
+ #define SBC_IDE_TIMING(mode) \
+-         SBC_IDE_##mode##_TWCS | \
+-         SBC_IDE_##mode##_TCSH | \
+-         SBC_IDE_##mode##_TCSOFF | \
+-         SBC_IDE_##mode##_TWP | \
+-         SBC_IDE_##mode##_TCSW | \
+-         SBC_IDE_##mode##_TPM | \
+-         SBC_IDE_##mode##_TA
++	(SBC_IDE_##mode##_TWCS | \
++	 SBC_IDE_##mode##_TCSH | \
++	 SBC_IDE_##mode##_TCSOFF | \
++	 SBC_IDE_##mode##_TWP | \
++	 SBC_IDE_##mode##_TCSW | \
++	 SBC_IDE_##mode##_TPM | \
++	 SBC_IDE_##mode##_TA)
+Index: linux-2.6/include/asm-mips/mach-au1x00/au1xxx_psc.h
+===================================================================
+--- linux-2.6.orig/include/asm-mips/mach-au1x00/au1xxx_psc.h
++++ linux-2.6/include/asm-mips/mach-au1x00/au1xxx_psc.h
+@@ -33,7 +33,6 @@
+ #ifndef _AU1000_PSC_H_
+ #define _AU1000_PSC_H_
+ 
+-
+ /* The PSC base addresses.  */
+ #ifdef CONFIG_SOC_AU1550
+ #define PSC0_BASE_ADDR		0xb1a00000
+@@ -47,8 +46,8 @@
+ #define PSC1_BASE_ADDR		0xb1b00000
+ #endif
+ 
+-/* The PSC select and control registers are common to
+- * all protocols.
++/*
++ * The PSC select and control registers are common to all protocols.
+  */
+ #define PSC_SEL_OFFSET		0x00000000
+ #define PSC_CTRL_OFFSET		0x00000004
+@@ -59,18 +58,17 @@
+ #define PSC_SEL_CLK_SERCLK	(2 << 4)
+ 
+ #define PSC_SEL_PS_MASK		0x00000007
+-#define PSC_SEL_PS_DISABLED	(0)
+-#define PSC_SEL_PS_SPIMODE	(2)
+-#define PSC_SEL_PS_I2SMODE	(3)
+-#define PSC_SEL_PS_AC97MODE	(4)
+-#define PSC_SEL_PS_SMBUSMODE	(5)
+-
+-#define PSC_CTRL_DISABLE	(0)
+-#define PSC_CTRL_SUSPEND	(2)
+-#define PSC_CTRL_ENABLE		(3)
++#define PSC_SEL_PS_DISABLED	0
++#define PSC_SEL_PS_SPIMODE	2
++#define PSC_SEL_PS_I2SMODE	3
++#define PSC_SEL_PS_AC97MODE	4
++#define PSC_SEL_PS_SMBUSMODE	5
++
++#define PSC_CTRL_DISABLE	0
++#define PSC_CTRL_SUSPEND	2
++#define PSC_CTRL_ENABLE 	3
+ 
+-/* AC97 Registers.
+-*/
++/* AC97 Registers. */
+ #define PSC_AC97CFG_OFFSET	0x00000008
+ #define PSC_AC97MSK_OFFSET	0x0000000c
+ #define PSC_AC97PCR_OFFSET	0x00000010
+@@ -95,8 +93,7 @@
+ #define PSC_AC97GPO		(AC97_PSC_BASE + PSC_AC97GPO_OFFSET)
+ #define PSC_AC97GPI		(AC97_PSC_BASE + PSC_AC97GPI_OFFSET)
+ 
+-/* AC97 Config Register.
+-*/
++/* AC97 Config Register. */
+ #define PSC_AC97CFG_RT_MASK	(3 << 30)
+ #define PSC_AC97CFG_RT_FIFO1	(0 << 30)
+ #define PSC_AC97CFG_RT_FIFO2	(1 << 30)
+@@ -118,20 +115,19 @@
+ #define PSC_AC97CFG_RXSLOT_MASK	(0x3ff << 1)
+ #define PSC_AC97CFG_GE_ENABLE	(1)
+ 
+-/* Enable slots 3-12.
+-*/
++/* Enable slots 3-12. */
+ #define PSC_AC97CFG_TXSLOT_ENA(x)	(1 << (((x) - 3) + 11))
+ #define PSC_AC97CFG_RXSLOT_ENA(x)	(1 << (((x) - 3) + 1))
+ 
+-/* The word length equation is ((x) * 2) + 2, so choose 'x' appropriately.
++/*
++ * The word length equation is ((x) * 2) + 2, so choose 'x' appropriately.
+  * The only sensible numbers are 7, 9, or possibly 11.  Nah, just do the
+  * arithmetic in the macro.
+  */
+-#define PSC_AC97CFG_SET_LEN(x)	(((((x)-2)/2) & 0xf) << 21)
++#define PSC_AC97CFG_SET_LEN(x)	(((((x) - 2) / 2) & 0xf) << 21)
+ #define PSC_AC97CFG_GET_LEN(x)	(((((x) >> 21) & 0xf) * 2) + 2)
+ 
+-/* AC97 Mask Register.
+-*/
++/* AC97 Mask Register. */
+ #define PSC_AC97MSK_GR		(1 << 25)
+ #define PSC_AC97MSK_CD		(1 << 24)
+ #define PSC_AC97MSK_RR		(1 << 13)
+@@ -148,8 +144,7 @@
+ 				 PSC_AC97MSK_TO | PSC_AC97MSK_TU | \
+ 				 PSC_AC97MSK_RD | PSC_AC97MSK_TD)
+ 
+-/* AC97 Protocol Control Register.
+-*/
++/* AC97 Protocol Control Register. */
+ #define PSC_AC97PCR_RC		(1 << 6)
+ #define PSC_AC97PCR_RP		(1 << 5)
+ #define PSC_AC97PCR_RS		(1 << 4)
+@@ -157,8 +152,7 @@
+ #define PSC_AC97PCR_TP		(1 << 1)
+ #define PSC_AC97PCR_TS		(1 << 0)
+ 
+-/* AC97 Status register (read only).
+-*/
++/* AC97 Status register (read only). */
+ #define PSC_AC97STAT_CB		(1 << 26)
+ #define PSC_AC97STAT_CP		(1 << 25)
+ #define PSC_AC97STAT_CR		(1 << 24)
+@@ -174,8 +168,7 @@
+ #define PSC_AC97STAT_DR		(1 << 1)
+ #define PSC_AC97STAT_SR		(1 << 0)
+ 
+-/* AC97 Event Register.
+-*/
++/* AC97 Event Register. */
+ #define PSC_AC97EVNT_GR		(1 << 25)
+ #define PSC_AC97EVNT_CD		(1 << 24)
+ #define PSC_AC97EVNT_RR		(1 << 13)
+@@ -187,22 +180,18 @@
+ #define PSC_AC97EVNT_RD		(1 << 5)
+ #define PSC_AC97EVNT_TD		(1 << 4)
+ 
+-/* CODEC Command Register.
+-*/
++/* CODEC Command Register. */
+ #define PSC_AC97CDC_RD		(1 << 25)
+ #define PSC_AC97CDC_ID_MASK	(3 << 23)
+ #define PSC_AC97CDC_INDX_MASK	(0x7f << 16)
+-#define PSC_AC97CDC_ID(x)	(((x) & 0x3) << 23)
++#define PSC_AC97CDC_ID(x)	(((x) & 0x03) << 23)
+ #define PSC_AC97CDC_INDX(x)	(((x) & 0x7f) << 16)
+ 
+-/* AC97 Reset Control Register.
+-*/
++/* AC97 Reset Control Register. */
+ #define PSC_AC97RST_RST		(1 << 1)
+ #define PSC_AC97RST_SNC		(1 << 0)
+ 
+-
+-/* PSC in I2S Mode.
+-*/
++/* PSC in I2S Mode. */
+ typedef struct	psc_i2s {
+ 	u32	psc_sel;
+ 	u32	psc_ctrl;
+@@ -215,8 +204,7 @@ typedef struct	psc_i2s {
+ 	u32	psc_i2sudf;
+ } psc_i2s_t;
+ 
+-/* I2S Config Register.
+-*/
++/* I2S Config Register. */
+ #define PSC_I2SCFG_RT_MASK	(3 << 30)
+ #define PSC_I2SCFG_RT_FIFO1	(0 << 30)
+ #define PSC_I2SCFG_RT_FIFO2	(1 << 30)
+@@ -247,8 +235,7 @@ typedef struct	psc_i2s {
+ #define PSC_I2SCFG_MLJ		(1 << 10)
+ #define PSC_I2SCFG_XM		(1 << 9)
+ 
+-/* The word length equation is simply LEN+1.
+- */
++/* The word length equation is simply LEN+1. */
+ #define PSC_I2SCFG_SET_LEN(x)	((((x) - 1) & 0x1f) << 4)
+ #define PSC_I2SCFG_GET_LEN(x)	((((x) >> 4) & 0x1f) + 1)
+ 
+@@ -256,8 +243,7 @@ typedef struct	psc_i2s {
+ #define PSC_I2SCFG_MLF		(1 << 1)
+ #define PSC_I2SCFG_MS		(1 << 0)
+ 
+-/* I2S Mask Register.
+-*/
++/* I2S Mask Register. */
+ #define PSC_I2SMSK_RR		(1 << 13)
+ #define PSC_I2SMSK_RO		(1 << 12)
+ #define PSC_I2SMSK_RU		(1 << 11)
+@@ -271,8 +257,7 @@ typedef struct	psc_i2s {
+ 				 PSC_I2SMSK_TO | PSC_I2SMSK_TU | \
+ 				 PSC_I2SMSK_RD | PSC_I2SMSK_TD)
+ 
+-/* I2S Protocol Control Register.
+-*/
++/* I2S Protocol Control Register. */
+ #define PSC_I2SPCR_RC		(1 << 6)
+ #define PSC_I2SPCR_RP		(1 << 5)
+ #define PSC_I2SPCR_RS		(1 << 4)
+@@ -280,8 +265,7 @@ typedef struct	psc_i2s {
+ #define PSC_I2SPCR_TP		(1 << 1)
+ #define PSC_I2SPCR_TS		(1 << 0)
+ 
+-/* I2S Status register (read only).
+-*/
++/* I2S Status register (read only). */
+ #define PSC_I2SSTAT_RF		(1 << 13)
+ #define PSC_I2SSTAT_RE		(1 << 12)
+ #define PSC_I2SSTAT_RR		(1 << 11)
+@@ -294,8 +278,7 @@ typedef struct	psc_i2s {
+ #define PSC_I2SSTAT_DR		(1 << 1)
+ #define PSC_I2SSTAT_SR		(1 << 0)
+ 
+-/* I2S Event Register.
+-*/
++/* I2S Event Register. */
+ #define PSC_I2SEVNT_RR		(1 << 13)
+ #define PSC_I2SEVNT_RO		(1 << 12)
+ #define PSC_I2SEVNT_RU		(1 << 11)
+@@ -305,8 +288,7 @@ typedef struct	psc_i2s {
+ #define PSC_I2SEVNT_RD		(1 << 5)
+ #define PSC_I2SEVNT_TD		(1 << 4)
+ 
+-/* PSC in SPI Mode.
+-*/
++/* PSC in SPI Mode. */
+ typedef struct	psc_spi {
+ 	u32	psc_sel;
+ 	u32	psc_ctrl;
+@@ -318,8 +300,7 @@ typedef struct	psc_spi {
+ 	u32	psc_spitxrx;
+ } psc_spi_t;
+ 
+-/* SPI Config Register.
+-*/
++/* SPI Config Register. */
+ #define PSC_SPICFG_RT_MASK	(3 << 30)
+ #define PSC_SPICFG_RT_FIFO1	(0 << 30)
+ #define PSC_SPICFG_RT_FIFO2	(1 << 30)
+@@ -355,8 +336,7 @@ typedef struct	psc_spi {
+ #define PSC_SPICFG_MLF		(1 << 1)
+ #define PSC_SPICFG_MO		(1 << 0)
+ 
+-/* SPI Mask Register.
+-*/
++/* SPI Mask Register. */
+ #define PSC_SPIMSK_MM		(1 << 16)
+ #define PSC_SPIMSK_RR		(1 << 13)
+ #define PSC_SPIMSK_RO		(1 << 12)
+@@ -371,16 +351,14 @@ typedef struct	psc_spi {
+ 				 PSC_SPIMSK_TU | PSC_SPIMSK_SD | \
+ 				 PSC_SPIMSK_MD)
+ 
+-/* SPI Protocol Control Register.
+-*/
++/* SPI Protocol Control Register. */
+ #define PSC_SPIPCR_RC		(1 << 6)
+ #define PSC_SPIPCR_SP		(1 << 5)
+ #define PSC_SPIPCR_SS		(1 << 4)
+ #define PSC_SPIPCR_TC		(1 << 2)
+ #define PSC_SPIPCR_MS		(1 << 0)
+ 
+-/* SPI Status register (read only).
+-*/
++/* SPI Status register (read only). */
+ #define PSC_SPISTAT_RF		(1 << 13)
+ #define PSC_SPISTAT_RE		(1 << 12)
+ #define PSC_SPISTAT_RR		(1 << 11)
+@@ -393,8 +371,7 @@ typedef struct	psc_spi {
+ #define PSC_SPISTAT_DR		(1 << 1)
+ #define PSC_SPISTAT_SR		(1 << 0)
+ 
+-/* SPI Event Register.
+-*/
++/* SPI Event Register. */
+ #define PSC_SPIEVNT_MM		(1 << 16)
+ #define PSC_SPIEVNT_RR		(1 << 13)
+ #define PSC_SPIEVNT_RO		(1 << 12)
+@@ -405,13 +382,11 @@ typedef struct	psc_spi {
+ #define PSC_SPIEVNT_SD		(1 << 5)
+ #define PSC_SPIEVNT_MD		(1 << 4)
+ 
+-/* Transmit register control.
+-*/
++/* Transmit register control. */
+ #define PSC_SPITXRX_LC		(1 << 29)
+ #define PSC_SPITXRX_SR		(1 << 28)
+ 
+-/* PSC in SMBus (I2C) Mode.
+-*/
++/* PSC in SMBus (I2C) Mode. */
+ typedef struct	psc_smb {
+ 	u32	psc_sel;
+ 	u32	psc_ctrl;
+@@ -424,8 +399,7 @@ typedef struct	psc_smb {
+ 	u32	psc_smbtmr;
+ } psc_smb_t;
+ 
+-/* SMBus Config Register.
+-*/
++/* SMBus Config Register. */
+ #define PSC_SMBCFG_RT_MASK	(3 << 30)
+ #define PSC_SMBCFG_RT_FIFO1	(0 << 30)
+ #define PSC_SMBCFG_RT_FIFO2	(1 << 30)
+@@ -452,8 +426,7 @@ typedef struct	psc_smb {
+ 
+ #define PSC_SMBCFG_SET_SLV(x)	(((x) & 0x7f) << 1)
+ 
+-/* SMBus Mask Register.
+-*/
++/* SMBus Mask Register. */
+ #define PSC_SMBMSK_DN		(1 << 30)
+ #define PSC_SMBMSK_AN		(1 << 29)
+ #define PSC_SMBMSK_AL		(1 << 28)
+@@ -471,13 +444,11 @@ typedef struct	psc_smb {
+ 				 PSC_SMBMSK_TU | PSC_SMBMSK_SD | \
+ 				 PSC_SMBMSK_MD)
+ 
+-/* SMBus Protocol Control Register.
+-*/
++/* SMBus Protocol Control Register. */
+ #define PSC_SMBPCR_DC		(1 << 2)
+ #define PSC_SMBPCR_MS		(1 << 0)
+ 
+-/* SMBus Status register (read only).
+-*/
++/* SMBus Status register (read only). */
+ #define PSC_SMBSTAT_BB		(1 << 28)
+ #define PSC_SMBSTAT_RF		(1 << 13)
+ #define PSC_SMBSTAT_RE		(1 << 12)
+@@ -491,8 +462,7 @@ typedef struct	psc_smb {
+ #define PSC_SMBSTAT_DR		(1 << 1)
+ #define PSC_SMBSTAT_SR		(1 << 0)
+ 
+-/* SMBus Event Register.
+-*/
++/* SMBus Event Register. */
+ #define PSC_SMBEVNT_DN		(1 << 30)
+ #define PSC_SMBEVNT_AN		(1 << 29)
+ #define PSC_SMBEVNT_AL		(1 << 28)
+@@ -510,15 +480,13 @@ typedef struct	psc_smb {
+ 				 PSC_SMBEVNT_TU | PSC_SMBEVNT_SD | \
+ 				 PSC_SMBEVNT_MD)
+ 
+-/* Transmit register control.
+-*/
++/* Transmit register control. */
+ #define PSC_SMBTXRX_RSR		(1 << 28)
+ #define PSC_SMBTXRX_STP		(1 << 29)
+-#define PSC_SMBTXRX_DATAMASK	(0xff)
++#define PSC_SMBTXRX_DATAMASK	0xff
+ 
+-/* SMBus protocol timers register.
+-*/
+-#define PSC_SMBTMR_SET_TH(x)	(((x) & 0x3) << 30)
++/* SMBus protocol timers register. */
++#define PSC_SMBTMR_SET_TH(x)	(((x) & 0x03) << 30)
+ #define PSC_SMBTMR_SET_PS(x)	(((x) & 0x1f) << 25)
+ #define PSC_SMBTMR_SET_PU(x)	(((x) & 0x1f) << 20)
+ #define PSC_SMBTMR_SET_SH(x)	(((x) & 0x1f) << 15)
+@@ -526,5 +494,4 @@ typedef struct	psc_smb {
+ #define PSC_SMBTMR_SET_CL(x)	(((x) & 0x1f) << 5)
+ #define PSC_SMBTMR_SET_CH(x)	(((x) & 0x1f) << 0)
+ 
+-
+ #endif /* _AU1000_PSC_H_ */

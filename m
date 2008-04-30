@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Apr 2008 20:26:45 +0100 (BST)
-Received: from rtsoft3.corbina.net ([85.21.88.6]:60609 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Apr 2008 20:27:24 +0100 (BST)
+Received: from rtsoft3.corbina.net ([85.21.88.6]:61121 "EHLO
 	buildserver.ru.mvista.com") by ftp.linux-mips.org with ESMTP
-	id S29574466AbYD3T0m (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 30 Apr 2008 20:26:42 +0100
+	id S30618047AbYD3T1U (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 30 Apr 2008 20:27:20 +0100
 Received: from wasted.dev.rtsoft.ru (unknown [10.150.0.9])
 	by buildserver.ru.mvista.com (Postfix) with ESMTP
-	id 0133F8815; Thu,  1 May 2008 00:26:33 +0500 (SAMST)
+	id 170A48815; Thu,  1 May 2008 00:27:06 +0500 (SAMST)
 From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
 Organization: MontaVista Software Inc.
 To:	ralf@linux-mips.org
-Subject: [PATCH 5/11] Pb1000 code style cleanup
-Date:	Wed, 30 Apr 2008 23:25:55 +0400
+Subject: [PATCH 5/11] Pb1100 code style cleanup
+Date:	Wed, 30 Apr 2008 23:26:28 +0400
 User-Agent: KMail/1.5
 Cc:	linux-mips@linux-mips.org
 MIME-Version: 1.0
@@ -18,12 +18,12 @@ Content-Type: text/plain;
   charset="us-ascii"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200804302325.55147.sshtylyov@ru.mvista.com>
+Message-Id: <200804302326.28167.sshtylyov@ru.mvista.com>
 Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19058
+X-archive-position: 19059
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,43 +33,27 @@ X-list: linux-mips
 
 Fix several errors and warnings given by checkpatch.pl:
 
+- space between asterisk and variable name;
+
 - use of C99 // comments;
-
-- brace not on the same line with condition in the 'switch' statement;
-
-- printk() without KERN_* facility level;
-
-- unnecessary braces for single-statement block;
 
 - using simple_strtol() where strict_strtol() could be used.
 
 In addition to these changes, also do the following:
 
-- properly indent the 'switch' statement;
-
-- remove needless parentheses;
-
-- insert spaces between operator and its operands;
-
-- replace numeric literals/expressions with the matching macros;
-
-- remove useless #if dirctive from board_setup();
-
-- remove unneeded numeric literal type casts;
+- properly indent the code;
 
 - remove space after the type cast's closing parenthesis;
+
+- replace numeric literals/expressions with the matching macros;
 
 - replace spaces after the macro name with tabs in the #define directives, and
   sometimes insert spaces there;
 
-- remove excess new lines;
-
 - fix typos/errors, capitalize acronyms, etc. in the comments;
 
 - make the multi-line comment style consistent with the kernel style elsewhere
-  by adding empty first/last line;
-
-- combine some comments;
+  by adding empty first line;
 
 - update MontaVista copyright;
 
@@ -77,269 +61,212 @@ In addition to these changes, also do the following:
 
 Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
- arch/mips/au1000/pb1000/Makefile      |    8 +-
- arch/mips/au1000/pb1000/board_setup.c |  110 +++++++++++++++++-----------------
- arch/mips/au1000/pb1000/init.c        |   20 ++----
- include/asm-mips/mach-pb1x00/pb1000.h |  104 +++++++++++++++-----------------
- 4 files changed, 121 insertions(+), 121 deletions(-)
+ arch/mips/au1000/pb1100/Makefile      |    6 -
+ arch/mips/au1000/pb1100/board_setup.c |   50 ++++++++--------
+ arch/mips/au1000/pb1100/init.c        |   11 +--
+ arch/mips/au1000/pb1100/irqmap.c      |   10 +--
+ include/asm-mips/mach-pb1x00/pb1100.h |  104 +++++++++++++++++-----------------
+ 5 files changed, 91 insertions(+), 90 deletions(-)
 
-Index: linux-2.6/arch/mips/au1000/pb1000/Makefile
+Index: linux-2.6/arch/mips/au1000/pb1100/Makefile
 ===================================================================
---- linux-2.6.orig/arch/mips/au1000/pb1000/Makefile
-+++ linux-2.6/arch/mips/au1000/pb1000/Makefile
+--- linux-2.6.orig/arch/mips/au1000/pb1100/Makefile
++++ linux-2.6/arch/mips/au1000/pb1100/Makefile
 @@ -1,8 +1,8 @@
  #
--#  Copyright 2000 MontaVista Software Inc.
+-#  Copyright 2000,2001 MontaVista Software Inc.
 -#  Author: MontaVista Software, Inc.
 -#     	ppopov@mvista.com or source@mvista.com
-+#  Copyright 2000, 2008 MontaVista Software Inc.
++#  Copyright 2000, 2001, 2008 MontaVista Software Inc.
 +#  Author: MontaVista Software, Inc. <source@mvista.com>
-+#
-+# Makefile for the Alchemy Semiconductor Pb1000 board.
  #
--# Makefile for the Alchemy Semiconductor PB1000 board.
+ # Makefile for the Alchemy Semiconductor Pb1100 board.
++#
  
  lib-y := init.o board_setup.o irqmap.o
-Index: linux-2.6/arch/mips/au1000/pb1000/board_setup.c
+Index: linux-2.6/arch/mips/au1000/pb1100/board_setup.c
 ===================================================================
---- linux-2.6.orig/arch/mips/au1000/pb1000/board_setup.c
-+++ linux-2.6/arch/mips/au1000/pb1000/board_setup.c
+--- linux-2.6.orig/arch/mips/au1000/pb1100/board_setup.c
++++ linux-2.6/arch/mips/au1000/pb1100/board_setup.c
 @@ -1,7 +1,6 @@
  /*
-- * Copyright 2000 MontaVista Software Inc.
+- * Copyright 2002 MontaVista Software Inc.
 - * Author: MontaVista Software, Inc.
 - *         	ppopov@mvista.com or source@mvista.com
-+ * Copyright 2000, 2008 MontaVista Software Inc.
++ * Copyright 2002, 2008 MontaVista Software Inc.
 + * Author: MontaVista Software, Inc. <source@mvista.com>
   *
   *  This program is free software; you can redistribute  it and/or modify it
   *  under  the terms of  the GNU General  Public License as published by the
-@@ -40,121 +39,126 @@ void __init board_setup(void)
- 	u32 sys_freqctrl, sys_clksrc;
- 	u32 prid = read_c0_prid();
+@@ -32,15 +31,15 @@
+ 
+ void board_reset(void)
+ {
+-    /* Hit BCSR.SYSTEM_CONTROL[SW_RST] */
+-    au_writel(0x00000000, 0xAE00001C);
++	/* Hit BCSR.RST_VDDI[SOFT_RESET] */
++	au_writel(0x00000000, PB1100_RST_VDDI);
+ }
+ 
+ void __init board_setup(void)
+ {
+-	volatile void __iomem * base = (volatile void __iomem *) 0xac000000UL;
++	volatile void __iomem *base = (volatile void __iomem *)0xac000000UL;
  
 -	// set AUX clock to 12MHz * 8 = 96 MHz
 +	/* Set AUX clock to 12 MHz * 8 = 96 MHz */
  	au_writel(8, SYS_AUXPLL);
- 	au_writel(0, SYS_PINSTATERD);
+ 	au_writel(0, SYS_PININPUTEN);
  	udelay(100);
+@@ -49,44 +48,47 @@ void __init board_setup(void)
+ 	{
+ 		u32 pin_func, sys_freqctrl, sys_clksrc;
  
- #if defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE)
--	/* zero and disable FREQ2 */
-+	/* Zero and disable FREQ2 */
- 	sys_freqctrl = au_readl(SYS_FREQCTRL0);
- 	sys_freqctrl &= ~0xFFF00000;
- 	au_writel(sys_freqctrl, SYS_FREQCTRL0);
+-		// configure pins GPIO[14:9] as GPIO
+-		pin_func = au_readl(SYS_PINFUNC) & (u32)(~0x80);
++		/* Configure pins GPIO[14:9] as GPIO */
++		pin_func = au_readl(SYS_PINFUNC) & ~SYS_PF_UR3;
  
--	/* zero and disable USBH/USBD clocks */
-+	/* Zero and disable USBH/USBD clocks */
- 	sys_clksrc = au_readl(SYS_CLKSRC);
--	sys_clksrc &= ~0x00007FE0;
-+	sys_clksrc &= ~(SYS_CS_CUD | SYS_CS_DUD | SYS_CS_MUD_MASK |
-+			SYS_CS_CUH | SYS_CS_DUH | SYS_CS_MUH_MASK);
- 	au_writel(sys_clksrc, SYS_CLKSRC);
+-		/* zero and disable FREQ2 */
++		/* Zero and disable FREQ2 */
+ 		sys_freqctrl = au_readl(SYS_FREQCTRL0);
+ 		sys_freqctrl &= ~0xFFF00000;
+ 		au_writel(sys_freqctrl, SYS_FREQCTRL0);
  
- 	sys_freqctrl = au_readl(SYS_FREQCTRL0);
- 	sys_freqctrl &= ~0xFFF00000;
+-		/* zero and disable USBH/USBD/IrDA clock */
++		/* Zero and disable USBH/USBD/IrDA clock */
+ 		sys_clksrc = au_readl(SYS_CLKSRC);
+-		sys_clksrc &= ~0x0000001F;
++		sys_clksrc &= ~(SYS_CS_CIR | SYS_CS_DIR | SYS_CS_MIR_MASK);
+ 		au_writel(sys_clksrc, SYS_CLKSRC);
  
- 	sys_clksrc = au_readl(SYS_CLKSRC);
--	sys_clksrc &= ~0x00007FE0;
-+	sys_clksrc &= ~(SYS_CS_CUD | SYS_CS_DUD | SYS_CS_MUD_MASK |
-+			SYS_CS_CUH | SYS_CS_DUH | SYS_CS_MUH_MASK);
+ 		sys_freqctrl = au_readl(SYS_FREQCTRL0);
+ 		sys_freqctrl &= ~0xFFF00000;
  
--	switch (prid & 0x000000FF)
--	{
-+	switch (prid & 0x000000FF) {
- 	case 0x00: /* DA */
- 	case 0x01: /* HA */
- 	case 0x02: /* HB */
--	/* CPU core freq to 48MHz to slow it way down... */
--	au_writel(4, SYS_CPUPLL);
-+		/* CPU core freq to 48 MHz to slow it way down... */
-+		au_writel(4, SYS_CPUPLL);
+ 		sys_clksrc = au_readl(SYS_CLKSRC);
+-		sys_clksrc &= ~0x0000001F;
++		sys_clksrc &= ~(SYS_CS_CIR | SYS_CS_DIR | SYS_CS_MIR_MASK);
  
--	/*
--	 * Setup 48MHz FREQ2 from CPUPLL for USB Host
--	 */
--	/* FRDIV2=3 -> div by 8 of 384MHz -> 48MHz */
--	sys_freqctrl |= ((3<<22) | (1<<21) | (0<<20));
--	au_writel(sys_freqctrl, SYS_FREQCTRL0);
-+		/*
-+		 * Setup 48 MHz FREQ2 from CPUPLL for USB Host
-+		 * FRDIV2 = 3 -> div by 8 of 384 MHz -> 48 MHz
-+		 */
-+		sys_freqctrl |= (3 << SYS_FC_FRDIV2_BIT) | SYS_FC_FE2;
-+		au_writel(sys_freqctrl, SYS_FREQCTRL0);
- 
--	/* CPU core freq to 384MHz */
--	au_writel(0x20, SYS_CPUPLL);
-+		/* CPU core freq to 384 MHz */
-+		au_writel(0x20, SYS_CPUPLL);
- 
--	printk("Au1000: 48MHz OHCI workaround enabled\n");
-+		printk(KERN_INFO "Au1000: 48 MHz OHCI workaround enabled\n");
- 		break;
- 
--	default:  /* HC and newer */
--	// FREQ2 = aux/2 = 48 MHz
--	sys_freqctrl |= ((0<<22) | (1<<21) | (1<<20));
--	au_writel(sys_freqctrl, SYS_FREQCTRL0);
-+	default: /* HC and newer */
+-		// FREQ2 = aux/2 = 48 MHz
+-		sys_freqctrl |= ((0<<22) | (1<<21) | (1<<20));
 +		/* FREQ2 = aux / 2 = 48 MHz */
 +		sys_freqctrl |= (0 << SYS_FC_FRDIV2_BIT) |
 +				SYS_FC_FE2 | SYS_FC_FS2;
-+		au_writel(sys_freqctrl, SYS_FREQCTRL0);
- 		break;
- 	}
+ 		au_writel(sys_freqctrl, SYS_FREQCTRL0);
  
- 	/*
--	 * Route 48MHz FREQ2 into USB Host and/or Device
-+	 * Route 48 MHz FREQ2 into USB Host and/or Device
- 	 */
--#if defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE)
--	sys_clksrc |= ((4<<12) | (0<<11) | (0<<10));
--#endif
-+	sys_clksrc |= SYS_CS_MUX_FQ2 << SYS_CS_MUH_BIT;
- 	au_writel(sys_clksrc, SYS_CLKSRC);
+ 		/*
+-		 * Route 48MHz FREQ2 into USBH/USBD/IrDA
++		 * Route 48 MHz FREQ2 into USBH/USBD/IrDA
+ 		 */
+-		sys_clksrc |= ((4<<2) | (0<<1) | 0 );
++		sys_clksrc |= SYS_CS_MUX_FQ2 << SYS_CS_MIR_BIT;
+ 		au_writel(sys_clksrc, SYS_CLKSRC);
  
--	// configure pins GPIO[14:9] as GPIO
--	pin_func = au_readl(SYS_PINFUNC) & (u32)(~0x8080);
-+	/* Configure pins GPIO[14:9] as GPIO */
-+	pin_func = au_readl(SYS_PINFUNC) & ~(SYS_PF_UR3 | SYS_PF_USB);
+-		/* setup the static bus controller */
++		/* Setup the static bus controller */
+ 		au_writel(0x00000002, MEM_STCFG3);  /* type = PCMCIA */
+ 		au_writel(0x280E3D07, MEM_STTIME3); /* 250ns cycle time */
+ 		au_writel(0x10000000, MEM_STADDR3); /* any PCMCIA select */
  
--	// 2nd USB port is USB host
--	pin_func |= 0x8000;
-+	/* 2nd USB port is USB host */
-+	pin_func |= SYS_PF_USB;
- 
- 	au_writel(pin_func, SYS_PINFUNC);
- 	au_writel(0x2800, SYS_TRIOUTCLR);
- 	au_writel(0x0030, SYS_OUTPUTCLR);
- #endif /* defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE) */
- 
--	// make gpio 15 an input (for interrupt line)
--	pin_func = au_readl(SYS_PINFUNC) & (u32)(~0x100);
--	// we don't need I2S, so make it available for GPIO[31:29]
--	pin_func |= (1<<5);
-+	/* Make GPIO 15 an input (for interrupt line) */
-+	pin_func = au_readl(SYS_PINFUNC) & ~SYS_PF_IRF;
-+	/* We don't need I2S, so make it available for GPIO[31:29] */
-+	pin_func |= SYS_PF_I2S;
- 	au_writel(pin_func, SYS_PINFUNC);
- 
- 	au_writel(0x8000, SYS_TRIOUTCLR);
- 
--	static_cfg0 = au_readl(MEM_STCFG0) & (u32)(~0xc00);
-+	static_cfg0 = au_readl(MEM_STCFG0) & ~0xc00;
- 	au_writel(static_cfg0, MEM_STCFG0);
- 
--	// configure RCE2* for LCD
-+	/* configure RCE2* for LCD */
- 	au_writel(0x00000004, MEM_STCFG2);
- 
--	// MEM_STTIME2
-+	/* MEM_STTIME2 */
- 	au_writel(0x09000000, MEM_STTIME2);
- 
--	// Set 32-bit base address decoding for RCE2*
-+	/* Set 32-bit base address decoding for RCE2* */
- 	au_writel(0x10003ff0, MEM_STADDR2);
- 
--	// PCI CPLD setup
--	// expand CE0 to cover PCI
-+	/*
-+	 * PCI CPLD setup
-+	 * Expand CE0 to cover PCI
-+	 */
- 	au_writel(0x11803e40, MEM_STADDR1);
- 
--	// burst visibility on
-+	/* Burst visibility on */
- 	au_writel(au_readl(MEM_STCFG0) | 0x1000, MEM_STCFG0);
- 
--	au_writel(0x83, MEM_STCFG1);         // ewait enabled, flash timing
--	au_writel(0x33030a10, MEM_STTIME1);   // slower timing for FPGA
-+	au_writel(0x83, MEM_STCFG1);         /* ewait enabled, flash timing */
-+	au_writel(0x33030a10, MEM_STTIME1);  /* slower timing for FPGA */
- 
--	/* setup the static bus controller */
-+	/* Setup the static bus controller */
- 	au_writel(0x00000002, MEM_STCFG3);  /* type = PCMCIA */
- 	au_writel(0x280E3D07, MEM_STTIME3); /* 250ns cycle time */
- 	au_writel(0x10000000, MEM_STADDR3); /* any PCMCIA select */
- 
--	/* Enable Au1000 BCLK switching - note: sed1356 must not use
--	 * its BCLK (Au1000 LCLK) for any timings */
--	switch (prid & 0x000000FF)
--	{
-+	/*
-+	 * Enable Au1000 BCLK switching - note: sed1356 must not use
-+	 * its BCLK (Au1000 LCLK) for any timings
-+	 */
-+	switch (prid & 0x000000FF) {
- 	case 0x00: /* DA */
- 	case 0x01: /* HA */
- 	case 0x02: /* HB */
- 		break;
- 	default:  /* HC and newer */
--		/* Enable sys bus clock divider when IDLE state or no bus
--		   activity. */
+-		// get USB Functionality pin state (device vs host drive pins)
+-		pin_func = au_readl(SYS_PINFUNC) & (u32)(~0x8000);
+-		// 2nd USB port is USB host
+-		pin_func |= 0x8000;
 +		/*
-+		 * Enable sys bus clock divider when IDLE state or no bus
-+		 * activity.
++		 * Get USB Functionality pin state (device vs host drive pins).
 +		 */
- 		au_writel(au_readl(SYS_POWERCTRL) | (0x3 << 5), SYS_POWERCTRL);
- 		break;
++		pin_func = au_readl(SYS_PINFUNC) & ~SYS_PF_USB;
++		/* 2nd USB port is USB host. */
++		pin_func |= SYS_PF_USB;
+ 		au_writel(pin_func, SYS_PINFUNC);
  	}
-Index: linux-2.6/arch/mips/au1000/pb1000/init.c
+ #endif /* defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE) */
+@@ -94,12 +96,12 @@ void __init board_setup(void)
+ 	/* Enable sys bus clock divider when IDLE state or no bus activity. */
+ 	au_writel(au_readl(SYS_POWERCTRL) | (0x3 << 5), SYS_POWERCTRL);
+ 
+-	// Enable the RTC if not already enabled
++	/* Enable the RTC if not already enabled. */
+ 	if (!(readb(base + 0x28) & 0x20)) {
+ 		writeb(readb(base + 0x28) | 0x20, base + 0x28);
+ 		au_sync();
+ 	}
+-	// Put the clock in BCD mode
++	/* Put the clock in BCD mode. */
+ 	if (readb(base + 0x2C) & 0x4) { /* reg B */
+ 		writeb(readb(base + 0x2c) & ~0x4, base + 0x2c);
+ 		au_sync();
+Index: linux-2.6/arch/mips/au1000/pb1100/init.c
 ===================================================================
---- linux-2.6.orig/arch/mips/au1000/pb1000/init.c
-+++ linux-2.6/arch/mips/au1000/pb1000/init.c
-@@ -1,10 +1,9 @@
- /*
+--- linux-2.6.orig/arch/mips/au1000/pb1100/init.c
++++ linux-2.6/arch/mips/au1000/pb1100/init.c
+@@ -3,9 +3,8 @@
   * BRIEF MODULE DESCRIPTION
-- *	PB1000 board setup
-+ *	Pb1000 board setup
+  *	Pb1100 board setup
   *
-- * Copyright 2001 MontaVista Software Inc.
+- * Copyright 2002 MontaVista Software Inc.
 - * Author: MontaVista Software, Inc.
 - *         	ppopov@mvista.com or source@mvista.com
-+ * Copyright 2001, 2008 MontaVista Software Inc.
++ * Copyright 2002, 2008 MontaVista Software Inc.
 + * Author: MontaVista Software, Inc. <source@mvista.com>
   *
   *  This program is free software; you can redistribute  it and/or modify it
   *  under  the terms of  the GNU General  Public License as published by the
-@@ -44,16 +43,15 @@ void __init prom_init(void)
- 	unsigned char *memsize_str;
+@@ -46,8 +45,8 @@ void __init prom_init(void)
  	unsigned long memsize;
  
--	prom_argc = (int) fw_arg0;
+ 	prom_argc = fw_arg0;
 -	prom_argv = (char **) fw_arg1;
--	prom_envp = (char **) fw_arg2;
-+	prom_argc = (int)fw_arg0;
+-	prom_envp = (char **) fw_arg3;
 +	prom_argv = (char **)fw_arg1;
-+	prom_envp = (char **)fw_arg2;
++	prom_envp = (char **)fw_arg3;
  
  	prom_init_cmdline();
- 	memsize_str = prom_getenv("memsize");
--	if (!memsize_str) {
-+	if (!memsize_str)
+ 
+@@ -55,7 +54,7 @@ void __init prom_init(void)
+ 	if (!memsize_str)
  		memsize = 0x04000000;
--	} else {
+ 	else
 -		memsize = simple_strtol(memsize_str, NULL, 0);
--	}
-+	else
 +		memsize = strict_strtol(memsize_str, 0, NULL);
+ 
  	add_memory_region(0, memsize, BOOT_MEM_RAM);
  }
-Index: linux-2.6/include/asm-mips/mach-pb1x00/pb1000.h
+Index: linux-2.6/arch/mips/au1000/pb1100/irqmap.c
 ===================================================================
---- linux-2.6.orig/include/asm-mips/mach-pb1x00/pb1000.h
-+++ linux-2.6/include/asm-mips/mach-pb1x00/pb1000.h
+--- linux-2.6.orig/arch/mips/au1000/pb1100/irqmap.c
++++ linux-2.6/arch/mips/au1000/pb1100/irqmap.c
+@@ -1,6 +1,6 @@
+ /*
+  * BRIEF MODULE DESCRIPTION
+- *	Au1xxx irq map table
++ *	Au1xx0 IRQ map table
+  *
+  * Copyright 2003 Embedded Edge, LLC
+  *		dan@embeddededge.com
+@@ -31,10 +31,10 @@
+ #include <asm/mach-au1x00/au1000.h>
+ 
+ struct au1xxx_irqmap __initdata au1xxx_irq_map[] = {
+-	{ AU1000_GPIO_9, INTC_INT_LOW_LEVEL, 0 }, // PCMCIA Card Fully_Interted#
+-	{ AU1000_GPIO_10, INTC_INT_LOW_LEVEL, 0 }, // PCMCIA Card STSCHG#
+-	{ AU1000_GPIO_11, INTC_INT_LOW_LEVEL, 0 }, // PCMCIA Card IRQ#
+-	{ AU1000_GPIO_13, INTC_INT_LOW_LEVEL, 0 }, // DC_IRQ#
++	{ AU1000_GPIO_9,  INTC_INT_LOW_LEVEL, 0 }, /* PCMCIA Card Fully_Inserted# */
++	{ AU1000_GPIO_10, INTC_INT_LOW_LEVEL, 0 }, /* PCMCIA Card STSCHG# */
++	{ AU1000_GPIO_11, INTC_INT_LOW_LEVEL, 0 }, /* PCMCIA Card IRQ# */
++	{ AU1000_GPIO_13, INTC_INT_LOW_LEVEL, 0 }, /* DC_IRQ# */
+ };
+ 
+ int __initdata au1xxx_nr_irqs = ARRAY_SIZE(au1xxx_irq_map);
+Index: linux-2.6/include/asm-mips/mach-pb1x00/pb1100.h
+===================================================================
+--- linux-2.6.orig/include/asm-mips/mach-pb1x00/pb1100.h
++++ linux-2.6/include/asm-mips/mach-pb1x00/pb1100.h
 @@ -1,9 +1,8 @@
  /*
-- * Alchemy Semi PB1000 Referrence Board
-+ * Alchemy Semi Pb1000 Referrence Board
+- * Alchemy Semi PB1100 Referrence Board
++ * Alchemy Semi Pb1100 Referrence Board
   *
 - * Copyright 2001 MontaVista Software Inc.
 - * Author: MontaVista Software, Inc.
@@ -349,114 +276,112 @@ Index: linux-2.6/include/asm-mips/mach-pb1x00/pb1000.h
   *
   * ########################################################################
   *
-@@ -28,62 +27,61 @@
- #define __ASM_PB1000_H
+@@ -27,59 +26,60 @@
+ #ifndef __ASM_PB1100_H
+ #define __ASM_PB1100_H
  
- /* PCMCIA PB1000 specific defines */
--#define PCMCIA_MAX_SOCK 1
+-#define PB1100_IDENT          0xAE000000
+-#define BOARD_STATUS_REG      0xAE000004
+-#  define PB1100_ROM_SEL         (1<<15)
+-#  define PB1100_ROM_SIZ         (1<<14)
+-#  define PB1100_SWAP_BOOT       (1<<13)
+-#  define PB1100_FLASH_WP        (1<<12)
+-#  define PB1100_ROM_H_STS       (1<<11)
+-#  define PB1100_ROM_L_STS       (1<<10)
+-#  define PB1100_FLASH_H_STS      (1<<9)
+-#  define PB1100_FLASH_L_STS      (1<<8)
+-#  define PB1100_SRAM_SIZ         (1<<7)
+-#  define PB1100_TSC_BUSY         (1<<6)
+-#  define PB1100_PCMCIA_VS_MASK   (3<<4)
+-#  define PB1100_RS232_CD         (1<<3)
+-#  define PB1100_RS232_CTS        (1<<2)
+-#  define PB1100_RS232_DSR        (1<<1)
+-#  define PB1100_RS232_RI         (1<<0)
+-
+-#define PB1100_IRDA_RS232     0xAE00000C
+-#  define PB1100_IRDA_FULL       (0<<14) /* full power */
+-#  define PB1100_IRDA_SHUTDOWN   (1<<14)
+-#  define PB1100_IRDA_TT         (2<<14) /* 2/3 power */
+-#  define PB1100_IRDA_OT         (3<<14) /* 1/3 power */
+-#  define PB1100_IRDA_FIR        (1<<13)
+-
+-#define PCMCIA_BOARD_REG     0xAE000010
+-#  define PB1100_SD_WP1_RO       (1<<15) /* read only */
+-#  define PB1100_SD_WP0_RO       (1<<14) /* read only */
+-#  define PB1100_SD_PWR1         (1<<11) /* applies power to SD1 */
+-#  define PB1100_SD_PWR0         (1<<10) /* applies power to SD0 */
+-#  define PB1100_SEL_SD_CONN1     (1<<9)
+-#  define PB1100_SEL_SD_CONN0     (1<<8)
+-#  define PC_DEASSERT_RST         (1<<7)
+-#  define PC_DRV_EN               (1<<4)
+-
+-#define PB1100_G_CONTROL      0xAE000014 /* graphics control */
+-
+-#define PB1100_RST_VDDI       0xAE00001C
+-#  define PB1100_SOFT_RESET      (1<<15) /* clear to reset the board */
+-#  define PB1100_VDDI_MASK        (0x1F)
++#define PB1100_IDENT		0xAE000000
++#define BOARD_STATUS_REG	0xAE000004
++#  define PB1100_ROM_SEL	(1 << 15)
++#  define PB1100_ROM_SIZ	(1 << 14)
++#  define PB1100_SWAP_BOOT	(1 << 13)
++#  define PB1100_FLASH_WP	(1 << 12)
++#  define PB1100_ROM_H_STS	(1 << 11)
++#  define PB1100_ROM_L_STS	(1 << 10)
++#  define PB1100_FLASH_H_STS	(1 << 9)
++#  define PB1100_FLASH_L_STS	(1 << 8)
++#  define PB1100_SRAM_SIZ	(1 << 7)
++#  define PB1100_TSC_BUSY	(1 << 6)
++#  define PB1100_PCMCIA_VS_MASK (3 << 4)
++#  define PB1100_RS232_CD	(1 << 3)
++#  define PB1100_RS232_CTS	(1 << 2)
++#  define PB1100_RS232_DSR	(1 << 1)
++#  define PB1100_RS232_RI	(1 << 0)
++
++#define PB1100_IRDA_RS232	0xAE00000C
++#  define PB1100_IRDA_FULL	(0 << 14)	/* full power		*/
++#  define PB1100_IRDA_SHUTDOWN	(1 << 14)
++#  define PB1100_IRDA_TT	(2 << 14)	/* 2/3 power		*/
++#  define PB1100_IRDA_OT	(3 << 14)	/* 1/3 power		*/
++#  define PB1100_IRDA_FIR	(1 << 13)
++
++#define PCMCIA_BOARD_REG	0xAE000010
++#  define PB1100_SD_WP1_RO	(1 << 15)	/* read only		*/
++#  define PB1100_SD_WP0_RO	(1 << 14)	/* read only		*/
++#  define PB1100_SD_PWR1	(1 << 11)	/* applies power to SD1 */
++#  define PB1100_SD_PWR0	(1 << 10)	/* applies power to SD0 */
++#  define PB1100_SEL_SD_CONN1	(1 << 9)
++#  define PB1100_SEL_SD_CONN0	(1 << 8)
++#  define PC_DEASSERT_RST	(1 << 7)
++#  define PC_DRV_EN		(1 << 4)
++
++#define PB1100_G_CONTROL	0xAE000014	/* graphics control	*/
++
++#define PB1100_RST_VDDI 	0xAE00001C
++#  define PB1100_SOFT_RESET	(1 << 15)	/* clear to reset the board */
++#  define PB1100_VDDI_MASK	0x1F
+ 
+-#define PB1100_LEDS           0xAE000018
++#define PB1100_LEDS		0xAE000018
+ 
+-/* 11:8 is 4 discreet LEDs. Clearing a bit illuminates the LED.
+- * 7:0 is the LED Display's decimal points.
++/*
++ * 11:8 is 4 discreet LEDs. Clearing a bit illuminates the LED.
++ * 7:0  is the LED Display's decimal points.
+  */
+-#define PB1100_HEX_LED        0xAE000018
++#define PB1100_HEX_LED		0xAE000018
+ 
+-/* PCMCIA PB1100 specific defines */
+-#define PCMCIA_MAX_SOCK 0
 -#define PCMCIA_NUM_SOCKS (PCMCIA_MAX_SOCK+1)
-+#define PCMCIA_MAX_SOCK  1
++/* PCMCIA Pb1100 specific defines */
++#define PCMCIA_MAX_SOCK  0
 +#define PCMCIA_NUM_SOCKS (PCMCIA_MAX_SOCK + 1)
  
--#define PB1000_PCR     0xBE000000
--#  define PCR_SLOT_0_VPP0  (1<<0)
--#  define PCR_SLOT_0_VPP1  (1<<1)
--#  define PCR_SLOT_0_VCC0  (1<<2)
--#  define PCR_SLOT_0_VCC1  (1<<3)
--#  define PCR_SLOT_0_RST   (1<<4)
--
--#  define PCR_SLOT_1_VPP0  (1<<8)
--#  define PCR_SLOT_1_VPP1  (1<<9)
--#  define PCR_SLOT_1_VCC0  (1<<10)
--#  define PCR_SLOT_1_VCC1  (1<<11)
--#  define PCR_SLOT_1_RST   (1<<12)
--
--#define PB1000_MDR     0xBE000004
--#  define MDR_PI        (1<<5)  /* pcmcia int latch  */
--#  define MDR_EPI      (1<<14)  /* enable pcmcia int */
--#  define MDR_CPI      (1<<15)  /* clear pcmcia int  */
--
--#define PB1000_ACR1    0xBE000008
--#  define ACR1_SLOT_0_CD1    (1<<0)  /* card detect 1     */
--#  define ACR1_SLOT_0_CD2    (1<<1)  /* card detect 2     */
--#  define ACR1_SLOT_0_READY  (1<<2)  /* ready             */
--#  define ACR1_SLOT_0_STATUS (1<<3)  /* status change     */
--#  define ACR1_SLOT_0_VS1    (1<<4)  /* voltage sense 1   */
--#  define ACR1_SLOT_0_VS2    (1<<5)  /* voltage sense 2   */
--#  define ACR1_SLOT_0_INPACK (1<<6)  /* inpack pin status */
--#  define ACR1_SLOT_1_CD1    (1<<8)  /* card detect 1     */
--#  define ACR1_SLOT_1_CD2    (1<<9)  /* card detect 2     */
--#  define ACR1_SLOT_1_READY  (1<<10) /* ready             */
--#  define ACR1_SLOT_1_STATUS (1<<11) /* status change     */
--#  define ACR1_SLOT_1_VS1    (1<<12) /* voltage sense 1   */
--#  define ACR1_SLOT_1_VS2    (1<<13) /* voltage sense 2   */
--#  define ACR1_SLOT_1_INPACK (1<<14) /* inpack pin status */
--
--#define CPLD_AUX0      0xBE00000C
--#define CPLD_AUX1      0xBE000010
--#define CPLD_AUX2      0xBE000014
-+#define PB1000_PCR		0xBE000000
-+#  define PCR_SLOT_0_VPP0	(1 << 0)
-+#  define PCR_SLOT_0_VPP1	(1 << 1)
-+#  define PCR_SLOT_0_VCC0	(1 << 2)
-+#  define PCR_SLOT_0_VCC1	(1 << 3)
-+#  define PCR_SLOT_0_RST	(1 << 4)
-+#  define PCR_SLOT_1_VPP0	(1 << 8)
-+#  define PCR_SLOT_1_VPP1	(1 << 9)
-+#  define PCR_SLOT_1_VCC0	(1 << 10)
-+#  define PCR_SLOT_1_VCC1	(1 << 11)
-+#  define PCR_SLOT_1_RST	(1 << 12)
-+
-+#define PB1000_MDR		0xBE000004
-+#  define MDR_PI		(1 << 5)	/* PCMCIA int latch  */
-+#  define MDR_EPI		(1 << 14)	/* enable PCMCIA int */
-+#  define MDR_CPI		(1 << 15)	/* clear  PCMCIA int  */
-+
-+#define PB1000_ACR1		0xBE000008
-+#  define ACR1_SLOT_0_CD1	(1 << 0)	/* card detect 1	*/
-+#  define ACR1_SLOT_0_CD2	(1 << 1)	/* card detect 2	*/
-+#  define ACR1_SLOT_0_READY	(1 << 2)	/* ready		*/
-+#  define ACR1_SLOT_0_STATUS	(1 << 3)	/* status change	*/
-+#  define ACR1_SLOT_0_VS1	(1 << 4)	/* voltage sense 1	*/
-+#  define ACR1_SLOT_0_VS2	(1 << 5)	/* voltage sense 2	*/
-+#  define ACR1_SLOT_0_INPACK	(1 << 6)	/* inpack pin status	*/
-+#  define ACR1_SLOT_1_CD1	(1 << 8)	/* card detect 1	*/
-+#  define ACR1_SLOT_1_CD2	(1 << 9)	/* card detect 2	*/
-+#  define ACR1_SLOT_1_READY	(1 << 10)	/* ready		*/
-+#  define ACR1_SLOT_1_STATUS	(1 << 11)	/* status change	*/
-+#  define ACR1_SLOT_1_VS1	(1 << 12)	/* voltage sense 1	*/
-+#  define ACR1_SLOT_1_VS2	(1 << 13)	/* voltage sense 2	*/
-+#  define ACR1_SLOT_1_INPACK	(1 << 14)	/* inpack pin status	*/
-+
-+#define CPLD_AUX0		0xBE00000C
-+#define CPLD_AUX1		0xBE000010
-+#define CPLD_AUX2		0xBE000014
- 
- /* Voltage levels */
- 
- /* VPPEN1 - VPPEN0 */
--#define VPP_GND ((0<<1) | (0<<0))
--#define VPP_5V  ((1<<1) | (0<<0))
--#define VPP_3V  ((0<<1) | (1<<0))
--#define VPP_12V ((0<<1) | (1<<0))
--#define VPP_HIZ ((1<<1) | (1<<0))
-+#define VPP_GND ((0 << 1) | (0 << 0))
-+#define VPP_5V	((1 << 1) | (0 << 0))
-+#define VPP_3V	((0 << 1) | (1 << 0))
-+#define VPP_12V ((0 << 1) | (1 << 0))
-+#define VPP_HIZ ((1 << 1) | (1 << 0))
- 
- /* VCCEN1 - VCCEN0 */
--#define VCC_3V  ((0<<1) | (1<<0))
--#define VCC_5V  ((1<<1) | (0<<0))
--#define VCC_HIZ ((0<<1) | (0<<0))
-+#define VCC_3V	((0 << 1) | (1 << 0))
-+#define VCC_5V	((1 << 1) | (0 << 0))
-+#define VCC_HIZ ((0 << 1) | (0 << 0))
- 
  /* VPP/VCC */
--#define SET_VCC_VPP(VCC, VPP, SLOT)\
--	((((VCC)<<2) | ((VPP)<<0)) << ((SLOT)*8))
-+#define SET_VCC_VPP(VCC, VPP, SLOT) \
-+	((((VCC) << 2) | ((VPP) << 0)) << ((SLOT) * 8))
- #endif /* __ASM_PB1000_H */
+-#define SET_VCC_VPP(VCC, VPP) (((VCC)<<2) | ((VPP)<<0))
++#define SET_VCC_VPP(VCC, VPP) (((VCC) << 2) | ((VPP) << 0))
+ 
+ #endif /* __ASM_PB1100_H */

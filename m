@@ -1,51 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 May 2008 19:13:04 +0100 (BST)
-Received: from host194-211-dynamic.20-79-r.retail.telecomitalia.it ([79.20.211.194]:28576
-	"EHLO eppesuigoccas.homedns.org") by ftp.linux-mips.org with ESMTP
-	id S62064043AbYEASNB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 1 May 2008 19:13:01 +0100
-Received: from casa ([192.168.2.34])
-	by eppesuigoccas.homedns.org with esmtpsa (TLS-1.0:RSA_ARCFOUR_MD5:16)
-	(Exim 4.63)
-	(envelope-from <giuseppe@eppesuigoccas.homedns.org>)
-	id 1JrdGz-0001mx-80; Thu, 01 May 2008 20:12:52 +0200
-Subject: Re: undefined reference to `copy_siginfo_from_user32'
-From:	Giuseppe Sacco <giuseppe@eppesuigoccas.homedns.org>
-To:	Christoph Hellwig <hch@lst.de>
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20080429090039.GA16616@lst.de>
-References: <20080428212327.47c703b6.giuseppe@eppesuigoccas.homedns.org>
-	 <20080429090039.GA16616@lst.de>
-Content-Type: text/plain
-Date:	Thu, 01 May 2008 20:11:52 +0200
-Message-Id: <1209665512.5605.0.camel@casa>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.6.3 
-Content-Transfer-Encoding: 7bit
-Return-Path: <giuseppe@eppesuigoccas.homedns.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 01 May 2008 22:01:28 +0100 (BST)
+Received: from kirk.serum.com.pl ([213.77.9.205]:6127 "EHLO serum.com.pl")
+	by ftp.linux-mips.org with ESMTP id S20033234AbYEAVBZ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 1 May 2008 22:01:25 +0100
+Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
+	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m41L1FBq008191;
+	Thu, 1 May 2008 23:01:15 +0200
+Received: from localhost (macro@localhost)
+	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m41L1E81008187;
+	Thu, 1 May 2008 22:01:15 +0100
+Date:	Thu, 1 May 2008 22:01:13 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+cc:	linux-mips@linux-mips.org
+Subject: Re: Breakage in arch/mips/kernel/traps.c for 64bit
+In-Reply-To: <20080501163314.GA9955@alpha.franken.de>
+Message-ID: <Pine.LNX.4.55.0805012150130.6145@cliff.in.clinika.pl>
+References: <20080501163314.GA9955@alpha.franken.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19067
+X-archive-position: 19068
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: giuseppe@eppesuigoccas.homedns.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Il giorno mar, 29/04/2008 alle 11.00 +0200, Christoph Hellwig ha
-scritto:
-> On Mon, Apr 28, 2008 at 09:23:27PM +0200, Giuseppe Sacco wrote:
-> > Hi list,
-> > since a few days, whenever I try to recompile the latest kernel (from git) it always print this error message:
+On Thu, 1 May 2008, Thomas Bogendoerfer wrote:
+
+> it would be nice, if people started thinking before supplying such
+> crappy^Winteresting code:
 > 
-> This should be fixed in mainline.  But the right fix would be to switch
-> mips to the generic compat_ptrace.  And untested (and in fact even
-> uncompiled) patch ontop of the copy_siginfo_to_user32 posted to the list
-> a while ago is below to sketch how this should look like:
+> arch/mips/kernel/traps.c:
+> 
+> #define IS_KVA01(a) ((((unsigned int)a) & 0xc0000000) == 0x80000000)
+> 
+> Kills every 64bit kernel build...
 
-I cannot apply this patch to the latest kernel from git. Could you
-provide a new one?
+ Not everybody tests 64-bit stuff as some people limit themselves to
+32-bit systems only.  It looks like a step backwards, but there you go.
 
-Thanks a lot,
-Giuseppe Sacco
+> Why is this needed at all ?
+
+ It looks like an attempt to avoid TLB exceptions for the stack dump -- if
+that is the case, then obviously a piece of code like one in
+arch/mips/lib/uncached.c should be used to check for CKSEG0/1 and XKPHYS.  
+If there are two uses of this code, then it should be wrapped in an inline
+function and put in a header; <asm/addrspace.h>, perhaps.
+
+  Maciej

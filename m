@@ -1,57 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 May 2008 19:41:08 +0100 (BST)
-Received: from smtp1.linux-foundation.org ([140.211.169.13]:31920 "EHLO
-	smtp1.linux-foundation.org") by ftp.linux-mips.org with ESMTP
-	id S28791051AbYECSlA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 3 May 2008 19:41:00 +0100
-Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [140.211.169.55])
-	by smtp1.linux-foundation.org (8.14.2/8.13.5/Debian-3ubuntu1.1) with ESMTP id m43IeKJ0001044
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-	Sat, 3 May 2008 11:40:22 -0700
-Received: from localhost (localhost [127.0.0.1])
-	by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with ESMTP id m43IeIqL026803;
-	Sat, 3 May 2008 11:40:19 -0700
-Date:	Sat, 3 May 2008 11:40:18 -0700 (PDT)
-From:	Linus Torvalds <torvalds@linux-foundation.org>
-To:	Ulrich Drepper <drepper@redhat.com>
-cc:	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	linux-mips@linux-mips.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v2] unify sys_pipe implementation
-In-Reply-To: <200805031801.m43I109q032242@devserv.devel.redhat.com>
-Message-ID: <alpine.LFD.1.10.0805031138450.5994@woody.linux-foundation.org>
-References: <200805031801.m43I109q032242@devserv.devel.redhat.com>
-User-Agent: Alpine 1.10 (LFD 962 2008-03-14)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 May 2008 20:27:32 +0100 (BST)
+Received: from smtp5.pp.htv.fi ([213.243.153.39]:8126 "EHLO smtp5.pp.htv.fi")
+	by ftp.linux-mips.org with ESMTP id S20035143AbYECT1Y (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 3 May 2008 20:27:24 +0100
+Received: from cs181133002.pp.htv.fi (cs181133002.pp.htv.fi [82.181.133.2])
+	by smtp5.pp.htv.fi (Postfix) with ESMTP id B78B05BC02E;
+	Sat,  3 May 2008 22:27:18 +0300 (EEST)
+Date:	Sat, 3 May 2008 22:26:17 +0300
+From:	Adrian Bunk <bunk@kernel.org>
+To:	"H. Peter Anvin" <hpa@zytor.com>,
+	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [2.6 patch] fix asm-mips/types.h syntax error
+Message-ID: <20080503192617.GQ5838@cs181133002.pp.htv.fi>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-MIMEDefang-Filter: lf$Revision: 1.188 $
-X-Scanned-By: MIMEDefang 2.63 on 140.211.169.13
-Return-Path: <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+User-Agent: Mutt/1.5.17+20080114 (2008-01-14)
+Return-Path: <bunk@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19089
+X-archive-position: 19090
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: torvalds@linux-foundation.org
+X-original-sender: bunk@kernel.org
 Precedence: bulk
 X-list: linux-mips
 
+This patch fixes the following compile error caused by
+commit 23cf11ddb5099f8c7f7cb3eb154bff0faf31cae9
+(mips: types: use <asm-generic/int-*.h> for the mips architecture):
 
+<--  snip  -->
 
-On Sat, 3 May 2008, Ulrich Drepper wrote:
-> 
-> Some arch maintainers might want to take a look at their remaining
-> special versions.  The cris version, for instance, only differs from
-> the generic version in that it takes the BKL.  Is this still needed
-> these days?
+...
+  CC      kernel/bounds.s
+In file included from /home/bunk/linux/kernel-2.6/git/linux-2.6/include/linux/types.h:12,
+                 from /home/bunk/linux/kernel-2.6/git/linux-2.6/include/linux/page-flags.h:8,
+                 from /home/bunk/linux/kernel-2.6/git/linux-2.6/kernel/bounds.c:9:
+include2/asm/types.h:56:2: error: #endif without #if
+make[2]: *** [kernel/bounds.s] Error 1
 
-No, definitely not.
+<--  snip  -->
 
-That said, I think that in order to not break other architectures, and to 
-make it even easier to do this transformation, how about we just mark the 
-generic version with __weak?
+Signed-off-by: Adrian Bunk <bunk@kernel.org>
 
-That way, odd architectures can just continue to call their own versions 
-"sys_pipe()", and we don't break them unnecessarily.
-
-		Linus
+---
+5de735b6b9037ad6b8a30ef51f4bd8e011954144 diff --git a/include/asm-mips/types.h b/include/asm-mips/types.h
+index 7a2ee4f..bcbb8d6 100644
+--- a/include/asm-mips/types.h
++++ b/include/asm-mips/types.h
+@@ -19,8 +19,6 @@
+ 
+ typedef unsigned short umode_t;
+ 
+-#endif
+-
+ #endif /* __ASSEMBLY__ */
+ 
+ /*

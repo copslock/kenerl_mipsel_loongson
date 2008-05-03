@@ -1,50 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 May 2008 07:44:31 +0100 (BST)
-Received: from vigor.karmaclothing.net ([217.169.26.28]:30430 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28575714AbYECGo2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 3 May 2008 07:44:28 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m436iO8I004096;
-	Sat, 3 May 2008 07:44:25 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m436iOZs004088;
-	Sat, 3 May 2008 07:44:24 +0100
-Date:	Sat, 3 May 2008 07:44:24 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Daniel Jacobowitz <drow@false.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] Bring the SWARM defconfig up to date
-Message-ID: <20080503064424.GA15574@linux-mips.org>
-References: <Pine.LNX.4.55.0805030008280.12296@cliff.in.clinika.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 May 2008 15:24:04 +0100 (BST)
+Received: from mx.mips.com ([63.167.95.198]:34986 "EHLO dns0.mips.com")
+	by ftp.linux-mips.org with ESMTP id S28586771AbYECOYB (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 3 May 2008 15:24:01 +0100
+Received: from mercury.mips.com (mercury [192.168.64.101])
+	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id m43EMjQ9024475
+	for <linux-mips@linux-mips.org>; Sat, 3 May 2008 07:22:46 -0700 (PDT)
+Received: from [192.168.236.12] (cthulhu [192.168.236.12])
+	by mercury.mips.com (8.13.5/8.13.5) with ESMTP id m43ENgX3029794
+	for <linux-mips@linux-mips.org>; Sat, 3 May 2008 07:23:44 -0700 (PDT)
+Message-ID: <481C756E.4070806@mips.com>
+Date:	Sat, 03 May 2008 16:23:42 +0200
+From:	"Kevin D. Kissell" <kevink@mips.com>
+User-Agent: Thunderbird 2.0.0.12 (X11/20080226)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.55.0805030008280.12296@cliff.in.clinika.pl>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+To:	Linux MIPS Org <linux-mips@linux-mips.org>
+Subject: Patch to APRP ELF Loader
+Content-Type: multipart/mixed;
+ boundary="------------000005000500030307010207"
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19084
+X-archive-position: 19085
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, May 03, 2008 at 12:48:45AM +0100, Maciej W. Rozycki wrote:
+This is a multi-part message in MIME format.
+--------------000005000500030307010207
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
->  The SWARM defconfig file has not been regenerated for over a year now.
-> Here is a patch to bring the file up to date.  Additionally some important
-> and sometimes confusing changes happened meanwhile.  Here is the list of 
-> notable corresponding updates to the configuration:
-> 
-> 1. CPU_SB1_PASS_2_2 is now selected rather than CPU_SB1_PASS_1.  The
->    latter requires a non-standard -msb1-pass1-workarounds option to be
->    supported by GCC and I am told is quite rare anyway.
+Please find attached a patch to the APRP ELF loader (vpe.c)
+for the MIPS 34K which provides several requested/needed
+fixes and enhancements, most notably in allowing large
+stripped ELF binaries to be launched on the RP.
 
-Farely rare is a nice way to express it.  The option exists in MV's
-gcc 3.0 and as you know gcc 3.0 is no longer suitable to build a kernel ...
+	Regards,
 
-  Ralf
+	Kevin K.
+
+--------------000005000500030307010207
+Content-Type: text/x-patch;
+ name="0001-Rewrite-of-APRP-VPE-ELF-Loader.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="0001-Rewrite-of-APRP-VPE-ELF-Loader.patch"

@@ -1,54 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 May 2008 11:40:47 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:56467 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20040923AbYEEKkp (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 5 May 2008 11:40:45 +0100
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id A87A53EC9; Mon,  5 May 2008 03:40:39 -0700 (PDT)
-Message-ID: <481EE407.9080707@ru.mvista.com>
-Date:	Mon, 05 May 2008 14:40:07 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Pb1000: bury the remnants of the PCI code
-References: <200804052259.29959.sshtylyov@ru.mvista.com> <48176D09.7030308@ru.mvista.com> <20080429185333.GB14609@linux-mips.org>
-In-Reply-To: <20080429185333.GB14609@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 May 2008 15:57:28 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:45791 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S28776895AbYEEO5Z (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 5 May 2008 15:57:25 +0100
+Received: from localhost (p6218-ipad309funabasi.chiba.ocn.ne.jp [123.217.200.218])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 42B93AD48; Mon,  5 May 2008 23:57:19 +0900 (JST)
+Date:	Mon, 05 May 2008 23:58:27 +0900 (JST)
+Message-Id: <20080505.235827.93020396.anemo@mba.ocn.ne.jp>
+To:	tsbogend@alpha.franken.de
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: Breakage in arch/mips/kernel/traps.c for 64bit
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20080504220804.GA13442@alpha.franken.de>
+References: <20080503224849.GA2314@alpha.franken.de>
+	<20080504.223944.41198532.anemo@mba.ocn.ne.jp>
+	<20080504220804.GA13442@alpha.franken.de>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19105
+X-archive-position: 19106
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Mon, 5 May 2008 00:08:04 +0200, tsbogend@alpha.franken.de (Thomas Bogendoerfer) wrote:
+> > 	while (!kstack_end((void *)(unsigned long)sp)) {
+> > 
+> > will make this part sparse-free, though it seems a bit ugly.
+> 
+> hmm, would leaving sp as unsigned long * and casting it for __get_user()
+> make sparse happy ?
 
-Ralf Baechle wrote:
+Well, not as expected...  Here is some warning patterns.
 
->>>PCI support for the Pb1000 board was ectomized by Pete Popov four years ago.
->>>Unfortunately,  the header file  wasn't cleansed, so the remnants still get
->>>in the way of the kernel build (due to macro redefinitions).
+1.	unsigned long __user *sp = (unsigned long __user *)(reg29 & ~3);
+	...
+	while (!kstack_end(sp)) {
+		if (__get_user(addr, sp++)) {
 
->>>Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+linux/arch/mips/kernel/traps.c:91:21: warning: incorrect type in argument 1 (different address spaces)
+linux/arch/mips/kernel/traps.c:91:21:    expected void *addr
+linux/arch/mips/kernel/traps.c:91:21:    got unsigned long [noderef] <asn:1>*sp
 
->>   Hm looks like I have somehow missed the remanants in 
->>arch/mips/au1000/pb1000/board_setup.c... too bad that this patch has been 
->>long merged. :-/
+2.	unsigned long *sp = (unsigned long *)(reg29 & ~3);
+	...
+	while (!kstack_end(sp)) {
+		if (__get_user(addr, (unsigned long __user *)sp++)) {
 
-> New patch, new luck ;-)
+linux/arch/mips/kernel/traps.c:92:7: warning: cast adds address space to expression (<asn:1>)
+linux/arch/mips/kernel/traps.c:92:7: warning: cast adds address space to expression (<asn:1>)
+linux/arch/mips/kernel/traps.c:92:7: warning: cast adds address space to expression (<asn:1>)
+linux/arch/mips/kernel/traps.c:92:7: warning: cast adds address space to expression (<asn:1>)
+linux/arch/mips/kernel/traps.c:92:7: warning: cast adds address space to expression (<asn:1>)
+linux/arch/mips/kernel/traps.c:92:7: warning: cast adds address space to expression (<asn:1>)
+linux/arch/mips/kernel/traps.c:92:7: warning: cast adds address space to expression (<asn:1>)
+linux/arch/mips/kernel/traps.c:92:7: warning: cast adds address space to expression (<asn:1>)
+linux/arch/mips/kernel/traps.c:92:7: warning: cast adds address space to expression (<asn:1>)
 
-    I have posted the new patch but the luck (or lack thereof) is the same. ;-)
+3.	unsigned long __user *sp = (unsigned long __user *)(reg29 & ~3);
+	...
+	while (!kstack_end((void *)(unsigned long)sp)) {
+		if (__get_user(addr, sp++)) {
 
->   Ralf
+No warnings.
 
-WBR, Sergei
+4.	unsigned long *sp = (unsigned long *)(reg29 & ~3);
+	...
+	while (!kstack_end(sp)) {
+		unsigned long __user *p = (unsigned long __user *)sp++;
+		if (__get_user(addr, p)) {
+
+linux/arch/mips/kernel/traps.c:92:30: warning: cast adds address space to expression (<asn:1>)
+
+4.	unsigned long *sp = (unsigned long *)(reg29 & ~3);
+	...
+	while (!kstack_end(sp)) {
+		unsigned long __user *p =
+			(unsigned long __user *)(unsigned long)sp++;
+		if (__get_user(addr, p)) {
+
+No warnings.
+
+
+I think the "cast adds address space to expression" sparse warning is
+not worth to handle so seriously.  So I'm OK with any of (2) to (4).
+
+---
+Atsushi Nemoto

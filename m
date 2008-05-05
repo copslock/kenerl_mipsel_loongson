@@ -1,99 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 May 2008 15:57:28 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:45791 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S28776895AbYEEO5Z (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 5 May 2008 15:57:25 +0100
-Received: from localhost (p6218-ipad309funabasi.chiba.ocn.ne.jp [123.217.200.218])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 42B93AD48; Mon,  5 May 2008 23:57:19 +0900 (JST)
-Date:	Mon, 05 May 2008 23:58:27 +0900 (JST)
-Message-Id: <20080505.235827.93020396.anemo@mba.ocn.ne.jp>
-To:	tsbogend@alpha.franken.de
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: Breakage in arch/mips/kernel/traps.c for 64bit
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20080504220804.GA13442@alpha.franken.de>
-References: <20080503224849.GA2314@alpha.franken.de>
-	<20080504.223944.41198532.anemo@mba.ocn.ne.jp>
-	<20080504220804.GA13442@alpha.franken.de>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 May 2008 00:17:26 +0100 (BST)
+Received: from smtp1.linux-foundation.org ([140.211.169.13]:62096 "EHLO
+	smtp1.linux-foundation.org") by ftp.linux-mips.org with ESMTP
+	id S20022420AbYEEXRX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 6 May 2008 00:17:23 +0100
+Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [140.211.169.55])
+	by smtp1.linux-foundation.org (8.14.2/8.13.5/Debian-3ubuntu1.1) with ESMTP id m45NGaKq031412
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 5 May 2008 16:16:37 -0700
+Received: from akpm.corp.google.com (localhost [127.0.0.1])
+	by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with SMTP id m45NGY4K010330;
+	Mon, 5 May 2008 16:16:34 -0700
+Date:	Mon, 5 May 2008 16:16:34 -0700
+From:	Andrew Morton <akpm@linux-foundation.org>
+To:	Matteo Croce <matteo@openwrt.org>
+Cc:	jgarzik@pobox.com, ralf@linux-mips.org, nbd@openwrt.org,
+	ejka@imfi.kspu.ru, linux-mips@linux-mips.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH]: cpmac bugfixes and enhancements
+Message-Id: <20080505161634.6964d46b.akpm@linux-foundation.org>
+In-Reply-To: <200805041904.22726.matteo@openwrt.org>
+References: <200805041904.22726.matteo@openwrt.org>
+X-Mailer: Sylpheed version 2.2.4 (GTK+ 2.8.20; i486-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+X-MIMEDefang-Filter: lf$Revision: 1.188 $
+X-Scanned-By: MIMEDefang 2.63 on 140.211.169.13
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19106
+X-archive-position: 19107
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 5 May 2008 00:08:04 +0200, tsbogend@alpha.franken.de (Thomas Bogendoerfer) wrote:
-> > 	while (!kstack_end((void *)(unsigned long)sp)) {
-> > 
-> > will make this part sparse-free, though it seems a bit ugly.
+On Sun, 4 May 2008 19:04:22 +0200
+Matteo Croce <matteo@openwrt.org> wrote:
+
+> This patch fixes an IRQ storm, a locking issues, moves platform code in the right sections
+> and other small fixes.
 > 
-> hmm, would leaving sp as unsigned long * and casting it for __get_user()
-> make sparse happy ?
 
-Well, not as expected...  Here is some warning patterns.
+Please feed this patch (and all future ones) through scripts/checkpatch.pl.
+It picks up rather a lot of simple problems which there is no reason for
+us to retain.
 
-1.	unsigned long __user *sp = (unsigned long __user *)(reg29 & ~3);
-	...
-	while (!kstack_end(sp)) {
-		if (__get_user(addr, sp++)) {
+>
+> ...
+>
+> +	spin_unlock(&priv->rx_lock);
+> +	netif_rx_complete(priv->dev, napi);
+> +	netif_stop_queue(priv->dev);
+> +	napi_disable(&priv->napi);
+> +	
+> +	atomic_inc(&priv->reset_pending);
+> +	cpmac_hw_stop(priv->dev);
+> +	if (!schedule_work(&priv->reset_work))
+> +		atomic_dec(&priv->reset_pending);
+> +	return 0;
+> + 
+>  }
+>  
+>  static int cpmac_start_xmit(struct sk_buff *skb, struct net_device *dev)
+> @@ -456,6 +549,9 @@ static int cpmac_start_xmit(struct sk_buff *skb, struct net_device *dev)
+>  	struct cpmac_desc *desc;
+>  	struct cpmac_priv *priv = netdev_priv(dev);
+>  
+> +	if (unlikely(atomic_read(&priv->reset_pending)))
+> +		return NETDEV_TX_BUSY;
+> +
 
-linux/arch/mips/kernel/traps.c:91:21: warning: incorrect type in argument 1 (different address spaces)
-linux/arch/mips/kernel/traps.c:91:21:    expected void *addr
-linux/arch/mips/kernel/traps.c:91:21:    got unsigned long [noderef] <asn:1>*sp
+This looks a bit strange.  schedule_work() will return zero if the work was
+already scheduled, in which case we arrange for cpmac_start_xmit() to abort
+early.
 
-2.	unsigned long *sp = (unsigned long *)(reg29 & ~3);
-	...
-	while (!kstack_end(sp)) {
-		if (__get_user(addr, (unsigned long __user *)sp++)) {
+But if schedule_work() *doesn't* return zero, there is a time window in
+which the reset is still pending.  Because it takes time for keventd to be
+awoken and to run the work function.
 
-linux/arch/mips/kernel/traps.c:92:7: warning: cast adds address space to expression (<asn:1>)
-linux/arch/mips/kernel/traps.c:92:7: warning: cast adds address space to expression (<asn:1>)
-linux/arch/mips/kernel/traps.c:92:7: warning: cast adds address space to expression (<asn:1>)
-linux/arch/mips/kernel/traps.c:92:7: warning: cast adds address space to expression (<asn:1>)
-linux/arch/mips/kernel/traps.c:92:7: warning: cast adds address space to expression (<asn:1>)
-linux/arch/mips/kernel/traps.c:92:7: warning: cast adds address space to expression (<asn:1>)
-linux/arch/mips/kernel/traps.c:92:7: warning: cast adds address space to expression (<asn:1>)
-linux/arch/mips/kernel/traps.c:92:7: warning: cast adds address space to expression (<asn:1>)
-linux/arch/mips/kernel/traps.c:92:7: warning: cast adds address space to expression (<asn:1>)
-
-3.	unsigned long __user *sp = (unsigned long __user *)(reg29 & ~3);
-	...
-	while (!kstack_end((void *)(unsigned long)sp)) {
-		if (__get_user(addr, sp++)) {
-
-No warnings.
-
-4.	unsigned long *sp = (unsigned long *)(reg29 & ~3);
-	...
-	while (!kstack_end(sp)) {
-		unsigned long __user *p = (unsigned long __user *)sp++;
-		if (__get_user(addr, p)) {
-
-linux/arch/mips/kernel/traps.c:92:30: warning: cast adds address space to expression (<asn:1>)
-
-4.	unsigned long *sp = (unsigned long *)(reg29 & ~3);
-	...
-	while (!kstack_end(sp)) {
-		unsigned long __user *p =
-			(unsigned long __user *)(unsigned long)sp++;
-		if (__get_user(addr, p)) {
-
-No warnings.
+I would have thought that we would want to prevent cpmac_start_xmit() from
+running within that time window also?
 
 
-I think the "cast adds address space to expression" sparse warning is
-not worth to handle so seriously.  So I'm OK with any of (2) to (4).
-
----
-Atsushi Nemoto
+But that's just a guess - the text which you used to describe your work is
+missing much information, so I don't have a lot to work with here.

@@ -1,71 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 May 2008 09:30:29 +0100 (BST)
-Received: from yw-out-1718.google.com ([74.125.46.154]:27189 "EHLO
-	yw-out-1718.google.com") by ftp.linux-mips.org with ESMTP
-	id S28577966AbYEEIa0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 5 May 2008 09:30:26 +0100
-Received: by yw-out-1718.google.com with SMTP id 9so1222490ywk.24
-        for <linux-mips@linux-mips.org>; Mon, 05 May 2008 01:30:14 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 May 2008 10:16:01 +0100 (BST)
+Received: from fg-out-1718.google.com ([72.14.220.155]:19386 "EHLO
+	fg-out-1718.google.com") by ftp.linux-mips.org with ESMTP
+	id S20036616AbYEEJP5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 5 May 2008 10:15:57 +0100
+Received: by fg-out-1718.google.com with SMTP id d23so91195fga.32
+        for <linux-mips@linux-mips.org>; Mon, 05 May 2008 02:15:53 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        bh=1vNwkNd0nYp80jvMF7wkf5IzXiIWL5OfoM0OUPtffOY=;
-        b=LW2i4fqiGK0gDCkGKjTOsbBU+Dwt8Fk/Puzc3G3d+TuAFzVNSNkDvOUW3ljxGS0bD4lvTN9BQOd3llDmkw6JpgldgBPoDd2diPHrUmFrl58o7YPqzl7FBr1QHh/AYeY8mPUc4HxjGwlnKYpJz/lx3JG0kCa59Da38YXkuGcxxYU=
+        h=domainkey-signature:received:received:message-id:date:from:sender:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references:x-google-sender-auth;
+        bh=yJHrhUWPm80nO9pg3l7+5CF9in2efx8o1cL5G3M2aIY=;
+        b=TuVUwDepvr/y/ngeebB1kLyhvXWma1TBCDXyAnouPsHVXd8/alZw4h/eeOdfEVwfM1OXSKk9hqa1dQm3cV4Xh1HBFexb6DuptfByR/t1dNAR7VnjeqB0sOmDpz8OQTl6ih9LweabwEZUMC7Zux3YlWrhgxDuFZLdwnTObqzbXBQ=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
-        b=BlZwLZDhJ5raNDFiSkTgDB/awo0JiLN32gBHWuJQe3aT3Y9IDI28CKeeb5iFJZ0+Qo0d82CJr1Jy55dYyWaBhYUlWppdyTfT/11R1T28fXMf/Pzb8hp6TTPbd+cljYrson/oULp/4V4fmo8n81+vA/Aay08Hg1bx44tYIJLGuH0=
-Received: by 10.150.12.3 with SMTP id 3mr5778656ybl.17.1209976214383;
-        Mon, 05 May 2008 01:30:14 -0700 (PDT)
-Received: by 10.150.158.7 with HTTP; Mon, 5 May 2008 01:30:09 -0700 (PDT)
-Message-ID: <5eeb9ad90805050130i39ae791dwe599c12fc08fb8ec@mail.gmail.com>
-Date:	Mon, 5 May 2008 10:30:09 +0200
-From:	DM <dm.n9107@gmail.com>
-To:	"Ulrich Drepper" <drepper@redhat.com>
+        h=message-id:date:from:sender:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references:x-google-sender-auth;
+        b=kMGZpkyX+ewQQ2eYahy7WrEm2zS69ON+UQRxAa7Y7S/2hmm7yz5qF15E7eJKJOyRVJi1Y5tZMRIlt6O/WLtPa48g3w1iL0Bj64i6WvydC9kOmR8R7O0MIZFne6HJvzYzr2eDx14ePQBYc6DypZiRRFHfhF+PG/7U9Lx4yZoqGQI=
+Received: by 10.86.90.13 with SMTP id n13mr10192966fgb.64.1209978953407;
+        Mon, 05 May 2008 02:15:53 -0700 (PDT)
+Received: by 10.86.71.16 with HTTP; Mon, 5 May 2008 02:15:53 -0700 (PDT)
+Message-ID: <517f3f820805050215s689ae274yf8a4ad270cb5981c@mail.gmail.com>
+Date:	Mon, 5 May 2008 11:15:53 +0200
+From:	"Michael Kerrisk" <mtk.manpages@gmail.com>
+To:	DM <dm.n9107@gmail.com>
 Subject: Re: [PATCH v2] unify sys_pipe implementation
-Cc:	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+Cc:	"Ulrich Drepper" <drepper@redhat.com>,
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
 	linux-mips@linux-mips.org, sparclinux@vger.kernel.org,
 	torvalds@linux-foundation.org
-In-Reply-To: <200805031801.m43I109q032242@devserv.devel.redhat.com>
+In-Reply-To: <5eeb9ad90805050130i39ae791dwe599c12fc08fb8ec@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
 References: <200805031801.m43I109q032242@devserv.devel.redhat.com>
-Return-Path: <dm.n9107@gmail.com>
+	 <5eeb9ad90805050130i39ae791dwe599c12fc08fb8ec@mail.gmail.com>
+X-Google-Sender-Auth: 4e80ca2b3fe2a603
+Return-Path: <mtk.linux.lists@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19102
+X-archive-position: 19103
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dm.n9107@gmail.com
+X-original-sender: mtk.manpages@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, May 3, 2008 at 8:01 PM, Ulrich Drepper <drepper@redhat.com> wrote:
-[...]
->   /*
->  + * sys_pipe() is the normal C calling standard for creating
->  + * a pipe. It's not the way Unix traditionally does this, though.
->  + */
->  +asmlinkage long sys_pipe(int __user *fildes)
->  +{
->  +       int fd[2];
->  +       int error;
->  +
->  +       error = do_pipe(fd);
->  +       if (!error) {
->  +               if (copy_to_user(fildes, fd, sizeof(fd)))
->  +                       error = -EFAULT;
->  +       }
->  +       return error;
->  +}
->  +
-[...]
+On 5/5/08, DM <dm.n9107@gmail.com> wrote:
+> On Sat, May 3, 2008 at 8:01 PM, Ulrich Drepper <drepper@redhat.com> wrote:
+>  [...]
+>
+> >   /*
+>  >  + * sys_pipe() is the normal C calling standard for creating
+>  >  + * a pipe. It's not the way Unix traditionally does this, though.
+>  >  + */
+>  >  +asmlinkage long sys_pipe(int __user *fildes)
+>  >  +{
+>  >  +       int fd[2];
+>  >  +       int error;
+>  >  +
+>  >  +       error = do_pipe(fd);
+>  >  +       if (!error) {
+>  >  +               if (copy_to_user(fildes, fd, sizeof(fd)))
+>  >  +                       error = -EFAULT;
+>  >  +       }
+>  >  +       return error;
+>  >  +}
+>  >  +
+>
+> [...]
+>
+>  I realize this code is old, but wouldn't file descriptors leak if
+>  copy_to_user fails?
 
-I realize this code is old, but wouldn't file descriptors leak if
-copy_to_user fails?
+Yes, it does -- I just tested this.
 
-BR,
-dm.n9107
+-- 
+Michael Kerrisk
+Linux man-pages maintainer; http://www.kernel.org/doc/man-pages/
+Found a bug? http://www.kernel.org/doc/man-pages/reporting_bugs.html

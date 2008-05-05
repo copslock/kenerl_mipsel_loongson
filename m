@@ -1,66 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 May 2008 11:18:25 +0100 (BST)
-Received: from vigor.karmaclothing.net ([217.169.26.28]:21146 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S28774040AbYEEKSW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 5 May 2008 11:18:22 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m45AIAKV024516;
-	Mon, 5 May 2008 11:18:10 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m45AI98a024509;
-	Mon, 5 May 2008 11:18:09 +0100
-Date:	Mon, 5 May 2008 11:18:09 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	DM <dm.n9107@gmail.com>
-Cc:	Ulrich Drepper <drepper@redhat.com>, linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org, linux-mips@linux-mips.org,
-	sparclinux@vger.kernel.org, torvalds@linux-foundation.org
-Subject: Re: [PATCH v2] unify sys_pipe implementation
-Message-ID: <20080505101809.GA14547@linux-mips.org>
-References: <200805031801.m43I109q032242@devserv.devel.redhat.com> <5eeb9ad90805050130i39ae791dwe599c12fc08fb8ec@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 May 2008 11:40:47 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:56467 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20040923AbYEEKkp (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 5 May 2008 11:40:45 +0100
+Received: from [192.168.1.234] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id A87A53EC9; Mon,  5 May 2008 03:40:39 -0700 (PDT)
+Message-ID: <481EE407.9080707@ru.mvista.com>
+Date:	Mon, 05 May 2008 14:40:07 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5eeb9ad90805050130i39ae791dwe599c12fc08fb8ec@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Pb1000: bury the remnants of the PCI code
+References: <200804052259.29959.sshtylyov@ru.mvista.com> <48176D09.7030308@ru.mvista.com> <20080429185333.GB14609@linux-mips.org>
+In-Reply-To: <20080429185333.GB14609@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19104
+X-archive-position: 19105
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, May 05, 2008 at 10:30:09AM +0200, DM wrote:
+Hello.
 
-> >  + * sys_pipe() is the normal C calling standard for creating
-> >  + * a pipe. It's not the way Unix traditionally does this, though.
-> >  + */
-> >  +asmlinkage long sys_pipe(int __user *fildes)
-> >  +{
-> >  +       int fd[2];
-> >  +       int error;
-> >  +
-> >  +       error = do_pipe(fd);
-> >  +       if (!error) {
-> >  +               if (copy_to_user(fildes, fd, sizeof(fd)))
-> >  +                       error = -EFAULT;
-> >  +       }
-> >  +       return error;
-> >  +}
-> >  +
-> [...]
-> 
-> I realize this code is old, but wouldn't file descriptors leak if
-> copy_to_user fails?
+Ralf Baechle wrote:
 
-The MIPS implementation doesn't have this problem; it returns the
-file descriptors in the result registers $v0 and $v1.
+>>>PCI support for the Pb1000 board was ectomized by Pete Popov four years ago.
+>>>Unfortunately,  the header file  wasn't cleansed, so the remnants still get
+>>>in the way of the kernel build (due to macro redefinitions).
 
-But an interesting catch after so many years!
+>>>Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
-  Ralf
+>>   Hm looks like I have somehow missed the remanants in 
+>>arch/mips/au1000/pb1000/board_setup.c... too bad that this patch has been 
+>>long merged. :-/
+
+> New patch, new luck ;-)
+
+    I have posted the new patch but the luck (or lack thereof) is the same. ;-)
+
+>   Ralf
+
+WBR, Sergei

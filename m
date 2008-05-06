@@ -1,90 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 May 2008 00:17:26 +0100 (BST)
-Received: from smtp1.linux-foundation.org ([140.211.169.13]:62096 "EHLO
-	smtp1.linux-foundation.org") by ftp.linux-mips.org with ESMTP
-	id S20022420AbYEEXRX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 6 May 2008 00:17:23 +0100
-Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [140.211.169.55])
-	by smtp1.linux-foundation.org (8.14.2/8.13.5/Debian-3ubuntu1.1) with ESMTP id m45NGaKq031412
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-	Mon, 5 May 2008 16:16:37 -0700
-Received: from akpm.corp.google.com (localhost [127.0.0.1])
-	by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with SMTP id m45NGY4K010330;
-	Mon, 5 May 2008 16:16:34 -0700
-Date:	Mon, 5 May 2008 16:16:34 -0700
-From:	Andrew Morton <akpm@linux-foundation.org>
-To:	Matteo Croce <matteo@openwrt.org>
-Cc:	jgarzik@pobox.com, ralf@linux-mips.org, nbd@openwrt.org,
-	ejka@imfi.kspu.ru, linux-mips@linux-mips.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH]: cpmac bugfixes and enhancements
-Message-Id: <20080505161634.6964d46b.akpm@linux-foundation.org>
-In-Reply-To: <200805041904.22726.matteo@openwrt.org>
-References: <200805041904.22726.matteo@openwrt.org>
-X-Mailer: Sylpheed version 2.2.4 (GTK+ 2.8.20; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-MIMEDefang-Filter: lf$Revision: 1.188 $
-X-Scanned-By: MIMEDefang 2.63 on 140.211.169.13
-Return-Path: <akpm@linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 May 2008 11:21:29 +0100 (BST)
+Received: from relay01.mx.bawue.net ([193.7.176.67]:39392 "EHLO
+	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
+	id S28591803AbYEFKVZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 6 May 2008 11:21:25 +0100
+Received: from lagash (88-106-226-17.dynamic.dsl.as9105.com [88.106.226.17])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by relay01.mx.bawue.net (Postfix) with ESMTP id 848DE48916;
+	Tue,  6 May 2008 12:21:23 +0200 (CEST)
+Received: from ths by lagash with local (Exim 4.69)
+	(envelope-from <ths@networkno.de>)
+	id 1JtKIU-0002WH-5E; Tue, 06 May 2008 11:21:22 +0100
+Date:	Tue, 6 May 2008 11:21:22 +0100
+From:	Thiemo Seufer <ths@networkno.de>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: fix warning message on SMP kernels
+Message-ID: <20080506102122.GE22413@networkno.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.17+20080114 (2008-01-14)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19107
+X-archive-position: 19108
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 4 May 2008 19:04:22 +0200
-Matteo Croce <matteo@openwrt.org> wrote:
-
-> This patch fixes an IRQ storm, a locking issues, moves platform code in the right sections
-> and other small fixes.
-> 
-
-Please feed this patch (and all future ones) through scripts/checkpatch.pl.
-It picks up rather a lot of simple problems which there is no reason for
-us to retain.
-
->
-> ...
->
-> +	spin_unlock(&priv->rx_lock);
-> +	netif_rx_complete(priv->dev, napi);
-> +	netif_stop_queue(priv->dev);
-> +	napi_disable(&priv->napi);
-> +	
-> +	atomic_inc(&priv->reset_pending);
-> +	cpmac_hw_stop(priv->dev);
-> +	if (!schedule_work(&priv->reset_work))
-> +		atomic_dec(&priv->reset_pending);
-> +	return 0;
-> + 
->  }
->  
->  static int cpmac_start_xmit(struct sk_buff *skb, struct net_device *dev)
-> @@ -456,6 +549,9 @@ static int cpmac_start_xmit(struct sk_buff *skb, struct net_device *dev)
->  	struct cpmac_desc *desc;
->  	struct cpmac_priv *priv = netdev_priv(dev);
->  
-> +	if (unlikely(atomic_read(&priv->reset_pending)))
-> +		return NETDEV_TX_BUSY;
-> +
-
-This looks a bit strange.  schedule_work() will return zero if the work was
-already scheduled, in which case we arrange for cpmac_start_xmit() to abort
-early.
-
-But if schedule_work() *doesn't* return zero, there is a time window in
-which the reset is still pending.  Because it takes time for keventd to be
-awoken and to run the work function.
-
-I would have thought that we would want to prevent cpmac_start_xmit() from
-running within that time window also?
+This patch fixes a (harmless) warning message.
 
 
-But that's just a guess - the text which you used to describe your work is
-missing much information, so I don't have a lot to work with here.
+Signed-off-by: Thiemo Seufer <ths@networkno.de>
+
+Index: linux.git/arch/mips/kernel/smp.c
+===================================================================
+--- linux.git.orig/arch/mips/kernel/smp.c	2008-05-06 11:06:07.000000000 +0100
++++ linux.git/arch/mips/kernel/smp.c	2008-05-06 11:15:02.000000000 +0100
+@@ -87,8 +87,8 @@
+ 
+ __cpuinit void register_smp_ops(struct plat_smp_ops *ops)
+ {
+-	if (ops)
+-		printk(KERN_WARNING "Overriding previous set SMP ops\n");
++	if (mp_ops)
++		printk(KERN_WARNING "Overriding previously set SMP ops\n");
+ 
+ 	mp_ops = ops;
+ }

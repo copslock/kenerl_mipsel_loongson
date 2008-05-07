@@ -1,68 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 May 2008 15:38:27 +0100 (BST)
-Received: from mo31.po.2iij.NET ([210.128.50.54]:44104 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20021411AbYEGOiY (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 7 May 2008 15:38:24 +0100
-Received: by mo.po.2iij.net (mo31) id m47EcKZR007823; Wed, 7 May 2008 23:38:20 +0900 (JST)
-Received: from delta (61.25.30.125.dy.iij4u.or.jp [125.30.25.61])
-	by mbox.po.2iij.net (po-mbox305) id m47EcGLo020945
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Wed, 7 May 2008 23:38:16 +0900
-Date:	Wed, 7 May 2008 23:38:15 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][MIPS] fix divide by zero error in build_clear_page and
- build_copy_page
-Message-Id: <20080507233815.e6de28da.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed 2.4.5 (GTK+ 2.12.0; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 May 2008 17:02:04 +0100 (BST)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:23220 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S20022109AbYEGQCA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 7 May 2008 17:02:00 +0100
+Received: (qmail 17885 invoked by uid 1000); 7 May 2008 18:01:54 +0200
+Date:	Wed, 7 May 2008 18:01:54 +0200
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+To:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/7] au1xmmc updates
+Message-ID: <20080507160154.GA17806@roarinelk.homelinux.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19127
+X-archive-position: 19128
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-Fix divide by zero error in build_clear_page() and build_copy_page()
+Hello,
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+The following patches update the au1xmmc driver with new
+features and a few cleanups.
 
-diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/arch/mips/mm/page.c linux/arch/mips/mm/page.c
---- linux-orig/arch/mips/mm/page.c	2008-05-07 10:28:03.732151097 +0900
-+++ linux/arch/mips/mm/page.c	2008-05-07 23:27:00.212977534 +0900
-@@ -310,8 +310,8 @@ void __cpuinit build_clear_page(void)
- 	if (R4600_V2_HIT_CACHEOP_WAR && cpu_is_r4600_v2_x())
- 		uasm_i_lui(&buf, AT, 0xa000);
- 
--	off = min(8, pref_bias_clear_store / cache_line_size) *
--	      cache_line_size;
-+	off = cache_line_size ? min(8, pref_bias_clear_store / cache_line_size)
-+	                        * cache_line_size : 0;
- 	while (off) {
- 		build_clear_pref(&buf, -off);
- 		off -= cache_line_size;
-@@ -454,12 +454,14 @@ void __cpuinit build_copy_page(void)
- 	if (R4600_V2_HIT_CACHEOP_WAR && cpu_is_r4600_v2_x())
- 		uasm_i_lui(&buf, AT, 0xa000);
- 
--	off = min(8, pref_bias_copy_load / cache_line_size) * cache_line_size;
-+	off = cache_line_size ? min(8, pref_bias_copy_load / cache_line_size) *
-+	                        cache_line_size : 0;
- 	while (off) {
- 		build_copy_load_pref(&buf, -off);
- 		off -= cache_line_size;
- 	}
--	off = min(8, pref_bias_copy_store / cache_line_size) * cache_line_size;
-+	off = cache_line_size ? min(8, pref_bias_copy_load / cache_line_size) *
-+	                        cache_line_size : 0;
- 	while (off) {
- 		build_copy_store_pref(&buf, -off);
- 		off -= cache_line_size;
+Testers (especially with db1200 and pb1200 boards) and comments
+ welcome!
+
+Thanks!
+	Manuel Lauss

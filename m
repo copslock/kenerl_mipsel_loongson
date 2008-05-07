@@ -1,68 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 May 2008 08:05:33 +0100 (BST)
-Received: from zone0.gcu-squad.org ([212.85.147.21]:4899 "EHLO
-	services.gcu-squad.org") by ftp.linux-mips.org with ESMTP
-	id S20044581AbYEGHF3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 7 May 2008 08:05:29 +0100
-Received: from jdelvare.pck.nerim.net ([62.212.121.182] helo=hyperion.delvare)
-	by services.gcu-squad.org (GCU Mailer Daemon) with esmtpsa id 1Jteeb-0004uz-ID
-	(TLSv1:AES256-SHA:256)
-	(envelope-from <khali@linux-fr.org>)
-	; Wed, 07 May 2008 10:05:34 +0200
-Date:	Wed, 7 May 2008 09:05:14 +0200
-From:	Jean Delvare <khali@linux-fr.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Alessandro Zummo <a.zummo@towertech.it>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 May 2008 08:09:56 +0100 (BST)
+Received: from smtp1.linux-foundation.org ([140.211.169.13]:13026 "EHLO
+	smtp1.linux-foundation.org") by ftp.linux-mips.org with ESMTP
+	id S20044702AbYEGHJy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 7 May 2008 08:09:54 +0100
+Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [140.211.169.55])
+	by smtp1.linux-foundation.org (8.14.2/8.13.5/Debian-3ubuntu1.1) with ESMTP id m4778vLt010021
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Wed, 7 May 2008 00:08:59 -0700
+Received: from y.localdomain (localhost [127.0.0.1])
+	by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with SMTP id m4778r74017104;
+	Wed, 7 May 2008 00:08:55 -0700
+Date:	Wed, 7 May 2008 00:08:53 -0700
+From:	Andrew Morton <akpm@linux-foundation.org>
+To:	Jean Delvare <khali@linux-fr.org>
+Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	Alessandro Zummo <a.zummo@towertech.it>,
 	Ralf Baechle <ralf@linux-mips.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
 	rtc-linux@googlegroups.com, i2c@lm-sensors.org,
 	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
 Subject: Re: [RFC][PATCH 2/4] RTC: SWARM I2C board initialization
-Message-ID: <20080507090514.3a86cf4b@hyperion.delvare>
-In-Reply-To: <Pine.LNX.4.55.0805070031410.16173@cliff.in.clinika.pl>
+Message-Id: <20080507000853.17f1316b.akpm@linux-foundation.org>
+In-Reply-To: <20080507085953.2c08b854@hyperion.delvare>
 References: <Pine.LNX.4.55.0805070031410.16173@cliff.in.clinika.pl>
-X-Mailer: Claws Mail 3.4.0 (GTK+ 2.10.6; x86_64-suse-linux-gnu)
+	<20080507085953.2c08b854@hyperion.delvare>
+X-Mailer: Sylpheed 2.4.8 (GTK+ 2.12.5; x86_64-redhat-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <khali@linux-fr.org>
+X-MIMEDefang-Filter: lf$Revision: 1.188 $
+X-Scanned-By: MIMEDefang 2.63 on 140.211.169.13
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19121
+X-archive-position: 19122
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: khali@linux-fr.org
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 X-list: linux-mips
 
-Oh, BTW...
+On Wed, 7 May 2008 08:59:53 +0200 Jean Delvare <khali@linux-fr.org> wrote:
 
-On Wed, 7 May 2008 01:40:27 +0100 (BST), Maciej W. Rozycki wrote:
-> (...)
-> 1. i2c-swarm.c -- SWARM I2C board setup, currently for the M41T80 chip on 
->    the bus #1 only.
-> (...)
-> --- linux-2.6.26-rc1-20080505.macro/arch/mips/sibyte/swarm/Makefile	2004-01-29 04:57:05.000000000 +0000
-> +++ linux-2.6.26-rc1-20080505/arch/mips/sibyte/swarm/Makefile	2008-05-06 01:18:21.000000000 +0000
-> @@ -1,3 +1,4 @@
-> -lib-y				= setup.o rtc_xicor1241.o rtc_m41t81.o
-> +obj-y				:= setup.o rtc_xicor1241.o rtc_m41t81.o
->  
-> -lib-$(CONFIG_KGDB)		+= dbg_io.o
-> +obj-$(CONFIG_I2C_BOARDINFO)	+= i2c-swarm.o
-> +obj-$(CONFIG_KGDB)		+= dbg_io.o
-> (...)
-> --- linux-2.6.26-rc1-20080505.macro/arch/mips/sibyte/swarm/i2c-swarm.c	1970-01-01 00:00:00.000000000 +0000
-> +++ linux-2.6.26-rc1-20080505/arch/mips/sibyte/swarm/i2c-swarm.c	2008-05-06 23:51:34.000000000 +0000
+> I'm not sure how you intend to push these changes upstream. I would
+> take a patch only touching drivers/i2c/busses/i2c-sibyte.c in my i2c
+> tree, however a patch also touching arch code, must be handled be the
+> maintainer for that architecture or platform.
 
-i2c-foo.c is consistently used for i2c bus driver themselves so far.
-It's somewhat confusing to see you name platform code that way. It's
-also redundant, given that the file lives in the swarm platform
-directory. May I suggest naming this file just
-arch/mips/sibyte/swarm/i2c.c? Other architectures (cris, arm) are doing
-this already.
+Not "must".  The arch maintainer could ask you to merge it or you could ask
+the arch maintainer to merge it.
 
--- 
-Jean Delvare
+It's some little one-line change like this one appeared to be, it's
+fair to assume the arch maintainer won't care much about it.  View it as an
+i2c patch?

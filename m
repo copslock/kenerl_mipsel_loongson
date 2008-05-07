@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 May 2008 01:41:17 +0100 (BST)
-Received: from kirk.serum.com.pl ([213.77.9.205]:54517 "EHLO serum.com.pl")
-	by ftp.linux-mips.org with ESMTP id S20021897AbYEGAlN (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 7 May 2008 01:41:13 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 May 2008 01:41:36 +0100 (BST)
+Received: from kirk.serum.com.pl ([213.77.9.205]:54773 "EHLO serum.com.pl")
+	by ftp.linux-mips.org with ESMTP id S20022305AbYEGAlO (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 7 May 2008 01:41:14 +0100
 Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
-	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m470eHHi020411;
-	Wed, 7 May 2008 02:40:17 +0200
+	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m470eS0d020427;
+	Wed, 7 May 2008 02:40:28 +0200
 Received: from localhost (macro@localhost)
-	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m470dxAf020402;
-	Wed, 7 May 2008 01:40:00 +0100
-Date:	Wed, 7 May 2008 01:39:59 +0100 (BST)
+	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m470eRNt020423;
+	Wed, 7 May 2008 01:40:27 +0100
+Date:	Wed, 7 May 2008 01:40:27 +0100 (BST)
 From:	"Maciej W. Rozycki" <macro@linux-mips.org>
 To:	Alessandro Zummo <a.zummo@towertech.it>,
 	Jean Delvare <khali@linux-fr.org>,
@@ -17,15 +17,15 @@ To:	Alessandro Zummo <a.zummo@towertech.it>,
 	Andrew Morton <akpm@linux-foundation.org>
 cc:	rtc-linux@googlegroups.com, i2c@lm-sensors.org,
 	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [RFC][PATCH 0/4] RTC: Use class devices as a persistent clock
-Message-ID: <Pine.LNX.4.55.0805062333390.16173@cliff.in.clinika.pl>
+Subject: [RFC][PATCH 2/4] RTC: SWARM I2C board initialization
+Message-ID: <Pine.LNX.4.55.0805070031410.16173@cliff.in.clinika.pl>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19114
+X-archive-position: 19115
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,59 +33,155 @@ X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+ The standard rtc-m41t80.c driver cannot be used with the SWARM as it is,
+because the board does not provide setup information for the I2C core.  
+As a result the bus and the address to probe for the M41T80 chip is not
+known.
 
- While investigating why Linux on the MIPS64 Broadcom BCM91250A board (the
-SWARM, based on the SiByte BCM1250A SOC) does not support an RTC device
-anymore I discovered the "wiring" of code to access /dev/rtc to the RTC
-device driver got removed with some changes that happened a while ago.  
-The board uses the ST M41T81 I2C chip with a driver buried within the
-architecture code.  There is a standard driver for this chip in our tree
-already, which is called rtc-m41t80, and which as a part of the RTC driver
-suite provides the necessary "wiring" to /dev/rtc.
+ Here is a set of changes that fix the problem:
 
- I decided to remove the platform driver as redundant and unportable -- it
-groups together knowledge about the M41T81 and the BCM1250A onchip I2C
-controller.  This revealed a couple of problems which this patch set
-addresses.  I'd like to skip the discussion of hardware-specific bits
-here, which I think are rather obvious and which I will cover with the
-individual patches.
+1. i2c-swarm.c -- SWARM I2C board setup, currently for the M41T80 chip on 
+   the bus #1 only.
 
- My point here is whether we want to switch over to the RTC suite in
-preference to legacy RTC drivers (like drivers/char/rtc.c) and perhaps
-more importantly platform RTC drivers which are often buried in a mixture
-of header files and arch C code for the purpose of timekeeping.  The API
-in question are the read_persistent_clock() and update_persistent_clock()  
-functions used mostly by the NTP support code.
+2. The i2c-sibyte.c BCM1250A SMBus controller driver now registers its 
+   buses as numbered so that board setup is correctly applied.  Plus minor 
+   corrections.
 
- The notable gain is the removal of the additional burden from platform
-code -- all that has be implemented is support for the RTC chip the
-platform has.  I have added the rtc_read_persistent_clock() and
-rtc_update_persistent_clock() functions to the RTC suite that can serve as
-the implementation of the API and work the same (hardware implementation
-permitting) regardless of the exact RTC chip used.  There is even support
-for the ubiquitous derivatives of the MC146818 available as a class device
-already.  Additionally, if there is more than one RTC chip in a given
-system, the user can select which of the chips to use.
+3. SWARM platform library is now built as an object to include i2c-swarm.c 
+   which is only used as an initcall and does not provide any symbols that 
+   would pull the file from an archive.
 
- The drawback is some implementations behind these functions may sleep,
-for example because hardware is slow to access.  The current calling
-context of update_persistent_clock() (which is the softirq) does not
-permit the function to sleep.  To rectify I have moved the call into the
-process context, but it now means the latency between getnstimeofday() and
-the writeback into the RTC will be yet less predictable and potentially
-higher.  This should not matter in practice, because the RTC generally
-cannot guarantee suitable precision to be a reliable sub-second resolution
-device for providing time while the NTP daemon is not running and one who
-cares about timekeeping will run NTP during normal system operation anyway
-which will correct any inaccuracy gathered from the RTC.  I am mentioning
-it though as I think it should be noted.
-
- Individual patches follow, feedback is welcome.  All have been
-successfully tested at the run time with a big-endian 64-bit MIPS
-configuration, using the usual SMP vs non-SMP and PREEMPT vs non-PREEMPT
-configurations, with spinlock, etc. debugging on; no checkpatch.pl nor
-sparse problems either.  They have been successfully built for a 32-bit
-x86 and Alpha configuration as well.
-
-  Maciej
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+---
+patch-2.6.26-rc1-20080505-swarm-i2c-15
+diff -up --recursive --new-file linux-2.6.26-rc1-20080505.macro/arch/mips/Makefile linux-2.6.26-rc1-20080505/arch/mips/Makefile
+--- linux-2.6.26-rc1-20080505.macro/arch/mips/Makefile	2008-05-05 02:55:23.000000000 +0000
++++ linux-2.6.26-rc1-20080505/arch/mips/Makefile	2008-05-05 21:10:50.000000000 +0000
+@@ -538,19 +538,19 @@ cflags-$(CONFIG_SIBYTE_BCM1x80)	+= -Iinc
+ # Sibyte SWARM board
+ # Sibyte BCM91x80 (BigSur) board
+ #
+-libs-$(CONFIG_SIBYTE_CARMEL)	+= arch/mips/sibyte/swarm/
++core-$(CONFIG_SIBYTE_CARMEL)	+= arch/mips/sibyte/swarm/
+ load-$(CONFIG_SIBYTE_CARMEL)	:= 0xffffffff80100000
+-libs-$(CONFIG_SIBYTE_CRHINE)	+= arch/mips/sibyte/swarm/
++core-$(CONFIG_SIBYTE_CRHINE)	+= arch/mips/sibyte/swarm/
+ load-$(CONFIG_SIBYTE_CRHINE)	:= 0xffffffff80100000
+-libs-$(CONFIG_SIBYTE_CRHONE)	+= arch/mips/sibyte/swarm/
++core-$(CONFIG_SIBYTE_CRHONE)	+= arch/mips/sibyte/swarm/
+ load-$(CONFIG_SIBYTE_CRHONE)	:= 0xffffffff80100000
+-libs-$(CONFIG_SIBYTE_RHONE)	+= arch/mips/sibyte/swarm/
++core-$(CONFIG_SIBYTE_RHONE)	+= arch/mips/sibyte/swarm/
+ load-$(CONFIG_SIBYTE_RHONE)	:= 0xffffffff80100000
+-libs-$(CONFIG_SIBYTE_SENTOSA)	+= arch/mips/sibyte/swarm/
++core-$(CONFIG_SIBYTE_SENTOSA)	+= arch/mips/sibyte/swarm/
+ load-$(CONFIG_SIBYTE_SENTOSA)	:= 0xffffffff80100000
+-libs-$(CONFIG_SIBYTE_SWARM)	+= arch/mips/sibyte/swarm/
++core-$(CONFIG_SIBYTE_SWARM)	+= arch/mips/sibyte/swarm/
+ load-$(CONFIG_SIBYTE_SWARM)	:= 0xffffffff80100000
+-libs-$(CONFIG_SIBYTE_BIGSUR)	+= arch/mips/sibyte/swarm/
++core-$(CONFIG_SIBYTE_BIGSUR)	+= arch/mips/sibyte/swarm/
+ load-$(CONFIG_SIBYTE_BIGSUR)	:= 0xffffffff80100000
+ 
+ #
+diff -up --recursive --new-file linux-2.6.26-rc1-20080505.macro/arch/mips/sibyte/swarm/Makefile linux-2.6.26-rc1-20080505/arch/mips/sibyte/swarm/Makefile
+--- linux-2.6.26-rc1-20080505.macro/arch/mips/sibyte/swarm/Makefile	2004-01-29 04:57:05.000000000 +0000
++++ linux-2.6.26-rc1-20080505/arch/mips/sibyte/swarm/Makefile	2008-05-06 01:18:21.000000000 +0000
+@@ -1,3 +1,4 @@
+-lib-y				= setup.o rtc_xicor1241.o rtc_m41t81.o
++obj-y				:= setup.o rtc_xicor1241.o rtc_m41t81.o
+ 
+-lib-$(CONFIG_KGDB)		+= dbg_io.o
++obj-$(CONFIG_I2C_BOARDINFO)	+= i2c-swarm.o
++obj-$(CONFIG_KGDB)		+= dbg_io.o
+diff -up --recursive --new-file linux-2.6.26-rc1-20080505.macro/arch/mips/sibyte/swarm/i2c-swarm.c linux-2.6.26-rc1-20080505/arch/mips/sibyte/swarm/i2c-swarm.c
+--- linux-2.6.26-rc1-20080505.macro/arch/mips/sibyte/swarm/i2c-swarm.c	1970-01-01 00:00:00.000000000 +0000
++++ linux-2.6.26-rc1-20080505/arch/mips/sibyte/swarm/i2c-swarm.c	2008-05-06 23:51:34.000000000 +0000
+@@ -0,0 +1,37 @@
++/*
++ *	arch/mips/sibyte/swarm/i2c-swarm.c
++ *
++ *	Broadcom BCM91250A (SWARM), etc. I2C platform setup.
++ *
++ *	Copyright (c) 2008  Maciej W. Rozycki
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++
++#include <linux/i2c.h>
++#include <linux/init.h>
++#include <linux/kernel.h>
++
++
++static struct i2c_board_info swarm_i2c_info1[] __initdata = {
++	{
++		I2C_BOARD_INFO("m41t81", 0x68),
++	},
++};
++
++static int __init swarm_i2c_init(void)
++{
++	int err;
++
++	err = i2c_register_board_info(1, swarm_i2c_info1,
++				      ARRAY_SIZE(swarm_i2c_info1));
++	if (err < 0)
++		printk(KERN_ERR
++		       "i2c-swarm: cannot register board I2C devices\n");
++	return err;
++}
++
++arch_initcall(swarm_i2c_init);
+diff -up --recursive --new-file linux-2.6.26-rc1-20080505.macro/drivers/i2c/busses/i2c-sibyte.c linux-2.6.26-rc1-20080505/drivers/i2c/busses/i2c-sibyte.c
+--- linux-2.6.26-rc1-20080505.macro/drivers/i2c/busses/i2c-sibyte.c	2008-05-05 02:55:25.000000000 +0000
++++ linux-2.6.26-rc1-20080505/drivers/i2c/busses/i2c-sibyte.c	2008-05-06 23:45:32.000000000 +0000
+@@ -2,6 +2,7 @@
+  * Copyright (C) 2004 Steven J. Hill
+  * Copyright (C) 2001,2002,2003 Broadcom Corporation
+  * Copyright (C) 1995-2000 Simon G. Vogl
++ * Copyright (C) 2008  Maciej W. Rozycki
+  *
+  * This program is free software; you can redistribute it and/or
+  * modify it under the terms of the GNU General Public License
+@@ -132,18 +133,18 @@ static const struct i2c_algorithm i2c_si
+ /*
+  * registering functions to load algorithms at runtime
+  */
+-int __init i2c_sibyte_add_bus(struct i2c_adapter *i2c_adap, int speed)
++static int __init i2c_sibyte_add_bus(struct i2c_adapter *i2c_adap, int speed)
+ {
+ 	struct i2c_algo_sibyte_data *adap = i2c_adap->algo_data;
+ 
+-	/* register new adapter to i2c module... */
++	/* Register new adapter to i2c module...  */
+ 	i2c_adap->algo = &i2c_sibyte_algo;
+ 
+-	/* Set the frequency to 100 kHz */
++	/* Set the requested frequency.  */
+ 	csr_out32(speed, SMB_CSR(adap,R_SMB_FREQ));
+ 	csr_out32(0, SMB_CSR(adap,R_SMB_CONTROL));
+ 
+-	return i2c_add_adapter(i2c_adap);
++	return i2c_add_numbered_adapter(i2c_adap);
+ }
+ 
+ 
+@@ -159,6 +160,7 @@ static struct i2c_adapter sibyte_board_a
+ 		.class		= I2C_CLASS_HWMON,
+ 		.algo		= NULL,
+ 		.algo_data	= &sibyte_board_data[0],
++		.nr		= 0,
+ 		.name		= "SiByte SMBus 0",
+ 	},
+ 	{
+@@ -167,6 +169,7 @@ static struct i2c_adapter sibyte_board_a
+ 		.class		= I2C_CLASS_HWMON,
+ 		.algo		= NULL,
+ 		.algo_data	= &sibyte_board_data[1],
++		.nr		= 1,
+ 		.name		= "SiByte SMBus 1",
+ 	},
+ };

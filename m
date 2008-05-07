@@ -1,82 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 May 2008 08:43:59 +0100 (BST)
-Received: from zone0.gcu-squad.org ([212.85.147.21]:25374 "EHLO
-	services.gcu-squad.org") by ftp.linux-mips.org with ESMTP
-	id S20022427AbYEGHn4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 7 May 2008 08:43:56 +0100
-Received: from jdelvare.pck.nerim.net ([62.212.121.182] helo=hyperion.delvare)
-	by services.gcu-squad.org (GCU Mailer Daemon) with esmtpsa id 1JtfFq-0002DV-NC
-	(TLSv1:AES256-SHA:256)
-	(envelope-from <khali@linux-fr.org>)
-	; Wed, 07 May 2008 10:44:02 +0200
-Date:	Wed, 7 May 2008 09:43:43 +0200
-From:	Jean Delvare <khali@linux-fr.org>
-To:	Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	Alessandro Zummo <a.zummo@towertech.it>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 May 2008 09:24:25 +0100 (BST)
+Received: from pentafluge.infradead.org ([213.146.154.40]:14309 "EHLO
+	pentafluge.infradead.org") by ftp.linux-mips.org with ESMTP
+	id S20024817AbYEGIYX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 7 May 2008 09:24:23 +0100
+Received: from pmac.infradead.org ([2001:8b0:10b:1:20d:93ff:fe7a:3f2c])
+	by pentafluge.infradead.org with esmtpsa (Exim 4.68 #1 (Red Hat Linux))
+	id 1Jtewi-0000k9-Iy; Wed, 07 May 2008 08:24:16 +0000
+Subject: Re: [rtc-linux] [RFC][PATCH 1/4] RTC: Class device support for
+	persistent clock
+From:	David Woodhouse <dwmw2@infradead.org>
+To:	rtc-linux@googlegroups.com
+Cc:	Alessandro Zummo <a.zummo@towertech.it>,
+	Jean Delvare <khali@linux-fr.org>,
 	Ralf Baechle <ralf@linux-mips.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	rtc-linux@googlegroups.com, i2c@lm-sensors.org,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-	David Brownell <david-b@pacbell.net>
-Subject: Re: [RFC][PATCH 2/4] RTC: SWARM I2C board initialization
-Message-ID: <20080507094343.25f279b9@hyperion.delvare>
-In-Reply-To: <Pine.LNX.4.64.0805070936060.6341@anakin>
-References: <Pine.LNX.4.55.0805070031410.16173@cliff.in.clinika.pl>
-	<20080507090514.3a86cf4b@hyperion.delvare>
-	<Pine.LNX.4.64.0805070936060.6341@anakin>
-X-Mailer: Claws Mail 3.4.0 (GTK+ 2.10.6; x86_64-suse-linux-gnu)
+	Andrew Morton <akpm@linux-foundation.org>, i2c@lm-sensors.org,
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+In-Reply-To: <Pine.LNX.4.55.0805070015360.16173@cliff.in.clinika.pl>
+References: <Pine.LNX.4.55.0805070015360.16173@cliff.in.clinika.pl>
+Content-Type: text/plain
+Date:	Wed, 07 May 2008 09:24:15 +0100
+Message-Id: <1210148655.25560.825.camel@pmac.infradead.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-Mailer: Evolution 2.22.1 (2.22.1-1.fc9) 
 Content-Transfer-Encoding: 7bit
-Return-Path: <khali@linux-fr.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by pentafluge.infradead.org
+	See http://www.infradead.org/rpr.html
+Return-Path: <SRS0+9d6426c59dd8b4fa22d3+1718+infradead.org+dwmw2@pentafluge.srs.infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19124
+X-archive-position: 19125
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: khali@linux-fr.org
+X-original-sender: dwmw2@infradead.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Geert,
-
-On Wed, 7 May 2008 09:37:01 +0200 (CEST), Geert Uytterhoeven wrote:
-> On Wed, 7 May 2008, Jean Delvare wrote:
-> > Oh, BTW...
-> > 
-> > On Wed, 7 May 2008 01:40:27 +0100 (BST), Maciej W. Rozycki wrote:
-> > > (...)
-> > > 1. i2c-swarm.c -- SWARM I2C board setup, currently for the M41T80 chip on 
-> > >    the bus #1 only.
-> > > (...)
-> > > --- linux-2.6.26-rc1-20080505.macro/arch/mips/sibyte/swarm/Makefile	2004-01-29 04:57:05.000000000 +0000
-> > > +++ linux-2.6.26-rc1-20080505/arch/mips/sibyte/swarm/Makefile	2008-05-06 01:18:21.000000000 +0000
-> > > @@ -1,3 +1,4 @@
-> > > -lib-y				= setup.o rtc_xicor1241.o rtc_m41t81.o
-> > > +obj-y				:= setup.o rtc_xicor1241.o rtc_m41t81.o
-> > >  
-> > > -lib-$(CONFIG_KGDB)		+= dbg_io.o
-> > > +obj-$(CONFIG_I2C_BOARDINFO)	+= i2c-swarm.o
-> > > +obj-$(CONFIG_KGDB)		+= dbg_io.o
-> > > (...)
-> > > --- linux-2.6.26-rc1-20080505.macro/arch/mips/sibyte/swarm/i2c-swarm.c	1970-01-01 00:00:00.000000000 +0000
-> > > +++ linux-2.6.26-rc1-20080505/arch/mips/sibyte/swarm/i2c-swarm.c	2008-05-06 23:51:34.000000000 +0000
-> > 
-> > i2c-foo.c is consistently used for i2c bus driver themselves so far.
-> > It's somewhat confusing to see you name platform code that way. It's
-> > also redundant, given that the file lives in the swarm platform
-> > directory. May I suggest naming this file just
-> > arch/mips/sibyte/swarm/i2c.c? Other architectures (cris, arm) are doing
-> > this already.
+On Wed, 2008-05-07 at 01:40 +0100, Maciej W. Rozycki wrote:
 > 
-> Is there any chance CONFIG_I2C_BOARDINFO could become tristate?
-> If yes, it's problematic if you have multiple modules called i2c.ko.
+> +int rtc_update_persistent_clock(struct timespec now)
+> +{
+> +       struct rtc_device *rtc =
+> rtc_class_open(CONFIG_RTC_HCTOSYS_DEVICE);
+> +       int err;
+> +
+> +       if (rtc == NULL) {
+> +               printk(KERN_ERR "hctosys: unable to open rtc device (%
+> s)\n",
+> +                      CONFIG_RTC_HCTOSYS_DEVICE);
+> +               err = -ENXIO;
+> +               goto out;
+>         }
+> -       else
+> +       err = rtc_set_mmss(rtc, now.tv_sec);
+> +       if (err < 0) {
+>                 dev_err(rtc->dev.parent,
+> -                       "hctosys: unable to read the hardware clock
+> \n");
+> +                       "hctosys: unable to set the hardware clock
+> \n");
+> +               goto out_close;
+> +       }
+>  
+> +       err = 0;
+> +
+> +out_close:
+>         rtc_class_close(rtc);
+> +out:
+> +       return err;
+> +}
 
-No, CONFIG_I2C_BOARDINFO is boolean by nature, it will never become
-tristate.
+Ooh, shiny -- you saved me the trouble of doing this (and hopefully also
+the trouble of looking through it to check whether all the callers of
+read_persistent_clock() can sleep, etc.?)
+
+One thing I was going to do in rtc_update_persistent_clock() was make it
+use mutex_trylock() for grabbing rtc->lock. We go to great lengths to
+make sure we're updating the clock at the correct time -- we don't want
+to be doing things which delay the update. So we should probably just
+use mutex_trylock() and abort the update (this time) if it fails.
+
+I was also thinking of holding the RTC_HCTOSYS device open all the time,
+too. If it's a problem that you then couldn't unload the module, perhaps
+a sysfs interface to set/change/clear which device is used for this?
+
+When we discussed it last week, Alessandro was concerned that the
+'update at precisely 500ms past the second' rule was not universal to
+all RTC devices, although I'm not entirely sure. It might be worth
+moving that logic into a 'default' NTP-sync routine provided by the RTC
+class, so that if any strange devices exist which require different
+treatment, they can override that.
+
+I wouldn't worry too much about leaving the old
+update_persistent_clock() and read_persistent_clock() -- I hope we can
+plan to remove those entirely in favour of the RTC class methods.
 
 -- 
-Jean Delvare
+dwmw2

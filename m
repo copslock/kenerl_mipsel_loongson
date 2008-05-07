@@ -1,142 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 May 2008 22:32:31 +0100 (BST)
-Received: from mailhub.zebra.lt ([212.59.31.77]:16132 "EHLO mh.zebra.lt")
-	by ftp.linux-mips.org with ESMTP id S20032213AbYEFVc1 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 6 May 2008 22:32:27 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by mh.zebra.lt (Postfix) with ESMTP id 83F86118AE3;
-	Wed,  7 May 2008 00:31:11 +0300 (EEST)
-X-Virus-Scanned: amavisd-new at takas.lt
-Received: from mh.zebra.lt ([127.0.0.1])
-	by localhost (ispmailfe123.internal.takas.lt [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id vd1r-G0F4f4P; Wed,  7 May 2008 00:31:11 +0300 (EEST)
-Received: from mailhub.zebra.lt (unknown [192.168.3.104])
-	by mh.zebra.lt (Postfix) with ESMTP id 2BDB8118B8E;
-	Wed,  7 May 2008 00:31:11 +0300 (EEST)
-Received: from localhost (localhost [127.0.0.1])
-	by mailhub.zebra.lt (Postfix) with ESMTP id 4BD90279DA7;
-	Wed,  7 May 2008 00:32:21 +0300 (EEST)
-X-Virus-Scanned: amavisd-new at takas.lt
-Received: from mailhub.zebra.lt ([127.0.0.1])
-	by localhost (ispmailfe104.internal.takas.lt [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id ULoOfR-3KQoX; Wed,  7 May 2008 00:32:20 +0300 (EEST)
-Received: from paulius.dzuku (78-62-85-225.static.zebra.lt [78.62.85.225])
-	by mailhub.zebra.lt (Postfix) with ESMTP id 7A708279DB3;
-	Wed,  7 May 2008 00:32:20 +0300 (EEST)
-Message-ID: <4820CE63.7050505@teltonika.lt>
-Date:	Wed, 07 May 2008 00:32:19 +0300
-From:	Paulius Zaleckas <paulius.zaleckas@teltonika.lt>
-User-Agent: Thunderbird 2.0.0.12 (X11/20080226)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 May 2008 01:41:17 +0100 (BST)
+Received: from kirk.serum.com.pl ([213.77.9.205]:54517 "EHLO serum.com.pl")
+	by ftp.linux-mips.org with ESMTP id S20021897AbYEGAlN (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 7 May 2008 01:41:13 +0100
+Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
+	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m470eHHi020411;
+	Wed, 7 May 2008 02:40:17 +0200
+Received: from localhost (macro@localhost)
+	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m470dxAf020402;
+	Wed, 7 May 2008 01:40:00 +0100
+Date:	Wed, 7 May 2008 01:39:59 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Alessandro Zummo <a.zummo@towertech.it>,
+	Jean Delvare <khali@linux-fr.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+cc:	rtc-linux@googlegroups.com, i2c@lm-sensors.org,
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [RFC][PATCH 0/4] RTC: Use class devices as a persistent clock
+Message-ID: <Pine.LNX.4.55.0805062333390.16173@cliff.in.clinika.pl>
 MIME-Version: 1.0
-Newsgroups: gmane.linux.irda.general,gmane.linux.network
-CC:	linux-mips@linux-mips.org, ppopov@mvista.com
-Subject: [PATCH] au1k_ir: use netstats in net_device structure
-Content-Type: multipart/mixed;
- boundary="------------030305010008050208030004"
-To:	unlisted-recipients:; (no To-header on input)
-Return-Path: <paulius.zaleckas@teltonika.lt>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19113
+X-archive-position: 19114
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paulius.zaleckas@teltonika.lt
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------030305010008050208030004
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Hello,
 
-Use net_device_stats from net_device structure instead of local.
-Kill au1k_irda_stats function, because by default it is used
-identical internal_stats function from net/core/dev.c
+ While investigating why Linux on the MIPS64 Broadcom BCM91250A board (the
+SWARM, based on the SiByte BCM1250A SOC) does not support an RTC device
+anymore I discovered the "wiring" of code to access /dev/rtc to the RTC
+device driver got removed with some changes that happened a while ago.  
+The board uses the ST M41T81 I2C chip with a driver buried within the
+architecture code.  There is a standard driver for this chip in our tree
+already, which is called rtc-m41t80, and which as a part of the RTC driver
+suite provides the necessary "wiring" to /dev/rtc.
 
-Haven't tried to compile it. Need ack from MIPS people!
+ I decided to remove the platform driver as redundant and unportable -- it
+groups together knowledge about the M41T81 and the BCM1250A onchip I2C
+controller.  This revealed a couple of problems which this patch set
+addresses.  I'd like to skip the discussion of hardware-specific bits
+here, which I think are rather obvious and which I will cover with the
+individual patches.
 
-Signed-off-by: Paulius Zaleckas <paulius.zaleckas@teltonika.lt>
+ My point here is whether we want to switch over to the RTC suite in
+preference to legacy RTC drivers (like drivers/char/rtc.c) and perhaps
+more importantly platform RTC drivers which are often buried in a mixture
+of header files and arch C code for the purpose of timekeeping.  The API
+in question are the read_persistent_clock() and update_persistent_clock()  
+functions used mostly by the NTP support code.
 
---------------030305010008050208030004
-Content-Type: text/x-patch;
- name="au1k_ir_netstats.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="au1k_ir_netstats.patch"
+ The notable gain is the removal of the additional burden from platform
+code -- all that has be implemented is support for the RTC chip the
+platform has.  I have added the rtc_read_persistent_clock() and
+rtc_update_persistent_clock() functions to the RTC suite that can serve as
+the implementation of the API and work the same (hardware implementation
+permitting) regardless of the exact RTC chip used.  There is even support
+for the ubiquitous derivatives of the MC146818 available as a class device
+already.  Additionally, if there is more than one RTC chip in a given
+system, the user can select which of the chips to use.
 
-diff --git a/drivers/net/irda/au1000_ircc.h b/drivers/net/irda/au1000_ircc.h
-index 7a31d46..1ed665a 100644
---- a/drivers/net/irda/au1000_ircc.h
-+++ b/drivers/net/irda/au1000_ircc.h
-@@ -107,7 +107,6 @@ struct au1k_private {
- 	iobuff_t rx_buff;
- 
- 	struct net_device *netdev;
--	struct net_device_stats stats;
- 	
- 	struct timeval stamp;
- 	struct timeval now;
-diff --git a/drivers/net/irda/au1k_ir.c b/drivers/net/irda/au1k_ir.c
-index a1e4508..f4e639b 100644
---- a/drivers/net/irda/au1k_ir.c
-+++ b/drivers/net/irda/au1k_ir.c
-@@ -53,7 +53,6 @@ static int au1k_irda_hard_xmit(struct sk_buff *, struct net_device *);
- static int au1k_irda_rx(struct net_device *);
- static void au1k_irda_interrupt(int, void *);
- static void au1k_tx_timeout(struct net_device *);
--static struct net_device_stats *au1k_irda_stats(struct net_device *);
- static int au1k_irda_ioctl(struct net_device *, struct ifreq *, int);
- static int au1k_irda_set_speed(struct net_device *dev, int speed);
- 
-@@ -213,7 +212,6 @@ static int au1k_irda_net_init(struct net_device *dev)
- 	dev->open = au1k_irda_start;
- 	dev->hard_start_xmit = au1k_irda_hard_xmit;
- 	dev->stop = au1k_irda_stop;
--	dev->get_stats = au1k_irda_stats;
- 	dev->do_ioctl = au1k_irda_ioctl;
- 	dev->tx_timeout = au1k_tx_timeout;
- 
-@@ -421,7 +419,7 @@ static inline void
- update_tx_stats(struct net_device *dev, u32 status, u32 pkt_len)
- {
- 	struct au1k_private *aup = netdev_priv(dev);
--	struct net_device_stats *ps = &aup->stats;
-+	struct net_device_stats *ps = &dev->stats;
- 
- 	ps->tx_packets++;
- 	ps->tx_bytes += pkt_len;
-@@ -557,7 +555,7 @@ static inline void
- update_rx_stats(struct net_device *dev, u32 status, u32 count)
- {
- 	struct au1k_private *aup = netdev_priv(dev);
--	struct net_device_stats *ps = &aup->stats;
-+	struct net_device_stats *ps = &dev->stats;
- 
- 	ps->rx_packets++;
- 
-@@ -596,7 +594,7 @@ static int au1k_irda_rx(struct net_device *dev)
- 			update_rx_stats(dev, flags, count);
- 			skb=alloc_skb(count+1,GFP_ATOMIC);
- 			if (skb == NULL) {
--				aup->stats.rx_dropped++;
-+				dev->stats.rx_dropped++;
- 				continue;
- 			}
- 			skb_reserve(skb, 1);
-@@ -833,13 +831,6 @@ au1k_irda_ioctl(struct net_device *dev, struct ifreq *ifreq, int cmd)
- 	return ret;
- }
- 
--
--static struct net_device_stats *au1k_irda_stats(struct net_device *dev)
--{
--	struct au1k_private *aup = netdev_priv(dev);
--	return &aup->stats;
--}
--
- MODULE_AUTHOR("Pete Popov <ppopov@mvista.com>");
- MODULE_DESCRIPTION("Au1000 IrDA Device Driver");
- 
+ The drawback is some implementations behind these functions may sleep,
+for example because hardware is slow to access.  The current calling
+context of update_persistent_clock() (which is the softirq) does not
+permit the function to sleep.  To rectify I have moved the call into the
+process context, but it now means the latency between getnstimeofday() and
+the writeback into the RTC will be yet less predictable and potentially
+higher.  This should not matter in practice, because the RTC generally
+cannot guarantee suitable precision to be a reliable sub-second resolution
+device for providing time while the NTP daemon is not running and one who
+cares about timekeeping will run NTP during normal system operation anyway
+which will correct any inaccuracy gathered from the RTC.  I am mentioning
+it though as I think it should be noted.
 
---------------030305010008050208030004--
+ Individual patches follow, feedback is welcome.  All have been
+successfully tested at the run time with a big-endian 64-bit MIPS
+configuration, using the usual SMP vs non-SMP and PREEMPT vs non-PREEMPT
+configurations, with spinlock, etc. debugging on; no checkpatch.pl nor
+sparse problems either.  They have been successfully built for a 32-bit
+x86 and Alpha configuration as well.
+
+  Maciej

@@ -1,29 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 May 2008 17:04:07 +0100 (BST)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:33724 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S20022145AbYEGQEC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 7 May 2008 17:04:02 +0100
-Received: (qmail 17913 invoked by uid 1000); 7 May 2008 18:03:58 +0200
-Date:	Wed, 7 May 2008 18:03:58 +0200
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/7] Alchemy: dbdma: add api to delete custom ddma devices
-Message-ID: <20080507160358.GC17806@roarinelk.homelinux.net>
-References: <20080507160154.GA17806@roarinelk.homelinux.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080507160154.GA17806@roarinelk.homelinux.net>
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <mano@roarinelk.homelinux.net>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19130
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
-Precedence: bulk
-X-list: linux-mips
+From: Manuel Lauss <mlau@msc-ge.com>
+Date: Wed, 7 May 2008 13:45:23 +0200
+Subject: [PATCH] Alchemy: dbdma: add API to delete custom DDMA device ids.
+Message-ID: <20080507114523.oKPkqBksIk-PBt8UW3uo8H58iYfIMsI2JzjqtMI-YiI@z>
 
+Add API to delete custom DDMA device ids created with
+au1xxx_ddma_device_add(), to avoid filling the ddma id table by repeatedly
+loading/unloading a module using this function.
+
+Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
+---
+ arch/mips/au1000/common/dbdma.c             |   10 ++++++++++
+ include/asm-mips/mach-au1x00/au1xxx_dbdma.h |    1 +
+ 2 files changed, 11 insertions(+), 0 deletions(-)
+
+diff --git a/arch/mips/au1000/common/dbdma.c b/arch/mips/au1000/common/dbdma.c
+index 53377df..69171c6 100644
+--- a/arch/mips/au1000/common/dbdma.c
++++ b/arch/mips/au1000/common/dbdma.c
+@@ -220,6 +220,16 @@ au1xxx_ddma_add_device(dbdev_tab_t *dev)
+ }
+ EXPORT_SYMBOL(au1xxx_ddma_add_device);
+ 
++void au1xxx_ddma_del_device(u32 devid)
++{
++	dbdev_tab_t *p = find_dbdev_id(devid);
++	if (p != NULL) {
++		memset(p, 0, sizeof(dbdev_tab_t));
++		p->dev_id = ~0;
++	}
++}
++EXPORT_SYMBOL(au1xxx_ddma_del_device);
++
+ /* Allocate a channel and return a non-zero descriptor if successful.
+ */
+ u32
+diff --git a/include/asm-mips/mach-au1x00/au1xxx_dbdma.h b/include/asm-mips/mach-au1x00/au1xxx_dbdma.h
+index 93d507c..5e33ff0 100644
+--- a/include/asm-mips/mach-au1x00/au1xxx_dbdma.h
++++ b/include/asm-mips/mach-au1x00/au1xxx_dbdma.h
+@@ -367,6 +367,7 @@ void au1xxx_dbdma_dump(u32 chanid);
+ u32 au1xxx_dbdma_put_dscr(u32 chanid, au1x_ddma_desc_t *dscr );
+ 
+ u32 au1xxx_ddma_add_device( dbdev_tab_t *dev );
++void au1xxx_ddma_del_device(u32 devid);
+ void * au1xxx_ddma_get_nextptr_virt(au1x_ddma_desc_t *dp);
+ 
+ /*
+-- 
+1.5.5.1

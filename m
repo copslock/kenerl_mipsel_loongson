@@ -1,154 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 May 2008 09:59:31 +0100 (BST)
-Received: from zone0.gcu-squad.org ([212.85.147.21]:11592 "EHLO
-	services.gcu-squad.org") by ftp.linux-mips.org with ESMTP
-	id S20025578AbYEHI70 convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 8 May 2008 09:59:26 +0100
-Received: from jdelvare.pck.nerim.net ([62.212.121.182] helo=hyperion.delvare)
-	by services.gcu-squad.org (GCU Mailer Daemon) with esmtpsa id 1Ju2uN-0000VT-23
-	(TLSv1:AES256-SHA:256)
-	(envelope-from <khali@linux-fr.org>)
-	; Thu, 08 May 2008 11:59:27 +0200
-Date:	Thu, 8 May 2008 10:59:05 +0200
-From:	Jean Delvare <khali@linux-fr.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Alessandro Zummo <a.zummo@towertech.it>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	rtc-linux@googlegroups.com, i2c@lm-sensors.org,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC][PATCH 2/4] RTC: SWARM I2C board initialization
-Message-ID: <20080508105905.3209c659@hyperion.delvare>
-In-Reply-To: <Pine.LNX.4.55.0805072145040.25644@cliff.in.clinika.pl>
-References: <Pine.LNX.4.55.0805070031410.16173@cliff.in.clinika.pl>
-	<20080507085953.2c08b854@hyperion.delvare>
-	<Pine.LNX.4.55.0805072145040.25644@cliff.in.clinika.pl>
-X-Mailer: Claws Mail 3.4.0 (GTK+ 2.10.6; x86_64-suse-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8BIT
-Return-Path: <khali@linux-fr.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 May 2008 13:14:37 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:53865 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20021380AbYEHMOe (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 8 May 2008 13:14:34 +0100
+Received: from [192.168.1.234] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 28BF83ECD; Thu,  8 May 2008 05:14:29 -0700 (PDT)
+Message-ID: <4822EE83.9000708@ru.mvista.com>
+Date:	Thu, 08 May 2008 16:13:55 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Pb1000: bury the remnants of the PCI code (part 2)
+References: <200804292333.47099.sshtylyov@ru.mvista.com>
+In-Reply-To: <200804292333.47099.sshtylyov@ru.mvista.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19161
+X-archive-position: 19162
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: khali@linux-fr.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Maciej,
+Hello, I wrote:
 
-On Wed, 7 May 2008 22:13:23 +0100 (BST), Maciej W. Rozycki wrote:
-> Hi Jean,
+> Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+
+> ---
+> Here's the fragment I missed in the initial patch. Combine them if possible...
+
+    So, Ralf, will you apply this patch as is or I need to do something about 
+it (like adding log message)?
+
+>  arch/mips/au1000/pb1000/board_setup.c |    7 -------
+>  1 files changed, 7 deletions(-)
 > 
-> > Minor corrections which would ideally belong to a separate patch
-> > (there's a whole lot more cleanups that could be done in that driver,
-> > BTW...)
+> Index: linux-2.6/arch/mips/au1000/pb1000/board_setup.c
+> ===================================================================
+> --- linux-2.6.orig/arch/mips/au1000/pb1000/board_setup.c
+> +++ linux-2.6/arch/mips/au1000/pb1000/board_setup.c
+> @@ -153,13 +153,6 @@ void __init board_setup(void)
+>  	au_writel(0x280E3D07, MEM_STTIME3); /* 250ns cycle time */
+>  	au_writel(0x10000000, MEM_STADDR3); /* any PCMCIA select */
+>  
+> -#ifdef CONFIG_PCI
+> -	au_writel(0, PCI_BRIDGE_CONFIG); // set extend byte to 0
+> -	au_writel(0, SDRAM_MBAR);        // set mbar to 0
+> -	au_writel(0x2, SDRAM_CMD);       // enable memory accesses
+> -	au_sync_delay(1);
+> -#endif
+> -
+>  	/* Enable Au1000 BCLK switching - note: sed1356 must not use
+>  	 * its BCLK (Au1000 LCLK) for any timings */
+>  	switch (prid & 0x000000FF)
 > 
->  Not suprising, as usually with most pieces of code for the SWARM and the 
-> SiByte SOC.  That can be done gradually, but mixing a driver overhaul with 
-> functional changes usually only results in confusion later on.
 
-I fully agree.
-
-> > I don't think that the minor changes below are enough for you to claim
-> > copyright on that driver.
-> 
->  Well, I decide whether or not to add one based on how important changes
-> are from the piece's of code point of view.  In this case the change is
-> essential for new-style client drivers to work at all, which I think is
-> more important than e.g. a lot of cosmetical changes throughout would be.  
-> But I do not insist on keeping it -- if you think I misjudged on this
-> occasion, I see no problem with discarding it.
-
-If you had to add a missing semicolon to a source file to get it to
-build again, it would be an "essential" change (without it nothing
-works) but still, you can't claim you added any intellectual value to
-the source file. So, no copyright. The copyright is about how much
-value you add, not how important the change is in the big picture.
-
-> > Why do you double the space and the end of comments? Never seen that
-> > before, and I can't see the idea.
-> 
->  This is mostly habitual -- this is what the GNU Coding Standard specifies
-> for comments and which is enforced for GNU software which I have dealt a
-> lot with.
-
-From Documentation/CodingStyle:
-
-"First off, I'd suggest printing out a copy of the GNU coding standards,
-and NOT read it.  Burn them, it's a great symbolic gesture."
-
-I'm not going to tell how bad I think the GNU coding standards are, the
-point here is that we don't follow them at all, so whatever they say is
-totally irrelevant. Read Documentation/CodingStyle, it describes what
-we do. Also make sure that you run your patches through
-scripts/checkpatch.pl. The rest is up to you, but in general, when
-modifying existing code, you want to stick to what the surrounding code
-looks like.
-
->  I think the idea is it improves readability and I tend to
-> agree.  The same goes for using a capital at the beginning and a full stop
-> at the end of sentences in comments -- it improves readability and
-> (together with a good style of code itself) makes the result look more
-> professional.  Certainly well-formatted code is easier to comprehend for 
-> someone looking at it for the first time.
-> 
->  I do not insist on the extraneous space if you have a strong opinion 
-> against though.
-
-I do insist ;) Admittedly, double spaces at end of comments are used in
-some places in the kernel tree (I had never seen that before), but they
-are still outnumbered by single-space ending comments, 50 to 1. Do
-what you want in the drivers your create or maintain, but please don't
-change existing comments, especially not in the middle of functional
-changes.
-
-> > I'm not sure how you intend to push these changes upstream. I would
-> > take a patch only touching drivers/i2c/busses/i2c-sibyte.c in my i2c
-> > tree, however a patch also touching arch code, must be handled be the
-> > maintainer for that architecture or platform.
-> 
->  Andrew has spoken (thank you, Andrew) and I would only like to add an
-> explanation why I have not split this change further.  Certainly it is
-> functionally consistent.  Then adding i2c-swarm.c only breaks things as
-> the onchip buses suddenly get the numbers 2 and 3.  On the other hand, if
-> adding the i2c-sibyte.c change only, it will take a while until it
-> propagates back to the MIPS tree and without that as it is there is no
-> single way to use the whole set of changes as the clock device will not be
-> seen.
-> 
->  If you are scared off by the MIPS-specific Makefile (lib vs obj) changes,
-> then I think they should be reasonably easy to sort out separately in a
-> couple of days as functionally not changing anything.  The only other file
-> in the affected subdirectory that depends on a config option uses
-> CONFIG_KGDB which does not seem to rely on being pulled implicitly by the
-> linker.  But such a mechanical change by itself would make little sense 
-> (don't fix what isn't broken), so I have not pushed it without a 
-> reasonable justification.
-> 
->  Ralf -- what do you think about the Makefile changes?  I can send you a 
-> separate patch which will reduce the span of this one.
-
-That's not a matter of being scared, and I was also _not_ asking you to
-split the patch. That's a matter of synchronizing merges between me and
-the architecture maintainer. If I take a patch in my i2c tree which
-touches architecture-specific files, and I only push it to Linus in 2
-months, then chances are that the architecture-specific files in
-question will change several times meanwhile, resulting in conflicts in
--next and -mm. I am only trying to prevent this from happening. I
-simply think that it is easier to synchronize patches if all
-architecture-specific patches go through the relevant architecture tree.
-
-BTW, SWARM seems to be only one of the 4 SiByte platforms we support.
-What about the other ones? Your changes to the i2c-sibyte driver could
-cause the i2c bus registration to fail, as the other platforms do not
-declare I2C devices, the bus numbers 0 and 1 won't be reserved by
-i2c-core. Care to comment on this?
-
-Thanks,
--- 
-Jean Delvare
+WBR, Sergei

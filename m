@@ -1,224 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 May 2008 05:39:10 +0100 (BST)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:37706 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20022495AbYEHEjI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 8 May 2008 05:39:08 +0100
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [213.58.128.207]) with ESMTP; Thu, 8 May 2008 13:39:06 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 16D3D1EF46;
-	Thu,  8 May 2008 13:39:00 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 0A9C71EF42;
-	Thu,  8 May 2008 13:39:00 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id m484clAF080531;
-	Thu, 8 May 2008 13:38:49 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Thu, 08 May 2008 13:38:47 +0900 (JST)
-Message-Id: <20080508.133847.74565891.nemoto@toshiba-tops.co.jp>
-To:	macro@linux-mips.org
-Cc:	a.zummo@towertech.it, khali@linux-fr.org, ralf@linux-mips.org,
-	tglx@linutronix.de, akpm@linux-foundation.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 May 2008 05:51:25 +0100 (BST)
+Received: from vigor.karmaclothing.net ([217.169.26.28]:19421 "EHLO
+	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
+	id S20022210AbYEHEvX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 8 May 2008 05:51:23 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m484p8cn001412;
+	Thu, 8 May 2008 05:51:08 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m484p6Ob001399;
+	Thu, 8 May 2008 05:51:06 +0100
+Date:	Thu, 8 May 2008 05:51:06 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Jean Delvare <khali@linux-fr.org>,
+	Alessandro Zummo <a.zummo@towertech.it>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	rtc-linux@googlegroups.com, i2c@lm-sensors.org,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-	ab@mycable.de, mgreer@mvista.com
-Subject: Re: [RFC][PATCH 4/4] RTC: SMBus support for the M41T80, etc. driver
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <Pine.LNX.4.55.0805070102460.16173@cliff.in.clinika.pl>
-References: <Pine.LNX.4.55.0805070102460.16173@cliff.in.clinika.pl>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC][PATCH 2/4] RTC: SWARM I2C board initialization
+Message-ID: <20080508045106.GB25531@linux-mips.org>
+References: <Pine.LNX.4.55.0805070031410.16173@cliff.in.clinika.pl> <20080507085953.2c08b854@hyperion.delvare> <Pine.LNX.4.55.0805072145040.25644@cliff.in.clinika.pl>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.55.0805072145040.25644@cliff.in.clinika.pl>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19145
+X-archive-position: 19146
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Added CC to authers of the driver.
+On Wed, May 07, 2008 at 10:13:23PM +0100, Maciej W. Rozycki wrote:
 
-On Wed, 7 May 2008 01:40:41 +0100 (BST), "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
->  The BCM1250A SOC which is used on the SWARM board utilising an M41T81
-> chip only supports pure I2C in the raw bit-banged mode.  Nobody sane
-> really wants to use it unless absolutely necessary and the M41T80, etc.  
-> chips work just fine with an SMBus controller which is what the standard
-> mode of operation of the BCM1250A.  The only drawback of byte accesses
-> with the M41T80 is the chip only latches clock data registers for the
-> duration of an I2C transaction which works fine with a block transfers,
-> but not byte-wise accesses.
-> 
->  The driver currently requires an I2C controller providing both SMBus and
-> pure I2C access.  This is a set of changes to make it work with either,
-> with a preference to pure I2C.  The problem of unlatched clock data if
-> SMBus transactions are used is resolved in the standard way.
-> 
->  Whether a choice between SMBus and pure I2C access is possible is 
-> obviously device dependent.  If the code proved useful for other I2C 
-> devices, then it could be moved to a more generic place.  It is a code
-> simplification regardless -- similar I2C packet definitions are not 
-> scattered throughout the driver anymore.
-> 
-> Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
-> ---
->  Please note I have no means to test these changes with a pure I2C 
-> controller -- anybody interested, please help.
+>  Ralf -- what do you think about the Makefile changes?  I can send you a 
+> separate patch which will reduce the span of this one.
 
-I tested this with i2c-gpio.  It needs some fix.  Detailed below.
+I like it; we maybe should consider getting rid of most of the libs-* stuff
+in arch/mips/Makefile.  Some of it might be causing subtle bugs such as
+routines exported to modules not getting linked into the kernel proper.
 
-> -static int m41t80_get_datetime(struct i2c_client *client,
-> -			       struct rtc_time *tm)
-> +
-> +static int m41t80_i2c_transfer(struct i2c_client *client, int write,
-> +			       u8 reg, u8 num, u8 *buf)
->  {
-> -	u8 buf[M41T80_DATETIME_REG_SIZE], dt_addr[1] = { M41T80_REG_SEC };
->  	struct i2c_msg msgs[] = {
->  		{
->  			.addr	= client->addr,
->  			.flags	= 0,
->  			.len	= 1,
-> -			.buf	= dt_addr,
-> +			.buf	= &reg,
->  		},
->  		{
->  			.addr	= client->addr,
-> -			.flags	= I2C_M_RD,
-> -			.len	= M41T80_DATETIME_REG_SIZE - M41T80_REG_SEC,
-> -			.buf	= buf + M41T80_REG_SEC,
-> +			.flags	= write ? 0 : I2C_M_RD,
-> +			.len	= num,
-> +			.buf	= buf,
->  		},
->  	};
->  
-> -	if (i2c_transfer(client->adapter, msgs, 2) < 0) {
-> -		dev_err(&client->dev, "read error\n");
-> -		return -EIO;
-> +	return i2c_transfer(client->adapter, msgs, 2);
-> +}
-
-For write transfer, you must use only one i2c_msg.  If two i2c_msg
-were used, the slave address is inserted between register number and
-first data.  This chip cannot accept such sequence.
-
-> +static int m41t80_transfer(struct i2c_client *client, int write,
-> +			   u8 reg, u8 num, u8 *buf)
-> +{
-> +	int i, rc;
-> +
-> +	if (i2c_check_functionality(client->adapter, I2C_FUNC_I2C))
-> +		return m41t80_i2c_transfer(client, write, reg, num, buf);
-
-On success, m41t80_i2c_transfer() returns positive value, but
-m41t80_transfer() should return 0.
-
-
-Here is a proposed fix on top of your patch.
-
---- drivers/rtc/rtc-m41t80.c.orig	2008-05-08 11:08:57.000000000 +0900
-+++ drivers/rtc/rtc-m41t80.c	2008-05-08 12:30:49.000000000 +0900
-@@ -83,8 +83,8 @@ struct m41t80_data {
- };
- 
- 
--static int m41t80_i2c_transfer(struct i2c_client *client, int write,
--			       u8 reg, u8 num, u8 *buf)
-+static int m41t80_i2c_read_transfer(struct i2c_client *client,
-+				    u8 reg, u8 num, u8 *buf)
- {
- 	struct i2c_msg msgs[] = {
- 		{
-@@ -95,7 +95,7 @@ static int m41t80_i2c_transfer(struct i2
- 		},
- 		{
- 			.addr	= client->addr,
--			.flags	= write ? 0 : I2C_M_RD,
-+			.flags	= I2C_M_RD,
- 			.len	= num,
- 			.buf	= buf,
- 		},
-@@ -104,13 +104,29 @@ static int m41t80_i2c_transfer(struct i2
- 	return i2c_transfer(client->adapter, msgs, 2);
- }
- 
-+static int m41t80_i2c_write_transfer(struct i2c_client *client,
-+				     u8 reg, u8 num, u8 *buf)
-+{
-+	u8 wbuf[M41T80_DATETIME_REG_SIZE + 1];
-+	struct i2c_msg msg = {
-+		.addr	= client->addr,
-+		.flags	= 0,
-+		.len	= num + 1,
-+		.buf	= wbuf,
-+	};
-+
-+	wbuf[0] = reg;
-+	memcpy(wbuf + 1, buf, num);
-+	return i2c_transfer(client->adapter, &msg, 1);
-+}
-+
- static int m41t80_read_byte_data(struct i2c_client *client, u8 reg)
- {
- 	int rc;
- 	u8 val;
- 
- 	if (i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
--		rc = m41t80_i2c_transfer(client, 0, reg, 1, &val);
-+		rc = m41t80_i2c_read_transfer(client, reg, 1, &val);
- 		if (rc < 0)
- 			return rc;
- 		else
-@@ -122,7 +138,7 @@ static int m41t80_read_byte_data(struct 
- static int m41t80_write_byte_data(struct i2c_client *client, u8 reg, u8 val)
- {
- 	if (i2c_check_functionality(client->adapter, I2C_FUNC_I2C))
--		return m41t80_i2c_transfer(client, 1, reg, 1, &val);
-+		return m41t80_i2c_write_transfer(client, reg, 1, &val);
- 	else
- 		return i2c_smbus_write_byte_data(client, reg, val);
- }
-@@ -132,16 +148,20 @@ static int m41t80_transfer(struct i2c_cl
- {
- 	int i, rc;
- 
--	if (i2c_check_functionality(client->adapter, I2C_FUNC_I2C))
--		return m41t80_i2c_transfer(client, write, reg, num, buf);
--	else if (write) {
-+	if (i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
-+		if (write)
-+			rc = m41t80_i2c_write_transfer(client, reg, num, buf);
-+		else
-+			rc = m41t80_i2c_read_transfer(client, reg, num, buf);
-+		if (rc < 0)
-+			return rc;
-+	} else if (write) {
- 		for (i = 0; i < num; i++) {
- 			rc = i2c_smbus_write_byte_data(client, reg + i,
- 						       buf[i]);
- 			if (rc < 0)
- 				return rc;
- 		}
--		return 0;
- 	} else {
- 		for (i = 0; i < num; i++) {
- 			rc = i2c_smbus_read_byte_data(client, reg + i);
-@@ -149,8 +169,8 @@ static int m41t80_transfer(struct i2c_cl
- 				return rc;
- 			buf[i] = rc;
- 		}
--		return 0;
- 	}
-+	return 0;
- }
- 
- static int m41t80_get_datetime(struct i2c_client *client, struct rtc_time *tm)
+  Ralf

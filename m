@@ -1,69 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 May 2008 08:38:52 +0100 (BST)
-Received: from mail.gmx.net ([213.165.64.20]:12490 "HELO mail.gmx.net")
-	by ftp.linux-mips.org with SMTP id S20021650AbYEHHit convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 8 May 2008 08:38:49 +0100
-Received: (qmail invoked by alias); 08 May 2008 07:38:43 -0000
-Received: from unknown (EHLO localhost) [86.56.122.148]
-  by mail.gmx.net (mp023) with SMTP; 08 May 2008 09:38:43 +0200
-X-Authenticated: #2913508
-X-Provags-ID: V01U2FsdGVkX1/KproR/mPKll64QaAnAinpz/1cB9THNuTiq1PVQt
-	N3YiqB7kQzHsbL
-Date:	Thu, 08 May 2008 09:38:41 +0200
-To:	abhiruchi.g@vaultinfo.com
-Subject: Re: Alchemy DB1200
-From:	"Thorsten Schulz" <stehbrettsegeln@gmx.de>
-Cc:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=utf-8
-MIME-Version: 1.0
-References: <40369.192.168.1.71.1210230665.webmail@192.168.1.71>
-Content-Transfer-Encoding: 8BIT
-Message-ID: <op.uatrirwg33s53m@localhost>
-In-Reply-To: <40369.192.168.1.71.1210230665.webmail@192.168.1.71>
-User-Agent: Opera Mail/9.27 (Linux)
-X-Y-GMX-Trusted: 0
-Return-Path: <stehbrettsegeln@gmx.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 May 2008 08:57:17 +0100 (BST)
+Received: from zone0.gcu-squad.org ([212.85.147.21]:18297 "EHLO
+	services.gcu-squad.org") by ftp.linux-mips.org with ESMTP
+	id S20022549AbYEHH5P (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 8 May 2008 08:57:15 +0100
+Received: from jdelvare.pck.nerim.net ([62.212.121.182] helo=hyperion.delvare)
+	by services.gcu-squad.org (GCU Mailer Daemon) with esmtpsa id 1Ju1wF-0005Rg-Ag
+	(TLSv1:AES256-SHA:256)
+	(envelope-from <khali@linux-fr.org>)
+	; Thu, 08 May 2008 10:57:19 +0200
+Date:	Thu, 8 May 2008 09:56:58 +0200
+From:	Jean Delvare <khali@linux-fr.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Alessandro Zummo <a.zummo@towertech.it>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	rtc-linux@googlegroups.com, i2c@lm-sensors.org,
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+	David Brownell <david-b@pacbell.net>
+Subject: Re: [RFC][PATCH 2/4] RTC: SWARM I2C board initialization
+Message-ID: <20080508095658.40eb74f4@hyperion.delvare>
+In-Reply-To: <Pine.LNX.4.55.0805072214090.25644@cliff.in.clinika.pl>
+References: <Pine.LNX.4.55.0805070031410.16173@cliff.in.clinika.pl>
+	<20080507090514.3a86cf4b@hyperion.delvare>
+	<Pine.LNX.4.64.0805070936060.6341@anakin>
+	<20080507094343.25f279b9@hyperion.delvare>
+	<Pine.LNX.4.55.0805072214090.25644@cliff.in.clinika.pl>
+X-Mailer: Claws Mail 3.4.0 (GTK+ 2.10.6; x86_64-suse-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <khali@linux-fr.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19149
+X-archive-position: 19150
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: stehbrettsegeln@gmx.de
+X-original-sender: khali@linux-fr.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Hi Maciej,
 
-do you actually have that console device on your usb-stick?
+On Wed, 7 May 2008 22:25:08 +0100 (BST), Maciej W. Rozycki wrote:
+> > i2c-foo.c is consistently used for i2c bus driver themselves so far.
+> > It's somewhat confusing to see you name platform code that way. It's
+> > also redundant, given that the file lives in the swarm platform
+> > directory. May I suggest naming this file just
+> > arch/mips/sibyte/swarm/i2c.c? Other architectures (cris, arm) are doing
+> > this already.
+>
+>  I can do that and I have considered it while preparing the change.  What
+> convinced me not to use a name that is already present elsewhere in the
+> tree is the confusion that it sometimes causes.  For example during a
+> debugging session GDB only reports the file name and not the leading
+> pathname (and some people do run GDB over the kernel).  Of course the
+> actual file can still be chased with some `find' and `grep' scriptery, but
+> why to create a problem in the first place?
+>
+>  I consider repeated file names throughout a tree of a single program a 
+> namespace pollution similar to one with repeated static symbol names.  
+> While syntactically valid and working, it asks for unnecessary confusion.
 
-mknod -m 0600 /path/to/stick/dev/console c 5 1
-mknod -m 0777 /path/to/stick/mnt/dev/null c 1 3
+$ find linux-2.6.26-rc1 -name Kconfig | wc -l
+455
+$ find linux-2.6.26-rc1 -name Makefile | wc -l
+1030
+$
 
-Thorsten
+Not to mention the 102 setup.c, 87 irq.c, 62 time.c... It is very
+common to have duplicated file names in the kernel tree because it
+supports so many architectures and platforms. In general, when you work
+on a given architecture or platform, names become unique again. Taking
+GDB as an example again, you definitely know what architecture you are
+debugging, so there should be relatively little ambiguity on what files
+are involved.
 
-PS btw. could you mail me your config/initramfslist/init how you got the kernel to boot the rootfs from usb, i never managed to. I am working on an au1550 system thats mtd-flash has problems with recent kernels.
+(On top of that, I'd argue that we _should_ be able to display relative
+paths to file names when debugging.)
 
-On Thu, 08 May 2008 09:11:05 +0200, <abhiruchi.g@vaultinfo.com> wrote:
+Your point about the "single program namespace" is certainly valid for
+small to medium-size programs, but in the case of something as big as
+the kernel, it probably no longer holds.
 
-> I am trying to build kernel for DB1200 board.
-> but kernel hangs after the following output:
+>  This is my point of view, but I can see others may not necessarily follow
+> it.  I am fine with changing the name to i2c.c as it is unlikely I will
+> run GDB over it. ;-)
 
-> Waiting 10sec before mounting root device...
-> scsi 0:0:0:0: Direct-Access     Ut163    USB2FlashStorage 0.00 PQ: 0 ANSI: 2
-> sd 0:0:0:0: [sda] 983808 512-byte hardware sectors (504 MB)
-> sd 0:0:0:0: [sda] Write Protect is off
-> sd 0:0:0:0: [sda] Assuming drive cache: write through
-> sd 0:0:0:0: [sda] 983808 512-byte hardware sectors (504 MB)
-> sd 0:0:0:0: [sda] Write Protect is off
-> sd 0:0:0:0: [sda] Assuming drive cache: write through
-> sda:<7>usb-storage: queuecommand called
-> sda1
-> sd 0:0:0:0: [sda] Attached SCSI removable disk
-> sd 0:0:0:0: Attached scsi generic sg0 type 0
-> VFS: Mounted root (ext2 filesystem) readonly.
-> mount_block_root: name=/dev/root fs=ext2 flags=32769
-> Freeing unused kernel memory: 164k freed
-> Warning: unable to open an initial console.
-> Algorithmics/MIPS FPU Emulator v1.5
+I don't have a strong opinion on this either, it is very unlikely that
+I'll ever have to deal with this file personally. I'm only telling you
+what the common practice is in the kernel tree.
+
+-- 
+Jean Delvare

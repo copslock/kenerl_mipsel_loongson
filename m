@@ -1,40 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2008 00:59:14 +0100 (BST)
-Received: from p549F5155.dip.t-dialin.net ([84.159.81.85]:62128 "EHLO
-	p549F5155.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
-	id S20045980AbYE2IU4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 29 May 2008 09:20:56 +0100
-Received: from smtp187.iad.emailsrvr.com ([207.97.245.187]:63935 "EHLO
-	smtp187.iad.emailsrvr.com") by lappi.linux-mips.net with ESMTP
-	id S1108563AbYE2Fd4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 29 May 2008 07:33:56 +0200
-Received: from relay8.relay.iad.mlsrvr.com (localhost [127.0.0.1])
-	by relay8.relay.iad.mlsrvr.com (SMTP Server) with ESMTP id 5EA9E1B5ACF;
-	Thu, 29 May 2008 01:33:53 -0400 (EDT)
-Received: from vaultinfo.com (webmail11.webmail.iad.mlsrvr.com [192.168.1.31])
-	by relay8.relay.iad.mlsrvr.com (SMTP Server) with ESMTP id 57D0C1B5AEE;
-	Thu, 29 May 2008 01:33:53 -0400 (EDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2008 01:06:34 +0100 (BST)
+Received: from p549F6826.dip.t-dialin.net ([84.159.104.38]:19387 "EHLO
+	p549F6826.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
+	id S28590401AbYE1VFy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 28 May 2008 22:05:54 +0100
+Received: from smtp117.iad.emailsrvr.com ([207.97.245.117]:13721 "EHLO
+	smtp117.iad.emailsrvr.com") by lappi.linux-mips.net with ESMTP
+	id S528764AbYEHIby convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 8 May 2008 10:31:54 +0200
+Received: from relay1.r1.iad.emailsrvr.com (localhost [127.0.0.1])
+	by relay1.r1.iad.emailsrvr.com (SMTP Server) with ESMTP id 2265444C261;
+	Thu,  8 May 2008 04:30:51 -0400 (EDT)
+Received: from vaultinfo.com (webmail4.r2.iad.emailsrvr.com [192.168.1.12])
+	by relay1.r1.iad.emailsrvr.com (SMTP Server) with ESMTP id 1B96644C207;
+	Thu,  8 May 2008 04:30:51 -0400 (EDT)
 Received: by webmail.mailsin.net
     (Authenticated sender: abhiruchi.g@vaultinfo.com, from: abhiruchi.g@vaultinfo.com) 
-    with HTTP; Thu, 29 May 2008 01:33:53 -0400 (EDT)
-Date:	Thu, 29 May 2008 01:33:53 -0400 (EDT)
-Subject: mips problem:-usb 1-1.3: rejected 1 configuration due to insufficient available bus power
+    with HTTP; Thu, 8 May 2008 04:30:51 -0400 (EDT)
+Date:	Thu, 8 May 2008 04:30:51 -0400 (EDT)
+Subject: 
 From:	abhiruchi.g@vaultinfo.com
-To:	"kernel-testers" <kernel-testers@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+To:	stehbrettsegeln@gmx.de
+Cc:	linux-mips@linux-mips.org
 Reply-To: abhiruchi.g@vaultinfo.com
 MIME-Version: 1.0
-Content-Type: multipart/alternative;boundary="----=_20080529013353_71167"
+Content-Type: text/plain;charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Importance: Normal
 X-Priority: 3 (Normal)
-X-Type:	2
-Message-ID: <46996.192.168.1.35.1212039233.webmail@192.168.1.35>
+X-Type:	1
+Message-ID: <58354.192.168.1.71.1210235451.webmail@192.168.1.71>
 X-Mailer: webmail6.6.1
 Return-Path: <abhiruchi.g@vaultinfo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19374
+X-archive-position: 19375
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -42,28 +42,52 @@ X-original-sender: abhiruchi.g@vaultinfo.com
 Precedence: bulk
 X-list: linux-mips
 
-------=_20080529013353_71167
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Hi,
+   Thanks for the reply.
+   I am using the default initramfs given in usr directory of source code.
 
-hi,=0A  I am getting the problem for Alchemy Board DB1200 (linux-2.6.22)=0A=
-=0Ahow to solve this :=0A=0A=0A=0A=09=0A=09=0A=09=0A=09=0A=09=0A=09=0A=0A=
-=0Ausb 1-1.3: new full speed=0AUSB device using au1xxx-ehci and address 6=
-=0A=0Ausb 1-1.3: rejected 1 configuration due=0Ato insufficient available b=
-us power=0A=0Ausb 1-1.3: no configuration chosen from=0A1 choice=0A=0A
-------=_20080529013353_71167
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Actually I copied linux image to SD card and ext2fs to SCSI device. I passed one of kernel parameters as root=/dev/sda1.
+thats why It is getting detected.
+ 
+I am the new one. so do know much.
 
-<font face=3D"arial" size=3D"2">hi,<br>&nbsp; I am getting the problem for =
-Alchemy Board DB1200 (linux-2.6.22)<br><br>how to solve this :<br>=0A=0A=0A=
-=09<meta http-equiv=3D"CONTENT-TYPE" content=3D"text/html; charset=3Dutf-8"=
-><title></title><meta name=3D"GENERATOR" content=3D"OpenOffice.org 2.3  (Li=
-nux)">=0A=09=0A=09=0A=09<style type=3D"text/css">=0A=09<!--=0A=09=09@page {=
- size: 8.5in 11in; margin: 0.79in }=0A=09=09P { margin-bottom: 0.08in }=0A=
-=09-->=0A=09</style>=0A=0A<p style=3D"margin-bottom: 0in;">usb 1-1.3: new f=
-ull speed=0AUSB device using au1xxx-ehci and address 6</p>=0A<p style=3D"ma=
-rgin-bottom: 0in;">usb 1-1.3: rejected 1 configuration due=0Ato insufficien=
-t available bus power</p>=0A<p style=3D"margin-bottom: 0in;">usb 1-1.3: no =
-configuration chosen from=0A1 choice</p>=0A<br></font>
-------=_20080529013353_71167--
+-----Original Message-----
+From: Thorsten Schulz <stehbrettsegeln@gmx.de>
+Sent: Thursday, May 8, 2008 3:38am
+To: abhiruchi.g@vaultinfo.com
+Cc: linux-mips@linux-mips.org <linux-mips@linux-mips.org>
+Subject: Re: Alchemy DB1200
+
+Hi,
+
+do you actually have that console device on your usb-stick?
+
+mknod -m 0600 /path/to/stick/dev/console c 5 1
+mknod -m 0777 /path/to/stick/mnt/dev/null c 1 3
+
+Thorsten
+
+PS btw. could you mail me your config/initramfslist/init how you got the kernel to boot the rootfs from usb, i never managed to. I am working on an au1550 system thats mtd-flash has problems with recent kernels.
+
+On Thu, 08 May 2008 09:11:05 +0200, <abhiruchi.g@vaultinfo.com> wrote:
+
+> I am trying to build kernel for DB1200 board.
+> but kernel hangs after the following output:
+
+> Waiting 10sec before mounting root device...
+> scsi 0:0:0:0: Direct-Access     Ut163    USB2FlashStorage 0.00 PQ: 0 ANSI: 2
+> sd 0:0:0:0: [sda] 983808 512-byte hardware sectors (504 MB)
+> sd 0:0:0:0: [sda] Write Protect is off
+> sd 0:0:0:0: [sda] Assuming drive cache: write through
+> sd 0:0:0:0: [sda] 983808 512-byte hardware sectors (504 MB)
+> sd 0:0:0:0: [sda] Write Protect is off
+> sd 0:0:0:0: [sda] Assuming drive cache: write through
+> sda:<7>usb-storage: queuecommand called
+> sda1
+> sd 0:0:0:0: [sda] Attached SCSI removable disk
+> sd 0:0:0:0: Attached scsi generic sg0 type 0
+> VFS: Mounted root (ext2 filesystem) readonly.
+> mount_block_root: name=/dev/root fs=ext2 flags=32769
+> Freeing unused kernel memory: 164k freed
+> Warning: unable to open an initial console.
+> Algorithmics/MIPS FPU Emulator v1.5

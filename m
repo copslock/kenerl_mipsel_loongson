@@ -1,54 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2008 01:18:08 +0100 (BST)
-Received: from kirk.serum.com.pl ([213.77.9.205]:60412 "EHLO serum.com.pl")
-	by ftp.linux-mips.org with ESMTP id S20023576AbYEIASG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 9 May 2008 01:18:06 +0100
-Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
-	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m490HbsK006475;
-	Fri, 9 May 2008 02:17:37 +0200
-Received: from localhost (macro@localhost)
-	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m490HMcN006468;
-	Fri, 9 May 2008 01:17:23 +0100
-Date:	Fri, 9 May 2008 01:17:21 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-cc:	a.zummo@towertech.it, khali@linux-fr.org, ralf@linux-mips.org,
-	tglx@linutronix.de, akpm@linux-foundation.org,
-	rtc-linux@googlegroups.com, i2c@lm-sensors.org,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-	ab@mycable.de, mgreer@mvista.com
-Subject: Re: [RFC][PATCH 4/4] RTC: SMBus support for the M41T80, etc. driver
-In-Reply-To: <20080508.133847.74565891.nemoto@toshiba-tops.co.jp>
-Message-ID: <Pine.LNX.4.55.0805090054300.5944@cliff.in.clinika.pl>
-References: <Pine.LNX.4.55.0805070102460.16173@cliff.in.clinika.pl>
- <20080508.133847.74565891.nemoto@toshiba-tops.co.jp>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2008 01:41:26 +0100 (BST)
+Received: from smtp.sprintpcs.com ([68.28.27.84]:47236 "EHLO
+	mta02.smtp.sprintpcs.com") by ftp.linux-mips.org with ESMTP
+	id S20024779AbYEIAlX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 9 May 2008 01:41:23 +0100
+Received: from [192.168.1.100] ([67.169.24.75])
+ by lswsmta02.nmcc.sprintspectrum.com
+ (iPlanet Messaging Server 5.2 HotFix 2.06 (built Mar 28 2005))
+ with ESMTPA id <0K0K007QGSKCCS@lswsmta02.nmcc.sprintspectrum.com> for
+ linux-mips@linux-mips.org; Thu, 08 May 2008 19:41:01 -0500 (CDT)
+Date:	Thu, 08 May 2008 17:41:02 -0700
+From:	David VomLehn <vomlehn@texas.net>
+Subject: Re: Alchemy DB1200: do_cpu()
+To:	abhiruchi.g@vaultinfo.com
+Cc:	linux-mips@linux-mips.org
+Message-id: <48239D9E.8040207@texas.net>
+MIME-version: 1.0
+Content-type: text/plain; charset=ISO-8859-1; format=flowed
+Content-transfer-encoding: 7BIT
+User-Agent: Thunderbird 2.0.0.14 (Windows/20080421)
+Return-Path: <vomlehn@texas.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19169
+X-archive-position: 19170
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: vomlehn@texas.net
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 8 May 2008, Atsushi Nemoto wrote:
+>
+> I am not able to find out:
+>
+>   From which function and which file "do_cpu()" is called?
+Look in arch/mips/entry.S, line 414, or so. The assembler macro 
+BUILD_HANDLER is used to create a function named handle_cpu, which does 
+a jump to do_cpu.
 
-> For write transfer, you must use only one i2c_msg.  If two i2c_msg
-> were used, the slave address is inserted between register number and
-> first data.  This chip cannot accept such sequence.
-
- Correct, thank you for pointing it out -- verified with the datasheet.  I 
-will send an updated patch separately taking other suggestions into 
-account as well.
-
-> On success, m41t80_i2c_transfer() returns positive value, but
-> m41t80_transfer() should return 0.
-
- I think the check should be for values below zero as originally instead.  
-Thanks for the point again.
-
-  Maciej
+-- 
+David VomLehn         +1 512-297-7814
+vomlehn@texas.net

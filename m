@@ -1,31 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2008 08:28:54 +0100 (BST)
-Received: from zone0.gcu-squad.org ([212.85.147.21]:34163 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2008 09:09:03 +0100 (BST)
+Received: from zone0.gcu-squad.org ([212.85.147.21]:15128 "EHLO
 	services.gcu-squad.org") by ftp.linux-mips.org with ESMTP
-	id S20023171AbYEIH2v (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 9 May 2008 08:28:51 +0100
+	id S20023433AbYEIIJA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 9 May 2008 09:09:00 +0100
 Received: from jdelvare.pck.nerim.net ([62.212.121.182] helo=hyperion.delvare)
-	by services.gcu-squad.org (GCU Mailer Daemon) with esmtpsa id 1JuNyM-0003US-J9
+	by services.gcu-squad.org (GCU Mailer Daemon) with esmtpsa id 1JuOb9-0003iq-VO
 	(TLSv1:AES256-SHA:256)
 	(envelope-from <khali@linux-fr.org>)
-	; Fri, 09 May 2008 10:28:58 +0200
-Date:	Fri, 9 May 2008 09:28:35 +0200
+	; Fri, 09 May 2008 11:09:04 +0200
+Date:	Fri, 9 May 2008 10:08:41 +0200
 From:	Jean Delvare <khali@linux-fr.org>
 To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Alessandro Zummo <a.zummo@towertech.it>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	rtc-linux@googlegroups.com, i2c@lm-sensors.org,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-	David Brownell <david-b@pacbell.net>
-Subject: Re: [RFC][PATCH 2/4] RTC: SWARM I2C board initialization
-Message-ID: <20080509092835.3bbf0f55@hyperion.delvare>
-In-Reply-To: <Pine.LNX.4.55.0805082344040.5944@cliff.in.clinika.pl>
-References: <Pine.LNX.4.55.0805070031410.16173@cliff.in.clinika.pl>
-	<20080507085953.2c08b854@hyperion.delvare>
-	<Pine.LNX.4.55.0805072145040.25644@cliff.in.clinika.pl>
-	<20080508105905.3209c659@hyperion.delvare>
-	<Pine.LNX.4.55.0805082344040.5944@cliff.in.clinika.pl>
+Cc:	David Brownell <david-b@pacbell.net>, linux-mips@linux-mips.org,
+	mgreer@mvista.com, rtc-linux@googlegroups.com,
+	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+	linux-kernel@vger.kernel.org, i2c@lm-sensors.org, ab@mycable.de,
+	Alessandro Zummo <alessandro.zummo@towertech.it>
+Subject: Re: [i2c] [RFC][PATCH 4/4] RTC: SMBus support for the M41T80,
+Message-ID: <20080509100841.151eabcd@hyperion.delvare>
+In-Reply-To: <Pine.LNX.4.55.0805080306080.32613@cliff.in.clinika.pl>
+References: <200805070120.03821.david-b@pacbell.net>
+	<Pine.LNX.4.55.0805072226180.25644@cliff.in.clinika.pl>
+	<200805071625.20430.david-b@pacbell.net>
+	<Pine.LNX.4.55.0805080306080.32613@cliff.in.clinika.pl>
 X-Mailer: Claws Mail 3.4.0 (GTK+ 2.10.6; x86_64-suse-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -34,7 +31,7 @@ Return-Path: <khali@linux-fr.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19174
+X-archive-position: 19175
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,81 +41,323 @@ X-list: linux-mips
 
 Hi Maciej,
 
-On Fri, 9 May 2008 00:10:47 +0100 (BST), Maciej W. Rozycki wrote:
-> > I'm not going to tell how bad I think the GNU coding standards are, the
-> > point here is that we don't follow them at all, so whatever they say is
-> > totally irrelevant. Read Documentation/CodingStyle, it describes what
+On Fri, 9 May 2008 01:43:32 +0100 (BST), Maciej W. Rozycki wrote:
+>  Please do not remove other lists cc-ed as there are people interested in 
+> this piece of hardware who are neither on i2c nor on rtc-linux (I am on 
+> neither of the lists too).
+
+Maybe you shouldn't have included 4 different mailing lists to start
+with, especially for a patch which is rather hardware-specific and not
+overly important.
+
+> > >  Do you mean our generic I2C code emulates SMBus calls if the hardware
+> > > does not support them directly?  Well, it looks to me it indeed does and
+> > > you are right, but I have assumed, perhaps mistakenly, (but I generally
+> > > trust if a piece of code is there, it is for a reason), that this driver
+> > > checks for I2C_FUNC_SMBUS_BYTE_DATA for a purpose.
+> > 
+> > That purpose being:  it makes those SMBus calls explicitly.
+> > (And it makes i2c_transfer calls explicitly too...)
 > 
->  Oh come on -- that's just common sense.  If something is good, there is
-> no point in discarding it without thinking, just because it is a part of a
-> bigger entity that we consider bad.  I consider it good not because it is
-> a part of the GNU standard, but because I have concluded that it is and it
-> is pure coincidence ;-) I have taken it from the said standard.
+>  Then, given the emulation, the client should be satisfied with either of
+> the flags instead of both at a time.  Exactly how I changed it.
 
-Let me just quote you:
+You're going in the right direction, but it's not yet correct.
 
-"This is mostly habitual -- this is what the GNU Coding Standard specifies
-for comments and which is enforced for GNU software which I have dealt a
-lot with."
+>  But as Atsushi-san pointed out, the block transfer transactions
+> implemented by the M41T81 do not quite follow the rules of SMBus block
+> transfers, so the call is out of question -- either i2c_transfer() or a
+> sequence of byte transactions have to be used.
 
-You didn't say it was common sense. You did say that it was what the
-GNU Coding Standard specified, and as a consequence, what you were used
-to. So please keep your "oh come on" for yourself, you pointed the
-discussion in this direction yourself.
-
->                                                                   But as I
-> said, this is a minor nit here and I can resist from adding extraneous
-> spaces in pieces of code you are interested in as long as I am able to
-> track which ones they actually are.
-
-What matters is not "the pieces of code I am interested in", but the
-pieces of code _you_ are the master of, or not. As explained somewhere
-else in this thread, you are free to use whatever style you like (as
-long as it complies with Documentation/CodingStyle, that is) in new
-code you write and in code you maintain. For all the rest, you should
-stick to the surrounding style. This is common sense, as you'd say.
+As I already wrote, what the M41T81 wants is _I2C_ block transactions,
+not _SMBus_ block transactions. Both are supported by i2c-core, it's
+just a matter of checking the right functionality flag and calling the
+right helper function.
 
 > (...)
->  Well, arch/mips/sibyte/swarm/ is included for all the three above as well 
-> as a couple of other I may not necessarily be sure what they are even.  So 
-> this should be of no concern.
+>  Here is a new version of the patch.  I hope I have addressed all your
+> concerns, but I am officially dead at the moment, so please do not disturb
+> me until this is no longer the case.
 > 
->  BTW, do you mean i2c_add_numbered_adapter() will fail if no devices have
-> been declared to exist on the given bus with i2c_register_board_info()?  
-> That sounds strange...
+>   Maciej
+> 
+> patch-2.6.26-rc1-20080505-m41t80-smbus-13
+> diff -up --recursive --new-file linux-2.6.26-rc1-20080505.macro/drivers/rtc/rtc-m41t80.c linux-2.6.26-rc1-20080505/drivers/rtc/rtc-m41t80.c
+> --- linux-2.6.26-rc1-20080505.macro/drivers/rtc/rtc-m41t80.c	2008-05-05 02:55:40.000000000 +0000
+> +++ linux-2.6.26-rc1-20080505/drivers/rtc/rtc-m41t80.c	2008-05-09 00:32:39.000000000 +0000
+> @@ -6,6 +6,8 @@
+>   * Based on m41t00.c by Mark A. Greer <mgreer@mvista.com>
+>   *
+>   * 2006 (c) mycable GmbH
+> + * Copyright (c) 2008  Maciej W. Rozycki
+> + * Copyright (c) 2008  Atsushi Nemoto
+>   *
+>   * This program is free software; you can redistribute it and/or modify
+>   * it under the terms of the GNU General Public License version 2 as
+> @@ -15,6 +17,7 @@
+>  
+>  #include <linux/module.h>
+>  #include <linux/init.h>
+> +#include <linux/kernel.h>
+>  #include <linux/slab.h>
+>  #include <linux/string.h>
+>  #include <linux/i2c.h>
+> @@ -36,6 +39,8 @@
+>  #define M41T80_REG_DAY	5
+>  #define M41T80_REG_MON	6
+>  #define M41T80_REG_YEAR	7
+> +#define M41T80_REG_CONTROL	8
+> +#define M41T80_REG_WATCHDOG	9
+>  #define M41T80_REG_ALARM_MON	0xa
+>  #define M41T80_REG_ALARM_DAY	0xb
+>  #define M41T80_REG_ALARM_HOUR	0xc
+> @@ -58,7 +63,7 @@
+>  #define M41T80_FEATURE_HT	(1 << 0)
+>  #define M41T80_FEATURE_BL	(1 << 1)
+>  
+> -#define DRV_VERSION "0.05"
+> +#define DRV_VERSION "0.06"
+>  
+>  static const struct i2c_device_id m41t80_id[] = {
+>  	{ "m41t80", 0 },
+> @@ -78,31 +83,104 @@ struct m41t80_data {
+>  	struct rtc_device *rtc;
+>  };
+>  
+> -static int m41t80_get_datetime(struct i2c_client *client,
+> -			       struct rtc_time *tm)
+> +
+> +static int m41t80_i2c_write(struct i2c_client *client, u8 reg, u8 num, u8 *buf)
+> +{
+> +	u8 wbuf[num + 1];
+> +	struct i2c_msg msgs[] = {
+> +		{
+> +			.addr	= client->addr,
+> +			.flags	= 0,
+> +			.len	= num + 1,
+> +			.buf	= wbuf,
+> +		},
+> +	};
+> +
+> +	wbuf[0] = reg;
+> +	memcpy(wbuf + 1, buf, num);
+> +	return i2c_transfer(client->adapter, msgs, 1);
+> +}
 
-i2c_add_numbered_adapter() _may_ fail if no I2C devices have been
-declared _and_ other i2c adapters are registered using
-i2c_add_adapter(). When you declare I2C devices, i2c-core reserves the
-bus numbers in question for i2c_add_numbered_adapter() and they cannot
-be used for i2c_add_adapter(). This is what guarantees that the calls
-to i2c_add_numbered_adapter() (in i2c-sibyte for example) will succeed.
-If no I2C devices are declared, bus numbers are not reserved, so if it
-happens that another I2C bus driver registers itself before i2c-sibyte
-does, when i2c-sibyte calls i2c_add_numbered_adapter(), the bus number
-is already in use and the call fails.
+This is reimplementing i2c_smbus_write_i2c_block_data().
 
-I admit that this is unlikely to happen, but depending on what exact
-hardware there is on the system and what drivers are built-in, it could
-happen. I think it is a weakness of i2c-core, it should allow platform
-code to reserve i2c bus numbers regardless of what devices are
-registered. I seem to remember I said that when the code was added to
-the kernel already. I guess we'll have to fix it the day it actually
-breaks.
+> +
+> +static int m41t80_i2c_read(struct i2c_client *client, u8 reg, u8 num, u8 *buf)
+>  {
+> -	u8 buf[M41T80_DATETIME_REG_SIZE], dt_addr[1] = { M41T80_REG_SEC };
+>  	struct i2c_msg msgs[] = {
+>  		{
+>  			.addr	= client->addr,
+>  			.flags	= 0,
+>  			.len	= 1,
+> -			.buf	= dt_addr,
+> +			.buf	= &reg,
+>  		},
+>  		{
+>  			.addr	= client->addr,
+>  			.flags	= I2C_M_RD,
+> -			.len	= M41T80_DATETIME_REG_SIZE - M41T80_REG_SEC,
+> -			.buf	= buf + M41T80_REG_SEC,
+> +			.len	= num,
+> +			.buf	= buf,
+>  		},
+>  	};
+>  
+> -	if (i2c_transfer(client->adapter, msgs, 2) < 0) {
+> -		dev_err(&client->dev, "read error\n");
+> -		return -EIO;
+> -	}
+> +	return i2c_transfer(client->adapter, msgs, 2);
+> +}
 
-BTW, i2c-sibyte should be converted to a proper platform driver, so
-that only platforms with such a device instantiate it.
+And this is reimplementing i2c_smbus_read_i2c_block_data(). So please
+just use these standard helpers, which have the advantage that they can
+work on a number of adapters that cannot do full I2C (many SMBus
+controllers support I2C block transactions as long as the length
+doesn't exceed 32 bytes.)
 
->                         Note in all cases there are EEPROMs (onboard ones
-> as well as optionally SPD ones) on both buses on Broadcom/SiByte boards
-> and they are handled by a legacy client driver.  The Broadcom SOC is
-> actually capable to bootstrap from one of these EEPROMs (rather than form
-> the usual system parallel Flash ROM).
+> +
+> +static int m41t80_transfer(struct i2c_client *client, int write,
+> +			   u8 reg, u8 num, u8 *buf)
+> +{
+> +	int i, rc;
+> +
+> +	if (i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
 
-Which legacy driver, "eeprom"? You should probably look into David
-Brownell's at24c driver:
-http://lists.lm-sensors.org/pipermail/i2c/2008-April/003307.html
-If it gets enough attention and testing, it could go upstream quickly.
+And then here you want to check for I2C_FUNC_SMBUS_I2C_BLOCK. Or even
+better, check for I2C_FUNC_SMBUS_READ_I2C_BLOCK on read and
+I2C_FUNC_SMBUS_WRITE_I2C_BLOCK on write, so you get the best of each
+adapter in the unlikely event an adapter would support I2C block reads
+but not writes or vice-versa.
+
+> +		if (write)
+> +			i = m41t80_i2c_write(client, reg, num, buf);
+> +		else
+> +			i = m41t80_i2c_read(client, reg, num, buf);
+> +	} else {
+> +		if (write)
+> +			for (i = 0; i < num; i++) {
+> +				rc = i2c_smbus_write_byte_data(client, reg + i,
+> +							       buf[i]);
+> +				if (rc < 0)
+> +					return rc;
+> +			}
+> +		else
+> +			for (i = 0; i < num; i++) {
+> +				rc = i2c_smbus_read_byte_data(client, reg + i);
+> +				if (rc < 0)
+> +					return rc;
+> +				buf[i] = rc;
+> +			}
+> +	}
+> +	return i;
+> +}
+
+> (...)
+> @@ -629,14 +610,12 @@ static int wdt_ioctl(struct inode *inode
+>  			return -EFAULT;
+>  
+>  		if (rv & WDIOS_DISABLECARD) {
+> -			printk(KERN_INFO
+> -			       "rtc-m41t80: disable watchdog\n");
+> +			pr_info("rtc-m41t80: disable watchdog\n");
+>  			wdt_disable();
+>  		}
+>  
+>  		if (rv & WDIOS_ENABLECARD) {
+> -			printk(KERN_INFO
+> -			       "rtc-m41t80: enable watchdog\n");
+> +			pr_info("rtc-m41t80: enable watchdog\n");
+>  			wdt_ping();
+>  		}
+>  
+
+Mixing code cleanups with functional changes is a Bad Idea (TM).
+
+> @@ -732,19 +711,28 @@ static struct notifier_block wdt_notifie
+>  static int m41t80_probe(struct i2c_client *client,
+>  			const struct i2c_device_id *id)
+>  {
+> -	int rc = 0;
+>  	struct rtc_device *rtc = NULL;
+>  	struct rtc_time tm;
+>  	struct m41t80_data *clientdata = NULL;
+> +	int rc = 0;
+> +	int reg;
+>  
+> -	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C
+> -				     | I2C_FUNC_SMBUS_BYTE_DATA)) {
+> +	if ((i2c_get_functionality(client->adapter) &
+> +	     (I2C_FUNC_I2C | I2C_FUNC_SMBUS_BYTE_DATA)) == 0) {
+>  		rc = -ENODEV;
+>  		goto exit;
+>  	}
+
+That's not correct. The driver is making unconditional calls to
+i2c_smbus_write_byte_data() and i2c_smbus_read_byte_data() so the
+underlying adapter _must_ implement I2C_FUNC_SMBUS_BYTE_DATA. If it
+additionally implements I2C_FUNC_I2C (or actually
+I2C_FUNC_SMBUS_I2C_BLOCK), see above, then you can optimize some
+transactions, but you don't have to check it here, the check should be
+done at run-time (as you already do.)
+
+You really shouldn't worry about making the I2C_FUNC_SMBUS_BYTE_DATA
+check unconditional. I don't think I've ever seen an i2c bus driver not
+supporting it.
+
+
+>  
+> +	/* Trivially check it's there; keep the result for the HT check.  */
+> +	reg = i2c_smbus_read_byte_data(client, M41T80_REG_ALARM_HOUR);
+> +	if (reg < 0) {
+> +		rc = -ENXIO;
+> +		goto exit;
+> +	}
+> +
+>  	dev_info(&client->dev,
+> -		 "chip found, driver version " DRV_VERSION "\n");
+> +		 "%s chip found, driver version " DRV_VERSION "\n",
+> +		 client->name);
+
+Incorrect change, dev_info() already includes the chip name.
+
+>  
+>  	clientdata = kzalloc(sizeof(*clientdata), GFP_KERNEL);
+>  	if (!clientdata) {
+> @@ -765,11 +753,7 @@ static int m41t80_probe(struct i2c_clien
+>  	i2c_set_clientdata(client, clientdata);
+>  
+>  	/* Make sure HT (Halt Update) bit is cleared */
+> -	rc = i2c_smbus_read_byte_data(client, M41T80_REG_ALARM_HOUR);
+> -	if (rc < 0)
+> -		goto ht_err;
+> -
+> -	if (rc & M41T80_ALHOUR_HT) {
+> +	if (reg & M41T80_ALHOUR_HT) {
+>  		if (clientdata->features & M41T80_FEATURE_HT) {
+>  			m41t80_get_datetime(client, &tm);
+>  			dev_info(&client->dev, "HT bit was set!\n");
+> @@ -780,20 +764,19 @@ static int m41t80_probe(struct i2c_clien
+>  				 tm.tm_mon + 1, tm.tm_mday, tm.tm_hour,
+>  				 tm.tm_min, tm.tm_sec);
+>  		}
+> -		if (i2c_smbus_write_byte_data(client,
+> -					      M41T80_REG_ALARM_HOUR,
+> -					      rc & ~M41T80_ALHOUR_HT) < 0)
+> +		if (i2c_smbus_write_byte_data(client, M41T80_REG_ALARM_HOUR,
+> +					      reg & ~M41T80_ALHOUR_HT) < 0)
+>  			goto ht_err;
+>  	}
+
+Again coding style fixes...
+
+>  
+>  	/* Make sure ST (stop) bit is cleared */
+> -	rc = i2c_smbus_read_byte_data(client, M41T80_REG_SEC);
+> -	if (rc < 0)
+> +	reg = i2c_smbus_read_byte_data(client, M41T80_REG_SEC);
+> +	if (reg < 0)
+>  		goto st_err;
+>  
+> -	if (rc & M41T80_SEC_ST) {
+> +	if (reg & M41T80_SEC_ST) {
+>  		if (i2c_smbus_write_byte_data(client, M41T80_REG_SEC,
+> -					      rc & ~M41T80_SEC_ST) < 0)
+> +					      reg & ~M41T80_SEC_ST) < 0)
+>  			goto st_err;
+>  	}
+
+And here again...
+
+I'm not the one who will take your patch, I'll leave it to Alessandro
+to tell you what he wants, but one thing for sure: it would be much
+easier to review and validate your patches if you were not mixing
+functional changes and code cleanups.
+
+>  
+> @@ -803,6 +786,7 @@ static int m41t80_probe(struct i2c_clien
+>  
+>  #ifdef CONFIG_RTC_DRV_M41T80_WDT
+>  	if (clientdata->features & M41T80_FEATURE_HT) {
+> +		save_client = client;
+>  		rc = misc_register(&wdt_dev);
+>  		if (rc)
+>  			goto exit;
+> @@ -811,7 +795,6 @@ static int m41t80_probe(struct i2c_clien
+>  			misc_deregister(&wdt_dev);
+>  			goto exit;
+>  		}
+> -		save_client = client;
+>  	}
+>  #endif
+>  	return 0;
+
+This one deserves a patch on its own IMHO.
 
 -- 
 Jean Delvare

@@ -1,66 +1,124 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2008 07:54:37 +0100 (BST)
-Received: from ti-out-0910.google.com ([209.85.142.187]:46870 "EHLO
-	ti-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20023693AbYEIGyf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 9 May 2008 07:54:35 +0100
-Received: by ti-out-0910.google.com with SMTP id i7so417092tid.20
-        for <linux-mips@linux-mips.org>; Thu, 08 May 2008 23:54:29 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
-        bh=IldOvj1Zno9+nqgRD3YU0CaROgbIIhfNRnj0IOnvv90=;
-        b=lxONG9tKbS91iYCId1egijeSj8iXnua903X2hi+S8zznZQEEepv/52miiF6fPHttrwcSgAiAzTGX5ppU12nETLym2zTDt9/NDqBpbqXYVYvNO+zYVuEOHf9rNWOKCY/hs0sRH2TyqK5oIXfXdtJRShOUsMXL/wqBvBNsrjfacsQ=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:mime-version:content-type;
-        b=w6itR6IfQIoJCV721KXFkmaL352vasDehQgfLj9YZYs7FA869ASRfsoPlr5YXj+6W0+GHf6LWLln5MtqET6tDtiStd8CXDQu/Nigk+8KZt05PODJE7MUFm5dGCQ7yszpXhzDA9p3MArgtUSQaS83YFBHHZbUqSyWtOqdNvIVTQI=
-Received: by 10.110.15.9 with SMTP id 9mr399784tio.44.1210316069127;
-        Thu, 08 May 2008 23:54:29 -0700 (PDT)
-Received: by 10.110.42.3 with HTTP; Thu, 8 May 2008 23:54:29 -0700 (PDT)
-Message-ID: <50c9a2250805082354x1edc1ecar89dcc3378b3bbe75@mail.gmail.com>
-Date:	Fri, 9 May 2008 14:54:29 +0800
-From:	zhuzhenhua <zzh.hust@gmail.com>
-To:	linux-mips <linux-mips@linux-mips.org>
-Subject: is remap_pfn_range should align to 2(n) * (page size) ?
-MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_3407_14612540.1210316069190"
-Return-Path: <zzh.hust@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2008 08:28:54 +0100 (BST)
+Received: from zone0.gcu-squad.org ([212.85.147.21]:34163 "EHLO
+	services.gcu-squad.org") by ftp.linux-mips.org with ESMTP
+	id S20023171AbYEIH2v (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 9 May 2008 08:28:51 +0100
+Received: from jdelvare.pck.nerim.net ([62.212.121.182] helo=hyperion.delvare)
+	by services.gcu-squad.org (GCU Mailer Daemon) with esmtpsa id 1JuNyM-0003US-J9
+	(TLSv1:AES256-SHA:256)
+	(envelope-from <khali@linux-fr.org>)
+	; Fri, 09 May 2008 10:28:58 +0200
+Date:	Fri, 9 May 2008 09:28:35 +0200
+From:	Jean Delvare <khali@linux-fr.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
+	Alessandro Zummo <a.zummo@towertech.it>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	rtc-linux@googlegroups.com, i2c@lm-sensors.org,
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+	David Brownell <david-b@pacbell.net>
+Subject: Re: [RFC][PATCH 2/4] RTC: SWARM I2C board initialization
+Message-ID: <20080509092835.3bbf0f55@hyperion.delvare>
+In-Reply-To: <Pine.LNX.4.55.0805082344040.5944@cliff.in.clinika.pl>
+References: <Pine.LNX.4.55.0805070031410.16173@cliff.in.clinika.pl>
+	<20080507085953.2c08b854@hyperion.delvare>
+	<Pine.LNX.4.55.0805072145040.25644@cliff.in.clinika.pl>
+	<20080508105905.3209c659@hyperion.delvare>
+	<Pine.LNX.4.55.0805082344040.5944@cliff.in.clinika.pl>
+X-Mailer: Claws Mail 3.4.0 (GTK+ 2.10.6; x86_64-suse-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <khali@linux-fr.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19173
+X-archive-position: 19174
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zzh.hust@gmail.com
+X-original-sender: khali@linux-fr.org
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_3407_14612540.1210316069190
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Hi Maciej,
 
-hello all
-           i have a sensor driver want to malloc 2.xM SDRAM to capture
-data(using DMA),  so i used  remap_pfn_range to malloc 3M.
-But in /proc/meminfo, it showes free memory reduce 4M. i also check the
-/proc/buddyinfo, it seemes too.
-(i am looking inside kernel code, but not get clear at now).
+On Fri, 9 May 2008 00:10:47 +0100 (BST), Maciej W. Rozycki wrote:
+> > I'm not going to tell how bad I think the GNU coding standards are, the
+> > point here is that we don't follow them at all, so whatever they say is
+> > totally irrelevant. Read Documentation/CodingStyle, it describes what
+> 
+>  Oh come on -- that's just common sense.  If something is good, there is
+> no point in discarding it without thinking, just because it is a part of a
+> bigger entity that we consider bad.  I consider it good not because it is
+> a part of the GNU standard, but because I have concluded that it is and it
+> is pure coincidence ;-) I have taken it from the said standard.
 
- is remap_pfn_range should align to  2(n) * (page size) ?
+Let me just quote you:
 
-thanks for any hints
+"This is mostly habitual -- this is what the GNU Coding Standard specifies
+for comments and which is enforced for GNU software which I have dealt a
+lot with."
 
-zzh
+You didn't say it was common sense. You did say that it was what the
+GNU Coding Standard specified, and as a consequence, what you were used
+to. So please keep your "oh come on" for yourself, you pointed the
+discussion in this direction yourself.
 
-------=_Part_3407_14612540.1210316069190
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+>                                                                   But as I
+> said, this is a minor nit here and I can resist from adding extraneous
+> spaces in pieces of code you are interested in as long as I am able to
+> track which ones they actually are.
 
-hello all<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i have a sensor driver want to malloc 2.xM SDRAM to capture data(using DMA),&nbsp; so i used&nbsp; remap_pfn_range to malloc 3M.<br>But in /proc/meminfo, it showes free memory reduce 4M. i also check the /proc/buddyinfo, it seemes too.<br>
-(i am looking inside kernel code, but not get clear at now).<br><br>&nbsp;is remap_pfn_range should align to&nbsp; 2(n) * (page size) ?&nbsp; <br><br>thanks for any hints<br><br>zzh<br>
+What matters is not "the pieces of code I am interested in", but the
+pieces of code _you_ are the master of, or not. As explained somewhere
+else in this thread, you are free to use whatever style you like (as
+long as it complies with Documentation/CodingStyle, that is) in new
+code you write and in code you maintain. For all the rest, you should
+stick to the surrounding style. This is common sense, as you'd say.
 
-------=_Part_3407_14612540.1210316069190--
+> (...)
+>  Well, arch/mips/sibyte/swarm/ is included for all the three above as well 
+> as a couple of other I may not necessarily be sure what they are even.  So 
+> this should be of no concern.
+> 
+>  BTW, do you mean i2c_add_numbered_adapter() will fail if no devices have
+> been declared to exist on the given bus with i2c_register_board_info()?  
+> That sounds strange...
+
+i2c_add_numbered_adapter() _may_ fail if no I2C devices have been
+declared _and_ other i2c adapters are registered using
+i2c_add_adapter(). When you declare I2C devices, i2c-core reserves the
+bus numbers in question for i2c_add_numbered_adapter() and they cannot
+be used for i2c_add_adapter(). This is what guarantees that the calls
+to i2c_add_numbered_adapter() (in i2c-sibyte for example) will succeed.
+If no I2C devices are declared, bus numbers are not reserved, so if it
+happens that another I2C bus driver registers itself before i2c-sibyte
+does, when i2c-sibyte calls i2c_add_numbered_adapter(), the bus number
+is already in use and the call fails.
+
+I admit that this is unlikely to happen, but depending on what exact
+hardware there is on the system and what drivers are built-in, it could
+happen. I think it is a weakness of i2c-core, it should allow platform
+code to reserve i2c bus numbers regardless of what devices are
+registered. I seem to remember I said that when the code was added to
+the kernel already. I guess we'll have to fix it the day it actually
+breaks.
+
+BTW, i2c-sibyte should be converted to a proper platform driver, so
+that only platforms with such a device instantiate it.
+
+>                         Note in all cases there are EEPROMs (onboard ones
+> as well as optionally SPD ones) on both buses on Broadcom/SiByte boards
+> and they are handled by a legacy client driver.  The Broadcom SOC is
+> actually capable to bootstrap from one of these EEPROMs (rather than form
+> the usual system parallel Flash ROM).
+
+Which legacy driver, "eeprom"? You should probably look into David
+Brownell's at24c driver:
+http://lists.lm-sensors.org/pipermail/i2c/2008-April/003307.html
+If it gets enough attention and testing, it could go upstream quickly.
+
+-- 
+Jean Delvare

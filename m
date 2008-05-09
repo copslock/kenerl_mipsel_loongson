@@ -1,154 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2008 06:40:18 +0100 (BST)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:57037 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S20022410AbYEIFkP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 9 May 2008 06:40:15 +0100
-Received: (qmail 593 invoked by uid 1000); 9 May 2008 07:40:10 +0200
-Date:	Fri, 9 May 2008 07:40:10 +0200
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/7] Alchemy: db1200/pb1200: register mmc platform
-	device and board specific functions
-Message-ID: <20080509054010.GA32719@roarinelk.homelinux.net>
-References: <20080507160154.GA17806@roarinelk.homelinux.net> <20080507160634.GE17806@roarinelk.homelinux.net> <4822F4FC.5040107@ru.mvista.com> <20080508130833.GA25971@roarinelk.homelinux.net> <482354D0.9040304@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 May 2008 07:54:37 +0100 (BST)
+Received: from ti-out-0910.google.com ([209.85.142.187]:46870 "EHLO
+	ti-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20023693AbYEIGyf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 9 May 2008 07:54:35 +0100
+Received: by ti-out-0910.google.com with SMTP id i7so417092tid.20
+        for <linux-mips@linux-mips.org>; Thu, 08 May 2008 23:54:29 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:mime-version:content-type;
+        bh=IldOvj1Zno9+nqgRD3YU0CaROgbIIhfNRnj0IOnvv90=;
+        b=lxONG9tKbS91iYCId1egijeSj8iXnua903X2hi+S8zznZQEEepv/52miiF6fPHttrwcSgAiAzTGX5ppU12nETLym2zTDt9/NDqBpbqXYVYvNO+zYVuEOHf9rNWOKCY/hs0sRH2TyqK5oIXfXdtJRShOUsMXL/wqBvBNsrjfacsQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:mime-version:content-type;
+        b=w6itR6IfQIoJCV721KXFkmaL352vasDehQgfLj9YZYs7FA869ASRfsoPlr5YXj+6W0+GHf6LWLln5MtqET6tDtiStd8CXDQu/Nigk+8KZt05PODJE7MUFm5dGCQ7yszpXhzDA9p3MArgtUSQaS83YFBHHZbUqSyWtOqdNvIVTQI=
+Received: by 10.110.15.9 with SMTP id 9mr399784tio.44.1210316069127;
+        Thu, 08 May 2008 23:54:29 -0700 (PDT)
+Received: by 10.110.42.3 with HTTP; Thu, 8 May 2008 23:54:29 -0700 (PDT)
+Message-ID: <50c9a2250805082354x1edc1ecar89dcc3378b3bbe75@mail.gmail.com>
+Date:	Fri, 9 May 2008 14:54:29 +0800
+From:	zhuzhenhua <zzh.hust@gmail.com>
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: is remap_pfn_range should align to 2(n) * (page size) ?
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <482354D0.9040304@ru.mvista.com>
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <mano@roarinelk.homelinux.net>
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_3407_14612540.1210316069190"
+Return-Path: <zzh.hust@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19172
+X-archive-position: 19173
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: zzh.hust@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, May 08, 2008 at 11:30:24PM +0400, Sergei Shtylyov wrote:
-> Manuel Lauss wrote:
->
->>>> diff --git a/arch/mips/au1000/common/platform.c 
->>>> b/arch/mips/au1000/common/platform.c
->>>> index 31d2a22..08a5900 100644
->>>> --- a/arch/mips/au1000/common/platform.c
->>>> +++ b/arch/mips/au1000/common/platform.c
->>>> -
->>>> -static struct platform_device au1xxx_mmc_device = {
->>>> -	.name = "au1xxx-mmc",
->>>> -	.id = 0,
->>>> -	.dev = {
->>>> -		.dma_mask               = &au1xxx_mmc_dmamask,
->>>> -		.coherent_dma_mask      = 0xffffffff,
->>>> -	},
->>>> -	.num_resources  = ARRAY_SIZE(au1xxx_mmc_resources),
->>>> -	.resource       = au1xxx_mmc_resources,
->>>> -};
->>>> #endif /* #ifdef CONFIG_SOC_AU1200 */
->>>
->>>   What board-specific was here?
->
->> Nothing in here per se, but a) I don't like this file, it registers
->> stuff some boards don't need/want,  b) this part is only interesting
->> for pb1200 board anyway.
->
->    Sigh. Do you know that Au1100 also has the same MMC controllers? The 
-> platform device is not registered in this case though and the driver 
-> (however small it now actually uses the platform device per se) is 
-> therefore unable to control it (well, I'm not sure it can do that since it 
-> seems to be Au1200 centered now (using DBDMA), however it was initially 
-> written for Au1100 as it seems.
+------=_Part_3407_14612540.1210316069190
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-I gathered that from the driver source...
+hello all
+           i have a sensor driver want to malloc 2.xM SDRAM to capture
+data(using DMA),  so i used  remap_pfn_range to malloc 3M.
+But in /proc/meminfo, it showes free memory reduce 4M. i also check the
+/proc/buddyinfo, it seemes too.
+(i am looking inside kernel code, but not get clear at now).
 
-I assume the PIO paths in the driver are intended for the Au1100, correct?
-Should not be too hard to force PIO paths when no DDMA IDs are passed
-through the platform device's resources.
-Someone should test it on Au1100 though.
+ is remap_pfn_range should align to  2(n) * (page size) ?
 
+thanks for any hints
 
->> I moved it to the pb1200 platform.c because
->> of the function pointers for au1xmmc platdata.
->
->    I'm sure that can be handled without moving the device itself...
+zzh
 
-Okay...
+------=_Part_3407_14612540.1210316069190
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
+hello all<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i have a sensor driver want to malloc 2.xM SDRAM to capture data(using DMA),&nbsp; so i used&nbsp; remap_pfn_range to malloc 3M.<br>But in /proc/meminfo, it showes free memory reduce 4M. i also check the /proc/buddyinfo, it seemes too.<br>
+(i am looking inside kernel code, but not get clear at now).<br><br>&nbsp;is remap_pfn_range should align to&nbsp; 2(n) * (page size) ?&nbsp; <br><br>thanks for any hints<br><br>zzh<br>
 
->>>> +	return (bcsr->sig_status & au1xmmc_card_table[host->id].bcsrstatus)
->>>> +		? 1 : 0;
->>>> +}
->>>> +
->>>> +static struct au1xmmc_platdata db1xmmcpd = {
->>>> +	.set_power	= pb1200mmc_set_power,
->>>> +	.card_inserted	= pb1200mmc_card_inserted,
->>>> +	.card_readonly	= pb1200mmc_card_readonly,
->>>> +	.cd_setup	= NULL,		/* use poll-timer in driver */
->
->>>   Function ptrs in the platform data?  That's something new -- though why 
->>> not? :-)
->
->> Is this an accepted way of doing things in the kernel?  If not, I'm open 
->> to
->> suggestions!
->
->    I really don't know -- never seen such trick before.
->
->> (I prefer this to globally-visible methods called by the
->> driver.  I like it when related things are neatly grouped together).
->
->    Yes, this indeed looks better.
->
-
-Unless someone else speaks up against it, I'll leave it the way it is.
-
-
->>>> +static struct platform_device au1200_sd0_device = {
->>>> +	.name = "au1xxx-mmc",
->>>> +	.id = 0,	/* index into au1xmmc_card_table[] */
->>>> +	.dev = {
->>>> +		.dma_mask               = &au1xxx_mmc_dmamask,
->>>> +		.coherent_dma_mask      = 0xffffffff,
->>>> +		.platform_data		= &db1xmmcpd,
->
->>>   Can't we leave the MMC platform device where it is but define the 
->>> platform data structure per board with some starndard name? Since IMO it 
->>> doesn't make sense to move the platform device itself.
->
->> I like my device setup data in one file (preferably living in the board
->> subdir), but for mainline inclusion I can move it back to its original
->> place if you and others prefer so.
->
->    I'd definitely prefer to leave the SOC device where they were...
-
-Okay.
-
-
->>>> +	},
->>>> +	.num_resources  = ARRAY_SIZE(au1200sd0_res),
->>>> +	.resource       = au1200sd0_res,
->>>> +};
->>>> +
->>>> +#ifndef CONFIG_MIPS_DB1200
->
->>>   Wait, SD controller 1 is there regardless of the board, so should be 
->>> registerred regardless. If however the board doesn't have the necessary 
->>> resources to support the driver functionality, I think it can be 
->>> indicated by the board-level platform data, so that the driver could 
->>> decide whether it wants to support that controller or not.
->
->> Won't this cause problems if e.g. you are using PCMCIA (since SD1 pins are
->> muxed with pcmcia signals)? 
->
->    Good point.  I think that the code in arch/mips/au1000/common/platform.c 
-> should check the sys_pinfunc register, and not blindly register all 
-> devices.
-
-Hm, sounds ugly, but I'll add something.
-
-Thanks!
-	Manuel Lauss
+------=_Part_3407_14612540.1210316069190--

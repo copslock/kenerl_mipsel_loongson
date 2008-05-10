@@ -1,32 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 May 2008 07:54:08 +0100 (BST)
-Received: from zone0.gcu-squad.org ([212.85.147.21]:24464 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 May 2008 08:08:17 +0100 (BST)
+Received: from zone0.gcu-squad.org ([212.85.147.21]:62844 "EHLO
 	services.gcu-squad.org") by ftp.linux-mips.org with ESMTP
-	id S20022375AbYEJGyE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 10 May 2008 07:54:04 +0100
+	id S20021567AbYEJHIO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 10 May 2008 08:08:14 +0100
 Received: from jdelvare.pck.nerim.net ([62.212.121.182] helo=hyperion.delvare)
-	by services.gcu-squad.org (GCU Mailer Daemon) with esmtpsa id 1JujuC-0002lE-Ak
+	by services.gcu-squad.org (GCU Mailer Daemon) with esmtpsa id 1Juk81-0001W2-AP
 	(TLSv1:AES256-SHA:256)
 	(envelope-from <khali@linux-fr.org>)
-	; Sat, 10 May 2008 09:54:08 +0200
-Date:	Sat, 10 May 2008 08:53:40 +0200
+	; Sat, 10 May 2008 10:08:25 +0200
+Date:	Sat, 10 May 2008 09:08:01 +0200
 From:	Jean Delvare <khali@linux-fr.org>
 To:	"Maciej W. Rozycki" <macro@linux-mips.org>
 Cc:	David Brownell <david-b@pacbell.net>, linux-mips@linux-mips.org,
 	mgreer@mvista.com, rtc-linux@googlegroups.com,
 	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-	linux-kernel@vger.kernel.org, i2c@lm-sensors.org, ab@mycable.de,
-	Alessandro Zummo <alessandro.zummo@towertech.it>
-Subject: Re: [i2c] [RFC][PATCH 4/4] RTC: SMBus support for the M41T80,
-Message-ID: <20080510085340.29c26aef@hyperion.delvare>
-In-Reply-To: <Pine.LNX.4.55.0805100301100.10552@cliff.in.clinika.pl>
+	linux-kernel@vger.kernel.org, i2c@lm-sensors.org, ab@mycable.de
+Subject: Re: [RFC][PATCH 4/4] RTC: SMBus support for the M41T80,
+Message-ID: <20080510090801.74da049d@hyperion.delvare>
+In-Reply-To: <Pine.LNX.4.55.0805092202380.10552@cliff.in.clinika.pl>
 References: <200805070120.03821.david-b@pacbell.net>
-	<Pine.LNX.4.55.0805072226180.25644@cliff.in.clinika.pl>
 	<200805071625.20430.david-b@pacbell.net>
 	<Pine.LNX.4.55.0805080306080.32613@cliff.in.clinika.pl>
-	<20080509100841.151eabcd@hyperion.delvare>
-	<Pine.LNX.4.55.0805092127410.10552@cliff.in.clinika.pl>
-	<20080509232146.18638986@hyperion.delvare>
-	<Pine.LNX.4.55.0805100301100.10552@cliff.in.clinika.pl>
+	<200805090218.52570.david-b@pacbell.net>
+	<Pine.LNX.4.55.0805092202380.10552@cliff.in.clinika.pl>
 X-Mailer: Claws Mail 3.4.0 (GTK+ 2.10.6; x86_64-suse-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -35,7 +31,7 @@ Return-Path: <khali@linux-fr.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19190
+X-archive-position: 19191
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -43,47 +39,39 @@ X-original-sender: khali@linux-fr.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 10 May 2008 03:21:35 +0100 (BST), Maciej W. Rozycki wrote:
-> > This was an option when the functions where introduced 9 years ago.
-> > But now that it was done, renaming them would cause even more
-> > confusion, I think. I would be fine with adding comments in i2c-core.c
-> > or improving Documentation/i2c/smbus-protocol to make it more obious,
-> > though.
+On Fri, 9 May 2008 22:22:11 +0100 (BST), Maciej W. Rozycki wrote:
+> > >  You can issue a block read of up to 5 bytes (6 if you add the PEC byte
+> > > which is not interpreted by the controller in any way).  And you can issue
+> > > a block write of up to 4 bytes (5 with PEC).  That's clearly not enough
+> > > for the m41t81 let alone a generic implementation.
 > > 
-> > On a related note, you will notice that the other i2c_smbus_* functions
-> > do not follow the naming of SMBus transactions. Again that's something
-> > I regret but I feel that changing the names now would cause a lot of
-> > confusion amongst developers, so I'm not doing it.
+> > Right.  Possibly worth updating i2c-sibyte to be able to perform
+> > those calls through the "smbus i2c_block" calls; but maybe not.
+> > (Those calls aren't true SMBus calls, but many otherwise-SMBus-only
+> > controllers can handle them, hence the i2c_smbus_* prefix.)
 > 
->  It may not be worth the effort, but if done in bulk for all the users in
-> the tree, there should be no problem with that.  I am fairly sure there
-> were changes of this kind from time to time, with occasional screams heard
-> in response from some dark corners, but no big pain.  We obviously
-> explicitly disregard out-of-tree users and for occasional contributors
-> asking: "Where the * has this function gone?" there is the Documentation/
-> tree to provide a greppable reference, so generally not a big deal.
+>  I am not sure such a limited functionality is worth the hassle of making 
+> it available to clients in a reasonably clean way.  How common an 
+> extension of this kind is among SMBus controllers?  I would say if there 
+> are other controllers providing it (perhaps for a different range of 
+> transfer lengths) and clients benefitting from it, it might be worth 
+> adding it for this controller as well.  Otherwise perhaps let's wait till 
+> somebody complains about the lack of this functionality?
 
-It's not that easy. There are some drivers which are both in-tree and
-out-of-tree, for which such a change means adding ifdefs. And there is
-i2c-dev.h (the user-space one) which has similar functions, if we
-rename only the kernel variants, there will be some confusion. But if
-we rename also the user-space variants, then it's up to 2.4 kernel
-users to have different names for kernel-space and user-space functions.
+The problem is that the interface for client drivers to query the
+adapters capabilities is rather limited. There's just one bit for I2C
+block read, so if an adapter has limitations in the size of requests it
+can accept (beyond the traditional 32-byte limit that comes from SMBus)
+it can't express it. This means that client drivers should expect
+transaction requests to fail even if they checked that the transaction
+type in question was supported. Most client drivers don't actually
+expect that.
 
-All in all I'd say it is not worth the effort. There are many other
-tasks where our time will be better used.
-
-> > Just one patch should be enough, if I agree with all the changes. You
-> > might make a separate patch with the things I may not agree with, so
-> > that you don't have to cherry-revert them if I indeed don't agree, and
-> > we just merge them if I do agree.
-> 
->  Hmm, technically you do not seem to be responsible to accept changes
-> under drivers/rtc/, so I will split them anyway for others to decide.
-
-Huu, sorry, for some reason I thought that we were still speaking about
-i2c-sibyte. Of course I don't have my say about what happens in
-drivers/rtc.
+My advice would be to only bother implementing restricted support for a
+transaction type if there's a big benefit in doing so. And then, double
+check that all the client drivers that are likely to be used with the
+adapter in question, are robust enough to deal with the restrictions
+gracefully.
 
 -- 
 Jean Delvare

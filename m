@@ -1,628 +1,481 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 May 2008 17:40:15 +0100 (BST)
-Received: from smtp118.sbc.mail.sp1.yahoo.com ([69.147.64.91]:4486 "HELO
-	smtp118.sbc.mail.sp1.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20023159AbYEJQkM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 10 May 2008 17:40:12 +0100
-Received: (qmail 17736 invoked from network); 10 May 2008 16:40:03 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=pacbell.net;
-  h=Received:X-YMail-OSG:X-Yahoo-Newman-Property:From:To:Subject:Date:User-Agent:Cc:References:In-Reply-To:MIME-Version:Content-Type:Content-Transfer-Encoding:Content-Disposition:Message-Id;
-  b=N9kNP7Ejo3Q7bZZHCzJKLnOs3KonhjpO/s6VIp9c/Oas9JjgMQrHq15xIgYqasw540286oUdzymxAeuMAsYCLU4jBJpJxYY0qttTuC2ZbNR/NG8slGJh3nLrBbMNqC8rtG7gLFseOFyT11ZGnPQibBX6Reo8DR7dtwsOr3ewsYQ=  ;
-Received: from unknown (HELO ascent) (david-b@pacbell.net@69.226.243.232 with plain)
-  by smtp118.sbc.mail.sp1.yahoo.com with SMTP; 10 May 2008 16:40:02 -0000
-X-YMail-OSG: otf8KZAVM1nvzFtQI6osUUpw9Xi5DpGth28ef.aytRA438dUlShuAlEK.6Ec50CxWVQTDr1r7EODEUl05lFZtoccpc9UDzNUivZYf3CVVWJD3sr_gu33ltuAtWOIhEZkEL0-
-X-Yahoo-Newman-Property: ymail-3
-From:	David Brownell <david-b@pacbell.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 May 2008 03:00:14 +0100 (BST)
+Received: from kirk.serum.com.pl ([213.77.9.205]:59133 "EHLO serum.com.pl")
+	by ftp.linux-mips.org with ESMTP id S20026598AbYEKCAL (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 11 May 2008 03:00:11 +0100
+Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
+	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m4B2003b020596;
+	Sun, 11 May 2008 04:00:00 +0200
+Received: from localhost (macro@localhost)
+	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m4B1xYBM020592;
+	Sun, 11 May 2008 02:59:42 +0100
+Date:	Sun, 11 May 2008 02:59:34 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
 To:	Jean Delvare <khali@linux-fr.org>
-Subject: Re: [i2c] [RFC][PATCH 4/4] RTC: SMBus support for the M41T80,
-Date:	Sat, 10 May 2008 09:36:50 -0700
-User-Agent: KMail/1.9.6
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips@linux-mips.org, mgreer@mvista.com,
-	rtc-linux@googlegroups.com, Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-	linux-kernel@vger.kernel.org, i2c@lm-sensors.org, ab@mycable.de,
-	Alessandro Zummo <alessandro.zummo@towertech.it>
-References: <200805070120.03821.david-b@pacbell.net> <Pine.LNX.4.55.0805100301100.10552@cliff.in.clinika.pl> <20080510085340.29c26aef@hyperion.delvare>
-In-Reply-To: <20080510085340.29c26aef@hyperion.delvare>
+cc:	David Brownell <david-b@pacbell.net>,
+	Alessandro Zummo <a.zummo@towertech.it>,
+	Alexander Bigga <ab@mycable.de>,
+	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, i2c@lm-sensors.org,
+	rtc-linux@googlegroups.com, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC][PATCH 4/4] RTC: SMBus support for the M41T80
+In-Reply-To: <20080510103544.701c7b3f@hyperion.delvare>
+Message-ID: <Pine.LNX.4.55.0805110045010.18978@cliff.in.clinika.pl>
+References: <200805070120.03821.david-b@pacbell.net>
+ <Pine.LNX.4.55.0805072226180.25644@cliff.in.clinika.pl>
+ <20080508093456.340a42b0@hyperion.delvare> <Pine.LNX.4.55.0805091917370.10552@cliff.in.clinika.pl>
+ <20080509222754.03de1c54@hyperion.delvare> <Pine.LNX.4.55.0805100116290.10552@cliff.in.clinika.pl>
+ <20080510103544.701c7b3f@hyperion.delvare>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 8bit
-Content-Disposition: inline
-Message-Id: <200805100936.52057.david-b@pacbell.net>
-Return-Path: <david-b@pacbell.net>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19194
+X-archive-position: 19195
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david-b@pacbell.net
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Friday 09 May 2008, Jean Delvare wrote:
-> 
-> > > On a related note, you will notice that the other i2c_smbus_* functions
-> > > do not follow the naming of SMBus transactions. Again that's something
-> > > I regret but I feel that changing the names now would cause a lot of
-> > > confusion amongst developers, so I'm not doing it.
-> > 
-> > It may not be worth the effort, but if done in bulk for all the users in
-> > the tree, there should be no problem with that.  ...
-> 
-> It's not that easy. There are some drivers which are both in-tree and
-> out-of-tree, for which such a change means adding ifdefs.
+Hi Jean,
 
-Actually, I thought it *WAS* that easy.  See the appended patch,
-which goes on top of the various doc and (mostly SMBus) fault
-handling patches I've sent ... the old names are still available
-(only needed by out-of-tree drivers), but marked as __deprecated.
-So:  no #ifdefs required.
+> OK, I've just spent some time trying to improve this piece of
+> documentation. I'll send it to you and the i2c list in a moment, to not
+> overload this thread. Please tell me if my proposed changes make the
+> document clearer.
 
-I agree it's not worth while for *all* the SMBus functions that
-use names-made-up-for-Linux.  But for the two which are really
-badly misnamed (after *different* SMBus operations), I suggest
-fixing would be a reasonable thing.
+ Certainly.
 
+> I don't understand why you insist on having a single m41t80_transfer()
+> function for read and write transactions, when the read and write cases
+> share zero code. Separate functions would perform better.
 
-> And there is 
-> i2c-dev.h (the user-space one) which has similar functions,
+ Nothing to understand here and I do not insist on anything.  You are
+right of course -- I must have got too much influenced by i2c_transfer()  
+and have not thought of splitting.
 
-That's problematic in its own right though.  Not only that
-the *kernel* file Documentation/i2c/dev-interface referring
-to those functions, which are unavailable from the header
-provided by the kernel.  Or that there's no relationship
-between the kernel and userspace files of the same name.
-But also that those functions are actually a bit too large
-to be appropriate as inlines, even once you manage to track
-it down (as part of a "tools" package, not a "library").
+> Still not correct, sorry. The driver is still making unconditional
+> calls to i2c_smbus_read_byte_data() and i2c_smbus_write_byte_data(), so
+> the underlying adapter _must_ support I2C_FUNC_SMBUS_READ_BYTE_DATA and
+> I2C_FUNC_SMBUS_WRITE_BYTE_DATA (i.e. I2C_FUNC_SMBUS_BYTE_DATA), even if
 
+ Well, as I understand the support for I2C_FUNC_SMBUS_I2C_BLOCK
+(read/write, as appropriate) implies I2C_FUNC_SMBUS_BYTE_DATA as the
+latter is a special case of the former, where the length of the transfer
+equals one.  But I agree -- in the light of what you wrote previously a
+bus adapter that supports say I2C_FUNC_SMBUS_READ_I2C_BLOCK is meant to
+have I2C_FUNC_SMBUS_READ_BYTE set as well, so no need to check for it
+here.
 
-> if we 
-> rename only the kernel variants, there will be some confusion. But if
-> we rename also the user-space variants, then it's up to 2.4 kernel
-> users to have different names for kernel-space and user-space functions.
+ If we agree on this one, I will retest and submit the whole batch again,
+updated as needed.
 
-True, but that would be a question for a "libsmbus" or somesuch
-to deal with.  Not a kernel issue.
+  Maciej
 
-- Dave
-
-
-===========
-Two of the SMBus operations are using confusingly inappropriate names:
-
-  i2c_smbus_read_byte() does not execute the SMBus "Read Byte" protocol
-  	... it implements the SMBus "Receive Byte" protocol instead!!
-
-  i2c_smbus_write_byte() does not execute the SMBus "Write Byte" protocol
-  	... it implements the SMBus "Send Byte" protocol instead!!
-
-This patch changes the names of those functions, so they no longer
-use names of different operations (which they do not implement).
-
----
- Documentation/i2c/chips/max6875   |    4 ++--
- Documentation/i2c/smbus-protocol  |   12 +++++-------
- Documentation/i2c/writing-clients |    4 ++--
- drivers/gpio/pcf857x.c            |    8 ++++----
- drivers/hwmon/ds1621.c            |    2 +-
- drivers/hwmon/lm90.c              |    2 +-
- drivers/i2c/chips/eeprom.c        |   10 +++++-----
- drivers/i2c/chips/max6875.c       |    2 +-
- drivers/i2c/chips/pcf8574.c       |    4 ++--
- drivers/i2c/chips/pcf8591.c       |   10 +++++-----
- drivers/i2c/chips/tsl2550.c       |   16 ++++++++--------
- drivers/i2c/i2c-core.c            |   12 ++++++------
- drivers/media/video/saa7110.c     |    2 +-
- drivers/media/video/saa7185.c     |    2 +-
- drivers/media/video/tda9840.c     |    8 ++++----
- drivers/media/video/tea6415c.c    |    4 ++--
- drivers/media/video/tea6420.c     |    4 ++--
- drivers/w1/masters/ds2482.c       |   10 +++++-----
- include/linux/i2c.h               |   20 ++++++++++++++++++--
- 19 files changed, 75 insertions(+), 61 deletions(-)
-
---- g26.orig/include/linux/i2c.h	2008-05-07 16:32:18.000000000 -0700
-+++ g26/include/linux/i2c.h	2008-05-10 00:13:48.000000000 -0700
-@@ -73,8 +73,8 @@ extern s32 i2c_smbus_xfer (struct i2c_ad
-    conventions of smbus_access. */
+patch-2.6.26-rc1-20080505-m41t80-smbus-16
+diff -up --recursive --new-file linux-2.6.26-rc1-20080505.macro/drivers/rtc/rtc-m41t80.c linux-2.6.26-rc1-20080505/drivers/rtc/rtc-m41t80.c
+--- linux-2.6.26-rc1-20080505.macro/drivers/rtc/rtc-m41t80.c	2008-05-05 02:55:40.000000000 +0000
++++ linux-2.6.26-rc1-20080505/drivers/rtc/rtc-m41t80.c	2008-05-11 00:16:36.000000000 +0000
+@@ -6,6 +6,7 @@
+  * Based on m41t00.c by Mark A. Greer <mgreer@mvista.com>
+  *
+  * 2006 (c) mycable GmbH
++ * Copyright (c) 2008  Maciej W. Rozycki
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License version 2 as
+@@ -36,6 +37,8 @@
+ #define M41T80_REG_DAY	5
+ #define M41T80_REG_MON	6
+ #define M41T80_REG_YEAR	7
++#define M41T80_REG_CONTROL	8
++#define M41T80_REG_WATCHDOG	9
+ #define M41T80_REG_ALARM_MON	0xa
+ #define M41T80_REG_ALARM_DAY	0xb
+ #define M41T80_REG_ALARM_HOUR	0xc
+@@ -58,7 +61,7 @@
+ #define M41T80_FEATURE_HT	(1 << 0)
+ #define M41T80_FEATURE_BL	(1 << 1)
  
- extern s32 i2c_smbus_write_quick(struct i2c_client * client, u8 value);
--extern s32 i2c_smbus_read_byte(struct i2c_client * client);
--extern s32 i2c_smbus_write_byte(struct i2c_client * client, u8 value);
-+extern s32 i2c_smbus_receive_byte(struct i2c_client *client);
-+extern s32 i2c_smbus_send_byte(struct i2c_client *client, u8 value);
- extern s32 i2c_smbus_read_byte_data(struct i2c_client * client, u8 command);
- extern s32 i2c_smbus_write_byte_data(struct i2c_client * client,
-                                      u8 command, u8 value);
-@@ -94,6 +94,22 @@ extern s32 i2c_smbus_write_i2c_block_dat
- 					  u8 command, u8 length,
- 					  const u8 *values);
+-#define DRV_VERSION "0.05"
++#define DRV_VERSION "0.06"
  
-+/* Stop using these legacy names in new code.
-+ * - the SMBus "Read Byte" operation is i2c_smbus_read_byte_data()
-+ * - the SMBus "Write Byte" operation is i2c_smbus_write_byte_data()
-+ *
-+ */
-+static inline s32 __deprecated i2c_smbus_read_byte(struct i2c_client *client)
-+{
-+	return i2c_smbus_receive_byte(client);
+ static const struct i2c_device_id m41t80_id[] = {
+ 	{ "m41t80", 0 },
+@@ -78,31 +81,83 @@ struct m41t80_data {
+ 	struct rtc_device *rtc;
+ };
+ 
+-static int m41t80_get_datetime(struct i2c_client *client,
+-			       struct rtc_time *tm)
++
++static int m41t80_write_block_data(struct i2c_client *client,
++				   u8 reg, u8 num, u8 *buf)
+ {
+-	u8 buf[M41T80_DATETIME_REG_SIZE], dt_addr[1] = { M41T80_REG_SEC };
+-	struct i2c_msg msgs[] = {
+-		{
+-			.addr	= client->addr,
+-			.flags	= 0,
+-			.len	= 1,
+-			.buf	= dt_addr,
+-		},
+-		{
+-			.addr	= client->addr,
+-			.flags	= I2C_M_RD,
+-			.len	= M41T80_DATETIME_REG_SIZE - M41T80_REG_SEC,
+-			.buf	= buf + M41T80_REG_SEC,
+-		},
+-	};
++	int i, rc;
+ 
+-	if (i2c_transfer(client->adapter, msgs, 2) < 0) {
+-		dev_err(&client->dev, "read error\n");
+-		return -EIO;
++	if (i2c_check_functionality(client->adapter,
++				    I2C_FUNC_SMBUS_WRITE_I2C_BLOCK)) {
++		i = i2c_smbus_write_i2c_block_data(client, reg, num, buf);
++	} else {
++		for (i = 0; i < num; i++) {
++			rc = i2c_smbus_write_byte_data(client, reg + i,
++						       buf[i]);
++			if (rc < 0) {
++				i = rc;
++				goto out;
++			}
++		}
+ 	}
++out:
++	return i;
 +}
 +
-+static inline s32 __deprecated i2c_smbus_write_byte(struct i2c_client *client,
-+		u8 value)
++static int m41t80_read_block_data(struct i2c_client *client,
++				  u8 reg, u8 num, u8 *buf)
 +{
-+	return i2c_smbus_send_byte(client, value);
++	int i, rc;
++
++	if (i2c_check_functionality(client->adapter,
++				    I2C_FUNC_SMBUS_READ_I2C_BLOCK)) {
++		i = i2c_smbus_read_i2c_block_data(client, reg, num, buf);
++	} else {
++		for (i = 0; i < num; i++) {
++			rc = i2c_smbus_read_byte_data(client, reg + i);
++			if (rc < 0) {
++				i = rc;
++				goto out;
++			}
++			buf[i] = rc;
++		}
++	}
++out:
++	return i;
 +}
 +
- /*
-  * A driver is capable of handling one or more physical devices present on
-  * I2C adapters. This information is used to inform the driver of adapter
---- g26.orig/drivers/i2c/i2c-core.c	2008-05-07 16:32:18.000000000 -0700
-+++ g26/drivers/i2c/i2c-core.c	2008-05-10 00:08:45.000000000 -0700
-@@ -1529,13 +1529,13 @@ s32 i2c_smbus_write_quick(struct i2c_cli
- EXPORT_SYMBOL(i2c_smbus_write_quick);
++static int m41t80_get_datetime(struct i2c_client *client, struct rtc_time *tm)
++{
++	u8 buf[M41T80_DATETIME_REG_SIZE];
++	int loops = 2;
++	int sec0, sec1;
++
++	/*
++	 * Time registers are latched by this chip if an I2C block
++	 * transfer is used, but with SMBus-style byte accesses
++	 * this is not the case, so check seconds for a wraparound.
++	 */
++	do {
++		if (m41t80_read_block_data(client, M41T80_REG_SEC,
++					   M41T80_DATETIME_REG_SIZE -
++					   M41T80_REG_SEC,
++					   buf + M41T80_REG_SEC) < 0) {
++			dev_err(&client->dev, "read error\n");
++			return -EIO;
++		}
++		sec0 = buf[M41T80_REG_SEC];
++
++		sec1 = i2c_smbus_read_byte_data(client, M41T80_REG_SEC);
++		if (sec1 < 0) {
++			dev_err(&client->dev, "read error\n");
++			return -EIO;
++		}
  
- /**
-- * i2c_smbus_read_byte - SMBus "receive byte" protocol
-+ * i2c_smbus_receive_byte - SMBus "receive byte" protocol
-  * @client: Handle to slave device
-  *
-  * This executes the SMBus "receive byte" protocol, returning negative errno
-  * else the byte received from the device.
-  */
--s32 i2c_smbus_read_byte(struct i2c_client *client)
-+s32 i2c_smbus_receive_byte(struct i2c_client *client)
+-	tm->tm_sec = BCD2BIN(buf[M41T80_REG_SEC] & 0x7f);
++		sec0 = BCD2BIN(sec0 & 0x7f);
++		sec1 = BCD2BIN(sec1 & 0x7f);
++	} while (sec1 < sec0 && --loops);
++
++	tm->tm_sec = sec1;
+ 	tm->tm_min = BCD2BIN(buf[M41T80_REG_MIN] & 0x7f);
+ 	tm->tm_hour = BCD2BIN(buf[M41T80_REG_HOUR] & 0x3f);
+ 	tm->tm_mday = BCD2BIN(buf[M41T80_REG_DAY] & 0x3f);
+@@ -117,39 +172,16 @@ static int m41t80_get_datetime(struct i2
+ /* Sets the given date and time to the real time clock. */
+ static int m41t80_set_datetime(struct i2c_client *client, struct rtc_time *tm)
  {
- 	union i2c_smbus_data data;
- 	int status;
-@@ -1545,22 +1545,22 @@ s32 i2c_smbus_read_byte(struct i2c_clien
- 			I2C_SMBUS_BYTE, &data);
- 	return (status < 0) ? status : data.byte;
- }
--EXPORT_SYMBOL(i2c_smbus_read_byte);
-+EXPORT_SYMBOL(i2c_smbus_receive_byte);
+-	u8 wbuf[1 + M41T80_DATETIME_REG_SIZE];
+-	u8 *buf = &wbuf[1];
+-	u8 dt_addr[1] = { M41T80_REG_SEC };
+-	struct i2c_msg msgs_in[] = {
+-		{
+-			.addr	= client->addr,
+-			.flags	= 0,
+-			.len	= 1,
+-			.buf	= dt_addr,
+-		},
+-		{
+-			.addr	= client->addr,
+-			.flags	= I2C_M_RD,
+-			.len	= M41T80_DATETIME_REG_SIZE - M41T80_REG_SEC,
+-			.buf	= buf + M41T80_REG_SEC,
+-		},
+-	};
+-	struct i2c_msg msgs[] = {
+-		{
+-			.addr	= client->addr,
+-			.flags	= 0,
+-			.len	= 1 + M41T80_DATETIME_REG_SIZE,
+-			.buf	= wbuf,
+-		 },
+-	};
++	u8 buf[M41T80_DATETIME_REG_SIZE];
  
- /**
-- * i2c_smbus_write_byte - SMBus "send byte" protocol
-+ * i2c_smbus_send_byte - SMBus "send byte" protocol
-  * @client: Handle to slave device
-  * @value: Byte to be sent
-  *
-  * This executes the SMBus "send byte" protocol, returning negative errno
-  * else zero on success.
-  */
--s32 i2c_smbus_write_byte(struct i2c_client *client, u8 value)
-+s32 i2c_smbus_send_byte(struct i2c_client *client, u8 value)
- {
- 	return i2c_smbus_xfer(client->adapter,client->addr,client->flags,
- 	                      I2C_SMBUS_WRITE, value, I2C_SMBUS_BYTE, NULL);
- }
--EXPORT_SYMBOL(i2c_smbus_write_byte);
-+EXPORT_SYMBOL(i2c_smbus_send_byte);
+ 	/* Read current reg values into buf[1..7] */
+-	if (i2c_transfer(client->adapter, msgs_in, 2) < 0) {
++	if (m41t80_read_block_data(client, M41T80_REG_SEC,
++				   M41T80_DATETIME_REG_SIZE - M41T80_REG_SEC,
++				   buf + M41T80_REG_SEC) < 0) {
+ 		dev_err(&client->dev, "read error\n");
+ 		return -EIO;
+ 	}
  
- /**
-  * i2c_smbus_read_byte_data - SMBus "read byte" protocol
---- g26.orig/Documentation/i2c/chips/max6875	2007-07-12 16:32:15.000000000 -0700
-+++ g26/Documentation/i2c/chips/max6875	2008-05-10 00:07:50.000000000 -0700
-@@ -88,14 +88,14 @@ To write 0x5a to address 0x8003:
+-	wbuf[0] = 0; /* offset into rtc's regs */
+ 	/* Merge time-data and register flags into buf[0..7] */
+ 	buf[M41T80_REG_SSEC] = 0;
+ 	buf[M41T80_REG_SEC] =
+@@ -167,7 +199,8 @@ static int m41t80_set_datetime(struct i2
+ 	/* assume 20YY not 19YY */
+ 	buf[M41T80_REG_YEAR] = BIN2BCD(tm->tm_year % 100);
  
- Reading data from the EEPROM is a little more complicated.
- Use i2c_smbus_write_byte_data() to set the read address and then
--i2c_smbus_read_byte() or i2c_smbus_read_i2c_block_data() to read the data.
-+i2c_smbus_receive_byte() or i2c_smbus_read_i2c_block_data() to read the data.
- 
- Example:
- To read data starting at offset 0x8100, first set the address:
-   i2c_smbus_write_byte_data(fd, 0x81, 0x00);
- 
- And then read the data
--  value = i2c_smbus_read_byte(fd);
-+  value = i2c_smbus_receive_byte(fd);
- 
-   or
- 
---- g26.orig/Documentation/i2c/smbus-protocol	2008-05-10 00:13:59.000000000 -0700
-+++ g26/Documentation/i2c/smbus-protocol	2008-05-10 00:15:14.000000000 -0700
-@@ -18,9 +18,7 @@ handled at all on most pure SMBus adapte
- 
- Below is a list of SMBus protocol operations, and the functions executing
- them.  Note that the names used in the SMBus protocol specifications usually
--don't match these function names.  For some of the operations which pass a
--single data byte, the functions using SMBus protocol operation names execute
--a different protocol operation entirely.
-+don't match these function names.
- 
- 
- Key to symbols
-@@ -49,8 +47,8 @@ This sends a single bit to the device, a
- A Addr Rd/Wr [A] P
- 
- 
--SMBus Receive Byte:  i2c_smbus_read_byte()
--==========================================
-+SMBus Receive Byte:  i2c_smbus_receive_byte()
-+=============================================
- 
- This reads a single byte from a device, without specifying a device
- register. Some devices are so simple that this interface is enough; for
-@@ -60,8 +58,8 @@ the previous SMBus command.
- S Addr Rd [A] [Data] NA P
- 
- 
--SMBus Send Byte:  i2c_smbus_write_byte()
--========================================
-+SMBus Send Byte:  i2c_smbus_send_byte()
-+=======================================
- 
- This operation is the reverse of Receive Byte: it sends a single byte
- to a device.  See Receive Byte for more information.
---- g26.orig/Documentation/i2c/writing-clients	2008-04-29 21:51:55.000000000 -0700
-+++ g26/Documentation/i2c/writing-clients	2008-05-10 00:07:50.000000000 -0700
-@@ -560,8 +560,8 @@ SMBus communication
- 
- 
-   extern s32 i2c_smbus_write_quick(struct i2c_client * client, u8 value);
--  extern s32 i2c_smbus_read_byte(struct i2c_client * client);
--  extern s32 i2c_smbus_write_byte(struct i2c_client * client, u8 value);
-+  extern s32 i2c_smbus_receive_byte(struct i2c_client * client);
-+  extern s32 i2c_smbus_send_byte(struct i2c_client * client, u8 value);
-   extern s32 i2c_smbus_read_byte_data(struct i2c_client * client, u8 command);
-   extern s32 i2c_smbus_write_byte_data(struct i2c_client * client,
-                                        u8 command, u8 value);
---- g26.orig/drivers/gpio/pcf857x.c	2008-05-07 16:32:18.000000000 -0700
-+++ g26/drivers/gpio/pcf857x.c	2008-05-10 00:07:50.000000000 -0700
-@@ -68,7 +68,7 @@ static int pcf857x_input8(struct gpio_ch
- 	struct pcf857x	*gpio = container_of(chip, struct pcf857x, chip);
- 
- 	gpio->out |= (1 << offset);
--	return i2c_smbus_write_byte(gpio->client, gpio->out);
-+	return i2c_smbus_send_byte(gpio->client, gpio->out);
- }
- 
- static int pcf857x_get8(struct gpio_chip *chip, unsigned offset)
-@@ -76,7 +76,7 @@ static int pcf857x_get8(struct gpio_chip
- 	struct pcf857x	*gpio = container_of(chip, struct pcf857x, chip);
- 	s32		value;
- 
--	value = i2c_smbus_read_byte(gpio->client);
-+	value = i2c_smbus_receive_byte(gpio->client);
- 	return (value < 0) ? 0 : (value & (1 << offset));
- }
- 
-@@ -89,7 +89,7 @@ static int pcf857x_output8(struct gpio_c
- 		gpio->out |= bit;
- 	else
- 		gpio->out &= ~bit;
--	return i2c_smbus_write_byte(gpio->client, gpio->out);
-+	return i2c_smbus_send_byte(gpio->client, gpio->out);
- }
- 
- static void pcf857x_set8(struct gpio_chip *chip, unsigned offset, int value)
-@@ -202,7 +202,7 @@ static int pcf857x_probe(struct i2c_clie
- 
- 		/* fail if there's no chip present */
- 		else
--			status = i2c_smbus_read_byte(client);
-+			status = i2c_smbus_receive_byte(client);
- 
- 	/* '75/'75c addresses are 0x20..0x27, just like the '74;
- 	 * the '75c doesn't have a current source pulling high.
---- g26.orig/drivers/hwmon/ds1621.c	2008-03-28 11:08:28.000000000 -0700
-+++ g26/drivers/hwmon/ds1621.c	2008-05-10 00:07:50.000000000 -0700
-@@ -132,7 +132,7 @@ static void ds1621_init_client(struct i2
- 	ds1621_write_value(client, DS1621_REG_CONF, reg);
- 	
- 	/* start conversion */
--	i2c_smbus_write_byte(client, DS1621_COM_START);
-+	i2c_smbus_send_byte(client, DS1621_COM_START);
- }
- 
- static ssize_t show_temp(struct device *dev, struct device_attribute *da,
---- g26.orig/drivers/hwmon/lm90.c	2008-03-28 11:08:29.000000000 -0700
-+++ g26/drivers/hwmon/lm90.c	2008-05-10 00:07:50.000000000 -0700
-@@ -463,7 +463,7 @@ static int lm90_read_reg(struct i2c_clie
-  	if (client->flags & I2C_CLIENT_PEC) {
-  		err = adm1032_write_byte(client, reg);
-  		if (err >= 0)
-- 			err = i2c_smbus_read_byte(client);
-+			err = i2c_smbus_receive_byte(client);
-  	} else
-  		err = i2c_smbus_read_byte_data(client, reg);
- 
---- g26.orig/drivers/i2c/chips/eeprom.c	2008-03-28 11:08:29.000000000 -0700
-+++ g26/drivers/i2c/chips/eeprom.c	2008-05-10 00:07:50.000000000 -0700
-@@ -93,12 +93,12 @@ static void eeprom_update_client(struct 
- 							!= 32)
- 					goto exit;
- 		} else {
--			if (i2c_smbus_write_byte(client, slice << 5)) {
-+			if (i2c_smbus_send_byte(client, slice << 5)) {
- 				dev_dbg(&client->dev, "eeprom read start has failed!\n");
- 				goto exit;
- 			}
- 			for (i = slice << 5; i < (slice + 1) << 5; i++) {
--				j = i2c_smbus_read_byte(client);
-+				j = i2c_smbus_receive_byte(client);
- 				if (j < 0)
- 					goto exit;
- 				data->data[i] = (u8) j;
-@@ -208,9 +208,9 @@ static int eeprom_detect(struct i2c_adap
- 		char name[4];
- 
- 		name[0] = i2c_smbus_read_byte_data(new_client, 0x80);
--		name[1] = i2c_smbus_read_byte(new_client);
--		name[2] = i2c_smbus_read_byte(new_client);
--		name[3] = i2c_smbus_read_byte(new_client);
-+		name[1] = i2c_smbus_receive_byte(new_client);
-+		name[2] = i2c_smbus_receive_byte(new_client);
-+		name[3] = i2c_smbus_receive_byte(new_client);
- 
- 		if (!memcmp(name, "PCG-", 4) || !memcmp(name, "VGN-", 4)) {
- 			dev_info(&new_client->dev, "Vaio EEPROM detected, "
---- g26.orig/drivers/i2c/chips/max6875.c	2008-03-28 10:42:32.000000000 -0700
-+++ g26/drivers/i2c/chips/max6875.c	2008-05-10 00:07:50.000000000 -0700
-@@ -112,7 +112,7 @@ static void max6875_update_slice(struct 
- 			}
- 		} else {
- 			for (i = 0; i < SLICE_SIZE; i++) {
--				j = i2c_smbus_read_byte(client);
-+				j = i2c_smbus_receive_byte(client);
- 				if (j < 0) {
- 					goto exit_up;
- 				}
---- g26.orig/drivers/i2c/chips/pcf8574.c	2008-03-28 11:08:29.000000000 -0700
-+++ g26/drivers/i2c/chips/pcf8574.c	2008-05-10 00:07:50.000000000 -0700
-@@ -75,7 +75,7 @@ static struct i2c_driver pcf8574_driver 
- static ssize_t show_read(struct device *dev, struct device_attribute *attr, char *buf)
+-	if (i2c_transfer(client->adapter, msgs, 1) != 1) {
++	if (m41t80_write_block_data(client, M41T80_REG_SSEC,
++				    M41T80_DATETIME_REG_SIZE, buf) < 0) {
+ 		dev_err(&client->dev, "write error\n");
+ 		return -EIO;
+ 	}
+@@ -241,34 +274,11 @@ err:
+ static int m41t80_rtc_set_alarm(struct device *dev, struct rtc_wkalrm *t)
  {
  	struct i2c_client *client = to_i2c_client(dev);
--	return sprintf(buf, "%u\n", i2c_smbus_read_byte(client));
-+	return sprintf(buf, "%u\n", i2c_smbus_receive_byte(client));
- }
+-	u8 wbuf[1 + M41T80_ALARM_REG_SIZE];
+-	u8 *buf = &wbuf[1];
++	u8 buf[M41T80_ALARM_REG_SIZE];
+ 	u8 *reg = buf - M41T80_REG_ALARM_MON;
+-	u8 dt_addr[1] = { M41T80_REG_ALARM_MON };
+-	struct i2c_msg msgs_in[] = {
+-		{
+-			.addr	= client->addr,
+-			.flags	= 0,
+-			.len	= 1,
+-			.buf	= dt_addr,
+-		},
+-		{
+-			.addr	= client->addr,
+-			.flags	= I2C_M_RD,
+-			.len	= M41T80_ALARM_REG_SIZE,
+-			.buf	= buf,
+-		},
+-	};
+-	struct i2c_msg msgs[] = {
+-		{
+-			.addr	= client->addr,
+-			.flags	= 0,
+-			.len	= 1 + M41T80_ALARM_REG_SIZE,
+-			.buf	= wbuf,
+-		 },
+-	};
  
- static DEVICE_ATTR(read, S_IRUGO, show_read, NULL);
-@@ -101,7 +101,7 @@ static ssize_t set_write(struct device *
- 		return -EINVAL;
+-	if (i2c_transfer(client->adapter, msgs_in, 2) < 0) {
++	if (m41t80_read_block_data(client, M41T80_REG_ALARM_MON,
++				   M41T80_ALARM_REG_SIZE, buf) < 0) {
+ 		dev_err(&client->dev, "read error\n");
+ 		return -EIO;
+ 	}
+@@ -278,7 +288,6 @@ static int m41t80_rtc_set_alarm(struct d
+ 	reg[M41T80_REG_ALARM_MIN] = 0;
+ 	reg[M41T80_REG_ALARM_SEC] = 0;
  
- 	data->write = val;
--	i2c_smbus_write_byte(client, data->write);
-+	i2c_smbus_send_byte(client, data->write);
- 	return count;
- }
- 
---- g26.orig/drivers/i2c/chips/pcf8591.c	2008-03-28 11:08:29.000000000 -0700
-+++ g26/drivers/i2c/chips/pcf8591.c	2008-05-10 00:07:50.000000000 -0700
-@@ -149,7 +149,7 @@ static ssize_t set_out0_enable(struct de
- 		data->control |= PCF8591_CONTROL_AOEF;
+-	wbuf[0] = M41T80_REG_ALARM_MON; /* offset into rtc's regs */
+ 	reg[M41T80_REG_ALARM_SEC] |= t->time.tm_sec >= 0 ?
+ 		BIN2BCD(t->time.tm_sec) : 0x80;
+ 	reg[M41T80_REG_ALARM_MIN] |= t->time.tm_min >= 0 ?
+@@ -292,7 +301,8 @@ static int m41t80_rtc_set_alarm(struct d
  	else
- 		data->control &= ~PCF8591_CONTROL_AOEF;
--	i2c_smbus_write_byte(client, data->control);
-+	i2c_smbus_send_byte(client, data->control);
- 	mutex_unlock(&data->update_lock);
- 	return count;
- }
-@@ -288,7 +288,7 @@ static void pcf8591_init_client(struct i
- 	
- 	/* The first byte transmitted contains the conversion code of the 
- 	   previous read cycle. FLUSH IT! */
--	i2c_smbus_read_byte(client);
-+	i2c_smbus_receive_byte(client);
- }
+ 		reg[M41T80_REG_ALARM_DAY] |= 0x40;
  
- static int pcf8591_read_channel(struct device *dev, int channel)
-@@ -302,13 +302,13 @@ static int pcf8591_read_channel(struct d
- 	if ((data->control & PCF8591_CONTROL_AICH_MASK) != channel) {
- 		data->control = (data->control & ~PCF8591_CONTROL_AICH_MASK)
- 			      | channel;
--		i2c_smbus_write_byte(client, data->control);
-+		i2c_smbus_send_byte(client, data->control);
- 	
- 		/* The first byte transmitted contains the conversion code of 
- 		   the previous read cycle. FLUSH IT! */
--		i2c_smbus_read_byte(client);
-+		i2c_smbus_receive_byte(client);
- 	}
--	value = i2c_smbus_read_byte(client);
-+	value = i2c_smbus_receive_byte(client);
- 
- 	mutex_unlock(&data->update_lock);
- 
---- g26.orig/drivers/i2c/chips/tsl2550.c	2008-04-29 21:51:56.000000000 -0700
-+++ g26/drivers/i2c/chips/tsl2550.c	2008-05-10 00:07:50.000000000 -0700
-@@ -68,7 +68,7 @@ static int tsl2550_set_operating_mode(st
- {
- 	struct tsl2550_data *data = i2c_get_clientdata(client);
- 
--	int ret = i2c_smbus_write_byte(client, TSL2550_MODE_RANGE[mode]);
-+	int ret = i2c_smbus_send_byte(client, TSL2550_MODE_RANGE[mode]);
- 
- 	data->operating_mode = mode;
- 
-@@ -81,9 +81,9 @@ static int tsl2550_set_power_state(struc
- 	int ret;
- 
- 	if (state == 0)
--		ret = i2c_smbus_write_byte(client, TSL2550_POWER_DOWN);
-+		ret = i2c_smbus_send_byte(client, TSL2550_POWER_DOWN);
- 	else {
--		ret = i2c_smbus_write_byte(client, TSL2550_POWER_UP);
-+		ret = i2c_smbus_send_byte(client, TSL2550_POWER_UP);
- 
- 		/* On power up we should reset operating mode also... */
- 		tsl2550_set_operating_mode(client, data->operating_mode);
-@@ -107,14 +107,14 @@ static int tsl2550_get_adc_value(struct 
- 	 */
- 	end = jiffies + msecs_to_jiffies(400);
- 	while (time_before(jiffies, end)) {
--		i2c_smbus_write_byte(client, cmd);
-+		i2c_smbus_send_byte(client, cmd);
- 
- 		if (loop++ < 5)
- 			mdelay(1);
- 		else
- 			msleep(1);
- 
--		ret = i2c_smbus_read_byte(client);
-+		ret = i2c_smbus_receive_byte(client);
- 		if (ret < 0)
- 			return ret;
- 		else if (ret & 0x0080)
-@@ -342,16 +342,16 @@ static int tsl2550_init_client(struct i2
- 	 * Probe the chip. To do so we try to power up the device and then to
- 	 * read back the 0x03 code
- 	 */
--	err = i2c_smbus_write_byte(client, TSL2550_POWER_UP);
-+	err = i2c_smbus_send_byte(client, TSL2550_POWER_UP);
- 	if (err < 0)
- 		return err;
- 	mdelay(1);
--	if (i2c_smbus_read_byte(client) != TSL2550_POWER_UP)
-+	if (i2c_smbus_receive_byte(client) != TSL2550_POWER_UP)
- 		return -ENODEV;
- 	data->power_state = 1;
- 
- 	/* Set the default operating mode */
--	err = i2c_smbus_write_byte(client,
-+	err = i2c_smbus_send_byte(client,
- 				   TSL2550_MODE_RANGE[data->operating_mode]);
- 	if (err < 0)
- 		return err;
---- g26.orig/drivers/media/video/saa7110.c	2008-04-24 13:45:59.000000000 -0700
-+++ g26/drivers/media/video/saa7110.c	2008-05-10 00:07:51.000000000 -0700
-@@ -127,7 +127,7 @@ saa7110_write_block (struct i2c_client *
- static inline int
- saa7110_read (struct i2c_client *client)
- {
--	return i2c_smbus_read_byte(client);
-+	return i2c_smbus_receive_byte(client);
- }
- 
- /* ----------------------------------------------------------------------- */
---- g26.orig/drivers/media/video/saa7185.c	2008-04-24 13:45:59.000000000 -0700
-+++ g26/drivers/media/video/saa7185.c	2008-05-10 00:07:51.000000000 -0700
-@@ -82,7 +82,7 @@ struct saa7185 {
- static inline int
- saa7185_read (struct i2c_client *client)
- {
--	return i2c_smbus_read_byte(client);
-+	return i2c_smbus_receive_byte(client);
- }
- 
- static int
---- g26.orig/drivers/media/video/tda9840.c	2008-04-24 13:45:59.000000000 -0700
-+++ g26/drivers/media/video/tda9840.c	2008-05-10 00:07:51.000000000 -0700
-@@ -74,7 +74,7 @@ static int command(struct i2c_client *cl
- 
- 		result = i2c_smbus_write_byte_data(client, SWITCH, byte);
- 		if (result)
--			dprintk("i2c_smbus_write_byte() failed, ret:%d\n", result);
-+			dprintk("i2c_smbus_write_byte_data() failed, ret:%d\n", result);
- 		break;
- 
- 	case TDA9840_LEVEL_ADJUST:
-@@ -94,7 +94,7 @@ static int command(struct i2c_client *cl
- 
- 		result = i2c_smbus_write_byte_data(client, LEVEL_ADJUST, byte);
- 		if (result)
--			dprintk("i2c_smbus_write_byte() failed, ret:%d\n", result);
-+			dprintk("i2c_smbus_write_byte_data() failed, ret:%d\n", result);
- 		break;
- 
- 	case TDA9840_STEREO_ADJUST:
-@@ -114,7 +114,7 @@ static int command(struct i2c_client *cl
- 
- 		result = i2c_smbus_write_byte_data(client, STEREO_ADJUST, byte);
- 		if (result)
--			dprintk("i2c_smbus_write_byte() failed, ret:%d\n", result);
-+			dprintk("i2c_smbus_write_byte_data() failed, ret:%d\n", result);
- 		break;
- 
- 	case TDA9840_DETECT: {
-@@ -144,7 +144,7 @@ static int command(struct i2c_client *cl
- 
- 		result = i2c_smbus_write_byte_data(client, TEST, byte);
- 		if (result)
--			dprintk("i2c_smbus_write_byte() failed, ret:%d\n", result);
-+			dprintk("i2c_smbus_write_byte_data() failed, ret:%d\n", result);
- 		break;
- 	default:
- 		return -ENOIOCTLCMD;
---- g26.orig/drivers/media/video/tea6415c.c	2008-04-24 13:45:59.000000000 -0700
-+++ g26/drivers/media/video/tea6415c.c	2008-05-10 00:07:51.000000000 -0700
-@@ -165,9 +165,9 @@ static int switch_matrix(struct i2c_clie
- 		break;
- 	};
- 
--	ret = i2c_smbus_write_byte(client, byte);
-+	ret = i2c_smbus_send_byte(client, byte);
- 	if (ret) {
--		dprintk("i2c_smbus_write_byte() failed, ret:%d\n", ret);
-+		dprintk("i2c_smbus_send_byte() failed, ret:%d\n", ret);
+-	if (i2c_transfer(client->adapter, msgs, 1) != 1) {
++	if (m41t80_write_block_data(client, M41T80_REG_ALARM_MON,
++				    M41T80_ALARM_REG_SIZE, buf) < 0) {
+ 		dev_err(&client->dev, "write error\n");
  		return -EIO;
  	}
+@@ -312,24 +322,10 @@ static int m41t80_rtc_read_alarm(struct 
+ {
+ 	struct i2c_client *client = to_i2c_client(dev);
+ 	u8 buf[M41T80_ALARM_REG_SIZE + 1]; /* all alarm regs and flags */
+-	u8 dt_addr[1] = { M41T80_REG_ALARM_MON };
+ 	u8 *reg = buf - M41T80_REG_ALARM_MON;
+-	struct i2c_msg msgs[] = {
+-		{
+-			.addr	= client->addr,
+-			.flags	= 0,
+-			.len	= 1,
+-			.buf	= dt_addr,
+-		},
+-		{
+-			.addr	= client->addr,
+-			.flags	= I2C_M_RD,
+-			.len	= M41T80_ALARM_REG_SIZE + 1,
+-			.buf	= buf,
+-		},
+-	};
  
---- g26.orig/drivers/media/video/tea6420.c	2008-04-24 13:45:59.000000000 -0700
-+++ g26/drivers/media/video/tea6420.c	2008-05-10 00:07:51.000000000 -0700
-@@ -79,9 +79,9 @@ static int tea6420_switch(struct i2c_cli
- 		break;
- 	}
- 
--	ret = i2c_smbus_write_byte(client, byte);
-+	ret = i2c_smbus_send_byte(client, byte);
- 	if (ret) {
--		dprintk("i2c_smbus_write_byte() failed, ret:%d\n", ret);
-+		dprintk("i2c_smbus_send_byte() failed, ret:%d\n", ret);
+-	if (i2c_transfer(client->adapter, msgs, 2) < 0) {
++	if (m41t80_read_block_data(client, M41T80_REG_ALARM_MON,
++				   M41T80_ALARM_REG_SIZE + 1, buf) < 0) {
+ 		dev_err(&client->dev, "read error\n");
  		return -EIO;
  	}
- 
---- g26.orig/drivers/w1/masters/ds2482.c	2008-03-28 10:42:44.000000000 -0700
-+++ g26/drivers/w1/masters/ds2482.c	2008-05-10 00:07:51.000000000 -0700
-@@ -167,7 +167,7 @@ static inline int ds2482_select_register
+@@ -488,26 +484,16 @@ static int boot_flag;
   */
- static inline int ds2482_send_cmd(struct ds2482_data *pdev, u8 cmd)
+ static void wdt_ping(void)
  {
--	if (i2c_smbus_write_byte(&pdev->client, cmd) < 0)
-+	if (i2c_smbus_send_byte(&pdev->client, cmd) < 0)
- 		return -1;
+-	unsigned char i2c_data[2];
+-	struct i2c_msg msgs1[1] = {
+-		{
+-			.addr	= save_client->addr,
+-			.flags	= 0,
+-			.len	= 2,
+-			.buf	= i2c_data,
+-		},
+-	};
+-	i2c_data[0] = 0x09;		/* watchdog register */
++	u8 wdt = 0x80;				/* WDS = 1 (0x80)  */
  
- 	pdev->read_prt = DS2482_PTR_CODE_STATUS;
-@@ -216,7 +216,7 @@ static int ds2482_wait_1wire_idle(struct
+ 	if (wdt_margin > 31)
+-		i2c_data[1] = (wdt_margin & 0xFC) | 0x83; /* resolution = 4s */
++		/* mulitplier = WD_TIMO / 4, resolution = 4s (0x3)  */
++		wdt |= (wdt_margin & 0xfc) | 0x3;
+ 	else
+-		/*
+-		 * WDS = 1 (0x80), mulitplier = WD_TIMO, resolution = 1s (0x02)
+-		 */
+-		i2c_data[1] = wdt_margin<<2 | 0x82;
++		/* mulitplier = WD_TIMO, resolution = 1s (0x2)  */
++		wdt |= wdt_margin << 2 | 0x2;
  
- 	if (!ds2482_select_register(pdev, DS2482_PTR_CODE_STATUS)) {
- 		do {
--			temp = i2c_smbus_read_byte(&pdev->client);
-+			temp = i2c_smbus_receive_byte(&pdev->client);
- 		} while ((temp >= 0) && (temp & DS2482_REG_STS_1WB) &&
- 			 (++retries < DS2482_WAIT_IDLE_TIMEOUT));
+-	i2c_transfer(save_client->adapter, msgs1, 1);
++	i2c_smbus_write_byte_data(save_client, M41T80_REG_WATCHDOG, wdt);
+ }
+ 
+ /**
+@@ -517,36 +503,8 @@ static void wdt_ping(void)
+  */
+ static void wdt_disable(void)
+ {
+-	unsigned char i2c_data[2], i2c_buf[0x10];
+-	struct i2c_msg msgs0[2] = {
+-		{
+-			.addr	= save_client->addr,
+-			.flags	= 0,
+-			.len	= 1,
+-			.buf	= i2c_data,
+-		},
+-		{
+-			.addr	= save_client->addr,
+-			.flags	= I2C_M_RD,
+-			.len	= 1,
+-			.buf	= i2c_buf,
+-		},
+-	};
+-	struct i2c_msg msgs1[1] = {
+-		{
+-			.addr	= save_client->addr,
+-			.flags	= 0,
+-			.len	= 2,
+-			.buf	= i2c_data,
+-		},
+-	};
+-
+-	i2c_data[0] = 0x09;
+-	i2c_transfer(save_client->adapter, msgs0, 2);
+-
+-	i2c_data[0] = 0x09;
+-	i2c_data[1] = 0x00;
+-	i2c_transfer(save_client->adapter, msgs1, 1);
++	i2c_smbus_read_byte_data(save_client, M41T80_REG_WATCHDOG);
++	i2c_smbus_write_byte_data(save_client, M41T80_REG_WATCHDOG, 0);
+ }
+ 
+ /**
+@@ -736,13 +694,21 @@ static int m41t80_probe(struct i2c_clien
+ 	struct rtc_device *rtc = NULL;
+ 	struct rtc_time tm;
+ 	struct m41t80_data *clientdata = NULL;
++	int reg;
+ 
+-	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C
+-				     | I2C_FUNC_SMBUS_BYTE_DATA)) {
++	if (!i2c_check_functionality(client->adapter,
++				     I2C_FUNC_SMBUS_BYTE_DATA)) {
+ 		rc = -ENODEV;
+ 		goto exit;
  	}
-@@ -244,7 +244,7 @@ static int ds2482_set_channel(struct ds2
  
- 	pdev->read_prt = DS2482_PTR_CODE_CHANNEL;
- 	pdev->channel = -1;
--	if (i2c_smbus_read_byte(&pdev->client) == ds2482_chan_rd[channel]) {
-+	if (i2c_smbus_receive_byte(&pdev->client) == ds2482_chan_rd[channel]) {
- 		pdev->channel = channel;
- 		return 0;
++	/* Trivially check it's there; keep the result for the HT check. */
++	reg = i2c_smbus_read_byte_data(client, M41T80_REG_ALARM_HOUR);
++	if (reg < 0) {
++		rc = -ENXIO;
++		goto exit;
++	}
++
+ 	dev_info(&client->dev,
+ 		 "chip found, driver version " DRV_VERSION "\n");
+ 
+@@ -765,11 +731,7 @@ static int m41t80_probe(struct i2c_clien
+ 	i2c_set_clientdata(client, clientdata);
+ 
+ 	/* Make sure HT (Halt Update) bit is cleared */
+-	rc = i2c_smbus_read_byte_data(client, M41T80_REG_ALARM_HOUR);
+-	if (rc < 0)
+-		goto ht_err;
+-
+-	if (rc & M41T80_ALHOUR_HT) {
++	if (reg & M41T80_ALHOUR_HT) {
+ 		if (clientdata->features & M41T80_FEATURE_HT) {
+ 			m41t80_get_datetime(client, &tm);
+ 			dev_info(&client->dev, "HT bit was set!\n");
+@@ -782,18 +744,18 @@ static int m41t80_probe(struct i2c_clien
+ 		}
+ 		if (i2c_smbus_write_byte_data(client,
+ 					      M41T80_REG_ALARM_HOUR,
+-					      rc & ~M41T80_ALHOUR_HT) < 0)
++					      reg & ~M41T80_ALHOUR_HT) < 0)
+ 			goto ht_err;
  	}
-@@ -368,7 +368,7 @@ static u8 ds2482_w1_read_byte(void *data
- 	ds2482_select_register(pdev, DS2482_PTR_CODE_DATA);
  
- 	/* Read the data byte */
--	result = i2c_smbus_read_byte(&pdev->client);
-+	result = i2c_smbus_receive_byte(&pdev->client);
+ 	/* Make sure ST (stop) bit is cleared */
+-	rc = i2c_smbus_read_byte_data(client, M41T80_REG_SEC);
+-	if (rc < 0)
++	reg = i2c_smbus_read_byte_data(client, M41T80_REG_SEC);
++	if (reg < 0)
+ 		goto st_err;
  
- 	mutex_unlock(&pdev->access_lock);
+-	if (rc & M41T80_SEC_ST) {
++	if (reg & M41T80_SEC_ST) {
+ 		if (i2c_smbus_write_byte_data(client, M41T80_REG_SEC,
+-					      rc & ~M41T80_SEC_ST) < 0)
++					      reg & ~M41T80_SEC_ST) < 0)
+ 			goto st_err;
+ 	}
  
-@@ -463,7 +463,7 @@ static int ds2482_detect(struct i2c_adap
- 	ndelay(525);
- 
- 	/* Read the status byte - only reset bit and line should be set */
--	temp1 = i2c_smbus_read_byte(new_client);
-+	temp1 = i2c_smbus_receive_byte(new_client);
- 	if (temp1 != (DS2482_REG_STS_LL | DS2482_REG_STS_RST)) {
- 		dev_dbg(&adapter->dev, "DS2482 (0x%02x) reset status "
- 			"0x%02X - not a DS2482\n", address, temp1);

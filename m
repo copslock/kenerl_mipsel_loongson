@@ -1,66 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 May 2008 16:59:22 +0100 (BST)
-Received: from elvis.franken.de ([193.175.24.41]:4823 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S20031639AbYELP7A (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 12 May 2008 16:59:00 +0100
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1JvaQO-0004fL-01; Mon, 12 May 2008 17:58:52 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id 29DB4DE534; Mon, 12 May 2008 17:58:48 +0200 (CEST)
-From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [UPDATED PATCH] Fix check for valid stack pointer during backtrace
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 May 2008 17:31:24 +0100 (BST)
+Received: from sorrow.cyrius.com ([65.19.161.204]:36872 "EHLO
+	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
+	id S20030855AbYELQbV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 12 May 2008 17:31:21 +0100
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id D354ED8E7; Mon, 12 May 2008 16:31:16 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id C2C33372609; Mon, 12 May 2008 18:31:07 +0200 (CEST)
+Date:	Mon, 12 May 2008 18:31:07 +0200
+From:	Martin Michlmayr <tbm@cyrius.com>
 To:	linux-mips@linux-mips.org
-cc:	ralf@linux-mips.org
-Message-Id: <20080512155849.29DB4DE534@solo.franken.de>
-Date:	Mon, 12 May 2008 17:58:48 +0200 (CEST)
-Return-Path: <tsbogend@alpha.franken.de>
+Subject: Malta build errors with 2.6.26-rc1
+Message-ID: <20080512163107.GA19052@deprecation.cyrius.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+User-Agent: Mutt/1.5.16 (2007-06-11)
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19221
+X-archive-position: 19222
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-The newly added check for valid stack pointer address breaks at least for
-64bit kernels.  Use __get_user() for accessing stack content to avoid crashes,
-when doing the backtrace.
+Some Malta build errors:
 
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
----
+cc1: warnings being treated as errors
+arch/mips/mips-boards/malta/malta_int.c: In function ‘gcmp_probe’:
+arch/mips/mips-boards/malta/malta_int.c:408: warning: cast to pointer from integer of different size
+arch/mips/mips-boards/malta/malta_int.c: In function ‘arch_init_irq’:
+arch/mips/mips-boards/malta/malta_int.c:437: warning: cast to pointer from integer of different size
+arch/mips/mips-boards/malta/malta_int.c:441: warning: cast to pointer from integer of different size
+arch/mips/mips-boards/malta/malta_int.c: In function ‘malta_be_handler’:
+arch/mips/mips-boards/malta/malta_int.c:656: warning: cast to pointer from integer of different size
+arch/mips/mips-boards/malta/malta_int.c:657: warning: cast to pointer from integer of different size
+arch/mips/mips-boards/malta/malta_int.c:658: warning: cast to pointer from integer of different size
+arch/mips/mips-boards/malta/malta_int.c:704: warning: cast to pointer from integer of different size
+make[5]: *** [arch/mips/mips-boards/malta/malta_int.o] Error 1
 
- arch/mips/kernel/traps.c |   16 +++++++++-------
- 1 files changed, 9 insertions(+), 7 deletions(-)
+and:
 
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index cb8b0e2..f9165d1 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -88,15 +88,17 @@ static void show_raw_backtrace(unsigned long reg29)
- #ifdef CONFIG_KALLSYMS
- 	printk("\n");
- #endif
--#define IS_KVA01(a) ((((unsigned int)a) & 0xc0000000) == 0x80000000)
--	if (IS_KVA01(sp)) {
--		while (!kstack_end(sp)) {
--			addr = *sp++;
--			if (__kernel_text_address(addr))
--				print_ip_sym(addr);
-+	while (!kstack_end(sp)) {
-+		unsigned long __user *p =
-+			(unsigned long __user *)(unsigned long)sp++;
-+		if (__get_user(addr, p)) {
-+			printk(" (Bad stack address)");
-+			break;
- 		}
--		printk("\n");
-+		if (__kernel_text_address(addr))
-+			print_ip_sym(addr);
- 	}
-+	printk("\n");
- }
- 
- #ifdef CONFIG_KALLSYMS
+arch/mips/mips-boards/generic/amon.c: In function ‘amon_cpu_avail’:
+arch/mips/mips-boards/generic/amon.c:31: error: implicit declaration of function ‘KSEG0ADDR’
+cc1: warnings being treated as errors
+arch/mips/mips-boards/generic/amon.c:31: warning: cast to pointer from integer of different size
+arch/mips/mips-boards/generic/amon.c: In function ‘amon_cpu_start’:
+arch/mips/mips-boards/generic/amon.c:56: warning: cast to pointer from integer of different size
+make[4]: *** [arch/mips/mips-boards/malta] Error 2
+
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

@@ -1,47 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 May 2008 06:54:12 +0100 (BST)
-Received: from smtp167.iad.emailsrvr.com ([207.97.245.167]:43660 "EHLO
-	smtp167.iad.emailsrvr.com") by ftp.linux-mips.org with ESMTP
-	id S20030721AbYELFyK convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 12 May 2008 06:54:10 +0100
-Received: from relay6.relay.iad.emailsrvr.com (localhost [127.0.0.1])
-	by relay6.relay.iad.emailsrvr.com (SMTP Server) with ESMTP id 14F3B75243C;
-	Mon, 12 May 2008 01:54:03 -0400 (EDT)
-Received: from vaultinfo.com (webmail20.webmail.iad.mlsrvr.com [192.168.1.41])
-	by relay6.relay.iad.emailsrvr.com (SMTP Server) with ESMTP id 02DAA73A2B2;
-	Mon, 12 May 2008 01:54:03 -0400 (EDT)
-Received: by webmail.mailsin.net
-    (Authenticated sender: abhiruchi.g@vaultinfo.com, from: abhiruchi.g@vaultinfo.com) 
-    with HTTP; Mon, 12 May 2008 01:54:02 -0400 (EDT)
-Date:	Mon, 12 May 2008 01:54:02 -0400 (EDT)
-Subject: =?UTF-8?Q?mips:(Alchemy=20au1200)=20how=20to=20use=20kdb=20to=20debug=20?=
- =?UTF-8?Q?the=20kernel=3Fis=20kdb=20inbuilt=20or=20kdb=20patch=20is=20req?=
- =?UTF-8?Q?uired=3F?=
-From:	abhiruchi.g@vaultinfo.com
-To:	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-	kernel-testers@vger.kernel.org
-Reply-To: abhiruchi.g@vaultinfo.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 May 2008 09:39:27 +0100 (BST)
+Received: from smtp04.mtu.ru ([62.5.255.51]:31231 "EHLO smtp04.mtu.ru")
+	by ftp.linux-mips.org with ESMTP id S20030494AbYELIjY (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 12 May 2008 09:39:24 +0100
+Received: from smtp04.mtu.ru (localhost [127.0.0.1])
+	by smtp04.mtu.ru (Postfix) with ESMTP id B389D839011;
+	Mon, 12 May 2008 12:39:17 +0400 (MSD)
+Received: from [127.0.0.1] (ppp83-237-118-229.pppoe.mtu-net.ru [83.237.118.229])
+	(Authenticated sender: braindead@stream.ru)
+	by smtp04.mtu.ru (Postfix) with ESMTP id 8DF38838D8F;
+	Mon, 12 May 2008 12:39:17 +0400 (MSD)
+Message-ID: <48280221.9010206@ru.mvista.com>
+Date:	Mon, 12 May 2008 12:38:57 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+User-Agent: Thunderbird 1.5.0.2 (Windows/20060308)
 MIME-Version: 1.0
-Content-Type: text/plain;charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Importance: Normal
-X-Priority: 3 (Normal)
-X-Type:	1
-Message-ID: <54114.192.168.1.71.1210571642.webmail@192.168.1.71>
-X-Mailer: webmail6.6.1
-Return-Path: <abhiruchi.g@vaultinfo.com>
+To:	Manuel Lauss <mano@roarinelk.homelinux.net>
+CC:	Sergei Shtylyov <sshtylyov@dev.rtsoft.ru>, ralf@linux-mips.org,
+	linux-mips@linux-mips.org
+Subject: Re: [MIPS] Alchemy: register mmc platform device for db1200/pb1200
+ boards
+References: <S20024685AbYEKJEz/20080511090455Z+641267@ftp.linux-mips.org> <4826CA3C.6090809@dev.rtsoft.ru> <4827468F.8030808@roarinelk.homelinux.net>
+In-Reply-To: <4827468F.8030808@roarinelk.homelinux.net>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-DCC-STREAM-Metrics: smtp04.mtu.ru 10002; Body=0 Fuz1=0 Fuz2=0
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19204
+X-archive-position: 19205
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: abhiruchi.g@vaultinfo.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-how to use kdb to debug the kernel.
-I am using linux-2.6.22.
+Hello.
 
-Is kdb inbuilt or kdb patch is required? 
+Manuel Lauss wrote:
+>> Besides, the driver as it is now, is not quite prepared to handle two 
+>> MMC controllers as two different platform devices.
+
+> Care to elaborate? If it's about the shared SD IRQ, well, that's why I 
+> asked for PB1200 testers.
+    I meant the driver *before* your changes -- they're not yet merged 
+if I don't mistake.
+
+>     Manuel Lauss
+WBR, Sergei

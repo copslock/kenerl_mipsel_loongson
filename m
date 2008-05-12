@@ -1,90 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 May 2008 03:46:11 +0100 (BST)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:50100 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20030198AbYELCqJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 12 May 2008 03:46:09 +0100
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [213.58.128.207]) with ESMTP; Mon, 12 May 2008 11:46:06 +0900
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with SMTP id 7F6A91EF48;
-	Mon, 12 May 2008 11:46:01 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 7FDC11EF48;
-	Mon, 12 May 2008 11:45:53 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id m4C2jiAF099220;
-	Mon, 12 May 2008 11:45:47 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Mon, 12 May 2008 11:45:44 +0900 (JST)
-Message-Id: <20080512.114544.41629483.nemoto@toshiba-tops.co.jp>
-To:	macro@linux-mips.org
-Cc:	khali@linux-fr.org, david-b@pacbell.net, a.zummo@towertech.it,
-	ab@mycable.de, anemo@mba.ocn.ne.jp, i2c@lm-sensors.org,
-	rtc-linux@googlegroups.com, linux-mips@linux-mips.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC][PATCH 4/4] RTC: SMBus support for the M41T80
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <Pine.LNX.4.55.0805110045010.18978@cliff.in.clinika.pl>
-References: <Pine.LNX.4.55.0805100116290.10552@cliff.in.clinika.pl>
-	<20080510103544.701c7b3f@hyperion.delvare>
-	<Pine.LNX.4.55.0805110045010.18978@cliff.in.clinika.pl>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 May 2008 06:07:38 +0100 (BST)
+Received: from smtp207.iad.emailsrvr.com ([207.97.245.207]:3508 "EHLO
+	smtp207.iad.emailsrvr.com") by ftp.linux-mips.org with ESMTP
+	id S20030601AbYELFHf convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 12 May 2008 06:07:35 +0100
+Received: from relay10.relay.iad.mlsrvr.com (localhost [127.0.0.1])
+	by relay10.relay.iad.mlsrvr.com (SMTP Server) with ESMTP id CC3D51B4082;
+	Mon, 12 May 2008 01:07:28 -0400 (EDT)
+Received: from vaultinfo.com (webmail19.webmail.iad.mlsrvr.com [192.168.1.17])
+	by relay10.relay.iad.mlsrvr.com (SMTP Server) with ESMTP id C54F41B4079;
+	Mon, 12 May 2008 01:07:28 -0400 (EDT)
+Received: by webmail.mailsin.net
+    (Authenticated sender: abhiruchi.g@vaultinfo.com, from: abhiruchi.g@vaultinfo.com) 
+    with HTTP; Mon, 12 May 2008 01:07:28 -0400 (EDT)
+Date:	Mon, 12 May 2008 01:07:28 -0400 (EDT)
+Subject: =?UTF-8?Q?WARNING:=20arch/mips/au1000/common/built-in.o(.text+0x15c0):?=
+ =?UTF-8?Q?=20Section=20mismatch:=20reference=20to=20.init.data:=20(betwee?=
+ =?UTF-8?Q?n=20'au1xxx=5Fplatform=5Finit'=20and=20'=5F=5Ffixup=5Fbigphys?=
+ =?UTF-8?Q?=5Faddr')?=
+From:	abhiruchi.g@vaultinfo.com
+To:	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+	kernel-testers@vger.kernel.org
+Reply-To: abhiruchi.g@vaultinfo.com
+MIME-Version: 1.0
+Content-Type: text/plain;charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Importance: Normal
+X-Priority: 3 (Normal)
+X-Type:	1
+Message-ID: <54350.192.168.1.71.1210568848.webmail@192.168.1.71>
+X-Mailer: webmail6.6.1
+Return-Path: <abhiruchi.g@vaultinfo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19202
+X-archive-position: 19203
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: abhiruchi.g@vaultinfo.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 11 May 2008 02:59:34 +0100 (BST), "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
->  If we agree on this one, I will retest and submit the whole batch again,
-> updated as needed.
+Hi all,
+  I am trying to configure the kernel for mips(DB1200 bosrd).I am getting this warning.
+how to remove this warning?
 
-Works OK for me (m41t80 + i2c-gpio).
+WARNING: arch/mips/au1000/common/built-in.o(.text+0x15c0): Section mismatch: reference to .init.data: (between 'au1xxx_platform_init' and '__fixup_bigphys_addr')
+WARNING: arch/mips/au1000/common/built-in.o(.text+0x15c4): Section mismatch: reference to .init.data: (between 'au1xxx_platform_init' and '__fixup_bigphys_addr
 
-Tested-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-One minor style comment.
+My kernel hangs after this:
+===========================
+Waiting 10sec before mounting root device...
+scsi 0:0:0:0: Direct-Access     Ut163    USB2FlashStorage 0.00 PQ: 0 ANSI: 2
+sd 0:0:0:0: [sda] 983808 512-byte hardware sectors (504 MB)
+sd 0:0:0:0: [sda] Write Protect is off
+sd 0:0:0:0: [sda] Assuming drive cache: write through
+sd 0:0:0:0: [sda] 983808 512-byte hardware sectors (504 MB)
+sd 0:0:0:0: [sda] Write Protect is off
+sd 0:0:0:0: [sda] Assuming drive cache: write through
+ sda:<7>usb-storage: queuecommand called
+ sda1
+sd 0:0:0:0: [sda] Attached SCSI removable disk
+sd 0:0:0:0: Attached scsi generic sg0 type 0
+VFS: Mounted root (ext2 filesystem) readonly.
+mount_block_root: name=/dev/root fs=ext2 flags=32769
+Freeing unused kernel memory: 164k freed
+Warning: unable to open an initial console.
+Algorithmics/MIPS FPU Emulator v1.5
 
-> +	if (i2c_check_functionality(client->adapter,
-> +				    I2C_FUNC_SMBUS_WRITE_I2C_BLOCK)) {
-> +		i = i2c_smbus_write_i2c_block_data(client, reg, num, buf);
-> +	} else {
-> +		for (i = 0; i < num; i++) {
-> +			rc = i2c_smbus_write_byte_data(client, reg + i,
-> +						       buf[i]);
-> +			if (rc < 0) {
-> +				i = rc;
-> +				goto out;
-> +			}
-> +		}
->  	}
-> +out:
-> +	return i;
 
-This part can be a bit shorter.
-
-	if (i2c_check_functionality(client->adapter,
-				    I2C_FUNC_SMBUS_WRITE_I2C_BLOCK))
-		return i2c_smbus_write_i2c_block_data(client, reg, num, buf);
-	for (i = 0; i < num; i++) {
-		rc = i2c_smbus_write_byte_data(client, reg + i, buf[i]);
-		if (rc < 0)
-			return rc;
-	}
-	return i;
-
-Saves 6 lines.  Not a big issue.
-
----
-Atsushi Nemoto
+Thanks,
+Abhi

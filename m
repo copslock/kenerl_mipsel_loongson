@@ -1,76 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 May 2008 02:43:06 +0100 (BST)
-Received: from chilli.pcug.org.au ([203.10.76.44]:62095 "EHLO smtps.tip.net.au")
-	by ftp.linux-mips.org with ESMTP id S20023287AbYEMBnE (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 13 May 2008 02:43:04 +0100
-Received: from ash.ozlabs.ibm.com (bh02i525f01.au.ibm.com [202.81.18.30])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(Client did not present a certificate)
-	by smtps.tip.net.au (Postfix) with ESMTP id 2695D368003;
-	Tue, 13 May 2008 11:42:57 +1000 (EST)
-Date:	Tue, 13 May 2008 11:42:44 +1000
-From:	Stephen Rothwell <sfr@canb.auug.org.au>
-To:	"Dmitri Vorobiev" <dmitri.vorobiev@gmail.com>
-Cc:	"Theodore Tso" <tytso@mit.edu>,
-	"Martin Michlmayr" <tbm@cyrius.com>, linux-mips@linux-mips.org,
-	linux-ext4@vger.kernel.org, ralf@linux-mips.org
-Subject: Re: ext4dev build failure on mips: "empty_zero_page" undefined
-Message-Id: <20080513114244.736cf625.sfr@canb.auug.org.au>
-In-Reply-To: <20080513105549.bb1563f8.sfr@canb.auug.org.au>
-References: <20080512130604.GA15008@deprecation.cyrius.com>
-	<90edad820805120654n50f7a00cm3c7b4a4f9346d5ea@mail.gmail.com>
-	<20080512143426.GB7029@mit.edu>
-	<20080512145836.GE15866@deprecation.cyrius.com>
-	<90edad820805120814l7ee3f5d3h7f9939854bccf0@mail.gmail.com>
-	<20080512173537.GG7029@mit.edu>
-	<90edad820805121237r7f4b6e16g135df49cfe27499a@mail.gmail.com>
-	<20080513105549.bb1563f8.sfr@canb.auug.org.au>
-X-Mailer: Sylpheed 2.5.0beta3 (GTK+ 2.12.9; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pgp-signature";
- micalg="PGP-SHA1";
- boundary="Signature=_Tue__13_May_2008_11_42_44_+1000_D4xdJbk8zH./C2Qr"
-Return-Path: <sfr@canb.auug.org.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 May 2008 04:26:40 +0100 (BST)
+Received: from kirk.serum.com.pl ([213.77.9.205]:14323 "EHLO serum.com.pl")
+	by ftp.linux-mips.org with ESMTP id S20031883AbYEMD0i (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 13 May 2008 04:26:38 +0100
+Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
+	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m4D3QGUF003655;
+	Tue, 13 May 2008 05:26:16 +0200
+Received: from localhost (macro@localhost)
+	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m4D3PkaF003645;
+	Tue, 13 May 2008 04:25:54 +0100
+Date:	Tue, 13 May 2008 04:25:45 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Alessandro Zummo <a.zummo@towertech.it>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Jean Delvare <khali@linux-fr.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Thomas Gleixner <tglx@linutronix.de>
+cc:	rtc-linux@googlegroups.com, i2c@lm-sensors.org,
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 0/6] RTC: Use class devices as a persistent clock (#2)
+Message-ID: <Pine.LNX.4.55.0805130214460.535@cliff.in.clinika.pl>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19232
+X-archive-position: 19233
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sfr@canb.auug.org.au
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
---Signature=_Tue__13_May_2008_11_42_44_+1000_D4xdJbk8zH./C2Qr
-Content-Type: text/plain; charset=US-ASCII
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hello,
 
-On Tue, 13 May 2008 10:55:49 +1000 Stephen Rothwell <sfr@canb.auug.org.au> =
-wrote:
->
-> That would be great.  However, let us try with crosstool first. We
-> haven't actually tried using crosstool to build a mips cross compiler.
-> For a start, do we need mips or mipsel?  (My tame minion is trying to
-> build both now.  :-))  Our host arch is powerpc64.
+ This is the second stage of patch submission for this change.  Thanks
+everybody for all the useful suggestions and testing.  As I understand the
+changes are in line with the intent of everyone concerned.  At this
+moment, unless anybody complains, I consider these patches ready to be
+applied upstream.
 
-Also, the only compiler version that crosstool seems to know about for
-mips is 3.4.5.  Is this version ok for building mips kernels?
+ These patches provide means to switch to the RTC class devices for the
+purpose of providing the backup clock for timekeeping.  The API in
+question are the read_persistent_clock() and update_persistent_clock()  
+functions used mostly by the NTP support code.
 
---=20
-Cheers,
-Stephen Rothwell                    sfr@canb.auug.org.au
-http://www.canb.auug.org.au/~sfr/
+ The notable gain is the removal of the additional burden from platform
+code -- all that has be implemented is support for the RTC chip the
+platform has.  I have added the rtc_read_persistent_clock() and
+rtc_update_persistent_clock() functions to the RTC suite that can serve as
+the implementation of the API and work the same (hardware implementation
+permitting) regardless of the exact RTC chip used.  There is even support
+for the ubiquitous derivatives of the MC146818 available as a class device
+already.  Additionally, if there is more than one RTC chip in a given
+system, the user can select which of the chips to use.
 
---Signature=_Tue__13_May_2008_11_42_44_+1000_D4xdJbk8zH./C2Qr
-Content-Type: application/pgp-signature
+ The drawback is some implementations behind these functions may sleep,
+for example because hardware is slow to access.  The current calling
+context of update_persistent_clock() (which is the softirq) does not
+permit the function to sleep.  To rectify I have moved the call into the
+process context, but it now means the latency between getnstimeofday() and
+the writeback into the RTC will be yet less predictable and potentially
+higher.  This should not matter in practice, because the RTC generally
+cannot guarantee suitable precision to be a reliable sub-second resolution
+device for providing time while the NTP daemon is not running and one who
+cares about timekeeping will run NTP during normal system operation anyway
+which will correct any inaccuracy gathered from the RTC.  I am mentioning
+it though as I think it should be noted.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.6 (GNU/Linux)
+ Significant changes from the first iteration:
 
-iD8DBQFIKPIgTgG2atn1QN8RAlbPAKCLH9Yh2Ofm9Jk0tDqpavAOTZTkowCfbqkn
-whC5LVgC8CjZ8HhpONd0yEE=
-=lbVq
------END PGP SIGNATURE-----
+1. MIPS Makefile changes are now separate so that they can go straight
+   into the MIPS tree without relying on I2C changes.
 
---Signature=_Tue__13_May_2008_11_42_44_+1000_D4xdJbk8zH./C2Qr--
+2. M41T80 driver changes have been simplified -- thanks, Jean and DavidB,
+   for your feedback letting me understand the I2C core better.
+
+ Individual patches follow, feedback is welcome.  All have been
+successfully tested at the run time with a big-endian 64-bit MIPS
+configuration (a Broadcom BCM91250A board), using the usual SMP vs non-SMP
+and PREEMPT vs non-PREEMPT configurations, with spinlock, etc. debugging
+on; no checkpatch.pl nor sparse problems either.  They have been
+successfully built for a 32-bit x86 and Alpha configuration as well.
+
+  Maciej

@@ -1,69 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 May 2008 13:28:46 +0100 (BST)
-Received: from zone0.gcu-squad.org ([212.85.147.21]:53367 "EHLO
-	services.gcu-squad.org") by ftp.linux-mips.org with ESMTP
-	id S20027468AbYEMM2n (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 13 May 2008 13:28:43 +0100
-Received: from jdelvare.pck.nerim.net ([62.212.121.182] helo=hyperion.delvare)
-	by services.gcu-squad.org (GCU Mailer Daemon) with esmtpsa id 1JvuYs-0003IN-QA
-	(TLSv1:AES256-SHA:256)
-	(envelope-from <khali@linux-fr.org>)
-	; Tue, 13 May 2008 15:28:58 +0200
-Date:	Tue, 13 May 2008 14:28:29 +0200
-From:	Jean Delvare <khali@linux-fr.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Alessandro Zummo <a.zummo@towertech.it>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 May 2008 17:52:56 +0100 (BST)
+Received: from kirk.serum.com.pl ([213.77.9.205]:19438 "EHLO serum.com.pl")
+	by ftp.linux-mips.org with ESMTP id S20031665AbYEMQwy (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 13 May 2008 17:52:54 +0100
+Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
+	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m4DGppXR007316;
+	Tue, 13 May 2008 18:51:51 +0200
+Received: from localhost (macro@localhost)
+	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m4DGpXrg007307;
+	Tue, 13 May 2008 17:51:41 +0100
+Date:	Tue, 13 May 2008 17:51:32 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Jean Delvare <khali@linux-fr.org>
+cc:	Alessandro Zummo <a.zummo@towertech.it>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
 	David Woodhouse <dwmw2@infradead.org>,
 	Ralf Baechle <ralf@linux-mips.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	rtc-linux@googlegroups.com, i2c@lm-sensors.org,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-	David Brownell <david-b@pacbell.net>
-Subject: Re: [PATCH 6/6] RTC: Trivially probe for an M41T80 (#2)
-Message-ID: <20080513142829.2d737424@hyperion.delvare>
-In-Reply-To: <Pine.LNX.4.55.0805130303430.535@cliff.in.clinika.pl>
-References: <Pine.LNX.4.55.0805130303430.535@cliff.in.clinika.pl>
-X-Mailer: Claws Mail 3.4.0 (GTK+ 2.10.6; x86_64-suse-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <khali@linux-fr.org>
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/6] RTC: SWARM I2C board initialization (#2)
+In-Reply-To: <20080513133416.59a8d943@hyperion.delvare>
+Message-ID: <Pine.LNX.4.55.0805131747590.7267@cliff.in.clinika.pl>
+References: <Pine.LNX.4.55.0805130249230.535@cliff.in.clinika.pl>
+ <20080513133416.59a8d943@hyperion.delvare>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19251
+X-archive-position: 19252
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: khali@linux-fr.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Maciej,
+Hi Jean,
 
-On Tue, 13 May 2008 04:27:42 +0100 (BST), Maciej W. Rozycki wrote:
->  When probing the driver try to access the device with a read to one of
-> its registers and exit silently if the read fails.  This is so that boards
-> may register this device unconditionally and do not trigger error messages
-> at the bootstrap, where there is no other way to determine if an
-> M41T80-class RTC is actually there.
+> > 1. swarm-i2c.c -- SWARM I2C board setup, currently for the M41T80 chip on 
+> >    the bus #1 only (there is a MAX6654 temperature sensor on the bus #0 
+> >    which may be added in the future if we have a driver for that chip).
+> 
+> We don't have a driver yet, however the datasheet for that chip is
+> publicly available and writing a driver would be easy. Or maybe just
+> reuse an existing driver - from a quick look at the datasheet I suspect
+> that this device is essentially compatible with the LM90 and ADM1032
+> chips supported by the lm90 driver.
 
-I don't like this. You are only supposed to declare in platform init
-structures, I2C devices that you are sure are present. Relying on the
-driver to not attach to the device if it is in fact not there sounds
-wrong, because the I2C device will still be declared, so it's
-confusing. Also, you consider that a driver silently failing to attach
-is a feature, and in your specific case it may be, but for other users
-it will be an annoyance: in the general case you want errors to be
-clearly reported.
+ True, but someone has to do that.  I feel no incentive at the moment. ;-)
 
-If you are not sure that an I2C device will be present, then you should
-not declare it as part of the I2C board info, but register it later
-with i2c_new_probed_device(). If this isn't possible or not convenient,
-then I'd rather add a probing variant of i2c_register_board_info() (or
-maybe a new flag in i2c_board_info.flags) than hack all i2c drivers to
-silent failures when devices are missing.
+> > 2. The i2c-sibyte.c BCM1250A SMBus controller driver now registers its 
+> >    buses as numbered so that board setup is correctly applied.
+> > 
+> > Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+> > ---
+> >  I have renamed i2c-swarm.c to swarm-i2c.c for consistency with names 
+> > of other files under arch/mips/.
+> 
+> But you forgot to update the log message accordingly...
 
--- 
-Jean Delvare
+ I did not, unless I am missing something.
+
+> >  Please note this patch trivially depends on
+> > patch-2.6.26-rc1-20080505-swarm-core-16 -- 2/6 of this set.
+> 
+> OK, so I should just wait for patch 2/6 to get upstream before I add
+> this one to my i2c tree?
+
+ Either this or you can apply both and remove the local copy of the former
+when it comes back from upstream.  Whatever you prefer -- it is your
+choice.
+
+  Maciej

@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 May 2008 17:58:42 +0100 (BST)
-Received: from kirk.serum.com.pl ([213.77.9.205]:32238 "EHLO serum.com.pl")
-	by ftp.linux-mips.org with ESMTP id S20032307AbYEMQ6k (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 13 May 2008 17:58:40 +0100
-Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
-	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m4DGvrce007367;
-	Tue, 13 May 2008 18:57:53 +0200
-Received: from localhost (macro@localhost)
-	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m4DGvqTg007363;
-	Tue, 13 May 2008 17:57:52 +0100
-Date:	Tue, 13 May 2008 17:57:52 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Jean Delvare <khali@linux-fr.org>
-cc:	Alessandro Zummo <a.zummo@towertech.it>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 May 2008 18:17:49 +0100 (BST)
+Received: from zone0.gcu-squad.org ([212.85.147.21]:7480 "EHLO
+	services.gcu-squad.org") by ftp.linux-mips.org with ESMTP
+	id S20027521AbYEMRRr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 13 May 2008 18:17:47 +0100
+Received: from jdelvare.pck.nerim.net ([62.212.121.182] helo=hyperion.delvare)
+	by services.gcu-squad.org (GCU Mailer Daemon) with esmtpsa id 1Jvz4c-0002xe-AE
+	(TLSv1:AES256-SHA:256)
+	(envelope-from <khali@linux-fr.org>)
+	; Tue, 13 May 2008 20:18:02 +0200
+Date:	Tue, 13 May 2008 19:17:32 +0200
+From:	Jean Delvare <khali@linux-fr.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Alessandro Zummo <a.zummo@towertech.it>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
 	David Woodhouse <dwmw2@infradead.org>,
@@ -19,72 +19,52 @@ cc:	Alessandro Zummo <a.zummo@towertech.it>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	rtc-linux@googlegroups.com, i2c@lm-sensors.org,
 	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/6] RTC: SMBus support for the M41T80, etc. driver (#2)
-In-Reply-To: <20080513140444.49d7a044@hyperion.delvare>
-Message-ID: <Pine.LNX.4.55.0805131752340.7267@cliff.in.clinika.pl>
-References: <Pine.LNX.4.55.0805130254420.535@cliff.in.clinika.pl>
- <20080513140444.49d7a044@hyperion.delvare>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Subject: Re: [PATCH 3/6] RTC: SWARM I2C board initialization (#2)
+Message-ID: <20080513191732.259d0ab2@hyperion.delvare>
+In-Reply-To: <Pine.LNX.4.55.0805131747590.7267@cliff.in.clinika.pl>
+References: <Pine.LNX.4.55.0805130249230.535@cliff.in.clinika.pl>
+	<20080513133416.59a8d943@hyperion.delvare>
+	<Pine.LNX.4.55.0805131747590.7267@cliff.in.clinika.pl>
+X-Mailer: Claws Mail 3.4.0 (GTK+ 2.10.6; x86_64-suse-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <khali@linux-fr.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19253
+X-archive-position: 19254
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: khali@linux-fr.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Jean,
-
-> The I2C part of the changes look OK to me. With one comment below:
+On Tue, 13 May 2008 17:51:32 +0100 (BST), Maciej W. Rozycki wrote:
+> > >  I have renamed i2c-swarm.c to swarm-i2c.c for consistency with names 
+> > > of other files under arch/mips/.
+> > 
+> > But you forgot to update the log message accordingly...
 > 
-> > +static int m41t80_get_datetime(struct i2c_client *client, struct rtc_time *tm)
-> > +{
-> > +	u8 buf[M41T80_DATETIME_REG_SIZE];
-> > +	int loops = 2;
-> > +	int sec0, sec1;
-> > +
-> > +	/*
-> > +	 * Time registers are latched by this chip if an I2C block
-> > +	 * transfer is used, but with SMBus-style byte accesses
-> > +	 * this is not the case, so check seconds for a wraparound.
-> > +	 */
-> > +	do {
-> > +		if (m41t80_read_block_data(client, M41T80_REG_SEC,
-> > +					   M41T80_DATETIME_REG_SIZE -
-> > +					   M41T80_REG_SEC,
-> > +					   buf + M41T80_REG_SEC) < 0) {
-> > +			dev_err(&client->dev, "read error\n");
-> > +			return -EIO;
-> > +		}
-> > +		sec0 = buf[M41T80_REG_SEC];
-> >  
-> > -	tm->tm_sec = BCD2BIN(buf[M41T80_REG_SEC] & 0x7f);
-> > +		sec1 = i2c_smbus_read_byte_data(client, M41T80_REG_SEC);
-> > +		if (sec1 < 0) {
-> > +			dev_err(&client->dev, "read error\n");
-> > +			return -EIO;
-> > +		}
-> > +
-> > +		sec0 = BCD2BIN(sec0 & 0x7f);
-> > +		sec1 = BCD2BIN(sec1 & 0x7f);
-> > +	} while (sec1 < sec0 && --loops);
+>  I did not, unless I am missing something.
+
+		printk(KERN_ERR
+		       "i2c-swarm: cannot register board I2C devices\n");
+
+> > >  Please note this patch trivially depends on
+> > > patch-2.6.26-rc1-20080505-swarm-core-16 -- 2/6 of this set.
+> > 
+> > OK, so I should just wait for patch 2/6 to get upstream before I add
+> > this one to my i2c tree?
 > 
-> You will do this even if all the registers were read as a block and the
-> RTC latched the register values so they have to be correct. Isn't it a
-> bit unfair / inefficient? If client->adapter has the
-> I2C_FUNC_SMBUS_READ_I2C_BLOCK functionality you can skip the comparison
-> and retry mechanism completely, saving some time and CPU cycles.
+>  Either this or you can apply both and remove the local copy of the former
+> when it comes back from upstream.  Whatever you prefer -- it is your
+> choice.
 
- Well, actually there is a reason beyond that.  It may change if we
-support subsecond resolution, but we currently do not.  The reason is if
-we return the original timestamp and the seconds register changes while
-the timestamp is being read, then effectively we return a value that is
-off by one second.  This is why for seconds I decided to return the second
-value read all the time.
+I don't really want to include a mips arch patch in my public i2c tree,
+that would be confusing. I think I'll just wait. I have the mips patch
+in my local tree, so quilt will tell me when it hits upstream.
 
-  Maciej
+-- 
+Jean Delvare

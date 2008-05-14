@@ -1,136 +1,142 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2008 02:14:36 +0100 (BST)
-Received: from kirk.serum.com.pl ([213.77.9.205]:51443 "EHLO serum.com.pl")
-	by ftp.linux-mips.org with ESMTP id S20029436AbYENBOd (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 14 May 2008 02:14:33 +0100
-Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
-	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m4E1E8o8010736;
-	Wed, 14 May 2008 03:14:08 +0200
-Received: from localhost (macro@localhost)
-	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m4E1DZVO010732;
-	Wed, 14 May 2008 02:13:43 +0100
-Date:	Wed, 14 May 2008 02:13:34 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Jean Delvare <khali@linux-fr.org>
-cc:	Alessandro Zummo <a.zummo@towertech.it>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	rtc-linux@googlegroups.com, i2c@lm-sensors.org,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-	David Brownell <david-b@pacbell.net>
-Subject: Re: [PATCH 6/6] RTC: Trivially probe for an M41T80 (#2)
-In-Reply-To: <20080513142829.2d737424@hyperion.delvare>
-Message-ID: <Pine.LNX.4.55.0805131759580.7267@cliff.in.clinika.pl>
-References: <Pine.LNX.4.55.0805130303430.535@cliff.in.clinika.pl>
- <20080513142829.2d737424@hyperion.delvare>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2008 02:19:19 +0100 (BST)
+Received: from ti-out-0910.google.com ([209.85.142.185]:35215 "EHLO
+	ti-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20031458AbYENBTQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 14 May 2008 02:19:16 +0100
+Received: by ti-out-0910.google.com with SMTP id i7so1173308tid.20
+        for <linux-mips@linux-mips.org>; Tue, 13 May 2008 18:19:10 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:references;
+        bh=3cgZK5KxHHqy95NxMzOKg/woigjMu24mY1zUrbRjuT8=;
+        b=kANWUiKJA/WAhjEQZGdgPiqJaqch7ja0K2kQI70WmFC0E252gT2jx7Io/ZRawCCqGpRovTMai5wTCwE9lE1X1AZxW5M19dGfWm4WkMscUxTeIWyNd4ZIldmoYpDZrNyjWDu55q20Wx9J8h44ZzpOX/WbemgdRasEXOpkFkw/GOM=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:references;
+        b=P5wzS/Ra2bmwi11uKvyIx2xv/Pnto5QEfF3brf7FXKAG4GLHE9fQz7sbTKlYblfc1NqiniPmAWlFU///MXeBtM8StBfkorA0DvSnvtJxB4EnSloiqbzrbBIlEAi+m89xmX+dDkXGe4ASrzFZsLUp7xl7Gz68euQLT4O6oR6lqr8=
+Received: by 10.110.39.5 with SMTP id m5mr39964tim.55.1210727950469;
+        Tue, 13 May 2008 18:19:10 -0700 (PDT)
+Received: by 10.110.42.3 with HTTP; Tue, 13 May 2008 18:19:10 -0700 (PDT)
+Message-ID: <50c9a2250805131819q41c6da0au1ae3ef9e833812a9@mail.gmail.com>
+Date:	Wed, 14 May 2008 09:19:10 +0800
+From:	zhuzhenhua <zzh.hust@gmail.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+Subject: Re: is remap_pfn_range should align to 2(n) * (page size) ?
+Cc:	linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <20080513172300.GA9788@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_16099_26535377.1210727950464"
+References: <50c9a2250805082354x1edc1ecar89dcc3378b3bbe75@mail.gmail.com>
+	 <20080509095605.GB14450@linux-mips.org>
+	 <50c9a2250805111918r16913139obfc2982220636b3@mail.gmail.com>
+	 <20080512112233.GA8843@linux-mips.org>
+	 <50c9a2250805130444u4218654bw66f6158ba10b2b92@mail.gmail.com>
+	 <20080513172300.GA9788@linux-mips.org>
+Return-Path: <zzh.hust@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19264
+X-archive-position: 19265
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: zzh.hust@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Jean,
+------=_Part_16099_26535377.1210727950464
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-> I don't like this. You are only supposed to declare in platform init
-> structures, I2C devices that you are sure are present. Relying on the
-> driver to not attach to the device if it is in fact not there sounds
-> wrong, because the I2C device will still be declared, so it's
+On Wed, May 14, 2008 at 1:23 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
 
- Well, the theory behind I2C addressing is no two devices should ever
-share the same location.  Now that being a mere 7-bit field (at least with
-standard devices) does not give too much of a chance for the lack of
-duplication being universally true.  However within a given system it is
-possible to arrange for no conflicts to be present and any given location
-to be possibly associated with a single type of device only.
+> On Tue, May 13, 2008 at 07:44:06PM +0800, zhuzhenhua wrote:
+>
+> > thanks for your advice, i found in newest kernel version, in some arch ,
+> the
+> > dma_alloc_coherent will call split_page.
+> > because my kernel version is 2.6.14, so i first patch a split_page patch
+> as
+> > follow:
+> >
+> http://www.kernel.org/pub/linux/kernel/people/npiggin/patches/lockless/2.6.16-rc5/broken-out/mm-split-highorder.patch
+> >
+> > but it seemes that there is still no split_page in
+> > dma_alloc_coherent/dma_alloc_noncoherent
+> > so i copy from other arch code to arch/mips/mm/dma-noncoherent.c (attach
+> at
+> > the end of mail)
+> > and now my driver just use dma_alloc_coherent malloc 3M directly, and it
+> > seemes ok.
+> > i just wonder why mips arch dma_alloc_coherent/dma_alloc_nocoherent do
+> not
+> > call split_page while other arch calling.
+>
+> I have not identified the waste of memory as a big problem for typical
+> MIPS systems yet.
+>
+> The 3MB requirement of your device is sort of odd because it's not a power
+> of two.  Have you considered splitting the allocation into a 2MB and a 1MB
+> allocation or would that be undersirable?
+>
+>  Ralf
+>
 
- The end result of an optional device being declared and later on found by
-its driver not to be present should have no harm, should it?
+Thanks for your reply.
+Our board is for embedded system , It only have 32M sdram and we don't want
+to
+ waste 1M sdram.  My sensor driver need about 2.5xM memory to capture a
+picture
+ by DMA (our DMA controller do not support scatter/gather).
 
-> confusing. Also, you consider that a driver silently failing to attach
-> is a feature, and in your specific case it may be, but for other users
-> it will be an annoyance: in the general case you want errors to be
-> clearly reported.
+I also can use bootargs "mem=29M" to keep 3M sdram.  but it's not flexible
+as
+passing a param to driver module(calling dma_alloc_coherent). maybe my
+situation
+is not common for MIPS arch. so that's is no split_page in
+dma_alloc_coherent.
+and now after patch,it seemes ok for me.
 
- The question is whether it actually is an error or not.  Assuming the
-configuration has been specified correctly, there are two cases possible
--- either the device is missing or the device is faulty.  If the latter,
-an error should be reported.  If the former, it should or it should not.  
-Depending on whether it is expected or not.  If for example the device is
-meant to be there, but it has dropped off the PCB, then clearly it is an
-error condition; if it is a manufacturing option that was not included in
-this particular copy of the board, then it is expected and not a problem
-at all (of course in this case it is indistinguishable from a dropped off
-part).
+Best Regards
 
- Not reporting errors for devices believed to be missing altogether would 
-be similar to what drivers for some other devices that do not report 
-themselves with identifiers do.  This is for example the case with most 
-ISA devices -- if pokes at I/O ports indicate the device is not there, the 
-driver quits silently.  Some do report they probe though.  Please note I 
-do not mean such a driver should quit with a success returned.
+zzh
 
-> If you are not sure that an I2C device will be present, then you should
-> not declare it as part of the I2C board info, but register it later
-> with i2c_new_probed_device(). If this isn't possible or not convenient,
-> then I'd rather add a probing variant of i2c_register_board_info() (or
-> maybe a new flag in i2c_board_info.flags) than hack all i2c drivers to
-> silent failures when devices are missing.
+------=_Part_16099_26535377.1210727950464
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
- Well, the SWARM can either have a ST M41T81 or a Xicor X1241 RTC.  It is
-a manufacturing option and either of these will be present and no other
-device will use the same address.  The presence of either is not recorded
-anywhere, because you can query the hardware directly to see which one is
-there -- there is no need to duplicate this information elsewhere, the
-firmware supports both and I do not think it has any hardcoded notion of
-what's on-board and what's not.  Note the M41T81 has a hardwired slave
-address of 0x68 -- there are no additional address select pins.  
-Similarly the RTC function of the X1241 only responds to 0x6f (and its
-EEPROM to 0x57).
+<br><br><div class="gmail_quote">On Wed, May 14, 2008 at 1:23 AM, Ralf Baechle &lt;<a href="mailto:ralf@linux-mips.org">ralf@linux-mips.org</a>&gt; wrote:<br><blockquote class="gmail_quote" style="border-left: 1px solid rgb(204, 204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;">
+<div class="Ih2E3d">On Tue, May 13, 2008 at 07:44:06PM +0800, zhuzhenhua wrote:<br>
+<br>
+&gt; thanks for your advice, i found in newest kernel version, in some arch , the<br>
+&gt; dma_alloc_coherent will call split_page.<br>
+&gt; because my kernel version is 2.6.14, so i first patch a split_page patch as<br>
+&gt; follow:<br>
+&gt; <a href="http://www.kernel.org/pub/linux/kernel/people/npiggin/patches/lockless/2.6.16-rc5/broken-out/mm-split-highorder.patch" target="_blank">http://www.kernel.org/pub/linux/kernel/people/npiggin/patches/lockless/2.6.16-rc5/broken-out/mm-split-highorder.patch</a><br>
 
- Then I am not sure how i2c_new_probed_device() could be used for a
-baseboard device.  With an option card bearing an I2C adapter it can be
-done at the time the card, including the adapter, is initialized.  With a
-baseboard adapter it really begs to be in board initialization.  It cannot
-be tied to i2c-sibyte.c, because it is a generic adapter driver -- the SOC
-can be used in any configuration, not just the SWARM and friends.  
-Perhaps it can be done with proper platform device initialization for the
-SWARM, but I fear it will not happen shortly.  Hmm...
+&gt;<br>
+&gt; but it seemes that there is still no split_page in<br>
+&gt; dma_alloc_coherent/dma_alloc_noncoherent<br>
+&gt; so i copy from other arch code to arch/mips/mm/dma-noncoherent.c (attach at<br>
+&gt; the end of mail)<br>
+&gt; and now my driver just use dma_alloc_coherent malloc 3M directly, and it<br>
+&gt; seemes ok.<br>
+&gt; i just wonder why mips arch dma_alloc_coherent/dma_alloc_nocoherent do not<br>
+&gt; call split_page while other arch calling.<br>
+<br>
+</div>I have not identified the waste of memory as a big problem for typical<br>
+MIPS systems yet.<br>
+<br>
+The 3MB requirement of your device is sort of odd because it&#39;s not a power<br>
+of two. &nbsp;Have you considered splitting the allocation into a 2MB and a 1MB<br>
+allocation or would that be undersirable?<br>
+<font color="#888888"><br>
+ &nbsp;Ralf<br>
+</font></blockquote></div><br>Thanks for your reply.<br>Our board is for embedded system , It only have 32M sdram and we don&#39;t want to<br>&nbsp;waste 1M sdram.&nbsp; My sensor driver need about 2.5xM memory to capture a picture<br>
+&nbsp;by DMA (our DMA controller do not support scatter/gather).<br><br>I also can use bootargs &quot;mem=29M&quot; to keep 3M sdram.&nbsp; but it&#39;s not flexible as <br>passing a param to driver module(calling dma_alloc_coherent). maybe my situation <br>
+is not common for MIPS arch. so that&#39;s is no split_page in dma_alloc_coherent.<br>and now after patch,it seemes ok for me. <br><br>Best Regards<br><br>zzh<br><br><br>
 
- The idea to have a flag along the lines of I2C_CLIENT_OPTION marking 
-the device may or may not be there in struct i2c_board_info seems 
-reasonable, perhaps better for some cases than i2c_new_probed_device() 
-even, as the lack of standardisation makes device-independent probes a bit 
-dangerous as already noted in the function.  Here the device driver itself 
-could perform probing in a known-safe way for the given device.
-
- And last but not least, this whole consideration may actually not matter
-anymore as I have yet to encounter a SWARM or similar board featuring an
-X1241 rather than an M41T81.  While no piece of documentation mentions it
-(all the board documents simply state either of the RTC chips is present)  
-I think X1241 chips were used for older revisions of the board which had
-serious errata in the BCM1250A SOC requiring gross changes to GCC to get a
-working kernel.  These changes were never pushed upstream and the old
-version of the compiler they were intended for is no longer capable of
-building Linux.  Therefore chances are there is no way to get a board with
-the X1241 running under Linux.  And perhaps the antiquated support for the
-X1241 that we have could be entirely dropped and the M41T81 assumed as a
-fixture for these boards.
-
- Anybody cares to comment on the last paragraph?
-
- Please note this change is not strictly required for the rest of the set
-to operate correctly on with an M41T81-equipped board, so let's perhaps
-pull this single patch out till we reach some consensus and proceed with
-the rest independently.
-
-  Maciej
+------=_Part_16099_26535377.1210727950464--

@@ -1,60 +1,136 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2008 02:03:43 +0100 (BST)
-Received: from smtp1.linux-foundation.org ([140.211.169.13]:57573 "EHLO
-	smtp1.linux-foundation.org") by ftp.linux-mips.org with ESMTP
-	id S20030512AbYENBDk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 14 May 2008 02:03:40 +0100
-Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [140.211.169.55])
-	by smtp1.linux-foundation.org (8.14.2/8.13.5/Debian-3ubuntu1.1) with ESMTP id m4E12U9o031051
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-	Tue, 13 May 2008 18:02:31 -0700
-Received: from y.localdomain (localhost [127.0.0.1])
-	by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with SMTP id m4E12Pdx009236;
-	Tue, 13 May 2008 18:02:27 -0700
-Date:	Tue, 13 May 2008 18:02:25 -0700
-From:	Andrew Morton <akpm@linux-foundation.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@helsinki.fi>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH RESEND] [MIPS]: multi-statement if() seems to be missing
- braces
-Message-Id: <20080513180225.194f400b.akpm@linux-foundation.org>
-In-Reply-To: <20080513232507.GA24102@linux-mips.org>
-References: <Pine.LNX.4.64.0805131444360.15369@wrl-59.cs.helsinki.fi>
-	<20080513232507.GA24102@linux-mips.org>
-X-Mailer: Sylpheed 2.4.8 (GTK+ 2.12.5; x86_64-redhat-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-MIMEDefang-Filter: lf$Revision: 1.188 $
-X-Scanned-By: MIMEDefang 2.63 on 140.211.169.13
-Return-Path: <akpm@linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2008 02:14:36 +0100 (BST)
+Received: from kirk.serum.com.pl ([213.77.9.205]:51443 "EHLO serum.com.pl")
+	by ftp.linux-mips.org with ESMTP id S20029436AbYENBOd (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 14 May 2008 02:14:33 +0100
+Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
+	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m4E1E8o8010736;
+	Wed, 14 May 2008 03:14:08 +0200
+Received: from localhost (macro@localhost)
+	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m4E1DZVO010732;
+	Wed, 14 May 2008 02:13:43 +0100
+Date:	Wed, 14 May 2008 02:13:34 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Jean Delvare <khali@linux-fr.org>
+cc:	Alessandro Zummo <a.zummo@towertech.it>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	rtc-linux@googlegroups.com, i2c@lm-sensors.org,
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+	David Brownell <david-b@pacbell.net>
+Subject: Re: [PATCH 6/6] RTC: Trivially probe for an M41T80 (#2)
+In-Reply-To: <20080513142829.2d737424@hyperion.delvare>
+Message-ID: <Pine.LNX.4.55.0805131759580.7267@cliff.in.clinika.pl>
+References: <Pine.LNX.4.55.0805130303430.535@cliff.in.clinika.pl>
+ <20080513142829.2d737424@hyperion.delvare>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19263
+X-archive-position: 19264
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: akpm@linux-foundation.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 14 May 2008 00:25:07 +0100 Ralf Baechle <ralf@linux-mips.org> wrote:
+Hi Jean,
 
-> On Tue, May 13, 2008 at 02:50:50PM +0300, Ilpo J__rvinen wrote:
-> 
-> > In case this is a genuine bug, somebody else more familiar
-> > with that stuff should evaluate it's effects (I just found it
-> > by some shell pipeline and it seems suspicious looking).
-> 
-> Should be fairly as proven by practice; it's there since day of of 64-bit
-> pagetable for 32-bit hw support which was November 29, 2004.
-> 
+> I don't like this. You are only supposed to declare in platform init
+> structures, I2C devices that you are sure are present. Relying on the
+> driver to not attach to the device if it is in fact not there sounds
+> wrong, because the I2C device will still be declared, so it's
 
-It's unlikely that anyone would notice an error in pte_mkyoung().  It
-will affect page reclaim behaviour and _might_ be demonstrable with a
-carefully set up test.  But an error in here won't cause crashes or
-lockups or anything.
+ Well, the theory behind I2C addressing is no two devices should ever
+share the same location.  Now that being a mere 7-bit field (at least with
+standard devices) does not give too much of a chance for the lack of
+duplication being universally true.  However within a given system it is
+possible to arrange for no conflicts to be present and any given location
+to be possibly associated with a single type of device only.
 
-What this needs is someone who understands the architecture (ie: you
-;)) to take a look, please.
+ The end result of an optional device being declared and later on found by
+its driver not to be present should have no harm, should it?
+
+> confusing. Also, you consider that a driver silently failing to attach
+> is a feature, and in your specific case it may be, but for other users
+> it will be an annoyance: in the general case you want errors to be
+> clearly reported.
+
+ The question is whether it actually is an error or not.  Assuming the
+configuration has been specified correctly, there are two cases possible
+-- either the device is missing or the device is faulty.  If the latter,
+an error should be reported.  If the former, it should or it should not.  
+Depending on whether it is expected or not.  If for example the device is
+meant to be there, but it has dropped off the PCB, then clearly it is an
+error condition; if it is a manufacturing option that was not included in
+this particular copy of the board, then it is expected and not a problem
+at all (of course in this case it is indistinguishable from a dropped off
+part).
+
+ Not reporting errors for devices believed to be missing altogether would 
+be similar to what drivers for some other devices that do not report 
+themselves with identifiers do.  This is for example the case with most 
+ISA devices -- if pokes at I/O ports indicate the device is not there, the 
+driver quits silently.  Some do report they probe though.  Please note I 
+do not mean such a driver should quit with a success returned.
+
+> If you are not sure that an I2C device will be present, then you should
+> not declare it as part of the I2C board info, but register it later
+> with i2c_new_probed_device(). If this isn't possible or not convenient,
+> then I'd rather add a probing variant of i2c_register_board_info() (or
+> maybe a new flag in i2c_board_info.flags) than hack all i2c drivers to
+> silent failures when devices are missing.
+
+ Well, the SWARM can either have a ST M41T81 or a Xicor X1241 RTC.  It is
+a manufacturing option and either of these will be present and no other
+device will use the same address.  The presence of either is not recorded
+anywhere, because you can query the hardware directly to see which one is
+there -- there is no need to duplicate this information elsewhere, the
+firmware supports both and I do not think it has any hardcoded notion of
+what's on-board and what's not.  Note the M41T81 has a hardwired slave
+address of 0x68 -- there are no additional address select pins.  
+Similarly the RTC function of the X1241 only responds to 0x6f (and its
+EEPROM to 0x57).
+
+ Then I am not sure how i2c_new_probed_device() could be used for a
+baseboard device.  With an option card bearing an I2C adapter it can be
+done at the time the card, including the adapter, is initialized.  With a
+baseboard adapter it really begs to be in board initialization.  It cannot
+be tied to i2c-sibyte.c, because it is a generic adapter driver -- the SOC
+can be used in any configuration, not just the SWARM and friends.  
+Perhaps it can be done with proper platform device initialization for the
+SWARM, but I fear it will not happen shortly.  Hmm...
+
+ The idea to have a flag along the lines of I2C_CLIENT_OPTION marking 
+the device may or may not be there in struct i2c_board_info seems 
+reasonable, perhaps better for some cases than i2c_new_probed_device() 
+even, as the lack of standardisation makes device-independent probes a bit 
+dangerous as already noted in the function.  Here the device driver itself 
+could perform probing in a known-safe way for the given device.
+
+ And last but not least, this whole consideration may actually not matter
+anymore as I have yet to encounter a SWARM or similar board featuring an
+X1241 rather than an M41T81.  While no piece of documentation mentions it
+(all the board documents simply state either of the RTC chips is present)  
+I think X1241 chips were used for older revisions of the board which had
+serious errata in the BCM1250A SOC requiring gross changes to GCC to get a
+working kernel.  These changes were never pushed upstream and the old
+version of the compiler they were intended for is no longer capable of
+building Linux.  Therefore chances are there is no way to get a board with
+the X1241 running under Linux.  And perhaps the antiquated support for the
+X1241 that we have could be entirely dropped and the M41T81 assumed as a
+fixture for these boards.
+
+ Anybody cares to comment on the last paragraph?
+
+ Please note this change is not strictly required for the rest of the set
+to operate correctly on with an M41T81-equipped board, so let's perhaps
+pull this single patch out till we reach some consensus and proceed with
+the rest independently.
+
+  Maciej

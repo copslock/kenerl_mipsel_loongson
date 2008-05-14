@@ -1,73 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2008 16:59:09 +0100 (BST)
-Received: from mms1.broadcom.com ([216.31.210.17]:57360 "EHLO
-	mms1.broadcom.com") by ftp.linux-mips.org with ESMTP
-	id S20031179AbYENP7H convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 14 May 2008 16:59:07 +0100
-Received: from [10.11.16.99] by mms1.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.3.2)); Wed, 14 May 2008 08:58:53 -0700
-X-Server-Uuid: 02CED230-5797-4B57-9875-D5D2FEE4708A
-Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
- 33CD32B1; Wed, 14 May 2008 08:58:53 -0700 (PDT)
-Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.11.18.52]) by
- mail-irva-10.broadcom.com (Postfix) with ESMTP id 1EFCA2B0 for
- <linux-mips@linux-mips.org>; Wed, 14 May 2008 08:58:53 -0700 (PDT)
-Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
- [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.5a-GA) with ESMTP
- id GWG81990; Wed, 14 May 2008 08:58:52 -0700 (PDT)
-Received: from NT-SJCA-0752.brcm.ad.broadcom.com (nt-sjca-0752
- [10.16.192.222]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
- 9CFAB20502 for <linux-mips@linux-mips.org>; Wed, 14 May 2008 08:58:52
- -0700 (PDT)
-X-MimeOLE: Produced By Microsoft Exchange V6.5
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2008 19:26:25 +0100 (BST)
+Received: from pmc216-241-226-184.pmc-sierra.bc.ca ([216.241.226.184]:43712
+	"EHLO pmxedge2.pmc-sierra.bc.ca") by ftp.linux-mips.org with ESMTP
+	id S20032684AbYENS0X convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 14 May 2008 19:26:23 +0100
+Received: from bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca (BBY1EXG02.pmc-sierra.bc.ca [216.241.231.167])
+	by pmxedge2.pmc-sierra.bc.ca (8.13.4/8.12.11) with ESMTP id m4EIQAGd026480;
+	Wed, 14 May 2008 11:26:10 -0700
+Received: from BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca ([216.241.231.157]) by bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 14 May 2008 11:26:09 -0700
+x-mimeole: Produced By Microsoft Exchange V6.5
 Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Subject: Enabling JFFS as Root FS
-Date:	Wed, 14 May 2008 08:58:47 -0700
-Message-ID: <E06E3B7BBC07864CADE892DAF1EB0FBD07CEB326@NT-SJCA-0752.brcm.ad.broadcom.com>
-In-Reply-To: <20080514150859.GA9898@linux-mips.org>
-Thread-Topic: Enabling JFFS as Root FS
-Thread-Index: Aci11KF4yfiNBuzTQD66oHe+w/sTnAABd0Pw
-References: <Pine.LNX.4.64.0805131444360.15369@wrl-59.cs.helsinki.fi>
- <20080513232507.GA24102@linux-mips.org>
- <20080513180225.194f400b.akpm@linux-foundation.org>
- <20080514150859.GA9898@linux-mips.org>
-From:	"Ramgopal Kota" <rkota@broadcom.com>
-To:	linux-mips@linux-mips.org
-X-WSS-ID: 6435D3B74E010654696-01-01
 Content-Type: text/plain;
- charset=us-ascii
+	charset="iso-8859-1"
 Content-Transfer-Encoding: 8BIT
-Return-Path: <rkota@broadcom.com>
+Subject:  Problem with binutils 
+Date:	Wed, 14 May 2008 11:26:09 -0700
+Message-ID: <A7DEA48C84FD0B48AAAE33F328C0201401EF0B1B@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic:  Problem with binutils 
+Thread-Index: Aci11KF4yfiNBuzTQD66oHe+w/sTnAABd0PwAAQu7Bg=
+References: <Pine.LNX.4.64.0805131444360.15369@wrl-59.cs.helsinki.fi> <20080513232507.GA24102@linux-mips.org> <20080513180225.194f400b.akpm@linux-foundation.org> <20080514150859.GA9898@linux-mips.org> <E06E3B7BBC07864CADE892DAF1EB0FBD07CEB326@NT-SJCA-0752.brcm.ad.broadcom.com>
+From:	"Anoop P.A." <Anoop_P.A@pmc-sierra.com>
+To:	<linux-mips@linux-mips.org>
+Cc:	<ralf@linux-mips.org>
+X-OriginalArrivalTime: 14 May 2008 18:26:09.0991 (UTC) FILETIME=[FB6A2D70:01C8B5EF]
+Return-Path: <Anoop_P.A@pmc-sierra.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19270
+X-archive-position: 19271
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rkota@broadcom.com
+X-original-sender: Anoop_P.A@pmc-sierra.com
 Precedence: bulk
 X-list: linux-mips
 
 Hi,
-
-Currently I am having a kernel 2.6.14 with INIT_RAMFS and it is using
-cpio archive to create the nodes and rootfs.
-
-Now I want to have the rootfs (jffs) on flash. Is there any document
-which tells me how to do that ?
-
-I did the following ..
-
-I created the rootfs directory say "embeddedroot" structure except /dev
-directory and ran mkfs.jffs2 on "embeddedroot".
-
-The .jffs2 image is loaded onto flash at the correct offset pointed in
-the MTD partition structure as mtdblock2.
-
-My basic doubt is , how the kernel will create a node in /dev in the
-above case ? or is there any other way to make jffs as rootfs.
-
-I am missing some thing , I will be glad if someone points me that.
-
-Ramgopal Kota
+ 
+currently I am using binutils 2.15.97 . I though of upgrade binutils 2.18 version( assembler 2.15.97 doesn't have support for mip34k specific instructions used for SMTC) .package is compiling properly and I am able to compile my BSP. But while booting I am unable to detect my embedded rootfs. If you do NFS mount it is booting properly 
+( I am using .incbin directive  to add my rootfile system and I am suspecting problem with incbin directive comes from 2.18 . I am able use same code properly with 2.15.97 toolchain. anybody else faced this issue?). 
+ 
+ 
+One thing I am observing that vmlinux(ELF) built with 2.15.97 contains 39 section while vmlinux built using 2.18 contains 28 sections only.
+I am using GCC 3.4.5 and uClibc. 
+ 
+Somebody please help me
+ 
+Thanks
+Anoop
+ 
+ 

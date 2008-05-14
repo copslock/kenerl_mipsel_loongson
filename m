@@ -1,63 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2008 16:09:43 +0100 (BST)
-Received: from vigor.karmaclothing.net ([217.169.26.28]:64704 "EHLO
-	dl5rb.ham-radio-op.net") by ftp.linux-mips.org with ESMTP
-	id S20024215AbYENPJl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 14 May 2008 16:09:41 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by dl5rb.ham-radio-op.net (8.14.1/8.13.8) with ESMTP id m4EF90CP027118;
-	Wed, 14 May 2008 16:09:00 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m4EF8xT0027111;
-	Wed, 14 May 2008 16:08:59 +0100
-Date:	Wed, 14 May 2008 16:08:59 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Andrew Morton <akpm@linux-foundation.org>
-Cc:	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@helsinki.fi>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH RESEND] [MIPS]: multi-statement if() seems to be
-	missing braces
-Message-ID: <20080514150859.GA9898@linux-mips.org>
-References: <Pine.LNX.4.64.0805131444360.15369@wrl-59.cs.helsinki.fi> <20080513232507.GA24102@linux-mips.org> <20080513180225.194f400b.akpm@linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2008 16:59:09 +0100 (BST)
+Received: from mms1.broadcom.com ([216.31.210.17]:57360 "EHLO
+	mms1.broadcom.com") by ftp.linux-mips.org with ESMTP
+	id S20031179AbYENP7H convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 14 May 2008 16:59:07 +0100
+Received: from [10.11.16.99] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.3.2)); Wed, 14 May 2008 08:58:53 -0700
+X-Server-Uuid: 02CED230-5797-4B57-9875-D5D2FEE4708A
+Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
+ 33CD32B1; Wed, 14 May 2008 08:58:53 -0700 (PDT)
+Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.11.18.52]) by
+ mail-irva-10.broadcom.com (Postfix) with ESMTP id 1EFCA2B0 for
+ <linux-mips@linux-mips.org>; Wed, 14 May 2008 08:58:53 -0700 (PDT)
+Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
+ [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.5a-GA) with ESMTP
+ id GWG81990; Wed, 14 May 2008 08:58:52 -0700 (PDT)
+Received: from NT-SJCA-0752.brcm.ad.broadcom.com (nt-sjca-0752
+ [10.16.192.222]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
+ 9CFAB20502 for <linux-mips@linux-mips.org>; Wed, 14 May 2008 08:58:52
+ -0700 (PDT)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080513180225.194f400b.akpm@linux-foundation.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+Subject: Enabling JFFS as Root FS
+Date:	Wed, 14 May 2008 08:58:47 -0700
+Message-ID: <E06E3B7BBC07864CADE892DAF1EB0FBD07CEB326@NT-SJCA-0752.brcm.ad.broadcom.com>
+In-Reply-To: <20080514150859.GA9898@linux-mips.org>
+Thread-Topic: Enabling JFFS as Root FS
+Thread-Index: Aci11KF4yfiNBuzTQD66oHe+w/sTnAABd0Pw
+References: <Pine.LNX.4.64.0805131444360.15369@wrl-59.cs.helsinki.fi>
+ <20080513232507.GA24102@linux-mips.org>
+ <20080513180225.194f400b.akpm@linux-foundation.org>
+ <20080514150859.GA9898@linux-mips.org>
+From:	"Ramgopal Kota" <rkota@broadcom.com>
+To:	linux-mips@linux-mips.org
+X-WSS-ID: 6435D3B74E010654696-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Transfer-Encoding: 8BIT
+Return-Path: <rkota@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19269
+X-archive-position: 19270
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: rkota@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, May 13, 2008 at 06:02:25PM -0700, Andrew Morton wrote:
+Hi,
 
-> > > In case this is a genuine bug, somebody else more familiar
-> > > with that stuff should evaluate it's effects (I just found it
-> > > by some shell pipeline and it seems suspicious looking).
-> > 
-> > Should be fairly as proven by practice; it's there since day of of 64-bit
-> > pagetable for 32-bit hw support which was November 29, 2004.
-> > 
-> 
-> It's unlikely that anyone would notice an error in pte_mkyoung().  It
-> will affect page reclaim behaviour and _might_ be demonstrable with a
-> carefully set up test.  But an error in here won't cause crashes or
-> lockups or anything.
+Currently I am having a kernel 2.6.14 with INIT_RAMFS and it is using
+cpio archive to create the nodes and rootfs.
 
-It's even more subtle than that.  Only a special variant of the pagetables
-used for the MIPS equivalent of PAE is affected.  For performance reason
-this format contains two copies of the some of the bits.  The result of
-the bug was one being maintained corrected, the other one not.
+Now I want to have the rootfs (jffs) on flash. Is there any document
+which tells me how to do that ?
 
-> What this needs is someone who understands the architecture (ie: you
-> ;)) to take a look, please.
+I did the following ..
 
-I've applied the patch yesterday; will go to Linus in the next merge.
+I created the rootfs directory say "embeddedroot" structure except /dev
+directory and ran mkfs.jffs2 on "embeddedroot".
 
-  Ralf
+The .jffs2 image is loaded onto flash at the correct offset pointed in
+the MTD partition structure as mtdblock2.
+
+My basic doubt is , how the kernel will create a node in /dev in the
+above case ? or is there any other way to make jffs as rootfs.
+
+I am missing some thing , I will be glad if someone points me that.
+
+Ramgopal Kota

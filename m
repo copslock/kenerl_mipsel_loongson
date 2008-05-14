@@ -1,105 +1,258 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2008 08:34:04 +0100 (BST)
-Received: from nelson.telenet-ops.be ([195.130.133.66]:57797 "EHLO
-	nelson.telenet-ops.be") by ftp.linux-mips.org with ESMTP
-	id S20026559AbYENHeB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 14 May 2008 08:34:01 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by nelson.telenet-ops.be (Postfix) with SMTP id B98875003D;
-	Wed, 14 May 2008 09:33:59 +0200 (CEST)
-Received: from anakin.of.borg (78-21-204-88.access.telenet.be [78.21.204.88])
-	by nelson.telenet-ops.be (Postfix) with ESMTP id 93A885000A;
-	Wed, 14 May 2008 09:33:59 +0200 (CEST)
-Received: from anakin.of.borg (localhost [127.0.0.1])
-	by anakin.of.borg (8.14.2/8.14.2/Debian-4) with ESMTP id m4E7Xx1R011656
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Wed, 14 May 2008 09:33:59 +0200
-Received: from localhost (geert@localhost)
-	by anakin.of.borg (8.14.2/8.14.2/Submit) with ESMTP id m4E7XwXv011653;
-	Wed, 14 May 2008 09:33:59 +0200
-X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
-Date:	Wed, 14 May 2008 09:33:58 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	zhuzhenhua <zzh.hust@gmail.com>
-cc:	Ralf Baechle <ralf@linux-mips.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: is remap_pfn_range should align to 2(n) * (page size) ?
-In-Reply-To: <50c9a2250805131819q41c6da0au1ae3ef9e833812a9@mail.gmail.com>
-Message-ID: <Pine.LNX.4.64.0805140932410.5778@anakin>
-References: <50c9a2250805082354x1edc1ecar89dcc3378b3bbe75@mail.gmail.com>
- <20080509095605.GB14450@linux-mips.org> <50c9a2250805111918r16913139obfc2982220636b3@mail.gmail.com>
- <20080512112233.GA8843@linux-mips.org> <50c9a2250805130444u4218654bw66f6158ba10b2b92@mail.gmail.com>
- <20080513172300.GA9788@linux-mips.org> <50c9a2250805131819q41c6da0au1ae3ef9e833812a9@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2008 09:37:22 +0100 (BST)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:16818 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S20023175AbYENIhU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 14 May 2008 09:37:20 +0100
+Received: (qmail 11461 invoked by uid 1000); 14 May 2008 10:37:16 +0200
+Date:	Wed, 14 May 2008 10:37:16 +0200
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/7] au1xmmc: remove db1x00 board-specific functions
+	from driver
+Message-ID: <20080514083716.GA10860@roarinelk.homelinux.net>
+References: <20080508080040.GA24383@roarinelk.homelinux.net> <20080508080301.GD24383@roarinelk.homelinux.net> <48282BBE.4090409@ru.mvista.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <48282BBE.4090409@ru.mvista.com>
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19267
+X-archive-position: 19268
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 14 May 2008, zhuzhenhua wrote:
-> On Wed, May 14, 2008 at 1:23 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> > On Tue, May 13, 2008 at 07:44:06PM +0800, zhuzhenhua wrote:
-> > > thanks for your advice, i found in newest kernel version, in some arch ,
-> > the
-> > > dma_alloc_coherent will call split_page.
-> > > because my kernel version is 2.6.14, so i first patch a split_page patch
-> > as
-> > > follow:
-> > >
-> > http://www.kernel.org/pub/linux/kernel/people/npiggin/patches/lockless/2.6.16-rc5/broken-out/mm-split-highorder.patch
-> > >
-> > > but it seemes that there is still no split_page in
-> > > dma_alloc_coherent/dma_alloc_noncoherent
-> > > so i copy from other arch code to arch/mips/mm/dma-noncoherent.c (attach
-> > at
-> > > the end of mail)
-> > > and now my driver just use dma_alloc_coherent malloc 3M directly, and it
-> > > seemes ok.
-> > > i just wonder why mips arch dma_alloc_coherent/dma_alloc_nocoherent do
-> > not
-> > > call split_page while other arch calling.
-> >
-> > I have not identified the waste of memory as a big problem for typical
-> > MIPS systems yet.
-> >
-> > The 3MB requirement of your device is sort of odd because it's not a power
-> > of two.  Have you considered splitting the allocation into a 2MB and a 1MB
-> > allocation or would that be undersirable?
-> >
-> 
-> Thanks for your reply.
-> Our board is for embedded system , It only have 32M sdram and we don't want
-> to
->  waste 1M sdram.  My sensor driver need about 2.5xM memory to capture a
-> picture
->  by DMA (our DMA controller do not support scatter/gather).
-> 
-> I also can use bootargs "mem=29M" to keep 3M sdram.  but it's not flexible
-> as
-> passing a param to driver module(calling dma_alloc_coherent). maybe my
-> situation
-> is not common for MIPS arch. so that's is no split_page in
-> dma_alloc_coherent.
-> and now after patch,it seemes ok for me.
+Hello Sergei,
 
-One other issue is that bootargs "mem=29M" is guaranteed to give you 3
-MiB for your device, while dma_alloc_coherent() may fail if memory is
-too fragmented.
+>>  #include <asm/mach-au1x00/au1100_mmc.h>
+>>   #include <au1xxx.h>
+>> -#include "au1xmmc.h"
+>>   
+>   I think you should merge the header to the driver in a separate patch.
 
-Gr{oetje,eeting}s,
+Okay...
 
-						Geert
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+>> @@ -174,8 +221,6 @@ static void au1xmmc_finish_request(struct au1xmmc_host 
+>> *host)
+>>   	host->status = HOST_S_IDLE;
+>>  -	bcsr->disk_leds |= (1 << 8);
+>> -
+>>   
+>   So, the LED support is gone with your patch? You should at least document 
+> this...
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+Okay...
+
+
+>>  	mmc_request_done(host->mmc, mrq);
+>>  }
+>>  @@ -663,7 +708,9 @@ static void au1xmmc_request(struct mmc_host* mmc, 
+>> struct mmc_request* mrq)
+>>  	host->mrq = mrq;
+>>  	host->status = HOST_S_CMD;
+>>  -	bcsr->disk_leds &= ~(1 << 8);
+>> +	au_writel(0, HOST_STATUS(host));
+>> +	au_sync();
+>> +	FLUSH_FIFO(host);
+>>   
+>   Hm, not an obvious change...
+
+Gone (leftovers from debugging MMC and other non-working cards)
+
+
+>>   	if (mrq->data) {
+>>  		FLUSH_FIFO(host);
+>> @@ -749,118 +796,87 @@ static void au1xmmc_dma_callback(int irq, void 
+>> *dev_id)
+>>   static irqreturn_t au1xmmc_irq(int irq, void *dev_id)
+>>  {
+>> -
+>> +	struct au1xmmc_host *host = dev_id;
+>>  	u32 status;
+>> -	int i, ret = 0;
+>>  -	disable_irq(AU1100_SD_IRQ);
+>> +	status = au_readl(HOST_STATUS(host));
+>>  -	for(i = 0; i < AU1XMMC_CONTROLLER_COUNT; i++) {
+>> -		struct au1xmmc_host * host = au1xmmc_hosts[i];
+>> -		u32 handled = 1;
+>> +	if (!(status & (1 << 15)))
+>>   
+>   Why not SD_STATUS_I?
+
+Good point, I'll add named constants for other values as well.
+
+
+>> +		//IRQ_OFF(host, SD_CONFIG_TH|SD_CONFIG_RA|SD_CONFIG_RF);
+>>   
+>   No C99 // comments please -- checkpatch.pl would have given you error 
+> about them...
+
+It did-- but since I was just shuffling code around I was hesitant to do
+these changes as well in this particular patch (the i2c maintainer for
+instance wants functional and cosmetic changes in separate patches;
+and every maintainer has different preferences, so I left those lines
+untouched to not add additional noise).
+
+
+>> +	} else if (status & 0x203FBC70) {
+>>   
+>   I think the mask should be changed to 0x203F3C70 since you're handling 
+> SD_STATUS_I but maybe I'm wrong...
+
+Yes you're right (but this line never triggered while testing so it's
+harmless).
+
+
+>> -static void au1xmmc_init_dma(struct au1xmmc_host *host)
+>> +static int au1xmmc_init_dma(struct au1xmmc_host *host)
+>>   
+>   I'd have called it au1xmmc_init_dbdma() instead since in Au1100 the 
+> controller works with its "old-style" DMA... though maybe the difference 
+> could be handled within this function via #ifdef...
+
+I like the renamed function, but again, I was just shuffling code around
+(more or less) so I didn't touch the name(s).
+For the time being, I'll leave it as-is, and if someday Au1100 DMA is added
+the functions can be renamed or beautified with tons of ifdefs.
+What do you think?
+
+
+>> @@ -878,116 +896,201 @@ static const struct mmc_host_ops au1xmmc_ops = {
+>>  	.get_ro		= au1xmmc_card_readonly,
+>>  };
+>>  -static int __devinit au1xmmc_probe(struct platform_device *pdev)
+>> +static void au1xmmc_poll_event(unsigned long arg)
+>>  {
+>> +	struct au1xmmc_host *host = (struct au1xmmc_host *)arg;
+>>   
+>   Don't need new line here...
+
+Okay...
+
+
+>>  -	int i, ret = 0;
+>> +	int card = au1xmmc_card_inserted(host);
+>> +        int controller = (host->flags & HOST_F_ACTIVE) ? 1 : 0;
+>>   
+>   Remove extra space please. And what does this variable actually mean?
+
+Based on HOST_F_ACTIVE the driver determines if it is possible that there's
+a card in the socket.  Again, I just did code shuffling here. 
+
+
+>> +	host->iobase = (unsigned long)ioremap(r->start, 0xff);
+>>   
+>   You have the r->end specifying the resource end, why 0xff (well, actually 
+> 0x3c is enough)
+
+Okay...
+
+
+>> @@ -1004,21 +1107,32 @@ static struct platform_driver au1xmmc_driver = {
+>>   static int __init au1xmmc_init(void)
+>>  {
+>> +	if (dma) {
+>> +		/* DSCR_CMD0_ALWAYS has a stride of 32 bits, we need a stride
+>> +		 * of 8 bits.  And since devices are shared, we need to create
+>> +		 * our own to avoid freaking out other devices
+>>   
+>   Missing period at end of statement.
+
+Okay...
+
+
+>> +		 */
+>> +		if (!memid)
+>>   
+>   Hm, is there a chance that it won't be NULL?
+
+Are global vars initialized to zero on module load?  Then it can go away of
+course.
+
+
+>> +			memid = au1xxx_ddma_add_device(&au1xmmc_mem_dbdev);
+>> +		if (!memid) {
+>> +			printk(KERN_ERR "au1xmmc: cannot add memory dma dev\n");
+>> +			return -ENODEV;
+>> +		}
+>> +	}
+>>  	return platform_driver_register(&au1xmmc_driver);
+>>  }
+> [...]
+>> diff --git a/include/asm-mips/mach-au1x00/au1100_mmc.h 
+>> b/include/asm-mips/mach-au1x00/au1100_mmc.h
+>> index 9e0028f..6474fac 100644
+>> --- a/include/asm-mips/mach-au1x00/au1100_mmc.h
+>> +++ b/include/asm-mips/mach-au1x00/au1100_mmc.h
+>> @@ -38,15 +38,46 @@
+>>  #ifndef __ASM_AU1100_MMC_H
+>>  #define __ASM_AU1100_MMC_H
+>>    
+> [...]
+>> +struct au1xmmc_platdata {
+>>   
+>   I'd suggest au1xmmc_platform_data.
+
+Too much to type for my taste, but okay, changed.
+
+
+>> +	int(*cd_setup)(void *mmc_host, int on);
+>> +	int(*card_inserted)(void *mmc_host);
+>> +	int(*card_readonly)(void *mmc_host);
+>> +	void(*set_power)(void *mmc_host, int state);
+>> +};
+>> +
+>> +struct au1xmmc_host {
+>> +	struct mmc_host *mmc;
+>> +	struct mmc_request *mrq;
+>> +
+>> +	u32 id;
+>> +
+>> +	u32 flags;
+>> +	u32 iobase;
+>> +	u32 clock;
+>> +
+>> +	int status;
+>> +
+>> +	struct {
+>> +		int len;
+>> +		int dir;
+>> +		u32 tx_chan;
+>> +		u32 rx_chan;
+>> +	} dma;
+>> +
+>> +	struct {
+>> +		int index;
+>> +		int offset;
+>> +		int len;
+>> +	} pio;
+>> +
+>> +	struct timer_list timer;
+>> +	struct tasklet_struct finish_task;
+>> +	struct tasklet_struct data_task;
+>> +
+>> +	struct platform_device *pdev;
+>> +	struct au1xmmc_platdata *platdata;
+>> +	int irq;
+>> +};
+>   Hm, do you need the above structure to be visible from the platform code?
+
+The db1200 board stuff references the ->id member to determine which BCSR
+bits it should pay attention to.  It can go into the driver code if you are
+okay with adding platform data for every one of both SD controllers on the
+PB1200 (which means lots of duplicated code which only differs in BCSR
+constants).  I'm okay with eiher solution, which do you prefer?
+
+
+> WBR, Sergei
+
+Thanks for having a look!
+	Manuel Lauss

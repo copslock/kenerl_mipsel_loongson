@@ -1,68 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2008 00:31:30 +0100 (BST)
-Received: from smtp-out113.alice.it ([85.37.17.113]:41742 "EHLO
-	smtp-out113.alice.it") by ftp.linux-mips.org with ESMTP
-	id S20030389AbYEMXb1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 14 May 2008 00:31:27 +0100
-Received: from FBCMMO01.fbc.local ([192.168.68.195]) by smtp-out113.alice.it with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 14 May 2008 01:31:19 +0200
-Received: from FBCMCL01B07.fbc.local ([192.168.171.45]) by FBCMMO01.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 14 May 2008 01:31:19 +0200
-Received: from raver.lan ([82.55.114.254]) by FBCMCL01B07.fbc.local with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 14 May 2008 01:29:51 +0200
-From:	Matteo Croce <matteo@openwrt.org>
-To:	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH]: cpmac bugfixes and enhancements
-Date:	Wed, 14 May 2008 01:31:16 +0200
-User-Agent: KMail/1.9.9
-Cc:	jgarzik@pobox.com, ralf@linux-mips.org, nbd@openwrt.org,
-	ejka@imfi.kspu.ru, linux-mips@linux-mips.org,
-	netdev@vger.kernel.org
-References: <200805041904.22726.matteo@openwrt.org> <200805140058.32890.matteo@openwrt.org> <20080513160642.a96dccbf.akpm@linux-foundation.org>
-In-Reply-To: <20080513160642.a96dccbf.akpm@linux-foundation.org>
-X-Face:	0AUq?,0sKh2O65+R5#[nTCS'~}"m)9|g3Tsi=g7A9q69S+=M!BY)=?utf-8?q?Zdmwo2u!i=5CUylx=26=27D+=0A=09=5B7u=26z1=27s=7E=5B=3F+=24=27w?=
- =?utf-8?q?O6+?="'WWcr5Jy,]}8namg8NP:9<E,o^21xGB~/HRhB(u^@
- =?utf-8?q?ZB=2EXLP0swe=0A=09r9M=7EL?=<b1=^'4cv*_N1tNJ$`9Ot*KL/;8oXFdrT@r|-Ki2wCQI"R(X(
- =?utf-8?q?73r=3A=3BmnNPoA2a=5D=7EZ=0A=092n2sUh?=,B|bt;ys*hv.QR>a]{m
-MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 May 2008 02:03:43 +0100 (BST)
+Received: from smtp1.linux-foundation.org ([140.211.169.13]:57573 "EHLO
+	smtp1.linux-foundation.org") by ftp.linux-mips.org with ESMTP
+	id S20030512AbYENBDk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 14 May 2008 02:03:40 +0100
+Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [140.211.169.55])
+	by smtp1.linux-foundation.org (8.14.2/8.13.5/Debian-3ubuntu1.1) with ESMTP id m4E12U9o031051
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Tue, 13 May 2008 18:02:31 -0700
+Received: from y.localdomain (localhost [127.0.0.1])
+	by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with SMTP id m4E12Pdx009236;
+	Tue, 13 May 2008 18:02:27 -0700
+Date:	Tue, 13 May 2008 18:02:25 -0700
+From:	Andrew Morton <akpm@linux-foundation.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@helsinki.fi>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH RESEND] [MIPS]: multi-statement if() seems to be missing
+ braces
+Message-Id: <20080513180225.194f400b.akpm@linux-foundation.org>
+In-Reply-To: <20080513232507.GA24102@linux-mips.org>
+References: <Pine.LNX.4.64.0805131444360.15369@wrl-59.cs.helsinki.fi>
+	<20080513232507.GA24102@linux-mips.org>
+X-Mailer: Sylpheed 2.4.8 (GTK+ 2.12.5; x86_64-redhat-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200805140131.16473.matteo@openwrt.org>
-X-OriginalArrivalTime: 13 May 2008 23:29:52.0656 (UTC) FILETIME=[3E8E7100:01C8B551]
-Return-Path: <matteo@openwrt.org>
+X-MIMEDefang-Filter: lf$Revision: 1.188 $
+X-Scanned-By: MIMEDefang 2.63 on 140.211.169.13
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19262
+X-archive-position: 19263
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: matteo@openwrt.org
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 X-list: linux-mips
 
-Il Wednesday 14 May 2008 01:06:42 Andrew Morton ha scritto:
-> On Wed, 14 May 2008 00:58:32 +0200 Matteo Croce <matteo@openwrt.org> wrote:
+On Wed, 14 May 2008 00:25:07 +0100 Ralf Baechle <ralf@linux-mips.org> wrote:
+
+> On Tue, May 13, 2008 at 02:50:50PM +0300, Ilpo J__rvinen wrote:
 > 
-> > This one is cleaner:
-> > 
-> > 
-> > Signed-off-by: Matteo Croce <matteo@openwrt.org>
-> > Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+> > In case this is a genuine bug, somebody else more familiar
+> > with that stuff should evaluate it's effects (I just found it
+> > by some shell pipeline and it seems suspicious looking).
 > 
-> It has no changelog.  We can neither effectively review it nor commit
-> it without one.
-> 
-> Each bugfix and each enhancement should be described, please.
+> Should be fairly as proven by practice; it's there since day of of 64-bit
+> pagetable for 32-bit hw support which was November 29, 2004.
 > 
 
-Here's the changelog:
+It's unlikely that anyone would notice an error in pte_mkyoung().  It
+will affect page reclaim behaviour and _might_ be demonstrable with a
+carefully set up test.  But an error in here won't cause crashes or
+lockups or anything.
 
-* Resolve some locking issues using atomic_inc/atomic_dec
-* move status code in cpmac_check_status
-* unmark the BROKEN flag in Kconfig
-* move code which should have been in platform code in arch/mips/ar7/platform.c
-* fixed an IRQ storm which lets the kernel hang
-* fixed a double call to netif_start_queue which causes a kernel panic
-* don't fail to register the PHY, works on many devices now
+What this needs is someone who understands the architecture (ie: you
+;)) to take a look, please.

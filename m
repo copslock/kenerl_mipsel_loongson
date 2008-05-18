@@ -1,82 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 May 2008 05:40:27 +0100 (BST)
-Received: from kirk.serum.com.pl ([213.77.9.205]:24559 "EHLO serum.com.pl")
-	by ftp.linux-mips.org with ESMTP id S28573880AbYEREkZ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 18 May 2008 05:40:25 +0100
-Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
-	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m4I4e1BM014328;
-	Sun, 18 May 2008 06:40:01 +0200
-Received: from localhost (macro@localhost)
-	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m4I4dmpE014319;
-	Sun, 18 May 2008 05:39:48 +0100
-Date:	Sun, 18 May 2008 05:39:47 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	john stultz <johnstul@us.ibm.com>
-cc:	Alessandro Zummo <a.zummo@towertech.it>,
-	Jean Delvare <khali@linux-fr.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	rtc-linux@googlegroups.com, i2c@lm-sensors.org,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC][PATCH 1/4] RTC: Class device support for persistent clock
-In-Reply-To: <1f1b08da0805071418q365680bexafb1996dcc77ebb0@mail.gmail.com>
-Message-ID: <Pine.LNX.4.55.0805160356570.519@cliff.in.clinika.pl>
-References: <Pine.LNX.4.55.0805070015360.16173@cliff.in.clinika.pl>
- <1f1b08da0805071418q365680bexafb1996dcc77ebb0@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 May 2008 17:09:28 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:47843 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20024391AbYERQJ0 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 18 May 2008 17:09:26 +0100
+Received: from localhost (p1215-ipad205funabasi.chiba.ocn.ne.jp [222.146.96.215])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id D788CA96F; Mon, 19 May 2008 01:09:18 +0900 (JST)
+Date:	Mon, 19 May 2008 01:10:34 +0900 (JST)
+Message-Id: <20080519.011034.25909336.anemo@mba.ocn.ne.jp>
+To:	macro@linux-mips.org
+Cc:	a.zummo@towertech.it, hvr@gnu.org, akpm@linux-foundation.org,
+	rtc-linux@googlegroups.com, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] RTC: M41T80: Century Bit support
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <Pine.LNX.4.55.0805171959030.10067@cliff.in.clinika.pl>
+References: <Pine.LNX.4.55.0805170057370.4049@cliff.in.clinika.pl>
+	<20080518.000242.41199304.anemo@mba.ocn.ne.jp>
+	<Pine.LNX.4.55.0805171959030.10067@cliff.in.clinika.pl>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19296
+X-archive-position: 19297
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi John,
-
- Sorry about the delay -- I have missed your comment in the flood.
-
-On Wed, 7 May 2008, john stultz wrote:
-
-> >   As rtc_read_persistent_clock() is not available at the time
-> >  timekeeping_init() is called, it will now be disabled if the class device
-> >  is to be used as a reference.  In this case rtc_hctosys(), already
-> >  present, will be used to set up the system time at the late initcall time.
-> >  This call has now been rewritten to make use of
-> >  rtc_read_persistent_clock().
+On Sat, 17 May 2008 20:16:20 +0100 (BST), "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
+> > How about doing like this?
+> > 
+> > 1. If CEB was 0, keep current behavior. (does not touch CB bit)
+> > 
+> > 2. If CEB was 1, detect polarity of CB bit on get_datetime, and set or
+> >    clear CB bit on set_datetime based on the polarity.
 > 
-> Hrmm. So how is this going to work with suspend and resume?
+>  That's what I did initially as it is as obvious as you can get.  But as I
+> noted, CFE, the firmware used with the SWARM, does not set CEB even though
+> it takes CB into account.  The approach is not useful therefore at least
+> for one major user of the device.
 
- Hmm, I have never used suspend/resume, so I cannot really comment.  Here
-is what I gathered by glancing over the code and some bits of
-documentation.
+Oh I had missed that the firmware does not set CEB.  Hmm...
 
-> Ideally, on resume we want to update the clock before interrupts are
-> reenabled so we don't get stale time values post-resume.  For systems
-> that sleep on reading the persistent clock, I'm open to having them
-> fix it up as best they can later (partly why the code can handle
-> read_persistent_clock() not returning anything), but unless I'm
-> misreading this, it seems you're proposing to make systems that do
-> have a safe persistent clock have to have the window where code may
-> see the pre-suspend time after resume.
+>  Of course CFE is BSD-licensed and can be changed too, but based on my
+> experience with how serious bugs are handled, I would not count on getting
+> such a minor change integrated into the official sources.
+> 
+> > Please look at "c_polarity" variable in rtc-pcf8563.c driver.
+> 
+>  Hmm, not terribly useful as few of us if anybody live back in the 20th
+> century. ;-)  I think let's scrap the patch in this case and let our
+> grandchildren solve the problem -- a proposal has been published and can
+> be reused as needed.
 
- Right now it looks the time is restored in two places, 
-timekeeping_resume() and rtc_resume().  Of course once the transition to 
-the new RTC infrastructure has been done, one is going to be redundant.  
-For the time being I think it is harmless to have them both.
+OK for me.  Lets hear how our grandchildren complain on this fault. :)
 
- That written, both are called from the relevant driver's ->resume()  
-method.  My set of patches does not change it and as far as I can tell if
-it worked before, it will work afterwards.  As I understand ->resume()  
-methods may sleep and are called with interrupts already enabled.
- 
-> Am I missing something here?
-
- No idea -- anyone?
-
-  Maciej
+---
+Atsushi Nemoto

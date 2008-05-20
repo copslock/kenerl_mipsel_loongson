@@ -1,71 +1,145 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 May 2008 02:26:12 +0100 (BST)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:57586 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20026888AbYETB0K (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 20 May 2008 02:26:10 +0100
-Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [213.58.128.207]) with ESMTP; Tue, 20 May 2008 10:26:07 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id BDA9341E1D;
-	Tue, 20 May 2008 10:26:01 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id B06E81EF4E;
-	Tue, 20 May 2008 10:26:01 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id m4K1PxAF038628;
-	Tue, 20 May 2008 10:26:00 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Tue, 20 May 2008 10:25:59 +0900 (JST)
-Message-Id: <20080520.102559.25909127.nemoto@toshiba-tops.co.jp>
-To:	macro@linux-mips.org
-Cc:	a.zummo@towertech.it, khali@linux-fr.org,
-	rtc-linux@googlegroups.com, i2c@lm-sensors.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH 5/6 #3] RTC: SMBus support for the M41T80, etc. driver
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <Pine.LNX.4.55.0805180447210.10067@cliff.in.clinika.pl>
-References: <Pine.LNX.4.55.0805180447210.10067@cliff.in.clinika.pl>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 May 2008 10:21:02 +0100 (BST)
+Received: from zone0.gcu-squad.org ([212.85.147.21]:52524 "EHLO
+	services.gcu-squad.org") by ftp.linux-mips.org with ESMTP
+	id S20023000AbYETJU7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 20 May 2008 10:20:59 +0100
+Received: from jdelvare.pck.nerim.net ([62.212.121.182] helo=hyperion.delvare)
+	by services.gcu-squad.org (GCU Mailer Daemon) with esmtpsa id 1JyOyA-00021P-8X
+	(TLSv1:AES256-SHA:256)
+	(envelope-from <khali@linux-fr.org>)
+	; Tue, 20 May 2008 12:21:22 +0200
+Date:	Tue, 20 May 2008 11:20:40 +0200
+From:	Jean Delvare <khali@linux-fr.org>
+To:	David Brownell <david-b@pacbell.net>
+Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	linux-mips@linux-mips.org, mgreer@mvista.com,
+	rtc-linux@googlegroups.com, Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+	linux-kernel@vger.kernel.org, i2c@lm-sensors.org, ab@mycable.de,
+	Alessandro Zummo <alessandro.zummo@towertech.it>
+Subject: Re: [i2c] [RFC][PATCH 4/4] RTC: SMBus support for the M41T80,
+Message-ID: <20080520112040.08c809a1@hyperion.delvare>
+In-Reply-To: <200805100936.52057.david-b@pacbell.net>
+References: <200805070120.03821.david-b@pacbell.net>
+	<Pine.LNX.4.55.0805100301100.10552@cliff.in.clinika.pl>
+	<20080510085340.29c26aef@hyperion.delvare>
+	<200805100936.52057.david-b@pacbell.net>
+X-Mailer: Claws Mail 3.4.0 (GTK+ 2.10.6; x86_64-suse-linux-gnu)
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <khali@linux-fr.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19314
+X-archive-position: 19322
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: khali@linux-fr.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 18 May 2008 04:53:54 +0100 (BST), "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
->  The BCM1250A SOC which is used on the SWARM board utilising an M41T81
-> chip only supports pure I2C in the raw bit-banged mode.  Nobody sane
-> really wants to use it unless absolutely necessary and the M41T80, etc.  
-> chips work just fine with an SMBus adapter which is what the standard mode
-> of operation of the BCM1250A.  The only drawback of byte accesses with the
-> M41T80 is the chip only latches clock data registers for the duration of
-> an I2C transaction which works fine with a block transfers, but not
-> byte-wise accesses.
-> 
->  The driver currently requires an I2C adapter providing both SMBus and raw
-> I2C access.  This is a set of changes to make it work with any SMBus
-> adapter providing at least read byte and write byte protocols.  
-> Additionally, if a given SMBus adapter supports I2C block read and/or
-> write protocols (a common extension beyond the SMBus spec), they are used
-> as well.  The problem of unlatched clock data if SMBus byte transactions
-> are used is resolved in the standard way.  For raw I2C controllers this
-> functionality is provided by the I2C core as SMBus emulation in a
-> transparent way.
-> 
-> Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+Hi David,
 
-Tested-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+On Sat, 10 May 2008 09:36:50 -0700, David Brownell wrote:
+> > It's not that easy. There are some drivers which are both in-tree and
+> > out-of-tree, for which such a change means adding ifdefs.
+> 
+> Actually, I thought it *WAS* that easy.  See the appended patch,
+> which goes on top of the various doc and (mostly SMBus) fault
+> handling patches I've sent ... the old names are still available
+> (only needed by out-of-tree drivers), but marked as __deprecated.
+> So:  no #ifdefs required.
 
----
-Atsushi Nemoto
+No #ifdefs required until we drop the deprecated helpers, which will
+inevitably happen, even if only in several years. So in practice,
+#ifdefs would be required for out-of-tree drivers (or semi-out-of-tree
+drivers such as v4l/dvb drivers).
+
+> I agree it's not worth while for *all* the SMBus functions that
+> use names-made-up-for-Linux.  But for the two which are really
+> badly misnamed (after *different* SMBus operations), I suggest
+> fixing would be a reasonable thing.
+
+That's tempting, but see below.
+
+> > And there is 
+> > i2c-dev.h (the user-space one) which has similar functions,
+> 
+> That's problematic in its own right though.  Not only that
+> the *kernel* file Documentation/i2c/dev-interface referring
+> to those functions, which are unavailable from the header
+> provided by the kernel.  Or that there's no relationship
+> between the kernel and userspace files of the same name.
+> But also that those functions are actually a bit too large
+> to be appropriate as inlines, even once you manage to track
+> it down (as part of a "tools" package, not a "library").
+
+I agree that the i2c-dev.h mess needs some love and this is on my to-do
+list for this year. That's not necessarily related to the problem at
+hand though.
+
+> > if we 
+> > rename only the kernel variants, there will be some confusion. But if
+> > we rename also the user-space variants, then it's up to 2.4 kernel
+> > users to have different names for kernel-space and user-space functions.
+> 
+> True, but that would be a question for a "libsmbus" or somesuch
+> to deal with.  Not a kernel issue.
+
+Whether it's in the kernel or outside the kernel is irrelevant. The
+developers are likely to be the same, and the person who will have to
+deal with the confusion is the same (i.e.: me.)
+
+> ===========
+> Two of the SMBus operations are using confusingly inappropriate names:
+> 
+>   i2c_smbus_read_byte() does not execute the SMBus "Read Byte" protocol
+>   	... it implements the SMBus "Receive Byte" protocol instead!!
+> 
+>   i2c_smbus_write_byte() does not execute the SMBus "Write Byte" protocol
+>   	... it implements the SMBus "Send Byte" protocol instead!!
+> 
+> This patch changes the names of those functions, so they no longer
+> use names of different operations (which they do not implement).
+> 
+> ---
+>  Documentation/i2c/chips/max6875   |    4 ++--
+>  Documentation/i2c/smbus-protocol  |   12 +++++-------
+>  Documentation/i2c/writing-clients |    4 ++--
+>  drivers/gpio/pcf857x.c            |    8 ++++----
+>  drivers/hwmon/ds1621.c            |    2 +-
+>  drivers/hwmon/lm90.c              |    2 +-
+>  drivers/i2c/chips/eeprom.c        |   10 +++++-----
+>  drivers/i2c/chips/max6875.c       |    2 +-
+>  drivers/i2c/chips/pcf8574.c       |    4 ++--
+>  drivers/i2c/chips/pcf8591.c       |   10 +++++-----
+>  drivers/i2c/chips/tsl2550.c       |   16 ++++++++--------
+>  drivers/i2c/i2c-core.c            |   12 ++++++------
+>  drivers/media/video/saa7110.c     |    2 +-
+>  drivers/media/video/saa7185.c     |    2 +-
+>  drivers/media/video/tda9840.c     |    8 ++++----
+>  drivers/media/video/tea6415c.c    |    4 ++--
+>  drivers/media/video/tea6420.c     |    4 ++--
+>  drivers/w1/masters/ds2482.c       |   10 +++++-----
+>  include/linux/i2c.h               |   20 ++++++++++++++++++--
+>  19 files changed, 75 insertions(+), 61 deletions(-)
+
+I'm not going to take this, sorry. I still believe that it will cause
+more trouble than is worth at this point in time. For example, after
+applying your patch, we'd have functionality defines no longer matching
+the SMBus helper names (I2C_FUNC_SMBUS_READ_BYTE,
+I2C_FUNC_SMBUS_WRITE_BYTE). And you can't easily rename these because
+they are part of the i2c-dev API.
+
+I'm not saying that the suggested cleanup shouldn't be done, nor that
+it cannot be done. All I'm saying is that it will be a lot of work if
+we do it properly, and potentially a lot of trouble for many developers
+out there, all for a marginal benefit, and I think that our time can be
+better used to solve other, more important problems. And you've done a
+very good job at documenting the current implementation, so I hope that
+it is clear enough for everyone now.
+
+Thanks,
+-- 
+Jean Delvare

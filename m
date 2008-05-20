@@ -1,52 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 May 2008 21:31:12 +0100 (BST)
-Received: from kirk.serum.com.pl ([213.77.9.205]:38645 "EHLO serum.com.pl")
-	by ftp.linux-mips.org with ESMTP id S28575573AbYETUbJ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 20 May 2008 21:31:09 +0100
-Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
-	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m4KKURJm001096;
-	Tue, 20 May 2008 22:30:27 +0200
-Received: from localhost (macro@localhost)
-	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m4KKUIZr001092;
-	Tue, 20 May 2008 21:30:18 +0100
-Date:	Tue, 20 May 2008 21:30:17 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Andrew Morton <akpm@linux-foundation.org>
-cc:	anemo@mba.ocn.ne.jp, a.zummo@towertech.it, hvr@gnu.org,
-	rtc-linux@googlegroups.com, linux-mips@linux-mips.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] RTC: M41T80: Century Bit support
-In-Reply-To: <20080520130311.58a8e5ac.akpm@linux-foundation.org>
-Message-ID: <Pine.LNX.4.55.0805202127320.31790@cliff.in.clinika.pl>
-References: <Pine.LNX.4.55.0805170057370.4049@cliff.in.clinika.pl>
- <20080518.000242.41199304.anemo@mba.ocn.ne.jp>
- <Pine.LNX.4.55.0805171959030.10067@cliff.in.clinika.pl>
- <20080519.011034.25909336.anemo@mba.ocn.ne.jp>
- <Pine.LNX.4.55.0805202045320.31790@cliff.in.clinika.pl>
- <20080520130311.58a8e5ac.akpm@linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 May 2008 23:57:18 +0100 (BST)
+Received: from smtp5.pp.htv.fi ([213.243.153.39]:13455 "EHLO smtp5.pp.htv.fi")
+	by ftp.linux-mips.org with ESMTP id S28575640AbYETW5P (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 20 May 2008 23:57:15 +0100
+Received: from cs181133002.pp.htv.fi (cs181133002.pp.htv.fi [82.181.133.2])
+	by smtp5.pp.htv.fi (Postfix) with ESMTP id 4F3905BC01C;
+	Wed, 21 May 2008 01:57:12 +0300 (EEST)
+Date:	Wed, 21 May 2008 01:55:02 +0300
+From:	Adrian Bunk <bunk@kernel.org>
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org,
+	"Robert P. J. Day" <rpjday@crashcourse.ca>
+Subject: [2.6 patch] mips/kernel/Makefile: remove CONFIG_CPU_R4000 line
+Message-ID: <20080520225502.GC16264@cs181133002.pp.htv.fi>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+User-Agent: Mutt/1.5.17+20080114 (2008-01-14)
+Return-Path: <bunk@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19327
+X-archive-position: 19328
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: bunk@kernel.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 20 May 2008, Andrew Morton wrote:
+The existing options are named CONFIG_CPU_R4300 and CONFIG_CPU_R4X00, 
+and they are directly below.
 
-> It's be saner for me to drop it and have you resend when appropriate.  
+Reported-by: Robert P. J. Day <rpjday@crashcourse.ca>
+Signed-off-by: Adrian Bunk <bunk@kernel.org>
 
- OK, no problem with that.
-
-> The chances of me being able to succesfully correlate this patch and
-> something called "the flags" at some time in the future are less than
-> 100% ;)
-
- You mean like 99.9% less? ;-)  Some people call it "epsilon".
-
-  Maciej
+---
+372ea8980a1d94e474b512bd20d870ee3ea15099 diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+index cc02440..65e46a6 100644
+--- a/arch/mips/kernel/Makefile
++++ b/arch/mips/kernel/Makefile
+@@ -30,7 +30,6 @@ obj-$(CONFIG_CPU_LOONGSON2)	+= r4k_fpu.o r4k_switch.o
+ obj-$(CONFIG_CPU_MIPS32)	+= r4k_fpu.o r4k_switch.o
+ obj-$(CONFIG_CPU_MIPS64)	+= r4k_fpu.o r4k_switch.o
+ obj-$(CONFIG_CPU_R3000)		+= r2300_fpu.o r2300_switch.o
+-obj-$(CONFIG_CPU_R4000)		+= r4k_fpu.o r4k_switch.o
+ obj-$(CONFIG_CPU_R4300)		+= r4k_fpu.o r4k_switch.o
+ obj-$(CONFIG_CPU_R4X00)		+= r4k_fpu.o r4k_switch.o
+ obj-$(CONFIG_CPU_R5000)		+= r4k_fpu.o r4k_switch.o

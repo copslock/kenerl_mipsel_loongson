@@ -1,161 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 May 2008 21:37:38 +0100 (BST)
-Received: from zone0.gcu-squad.org ([212.85.147.21]:56445 "EHLO
-	services.gcu-squad.org") by ftp.linux-mips.org with ESMTP
-	id S20026290AbYESUhg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 19 May 2008 21:37:36 +0100
-Received: from jdelvare.pck.nerim.net ([62.212.121.182] helo=hyperion.delvare)
-	by services.gcu-squad.org (GCU Mailer Daemon) with esmtpsa id 1JyD3O-0005Rl-69
-	(TLSv1:AES256-SHA:256)
-	(envelope-from <khali@linux-fr.org>)
-	; Mon, 19 May 2008 23:37:58 +0200
-Date:	Mon, 19 May 2008 22:37:18 +0200
-From:	Jean Delvare <khali@linux-fr.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Alessandro Zummo <a.zummo@towertech.it>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 May 2008 02:26:12 +0100 (BST)
+Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:57586 "EHLO
+	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20026888AbYETB0K (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 20 May 2008 02:26:10 +0100
+Received: from topsms.toshiba-tops.co.jp by topsns2.toshiba-tops.co.jp
+          via smtpd (for ftp.linux-mips.org [213.58.128.207]) with ESMTP; Tue, 20 May 2008 10:26:07 +0900
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id BDA9341E1D;
+	Tue, 20 May 2008 10:26:01 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id B06E81EF4E;
+	Tue, 20 May 2008 10:26:01 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id m4K1PxAF038628;
+	Tue, 20 May 2008 10:26:00 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Tue, 20 May 2008 10:25:59 +0900 (JST)
+Message-Id: <20080520.102559.25909127.nemoto@toshiba-tops.co.jp>
+To:	macro@linux-mips.org
+Cc:	a.zummo@towertech.it, khali@linux-fr.org,
 	rtc-linux@googlegroups.com, i2c@lm-sensors.org,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-	David Brownell <david-b@pacbell.net>
-Subject: Re: [PATCH 6/6] RTC: Trivially probe for an M41T80 (#2)
-Message-ID: <20080519223718.3c89aa40@hyperion.delvare>
-In-Reply-To: <Pine.LNX.4.55.0805131759580.7267@cliff.in.clinika.pl>
-References: <Pine.LNX.4.55.0805130303430.535@cliff.in.clinika.pl>
-	<20080513142829.2d737424@hyperion.delvare>
-	<Pine.LNX.4.55.0805131759580.7267@cliff.in.clinika.pl>
-X-Mailer: Claws Mail 3.4.0 (GTK+ 2.10.6; x86_64-suse-linux-gnu)
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH 5/6 #3] RTC: SMBus support for the M41T80, etc. driver
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <Pine.LNX.4.55.0805180447210.10067@cliff.in.clinika.pl>
+References: <Pine.LNX.4.55.0805180447210.10067@cliff.in.clinika.pl>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <khali@linux-fr.org>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19313
+X-archive-position: 19314
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: khali@linux-fr.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi Maciej,
-
-On Wed, 14 May 2008 02:13:34 +0100 (BST), Maciej W. Rozycki wrote:
-> > I don't like this. You are only supposed to declare in platform init
-> > structures, I2C devices that you are sure are present. Relying on the
-> > driver to not attach to the device if it is in fact not there sounds
-> > wrong, because the I2C device will still be declared, so it's
+On Sun, 18 May 2008 04:53:54 +0100 (BST), "Maciej W. Rozycki" <macro@linux-mips.org> wrote:
+>  The BCM1250A SOC which is used on the SWARM board utilising an M41T81
+> chip only supports pure I2C in the raw bit-banged mode.  Nobody sane
+> really wants to use it unless absolutely necessary and the M41T80, etc.  
+> chips work just fine with an SMBus adapter which is what the standard mode
+> of operation of the BCM1250A.  The only drawback of byte accesses with the
+> M41T80 is the chip only latches clock data registers for the duration of
+> an I2C transaction which works fine with a block transfers, but not
+> byte-wise accesses.
 > 
->  Well, the theory behind I2C addressing is no two devices should ever
-> share the same location.  Now that being a mere 7-bit field (at least with
-> standard devices) does not give too much of a chance for the lack of
-> duplication being universally true.  However within a given system it is
-> possible to arrange for no conflicts to be present and any given location
-> to be possibly associated with a single type of device only.
+>  The driver currently requires an I2C adapter providing both SMBus and raw
+> I2C access.  This is a set of changes to make it work with any SMBus
+> adapter providing at least read byte and write byte protocols.  
+> Additionally, if a given SMBus adapter supports I2C block read and/or
+> write protocols (a common extension beyond the SMBus spec), they are used
+> as well.  The problem of unlatched clock data if SMBus byte transactions
+> are used is resolved in the standard way.  For raw I2C controllers this
+> functionality is provided by the I2C core as SMBus emulation in a
+> transparent way.
 > 
->  The end result of an optional device being declared and later on found by
-> its driver not to be present should have no harm, should it?
+> Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
 
-As I wrote above: the I2C device will be listed as present forever. I
-believe it's pretty confusing to have a device listed
-under /sys/bus/i2c/devices which is in fact not present on the system.
-On top of that, in case of modular setups with proper coldplug support,
-the I2C device driver will be loaded automatically when the device is
-declared, but will not be removed automatically when the probe fails,
-so this is wasted memory.
+Tested-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-> > confusing. Also, you consider that a driver silently failing to attach
-> > is a feature, and in your specific case it may be, but for other users
-> > it will be an annoyance: in the general case you want errors to be
-> > clearly reported.
-> 
->  The question is whether it actually is an error or not.  Assuming the
-> configuration has been specified correctly, there are two cases possible
-> -- either the device is missing or the device is faulty.  If the latter,
-> an error should be reported.  If the former, it should or it should not.  
-> Depending on whether it is expected or not.  If for example the device is
-> meant to be there, but it has dropped off the PCB, then clearly it is an
-> error condition; if it is a manufacturing option that was not included in
-> this particular copy of the board, then it is expected and not a problem
-> at all (of course in this case it is indistinguishable from a dropped off
-> part).
-> 
->  Not reporting errors for devices believed to be missing altogether would 
-> be similar to what drivers for some other devices that do not report 
-> themselves with identifiers do.  This is for example the case with most 
-> ISA devices -- if pokes at I/O ports indicate the device is not there, the 
-> driver quits silently.  Some do report they probe though.  Please note I 
-> do not mean such a driver should quit with a success returned.
-
-The comparison with ISA devices does not hold: ISA devices are created
-by their own drivers (much like the legacy I2C device drivers.) Thus,
-when the probe fails, they can simply delete the device they created (or
-even better, they can delay the device creation until they are sure
-that the device is there.) New-style I2C device drivers do not create
-their devices, so they don't get a chance to delete them nor to delay
-their creation.
-
-> > If you are not sure that an I2C device will be present, then you should
-> > not declare it as part of the I2C board info, but register it later
-> > with i2c_new_probed_device(). If this isn't possible or not convenient,
-> > then I'd rather add a probing variant of i2c_register_board_info() (or
-> > maybe a new flag in i2c_board_info.flags) than hack all i2c drivers to
-> > silent failures when devices are missing.
-> 
->  Well, the SWARM can either have a ST M41T81 or a Xicor X1241 RTC.  It is
-> a manufacturing option and either of these will be present and no other
-> device will use the same address.  The presence of either is not recorded
-> anywhere, because you can query the hardware directly to see which one is
-> there -- there is no need to duplicate this information elsewhere, the
-> firmware supports both and I do not think it has any hardcoded notion of
-> what's on-board and what's not.  Note the M41T81 has a hardwired slave
-> address of 0x68 -- there are no additional address select pins.  
-> Similarly the RTC function of the X1241 only responds to 0x6f (and its
-> EEPROM to 0x57).
-> 
->  Then I am not sure how i2c_new_probed_device() could be used for a
-> baseboard device.  With an option card bearing an I2C adapter it can be
-> done at the time the card, including the adapter, is initialized.  With a
-> baseboard adapter it really begs to be in board initialization.  It cannot
-> be tied to i2c-sibyte.c, because it is a generic adapter driver -- the SOC
-> can be used in any configuration, not just the SWARM and friends.  
-> Perhaps it can be done with proper platform device initialization for the
-> SWARM, but I fear it will not happen shortly.  Hmm...
-
-It could certainly be implemented in terms of i2c_new_probed_device()
-in i2c-sibyte, if it was a proper platform driver with proper platform
-data. I admit it wouldn't be necessarily very elegant, in particular if
-we have more similar cases in the future. That could still do for now,
-though. Converting i2c-sibyte to a proper platform driver is needed
-anyway.
-
->  The idea to have a flag along the lines of I2C_CLIENT_OPTION marking 
-> the device may or may not be there in struct i2c_board_info seems 
-> reasonable, perhaps better for some cases than i2c_new_probed_device() 
-> even, as the lack of standardisation makes device-independent probes a bit 
-> dangerous as already noted in the function.  Here the device driver itself 
-> could perform probing in a known-safe way for the given device.
-
-The flag in struct i2c_board_info would trigger the exact same probing
-mechanism as i2c_new_probed_device() does. The whole point it to test
-for the presence of the device _before_ its driver is loaded. It you
-have to let the I2C device driver decide, then it's already too late:
-the I2C device is created and it won't go even if the probe fails.
-
-If said probing mechanism doesn't work properly for some devices, we'll
-improve it, but it has to stay in i2c-core.
-
-> (...)
->  Please note this change is not strictly required for the rest of the set
-> to operate correctly on with an M41T81-equipped board, so let's perhaps
-> pull this single patch out till we reach some consensus and proceed with
-> the rest independently.
-
-Agreed.
-
--- 
-Jean Delvare
+---
+Atsushi Nemoto

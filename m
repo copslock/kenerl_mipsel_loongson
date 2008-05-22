@@ -1,120 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 May 2008 17:04:48 +0100 (BST)
-Received: from kirk.serum.com.pl ([213.77.9.205]:6386 "EHLO serum.com.pl")
-	by ftp.linux-mips.org with ESMTP id S20029170AbYEVQEq (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 22 May 2008 17:04:46 +0100
-Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
-	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m4MG2nte014198;
-	Thu, 22 May 2008 18:02:49 +0200
-Received: from localhost (macro@localhost)
-	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m4MG2O3M014191;
-	Thu, 22 May 2008 17:02:32 +0100
-Date:	Thu, 22 May 2008 17:02:23 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Jean Delvare <khali@linux-fr.org>
-cc:	Alessandro Zummo <a.zummo@towertech.it>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	rtc-linux@googlegroups.com, i2c@lm-sensors.org,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-	David Brownell <david-b@pacbell.net>
-Subject: Re: [PATCH 6/6] RTC: Trivially probe for an M41T80 (#2)
-In-Reply-To: <20080522113258.3dff7eed@hyperion.delvare>
-Message-ID: <Pine.LNX.4.55.0805221627560.13339@cliff.in.clinika.pl>
-References: <Pine.LNX.4.55.0805130303430.535@cliff.in.clinika.pl>
- <20080513142829.2d737424@hyperion.delvare> <Pine.LNX.4.55.0805131759580.7267@cliff.in.clinika.pl>
- <20080519223718.3c89aa40@hyperion.delvare> <Pine.LNX.4.55.0805202057380.31790@cliff.in.clinika.pl>
- <20080522113258.3dff7eed@hyperion.delvare>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 May 2008 23:43:14 +0100 (BST)
+Received: from dns0.mips.com ([63.167.95.198]:56304 "EHLO dns0.mips.com")
+	by ftp.linux-mips.org with ESMTP id S20031652AbYEVWnM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 22 May 2008 23:43:12 +0100
+Received: from mercury.mips.com (mercury [192.168.64.101])
+	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id m4MMftMN016144
+	for <linux-mips@linux-mips.org>; Thu, 22 May 2008 15:41:56 -0700 (PDT)
+Received: from [192.168.236.12] (cthulhu [192.168.236.12])
+	by mercury.mips.com (8.13.5/8.13.5) with ESMTP id m4MMgblJ009887
+	for <linux-mips@linux-mips.org>; Thu, 22 May 2008 15:42:53 -0700 (PDT)
+Message-ID: <4835F6DD.4090409@mips.com>
+Date:	Fri, 23 May 2008 00:42:37 +0200
+From:	"Kevin D. Kissell" <kevink@mips.com>
+User-Agent: Thunderbird 2.0.0.12 (X11/20080226)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+To:	Linux MIPS Org <linux-mips@linux-mips.org>
+Subject: Still More MIPS 34K APRP Patches
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kevink@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19338
+X-archive-position: 19339
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: kevink@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Jean,
+This message will be followed by a couple more patches
+to the APRP support for the 34K.  The first fixes a few
+bugs (minor memory leak, some ELF loader failure cases)
+and reorganizes functions so as to allow for more than
+just the RTLX service for run-time support. This assumes
+that the 0001-Rewrite-of-APRP-VPE-ELF-Loader.patch patch
+that I sent out on May 3 has already been applied.
 
-> Whether the unneeded module can be removed or not, is a side problem
-> (which I didn't even have in mind at first, thanks for pointing it
-> out.) The main problem is that, even if you can remove the module, the
-> device you declared is still visible, even though it's not on the
-> system - and that's confusing.
+The second patch adds a new driver to drivers/net,
+along with some platform support in
+arch/mips/mips-boards/generic.  I call this a M3P
+(pronounced "mehp") driver, for MIPS Memeory Message
+Passing.  It creates a ethernet-compatible networking
+interface between Linux and the RP.  With a little more
+work, it could also be used for message passing between
+Linux and other OSes in a software-heterogeneous SMP
+environment.  Dropping it into drivers/net will make
+it harder to propagate, but the more narrowly specialized
+mipsnet driver is already there, and in principle the
+driver module could have the remaining MIPSisms filed
+off and become useful in heterogeneous multiprocessors.
 
- No need to repeat this -- it was a side note of mine already and I agreed 
-with you about the visibility of a phantom device.
+	Regards,
 
-> What you describe here doesn't fit in the platform device declaration
-> model. The platform code is supposed to know what hardware is present,
-> with all the required configuration details. Not being certain that a
-> given device is there or not, as was the case for your RTC chip, is
-> already a variation from the standard theme. Being uncertain what chip
-> is at a given address would be completely off-track IMHO. That would be
-> much like the PC SMBus' realm where the hardware monitoring chips are
-> probed automatically, i.e. we do not follow the device driver model at
-> all. These are the legacy i2c device drivers we are trying to get rid
-> of at the moment, even though the plan on how to do this is still vague.
-
- Too bad for the reality it does not agree then?  While you might desire
-system designers record the configuration somewhere in some software
-accessible way (unless it is entirely fixed), as you can see with the
-SWARM, it may not necessarily be the case and you may have to ask the
-hardware directly.
-
-> >  That sounds like a limitation, although perhaps there is not enough
-> > justification to lift it.  I can certainly imagine a flag telling the
-> > driver: "Please check if this device is there for me [=the core] as the
-> > complication behind that is beyond my capabilities."
-> 
-> Again this would not fit well within the device driver model, as you
-> would have to load the driver before you know if you really need it.
-> I agree that we might have to resort to this in some cases (I have
-> hwmon drivers in mind as I write this.) However, my original idea was
-> rather to have a single module dedicated to identification of a given
-> type of I2C devices (say hwmon), that would act as an helper for
-> i2c-core, letting it instantiate the right I2C devices (in turn
-> triggering the loading of the appropriate device drivers.)
-
- By all means it sounds reasonable and desirable, but I do not think this
-an excuse for saying: "Let's not support this board, system, etc. because
-the designers did not follow our way of thinking." -- I think if a piece
-of hardware does not fit our model, then we should either adjust the model
-or come up with a solution which makes the device work with as little
-negative impact to the model as possible.
-
- Fortunately, as I mentioned previously, we can escape the dilemma for the 
-SWARM for now.  I should come up with updated patches tonight.
-
-> An alternative would be to delegate the identification task to a
-> user-space helper. This would however require that new-style I2C
-> devices can be created and removed from user-space, which isn't the
-> case yet.
-
- That might make sense, although in the case of a RTC chip we have some 
-desire to use it before userland is run.
-
-> Anyway, I don't expect embedded platforms to need this. That's more
-> likely to be needed only by hwmon drivers on the PC, and possibly some
-> old v4l drivers.
-
- Hmm, an ATX-form board like the SWARM, with SDRAM and PCI slots, IDE,
-Gigabit Ethernet, USB and sound ports onboard, and keyboard and VGA
-support in the firmware can hardly be called embedded. ;-)  It even comes
-in a desktop enclosure with drive bays, etc.  It makes quite a nice PC
-based on a decent processor architecture. :-)  The only difference making
-it a bit more embedded is most of the functionality is implemented in the
-SOC leaving off-chip features mainly to a bunch of I2C peripherals and
-then boring stuff like line drivers and passive components. ;-)
-
- I agree for truly embedded systems it should not matter as I would expect
-them to come in a fixed configuration.
-
-  Maciej
+	Kevin K.

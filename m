@@ -1,85 +1,148 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 May 2008 19:58:41 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:12715 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20036180AbYEUS6j (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 21 May 2008 19:58:39 +0100
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 89BE331A33E;
-	Wed, 21 May 2008 18:58:37 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Wed, 21 May 2008 18:58:35 +0000 (UTC)
-Received: from silver64.hq2.avtrex.com ([192.168.7.19]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 21 May 2008 11:58:12 -0700
-Message-ID: <48346C45.1050608@avtrex.com>
-Date:	Wed, 21 May 2008 11:39:01 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 2.0.0.14 (X11/20080501)
-MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Cc:	linux-kernel@vger.kernel.org
-Subject: [PATCH] mips: Remove board_watchpoint_handler.
-Content-Type: text/plain; charset=ISO-8859-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 May 2008 10:33:21 +0100 (BST)
+Received: from zone0.gcu-squad.org ([212.85.147.21]:46618 "EHLO
+	services.gcu-squad.org") by ftp.linux-mips.org with ESMTP
+	id S20029484AbYEVJdR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 22 May 2008 10:33:17 +0100
+Received: from jdelvare.pck.nerim.net ([62.212.121.182] helo=hyperion.delvare)
+	by services.gcu-squad.org (GCU Mailer Daemon) with esmtpsa id 1Jz87D-0007Zb-BS
+	(TLSv1:AES256-SHA:256)
+	(envelope-from <khali@linux-fr.org>)
+	; Thu, 22 May 2008 12:33:43 +0200
+Date:	Thu, 22 May 2008 11:32:58 +0200
+From:	Jean Delvare <khali@linux-fr.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Alessandro Zummo <a.zummo@towertech.it>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	rtc-linux@googlegroups.com, i2c@lm-sensors.org,
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+	David Brownell <david-b@pacbell.net>
+Subject: Re: [PATCH 6/6] RTC: Trivially probe for an M41T80 (#2)
+Message-ID: <20080522113258.3dff7eed@hyperion.delvare>
+In-Reply-To: <Pine.LNX.4.55.0805202057380.31790@cliff.in.clinika.pl>
+References: <Pine.LNX.4.55.0805130303430.535@cliff.in.clinika.pl>
+	<20080513142829.2d737424@hyperion.delvare>
+	<Pine.LNX.4.55.0805131759580.7267@cliff.in.clinika.pl>
+	<20080519223718.3c89aa40@hyperion.delvare>
+	<Pine.LNX.4.55.0805202057380.31790@cliff.in.clinika.pl>
+X-Mailer: Claws Mail 3.4.0 (GTK+ 2.10.6; x86_64-suse-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 21 May 2008 18:58:12.0106 (UTC) FILETIME=[9DF9E6A0:01C8BB74]
-Return-Path: <ddaney@avtrex.com>
+Return-Path: <khali@linux-fr.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19335
+X-archive-position: 19336
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: khali@linux-fr.org
 Precedence: bulk
 X-list: linux-mips
 
-mips: Remove board_watchpoint_handler.
+Hi Maciej,
 
-It is not used anywhere in tree.
+On Tue, 20 May 2008 21:26:42 +0100 (BST), Maciej W. Rozycki wrote:
+> > As I wrote above: the I2C device will be listed as present forever. I
+> > believe it's pretty confusing to have a device listed
+> > under /sys/bus/i2c/devices which is in fact not present on the system.
+> 
+>  It somehow escaped me a sysfs entry would be present even before the 
+> driver for this device has been loaded.  You are right, of course.
+> 
+> > On top of that, in case of modular setups with proper coldplug support,
+> > the I2C device driver will be loaded automatically when the device is
+> > declared, but will not be removed automatically when the probe fails,
+> > so this is wasted memory.
+> 
+>  We used to support module unloading unconditionally -- I keep forgetting
+> this was lifted at one point.  Personally I do not think removing the
+> requirement for modules to support unloading was a good decision and here
+> is a good example where it hurts, but obviously we have to live with
+> whatever consequences of that decision we have.
 
-Signed-off-by: David Daney <ddaney@avtrex.com>
----
- arch/mips/kernel/traps.c |    6 ------
- include/asm-mips/traps.h |    1 -
- 2 files changed, 0 insertions(+), 7 deletions(-)
+Whether the unneeded module can be removed or not, is a side problem
+(which I didn't even have in mind at first, thanks for pointing it
+out.) The main problem is that, even if you can remove the module, the
+device you declared is still visible, even though it's not on the
+system - and that's confusing.
 
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index f9165d1..6e7e4a2 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -71,7 +71,6 @@ extern asmlinkage void handle_reserved(void);
- extern int fpu_emulator_cop1Handler(struct pt_regs *xcp,
- 	struct mips_fpu_struct *ctx, int has_fpu);
- 
--void (*board_watchpoint_handler)(struct pt_regs *regs);
- void (*board_be_init)(void);
- int (*board_be_handler)(struct pt_regs *regs, int is_fixup);
- void (*board_nmi_handler_setup)(void);
-@@ -892,11 +891,6 @@ asmlinkage void do_mdmx(struct pt_regs *regs)
- 
- asmlinkage void do_watch(struct pt_regs *regs)
- {
--	if (board_watchpoint_handler) {
--		(*board_watchpoint_handler)(regs);
--		return;
--	}
--
- 	/*
- 	 * We use the watch exception where available to detect stack
- 	 * overflows.
-diff --git a/include/asm-mips/traps.h b/include/asm-mips/traps.h
-index e5dbde6..90ff2f4 100644
---- a/include/asm-mips/traps.h
-+++ b/include/asm-mips/traps.h
-@@ -24,6 +24,5 @@ extern int (*board_be_handler)(struct pt_regs *regs, int is_fixup);
- extern void (*board_nmi_handler_setup)(void);
- extern void (*board_ejtag_handler_setup)(void);
- extern void (*board_bind_eic_interrupt)(int irq, int regset);
--extern void (*board_watchpoint_handler)(struct pt_regs *regs);
- 
- #endif /* _ASM_TRAPS_H */
+> > The comparison with ISA devices does not hold: ISA devices are created
+> > by their own drivers (much like the legacy I2C device drivers.) Thus,
+> > when the probe fails, they can simply delete the device they created (or
+> > even better, they can delay the device creation until they are sure
+> > that the device is there.) New-style I2C device drivers do not create
+> > their devices, so they don't get a chance to delete them nor to delay
+> > their creation.
+> 
+>  Sometimes you may have to use a device-specific probe sequence and this
+> is where my comparison is right.  You cannot always escape with random
+> poking at the device done by the core.  For example some devices have
+> additional manufacturer/device ID registers -- only the respective drivers
+> will know which ones are acceptable.  Others may get badly hurt -- not
+> necessarily broken, but for example reconfigured undesirably -- as a
+> results of blind accesses.
+
+What you describe here doesn't fit in the platform device declaration
+model. The platform code is supposed to know what hardware is present,
+with all the required configuration details. Not being certain that a
+given device is there or not, as was the case for your RTC chip, is
+already a variation from the standard theme. Being uncertain what chip
+is at a given address would be completely off-track IMHO. That would be
+much like the PC SMBus' realm where the hardware monitoring chips are
+probed automatically, i.e. we do not follow the device driver model at
+all. These are the legacy i2c device drivers we are trying to get rid
+of at the moment, even though the plan on how to do this is still vague.
+
+>  Although I agree a generic probe would work with both RTC chips under
+> question here.
+> 
+> > It could certainly be implemented in terms of i2c_new_probed_device()
+> > in i2c-sibyte, if it was a proper platform driver with proper platform
+> > data. I admit it wouldn't be necessarily very elegant, in particular if
+> > we have more similar cases in the future. That could still do for now,
+> > though. Converting i2c-sibyte to a proper platform driver is needed
+> > anyway.
+> 
+>  No question about the conversion -- it's just unlikely to happen soon.
+> 
+> > The flag in struct i2c_board_info would trigger the exact same probing
+> > mechanism as i2c_new_probed_device() does. The whole point it to test
+> > for the presence of the device _before_ its driver is loaded. It you
+> > have to let the I2C device driver decide, then it's already too late:
+> > the I2C device is created and it won't go even if the probe fails.
+> 
+>  That sounds like a limitation, although perhaps there is not enough
+> justification to lift it.  I can certainly imagine a flag telling the
+> driver: "Please check if this device is there for me [=the core] as the
+> complication behind that is beyond my capabilities."
+
+Again this would not fit well within the device driver model, as you
+would have to load the driver before you know if you really need it.
+I agree that we might have to resort to this in some cases (I have
+hwmon drivers in mind as I write this.) However, my original idea was
+rather to have a single module dedicated to identification of a given
+type of I2C devices (say hwmon), that would act as an helper for
+i2c-core, letting it instantiate the right I2C devices (in turn
+triggering the loading of the appropriate device drivers.)
+
+An alternative would be to delegate the identification task to a
+user-space helper. This would however require that new-style I2C
+devices can be created and removed from user-space, which isn't the
+case yet.
+
+Anyway, I don't expect embedded platforms to need this. That's more
+likely to be needed only by hwmon drivers on the PC, and possibly some
+old v4l drivers.
+
+> > If said probing mechanism doesn't work properly for some devices, we'll
+> > improve it, but it has to stay in i2c-core.
+> 
+>  No doubt as it is good enough for many devices.
+
 -- 
-1.5.4.5
+Jean Delvare

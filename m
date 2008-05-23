@@ -1,79 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 May 2008 01:09:04 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:18413 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20032119AbYEWAJB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 23 May 2008 01:09:01 +0100
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id D0E3131AAEB;
-	Fri, 23 May 2008 00:09:07 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Fri, 23 May 2008 00:09:07 +0000 (UTC)
-Received: from dl2.hq2.avtrex.com ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Thu, 22 May 2008 17:08:47 -0700
-Message-ID: <48360B0E.9050009@avtrex.com>
-Date:	Thu, 22 May 2008 17:08:46 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 2.0.0.12 (X11/20080226)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 May 2008 03:36:36 +0100 (BST)
+Received: from vigor.karmaclothing.net ([217.169.26.28]:8089 "EHLO
+	vigor.karmaclothing.net.") by ftp.linux-mips.org with ESMTP
+	id S20032933AbYEWCgd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 23 May 2008 03:36:33 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by vigor.karmaclothing.net. (8.14.1/8.14.1) with ESMTP id m4N2aQZE025028;
+	Fri, 23 May 2008 03:36:28 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m4N2aNmM025009;
+	Fri, 23 May 2008 03:36:23 +0100
+Date:	Fri, 23 May 2008 03:36:23 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Kevin D. Kissell" <kevink@mips.com>
+Cc:	Linux MIPS Org <linux-mips@linux-mips.org>
+Subject: Re: Patch to add M3Pnet Driver
+Message-ID: <20080523023623.GA17651@linux-mips.org>
+References: <4835F799.6070302@mips.com>
 MIME-Version: 1.0
-To:	akpm@linux-foundation.org
-Cc:	mm-commits@vger.kernel.org,
-	MIPS Linux List <linux-mips@linux-mips.org>
-Subject: Re: + mips-remove-board_watchpoint_handler.patch added to -mm tree
-References: <200805222351.m4MNp62P027891@imap1.linux-foundation.org>
-In-Reply-To: <200805222351.m4MNp62P027891@imap1.linux-foundation.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 23 May 2008 00:08:47.0595 (UTC) FILETIME=[2C019BB0:01C8BC69]
-Return-Path: <ddaney@avtrex.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4835F799.6070302@mips.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19342
+X-archive-position: 19343
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-akpm@linux-foundation.org wrote:
-> The patch titled
->      mips: remove board_watchpoint_handler
-> has been added to the -mm tree.  Its filename is
->      mips-remove-board_watchpoint_handler.patch
+On Fri, May 23, 2008 at 12:45:45AM +0200, Kevin D. Kissell wrote:
+> From: "Kevin D. Kissell" <kevink@mips.com>
+> Date: Fri, 23 May 2008 00:45:45 +0200
+> To: Linux MIPS Org <linux-mips@linux-mips.org>
+> Subject: Patch to add M3Pnet Driver
+> Content-Type: multipart/mixed;
+> 	boundary="------------050707080700070300010401"
 > 
-[...]
-> 
-> See http://www.zip.com.au/~akpm/linux/patches/stuff/added-to-mm.txt to find
-> out what to do about this
-> 
+> As per previous messages, here's 2 of 2
 
-Thanks Andrew,
+This is largely a network driver patch with minor arch bits thrown in so
+this one will have to go via jeff@garzik.org and netdev@vger.kernel.org.
+The MIPS bits are looking good though so feel free to add my
 
-The original patch e-mail went to linux-mips@linux-mips.org, so I was 
-hoping that Ralf would queue it up.  I will defer to you all to decide 
-the proper disposition of the patch.
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-David Daney
+line for them.
 
-
-> The current -mm tree may be found at http://userweb.kernel.org/~akpm/mmotm/
-> 
-> ------------------------------------------------------
-> Subject: mips: remove board_watchpoint_handler
-> From: David Daney <ddaney@avtrex.com>
-> 
-> It is not used anywhere in tree.
-> 
-> Signed-off-by: David Daney <ddaney@avtrex.com>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
-> 
->  arch/mips/kernel/traps.c |    6 ------
->  include/asm-mips/traps.h |    1 -
->  2 files changed, 7 deletions(-)
-> 
-[...]
+  Ralf

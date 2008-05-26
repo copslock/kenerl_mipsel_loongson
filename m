@@ -1,69 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 May 2008 23:43:51 +0100 (BST)
-Received: from vigor.karmaclothing.net ([217.169.26.28]:20353 "EHLO
-	vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
-	id S28578045AbYEZWnt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 26 May 2008 23:43:49 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m4QMhkno031008;
-	Mon, 26 May 2008 23:43:46 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m4QMhgDs030956;
-	Mon, 26 May 2008 23:43:42 +0100
-Date:	Mon, 26 May 2008 23:43:42 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Adrian Bunk <adrian.bunk@movial.fi>
-Cc:	Chris Dearman <chris@mips.com>,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [2.6 patch] MIPS SEAD compile fix
-Message-ID: <20080526224342.GA28360@linux-mips.org>
-References: <20080525180316.GF1791@cs181133002.pp.htv.fi>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080525180316.GF1791@cs181133002.pp.htv.fi>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 May 2008 00:15:19 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:3245 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S28578180AbYEZXPR (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 27 May 2008 00:15:17 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1K0luO-0001Xr-01; Tue, 27 May 2008 01:15:16 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 66C20FA1C3; Tue, 27 May 2008 01:15:20 +0200 (CEST)
+From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH] Add RM200 with R5000 CPU to known ARC machines
+To:	linux-mips@linux-mips.org
+cc:	ralf@linux-mips.org
+Message-Id: <20080526231520.66C20FA1C3@solo.franken.de>
+Date:	Tue, 27 May 2008 01:15:20 +0200 (CEST)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19355
+X-archive-position: 19356
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, May 25, 2008 at 09:03:16PM +0300, Adrian Bunk wrote:
+RM200 with R5ks have a little bit different arcname
 
-> This patch fixes the following compile error caused by
-> commit 39b8d5254246ac56342b72f812255c8f7a74dca9
-> ([MIPS] Add support for MIPS CMP platform.):
-> 
-> <--  snip  -->
-> 
-> ...
->   CC      arch/mips/mips-boards/generic/time.o
-> cc1: warnings being treated as errors
-> /home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/mips-boards/generic/time.c:63: error: 'ledbitmask' defined but not used
-> make[2]: *** [arch/mips/mips-boards/generic/time.o] Error 1
-> 
-> <--  snip  -->
-> 
-> Signed-off-by: Adrian Bunk <adrian.bunk@movial.fi>
-> 
-> ---
-> a6622e47dd128da338d6dbae457ec1b043604814 diff --git a/arch/mips/mips-boards/generic/time.c b/arch/mips/mips-boards/generic/time.c
-> index 008fd82..df23558 100644
-> --- a/arch/mips/mips-boards/generic/time.c
-> +++ b/arch/mips/mips-boards/generic/time.c
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+---
 
-[...]
+ arch/mips/fw/arc/identify.c |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
 
-> +#if defined(CONFIG_MIPS_MALTA) || defined(CONFIG_MIPS_ATLAS)
-
-Generic code thanks to #ifdef ;-)  Not really the way to go.  I just blew
-away the original offending change.
-
-  Ralf
+diff --git a/arch/mips/fw/arc/identify.c b/arch/mips/fw/arc/identify.c
+index 28dfd2e..2306698 100644
+--- a/arch/mips/fw/arc/identify.c
++++ b/arch/mips/fw/arc/identify.c
+@@ -67,6 +67,11 @@ static struct smatch mach_table[] = {
+ 		.liname		= "SNI RM200_PCI",
+ 		.type		= MACH_SNI_RM200_PCI,
+ 		.flags		= PROM_FLAG_DONT_FREE_TEMP,
++	}, {
++		.arcname	= "RM200PCI-R5K",
++		.liname		= "SNI RM200_PCI-R5K",
++		.type		= MACH_SNI_RM200_PCI,
++		.flags		= PROM_FLAG_DONT_FREE_TEMP,
+ 	}
+ };
+ 

@@ -1,78 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 May 2008 08:04:40 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:37297 "HELO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with SMTP
-	id S20024304AbYE0HEi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 27 May 2008 08:04:38 +0100
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id B1068319FFC
-	for <linux-mips@linux-mips.org>; Tue, 27 May 2008 07:04:28 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP
-	for <linux-mips@linux-mips.org>; Tue, 27 May 2008 07:04:28 +0000 (UTC)
-Received: from silver64.hq2.avtrex.com ([192.168.7.227]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 27 May 2008 00:04:22 -0700
-Message-ID: <483BB274.10901@avtrex.com>
-Date:	Tue, 27 May 2008 00:04:20 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 2.0.0.14 (X11/20080501)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 May 2008 09:52:41 +0100 (BST)
+Received: from mx03.syneticon.net ([87.79.32.166]:27919 "HELO
+	mx03.syneticon.net") by ftp.linux-mips.org with SMTP
+	id S20023342AbYE0Iwj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 27 May 2008 09:52:39 +0100
+Received: from localhost (filter1.syneticon.net [192.168.113.3])
+	by mx03.syneticon.net (Postfix) with ESMTP id 96C2D95A1;
+	Tue, 27 May 2008 10:52:38 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at mx03.syneticon.net
+Received: from mx03.syneticon.net ([192.168.113.4])
+	by localhost (mx03.syneticon.net [192.168.113.3]) (amavisd-new, port 10025)
+	with ESMTP id Cdh+07daZE9E; Tue, 27 May 2008 10:52:33 +0200 (CEST)
+Received: from [192.168.10.145] (koln-4d0b6fdf.pool.mediaWays.net [77.11.111.223])
+	by mx03.syneticon.net (Postfix) with ESMTP;
+	Tue, 27 May 2008 10:52:33 +0200 (CEST)
+Message-ID: <483BCB75.4050901@wpkg.org>
+Date:	Tue, 27 May 2008 10:51:01 +0200
+From:	Tomasz Chmielewski <mangoo@wpkg.org>
+User-Agent: Thunderbird 2.0.0.12 (X11/20080305)
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: [PATCH] [MIPS] Fix asm constraints for 'ins' instructions.
-Content-Type: text/plain; charset=ISO-8859-1
+To:	Kexec Mailing List <kexec@lists.infradead.org>,
+	linux-mips@linux-mips.org
+Subject: kexec on mips - anyone has it working?
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 27 May 2008 07:04:22.0547 (UTC) FILETIME=[E40C5630:01C8BFC7]
-Return-Path: <ddaney@avtrex.com>
+Return-Path: <mangoo@wpkg.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19358
+X-archive-position: 19359
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: mangoo@wpkg.org
 Precedence: bulk
 X-list: linux-mips
 
+I'm trying to use kexec on a ASUS WL-500gP router (BCM47XX, little 
+endian MIPS) with a 2.6.25.4 kernel with some additional changes from 
+OpenWRT.
 
-The third operand to 'ins' must be a constant int, not a register.
+Unfortunately, it doesn't work for me - when I load a new kernel and try 
+to execute it, it just says "Bye" and the router is dead:
 
-Signed-off-by: David Daney <ddaney@avtrex.com>
----
- include/asm-mips/bitops.h |    6 +++---
- 1 files changed, 3 insertions(+), 3 deletions(-)
+# kexec -l vmlinux
+# kexec -e
+(...)
+Bye
 
-diff --git a/include/asm-mips/bitops.h b/include/asm-mips/bitops.h
-index 6427247..9a7274b 100644
---- a/include/asm-mips/bitops.h
-+++ b/include/asm-mips/bitops.h
-@@ -82,7 +82,7 @@ static inline void set_bit(unsigned long nr, volatile unsigned long *addr)
- 		"2:	b	1b					\n"
- 		"	.previous					\n"
- 		: "=&r" (temp), "=m" (*m)
--		: "ir" (bit), "m" (*m), "r" (~0));
-+		: "i" (bit), "m" (*m), "r" (~0));
- #endif /* CONFIG_CPU_MIPSR2 */
- 	} else if (cpu_has_llsc) {
- 		__asm__ __volatile__(
-@@ -147,7 +147,7 @@ static inline void clear_bit(unsigned long nr, volatile unsigned long *addr)
- 		"2:	b	1b					\n"
- 		"	.previous					\n"
- 		: "=&r" (temp), "=m" (*m)
--		: "ir" (bit), "m" (*m));
-+		: "i" (bit), "m" (*m));
- #endif /* CONFIG_CPU_MIPSR2 */
- 	} else if (cpu_has_llsc) {
- 		__asm__ __volatile__(
-@@ -428,7 +428,7 @@ static inline int test_and_clear_bit(unsigned long nr,
- 		"2:	b	1b					\n"
- 		"	.previous					\n"
- 		: "=&r" (temp), "=m" (*m), "=&r" (res)
--		: "ri" (bit), "m" (*m)
-+		: "i" (bit), "m" (*m)
- 		: "memory");
- #endif
- 	} else if (cpu_has_llsc) {
+
+I signalled the issue before in the past, with a 2.6.23.1 kernel:
+
+http://lists.infradead.org/pipermail/kexec/2008-February/001315.html
+
+
+Ideas? Ways to debug it?
+
+
+
 -- 
-1.5.4.5
+Tomasz Chmielewski
+http://wpkg.org

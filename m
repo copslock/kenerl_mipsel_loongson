@@ -1,69 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 May 2008 00:32:07 +0100 (BST)
-Received: from koto.vergenet.net ([210.128.90.7]:7103 "HELO koto.vergenet.net")
-	by ftp.linux-mips.org with SMTP id S20044359AbYE0XcF (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 28 May 2008 00:32:05 +0100
-Received: from yukiko.shinjuku.tokyo.vergenet.net (unknown [202.128.119.22])
-	by koto.vergenet.net (Postfix) with ESMTP id 083C83406E;
-	Wed, 28 May 2008 08:31:53 +0900 (JST)
-Received: by yukiko.shinjuku.tokyo.vergenet.net (Postfix, from userid 7100)
-	id F0C0FC22C2; Wed, 28 May 2008 09:31:49 +1000 (EST)
-Date:	Wed, 28 May 2008 09:31:49 +1000
-From:	Simon Horman <horms@verge.net.au>
-To:	Tomasz Chmielewski <mangoo@wpkg.org>
-Cc:	Nicolas Schichan <nschichan@freebox.fr>, linux-mips@linux-mips.org,
-	Kexec Mailing List <kexec@lists.infradead.org>
-Subject: Re: kexec on mips - anyone has it working?
-Message-ID: <20080527233148.GB6752@verge.net.au>
-References: <483BCB75.4050901@wpkg.org> <200805271405.55346.nschichan@freebox.fr> <483C0135.9070203@wpkg.org> <200805271449.45124.nschichan@freebox.fr> <483C4F73.4040909@wpkg.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 May 2008 04:15:18 +0100 (BST)
+Received: from rv-out-0708.google.com ([209.85.198.247]:63384 "EHLO
+	rv-out-0708.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021393AbYE1DPQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 28 May 2008 04:15:16 +0100
+Received: by rv-out-0708.google.com with SMTP id c5so2557904rvf.24
+        for <linux-mips@linux-mips.org>; Tue, 27 May 2008 20:15:13 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        bh=1lI4LCLH1URYbLYIUnQp9sz1tkLWcby+diGqZhCJ06Y=;
+        b=G+vWWCCnYT0RQ81/+C2+3YbFt9ltM4S+jukReSZZxSuSXGnhSckSeLf/NaKSifbMcfaEl0/4nkVYkdZBv0ak78p6qzEbMMbJabReCcG/cyKQOFTphaHMh0L8FV/ymvfJubdOdia/eATaV5AwbDzeyhSVh6UJ/WUmgWwlhZrNcTo=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:cc:in-reply-to:mime-version:content-type:content-transfer-encoding:content-disposition:references;
+        b=A7JQGKtwm+W76pT9vg4U2Zwov8cqI3HABWAo/X4Ph79DZBzhZEo6pYYIHun2rOpxFdwwSwKs0eah9BEc3+6SNAGgABsjgxwQVGIdLYBDpKotxNoOmMAAZ0a+WN6dhb8JDAR0aUeeiDOBrj8jmlru4mF9l1lTfvd/lFZ9+erpp+0=
+Received: by 10.142.87.7 with SMTP id k7mr818068wfb.167.1211944513237;
+        Tue, 27 May 2008 20:15:13 -0700 (PDT)
+Received: by 10.143.42.1 with HTTP; Tue, 27 May 2008 20:15:12 -0700 (PDT)
+Message-ID: <dcf6addc0805272015w1f60457bic919ee3acc79d0fb@mail.gmail.com>
+Date:	Wed, 28 May 2008 11:15:12 +0800
+From:	"Jun Ma" <sync.jma@gmail.com>
+To:	"Manuel Lauss" <mano@roarinelk.homelinux.net>
+Subject: Re: MIPS kernel hangs: Warning: unable to open an initial console. /sbin/init
+Cc:	abhiruchi.g@vaultinfo.com, linux-kernel@vger.kernel.org,
+	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+	kernel-testers <kernel-testers@vger.kernel.org>
+In-Reply-To: <20080515133855.GA20300@roarinelk.homelinux.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <483C4F73.4040909@wpkg.org>
-User-Agent: Mutt/1.5.17+20080114 (2008-01-14)
-Return-Path: <horms@verge.net.au>
+References: <55815.192.168.1.71.1210856139.webmail@192.168.1.71>
+	 <20080515133855.GA20300@roarinelk.homelinux.net>
+Return-Path: <sync.jma@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19365
+X-archive-position: 19366
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: horms@verge.net.au
+X-original-sender: sync.jma@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, May 27, 2008 at 08:14:11PM +0200, Tomasz Chmielewski wrote:
-> Nicolas Schichan schrieb:
-> > On Tuesday 27 May 2008 14:40:21 you wrote:
-> >>> Could you try to add the following line in machine_kexec.c, just before
-> >>> jumping to the trampoline:
-> >>>
-> >>>        change_c0_config(CONF_CM_CMASK, CONF_CM_UNCACHED);
-> >> And machine_kexec.c file is in where? It's not in the above one, it's
-> >> not in kexec-tools-testing-20080324?
-> > 
-> > 
-> > machine_kexec.c is in the kernel not in the kexec userland tools.
-> 
-> Aah, I see.
-> 
-> Anyway, it doesn't work - with or without this slight change in 
-> machine_kexec.c, with kexec compiled from the sources in the link you 
-> gave or with kexec-tools-testing-20080324, it just doesn't work on 
-> BCM43XX with OpenWRT patches. At least on Asus WL-500gP.
+On Thu, May 15, 2008 at 9:38 PM, Manuel Lauss
+<mano@roarinelk.homelinux.net> wrote:
+> On Thu, May 15, 2008 at 08:55:39AM -0400, abhiruchi.g@vaultinfo.com wrote:
+>> Hi,
+>>
+>> My kernel hangs by initializing the system. My target is Alchemy DB1200. I use crosstool-ng to build MIPS cross toolchain and ptxdist to build ext2 filesystem.
+>> kernel version:linux-2.6.22
+>
+> Try and add "console=ttyS0,115200" to the kernel commandline (either in
+> yamon or kernel config).
+>
+>
 
-Hi,
+And you must have a tty node in your /dev directory, e.g. /dev/ttyS0
 
-MIPS support was merged into kexec-tools-testing-20080324.
-However, as far as I could tell it only supports one of the
-many boot protocols that are used by various MIPS machines.
-
-If things aren't working for a particular peice of hardware, I would
-start by looking into what boot protocol the kernel uses on that
-machine, and making sure that kexec-tools understands it.
-
-As always if there are any patches for MIPS for kexec-tools, please send
-them to me and this list.
 
 -- 
-Horms
+FIXME if it is wrong.

@@ -1,79 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2008 05:16:13 +0100 (BST)
-Received: from p549F7A8A.dip.t-dialin.net ([84.159.122.138]:38042 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2008 12:34:45 +0100 (BST)
+Received: from p549F7A8A.dip.t-dialin.net ([84.159.122.138]:49287 "EHLO
 	p549F7A8A.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
-	id S20022020AbYE3EQL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 30 May 2008 05:16:11 +0100
-Received: from [202.230.225.126] ([202.230.225.126]:64102 "EHLO
-	topsns2.toshiba-tops.co.jp") by lappi.linux-mips.net with ESMTP
-	id S1099251AbYE3EIF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 30 May 2008 06:08:05 +0200
-Received: from no.name.available by topsns2.toshiba-tops.co.jp
-          via smtpd (for p549F7A8A.dip.t-dialin.net [84.159.122.138]) with ESMTP; Fri, 30 May 2008 13:07:59 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 058F142B6C;
-	Fri, 30 May 2008 13:07:25 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id E59DA42B38;
-	Fri, 30 May 2008 13:07:24 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id m4U47MZf023516;
-	Fri, 30 May 2008 13:07:22 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Fri, 30 May 2008 13:07:21 +0900 (JST)
-Message-Id: <20080530.130721.41629284.nemoto@toshiba-tops.co.jp>
-To:	yoichi_yuasa@tripeaks.co.jp
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH][MIPS] fix divide by zero error in build_clear_page and
- build_copy_page
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20080507233815.e6de28da.yoichi_yuasa@tripeaks.co.jp>
-References: <20080507233815.e6de28da.yoichi_yuasa@tripeaks.co.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+	id S20022444AbYE3Lel (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 30 May 2008 12:34:41 +0100
+Received: from smtp4-g19.free.fr ([212.27.42.30]:6851 "EHLO smtp4-g19.free.fr")
+	by lappi.linux-mips.net with ESMTP id S1109564AbYE3L1O (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 30 May 2008 13:27:14 +0200
+Received: from smtp4-g19.free.fr (localhost.localdomain [127.0.0.1])
+	by smtp4-g19.free.fr (Postfix) with ESMTP id 7364A3EA0C5
+	for <linux-mips@linux-mips.org>; Fri, 30 May 2008 13:27:13 +0200 (CEST)
+Received: from bobafett.staff.proxad.net (bobafett.staff.proxad.net [213.228.1.121])
+	by smtp4-g19.free.fr (Postfix) with ESMTP id 679433EA0D8
+	for <linux-mips@linux-mips.org>; Fri, 30 May 2008 13:27:13 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by bobafett.staff.proxad.net (Postfix) with ESMTP id 118D62AE6D;
+	Fri, 30 May 2008 13:27:13 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at staff.proxad.net
+Received: from bobafett.staff.proxad.net ([127.0.0.1])
+	by localhost (bobafett.staff.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id qn1a-cLltw1u; Fri, 30 May 2008 13:27:12 +0200 (CEST)
+Received: from nschichan.priv.staff.proxad.net (nschichan.priv.staff.proxad.net [172.18.3.120])
+	by bobafett.staff.proxad.net (Postfix) with ESMTP id 25C921CC6C;
+	Fri, 30 May 2008 13:27:12 +0200 (CEST)
+From:	Nicolas Schichan <nschichan@freebox.fr>
+Organization: Freebox
+To:	Tomasz Chmielewski <mangoo@wpkg.org>
+Subject: Re: kexec on mips - anyone has it working?
+Date:	Fri, 30 May 2008 13:27:11 +0200
+User-Agent: KMail/1.9.6 (enterprise 0.20070907.709405)
+Cc:	linux-mips@linux-mips.org,
+	Kexec Mailing List <kexec@lists.infradead.org>,
+	openwrt-devel@lists.openwrt.org
+References: <483BCB75.4050901@wpkg.org> <200805291347.05196.nschichan@freebox.fr> <483F0EF3.3060500@wpkg.org>
+In-Reply-To: <483F0EF3.3060500@wpkg.org>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Disposition: inline
+Message-Id: <200805301327.11925.nschichan@freebox.fr>
+Return-Path: <nschichan@freebox.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19385
+X-archive-position: 19386
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: nschichan@freebox.fr
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 7 May 2008 23:38:15 +0900, Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp> wrote:
-> Fix divide by zero error in build_clear_page() and build_copy_page()
-> 
-> Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-> 
-> diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/arch/mips/mm/page.c linux/arch/mips/mm/page.c
-> --- linux-orig/arch/mips/mm/page.c	2008-05-07 10:28:03.732151097 +0900
-> +++ linux/arch/mips/mm/page.c	2008-05-07 23:27:00.212977534 +0900
-...
-> -	off = min(8, pref_bias_copy_store / cache_line_size) * cache_line_size;
-> +	off = cache_line_size ? min(8, pref_bias_copy_load / cache_line_size) *
-> +	                        cache_line_size : 0;
->  	while (off) {
->  		build_copy_store_pref(&buf, -off);
->  		off -= cache_line_size;
+On Thursday 29 May 2008 22:15:47 Tomasz Chmielewski wrote:
+> # kexec -e
+> b44: eth0: powering down PHY
+> Starting new kernel
+> Will call new kernel at 00305000
 
-This change is wrong.  Please apply this on top of the patch.
+The calling address of the kernel looks quite wrong, it should clearly
+be inside the KSEG0 zone. could  you please indicate the output of the
+command "mips-linux-readelf -l vmlinux" ?
 
-diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
-index cab81f4..1edf0cb 100644
---- a/arch/mips/mm/page.c
-+++ b/arch/mips/mm/page.c
-@@ -460,7 +460,7 @@ void __cpuinit build_copy_page(void)
- 		build_copy_load_pref(&buf, -off);
- 		off -= cache_line_size;
- 	}
--	off = cache_line_size ? min(8, pref_bias_copy_load / cache_line_size) *
-+	off = cache_line_size ? min(8, pref_bias_copy_store / cache_line_size) *
- 	                        cache_line_size : 0;
- 	while (off) {
- 		build_copy_store_pref(&buf, -off);
+Regards,
+
+-- 
+Nicolas Schichan

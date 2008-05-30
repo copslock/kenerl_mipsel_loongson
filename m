@@ -1,73 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2008 02:00:05 +0100 (BST)
-Received: from p549F5155.dip.t-dialin.net ([84.159.81.85]:38065 "EHLO
-	p549F5155.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
-	id S20046671AbYE2LwT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 29 May 2008 12:52:19 +0100
-Received: from bobafett.staff.proxad.net ([213.228.1.121]:43727 "EHLO
-	bobafett.staff.proxad.net") by lappi.linux-mips.net with ESMTP
-	id S1107570AbYE2LrN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 29 May 2008 13:47:13 +0200
-Received: from localhost (localhost [127.0.0.1])
-	by bobafett.staff.proxad.net (Postfix) with ESMTP id D263D1CA07;
-	Thu, 29 May 2008 13:47:06 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at staff.proxad.net
-Received: from bobafett.staff.proxad.net ([127.0.0.1])
-	by localhost (bobafett.staff.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
-	with LMTP id g80jNbMPAjJ6; Thu, 29 May 2008 13:47:05 +0200 (CEST)
-Received: from nschichan.priv.staff.proxad.net (nschichan.priv.staff.proxad.net [172.18.3.120])
-	by bobafett.staff.proxad.net (Postfix) with ESMTP id 833A42ADB;
-	Thu, 29 May 2008 13:47:05 +0200 (CEST)
-From:	Nicolas Schichan <nschichan@freebox.fr>
-Organization: Freebox
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 May 2008 02:42:27 +0100 (BST)
+Received: from p549F7A8A.dip.t-dialin.net ([84.159.122.138]:36843 "EHLO
+	p549F7A8A.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
+	id S20021483AbYE3BmY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 30 May 2008 02:42:24 +0100
+Received: from kirk.serum.com.pl ([213.77.9.205]:55028 "EHLO serum.com.pl")
+	by lappi.linux-mips.net with ESMTP id S1107799AbYE3Bks (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 30 May 2008 03:40:48 +0200
+Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
+	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m4U1ekS6012580;
+	Fri, 30 May 2008 03:40:46 +0200
+Received: from localhost (macro@localhost)
+	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m4U1eSQl012576;
+	Fri, 30 May 2008 02:40:37 +0100
+Date:	Fri, 30 May 2008 02:40:27 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
 To:	Tomasz Chmielewski <mangoo@wpkg.org>
+cc:	Nicolas Schichan <nschichan@freebox.fr>, linux-mips@linux-mips.org,
+	Kexec Mailing List <kexec@lists.infradead.org>,
+	openwrt-devel@lists.openwrt.org
 Subject: Re: kexec on mips - anyone has it working?
-Date:	Thu, 29 May 2008 13:47:04 +0200
-User-Agent: KMail/1.9.6 (enterprise 0.20070907.709405)
-References: <483BCB75.4050901@wpkg.org> <200805271449.45124.nschichan@freebox.fr> <483C4F73.4040909@wpkg.org>
-In-Reply-To: <483C4F73.4040909@wpkg.org>
-Cc:	linux-mips@linux-mips.org
+In-Reply-To: <483F0EF3.3060500@wpkg.org>
+Message-ID: <Pine.LNX.4.55.0805300233450.8254@cliff.in.clinika.pl>
+References: <483BCB75.4050901@wpkg.org> <200805271449.45124.nschichan@freebox.fr>
+ <483C4F73.4040909@wpkg.org> <200805291347.05196.nschichan@freebox.fr>
+ <483F0EF3.3060500@wpkg.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200805291347.05196.nschichan@freebox.fr>
-Return-Path: <nschichan@freebox.fr>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19383
+X-archive-position: 19384
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nschichan@freebox.fr
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tuesday 27 May 2008 20:14:11 you wrote:
-> Aah, I see.
->
-> Anyway, it doesn't work - with or without this slight change in
-> machine_kexec.c, with kexec compiled from the sources in the link you
-> gave or with kexec-tools-testing-20080324, it just doesn't work on
-> BCM43XX with OpenWRT patches. At least on Asus WL-500gP.
+On Thu, 29 May 2008, Tomasz Chmielewski wrote:
 
-I'm not familiar with broadcom CPU names, but isn't BCM43XX supposed
-to be a Wifi chipset ? :)
+> I guess I'm not that lucky. Either CONFIG_MIPS_UNCACHED slowed the 
+> device down so much that it didn't boot, or it didn't boot. Hey, isn't 
+> it the same? So either BCM43XX doesn't work very well with certain 
+> kernel options enabled/disabled, or OpenWRT patches still lack some 
+> features to make ASUS WL-500gP properly (added openwrt-devel to CC:).
 
-However,  could   you  kexec   a  kernel  from   a  kernel   that  has
-CONFIG_MIPS_UNCACHED  set (under  "Kernel  hacking", "run  uncached")?
-this will slow down the kernel that does the kexec, but if this works,
-then it is most probably a cache problem.
+ LL/SC are undefined on uncached memory.  Implementers are free to keep
+the instructions working the same way as on cached memory, but are not
+required to do so and your chip may be an example.  Of course the reason
+of the hang you see may be different, but this is one plausible
+explanation.  I wouldn't trust a kernel running with CONFIG_MIPS_UNCACHED
+enabled -- it is merely a debugging hack.
 
-Could you also indicate the last lines of kernel messages just before
-the "Bye." ?
-
-Are you trying to kexec a big kernel image ? how much RAM do you have
-on the board ? are there some hardware that could have a hard time to
-be re-probed by the kexeced linux kernel ?
-
-Regards,
-
--- 
-Nicolas Schichan
+  Maciej

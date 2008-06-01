@@ -1,71 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Jun 2008 17:33:49 +0100 (BST)
-Received: from p549F48FC.dip.t-dialin.net ([84.159.72.252]:20181 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Jun 2008 19:02:14 +0100 (BST)
+Received: from p549F48FC.dip.t-dialin.net ([84.159.72.252]:39557 "EHLO
 	p549F48FC.dip.t-dialin.net") by ftp.linux-mips.org with ESMTP
-	id S20024203AbYFAQdr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 1 Jun 2008 17:33:47 +0100
-Received: from [122.1.235.107] ([122.1.235.107]:21985 "EHLO smtp.mba.ocn.ne.jp")
-	by lappi.linux-mips.net with ESMTP id S1111367AbYFAQ2q (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 1 Jun 2008 18:28:46 +0200
-Received: from localhost (p7240-ipad212funabasi.chiba.ocn.ne.jp [58.91.171.240])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 390ECAA2B; Mon,  2 Jun 2008 01:26:52 +0900 (JST)
-Date:	Mon, 02 Jun 2008 01:28:14 +0900 (JST)
-Message-Id: <20080602.012814.35471915.anemo@mba.ocn.ne.jp>
-To:	adrian.bunk@movial.fi
-Cc:	chris@mips.com, ralf@linux-mips.org, linux-mips@linux-mips.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: mips: CONF_CM_DEFAULT build error
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20080525170718.GD1791@cs181133002.pp.htv.fi>
-References: <20080525170718.GD1791@cs181133002.pp.htv.fi>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+	id S20024340AbYFASCJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 1 Jun 2008 19:02:09 +0100
+Received: from h155.mvista.com ([63.81.120.155]:19062 "EHLO imap.sh.mvista.com")
+	by lappi.linux-mips.net with ESMTP id S1111459AbYFAR4y (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 1 Jun 2008 19:56:54 +0200
+Received: from [127.0.0.1] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 8DB163EC9; Sun,  1 Jun 2008 10:56:19 -0700 (PDT)
+Message-ID: <4842E2C0.1020106@ru.mvista.com>
+Date:	Sun, 01 Jun 2008 21:56:16 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+User-Agent: Thunderbird 1.5.0.14 (Windows/20071210)
+MIME-Version: 1.0
+To:	Manuel Lauss <mano@roarinelk.homelinux.net>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/2] MIPS: make r4k clocksource/clockevent usable in other
+ codepaths
+References: <20080528122838.GA5976@roarinelk.homelinux.net>
+In-Reply-To: <20080528122838.GA5976@roarinelk.homelinux.net>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19391
+X-archive-position: 19392
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 25 May 2008 20:07:24 +0300, Adrian Bunk <adrian.bunk@movial.fi> wrote:
-> Commit 351336929ccf222ae38ff0cb7a8dd5fd5c6236a0
-> ([MIPS] Allow setting of the cache attribute at run time.)
-> causes the following build error with pnx8550-jbs_defconfig
-> and pnx8550-stb810_defconfig:
+Hello.
 
-I wondered why the commit has my S-O-B, and finally found that I had
-fixed a section mismatch caused by the original patch (on queue tree
-on linux-mips.org) and Ralf had folded my fix into the original patch,
-with my S-O-B.  Folding on the queue tree will be good on many case,
-but sometimes a bit confusing. :-)
+Manuel Lauss wrote:
+> Make the r4k cp0 counter clocksource and clockevent modules
+> library code so it may be used e.g. as a fallback in case other
+> clocksources/events aren't available.
+>
+> Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
+>   
+[...]
 
+> diff --git a/include/asm-mips/time.h b/include/asm-mips/time.h
+> index d3bd5c5..01a4c93 100644
+> --- a/include/asm-mips/time.h
+> +++ b/include/asm-mips/time.h
+> @@ -50,27 +50,35 @@ extern int (*perf_irq)(void);
+>  /*
+>   * Initialize the calling CPU's compare interrupt as clockevent device
+>   */
+> -#ifdef CONFIG_CEVT_R4K
+> -extern int mips_clockevent_init(void);
+> +#ifdef CONFIG_CEVT_R4K_LIB
+>  extern unsigned int __weak get_c0_compare_int(void);
+> -#else
+> +extern int r4k_clockevent_init(void);
+> +#endif
+> +
+>  static inline int mips_clockevent_init(void)
+>  {
+> +#ifdef CONFIG_CEVT_R4K
+> +	return r4k_clockevent_init();
+> +#else
+>  	return -ENXIO;
+> -}
+>  #endif
+> +}
+>  
+>  /*
+>   * Initialize the count register as a clocksource
+>   */
+> -#ifdef CONFIG_CEVT_R4K
+> -extern int init_mips_clocksource(void);
+> -#else
+> +#ifdef CONFIG_CSRC_R4K_LIB
+> +extern int init_r4k_clocksource(void);
+> +#endif
+>   
 
-Anyway, here is a patch to fix the build failure.  Thank you for reporting.
+   Hm, does it make sense to hedge ''extern' declaration by #ifdef's?
 
-------------------------------------------------------
-Subject: [PATCH] MIPS: Fix CONF_CM_DEFAULT build error
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
-diff --git a/include/asm-mips/pgtable-bits.h b/include/asm-mips/pgtable-bits.h
-index 60e2f93..8a75677 100644
---- a/include/asm-mips/pgtable-bits.h
-+++ b/include/asm-mips/pgtable-bits.h
-@@ -134,6 +134,6 @@
- 
- #define _PAGE_CHG_MASK  (PAGE_MASK | _PAGE_ACCESSED | _PAGE_MODIFIED | _CACHE_MASK)
- 
--#define CONF_CM_DEFAULT		(PAGE_CACHABLE_DEFAULT>>_CACHE_SHIFT)
-+#define CONF_CM_DEFAULT		(_page_cachable_default >> _CACHE_SHIFT)
- 
- #endif /* _ASM_PGTABLE_BITS_H */
+WBR, Sergei

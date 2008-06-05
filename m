@@ -1,56 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2008 02:36:00 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:2222 "EHLO
-	bby1mta03.pmc-sierra.bc.ca") by ftp.linux-mips.org with ESMTP
-	id S20021633AbYFEBf6 convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 5 Jun 2008 02:35:58 +0100
-Received: from bby1mta03.pmc-sierra.bc.ca (localhost.pmc-sierra.bc.ca [127.0.0.1])
-	by localhost (Postfix) with SMTP id 23FE510713A7;
-	Wed,  4 Jun 2008 18:37:32 -0700 (PDT)
-Received: from bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca (BBY1EXG02.pmc-sierra.bc.ca [216.241.231.167])
-	by bby1mta03.pmc-sierra.bc.ca (Postfix) with SMTP id ED26410713DF;
-	Wed,  4 Jun 2008 18:37:31 -0700 (PDT)
-Received: from BBY1EXM09.pmc_nt.nt.pmc-sierra.bc.ca ([216.241.231.157]) by bby1exg02.pmc_nt.nt.pmc-sierra.bc.ca with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 4 Jun 2008 18:36:12 -0700
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2008 11:03:28 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:14056 "EHLO
+	ti-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021862AbYFEKDZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 5 Jun 2008 11:03:25 +0100
+Received: by ti-out-0910.google.com with SMTP id i7so152191tid.20
+        for <linux-mips@linux-mips.org>; Thu, 05 Jun 2008 03:02:42 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to
+         :subject:mime-version:content-type:content-transfer-encoding
+         :content-disposition;
+        bh=YVVvVbAjpysHLwtKLqpRAYDXH17e/Z/OchQz59UNc0Y=;
+        b=JYhLPQX1sVbxKHM/FVHoidj3r6vYn6GSb/BKeD/XZ+68zozxBQtBT6c6VE/h/QN2LQ
+         g/IEw8LeSrsUlIuxZo3AKrzpUoPO1pYq2c6DOOADpFq2CNm/9Q+CUdERaNo8XK9Wut2p
+         zfLwaUCDN7kscSsLnpQkVEhY+NO1zILGLB8Po=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:mime-version:content-type
+         :content-transfer-encoding:content-disposition;
+        b=u/g7LmSRHc0ZGThd0MA4Cnd1YLn0dFrYlGSpOZxPmy9GkbXNJ/K7+HSkGXKb19yR7l
+         qWzh0pU5vXkCKY1F6ghJ2Z+RgCVCiMMsfpRKxx4EdvPIraIhGrhsdNpIYqTqI3gMzZdH
+         KFPErGxm2tS8Ta+tTmhTToAc82D4TjNYk/cFk=
+Received: by 10.110.15.9 with SMTP id 9mr333229tio.44.1212660162689;
+        Thu, 05 Jun 2008 03:02:42 -0700 (PDT)
+Received: by 10.110.11.2 with HTTP; Thu, 5 Jun 2008 03:02:42 -0700 (PDT)
+Message-ID: <7f245da80806050302m6b449e6m1f84dc7ef7efff46@mail.gmail.com>
+Date:	Thu, 5 Jun 2008 15:32:42 +0530
+From:	"Chetan Nanda" <chetannanda@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: understanding head.S
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="US-ASCII"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: Status of PMC MSP71xx support?
-Date:	Wed, 4 Jun 2008 18:35:08 -0700
-Message-ID: <92F38F1DC286C7409E29F0C6FBFB6E4F0134B636@BBY1EXM09.pmc_nt.nt.pmc-sierra.bc.ca>
-In-Reply-To: <8A9D56C5E50F774BABE033F1710B35760138FF57@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Status of PMC MSP71xx support?
-Thread-Index: AcjGXDI8bKZ0Up11QmqlnFytGPSKmQAA6eagABK41GA=
-References: <8A9D56C5E50F774BABE033F1710B35760138FF57@BBY1EXM11.pmc_nt.nt.pmc-sierra.bc.ca>
-From:	"Rod Sillett" <Rod_Sillett@pmc-sierra.com>
-To:	<bunk@kernel.org>
-Cc:	"Brian Oostenbrink" <Brian_Oostenbrink@pmc-sierra.com>,
-	<linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 05 Jun 2008 01:36:12.0996 (UTC) FILETIME=[89E10840:01C8C6AC]
-X-PMX-Version: 5.4.2.338381, Antispam-Engine: 2.6.0.325393, Antispam-Data: 2008.6.4.181942
-X-PMC-SpamCheck: Gauge=IIIIIII, Probability=7%, Report='BODY_SIZE_1000_LESS 0, BODY_SIZE_300_399 0, BODY_SIZE_5000_LESS 0, __BOUNCE_CHALLENGE_SUBJ 0, __CT 0, __CTE 0, __CT_TEXT_PLAIN 0, __HAS_MSGID 0, __IMS_MSGID 0, __MIME_TEXT_ONLY 0, __MIME_VERSION 0, __SANE_MSGID 0'
-Return-Path: <Rod_Sillett@pmc-sierra.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Return-Path: <chetannanda@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19400
+X-archive-position: 19401
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Rod_Sillett@pmc-sierra.com
+X-original-sender: chetannanda@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Adrian,
+Hi All,
+I was reading the boot code for MIPS.
+in head.S file before jumping to 'start_kernel' it calculate the stack
+pointer address as follow:
 
-Yes, the msp71xx platform is still actively supported by PMC. I am
-responsible for merging the changes back to the community. As a first
-step (a learning experience for me) I was planning to submit updated
-GPIO and LED support in the next few weeks. 
+"
+	PTR_LA		$28, init_thread_union
+	PTR_ADDIU	sp, $28, _THREAD_SIZE - 32
+	set_saved_sp	sp, t0, t1
+	PTR_SUBU	sp, 4 * SZREG		# init stack pointer
+"
 
-Best Regards,
-Rod Sillett
+Can anyone please explains me this 4 lines of code?
+Why ' _THREAD_SIZE - 32' is added in 'sp' ?
+What 'set_saved_sp' will do ?
+and then why we subtract '4 * SZREG' from 'sp' ?
+
+Please hep me to understand this code better.
+
+Thanks,
+Chetan Nanda

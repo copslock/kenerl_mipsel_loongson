@@ -1,86 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2008 13:47:04 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:62408 "EHLO
-	rv-out-0708.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022188AbYFEMrB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 5 Jun 2008 13:47:01 +0100
-Received: by rv-out-0708.google.com with SMTP id c5so564259rvf.24
-        for <linux-mips@linux-mips.org>; Thu, 05 Jun 2008 05:46:41 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:sender
-         :to:subject:mime-version:content-type:content-transfer-encoding
-         :content-disposition:x-google-sender-auth;
-        bh=lQNYOKFaiqU3+K73qp+i02KEGERjGYqERt3abZ9aXdQ=;
-        b=r28VmdN49d2uyfxhc5cyj8+u1yd5dhfkEFke+/ZRKEm1m/t7jpj+yU00sqNUO5QAMM
-         ljdAmRNdRhc4BqpR1obsQFcrXtcDmft3cNeDmyUq+Wsqa/iUfLAwvMsl3LMiSlXusY0S
-         JDKP74bgVehwAZg3/TTkOVAeUYBjiP3NYQDUM=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:sender:to:subject:mime-version:content-type
-         :content-transfer-encoding:content-disposition:x-google-sender-auth;
-        b=kfe5n4do21UwnuGQl8I3ddXxkCfA1S/AjFSzQ3zGEUao7LsXGBixVbTe8VGK3bws7Z
-         3WVKs1Z4MAnpkRKHKN6OCp0sqZLoZO/OBYE7fS10OQqjZsziBXaULHvu14M3fTzFO0PP
-         im9+Ope5/zl5kEtrlpJkLdbBLjtyTTW5aZ7jI=
-Received: by 10.141.175.5 with SMTP id c5mr823116rvp.54.1212670001034;
-        Thu, 05 Jun 2008 05:46:41 -0700 (PDT)
-Received: by 10.141.197.19 with HTTP; Thu, 5 Jun 2008 05:46:40 -0700 (PDT)
-Message-ID: <a537dd660806050546s5b015183ra7b3a8259e13574e@mail.gmail.com>
-Date:	Thu, 5 Jun 2008 14:46:40 +0200
-From:	"Brian Foster" <brian.foster@innova-card.com>
-To:	linux-mips@linux-mips.org
-Subject: [Q] Pre-built cross-compilers for little-endian MIPS-Linux kernel (SDE-Lite vs? mipsel-linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2008 19:39:13 +0100 (BST)
+Received: from BISCAYNE-ONE-STATION.MIT.EDU ([18.7.7.80]:39309 "EHLO
+	biscayne-one-station.mit.edu") by ftp.linux-mips.org with ESMTP
+	id S20024061AbYFESjL (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 5 Jun 2008 19:39:11 +0100
+Received: from outgoing.mit.edu (OUTGOING-AUTH.MIT.EDU [18.7.22.103])
+	by biscayne-one-station.mit.edu (8.13.6/8.9.2) with ESMTP id m55IcvTU003603;
+	Thu, 5 Jun 2008 14:38:57 -0400 (EDT)
+Received: from closure.thunk.org (c-98-216-98-217.hsd1.ma.comcast.net [98.216.98.217])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.13.6/8.12.4) with ESMTP id m55IcsjQ008235
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Thu, 5 Jun 2008 14:38:55 -0400 (EDT)
+Received: from tytso by closure.thunk.org with local (Exim 4.67)
+	(envelope-from <tytso@mit.edu>)
+	id 1K4KMQ-0007dv-Eh; Thu, 05 Jun 2008 14:38:54 -0400
+Date:	Thu, 5 Jun 2008 14:38:54 -0400
+From:	Theodore Tso <tytso@MIT.EDU>
+To:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+Cc:	Martin Michlmayr <tbm@cyrius.com>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>,
+	linux-mips@linux-mips.org, linux-ext4@vger.kernel.org
+Subject: Re: ext4dev build failure on mips: "empty_zero_page" undefined
+Message-ID: <20080605183854.GN25477@mit.edu>
+References: <20080512130604.GA15008@deprecation.cyrius.com> <90edad820805120654n50f7a00cm3c7b4a4f9346d5ea@mail.gmail.com> <20080512143426.GB7029@mit.edu> <90edad820805120746l61e67362vbd177d63e8b05dc8@mail.gmail.com> <20080513045028.GC22226@linux-mips.org> <20080528070637.GA10393@deprecation.cyrius.com> <20080605111148.GA4483@deprecation.cyrius.com> <1212664977.4840.6.camel@sd048.hel.movial.fi>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Google-Sender-Auth: 86461a57dfdfe4e1
-Return-Path: <blf.ireland@gmail.com>
+In-Reply-To: <1212664977.4840.6.camel@sd048.hel.movial.fi>
+User-Agent: Mutt/1.5.15+20070412 (2007-04-11)
+X-Scanned-By: MIMEDefang 2.42
+Return-Path: <tytso@MIT.EDU>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19407
+X-archive-position: 19408
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brian.foster@innova-card.com
+X-original-sender: tytso@MIT.EDU
 Precedence: bulk
 X-list: linux-mips
 
- I'm confused about pre-built cross-compiling tool-chains
- for building the MIPS-Linux kernel.  (Please note my
- question is confined to building the kernel, cross.)
+On Thu, Jun 05, 2008 at 02:22:57PM +0300, Dmitri Vorobiev wrote:
+> 
+> It looks like the discussion related to this issue has faded out. Ralf
+> seemed to have some objections to using ZERO_PAGE() outside of the
+> context of getting a user-mapped page, but I think that ext4 driver is
+> still doing that.
+> 
 
- My Host is x86 running Linux.  My Target is an embedded
- SoC using the 4KSd core, and is little-endian.
+I thought I had sent a reply indicating that yes, we are using
+ZERO_PAGE outside of getting a user-mapped page, because this is
+happening when we need to write zero's to directly to a filesystem
+block.  This case arises when we have a file which contains
+preallocated space that has not yet been initialized, and the user
+program seeks into the middle of the unitialized extent range, and
+writes into the middle of that space.
 
- Linux (of the 2.6.20 vintage) has been ported to the SoC,
- using  mipsel-sdelinux-V6.04.00-4  to compile the kernel.
- The development system also includes  5.03 SDE-Lite,
- albeit I'm not too clear what that's used for:  I know
- the debugger, sde-gdb, is used with the FS2 EJTAG Probe,
- but am uncertain if anything else is actually used ....
+In some cases, it is more efficient to zero out a small range of
+blocks on disk rather than splitting the extent in the middle.  We
+could explicitly allocate a page, and zero it out, and use it to write
+zeros from the ext4 filesystem, code, but that seems silly, given that
+ZERO_PAGE exists and is available on all other architectures.
 
- Anyways, that's all getting a bit old.  Hence, in time,
- the kernel will be up-reved (to at least 2.6.24).
- I also want to use later toolchain(s?), and I am currently
- trying to work out what's what, with the goal (if possible)
- of using them to built the current (2.6.20-ish kernel).
- The  http://www.linux-mips.org/wiki/MIPS_SDE_Installation
- page is rather confusing, talking first about SDE 6.x,
- and then jumping into a discussion of cross tool-chains.
+Cristoph Hellwig had complained about the use of ZERO_PAGE, but when I
+gave him the above explanation, he agreed that this was indeed
+probably the best way to do things.
 
- Whilst I assume I can use the most recent  mipsel-linux
- (mipsel-sdelinux-v6.05.00-4) to built the kernel, is it
- possible to use the most recent SDE-Lite (v6.06.01) to
- build the Linux kernel?   If so, what do I need to tweak
- so `sde-gcc' (with appropriate magic) is used instead of
- `mipsel-linux-gcc' (with whatever magic it's using)?
+If you really insist I suppose we could have a MIPS specific patch
+where we allocate a 4k page and zero it, so we can use it from our
+kernel code because you don't want to export and make available the
+ZERO_PAGE that gets used by the rest of the kernel, but that seems
+awfully silly, and would be a waste of 4k of memory.....  Someone from
+MIPS land would have to test it, as well, as I dont think any of the
+ext4 developers have access to a MIPS platform.
 
-cheers!
-	-blf-
-
--- 
-"How many surrealists does it take to | Brian Foster
- change a lightbulb? Three. One calms | somewhere in south of France
- the warthog, and two fill the bathtub | Stop E$$o (ExxonMobil)!
- with brightly-coloured machine tools." | http://www.stopesso.com
+						- Ted

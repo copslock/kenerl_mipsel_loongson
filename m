@@ -1,41 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2008 12:42:19 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:65196 "EHLO smtp.movial.fi")
-	by ftp.linux-mips.org with ESMTP id S20022130AbYFELmR (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 5 Jun 2008 12:42:17 +0100
-Received: from localhost (mailscanner.hel.movial.fi [172.17.81.9])
-	by smtp.movial.fi (Postfix) with ESMTP id AAD28C8044
-	for <linux-mips@linux-mips.org>; Thu,  5 Jun 2008 14:42:15 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at movial.fi
-Received: from smtp.movial.fi ([62.236.91.34])
-	by localhost (mailscanner.hel.movial.fi [172.17.81.9]) (amavisd-new, port 10026)
-	with ESMTP id x6XOKoP+Pym4 for <linux-mips@linux-mips.org>;
-	Thu,  5 Jun 2008 14:42:15 +0300 (EEST)
-Received: from [172.17.49.48] (sd048.hel.movial.fi [172.17.49.48])
-	by smtp.movial.fi (Postfix) with ESMTP id 8296FC801D
-	for <linux-mips@linux-mips.org>; Thu,  5 Jun 2008 14:42:15 +0300 (EEST)
-Message-ID: <4847D117.2090302@movial.fi>
-Date:	Thu, 05 Jun 2008 14:42:15 +0300
-From:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
-Organization: Movial Creative Technologies
-User-Agent: Icedove 1.5.0.14eol (X11/20080509)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2008 12:58:21 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:29862 "EHLO
+	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
+	id S20022151AbYFEL6T (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 5 Jun 2008 12:58:19 +0100
+Received: by sorrow.cyrius.com (Postfix, from userid 10)
+	id BD61FD8DE; Thu,  5 Jun 2008 11:58:16 +0000 (UTC)
+Received: by deprecation.cyrius.com (Postfix, from userid 1000)
+	id 4BDA0150F76; Thu,  5 Jun 2008 13:57:59 +0200 (CEST)
+Date:	Thu, 5 Jun 2008 13:57:59 +0200
+From:	Martin Michlmayr <tbm@cyrius.com>
+To:	Adrian Bunk <bunk@kernel.org>
+Cc:	Chris Dearman <chris@mips.com>,
+	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: mips/kernel/traps.c build error
+Message-ID: <20080605115759.GA5043@deprecation.cyrius.com>
+References: <20080525164311.GB1791@cs181133002.pp.htv.fi>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Please let me try if this works now...
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <dmitri.vorobiev@movial.fi>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20080525164311.GB1791@cs181133002.pp.htv.fi>
+User-Agent: Mutt/1.5.17+20080114 (2008-01-14)
+Return-Path: <tbm@cyrius.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19405
+X-archive-position: 19406
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@movial.fi
+X-original-sender: tbm@cyrius.com
 Precedence: bulk
 X-list: linux-mips
 
-Sorry for extra traffic, I'm just testing if I can send messages to this
-list.
+* Adrian Bunk <bunk@kernel.org> [2008-05-25 19:43]:
+> /home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/kernel/traps.c: In function 'show_raw_backtrace':
+> /home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/kernel/traps.c:92: error: cast from pointer to integer of different size
+> make[2]: *** [arch/mips/kernel/traps.o] Error 1
+> 
+> <--  snip  -->
+> 
+> "[MIPS] Fix check for valid stack pointer during backtrace" in the mips 
+> tree fixes it, and should therefore also go into 2.6.26.
 
-Dmitri
+It's still not in mainline as of rc5.
+-- 
+Martin Michlmayr
+http://www.cyrius.com/

@@ -1,66 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2008 22:09:54 +0100 (BST)
-Received: from server.drzeus.cx ([85.8.24.28]:23229 "EHLO smtp.drzeus.cx")
-	by ftp.linux-mips.org with ESMTP id S28575359AbYFEVJw (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 5 Jun 2008 22:09:52 +0100
-Received: from mjolnir.drzeus.cx (wlan252.drzeus.cx [::ffff:10.8.2.252])
-  (AUTH: LOGIN drzeus, TLS: TLS 1.0,256bits,RSA_AES_256_CBC_SHA1)
-  by smtp.drzeus.cx with esmtp; Thu, 05 Jun 2008 23:04:41 +0200
-  id 0000000000120045.00000000484854E9.000066D5
-Date:	Thu, 5 Jun 2008 23:09:23 +0200
-From:	Pierre Ossman <drzeus@drzeus.cx>
-To:	Manuel Lauss <mano@roarinelk.homelinux.net>
-Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-	sshtylyov@ru.mvista.com
-Subject: Re: [PATCH 0/9] au1xmmc updates #3
-Message-ID: <20080605230923.0268dd23@mjolnir.drzeus.cx>
-In-Reply-To: <20080519080339.GA21985@roarinelk.homelinux.net>
-References: <20080519080339.GA21985@roarinelk.homelinux.net>
-X-Mailer: Claws Mail 3.4.0 (GTK+ 2.13.1; i386-redhat-linux-gnu)
-Face:	iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAAXNSR0IArs4c6QAAADNQTFRFEgwFRSofeTwxZEI1h1lFl1ZHeGBetHZk24VzuZJ43p2GsbKw/Lmg2MTL/NO3/+/Q//fpWFujUwAAAk5JREFUSMeNlVcWnDAMRd0bLux/tVGxiAEzic7hZ+Zd1IU6NtbYdn8daic/cgj52CPqLQ8hOBdjzsD8G2hHsCiPBS2/nTyABi93zvsYUyql1v6KSz30AeUAJLAK1uuDUI94WA7GDsAePtRDfwFRgP7DA8vvwOgQ1R5oYQUKAwOsfwDHDcAcWH+e5xagiooey1SwSAy0L8C7BaDKdgKWoNQtIjYEfHQGzMcKwNgCpLdgBn14ZzXNSPkJWK201vjiHMkXZg7AuQWCA7G2DPTiMSIsLSZxbgEIwlqEjE+9WBu0yaWOHwDLLQE9WmMieCBgtG1IAFgBzo7tlojGtbI3wFljuU4JdL3ghPeO+tFr2QHG0DOBSuN0kofaU302zmKbcTrgAWDUywG0OvXELi6gZScAdq6WnhYgvYDGu0YQjYSZs3ROID0B4y+jjpWyAhjePWkAjKwD5o09xioNBoro/+YQZjzTg8ce1CJtwFvwAMDFBEjv6cgI0P/u0DqtGJOjNSAm4e0jABxsgDYXSADQw2wwsFyzdePCAviE48QexseKNiGcp4jgKNEVAGC7QEwY5+S6Qpf50NzujHrdYgEKH0o8ZJ/AQR8HAGiaugDjG2i4ddZx4wToPwB0gQsEfjyFRKf1M+kLQC8u5iuoX8BhxYCQJPZXQ7LQdDnQR87/BdCpQQSJpREh7EMSQOvpYwJaqbAHgrUXkWehxhmUUjpsQ+IDSHlzEvidywrtDYSpnHVioNbstBLi9o3Dn/WqZ3Nw1pUQy8bN3/QdiPiVUZfpP4cDVEKd2cXEAAAAAElFTkSuQmCC
-X-Face:	@{|$W51qEixc&6}dq_38NM^&.vv|'{O)ae?DMZ1%VYxuhN2}5VpQ!'gx[{V+8Xw'+cV5*491_)-SU2YT8s@4`H;@:ELS'/P(@.JxxJi/C8mG0H#A^R<JfS_l?/%fD\D/mFJ8c2M?_kIL;:txa"s`0O*d+}p/4;$lAw@/e&h-nvQ)~q-a("De+&~-{5`:T{9d%0
-Mime-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=PGP-SHA1; boundary="=_freyr.drzeus.cx-26325-1212699881-0001-2"
-Return-Path: <drzeus@drzeus.cx>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2008 22:34:19 +0100 (BST)
+Received: from smtp.movial.fi ([62.236.91.34]:58838 "HELO smtp.movial.fi")
+	by ftp.linux-mips.org with SMTP id S28575864AbYFEVeQ convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 5 Jun 2008 22:34:16 +0100
+Received: from localhost (mailscanner.hel.movial.fi [172.17.81.9])
+	by smtp.movial.fi (Postfix) with ESMTP id E13B6C803F;
+	Fri,  6 Jun 2008 00:34:10 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at movial.fi
+Received: from smtp.movial.fi ([62.236.91.34])
+	by localhost (mailscanner.hel.movial.fi [172.17.81.9]) (amavisd-new, port 10026)
+	with ESMTP id 9J+EoFurkprS; Fri,  6 Jun 2008 00:34:10 +0300 (EEST)
+Received: from webmail.movial.fi (webmail.movial.fi [62.236.91.25])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp.movial.fi (Postfix) with ESMTP id C20FDC801D;
+	Fri,  6 Jun 2008 00:34:10 +0300 (EEST)
+Received: by webmail.movial.fi (Postfix, from userid 33)
+	id B037023CD79; Fri,  6 Jun 2008 00:34:10 +0300 (EEST)
+Received: from 84.249.59.97
+        (SquirrelMail authenticated user dvorobye)
+        by webmail.movial.fi with HTTP;
+        Fri, 6 Jun 2008 00:34:10 +0300 (EEST)
+Message-ID: <38408.84.249.59.97.1212701650.squirrel@webmail.movial.fi>
+In-Reply-To: <20080605183854.GN25477@mit.edu>
+References: <20080512130604.GA15008@deprecation.cyrius.com>
+    <90edad820805120654n50f7a00cm3c7b4a4f9346d5ea@mail.gmail.com>
+    <20080512143426.GB7029@mit.edu>
+    <90edad820805120746l61e67362vbd177d63e8b05dc8@mail.gmail.com>
+    <20080513045028.GC22226@linux-mips.org>
+    <20080528070637.GA10393@deprecation.cyrius.com>
+    <20080605111148.GA4483@deprecation.cyrius.com>
+    <1212664977.4840.6.camel@sd048.hel.movial.fi>
+    <20080605183854.GN25477@mit.edu>
+Date:	Fri, 6 Jun 2008 00:34:10 +0300 (EEST)
+Subject: Re: ext4dev build failure on mips: "empty_zero_page" undefined
+From:	"Vorobiev Dmitri" <dmitri.vorobiev@movial.fi>
+To:	"Theodore Tso" <tytso@MIT.EDU>
+Cc:	"Dmitri Vorobiev" <dmitri.vorobiev@movial.fi>,
+	"Martin Michlmayr" <tbm@cyrius.com>,
+	"Ralf Baechle" <ralf@linux-mips.org>,
+	"Dmitri Vorobiev" <dmitri.vorobiev@gmail.com>,
+	linux-mips@linux-mips.org, linux-ext4@vger.kernel.org
+User-Agent: SquirrelMail/1.4.9a
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-15
+X-Priority: 3 (Normal)
+Importance: Normal
+Content-Transfer-Encoding: 8BIT
+Return-Path: <dmitri.vorobiev@movial.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19414
+X-archive-position: 19415
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: drzeus@drzeus.cx
+X-original-sender: dmitri.vorobiev@movial.fi
 Precedence: bulk
 X-list: linux-mips
 
-This is a MIME-formatted message.  If you see this text it means that your
-E-mail software does not support MIME-formatted messages.
+Theodore Tso wrote:
+>
+> If you really insist I suppose we could have a MIPS specific patch
+> where we allocate a 4k page and zero it, so we can use it from our
+> kernel code because you don't want to export and make available the
+> ZERO_PAGE that gets used by the rest of the kernel, but that seems
+> awfully silly, and would be a waste of 4k of memory.....  Someone from
+> MIPS land would have to test it, as well, as I dont think any of the
+> ext4 developers have access to a MIPS platform.
 
---=_freyr.drzeus.cx-26325-1212699881-0001-2
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Ted, Ralf seems to be unwilling to accept the ZERO_PAGE() export. If you
+send the MIPS-specific patch, I can do the testing for you as I have a
+MIPS Malta board at my disposal.
 
-On Mon, 19 May 2008 10:03:39 +0200
-Manuel Lauss <mano@roarinelk.homelinux.net> wrote:
-
-> Hello,
->=20
-> The following set of patches remove demoboard-specific code from the
-> au1xmmc.c driver and adds new features.
->=20
-
-The role of maintainer is vacant if you want it. *nudge* ;)
-
---=_freyr.drzeus.cx-26325-1212699881-0001-2
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment; filename=signature.asc
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.9 (GNU/Linux)
-
-iEYEARECAAYFAkhIVggACgkQ7b8eESbyJLjmZQCgvOjMBWmXUaowz3LOXda2GWwC
-yEQAnR4+cYGtHueM1rSRZFrThlvTu5RM
-=LfR8
------END PGP SIGNATURE-----
-
---=_freyr.drzeus.cx-26325-1212699881-0001-2--
+Thanks,
+Dmitri

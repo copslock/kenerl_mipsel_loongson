@@ -1,51 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2008 12:58:21 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:29862 "EHLO
-	sorrow.cyrius.com") by ftp.linux-mips.org with ESMTP
-	id S20022151AbYFEL6T (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 5 Jun 2008 12:58:19 +0100
-Received: by sorrow.cyrius.com (Postfix, from userid 10)
-	id BD61FD8DE; Thu,  5 Jun 2008 11:58:16 +0000 (UTC)
-Received: by deprecation.cyrius.com (Postfix, from userid 1000)
-	id 4BDA0150F76; Thu,  5 Jun 2008 13:57:59 +0200 (CEST)
-Date:	Thu, 5 Jun 2008 13:57:59 +0200
-From:	Martin Michlmayr <tbm@cyrius.com>
-To:	Adrian Bunk <bunk@kernel.org>
-Cc:	Chris Dearman <chris@mips.com>,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: mips/kernel/traps.c build error
-Message-ID: <20080605115759.GA5043@deprecation.cyrius.com>
-References: <20080525164311.GB1791@cs181133002.pp.htv.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2008 13:47:04 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:62408 "EHLO
+	rv-out-0708.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022188AbYFEMrB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 5 Jun 2008 13:47:01 +0100
+Received: by rv-out-0708.google.com with SMTP id c5so564259rvf.24
+        for <linux-mips@linux-mips.org>; Thu, 05 Jun 2008 05:46:41 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:sender
+         :to:subject:mime-version:content-type:content-transfer-encoding
+         :content-disposition:x-google-sender-auth;
+        bh=lQNYOKFaiqU3+K73qp+i02KEGERjGYqERt3abZ9aXdQ=;
+        b=r28VmdN49d2uyfxhc5cyj8+u1yd5dhfkEFke+/ZRKEm1m/t7jpj+yU00sqNUO5QAMM
+         ljdAmRNdRhc4BqpR1obsQFcrXtcDmft3cNeDmyUq+Wsqa/iUfLAwvMsl3LMiSlXusY0S
+         JDKP74bgVehwAZg3/TTkOVAeUYBjiP3NYQDUM=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:sender:to:subject:mime-version:content-type
+         :content-transfer-encoding:content-disposition:x-google-sender-auth;
+        b=kfe5n4do21UwnuGQl8I3ddXxkCfA1S/AjFSzQ3zGEUao7LsXGBixVbTe8VGK3bws7Z
+         3WVKs1Z4MAnpkRKHKN6OCp0sqZLoZO/OBYE7fS10OQqjZsziBXaULHvu14M3fTzFO0PP
+         im9+Ope5/zl5kEtrlpJkLdbBLjtyTTW5aZ7jI=
+Received: by 10.141.175.5 with SMTP id c5mr823116rvp.54.1212670001034;
+        Thu, 05 Jun 2008 05:46:41 -0700 (PDT)
+Received: by 10.141.197.19 with HTTP; Thu, 5 Jun 2008 05:46:40 -0700 (PDT)
+Message-ID: <a537dd660806050546s5b015183ra7b3a8259e13574e@mail.gmail.com>
+Date:	Thu, 5 Jun 2008 14:46:40 +0200
+From:	"Brian Foster" <brian.foster@innova-card.com>
+To:	linux-mips@linux-mips.org
+Subject: [Q] Pre-built cross-compilers for little-endian MIPS-Linux kernel (SDE-Lite vs? mipsel-linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <20080525164311.GB1791@cs181133002.pp.htv.fi>
-User-Agent: Mutt/1.5.17+20080114 (2008-01-14)
-Return-Path: <tbm@cyrius.com>
+X-Google-Sender-Auth: 86461a57dfdfe4e1
+Return-Path: <blf.ireland@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19406
+X-archive-position: 19407
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tbm@cyrius.com
+X-original-sender: brian.foster@innova-card.com
 Precedence: bulk
 X-list: linux-mips
 
-* Adrian Bunk <bunk@kernel.org> [2008-05-25 19:43]:
-> /home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/kernel/traps.c: In function 'show_raw_backtrace':
-> /home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/kernel/traps.c:92: error: cast from pointer to integer of different size
-> make[2]: *** [arch/mips/kernel/traps.o] Error 1
-> 
-> <--  snip  -->
-> 
-> "[MIPS] Fix check for valid stack pointer during backtrace" in the mips 
-> tree fixes it, and should therefore also go into 2.6.26.
+ I'm confused about pre-built cross-compiling tool-chains
+ for building the MIPS-Linux kernel.  (Please note my
+ question is confined to building the kernel, cross.)
 
-It's still not in mainline as of rc5.
+ My Host is x86 running Linux.  My Target is an embedded
+ SoC using the 4KSd core, and is little-endian.
+
+ Linux (of the 2.6.20 vintage) has been ported to the SoC,
+ using  mipsel-sdelinux-V6.04.00-4  to compile the kernel.
+ The development system also includes  5.03 SDE-Lite,
+ albeit I'm not too clear what that's used for:  I know
+ the debugger, sde-gdb, is used with the FS2 EJTAG Probe,
+ but am uncertain if anything else is actually used ....
+
+ Anyways, that's all getting a bit old.  Hence, in time,
+ the kernel will be up-reved (to at least 2.6.24).
+ I also want to use later toolchain(s?), and I am currently
+ trying to work out what's what, with the goal (if possible)
+ of using them to built the current (2.6.20-ish kernel).
+ The  http://www.linux-mips.org/wiki/MIPS_SDE_Installation
+ page is rather confusing, talking first about SDE 6.x,
+ and then jumping into a discussion of cross tool-chains.
+
+ Whilst I assume I can use the most recent  mipsel-linux
+ (mipsel-sdelinux-v6.05.00-4) to built the kernel, is it
+ possible to use the most recent SDE-Lite (v6.06.01) to
+ build the Linux kernel?   If so, what do I need to tweak
+ so `sde-gcc' (with appropriate magic) is used instead of
+ `mipsel-linux-gcc' (with whatever magic it's using)?
+
+cheers!
+	-blf-
+
 -- 
-Martin Michlmayr
-http://www.cyrius.com/
+"How many surrealists does it take to | Brian Foster
+ change a lightbulb? Three. One calms | somewhere in south of France
+ the warthog, and two fill the bathtub | Stop E$$o (ExxonMobil)!
+ with brightly-coloured machine tools." | http://www.stopesso.com

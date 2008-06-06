@@ -1,61 +1,120 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Jun 2008 22:51:57 +0100 (BST)
-Received: from relay01.mx.bawue.net ([193.7.176.67]:30389 "HELO
-	relay01.mx.bawue.net") by ftp.linux-mips.org with SMTP
-	id S28575467AbYFEVvz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 5 Jun 2008 22:51:55 +0100
-Received: from lagash (88-106-136-149.dynamic.dsl.as9105.com [88.106.136.149])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by relay01.mx.bawue.net (Postfix) with ESMTP id 5603448916;
-	Thu,  5 Jun 2008 23:51:54 +0200 (CEST)
-Received: from ths by lagash with local (Exim 4.69)
-	(envelope-from <ths@networkno.de>)
-	id 1K4NNA-0001ea-8L; Thu, 05 Jun 2008 22:51:52 +0100
-Date:	Thu, 5 Jun 2008 22:51:52 +0100
-From:	Thiemo Seufer <ths@networkno.de>
-To:	Vorobiev Dmitri <dmitri.vorobiev@movial.fi>
-Cc:	Theodore Tso <tytso@MIT.EDU>, Martin Michlmayr <tbm@cyrius.com>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>,
-	linux-mips@linux-mips.org, linux-ext4@vger.kernel.org
-Subject: Re: ext4dev build failure on mips: "empty_zero_page" undefined
-Message-ID: <20080605215152.GB15504@networkno.de>
-References: <20080512130604.GA15008@deprecation.cyrius.com> <90edad820805120654n50f7a00cm3c7b4a4f9346d5ea@mail.gmail.com> <20080512143426.GB7029@mit.edu> <90edad820805120746l61e67362vbd177d63e8b05dc8@mail.gmail.com> <20080513045028.GC22226@linux-mips.org> <20080528070637.GA10393@deprecation.cyrius.com> <20080605111148.GA4483@deprecation.cyrius.com> <1212664977.4840.6.camel@sd048.hel.movial.fi> <20080605183854.GN25477@mit.edu> <38408.84.249.59.97.1212701650.squirrel@webmail.movial.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jun 2008 02:25:30 +0100 (BST)
+Received: from sj-iport-6.cisco.com ([171.71.176.117]:35886 "EHLO
+	sj-iport-6.cisco.com") by ftp.linux-mips.org with ESMTP
+	id S28576363AbYFFBZ2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 6 Jun 2008 02:25:28 +0100
+X-IronPort-AV: E=Sophos;i="4.27,598,1204531200"; 
+   d="scan'208";a="109172505"
+Received: from sj-dkim-2.cisco.com ([171.71.179.186])
+  by sj-iport-6.cisco.com with ESMTP; 05 Jun 2008 18:25:21 -0700
+Received: from sj-core-2.cisco.com (sj-core-2.cisco.com [171.71.177.254])
+	by sj-dkim-2.cisco.com (8.12.11/8.12.11) with ESMTP id m561PLDF002740;
+	Thu, 5 Jun 2008 18:25:21 -0700
+Received: from cliff.cisco.com (cliff.cisco.com [171.69.11.141])
+	by sj-core-2.cisco.com (8.13.8/8.13.8) with ESMTP id m561PKgf002787;
+	Fri, 6 Jun 2008 01:25:20 GMT
+Received: from [127.0.0.1] ([64.101.20.200]) by cliff.cisco.com (8.6.12/8.6.5) with ESMTP id BAA23770; Fri, 6 Jun 2008 01:25:18 GMT
+Message-ID: <484891DA.2080202@cisco.com>
+Date:	Thu, 05 Jun 2008 18:24:42 -0700
+From:	David VomLehn <dvomlehn@cisco.com>
+User-Agent: Thunderbird 2.0.0.14 (Windows/20080421)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <38408.84.249.59.97.1212701650.squirrel@webmail.movial.fi>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ths@networkno.de>
+To:	wangbj@dslab.lzu.edu.cn
+CC:	Chetan Nanda <chetannanda@gmail.com>, linux-mips@linux-mips.org
+Subject: Re: understanding head.S
+References: <7f245da80806050302m6b449e6m1f84dc7ef7efff46@mail.gmail.com> <1212664525.24330.22.camel@localhost.dslab>
+In-Reply-To: <1212664525.24330.22.camel@localhost.dslab>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=3121; t=1212715521; x=1213579521;
+	c=relaxed/simple; s=sjdkim2002;
+	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
+	d=cisco.com; i=dvomlehn@cisco.com;
+	z=From:=20David=20VomLehn=20<dvomlehn@cisco.com>
+	|Subject:=20Re=3A=20understanding=20head.S
+	|Sender:=20;
+	bh=r5Ecb04ZaYMY8B/kTL/JGbDJf/Wfq9ISIR8yQvT/x2M=;
+	b=eXJGuGEKq/7HvUW7wBxod7xf2OKqu3xIc1y82cyvmezliZcxVSxWHccwJr
+	6TviE+ehqewYHyqwazo9vSnmmbPIlGB27wifcOgVQ4uyp9yL4JM/y5imF2Zb
+	dJ5SukPE1f;
+Authentication-Results:	sj-dkim-2; header.From=dvomlehn@cisco.com; dkim=pass (
+	sig from cisco.com/sjdkim2002 verified; ); 
+Return-Path: <dvomlehn@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19416
+X-archive-position: 19417
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: dvomlehn@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
-Vorobiev Dmitri wrote:
-> Theodore Tso wrote:
-> >
-> > If you really insist I suppose we could have a MIPS specific patch
-> > where we allocate a 4k page and zero it, so we can use it from our
-> > kernel code because you don't want to export and make available the
-> > ZERO_PAGE that gets used by the rest of the kernel, but that seems
-> > awfully silly, and would be a waste of 4k of memory.....  Someone from
-> > MIPS land would have to test it, as well, as I dont think any of the
-> > ext4 developers have access to a MIPS platform.
-> 
-> Ted, Ralf seems to be unwilling to accept the ZERO_PAGE() export. If you
-> send the MIPS-specific patch, I can do the testing for you as I have a
-> MIPS Malta board at my disposal.
+Wang, Baojun wrote:
+> 在 2008-06-05四的 15:32 +0530，Chetan Nanda写道：
+>   
+>> Hi All,
+>> I was reading the boot code for MIPS.
+>> in head.S file before jumping to 'start_kernel' it calculate the stack
+>> pointer address as follow:
+>>
+>> "
+>> 	PTR_LA		$28, init_thread_union
+>> 	PTR_ADDIU	sp, $28, _THREAD_SIZE - 32
+>>     
+> make sp point to the stack top so that we can allocate stack space
+> later, -32 is a reserved area for local variable, saved GPR, arguments
+> (function stack frame).. due to the abi
+>   
+The MIPS ABI, whose official name is "System V Application Binary 
+Interface: MIPS(r) Processor Supplement, 3rd Edition", may be found at 
+http://math-atlas.sourceforge.net/devel/assembly/mipsabi32.pdf.. The 
+code generated by gcc does not conform to the MIPS ABI in all cases, but 
+it is the closest thing we have to a standard.
 
-AFAIU the problematic case are systems with R4000/R4400 SC/MC CPUs
-since they use 8 zero pages of different color. Have a look at
-arch/mips/mm/init.c:setup_zero_pages.
-
-
-Thiemo
+The init_thread_union item is a pre-allocated stack area. The PTR_LA 
+loads the address of the beginning of that item, but since the stack 
+grows down, toward smaller addresses, we need to set the stack pointer 
+to the highest address in the stack area. I'm pretty sure the MIPS ABI 
+doesn't mention anything about the 32-byte area as it doesn't address 
+the case of  how kernel stacks should be initialized. It's not clear to 
+me what it's there for, but it might be helpful for detecting stack 
+underflows or for giving a little extra space before a buffer overflow 
+corrupts other kernel data structures.
+>> 	set_saved_sp	sp, t0, t1
+>>     
+> set_saved_sp is defined (as a assembler macro) in
+> include/asm-mips/stackframe.h (if you're using vim, I think it will be
+> easy to use vim with cscope..)
+>   
+We must load the stack pointer with pointer to a valid kernel stack 
+before calling any C code to handle interrupts or exceptions. The 
+assembly language macro set_saved_sp is how we store the kernel stack 
+pointer to use in such a case. The SAVE_SOME macro is generally used to 
+restore the stack pointer.
+>> 	PTR_SUBU	sp, 4 * SZREG		# init stack pointer
+>>     
+> SZREG is defined to the general purpose register size, it is 32bit in
+> MIPS32 and 64bit in MIPS64, so the last line allocates 16/32 bytes to
+> build a stack frame.. You could refer to the MIPS ABI if you need
+> further information (the kernel don't follow the standard ABI all the
+> time though..)
+>   
+The MIPS ABI states that the caller of a function must reserve space for 
+four arguments, which are passed in the registers a0-a3, even if the 
+function being called is not being passed four arguments. Since SZREG is 
+the size of one register, 4 * SZREG reserves enough space for these four 
+arguments. See the section "C Stack Frame" on page 3-46 and Figures 3-37 
+and Figure 3-38 in the MIPS ABI for details about what C stack frames 
+look like.
+>> Can anyone please explains me this 4 lines of code?
+>> Why ' _THREAD_SIZE - 32' is added in 'sp' ?
+>> What 'set_saved_sp' will do ?
+>> and then why we subtract '4 * SZREG' from 'sp' ?
+>>
+>> Please hep me to understand this code better.
+>>
+>> Thanks,
+>> Chetan Nanda
+>>     

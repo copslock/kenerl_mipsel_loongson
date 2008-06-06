@@ -1,63 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jun 2008 14:16:21 +0100 (BST)
-Received: from www.church-of-our-saviour.org ([69.25.196.31]:22442 "EHLO
-	thunker.thunk.org") by ftp.linux-mips.org with ESMTP
-	id S28585996AbYFFNQT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 6 Jun 2008 14:16:19 +0100
-Received: from root (helo=closure.thunk.org)
-	by thunker.thunk.org with local-esmtp   (Exim 4.50 #1 (Debian))
-	id 1K4bqH-000799-7j; Fri, 06 Jun 2008 09:18:53 -0400
-Received: from tytso by closure.thunk.org with local (Exim 4.67)
-	(envelope-from <tytso@mit.edu>)
-	id 1K4bnH-0002rc-7l; Fri, 06 Jun 2008 09:15:47 -0400
-Date:	Fri, 6 Jun 2008 09:15:47 -0400
-From:	Theodore Tso <tytso@mit.edu>
-To:	Thiemo Seufer <ths@networkno.de>
-Cc:	Vorobiev Dmitri <dmitri.vorobiev@movial.fi>,
-	Martin Michlmayr <tbm@cyrius.com>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>,
-	linux-mips@linux-mips.org, linux-ext4@vger.kernel.org
-Subject: Re: ext4dev build failure on mips: "empty_zero_page" undefined
-Message-ID: <20080606131547.GB9033@mit.edu>
-References: <90edad820805120654n50f7a00cm3c7b4a4f9346d5ea@mail.gmail.com> <20080512143426.GB7029@mit.edu> <90edad820805120746l61e67362vbd177d63e8b05dc8@mail.gmail.com> <20080513045028.GC22226@linux-mips.org> <20080528070637.GA10393@deprecation.cyrius.com> <20080605111148.GA4483@deprecation.cyrius.com> <1212664977.4840.6.camel@sd048.hel.movial.fi> <20080605183854.GN25477@mit.edu> <38408.84.249.59.97.1212701650.squirrel@webmail.movial.fi> <20080605215152.GB15504@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jun 2008 15:42:03 +0100 (BST)
+Received: from mail30g.wh2.ocn.ne.jp ([220.111.41.239]:37231 "HELO
+	mail30g.wh2.ocn.ne.jp") by ftp.linux-mips.org with SMTP
+	id S28642419AbYFFOmB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 6 Jun 2008 15:42:01 +0100
+Received: from vs30a.wh2.ocn.ne.jp (220.111.41.231)
+	by mail30g.wh2.ocn.ne.jp (RS ver 1.0.95vs) with SMTP id 1-096493303;
+	Fri,  6 Jun 2008 23:41:56 +0900 (JST)
+From:	bruno randolf <br1@einfach.org>
+To:	ralf@linux-mips.org
+Subject: [patch] add au1500 reserved interrupt
+Date:	Fri, 6 Jun 2008 16:42:03 +0200
+User-Agent: KMail/1.9.7
+Cc:	linux-mips@linux-mips.org, sshtylyov@ru.mvista.com
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <20080605215152.GB15504@networkno.de>
-User-Agent: Mutt/1.5.15+20070412 (2007-04-11)
-X-SA-Exim-Connect-IP: <locally generated>
-X-SA-Exim-Mail-From: tytso@mit.edu
-X-SA-Exim-Scanned: No (on thunker.thunk.org); SAEximRunCond expanded to false
-Return-Path: <tytso@mit.edu>
+Message-Id: <200806061642.03883.br1@einfach.org>
+X-SF-Loop: 1
+Return-Path: <br1@einfach.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19427
+X-archive-position: 19428
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tytso@mit.edu
+X-original-sender: br1@einfach.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jun 05, 2008 at 10:51:52PM +0100, Thiemo Seufer wrote:
-> > Ted, Ralf seems to be unwilling to accept the ZERO_PAGE() export. If you
-> > send the MIPS-specific patch, I can do the testing for you as I have a
-> > MIPS Malta board at my disposal.
+au1000: add au1500 reserved interrupt
 
-Ralf sent me a private note saying he would take care of this, but
-that he had been very busy with real-world life items.
+in the conversion done in the commits
 
-> AFAIU the problematic case are systems with R4000/R4400 SC/MC CPUs
-> since they use 8 zero pages of different color. Have a look at
-> arch/mips/mm/init.c:setup_zero_pages.
+  95c4eb3ef4484ca85da5c98780d358cffd546b90
+  9d360ab4a7568a8d177280f651a8a772ae52b9b9
 
-Right.  So we're not actually going to ever write to the page, but we
-are going to add the page to a bio and submit for writing.  I assume
-that's not going to cause VECI/VCED exceptions, right?  If the act of
-DMA'ing, or worse yet, for older devices/drivers which have to use PIO
-to write out a block device is going to cause "thousand and thousands
-of exceptions", it sounds like MIPS CPU designers need to be slapped
-silly....
+  [MIPS] Alchemy: Renumber interrupts so irq_cpu can work.
 
-					- Ted
+one reserved interrupt on au1500 was missed. this broke the au1000 ethernet 
+driver.
+
+this patch against 2.6.25.4 makes it work again.
+
+Signed-off-by: Bruno Randolf <br1@einfach.org>
+
+--- a/include/asm-mips/mach-au1x00/au1000.h	2008-05-15 17:00:12.000000000 
++0200
++++ b/include/asm-mips/mach-au1x00/au1000.h	2008-06-06 16:22:51.000000000 
++0200
+@@ -623,6 +623,7 @@
+ 	AU1000_RTC_MATCH1_INT,
+ 	AU1000_RTC_MATCH2_INT,
+ 	AU1500_PCI_ERR_INT,
++	AU1500_RESERVED_INT,
+ 	AU1000_USB_DEV_REQ_INT,
+ 	AU1000_USB_DEV_SUS_INT,
+ 	AU1000_USB_HOST_INT,

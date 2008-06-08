@@ -1,61 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Jun 2008 15:42:03 +0100 (BST)
-Received: from mail30g.wh2.ocn.ne.jp ([220.111.41.239]:37231 "HELO
-	mail30g.wh2.ocn.ne.jp") by ftp.linux-mips.org with SMTP
-	id S28642419AbYFFOmB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 6 Jun 2008 15:42:01 +0100
-Received: from vs30a.wh2.ocn.ne.jp (220.111.41.231)
-	by mail30g.wh2.ocn.ne.jp (RS ver 1.0.95vs) with SMTP id 1-096493303;
-	Fri,  6 Jun 2008 23:41:56 +0900 (JST)
-From:	bruno randolf <br1@einfach.org>
-To:	ralf@linux-mips.org
-Subject: [patch] add au1500 reserved interrupt
-Date:	Fri, 6 Jun 2008 16:42:03 +0200
-User-Agent: KMail/1.9.7
-Cc:	linux-mips@linux-mips.org, sshtylyov@ru.mvista.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Jun 2008 05:32:15 +0100 (BST)
+Received: from wsip-70-184-212-2.om.om.cox.net ([70.184.212.2]:23526 "EHLO
+	hachi.dashjr.org") by ftp.linux-mips.org with ESMTP
+	id S29038660AbYFHEcM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 8 Jun 2008 05:32:12 +0100
+Received: from yokochan.lan (yokochan.lan [IPv6:2002:440d:6de2:0:20d:60ff:fe77:7d85])
+	(Authenticated sender: luke-jr)
+	by hachi.dashjr.org (Postfix) with ESMTP id 3E565961B73;
+	Sun,  8 Jun 2008 04:32:10 +0000 (UTC)
+From:	Luke -Jr <luke@dashjr.org>
+Organization: -Jr Family
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: Re: bcm33xx port
+Date:	Sat, 7 Jun 2008 23:32:01 -0500
+User-Agent: KMail/1.9.9
+Cc:	linux-kernel <linux-kernel@vger.kernel.org>,
+	linux-mips@linux-mips.org
+References: <200806072113.26433.luke@dashjr.org> <Pine.LNX.4.55.0806080342310.15673@cliff.in.clinika.pl>
+In-Reply-To: <Pine.LNX.4.55.0806080342310.15673@cliff.in.clinika.pl>
+PGP-Key-Fingerprint: CE5A D56A 36CC 69FA E7D2 3558 665F C11D D53E 9583
+Jabber-ID: luke@dashjr.org
 MIME-Version: 1.0
 Content-Type: text/plain;
-  charset="us-ascii"
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200806061642.03883.br1@einfach.org>
-X-SF-Loop: 1
-Return-Path: <br1@einfach.org>
+Message-Id: <200806072332.06460.luke@dashjr.org>
+Return-Path: <luke@dashjr.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19428
+X-archive-position: 19430
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: br1@einfach.org
+X-original-sender: luke@dashjr.org
 Precedence: bulk
 X-list: linux-mips
 
-au1000: add au1500 reserved interrupt
+On Saturday 07 June 2008, Maciej W. Rozycki wrote:
+> On Sat, 7 Jun 2008, Luke -Jr wrote:
+> > > I'm not too up on MIPS but there're a few things in the log which stand
+> > > out to me:
+> > >
+> > > Determined physical RAM map:
+> > >  memory: 00fa0000 @ 00000000 (usable)
+> > > User-defined physical RAM map:
+> > >  memory: 007a1200 @ 00000000 (usable)
+> > >
+> > > Can you confirm these sizes and locations for RAM?  Does anything
+> > > change if you don't force the size constraint?
+> >
+> > According to
+> > http://research.msrg.utoronto.ca/ece344/2007s/os161/mips.html , MIPS has
+> > a pretty odd memory layout, and I'm honestly not sure how Linux usually
+> > handles it. I don't feel competent to try and summarize the details on
+> > that page here.
+>
+>  Nothing odd about the memory layout I would say unless you want to go
+> beyond 512MB with a 32-bit system which is not the case here.
 
-in the conversion done in the commits
+Well, I always imagined memory layout as being a simple flat range from 0 to 
+all_memory_in_system, but this is my first experience with it at such a low 
+level, so I guess I don't know what's "odd" or "normal".
 
-  95c4eb3ef4484ca85da5c98780d358cffd546b90
-  9d360ab4a7568a8d177280f651a8a772ae52b9b9
+> > > CPU frequency 32.00 MHz
+> > >
+> > > Really?  Is your bootloader setting the CPU up correctly before handing
+> > > control to Linux?
+> >
+> > The CPU is 200 MHz, I believe. The bootloader is just a part of VxWorks,
+> > not really meant to boot anything else.
+>
+>  CFE is pretty much standard for Broadcom platforms and far from being
+> specific to VxWorks.
 
-  [MIPS] Alchemy: Renumber interrupts so irq_cpu can work.
+VxWorks, including the boot loader, is not CFE as far as I am aware. If you're 
+referring to the "CFEv2" in the log, that appears to be the default of a 
+switch (eg, if Linux doesn't detect anything else).
 
-one reserved interrupt on au1500 was missed. this broke the au1000 ethernet 
-driver.
+>  I'd be more concerned about:
+>
+> Calibrating delay loop (skipped)... 0.00 BogoMIPS preset
 
-this patch against 2.6.25.4 makes it work again.
+The calibration code was crashing, so I set it to a fixed 1 value.
+Worst case, some code won't delay as long as it wants to, right?
 
-Signed-off-by: Bruno Randolf <br1@einfach.org>
+> > > Reserved instruction in kernel code[#1]:
+> > >
+> > > You're compiling with an appropriate -march switch?
+> >
+> > I believe so... It appears to be a "reserved instruction" only because of
+> > the memory area it tries to access. The instruction in question is "store
+> > word", nothing complex.
+>
+>  You have got something seriously broken -- __bzero traps exceptions on
+> stores for graceful recovery as user addresses may be accessed as is the
+> case here.  If the reserved instruction exception handler is reached, then
+> clearly the store instruction is not the immediate cause.
 
---- a/include/asm-mips/mach-au1x00/au1000.h	2008-05-15 17:00:12.000000000 
-+0200
-+++ b/include/asm-mips/mach-au1x00/au1000.h	2008-06-06 16:22:51.000000000 
-+0200
-@@ -623,6 +623,7 @@
- 	AU1000_RTC_MATCH1_INT,
- 	AU1000_RTC_MATCH2_INT,
- 	AU1500_PCI_ERR_INT,
-+	AU1500_RESERVED_INT,
- 	AU1000_USB_DEV_REQ_INT,
- 	AU1000_USB_DEV_SUS_INT,
- 	AU1000_USB_HOST_INT,
+What else could it be?

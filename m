@@ -1,59 +1,30 @@
-From: Manuel Lauss <mlau@msc-ge.com>
-Date: Sat, 17 May 2008 17:58:52 +0200
-Subject: [PATCH] au1xmmc: SDIO IRQ support
-Message-ID: <20080517155852.y86jIPVFhF1JWzOHA-uPOBPYzhBmmtBU6q9gPGeZAkM@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jun 2008 07:38:39 +0100 (BST)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:57493 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S20029933AbYFIGig (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 9 Jun 2008 07:38:36 +0100
+Received: (qmail 8896 invoked by uid 1000); 9 Jun 2008 08:38:35 +0200
+Date:	Mon, 9 Jun 2008 08:38:35 +0200
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+To:	linux-mips@linux-mips.org, sshtylyov@ru.mvista.com,
+	drzeus@drzeus.cx, linux-kernel@vger.kernel.org
+Subject: [PATCH 5/8] au1xmmc: codingstyle tidying.
+Message-ID: <20080609063835.GF8724@roarinelk.homelinux.net>
+References: <20080609063521.GA8724@roarinelk.homelinux.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20080609063521.GA8724@roarinelk.homelinux.net>
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Return-Path: <mano@roarinelk.homelinux.net>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 19449
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: mano@roarinelk.homelinux.net
+Precedence: bulk
+X-list: linux-mips
 
-Wire up the SD controllers' SDIO IRQ capability.
-
-Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
----
- drivers/mmc/host/au1xmmc.c |   16 +++++++++++++++-
- 1 files changed, 15 insertions(+), 1 deletions(-)
-
-diff --git a/drivers/mmc/host/au1xmmc.c b/drivers/mmc/host/au1xmmc.c
-index 2bd4cf4..16b5640 100644
---- a/drivers/mmc/host/au1xmmc.c
-+++ b/drivers/mmc/host/au1xmmc.c
-@@ -736,6 +736,9 @@ static irqreturn_t au1xmmc_irq(int irq, void *dev_id)
- 	if (!(status & SD_STATUS_I))
- 		return IRQ_NONE;	/* not ours */
- 
-+	if (status & SD_STATUS_SI)	/* SDIO */
-+		mmc_signal_sdio_irq(host->mmc);
-+
- 	if (host->mrq && (status & STATUS_TIMEOUT)) {
- 		if (status & SD_STATUS_RAT)
- 			host->mrq->cmd->error = -ETIMEDOUT;
-@@ -862,10 +865,21 @@ static void au1xmmc_dbdma_shutdown(struct au1xmmc_host *host)
- }
- #endif
- 
-+static void au1xmmc_enable_sdio_irq(struct mmc_host *mmc, int en)
-+{
-+	struct au1xmmc_host *host = mmc_priv(mmc);
-+
-+	if (en)
-+		IRQ_ON(host, SD_CONFIG_SI);
-+	else
-+		IRQ_OFF(host, SD_CONFIG_SI);
-+}
-+
- static const struct mmc_host_ops au1xmmc_ops = {
- 	.request	= au1xmmc_request,
- 	.set_ios	= au1xmmc_set_ios,
- 	.get_ro		= au1xmmc_card_readonly,
-+	.enable_sdio_irq = au1xmmc_enable_sdio_irq,
- };
- 
- static void au1xmmc_poll_event(unsigned long arg)
-@@ -964,7 +978,7 @@ static int __devinit au1xmmc_probe(struct platform_device *pdev)
- 	mmc->max_blk_count = 512;
- 
- 	mmc->ocr_avail = AU1XMMC_OCR;
--	mmc->caps = MMC_CAP_4_BIT_DATA;
-+	mmc->caps = MMC_CAP_4_BIT_DATA | MMC_CAP_SDIO_IRQ;
- 
- 	host->status = HOST_S_IDLE;
- 
--- 
-1.5.5.3

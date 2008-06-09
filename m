@@ -1,116 +1,145 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jun 2008 16:37:18 +0100 (BST)
-Received: from hs-out-0708.google.com ([64.233.178.240]:16231 "EHLO
-	hs-out-0708.google.com") by ftp.linux-mips.org with ESMTP
-	id S20032162AbYFIPhP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 9 Jun 2008 16:37:15 +0100
-Received: by hs-out-0708.google.com with SMTP id x43so901313hsb.0
-        for <linux-mips@linux-mips.org>; Mon, 09 Jun 2008 08:37:13 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:sender
-         :to:subject:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:content-disposition:references
-         :x-google-sender-auth;
-        bh=cugFjSLA+m0QVRhFuuNJQ+b5wa2s5x8Y6XGj62uecpg=;
-        b=b6+2rj7ocokfw1MJ3+Bh4cGYbGrlaDV2BaQenjMe3oG74fGmeN6JvjtgDjYcYn2/pP
-         yPdF1uJrKjmOcEoXLCjt/z4DMSHm7Earw67mxxJufIrsnDblTiULvi03bvZgjqS3mq6d
-         BVn3FSM3T0m2+QnqUi4pvaDeP72AcEFLCrTCs=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:sender:to:subject:in-reply-to:mime-version
-         :content-type:content-transfer-encoding:content-disposition
-         :references:x-google-sender-auth;
-        b=mHpbBh1ZJRTxXGF50ITAMGOhOE2+QBmVoi4Zd8J5MEBlm250bX3jfpmuedYzCBzRYe
-         5ayKvLfgGsbD/zLJrJErusZC7ZLld5LLn+f1dwbtgbFZ3dn2BQ9aaTYW2FGRvgnDNBOf
-         szwZqM+R/CORX3Nw/Da3dg6w+W1p4UwERqCOQ=
-Received: by 10.150.49.1 with SMTP id w1mr6543951ybw.24.1213025833748;
-        Mon, 09 Jun 2008 08:37:13 -0700 (PDT)
-Received: by 10.150.156.11 with HTTP; Mon, 9 Jun 2008 08:37:13 -0700 (PDT)
-Message-ID: <a537dd660806090837i5ef6c1e2k167aeb97785a136d@mail.gmail.com>
-Date:	Mon, 9 Jun 2008 17:37:13 +0200
-From:	"Brian Foster" <brian.foster@innova-card.com>
-To:	linux-mips@linux-mips.org, "Andrew Dyer" <adyer@righthandtech.com>
-Subject: Re: Re: Adding(?) XI support to MIPS-Linux?
-In-Reply-To: <200806091658.10937.brian.foster@innova-card.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Jun 2008 17:20:02 +0100 (BST)
+Received: from kirk.serum.com.pl ([213.77.9.205]:53231 "EHLO serum.com.pl")
+	by ftp.linux-mips.org with ESMTP id S20031030AbYFIQUA (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Jun 2008 17:20:00 +0100
+Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
+	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m59GJtEa028053;
+	Mon, 9 Jun 2008 18:19:55 +0200
+Received: from localhost (macro@localhost)
+	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m59GJsCH028049;
+	Mon, 9 Jun 2008 17:19:54 +0100
+Date:	Mon, 9 Jun 2008 17:19:53 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	Daniel Jacobowitz <drow@false.org>, linux-mips@linux-mips.org
+Subject: [PATCH 1/2] mips: Remove obsolete isa_slot_offset
+Message-ID: <Pine.LNX.4.55.0806091655480.26593@cliff.in.clinika.pl>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <200806091658.10937.brian.foster@innova-card.com>
-X-Google-Sender-Auth: f108a826f98cf427
-Return-Path: <blf.ireland@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19457
+X-archive-position: 19458
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brian.foster@innova-card.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-> Date: Monday 09 June 2008
-> From: Andrew Dyer <adyer@righthandtech.com>
->
-> Brian Foster wrote:
->>  The MIPS 4KSd core (at least) implements an XI (eXecute Inhibit)
->>  page protection bit.  XI is similar to the NX (No Execute) bit
->>  in the more recent AMD/Intel x86 families:  Attempts to I-fetch
->>  from a page with XI set cause an exception.
->
-> AFAIK this is the only part with this extension, so I doubt that
-> much has been done with it.
->
-> I know that OpenBSD has done a bunch of work with x86 implementing
-> a similar protection scheme, you might do some searching on their
-> lists to see if they have any information on GCC mods required.
+ The isa_slot_offset variable and its __ISA_IO_base macro is not used
+anywhere anymore.  It does not look like a decent interface per today's
+standards either.  Remove both including all places of initialization.
 
-Andrew,
+Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
+---
+Hello,
 
- As far as I am aware, XI is part of the SMARTMIPS extension,
- and I _think_ SMARTMIPS is only implemented by the 4KS cores?
- Whilst other companies have licensed that core from MIPS, to
- the best of my knowledge the SoC I'm concerned with (Innova
- Card's USIP Pro) is the only one running Linux.  So I suspect
- you're quite correct:  Nothing's been done.
+ This is the first half of a set of two changes resulting from my
+investigation of how proper iomap support should be done for the SB1250 in
+response to a report from Daniel.  Tested successfully with a SWARM board
+with no regressions.
 
- I've been in contact with the PaX people, and they inform me
- "the experimental NX tweaks [ for MIPS ] didn't get anywhere
- due to lack of time/interest of the guy who started it."
+ Please apply.
 
- The "market segment" USIP is aimed at is sufficiently touchy
- about security I currently believe it's plausible (assuming
- it's technologically possible) to simply forbid (not support)
- concurrently executable-and-writable memory.  As such, certain
- programs won't work.  Tough.  There's no call to support the
- (broken) JVM's et al. that "require" it, and I'm hoping that
- nested C/C++ functions are rare (ideally non-existent in the
- code which normally runs on USIP).  It'd be nice if such code
- either fails to compile and/or fails to link/load, but that's
- some (highly useful) porcelain.
+  Maciej
 
- Broadly, what I'm trying to say is I don't want to touch gcc
- (and/or binutils) and am unconvinced I have to.  But I'm very
- much open to correction here!
-
- The x86 (including amd64) and, AFAIK, SuperH (sh) Linux kernels
- now support NX or equivalent; indeed, a test on my 2.6.22(-ish)
- amd64 workstation (Kubuntu 7.10) has a non-executable stack.
- As such, those could be a model worth studying/following, but
- I understand they have support for specially-marked binaries to
- have executable stacks (i.e., binutils/gcc mods, which I want to
- avoid).  It's probably worth having a look at OpenBSD (thanks
- for the suggestion!).
-
- Advice, suggestions, pointers, comments, corrections are very
- welcome.
-
-cheers!
-	-blf-
-
--- 
-"How many surrealists does it take to   | Brian Foster
- change a lightbulb? Three. One calms   | somewhere in south of France
- the warthog, and two fill the bathtub  |   Stop E$$o (ExxonMobil)!
- with brightly-coloured machine tools." |      http://www.stopesso.com
+patch-2.6.26-rc1-20080505-isa-slot-offset-0
+diff -up --recursive --new-file linux-2.6.26-rc1-20080505.macro/arch/mips/jazz/setup.c linux-2.6.26-rc1-20080505/arch/mips/jazz/setup.c
+--- linux-2.6.26-rc1-20080505.macro/arch/mips/jazz/setup.c	2008-05-05 02:55:23.000000000 +0000
++++ linux-2.6.26-rc1-20080505/arch/mips/jazz/setup.c	2008-06-08 23:37:22.000000000 +0000
+@@ -79,7 +79,6 @@ void __init plat_mem_setup(void)
+ 	if (mips_machtype == MACH_MIPS_MAGNUM_4000)
+ 		EISA_bus = 1;
+ #endif
+-	isa_slot_offset = 0xe3000000;
+ 
+ 	/* request I/O space for devices used on all i[345]86 PCs */
+ 	for (i = 0; i < ARRAY_SIZE(jazz_io_resources); i++)
+diff -up --recursive --new-file linux-2.6.26-rc1-20080505.macro/arch/mips/kernel/setup.c linux-2.6.26-rc1-20080505/arch/mips/kernel/setup.c
+--- linux-2.6.26-rc1-20080505.macro/arch/mips/kernel/setup.c	2008-05-05 02:55:23.000000000 +0000
++++ linux-2.6.26-rc1-20080505/arch/mips/kernel/setup.c	2008-06-08 23:38:07.000000000 +0000
+@@ -68,13 +68,6 @@ static char command_line[CL_SIZE];
+ const unsigned long mips_io_port_base __read_mostly = -1;
+ EXPORT_SYMBOL(mips_io_port_base);
+ 
+-/*
+- * isa_slot_offset is the address where E(ISA) busaddress 0 is mapped
+- * for the processor.
+- */
+-unsigned long isa_slot_offset;
+-EXPORT_SYMBOL(isa_slot_offset);
+-
+ static struct resource code_resource = { .name = "Kernel code", };
+ static struct resource data_resource = { .name = "Kernel data", };
+ 
+diff -up --recursive --new-file linux-2.6.26-rc1-20080505.macro/arch/mips/pci/pci-bcm1480.c linux-2.6.26-rc1-20080505/arch/mips/pci/pci-bcm1480.c
+--- linux-2.6.26-rc1-20080505.macro/arch/mips/pci/pci-bcm1480.c	2008-05-05 02:55:23.000000000 +0000
++++ linux-2.6.26-rc1-20080505/arch/mips/pci/pci-bcm1480.c	2008-06-08 23:39:17.000000000 +0000
+@@ -254,8 +254,6 @@ static int __init bcm1480_pcibios_init(v
+ 		ioremap(A_BCM1480_PHYS_PCI_IO_MATCH_BYTES, 65536);
+ 	bcm1480_controller.io_map_base -= bcm1480_controller.io_offset;
+ 	set_io_port_base(bcm1480_controller.io_map_base);
+-	isa_slot_offset = (unsigned long)
+-		ioremap(A_BCM1480_PHYS_PCI_MEM_MATCH_BYTES, 1024*1024);
+ 
+ 	register_pci_controller(&bcm1480_controller);
+ 
+diff -up --recursive --new-file linux-2.6.26-rc1-20080505.macro/arch/mips/pci/pci-sb1250.c linux-2.6.26-rc1-20080505/arch/mips/pci/pci-sb1250.c
+--- linux-2.6.26-rc1-20080505.macro/arch/mips/pci/pci-sb1250.c	2007-10-11 04:56:52.000000000 +0000
++++ linux-2.6.26-rc1-20080505/arch/mips/pci/pci-sb1250.c	2008-06-08 23:39:46.000000000 +0000
+@@ -256,8 +256,6 @@ static int __init sb1250_pcibios_init(vo
+ 
+ 	set_io_port_base((unsigned long)
+ 			 ioremap(A_PHYS_LDTPCI_IO_MATCH_BYTES, 65536));
+-	isa_slot_offset = (unsigned long)
+-	    ioremap(A_PHYS_LDTPCI_IO_MATCH_BYTES_32, 1024 * 1024);
+ 
+ #ifdef CONFIG_SIBYTE_HAS_LDT
+ 	/*
+diff -up --recursive --new-file linux-2.6.26-rc1-20080505.macro/arch/mips/sni/setup.c linux-2.6.26-rc1-20080505/arch/mips/sni/setup.c
+--- linux-2.6.26-rc1-20080505.macro/arch/mips/sni/setup.c	2008-05-05 02:55:23.000000000 +0000
++++ linux-2.6.26-rc1-20080505/arch/mips/sni/setup.c	2008-06-08 23:40:05.000000000 +0000
+@@ -116,7 +116,6 @@ void __init plat_mem_setup(void)
+ 	/*
+ 	 * Setup (E)ISA I/O memory access stuff
+ 	 */
+-	isa_slot_offset = CKSEG1ADDR(0xb0000000);
+ #ifdef CONFIG_EISA
+ 	EISA_bus = 1;
+ #endif
+diff -up --recursive --new-file linux-2.6.26-rc1-20080505.macro/include/asm-mips/io.h linux-2.6.26-rc1-20080505/include/asm-mips/io.h
+--- linux-2.6.26-rc1-20080505.macro/include/asm-mips/io.h	2008-05-05 02:55:55.000000000 +0000
++++ linux-2.6.26-rc1-20080505/include/asm-mips/io.h	2008-06-08 23:23:23.000000000 +0000
+@@ -161,13 +161,6 @@ static inline void * isa_bus_to_virt(uns
+ #define bus_to_virt phys_to_virt
+ 
+ /*
+- * isa_slot_offset is the address where E(ISA) busaddress 0 is mapped
+- * for the processor.  This implies the assumption that there is only
+- * one of these busses.
+- */
+-extern unsigned long isa_slot_offset;
+-
+-/*
+  * Change "struct page" to physical address.
+  */
+ #define page_to_phys(page)	((dma_addr_t)page_to_pfn(page) << PAGE_SHIFT)
+@@ -528,16 +521,6 @@ static inline void memcpy_toio(volatile 
+ }
+ 
+ /*
+- * ISA space is 'always mapped' on currently supported MIPS systems, no need
+- * to explicitly ioremap() it. The fact that the ISA IO space is mapped
+- * to PAGE_OFFSET is pure coincidence - it does not mean ISA values
+- * are physical addresses. The following constant pointer can be
+- * used as the IO-area pointer (it can be iounmapped as well, so the
+- * analogy with PCI is quite large):
+- */
+-#define __ISA_IO_base ((char *)(isa_slot_offset))
+-
+-/*
+  * The caches on some architectures aren't dma-coherent and have need to
+  * handle this in software.  There are three types of operations that
+  * can be applied to dma buffers.

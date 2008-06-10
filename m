@@ -1,97 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jun 2008 17:21:59 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:21889 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S29038288AbYFJQV4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 10 Jun 2008 17:21:56 +0100
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 9EBDB31E0C9;
-	Tue, 10 Jun 2008 16:21:55 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Tue, 10 Jun 2008 16:21:55 +0000 (UTC)
-Received: from dl2.hq2.avtrex.com ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 10 Jun 2008 09:21:43 -0700
-Message-ID: <484EAA16.80903@avtrex.com>
-Date:	Tue, 10 Jun 2008 09:21:42 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 2.0.0.14 (X11/20080501)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Jun 2008 22:30:38 +0100 (BST)
+Received: from fk-out-0910.google.com ([209.85.128.187]:43256 "EHLO
+	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S28596368AbYFJVag (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 10 Jun 2008 22:30:36 +0100
+Received: by fk-out-0910.google.com with SMTP id b27so1615417fka.0
+        for <linux-mips@linux-mips.org>; Tue, 10 Jun 2008 14:30:35 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to
+         :subject:mime-version:content-type:content-transfer-encoding
+         :content-disposition;
+        bh=8PdoJ2MYVvVvw2kpR2m8vAmcTFqP0ZWz0a2GyawZNgM=;
+        b=W1xs0hqycO2/s4UwRPYwlSGytc7WFvvT0Kqjj8wyqW/kuoPW88VNOgdjuPvt1eWYLU
+         6EVZpqjA7IGvNnEh02djJ98YkIuYYQk9sqxoeEvyF2RPflC5adVaTaRBWVq00kquSd6E
+         rhXy6XmIAy/DNMJx13EMQauqa2Z79/fscOLME=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:mime-version:content-type
+         :content-transfer-encoding:content-disposition;
+        b=EnF7kOwXDow81nSZSjHCxhtDIbbSd3WNZhiqol8KA5OuELOWsXtKrw6nwXpbkNr8k3
+         W+D59SiAmH+RJwveyc3XvueIxdpO6l66nBvfiKZLrdAEnR/pRkOD6z18Mb8UichxzWjS
+         zY6sukwo9Jj8dqfw+Ci176afJ0sVPPB5G408Q=
+Received: by 10.82.178.11 with SMTP id a11mr373976buf.47.1213133435067;
+        Tue, 10 Jun 2008 14:30:35 -0700 (PDT)
+Received: by 10.82.146.3 with HTTP; Tue, 10 Jun 2008 14:30:35 -0700 (PDT)
+Message-ID: <ecb4efd10806101430o426a2b51r3895871e31ceec89@mail.gmail.com>
+Date:	Tue, 10 Jun 2008 17:30:35 -0400
+From:	"Clem Taylor" <clem.taylor@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: early hang in 2.6.24 on au1550 (MIPSLE)
 MIME-Version: 1.0
-To:	Thiemo Seufer <ths@networkno.de>
-Cc:	Brian Foster <brian.foster@innova-card.com>,
-	"Kevin D. Kissell" <KevinK@paralogos.com>,
-	Andrew Dyer <adyer@righthandtech.com>,
-	linux-mips@linux-mips.org
-Subject: Re: Adding(?) XI support to MIPS-Linux?
-References: <200806091658.10937.brian.foster@innova-card.com> <484D856B.5030306@paralogos.com> <20080609204627.GE11233@networkno.de> <200806101119.06227.brian.foster@innova-card.com> <a537dd660806100232v4cbf2cfeo397e94ac5a4d2104@mail.gmail.com> <20080610095702.GG11233@networkno.de>
-In-Reply-To: <20080610095702.GG11233@networkno.de>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 10 Jun 2008 16:21:43.0696 (UTC) FILETIME=[124F3900:01C8CB16]
-Return-Path: <ddaney@avtrex.com>
+Content-Disposition: inline
+Return-Path: <clem.taylor@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19467
+X-archive-position: 19468
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: clem.taylor@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Thiemo Seufer wrote:
-> Brian Foster wrote:
-> [snip]
->   
->>  2) Kevin D. Kissell wrote:
->>  2)[ ... ]
->>  2) > Well, strictly speaking, you wouldn't actually *need* to modify
->>  2) > binutils to make specially tagged binaries.  [ ... ]
->>  2)
->>  2) This exists already in ld's -z execstack/noexecstack feature.
->>
->> Good point.  Thanks for the reminder.
->>
->>  2) It is not used by default because too many things depend on executable
->>  2) stacks on MIPS.
->>
->> Ah!  Can you be more specific please?  At the present time
->> I'm only aware of three situations where executable stacks
->> are magically used ("magic" meaning it's being done without
->> the programmer explicitly coding it):
->>
->>   1. sigreturn.
->>   2. something to do with FPU emulation?
->>   3. pointer to a nested function (gcc extension).
->>     
->
-> Those, plus manually coded trampolines in e.g. foreign function
-> interfacing (which are typically hidden in some library). I don't
-> know if you can ignore that completely. :-)
->
->   
-The trampolines in libffi are user allocated, so there is a choice of 
-where to place them.  In libgcj (which uses the libffi trampolines) the 
-trampolines are allocated on the heap and care is taken to set the 
-execute permissions on the memory in question.  Other users may have 
-problems, but by now most code should work as XI support has been 
-present on x86 for quite some time now.
+A few months ago I switched from 2.6.16.16 to 2.6.24 on an AU1550
+(MIPSLE) system. I started rolling this out to more systems, getting
+ready for a new software release and discovered that on fresh powerup,
+the 2.6.24 kernel sometimes (1 in 10-25 power cycles) fails to start.
+The bootloader (uboot) decompresses the kernel from a jffs2 filesystem
+and then jumps to it, but I don't get any serial messages from the
+kernel.
 
-As long as there is a mechanism to make user space stacks (and heap) 
-executable, there should be no problem.  People running code that 
-requires it can switch off the XI support.
+If I switch back to the 2.6.16.16 kernel, everything is happy. The
+annoying thing is that I have been unable to catch the problem with
+the JTAG debugger connected, so I'm not sure where it is hanging.
 
-David Daney
->> And, significantly, I am do not know of any need for the
->> kernel-mode stacks to be executable.  Except, perhaps,
->> for case 3, the above are (should be?) user-land only.
->>     
->
-> AFAIK nested functions are frowned upon in kernelspace.
->
->
-> Thiemo
->
->   
+I've been looking at diffs in the arch/mips tree and nothing has
+jumped out at me.   I don't think this is a hardware problem, this
+hardware platform has been fairly stable and it works just fine with
+the older kernel. I was wondering if anyone has any suggestions where
+I might look? Also, is anyone using 2.6.24 with a Au1550?
+
+                       Thanks,
+                       Clem

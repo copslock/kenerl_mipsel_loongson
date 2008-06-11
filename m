@@ -1,82 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jun 2008 18:56:48 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:54486 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20041731AbYFKRoM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 11 Jun 2008 18:44:12 +0100
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 13CE931DBFF;
-	Wed, 11 Jun 2008 17:44:13 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Wed, 11 Jun 2008 17:44:12 +0000 (UTC)
-Received: from dl2.hq2.avtrex.com ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 11 Jun 2008 10:43:58 -0700
-Message-ID: <48500EDD.404@avtrex.com>
-Date:	Wed, 11 Jun 2008 10:43:57 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 2.0.0.14 (X11/20080501)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jun 2008 19:41:40 +0100 (BST)
+Received: from mail.codesourcery.com ([65.74.133.4]:43740 "EHLO
+	mail.codesourcery.com") by ftp.linux-mips.org with ESMTP
+	id S20038523AbYFKSli (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Jun 2008 19:41:38 +0100
+Received: (qmail 20200 invoked from network); 11 Jun 2008 18:41:34 -0000
+Received: from unknown (HELO mbp.local) (maxim@127.0.0.2)
+  by mail.codesourcery.com with ESMTPA; 11 Jun 2008 18:41:34 -0000
+Message-ID: <48501C55.5060602@codesourcery.com>
+Date:	Wed, 11 Jun 2008 22:41:25 +0400
+From:	Maxim Kuvyrkov <maxim@codesourcery.com>
+User-Agent: Thunderbird 2.0.0.14 (Macintosh/20080421)
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>,
-	GCC Mailing List <gcc@gcc.gnu.org>
-Cc:	MIPS Linux List <linux-mips@linux-mips.org>,
-	Richard Sandiford <rdsandiford@googlemail.com>
-Subject: Re: Resend: [PATCH] [MIPS] Fix asm constraints for 'ins'	instructions.
-References: <48500599.9080807@avtrex.com> <20080611172950.GA16600@linux-mips.org>
-In-Reply-To: <20080611172950.GA16600@linux-mips.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>, gcc-patches@gcc.gnu.org,
+	linux-mips@linux-mips.org, rdsandiford@googlemail.com
+Subject: Re: Changing the treatment of the MIPS HI and LO registers
+References: <87tzgj4nh6.fsf@firetop.home> 	<Pine.LNX.4.55.0805272134540.18833@cliff.in.clinika.pl> 	<87abib4d9t.fsf@firetop.home> 	<Pine.LNX.4.55.0805272357020.18833@cliff.in.clinika.pl> 	<87r6bm1ebd.fsf@firetop.home> 	<Pine.LNX.4.55.0805290213140.29522@cliff.in.clinika.pl> 	<878wxtvarg.fsf@firetop.home> <8763stz2p3.fsf@firetop.home> <87zlpuxqfb.fsf@firetop.home>
+In-Reply-To: <87zlpuxqfb.fsf@firetop.home>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 11 Jun 2008 17:43:58.0766 (UTC) FILETIME=[BA40E4E0:01C8CBEA]
-Return-Path: <ddaney@avtrex.com>
+Return-Path: <maxim@codesourcery.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19484
+X-archive-position: 19485
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: maxim@codesourcery.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Wed, Jun 11, 2008 at 10:04:25AM -0700, David Daney wrote:
-> 
->> The third operand to 'ins' must be a constant int, not a register.
->>
->> Signed-off-by: David Daney <ddaney@avtrex.com>
->> ---
->> include/asm-mips/bitops.h |    6 +++---
->> 1 files changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/include/asm-mips/bitops.h b/include/asm-mips/bitops.h
->> index 6427247..9a7274b 100644
->> --- a/include/asm-mips/bitops.h
->> +++ b/include/asm-mips/bitops.h
->> @@ -82,7 +82,7 @@ static inline void set_bit(unsigned long nr, volatile unsigned long *addr)
->> 		"2:	b	1b					\n"
->> 		"	.previous					\n"
->> 		: "=&r" (temp), "=m" (*m)
->> -		: "ir" (bit), "m" (*m), "r" (~0));
->> +		: "i" (bit), "m" (*m), "r" (~0));
->> #endif /* CONFIG_CPU_MIPSR2 */
->> 	} else if (cpu_has_llsc) {
->> 		__asm__ __volatile__(
-> 
-> An old trick to get gcc to do the right thing.  Basically at the stage when
-> gcc is verifying the constraints it may not yet know that it can optimize
-> things into an "i" argument, so compilation may fail if "r" isn't in the
-> constraints.  However we happen to know that due to the way the code is
-> written gcc will always be able to make use of the "i" constraint so no
-> code using "r" should ever be created.
-> 
-> The trick is a bit ugly; I think it was used first in asm-i386/io.h ages ago
-> and I would be happy if we could get rid of it without creating new problems.
-> Maybe a gcc hacker here can tell more?
+Richard Sandiford wrote:
 
-It is not nice to lie to GCC.
+...
 
-CCing GCC and Richard in hopes that a wider audience may shed some light on the issue.
+> +    <li>The MIPS port no longer recognizes the <code>h</code>
+> +    <code>asm</code> constraint.  It was necessary to remove
+> +    this constraint in order to avoid generating unpredictable
+> +    code sequences.
+> +
+> +    <p>One of the main uses of the <code>h</code> constraint
+> +    was to extract the high part of a multiplication on
+> +    64-bit targets.  For example:</p>
+> +    <pre>
+> +    asm ("dmultu\t%1,%2" : "=h" (result) : "r" (x), "r" (y));</pre>
+> +    <p>You can now achieve the same effect using 128-bit types:</p>
+> +    <pre>
+> +    typedef unsigned int uint128_t __attribute__((mode(TI)));
+> +    result = ((uint128_t) x * y) >> 64;</pre>
+> +    <p>The second sequence is better in many ways.  For example,
+> +    if <code>x</code> and <code>y</code> are constants, the
+> +    compiler can perform the multiplication at compile time.
+> +    If <code>x</code> and <code>y</code> are not constants,
+> +    the compiler can schedule the runtime multiplication
+> +    better than it can schedule an <code>asm</code> statement.</p>
+> +    </li>
+>   </ul>
 
-David Daney
+Hi,
+
+GLIBC contains the following code in stdlib/longlong.h:
+<snip>
+#if defined (__mips__) && W_TYPE_SIZE == 32
+#define umul_ppmm(w1, w0, u, v) \
+   __asm__ ("multu %2,%3"						\
+	   : "=l" ((USItype) (w0)),					\
+	     "=h" ((USItype) (w1))					\
+	   : "d" ((USItype) (u)),					\
+	     "d" ((USItype) (v)))
+#define UMUL_TIME 10
+#define UDIV_TIME 100
+#endif /* __mips__ */
+</snip>
+
+What would be a correct fix in this case?  Something like this:
+<snip>
+#define umul_ppmm(w1, w0, u, v)					\
+   ({unsigned int __attribute__((mode(DI))) __xx;		\
+     __xx = (unsigned int __attribute__((mode(DI)))) u * v;	\
+     w0 = __xx & ((1 << 32) - 1);				\
+     w1 = __xx >> 32;})
+</snip>
+
+Or is there a better way?
+
+
+Thanks,
+
+Maxim

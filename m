@@ -1,32 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jun 2008 18:12:54 +0100 (BST)
-Received: from vigor.karmaclothing.net ([217.169.26.28]:61871 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jun 2008 18:15:33 +0100 (BST)
+Received: from vigor.karmaclothing.net ([217.169.26.28]:32490 "EHLO
 	vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
-	id S20021838AbYFKRMw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 11 Jun 2008 18:12:52 +0100
+	id S20021988AbYFKRPb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Jun 2008 18:15:31 +0100
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m5BHCPn0021878;
-	Wed, 11 Jun 2008 18:12:25 +0100
+	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m5BHF9Tn023147;
+	Wed, 11 Jun 2008 18:15:09 +0100
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m5BHCL1j021853;
-	Wed, 11 Jun 2008 18:12:21 +0100
-Date:	Wed, 11 Jun 2008 18:12:21 +0100
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m5BHF2Ab022966;
+	Wed, 11 Jun 2008 18:15:02 +0100
+Date:	Wed, 11 Jun 2008 18:15:02 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	David Daney <ddaney@avtrex.com>
-Cc:	MIPS Linux List <linux-mips@linux-mips.org>
-Subject: Re: Resend: [PATCH] [MIPS] Fix asm constraints for 'ins'
-	instructions.
-Message-ID: <20080611171220.GC10820@linux-mips.org>
-References: <48500599.9080807@avtrex.com>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Daniel Jacobowitz <drow@false.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/2] mips: Remove obsolete isa_slot_offset
+Message-ID: <20080611171502.GC30400@linux-mips.org>
+References: <Pine.LNX.4.55.0806091655480.26593@cliff.in.clinika.pl>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <48500599.9080807@avtrex.com>
+In-Reply-To: <Pine.LNX.4.55.0806091655480.26593@cliff.in.clinika.pl>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19479
+X-archive-position: 19480
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,10 +33,12 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jun 11, 2008 at 10:04:25AM -0700, David Daney wrote:
+On Mon, Jun 09, 2008 at 05:19:53PM +0100, Maciej W. Rozycki wrote:
 
-> This patch may have been lost in the Great LMO Firewall Saga, so I am resending it:
+>  The isa_slot_offset variable and its __ISA_IO_base macro is not used
+> anywhere anymore.  It does not look like a decent interface per today's
+> standards either.  Remove both including all places of initialization.
 
-The firewall has been torched btw ;-)
+Queued for 2.6.27, thanks.
 
-  Ralf
+   Ralf

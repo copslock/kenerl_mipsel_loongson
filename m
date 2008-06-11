@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jun 2008 18:30:21 +0100 (BST)
-Received: from vigor.karmaclothing.net ([217.169.26.28]:38369 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jun 2008 18:56:07 +0100 (BST)
+Received: from vigor.karmaclothing.net ([217.169.26.28]:31658 "EHLO
 	vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
-	id S20021887AbYFKRaR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 11 Jun 2008 18:30:17 +0100
+	id S20041986AbYFKRol (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Jun 2008 18:44:41 +0100
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m5BHToVd028593;
-	Wed, 11 Jun 2008 18:29:50 +0100
+	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m5BHiLMP002131;
+	Wed, 11 Jun 2008 18:44:21 +0100
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m5BHToMi028586;
-	Wed, 11 Jun 2008 18:29:50 +0100
-Date:	Wed, 11 Jun 2008 18:29:50 +0100
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m5BHiFIh002094;
+	Wed, 11 Jun 2008 18:44:15 +0100
+Date:	Wed, 11 Jun 2008 18:44:15 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	David Daney <ddaney@avtrex.com>
-Cc:	MIPS Linux List <linux-mips@linux-mips.org>
-Subject: Re: Resend: [PATCH] [MIPS] Fix asm constraints for 'ins'
-	instructions.
-Message-ID: <20080611172950.GA16600@linux-mips.org>
-References: <48500599.9080807@avtrex.com>
+To:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5/5] [MIPS] The tickcount per-cpu variable can become
+	static
+Message-ID: <20080611174415.GE30400@linux-mips.org>
+References: <12120730323761-git-send-email-dmitri.vorobiev@movial.fi> <12120730321843-git-send-email-dmitri.vorobiev@movial.fi>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <48500599.9080807@avtrex.com>
+In-Reply-To: <12120730321843-git-send-email-dmitri.vorobiev@movial.fi>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19482
+X-archive-position: 19483
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,38 +34,16 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jun 11, 2008 at 10:04:25AM -0700, David Daney wrote:
+On Thu, May 29, 2008 at 05:57:12PM +0300, Dmitri Vorobiev wrote:
 
-> The third operand to 'ins' must be a constant int, not a register.
->
-> Signed-off-by: David Daney <ddaney@avtrex.com>
-> ---
-> include/asm-mips/bitops.h |    6 +++---
-> 1 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/include/asm-mips/bitops.h b/include/asm-mips/bitops.h
-> index 6427247..9a7274b 100644
-> --- a/include/asm-mips/bitops.h
-> +++ b/include/asm-mips/bitops.h
-> @@ -82,7 +82,7 @@ static inline void set_bit(unsigned long nr, volatile unsigned long *addr)
-> 		"2:	b	1b					\n"
-> 		"	.previous					\n"
-> 		: "=&r" (temp), "=m" (*m)
-> -		: "ir" (bit), "m" (*m), "r" (~0));
-> +		: "i" (bit), "m" (*m), "r" (~0));
-> #endif /* CONFIG_CPU_MIPSR2 */
-> 	} else if (cpu_has_llsc) {
-> 		__asm__ __volatile__(
+> In arch/mips/mips-boards/generic/time.c, the `tickcount' per-cpu
+> variable is needlessly defined global, and this patch makes it
+> static.
+> 
+> Noticed by sparse. Tested by booting a Qemu-emulated Malta board
+> up to the shell prompt.
 
-An old trick to get gcc to do the right thing.  Basically at the stage when
-gcc is verifying the constraints it may not yet know that it can optimize
-things into an "i" argument, so compilation may fail if "r" isn't in the
-constraints.  However we happen to know that due to the way the code is
-written gcc will always be able to make use of the "i" constraint so no
-code using "r" should ever be created.
-
-The trick is a bit ugly; I think it was used first in asm-i386/io.h ages ago
-and I would be happy if we could get rid of it without creating new problems.
-Maybe a gcc hacker here can tell more?
+Patch is ok - except it tries to fix a piece of code which I've already
+removed so I'll drop this one.
 
   Ralf

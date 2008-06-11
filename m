@@ -1,61 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jun 2008 10:36:27 +0100 (BST)
-Received: from mx.mips.com ([63.167.95.198]:50913 "EHLO dns0.mips.com")
-	by ftp.linux-mips.org with ESMTP id S20039894AbYFKJfM (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Jun 2008 10:35:12 +0100
-Received: from mercury.mips.com (mercury [192.168.64.101])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id m5B9XgXo014244;
-	Wed, 11 Jun 2008 02:33:42 -0700 (PDT)
-Received: from [127.0.0.1] (grendel [192.168.236.16])
-	by mercury.mips.com (8.13.5/8.13.5) with ESMTP id m5B9YIYo029524;
-	Wed, 11 Jun 2008 02:34:34 -0700 (PDT)
-Message-ID: <484F9C76.4030104@mips.com>
-Date:	Wed, 11 Jun 2008 11:35:50 +0200
-From:	"Kevin D. Kissell" <kevink@mips.com>
-User-Agent: Thunderbird 2.0.0.14 (Windows/20080421)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jun 2008 11:43:54 +0100 (BST)
+Received: from vigor.karmaclothing.net ([217.169.26.28]:22695 "EHLO
+	vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
+	id S20024673AbYFKKnw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Jun 2008 11:43:52 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m5BAhXax008197;
+	Wed, 11 Jun 2008 11:43:33 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m5BAhRHO008156;
+	Wed, 11 Jun 2008 11:43:27 +0100
+Date:	Wed, 11 Jun 2008 11:43:27 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Daniel Laird <daniel.j.laird@nxp.com>
+Cc:	Florian Fainelli <florian.fainelli@telecomint.eu>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] : Add support for NXP PNX833x (STB222/5) into linux
+	kernel
+Message-ID: <20080611104327.GA777@linux-mips.org>
+References: <64660ef00806060132j1aab8d9fh968cbf3f2fc56bc2@mail.gmail.com>
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	"Kevin D. Kissell" <KevinK@paralogos.com>,
-	Brian Foster <brian.foster@innova-card.com>,
-	linux-mips@linux-mips.org, Andrew Dyer <adyer@righthandtech.com>
-Subject: Re: Adding(?) XI support to MIPS-Linux?
-References: <200806091658.10937.brian.foster@innova-card.com> <a537dd660806090837i5ef6c1e2k167aeb97785a136d@mail.gmail.com> <484D856B.5030306@paralogos.com> <20080611090601.GB19755@linux-mips.org>
-In-Reply-To: <20080611090601.GB19755@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kevink@mips.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <64660ef00806060132j1aab8d9fh968cbf3f2fc56bc2@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19471
+X-archive-position: 19472
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Mon, Jun 09, 2008 at 09:32:59PM +0200, Kevin D. Kissell wrote:
->
->   
->> That is correct, though there has long been interest in having XI/RI as an option for non-SmartMIPS cores and I would not be surprised if sooner or later it became more generally available.
->>     
->
-> Cavium has it in their 64-bit core.  I haven't verified this in the docs
-> but apparently it is meant to be compatible with the old SmartMIPS ASE
-> for MIPS32.
->   
-Do check the documentation.  I can't comment officially, but I can 
-observe that,
-in the hypothetical case where you'd want XI/RI semantics in a 64-bit 
-processor,
-you might use exactly the same semantics (and therefore the same kernel 
-C code
-support), but you might want to use different bits  for XI/RI in a 
-64-bit TLB entry
-than in a 32-bit TLB entry (and therefore different header file 
-definitions).
+On Fri, Jun 06, 2008 at 09:32:15AM +0100, Daniel Laird wrote:
 
-          Regards,
+> > > +#if defined(CONFIG_SATA_PNX833X) || defined(CONFIG_SATA_PNX833X_MODULE)
+> > > +static struct resource pnx833x_sata_resources[] = {
+> > > +       [0] = {
+> > > +               .start = PNX8335_SATA_PORTS_START,
+> > > +               .end   = PNX8335_SATA_PORTS_END,
+> > > +               .flags = IORESOURCE_MEM,
+> > > +       },
+> > > +       [1] = {
+> > > +               .start = PNX8335_PIC_SATA_INT,
+> > > +               .end   = PNX8335_PIC_SATA_INT,
+> > > +               .flags = IORESOURCE_IRQ,
+> > > +       },
+> > > +};
+> > > +
+> > > +static struct platform_device pnx833x_sata_device = {
+> > > +       .name          = "pnx833x-sata",
+> > > +       .id            = -1,
+> > > +       .num_resources = ARRAY_SIZE(pnx833x_sata_resources),
+> > > +       .resource      = pnx833x_sata_resources,
+> > > +};
+> > > +#endif
+> >
+> > What about defining those resources anyway ?
+> > > +
+> > > +#if defined(CONFIG_MTD_NAND_PLATFORM) ||
+> > > defined(CONFIG_MTD_NAND_PLATFORM_MODULE)
+> >
+> > Same here and others below too.
+> >
+> Is there any harm in having them always defined even if not
+> implemented? I was playing safe.
 
-          Kevin K.
+You normally should register all platform devices based on their presence
+on the platform without consideration of the drivers actually being enabled.
+The Linux driver philosophy is that a driver can be enabled, compiled as
+a module and loaded separately from the kernel build and the driver should
+still be working.  That will only work if the driver and its resources are
+always in - even at the (low!) price of being unused on a particular
+platform.  It also helps tools that use sysfs to query hardware
+configuration.
+
+> > > +{
+> > > +       printk(KERN_ALERT "\n\nSystem halted.\n\n");
+> > > +
+> > > +       while (1)
+> > > +               __asm__ __volatile__ ("wait");
+> > > +}
+> >
+> > You might want to use cpu_relax(); instead of the assembly wait instruction.
+> >
+> Sounds good.
+
+Almost.   cpu_relax() is defined to just barrier() on MIPS since there
+isn't really very much we could or need to do in tight loop - unlike the
+infamous Pentium 4 netburst architecture which burns serious amounts of
+power in such a loop.
+
+So best keep it as it is for now.  The issue deserves a better solution
+though but that's beyond the scope of your patch.
+
+> > > +void pnx833x_machine_power_off(void)
+> > > +{
+> > > +       printk(KERN_ALERT "\n\nPower off not implemented.");
+> > > +       pnx833x_machine_halt();
+> > > +}
+> >
+> > And put some less alarming message here, like "*** You can safely turn off the
+> > board".
+
+No message at all.  It's userspace which is supposed to communicate with the
+user not the kernel.
+
+  Ralf

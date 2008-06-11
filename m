@@ -1,49 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jun 2008 18:56:07 +0100 (BST)
-Received: from vigor.karmaclothing.net ([217.169.26.28]:31658 "EHLO
-	vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
-	id S20041986AbYFKRol (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 11 Jun 2008 18:44:41 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m5BHiLMP002131;
-	Wed, 11 Jun 2008 18:44:21 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m5BHiFIh002094;
-	Wed, 11 Jun 2008 18:44:15 +0100
-Date:	Wed, 11 Jun 2008 18:44:15 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
-Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/5] [MIPS] The tickcount per-cpu variable can become
-	static
-Message-ID: <20080611174415.GE30400@linux-mips.org>
-References: <12120730323761-git-send-email-dmitri.vorobiev@movial.fi> <12120730321843-git-send-email-dmitri.vorobiev@movial.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jun 2008 18:56:48 +0100 (BST)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:54486 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S20041731AbYFKRoM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Jun 2008 18:44:12 +0100
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 13CE931DBFF;
+	Wed, 11 Jun 2008 17:44:13 +0000 (UTC)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [67.116.42.147])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
+	Wed, 11 Jun 2008 17:44:12 +0000 (UTC)
+Received: from dl2.hq2.avtrex.com ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 11 Jun 2008 10:43:58 -0700
+Message-ID: <48500EDD.404@avtrex.com>
+Date:	Wed, 11 Jun 2008 10:43:57 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 2.0.0.14 (X11/20080501)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <12120730321843-git-send-email-dmitri.vorobiev@movial.fi>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>,
+	GCC Mailing List <gcc@gcc.gnu.org>
+Cc:	MIPS Linux List <linux-mips@linux-mips.org>,
+	Richard Sandiford <rdsandiford@googlemail.com>
+Subject: Re: Resend: [PATCH] [MIPS] Fix asm constraints for 'ins'	instructions.
+References: <48500599.9080807@avtrex.com> <20080611172950.GA16600@linux-mips.org>
+In-Reply-To: <20080611172950.GA16600@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 11 Jun 2008 17:43:58.0766 (UTC) FILETIME=[BA40E4E0:01C8CBEA]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19483
+X-archive-position: 19484
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, May 29, 2008 at 05:57:12PM +0300, Dmitri Vorobiev wrote:
-
-> In arch/mips/mips-boards/generic/time.c, the `tickcount' per-cpu
-> variable is needlessly defined global, and this patch makes it
-> static.
+Ralf Baechle wrote:
+> On Wed, Jun 11, 2008 at 10:04:25AM -0700, David Daney wrote:
 > 
-> Noticed by sparse. Tested by booting a Qemu-emulated Malta board
-> up to the shell prompt.
+>> The third operand to 'ins' must be a constant int, not a register.
+>>
+>> Signed-off-by: David Daney <ddaney@avtrex.com>
+>> ---
+>> include/asm-mips/bitops.h |    6 +++---
+>> 1 files changed, 3 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/include/asm-mips/bitops.h b/include/asm-mips/bitops.h
+>> index 6427247..9a7274b 100644
+>> --- a/include/asm-mips/bitops.h
+>> +++ b/include/asm-mips/bitops.h
+>> @@ -82,7 +82,7 @@ static inline void set_bit(unsigned long nr, volatile unsigned long *addr)
+>> 		"2:	b	1b					\n"
+>> 		"	.previous					\n"
+>> 		: "=&r" (temp), "=m" (*m)
+>> -		: "ir" (bit), "m" (*m), "r" (~0));
+>> +		: "i" (bit), "m" (*m), "r" (~0));
+>> #endif /* CONFIG_CPU_MIPSR2 */
+>> 	} else if (cpu_has_llsc) {
+>> 		__asm__ __volatile__(
+> 
+> An old trick to get gcc to do the right thing.  Basically at the stage when
+> gcc is verifying the constraints it may not yet know that it can optimize
+> things into an "i" argument, so compilation may fail if "r" isn't in the
+> constraints.  However we happen to know that due to the way the code is
+> written gcc will always be able to make use of the "i" constraint so no
+> code using "r" should ever be created.
+> 
+> The trick is a bit ugly; I think it was used first in asm-i386/io.h ages ago
+> and I would be happy if we could get rid of it without creating new problems.
+> Maybe a gcc hacker here can tell more?
 
-Patch is ok - except it tries to fix a piece of code which I've already
-removed so I'll drop this one.
+It is not nice to lie to GCC.
 
-  Ralf
+CCing GCC and Richard in hopes that a wider audience may shed some light on the issue.
+
+David Daney

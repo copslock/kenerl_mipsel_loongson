@@ -1,93 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jun 2008 19:50:44 +0100 (BST)
-Received: from mx.mips.com ([63.167.95.198]:33515 "EHLO dns0.mips.com")
-	by ftp.linux-mips.org with ESMTP id S20039320AbYFKSul (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Jun 2008 19:50:41 +0100
-Received: from mercury.mips.com (mercury [192.168.64.101])
-	by dns0.mips.com (8.12.11/8.12.11) with ESMTP id m5BIn2f0015804;
-	Wed, 11 Jun 2008 11:49:02 -0700 (PDT)
-Received: from [127.0.0.1] (grendel [192.168.236.16])
-	by mercury.mips.com (8.13.5/8.13.5) with ESMTP id m5BInbJW014977;
-	Wed, 11 Jun 2008 11:49:53 -0700 (PDT)
-Message-ID: <48501E9E.1040202@mips.com>
-Date:	Wed, 11 Jun 2008 20:51:10 +0200
-From:	"Kevin D. Kissell" <kevink@mips.com>
-User-Agent: Thunderbird 2.0.0.14 (Windows/20080421)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Jun 2008 19:54:24 +0100 (BST)
+Received: from ug-out-1314.google.com ([66.249.92.170]:2716 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S20039520AbYFKSyW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Jun 2008 19:54:22 +0100
+Received: by ug-out-1314.google.com with SMTP id 30so164372ugs.39
+        for <linux-mips@linux-mips.org>; Wed, 11 Jun 2008 11:54:20 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:mail-followup-to:cc
+         :subject:references:date:in-reply-to:message-id:user-agent
+         :mime-version:content-type;
+        bh=ywuunZExzVpom9xfe8qpV3W1kdM7gCA637PSAqoa9BQ=;
+        b=nJueQ3pw3vRk3syPU1gLlTMQW1nupuvDk1aR1TtUaldE9rUMa3C21LSg0omlsc5J0g
+         iYc4p/kLObnr1VGJe0xU94nU0c2c/VEZGpaDtBtPnggaqdaod9lhEaD1JihlXrVvgGFo
+         75oxpsFiep4/xLCdeounVEi/pL2MbItrlq1no=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=from:to:mail-followup-to:cc:subject:references:date:in-reply-to
+         :message-id:user-agent:mime-version:content-type;
+        b=V3HZbpgtCqlGaH3Uf10uI48WgJku3dIrCcRaC2g7JVcZV+w2IiZZDKvIMfP/dlkIrw
+         z+SI0tafZO6rpj/nYYAOs4p9d3FYAm5V05EviWOzbELPg0kWb3FDEyEEp8gcvKQAB2KV
+         eLA1zv7BwFXtknHUvQ5haI/aCovs2mrqQJnCQ=
+Received: by 10.210.78.16 with SMTP id a16mr122963ebb.173.1213210460843;
+        Wed, 11 Jun 2008 11:54:20 -0700 (PDT)
+Received: from localhost ( [79.75.55.39])
+        by mx.google.com with ESMTPS id m5sm404771gve.3.2008.06.11.11.54.18
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 11 Jun 2008 11:54:19 -0700 (PDT)
+From:	Richard Sandiford <rdsandiford@googlemail.com>
+To:	Maxim Kuvyrkov <maxim@codesourcery.com>
+Mail-Followup-To: Maxim Kuvyrkov <maxim@codesourcery.com>,"Maciej W. Rozycki" <macro@linux-mips.org>,  Ralf Baechle <ralf@linux-mips.org>,  gcc-patches@gcc.gnu.org,  linux-mips@linux-mips.org, rdsandiford@googlemail.com
+Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>, gcc-patches@gcc.gnu.org,
+	linux-mips@linux-mips.org
+Subject: Re: Changing the treatment of the MIPS HI and LO registers
+References: <87tzgj4nh6.fsf@firetop.home>
+	<Pine.LNX.4.55.0805272134540.18833@cliff.in.clinika.pl>
+	<87abib4d9t.fsf@firetop.home>
+	<Pine.LNX.4.55.0805272357020.18833@cliff.in.clinika.pl>
+	<87r6bm1ebd.fsf@firetop.home>
+	<Pine.LNX.4.55.0805290213140.29522@cliff.in.clinika.pl>
+	<878wxtvarg.fsf@firetop.home> <8763stz2p3.fsf@firetop.home>
+	<87zlpuxqfb.fsf@firetop.home> <48501C55.5060602@codesourcery.com>
+Date:	Wed, 11 Jun 2008 19:54:17 +0100
+In-Reply-To: <48501C55.5060602@codesourcery.com> (Maxim Kuvyrkov's message of
+	"Wed\, 11 Jun 2008 22\:41\:25 +0400")
+Message-ID: <87hcbzx0o6.fsf@firetop.home>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/22.1 (gnu/linux)
 MIME-Version: 1.0
-To:	Brian Foster <brian.foster@innova-card.com>
-CC:	David Daney <ddaney@avtrex.com>, linux-mips@linux-mips.org,
-	Thiemo Seufer <ths@networkno.de>,
-	"Kevin D. Kissell" <KevinK@paralogos.com>,
-	Andrew Dyer <adyer@righthandtech.com>
-Subject: Re: Adding(?) XI support to MIPS-Linux?
-References: <200806091658.10937.brian.foster@innova-card.com> <20080610095702.GG11233@networkno.de> <484EAA16.80903@avtrex.com> <200806111516.57406.brian.foster@innova-card.com>
-In-Reply-To: <200806111516.57406.brian.foster@innova-card.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <kevink@mips.com>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <rdsandiford@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19486
+X-archive-position: 19487
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@mips.com
+X-original-sender: rdsandiford@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-Brian Foster wrote:
->  It's case 2 (above), the trampoline that has “something
->  to do with FPU emulation”, which has me concerned ATM.
->  The 4KSd core does not have an FPU.  That encourages the
->  use of ‘-msoft-float’ (at least for performance), but does
->  not require it.  (Albeit I wonder if, in the restricted
->  world I'm playing in, if it could be “required” (assuming
->  it doesn't have an issue?)?  Hum .... .)
->   
-The use of -msoft-float historically required (and as far as I know 
-still requires)
-a completely different ground-up userland build, so it gets used less 
-than you
-might think.
->  The quick summary (which I'm sure others on this list can
->  clarify/correct) is the FP trampoline, which is pushed on
->  the user-land stack is, unlike sigreturn, not fixed code.
->  It varies on a per-instance per-thread basis.  Hence the
->  simple ‘vsyscall’ mechanism ((to be?) used for sigreturn)
->  is inappropriate.
+Maxim Kuvyrkov <maxim@codesourcery.com> writes:
+> GLIBC contains the following code in stdlib/longlong.h:
+> <snip>
+> #if defined (__mips__) && W_TYPE_SIZE == 32
+> #define umul_ppmm(w1, w0, u, v) \
+>    __asm__ ("multu %2,%3"						\
+> 	   : "=l" ((USItype) (w0)),					\
+> 	     "=h" ((USItype) (w1))					\
+> 	   : "d" ((USItype) (u)),					\
+> 	     "d" ((USItype) (v)))
+> #define UMUL_TIME 10
+> #define UDIV_TIME 100
+> #endif /* __mips__ */
+> </snip>
 >
->  The trampoline is only used to execute a non-FP instruction
->  (<instr>) in the delay slot of an FP-instruction:
+> What would be a correct fix in this case?  Something like this:
+> <snip>
+> #define umul_ppmm(w1, w0, u, v)					\
+>    ({unsigned int __attribute__((mode(DI))) __xx;		\
+>      __xx = (unsigned int __attribute__((mode(DI)))) u * v;	\
+>      w0 = __xx & ((1 << 32) - 1);				\
+>      w1 = __xx >> 32;})
+> </snip>
 >
->      <instr>  # Non-FP instruction to execute in user-land
->      BADINST  # Bad instruction forcing return to FP emulator
->      COOKIE   # Bad instruction (not executed) for verification
->      <epc>    # Where to resume execution after <instr>
->
->  Belch! ;-\  Whilst I can think of a few things that may work
->  (temporarily change page permissions;  or go ahead and use
->  the ‘vsyscall’ page with some interlocking magic;  or a new
->  new dedicated per-thread page;  or ...?) none seem appealing.
->
->  Suggestions?  Comments?  Prior art to study?
->   
-As the jerk who originally bolted the FP emulator into the MIPS kernel
-and came up with the stack trampoline hack, I can explain why it seemed
-sane at the time.  If an FP branch is emulated and to be taken, we have to
-find a way for the instruction in the delay slot to be executed prior to the
-transfer of control to the branch target.  It has to execute with the user's
-permissions.  Putting it on the user's stack and building a trampoline was
-the fairly classical way of doing it, but note that it's architecturally 
-illegal
-to put a branch in a branch delay slot (floating point or otherwise), so
-there's no possibility of recursion. So one only needs 3-4 words (one
-could substitute another means of validation for the cookie) per
-thread.  It just has to be part of the user's address space.  I suppose
-that instead of using a few words just above the stack, one could use
-a few words just below the current "brk()" point, or, better still (but
-far more invasive) pad the text segment, which should always be
-executable, with 4 words that the kernel can find in a hurry.
+> Or is there a better way?
 
-          Regards,
+All being well, you should just be able to do the same as I did for
+GCC's copy of longlong.h (included in the patch you responded to).
 
-          Kevin K.
+Richard

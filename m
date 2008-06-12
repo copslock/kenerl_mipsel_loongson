@@ -1,307 +1,107 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2008 10:02:40 +0100 (BST)
-Received: from vigor.karmaclothing.net ([217.169.26.28]:42434 "EHLO
-	vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
-	id S28578097AbYFLJCi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 12 Jun 2008 10:02:38 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m5C92ENE020156;
-	Thu, 12 Jun 2008 10:02:15 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m5C927mG020100;
-	Thu, 12 Jun 2008 10:02:07 +0100
-Date:	Thu, 12 Jun 2008 10:02:06 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Manuel Lauss <mano@roarinelk.homelinux.net>
-Cc:	linux-mips@linux-mips.org, sshtylyov@ru.mvista.com,
-	drzeus@drzeus.cx, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/8] Alchemy: register mmc platform device for
-	db1200/pb1200 boards.
-Message-ID: <20080612090206.GB21601@linux-mips.org>
-References: <20080609063521.GA8724@roarinelk.homelinux.net> <20080609063702.GC8724@roarinelk.homelinux.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080609063702.GC8724@roarinelk.homelinux.net>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2008 10:43:11 +0100 (BST)
+Received: from mail2.lzu.edu.cn ([202.201.0.158]:25322 "HELO lzu.edu.cn")
+	by ftp.linux-mips.org with SMTP id S28578173AbYFLJnI (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 12 Jun 2008 10:43:08 +0100
+Received: from [192.168.2.104] (unknown [202.201.14.140])
+	by mail1.lzu.edu.cn (Coremail) with SMTP id AQAAf7Dr8wuX51BIDqAzAA==.4517S2;
+	Thu, 12 Jun 2008 17:08:39 +0800 (CST)
+Subject: irq hande default_startup qestion
+From:	"Wang, Baojun" <wangbj@lzu.edu.cn>
+Reply-To: wangbj@dslab.lzu.edu.cn
+To:	linux-mips@linux-mips.org
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-EmmDG8reDwVQPiA2VVlj"
+Organization: DSLab, Lanzhou University
+Date:	Thu, 12 Jun 2008 17:42:54 +0800
+Message-Id: <1213263774.31495.9.camel@localhost.dslab>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.22.2 
+X-Coremail-Antispam: 1U3129KBjvJXoW7Gw1xAw17uFykJw1DJr4fKrg_yoW8JF1DpF
+	4rGwnYvFW3Xay0grWUCw40kr1ftwsxJry8Ar1rK343Zayq93yvv3Wvqrs7Ar1UGr9Fqr47
+	AF4SvFWIva13A3DanT9S1TB71UUUUUUv73VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjLIb7
+	Iv0xC_Jr1l5I8CrVACY4xI64kE6c02F40Ex7xfM7kC6x804xWl14x267AKxVWUJVW8JwAF
+	xVCF77xC6IxKo4kEV4yl1I0EscIYIxCEI4klw4CSwwAFIxvE14AKwVWUJVWUGwASzI0EjI
+	02j7AqF2xKxwAq048E620vw7xCY7CE4x8GYI0EYx1lYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4l
+	Yx0Ex4A2jsIE14v26r1j6r4UMx02cVAKzwCY0x0Ix7I2Y4AK64vIr41l4x8a64kEw24lx4
+	CE17CEb7AF67AKxVWUJVWUXjIFyTuYvjxUYmiiDUUUU
+Return-Path: <wangbj@lzu.edu.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19495
+X-archive-position: 19496
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: wangbj@lzu.edu.cn
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jun 09, 2008 at 08:37:02AM +0200, Manuel Lauss wrote:
 
-Only a few small nits ...
+--=-EmmDG8reDwVQPiA2VVlj
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-> >From 536f44d2947f3883016b927a621e30782bd3149f Mon Sep 17 00:00:00 2001
-> From: Manuel Lauss <mlau@msc-ge.com>
-> Date: Sat, 17 May 2008 17:48:02 +0200
-> Subject: [PATCH] Alchemy: register mmc platform device for db1200/pb1200 boards
+hi, list:
 
-Please only post as part of the body what is supposed to go into the commit
-message.  Three of these lines are junk which the maintainer applying the
-patch will have to remove ...
+I have a question about default_startup() in kernel/irq/chip.c:
 
-> Add au1xmmc platform data for PB1200/DB1200 boards, and wire up
-> the 2 SD controllers for them.
-> 
-> Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
-> ---
->  arch/mips/au1000/common/platform.c |   99 +++++++++++++++++++++++++++---------
->  arch/mips/au1000/pb1200/platform.c |   81 +++++++++++++++++++++++++++++
->  2 files changed, 156 insertions(+), 24 deletions(-)
-> 
-> diff --git a/arch/mips/au1000/common/platform.c b/arch/mips/au1000/common/platform.c
-> index 8cae775..c235434 100644
-> --- a/arch/mips/au1000/common/platform.c
-> +++ b/arch/mips/au1000/common/platform.c
-> @@ -16,6 +16,8 @@
->  #include <linux/init.h>
->  
->  #include <asm/mach-au1x00/au1xxx.h>
-> +#include <asm/mach-au1x00/au1xxx_dbdma.h>
-> +#include <asm/mach-au1x00/au1100_mmc.h>
->  
->  #define PORT(_base, _irq)				\
->  	{						\
-> @@ -162,24 +164,6 @@ static struct resource au1xxx_usb_gdt_resources[] = {
->  	},
->  };
->  
-> -static struct resource au1xxx_mmc_resources[] = {
-> -	[0] = {
-> -		.start          = SD0_PHYS_ADDR,
-> -		.end            = SD0_PHYS_ADDR + 0x40,
-> -		.flags          = IORESOURCE_MEM,
-> -	},
-> -	[1] = {
-> -		.start		= SD1_PHYS_ADDR,
-> -		.end 		= SD1_PHYS_ADDR + 0x40,
-> -		.flags		= IORESOURCE_MEM,
-> -	},
-> -	[2] = {
-> -		.start          = AU1200_SD_INT,
-> -		.end            = AU1200_SD_INT,
-> -		.flags          = IORESOURCE_IRQ,
-> -	}
-> -};
-> -
->  static u64 udc_dmamask = ~(u32)0;
+/*
+ * default startup function
+ */
+static unsigned int default_startup(unsigned int irq)
+{
+        irq_desc[irq].chip->enable(irq);
 
-Okay, you didn't change this line but using DMA_32BIT_MASK would be
-cleaner ...
+        return 0;
+}
 
->  static struct platform_device au1xxx_usb_gdt_device = {
-> @@ -248,16 +232,80 @@ static struct platform_device au1200_lcd_device = {
->  
->  static u64 au1xxx_mmc_dmamask =  ~(u32)0;
+By default, default_startup will call irq_chip->enable(), but some
+drivers like i8259A, in arch/mips/kenrel/i8259.c:
 
-Ditto.
+static struct irq_chip i8259A_chip =3D {
+        .name           =3D "XT-PIC",
+        .mask           =3D disable_8259A_irq,
+        .disable        =3D disable_8259A_irq,
+        .unmask         =3D enable_8259A_irq,
+        .mask_ack       =3D mask_and_ack_8259A,
+#ifdef CONFIG_MIPS_MT_SMTC_IRQAFF
+        .set_affinity   =3D plat_set_irq_affinity,
+#endif /* CONFIG_MIPS_MT_SMTC_IRQAFF */
+};
 
-> -static struct platform_device au1xxx_mmc_device = {
-> +extern struct au1xmmc_platform_data au1xmmc_platdata[2];
-> +
-> +static struct resource au1200_mmc0_resources[] = {
-> +	[0] = {
-> +		.start          = SD0_PHYS_ADDR,
-> +		.end            = SD0_PHYS_ADDR + 0x7ffff,
-> +		.flags          = IORESOURCE_MEM,
-> +	},
-> +	[1] = {
-> +		.start		= AU1200_SD_INT,
-> +		.end		= AU1200_SD_INT,
-> +		.flags		= IORESOURCE_IRQ,
-> +	},
-> +	[2] = {
-> +		.start		= DSCR_CMD0_SDMS_TX0,
-> +		.end		= DSCR_CMD0_SDMS_TX0,
-> +		.flags		= IORESOURCE_DMA,
-> +	},
-> +	[3] = {
-> +		.start          = DSCR_CMD0_SDMS_RX0,
-> +		.end		= DSCR_CMD0_SDMS_RX0,
-> +		.flags          = IORESOURCE_DMA,
-> +	}
-> +};
-> +
-> +static struct platform_device au1200_mmc0_device = {
->  	.name = "au1xxx-mmc",
->  	.id = 0,
->  	.dev = {
-> -		.dma_mask               = &au1xxx_mmc_dmamask,
-> -		.coherent_dma_mask      = 0xffffffff,
-> +		.dma_mask		= &au1xxx_mmc_dmamask,
-> +		.coherent_dma_mask	= 0xffffffff,
+which don't initialize irq_chip->enable, in some (probably rare) case
+when irq_chip->startup() get called, it will cause NULL pointer
+reference. is it OK to change i8259A_chip (add .enable =3D
+xxx_unmask, .disable =3D xxx_mask) or just change default_startup()
+function? (irq_desc[irq].chip->unmask() or so?)
 
-DMA_32BIT_MASK.
+  Regards,
+Wang
 
-> +		.platform_data		= &au1xmmc_platdata[0],
->  	},
-> -	.num_resources  = ARRAY_SIZE(au1xxx_mmc_resources),
-> -	.resource       = au1xxx_mmc_resources,
-> +	.num_resources	= ARRAY_SIZE(au1200_mmc0_resources),
-> +	.resource	= au1200_mmc0_resources,
->  };
-> +
-> +#ifndef CONFIG_MIPS_DB1200
-> +static struct resource au1200_mmc1_resources[] = {
-> +	[0] = {
-> +		.start          = SD1_PHYS_ADDR,
-> +		.end            = SD1_PHYS_ADDR + 0x7ffff,
-> +		.flags          = IORESOURCE_MEM,
-> +	},
-> +	[1] = {
-> +		.start		= AU1200_SD_INT,
-> +		.end		= AU1200_SD_INT,
-> +		.flags		= IORESOURCE_IRQ,
-> +	},
-> +	[2] = {
-> +		.start		= DSCR_CMD0_SDMS_TX1,
-> +		.end		= DSCR_CMD0_SDMS_TX1,
-> +		.flags		= IORESOURCE_DMA,
-> +	},
-> +	[3] = {
-> +		.start          = DSCR_CMD0_SDMS_RX1,
-> +		.end		= DSCR_CMD0_SDMS_RX1,
-> +		.flags          = IORESOURCE_DMA,
-> +	}
-> +};
-> +
-> +
-> +static struct platform_device au1200_mmc1_device = {
-> +	.name = "au1xxx-mmc",
-> +	.id = 1,
-> +	.dev = {
-> +		.dma_mask		= &au1xxx_mmc_dmamask,
-> +		.coherent_dma_mask	= 0xffffffff,
+--=20
+Wang, Baojun                                                Lanzhou Univers=
+ity
+Distributed & Embedded System Lab                      http://dslab.lzu.edu=
+.cn
+School of Information Science and Engeneering          wangbj@dslab.lzu.edu=
+.cn
+Tianshui South Road 222. Lanzhou 730000                             .P.R.Ch=
+ina
+Tel: +86-931-8912025                                      Fax: +86-931-8912=
+022
 
-DMA_32BIT_MASK.
 
-> +		.platform_data		= &au1xmmc_platdata[1],
-> +	},
-> +	.num_resources	= ARRAY_SIZE(au1200_mmc1_resources),
-> +	.resource	= au1200_mmc1_resources,
-> +};
-> +#endif /* #ifndef CONFIG_MIPS_DB1200 */
->  #endif /* #ifdef CONFIG_SOC_AU1200 */
->  
->  static struct platform_device au1x00_pcmcia_device = {
-> @@ -295,7 +343,10 @@ static struct platform_device *au1xxx_platform_devices[] __initdata = {
->  	&au1xxx_usb_gdt_device,
->  	&au1xxx_usb_otg_device,
->  	&au1200_lcd_device,
-> -	&au1xxx_mmc_device,
-> +	&au1200_mmc0_device,
-> +#ifndef CONFIG_MIPS_DB1200
-> +	&au1200_mmc1_device,
-> +#endif
->  #endif
->  #ifdef SMBUS_PSC_BASE
->  	&pbdb_smbus_device,
-> diff --git a/arch/mips/au1000/pb1200/platform.c b/arch/mips/au1000/pb1200/platform.c
-> index 5930110..faf3d92 100644
-> --- a/arch/mips/au1000/pb1200/platform.c
-> +++ b/arch/mips/au1000/pb1200/platform.c
-> @@ -19,9 +19,90 @@
->   */
->  
->  #include <linux/init.h>
-> +#include <linux/leds.h>
->  #include <linux/platform_device.h>
->  
->  #include <asm/mach-au1x00/au1xxx.h>
-> +#include <asm/mach-au1x00/au1100_mmc.h>
-> +
-> +static int mmc_activity = 0;
+--=-EmmDG8reDwVQPiA2VVlj
+Content-Type: application/pgp-signature; name=signature.asc
+Content-Description:
+	=?gb2312?Q?=D5=E2=CA=C7=D0=C5=BC=FE=B5=C4=CA=FD=D7=D6=C7=A9?=
+	=?gb2312?Q?=C3=FB=B2=BF=B7=D6?=
 
-Don't initialize static variables to 0.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.9 (GNU/Linux)
 
-> +
-> +static void pb1200mmc0_set_power(void *mmc_host, int state)
-> +{
-> +	if (state)
-> +		bcsr->board |= BCSR_BOARD_SD0PWR;
-> +	else
-> +		bcsr->board &= ~BCSR_BOARD_SD0PWR;
-> +
-> +	au_sync_delay(1);
-> +}
-> +
-> +static int pb1200mmc0_card_readonly(void *mmc_host)
-> +{
-> +	return (bcsr->status & BCSR_STATUS_SD0WP) ? 1 : 0;
-> +}
-> +
-> +static int pb1200mmc0_card_inserted(void *mmc_host)
-> +{
-> +	return (bcsr->sig_status & BCSR_INT_SD0INSERT) ? 1 : 0;
-> +}
-> +
-> +static void pb1200_mmcled_set(struct led_classdev *led,
-> +			enum led_brightness brightness)
-> +{
-> +	if (brightness != LED_OFF) {
-> +		if (++mmc_activity == 1)
-> +			bcsr->disk_leds &= ~(1 << 8);
-> +	} else {
-> +		if (--mmc_activity == 0)
-> +			bcsr->disk_leds |= (1 << 8);
-> +	}
-> +}
-> +
-> +static struct led_classdev pb1200mmc_led = {
-> +	.brightness_set	= pb1200_mmcled_set,
-> +};
-> +
-> +#ifndef CONFIG_MIPS_DB1200
-> +static void pb1200mmc1_set_power(void *mmc_host, int state)
-> +{
-> +	if (state)
-> +		bcsr->board |= BCSR_BOARD_SD1PWR;
-> +	else
-> +		bcsr->board &= ~BCSR_BOARD_SD1PWR;
-> +
-> +	au_sync_delay(1);
-> +}
-> +
-> +static int pb1200mmc1_card_readonly(void *mmc_host)
-> +{
-> +	return (bcsr->status & BCSR_STATUS_SD1WP) ? 1 : 0;
-> +}
-> +
-> +static int pb1200mmc1_card_inserted(void *mmc_host)
-> +{
-> +	return (bcsr->sig_status & BCSR_INT_SD1INSERT) ? 1 : 0;
-> +}
-> +#endif
-> +
-> +const struct au1xmmc_platform_data au1xmmc_platdata[2] = {
-> +	[0] = {
-> +		.set_power	= pb1200mmc0_set_power,
-> +		.card_inserted	= pb1200mmc0_card_inserted,
-> +		.card_readonly	= pb1200mmc0_card_readonly,
-> +		.cd_setup	= NULL,		/* use poll-timer in driver */
-> +		.led		= &pb1200mmc_led,
-> +	},
-> +#ifndef CONFIG_MIPS_DB1200
-> +	[1] = {
-> +		.set_power	= pb1200mmc1_set_power,
-> +		.card_inserted	= pb1200mmc1_card_inserted,
-> +		.card_readonly	= pb1200mmc1_card_readonly,
-> +		.cd_setup	= NULL,		/* use poll-timer in driver */
-> +		.led		= &pb1200mmc_led,
-> +	},
-> +#endif
-> +};
->  
->  static struct resource ide_resources[] = {
->  	[0] = {
-> -- 
-> 1.5.5.3
-> 
+iEYEABECAAYFAkhQ754ACgkQIuIOr7tpgg09kwCfTgreFvQ9DSZEsDpJ5tcZK3tx
+X14AnRc9fzTdjAsSx5OMi7Bpm2yzB69w
+=CXtX
+-----END PGP SIGNATURE-----
+
+--=-EmmDG8reDwVQPiA2VVlj--

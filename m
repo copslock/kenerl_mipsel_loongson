@@ -1,95 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2008 00:24:44 +0100 (BST)
-Received: from yw-out-1718.google.com ([74.125.46.156]:20446 "EHLO
-	yw-out-1718.google.com") by ftp.linux-mips.org with ESMTP
-	id S20040942AbYFKXYm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 12 Jun 2008 00:24:42 +0100
-Received: by yw-out-1718.google.com with SMTP id 9so1690999ywk.24
-        for <linux-mips@linux-mips.org>; Wed, 11 Jun 2008 16:24:32 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from
-         :user-agent:mime-version:to:cc:subject:references:in-reply-to
-         :content-type:content-transfer-encoding:sender;
-        bh=igQVFScsQAz5rH5aanlAlNbrqEX1ZWZruq2DvHEezow=;
-        b=S9RDrVL6/Da23VdeFyIOi3zkvfn/MNShv4pZhNBYbNfe4ZbbuiA3iSsc6iMDeRG4bF
-         vqdiBDAA3SIZa1RTEFYJo9ecNtg82q2hU8qXwdqOtFHfMAenDMwF6g89aB06Vaeih9We
-         NoMxcvIFiQbsx+ffTwjHEF4W3CAQkYuXM1fCM=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding
-         :sender;
-        b=najfc6+uFswfjhA2qT6aB3WxJuIjiyqj2bF/EWXzPX3ZmEV/hVVNZx2Y9rU2ka4rLe
-         fy5BjSYyhnWB8MryfueZl0NxUdjWCwiwLslnsZgAG0n4Dk8kuQeLHWwsBpgOeQAG6O+7
-         +DiAL0FnkVUSHiR4o5Eh0PDJleVFDtoXi9vds=
-Received: by 10.150.192.7 with SMTP id p7mr1135101ybf.91.1213226672307;
-        Wed, 11 Jun 2008 16:24:32 -0700 (PDT)
-Received: from scientist-2.local ( [66.78.193.51])
-        by mx.google.com with ESMTPS id x56sm2000279pyg.10.2008.06.11.16.24.28
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 11 Jun 2008 16:24:31 -0700 (PDT)
-Message-ID: <48505EAC.6050404@gnu.org>
-Date:	Wed, 11 Jun 2008 16:24:28 -0700
-From:	Paolo Bonzini <bonzini@gnu.org>
-User-Agent: Thunderbird 2.0.0.14 (Macintosh/20080421)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2008 08:26:27 +0100 (BST)
+Received: from vigor.karmaclothing.net ([217.169.26.28]:34282 "EHLO
+	vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
+	id S28577823AbYFLH0Z (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 12 Jun 2008 08:26:25 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m5C7Q5Da012575;
+	Thu, 12 Jun 2008 08:26:05 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m5C7Q551012569;
+	Thu, 12 Jun 2008 08:26:05 +0100
+Date:	Thu, 12 Jun 2008 08:26:05 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/5] [MIPS] fix sparse warning about
+	setup_early_printk()
+Message-ID: <20080612072604.GF30400@linux-mips.org>
+References: <12124843631664-git-send-email-dmitri.vorobiev@movial.fi> <12124843631742-git-send-email-dmitri.vorobiev@movial.fi>
 MIME-Version: 1.0
-To:	Maxim Kuvyrkov <maxim@codesourcery.com>
-CC:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>, gcc-patches@gcc.gnu.org,
-	linux-mips@linux-mips.org, rdsandiford@googlemail.com
-Subject: Re: Changing the treatment of the MIPS HI and LO registers
-References: <87tzgj4nh6.fsf@firetop.home> 	<Pine.LNX.4.55.0805272134540.18833@cliff.in.clinika.pl> 	<87abib4d9t.fsf@firetop.home> 	<Pine.LNX.4.55.0805272357020.18833@cliff.in.clinika.pl> 	<87r6bm1ebd.fsf@firetop.home> 	<Pine.LNX.4.55.0805290213140.29522@cliff.in.clinika.pl> 	<878wxtvarg.fsf@firetop.home> <8763stz2p3.fsf@firetop.home> <87zlpuxqfb.fsf@firetop.home> <48501C55.5060602@codesourcery.com>
-In-Reply-To: <48501C55.5060602@codesourcery.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <paolo.bonzini@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <12124843631742-git-send-email-dmitri.vorobiev@movial.fi>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19489
+X-archive-position: 19490
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bonzini@gnu.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-> GLIBC contains the following code in stdlib/longlong.h:
-> <snip>
-> #if defined (__mips__) && W_TYPE_SIZE == 32
-> #define umul_ppmm(w1, w0, u, v) \
->   __asm__ ("multu %2,%3"                        \
->        : "=l" ((USItype) (w0)),                    \
->          "=h" ((USItype) (w1))                    \
->        : "d" ((USItype) (u)),                    \
->          "d" ((USItype) (v)))
-> #define UMUL_TIME 10
-> #define UDIV_TIME 100
-> #endif /* __mips__ */
-> </snip>
-
-Actually, so does GCC itself.  Can you prepare a patch?
-
-> What would be a correct fix in this case?  Something like this:
-> <snip>
-> #define umul_ppmm(w1, w0, u, v)                    \
->   ({unsigned int __attribute__((mode(DI))) __xx;        \
->     __xx = (unsigned int __attribute__((mode(DI)))) u * v;    \
->     w0 = __xx & ((1 << 32) - 1);                \
->     w1 = __xx >> 32;})
-> </snip>
+On Tue, Jun 03, 2008 at 12:12:40PM +0300, Dmitri Vorobiev wrote:
+> From: Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+> Date: Tue,  3 Jun 2008 12:12:40 +0300
+> To: linux-mips@linux-mips.org, ralf@linux-mips.org
+> Subject: [PATCH 1/5] [MIPS] fix sparse warning about setup_early_printk()
 > 
-> Or is there a better way?
+> This patch fixes the following sparse warning:
+> 
+> <<<<<<<<
+> 
+> arch/mips/kernel/early_printk.c:35:13: warning: symbol 'setup_early_printk'
+> was not declared. Should it be static?
+> 
+> <<<<<<<<
+> 
+> The fix is to define a prototype of the setup_early_printk() function and
+> to include the appropriate header into arch/mips/kernel/early_printk.c.
+> 
+> Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+> ---
+>  arch/mips/kernel/early_printk.c |    1 +
+>  arch/mips/kernel/setup.c        |    6 +-----
+>  include/asm-mips/setup.h        |    2 ++
+>  3 files changed, 4 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/mips/kernel/early_printk.c b/arch/mips/kernel/early_printk.c
+> index 9dccfa4..cb602c1 100644
+> --- a/arch/mips/kernel/early_printk.c
+> +++ b/arch/mips/kernel/early_printk.c
+> @@ -7,6 +7,7 @@
+>   * Copyright (C) 2007 MIPS Technologies, Inc.
+>   *   written by Ralf Baechle (ralf@linux-mips.org)
+>   */
+> +#include <asm/setup.h>
+>  #include <linux/console.h>
+>  #include <linux/init.h>
 
-Almost; this:
+Queued for 2.6.27 with includes sorted <linux/...> first followed by
+<asm/...>.
 
-#define umul_ppmm(w1, w0, u, v)  \
-   ({UDWtype __xx;       	 \
-     UWtype __u = (u), __v = (v); \
-     __xx = (UDWtype) __u * __v;  \
-     w0 = (UWtype) __xx;          \
-     w1 = __xx >> 32;})
-
-should work.
-
-Paolo
+  Ralf

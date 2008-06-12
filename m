@@ -1,65 +1,254 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2008 10:51:50 +0100 (BST)
-Received: from wf-out-1314.google.com ([209.85.200.169]:9830 "EHLO
-	wf-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S28578203AbYFLJvr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 12 Jun 2008 10:51:47 +0100
-Received: by wf-out-1314.google.com with SMTP id 28so4327568wff.21
-        for <linux-mips@linux-mips.org>; Thu, 12 Jun 2008 02:51:44 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to
-         :subject:cc:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:content-disposition:references;
-        bh=F6LGIQl4CuEpYvQniQv8GJhqbhAiN0X56tbvMyGVae0=;
-        b=BnK61hr6HKyIPayHGszC/8nPm25oCOs+Q4AeGwZnUGL3LuVxfZAgAdCdC7Xy5LNgfz
-         nlvpRQv6oFVlSQESWJ5b2DXC+xpUrPI3U+FJLpMUcolX8A5XI2o+oFI7eVI5Ay3AK0e6
-         GVpUcfMaxECfv5C8VzFGE+piYui0dHnHzFnrI=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:cc:in-reply-to:mime-version
-         :content-type:content-transfer-encoding:content-disposition
-         :references;
-        b=j1cr9Tatjtdw71sMTNy0wsT00PE5WRZZV58r9e6z8HgAaK6sv/0czwJ67u7ztSqx8b
-         BHdlQUHNPeBqx9ZP/dGdtOPLhW9NMZu1XvPtxo59z5u2H9+U6zFKuc3Bv0WGSS4CiRAR
-         HbxG/wm5xlI12EQFYwAt5AtI6NA3DC6YZGafU=
-Received: by 10.142.174.18 with SMTP id w18mr389646wfe.325.1213264304694;
-        Thu, 12 Jun 2008 02:51:44 -0700 (PDT)
-Received: by 10.143.42.1 with HTTP; Thu, 12 Jun 2008 02:51:44 -0700 (PDT)
-Message-ID: <dcf6addc0806120251t4785dc09tc4a6f0854c5cd425@mail.gmail.com>
-Date:	Thu, 12 Jun 2008 17:51:44 +0800
-From:	J.Ma <sync.jma@gmail.com>
-To:	"Markus Gothe" <markus.gothe@27m.se>
-Subject: Re: [SPAM] linux-2.6.25.4 Porting OOPS
-Cc:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-In-Reply-To: <20B109E2-594E-4329-95C7-F67E9A7882E2@27m.se>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2008 11:19:06 +0100 (BST)
+Received: from vigor.karmaclothing.net ([217.169.26.28]:63459 "EHLO
+	vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
+	id S28578262AbYFLKTD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 12 Jun 2008 11:19:03 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m5CAIfwi011235;
+	Thu, 12 Jun 2008 11:18:41 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m5CAIdVY011227;
+	Thu, 12 Jun 2008 11:18:39 +0100
+Date:	Thu, 12 Jun 2008 11:18:39 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Manuel Lauss <mano@roarinelk.homelinux.net>
+Cc:	linux-mips@linux-mips.org, sshtylyov@ru.mvista.com,
+	drzeus@drzeus.cx, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/8] Alchemy: register mmc platform device for
+	db1200/pb1200 boards.
+Message-ID: <20080612101839.GC21601@linux-mips.org>
+References: <20080609063521.GA8724@roarinelk.homelinux.net> <20080609063702.GC8724@roarinelk.homelinux.net> <20080612090206.GB21601@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-References: <dcf6addc0806082001m19d54184pc8ab42b0875c5238@mail.gmail.com>
-	 <20B109E2-594E-4329-95C7-F67E9A7882E2@27m.se>
-Return-Path: <sync.jma@gmail.com>
+In-Reply-To: <20080612090206.GB21601@linux-mips.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19497
+X-archive-position: 19498
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sync.jma@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jun 9, 2008 at 1:53 PM, Markus Gothe <markus.gothe@27m.se> wrote:
-> Start with checking the memory mapping as hinted by:
-> ra    : 8000dd10 copy_user_highpage+0x98/0x158
-> //Markus
+On Thu, Jun 12, 2008 at 10:02:06AM +0100, Ralf Baechle wrote:
 
-Thank you for your advice, I checked this function and found that the
-problem might be "cpu_has_dc_aliases", After disabling
-MIPS_CACHE_ALIASES in probe_pcache(), the linux goes on with no oops.
-Could anyone here provide instructions about fusion MIPS SOC(R3K/R4K
-for example)? It confused me a lot. :)
+I cleaned the numerals for the DMA constants with below patch which now
+is in the 2.6.27 patch queue.
 
--- 
-FIXME if it is wrong.
+  Ralf
+
+From: Ralf Baechle <ralf@linux-mips.org>
+
+[MIPS] Alchemy, PNX: Use symbolic constants for DMA masks.
+
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+ arch/mips/au1000/common/platform.c      |   29 +++++++++++++++--------------
+ arch/mips/au1000/pb1200/platform.c      |    5 +++--
+ arch/mips/nxp/pnx8550/common/platform.c |    9 +++++----
+ 3 files changed, 23 insertions(+), 20 deletions(-)
+
+Index: linux-queue/arch/mips/au1000/common/platform.c
+===================================================================
+--- linux-queue.orig/arch/mips/au1000/common/platform.c
++++ linux-queue/arch/mips/au1000/common/platform.c
+@@ -11,6 +11,7 @@
+  * warranty of any kind, whether express or implied.
+  */
+ 
++#include <linux/dma-mapping.h>
+ #include <linux/platform_device.h>
+ #include <linux/serial_8250.h>
+ #include <linux/init.h>
+@@ -77,14 +78,14 @@ static struct resource au1xxx_usb_ohci_r
+ };
+ 
+ /* The dmamask must be set for OHCI to work */
+-static u64 ohci_dmamask = ~(u32)0;
++static u64 ohci_dmamask = DMA_32BIT_MASK;
+ 
+ static struct platform_device au1xxx_usb_ohci_device = {
+ 	.name		= "au1xxx-ohci",
+ 	.id		= 0,
+ 	.dev = {
+ 		.dma_mask		= &ohci_dmamask,
+-		.coherent_dma_mask	= 0xffffffff,
++		.coherent_dma_mask	= DMA_32BIT_MASK,
+ 	},
+ 	.num_resources	= ARRAY_SIZE(au1xxx_usb_ohci_resources),
+ 	.resource	= au1xxx_usb_ohci_resources,
+@@ -106,14 +107,14 @@ static struct resource au1100_lcd_resour
+ 	}
+ };
+ 
+-static u64 au1100_lcd_dmamask = ~(u32)0;
++static u64 au1100_lcd_dmamask = DMA_32BIT_MASK;
+ 
+ static struct platform_device au1100_lcd_device = {
+ 	.name           = "au1100-lcd",
+ 	.id             = 0,
+ 	.dev = {
+ 		.dma_mask               = &au1100_lcd_dmamask,
+-		.coherent_dma_mask      = 0xffffffff,
++		.coherent_dma_mask      = DMA_32BIT_MASK,
+ 	},
+ 	.num_resources  = ARRAY_SIZE(au1100_lcd_resources),
+ 	.resource       = au1100_lcd_resources,
+@@ -135,14 +136,14 @@ static struct resource au1xxx_usb_ehci_r
+ 	},
+ };
+ 
+-static u64 ehci_dmamask = ~(u32)0;
++static u64 ehci_dmamask = DMA_32BIT_MASK;
+ 
+ static struct platform_device au1xxx_usb_ehci_device = {
+ 	.name		= "au1xxx-ehci",
+ 	.id		= 0,
+ 	.dev = {
+ 		.dma_mask		= &ehci_dmamask,
+-		.coherent_dma_mask	= 0xffffffff,
++		.coherent_dma_mask	= DMA_32BIT_MASK,
+ 	},
+ 	.num_resources	= ARRAY_SIZE(au1xxx_usb_ehci_resources),
+ 	.resource	= au1xxx_usb_ehci_resources,
+@@ -180,14 +181,14 @@ static struct resource au1xxx_mmc_resour
+ 	}
+ };
+ 
+-static u64 udc_dmamask = ~(u32)0;
++static u64 udc_dmamask = DMA_32BIT_MASK;
+ 
+ static struct platform_device au1xxx_usb_gdt_device = {
+ 	.name		= "au1xxx-udc",
+ 	.id		= 0,
+ 	.dev = {
+ 		.dma_mask		= &udc_dmamask,
+-		.coherent_dma_mask	= 0xffffffff,
++		.coherent_dma_mask	= DMA_32BIT_MASK,
+ 	},
+ 	.num_resources	= ARRAY_SIZE(au1xxx_usb_gdt_resources),
+ 	.resource	= au1xxx_usb_gdt_resources,
+@@ -207,14 +208,14 @@ static struct resource au1xxx_usb_otg_re
+ 	},
+ };
+ 
+-static u64 uoc_dmamask = ~(u32)0;
++static u64 uoc_dmamask = DMA_32BIT_MASK;
+ 
+ static struct platform_device au1xxx_usb_otg_device = {
+ 	.name		= "au1xxx-uoc",
+ 	.id		= 0,
+ 	.dev = {
+ 		.dma_mask		= &uoc_dmamask,
+-		.coherent_dma_mask	= 0xffffffff,
++		.coherent_dma_mask	= DMA_32BIT_MASK,
+ 	},
+ 	.num_resources	= ARRAY_SIZE(au1xxx_usb_otg_resources),
+ 	.resource	= au1xxx_usb_otg_resources,
+@@ -233,27 +234,27 @@ static struct resource au1200_lcd_resour
+ 	}
+ };
+ 
+-static u64 au1200_lcd_dmamask = ~(u32)0;
++static u64 au1200_lcd_dmamask = DMA_32BIT_MASK;
+ 
+ static struct platform_device au1200_lcd_device = {
+ 	.name           = "au1200-lcd",
+ 	.id             = 0,
+ 	.dev = {
+ 		.dma_mask               = &au1200_lcd_dmamask,
+-		.coherent_dma_mask      = 0xffffffff,
++		.coherent_dma_mask      = DMA_32BIT_MASK,
+ 	},
+ 	.num_resources  = ARRAY_SIZE(au1200_lcd_resources),
+ 	.resource       = au1200_lcd_resources,
+ };
+ 
+-static u64 au1xxx_mmc_dmamask =  ~(u32)0;
++static u64 au1xxx_mmc_dmamask =  DMA_32BIT_MASK;
+ 
+ static struct platform_device au1xxx_mmc_device = {
+ 	.name = "au1xxx-mmc",
+ 	.id = 0,
+ 	.dev = {
+ 		.dma_mask               = &au1xxx_mmc_dmamask,
+-		.coherent_dma_mask      = 0xffffffff,
++		.coherent_dma_mask      = DMA_32BIT_MASK,
+ 	},
+ 	.num_resources  = ARRAY_SIZE(au1xxx_mmc_resources),
+ 	.resource       = au1xxx_mmc_resources,
+Index: linux-queue/arch/mips/au1000/pb1200/platform.c
+===================================================================
+--- linux-queue.orig/arch/mips/au1000/pb1200/platform.c
++++ linux-queue/arch/mips/au1000/pb1200/platform.c
+@@ -18,6 +18,7 @@
+  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+  */
+ 
++#include <linux/dma-mapping.h>
+ #include <linux/init.h>
+ #include <linux/platform_device.h>
+ 
+@@ -36,14 +37,14 @@ static struct resource ide_resources[] =
+ 	}
+ };
+ 
+-static u64 ide_dmamask = ~(u32)0;
++static u64 ide_dmamask = DMA_32BIT_MASK;
+ 
+ static struct platform_device ide_device = {
+ 	.name		= "au1200-ide",
+ 	.id		= 0,
+ 	.dev = {
+ 		.dma_mask 		= &ide_dmamask,
+-		.coherent_dma_mask	= 0xffffffff,
++		.coherent_dma_mask	= DMA_32BIT_MASK,
+ 	},
+ 	.num_resources	= ARRAY_SIZE(ide_resources),
+ 	.resource	= ide_resources
+Index: linux-queue/arch/mips/nxp/pnx8550/common/platform.c
+===================================================================
+--- linux-queue.orig/arch/mips/nxp/pnx8550/common/platform.c
++++ linux-queue/arch/mips/nxp/pnx8550/common/platform.c
+@@ -13,6 +13,7 @@
+  * warranty of any kind, whether express or implied.
+  */
+ #include <linux/device.h>
++#include <linux/dma-mapping.h>
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/resource.h>
+@@ -91,16 +92,16 @@ struct pnx8xxx_port pnx8xxx_ports[] = {
+ };
+ 
+ /* The dmamask must be set for OHCI to work */
+-static u64 ohci_dmamask = ~(u32)0;
++static u64 ohci_dmamask = DMA_32BIT_MASK;
+ 
+-static u64 uart_dmamask = ~(u32)0;
++static u64 uart_dmamask = DMA_32BIT_MASK;
+ 
+ static struct platform_device pnx8550_usb_ohci_device = {
+ 	.name		= "pnx8550-ohci",
+ 	.id		= -1,
+ 	.dev = {
+ 		.dma_mask		= &ohci_dmamask,
+-		.coherent_dma_mask	= 0xffffffff,
++		.coherent_dma_mask	= DMA_32BIT_MASK,
+ 	},
+ 	.num_resources	= ARRAY_SIZE(pnx8550_usb_ohci_resources),
+ 	.resource	= pnx8550_usb_ohci_resources,
+@@ -111,7 +112,7 @@ static struct platform_device pnx8550_ua
+ 	.id		= -1,
+ 	.dev = {
+ 		.dma_mask		= &uart_dmamask,
+-		.coherent_dma_mask	= 0xffffffff,
++		.coherent_dma_mask	= DMA_32BIT_MASK,
+ 		.platform_data = pnx8xxx_ports,
+ 	},
+ 	.num_resources	= ARRAY_SIZE(pnx8550_uart_resources),

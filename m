@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2008 11:19:06 +0100 (BST)
-Received: from vigor.karmaclothing.net ([217.169.26.28]:63459 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2008 11:22:08 +0100 (BST)
+Received: from vigor.karmaclothing.net ([217.169.26.28]:2276 "EHLO
 	vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
-	id S28578262AbYFLKTD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 12 Jun 2008 11:19:03 +0100
+	id S28578255AbYFLKWG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 12 Jun 2008 11:22:06 +0100
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m5CAIfwi011235;
-	Thu, 12 Jun 2008 11:18:41 +0100
+	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m5CALi0D012413;
+	Thu, 12 Jun 2008 11:21:44 +0100
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m5CAIdVY011227;
-	Thu, 12 Jun 2008 11:18:39 +0100
-Date:	Thu, 12 Jun 2008 11:18:39 +0100
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m5CALhc2012406;
+	Thu, 12 Jun 2008 11:21:43 +0100
+Date:	Thu, 12 Jun 2008 11:21:43 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
 To:	Manuel Lauss <mano@roarinelk.homelinux.net>
 Cc:	linux-mips@linux-mips.org, sshtylyov@ru.mvista.com,
 	drzeus@drzeus.cx, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/8] Alchemy: register mmc platform device for
-	db1200/pb1200 boards.
-Message-ID: <20080612101839.GC21601@linux-mips.org>
-References: <20080609063521.GA8724@roarinelk.homelinux.net> <20080609063702.GC8724@roarinelk.homelinux.net> <20080612090206.GB21601@linux-mips.org>
+Subject: Re: [PATCH 7/8] Alchemy: remove unused MMC macros from db1x00
+	header.
+Message-ID: <20080612102143.GD21601@linux-mips.org>
+References: <20080609063521.GA8724@roarinelk.homelinux.net> <20080609063958.GH8724@roarinelk.homelinux.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20080612090206.GB21601@linux-mips.org>
+In-Reply-To: <20080609063958.GH8724@roarinelk.homelinux.net>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19498
+X-archive-position: 19499
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,220 +35,15 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jun 12, 2008 at 10:02:06AM +0100, Ralf Baechle wrote:
+On Mon, Jun 09, 2008 at 08:39:58AM +0200, Manuel Lauss wrote:
+> From: Manuel Lauss <mano@roarinelk.homelinux.net>
+> Date: Mon, 9 Jun 2008 08:39:58 +0200
+> To: linux-mips@linux-mips.org, sshtylyov@ru.mvista.com, drzeus@drzeus.cx,
+> 	linux-kernel@vger.kernel.org
+> Subject: [PATCH 7/8] Alchemy: remove unused MMC macros from db1x00 header.
+> Content-Type: text/plain; charset=us-ascii
 
-I cleaned the numerals for the DMA constants with below patch which now
-is in the 2.6.27 patch queue.
+Okay for this one.  Since it's independant of the others I will put it
+into the 2.6.27 queue.  Thanks,
 
   Ralf
-
-From: Ralf Baechle <ralf@linux-mips.org>
-
-[MIPS] Alchemy, PNX: Use symbolic constants for DMA masks.
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
- arch/mips/au1000/common/platform.c      |   29 +++++++++++++++--------------
- arch/mips/au1000/pb1200/platform.c      |    5 +++--
- arch/mips/nxp/pnx8550/common/platform.c |    9 +++++----
- 3 files changed, 23 insertions(+), 20 deletions(-)
-
-Index: linux-queue/arch/mips/au1000/common/platform.c
-===================================================================
---- linux-queue.orig/arch/mips/au1000/common/platform.c
-+++ linux-queue/arch/mips/au1000/common/platform.c
-@@ -11,6 +11,7 @@
-  * warranty of any kind, whether express or implied.
-  */
- 
-+#include <linux/dma-mapping.h>
- #include <linux/platform_device.h>
- #include <linux/serial_8250.h>
- #include <linux/init.h>
-@@ -77,14 +78,14 @@ static struct resource au1xxx_usb_ohci_r
- };
- 
- /* The dmamask must be set for OHCI to work */
--static u64 ohci_dmamask = ~(u32)0;
-+static u64 ohci_dmamask = DMA_32BIT_MASK;
- 
- static struct platform_device au1xxx_usb_ohci_device = {
- 	.name		= "au1xxx-ohci",
- 	.id		= 0,
- 	.dev = {
- 		.dma_mask		= &ohci_dmamask,
--		.coherent_dma_mask	= 0xffffffff,
-+		.coherent_dma_mask	= DMA_32BIT_MASK,
- 	},
- 	.num_resources	= ARRAY_SIZE(au1xxx_usb_ohci_resources),
- 	.resource	= au1xxx_usb_ohci_resources,
-@@ -106,14 +107,14 @@ static struct resource au1100_lcd_resour
- 	}
- };
- 
--static u64 au1100_lcd_dmamask = ~(u32)0;
-+static u64 au1100_lcd_dmamask = DMA_32BIT_MASK;
- 
- static struct platform_device au1100_lcd_device = {
- 	.name           = "au1100-lcd",
- 	.id             = 0,
- 	.dev = {
- 		.dma_mask               = &au1100_lcd_dmamask,
--		.coherent_dma_mask      = 0xffffffff,
-+		.coherent_dma_mask      = DMA_32BIT_MASK,
- 	},
- 	.num_resources  = ARRAY_SIZE(au1100_lcd_resources),
- 	.resource       = au1100_lcd_resources,
-@@ -135,14 +136,14 @@ static struct resource au1xxx_usb_ehci_r
- 	},
- };
- 
--static u64 ehci_dmamask = ~(u32)0;
-+static u64 ehci_dmamask = DMA_32BIT_MASK;
- 
- static struct platform_device au1xxx_usb_ehci_device = {
- 	.name		= "au1xxx-ehci",
- 	.id		= 0,
- 	.dev = {
- 		.dma_mask		= &ehci_dmamask,
--		.coherent_dma_mask	= 0xffffffff,
-+		.coherent_dma_mask	= DMA_32BIT_MASK,
- 	},
- 	.num_resources	= ARRAY_SIZE(au1xxx_usb_ehci_resources),
- 	.resource	= au1xxx_usb_ehci_resources,
-@@ -180,14 +181,14 @@ static struct resource au1xxx_mmc_resour
- 	}
- };
- 
--static u64 udc_dmamask = ~(u32)0;
-+static u64 udc_dmamask = DMA_32BIT_MASK;
- 
- static struct platform_device au1xxx_usb_gdt_device = {
- 	.name		= "au1xxx-udc",
- 	.id		= 0,
- 	.dev = {
- 		.dma_mask		= &udc_dmamask,
--		.coherent_dma_mask	= 0xffffffff,
-+		.coherent_dma_mask	= DMA_32BIT_MASK,
- 	},
- 	.num_resources	= ARRAY_SIZE(au1xxx_usb_gdt_resources),
- 	.resource	= au1xxx_usb_gdt_resources,
-@@ -207,14 +208,14 @@ static struct resource au1xxx_usb_otg_re
- 	},
- };
- 
--static u64 uoc_dmamask = ~(u32)0;
-+static u64 uoc_dmamask = DMA_32BIT_MASK;
- 
- static struct platform_device au1xxx_usb_otg_device = {
- 	.name		= "au1xxx-uoc",
- 	.id		= 0,
- 	.dev = {
- 		.dma_mask		= &uoc_dmamask,
--		.coherent_dma_mask	= 0xffffffff,
-+		.coherent_dma_mask	= DMA_32BIT_MASK,
- 	},
- 	.num_resources	= ARRAY_SIZE(au1xxx_usb_otg_resources),
- 	.resource	= au1xxx_usb_otg_resources,
-@@ -233,27 +234,27 @@ static struct resource au1200_lcd_resour
- 	}
- };
- 
--static u64 au1200_lcd_dmamask = ~(u32)0;
-+static u64 au1200_lcd_dmamask = DMA_32BIT_MASK;
- 
- static struct platform_device au1200_lcd_device = {
- 	.name           = "au1200-lcd",
- 	.id             = 0,
- 	.dev = {
- 		.dma_mask               = &au1200_lcd_dmamask,
--		.coherent_dma_mask      = 0xffffffff,
-+		.coherent_dma_mask      = DMA_32BIT_MASK,
- 	},
- 	.num_resources  = ARRAY_SIZE(au1200_lcd_resources),
- 	.resource       = au1200_lcd_resources,
- };
- 
--static u64 au1xxx_mmc_dmamask =  ~(u32)0;
-+static u64 au1xxx_mmc_dmamask =  DMA_32BIT_MASK;
- 
- static struct platform_device au1xxx_mmc_device = {
- 	.name = "au1xxx-mmc",
- 	.id = 0,
- 	.dev = {
- 		.dma_mask               = &au1xxx_mmc_dmamask,
--		.coherent_dma_mask      = 0xffffffff,
-+		.coherent_dma_mask      = DMA_32BIT_MASK,
- 	},
- 	.num_resources  = ARRAY_SIZE(au1xxx_mmc_resources),
- 	.resource       = au1xxx_mmc_resources,
-Index: linux-queue/arch/mips/au1000/pb1200/platform.c
-===================================================================
---- linux-queue.orig/arch/mips/au1000/pb1200/platform.c
-+++ linux-queue/arch/mips/au1000/pb1200/platform.c
-@@ -18,6 +18,7 @@
-  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-  */
- 
-+#include <linux/dma-mapping.h>
- #include <linux/init.h>
- #include <linux/platform_device.h>
- 
-@@ -36,14 +37,14 @@ static struct resource ide_resources[] =
- 	}
- };
- 
--static u64 ide_dmamask = ~(u32)0;
-+static u64 ide_dmamask = DMA_32BIT_MASK;
- 
- static struct platform_device ide_device = {
- 	.name		= "au1200-ide",
- 	.id		= 0,
- 	.dev = {
- 		.dma_mask 		= &ide_dmamask,
--		.coherent_dma_mask	= 0xffffffff,
-+		.coherent_dma_mask	= DMA_32BIT_MASK,
- 	},
- 	.num_resources	= ARRAY_SIZE(ide_resources),
- 	.resource	= ide_resources
-Index: linux-queue/arch/mips/nxp/pnx8550/common/platform.c
-===================================================================
---- linux-queue.orig/arch/mips/nxp/pnx8550/common/platform.c
-+++ linux-queue/arch/mips/nxp/pnx8550/common/platform.c
-@@ -13,6 +13,7 @@
-  * warranty of any kind, whether express or implied.
-  */
- #include <linux/device.h>
-+#include <linux/dma-mapping.h>
- #include <linux/kernel.h>
- #include <linux/init.h>
- #include <linux/resource.h>
-@@ -91,16 +92,16 @@ struct pnx8xxx_port pnx8xxx_ports[] = {
- };
- 
- /* The dmamask must be set for OHCI to work */
--static u64 ohci_dmamask = ~(u32)0;
-+static u64 ohci_dmamask = DMA_32BIT_MASK;
- 
--static u64 uart_dmamask = ~(u32)0;
-+static u64 uart_dmamask = DMA_32BIT_MASK;
- 
- static struct platform_device pnx8550_usb_ohci_device = {
- 	.name		= "pnx8550-ohci",
- 	.id		= -1,
- 	.dev = {
- 		.dma_mask		= &ohci_dmamask,
--		.coherent_dma_mask	= 0xffffffff,
-+		.coherent_dma_mask	= DMA_32BIT_MASK,
- 	},
- 	.num_resources	= ARRAY_SIZE(pnx8550_usb_ohci_resources),
- 	.resource	= pnx8550_usb_ohci_resources,
-@@ -111,7 +112,7 @@ static struct platform_device pnx8550_ua
- 	.id		= -1,
- 	.dev = {
- 		.dma_mask		= &uart_dmamask,
--		.coherent_dma_mask	= 0xffffffff,
-+		.coherent_dma_mask	= DMA_32BIT_MASK,
- 		.platform_data = pnx8xxx_ports,
- 	},
- 	.num_resources	= ARRAY_SIZE(pnx8550_uart_resources),

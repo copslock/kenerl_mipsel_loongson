@@ -1,107 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2008 10:43:11 +0100 (BST)
-Received: from mail2.lzu.edu.cn ([202.201.0.158]:25322 "HELO lzu.edu.cn")
-	by ftp.linux-mips.org with SMTP id S28578173AbYFLJnI (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 12 Jun 2008 10:43:08 +0100
-Received: from [192.168.2.104] (unknown [202.201.14.140])
-	by mail1.lzu.edu.cn (Coremail) with SMTP id AQAAf7Dr8wuX51BIDqAzAA==.4517S2;
-	Thu, 12 Jun 2008 17:08:39 +0800 (CST)
-Subject: irq hande default_startup qestion
-From:	"Wang, Baojun" <wangbj@lzu.edu.cn>
-Reply-To: wangbj@dslab.lzu.edu.cn
-To:	linux-mips@linux-mips.org
-Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="=-EmmDG8reDwVQPiA2VVlj"
-Organization: DSLab, Lanzhou University
-Date:	Thu, 12 Jun 2008 17:42:54 +0800
-Message-Id: <1213263774.31495.9.camel@localhost.dslab>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.22.2 
-X-Coremail-Antispam: 1U3129KBjvJXoW7Gw1xAw17uFykJw1DJr4fKrg_yoW8JF1DpF
-	4rGwnYvFW3Xay0grWUCw40kr1ftwsxJry8Ar1rK343Zayq93yvv3Wvqrs7Ar1UGr9Fqr47
-	AF4SvFWIva13A3DanT9S1TB71UUUUUUv73VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjLIb7
-	Iv0xC_Jr1l5I8CrVACY4xI64kE6c02F40Ex7xfM7kC6x804xWl14x267AKxVWUJVW8JwAF
-	xVCF77xC6IxKo4kEV4yl1I0EscIYIxCEI4klw4CSwwAFIxvE14AKwVWUJVWUGwASzI0EjI
-	02j7AqF2xKxwAq048E620vw7xCY7CE4x8GYI0EYx1lYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4l
-	Yx0Ex4A2jsIE14v26r1j6r4UMx02cVAKzwCY0x0Ix7I2Y4AK64vIr41l4x8a64kEw24lx4
-	CE17CEb7AF67AKxVWUJVWUXjIFyTuYvjxUYmiiDUUUU
-Return-Path: <wangbj@lzu.edu.cn>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2008 10:51:50 +0100 (BST)
+Received: from wf-out-1314.google.com ([209.85.200.169]:9830 "EHLO
+	wf-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S28578203AbYFLJvr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 12 Jun 2008 10:51:47 +0100
+Received: by wf-out-1314.google.com with SMTP id 28so4327568wff.21
+        for <linux-mips@linux-mips.org>; Thu, 12 Jun 2008 02:51:44 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to
+         :subject:cc:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:content-disposition:references;
+        bh=F6LGIQl4CuEpYvQniQv8GJhqbhAiN0X56tbvMyGVae0=;
+        b=BnK61hr6HKyIPayHGszC/8nPm25oCOs+Q4AeGwZnUGL3LuVxfZAgAdCdC7Xy5LNgfz
+         nlvpRQv6oFVlSQESWJ5b2DXC+xpUrPI3U+FJLpMUcolX8A5XI2o+oFI7eVI5Ay3AK0e6
+         GVpUcfMaxECfv5C8VzFGE+piYui0dHnHzFnrI=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:cc:in-reply-to:mime-version
+         :content-type:content-transfer-encoding:content-disposition
+         :references;
+        b=j1cr9Tatjtdw71sMTNy0wsT00PE5WRZZV58r9e6z8HgAaK6sv/0czwJ67u7ztSqx8b
+         BHdlQUHNPeBqx9ZP/dGdtOPLhW9NMZu1XvPtxo59z5u2H9+U6zFKuc3Bv0WGSS4CiRAR
+         HbxG/wm5xlI12EQFYwAt5AtI6NA3DC6YZGafU=
+Received: by 10.142.174.18 with SMTP id w18mr389646wfe.325.1213264304694;
+        Thu, 12 Jun 2008 02:51:44 -0700 (PDT)
+Received: by 10.143.42.1 with HTTP; Thu, 12 Jun 2008 02:51:44 -0700 (PDT)
+Message-ID: <dcf6addc0806120251t4785dc09tc4a6f0854c5cd425@mail.gmail.com>
+Date:	Thu, 12 Jun 2008 17:51:44 +0800
+From:	J.Ma <sync.jma@gmail.com>
+To:	"Markus Gothe" <markus.gothe@27m.se>
+Subject: Re: [SPAM] linux-2.6.25.4 Porting OOPS
+Cc:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+In-Reply-To: <20B109E2-594E-4329-95C7-F67E9A7882E2@27m.se>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <dcf6addc0806082001m19d54184pc8ab42b0875c5238@mail.gmail.com>
+	 <20B109E2-594E-4329-95C7-F67E9A7882E2@27m.se>
+Return-Path: <sync.jma@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19496
+X-archive-position: 19497
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wangbj@lzu.edu.cn
+X-original-sender: sync.jma@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
+On Mon, Jun 9, 2008 at 1:53 PM, Markus Gothe <markus.gothe@27m.se> wrote:
+> Start with checking the memory mapping as hinted by:
+> ra    : 8000dd10 copy_user_highpage+0x98/0x158
+> //Markus
 
---=-EmmDG8reDwVQPiA2VVlj
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+Thank you for your advice, I checked this function and found that the
+problem might be "cpu_has_dc_aliases", After disabling
+MIPS_CACHE_ALIASES in probe_pcache(), the linux goes on with no oops.
+Could anyone here provide instructions about fusion MIPS SOC(R3K/R4K
+for example)? It confused me a lot. :)
 
-hi, list:
-
-I have a question about default_startup() in kernel/irq/chip.c:
-
-/*
- * default startup function
- */
-static unsigned int default_startup(unsigned int irq)
-{
-        irq_desc[irq].chip->enable(irq);
-
-        return 0;
-}
-
-By default, default_startup will call irq_chip->enable(), but some
-drivers like i8259A, in arch/mips/kenrel/i8259.c:
-
-static struct irq_chip i8259A_chip =3D {
-        .name           =3D "XT-PIC",
-        .mask           =3D disable_8259A_irq,
-        .disable        =3D disable_8259A_irq,
-        .unmask         =3D enable_8259A_irq,
-        .mask_ack       =3D mask_and_ack_8259A,
-#ifdef CONFIG_MIPS_MT_SMTC_IRQAFF
-        .set_affinity   =3D plat_set_irq_affinity,
-#endif /* CONFIG_MIPS_MT_SMTC_IRQAFF */
-};
-
-which don't initialize irq_chip->enable, in some (probably rare) case
-when irq_chip->startup() get called, it will cause NULL pointer
-reference. is it OK to change i8259A_chip (add .enable =3D
-xxx_unmask, .disable =3D xxx_mask) or just change default_startup()
-function? (irq_desc[irq].chip->unmask() or so?)
-
-  Regards,
-Wang
-
---=20
-Wang, Baojun                                                Lanzhou Univers=
-ity
-Distributed & Embedded System Lab                      http://dslab.lzu.edu=
-.cn
-School of Information Science and Engeneering          wangbj@dslab.lzu.edu=
-.cn
-Tianshui South Road 222. Lanzhou 730000                             .P.R.Ch=
-ina
-Tel: +86-931-8912025                                      Fax: +86-931-8912=
-022
-
-
---=-EmmDG8reDwVQPiA2VVlj
-Content-Type: application/pgp-signature; name=signature.asc
-Content-Description:
-	=?gb2312?Q?=D5=E2=CA=C7=D0=C5=BC=FE=B5=C4=CA=FD=D7=D6=C7=A9?=
-	=?gb2312?Q?=C3=FB=B2=BF=B7=D6?=
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.9 (GNU/Linux)
-
-iEYEABECAAYFAkhQ754ACgkQIuIOr7tpgg09kwCfTgreFvQ9DSZEsDpJ5tcZK3tx
-X14AnRc9fzTdjAsSx5OMi7Bpm2yzB69w
-=CXtX
------END PGP SIGNATURE-----
-
---=-EmmDG8reDwVQPiA2VVlj--
+-- 
+FIXME if it is wrong.

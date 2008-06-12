@@ -1,181 +1,143 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2008 20:49:19 +0100 (BST)
-Received: from bay0-omc3-s10.bay0.hotmail.com ([65.54.246.210]:44833 "EHLO
-	BAY0-OMC3-S10.bay0.hotmail.com") by ftp.linux-mips.org with ESMTP
-	id S28580368AbYFLTtQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 12 Jun 2008 20:49:16 +0100
-Received: from BAY124-DS4 ([207.46.11.159]) by BAY0-OMC3-S10.bay0.hotmail.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 12 Jun 2008 12:49:07 -0700
-X-Originating-IP: [90.212.251.215]
-X-Originating-Email: [danieljlaird@hotmail.com]
-Message-ID: <BAY124-DS40AA7BBF3FEA6F03F0D87DCAD0@phx.gbl>
-From:	<danieljlaird@hotmail.com>
-In-Reply-To: <20080612134539.GA20487@cs181133002.pp.htv.fi> <20080612135835.GB20015@linux-mips.org> <20080613.000350.93206311.anemo@mba.ocn.ne.jp> <20080612162350.GA19234@linux-mips.org>
-To:	"Ralf Baechle" <ralf@linux-mips.org>,
-	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
-Cc:	<bunk@kernel.org>, <linux-mips@linux-mips.org>, <mb@bu3sch.de>,
-	<aurelien@aurel32.net>, <daniel.j.laird@nxp.com>
-References: <20080612134539.GA20487@cs181133002.pp.htv.fi> <20080612135835.GB20015@linux-mips.org> <20080613.000350.93206311.anemo@mba.ocn.ne.jp> <20080612162350.GA19234@linux-mips.org>
-X-Unsent: 1
-Subject: Re: pending mips build fixes
-Date:	Thu, 12 Jun 2008 20:49:06 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2008 21:10:31 +0100 (BST)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:25300 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S28580441AbYFLUKZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 12 Jun 2008 21:10:25 +0100
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 252C931EA05;
+	Thu, 12 Jun 2008 20:10:28 +0000 (UTC)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [67.116.42.147])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
+	Thu, 12 Jun 2008 20:10:27 +0000 (UTC)
+Received: from dl2.hq2.avtrex.com ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 12 Jun 2008 13:10:11 -0700
+Message-ID: <485182A2.7020702@avtrex.com>
+Date:	Thu, 12 Jun 2008 13:10:10 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 2.0.0.14 (X11/20080501)
 MIME-Version: 1.0
-Content-Type: text/plain;
-	format=flowed;
-	charset="iso-8859-1";
-	reply-type=original
+To:	David Daney <ddaney@avtrex.com>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	GCC Mailing List <gcc@gcc.gnu.org>,
+	MIPS Linux List <linux-mips@linux-mips.org>,
+	rdsandiford@googlemail.com
+Subject: Re: Resend: [PATCH] [MIPS] Fix asm constraints for 'ins'	instructions.
+References: <48500599.9080807@avtrex.com>	<20080611172950.GA16600@linux-mips.org> <48500EDD.404@avtrex.com>	<871w339hy9.fsf@firetop.home> <48514F3E.6050906@avtrex.com> <87k5gu8qey.fsf@firetop.home>
+In-Reply-To: <87k5gu8qey.fsf@firetop.home>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-Importance: Normal
-X-Mailer: Microsoft Windows Live Mail 12.0.1606
-X-MimeOLE: Produced By Microsoft MimeOLE V12.0.1606
-X-OriginalArrivalTime: 12 Jun 2008 19:49:07.0988 (UTC) FILETIME=[6082FD40:01C8CCC5]
-Return-Path: <danieljlaird@hotmail.com>
+X-OriginalArrivalTime: 12 Jun 2008 20:10:11.0999 (UTC) FILETIME=[51EBC2F0:01C8CCC8]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19526
+X-archive-position: 19527
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: danieljlaird@hotmail.com
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-Agree with the changes made
-
-There is a larger problem however which is that I believe the 2.6.24 and 
-later kernels broke PNX8550 support.
-I tried to solve the issues (see some postings some time ago) regarding 
-timer issues and changes made between 2.6.22 (working) and 2.6.24 broken.
-However I could never get the fixes to work properly.  I have also since 
-moved onto pastures new with the PNX833x/893x CPUs which means solving 
-issues for a older CPU is not top of the list. And the lifetime of 8550 
-willbe much shorter than the newer chipsets.
-
-I would be tempted to mark PNX8550 / STB810 support as BROKEN.  Unless other 
-8550 users can prove me wrong.
-I would not remove the code yet incase it can be rescued but would mark as 
-BROKEN in 2.6.27 and remove in 2.6.28
-Cheers
-Dan
-
---------------------------------------------------
-From: "Ralf Baechle" <ralf@linux-mips.org>
-Sent: Thursday, June 12, 2008 5:23 PM
-To: "Atsushi Nemoto" <anemo@mba.ocn.ne.jp>
-Cc: <bunk@kernel.org>; <linux-mips@linux-mips.org>; <mb@bu3sch.de>; 
-<aurelien@aurel32.net>; <daniel.j.laird@nxp.com>
-Subject: Re: pending mips build fixes
-
-> On Fri, Jun 13, 2008 at 12:03:50AM +0900, Atsushi Nemoto wrote:
->
->> This patch fix a breakage by commit
->> 351336929ccf222ae38ff0cb7a8dd5fd5c6236a0 > ([MIPS] Allow setting of
->> the cache attribute at run time.)
+Richard Sandiford wrote:
+> David Daney <ddaney@avtrex.com> writes:
+>> Richard Sandiford wrote:
+>>> David Daney <ddaney@avtrex.com> writes:
+>>>> Ralf Baechle wrote:
+>>>>> On Wed, Jun 11, 2008 at 10:04:25AM -0700, David Daney wrote:
+>>>>>
+>>>>>> The third operand to 'ins' must be a constant int, not a register.
+>>>>>>
+>>>>>> Signed-off-by: David Daney <ddaney@avtrex.com>
+>>>>>> ---
+>>>>>> include/asm-mips/bitops.h |    6 +++---
+>>>>>> 1 files changed, 3 insertions(+), 3 deletions(-)
+>>>>>>
+>>>>>> diff --git a/include/asm-mips/bitops.h b/include/asm-mips/bitops.h
+>>>>>> index 6427247..9a7274b 100644
+>>>>>> --- a/include/asm-mips/bitops.h
+>>>>>> +++ b/include/asm-mips/bitops.h
+>>>>>> @@ -82,7 +82,7 @@ static inline void set_bit(unsigned long nr, volatile unsigned long *addr)
+>>>>>> 		"2:	b	1b					\n"
+>>>>>> 		"	.previous					\n"
+>>>>>> 		: "=&r" (temp), "=m" (*m)
+>>>>>> -		: "ir" (bit), "m" (*m), "r" (~0));
+>>>>>> +		: "i" (bit), "m" (*m), "r" (~0));
+>>>>>> #endif /* CONFIG_CPU_MIPSR2 */
+>>>>>> 	} else if (cpu_has_llsc) {
+>>>>>> 		__asm__ __volatile__(
+>>>>> An old trick to get gcc to do the right thing.  Basically at the stage when
+>>>>> gcc is verifying the constraints it may not yet know that it can optimize
+>>>>> things into an "i" argument, so compilation may fail if "r" isn't in the
+>>>>> constraints.  However we happen to know that due to the way the code is
+>>>>> written gcc will always be able to make use of the "i" constraint so no
+>>>>> code using "r" should ever be created.
+>>>>>
+>>>>> The trick is a bit ugly; I think it was used first in asm-i386/io.h ages ago
+>>>>> and I would be happy if we could get rid of it without creating new problems.
+>>>>> Maybe a gcc hacker here can tell more?
+>>>> It is not nice to lie to GCC.
+>>>>
+>>>> CCing GCC and Richard in hopes that a wider audience may shed some light on the issue.
+>>> You _might_ be able to use "i#r" instead of "ri", but I wouldn't
+>>> really recommend it.  Even if it works now, I don't think there's
+>>> any guarantee it will in future.
+>>>
+>>> There are tricks you could pull to detect the problem at compile time
+>>> rather than assembly time, but that's probably not a big win.  And again,
+>>> I wouldn't recommend them.
+>>>
+>>> I'm not saying anything you don't know here, but if the argument is
+>>> always a syntactic constant, the safest bet would be to apply David's
+>>> patch and also convert the function into a macro.  I notice some other
+>>> ports use macros rather than inline functions here.  I assume you've
+>>> deliberately rejected macros as being too ugly though.
+>> I am still a little unclear on this.
 >>
->> This patch introduce an weak __coherency_setup() to support PNX8550
->> which needs special handling on cache coherency updating.
+>> To restate the question:
 >>
->> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
->
-> Never been a fan of weak functions though depending circumstances they
-> certainly can be less evil than some of the alternatives.  Also what is
-> hidden deep in the PNX board code really is specific to the PNX CPU core,
-> so I moved it to c-r4k.c.  The resulting patch is below.
->
->  Ralf
->
-> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
->
-> diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-> index 643c8bc..c41ea22 100644
-> --- a/arch/mips/mm/c-r4k.c
-> +++ b/arch/mips/mm/c-r4k.c
-> @@ -1226,6 +1226,28 @@ void au1x00_fixup_config_od(void)
->  }
-> }
->
-> +/* CP0 hazard avoidance. */
-> +#define NXP_BARRIER() \
-> + __asm__ __volatile__( \
-> + ".set noreorder\n\t" \
-> + "nop; nop; nop; nop; nop; nop;\n\t" \
-> + ".set reorder\n\t")
-> +
-> +static void nxp_pr4450_fixup_config(void)
-> +{
-> + unsigned long config0;
-> +
-> + config0 = read_c0_config();
-> +
-> + /* clear all three cache coherency fields */
-> + config0 &= ~(0x7 | (7 << 25) | (7 << 28));
-> + config0 |= (((_page_cachable_default >> _CACHE_SHIFT) <<  0) |
-> +     ((_page_cachable_default >> _CACHE_SHIFT) << 25) |
-> +     ((_page_cachable_default >> _CACHE_SHIFT) << 28));
-> + write_c0_config(config0);
-> + NXP_BARRIER();
-> +}
-> +
-> static int __cpuinitdata cca = -1;
->
-> static int __init cca_setup(char *str)
-> @@ -1271,6 +1293,10 @@ static void __cpuinit coherency_setup(void)
->  case CPU_AU1500: /* rev. AB */
->  au1x00_fixup_config_od();
->  break;
-> +
-> + case PRID_IMP_PR4450:
-> + nxp_pr4450_fixup_config();
-> + break;
->  }
-> }
->
-> diff --git a/arch/mips/nxp/pnx8550/jbs/board_setup.c 
-> b/arch/mips/nxp/pnx8550/jbs/board_setup.c
-> index f92826e..57dd903 100644
-> --- a/arch/mips/nxp/pnx8550/jbs/board_setup.c
-> +++ b/arch/mips/nxp/pnx8550/jbs/board_setup.c
-> @@ -47,16 +47,7 @@
->
-> void __init board_setup(void)
-> {
-> - unsigned long config0, configpr;
-> -
-> - config0 = read_c0_config();
-> -
-> - /* clear all three cache coherency fields */
-> - config0 &= ~(0x7 | (7<<25) | (7<<28));
-> - config0 |= (CONF_CM_DEFAULT | (CONF_CM_DEFAULT<<25) |
-> - (CONF_CM_DEFAULT<<28));
-> - write_c0_config(config0);
-> - BARRIER;
-> + unsigned long configpr;
->
->  configpr = read_c0_config7();
->  configpr |= (1<<19); /* enable tlb */
-> diff --git a/arch/mips/nxp/pnx8550/stb810/board_setup.c 
-> b/arch/mips/nxp/pnx8550/stb810/board_setup.c
-> index 1282c27..af2a55e 100644
-> --- a/arch/mips/nxp/pnx8550/stb810/board_setup.c
-> +++ b/arch/mips/nxp/pnx8550/stb810/board_setup.c
-> @@ -33,15 +33,7 @@
->
-> void __init board_setup(void)
-> {
-> - unsigned long config0, configpr;
-> -
-> - config0 = read_c0_config();
-> -
-> - /* clear all three cache coherency fields */
-> - config0 &= ~(0x7 | (7<<25) | (7<<28));
-> - config0 |= (CONF_CM_DEFAULT | (CONF_CM_DEFAULT<<25) |
-> - (CONF_CM_DEFAULT<<28));
-> - write_c0_config(config0);
-> + unsigned long configpr;
->
->  configpr = read_c0_config7();
->  configpr |= (1<<19); /* enable tlb */
->
+>> static inline void f(unsigned nr, unsigned *p)
+>> {
+>>   unsigned short bit = nr & 5;
+>>
+>>   if (__builtin_constant_p(bit)) {
+>>     __asm__ __volatile__ ("  foo %0, %1" : "=m" (*p) : "i" (bit));
+>>   }
+>>   else {
+>>     // Do something else.
+>>   }
+>> }
+>> .
+>> .
+>> .
+>>   f(3, some_pointer);
+>> .
+>> .
+>> .
+>>
+>> Among the versions of GCC that can build the current kernel, will any
+>> fail on this code because the "i" constraint cannot be matched when
+>> expanded to RTL?
 > 
+> Someone will point this out if I don't, so for avoidance of doubt:
+> this needs to be always_inline.  It also isn't guaranteed to work
+> with "bit" being a separate statement.  I'm not truly sure it's
+> guaranteed to work even with:
+> 
+>     __asm__ __volatile__ ("  foo %0, %1" : "=m" (*p) : "i" (nr & 5));
+> 
+> but I think we'd try hard to make sure it does.
+> 
+> I think Maciej said that 3.2 was the minimum current version.
+> Even with those two issues sorted out, I don't think you can
+> rely on this sort of thing with compilers that used RTL inlining.
+> (always_inline does go back to 3.2, in case you're wondering.)
+> 
+
+Well I withdraw the patch.  With the current kernel code we seem to always get good code generation.  In the event that the compiler tries to put the shift amount (nr) in a register, the assembler will complain.  I don't think it is possible to generate bad object code, so best to leave it alone.
+
+FYI, the reason that I stumbled on this several weeks ago is that if(__builtin_constant_p(nr)) in the trunk compiler was generating code for the asm even though nr was not constant.
+
+David Daney

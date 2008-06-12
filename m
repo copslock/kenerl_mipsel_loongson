@@ -1,52 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2008 14:58:13 +0100 (BST)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:52116 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S28578858AbYFLN6L (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 12 Jun 2008 14:58:11 +0100
-Received: (qmail 25587 invoked by uid 1000); 12 Jun 2008 15:58:10 +0200
-Date:	Thu, 12 Jun 2008 15:58:10 +0200
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Pierre Ossman <drzeus@drzeus.cx>, linux-mips@linux-mips.org,
-	sshtylyov@ru.mvista.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/8] Alchemy: register mmc platform device for
-	db1200/pb1200 boards.
-Message-ID: <20080612135810.GA25352@roarinelk.homelinux.net>
-References: <20080609063521.GA8724@roarinelk.homelinux.net> <20080609063702.GC8724@roarinelk.homelinux.net> <20080612090206.GB21601@linux-mips.org> <20080612101839.GC21601@linux-mips.org> <20080612121828.GA24603@roarinelk.homelinux.net> <20080612122646.GA9493@linux-mips.org> <20080612154248.5c9c5c9d@mjolnir.drzeus.cx> <20080612134729.GA20015@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2008 14:59:20 +0100 (BST)
+Received: from vigor.karmaclothing.net ([217.169.26.28]:46748 "EHLO
+	vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
+	id S28578858AbYFLN7R (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 12 Jun 2008 14:59:17 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m5CDwbDL031021;
+	Thu, 12 Jun 2008 14:58:38 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m5CDwZ5K031008;
+	Thu, 12 Jun 2008 14:58:35 +0100
+Date:	Thu, 12 Jun 2008 14:58:35 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Adrian Bunk <bunk@kernel.org>
+Cc:	linux-mips@linux-mips.org, Michael Buesch <mb@bu3sch.de>,
+	Aurelien Jarno <aurelien@aurel32.net>,
+	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Subject: Re: pending mips build fixes
+Message-ID: <20080612135835.GB20015@linux-mips.org>
+References: <20080612134539.GA20487@cs181133002.pp.htv.fi>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20080612134729.GA20015@linux-mips.org>
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <mano@roarinelk.homelinux.net>
+In-Reply-To: <20080612134539.GA20487@cs181133002.pp.htv.fi>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19514
+X-archive-position: 19515
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jun 12, 2008 at 02:47:30PM +0100, Ralf Baechle wrote:
-> On Thu, Jun 12, 2008 at 03:42:48PM +0200, Pierre Ossman wrote:
+On Thu, Jun 12, 2008 at 04:45:40PM +0300, Adrian Bunk wrote:
+> From: Adrian Bunk <bunk@kernel.org>
+> Date: Thu, 12 Jun 2008 16:45:40 +0300
+> To: ralf@linux-mips.org
+> Cc: linux-mips@linux-mips.org, Michael Buesch <mb@bu3sch.de>,
+> 	Aurelien Jarno <aurelien@aurel32.net>,
+> 	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> Subject: pending mips build fixes
+> Content-Type: text/plain; charset=utf-8
 > 
-> > > Pierre, feel free to merge these MIPS bits into your tree.  The whole
-> > > series should probably go upstream together.
-> > > 
-> > 
-> > How's the dependency issue though? Will this series be bisectable in my
-> > tree?
+> Hi Ralf,
 > 
-> If we're only talking about a build, there should be no dependencies
-> between the Alchemy and the MMC parts of the series.  The Alchemy part
-> sorts the device registration and that's a separate construction site
-> from the rest.  Of course with only one applied things won't work
-> terribly well but that would only be temporarily.
+> I hope I'm not too annoying on this, but I like it when as many 
+> defconfigs as possible compile.
+> 
+> Please review and push the following patches for 2.6.26:
+> 
+>   BCM47xx: Add platform specific PCI code
+>   http://marc.info/?l=linux-kernel&amp;m=120876451216558&amp;w=2
+> 
+>   MIPS: Fix CONF_CM_DEFAULT build error
+>   http://lkml.org/lkml/2008/6/1/125
 
-FWIW, I build tested-tested the DB1200 defconfig after each patch applied.
-As Ralf said, patch 1 alone isn't terribly useful on it, but it should work.
+That won't fly.  CONF_CM_DEFAULT is being dereferenced before
+_page_cachable_default has been initialized.
 
-	Manuel Lauss
+Can't comment at the BCM47xx patch yet.
+
+  Ralf

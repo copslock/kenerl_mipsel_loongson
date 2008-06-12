@@ -1,143 +1,121 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2008 17:25:50 +0100 (BST)
-Received: from vigor.karmaclothing.net ([217.169.26.28]:50819 "EHLO
-	vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
-	id S28579736AbYFLQZs (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 12 Jun 2008 17:25:48 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m5CGOXhl018287;
-	Thu, 12 Jun 2008 17:24:39 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m5CGNoMk018002;
-	Thu, 12 Jun 2008 17:23:50 +0100
-Date:	Thu, 12 Jun 2008 17:23:50 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	bunk@kernel.org, linux-mips@linux-mips.org, mb@bu3sch.de,
-	aurelien@aurel32.net, daniel.j.laird@nxp.com
-Subject: Re: pending mips build fixes
-Message-ID: <20080612162350.GA19234@linux-mips.org>
-References: <20080612134539.GA20487@cs181133002.pp.htv.fi> <20080612135835.GB20015@linux-mips.org> <20080613.000350.93206311.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Jun 2008 17:31:10 +0100 (BST)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.144]:38554 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S28579677AbYFLQbI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 12 Jun 2008 17:31:08 +0100
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 7F86D31EDF9;
+	Thu, 12 Jun 2008 16:31:07 +0000 (UTC)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [67.116.42.147])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
+	Thu, 12 Jun 2008 16:31:07 +0000 (UTC)
+Received: from silver64.hq2.avtrex.com ([192.168.7.27]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 12 Jun 2008 09:30:54 -0700
+Message-ID: <48514F3E.6050906@avtrex.com>
+Date:	Thu, 12 Jun 2008 09:30:54 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 2.0.0.14 (X11/20080501)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080613.000350.93206311.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>,
+	GCC Mailing List <gcc@gcc.gnu.org>,
+	MIPS Linux List <linux-mips@linux-mips.org>,
+	rdsandiford@googlemail.com
+Subject: Re: Resend: [PATCH] [MIPS] Fix asm constraints for 'ins'	instructions.
+References: <48500599.9080807@avtrex.com>	<20080611172950.GA16600@linux-mips.org> <48500EDD.404@avtrex.com> <871w339hy9.fsf@firetop.home>
+In-Reply-To: <871w339hy9.fsf@firetop.home>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 12 Jun 2008 16:30:54.0073 (UTC) FILETIME=[AF2F9690:01C8CCA9]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19518
+X-archive-position: 19519
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jun 13, 2008 at 12:03:50AM +0900, Atsushi Nemoto wrote:
-
-> This patch fix a breakage by commit
-> 351336929ccf222ae38ff0cb7a8dd5fd5c6236a0 > ([MIPS] Allow setting of
-> the cache attribute at run time.)
+Richard Sandiford wrote:
+> David Daney <ddaney@avtrex.com> writes:
+>> Ralf Baechle wrote:
+>>> On Wed, Jun 11, 2008 at 10:04:25AM -0700, David Daney wrote:
+>>>
+>>>> The third operand to 'ins' must be a constant int, not a register.
+>>>>
+>>>> Signed-off-by: David Daney <ddaney@avtrex.com>
+>>>> ---
+>>>> include/asm-mips/bitops.h |    6 +++---
+>>>> 1 files changed, 3 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git a/include/asm-mips/bitops.h b/include/asm-mips/bitops.h
+>>>> index 6427247..9a7274b 100644
+>>>> --- a/include/asm-mips/bitops.h
+>>>> +++ b/include/asm-mips/bitops.h
+>>>> @@ -82,7 +82,7 @@ static inline void set_bit(unsigned long nr, volatile unsigned long *addr)
+>>>> 		"2:	b	1b					\n"
+>>>> 		"	.previous					\n"
+>>>> 		: "=&r" (temp), "=m" (*m)
+>>>> -		: "ir" (bit), "m" (*m), "r" (~0));
+>>>> +		: "i" (bit), "m" (*m), "r" (~0));
+>>>> #endif /* CONFIG_CPU_MIPSR2 */
+>>>> 	} else if (cpu_has_llsc) {
+>>>> 		__asm__ __volatile__(
+>>> An old trick to get gcc to do the right thing.  Basically at the stage when
+>>> gcc is verifying the constraints it may not yet know that it can optimize
+>>> things into an "i" argument, so compilation may fail if "r" isn't in the
+>>> constraints.  However we happen to know that due to the way the code is
+>>> written gcc will always be able to make use of the "i" constraint so no
+>>> code using "r" should ever be created.
+>>>
+>>> The trick is a bit ugly; I think it was used first in asm-i386/io.h ages ago
+>>> and I would be happy if we could get rid of it without creating new problems.
+>>> Maybe a gcc hacker here can tell more?
+>> It is not nice to lie to GCC.
+>>
+>> CCing GCC and Richard in hopes that a wider audience may shed some light on the issue.
 > 
-> This patch introduce an weak __coherency_setup() to support PNX8550
-> which needs special handling on cache coherency updating.
+> You _might_ be able to use "i#r" instead of "ri", but I wouldn't
+> really recommend it.  Even if it works now, I don't think there's
+> any guarantee it will in future.
 > 
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> There are tricks you could pull to detect the problem at compile time
+> rather than assembly time, but that's probably not a big win.  And again,
+> I wouldn't recommend them.
+> 
+> I'm not saying anything you don't know here, but if the argument is
+> always a syntactic constant, the safest bet would be to apply David's
+> patch and also convert the function into a macro.  I notice some other
+> ports use macros rather than inline functions here.  I assume you've
+> deliberately rejected macros as being too ugly though.
 
-Never been a fan of weak functions though depending circumstances they
-certainly can be less evil than some of the alternatives.  Also what is
-hidden deep in the PNX board code really is specific to the PNX CPU core,
-so I moved it to c-r4k.c.  The resulting patch is below.
+I am still a little unclear on this.
 
-  Ralf
+To restate the question:
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+static inline void f(unsigned nr, unsigned *p)
+{
+  unsigned short bit = nr & 5;
 
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 643c8bc..c41ea22 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -1226,6 +1226,28 @@ void au1x00_fixup_config_od(void)
- 	}
- }
- 
-+/* CP0 hazard avoidance. */
-+#define NXP_BARRIER()							\
-+	 __asm__ __volatile__(						\
-+	".set noreorder\n\t"						\
-+	"nop; nop; nop; nop; nop; nop;\n\t"				\
-+	".set reorder\n\t")
-+
-+static void nxp_pr4450_fixup_config(void)
-+{
-+	unsigned long config0;
-+
-+	config0 = read_c0_config();
-+
-+	/* clear all three cache coherency fields */
-+	config0 &= ~(0x7 | (7 << 25) | (7 << 28));
-+	config0 |= (((_page_cachable_default >> _CACHE_SHIFT) <<  0) |
-+		    ((_page_cachable_default >> _CACHE_SHIFT) << 25) |
-+		    ((_page_cachable_default >> _CACHE_SHIFT) << 28));
-+	write_c0_config(config0);
-+	NXP_BARRIER();
-+}
-+
- static int __cpuinitdata cca = -1;
- 
- static int __init cca_setup(char *str)
-@@ -1271,6 +1293,10 @@ static void __cpuinit coherency_setup(void)
- 	case CPU_AU1500: /* rev. AB */
- 		au1x00_fixup_config_od();
- 		break;
-+
-+	case PRID_IMP_PR4450:
-+		nxp_pr4450_fixup_config();
-+		break;
- 	}
- }
- 
-diff --git a/arch/mips/nxp/pnx8550/jbs/board_setup.c b/arch/mips/nxp/pnx8550/jbs/board_setup.c
-index f92826e..57dd903 100644
---- a/arch/mips/nxp/pnx8550/jbs/board_setup.c
-+++ b/arch/mips/nxp/pnx8550/jbs/board_setup.c
-@@ -47,16 +47,7 @@
- 
- void __init board_setup(void)
- {
--	unsigned long config0, configpr;
--
--	config0 = read_c0_config();
--
--	/* clear all three cache coherency fields */
--	config0 &= ~(0x7 | (7<<25) | (7<<28));
--	config0 |= (CONF_CM_DEFAULT | (CONF_CM_DEFAULT<<25) |
--			(CONF_CM_DEFAULT<<28));
--	write_c0_config(config0);
--	BARRIER;
-+	unsigned long configpr;
- 
- 	configpr = read_c0_config7();
- 	configpr |= (1<<19); /* enable tlb */
-diff --git a/arch/mips/nxp/pnx8550/stb810/board_setup.c b/arch/mips/nxp/pnx8550/stb810/board_setup.c
-index 1282c27..af2a55e 100644
---- a/arch/mips/nxp/pnx8550/stb810/board_setup.c
-+++ b/arch/mips/nxp/pnx8550/stb810/board_setup.c
-@@ -33,15 +33,7 @@
- 
- void __init board_setup(void)
- {
--	unsigned long config0, configpr;
--
--	config0 = read_c0_config();
--
--	/* clear all three cache coherency fields */
--	config0 &= ~(0x7 | (7<<25) | (7<<28));
--	config0 |= (CONF_CM_DEFAULT | (CONF_CM_DEFAULT<<25) |
--			(CONF_CM_DEFAULT<<28));
--	write_c0_config(config0);
-+	unsigned long configpr;
- 
- 	configpr = read_c0_config7();
- 	configpr |= (1<<19); /* enable tlb */
+  if (__builtin_constant_p(bit)) {
+    __asm__ __volatile__ ("  foo %0, %1" : "=m" (*p) : "i" (bit));
+  }
+  else {
+    // Do something else.
+  }
+}
+.
+.
+.
+  f(3, some_pointer);
+.
+.
+.
+
+Among the versions of GCC that can build the current kernel, will any fail on this code because the "i" constraint  cannot be matched when expanded to RTL?
+
+David Daney

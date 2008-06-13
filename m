@@ -1,32 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jun 2008 14:42:13 +0100 (BST)
-Received: from vigor.karmaclothing.net ([217.169.26.28]:26546 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jun 2008 14:47:03 +0100 (BST)
+Received: from vigor.karmaclothing.net ([217.169.26.28]:8160 "EHLO
 	vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
-	id S20035206AbYFMNmL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 13 Jun 2008 14:42:11 +0100
+	id S20035202AbYFMNrB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 13 Jun 2008 14:47:01 +0100
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m5DDfkhq008204;
-	Fri, 13 Jun 2008 14:41:46 +0100
+	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m5DDkYpb009968;
+	Fri, 13 Jun 2008 14:46:34 +0100
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m5DDfiYi008185;
-	Fri, 13 Jun 2008 14:41:44 +0100
-Date:	Fri, 13 Jun 2008 14:41:44 +0100
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m5DDkTRP009937;
+	Fri, 13 Jun 2008 14:46:29 +0100
+Date:	Fri, 13 Jun 2008 14:46:29 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Pelton, Dave" <dpelton@ciena.com>
-Cc:	"J.Ma" <sync.jma@gmail.com>, Markus Gothe <markus.gothe@27m.se>,
+To:	Adam Litke <agl@us.ibm.com>
+Cc:	linux-mm <linux-mm@kvack.org>, npiggin@suse.de, nacc@us.ibm.com,
+	mel@csn.ul.ie, Eric B Munson <ebmunson@us.ibm.com>,
+	linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
+	linuxppc-dev@ozlabs.org, sparclinux@vger.kernel.org,
+	linux-sh@vger.kernel.org, linux-s390@vger.kernel.org,
 	linux-mips@linux-mips.org
-Subject: Re: [SPAM] linux-2.6.25.4 Porting OOPS
-Message-ID: <20080613134143.GE703@linux-mips.org>
-References: <dcf6addc0806082001m19d54184pc8ab42b0875c5238@mail.gmail.com> <20B109E2-594E-4329-95C7-F67E9A7882E2@27m.se> <dcf6addc0806120251t4785dc09tc4a6f0854c5cd425@mail.gmail.com> <A3BA2251DD85404FBBEF7478C29D8742F26EFE@onmxm01.ciena.com>
+Subject: Re: [RFC PATCH 0/2] Merge HUGETLB_PAGE and HUGETLBFS Kconfig
+	options
+Message-ID: <20080613134629.GD16344@linux-mips.org>
+References: <1213296540.17108.8.camel@localhost.localdomain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <A3BA2251DD85404FBBEF7478C29D8742F26EFE@onmxm01.ciena.com>
+In-Reply-To: <1213296540.17108.8.camel@localhost.localdomain>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19533
+X-archive-position: 19534
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,31 +39,27 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jun 12, 2008 at 03:02:31PM -0400, Pelton, Dave wrote:
+On Thu, Jun 12, 2008 at 02:49:00PM -0400, Adam Litke wrote:
 
-> --- linux-2.6.25.4-clean/include/asm-mips/fixmap.h      2008-05-15
-> 11:00:12.000000000 -0400
-> +++ linux-2.6.25.4/include/asm-mips/fixmap.h    2008-06-12
-> 13:21:49.042673000 -0400
-> @@ -69,6 +69,8 @@ enum fixed_addresses {
->   */
->  #if defined(CONFIG_CPU_TX39XX) || defined(CONFIG_CPU_TX49XX)
->  #define FIXADDR_TOP    ((unsigned long)(long)(int)(0xff000000 -
-> 0x20000))
-> +#elif defined(CONFIG_CPU_BMIPS3300)
-> +#define FIXADDR_TOP    ((unsigned long)(long)(int)0xff200000 - 0x1000)
->  #else
->  #define FIXADDR_TOP    ((unsigned long)(long)(int)0xfffe0000)
->  #endif
+> There are currently two global Kconfig options that enable/disable the
+> hugetlb code: CONFIG_HUGETLB_PAGE and CONFIG_HUGETLBFS.  This may have
+> made sense before hugetlbfs became ubiquitous but now the pair of
+> options are redundant.  Merging these two options into one will simplify
+> the code slightly and will, more importantly, avoid confusion and
+> questions like: Which hugetlbfs CONFIG option should my code depend on?
 > 
-> You will need to define CONFIG_CPU_BMIPS3300 in your config file for
-> this change to be applied.  I suspect that the same core is present in
-> a number of Broadcom SOC designs, so this issue may exist for a number
-> of different chips.
+> CONFIG_HUGETLB_PAGE is aliased to the value of CONFIG_HUGETLBFS, so one
+> option can be removed without any effect.  The first patch merges the
+> two options into one option: CONFIG_HUGETLB.  The second patch updates
+> the defconfigs to set the one new option appropriately.
+> 
+> I have cross-compiled this on i386, x86_64, ia64, powerpc, sparc64 and
+> sh with the option enabled and disabled.  This is completely mechanical
+> but, due to the large number of files affected (especially defconfigs),
+> could do well with a review from several sets of eyeballs.  Thanks.
 
-There are a few other processors such as some TX4900 family members which
-use up some virtual address space without telling telling the OS.  In any
-case I consider that a blatant violation fo the architecture and the
-kernel should be tought about these special cases.
+MIPS doesn't do HUGETLB (at least not in-tree atm) so I'm not sure why
+linux-mips@linux-mips.org was cc'ed at all.  So feel free to add my
+Couldnt-care-less: ack line ;-)
 
   Ralf

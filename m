@@ -1,64 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jun 2008 15:03:25 +0100 (BST)
-Received: from vigor.karmaclothing.net ([217.169.26.28]:38856 "EHLO
-	vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
-	id S20035270AbYFMODW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 13 Jun 2008 15:03:22 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m5DE30gY022613;
-	Fri, 13 Jun 2008 15:03:00 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m5DE2wm9022591;
-	Fri, 13 Jun 2008 15:02:58 +0100
-Date:	Fri, 13 Jun 2008 15:02:58 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Dominik Brodowski <linux@dominikbrodowski.net>
-Cc:	linux-pcmcia@lists.infradead.org,
-	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jun 2008 15:03:52 +0100 (BST)
+Received: from e34.co.us.ibm.com ([32.97.110.152]:6338 "EHLO e34.co.us.ibm.com")
+	by ftp.linux-mips.org with ESMTP id S20035246AbYFMODt (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 13 Jun 2008 15:03:49 +0100
+Received: from d03relay02.boulder.ibm.com (d03relay02.boulder.ibm.com [9.17.195.227])
+	by e34.co.us.ibm.com (8.13.8/8.13.8) with ESMTP id m5DE3dVV007478;
+	Fri, 13 Jun 2008 10:03:39 -0400
+Received: from d03av03.boulder.ibm.com (d03av03.boulder.ibm.com [9.17.195.169])
+	by d03relay02.boulder.ibm.com (8.13.8/8.13.8/NCO v9.0) with ESMTP id m5DE3VhJ044070;
+	Fri, 13 Jun 2008 08:03:32 -0600
+Received: from d03av03.boulder.ibm.com (loopback [127.0.0.1])
+	by d03av03.boulder.ibm.com (8.12.11.20060308/8.13.3) with ESMTP id m5DE3Uon003702;
+	Fri, 13 Jun 2008 08:03:31 -0600
+Received: from [9.76.91.124] (sig-9-76-91-124.mts.ibm.com [9.76.91.124])
+	by d03av03.boulder.ibm.com (8.12.11.20060308/8.12.11) with ESMTP id m5DE3SwM003330;
+	Fri, 13 Jun 2008 08:03:29 -0600
+Subject: Re: [RFC PATCH 0/2] Merge HUGETLB_PAGE and HUGETLBFS Kconfig
+	options
+From:	Adam Litke <agl@us.ibm.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mm <linux-mm@kvack.org>, npiggin@suse.de, nacc@us.ibm.com,
+	mel@csn.ul.ie, Eric B Munson <ebmunson@us.ibm.com>,
+	linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
+	linuxppc-dev@ozlabs.org, sparclinux@vger.kernel.org,
+	linux-sh@vger.kernel.org, linux-s390@vger.kernel.org,
 	linux-mips@linux-mips.org
-Subject: Re: [PATCH 6/9] pcmcia: fix Alchemy warnings
-Message-ID: <20080613140258.GE16344@linux-mips.org>
-References: <20080530212821.GA30197@comet.dominikbrodowski.net> <1212183079-30505-6-git-send-email-linux@dominikbrodowski.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1212183079-30505-6-git-send-email-linux@dominikbrodowski.net>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <20080613134629.GD16344@linux-mips.org>
+References: <1213296540.17108.8.camel@localhost.localdomain>
+	 <20080613134629.GD16344@linux-mips.org>
+Content-Type: text/plain
+Organization: IBM
+Date:	Fri, 13 Jun 2008 10:03:28 -0400
+Message-Id: <1213365808.15016.5.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.22.2 
+Content-Transfer-Encoding: 7bit
+Return-Path: <agl@us.ibm.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19536
+X-archive-position: 19537
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: agl@us.ibm.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, May 30, 2008 at 11:31:16PM +0200, Dominik Brodowski wrote:
+On Fri, 2008-06-13 at 14:46 +0100, Ralf Baechle wrote:
+> MIPS doesn't do HUGETLB (at least not in-tree atm) so I'm not sure why
+> linux-mips@linux-mips.org was cc'ed at all.  So feel free to add my
+> Couldnt-care-less: ack line ;-)
 
-> Subject: [PATCH 6/9] pcmcia: fix Alchemy warnings
-> 
-> From: Sergei Shtylyov <sshtylyov@ru.mvista.com>
-> 
-> Fix the following warnings:
-> 
-> drivers/pcmcia/au1000_generic.c: In function `au1x00_pcmcia_socket_probe':
-> drivers/pcmcia/au1000_generic.c:405: warning: integer constant is too large for
-> "long" type
-> drivers/pcmcia/au1000_generic.c:413: warning: integer constant is too large for
-> "long" type
-> 
-> by properly postfixing the socket constants. While at it, fix the lines over 80
-> characters long in the vicinity...
-> 
-> Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
-> Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
-> CC: linux-mips@linux-mips.org
+Sorry :)  My patches touched your defconfigs so I felt it prudent to
+include the mips list as an FYI.
 
-Any reason why this patch still isn't merged?  It looks right and seems to
-do what it promised,
-
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
-
-  Ralf
+-- 
+Adam Litke - (agl at us.ibm.com)
+IBM Linux Technology Center

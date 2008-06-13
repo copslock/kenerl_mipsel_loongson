@@ -1,32 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jun 2008 14:56:03 +0100 (BST)
-Received: from vigor.karmaclothing.net ([217.169.26.28]:29649 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jun 2008 15:03:25 +0100 (BST)
+Received: from vigor.karmaclothing.net ([217.169.26.28]:38856 "EHLO
 	vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
-	id S20035254AbYFMN4A (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 13 Jun 2008 14:56:00 +0100
+	id S20035270AbYFMODW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 13 Jun 2008 15:03:22 +0100
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m5DDtdBO016654;
-	Fri, 13 Jun 2008 14:55:40 +0100
+	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m5DE30gY022613;
+	Fri, 13 Jun 2008 15:03:00 +0100
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m5DDtcF2016641;
-	Fri, 13 Jun 2008 14:55:38 +0100
-Date:	Fri, 13 Jun 2008 14:55:38 +0100
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m5DE2wm9022591;
+	Fri, 13 Jun 2008 15:02:58 +0100
+Date:	Fri, 13 Jun 2008 15:02:58 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	adrian.bunk@movial.fi, chris@mips.com, linux-mips@linux-mips.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: mips: CONF_CM_DEFAULT build error
-Message-ID: <20080613135538.GF703@linux-mips.org>
-References: <20080525170718.GD1791@cs181133002.pp.htv.fi> <20080602.012814.35471915.anemo@mba.ocn.ne.jp>
+To:	Dominik Brodowski <linux@dominikbrodowski.net>
+Cc:	linux-pcmcia@lists.infradead.org,
+	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH 6/9] pcmcia: fix Alchemy warnings
+Message-ID: <20080613140258.GE16344@linux-mips.org>
+References: <20080530212821.GA30197@comet.dominikbrodowski.net> <1212183079-30505-6-git-send-email-linux@dominikbrodowski.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20080602.012814.35471915.anemo@mba.ocn.ne.jp>
+In-Reply-To: <1212183079-30505-6-git-send-email-linux@dominikbrodowski.net>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19535
+X-archive-position: 19536
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,23 +35,30 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jun 02, 2008 at 01:28:14AM +0900, Atsushi Nemoto wrote:
+On Fri, May 30, 2008 at 11:31:16PM +0200, Dominik Brodowski wrote:
 
-> > Commit 351336929ccf222ae38ff0cb7a8dd5fd5c6236a0
-> > ([MIPS] Allow setting of the cache attribute at run time.)
-> > causes the following build error with pnx8550-jbs_defconfig
-> > and pnx8550-stb810_defconfig:
+> Subject: [PATCH 6/9] pcmcia: fix Alchemy warnings
 > 
-> I wondered why the commit has my S-O-B, and finally found that I had
-> fixed a section mismatch caused by the original patch (on queue tree
-> on linux-mips.org) and Ralf had folded my fix into the original patch,
-> with my S-O-B.  Folding on the queue tree will be good on many case,
-> but sometimes a bit confusing. :-)
+> From: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+> 
+> Fix the following warnings:
+> 
+> drivers/pcmcia/au1000_generic.c: In function `au1x00_pcmcia_socket_probe':
+> drivers/pcmcia/au1000_generic.c:405: warning: integer constant is too large for
+> "long" type
+> drivers/pcmcia/au1000_generic.c:413: warning: integer constant is too large for
+> "long" type
+> 
+> by properly postfixing the socket constants. While at it, fix the lines over 80
+> characters long in the vicinity...
+> 
+> Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+> Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
+> CC: linux-mips@linux-mips.org
 
-Yes, I try to merge any follow on patches into the original patch as long
-as that one is still sitting in the patch queue.  Since that result in
-bugs getting fixes before they ever show up in any of the more static
-trees, that is the MIPS or kernel.org git trees there is little point in
-documenting bugs "that never existed" and their "non-fixes" ;-)
+Any reason why this patch still isn't merged?  It looks right and seems to
+do what it promised,
+
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
   Ralf

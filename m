@@ -1,75 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jun 2008 19:12:40 +0100 (BST)
-Received: from e3.ny.us.ibm.com ([32.97.182.143]:6338 "EHLO e3.ny.us.ibm.com")
-	by ftp.linux-mips.org with ESMTP id S20036135AbYFMSMi (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 13 Jun 2008 19:12:38 +0100
-Received: from d01relay02.pok.ibm.com (d01relay02.pok.ibm.com [9.56.227.234])
-	by e3.ny.us.ibm.com (8.13.8/8.13.8) with ESMTP id m5DICKqc023697
-	for <linux-mips@linux-mips.org>; Fri, 13 Jun 2008 14:12:20 -0400
-Received: from d01av02.pok.ibm.com (d01av02.pok.ibm.com [9.56.224.216])
-	by d01relay02.pok.ibm.com (8.13.8/8.13.8/NCO v9.0) with ESMTP id m5DICAMK208862
-	for <linux-mips@linux-mips.org>; Fri, 13 Jun 2008 14:12:10 -0400
-Received: from d01av02.pok.ibm.com (loopback [127.0.0.1])
-	by d01av02.pok.ibm.com (8.12.11.20060308/8.13.3) with ESMTP id m5DIC9LT024039
-	for <linux-mips@linux-mips.org>; Fri, 13 Jun 2008 14:12:09 -0400
-Received: from [9.76.91.124] (sig-9-76-91-124.mts.ibm.com [9.76.91.124])
-	by d01av02.pok.ibm.com (8.12.11.20060308/8.12.11) with ESMTP id m5DIC8Fg024009;
-	Fri, 13 Jun 2008 14:12:08 -0400
-Subject: Re: [RFC PATCH 2/2] Update defconfigs for CONFIG_HUGETLB
-From:	Adam Litke <agl@us.ibm.com>
-To:	Adrian Bunk <bunk@kernel.org>
-Cc:	linux-mm <linux-mm@kvack.org>, npiggin@suse.de, nacc@us.ibm.com,
-	mel@csn.ul.ie, Eric B Munson <ebmunson@us.ibm.com>,
-	linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
-	linuxppc-dev@ozlabs.org, sparclinux@vger.kernel.org,
-	linux-sh@vger.kernel.org, linux-s390@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Jun 2008 19:24:29 +0100 (BST)
+Received: from isilmar.linta.de ([213.133.102.198]:26068 "EHLO linta.de")
+	by ftp.linux-mips.org with ESMTP id S20036153AbYFMSY1 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 13 Jun 2008 19:24:27 +0100
+Received: (qmail 2924 invoked by uid 1000); 13 Jun 2008 18:24:20 -0000
+Date:	Fri, 13 Jun 2008 20:24:20 +0200
+From:	Dominik Brodowski <linux@dominikbrodowski.net>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-pcmcia@lists.infradead.org,
+	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
 	linux-mips@linux-mips.org
-In-Reply-To: <20080612193638.GB17231@cs181133002.pp.htv.fi>
-References: <1213296540.17108.8.camel@localhost.localdomain>
-	 <1213296945.17108.13.camel@localhost.localdomain>
-	 <20080612193638.GB17231@cs181133002.pp.htv.fi>
-Content-Type: text/plain
-Organization: IBM
-Date:	Fri, 13 Jun 2008 14:12:08 -0400
-Message-Id: <1213380728.15016.8.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.22.2 
-Content-Transfer-Encoding: 7bit
-Return-Path: <agl@us.ibm.com>
+Subject: Re: [PATCH 6/9] pcmcia: fix Alchemy warnings
+Message-ID: <20080613182420.GB2649@isilmar.linta.de>
+Mail-Followup-To: Ralf Baechle <ralf@linux-mips.org>,
+	linux-pcmcia@lists.infradead.org,
+	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
+	linux-mips@linux-mips.org
+References: <20080530212821.GA30197@comet.dominikbrodowski.net> <1212183079-30505-6-git-send-email-linux@dominikbrodowski.net> <20080613140258.GE16344@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20080613140258.GE16344@linux-mips.org>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+Return-Path: <linux@dominikbrodowski.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19546
+X-archive-position: 19547
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: agl@us.ibm.com
+X-original-sender: linux@dominikbrodowski.net
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2008-06-12 at 22:36 +0300, Adrian Bunk wrote:
-> On Thu, Jun 12, 2008 at 02:55:45PM -0400, Adam Litke wrote:
-> > Update all defconfigs that specify a default configuration for hugetlbfs.
-> > There is now only one option: CONFIG_HUGETLB.  Replace the old
-> > CONFIG_HUGETLB_PAGE and CONFIG_HUGETLBFS options with the new one.  I found no
-> > cases where CONFIG_HUGETLBFS and CONFIG_HUGETLB_PAGE had different values so
-> > this patch is large but completely mechanical:
-> >...
-> >  335 files changed, 335 insertions(+), 385 deletions(-)
-> >...
-> 
-> Please don't do this kind of patches - it doesn't bring any advantage 
-> but can create tons of patch conflicts.
-> 
-> The next time a defconfig gets updated it will anyway automatically be 
-> fixed, and for defconfigs that aren't updated it doesn't create any 
-> problems to keep them as they are today until they might one day get 
-> updated.
+Hi,
 
-Thanks for taking a look.  I am not sure if I have ever seen a defconfig
-patch hit the mailing list before and I was wondering how those changes
-happen.  In any case I am perfectly happy to drop this huge patch and
-stick with just the first one.
+On Fri, Jun 13, 2008 at 03:02:58PM +0100, Ralf Baechle wrote:
+> On Fri, May 30, 2008 at 11:31:16PM +0200, Dominik Brodowski wrote:
+> 
+> > Subject: [PATCH 6/9] pcmcia: fix Alchemy warnings
+> > 
+> > From: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+> > 
+> > Fix the following warnings:
+> > 
+> > drivers/pcmcia/au1000_generic.c: In function `au1x00_pcmcia_socket_probe':
+> > drivers/pcmcia/au1000_generic.c:405: warning: integer constant is too large for
+> > "long" type
+> > drivers/pcmcia/au1000_generic.c:413: warning: integer constant is too large for
+> > "long" type
+> > 
+> > by properly postfixing the socket constants. While at it, fix the lines over 80
+> > characters long in the vicinity...
+> > 
+> > Signed-off-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+> > Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
+> > CC: linux-mips@linux-mips.org
+> 
+> Any reason why this patch still isn't merged?  It looks right and seems to
+> do what it promised,
 
--- 
-Adam Litke - (agl at us.ibm.com)
-IBM Linux Technology Center
+It's in the queue for what is to be merged for 2.6.27-rc1.
+
+Best,
+	Dominik

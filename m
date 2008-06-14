@@ -1,95 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Jun 2008 02:32:48 +0100 (BST)
-Received: from jehova.dsm.dk ([80.199.102.117]:37256 "EHLO jehova.dsm.dk")
-	by ftp.linux-mips.org with ESMTP id S20037362AbYFNBco (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 14 Jun 2008 02:32:44 +0100
-Received: (qmail 29538 invoked by uid 1000); 14 Jun 2008 01:32:42 -0000
-Date:	Sat, 14 Jun 2008 02:32:42 +0100 (BST)
-From:	Thomas Horsten <thomas@horsten.com>
-X-X-Sender: thomas@jehova.dsm.dk
-To:	ralf@linux-mips.org
-cc:	linux-mips@linux-mips.org
-Subject: [PATCH] 2.6.25.6 bring Lasat back from the dead
-Message-ID: <Pine.LNX.4.40.0806140224580.29138-100000@jehova.dsm.dk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Jun 2008 13:59:29 +0100 (BST)
+Received: from vigor.karmaclothing.net ([217.169.26.28]:20705 "EHLO
+	vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
+	id S28574559AbYFNM71 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 14 Jun 2008 13:59:27 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m5ECx4bX023708;
+	Sat, 14 Jun 2008 13:59:04 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m5ECx3Bg023701;
+	Sat, 14 Jun 2008 13:59:03 +0100
+Date:	Sat, 14 Jun 2008 13:59:03 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Thomas Horsten <thomas@horsten.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [BUG] R5000 failure in kmap_coherent on Lasat board, bug that
+	has been there for a while?
+Message-ID: <20080614125903.GA483@linux-mips.org>
+References: <Pine.LNX.4.40.0806131600540.25629-100000@jehova.dsm.dk>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <th@jehova.dsm.dk>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.40.0806131600540.25629-100000@jehova.dsm.dk>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19549
+X-archive-position: 19550
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: thomas@horsten.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-After the common MIPS CPU interrupt controller (for irq0-7) was
-introduced the Lasat boards didn't get their interrupts right, so
-nothing worked. The old routines need to be offset by the new 8
-hardware interrupts common to all MIPS CPU's.
+On Fri, Jun 13, 2008 at 04:06:03PM +0100, Thomas Horsten wrote:
 
-Signed-off-by: Thomas Horsten <thomas@horsten.com>
+Only compile tested - can you try this one?
 
-diff -u -r linux-2.6.25.6/arch/mips/lasat/image/Makefile linux-2.6.25.6-th/arch/mips/lasat/image/Makefile
---- linux-2.6.25.6/arch/mips/lasat/image/Makefile	2008-06-11 10:39:29.000000000 +0100
-+++ linux-2.6.25.6-th/arch/mips/lasat/image/Makefile	2008-06-12 18:35:45.000000000 +0100
-@@ -24,7 +24,7 @@
- 		-D TIMESTAMP=$(shell date +%s)
+  Ralf
 
- $(obj)/head.o: $(obj)/head.S $(KERNEL_IMAGE)
--	$(CC) -fno-pic $(HEAD_DEFINES) $(LINUXINCLUDE) -c -o $@ $<
-+	$(CC) -EL -fno-pic $(HEAD_DEFINES) $(LINUXINCLUDE) -c -o $@ $<
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
- OBJECTS = head.o kImage.o
-
-@@ -35,14 +35,14 @@
- 	$(MKLASATIMG) -o $@ -k $^ -m $(MKLASATIMG_ARCH)
-
- $(obj)/rom.bin: $(obj)/rom
--	$(OBJCOPY) -O binary -S $^ $@
-+	$(OBJCOPY) -O binary -S $^ $@
-
- # Rule to make the bootloader
- $(obj)/rom: $(addprefix $(obj)/,$(OBJECTS))
- 	$(LD) $(LDFLAGS) $(LDSCRIPT) -o $@ $^
-
- $(obj)/%.o: $(obj)/%.gz
--	$(LD) -r -o $@ -b binary $<
-+	$(LD) -EL -r -o $@ -b binary $<
-
- $(obj)/%.gz: $(obj)/%.bin
- 	gzip -cf -9 $< > $@
-diff -u -r linux-2.6.25.6/arch/mips/lasat/interrupt.c linux-2.6.25.6-th/arch/mips/lasat/interrupt.c
---- linux-2.6.25.6/arch/mips/lasat/interrupt.c	2008-06-11 10:39:29.000000000 +0100
-+++ linux-2.6.25.6-th/arch/mips/lasat/interrupt.c	2008-06-12 23:45:51.000000000 +0100
-@@ -34,11 +34,13 @@
-
- void disable_lasat_irq(unsigned int irq_nr)
- {
-+	irq_nr -= LASAT_IRQ_BASE;
- 	*lasat_int_mask &= ~(1 << irq_nr) << lasat_int_mask_shift;
- }
-
- void enable_lasat_irq(unsigned int irq_nr)
- {
-+	irq_nr -= LASAT_IRQ_BASE;
- 	*lasat_int_mask |= (1 << irq_nr) << lasat_int_mask_shift;
- }
-
-diff -u -r linux-2.6.25.6/include/asm-mips/lasat/serial.h linux-2.6.25.6-th/include/asm-mips/lasat/serial.h
---- linux-2.6.25.6/include/asm-mips/lasat/serial.h	2008-06-11 10:39:29.000000000 +0100
-+++ linux-2.6.25.6-th/include/asm-mips/lasat/serial.h	2008-06-13 00:09:29.000000000 +0100
-@@ -4,10 +4,10 @@
- #define LASAT_BASE_BAUD_100 		(7372800 / 16)
- #define LASAT_UART_REGS_BASE_100	0x1c8b0000
- #define LASAT_UART_REGS_SHIFT_100	2
--#define LASATINT_UART_100		8
-+#define LASATINT_UART_100		16
-
- /* * LASAT 200 boards serial configuration */
- #define LASAT_BASE_BAUD_200		(100000000 / 16 / 12)
- #define LASAT_UART_REGS_BASE_200	(Vrc5074_PHYS_BASE + 0x0300)
- #define LASAT_UART_REGS_SHIFT_200	3
--#define LASATINT_UART_200		13
-+#define LASATINT_UART_200		21
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index c41ea22..2709675 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -446,6 +446,7 @@ static inline void local_r4k_flush_cache_page(void *args)
+ 	struct page *page = pfn_to_page(fcp_args->pfn);
+ 	int exec = vma->vm_flags & VM_EXEC;
+ 	struct mm_struct *mm = vma->vm_mm;
++	int map_coherent = 0;
+ 	pgd_t *pgdp;
+ 	pud_t *pudp;
+ 	pmd_t *pmdp;
+@@ -479,7 +480,9 @@ static inline void local_r4k_flush_cache_page(void *args)
+ 		 * Use kmap_coherent or kmap_atomic to do flushes for
+ 		 * another ASID than the current one.
+ 		 */
+-		if (cpu_has_dc_aliases)
++		map_coherent = (cpu_has_dc_aliases &&
++				page_mapped(page) && !Page_dcache_dirty(page));
++		if (map_coherent)
+ 			vaddr = kmap_coherent(page, addr);
+ 		else
+ 			vaddr = kmap_atomic(page, KM_USER0);
+@@ -502,7 +505,7 @@ static inline void local_r4k_flush_cache_page(void *args)
+ 	}
+ 
+ 	if (vaddr) {
+-		if (cpu_has_dc_aliases)
++		if (map_coherent)
+ 			kunmap_coherent();
+ 		else
+ 			kunmap_atomic(vaddr, KM_USER0);

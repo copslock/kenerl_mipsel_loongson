@@ -1,57 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Jun 2008 17:14:47 +0100 (BST)
-Received: from smtp4.pp.htv.fi ([213.243.153.38]:29165 "EHLO smtp4.pp.htv.fi")
-	by ftp.linux-mips.org with ESMTP id S20040252AbYFOQOl (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 15 Jun 2008 17:14:41 +0100
-Received: from cs181133002.pp.htv.fi (cs181140183.pp.htv.fi [82.181.140.183])
-	by smtp4.pp.htv.fi (Postfix) with ESMTP id 763F45BC012;
-	Sun, 15 Jun 2008 19:14:38 +0300 (EEST)
-Date:	Sun, 15 Jun 2008 19:13:21 +0300
-From:	Adrian Bunk <bunk@kernel.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: [2.6 patch] malta_mtd.c: add MODULE_LICENSE
-Message-ID: <20080615161321.GB7865@cs181133002.pp.htv.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jun 2008 01:04:25 +0100 (BST)
+Received: from kirk.serum.com.pl ([213.77.9.205]:14321 "EHLO serum.com.pl")
+	by ftp.linux-mips.org with ESMTP id S20043261AbYFPAEX (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 16 Jun 2008 01:04:23 +0100
+Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
+	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m5G03DJ9015880;
+	Mon, 16 Jun 2008 02:03:13 +0200
+Received: from localhost (macro@localhost)
+	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m5G038dX015874;
+	Mon, 16 Jun 2008 01:03:09 +0100
+Date:	Mon, 16 Jun 2008 01:03:08 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	"Chen, Huacai" <huacai.chen@intel.com>
+cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: RE: [patch]modify the MIPS CPU classfication
+In-Reply-To: <42DFA526FC41B1429CE7279EF83C6BDC01404431@pdsmsx415.ccr.corp.intel.com>
+Message-ID: <Pine.LNX.4.55.0806160102040.11995@cliff.in.clinika.pl>
+References: <42DFA526FC41B1429CE7279EF83C6BDC01404341@pdsmsx415.ccr.corp.intel.com>
+ <Pine.LNX.4.55.0806091330560.26593@cliff.in.clinika.pl>
+ <42DFA526FC41B1429CE7279EF83C6BDC01404431@pdsmsx415.ccr.corp.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <bunk@kernel.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19558
+X-archive-position: 19559
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bunk@kernel.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch adds the missing MODULE_LICENSE("GPL").
+On Tue, 10 Jun 2008, Chen, Huacai wrote:
 
-Reported-by: Adrian Bunk <bunk@kernel.org>
-Signed-off-by: Adrian Bunk <bunk@kernel.org>
+> This is the new patch sorted numerically.
 
----
+ This version looks good, thanks.  Please send it to Ralf, the MIPS/Linux 
+maintainer, for inclusion.
 
- arch/mips/mips-boards/malta/malta_mtd.c |    3 +++
- 1 file changed, 3 insertions(+)
-
-da2e8fd47a57f6e5c48dc0781db3aa7a46365c38 diff --git a/arch/mips/mips-boards/malta/malta_mtd.c b/arch/mips/mips-boards/malta/malta_mtd.c
-index 8ad9bdf..dd38c12 100644
---- a/arch/mips/mips-boards/malta/malta_mtd.c
-+++ b/arch/mips/mips-boards/malta/malta_mtd.c
-@@ -8,6 +8,7 @@
-  */
- 
- #include <linux/init.h>
-+#include <linux/module.h>
- #include <linux/platform_device.h>
- #include <linux/mtd/partitions.h>
- #include <linux/mtd/physmap.h>
-@@ -61,3 +62,5 @@ static int __init malta_mtd_init(void)
- }
- 
- module_init(malta_mtd_init)
-+
-+MODULE_LICENSE("GPL");
+  Maciej

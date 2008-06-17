@@ -1,91 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Jun 2008 20:15:49 +0100 (BST)
-Received: from an-out-0708.google.com ([209.85.132.241]:49353 "EHLO
-	an-out-0708.google.com") by ftp.linux-mips.org with ESMTP
-	id S20041870AbYFPTPn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 16 Jun 2008 20:15:43 +0100
-Received: by an-out-0708.google.com with SMTP id d11so1199653and.64
-        for <linux-mips@linux-mips.org>; Mon, 16 Jun 2008 12:15:40 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from
-         :user-agent:mime-version:to:cc:subject:content-type
-         :content-transfer-encoding;
-        bh=7QWnZj3xf/+rXajrxxKwiskWmIMkeUNaH0NdvoATygc=;
-        b=K/f1eU0U9GJlAj/CvUp+xZmBKn5Q0MAvn5EEmTQQqgXcjtiDQ7Uy7HnFOciVuYnJFF
-         9HvxTcqE/WiApEhnJTA4PpVetbjz8fyXvhZNLPOvZLF1eidkKpxxLuXbeO4x8jSKXW+T
-         MKtwcFVcvcIJmILZv03szCvHoUB1+5t8jo+KE=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :content-type:content-transfer-encoding;
-        b=ly3jSxdq9E91ht/EWmsCEZYuimraVCJ0UttAc51vXvPBUyKmu2pSC604l+L24YsFqP
-         6SPfZuKydxZCh6tQ2TTPHNEDcP2a9701zX03xMD2axQrvNTzt0dg/QnBd5puoR0Zh4ch
-         drtvcI1uQZSPyZ8y+CsCRwVRTKf4qZFHt87vU=
-Received: by 10.100.215.14 with SMTP id n14mr9101275ang.148.1213643736388;
-        Mon, 16 Jun 2008 12:15:36 -0700 (PDT)
-Received: from ?10.1.8.176? ( [209.29.220.87])
-        by mx.google.com with ESMTPS id 28sm927878qbw.0.2008.06.16.12.15.34
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 16 Jun 2008 12:15:35 -0700 (PDT)
-Message-ID: <4856BBDB.6000306@gmail.com>
-Date:	Mon, 16 Jun 2008 15:15:39 -0400
-From:	David Pelton <david.r.pelton@gmail.com>
-User-Agent: Thunderbird 2.0.0.14 (Windows/20080421)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jun 2008 09:51:37 +0100 (BST)
+Received: from smtp.movial.fi ([62.236.91.34]:19899 "EHLO smtp.movial.fi")
+	by ftp.linux-mips.org with ESMTP id S20022644AbYFQIvf (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 17 Jun 2008 09:51:35 +0100
+Received: from localhost (mailscanner.hel.movial.fi [172.17.81.9])
+	by smtp.movial.fi (Postfix) with ESMTP id 8A0ACC80D3;
+	Tue, 17 Jun 2008 11:51:28 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at movial.fi
+Received: from smtp.movial.fi ([62.236.91.34])
+	by localhost (mailscanner.hel.movial.fi [172.17.81.9]) (amavisd-new, port 10026)
+	with ESMTP id DTRkY8YmeH9v; Tue, 17 Jun 2008 11:51:28 +0300 (EEST)
+Received: from [172.17.49.48] (sd048.hel.movial.fi [172.17.49.48])
+	by smtp.movial.fi (Postfix) with ESMTP id 6695CC809E;
+	Tue, 17 Jun 2008 11:51:28 +0300 (EEST)
+Message-ID: <48577B56.8010008@movial.fi>
+Date:	Tue, 17 Jun 2008 11:52:38 +0300
+From:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+Organization: Movial Creative Technologies
+User-Agent: Icedove 1.5.0.14eol (X11/20080509)
 MIME-Version: 1.0
 To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips@linux-mips.org
-Subject: [PATCH] [MIPS] change EARLY_PRINTK default to n
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <david.r.pelton@gmail.com>
+CC:	Adrian Bunk <bunk@kernel.org>, linux-mips@linux-mips.org
+Subject: Re: [2.6 patch] malta_mtd.c: add MODULE_LICENSE
+References: <20080615161321.GB7865@cs181133002.pp.htv.fi> <20080616133049.GA24056@linux-mips.org> <48567A12.3050206@movial.fi> <20080616143700.GA28471@linux-mips.org>
+In-Reply-To: <20080616143700.GA28471@linux-mips.org>
+Content-Type: multipart/mixed;
+ boundary="------------030806050307080309070502"
+Return-Path: <dmitri.vorobiev@movial.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19575
+X-archive-position: 19576
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.r.pelton@gmail.com
+X-original-sender: dmitri.vorobiev@movial.fi
 Precedence: bulk
 X-list: linux-mips
 
+This is a multi-part message in MIME format.
+--------------030806050307080309070502
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 
-This patch changes the default for CONFIG_EARLY_PRINTK to n.  Prior to
-this change, the presence of SYS_HAS_EARLY_PRINTK would always set
-EARLY_PRINTK to y if either EMBEDDED or DEBUG_KERNEL were not set.  As
-this is a debugging option, it should default to n.
+Ralf Baechle wrote:
+> On Mon, Jun 16, 2008 at 05:34:58PM +0300, Dmitri Vorobiev wrote:
+> 
+>> Every time I come across this file I wonder whether this needs to be
+>> modularized at all. Isn't you chainsaw itching for this as well? :)
+> 
+> The reason why it was implemented as a module was that due to a MTD
+> "feature" the code wouldn't compile in 2.6.20 and earlier.  So yes, I
+> chainsawed it into the right shape, patch is on the way to Linus.
 
-Signed-off-by: David Pelton <david.r.pelton@gmail.com>
----
+Looks like Linus has applied the patch.
 
-Hi,
+I think that module_init() needs to be replaced by device_initcall() in
+malta_mtd.c. Not that it would make any difference at all, but just some
+nitpicking - I simply get a bit nervous and irritated when looking at
+the `module' word in the core kernel code. :)
 
-while fiddling with kernel configuration options for the Broadcom eval
-board I am working with, I noticed that turning off DEBUG_KERNEL would
-make many bad things happen.  I did not get to the root cause, but I
-think that some of the early printk drivers have some dependency on
-functionality enabled by DEBUG_KERNEL.  The 2.6.25.6 kernel has a
-default value of "y" for EARLY_PRINTK, and this default will be applied
-anytime the platform claims to support early printk.  In particular, if
-DEBUG_KERNEL is not selected, there is no way to disable EARLY_PRINTK.
-This patch changes the default to "n" to avoid these problems.
+Patch attached.
 
-- David Pelton
+Dmitri
+
+> 
+>   Ralf
+> 
 
 
- arch/mips/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-
-diff -Nraup linux-2.6.25.6-clean/arch/mips/Kconfig linux-2.6.25.6/arch/mips/Kconfig
---- linux-2.6.25.6-clean/arch/mips/Kconfig      2008-06-09 14:27:19.000000000 -0400
-+++ linux-2.6.25.6/arch/mips/Kconfig    2008-06-16 14:34:33.229160000 -0400
-@@ -807,7 +807,7 @@ config DMA_NEED_PCI_MAP_STATE
- config EARLY_PRINTK
-        bool "Early printk" if EMBEDDED && DEBUG_KERNEL
-        depends on SYS_HAS_EARLY_PRINTK
--       default y
-+       default n
-        help
-          This option enables special console drivers which allow the kernel
-          to print messages very early in the bootup process.
+--------------030806050307080309070502
+Content-Type: text/x-patch;
+ name*0="0001--MIPS-Get-rid-of-module_init-in-core-kernel-code.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename*0="0001--MIPS-Get-rid-of-module_init-in-core-kernel-code.patch"

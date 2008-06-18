@@ -1,63 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jun 2008 08:19:14 +0100 (BST)
-Received: from smtp.movial.fi ([62.236.91.34]:13494 "EHLO smtp.movial.fi")
-	by ftp.linux-mips.org with ESMTP id S20025325AbYFRHRU (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 18 Jun 2008 08:17:20 +0100
-Received: from localhost (mailscanner.hel.movial.fi [172.17.81.9])
-	by smtp.movial.fi (Postfix) with ESMTP id 99853C80D8;
-	Wed, 18 Jun 2008 10:17:09 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at movial.fi
-Received: from smtp.movial.fi ([62.236.91.34])
-	by localhost (mailscanner.hel.movial.fi [172.17.81.9]) (amavisd-new, port 10026)
-	with ESMTP id a4jR73frvyIf; Wed, 18 Jun 2008 10:17:09 +0300 (EEST)
-Received: from sd048.hel.movial.fi (sd048.hel.movial.fi [172.17.49.48])
-	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp.movial.fi (Postfix) with ESMTP id 3F387C80DD;
-	Wed, 18 Jun 2008 10:17:09 +0300 (EEST)
-Received: by sd048.hel.movial.fi (Postfix, from userid 30120)
-	id A6C20B4049; Wed, 18 Jun 2008 10:18:22 +0300 (EEST)
-From:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
-To:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: [PATCH 1/5] [MIPS] 8253: make the pit_clockevent variable static
-Date:	Wed, 18 Jun 2008 10:18:19 +0300
-Message-Id: <1213773503-23536-2-git-send-email-dmitri.vorobiev@movial.fi>
-X-Mailer: git-send-email 1.5.5.GIT
-In-Reply-To: <1213773503-23536-1-git-send-email-dmitri.vorobiev@movial.fi>
-References: <1213773503-23536-1-git-send-email-dmitri.vorobiev@movial.fi>
-Return-Path: <dvorobye@movial.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jun 2008 09:42:40 +0100 (BST)
+Received: from fg-out-1718.google.com ([72.14.220.159]:43211 "EHLO
+	fg-out-1718.google.com") by ftp.linux-mips.org with ESMTP
+	id S20027444AbYFRImd convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 18 Jun 2008 09:42:33 +0100
+Received: by fg-out-1718.google.com with SMTP id d23so77941fga.32
+        for <linux-mips@linux-mips.org>; Wed, 18 Jun 2008 01:42:30 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:reply-to:to:subject:date
+         :user-agent:cc:references:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:content-disposition:message-id:sender;
+        bh=ZooI+/Lk0/XVgAQrSPYivlaorS+GQn/XGOZePEcVT3I=;
+        b=uqRhCIDfU0yZmz+2PN2O05ZsR2+2gcaLqpPcCn5P4fFOdp2cgOqMPclAkquSHweUer
+         NCTqk7W5FtzzxyPZ1RVy86Spcflqhy2XNuqWWAICrXpP11jhf02lDaRokwZN2l903/Rt
+         esI5uvJcaSk/kgncjy/xRhAx1eNpDZNjMvOaA=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:reply-to:to:subject:date:user-agent:cc:references:in-reply-to
+         :mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id:sender;
+        b=FA3vSutB3ep74/1yAbALa8PIxspblqDKP50N35M/6kHDs/1sm7CbLcotVwedGNKS2k
+         K6aexWEaasMYXq8EqE5e8tn4LRZkhnbTSvlW2dhXdiS1F/4/eLa1NvcxY66BTIASktdJ
+         c1VZSh7XirWjAunpqrk0l6AoxyVXkmERC+mJs=
+Received: by 10.86.66.11 with SMTP id o11mr443015fga.43.1213778550865;
+        Wed, 18 Jun 2008 01:42:30 -0700 (PDT)
+Received: from innova-card.com ( [81.252.61.1])
+        by mx.google.com with ESMTPS id 12sm14867171fgg.0.2008.06.18.01.42.24
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 18 Jun 2008 01:42:28 -0700 (PDT)
+From:	Brian Foster <brian.foster@innova-card.com>
+Reply-To: Brian Foster <brian.foster@innova-card.com>
+To:	linux-mips@linux-mips.org
+Subject: Re: Adding(?) XI support to MIPS-Linux?
+Date:	Wed, 18 Jun 2008 10:42:12 +0200
+User-Agent: KMail/1.9.6 (enterprise 0.20070907.709405)
+Cc:	David Daney <ddaney@avtrex.com>, Thiemo Seufer <ths@networkno.de>,
+	"Kevin D. Kissell" <KevinK@paralogos.com>,
+	Andrew Dyer <adyer@righthandtech.com>
+References: <200806091658.10937.brian.foster@innova-card.com> <484EAA16.80903@avtrex.com> <200806111516.57406.brian.foster@innova-card.com>
+In-Reply-To: <200806111516.57406.brian.foster@innova-card.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Message-Id: <200806181042.12911.brian.foster@innova-card.com>
+Return-Path: <blf.ireland@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19586
+X-archive-position: 19587
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@movial.fi
+X-original-sender: brian.foster@innova-card.com
 Precedence: bulk
 X-list: linux-mips
 
-The pit_clockevent symbol is needlessly defined global. This patch makes
-that variable static.
+On Wednesday 11 June 2008 15:16:56 Brian Foster wrote:
+>[ ... ]
+>  It's [ ... ] the trampoline that has “something to do with
+>  FPU emulation”, which has me concerned ATM.  [ ... ]
+> 
+>  The quick summary [ ... ] is the FP trampoline, which is pushed
+>  on the user-land stack is, unlike sigreturn, not fixed code.
+>  It varies on a per-instance per-thread basis.  Hence the
+>  simple ‘vsyscall’ mechanism ((to be?) used for sigreturn)
+>  is inappropriate.
+> 
+>  The trampoline is only used to execute a non-FP instruction
+>  (<instr>) in the delay slot of an FP-instruction:
+> 
+      [ point A "before" <instr> ]
+>      <instr>  # Non-FP instruction to execute in user-land
+      [ point B "after" <instr> "before" BADINST ]
+>      BADINST  # Bad instruction forcing return to FP emulator
+>      COOKIE   # Bad instruction (not executed) for verification
+>      <epc>    # Where to resume execution after <instr>
+      [ user-land stack-pointer points here(-ish) ]
 
-Spotted by sparse. Compile-tested using Malta defconfig.
+ Whilst thinking about the problem and possible solutions,
+ it occurred to me there could be a defect in the current
+ trampoline:  Suppose there is a signal, either at point A,
+ due to <instr> itself, or at point B, which is caught on
+ this stack, and the user-land signal-handler ‘return’s.
 
-Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
----
- arch/mips/kernel/i8253.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+ Doesn't the signal-handler/sigreturn stack-frame overwrite
+ the FP trampoline?   In which case, when the signal-hander
+ returns, more-or-less anything could happen.  (And very
+ unlikely to be what's wanted!)
 
-diff --git a/arch/mips/kernel/i8253.c b/arch/mips/kernel/i8253.c
-index 38fa1a1..b6ac551 100644
---- a/arch/mips/kernel/i8253.c
-+++ b/arch/mips/kernel/i8253.c
-@@ -80,7 +80,7 @@ static int pit_next_event(unsigned long delta, struct clock_event_device *evt)
-  * registered. This mechanism replaces the previous #ifdef LOCAL_APIC -
-  * !using_apic_timer decisions in do_timer_interrupt_hook()
-  */
--struct clock_event_device pit_clockevent = {
-+static struct clock_event_device pit_clockevent = {
- 	.name		= "pit",
- 	.features	= CLOCK_EVT_FEAT_PERIODIC | CLOCK_EVT_FEAT_ONESHOT,
- 	.set_mode	= init_pit_timer,
+cheers!
+	-blf-
+
 -- 
-1.5.5.GIT
+“How many surrealists does it take to   | Brian Foster
+ change a lightbulb? Three. One calms   | somewhere in south of France
+ the warthog, and two fill the bathtub  |   Stop E$$o (ExxonMobil)!
+ with brightly-coloured machine tools.” |      http://www.stopesso.com

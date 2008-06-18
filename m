@@ -1,229 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Jun 2008 23:35:32 +0100 (BST)
-Received: from smtp4.pp.htv.fi ([213.243.153.38]:18114 "EHLO smtp4.pp.htv.fi")
-	by ftp.linux-mips.org with ESMTP id S20026847AbYFQWe7 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 17 Jun 2008 23:34:59 +0100
-Received: from cs181133002.pp.htv.fi (cs181140183.pp.htv.fi [82.181.140.183])
-	by smtp4.pp.htv.fi (Postfix) with ESMTP id D99F65BC074;
-	Wed, 18 Jun 2008 01:34:57 +0300 (EEST)
-Date:	Wed, 18 Jun 2008 01:33:32 +0300
-From:	Adrian Bunk <bunk@kernel.org>
-To:	jbarnes@virtuousgeek.org
-Cc:	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	dhowells@redhat.com, gerg@uclinux.org, ralf@linux-mips.org,
-	linux-mips@linux-mips.org, lethal@linux-sh.org,
-	linux-sh@vger.kernel.org, Russell King <rmk+lkml@arm.linux.org.uk>
-Subject: [2.6 patch] remove pcibios_update_resource() functions
-Message-ID: <20080617223332.GM25911@cs181133002.pp.htv.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jun 2008 08:00:39 +0100 (BST)
+Received: from smtp.movial.fi ([62.236.91.34]:19939 "EHLO smtp.movial.fi")
+	by ftp.linux-mips.org with ESMTP id S20022503AbYFRHAh (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 18 Jun 2008 08:00:37 +0100
+Received: from localhost (mailscanner.hel.movial.fi [172.17.81.9])
+	by smtp.movial.fi (Postfix) with ESMTP id 25848C80DF;
+	Wed, 18 Jun 2008 10:00:28 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at movial.fi
+Received: from smtp.movial.fi ([62.236.91.34])
+	by localhost (mailscanner.hel.movial.fi [172.17.81.9]) (amavisd-new, port 10026)
+	with ESMTP id Zh-HxJdDbVr7; Wed, 18 Jun 2008 10:00:28 +0300 (EEST)
+Received: from [172.17.49.48] (sd048.hel.movial.fi [172.17.49.48])
+	by smtp.movial.fi (Postfix) with ESMTP id 51B7AC80FA;
+	Wed, 18 Jun 2008 10:00:21 +0300 (EEST)
+Message-ID: <4858B2D0.4000809@movial.fi>
+Date:	Wed, 18 Jun 2008 10:01:36 +0300
+From:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+Organization: Movial Creative Technologies
+User-Agent: Icedove 1.5.0.14eol (X11/20080509)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <bunk@kernel.org>
+To:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+CC:	Ralf Baechle <ralf@linux-mips.org>, Adrian Bunk <bunk@kernel.org>,
+	linux-mips@linux-mips.org
+Subject: Re: [2.6 patch] malta_mtd.c: add MODULE_LICENSE
+References: <20080615161321.GB7865@cs181133002.pp.htv.fi> <20080616133049.GA24056@linux-mips.org> <48567A12.3050206@movial.fi> <20080616143700.GA28471@linux-mips.org> <48577B56.8010008@movial.fi>
+In-Reply-To: <48577B56.8010008@movial.fi>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <dmitri.vorobiev@movial.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19579
+X-archive-position: 19580
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bunk@kernel.org
+X-original-sender: dmitri.vorobiev@movial.fi
 Precedence: bulk
 X-list: linux-mips
 
-Russell King did the following back in 2003:
+Dmitri Vorobiev wrote:
+> 
+> Patch attached.
 
-<--  snip  -->
+Oops, and I made a typo in the S-O-B line. Sorry for sloppiness. The
+line should read:
 
-    [PCI] pci-9: Kill per-architecture pcibios_update_resource()
-    
-    Kill pcibios_update_resource(), replacing it with pci_update_resource().
-    pci_update_resource() uses pcibios_resource_to_bus() to convert a
-    resource to a device BAR - the transformation should be exactly the
-    same as the transformation used for the PCI bridges.
-    
-    pci_update_resource "knows" about 64-bit BARs, but doesn't attempt to
-    set the high 32-bits to anything non-zero - currently no architecture
-    attempts to do something different.  If anyone cares, please fix; I'm
-    going to reflect current behaviour for the time being.
-    
-    Ivan pointed out the following architectures need to examine their
-    pcibios_update_resource() implementation - they should make sure that
-    this new implementation does the right thing.  #warning's have been
-    added where appropriate.
-    
-        ia64
-        mips
-        mips64
-    
-    This cset also includes a fix for the problem reported by AKPM where
-    64-bit arch compilers complain about the resource mask being placed
-    in a u32.
-
-<--  snip  -->
-
-
-This patch removes the unused pcibios_update_resource() functions the 
-kernel gained since.
-
-
-Signed-off-by: Adrian Bunk <bunk@kernel.org>
-
----
-
- arch/frv/mb93090-mb00/pci-frv.c    |   30 ------------------------
- arch/m68knommu/kernel/comempci.c   |    9 -------
- arch/mips/pmc-sierra/yosemite/ht.c |   36 -----------------------------
- arch/sh/drivers/pci/pci.c          |   32 -------------------------
- 4 files changed, 107 deletions(-)
-
-ebd37440bafbb6f9f5ecd6315ac9953cf97f20e9 diff --git a/arch/frv/mb93090-mb00/pci-frv.c b/arch/frv/mb93090-mb00/pci-frv.c
-index 4f165c9..edae117 100644
---- a/arch/frv/mb93090-mb00/pci-frv.c
-+++ b/arch/frv/mb93090-mb00/pci-frv.c
-@@ -19,36 +19,6 @@
- 
- #include "pci-frv.h"
- 
--#if 0
--void
--pcibios_update_resource(struct pci_dev *dev, struct resource *root,
--			struct resource *res, int resource)
--{
--	u32 new, check;
--	int reg;
--
--	new = res->start | (res->flags & PCI_REGION_FLAG_MASK);
--	if (resource < 6) {
--		reg = PCI_BASE_ADDRESS_0 + 4*resource;
--	} else if (resource == PCI_ROM_RESOURCE) {
--		res->flags |= IORESOURCE_ROM_ENABLE;
--		new |= PCI_ROM_ADDRESS_ENABLE;
--		reg = dev->rom_base_reg;
--	} else {
--		/* Somebody might have asked allocation of a non-standard resource */
--		return;
--	}
--
--	pci_write_config_dword(dev, reg, new);
--	pci_read_config_dword(dev, reg, &check);
--	if ((new ^ check) & ((new & PCI_BASE_ADDRESS_SPACE_IO) ? PCI_BASE_ADDRESS_IO_MASK : PCI_BASE_ADDRESS_MEM_MASK)) {
--		printk(KERN_ERR "PCI: Error while updating region "
--		       "%s/%d (%08x != %08x)\n", pci_name(dev), resource,
--		       new, check);
--	}
--}
--#endif
--
- /*
-  * We need to avoid collisions with `mirrored' VGA ports
-  * and other strange ISA hardware, so we always want the
-diff --git a/arch/m68knommu/kernel/comempci.c b/arch/m68knommu/kernel/comempci.c
-index 6ee00ef..0a68b5a 100644
---- a/arch/m68knommu/kernel/comempci.c
-+++ b/arch/m68knommu/kernel/comempci.c
-@@ -375,15 +375,6 @@ int pcibios_enable_device(struct pci_dev *dev, int mask)
- 
- /*****************************************************************************/
- 
--void pcibios_update_resource(struct pci_dev *dev, struct resource *root, struct resource *r, int resource)
--{
--	printk(KERN_WARNING "%s(%d): no support for changing PCI resources...\n",
--		__FILE__, __LINE__);
--}
--
--
--/*****************************************************************************/
--
- /*
-  *	Local routines to interrcept the standard I/O and vector handling
-  *	code. Don't include this 'till now - initialization code above needs
-diff --git a/arch/mips/pmc-sierra/yosemite/ht.c b/arch/mips/pmc-sierra/yosemite/ht.c
-index 6380662..678388f 100644
---- a/arch/mips/pmc-sierra/yosemite/ht.c
-+++ b/arch/mips/pmc-sierra/yosemite/ht.c
-@@ -345,42 +345,6 @@ int pcibios_enable_device(struct pci_dev *dev, int mask)
-         return pcibios_enable_resources(dev);
- }
- 
--
--
--void pcibios_update_resource(struct pci_dev *dev, struct resource *root,
--                             struct resource *res, int resource)
--{
--        u32 new, check;
--        int reg;
--
--        return;
--
--        new = res->start | (res->flags & PCI_REGION_FLAG_MASK);
--        if (resource < 6) {
--                reg = PCI_BASE_ADDRESS_0 + 4 * resource;
--        } else if (resource == PCI_ROM_RESOURCE) {
--		res->flags |= IORESOURCE_ROM_ENABLE;
--                reg = dev->rom_base_reg;
--        } else {
--                /*
--                 * Somebody might have asked allocation of a non-standard
--                 * resource
--                 */
--                return;
--        }
--
--        pci_write_config_dword(dev, reg, new);
--        pci_read_config_dword(dev, reg, &check);
--        if ((new ^ check) &
--            ((new & PCI_BASE_ADDRESS_SPACE_IO) ? PCI_BASE_ADDRESS_IO_MASK :
--             PCI_BASE_ADDRESS_MEM_MASK)) {
--                printk(KERN_ERR "PCI: Error while updating region "
--                       "%s/%d (%08x != %08x)\n", pci_name(dev), resource,
--                       new, check);
--        }
--}
--
--
- void pcibios_align_resource(void *data, struct resource *res,
-                             resource_size_t size, resource_size_t align)
- {
-diff --git a/arch/sh/drivers/pci/pci.c b/arch/sh/drivers/pci/pci.c
-index 08d2e73..f57095a 100644
---- a/arch/sh/drivers/pci/pci.c
-+++ b/arch/sh/drivers/pci/pci.c
-@@ -76,38 +76,6 @@ void __devinit __weak pcibios_fixup_bus(struct pci_bus *bus)
- 	pci_read_bridge_bases(bus);
- }
- 
--void
--pcibios_update_resource(struct pci_dev *dev, struct resource *root,
--			struct resource *res, int resource)
--{
--	u32 new, check;
--	int reg;
--
--	new = res->start | (res->flags & PCI_REGION_FLAG_MASK);
--	if (resource < 6) {
--		reg = PCI_BASE_ADDRESS_0 + 4*resource;
--	} else if (resource == PCI_ROM_RESOURCE) {
--		res->flags |= IORESOURCE_ROM_ENABLE;
--		new |= PCI_ROM_ADDRESS_ENABLE;
--		reg = dev->rom_base_reg;
--	} else {
--		/*
--		 * Somebody might have asked allocation of a non-standard
--		 * resource
--		 */
--		return;
--	}
--
--	pci_write_config_dword(dev, reg, new);
--	pci_read_config_dword(dev, reg, &check);
--	if ((new ^ check) & ((new & PCI_BASE_ADDRESS_SPACE_IO) ?
--		PCI_BASE_ADDRESS_IO_MASK : PCI_BASE_ADDRESS_MEM_MASK)) {
--		printk(KERN_ERR "PCI: Error while updating region "
--		       "%s/%d (%08x != %08x)\n", pci_name(dev), resource,
--		       new, check);
--	}
--}
--
- void pcibios_align_resource(void *data, struct resource *res,
- 			    resource_size_t size, resource_size_t align)
- 			    __attribute__ ((weak));
+Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@movial.fi>

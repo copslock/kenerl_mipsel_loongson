@@ -1,88 +1,113 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jun 2008 10:45:51 +0100 (BST)
-Received: from fg-out-1718.google.com ([72.14.220.154]:63844 "EHLO
-	fg-out-1718.google.com") by ftp.linux-mips.org with ESMTP
-	id S20027250AbYFRJpr convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 18 Jun 2008 10:45:47 +0100
-Received: by fg-out-1718.google.com with SMTP id d23so89629fga.32
-        for <linux-mips@linux-mips.org>; Wed, 18 Jun 2008 02:45:46 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:reply-to:to:subject:date
-         :user-agent:cc:references:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:content-disposition:message-id:sender;
-        bh=TUHRSmICQCLWcbylI6g2aJpVDSX4LQfpacyZkqJY7B8=;
-        b=FreGFQpG4iTtfz790zULXj10qF+jcnLeIBSogGXkskV0Wr+BfVKWY1huxAh9FlNPgT
-         0DK1665XgQa8BGnHKViAiUOVEP16CnvWxN8aN3kvB6VWqU+nUkmslDNPqeBUKZBuPKg2
-         kZ7Z0mzNx4s+H5t9FtNAB+7P1RUIHid8+h+uA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:reply-to:to:subject:date:user-agent:cc:references:in-reply-to
-         :mime-version:content-type:content-transfer-encoding
-         :content-disposition:message-id:sender;
-        b=R5/dPZgSnY8YSxGQLebqHMWm5ZuwdShgVIlzx7P/QdpGHzonrpGoE3J6NMW9yUofOG
-         XJAtcil7PhPAZTkb0dsaCXYaryjdfYbSMusUw3F54iCf0W96S810JcNuHIVJw5WSloPn
-         qhn60PlA1Pe/lk6N+Q6y+ZDEPbr2aWdepO0JQ=
-Received: by 10.86.52.6 with SMTP id z6mr485691fgz.48.1213782346605;
-        Wed, 18 Jun 2008 02:45:46 -0700 (PDT)
-Received: from innova-card.com ( [81.252.61.1])
-        by mx.google.com with ESMTPS id 4sm13114542fgg.9.2008.06.18.02.45.43
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 18 Jun 2008 02:45:45 -0700 (PDT)
-From:	Brian Foster <brian.foster@innova-card.com>
-Reply-To: Brian Foster <brian.foster@innova-card.com>
-To:	"Kevin D. Kissell" <kevink@paralogos.com>
-Subject: Re: Adding(?) XI support to MIPS-Linux?
-Date:	Wed, 18 Jun 2008 11:45:38 +0200
-User-Agent: KMail/1.9.6 (enterprise 0.20070907.709405)
-Cc:	linux-mips@linux-mips.org, David Daney <ddaney@avtrex.com>,
-	Thiemo Seufer <ths@networkno.de>,
-	Andrew Dyer <adyer@righthandtech.com>
-References: <200806091658.10937.brian.foster@innova-card.com> <200806181042.12911.brian.foster@innova-card.com> <4858D735.5020406@paralogos.com>
-In-Reply-To: <4858D735.5020406@paralogos.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jun 2008 18:25:11 +0100 (BST)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:37343 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S20021812AbYFRRYw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 18 Jun 2008 18:24:52 +0100
+Received: (qmail 14716 invoked by uid 1000); 18 Jun 2008 19:24:48 +0200
+Date:	Wed, 18 Jun 2008 19:24:48 +0200
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+To:	linux-mips@linux-mips.org
+Subject: [PATCH] Alchemy: remove unused get/set_au1x00_lcd_clock()
+	functions.
+Message-ID: <20080618172448.GA14697@roarinelk.homelinux.net>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200806181145.39078.brian.foster@innova-card.com>
-Return-Path: <blf.ireland@gmail.com>
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19590
+X-archive-position: 19591
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brian.foster@innova-card.com
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-On Wednesday 18 June 2008 11:36:53 Kevin D. Kissell wrote:
-> Brian Foster wrote:
-> >  Whilst thinking about the problem and possible solutions,
-> >  it occurred to me there could be a defect in the current
-> >  trampoline:  Suppose there is a signal, either at point A,
-> >  due to <instr> itself, or at point B, which is caught on
-> >  this stack, and the user-land signal-handler ‘return’s.
-> >
-> >  Doesn't the signal-handler/sigreturn stack-frame overwrite
-> >  the FP trampoline?   [ ... ]
-> 
-> When I first integrated the FP emulator into the kernel, back in 2.2.x,
-> I seem to recall that someone found this problem and that I came up with
-> a tweak to signal stack setup that protected the FP branch delay slot
-> trampoline.  Maybe I'm mistaken, or maybe the tweak was lost?
+From: Manuel Lauss <mano@roarinelk.homelinux.net>
 
- The error is mine:  I overlooked the tweak.
- Now that you mention it / remind me of it,
- I distinctly recall it; in fact, that was
- what first alerted me to the existance of
- the FP trampoline.
+They don't do anything except print annoying messages,
+and are not called from anywhere interesting.
 
-sorry & cheers!
-	-blf-
+Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
+---
+ arch/mips/au1000/common/clocks.c      |   31 -------------------------------
+ arch/mips/au1000/common/time.c        |    1 -
+ include/asm-mips/mach-au1x00/au1000.h |    2 --
+ 3 files changed, 0 insertions(+), 34 deletions(-)
+
+diff --git a/arch/mips/au1000/common/clocks.c b/arch/mips/au1000/common/clocks.c
+index 043429d..a8170fd 100644
+--- a/arch/mips/au1000/common/clocks.c
++++ b/arch/mips/au1000/common/clocks.c
+@@ -30,7 +30,6 @@
+ #include <asm/mach-au1x00/au1000.h>
+ 
+ static unsigned int au1x00_clock; /*  Hz */
+-static unsigned int lcd_clock;    /* KHz */
+ static unsigned long uart_baud_base;
+ 
+ /*
+@@ -61,33 +60,3 @@ void set_au1x00_uart_baud_base(unsigned long new_baud_base)
+ {
+ 	uart_baud_base = new_baud_base;
+ }
+-
+-/*
+- * Calculate the Au1x00's LCD clock based on the current
+- * cpu clock and the system bus clock, and try to keep it
+- * below 40 MHz (the Pb1000 board can lock-up if the LCD
+- * clock is over 40 MHz).
+- */
+-void set_au1x00_lcd_clock(void)
+-{
+-	unsigned int static_cfg0;
+-	unsigned int sys_busclk = (get_au1x00_speed() / 1000) /
+-				  ((int)(au_readl(SYS_POWERCTRL) & 0x03) + 2);
+-
+-	static_cfg0 = au_readl(MEM_STCFG0);
+-
+-	if (static_cfg0 & (1 << 11))
+-		lcd_clock = sys_busclk / 5; /* note: BCLK switching fails with D5 */
+-	else
+-		lcd_clock = sys_busclk / 4;
+-
+-	if (lcd_clock > 50000) /* Epson MAX */
+-		printk(KERN_WARNING "warning: LCD clock too high (%u KHz)\n",
+-				    lcd_clock);
+-}
+-
+-unsigned int get_au1x00_lcd_clock(void)
+-{
+-	return lcd_clock;
+-}
+-EXPORT_SYMBOL(get_au1x00_lcd_clock);
+diff --git a/arch/mips/au1000/common/time.c b/arch/mips/au1000/common/time.c
+index f00904b..1159f2c 100644
+--- a/arch/mips/au1000/common/time.c
++++ b/arch/mips/au1000/common/time.c
+@@ -234,7 +234,6 @@ void __init plat_time_init(void)
+ 	printk(KERN_INFO "CPU frequency %u.%02u MHz\n",
+ 	       est_freq / 1000000, ((est_freq % 1000000) * 100) / 1000000);
+ 	set_au1x00_speed(est_freq);
+-	set_au1x00_lcd_clock(); /* program the LCD clock */
+ 
+ #ifdef CONFIG_PM
+ 	/*
+diff --git a/include/asm-mips/mach-au1x00/au1000.h b/include/asm-mips/mach-au1x00/au1000.h
+index 5004bf9..0879397 100644
+--- a/include/asm-mips/mach-au1x00/au1000.h
++++ b/include/asm-mips/mach-au1x00/au1000.h
+@@ -99,8 +99,6 @@ extern void set_au1x00_speed(unsigned int new_freq);
+ extern unsigned int get_au1x00_speed(void);
+ extern void set_au1x00_uart_baud_base(unsigned long new_baud_base);
+ extern unsigned long get_au1x00_uart_baud_base(void);
+-extern void set_au1x00_lcd_clock(void);
+-extern unsigned int get_au1x00_lcd_clock(void);
+ 
+ /*
+  * Every board describes its IRQ mapping with this table.
 -- 
-“How many surrealists does it take to   | Brian Foster
- change a lightbulb? Three. One calms   | somewhere in south of France
- the warthog, and two fill the bathtub  |   Stop E$$o (ExxonMobil)!
- with brightly-coloured machine tools.” |      http://www.stopesso.com
+1.5.5.4

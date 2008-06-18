@@ -1,57 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jun 2008 10:35:56 +0100 (BST)
-Received: from aux-209-217-49-36.oklahoma.net ([209.217.49.36]:64014 "EHLO
-	proteus.paralogos.com") by ftp.linux-mips.org with ESMTP
-	id S20026526AbYFRJfx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 18 Jun 2008 10:35:53 +0100
-Received: from [127.0.0.1] (cerberus.paralogos.fr [81.255.9.181])
-	by proteus.paralogos.com (8.9.3/8.9.3) with ESMTP id FAA08029;
-	Wed, 18 Jun 2008 05:06:51 -0500
-Message-ID: <4858D735.5020406@paralogos.com>
-Date:	Wed, 18 Jun 2008 11:36:53 +0200
-From:	"Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Thunderbird 2.0.0.14 (Windows/20080421)
-MIME-Version: 1.0
-To:	Brian Foster <brian.foster@innova-card.com>
-CC:	linux-mips@linux-mips.org, David Daney <ddaney@avtrex.com>,
-	Thiemo Seufer <ths@networkno.de>,
-	Andrew Dyer <adyer@righthandtech.com>
-Subject: Re: Adding(?) XI support to MIPS-Linux?
-References: <200806091658.10937.brian.foster@innova-card.com> <484EAA16.80903@avtrex.com> <200806111516.57406.brian.foster@innova-card.com> <200806181042.12911.brian.foster@innova-card.com>
-In-Reply-To: <200806181042.12911.brian.foster@innova-card.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <kevink@paralogos.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jun 2008 10:40:48 +0100 (BST)
+Received: from mx1.redhat.com ([66.187.233.31]:37096 "EHLO mx1.redhat.com")
+	by ftp.linux-mips.org with ESMTP id S20026438AbYFRJkp (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 18 Jun 2008 10:40:45 +0100
+Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
+	by mx1.redhat.com (8.13.8/8.13.8) with ESMTP id m5I9eIhF031482;
+	Wed, 18 Jun 2008 05:40:18 -0400
+Received: from pobox.devel.redhat.com (pobox.devel.redhat.com [10.11.255.8])
+	by int-mx1.corp.redhat.com (8.13.1/8.13.1) with ESMTP id m5I9eHVR012805;
+	Wed, 18 Jun 2008 05:40:17 -0400
+Received: from warthog.cambridge.redhat.com (devserv.devel.redhat.com [10.10.36.72])
+	by pobox.devel.redhat.com (8.13.1/8.13.1) with ESMTP id m5I9eFtP023909;
+	Wed, 18 Jun 2008 05:40:15 -0400
+Received: from [127.0.0.1] (helo=redhat.com)
+	by warthog.cambridge.redhat.com with esmtp (Exim 4.68 #1 (Red Hat Linux))
+	id 1K8u9G-0005Co-VG; Wed, 18 Jun 2008 10:40:15 +0100
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From:	David Howells <dhowells@redhat.com>
+In-Reply-To: <20080617223332.GM25911@cs181133002.pp.htv.fi>
+References: <20080617223332.GM25911@cs181133002.pp.htv.fi>
+To:	Adrian Bunk <bunk@kernel.org>
+Cc:	dhowells@redhat.com, jbarnes@virtuousgeek.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	gerg@uclinux.org, ralf@linux-mips.org, linux-mips@linux-mips.org,
+	lethal@linux-sh.org, linux-sh@vger.kernel.org,
+	Russell King <rmk+lkml@arm.linux.org.uk>
+Subject: Re: [2.6 patch] remove pcibios_update_resource() functions
+X-Mailer: MH-E 8.0.3+cvs; nmh 1.2-20070115cvs; GNU Emacs 23.0.50
+Date:	Wed, 18 Jun 2008 10:40:14 +0100
+Message-ID: <20013.1213782014@redhat.com>
+X-Scanned-By: MIMEDefang 2.58 on 172.16.52.254
+Return-Path: <dhowells@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19588
+X-archive-position: 19589
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
+X-original-sender: dhowells@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
-Brian Foster wrote:
->  Whilst thinking about the problem and possible solutions,
->  it occurred to me there could be a defect in the current
->  trampoline:  Suppose there is a signal, either at point A,
->  due to <instr> itself, or at point B, which is caught on
->  this stack, and the user-land signal-handler ‘return’s.
->
->  Doesn't the signal-handler/sigreturn stack-frame overwrite
->  the FP trampoline?   In which case, when the signal-hander
->  returns, more-or-less anything could happen.  (And very
->  unlikely to be what's wanted!)
->   
-When I first integrated the FP emulator into the kernel, back in 2.2.x, 
-I seem to
-recall that someone found this problem and that I came up with a tweak 
-to signal
-stack setup that protected the FP branch delay slot trampoline.  Maybe 
-I'm mistaken,
-or maybe the tweak was lost?
+Adrian Bunk <bunk@kernel.org> wrote:
 
-          Regards,
+> This patch removes the unused pcibios_update_resource() functions the 
+> kernel gained since.
 
-          Kevin K.
+Fine for FRV, since it's #if'd out anyway.
+
+Acked-by: David Howells <dhowells@redhat.com>

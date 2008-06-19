@@ -1,113 +1,253 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Jun 2008 18:25:11 +0100 (BST)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:37343 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S20021812AbYFRRYw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 18 Jun 2008 18:24:52 +0100
-Received: (qmail 14716 invoked by uid 1000); 18 Jun 2008 19:24:48 +0200
-Date:	Wed, 18 Jun 2008 19:24:48 +0200
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	linux-mips@linux-mips.org
-Subject: [PATCH] Alchemy: remove unused get/set_au1x00_lcd_clock()
-	functions.
-Message-ID: <20080618172448.GA14697@roarinelk.homelinux.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jun 2008 13:08:54 +0100 (BST)
+Received: from hosted02.westnet.com.au ([203.10.1.213]:22721 "EHLO
+	hosted02.westnet.com.au") by ftp.linux-mips.org with ESMTP
+	id S20033468AbYFSMIr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 19 Jun 2008 13:08:47 +0100
+Received: from hosted02.westnet.com.au (hosted02.westnet.com.au [127.0.0.1])
+	by hosted02.westnet.com.au (Postfix) with SMTP id 310632F6850;
+	Thu, 19 Jun 2008 20:08:38 +0800 (WST)
+Received: from [192.168.0.108] (unknown [58.6.191.150])
+	by hosted02.westnet.com.au (Postfix) with ESMTP id 2F555230E22;
+	Thu, 19 Jun 2008 20:08:29 +0800 (WST)
+Message-ID: <485A4C3D.5050909@snapgear.com>
+Date:	Thu, 19 Jun 2008 22:08:29 +1000
+From:	Greg Ungerer <gerg@snapgear.com>
+User-Agent: Thunderbird 2.0.0.9 (X11/20071115)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <mano@roarinelk.homelinux.net>
+To:	Adrian Bunk <bunk@kernel.org>
+CC:	jbarnes@virtuousgeek.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org, dhowells@redhat.com,
+	ralf@linux-mips.org, linux-mips@linux-mips.org,
+	lethal@linux-sh.org, linux-sh@vger.kernel.org,
+	Russell King <rmk+lkml@arm.linux.org.uk>
+Subject: Re: [2.6 patch] remove pcibios_update_resource() functions
+References: <20080617223332.GM25911@cs181133002.pp.htv.fi>
+In-Reply-To: <20080617223332.GM25911@cs181133002.pp.htv.fi>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-PMX-Branch: TNG-Outgoing
+Return-Path: <gerg@snapgear.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19591
+X-archive-position: 19592
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: gerg@snapgear.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Manuel Lauss <mano@roarinelk.homelinux.net>
+Adrian Bunk wrote:
+> Russell King did the following back in 2003:
+> 
+> <--  snip  -->
+> 
+>     [PCI] pci-9: Kill per-architecture pcibios_update_resource()
+>     
+>     Kill pcibios_update_resource(), replacing it with pci_update_resource().
+>     pci_update_resource() uses pcibios_resource_to_bus() to convert a
+>     resource to a device BAR - the transformation should be exactly the
+>     same as the transformation used for the PCI bridges.
+>     
+>     pci_update_resource "knows" about 64-bit BARs, but doesn't attempt to
+>     set the high 32-bits to anything non-zero - currently no architecture
+>     attempts to do something different.  If anyone cares, please fix; I'm
+>     going to reflect current behaviour for the time being.
+>     
+>     Ivan pointed out the following architectures need to examine their
+>     pcibios_update_resource() implementation - they should make sure that
+>     this new implementation does the right thing.  #warning's have been
+>     added where appropriate.
+>     
+>         ia64
+>         mips
+>         mips64
+>     
+>     This cset also includes a fix for the problem reported by AKPM where
+>     64-bit arch compilers complain about the resource mask being placed
+>     in a u32.
+> 
+> <--  snip  -->
+> 
+> 
+> This patch removes the unused pcibios_update_resource() functions the 
+> kernel gained since.
+> 
+> 
+> Signed-off-by: Adrian Bunk <bunk@kernel.org>
 
-They don't do anything except print annoying messages,
-and are not called from anywhere interesting.
+The comempci.c change looks fine, for that part:
 
-Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
----
- arch/mips/au1000/common/clocks.c      |   31 -------------------------------
- arch/mips/au1000/common/time.c        |    1 -
- include/asm-mips/mach-au1x00/au1000.h |    2 --
- 3 files changed, 0 insertions(+), 34 deletions(-)
+Acked-by: Greg Ungerer <gerg@uclinux.org>
 
-diff --git a/arch/mips/au1000/common/clocks.c b/arch/mips/au1000/common/clocks.c
-index 043429d..a8170fd 100644
---- a/arch/mips/au1000/common/clocks.c
-+++ b/arch/mips/au1000/common/clocks.c
-@@ -30,7 +30,6 @@
- #include <asm/mach-au1x00/au1000.h>
- 
- static unsigned int au1x00_clock; /*  Hz */
--static unsigned int lcd_clock;    /* KHz */
- static unsigned long uart_baud_base;
- 
- /*
-@@ -61,33 +60,3 @@ void set_au1x00_uart_baud_base(unsigned long new_baud_base)
- {
- 	uart_baud_base = new_baud_base;
- }
--
--/*
-- * Calculate the Au1x00's LCD clock based on the current
-- * cpu clock and the system bus clock, and try to keep it
-- * below 40 MHz (the Pb1000 board can lock-up if the LCD
-- * clock is over 40 MHz).
-- */
--void set_au1x00_lcd_clock(void)
--{
--	unsigned int static_cfg0;
--	unsigned int sys_busclk = (get_au1x00_speed() / 1000) /
--				  ((int)(au_readl(SYS_POWERCTRL) & 0x03) + 2);
--
--	static_cfg0 = au_readl(MEM_STCFG0);
--
--	if (static_cfg0 & (1 << 11))
--		lcd_clock = sys_busclk / 5; /* note: BCLK switching fails with D5 */
--	else
--		lcd_clock = sys_busclk / 4;
--
--	if (lcd_clock > 50000) /* Epson MAX */
--		printk(KERN_WARNING "warning: LCD clock too high (%u KHz)\n",
--				    lcd_clock);
--}
--
--unsigned int get_au1x00_lcd_clock(void)
--{
--	return lcd_clock;
--}
--EXPORT_SYMBOL(get_au1x00_lcd_clock);
-diff --git a/arch/mips/au1000/common/time.c b/arch/mips/au1000/common/time.c
-index f00904b..1159f2c 100644
---- a/arch/mips/au1000/common/time.c
-+++ b/arch/mips/au1000/common/time.c
-@@ -234,7 +234,6 @@ void __init plat_time_init(void)
- 	printk(KERN_INFO "CPU frequency %u.%02u MHz\n",
- 	       est_freq / 1000000, ((est_freq % 1000000) * 100) / 1000000);
- 	set_au1x00_speed(est_freq);
--	set_au1x00_lcd_clock(); /* program the LCD clock */
- 
- #ifdef CONFIG_PM
- 	/*
-diff --git a/include/asm-mips/mach-au1x00/au1000.h b/include/asm-mips/mach-au1x00/au1000.h
-index 5004bf9..0879397 100644
---- a/include/asm-mips/mach-au1x00/au1000.h
-+++ b/include/asm-mips/mach-au1x00/au1000.h
-@@ -99,8 +99,6 @@ extern void set_au1x00_speed(unsigned int new_freq);
- extern unsigned int get_au1x00_speed(void);
- extern void set_au1x00_uart_baud_base(unsigned long new_baud_base);
- extern unsigned long get_au1x00_uart_baud_base(void);
--extern void set_au1x00_lcd_clock(void);
--extern unsigned int get_au1x00_lcd_clock(void);
- 
- /*
-  * Every board describes its IRQ mapping with this table.
+
+> ---
+> 
+>  arch/frv/mb93090-mb00/pci-frv.c    |   30 ------------------------
+>  arch/m68knommu/kernel/comempci.c   |    9 -------
+>  arch/mips/pmc-sierra/yosemite/ht.c |   36 -----------------------------
+>  arch/sh/drivers/pci/pci.c          |   32 -------------------------
+>  4 files changed, 107 deletions(-)
+> 
+> ebd37440bafbb6f9f5ecd6315ac9953cf97f20e9 diff --git a/arch/frv/mb93090-mb00/pci-frv.c b/arch/frv/mb93090-mb00/pci-frv.c
+> index 4f165c9..edae117 100644
+> --- a/arch/frv/mb93090-mb00/pci-frv.c
+> +++ b/arch/frv/mb93090-mb00/pci-frv.c
+> @@ -19,36 +19,6 @@
+>  
+>  #include "pci-frv.h"
+>  
+> -#if 0
+> -void
+> -pcibios_update_resource(struct pci_dev *dev, struct resource *root,
+> -			struct resource *res, int resource)
+> -{
+> -	u32 new, check;
+> -	int reg;
+> -
+> -	new = res->start | (res->flags & PCI_REGION_FLAG_MASK);
+> -	if (resource < 6) {
+> -		reg = PCI_BASE_ADDRESS_0 + 4*resource;
+> -	} else if (resource == PCI_ROM_RESOURCE) {
+> -		res->flags |= IORESOURCE_ROM_ENABLE;
+> -		new |= PCI_ROM_ADDRESS_ENABLE;
+> -		reg = dev->rom_base_reg;
+> -	} else {
+> -		/* Somebody might have asked allocation of a non-standard resource */
+> -		return;
+> -	}
+> -
+> -	pci_write_config_dword(dev, reg, new);
+> -	pci_read_config_dword(dev, reg, &check);
+> -	if ((new ^ check) & ((new & PCI_BASE_ADDRESS_SPACE_IO) ? PCI_BASE_ADDRESS_IO_MASK : PCI_BASE_ADDRESS_MEM_MASK)) {
+> -		printk(KERN_ERR "PCI: Error while updating region "
+> -		       "%s/%d (%08x != %08x)\n", pci_name(dev), resource,
+> -		       new, check);
+> -	}
+> -}
+> -#endif
+> -
+>  /*
+>   * We need to avoid collisions with `mirrored' VGA ports
+>   * and other strange ISA hardware, so we always want the
+> diff --git a/arch/m68knommu/kernel/comempci.c b/arch/m68knommu/kernel/comempci.c
+> index 6ee00ef..0a68b5a 100644
+> --- a/arch/m68knommu/kernel/comempci.c
+> +++ b/arch/m68knommu/kernel/comempci.c
+> @@ -375,15 +375,6 @@ int pcibios_enable_device(struct pci_dev *dev, int mask)
+>  
+>  /*****************************************************************************/
+>  
+> -void pcibios_update_resource(struct pci_dev *dev, struct resource *root, struct resource *r, int resource)
+> -{
+> -	printk(KERN_WARNING "%s(%d): no support for changing PCI resources...\n",
+> -		__FILE__, __LINE__);
+> -}
+> -
+> -
+> -/*****************************************************************************/
+> -
+>  /*
+>   *	Local routines to interrcept the standard I/O and vector handling
+>   *	code. Don't include this 'till now - initialization code above needs
+> diff --git a/arch/mips/pmc-sierra/yosemite/ht.c b/arch/mips/pmc-sierra/yosemite/ht.c
+> index 6380662..678388f 100644
+> --- a/arch/mips/pmc-sierra/yosemite/ht.c
+> +++ b/arch/mips/pmc-sierra/yosemite/ht.c
+> @@ -345,42 +345,6 @@ int pcibios_enable_device(struct pci_dev *dev, int mask)
+>          return pcibios_enable_resources(dev);
+>  }
+>  
+> -
+> -
+> -void pcibios_update_resource(struct pci_dev *dev, struct resource *root,
+> -                             struct resource *res, int resource)
+> -{
+> -        u32 new, check;
+> -        int reg;
+> -
+> -        return;
+> -
+> -        new = res->start | (res->flags & PCI_REGION_FLAG_MASK);
+> -        if (resource < 6) {
+> -                reg = PCI_BASE_ADDRESS_0 + 4 * resource;
+> -        } else if (resource == PCI_ROM_RESOURCE) {
+> -		res->flags |= IORESOURCE_ROM_ENABLE;
+> -                reg = dev->rom_base_reg;
+> -        } else {
+> -                /*
+> -                 * Somebody might have asked allocation of a non-standard
+> -                 * resource
+> -                 */
+> -                return;
+> -        }
+> -
+> -        pci_write_config_dword(dev, reg, new);
+> -        pci_read_config_dword(dev, reg, &check);
+> -        if ((new ^ check) &
+> -            ((new & PCI_BASE_ADDRESS_SPACE_IO) ? PCI_BASE_ADDRESS_IO_MASK :
+> -             PCI_BASE_ADDRESS_MEM_MASK)) {
+> -                printk(KERN_ERR "PCI: Error while updating region "
+> -                       "%s/%d (%08x != %08x)\n", pci_name(dev), resource,
+> -                       new, check);
+> -        }
+> -}
+> -
+> -
+>  void pcibios_align_resource(void *data, struct resource *res,
+>                              resource_size_t size, resource_size_t align)
+>  {
+> diff --git a/arch/sh/drivers/pci/pci.c b/arch/sh/drivers/pci/pci.c
+> index 08d2e73..f57095a 100644
+> --- a/arch/sh/drivers/pci/pci.c
+> +++ b/arch/sh/drivers/pci/pci.c
+> @@ -76,38 +76,6 @@ void __devinit __weak pcibios_fixup_bus(struct pci_bus *bus)
+>  	pci_read_bridge_bases(bus);
+>  }
+>  
+> -void
+> -pcibios_update_resource(struct pci_dev *dev, struct resource *root,
+> -			struct resource *res, int resource)
+> -{
+> -	u32 new, check;
+> -	int reg;
+> -
+> -	new = res->start | (res->flags & PCI_REGION_FLAG_MASK);
+> -	if (resource < 6) {
+> -		reg = PCI_BASE_ADDRESS_0 + 4*resource;
+> -	} else if (resource == PCI_ROM_RESOURCE) {
+> -		res->flags |= IORESOURCE_ROM_ENABLE;
+> -		new |= PCI_ROM_ADDRESS_ENABLE;
+> -		reg = dev->rom_base_reg;
+> -	} else {
+> -		/*
+> -		 * Somebody might have asked allocation of a non-standard
+> -		 * resource
+> -		 */
+> -		return;
+> -	}
+> -
+> -	pci_write_config_dword(dev, reg, new);
+> -	pci_read_config_dword(dev, reg, &check);
+> -	if ((new ^ check) & ((new & PCI_BASE_ADDRESS_SPACE_IO) ?
+> -		PCI_BASE_ADDRESS_IO_MASK : PCI_BASE_ADDRESS_MEM_MASK)) {
+> -		printk(KERN_ERR "PCI: Error while updating region "
+> -		       "%s/%d (%08x != %08x)\n", pci_name(dev), resource,
+> -		       new, check);
+> -	}
+> -}
+> -
+>  void pcibios_align_resource(void *data, struct resource *res,
+>  			    resource_size_t size, resource_size_t align)
+>  			    __attribute__ ((weak));
+> 
+> 
+
+
 -- 
-1.5.5.4
+------------------------------------------------------------------------
+Greg Ungerer  --  Chief Software Dude       EMAIL:     gerg@snapgear.com
+SnapGear -- a Secure Computing Company      PHONE:       +61 7 3435 2888
+825 Stanley St,                             FAX:         +61 7 3891 3630
+Woolloongabba, QLD, 4102, Australia         WEB: http://www.SnapGear.com

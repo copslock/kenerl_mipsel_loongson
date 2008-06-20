@@ -1,253 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 19 Jun 2008 13:08:54 +0100 (BST)
-Received: from hosted02.westnet.com.au ([203.10.1.213]:22721 "EHLO
-	hosted02.westnet.com.au") by ftp.linux-mips.org with ESMTP
-	id S20033468AbYFSMIr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 19 Jun 2008 13:08:47 +0100
-Received: from hosted02.westnet.com.au (hosted02.westnet.com.au [127.0.0.1])
-	by hosted02.westnet.com.au (Postfix) with SMTP id 310632F6850;
-	Thu, 19 Jun 2008 20:08:38 +0800 (WST)
-Received: from [192.168.0.108] (unknown [58.6.191.150])
-	by hosted02.westnet.com.au (Postfix) with ESMTP id 2F555230E22;
-	Thu, 19 Jun 2008 20:08:29 +0800 (WST)
-Message-ID: <485A4C3D.5050909@snapgear.com>
-Date:	Thu, 19 Jun 2008 22:08:29 +1000
-From:	Greg Ungerer <gerg@snapgear.com>
-User-Agent: Thunderbird 2.0.0.9 (X11/20071115)
-MIME-Version: 1.0
-To:	Adrian Bunk <bunk@kernel.org>
-CC:	jbarnes@virtuousgeek.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, dhowells@redhat.com,
-	ralf@linux-mips.org, linux-mips@linux-mips.org,
-	lethal@linux-sh.org, linux-sh@vger.kernel.org,
-	Russell King <rmk+lkml@arm.linux.org.uk>
-Subject: Re: [2.6 patch] remove pcibios_update_resource() functions
-References: <20080617223332.GM25911@cs181133002.pp.htv.fi>
-In-Reply-To: <20080617223332.GM25911@cs181133002.pp.htv.fi>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-PMX-Branch: TNG-Outgoing
-Return-Path: <gerg@snapgear.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Jun 2008 16:46:26 +0100 (BST)
+Received: from server.drzeus.cx ([85.8.24.28]:13212 "EHLO smtp.drzeus.cx")
+	by ftp.linux-mips.org with ESMTP id S20039907AbYFTPqT (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 20 Jun 2008 16:46:19 +0100
+Received: from mjolnir.drzeus.cx (c-5323e455.04-231-6c6b7012.cust.bredbandsbolaget.se [::ffff:85.228.35.83])
+  (AUTH: LOGIN drzeus, TLS: TLS 1.0,256bits,RSA_AES_256_CBC_SHA1)
+  by smtp.drzeus.cx with esmtp; Fri, 20 Jun 2008 17:37:52 +0200
+  id 0000000000128002.00000000485BCED0.0000746A
+Date:	Fri, 20 Jun 2008 17:46:07 +0200
+From:	Pierre Ossman <drzeus@drzeus.cx>
+To:	Manuel Lauss <mano@roarinelk.homelinux.net>
+Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	sshtylyov@ru.mvista.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/8] Alchemy: register mmc platform device for
+ db1200/pb1200 boards.
+Message-ID: <20080620174607.50ad6874@mjolnir.drzeus.cx>
+In-Reply-To: <20080612135810.GA25352@roarinelk.homelinux.net>
+References: <20080609063521.GA8724@roarinelk.homelinux.net>
+	<20080609063702.GC8724@roarinelk.homelinux.net>
+	<20080612090206.GB21601@linux-mips.org>
+	<20080612101839.GC21601@linux-mips.org>
+	<20080612121828.GA24603@roarinelk.homelinux.net>
+	<20080612122646.GA9493@linux-mips.org>
+	<20080612154248.5c9c5c9d@mjolnir.drzeus.cx>
+	<20080612134729.GA20015@linux-mips.org>
+	<20080612135810.GA25352@roarinelk.homelinux.net>
+X-Mailer: Claws Mail 3.4.0 (GTK+ 2.13.3; i386-redhat-linux-gnu)
+Face:	iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAAAXNSR0IArs4c6QAAADNQTFRFEgwFRSofeTwxZEI1h1lFl1ZHeGBetHZk24VzuZJ43p2GsbKw/Lmg2MTL/NO3/+/Q//fpWFujUwAAAk5JREFUSMeNlVcWnDAMRd0bLux/tVGxiAEzic7hZ+Zd1IU6NtbYdn8daic/cgj52CPqLQ8hOBdjzsD8G2hHsCiPBS2/nTyABi93zvsYUyql1v6KSz30AeUAJLAK1uuDUI94WA7GDsAePtRDfwFRgP7DA8vvwOgQ1R5oYQUKAwOsfwDHDcAcWH+e5xagiooey1SwSAy0L8C7BaDKdgKWoNQtIjYEfHQGzMcKwNgCpLdgBn14ZzXNSPkJWK201vjiHMkXZg7AuQWCA7G2DPTiMSIsLSZxbgEIwlqEjE+9WBu0yaWOHwDLLQE9WmMieCBgtG1IAFgBzo7tlojGtbI3wFljuU4JdL3ghPeO+tFr2QHG0DOBSuN0kofaU302zmKbcTrgAWDUywG0OvXELi6gZScAdq6WnhYgvYDGu0YQjYSZs3ROID0B4y+jjpWyAhjePWkAjKwD5o09xioNBoro/+YQZjzTg8ce1CJtwFvwAMDFBEjv6cgI0P/u0DqtGJOjNSAm4e0jABxsgDYXSADQw2wwsFyzdePCAviE48QexseKNiGcp4jgKNEVAGC7QEwY5+S6Qpf50NzujHrdYgEKH0o8ZJ/AQR8HAGiaugDjG2i4ddZx4wToPwB0gQsEfjyFRKf1M+kLQC8u5iuoX8BhxYCQJPZXQ7LQdDnQR87/BdCpQQSJpREh7EMSQOvpYwJaqbAHgrUXkWehxhmUUjpsQ+IDSHlzEvidywrtDYSpnHVioNbstBLi9o3Dn/WqZ3Nw1pUQy8bN3/QdiPiVUZfpP4cDVEKd2cXEAAAAAElFTkSuQmCC
+X-Face:	@{|$W51qEixc&6}dq_38NM^&.vv|'{O)ae?DMZ1%VYxuhN2}5VpQ!'gx[{V+8Xw'+cV5*491_)-SU2YT8s@4`H;@:ELS'/P(@.JxxJi/C8mG0H#A^R<JfS_l?/%fD\D/mFJ8c2M?_kIL;:txa"s`0O*d+}p/4;$lAw@/e&h-nvQ)~q-a("De+&~-{5`:T{9d%0
+Mime-Version: 1.0
+Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=PGP-SHA1; boundary="=_freyr.drzeus.cx-29802-1213976272-0001-2"
+Return-Path: <drzeus@drzeus.cx>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19592
+X-archive-position: 19593
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gerg@snapgear.com
+X-original-sender: drzeus@drzeus.cx
 Precedence: bulk
 X-list: linux-mips
 
-Adrian Bunk wrote:
-> Russell King did the following back in 2003:
-> 
-> <--  snip  -->
-> 
->     [PCI] pci-9: Kill per-architecture pcibios_update_resource()
->     
->     Kill pcibios_update_resource(), replacing it with pci_update_resource().
->     pci_update_resource() uses pcibios_resource_to_bus() to convert a
->     resource to a device BAR - the transformation should be exactly the
->     same as the transformation used for the PCI bridges.
->     
->     pci_update_resource "knows" about 64-bit BARs, but doesn't attempt to
->     set the high 32-bits to anything non-zero - currently no architecture
->     attempts to do something different.  If anyone cares, please fix; I'm
->     going to reflect current behaviour for the time being.
->     
->     Ivan pointed out the following architectures need to examine their
->     pcibios_update_resource() implementation - they should make sure that
->     this new implementation does the right thing.  #warning's have been
->     added where appropriate.
->     
->         ia64
->         mips
->         mips64
->     
->     This cset also includes a fix for the problem reported by AKPM where
->     64-bit arch compilers complain about the resource mask being placed
->     in a u32.
-> 
-> <--  snip  -->
-> 
-> 
-> This patch removes the unused pcibios_update_resource() functions the 
-> kernel gained since.
-> 
-> 
-> Signed-off-by: Adrian Bunk <bunk@kernel.org>
+This is a MIME-formatted message.  If you see this text it means that your
+E-mail software does not support MIME-formatted messages.
 
-The comempci.c change looks fine, for that part:
+--=_freyr.drzeus.cx-29802-1213976272-0001-2
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-Acked-by: Greg Ungerer <gerg@uclinux.org>
+On Thu, 12 Jun 2008 15:58:10 +0200
+Manuel Lauss <mano@roarinelk.homelinux.net> wrote:
 
+> On Thu, Jun 12, 2008 at 02:47:30PM +0100, Ralf Baechle wrote:
+> > On Thu, Jun 12, 2008 at 03:42:48PM +0200, Pierre Ossman wrote:
+> >=20
+> > >=20
+> > > How's the dependency issue though? Will this series be bisectable in =
+my
+> > > tree?
+> >=20
+> > If we're only talking about a build, there should be no dependencies
+> > between the Alchemy and the MMC parts of the series.  The Alchemy part
+> > sorts the device registration and that's a separate construction site
+> > from the rest.  Of course with only one applied things won't work
+> > terribly well but that would only be temporarily.
+>=20
+> FWIW, I build tested-tested the DB1200 defconfig after each patch applied.
+> As Ralf said, patch 1 alone isn't terribly useful on it, but it should wo=
+rk.
+>=20
 
-> ---
-> 
->  arch/frv/mb93090-mb00/pci-frv.c    |   30 ------------------------
->  arch/m68knommu/kernel/comempci.c   |    9 -------
->  arch/mips/pmc-sierra/yosemite/ht.c |   36 -----------------------------
->  arch/sh/drivers/pci/pci.c          |   32 -------------------------
->  4 files changed, 107 deletions(-)
-> 
-> ebd37440bafbb6f9f5ecd6315ac9953cf97f20e9 diff --git a/arch/frv/mb93090-mb00/pci-frv.c b/arch/frv/mb93090-mb00/pci-frv.c
-> index 4f165c9..edae117 100644
-> --- a/arch/frv/mb93090-mb00/pci-frv.c
-> +++ b/arch/frv/mb93090-mb00/pci-frv.c
-> @@ -19,36 +19,6 @@
->  
->  #include "pci-frv.h"
->  
-> -#if 0
-> -void
-> -pcibios_update_resource(struct pci_dev *dev, struct resource *root,
-> -			struct resource *res, int resource)
-> -{
-> -	u32 new, check;
-> -	int reg;
-> -
-> -	new = res->start | (res->flags & PCI_REGION_FLAG_MASK);
-> -	if (resource < 6) {
-> -		reg = PCI_BASE_ADDRESS_0 + 4*resource;
-> -	} else if (resource == PCI_ROM_RESOURCE) {
-> -		res->flags |= IORESOURCE_ROM_ENABLE;
-> -		new |= PCI_ROM_ADDRESS_ENABLE;
-> -		reg = dev->rom_base_reg;
-> -	} else {
-> -		/* Somebody might have asked allocation of a non-standard resource */
-> -		return;
-> -	}
-> -
-> -	pci_write_config_dword(dev, reg, new);
-> -	pci_read_config_dword(dev, reg, &check);
-> -	if ((new ^ check) & ((new & PCI_BASE_ADDRESS_SPACE_IO) ? PCI_BASE_ADDRESS_IO_MASK : PCI_BASE_ADDRESS_MEM_MASK)) {
-> -		printk(KERN_ERR "PCI: Error while updating region "
-> -		       "%s/%d (%08x != %08x)\n", pci_name(dev), resource,
-> -		       new, check);
-> -	}
-> -}
-> -#endif
-> -
->  /*
->   * We need to avoid collisions with `mirrored' VGA ports
->   * and other strange ISA hardware, so we always want the
-> diff --git a/arch/m68knommu/kernel/comempci.c b/arch/m68knommu/kernel/comempci.c
-> index 6ee00ef..0a68b5a 100644
-> --- a/arch/m68knommu/kernel/comempci.c
-> +++ b/arch/m68knommu/kernel/comempci.c
-> @@ -375,15 +375,6 @@ int pcibios_enable_device(struct pci_dev *dev, int mask)
->  
->  /*****************************************************************************/
->  
-> -void pcibios_update_resource(struct pci_dev *dev, struct resource *root, struct resource *r, int resource)
-> -{
-> -	printk(KERN_WARNING "%s(%d): no support for changing PCI resources...\n",
-> -		__FILE__, __LINE__);
-> -}
-> -
-> -
-> -/*****************************************************************************/
-> -
->  /*
->   *	Local routines to interrcept the standard I/O and vector handling
->   *	code. Don't include this 'till now - initialization code above needs
-> diff --git a/arch/mips/pmc-sierra/yosemite/ht.c b/arch/mips/pmc-sierra/yosemite/ht.c
-> index 6380662..678388f 100644
-> --- a/arch/mips/pmc-sierra/yosemite/ht.c
-> +++ b/arch/mips/pmc-sierra/yosemite/ht.c
-> @@ -345,42 +345,6 @@ int pcibios_enable_device(struct pci_dev *dev, int mask)
->          return pcibios_enable_resources(dev);
->  }
->  
-> -
-> -
-> -void pcibios_update_resource(struct pci_dev *dev, struct resource *root,
-> -                             struct resource *res, int resource)
-> -{
-> -        u32 new, check;
-> -        int reg;
-> -
-> -        return;
-> -
-> -        new = res->start | (res->flags & PCI_REGION_FLAG_MASK);
-> -        if (resource < 6) {
-> -                reg = PCI_BASE_ADDRESS_0 + 4 * resource;
-> -        } else if (resource == PCI_ROM_RESOURCE) {
-> -		res->flags |= IORESOURCE_ROM_ENABLE;
-> -                reg = dev->rom_base_reg;
-> -        } else {
-> -                /*
-> -                 * Somebody might have asked allocation of a non-standard
-> -                 * resource
-> -                 */
-> -                return;
-> -        }
-> -
-> -        pci_write_config_dword(dev, reg, new);
-> -        pci_read_config_dword(dev, reg, &check);
-> -        if ((new ^ check) &
-> -            ((new & PCI_BASE_ADDRESS_SPACE_IO) ? PCI_BASE_ADDRESS_IO_MASK :
-> -             PCI_BASE_ADDRESS_MEM_MASK)) {
-> -                printk(KERN_ERR "PCI: Error while updating region "
-> -                       "%s/%d (%08x != %08x)\n", pci_name(dev), resource,
-> -                       new, check);
-> -        }
-> -}
-> -
-> -
->  void pcibios_align_resource(void *data, struct resource *res,
->                              resource_size_t size, resource_size_t align)
->  {
-> diff --git a/arch/sh/drivers/pci/pci.c b/arch/sh/drivers/pci/pci.c
-> index 08d2e73..f57095a 100644
-> --- a/arch/sh/drivers/pci/pci.c
-> +++ b/arch/sh/drivers/pci/pci.c
-> @@ -76,38 +76,6 @@ void __devinit __weak pcibios_fixup_bus(struct pci_bus *bus)
->  	pci_read_bridge_bases(bus);
->  }
->  
-> -void
-> -pcibios_update_resource(struct pci_dev *dev, struct resource *root,
-> -			struct resource *res, int resource)
-> -{
-> -	u32 new, check;
-> -	int reg;
-> -
-> -	new = res->start | (res->flags & PCI_REGION_FLAG_MASK);
-> -	if (resource < 6) {
-> -		reg = PCI_BASE_ADDRESS_0 + 4*resource;
-> -	} else if (resource == PCI_ROM_RESOURCE) {
-> -		res->flags |= IORESOURCE_ROM_ENABLE;
-> -		new |= PCI_ROM_ADDRESS_ENABLE;
-> -		reg = dev->rom_base_reg;
-> -	} else {
-> -		/*
-> -		 * Somebody might have asked allocation of a non-standard
-> -		 * resource
-> -		 */
-> -		return;
-> -	}
-> -
-> -	pci_write_config_dword(dev, reg, new);
-> -	pci_read_config_dword(dev, reg, &check);
-> -	if ((new ^ check) & ((new & PCI_BASE_ADDRESS_SPACE_IO) ?
-> -		PCI_BASE_ADDRESS_IO_MASK : PCI_BASE_ADDRESS_MEM_MASK)) {
-> -		printk(KERN_ERR "PCI: Error while updating region "
-> -		       "%s/%d (%08x != %08x)\n", pci_name(dev), resource,
-> -		       new, check);
-> -	}
-> -}
-> -
->  void pcibios_align_resource(void *data, struct resource *res,
->  			    resource_size_t size, resource_size_t align)
->  			    __attribute__ ((weak));
-> 
-> 
+This patch does not apply against HEAD. Are you sure there aren't any
+dependencies on what Ralf has in his tree? If so, perhaps this should
+be in the MIPS tree.
 
+Rgds
+--=20
+     -- Pierre Ossman
 
--- 
-------------------------------------------------------------------------
-Greg Ungerer  --  Chief Software Dude       EMAIL:     gerg@snapgear.com
-SnapGear -- a Secure Computing Company      PHONE:       +61 7 3435 2888
-825 Stanley St,                             FAX:         +61 7 3891 3630
-Woolloongabba, QLD, 4102, Australia         WEB: http://www.SnapGear.com
+  WARNING: This correspondence is being monitored by the
+  Swedish government. Use end-to-end encryption where
+  possible.
+
+--=_freyr.drzeus.cx-29802-1213976272-0001-2
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.9 (GNU/Linux)
+
+iEYEARECAAYFAkhb0MQACgkQ7b8eESbyJLiDCwCeJVcOfME62LEqi6pbIrohhQDi
+rY0AoPnWQhv52u441bS+eVJA/06Ai0Ur
+=XW+X
+-----END PGP SIGNATURE-----
+
+--=_freyr.drzeus.cx-29802-1213976272-0001-2--

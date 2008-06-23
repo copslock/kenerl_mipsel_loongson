@@ -1,173 +1,362 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Jun 2008 16:48:32 +0100 (BST)
-Received: from ug-out-1314.google.com ([66.249.92.169]:23291 "EHLO
-	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
-	id S20035065AbYFVPsZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 22 Jun 2008 16:48:25 +0100
-Received: by ug-out-1314.google.com with SMTP id 30so274066ugs.39
-        for <linux-mips@linux-mips.org>; Sun, 22 Jun 2008 08:48:24 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to
-         :subject:mime-version:content-type;
-        bh=95v2UbGhGdLHmOJIRAzehUaYM8I6s4YKVT+pFCtGZLc=;
-        b=MHcRuCwN9DsrnBsAwffYIW6PF7mCL9P8bDSk5tsucgXL110B2gxxTictEgVVHwP7d+
-         i8n8pt+0WqV+3ynT3PMMUw6KJsSq5WjGvPaoTDtdkItVgA8J5H51cz2Qiw58Xei69vUU
-         Vmemp60QTi8HRTZt6vuTA5+gKf53Wq89pwe24=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:mime-version:content-type;
-        b=w9CP1VszUZnduxUOQacy82i6FoTavW527uhNb4nlk6GYlP4v4WkP+QNt1fPNsvcn74
-         ZZG+214xby+1tr+NsyznZFzerfqP8HT3dB6XWYHPYDsmXp3ncJed1Y/7EQFfTLuJDDnc
-         dTTfgXT+3BrRQkooS956GKuN7wyuDEY0/wG9E=
-Received: by 10.210.71.12 with SMTP id t12mr5015389eba.36.1214149703208;
-        Sun, 22 Jun 2008 08:48:23 -0700 (PDT)
-Received: by 10.210.23.7 with HTTP; Sun, 22 Jun 2008 08:48:23 -0700 (PDT)
-Message-ID: <b2b2f2320806220848q179ace2y211701af50d3e650@mail.gmail.com>
-Date:	Sun, 22 Jun 2008 09:48:23 -0600
-From:	"Shane McDonald" <mcdonald.shane@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: Question about the new "cca" kernel parameter
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Jun 2008 18:50:10 +0100 (BST)
+Received: from smtp5.pp.htv.fi ([213.243.153.39]:59068 "EHLO smtp5.pp.htv.fi")
+	by ftp.linux-mips.org with ESMTP id S20051755AbYFWRuH (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 23 Jun 2008 18:50:07 +0100
+Received: from cs181140183.pp.htv.fi (cs181140183.pp.htv.fi [82.181.140.183])
+	by smtp5.pp.htv.fi (Postfix) with ESMTP id 65DD55BC00B;
+	Mon, 23 Jun 2008 20:50:04 +0300 (EEST)
+Date:	Mon, 23 Jun 2008 20:48:09 +0300
+From:	Adrian Bunk <bunk@kernel.org>
+To:	Roland McGrath <roland@redhat.com>
+Cc:	linux-kernel@vger.kernel.org, rmk@arm.linux.org.uk,
+	cooloney@kernel.org, dev-etrax@axis.com, dhowells@redhat.com,
+	gerg@uclinux.org, yasutake.koichi@jp.panasonic.com,
+	linux-parisc@vger.kernel.org, paulus@samba.org,
+	linuxppc-dev@ozlabs.org, linux-sh@vger.kernel.org,
+	chris@zankel.net, linux-mips@linux-mips.org,
+	ysato@users.sourceforge.jp,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [2.6 patch] asm/ptrace.h userspace headers cleanup
+Message-ID: <20080623174809.GE4756@cs181140183.pp.htv.fi>
 MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_8660_9086322.1214149703202"
-Return-Path: <mcdonald.shane@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <bunk@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19599
+X-archive-position: 19600
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mcdonald.shane@gmail.com
+X-original-sender: bunk@kernel.org
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_8660_9086322.1214149703202
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+This patch contains the following cleanups for the asm/ptrace.h 
+userspace headers:
+- include/asm-generic/Kbuild.asm already lists ptrace.h, remove
+  the superfluous listings in the Kbuild files of the following
+  architectures:
+  - cris
+  - frv
+  - powerpc
+  - x86
+- don't expose function prototypes and macros to userspace:
+  - arm
+  - blackfin
+  - cris
+  - mn10300
+  - parisc
+- remove #ifdef CONFIG_'s around #define's:
+  - blackfin
+  - m68knommu
+- sh: AFAIK __SH5__ should work in both kernel and userspace,
+      no need to leak CONFIG_SUPERH64 to userspace
+- xtensa: cosmetical change to remove empty
+            #ifndef __ASSEMBLY__ #else #endif
+          from the userspace headers
 
-Hello:
+Signed-off-by: Adrian Bunk <bunk@kernel.org>
 
-  In the run-up to the 2.6.26 series of RCs, commit
-351336929ccf222ae38ff0cb7a8dd5fd5c6236a0, [MIPS] Allow setting of the cache
-attribute at run time, introduced a new kernel parameter, cca, which you can
-use to specify the cache coherency attribute to be used in the system.  This
-replaces the previous config parameter, CONFIG_MIPS_UNCACHED, to allow
-finer-grained control over the CCA to be used.
+---
 
-  I'm running into a problem with this code, in that when I don't specify
-the cca parameter on my boot line, it selects a default value that is not
-the same as was used in 2.6.25 and previous kernel versions.  Before, the
-CCA would be set to a value specified in the constant PAGE_CACHABLE_DEFAULT,
-defined in include/asm-mips/pgtable-bits.h.  The relevant code in 2.6.25
-was:
+Not changed by this patch is the fact that the following architectures 
+have a different struct pt_regs depending on CONFIG_ variables:
+- h8300
+- m68knommu
+- mips
 
-#ifdef CONFIG_MIPS_UNCACHED
-#define PAGE_CACHABLE_DEFAULT   _CACHE_UNCACHED
-#elif defined(CONFIG_DMA_NONCOHERENT)
-#define PAGE_CACHABLE_DEFAULT   _CACHE_CACHABLE_NONCOHERENT
-#elif defined(CONFIG_CPU_RM9000)
-#define PAGE_CACHABLE_DEFAULT   _CACHE_CWB
-#else
-#define PAGE_CACHABLE_DEFAULT   _CACHE_CACHABLE_COW
-#endif
+This does not work in userspace.
 
-For my system, CONFIG_DMA_NONCOHERENT is defined, so the CCA is set to
-_CACHE_CACHABLE_NONCOHERENT (value of 3, writeback, on my PMC-Sierra
-RM7035C-based system).
 
-  After the commit, the CCA, if not set on the kernel boot line, is set to
-the current value of the K0 field of the coprocessor 0 Config register.  In
-my system's case, this code comes from the function coherency_setup() in
-arch/mips/mm/c-r4k.c:
+ include/asm-arm/ptrace.h           |    6 ++----
+ include/asm-blackfin/ptrace.h      |    6 ++++--
+ include/asm-cris/arch-v10/Kbuild   |    1 -
+ include/asm-cris/arch-v10/ptrace.h |    4 ++++
+ include/asm-cris/arch-v32/Kbuild   |    1 -
+ include/asm-cris/arch-v32/ptrace.h |    4 ++++
+ include/asm-cris/ptrace.h          |    4 +++-
+ include/asm-frv/Kbuild             |    1 -
+ include/asm-m68knommu/ptrace.h     |    2 --
+ include/asm-mn10300/ptrace.h       |    8 ++++++--
+ include/asm-parisc/ptrace.h        |    4 +++-
+ include/asm-powerpc/Kbuild         |    1 -
+ include/asm-sh/ptrace.h            |    2 +-
+ include/asm-x86/Kbuild             |    1 -
+ include/asm-xtensa/ptrace.h        |   10 +++++-----
+ 15 files changed, 32 insertions(+), 23 deletions(-)
 
-        if (cca < 0 || cca > 7)
-                cca = read_c0_config() & CONF_CM_CMASK;
-        _page_cachable_default = cca << _CACHE_SHIFT;
-
-On my system, when this code is executed, the K0 field has a value of 0
-(write-through without write-allocate) -- I'm not sure if this has been set
-previously during the Linux bootup sequence, or if it would have been set
-from the boot monitor (PMON in my case, for which I have no source code
-specific to my system), or if it is using the default processor reset values
-(undefined on my processor).  Anyways, the result is that my system uses a
-CCA setting of 0 rather than 3, and I see much slower performance than I did
-under 2.6.25.  Of course, I can specify "cca=3" on the command line to use
-the previous setting, but I think it would be much nicer if this was handled
-in the code.
-
-  OK, so I guess what my question is, what would be the best way to fix
-this, or am I the only one who is seeing this problem?  I could whip up a
-patch for c-r4k.c that restores the previous behaviour as defined in
-2.6.25's pgtable-bits.h, or I could set something up in my platform-specific
-code to use a different value.  Suggestions?
-
-  For the record, my system is a PMC-Sierra RM2881 "Xiao Hu" evaluation
-board with a RM7035C processor.  It is based on the old ITE 8172G evaluation
-board, whose support had become subject to bitrot and was finally removed in
-2.6.19.  Support for the Xiao Hu is not in the l-m.o tree.
-
-  Thanks for any guidance that you can provide me!
-
-Shane McDonald
-
-------=_Part_8660_9086322.1214149703202
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
-
-Hello:<br><br>&nbsp; In the run-up to the 2.6.26 series of RCs, commit 3513=
-36929ccf222ae38ff0cb7a8dd5fd5c6236a0, [MIPS] Allow setting of the cache att=
-ribute at run time, introduced a new kernel parameter, cca, which you can u=
-se to specify the cache coherency attribute to be used in the system.&nbsp;=
- This replaces the previous config parameter, CONFIG_MIPS_UNCACHED, to allo=
-w finer-grained control over the CCA to be used.<br>
-<br>&nbsp; I&#39;m running into a problem with this code, in that when I do=
-n&#39;t specify the cca parameter on my boot line, it selects a default val=
-ue that is not the same as was used in 2.6.25 and previous kernel versions.=
-&nbsp; Before, the CCA would be set to a value specified in the constant PA=
-GE_CACHABLE_DEFAULT, defined in include/asm-mips/pgtable-bits.h.&nbsp; The =
-relevant code in 2.6.25 was:<br>
-<br>#ifdef CONFIG_MIPS_UNCACHED<br>#define PAGE_CACHABLE_DEFAULT&nbsp;&nbsp=
-; _CACHE_UNCACHED<br>#elif defined(CONFIG_DMA_NONCOHERENT)<br>#define PAGE_=
-CACHABLE_DEFAULT&nbsp;&nbsp; _CACHE_CACHABLE_NONCOHERENT<br>#elif defined(C=
-ONFIG_CPU_RM9000)<br>
-#define PAGE_CACHABLE_DEFAULT&nbsp;&nbsp; _CACHE_CWB<br>#else<br>#define PA=
-GE_CACHABLE_DEFAULT&nbsp;&nbsp; _CACHE_CACHABLE_COW<br>#endif<br><br>For my=
- system, CONFIG_DMA_NONCOHERENT is defined, so the CCA is set to _CACHE_CAC=
-HABLE_NONCOHERENT (value of 3, writeback, on my PMC-Sierra RM7035C-based sy=
-stem).<br>
-<br>&nbsp; After the commit, the CCA, if not set on the kernel boot line, i=
-s set to the current value of the K0 field of the coprocessor 0 Config regi=
-ster.&nbsp; In my system&#39;s case, this code comes from the function cohe=
-rency_setup() in arch/mips/mm/c-r4k.c:<br>
-<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (cca &lt; 0 || cca &gt; 7=
-)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
-p;&nbsp;&nbsp;&nbsp; cca =3D read_c0_config() &amp; CONF_CM_CMASK;<br>&nbsp=
-;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _page_cachable_default =3D cca &lt;&l=
-t; _CACHE_SHIFT;<br><br>On my system, when this code is executed, the K0 fi=
-eld has a value of 0 (write-through without write-allocate) -- I&#39;m not =
-sure if this has been set previously during the Linux bootup sequence, or i=
-f it would have been set from the boot monitor (PMON in my case, for which =
-I have no source code specific to my system), or if it is using the default=
- processor reset values (undefined on my processor).&nbsp; Anyways, the res=
-ult is that my system uses a CCA setting of 0 rather than 3, and I see much=
- slower performance than I did under <a href=3D"http://2.6.25.">2.6.25.</a>=
-&nbsp; Of course, I can specify &quot;cca=3D3&quot; on the command line to =
-use the previous setting, but I think it would be much nicer if this was ha=
-ndled in the code.<br>
-<br>&nbsp; OK, so I guess what my question is, what would be the best way t=
-o fix this, or am I the only one who is seeing this problem?&nbsp; I could =
-whip up a patch for c-r4k.c that restores the previous behaviour as defined=
- in 2.6.25&#39;s pgtable-bits.h, or I could set something up in my platform=
--specific code to use a different value.&nbsp; Suggestions?<br>
-<br>&nbsp; For the record, my system is a PMC-Sierra RM2881 &quot;Xiao Hu&q=
-uot; evaluation board with a RM7035C processor.&nbsp; It is based on the ol=
-d ITE 8172G evaluation board, whose support had become subject to bitrot an=
-d was finally removed in <a href=3D"http://2.6.19.">2.6.19.</a>&nbsp; Suppo=
-rt for the Xiao Hu is not in the l-m.o tree.<br>
-<br>&nbsp; Thanks for any guidance that you can provide me!<br><br>Shane Mc=
-Donald<br>
-
-------=_Part_8660_9086322.1214149703202--
+fc14755b77cff7af5ff00e938a4c493a669e25cd diff --git a/include/asm-arm/ptrace.h b/include/asm-arm/ptrace.h
+index 7aaa206..8382b75 100644
+--- a/include/asm-arm/ptrace.h
++++ b/include/asm-arm/ptrace.h
+@@ -139,8 +139,6 @@ static inline int valid_user_regs(struct pt_regs *regs)
+ 	return 0;
+ }
+ 
+-#endif	/* __KERNEL__ */
+-
+ #define pc_pointer(v) \
+ 	((v) & ~PCMASK)
+ 
+@@ -153,10 +151,10 @@ extern unsigned long profile_pc(struct pt_regs *regs);
+ #define profile_pc(regs) instruction_pointer(regs)
+ #endif
+ 
+-#ifdef __KERNEL__
+ #define predicate(x)		((x) & 0xf0000000)
+ #define PREDICATE_ALWAYS	0xe0000000
+-#endif
++
++#endif /* __KERNEL__ */
+ 
+ #endif /* __ASSEMBLY__ */
+ 
+diff --git a/include/asm-blackfin/ptrace.h b/include/asm-blackfin/ptrace.h
+index b8346cd..a45a80e 100644
+--- a/include/asm-blackfin/ptrace.h
++++ b/include/asm-blackfin/ptrace.h
+@@ -83,14 +83,14 @@ struct pt_regs {
+ #define PTRACE_GETREGS            12
+ #define PTRACE_SETREGS            13	/* ptrace signal  */
+ 
+-#ifdef CONFIG_BINFMT_ELF_FDPIC
+ #define PTRACE_GETFDPIC           31
+ #define PTRACE_GETFDPIC_EXEC      0
+ #define PTRACE_GETFDPIC_INTERP    1
+-#endif
+ 
+ #define PS_S  (0x0002)
+ 
++#ifdef __KERNEL__
++
+ /* user_mode returns true if only one bit is set in IPEND, other than the
+    master interrupt enable.  */
+ #define user_mode(regs) (!(((regs)->ipend & ~0x10) & (((regs)->ipend & ~0x10) - 1)))
+@@ -98,6 +98,8 @@ struct pt_regs {
+ #define profile_pc(regs) instruction_pointer(regs)
+ extern void show_regs(struct pt_regs *);
+ 
++#endif  /*  __KERNEL__  */
++
+ #endif				/* __ASSEMBLY__ */
+ 
+ /*
+diff --git a/include/asm-cris/arch-v10/Kbuild b/include/asm-cris/arch-v10/Kbuild
+index 60e7e1b..7a192e1 100644
+--- a/include/asm-cris/arch-v10/Kbuild
++++ b/include/asm-cris/arch-v10/Kbuild
+@@ -1,4 +1,3 @@
+-header-y += ptrace.h
+ header-y += user.h
+ header-y += svinto.h
+ header-y += sv_addr_ag.h
+diff --git a/include/asm-cris/arch-v10/ptrace.h b/include/asm-cris/arch-v10/ptrace.h
+index fb14c5e..2f464ea 100644
+--- a/include/asm-cris/arch-v10/ptrace.h
++++ b/include/asm-cris/arch-v10/ptrace.h
+@@ -106,10 +106,14 @@ struct switch_stack {
+ 	unsigned long return_ip; /* ip that _resume will return to */
+ };
+ 
++#ifdef __KERNEL__
++
+ /* bit 8 is user-mode flag */
+ #define user_mode(regs) (((regs)->dccr & 0x100) != 0)
+ #define instruction_pointer(regs) ((regs)->irp)
+ #define profile_pc(regs) instruction_pointer(regs)
+ extern void show_regs(struct pt_regs *);
+ 
++#endif  /*  __KERNEL__  */
++
+ #endif
+diff --git a/include/asm-cris/arch-v32/Kbuild b/include/asm-cris/arch-v32/Kbuild
+index a0ec545..35f2fc4 100644
+--- a/include/asm-cris/arch-v32/Kbuild
++++ b/include/asm-cris/arch-v32/Kbuild
+@@ -1,3 +1,2 @@
+-header-y += ptrace.h
+ header-y += user.h
+ header-y += cryptocop.h
+diff --git a/include/asm-cris/arch-v32/ptrace.h b/include/asm-cris/arch-v32/ptrace.h
+index 516cc70..41f4e86 100644
+--- a/include/asm-cris/arch-v32/ptrace.h
++++ b/include/asm-cris/arch-v32/ptrace.h
+@@ -106,9 +106,13 @@ struct switch_stack {
+ 	unsigned long return_ip; /* ip that _resume will return to */
+ };
+ 
++#ifdef __KERNEL__
++
+ #define user_mode(regs) (((regs)->ccs & (1 << (U_CCS_BITNR + CCS_SHIFT))) != 0)
+ #define instruction_pointer(regs) ((regs)->erp)
+ extern void show_regs(struct pt_regs *);
+ #define profile_pc(regs) instruction_pointer(regs)
+ 
++#endif  /*  __KERNEL__  */
++
+ #endif
+diff --git a/include/asm-cris/ptrace.h b/include/asm-cris/ptrace.h
+index 1ec69a7..d910925 100644
+--- a/include/asm-cris/ptrace.h
++++ b/include/asm-cris/ptrace.h
+@@ -4,11 +4,13 @@
+ #include <asm/arch/ptrace.h>
+ 
+ #ifdef __KERNEL__
++
+ /* Arbitrarily choose the same ptrace numbers as used by the Sparc code. */
+ #define PTRACE_GETREGS            12
+ #define PTRACE_SETREGS            13
+-#endif
+ 
+ #define profile_pc(regs) instruction_pointer(regs)
+ 
++#endif /* __KERNEL__ */
++
+ #endif /* _CRIS_PTRACE_H */
+diff --git a/include/asm-frv/Kbuild b/include/asm-frv/Kbuild
+index bc3f12c..0f8956d 100644
+--- a/include/asm-frv/Kbuild
++++ b/include/asm-frv/Kbuild
+@@ -3,4 +3,3 @@ include include/asm-generic/Kbuild.asm
+ header-y += registers.h
+ 
+ unifdef-y += termios.h
+-unifdef-y += ptrace.h
+diff --git a/include/asm-m68knommu/ptrace.h b/include/asm-m68knommu/ptrace.h
+index 47258e8..8c9194b 100644
+--- a/include/asm-m68knommu/ptrace.h
++++ b/include/asm-m68knommu/ptrace.h
+@@ -68,10 +68,8 @@ struct switch_stack {
+ /* Arbitrarily choose the same ptrace numbers as used by the Sparc code. */
+ #define PTRACE_GETREGS            12
+ #define PTRACE_SETREGS            13
+-#ifdef CONFIG_FPU
+ #define PTRACE_GETFPREGS          14
+ #define PTRACE_SETFPREGS          15
+-#endif
+ 
+ #ifdef __KERNEL__
+ 
+diff --git a/include/asm-mn10300/ptrace.h b/include/asm-mn10300/ptrace.h
+index b368468..7b06cc6 100644
+--- a/include/asm-mn10300/ptrace.h
++++ b/include/asm-mn10300/ptrace.h
+@@ -88,12 +88,16 @@ extern struct pt_regs *__frame; /* current frame pointer */
+ /* options set using PTRACE_SETOPTIONS */
+ #define PTRACE_O_TRACESYSGOOD     0x00000001
+ 
+-#if defined(__KERNEL__) && !defined(__ASSEMBLY__)
++#if defined(__KERNEL__)
++
++#if !defined(__ASSEMBLY__)
+ #define user_mode(regs)			(((regs)->epsw & EPSW_nSL) == EPSW_nSL)
+ #define instruction_pointer(regs)	((regs)->pc)
+ extern void show_regs(struct pt_regs *);
+-#endif
++#endif  /*  !__ASSEMBLY  */
+ 
+ #define profile_pc(regs) ((regs)->pc)
+ 
++#endif  /*  __KERNEL__  */
++
+ #endif /* _ASM_PTRACE_H */
+diff --git a/include/asm-parisc/ptrace.h b/include/asm-parisc/ptrace.h
+index 93f990e..3e94c5d 100644
+--- a/include/asm-parisc/ptrace.h
++++ b/include/asm-parisc/ptrace.h
+@@ -33,7 +33,6 @@ struct pt_regs {
+ 	unsigned long ipsw;	/* CR22 */
+ };
+ 
+-#define task_regs(task) ((struct pt_regs *) ((char *)(task) + TASK_REGS))
+ /*
+  * The numbers chosen here are somewhat arbitrary but absolutely MUST
+  * not overlap with any of the number assigned in <linux/ptrace.h>.
+@@ -43,8 +42,11 @@ struct pt_regs {
+  * since we have taken branch traps too)
+  */
+ #define PTRACE_SINGLEBLOCK	12	/* resume execution until next branch */
++
+ #ifdef __KERNEL__
+ 
++#define task_regs(task) ((struct pt_regs *) ((char *)(task) + TASK_REGS))
++
+ /* XXX should we use iaoq[1] or iaoq[0] ? */
+ #define user_mode(regs)			(((regs)->iaoq[0] & 3) ? 1 : 0)
+ #define user_space(regs)		(((regs)->iasq[1] != 0) ? 1 : 0)
+diff --git a/include/asm-powerpc/Kbuild b/include/asm-powerpc/Kbuild
+index 7381916..6920904 100644
+--- a/include/asm-powerpc/Kbuild
++++ b/include/asm-powerpc/Kbuild
+@@ -32,7 +32,6 @@ unifdef-y += elf.h
+ unifdef-y += nvram.h
+ unifdef-y += param.h
+ unifdef-y += posix_types.h
+-unifdef-y += ptrace.h
+ unifdef-y += seccomp.h
+ unifdef-y += signal.h
+ unifdef-y += spu_info.h
+diff --git a/include/asm-sh/ptrace.h b/include/asm-sh/ptrace.h
+index 8d6c92b..7d36dc3 100644
+--- a/include/asm-sh/ptrace.h
++++ b/include/asm-sh/ptrace.h
+@@ -5,7 +5,7 @@
+  * Copyright (C) 1999, 2000  Niibe Yutaka
+  *
+  */
+-#if defined(__SH5__) || defined(CONFIG_SUPERH64)
++#if defined(__SH5__)
+ struct pt_regs {
+ 	unsigned long long pc;
+ 	unsigned long long sr;
+diff --git a/include/asm-x86/Kbuild b/include/asm-x86/Kbuild
+index 1e35545..00473f7 100644
+--- a/include/asm-x86/Kbuild
++++ b/include/asm-x86/Kbuild
+@@ -19,7 +19,6 @@ unifdef-y += msr.h
+ unifdef-y += mtrr.h
+ unifdef-y += posix_types_32.h
+ unifdef-y += posix_types_64.h
+-unifdef-y += ptrace.h
+ unifdef-y += unistd_32.h
+ unifdef-y += unistd_64.h
+ unifdef-y += vm86.h
+diff --git a/include/asm-xtensa/ptrace.h b/include/asm-xtensa/ptrace.h
+index 422c73e..089b0db 100644
+--- a/include/asm-xtensa/ptrace.h
++++ b/include/asm-xtensa/ptrace.h
+@@ -73,10 +73,10 @@
+ #define PTRACE_GETXTREGS	18
+ #define PTRACE_SETXTREGS	19
+ 
+-#ifndef __ASSEMBLY__
+-
+ #ifdef __KERNEL__
+ 
++#ifndef __ASSEMBLY__
++
+ /*
+  * This struct defines the way the registers are stored on the
+  * kernel stack during a system call or other kernel entry.
+@@ -122,14 +122,14 @@ extern void show_regs(struct pt_regs *);
+ # ifndef CONFIG_SMP
+ #  define profile_pc(regs) instruction_pointer(regs)
+ # endif
+-#endif /* __KERNEL__ */
+ 
+ #else	/* __ASSEMBLY__ */
+ 
+-#ifdef __KERNEL__
+ # include <asm/asm-offsets.h>
+ #define PT_REGS_OFFSET	  (KERNEL_STACK_SIZE - PT_USER_SIZE)
+-#endif
+ 
+ #endif	/* !__ASSEMBLY__ */
++
++#endif  /* __KERNEL__ */
++
+ #endif	/* _XTENSA_PTRACE_H */

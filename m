@@ -1,82 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2008 11:18:45 +0100 (BST)
-Received: from mail2.ict.tuwien.ac.at ([128.131.81.21]:43493 "EHLO
-	mail.ict.tuwien.ac.at") by ftp.linux-mips.org with ESMTP
-	id S20037172AbYFXKSi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 24 Jun 2008 11:18:38 +0100
-Received: from pc81-11.ict.tuwien.ac.at ([128.131.81.11])
-	by mail.ict.tuwien.ac.at with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-	(Exim 4.69)
-	(envelope-from <krapfenbauer@ict.tuwien.ac.at>)
-	id 1KB5bh-00058y-3O
-	for linux-mips@linux-mips.org; Tue, 24 Jun 2008 12:18:37 +0200
-Message-ID: <4860C9FD.60103@ict.tuwien.ac.at>
-Date:	Tue, 24 Jun 2008 12:18:37 +0200
-From:	Harald Krapfenbauer <krapfenbauer@ict.tuwien.ac.at>
-Organization: Institute of Computer Technology, Vienna University of Technology
-User-Agent: Thunderbird 2.0.0.14 (X11/20080502)
-MIME-Version: 1.0
-To:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: function call on MIPS (newbie question)
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 128.131.81.11
-X-SA-Exim-Mail-From: krapfenbauer@ict.tuwien.ac.at
-X-SA-Exim-Scanned: No (on mail.ict.tuwien.ac.at); SAEximRunCond expanded to false
-Return-Path: <krapfenbauer@ict.tuwien.ac.at>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2008 11:24:50 +0100 (BST)
+Received: from mx1.redhat.com ([66.187.233.31]:27881 "EHLO mx1.redhat.com")
+	by ftp.linux-mips.org with ESMTP id S20023260AbYFXKYn (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Jun 2008 11:24:43 +0100
+Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
+	by mx1.redhat.com (8.13.8/8.13.8) with ESMTP id m5OANobG028481;
+	Tue, 24 Jun 2008 06:23:50 -0400
+Received: from pobox.devel.redhat.com (pobox.devel.redhat.com [10.11.255.8])
+	by int-mx1.corp.redhat.com (8.13.1/8.13.1) with ESMTP id m5OANodX010058;
+	Tue, 24 Jun 2008 06:23:50 -0400
+Received: from warthog.cambridge.redhat.com (devserv.devel.redhat.com [10.10.36.72])
+	by pobox.devel.redhat.com (8.13.1/8.13.1) with ESMTP id m5OANmlw014518;
+	Tue, 24 Jun 2008 06:23:48 -0400
+Received: from [127.0.0.1] (helo=redhat.com)
+	by warthog.cambridge.redhat.com with esmtp (Exim 4.68 #1 (Red Hat Linux))
+	id 1KB5gi-000260-AU; Tue, 24 Jun 2008 11:23:48 +0100
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From:	David Howells <dhowells@redhat.com>
+In-Reply-To: <20080623174809.GE4756@cs181140183.pp.htv.fi>
+References: <20080623174809.GE4756@cs181140183.pp.htv.fi>
+To:	Adrian Bunk <bunk@kernel.org>
+Cc:	dhowells@redhat.com, Roland McGrath <roland@redhat.com>,
+	linux-kernel@vger.kernel.org, rmk@arm.linux.org.uk,
+	cooloney@kernel.org, dev-etrax@axis.com, gerg@uclinux.org,
+	yasutake.koichi@jp.panasonic.com, linux-parisc@vger.kernel.org,
+	paulus@samba.org, linuxppc-dev@ozlabs.org,
+	linux-sh@vger.kernel.org, chris@zankel.net,
+	linux-mips@linux-mips.org, ysato@users.sourceforge.jp,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [2.6 patch] asm/ptrace.h userspace headers cleanup
+X-Mailer: MH-E 8.0.3+cvs; nmh 1.2-20070115cvs; GNU Emacs 23.0.50
+Date:	Tue, 24 Jun 2008 11:23:48 +0100
+Message-ID: <8058.1214303028@redhat.com>
+X-Scanned-By: MIMEDefang 2.58 on 172.16.52.254
+Return-Path: <dhowells@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19609
+X-archive-position: 19610
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: krapfenbauer@ict.tuwien.ac.at
+X-original-sender: dhowells@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi!
+Adrian Bunk <bunk@kernel.org> wrote:
 
-I'm a newbie to the MIPS architecture and I want to port some program to
-MIPS.
-I must call a function within the .text segment with 2 simple
-parameters. So I figured out the following code which
-*) loads arg1 into register $4
-*) loads arg2 into register $5
-*) loads the address into $15
-*) executes a jalr
-*) breaks afterwards
+> This patch contains the following cleanups for the asm/ptrace.h 
+> userspace headers:
+> - include/asm-generic/Kbuild.asm already lists ptrace.h, remove
+>   the superfluous listings in the Kbuild files of the following
+>   architectures:
+> ...
+>   - frv
+> ...
+> - don't expose function prototypes and macros to userspace:
+> ...
+>   - mn10300
 
-
-	*((guint32 *)(code)) = ((method_argument1 >> 16) & 0xffff) |
-0x3c040000;    /* arg 1 upper half word */
-	*((guint32 *)(code+4)) = (method_argument1 & 0xffff) | 0x24040000;
-     /* arg 1 lower half word */
-	*((guint32 *)(code+8)) = ((method_argument2 >> 16) & 0xffff) |
-0x3c050000;  /* arg 2 upper half word */
-	*((guint32 *)(code+12)) = (method_argument2 & 0xffff) | 0x24050000;
-     /* arg 2 lower half word */
-	*((guint32 *)(code+16)) = ((method_address >> 16) & 0xffff) |
-0x3c0f0000;   /* address upper half word */
-	*((guint32 *)(code+20)) = (method_address & 0xffff) | 0x240f0000;
-     /* address lower half word */
-	*((guint32 *)(code+24)) = 0x01e0f809;
-     /* jalr */
-	*((guint32 *)(code+28)) = 0x0;
-     /* branch delay slot */
-	*((guint32 *)(code+32)) = 0x0d;
-     /* breakpoint */
-
-
-
-The code is written to the stack, the SP and the PC are then set to the
-beginning of the code on the stack.
-
-Something must be going wrong because after the program stops again, the
-PC is 0xffffcb38 (The method address is 0x53cb38) and my program
-receives signal 10.
-
-Did I miss something or is my code wrong?
-Any help appreciated!
-
-Best regards,
-Harald Krapfenbauer
+Acked-by: David Howells <dhowells@redhat.com> (FRV and MN10300)

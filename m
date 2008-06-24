@@ -1,21 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2008 05:11:43 +0100 (BST)
-Received: from mta23.gyao.ne.jp ([125.63.38.249]:22177 "EHLO mx.gate01.com")
-	by ftp.linux-mips.org with ESMTP id S20022131AbYFXELg (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Jun 2008 05:11:36 +0100
-Received: from [124.34.33.190] (helo=master.linux-sh.org)
-	by smtp31.isp.us-com.jp with esmtp (Mail 4.41)
-	id 1KAzs5-0004TR-UH; Tue, 24 Jun 2008 13:11:09 +0900
-Received: from localhost (unknown [127.0.0.1])
-	by master.linux-sh.org (Postfix) with ESMTP id D6CCC63754;
-	Tue, 24 Jun 2008 04:08:44 +0000 (UTC)
-X-Virus-Scanned: amavisd-new at linux-sh.org
-Received: from master.linux-sh.org ([127.0.0.1])
-	by localhost (master.linux-sh.org [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id sFzR7qUSbnqL; Tue, 24 Jun 2008 13:08:44 +0900 (JST)
-Received: by master.linux-sh.org (Postfix, from userid 500)
-	id 6DE1563758; Tue, 24 Jun 2008 13:08:44 +0900 (JST)
-Date:	Tue, 24 Jun 2008 13:08:44 +0900
-From:	Paul Mundt <lethal@linux-sh.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Jun 2008 06:18:47 +0100 (BST)
+Received: from colo.lackof.org ([198.49.126.79]:22946 "EHLO colo.lackof.org")
+	by ftp.linux-mips.org with ESMTP id S20022250AbYFXFSp (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Jun 2008 06:18:45 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by colo.lackof.org (Postfix) with ESMTP id 7EDF7300037;
+	Mon, 23 Jun 2008 23:18:36 -0600 (MDT)
+Received: from colo.lackof.org ([127.0.0.1])
+	by localhost (colo.lackof.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 19451-10; Mon, 23 Jun 2008 23:18:26 -0600 (MDT)
+Received: by colo.lackof.org (Postfix, from userid 27253)
+	id 1DFC4300035; Mon, 23 Jun 2008 23:18:26 -0600 (MDT)
+Date:	Mon, 23 Jun 2008 23:18:26 -0600
+From:	Grant Grundler <grundler@parisc-linux.org>
 To:	Adrian Bunk <bunk@kernel.org>
 Cc:	Roland McGrath <roland@redhat.com>, linux-kernel@vger.kernel.org,
 	rmk@arm.linux.org.uk, cooloney@kernel.org, dev-etrax@axis.com,
@@ -26,31 +22,24 @@ Cc:	Roland McGrath <roland@redhat.com>, linux-kernel@vger.kernel.org,
 	linux-mips@linux-mips.org, ysato@users.sourceforge.jp,
 	Andrew Morton <akpm@linux-foundation.org>
 Subject: Re: [2.6 patch] asm/ptrace.h userspace headers cleanup
-Message-ID: <20080624040844.GE22526@linux-sh.org>
-Mail-Followup-To: Paul Mundt <lethal@linux-sh.org>,
-	Adrian Bunk <bunk@kernel.org>, Roland McGrath <roland@redhat.com>,
-	linux-kernel@vger.kernel.org, rmk@arm.linux.org.uk,
-	cooloney@kernel.org, dev-etrax@axis.com, dhowells@redhat.com,
-	gerg@uclinux.org, yasutake.koichi@jp.panasonic.com,
-	linux-parisc@vger.kernel.org, paulus@samba.org,
-	linuxppc-dev@ozlabs.org, linux-sh@vger.kernel.org, chris@zankel.net,
-	linux-mips@linux-mips.org, ysato@users.sourceforge.jp,
-	Andrew Morton <akpm@linux-foundation.org>
+Message-ID: <20080624051826.GC19434@colo.lackof.org>
 References: <20080623174809.GE4756@cs181140183.pp.htv.fi>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20080623174809.GE4756@cs181140183.pp.htv.fi>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Return-Path: <lethal@linux-sh.org>
+X-Home-Page: http://www.parisc-linux.org/
+User-Agent: Mutt/1.5.16 (2007-06-11)
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at lackof.org
+Return-Path: <grundler@lackof.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19604
+X-archive-position: 19605
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lethal@linux-sh.org
+X-original-sender: grundler@parisc-linux.org
 Precedence: bulk
 X-list: linux-mips
 
@@ -70,14 +59,31 @@ On Mon, Jun 23, 2008 at 08:48:09PM +0300, Adrian Bunk wrote:
 >   - cris
 >   - mn10300
 >   - parisc
-> - remove #ifdef CONFIG_'s around #define's:
->   - blackfin
->   - m68knommu
-> - sh: AFAIK __SH5__ should work in both kernel and userspace,
->       no need to leak CONFIG_SUPERH64 to userspace
+...
+> diff --git a/include/asm-parisc/ptrace.h b/include/asm-parisc/ptrace.h
+> index 93f990e..3e94c5d 100644
+> --- a/include/asm-parisc/ptrace.h
+> +++ b/include/asm-parisc/ptrace.h
+> @@ -33,7 +33,6 @@ struct pt_regs {
+>  	unsigned long ipsw;	/* CR22 */
+>  };
+>  
+> -#define task_regs(task) ((struct pt_regs *) ((char *)(task) + TASK_REGS))
+>  /*
+>   * The numbers chosen here are somewhat arbitrary but absolutely MUST
+>   * not overlap with any of the number assigned in <linux/ptrace.h>.
+> @@ -43,8 +42,11 @@ struct pt_regs {
+>   * since we have taken branch traps too)
+>   */
+>  #define PTRACE_SINGLEBLOCK	12	/* resume execution until next branch */
+> +
+>  #ifdef __KERNEL__
+>  
+> +#define task_regs(task) ((struct pt_regs *) ((char *)(task) + TASK_REGS))
+> +
+>  /* XXX should we use iaoq[1] or iaoq[0] ? */
+>  #define user_mode(regs)			(((regs)->iaoq[0] & 3) ? 1 : 0)
+>  #define user_space(regs)		(((regs)->iasq[1] != 0) ? 1 : 0)
 
-Yes, that's fine. We've generally avoided relying entirely on the gcc
-builtin definitions due to the rampant stupidity surrounding
-__SH4_NOFPU__, but it is true that __SH5__ is always defined at least.
-
-Acked-by: Paul Mundt <lethal@linux-sh.org>
+Looks fine to me.
+Acked-by: Grant Grundler <grundler@parisc-linux.org>

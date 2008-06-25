@@ -1,66 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2008 03:41:18 +0100 (BST)
-Received: from topsns2.toshiba-tops.co.jp ([202.230.225.126]:50816 "EHLO
-	topsns2.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S20042932AbYFYClL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 25 Jun 2008 03:41:11 +0100
-Received: from no.name.available by topsns2.toshiba-tops.co.jp
-          via smtpd (for ftp.linux-mips.org [213.58.128.207]) with ESMTP; Wed, 25 Jun 2008 11:41:09 +0900
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 3BDF342496;
-	Wed, 25 Jun 2008 11:41:03 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 30B4B1EF5F;
-	Wed, 25 Jun 2008 11:41:03 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id m5P2f1fl054647;
-	Wed, 25 Jun 2008 11:41:02 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Wed, 25 Jun 2008 11:41:01 +0900 (JST)
-Message-Id: <20080625.114101.102912128.nemoto@toshiba-tops.co.jp>
-To:	linux-mips@linux-mips.org
-Cc:	Jeff Garzik <jeff@garzik.org>, netdev@vger.kernel.org
-Subject: [PATCH] tc35815: Mark carrier-off before starting PHY
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 6.1 on Emacs 22.2 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2008 08:47:44 +0100 (BST)
+Received: from caramon.arm.linux.org.uk ([78.32.30.218]:13550 "EHLO
+	caramon.arm.linux.org.uk") by ftp.linux-mips.org with ESMTP
+	id S20040256AbYFYHri (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 25 Jun 2008 08:47:38 +0100
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=arm.linux.org.uk; s=caramon; h=Date:From:To:Cc:Subject:
+	Message-ID:References:Mime-Version:Content-Type:In-Reply-To:
+	Sender; bh=DPZoLC/PIMX8PnYok//2Q0L7BgRGOutqmDCjPMXiQT8=; b=Hg+sj
+	vKffkgaXTO3ymvSPiz2TgC4rH6ierWyf0tauevjOOL8QxssO/blSiZwBBfug/v9e
+	BkCRJ7mAiPAuu1V/LcyDZQEbPRmWTn7O8HfL2842KGj5Gherc21ST5zUPQqUX9tP
+	GW6bqemuKYQFW50e+w8kF8X337Cirb1lZcEtrc=
+Received: from flint.arm.linux.org.uk ([2002:4e20:1eda:1:201:2ff:fe14:8fad])
+	by caramon.arm.linux.org.uk with esmtpsa (TLSv1:AES256-SHA:256)
+	(Exim 4.69)
+	(envelope-from <rmk@arm.linux.org.uk>)
+	id 1KBPhe-0002s0-6U; Wed, 25 Jun 2008 08:46:06 +0100
+Received: from rmk by flint.arm.linux.org.uk with local (Exim 4.69)
+	(envelope-from <rmk@flint.arm.linux.org.uk>)
+	id 1KBPhb-00040P-GO; Wed, 25 Jun 2008 08:46:03 +0100
+Date:	Wed, 25 Jun 2008 08:46:02 +0100
+From:	Russell King <rmk+lkml@arm.linux.org.uk>
+To:	Adrian Bunk <bunk@kernel.org>
+Cc:	Roland McGrath <roland@redhat.com>, linux-kernel@vger.kernel.org,
+	cooloney@kernel.org, dev-etrax@axis.com, dhowells@redhat.com,
+	gerg@uclinux.org, yasutake.koichi@jp.panasonic.com,
+	linux-parisc@vger.kernel.org, paulus@samba.org,
+	linuxppc-dev@ozlabs.org, linux-sh@vger.kernel.org,
+	chris@zankel.net, linux-mips@linux-mips.org,
+	ysato@users.sourceforge.jp,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [2.6 patch] asm/ptrace.h userspace headers cleanup
+Message-ID: <20080625074602.GA14791@flint.arm.linux.org.uk>
+References: <20080623174809.GE4756@cs181140183.pp.htv.fi>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20080623174809.GE4756@cs181140183.pp.htv.fi>
+User-Agent: Mutt/1.4.2.1i
+Return-Path: <rmk+linux-mips=linux-mips.org@arm.linux.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19631
+X-archive-position: 19632
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: rmk+lkml@arm.linux.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-Call netif_carrier_off() before starting PHY device.  This is a
-behavior before converting to generic PHY layer.
+On Mon, Jun 23, 2008 at 08:48:09PM +0300, Adrian Bunk wrote:
+> diff --git a/include/asm-arm/ptrace.h b/include/asm-arm/ptrace.h
+> index 7aaa206..8382b75 100644
+> --- a/include/asm-arm/ptrace.h
+> +++ b/include/asm-arm/ptrace.h
+> @@ -139,8 +139,6 @@ static inline int valid_user_regs(struct pt_regs *regs)
+>  	return 0;
+>  }
+>  
+> -#endif	/* __KERNEL__ */
+> -
+>  #define pc_pointer(v) \
+>  	((v) & ~PCMASK)
+>  
+> @@ -153,10 +151,10 @@ extern unsigned long profile_pc(struct pt_regs *regs);
+>  #define profile_pc(regs) instruction_pointer(regs)
+>  #endif
+>  
+> -#ifdef __KERNEL__
+>  #define predicate(x)		((x) & 0xf0000000)
+>  #define PREDICATE_ALWAYS	0xe0000000
+> -#endif
+> +
+> +#endif /* __KERNEL__ */
+>  
+>  #endif /* __ASSEMBLY__ */
+>  
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
-diff --git a/drivers/net/tc35815.c b/drivers/net/tc35815.c
-index 10e4e85..dccea52 100644
---- a/drivers/net/tc35815.c
-+++ b/drivers/net/tc35815.c
-@@ -1394,6 +1394,7 @@ tc35815_open(struct net_device *dev)
- 	tc35815_chip_init(dev);
- 	spin_unlock_irq(&lp->lock);
- 
-+	netif_carrier_off(dev);
- 	/* schedule a link state check */
- 	phy_start(lp->phy_dev);
- 
-@@ -2453,6 +2454,7 @@ static int tc35815_resume(struct pci_dev *pdev)
- 		return 0;
- 	pci_set_power_state(pdev, PCI_D0);
- 	tc35815_restart(dev);
-+	netif_carrier_off(dev);
- 	if (lp->phy_dev)
- 		phy_start(lp->phy_dev);
- 	netif_device_attach(dev);
+Acked-by: Russell King <rmk+kernel@arm.linux.org.uk>
+
+-- 
+Russell King
+ Linux kernel    2.6 ARM Linux   - http://www.arm.linux.org.uk/
+ maintainer of:

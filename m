@@ -1,137 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Jun 2008 23:16:53 +0100 (BST)
-Received: from elvis.franken.de ([193.175.24.41]:42126 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S20045240AbYFYWQq (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 25 Jun 2008 23:16:46 +0100
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1KBdIB-0000GX-00; Thu, 26 Jun 2008 00:16:43 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id 35CF3E2F71; Thu, 26 Jun 2008 00:16:40 +0200 (CEST)
-From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH] gbefb: cmap FIFO timeout
-To:	linux-fbdev-devel@lists.sourceforge.net
-Cc:	linux-mips@linux-mips.org, adaplas@gmail.com,
-	487257@bugs.debian.org
-Message-Id: <20080625221640.35CF3E2F71@solo.franken.de>
-Date:	Thu, 26 Jun 2008 00:16:40 +0200 (CEST)
-Return-Path: <tsbogend@alpha.franken.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jun 2008 00:03:27 +0100 (BST)
+Received: from outbound-mail-159.bluehost.com ([67.222.39.39]:44476 "HELO
+	outbound-mail-159.bluehost.com") by ftp.linux-mips.org with SMTP
+	id S28575237AbYFYXDR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 26 Jun 2008 00:03:17 +0100
+Received: (qmail 8181 invoked by uid 0); 25 Jun 2008 23:03:12 -0000
+Received: from unknown (HELO box128.bluehost.com) (69.89.22.128)
+  by outboundproxy5.bluehost.com with SMTP; 25 Jun 2008 23:03:12 -0000
+Received: from [75.111.27.49] (helo=[192.168.1.157])
+	by box128.bluehost.com with esmtpsa (TLSv1:AES256-SHA:256)
+	(Exim 4.68)
+	(envelope-from <jbarnes@virtuousgeek.org>)
+	id 1KBe19-0004gC-TV; Wed, 25 Jun 2008 17:03:12 -0600
+From:	Jesse Barnes <jbarnes@virtuousgeek.org>
+To:	Adrian Bunk <bunk@kernel.org>
+Subject: Re: [2.6 patch] remove pcibios_update_resource() functions
+Date:	Wed, 25 Jun 2008 16:02:49 -0700
+User-Agent: KMail/1.9.9
+Cc:	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	dhowells@redhat.com, gerg@uclinux.org, ralf@linux-mips.org,
+	linux-mips@linux-mips.org, lethal@linux-sh.org,
+	linux-sh@vger.kernel.org, Russell King <rmk+lkml@arm.linux.org.uk>
+References: <20080617223332.GM25911@cs181133002.pp.htv.fi>
+In-Reply-To: <20080617223332.GM25911@cs181133002.pp.htv.fi>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200806251602.49856.jbarnes@virtuousgeek.org>
+X-Identified-User: {642:box128.bluehost.com:virtuous:virtuousgeek.org} {sentby:smtp auth 75.111.27.49 authed with jbarnes@virtuousgeek.org}
+DomainKey-Status: no signature
+Return-Path: <jbarnes@virtuousgeek.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19635
+X-archive-position: 19636
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: jbarnes@virtuousgeek.org
 Precedence: bulk
 X-list: linux-mips
 
-Writes to the cmap fifo while the display is blanked caused cmap FIFO
-timeout messages and a wrong colormap. To avoid this the driver now
-maintains a colormap in memory and updates the colormap after the
-display is unblanked.
+On Tuesday, June 17, 2008 3:33 pm Adrian Bunk wrote:
+> Russell King did the following back in 2003:
+>
+> <--  snip  -->
+>
+>     [PCI] pci-9: Kill per-architecture pcibios_update_resource()
+>
+>     Kill pcibios_update_resource(), replacing it with
+> pci_update_resource(). pci_update_resource() uses pcibios_resource_to_bus()
+> to convert a resource to a device BAR - the transformation should be
+> exactly the same as the transformation used for the PCI bridges.
 
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
----
+Ralf, I assume you're ok with this?
 
- drivers/video/gbefb.c |   50 +++++++++++++++++++++++++++++++++---------------
- 1 files changed, 34 insertions(+), 16 deletions(-)
+Thanks,
+Jesse
 
-diff --git a/drivers/video/gbefb.c b/drivers/video/gbefb.c
-index 2e552d5..f89c3cc 100644
---- a/drivers/video/gbefb.c
-+++ b/drivers/video/gbefb.c
-@@ -87,6 +87,8 @@ static int gbe_revision;
- static int ypan, ywrap;
- 
- static uint32_t pseudo_palette[16];
-+static uint32_t gbe_cmap[256];
-+static int gbe_turned_on; /* 0 turned off, 1 turned on */
- 
- static char *mode_option __initdata = NULL;
- 
-@@ -208,6 +210,8 @@ void gbe_turn_off(void)
- 	int i;
- 	unsigned int val, x, y, vpixen_off;
- 
-+	gbe_turned_on = 0;
-+
- 	/* check if pixel counter is on */
- 	val = gbe->vt_xy;
- 	if (GET_GBE_FIELD(VT_XY, FREEZE, val) == 1)
-@@ -371,6 +375,22 @@ static void gbe_turn_on(void)
- 	}
- 	if (i == 10000)
- 		printk(KERN_ERR "gbefb: turn on DMA timed out\n");
-+
-+	gbe_turned_on = 1;
-+}
-+
-+static void gbe_loadcmap(void)
-+{
-+	int i, j;
-+
-+	for (i = 0; i < 256; i++) {
-+		for (j = 0; j < 1000 && gbe->cm_fifo >= 63; j++)
-+			udelay(10);
-+		if (j == 1000)
-+			printk(KERN_ERR "gbefb: cmap FIFO timeout\n");
-+
-+		gbe->cmap[i] = gbe_cmap[i];
-+	}
- }
- 
- /*
-@@ -382,6 +402,7 @@ static int gbefb_blank(int blank, struct fb_info *info)
- 	switch (blank) {
- 	case FB_BLANK_UNBLANK:		/* unblank */
- 		gbe_turn_on();
-+		gbe_loadcmap();
- 		break;
- 
- 	case FB_BLANK_NORMAL:		/* blank */
-@@ -796,16 +817,10 @@ static int gbefb_set_par(struct fb_info *info)
- 		gbe->gmap[i] = (i << 24) | (i << 16) | (i << 8);
- 
- 	/* Initialize the color map */
--	for (i = 0; i < 256; i++) {
--		int j;
--
--		for (j = 0; j < 1000 && gbe->cm_fifo >= 63; j++)
--			udelay(10);
--		if (j == 1000)
--			printk(KERN_ERR "gbefb: cmap FIFO timeout\n");
-+	for (i = 0; i < 256; i++)
-+		gbe_cmap[i] = (i << 8) | (i << 16) | (i << 24);
- 
--		gbe->cmap[i] = (i << 8) | (i << 16) | (i << 24);
--	}
-+	gbe_loadcmap();
- 
- 	return 0;
- }
-@@ -855,14 +870,17 @@ static int gbefb_setcolreg(unsigned regno, unsigned red, unsigned green,
- 	blue >>= 8;
- 
- 	if (info->var.bits_per_pixel <= 8) {
--		/* wait for the color map FIFO to have a free entry */
--		for (i = 0; i < 1000 && gbe->cm_fifo >= 63; i++)
--			udelay(10);
--		if (i == 1000) {
--			printk(KERN_ERR "gbefb: cmap FIFO timeout\n");
--			return 1;
-+		gbe_cmap[regno] = (red << 24) | (green << 16) | (blue << 8);
-+		if (gbe_turned_on) {
-+			/* wait for the color map FIFO to have a free entry */
-+			for (i = 0; i < 1000 && gbe->cm_fifo >= 63; i++)
-+				udelay(10);
-+			if (i == 1000) {
-+				printk(KERN_ERR "gbefb: cmap FIFO timeout\n");
-+				return 1;
-+			}
-+			gbe->cmap[regno] = gbe_cmap[regno];
- 		}
--		gbe->cmap[regno] = (red << 24) | (green << 16) | (blue << 8);
- 	} else if (regno < 16) {
- 		switch (info->var.bits_per_pixel) {
- 		case 15:
+> diff --git a/arch/mips/pmc-sierra/yosemite/ht.c
+> b/arch/mips/pmc-sierra/yosemite/ht.c index 6380662..678388f 100644
+> --- a/arch/mips/pmc-sierra/yosemite/ht.c
+> +++ b/arch/mips/pmc-sierra/yosemite/ht.c
+> @@ -345,42 +345,6 @@ int pcibios_enable_device(struct pci_dev *dev, int
+> mask) return pcibios_enable_resources(dev);
+>  }
+>
+> -
+> -
+> -void pcibios_update_resource(struct pci_dev *dev, struct resource *root,
+> -                             struct resource *res, int resource)
+> -{
+> -        u32 new, check;
+> -        int reg;
+> -
+> -        return;
+> -
+> -        new = res->start | (res->flags & PCI_REGION_FLAG_MASK);
+> -        if (resource < 6) {
+> -                reg = PCI_BASE_ADDRESS_0 + 4 * resource;
+> -        } else if (resource == PCI_ROM_RESOURCE) {
+> -		res->flags |= IORESOURCE_ROM_ENABLE;
+> -                reg = dev->rom_base_reg;
+> -        } else {
+> -                /*
+> -                 * Somebody might have asked allocation of a non-standard
+> -                 * resource
+> -                 */
+> -                return;
+> -        }
+> -
+> -        pci_write_config_dword(dev, reg, new);
+> -        pci_read_config_dword(dev, reg, &check);
+> -        if ((new ^ check) &
+> -            ((new & PCI_BASE_ADDRESS_SPACE_IO) ? PCI_BASE_ADDRESS_IO_MASK
+> : -             PCI_BASE_ADDRESS_MEM_MASK)) {
+> -                printk(KERN_ERR "PCI: Error while updating region "
+> -                       "%s/%d (%08x != %08x)\n", pci_name(dev), resource,
+> -                       new, check);
+> -        }
+> -}
+> -
+> -
+>  void pcibios_align_resource(void *data, struct resource *res,
+>                              resource_size_t size, resource_size_t align)
+>  {

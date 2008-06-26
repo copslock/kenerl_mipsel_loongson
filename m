@@ -1,47 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jun 2008 00:45:28 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:38046 "EHLO
-	vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
-	id S28574652AbYFYXpK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 26 Jun 2008 00:45:10 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m5PNg3U3028698;
-	Thu, 26 Jun 2008 01:42:29 +0200
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m5PNfx2e028673;
-	Thu, 26 Jun 2008 01:41:59 +0200
-Date:	Thu, 26 Jun 2008 01:41:59 +0200
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Jesse Barnes <jbarnes@virtuousgeek.org>
-Cc:	Adrian Bunk <bunk@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, dhowells@redhat.com, gerg@uclinux.org,
-	linux-mips@linux-mips.org, lethal@linux-sh.org,
-	linux-sh@vger.kernel.org, Russell King <rmk+lkml@arm.linux.org.uk>
-Subject: Re: [2.6 patch] remove pcibios_update_resource() functions
-Message-ID: <20080625234159.GB15605@linux-mips.org>
-References: <20080617223332.GM25911@cs181133002.pp.htv.fi> <200806251602.49856.jbarnes@virtuousgeek.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Jun 2008 07:07:55 +0100 (BST)
+Received: from mms1.broadcom.com ([216.31.210.17]:22541 "EHLO
+	mms1.broadcom.com") by ftp.linux-mips.org with ESMTP
+	id S28575986AbYFZGHp convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 26 Jun 2008 07:07:45 +0100
+Received: from [10.11.16.99] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.3.2)); Wed, 25 Jun 2008 23:07:28 -0700
+X-Server-Uuid: 02CED230-5797-4B57-9875-D5D2FEE4708A
+Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
+ 0D6512B0; Wed, 25 Jun 2008 23:07:28 -0700 (PDT)
+Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.11.18.52]) by
+ mail-irva-10.broadcom.com (Postfix) with ESMTP id E5D5E2B0 for
+ <linux-mips@linux-mips.org>; Wed, 25 Jun 2008 23:07:27 -0700 (PDT)
+Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
+ [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.5a-GA) with ESMTP
+ id GYV16025; Wed, 25 Jun 2008 23:07:27 -0700 (PDT)
+Received: from NT-SJCA-0750.brcm.ad.broadcom.com (nt-sjca-0750
+ [10.16.192.220]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
+ 1230120501 for <linux-mips@linux-mips.org>; Wed, 25 Jun 2008 23:07:27
+ -0700 (PDT)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <200806251602.49856.jbarnes@virtuousgeek.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+Subject: Bug in atomic_sub_if_positive
+Date:	Wed, 25 Jun 2008 23:07:24 -0700
+Message-ID: <ADD7831BD377A74E9A1621D1EAAED18F0442AF00@NT-SJCA-0750.brcm.ad.broadcom.com>
+Thread-Topic: Bug in atomic_sub_if_positive
+Thread-Index: AcjXUubV9JI/8zo6QlaMem/+HdxMfQ==
+From:	"Morten Larsen" <mlarsen@broadcom.com>
+To:	linux-mips@linux-mips.org
+X-WSS-ID: 647DEDAA4E062194696-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Transfer-Encoding: 8BIT
+Return-Path: <mlarsen@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19637
+X-archive-position: 19638
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mlarsen@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jun 25, 2008 at 04:02:49PM -0700, Jesse Barnes wrote:
 
-> Ralf, I assume you're ok with this?
+As far as I can tell the branch optimization fixes in 2.6.21 introduced
+a bug in atomic_sub_if_positive that causes it to return even when the
+sc instruction fails. The result is that e.g. down_trylock becomes
+unreliable as the semaphore counter is not always decremented.
 
-Yes, of course.
+Below is a patch that fixed the problem on my system.
 
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
+Morten S. Larsen
 
-  Ralf
+
+--- a/include/asm-mips/atomic.h 2008-06-25 22:38:43.159739000 -0700
++++ b/include/asm-mips/atomic.h 2008-06-25 22:39:07.552065000 -0700
+@@ -292,10 +292,10 @@ static __inline__ int atomic_sub_if_posi
+                "       beqz    %0, 2f
+\n"
+                "        subu   %0, %1, %3
+\n"
+                "       .set    reorder
+\n"
+-               "1:
+\n"
+                "       .subsection 2
+\n"
+                "2:     b       1b
+\n"
+                "       .previous
+\n"
++               "1:
+\n"
+                "       .set    mips0
+\n"
+                : "=&r" (result), "=&r" (temp), "=m" (v->counter)
+                : "Ir" (i), "m" (v->counter)
+@@ -682,10 +682,10 @@ static __inline__ long atomic64_sub_if_p
+                "       beqz    %0, 2f
+\n"
+                "        dsubu  %0, %1, %3
+\n"
+                "       .set    reorder
+\n"
+-               "1:
+\n"
+                "       .subsection 2
+\n"
+                "2:     b       1b
+\n"
+                "       .previous
+\n"
++               "1:
+\n"
+                "       .set    mips0
+\n"
+                : "=&r" (result), "=&r" (temp), "=m" (v->counter)
+                : "Ir" (i), "m" (v->counter)

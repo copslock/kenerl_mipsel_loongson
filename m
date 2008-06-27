@@ -1,57 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jun 2008 06:34:35 +0100 (BST)
-Received: from srv5.dvmed.net ([207.36.208.214]:38859 "EHLO mail.dvmed.net")
-	by ftp.linux-mips.org with ESMTP id S20026854AbYF0FeH (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 27 Jun 2008 06:34:07 +0100
-Received: from cpe-069-134-153-115.nc.res.rr.com ([69.134.153.115] helo=core.yyz.us)
-	by mail.dvmed.net with esmtpsa (Exim 4.69 #1 (Red Hat Linux))
-	id 1KC6ay-0002Gz-09; Fri, 27 Jun 2008 05:34:05 +0000
-Message-ID: <48647BCB.80700@garzik.org>
-Date:	Fri, 27 Jun 2008 01:34:03 -0400
-From:	Jeff Garzik <jeff@garzik.org>
-User-Agent: Thunderbird 2.0.0.14 (X11/20080501)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Jun 2008 07:00:32 +0100 (BST)
+Received: from mms2.broadcom.com ([216.31.210.18]:45830 "EHLO
+	mms2.broadcom.com") by ftp.linux-mips.org with ESMTP
+	id S20022951AbYF0GA0 convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 27 Jun 2008 07:00:26 +0100
+Received: from [10.11.16.99] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.3.2)); Thu, 26 Jun 2008 23:00:06 -0700
+X-Server-Uuid: D3C04415-6FA8-4F2C-93C1-920E106A2031
+Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
+ 62FEA2B1; Thu, 26 Jun 2008 23:00:06 -0700 (PDT)
+Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.11.18.52]) by
+ mail-irva-10.broadcom.com (Postfix) with ESMTP id 4BC0C2B0; Thu, 26 Jun
+ 2008 23:00:06 -0700 (PDT)
+Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
+ [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.5a-GA) with ESMTP
+ id GYW89469; Thu, 26 Jun 2008 23:00:02 -0700 (PDT)
+Received: from NT-SJCA-0750.brcm.ad.broadcom.com (nt-sjca-0750
+ [10.16.192.220]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
+ 8849820503; Thu, 26 Jun 2008 23:00:02 -0700 (PDT)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	linux-mips@linux-mips.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] tc35815: Mark carrier-off before starting PHY
-References: <20080625.114101.102912128.nemoto@toshiba-tops.co.jp>
-In-Reply-To: <20080625.114101.102912128.nemoto@toshiba-tops.co.jp>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <jeff@garzik.org>
+Subject: RE: Bug in atomic_sub_if_positive
+Date:	Thu, 26 Jun 2008 23:00:01 -0700
+Message-ID: <ADD7831BD377A74E9A1621D1EAAED18F0442B04E@NT-SJCA-0750.brcm.ad.broadcom.com>
+In-Reply-To: <20080626121120.GA5222@linux-mips.org>
+Thread-Topic: Bug in atomic_sub_if_positive
+Thread-Index: AcjXhfSPlphHxEPJS56jk+LneGLzBQAlDgzw
+From:	"Morten Larsen" <mlarsen@broadcom.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+cc:	linux-mips@linux-mips.org
+X-WSS-ID: 647A5E6C3D070080861-01-01
+Content-Type: text/plain;
+ charset=us-ascii
+Content-Transfer-Encoding: 8BIT
+Return-Path: <mlarsen@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19654
+X-archive-position: 19655
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jeff@garzik.org
+X-original-sender: mlarsen@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> Call netif_carrier_off() before starting PHY device.  This is a
-> behavior before converting to generic PHY layer.
+ 
+> I did play with a test program and can't reproduce the effect with my
+> assembler.  I have darm memories of gas immitating some 
+> obscure behaviour
+> of the IRIX assembler and I think it doesn't do so for all 
+> MIPS targets.
 > 
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-> ---
-> diff --git a/drivers/net/tc35815.c b/drivers/net/tc35815.c
-> index 10e4e85..dccea52 100644
-> --- a/drivers/net/tc35815.c
-> +++ b/drivers/net/tc35815.c
-> @@ -1394,6 +1394,7 @@ tc35815_open(struct net_device *dev)
->  	tc35815_chip_init(dev);
->  	spin_unlock_irq(&lp->lock);
->  
-> +	netif_carrier_off(dev);
->  	/* schedule a link state check */
->  	phy_start(lp->phy_dev);
->  
-> @@ -2453,6 +2454,7 @@ static int tc35815_resume(struct pci_dev *pdev)
->  		return 0;
->  	pci_set_power_state(pdev, PCI_D0);
->  	tc35815_restart(dev);
-> +	netif_carrier_off(dev);
->  	if (lp->phy_dev)
+> So I'm wandering what toolchain have you been using?
+> 
+>   Ralf
+> 
+The toolchain is from Wind River Systems 2.0 Linux Edition.
+The kernel (based on 2.6.21.7) is also supplied by Wind River, and it
+has preemption turned on.
+The CPU is a Broadcom/SiByte BCM1125H (single core version of BCM1250
+Swarm.)
 
-applied
+Morten

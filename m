@@ -1,29 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Jun 2008 23:46:10 +0100 (BST)
-Received: from elvis.franken.de ([193.175.24.41]:7873 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S28578363AbYF1Wp7 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 28 Jun 2008 23:45:59 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Jun 2008 23:35:49 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:61674 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20046290AbYF2Wfo (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 29 Jun 2008 23:35:44 +0100
 Received: from uucp (helo=solo.franken.de)
 	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1KCjB6-0004Y0-00
-	for linux-mips@linux-mips.org; Sun, 29 Jun 2008 00:45:56 +0200
+	id 1KD5Uk-0007Ff-00
+	for linux-mips@linux-mips.org; Mon, 30 Jun 2008 00:35:42 +0200
 Received: by solo.franken.de (Postfix, from userid 1000)
-	id 3B57AE2F71; Sun, 29 Jun 2008 00:45:53 +0200 (CEST)
-Date:	Sun, 29 Jun 2008 00:45:53 +0200
+	id 47324FB46F; Mon, 30 Jun 2008 00:35:37 +0200 (CEST)
+Date:	Mon, 30 Jun 2008 00:35:37 +0200
 To:	linux-mips@linux-mips.org
-Subject: Re: SGI O2 sound driver
-Message-ID: <20080628224553.GA2064@alpha.franken.de>
-References: <20080628000916.GA22049@alpha.franken.de> <20080628141336.GA17727@alpha.franken.de>
+Subject: Re: SGI O2 sound driver v4
+Message-ID: <20080629223537.GA697@alpha.franken.de>
+References: <20080628000916.GA22049@alpha.franken.de> <20080628141336.GA17727@alpha.franken.de> <20080628224553.GA2064@alpha.franken.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20080628141336.GA17727@alpha.franken.de>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20080628224553.GA2064@alpha.franken.de>
 User-Agent: Mutt/1.5.13 (2006-08-11)
 From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
 Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19668
+X-archive-position: 19670
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,25 +32,36 @@ X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Jun 28, 2008 at 04:13:37PM +0200, Thomas Bogendoerfer wrote:
-> v2 is now checkpatch clean and I switched over to use a platform device.
-> The next step is now to get capture and 2nd playback going.
+On Sun, Jun 29, 2008 at 12:45:53AM +0200, Thomas Bogendoerfer wrote:
+> [...]
 
-(important) changes in v3:
+changes in v4:
 
-- support 2nd DAC
-- added delay after releasing module reset
+- added control
+- added capture support (no idea, if it is correct, yet)
+
+I'm on a buissness trip the next two days, so I'm not able to work on
+the driver. Here is a short TODO:
+
+- test capture and fix bugs
+- switch over to use S24_BE (didn't work the first time I checked it)
+- rewrite dma_push/dma_pull functions after switching for S24_BE
+- maybe more controls
+- rip out button support and write input driver for it
+- add dma error interrupt handling
+- check spinlock usage
+- use atomic_test_set for pcm open stuff
 
 Thomas.
 
 
  arch/mips/sgi-ip32/ip32-platform.c |   18 +
- include/sound/ad1843.h             |   47 +++
+ include/sound/ad1843.h             |   45 ++
  sound/mips/Kconfig                 |    6 +
  sound/mips/Makefile                |    2 +
- sound/mips/ad1843.c                |  653 ++++++++++++++++++++++++++++++++
- sound/mips/sgio2audio.c            |  730 ++++++++++++++++++++++++++++++++++++
- 6 files changed, 1456 insertions(+), 0 deletions(-)
+ sound/mips/ad1843.c                |  545 +++++++++++++++++++
+ sound/mips/sgio2audio.c            | 1034 ++++++++++++++++++++++++++++++++++++
+ 6 files changed, 1650 insertions(+), 0 deletions(-)
 
 diff --git a/arch/mips/sgi-ip32/ip32-platform.c b/arch/mips/sgi-ip32/ip32-platform.c
 index 89a71f4..8b624b9 100644
@@ -82,16 +94,17 @@ index 89a71f4..8b624b9 100644
  MODULE_DESCRIPTION("8250 UART probe driver for SGI IP32 aka O2");
 diff --git a/include/sound/ad1843.h b/include/sound/ad1843.h
 new file mode 100644
-index 0000000..492d10c
+index 0000000..0fe9aa7
 --- /dev/null
 +++ b/include/sound/ad1843.h
-@@ -0,0 +1,47 @@
+@@ -0,0 +1,45 @@
 +/*
 + * This file is subject to the terms and conditions of the GNU General Public
 + * License.  See the file "COPYING" in the main directory of this archive
 + * for more details.
 + *
 + * Copyright 2003 Vivien Chappelier <vivien.chappelier@linux-mips.org>
++ * Copyright 2008 Thomas Bogendoerfer <tsbogend@franken.de>
 + */
 +
 +#ifndef __SOUND_AD1843_H
@@ -114,10 +127,7 @@ index 0000000..492d10c
 +int ad1843_get_gain(struct snd_ad1843 *ad1843, int id);
 +int ad1843_set_gain(struct snd_ad1843 *ad1843, int id, int newval);
 +int ad1843_get_recsrc(struct snd_ad1843 *ad1843);
-+void ad1843_set_resample_mode(struct snd_ad1843 *ad1843, int onoff);
 +int ad1843_set_recsrc(struct snd_ad1843 *ad1843, int newsrc);
-+int ad1843_get_outsrc(struct snd_ad1843 *ad1843);
-+int ad1843_set_outsrc(struct snd_ad1843 *ad1843, int mask);
 +void ad1843_setup_dac(struct snd_ad1843 *ad1843,
 +		      unsigned int id,
 +		      unsigned int framerate,
@@ -165,14 +175,15 @@ index 47afed9..55624d8 100644
 +obj-$(CONFIG_SND_SGI_O2) += snd-sgi-o2.o
 diff --git a/sound/mips/ad1843.c b/sound/mips/ad1843.c
 new file mode 100644
-index 0000000..b766698
+index 0000000..90ea2c2
 --- /dev/null
 +++ b/sound/mips/ad1843.c
-@@ -0,0 +1,653 @@
+@@ -0,0 +1,545 @@
 +/*
 + *   AD1843 low level driver
 + *
 + *   Copyright 2003 Vivien Chappelier <vivien.chappelier@linux-mips.org>
++ *   Copyright 2008 Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 + *
 + *   inspired from vwsnd.c (SGI VW audio driver)
 + *     Copyright 1999 Silicon Graphics, Inc.  All rights reserved.
@@ -193,15 +204,11 @@ index 0000000..b766698
 + *
 + */
 +
-+#include <linux/slab.h>
-+
 +#include <linux/init.h>
-+#include <linux/jiffies.h>
 +#include <linux/sched.h>
 +#include <linux/errno.h>
 +#include <sound/core.h>
 +#include <sound/pcm.h>
-+#include <sound/initval.h>
 +#include <sound/ad1843.h>
 +
 +/* TEMP: OSS stuff */
@@ -495,62 +502,7 @@ index 0000000..b766698
 +
 +int ad1843_get_recsrc(struct snd_ad1843 *ad1843)
 +{
-+	int ls = ad1843_read_bits(ad1843, &ad1843_LSS);
-+
-+	switch (ls) {
-+	case 1:
-+		return SOUND_MASK_MIC;
-+	case 2:
-+		return SOUND_MASK_LINE;
-+	case 3:
-+		return SOUND_MASK_CD;
-+	case 6:
-+		return SOUND_MASK_PCM;
-+	default:
-+		return -1;
-+	}
-+}
-+
-+/*
-+ * Enable/disable digital resample mode in the AD1843.
-+ *
-+ * The AD1843 requires that ADL, ADR, DA1 and DA2 be powered down
-+ * while switching modes.  So we save DA's state, power them down,
-+ * switch into/out of resample mode, power them up, and restore state.
-+ *
-+ * This will cause audible glitches if D/A or A/D is going on, so the
-+ * driver disallows that (in mixer_write_ioctl()).
-+ *
-+ * The open question is, is this worth doing?  I'm leaving it in,
-+ * because it's written, but...
-+ */
-+
-+void ad1843_set_resample_mode(struct snd_ad1843 *ad1843, int onoff)
-+{
-+	/* Save DA's mute and gain (addr 9/10 is analog gain/attenuation) */
-+	int save_da1 = ad1843->read(ad1843->chip, 9);
-+	int save_da2 = ad1843->read(ad1843->chip, 10);
-+
-+	/* Power down A/D and D/A. */
-+	ad1843_write_multi(ad1843, 4,
-+			   &ad1843_DA1EN, 0,
-+			   &ad1843_DA2EN, 0,
-+			   &ad1843_ADLEN, 0,
-+			   &ad1843_ADREN, 0);
-+
-+	/* Switch mode */
-+	ad1843_write_bits(ad1843, &ad1843_DRSFLT, onoff);
-+
-+	/* Power up A/D and D/A. */
-+	ad1843_write_multi(ad1843, 3,
-+			   &ad1843_DA1EN, 1,
-+			   &ad1843_DA2EN, 1,
-+			   &ad1843_ADLEN, 1,
-+			   &ad1843_ADREN, 1);
-+
-+	/* Restore DA's mute and gain. */
-+	ad1843->write(ad1843->chip, 9, save_da1);
-+	ad1843->write(ad1843->chip, 10, save_da2);
++	return ad1843_read_bits(ad1843, &ad1843_LSS);
 +}
 +
 +/*
@@ -565,61 +517,11 @@ index 0000000..b766698
 +
 +int ad1843_set_recsrc(struct snd_ad1843 *ad1843, int newsrc)
 +{
-+	int bits;
-+	int oldbits;
-+
-+	switch (newsrc) {
-+	case SOUND_MASK_PCM:
-+		bits = 6;
-+		break;
-+
-+	case SOUND_MASK_MIC:
-+		bits = 1;
-+		break;
-+
-+	case SOUND_MASK_LINE:
-+		bits = 2;
-+		break;
-+
-+	case SOUND_MASK_CD:
-+		bits = 3;
-+		break;
-+
-+	default:
++	if (newsrc < 0 || newsrc > 7)
 +		return -EINVAL;
-+	}
-+	oldbits = ad1843_read_bits(ad1843, &ad1843_LSS);
-+	if (newsrc == SOUND_MASK_PCM && oldbits != 6) {
 +
-+		ad1843_set_resample_mode(ad1843, 1);
-+		ad1843_write_multi(ad1843, 2,
-+				   &ad1843_DAADL, 2,
-+				   &ad1843_DAADR, 2);
-+	} else if (newsrc != SOUND_MASK_PCM && oldbits == 6) {
-+
-+		ad1843_set_resample_mode(ad1843, 0);
-+		ad1843_write_multi(ad1843, 2,
-+				   &ad1843_DAADL, 0,
-+				   &ad1843_DAADR, 0);
-+	}
-+	ad1843_write_multi(ad1843, 2, &ad1843_LSS, bits, &ad1843_RSS, bits);
++	ad1843_write_multi(ad1843, 2, &ad1843_LSS, newsrc, &ad1843_RSS, newsrc);
 +	return newsrc;
-+}
-+
-+/*
-+ * Return current output sources, in OSS format.
-+ */
-+
-+int ad1843_get_outsrc(struct snd_ad1843 *ad1843)
-+{
-+	int pcm, line, mic, cd;
-+
-+	pcm  = ad1843_read_bits(ad1843, &ad1843_LDA1GM) ? 0 : SOUND_MASK_PCM;
-+	line = ad1843_read_bits(ad1843, &ad1843_LX1MM)  ? 0 : SOUND_MASK_LINE;
-+	cd   = ad1843_read_bits(ad1843, &ad1843_LX2MM)  ? 0 : SOUND_MASK_CD;
-+	mic  = ad1843_read_bits(ad1843, &ad1843_LMCMM)  ? 0 : SOUND_MASK_MIC;
-+
-+	return pcm | line | cd | mic;
 +}
 +
 +/*
@@ -628,7 +530,7 @@ index 0000000..b766698
 + * Returns source mask on success, -errno on failure.
 + */
 +
-+int ad1843_set_outsrc(struct snd_ad1843 *ad1843, int mask)
++static int ad1843_set_outsrc(struct snd_ad1843 *ad1843, int mask)
 +{
 +	int pcm, line, mic, cd;
 +
@@ -824,20 +726,17 @@ index 0000000..b766698
 +}
 diff --git a/sound/mips/sgio2audio.c b/sound/mips/sgio2audio.c
 new file mode 100644
-index 0000000..e77577d
+index 0000000..cb6a9ce
 --- /dev/null
 +++ b/sound/mips/sgio2audio.c
-@@ -0,0 +1,730 @@
+@@ -0,0 +1,1034 @@
 +/*
 + *   Sound driver for Silicon Graphics O2 Workstations A/V board audio.
 + *
 + *   Copyright 2003 Vivien Chappelier <vivien.chappelier@linux-mips.org>
-+ *
-+ *   INCOMPLETE:
-+ *        - finish PCM,
-+ *            . recording
-+ *        - mixer and controls
-+ *        - /proc interface
++ *   Copyright 2008 Thomas Bogendoerfer <tsbogend@alpha.franken.de>
++ *   Mxier part taken from mace_audio.c:
++ *   Copyright 2007 Thorben Jändling <tj.trevelyan@gmail.com>
 + *
 + *   This program is free software; you can redistribute it and/or modify
 + *   it under the terms of the GNU General Public License as published by
@@ -881,6 +780,14 @@ index 0000000..e77577d
 +MODULE_LICENSE("GPL");
 +MODULE_SUPPORTED_DEVICE("{{Silicon Graphics, O2 Audio}}");
 +
++static int index = SNDRV_DEFAULT_IDX1;  /* Index 0-MAX */
++static char *id = SNDRV_DEFAULT_STR1;   /* ID for this card */
++
++module_param(index, int, 0444);
++MODULE_PARM_DESC(index, "Index value for SGI O2 soundcard.");
++module_param(id, charp, 0444);
++MODULE_PARM_DESC(id, "ID string for SGI O2 soundcard.");
++
 +
 +#define SGIO2AUDIO_MAX_VOLUME 1000
 +
@@ -892,16 +799,12 @@ index 0000000..e77577d
 +#define AUDIO_CONTROL_VOLUME_BUTTON_UP   BIT(23) /* latched volume button */
 +#define AUDIO_CONTROL_VOLUME_BUTTON_DOWN BIT(24) /* latched volume button */
 +
-+#define CODEC_CONTROL_WORD_SHIFT 0
-+#define CODEC_CONTROL_WORD_MASK ((1 << 16) - 1)
-+#define CODEC_CONTROL_READ BIT(16)
-+#define CODEC_CONTROL_ADDRESS_SHIFT 17
-+#define CODEC_CONTROL_ADDRESS_MASK ((1 << 7) - 1)
++#define CODEC_CONTROL_WORD_SHIFT        0
++#define CODEC_CONTROL_READ              BIT(16)
++#define CODEC_CONTROL_ADDRESS_SHIFT     17
 +
-+#define CHANNEL_PTR_SHIFT     5
-+#define CHANNEL_PTR_MASK      ((1 << 6) - 1)
-+#define CHANNEL_CONTROL_RESET BIT(10) /* 1: reset channel */
-+#define CHANNEL_DMA_ENABLE    BIT(9)  /* 1: enable DMA transfer */
++#define CHANNEL_CONTROL_RESET           BIT(10) /* 1: reset channel */
++#define CHANNEL_DMA_ENABLE              BIT(9)  /* 1: enable DMA transfer */
 +#define CHANNEL_INT_THRESHOLD_DISABLED  (0 << 5) /* interrupt disabled */
 +#define CHANNEL_INT_THRESHOLD_25        (1 << 5) /* int on buffer >25% full */
 +#define CHANNEL_INT_THRESHOLD_50        (2 << 5) /* int on buffer >50% full */
@@ -911,13 +814,9 @@ index 0000000..e77577d
 +#define CHANNEL_INT_THRESHOLD_FULL      (6 << 5) /* int on buffer empty */
 +#define CHANNEL_INT_THRESHOLD_NOT_FULL  (7 << 5) /* int on buffer !empty */
 +
-+#define CHANNEL_IN_BASE   (0 << 12)
-+#define CHANNEL_OUT1_BASE (1 << 12)
-+#define CHANNEL_OUT2_BASE (2 << 12)
-+
-+#define CHANNEL_RING_SHIFT 12
-+#define CHANNEL_RING_SIZE (1 << CHANNEL_RING_SHIFT)
-+#define CHANNEL_RING_MASK (CHANNEL_RING_SIZE - 1)
++#define CHANNEL_RING_SHIFT              12
++#define CHANNEL_RING_SIZE               (1 << CHANNEL_RING_SHIFT)
++#define CHANNEL_RING_MASK               (CHANNEL_RING_SIZE - 1)
 +
 +#define CHANNEL_LEFT_SHIFT 40
 +#define CHANNEL_RIGHT_SHIFT 8
@@ -954,25 +853,6 @@ index 0000000..e77577d
 +	dma_addr_t ring_base_dma;
 +	int irq_start;
 +	int irq_end;
-+};
-+
-+/* PCM hardware definition */
-+static struct snd_pcm_hardware snd_sgio2audio_playback_hw = {
-+	.info = (SNDRV_PCM_INFO_MMAP |
-+		 SNDRV_PCM_INFO_MMAP_VALID |
-+		 SNDRV_PCM_INFO_INTERLEAVED |
-+		 SNDRV_PCM_INFO_BLOCK_TRANSFER),
-+	.formats =          SNDRV_PCM_FMTBIT_S16_BE,
-+	.rates =            SNDRV_PCM_RATE_8000_48000,
-+	.rate_min =         8000,
-+	.rate_max =         48000,
-+	.channels_min =     2,
-+	.channels_max =     2,
-+	.buffer_bytes_max = 65536,
-+	.period_bytes_min = 32768,
-+	.period_bytes_max = 65536,
-+	.periods_min =      1,
-+	.periods_max =      1024,
 +};
 +
 +/* AD1843 access */
@@ -1030,7 +910,271 @@ index 0000000..e77577d
 +	write_ad1843_reg,
 +};
 +
++static int sgio2audio_gain_info(struct snd_kcontrol *kcontrol,
++			       struct snd_ctl_elem_info *uinfo)
++{
++	uinfo->type = SNDRV_CTL_ELEM_TYPE_INTEGER;
++	uinfo->count = 2;
++	uinfo->value.integer.min = 0;
++	uinfo->value.integer.max = 100;
++	return 0;
++}
++
++static int sgio2audio_gain_get(struct snd_kcontrol *kcontrol,
++			       struct snd_ctl_elem_value *ucontrol)
++{
++	struct snd_sgio2audio *chip = snd_kcontrol_chip(kcontrol);
++	int vol;
++	unsigned long flags;
++
++	spin_lock_irqsave(&chip->ad1843_lock, flags);
++
++	vol = ad1843_get_gain(chip->ad1843, (int)kcontrol->private_value);
++
++	ucontrol->value.integer.value[0] = vol & 0xFF;
++	ucontrol->value.integer.value[1] = (vol >> 8) & 0xFF;
++
++	spin_unlock_irqrestore(&chip->ad1843_lock, flags);
++
++	return 0;
++}
++
++static int sgio2audio_gain_put(struct snd_kcontrol *kcontrol,
++			struct snd_ctl_elem_value *ucontrol)
++{
++	struct snd_sgio2audio *chip = snd_kcontrol_chip(kcontrol);
++	int newvol, oldvol;
++	unsigned long flags;
++
++	spin_lock_irqsave(&chip->ad1843_lock, flags);
++
++	oldvol = ad1843_get_gain(chip->ad1843, kcontrol->private_value);
++	newvol = (ucontrol->value.integer.value[1] << 8) |
++		ucontrol->value.integer.value[0];
++
++	newvol = ad1843_set_gain(chip->ad1843, kcontrol->private_value,
++		newvol);
++
++	spin_unlock_irqrestore(&chip->ad1843_lock, flags);
++
++	return newvol != oldvol;
++}
++
++static int sgio2audio_source_info(struct snd_kcontrol *kcontrol,
++			       struct snd_ctl_elem_info *uinfo)
++{
++	static const char *texts[2] = {
++		"Line In", "Mic"
++	};
++	uinfo->type = SNDRV_CTL_ELEM_TYPE_ENUMERATED;
++	uinfo->count = 1;
++	uinfo->value.enumerated.items = 2;
++	if (uinfo->value.enumerated.item >= 2)
++		uinfo->value.enumerated.item = 1;
++	strcpy(uinfo->value.enumerated.name,
++	       texts[uinfo->value.enumerated.item]);
++	return 0;
++}
++
++static int sgio2audio_source_get(struct snd_kcontrol *kcontrol,
++			       struct snd_ctl_elem_value *ucontrol)
++{
++	struct snd_sgio2audio *chip = snd_kcontrol_chip(kcontrol);
++	unsigned long flags;
++
++	spin_lock_irqsave(&chip->ad1843_lock, flags);
++
++	ucontrol->value.enumerated.item[0] = ad1843_get_recsrc(chip->ad1843);
++
++	spin_unlock_irqrestore(&chip->ad1843_lock, flags);
++
++	return 0;
++}
++
++static int sgio2audio_source_put(struct snd_kcontrol *kcontrol,
++			struct snd_ctl_elem_value *ucontrol)
++{
++	struct snd_sgio2audio *chip = snd_kcontrol_chip(kcontrol);
++	int newsrc, oldsrc;
++	unsigned long flags;
++
++	spin_lock_irqsave(&chip->ad1843_lock, flags);
++
++	oldsrc = ad1843_get_recsrc(chip->ad1843);
++	newsrc = ad1843_set_recsrc(chip->ad1843,
++				   ucontrol->value.enumerated.item[0]);
++
++	spin_unlock_irqrestore(&chip->ad1843_lock, flags);
++
++	return newsrc != oldsrc;
++}
++
++/* dac1/pcm0 mixer control */
++static struct snd_kcontrol_new sgio2audio_ctrl_pcm0 __devinitdata = {
++	.iface          = SNDRV_CTL_ELEM_IFACE_MIXER,
++	.name           = "Playback 0 Volume",
++	.access         = SNDRV_CTL_ELEM_ACCESS_READWRITE,
++	.private_value  = AD1843_GAIN_PCM_0,
++	.info           = sgio2audio_gain_info,
++	.get            = sgio2audio_gain_get,
++	.put            = sgio2audio_gain_put,
++};
++
++/* dac2/pcm1 mixer control */
++static struct snd_kcontrol_new sgio2audio_ctrl_pcm1 __devinitdata = {
++	.iface          = SNDRV_CTL_ELEM_IFACE_MIXER,
++	.name           = "Playback 1 Volume",
++	.access         = SNDRV_CTL_ELEM_ACCESS_READWRITE,
++	.private_value  = AD1843_GAIN_PCM_1,
++	.info           = sgio2audio_gain_info,
++	.get            = sgio2audio_gain_get,
++	.put            = sgio2audio_gain_put,
++};
++
++/* record level mixer control */
++static struct snd_kcontrol_new sgio2audio_ctrl_reclevel __devinitdata = {
++	.iface          = SNDRV_CTL_ELEM_IFACE_MIXER,
++	.name           = "Capture Volume",
++	.access         = SNDRV_CTL_ELEM_ACCESS_READWRITE,
++	.private_value  = AD1843_GAIN_RECLEV,
++	.info           = sgio2audio_gain_info,
++	.get            = sgio2audio_gain_get,
++	.put            = sgio2audio_gain_put,
++};
++
++/* record level source control */
++static struct snd_kcontrol_new sgio2audio_ctrl_recsource __devinitdata = {
++	.iface          = SNDRV_CTL_ELEM_IFACE_MIXER,
++	.name           = "Capture Source",
++	.access         = SNDRV_CTL_ELEM_ACCESS_READWRITE,
++	.info           = sgio2audio_source_info,
++	.get            = sgio2audio_source_get,
++	.put            = sgio2audio_source_put,
++};
++
++/* line mixer control */
++static struct snd_kcontrol_new sgio2audio_ctrl_line __devinitdata = {
++	.iface          = SNDRV_CTL_ELEM_IFACE_MIXER,
++	.name           = "Line Volume",
++	.access         = SNDRV_CTL_ELEM_ACCESS_READWRITE,
++	.private_value  = AD1843_GAIN_LINE,
++	.info           = sgio2audio_gain_info,
++	.get            = sgio2audio_gain_get,
++	.put            = sgio2audio_gain_put,
++};
++
++/* cd mixer control */
++static struct snd_kcontrol_new sgio2audio_ctrl_cd __devinitdata = {
++	.iface          = SNDRV_CTL_ELEM_IFACE_MIXER,
++	.name           = "CD Volume",
++	.access         = SNDRV_CTL_ELEM_ACCESS_READWRITE,
++	.private_value  = AD1843_GAIN_CD,
++	.info           = sgio2audio_gain_info,
++	.get            = sgio2audio_gain_get,
++	.put            = sgio2audio_gain_put,
++};
++
++/* mic mixer control */
++static struct snd_kcontrol_new sgio2audio_ctrl_mic __devinitdata = {
++	.iface          = SNDRV_CTL_ELEM_IFACE_MIXER,
++	.name           = "Mic Volume",
++	.access         = SNDRV_CTL_ELEM_ACCESS_READWRITE,
++	.private_value  = AD1843_GAIN_MIC,
++	.info           = sgio2audio_gain_info,
++	.get            = sgio2audio_gain_get,
++	.put            = sgio2audio_gain_put,
++};
++
++
++static int __devinit snd_sgio2audio_new_mixer(struct snd_sgio2audio *chip)
++{
++	int err;
++
++	err = snd_ctl_add(chip->card,
++			  snd_ctl_new1(&sgio2audio_ctrl_pcm0, chip));
++	if (err < 0)
++		return err;
++
++	err = snd_ctl_add(chip->card,
++			  snd_ctl_new1(&sgio2audio_ctrl_pcm1, chip));
++	if (err < 0)
++		return err;
++
++	err = snd_ctl_add(chip->card,
++			  snd_ctl_new1(&sgio2audio_ctrl_reclevel, chip));
++	if (err < 0)
++		return err;
++
++	err = snd_ctl_add(chip->card,
++			  snd_ctl_new1(&sgio2audio_ctrl_recsource, chip));
++	if (err < 0)
++		return err;
++	err = snd_ctl_add(chip->card,
++			  snd_ctl_new1(&sgio2audio_ctrl_line, chip));
++	if (err < 0)
++		return err;
++
++	err = snd_ctl_add(chip->card,
++			  snd_ctl_new1(&sgio2audio_ctrl_cd, chip));
++	if (err < 0)
++		return err;
++
++	err = snd_ctl_add(chip->card,
++			  snd_ctl_new1(&sgio2audio_ctrl_mic, chip));
++	if (err < 0)
++		return err;
++
++	return 0;
++}
++
 +/* low-level audio interface DMA */
++
++/* get data out of bounce buffer, count must be a multiple of 32 */
++/* returns 1 if a period has elapsed */
++static int snd_sgio2audio_dma_pull_frag(struct snd_sgio2audio *chip,
++					unsigned int ch, unsigned int count)
++{
++	int ret;
++	unsigned long src_base, src_pos;
++	unsigned long dst_base, dst_pos, dst_mask;
++	u32 *src;
++	s16 *dst;
++	unsigned long flags;
++	struct snd_pcm_runtime *runtime = chip->channel[ch].substream->runtime;
++
++	spin_lock_irqsave(&chip->channel[ch].lock, flags);
++
++	src_base = (unsigned long) chip->ring_base | (ch << CHANNEL_RING_SHIFT);
++	src_pos = readq(&mace->perif.audio.chan[ch].read_ptr);
++	dst_base = (unsigned long) chip->channel[ch].buffer;
++	dst_pos = (unsigned long) chip->channel[ch].pos;
++	dst_mask = frames_to_bytes(runtime, runtime->buffer_size) - 1;
++
++	/* check if a period has elapsed */
++	chip->channel[ch].size += (count >> 3); /* in frames */
++	ret = chip->channel[ch].size >= runtime->period_size;
++	chip->channel[ch].size %= runtime->period_size;
++
++	if (count & 7)
++		count -= 4;
++	while (count) {
++		dst = (s16 *)(src_base + src_pos);
++		src = (u32 *)(dst_base + dst_pos);
++
++		dst[0] = src[0] >> 16;
++		dst[1] = src[1] >> 16;
++
++		src_pos = (src_pos + 2 * sizeof(u32)) & CHANNEL_RING_MASK;
++		dst_pos = (dst_pos + 2 * sizeof(s16)) & dst_mask;
++		count -= sizeof(u64);
++	}
++
++	writeq(src_pos, &mace->perif.audio.chan[ch].read_ptr); /* in bytes */
++	chip->channel[ch].pos = dst_pos;
++
++	spin_unlock_irqrestore(&chip->channel[ch].lock, flags);
++	return ret;
++}
 +
 +/* put some DMA data in bounce buffer, count must be a multiple of 32 */
 +/* returns 1 if a period has elapsed */
@@ -1092,9 +1236,10 @@ index 0000000..e77577d
 +	udelay(10);
 +	writeq(0, &mace->perif.audio.chan[ch].control);
 +
-+	/* push a full buffer */
-+	snd_sgio2audio_dma_push_frag(chip, ch, CHANNEL_RING_SIZE - 32);
-+
++	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
++		/* push a full buffer */
++		snd_sgio2audio_dma_push_frag(chip, ch, CHANNEL_RING_SIZE - 32);
++	}
 +	/* set DMA to wake on 50% empty and enable interrupt */
 +	writeq(CHANNEL_DMA_ENABLE | CHANNEL_INT_THRESHOLD_50,
 +	       &mace->perif.audio.chan[ch].control);
@@ -1109,19 +1254,46 @@ index 0000000..e77577d
 +	return 0;
 +}
 +
-+static void snd_sgio2audio_dma_interrupt(struct snd_sgio2audio *chip, int ch)
++static irqreturn_t snd_sgio2audio_dma_in_isr(int irq, void *dev_id)
 +{
-+	struct snd_pcm_substream *substream = chip->channel[ch].substream;
-+	int count;
++	struct snd_sgio2audio_chan *chan = dev_id;
++	struct snd_pcm_substream *substream;
++	struct snd_sgio2audio *chip;
++	int count, ch;
 +
++	substream = chan->substream;
++	chip = snd_pcm_substream_chip(substream);
++	ch = chan->idx;
++
++	/* empty the ring */
++	count = CHANNEL_RING_SIZE -
++		readq(&mace->perif.audio.chan[ch].depth) - 32;
++	if (snd_sgio2audio_dma_pull_frag(chip, ch, count))
++		snd_pcm_period_elapsed(substream);
++
++	return IRQ_HANDLED;
++}
++
++static irqreturn_t snd_sgio2audio_dma_out_isr(int irq, void *dev_id)
++{
++	struct snd_sgio2audio_chan *chan = dev_id;
++	struct snd_pcm_substream *substream;
++	struct snd_sgio2audio *chip;
++	int count, ch;
++
++	substream = chan->substream;
++	chip = snd_pcm_substream_chip(substream);
++	ch = chan->idx;
 +	/* fill the ring */
 +	count = CHANNEL_RING_SIZE -
 +		readq(&mace->perif.audio.chan[ch].depth) - 32;
 +	if (snd_sgio2audio_dma_push_frag(chip, ch, count))
 +		snd_pcm_period_elapsed(substream);
++
++	return IRQ_HANDLED;
 +}
 +
-+static irqreturn_t snd_sgio2audio_interrupt(int irq, void *dev_id)
++static irqreturn_t snd_sgio2audio_misc_isr(int irq, void *dev_id)
 +{
 +	struct snd_sgio2audio *chip = dev_id;
 +	unsigned long status;
@@ -1149,16 +1321,6 @@ index 0000000..e77577d
 +				chip->volume / 10);
 +		break;
 +
-+		/* dma ring ready */
-+	case MACEISA_AUDIO1_DMAT_IRQ:
-+		snd_sgio2audio_dma_interrupt(chip, 0);
-+		break;
-+	case MACEISA_AUDIO2_DMAT_IRQ:
-+		snd_sgio2audio_dma_interrupt(chip, 1);
-+		break;
-+	case MACEISA_AUDIO3_DMAT_IRQ:
-+		snd_sgio2audio_dma_interrupt(chip, 2);
-+		break;
 +	default:
 +		printk(KERN_ERR "sgio2audio: unhandled interrupt %d\n", irq);
 +		/* TEMP : stop DMA */
@@ -1171,6 +1333,24 @@ index 0000000..e77577d
 +}
 +
 +/* PCM part */
++/* PCM hardware definition */
++static struct snd_pcm_hardware snd_sgio2audio_playback_hw = {
++	.info = (SNDRV_PCM_INFO_MMAP |
++		 SNDRV_PCM_INFO_MMAP_VALID |
++		 SNDRV_PCM_INFO_INTERLEAVED |
++		 SNDRV_PCM_INFO_BLOCK_TRANSFER),
++	.formats =          SNDRV_PCM_FMTBIT_S16_BE,
++	.rates =            SNDRV_PCM_RATE_8000_48000,
++	.rate_min =         8000,
++	.rate_max =         48000,
++	.channels_min =     2,
++	.channels_max =     2,
++	.buffer_bytes_max = 65536,
++	.period_bytes_min = 32768,
++	.period_bytes_max = 65536,
++	.periods_min =      1,
++	.periods_max =      1024,
++};
 +
 +/* PCM playback open callback */
 +static int snd_sgio2audio_playback_open(struct snd_pcm_substream *substream)
@@ -1211,10 +1391,7 @@ index 0000000..e77577d
 +	struct snd_pcm_runtime *runtime = substream->runtime;
 +
 +	runtime->hw = snd_sgio2audio_playback_hw;
-+
-+	/* initialize AD1843 */
-+	ad1843_init(chip->ad1843);
-+
++	runtime->private_data = &chip->channel[0];
 +	return 0;
 +}
 +
@@ -1413,7 +1590,10 @@ index 0000000..e77577d
 +					   struct snd_sgio2audio **rchip)
 +{
 +	struct snd_sgio2audio *chip;
++	irqreturn_t (*isr)(int, void *);
 +	int i, err, irq;
++	void *arg;
++	const char *desc;
 +
 +	*rchip = NULL;
 +
@@ -1451,9 +1631,29 @@ index 0000000..e77577d
 +
 +	/* allocate IRQs */
 +	for (irq = chip->irq_start; irq <= chip->irq_end; irq++) {
-+		if (request_irq(irq, snd_sgio2audio_interrupt,
-+				IRQF_SHARED, "SGI O2 Audio",
-+				(void *)chip)) {
++		switch (irq) {
++		case MACEISA_AUDIO1_DMAT_IRQ:
++			isr = snd_sgio2audio_dma_in_isr;
++			arg = &chip->channel[0];
++			desc = "Capture DMA Channel 0";
++			break;
++		case MACEISA_AUDIO2_DMAT_IRQ:
++			isr = snd_sgio2audio_dma_out_isr;
++			arg = &chip->channel[1];
++			desc = "Playback DMA Channel 1";
++			break;
++		case MACEISA_AUDIO3_DMAT_IRQ:
++			isr = snd_sgio2audio_dma_out_isr;
++			arg = &chip->channel[2];
++			desc = "Playback DMA Channel 2";
++			break;
++		default:
++			isr = snd_sgio2audio_misc_isr;
++			arg = chip;
++			desc = "Audio";
++			break;
++		}
++		if (request_irq(irq, isr, IRQF_SHARED, desc, arg)) {
 +			snd_sgio2audio_free(chip);
 +			printk(KERN_ERR
 +			       "sgio2audio: cannot allocate irq %d\n", irq);
@@ -1496,7 +1696,7 @@ index 0000000..e77577d
 +	struct snd_sgio2audio *chip;
 +	int err;
 +
-+	card = snd_card_new(0, 0, THIS_MODULE, 0);
++	card = snd_card_new(index, id, THIS_MODULE, 0);
 +	if (card == NULL)
 +		return -ENOMEM;
 +
@@ -1505,9 +1705,15 @@ index 0000000..e77577d
 +		snd_card_free(card);
 +		return err;
 +	}
++	snd_card_set_dev(card, &pdev->dev);
 +
 +	/* TODO : finish PCM, do mixer and /proc */
 +	err = snd_sgio2audio_new_pcm(chip);
++	if (err < 0) {
++		snd_card_free(card);
++		return err;
++	}
++	err = snd_sgio2audio_new_mixer(chip);
 +	if (err < 0) {
 +		snd_card_free(card);
 +		return err;
@@ -1558,7 +1764,6 @@ index 0000000..e77577d
 +
 +module_init(alsa_card_sgio2audio_init)
 +module_exit(alsa_card_sgio2audio_exit)
-
 
 -- 
 Crap can work. Given enough thrust pigs will fly, but it's not necessary a

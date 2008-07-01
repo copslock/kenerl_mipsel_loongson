@@ -1,20 +1,20 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jul 2008 19:21:42 +0100 (BST)
-Received: from mx03.syneticon.net ([87.79.32.166]:56836 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jul 2008 19:26:03 +0100 (BST)
+Received: from mx03.syneticon.net ([87.79.32.166]:31501 "EHLO
 	mx03.syneticon.net") by ftp.linux-mips.org with ESMTP
-	id S32706994AbYGASVf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 1 Jul 2008 19:21:35 +0100
+	id S32707294AbYGASZ4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 1 Jul 2008 19:25:56 +0100
 Received: from localhost (filter1.syneticon.net [192.168.113.3])
-	by mx03.syneticon.net (Postfix) with ESMTP id 5AEB29601;
-	Tue,  1 Jul 2008 20:21:34 +0200 (CEST)
+	by mx03.syneticon.net (Postfix) with ESMTP id 3B98F9601;
+	Tue,  1 Jul 2008 20:25:55 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at mx03.syneticon.net
 Received: from mx03.syneticon.net ([192.168.113.4])
 	by localhost (mx03.syneticon.net [192.168.113.3]) (amavisd-new, port 10025)
-	with ESMTP id BRg5Zo+0PuhB; Tue,  1 Jul 2008 20:21:19 +0200 (CEST)
+	with ESMTP id IVzukLrygtvA; Tue,  1 Jul 2008 20:25:52 +0200 (CEST)
 Received: from [192.168.10.145] (koln-4d0b69d5.pool.mediaWays.net [77.11.105.213])
 	by mx03.syneticon.net (Postfix) with ESMTP;
-	Tue,  1 Jul 2008 20:21:19 +0200 (CEST)
-Message-ID: <486A759D.6080803@wpkg.org>
-Date:	Tue, 01 Jul 2008 20:21:17 +0200
+	Tue,  1 Jul 2008 20:25:52 +0200 (CEST)
+Message-ID: <486A76AF.9080109@wpkg.org>
+Date:	Tue, 01 Jul 2008 20:25:51 +0200
 From:	Tomasz Chmielewski <mangoo@wpkg.org>
 User-Agent: Thunderbird 2.0.0.12 (X11/20080305)
 MIME-Version: 1.0
@@ -29,7 +29,7 @@ Return-Path: <mangoo@wpkg.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19681
+X-archive-position: 19682
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,17 +39,19 @@ X-list: linux-mips
 
 Nicolas Schichan schrieb:
 
+(...)
+
 > +	printk("image->start = %lx", image->start);
 > +
->  	reboot_code_buffer =
->  	  (unsigned long)page_address(image->control_code_page);
 
-# kexec -e
-b44: eth0: powering down PHY
+And this is what happens if I use your "util.c for kexec-userland" - why 
+does it use a different address?
+
+
+# /root/kexec-test/kexec -r
 Starting new kernel
-image->start = 304000Will call new kernel at 00304000
+image->start = 802520d0Will call new kernel at 802520d0
 Bye ...
-
 
 
 -- 

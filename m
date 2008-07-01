@@ -1,93 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Jun 2008 22:29:19 +0100 (BST)
-Received: from sj-iport-6.cisco.com ([171.71.176.117]:55638 "EHLO
-	sj-iport-6.cisco.com") by ftp.linux-mips.org with ESMTP
-	id S28792996AbYF3V3O (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 30 Jun 2008 22:29:14 +0100
-X-IronPort-AV: E=Sophos;i="4.27,728,1204531200"; 
-   d="scan'208";a="120604026"
-Received: from sj-dkim-1.cisco.com ([171.71.179.21])
-  by sj-iport-6.cisco.com with ESMTP; 30 Jun 2008 14:29:05 -0700
-Received: from sj-core-5.cisco.com (sj-core-5.cisco.com [171.71.177.238])
-	by sj-dkim-1.cisco.com (8.12.11/8.12.11) with ESMTP id m5ULT54i032369
-	for <linux-mips@linux-mips.org>; Mon, 30 Jun 2008 14:29:05 -0700
-Received: from sausatlsmtp2.sciatl.com ([192.133.217.159])
-	by sj-core-5.cisco.com (8.13.8/8.13.8) with ESMTP id m5ULT5ir013889
-	for <linux-mips@linux-mips.org>; Mon, 30 Jun 2008 21:29:05 GMT
-Received: from default.com ([192.133.217.159]) by sausatlsmtp2.sciatl.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 30 Jun 2008 17:29:04 -0400
-Received: from sausatlbhs01.corp.sa.net ([192.133.216.76]) by sausatlsmtp2.sciatl.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 30 Jun 2008 17:29:02 -0400
-Received: from [127.0.0.1] ([64.101.20.200]) by sausatlbhs01.corp.sa.net with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 30 Jun 2008 17:29:02 -0400
-Message-ID: <48695012.4080306@cisco.com>
-Date:	Mon, 30 Jun 2008 14:28:50 -0700
-From:	David VomLehn <dvomlehn@cisco.com>
-User-Agent: Thunderbird 2.0.0.14 (Windows/20080421)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jul 2008 07:05:35 +0100 (BST)
+Received: from smtp3.infineon.com ([203.126.106.229]:10290 "EHLO
+	smtp3.infineon.com") by ftp.linux-mips.org with ESMTP
+	id S29047646AbYGAGF2 convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 1 Jul 2008 07:05:28 +0100
+X-SBRS:	None
+Received: from unknown (HELO sinse301.ap.infineon.com) ([172.20.70.22])
+  by smtp3.infineon.com with ESMTP; 01 Jul 2008 14:05:19 +0800
+Received: from sinse303.ap.infineon.com ([172.20.70.24]) by sinse301.ap.infineon.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 1 Jul 2008 14:05:18 +0800
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-To:	David VomLehn <dvomlehn@cisco.com>, binutils@sourceware.org,
-	gcc@gcc.gnu.org, linux-mips@linux-mips.org,
-	rdsandiford@googlemail.com
-Subject: Re: RFC: Adding non-PIC executable support to MIPS
-References: <87y74pxwyl.fsf@firetop.home> <48694927.90906@cisco.com> <20080630211950.GA30847@caradoc.them.org>
-In-Reply-To: <20080630211950.GA30847@caradoc.them.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 30 Jun 2008 21:29:02.0105 (UTC) FILETIME=[50B82890:01C8DAF8]
-X-ST-MF-Message-Resent:	6/30/2008 17:29
-DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=1633; t=1214861345; x=1215725345;
-	c=relaxed/simple; s=sjdkim1004;
-	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
-	d=cisco.com; i=dvomlehn@cisco.com;
-	z=From:=20David=20VomLehn=20<dvomlehn@cisco.com>
-	|Subject:=20Re=3A=20RFC=3A=20Adding=20non-PIC=20executable=
-	20support=20to=20MIPS
-	|Sender:=20;
-	bh=MMLRENXuDm3nVLwyN8zhWRyyhbMUurA2KSi/l/2LCnA=;
-	b=oS7lCy4JbNlp1sWE/JN7xBZleRP+tRI/sj+pVe1AkCHrSoThf79emk4Fja
-	otkaXkYkoNWbVa3PuH0ncDo8dRMs00WfqRh+9/plB/SwKSCmasAvyySJ49LR
-	FkshQRnGgGaUtqRNwYN+fmPjJcdMkApSJepSwEJEeSUyNR5Y8VkD4=;
-Authentication-Results:	sj-dkim-1; header.From=dvomlehn@cisco.com; dkim=pass (
-	sig from cisco.com/sjdkim1004 verified; ); 
-Return-Path: <dvomlehn@cisco.com>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: Kmem_cache handling in linux-2.6.2x kernel.
+Date:	Tue, 1 Jul 2008 14:05:17 +0800
+Message-ID: <31E09F73562D7A4D82119D7F6C172986045B6E80@sinse303.ap.infineon.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Kmem_cache handling in linux-2.6.2x kernel.
+Thread-Index: AcjbQCezWLXpXWxBSj2JrUNDAJRvkw==
+From:	<KokHow.Teh@infineon.com>
+To:	<linux-mips@linux-mips.org>, <bookquestions@oreilly.com>
+Cc:	<Bing-Tao.Xu@infineon.com>
+X-OriginalArrivalTime: 01 Jul 2008 06:05:18.0988 (UTC) FILETIME=[706164C0:01C8DB40]
+Return-Path: <KokHow.Teh@infineon.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19675
+X-archive-position: 19677
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvomlehn@cisco.com
+X-original-sender: KokHow.Teh@infineon.com
 Precedence: bulk
 X-list: linux-mips
 
-Daniel Jacobowitz wrote:
-> On Mon, Jun 30, 2008 at 01:59:19PM -0700, David VomLehn wrote:
->> This sounds like really good stuff and, on first reading, it all seems to 
->> make sense to me. My only real concern is documentation of these changes. 
-> 
-> FWIW, I'll be posting our version of this project shortly, and it
-> includes an ABI supplement.  Supplemental to a somewhat hypothetical
-> document, but there you go...
+Hi list;
+	I have a question about kmem_cache implemented in Linux-2.6.2x
+kernel. I have an application that allocates and free 64KByte chunks of
+memory (32-byte aligned) quite often. Therefore, I create a lookaside
+cache for that purpose and use kmem_cache_alloc(), kmem_cache_free() to
+allocate and free the caches. The application works very well in this
+model. However, my concern here is if kmem_cache_free() does return the
+cache to the system-wide pool so that it could be used by other
+applications when need arises; when system is low in memory resources,
+for instance. This is a question about the internal workings of the
+memory management system of the Linux-2.6.2x kernel as to how efficient
+it manages this lookasie caches. The concern is valid because if this
+lookaside cache is not managed well, i.e, it is not returned to the
+system-wide pool of free memory pools to be used by other applications,
+this will penalize the performace and throughput of the whole system due
+to the dynamic behaviour of the utilization of system memory resources.
+For example, other applications might be swapping in and out of the
+harddisk and if the kmem_cache_free()'ed memory objects could be used by
+these applications, it will help in this case to reduce the number of
+swaps that happen, thereby freeing the CPU and/or DMA from doing the
+swapping to do other critical tasks.
 
-Also, FWIW, if there is interest in trying to get an Linux Standard Base working 
-group for the MIPS Processor, one of the LSB Steering Committee members used to 
-be Chair of the MIPS ABI Group Technical Committee, which wrote the MIPS ABI. 
-And, uh, yeah, I'll admit it, I used to chair the TC, too, once upon a time. So, 
-we actually still have some people around who at least used to know something 
-about it...
+	Any insight and advice is appreciated.
 
--- 
-David VomLehn, dvomlehn@cisco.com
-The opinions expressed herein are likely mine, but might not be my employer's...
-
-
-
-
-     - - - - -                              Cisco                            - - - - -         
-This e-mail and any attachments may contain information which is confidential, 
-proprietary, privileged or otherwise protected by law. The information is solely 
-intended for the named addressee (or a person responsible for delivering it to 
-the addressee). If you are not the intended recipient of this message, you are 
-not authorized to read, print, retain, copy or disseminate this message or any 
-part of it. If you have received this e-mail in error, please notify the sender 
-immediately by return e-mail and delete it from your computer.
+Regards,
+KH

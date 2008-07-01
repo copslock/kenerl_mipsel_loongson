@@ -1,65 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jul 2008 07:05:35 +0100 (BST)
-Received: from smtp3.infineon.com ([203.126.106.229]:10290 "EHLO
-	smtp3.infineon.com") by ftp.linux-mips.org with ESMTP
-	id S29047646AbYGAGF2 convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 1 Jul 2008 07:05:28 +0100
-X-SBRS:	None
-Received: from unknown (HELO sinse301.ap.infineon.com) ([172.20.70.22])
-  by smtp3.infineon.com with ESMTP; 01 Jul 2008 14:05:19 +0800
-Received: from sinse303.ap.infineon.com ([172.20.70.24]) by sinse301.ap.infineon.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 1 Jul 2008 14:05:18 +0800
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jul 2008 14:42:44 +0100 (BST)
+Received: from bobafett.staff.proxad.net ([213.228.1.121]:20421 "EHLO
+	bobafett.staff.proxad.net") by ftp.linux-mips.org with ESMTP
+	id S30613934AbYGANmh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 1 Jul 2008 14:42:37 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by bobafett.staff.proxad.net (Postfix) with ESMTP id CE5302AE93;
+	Tue,  1 Jul 2008 15:42:30 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at staff.proxad.net
+Received: from bobafett.staff.proxad.net ([127.0.0.1])
+	by localhost (bobafett.staff.proxad.net [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id wyuBsemcEl1S; Tue,  1 Jul 2008 15:42:29 +0200 (CEST)
+Received: from nschichan.priv.staff.proxad.net (nschichan.priv.staff.proxad.net [172.18.3.120])
+	by bobafett.staff.proxad.net (Postfix) with ESMTP id A42192AE47;
+	Tue,  1 Jul 2008 15:42:29 +0200 (CEST)
+From:	Nicolas Schichan <nschichan@freebox.fr>
+Organization: Freebox
+To:	Tomasz Chmielewski <mangoo@wpkg.org>
+Subject: Re: kexec on mips - anyone has it working?
+Date:	Tue, 1 Jul 2008 15:42:28 +0200
+User-Agent: KMail/1.9.6 (enterprise 0.20070907.709405)
+Cc:	linux-mips@linux-mips.org,
+	Kexec Mailing List <kexec@lists.infradead.org>,
+	openwrt-devel@lists.openwrt.org
+References: <483BCB75.4050901@wpkg.org> <200805301327.11925.nschichan@freebox.fr> <483FE764.1090901@wpkg.org>
+In-Reply-To: <483FE764.1090901@wpkg.org>
 MIME-Version: 1.0
 Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: Kmem_cache handling in linux-2.6.2x kernel.
-Date:	Tue, 1 Jul 2008 14:05:17 +0800
-Message-ID: <31E09F73562D7A4D82119D7F6C172986045B6E80@sinse303.ap.infineon.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Kmem_cache handling in linux-2.6.2x kernel.
-Thread-Index: AcjbQCezWLXpXWxBSj2JrUNDAJRvkw==
-From:	<KokHow.Teh@infineon.com>
-To:	<linux-mips@linux-mips.org>, <bookquestions@oreilly.com>
-Cc:	<Bing-Tao.Xu@infineon.com>
-X-OriginalArrivalTime: 01 Jul 2008 06:05:18.0988 (UTC) FILETIME=[706164C0:01C8DB40]
-Return-Path: <KokHow.Teh@infineon.com>
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200807011542.29274.nschichan@freebox.fr>
+Return-Path: <nschichan@freebox.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19677
+X-archive-position: 19678
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: KokHow.Teh@infineon.com
+X-original-sender: nschichan@freebox.fr
 Precedence: bulk
 X-list: linux-mips
 
-Hi list;
-	I have a question about kmem_cache implemented in Linux-2.6.2x
-kernel. I have an application that allocates and free 64KByte chunks of
-memory (32-byte aligned) quite often. Therefore, I create a lookaside
-cache for that purpose and use kmem_cache_alloc(), kmem_cache_free() to
-allocate and free the caches. The application works very well in this
-model. However, my concern here is if kmem_cache_free() does return the
-cache to the system-wide pool so that it could be used by other
-applications when need arises; when system is low in memory resources,
-for instance. This is a question about the internal workings of the
-memory management system of the Linux-2.6.2x kernel as to how efficient
-it manages this lookasie caches. The concern is valid because if this
-lookaside cache is not managed well, i.e, it is not returned to the
-system-wide pool of free memory pools to be used by other applications,
-this will penalize the performace and throughput of the whole system due
-to the dynamic behaviour of the utilization of system memory resources.
-For example, other applications might be swapping in and out of the
-harddisk and if the kmem_cache_free()'ed memory objects could be used by
-these applications, it will help in this case to reduce the number of
-swaps that happen, thereby freeing the CPU and/or DMA from doing the
-swapping to do other critical tasks.
+On Friday 30 May 2008 13:39:16 Tomasz Chmielewski wrote:
 
-	Any insight and advice is appreciated.
+Hello,
+
+> Nicolas Schichan schrieb:
+> > On Thursday 29 May 2008 22:15:47 Tomasz Chmielewski wrote:
+> >> Will call new kernel at 00305000
+> >
+> > The calling address of the kernel looks quite wrong, it should clearly
+> > be inside the KSEG0 zone. could  you please indicate the output of the
+> > command "mips-linux-readelf -l vmlinux" ?
+>
+> # uname -m
+> mips
+> # readelf -l vmlinux
+>
+> Elf file type is EXEC (Executable file)
+> Entry point 0x80251b50
+
+This is  quite surprising.   The jump address  that kexec will  use is
+cleary not what  I expected. I would have expected it  to be the Entry
+point address given by readelf.
+
+could  you try  the  following patch  to  make sure  that the  kimage*
+structure is not corrupted by the code in machine_kexec() ?
+
+Index: linux/arch/mips/kernel/machine_kexec.c
+===================================================================
+--- linux/arch/mips/kernel/machine_kexec.c	(revision 8056)
++++ linux/arch/mips/kernel/machine_kexec.c	(working copy)
+@@ -49,6 +49,8 @@
+ 	unsigned long entry;
+ 	unsigned long *ptr;
+ 
++	printk("image->start = %p", image->start);
++
+ 	reboot_code_buffer =
+ 	  (unsigned long)page_address(image->control_code_page);
+ 
+
 
 Regards,
-KH
+
+-- 
+Nicolas Schichan

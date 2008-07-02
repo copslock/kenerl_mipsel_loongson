@@ -1,147 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jul 2008 01:43:58 +0100 (BST)
-Received: from mms2.broadcom.com ([216.31.210.18]:11528 "EHLO
-	mms2.broadcom.com") by ftp.linux-mips.org with ESMTP
-	id S29054755AbYGBAnu convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 2 Jul 2008 01:43:50 +0100
-Received: from [10.11.16.99] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.3.2)); Tue, 01 Jul 2008 17:43:26 -0700
-X-Server-Uuid: D3C04415-6FA8-4F2C-93C1-920E106A2031
-Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
- D78E82B1; Tue, 1 Jul 2008 17:43:26 -0700 (PDT)
-Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.11.18.52]) by
- mail-irva-10.broadcom.com (Postfix) with ESMTP id C37922B0; Tue, 1 Jul
- 2008 17:43:26 -0700 (PDT)
-Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
- [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.5a-GA) with ESMTP
- id GZD41167; Tue, 1 Jul 2008 17:43:15 -0700 (PDT)
-Received: from NT-SJCA-0750.brcm.ad.broadcom.com (nt-sjca-0750
- [10.16.192.220]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
- B3B6A20501; Tue, 1 Jul 2008 17:43:15 -0700 (PDT)
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jul 2008 08:01:41 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:11102 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S36907672AbYGBHBf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 2 Jul 2008 08:01:35 +0100
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B486b27950000>; Wed, 02 Jul 2008 03:00:37 -0400
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 2 Jul 2008 00:00:36 -0700
+Received: from localhost.localdomain ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 2 Jul 2008 00:00:36 -0700
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by localhost.localdomain (8.14.2/8.13.7/Debian-2) with ESMTP id m6270YFb016824;
+	Wed, 2 Jul 2008 00:00:34 -0700
+Received: (from anemet@localhost)
+	by localhost.localdomain (8.14.2/8.13.7/Submit) id m6270Xlb016823;
+	Wed, 2 Jul 2008 00:00:33 -0700
+To:	binutils@sourceware.org
+Cc:	gcc@gcc.gnu.org, linux-mips@linux-mips.org,
+	rdsandiford@googlemail.com
+Subject: Re: RFC: Adding non-PIC executable support to MIPS
+References: <87y74pxwyl.fsf@firetop.home>
+	<20080701202236.GA1534@caradoc.them.org> <87zlp149ot.fsf@firetop.home>
+From:	Adam Nemet <anemet@caviumnetworks.com>
+Date:	Wed, 02 Jul 2008 00:00:33 -0700
+In-Reply-To: <87zlp149ot.fsf@firetop.home> (Richard Sandiford's message of "Tue, 01 Jul 2008 21:43:30 +0100")
+Message-ID: <87myl093e6.fsf@localhost.localdomain.i-did-not-set--mail-host-address--so-tickle-me>
+User-Agent: Gnus/5.1007 (Gnus v5.10.7) XEmacs/21.4.20 (linux)
 MIME-Version: 1.0
-Subject: RE: [SPAM] RE: Bug in atomic_sub_if_positive
-Date:	Tue, 1 Jul 2008 17:43:14 -0700
-Message-ID: <ADD7831BD377A74E9A1621D1EAAED18F0450AC67@NT-SJCA-0750.brcm.ad.broadcom.com>
-In-Reply-To: <1CA160A5-AC66-4BBF-9C88-0C2B9FF40E6E@27m.se>
-Thread-Topic: [SPAM] RE: Bug in atomic_sub_if_positive
-Thread-Index: Acjb2qZnclxNhMgNQHeIqx5CltCbqAAALd2g
-From:	"Morten Larsen" <mlarsen@broadcom.com>
-To:	"Markus Gothe" <markus.gothe@27m.se>
-cc:	linux-mips@linux-mips.org
-X-WSS-ID: 647410A43D075149103-01-01
-Content-Type: text/plain;
- charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <mlarsen@broadcom.com>
+Content-Type: text/plain; charset=us-ascii
+X-OriginalArrivalTime: 02 Jul 2008 07:00:36.0414 (UTC) FILETIME=[54222DE0:01C8DC11]
+Return-Path: <Adam.Nemet@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19688
+X-archive-position: 19689
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mlarsen@broadcom.com
+X-original-sender: anemet@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
+Richard Sandiford writes:
+> However, IMO, your argument about MTI being the central authority
+> is a killer one.  The purpose of the GNU tools should be to follow
+> appropriate standards where applicable (and extend them where it
+> seems wise).  So from that point of view, I agree that the GNU tools
+> should follow the ABI that Nigel and MTI set down.  Consider my
+> patch withdrawn.
 
-Thanks for the reply. My main point is that if the sc instruction fails (returns zero) then we need to start over (with another ll instruction.) It appears that the current code does not do this correctly. If you have a better suggestion for a patch, that's fine with me. Below is the code from the 2.6.20.21 kernel, which is (also) working for me.
+While I'm not entirely clear how this decision came about I'd like to point
+out that it is unfortunate that MTI had not sought wider consensus for this
+ABI extension among MIPS implementors and the community.
 
-=:-) Morten
+We would not be in this situation with duplicated efforts and much frustration
+if this proposal had been circulated properly ahead of time.
 
+> I've been thinking about that a lot recently, since I heard about
+> your implementation.  I kind-of guessed it had been agreed with MTI
+> beforehand (although I hadn't realised MTI themselves had written
+> the specification).  Having thought it over, I think it would be best
+> if I stand down as a MIPS maintainer and if someone with the appropriate
+> commercial connections is appointed instead.  I'd recommend any
+> combination of yourself, Adam Nemet and David Daney (subject to
+> said people being willing, of course).
 
-                 __asm__ __volatile__(
-                 "       .set    mips3                                   \n"
-                 "1:     ll      %1, %2          # atomic_sub_if_positive\n"
-                 "       subu    %0, %1, %3                              \n"
-                 "       bltz    %0, 1f                                  \n"
-                 "       sc      %0, %2                                  \n"
-                 "       .set    noreorder                               \n"
-                 "       beqz    %0, 1b                                  \n"
-                 "        subu   %0, %1, %3                              \n"
-                 "       .set    reorder                                 \n"
-                 "1:                                                     \n"
-                 "       .set    mips0                                   \n"
-                 : "=&r" (result), "=&r" (temp), "=m" (v->counter)
-                 : "Ir" (i), "m" (v->counter)
-                 : "memory");
+Richard, while I understand your frustration I really hope that you will
+reconsider your decision and remain the MIPS maintainer.  I think there is a
+chance that if the community expresses that MTI should seek broader consensus
+for such proposals they will do so in the future.
 
+Your expertise as the GCC maintainer has improved the backend tremendously and
+and you should be given all the information necessary to continue your great
+work.
 
-
-________________________________
-
-	From: Markus Gothe [mailto:markus.gothe@27m.se] 
-	Sent: Tuesday, July 01, 2008 5:29 PM
-	To: Morten Larsen
-	Cc: linux-mips@linux-mips.org
-	Subject: Re: [SPAM] RE: Bug in atomic_sub_if_positive
-	
-	
-	NACK. 
-
-	You must realize that 1b stands for 'label 1, backwards', so correctly it would be '2: b 1f'... Which is a kind off inconsequent numbering in this case.
-
-	//Markus
-
-	On 2 Jul 2008, at 02:12, Morten Larsen wrote:
-
-
-
-			As far as I can tell the branch optimization fixes in 2.6.21 introduced
-			
-
-			a bug in atomic_sub_if_positive that causes it to return even when the
-			
-
-			sc instruction fails. The result is that e.g. down_trylock becomes
-			
-
-			unreliable as the semaphore counter is not always decremented.
-			
-
-
-		Previous patch was garbled by Outlook - this one should be clean:
-		
-		--- a/include/asm-mips/atomic.h 2008-06-25 22:38:43.159739000 -0700
-		+++ b/include/asm-mips/atomic.h 2008-06-25 22:39:07.552065000 -0700
-		@@ -292,10 +292,10 @@ static __inline__ int atomic_sub_if_posi
-		" beqz %0, 2f \n"
-		" subu %0, %1, %3 \n"
-		" .set reorder \n"
-		- "1: \n"
-		" .subsection 2 \n"
-		"2: b 1b \n"
-		" .previous \n"
-		+ "1: \n"
-		" .set mips0 \n"
-		: "=&r" (result), "=&r" (temp), "=m" (v->counter)
-		: "Ir" (i), "m" (v->counter)
-		@@ -682,10 +682,10 @@ static __inline__ long atomic64_sub_if_p
-		" beqz %0, 2f \n"
-		" dsubu %0, %1, %3 \n"
-		" .set reorder \n"
-		- "1: \n"
-		" .subsection 2 \n"
-		"2: b 1b \n"
-		" .previous \n"
-		+ "1: \n"
-		" .set mips0 \n"
-		: "=&r" (result), "=&r" (temp), "=m" (v->counter)
-		: "Ir" (i), "m" (v->counter)
-		
-
-
-			_______________________________________
-
-	Mr Markus Gothe
-	Software Engineer
-
-	Phone: +46 (0)13 21 81 20 (ext. 1046)
-	Fax: +46 (0)13 21 21 15
-	Mobile: +46 (0)70 348 44 35
-	Diskettgatan 11, SE-583 35 Linköping, Sweden
-	www.27m.com
-
-		
-	
+Adam

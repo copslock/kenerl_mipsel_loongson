@@ -1,70 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Jul 2008 23:03:11 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.186]:4231 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S32716728AbYGAWDF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 1 Jul 2008 23:03:05 +0100
-Received: by nf-out-0910.google.com with SMTP id h3so24648nfh.14
-        for <linux-mips@linux-mips.org>; Tue, 01 Jul 2008 15:03:04 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:mail-followup-to:cc
-         :subject:references:date:in-reply-to:message-id:user-agent
-         :mime-version:content-type;
-        bh=QmXN6RhKS0/S1/XTXrOP6Zl+KiStHwWJlFhVEynpZ5w=;
-        b=a5s8+RTGjm9dn1e4VxtQEJmGh/1dVKndynHMOrj8DVtPfPyfuikIZODnq64UzVF1as
-         zL7zTqjbVjfmnl0XORGxoRMHnzwzDIYCI+BdKbcYfkVU/Us6f2d1G6wtkoWE/UbAS+T2
-         Xl8TfSQ3fN1xr3towMcXzyNIuvcwtBLe3Dt8Y=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=from:to:mail-followup-to:cc:subject:references:date:in-reply-to
-         :message-id:user-agent:mime-version:content-type;
-        b=YZbKp/A7koACVvpypMHopcBP0rV3g5B4iXX1nJV1IWed4Ss4A3Rte32Ob/1RP0Zupa
-         DbpM+0UjAYw9BO6T3ZjUfFeEny9AYkpG8jLTSco1Ap9JrB0VntlshYNZZ7wZ3pst72rI
-         kCTMQiM92ZmA+6pY3a23hk5DwzV6O4WlulvsY=
-Received: by 10.210.76.19 with SMTP id y19mr5777304eba.186.1214949783944;
-        Tue, 01 Jul 2008 15:03:03 -0700 (PDT)
-Received: from localhost ( [79.75.55.39])
-        by mx.google.com with ESMTPS id i6sm2211941gve.4.2008.07.01.15.03.01
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 01 Jul 2008 15:03:02 -0700 (PDT)
-From:	Richard Sandiford <rdsandiford@googlemail.com>
-To:	binutils@sourceware.org
-Mail-Followup-To: binutils@sourceware.org,gcc@gcc.gnu.org,  linux-mips@linux-mips.org, rdsandiford@googlemail.com
-Cc:	gcc@gcc.gnu.org, linux-mips@linux-mips.org
-Subject: Re: RFC: Adding non-PIC executable support to MIPS
-References: <87y74pxwyl.fsf@firetop.home>
-	<20080701202236.GA1534@caradoc.them.org> <87zlp149ot.fsf@firetop.home>
-Date:	Tue, 01 Jul 2008 23:02:59 +0100
-In-Reply-To: <87zlp149ot.fsf@firetop.home> (Richard Sandiford's message of
-	"Tue\, 01 Jul 2008 21\:43\:30 +0100")
-Message-ID: <87r6ad460c.fsf@firetop.home>
-User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/22.1 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jul 2008 01:12:43 +0100 (BST)
+Received: from mms2.broadcom.com ([216.31.210.18]:62724 "EHLO
+	mms2.broadcom.com") by ftp.linux-mips.org with ESMTP
+	id S32723985AbYGBAMd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 2 Jul 2008 01:12:33 +0100
+Received: from [10.11.16.99] by mms2.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.3.2)); Tue, 01 Jul 2008 17:12:20 -0700
+X-Server-Uuid: D3C04415-6FA8-4F2C-93C1-920E106A2031
+Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
+ 9A20E2B1; Tue, 1 Jul 2008 17:12:20 -0700 (PDT)
+Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.11.18.52]) by
+ mail-irva-10.broadcom.com (Postfix) with ESMTP id 86C912B0 for
+ <linux-mips@linux-mips.org>; Tue, 1 Jul 2008 17:12:20 -0700 (PDT)
+Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
+ [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.5a-GA) with ESMTP
+ id GZD36507; Tue, 1 Jul 2008 17:12:20 -0700 (PDT)
+Received: from NT-SJCA-0750.brcm.ad.broadcom.com (nt-sjca-0750
+ [10.16.192.220]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
+ 1A7F920501 for <linux-mips@linux-mips.org>; Tue, 1 Jul 2008 17:12:20
+ -0700 (PDT)
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <rdsandiford@googlemail.com>
+Subject: RE: Bug in atomic_sub_if_positive
+Date:	Tue, 1 Jul 2008 17:12:19 -0700
+Message-ID: <ADD7831BD377A74E9A1621D1EAAED18F0450AC61@NT-SJCA-0750.brcm.ad.broadcom.com>
+Thread-Topic: RE: Bug in atomic_sub_if_positive
+Thread-Index: Acjb16gnajlQWCmATQa1bV7F7m0yoAAABL1g
+From:	"Morten Larsen" <mlarsen@broadcom.com>
+To:	linux-mips@linux-mips.org
+X-WSS-ID: 6474186E3D075132792-01-01
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: base64
+Return-Path: <mlarsen@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19685
+X-archive-position: 19686
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rdsandiford@googlemail.com
+X-original-sender: mlarsen@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 
-Richard Sandiford <rdsandiford@googlemail.com> writes:
-> I've been thinking about that a lot recently, since I heard about
-> your implementation.  I kind-of guessed it had been agreed with MTI
-> beforehand (although I hadn't realised MTI themselves had written
-> the specification).  Having thought it over, I think it would be best
-> if I stand down as a MIPS maintainer and if someone with the appropriate
-> commercial connections is appointed instead.  I'd recommend any
-> combination of yourself, Adam Nemet and David Daney (subject to
-> said people being willing, of course).
-
-I realised afterwards that this might be offensive by who it left out.
-For the record, it wasn't supposed to be an exclusive list.  Other people
-have strong claims too. ;)
-
-Richard
+DQo+IEFzIGZhciBhcyBJIGNhbiB0ZWxsIHRoZSBicmFuY2ggb3B0aW1pemF0aW9uIGZpeGVzIGlu
+IDIuNi4yMSBpbnRyb2R1Y2VkDQo+IGEgYnVnIGluIGF0b21pY19zdWJfaWZfcG9zaXRpdmUgdGhh
+dCBjYXVzZXMgaXQgdG8gcmV0dXJuIGV2ZW4gd2hlbiB0aGUNCj4gc2MgaW5zdHJ1Y3Rpb24gZmFp
+bHMuIFRoZSByZXN1bHQgaXMgdGhhdCBlLmcuIGRvd25fdHJ5bG9jayBiZWNvbWVzDQo+IHVucmVs
+aWFibGUgYXMgdGhlIHNlbWFwaG9yZSBjb3VudGVyIGlzIG5vdCBhbHdheXMgZGVjcmVtZW50ZWQu
+DQoNClByZXZpb3VzIHBhdGNoIHdhcyBnYXJibGVkIGJ5IE91dGxvb2sgLSB0aGlzIG9uZSBzaG91
+bGQgYmUgY2xlYW46DQoNCi0tLSBhL2luY2x1ZGUvYXNtLW1pcHMvYXRvbWljLmgJMjAwOC0wNi0y
+NSAyMjozODo0My4xNTk3MzkwMDAgLTA3MDANCisrKyBiL2luY2x1ZGUvYXNtLW1pcHMvYXRvbWlj
+LmgJMjAwOC0wNi0yNSAyMjozOTowNy41NTIwNjUwMDAgLTA3MDANCkBAIC0yOTIsMTAgKzI5Miwx
+MCBAQCBzdGF0aWMgX19pbmxpbmVfXyBpbnQgYXRvbWljX3N1Yl9pZl9wb3NpDQogCQkiCWJlcXoJ
+JTAsIDJmCQkJCQlcbiINCiAJCSIJIHN1YnUJJTAsICUxLCAlMwkJCQlcbiINCiAJCSIJLnNldAly
+ZW9yZGVyCQkJCQlcbiINCi0JCSIxOgkJCQkJCQlcbiINCiAJCSIJLnN1YnNlY3Rpb24gMgkJCQkJ
+XG4iDQogCQkiMjoJYgkxYgkJCQkJXG4iDQogCQkiCS5wcmV2aW91cwkJCQkJXG4iDQorCQkiMToJ
+CQkJCQkJXG4iDQogCQkiCS5zZXQJbWlwczAJCQkJCVxuIg0KIAkJOiAiPSZyIiAocmVzdWx0KSwg
+Ij0mciIgKHRlbXApLCAiPW0iICh2LT5jb3VudGVyKQ0KIAkJOiAiSXIiIChpKSwgIm0iICh2LT5j
+b3VudGVyKQ0KQEAgLTY4MiwxMCArNjgyLDEwIEBAIHN0YXRpYyBfX2lubGluZV9fIGxvbmcgYXRv
+bWljNjRfc3ViX2lmX3ANCiAJCSIJYmVxegklMCwgMmYJCQkJCVxuIg0KIAkJIgkgZHN1YnUJJTAs
+ICUxLCAlMwkJCQlcbiINCiAJCSIJLnNldAlyZW9yZGVyCQkJCQlcbiINCi0JCSIxOgkJCQkJCQlc
+biINCiAJCSIJLnN1YnNlY3Rpb24gMgkJCQkJXG4iDQogCQkiMjoJYgkxYgkJCQkJXG4iDQogCQki
+CS5wcmV2aW91cwkJCQkJXG4iDQorCQkiMToJCQkJCQkJXG4iDQogCQkiCS5zZXQJbWlwczAJCQkJ
+CVxuIg0KIAkJOiAiPSZyIiAocmVzdWx0KSwgIj0mciIgKHRlbXApLCAiPW0iICh2LT5jb3VudGVy
+KQ0KIAkJOiAiSXIiIChpKSwgIm0iICh2LT5jb3VudGVyKQ0K

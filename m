@@ -1,77 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jul 2008 08:01:41 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:11102 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S36907672AbYGBHBf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 2 Jul 2008 08:01:35 +0100
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B486b27950000>; Wed, 02 Jul 2008 03:00:37 -0400
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 2 Jul 2008 00:00:36 -0700
-Received: from localhost.localdomain ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 2 Jul 2008 00:00:36 -0700
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by localhost.localdomain (8.14.2/8.13.7/Debian-2) with ESMTP id m6270YFb016824;
-	Wed, 2 Jul 2008 00:00:34 -0700
-Received: (from anemet@localhost)
-	by localhost.localdomain (8.14.2/8.13.7/Submit) id m6270Xlb016823;
-	Wed, 2 Jul 2008 00:00:33 -0700
-To:	binutils@sourceware.org
-Cc:	gcc@gcc.gnu.org, linux-mips@linux-mips.org,
-	rdsandiford@googlemail.com
-Subject: Re: RFC: Adding non-PIC executable support to MIPS
-References: <87y74pxwyl.fsf@firetop.home>
-	<20080701202236.GA1534@caradoc.them.org> <87zlp149ot.fsf@firetop.home>
-From:	Adam Nemet <anemet@caviumnetworks.com>
-Date:	Wed, 02 Jul 2008 00:00:33 -0700
-In-Reply-To: <87zlp149ot.fsf@firetop.home> (Richard Sandiford's message of "Tue, 01 Jul 2008 21:43:30 +0100")
-Message-ID: <87myl093e6.fsf@localhost.localdomain.i-did-not-set--mail-host-address--so-tickle-me>
-User-Agent: Gnus/5.1007 (Gnus v5.10.7) XEmacs/21.4.20 (linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jul 2008 11:00:07 +0100 (BST)
+Received: from relay01.mx.bawue.net ([193.7.176.67]:33258 "EHLO
+	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
+	id S62065451AbYGBKAB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 2 Jul 2008 11:00:01 +0100
+Received: from lagash (88-106-136-149.dynamic.dsl.as9105.com [88.106.136.149])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by relay01.mx.bawue.net (Postfix) with ESMTP id B485B48916;
+	Wed,  2 Jul 2008 11:59:57 +0200 (CEST)
+Received: from ths by lagash with local (Exim 4.69)
+	(envelope-from <ths@networkno.de>)
+	id 1KDz80-0001q7-4o; Wed, 02 Jul 2008 10:59:56 +0100
+Date:	Wed, 2 Jul 2008 10:59:56 +0100
+From:	Thiemo Seufer <ths@networkno.de>
+To:	Morten Larsen <mlarsen@broadcom.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: Bug in atomic_sub_if_positive
+Message-ID: <20080702095955.GA7007@networkno.de>
+References: <ADD7831BD377A74E9A1621D1EAAED18F0450AC61@NT-SJCA-0750.brcm.ad.broadcom.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-X-OriginalArrivalTime: 02 Jul 2008 07:00:36.0414 (UTC) FILETIME=[54222DE0:01C8DC11]
-Return-Path: <Adam.Nemet@caviumnetworks.com>
+Content-Disposition: inline
+In-Reply-To: <ADD7831BD377A74E9A1621D1EAAED18F0450AC61@NT-SJCA-0750.brcm.ad.broadcom.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19689
+X-archive-position: 19690
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemet@caviumnetworks.com
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-Richard Sandiford writes:
-> However, IMO, your argument about MTI being the central authority
-> is a killer one.  The purpose of the GNU tools should be to follow
-> appropriate standards where applicable (and extend them where it
-> seems wise).  So from that point of view, I agree that the GNU tools
-> should follow the ABI that Nigel and MTI set down.  Consider my
-> patch withdrawn.
+Morten Larsen wrote:
+> 
+> > As far as I can tell the branch optimization fixes in 2.6.21 introduced
+> > a bug in atomic_sub_if_positive that causes it to return even when the
+> > sc instruction fails. The result is that e.g. down_trylock becomes
+> > unreliable as the semaphore counter is not always decremented.
+> 
+> Previous patch was garbled by Outlook - this one should be clean:
+> 
+> --- a/include/asm-mips/atomic.h	2008-06-25 22:38:43.159739000 -0700
+> +++ b/include/asm-mips/atomic.h	2008-06-25 22:39:07.552065000 -0700
+> @@ -292,10 +292,10 @@ static __inline__ int atomic_sub_if_posi
+>  		"	beqz	%0, 2f					\n"
+>  		"	 subu	%0, %1, %3				\n"
+>  		"	.set	reorder					\n"
+> -		"1:							\n"
+>  		"	.subsection 2					\n"
+>  		"2:	b	1b					\n"
+>  		"	.previous					\n"
+> +		"1:							\n"
 
-While I'm not entirely clear how this decision came about I'd like to point
-out that it is unfortunate that MTI had not sought wider consensus for this
-ABI extension among MIPS implementors and the community.
+AFAICS this change should make no difference to the generated code. I
+suspect you assembler handles .subsection incorrectly. Can you provide
+a disassembled exapmle which gets altered by this patch? Also, please
+tell us the exact version of the assembler you use.
 
-We would not be in this situation with duplicated efforts and much frustration
-if this proposal had been circulated properly ahead of time.
 
-> I've been thinking about that a lot recently, since I heard about
-> your implementation.  I kind-of guessed it had been agreed with MTI
-> beforehand (although I hadn't realised MTI themselves had written
-> the specification).  Having thought it over, I think it would be best
-> if I stand down as a MIPS maintainer and if someone with the appropriate
-> commercial connections is appointed instead.  I'd recommend any
-> combination of yourself, Adam Nemet and David Daney (subject to
-> said people being willing, of course).
-
-Richard, while I understand your frustration I really hope that you will
-reconsider your decision and remain the MIPS maintainer.  I think there is a
-chance that if the community expresses that MTI should seek broader consensus
-for such proposals they will do so in the future.
-
-Your expertise as the GCC maintainer has improved the backend tremendously and
-and you should be given all the information necessary to continue your great
-work.
-
-Adam
+Thiemo

@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jul 2008 11:00:07 +0100 (BST)
-Received: from relay01.mx.bawue.net ([193.7.176.67]:33258 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 02 Jul 2008 11:14:05 +0100 (BST)
+Received: from relay01.mx.bawue.net ([193.7.176.67]:14793 "EHLO
 	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
-	id S62065451AbYGBKAB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 2 Jul 2008 11:00:01 +0100
+	id S62065707AbYGBKN6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 2 Jul 2008 11:13:58 +0100
 Received: from lagash (88-106-136-149.dynamic.dsl.as9105.com [88.106.136.149])
 	(using TLSv1 with cipher AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by relay01.mx.bawue.net (Postfix) with ESMTP id B485B48916;
-	Wed,  2 Jul 2008 11:59:57 +0200 (CEST)
+	by relay01.mx.bawue.net (Postfix) with ESMTP id AE71448916;
+	Wed,  2 Jul 2008 12:13:57 +0200 (CEST)
 Received: from ths by lagash with local (Exim 4.69)
 	(envelope-from <ths@networkno.de>)
-	id 1KDz80-0001q7-4o; Wed, 02 Jul 2008 10:59:56 +0100
-Date:	Wed, 2 Jul 2008 10:59:56 +0100
+	id 1KDzLY-00026W-LX; Wed, 02 Jul 2008 11:13:56 +0100
+Date:	Wed, 2 Jul 2008 11:13:56 +0100
 From:	Thiemo Seufer <ths@networkno.de>
-To:	Morten Larsen <mlarsen@broadcom.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Bug in atomic_sub_if_positive
-Message-ID: <20080702095955.GA7007@networkno.de>
-References: <ADD7831BD377A74E9A1621D1EAAED18F0450AC61@NT-SJCA-0750.brcm.ad.broadcom.com>
+To:	binutils@sourceware.org, gcc@gcc.gnu.org,
+	linux-mips@linux-mips.org, rdsandiford@googlemail.com
+Subject: Re: RFC: Adding non-PIC executable support to MIPS
+Message-ID: <20080702101356.GB7007@networkno.de>
+References: <87y74pxwyl.fsf@firetop.home> <20080701202236.GA1534@caradoc.them.org> <87zlp149ot.fsf@firetop.home>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ADD7831BD377A74E9A1621D1EAAED18F0450AC61@NT-SJCA-0750.brcm.ad.broadcom.com>
+In-Reply-To: <87zlp149ot.fsf@firetop.home>
 User-Agent: Mutt/1.5.18 (2008-05-17)
 Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19690
+X-archive-position: 19691
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,31 +35,59 @@ X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-Morten Larsen wrote:
+Richard Sandiford wrote:
+> Daniel Jacobowitz <dan@debian.org> writes:
+> > We've shipped our version.  Richard's version has presumably also
+> > shipped.
 > 
-> > As far as I can tell the branch optimization fixes in 2.6.21 introduced
-> > a bug in atomic_sub_if_positive that causes it to return even when the
-> > sc instruction fails. The result is that e.g. down_trylock becomes
-> > unreliable as the semaphore counter is not always decremented.
+> Right.
 > 
-> Previous patch was garbled by Outlook - this one should be clean:
+> > We did negotiate the ABI changes with MTI; this is not quite
+> > as good as doing it in full view, but it was the best we could manage
+> > and MTI is as close to a central authority for the MIPS psABI as
+> > exists today.
+> >
+> > Richard, what are your thoughts on reconciling the differences?  You
+> > can surely guess that I want to avoid changing our ABI now, even for
+> > relatively significant technical reasons - I'm all ears if there's a
+> > major reason, but in the comparisons I do not see one.
 > 
-> --- a/include/asm-mips/atomic.h	2008-06-25 22:38:43.159739000 -0700
-> +++ b/include/asm-mips/atomic.h	2008-06-25 22:39:07.552065000 -0700
-> @@ -292,10 +292,10 @@ static __inline__ int atomic_sub_if_posi
->  		"	beqz	%0, 2f					\n"
->  		"	 subu	%0, %1, %3				\n"
->  		"	.set	reorder					\n"
-> -		"1:							\n"
->  		"	.subsection 2					\n"
->  		"2:	b	1b					\n"
->  		"	.previous					\n"
-> +		"1:							\n"
+> I suppose I still support the trade-off between the 5-insn MIPS I stubs
+> (with extra-long variation for large PLT indices) and the absolute
+> .got.plt address I used.  And I still think it's shame we're treating
+> STO_MIPS_PLT and STO_MIPS16 as separate; we then only have 1 bit of
+> st_other unclaimed.
+> 
+> However, IMO, your argument about MTI being the central authority
+> is a killer one.  The purpose of the GNU tools should be to follow
+> appropriate standards where applicable (and extend them where it
+> seems wise).  So from that point of view, I agree that the GNU tools
+> should follow the ABI that Nigel and MTI set down.  Consider my
+> patch withdrawn.
+> 
+> TBH, the close relationship between CodeSourcery and MTI
+> make it difficult for a non-Sourcerer and non-MTI employee
+> to continue to be a MIPS maintainer.  I won't be in-the-know
+> about this sort of thing.
+> 
+> I've been thinking about that a lot recently, since I heard about
+> your implementation.  I kind-of guessed it had been agreed with MTI
+> beforehand (although I hadn't realised MTI themselves had written
+> the specification).
 
-AFAICS this change should make no difference to the generated code. I
-suspect you assembler handles .subsection incorrectly. Can you provide
-a disassembled exapmle which gets altered by this patch? Also, please
-tell us the exact version of the assembler you use.
+The specification is a co-production of MTI and CS. I believe the
+reason why it wasn't discussed in a wider audience is that it occured
+to nobody there could be a parallel effort going on after all those
+years!
+
+> Having thought it over, I think it would be best
+> if I stand down as a MIPS maintainer and if someone with the appropriate
+> commercial connections is appointed instead.  I'd recommend any
+> combination of yourself, Adam Nemet and David Daney (subject to
+> said people being willing, of course).
+
+FWIW, I believe a person who is _not_ in the midst of the commercial
+pressures adds valuable perspective as a maintainer.
 
 
 Thiemo

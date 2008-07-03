@@ -1,45 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Jul 2008 16:03:00 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:42178 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20130896AbYGCPCw (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 3 Jul 2008 16:02:52 +0100
-Received: from localhost (p7152-ipad201funabasi.chiba.ocn.ne.jp [222.146.70.152])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 3F765ADA1; Fri,  4 Jul 2008 00:02:45 +0900 (JST)
-Date:	Fri, 04 Jul 2008 00:04:26 +0900 (JST)
-Message-Id: <20080704.000426.39153587.anemo@mba.ocn.ne.jp>
-To:	ths@networkno.de
-Cc:	mlarsen@broadcom.com, linux-mips@linux-mips.org
-Subject: Re: Bug in atomic_sub_if_positive
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20080702105155.GC7007@networkno.de>
-References: <20080702095955.GA7007@networkno.de>
-	<20080702.193133.211490377.nemoto@toshiba-tops.co.jp>
-	<20080702105155.GC7007@networkno.de>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Jul 2008 16:22:38 +0100 (BST)
+Received: from vigor.karmaclothing.net ([217.169.26.28]:62886 "EHLO
+	vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
+	id S20132325AbYGCPWc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 3 Jul 2008 16:22:32 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m63FLVlt024063;
+	Thu, 3 Jul 2008 17:21:56 +0200
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m63FLU09024056;
+	Thu, 3 Jul 2008 16:21:30 +0100
+Date:	Thu, 3 Jul 2008 16:21:30 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/5] [MIPS] 8253: make the pit_clockevent variable
+	static
+Message-ID: <20080703152130.GA11434@linux-mips.org>
+References: <1213773503-23536-1-git-send-email-dmitri.vorobiev@movial.fi> <1213773503-23536-2-git-send-email-dmitri.vorobiev@movial.fi>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1213773503-23536-2-git-send-email-dmitri.vorobiev@movial.fi>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19707
+X-archive-position: 19708
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2 Jul 2008 11:51:55 +0100, Thiemo Seufer <ths@networkno.de> wrote:
-> > The patch looks correct.
+On Wed, Jun 18, 2008 at 10:18:19AM +0300, Dmitri Vorobiev wrote:
+> From: Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+> Date: Wed, 18 Jun 2008 10:18:19 +0300
+> To: ralf@linux-mips.org, linux-mips@linux-mips.org
+> Subject: [PATCH 1/5] [MIPS] 8253: make the pit_clockevent variable static
 > 
-> Agreed.
+> The pit_clockevent symbol is needlessly defined global. This patch makes
+> that variable static.
+> 
+> Spotted by sparse. Compile-tested using Malta defconfig.
+> 
+> Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
 
-Ralf, too late for 2.6.26?
-Anyway I think it should go into -stable tree too.
+Queued for 2.6.27.  Thanks,
 
----
-Atsushi Nemoto
+  Ralf

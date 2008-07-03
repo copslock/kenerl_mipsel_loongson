@@ -1,50 +1,115 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Jul 2008 16:44:53 +0100 (BST)
-Received: from vigor.karmaclothing.net ([217.169.26.28]:24489 "EHLO
-	vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
-	id S20133768AbYGCPoq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 3 Jul 2008 16:44:46 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m63FhTAL005721;
-	Thu, 3 Jul 2008 17:43:54 +0200
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m63FhT4a005714;
-	Thu, 3 Jul 2008 16:43:29 +0100
-Date:	Thu, 3 Jul 2008 16:43:29 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] IP28: switch to "normal" mode after PROM no longer
-	needed
-Message-ID: <20080703154329.GA21642@linux-mips.org>
-References: <20080318214756.D7E77C2816@solo.franken.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080318214756.D7E77C2816@solo.franken.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Jul 2008 16:58:12 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:44740 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20134230AbYGCP6G (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 3 Jul 2008 16:58:06 +0100
+Received: from localhost (p7152-ipad201funabasi.chiba.ocn.ne.jp [222.146.70.152])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id B67E5AA0D; Fri,  4 Jul 2008 00:57:59 +0900 (JST)
+Date:	Fri, 04 Jul 2008 00:59:40 +0900 (JST)
+Message-Id: <20080704.005940.108121109.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: Re: [PATCH] Declare some pci variables in header file
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20080419.005346.85684007.anemo@mba.ocn.ne.jp>
+References: <20080419.005346.85684007.anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19714
+X-archive-position: 19715
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Mar 18, 2008 at 10:47:56PM +0100, Thomas Bogendoerfer wrote:
+On Sat, 19 Apr 2008 00:53:46 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> Declare pci_probe_only, etc. in asm-mips/pci.h file.  This will fix
+> some sparse warnings.
 
-> SGI-IP28 is running in so called slow mode, when kernel is started
-> from the PROM. PROM calls must be done in slow mode otherwise the
-> PROM will issue an error. To get better memory performance we now
-> switch to normal mode, when the PROM is no longer needed.
-> 
-> Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Revesed against current linux-queue tree.
 
-Ugly ...  but applied anyway.
+------------------------------------------------------
+Subject: [PATCH] Declare some pci variables in header file
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-Thanks,
+Declare pci_probe_only, etc. in asm-mips/pci.h file.  This will fix
+some sparse warnings.
 
-  Ralf
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+ arch/mips/pci/fixup-vr4133.c |    1 -
+ arch/mips/pci/pci-bcm1480.c  |    1 -
+ arch/mips/pci/pci-ip27.c     |    1 -
+ arch/mips/pci/pci-sb1250.c   |    1 -
+ include/asm-mips/pci.h       |    3 +++
+ 5 files changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/arch/mips/pci/fixup-vr4133.c b/arch/mips/pci/fixup-vr4133.c
+index de5e5f6..34e651b 100644
+--- a/arch/mips/pci/fixup-vr4133.c
++++ b/arch/mips/pci/fixup-vr4133.c
+@@ -171,7 +171,6 @@ void i8259_init(void)
+ 
+ int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
+ {
+-	extern int pci_probe_only;
+ 	pci_probe_only = 1;
+ 
+ #ifdef CONFIG_ROCKHOPPER
+diff --git a/arch/mips/pci/pci-bcm1480.c b/arch/mips/pci/pci-bcm1480.c
+index d19d262..a9060c7 100644
+--- a/arch/mips/pci/pci-bcm1480.c
++++ b/arch/mips/pci/pci-bcm1480.c
+@@ -202,7 +202,6 @@ static int __init bcm1480_pcibios_init(void)
+ {
+ 	uint32_t cmdreg;
+ 	uint64_t reg;
+-	extern int pci_probe_only;
+ 
+ 	/* CFE will assign PCI resources */
+ 	pci_probe_only = 1;
+diff --git a/arch/mips/pci/pci-ip27.c b/arch/mips/pci/pci-ip27.c
+index a185169..ce92f82 100644
+--- a/arch/mips/pci/pci-ip27.c
++++ b/arch/mips/pci/pci-ip27.c
+@@ -47,7 +47,6 @@ int __cpuinit bridge_probe(nasid_t nasid, int widget_id, int masterwid)
+ 	static int num_bridges = 0;
+ 	bridge_t *bridge;
+ 	int slot;
+-	extern int pci_probe_only;
+ 
+ 	pci_probe_only = 1;
+ 
+diff --git a/arch/mips/pci/pci-sb1250.c b/arch/mips/pci/pci-sb1250.c
+index 9bc102a..bf63959 100644
+--- a/arch/mips/pci/pci-sb1250.c
++++ b/arch/mips/pci/pci-sb1250.c
+@@ -210,7 +210,6 @@ static int __init sb1250_pcibios_init(void)
+ 	void __iomem *io_map_base;
+ 	uint32_t cmdreg;
+ 	uint64_t reg;
+-	extern int pci_probe_only;
+ 
+ 	/* CFE will assign PCI resources */
+ 	pci_probe_only = 1;
+diff --git a/include/asm-mips/pci.h b/include/asm-mips/pci.h
+index 301ff2f..d3be834 100644
+--- a/include/asm-mips/pci.h
++++ b/include/asm-mips/pci.h
+@@ -172,4 +172,7 @@ static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+ 	return channel ? 15 : 14;
+ }
+ 
++extern int pci_probe_only;
++extern unsigned int pcibios_max_latency;
++
+ #endif /* _ASM_PCI_H */

@@ -1,71 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Jul 2008 09:24:17 +0100 (BST)
-Received: from winston.telenet-ops.be ([195.130.137.75]:2491 "EHLO
-	winston.telenet-ops.be") by ftp.linux-mips.org with ESMTP
-	id S28590565AbYGEIWc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 5 Jul 2008 09:22:32 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by winston.telenet-ops.be (Postfix) with SMTP id E584DA0046;
-	Sat,  5 Jul 2008 10:22:30 +0200 (CEST)
-Received: from anakin.of.borg (78-21-204-88.access.telenet.be [78.21.204.88])
-	by winston.telenet-ops.be (Postfix) with ESMTP id CC5D6A002F;
-	Sat,  5 Jul 2008 10:22:30 +0200 (CEST)
-Received: from anakin.of.borg (localhost [127.0.0.1])
-	by anakin.of.borg (8.14.3/8.14.3/Debian-4) with ESMTP id m658MUYi007236
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Sat, 5 Jul 2008 10:22:30 +0200
-Received: from localhost (geert@localhost)
-	by anakin.of.borg (8.14.3/8.14.3/Submit) with ESMTP id m658MUar007233;
-	Sat, 5 Jul 2008 10:22:30 +0200
-X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
-Date:	Sat, 5 Jul 2008 10:22:30 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [SPAM] [PATCH] IP32: Add platform devices for audio and volume
- button
-In-Reply-To: <20080704231213.3C6121DA77A@solo.franken.de>
-Message-ID: <Pine.LNX.4.64.0807051020170.5733@anakin>
-References: <20080704231213.3C6121DA77A@solo.franken.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Jul 2008 09:32:03 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:62957 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S28589888AbYGEIb5 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 5 Jul 2008 09:31:57 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1KF3BT-0004Uh-00; Sat, 05 Jul 2008 10:31:55 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 6822AC2E7E; Sat,  5 Jul 2008 10:04:14 +0200 (CEST)
+Date:	Sat, 5 Jul 2008 10:04:14 +0200
+To:	Martin Michlmayr <tbm@cyrius.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: SGI O2 sound driver v6
+Message-ID: <20080705080414.GA4989@alpha.franken.de>
+References: <20080628000916.GA22049@alpha.franken.de> <20080628141336.GA17727@alpha.franken.de> <20080628224553.GA2064@alpha.franken.de> <20080629223537.GA697@alpha.franken.de> <20080702232118.GB18226@alpha.franken.de> <20080704225106.GA7408@alpha.franken.de> <20080705070410.GA7384@deprecation.cyrius.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20080705070410.GA7384@deprecation.cyrius.com>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19722
+X-archive-position: 19723
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 5 Jul 2008, Thomas Bogendoerfer wrote:
-> +static __init int sgio2audio_devinit(void)
-> +{
-> +	struct platform_device *pd;
-> +	int ret;
-> +
-> +	pd = platform_device_alloc("sgio2audio", -1);
-> +	if (!pd)
-> +		return -ENOMEM;
-> +
-> +	ret = platform_device_add(pd);
-> +	if (ret)
-> +		platform_device_put(pd);
+On Sat, Jul 05, 2008 at 10:04:10AM +0300, Martin Michlmayr wrote:
+> * Thomas Bogendoerfer <tsbogend@alpha.franken.de> [2008-07-05 00:51]:
+> > --- /dev/null
+> > +++ b/drivers/input/misc/sgio2_btns.c
+> > @@ -0,0 +1,154 @@
+> > +/*
+> > + *  Cobalt button interface driver.
+> 
+> You should update that text.
 
-This sequence is exactly what platform_device_register_simple() does, right?
+of course. I noticed it, while preparing the patch for maintainer submission
+and fixed it. Thanks for noticing.
 
-BTW, I'm also still wondering what's the most efficient way of creating
-platform devices. There's also platform_device_register()...
+Thomas.
 
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

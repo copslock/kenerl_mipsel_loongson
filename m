@@ -1,51 +1,111 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Jul 2008 09:32:03 +0100 (BST)
-Received: from elvis.franken.de ([193.175.24.41]:62957 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S28589888AbYGEIb5 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 5 Jul 2008 09:31:57 +0100
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1KF3BT-0004Uh-00; Sat, 05 Jul 2008 10:31:55 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id 6822AC2E7E; Sat,  5 Jul 2008 10:04:14 +0200 (CEST)
-Date:	Sat, 5 Jul 2008 10:04:14 +0200
-To:	Martin Michlmayr <tbm@cyrius.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: SGI O2 sound driver v6
-Message-ID: <20080705080414.GA4989@alpha.franken.de>
-References: <20080628000916.GA22049@alpha.franken.de> <20080628141336.GA17727@alpha.franken.de> <20080628224553.GA2064@alpha.franken.de> <20080629223537.GA697@alpha.franken.de> <20080702232118.GB18226@alpha.franken.de> <20080704225106.GA7408@alpha.franken.de> <20080705070410.GA7384@deprecation.cyrius.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080705070410.GA7384@deprecation.cyrius.com>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Jul 2008 00:19:57 +0100 (BST)
+Received: from rv-out-0708.google.com ([209.85.198.245]:8425 "EHLO
+	rv-out-0708.google.com") by ftp.linux-mips.org with ESMTP
+	id S20042651AbYGEXTv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 6 Jul 2008 00:19:51 +0100
+Received: by rv-out-0708.google.com with SMTP id c5so1632272rvf.24
+        for <linux-mips@linux-mips.org>; Sat, 05 Jul 2008 16:19:48 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:received:to:subject
+         :message-id:date:from;
+        bh=Gfgj7q+mKExEZM1fpL4AKEb+sPPRDjJ2vBHGLK0E3Zg=;
+        b=m1VMFR5BBjN/dcRSsnLamECafik/hQrvll+Xldw/oFvhuXcQbziK//qyCtcHDpEUCo
+         zlf1xCVpKDkZrEo9xubCNlgC9EIf/4Ac/MjjwlOT6+ebksHzPHeeij6sltkgROxSSyhK
+         FttMP+VoSDwc2MTnX+q8Zmi6ysr7dS18QQUTo=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=to:subject:message-id:date:from;
+        b=gfkpS62qo9zPPo9SQfCLVbb1tsj3KPMHRcgVjL1Y1mQE+faSFy+M2tFI5xBJ0V/1rX
+         jDbMiWkNJD9R4b75I7OoTndg+w2KwBcEML+zEEU4WhtAp1TYXFV16V3DlPdR+YhAqtSf
+         +TDMjXHx0SZpwQV+12cbYWrCR5jZDPrw88R9M=
+Received: by 10.140.133.9 with SMTP id g9mr1260760rvd.235.1215299987928;
+        Sat, 05 Jul 2008 16:19:47 -0700 (PDT)
+Received: from localhost ( [207.47.250.104])
+        by mx.google.com with ESMTPS id c20sm3324620rvf.1.2008.07.05.16.19.45
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sat, 05 Jul 2008 16:19:46 -0700 (PDT)
+Received: from shane by localhost with local (Exim 4.63)
+	(envelope-from <shane@localhost>)
+	id 1KFH2c-0005iq-80; Sat, 05 Jul 2008 17:19:42 -0600
+To:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: [MIPS] Fix section mismatches when compiling atlas and decstation defconfigs
+Message-Id: <E1KFH2c-0005iq-80@localhost>
+Date:	Sat, 05 Jul 2008 17:19:42 -0600
+From:	Shane McDonald <mcdonald.shane@gmail.com>
+Return-Path: <mcdonald.shane@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19723
+X-archive-position: 19725
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: mcdonald.shane@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Jul 05, 2008 at 10:04:10AM +0300, Martin Michlmayr wrote:
-> * Thomas Bogendoerfer <tsbogend@alpha.franken.de> [2008-07-05 00:51]:
-> > --- /dev/null
-> > +++ b/drivers/input/misc/sgio2_btns.c
-> > @@ -0,0 +1,154 @@
-> > +/*
-> > + *  Cobalt button interface driver.
-> 
-> You should update that text.
+From: Shane McDonald <mcdonald.shane@gmail.com>
 
-of course. I noticed it, while preparing the patch for maintainer submission
-and fixed it. Thanks for noticing.
+Section mismatches are reported when compiling the default
+Atlas configuration and the default Decstation configuration.
+This patch resolves those mismatches by defining affected
+functions with the __cpuinit attribute, rather than __init.
 
-Thomas.
+Signed-off-by: Shane McDonald <mcdonald.shane@gmail.com>
+---
+ arch/mips/mm/c-r3k.c   |    6 +++---
+ arch/mips/mm/sc-rm7k.c |    4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+diff -uprN -X orig/Documentation/dontdiff orig/arch/mips/mm/c-r3k.c patched/arch/mips/mm/c-r3k.c
+--- orig/arch/mips/mm/c-r3k.c	2008-07-04 17:22:25.000000000 -0600
++++ patched/arch/mips/mm/c-r3k.c	2008-07-05 11:56:01.000000000 -0600
+@@ -26,7 +26,7 @@
+ static unsigned long icache_size, dcache_size;		/* Size in bytes */
+ static unsigned long icache_lsize, dcache_lsize;	/* Size in bytes */
+ 
+-unsigned long __init r3k_cache_size(unsigned long ca_flags)
++unsigned long __cpuinit r3k_cache_size(unsigned long ca_flags)
+ {
+ 	unsigned long flags, status, dummy, size;
+ 	volatile unsigned long *p;
+@@ -61,7 +61,7 @@ unsigned long __init r3k_cache_size(unsi
+ 	return size * sizeof(*p);
+ }
+ 
+-unsigned long __init r3k_cache_lsize(unsigned long ca_flags)
++unsigned long __cpuinit r3k_cache_lsize(unsigned long ca_flags)
+ {
+ 	unsigned long flags, status, lsize, i;
+ 	volatile unsigned long *p;
+@@ -90,7 +90,7 @@ unsigned long __init r3k_cache_lsize(uns
+ 	return lsize * sizeof(*p);
+ }
+ 
+-static void __init r3k_probe_cache(void)
++static void __cpuinit r3k_probe_cache(void)
+ {
+ 	dcache_size = r3k_cache_size(ST0_ISC);
+ 	if (dcache_size)
+diff -uprN -X orig/Documentation/dontdiff orig/arch/mips/mm/sc-rm7k.c patched/arch/mips/mm/sc-rm7k.c
+--- orig/arch/mips/mm/sc-rm7k.c	2008-07-04 17:22:25.000000000 -0600
++++ patched/arch/mips/mm/sc-rm7k.c	2008-07-05 09:51:34.000000000 -0600
+@@ -86,7 +86,7 @@ static void rm7k_sc_inv(unsigned long ad
+ /*
+  * This function is executed in uncached address space.
+  */
+-static __init void __rm7k_sc_enable(void)
++static __cpuinit void __rm7k_sc_enable(void)
+ {
+ 	int i;
+ 
+@@ -107,7 +107,7 @@ static __init void __rm7k_sc_enable(void
+ 	}
+ }
+ 
+-static __init void rm7k_sc_enable(void)
++static __cpuinit void rm7k_sc_enable(void)
+ {
+ 	if (read_c0_config() & RM7K_CONF_SE)
+ 		return;

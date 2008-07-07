@@ -1,32 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Jul 2008 06:28:59 +0100 (BST)
-Received: from vigor.karmaclothing.net ([217.169.26.28]:30621 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Jul 2008 12:58:03 +0100 (BST)
+Received: from vigor.karmaclothing.net ([217.169.26.28]:41376 "EHLO
 	vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
-	id S20033740AbYGGF2y (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 7 Jul 2008 06:28:54 +0100
+	id S20045778AbYGGL55 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 7 Jul 2008 12:57:57 +0100
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m675Ra0h016482;
-	Mon, 7 Jul 2008 07:28:02 +0200
+	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m67Busbf028148;
+	Mon, 7 Jul 2008 12:57:20 +0100
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m675RZjj016481;
-	Mon, 7 Jul 2008 06:27:35 +0100
-Date:	Mon, 7 Jul 2008 06:27:35 +0100
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m67Burlc028147;
+	Mon, 7 Jul 2008 12:56:53 +0100
+Date:	Mon, 7 Jul 2008 12:56:53 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Shane McDonald <mcdonald.shane@gmail.com>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: [MIPS] Fix section mismatches when compiling atlas and
-	decstation defconfigs
-Message-ID: <20080707052735.GB26850@linux-mips.org>
-References: <E1KFH2c-0005iq-80@localhost>
+Subject: Re: [PATCH] Declare some pci variables in header file
+Message-ID: <20080707115653.GA28127@linux-mips.org>
+References: <20080419.005346.85684007.anemo@mba.ocn.ne.jp> <20080704.005940.108121109.anemo@mba.ocn.ne.jp>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <E1KFH2c-0005iq-80@localhost>
+In-Reply-To: <20080704.005940.108121109.anemo@mba.ocn.ne.jp>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19726
+X-archive-position: 19727
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,22 +33,14 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Jul 05, 2008 at 05:19:42PM -0600, Shane McDonald wrote:
+On Fri, Jul 04, 2008 at 12:59:40AM +0900, Atsushi Nemoto wrote:
 
-> From: Shane McDonald <mcdonald.shane@gmail.com>
-
-Btw, while it doesn't harm there is no need to insert this From: line into
-the patch if it's identical to the sender's email address as in your case.
-Where it's missing git will just pick the From: address from the email
-headers.
-
-> Section mismatches are reported when compiling the default
-> Atlas configuration and the default Decstation configuration.
-> This patch resolves those mismatches by defining affected
-> functions with the __cpuinit attribute, rather than __init.
+> On Sat, 19 Apr 2008 00:53:46 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> > Declare pci_probe_only, etc. in asm-mips/pci.h file.  This will fix
+> > some sparse warnings.
 > 
-> Signed-off-by: Shane McDonald <mcdonald.shane@gmail.com>
+> Revesed against current linux-queue tree.
 
-Thanks, applied.
+Thanks, queued for 2.6.27.
 
   Ralf

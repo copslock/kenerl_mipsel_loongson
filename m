@@ -1,155 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Jul 2008 16:16:08 +0100 (BST)
-Received: from vigor.karmaclothing.net ([217.169.26.28]:48774 "EHLO
-	vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
-	id S20036090AbYGHPQB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 8 Jul 2008 16:16:01 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m68FEaPV031632;
-	Tue, 8 Jul 2008 16:15:01 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m68FEU4Z031631;
-	Tue, 8 Jul 2008 16:14:30 +0100
-Date:	Tue, 8 Jul 2008 16:14:30 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Harald Krapfenbauer <krapfenbauer@ict.tuwien.ac.at>
-Cc:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: 64-bit values on 32-bit machine
-Message-ID: <20080708151429.GA31147@linux-mips.org>
-References: <487334AD.70100@ict.tuwien.ac.at>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <487334AD.70100@ict.tuwien.ac.at>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 08 Jul 2008 16:26:32 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:17613 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20036561AbYGHP02 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 8 Jul 2008 16:26:28 +0100
+Received: from localhost (p2206-ipad301funabasi.chiba.ocn.ne.jp [122.17.252.206])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id EB03CAE18; Wed,  9 Jul 2008 00:26:20 +0900 (JST)
+Date:	Wed, 09 Jul 2008 00:28:05 +0900 (JST)
+Message-Id: <20080709.002805.128619748.anemo@mba.ocn.ne.jp>
+To:	linux-sparse@vger.kernel.org
+Cc:	linux-mips@linux-mips.org
+Subject: [PATCH] sparse: Increase pre_buffer[] and check overflow
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19738
+X-archive-position: 19739
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jul 08, 2008 at 11:34:37AM +0200, Harald Krapfenbauer wrote:
+I got this error when running sparse on mips kernel with gcc 4.3:
 
-> I want to know how 64-bit values are passed on a little-endian 32-bit
-> MIPS machine on function calls.
-> 
-> If there is one 64-bit argument to a function, it is passed in registers
-> a0-a1 I think, but does a0 contain the lower 4 bytes or the upper 4?
-> 
-> Similarly, if there are several arguments so that a 64-bit argument is
-> passed on the stack: Do the lower 4 bytes go to the lower address or to
-> the higher?
+builtin:272:1: warning: Newline in string or character constant
 
-Give a man a fish and he's got to eat for one day.  Teach a man how to
-fish and he's got food for a life ;-)
+The linus-mips kernel uses '$(CC) -dM -E' to generates arguments for
+sparse.  With gcc 4.3, it generates lot of '-D' options and causes
+pre_buffer overflow.
 
-I suggest to find out about such ABI details you write a small test program
-in C, compile that to assembler code using the -S option and check the
-generated .s file.  For example:
+This patch increase pre_buffer[] size and add extra checking for
+overflow instead of silently truncating.
 
-$ cat c.c
-extern foo(unsigned long long a1, unsigned long long a2,
-           unsigned long long a3);
-
-void bar(void)
-{
-	foo(1UL, 2UL, 3UL);
-}
-$ mips-linux-gcc -fno-pic -mno-abicalls -O2 -S c.c
-	.file	1 "c.c"
-	.section .mdebug.abi32
-	.previous
-	.gnu_attribute 4, 1
-	.text
-	.align	2
-	.globl	bar
-	.ent	bar
-	.type	bar, @function
-bar:
-	.set	nomips16
-	.frame	$sp,32,$31		# vars= 0, regs= 1/0, args= 24, gp= 0
-	.mask	0x80000000,-4
-	.fmask	0x00000000,0
-	.set	noreorder
-	.set	nomacro
-	
-	addiu	$sp,$sp,-32
-	li	$3,3			# 0x3
-	move	$2,$0
-	li	$5,1			# 0x1
-	move	$4,$0
-	li	$7,2			# 0x2
-	move	$6,$0
-	sw	$31,28($sp)
-	sw	$3,20($sp)
-	jal	foo
-	sw	$2,16($sp)
-
-	lw	$31,28($sp)
-	nop
-	j	$31
-	addiu	$sp,$sp,32
-
-	.set	macro
-	.set	reorder
-	.end	bar
-	.ident	"GCC: (GNU) 4.3.0"
-$
-
-mips-linux-gcc is the big endian compiler.  Repeat for little endian:
-
-$ mipsel-linux-gcc -fno-pic -mno-abicalls -O2 -S c.c
-	.file	1 "c.c"
-	.section .mdebug.abi32
-	.previous
-	.gnu_attribute 4, 1
-	.text
-	.align	2
-	.globl	bar
-	.ent	bar
-	.type	bar, @function
-bar:
-	.set	nomips16
-	.frame	$sp,32,$31		# vars= 0, regs= 1/0, args= 24, gp= 0
-	.mask	0x80000000,-4
-	.fmask	0x00000000,0
-	.set	noreorder
-	.set	nomacro
-	
-	addiu	$sp,$sp,-32
-	li	$2,3			# 0x3
-	move	$3,$0
-	li	$4,1			# 0x1
-	move	$5,$0
-	li	$6,2			# 0x2
-	move	$7,$0
-	sw	$31,28($sp)
-	sw	$2,16($sp)
-	jal	foo
-	sw	$3,20($sp)
-
-	lw	$31,28($sp)
-	nop
-	j	$31
-	addiu	$sp,$sp,32
-
-	.set	macro
-	.set	reorder
-	.end	bar
-	.ident	"GCC: (GNU) 4.3.0"
-$
-
-Ignore the "-fno-pic -mno-abicalls" options; they disable the PIC code
-generation which on MIPS is default and is making the generated code well
-harder to read.
-
-You will notice that big endian compiler uses register pairs $4/$5 rsp.
-$6/$6 in the order high / low half and the little endian compiler does it
-in the reverse order; similar for the memory order for stack arguments.
-
-  Ralf
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+diff --git a/lib.c b/lib.c
+index 0abcc9a..b8b2d57 100644
+--- a/lib.c
++++ b/lib.c
+@@ -186,7 +186,7 @@ void die(const char *fmt, ...)
+ }
+ 
+ static unsigned int pre_buffer_size;
+-static char pre_buffer[8192];
++static char pre_buffer[16384];
+ 
+ int Waddress_space = 1;
+ int Wbitwise = 0;
+@@ -238,6 +238,8 @@ void add_pre_buffer(const char *fmt, ...)
+ 		fmt, args);
+ 	pre_buffer_size = size;
+ 	va_end(args);
++	if (pre_buffer_size >= sizeof(pre_buffer) - 1)
++		die("pre_buffer overflow");
+ }
+ 
+ static char **handle_switch_D(char *arg, char **next)

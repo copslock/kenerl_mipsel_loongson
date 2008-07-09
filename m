@@ -1,64 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Jul 2008 17:31:26 +0100 (BST)
-Received: from pasmtpb.tele.dk ([80.160.77.98]:56297 "EHLO pasmtpB.tele.dk")
-	by ftp.linux-mips.org with ESMTP id S20023167AbYGIQbY (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 9 Jul 2008 17:31:24 +0100
-Received: from ravnborg.org (0x535d98d8.vgnxx8.dynamic.dsl.tele.dk [83.93.152.216])
-	by pasmtpB.tele.dk (Postfix) with ESMTP id 0FEC8E30CAF;
-	Wed,  9 Jul 2008 18:31:22 +0200 (CEST)
-Received: by ravnborg.org (Postfix, from userid 500)
-	id 55D9D580D9; Wed,  9 Jul 2008 18:32:12 +0200 (CEST)
-Date:	Wed, 9 Jul 2008 18:32:12 +0200
-From:	Sam Ravnborg <sam@ravnborg.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Jul 2008 17:41:02 +0100 (BST)
+Received: from ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk ([217.169.26.28]:63414
+	"EHLO vigor.karmaclothing.net") by ftp.linux-mips.org with ESMTP
+	id S20025262AbYGIQk7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 9 Jul 2008 17:40:59 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by vigor.karmaclothing.net (8.14.1/8.14.1) with ESMTP id m69GesgW025421;
+	Wed, 9 Jul 2008 17:40:55 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.1/8.14.1/Submit) id m69GerHL025414;
+	Wed, 9 Jul 2008 17:40:53 +0100
+Date:	Wed, 9 Jul 2008 17:40:53 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
 To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-sparse@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] sparse: Increase pre_buffer[] and check overflow
-Message-ID: <20080709163212.GA1227@uranus.ravnborg.org>
-References: <20080709.002805.128619748.anemo@mba.ocn.ne.jp> <20080708204547.GA16742@uranus.ravnborg.org> <20080710.011818.26096759.anemo@mba.ocn.ne.jp>
-Mime-Version: 1.0
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Make gpio_txx9 entirely spinlock-safe
+Message-ID: <20080709164053.GA5672@linux-mips.org>
+References: <20080710.010208.39154926.anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20080710.011818.26096759.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <sam@ravnborg.org>
+In-Reply-To: <20080710.010208.39154926.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19751
+X-archive-position: 19752
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sam@ravnborg.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jul 10, 2008 at 01:18:18AM +0900, Atsushi Nemoto wrote:
-> On Tue, 8 Jul 2008 22:45:47 +0200, Sam Ravnborg <sam@ravnborg.org> wrote:
-> > > The linus-mips kernel uses '$(CC) -dM -E' to generates arguments for
-> > > sparse.  With gcc 4.3, it generates lot of '-D' options and causes
-> > > pre_buffer overflow.
-> > 
-> > Why does mips have this need when all other archs does not?
-> > We should fix sparse so it is dynamically allocated - but
-> > that is not an excuse for mips to use odd stuff like this.
-> > 
-> > So please someone from mips land explain why this is needed.
-> 
-> This was introduced by commit 59b3e8e9aac69d2d02853acac7e2affdfbabca50.
-> ("[MIPS] Makefile crapectomy.")
-> 
-> Before the commit, CHECKFLAGS was adjusted like this:
-> 
-> CHECKFLAGS-y				+= -D__linux__ -D__mips__ \
-> 					   -D_MIPS_SZINT=32 \
-> 					   -D_ABIO32=1 \
-...
+On Thu, Jul 10, 2008 at 01:02:08AM +0900, Atsushi Nemoto wrote:
 
-So the expalnation seems that gcc for mips define much more
-than the usual gcc does.
-My gcc define 76 symbols for i386.
+> TXx9 GPIO set/get routines are spinlock-safe.  This patch make
+> gpio_direction_{input,output} routines also spinlock-safe so that they
+> can be used during early board setup.
 
-And we use this stuff in the kernel.
+Thanks, queued for 2.6.27.
 
-OK - thanks for the details.
-
-	Sam
+  Ralf

@@ -1,68 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jul 2008 19:09:41 +0100 (BST)
-Received: from wr-out-0506.google.com ([64.233.184.226]:29835 "EHLO
-	wr-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20024233AbYGJSJj (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 10 Jul 2008 19:09:39 +0100
-Received: by wr-out-0506.google.com with SMTP id 58so2519262wri.8
-        for <linux-mips@linux-mips.org>; Thu, 10 Jul 2008 11:09:37 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to
-         :subject:cc:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:content-disposition:references;
-        bh=MPa0EJA0Zz6mGe/OJXtfuXIU4UwXQLn4wGx3pydxTck=;
-        b=MS7wPiK6sQBGoFkPHdpLotp22g2HZwtVMbwElCJyasKVwMmRw4fmE2ypjs/0B7xSTc
-         6Yi68ew7wVUo5HiFIIc0PYUfoHhyB1I7husWr/Pp8CKsJcWMG5yttuuvY8psdXJUBXyF
-         8djgjf6OPXjKWo3yooMdL+q1nfXuH6/GwJcQw=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:cc:in-reply-to:mime-version
-         :content-type:content-transfer-encoding:content-disposition
-         :references;
-        b=jgTDIVcV5Okkd/td6v+JRU3k/pl3SvJPPRLWxp3gHlGByjXMZ6zYdxxWX7eP9ph0WJ
-         m/VvfTykAmwLwGH2sfJdm+OD4K0xcQOOmGuzzY/ybscud/qMJxNKul8E85Z65xMkWA1g
-         vwaNMUiVs3C2gPjg2+PXUNTJk3/GNAAaKCl68=
-Received: by 10.90.51.13 with SMTP id y13mr9036852agy.67.1215713377658;
-        Thu, 10 Jul 2008 11:09:37 -0700 (PDT)
-Received: by 10.90.49.16 with HTTP; Thu, 10 Jul 2008 11:09:37 -0700 (PDT)
-Message-ID: <118833cc0807101109m6abcda96w492548d847b1a8c4@mail.gmail.com>
-Date:	Thu, 10 Jul 2008 14:09:37 -0400
-From:	"Morten Welinder" <mwelinder@gmail.com>
-To:	"Al Viro" <viro@zeniv.linux.org.uk>
-Subject: Re: [PATCH] sparse: Increase pre_buffer[] and check overflow
-Cc:	"Atsushi Nemoto" <anemo@mba.ocn.ne.jp>,
-	linux-sparse@vger.kernel.org, linux-mips@linux-mips.org
-In-Reply-To: <20080710175100.GF28946@ZenIV.linux.org.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <20080709.002805.128619748.anemo@mba.ocn.ne.jp>
-	 <20080709.005953.26097194.anemo@mba.ocn.ne.jp>
-	 <20080710175100.GF28946@ZenIV.linux.org.uk>
-Return-Path: <mwelinder@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jul 2008 19:30:03 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:62689 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20022781AbYGJSaB (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 10 Jul 2008 19:30:01 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1KH0tz-0003lZ-00; Thu, 10 Jul 2008 20:29:59 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 15B4BC2AE2; Thu, 10 Jul 2008 20:29:55 +0200 (CEST)
+From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH] IP22/28: Add platform devices for hal2
+To:	linux-mips@linux-mips.org
+cc:	ralf@linux-mips.org
+Message-Id: <20080710182955.15B4BC2AE2@solo.franken.de>
+Date:	Thu, 10 Jul 2008 20:29:55 +0200 (CEST)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19767
+X-archive-position: 19768
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mwelinder@gmail.com
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-> Not used anywhere in the tree:
-> -D__DBL_MIN_EXP__='(-1021)' -D__HQ_FBIT__='15' -D__SFRACT_IBIT__='0'
-> -D__FLT_MIN__='1.17549435e-38F' -D__UFRACT_MAX__='0XFFFFP-16UR'
-> -D__DEC64_DEN__='0.000000000000001E-383DD' -D__DQ_FBIT__='63'
-> -D__ULFRACT_FBIT__='32' -D__SACCUM_EPSILON__='0x1P-7HK'
-> -D__CHAR_BIT__='8' -D__USQ_IBIT__='0' -D__ACCUM_FBIT__='15'
+Create platform devices for hal2 and add option for selecting HAL2 alsa
+driver.
 
-Wrong tree, :-)  Check your equivalent of
-/usr/lib64/gcc/x86_64-suse-linux/4.1.0/include/float.h
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+---
 
-The kernel probably doesn't care much, but sparse as a general tool
-ought to care.
+ arch/mips/Kconfig                  |    5 +++++
+ arch/mips/sgi-ip22/ip22-platform.c |    7 +++++++
+ 2 files changed, 12 insertions(+), 0 deletions(-)
 
-Morten
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 24c5dee..a3a2dd2 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -382,6 +382,7 @@ config SGI_IP22
+ 	select SGI_HAS_DS1286
+ 	select SGI_HAS_I8042
+ 	select SGI_HAS_INDYDOG
++	select SGI_HAS_HAL2
+ 	select SGI_HAS_SEEQ
+ 	select SGI_HAS_WD93
+ 	select SGI_HAS_ZILOG
+@@ -437,6 +438,7 @@ config SGI_IP28
+ 	select SGI_HAS_DS1286
+ 	select SGI_HAS_I8042
+ 	select SGI_HAS_INDYDOG
++	select SGI_HAS_HAL2
+ 	select SGI_HAS_SEEQ
+ 	select SGI_HAS_WD93
+ 	select SGI_HAS_ZILOG
+@@ -979,6 +981,9 @@ config SGI_HAS_DS1286
+ config SGI_HAS_INDYDOG
+ 	bool
+ 
++config SGI_HAS_HAL2
++	bool
++
+ config SGI_HAS_SEEQ
+ 	bool
+ 
+diff --git a/arch/mips/sgi-ip22/ip22-platform.c b/arch/mips/sgi-ip22/ip22-platform.c
+index 28ffec8..d93d07a 100644
+--- a/arch/mips/sgi-ip22/ip22-platform.c
++++ b/arch/mips/sgi-ip22/ip22-platform.c
+@@ -175,3 +175,10 @@ static int __init sgiseeq_devinit(void)
+ }
+ 
+ device_initcall(sgiseeq_devinit);
++
++static int __init sgi_hal2_devinit(void)
++{
++	return IS_ERR(platform_device_register_simple("sgihal2", 0, NULL, 0));
++}
++
++device_initcall(sgi_hal2_devinit);

@@ -1,28 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jul 2008 18:39:52 +0100 (BST)
-Received: from zeniv.linux.org.uk ([195.92.253.2]:7560 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Jul 2008 18:51:06 +0100 (BST)
+Received: from zeniv.linux.org.uk ([195.92.253.2]:16871 "EHLO
 	ZenIV.linux.org.uk") by ftp.linux-mips.org with ESMTP
-	id S20023054AbYGJRju (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 10 Jul 2008 18:39:50 +0100
+	id S20025065AbYGJRvD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 10 Jul 2008 18:51:03 +0100
 Received: from viro by ZenIV.linux.org.uk with local (Exim 4.68 #1 (Red Hat Linux))
-	id 1KH07N-0002pt-7f; Thu, 10 Jul 2008 18:39:45 +0100
-Date:	Thu, 10 Jul 2008 18:39:45 +0100
+	id 1KH0IH-0003GI-04; Thu, 10 Jul 2008 18:51:01 +0100
+Date:	Thu, 10 Jul 2008 18:51:00 +0100
 From:	Al Viro <viro@ZenIV.linux.org.uk>
-To:	Sam Ravnborg <sam@ravnborg.org>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-sparse@vger.kernel.org,
-	linux-mips@linux-mips.org
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-sparse@vger.kernel.org, linux-mips@linux-mips.org
 Subject: Re: [PATCH] sparse: Increase pre_buffer[] and check overflow
-Message-ID: <20080710173945.GE28946@ZenIV.linux.org.uk>
-References: <20080709.002805.128619748.anemo@mba.ocn.ne.jp> <20080708204547.GA16742@uranus.ravnborg.org> <20080710.011818.26096759.anemo@mba.ocn.ne.jp> <20080709163212.GA1227@uranus.ravnborg.org>
+Message-ID: <20080710175100.GF28946@ZenIV.linux.org.uk>
+References: <20080709.002805.128619748.anemo@mba.ocn.ne.jp> <20080709.005953.26097194.anemo@mba.ocn.ne.jp>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20080709163212.GA1227@uranus.ravnborg.org>
+In-Reply-To: <20080709.005953.26097194.anemo@mba.ocn.ne.jp>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 Return-Path: <viro@ftp.linux.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19765
+X-archive-position: 19766
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,40 +29,72 @@ X-original-sender: viro@ZenIV.linux.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jul 09, 2008 at 06:32:12PM +0200, Sam Ravnborg wrote:
-> So the expalnation seems that gcc for mips define much more
-> than the usual gcc does.
-> My gcc define 76 symbols for i386.
-> 
-> And we use this stuff in the kernel.
+On Wed, Jul 09, 2008 at 12:59:53AM +0900, Atsushi Nemoto wrote:
+explicit (and __STDC__ is redundant): -D__linux__ -Dlinux -D__STDC__
+-Dunix -D__unix__ -Wbitwise
 
-How much of it do we really use?  Let's see - on i386 gcc-4.1.2 I see
-79 symbols.  64 simply never occur in the tree.  At all.  Out of remaining
-15, we have
+Not used anywhere in the tree:
+-D__DBL_MIN_EXP__='(-1021)' -D__HQ_FBIT__='15' -D__SFRACT_IBIT__='0'
+-D__FLT_MIN__='1.17549435e-38F' -D__UFRACT_MAX__='0XFFFFP-16UR'
+-D__DEC64_DEN__='0.000000000000001E-383DD' -D__DQ_FBIT__='63'
+-D__ULFRACT_FBIT__='32' -D__SACCUM_EPSILON__='0x1P-7HK'
+-D__CHAR_BIT__='8' -D__USQ_IBIT__='0' -D__ACCUM_FBIT__='15'
 
-__GNUC__, __GNUC_MAJOR__, __GNUC_PATCHLEVEL__ - provided by sparse.
-__STDC__: few users, provided by sparse.
-__SIZE_TYPE__: one odd user, defined by sparse anyway
-__PTRDIFF_TYPE__: one odd user, defined by sparse anyway
+Maybe, let me check...  Nope, not used.
+> -DR3000='1'
 
-__linux__ - few users, explicitly added in top-level Makefile
-linux - 3 users.  Defined in top-level Makefile.
-unix - no real users (some instances, of course, but none outside of comments,
-#include pathnames and string constants).  Defined in top-level Makefile,
-anyway.
+Not used anywhere:
+> -D__USFRACT_FBIT__='8'
+> -D__ULLFRACT_MAX__='0XFFFFFFFFFFFFFFFFP-64ULLR'
+> -D__WCHAR_MAX__='2147483647' -D__LACCUM_IBIT__='32'
+> -D__GCC_HAVE_SYNC_COMPARE_AND_SWAP_4='1'
+> -D__DBL_DENORM_MIN__='4.9406564584124654e-324'
+> -D__FLT_EVAL_METHOD__='0'
 
-__USER_LABEL_PREFIX__, __REGISTER_PREFIX__ - arch/m68knommu/lib/*.S; not
-a sparse fodder anyway *and* defaults are given in files themselves.
+Explicitly passed: -D__unix__='1'
 
-__ELF__: arch/alpha/boot/tools/objstrip.c (userland helper, actually, *and*
-misplaced there; it's used as a proxy for type of kernel image)
+Not used:
+> -D__LLACCUM_MAX__='0X7FFFFFFFFFFFFFFFP-31LLK' -D__FRACT_FBIT__='15'
 
-__i386__: a bunch
-__i386: one user, redundant (__i386__ *and* i386 in the same #if)
-i386: 3 users besides the aforementioned one.
+Used:
+-D_MIPS_ISA='_MIPS_ISA_MIPS32'
 
-So...  Only 3 symbols out of the entire bunch are arch-dependent *and* not
-provided by sparse itself.  Absolute majority of the rest is never ever
-used in the tree.
+Not used:
+> -D__UACCUM_FBIT__='16'
+> -D__LANGUAGE_C='1' -D__DBL_MIN_10_EXP__='(-307)'
+> -D__FINITE_MATH_ONLY__='0' -D_MIPS_TUNE='"mips32r2"'
+> -D__LFRACT_IBIT__='0' -D__LFRACT_MAX__='0X7FFFFFFFP-31LR'
+> -D__DEC64_MAX_EXP__='384' -D_ABIO32='1' -D__SA_FBIT__='15'
+> -D__SHRT_MAX__='32767' -D__LDBL_MAX__='1.7976931348623157e+308L'
+> -D__FRACT_MAX__='0X7FFFP-15R' -D__UFRACT_FBIT__='16'
+> -D__UFRACT_MIN__='0.0UR' -D__LANGUAGE_C__='1'
 
-I very much doubt that mips situation is seriously different...
+Not used, might be worth defining in sparse:
+-D__UINTMAX_TYPE__='long
+> long unsigned int'
+
+Not used:
+ -D__LLFRACT_EPSILON__='0x1P-63LLR'
+
+Explicitly passed:
+ -D__linux='1'
+
+Not used:
+> -D__DEC32_EPSILON__='1E-6DF'
+
+Passed by sparse:
+-D__OPTIMIZE__='1'
+
+Explicitly passed: -D__unix='1'
+
+Not used:
+> -D__ULFRACT_MAX__='0XFFFFFFFFP-32ULR' -D__TA_IBIT__='64'
+> -D__LDBL_MAX_EXP__='1024'
+
+Used: -D__MIPSEL__='1'
+
+Explicitly passed: -D__linux__='1'
+
+[...]
+
+And AFAICS, the ratio gets even worse further into the list...

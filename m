@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jul 2008 15:26:21 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:40673 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20031095AbYGKO0R (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 11 Jul 2008 15:26:17 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jul 2008 15:26:44 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:63715 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20030628AbYGKO0X (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 11 Jul 2008 15:26:23 +0100
 Received: from localhost (p1011-ipad211funabasi.chiba.ocn.ne.jp [58.91.157.11])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id E32D1AB97; Fri, 11 Jul 2008 23:26:08 +0900 (JST)
-Date:	Fri, 11 Jul 2008 23:27:54 +0900 (JST)
-Message-Id: <20080711.232754.07644442.anemo@mba.ocn.ne.jp>
+	id 00306AC01; Fri, 11 Jul 2008 23:26:17 +0900 (JST)
+Date:	Fri, 11 Jul 2008 23:28:04 +0900 (JST)
+Message-Id: <20080711.232804.75184425.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
 Cc:	ralf@linux-mips.org
-Subject: [PATCH 1/2] txx9: Make single kernel can support multiple boards
+Subject: [PATCH 1/2] txx9: update and merge defconfigs
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
 X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
@@ -21,7 +21,7 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19780
+X-archive-position: 19781
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,1881 +29,2296 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Make single kernel can be used on RBTX4927/37/38.  Also make
-some SoC-specific code independent from board-specific code.
+Merge rbhma4200(RBTX4927/37) and rbhma4500(RBTX4938) defconfig into
+single rbtx49xx defconfig.  And jmr3927 defconfig is also updated.
 
 Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
- arch/mips/Kconfig                   |   67 +-------------
- arch/mips/Makefile                  |   21 +++--
- arch/mips/pci/Makefile              |    9 +-
- arch/mips/pci/fixup-jmr3927.c       |    8 +--
- arch/mips/pci/fixup-rbtx4927.c      |    8 +--
- arch/mips/pci/fixup-rbtx4938.c      |   11 +--
- arch/mips/txx9/Kconfig              |   82 ++++++++++++++++-
- arch/mips/txx9/generic/Makefile     |    4 +-
- arch/mips/txx9/generic/irq_tx4927.c |   33 +------
- arch/mips/txx9/generic/irq_tx4938.c |   31 +------
- arch/mips/txx9/generic/pci.c        |   11 +++
- arch/mips/txx9/generic/setup.c      |  169 +++++++++++++++++++++++++++++++++++
- arch/mips/txx9/jmr3927/Makefile     |    2 +-
- arch/mips/txx9/jmr3927/init.c       |   57 ------------
- arch/mips/txx9/jmr3927/irq.c        |   45 ++++-----
- arch/mips/txx9/jmr3927/prom.c       |   46 +++-------
- arch/mips/txx9/jmr3927/setup.c      |   54 +++++-------
- arch/mips/txx9/rbtx4927/irq.c       |   57 ++++++------
- arch/mips/txx9/rbtx4927/prom.c      |   52 +----------
- arch/mips/txx9/rbtx4927/setup.c     |   78 ++++++++---------
- arch/mips/txx9/rbtx4938/irq.c       |   48 ++++++----
- arch/mips/txx9/rbtx4938/prom.c      |   49 +----------
- arch/mips/txx9/rbtx4938/setup.c     |   64 +++++---------
- include/asm-mips/txx9/generic.h     |   18 ++++
- include/asm-mips/txx9/jmr3927.h     |    5 +
- include/asm-mips/txx9/rbtx4927.h    |   13 ++-
- include/asm-mips/txx9/rbtx4938.h    |   36 ++------
- include/asm-mips/txx9/tx4927.h      |   19 +---
- include/asm-mips/txx9/tx4938.h      |    8 +-
- 29 files changed, 520 insertions(+), 585 deletions(-)
+ arch/mips/configs/jmr3927_defconfig   |   10 +-
+ arch/mips/configs/rbhma4200_defconfig |  698 ------------------------------
+ arch/mips/configs/rbhma4500_defconfig |  763 --------------------------------
+ arch/mips/configs/rbtx49xx_defconfig  |  767 +++++++++++++++++++++++++++++++++
+ 4 files changed, 772 insertions(+), 1466 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 591dedc..d23204e 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -552,66 +552,11 @@ config SNI_RM
- 	  Technology and now in turn merged with Fujitsu.  Say Y here to
- 	  support this machine type.
- 
--config TOSHIBA_JMR3927
--	bool "Toshiba JMR-TX3927 board"
--	select CEVT_TXX9
--	select DMA_NONCOHERENT
--	select HW_HAS_PCI
--	select MIPS_TX3927
--	select IRQ_TXX9
--	select SWAP_IO_SPACE
--	select SYS_HAS_CPU_TX39XX
--	select SYS_SUPPORTS_32BIT_KERNEL
--	select SYS_SUPPORTS_LITTLE_ENDIAN
--	select SYS_SUPPORTS_BIG_ENDIAN
--	select GENERIC_HARDIRQS_NO__DO_IRQ
--	select GPIO_TXX9
-+config MACH_TX39XX
-+	bool "Toshiba TX39 series based machines"
- 
--config TOSHIBA_RBTX4927
--	bool "Toshiba RBTX49[23]7 board"
--	select CEVT_R4K
--	select CSRC_R4K
--	select CEVT_TXX9
--	select DMA_NONCOHERENT
--	select HAS_TXX9_SERIAL
--	select HW_HAS_PCI
--	select IRQ_CPU
--	select IRQ_TXX9
--	select PCI_TX4927
--	select SWAP_IO_SPACE
--	select SYS_HAS_CPU_TX49XX
--	select SYS_SUPPORTS_32BIT_KERNEL
--	select SYS_SUPPORTS_64BIT_KERNEL
--	select SYS_SUPPORTS_LITTLE_ENDIAN
--	select SYS_SUPPORTS_BIG_ENDIAN
--	select SYS_SUPPORTS_KGDB
--	select GENERIC_HARDIRQS_NO__DO_IRQ
--	help
--	  This Toshiba board is based on the TX4927 processor. Say Y here to
--	  support this machine type
--
--config TOSHIBA_RBTX4938
--	bool "Toshiba RBTX4938 board"
--	select CEVT_R4K
--	select CSRC_R4K
--	select CEVT_TXX9
--	select DMA_NONCOHERENT
--	select HAS_TXX9_SERIAL
--	select HW_HAS_PCI
--	select IRQ_CPU
--	select IRQ_TXX9
--	select PCI_TX4927
--	select SWAP_IO_SPACE
--	select SYS_HAS_CPU_TX49XX
--	select SYS_SUPPORTS_32BIT_KERNEL
--	select SYS_SUPPORTS_LITTLE_ENDIAN
--	select SYS_SUPPORTS_BIG_ENDIAN
--	select SYS_SUPPORTS_KGDB
--	select GENERIC_HARDIRQS_NO__DO_IRQ
--	select GPIO_TXX9
--	help
--	  This Toshiba board is based on the TX4938 processor. Say Y here to
--	  support this machine type
-+config MACH_TX49XX
-+	bool "Toshiba TX49 series based machines"
- 
- config WR_PPMC
- 	bool "Wind River PPMC board"
-@@ -889,10 +834,6 @@ config PCI_GT64XXX_PCI0
- config NO_EXCEPT_FILL
- 	bool
- 
--config MIPS_TX3927
--	bool
--	select HAS_TXX9_SERIAL
--
- config MIPS_RM9122
- 	bool
- 	select SERIAL_RM9000
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 8e1e49c..d319cd6 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -551,29 +551,30 @@ endif
- all-$(CONFIG_SNI_RM)		:= vmlinux.ecoff
- 
+diff --git a/arch/mips/configs/jmr3927_defconfig b/arch/mips/configs/jmr3927_defconfig
+index ab16e67..9d5bd2a 100644
+--- a/arch/mips/configs/jmr3927_defconfig
++++ b/arch/mips/configs/jmr3927_defconfig
+@@ -1,7 +1,7 @@
  #
-+# Common TXx9
-+#
-+core-$(CONFIG_MACH_TX39XX)	+= arch/mips/txx9/generic/
-+cflags-$(CONFIG_MACH_TX39XX) += -Iinclude/asm-mips/mach-jmr3927
-+load-$(CONFIG_MACH_TX39XX)	+= 0xffffffff80050000
-+core-$(CONFIG_MACH_TX49XX)	+= arch/mips/txx9/generic/
-+cflags-$(CONFIG_MACH_TX49XX) += -Iinclude/asm-mips/mach-tx49xx
-+load-$(CONFIG_MACH_TX49XX)	+= 0xffffffff80100000
-+
-+#
- # Toshiba JMR-TX3927 board
+ # Automatically generated make config: don't edit
+ # Linux kernel version: 2.6.26-rc9
+-# Fri Jul 11 00:25:19 2008
++# Fri Jul 11 23:01:36 2008
  #
--core-$(CONFIG_TOSHIBA_JMR3927)	+= arch/mips/txx9/jmr3927/ \
--				   arch/mips/txx9/generic/
--cflags-$(CONFIG_TOSHIBA_JMR3927) += -Iinclude/asm-mips/mach-jmr3927
--load-$(CONFIG_TOSHIBA_JMR3927)	+= 0xffffffff80050000
-+core-$(CONFIG_TOSHIBA_JMR3927)	+= arch/mips/txx9/jmr3927/
+ CONFIG_MIPS=y
  
- #
- # Toshiba RBTX4927 board or
- # Toshiba RBTX4937 board
- #
- core-$(CONFIG_TOSHIBA_RBTX4927)	+= arch/mips/txx9/rbtx4927/
--core-$(CONFIG_TOSHIBA_RBTX4927)	+= arch/mips/txx9/generic/
--cflags-$(CONFIG_TOSHIBA_RBTX4927) += -Iinclude/asm-mips/mach-tx49xx
--load-$(CONFIG_TOSHIBA_RBTX4927)	+= 0xffffffff80020000
+@@ -37,10 +37,11 @@ CONFIG_MIPS=y
+ # CONFIG_SIBYTE_SENTOSA is not set
+ # CONFIG_SIBYTE_BIGSUR is not set
+ # CONFIG_SNI_RM is not set
+-CONFIG_TOSHIBA_JMR3927=y
+-# CONFIG_TOSHIBA_RBTX4927 is not set
+-# CONFIG_TOSHIBA_RBTX4938 is not set
++CONFIG_MACH_TX39XX=y
++# CONFIG_MACH_TX49XX is not set
+ # CONFIG_WR_PPMC is not set
++CONFIG_TOSHIBA_JMR3927=y
++CONFIG_SOC_TX3927=y
+ # CONFIG_TOSHIBA_FPCIB0 is not set
+ CONFIG_PICMG_PCI_BACKPLANE_DEFAULT=y
+ CONFIG_RWSEM_GENERIC_SPINLOCK=y
+@@ -67,7 +68,6 @@ CONFIG_CPU_BIG_ENDIAN=y
+ CONFIG_SYS_SUPPORTS_BIG_ENDIAN=y
+ CONFIG_SYS_SUPPORTS_LITTLE_ENDIAN=y
+ CONFIG_IRQ_TXX9=y
+-CONFIG_MIPS_TX3927=y
+ CONFIG_SWAP_IO_SPACE=y
+ CONFIG_MIPS_L1_CACHE_SHIFT=5
  
- #
- # Toshiba RBTX4938 board
- #
- core-$(CONFIG_TOSHIBA_RBTX4938) += arch/mips/txx9/rbtx4938/
--core-$(CONFIG_TOSHIBA_RBTX4938) += arch/mips/txx9/generic/
--cflags-$(CONFIG_TOSHIBA_RBTX4938) += -Iinclude/asm-mips/mach-tx49xx
--load-$(CONFIG_TOSHIBA_RBTX4938) += 0xffffffff80100000
- 
- cflags-y			+= -Iinclude/asm-mips/mach-generic
- drivers-$(CONFIG_PCI)		+= arch/mips/pci/
-diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
-index 9087648..875b643 100644
---- a/arch/mips/pci/Makefile
-+++ b/arch/mips/pci/Makefile
-@@ -11,11 +11,10 @@ obj-$(CONFIG_MIPS_BONITO64)	+= ops-bonito64.o
- obj-$(CONFIG_PCI_GT64XXX_PCI0)	+= ops-gt64xxx_pci0.o
- obj-$(CONFIG_MIPS_MSC)		+= ops-msc.o
- obj-$(CONFIG_MIPS_NILE4)	+= ops-nile4.o
--obj-$(CONFIG_MIPS_TX3927)	+= ops-tx3927.o
-+obj-$(CONFIG_SOC_TX3927)	+= ops-tx3927.o
- obj-$(CONFIG_PCI_VR41XX)	+= ops-vr41xx.o pci-vr41xx.o
- obj-$(CONFIG_NEC_CMBVR4133)	+= fixup-vr4133.o
- obj-$(CONFIG_MARKEINS)		+= ops-emma2rh.o pci-emma2rh.o fixup-emma2rh.o
--obj-$(CONFIG_PCI_TX3927)	+= ops-tx3927.o
- obj-$(CONFIG_PCI_TX4927)	+= ops-tx4927.o
- 
- #
-@@ -44,8 +43,10 @@ obj-$(CONFIG_TANBAC_TB0219)	+= fixup-tb0219.o
- obj-$(CONFIG_TANBAC_TB0226)	+= fixup-tb0226.o
- obj-$(CONFIG_TANBAC_TB0287)	+= fixup-tb0287.o
- obj-$(CONFIG_TOSHIBA_JMR3927)	+= fixup-jmr3927.o
--obj-$(CONFIG_TOSHIBA_RBTX4927)	+= fixup-rbtx4927.o pci-tx4927.o pci-tx4938.o
--obj-$(CONFIG_TOSHIBA_RBTX4938)	+= fixup-rbtx4938.o pci-tx4938.o
-+obj-$(CONFIG_SOC_TX4927)	+= pci-tx4927.o
-+obj-$(CONFIG_SOC_TX4938)	+= pci-tx4938.o
-+obj-$(CONFIG_TOSHIBA_RBTX4927)	+= fixup-rbtx4927.o
-+obj-$(CONFIG_TOSHIBA_RBTX4938)	+= fixup-rbtx4938.o
- obj-$(CONFIG_VICTOR_MPC30X)	+= fixup-mpc30x.o
- obj-$(CONFIG_ZAO_CAPCELLA)	+= fixup-capcella.o
- obj-$(CONFIG_WR_PPMC)		+= fixup-wrppmc.o
-diff --git a/arch/mips/pci/fixup-jmr3927.c b/arch/mips/pci/fixup-jmr3927.c
-index d5edaf2..0f10695 100644
---- a/arch/mips/pci/fixup-jmr3927.c
-+++ b/arch/mips/pci/fixup-jmr3927.c
-@@ -31,7 +31,7 @@
- #include <asm/txx9/pci.h>
- #include <asm/txx9/jmr3927.h>
- 
--int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-+int __init jmr3927_pci_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
- {
- 	unsigned char irq = pin;
- 
-@@ -77,9 +77,3 @@ int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
- 		irq = JMR3927_IRQ_ETHER0;
- 	return irq;
- }
--
--/* Do platform specific device initialization at pci_enable_device() time */
--int pcibios_plat_dev_init(struct pci_dev *dev)
--{
--	return 0;
--}
-diff --git a/arch/mips/pci/fixup-rbtx4927.c b/arch/mips/pci/fixup-rbtx4927.c
-index abab485..321db26 100644
---- a/arch/mips/pci/fixup-rbtx4927.c
-+++ b/arch/mips/pci/fixup-rbtx4927.c
-@@ -36,7 +36,7 @@
- #include <asm/txx9/pci.h>
- #include <asm/txx9/rbtx4927.h>
- 
--int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-+int __init rbtx4927_pci_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
- {
- 	unsigned char irq = pin;
- 
-@@ -71,9 +71,3 @@ int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
- 	}
- 	return irq;
- }
--
--/* Do platform specific device initialization at pci_enable_device() time */
--int pcibios_plat_dev_init(struct pci_dev *dev)
--{
--	return 0;
--}
-diff --git a/arch/mips/pci/fixup-rbtx4938.c b/arch/mips/pci/fixup-rbtx4938.c
-index 39c9958..a80579a 100644
---- a/arch/mips/pci/fixup-rbtx4938.c
-+++ b/arch/mips/pci/fixup-rbtx4938.c
-@@ -13,7 +13,7 @@
- #include <asm/txx9/pci.h>
- #include <asm/txx9/rbtx4938.h>
- 
--int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-+int __init rbtx4938_pci_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
- {
- 	int irq = tx4938_pcic1_map_irq(dev, slot);
- 
-@@ -51,12 +51,3 @@ int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
- 	}
- 	return irq;
- }
--
--/*
-- * Do platform specific device initialization at pci_enable_device() time
-- */
--int pcibios_plat_dev_init(struct pci_dev *dev)
--{
--	return 0;
--}
--
-diff --git a/arch/mips/txx9/Kconfig b/arch/mips/txx9/Kconfig
-index b8cdb19..b92a134 100644
---- a/arch/mips/txx9/Kconfig
-+++ b/arch/mips/txx9/Kconfig
-@@ -1,11 +1,89 @@
-+config TOSHIBA_JMR3927
-+	bool "Toshiba JMR-TX3927 board"
-+	depends on MACH_TX39XX
-+	select SOC_TX3927
-+
-+config TOSHIBA_RBTX4927
-+	bool "Toshiba RBTX49[23]7 board"
-+	depends on MACH_TX49XX
-+	select SOC_TX4927
-+	help
-+	  This Toshiba board is based on the TX4927 processor. Say Y here to
-+	  support this machine type
-+
-+config TOSHIBA_RBTX4938
-+	bool "Toshiba RBTX4938 board"
-+	depends on MACH_TX49XX
-+	select SOC_TX4938
-+	help
-+	  This Toshiba board is based on the TX4938 processor. Say Y here to
-+	  support this machine type
-+
-+config SOC_TX3927
-+	bool
-+	select CEVT_TXX9
-+	select DMA_NONCOHERENT
-+	select HAS_TXX9_SERIAL
-+	select HW_HAS_PCI
-+	select IRQ_TXX9
-+	select SWAP_IO_SPACE
-+	select SYS_HAS_CPU_TX39XX
-+	select SYS_SUPPORTS_32BIT_KERNEL
-+	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SYS_SUPPORTS_BIG_ENDIAN
-+	select GENERIC_HARDIRQS_NO__DO_IRQ
-+	select GPIO_TXX9
-+
-+config SOC_TX4927
-+	bool
-+	select CEVT_R4K
-+	select CSRC_R4K
-+	select CEVT_TXX9
-+	select DMA_NONCOHERENT
-+	select HAS_TXX9_SERIAL
-+	select HW_HAS_PCI
-+	select IRQ_CPU
-+	select IRQ_TXX9
-+	select PCI_TX4927
-+	select SWAP_IO_SPACE
-+	select SYS_HAS_CPU_TX49XX
-+	select SYS_SUPPORTS_32BIT_KERNEL
-+	select SYS_SUPPORTS_64BIT_KERNEL
-+	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SYS_SUPPORTS_BIG_ENDIAN
-+	select SYS_SUPPORTS_KGDB
-+	select GENERIC_HARDIRQS_NO__DO_IRQ
-+	select GPIO_TXX9
-+
-+config SOC_TX4938
-+	bool
-+	select CEVT_R4K
-+	select CSRC_R4K
-+	select CEVT_TXX9
-+	select DMA_NONCOHERENT
-+	select HAS_TXX9_SERIAL
-+	select HW_HAS_PCI
-+	select IRQ_CPU
-+	select IRQ_TXX9
-+	select PCI_TX4927
-+	select SWAP_IO_SPACE
-+	select SYS_HAS_CPU_TX49XX
-+	select SYS_SUPPORTS_32BIT_KERNEL
-+	select SYS_SUPPORTS_64BIT_KERNEL
-+	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SYS_SUPPORTS_BIG_ENDIAN
-+	select SYS_SUPPORTS_KGDB
-+	select GENERIC_HARDIRQS_NO__DO_IRQ
-+	select GPIO_TXX9
-+
- config TOSHIBA_FPCIB0
- 	bool "FPCIB0 Backplane Support"
--	depends on PCI && (SYS_HAS_CPU_TX49XX || SYS_HAS_CPU_TX39XX)
-+	depends on PCI && (MACH_TX39XX || MACH_TX49XX)
- 	select I8259
- 
- config PICMG_PCI_BACKPLANE_DEFAULT
- 	bool "Support for PICMG PCI Backplane"
--	depends on PCI && (SYS_HAS_CPU_TX49XX || SYS_HAS_CPU_TX39XX)
-+	depends on PCI && (MACH_TX39XX || MACH_TX49XX)
- 	default y if !TOSHIBA_FPCIB0
- 
- if TOSHIBA_RBTX4938
-diff --git a/arch/mips/txx9/generic/Makefile b/arch/mips/txx9/generic/Makefile
-index b80b6e0..668fdaa 100644
---- a/arch/mips/txx9/generic/Makefile
-+++ b/arch/mips/txx9/generic/Makefile
-@@ -4,8 +4,8 @@
- 
- obj-y	+= setup.o
- obj-$(CONFIG_PCI)	+= pci.o
--obj-$(CONFIG_TOSHIBA_RBTX4927)	+= mem_tx4927.o irq_tx4927.o
--obj-$(CONFIG_TOSHIBA_RBTX4938)	+= mem_tx4938.o irq_tx4938.o
-+obj-$(CONFIG_SOC_TX4927)	+= mem_tx4927.o irq_tx4927.o
-+obj-$(CONFIG_SOC_TX4938)	+= mem_tx4938.o irq_tx4938.o
- obj-$(CONFIG_TOSHIBA_FPCIB0)	+= smsc_fdc37m81x.o
- obj-$(CONFIG_KGDB)	+= dbgio.o
- 
-diff --git a/arch/mips/txx9/generic/irq_tx4927.c b/arch/mips/txx9/generic/irq_tx4927.c
-index 685ecc2..6377bd8 100644
---- a/arch/mips/txx9/generic/irq_tx4927.c
-+++ b/arch/mips/txx9/generic/irq_tx4927.c
-@@ -26,39 +26,12 @@
- #include <linux/init.h>
- #include <linux/interrupt.h>
- #include <asm/irq_cpu.h>
--#include <asm/mipsregs.h>
--#ifdef CONFIG_TOSHIBA_RBTX4927
--#include <asm/txx9/rbtx4927.h>
--#endif
-+#include <asm/txx9/tx4927.h>
- 
- void __init tx4927_irq_init(void)
- {
- 	mips_cpu_irq_init();
- 	txx9_irq_init(TX4927_IRC_REG);
--	set_irq_chained_handler(TX4927_IRQ_NEST_PIC_ON_CP0, handle_simple_irq);
--}
--
--asmlinkage void plat_irq_dispatch(void)
--{
--	unsigned int pending = read_c0_status() & read_c0_cause() & ST0_IM;
--
--	if (pending & STATUSF_IP7)			/* cpu timer */
--		do_IRQ(TX4927_IRQ_CPU_TIMER);
--	else if (pending & STATUSF_IP2) {		/* tx4927 pic */
--		int irq = txx9_irq();
--#ifdef CONFIG_TOSHIBA_RBTX4927
--		if (irq == TX4927_IRQ_NEST_EXT_ON_PIC)
--			irq = toshiba_rbtx4927_irq_nested(irq);
--#endif
--		if (unlikely(irq < 0)) {
--			spurious_interrupt();
--			return;
--		}
--		do_IRQ(irq);
--	} else if (pending & STATUSF_IP0)		/* user line 0 */
--		do_IRQ(TX4927_IRQ_USER0);
--	else if (pending & STATUSF_IP1)			/* user line 1 */
--		do_IRQ(TX4927_IRQ_USER1);
--	else
--		spurious_interrupt();
-+	set_irq_chained_handler(MIPS_CPU_IRQ_BASE + TX4927_IRC_INT,
-+				handle_simple_irq);
- }
-diff --git a/arch/mips/txx9/generic/irq_tx4938.c b/arch/mips/txx9/generic/irq_tx4938.c
-index 0886d91..5fc86c9 100644
---- a/arch/mips/txx9/generic/irq_tx4938.c
-+++ b/arch/mips/txx9/generic/irq_tx4938.c
-@@ -14,35 +14,12 @@
- #include <linux/init.h>
- #include <linux/interrupt.h>
- #include <asm/irq_cpu.h>
--#include <asm/mipsregs.h>
--#include <asm/txx9/rbtx4938.h>
-+#include <asm/txx9/tx4938.h>
- 
--void __init
--tx4938_irq_init(void)
-+void __init tx4938_irq_init(void)
- {
- 	mips_cpu_irq_init();
- 	txx9_irq_init(TX4938_IRC_REG);
--	set_irq_chained_handler(TX4938_IRQ_NEST_PIC_ON_CP0, handle_simple_irq);
--}
--
--int toshiba_rbtx4938_irq_nested(int irq);
--
--asmlinkage void plat_irq_dispatch(void)
--{
--	unsigned int pending = read_c0_cause() & read_c0_status();
--
--	if (pending & STATUSF_IP7)
--		do_IRQ(TX4938_IRQ_CPU_TIMER);
--	else if (pending & STATUSF_IP2) {
--		int irq = txx9_irq();
--		if (irq == TX4938_IRQ_PIC_BEG + TX4938_IR_INT(0))
--			irq = toshiba_rbtx4938_irq_nested(irq);
--		if (irq >= 0)
--			do_IRQ(irq);
--		else
--			spurious_interrupt();
--	} else if (pending & STATUSF_IP1)
--		do_IRQ(TX4938_IRQ_USER1);
--	else if (pending & STATUSF_IP0)
--		do_IRQ(TX4938_IRQ_USER0);
-+	set_irq_chained_handler(MIPS_CPU_IRQ_BASE + TX4938_IRC_INT,
-+				handle_simple_irq);
- }
-diff --git a/arch/mips/txx9/generic/pci.c b/arch/mips/txx9/generic/pci.c
-index 8173faa..0b92d8c 100644
---- a/arch/mips/txx9/generic/pci.c
-+++ b/arch/mips/txx9/generic/pci.c
-@@ -16,6 +16,7 @@
- #include <linux/delay.h>
- #include <linux/jiffies.h>
- #include <linux/io.h>
-+#include <asm/txx9/generic.h>
- #include <asm/txx9/pci.h>
- #ifdef CONFIG_TOSHIBA_FPCIB0
- #include <linux/interrupt.h>
-@@ -375,3 +376,13 @@ DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_EFAR, PCI_DEVICE_ID_EFAR_SLC90E66_1,
- #endif
- DECLARE_PCI_FIXUP_FINAL(PCI_ANY_ID, PCI_ANY_ID, final_fixup);
- DECLARE_PCI_FIXUP_RESUME(PCI_ANY_ID, PCI_ANY_ID, final_fixup);
-+
-+int pcibios_plat_dev_init(struct pci_dev *dev)
-+{
-+	return 0;
-+}
-+
-+int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-+{
-+	return txx9_board_vec->pci_map_irq(dev, slot, pin);
-+}
-diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
-index 46a6311..66ff74f 100644
---- a/arch/mips/txx9/generic/setup.c
-+++ b/arch/mips/txx9/generic/setup.c
-@@ -14,7 +14,16 @@
- #include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/types.h>
-+#include <linux/interrupt.h>
-+#include <linux/string.h>
-+#include <linux/module.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+#include <asm/bootinfo.h>
- #include <asm/txx9/generic.h>
-+#ifdef CONFIG_CPU_TX49XX
-+#include <asm/txx9/tx4938.h>
-+#endif
- 
- /* EBUSC settings of TX4927, etc. */
- struct resource txx9_ce_res[8];
-@@ -49,3 +58,163 @@ txx9_reg_res_init(unsigned int pcode, unsigned long base, unsigned long size)
- unsigned int txx9_master_clock;
- unsigned int txx9_cpu_clock;
- unsigned int txx9_gbus_clock;
-+
-+
-+/* Minimum CLK support */
-+
-+struct clk *clk_get(struct device *dev, const char *id)
-+{
-+	if (!strcmp(id, "spi-baseclk"))
-+		return (struct clk *)(txx9_gbus_clock / 2 / 4);
-+	if (!strcmp(id, "imbus_clk"))
-+		return (struct clk *)(txx9_gbus_clock / 2);
-+	return ERR_PTR(-ENOENT);
-+}
-+EXPORT_SYMBOL(clk_get);
-+
-+int clk_enable(struct clk *clk)
-+{
-+	return 0;
-+}
-+EXPORT_SYMBOL(clk_enable);
-+
-+void clk_disable(struct clk *clk)
-+{
-+}
-+EXPORT_SYMBOL(clk_disable);
-+
-+unsigned long clk_get_rate(struct clk *clk)
-+{
-+	return (unsigned long)clk;
-+}
-+EXPORT_SYMBOL(clk_get_rate);
-+
-+void clk_put(struct clk *clk)
-+{
-+}
-+EXPORT_SYMBOL(clk_put);
-+
-+extern struct txx9_board_vec jmr3927_vec;
-+extern struct txx9_board_vec rbtx4927_vec;
-+extern struct txx9_board_vec rbtx4937_vec;
-+extern struct txx9_board_vec rbtx4938_vec;
-+
-+/* board definitions */
-+static struct txx9_board_vec *board_vecs[] __initdata = {
-+#ifdef CONFIG_TOSHIBA_JMR3927
-+	&jmr3927_vec,
-+#endif
-+#ifdef CONFIG_TOSHIBA_RBTX4927
-+	&rbtx4927_vec,
-+	&rbtx4937_vec,
-+#endif
-+#ifdef CONFIG_TOSHIBA_RBTX4938
-+	&rbtx4938_vec,
-+#endif
-+};
-+struct txx9_board_vec *txx9_board_vec __initdata;
-+static char txx9_system_type[32];
-+
-+void __init prom_init_cmdline(void)
-+{
-+	int argc = (int)fw_arg0;
-+	char **argv = (char **)fw_arg1;
-+	int i;			/* Always ignore the "-c" at argv[0] */
-+
-+	/* ignore all built-in args if any f/w args given */
-+	if (argc > 1)
-+		*arcs_cmdline = '\0';
-+
-+	for (i = 1; i < argc; i++) {
-+		if (i != 1)
-+			strcat(arcs_cmdline, " ");
-+		strcat(arcs_cmdline, argv[i]);
-+	}
-+}
-+
-+void __init prom_init(void)
-+{
-+	int i;
-+
-+#ifdef CONFIG_CPU_TX39XX
-+	mips_machtype = MACH_TOSHIBA_JMR3927;
-+#endif
-+#ifdef CONFIG_CPU_TX49XX
-+	switch (TX4938_REV_PCODE()) {
-+	case 0x4927:
-+		mips_machtype = MACH_TOSHIBA_RBTX4927;
-+		break;
-+	case 0x4937:
-+		mips_machtype = MACH_TOSHIBA_RBTX4937;
-+		break;
-+	case 0x4938:
-+		mips_machtype = MACH_TOSHIBA_RBTX4938;
-+		break;
-+	}
-+#endif
-+	for (i = 0; i < ARRAY_SIZE(board_vecs); i++) {
-+		if (board_vecs[i]->type == mips_machtype) {
-+			txx9_board_vec = board_vecs[i];
-+			strcpy(txx9_system_type, txx9_board_vec->system);
-+			return txx9_board_vec->prom_init();
-+		}
-+	}
-+}
-+
-+void __init prom_free_prom_memory(void)
-+{
-+}
-+
-+const char *get_system_type(void)
-+{
-+	return txx9_system_type;
-+}
-+
-+char * __init prom_getcmdline(void)
-+{
-+	return &(arcs_cmdline[0]);
-+}
-+
-+/* wrappers */
-+void __init plat_mem_setup(void)
-+{
-+	txx9_board_vec->mem_setup();
-+}
-+
-+void __init arch_init_irq(void)
-+{
-+	txx9_board_vec->irq_setup();
-+}
-+
-+void __init plat_time_init(void)
-+{
-+	txx9_board_vec->time_init();
-+}
-+
-+static int __init _txx9_arch_init(void)
-+{
-+	if (txx9_board_vec->arch_init)
-+		txx9_board_vec->arch_init();
-+	return 0;
-+}
-+arch_initcall(_txx9_arch_init);
-+
-+static int __init _txx9_device_init(void)
-+{
-+	if (txx9_board_vec->device_init)
-+		txx9_board_vec->device_init();
-+	return 0;
-+}
-+device_initcall(_txx9_device_init);
-+
-+int (*txx9_irq_dispatch)(int pending);
-+asmlinkage void plat_irq_dispatch(void)
-+{
-+	int pending = read_c0_status() & read_c0_cause() & ST0_IM;
-+	int irq = txx9_irq_dispatch(pending);
-+
-+	if (likely(irq >= 0))
-+		do_IRQ(irq);
-+	else
-+		spurious_interrupt();
-+}
-diff --git a/arch/mips/txx9/jmr3927/Makefile b/arch/mips/txx9/jmr3927/Makefile
-index 5f83ea3..ba292c9 100644
---- a/arch/mips/txx9/jmr3927/Makefile
-+++ b/arch/mips/txx9/jmr3927/Makefile
-@@ -2,7 +2,7 @@
- # Makefile for TOSHIBA JMR-TX3927 board
- #
- 
--obj-y	+= prom.o init.o irq.o setup.o
-+obj-y	+= prom.o irq.o setup.o
- obj-$(CONFIG_KGDB)	+= kgdb_io.o
- 
- EXTRA_CFLAGS += -Werror
-diff --git a/arch/mips/txx9/jmr3927/init.c b/arch/mips/txx9/jmr3927/init.c
+diff --git a/arch/mips/configs/rbhma4200_defconfig b/arch/mips/configs/rbhma4200_defconfig
 deleted file mode 100644
-index 1bbb534..0000000
---- a/arch/mips/txx9/jmr3927/init.c
+index e0af6a9..0000000
+--- a/arch/mips/configs/rbhma4200_defconfig
 +++ /dev/null
-@@ -1,57 +0,0 @@
--/*
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: MontaVista Software, Inc.
-- *              ahennessy@mvista.com
-- *
-- * arch/mips/jmr3927/common/init.c
-- *
-- * Copyright (C) 2000-2001 Toshiba Corporation
-- *
-- *  This program is free software; you can redistribute  it and/or modify it
-- *  under  the terms of  the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at your
-- *  option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- */
--#include <linux/init.h>
--#include <asm/bootinfo.h>
--#include <asm/txx9/jmr3927.h>
+@@ -1,698 +0,0 @@
+-#
+-# Automatically generated make config: don't edit
+-# Linux kernel version: 2.6.26-rc9
+-# Thu Jul 10 23:52:40 2008
+-#
+-CONFIG_MIPS=y
 -
--extern void  __init prom_init_cmdline(void);
+-#
+-# Machine selection
+-#
+-# CONFIG_MACH_ALCHEMY is not set
+-# CONFIG_BASLER_EXCITE is not set
+-# CONFIG_BCM47XX is not set
+-# CONFIG_MIPS_COBALT is not set
+-# CONFIG_MACH_DECSTATION is not set
+-# CONFIG_MACH_JAZZ is not set
+-# CONFIG_LASAT is not set
+-# CONFIG_LEMOTE_FULONG is not set
+-# CONFIG_MIPS_MALTA is not set
+-# CONFIG_MIPS_SIM is not set
+-# CONFIG_MARKEINS is not set
+-# CONFIG_MACH_VR41XX is not set
+-# CONFIG_PNX8550_JBS is not set
+-# CONFIG_PNX8550_STB810 is not set
+-# CONFIG_PMC_MSP is not set
+-# CONFIG_PMC_YOSEMITE is not set
+-# CONFIG_SGI_IP22 is not set
+-# CONFIG_SGI_IP27 is not set
+-# CONFIG_SGI_IP28 is not set
+-# CONFIG_SGI_IP32 is not set
+-# CONFIG_SIBYTE_CRHINE is not set
+-# CONFIG_SIBYTE_CARMEL is not set
+-# CONFIG_SIBYTE_CRHONE is not set
+-# CONFIG_SIBYTE_RHONE is not set
+-# CONFIG_SIBYTE_SWARM is not set
+-# CONFIG_SIBYTE_LITTLESUR is not set
+-# CONFIG_SIBYTE_SENTOSA is not set
+-# CONFIG_SIBYTE_BIGSUR is not set
+-# CONFIG_SNI_RM is not set
+-# CONFIG_TOSHIBA_JMR3927 is not set
+-CONFIG_TOSHIBA_RBTX4927=y
+-# CONFIG_TOSHIBA_RBTX4938 is not set
+-# CONFIG_WR_PPMC is not set
+-# CONFIG_TOSHIBA_FPCIB0 is not set
+-CONFIG_PICMG_PCI_BACKPLANE_DEFAULT=y
+-CONFIG_PCI_TX4927=y
+-CONFIG_RWSEM_GENERIC_SPINLOCK=y
+-# CONFIG_ARCH_HAS_ILOG2_U32 is not set
+-# CONFIG_ARCH_HAS_ILOG2_U64 is not set
+-CONFIG_ARCH_SUPPORTS_OPROFILE=y
+-CONFIG_GENERIC_FIND_NEXT_BIT=y
+-CONFIG_GENERIC_HWEIGHT=y
+-CONFIG_GENERIC_CALIBRATE_DELAY=y
+-CONFIG_GENERIC_CLOCKEVENTS=y
+-CONFIG_GENERIC_TIME=y
+-CONFIG_GENERIC_CMOS_UPDATE=y
+-CONFIG_SCHED_NO_NO_OMIT_FRAME_POINTER=y
+-CONFIG_GENERIC_HARDIRQS_NO__DO_IRQ=y
+-CONFIG_CEVT_R4K=y
+-CONFIG_CEVT_TXX9=y
+-CONFIG_CSRC_R4K=y
+-CONFIG_DMA_NONCOHERENT=y
+-CONFIG_DMA_NEED_PCI_MAP_STATE=y
+-# CONFIG_HOTPLUG_CPU is not set
+-# CONFIG_NO_IOPORT is not set
+-CONFIG_CPU_BIG_ENDIAN=y
+-# CONFIG_CPU_LITTLE_ENDIAN is not set
+-CONFIG_SYS_SUPPORTS_BIG_ENDIAN=y
+-CONFIG_SYS_SUPPORTS_LITTLE_ENDIAN=y
+-CONFIG_IRQ_CPU=y
+-CONFIG_IRQ_TXX9=y
+-CONFIG_SWAP_IO_SPACE=y
+-CONFIG_MIPS_L1_CACHE_SHIFT=5
 -
--const char *get_system_type(void)
--{
--	return "Toshiba"
--#ifdef CONFIG_TOSHIBA_JMR3927
--	       " JMR_TX3927"
--#endif
--	;
--}
+-#
+-# CPU selection
+-#
+-# CONFIG_CPU_LOONGSON2 is not set
+-# CONFIG_CPU_MIPS32_R1 is not set
+-# CONFIG_CPU_MIPS32_R2 is not set
+-# CONFIG_CPU_MIPS64_R1 is not set
+-# CONFIG_CPU_MIPS64_R2 is not set
+-# CONFIG_CPU_R3000 is not set
+-# CONFIG_CPU_TX39XX is not set
+-# CONFIG_CPU_VR41XX is not set
+-# CONFIG_CPU_R4300 is not set
+-# CONFIG_CPU_R4X00 is not set
+-CONFIG_CPU_TX49XX=y
+-# CONFIG_CPU_R5000 is not set
+-# CONFIG_CPU_R5432 is not set
+-# CONFIG_CPU_R6000 is not set
+-# CONFIG_CPU_NEVADA is not set
+-# CONFIG_CPU_R8000 is not set
+-# CONFIG_CPU_R10000 is not set
+-# CONFIG_CPU_RM7000 is not set
+-# CONFIG_CPU_RM9000 is not set
+-# CONFIG_CPU_SB1 is not set
+-CONFIG_SYS_HAS_CPU_TX49XX=y
+-CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
+-CONFIG_SYS_SUPPORTS_64BIT_KERNEL=y
+-CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
+-CONFIG_CPU_SUPPORTS_64BIT_KERNEL=y
 -
--extern void puts(const char *cp);
+-#
+-# Kernel type
+-#
+-CONFIG_32BIT=y
+-# CONFIG_64BIT is not set
+-CONFIG_PAGE_SIZE_4KB=y
+-# CONFIG_PAGE_SIZE_8KB is not set
+-# CONFIG_PAGE_SIZE_16KB is not set
+-# CONFIG_PAGE_SIZE_64KB is not set
+-CONFIG_CPU_HAS_PREFETCH=y
+-CONFIG_MIPS_MT_DISABLED=y
+-# CONFIG_MIPS_MT_SMP is not set
+-# CONFIG_MIPS_MT_SMTC is not set
+-CONFIG_CPU_HAS_LLSC=y
+-CONFIG_CPU_HAS_SYNC=y
+-CONFIG_GENERIC_HARDIRQS=y
+-CONFIG_GENERIC_IRQ_PROBE=y
+-CONFIG_ARCH_FLATMEM_ENABLE=y
+-CONFIG_ARCH_POPULATES_NODE_MAP=y
+-CONFIG_FLATMEM=y
+-CONFIG_FLAT_NODE_MEM_MAP=y
+-# CONFIG_SPARSEMEM_STATIC is not set
+-# CONFIG_SPARSEMEM_VMEMMAP_ENABLE is not set
+-CONFIG_PAGEFLAGS_EXTENDED=y
+-CONFIG_SPLIT_PTLOCK_CPUS=4
+-# CONFIG_RESOURCES_64BIT is not set
+-CONFIG_ZONE_DMA_FLAG=0
+-CONFIG_VIRT_TO_BUS=y
+-CONFIG_TICK_ONESHOT=y
+-CONFIG_NO_HZ=y
+-CONFIG_HIGH_RES_TIMERS=y
+-CONFIG_GENERIC_CLOCKEVENTS_BUILD=y
+-# CONFIG_HZ_48 is not set
+-# CONFIG_HZ_100 is not set
+-# CONFIG_HZ_128 is not set
+-CONFIG_HZ_250=y
+-# CONFIG_HZ_256 is not set
+-# CONFIG_HZ_1000 is not set
+-# CONFIG_HZ_1024 is not set
+-CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
+-CONFIG_HZ=250
+-CONFIG_PREEMPT_NONE=y
+-# CONFIG_PREEMPT_VOLUNTARY is not set
+-# CONFIG_PREEMPT is not set
+-# CONFIG_SECCOMP is not set
+-CONFIG_LOCKDEP_SUPPORT=y
+-CONFIG_STACKTRACE_SUPPORT=y
+-CONFIG_DEFCONFIG_LIST="/lib/modules/$UNAME_RELEASE/.config"
 -
--void __init prom_init(void)
--{
--#ifdef CONFIG_TOSHIBA_JMR3927
--	/* CCFG */
--	if ((tx3927_ccfgptr->ccfg & TX3927_CCFG_TLBOFF) == 0)
--		puts("Warning: TX3927 TLB off\n");
--#endif
+-#
+-# General setup
+-#
+-# CONFIG_EXPERIMENTAL is not set
+-CONFIG_BROKEN_ON_SMP=y
+-CONFIG_INIT_ENV_ARG_LIMIT=32
+-CONFIG_LOCALVERSION=""
+-CONFIG_LOCALVERSION_AUTO=y
+-CONFIG_SWAP=y
+-CONFIG_SYSVIPC=y
+-CONFIG_SYSVIPC_SYSCTL=y
+-# CONFIG_BSD_PROCESS_ACCT is not set
+-# CONFIG_TASKSTATS is not set
+-# CONFIG_AUDIT is not set
+-CONFIG_IKCONFIG=y
+-CONFIG_IKCONFIG_PROC=y
+-CONFIG_LOG_BUF_SHIFT=14
+-# CONFIG_CGROUPS is not set
+-CONFIG_SYSFS_DEPRECATED=y
+-CONFIG_SYSFS_DEPRECATED_V2=y
+-# CONFIG_RELAY is not set
+-# CONFIG_NAMESPACES is not set
+-CONFIG_BLK_DEV_INITRD=y
+-CONFIG_INITRAMFS_SOURCE=""
+-CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+-CONFIG_SYSCTL=y
+-CONFIG_EMBEDDED=y
+-CONFIG_SYSCTL_SYSCALL=y
+-CONFIG_SYSCTL_SYSCALL_CHECK=y
+-CONFIG_KALLSYMS=y
+-# CONFIG_KALLSYMS_EXTRA_PASS is not set
+-# CONFIG_HOTPLUG is not set
+-CONFIG_PRINTK=y
+-CONFIG_BUG=y
+-CONFIG_ELF_CORE=y
+-# CONFIG_PCSPKR_PLATFORM is not set
+-CONFIG_COMPAT_BRK=y
+-CONFIG_BASE_FULL=y
+-# CONFIG_FUTEX is not set
+-CONFIG_ANON_INODES=y
+-# CONFIG_EPOLL is not set
+-CONFIG_SIGNALFD=y
+-CONFIG_TIMERFD=y
+-CONFIG_EVENTFD=y
+-CONFIG_SHMEM=y
+-CONFIG_VM_EVENT_COUNTERS=y
+-CONFIG_SLAB=y
+-# CONFIG_SLUB is not set
+-# CONFIG_SLOB is not set
+-# CONFIG_PROFILING is not set
+-# CONFIG_MARKERS is not set
+-CONFIG_HAVE_OPROFILE=y
+-# CONFIG_HAVE_KPROBES is not set
+-# CONFIG_HAVE_KRETPROBES is not set
+-# CONFIG_HAVE_DMA_ATTRS is not set
+-CONFIG_PROC_PAGE_MONITOR=y
+-CONFIG_SLABINFO=y
+-# CONFIG_TINY_SHMEM is not set
+-CONFIG_BASE_SMALL=0
+-CONFIG_MODULES=y
+-# CONFIG_MODULE_FORCE_LOAD is not set
+-# CONFIG_MODULE_UNLOAD is not set
+-# CONFIG_MODVERSIONS is not set
+-# CONFIG_MODULE_SRCVERSION_ALL is not set
+-CONFIG_KMOD=y
+-CONFIG_BLOCK=y
+-# CONFIG_LBD is not set
+-# CONFIG_BLK_DEV_IO_TRACE is not set
+-# CONFIG_LSF is not set
 -
--	prom_init_cmdline();
--	add_memory_region(0, JMR3927_SDRAM_SIZE, BOOT_MEM_RAM);
--}
-diff --git a/arch/mips/txx9/jmr3927/irq.c b/arch/mips/txx9/jmr3927/irq.c
-index b97d22e..070c9a1 100644
---- a/arch/mips/txx9/jmr3927/irq.c
-+++ b/arch/mips/txx9/jmr3927/irq.c
-@@ -39,6 +39,7 @@
- #include <asm/system.h>
- 
- #include <asm/processor.h>
-+#include <asm/txx9/generic.h>
- #include <asm/txx9/jmr3927.h>
- 
- #if JMR3927_IRQ_END > NR_IRQS
-@@ -77,37 +78,30 @@ static void unmask_irq_ioc(unsigned int irq)
- 	(void)jmr3927_ioc_reg_in(JMR3927_IOC_REV_ADDR);
- }
- 
--asmlinkage void plat_irq_dispatch(void)
--{
--	unsigned long cp0_cause = read_c0_cause();
--	int irq;
+-#
+-# IO Schedulers
+-#
+-CONFIG_IOSCHED_NOOP=y
+-CONFIG_IOSCHED_AS=y
+-CONFIG_IOSCHED_DEADLINE=y
+-CONFIG_IOSCHED_CFQ=y
+-CONFIG_DEFAULT_AS=y
+-# CONFIG_DEFAULT_DEADLINE is not set
+-# CONFIG_DEFAULT_CFQ is not set
+-# CONFIG_DEFAULT_NOOP is not set
+-CONFIG_DEFAULT_IOSCHED="anticipatory"
+-CONFIG_CLASSIC_RCU=y
 -
--	if ((cp0_cause & CAUSEF_IP7) == 0)
--		return;
--	irq = (cp0_cause >> CAUSEB_IP2) & 0x0f;
+-#
+-# Bus options (PCI, PCMCIA, EISA, ISA, TC)
+-#
+-CONFIG_HW_HAS_PCI=y
+-CONFIG_PCI=y
+-CONFIG_PCI_DOMAINS=y
+-# CONFIG_ARCH_SUPPORTS_MSI is not set
+-# CONFIG_PCI_LEGACY is not set
+-CONFIG_MMU=y
 -
--	do_IRQ(irq + JMR3927_IRQ_IRC);
--}
+-#
+-# Executable file formats
+-#
+-CONFIG_BINFMT_ELF=y
+-# CONFIG_BINFMT_MISC is not set
+-CONFIG_TRAD_SIGNALS=y
 -
--static irqreturn_t jmr3927_ioc_interrupt(int irq, void *dev_id)
-+static int jmr3927_ioc_irqroute(void)
- {
- 	unsigned char istat = jmr3927_ioc_reg_in(JMR3927_IOC_INTS2_ADDR);
- 	int i;
- 
- 	for (i = 0; i < JMR3927_NR_IRQ_IOC; i++) {
--		if (istat & (1 << i)) {
--			irq = JMR3927_IRQ_IOC + i;
--			do_IRQ(irq);
--		}
-+		if (istat & (1 << i))
-+			return JMR3927_IRQ_IOC + i;
- 	}
--	return IRQ_HANDLED;
-+	return -1;
- }
- 
--static struct irqaction ioc_action = {
--	.handler = jmr3927_ioc_interrupt,
--	.mask = CPU_MASK_NONE,
--	.name = "IOC",
--};
-+static int jmr3927_irq_dispatch(int pending)
-+{
-+	int irq;
+-#
+-# Power management options
+-#
+-CONFIG_ARCH_SUSPEND_POSSIBLE=y
+-# CONFIG_PM is not set
+-
+-#
+-# Networking
+-#
+-CONFIG_NET=y
+-
+-#
+-# Networking options
+-#
+-CONFIG_PACKET=y
+-# CONFIG_PACKET_MMAP is not set
+-CONFIG_UNIX=y
+-# CONFIG_NET_KEY is not set
+-CONFIG_INET=y
+-CONFIG_IP_MULTICAST=y
+-# CONFIG_IP_ADVANCED_ROUTER is not set
+-CONFIG_IP_FIB_HASH=y
+-CONFIG_IP_PNP=y
+-# CONFIG_IP_PNP_DHCP is not set
+-# CONFIG_IP_PNP_BOOTP is not set
+-# CONFIG_IP_PNP_RARP is not set
+-# CONFIG_NET_IPIP is not set
+-# CONFIG_NET_IPGRE is not set
+-# CONFIG_IP_MROUTE is not set
+-# CONFIG_SYN_COOKIES is not set
+-# CONFIG_INET_AH is not set
+-# CONFIG_INET_ESP is not set
+-# CONFIG_INET_IPCOMP is not set
+-# CONFIG_INET_XFRM_TUNNEL is not set
+-# CONFIG_INET_TUNNEL is not set
+-# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
+-# CONFIG_INET_XFRM_MODE_TUNNEL is not set
+-# CONFIG_INET_XFRM_MODE_BEET is not set
+-# CONFIG_INET_LRO is not set
+-CONFIG_INET_DIAG=y
+-CONFIG_INET_TCP_DIAG=y
+-# CONFIG_TCP_CONG_ADVANCED is not set
+-CONFIG_TCP_CONG_CUBIC=y
+-CONFIG_DEFAULT_TCP_CONG="cubic"
+-# CONFIG_IPV6 is not set
+-# CONFIG_NETWORK_SECMARK is not set
+-# CONFIG_NETFILTER is not set
+-# CONFIG_ATM is not set
+-# CONFIG_BRIDGE is not set
+-# CONFIG_VLAN_8021Q is not set
+-# CONFIG_DECNET is not set
+-# CONFIG_LLC2 is not set
+-# CONFIG_IPX is not set
+-# CONFIG_ATALK is not set
+-# CONFIG_NET_SCHED is not set
+-
+-#
+-# Network testing
+-#
+-# CONFIG_NET_PKTGEN is not set
+-# CONFIG_HAMRADIO is not set
+-# CONFIG_CAN is not set
+-# CONFIG_IRDA is not set
+-# CONFIG_BT is not set
+-
+-#
+-# Wireless
+-#
+-# CONFIG_CFG80211 is not set
+-# CONFIG_WIRELESS_EXT is not set
+-# CONFIG_MAC80211 is not set
+-# CONFIG_IEEE80211 is not set
+-# CONFIG_RFKILL is not set
+-
+-#
+-# Device Drivers
+-#
+-
+-#
+-# Generic Driver Options
+-#
+-CONFIG_STANDALONE=y
+-CONFIG_PREVENT_FIRMWARE_BUILD=y
+-# CONFIG_SYS_HYPERVISOR is not set
+-# CONFIG_CONNECTOR is not set
+-# CONFIG_MTD is not set
+-# CONFIG_PARPORT is not set
+-CONFIG_BLK_DEV=y
+-# CONFIG_BLK_CPQ_DA is not set
+-# CONFIG_BLK_CPQ_CISS_DA is not set
+-# CONFIG_BLK_DEV_DAC960 is not set
+-# CONFIG_BLK_DEV_COW_COMMON is not set
+-CONFIG_BLK_DEV_LOOP=y
+-# CONFIG_BLK_DEV_CRYPTOLOOP is not set
+-# CONFIG_BLK_DEV_NBD is not set
+-# CONFIG_BLK_DEV_SX8 is not set
+-CONFIG_BLK_DEV_RAM=y
+-CONFIG_BLK_DEV_RAM_COUNT=16
+-CONFIG_BLK_DEV_RAM_SIZE=8192
+-# CONFIG_BLK_DEV_XIP is not set
+-# CONFIG_CDROM_PKTCDVD is not set
+-# CONFIG_ATA_OVER_ETH is not set
+-# CONFIG_MISC_DEVICES is not set
+-CONFIG_HAVE_IDE=y
+-# CONFIG_IDE is not set
+-
+-#
+-# SCSI device support
+-#
+-# CONFIG_RAID_ATTRS is not set
+-# CONFIG_SCSI is not set
+-# CONFIG_SCSI_DMA is not set
+-# CONFIG_SCSI_NETLINK is not set
+-# CONFIG_ATA is not set
+-# CONFIG_MD is not set
+-# CONFIG_FUSION is not set
+-
+-#
+-# IEEE 1394 (FireWire) support
+-#
+-
+-#
+-# A new alternative FireWire stack is available with EXPERIMENTAL=y
+-#
+-# CONFIG_IEEE1394 is not set
+-# CONFIG_I2O is not set
+-CONFIG_NETDEVICES=y
+-# CONFIG_NETDEVICES_MULTIQUEUE is not set
+-# CONFIG_DUMMY is not set
+-# CONFIG_BONDING is not set
+-# CONFIG_EQUALIZER is not set
+-# CONFIG_TUN is not set
+-# CONFIG_VETH is not set
+-# CONFIG_ARCNET is not set
+-# CONFIG_PHYLIB is not set
+-CONFIG_NET_ETHERNET=y
+-# CONFIG_MII is not set
+-# CONFIG_AX88796 is not set
+-# CONFIG_HAPPYMEAL is not set
+-# CONFIG_SUNGEM is not set
+-# CONFIG_CASSINI is not set
+-# CONFIG_NET_VENDOR_3COM is not set
+-# CONFIG_DM9000 is not set
+-# CONFIG_NET_TULIP is not set
+-# CONFIG_HP100 is not set
+-CONFIG_NE2000=y
+-# CONFIG_IBM_NEW_EMAC_ZMII is not set
+-# CONFIG_IBM_NEW_EMAC_RGMII is not set
+-# CONFIG_IBM_NEW_EMAC_TAH is not set
+-# CONFIG_IBM_NEW_EMAC_EMAC4 is not set
+-# CONFIG_NET_PCI is not set
+-# CONFIG_B44 is not set
+-# CONFIG_NETDEV_1000 is not set
+-# CONFIG_NETDEV_10000 is not set
+-# CONFIG_TR is not set
+-
+-#
+-# Wireless LAN
+-#
+-# CONFIG_WLAN_PRE80211 is not set
+-# CONFIG_WLAN_80211 is not set
+-# CONFIG_IWLWIFI_LEDS is not set
+-# CONFIG_WAN is not set
+-# CONFIG_FDDI is not set
+-# CONFIG_PPP is not set
+-# CONFIG_SLIP is not set
+-# CONFIG_NETPOLL is not set
+-# CONFIG_NET_POLL_CONTROLLER is not set
+-# CONFIG_ISDN is not set
+-# CONFIG_PHONE is not set
+-
+-#
+-# Input device support
+-#
+-# CONFIG_INPUT is not set
+-
+-#
+-# Hardware I/O ports
+-#
+-CONFIG_SERIO=y
+-# CONFIG_SERIO_I8042 is not set
+-CONFIG_SERIO_SERPORT=y
+-# CONFIG_SERIO_PCIPS2 is not set
+-CONFIG_SERIO_LIBPS2=y
+-# CONFIG_SERIO_RAW is not set
+-# CONFIG_GAMEPORT is not set
+-
+-#
+-# Character devices
+-#
+-# CONFIG_VT is not set
+-CONFIG_DEVKMEM=y
+-# CONFIG_SERIAL_NONSTANDARD is not set
+-
+-#
+-# Serial drivers
+-#
+-# CONFIG_SERIAL_8250 is not set
+-
+-#
+-# Non-8250 serial port support
+-#
+-CONFIG_SERIAL_CORE=y
+-CONFIG_SERIAL_CORE_CONSOLE=y
+-CONFIG_SERIAL_TXX9=y
+-CONFIG_HAS_TXX9_SERIAL=y
+-CONFIG_SERIAL_TXX9_NR_UARTS=6
+-CONFIG_SERIAL_TXX9_CONSOLE=y
+-CONFIG_SERIAL_TXX9_STDSERIAL=y
+-# CONFIG_SERIAL_JSM is not set
+-CONFIG_UNIX98_PTYS=y
+-CONFIG_LEGACY_PTYS=y
+-CONFIG_LEGACY_PTY_COUNT=256
+-# CONFIG_IPMI_HANDLER is not set
+-# CONFIG_HW_RANDOM is not set
+-# CONFIG_R3964 is not set
+-# CONFIG_APPLICOM is not set
+-# CONFIG_RAW_DRIVER is not set
+-CONFIG_DEVPORT=y
+-# CONFIG_I2C is not set
+-# CONFIG_SPI is not set
+-# CONFIG_W1 is not set
+-# CONFIG_POWER_SUPPLY is not set
+-# CONFIG_HWMON is not set
+-# CONFIG_THERMAL is not set
+-# CONFIG_THERMAL_HWMON is not set
+-CONFIG_WATCHDOG=y
+-# CONFIG_WATCHDOG_NOWAYOUT is not set
+-
+-#
+-# Watchdog Device Drivers
+-#
+-# CONFIG_SOFT_WATCHDOG is not set
+-CONFIG_TXX9_WDT=y
+-
+-#
+-# PCI-based Watchdog Cards
+-#
+-# CONFIG_PCIPCWATCHDOG is not set
+-# CONFIG_WDTPCI is not set
+-
+-#
+-# Sonics Silicon Backplane
+-#
+-CONFIG_SSB_POSSIBLE=y
+-# CONFIG_SSB is not set
+-
+-#
+-# Multifunction device drivers
+-#
+-# CONFIG_MFD_SM501 is not set
+-# CONFIG_HTC_PASIC3 is not set
+-
+-#
+-# Multimedia devices
+-#
+-
+-#
+-# Multimedia core support
+-#
+-# CONFIG_VIDEO_DEV is not set
+-# CONFIG_DVB_CORE is not set
+-# CONFIG_VIDEO_MEDIA is not set
+-
+-#
+-# Multimedia drivers
+-#
+-# CONFIG_DAB is not set
+-
+-#
+-# Graphics support
+-#
+-# CONFIG_DRM is not set
+-# CONFIG_VGASTATE is not set
+-# CONFIG_VIDEO_OUTPUT_CONTROL is not set
+-# CONFIG_FB is not set
+-# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
+-
+-#
+-# Display device support
+-#
+-# CONFIG_DISPLAY_SUPPORT is not set
+-
+-#
+-# Sound
+-#
+-# CONFIG_SOUND is not set
+-# CONFIG_USB_SUPPORT is not set
+-# CONFIG_MMC is not set
+-# CONFIG_MEMSTICK is not set
+-# CONFIG_NEW_LEDS is not set
+-# CONFIG_ACCESSIBILITY is not set
+-# CONFIG_INFINIBAND is not set
+-CONFIG_RTC_LIB=y
+-CONFIG_RTC_CLASS=y
+-CONFIG_RTC_HCTOSYS=y
+-CONFIG_RTC_HCTOSYS_DEVICE="rtc0"
+-# CONFIG_RTC_DEBUG is not set
+-
+-#
+-# RTC interfaces
+-#
+-CONFIG_RTC_INTF_SYSFS=y
+-CONFIG_RTC_INTF_PROC=y
+-CONFIG_RTC_INTF_DEV=y
+-# CONFIG_RTC_INTF_DEV_UIE_EMUL is not set
+-# CONFIG_RTC_DRV_TEST is not set
+-
+-#
+-# SPI RTC drivers
+-#
+-
+-#
+-# Platform RTC drivers
+-#
+-# CONFIG_RTC_DRV_CMOS is not set
+-# CONFIG_RTC_DRV_DS1511 is not set
+-# CONFIG_RTC_DRV_DS1553 is not set
+-CONFIG_RTC_DRV_DS1742=y
+-# CONFIG_RTC_DRV_STK17TA8 is not set
+-# CONFIG_RTC_DRV_M48T86 is not set
+-# CONFIG_RTC_DRV_M48T59 is not set
+-# CONFIG_RTC_DRV_V3020 is not set
+-
+-#
+-# on-CPU RTC drivers
+-#
+-# CONFIG_UIO is not set
+-
+-#
+-# File systems
+-#
+-# CONFIG_EXT2_FS is not set
+-# CONFIG_EXT3_FS is not set
+-# CONFIG_REISERFS_FS is not set
+-# CONFIG_JFS_FS is not set
+-CONFIG_FS_POSIX_ACL=y
+-# CONFIG_XFS_FS is not set
+-# CONFIG_OCFS2_FS is not set
+-# CONFIG_DNOTIFY is not set
+-CONFIG_INOTIFY=y
+-CONFIG_INOTIFY_USER=y
+-# CONFIG_QUOTA is not set
+-# CONFIG_AUTOFS_FS is not set
+-# CONFIG_AUTOFS4_FS is not set
+-# CONFIG_FUSE_FS is not set
+-CONFIG_GENERIC_ACL=y
+-
+-#
+-# CD-ROM/DVD Filesystems
+-#
+-# CONFIG_ISO9660_FS is not set
+-# CONFIG_UDF_FS is not set
+-
+-#
+-# DOS/FAT/NT Filesystems
+-#
+-# CONFIG_MSDOS_FS is not set
+-# CONFIG_VFAT_FS is not set
+-# CONFIG_NTFS_FS is not set
+-
+-#
+-# Pseudo filesystems
+-#
+-CONFIG_PROC_FS=y
+-# CONFIG_PROC_KCORE is not set
+-CONFIG_PROC_SYSCTL=y
+-CONFIG_SYSFS=y
+-CONFIG_TMPFS=y
+-CONFIG_TMPFS_POSIX_ACL=y
+-# CONFIG_HUGETLB_PAGE is not set
+-# CONFIG_CONFIGFS_FS is not set
+-
+-#
+-# Miscellaneous filesystems
+-#
+-# CONFIG_HFSPLUS_FS is not set
+-# CONFIG_CRAMFS is not set
+-# CONFIG_VXFS_FS is not set
+-# CONFIG_MINIX_FS is not set
+-# CONFIG_HPFS_FS is not set
+-# CONFIG_QNX4FS_FS is not set
+-# CONFIG_ROMFS_FS is not set
+-# CONFIG_SYSV_FS is not set
+-# CONFIG_UFS_FS is not set
+-CONFIG_NETWORK_FILESYSTEMS=y
+-CONFIG_NFS_FS=y
+-CONFIG_NFS_V3=y
+-# CONFIG_NFS_V3_ACL is not set
+-# CONFIG_NFSD is not set
+-CONFIG_ROOT_NFS=y
+-CONFIG_LOCKD=y
+-CONFIG_LOCKD_V4=y
+-CONFIG_NFS_COMMON=y
+-CONFIG_SUNRPC=y
+-# CONFIG_SMB_FS is not set
+-# CONFIG_CIFS is not set
+-# CONFIG_NCP_FS is not set
+-# CONFIG_CODA_FS is not set
+-
+-#
+-# Partition Types
+-#
+-# CONFIG_PARTITION_ADVANCED is not set
+-CONFIG_MSDOS_PARTITION=y
+-# CONFIG_NLS is not set
+-
+-#
+-# Kernel hacking
+-#
+-CONFIG_TRACE_IRQFLAGS_SUPPORT=y
+-# CONFIG_PRINTK_TIME is not set
+-CONFIG_ENABLE_WARN_DEPRECATED=y
+-CONFIG_ENABLE_MUST_CHECK=y
+-CONFIG_FRAME_WARN=1024
+-# CONFIG_MAGIC_SYSRQ is not set
+-# CONFIG_UNUSED_SYMBOLS is not set
+-# CONFIG_DEBUG_FS is not set
+-# CONFIG_HEADERS_CHECK is not set
+-# CONFIG_DEBUG_KERNEL is not set
+-# CONFIG_SAMPLES is not set
+-CONFIG_CMDLINE=""
+-CONFIG_SYS_SUPPORTS_KGDB=y
+-
+-#
+-# Security options
+-#
+-# CONFIG_KEYS is not set
+-# CONFIG_SECURITY is not set
+-# CONFIG_CRYPTO is not set
+-
+-#
+-# Library routines
+-#
+-CONFIG_BITREVERSE=y
+-# CONFIG_GENERIC_FIND_FIRST_BIT is not set
+-# CONFIG_CRC_CCITT is not set
+-# CONFIG_CRC16 is not set
+-# CONFIG_CRC_ITU_T is not set
+-CONFIG_CRC32=y
+-# CONFIG_CRC7 is not set
+-# CONFIG_LIBCRC32C is not set
+-CONFIG_HAS_IOMEM=y
+-CONFIG_HAS_IOPORT=y
+-CONFIG_HAS_DMA=y
+diff --git a/arch/mips/configs/rbhma4500_defconfig b/arch/mips/configs/rbhma4500_defconfig
+deleted file mode 100644
+index 50aa1b6..0000000
+--- a/arch/mips/configs/rbhma4500_defconfig
++++ /dev/null
+@@ -1,763 +0,0 @@
+-#
+-# Automatically generated make config: don't edit
+-# Linux kernel version: 2.6.26-rc9
+-# Thu Jul 10 23:53:27 2008
+-#
+-CONFIG_MIPS=y
+-
+-#
+-# Machine selection
+-#
+-# CONFIG_MACH_ALCHEMY is not set
+-# CONFIG_BASLER_EXCITE is not set
+-# CONFIG_BCM47XX is not set
+-# CONFIG_MIPS_COBALT is not set
+-# CONFIG_MACH_DECSTATION is not set
+-# CONFIG_MACH_JAZZ is not set
+-# CONFIG_LASAT is not set
+-# CONFIG_LEMOTE_FULONG is not set
+-# CONFIG_MIPS_MALTA is not set
+-# CONFIG_MIPS_SIM is not set
+-# CONFIG_MARKEINS is not set
+-# CONFIG_MACH_VR41XX is not set
+-# CONFIG_PNX8550_JBS is not set
+-# CONFIG_PNX8550_STB810 is not set
+-# CONFIG_PMC_MSP is not set
+-# CONFIG_PMC_YOSEMITE is not set
+-# CONFIG_SGI_IP22 is not set
+-# CONFIG_SGI_IP27 is not set
+-# CONFIG_SGI_IP28 is not set
+-# CONFIG_SGI_IP32 is not set
+-# CONFIG_SIBYTE_CRHINE is not set
+-# CONFIG_SIBYTE_CARMEL is not set
+-# CONFIG_SIBYTE_CRHONE is not set
+-# CONFIG_SIBYTE_RHONE is not set
+-# CONFIG_SIBYTE_SWARM is not set
+-# CONFIG_SIBYTE_LITTLESUR is not set
+-# CONFIG_SIBYTE_SENTOSA is not set
+-# CONFIG_SIBYTE_BIGSUR is not set
+-# CONFIG_SNI_RM is not set
+-# CONFIG_TOSHIBA_JMR3927 is not set
+-# CONFIG_TOSHIBA_RBTX4927 is not set
+-CONFIG_TOSHIBA_RBTX4938=y
+-# CONFIG_WR_PPMC is not set
+-# CONFIG_TOSHIBA_FPCIB0 is not set
+-CONFIG_PICMG_PCI_BACKPLANE_DEFAULT=y
+-
+-#
+-# Multiplex Pin Select
+-#
+-CONFIG_TOSHIBA_RBTX4938_MPLEX_PIO58_61=y
+-# CONFIG_TOSHIBA_RBTX4938_MPLEX_NAND is not set
+-# CONFIG_TOSHIBA_RBTX4938_MPLEX_ATA is not set
+-CONFIG_PCI_TX4927=y
+-CONFIG_RWSEM_GENERIC_SPINLOCK=y
+-# CONFIG_ARCH_HAS_ILOG2_U32 is not set
+-# CONFIG_ARCH_HAS_ILOG2_U64 is not set
+-CONFIG_ARCH_SUPPORTS_OPROFILE=y
+-CONFIG_GENERIC_FIND_NEXT_BIT=y
+-CONFIG_GENERIC_HWEIGHT=y
+-CONFIG_GENERIC_CALIBRATE_DELAY=y
+-CONFIG_GENERIC_CLOCKEVENTS=y
+-CONFIG_GENERIC_TIME=y
+-CONFIG_GENERIC_CMOS_UPDATE=y
+-CONFIG_SCHED_NO_NO_OMIT_FRAME_POINTER=y
+-CONFIG_GENERIC_HARDIRQS_NO__DO_IRQ=y
+-CONFIG_CEVT_R4K=y
+-CONFIG_CEVT_TXX9=y
+-CONFIG_CSRC_R4K=y
+-CONFIG_GPIO_TXX9=y
+-CONFIG_DMA_NONCOHERENT=y
+-CONFIG_DMA_NEED_PCI_MAP_STATE=y
+-# CONFIG_HOTPLUG_CPU is not set
+-# CONFIG_NO_IOPORT is not set
+-CONFIG_GENERIC_GPIO=y
+-CONFIG_CPU_BIG_ENDIAN=y
+-# CONFIG_CPU_LITTLE_ENDIAN is not set
+-CONFIG_SYS_SUPPORTS_BIG_ENDIAN=y
+-CONFIG_SYS_SUPPORTS_LITTLE_ENDIAN=y
+-CONFIG_IRQ_CPU=y
+-CONFIG_IRQ_TXX9=y
+-CONFIG_SWAP_IO_SPACE=y
+-CONFIG_MIPS_L1_CACHE_SHIFT=5
+-
+-#
+-# CPU selection
+-#
+-# CONFIG_CPU_LOONGSON2 is not set
+-# CONFIG_CPU_MIPS32_R1 is not set
+-# CONFIG_CPU_MIPS32_R2 is not set
+-# CONFIG_CPU_MIPS64_R1 is not set
+-# CONFIG_CPU_MIPS64_R2 is not set
+-# CONFIG_CPU_R3000 is not set
+-# CONFIG_CPU_TX39XX is not set
+-# CONFIG_CPU_VR41XX is not set
+-# CONFIG_CPU_R4300 is not set
+-# CONFIG_CPU_R4X00 is not set
+-CONFIG_CPU_TX49XX=y
+-# CONFIG_CPU_R5000 is not set
+-# CONFIG_CPU_R5432 is not set
+-# CONFIG_CPU_R6000 is not set
+-# CONFIG_CPU_NEVADA is not set
+-# CONFIG_CPU_R8000 is not set
+-# CONFIG_CPU_R10000 is not set
+-# CONFIG_CPU_RM7000 is not set
+-# CONFIG_CPU_RM9000 is not set
+-# CONFIG_CPU_SB1 is not set
+-CONFIG_SYS_HAS_CPU_TX49XX=y
+-CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
+-CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
+-CONFIG_CPU_SUPPORTS_64BIT_KERNEL=y
+-
+-#
+-# Kernel type
+-#
+-CONFIG_32BIT=y
+-# CONFIG_64BIT is not set
+-CONFIG_PAGE_SIZE_4KB=y
+-# CONFIG_PAGE_SIZE_8KB is not set
+-# CONFIG_PAGE_SIZE_16KB is not set
+-# CONFIG_PAGE_SIZE_64KB is not set
+-CONFIG_CPU_HAS_PREFETCH=y
+-CONFIG_MIPS_MT_DISABLED=y
+-# CONFIG_MIPS_MT_SMP is not set
+-# CONFIG_MIPS_MT_SMTC is not set
+-CONFIG_CPU_HAS_LLSC=y
+-CONFIG_CPU_HAS_SYNC=y
+-CONFIG_GENERIC_HARDIRQS=y
+-CONFIG_GENERIC_IRQ_PROBE=y
+-CONFIG_ARCH_FLATMEM_ENABLE=y
+-CONFIG_ARCH_POPULATES_NODE_MAP=y
+-CONFIG_FLATMEM=y
+-CONFIG_FLAT_NODE_MEM_MAP=y
+-# CONFIG_SPARSEMEM_STATIC is not set
+-# CONFIG_SPARSEMEM_VMEMMAP_ENABLE is not set
+-CONFIG_PAGEFLAGS_EXTENDED=y
+-CONFIG_SPLIT_PTLOCK_CPUS=4
+-# CONFIG_RESOURCES_64BIT is not set
+-CONFIG_ZONE_DMA_FLAG=0
+-CONFIG_VIRT_TO_BUS=y
+-CONFIG_TICK_ONESHOT=y
+-CONFIG_NO_HZ=y
+-CONFIG_HIGH_RES_TIMERS=y
+-CONFIG_GENERIC_CLOCKEVENTS_BUILD=y
+-# CONFIG_HZ_48 is not set
+-# CONFIG_HZ_100 is not set
+-# CONFIG_HZ_128 is not set
+-CONFIG_HZ_250=y
+-# CONFIG_HZ_256 is not set
+-# CONFIG_HZ_1000 is not set
+-# CONFIG_HZ_1024 is not set
+-CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
+-CONFIG_HZ=250
+-CONFIG_PREEMPT_NONE=y
+-# CONFIG_PREEMPT_VOLUNTARY is not set
+-# CONFIG_PREEMPT is not set
+-# CONFIG_SECCOMP is not set
+-CONFIG_LOCKDEP_SUPPORT=y
+-CONFIG_STACKTRACE_SUPPORT=y
+-CONFIG_DEFCONFIG_LIST="/lib/modules/$UNAME_RELEASE/.config"
+-
+-#
+-# General setup
+-#
+-# CONFIG_EXPERIMENTAL is not set
+-CONFIG_BROKEN_ON_SMP=y
+-CONFIG_INIT_ENV_ARG_LIMIT=32
+-CONFIG_LOCALVERSION=""
+-CONFIG_LOCALVERSION_AUTO=y
+-CONFIG_SWAP=y
+-CONFIG_SYSVIPC=y
+-CONFIG_SYSVIPC_SYSCTL=y
+-# CONFIG_BSD_PROCESS_ACCT is not set
+-# CONFIG_TASKSTATS is not set
+-# CONFIG_AUDIT is not set
+-CONFIG_IKCONFIG=y
+-CONFIG_IKCONFIG_PROC=y
+-CONFIG_LOG_BUF_SHIFT=14
+-# CONFIG_CGROUPS is not set
+-CONFIG_SYSFS_DEPRECATED=y
+-CONFIG_SYSFS_DEPRECATED_V2=y
+-# CONFIG_RELAY is not set
+-# CONFIG_NAMESPACES is not set
+-CONFIG_BLK_DEV_INITRD=y
+-CONFIG_INITRAMFS_SOURCE=""
+-CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+-CONFIG_SYSCTL=y
+-CONFIG_EMBEDDED=y
+-CONFIG_SYSCTL_SYSCALL=y
+-CONFIG_SYSCTL_SYSCALL_CHECK=y
+-CONFIG_KALLSYMS=y
+-# CONFIG_KALLSYMS_EXTRA_PASS is not set
+-# CONFIG_HOTPLUG is not set
+-CONFIG_PRINTK=y
+-CONFIG_BUG=y
+-CONFIG_ELF_CORE=y
+-# CONFIG_PCSPKR_PLATFORM is not set
+-CONFIG_COMPAT_BRK=y
+-CONFIG_BASE_FULL=y
+-# CONFIG_FUTEX is not set
+-CONFIG_ANON_INODES=y
+-# CONFIG_EPOLL is not set
+-CONFIG_SIGNALFD=y
+-CONFIG_TIMERFD=y
+-CONFIG_EVENTFD=y
+-CONFIG_SHMEM=y
+-CONFIG_VM_EVENT_COUNTERS=y
+-CONFIG_SLAB=y
+-# CONFIG_SLUB is not set
+-# CONFIG_SLOB is not set
+-# CONFIG_PROFILING is not set
+-# CONFIG_MARKERS is not set
+-CONFIG_HAVE_OPROFILE=y
+-# CONFIG_HAVE_KPROBES is not set
+-# CONFIG_HAVE_KRETPROBES is not set
+-# CONFIG_HAVE_DMA_ATTRS is not set
+-CONFIG_PROC_PAGE_MONITOR=y
+-CONFIG_SLABINFO=y
+-# CONFIG_TINY_SHMEM is not set
+-CONFIG_BASE_SMALL=0
+-CONFIG_MODULES=y
+-# CONFIG_MODULE_FORCE_LOAD is not set
+-# CONFIG_MODULE_UNLOAD is not set
+-# CONFIG_MODVERSIONS is not set
+-# CONFIG_MODULE_SRCVERSION_ALL is not set
+-CONFIG_KMOD=y
+-CONFIG_BLOCK=y
+-# CONFIG_LBD is not set
+-# CONFIG_BLK_DEV_IO_TRACE is not set
+-# CONFIG_LSF is not set
+-
+-#
+-# IO Schedulers
+-#
+-CONFIG_IOSCHED_NOOP=y
+-CONFIG_IOSCHED_AS=y
+-CONFIG_IOSCHED_DEADLINE=y
+-CONFIG_IOSCHED_CFQ=y
+-CONFIG_DEFAULT_AS=y
+-# CONFIG_DEFAULT_DEADLINE is not set
+-# CONFIG_DEFAULT_CFQ is not set
+-# CONFIG_DEFAULT_NOOP is not set
+-CONFIG_DEFAULT_IOSCHED="anticipatory"
+-CONFIG_CLASSIC_RCU=y
+-
+-#
+-# Bus options (PCI, PCMCIA, EISA, ISA, TC)
+-#
+-CONFIG_HW_HAS_PCI=y
+-CONFIG_PCI=y
+-CONFIG_PCI_DOMAINS=y
+-# CONFIG_ARCH_SUPPORTS_MSI is not set
+-# CONFIG_PCI_LEGACY is not set
+-CONFIG_MMU=y
+-
+-#
+-# Executable file formats
+-#
+-CONFIG_BINFMT_ELF=y
+-# CONFIG_BINFMT_MISC is not set
+-CONFIG_TRAD_SIGNALS=y
+-
+-#
+-# Power management options
+-#
+-CONFIG_ARCH_SUSPEND_POSSIBLE=y
+-# CONFIG_PM is not set
+-
+-#
+-# Networking
+-#
+-CONFIG_NET=y
+-
+-#
+-# Networking options
+-#
+-CONFIG_PACKET=y
+-# CONFIG_PACKET_MMAP is not set
+-CONFIG_UNIX=y
+-# CONFIG_NET_KEY is not set
+-CONFIG_INET=y
+-CONFIG_IP_MULTICAST=y
+-# CONFIG_IP_ADVANCED_ROUTER is not set
+-CONFIG_IP_FIB_HASH=y
+-CONFIG_IP_PNP=y
+-# CONFIG_IP_PNP_DHCP is not set
+-# CONFIG_IP_PNP_BOOTP is not set
+-# CONFIG_IP_PNP_RARP is not set
+-# CONFIG_NET_IPIP is not set
+-# CONFIG_NET_IPGRE is not set
+-# CONFIG_IP_MROUTE is not set
+-# CONFIG_SYN_COOKIES is not set
+-# CONFIG_INET_AH is not set
+-# CONFIG_INET_ESP is not set
+-# CONFIG_INET_IPCOMP is not set
+-# CONFIG_INET_XFRM_TUNNEL is not set
+-# CONFIG_INET_TUNNEL is not set
+-# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
+-# CONFIG_INET_XFRM_MODE_TUNNEL is not set
+-# CONFIG_INET_XFRM_MODE_BEET is not set
+-# CONFIG_INET_LRO is not set
+-CONFIG_INET_DIAG=y
+-CONFIG_INET_TCP_DIAG=y
+-# CONFIG_TCP_CONG_ADVANCED is not set
+-CONFIG_TCP_CONG_CUBIC=y
+-CONFIG_DEFAULT_TCP_CONG="cubic"
+-# CONFIG_IPV6 is not set
+-# CONFIG_NETWORK_SECMARK is not set
+-# CONFIG_NETFILTER is not set
+-# CONFIG_ATM is not set
+-# CONFIG_BRIDGE is not set
+-# CONFIG_VLAN_8021Q is not set
+-# CONFIG_DECNET is not set
+-# CONFIG_LLC2 is not set
+-# CONFIG_IPX is not set
+-# CONFIG_ATALK is not set
+-# CONFIG_NET_SCHED is not set
+-
+-#
+-# Network testing
+-#
+-# CONFIG_NET_PKTGEN is not set
+-# CONFIG_HAMRADIO is not set
+-# CONFIG_CAN is not set
+-# CONFIG_IRDA is not set
+-# CONFIG_BT is not set
+-
+-#
+-# Wireless
+-#
+-# CONFIG_CFG80211 is not set
+-# CONFIG_WIRELESS_EXT is not set
+-# CONFIG_MAC80211 is not set
+-# CONFIG_IEEE80211 is not set
+-# CONFIG_RFKILL is not set
+-
+-#
+-# Device Drivers
+-#
+-
+-#
+-# Generic Driver Options
+-#
+-CONFIG_STANDALONE=y
+-CONFIG_PREVENT_FIRMWARE_BUILD=y
+-# CONFIG_SYS_HYPERVISOR is not set
+-# CONFIG_CONNECTOR is not set
+-# CONFIG_MTD is not set
+-# CONFIG_PARPORT is not set
+-CONFIG_BLK_DEV=y
+-# CONFIG_BLK_CPQ_DA is not set
+-# CONFIG_BLK_CPQ_CISS_DA is not set
+-# CONFIG_BLK_DEV_DAC960 is not set
+-# CONFIG_BLK_DEV_COW_COMMON is not set
+-CONFIG_BLK_DEV_LOOP=y
+-# CONFIG_BLK_DEV_CRYPTOLOOP is not set
+-# CONFIG_BLK_DEV_NBD is not set
+-# CONFIG_BLK_DEV_SX8 is not set
+-CONFIG_BLK_DEV_RAM=y
+-CONFIG_BLK_DEV_RAM_COUNT=16
+-CONFIG_BLK_DEV_RAM_SIZE=8192
+-# CONFIG_BLK_DEV_XIP is not set
+-# CONFIG_CDROM_PKTCDVD is not set
+-# CONFIG_ATA_OVER_ETH is not set
+-# CONFIG_MISC_DEVICES is not set
+-CONFIG_HAVE_IDE=y
+-# CONFIG_IDE is not set
+-
+-#
+-# SCSI device support
+-#
+-# CONFIG_RAID_ATTRS is not set
+-# CONFIG_SCSI is not set
+-# CONFIG_SCSI_DMA is not set
+-# CONFIG_SCSI_NETLINK is not set
+-# CONFIG_ATA is not set
+-# CONFIG_MD is not set
+-# CONFIG_FUSION is not set
+-
+-#
+-# IEEE 1394 (FireWire) support
+-#
+-
+-#
+-# A new alternative FireWire stack is available with EXPERIMENTAL=y
+-#
+-# CONFIG_IEEE1394 is not set
+-# CONFIG_I2O is not set
+-CONFIG_NETDEVICES=y
+-# CONFIG_NETDEVICES_MULTIQUEUE is not set
+-# CONFIG_DUMMY is not set
+-# CONFIG_BONDING is not set
+-# CONFIG_EQUALIZER is not set
+-# CONFIG_TUN is not set
+-# CONFIG_VETH is not set
+-# CONFIG_ARCNET is not set
+-CONFIG_PHYLIB=y
+-
+-#
+-# MII PHY device drivers
+-#
+-# CONFIG_MARVELL_PHY is not set
+-# CONFIG_DAVICOM_PHY is not set
+-# CONFIG_QSEMI_PHY is not set
+-# CONFIG_LXT_PHY is not set
+-# CONFIG_CICADA_PHY is not set
+-# CONFIG_VITESSE_PHY is not set
+-# CONFIG_SMSC_PHY is not set
+-# CONFIG_BROADCOM_PHY is not set
+-# CONFIG_ICPLUS_PHY is not set
+-# CONFIG_REALTEK_PHY is not set
+-# CONFIG_FIXED_PHY is not set
+-# CONFIG_MDIO_BITBANG is not set
+-CONFIG_NET_ETHERNET=y
+-# CONFIG_MII is not set
+-# CONFIG_AX88796 is not set
+-# CONFIG_HAPPYMEAL is not set
+-# CONFIG_SUNGEM is not set
+-# CONFIG_CASSINI is not set
+-# CONFIG_NET_VENDOR_3COM is not set
+-# CONFIG_DM9000 is not set
+-# CONFIG_NET_TULIP is not set
+-# CONFIG_HP100 is not set
+-CONFIG_NE2000=y
+-# CONFIG_IBM_NEW_EMAC_ZMII is not set
+-# CONFIG_IBM_NEW_EMAC_RGMII is not set
+-# CONFIG_IBM_NEW_EMAC_TAH is not set
+-# CONFIG_IBM_NEW_EMAC_EMAC4 is not set
+-CONFIG_NET_PCI=y
+-# CONFIG_PCNET32 is not set
+-# CONFIG_AMD8111_ETH is not set
+-# CONFIG_ADAPTEC_STARFIRE is not set
+-# CONFIG_B44 is not set
+-# CONFIG_FORCEDETH is not set
+-CONFIG_TC35815=y
+-# CONFIG_EEPRO100 is not set
+-# CONFIG_E100 is not set
+-# CONFIG_FEALNX is not set
+-# CONFIG_NATSEMI is not set
+-# CONFIG_NE2K_PCI is not set
+-# CONFIG_8139TOO is not set
+-# CONFIG_R6040 is not set
+-# CONFIG_SIS900 is not set
+-# CONFIG_EPIC100 is not set
+-# CONFIG_SUNDANCE is not set
+-# CONFIG_TLAN is not set
+-# CONFIG_VIA_RHINE is not set
+-# CONFIG_NETDEV_1000 is not set
+-# CONFIG_NETDEV_10000 is not set
+-# CONFIG_TR is not set
+-
+-#
+-# Wireless LAN
+-#
+-# CONFIG_WLAN_PRE80211 is not set
+-# CONFIG_WLAN_80211 is not set
+-# CONFIG_IWLWIFI_LEDS is not set
+-# CONFIG_WAN is not set
+-# CONFIG_FDDI is not set
+-# CONFIG_PPP is not set
+-# CONFIG_SLIP is not set
+-# CONFIG_NETPOLL is not set
+-# CONFIG_NET_POLL_CONTROLLER is not set
+-# CONFIG_ISDN is not set
+-# CONFIG_PHONE is not set
+-
+-#
+-# Input device support
+-#
+-# CONFIG_INPUT is not set
+-
+-#
+-# Hardware I/O ports
+-#
+-# CONFIG_SERIO is not set
+-# CONFIG_GAMEPORT is not set
+-
+-#
+-# Character devices
+-#
+-# CONFIG_VT is not set
+-CONFIG_DEVKMEM=y
+-# CONFIG_SERIAL_NONSTANDARD is not set
+-
+-#
+-# Serial drivers
+-#
+-# CONFIG_SERIAL_8250 is not set
+-
+-#
+-# Non-8250 serial port support
+-#
+-CONFIG_SERIAL_CORE=y
+-CONFIG_SERIAL_CORE_CONSOLE=y
+-CONFIG_SERIAL_TXX9=y
+-CONFIG_HAS_TXX9_SERIAL=y
+-CONFIG_SERIAL_TXX9_NR_UARTS=6
+-CONFIG_SERIAL_TXX9_CONSOLE=y
+-CONFIG_SERIAL_TXX9_STDSERIAL=y
+-# CONFIG_SERIAL_JSM is not set
+-CONFIG_UNIX98_PTYS=y
+-CONFIG_LEGACY_PTYS=y
+-CONFIG_LEGACY_PTY_COUNT=256
+-# CONFIG_IPMI_HANDLER is not set
+-# CONFIG_HW_RANDOM is not set
+-# CONFIG_R3964 is not set
+-# CONFIG_APPLICOM is not set
+-# CONFIG_RAW_DRIVER is not set
+-CONFIG_DEVPORT=y
+-# CONFIG_I2C is not set
+-CONFIG_SPI=y
+-CONFIG_SPI_MASTER=y
+-
+-#
+-# SPI Master Controller Drivers
+-#
+-CONFIG_SPI_TXX9=y
+-
+-#
+-# SPI Protocol Masters
+-#
+-CONFIG_SPI_AT25=y
+-# CONFIG_SPI_TLE62X0 is not set
+-CONFIG_HAVE_GPIO_LIB=y
+-
+-#
+-# GPIO Support
+-#
+-
+-#
+-# I2C GPIO expanders:
+-#
+-
+-#
+-# SPI GPIO expanders:
+-#
+-# CONFIG_GPIO_MCP23S08 is not set
+-# CONFIG_W1 is not set
+-# CONFIG_POWER_SUPPLY is not set
+-# CONFIG_HWMON is not set
+-# CONFIG_THERMAL is not set
+-# CONFIG_THERMAL_HWMON is not set
+-CONFIG_WATCHDOG=y
+-# CONFIG_WATCHDOG_NOWAYOUT is not set
+-
+-#
+-# Watchdog Device Drivers
+-#
+-# CONFIG_SOFT_WATCHDOG is not set
+-CONFIG_TXX9_WDT=m
+-
+-#
+-# PCI-based Watchdog Cards
+-#
+-# CONFIG_PCIPCWATCHDOG is not set
+-# CONFIG_WDTPCI is not set
+-
+-#
+-# Sonics Silicon Backplane
+-#
+-CONFIG_SSB_POSSIBLE=y
+-# CONFIG_SSB is not set
+-
+-#
+-# Multifunction device drivers
+-#
+-# CONFIG_MFD_SM501 is not set
+-# CONFIG_HTC_PASIC3 is not set
+-
+-#
+-# Multimedia devices
+-#
+-
+-#
+-# Multimedia core support
+-#
+-# CONFIG_VIDEO_DEV is not set
+-# CONFIG_DVB_CORE is not set
+-# CONFIG_VIDEO_MEDIA is not set
+-
+-#
+-# Multimedia drivers
+-#
+-# CONFIG_DAB is not set
+-
+-#
+-# Graphics support
+-#
+-# CONFIG_DRM is not set
+-# CONFIG_VGASTATE is not set
+-# CONFIG_VIDEO_OUTPUT_CONTROL is not set
+-# CONFIG_FB is not set
+-# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
+-
+-#
+-# Display device support
+-#
+-# CONFIG_DISPLAY_SUPPORT is not set
+-
+-#
+-# Sound
+-#
+-# CONFIG_SOUND is not set
+-# CONFIG_USB_SUPPORT is not set
+-# CONFIG_MMC is not set
+-# CONFIG_MEMSTICK is not set
+-# CONFIG_NEW_LEDS is not set
+-# CONFIG_ACCESSIBILITY is not set
+-# CONFIG_INFINIBAND is not set
+-CONFIG_RTC_LIB=y
+-CONFIG_RTC_CLASS=y
+-CONFIG_RTC_HCTOSYS=y
+-CONFIG_RTC_HCTOSYS_DEVICE="rtc0"
+-# CONFIG_RTC_DEBUG is not set
+-
+-#
+-# RTC interfaces
+-#
+-CONFIG_RTC_INTF_SYSFS=y
+-CONFIG_RTC_INTF_PROC=y
+-CONFIG_RTC_INTF_DEV=y
+-CONFIG_RTC_INTF_DEV_UIE_EMUL=y
+-# CONFIG_RTC_DRV_TEST is not set
+-
+-#
+-# SPI RTC drivers
+-#
+-# CONFIG_RTC_DRV_MAX6902 is not set
+-# CONFIG_RTC_DRV_R9701 is not set
+-CONFIG_RTC_DRV_RS5C348=y
+-
+-#
+-# Platform RTC drivers
+-#
+-# CONFIG_RTC_DRV_CMOS is not set
+-# CONFIG_RTC_DRV_DS1511 is not set
+-# CONFIG_RTC_DRV_DS1553 is not set
+-# CONFIG_RTC_DRV_DS1742 is not set
+-# CONFIG_RTC_DRV_STK17TA8 is not set
+-# CONFIG_RTC_DRV_M48T86 is not set
+-# CONFIG_RTC_DRV_M48T59 is not set
+-# CONFIG_RTC_DRV_V3020 is not set
+-
+-#
+-# on-CPU RTC drivers
+-#
+-# CONFIG_UIO is not set
+-
+-#
+-# File systems
+-#
+-# CONFIG_EXT2_FS is not set
+-# CONFIG_EXT3_FS is not set
+-# CONFIG_REISERFS_FS is not set
+-# CONFIG_JFS_FS is not set
+-CONFIG_FS_POSIX_ACL=y
+-# CONFIG_XFS_FS is not set
+-# CONFIG_OCFS2_FS is not set
+-# CONFIG_DNOTIFY is not set
+-CONFIG_INOTIFY=y
+-CONFIG_INOTIFY_USER=y
+-# CONFIG_QUOTA is not set
+-# CONFIG_AUTOFS_FS is not set
+-# CONFIG_AUTOFS4_FS is not set
+-# CONFIG_FUSE_FS is not set
+-CONFIG_GENERIC_ACL=y
+-
+-#
+-# CD-ROM/DVD Filesystems
+-#
+-# CONFIG_ISO9660_FS is not set
+-# CONFIG_UDF_FS is not set
+-
+-#
+-# DOS/FAT/NT Filesystems
+-#
+-# CONFIG_MSDOS_FS is not set
+-# CONFIG_VFAT_FS is not set
+-# CONFIG_NTFS_FS is not set
+-
+-#
+-# Pseudo filesystems
+-#
+-CONFIG_PROC_FS=y
+-# CONFIG_PROC_KCORE is not set
+-CONFIG_PROC_SYSCTL=y
+-CONFIG_SYSFS=y
+-CONFIG_TMPFS=y
+-CONFIG_TMPFS_POSIX_ACL=y
+-# CONFIG_HUGETLB_PAGE is not set
+-# CONFIG_CONFIGFS_FS is not set
+-
+-#
+-# Miscellaneous filesystems
+-#
+-# CONFIG_HFSPLUS_FS is not set
+-# CONFIG_CRAMFS is not set
+-# CONFIG_VXFS_FS is not set
+-# CONFIG_MINIX_FS is not set
+-# CONFIG_HPFS_FS is not set
+-# CONFIG_QNX4FS_FS is not set
+-# CONFIG_ROMFS_FS is not set
+-# CONFIG_SYSV_FS is not set
+-# CONFIG_UFS_FS is not set
+-CONFIG_NETWORK_FILESYSTEMS=y
+-CONFIG_NFS_FS=y
+-CONFIG_NFS_V3=y
+-# CONFIG_NFS_V3_ACL is not set
+-# CONFIG_NFSD is not set
+-CONFIG_ROOT_NFS=y
+-CONFIG_LOCKD=y
+-CONFIG_LOCKD_V4=y
+-CONFIG_NFS_COMMON=y
+-CONFIG_SUNRPC=y
+-# CONFIG_SMB_FS is not set
+-# CONFIG_CIFS is not set
+-# CONFIG_NCP_FS is not set
+-# CONFIG_CODA_FS is not set
+-
+-#
+-# Partition Types
+-#
+-# CONFIG_PARTITION_ADVANCED is not set
+-CONFIG_MSDOS_PARTITION=y
+-# CONFIG_NLS is not set
+-
+-#
+-# Kernel hacking
+-#
+-CONFIG_TRACE_IRQFLAGS_SUPPORT=y
+-# CONFIG_PRINTK_TIME is not set
+-CONFIG_ENABLE_WARN_DEPRECATED=y
+-CONFIG_ENABLE_MUST_CHECK=y
+-CONFIG_FRAME_WARN=1024
+-# CONFIG_MAGIC_SYSRQ is not set
+-# CONFIG_UNUSED_SYMBOLS is not set
+-CONFIG_DEBUG_FS=y
+-# CONFIG_HEADERS_CHECK is not set
+-# CONFIG_DEBUG_KERNEL is not set
+-# CONFIG_SAMPLES is not set
+-CONFIG_CMDLINE=""
+-CONFIG_SYS_SUPPORTS_KGDB=y
+-
+-#
+-# Security options
+-#
+-# CONFIG_KEYS is not set
+-# CONFIG_SECURITY is not set
+-# CONFIG_CRYPTO is not set
+-
+-#
+-# Library routines
+-#
+-CONFIG_BITREVERSE=y
+-# CONFIG_GENERIC_FIND_FIRST_BIT is not set
+-# CONFIG_CRC_CCITT is not set
+-# CONFIG_CRC16 is not set
+-# CONFIG_CRC_ITU_T is not set
+-CONFIG_CRC32=y
+-# CONFIG_CRC7 is not set
+-# CONFIG_LIBCRC32C is not set
+-CONFIG_HAS_IOMEM=y
+-CONFIG_HAS_IOPORT=y
+-CONFIG_HAS_DMA=y
+diff --git a/arch/mips/configs/rbtx49xx_defconfig b/arch/mips/configs/rbtx49xx_defconfig
+new file mode 100644
+index 0000000..e42aed5
+--- /dev/null
++++ b/arch/mips/configs/rbtx49xx_defconfig
+@@ -0,0 +1,767 @@
++#
++# Automatically generated make config: don't edit
++# Linux kernel version: 2.6.26-rc9
++# Fri Jul 11 23:03:21 2008
++#
++CONFIG_MIPS=y
 +
-+	if ((pending & CAUSEF_IP7) == 0)
-+		return -1;
-+	irq = (pending >> CAUSEB_IP2) & 0x0f;
-+	irq += JMR3927_IRQ_IRC;
-+	if (irq == JMR3927_IRQ_IOCINT)
-+		irq = jmr3927_ioc_irqroute();
-+	return irq;
-+}
- 
- #ifdef CONFIG_PCI
- static irqreturn_t jmr3927_pcierr_interrupt(int irq, void *dev_id)
-@@ -127,8 +121,9 @@ static struct irqaction pcierr_action = {
- 
- static void __init jmr3927_irq_init(void);
- 
--void __init arch_init_irq(void)
-+void __init jmr3927_irq_setup(void)
- {
-+	txx9_irq_dispatch = jmr3927_irq_dispatch;
- 	/* Now, interrupt control disabled, */
- 	/* all IRC interrupts are masked, */
- 	/* all IRC interrupt mode are Low Active. */
-@@ -146,7 +141,7 @@ void __init arch_init_irq(void)
- 	jmr3927_irq_init();
- 
- 	/* setup IOC interrupt 1 (PCI, MODEM) */
--	setup_irq(JMR3927_IRQ_IOCINT, &ioc_action);
-+	set_irq_chained_handler(JMR3927_IRQ_IOCINT, handle_simple_irq);
- 
- #ifdef CONFIG_PCI
- 	setup_irq(JMR3927_IRQ_IRC_PCI, &pcierr_action);
-diff --git a/arch/mips/txx9/jmr3927/prom.c b/arch/mips/txx9/jmr3927/prom.c
-index 8bc1049..2cadb42 100644
---- a/arch/mips/txx9/jmr3927/prom.c
-+++ b/arch/mips/txx9/jmr3927/prom.c
-@@ -35,42 +35,10 @@
-  *  with this program; if not, write  to the Free Software Foundation, Inc.,
-  *  675 Mass Ave, Cambridge, MA 02139, USA.
-  */
--#include <linux/kernel.h>
- #include <linux/init.h>
--#include <linux/string.h>
--
- #include <asm/bootinfo.h>
--#include <asm/txx9/tx3927.h>
--
--char * __init prom_getcmdline(void)
--{
--	return &(arcs_cmdline[0]);
--}
--
--void  __init prom_init_cmdline(void)
--{
--	char *cp;
--	int actr;
--	int prom_argc = fw_arg0;
--	char **prom_argv = (char **) fw_arg1;
--
--	actr = 1; /* Always ignore argv[0] */
--
--	cp = &(arcs_cmdline[0]);
--	while(actr < prom_argc) {
--	        strcpy(cp, prom_argv[actr]);
--		cp += strlen(prom_argv[actr]);
--		*cp++ = ' ';
--		actr++;
--	}
--	if (cp != &(arcs_cmdline[0])) /* get rid of trailing space */
--		--cp;
--	*cp = '\0';
--}
--
--void __init prom_free_prom_memory(void)
--{
--}
-+#include <asm/txx9/generic.h>
-+#include <asm/txx9/jmr3927.h>
- 
- #define TIMEOUT       0xffffff
- 
-@@ -96,3 +64,13 @@ puts(const char *cp)
-     prom_putchar('\r');
-     prom_putchar('\n');
- }
++#
++# Machine selection
++#
++# CONFIG_MACH_ALCHEMY is not set
++# CONFIG_BASLER_EXCITE is not set
++# CONFIG_BCM47XX is not set
++# CONFIG_MIPS_COBALT is not set
++# CONFIG_MACH_DECSTATION is not set
++# CONFIG_MACH_JAZZ is not set
++# CONFIG_LASAT is not set
++# CONFIG_LEMOTE_FULONG is not set
++# CONFIG_MIPS_MALTA is not set
++# CONFIG_MIPS_SIM is not set
++# CONFIG_MARKEINS is not set
++# CONFIG_MACH_VR41XX is not set
++# CONFIG_PNX8550_JBS is not set
++# CONFIG_PNX8550_STB810 is not set
++# CONFIG_PMC_MSP is not set
++# CONFIG_PMC_YOSEMITE is not set
++# CONFIG_SGI_IP22 is not set
++# CONFIG_SGI_IP27 is not set
++# CONFIG_SGI_IP28 is not set
++# CONFIG_SGI_IP32 is not set
++# CONFIG_SIBYTE_CRHINE is not set
++# CONFIG_SIBYTE_CARMEL is not set
++# CONFIG_SIBYTE_CRHONE is not set
++# CONFIG_SIBYTE_RHONE is not set
++# CONFIG_SIBYTE_SWARM is not set
++# CONFIG_SIBYTE_LITTLESUR is not set
++# CONFIG_SIBYTE_SENTOSA is not set
++# CONFIG_SIBYTE_BIGSUR is not set
++# CONFIG_SNI_RM is not set
++# CONFIG_MACH_TX39XX is not set
++CONFIG_MACH_TX49XX=y
++# CONFIG_WR_PPMC is not set
++CONFIG_TOSHIBA_RBTX4927=y
++CONFIG_TOSHIBA_RBTX4938=y
++CONFIG_SOC_TX4927=y
++CONFIG_SOC_TX4938=y
++# CONFIG_TOSHIBA_FPCIB0 is not set
++CONFIG_PICMG_PCI_BACKPLANE_DEFAULT=y
 +
-+void __init jmr3927_prom_init(void)
-+{
-+	/* CCFG */
-+	if ((tx3927_ccfgptr->ccfg & TX3927_CCFG_TLBOFF) == 0)
-+		puts("Warning: TX3927 TLB off\n");
++#
++# Multiplex Pin Select
++#
++CONFIG_TOSHIBA_RBTX4938_MPLEX_PIO58_61=y
++# CONFIG_TOSHIBA_RBTX4938_MPLEX_NAND is not set
++# CONFIG_TOSHIBA_RBTX4938_MPLEX_ATA is not set
++CONFIG_PCI_TX4927=y
++CONFIG_RWSEM_GENERIC_SPINLOCK=y
++# CONFIG_ARCH_HAS_ILOG2_U32 is not set
++# CONFIG_ARCH_HAS_ILOG2_U64 is not set
++CONFIG_ARCH_SUPPORTS_OPROFILE=y
++CONFIG_GENERIC_FIND_NEXT_BIT=y
++CONFIG_GENERIC_HWEIGHT=y
++CONFIG_GENERIC_CALIBRATE_DELAY=y
++CONFIG_GENERIC_CLOCKEVENTS=y
++CONFIG_GENERIC_TIME=y
++CONFIG_GENERIC_CMOS_UPDATE=y
++CONFIG_SCHED_NO_NO_OMIT_FRAME_POINTER=y
++CONFIG_GENERIC_HARDIRQS_NO__DO_IRQ=y
++CONFIG_CEVT_R4K=y
++CONFIG_CEVT_TXX9=y
++CONFIG_CSRC_R4K=y
++CONFIG_GPIO_TXX9=y
++CONFIG_DMA_NONCOHERENT=y
++CONFIG_DMA_NEED_PCI_MAP_STATE=y
++# CONFIG_HOTPLUG_CPU is not set
++# CONFIG_NO_IOPORT is not set
++CONFIG_GENERIC_GPIO=y
++CONFIG_CPU_BIG_ENDIAN=y
++# CONFIG_CPU_LITTLE_ENDIAN is not set
++CONFIG_SYS_SUPPORTS_BIG_ENDIAN=y
++CONFIG_SYS_SUPPORTS_LITTLE_ENDIAN=y
++CONFIG_IRQ_CPU=y
++CONFIG_IRQ_TXX9=y
++CONFIG_SWAP_IO_SPACE=y
++CONFIG_MIPS_L1_CACHE_SHIFT=5
 +
-+	prom_init_cmdline();
-+	add_memory_region(0, JMR3927_SDRAM_SIZE, BOOT_MEM_RAM);
-+}
-diff --git a/arch/mips/txx9/jmr3927/setup.c b/arch/mips/txx9/jmr3927/setup.c
-index baa8c8d..128a4ae 100644
---- a/arch/mips/txx9/jmr3927/setup.c
-+++ b/arch/mips/txx9/jmr3927/setup.c
-@@ -34,15 +34,16 @@
- #include <linux/delay.h>
- #include <linux/pm.h>
- #include <linux/platform_device.h>
--#include <linux/clk.h>
- #include <linux/gpio.h>
- #ifdef CONFIG_SERIAL_TXX9
- #include <linux/serial_core.h>
- #endif
- 
-+#include <asm/bootinfo.h>
- #include <asm/txx9tmr.h>
- #include <asm/txx9pio.h>
- #include <asm/reboot.h>
-+#include <asm/txx9/generic.h>
- #include <asm/txx9/pci.h>
- #include <asm/txx9/jmr3927.h>
- #include <asm/mipsregs.h>
-@@ -83,7 +84,7 @@ static void jmr3927_machine_power_off(void)
- 	while (1);
- }
- 
--void __init plat_time_init(void)
-+static void __init jmr3927_time_init(void)
- {
- 	txx9_clockevent_init(TX3927_TMR_REG(0),
- 			     TXX9_IRQ_BASE + JMR3927_IRQ_IRC_TMR(0),
-@@ -97,7 +98,7 @@ void __init plat_time_init(void)
- extern char * __init prom_getcmdline(void);
- static void jmr3927_board_init(void);
- 
--void __init plat_mem_setup(void)
-+static void __init jmr3927_mem_setup(void)
- {
- 	char *argptr;
- 
-@@ -233,6 +234,8 @@ static void __init tx3927_setup(void)
- {
- 	int i;
- 
-+	txx9_cpu_clock = JMR3927_CORECLK;
-+	txx9_gbus_clock = JMR3927_GBUSCLK;
- 	/* SDRAMC are configured by PROM */
- 
- 	/* ROMC */
-@@ -336,7 +339,6 @@ static int __init jmr3927_rtc_init(void)
- 	dev = platform_device_register_simple("rtc-ds1742", -1, &res, 1);
- 	return IS_ERR(dev) ? PTR_ERR(dev) : 0;
- }
--device_initcall(jmr3927_rtc_init);
- 
- /* Watchdog support */
- 
-@@ -356,36 +358,22 @@ static int __init jmr3927_wdt_init(void)
- {
- 	return txx9_wdt_init(TX3927_TMR_REG(2));
- }
--device_initcall(jmr3927_wdt_init);
- 
--/* Minimum CLK support */
--
--struct clk *clk_get(struct device *dev, const char *id)
--{
--	if (!strcmp(id, "imbus_clk"))
--		return (struct clk *)JMR3927_IMCLK;
--	return ERR_PTR(-ENOENT);
--}
--EXPORT_SYMBOL(clk_get);
--
--int clk_enable(struct clk *clk)
--{
--	return 0;
--}
--EXPORT_SYMBOL(clk_enable);
--
--void clk_disable(struct clk *clk)
-+static void __init jmr3927_device_init(void)
- {
-+	jmr3927_rtc_init();
-+	jmr3927_wdt_init();
- }
--EXPORT_SYMBOL(clk_disable);
- 
--unsigned long clk_get_rate(struct clk *clk)
--{
--	return (unsigned long)clk;
--}
--EXPORT_SYMBOL(clk_get_rate);
--
--void clk_put(struct clk *clk)
--{
--}
--EXPORT_SYMBOL(clk_put);
-+struct txx9_board_vec jmr3927_vec __initdata = {
-+	.type = MACH_TOSHIBA_JMR3927,
-+	.system = "Toshiba JMR_TX3927",
-+	.prom_init = jmr3927_prom_init,
-+	.mem_setup = jmr3927_mem_setup,
-+	.irq_setup = jmr3927_irq_setup,
-+	.time_init = jmr3927_time_init,
-+	.device_init = jmr3927_device_init,
-+#ifdef CONFIG_PCI
-+	.pci_map_irq = jmr3927_pci_map_irq,
-+#endif
-+};
-diff --git a/arch/mips/txx9/rbtx4927/irq.c b/arch/mips/txx9/rbtx4927/irq.c
-index bef1447..70f1321 100644
---- a/arch/mips/txx9/rbtx4927/irq.c
-+++ b/arch/mips/txx9/rbtx4927/irq.c
-@@ -111,17 +111,10 @@ JP7 is not bus master -- do NOT use -- only 4 pci bus master's allowed -- SouthB
- #include <linux/types.h>
- #include <linux/interrupt.h>
- #include <asm/io.h>
-+#include <asm/mipsregs.h>
-+#include <asm/txx9/generic.h>
- #include <asm/txx9/rbtx4927.h>
- 
--#define TOSHIBA_RBTX4927_IRQ_IOC_RAW_BEG   0
--#define TOSHIBA_RBTX4927_IRQ_IOC_RAW_END   7
--
--#define TOSHIBA_RBTX4927_IRQ_IOC_BEG  ((TX4927_IRQ_PIC_END+1)+TOSHIBA_RBTX4927_IRQ_IOC_RAW_BEG)	/* 56 */
--#define TOSHIBA_RBTX4927_IRQ_IOC_END  ((TX4927_IRQ_PIC_END+1)+TOSHIBA_RBTX4927_IRQ_IOC_RAW_END)	/* 63 */
--
--#define TOSHIBA_RBTX4927_IRQ_NEST_IOC_ON_PIC TX4927_IRQ_NEST_EXT_ON_PIC
--#define TOSHIBA_RBTX4927_IRQ_NEST_ISA_ON_IOC (TOSHIBA_RBTX4927_IRQ_IOC_BEG+2)
--
- static void toshiba_rbtx4927_irq_ioc_enable(unsigned int irq);
- static void toshiba_rbtx4927_irq_ioc_disable(unsigned int irq);
- 
-@@ -136,34 +129,25 @@ static struct irq_chip toshiba_rbtx4927_irq_ioc_type = {
- #define TOSHIBA_RBTX4927_IOC_INTR_ENAB (void __iomem *)0xbc002000UL
- #define TOSHIBA_RBTX4927_IOC_INTR_STAT (void __iomem *)0xbc002006UL
- 
--int toshiba_rbtx4927_irq_nested(int sw_irq)
-+static int toshiba_rbtx4927_irq_nested(int sw_irq)
- {
- 	u8 level3;
- 
- 	level3 = readb(TOSHIBA_RBTX4927_IOC_INTR_STAT) & 0x1f;
- 	if (level3)
--		sw_irq = TOSHIBA_RBTX4927_IRQ_IOC_BEG + fls(level3) - 1;
-+		sw_irq = RBTX4927_IRQ_IOC + fls(level3) - 1;
- 	return (sw_irq);
- }
- 
--static struct irqaction toshiba_rbtx4927_irq_ioc_action = {
--	.handler	= no_action,
--	.flags		= IRQF_SHARED,
--	.mask		= CPU_MASK_NONE,
--	.name		= TOSHIBA_RBTX4927_IOC_NAME
--};
--
- static void __init toshiba_rbtx4927_irq_ioc_init(void)
- {
- 	int i;
- 
--	for (i = TOSHIBA_RBTX4927_IRQ_IOC_BEG;
--	     i <= TOSHIBA_RBTX4927_IRQ_IOC_END; i++)
-+	for (i = RBTX4927_IRQ_IOC;
-+	     i < RBTX4927_IRQ_IOC + RBTX4927_NR_IRQ_IOC; i++)
- 		set_irq_chip_and_handler(i, &toshiba_rbtx4927_irq_ioc_type,
- 					 handle_level_irq);
--
--	setup_irq(TOSHIBA_RBTX4927_IRQ_NEST_IOC_ON_PIC,
--		  &toshiba_rbtx4927_irq_ioc_action);
-+	set_irq_chained_handler(RBTX4927_IRQ_IOCINT, handle_simple_irq);
- }
- 
- static void toshiba_rbtx4927_irq_ioc_enable(unsigned int irq)
-@@ -171,7 +155,7 @@ static void toshiba_rbtx4927_irq_ioc_enable(unsigned int irq)
- 	unsigned char v;
- 
- 	v = readb(TOSHIBA_RBTX4927_IOC_INTR_ENAB);
--	v |= (1 << (irq - TOSHIBA_RBTX4927_IRQ_IOC_BEG));
-+	v |= (1 << (irq - RBTX4927_IRQ_IOC));
- 	writeb(v, TOSHIBA_RBTX4927_IOC_INTR_ENAB);
- }
- 
-@@ -180,15 +164,34 @@ static void toshiba_rbtx4927_irq_ioc_disable(unsigned int irq)
- 	unsigned char v;
- 
- 	v = readb(TOSHIBA_RBTX4927_IOC_INTR_ENAB);
--	v &= ~(1 << (irq - TOSHIBA_RBTX4927_IRQ_IOC_BEG));
-+	v &= ~(1 << (irq - RBTX4927_IRQ_IOC));
- 	writeb(v, TOSHIBA_RBTX4927_IOC_INTR_ENAB);
- 	mmiowb();
- }
- 
--void __init arch_init_irq(void)
++#
++# CPU selection
++#
++# CONFIG_CPU_LOONGSON2 is not set
++# CONFIG_CPU_MIPS32_R1 is not set
++# CONFIG_CPU_MIPS32_R2 is not set
++# CONFIG_CPU_MIPS64_R1 is not set
++# CONFIG_CPU_MIPS64_R2 is not set
++# CONFIG_CPU_R3000 is not set
++# CONFIG_CPU_TX39XX is not set
++# CONFIG_CPU_VR41XX is not set
++# CONFIG_CPU_R4300 is not set
++# CONFIG_CPU_R4X00 is not set
++CONFIG_CPU_TX49XX=y
++# CONFIG_CPU_R5000 is not set
++# CONFIG_CPU_R5432 is not set
++# CONFIG_CPU_R6000 is not set
++# CONFIG_CPU_NEVADA is not set
++# CONFIG_CPU_R8000 is not set
++# CONFIG_CPU_R10000 is not set
++# CONFIG_CPU_RM7000 is not set
++# CONFIG_CPU_RM9000 is not set
++# CONFIG_CPU_SB1 is not set
++CONFIG_SYS_HAS_CPU_TX49XX=y
++CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
++CONFIG_SYS_SUPPORTS_64BIT_KERNEL=y
++CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
++CONFIG_CPU_SUPPORTS_64BIT_KERNEL=y
 +
-+static int rbtx4927_irq_dispatch(int pending)
- {
--	extern void tx4927_irq_init(void);
-+	int irq;
++#
++# Kernel type
++#
++CONFIG_32BIT=y
++# CONFIG_64BIT is not set
++CONFIG_PAGE_SIZE_4KB=y
++# CONFIG_PAGE_SIZE_8KB is not set
++# CONFIG_PAGE_SIZE_16KB is not set
++# CONFIG_PAGE_SIZE_64KB is not set
++CONFIG_CPU_HAS_PREFETCH=y
++CONFIG_MIPS_MT_DISABLED=y
++# CONFIG_MIPS_MT_SMP is not set
++# CONFIG_MIPS_MT_SMTC is not set
++CONFIG_CPU_HAS_LLSC=y
++CONFIG_CPU_HAS_SYNC=y
++CONFIG_GENERIC_HARDIRQS=y
++CONFIG_GENERIC_IRQ_PROBE=y
++CONFIG_ARCH_FLATMEM_ENABLE=y
++CONFIG_ARCH_POPULATES_NODE_MAP=y
++CONFIG_FLATMEM=y
++CONFIG_FLAT_NODE_MEM_MAP=y
++# CONFIG_SPARSEMEM_STATIC is not set
++# CONFIG_SPARSEMEM_VMEMMAP_ENABLE is not set
++CONFIG_PAGEFLAGS_EXTENDED=y
++CONFIG_SPLIT_PTLOCK_CPUS=4
++# CONFIG_RESOURCES_64BIT is not set
++CONFIG_ZONE_DMA_FLAG=0
++CONFIG_VIRT_TO_BUS=y
++CONFIG_TICK_ONESHOT=y
++CONFIG_NO_HZ=y
++CONFIG_HIGH_RES_TIMERS=y
++CONFIG_GENERIC_CLOCKEVENTS_BUILD=y
++# CONFIG_HZ_48 is not set
++# CONFIG_HZ_100 is not set
++# CONFIG_HZ_128 is not set
++CONFIG_HZ_250=y
++# CONFIG_HZ_256 is not set
++# CONFIG_HZ_1000 is not set
++# CONFIG_HZ_1024 is not set
++CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
++CONFIG_HZ=250
++CONFIG_PREEMPT_NONE=y
++# CONFIG_PREEMPT_VOLUNTARY is not set
++# CONFIG_PREEMPT is not set
++# CONFIG_SECCOMP is not set
++CONFIG_LOCKDEP_SUPPORT=y
++CONFIG_STACKTRACE_SUPPORT=y
++CONFIG_DEFCONFIG_LIST="/lib/modules/$UNAME_RELEASE/.config"
 +
-+	if (pending & STATUSF_IP7)			/* cpu timer */
-+		irq = MIPS_CPU_IRQ_BASE + 7;
-+	else if (pending & STATUSF_IP2) {		/* tx4927 pic */
-+		irq = txx9_irq();
-+		if (irq == RBTX4927_IRQ_IOCINT)
-+			irq = toshiba_rbtx4927_irq_nested(irq);
-+	} else if (pending & STATUSF_IP0)		/* user line 0 */
-+		irq = MIPS_CPU_IRQ_BASE + 0;
-+	else if (pending & STATUSF_IP1)			/* user line 1 */
-+		irq = MIPS_CPU_IRQ_BASE + 1;
-+	else
-+		irq = -1;
-+	return irq;
-+}
- 
-+void __init rbtx4927_irq_setup(void)
-+{
-+	txx9_irq_dispatch = rbtx4927_irq_dispatch;
- 	tx4927_irq_init();
- 	toshiba_rbtx4927_irq_ioc_init();
- 	/* Onboard 10M Ether: High Active */
-diff --git a/arch/mips/txx9/rbtx4927/prom.c b/arch/mips/txx9/rbtx4927/prom.c
-index 0020bbe..942e627 100644
---- a/arch/mips/txx9/rbtx4927/prom.c
-+++ b/arch/mips/txx9/rbtx4927/prom.c
-@@ -30,62 +30,16 @@
-  *  675 Mass Ave, Cambridge, MA 02139, USA.
-  */
- #include <linux/init.h>
--#include <linux/string.h>
- #include <asm/bootinfo.h>
--#include <asm/cpu.h>
--#include <asm/mipsregs.h>
--#include <asm/txx9/tx4927.h>
-+#include <asm/txx9/generic.h>
-+#include <asm/txx9/rbtx4927.h>
- 
--void __init prom_init_cmdline(void)
--{
--	int argc = (int) fw_arg0;
--	char **argv = (char **) fw_arg1;
--	int i;			/* Always ignore the "-c" at argv[0] */
--
--	/* ignore all built-in args if any f/w args given */
--	if (argc > 1) {
--		*arcs_cmdline = '\0';
--	}
--
--	for (i = 1; i < argc; i++) {
--		if (i != 1) {
--			strcat(arcs_cmdline, " ");
--		}
--		strcat(arcs_cmdline, argv[i]);
--	}
--}
--
--void __init prom_init(void)
-+void __init rbtx4927_prom_init(void)
- {
- 	extern int tx4927_get_mem_size(void);
--	extern char* toshiba_name;
- 	int msize;
- 
- 	prom_init_cmdline();
--
--	if ((read_c0_prid() & 0xff) == PRID_REV_TX4927) {
--		mips_machtype = MACH_TOSHIBA_RBTX4927;
--		toshiba_name  = "TX4927";
--	} else {
--		mips_machtype = MACH_TOSHIBA_RBTX4937;
--		toshiba_name  = "TX4937";
--	}
--
- 	msize = tx4927_get_mem_size();
- 	add_memory_region(0, msize << 20, BOOT_MEM_RAM);
- }
--
--void __init prom_free_prom_memory(void)
--{
--}
--
--const char *get_system_type(void)
--{
--	return "Toshiba RBTX4927/RBTX4937";
--}
--
--char * __init prom_getcmdline(void)
--{
--        return &(arcs_cmdline[0]);
--}
--
-diff --git a/arch/mips/txx9/rbtx4927/setup.c b/arch/mips/txx9/rbtx4927/setup.c
-index 86b870a..c3566c3 100644
---- a/arch/mips/txx9/rbtx4927/setup.c
-+++ b/arch/mips/txx9/rbtx4927/setup.c
-@@ -49,7 +49,6 @@
- #include <linux/interrupt.h>
- #include <linux/pm.h>
- #include <linux/platform_device.h>
--#include <linux/clk.h>
- #include <linux/delay.h>
- 
- #include <asm/bootinfo.h>
-@@ -76,8 +75,6 @@ char *prom_getcmdline(void);
- 
- static int tx4927_ccfg_toeon = 1;
- 
--char *toshiba_name = "";
--
- #ifdef CONFIG_PCI
- static void __init tx4927_pci_setup(void)
- {
-@@ -171,15 +168,15 @@ static void __init tx4937_pci_setup(void)
- 	}
- }
- 
--static int __init rbtx4927_arch_init(void)
-+static void __init rbtx4927_arch_init(void)
- {
- 	if (mips_machtype == MACH_TOSHIBA_RBTX4937)
- 		tx4937_pci_setup();
- 	else
- 		tx4927_pci_setup();
--	return 0;
- }
--arch_initcall(rbtx4927_arch_init);
-+#else
-+#define rbtx4927_arch_init NULL
- #endif /* CONFIG_PCI */
- 
- static void __noreturn wait_forever(void)
-@@ -223,14 +220,12 @@ void toshiba_rbtx4927_power_off(void)
- 	/* no return */
- }
- 
--void __init plat_mem_setup(void)
-+static void __init rbtx4927_mem_setup(void)
- {
- 	int i;
- 	u32 cp0_config;
- 	char *argptr;
- 
--	printk("CPU is %s\n", toshiba_name);
--
- 	/* f/w leaves this on at startup */
- 	clear_c0_status(ST0_ERL);
- 
-@@ -323,7 +318,7 @@ void __init plat_mem_setup(void)
- 			req.iotype = UPIO_MEM;
- 			req.membase = (char *)(0xff1ff300 + i * 0x100);
- 			req.mapbase = 0xff1ff300 + i * 0x100;
--			req.irq = TX4927_IRQ_PIC_BEG + 8 + i;
-+			req.irq = TXX9_IRQ_BASE + TX4927_IR_SIO(i);
- 			req.flags |= UPF_BUGGY_UART /*HAVE_CTS_LINE*/;
- 			req.uartclk = 50000000;
- 			early_serial_txx9_setup(&req);
-@@ -352,7 +347,7 @@ void __init plat_mem_setup(void)
- #endif
- }
- 
--void __init plat_time_init(void)
-+static void __init rbtx4927_time_init(void)
- {
- 	mips_hpt_frequency = txx9_cpu_clock / 2;
- 	if (____raw_readq(&tx4927_ccfgptr->ccfg) & TX4927_CCFG_TINTDIS)
-@@ -372,7 +367,6 @@ static int __init toshiba_rbtx4927_rtc_init(void)
- 		platform_device_register_simple("rtc-ds1742", -1, &res, 1);
- 	return IS_ERR(dev) ? PTR_ERR(dev) : 0;
- }
--device_initcall(toshiba_rbtx4927_rtc_init);
- 
- static int __init rbtx4927_ne_init(void)
- {
-@@ -391,7 +385,6 @@ static int __init rbtx4927_ne_init(void)
- 						res, ARRAY_SIZE(res));
- 	return IS_ERR(dev) ? PTR_ERR(dev) : 0;
- }
--device_initcall(rbtx4927_ne_init);
- 
- /* Watchdog support */
- 
-@@ -411,36 +404,37 @@ static int __init rbtx4927_wdt_init(void)
- {
- 	return txx9_wdt_init(TX4927_TMR_REG(2) & 0xfffffffffULL);
- }
--device_initcall(rbtx4927_wdt_init);
--
--/* Minimum CLK support */
--
--struct clk *clk_get(struct device *dev, const char *id)
--{
--	if (!strcmp(id, "imbus_clk"))
--		return (struct clk *)50000000;
--	return ERR_PTR(-ENOENT);
--}
--EXPORT_SYMBOL(clk_get);
--
--int clk_enable(struct clk *clk)
--{
--	return 0;
--}
--EXPORT_SYMBOL(clk_enable);
- 
--void clk_disable(struct clk *clk)
-+static void __init rbtx4927_device_init(void)
- {
-+	toshiba_rbtx4927_rtc_init();
-+	rbtx4927_ne_init();
-+	rbtx4927_wdt_init();
- }
--EXPORT_SYMBOL(clk_disable);
- 
--unsigned long clk_get_rate(struct clk *clk)
--{
--	return (unsigned long)clk;
--}
--EXPORT_SYMBOL(clk_get_rate);
--
--void clk_put(struct clk *clk)
--{
--}
--EXPORT_SYMBOL(clk_put);
-+struct txx9_board_vec rbtx4927_vec __initdata = {
-+	.type = MACH_TOSHIBA_RBTX4927,
-+	.system = "Toshiba RBTX4927",
-+	.prom_init = rbtx4927_prom_init,
-+	.mem_setup = rbtx4927_mem_setup,
-+	.irq_setup = rbtx4927_irq_setup,
-+	.time_init = rbtx4927_time_init,
-+	.device_init = rbtx4927_device_init,
-+	.arch_init = rbtx4927_arch_init,
-+#ifdef CONFIG_PCI
-+	.pci_map_irq = rbtx4927_pci_map_irq,
-+#endif
-+};
-+struct txx9_board_vec rbtx4937_vec __initdata = {
-+	.type = MACH_TOSHIBA_RBTX4937,
-+	.system = "Toshiba RBTX4937",
-+	.prom_init = rbtx4927_prom_init,
-+	.mem_setup = rbtx4927_mem_setup,
-+	.irq_setup = rbtx4927_irq_setup,
-+	.time_init = rbtx4927_time_init,
-+	.device_init = rbtx4927_device_init,
-+	.arch_init = rbtx4927_arch_init,
-+#ifdef CONFIG_PCI
-+	.pci_map_irq = rbtx4927_pci_map_irq,
-+#endif
-+};
-diff --git a/arch/mips/txx9/rbtx4938/irq.c b/arch/mips/txx9/rbtx4938/irq.c
-index f498482..3971a06 100644
---- a/arch/mips/txx9/rbtx4938/irq.c
-+++ b/arch/mips/txx9/rbtx4938/irq.c
-@@ -66,6 +66,8 @@ IRQ  Device
- */
- #include <linux/init.h>
- #include <linux/interrupt.h>
-+#include <asm/mipsregs.h>
-+#include <asm/txx9/generic.h>
- #include <asm/txx9/rbtx4938.h>
- 
- static void toshiba_rbtx4938_irq_ioc_enable(unsigned int irq);
-@@ -80,26 +82,17 @@ static struct irq_chip toshiba_rbtx4938_irq_ioc_type = {
- 	.unmask = toshiba_rbtx4938_irq_ioc_enable,
- };
- 
--int
--toshiba_rbtx4938_irq_nested(int sw_irq)
-+static int toshiba_rbtx4938_irq_nested(int sw_irq)
- {
- 	u8 level3;
- 
- 	level3 = readb(rbtx4938_imstat_addr);
- 	if (level3)
- 		/* must use fls so onboard ATA has priority */
--		sw_irq = TOSHIBA_RBTX4938_IRQ_IOC_BEG + fls(level3) - 1;
--
-+		sw_irq = RBTX4938_IRQ_IOC + fls(level3) - 1;
- 	return sw_irq;
- }
- 
--static struct irqaction toshiba_rbtx4938_irq_ioc_action = {
--	.handler = no_action,
--	.flags = 0,
--	.mask = CPU_MASK_NONE,
--	.name = TOSHIBA_RBTX4938_IOC_NAME,
--};
--
- /**********************************************************************************/
- /* Functions for ioc                                                              */
- /**********************************************************************************/
-@@ -108,13 +101,12 @@ toshiba_rbtx4938_irq_ioc_init(void)
- {
- 	int i;
- 
--	for (i = TOSHIBA_RBTX4938_IRQ_IOC_BEG;
--	     i <= TOSHIBA_RBTX4938_IRQ_IOC_END; i++)
-+	for (i = RBTX4938_IRQ_IOC;
-+	     i < RBTX4938_IRQ_IOC + RBTX4938_NR_IRQ_IOC; i++)
- 		set_irq_chip_and_handler(i, &toshiba_rbtx4938_irq_ioc_type,
- 					 handle_level_irq);
- 
--	setup_irq(RBTX4938_IRQ_IOCINT,
--		  &toshiba_rbtx4938_irq_ioc_action);
-+	set_irq_chained_handler(RBTX4938_IRQ_IOCINT, handle_simple_irq);
- }
- 
- static void
-@@ -123,7 +115,7 @@ toshiba_rbtx4938_irq_ioc_enable(unsigned int irq)
- 	unsigned char v;
- 
- 	v = readb(rbtx4938_imask_addr);
--	v |= (1 << (irq - TOSHIBA_RBTX4938_IRQ_IOC_BEG));
-+	v |= (1 << (irq - RBTX4938_IRQ_IOC));
- 	writeb(v, rbtx4938_imask_addr);
- 	mmiowb();
- }
-@@ -134,15 +126,33 @@ toshiba_rbtx4938_irq_ioc_disable(unsigned int irq)
- 	unsigned char v;
- 
- 	v = readb(rbtx4938_imask_addr);
--	v &= ~(1 << (irq - TOSHIBA_RBTX4938_IRQ_IOC_BEG));
-+	v &= ~(1 << (irq - RBTX4938_IRQ_IOC));
- 	writeb(v, rbtx4938_imask_addr);
- 	mmiowb();
- }
- 
--void __init arch_init_irq(void)
-+static int rbtx4938_irq_dispatch(int pending)
- {
--	extern void tx4938_irq_init(void);
-+	int irq;
++#
++# General setup
++#
++# CONFIG_EXPERIMENTAL is not set
++CONFIG_BROKEN_ON_SMP=y
++CONFIG_INIT_ENV_ARG_LIMIT=32
++CONFIG_LOCALVERSION=""
++CONFIG_LOCALVERSION_AUTO=y
++CONFIG_SWAP=y
++CONFIG_SYSVIPC=y
++CONFIG_SYSVIPC_SYSCTL=y
++# CONFIG_BSD_PROCESS_ACCT is not set
++# CONFIG_TASKSTATS is not set
++# CONFIG_AUDIT is not set
++CONFIG_IKCONFIG=y
++CONFIG_IKCONFIG_PROC=y
++CONFIG_LOG_BUF_SHIFT=14
++# CONFIG_CGROUPS is not set
++CONFIG_SYSFS_DEPRECATED=y
++CONFIG_SYSFS_DEPRECATED_V2=y
++# CONFIG_RELAY is not set
++# CONFIG_NAMESPACES is not set
++CONFIG_BLK_DEV_INITRD=y
++CONFIG_INITRAMFS_SOURCE=""
++CONFIG_CC_OPTIMIZE_FOR_SIZE=y
++CONFIG_SYSCTL=y
++CONFIG_EMBEDDED=y
++CONFIG_SYSCTL_SYSCALL=y
++CONFIG_SYSCTL_SYSCALL_CHECK=y
++CONFIG_KALLSYMS=y
++# CONFIG_KALLSYMS_EXTRA_PASS is not set
++# CONFIG_HOTPLUG is not set
++CONFIG_PRINTK=y
++CONFIG_BUG=y
++CONFIG_ELF_CORE=y
++# CONFIG_PCSPKR_PLATFORM is not set
++CONFIG_COMPAT_BRK=y
++CONFIG_BASE_FULL=y
++# CONFIG_FUTEX is not set
++CONFIG_ANON_INODES=y
++# CONFIG_EPOLL is not set
++CONFIG_SIGNALFD=y
++CONFIG_TIMERFD=y
++CONFIG_EVENTFD=y
++CONFIG_SHMEM=y
++CONFIG_VM_EVENT_COUNTERS=y
++CONFIG_SLAB=y
++# CONFIG_SLUB is not set
++# CONFIG_SLOB is not set
++# CONFIG_PROFILING is not set
++# CONFIG_MARKERS is not set
++CONFIG_HAVE_OPROFILE=y
++# CONFIG_HAVE_KPROBES is not set
++# CONFIG_HAVE_KRETPROBES is not set
++# CONFIG_HAVE_DMA_ATTRS is not set
++CONFIG_PROC_PAGE_MONITOR=y
++CONFIG_SLABINFO=y
++# CONFIG_TINY_SHMEM is not set
++CONFIG_BASE_SMALL=0
++CONFIG_MODULES=y
++# CONFIG_MODULE_FORCE_LOAD is not set
++# CONFIG_MODULE_UNLOAD is not set
++# CONFIG_MODVERSIONS is not set
++# CONFIG_MODULE_SRCVERSION_ALL is not set
++CONFIG_KMOD=y
++CONFIG_BLOCK=y
++# CONFIG_LBD is not set
++# CONFIG_BLK_DEV_IO_TRACE is not set
++# CONFIG_LSF is not set
 +
-+	if (pending & STATUSF_IP7)
-+		irq = MIPS_CPU_IRQ_BASE + 7;
-+	else if (pending & STATUSF_IP2) {
-+		irq = txx9_irq();
-+		if (irq == RBTX4938_IRQ_IOCINT)
-+			irq = toshiba_rbtx4938_irq_nested(irq);
-+	} else if (pending & STATUSF_IP1)
-+		irq = MIPS_CPU_IRQ_BASE + 0;
-+	else if (pending & STATUSF_IP0)
-+		irq = MIPS_CPU_IRQ_BASE + 1;
-+	else
-+		irq = -1;
-+	return irq;
-+}
- 
-+void __init rbtx4938_irq_setup(void)
-+{
-+	txx9_irq_dispatch = rbtx4938_irq_dispatch;
- 	/* Now, interrupt control disabled, */
- 	/* all IRC interrupts are masked, */
- 	/* all IRC interrupt mode are Low Active. */
-diff --git a/arch/mips/txx9/rbtx4938/prom.c b/arch/mips/txx9/rbtx4938/prom.c
-index 134fcc2..fbb3745 100644
---- a/arch/mips/txx9/rbtx4938/prom.c
-+++ b/arch/mips/txx9/rbtx4938/prom.c
-@@ -11,34 +11,12 @@
-  */
- 
- #include <linux/init.h>
--#include <linux/mm.h>
--#include <linux/sched.h>
- #include <linux/bootmem.h>
--
--#include <asm/addrspace.h>
- #include <asm/bootinfo.h>
--#include <asm/txx9/tx4938.h>
--
--void __init prom_init_cmdline(void)
--{
--	int argc = (int) fw_arg0;
--	char **argv = (char **) fw_arg1;
--	int i;
--
--	/* ignore all built-in args if any f/w args given */
--	if (argc > 1) {
--		*arcs_cmdline = '\0';
--	}
--
--	for (i = 1; i < argc; i++) {
--		if (i != 1) {
--			strcat(arcs_cmdline, " ");
--		}
--		strcat(arcs_cmdline, argv[i]);
--	}
--}
-+#include <asm/txx9/generic.h>
-+#include <asm/txx9/rbtx4938.h>
- 
--void __init prom_init(void)
-+void __init rbtx4938_prom_init(void)
- {
- 	extern int tx4938_get_mem_size(void);
- 	int msize;
-@@ -48,25 +26,4 @@ void __init prom_init(void)
- 
- 	msize = tx4938_get_mem_size();
- 	add_memory_region(0, msize << 20, BOOT_MEM_RAM);
--
--	return;
--}
--
--void __init prom_free_prom_memory(void)
--{
--}
--
--void __init prom_fixup_mem_map(unsigned long start, unsigned long end)
--{
--	return;
--}
--
--const char *get_system_type(void)
--{
--	return "Toshiba RBTX4938";
--}
--
--char * __init prom_getcmdline(void)
--{
--	return &(arcs_cmdline[0]);
- }
-diff --git a/arch/mips/txx9/rbtx4938/setup.c b/arch/mips/txx9/rbtx4938/setup.c
-index 144d2ca..8306ba3 100644
---- a/arch/mips/txx9/rbtx4938/setup.c
-+++ b/arch/mips/txx9/rbtx4938/setup.c
-@@ -17,7 +17,6 @@
- #include <linux/console.h>
- #include <linux/pm.h>
- #include <linux/platform_device.h>
--#include <linux/clk.h>
- #include <linux/gpio.h>
- 
- #include <asm/reboot.h>
-@@ -147,9 +146,9 @@ static void __init rbtx4938_pci_setup(void)
- #define	SEEPROM3_CS	1	/* IOC */
- #define	SRTC_CS	2	/* IOC */
- 
--#ifdef CONFIG_PCI
- static int __init rbtx4938_ethaddr_init(void)
- {
-+#ifdef CONFIG_PCI
- 	unsigned char dat[17];
- 	unsigned char sum;
- 	int i;
-@@ -179,10 +178,9 @@ static int __init rbtx4938_ethaddr_init(void)
- 		    platform_device_add(pdev))
- 			platform_device_put(pdev);
- 	}
-+#endif /* CONFIG_PCI */
- 	return 0;
- }
--device_initcall(rbtx4938_ethaddr_init);
--#endif /* CONFIG_PCI */
- 
- static void __init rbtx4938_spi_setup(void)
- {
-@@ -366,7 +364,7 @@ void __init tx4938_board_setup(void)
- #endif
- }
- 
--void __init plat_time_init(void)
-+static void __init rbtx4938_time_init(void)
- {
- 	mips_hpt_frequency = txx9_cpu_clock / 2;
- 	if (____raw_readq(&tx4938_ccfgptr->ccfg) & TX4938_CCFG_TINTDIS)
-@@ -375,7 +373,7 @@ void __init plat_time_init(void)
- 				     txx9_gbus_clock / 2);
- }
- 
--void __init plat_mem_setup(void)
-+static void __init rbtx4938_mem_setup(void)
- {
- 	unsigned long long pcfg;
- 	char *argptr;
-@@ -496,7 +494,6 @@ static int __init rbtx4938_ne_init(void)
- 						res, ARRAY_SIZE(res));
- 	return IS_ERR(dev) ? PTR_ERR(dev) : 0;
- }
--device_initcall(rbtx4938_ne_init);
- 
- /* GPIO support */
- 
-@@ -587,14 +584,13 @@ static int __init rbtx4938_spi_init(void)
- 	return 0;
- }
- 
--static int __init rbtx4938_arch_init(void)
-+static void __init rbtx4938_arch_init(void)
- {
- 	txx9_gpio_init(TX4938_PIO_REG & 0xfffffffffULL, 0, 16);
- 	gpiochip_add(&rbtx4938_spi_gpio_chip);
- 	rbtx4938_pci_setup();
--	return rbtx4938_spi_init();
-+	rbtx4938_spi_init();
- }
--arch_initcall(rbtx4938_arch_init);
- 
- /* Watchdog support */
- 
-@@ -614,38 +610,24 @@ static int __init rbtx4938_wdt_init(void)
- {
- 	return txx9_wdt_init(TX4938_TMR_REG(2) & 0xfffffffffULL);
- }
--device_initcall(rbtx4938_wdt_init);
--
--/* Minimum CLK support */
--
--struct clk *clk_get(struct device *dev, const char *id)
--{
--	if (!strcmp(id, "spi-baseclk"))
--		return (struct clk *)(txx9_gbus_clock / 2 / 4);
--	if (!strcmp(id, "imbus_clk"))
--		return (struct clk *)(txx9_gbus_clock / 2);
--	return ERR_PTR(-ENOENT);
--}
--EXPORT_SYMBOL(clk_get);
--
--int clk_enable(struct clk *clk)
--{
--	return 0;
--}
--EXPORT_SYMBOL(clk_enable);
--
--void clk_disable(struct clk *clk)
--{
--}
--EXPORT_SYMBOL(clk_disable);
- 
--unsigned long clk_get_rate(struct clk *clk)
-+static void __init rbtx4938_device_init(void)
- {
--	return (unsigned long)clk;
-+	rbtx4938_ethaddr_init();
-+	rbtx4938_ne_init();
-+	rbtx4938_wdt_init();
- }
--EXPORT_SYMBOL(clk_get_rate);
- 
--void clk_put(struct clk *clk)
--{
--}
--EXPORT_SYMBOL(clk_put);
-+struct txx9_board_vec rbtx4938_vec __initdata = {
-+	.type = MACH_TOSHIBA_RBTX4938,
-+	.system = "Toshiba RBTX4938",
-+	.prom_init = rbtx4938_prom_init,
-+	.mem_setup = rbtx4938_mem_setup,
-+	.irq_setup = rbtx4938_irq_setup,
-+	.time_init = rbtx4938_time_init,
-+	.device_init = rbtx4938_device_init,
-+	.arch_init = rbtx4938_arch_init,
-+#ifdef CONFIG_PCI
-+	.pci_map_irq = rbtx4938_pci_map_irq,
-+#endif
-+};
-diff --git a/include/asm-mips/txx9/generic.h b/include/asm-mips/txx9/generic.h
-index 2ff6c20..6cd1477 100644
---- a/include/asm-mips/txx9/generic.h
-+++ b/include/asm-mips/txx9/generic.h
-@@ -20,4 +20,22 @@ extern unsigned int txx9_master_clock;
- extern unsigned int txx9_cpu_clock;
- extern unsigned int txx9_gbus_clock;
- 
-+struct pci_dev;
-+struct txx9_board_vec {
-+	unsigned long type;
-+	const char *system;
-+	void (*prom_init)(void);
-+	void (*mem_setup)(void);
-+	void (*irq_setup)(void);
-+	void (*time_init)(void);
-+	void (*arch_init)(void);
-+	void (*device_init)(void);
-+#ifdef CONFIG_PCI
-+	int (*pci_map_irq)(const struct pci_dev *dev, u8 slot, u8 pin);
-+#endif
-+};
-+extern struct txx9_board_vec *txx9_board_vec;
-+extern int (*txx9_irq_dispatch)(int pending);
-+void prom_init_cmdline(void);
++#
++# IO Schedulers
++#
++CONFIG_IOSCHED_NOOP=y
++CONFIG_IOSCHED_AS=y
++CONFIG_IOSCHED_DEADLINE=y
++CONFIG_IOSCHED_CFQ=y
++CONFIG_DEFAULT_AS=y
++# CONFIG_DEFAULT_DEADLINE is not set
++# CONFIG_DEFAULT_CFQ is not set
++# CONFIG_DEFAULT_NOOP is not set
++CONFIG_DEFAULT_IOSCHED="anticipatory"
++CONFIG_CLASSIC_RCU=y
 +
- #endif /* __ASM_TXX9_GENERIC_H */
-diff --git a/include/asm-mips/txx9/jmr3927.h b/include/asm-mips/txx9/jmr3927.h
-index 29e5498..d6eb1b6 100644
---- a/include/asm-mips/txx9/jmr3927.h
-+++ b/include/asm-mips/txx9/jmr3927.h
-@@ -174,4 +174,9 @@
-  *	INT[3:0]
-  */
- 
-+void jmr3927_prom_init(void);
-+void jmr3927_irq_setup(void);
-+struct pci_dev;
-+int jmr3927_pci_map_irq(const struct pci_dev *dev, u8 slot, u8 pin);
++#
++# Bus options (PCI, PCMCIA, EISA, ISA, TC)
++#
++CONFIG_HW_HAS_PCI=y
++CONFIG_PCI=y
++CONFIG_PCI_DOMAINS=y
++# CONFIG_ARCH_SUPPORTS_MSI is not set
++# CONFIG_PCI_LEGACY is not set
++CONFIG_MMU=y
 +
- #endif /* __ASM_TXX9_JMR3927_H */
-diff --git a/include/asm-mips/txx9/rbtx4927.h b/include/asm-mips/txx9/rbtx4927.h
-index 5b6f488..bf19458 100644
---- a/include/asm-mips/txx9/rbtx4927.h
-+++ b/include/asm-mips/txx9/rbtx4927.h
-@@ -46,12 +46,16 @@
- #define RBTX4927_INTF_PCIB	(1 << RBTX4927_INTB_PCIB)
- #define RBTX4927_INTF_PCIA	(1 << RBTX4927_INTB_PCIA)
- 
--#define RBTX4927_IRQ_IOC	(TX4927_IRQ_PIC_BEG + TX4927_NUM_IR)
-+#define RBTX4927_NR_IRQ_IOC	8	/* IOC */
++#
++# Executable file formats
++#
++CONFIG_BINFMT_ELF=y
++# CONFIG_BINFMT_MISC is not set
++CONFIG_TRAD_SIGNALS=y
 +
-+#define RBTX4927_IRQ_IOC	(TXX9_IRQ_BASE + TX4927_NUM_IR)
- #define RBTX4927_IRQ_IOC_PCID	(RBTX4927_IRQ_IOC + RBTX4927_INTB_PCID)
- #define RBTX4927_IRQ_IOC_PCIC	(RBTX4927_IRQ_IOC + RBTX4927_INTB_PCIC)
- #define RBTX4927_IRQ_IOC_PCIB	(RBTX4927_IRQ_IOC + RBTX4927_INTB_PCIB)
- #define RBTX4927_IRQ_IOC_PCIA	(RBTX4927_IRQ_IOC + RBTX4927_INTB_PCIA)
- 
-+#define RBTX4927_IRQ_IOCINT	(TXX9_IRQ_BASE + TX4927_IR_INT(1))
++#
++# Power management options
++#
++CONFIG_ARCH_SUSPEND_POSSIBLE=y
++# CONFIG_PM is not set
 +
- #ifdef CONFIG_PCI
- #define RBTX4927_ISA_IO_OFFSET RBTX4927_PCIIO
- #else
-@@ -65,8 +69,11 @@
- #define RBTX4927_SW_RESET_ENABLE_SET            0x01
- 
- #define RBTX4927_RTL_8019_BASE (0x1c020280 - RBTX4927_ISA_IO_OFFSET)
--#define RBTX4927_RTL_8019_IRQ  (TX4927_IRQ_PIC_BEG + 5)
-+#define RBTX4927_RTL_8019_IRQ  (TXX9_IRQ_BASE + TX4927_IR_INT(3))
- 
--int toshiba_rbtx4927_irq_nested(int sw_irq);
-+void rbtx4927_prom_init(void);
-+void rbtx4927_irq_setup(void);
-+struct pci_dev;
-+int rbtx4927_pci_map_irq(const struct pci_dev *dev, u8 slot, u8 pin);
- 
- #endif /* __ASM_TXX9_RBTX4927_H */
-diff --git a/include/asm-mips/txx9/rbtx4938.h b/include/asm-mips/txx9/rbtx4938.h
-index 8450f73..2f5d5e7 100644
---- a/include/asm-mips/txx9/rbtx4938.h
-+++ b/include/asm-mips/txx9/rbtx4938.h
-@@ -101,35 +101,12 @@
-  * that particular IRQ on an RBTX4938 machine.  Add new 'spaces' as new
-  * IRQ hardware is supported.
-  */
--#define RBTX4938_NR_IRQ_LOCAL	8
--#define RBTX4938_NR_IRQ_IRC	32	/* On-Chip IRC */
- #define RBTX4938_NR_IRQ_IOC	8
- 
--#define TX4938_IRQ_CP0_BEG  MIPS_CPU_IRQ_BASE
--#define TX4938_IRQ_CP0_END  (MIPS_CPU_IRQ_BASE + 8 - 1)
--
--#define TX4938_IRQ_PIC_BEG  TXX9_IRQ_BASE
--#define TX4938_IRQ_PIC_END  (TXX9_IRQ_BASE + TXx9_MAX_IR - 1)
--#define TX4938_IRQ_NEST_EXT_ON_PIC  (TX4938_IRQ_PIC_BEG+2)
--#define TX4938_IRQ_NEST_PIC_ON_CP0  (TX4938_IRQ_CP0_BEG+2)
--#define TX4938_IRQ_USER0            (TX4938_IRQ_CP0_BEG+0)
--#define TX4938_IRQ_USER1            (TX4938_IRQ_CP0_BEG+1)
--#define TX4938_IRQ_CPU_TIMER        (TX4938_IRQ_CP0_BEG+7)
--
--#define TOSHIBA_RBTX4938_IRQ_IOC_RAW_BEG   0
--#define TOSHIBA_RBTX4938_IRQ_IOC_RAW_END   7
--
--#define TOSHIBA_RBTX4938_IRQ_IOC_BEG  ((TX4938_IRQ_PIC_END+1)+TOSHIBA_RBTX4938_IRQ_IOC_RAW_BEG) /* 56 */
--#define TOSHIBA_RBTX4938_IRQ_IOC_END  ((TX4938_IRQ_PIC_END+1)+TOSHIBA_RBTX4938_IRQ_IOC_RAW_END) /* 63 */
--#define RBTX4938_IRQ_LOCAL	TX4938_IRQ_CP0_BEG
--#define RBTX4938_IRQ_IRC	(RBTX4938_IRQ_LOCAL + RBTX4938_NR_IRQ_LOCAL)
--#define RBTX4938_IRQ_IOC	(RBTX4938_IRQ_IRC + RBTX4938_NR_IRQ_IRC)
-+#define RBTX4938_IRQ_IRC	TXX9_IRQ_BASE
-+#define RBTX4938_IRQ_IOC	(TXX9_IRQ_BASE + TX4938_NUM_IR)
- #define RBTX4938_IRQ_END	(RBTX4938_IRQ_IOC + RBTX4938_NR_IRQ_IOC)
- 
--#define RBTX4938_IRQ_LOCAL_SOFT0	(RBTX4938_IRQ_LOCAL + RBTX4938_SOFT_INT0)
--#define RBTX4938_IRQ_LOCAL_SOFT1	(RBTX4938_IRQ_LOCAL + RBTX4938_SOFT_INT1)
--#define RBTX4938_IRQ_LOCAL_IRC	(RBTX4938_IRQ_LOCAL + RBTX4938_IRC_INT)
--#define RBTX4938_IRQ_LOCAL_TIMER	(RBTX4938_IRQ_LOCAL + RBTX4938_TIMER_INT)
- #define RBTX4938_IRQ_IRC_ECCERR	(RBTX4938_IRQ_IRC + TX4938_IR_ECCERR)
- #define RBTX4938_IRQ_IRC_WTOERR	(RBTX4938_IRQ_IRC + TX4938_IR_WTOERR)
- #define RBTX4938_IRQ_IRC_INT(n)	(RBTX4938_IRQ_IRC + TX4938_IR_INT(n))
-@@ -157,11 +134,16 @@
- 
- 
- /* IOC (PCI, etc) */
--#define RBTX4938_IRQ_IOCINT	(TX4938_IRQ_NEST_EXT_ON_PIC)
-+#define RBTX4938_IRQ_IOCINT	(TXX9_IRQ_BASE + TX4938_IR_INT(0))
- /* Onboard 10M Ether */
--#define RBTX4938_IRQ_ETHER	(TX4938_IRQ_NEST_EXT_ON_PIC + 1)
-+#define RBTX4938_IRQ_ETHER	(TXX9_IRQ_BASE + TX4938_IR_INT(1))
- 
- #define RBTX4938_RTL_8019_BASE (RBTX4938_ETHER_ADDR - mips_io_port_base)
- #define RBTX4938_RTL_8019_IRQ  (RBTX4938_IRQ_ETHER)
- 
-+void rbtx4938_prom_init(void);
-+void rbtx4938_irq_setup(void);
-+struct pci_dev;
-+int rbtx4938_pci_map_irq(const struct pci_dev *dev, u8 slot, u8 pin);
++#
++# Networking
++#
++CONFIG_NET=y
 +
- #endif /* __ASM_TXX9_RBTX4938_H */
-diff --git a/include/asm-mips/txx9/tx4927.h b/include/asm-mips/txx9/tx4927.h
-index c0382fd..46d60af 100644
---- a/include/asm-mips/txx9/tx4927.h
-+++ b/include/asm-mips/txx9/tx4927.h
-@@ -32,20 +32,6 @@
- #include <asm/txx9irq.h>
- #include <asm/txx9/tx4927pcic.h>
- 
--#define TX4927_IRQ_CP0_BEG  MIPS_CPU_IRQ_BASE
--#define TX4927_IRQ_CP0_END  (MIPS_CPU_IRQ_BASE + 8 - 1)
--
--#define TX4927_IRQ_PIC_BEG  TXX9_IRQ_BASE
--#define TX4927_IRQ_PIC_END  (TXX9_IRQ_BASE + TXx9_MAX_IR - 1)
--
--
--#define TX4927_IRQ_USER0	    (TX4927_IRQ_CP0_BEG+0)
--#define TX4927_IRQ_USER1	    (TX4927_IRQ_CP0_BEG+1)
--#define TX4927_IRQ_NEST_PIC_ON_CP0  (TX4927_IRQ_CP0_BEG+2)
--#define TX4927_IRQ_CPU_TIMER	    (TX4927_IRQ_CP0_BEG+7)
--
--#define TX4927_IRQ_NEST_EXT_ON_PIC  (TX4927_IRQ_PIC_BEG+3)
--
- #define TX4927_SDRAMC_REG	0xff1f8000
- #define TX4927_EBUSC_REG	0xff1f9000
- #define TX4927_PCIC_REG		0xff1fd000
-@@ -54,10 +40,14 @@
- #define TX4927_NR_TMR	3
- #define TX4927_TMR_REG(ch)	(0xff1ff000 + (ch) * 0x100)
- 
-+#define TX4927_IR_INT(n)	(2 + (n))
-+#define TX4927_IR_SIO(n)	(8 + (n))
- #define TX4927_IR_PCIC		16
- #define TX4927_IR_PCIERR	22
- #define TX4927_NUM_IR	32
- 
-+#define TX4927_IRC_INT	2	/* IP[2] in Status register */
++#
++# Networking options
++#
++CONFIG_PACKET=y
++# CONFIG_PACKET_MMAP is not set
++CONFIG_UNIX=y
++# CONFIG_NET_KEY is not set
++CONFIG_INET=y
++CONFIG_IP_MULTICAST=y
++# CONFIG_IP_ADVANCED_ROUTER is not set
++CONFIG_IP_FIB_HASH=y
++CONFIG_IP_PNP=y
++# CONFIG_IP_PNP_DHCP is not set
++# CONFIG_IP_PNP_BOOTP is not set
++# CONFIG_IP_PNP_RARP is not set
++# CONFIG_NET_IPIP is not set
++# CONFIG_NET_IPGRE is not set
++# CONFIG_IP_MROUTE is not set
++# CONFIG_SYN_COOKIES is not set
++# CONFIG_INET_AH is not set
++# CONFIG_INET_ESP is not set
++# CONFIG_INET_IPCOMP is not set
++# CONFIG_INET_XFRM_TUNNEL is not set
++# CONFIG_INET_TUNNEL is not set
++# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
++# CONFIG_INET_XFRM_MODE_TUNNEL is not set
++# CONFIG_INET_XFRM_MODE_BEET is not set
++# CONFIG_INET_LRO is not set
++CONFIG_INET_DIAG=y
++CONFIG_INET_TCP_DIAG=y
++# CONFIG_TCP_CONG_ADVANCED is not set
++CONFIG_TCP_CONG_CUBIC=y
++CONFIG_DEFAULT_TCP_CONG="cubic"
++# CONFIG_IPV6 is not set
++# CONFIG_NETWORK_SECMARK is not set
++# CONFIG_NETFILTER is not set
++# CONFIG_ATM is not set
++# CONFIG_BRIDGE is not set
++# CONFIG_VLAN_8021Q is not set
++# CONFIG_DECNET is not set
++# CONFIG_LLC2 is not set
++# CONFIG_IPX is not set
++# CONFIG_ATALK is not set
++# CONFIG_NET_SCHED is not set
 +
- struct tx4927_sdramc_reg {
- 	volatile unsigned long long cr[4];
- 	volatile unsigned long long unused0[4];
-@@ -224,5 +214,6 @@ static inline void tx4927_ccfg_change(__u64 change, __u64 new)
- 
- int tx4927_report_pciclk(void);
- int tx4927_pciclk66_setup(void);
-+void tx4927_irq_init(void);
- 
- #endif /* __ASM_TXX9_TX4927_H */
-diff --git a/include/asm-mips/txx9/tx4938.h b/include/asm-mips/txx9/tx4938.h
-index 0bb8919..12de68a 100644
---- a/include/asm-mips/txx9/tx4938.h
-+++ b/include/asm-mips/txx9/tx4938.h
-@@ -18,11 +18,6 @@
- #define tx4938_read_nfmc(addr) (*(volatile unsigned int *)(addr))
- #define tx4938_write_nfmc(b, addr) (*(volatile unsigned int *)(addr)) = (b)
- 
--#define TX4938_NR_IRQ_LOCAL     TX4938_IRQ_PIC_BEG
--
--#define TX4938_IRQ_IRC_PCIC     (TX4938_NR_IRQ_LOCAL + TX4938_IR_PCIC)
--#define TX4938_IRQ_IRC_PCIERR   (TX4938_NR_IRQ_LOCAL + TX4938_IR_PCIERR)
--
- #define TX4938_PCIIO_0 0x10000000
- #define TX4938_PCIIO_1 0x01010000
- #define TX4938_PCIMEM_0 0x08000000
-@@ -271,6 +266,8 @@ struct tx4938_ccfg_reg {
- #define TX4938_IR_ETH0	TX4938_IR_INT(4)
- #define TX4938_IR_ETH1	TX4938_IR_INT(3)
- 
-+#define TX4938_IRC_INT	2	/* IP[2] in Status register */
++#
++# Network testing
++#
++# CONFIG_NET_PKTGEN is not set
++# CONFIG_HAMRADIO is not set
++# CONFIG_CAN is not set
++# CONFIG_IRDA is not set
++# CONFIG_BT is not set
 +
- /*
-  * CCFG
-  */
-@@ -463,5 +460,6 @@ void tx4938_report_pci1clk(void);
- int tx4938_pciclk66_setup(void);
- struct pci_dev;
- int tx4938_pcic1_map_irq(const struct pci_dev *dev, u8 slot);
-+void tx4938_irq_init(void);
- 
- #endif
++#
++# Wireless
++#
++# CONFIG_CFG80211 is not set
++# CONFIG_WIRELESS_EXT is not set
++# CONFIG_MAC80211 is not set
++# CONFIG_IEEE80211 is not set
++# CONFIG_RFKILL is not set
++
++#
++# Device Drivers
++#
++
++#
++# Generic Driver Options
++#
++CONFIG_STANDALONE=y
++CONFIG_PREVENT_FIRMWARE_BUILD=y
++# CONFIG_SYS_HYPERVISOR is not set
++# CONFIG_CONNECTOR is not set
++# CONFIG_MTD is not set
++# CONFIG_PARPORT is not set
++CONFIG_BLK_DEV=y
++# CONFIG_BLK_CPQ_DA is not set
++# CONFIG_BLK_CPQ_CISS_DA is not set
++# CONFIG_BLK_DEV_DAC960 is not set
++# CONFIG_BLK_DEV_COW_COMMON is not set
++CONFIG_BLK_DEV_LOOP=y
++# CONFIG_BLK_DEV_CRYPTOLOOP is not set
++# CONFIG_BLK_DEV_NBD is not set
++# CONFIG_BLK_DEV_SX8 is not set
++CONFIG_BLK_DEV_RAM=y
++CONFIG_BLK_DEV_RAM_COUNT=16
++CONFIG_BLK_DEV_RAM_SIZE=8192
++# CONFIG_BLK_DEV_XIP is not set
++# CONFIG_CDROM_PKTCDVD is not set
++# CONFIG_ATA_OVER_ETH is not set
++# CONFIG_MISC_DEVICES is not set
++CONFIG_HAVE_IDE=y
++# CONFIG_IDE is not set
++
++#
++# SCSI device support
++#
++# CONFIG_RAID_ATTRS is not set
++# CONFIG_SCSI is not set
++# CONFIG_SCSI_DMA is not set
++# CONFIG_SCSI_NETLINK is not set
++# CONFIG_ATA is not set
++# CONFIG_MD is not set
++# CONFIG_FUSION is not set
++
++#
++# IEEE 1394 (FireWire) support
++#
++
++#
++# A new alternative FireWire stack is available with EXPERIMENTAL=y
++#
++# CONFIG_IEEE1394 is not set
++# CONFIG_I2O is not set
++CONFIG_NETDEVICES=y
++# CONFIG_NETDEVICES_MULTIQUEUE is not set
++# CONFIG_DUMMY is not set
++# CONFIG_BONDING is not set
++# CONFIG_EQUALIZER is not set
++# CONFIG_TUN is not set
++# CONFIG_VETH is not set
++# CONFIG_ARCNET is not set
++CONFIG_PHYLIB=y
++
++#
++# MII PHY device drivers
++#
++# CONFIG_MARVELL_PHY is not set
++# CONFIG_DAVICOM_PHY is not set
++# CONFIG_QSEMI_PHY is not set
++# CONFIG_LXT_PHY is not set
++# CONFIG_CICADA_PHY is not set
++# CONFIG_VITESSE_PHY is not set
++# CONFIG_SMSC_PHY is not set
++# CONFIG_BROADCOM_PHY is not set
++# CONFIG_ICPLUS_PHY is not set
++# CONFIG_REALTEK_PHY is not set
++# CONFIG_FIXED_PHY is not set
++# CONFIG_MDIO_BITBANG is not set
++CONFIG_NET_ETHERNET=y
++# CONFIG_MII is not set
++# CONFIG_AX88796 is not set
++# CONFIG_HAPPYMEAL is not set
++# CONFIG_SUNGEM is not set
++# CONFIG_CASSINI is not set
++# CONFIG_NET_VENDOR_3COM is not set
++# CONFIG_DM9000 is not set
++# CONFIG_NET_TULIP is not set
++# CONFIG_HP100 is not set
++CONFIG_NE2000=y
++# CONFIG_IBM_NEW_EMAC_ZMII is not set
++# CONFIG_IBM_NEW_EMAC_RGMII is not set
++# CONFIG_IBM_NEW_EMAC_TAH is not set
++# CONFIG_IBM_NEW_EMAC_EMAC4 is not set
++CONFIG_NET_PCI=y
++# CONFIG_PCNET32 is not set
++# CONFIG_AMD8111_ETH is not set
++# CONFIG_ADAPTEC_STARFIRE is not set
++# CONFIG_B44 is not set
++# CONFIG_FORCEDETH is not set
++CONFIG_TC35815=y
++# CONFIG_EEPRO100 is not set
++# CONFIG_E100 is not set
++# CONFIG_FEALNX is not set
++# CONFIG_NATSEMI is not set
++# CONFIG_NE2K_PCI is not set
++# CONFIG_8139TOO is not set
++# CONFIG_R6040 is not set
++# CONFIG_SIS900 is not set
++# CONFIG_EPIC100 is not set
++# CONFIG_SUNDANCE is not set
++# CONFIG_TLAN is not set
++# CONFIG_VIA_RHINE is not set
++# CONFIG_NETDEV_1000 is not set
++# CONFIG_NETDEV_10000 is not set
++# CONFIG_TR is not set
++
++#
++# Wireless LAN
++#
++# CONFIG_WLAN_PRE80211 is not set
++# CONFIG_WLAN_80211 is not set
++# CONFIG_IWLWIFI_LEDS is not set
++# CONFIG_WAN is not set
++# CONFIG_FDDI is not set
++# CONFIG_PPP is not set
++# CONFIG_SLIP is not set
++# CONFIG_NETPOLL is not set
++# CONFIG_NET_POLL_CONTROLLER is not set
++# CONFIG_ISDN is not set
++# CONFIG_PHONE is not set
++
++#
++# Input device support
++#
++# CONFIG_INPUT is not set
++
++#
++# Hardware I/O ports
++#
++# CONFIG_SERIO is not set
++# CONFIG_GAMEPORT is not set
++
++#
++# Character devices
++#
++# CONFIG_VT is not set
++CONFIG_DEVKMEM=y
++# CONFIG_SERIAL_NONSTANDARD is not set
++
++#
++# Serial drivers
++#
++# CONFIG_SERIAL_8250 is not set
++
++#
++# Non-8250 serial port support
++#
++CONFIG_SERIAL_CORE=y
++CONFIG_SERIAL_CORE_CONSOLE=y
++CONFIG_SERIAL_TXX9=y
++CONFIG_HAS_TXX9_SERIAL=y
++CONFIG_SERIAL_TXX9_NR_UARTS=6
++CONFIG_SERIAL_TXX9_CONSOLE=y
++CONFIG_SERIAL_TXX9_STDSERIAL=y
++# CONFIG_SERIAL_JSM is not set
++CONFIG_UNIX98_PTYS=y
++CONFIG_LEGACY_PTYS=y
++CONFIG_LEGACY_PTY_COUNT=256
++# CONFIG_IPMI_HANDLER is not set
++# CONFIG_HW_RANDOM is not set
++# CONFIG_R3964 is not set
++# CONFIG_APPLICOM is not set
++# CONFIG_RAW_DRIVER is not set
++CONFIG_DEVPORT=y
++# CONFIG_I2C is not set
++CONFIG_SPI=y
++CONFIG_SPI_MASTER=y
++
++#
++# SPI Master Controller Drivers
++#
++CONFIG_SPI_TXX9=y
++
++#
++# SPI Protocol Masters
++#
++CONFIG_SPI_AT25=y
++# CONFIG_SPI_TLE62X0 is not set
++CONFIG_HAVE_GPIO_LIB=y
++
++#
++# GPIO Support
++#
++
++#
++# I2C GPIO expanders:
++#
++
++#
++# SPI GPIO expanders:
++#
++# CONFIG_GPIO_MCP23S08 is not set
++# CONFIG_W1 is not set
++# CONFIG_POWER_SUPPLY is not set
++# CONFIG_HWMON is not set
++# CONFIG_THERMAL is not set
++# CONFIG_THERMAL_HWMON is not set
++CONFIG_WATCHDOG=y
++# CONFIG_WATCHDOG_NOWAYOUT is not set
++
++#
++# Watchdog Device Drivers
++#
++# CONFIG_SOFT_WATCHDOG is not set
++CONFIG_TXX9_WDT=m
++
++#
++# PCI-based Watchdog Cards
++#
++# CONFIG_PCIPCWATCHDOG is not set
++# CONFIG_WDTPCI is not set
++
++#
++# Sonics Silicon Backplane
++#
++CONFIG_SSB_POSSIBLE=y
++# CONFIG_SSB is not set
++
++#
++# Multifunction device drivers
++#
++# CONFIG_MFD_SM501 is not set
++# CONFIG_HTC_PASIC3 is not set
++
++#
++# Multimedia devices
++#
++
++#
++# Multimedia core support
++#
++# CONFIG_VIDEO_DEV is not set
++# CONFIG_DVB_CORE is not set
++# CONFIG_VIDEO_MEDIA is not set
++
++#
++# Multimedia drivers
++#
++# CONFIG_DAB is not set
++
++#
++# Graphics support
++#
++# CONFIG_DRM is not set
++# CONFIG_VGASTATE is not set
++# CONFIG_VIDEO_OUTPUT_CONTROL is not set
++# CONFIG_FB is not set
++# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
++
++#
++# Display device support
++#
++# CONFIG_DISPLAY_SUPPORT is not set
++
++#
++# Sound
++#
++# CONFIG_SOUND is not set
++# CONFIG_USB_SUPPORT is not set
++# CONFIG_MMC is not set
++# CONFIG_MEMSTICK is not set
++# CONFIG_NEW_LEDS is not set
++# CONFIG_ACCESSIBILITY is not set
++# CONFIG_INFINIBAND is not set
++CONFIG_RTC_LIB=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_HCTOSYS=y
++CONFIG_RTC_HCTOSYS_DEVICE="rtc0"
++# CONFIG_RTC_DEBUG is not set
++
++#
++# RTC interfaces
++#
++CONFIG_RTC_INTF_SYSFS=y
++CONFIG_RTC_INTF_PROC=y
++CONFIG_RTC_INTF_DEV=y
++CONFIG_RTC_INTF_DEV_UIE_EMUL=y
++# CONFIG_RTC_DRV_TEST is not set
++
++#
++# SPI RTC drivers
++#
++# CONFIG_RTC_DRV_MAX6902 is not set
++# CONFIG_RTC_DRV_R9701 is not set
++CONFIG_RTC_DRV_RS5C348=y
++
++#
++# Platform RTC drivers
++#
++# CONFIG_RTC_DRV_CMOS is not set
++# CONFIG_RTC_DRV_DS1511 is not set
++# CONFIG_RTC_DRV_DS1553 is not set
++CONFIG_RTC_DRV_DS1742=y
++# CONFIG_RTC_DRV_STK17TA8 is not set
++# CONFIG_RTC_DRV_M48T86 is not set
++# CONFIG_RTC_DRV_M48T59 is not set
++# CONFIG_RTC_DRV_V3020 is not set
++
++#
++# on-CPU RTC drivers
++#
++# CONFIG_UIO is not set
++
++#
++# File systems
++#
++# CONFIG_EXT2_FS is not set
++# CONFIG_EXT3_FS is not set
++# CONFIG_REISERFS_FS is not set
++# CONFIG_JFS_FS is not set
++CONFIG_FS_POSIX_ACL=y
++# CONFIG_XFS_FS is not set
++# CONFIG_OCFS2_FS is not set
++# CONFIG_DNOTIFY is not set
++CONFIG_INOTIFY=y
++CONFIG_INOTIFY_USER=y
++# CONFIG_QUOTA is not set
++# CONFIG_AUTOFS_FS is not set
++# CONFIG_AUTOFS4_FS is not set
++# CONFIG_FUSE_FS is not set
++CONFIG_GENERIC_ACL=y
++
++#
++# CD-ROM/DVD Filesystems
++#
++# CONFIG_ISO9660_FS is not set
++# CONFIG_UDF_FS is not set
++
++#
++# DOS/FAT/NT Filesystems
++#
++# CONFIG_MSDOS_FS is not set
++# CONFIG_VFAT_FS is not set
++# CONFIG_NTFS_FS is not set
++
++#
++# Pseudo filesystems
++#
++CONFIG_PROC_FS=y
++# CONFIG_PROC_KCORE is not set
++CONFIG_PROC_SYSCTL=y
++CONFIG_SYSFS=y
++CONFIG_TMPFS=y
++CONFIG_TMPFS_POSIX_ACL=y
++# CONFIG_HUGETLB_PAGE is not set
++# CONFIG_CONFIGFS_FS is not set
++
++#
++# Miscellaneous filesystems
++#
++# CONFIG_HFSPLUS_FS is not set
++# CONFIG_CRAMFS is not set
++# CONFIG_VXFS_FS is not set
++# CONFIG_MINIX_FS is not set
++# CONFIG_HPFS_FS is not set
++# CONFIG_QNX4FS_FS is not set
++# CONFIG_ROMFS_FS is not set
++# CONFIG_SYSV_FS is not set
++# CONFIG_UFS_FS is not set
++CONFIG_NETWORK_FILESYSTEMS=y
++CONFIG_NFS_FS=y
++CONFIG_NFS_V3=y
++# CONFIG_NFS_V3_ACL is not set
++# CONFIG_NFSD is not set
++CONFIG_ROOT_NFS=y
++CONFIG_LOCKD=y
++CONFIG_LOCKD_V4=y
++CONFIG_NFS_COMMON=y
++CONFIG_SUNRPC=y
++# CONFIG_SMB_FS is not set
++# CONFIG_CIFS is not set
++# CONFIG_NCP_FS is not set
++# CONFIG_CODA_FS is not set
++
++#
++# Partition Types
++#
++# CONFIG_PARTITION_ADVANCED is not set
++CONFIG_MSDOS_PARTITION=y
++# CONFIG_NLS is not set
++
++#
++# Kernel hacking
++#
++CONFIG_TRACE_IRQFLAGS_SUPPORT=y
++# CONFIG_PRINTK_TIME is not set
++CONFIG_ENABLE_WARN_DEPRECATED=y
++CONFIG_ENABLE_MUST_CHECK=y
++CONFIG_FRAME_WARN=1024
++# CONFIG_MAGIC_SYSRQ is not set
++# CONFIG_UNUSED_SYMBOLS is not set
++CONFIG_DEBUG_FS=y
++# CONFIG_HEADERS_CHECK is not set
++# CONFIG_DEBUG_KERNEL is not set
++# CONFIG_SAMPLES is not set
++CONFIG_CMDLINE=""
++CONFIG_SYS_SUPPORTS_KGDB=y
++
++#
++# Security options
++#
++# CONFIG_KEYS is not set
++# CONFIG_SECURITY is not set
++# CONFIG_CRYPTO is not set
++
++#
++# Library routines
++#
++CONFIG_BITREVERSE=y
++# CONFIG_GENERIC_FIND_FIRST_BIT is not set
++# CONFIG_CRC_CCITT is not set
++# CONFIG_CRC16 is not set
++# CONFIG_CRC_ITU_T is not set
++CONFIG_CRC32=y
++# CONFIG_CRC7 is not set
++# CONFIG_LIBCRC32C is not set
++CONFIG_HAS_IOMEM=y
++CONFIG_HAS_IOPORT=y
++CONFIG_HAS_DMA=y

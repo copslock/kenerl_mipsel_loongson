@@ -1,133 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jul 2008 19:34:42 +0100 (BST)
-Received: from elvis.franken.de ([193.175.24.41]:59564 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S20031665AbYGKSeh (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 11 Jul 2008 19:34:37 +0100
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1KHNS0-00055Z-00; Fri, 11 Jul 2008 20:34:36 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id 1CEEDC2EB7; Fri, 11 Jul 2008 20:34:32 +0200 (CEST)
-From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH] IP22: Add platform device for Indy volume buttons
-To:	linux-mips@linux-mips.org
-cc:	ralf@linux-mips.org
-Message-Id: <20080711183432.1CEEDC2EB7@solo.franken.de>
-Date:	Fri, 11 Jul 2008 20:34:32 +0200 (CEST)
-Return-Path: <tsbogend@alpha.franken.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 11 Jul 2008 20:09:35 +0100 (BST)
+Received: from nelson.telenet-ops.be ([195.130.133.66]:38853 "EHLO
+	nelson.telenet-ops.be") by ftp.linux-mips.org with ESMTP
+	id S20032132AbYGKTJd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 11 Jul 2008 20:09:33 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by nelson.telenet-ops.be (Postfix) with SMTP id 6638450010;
+	Fri, 11 Jul 2008 21:09:32 +0200 (CEST)
+Received: from anakin.of.borg (78-21-204-88.access.telenet.be [78.21.204.88])
+	by nelson.telenet-ops.be (Postfix) with ESMTP id 53ACD50009;
+	Fri, 11 Jul 2008 21:09:32 +0200 (CEST)
+Received: from anakin.of.borg (localhost [127.0.0.1])
+	by anakin.of.borg (8.14.3/8.14.3/Debian-4) with ESMTP id m6BJ9VHZ013028
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Fri, 11 Jul 2008 21:09:31 +0200
+Received: from localhost (geert@localhost)
+	by anakin.of.borg (8.14.3/8.14.3/Submit) with ESMTP id m6BJ9V8b013025;
+	Fri, 11 Jul 2008 21:09:31 +0200
+X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
+Date:	Fri, 11 Jul 2008 21:09:31 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] IP22: Add platform device for Indy volume buttons
+In-Reply-To: <20080711183432.1CEEDC2EB7@solo.franken.de>
+Message-ID: <Pine.LNX.4.64.0807112107360.7822@anakin>
+References: <20080711183432.1CEEDC2EB7@solo.franken.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19793
+X-archive-position: 19794
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Create platform device for Indy volume buttons and remove button
-handling from ip22-reset.c
+On Fri, 11 Jul 2008, Thomas Bogendoerfer wrote:
+> --- a/arch/mips/sgi-ip22/ip22-platform.c
+> +++ b/arch/mips/sgi-ip22/ip22-platform.c
+> @@ -182,3 +182,14 @@ static int __init sgi_hal2_devinit(void)
+>  }
+>  
+>  device_initcall(sgi_hal2_devinit);
+> +
+> +static int __init sgi_button_devinit(void)
+> +{
+> +	if (ip22_is_fullhouse())
+> +		return 0; /* full house has no volume buttons */
+> +
+> +	return IS_ERR(platform_device_register_simple("sgiindybtns",
+> +						      0, NULL, 0));
+                                                      ^
+Shouldn't the instance id be -1, as there can be only one?
+(cfr. Documentation/driver-model/platform.txt)
 
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
----
+Gr{oetje,eeting}s,
 
- arch/mips/sgi-ip22/ip22-platform.c |   11 ++++++++
- arch/mips/sgi-ip22/ip22-reset.c    |   51 +----------------------------------
- 2 files changed, 13 insertions(+), 49 deletions(-)
+						Geert
 
-diff --git a/arch/mips/sgi-ip22/ip22-platform.c b/arch/mips/sgi-ip22/ip22-platform.c
-index d93d07a..c0eb360 100644
---- a/arch/mips/sgi-ip22/ip22-platform.c
-+++ b/arch/mips/sgi-ip22/ip22-platform.c
-@@ -182,3 +182,14 @@ static int __init sgi_hal2_devinit(void)
- }
- 
- device_initcall(sgi_hal2_devinit);
-+
-+static int __init sgi_button_devinit(void)
-+{
-+	if (ip22_is_fullhouse())
-+		return 0; /* full house has no volume buttons */
-+
-+	return IS_ERR(platform_device_register_simple("sgiindybtns",
-+						      0, NULL, 0));
-+}
-+
-+device_initcall(sgi_button_devinit);
-diff --git a/arch/mips/sgi-ip22/ip22-reset.c b/arch/mips/sgi-ip22/ip22-reset.c
-index a435b31..4ad5c33 100644
---- a/arch/mips/sgi-ip22/ip22-reset.c
-+++ b/arch/mips/sgi-ip22/ip22-reset.c
-@@ -39,7 +39,7 @@
- #define POWERDOWN_FREQ		(HZ / 4)
- #define PANIC_FREQ		(HZ / 8)
- 
--static struct timer_list power_timer, blink_timer, debounce_timer, volume_timer;
-+static struct timer_list power_timer, blink_timer, debounce_timer;
- 
- #define MACHINE_PANICED		1
- #define MACHINE_SHUTTING_DOWN	2
-@@ -139,36 +139,6 @@ static inline void power_button(void)
- 	add_timer(&power_timer);
- }
- 
--void (*indy_volume_button)(int) = NULL;
--
--EXPORT_SYMBOL(indy_volume_button);
--
--static inline void volume_up_button(unsigned long data)
--{
--	del_timer(&volume_timer);
--
--	if (indy_volume_button)
--		indy_volume_button(1);
--
--	if (sgint->istat1 & SGINT_ISTAT1_PWR) {
--		volume_timer.expires = jiffies + (HZ / 100);
--		add_timer(&volume_timer);
--	}
--}
--
--static inline void volume_down_button(unsigned long data)
--{
--	del_timer(&volume_timer);
--
--	if (indy_volume_button)
--		indy_volume_button(-1);
--
--	if (sgint->istat1 & SGINT_ISTAT1_PWR) {
--		volume_timer.expires = jiffies + (HZ / 100);
--		add_timer(&volume_timer);
--	}
--}
--
- static irqreturn_t panel_int(int irq, void *dev_id)
- {
- 	unsigned int buttons;
-@@ -190,25 +160,8 @@ static irqreturn_t panel_int(int irq, void *dev_id)
- 	 * House. Only lowest 2 bits are used. Guiness uses upper four bits
- 	 * for volume control". This is not true, all bits are pulled high
- 	 * on fullhouse */
--	if (ip22_is_fullhouse() || !(buttons & SGIOC_PANEL_POWERINTR)) {
-+	if (!(buttons & SGIOC_PANEL_POWERINTR))
- 		power_button();
--		return IRQ_HANDLED;
--	}
--	/* TODO: mute/unmute */
--	/* Volume up button was pressed */
--	if (!(buttons & SGIOC_PANEL_VOLUPINTR)) {
--		init_timer(&volume_timer);
--		volume_timer.function = volume_up_button;
--		volume_timer.expires = jiffies + (HZ / 100);
--		add_timer(&volume_timer);
--	}
--	/* Volume down button was pressed */
--	if (!(buttons & SGIOC_PANEL_VOLDNINTR)) {
--		init_timer(&volume_timer);
--		volume_timer.function = volume_down_button;
--		volume_timer.expires = jiffies + (HZ / 100);
--		add_timer(&volume_timer);
--	}
- 
- 	return IRQ_HANDLED;
- }
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

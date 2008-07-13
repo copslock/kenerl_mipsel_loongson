@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Jul 2008 12:06:15 +0100 (BST)
-Received: from mo32.po.2iij.NET ([210.128.50.17]:63244 "EHLO mo32.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20036140AbYGMLFQ (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Jul 2008 12:06:34 +0100 (BST)
+Received: from mo31.po.2iij.net ([210.128.50.54]:48177 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20036274AbYGMLFQ (ORCPT
 	<rfc822;linux-mips@linux-mips.org>); Sun, 13 Jul 2008 12:05:16 +0100
-Received: by mo.po.2iij.net (mo32) id m6DB5DMR009609; Sun, 13 Jul 2008 20:05:13 +0900 (JST)
+Received: by mo.po.2iij.net (mo31) id m6DB5Dxt017244; Sun, 13 Jul 2008 20:05:13 +0900 (JST)
 Received: from delta (61.25.30.125.dy.iij4u.or.jp [125.30.25.61])
-	by mbox.po.2iij.net (po-mbox300) id m6DB59qj000558
+	by mbox.po.2iij.net (po-mbox305) id m6DB589K024731
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
 	Sun, 13 Jul 2008 20:05:09 +0900
-Date:	Sun, 13 Jul 2008 20:04:18 +0900
+Date:	Sun, 13 Jul 2008 20:02:13 +0900
 From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	yoichi_yuasa@tripeaks.co.jp, Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
 	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][5/5][MIPS] remove machtype for group Toshiba
-Message-Id: <20080713200418.591614aa.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20080713200213.6cea0cca.yoichi_yuasa@tripeaks.co.jp>
+Subject: [PATCH][4/5][MIPS] separate rbtx4927_time_init() and
+ rbtx4937_time_init()
+Message-Id: <20080713200213.6cea0cca.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20080713200104.02e6d163.yoichi_yuasa@tripeaks.co.jp>
 References: <20080713195155.08c4285d.yoichi_yuasa@tripeaks.co.jp>
 	<20080713195408.f3878fb2.yoichi_yuasa@tripeaks.co.jp>
 	<20080713200104.02e6d163.yoichi_yuasa@tripeaks.co.jp>
-	<20080713200213.6cea0cca.yoichi_yuasa@tripeaks.co.jp>
 Organization: TriPeaks Corporation
 X-Mailer: Sylpheed 2.4.8 (GTK+ 2.12.9; i486-pc-linux-gnu)
 Mime-Version: 1.0
@@ -28,7 +28,7 @@ Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19803
+X-archive-position: 19804
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,80 +36,117 @@ X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Remove machtype for group Toshiba.
+Separate rbtx4927_time_init() and rbtx4937_time_init().
 
 Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/arch/mips/txx9/jmr3927/setup.c linux/arch/mips/txx9/jmr3927/setup.c
---- linux-orig/arch/mips/txx9/jmr3927/setup.c	2008-07-13 15:59:38.884682499 +0900
-+++ linux/arch/mips/txx9/jmr3927/setup.c	2008-07-13 17:43:27.789224724 +0900
-@@ -366,7 +366,6 @@ static void __init jmr3927_device_init(v
- }
- 
- struct txx9_board_vec jmr3927_vec __initdata = {
--	.type = MACH_TOSHIBA_JMR3927,
- 	.system = "Toshiba JMR_TX3927",
- 	.prom_init = jmr3927_prom_init,
- 	.mem_setup = jmr3927_mem_setup,
 diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/arch/mips/txx9/rbtx4927/setup.c linux/arch/mips/txx9/rbtx4927/setup.c
---- linux-orig/arch/mips/txx9/rbtx4927/setup.c	2008-07-13 17:40:52.452372581 +0900
-+++ linux/arch/mips/txx9/rbtx4927/setup.c	2008-07-13 17:43:39.193874641 +0900
-@@ -428,7 +428,6 @@ static void __init rbtx4927_device_init(
- }
- 
- struct txx9_board_vec rbtx4927_vec __initdata = {
--	.type = MACH_TOSHIBA_RBTX4927,
- 	.system = "Toshiba RBTX4927",
- 	.prom_init = rbtx4927_prom_init,
- 	.mem_setup = rbtx4927_mem_setup,
-@@ -441,7 +440,6 @@ struct txx9_board_vec rbtx4927_vec __ini
+--- linux-orig/arch/mips/txx9/rbtx4927/setup.c	2008-07-13 16:51:55.940147585 +0900
++++ linux/arch/mips/txx9/rbtx4927/setup.c	2008-07-13 17:39:51.676909186 +0900
+@@ -301,6 +301,18 @@ static void __init rbtx4927_mem_setup(vo
  #endif
- };
- struct txx9_board_vec rbtx4937_vec __initdata = {
--	.type = MACH_TOSHIBA_RBTX4937,
- 	.system = "Toshiba RBTX4937",
- 	.prom_init = rbtx4927_prom_init,
- 	.mem_setup = rbtx4927_mem_setup,
-diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/arch/mips/txx9/rbtx4938/setup.c linux/arch/mips/txx9/rbtx4938/setup.c
---- linux-orig/arch/mips/txx9/rbtx4938/setup.c	2008-07-13 15:59:38.888682728 +0900
-+++ linux/arch/mips/txx9/rbtx4938/setup.c	2008-07-13 17:43:47.814365892 +0900
-@@ -619,7 +619,6 @@ static void __init rbtx4938_device_init(
  }
  
- struct txx9_board_vec rbtx4938_vec __initdata = {
--	.type = MACH_TOSHIBA_RBTX4938,
- 	.system = "Toshiba RBTX4938",
- 	.prom_init = rbtx4938_prom_init,
- 	.mem_setup = rbtx4938_mem_setup,
-diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/include/asm-mips/bootinfo.h linux/include/asm-mips/bootinfo.h
---- linux-orig/include/asm-mips/bootinfo.h	2008-07-13 15:59:46.073092146 +0900
-+++ linux/include/asm-mips/bootinfo.h	2008-07-13 17:44:27.320617224 +0900
-@@ -62,17 +62,6 @@
- #define  MACH_SGI_IP30		4	/* Octane, Octane2              */
- 
- /*
-- * Valid machtypes for group Toshiba
-- */
--#define  MACH_PALLAS		0
--#define  MACH_TOPAS		1
--#define  MACH_JMR		2
--#define  MACH_TOSHIBA_JMR3927	3	/* JMR-TX3927 CPU/IO board */
--#define  MACH_TOSHIBA_RBTX4927	4
--#define  MACH_TOSHIBA_RBTX4937	5
--#define  MACH_TOSHIBA_RBTX4938	6
++static void __init rbtx49x7_common_time_init(void)
++{
++	/* change default value to udelay/mdelay take reasonable time */
++	loops_per_jiffy = txx9_cpu_clock / HZ / 2;
++
++	mips_hpt_frequency = txx9_cpu_clock / 2;
++	if (____raw_readq(&tx4927_ccfgptr->ccfg) & TX4927_CCFG_TINTDIS)
++		txx9_clockevent_init(TX4927_TMR_REG(0) & 0xfffffffffULL,
++				     TXX9_IRQ_BASE + 17,
++				     50000000);
++}
++
+ static void __init rbtx4927_time_init(void)
+ {
+ 	/*
+@@ -313,6 +325,24 @@ static void __init rbtx4927_time_init(vo
+ 	 * CPU 166MHz: PCI 33MHz : PCIDIVMODE: 10 (1/5)
+ 	 * CPU 200MHz: PCI 33MHz : PCIDIVMODE: 11 (1/6)
+ 	 * i.e. S9[3]: ON (83MHz), OFF (100MHz)
++	 */
++	switch ((unsigned long)__raw_readq(&tx4927_ccfgptr->ccfg) &
++		TX4927_CCFG_PCIDIVMODE_MASK) {
++	case TX4927_CCFG_PCIDIVMODE_2_5:
++	case TX4927_CCFG_PCIDIVMODE_5:
++		txx9_cpu_clock = 166666666;	/* 166MHz */
++		break;
++	default:
++		txx9_cpu_clock = 200000000;	/* 200MHz */
++	}
++
++	rbtx49x7_common_time_init();
++}
++
++static void __init rbtx4937_time_init(void)
++{
++	/*
++	 * ASSUMPTION: PCIDIVMODE is configured for PCI 33MHz or 66MHz.
+ 	 *
+ 	 * For TX4937:
+ 	 * PCIDIVMODE[12:11]'s initial value is given by S1[5:4] (ON:0, OFF:1)
+@@ -324,39 +354,21 @@ static void __init rbtx4927_time_init(vo
+ 	 * CPU 333MHz: PCI 33MHz : PCIDIVMODE: 100 (1/10)
+ 	 * CPU 333MHz: PCI 66MHz : PCIDIVMODE: 101 (1/5)
+ 	 */
+-	if (mips_machtype == MACH_TOSHIBA_RBTX4937)
+-		switch ((unsigned long)__raw_readq(&tx4938_ccfgptr->ccfg) &
+-			TX4938_CCFG_PCIDIVMODE_MASK) {
+-		case TX4938_CCFG_PCIDIVMODE_8:
+-		case TX4938_CCFG_PCIDIVMODE_4:
+-			txx9_cpu_clock = 266666666;	/* 266MHz */
+-			break;
+-		case TX4938_CCFG_PCIDIVMODE_9:
+-		case TX4938_CCFG_PCIDIVMODE_4_5:
+-			txx9_cpu_clock = 300000000;	/* 300MHz */
+-			break;
+-		default:
+-			txx9_cpu_clock = 333333333;	/* 333MHz */
+-		}
+-	else
+-		switch ((unsigned long)__raw_readq(&tx4927_ccfgptr->ccfg) &
+-			TX4927_CCFG_PCIDIVMODE_MASK) {
+-		case TX4927_CCFG_PCIDIVMODE_2_5:
+-		case TX4927_CCFG_PCIDIVMODE_5:
+-			txx9_cpu_clock = 166666666;	/* 166MHz */
+-			break;
+-		default:
+-			txx9_cpu_clock = 200000000;	/* 200MHz */
+-		}
 -
--/*
-  * Valid machtype for group LASAT
-  */
- #define  MACH_LASAT_100		0	/* Masquerade II/SP100/SP50/SP25 */
-diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/include/asm-mips/txx9/generic.h linux/include/asm-mips/txx9/generic.h
---- linux-orig/include/asm-mips/txx9/generic.h	2008-07-13 15:59:46.285104227 +0900
-+++ linux/include/asm-mips/txx9/generic.h	2008-07-13 17:44:15.759958419 +0900
-@@ -22,7 +22,6 @@ extern unsigned int txx9_gbus_clock;
+-	/* change default value to udelay/mdelay take reasonable time */
+-	loops_per_jiffy = txx9_cpu_clock / HZ / 2;
++	switch ((unsigned long)__raw_readq(&tx4938_ccfgptr->ccfg) &
++		TX4938_CCFG_PCIDIVMODE_MASK) {
++	case TX4938_CCFG_PCIDIVMODE_8:
++	case TX4938_CCFG_PCIDIVMODE_4:
++		txx9_cpu_clock = 266666666;	/* 266MHz */
++		break;
++	case TX4938_CCFG_PCIDIVMODE_9:
++	case TX4938_CCFG_PCIDIVMODE_4_5:
++		txx9_cpu_clock = 300000000;	/* 300MHz */
++		break;
++	default:
++		txx9_cpu_clock = 333333333;	/* 333MHz */
++	}
  
- struct pci_dev;
- struct txx9_board_vec {
--	unsigned long type;
- 	const char *system;
- 	void (*prom_init)(void);
- 	void (*mem_setup)(void);
+-	mips_hpt_frequency = txx9_cpu_clock / 2;
+-	if (____raw_readq(&tx4927_ccfgptr->ccfg) & TX4927_CCFG_TINTDIS)
+-		txx9_clockevent_init(TX4927_TMR_REG(0) & 0xfffffffffULL,
+-				     TXX9_IRQ_BASE + 17,
+-				     50000000);
++	rbtx49x7_common_time_init();
+ }
+ 
+ static int __init toshiba_rbtx4927_rtc_init(void)
+@@ -434,7 +446,7 @@ struct txx9_board_vec rbtx4937_vec __ini
+ 	.prom_init = rbtx4927_prom_init,
+ 	.mem_setup = rbtx4927_mem_setup,
+ 	.irq_setup = rbtx4927_irq_setup,
+-	.time_init = rbtx4927_time_init,
++	.time_init = rbtx4937_time_init,
+ 	.device_init = rbtx4927_device_init,
+ 	.arch_init = rbtx4937_arch_init,
+ #ifdef CONFIG_PCI

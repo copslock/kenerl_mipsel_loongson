@@ -1,20 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Jul 2008 12:05:16 +0100 (BST)
-Received: from mo32.po.2iij.NET ([210.128.50.17]:55367 "EHLO mo32.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S20036084AbYGMLFM (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 13 Jul 2008 12:05:12 +0100
-Received: by mo.po.2iij.net (mo32) id m6DB59b9009574; Sun, 13 Jul 2008 20:05:09 +0900 (JST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Jul 2008 12:05:36 +0100 (BST)
+Received: from mo30.po.2iij.net ([210.128.50.53]:43591 "EHLO mo30.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S20036268AbYGMLFN (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 13 Jul 2008 12:05:13 +0100
+Received: by mo.po.2iij.net (mo30) id m6DB5Bnk001170; Sun, 13 Jul 2008 20:05:11 +0900 (JST)
 Received: from delta (61.25.30.125.dy.iij4u.or.jp [125.30.25.61])
-	by mbox.po.2iij.net (po-mbox302) id m6DB56VA006089
+	by mbox.po.2iij.net (po-mbox301) id m6DB58tT025873
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Sun, 13 Jul 2008 20:05:07 +0900
-Date:	Sun, 13 Jul 2008 19:51:55 +0900
+	Sun, 13 Jul 2008 20:05:08 +0900
+Date:	Sun, 13 Jul 2008 20:01:04 +0900
 From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	yoichi_yuasa@tripeaks.co.jp, Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
 	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][1/5][MIPS] txx9_board_vec set directly without
- mips_machtype
-Message-Id: <20080713195155.08c4285d.yoichi_yuasa@tripeaks.co.jp>
+Subject: [PATCH][3/5][MIPS] separate rbtx4927_arch_init() and
+ rbtx4937_arch_init()
+Message-Id: <20080713200104.02e6d163.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20080713195408.f3878fb2.yoichi_yuasa@tripeaks.co.jp>
+References: <20080713195155.08c4285d.yoichi_yuasa@tripeaks.co.jp>
+	<20080713195408.f3878fb2.yoichi_yuasa@tripeaks.co.jp>
 Organization: TriPeaks Corporation
 X-Mailer: Sylpheed 2.4.8 (GTK+ 2.12.9; i486-pc-linux-gnu)
 Mime-Version: 1.0
@@ -24,7 +27,7 @@ Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19800
+X-archive-position: 19801
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,70 +35,40 @@ X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-txx9_board_vec set directly without mips_machtype.
+Separate rbtx4927_arch_init() and rbtx4937_arch_init().
 
 Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/arch/mips/txx9/generic/setup.c linux/arch/mips/txx9/generic/setup.c
---- linux-orig/arch/mips/txx9/generic/setup.c	2008-07-13 15:59:38.884682499 +0900
-+++ linux/arch/mips/txx9/generic/setup.c	2008-07-13 16:00:06.436034688 +0900
-@@ -99,19 +99,6 @@ extern struct txx9_board_vec rbtx4927_ve
- extern struct txx9_board_vec rbtx4937_vec;
- extern struct txx9_board_vec rbtx4938_vec;
+diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/arch/mips/txx9/rbtx4927/setup.c linux/arch/mips/txx9/rbtx4927/setup.c
+--- linux-orig/arch/mips/txx9/rbtx4927/setup.c	2008-07-13 16:49:44.924681441 +0900
++++ linux/arch/mips/txx9/rbtx4927/setup.c	2008-07-13 16:50:54.684656833 +0900
+@@ -170,13 +170,16 @@ static void __init tx4937_pci_setup(void
  
--/* board definitions */
--static struct txx9_board_vec *board_vecs[] __initdata = {
--#ifdef CONFIG_TOSHIBA_JMR3927
--	&jmr3927_vec,
--#endif
--#ifdef CONFIG_TOSHIBA_RBTX4927
--	&rbtx4927_vec,
--	&rbtx4937_vec,
--#endif
--#ifdef CONFIG_TOSHIBA_RBTX4938
--	&rbtx4938_vec,
--#endif
--};
- struct txx9_board_vec *txx9_board_vec __initdata;
- static char txx9_system_type[32];
- 
-@@ -134,31 +121,26 @@ void __init prom_init_cmdline(void)
- 
- void __init prom_init(void)
+ static void __init rbtx4927_arch_init(void)
  {
--	int i;
--
- #ifdef CONFIG_CPU_TX39XX
--	mips_machtype = MACH_TOSHIBA_JMR3927;
-+	txx9_board_vec = &jmr3927_vec;
- #endif
- #ifdef CONFIG_CPU_TX49XX
- 	switch (TX4938_REV_PCODE()) {
- 	case 0x4927:
--		mips_machtype = MACH_TOSHIBA_RBTX4927;
-+		txx9_board_vec = &rbtx4927_vec;
- 		break;
- 	case 0x4937:
--		mips_machtype = MACH_TOSHIBA_RBTX4937;
-+		txx9_board_vec = &rbtx4937_vec;
- 		break;
- 	case 0x4938:
--		mips_machtype = MACH_TOSHIBA_RBTX4938;
-+		txx9_board_vec = &rbtx4938_vec;
- 		break;
- 	}
- #endif
--	for (i = 0; i < ARRAY_SIZE(board_vecs); i++) {
--		if (board_vecs[i]->type == mips_machtype) {
--			txx9_board_vec = board_vecs[i];
--			strcpy(txx9_system_type, txx9_board_vec->system);
--			return txx9_board_vec->prom_init();
--		}
--	}
+-	if (mips_machtype == MACH_TOSHIBA_RBTX4937)
+-		tx4937_pci_setup();
+-	else
+-		tx4927_pci_setup();
++	tx4927_pci_setup();
++}
 +
-+	strcpy(txx9_system_type, txx9_board_vec->system);
-+
-+	return txx9_board_vec->prom_init();
++static void __init rbtx4937_arch_init(void)
++{
++	tx4937_pci_setup();
  }
+ #else
+ #define rbtx4927_arch_init NULL
++#define rbtx4937_arch_init NULL
+ #endif /* CONFIG_PCI */
  
- void __init prom_free_prom_memory(void)
+ static void __noreturn wait_forever(void)
+@@ -433,7 +436,7 @@ struct txx9_board_vec rbtx4937_vec __ini
+ 	.irq_setup = rbtx4927_irq_setup,
+ 	.time_init = rbtx4927_time_init,
+ 	.device_init = rbtx4927_device_init,
+-	.arch_init = rbtx4927_arch_init,
++	.arch_init = rbtx4937_arch_init,
+ #ifdef CONFIG_PCI
+ 	.pci_map_irq = rbtx4927_pci_map_irq,
+ #endif

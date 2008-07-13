@@ -1,78 +1,192 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Jul 2008 15:53:29 +0100 (BST)
-Received: from nf-out-0910.google.com ([64.233.182.185]:31898 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037046AbYGMOx1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 13 Jul 2008 15:53:27 +0100
-Received: by nf-out-0910.google.com with SMTP id h3so1195328nfh.14
-        for <linux-mips@linux-mips.org>; Sun, 13 Jul 2008 07:53:26 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to
-         :subject:mime-version:content-type;
-        bh=48JWKRe8dDL+PLf05G6l8JwK1/FR6lYTWzJBrZ0O89s=;
-        b=RqDtHaLzrf2L/kcoiw8LOhQQnQjmWStzomnMLpeO5pKIhtsXa9u1eaZ0R5iHNscKuH
-         utQGyBJ7ezUacW9eqVQXX4ZdqV1yqeMxsh85jepngChW4NfoOmkiNInFt4HDSFYaVLEO
-         +CSUL/Fz/zUwhsN7p8wvnOwx5S3KjlHsLZNaU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:mime-version:content-type;
-        b=pDM4+JfDTN6zDxQu0c2m1QSXRuTRnEWy1rPLL4j9iYSoDmbOVd/nxYLvfumDYkdpUC
-         amBgI7py6o2kc6yAUg8EUKMx0/FjjkhS7tAyl1mKNt3l1Gy/BGrhZQ0GuH8LBy4VUQCR
-         SvBdBkepNyEC+QbvOXwnvEwkv3RKqJcJYKkbM=
-Received: by 10.210.62.12 with SMTP id k12mr8193456eba.166.1215960806083;
-        Sun, 13 Jul 2008 07:53:26 -0700 (PDT)
-Received: by 10.210.28.18 with HTTP; Sun, 13 Jul 2008 07:53:26 -0700 (PDT)
-Message-ID: <4ac2955e0807130753ydaf0d10n9d95d4d51baf660b@mail.gmail.com>
-Date:	Sun, 13 Jul 2008 20:23:26 +0530
-From:	"mahendra varman" <mahendravarman15@gmail.com>
-To:	linuxppc-embedded@ozlabs.org., linux-kernel@vger.kernel.org, 
-	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: rtc integration with hwclock
-MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_27287_27720679.1215960806080"
-Return-Path: <mahendravarman15@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 13 Jul 2008 16:13:25 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:3583 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20037082AbYGMPNW (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 13 Jul 2008 16:13:22 +0100
+Received: from localhost (p1204-ipad207funabasi.chiba.ocn.ne.jp [222.145.83.204])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 2AC11A8B3; Mon, 14 Jul 2008 00:13:17 +0900 (JST)
+Date:	Mon, 14 Jul 2008 00:15:04 +0900 (JST)
+Message-Id: <20080714.001504.18284902.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] txx9: cleanup and fix some sparse warnings
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19812
+X-archive-position: 19813
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mahendravarman15@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_27287_27720679.1215960806080
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+* Do not return void value
+* Make some functions static
+* Do not include unnecessary bootinfo.h
 
-Hi
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+This patch can be applied on top of Yoichi Yuasa's txx9 mips_machtype
+cleanup patchset.
 
-Help me to solve the below point
+ arch/mips/txx9/generic/setup.c  |    2 +-
+ arch/mips/txx9/jmr3927/setup.c  |    3 ---
+ arch/mips/txx9/rbtx4927/setup.c |   16 +++-------------
+ arch/mips/txx9/rbtx4938/setup.c |   13 +++----------
+ include/asm-mips/txx9/generic.h |    1 +
+ 5 files changed, 8 insertions(+), 27 deletions(-)
 
-Hi have wrote a simple i2c based driver for rtc chip (x1226) in linux 2.6
-with inbuilt i2c routines.
-
-In the get_rtc_time routine i can able to read the values from the rtc chip
-and store it in variables
-
-I need to know how to update those values into the rtc structure so that if
-i put hwclock it should display the read value....
-
-
-Any example code depicting the above point is also welcome
-
-
-Thanks in advance
-
-------=_Part_27287_27720679.1215960806080
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-Hi<br><br>Help me to solve the below point<br><br>Hi have wrote a simple i2c based driver for rtc chip (x1226) in linux 2.6 with inbuilt i2c routines.<br><br>In the get_rtc_time routine i can able to read the values from the rtc chip and store it in variables<br>
-<br>I need to know how to update those values into the rtc structure so that if i put hwclock it should display the read value....<br><br><br>Any example code depicting the above point is also welcome<br><br><br>Thanks in advance<br>
-
-------=_Part_27287_27720679.1215960806080--
+diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
+index 452cb9e..5afc5d5 100644
+--- a/arch/mips/txx9/generic/setup.c
++++ b/arch/mips/txx9/generic/setup.c
+@@ -140,7 +140,7 @@ void __init prom_init(void)
+ 
+ 	strcpy(txx9_system_type, txx9_board_vec->system);
+ 
+-	return txx9_board_vec->prom_init();
++	txx9_board_vec->prom_init();
+ }
+ 
+ void __init prom_free_prom_memory(void)
+diff --git a/arch/mips/txx9/jmr3927/setup.c b/arch/mips/txx9/jmr3927/setup.c
+index 61edc4a..5e35ef7 100644
+--- a/arch/mips/txx9/jmr3927/setup.c
++++ b/arch/mips/txx9/jmr3927/setup.c
+@@ -38,8 +38,6 @@
+ #ifdef CONFIG_SERIAL_TXX9
+ #include <linux/serial_core.h>
+ #endif
+-
+-#include <asm/bootinfo.h>
+ #include <asm/txx9tmr.h>
+ #include <asm/txx9pio.h>
+ #include <asm/reboot.h>
+@@ -95,7 +93,6 @@ static void __init jmr3927_time_init(void)
+ #define DO_WRITE_THROUGH
+ #define DO_ENABLE_CACHE
+ 
+-extern char * __init prom_getcmdline(void);
+ static void jmr3927_board_init(void);
+ 
+ static void __init jmr3927_mem_setup(void)
+diff --git a/arch/mips/txx9/rbtx4927/setup.c b/arch/mips/txx9/rbtx4927/setup.c
+index aba11f3..1657fd9 100644
+--- a/arch/mips/txx9/rbtx4927/setup.c
++++ b/arch/mips/txx9/rbtx4927/setup.c
+@@ -50,8 +50,6 @@
+ #include <linux/pm.h>
+ #include <linux/platform_device.h>
+ #include <linux/delay.h>
+-
+-#include <asm/bootinfo.h>
+ #include <asm/io.h>
+ #include <asm/processor.h>
+ #include <asm/reboot.h>
+@@ -65,14 +63,6 @@
+ #include <linux/serial_core.h>
+ #endif
+ 
+-/* These functions are used for rebooting or halting the machine*/
+-extern void toshiba_rbtx4927_restart(char *command);
+-extern void toshiba_rbtx4927_halt(void);
+-extern void toshiba_rbtx4927_power_off(void);
+-extern void toshiba_rbtx4927_irq_setup(void);
+-
+-char *prom_getcmdline(void);
+-
+ static int tx4927_ccfg_toeon = 1;
+ 
+ #ifdef CONFIG_PCI
+@@ -189,7 +179,7 @@ static void __noreturn wait_forever(void)
+ 			(*cpu_wait)();
+ }
+ 
+-void toshiba_rbtx4927_restart(char *command)
++static void toshiba_rbtx4927_restart(char *command)
+ {
+ 	printk(KERN_NOTICE "System Rebooting...\n");
+ 
+@@ -209,7 +199,7 @@ void toshiba_rbtx4927_restart(char *command)
+ 	/* no return */
+ }
+ 
+-void toshiba_rbtx4927_halt(void)
++static void toshiba_rbtx4927_halt(void)
+ {
+ 	printk(KERN_NOTICE "System Halted\n");
+ 	local_irq_disable();
+@@ -217,7 +207,7 @@ void toshiba_rbtx4927_halt(void)
+ 	/* no return */
+ }
+ 
+-void toshiba_rbtx4927_power_off(void)
++static void toshiba_rbtx4927_power_off(void)
+ {
+ 	toshiba_rbtx4927_halt();
+ 	/* no return */
+diff --git a/arch/mips/txx9/rbtx4938/setup.c b/arch/mips/txx9/rbtx4938/setup.c
+index 2ef71ad..aaa987a 100644
+--- a/arch/mips/txx9/rbtx4938/setup.c
++++ b/arch/mips/txx9/rbtx4938/setup.c
+@@ -23,7 +23,6 @@
+ #include <asm/time.h>
+ #include <asm/txx9tmr.h>
+ #include <asm/io.h>
+-#include <asm/bootinfo.h>
+ #include <asm/txx9/generic.h>
+ #include <asm/txx9/pci.h>
+ #include <asm/txx9/rbtx4938.h>
+@@ -34,15 +33,9 @@
+ #include <asm/txx9/spi.h>
+ #include <asm/txx9pio.h>
+ 
+-extern char * __init prom_getcmdline(void);
+-/* These functions are used for rebooting or halting the machine*/
+-extern void rbtx4938_machine_restart(char *command);
+-extern void rbtx4938_machine_halt(void);
+-extern void rbtx4938_machine_power_off(void);
+-
+ static int tx4938_ccfg_toeon = 1;
+ 
+-void rbtx4938_machine_halt(void)
++static void rbtx4938_machine_halt(void)
+ {
+         printk(KERN_NOTICE "System Halted\n");
+ 	local_irq_disable();
+@@ -53,13 +46,13 @@ void rbtx4938_machine_halt(void)
+ 			".set\tmips0");
+ }
+ 
+-void rbtx4938_machine_power_off(void)
++static void rbtx4938_machine_power_off(void)
+ {
+         rbtx4938_machine_halt();
+         /* no return */
+ }
+ 
+-void rbtx4938_machine_restart(char *command)
++static void rbtx4938_machine_restart(char *command)
+ {
+ 	local_irq_disable();
+ 
+diff --git a/include/asm-mips/txx9/generic.h b/include/asm-mips/txx9/generic.h
+index 715d7c8..d875666 100644
+--- a/include/asm-mips/txx9/generic.h
++++ b/include/asm-mips/txx9/generic.h
+@@ -36,5 +36,6 @@ struct txx9_board_vec {
+ extern struct txx9_board_vec *txx9_board_vec;
+ extern int (*txx9_irq_dispatch)(int pending);
+ void prom_init_cmdline(void);
++char *prom_getcmdline(void);
+ 
+ #endif /* __ASM_TXX9_GENERIC_H */

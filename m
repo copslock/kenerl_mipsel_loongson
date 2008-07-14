@@ -1,247 +1,187 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jul 2008 15:58:53 +0100 (BST)
-Received: from elvis.franken.de ([193.175.24.41]:12242 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S28577737AbYGNO6v (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 14 Jul 2008 15:58:51 +0100
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1KIPVq-0005di-00; Mon, 14 Jul 2008 16:58:50 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id 8383EDE7B3; Mon, 14 Jul 2008 16:58:47 +0200 (CEST)
-From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH] Remove mips_machtype for LASAT machines
-To:	linux-mips@linux-mips.org
-cc:	ralf@linux-mips.org
-Message-Id: <20080714145847.8383EDE7B3@solo.franken.de>
-Date:	Mon, 14 Jul 2008 16:58:47 +0200 (CEST)
-Return-Path: <tsbogend@alpha.franken.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jul 2008 17:30:46 +0100 (BST)
+Received: from rtp-iport-1.cisco.com ([64.102.122.148]:30793 "EHLO
+	rtp-iport-1.cisco.com") by ftp.linux-mips.org with ESMTP
+	id S28578063AbYGNQao (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 14 Jul 2008 17:30:44 +0100
+X-IronPort-AV: E=Sophos;i="4.30,360,1212364800"; 
+   d="scan'208,217";a="14240665"
+Received: from rtp-dkim-2.cisco.com ([64.102.121.159])
+  by rtp-iport-1.cisco.com with ESMTP; 14 Jul 2008 16:30:34 +0000
+Received: from rtp-core-1.cisco.com (rtp-core-1.cisco.com [64.102.124.12])
+	by rtp-dkim-2.cisco.com (8.12.11/8.12.11) with ESMTP id m6EGUY4w007658
+	for <linux-mips@linux-mips.org>; Mon, 14 Jul 2008 12:30:34 -0400
+Received: from sausatlsmtp1.sciatl.com ([192.133.217.33])
+	by rtp-core-1.cisco.com (8.13.8/8.13.8) with ESMTP id m6EGUY4T003972
+	for <linux-mips@linux-mips.org>; Mon, 14 Jul 2008 16:30:34 GMT
+Received: from default.com ([192.133.217.33]) by sausatlsmtp1.sciatl.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 14 Jul 2008 12:30:33 -0400
+Received: from sausatlbhs01.corp.sa.net ([192.133.216.76]) by sausatlsmtp1.sciatl.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 14 Jul 2008 12:30:32 -0400
+Received: from SAUSCUPEXCH01.corp.sa.net ([64.101.22.160]) by sausatlbhs01.corp.sa.net with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 14 Jul 2008 12:30:31 -0400
+x-mimeole: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----_=_NextPart_001_01C8E5CE.EE641206"
+Subject: sparse or discontiguous  memory on 32bit mips platform
+Date:	Mon, 14 Jul 2008 09:30:30 -0700
+Message-ID: <D331130DD3DA194B96EF57DA3415F50A026331BB@SAUSCUPEXCH01.corp.sa.net>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: sparse or discontiguous  memory on 32bit mips platform
+Thread-Index: Acjlzu5Yjal8D5ipT+yVN4T1NoaG1g==
+From:	"Sundius, Michael" <michael.sundius@sciatl.com>
+To:	<linux-mips@linux-mips.org>
+Cc:	<msundius@sundius.com>
+X-OriginalArrivalTime: 14 Jul 2008 16:30:31.0540 (UTC) FILETIME=[EEF95340:01C8E5CE]
+X-ST-MF-Message-Resent:	7/14/2008 12:30
+Authentication-Results:	rtp-dkim-2; header.From=michael.sundius@sciatl.com; dkim=neutral
+Return-Path: <michael.sundius@sciatl.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19830
+X-archive-position: 19831
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: michael.sundius@sciatl.com
 Precedence: bulk
 X-list: linux-mips
 
-This is the LASAT part of the mips_machtype removal.
+This is a multi-part message in MIME format.
 
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
----
+------_=_NextPart_001_01C8E5CE.EE641206
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-This patch is against the queue tree.
+Hi, 
 
- arch/mips/lasat/interrupt.c    |   21 ++++++++-------------
- arch/mips/lasat/lasat_board.c  |    3 +--
- arch/mips/lasat/prom.c         |    8 +++-----
- arch/mips/lasat/serial.c       |    3 +--
- arch/mips/lasat/setup.c        |    8 +++++---
- arch/mips/pci/pci-lasat.c      |   14 ++++----------
- include/asm-mips/bootinfo.h    |    6 ------
- include/asm-mips/lasat/lasat.h |    2 ++
- 8 files changed, 24 insertions(+), 41 deletions(-)
+I'm looking into turning on either sparse memory or discontiguous
+memory for a 32 Mips platform (single processor) since we have 2 
+large memory banks that are nowhere near each other in physical memory.
 
-diff --git a/arch/mips/lasat/interrupt.c b/arch/mips/lasat/interrupt.c
-index a56c150..d1ac7a2 100644
---- a/arch/mips/lasat/interrupt.c
-+++ b/arch/mips/lasat/interrupt.c
-@@ -22,8 +22,8 @@
- #include <linux/interrupt.h>
- #include <linux/irq.h>
- 
--#include <asm/bootinfo.h>
- #include <asm/irq_cpu.h>
-+#include <asm/lasat/lasat.h>
- #include <asm/lasat/lasatint.h>
- 
- #include <irq.h>
-@@ -112,23 +112,18 @@ void __init arch_init_irq(void)
- {
- 	int i;
- 
--	switch (mips_machtype) {
--	case MACH_LASAT_100:
--		lasat_int_status = (void *)LASAT_INT_STATUS_REG_100;
--		lasat_int_mask = (void *)LASAT_INT_MASK_REG_100;
--		lasat_int_mask_shift = LASATINT_MASK_SHIFT_100;
--		get_int_status = get_int_status_100;
--		*lasat_int_mask = 0;
--		break;
--	case MACH_LASAT_200:
-+	if (IS_LASAT_200()) {
- 		lasat_int_status = (void *)LASAT_INT_STATUS_REG_200;
- 		lasat_int_mask = (void *)LASAT_INT_MASK_REG_200;
- 		lasat_int_mask_shift = LASATINT_MASK_SHIFT_200;
- 		get_int_status = get_int_status_200;
- 		*lasat_int_mask &= 0xffff;
--		break;
--	default:
--		panic("arch_init_irq: mips_machtype incorrect");
-+	} else {
-+		lasat_int_status = (void *)LASAT_INT_STATUS_REG_100;
-+		lasat_int_mask = (void *)LASAT_INT_MASK_REG_100;
-+		lasat_int_mask_shift = LASATINT_MASK_SHIFT_100;
-+		get_int_status = get_int_status_100;
-+		*lasat_int_mask = 0;
- 	}
- 
- 	mips_cpu_irq_init();
-diff --git a/arch/mips/lasat/lasat_board.c b/arch/mips/lasat/lasat_board.c
-index 31e328b..577bb46 100644
---- a/arch/mips/lasat/lasat_board.c
-+++ b/arch/mips/lasat/lasat_board.c
-@@ -24,7 +24,6 @@
- #include <linux/string.h>
- #include <linux/ctype.h>
- #include <linux/mutex.h>
--#include <asm/bootinfo.h>
- #include <asm/addrspace.h>
- #include "at93c.h"
- /* New model description table */
-@@ -66,7 +65,7 @@ static void init_flash_sizes(void)
- 	ls[LASAT_MTD_SERVICE] = 0xC0000;
- 	ls[LASAT_MTD_NORMAL] = 0x100000;
- 
--	if (mips_machtype == MACH_LASAT_100) {
-+	if (!IS_LASAT_200()) {
- 		lasat_board_info.li_flash_base = 0x1e000000;
- 
- 		lb[LASAT_MTD_BOOTLOADER] = 0x1e400000;
-diff --git a/arch/mips/lasat/prom.c b/arch/mips/lasat/prom.c
-index 209edcc..6acc6cb 100644
---- a/arch/mips/lasat/prom.c
-+++ b/arch/mips/lasat/prom.c
-@@ -86,18 +86,16 @@ void __init prom_init(void)
- 
- 	setup_prom_vectors();
- 
--	if (current_cpu_data.cputype == CPU_R5000) {
-+	if (IS_LASAT_200()) {
- 		printk(KERN_INFO "LASAT 200 board\n");
--		mips_machtype = MACH_LASAT_200;
- 		lasat_ndelay_divider = LASAT_200_DIVIDER;
-+		at93c = &at93c_defs[1];
- 	} else {
- 		printk(KERN_INFO "LASAT 100 board\n");
--		mips_machtype = MACH_LASAT_100;
- 		lasat_ndelay_divider = LASAT_100_DIVIDER;
-+		at93c = &at93c_defs[0];
- 	}
- 
--	at93c = &at93c_defs[mips_machtype];
--
- 	lasat_init_board_info();		/* Read info from EEPROM */
- 
- 	/* Get the command line */
-diff --git a/arch/mips/lasat/serial.c b/arch/mips/lasat/serial.c
-index 205bd39..5bcb6e8 100644
---- a/arch/mips/lasat/serial.c
-+++ b/arch/mips/lasat/serial.c
-@@ -23,7 +23,6 @@
- #include <linux/platform_device.h>
- #include <linux/serial_8250.h>
- 
--#include <asm/bootinfo.h>
- #include <asm/lasat/lasat.h>
- #include <asm/lasat/serial.h>
- 
-@@ -47,7 +46,7 @@ static __init int lasat_uart_add(void)
- 	if (!pdev)
- 		return -ENOMEM;
- 
--	if (mips_machtype == MACH_LASAT_100) {
-+	if (!IS_LASAT_200()) {
- 		lasat_serial_res[0].start = KSEG1ADDR(LASAT_UART_REGS_BASE_100);
- 		lasat_serial_res[0].end = lasat_serial_res[0].start + LASAT_UART_REGS_SHIFT_100 * 8 - 1;
- 		lasat_serial_res[0].flags = IORESOURCE_MEM;
-diff --git a/arch/mips/lasat/setup.c b/arch/mips/lasat/setup.c
-index e072da4..dbd3163 100644
---- a/arch/mips/lasat/setup.c
-+++ b/arch/mips/lasat/setup.c
-@@ -127,9 +127,11 @@ void __init plat_time_init(void)
- void __init plat_mem_setup(void)
- {
- 	int i;
--	lasat_misc  = &lasat_misc_info[mips_machtype];
-+	int lasat_type = IS_LASAT_200() ? 1 : 0;
-+
-+	lasat_misc  = &lasat_misc_info[lasat_type];
- #ifdef CONFIG_PICVUE
--	picvue = &pvc_defs[mips_machtype];
-+	picvue = &pvc_defs[lasat_type];
- #endif
- 
- 	/* Set up panic notifier */
-@@ -140,7 +142,7 @@ void __init plat_mem_setup(void)
- 	lasat_reboot_setup();
- 
- #ifdef CONFIG_DS1603
--	ds1603 = &ds_defs[mips_machtype];
-+	ds1603 = &ds_defs[lasat_type];
- #endif
- 
- #ifdef DYNAMIC_SERIAL_INIT
-diff --git a/arch/mips/pci/pci-lasat.c b/arch/mips/pci/pci-lasat.c
-index e70ae32..a98e543 100644
---- a/arch/mips/pci/pci-lasat.c
-+++ b/arch/mips/pci/pci-lasat.c
-@@ -10,7 +10,7 @@
- #include <linux/pci.h>
- #include <linux/types.h>
- 
--#include <asm/bootinfo.h>
-+#include <asm/lasat/lasat.h>
- 
- #include <irq.h>
- 
-@@ -39,16 +39,10 @@ static int __init lasat_pci_setup(void)
- {
- 	printk(KERN_DEBUG "PCI: starting\n");
- 
--	switch (mips_machtype) {
--	case MACH_LASAT_100:
--		lasat_pci_controller.pci_ops = &gt64xxx_pci0_ops;
--		break;
--	case MACH_LASAT_200:
-+	if (IS_LASAT_200())
- 		lasat_pci_controller.pci_ops = &nile4_pci_ops;
--		break;
--	default:
--		panic("pcibios_init: mips_machtype incorrect");
--	}
-+	else
-+		lasat_pci_controller.pci_ops = &gt64xxx_pci0_ops;
- 
- 	register_pci_controller(&lasat_pci_controller);
- 
-diff --git a/include/asm-mips/bootinfo.h b/include/asm-mips/bootinfo.h
-index 51dbec9..d39e143 100644
---- a/include/asm-mips/bootinfo.h
-+++ b/include/asm-mips/bootinfo.h
-@@ -41,12 +41,6 @@
- #define  MACH_DS5900		10	/* DECsystem 5900		*/
- 
- /*
-- * Valid machtype for group LASAT
-- */
--#define  MACH_LASAT_100		0	/* Masquerade II/SP100/SP50/SP25 */
--#define  MACH_LASAT_200		1	/* Masquerade PRO/SP200 */
--
--/*
-  * Valid machtype for group PMC-MSP
-  */
- #define MACH_MSP4200_EVAL       0	/* PMC-Sierra MSP4200 Evaluation */
-diff --git a/include/asm-mips/lasat/lasat.h b/include/asm-mips/lasat/lasat.h
-index ea04d92..caeba1e 100644
---- a/include/asm-mips/lasat/lasat.h
-+++ b/include/asm-mips/lasat/lasat.h
-@@ -240,6 +240,8 @@ static inline void lasat_ndelay(unsigned int ns)
- 	__delay(ns / lasat_ndelay_divider);
- }
- 
-+#define IS_LASAT_200()     (current_cpu_data.cputype == CPU_R5000)
-+
- #endif /* !defined (_LANGUAGE_ASSEMBLY) */
- 
- #define LASAT_SERVICEMODE_MAGIC_1     0xdeadbeef
+What has been done in hardware, has been done and so be it.
+But since we are an embedded system, we do have memroy constraints and
+wish to conserve as much space as possible, we are trying to avoid creati=
+ng 
+pagetables for the whole space. 
+
+That said, I have a few questions.
+
+1) Are there any 32 Mips platforms where either sparsemem or
+discontigmem have been supported?
+
+2) It seems like sparesemem is the wave of the future, am I 
+correct in assuming that this is simmplier / more efficient /
+"better" way to go? 
+
+3) Is there anywhere (besides the code) where I can find an article
+or some documentation on how sparsemem and/or discontig work? or how
+to go about adding support for them in a here to for unsupported 
+platform?
+
+all info, pointers, hints, advice and comments are much appreciated. 
+
+thanks
+Mike
+
+
+
+
+     - - - - -                              Cisco                        =
+    - - - - -         
+This e-mail and any attachments may contain information which is confiden=
+tial, 
+proprietary, privileged or otherwise protected by law. The information is=
+ solely 
+intended for the named addressee (or a person responsible for delivering =
+it to 
+the addressee). If you are not the intended recipient of this message, yo=
+u are 
+not authorized to read, print, retain, copy or disseminate this message o=
+r any 
+part of it. If you have received this e-mail in error, please notify the =
+sender 
+immediately by return e-mail and delete it from your computer.
+------_=_NextPart_001_01C8E5CE.EE641206
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; charset=3Diso-885=
+9-1">
+<META NAME=3D"Generator" CONTENT=3D"MS Exchange Server version 6.5.7652.2=
+4">
+<TITLE>sparse or discontiguous  memory on 32bit mips platform</TITLE>
+</HEAD>
+<BODY><P>
+<!-- Converted from text/plain format -->
+
+<P><FONT SIZE=3D2>Hi,<BR>
+<BR>
+I'm looking into turning on either sparse memory or discontiguous<BR>
+memory for a 32 Mips platform (single processor) since we have 2<BR>
+large memory banks that are nowhere near each other in physical memory.<B=
+R>
+<BR>
+What has been done in hardware, has been done and so be it.<BR>
+But since we are an embedded system, we do have memroy constraints and<BR=
+>
+wish to conserve as much space as possible, we are trying to avoid creati=
+ng<BR>
+pagetables for the whole space.<BR>
+<BR>
+That said, I have a few questions.<BR>
+<BR>
+1) Are there any 32 Mips platforms where either sparsemem or<BR>
+discontigmem have been supported?<BR>
+<BR>
+2) It seems like sparesemem is the wave of the future, am I<BR>
+correct in assuming that this is simmplier / more efficient /<BR>
+&quot;better&quot; way to go?<BR>
+<BR>
+3) Is there anywhere (besides the code) where I can find an article<BR>
+or some documentation on how sparsemem and/or discontig work? or how<BR>
+to go about adding support for them in a here to for unsupported<BR>
+platform?<BR>
+<BR>
+all info, pointers, hints, advice and comments are much appreciated.<BR>
+<BR>
+thanks<BR>
+Mike</FONT>
+</P>
+
+</P>
+<HR style=3D"HEIGHT: 1px">
+
+<DIV></DIV>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - - - - 
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cisco&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp; - - - - 
+-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<BR>This e-mail an=
+d any 
+attachments may contain information which is confidential, <BR>proprietar=
+y, 
+privileged or otherwise protected by law. The information is solely <BR>i=
+ntended 
+for the named addressee (or a person responsible for delivering it to <BR=
+>the 
+addressee). If you are not the intended recipient of this message, you ar=
+e 
+<BR>not authorized to read, print, retain, copy or disseminate this messa=
+ge or 
+any <BR>part of it. If you have received this e-mail in error, please not=
+ify the 
+sender <BR>immediately by return e-mail and delete it from your computer.=
+</BODY>
+</HTML>
+
+------_=_NextPart_001_01C8E5CE.EE641206--

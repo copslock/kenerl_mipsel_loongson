@@ -1,44 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jul 2008 12:02:29 +0100 (BST)
-Received: from mail2.ict.tuwien.ac.at ([128.131.81.21]:65202 "EHLO
-	mail.ict.tuwien.ac.at") by ftp.linux-mips.org with ESMTP
-	id S28577238AbYGNLC1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 14 Jul 2008 12:02:27 +0100
-Received: from pc81-11.ict.tuwien.ac.at ([128.131.81.11])
-	by mail.ict.tuwien.ac.at with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-	(Exim 4.69)
-	(envelope-from <krapfenbauer@ict.tuwien.ac.at>)
-	id 1KILp4-0000he-NP
-	for linux-mips@linux-mips.org; Mon, 14 Jul 2008 13:02:26 +0200
-Message-ID: <487B3242.60202@ict.tuwien.ac.at>
-Date:	Mon, 14 Jul 2008 13:02:26 +0200
-From:	Harald Krapfenbauer <krapfenbauer@ict.tuwien.ac.at>
-Organization: Institute of Computer Technology, Vienna University of Technology
-User-Agent: Thunderbird 2.0.0.14 (X11/20080502)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jul 2008 12:08:37 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:43189 "EHLO
+	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
+	with ESMTP id S28577370AbYGNLIf (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 14 Jul 2008 12:08:35 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m6EB8edt013975;
+	Mon, 14 Jul 2008 12:08:41 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m6EB8c9l013974;
+	Mon, 14 Jul 2008 12:08:38 +0100
+Date:	Mon, 14 Jul 2008 12:08:38 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH][1/5][MIPS] txx9_board_vec set directly without
+	mips_machtype
+Message-ID: <20080714110838.GA10379@linux-mips.org>
+References: <20080713195155.08c4285d.yoichi_yuasa@tripeaks.co.jp>
 MIME-Version: 1.0
-To:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: ptrace question
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 128.131.81.11
-X-SA-Exim-Mail-From: krapfenbauer@ict.tuwien.ac.at
-X-SA-Exim-Scanned: No (on mail.ict.tuwien.ac.at); SAEximRunCond expanded to false
-Return-Path: <krapfenbauer@ict.tuwien.ac.at>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20080713195155.08c4285d.yoichi_yuasa@tripeaks.co.jp>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19815
+X-archive-position: 19816
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: krapfenbauer@ict.tuwien.ac.at
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+On Sun, Jul 13, 2008 at 07:51:55PM +0900, Yoichi Yuasa wrote:
 
-If I write memory (maybe with instructions) of a traced application with
-the ptrace() call, are the caches invalidated automatically, i.e. can I
-assume that the processor uses the newly written values after continuing?
+All five queued up for 2.6.27.
 
-Thanks + best regards,
-Harald
+Thanks, Yoichi-San!
+
+  Ralf

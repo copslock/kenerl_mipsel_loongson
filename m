@@ -1,61 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jul 2008 14:56:41 +0100 (BST)
-Received: from web51905.mail.re2.yahoo.com ([206.190.48.68]:45648 "HELO
-	web51905.mail.re2.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20038843AbYGNN4j (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 14 Jul 2008 14:56:39 +0100
-Received: (qmail 44958 invoked by uid 60001); 14 Jul 2008 13:55:42 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Received:X-Mailer:Date:From:Reply-To:Subject:To:In-Reply-To:MIME-Version:Content-Type:Message-ID;
-  b=wNsn2ppAW7sN2z9li/sFtodGIObyZVZnCRKglDLha5gYnVi2MX84Zky4coM6YymXzIBDmSGWuAOIf+Vmi8qmmec+4TLFmuVa9OuyOVgtH2Dp7pu9ww5XMLJSk8H+HMpOCRz67L2fj10MlZASzugtbBSC40lC+sWsQLsdSHzuigM=;
-Received: from [155.104.37.17] by web51905.mail.re2.yahoo.com via HTTP; Mon, 14 Jul 2008 06:55:42 PDT
-X-Mailer: YahooMailWebService/0.7.199
-Date:	Mon, 14 Jul 2008 06:55:42 -0700 (PDT)
-From:	Sean Parker <supinlick@yahoo.com>
-Reply-To: supinlick@yahoo.com
-Subject: Accessing DDR DCR registers in init_mem - PMC RM9000
-To:	linux-mips@linux-mips.org
-In-Reply-To: <23157.12397.qm@web37506.mail.mud.yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jul 2008 15:07:42 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:2768 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S28577393AbYGNOHk (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 14 Jul 2008 15:07:40 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1KIOiJ-0007NP-00; Mon, 14 Jul 2008 16:07:39 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id E96BADE7B3; Mon, 14 Jul 2008 16:05:39 +0200 (CEST)
+Date:	Mon, 14 Jul 2008 16:05:39 +0200
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Remove mips_machtype from ARC based machines
+Message-ID: <20080714140539.GA28056@alpha.franken.de>
+References: <20080714131140.6B5E0DE7BA@solo.franken.de> <20080714133447.GA5963@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Message-ID: <452355.43944.qm@web51905.mail.re2.yahoo.com>
-Return-Path: <supinlick@yahoo.com>
+Content-Disposition: inline
+In-Reply-To: <20080714133447.GA5963@linux-mips.org>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19826
+X-archive-position: 19827
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: supinlick@yahoo.com
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
+On Mon, Jul 14, 2008 at 02:34:47PM +0100, Ralf Baechle wrote:
+> It may be a little academic at this stage but the Acer PICA has no EISA
+> but just ISA slots.
 
+I knew there one JAZZ maschine with ISA only, but I believe it doesn't
+make much difference without a register EISA root bus. So we could
+also kill it completly and I'll add it, if the EISA bits are sorted.
 
- Hello - 
- 
-   We're trying to determine dynamically the DDR DCR
- register values from within setup.c, init_mem(), so that we
- can remove the hard-coded 256MB RAM size (and not rely on
- cmd-line args) From documentation I've read (not evry
- clear for a MIPS newbie) it appears I need to setup a TLB
- entry to access phys mem above 0x80000000. (PMON already
- sets up a range for Compact Flash)
- 
-   I setup a TLB entry for that region ( 0xFF080000, making
- 3 total entries setup in PMON) but I still get an exception
- in setup.c when I try to read the DCR reg.
- 
-   Is it as simple as setting up a TLB entry? I can't
- find examples for how to access registeres in various
- segments of physical memory (in kernel mode) does anyone
- know of a good resource for that kind of stuff?
- 
-   Any suggestions?
- 
-   Thanks
-    Sean
+Thomas.
 
-
-      
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

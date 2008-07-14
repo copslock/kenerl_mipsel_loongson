@@ -1,45 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jul 2008 11:24:47 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:49102 "EHLO
-	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S20038741AbYGNKYp (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 14 Jul 2008 11:24:45 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m6EAOor3006320;
-	Mon, 14 Jul 2008 11:24:50 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m6EAOlU9006319;
-	Mon, 14 Jul 2008 11:24:48 +0100
-Date:	Mon, 14 Jul 2008 11:24:47 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH v2] IP22: Add platform device for Indy volume buttons
-Message-ID: <20080714102447.GB32633@linux-mips.org>
-References: <20080711210303.8377DC2EC0@solo.franken.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jul 2008 12:02:29 +0100 (BST)
+Received: from mail2.ict.tuwien.ac.at ([128.131.81.21]:65202 "EHLO
+	mail.ict.tuwien.ac.at") by ftp.linux-mips.org with ESMTP
+	id S28577238AbYGNLC1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 14 Jul 2008 12:02:27 +0100
+Received: from pc81-11.ict.tuwien.ac.at ([128.131.81.11])
+	by mail.ict.tuwien.ac.at with esmtpsa (TLS1.0:DHE_RSA_AES_256_CBC_SHA1:32)
+	(Exim 4.69)
+	(envelope-from <krapfenbauer@ict.tuwien.ac.at>)
+	id 1KILp4-0000he-NP
+	for linux-mips@linux-mips.org; Mon, 14 Jul 2008 13:02:26 +0200
+Message-ID: <487B3242.60202@ict.tuwien.ac.at>
+Date:	Mon, 14 Jul 2008 13:02:26 +0200
+From:	Harald Krapfenbauer <krapfenbauer@ict.tuwien.ac.at>
+Organization: Institute of Computer Technology, Vienna University of Technology
+User-Agent: Thunderbird 2.0.0.14 (X11/20080502)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080711210303.8377DC2EC0@solo.franken.de>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+To:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: ptrace question
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 128.131.81.11
+X-SA-Exim-Mail-From: krapfenbauer@ict.tuwien.ac.at
+X-SA-Exim-Scanned: No (on mail.ict.tuwien.ac.at); SAEximRunCond expanded to false
+Return-Path: <krapfenbauer@ict.tuwien.ac.at>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19814
+X-archive-position: 19815
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: krapfenbauer@ict.tuwien.ac.at
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jul 11, 2008 at 11:03:03PM +0200, Thomas Bogendoerfer wrote:
+Hello,
 
-> Create platform device for Indy volume buttons and remove button
-> handling from ip22-reset.c
-> 
-> Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+If I write memory (maybe with instructions) of a traced application with
+the ptrace() call, are the caches invalidated automatically, i.e. can I
+assume that the processor uses the newly written values after continuing?
 
-Thanks, queued for 2.6.27.
-
-  Ralf
+Thanks + best regards,
+Harald

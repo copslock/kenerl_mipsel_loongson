@@ -1,47 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jul 2008 17:30:46 +0100 (BST)
-Received: from rtp-iport-1.cisco.com ([64.102.122.148]:30793 "EHLO
-	rtp-iport-1.cisco.com") by ftp.linux-mips.org with ESMTP
-	id S28578063AbYGNQao (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 14 Jul 2008 17:30:44 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 14 Jul 2008 17:31:57 +0100 (BST)
+Received: from sj-iport-2.cisco.com ([171.71.176.71]:22369 "EHLO
+	sj-iport-2.cisco.com") by ftp.linux-mips.org with ESMTP
+	id S20038976AbYGNQby (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 14 Jul 2008 17:31:54 +0100
 X-IronPort-AV: E=Sophos;i="4.30,360,1212364800"; 
-   d="scan'208,217";a="14240665"
-Received: from rtp-dkim-2.cisco.com ([64.102.121.159])
-  by rtp-iport-1.cisco.com with ESMTP; 14 Jul 2008 16:30:34 +0000
-Received: from rtp-core-1.cisco.com (rtp-core-1.cisco.com [64.102.124.12])
-	by rtp-dkim-2.cisco.com (8.12.11/8.12.11) with ESMTP id m6EGUY4w007658
-	for <linux-mips@linux-mips.org>; Mon, 14 Jul 2008 12:30:34 -0400
-Received: from sausatlsmtp1.sciatl.com ([192.133.217.33])
-	by rtp-core-1.cisco.com (8.13.8/8.13.8) with ESMTP id m6EGUY4T003972
-	for <linux-mips@linux-mips.org>; Mon, 14 Jul 2008 16:30:34 GMT
-Received: from default.com ([192.133.217.33]) by sausatlsmtp1.sciatl.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 14 Jul 2008 12:30:33 -0400
-Received: from sausatlbhs01.corp.sa.net ([192.133.216.76]) by sausatlsmtp1.sciatl.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 14 Jul 2008 12:30:32 -0400
-Received: from SAUSCUPEXCH01.corp.sa.net ([64.101.22.160]) by sausatlbhs01.corp.sa.net with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 14 Jul 2008 12:30:31 -0400
+   d="scan'208,217";a="65276019"
+Received: from sj-dkim-4.cisco.com ([171.71.179.196])
+  by sj-iport-2.cisco.com with ESMTP; 14 Jul 2008 16:30:53 +0000
+Received: from sj-core-1.cisco.com (sj-core-1.cisco.com [171.71.177.237])
+	by sj-dkim-4.cisco.com (8.12.11/8.12.11) with ESMTP id m6EGUrse006252
+	for <linux-mips@linux-mips.org>; Mon, 14 Jul 2008 09:30:53 -0700
+Received: from sausatlsmtp2.sciatl.com ([192.133.217.159])
+	by sj-core-1.cisco.com (8.13.8/8.13.8) with ESMTP id m6EGUr71000358
+	for <linux-mips@linux-mips.org>; Mon, 14 Jul 2008 16:30:53 GMT
+Received: from default.com ([192.133.217.159]) by sausatlsmtp2.sciatl.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 14 Jul 2008 12:30:47 -0400
+Received: from sausatlbhs02.corp.sa.net ([192.133.216.42]) by sausatlsmtp2.sciatl.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 14 Jul 2008 12:30:45 -0400
+Received: from SAUSCUPEXCH01.corp.sa.net ([64.101.22.160]) by sausatlbhs02.corp.sa.net with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 14 Jul 2008 12:30:45 -0400
 x-mimeole: Produced By Microsoft Exchange V6.5
 Content-class: urn:content-classes:message
 MIME-Version: 1.0
 Content-Type: multipart/alternative;
-	boundary="----_=_NextPart_001_01C8E5CE.EE641206"
+	boundary="----_=_NextPart_001_01C8E5CE.F68CA842"
 Subject: sparse or discontiguous  memory on 32bit mips platform
-Date:	Mon, 14 Jul 2008 09:30:30 -0700
-Message-ID: <D331130DD3DA194B96EF57DA3415F50A026331BB@SAUSCUPEXCH01.corp.sa.net>
+Date:	Mon, 14 Jul 2008 09:30:44 -0700
+Message-ID: <D331130DD3DA194B96EF57DA3415F50A026331BC@SAUSCUPEXCH01.corp.sa.net>
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 Thread-Topic: sparse or discontiguous  memory on 32bit mips platform
-Thread-Index: Acjlzu5Yjal8D5ipT+yVN4T1NoaG1g==
+Thread-Index: AcjlzvaDwoNenOH2RumoeoHrBZYXVA==
 From:	"Sundius, Michael" <michael.sundius@sciatl.com>
 To:	<linux-mips@linux-mips.org>
 Cc:	<msundius@sundius.com>
-X-OriginalArrivalTime: 14 Jul 2008 16:30:31.0540 (UTC) FILETIME=[EEF95340:01C8E5CE]
+X-OriginalArrivalTime: 14 Jul 2008 16:30:45.0235 (UTC) FILETIME=[F7230430:01C8E5CE]
 X-ST-MF-Message-Resent:	7/14/2008 12:30
-Authentication-Results:	rtp-dkim-2; header.From=michael.sundius@sciatl.com; dkim=neutral
+Authentication-Results:	sj-dkim-4; header.From=michael.sundius@sciatl.com; dkim=neutral
 Return-Path: <michael.sundius@sciatl.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19831
+X-archive-position: 19832
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,7 +51,7 @@ X-list: linux-mips
 
 This is a multi-part message in MIME format.
 
-------_=_NextPart_001_01C8E5CE.EE641206
+------_=_NextPart_001_01C8E5CE.F68CA842
 Content-Type: text/plain;
 	charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -105,7 +105,7 @@ r any
 part of it. If you have received this e-mail in error, please notify the =
 sender 
 immediately by return e-mail and delete it from your computer.
-------_=_NextPart_001_01C8E5CE.EE641206
+------_=_NextPart_001_01C8E5CE.F68CA842
 Content-Type: text/html;
 	charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -184,4 +184,4 @@ sender <BR>immediately by return e-mail and delete it from your computer.=
 </BODY>
 </HTML>
 
-------_=_NextPart_001_01C8E5CE.EE641206--
+------_=_NextPart_001_01C8E5CE.F68CA842--

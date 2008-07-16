@@ -1,94 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2008 08:52:49 +0100 (BST)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:53938 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S28574021AbYGPHwr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 16 Jul 2008 08:52:47 +0100
-Received: (qmail 4392 invoked by uid 1000); 16 Jul 2008 09:52:46 +0200
-Date:	Wed, 16 Jul 2008 09:52:46 +0200
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	linux-mips@linux-mips.org
-Subject: 2.6.26-gitX: insane number of section headers
-Message-ID: <20080716075246.GA3184@roarinelk.homelinux.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <mano@roarinelk.homelinux.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2008 09:01:57 +0100 (BST)
+Received: from smtp.movial.fi ([62.236.91.34]:20879 "EHLO smtp.movial.fi")
+	by ftp.linux-mips.org with ESMTP id S28575367AbYGPIBz (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 16 Jul 2008 09:01:55 +0100
+Received: from localhost (mailscanner.hel.movial.fi [172.17.81.9])
+	by smtp.movial.fi (Postfix) with ESMTP id AC76DC80EA;
+	Wed, 16 Jul 2008 11:01:49 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at movial.fi
+Received: from smtp.movial.fi ([62.236.91.34])
+	by localhost (mailscanner.hel.movial.fi [172.17.81.9]) (amavisd-new, port 10026)
+	with ESMTP id w93JOI1xRdDw; Wed, 16 Jul 2008 11:01:49 +0300 (EEST)
+Received: from sd048.hel.movial.fi (sd048.hel.movial.fi [172.17.49.48])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp.movial.fi (Postfix) with ESMTP id 9115CC8084;
+	Wed, 16 Jul 2008 11:01:49 +0300 (EEST)
+Received: by sd048.hel.movial.fi (Postfix, from userid 30120)
+	id 734BDB4046; Wed, 16 Jul 2008 11:01:49 +0300 (EEST)
+From:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+To:	ralf@linux-mips.org, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/3 part 2] [MIPS] make the pcibios_max_latency variable static
+Date:	Wed, 16 Jul 2008 11:01:49 +0300
+Message-Id: <1216195309-13069-1-git-send-email-dmitri.vorobiev@movial.fi>
+X-Mailer: git-send-email 1.5.6
+In-Reply-To: <1216141052-28005-2-git-send-email-dmitri.vorobiev@movial.fi>
+References: <1216141052-28005-2-git-send-email-dmitri.vorobiev@movial.fi>
+Return-Path: <dvorobye@movial.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19841
+X-archive-position: 19842
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: dmitri.vorobiev@movial.fi
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+Along with making the pcibios_max_latency variable static,
+its declaration needs to be removed from the header file.
 
-Todays 2.6.26-git kernel produces an insane amout of section headers in the
-vmlinux file, one for every function. Is that intentional, or a toolchain
-problem on my side (binutils-2.18, gcc-4.2.4)?
+Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+---
 
-ELF Header:
-  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00
-  Class:                             ELF32
-  Data:                              2's complement, little endian
-  Version:                           1 (current)
-  OS/ABI:                            UNIX - System V
-  ABI Version:                       0
-  Type:                              EXEC (Executable file)
-  Machine:                           MIPS R3000
-  Version:                           0x1
-  Entry point address:               0x801045d0
-  Start of program headers:          52 (bytes into file)
-  Start of section headers:          29726396 (bytes into file)
-  Flags:                             0x50001001, noreorder, o32, mips32
-  Size of this header:               52 (bytes)
-  Size of program headers:           32 (bytes)
-  Number of program headers:         2
-  Size of section headers:           40 (bytes)
-  Number of section headers:         9282
-  Section header string table index: 9279
+Hi Ralf,
 
-Section Headers:
-  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk
-Inf Al
-  [ 0]                   NULL            00000000 000000 000000 00      0
-0  0
-  [ 1] .text             PROGBITS        80100000 002000 009bd0 00  AX  0
-0 32
-  [ 2] .text.run_init_pr PROGBITS        80109bd0 00bbd0 000018 00  AX  0
-0  4
-  [ 3] .text.init_post   PROGBITS        80109be8 00bbe8 0000f0 00  AX  0
-0  4
-  [ 4] .text.name_to_dev PROGBITS        80109cd8 00bcd8 0002dc 00  AX  0
-0  4
-  [ 5] .text.prom_getcmd PROGBITS        80109fb4 00bfb4 00000c 00  AX  0
-0  4
-  [ 6] .text.prom_init_c PROGBITS        80109fc0 00bfc0 0000c4 00  AX  0
-0  4
-  [ 7] .text.prom_getenv PROGBITS        8010a084 00c084 000110 00  AX  0
-0  4
-  [ 8] .text.prom_get_et PROGBITS        8010a194 00c194 000160 00  AX  0
-0  4
-  [ 9] .text.local_enabl PROGBITS        8010a2f4 00c2f4 000048 00  AX  0
-0  4
-  [10] .text.local_disab PROGBITS        8010a33c 00c33c 000048 00  AX  0
-0  4
-  [11] .text.plat_irq_di PROGBITS        8010a384 00c384 000220 00  AX  0
-0  4
-  [12] .text.restore_au1 PROGBITS        8010a5a4 00c5a4 00021c 00  AX  0
-0  4
-  [13] .text.mask_and_ac PROGBITS        8010a7c0 00c7c0 000048 00  AX  0
-0  4
-  [14] .text.mask_and_ac PROGBITS        8010a808 00c808 000048 00  AX  0
-0  4
-  [15] .text.mask_and_ac PROGBITS        8010a850 00c850 000050 00  AX  0
-0  4
-  [16] .text.save_au1xxx PROGBITS        8010a8a0 00c8a0 000154 00  AX  0
+Forgot about this one yesterday, sorry.
 
+Dmitri
 
-Thanks!
-	Manuel Lauss
+ include/asm-mips/pci.h |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+diff --git a/include/asm-mips/pci.h b/include/asm-mips/pci.h
+index d3be834..c205875 100644
+--- a/include/asm-mips/pci.h
++++ b/include/asm-mips/pci.h
+@@ -173,6 +173,5 @@ static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
+ }
+ 
+ extern int pci_probe_only;
+-extern unsigned int pcibios_max_latency;
+ 
+ #endif /* _ASM_PCI_H */
+-- 
+1.5.6

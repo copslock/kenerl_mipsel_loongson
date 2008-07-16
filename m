@@ -1,68 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2008 09:45:00 +0100 (BST)
-Received: from smtp.movial.fi ([62.236.91.34]:21952 "EHLO smtp.movial.fi")
-	by ftp.linux-mips.org with ESMTP id S28581446AbYGPIo5 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 16 Jul 2008 09:44:57 +0100
-Received: from localhost (mailscanner.hel.movial.fi [172.17.81.9])
-	by smtp.movial.fi (Postfix) with ESMTP id 28F24C80EA;
-	Wed, 16 Jul 2008 11:44:52 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at movial.fi
-Received: from smtp.movial.fi ([62.236.91.34])
-	by localhost (mailscanner.hel.movial.fi [172.17.81.9]) (amavisd-new, port 10026)
-	with ESMTP id KIop1fbaT0Iy; Wed, 16 Jul 2008 11:44:52 +0300 (EEST)
-Received: from [172.17.49.48] (sd048.hel.movial.fi [172.17.49.48])
-	by smtp.movial.fi (Postfix) with ESMTP id 0B909C8084;
-	Wed, 16 Jul 2008 11:44:52 +0300 (EEST)
-Message-ID: <487DB503.10105@movial.fi>
-Date:	Wed, 16 Jul 2008 11:44:51 +0300
-From:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
-Organization: Movial Creative Technologies
-User-Agent: Icedove 1.5.0.14eol (X11/20080509)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2008 09:45:25 +0100 (BST)
+Received: from ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk ([217.169.26.28]:61621
+	"EHLO ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk")
+	by ftp.linux-mips.org with ESMTP id S28580432AbYGPIpX (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 16 Jul 2008 09:45:23 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m6G8jMP6023163;
+	Wed, 16 Jul 2008 09:45:22 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m6G8jMPu023162;
+	Wed, 16 Jul 2008 09:45:22 +0100
+Date:	Wed, 16 Jul 2008 09:45:22 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] [MIPS] fix missing prototypes in asm/fpu.h
+Message-ID: <20080716084522.GB22957@linux-mips.org>
+References: <1216141052-28005-1-git-send-email-dmitri.vorobiev@movial.fi> <1216141052-28005-3-git-send-email-dmitri.vorobiev@movial.fi>
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3 part 2] [MIPS] make the pcibios_max_latency	variable
- static
-References: <1216141052-28005-2-git-send-email-dmitri.vorobiev@movial.fi> <1216195309-13069-1-git-send-email-dmitri.vorobiev@movial.fi> <20080716084310.GA22957@linux-mips.org>
-In-Reply-To: <20080716084310.GA22957@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <dmitri.vorobiev@movial.fi>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1216141052-28005-3-git-send-email-dmitri.vorobiev@movial.fi>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19845
+X-archive-position: 19846
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@movial.fi
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Wed, Jul 16, 2008 at 11:01:49AM +0300, Dmitri Vorobiev wrote:
-> 
->> Along with making the pcibios_max_latency variable static,
->> its declaration needs to be removed from the header file.
->>
->> Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
->> ---
->>
->> Hi Ralf,
->>
->> Forgot about this one yesterday, sorry.
-> 
-> No big deal, lmo's internet connection was down for part of the afternoon
-> so I wasn't doing as much patch stuff as I was hoping to ...
-> 
-> I folded part 2 into part 1 of your patch and applied the result.
+On Tue, Jul 15, 2008 at 07:57:31PM +0300, Dmitri Vorobiev wrote:
 
-Thank you, Ralf.
+> While building the Malta defconfig, sparse spat the following
+> warnings:
+> 
+> >>>>>>>>>>>>>>>>>>
+> arch/mips/math-emu/kernel_linkage.c:31:6: warning: symbol
+> 'fpu_emulator_init_fpu' was not declared. Should it be static?
+> 
+> arch/mips/math-emu/kernel_linkage.c:54:5: warning: symbol
+> 'fpu_emulator_save_context' was not declared. Should it be
+> static?
+> 
+> arch/mips/math-emu/kernel_linkage.c:68:5: warning: symbol
+> 'fpu_emulator_restore_context' was not declared. Should it be
+> static?
+> >>>>>>>>>>>>>>>>>>
+> 
+> This patch fixes these errors by adding the proper prototypes
+> to the include/asm-mips/fpu.h header, and actually using this
+> header in the sparse-spotted source file.
 
-Regards,
-Dmitri
+I'm not terribly fond of exporting these private prototypes by making
+their prototypes widely available.  I see it's need to make sparse a more
+productive tool, so I applied the patch though.
 
-> 
-> Thanks,
-> 
->   Ralf
-> 
+Thanks,
+
+  Ralf

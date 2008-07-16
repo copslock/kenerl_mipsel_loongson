@@ -1,42 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2008 09:15:35 +0100 (BST)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:9870 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S28577366AbYGPIPd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 16 Jul 2008 09:15:33 +0100
-Received: (qmail 4536 invoked by uid 1000); 16 Jul 2008 10:15:32 +0200
-Date:	Wed, 16 Jul 2008 10:15:32 +0200
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	linux-mips@linux-mips.org
-Subject: Re: 2.6.26-gitX: insane number of section headers
-Message-ID: <20080716081532.GB3184@roarinelk.homelinux.net>
-References: <20080716075246.GA3184@roarinelk.homelinux.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2008 09:43:14 +0100 (BST)
+Received: from ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk ([217.169.26.28]:58549
+	"EHLO ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk")
+	by ftp.linux-mips.org with ESMTP id S28581349AbYGPInM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 16 Jul 2008 09:43:12 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m6G8hAc7023108;
+	Wed, 16 Jul 2008 09:43:11 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m6G8hAab023107;
+	Wed, 16 Jul 2008 09:43:10 +0100
+Date:	Wed, 16 Jul 2008 09:43:10 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3 part 2] [MIPS] make the pcibios_max_latency
+	variable static
+Message-ID: <20080716084310.GA22957@linux-mips.org>
+References: <1216141052-28005-2-git-send-email-dmitri.vorobiev@movial.fi> <1216195309-13069-1-git-send-email-dmitri.vorobiev@movial.fi>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20080716075246.GA3184@roarinelk.homelinux.net>
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <mano@roarinelk.homelinux.net>
+In-Reply-To: <1216195309-13069-1-git-send-email-dmitri.vorobiev@movial.fi>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19843
+X-archive-position: 19844
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jul 16, 2008 at 09:52:46AM +0200, Manuel Lauss wrote:
-> Hello,
+On Wed, Jul 16, 2008 at 11:01:49AM +0300, Dmitri Vorobiev wrote:
+
+> Along with making the pcibios_max_latency variable static,
+> its declaration needs to be removed from the header file.
 > 
-> Todays 2.6.26-git kernel produces an insane amout of section headers in the
-> vmlinux file, one for every function. Is that intentional, or a toolchain
-> problem on my side (binutils-2.18, gcc-4.2.4)?
+> Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+> ---
+> 
+> Hi Ralf,
+> 
+> Forgot about this one yesterday, sorry.
 
-I see Ralf added -ffunction-sections with commit
-372a775f50347f5c1dd87752b16e5c05ea965790.
+No big deal, lmo's internet connection was down for part of the afternoon
+so I wasn't doing as much patch stuff as I was hoping to ...
 
-Sorry for the noise.
+I folded part 2 into part 1 of your patch and applied the result.
 
-	Manuel Lauss
+Thanks,
+
+  Ralf

@@ -1,109 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2008 16:19:27 +0100 (BST)
-Received: from nelson.telenet-ops.be ([195.130.133.66]:35994 "EHLO
-	nelson.telenet-ops.be") by ftp.linux-mips.org with ESMTP
-	id S28581105AbYGPPTY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 16 Jul 2008 16:19:24 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by nelson.telenet-ops.be (Postfix) with SMTP id 72D4650032;
-	Wed, 16 Jul 2008 17:19:23 +0200 (CEST)
-Received: from anakin.of.borg (78-21-204-88.access.telenet.be [78.21.204.88])
-	by nelson.telenet-ops.be (Postfix) with ESMTP id BE9585001D;
-	Wed, 16 Jul 2008 17:19:20 +0200 (CEST)
-Received: from anakin.of.borg (localhost [127.0.0.1])
-	by anakin.of.borg (8.14.3/8.14.3/Debian-4) with ESMTP id m6GFJJji002341
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Wed, 16 Jul 2008 17:19:20 +0200
-Received: from localhost (geert@localhost)
-	by anakin.of.borg (8.14.3/8.14.3/Submit) with ESMTP id m6GFJBZZ002305;
-	Wed, 16 Jul 2008 17:19:12 +0200
-X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
-Date:	Wed, 16 Jul 2008 17:19:11 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	Ralf Baechle <ralf@linux-mips.org>,
-	Michael Schmitz <schmitz@zirkon.biophys.uni-duesseldorf.de>
-cc:	Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-stable@linux-mips.org,
-	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>,
-	Linux Kernel Development <linux-kernel@vger.kernel.org>,
-	Andi Kleen <andi@firstfloor.org>,
-	Linux/m68k <linux-m68k@vger.kernel.org>
-Subject: Re: MIPS toolchain
-In-Reply-To: <20080716120224.GA6061@linux-mips.org>
-Message-ID: <Pine.LNX.4.64.0807161716290.7399@anakin>
-References: <487DA40C.6010405@movial.fi> <20080716104533.GA7198@linux-mips.org>
- <487DD559.3020802@movial.fi> <20080716120224.GA6061@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2008 17:25:55 +0100 (BST)
+Received: from smtp6.pp.htv.fi ([213.243.153.40]:31961 "EHLO smtp6.pp.htv.fi")
+	by ftp.linux-mips.org with ESMTP id S28581163AbYGPQZx (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 16 Jul 2008 17:25:53 +0100
+Received: from cs181140183.pp.htv.fi (cs181140183.pp.htv.fi [82.181.140.183])
+	by smtp6.pp.htv.fi (Postfix) with ESMTP id 250205BC00C;
+	Wed, 16 Jul 2008 19:25:50 +0300 (EEST)
+Date:	Wed, 16 Jul 2008 19:25:40 +0300
+From:	Adrian Bunk <bunk@kernel.org>
+To:	"Robert P. J. Day" <rpjday@crashcourse.ca>,
+	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: [2.6 patch] mips/sgi-ip22/ip28-berr.c: fix the build
+Message-ID: <20080716162540.GB17329@cs181140183.pp.htv.fi>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <bunk@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19866
+X-archive-position: 19867
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: bunk@kernel.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 16 Jul 2008, Ralf Baechle wrote:
-> Crosscompiling on a Fedora 9 machine running gcc 4.3.0 as its host compiler
-> and gcc 3.4.6 for the mips-linux target results in the following build
-> error:
-> 
-> $ make malta_defconfig
-> $ make
-> cc1: error: unrecognized command line option "-fno-stack-protector"
-> scripts/kconfig/conf -s arch/mips/Kconfig
-> cc1: error: unrecognized command line option "-fno-stack-protector"
-> 
-> The arch Makefile is included too late so the host compiler is feature
-> tested, not the crosscompiler as intended and thus the Makefile applies
-> adds -fno-stack-protector to crosscompiler's flags which fails for gcc
-> 3.4.6.  The bug was introduced by e06b8b98da071f7dd78fb7822991694288047df0
-> in 2.6.25; 35bb5b1e0e84cfa1a8906f7e6a77f391ff315791 did add more flags
-> testing before the arch Makefile inclusion.
-> 
-> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-> 
-> diff --git a/Makefile b/Makefile
-> index bfde079..312fcaa 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -509,6 +509,8 @@ else
->  KBUILD_CFLAGS	+= -O2
->  endif
->  
-> +include $(srctree)/arch/$(SRCARCH)/Makefile
-> +
->  ifneq (CONFIG_FRAME_WARN,0)
->  KBUILD_CFLAGS += $(call cc-option,-Wframe-larger-than=${CONFIG_FRAME_WARN})
->  endif
-> @@ -517,8 +519,6 @@ endif
->  # Arch Makefiles may override this setting
->  KBUILD_CFLAGS += $(call cc-option, -fno-stack-protector)
->  
-> -include $(srctree)/arch/$(SRCARCH)/Makefile
-> -
->  ifdef CONFIG_FRAME_POINTER
->  KBUILD_CFLAGS	+= -fno-omit-frame-pointer -fno-optimize-sibling-calls
->  else
+Commit 52f4f6bbcff5510f662a002ec1219660ea25af62
+([MIPS] Use kernel-supplied ARRAY_SIZE() macro.)
+causes the following compile error:
 
-Thank you!
+<--  snip  -->
 
-Michael Schmitz also saw this problem, but we never found what caused
-it...
+...
+  CC      arch/mips/sgi-ip22/ip28-berr.o
+/home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/sgi-ip22/ip28-berr.c: In function 'ip28_be_interrupt':
+/home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/sgi-ip22/ip28-berr.c:415: error: subscripted value is neither array nor pointer
+/home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/sgi-ip22/ip28-berr.c:415: error: subscripted value is neither array nor pointer
+/home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/sgi-ip22/ip28-berr.c:415: warning: type defaults to 'int' in declaration of 'type name'
+/home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/sgi-ip22/ip28-berr.c:424: error: subscripted value is neither array nor pointer
+/home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/sgi-ip22/ip28-berr.c:424: error: subscripted value is neither array nor pointer
+/home/bunk/linux/kernel-2.6/git/linux-2.6/arch/mips/sgi-ip22/ip28-berr.c:424: warning: type defaults to 'int' in declaration of 'type name'
+make[2]: *** [arch/mips/sgi-ip22/ip28-berr.o] Error 1
 
-Gr{oetje,eeting}s,
+<--  snip  -->
 
-						Geert
+Using ARRAY_SIZE in these places in arch/mips/sgi-ip22/ip28-berr.c was 
+bogus, and therefore gets reverted by this patch.
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Signed-off-by: Adrian Bunk <bunk@kernel.org>
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+---
+
+ arch/mips/sgi-ip22/ip28-berr.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+--- a/arch/mips/sgi-ip22/ip28-berr.c
++++ b/arch/mips/sgi-ip22/ip28-berr.c
+@@ -412,7 +412,7 @@ static int ip28_be_interrupt(const struct pt_regs *regs)
+ 	 * Now we have an asynchronous bus error, speculatively or DMA caused.
+ 	 * Need to search all DMA descriptors for the error address.
+ 	 */
+-	for (i = 0; i < ARRAY_SIZE(hpc3); ++i) {
++	for (i = 0; i < sizeof(hpc3)/sizeof(struct hpc3_stat); ++i) {
+ 		struct hpc3_stat *hp = (struct hpc3_stat *)&hpc3 + i;
+ 		if ((cpu_err_stat & CPU_ERRMASK) &&
+ 		    (cpu_err_addr == hp->ndptr || cpu_err_addr == hp->cbp))
+@@ -421,7 +421,7 @@ static int ip28_be_interrupt(const struct pt_regs *regs)
+ 		    (gio_err_addr == hp->ndptr || gio_err_addr == hp->cbp))
+ 			break;
+ 	}
+-	if (i < ARRAY_SIZE(hpc3)) {
++	if (i < sizeof(hpc3)/sizeof(struct hpc3_stat)) {
+ 		struct hpc3_stat *hp = (struct hpc3_stat *)&hpc3 + i;
+ 		printk(KERN_ERR "at DMA addresses: HPC3 @ %08lx:"
+ 		       " ctl %08x, ndp %08x, cbp %08x\n",

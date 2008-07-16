@@ -1,456 +1,205 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 15 Jul 2008 14:28:02 +0100 (BST)
-Received: from mo31.po.2iij.net ([210.128.50.54]:22027 "EHLO mo31.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S28579239AbYGON17 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 15 Jul 2008 14:27:59 +0100
-Received: by mo.po.2iij.net (mo31) id m6FDRqZE039988; Tue, 15 Jul 2008 22:27:52 +0900 (JST)
-Received: from delta (16.26.30.125.dy.iij4u.or.jp [125.30.26.16])
-	by mbox.po.2iij.net (po-mbox300) id m6FDRoJc015700
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Tue, 15 Jul 2008 22:27:51 +0900
-Date:	Tue, 15 Jul 2008 22:27:51 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Andrew Morton <akpm@linux-foundation.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp,
-	"Antonino A. Daplas" <adaplas@pol.net>,
-	linux-fbdev-devel <linux-fbdev-devel@lists.sourceforge.net>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH v3] add new Cobalt LCD framebuffer driver
-Message-Id: <20080715222751.86091a71.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed 2.4.8 (GTK+ 2.12.9; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Jul 2008 05:08:16 +0100 (BST)
+Received: from kuber.nabble.com ([216.139.236.158]:7620 "EHLO kuber.nabble.com")
+	by ftp.linux-mips.org with ESMTP id S20031390AbYGPEIO (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 16 Jul 2008 05:08:14 +0100
+Received: from isper.nabble.com ([192.168.236.156])
+	by kuber.nabble.com with esmtp (Exim 4.63)
+	(envelope-from <lists@nabble.com>)
+	id 1KIyJI-0006HM-1Q
+	for linux-mips@linux-mips.org; Tue, 15 Jul 2008 21:08:12 -0700
+Message-ID: <18470529.post@talk.nabble.com>
+Date:	Tue, 15 Jul 2008 21:08:12 -0700 (PDT)
+From:	saran1484 <saravanakumar.s@teclever.com>
+To:	linux-mips@linux-mips.org
+Subject: Re: Alchemy DB1200
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+X-Nabble-From: saravanakumar.s@teclever.com
+Return-Path: <lists@nabble.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19838
+X-archive-position: 19839
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: saravanakumar.s@teclever.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
 
-I update cobalt_lcdfb driver.
 
-v3
-- fix read/write count boundary check.
-- add <include/uaccess.h>.
-- fix MODULE_AUTHOR.
+abhiruchi.g wrote:
+> 
+> I am trying to build kernel for DB1200 board.
+> but kernel hangs after the following output:
+> 
+> Image Loaded Successfully.
+> ---------------------------------------------
+> Program Entry Point: 80536000
+> Executing Application
+> Linux version 2.6.22 (abhi@linux-3s9p) (gcc version 4.2.1) #75 PREEMPT Mon
+> Apr 8
+> CPU revision is: 04030201
+> AMD Alchemy Db1200 Board
+> (PRId 04030201) @ 396MHZ
+> Determined physical RAM map:
+> memory: 08000000 @ 00000000 (usable)
+> User-defined physical RAM map:
+> memory: 08000000 @ 00000000 (usable)
+> Initrd not found or empty - disabling initrd
+> Built 1 zonelists.  Total pages: 32512
+> Kernel command line: rootdelay=10 rootfstype=ext2 mem=128M root=/dev/sda1  
+> vid0
+> Primary instruction cache 16kB, physically tagged, 4-way, linesize 32
+> bytes.
+> Primary data cache 16kB, 4-way, linesize 32 bytes.
+> Synthesized TLB refill handler (17 instructions).
+> Synthesized TLB load handler fastpath (34 instructions).
+> Synthesized TLB store handler fastpath (34 instructions).
+> Synthesized TLB modify handler fastpath (33 instructions).
+> PID hash table entries: 512 (order: 9, 2048 bytes)
+> calculating r4koff... 00060ae0(396000)
+> CPU frequency 396.00 MHz
+> Console: colour dummy device 80x25
+> Dentry cache hash table entries: 16384 (order: 4, 65536 bytes)
+> Inode-cache hash table entries: 8192 (order: 3, 32768 bytes)
+> Memory: 124032k/131072k available (3069k kernel code, 6904k reserved,
+> 1238k dat)
+> Mount-cache hash table entries: 512
+> NET: Registered protocol family 16
+> SCSI subsystem initialized
+> usbcore: registered new interface driver usbfs
+> usbcore: registered new interface driver hub
+> usbcore: registered new device driver usb
+> Bluetooth: Core ver 2.11
+> NET: Registered protocol family 31
+> Bluetooth: HCI device and connection manager initialized
+> Bluetooth: HCI socket layer initialized
+> Time: MIPS clocksource has been installed.
+> NET: Registered protocol family 2
+> IP route cache hash table entries: 1024 (order: 0, 4096 bytes)
+> TCP established hash table entries: 4096 (order: 3, 32768 bytes)
+> TCP bind hash table entries: 4096 (order: 2, 16384 bytes)
+> TCP: Hash tables configured (established 4096 bind 4096)
+> TCP reno registered
+> JFS: nTxBlock = 970, nTxLock = 7760
+> io scheduler noop registered
+> io scheduler anticipatory registered
+> io scheduler deadline registered
+> io scheduler cfq registered (default)
+> au1200fb: LCD controller driver for AU1200 processors
+> au1200fb: Panel 0 QVGA_320x240
+> au1200fb: Win 2 0-FS gfx, 1-video, 2-ovly gfx, 3-ovly gfx
+> Panel(QVGA_320x240), 320x240
+> 
+> 
+> 
+> 
+> Console: switching to colour frame buffer device 40x30
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> Serial: 8250/16550 driver $Revision: 1.90 $ 4 ports, IRQ sharing disabled
+> serial8250.9: ttyS0 at MMIO 0x11100000 (irq = 0) is a 16550A
+> serial8250.9: ttyS1 at MMIO 0x11200000 (irq = 8) is a 16550A
+> RAMDISK driver initialized: 16 RAM disks of 4096K size 1024 blocksize
+> loop: module loaded
+> nbd: registered device at major 43
+> Uniform Multi-Platform E-IDE driver Revision: 7.00alpha2
+> ide: Assuming 50MHz system bus speed for PIO modes; override with
+> idebus=xx
+> Au1xxx IDE(builtin) configured for PIO+DDMA(offload)
+> au1xxx-ehci au1xxx-ehci.0: Au1xxx EHCI
+> au1xxx-ehci au1xxx-ehci.0: new USB bus registered, assigned bus number 1
+> au1xxx-ehci au1xxx-ehci.0: irq 29, io mem 0x14020200
+> au1xxx-ehci au1xxx-ehci.0: USB 0.0 started, EHCI 1.00, driver 10 Dec 2004
+> usb usb1: configuration #1 chosen from 1 choice
+> hub 1-0:1.0: USB hub found
+> hub 1-0:1.0: 2 ports detected
+> au1xxx-ohci au1xxx-ohci.0: Au1xxx OHCI
+> au1xxx-ohci au1xxx-ohci.0: new USB bus registered, assigned bus number 2
+> au1xxx-ohci au1xxx-ohci.0: irq 29, io mem 0x14020100
+> usb usb2: configuration #1 chosen from 1 choice
+> hub 2-0:1.0: USB hub found
+> hub 2-0:1.0: 2 ports detected
+> usb 1-1: new high speed USB device using au1xxx-ehci and address 2
+> Initializing USB Mass Storage driver...
+> usb 1-1: configuration #1 chosen from 1 choice
+> hub 1-1:1.0: USB hub found
+> hub 1-1:1.0: 4 ports detected
+> usb 1-1.2: new high speed USB device using au1xxx-ehci and address 3
+> usb 1-1.2: configuration #1 chosen from 1 choice
+> scsi0 : SCSI emulation for USB Mass Storage devices
+> usbcore: registered new interface driver usb-storage
+> USB Mass Storage support registered.
+> mice: PS/2 mouse device common for all mice
+> 
+> After this i cant get the following message i want to know whether i need
+> to change the kernel configuration
+> Bluetooth: HCI USB driver ver 2.9
+> usbcore: registered new interface driver hci_usb
+> usbcore: registered new interface driver hiddev
+> usbcore: registered new interface driver usbhid
+> drivers/hid/usbhid/hid-core.c: v2.6:USB HID core driver
+> TCP cubic registered
+> NET: Registered protocol family 17
+> Bluetooth: L2CAP ver 2.8
+> Bluetooth: L2CAP socket layer initialized
+> Bluetooth: SCO (Voice Link) ver 0.5
+> Bluetooth: SCO socket layer initialized
+> Bluetooth: HIDP (Human Interface Emulation) ver 1.2
+> ieee80211: 802.11 data/management/control stack, git-1.1.13
+> ieee80211: Copyright (C) 2004-2005 Intel Corporation
+> <jketreno@linux.intel.com>
+> drivers/rtc/hctosys.c: unable to open rtc device (rtc0)
+> Waiting 10sec before mounting root device...
+> 
+>  i want my kernle to wait 
+> 
+> scsi 0:0:0:0: Direct-Access     Ut163    USB2FlashStorage 0.00 PQ: 0 ANSI:
+> 2
+> sd 0:0:0:0: [sda] 983808 512-byte hardware sectors (504 MB)
+> sd 0:0:0:0: [sda] Write Protect is off
+> sd 0:0:0:0: [sda] Assuming drive cache: write through
+> sd 0:0:0:0: [sda] 983808 512-byte hardware sectors (504 MB)
+> sd 0:0:0:0: [sda] Write Protect is off
+> sd 0:0:0:0: [sda] Assuming drive cache: write through
+> sda:<7>usb-storage: queuecommand called
+> sda1
+> sd 0:0:0:0: [sda] Attached SCSI removable disk
+> sd 0:0:0:0: Attached scsi generic sg0 type 0
+> VFS: Mounted root (ext2 filesystem) readonly.
+> mount_block_root: name=/dev/root fs=ext2 flags=32769
+> Freeing unused kernel memory: 164k freed
+> Warning: unable to open an initial console.
+> Algorithmics/MIPS FPU Emulator v1.5
+> 
+> 
+> 
+> 
+> what could be the problem?
+> Is this creating any problem?
+> sda:<7>usb-storage: queuecommand called
+> 
+> 
+> 
+> 
+> 
+> 
 
-v2
-- add dpends MIPS_COBALT in Kconfig.
-- add handling of signal_pending().
-- check overflow of read/write count.
-
-v1
-- first release.
-
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Acked-by: Ralf Baechle <ralf@linux-mips.org>
-
-diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/drivers/video/Kconfig linux/drivers/video/Kconfig
---- linux-orig/drivers/video/Kconfig	2008-07-15 15:54:29.554677590 +0900
-+++ linux/drivers/video/Kconfig	2008-07-15 10:37:54.612354756 +0900
-@@ -1951,6 +1951,10 @@ config FB_AM200EPD
-          This enables support for the Metronome display controller used on
-          the E-Ink AM-200 EPD devkit.
- 
-+config FB_COBALT
-+	tristate "Cobalt server LCD frame buffer support"
-+	depends on FB && MIPS_COBALT
-+
- config FB_VIRTUAL
- 	tristate "Virtual Frame Buffer support (ONLY FOR TESTING!)"
- 	depends on FB
-diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/drivers/video/Makefile linux/drivers/video/Makefile
---- linux-orig/drivers/video/Makefile	2008-07-15 15:54:29.562678048 +0900
-+++ linux/drivers/video/Makefile	2008-07-15 10:37:54.612354756 +0900
-@@ -117,6 +117,7 @@ obj-$(CONFIG_FB_SM501)            += sm5
- obj-$(CONFIG_FB_XILINX)           += xilinxfb.o
- obj-$(CONFIG_FB_OMAP)             += omap/
- obj-$(CONFIG_XEN_FBDEV_FRONTEND)  += xen-fbfront.o
-+obj-$(CONFIG_FB_COBALT)           += cobalt_lcdfb.o
- 
- # Platform or fallback drivers go here
- obj-$(CONFIG_FB_UVESA)            += uvesafb.o
-diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/drivers/video/cobalt_lcdfb.c linux/drivers/video/cobalt_lcdfb.c
---- linux-orig/drivers/video/cobalt_lcdfb.c	1970-01-01 09:00:00.000000000 +0900
-+++ linux/drivers/video/cobalt_lcdfb.c	2008-07-15 15:48:52.035443466 +0900
-@@ -0,0 +1,371 @@
-+/*
-+ *  Cobalt server LCD frame buffer driver.
-+ *
-+ *  Copyright (C) 2008  Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, write to the Free Software
-+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
-+ */
-+#include <linux/delay.h>
-+#include <linux/fb.h>
-+#include <linux/init.h>
-+#include <linux/io.h>
-+#include <linux/ioport.h>
-+#include <linux/platform_device.h>
-+#include <linux/uaccess.h>
-+
-+/*
-+ * Cursor position address
-+ * \X  0    1    2  ...  14   15
-+ * Y+----+----+----+---+----+----+
-+ * 0|0x00|0x01|0x02|...|0x0e|0x0f|
-+ *  +----+----+----+---+----+----+
-+ * 1|0x40|0x41|0x42|...|0x4e|0x4f|
-+ *  +----+----+----+---+----+----+
-+ */
-+#define LCD_DATA_REG_OFFSET	0x10
-+#define LCD_XRES_MAX		16
-+#define LCD_YRES_MAX		2
-+#define LCD_CHARS_MAX		32
-+
-+#define LCD_CLEAR		0x01
-+#define LCD_CURSOR_MOVE_HOME	0x02
-+#define LCD_RESET		0x06
-+#define LCD_OFF			0x08
-+#define LCD_CURSOR_OFF		0x0c
-+#define LCD_CURSOR_BLINK_OFF	0x0e
-+#define LCD_CURSOR_ON		0x0f
-+#define LCD_ON			LCD_CURSOR_ON
-+#define LCD_CURSOR_MOVE_LEFT	0x10
-+#define LCD_CURSOR_MOVE_RIGHT	0x14
-+#define LCD_DISPLAY_LEFT	0x18
-+#define LCD_DISPLAY_RIGHT	0x1c
-+#define LCD_PRERESET		0x3f	/* execute 4 times continuously */
-+#define LCD_BUSY		0x80
-+
-+#define LCD_GRAPHIC_MODE	0x40
-+#define LCD_TEXT_MODE		0x80
-+#define LCD_CUR_POS_MASK	0x7f
-+
-+#define LCD_CUR_POS(x)		((x) & LCD_CUR_POS_MASK)
-+#define LCD_TEXT_POS(x)		((x) | LCD_TEXT_MODE)
-+
-+static inline void lcd_write_control(struct fb_info *info, u8 control)
-+{
-+	writel((u32)control << 24, info->screen_base);
-+}
-+
-+static inline u8 lcd_read_control(struct fb_info *info)
-+{
-+	return readl(info->screen_base) >> 24;
-+}
-+
-+static inline void lcd_write_data(struct fb_info *info, u8 data)
-+{
-+	writel((u32)data << 24, info->screen_base + LCD_DATA_REG_OFFSET);
-+}
-+
-+static inline u8 lcd_read_data(struct fb_info *info)
-+{
-+	return readl(info->screen_base + LCD_DATA_REG_OFFSET) >> 24;
-+}
-+
-+static int lcd_busy_wait(struct fb_info *info)
-+{
-+	u8 val = 0;
-+	int timeout = 10, retval = 0;
-+
-+	do {
-+		val = lcd_read_control(info);
-+		val &= LCD_BUSY;
-+		if (val != LCD_BUSY)
-+			break;
-+
-+		if (msleep_interruptible(1))
-+			return -EINTR;
-+
-+		timeout--;
-+	} while (timeout);
-+
-+	if (val == LCD_BUSY)
-+		retval = -EBUSY;
-+
-+	return retval;
-+}
-+
-+static void lcd_clear(struct fb_info *info)
-+{
-+	int i;
-+
-+	for (i = 0; i < 4; i++) {
-+		udelay(150);
-+
-+		lcd_write_control(info, LCD_PRERESET);
-+	}
-+
-+	udelay(150);
-+
-+	lcd_write_control(info, LCD_CLEAR);
-+
-+	udelay(150);
-+
-+	lcd_write_control(info, LCD_RESET);
-+}
-+
-+static struct fb_fix_screeninfo cobalt_lcdfb_fix __initdata = {
-+	.id		= "cobalt-lcd",
-+	.type		= FB_TYPE_TEXT,
-+	.type_aux	= FB_AUX_TEXT_MDA,
-+	.visual		= FB_VISUAL_MONO01,
-+	.line_length	= LCD_XRES_MAX,
-+	.accel		= FB_ACCEL_NONE,
-+};
-+
-+static ssize_t cobalt_lcdfb_read(struct fb_info *info, char __user *buf,
-+				 size_t count, loff_t *ppos)
-+{
-+	char src[LCD_CHARS_MAX];
-+	unsigned long pos;
-+	int len, retval = 0;
-+
-+	pos = *ppos;
-+	if (pos >= LCD_CHARS_MAX || count == 0)
-+		return 0;
-+
-+	if (count > LCD_CHARS_MAX)
-+		count = LCD_CHARS_MAX;
-+
-+	if (pos + count > LCD_CHARS_MAX)
-+		count = LCD_CHARS_MAX - pos;
-+
-+	for (len = 0; len < count; len++) {
-+		retval = lcd_busy_wait(info);
-+		if (retval < 0)
-+			break;
-+
-+		lcd_write_control(info, LCD_TEXT_POS(pos));
-+
-+		retval = lcd_busy_wait(info);
-+		if (retval < 0)
-+			break;
-+
-+		src[len] = lcd_read_data(info);
-+		if (pos == 0x0f)
-+			pos = 0x40;
-+		else
-+			pos++;
-+	}
-+
-+	if (retval < 0 && signal_pending(current))
-+		return -ERESTARTSYS;
-+
-+	if (copy_to_user(buf, src, len))
-+		return -EFAULT;
-+
-+	*ppos += len;
-+
-+	return len;
-+}
-+
-+static ssize_t cobalt_lcdfb_write(struct fb_info *info, const char __user *buf,
-+				  size_t count, loff_t *ppos)
-+{
-+	char dst[LCD_CHARS_MAX];
-+	unsigned long pos;
-+	int len, retval = 0;
-+
-+	pos = *ppos;
-+	if (pos >= LCD_CHARS_MAX || count == 0)
-+		return 0;
-+
-+	if (count > LCD_CHARS_MAX)
-+		count = LCD_CHARS_MAX;
-+
-+	if (pos + count > LCD_CHARS_MAX)
-+		count = LCD_CHARS_MAX - pos;
-+
-+	if (copy_from_user(dst, buf, count))
-+		return -EFAULT;
-+
-+	for (len = 0; len < count; len++) {
-+		retval = lcd_busy_wait(info);
-+		if (retval < 0)
-+			break;
-+
-+		lcd_write_control(info, LCD_TEXT_POS(pos));
-+
-+		retval = lcd_busy_wait(info);
-+		if (retval < 0)
-+			break;
-+
-+		lcd_write_data(info, dst[len]);
-+		if (pos == 0x0f)
-+			pos = 0x40;
-+		else
-+			pos++;
-+	}
-+
-+	if (retval < 0 && signal_pending(current))
-+		return -ERESTARTSYS;
-+
-+	*ppos += len;
-+
-+	return len;
-+}
-+
-+static int cobalt_lcdfb_blank(int blank_mode, struct fb_info *info)
-+{
-+	int retval;
-+
-+	retval = lcd_busy_wait(info);
-+	if (retval < 0)
-+		return retval;
-+
-+	switch (blank_mode) {
-+	case FB_BLANK_UNBLANK:
-+		lcd_write_control(info, LCD_ON);
-+		break;
-+	default:
-+		lcd_write_control(info, LCD_OFF);
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
-+static int cobalt_lcdfb_cursor(struct fb_info *info, struct fb_cursor *cursor)
-+{
-+	u32 x, y;
-+	int retval;
-+
-+	switch (cursor->set) {
-+	case FB_CUR_SETPOS:
-+		x = cursor->image.dx;
-+		y = cursor->image.dy;
-+		if (x >= LCD_XRES_MAX || y >= LCD_YRES_MAX)
-+			return -EINVAL;
-+
-+		retval = lcd_busy_wait(info);
-+		if (retval < 0)
-+			return retval;
-+
-+		lcd_write_control(info,
-+				  LCD_TEXT_POS(info->fix.line_length * y + x));
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	retval = lcd_busy_wait(info);
-+	if (retval < 0)
-+		return retval;
-+
-+	if (cursor->enable)
-+		lcd_write_control(info, LCD_CURSOR_ON);
-+	else
-+		lcd_write_control(info, LCD_CURSOR_OFF);
-+
-+	return 0;
-+}
-+
-+static struct fb_ops cobalt_lcd_fbops = {
-+	.owner		= THIS_MODULE,
-+	.fb_read	= cobalt_lcdfb_read,
-+	.fb_write	= cobalt_lcdfb_write,
-+	.fb_blank	= cobalt_lcdfb_blank,
-+	.fb_cursor	= cobalt_lcdfb_cursor,
-+};
-+
-+static int __init cobalt_lcdfb_probe(struct platform_device *dev)
-+{
-+	struct fb_info *info;
-+	struct resource *res;
-+	int retval;
-+
-+	info = framebuffer_alloc(0, &dev->dev);
-+	if (!info)
-+		return -ENOMEM;
-+
-+	res = platform_get_resource(dev, IORESOURCE_MEM, 0);
-+	if (!res) {
-+		framebuffer_release(info);
-+		return -EBUSY;
-+	}
-+
-+	info->screen_size = res->end - res->start + 1;
-+	info->screen_base = ioremap(res->start, info->screen_size);
-+	info->fbops = &cobalt_lcd_fbops;
-+	info->fix = cobalt_lcdfb_fix;
-+	info->fix.smem_start = res->start;
-+	info->fix.smem_len = info->screen_size;
-+	info->pseudo_palette = NULL;
-+	info->par = NULL;
-+	info->flags = FBINFO_DEFAULT;
-+
-+	retval = register_framebuffer(info);
-+	if (retval < 0) {
-+		iounmap(info->screen_base);
-+		framebuffer_release(info);
-+		return retval;
-+	}
-+
-+	platform_set_drvdata(dev, info);
-+
-+	lcd_clear(info);
-+
-+	printk(KERN_INFO "fb%d: Cobalt server LCD frame buffer device\n",
-+		info->node);
-+
-+	return 0;
-+}
-+
-+static int __devexit cobalt_lcdfb_remove(struct platform_device *dev)
-+{
-+	struct fb_info *info;
-+
-+	info = platform_get_drvdata(dev);
-+	if (info) {
-+		iounmap(info->screen_base);
-+		unregister_framebuffer(info);
-+		framebuffer_release(info);
-+	}
-+
-+	return 0;
-+}
-+
-+static struct platform_driver cobalt_lcdfb_driver = {
-+	.probe	= cobalt_lcdfb_probe,
-+	.remove	= __devexit_p(cobalt_lcdfb_remove),
-+	.driver	= {
-+		.name	= "cobalt-lcd",
-+		.owner	= THIS_MODULE,
-+	},
-+};
-+
-+static int __init cobalt_lcdfb_init(void)
-+{
-+	return platform_driver_register(&cobalt_lcdfb_driver);
-+}
-+
-+static void __exit cobalt_lcdfb_exit(void)
-+{
-+	platform_driver_unregister(&cobalt_lcdfb_driver);
-+}
-+
-+module_init(cobalt_lcdfb_init);
-+module_exit(cobalt_lcdfb_exit);
-+
-+MODULE_LICENSE("GPL v2");
-+MODULE_AUTHOR("Yoichi Yuasa");
-+MODULE_DESCRIPTION("Cobalt server LCD frame buffer driver");
+-- 
+View this message in context: http://www.nabble.com/Alchemy-DB1200-tp17121656p18470529.html
+Sent from the linux-mips main mailing list archive at Nabble.com.

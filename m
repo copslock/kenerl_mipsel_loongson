@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jul 2008 17:50:00 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:37334 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S28588255AbYGRQt6 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 18 Jul 2008 17:49:58 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jul 2008 17:50:22 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:53463 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S28588257AbYGRQuD (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 18 Jul 2008 17:50:03 +0100
 Received: from localhost (p8181-ipad203funabasi.chiba.ocn.ne.jp [222.146.87.181])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 4DE99B382; Sat, 19 Jul 2008 01:49:51 +0900 (JST)
-Date:	Sat, 19 Jul 2008 01:51:41 +0900 (JST)
-Message-Id: <20080719.015141.102579582.anemo@mba.ocn.ne.jp>
+	id 6376CB384; Sat, 19 Jul 2008 01:49:57 +0900 (JST)
+Date:	Sat, 19 Jul 2008 01:51:47 +0900 (JST)
+Message-Id: <20080719.015147.112855514.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
 Cc:	ralf@linux-mips.org
-Subject: [PATCH 1/3] txx9: Cleanups for 64-bit support
+Subject: [PATCH 2/3] txx9: Add 64-bit support
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
 X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
@@ -21,7 +21,7 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19889
+X-archive-position: 19890
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,761 +29,1318 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-* Unify (and fix) mem_tx4938.c and mem_tx4927.c
-* Simplify prom_init
-* Kill volatiles and unused definitions for tx4927.h and tx4938.h
+SYS_SUPPORTS_64BIT_KERNEL is enabled for RBTX4927/RBTX4938, but
+actually it was broken for long time (or from the beginning).  Now it
+should work.
 
 Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
- arch/mips/txx9/generic/Makefile     |    2 +-
- arch/mips/txx9/generic/mem_tx4927.c |   94 +++------------
- arch/mips/txx9/generic/mem_tx4938.c |  124 ------------------
- arch/mips/txx9/rbtx4927/prom.c      |    6 +-
- arch/mips/txx9/rbtx4938/prom.c      |    6 +-
- arch/mips/txx9/rbtx4938/setup.c     |   11 +-
- include/asm-mips/txx9/tx4927.h      |   48 +++++--
- include/asm-mips/txx9/tx4938.h      |  237 ++++------------------------------
- 8 files changed, 86 insertions(+), 442 deletions(-)
+ arch/mips/txx9/generic/Makefile       |    4 +-
+ arch/mips/txx9/generic/irq_tx4927.c   |    2 +-
+ arch/mips/txx9/generic/irq_tx4938.c   |    2 +-
+ arch/mips/txx9/generic/setup.c        |   16 ++-
+ arch/mips/txx9/generic/setup_tx4927.c |  194 ++++++++++++++++++++++++
+ arch/mips/txx9/generic/setup_tx4938.c |  259 +++++++++++++++++++++++++++++++++
+ arch/mips/txx9/jmr3927/setup.c        |    8 -
+ arch/mips/txx9/rbtx4927/irq.c         |   12 +-
+ arch/mips/txx9/rbtx4927/setup.c       |   89 ++++--------
+ arch/mips/txx9/rbtx4938/setup.c       |  218 +--------------------------
+ include/asm-mips/txx9/generic.h       |    7 +
+ include/asm-mips/txx9/rbtx4927.h      |   26 +++-
+ include/asm-mips/txx9/rbtx4938.h      |   52 +++----
+ include/asm-mips/txx9/tx4927.h        |   15 ++
+ include/asm-mips/txx9/tx4938.h        |    6 +
+ 15 files changed, 580 insertions(+), 330 deletions(-)
 
 diff --git a/arch/mips/txx9/generic/Makefile b/arch/mips/txx9/generic/Makefile
-index 668fdaa..ab274ed 100644
+index ab274ed..9c12077 100644
 --- a/arch/mips/txx9/generic/Makefile
 +++ b/arch/mips/txx9/generic/Makefile
-@@ -5,7 +5,7 @@
+@@ -4,8 +4,8 @@
+ 
  obj-y	+= setup.o
  obj-$(CONFIG_PCI)	+= pci.o
- obj-$(CONFIG_SOC_TX4927)	+= mem_tx4927.o irq_tx4927.o
--obj-$(CONFIG_SOC_TX4938)	+= mem_tx4938.o irq_tx4938.o
-+obj-$(CONFIG_SOC_TX4938)	+= mem_tx4927.o irq_tx4938.o
+-obj-$(CONFIG_SOC_TX4927)	+= mem_tx4927.o irq_tx4927.o
+-obj-$(CONFIG_SOC_TX4938)	+= mem_tx4927.o irq_tx4938.o
++obj-$(CONFIG_SOC_TX4927)	+= mem_tx4927.o setup_tx4927.o irq_tx4927.o
++obj-$(CONFIG_SOC_TX4938)	+= mem_tx4927.o setup_tx4938.o irq_tx4938.o
  obj-$(CONFIG_TOSHIBA_FPCIB0)	+= smsc_fdc37m81x.o
  obj-$(CONFIG_KGDB)	+= dbgio.o
  
-diff --git a/arch/mips/txx9/generic/mem_tx4927.c b/arch/mips/txx9/generic/mem_tx4927.c
-index 12dfc37..ef6ea6e 100644
---- a/arch/mips/txx9/generic/mem_tx4927.c
-+++ b/arch/mips/txx9/generic/mem_tx4927.c
-@@ -1,5 +1,5 @@
- /*
-- * linux/arch/mips/tx4927/common/tx4927_prom.c
-+ * linux/arch/mips/txx9/generic/mem_tx4927.c
-  *
-  * common tx4927 memory interface
-  *
-@@ -32,8 +32,9 @@
- #include <linux/init.h>
- #include <linux/types.h>
- #include <linux/io.h>
+diff --git a/arch/mips/txx9/generic/irq_tx4927.c b/arch/mips/txx9/generic/irq_tx4927.c
+index 6377bd8..cbea1fd 100644
+--- a/arch/mips/txx9/generic/irq_tx4927.c
++++ b/arch/mips/txx9/generic/irq_tx4927.c
+@@ -31,7 +31,7 @@
+ void __init tx4927_irq_init(void)
+ {
+ 	mips_cpu_irq_init();
+-	txx9_irq_init(TX4927_IRC_REG);
++	txx9_irq_init(TX4927_IRC_REG & 0xfffffffffULL);
+ 	set_irq_chained_handler(MIPS_CPU_IRQ_BASE + TX4927_IRC_INT,
+ 				handle_simple_irq);
+ }
+diff --git a/arch/mips/txx9/generic/irq_tx4938.c b/arch/mips/txx9/generic/irq_tx4938.c
+index 5fc86c9..6eac684 100644
+--- a/arch/mips/txx9/generic/irq_tx4938.c
++++ b/arch/mips/txx9/generic/irq_tx4938.c
+@@ -19,7 +19,7 @@
+ void __init tx4938_irq_init(void)
+ {
+ 	mips_cpu_irq_init();
+-	txx9_irq_init(TX4938_IRC_REG);
++	txx9_irq_init(TX4938_IRC_REG & 0xfffffffffULL);
+ 	set_irq_chained_handler(MIPS_CPU_IRQ_BASE + TX4938_IRC_INT,
+ 				handle_simple_irq);
+ }
+diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
+index 8caef07..3715a8f 100644
+--- a/arch/mips/txx9/generic/setup.c
++++ b/arch/mips/txx9/generic/setup.c
+@@ -30,6 +30,7 @@ struct resource txx9_ce_res[8];
+ static char txx9_ce_res_name[8][4];	/* "CEn" */
+ 
+ /* pcode, internal register */
++unsigned int txx9_pcode;
+ char txx9_pcode_str[8];
+ static struct resource txx9_reg_res = {
+ 	.name = txx9_pcode_str,
+@@ -59,15 +60,16 @@ unsigned int txx9_master_clock;
+ unsigned int txx9_cpu_clock;
+ unsigned int txx9_gbus_clock;
+ 
++int txx9_ccfg_toeon __initdata = 1;
+ 
+ /* Minimum CLK support */
+ 
+ struct clk *clk_get(struct device *dev, const char *id)
+ {
+ 	if (!strcmp(id, "spi-baseclk"))
+-		return (struct clk *)(txx9_gbus_clock / 2 / 4);
++		return (struct clk *)((unsigned long)txx9_gbus_clock / 2 / 4);
+ 	if (!strcmp(id, "imbus_clk"))
+-		return (struct clk *)(txx9_gbus_clock / 2);
++		return (struct clk *)((unsigned long)txx9_gbus_clock / 2);
+ 	return ERR_PTR(-ENOENT);
+ }
+ EXPORT_SYMBOL(clk_get);
+@@ -123,6 +125,12 @@ void __init prom_init_cmdline(void)
+ 	int argc = (int)fw_arg0;
+ 	char **argv = (char **)fw_arg1;
+ 	int i;			/* Always ignore the "-c" at argv[0] */
++#ifdef CONFIG_64BIT
++	char *fixed_argv[32];
++	for (i = 0; i < argc; i++)
++		fixed_argv[i] = (char *)(long)(*((__s32 *)argv + i));
++	argv = fixed_argv;
++#endif
+ 
+ 	/* ignore all built-in args if any f/w args given */
+ 	if (argc > 1)
+@@ -180,6 +188,10 @@ char * __init prom_getcmdline(void)
+ /* wrappers */
+ void __init plat_mem_setup(void)
+ {
++	ioport_resource.start = 0;
++	ioport_resource.end = ~0UL;	/* no limit */
++	iomem_resource.start = 0;
++	iomem_resource.end = ~0UL;	/* no limit */
+ 	txx9_board_vec->mem_setup();
+ }
+ 
+diff --git a/arch/mips/txx9/generic/setup_tx4927.c b/arch/mips/txx9/generic/setup_tx4927.c
+new file mode 100644
+index 0000000..89d6e28
+--- /dev/null
++++ b/arch/mips/txx9/generic/setup_tx4927.c
+@@ -0,0 +1,194 @@
++/*
++ * TX4927 setup routines
++ * Based on linux/arch/mips/txx9/rbtx4938/setup.c,
++ *	    and RBTX49xx patch from CELF patch archive.
++ *
++ * 2003-2005 (c) MontaVista Software, Inc.
++ * (C) Copyright TOSHIBA CORPORATION 2000-2001, 2004-2007
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ */
++#include <linux/init.h>
++#include <linux/ioport.h>
++#include <linux/delay.h>
++#include <linux/serial_core.h>
++#include <linux/param.h>
++#include <asm/txx9irq.h>
++#include <asm/txx9tmr.h>
++#include <asm/txx9pio.h>
++#include <asm/txx9/generic.h>
 +#include <asm/txx9/tx4927.h>
- 
--static unsigned int __init tx4927_process_sdccr(unsigned long addr)
-+static unsigned int __init tx4927_process_sdccr(u64 __iomem *addr)
- {
- 	u64 val;
- 	unsigned int sdccr_ce;
-@@ -45,97 +46,32 @@ static unsigned int __init tx4927_process_sdccr(unsigned long addr)
- 	unsigned int rs = 0;
- 	unsigned int cs = 0;
- 	unsigned int mw = 0;
--	unsigned int msize = 0;
- 
--	val = __raw_readq((void __iomem *)addr);
-+	val = __raw_readq(addr);
- 
- 	/* MVMCP -- need #defs for these bits masks */
- 	sdccr_ce = ((val & (1 << 10)) >> 10);
- 	sdccr_bs = ((val & (1 << 8)) >> 8);
- 	sdccr_rs = ((val & (3 << 5)) >> 5);
--	sdccr_cs = ((val & (3 << 2)) >> 2);
-+	sdccr_cs = ((val & (7 << 2)) >> 2);
- 	sdccr_mw = ((val & (1 << 0)) >> 0);
- 
- 	if (sdccr_ce) {
--		switch (sdccr_bs) {
--		case 0:{
--				bs = 2;
--				break;
--			}
--		case 1:{
--				bs = 4;
--				break;
--			}
--		}
--		switch (sdccr_rs) {
--		case 0:{
--				rs = 2048;
--				break;
--			}
--		case 1:{
--				rs = 4096;
--				break;
--			}
--		case 2:{
--				rs = 8192;
--				break;
--			}
--		case 3:{
--				rs = 0;
--				break;
--			}
--		}
--		switch (sdccr_cs) {
--		case 0:{
--				cs = 256;
--				break;
--			}
--		case 1:{
--				cs = 512;
--				break;
--			}
--		case 2:{
--				cs = 1024;
--				break;
--			}
--		case 3:{
--				cs = 2048;
--				break;
--			}
--		}
--		switch (sdccr_mw) {
--		case 0:{
--				mw = 8;
--				break;
--			}	/* 8 bytes = 64 bits */
--		case 1:{
--				mw = 4;
--				break;
--			}	/* 4 bytes = 32 bits */
--		}
-+		bs = 2 << sdccr_bs;
-+		rs = 2048 << sdccr_rs;
-+		cs = 256 << sdccr_cs;
-+		mw = 8 >> sdccr_mw;
- 	}
- 
--	/*            bytes per chip     MB per chip      num chips */
--	msize = (((rs * cs * mw) / (1024 * 1024)) * bs);
--
--	return (msize);
-+	return rs * cs * mw * bs;
- }
- 
--
- unsigned int __init tx4927_get_mem_size(void)
- {
--	unsigned int c0;
--	unsigned int c1;
--	unsigned int c2;
--	unsigned int c3;
--	unsigned int total;
--
--	/* MVMCP -- need #defs for these registers */
--	c0 = tx4927_process_sdccr(0xff1f8000);
--	c1 = tx4927_process_sdccr(0xff1f8008);
--	c2 = tx4927_process_sdccr(0xff1f8010);
--	c3 = tx4927_process_sdccr(0xff1f8018);
--	total = c0 + c1 + c2 + c3;
-+	unsigned int total = 0;
++
++void __init tx4927_wdr_init(void)
++{
++	/* clear WatchDogReset (W1C) */
++	tx4927_ccfg_set(TX4927_CCFG_WDRST);
++	/* do reset on watchdog */
++	tx4927_ccfg_set(TX4927_CCFG_WR);
++}
++
++static struct resource tx4927_sdram_resource[4];
++
++void __init tx4927_setup(void)
++{
 +	int i;
- 
--	return (total);
-+	for (i = 0; i < ARRAY_SIZE(tx4927_sdramcptr->cr); i++)
-+		total += tx4927_process_sdccr(&tx4927_sdramcptr->cr[i]);
-+	return total;
- }
-diff --git a/arch/mips/txx9/generic/mem_tx4938.c b/arch/mips/txx9/generic/mem_tx4938.c
-deleted file mode 100644
-index 20baeae..0000000
---- a/arch/mips/txx9/generic/mem_tx4938.c
-+++ /dev/null
-@@ -1,124 +0,0 @@
--/*
-- * linux/arch/mips/tx4938/common/prom.c
-- *
-- * common tx4938 memory interface
-- * Copyright (C) 2000-2001 Toshiba Corporation
-- *
-- * 2003-2005 (c) MontaVista Software, Inc. This file is licensed under the
-- * terms of the GNU General Public License version 2. This program is
-- * licensed "as is" without any warranty of any kind, whether express
-- * or implied.
-- *
-- * Support for TX4938 in 2.6 - Manish Lachwani (mlachwani@mvista.com)
-- */
--
--#include <linux/init.h>
--#include <linux/types.h>
--#include <linux/io.h>
--
--static unsigned int __init
--tx4938_process_sdccr(u64 * addr)
--{
--	u64 val;
--	unsigned int sdccr_ce;
--	unsigned int sdccr_rs;
--	unsigned int sdccr_cs;
--	unsigned int sdccr_mw;
--	unsigned int rs = 0;
--	unsigned int cs = 0;
--	unsigned int mw = 0;
--	unsigned int bc = 4;
--	unsigned int msize = 0;
--
--	val = ____raw_readq((void __iomem *)addr);
--
--	/* MVMCP -- need #defs for these bits masks */
--	sdccr_ce = ((val & (1 << 10)) >> 10);
--	sdccr_rs = ((val & (3 << 5)) >> 5);
--	sdccr_cs = ((val & (7 << 2)) >> 2);
--	sdccr_mw = ((val & (1 << 0)) >> 0);
--
--	if (sdccr_ce) {
--		switch (sdccr_rs) {
--		case 0:{
--				rs = 2048;
--				break;
--			}
--		case 1:{
--				rs = 4096;
--				break;
--			}
--		case 2:{
--				rs = 8192;
--				break;
--			}
--		default:{
--				rs = 0;
--				break;
--			}
--		}
--		switch (sdccr_cs) {
--		case 0:{
--				cs = 256;
--				break;
--			}
--		case 1:{
--				cs = 512;
--				break;
--			}
--		case 2:{
--				cs = 1024;
--				break;
--			}
--		case 3:{
--				cs = 2048;
--				break;
--			}
--		case 4:{
--				cs = 4096;
--				break;
--			}
--		default:{
--				cs = 0;
--				break;
--			}
--		}
--		switch (sdccr_mw) {
--		case 0:{
--				mw = 8;
--				break;
--			}	/* 8 bytes = 64 bits */
--		case 1:{
--				mw = 4;
--				break;
--			}	/* 4 bytes = 32 bits */
--		}
--	}
--
--	/*           bytes per chip    MB per chip          bank count */
--	msize = (((rs * cs * mw) / (1024 * 1024)) * (bc));
--
--	/* MVMCP -- bc hard coded to 4 from table 9.3.1     */
--	/*          boad supports bc=2 but no way to detect */
--
--	return (msize);
--}
--
--unsigned int __init
--tx4938_get_mem_size(void)
--{
--	unsigned int c0;
--	unsigned int c1;
--	unsigned int c2;
--	unsigned int c3;
--	unsigned int total;
--
--	/* MVMCP -- need #defs for these registers */
--	c0 = tx4938_process_sdccr((u64 *) 0xff1f8000);
--	c1 = tx4938_process_sdccr((u64 *) 0xff1f8008);
--	c2 = tx4938_process_sdccr((u64 *) 0xff1f8010);
--	c3 = tx4938_process_sdccr((u64 *) 0xff1f8018);
--	total = c0 + c1 + c2 + c3;
--
--	return (total);
--}
-diff --git a/arch/mips/txx9/rbtx4927/prom.c b/arch/mips/txx9/rbtx4927/prom.c
-index 942e627..5c0de54 100644
---- a/arch/mips/txx9/rbtx4927/prom.c
-+++ b/arch/mips/txx9/rbtx4927/prom.c
-@@ -36,10 +36,6 @@
- 
- void __init rbtx4927_prom_init(void)
- {
--	extern int tx4927_get_mem_size(void);
--	int msize;
--
- 	prom_init_cmdline();
--	msize = tx4927_get_mem_size();
--	add_memory_region(0, msize << 20, BOOT_MEM_RAM);
-+	add_memory_region(0, tx4927_get_mem_size(), BOOT_MEM_RAM);
- }
-diff --git a/arch/mips/txx9/rbtx4938/prom.c b/arch/mips/txx9/rbtx4938/prom.c
-index fbb3745..ee18951 100644
---- a/arch/mips/txx9/rbtx4938/prom.c
-+++ b/arch/mips/txx9/rbtx4938/prom.c
-@@ -18,12 +18,8 @@
- 
- void __init rbtx4938_prom_init(void)
- {
--	extern int tx4938_get_mem_size(void);
--	int msize;
- #ifndef CONFIG_TX4938_NAND_BOOT
- 	prom_init_cmdline();
- #endif
--
--	msize = tx4938_get_mem_size();
--	add_memory_region(0, msize << 20, BOOT_MEM_RAM);
-+	add_memory_region(0, tx4938_get_mem_size(), BOOT_MEM_RAM);
- }
-diff --git a/arch/mips/txx9/rbtx4938/setup.c b/arch/mips/txx9/rbtx4938/setup.c
-index c2da923..c1e076c 100644
---- a/arch/mips/txx9/rbtx4938/setup.c
-+++ b/arch/mips/txx9/rbtx4938/setup.c
-@@ -310,7 +310,7 @@ void __init tx4938_board_setup(void)
- 
- 	printk(KERN_INFO "%s SDRAMC --", txx9_pcode_str);
- 	for (i = 0; i < 4; i++) {
--		unsigned long long cr = tx4938_sdramcptr->cr[i];
-+		u64 cr = TX4938_SDRAMC_CR(i);
- 		unsigned long ram_base, ram_size;
- 		if (!((unsigned long)cr & 0x00000400))
- 			continue;	/* disabled */
-@@ -318,20 +318,21 @@ void __init tx4938_board_setup(void)
- 		ram_size = ((unsigned long)(cr >> 33) + 1) << 21;
- 		if (ram_base >= 0x20000000)
- 			continue;	/* high memory (ignore) */
--		printk(" CR%d:%016Lx", i, cr);
-+		printk(KERN_CONT " CR%d:%016llx", i, cr);
- 		tx4938_sdram_resource[i].name = "SDRAM";
- 		tx4938_sdram_resource[i].start = ram_base;
- 		tx4938_sdram_resource[i].end = ram_base + ram_size - 1;
- 		tx4938_sdram_resource[i].flags = IORESOURCE_MEM;
- 		request_resource(&iomem_resource, &tx4938_sdram_resource[i]);
- 	}
--	printk(" TR:%09Lx\n", tx4938_sdramcptr->tr);
-+	printk(KERN_CONT " TR:%09llx\n", ____raw_readq(&tx4938_sdramcptr->tr));
- 
- 	/* SRAM */
--	if (tx4938_sramcptr->cr & 1) {
-+	if (____raw_readq(&tx4938_sramcptr->cr) & 1) {
- 		unsigned int size = 0x800;
- 		unsigned long base =
--			(tx4938_sramcptr->cr >> (39-11)) & ~(size - 1);
++	__u32 divmode;
++	int cpuclk = 0;
++	u64 ccfg;
++
++	txx9_reg_res_init(TX4927_REV_PCODE(), TX4927_REG_BASE,
++			  TX4927_REG_SIZE);
++
++	/* SDRAMC,EBUSC are configured by PROM */
++	for (i = 0; i < 8; i++) {
++		if (!(TX4927_EBUSC_CR(i) & 0x8))
++			continue;	/* disabled */
++		txx9_ce_res[i].start = (unsigned long)TX4927_EBUSC_BA(i);
++		txx9_ce_res[i].end =
++			txx9_ce_res[i].start + TX4927_EBUSC_SIZE(i) - 1;
++		request_resource(&iomem_resource, &txx9_ce_res[i]);
++	}
++
++	/* clocks */
++	ccfg = ____raw_readq(&tx4927_ccfgptr->ccfg);
++	if (txx9_master_clock) {
++		/* calculate gbus_clock and cpu_clock from master_clock */
++		divmode = (__u32)ccfg & TX4927_CCFG_DIVMODE_MASK;
++		switch (divmode) {
++		case TX4927_CCFG_DIVMODE_8:
++		case TX4927_CCFG_DIVMODE_10:
++		case TX4927_CCFG_DIVMODE_12:
++		case TX4927_CCFG_DIVMODE_16:
++			txx9_gbus_clock = txx9_master_clock * 4; break;
++		default:
++			txx9_gbus_clock = txx9_master_clock;
++		}
++		switch (divmode) {
++		case TX4927_CCFG_DIVMODE_2:
++		case TX4927_CCFG_DIVMODE_8:
++			cpuclk = txx9_gbus_clock * 2; break;
++		case TX4927_CCFG_DIVMODE_2_5:
++		case TX4927_CCFG_DIVMODE_10:
++			cpuclk = txx9_gbus_clock * 5 / 2; break;
++		case TX4927_CCFG_DIVMODE_3:
++		case TX4927_CCFG_DIVMODE_12:
++			cpuclk = txx9_gbus_clock * 3; break;
++		case TX4927_CCFG_DIVMODE_4:
++		case TX4927_CCFG_DIVMODE_16:
++			cpuclk = txx9_gbus_clock * 4; break;
++		}
++		txx9_cpu_clock = cpuclk;
++	} else {
++		if (txx9_cpu_clock == 0)
++			txx9_cpu_clock = 200000000;	/* 200MHz */
++		/* calculate gbus_clock and master_clock from cpu_clock */
++		cpuclk = txx9_cpu_clock;
++		divmode = (__u32)ccfg & TX4927_CCFG_DIVMODE_MASK;
++		switch (divmode) {
++		case TX4927_CCFG_DIVMODE_2:
++		case TX4927_CCFG_DIVMODE_8:
++			txx9_gbus_clock = cpuclk / 2; break;
++		case TX4927_CCFG_DIVMODE_2_5:
++		case TX4927_CCFG_DIVMODE_10:
++			txx9_gbus_clock = cpuclk * 2 / 5; break;
++		case TX4927_CCFG_DIVMODE_3:
++		case TX4927_CCFG_DIVMODE_12:
++			txx9_gbus_clock = cpuclk / 3; break;
++		case TX4927_CCFG_DIVMODE_4:
++		case TX4927_CCFG_DIVMODE_16:
++			txx9_gbus_clock = cpuclk / 4; break;
++		}
++		switch (divmode) {
++		case TX4927_CCFG_DIVMODE_8:
++		case TX4927_CCFG_DIVMODE_10:
++		case TX4927_CCFG_DIVMODE_12:
++		case TX4927_CCFG_DIVMODE_16:
++			txx9_master_clock = txx9_gbus_clock / 4; break;
++		default:
++			txx9_master_clock = txx9_gbus_clock;
++		}
++	}
++	/* change default value to udelay/mdelay take reasonable time */
++	loops_per_jiffy = txx9_cpu_clock / HZ / 2;
++
++	/* CCFG */
++	tx4927_wdr_init();
++	/* clear BusErrorOnWrite flag (W1C) */
++	tx4927_ccfg_set(TX4927_CCFG_BEOW);
++	/* enable Timeout BusError */
++	if (txx9_ccfg_toeon)
++		tx4927_ccfg_set(TX4927_CCFG_TOE);
++
++	/* DMA selection */
++	txx9_clear64(&tx4927_ccfgptr->pcfg, TX4927_PCFG_DMASEL_ALL);
++
++	/* Use external clock for external arbiter */
++	if (!(____raw_readq(&tx4927_ccfgptr->ccfg) & TX4927_CCFG_PCIARB))
++		txx9_clear64(&tx4927_ccfgptr->pcfg, TX4927_PCFG_PCICLKEN_ALL);
++
++	printk(KERN_INFO "%s -- %dMHz(M%dMHz) CRIR:%08x CCFG:%llx PCFG:%llx\n",
++	       txx9_pcode_str,
++	       (cpuclk + 500000) / 1000000,
++	       (txx9_master_clock + 500000) / 1000000,
++	       (__u32)____raw_readq(&tx4927_ccfgptr->crir),
++	       (unsigned long long)____raw_readq(&tx4927_ccfgptr->ccfg),
++	       (unsigned long long)____raw_readq(&tx4927_ccfgptr->pcfg));
++
++	printk(KERN_INFO "%s SDRAMC --", txx9_pcode_str);
++	for (i = 0; i < 4; i++) {
++		__u64 cr = TX4927_SDRAMC_CR(i);
++		unsigned long base, size;
++		if (!((__u32)cr & 0x00000400))
++			continue;	/* disabled */
++		base = (unsigned long)(cr >> 49) << 21;
++		size = (((unsigned long)(cr >> 33) & 0x7fff) + 1) << 21;
++		printk(" CR%d:%016llx", i, (unsigned long long)cr);
++		tx4927_sdram_resource[i].name = "SDRAM";
++		tx4927_sdram_resource[i].start = base;
++		tx4927_sdram_resource[i].end = base + size - 1;
++		tx4927_sdram_resource[i].flags = IORESOURCE_MEM;
++		request_resource(&iomem_resource, &tx4927_sdram_resource[i]);
++	}
++	printk(" TR:%09llx\n",
++	       (unsigned long long)____raw_readq(&tx4927_sdramcptr->tr));
++
++	/* TMR */
++	/* disable all timers */
++	for (i = 0; i < TX4927_NR_TMR; i++)
++		txx9_tmr_init(TX4927_TMR_REG(i) & 0xfffffffffULL);
++
++	/* PIO */
++	txx9_gpio_init(TX4927_PIO_REG & 0xfffffffffULL, 0, TX4927_NUM_PIO);
++	__raw_writel(0, &tx4927_pioptr->maskcpu);
++	__raw_writel(0, &tx4927_pioptr->maskext);
++}
++
++void __init tx4927_time_init(unsigned int tmrnr)
++{
++	if (____raw_readq(&tx4927_ccfgptr->ccfg) & TX4927_CCFG_TINTDIS)
++		txx9_clockevent_init(TX4927_TMR_REG(tmrnr) & 0xfffffffffULL,
++				     TXX9_IRQ_BASE + TX4927_IR_TMR(tmrnr),
++				     TXX9_IMCLK);
++}
++
++void __init tx4927_setup_serial(void)
++{
++#ifdef CONFIG_SERIAL_TXX9
++	int i;
++	struct uart_port req;
++
++	for (i = 0; i < 2; i++) {
++		memset(&req, 0, sizeof(req));
++		req.line = i;
++		req.iotype = UPIO_MEM;
++		req.membase = (unsigned char __iomem *)TX4927_SIO_REG(i);
++		req.mapbase = TX4927_SIO_REG(i) & 0xfffffffffULL;
++		req.irq = TXX9_IRQ_BASE + TX4927_IR_SIO(i);
++		req.flags |= UPF_BUGGY_UART /*HAVE_CTS_LINE*/;
++		req.uartclk = TXX9_IMCLK;
++		early_serial_txx9_setup(&req);
++	}
++#endif /* CONFIG_SERIAL_TXX9 */
++}
+diff --git a/arch/mips/txx9/generic/setup_tx4938.c b/arch/mips/txx9/generic/setup_tx4938.c
+new file mode 100644
+index 0000000..317378d
+--- /dev/null
++++ b/arch/mips/txx9/generic/setup_tx4938.c
+@@ -0,0 +1,259 @@
++/*
++ * TX4938/4937 setup routines
++ * Based on linux/arch/mips/txx9/rbtx4938/setup.c,
++ *	    and RBTX49xx patch from CELF patch archive.
++ *
++ * 2003-2005 (c) MontaVista Software, Inc.
++ * (C) Copyright TOSHIBA CORPORATION 2000-2001, 2004-2007
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ */
++#include <linux/init.h>
++#include <linux/ioport.h>
++#include <linux/delay.h>
++#include <linux/serial_core.h>
++#include <linux/param.h>
++#include <asm/txx9irq.h>
++#include <asm/txx9tmr.h>
++#include <asm/txx9pio.h>
++#include <asm/txx9/generic.h>
++#include <asm/txx9/tx4938.h>
++
++void __init tx4938_wdr_init(void)
++{
++	/* clear WatchDogReset (W1C) */
++	tx4938_ccfg_set(TX4938_CCFG_WDRST);
++	/* do reset on watchdog */
++	tx4938_ccfg_set(TX4938_CCFG_WR);
++}
++
++static struct resource tx4938_sdram_resource[4];
++static struct resource tx4938_sram_resource;
++
++#define TX4938_SRAM_SIZE 0x800
++
++void __init tx4938_setup(void)
++{
++	int i;
++	__u32 divmode;
++	int cpuclk = 0;
++	u64 ccfg;
++
++	txx9_reg_res_init(TX4938_REV_PCODE(), TX4938_REG_BASE,
++			  TX4938_REG_SIZE);
++
++	/* SDRAMC,EBUSC are configured by PROM */
++	for (i = 0; i < 8; i++) {
++		if (!(TX4938_EBUSC_CR(i) & 0x8))
++			continue;	/* disabled */
++		txx9_ce_res[i].start = (unsigned long)TX4938_EBUSC_BA(i);
++		txx9_ce_res[i].end =
++			txx9_ce_res[i].start + TX4938_EBUSC_SIZE(i) - 1;
++		request_resource(&iomem_resource, &txx9_ce_res[i]);
++	}
++
++	/* clocks */
++	ccfg = ____raw_readq(&tx4938_ccfgptr->ccfg);
++	if (txx9_master_clock) {
++		/* calculate gbus_clock and cpu_clock from master_clock */
++		divmode = (__u32)ccfg & TX4938_CCFG_DIVMODE_MASK;
++		switch (divmode) {
++		case TX4938_CCFG_DIVMODE_8:
++		case TX4938_CCFG_DIVMODE_10:
++		case TX4938_CCFG_DIVMODE_12:
++		case TX4938_CCFG_DIVMODE_16:
++		case TX4938_CCFG_DIVMODE_18:
++			txx9_gbus_clock = txx9_master_clock * 4; break;
++		default:
++			txx9_gbus_clock = txx9_master_clock;
++		}
++		switch (divmode) {
++		case TX4938_CCFG_DIVMODE_2:
++		case TX4938_CCFG_DIVMODE_8:
++			cpuclk = txx9_gbus_clock * 2; break;
++		case TX4938_CCFG_DIVMODE_2_5:
++		case TX4938_CCFG_DIVMODE_10:
++			cpuclk = txx9_gbus_clock * 5 / 2; break;
++		case TX4938_CCFG_DIVMODE_3:
++		case TX4938_CCFG_DIVMODE_12:
++			cpuclk = txx9_gbus_clock * 3; break;
++		case TX4938_CCFG_DIVMODE_4:
++		case TX4938_CCFG_DIVMODE_16:
++			cpuclk = txx9_gbus_clock * 4; break;
++		case TX4938_CCFG_DIVMODE_4_5:
++		case TX4938_CCFG_DIVMODE_18:
++			cpuclk = txx9_gbus_clock * 9 / 2; break;
++		}
++		txx9_cpu_clock = cpuclk;
++	} else {
++		if (txx9_cpu_clock == 0)
++			txx9_cpu_clock = 300000000;	/* 300MHz */
++		/* calculate gbus_clock and master_clock from cpu_clock */
++		cpuclk = txx9_cpu_clock;
++		divmode = (__u32)ccfg & TX4938_CCFG_DIVMODE_MASK;
++		switch (divmode) {
++		case TX4938_CCFG_DIVMODE_2:
++		case TX4938_CCFG_DIVMODE_8:
++			txx9_gbus_clock = cpuclk / 2; break;
++		case TX4938_CCFG_DIVMODE_2_5:
++		case TX4938_CCFG_DIVMODE_10:
++			txx9_gbus_clock = cpuclk * 2 / 5; break;
++		case TX4938_CCFG_DIVMODE_3:
++		case TX4938_CCFG_DIVMODE_12:
++			txx9_gbus_clock = cpuclk / 3; break;
++		case TX4938_CCFG_DIVMODE_4:
++		case TX4938_CCFG_DIVMODE_16:
++			txx9_gbus_clock = cpuclk / 4; break;
++		case TX4938_CCFG_DIVMODE_4_5:
++		case TX4938_CCFG_DIVMODE_18:
++			txx9_gbus_clock = cpuclk * 2 / 9; break;
++		}
++		switch (divmode) {
++		case TX4938_CCFG_DIVMODE_8:
++		case TX4938_CCFG_DIVMODE_10:
++		case TX4938_CCFG_DIVMODE_12:
++		case TX4938_CCFG_DIVMODE_16:
++		case TX4938_CCFG_DIVMODE_18:
++			txx9_master_clock = txx9_gbus_clock / 4; break;
++		default:
++			txx9_master_clock = txx9_gbus_clock;
++		}
++	}
++	/* change default value to udelay/mdelay take reasonable time */
++	loops_per_jiffy = txx9_cpu_clock / HZ / 2;
++
++	/* CCFG */
++	tx4938_wdr_init();
++	/* clear BusErrorOnWrite flag (W1C) */
++	tx4938_ccfg_set(TX4938_CCFG_BEOW);
++	/* enable Timeout BusError */
++	if (txx9_ccfg_toeon)
++		tx4938_ccfg_set(TX4938_CCFG_TOE);
++
++	/* DMA selection */
++	txx9_clear64(&tx4938_ccfgptr->pcfg, TX4938_PCFG_DMASEL_ALL);
++
++	/* Use external clock for external arbiter */
++	if (!(____raw_readq(&tx4938_ccfgptr->ccfg) & TX4938_CCFG_PCIARB))
++		txx9_clear64(&tx4938_ccfgptr->pcfg, TX4938_PCFG_PCICLKEN_ALL);
++
++	printk(KERN_INFO "%s -- %dMHz(M%dMHz) CRIR:%08x CCFG:%llx PCFG:%llx\n",
++	       txx9_pcode_str,
++	       (cpuclk + 500000) / 1000000,
++	       (txx9_master_clock + 500000) / 1000000,
++	       (__u32)____raw_readq(&tx4938_ccfgptr->crir),
++	       (unsigned long long)____raw_readq(&tx4938_ccfgptr->ccfg),
++	       (unsigned long long)____raw_readq(&tx4938_ccfgptr->pcfg));
++
++	printk(KERN_INFO "%s SDRAMC --", txx9_pcode_str);
++	for (i = 0; i < 4; i++) {
++		__u64 cr = TX4938_SDRAMC_CR(i);
++		unsigned long base, size;
++		if (!((__u32)cr & 0x00000400))
++			continue;	/* disabled */
++		base = (unsigned long)(cr >> 49) << 21;
++		size = (((unsigned long)(cr >> 33) & 0x7fff) + 1) << 21;
++		printk(" CR%d:%016llx", i, (unsigned long long)cr);
++		tx4938_sdram_resource[i].name = "SDRAM";
++		tx4938_sdram_resource[i].start = base;
++		tx4938_sdram_resource[i].end = base + size - 1;
++		tx4938_sdram_resource[i].flags = IORESOURCE_MEM;
++		request_resource(&iomem_resource, &tx4938_sdram_resource[i]);
++	}
++	printk(" TR:%09llx\n",
++	       (unsigned long long)____raw_readq(&tx4938_sdramcptr->tr));
++
++	/* SRAM */
++	if (txx9_pcode == 0x4938 && ____raw_readq(&tx4938_sramcptr->cr) & 1) {
++		unsigned int size = TX4938_SRAM_SIZE;
++		tx4938_sram_resource.name = "SRAM";
++		tx4938_sram_resource.start =
 +			(____raw_readq(&tx4938_sramcptr->cr) >> (39-11))
 +			& ~(size - 1);
- 		tx4938_sram_resource.name = "SRAM";
- 		tx4938_sram_resource.start = base;
- 		tx4938_sram_resource.end = base + size - 1;
++		tx4938_sram_resource.end =
++			tx4938_sram_resource.start + TX4938_SRAM_SIZE - 1;
++		tx4938_sram_resource.flags = IORESOURCE_MEM;
++		request_resource(&iomem_resource, &tx4938_sram_resource);
++	}
++
++	/* TMR */
++	/* disable all timers */
++	for (i = 0; i < TX4938_NR_TMR; i++)
++		txx9_tmr_init(TX4938_TMR_REG(i) & 0xfffffffffULL);
++
++	/* DMA */
++	for (i = 0; i < 2; i++)
++		____raw_writeq(TX4938_DMA_MCR_MSTEN,
++			       (void __iomem *)(TX4938_DMA_REG(i) + 0x50));
++
++	/* PIO */
++	txx9_gpio_init(TX4938_PIO_REG & 0xfffffffffULL, 0, TX4938_NUM_PIO);
++	__raw_writel(0, &tx4938_pioptr->maskcpu);
++	__raw_writel(0, &tx4938_pioptr->maskext);
++
++	if (txx9_pcode == 0x4938) {
++		__u64 pcfg = ____raw_readq(&tx4938_ccfgptr->pcfg);
++		/* set PCIC1 reset */
++		txx9_set64(&tx4938_ccfgptr->clkctr, TX4938_CLKCTR_PCIC1RST);
++		if (pcfg & (TX4938_PCFG_ETH0_SEL | TX4938_PCFG_ETH1_SEL)) {
++			mdelay(1);	/* at least 128 cpu clock */
++			/* clear PCIC1 reset */
++			txx9_clear64(&tx4938_ccfgptr->clkctr,
++				     TX4938_CLKCTR_PCIC1RST);
++		} else {
++			printk(KERN_INFO "%s: stop PCIC1\n", txx9_pcode_str);
++			/* stop PCIC1 */
++			txx9_set64(&tx4938_ccfgptr->clkctr,
++				   TX4938_CLKCTR_PCIC1CKD);
++		}
++		if (!(pcfg & TX4938_PCFG_ETH0_SEL)) {
++			printk(KERN_INFO "%s: stop ETH0\n", txx9_pcode_str);
++			txx9_set64(&tx4938_ccfgptr->clkctr,
++				   TX4938_CLKCTR_ETH0RST);
++			txx9_set64(&tx4938_ccfgptr->clkctr,
++				   TX4938_CLKCTR_ETH0CKD);
++		}
++		if (!(pcfg & TX4938_PCFG_ETH1_SEL)) {
++			printk(KERN_INFO "%s: stop ETH1\n", txx9_pcode_str);
++			txx9_set64(&tx4938_ccfgptr->clkctr,
++				   TX4938_CLKCTR_ETH1RST);
++			txx9_set64(&tx4938_ccfgptr->clkctr,
++				   TX4938_CLKCTR_ETH1CKD);
++		}
++	}
++}
++
++void __init tx4938_time_init(unsigned int tmrnr)
++{
++	if (____raw_readq(&tx4938_ccfgptr->ccfg) & TX4938_CCFG_TINTDIS)
++		txx9_clockevent_init(TX4938_TMR_REG(tmrnr) & 0xfffffffffULL,
++				     TXX9_IRQ_BASE + TX4938_IR_TMR(tmrnr),
++				     TXX9_IMCLK);
++}
++
++void __init tx4938_setup_serial(void)
++{
++#ifdef CONFIG_SERIAL_TXX9
++	int i;
++	struct uart_port req;
++	unsigned int ch_mask = 0;
++
++	if (__raw_readq(&tx4938_ccfgptr->pcfg) & TX4938_PCFG_ETH0_SEL)
++		ch_mask |= 1 << 1; /* disable SIO1 by PCFG setting */
++	for (i = 0; i < 2; i++) {
++		if ((1 << i) & ch_mask)
++			continue;
++		memset(&req, 0, sizeof(req));
++		req.line = i;
++		req.iotype = UPIO_MEM;
++		req.membase = (unsigned char __iomem *)TX4938_SIO_REG(i);
++		req.mapbase = TX4938_SIO_REG(i) & 0xfffffffffULL;
++		req.irq = TXX9_IRQ_BASE + TX4938_IR_SIO(i);
++		req.flags |= UPF_BUGGY_UART /*HAVE_CTS_LINE*/;
++		req.uartclk = TXX9_IMCLK;
++		early_serial_txx9_setup(&req);
++	}
++#endif /* CONFIG_SERIAL_TXX9 */
++}
+diff --git a/arch/mips/txx9/jmr3927/setup.c b/arch/mips/txx9/jmr3927/setup.c
+index 5e35ef7..03647eb 100644
+--- a/arch/mips/txx9/jmr3927/setup.c
++++ b/arch/mips/txx9/jmr3927/setup.c
+@@ -105,14 +105,6 @@ static void __init jmr3927_mem_setup(void)
+ 	_machine_halt = jmr3927_machine_halt;
+ 	pm_power_off = jmr3927_machine_power_off;
+ 
+-	/*
+-	 * IO/MEM resources.
+-	 */
+-	ioport_resource.start = 0;
+-	ioport_resource.end = 0xffffffff;
+-	iomem_resource.start = 0;
+-	iomem_resource.end = 0xffffffff;
+-
+ 	/* Reboot on panic */
+ 	panic_timeout = 180;
+ 
+diff --git a/arch/mips/txx9/rbtx4927/irq.c b/arch/mips/txx9/rbtx4927/irq.c
+index 70f1321..cd748a9 100644
+--- a/arch/mips/txx9/rbtx4927/irq.c
++++ b/arch/mips/txx9/rbtx4927/irq.c
+@@ -126,14 +126,12 @@ static struct irq_chip toshiba_rbtx4927_irq_ioc_type = {
+ 	.mask_ack = toshiba_rbtx4927_irq_ioc_disable,
+ 	.unmask = toshiba_rbtx4927_irq_ioc_enable,
+ };
+-#define TOSHIBA_RBTX4927_IOC_INTR_ENAB (void __iomem *)0xbc002000UL
+-#define TOSHIBA_RBTX4927_IOC_INTR_STAT (void __iomem *)0xbc002006UL
+ 
+ static int toshiba_rbtx4927_irq_nested(int sw_irq)
+ {
+ 	u8 level3;
+ 
+-	level3 = readb(TOSHIBA_RBTX4927_IOC_INTR_STAT) & 0x1f;
++	level3 = readb(rbtx4927_imstat_addr) & 0x1f;
+ 	if (level3)
+ 		sw_irq = RBTX4927_IRQ_IOC + fls(level3) - 1;
+ 	return (sw_irq);
+@@ -154,18 +152,18 @@ static void toshiba_rbtx4927_irq_ioc_enable(unsigned int irq)
+ {
+ 	unsigned char v;
+ 
+-	v = readb(TOSHIBA_RBTX4927_IOC_INTR_ENAB);
++	v = readb(rbtx4927_imask_addr);
+ 	v |= (1 << (irq - RBTX4927_IRQ_IOC));
+-	writeb(v, TOSHIBA_RBTX4927_IOC_INTR_ENAB);
++	writeb(v, rbtx4927_imask_addr);
+ }
+ 
+ static void toshiba_rbtx4927_irq_ioc_disable(unsigned int irq)
+ {
+ 	unsigned char v;
+ 
+-	v = readb(TOSHIBA_RBTX4927_IOC_INTR_ENAB);
++	v = readb(rbtx4927_imask_addr);
+ 	v &= ~(1 << (irq - RBTX4927_IRQ_IOC));
+-	writeb(v, TOSHIBA_RBTX4927_IOC_INTR_ENAB);
++	writeb(v, rbtx4927_imask_addr);
+ 	mmiowb();
+ }
+ 
+diff --git a/arch/mips/txx9/rbtx4927/setup.c b/arch/mips/txx9/rbtx4927/setup.c
+index 1657fd9..3da20ea 100644
+--- a/arch/mips/txx9/rbtx4927/setup.c
++++ b/arch/mips/txx9/rbtx4927/setup.c
+@@ -53,17 +53,10 @@
+ #include <asm/io.h>
+ #include <asm/processor.h>
+ #include <asm/reboot.h>
+-#include <asm/time.h>
+-#include <asm/txx9tmr.h>
+ #include <asm/txx9/generic.h>
+ #include <asm/txx9/pci.h>
+ #include <asm/txx9/rbtx4927.h>
+ #include <asm/txx9/tx4938.h>	/* for TX4937 */
+-#ifdef CONFIG_SERIAL_TXX9
+-#include <linux/serial_core.h>
+-#endif
+-
+-static int tx4927_ccfg_toeon = 1;
+ 
+ #ifdef CONFIG_PCI
+ static void __init tx4927_pci_setup(void)
+@@ -184,14 +177,14 @@ static void toshiba_rbtx4927_restart(char *command)
+ 	printk(KERN_NOTICE "System Rebooting...\n");
+ 
+ 	/* enable the s/w reset register */
+-	writeb(RBTX4927_SW_RESET_ENABLE_SET, RBTX4927_SW_RESET_ENABLE);
++	writeb(1, rbtx4927_softresetlock_addr);
+ 
+ 	/* wait for enable to be seen */
+-	while ((readb(RBTX4927_SW_RESET_ENABLE) &
+-		RBTX4927_SW_RESET_ENABLE_SET) == 0x00);
++	while (!(readb(rbtx4927_softresetlock_addr) & 1))
++		;
+ 
+ 	/* do a s/w reset */
+-	writeb(RBTX4927_SW_RESET_DO_SET, RBTX4927_SW_RESET_DO);
++	writeb(1, rbtx4927_softreset_addr);
+ 
+ 	/* do something passive while waiting for reset */
+ 	local_irq_disable();
+@@ -213,9 +206,11 @@ static void toshiba_rbtx4927_power_off(void)
+ 	/* no return */
+ }
+ 
++static void __init rbtx4927_clock_init(void);
++static void __init rbtx4937_clock_init(void);
++
+ static void __init rbtx4927_mem_setup(void)
+ {
+-	int i;
+ 	u32 cp0_config;
+ 	char *argptr;
+ 
+@@ -227,16 +222,18 @@ static void __init rbtx4927_mem_setup(void)
+ 	cp0_config = cp0_config & ~(TX49_CONF_IC | TX49_CONF_DC);
+ 	write_c0_config(cp0_config);
+ 
+-	ioport_resource.end = 0xffffffff;
+-	iomem_resource.end = 0xffffffff;
++	if (TX4927_REV_PCODE() == 0x4927) {
++		rbtx4927_clock_init();
++		tx4927_setup();
++	} else {
++		rbtx4937_clock_init();
++		tx4938_setup();
++	}
+ 
+ 	_machine_restart = toshiba_rbtx4927_restart;
+ 	_machine_halt = toshiba_rbtx4927_halt;
+ 	pm_power_off = toshiba_rbtx4927_power_off;
+ 
+-	for (i = 0; i < TX4927_NR_TMR; i++)
+-		txx9_tmr_init(TX4927_TMR_REG(0) & 0xfffffffffULL);
+-
+ #ifdef CONFIG_PCI
+ 	txx9_alloc_pci_controller(&txx9_primary_pcic,
+ 				  RBTX4927_PCIMEM, RBTX4927_PCIMEM_SIZE,
+@@ -245,36 +242,13 @@ static void __init rbtx4927_mem_setup(void)
+ 	set_io_port_base(KSEG1 + RBTX4927_ISA_IO_OFFSET);
+ #endif
+ 
+-	/* CCFG */
+-	/* do reset on watchdog */
+-	tx4927_ccfg_set(TX4927_CCFG_WR);
+-	/* enable Timeout BusError */
+-	if (tx4927_ccfg_toeon)
+-		tx4927_ccfg_set(TX4927_CCFG_TOE);
+-
+-#ifdef CONFIG_SERIAL_TXX9
+-	{
+-		extern int early_serial_txx9_setup(struct uart_port *port);
+-		struct uart_port req;
+-		for(i = 0; i < 2; i++) {
+-			memset(&req, 0, sizeof(req));
+-			req.line = i;
+-			req.iotype = UPIO_MEM;
+-			req.membase = (char *)(0xff1ff300 + i * 0x100);
+-			req.mapbase = 0xff1ff300 + i * 0x100;
+-			req.irq = TXX9_IRQ_BASE + TX4927_IR_SIO(i);
+-			req.flags |= UPF_BUGGY_UART /*HAVE_CTS_LINE*/;
+-			req.uartclk = 50000000;
+-			early_serial_txx9_setup(&req);
+-		}
+-	}
++	tx4927_setup_serial();
+ #ifdef CONFIG_SERIAL_TXX9_CONSOLE
+         argptr = prom_getcmdline();
+         if (strstr(argptr, "console=") == NULL) {
+                 strcat(argptr, " console=ttyS0,38400");
+         }
+ #endif
+-#endif
+ 
+ #ifdef CONFIG_ROOT_NFS
+         argptr = prom_getcmdline();
+@@ -291,19 +265,7 @@ static void __init rbtx4927_mem_setup(void)
+ #endif
+ }
+ 
+-static void __init rbtx49x7_common_time_init(void)
+-{
+-	/* change default value to udelay/mdelay take reasonable time */
+-	loops_per_jiffy = txx9_cpu_clock / HZ / 2;
+-
+-	mips_hpt_frequency = txx9_cpu_clock / 2;
+-	if (____raw_readq(&tx4927_ccfgptr->ccfg) & TX4927_CCFG_TINTDIS)
+-		txx9_clockevent_init(TX4927_TMR_REG(0) & 0xfffffffffULL,
+-				     TXX9_IRQ_BASE + 17,
+-				     50000000);
+-}
+-
+-static void __init rbtx4927_time_init(void)
++static void __init rbtx4927_clock_init(void)
+ {
+ 	/*
+ 	 * ASSUMPTION: PCIDIVMODE is configured for PCI 33MHz or 66MHz.
+@@ -325,11 +287,9 @@ static void __init rbtx4927_time_init(void)
+ 	default:
+ 		txx9_cpu_clock = 200000000;	/* 200MHz */
+ 	}
+-
+-	rbtx49x7_common_time_init();
+ }
+ 
+-static void __init rbtx4937_time_init(void)
++static void __init rbtx4937_clock_init(void)
+ {
+ 	/*
+ 	 * ASSUMPTION: PCIDIVMODE is configured for PCI 33MHz or 66MHz.
+@@ -357,15 +317,18 @@ static void __init rbtx4937_time_init(void)
+ 	default:
+ 		txx9_cpu_clock = 333333333;	/* 333MHz */
+ 	}
++}
+ 
+-	rbtx49x7_common_time_init();
++static void __init rbtx4927_time_init(void)
++{
++	tx4927_time_init(0);
+ }
+ 
+ static int __init toshiba_rbtx4927_rtc_init(void)
+ {
+-	static struct resource __initdata res = {
+-		.start	= 0x1c010000,
+-		.end	= 0x1c010000 + 0x800 - 1,
++	struct resource res = {
++		.start	= RBTX4927_BRAMRTC_BASE - IO_BASE,
++		.end	= RBTX4927_BRAMRTC_BASE - IO_BASE + 0x800 - 1,
+ 		.flags	= IORESOURCE_MEM,
+ 	};
+ 	struct platform_device *dev =
+@@ -375,7 +338,7 @@ static int __init toshiba_rbtx4927_rtc_init(void)
+ 
+ static int __init rbtx4927_ne_init(void)
+ {
+-	static struct resource __initdata res[] = {
++	struct resource res[] = {
+ 		{
+ 			.start	= RBTX4927_RTL_8019_BASE,
+ 			.end	= RBTX4927_RTL_8019_BASE + 0x20 - 1,
+@@ -434,7 +397,7 @@ struct txx9_board_vec rbtx4937_vec __initdata = {
+ 	.prom_init = rbtx4927_prom_init,
+ 	.mem_setup = rbtx4927_mem_setup,
+ 	.irq_setup = rbtx4927_irq_setup,
+-	.time_init = rbtx4937_time_init,
++	.time_init = rbtx4927_time_init,
+ 	.device_init = rbtx4927_device_init,
+ 	.arch_init = rbtx4937_arch_init,
+ #ifdef CONFIG_PCI
+diff --git a/arch/mips/txx9/rbtx4938/setup.c b/arch/mips/txx9/rbtx4938/setup.c
+index c1e076c..6c2b99b 100644
+--- a/arch/mips/txx9/rbtx4938/setup.c
++++ b/arch/mips/txx9/rbtx4938/setup.c
+@@ -20,21 +20,14 @@
+ #include <linux/gpio.h>
+ 
+ #include <asm/reboot.h>
+-#include <asm/time.h>
+-#include <asm/txx9tmr.h>
+ #include <asm/io.h>
+ #include <asm/txx9/generic.h>
+ #include <asm/txx9/pci.h>
+ #include <asm/txx9/rbtx4938.h>
+-#ifdef CONFIG_SERIAL_TXX9
+-#include <linux/serial_core.h>
+-#endif
+ #include <linux/spi/spi.h>
+ #include <asm/txx9/spi.h>
+ #include <asm/txx9pio.h>
+ 
+-static int tx4938_ccfg_toeon = 1;
+-
+ static void rbtx4938_machine_halt(void)
+ {
+         printk(KERN_NOTICE "System Halted\n");
+@@ -182,189 +175,10 @@ static void __init rbtx4938_spi_setup(void)
+ }
+ 
+ static struct resource rbtx4938_fpga_resource;
+-static struct resource tx4938_sdram_resource[4];
+-static struct resource tx4938_sram_resource;
+-
+-void __init tx4938_board_setup(void)
+-{
+-	int i;
+-	unsigned long divmode;
+-	int cpuclk = 0;
+-	unsigned long pcode = TX4938_REV_PCODE();
+-
+-	ioport_resource.start = 0;
+-	ioport_resource.end = 0xffffffff;
+-	iomem_resource.start = 0;
+-	iomem_resource.end = 0xffffffff;	/* expand to 4GB */
+-
+-	txx9_reg_res_init(pcode, TX4938_REG_BASE,
+-			  TX4938_REG_SIZE);
+-	/* SDRAMC,EBUSC are configured by PROM */
+-	for (i = 0; i < 8; i++) {
+-		if (!(TX4938_EBUSC_CR(i) & 0x8))
+-			continue;	/* disabled */
+-		txx9_ce_res[i].start = (unsigned long)TX4938_EBUSC_BA(i);
+-		txx9_ce_res[i].end =
+-			txx9_ce_res[i].start + TX4938_EBUSC_SIZE(i) - 1;
+-		request_resource(&iomem_resource, &txx9_ce_res[i]);
+-	}
+-
+-	/* clocks */
+-	if (txx9_master_clock) {
+-		u64 ccfg = ____raw_readq(&tx4938_ccfgptr->ccfg);
+-		/* calculate gbus_clock and cpu_clock_freq from master_clock */
+-		divmode = (__u32)ccfg & TX4938_CCFG_DIVMODE_MASK;
+-		switch (divmode) {
+-		case TX4938_CCFG_DIVMODE_8:
+-		case TX4938_CCFG_DIVMODE_10:
+-		case TX4938_CCFG_DIVMODE_12:
+-		case TX4938_CCFG_DIVMODE_16:
+-		case TX4938_CCFG_DIVMODE_18:
+-			txx9_gbus_clock = txx9_master_clock * 4; break;
+-		default:
+-			txx9_gbus_clock = txx9_master_clock;
+-		}
+-		switch (divmode) {
+-		case TX4938_CCFG_DIVMODE_2:
+-		case TX4938_CCFG_DIVMODE_8:
+-			cpuclk = txx9_gbus_clock * 2; break;
+-		case TX4938_CCFG_DIVMODE_2_5:
+-		case TX4938_CCFG_DIVMODE_10:
+-			cpuclk = txx9_gbus_clock * 5 / 2; break;
+-		case TX4938_CCFG_DIVMODE_3:
+-		case TX4938_CCFG_DIVMODE_12:
+-			cpuclk = txx9_gbus_clock * 3; break;
+-		case TX4938_CCFG_DIVMODE_4:
+-		case TX4938_CCFG_DIVMODE_16:
+-			cpuclk = txx9_gbus_clock * 4; break;
+-		case TX4938_CCFG_DIVMODE_4_5:
+-		case TX4938_CCFG_DIVMODE_18:
+-			cpuclk = txx9_gbus_clock * 9 / 2; break;
+-		}
+-		txx9_cpu_clock = cpuclk;
+-	} else {
+-		u64 ccfg = ____raw_readq(&tx4938_ccfgptr->ccfg);
+-		if (txx9_cpu_clock == 0) {
+-			txx9_cpu_clock = 300000000;	/* 300MHz */
+-		}
+-		/* calculate gbus_clock and master_clock from cpu_clock_freq */
+-		cpuclk = txx9_cpu_clock;
+-		divmode = (__u32)ccfg & TX4938_CCFG_DIVMODE_MASK;
+-		switch (divmode) {
+-		case TX4938_CCFG_DIVMODE_2:
+-		case TX4938_CCFG_DIVMODE_8:
+-			txx9_gbus_clock = cpuclk / 2; break;
+-		case TX4938_CCFG_DIVMODE_2_5:
+-		case TX4938_CCFG_DIVMODE_10:
+-			txx9_gbus_clock = cpuclk * 2 / 5; break;
+-		case TX4938_CCFG_DIVMODE_3:
+-		case TX4938_CCFG_DIVMODE_12:
+-			txx9_gbus_clock = cpuclk / 3; break;
+-		case TX4938_CCFG_DIVMODE_4:
+-		case TX4938_CCFG_DIVMODE_16:
+-			txx9_gbus_clock = cpuclk / 4; break;
+-		case TX4938_CCFG_DIVMODE_4_5:
+-		case TX4938_CCFG_DIVMODE_18:
+-			txx9_gbus_clock = cpuclk * 2 / 9; break;
+-		}
+-		switch (divmode) {
+-		case TX4938_CCFG_DIVMODE_8:
+-		case TX4938_CCFG_DIVMODE_10:
+-		case TX4938_CCFG_DIVMODE_12:
+-		case TX4938_CCFG_DIVMODE_16:
+-		case TX4938_CCFG_DIVMODE_18:
+-			txx9_master_clock = txx9_gbus_clock / 4; break;
+-		default:
+-			txx9_master_clock = txx9_gbus_clock;
+-		}
+-	}
+-	/* change default value to udelay/mdelay take reasonable time */
+-	loops_per_jiffy = txx9_cpu_clock / HZ / 2;
+-
+-	/* CCFG */
+-	/* clear WatchDogReset,BusErrorOnWrite flag (W1C) */
+-	tx4938_ccfg_set(TX4938_CCFG_WDRST | TX4938_CCFG_BEOW);
+-	/* do reset on watchdog */
+-	tx4938_ccfg_set(TX4938_CCFG_WR);
+-	/* clear PCIC1 reset */
+-	txx9_clear64(&tx4938_ccfgptr->clkctr, TX4938_CLKCTR_PCIC1RST);
+-
+-	/* enable Timeout BusError */
+-	if (tx4938_ccfg_toeon)
+-		tx4938_ccfg_set(TX4938_CCFG_TOE);
+-
+-	/* DMA selection */
+-	txx9_clear64(&tx4938_ccfgptr->pcfg, TX4938_PCFG_DMASEL_ALL);
+-
+-	/* Use external clock for external arbiter */
+-	if (!(____raw_readq(&tx4938_ccfgptr->ccfg) & TX4938_CCFG_PCIARB))
+-		txx9_clear64(&tx4938_ccfgptr->pcfg, TX4938_PCFG_PCICLKEN_ALL);
+-
+-	printk(KERN_INFO "%s -- %dMHz(M%dMHz) CRIR:%08x CCFG:%llx PCFG:%llx\n",
+-	       txx9_pcode_str,
+-	       (cpuclk + 500000) / 1000000,
+-	       (txx9_master_clock + 500000) / 1000000,
+-	       (__u32)____raw_readq(&tx4938_ccfgptr->crir),
+-	       (unsigned long long)____raw_readq(&tx4938_ccfgptr->ccfg),
+-	       (unsigned long long)____raw_readq(&tx4938_ccfgptr->pcfg));
+-
+-	printk(KERN_INFO "%s SDRAMC --", txx9_pcode_str);
+-	for (i = 0; i < 4; i++) {
+-		u64 cr = TX4938_SDRAMC_CR(i);
+-		unsigned long ram_base, ram_size;
+-		if (!((unsigned long)cr & 0x00000400))
+-			continue;	/* disabled */
+-		ram_base = (unsigned long)(cr >> 49) << 21;
+-		ram_size = ((unsigned long)(cr >> 33) + 1) << 21;
+-		if (ram_base >= 0x20000000)
+-			continue;	/* high memory (ignore) */
+-		printk(KERN_CONT " CR%d:%016llx", i, cr);
+-		tx4938_sdram_resource[i].name = "SDRAM";
+-		tx4938_sdram_resource[i].start = ram_base;
+-		tx4938_sdram_resource[i].end = ram_base + ram_size - 1;
+-		tx4938_sdram_resource[i].flags = IORESOURCE_MEM;
+-		request_resource(&iomem_resource, &tx4938_sdram_resource[i]);
+-	}
+-	printk(KERN_CONT " TR:%09llx\n", ____raw_readq(&tx4938_sdramcptr->tr));
+-
+-	/* SRAM */
+-	if (____raw_readq(&tx4938_sramcptr->cr) & 1) {
+-		unsigned int size = 0x800;
+-		unsigned long base =
+-			(____raw_readq(&tx4938_sramcptr->cr) >> (39-11))
+-			& ~(size - 1);
+-		tx4938_sram_resource.name = "SRAM";
+-		tx4938_sram_resource.start = base;
+-		tx4938_sram_resource.end = base + size - 1;
+-		tx4938_sram_resource.flags = IORESOURCE_MEM;
+-		request_resource(&iomem_resource, &tx4938_sram_resource);
+-	}
+-
+-	/* TMR */
+-	for (i = 0; i < TX4938_NR_TMR; i++)
+-		txx9_tmr_init(TX4938_TMR_REG(i) & 0xfffffffffULL);
+-
+-	/* enable DMA */
+-	for (i = 0; i < 2; i++)
+-		____raw_writeq(TX4938_DMA_MCR_MSTEN,
+-			       (void __iomem *)(TX4938_DMA_REG(i) + 0x50));
+-
+-	/* PIO */
+-	__raw_writel(0, &tx4938_pioptr->maskcpu);
+-	__raw_writel(0, &tx4938_pioptr->maskext);
+-
+-#ifdef CONFIG_PCI
+-	txx9_alloc_pci_controller(&txx9_primary_pcic, 0, 0, 0, 0);
+-#endif
+-}
+ 
+ static void __init rbtx4938_time_init(void)
+ {
+-	mips_hpt_frequency = txx9_cpu_clock / 2;
+-	if (____raw_readq(&tx4938_ccfgptr->ccfg) & TX4938_CCFG_TINTDIS)
+-		txx9_clockevent_init(TX4938_TMR_REG(0) & 0xfffffffffULL,
+-				     TXX9_IRQ_BASE + TX4938_IR_TMR(0),
+-				     txx9_gbus_clock / 2);
++	tx4938_time_init(0);
+ }
+ 
+ static void __init rbtx4938_mem_setup(void)
+@@ -372,39 +186,24 @@ static void __init rbtx4938_mem_setup(void)
+ 	unsigned long long pcfg;
+ 	char *argptr;
+ 
+-	iomem_resource.end = 0xffffffff;	/* 4GB */
+-
+ 	if (txx9_master_clock == 0)
+ 		txx9_master_clock = 25000000; /* 25MHz */
+-	tx4938_board_setup();
+-#ifndef CONFIG_PCI
++
++	tx4938_setup();
++
++#ifdef CONFIG_PCI
++	txx9_alloc_pci_controller(&txx9_primary_pcic, 0, 0, 0, 0);
++#else
+ 	set_io_port_base(RBTX4938_ETHER_BASE);
+ #endif
+ 
+-#ifdef CONFIG_SERIAL_TXX9
+-	{
+-		extern int early_serial_txx9_setup(struct uart_port *port);
+-		int i;
+-		struct uart_port req;
+-		for(i = 0; i < 2; i++) {
+-			memset(&req, 0, sizeof(req));
+-			req.line = i;
+-			req.iotype = UPIO_MEM;
+-			req.membase = (char *)(0xff1ff300 + i * 0x100);
+-			req.mapbase = 0xff1ff300 + i * 0x100;
+-			req.irq = RBTX4938_IRQ_IRC_SIO(i);
+-			req.flags |= UPF_BUGGY_UART /*HAVE_CTS_LINE*/;
+-			req.uartclk = 50000000;
+-			early_serial_txx9_setup(&req);
+-		}
+-	}
++	tx4938_setup_serial();
+ #ifdef CONFIG_SERIAL_TXX9_CONSOLE
+         argptr = prom_getcmdline();
+         if (strstr(argptr, "console=") == NULL) {
+                 strcat(argptr, " console=ttyS0,38400");
+         }
+ #endif
+-#endif
+ 
+ #ifdef CONFIG_TOSHIBA_RBTX4938_MPLEX_PIO58_61
+ 	printk("PIOSEL: disabling both ata and nand selection\n");
+@@ -568,7 +367,6 @@ static int __init rbtx4938_spi_init(void)
+ 
+ static void __init rbtx4938_arch_init(void)
+ {
+-	txx9_gpio_init(TX4938_PIO_REG & 0xfffffffffULL, 0, 16);
+ 	gpiochip_add(&rbtx4938_spi_gpio_chip);
+ 	rbtx4938_pci_setup();
+ 	rbtx4938_spi_init();
+diff --git a/include/asm-mips/txx9/generic.h b/include/asm-mips/txx9/generic.h
+index d875666..cbae37e 100644
+--- a/include/asm-mips/txx9/generic.h
++++ b/include/asm-mips/txx9/generic.h
+@@ -12,6 +12,8 @@
+ #include <linux/ioport.h>	/* for struct resource */
+ 
+ extern struct resource txx9_ce_res[];
++#define TXX9_CE(n)	(unsigned long)(txx9_ce_res[(n)].start)
++extern unsigned int txx9_pcode;
+ extern char txx9_pcode_str[8];
+ void txx9_reg_res_init(unsigned int pcode, unsigned long base,
+ 		       unsigned long size);
+@@ -19,6 +21,11 @@ void txx9_reg_res_init(unsigned int pcode, unsigned long base,
+ extern unsigned int txx9_master_clock;
+ extern unsigned int txx9_cpu_clock;
+ extern unsigned int txx9_gbus_clock;
++#define TXX9_IMCLK	(txx9_gbus_clock / 2)
++
++extern int txx9_ccfg_toeon;
++struct uart_port;
++int early_serial_txx9_setup(struct uart_port *port);
+ 
+ struct pci_dev;
+ struct txx9_board_vec {
+diff --git a/include/asm-mips/txx9/rbtx4927.h b/include/asm-mips/txx9/rbtx4927.h
+index bf19458..6fcec91 100644
+--- a/include/asm-mips/txx9/rbtx4927.h
++++ b/include/asm-mips/txx9/rbtx4927.h
+@@ -34,7 +34,23 @@
+ #define RBTX4927_PCIIO		0x16000000
+ #define RBTX4927_PCIIO_SIZE	0x01000000
+ 
+-#define rbtx4927_pcireset_addr	((__u8 __iomem *)0xbc00f006UL)
++#define RBTX4927_IMASK_ADDR	(IO_BASE + TXX9_CE(2) + 0x00002000)
++#define RBTX4927_IMSTAT_ADDR	(IO_BASE + TXX9_CE(2) + 0x00002006)
++#define RBTX4927_SOFTRESET_ADDR	(IO_BASE + TXX9_CE(2) + 0x0000f000)
++#define RBTX4927_SOFTRESETLOCK_ADDR	(IO_BASE + TXX9_CE(2) + 0x0000f002)
++#define RBTX4927_PCIRESET_ADDR	(IO_BASE + TXX9_CE(2) + 0x0000f006)
++#define RBTX4927_BRAMRTC_BASE	(IO_BASE + TXX9_CE(2) + 0x00010000)
++#define RBTX4927_ETHER_BASE	(IO_BASE + TXX9_CE(2) + 0x00020000)
++
++/* Ethernet port address */
++#define RBTX4927_ETHER_ADDR	(RBTX4927_ETHER_BASE + 0x280)
++
++#define rbtx4927_imask_addr	((__u8 __iomem *)RBTX4927_IMASK_ADDR)
++#define rbtx4927_imstat_addr	((__u8 __iomem *)RBTX4927_IMSTAT_ADDR)
++#define rbtx4927_softreset_addr	((__u8 __iomem *)RBTX4927_SOFTRESET_ADDR)
++#define rbtx4927_softresetlock_addr	\
++				((__u8 __iomem *)RBTX4927_SOFTRESETLOCK_ADDR)
++#define rbtx4927_pcireset_addr	((__u8 __iomem *)RBTX4927_PCIRESET_ADDR)
+ 
+ /* bits for ISTAT/IMASK/IMSTAT */
+ #define RBTX4927_INTB_PCID	0
+@@ -62,13 +78,7 @@
+ #define RBTX4927_ISA_IO_OFFSET 0
+ #endif
+ 
+-#define RBTX4927_SW_RESET_DO         (void __iomem *)0xbc00f000UL
+-#define RBTX4927_SW_RESET_DO_SET                0x01
+-
+-#define RBTX4927_SW_RESET_ENABLE     (void __iomem *)0xbc00f002UL
+-#define RBTX4927_SW_RESET_ENABLE_SET            0x01
+-
+-#define RBTX4927_RTL_8019_BASE (0x1c020280 - RBTX4927_ISA_IO_OFFSET)
++#define RBTX4927_RTL_8019_BASE (RBTX4927_ETHER_ADDR - mips_io_port_base)
+ #define RBTX4927_RTL_8019_IRQ  (TXX9_IRQ_BASE + TX4927_IR_INT(3))
+ 
+ void rbtx4927_prom_init(void);
+diff --git a/include/asm-mips/txx9/rbtx4938.h b/include/asm-mips/txx9/rbtx4938.h
+index 2f5d5e7..9f0441a 100644
+--- a/include/asm-mips/txx9/rbtx4938.h
++++ b/include/asm-mips/txx9/rbtx4938.h
+@@ -15,35 +15,31 @@
+ #include <asm/txx9irq.h>
+ #include <asm/txx9/tx4938.h>
+ 
+-/* CS */
+-#define RBTX4938_CE0	0x1c000000	/* 64M */
+-#define RBTX4938_CE2	0x17f00000	/* 1M */
+-
+ /* Address map */
+-#define RBTX4938_FPGA_REG_ADDR	(KSEG1 + RBTX4938_CE2 + 0x00000000)
+-#define RBTX4938_FPGA_REV_ADDR	(KSEG1 + RBTX4938_CE2 + 0x00000002)
+-#define RBTX4938_CONFIG1_ADDR	(KSEG1 + RBTX4938_CE2 + 0x00000004)
+-#define RBTX4938_CONFIG2_ADDR	(KSEG1 + RBTX4938_CE2 + 0x00000006)
+-#define RBTX4938_CONFIG3_ADDR	(KSEG1 + RBTX4938_CE2 + 0x00000008)
+-#define RBTX4938_LED_ADDR	(KSEG1 + RBTX4938_CE2 + 0x00001000)
+-#define RBTX4938_DIPSW_ADDR	(KSEG1 + RBTX4938_CE2 + 0x00001002)
+-#define RBTX4938_BDIPSW_ADDR	(KSEG1 + RBTX4938_CE2 + 0x00001004)
+-#define RBTX4938_IMASK_ADDR	(KSEG1 + RBTX4938_CE2 + 0x00002000)
+-#define RBTX4938_IMASK2_ADDR	(KSEG1 + RBTX4938_CE2 + 0x00002002)
+-#define RBTX4938_INTPOL_ADDR	(KSEG1 + RBTX4938_CE2 + 0x00002004)
+-#define RBTX4938_ISTAT_ADDR	(KSEG1 + RBTX4938_CE2 + 0x00002006)
+-#define RBTX4938_ISTAT2_ADDR	(KSEG1 + RBTX4938_CE2 + 0x00002008)
+-#define RBTX4938_IMSTAT_ADDR	(KSEG1 + RBTX4938_CE2 + 0x0000200a)
+-#define RBTX4938_IMSTAT2_ADDR	(KSEG1 + RBTX4938_CE2 + 0x0000200c)
+-#define RBTX4938_SOFTINT_ADDR	(KSEG1 + RBTX4938_CE2 + 0x00003000)
+-#define RBTX4938_PIOSEL_ADDR	(KSEG1 + RBTX4938_CE2 + 0x00005000)
+-#define RBTX4938_SPICS_ADDR	(KSEG1 + RBTX4938_CE2 + 0x00005002)
+-#define RBTX4938_SFPWR_ADDR	(KSEG1 + RBTX4938_CE2 + 0x00005008)
+-#define RBTX4938_SFVOL_ADDR	(KSEG1 + RBTX4938_CE2 + 0x0000500a)
+-#define RBTX4938_SOFTRESET_ADDR	(KSEG1 + RBTX4938_CE2 + 0x00007000)
+-#define RBTX4938_SOFTRESETLOCK_ADDR	(KSEG1 + RBTX4938_CE2 + 0x00007002)
+-#define RBTX4938_PCIRESET_ADDR	(KSEG1 + RBTX4938_CE2 + 0x00007004)
+-#define RBTX4938_ETHER_BASE	(KSEG1 + RBTX4938_CE2 + 0x00020000)
++#define RBTX4938_FPGA_REG_ADDR	(IO_BASE + TXX9_CE(2) + 0x00000000)
++#define RBTX4938_FPGA_REV_ADDR	(IO_BASE + TXX9_CE(2) + 0x00000002)
++#define RBTX4938_CONFIG1_ADDR	(IO_BASE + TXX9_CE(2) + 0x00000004)
++#define RBTX4938_CONFIG2_ADDR	(IO_BASE + TXX9_CE(2) + 0x00000006)
++#define RBTX4938_CONFIG3_ADDR	(IO_BASE + TXX9_CE(2) + 0x00000008)
++#define RBTX4938_LED_ADDR	(IO_BASE + TXX9_CE(2) + 0x00001000)
++#define RBTX4938_DIPSW_ADDR	(IO_BASE + TXX9_CE(2) + 0x00001002)
++#define RBTX4938_BDIPSW_ADDR	(IO_BASE + TXX9_CE(2) + 0x00001004)
++#define RBTX4938_IMASK_ADDR	(IO_BASE + TXX9_CE(2) + 0x00002000)
++#define RBTX4938_IMASK2_ADDR	(IO_BASE + TXX9_CE(2) + 0x00002002)
++#define RBTX4938_INTPOL_ADDR	(IO_BASE + TXX9_CE(2) + 0x00002004)
++#define RBTX4938_ISTAT_ADDR	(IO_BASE + TXX9_CE(2) + 0x00002006)
++#define RBTX4938_ISTAT2_ADDR	(IO_BASE + TXX9_CE(2) + 0x00002008)
++#define RBTX4938_IMSTAT_ADDR	(IO_BASE + TXX9_CE(2) + 0x0000200a)
++#define RBTX4938_IMSTAT2_ADDR	(IO_BASE + TXX9_CE(2) + 0x0000200c)
++#define RBTX4938_SOFTINT_ADDR	(IO_BASE + TXX9_CE(2) + 0x00003000)
++#define RBTX4938_PIOSEL_ADDR	(IO_BASE + TXX9_CE(2) + 0x00005000)
++#define RBTX4938_SPICS_ADDR	(IO_BASE + TXX9_CE(2) + 0x00005002)
++#define RBTX4938_SFPWR_ADDR	(IO_BASE + TXX9_CE(2) + 0x00005008)
++#define RBTX4938_SFVOL_ADDR	(IO_BASE + TXX9_CE(2) + 0x0000500a)
++#define RBTX4938_SOFTRESET_ADDR	(IO_BASE + TXX9_CE(2) + 0x00007000)
++#define RBTX4938_SOFTRESETLOCK_ADDR	(IO_BASE + TXX9_CE(2) + 0x00007002)
++#define RBTX4938_PCIRESET_ADDR	(IO_BASE + TXX9_CE(2) + 0x00007004)
++#define RBTX4938_ETHER_BASE	(IO_BASE + TXX9_CE(2) + 0x00020000)
+ 
+ /* Ethernet port address (Jumperless Mode (W12:Open)) */
+ #define RBTX4938_ETHER_ADDR	(RBTX4938_ETHER_BASE + 0x280)
 diff --git a/include/asm-mips/txx9/tx4927.h b/include/asm-mips/txx9/tx4927.h
-index 46d60af..c921215 100644
+index c921215..ceb4b79 100644
 --- a/include/asm-mips/txx9/tx4927.h
 +++ b/include/asm-mips/txx9/tx4927.h
-@@ -32,13 +32,20 @@
- #include <asm/txx9irq.h>
- #include <asm/txx9/tx4927pcic.h>
- 
--#define TX4927_SDRAMC_REG	0xff1f8000
--#define TX4927_EBUSC_REG	0xff1f9000
--#define TX4927_PCIC_REG		0xff1fd000
--#define TX4927_CCFG_REG		0xff1fe000
--#define TX4927_IRC_REG		0xff1ff600
-+#ifdef CONFIG_64BIT
-+#define TX4927_REG_BASE	0xffffffffff1f0000UL
-+#else
-+#define TX4927_REG_BASE	0xff1f0000UL
-+#endif
-+#define TX4927_REG_SIZE	0x00010000
-+
-+#define TX4927_SDRAMC_REG	(TX4927_REG_BASE + 0x8000)
-+#define TX4927_EBUSC_REG	(TX4927_REG_BASE + 0x9000)
-+#define TX4927_PCIC_REG		(TX4927_REG_BASE + 0xd000)
-+#define TX4927_CCFG_REG		(TX4927_REG_BASE + 0xe000)
-+#define TX4927_IRC_REG		(TX4927_REG_BASE + 0xf600)
+@@ -46,15 +46,22 @@
+ #define TX4927_IRC_REG		(TX4927_REG_BASE + 0xf600)
  #define TX4927_NR_TMR	3
--#define TX4927_TMR_REG(ch)	(0xff1ff000 + (ch) * 0x100)
-+#define TX4927_TMR_REG(ch)	(TX4927_REG_BASE + 0xf000 + (ch) * 0x100)
+ #define TX4927_TMR_REG(ch)	(TX4927_REG_BASE + 0xf000 + (ch) * 0x100)
++#define TX4927_NR_SIO	2
++#define TX4927_SIO_REG(ch)	(TX4927_REG_BASE + 0xf300 + (ch) * 0x100)
++#define TX4927_PIO_REG		(TX4927_REG_BASE + 0xf500)
  
  #define TX4927_IR_INT(n)	(2 + (n))
  #define TX4927_IR_SIO(n)	(8 + (n))
-@@ -49,15 +56,15 @@
+ #define TX4927_IR_PCIC		16
++#define TX4927_NUM_IR_TMR	3
++#define TX4927_IR_TMR(n)	(17 + (n))
+ #define TX4927_IR_PCIERR	22
+ #define TX4927_NUM_IR	32
+ 
  #define TX4927_IRC_INT	2	/* IP[2] in Status register */
  
++#define TX4927_NUM_PIO	16
++
  struct tx4927_sdramc_reg {
--	volatile unsigned long long cr[4];
--	volatile unsigned long long unused0[4];
--	volatile unsigned long long tr;
--	volatile unsigned long long unused1[2];
--	volatile unsigned long long cmd;
-+	u64 cr[4];
-+	u64 unused0[4];
-+	u64 tr;
-+	u64 unused1[2];
-+	u64 cmd;
- };
- 
- struct tx4927_ebusc_reg {
--	volatile unsigned long long cr[8];
-+	u64 cr[8];
- };
- 
- struct tx4927_ccfg_reg {
-@@ -160,12 +167,24 @@ struct tx4927_ccfg_reg {
- #define TX4927_CLKCTR_SIO0RST	0x00000002
- #define TX4927_CLKCTR_SIO1RST	0x00000001
- 
--#define tx4927_sdramcptr	((struct tx4927_sdramc_reg *)TX4927_SDRAMC_REG)
-+#define tx4927_sdramcptr \
-+		((struct tx4927_sdramc_reg __iomem *)TX4927_SDRAMC_REG)
- #define tx4927_pcicptr \
- 		((struct tx4927_pcic_reg __iomem *)TX4927_PCIC_REG)
- #define tx4927_ccfgptr \
+ 	u64 cr[4];
+ 	u64 unused0[4];
+@@ -175,6 +182,10 @@ struct tx4927_ccfg_reg {
  		((struct tx4927_ccfg_reg __iomem *)TX4927_CCFG_REG)
--#define tx4927_ebuscptr		((struct tx4927_ebusc_reg *)TX4927_EBUSC_REG)
-+#define tx4927_ebuscptr \
-+		((struct tx4927_ebusc_reg __iomem *)TX4927_EBUSC_REG)
+ #define tx4927_ebuscptr \
+ 		((struct tx4927_ebusc_reg __iomem *)TX4927_EBUSC_REG)
++#define tx4927_pioptr		((struct txx9_pio_reg __iomem *)TX4927_PIO_REG)
 +
-+#define TX4927_SDRAMC_CR(ch)	__raw_readq(&tx4927_sdramcptr->cr[(ch)])
-+#define TX4927_SDRAMC_BA(ch)	((TX4927_SDRAMC_CR(ch) >> 49) << 21)
-+#define TX4927_SDRAMC_SIZE(ch)	\
-+	((((TX4927_SDRAMC_CR(ch) >> 33) & 0x7fff) + 1) << 21)
-+
-+#define TX4927_EBUSC_CR(ch)	__raw_readq(&tx4927_ebuscptr->cr[(ch)])
-+#define TX4927_EBUSC_BA(ch)	((TX4927_EBUSC_CR(ch) >> 48) << 20)
-+#define TX4927_EBUSC_SIZE(ch)	\
-+	(0x00100000 << ((unsigned long)(TX4927_EBUSC_CR(ch) >> 8) & 0xf))
++#define TX4927_REV_PCODE()	\
++	((__u32)__raw_readq(&tx4927_ccfgptr->crir) >> 16)
  
- /* utilities */
- static inline void txx9_clear64(__u64 __iomem *adr, __u64 bits)
-@@ -212,6 +231,7 @@ static inline void tx4927_ccfg_change(__u64 change, __u64 new)
- 		       &tx4927_ccfgptr->ccfg);
+ #define TX4927_SDRAMC_CR(ch)	__raw_readq(&tx4927_sdramcptr->cr[(ch)])
+ #define TX4927_SDRAMC_BA(ch)	((TX4927_SDRAMC_CR(ch) >> 49) << 21)
+@@ -232,6 +243,10 @@ static inline void tx4927_ccfg_change(__u64 change, __u64 new)
  }
  
-+unsigned int tx4927_get_mem_size(void);
+ unsigned int tx4927_get_mem_size(void);
++void tx4927_wdr_init(void);
++void tx4927_setup(void);
++void tx4927_time_init(unsigned int tmrnr);
++void tx4927_setup_serial(void);
  int tx4927_report_pciclk(void);
  int tx4927_pciclk66_setup(void);
  void tx4927_irq_init(void);
 diff --git a/include/asm-mips/txx9/tx4938.h b/include/asm-mips/txx9/tx4938.h
-index 12de68a..6690246 100644
+index 6690246..1ed969d 100644
 --- a/include/asm-mips/txx9/tx4938.h
 +++ b/include/asm-mips/txx9/tx4938.h
-@@ -15,20 +15,11 @@
- /* some controllers are compatible with 4927 */
- #include <asm/txx9/tx4927.h>
+@@ -90,6 +90,8 @@ struct tx4938_ccfg_reg {
  
--#define tx4938_read_nfmc(addr) (*(volatile unsigned int *)(addr))
--#define tx4938_write_nfmc(b, addr) (*(volatile unsigned int *)(addr)) = (b)
--
--#define TX4938_PCIIO_0 0x10000000
--#define TX4938_PCIIO_1 0x01010000
--#define TX4938_PCIMEM_0 0x08000000
--#define TX4938_PCIMEM_1 0x11000000
--
--#define TX4938_PCIIO_SIZE_0 0x01000000
--#define TX4938_PCIIO_SIZE_1 0x00010000
--#define TX4938_PCIMEM_SIZE_0 0x08000000
--#define TX4938_PCIMEM_SIZE_1 0x00010000
--
--#define TX4938_REG_BASE	0xff1f0000 /* == TX4937_REG_BASE */
-+#ifdef CONFIG_64BIT
-+#define TX4938_REG_BASE	0xffffffffff1f0000UL /* == TX4937_REG_BASE */
-+#else
-+#define TX4938_REG_BASE	0xff1f0000UL /* == TX4937_REG_BASE */
-+#endif
- #define TX4938_REG_SIZE	0x00010000 /* == TX4937_REG_SIZE */
+ #define TX4938_IRC_INT	2	/* IP[2] in Status register */
  
- /* NDFMC, SRAMC, PCIC1, SPIC: TX4938 only */
-@@ -49,149 +40,8 @@
- #define TX4938_ACLC_REG		(TX4938_REG_BASE + 0xf700)
- #define TX4938_SPI_REG		(TX4938_REG_BASE + 0xf800)
- 
--#define _CONST64(c)	c##ull
--
--#include <asm/byteorder.h>
--
--#ifdef __BIG_ENDIAN
--#define endian_def_l2(e1, e2)	\
--	volatile unsigned long e1, e2
--#define endian_def_s2(e1, e2)	\
--	volatile unsigned short e1, e2
--#define endian_def_sb2(e1, e2, e3)	\
--	volatile unsigned short e1;volatile unsigned char e2, e3
--#define endian_def_b2s(e1, e2, e3)	\
--	volatile unsigned char e1, e2;volatile unsigned short e3
--#define endian_def_b4(e1, e2, e3, e4)	\
--	volatile unsigned char e1, e2, e3, e4
--#else
--#define endian_def_l2(e1, e2)	\
--	volatile unsigned long e2, e1
--#define endian_def_s2(e1, e2)	\
--	volatile unsigned short e2, e1
--#define endian_def_sb2(e1, e2, e3)	\
--	volatile unsigned char e3, e2;volatile unsigned short e1
--#define endian_def_b2s(e1, e2, e3)	\
--	volatile unsigned short e3;volatile unsigned char e2, e1
--#define endian_def_b4(e1, e2, e3, e4)	\
--	volatile unsigned char e4, e3, e2, e1
--#endif
--
--
--struct tx4938_sdramc_reg {
--	volatile unsigned long long cr[4];
--	volatile unsigned long long unused0[4];
--	volatile unsigned long long tr;
--	volatile unsigned long long unused1[2];
--	volatile unsigned long long cmd;
--	volatile unsigned long long sfcmd;
--};
--
--struct tx4938_ebusc_reg {
--	volatile unsigned long long cr[8];
--};
--
--struct tx4938_dma_reg {
--	struct tx4938_dma_ch_reg {
--		volatile unsigned long long cha;
--		volatile unsigned long long sar;
--		volatile unsigned long long dar;
--		endian_def_l2(unused0, cntr);
--		endian_def_l2(unused1, sair);
--		endian_def_l2(unused2, dair);
--		endian_def_l2(unused3, ccr);
--		endian_def_l2(unused4, csr);
--	} ch[4];
--	volatile unsigned long long dbr[8];
--	volatile unsigned long long tdhr;
--	volatile unsigned long long midr;
--	endian_def_l2(unused0, mcr);
--};
--
--struct tx4938_aclc_reg {
--	volatile unsigned long acctlen;
--	volatile unsigned long acctldis;
--	volatile unsigned long acregacc;
--	volatile unsigned long unused0;
--	volatile unsigned long acintsts;
--	volatile unsigned long acintmsts;
--	volatile unsigned long acinten;
--	volatile unsigned long acintdis;
--	volatile unsigned long acsemaph;
--	volatile unsigned long unused1[7];
--	volatile unsigned long acgpidat;
--	volatile unsigned long acgpodat;
--	volatile unsigned long acslten;
--	volatile unsigned long acsltdis;
--	volatile unsigned long acfifosts;
--	volatile unsigned long unused2[11];
--	volatile unsigned long acdmasts;
--	volatile unsigned long acdmasel;
--	volatile unsigned long unused3[6];
--	volatile unsigned long acaudodat;
--	volatile unsigned long acsurrdat;
--	volatile unsigned long accentdat;
--	volatile unsigned long aclfedat;
--	volatile unsigned long acaudiat;
--	volatile unsigned long unused4;
--	volatile unsigned long acmodoat;
--	volatile unsigned long acmodidat;
--	volatile unsigned long unused5[15];
--	volatile unsigned long acrevid;
--};
--
--
--struct tx4938_tmr_reg {
--	volatile unsigned long tcr;
--	volatile unsigned long tisr;
--	volatile unsigned long cpra;
--	volatile unsigned long cprb;
--	volatile unsigned long itmr;
--	volatile unsigned long unused0[3];
--	volatile unsigned long ccdr;
--	volatile unsigned long unused1[3];
--	volatile unsigned long pgmr;
--	volatile unsigned long unused2[3];
--	volatile unsigned long wtmr;
--	volatile unsigned long unused3[43];
--	volatile unsigned long trr;
--};
--
--struct tx4938_sio_reg {
--	volatile unsigned long lcr;
--	volatile unsigned long dicr;
--	volatile unsigned long disr;
--	volatile unsigned long cisr;
--	volatile unsigned long fcr;
--	volatile unsigned long flcr;
--	volatile unsigned long bgr;
--	volatile unsigned long tfifo;
--	volatile unsigned long rfifo;
--};
--
--struct tx4938_ndfmc_reg {
--	endian_def_l2(unused0, dtr);
--	endian_def_l2(unused1, mcr);
--	endian_def_l2(unused2, sr);
--	endian_def_l2(unused3, isr);
--	endian_def_l2(unused4, imr);
--	endian_def_l2(unused5, spr);
--	endian_def_l2(unused6, rstr);
--};
--
--struct tx4938_spi_reg {
--	volatile unsigned long mcr;
--	volatile unsigned long cr0;
--	volatile unsigned long cr1;
--	volatile unsigned long fs;
--	volatile unsigned long unused1;
--	volatile unsigned long sr;
--	volatile unsigned long dr;
--	volatile unsigned long unused2;
--};
--
- struct tx4938_sramc_reg {
--	volatile unsigned long long cr;
-+	u64 cr;
- };
- 
- struct tx4938_ccfg_reg {
-@@ -209,34 +59,6 @@ struct tx4938_ccfg_reg {
- 	u64 jmpadr;
- };
- 
--#undef endian_def_l2
--#undef endian_def_s2
--#undef endian_def_sb2
--#undef endian_def_b2s
--#undef endian_def_b4
--
--/*
-- * NDFMC
-- */
--
--/* NDFMCR : NDFMC Mode Control */
--#define TX4938_NDFMCR_WE	0x80
--#define TX4938_NDFMCR_ECC_ALL	0x60
--#define TX4938_NDFMCR_ECC_RESET	0x60
--#define TX4938_NDFMCR_ECC_READ	0x40
--#define TX4938_NDFMCR_ECC_ON	0x20
--#define TX4938_NDFMCR_ECC_OFF	0x00
--#define TX4938_NDFMCR_CE	0x10
--#define TX4938_NDFMCR_BSPRT	0x04
--#define TX4938_NDFMCR_ALE	0x02
--#define TX4938_NDFMCR_CLE	0x01
--
--/* NDFMCR : NDFMC Status */
--#define TX4938_NDFSR_BUSY	0x80
--
--/* NDFMCR : NDFMC Reset */
--#define TX4938_NDFRSTR_RST	0x01
--
++#define TX4938_NUM_PIO	16
++
  /*
-  * IRC
-  */
-@@ -272,9 +94,9 @@ struct tx4938_ccfg_reg {
   * CCFG
   */
- /* CCFG : Chip Configuration */
--#define TX4938_CCFG_WDRST	_CONST64(0x0000020000000000)
--#define TX4938_CCFG_WDREXEN	_CONST64(0x0000010000000000)
--#define TX4938_CCFG_BCFG_MASK	_CONST64(0x000000ff00000000)
-+#define TX4938_CCFG_WDRST	0x0000020000000000ULL
-+#define TX4938_CCFG_WDREXEN	0x0000010000000000ULL
-+#define TX4938_CCFG_BCFG_MASK	0x000000ff00000000ULL
- #define TX4938_CCFG_TINTDIS	0x01000000
- #define TX4938_CCFG_PCI66	0x00800000
- #define TX4938_CCFG_PCIMODE	0x00400000
-@@ -310,12 +132,12 @@ struct tx4938_ccfg_reg {
- #define TX4938_CCFG_ACEHOLD	0x00000001
+@@ -274,6 +276,10 @@ struct tx4938_ccfg_reg {
+ #define TX4938_EBUSC_SIZE(ch)	TX4927_EBUSC_SIZE(ch)
  
- /* PCFG : Pin Configuration */
--#define TX4938_PCFG_ETH0_SEL	_CONST64(0x8000000000000000)
--#define TX4938_PCFG_ETH1_SEL	_CONST64(0x4000000000000000)
--#define TX4938_PCFG_ATA_SEL	_CONST64(0x2000000000000000)
--#define TX4938_PCFG_ISA_SEL	_CONST64(0x1000000000000000)
--#define TX4938_PCFG_SPI_SEL	_CONST64(0x0800000000000000)
--#define TX4938_PCFG_NDF_SEL	_CONST64(0x0400000000000000)
-+#define TX4938_PCFG_ETH0_SEL	0x8000000000000000ULL
-+#define TX4938_PCFG_ETH1_SEL	0x4000000000000000ULL
-+#define TX4938_PCFG_ATA_SEL	0x2000000000000000ULL
-+#define TX4938_PCFG_ISA_SEL	0x1000000000000000ULL
-+#define TX4938_PCFG_SPI_SEL	0x0800000000000000ULL
-+#define TX4938_PCFG_NDF_SEL	0x0400000000000000ULL
- #define TX4938_PCFG_SDCLKDLY_MASK	0x30000000
- #define TX4938_PCFG_SDCLKDLY(d)	((d)<<28)
- #define TX4938_PCFG_SYSCLKEN	0x08000000
-@@ -336,8 +158,8 @@ struct tx4938_ccfg_reg {
- #define TX4938_PCFG_DMASEL3_SIO0	0x00000008
- 
- /* CLKCTR : Clock Control */
--#define TX4938_CLKCTR_NDFCKD	_CONST64(0x0001000000000000)
--#define TX4938_CLKCTR_NDFRST	_CONST64(0x0000000100000000)
-+#define TX4938_CLKCTR_NDFCKD	0x0001000000000000ULL
-+#define TX4938_CLKCTR_NDFRST	0x0000000100000000ULL
- #define TX4938_CLKCTR_ETH1CKD	0x80000000
- #define TX4938_CLKCTR_ETH0CKD	0x40000000
- #define TX4938_CLKCTR_SPICKD	0x20000000
-@@ -424,20 +246,16 @@ struct tx4938_ccfg_reg {
- #define TX4938_DMA_CSR_DESERR	0x00000002
- #define TX4938_DMA_CSR_SORERR	0x00000001
- 
--#define tx4938_sdramcptr	((struct tx4938_sdramc_reg *)TX4938_SDRAMC_REG)
--#define tx4938_ebuscptr         ((struct tx4938_ebusc_reg *)TX4938_EBUSC_REG)
--#define tx4938_dmaptr(ch)	((struct tx4938_dma_reg *)TX4938_DMA_REG(ch))
--#define tx4938_ndfmcptr		((struct tx4938_ndfmc_reg *)TX4938_NDFMC_REG)
-+#define tx4938_sdramcptr	tx4927_sdramcptr
-+#define tx4938_ebuscptr		tx4927_ebuscptr
- #define tx4938_pcicptr		tx4927_pcicptr
- #define tx4938_pcic1ptr \
- 		((struct tx4927_pcic_reg __iomem *)TX4938_PCIC1_REG)
- #define tx4938_ccfgptr \
- 		((struct tx4938_ccfg_reg __iomem *)TX4938_CCFG_REG)
--#define tx4938_sioptr(ch)	((struct tx4938_sio_reg *)TX4938_SIO_REG(ch))
- #define tx4938_pioptr		((struct txx9_pio_reg __iomem *)TX4938_PIO_REG)
--#define tx4938_aclcptr		((struct tx4938_aclc_reg *)TX4938_ACLC_REG)
--#define tx4938_spiptr		((struct tx4938_spi_reg *)TX4938_SPI_REG)
--#define tx4938_sramcptr		((struct tx4938_sramc_reg *)TX4938_SRAMC_REG)
-+#define tx4938_sramcptr \
-+		((struct tx4938_sramc_reg __iomem *)TX4938_SRAMC_REG)
- 
- 
- #define TX4938_REV_PCODE()	\
-@@ -447,14 +265,15 @@ struct tx4938_ccfg_reg {
- #define tx4938_ccfg_set(bits)	tx4927_ccfg_set(bits)
- #define tx4938_ccfg_change(change, new)	tx4927_ccfg_change(change, new)
- 
--#define TX4938_SDRAMC_BA(ch)	((tx4938_sdramcptr->cr[ch] >> 49) << 21)
--#define TX4938_SDRAMC_SIZE(ch)	(((tx4938_sdramcptr->cr[ch] >> 33) + 1) << 21)
-+#define TX4938_SDRAMC_CR(ch)	TX4927_SDRAMC_CR(ch)
-+#define TX4938_SDRAMC_BA(ch)	TX4927_SDRAMC_BA(ch)
-+#define TX4938_SDRAMC_SIZE(ch)	TX4927_SDRAMC_SIZE(ch)
- 
--#define TX4938_EBUSC_CR(ch)	__raw_readq(&tx4938_ebuscptr->cr[(ch)])
--#define TX4938_EBUSC_BA(ch)	((tx4938_ebuscptr->cr[ch] >> 48) << 20)
--#define TX4938_EBUSC_SIZE(ch)	\
--	(0x00100000 << ((unsigned long)(tx4938_ebuscptr->cr[ch] >> 8) & 0xf))
-+#define TX4938_EBUSC_CR(ch)	TX4927_EBUSC_CR(ch)
-+#define TX4938_EBUSC_BA(ch)	TX4927_EBUSC_BA(ch)
-+#define TX4938_EBUSC_SIZE(ch)	TX4927_EBUSC_SIZE(ch)
- 
-+#define tx4938_get_mem_size() tx4927_get_mem_size()
+ #define tx4938_get_mem_size() tx4927_get_mem_size()
++void tx4938_wdr_init(void);
++void tx4938_setup(void);
++void tx4938_time_init(unsigned int tmrnr);
++void tx4938_setup_serial(void);
  int tx4938_report_pciclk(void);
  void tx4938_report_pci1clk(void);
  int tx4938_pciclk66_setup(void);

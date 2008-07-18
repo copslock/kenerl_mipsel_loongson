@@ -1,83 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jul 2008 17:50:41 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:40664 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S28588256AbYGRQuF (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 18 Jul 2008 17:50:05 +0100
-Received: from localhost (p8181-ipad203funabasi.chiba.ocn.ne.jp [222.146.87.181])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id C6750B382; Sat, 19 Jul 2008 01:50:01 +0900 (JST)
-Date:	Sat, 19 Jul 2008 01:51:52 +0900 (JST)
-Message-Id: <20080719.015152.10545752.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH 3/3] txx9: Fix some sparse warnings
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Jul 2008 18:09:38 +0100 (BST)
+Received: from mail.windriver.com ([147.11.1.11]:34445 "EHLO mail.wrs.com")
+	by ftp.linux-mips.org with ESMTP id S28588295AbYGRRJg (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 18 Jul 2008 18:09:36 +0100
+Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
+	by mail.wrs.com (8.13.6/8.13.6) with ESMTP id m6IH8is6023206;
+	Fri, 18 Jul 2008 10:09:20 -0700 (PDT)
+Received: from ala-mail06.corp.ad.wrs.com ([147.11.57.147]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 18 Jul 2008 10:08:48 -0700
+Received: from localhost.localdomain ([172.25.32.36]) by ala-mail06.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 18 Jul 2008 10:08:48 -0700
+From:	Jason Wessel <jason.wessel@windriver.com>
+To:	linux-kernel@vger.kernel.org
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org,
+	Jason Wessel <jason.wessel@windriver.com>
+Subject: [PATCH 3/3] kgdb, mips: pad pt_regs on MIPS64 for function arguments in an exception
+Date:	Fri, 18 Jul 2008 12:08:48 -0500
+Message-Id: <1216400928-29097-4-git-send-email-jason.wessel@windriver.com>
+X-Mailer: git-send-email 1.5.5.1
+In-Reply-To: <1216400928-29097-3-git-send-email-jason.wessel@windriver.com>
+References: <1216400928-29097-1-git-send-email-jason.wessel@windriver.com>
+ <1216400928-29097-2-git-send-email-jason.wessel@windriver.com>
+ <1216400928-29097-3-git-send-email-jason.wessel@windriver.com>
+X-OriginalArrivalTime: 18 Jul 2008 17:08:48.0301 (UTC) FILETIME=[F19A3DD0:01C8E8F8]
+Return-Path: <jason.wessel@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19891
+X-archive-position: 19892
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: jason.wessel@windriver.com
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
- arch/mips/txx9/generic/setup.c |    2 ++
- include/asm-mips/txx9/tx3927.h |   19 ++++++++++---------
- 2 files changed, 12 insertions(+), 9 deletions(-)
+When using KGDB the pt_regs structure has the function arguments saved
+to the stack.  48 bytes are required for MIPS 64 for this purpose.
 
-diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
-index 3715a8f..8c60c78 100644
---- a/arch/mips/txx9/generic/setup.c
-+++ b/arch/mips/txx9/generic/setup.c
-@@ -19,7 +19,9 @@
- #include <linux/module.h>
- #include <linux/clk.h>
- #include <linux/err.h>
-+#include <linux/gpio.h>
- #include <asm/bootinfo.h>
-+#include <asm/time.h>
- #include <asm/txx9/generic.h>
- #ifdef CONFIG_CPU_TX49XX
- #include <asm/txx9/tx4938.h>
-diff --git a/include/asm-mips/txx9/tx3927.h b/include/asm-mips/txx9/tx3927.h
-index ca414c7..ea79e1b 100644
---- a/include/asm-mips/txx9/tx3927.h
-+++ b/include/asm-mips/txx9/tx3927.h
-@@ -10,17 +10,18 @@
- 
- #include <asm/txx9/txx927.h>
- 
--#define TX3927_SDRAMC_REG	0xfffe8000
--#define TX3927_ROMC_REG		0xfffe9000
--#define TX3927_DMA_REG		0xfffeb000
--#define TX3927_IRC_REG		0xfffec000
--#define TX3927_PCIC_REG		0xfffed000
--#define TX3927_CCFG_REG		0xfffee000
-+#define TX3927_REG_BASE	0xfffe0000UL
-+#define TX3927_SDRAMC_REG	(TX3927_REG_BASE + 0x8000)
-+#define TX3927_ROMC_REG		(TX3927_REG_BASE + 0x9000)
-+#define TX3927_DMA_REG		(TX3927_REG_BASE + 0xb000)
-+#define TX3927_IRC_REG		(TX3927_REG_BASE + 0xc000)
-+#define TX3927_PCIC_REG		(TX3927_REG_BASE + 0xd000)
-+#define TX3927_CCFG_REG		(TX3927_REG_BASE + 0xe000)
- #define TX3927_NR_TMR	3
--#define TX3927_TMR_REG(ch)	(0xfffef000 + (ch) * 0x100)
-+#define TX3927_TMR_REG(ch)	(TX3927_REG_BASE + 0xf000 + (ch) * 0x100)
- #define TX3927_NR_SIO	2
--#define TX3927_SIO_REG(ch)	(0xfffef300 + (ch) * 0x100)
--#define TX3927_PIO_REG		0xfffef500
-+#define TX3927_SIO_REG(ch)	(TX3927_REG_BASE + 0xf300 + (ch) * 0x100)
-+#define TX3927_PIO_REG		(TX3927_REG_BASE + 0xf500)
- 
- struct tx3927_sdramc_reg {
- 	volatile unsigned long cr[8];
+Signed-off-by: Jason Wessel <jason.wessel@windriver.com>
+---
+ include/asm-mips/ptrace.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/include/asm-mips/ptrace.h b/include/asm-mips/ptrace.h
+index 786f7e3..c3f535f 100644
+--- a/include/asm-mips/ptrace.h
++++ b/include/asm-mips/ptrace.h
+@@ -28,7 +28,7 @@
+  * system call/exception. As usual the registers k0/k1 aren't being saved.
+  */
+ struct pt_regs {
+-#ifdef CONFIG_32BIT
++#if defined(CONFIG_32BIT) || defined(CONFIG_KGDB)
+ 	/* Pad bytes for argument save space on the stack. */
+ 	unsigned long pad0[6];
+ #endif
+-- 
+1.5.5.1

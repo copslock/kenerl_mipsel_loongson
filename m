@@ -1,56 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jul 2008 08:15:07 +0100 (BST)
-Received: from ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk ([217.169.26.28]:15032
-	"EHLO ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk")
-	by ftp.linux-mips.org with ESMTP id S20023505AbYGSHPF (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 19 Jul 2008 08:15:05 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m6J7F2Dl019976;
-	Sat, 19 Jul 2008 08:15:02 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m6J7F2if019969;
-	Sat, 19 Jul 2008 08:15:02 +0100
-Date:	Sat, 19 Jul 2008 08:15:02 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Martin Gebert <martin.gebert@alpha-bit.de>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: HOWTO submit patches using WebMail - Help appreciated?
-Message-ID: <20080719071502.GB7558@linux-mips.org>
-References: <64660ef00807171259l55f85380l47cfdc7574f84099@mail.gmail.com> <200807181528.41119.brian.foster@innova-card.com> <20080718143913.GB25491@linux-mips.org> <4880AD07.2070509@alpha-bit.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4880AD07.2070509@alpha-bit.de>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jul 2008 16:20:43 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:12251 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20025642AbYGSPUk (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 19 Jul 2008 16:20:40 +0100
+Received: from localhost (p1004-ipad301funabasi.chiba.ocn.ne.jp [122.17.251.4])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id ED8A2B0F8; Sun, 20 Jul 2008 00:20:33 +0900 (JST)
+Date:	Sun, 20 Jul 2008 00:22:24 +0900 (JST)
+Message-Id: <20080720.002224.108306935.anemo@mba.ocn.ne.jp>
+To:	linux-sparse@vger.kernel.org
+Cc:	linux-mips@linux-mips.org, sam@ravnborg.org,
+	viro@ZenIV.linux.org.uk
+Subject: [PATCH] sparse: Make pre_buffer dynamically increasable
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19900
+X-archive-position: 19901
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jul 18, 2008 at 04:47:35PM +0200, Martin Gebert wrote:
+I got this error when running sparse on mips kernel with gcc 4.3:
 
->> I'd like to remind people of the wiki page on this topic at
->>
->>   http://www.linux-mips.org/wiki/Mailing-patches
->>
->> It's not been updated in a while and doesn't cover all clients or
->> possible solutions so feel free to update it.
->>   
-> Which brings me to a question I've been wondering for some days now: Is  
-> the [PATCH] prefix in the subject mandatory for a patch proposal being  
-> noticed by the maintainers?
+builtin:272:1: warning: Newline in string or character constant
 
-That's simply a question of working style and mail volume of the maintainer.
+The linux-mips kernel uses '$(CC) -dM -E' to generates arguments for
+sparse.  With gcc 4.3, it generates lot of '-D' options and causes
+pre_buffer overflow.  The linux-mips kernel can filter unused symbols
+out to avoid overflow, but sparse should be fixed anyway.
 
-In the past I used to miss patches that were not sent to me directly at
-times.  I solved that by filtering for patches using procmail.  But that
-scheme also has its shortcomings; it would miss patches being sent in
-too creative MIME encodings but people aren't supposed to do that anyway.
+This patch make pre_buffer dynamically increasable and add extra
+checking for overflow instead of silently truncating.
 
-  Ralf
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+diff --git a/lib.c b/lib.c
+index 0abcc9a..6e8d09b 100644
+--- a/lib.c
++++ b/lib.c
+@@ -186,7 +186,8 @@ void die(const char *fmt, ...)
+ }
+ 
+ static unsigned int pre_buffer_size;
+-static char pre_buffer[8192];
++static unsigned int pre_buffer_alloc_size;
++static char *pre_buffer;
+ 
+ int Waddress_space = 1;
+ int Wbitwise = 0;
+@@ -232,12 +233,20 @@ void add_pre_buffer(const char *fmt, ...)
+ 	unsigned int size;
+ 
+ 	va_start(args, fmt);
++	if (pre_buffer_alloc_size < pre_buffer_size + getpagesize()) {
++		pre_buffer_alloc_size += getpagesize();
++		pre_buffer = realloc(pre_buffer, pre_buffer_alloc_size);
++		if (!pre_buffer)
++			die("Unable to allocate more pre_buffer space");
++	}
+ 	size = pre_buffer_size;
+ 	size += vsnprintf(pre_buffer + size,
+-		sizeof(pre_buffer) - size,
++		pre_buffer_alloc_size - size,
+ 		fmt, args);
+ 	pre_buffer_size = size;
+ 	va_end(args);
++	if (pre_buffer_size >= pre_buffer_alloc_size - 1)
++		die("pre_buffer overflow");
+ }
+ 
+ static char **handle_switch_D(char *arg, char **next)

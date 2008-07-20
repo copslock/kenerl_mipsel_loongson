@@ -1,82 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 19 Jul 2008 16:20:43 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:12251 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20025642AbYGSPUk (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 19 Jul 2008 16:20:40 +0100
-Received: from localhost (p1004-ipad301funabasi.chiba.ocn.ne.jp [122.17.251.4])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id ED8A2B0F8; Sun, 20 Jul 2008 00:20:33 +0900 (JST)
-Date:	Sun, 20 Jul 2008 00:22:24 +0900 (JST)
-Message-Id: <20080720.002224.108306935.anemo@mba.ocn.ne.jp>
-To:	linux-sparse@vger.kernel.org
-Cc:	linux-mips@linux-mips.org, sam@ravnborg.org,
-	viro@ZenIV.linux.org.uk
-Subject: [PATCH] sparse: Make pre_buffer dynamically increasable
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 20 Jul 2008 14:03:55 +0100 (BST)
+Received: from mo31.po.2iij.net ([210.128.50.54]:50453 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S28591775AbYGTNDw (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 20 Jul 2008 14:03:52 +0100
+Received: by mo.po.2iij.net (mo31) id m6KD3nAA042953; Sun, 20 Jul 2008 22:03:49 +0900 (JST)
+Received: from delta (16.26.30.125.dy.iij4u.or.jp [125.30.26.16])
+	by mbox.po.2iij.net (po-mbox304) id m6KD3jBH010429
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Sun, 20 Jul 2008 22:03:46 +0900
+Date:	Sun, 20 Jul 2008 22:03:32 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] remove unused maltasmp.h
+Message-Id: <20080720220332.d597433e.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed 2.4.8 (GTK+ 2.12.9; i486-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19901
+X-archive-position: 19902
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-I got this error when running sparse on mips kernel with gcc 4.3:
+Remove unused maltasmp.h.
 
-builtin:272:1: warning: Newline in string or character constant
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-The linux-mips kernel uses '$(CC) -dM -E' to generates arguments for
-sparse.  With gcc 4.3, it generates lot of '-D' options and causes
-pre_buffer overflow.  The linux-mips kernel can filter unused symbols
-out to avoid overflow, but sparse should be fixed anyway.
-
-This patch make pre_buffer dynamically increasable and add extra
-checking for overflow instead of silently truncating.
-
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
-diff --git a/lib.c b/lib.c
-index 0abcc9a..6e8d09b 100644
---- a/lib.c
-+++ b/lib.c
-@@ -186,7 +186,8 @@ void die(const char *fmt, ...)
- }
- 
- static unsigned int pre_buffer_size;
--static char pre_buffer[8192];
-+static unsigned int pre_buffer_alloc_size;
-+static char *pre_buffer;
- 
- int Waddress_space = 1;
- int Wbitwise = 0;
-@@ -232,12 +233,20 @@ void add_pre_buffer(const char *fmt, ...)
- 	unsigned int size;
- 
- 	va_start(args, fmt);
-+	if (pre_buffer_alloc_size < pre_buffer_size + getpagesize()) {
-+		pre_buffer_alloc_size += getpagesize();
-+		pre_buffer = realloc(pre_buffer, pre_buffer_alloc_size);
-+		if (!pre_buffer)
-+			die("Unable to allocate more pre_buffer space");
-+	}
- 	size = pre_buffer_size;
- 	size += vsnprintf(pre_buffer + size,
--		sizeof(pre_buffer) - size,
-+		pre_buffer_alloc_size - size,
- 		fmt, args);
- 	pre_buffer_size = size;
- 	va_end(args);
-+	if (pre_buffer_size >= pre_buffer_alloc_size - 1)
-+		die("pre_buffer overflow");
- }
- 
- static char **handle_switch_D(char *arg, char **next)
+diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/include/asm-mips/mips-boards/maltasmp.h linux/include/asm-mips/mips-boards/maltasmp.h
+--- linux-orig/include/asm-mips/mips-boards/maltasmp.h	2008-07-18 10:53:59.448363041 +0900
++++ linux/include/asm-mips/mips-boards/maltasmp.h	1970-01-01 09:00:00.000000000 +0900
+@@ -1,36 +0,0 @@
+-/*
+- * There are several SMP models supported
+- * SMTC is mutually exclusive to other options (atm)
+- */
+-#if defined(CONFIG_MIPS_MT_SMTC)
+-#define malta_smtc	1
+-#define malta_cmp	0
+-#define malta_smvp	0
+-#else
+-#define malta_smtc	0
+-#if defined(CONFIG_MIPS_CMP)
+-extern int gcmp_present;
+-#define malta_cmp	gcmp_present
+-#else
+-#define malta_cmp	0
+-#endif
+-/* FIXME: should become COMFIG_MIPS_MT_SMVP */
+-#if defined(CONFIG_MIPS_MT_SMP)
+-#define malta_smvp	1
+-#else
+-#define malta_smvp	0
+-#endif
+-#endif
+-
+-#include <asm/mipsregs.h>
+-#include <asm/mipsmtregs.h>
+-
+-/* malta_smtc */
+-#include <asm/smtc.h>
+-#include <asm/smtc_ipi.h>
+-
+-/* malta_cmp */
+-#include <asm/cmp.h>
+-
+-/* malta_smvp */
+-#include <asm/smvp.h>

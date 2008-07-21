@@ -1,165 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Jul 2008 01:04:09 +0100 (BST)
-Received: from bombadil.infradead.org ([18.85.46.34]:26803 "EHLO
-	bombadil.infradead.org") by ftp.linux-mips.org with ESMTP
-	id S28593555AbYGUAEG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 21 Jul 2008 01:04:06 +0100
-Received: from [59.180.111.8] (helo=[192.168.1.200])
-	by bombadil.infradead.org with esmtpsa (Exim 4.68 #1 (Red Hat Linux))
-	id 1KKisl-0003wi-7P; Mon, 21 Jul 2008 00:04:04 +0000
-Subject: [PATCH 13/22] mips: Introducing asm/syscalls.h
-From:	Jaswinder Singh <jaswinder@infradead.org>
-To:	LKML <linux-kernel@vger.kernel.org>
-Cc:	kernelnewbies <kernelnewbies@nl.linux.org>,
-	David Woodhouse <dwmw2@infradead.org>, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
-In-Reply-To: <1216597151.3679.125.camel@jaswinder.satnam>
-References: <1216592500.3679.14.camel@jaswinder.satnam>
-	 <1216592798.3679.22.camel@jaswinder.satnam>
-	 <1216592879.3679.24.camel@jaswinder.satnam>
-	 <1216593035.3679.27.camel@jaswinder.satnam>
-	 <1216596035.3679.95.camel@jaswinder.satnam>
-	 <1216596106.3679.98.camel@jaswinder.satnam>
-	 <1216596325.3679.104.camel@jaswinder.satnam>
-	 <1216596669.3679.112.camel@jaswinder.satnam>
-	 <1216596749.3679.115.camel@jaswinder.satnam>
-	 <1216596835.3679.117.camel@jaswinder.satnam>
-	 <1216596932.3679.120.camel@jaswinder.satnam>
-	 <1216597066.3679.123.camel@jaswinder.satnam>
-	 <1216597151.3679.125.camel@jaswinder.satnam>
-Content-Type: text/plain
-Date:	Mon, 21 Jul 2008 05:10:37 +0530
-Message-Id: <1216597237.3679.128.camel@jaswinder.satnam>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Jul 2008 01:21:02 +0100 (BST)
+Received: from mo30.po.2iij.net ([210.128.50.53]:52781 "EHLO mo30.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S28593565AbYGUAVA (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 21 Jul 2008 01:21:00 +0100
+Received: by mo.po.2iij.net (mo30) id m6L0Ktut082423; Mon, 21 Jul 2008 09:20:55 +0900 (JST)
+Received: from delta (16.26.30.125.dy.iij4u.or.jp [125.30.26.16])
+	by mbox.po.2iij.net (po-mbox300) id m6L0Kqr4006849
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Mon, 21 Jul 2008 09:20:52 +0900
+Date:	Mon, 21 Jul 2008 09:20:52 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH][MIPS] remove unused saa9730_uart.h
+Message-Id: <20080721092052.f0fb76df.yoichi_yuasa@tripeaks.co.jp>
+In-Reply-To: <20080720132049.GB22822@linux-mips.org>
+References: <20080720220106.bdb501a4.yoichi_yuasa@tripeaks.co.jp>
+	<20080720132049.GB22822@linux-mips.org>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed 2.4.8 (GTK+ 2.12.9; i486-pc-linux-gnu)
 Mime-Version: 1.0
-X-Mailer: Evolution 2.22.1 (2.22.1-2.fc9) 
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Bad-Reply: References and In-Reply-To but no 'Re:' in Subject.
-Return-Path: <jaswinder@infradead.org>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19906
+X-archive-position: 19907
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jaswinder@infradead.org
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Declaring arch-dependent syscalls for mips architecture
+On Sun, 20 Jul 2008 14:20:49 +0100
+Ralf Baechle <ralf@linux-mips.org> wrote:
 
-Signed-off-by: Jaswinder Singh <jaswinder@infradead.org>
----
- arch/mips/kernel/linux32.c  |    1 -
- arch/mips/kernel/signal.c   |    2 +-
- arch/mips/kernel/signal32.c |    1 -
- arch/mips/kernel/syscall.c  |    1 -
- include/asm-mips/syscalls.h |   45 +++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 46 insertions(+), 4 deletions(-)
+> On Sun, Jul 20, 2008 at 10:01:06PM +0900, Yoichi Yuasa wrote:
+> 
+> > Subject: [PATCH][MIPS] remove unused saa9730_uart.h
+> > Content-Type: text/plain; charset=US-ASCII
+> > 
+> > Remove unused saa9730_uart.h.
+> > 
+> > Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+> 
+> Applied.
+> 
+> Btw, when submitting patches you always repeat the Subject line as the
+> first line of the body.  Don't - it's just stuff that needs to be deleted.
 
-diff --git a/arch/mips/kernel/linux32.c b/arch/mips/kernel/linux32.c
-index 65af3cc..710e4dc 100644
---- a/arch/mips/kernel/linux32.c
-+++ b/arch/mips/kernel/linux32.c
-@@ -41,7 +41,6 @@
- #include <net/scm.h>
- 
- #include <asm/compat-signal.h>
--#include <asm/sim.h>
- #include <asm/uaccess.h>
- #include <asm/mmu_context.h>
- #include <asm/mman.h>
-diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
-index a4e106c..2bc1a37 100644
---- a/arch/mips/kernel/signal.c
-+++ b/arch/mips/kernel/signal.c
-@@ -20,13 +20,13 @@
- #include <linux/unistd.h>
- #include <linux/compiler.h>
- #include <linux/uaccess.h>
-+#include <linux/syscalls.h>
- 
- #include <asm/abi.h>
- #include <asm/asm.h>
- #include <linux/bitops.h>
- #include <asm/cacheflush.h>
- #include <asm/fpu.h>
--#include <asm/sim.h>
- #include <asm/ucontext.h>
- #include <asm/cpu-features.h>
- #include <asm/war.h>
-diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
-index 572c610..c1b32e9 100644
---- a/arch/mips/kernel/signal32.c
-+++ b/arch/mips/kernel/signal32.c
-@@ -27,7 +27,6 @@
- #include <asm/compat-signal.h>
- #include <linux/bitops.h>
- #include <asm/cacheflush.h>
--#include <asm/sim.h>
- #include <asm/ucontext.h>
- #include <asm/system.h>
- #include <asm/fpu.h>
-diff --git a/arch/mips/kernel/syscall.c b/arch/mips/kernel/syscall.c
-index af1bdc8..3505210 100644
---- a/arch/mips/kernel/syscall.c
-+++ b/arch/mips/kernel/syscall.c
-@@ -35,7 +35,6 @@
- #include <asm/cacheflush.h>
- #include <asm/asm-offsets.h>
- #include <asm/signal.h>
--#include <asm/sim.h>
- #include <asm/shmparam.h>
- #include <asm/sysmips.h>
- #include <asm/uaccess.h>
-diff --git a/include/asm-mips/syscalls.h b/include/asm-mips/syscalls.h
-index e69de29..3beed90 100644
---- a/include/asm-mips/syscalls.h
-+++ b/include/asm-mips/syscalls.h
-@@ -0,0 +1,45 @@
-+/*
-+ * syscalls.h - Linux syscall interfaces (arch-specific)
-+ *
-+ * Copyright (c) 2008 Jaswinder Singh
-+ *
-+ * This file is released under the GPLv2.
-+ * See the file COPYING for more details.
-+ *
-+ * Please do not call me directly, include linux/syscalls.h
-+ */
-+
-+#ifndef _ASM_MIPS_SYSCALLS_H
-+#define _ASM_MIPS_SYSCALLS_H
-+
-+#include <linux/ptrace.h>
-+#include <asm/sim.h>
-+
-+/* kernel/signal.c */
-+#ifdef CONFIG_TRAD_SIGNALS
-+asmlinkage int sys_sigsuspend(nabi_no_regargs struct pt_regs);
-+asmlinkage int sys_sigaction(int, const struct sigaction __user *,
-+			     struct sigaction __user *);
-+asmlinkage void sys_sigreturn(nabi_no_regargs struct pt_regs);
-+#endif
-+
-+asmlinkage int sys_rt_sigsuspend(nabi_no_regargs struct pt_regs);
-+asmlinkage int sys_sigaltstack(nabi_no_regargs struct pt_regs);
-+asmlinkage void sys_rt_sigreturn(nabi_no_regargs struct pt_regs);
-+
-+/* kernel/syscalls.c */
-+asmlinkage unsigned long old_mmap(unsigned long, unsigned long,
-+				  int, int, int, off_t);
-+
-+asmlinkage unsigned long sys_mmap2(unsigned long, unsigned long,
-+				   unsigned long, unsigned long,
-+				   unsigned long, unsigned long);
-+asmlinkage int sys_execve(nabi_no_regargs struct pt_regs);
-+asmlinkage int sys_uname(struct old_utsname __user *);
-+asmlinkage int sys_olduname(struct oldold_utsname __user *);
-+asmlinkage int sys_set_thread_area(unsigned long);
-+asmlinkage int sys_ipc(unsigned int, int, int,
-+		       unsigned long, void __user *, long);
-+asmlinkage int sys_cachectl(char *, int, int);
-+
-+#endif /* _ASM_MIPS_SYSCALLS_H */
--- 
-1.5.5.1
+OK, I will do that.
+
+Thanks,
+
+Yoichi

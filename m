@@ -1,57 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Jul 2008 01:21:02 +0100 (BST)
-Received: from mo30.po.2iij.net ([210.128.50.53]:52781 "EHLO mo30.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S28593565AbYGUAVA (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 21 Jul 2008 01:21:00 +0100
-Received: by mo.po.2iij.net (mo30) id m6L0Ktut082423; Mon, 21 Jul 2008 09:20:55 +0900 (JST)
-Received: from delta (16.26.30.125.dy.iij4u.or.jp [125.30.26.16])
-	by mbox.po.2iij.net (po-mbox300) id m6L0Kqr4006849
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Mon, 21 Jul 2008 09:20:52 +0900
-Date:	Mon, 21 Jul 2008 09:20:52 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Jul 2008 10:19:00 +0100 (BST)
+Received: from alpha-bit.de ([217.160.213.225]:40411 "EHLO
+	p15137410.pureserver.info") by ftp.linux-mips.org with ESMTP
+	id S28573768AbYGUJS6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 21 Jul 2008 10:18:58 +0100
+Received: from Porsche (DSL01.83.171.182.190.ip-pool.NEFkom.net [83.171.182.190])
+	by p15137410.pureserver.info (Postfix) with ESMTP id 81DA780DA12;
+	Mon, 21 Jul 2008 11:18:57 +0200 (CEST)
+X-KENId: 00004FAFKEN002CE47E
+X-KENRelayed: 00004FAFKEN002CE47E@Porsche
+Received: from [192.168.0.209]
+   by KEN (4.00.93-v070725) with SMTP
+   ; Mon, 21 Jul 2008 11:18:47 +0200
+Date:	Mon, 21 Jul 2008 11:18:55 +0200
+From:	Martin Gebert <martin.gebert@alpha-bit.de>
+Subject: Re: HOWTO submit patches using WebMail - Help appreciated?
 To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH][MIPS] remove unused saa9730_uart.h
-Message-Id: <20080721092052.f0fb76df.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20080720132049.GB22822@linux-mips.org>
-References: <20080720220106.bdb501a4.yoichi_yuasa@tripeaks.co.jp>
-	<20080720132049.GB22822@linux-mips.org>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed 2.4.8 (GTK+ 2.12.9; i486-pc-linux-gnu)
+Cc:	linux-mips@linux-mips.org
+Message-Id: <4884547F.8010505@alpha-bit.de>
+In-Reply-To: <20080719071502.GB7558@linux-mips.org>
+References: <64660ef00807171259l55f85380l47cfdc7574f84099@mail.gmail.com> <200807181528.41119.brian.foster@innova-card.com> <20080718143913.GB25491@linux-mips.org> <4880AD07.2070509@alpha-bit.de> <20080719071502.GB7558@linux-mips.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+X-KENRecTime: 1216631927
 Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+User-Agent: Thunderbird 2.0.0.14 (X11/20080421)
+Return-Path: <martin.gebert@alpha-bit.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19907
+X-archive-position: 19908
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: martin.gebert@alpha-bit.de
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 20 Jul 2008 14:20:49 +0100
-Ralf Baechle <ralf@linux-mips.org> wrote:
+Hi Ralf!
 
-> On Sun, Jul 20, 2008 at 10:01:06PM +0900, Yoichi Yuasa wrote:
-> 
-> > Subject: [PATCH][MIPS] remove unused saa9730_uart.h
-> > Content-Type: text/plain; charset=US-ASCII
-> > 
-> > Remove unused saa9730_uart.h.
-> > 
-> > Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-> 
-> Applied.
-> 
-> Btw, when submitting patches you always repeat the Subject line as the
-> first line of the body.  Don't - it's just stuff that needs to be deleted.
+> In the past I used to miss patches that were not sent to me directly at
+> times.  I solved that by filtering for patches using procmail.
 
-OK, I will do that.
+Thanks for this clarification. Perhaps the Mailing-patches FAQ could be 
+updated with this detail?
 
-Thanks,
-
-Yoichi
+Martin

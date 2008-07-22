@@ -1,62 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 21 Jul 2008 10:53:59 +0100 (BST)
-Received: from alpha-bit.de ([217.160.213.225]:8924 "EHLO
-	p15137410.pureserver.info") by ftp.linux-mips.org with ESMTP
-	id S28573717AbYGUJxw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 21 Jul 2008 10:53:52 +0100
-Received: from Porsche (DSL01.83.171.182.190.ip-pool.NEFkom.net [83.171.182.190])
-	by p15137410.pureserver.info (Postfix) with ESMTP id 4A3A980DA12
-	for <linux-mips@linux-mips.org>; Mon, 21 Jul 2008 11:53:52 +0200 (CEST)
-X-KENId: 00001AA9KEN004CDB5A
-X-KENRelayed: 00001AA9KEN004CDB5A@Porsche
-Received: from [192.168.0.209]
-   by KEN (4.00.93-v070725) with SMTP
-   ; Mon, 21 Jul 2008 11:53:42 +0200
-Date:	Mon, 21 Jul 2008 11:53:50 +0200
-From:	Martin Gebert <martin.gebert@alpha-bit.de>
-Subject: [PATCH] Spinlock initialisation au1000_eth.c
-To:	linux-mips@linux-mips.org
-Message-Id: <48845CAE.5000606@alpha-bit.de>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-KENRecTime: 1216634022
-Content-Transfer-Encoding: 7bit
-User-Agent: Thunderbird 2.0.0.14 (X11/20080421)
-Return-Path: <martin.gebert@alpha-bit.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2008 17:44:54 +0100 (BST)
+Received: from mgw2.diku.dk ([130.225.96.92]:56248 "EHLO mgw2.diku.dk")
+	by ftp.linux-mips.org with ESMTP id S28575441AbYGVQov (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 22 Jul 2008 17:44:51 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by mgw2.diku.dk (Postfix) with ESMTP id 35EB519BB88;
+	Tue, 22 Jul 2008 18:44:50 +0200 (CEST)
+Received: from mgw2.diku.dk ([127.0.0.1])
+ by localhost (mgw2.diku.dk [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 26238-17; Tue, 22 Jul 2008 18:44:49 +0200 (CEST)
+Received: from nhugin.diku.dk (nhugin.diku.dk [130.225.96.140])
+	by mgw2.diku.dk (Postfix) with ESMTP id 0719E19BB53;
+	Tue, 22 Jul 2008 18:44:49 +0200 (CEST)
+Received: from ask.diku.dk (ask.diku.dk [130.225.96.225])
+	by nhugin.diku.dk (Postfix) with ESMTP
+	id 4BBFE6DFAB3; Tue, 22 Jul 2008 18:42:57 +0200 (CEST)
+Received: by ask.diku.dk (Postfix, from userid 3767)
+	id E1B334F9F95; Tue, 22 Jul 2008 18:44:48 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by ask.diku.dk (Postfix) with ESMTP id E0C4C4F9F94;
+	Tue, 22 Jul 2008 18:44:48 +0200 (CEST)
+Date:	Tue, 22 Jul 2008 18:44:48 +0200 (CEST)
+From:	Julia Lawall <julia@diku.dk>
+To:	ralf@linux-mips.org, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH 2/2] : Add local_irq_restore in error handling code
+Message-ID: <Pine.LNX.4.64.0807221844250.2670@ask.diku.dk>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: amavisd-new at diku.dk
+Return-Path: <julia@diku.dk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19910
+X-archive-position: 19911
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: martin.gebert@alpha-bit.de
+X-original-sender: julia@diku.dk
 Precedence: bulk
 X-list: linux-mips
 
-Seems like the spinlock for the AU1x00 ethernet device is initialised too
-late, as it is already used in enable_mac(), which is called via
-mii_probe() before the init takes place.
-The attached patch is working here for a Linux Au1100 2.6.22.6 kernel,
-and as far as I checked should also be applicable to the current head
-(just line numbers differ).
+From: Julia Lawall <julia@diku.dk>
 
-Signed-off-by: Martin Gebert <Martin.Gebert@alpha-bit.de>
+There is a call to local_irq_restore in the normal exit case, so it would
+seem that there should be one on an error return as well.
 
---- drivers/net/au1000_eth.c	2008-06-26 14:21:53.000000000 +0200
-+++ drivers/net/au1000_eth.c	2008-06-26 14:23:00.000000000 +0200
-@@ -656,6 +656,7 @@
-		dev->name, base, irq);
+The semantic patch that makes this change is as follows:
+(http://www.emn.fr/x-info/coccinelle/)
 
-	aup = dev->priv;
-+	spin_lock_init(&aup->lock);
+// <smpl>
+@@
+expression l;
+expression E,E1,E2;
+@@
 
-	/* Allocate the data buffers */
-	/* Snooping works fine with eth on all au1xxx */
-@@ -766,7 +767,6 @@
-		aup->tx_db_inuse[i] = pDB;
-	}
+local_irq_save(l);
+... when != local_irq_restore(l)
+    when != spin_unlock_irqrestore(E,l)
+    when any
+    when strict
+(
+if (...) { ... when != local_irq_restore(l)
+               when != spin_unlock_irqrestore(E1,l)
++   local_irq_restore(l);
+    return ...;
+}
+|
+if (...)
++   {local_irq_restore(l);
+    return ...;
++   }
+|
+spin_unlock_irqrestore(E2,l);
+|
+local_irq_restore(l);
+)
+// </smpl>
 
--	spin_lock_init(&aup->lock);
-	dev->base_addr = base;
-	dev->irq = irq;
-	dev->open = au1000_open;
+Signed-off-by: Julia Lawall <julia@diku.dk>
+
+---
+ arch/mips/mm/tlb-r3k.c        |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/arch/mips/mm/tlb-r3k.c b/arch/mips/mm/tlb-r3k.c
+index a782549..7d7e822 100644
+--- a/arch/mips/mm/tlb-r3k.c
++++ b/arch/mips/mm/tlb-r3k.c
+@@ -247,6 +247,7 @@ void __init add_wired_entry(unsigned long entrylo0, unsigned long entrylo1,
+ 		w = read_c0_wired();
+ 		write_c0_wired(w + 1);
+ 		if (read_c0_wired() != w + 1) {
++			local_irq_restore(flags);
+ 			printk("[tlbwired] No WIRED reg?\n");
+ 			return;
+ 		}

@@ -1,80 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2008 18:10:14 +0100 (BST)
-Received: from ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk ([217.169.26.28]:48805
-	"EHLO ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk")
-	by ftp.linux-mips.org with ESMTP id S28575478AbYGVRKL (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 22 Jul 2008 18:10:11 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m6MHA84t000458;
-	Tue, 22 Jul 2008 18:10:08 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m6MHA6MB000457;
-	Tue, 22 Jul 2008 18:10:06 +0100
-Date:	Tue, 22 Jul 2008 18:10:06 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Julia Lawall <julia@diku.dk>
-Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 2/2] : Add local_irq_restore in error handling code
-Message-ID: <20080722171006.GA32742@linux-mips.org>
-References: <Pine.LNX.4.64.0807221844250.2670@ask.diku.dk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 22 Jul 2008 20:55:36 +0100 (BST)
+Received: from idcmail-mo2no.shaw.ca ([64.59.134.9]:61542 "EHLO
+	pd5mo1no-dmz.prod.shaw.ca") by ftp.linux-mips.org with ESMTP
+	id S28576005AbYGVTze (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 22 Jul 2008 20:55:34 +0100
+Received: from unknown (HELO pd7ml1no-ssvc.prod.shaw.ca) ([10.0.153.161])
+  by pd5mo1no-svcs.prod.shaw.ca with ESMTP; 22 Jul 2008 13:55:26 -0600
+X-Cloudmark-SP-Filtered: true
+X-Cloudmark-SP-Result: v=1.0 c=0 a=k3EDTjLkTGGeHWIs8FYA:9 a=-wLil0PomoLINGMZv2pVd9MzT2oA:4 a=LfNDhWR-7GwA:10
+Received: from s0106000d88c2e56e.cg.shawcable.net (HELO localhost.localdomain) ([70.73.70.241])
+  by pd7ml1no-dmz.prod.shaw.ca with ESMTP; 22 Jul 2008 13:55:18 -0600
+Message-ID: <48863A41.2020303@aksysnetworks.com>
+Date:	Tue, 22 Jul 2008 13:51:29 -0600
+From:	Mandeep Ahuja <ahuja@aksysnetworks.com>
+User-Agent: Thunderbird 2.0.0.6 (X11/20070926)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64.0807221844250.2670@ask.diku.dk>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+To:	linux-mips@linux-mips.org
+Subject: Load Average >=1, mips kernel 2.6.10
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <ahuja@aksysnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19912
+X-archive-position: 19913
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ahuja@aksysnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Julia,
+Hi,
+I need your guys help.
 
-On Tue, Jul 22, 2008 at 06:44:48PM +0200, Julia Lawall wrote:
+I have an embedded system thats has mips processor. I recently updated 
+to Kernel 2.6.10 from 2.4.17.
+I was able to run the kernel and mount the jffs2 file system.
 
-> From: Julia Lawall <julia@diku.dk>
-> 
-> There is a call to local_irq_restore in the normal exit case, so it would
-> seem that there should be one on an error return as well.
-> 
-> The semantic patch that makes this change is as follows:
-> (http://www.emn.fr/x-info/coccinelle/)
+When the system starts the load average is low like 0.02 but, after 
+about 2 minutes it becomes 1.00 and as long as the system is idle it 
+stays at 1.00. If the system is not idle it would go up to like 1.21 but 
+eventually come down  to 1.00 but NEVER goes below 1.
 
-Correctly spotted - but I decieded to go for below patch instead.
+There is no application running on the system. Only the busybox. Top 
+shows all processes sleeping.
 
-Thanks,
+this is the version of kernel
+Linux version 2.6.10_dev-malta-mips2_fp_len (gcc version 3.4.6)
 
-  Ralf
+Is there something holding the processor continuously? does anyone have 
+any idea whats going on?.
 
-From: Ralf Baechle <ralf@linux-mips.org>
+ I need to figure this one out before I start my application on it!.
 
-[MIPS] tlb-r4k: Nuke broken paranoia error test.
+Thanks a lot
 
-Bug originally found and reported by Julia Lawall <julia@diku.dk>.  I
-decieded that the whole error check was mostly useless paranoia and should
-be discarded.  It would only ever trigger if r3k_have_wired_reg has a wrong
-value.
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
-diff --git a/arch/mips/mm/tlb-r3k.c b/arch/mips/mm/tlb-r3k.c
-index a782549..f0cf46a 100644
---- a/arch/mips/mm/tlb-r3k.c
-+++ b/arch/mips/mm/tlb-r3k.c
-@@ -246,10 +246,6 @@ void __init add_wired_entry(unsigned long entrylo0, unsigned long entrylo1,
- 		old_pagemask = read_c0_pagemask();
- 		w = read_c0_wired();
- 		write_c0_wired(w + 1);
--		if (read_c0_wired() != w + 1) {
--			printk("[tlbwired] No WIRED reg?\n");
--			return;
--		}
- 		write_c0_index(w << 8);
- 		write_c0_pagemask(pagemask);
- 		write_c0_entryhi(entryhi);
+manjee

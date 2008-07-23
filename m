@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2008 16:26:13 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:27626 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S28577897AbYGWPXi (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2008 16:26:33 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:33514 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S28578800AbYGWPXi (ORCPT
 	<rfc822;linux-mips@linux-mips.org>); Wed, 23 Jul 2008 16:23:38 +0100
 Received: from localhost.localdomain (p3049-ipad205funabasi.chiba.ocn.ne.jp [222.146.98.49])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id BACFEA9F1; Thu, 24 Jul 2008 00:23:30 +0900 (JST)
+	id 9FFF2A929; Thu, 24 Jul 2008 00:23:31 +0900 (JST)
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
 Cc:	ralf@linux-mips.org
-Subject: [PATCH 08/10] txx9: Make tx3927-specific code more independent
-Date:	Thu, 24 Jul 2008 00:25:19 +0900
-Message-Id: <1216826721-28259-8-git-send-email-anemo@mba.ocn.ne.jp>
+Subject: [PATCH 10/10] txx9: Random cleanup
+Date:	Thu, 24 Jul 2008 00:25:21 +0900
+Message-Id: <1216826721-28259-10-git-send-email-anemo@mba.ocn.ne.jp>
 X-Mailer: git-send-email 1.5.5.5
 Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19929
+X-archive-position: 19930
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -24,546 +24,754 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Make some TX3927 SoC specific code independent from board specific code.
+* Random cleanups spotted by checkpatch script.
+* Do not initialize panic_timeout.  "panic=" kernel parameter can be used.
+* Do not add "ip=any" or "ip=bootp".  This options is not board specific.
+* Do not add "root=/dev/nfs".  This is default on CONFIG_ROOT_NFS.
+* Kill unused error checking.
+* Fix IRQ comment to match current code.
+* Kill some unneeded includes
+* ST0_ERL is already cleared in generic code.
+* conswitchp is initialized generic code.
+* __init is not needed in prototype.
 
 Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
- arch/mips/txx9/generic/Makefile       |    1 +
- arch/mips/txx9/generic/irq_tx3927.c   |   25 ++++++
- arch/mips/txx9/generic/setup_tx3927.c |  141 +++++++++++++++++++++++++++++++++
- arch/mips/txx9/jmr3927/irq.c          |   43 +++-------
- arch/mips/txx9/jmr3927/setup.c        |  136 ++++---------------------------
- include/asm-mips/txx9/jmr3927.h       |    2 -
- include/asm-mips/txx9/tx3927.h        |   12 +++-
- 7 files changed, 207 insertions(+), 153 deletions(-)
- create mode 100644 arch/mips/txx9/generic/irq_tx3927.c
- create mode 100644 arch/mips/txx9/generic/setup_tx3927.c
+ arch/mips/txx9/generic/smsc_fdc37m81x.c |   20 ++--
+ arch/mips/txx9/jmr3927/irq.c            |    4 -
+ arch/mips/txx9/jmr3927/prom.c           |   12 +--
+ arch/mips/txx9/jmr3927/setup.c          |   22 +----
+ arch/mips/txx9/rbtx4927/irq.c           |  161 ++++++++++++++++---------------
+ arch/mips/txx9/rbtx4927/setup.c         |   38 ++------
+ arch/mips/txx9/rbtx4938/irq.c           |  107 ++++++++++-----------
+ arch/mips/txx9/rbtx4938/setup.c         |   39 ++------
+ include/asm-mips/txx9/smsc_fdc37m81x.h  |    2 +-
+ include/asm-mips/txx9/tx3927.h          |    4 +-
+ include/asm-mips/txx9/tx4927pcic.h      |    4 +-
+ 11 files changed, 170 insertions(+), 243 deletions(-)
 
-diff --git a/arch/mips/txx9/generic/Makefile b/arch/mips/txx9/generic/Makefile
-index 9c12077..57ed07b 100644
---- a/arch/mips/txx9/generic/Makefile
-+++ b/arch/mips/txx9/generic/Makefile
-@@ -4,6 +4,7 @@
+diff --git a/arch/mips/txx9/generic/smsc_fdc37m81x.c b/arch/mips/txx9/generic/smsc_fdc37m81x.c
+index 69e4874..a2b2d62 100644
+--- a/arch/mips/txx9/generic/smsc_fdc37m81x.c
++++ b/arch/mips/txx9/generic/smsc_fdc37m81x.c
+@@ -15,8 +15,6 @@
+ #include <asm/io.h>
+ #include <asm/txx9/smsc_fdc37m81x.h>
  
- obj-y	+= setup.o
- obj-$(CONFIG_PCI)	+= pci.o
-+obj-$(CONFIG_SOC_TX3927)	+= setup_tx3927.o irq_tx3927.o
- obj-$(CONFIG_SOC_TX4927)	+= mem_tx4927.o setup_tx4927.o irq_tx4927.o
- obj-$(CONFIG_SOC_TX4938)	+= mem_tx4927.o setup_tx4938.o irq_tx4938.o
- obj-$(CONFIG_TOSHIBA_FPCIB0)	+= smsc_fdc37m81x.o
-diff --git a/arch/mips/txx9/generic/irq_tx3927.c b/arch/mips/txx9/generic/irq_tx3927.c
-new file mode 100644
-index 0000000..c683f59
---- /dev/null
-+++ b/arch/mips/txx9/generic/irq_tx3927.c
-@@ -0,0 +1,25 @@
-+/*
-+ * Common tx3927 irq handler
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright 2001 MontaVista Software Inc.
-+ * Copyright (C) 2000-2001 Toshiba Corporation
-+ */
-+#include <linux/init.h>
-+#include <asm/txx9irq.h>
-+#include <asm/txx9/tx3927.h>
-+
-+void __init tx3927_irq_init(void)
-+{
-+	int i;
-+
-+	txx9_irq_init(TX3927_IRC_REG);
-+	/* raise priority for timers, sio */
-+	for (i = 0; i < TX3927_NR_TMR; i++)
-+		txx9_irq_set_pri(TX3927_IR_TMR(i), 6);
-+	for (i = 0; i < TX3927_NR_SIO; i++)
-+		txx9_irq_set_pri(TX3927_IR_SIO(i), 7);
-+}
-diff --git a/arch/mips/txx9/generic/setup_tx3927.c b/arch/mips/txx9/generic/setup_tx3927.c
-new file mode 100644
-index 0000000..0d09a0f
---- /dev/null
-+++ b/arch/mips/txx9/generic/setup_tx3927.c
-@@ -0,0 +1,141 @@
-+/*
-+ * TX3927 setup routines
-+ * Based on linux/arch/mips/txx9/jmr3927/setup.c
-+ *
-+ * Copyright 2001 MontaVista Software Inc.
-+ * Copyright (C) 2000-2001 Toshiba Corporation
-+ * Copyright (C) 2007 Ralf Baechle (ralf@linux-mips.org)
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ */
-+#include <linux/init.h>
-+#include <linux/ioport.h>
-+#include <linux/delay.h>
-+#include <linux/serial_core.h>
-+#include <linux/param.h>
-+#include <asm/mipsregs.h>
-+#include <asm/txx9irq.h>
-+#include <asm/txx9tmr.h>
-+#include <asm/txx9pio.h>
-+#include <asm/txx9/generic.h>
-+#include <asm/txx9/tx3927.h>
-+
-+void __init tx3927_wdt_init(void)
-+{
-+	txx9_wdt_init(TX3927_TMR_REG(2));
-+}
-+
-+void __init tx3927_setup(void)
-+{
-+	int i;
-+	unsigned int conf;
-+
-+	/* don't enable - see errata */
-+	txx9_ccfg_toeon = 0;
-+	if (strstr(prom_getcmdline(), "toeon") != NULL)
-+		txx9_ccfg_toeon = 1;
-+
-+	txx9_reg_res_init(TX3927_REV_PCODE(), TX3927_REG_BASE,
-+			  TX3927_REG_SIZE);
-+
-+	/* SDRAMC,ROMC are configured by PROM */
-+	for (i = 0; i < 8; i++) {
-+		if (!(tx3927_romcptr->cr[i] & 0x8))
-+			continue;	/* disabled */
-+		txx9_ce_res[i].start = (unsigned long)TX3927_ROMC_BA(i);
-+		txx9_ce_res[i].end =
-+			txx9_ce_res[i].start + TX3927_ROMC_SIZE(i) - 1;
-+		request_resource(&iomem_resource, &txx9_ce_res[i]);
-+	}
-+
-+	/* clocks */
-+	txx9_gbus_clock = txx9_cpu_clock / 2;
-+	/* change default value to udelay/mdelay take reasonable time */
-+	loops_per_jiffy = txx9_cpu_clock / HZ / 2;
-+
-+	/* CCFG */
-+	/* enable Timeout BusError */
-+	if (txx9_ccfg_toeon)
-+		tx3927_ccfgptr->ccfg |= TX3927_CCFG_TOE;
-+
-+	/* clear BusErrorOnWrite flag */
-+	tx3927_ccfgptr->ccfg &= ~TX3927_CCFG_BEOW;
-+	if (read_c0_conf() & TX39_CONF_WBON)
-+		/* Disable PCI snoop */
-+		tx3927_ccfgptr->ccfg &= ~TX3927_CCFG_PSNP;
-+	else
-+		/* Enable PCI SNOOP - with write through only */
-+		tx3927_ccfgptr->ccfg |= TX3927_CCFG_PSNP;
-+	/* do reset on watchdog */
-+	tx3927_ccfgptr->ccfg |= TX3927_CCFG_WR;
-+
-+	printk(KERN_INFO "TX3927 -- CRIR:%08lx CCFG:%08lx PCFG:%08lx\n",
-+	       tx3927_ccfgptr->crir,
-+	       tx3927_ccfgptr->ccfg, tx3927_ccfgptr->pcfg);
-+
-+	/* TMR */
-+	for (i = 0; i < TX3927_NR_TMR; i++)
-+		txx9_tmr_init(TX3927_TMR_REG(i));
-+
-+	/* DMA */
-+	tx3927_dmaptr->mcr = 0;
-+	for (i = 0; i < ARRAY_SIZE(tx3927_dmaptr->ch); i++) {
-+		/* reset channel */
-+		tx3927_dmaptr->ch[i].ccr = TX3927_DMA_CCR_CHRST;
-+		tx3927_dmaptr->ch[i].ccr = 0;
-+	}
-+	/* enable DMA */
-+#ifdef __BIG_ENDIAN
-+	tx3927_dmaptr->mcr = TX3927_DMA_MCR_MSTEN;
-+#else
-+	tx3927_dmaptr->mcr = TX3927_DMA_MCR_MSTEN | TX3927_DMA_MCR_LE;
-+#endif
-+
-+	/* PIO */
-+	__raw_writel(0, &tx3927_pioptr->maskcpu);
-+	__raw_writel(0, &tx3927_pioptr->maskext);
-+	txx9_gpio_init(TX3927_PIO_REG, 0, 16);
-+
-+	conf = read_c0_conf();
-+	if (!(conf & TX39_CONF_ICE))
-+		printk(KERN_INFO "TX3927 I-Cache disabled.\n");
-+	if (!(conf & TX39_CONF_DCE))
-+		printk(KERN_INFO "TX3927 D-Cache disabled.\n");
-+	else if (!(conf & TX39_CONF_WBON))
-+		printk(KERN_INFO "TX3927 D-Cache WriteThrough.\n");
-+	else if (!(conf & TX39_CONF_CWFON))
-+		printk(KERN_INFO "TX3927 D-Cache WriteBack.\n");
-+	else
-+		printk(KERN_INFO "TX3927 D-Cache WriteBack (CWF) .\n");
-+}
-+
-+void __init tx3927_time_init(unsigned int evt_tmrnr, unsigned int src_tmrnr)
-+{
-+	txx9_clockevent_init(TX3927_TMR_REG(evt_tmrnr),
-+			     TXX9_IRQ_BASE + TX3927_IR_TMR(evt_tmrnr),
-+			     TXX9_IMCLK);
-+	txx9_clocksource_init(TX3927_TMR_REG(src_tmrnr), TXX9_IMCLK);
-+}
-+
-+void __init tx3927_setup_serial(unsigned int cts_mask)
-+{
-+#ifdef CONFIG_SERIAL_TXX9
-+	int i;
-+	struct uart_port req;
-+
-+	for (i = 0; i < 2; i++) {
-+		memset(&req, 0, sizeof(req));
-+		req.line = i;
-+		req.iotype = UPIO_MEM;
-+		req.membase = (unsigned char __iomem *)TX3927_SIO_REG(i);
-+		req.mapbase = TX3927_SIO_REG(i);
-+		req.irq = TXX9_IRQ_BASE + TX3927_IR_SIO(i);
-+		if (!((1 << i) & cts_mask))
-+			req.flags |= UPF_BUGGY_UART /*HAVE_CTS_LINE*/;
-+		req.uartclk = TXX9_IMCLK;
-+		early_serial_txx9_setup(&req);
-+	}
-+#endif /* CONFIG_SERIAL_TXX9 */
-+}
+-#define DEBUG
+-
+ /* Common Registers */
+ #define SMSC_FDC37M81X_CONFIG_INDEX  0x00
+ #define SMSC_FDC37M81X_CONFIG_DATA   0x01
+@@ -55,7 +53,7 @@
+ #define SMSC_FDC37M81X_CONFIG_EXIT   0xaa
+ #define SMSC_FDC37M81X_CHIP_ID       0x4d
+ 
+-static unsigned long g_smsc_fdc37m81x_base = 0;
++static unsigned long g_smsc_fdc37m81x_base;
+ 
+ static inline unsigned char smsc_fdc37m81x_rd(unsigned char index)
+ {
+@@ -107,7 +105,8 @@ unsigned long __init smsc_fdc37m81x_init(unsigned long port)
+ 	u8 chip_id;
+ 
+ 	if (g_smsc_fdc37m81x_base)
+-		printk("smsc_fdc37m81x_init() stepping on old base=0x%0*lx\n",
++		printk(KERN_WARNING "%s: stepping on old base=0x%0*lx\n",
++		       __func__,
+ 		       field, g_smsc_fdc37m81x_base);
+ 
+ 	g_smsc_fdc37m81x_base = port;
+@@ -118,7 +117,7 @@ unsigned long __init smsc_fdc37m81x_init(unsigned long port)
+ 	if (chip_id == SMSC_FDC37M81X_CHIP_ID)
+ 		smsc_fdc37m81x_config_end();
+ 	else {
+-		printk("smsc_fdc37m81x_init() unknow chip id 0x%02x\n",
++		printk(KERN_WARNING "%s: unknow chip id 0x%02x\n", __func__,
+ 		       chip_id);
+ 		g_smsc_fdc37m81x_base = 0;
+ 	}
+@@ -127,22 +126,23 @@ unsigned long __init smsc_fdc37m81x_init(unsigned long port)
+ }
+ 
+ #ifdef DEBUG
+-void smsc_fdc37m81x_config_dump_one(char *key, u8 dev, u8 reg)
++static void smsc_fdc37m81x_config_dump_one(const char *key, u8 dev, u8 reg)
+ {
+-	printk("%s: dev=0x%02x reg=0x%02x val=0x%02x\n", key, dev, reg,
++	printk(KERN_INFO "%s: dev=0x%02x reg=0x%02x val=0x%02x\n",
++	       key, dev, reg,
+ 	       smsc_fdc37m81x_rd(reg));
+ }
+ 
+ void smsc_fdc37m81x_config_dump(void)
+ {
+ 	u8 orig;
+-	char *fname = "smsc_fdc37m81x_config_dump()";
++	const char *fname = __func__;
+ 
+ 	smsc_fdc37m81x_config_beg();
+ 
+ 	orig = smsc_fdc37m81x_rd(SMSC_FDC37M81X_DNUM);
+ 
+-	printk("%s: common\n", fname);
++	printk(KERN_INFO "%s: common\n", fname);
+ 	smsc_fdc37m81x_config_dump_one(fname, SMSC_FDC37M81X_NONE,
+ 				       SMSC_FDC37M81X_DNUM);
+ 	smsc_fdc37m81x_config_dump_one(fname, SMSC_FDC37M81X_NONE,
+@@ -154,7 +154,7 @@ void smsc_fdc37m81x_config_dump(void)
+ 	smsc_fdc37m81x_config_dump_one(fname, SMSC_FDC37M81X_NONE,
+ 				       SMSC_FDC37M81X_PMGT);
+ 
+-	printk("%s: keyboard\n", fname);
++	printk(KERN_INFO "%s: keyboard\n", fname);
+ 	smsc_dc37m81x_wr(SMSC_FDC37M81X_DNUM, SMSC_FDC37M81X_KBD);
+ 	smsc_fdc37m81x_config_dump_one(fname, SMSC_FDC37M81X_KBD,
+ 				       SMSC_FDC37M81X_ACTIVE);
 diff --git a/arch/mips/txx9/jmr3927/irq.c b/arch/mips/txx9/jmr3927/irq.c
-index f3b6023..68f7436 100644
+index 68f7436..6ec626c 100644
 --- a/arch/mips/txx9/jmr3927/irq.c
 +++ b/arch/mips/txx9/jmr3927/irq.c
-@@ -46,13 +46,6 @@
- #error JMR3927_IRQ_END > NR_IRQS
- #endif
+@@ -30,15 +30,11 @@
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+ #include <linux/init.h>
+-#include <linux/sched.h>
+ #include <linux/types.h>
+ #include <linux/interrupt.h>
  
--static unsigned char irc_level[TX3927_NUM_IR] = {
--	5, 5, 5, 5, 5, 5,	/* INT[5:0] */
--	7, 7,			/* SIO */
--	5, 5, 5, 0, 0,		/* DMA, PIO, PCI */
--	6, 6, 6			/* TMR */
--};
+ #include <asm/io.h>
+ #include <asm/mipsregs.h>
+-#include <asm/system.h>
 -
- /*
-  * CP0_STATUS is a thread's resource (saved/restored on context switch).
-  * So disable_irq/enable_irq MUST handle IOC/IRC registers.
-@@ -103,10 +96,18 @@ static int jmr3927_irq_dispatch(int pending)
- 	return irq;
+-#include <asm/processor.h>
+ #include <asm/txx9/generic.h>
+ #include <asm/txx9/jmr3927.h>
+ 
+diff --git a/arch/mips/txx9/jmr3927/prom.c b/arch/mips/txx9/jmr3927/prom.c
+index 2cadb42..23df38c 100644
+--- a/arch/mips/txx9/jmr3927/prom.c
++++ b/arch/mips/txx9/jmr3927/prom.c
+@@ -36,6 +36,7 @@
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+ #include <linux/init.h>
++#include <linux/kernel.h>
+ #include <asm/bootinfo.h>
+ #include <asm/txx9/generic.h>
+ #include <asm/txx9/jmr3927.h>
+@@ -56,20 +57,11 @@ prom_putchar(char c)
+ 	return;
  }
  
--static void __init jmr3927_irq_init(void);
-+static struct irq_chip jmr3927_irq_ioc = {
-+	.name = "jmr3927_ioc",
-+	.ack = mask_irq_ioc,
-+	.mask = mask_irq_ioc,
-+	.mask_ack = mask_irq_ioc,
-+	.unmask = unmask_irq_ioc,
-+};
- 
- void __init jmr3927_irq_setup(void)
- {
-+	int i;
-+
- 	txx9_irq_dispatch = jmr3927_irq_dispatch;
- 	/* Now, interrupt control disabled, */
- 	/* all IRC interrupts are masked, */
-@@ -122,30 +123,10 @@ void __init jmr3927_irq_setup(void)
- 	/* clear PCI Reset interrupts */
- 	jmr3927_ioc_reg_out(0, JMR3927_IOC_RESET_ADDR);
- 
--	jmr3927_irq_init();
-+	tx3927_irq_init();
-+	for (i = JMR3927_IRQ_IOC; i < JMR3927_IRQ_IOC + JMR3927_NR_IRQ_IOC; i++)
-+		set_irq_chip_and_handler(i, &jmr3927_irq_ioc, handle_level_irq);
- 
- 	/* setup IOC interrupt 1 (PCI, MODEM) */
- 	set_irq_chained_handler(JMR3927_IRQ_IOCINT, handle_simple_irq);
--
--	/* enable all CPU interrupt bits. */
--	set_c0_status(ST0_IM);	/* IE bit is still 0. */
+-void
+-puts(const char *cp)
+-{
+-    while (*cp)
+-	prom_putchar(*cp++);
+-    prom_putchar('\r');
+-    prom_putchar('\n');
 -}
 -
--static struct irq_chip jmr3927_irq_ioc = {
--	.name = "jmr3927_ioc",
--	.ack = mask_irq_ioc,
--	.mask = mask_irq_ioc,
--	.mask_ack = mask_irq_ioc,
--	.unmask = unmask_irq_ioc,
--};
--
--static void __init jmr3927_irq_init(void)
--{
--	u32 i;
--
--	txx9_irq_init(TX3927_IRC_REG);
--	for (i = 0; i < TXx9_MAX_IR; i++)
--		txx9_irq_set_pri(i, irc_level[i]);
--	for (i = JMR3927_IRQ_IOC; i < JMR3927_IRQ_IOC + JMR3927_NR_IRQ_IOC; i++)
--		set_irq_chip_and_handler(i, &jmr3927_irq_ioc, handle_level_irq);
- }
+ void __init jmr3927_prom_init(void)
+ {
+ 	/* CCFG */
+ 	if ((tx3927_ccfgptr->ccfg & TX3927_CCFG_TLBOFF) == 0)
+-		puts("Warning: TX3927 TLB off\n");
++		printk(KERN_ERR "TX3927 TLB off\n");
+ 
+ 	prom_init_cmdline();
+ 	add_memory_region(0, JMR3927_SDRAM_SIZE, BOOT_MEM_RAM);
 diff --git a/arch/mips/txx9/jmr3927/setup.c b/arch/mips/txx9/jmr3927/setup.c
-index ae34e9a..7378a83 100644
+index 7378a83..cf7513d 100644
 --- a/arch/mips/txx9/jmr3927/setup.c
 +++ b/arch/mips/txx9/jmr3927/setup.c
-@@ -34,20 +34,13 @@
- #include <linux/delay.h>
- #include <linux/platform_device.h>
- #include <linux/gpio.h>
--#ifdef CONFIG_SERIAL_TXX9
--#include <linux/serial_core.h>
--#endif
--#include <asm/txx9tmr.h>
--#include <asm/txx9pio.h>
- #include <asm/reboot.h>
-+#include <asm/txx9pio.h>
- #include <asm/txx9/generic.h>
- #include <asm/txx9/pci.h>
- #include <asm/txx9/jmr3927.h>
- #include <asm/mipsregs.h>
+@@ -74,9 +74,6 @@ static void __init jmr3927_mem_setup(void)
  
--/* don't enable - see errata */
--static int jmr3927_ccfg_toeon;
+ 	_machine_restart = jmr3927_machine_restart;
+ 
+-	/* Reboot on panic */
+-	panic_timeout = 180;
 -
- static void jmr3927_machine_restart(char *command)
- {
- 	local_irq_disable();
-@@ -65,10 +58,7 @@ static void jmr3927_machine_restart(char *command)
+ 	/* cache setup */
+ 	{
+ 		unsigned int conf;
+@@ -94,7 +91,8 @@ static void __init jmr3927_mem_setup(void)
+ #endif
  
- static void __init jmr3927_time_init(void)
- {
--	txx9_clockevent_init(TX3927_TMR_REG(0),
--			     JMR3927_IRQ_IRC_TMR(0),
--			     JMR3927_IMCLK);
--	txx9_clocksource_init(TX3927_TMR_REG(1), JMR3927_IMCLK);
-+	tx3927_time_init(0, 1);
- }
- 
- #define DO_WRITE_THROUGH
-@@ -118,34 +108,12 @@ static void __init jmr3927_mem_setup(void)
+ 		conf = read_c0_conf();
+-		conf &= ~(TX39_CONF_ICE | TX39_CONF_DCE | TX39_CONF_WBON | TX39_CONF_CWFON);
++		conf &= ~(TX39_CONF_ICE | TX39_CONF_DCE |
++			  TX39_CONF_WBON | TX39_CONF_CWFON);
+ 		conf |= mips_ic_disable ? 0 : TX39_CONF_ICE;
+ 		conf |= mips_dc_disable ? 0 : TX39_CONF_DCE;
+ 		conf |= mips_config_wbon ? TX39_CONF_WBON : 0;
+@@ -107,19 +105,11 @@ static void __init jmr3927_mem_setup(void)
+ 	/* initialize board */
  	jmr3927_board_init();
  
- 	argptr = prom_getcmdline();
--
--	if ((argptr = strstr(argptr, "toeon")) != NULL)
--		jmr3927_ccfg_toeon = 1;
 -	argptr = prom_getcmdline();
- 	if ((argptr = strstr(argptr, "ip=")) == NULL) {
- 		argptr = prom_getcmdline();
- 		strcat(argptr, " ip=bootp");
- 	}
- 
--#ifdef CONFIG_SERIAL_TXX9
--	{
--		extern int early_serial_txx9_setup(struct uart_port *port);
--		int i;
--		struct uart_port req;
--		for(i = 0; i < 2; i++) {
--			memset(&req, 0, sizeof(req));
--			req.line = i;
--			req.iotype = UPIO_MEM;
--			req.membase = (unsigned char __iomem *)TX3927_SIO_REG(i);
--			req.mapbase = TX3927_SIO_REG(i);
--			req.irq = i == 0 ?
--				JMR3927_IRQ_IRC_SIO0 : JMR3927_IRQ_IRC_SIO1;
--			if (i == 0)
--				req.flags |= UPF_BUGGY_UART /*HAVE_CTS_LINE*/;
--			req.uartclk = JMR3927_IMCLK;
--			early_serial_txx9_setup(&req);
--		}
+-	if ((argptr = strstr(argptr, "ip=")) == NULL) {
+-		argptr = prom_getcmdline();
+-		strcat(argptr, " ip=bootp");
 -	}
-+	tx3927_setup_serial(1 << 1); /* ch1: noCTS */
+-
+ 	tx3927_setup_serial(1 << 1); /* ch1: noCTS */
  #ifdef CONFIG_SERIAL_TXX9_CONSOLE
  	argptr = prom_getcmdline();
- 	if ((argptr = strstr(argptr, "console=")) == NULL) {
-@@ -153,11 +121,8 @@ static void __init jmr3927_mem_setup(void)
+-	if ((argptr = strstr(argptr, "console=")) == NULL) {
+-		argptr = prom_getcmdline();
++	if (!strstr(argptr, "console="))
  		strcat(argptr, " console=ttyS1,115200");
- 	}
+-	}
  #endif
--#endif
  }
  
--static void tx3927_setup(void);
--
- static void __init jmr3927_pci_setup(void)
+@@ -199,16 +189,14 @@ static unsigned long jmr3927_swizzle_addr_b(unsigned long port)
+ #endif
+ }
+ 
+-static int __init jmr3927_rtc_init(void)
++static void __init jmr3927_rtc_init(void)
  {
- #ifdef CONFIG_PCI
-@@ -184,27 +149,7 @@ static void __init jmr3927_pci_setup(void)
- 
- static void __init jmr3927_board_init(void)
- {
--	tx3927_setup();
--	jmr3927_pci_setup();
--
--	/* SIO0 DTR on */
--	jmr3927_ioc_reg_out(0, JMR3927_IOC_DTR_ADDR);
--
--	jmr3927_led_set(0);
--
--	printk("JMR-TX3927 (Rev %d) --- IOC(Rev %d) DIPSW:%d,%d,%d,%d\n",
--	       jmr3927_ioc_reg_in(JMR3927_IOC_BREV_ADDR) & JMR3927_REV_MASK,
--	       jmr3927_ioc_reg_in(JMR3927_IOC_REV_ADDR) & JMR3927_REV_MASK,
--	       jmr3927_dipsw1(), jmr3927_dipsw2(),
--	       jmr3927_dipsw3(), jmr3927_dipsw4());
--}
--
--static void __init tx3927_setup(void)
--{
--	int i;
--
- 	txx9_cpu_clock = JMR3927_CORECLK;
--	txx9_gbus_clock = JMR3927_GBUSCLK;
- 	/* SDRAMC are configured by PROM */
- 
- 	/* ROMC */
-@@ -213,74 +158,32 @@ static void __init tx3927_setup(void)
- 	tx3927_romcptr->cr[3] = JMR3927_ROMCE3 | 0x0003f698;
- 	tx3927_romcptr->cr[5] = JMR3927_ROMCE5 | 0x0000f218;
- 
--	/* CCFG */
--	/* enable Timeout BusError */
--	if (jmr3927_ccfg_toeon)
--		tx3927_ccfgptr->ccfg |= TX3927_CCFG_TOE;
--
--	/* clear BusErrorOnWrite flag */
--	tx3927_ccfgptr->ccfg &= ~TX3927_CCFG_BEOW;
--	/* Disable PCI snoop */
--	tx3927_ccfgptr->ccfg &= ~TX3927_CCFG_PSNP;
--	/* do reset on watchdog */
--	tx3927_ccfgptr->ccfg |= TX3927_CCFG_WR;
--
--#ifdef DO_WRITE_THROUGH
--	/* Enable PCI SNOOP - with write through only */
--	tx3927_ccfgptr->ccfg |= TX3927_CCFG_PSNP;
--#endif
--
- 	/* Pin selection */
- 	tx3927_ccfgptr->pcfg &= ~TX3927_PCFG_SELALL;
- 	tx3927_ccfgptr->pcfg |=
- 		TX3927_PCFG_SELSIOC(0) | TX3927_PCFG_SELSIO_ALL |
- 		(TX3927_PCFG_SELDMA_ALL & ~TX3927_PCFG_SELDMA(1));
- 
--	printk("TX3927 -- CRIR:%08lx CCFG:%08lx PCFG:%08lx\n",
--	       tx3927_ccfgptr->crir,
--	       tx3927_ccfgptr->ccfg, tx3927_ccfgptr->pcfg);
--
--	/* TMR */
--	for (i = 0; i < TX3927_NR_TMR; i++)
--		txx9_tmr_init(TX3927_TMR_REG(i));
--
--	/* DMA */
--	tx3927_dmaptr->mcr = 0;
--	for (i = 0; i < ARRAY_SIZE(tx3927_dmaptr->ch); i++) {
--		/* reset channel */
--		tx3927_dmaptr->ch[i].ccr = TX3927_DMA_CCR_CHRST;
--		tx3927_dmaptr->ch[i].ccr = 0;
--	}
--	/* enable DMA */
--#ifdef __BIG_ENDIAN
--	tx3927_dmaptr->mcr = TX3927_DMA_MCR_MSTEN;
--#else
--	tx3927_dmaptr->mcr = TX3927_DMA_MCR_MSTEN | TX3927_DMA_MCR_LE;
--#endif
-+	tx3927_setup();
- 
--	/* PIO */
- 	/* PIO[15:12] connected to LEDs */
- 	__raw_writel(0x0000f000, &tx3927_pioptr->dir);
--	__raw_writel(0, &tx3927_pioptr->maskcpu);
--	__raw_writel(0, &tx3927_pioptr->maskext);
--	txx9_gpio_init(TX3927_PIO_REG, 0, 16);
- 	gpio_request(11, "dipsw1");
- 	gpio_request(10, "dipsw2");
--	{
--		unsigned int conf;
- 
--	conf = read_c0_conf();
--               if (!(conf & TX39_CONF_ICE))
--                       printk("TX3927 I-Cache disabled.\n");
--               if (!(conf & TX39_CONF_DCE))
--                       printk("TX3927 D-Cache disabled.\n");
--               else if (!(conf & TX39_CONF_WBON))
--                       printk("TX3927 D-Cache WriteThrough.\n");
--               else if (!(conf & TX39_CONF_CWFON))
--                       printk("TX3927 D-Cache WriteBack.\n");
--               else
--                       printk("TX3927 D-Cache WriteBack (CWF) .\n");
--	}
-+	jmr3927_pci_setup();
-+
-+	/* SIO0 DTR on */
-+	jmr3927_ioc_reg_out(0, JMR3927_IOC_DTR_ADDR);
-+
-+	jmr3927_led_set(0);
-+
-+	printk(KERN_INFO
-+	       "JMR-TX3927 (Rev %d) --- IOC(Rev %d) DIPSW:%d,%d,%d,%d\n",
-+	       jmr3927_ioc_reg_in(JMR3927_IOC_BREV_ADDR) & JMR3927_REV_MASK,
-+	       jmr3927_ioc_reg_in(JMR3927_IOC_REV_ADDR) & JMR3927_REV_MASK,
-+	       jmr3927_dipsw1(), jmr3927_dipsw2(),
-+	       jmr3927_dipsw3(), jmr3927_dipsw4());
+ 	static struct resource __initdata res = {
+ 		.start	= JMR3927_IOC_NVRAMB_ADDR - IO_BASE,
+ 		.end	= JMR3927_IOC_NVRAMB_ADDR - IO_BASE + 0x800 - 1,
+ 		.flags	= IORESOURCE_MEM,
+ 	};
+-	struct platform_device *dev;
+-	dev = platform_device_register_simple("rtc-ds1742", -1, &res, 1);
+-	return IS_ERR(dev) ? PTR_ERR(dev) : 0;
++	platform_device_register_simple("rtc-ds1742", -1, &res, 1);
  }
  
- /* This trick makes rtc-ds1742 driver usable as is. */
-@@ -308,11 +211,6 @@ static int __init jmr3927_rtc_init(void)
- 	return IS_ERR(dev) ? PTR_ERR(dev) : 0;
- }
- 
--static void __init tx3927_wdt_init(void)
--{
--	txx9_wdt_init(TX3927_TMR_REG(2));
--}
--
  static void __init jmr3927_device_init(void)
- {
- 	__swizzle_addr_b = jmr3927_swizzle_addr_b;
-diff --git a/include/asm-mips/txx9/jmr3927.h b/include/asm-mips/txx9/jmr3927.h
-index d6eb1b6..a409c44 100644
---- a/include/asm-mips/txx9/jmr3927.h
-+++ b/include/asm-mips/txx9/jmr3927.h
-@@ -149,8 +149,6 @@
+diff --git a/arch/mips/txx9/rbtx4927/irq.c b/arch/mips/txx9/rbtx4927/irq.c
+index cd748a9..00cd523 100644
+--- a/arch/mips/txx9/rbtx4927/irq.c
++++ b/arch/mips/txx9/rbtx4927/irq.c
+@@ -27,85 +27,86 @@
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+ /*
+-IRQ  Device
+-00   RBTX4927-ISA/00
+-01   RBTX4927-ISA/01 PS2/Keyboard
+-02   RBTX4927-ISA/02 Cascade RBTX4927-ISA (irqs 8-15)
+-03   RBTX4927-ISA/03
+-04   RBTX4927-ISA/04
+-05   RBTX4927-ISA/05
+-06   RBTX4927-ISA/06
+-07   RBTX4927-ISA/07
+-08   RBTX4927-ISA/08
+-09   RBTX4927-ISA/09
+-10   RBTX4927-ISA/10
+-11   RBTX4927-ISA/11
+-12   RBTX4927-ISA/12 PS2/Mouse (not supported at this time)
+-13   RBTX4927-ISA/13
+-14   RBTX4927-ISA/14 IDE
+-15   RBTX4927-ISA/15
+-
+-16   TX4927-CP0/00 Software 0
+-17   TX4927-CP0/01 Software 1
+-18   TX4927-CP0/02 Cascade TX4927-CP0
+-19   TX4927-CP0/03 Multiplexed -- do not use
+-20   TX4927-CP0/04 Multiplexed -- do not use
+-21   TX4927-CP0/05 Multiplexed -- do not use
+-22   TX4927-CP0/06 Multiplexed -- do not use
+-23   TX4927-CP0/07 CPU TIMER
+-
+-24   TX4927-PIC/00
+-25   TX4927-PIC/01
+-26   TX4927-PIC/02
+-27   TX4927-PIC/03 Cascade RBTX4927-IOC
+-28   TX4927-PIC/04
+-29   TX4927-PIC/05 RBTX4927 RTL-8019AS ethernet
+-30   TX4927-PIC/06
+-31   TX4927-PIC/07
+-32   TX4927-PIC/08 TX4927 SerialIO Channel 0
+-33   TX4927-PIC/09 TX4927 SerialIO Channel 1
+-34   TX4927-PIC/10
+-35   TX4927-PIC/11
+-36   TX4927-PIC/12
+-37   TX4927-PIC/13
+-38   TX4927-PIC/14
+-39   TX4927-PIC/15
+-40   TX4927-PIC/16 TX4927 PCI PCI-C
+-41   TX4927-PIC/17
+-42   TX4927-PIC/18
+-43   TX4927-PIC/19
+-44   TX4927-PIC/20
+-45   TX4927-PIC/21
+-46   TX4927-PIC/22 TX4927 PCI PCI-ERR
+-47   TX4927-PIC/23 TX4927 PCI PCI-PMA (not used)
+-48   TX4927-PIC/24
+-49   TX4927-PIC/25
+-50   TX4927-PIC/26
+-51   TX4927-PIC/27
+-52   TX4927-PIC/28
+-53   TX4927-PIC/29
+-54   TX4927-PIC/30
+-55   TX4927-PIC/31
+-
+-56 RBTX4927-IOC/00 FPCIB0 PCI-D PJ4/A PJ5/B SB/C PJ6/D PJ7/A (SouthBridge/NotUsed)        [RTL-8139=PJ4]
+-57 RBTX4927-IOC/01 FPCIB0 PCI-C PJ4/D PJ5/A SB/B PJ6/C PJ7/D (SouthBridge/NotUsed)        [RTL-8139=PJ5]
+-58 RBTX4927-IOC/02 FPCIB0 PCI-B PJ4/C PJ5/D SB/A PJ6/B PJ7/C (SouthBridge/IDE/pin=1,INTR) [RTL-8139=NotSupported]
+-59 RBTX4927-IOC/03 FPCIB0 PCI-A PJ4/B PJ5/C SB/D PJ6/A PJ7/B (SouthBridge/USB/pin=4)      [RTL-8139=PJ6]
+-60 RBTX4927-IOC/04
+-61 RBTX4927-IOC/05
+-62 RBTX4927-IOC/06
+-63 RBTX4927-IOC/07
+-
+-NOTES:
+-SouthBridge/INTR is mapped to SouthBridge/A=PCI-B/#58
+-SouthBridge/ISA/pin=0 no pci irq used by this device
+-SouthBridge/IDE/pin=1 no pci irq used by this device, using INTR via ISA IRQ14
+-SouthBridge/USB/pin=4 using pci irq SouthBridge/D=PCI-A=#59
+-SouthBridge/PMC/pin=0 no pci irq used by this device
+-SuperIO/PS2/Keyboard, using INTR via ISA IRQ1
+-SuperIO/PS2/Mouse, using INTR via ISA IRQ12 (mouse not currently supported)
+-JP7 is not bus master -- do NOT use -- only 4 pci bus master's allowed -- SouthBridge, JP4, JP5, JP6
+-*/
++ * I8259A_IRQ_BASE+00
++ * I8259A_IRQ_BASE+01 PS2/Keyboard
++ * I8259A_IRQ_BASE+02 Cascade RBTX4927-ISA (irqs 8-15)
++ * I8259A_IRQ_BASE+03
++ * I8259A_IRQ_BASE+04
++ * I8259A_IRQ_BASE+05
++ * I8259A_IRQ_BASE+06
++ * I8259A_IRQ_BASE+07
++ * I8259A_IRQ_BASE+08
++ * I8259A_IRQ_BASE+09
++ * I8259A_IRQ_BASE+10
++ * I8259A_IRQ_BASE+11
++ * I8259A_IRQ_BASE+12 PS2/Mouse (not supported at this time)
++ * I8259A_IRQ_BASE+13
++ * I8259A_IRQ_BASE+14 IDE
++ * I8259A_IRQ_BASE+15
++ *
++ * MIPS_CPU_IRQ_BASE+00 Software 0
++ * MIPS_CPU_IRQ_BASE+01 Software 1
++ * MIPS_CPU_IRQ_BASE+02 Cascade TX4927-CP0
++ * MIPS_CPU_IRQ_BASE+03 Multiplexed -- do not use
++ * MIPS_CPU_IRQ_BASE+04 Multiplexed -- do not use
++ * MIPS_CPU_IRQ_BASE+05 Multiplexed -- do not use
++ * MIPS_CPU_IRQ_BASE+06 Multiplexed -- do not use
++ * MIPS_CPU_IRQ_BASE+07 CPU TIMER
++ *
++ * TXX9_IRQ_BASE+00
++ * TXX9_IRQ_BASE+01
++ * TXX9_IRQ_BASE+02
++ * TXX9_IRQ_BASE+03 Cascade RBTX4927-IOC
++ * TXX9_IRQ_BASE+04
++ * TXX9_IRQ_BASE+05 RBTX4927 RTL-8019AS ethernet
++ * TXX9_IRQ_BASE+06
++ * TXX9_IRQ_BASE+07
++ * TXX9_IRQ_BASE+08 TX4927 SerialIO Channel 0
++ * TXX9_IRQ_BASE+09 TX4927 SerialIO Channel 1
++ * TXX9_IRQ_BASE+10
++ * TXX9_IRQ_BASE+11
++ * TXX9_IRQ_BASE+12
++ * TXX9_IRQ_BASE+13
++ * TXX9_IRQ_BASE+14
++ * TXX9_IRQ_BASE+15
++ * TXX9_IRQ_BASE+16 TX4927 PCI PCI-C
++ * TXX9_IRQ_BASE+17
++ * TXX9_IRQ_BASE+18
++ * TXX9_IRQ_BASE+19
++ * TXX9_IRQ_BASE+20
++ * TXX9_IRQ_BASE+21
++ * TXX9_IRQ_BASE+22 TX4927 PCI PCI-ERR
++ * TXX9_IRQ_BASE+23 TX4927 PCI PCI-PMA (not used)
++ * TXX9_IRQ_BASE+24
++ * TXX9_IRQ_BASE+25
++ * TXX9_IRQ_BASE+26
++ * TXX9_IRQ_BASE+27
++ * TXX9_IRQ_BASE+28
++ * TXX9_IRQ_BASE+29
++ * TXX9_IRQ_BASE+30
++ * TXX9_IRQ_BASE+31
++ *
++ * RBTX4927_IRQ_IOC+00 FPCIB0 PCI-D (SouthBridge)
++ * RBTX4927_IRQ_IOC+01 FPCIB0 PCI-C (SouthBridge)
++ * RBTX4927_IRQ_IOC+02 FPCIB0 PCI-B (SouthBridge/IDE/pin=1,INTR)
++ * RBTX4927_IRQ_IOC+03 FPCIB0 PCI-A (SouthBridge/USB/pin=4)
++ * RBTX4927_IRQ_IOC+04
++ * RBTX4927_IRQ_IOC+05
++ * RBTX4927_IRQ_IOC+06
++ * RBTX4927_IRQ_IOC+07
++ *
++ * NOTES:
++ * SouthBridge/INTR is mapped to SouthBridge/A=PCI-B/#58
++ * SouthBridge/ISA/pin=0 no pci irq used by this device
++ * SouthBridge/IDE/pin=1 no pci irq used by this device, using INTR
++ * via ISA IRQ14
++ * SouthBridge/USB/pin=4 using pci irq SouthBridge/D=PCI-A=#59
++ * SouthBridge/PMC/pin=0 no pci irq used by this device
++ * SuperIO/PS2/Keyboard, using INTR via ISA IRQ1
++ * SuperIO/PS2/Mouse, using INTR via ISA IRQ12 (mouse not currently supported)
++ * JP7 is not bus master -- do NOT use -- only 4 pci bus master's
++ * allowed -- SouthBridge, JP4, JP5, JP6
++ */
  
- /* Clocks */
- #define JMR3927_CORECLK	132710400	/* 132.7MHz */
--#define JMR3927_GBUSCLK	(JMR3927_CORECLK / 2)	/* 66.35MHz */
--#define JMR3927_IMCLK	(JMR3927_CORECLK / 4)	/* 33.17MHz */
+ #include <linux/init.h>
+ #include <linux/types.h>
+@@ -134,7 +135,7 @@ static int toshiba_rbtx4927_irq_nested(int sw_irq)
+ 	level3 = readb(rbtx4927_imstat_addr) & 0x1f;
+ 	if (level3)
+ 		sw_irq = RBTX4927_IRQ_IOC + fls(level3) - 1;
+-	return (sw_irq);
++	return sw_irq;
+ }
+ 
+ static void __init toshiba_rbtx4927_irq_ioc_init(void)
+diff --git a/arch/mips/txx9/rbtx4927/setup.c b/arch/mips/txx9/rbtx4927/setup.c
+index f01af38..962ada5 100644
+--- a/arch/mips/txx9/rbtx4927/setup.c
++++ b/arch/mips/txx9/rbtx4927/setup.c
+@@ -46,7 +46,6 @@
+ #include <linux/kernel.h>
+ #include <linux/types.h>
+ #include <linux/ioport.h>
+-#include <linux/interrupt.h>
+ #include <linux/platform_device.h>
+ #include <linux/delay.h>
+ #include <asm/io.h>
+@@ -189,9 +188,6 @@ static void __init rbtx4927_mem_setup(void)
+ 	u32 cp0_config;
+ 	char *argptr;
+ 
+-	/* f/w leaves this on at startup */
+-	clear_c0_status(ST0_ERL);
+-
+ 	/* enable caches -- HCP5 does this, pmon does not */
+ 	cp0_config = read_c0_config();
+ 	cp0_config = cp0_config & ~(TX49_CONF_IC | TX49_CONF_DC);
+@@ -218,24 +214,9 @@ static void __init rbtx4927_mem_setup(void)
+ 
+ 	tx4927_setup_serial();
+ #ifdef CONFIG_SERIAL_TXX9_CONSOLE
+-        argptr = prom_getcmdline();
+-        if (strstr(argptr, "console=") == NULL) {
+-                strcat(argptr, " console=ttyS0,38400");
+-        }
+-#endif
+-
+-#ifdef CONFIG_ROOT_NFS
+-        argptr = prom_getcmdline();
+-        if (strstr(argptr, "root=") == NULL) {
+-                strcat(argptr, " root=/dev/nfs rw");
+-        }
+-#endif
+-
+-#ifdef CONFIG_IP_PNP
+-        argptr = prom_getcmdline();
+-        if (strstr(argptr, "ip=") == NULL) {
+-                strcat(argptr, " ip=any");
+-        }
++	argptr = prom_getcmdline();
++	if (!strstr(argptr, "console="))
++		strcat(argptr, " console=ttyS0,38400");
+ #endif
+ }
+ 
+@@ -298,19 +279,17 @@ static void __init rbtx4927_time_init(void)
+ 	tx4927_time_init(0);
+ }
+ 
+-static int __init toshiba_rbtx4927_rtc_init(void)
++static void __init toshiba_rbtx4927_rtc_init(void)
+ {
+ 	struct resource res = {
+ 		.start	= RBTX4927_BRAMRTC_BASE - IO_BASE,
+ 		.end	= RBTX4927_BRAMRTC_BASE - IO_BASE + 0x800 - 1,
+ 		.flags	= IORESOURCE_MEM,
+ 	};
+-	struct platform_device *dev =
+-		platform_device_register_simple("rtc-ds1742", -1, &res, 1);
+-	return IS_ERR(dev) ? PTR_ERR(dev) : 0;
++	platform_device_register_simple("rtc-ds1742", -1, &res, 1);
+ }
+ 
+-static int __init rbtx4927_ne_init(void)
++static void __init rbtx4927_ne_init(void)
+ {
+ 	struct resource res[] = {
+ 		{
+@@ -322,10 +301,7 @@ static int __init rbtx4927_ne_init(void)
+ 			.flags	= IORESOURCE_IRQ,
+ 		}
+ 	};
+-	struct platform_device *dev =
+-		platform_device_register_simple("ne", -1,
+-						res, ARRAY_SIZE(res));
+-	return IS_ERR(dev) ? PTR_ERR(dev) : 0;
++	platform_device_register_simple("ne", -1, res, ARRAY_SIZE(res));
+ }
+ 
+ static void __init rbtx4927_device_init(void)
+diff --git a/arch/mips/txx9/rbtx4938/irq.c b/arch/mips/txx9/rbtx4938/irq.c
+index 3971a06..ca2f830 100644
+--- a/arch/mips/txx9/rbtx4938/irq.c
++++ b/arch/mips/txx9/rbtx4938/irq.c
+@@ -11,59 +11,57 @@
+  */
  
  /*
-  * TX3927 Pin Configuration:
+-IRQ  Device
+-
+-16   TX4938-CP0/00 Software 0
+-17   TX4938-CP0/01 Software 1
+-18   TX4938-CP0/02 Cascade TX4938-CP0
+-19   TX4938-CP0/03 Multiplexed -- do not use
+-20   TX4938-CP0/04 Multiplexed -- do not use
+-21   TX4938-CP0/05 Multiplexed -- do not use
+-22   TX4938-CP0/06 Multiplexed -- do not use
+-23   TX4938-CP0/07 CPU TIMER
+-
+-24   TX4938-PIC/00
+-25   TX4938-PIC/01
+-26   TX4938-PIC/02 Cascade RBTX4938-IOC
+-27   TX4938-PIC/03 RBTX4938 RTL-8019AS Ethernet
+-28   TX4938-PIC/04
+-29   TX4938-PIC/05 TX4938 ETH1
+-30   TX4938-PIC/06 TX4938 ETH0
+-31   TX4938-PIC/07
+-32   TX4938-PIC/08 TX4938 SIO 0
+-33   TX4938-PIC/09 TX4938 SIO 1
+-34   TX4938-PIC/10 TX4938 DMA0
+-35   TX4938-PIC/11 TX4938 DMA1
+-36   TX4938-PIC/12 TX4938 DMA2
+-37   TX4938-PIC/13 TX4938 DMA3
+-38   TX4938-PIC/14
+-39   TX4938-PIC/15
+-40   TX4938-PIC/16 TX4938 PCIC
+-41   TX4938-PIC/17 TX4938 TMR0
+-42   TX4938-PIC/18 TX4938 TMR1
+-43   TX4938-PIC/19 TX4938 TMR2
+-44   TX4938-PIC/20
+-45   TX4938-PIC/21
+-46   TX4938-PIC/22 TX4938 PCIERR
+-47   TX4938-PIC/23
+-48   TX4938-PIC/24
+-49   TX4938-PIC/25
+-50   TX4938-PIC/26
+-51   TX4938-PIC/27
+-52   TX4938-PIC/28
+-53   TX4938-PIC/29
+-54   TX4938-PIC/30
+-55   TX4938-PIC/31 TX4938 SPI
+-
+-56 RBTX4938-IOC/00 PCI-D
+-57 RBTX4938-IOC/01 PCI-C
+-58 RBTX4938-IOC/02 PCI-B
+-59 RBTX4938-IOC/03 PCI-A
+-60 RBTX4938-IOC/04 RTC
+-61 RBTX4938-IOC/05 ATA
+-62 RBTX4938-IOC/06 MODEM
+-63 RBTX4938-IOC/07 SWINT
+-*/
++ * MIPS_CPU_IRQ_BASE+00 Software 0
++ * MIPS_CPU_IRQ_BASE+01 Software 1
++ * MIPS_CPU_IRQ_BASE+02 Cascade TX4938-CP0
++ * MIPS_CPU_IRQ_BASE+03 Multiplexed -- do not use
++ * MIPS_CPU_IRQ_BASE+04 Multiplexed -- do not use
++ * MIPS_CPU_IRQ_BASE+05 Multiplexed -- do not use
++ * MIPS_CPU_IRQ_BASE+06 Multiplexed -- do not use
++ * MIPS_CPU_IRQ_BASE+07 CPU TIMER
++ *
++ * TXX9_IRQ_BASE+00
++ * TXX9_IRQ_BASE+01
++ * TXX9_IRQ_BASE+02 Cascade RBTX4938-IOC
++ * TXX9_IRQ_BASE+03 RBTX4938 RTL-8019AS Ethernet
++ * TXX9_IRQ_BASE+04
++ * TXX9_IRQ_BASE+05 TX4938 ETH1
++ * TXX9_IRQ_BASE+06 TX4938 ETH0
++ * TXX9_IRQ_BASE+07
++ * TXX9_IRQ_BASE+08 TX4938 SIO 0
++ * TXX9_IRQ_BASE+09 TX4938 SIO 1
++ * TXX9_IRQ_BASE+10 TX4938 DMA0
++ * TXX9_IRQ_BASE+11 TX4938 DMA1
++ * TXX9_IRQ_BASE+12 TX4938 DMA2
++ * TXX9_IRQ_BASE+13 TX4938 DMA3
++ * TXX9_IRQ_BASE+14
++ * TXX9_IRQ_BASE+15
++ * TXX9_IRQ_BASE+16 TX4938 PCIC
++ * TXX9_IRQ_BASE+17 TX4938 TMR0
++ * TXX9_IRQ_BASE+18 TX4938 TMR1
++ * TXX9_IRQ_BASE+19 TX4938 TMR2
++ * TXX9_IRQ_BASE+20
++ * TXX9_IRQ_BASE+21
++ * TXX9_IRQ_BASE+22 TX4938 PCIERR
++ * TXX9_IRQ_BASE+23
++ * TXX9_IRQ_BASE+24
++ * TXX9_IRQ_BASE+25
++ * TXX9_IRQ_BASE+26
++ * TXX9_IRQ_BASE+27
++ * TXX9_IRQ_BASE+28
++ * TXX9_IRQ_BASE+29
++ * TXX9_IRQ_BASE+30
++ * TXX9_IRQ_BASE+31 TX4938 SPI
++ *
++ * RBTX4938_IRQ_IOC+00 PCI-D
++ * RBTX4938_IRQ_IOC+01 PCI-C
++ * RBTX4938_IRQ_IOC+02 PCI-B
++ * RBTX4938_IRQ_IOC+03 PCI-A
++ * RBTX4938_IRQ_IOC+04 RTC
++ * RBTX4938_IRQ_IOC+05 ATA
++ * RBTX4938_IRQ_IOC+06 MODEM
++ * RBTX4938_IRQ_IOC+07 SWINT
++ */
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+ #include <asm/mipsregs.h>
+@@ -93,9 +91,6 @@ static int toshiba_rbtx4938_irq_nested(int sw_irq)
+ 	return sw_irq;
+ }
+ 
+-/**********************************************************************************/
+-/* Functions for ioc                                                              */
+-/**********************************************************************************/
+ static void __init
+ toshiba_rbtx4938_irq_ioc_init(void)
+ {
+diff --git a/arch/mips/txx9/rbtx4938/setup.c b/arch/mips/txx9/rbtx4938/setup.c
+index 3324a70..5c05a21 100644
+--- a/arch/mips/txx9/rbtx4938/setup.c
++++ b/arch/mips/txx9/rbtx4938/setup.c
+@@ -13,8 +13,6 @@
+ #include <linux/types.h>
+ #include <linux/ioport.h>
+ #include <linux/delay.h>
+-#include <linux/interrupt.h>
+-#include <linux/console.h>
+ #include <linux/platform_device.h>
+ #include <linux/gpio.h>
+ 
+@@ -169,45 +167,29 @@ static void __init rbtx4938_mem_setup(void)
+ 
+ 	tx4938_setup_serial();
+ #ifdef CONFIG_SERIAL_TXX9_CONSOLE
+-        argptr = prom_getcmdline();
+-        if (strstr(argptr, "console=") == NULL) {
+-                strcat(argptr, " console=ttyS0,38400");
+-        }
++	argptr = prom_getcmdline();
++	if (!strstr(argptr, "console="))
++		strcat(argptr, " console=ttyS0,38400");
+ #endif
+ 
+ #ifdef CONFIG_TOSHIBA_RBTX4938_MPLEX_PIO58_61
+-	printk("PIOSEL: disabling both ata and nand selection\n");
+-	local_irq_disable();
++	printk(KERN_INFO "PIOSEL: disabling both ata and nand selection\n");
+ 	txx9_clear64(&tx4938_ccfgptr->pcfg,
+ 		     TX4938_PCFG_NDF_SEL | TX4938_PCFG_ATA_SEL);
+ #endif
+ 
+ #ifdef CONFIG_TOSHIBA_RBTX4938_MPLEX_NAND
+-	printk("PIOSEL: enabling nand selection\n");
++	printk(KERN_INFO "PIOSEL: enabling nand selection\n");
+ 	txx9_set64(&tx4938_ccfgptr->pcfg, TX4938_PCFG_NDF_SEL);
+ 	txx9_clear64(&tx4938_ccfgptr->pcfg, TX4938_PCFG_ATA_SEL);
+ #endif
+ 
+ #ifdef CONFIG_TOSHIBA_RBTX4938_MPLEX_ATA
+-	printk("PIOSEL: enabling ata selection\n");
++	printk(KERN_INFO "PIOSEL: enabling ata selection\n");
+ 	txx9_set64(&tx4938_ccfgptr->pcfg, TX4938_PCFG_ATA_SEL);
+ 	txx9_clear64(&tx4938_ccfgptr->pcfg, TX4938_PCFG_NDF_SEL);
+ #endif
+ 
+-#ifdef CONFIG_IP_PNP
+-	argptr = prom_getcmdline();
+-	if (strstr(argptr, "ip=") == NULL) {
+-		strcat(argptr, " ip=any");
+-	}
+-#endif
+-
+-
+-#ifdef CONFIG_FB
+-	{
+-		conswitchp = &dummy_con;
+-	}
+-#endif
+-
+ 	rbtx4938_spi_setup();
+ 	pcfg = ____raw_readq(&tx4938_ccfgptr->pcfg);	/* updated */
+ 	/* fixup piosel */
+@@ -228,7 +210,7 @@ static void __init rbtx4938_mem_setup(void)
+ 	rbtx4938_fpga_resource.end = CPHYSADDR(RBTX4938_FPGA_REG_ADDR) + 0xffff;
+ 	rbtx4938_fpga_resource.flags = IORESOURCE_MEM | IORESOURCE_BUSY;
+ 	if (request_resource(&txx9_ce_res[2], &rbtx4938_fpga_resource))
+-		printk("request resource for fpga failed\n");
++		printk(KERN_ERR "request resource for fpga failed\n");
+ 
+ 	_machine_restart = rbtx4938_machine_restart;
+ 
+@@ -238,7 +220,7 @@ static void __init rbtx4938_mem_setup(void)
+ 	       readb(rbtx4938_dipsw_addr), readb(rbtx4938_bdipsw_addr));
+ }
+ 
+-static int __init rbtx4938_ne_init(void)
++static void __init rbtx4938_ne_init(void)
+ {
+ 	struct resource res[] = {
+ 		{
+@@ -250,10 +232,7 @@ static int __init rbtx4938_ne_init(void)
+ 			.flags	= IORESOURCE_IRQ,
+ 		}
+ 	};
+-	struct platform_device *dev =
+-		platform_device_register_simple("ne", -1,
+-						res, ARRAY_SIZE(res));
+-	return IS_ERR(dev) ? PTR_ERR(dev) : 0;
++	platform_device_register_simple("ne", -1, res, ARRAY_SIZE(res));
+ }
+ 
+ static DEFINE_SPINLOCK(rbtx4938_spi_gpio_lock);
+diff --git a/include/asm-mips/txx9/smsc_fdc37m81x.h b/include/asm-mips/txx9/smsc_fdc37m81x.h
+index 9375e4f..02e161d 100644
+--- a/include/asm-mips/txx9/smsc_fdc37m81x.h
++++ b/include/asm-mips/txx9/smsc_fdc37m81x.h
+@@ -56,7 +56,7 @@
+ #define SMSC_FDC37M81X_CONFIG_EXIT   0xaa
+ #define SMSC_FDC37M81X_CHIP_ID       0x4d
+ 
+-unsigned long __init smsc_fdc37m81x_init(unsigned long port);
++unsigned long smsc_fdc37m81x_init(unsigned long port);
+ 
+ void smsc_fdc37m81x_config_beg(void);
+ 
 diff --git a/include/asm-mips/txx9/tx3927.h b/include/asm-mips/txx9/tx3927.h
-index 8d62b1b..0bac37f 100644
+index 0bac37f..f0439a7 100644
 --- a/include/asm-mips/txx9/tx3927.h
 +++ b/include/asm-mips/txx9/tx3927.h
-@@ -11,6 +11,7 @@
- #include <asm/txx9/txx927.h>
- 
- #define TX3927_REG_BASE	0xfffe0000UL
-+#define TX3927_REG_SIZE	0x00010000
- #define TX3927_SDRAMC_REG	(TX3927_REG_BASE + 0x8000)
- #define TX3927_ROMC_REG		(TX3927_REG_BASE + 0x9000)
- #define TX3927_DMA_REG		(TX3927_REG_BASE + 0xb000)
-@@ -319,13 +320,22 @@ struct tx3927_ccfg_reg {
- #define tx3927_dmaptr		((struct tx3927_dma_reg *)TX3927_DMA_REG)
- #define tx3927_pcicptr		((struct tx3927_pcic_reg *)TX3927_PCIC_REG)
- #define tx3927_ccfgptr		((struct tx3927_ccfg_reg *)TX3927_CCFG_REG)
--#define tx3927_tmrptr(ch)	((struct txx927_tmr_reg *)TX3927_TMR_REG(ch))
- #define tx3927_sioptr(ch)	((struct txx927_sio_reg *)TX3927_SIO_REG(ch))
- #define tx3927_pioptr		((struct txx9_pio_reg __iomem *)TX3927_PIO_REG)
- 
-+#define TX3927_REV_PCODE()	(tx3927_ccfgptr->crir >> 16)
-+#define TX3927_ROMC_BA(ch)	(tx3927_romcptr->cr[(ch)] & 0xfff00000)
-+#define TX3927_ROMC_SIZE(ch)	\
-+	(0x00100000 << ((tx3927_romcptr->cr[(ch)] >> 8) & 0xf))
-+
-+void tx3927_wdt_init(void);
-+void tx3927_setup(void);
-+void tx3927_time_init(unsigned int evt_tmrnr, unsigned int src_tmrnr);
-+void tx3927_setup_serial(unsigned int cts_mask);
+@@ -333,8 +333,8 @@ void tx3927_setup(void);
+ void tx3927_time_init(unsigned int evt_tmrnr, unsigned int src_tmrnr);
+ void tx3927_setup_serial(unsigned int cts_mask);
  struct pci_controller;
- void __init tx3927_pcic_setup(struct pci_controller *channel,
- 			      unsigned long sdram_size, int extarb);
+-void __init tx3927_pcic_setup(struct pci_controller *channel,
+-			      unsigned long sdram_size, int extarb);
++void tx3927_pcic_setup(struct pci_controller *channel,
++		       unsigned long sdram_size, int extarb);
  void tx3927_setup_pcierr_irq(void);
-+void tx3927_irq_init(void);
+ void tx3927_irq_init(void);
  
- #endif /* __ASM_TXX9_TX3927_H */
+diff --git a/include/asm-mips/txx9/tx4927pcic.h b/include/asm-mips/txx9/tx4927pcic.h
+index 223841c..c470b8a 100644
+--- a/include/asm-mips/txx9/tx4927pcic.h
++++ b/include/asm-mips/txx9/tx4927pcic.h
+@@ -193,8 +193,8 @@ struct tx4927_pcic_reg {
+ 
+ struct tx4927_pcic_reg __iomem *get_tx4927_pcicptr(
+ 	struct pci_controller *channel);
+-void __init tx4927_pcic_setup(struct tx4927_pcic_reg __iomem *pcicptr,
+-			      struct pci_controller *channel, int extarb);
++void tx4927_pcic_setup(struct tx4927_pcic_reg __iomem *pcicptr,
++		       struct pci_controller *channel, int extarb);
+ void tx4927_report_pcic_status(void);
+ char *tx4927_pcibios_setup(char *str);
+ void tx4927_dump_pcic_settings(void);
 -- 
 1.5.5.5

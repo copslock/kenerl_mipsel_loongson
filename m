@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2008 16:25:14 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:19690 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S28577895AbYGWPXh (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2008 16:25:34 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:22250 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S28577896AbYGWPXh (ORCPT
 	<rfc822;linux-mips@linux-mips.org>); Wed, 23 Jul 2008 16:23:37 +0100
 Received: from localhost.localdomain (p3049-ipad205funabasi.chiba.ocn.ne.jp [222.146.98.49])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 00E8CA8F2; Thu, 24 Jul 2008 00:23:29 +0900 (JST)
+	id 5EA64A9F6; Thu, 24 Jul 2008 00:23:30 +0900 (JST)
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
 Cc:	ralf@linux-mips.org
-Subject: [PATCH 06/10] txx9: Cleanup restart/halt/power_off
-Date:	Thu, 24 Jul 2008 00:25:17 +0900
-Message-Id: <1216826721-28259-6-git-send-email-anemo@mba.ocn.ne.jp>
+Subject: [PATCH 07/10] txx9: Cleanup watchdog
+Date:	Thu, 24 Jul 2008 00:25:18 +0900
+Message-Id: <1216826721-28259-7-git-send-email-anemo@mba.ocn.ne.jp>
 X-Mailer: git-send-email 1.5.5.5
 Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19926
+X-archive-position: 19927
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -24,259 +24,247 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Unify machine_restart/machine_halt/pm_power_off and add fallback
-machine_halt routine.
+Unify registration of txx9wdt platform device.
 
 Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
- arch/mips/txx9/generic/setup.c  |   26 ++++++++++++++++++++++++++
- arch/mips/txx9/jmr3927/setup.c  |   29 ++++-------------------------
- arch/mips/txx9/rbtx4927/setup.c |   33 ++-------------------------------
- arch/mips/txx9/rbtx4938/setup.c |   26 ++------------------------
- 4 files changed, 34 insertions(+), 80 deletions(-)
+ arch/mips/txx9/generic/setup.c        |   12 ++++++++++++
+ arch/mips/txx9/generic/setup_tx4927.c |    7 ++++++-
+ arch/mips/txx9/generic/setup_tx4938.c |    7 ++++++-
+ arch/mips/txx9/jmr3927/setup.c        |   20 +++-----------------
+ arch/mips/txx9/rbtx4927/setup.c       |   21 +--------------------
+ arch/mips/txx9/rbtx4938/setup.c       |   21 +--------------------
+ include/asm-mips/txx9/generic.h       |    1 +
+ include/asm-mips/txx9/tx4927.h        |    2 +-
+ include/asm-mips/txx9/tx4938.h        |    2 +-
+ 9 files changed, 32 insertions(+), 61 deletions(-)
 
 diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
-index 4fbd7ba..82272e8 100644
+index 82272e8..7b5705d 100644
 --- a/arch/mips/txx9/generic/setup.c
 +++ b/arch/mips/txx9/generic/setup.c
-@@ -22,6 +22,7 @@
+@@ -20,6 +20,7 @@
+ #include <linux/clk.h>
+ #include <linux/err.h>
  #include <linux/gpio.h>
++#include <linux/platform_device.h>
  #include <asm/bootinfo.h>
  #include <asm/time.h>
-+#include <asm/reboot.h>
- #include <asm/txx9/generic.h>
- #include <asm/txx9/pci.h>
- #ifdef CONFIG_CPU_TX49XX
-@@ -188,6 +189,25 @@ char * __init prom_getcmdline(void)
- 	return &(arcs_cmdline[0]);
+ #include <asm/reboot.h>
+@@ -208,6 +209,17 @@ static void __noreturn txx9_machine_halt(void)
+ 	}
  }
  
-+static void __noreturn txx9_machine_halt(void)
++/* Watchdog support */
++void __init txx9_wdt_init(unsigned long base)
 +{
-+	local_irq_disable();
-+	clear_c0_status(ST0_IM);
-+	while (1) {
-+		if (cpu_wait) {
-+			(*cpu_wait)();
-+			if (cpu_has_counter) {
-+				/*
-+				 * Clear counter interrupt while it
-+				 * breaks WAIT instruction even if
-+				 * masked.
-+				 */
-+				write_c0_compare(0);
-+			}
-+		}
-+	}
++	struct resource res = {
++		.start	= base,
++		.end	= base + 0x100 - 1,
++		.flags	= IORESOURCE_MEM,
++	};
++	platform_device_register_simple("txx9wdt", -1, &res, 1);
 +}
 +
  /* wrappers */
  void __init plat_mem_setup(void)
  {
-@@ -195,6 +215,12 @@ void __init plat_mem_setup(void)
- 	ioport_resource.end = ~0UL;	/* no limit */
- 	iomem_resource.start = 0;
- 	iomem_resource.end = ~0UL;	/* no limit */
+diff --git a/arch/mips/txx9/generic/setup_tx4927.c b/arch/mips/txx9/generic/setup_tx4927.c
+index 89d6e28..b42c855 100644
+--- a/arch/mips/txx9/generic/setup_tx4927.c
++++ b/arch/mips/txx9/generic/setup_tx4927.c
+@@ -21,7 +21,7 @@
+ #include <asm/txx9/generic.h>
+ #include <asm/txx9/tx4927.h>
+ 
+-void __init tx4927_wdr_init(void)
++static void __init tx4927_wdr_init(void)
+ {
+ 	/* clear WatchDogReset (W1C) */
+ 	tx4927_ccfg_set(TX4927_CCFG_WDRST);
+@@ -29,6 +29,11 @@ void __init tx4927_wdr_init(void)
+ 	tx4927_ccfg_set(TX4927_CCFG_WR);
+ }
+ 
++void __init tx4927_wdt_init(void)
++{
++	txx9_wdt_init(TX4927_TMR_REG(2) & 0xfffffffffULL);
++}
 +
-+	/* fallback restart/halt routines */
-+	_machine_restart = (void (*)(char *))txx9_machine_halt;
-+	_machine_halt = txx9_machine_halt;
-+	pm_power_off = txx9_machine_halt;
+ static struct resource tx4927_sdram_resource[4];
+ 
+ void __init tx4927_setup(void)
+diff --git a/arch/mips/txx9/generic/setup_tx4938.c b/arch/mips/txx9/generic/setup_tx4938.c
+index 317378d..b0a3dc8 100644
+--- a/arch/mips/txx9/generic/setup_tx4938.c
++++ b/arch/mips/txx9/generic/setup_tx4938.c
+@@ -21,7 +21,7 @@
+ #include <asm/txx9/generic.h>
+ #include <asm/txx9/tx4938.h>
+ 
+-void __init tx4938_wdr_init(void)
++static void __init tx4938_wdr_init(void)
+ {
+ 	/* clear WatchDogReset (W1C) */
+ 	tx4938_ccfg_set(TX4938_CCFG_WDRST);
+@@ -29,6 +29,11 @@ void __init tx4938_wdr_init(void)
+ 	tx4938_ccfg_set(TX4938_CCFG_WR);
+ }
+ 
++void __init tx4938_wdt_init(void)
++{
++	txx9_wdt_init(TX4938_TMR_REG(2) & 0xfffffffffULL);
++}
 +
- #ifdef CONFIG_PCI
- 	pcibios_plat_setup = txx9_pcibios_setup;
- #endif
+ static struct resource tx4938_sdram_resource[4];
+ static struct resource tx4938_sram_resource;
+ 
 diff --git a/arch/mips/txx9/jmr3927/setup.c b/arch/mips/txx9/jmr3927/setup.c
-index 7c16c40..fa0503e 100644
+index fa0503e..ae34e9a 100644
 --- a/arch/mips/txx9/jmr3927/setup.c
 +++ b/arch/mips/txx9/jmr3927/setup.c
-@@ -32,7 +32,6 @@
- #include <linux/types.h>
- #include <linux/ioport.h>
- #include <linux/delay.h>
--#include <linux/pm.h>
- #include <linux/platform_device.h>
- #include <linux/gpio.h>
- #ifdef CONFIG_SERIAL_TXX9
-@@ -46,13 +45,12 @@
- #include <asm/txx9/jmr3927.h>
- #include <asm/mipsregs.h>
- 
--extern void puts(const char *cp);
--
- /* don't enable - see errata */
- static int jmr3927_ccfg_toeon;
- 
--static inline void do_reset(void)
-+static void jmr3927_machine_restart(char *command)
- {
-+	local_irq_disable();
- #if 1	/* Resetting PCI bus */
- 	jmr3927_ioc_reg_out(0, JMR3927_IOC_RESET_ADDR);
- 	jmr3927_ioc_reg_out(JMR3927_IOC_RESET_PCI, JMR3927_IOC_RESET_ADDR);
-@@ -61,25 +59,8 @@ static inline void do_reset(void)
- 	jmr3927_ioc_reg_out(0, JMR3927_IOC_RESET_ADDR);
- #endif
- 	jmr3927_ioc_reg_out(JMR3927_IOC_RESET_CPU, JMR3927_IOC_RESET_ADDR);
--}
--
--static void jmr3927_machine_restart(char *command)
--{
--	local_irq_disable();
--	puts("Rebooting...");
--	do_reset();
--}
--
--static void jmr3927_machine_halt(void)
--{
--	puts("JMR-TX3927 halted.\n");
--	while (1);
--}
--
--static void jmr3927_machine_power_off(void)
--{
--	puts("JMR-TX3927 halted. Please turn off the power.\n");
--	while (1);
-+	/* fallback */
-+	(*_machine_halt)();
+@@ -308,30 +308,16 @@ static int __init jmr3927_rtc_init(void)
+ 	return IS_ERR(dev) ? PTR_ERR(dev) : 0;
  }
  
- static void __init jmr3927_time_init(void)
-@@ -102,8 +83,6 @@ static void __init jmr3927_mem_setup(void)
- 	set_io_port_base(JMR3927_PORT_BASE + JMR3927_PCIIO);
+-/* Watchdog support */
+-
+-static int __init txx9_wdt_init(unsigned long base)
+-{
+-	struct resource res = {
+-		.start	= base,
+-		.end	= base + 0x100 - 1,
+-		.flags	= IORESOURCE_MEM,
+-	};
+-	struct platform_device *dev =
+-		platform_device_register_simple("txx9wdt", -1, &res, 1);
+-	return IS_ERR(dev) ? PTR_ERR(dev) : 0;
+-}
+-
+-static int __init jmr3927_wdt_init(void)
++static void __init tx3927_wdt_init(void)
+ {
+-	return txx9_wdt_init(TX3927_TMR_REG(2));
++	txx9_wdt_init(TX3927_TMR_REG(2));
+ }
  
- 	_machine_restart = jmr3927_machine_restart;
--	_machine_halt = jmr3927_machine_halt;
--	pm_power_off = jmr3927_machine_power_off;
+ static void __init jmr3927_device_init(void)
+ {
+ 	__swizzle_addr_b = jmr3927_swizzle_addr_b;
+ 	jmr3927_rtc_init();
+-	jmr3927_wdt_init();
++	tx3927_wdt_init();
+ }
  
- 	/* Reboot on panic */
- 	panic_timeout = 180;
+ struct txx9_board_vec jmr3927_vec __initdata = {
 diff --git a/arch/mips/txx9/rbtx4927/setup.c b/arch/mips/txx9/rbtx4927/setup.c
-index 65b7224..54c33c3 100644
+index 54c33c3..f01af38 100644
 --- a/arch/mips/txx9/rbtx4927/setup.c
 +++ b/arch/mips/txx9/rbtx4927/setup.c
-@@ -47,11 +47,9 @@
- #include <linux/types.h>
- #include <linux/ioport.h>
- #include <linux/interrupt.h>
--#include <linux/pm.h>
- #include <linux/platform_device.h>
- #include <linux/delay.h>
- #include <asm/io.h>
--#include <asm/processor.h>
- #include <asm/reboot.h>
- #include <asm/txx9/generic.h>
- #include <asm/txx9/pci.h>
-@@ -167,17 +165,8 @@ static void __init rbtx4937_arch_init(void)
- #define rbtx4937_arch_init NULL
- #endif /* CONFIG_PCI */
- 
--static void __noreturn wait_forever(void)
--{
--	while (1)
--		if (cpu_wait)
--			(*cpu_wait)();
--}
--
- static void toshiba_rbtx4927_restart(char *command)
- {
--	printk(KERN_NOTICE "System Rebooting...\n");
--
- 	/* enable the s/w reset register */
- 	writeb(1, rbtx4927_softresetlock_addr);
- 
-@@ -188,24 +177,8 @@ static void toshiba_rbtx4927_restart(char *command)
- 	/* do a s/w reset */
- 	writeb(1, rbtx4927_softreset_addr);
- 
--	/* do something passive while waiting for reset */
--	local_irq_disable();
--	wait_forever();
--	/* no return */
--}
--
--static void toshiba_rbtx4927_halt(void)
--{
--	printk(KERN_NOTICE "System Halted\n");
--	local_irq_disable();
--	wait_forever();
--	/* no return */
--}
--
--static void toshiba_rbtx4927_power_off(void)
--{
--	toshiba_rbtx4927_halt();
--	/* no return */
-+	/* fallback */
-+	(*_machine_halt)();
+@@ -328,30 +328,11 @@ static int __init rbtx4927_ne_init(void)
+ 	return IS_ERR(dev) ? PTR_ERR(dev) : 0;
  }
  
- static void __init rbtx4927_clock_init(void);
-@@ -233,8 +206,6 @@ static void __init rbtx4927_mem_setup(void)
- 	}
+-/* Watchdog support */
+-
+-static int __init txx9_wdt_init(unsigned long base)
+-{
+-	struct resource res = {
+-		.start	= base,
+-		.end	= base + 0x100 - 1,
+-		.flags	= IORESOURCE_MEM,
+-	};
+-	struct platform_device *dev =
+-		platform_device_register_simple("txx9wdt", -1, &res, 1);
+-	return IS_ERR(dev) ? PTR_ERR(dev) : 0;
+-}
+-
+-static int __init rbtx4927_wdt_init(void)
+-{
+-	return txx9_wdt_init(TX4927_TMR_REG(2) & 0xfffffffffULL);
+-}
+-
+ static void __init rbtx4927_device_init(void)
+ {
+ 	toshiba_rbtx4927_rtc_init();
+ 	rbtx4927_ne_init();
+-	rbtx4927_wdt_init();
++	tx4927_wdt_init();
+ }
  
- 	_machine_restart = toshiba_rbtx4927_restart;
--	_machine_halt = toshiba_rbtx4927_halt;
--	pm_power_off = toshiba_rbtx4927_power_off;
- 
- #ifdef CONFIG_PCI
- 	txx9_alloc_pci_controller(&txx9_primary_pcic,
+ struct txx9_board_vec rbtx4927_vec __initdata = {
 diff --git a/arch/mips/txx9/rbtx4938/setup.c b/arch/mips/txx9/rbtx4938/setup.c
-index 4454b79..e1177b3 100644
+index e1177b3..ff5fda2 100644
 --- a/arch/mips/txx9/rbtx4938/setup.c
 +++ b/arch/mips/txx9/rbtx4938/setup.c
-@@ -15,7 +15,6 @@
- #include <linux/delay.h>
- #include <linux/interrupt.h>
- #include <linux/console.h>
--#include <linux/pm.h>
- #include <linux/platform_device.h>
- #include <linux/gpio.h>
- 
-@@ -28,33 +27,14 @@
- #include <asm/txx9/spi.h>
- #include <asm/txx9pio.h>
- 
--static void rbtx4938_machine_halt(void)
--{
--        printk(KERN_NOTICE "System Halted\n");
--	local_irq_disable();
--
--	while (1)
--		__asm__(".set\tmips3\n\t"
--			"wait\n\t"
--			".set\tmips0");
--}
--
--static void rbtx4938_machine_power_off(void)
--{
--        rbtx4938_machine_halt();
--        /* no return */
--}
--
- static void rbtx4938_machine_restart(char *command)
- {
- 	local_irq_disable();
--
--	printk("Rebooting...");
- 	writeb(1, rbtx4938_softresetlock_addr);
- 	writeb(1, rbtx4938_sfvol_addr);
- 	writeb(1, rbtx4938_softreset_addr);
--	while(1)
--		;
-+	/* fallback */
-+	(*_machine_halt)();
+@@ -352,30 +352,11 @@ static void __init rbtx4938_arch_init(void)
+ 	rbtx4938_spi_init();
  }
  
- static void __init rbtx4938_pci_setup(void)
-@@ -263,8 +243,6 @@ static void __init rbtx4938_mem_setup(void)
- 		printk("request resource for fpga failed\n");
+-/* Watchdog support */
+-
+-static int __init txx9_wdt_init(unsigned long base)
+-{
+-	struct resource res = {
+-		.start	= base,
+-		.end	= base + 0x100 - 1,
+-		.flags	= IORESOURCE_MEM,
+-	};
+-	struct platform_device *dev =
+-		platform_device_register_simple("txx9wdt", -1, &res, 1);
+-	return IS_ERR(dev) ? PTR_ERR(dev) : 0;
+-}
+-
+-static int __init rbtx4938_wdt_init(void)
+-{
+-	return txx9_wdt_init(TX4938_TMR_REG(2) & 0xfffffffffULL);
+-}
+-
+ static void __init rbtx4938_device_init(void)
+ {
+ 	rbtx4938_ethaddr_init();
+ 	rbtx4938_ne_init();
+-	rbtx4938_wdt_init();
++	tx4938_wdt_init();
+ }
  
- 	_machine_restart = rbtx4938_machine_restart;
--	_machine_halt = rbtx4938_machine_halt;
--	pm_power_off = rbtx4938_machine_power_off;
+ struct txx9_board_vec rbtx4938_vec __initdata = {
+diff --git a/include/asm-mips/txx9/generic.h b/include/asm-mips/txx9/generic.h
+index cbae37e..2b34d09 100644
+--- a/include/asm-mips/txx9/generic.h
++++ b/include/asm-mips/txx9/generic.h
+@@ -44,5 +44,6 @@ extern struct txx9_board_vec *txx9_board_vec;
+ extern int (*txx9_irq_dispatch)(int pending);
+ void prom_init_cmdline(void);
+ char *prom_getcmdline(void);
++void txx9_wdt_init(unsigned long base);
  
- 	writeb(0xff, rbtx4938_led_addr);
- 	printk(KERN_INFO "RBTX4938 --- FPGA(Rev %02x) DIPSW:%02x,%02x\n",
+ #endif /* __ASM_TXX9_GENERIC_H */
+diff --git a/include/asm-mips/txx9/tx4927.h b/include/asm-mips/txx9/tx4927.h
+index 2c26fd1..3d9fd7d 100644
+--- a/include/asm-mips/txx9/tx4927.h
++++ b/include/asm-mips/txx9/tx4927.h
+@@ -243,7 +243,7 @@ static inline void tx4927_ccfg_change(__u64 change, __u64 new)
+ }
+ 
+ unsigned int tx4927_get_mem_size(void);
+-void tx4927_wdr_init(void);
++void tx4927_wdt_init(void);
+ void tx4927_setup(void);
+ void tx4927_time_init(unsigned int tmrnr);
+ void tx4927_setup_serial(void);
+diff --git a/include/asm-mips/txx9/tx4938.h b/include/asm-mips/txx9/tx4938.h
+index 4fff1c9..d5d7cef 100644
+--- a/include/asm-mips/txx9/tx4938.h
++++ b/include/asm-mips/txx9/tx4938.h
+@@ -276,7 +276,7 @@ struct tx4938_ccfg_reg {
+ #define TX4938_EBUSC_SIZE(ch)	TX4927_EBUSC_SIZE(ch)
+ 
+ #define tx4938_get_mem_size() tx4927_get_mem_size()
+-void tx4938_wdr_init(void);
++void tx4938_wdt_init(void);
+ void tx4938_setup(void);
+ void tx4938_time_init(unsigned int tmrnr);
+ void tx4938_setup_serial(void);
 -- 
 1.5.5.5

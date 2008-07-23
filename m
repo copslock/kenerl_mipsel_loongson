@@ -1,23 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2008 18:46:01 +0100 (BST)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:21216 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2008 18:47:36 +0100 (BST)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:57747 "EHLO
 	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S28577450AbYGWRp7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 23 Jul 2008 18:45:59 +0100
-Received: (qmail 6123 invoked by uid 1000); 23 Jul 2008 19:45:57 +0200
-Date:	Wed, 23 Jul 2008 19:45:57 +0200
+	id S28577605AbYGWRre (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 23 Jul 2008 18:47:34 +0100
+Received: (qmail 6145 invoked by uid 1000); 23 Jul 2008 19:47:33 +0200
+Date:	Wed, 23 Jul 2008 19:47:33 +0200
 From:	Manuel Lauss <mano@roarinelk.homelinux.net>
 To:	linux-mips@linux-mips.org
-Subject: [PATCH v3 0/8] Alchemy updates
-Message-ID: <20080723174557.GA5986@roarinelk.homelinux.net>
+Subject: [PATCH 1/8] Alchemy: remove get/set_au1x00_lcd_clock().
+Message-ID: <20080723174733.GB5986@roarinelk.homelinux.net>
+References: <20080723174557.GA5986@roarinelk.homelinux.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20080723174557.GA5986@roarinelk.homelinux.net>
 User-Agent: Mutt/1.5.16 (2007-06-09)
 Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19932
+X-archive-position: 19933
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -25,38 +27,85 @@ X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+There are no in-tree users, so remove them.
 
-Here's a new set of patches to modernize Alchemy setup and PM code.
-All patches have been compile-tested with db100 and db1200 defconfigs,
-and have been runnning on a few custom Au1250 boards for now more than
-4 weeks.  I've suspended and resumed a few hundred times while stressing
-the system (continuously reading from SD cards and playing audio and
-compiling GCC) without any problems.
+Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
+---
+ arch/mips/au1000/common/clocks.c      |   31 -------------------------------
+ arch/mips/au1000/common/time.c        |    1 -
+ include/asm-mips/mach-au1x00/au1000.h |    2 --
+ 3 files changed, 0 insertions(+), 34 deletions(-)
 
-#1 removes unussed functions
-#2 removes the cpu_table and replaces it with simpler code (IMHO of course)
-#3 enables use of cp0 counter as a fallback,
-#4 clockevent/clocksource support using one of the 2 counters of the Au1xxx
-   this also enables the use of the 'wait' instruction; depends on #3
-#5 cleanup made possible with #4 
-#7 and #8 fix suspend/resume.
-
-I didn't touch the current Alchemy sysctl PM implementation to not change
-existing behavior except when necessary (e.g. in #4), although I'm
-itching to remove it completely and replace it with something better
-suited (and -looking) for 2.6.  It is broken for newer Alchemy SoCs anyway.
-
-
-Changes V2->V3:
-- swap patches 1 and 2 
-- minor refinements, no function changes.
-
-Changes V1->V2:
-- address Sergei's comments wrt. config[OD] handling
-- change TOY clocksource to RTC clocksource
-- add another patch (#5)
-
-
-Thanks,
-	Manuel Lauss
+diff --git a/arch/mips/au1000/common/clocks.c b/arch/mips/au1000/common/clocks.c
+index 043429d..a8170fd 100644
+--- a/arch/mips/au1000/common/clocks.c
++++ b/arch/mips/au1000/common/clocks.c
+@@ -30,7 +30,6 @@
+ #include <asm/mach-au1x00/au1000.h>
+ 
+ static unsigned int au1x00_clock; /*  Hz */
+-static unsigned int lcd_clock;    /* KHz */
+ static unsigned long uart_baud_base;
+ 
+ /*
+@@ -61,33 +60,3 @@ void set_au1x00_uart_baud_base(unsigned long new_baud_base)
+ {
+ 	uart_baud_base = new_baud_base;
+ }
+-
+-/*
+- * Calculate the Au1x00's LCD clock based on the current
+- * cpu clock and the system bus clock, and try to keep it
+- * below 40 MHz (the Pb1000 board can lock-up if the LCD
+- * clock is over 40 MHz).
+- */
+-void set_au1x00_lcd_clock(void)
+-{
+-	unsigned int static_cfg0;
+-	unsigned int sys_busclk = (get_au1x00_speed() / 1000) /
+-				  ((int)(au_readl(SYS_POWERCTRL) & 0x03) + 2);
+-
+-	static_cfg0 = au_readl(MEM_STCFG0);
+-
+-	if (static_cfg0 & (1 << 11))
+-		lcd_clock = sys_busclk / 5; /* note: BCLK switching fails with D5 */
+-	else
+-		lcd_clock = sys_busclk / 4;
+-
+-	if (lcd_clock > 50000) /* Epson MAX */
+-		printk(KERN_WARNING "warning: LCD clock too high (%u KHz)\n",
+-				    lcd_clock);
+-}
+-
+-unsigned int get_au1x00_lcd_clock(void)
+-{
+-	return lcd_clock;
+-}
+-EXPORT_SYMBOL(get_au1x00_lcd_clock);
+diff --git a/arch/mips/au1000/common/time.c b/arch/mips/au1000/common/time.c
+index 563d939..68d7142 100644
+--- a/arch/mips/au1000/common/time.c
++++ b/arch/mips/au1000/common/time.c
+@@ -224,7 +224,6 @@ void __init plat_time_init(void)
+ 	printk(KERN_INFO "CPU frequency %u.%02u MHz\n",
+ 	       est_freq / 1000000, ((est_freq % 1000000) * 100) / 1000000);
+ 	set_au1x00_speed(est_freq);
+-	set_au1x00_lcd_clock(); /* program the LCD clock */
+ 
+ #ifdef CONFIG_PM
+ 	/*
+diff --git a/include/asm-mips/mach-au1x00/au1000.h b/include/asm-mips/mach-au1x00/au1000.h
+index 0d302ba..8d2ced6 100644
+--- a/include/asm-mips/mach-au1x00/au1000.h
++++ b/include/asm-mips/mach-au1x00/au1000.h
+@@ -97,8 +97,6 @@ extern void set_au1x00_speed(unsigned int new_freq);
+ extern unsigned int get_au1x00_speed(void);
+ extern void set_au1x00_uart_baud_base(unsigned long new_baud_base);
+ extern unsigned long get_au1x00_uart_baud_base(void);
+-extern void set_au1x00_lcd_clock(void);
+-extern unsigned int get_au1x00_lcd_clock(void);
+ 
+ /*
+  * Every board describes its IRQ mapping with this table.
+-- 
+1.5.6.3

@@ -1,55 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2008 17:27:40 +0100 (BST)
-Received: from relay01.mx.bawue.net ([193.7.176.67]:28065 "EHLO
-	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
-	id S20030024AbYGWQ1i (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 23 Jul 2008 17:27:38 +0100
-Received: from lagash (p549ACCC1.dip.t-dialin.net [84.154.204.193])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by relay01.mx.bawue.net (Postfix) with ESMTP id A903A48917;
-	Wed, 23 Jul 2008 18:27:37 +0200 (CEST)
-Received: from ths by lagash with local (Exim 4.69)
-	(envelope-from <ths@networkno.de>)
-	id 1KLhBl-0005Ne-E8; Wed, 23 Jul 2008 17:27:41 +0100
-Date:	Wed, 23 Jul 2008 17:27:41 +0100
-From:	Thiemo Seufer <ths@networkno.de>
-To:	Naresh Bhat <nareshgbhat@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Kernel is Hanging for page size 16KB.
-Message-ID: <20080723162741.GA17043@networkno.de>
-References: <cf9b3c760807230016j6c1acc32qd1e54f3a9fa60403@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Jul 2008 18:46:01 +0100 (BST)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:21216 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S28577450AbYGWRp7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 23 Jul 2008 18:45:59 +0100
+Received: (qmail 6123 invoked by uid 1000); 23 Jul 2008 19:45:57 +0200
+Date:	Wed, 23 Jul 2008 19:45:57 +0200
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+To:	linux-mips@linux-mips.org
+Subject: [PATCH v3 0/8] Alchemy updates
+Message-ID: <20080723174557.GA5986@roarinelk.homelinux.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cf9b3c760807230016j6c1acc32qd1e54f3a9fa60403@mail.gmail.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ths@networkno.de>
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19931
+X-archive-position: 19932
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-Naresh Bhat wrote:
-> Hi Guys,
-> 
-> I have a board MIPS Malta and Linux 2.6.10 is running on that. By default
-> 4KB page size will be allocated in the kernel (I mean to say I saw it when I
-> do the "make menuconfig".
-> 
-> Problem is:
-> 
-> When I changed the page size to 16KB it will hang after mounting the file
-> system. I am using the NFS for booting the board.
+Hello,
 
-IIRC the old TLB handlers were buggy for anything else than 4k pages.
-For the Malta, upgrading to a recent kernel version should be the
-simplest way to solve the problem.
+Here's a new set of patches to modernize Alchemy setup and PM code.
+All patches have been compile-tested with db100 and db1200 defconfigs,
+and have been runnning on a few custom Au1250 boards for now more than
+4 weeks.  I've suspended and resumed a few hundred times while stressing
+the system (continuously reading from SD cards and playing audio and
+compiling GCC) without any problems.
+
+#1 removes unussed functions
+#2 removes the cpu_table and replaces it with simpler code (IMHO of course)
+#3 enables use of cp0 counter as a fallback,
+#4 clockevent/clocksource support using one of the 2 counters of the Au1xxx
+   this also enables the use of the 'wait' instruction; depends on #3
+#5 cleanup made possible with #4 
+#7 and #8 fix suspend/resume.
+
+I didn't touch the current Alchemy sysctl PM implementation to not change
+existing behavior except when necessary (e.g. in #4), although I'm
+itching to remove it completely and replace it with something better
+suited (and -looking) for 2.6.  It is broken for newer Alchemy SoCs anyway.
 
 
-Thiemo
+Changes V2->V3:
+- swap patches 1 and 2 
+- minor refinements, no function changes.
+
+Changes V1->V2:
+- address Sergei's comments wrt. config[OD] handling
+- change TOY clocksource to RTC clocksource
+- add another patch (#5)
+
+
+Thanks,
+	Manuel Lauss

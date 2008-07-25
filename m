@@ -1,62 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Jul 2008 18:52:49 +0100 (BST)
-Received: from smtp.wellnetcz.com ([212.24.148.102]:53162 "EHLO
-	smtp.wellnetcz.com") by ftp.linux-mips.org with ESMTP
-	id S28580240AbYGYRwr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 25 Jul 2008 18:52:47 +0100
-Received: from localhost.localdomain ([88.208.94.142])
-	by smtp.wellnetcz.com (8.14.1/8.14.1) with ESMTP id m6PIAFq5009830;
-	Fri, 25 Jul 2008 20:10:16 +0200
-From:	Jiri Slaby <jirislaby@gmail.com>
-To:	Andrew Morton <akpm@linux-foundation.org>
-Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-	Jiri Slaby <jirislaby@gmail.com>,
-	Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH 1/1] Char: ds1286, eliminate busy waiting
-Date:	Fri, 25 Jul 2008 19:49:58 +0200
-Message-Id: <1217008198-17143-1-git-send-email-jirislaby@gmail.com>
-X-Mailer: git-send-email 1.5.6.2
-Return-Path: <jirislaby@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Jul 2008 19:05:04 +0100 (BST)
+Received: from harold.telenet-ops.be ([195.130.133.65]:52683 "EHLO
+	harold.telenet-ops.be") by ftp.linux-mips.org with ESMTP
+	id S28580254AbYGYSFC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 25 Jul 2008 19:05:02 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by harold.telenet-ops.be (Postfix) with SMTP id 10BD530021;
+	Fri, 25 Jul 2008 20:05:01 +0200 (CEST)
+Received: from anakin.of.borg (78-21-204-88.access.telenet.be [78.21.204.88])
+	by harold.telenet-ops.be (Postfix) with ESMTP id 03C843000E;
+	Fri, 25 Jul 2008 20:05:00 +0200 (CEST)
+Received: from anakin.of.borg (localhost [127.0.0.1])
+	by anakin.of.borg (8.14.3/8.14.3/Debian-4) with ESMTP id m6PI50Si011164
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Fri, 25 Jul 2008 20:05:00 +0200
+Received: from localhost (geert@localhost)
+	by anakin.of.borg (8.14.3/8.14.3/Submit) with ESMTP id m6PI4vAX011161;
+	Fri, 25 Jul 2008 20:05:00 +0200
+X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
+Date:	Fri, 25 Jul 2008 20:04:57 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Mike Crowe <mac@mcrowe.com>
+cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Add severity levels to printk statements during
+ kernel setup.
+In-Reply-To: <20080725134454.GA26225@mcrowe.com>
+Message-ID: <Pine.LNX.4.64.0807252002490.11082@anakin>
+References: <20080725134454.GA26225@mcrowe.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19969
+X-archive-position: 19970
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jirislaby@gmail.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-ds1286_get_time(); is not called from atomic context, sleep for 20 ms is
-better choice than a (home-made) busy waiting for such a situation.
+On Fri, 25 Jul 2008, Mike Crowe wrote:
+> Signed-off-by: Mike Crowe <mac@mcrowe.com>
+> ---
+>  arch/mips/kernel/setup.c |   14 +++++++-------
+>  1 files changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+> index 8af8486..fcb12b9 100644
+> --- a/arch/mips/kernel/setup.c
+> +++ b/arch/mips/kernel/setup.c
+> @@ -78,7 +78,7 @@ void __init add_memory_region(phys_t start, phys_t size, long type)
+>  
+>  	/* Sanity check */
+>  	if (start + size < start) {
+> -		printk("Trying to add an invalid memory region, skipped\n");
+> +		printk(KERN_WARNING "Trying to add an invalid memory region, skipped\n");
 
-Signed-off-by: Jiri Slaby <jirislaby@gmail.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
----
- drivers/char/ds1286.c |    4 +---
- 1 files changed, 1 insertions(+), 3 deletions(-)
+Why not convert to pr_warning(), while you're at it?
 
-diff --git a/drivers/char/ds1286.c b/drivers/char/ds1286.c
-index fb58493..5329d48 100644
---- a/drivers/char/ds1286.c
-+++ b/drivers/char/ds1286.c
-@@ -443,7 +443,6 @@ static void ds1286_get_time(struct rtc_time *rtc_tm)
- {
- 	unsigned char save_control;
- 	unsigned long flags;
--	unsigned long uip_watchdog = jiffies;
- 
- 	/*
- 	 * read RTC once any update in progress is done. The update
-@@ -456,8 +455,7 @@ static void ds1286_get_time(struct rtc_time *rtc_tm)
- 	 */
- 
- 	if (ds1286_is_updating() != 0)
--		while (time_before(jiffies, uip_watchdog + 2*HZ/100))
--			barrier();
-+		msleep(20);
- 
- 	/*
- 	 * Only the values that we read from the RTC are set. We leave
--- 
-1.5.6.2
+> @@ -221,7 +221,7 @@ static void __init finalize_initrd(void)
+>  		goto disable;
+>  	}
+>  	if (__pa(initrd_end) > PFN_PHYS(max_low_pfn)) {
+> -		printk("Initrd extends beyond end of memory");
+> +		printk(KERN_ERR "Initrd extends beyond end of memory");
+                                                                    ^
+There's no newline here, so...
+
+>  		goto disable;
+>  	}
+>  
+> @@ -232,7 +232,7 @@ static void __init finalize_initrd(void)
+>  	       initrd_start, size);
+>  	return;
+>  disable:
+> -	printk(" - disabling initrd\n");
+> +	printk(KERN_ERR " - disabling initrd\n");
+               ^^^^^^^^
+... probably this should be KERN_CONT.
+Note that I didn't check the other paths to get here.
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

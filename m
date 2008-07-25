@@ -1,85 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Jul 2008 18:38:08 +0100 (BST)
-Received: from col0-omc4-s5.col0.hotmail.com ([65.55.34.207]:27022 "EHLO
-	col0-omc4-s5.col0.hotmail.com") by ftp.linux-mips.org with ESMTP
-	id S28580534AbYGYRiG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 25 Jul 2008 18:38:06 +0100
-Received: from COL102-DS16 ([65.55.34.201]) by col0-omc4-s5.col0.hotmail.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Fri, 25 Jul 2008 10:37:59 -0700
-X-Originating-IP: [90.212.251.215]
-X-Originating-Email: [danieljlaird@hotmail.com]
-Message-ID: <COL102-DS16F8C6A03D54FF8B7A87C4DC860@phx.gbl>
-From:	<danieljlaird@hotmail.com>
-To:	"linux-mips" <linux-mips@linux-mips.org>
-Subject: Watchdog drivers where to post
-Date:	Fri, 25 Jul 2008 18:37:55 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Jul 2008 18:40:34 +0100 (BST)
+Received: from ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk ([217.169.26.28]:28139
+	"EHLO ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk")
+	by ftp.linux-mips.org with ESMTP id S28580484AbYGYRkc (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 25 Jul 2008 18:40:32 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m6PHeRO1000944;
+	Fri, 25 Jul 2008 18:40:27 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m6PHeP03000943;
+	Fri, 25 Jul 2008 18:40:25 +0100
+Date:	Fri, 25 Jul 2008 18:40:25 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	danieljlaird@hotmail.com
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: Watchdog drivers where to post
+Message-ID: <20080725174025.GA793@linux-mips.org>
+References: <COL102-DS16F8C6A03D54FF8B7A87C4DC860@phx.gbl>
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----=_NextPart_000_0031_01C8EE85.8D8F9F00"
-X-Priority: 3
-X-MSMail-Priority: Normal
-Importance: Normal
-X-Mailer: Microsoft Windows Live Mail 12.0.1606
-X-MimeOLE: Produced By Microsoft MimeOLE V12.0.1606
-X-OriginalArrivalTime: 25 Jul 2008 17:37:59.0458 (UTC) FILETIME=[2E43D820:01C8EE7D]
-Return-Path: <danieljlaird@hotmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <COL102-DS16F8C6A03D54FF8B7A87C4DC860@phx.gbl>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19966
+X-archive-position: 19967
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: danieljlaird@hotmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
+On Fri, Jul 25, 2008 at 06:37:55PM +0100, danieljlaird@hotmail.com wrote:
 
-------=_NextPart_000_0031_01C8EE85.8D8F9F00
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+> I am wanting to post a watchdog driver for pnx833x.
+> 
+> I can find all the mailing lists for netdev/i2c/.... 
+> 
+> However, where do I post a watchdog driver?
+> 
+> Can I post here or do i post somewhere else
 
-I am wanting to post a watchdog driver for pnx833x.
+Just check the MAINTAINERS file; it says:
 
-I can find all the mailing lists for netdev/i2c/....=20
+WATCHDOG DEVICE DRIVERS
+P:      Wim Van Sebroeck
+M:      wim@iguana.be
+T:      git kernel.org:/pub/scm/linux/kernel/git/wim/linux-2.6-watchdog.git
+S:      Maintained
 
-However, where do I post a watchdog driver?
+Cc'ing linux-mips and whoever else you consider to be possibly interested
+can't harm.
 
-Can I post here or do i post somewhere else
-
-Cheers
-Daniel Laird
-------=_NextPart_000_0031_01C8EE85.8D8F9F00
-Content-Type: text/html;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META http-equiv=3DContent-Type =
-content=3Dtext/html;charset=3Diso-8859-1>
-<META content=3D"MSHTML 6.00.6000.16674" name=3DGENERATOR></HEAD>
-<BODY id=3DMailContainerBody=20
-style=3D"PADDING-RIGHT: 10px; PADDING-LEFT: 10px; PADDING-TOP: 15px"=20
-bgColor=3D#ffffff leftMargin=3D0 topMargin=3D0 CanvasTabStop=3D"true"=20
-name=3D"Compose message area">
-<DIV><FONT face=3DVerdana size=3D2>I am wanting to post a watchdog =
-driver for=20
-pnx833x.</FONT></DIV>
-<DIV><FONT face=3DVerdana size=3D2></FONT>&nbsp;</DIV>
-<DIV><FONT face=3DVerdana size=3D2>I can find all the mailing lists for=20
-netdev/i2c/.... </FONT></DIV>
-<DIV><FONT face=3DVerdana size=3D2></FONT>&nbsp;</DIV>
-<DIV><FONT face=3DVerdana size=3D2>However, where do I post a watchdog=20
-driver?</FONT></DIV>
-<DIV><FONT face=3DVerdana size=3D2></FONT>&nbsp;</DIV>
-<DIV><FONT face=3DVerdana size=3D2>Can I post here or do i post =
-somewhere=20
-else</FONT></DIV>
-<DIV><FONT face=3DVerdana size=3D2></FONT>&nbsp;</DIV>
-<DIV><FONT face=3DVerdana size=3D2>Cheers</FONT></DIV>
-<DIV><FONT face=3DVerdana size=3D2>Daniel =
-Laird</FONT></DIV></BODY></HTML>
-
-------=_NextPart_000_0031_01C8EE85.8D8F9F00--
+  Ralf

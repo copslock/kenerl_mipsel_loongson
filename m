@@ -1,29 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Jul 2008 14:59:50 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:36855 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20031898AbYGYN7r (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 25 Jul 2008 14:59:47 +0100
-Received: from localhost (p3225-ipad203funabasi.chiba.ocn.ne.jp [222.146.82.225])
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Jul 2008 15:06:18 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:15858 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20031841AbYGYOGQ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 25 Jul 2008 15:06:16 +0100
+Received: from localhost.localdomain (p3225-ipad203funabasi.chiba.ocn.ne.jp [222.146.82.225])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id F042CADE0; Fri, 25 Jul 2008 22:59:39 +0900 (JST)
-Date:	Fri, 25 Jul 2008 23:01:35 +0900 (JST)
-Message-Id: <20080725.230135.59464757.anemo@mba.ocn.ne.jp>
+	id 34B9CACB6; Fri, 25 Jul 2008 23:06:11 +0900 (JST)
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
 Cc:	ralf@linux-mips.org
-Subject: Re: [PATCH 05/10] txx9: PCI error handling
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <1216826721-28259-5-git-send-email-anemo@mba.ocn.ne.jp>
-References: <1216826721-28259-5-git-send-email-anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Subject: [PATCH] txx9: Unify serial_txx9 setup
+Date:	Fri, 25 Jul 2008 23:08:06 +0900
+Message-Id: <1216994886-6559-1-git-send-email-anemo@mba.ocn.ne.jp>
+X-Mailer: git-send-email 1.5.5.5
 Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19955
+X-archive-position: 19956
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,370 +24,286 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 24 Jul 2008 00:25:16 +0900, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> Add more control and detailed report on PCI error interrupt.
-
-Revised.  Get rid of a warning on 64-bit build.  Other patches can
-still be used as is.
-
------------------------------------------------------------------
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Date: Thu, 24 Jul 2008 00:25:16 +0900
-Subject: [PATCH] txx9: PCI error handling
-
-Add more control and detailed report on PCI error interrupt.
+* Unify calling of early_serial_txx9_setup.
+* Use dedicated serial clock on RBTX4938.
 
 Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
- arch/mips/pci/ops-tx3927.c         |   34 +++++++++++++++++++
- arch/mips/pci/ops-tx4927.c         |   62 ++++++++++++++++++++++++++++++++++++
- arch/mips/pci/pci-tx4927.c         |   10 ++++++
- arch/mips/pci/pci-tx4938.c         |   10 ++++++
- arch/mips/txx9/jmr3927/irq.c       |   20 -----------
- arch/mips/txx9/jmr3927/setup.c     |    1 +
- arch/mips/txx9/rbtx4927/setup.c    |    2 +
- arch/mips/txx9/rbtx4938/setup.c    |    1 +
- include/asm-mips/txx9/tx3927.h     |    7 ++++
- include/asm-mips/txx9/tx4927.h     |    1 +
- include/asm-mips/txx9/tx4927pcic.h |    3 ++
- include/asm-mips/txx9/tx4938.h     |    1 +
- 12 files changed, 132 insertions(+), 20 deletions(-)
+ arch/mips/txx9/generic/setup.c        |   24 ++++++++++++++++++++++++
+ arch/mips/txx9/generic/setup_tx3927.c |   25 +++++++------------------
+ arch/mips/txx9/generic/setup_tx4927.c |   23 ++++++-----------------
+ arch/mips/txx9/generic/setup_tx4938.c |   18 ++++--------------
+ arch/mips/txx9/jmr3927/setup.c        |    2 +-
+ arch/mips/txx9/rbtx4927/setup.c       |    2 +-
+ arch/mips/txx9/rbtx4938/setup.c       |    2 +-
+ include/asm-mips/txx9/generic.h       |    2 ++
+ include/asm-mips/txx9/tx3927.h        |    2 +-
+ include/asm-mips/txx9/tx4927.h        |    2 +-
+ include/asm-mips/txx9/tx4938.h        |    2 +-
+ 11 files changed, 49 insertions(+), 55 deletions(-)
 
-diff --git a/arch/mips/pci/ops-tx3927.c b/arch/mips/pci/ops-tx3927.c
-index c6bd79e..31c1501 100644
---- a/arch/mips/pci/ops-tx3927.c
-+++ b/arch/mips/pci/ops-tx3927.c
-@@ -37,8 +37,11 @@
- #include <linux/pci.h>
- #include <linux/kernel.h>
- #include <linux/init.h>
-+#include <linux/interrupt.h>
- 
- #include <asm/addrspace.h>
-+#include <asm/txx9irq.h>
-+#include <asm/txx9/pci.h>
- #include <asm/txx9/tx3927.h>
- 
- static int mkaddr(struct pci_bus *bus, unsigned char devfn, unsigned char where)
-@@ -194,3 +197,34 @@ void __init tx3927_pcic_setup(struct pci_controller *channel,
- 		PCI_COMMAND_PARITY | PCI_COMMAND_SERR;
- 	local_irq_restore(flags);
- }
-+
-+static irqreturn_t tx3927_pcierr_interrupt(int irq, void *dev_id)
-+{
-+	struct pt_regs *regs = get_irq_regs();
-+
-+	if (txx9_pci_err_action != TXX9_PCI_ERR_IGNORE) {
-+		printk(KERN_WARNING "PCI error interrupt at 0x%08lx.\n",
-+		       regs->cp0_epc);
-+		printk(KERN_WARNING "pcistat:%02x, lbstat:%04lx\n",
-+		       tx3927_pcicptr->pcistat, tx3927_pcicptr->lbstat);
-+	}
-+	if (txx9_pci_err_action != TXX9_PCI_ERR_PANIC) {
-+		/* clear all pci errors */
-+		tx3927_pcicptr->pcistat |= TX3927_PCIC_PCISTATIM_ALL;
-+		tx3927_pcicptr->istat = TX3927_PCIC_IIM_ALL;
-+		tx3927_pcicptr->tstat = TX3927_PCIC_TIM_ALL;
-+		tx3927_pcicptr->lbstat = TX3927_PCIC_LBIM_ALL;
-+		return IRQ_HANDLED;
-+	}
-+	console_verbose();
-+	panic("PCI error.");
-+}
-+
-+void __init tx3927_setup_pcierr_irq(void)
-+{
-+	if (request_irq(TXX9_IRQ_BASE + TX3927_IR_PCI,
-+			tx3927_pcierr_interrupt,
-+			IRQF_DISABLED, "PCI error",
-+			(void *)TX3927_PCIC_REG))
-+		printk(KERN_WARNING "Failed to request irq for PCIERR\n");
-+}
-diff --git a/arch/mips/pci/ops-tx4927.c b/arch/mips/pci/ops-tx4927.c
-index 038e311..5989e74 100644
---- a/arch/mips/pci/ops-tx4927.c
-+++ b/arch/mips/pci/ops-tx4927.c
-@@ -16,6 +16,8 @@
-  * option) any later version.
-  */
- #include <linux/kernel.h>
-+#include <linux/interrupt.h>
-+#include <asm/txx9/pci.h>
- #include <asm/txx9/tx4927pcic.h>
- 
- static struct {
-@@ -431,6 +433,66 @@ void tx4927_report_pcic_status(void)
- 	}
+diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
+index b136c66..94ce1a5 100644
+--- a/arch/mips/txx9/generic/setup.c
++++ b/arch/mips/txx9/generic/setup.c
+@@ -21,6 +21,7 @@
+ #include <linux/err.h>
+ #include <linux/gpio.h>
+ #include <linux/platform_device.h>
++#include <linux/serial_core.h>
+ #include <asm/bootinfo.h>
+ #include <asm/time.h>
+ #include <asm/reboot.h>
+@@ -247,6 +248,29 @@ void __init txx9_ethaddr_init(unsigned int id, unsigned char *ethaddr)
+ 		platform_device_put(pdev);
  }
  
-+static void tx4927_dump_pcic_settings1(struct tx4927_pcic_reg __iomem *pcicptr)
++void __init txx9_sio_init(unsigned long baseaddr, int irq,
++			  unsigned int line, unsigned int sclk, int nocts)
 +{
-+	int i;
-+	__u32 __iomem *preg = (__u32 __iomem *)pcicptr;
++#ifdef CONFIG_SERIAL_TXX9
++	struct uart_port req;
 +
-+	printk(KERN_INFO "tx4927 pcic (0x%p) settings:", pcicptr);
-+	for (i = 0; i < sizeof(struct tx4927_pcic_reg); i += 4, preg++) {
-+		if (i % 32 == 0) {
-+			printk(KERN_CONT "\n");
-+			printk(KERN_INFO "%04x:", i);
-+		}
-+		/* skip registers with side-effects */
-+		if (i == offsetof(struct tx4927_pcic_reg, g2pintack)
-+		    || i == offsetof(struct tx4927_pcic_reg, g2pspc)
-+		    || i == offsetof(struct tx4927_pcic_reg, g2pcfgadrs)
-+		    || i == offsetof(struct tx4927_pcic_reg, g2pcfgdata)) {
-+			printk(KERN_CONT " XXXXXXXX");
-+			continue;
-+		}
-+		printk(KERN_CONT " %08x", __raw_readl(preg));
-+	}
-+	printk(KERN_CONT "\n");
++	memset(&req, 0, sizeof(req));
++	req.line = line;
++	req.iotype = UPIO_MEM;
++	req.membase = ioremap(baseaddr, 0x24);
++	req.mapbase = baseaddr;
++	req.irq = irq;
++	if (!nocts)
++		req.flags |= UPF_BUGGY_UART /*HAVE_CTS_LINE*/;
++	if (sclk) {
++		req.flags |= UPF_MAGIC_MULTIPLIER /*USE_SCLK*/;
++		req.uartclk = sclk;
++	} else
++		req.uartclk = TXX9_IMCLK;
++	early_serial_txx9_setup(&req);
++#endif /* CONFIG_SERIAL_TXX9 */
 +}
 +
-+void tx4927_dump_pcic_settings(void)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(pcicptrs); i++) {
-+		if (pcicptrs[i].pcicptr)
-+			tx4927_dump_pcic_settings1(pcicptrs[i].pcicptr);
-+	}
-+}
-+
-+irqreturn_t tx4927_pcierr_interrupt(int irq, void *dev_id)
-+{
-+	struct pt_regs *regs = get_irq_regs();
-+	struct tx4927_pcic_reg __iomem *pcicptr =
-+		(struct tx4927_pcic_reg __iomem *)(unsigned long)dev_id;
-+
-+	if (txx9_pci_err_action != TXX9_PCI_ERR_IGNORE) {
-+		printk(KERN_WARNING "PCIERR interrupt at 0x%0*lx\n",
-+		       (int)(2 * sizeof(unsigned long)), regs->cp0_epc);
-+		tx4927_report_pcic_status1(pcicptr);
-+	}
-+	if (txx9_pci_err_action != TXX9_PCI_ERR_PANIC) {
-+		/* clear all pci errors */
-+		__raw_writel((__raw_readl(&pcicptr->pcistatus) & 0x0000ffff)
-+			     | (TX4927_PCIC_PCISTATUS_ALL << 16),
-+			     &pcicptr->pcistatus);
-+		__raw_writel(TX4927_PCIC_G2PSTATUS_ALL, &pcicptr->g2pstatus);
-+		__raw_writel(TX4927_PCIC_PBASTATUS_ALL, &pcicptr->pbastatus);
-+		__raw_writel(TX4927_PCIC_PCICSTATUS_ALL, &pcicptr->pcicstatus);
-+		return IRQ_HANDLED;
-+	}
-+	console_verbose();
-+	tx4927_dump_pcic_settings1(pcicptr);
-+	panic("PCI error.");
-+}
-+
- #ifdef CONFIG_TOSHIBA_FPCIB0
- static void __init tx4927_quirk_slc90e66_bridge(struct pci_dev *dev)
+ /* wrappers */
+ void __init plat_mem_setup(void)
  {
-diff --git a/arch/mips/pci/pci-tx4927.c b/arch/mips/pci/pci-tx4927.c
-index 27e86a0..aaa9005 100644
---- a/arch/mips/pci/pci-tx4927.c
-+++ b/arch/mips/pci/pci-tx4927.c
-@@ -15,6 +15,7 @@
+diff --git a/arch/mips/txx9/generic/setup_tx3927.c b/arch/mips/txx9/generic/setup_tx3927.c
+index 0d09a0f..7bd963d 100644
+--- a/arch/mips/txx9/generic/setup_tx3927.c
++++ b/arch/mips/txx9/generic/setup_tx3927.c
+@@ -13,8 +13,8 @@
  #include <linux/init.h>
- #include <linux/pci.h>
- #include <linux/kernel.h>
-+#include <linux/interrupt.h>
- #include <asm/txx9/generic.h>
- #include <asm/txx9/tx4927.h>
- 
-@@ -81,3 +82,12 @@ int __init tx4927_pciclk66_setup(void)
- 		pciclk = -1;
- 	return pciclk;
+ #include <linux/ioport.h>
+ #include <linux/delay.h>
+-#include <linux/serial_core.h>
+ #include <linux/param.h>
++#include <linux/io.h>
+ #include <asm/mipsregs.h>
+ #include <asm/txx9irq.h>
+ #include <asm/txx9tmr.h>
+@@ -119,23 +119,12 @@ void __init tx3927_time_init(unsigned int evt_tmrnr, unsigned int src_tmrnr)
+ 	txx9_clocksource_init(TX3927_TMR_REG(src_tmrnr), TXX9_IMCLK);
  }
-+
-+void __init tx4927_setup_pcierr_irq(void)
-+{
-+	if (request_irq(TXX9_IRQ_BASE + TX4927_IR_PCIERR,
-+			tx4927_pcierr_interrupt,
-+			IRQF_DISABLED, "PCI error",
-+			(void *)TX4927_PCIC_REG))
-+		printk(KERN_WARNING "Failed to request irq for PCIERR\n");
-+}
-diff --git a/arch/mips/pci/pci-tx4938.c b/arch/mips/pci/pci-tx4938.c
-index e537551..60e2c52 100644
---- a/arch/mips/pci/pci-tx4938.c
-+++ b/arch/mips/pci/pci-tx4938.c
-@@ -15,6 +15,7 @@
- #include <linux/init.h>
- #include <linux/pci.h>
- #include <linux/kernel.h>
-+#include <linux/interrupt.h>
- #include <asm/txx9/generic.h>
- #include <asm/txx9/tx4938.h>
  
-@@ -132,3 +133,12 @@ int tx4938_pcic1_map_irq(const struct pci_dev *dev, u8 slot)
+-void __init tx3927_setup_serial(unsigned int cts_mask)
++void __init tx3927_sio_init(unsigned int sclk, unsigned int cts_mask)
+ {
+-#ifdef CONFIG_SERIAL_TXX9
+ 	int i;
+-	struct uart_port req;
+-
+-	for (i = 0; i < 2; i++) {
+-		memset(&req, 0, sizeof(req));
+-		req.line = i;
+-		req.iotype = UPIO_MEM;
+-		req.membase = (unsigned char __iomem *)TX3927_SIO_REG(i);
+-		req.mapbase = TX3927_SIO_REG(i);
+-		req.irq = TXX9_IRQ_BASE + TX3927_IR_SIO(i);
+-		if (!((1 << i) & cts_mask))
+-			req.flags |= UPF_BUGGY_UART /*HAVE_CTS_LINE*/;
+-		req.uartclk = TXX9_IMCLK;
+-		early_serial_txx9_setup(&req);
+-	}
+-#endif /* CONFIG_SERIAL_TXX9 */
++
++	for (i = 0; i < 2; i++)
++		txx9_sio_init(TX3927_SIO_REG(i),
++			      TXX9_IRQ_BASE + TX3927_IR_SIO(i),
++			      i, sclk, (1 << i) & cts_mask);
+ }
+diff --git a/arch/mips/txx9/generic/setup_tx4927.c b/arch/mips/txx9/generic/setup_tx4927.c
+index b42c855..f80d4b7 100644
+--- a/arch/mips/txx9/generic/setup_tx4927.c
++++ b/arch/mips/txx9/generic/setup_tx4927.c
+@@ -13,7 +13,6 @@
+ #include <linux/init.h>
+ #include <linux/ioport.h>
+ #include <linux/delay.h>
+-#include <linux/serial_core.h>
+ #include <linux/param.h>
+ #include <asm/txx9irq.h>
+ #include <asm/txx9tmr.h>
+@@ -178,22 +177,12 @@ void __init tx4927_time_init(unsigned int tmrnr)
+ 				     TXX9_IMCLK);
+ }
+ 
+-void __init tx4927_setup_serial(void)
++void __init tx4927_sio_init(unsigned int sclk, unsigned int cts_mask)
+ {
+-#ifdef CONFIG_SERIAL_TXX9
+ 	int i;
+-	struct uart_port req;
+-
+-	for (i = 0; i < 2; i++) {
+-		memset(&req, 0, sizeof(req));
+-		req.line = i;
+-		req.iotype = UPIO_MEM;
+-		req.membase = (unsigned char __iomem *)TX4927_SIO_REG(i);
+-		req.mapbase = TX4927_SIO_REG(i) & 0xfffffffffULL;
+-		req.irq = TXX9_IRQ_BASE + TX4927_IR_SIO(i);
+-		req.flags |= UPF_BUGGY_UART /*HAVE_CTS_LINE*/;
+-		req.uartclk = TXX9_IMCLK;
+-		early_serial_txx9_setup(&req);
+-	}
+-#endif /* CONFIG_SERIAL_TXX9 */
++
++	for (i = 0; i < 2; i++)
++		txx9_sio_init(TX4927_SIO_REG(i) & 0xfffffffffULL,
++			      TXX9_IRQ_BASE + TX4927_IR_SIO(i),
++			      i, sclk, (1 << i) & cts_mask);
+ }
+diff --git a/arch/mips/txx9/generic/setup_tx4938.c b/arch/mips/txx9/generic/setup_tx4938.c
+index 1ceace4..f3040b9 100644
+--- a/arch/mips/txx9/generic/setup_tx4938.c
++++ b/arch/mips/txx9/generic/setup_tx4938.c
+@@ -13,7 +13,6 @@
+ #include <linux/init.h>
+ #include <linux/ioport.h>
+ #include <linux/delay.h>
+-#include <linux/serial_core.h>
+ #include <linux/param.h>
+ #include <asm/txx9irq.h>
+ #include <asm/txx9tmr.h>
+@@ -238,11 +237,9 @@ void __init tx4938_time_init(unsigned int tmrnr)
+ 				     TXX9_IMCLK);
+ }
+ 
+-void __init tx4938_setup_serial(void)
++void __init tx4938_sio_init(unsigned int sclk, unsigned int cts_mask)
+ {
+-#ifdef CONFIG_SERIAL_TXX9
+ 	int i;
+-	struct uart_port req;
+ 	unsigned int ch_mask = 0;
+ 
+ 	if (__raw_readq(&tx4938_ccfgptr->pcfg) & TX4938_PCFG_ETH0_SEL)
+@@ -250,17 +247,10 @@ void __init tx4938_setup_serial(void)
+ 	for (i = 0; i < 2; i++) {
+ 		if ((1 << i) & ch_mask)
+ 			continue;
+-		memset(&req, 0, sizeof(req));
+-		req.line = i;
+-		req.iotype = UPIO_MEM;
+-		req.membase = (unsigned char __iomem *)TX4938_SIO_REG(i);
+-		req.mapbase = TX4938_SIO_REG(i) & 0xfffffffffULL;
+-		req.irq = TXX9_IRQ_BASE + TX4938_IR_SIO(i);
+-		req.flags |= UPF_BUGGY_UART /*HAVE_CTS_LINE*/;
+-		req.uartclk = TXX9_IMCLK;
+-		early_serial_txx9_setup(&req);
++		txx9_sio_init(TX4938_SIO_REG(i) & 0xfffffffffULL,
++			      TXX9_IRQ_BASE + TX4938_IR_SIO(i),
++			      i, sclk, (1 << i) & cts_mask);
  	}
- 	return -1;
- }
-+
-+void __init tx4938_setup_pcierr_irq(void)
-+{
-+	if (request_irq(TXX9_IRQ_BASE + TX4938_IR_PCIERR,
-+			tx4927_pcierr_interrupt,
-+			IRQF_DISABLED, "PCI error",
-+			(void *)TX4927_PCIC_REG))
-+		printk(KERN_WARNING "Failed to request irq for PCIERR\n");
-+}
-diff --git a/arch/mips/txx9/jmr3927/irq.c b/arch/mips/txx9/jmr3927/irq.c
-index 070c9a1..f3b6023 100644
---- a/arch/mips/txx9/jmr3927/irq.c
-+++ b/arch/mips/txx9/jmr3927/irq.c
-@@ -103,22 +103,6 @@ static int jmr3927_irq_dispatch(int pending)
- 	return irq;
+-#endif /* CONFIG_SERIAL_TXX9 */
  }
  
--#ifdef CONFIG_PCI
--static irqreturn_t jmr3927_pcierr_interrupt(int irq, void *dev_id)
--{
--	printk(KERN_WARNING "PCI error interrupt (irq 0x%x).\n", irq);
--	printk(KERN_WARNING "pcistat:%02x, lbstat:%04lx\n",
--	       tx3927_pcicptr->pcistat, tx3927_pcicptr->lbstat);
--
--	return IRQ_HANDLED;
--}
--static struct irqaction pcierr_action = {
--	.handler = jmr3927_pcierr_interrupt,
--	.mask = CPU_MASK_NONE,
--	.name = "PCI error",
--};
--#endif
--
- static void __init jmr3927_irq_init(void);
- 
- void __init jmr3927_irq_setup(void)
-@@ -143,10 +127,6 @@ void __init jmr3927_irq_setup(void)
- 	/* setup IOC interrupt 1 (PCI, MODEM) */
- 	set_irq_chained_handler(JMR3927_IRQ_IOCINT, handle_simple_irq);
- 
--#ifdef CONFIG_PCI
--	setup_irq(JMR3927_IRQ_IRC_PCI, &pcierr_action);
--#endif
--
- 	/* enable all CPU interrupt bits. */
- 	set_c0_status(ST0_IM);	/* IE bit is still 0. */
- }
+ void __init tx4938_spi_init(int busid)
 diff --git a/arch/mips/txx9/jmr3927/setup.c b/arch/mips/txx9/jmr3927/setup.c
-index 57dc91e..7c16c40 100644
+index cf7513d..87db41b 100644
 --- a/arch/mips/txx9/jmr3927/setup.c
 +++ b/arch/mips/txx9/jmr3927/setup.c
-@@ -199,6 +199,7 @@ static void __init jmr3927_pci_setup(void)
- 		jmr3927_ioc_reg_out(0, JMR3927_IOC_RESET_ADDR);
- 	}
- 	tx3927_pcic_setup(c, JMR3927_SDRAM_SIZE, extarb);
-+	tx3927_setup_pcierr_irq();
- #endif /* CONFIG_PCI */
- }
+@@ -105,7 +105,7 @@ static void __init jmr3927_mem_setup(void)
+ 	/* initialize board */
+ 	jmr3927_board_init();
  
+-	tx3927_setup_serial(1 << 1); /* ch1: noCTS */
++	tx3927_sio_init(0, 1 << 1); /* ch1: noCTS */
+ #ifdef CONFIG_SERIAL_TXX9_CONSOLE
+ 	argptr = prom_getcmdline();
+ 	if (!strstr(argptr, "console="))
 diff --git a/arch/mips/txx9/rbtx4927/setup.c b/arch/mips/txx9/rbtx4927/setup.c
-index 88c05cc..65b7224 100644
+index 962ada5..0d39baf 100644
 --- a/arch/mips/txx9/rbtx4927/setup.c
 +++ b/arch/mips/txx9/rbtx4927/setup.c
-@@ -103,6 +103,7 @@ static void __init tx4927_pci_setup(void)
- 		tx4927_report_pciclk();
- 		tx4927_pcic_setup(tx4927_pcicptr, c, extarb);
- 	}
-+	tx4927_setup_pcierr_irq();
- }
+@@ -212,7 +212,7 @@ static void __init rbtx4927_mem_setup(void)
+ 	set_io_port_base(KSEG1 + RBTX4927_ISA_IO_OFFSET);
+ #endif
  
- static void __init tx4937_pci_setup(void)
-@@ -149,6 +150,7 @@ static void __init tx4937_pci_setup(void)
- 		tx4938_report_pciclk();
- 		tx4927_pcic_setup(tx4938_pcicptr, c, extarb);
- 	}
-+	tx4938_setup_pcierr_irq();
- }
- 
- static void __init rbtx4927_arch_init(void)
+-	tx4927_setup_serial();
++	tx4927_sio_init(0, 0);
+ #ifdef CONFIG_SERIAL_TXX9_CONSOLE
+ 	argptr = prom_getcmdline();
+ 	if (!strstr(argptr, "console="))
 diff --git a/arch/mips/txx9/rbtx4938/setup.c b/arch/mips/txx9/rbtx4938/setup.c
-index fc9034d..4454b79 100644
+index 5c05a21..9ab48de 100644
 --- a/arch/mips/txx9/rbtx4938/setup.c
 +++ b/arch/mips/txx9/rbtx4938/setup.c
-@@ -121,6 +121,7 @@ static void __init rbtx4938_pci_setup(void)
- 		register_pci_controller(c);
- 		tx4927_pcic_setup(tx4938_pcic1ptr, c, 0);
- 	}
-+	tx4938_setup_pcierr_irq();
- #endif /* CONFIG_PCI */
- }
+@@ -165,7 +165,7 @@ static void __init rbtx4938_mem_setup(void)
+ 	set_io_port_base(RBTX4938_ETHER_BASE);
+ #endif
  
+-	tx4938_setup_serial();
++	tx4938_sio_init(7372800, 0);
+ #ifdef CONFIG_SERIAL_TXX9_CONSOLE
+ 	argptr = prom_getcmdline();
+ 	if (!strstr(argptr, "console="))
+diff --git a/include/asm-mips/txx9/generic.h b/include/asm-mips/txx9/generic.h
+index c6b5cd6..a295aaa 100644
+--- a/include/asm-mips/txx9/generic.h
++++ b/include/asm-mips/txx9/generic.h
+@@ -47,5 +47,7 @@ char *prom_getcmdline(void);
+ void txx9_wdt_init(unsigned long base);
+ void txx9_spi_init(int busid, unsigned long base, int irq);
+ void txx9_ethaddr_init(unsigned int id, unsigned char *ethaddr);
++void txx9_sio_init(unsigned long baseaddr, int irq,
++		   unsigned int line, unsigned int sclk, int nocts);
+ 
+ #endif /* __ASM_TXX9_GENERIC_H */
 diff --git a/include/asm-mips/txx9/tx3927.h b/include/asm-mips/txx9/tx3927.h
-index ea79e1b..8d62b1b 100644
+index f0439a7..14e0636 100644
 --- a/include/asm-mips/txx9/tx3927.h
 +++ b/include/asm-mips/txx9/tx3927.h
-@@ -236,11 +236,17 @@ struct tx3927_ccfg_reg {
- /* see PCI_STATUS_XXX in linux/pci.h */
- #define PCI_STATUS_NEW_CAP	0x0010
- 
-+/* bits for ISTAT/IIM */
-+#define TX3927_PCIC_IIM_ALL	0x00001600
-+
- /* bits for TC */
- #define TX3927_PCIC_TC_OF16E	0x00000020
- #define TX3927_PCIC_TC_IF8E	0x00000010
- #define TX3927_PCIC_TC_OF8E	0x00000008
- 
-+/* bits for TSTAT/TIM */
-+#define TX3927_PCIC_TIM_ALL	0x0003ffff
-+
- /* bits for IOBA/MBA */
- /* see PCI_BASE_ADDRESS_XXX in linux/pci.h */
- 
-@@ -320,5 +326,6 @@ struct tx3927_ccfg_reg {
+@@ -331,7 +331,7 @@ struct tx3927_ccfg_reg {
+ void tx3927_wdt_init(void);
+ void tx3927_setup(void);
+ void tx3927_time_init(unsigned int evt_tmrnr, unsigned int src_tmrnr);
+-void tx3927_setup_serial(unsigned int cts_mask);
++void tx3927_sio_init(unsigned int sclk, unsigned int cts_mask);
  struct pci_controller;
- void __init tx3927_pcic_setup(struct pci_controller *channel,
- 			      unsigned long sdram_size, int extarb);
-+void tx3927_setup_pcierr_irq(void);
- 
- #endif /* __ASM_TXX9_TX3927_H */
+ void tx3927_pcic_setup(struct pci_controller *channel,
+ 		       unsigned long sdram_size, int extarb);
 diff --git a/include/asm-mips/txx9/tx4927.h b/include/asm-mips/txx9/tx4927.h
-index ceb4b79..2c26fd1 100644
+index 3d9fd7d..195f651 100644
 --- a/include/asm-mips/txx9/tx4927.h
 +++ b/include/asm-mips/txx9/tx4927.h
-@@ -249,6 +249,7 @@ void tx4927_time_init(unsigned int tmrnr);
- void tx4927_setup_serial(void);
+@@ -246,7 +246,7 @@ unsigned int tx4927_get_mem_size(void);
+ void tx4927_wdt_init(void);
+ void tx4927_setup(void);
+ void tx4927_time_init(unsigned int tmrnr);
+-void tx4927_setup_serial(void);
++void tx4927_sio_init(unsigned int sclk, unsigned int cts_mask);
  int tx4927_report_pciclk(void);
  int tx4927_pciclk66_setup(void);
-+void tx4927_setup_pcierr_irq(void);
- void tx4927_irq_init(void);
- 
- #endif /* __ASM_TXX9_TX4927_H */
-diff --git a/include/asm-mips/txx9/tx4927pcic.h b/include/asm-mips/txx9/tx4927pcic.h
-index e1d78e9..223841c 100644
---- a/include/asm-mips/txx9/tx4927pcic.h
-+++ b/include/asm-mips/txx9/tx4927pcic.h
-@@ -10,6 +10,7 @@
- #define __ASM_TXX9_TX4927PCIC_H
- 
- #include <linux/pci.h>
-+#include <linux/irqreturn.h>
- 
- struct tx4927_pcic_reg {
- 	u32 pciid;
-@@ -196,5 +197,7 @@ void __init tx4927_pcic_setup(struct tx4927_pcic_reg __iomem *pcicptr,
- 			      struct pci_controller *channel, int extarb);
- void tx4927_report_pcic_status(void);
- char *tx4927_pcibios_setup(char *str);
-+void tx4927_dump_pcic_settings(void);
-+irqreturn_t tx4927_pcierr_interrupt(int irq, void *dev_id);
- 
- #endif /* __ASM_TXX9_TX4927PCIC_H */
+ void tx4927_setup_pcierr_irq(void);
 diff --git a/include/asm-mips/txx9/tx4938.h b/include/asm-mips/txx9/tx4938.h
-index 1ed969d..4fff1c9 100644
+index 26f9d4a..8175d4c 100644
 --- a/include/asm-mips/txx9/tx4938.h
 +++ b/include/asm-mips/txx9/tx4938.h
-@@ -285,6 +285,7 @@ void tx4938_report_pci1clk(void);
- int tx4938_pciclk66_setup(void);
- struct pci_dev;
- int tx4938_pcic1_map_irq(const struct pci_dev *dev, u8 slot);
-+void tx4938_setup_pcierr_irq(void);
- void tx4938_irq_init(void);
- 
- #endif
+@@ -279,7 +279,7 @@ struct tx4938_ccfg_reg {
+ void tx4938_wdt_init(void);
+ void tx4938_setup(void);
+ void tx4938_time_init(unsigned int tmrnr);
+-void tx4938_setup_serial(void);
++void tx4938_sio_init(unsigned int sclk, unsigned int cts_mask);
+ void tx4938_spi_init(int busid);
+ void tx4938_ethaddr_init(unsigned char *addr0, unsigned char *addr1);
+ int tx4938_report_pciclk(void);
 -- 
 1.5.5.5

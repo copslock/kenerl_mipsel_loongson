@@ -1,52 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Jul 2008 22:45:26 +0100 (BST)
-Received: from web25808.mail.ukl.yahoo.com ([217.12.10.193]:42418 "HELO
-	web25808.mail.ukl.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S28580970AbYGYVpY convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 25 Jul 2008 22:45:24 +0100
-Received: (qmail 76795 invoked by uid 60001); 25 Jul 2008 21:45:18 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.co.uk;
-  h=Received:X-Mailer:Date:From:Reply-To:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-ID;
-  b=lcw/n3Ddf7NZmBOqvCdpstx1Lm9RNL8n18nDGP3i/2ojfGChylvdUSq3GnA4+URw8ZdhSLI2gRNhlUQtL907fhecGmu+0NKhHXWoId/LSn8gPFQnP5iubkiKgb846b2RECGfouZefrvgBb0hvxXPAqhOEdG0/IA4XlI+4V9k/D8=;
-Received: from [87.114.137.160] by web25808.mail.ukl.yahoo.com via HTTP; Fri, 25 Jul 2008 21:45:18 GMT
-X-Mailer: YahooMailWebService/0.7.218
-Date:	Fri, 25 Jul 2008 21:45:18 +0000 (GMT)
-From:	Glyn Astill <glynastill@yahoo.co.uk>
-Reply-To: glynastill@yahoo.co.uk
-Subject: Debian etch on cobalt
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Jul 2008 23:03:29 +0100 (BST)
+Received: from astoria.ccjclearline.com ([64.235.106.9]:51859 "EHLO
+	astoria.ccjclearline.com") by ftp.linux-mips.org with ESMTP
+	id S28580997AbYGYWD1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 25 Jul 2008 23:03:27 +0100
+Received: from [205.233.55.237] (helo=crashcourse.ca)
+	by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+	(Exim 4.69)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1KMVNk-0005Hx-Ur
+	for linux-mips@linux-mips.org; Fri, 25 Jul 2008 18:03:25 -0400
+Date:	Fri, 25 Jul 2008 18:01:35 -0400 (EDT)
+From:	"Robert P. J. Day" <rpjday@crashcourse.ca>
+X-X-Sender: rpjday@localhost.localdomain
 To:	linux-mips@linux-mips.org
+Subject: more MIPS-related config variable issues, just FYI
+Message-ID: <alpine.LFD.1.10.0807251758560.4566@localhost.localdomain>
+User-Agent: Alpine 1.10 (LFD 962 2008-03-14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-Message-ID: <633357.76258.qm@web25808.mail.ukl.yahoo.com>
-Return-Path: <glynastill@yahoo.co.uk>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - astoria.ccjclearline.com
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <rpjday@crashcourse.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19973
+X-archive-position: 19974
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: glynastill@yahoo.co.uk
+X-original-sender: rpjday@crashcourse.ca
 Precedence: bulk
 X-list: linux-mips
 
-Hi Chaps,
 
-I'm trying to get going with debian etch on a cobalt qube2. Unfortunately it dies randomly whilst I try to compile postgres.
+  first, what i call "badref" config variables -- tests on what should
+be config variables that are, in fact, not defined in any Kconfig
+file:
 
-I tried subscribing to the debian mipsel ilist with no luck.
+>>>>> EXCITE_FCAP_GPI
+arch/mips/basler/excite/excite_device.c:164:#if defined(CONFIG_EXCITE_FCAP_GPI) || defined(CONFIG_EXCITE_FCAP_GPI_MODULE)
+arch/mips/basler/excite/excite_device.c:227:#endif /* defined(CONFIG_EXCITE_FCAP_GPI) || defined(CONFIG_EXCITE_FCAP_GPI_MODULE) */
+>>>>> HT_LEVEL_TRIGGER
+arch/mips/pmc-sierra/yosemite/irq.c:80:#ifdef CONFIG_HT_LEVEL_TRIGGER
+arch/mips/pmc-sierra/yosemite/irq.c:109:#endif /* CONFIG_HT_LEVEL_TRIGGER */
+>>>>> PCMCIA_XXS1500
+arch/mips/au1000/xxs1500/board_setup.c:55:#ifdef CONFIG_PCMCIA_XXS1500
+>>>>> PMCTWILED
+arch/mips/pmc-sierra/msp71xx/msp_setup.c:233:#ifdef CONFIG_PMCTWILED
+arch/mips/pmc-sierra/msp71xx/msp_hwbutton.c:35:#ifdef CONFIG_PMCTWILED
+arch/mips/pmc-sierra/msp71xx/msp_hwbutton.c:85:#ifdef CONFIG_PMCTWILED
+arch/mips/pmc-sierra/msp71xx/msp_hwbutton.c:97:#ifdef CONFIG_PMCTWILED
+arch/mips/configs/msp71xx_defconfig:934:CONFIG_PMCTWILED=y
+>>>>> RM9K_GE
+arch/mips/basler/excite/excite_device.c:314:#if defined(CONFIG_RM9K_GE) || defined(CONFIG_RM9K_GE_MODULE)
+arch/mips/basler/excite/excite_device.c:367:#endif /* defined(CONFIG_RM9K_GE) || defined(CONFIG_RM9K_GE_MODULE) */
+>>>>> SIBYTE_BCM1480_PROF
+arch/mips/sibyte/bcm1480/irq.c:445:#ifdef CONFIG_SIBYTE_BCM1480_PROF
+arch/mips/sibyte/bcm1480/irq.c:452:#ifdef CONFIG_SIBYTE_BCM1480_PROF
+>>>>> SOC_AU1000_FREQUENCY
+arch/mips/au1000/common/time.c:202:#ifdef CONFIG_SOC_AU1000_FREQUENCY
+arch/mips/au1000/common/time.c:203:		cpu_speed = CONFIG_SOC_AU1000_FREQUENCY;
+arch/mips/au1000/common/setup.c:59:#ifdef CONFIG_SOC_AU1000_FREQUENCY
+arch/mips/au1000/common/setup.c:60:		cpufreq = CONFIG_SOC_AU1000_FREQUENCY / 1000000;
+>>>>> SOUND_AU1X00
+arch/mips/au1000/common/setup.c:101:#if defined(CONFIG_SOUND_AU1X00) && !defined(CONFIG_SOC_AU1000)
+>>>>> SQUASHFS
+arch/powerpc/configs/ppc6xx_defconfig:2962:CONFIG_SQUASHFS=m
+arch/mips/pmc-sierra/msp71xx/msp_prom.c:46:#ifdef CONFIG_SQUASHFS
+arch/mips/pmc-sierra/msp71xx/msp_prom.c:552:#ifdef CONFIG_SQUASHFS
+arch/mips/configs/msp71xx_defconfig:1300:CONFIG_SQUASHFS=y
+arch/mips/pmc-sierra/msp71xx/msp_prom.c:554:		/* Get SQUASHFS size */
 
-I used the following image:
- http://ftp.nl.debian.org/debian/dists/etch/main/installer-mipsel/current/images/cobalt/nfsroot.tar.gz
+  and, additionally, "badref" config variables that occur solely in
+Makefiles:
 
-Other than that I've done little else other than apt-get update and apt-get upgrade to use the latest kernel.
+===== MSPETH =====
+./arch/mips/pmc-sierra/msp71xx/Makefile:obj-$(CONFIG_MSPETH) += msp_eth.o
+===== USB_MSP71XX =====
+./arch/mips/pmc-sierra/msp71xx/Makefile:obj-$(CONFIG_USB_MSP71XX) += msp_usb.o
 
-When I start compiling postgres 8.3.3 it crashes randomly, if I keep rebooting I can get it compiled, however theres something seriously sh*gged here.
+  whether any of the above is an issue is entirely up to you.
 
-Are there known problems? Is there anything I can do to help, anything I can do to get a kernel core dump? How would I go about getting LKCD going?
+rday
+--
 
+========================================================================
+Robert P. J. Day
+Linux Consulting, Training and Annoying Kernel Pedantry:
+    Have classroom, will lecture.
 
-      __________________________________________________________
-Not happy with your email address?.
-Get the one you really want - millions of new email addresses available now at Yahoo! http://uk.docs.yahoo.com/ymail/new.html
+http://crashcourse.ca                          Waterloo, Ontario, CANADA
+========================================================================

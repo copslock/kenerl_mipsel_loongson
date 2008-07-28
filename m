@@ -1,46 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jul 2008 12:04:08 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:40626 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20023893AbYG1LD7 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 28 Jul 2008 12:03:59 +0100
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 0054F3ED2; Mon, 28 Jul 2008 04:03:55 -0700 (PDT)
-Message-ID: <488DA79D.1020900@ru.mvista.com>
-Date:	Mon, 28 Jul 2008 15:03:57 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jul 2008 12:43:35 +0100 (BST)
+Received: from astoria.ccjclearline.com ([64.235.106.9]:27059 "EHLO
+	astoria.ccjclearline.com") by ftp.linux-mips.org with ESMTP
+	id S20024233AbYG1Ln3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 28 Jul 2008 12:43:29 +0100
+Received: from cpe0018f85aee2d-cm00140454b5f8.cpe.net.cable.rogers.com ([72.140.151.132] helo=crashcourse.ca)
+	by astoria.ccjclearline.com with esmtpsa (TLSv1:AES256-SHA:256)
+	(Exim 4.69)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1KNR8P-0003jZ-Cb
+	for linux-mips@linux-mips.org; Mon, 28 Jul 2008 07:43:26 -0400
+Date:	Mon, 28 Jul 2008 07:41:50 -0400 (EDT)
+From:	"Robert P. J. Day" <rpjday@crashcourse.ca>
+X-X-Sender: rpjday@localhost.localdomain
+To:	linux-mips@linux-mips.org
+Subject: a couple Makefile-related non-existent CONFIG vars
+Message-ID: <alpine.LFD.1.10.0807280739290.14259@localhost.localdomain>
+User-Agent: Alpine 1.10 (LFD 962 2008-03-14)
 MIME-Version: 1.0
-To:	Kevin Hickey <khickey@rmicorp.com>
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/1] Initialization of Alchemy boards
-References: <1217002430.10968.30.camel@kh-ubuntu.razamicroelectronics.com>
-In-Reply-To: <1217002430.10968.30.camel@kh-ubuntu.razamicroelectronics.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - astoria.ccjclearline.com
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Return-Path: <rpjday@crashcourse.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19986
+X-archive-position: 19987
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: rpjday@crashcourse.ca
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
 
-Kevin Hickey wrote:
+  two mips-related CONFIG vars that occur exclusively in Makefiles:
 
-> I found this when I updated to version 2.6.26.  None of my development
-> boards would boot.  It appears that a previous update changed some calls
-> to simple_strtol to strict_strtol but did not account for the different
-> call semantics.
+===== MSPETH =====
+./arch/mips/pmc-sierra/msp71xx/Makefile:obj-$(CONFIG_MSPETH) += msp_eth.o
+===== USB_MSP71XX =====
+./arch/mips/pmc-sierra/msp71xx/Makefile:obj-$(CONFIG_USB_MSP71XX) += msp_usb.o
 
-    Oops, that was me who changed/overlooked that, sorry. :-<
-    The patch is fine but you forgot to sign it off.
+  and that's it for MIPS.
 
-WBR, Sergei
+rday
+--
+
+========================================================================
+Robert P. J. Day
+Linux Consulting, Training and Annoying Kernel Pedantry:
+    Have classroom, will lecture.
+
+http://crashcourse.ca                          Waterloo, Ontario, CANADA
+========================================================================

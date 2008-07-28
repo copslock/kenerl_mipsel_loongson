@@ -1,73 +1,169 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jul 2008 15:03:30 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:35269 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20025147AbYG1ODV (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 28 Jul 2008 15:03:21 +0100
-Received: from localhost (p3065-ipad303funabasi.chiba.ocn.ne.jp [123.217.149.65])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id DCAC5AA6F; Mon, 28 Jul 2008 23:03:15 +0900 (JST)
-Date:	Mon, 28 Jul 2008 23:05:12 +0900 (JST)
-Message-Id: <20080728.230512.132304415.anemo@mba.ocn.ne.jp>
-To:	jason.wessel@windriver.com
-Cc:	linux-kernel@vger.kernel.org, ralf@linux-mips.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/3] kgdb, mips: add arch support for the kernel's kgdb
- core
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20080725.235233.130241768.anemo@mba.ocn.ne.jp>
-References: <20080725.012748.108121457.anemo@mba.ocn.ne.jp>
-	<488941C5.9060908@windriver.com>
-	<20080725.235233.130241768.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Jul 2008 15:06:09 +0100 (BST)
+Received: from mx1.razamicroelectronics.com ([63.111.213.197]:48409 "EHLO
+	hq-ex-mb01.razamicroelectronics.com") by ftp.linux-mips.org with ESMTP
+	id S20023171AbYG1OGE convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 28 Jul 2008 15:06:04 +0100
+Received: from 10.8.0.25 ([10.8.0.25]) by hq-ex-mb01.razamicroelectronics.com ([10.1.1.40]) via Exchange Front-End Server webmail.razamicroelectronics.com ([10.1.1.41]) with Microsoft Exchange Server HTTP-DAV ;
+ Mon, 28 Jul 2008 14:05:55 +0000
+Received: from kh-ubuntu by webmail.razamicroelectronics.com; 28 Jul 2008 09:07:52 -0500
+Subject: Re: [PATCH 1/1] Initialization of Alchemy boards
+From:	Kevin Hickey <khickey@rmicorp.com>
+To:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+In-Reply-To: <488D707A.4090800@movial.fi>
+References: <1217002430.10968.30.camel@kh-ubuntu.razamicroelectronics.com>
+	 <488D707A.4090800@movial.fi>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+Date:	Mon, 28 Jul 2008 09:07:43 -0500
+Message-Id: <1217254063.9208.3.camel@kh-ubuntu.razamicroelectronics.com>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+X-Mailer: Evolution 2.22.3.1 
+Return-Path: <khickey@rmicorp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 19990
+X-archive-position: 19991
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: khickey@rmicorp.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 25 Jul 2008 23:52:33 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> > It seem ok to me to try it.  Here is version 3 of the patch, which I was going to send to Ralf.
+Dmitri,
+
+On Mon, 2008-07-28 at 10:08 +0300, Dmitri Vorobiev wrote:
+> Kevin Hickey wrote:
+> > I found this when I updated to version 2.6.26.  None of my development
+> > boards would boot.  It appears that a previous update changed some calls
+> > to simple_strtol to strict_strtol but did not account for the different
+> > call semantics.
 > 
-> Thanks, it works for me with serial_txx9 kgdboc module.
-
-BTW, is FRAME_POINTER mandatory for kgdb?  I agree that FRAME_POINTER
-(ie. -fno-omit-frame-pointer -fno-optimize-sibling-calls) helps source
-level debugging, but I think transparency is more important.
-
-Now kgdboc can be loaded/activated at run-time, so I want to enable
-CONFIG_KGDB usually.  But CONFIG_FRAME_POINTER introduces runtime
-overhead on overall kernel, which is too bad (at least on MIPS).
-
-Also, selecting FRAME_POINTER (which is not selectable on MIPS)
-unconditionally looks somewhat inconsistent.
-
-So ... Is this patch reasonable?
-
-
-Subject: kgdb: Do not select FRAME_POINTER on MIPS
-
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
-diff --git a/lib/Kconfig.kgdb b/lib/Kconfig.kgdb
-index a5d4b1d..cc61bf0 100644
---- a/lib/Kconfig.kgdb
-+++ b/lib/Kconfig.kgdb
-@@ -7,7 +7,7 @@ config HAVE_ARCH_KGDB
- 
- menuconfig KGDB
- 	bool "KGDB: kernel debugging with remote gdb"
--	select FRAME_POINTER
-+	select FRAME_POINTER if !MIPS
- 	depends on HAVE_ARCH_KGDB
- 	depends on DEBUG_KERNEL && EXPERIMENTAL
- 	help
+> Hi Kevin,
+> 
+> 1) you forgot to sign your patch off;
+Indeed I did.  Is it sufficient to reply to the original post and add a
+sign-off line?
+> 2) please consider using git to generate and submit patches. At least according to my experience, it's much more convenient than any other approach.
+It's starting to look that way to me.  I started my work here using SVN
+because that's what I'm familiar with.  I did some reading about git
+this weekend and I think I'm going to adopt it for future kernel
+development.
+> 3) As I can see, the board-specific code is almost identical for the pb1x00 boards. While at it, would you please try to merge it?
+Yes, but in a future patch.  I'd like to get this one accepted ASAP
+because it prevents 2.6.26+ from booting on any of our development
+boards.  Next, I want to go through all of the db and pb board specific
+code and see if I can condense any of it.
+> 
+> Regards,
+> Dmitri
+Thanks,
+Kevin
+> 
+> > 
+> > Index: arch/mips/au1000/pb1000/init.c
+> > ===================================================================
+> > --- arch/mips/au1000/pb1000/init.c
+> > +++ arch/mips/au1000/pb1000/init.c
+> > @@ -52,6 +52,6 @@
+> >  	if (!memsize_str)
+> >  		memsize = 0x04000000;
+> >  	else
+> > -		memsize = strict_strtol(memsize_str, 0, NULL);
+> > +		strict_strtol(memsize_str, 0, &memsize);
+> >  	add_memory_region(0, memsize, BOOT_MEM_RAM);
+> >  }
+> > Index: arch/mips/au1000/pb1100/init.c
+> > ===================================================================
+> > --- arch/mips/au1000/pb1100/init.c
+> > +++ arch/mips/au1000/pb1100/init.c
+> > @@ -54,7 +54,7 @@
+> >  	if (!memsize_str)
+> >  		memsize = 0x04000000;
+> >  	else
+> > -		memsize = strict_strtol(memsize_str, 0, NULL);
+> > +		strict_strtol(memsize_str, 0, &memsize);
+> >  
+> >  	add_memory_region(0, memsize, BOOT_MEM_RAM);
+> >  }
+> > Index: arch/mips/au1000/pb1200/init.c
+> > ===================================================================
+> > --- arch/mips/au1000/pb1200/init.c
+> > +++ arch/mips/au1000/pb1200/init.c
+> > @@ -53,6 +53,6 @@
+> >  	if (!memsize_str)
+> >  		memsize = 0x08000000;
+> >  	else
+> > -		memsize = strict_strtol(memsize_str, 0, NULL);
+> > +		strict_strtol(memsize_str, 0, &memsize);
+> >  	add_memory_region(0, memsize, BOOT_MEM_RAM);
+> >  }
+> > Index: arch/mips/au1000/mtx-1/init.c
+> > ===================================================================
+> > --- arch/mips/au1000/mtx-1/init.c
+> > +++ arch/mips/au1000/mtx-1/init.c
+> > @@ -55,6 +55,6 @@
+> >  	if (!memsize_str)
+> >  		memsize = 0x04000000;
+> >  	else
+> > -		memsize = strict_strtol(memsize_str, 0, NULL);
+> > +		strict_strtol(memsize_str, 0, &memsize);
+> >  	add_memory_region(0, memsize, BOOT_MEM_RAM);
+> >  }
+> > Index: arch/mips/au1000/pb1500/init.c
+> > ===================================================================
+> > --- arch/mips/au1000/pb1500/init.c
+> > +++ arch/mips/au1000/pb1500/init.c
+> > @@ -53,6 +53,6 @@
+> >  	if (!memsize_str)
+> >  		memsize = 0x04000000;
+> >  	else
+> > -		memsize = strict_strtol(memsize_str, 0, NULL);
+> > +		strict_strtol(memsize_str, 0, &memsize);
+> >  	add_memory_region(0, memsize, BOOT_MEM_RAM);
+> >  }
+> > Index: arch/mips/au1000/xxs1500/init.c
+> > ===================================================================
+> > --- arch/mips/au1000/xxs1500/init.c
+> > +++ arch/mips/au1000/xxs1500/init.c
+> > @@ -53,6 +53,6 @@
+> >  	if (!memsize_str)
+> >  		memsize = 0x04000000;
+> >  	else
+> > -		memsize = strict_strtol(memsize_str, 0, NULL);
+> > +		strict_strtol(memsize_str, 0, &memsize);
+> >  	add_memory_region(0, memsize, BOOT_MEM_RAM);
+> >  }
+> > Index: arch/mips/au1000/pb1550/init.c
+> > ===================================================================
+> > --- arch/mips/au1000/pb1550/init.c
+> > +++ arch/mips/au1000/pb1550/init.c
+> > @@ -53,6 +53,6 @@
+> >  	if (!memsize_str)
+> >  		memsize = 0x08000000;
+> >  	else
+> > -		memsize = strict_strtol(memsize_str, 0, NULL);
+> > +		strict_strtol(memsize_str, 0, &memsize);
+> >  	add_memory_region(0, memsize, BOOT_MEM_RAM);
+> >  }
+> > Index: arch/mips/au1000/db1x00/init.c
+> > ===================================================================
+> > --- arch/mips/au1000/db1x00/init.c
+> > +++ arch/mips/au1000/db1x00/init.c
+> > @@ -57,6 +57,6 @@
+> >  	if (!memsize_str)
+> >  		memsize = 0x04000000;
+> >  	else
+> > -		memsize = strict_strtol(memsize_str, 0, NULL);
+> > +		strict_strtol(memsize_str, 0, &memsize);
+> >  	add_memory_region(0, memsize, BOOT_MEM_RAM);
+> >  }
+> > 
+> 
+-- 
+Kevin Hickey
+﻿Alchemy Solutions
+RMI Corporation
+khickey@RMICorp.com
+P: 512.691.8044

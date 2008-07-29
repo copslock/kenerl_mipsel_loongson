@@ -1,14 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2008 18:02:29 +0100 (BST)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:13221 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2008 18:03:00 +0100 (BST)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:5022 "EHLO
 	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S20021952AbYG2RCW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 29 Jul 2008 18:02:22 +0100
-Received: (qmail 8944 invoked by uid 1000); 29 Jul 2008 19:02:19 +0200
-Date:	Tue, 29 Jul 2008 19:02:19 +0200
+	id S20022102AbYG2RC4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 29 Jul 2008 18:02:56 +0100
+Received: (qmail 8959 invoked by uid 1000); 29 Jul 2008 19:02:55 +0200
+Date:	Tue, 29 Jul 2008 19:02:54 +0200
 From:	Manuel Lauss <mano@roarinelk.homelinux.net>
 To:	linux-mips@linux-mips.org
-Subject: [PATCH v4 5/10] Alchemy: move calc_clock function.
-Message-ID: <20080729170219.GG8784@roarinelk.homelinux.net>
+Subject: [PATCH v4 6/10] Alchemy: compile platform.c only when building for
+	a demoboard.
+Message-ID: <20080729170254.GH8784@roarinelk.homelinux.net>
 References: <20080729165853.GB8784@roarinelk.homelinux.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -19,7 +20,7 @@ Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20037
+X-archive-position: 20038
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,208 +28,142 @@ X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-Now that nothing in time.c depends on calc_clock, it can
-be moved to clocks.c where it belongs.
-While at it, give it a better non-generic name and call it
-as soon as possible in plat_mem_init.
+The platform.c registers devices not all boards might need/want,
+and it makes adding platform data to drivers needlessly ugly and
+complicated.
+
+Most (all?) in-kernel users of Au1xxx are demoboards, and the file
+in question somewhat reflects that.  Remove the platform.c from the
+common Alchemy Makefile and add it to the Makefiles of the boards.
+Existing behavior of all in-kernel boards is not changed in any way.
 
 Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
 ---
- arch/mips/au1000/common/clocks.c |   54 ++++++++++++++++++++++++++++++++++++++
- arch/mips/au1000/common/dbg_io.c |    4 +-
- arch/mips/au1000/common/setup.c  |    9 ++++++
- arch/mips/au1000/common/time.c   |   54 --------------------------------------
- 4 files changed, 65 insertions(+), 56 deletions(-)
+ arch/mips/au1000/common/Makefile   |    2 +-
+ arch/mips/au1000/common/platform.c |    7 ++++++-
+ arch/mips/au1000/db1x00/Makefile   |    1 +
+ arch/mips/au1000/mtx-1/Makefile    |    2 +-
+ arch/mips/au1000/pb1000/Makefile   |    1 +
+ arch/mips/au1000/pb1100/Makefile   |    1 +
+ arch/mips/au1000/pb1200/Makefile   |    2 +-
+ arch/mips/au1000/pb1500/Makefile   |    1 +
+ arch/mips/au1000/pb1550/Makefile   |    1 +
+ arch/mips/au1000/xxs1500/Makefile  |    1 +
+ 10 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/au1000/common/clocks.c b/arch/mips/au1000/common/clocks.c
-index a8170fd..d899185 100644
---- a/arch/mips/au1000/common/clocks.c
-+++ b/arch/mips/au1000/common/clocks.c
-@@ -27,11 +27,21 @@
-  */
+diff --git a/arch/mips/au1000/common/Makefile b/arch/mips/au1000/common/Makefile
+index 850de08..aefb2b8 100644
+--- a/arch/mips/au1000/common/Makefile
++++ b/arch/mips/au1000/common/Makefile
+@@ -6,7 +6,7 @@
+ #
  
- #include <linux/module.h>
-+#include <linux/spinlock.h>
-+#include <asm/time.h>
- #include <asm/mach-au1x00/au1000.h>
+ obj-y += prom.o irq.o puts.o time.o reset.o \
+-	au1xxx_irqmap.o clocks.o platform.o power.o setup.o \
++	au1xxx_irqmap.o clocks.o power.o setup.o \
+ 	sleeper.o dma.o dbdma.o gpio.o
  
-+/*
-+ * I haven't found anyone that doesn't use a 12 MHz source clock,
-+ * but just in case.....
-+ */
-+#define AU1000_SRC_CLK	12000000
-+
- static unsigned int au1x00_clock; /*  Hz */
- static unsigned long uart_baud_base;
- 
-+static DEFINE_SPINLOCK(time_lock);
-+
+ obj-$(CONFIG_KGDB)		+= dbg_io.o
+diff --git a/arch/mips/au1000/common/platform.c b/arch/mips/au1000/common/platform.c
+index dc8a67e..66d6770 100644
+--- a/arch/mips/au1000/common/platform.c
++++ b/arch/mips/au1000/common/platform.c
+@@ -1,5 +1,5 @@
  /*
-  * Set the au1000_clock
+- * Platform device support for Au1x00 SoCs.
++ * Common device support for Au1x00 demoboards.
+  *
+  * Copyright 2004, Matt Porter <mporter@kernel.crashing.org>
+  *
+@@ -9,6 +9,11 @@
+  * This file is licensed under the terms of the GNU General Public
+  * License version 2.  This program is licensed "as is" without any
+  * warranty of any kind, whether express or implied.
++ *
++ * This file is intended to be included by all db1xxx/pb1xxx demoboards,
++ * and is currently used by all the in-tree ones.  If your system does
++ * not want/need all the devices registered in here (like mine) then
++ * simply don't include it in your Makefile ;-)
   */
-@@ -60,3 +70,47 @@ void set_au1x00_uart_baud_base(unsigned long new_baud_base)
- {
- 	uart_baud_base = new_baud_base;
- }
-+
-+/*
-+ * We read the real processor speed from the PLL.  This is important
-+ * because it is more accurate than computing it from the 32 KHz
-+ * counter, if it exists.  If we don't have an accurate processor
-+ * speed, all of the peripherals that derive their clocks based on
-+ * this advertised speed will introduce error and sometimes not work
-+ * properly.  This function is futher convoluted to still allow configurations
-+ * to do that in case they have really, really old silicon with a
-+ * write-only PLL register.			-- Dan
-+ */
-+unsigned long au1xxx_calc_clock(void)
-+{
-+	unsigned long cpu_speed;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&time_lock, flags);
-+
-+	/*
-+	 * On early Au1000, sys_cpupll was write-only. Since these
-+	 * silicon versions of Au1000 are not sold by AMD, we don't bend
-+	 * over backwards trying to determine the frequency.
-+	 */
-+	if (au1xxx_cpu_has_pll_wo())
-+#ifdef CONFIG_SOC_AU1000_FREQUENCY
-+		cpu_speed = CONFIG_SOC_AU1000_FREQUENCY;
-+#else
-+		cpu_speed = 396000000;
-+#endif
-+	else
-+		cpu_speed = (au_readl(SYS_CPUPLL) & 0x0000003f) * AU1000_SRC_CLK;
-+
-+	/* On Alchemy CPU:counter ratio is 1:1 */
-+	mips_hpt_frequency = cpu_speed;
-+	/* Equation: Baudrate = CPU / (SD * 2 * CLKDIV * 16) */
-+	set_au1x00_uart_baud_base(cpu_speed / (2 * ((int)(au_readl(SYS_POWERCTRL)
-+							  & 0x03) + 2) * 16));
-+
-+	spin_unlock_irqrestore(&time_lock, flags);
-+
-+	set_au1x00_speed(cpu_speed);
-+
-+	return cpu_speed;
-+}
-diff --git a/arch/mips/au1000/common/dbg_io.c b/arch/mips/au1000/common/dbg_io.c
-index af5be7d..72abb67 100644
---- a/arch/mips/au1000/common/dbg_io.c
-+++ b/arch/mips/au1000/common/dbg_io.c
-@@ -49,13 +49,13 @@
- #define UART16550_READ(y)     (au_readl(DEBUG_BASE + y) & 0xff)
- #define UART16550_WRITE(y, z) (au_writel(z & 0xff, DEBUG_BASE + y))
  
--extern unsigned long calc_clock(void);
-+extern unsigned long au1xxx_calc_clock(void);
+ #include <linux/dma-mapping.h>
+diff --git a/arch/mips/au1000/db1x00/Makefile b/arch/mips/au1000/db1x00/Makefile
+index 274db3b..3bfec10 100644
+--- a/arch/mips/au1000/db1x00/Makefile
++++ b/arch/mips/au1000/db1x00/Makefile
+@@ -6,3 +6,4 @@
+ #
  
- void debugInit(u32 baud, u8 data, u8 parity, u8 stop)
- {
- 	if (UART16550_READ(UART_MOD_CNTRL) != 0x3)
- 		UART16550_WRITE(UART_MOD_CNTRL, 3);
--	calc_clock();
-+	au1xxx_calc_clock();
+ lib-y := init.o board_setup.o irqmap.o
++obj-y := ../common/platform.o
+diff --git a/arch/mips/au1000/mtx-1/Makefile b/arch/mips/au1000/mtx-1/Makefile
+index 7c67b3d..ef98975 100644
+--- a/arch/mips/au1000/mtx-1/Makefile
++++ b/arch/mips/au1000/mtx-1/Makefile
+@@ -7,6 +7,6 @@
+ #
  
- 	/* disable interrupts */
- 	UART16550_WRITE(UART_IER, 0);
-diff --git a/arch/mips/au1000/common/setup.c b/arch/mips/au1000/common/setup.c
-index b6242c6..c5bd251 100644
---- a/arch/mips/au1000/common/setup.c
-+++ b/arch/mips/au1000/common/setup.c
-@@ -41,10 +41,19 @@ extern void __init board_setup(void);
- extern void au1000_restart(char *);
- extern void au1000_halt(void);
- extern void au1000_power_off(void);
-+extern unsigned long au1xxx_calc_clock(void);
+ lib-y := init.o board_setup.o irqmap.o
+-obj-y := platform.o
++obj-y := platform.o ../common/platform.o
  
- void __init plat_mem_setup(void)
- {
- 	char *argptr;
-+	unsigned long est_freq;
-+
-+	/* determine core clock */
-+	est_freq = au1xxx_calc_clock();
-+	est_freq += 5000;    /* round */
-+	est_freq -= est_freq % 10000;
-+	printk(KERN_INFO "(PRId %08x) @ %lu.%02lu MHz\n", read_c0_prid(),
-+	       est_freq / 1000000, ((est_freq % 1000000) * 100) / 1000000);
+ EXTRA_CFLAGS += -Werror
+diff --git a/arch/mips/au1000/pb1000/Makefile b/arch/mips/au1000/pb1000/Makefile
+index 99bbec0..41a09be 100644
+--- a/arch/mips/au1000/pb1000/Makefile
++++ b/arch/mips/au1000/pb1000/Makefile
+@@ -6,3 +6,4 @@
+ #
  
- 	board_setup();  /* board specific setup */
+ lib-y := init.o board_setup.o irqmap.o
++obj-y := ../common/platform.o
+diff --git a/arch/mips/au1000/pb1100/Makefile b/arch/mips/au1000/pb1100/Makefile
+index 793e97c..1a8cd71 100644
+--- a/arch/mips/au1000/pb1100/Makefile
++++ b/arch/mips/au1000/pb1100/Makefile
+@@ -6,3 +6,4 @@
+ #
  
-diff --git a/arch/mips/au1000/common/time.c b/arch/mips/au1000/common/time.c
-index fe859c1..0de9a43 100644
---- a/arch/mips/au1000/common/time.c
-+++ b/arch/mips/au1000/common/time.c
-@@ -47,53 +47,6 @@
+ lib-y := init.o board_setup.o irqmap.o
++obj-y := ../common/platform.o
+diff --git a/arch/mips/au1000/pb1200/Makefile b/arch/mips/au1000/pb1200/Makefile
+index d678adf..7b9f2f5 100644
+--- a/arch/mips/au1000/pb1200/Makefile
++++ b/arch/mips/au1000/pb1200/Makefile
+@@ -3,6 +3,6 @@
+ #
  
- extern int allow_au1k_wait; /* default off for CP0 Counter */
+ lib-y := init.o board_setup.o irqmap.o
+-obj-y += platform.o
++obj-y += platform.o ../common/platform.o
  
--static DEFINE_SPINLOCK(time_lock);
--
--/*
-- * I haven't found anyone that doesn't use a 12 MHz source clock,
-- * but just in case.....
-- */
--#define AU1000_SRC_CLK	12000000
--
--/*
-- * We read the real processor speed from the PLL.  This is important
-- * because it is more accurate than computing it from the 32 KHz
-- * counter, if it exists.  If we don't have an accurate processor
-- * speed, all of the peripherals that derive their clocks based on
-- * this advertised speed will introduce error and sometimes not work
-- * properly.  This function is futher convoluted to still allow configurations
-- * to do that in case they have really, really old silicon with a
-- * write-only PLL register.			-- Dan
-- */
--unsigned long calc_clock(void)
--{
--	unsigned long cpu_speed;
--	unsigned long flags;
--
--	spin_lock_irqsave(&time_lock, flags);
--
--	/*
--	 * On early Au1000, sys_cpupll was write-only. Since these
--	 * silicon versions of Au1000 are not sold by AMD, we don't bend
--	 * over backwards trying to determine the frequency.
--	 */
--	if (au1xxx_cpu_has_pll_wo())
--#ifdef CONFIG_SOC_AU1000_FREQUENCY
--		cpu_speed = CONFIG_SOC_AU1000_FREQUENCY;
--#else
--		cpu_speed = 396000000;
--#endif
--	else
--		cpu_speed = (au_readl(SYS_CPUPLL) & 0x0000003f) * AU1000_SRC_CLK;
--	/* On Alchemy CPU:counter ratio is 1:1 */
--	mips_hpt_frequency = cpu_speed;
--	/* Equation: Baudrate = CPU / (SD * 2 * CLKDIV * 16) */
--	set_au1x00_uart_baud_base(cpu_speed / (2 * ((int)(au_readl(SYS_POWERCTRL)
--							  & 0x03) + 2) * 16));
--	spin_unlock_irqrestore(&time_lock, flags);
--	return cpu_speed;
--}
--
- static cycle_t au1x_counter1_read(void)
- {
- 	return au_readl(SYS_RTCREAD);
-@@ -148,13 +101,6 @@ void __init plat_time_init(void)
- {
- 	struct clock_event_device *cd = &au1x_rtcmatch2_clockdev;
- 	unsigned long t;
--	unsigned int est_freq = calc_clock();
--
--	est_freq += 5000;    /* round */
--	est_freq -= est_freq%10000;
--	printk(KERN_INFO "(PRId %08x) @ %u.%02u MHz\n", read_c0_prid(),
--	       est_freq / 1000000, ((est_freq % 1000000) * 100) / 1000000);
--	set_au1x00_speed(est_freq);
+ EXTRA_CFLAGS += -Werror
+diff --git a/arch/mips/au1000/pb1500/Makefile b/arch/mips/au1000/pb1500/Makefile
+index 602f38d..c12e1bd 100644
+--- a/arch/mips/au1000/pb1500/Makefile
++++ b/arch/mips/au1000/pb1500/Makefile
+@@ -6,3 +6,4 @@
+ #
  
- 	/* Check if firmware (YAMON, ...) has enabled 32kHz and clock
- 	 * has been detected.  If so install the rtcmatch2 clocksource,
+ lib-y := init.o board_setup.o irqmap.o
++obj-y := ../common/platform.o
+diff --git a/arch/mips/au1000/pb1550/Makefile b/arch/mips/au1000/pb1550/Makefile
+index 7d8beca..8df0890 100644
+--- a/arch/mips/au1000/pb1550/Makefile
++++ b/arch/mips/au1000/pb1550/Makefile
+@@ -6,3 +6,4 @@
+ #
+ 
+ lib-y := init.o board_setup.o irqmap.o
++obj-y := ../common/platform.o
+diff --git a/arch/mips/au1000/xxs1500/Makefile b/arch/mips/au1000/xxs1500/Makefile
+index db3c526..86db0f7 100644
+--- a/arch/mips/au1000/xxs1500/Makefile
++++ b/arch/mips/au1000/xxs1500/Makefile
+@@ -6,3 +6,4 @@
+ #
+ 
+ lib-y := init.o board_setup.o irqmap.o
++obj-y := ../common/platform.o
 -- 
 1.5.6.3

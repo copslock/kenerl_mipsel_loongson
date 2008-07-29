@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2008 14:08:28 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:240 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20025519AbYG2NIS (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 29 Jul 2008 14:08:18 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2008 14:09:01 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:16893 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20023130AbYG2NIy (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 29 Jul 2008 14:08:54 +0100
 Received: from localhost (p7108-ipad203funabasi.chiba.ocn.ne.jp [222.146.86.108])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 67A02A9FC; Tue, 29 Jul 2008 22:08:10 +0900 (JST)
-Date:	Tue, 29 Jul 2008 22:10:08 +0900 (JST)
-Message-Id: <20080729.221008.102581021.anemo@mba.ocn.ne.jp>
+	id 403A5A9FC; Tue, 29 Jul 2008 22:08:49 +0900 (JST)
+Date:	Tue, 29 Jul 2008 22:10:47 +0900 (JST)
+Message-Id: <20080729.221047.79299051.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
 Cc:	ralf@linux-mips.org
-Subject: [PATCH 1/3] txx9: Support early_printk
+Subject: [PATCH 2/3] txx9: Kill unused txx927.h
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
 X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
@@ -21,7 +21,7 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20014
+X-archive-position: 20015
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,162 +29,156 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Kill jmr3927-specific prom_putchar and add txx9-generic prom_putchar
-to support early_printk.
+include/asm-mips/txx9/txx927.h is no longer used.
 
 Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
 This patch can be applied on top of my txx9 patch series and mips-kgdb patches.
 
- arch/mips/txx9/Kconfig          |    3 +++
- arch/mips/txx9/generic/setup.c  |   31 +++++++++++++++++++++++++++++++
- arch/mips/txx9/jmr3927/prom.c   |   17 +----------------
- arch/mips/txx9/rbtx4927/prom.c  |    1 +
- arch/mips/txx9/rbtx4938/prom.c  |    1 +
- include/asm-mips/txx9/generic.h |    9 +++++++++
- 6 files changed, 46 insertions(+), 16 deletions(-)
+ include/asm-mips/txx9/tx3927.h |    2 -
+ include/asm-mips/txx9/txx927.h |  121 ----------------------------------------
+ 2 files changed, 0 insertions(+), 123 deletions(-)
+ delete mode 100644 include/asm-mips/txx9/txx927.h
 
-diff --git a/arch/mips/txx9/Kconfig b/arch/mips/txx9/Kconfig
-index 7acdedd..caec917 100644
---- a/arch/mips/txx9/Kconfig
-+++ b/arch/mips/txx9/Kconfig
-@@ -30,6 +30,7 @@ config SOC_TX3927
- 	select IRQ_TXX9
- 	select SWAP_IO_SPACE
- 	select SYS_HAS_CPU_TX39XX
-+	select SYS_HAS_EARLY_PRINTK
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select SYS_SUPPORTS_BIG_ENDIAN
-@@ -49,6 +50,7 @@ config SOC_TX4927
- 	select PCI_TX4927
- 	select SWAP_IO_SPACE
- 	select SYS_HAS_CPU_TX49XX
-+	select SYS_HAS_EARLY_PRINTK
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_64BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
-@@ -69,6 +71,7 @@ config SOC_TX4938
- 	select PCI_TX4927
- 	select SWAP_IO_SPACE
- 	select SYS_HAS_CPU_TX49XX
-+	select SYS_HAS_EARLY_PRINTK
- 	select SYS_SUPPORTS_32BIT_KERNEL
- 	select SYS_SUPPORTS_64BIT_KERNEL
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
-diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
-index 94ce1a5..1bc57d0 100644
---- a/arch/mips/txx9/generic/setup.c
-+++ b/arch/mips/txx9/generic/setup.c
-@@ -271,6 +271,37 @@ void __init txx9_sio_init(unsigned long baseaddr, int irq,
- #endif /* CONFIG_SERIAL_TXX9 */
- }
+diff --git a/include/asm-mips/txx9/tx3927.h b/include/asm-mips/txx9/tx3927.h
+index 14e0636..587deb9 100644
+--- a/include/asm-mips/txx9/tx3927.h
++++ b/include/asm-mips/txx9/tx3927.h
+@@ -8,8 +8,6 @@
+ #ifndef __ASM_TXX9_TX3927_H
+ #define __ASM_TXX9_TX3927_H
  
-+#ifdef CONFIG_EARLY_PRINTK
-+static void __init null_prom_putchar(char c)
-+{
-+}
-+void (*txx9_prom_putchar)(char c) __initdata = null_prom_putchar;
-+
-+void __init prom_putchar(char c)
-+{
-+	txx9_prom_putchar(c);
-+}
-+
-+static void __iomem *early_txx9_sio_port;
-+
-+static void __init early_txx9_sio_putchar(char c)
-+{
-+#define TXX9_SICISR	0x0c
-+#define TXX9_SITFIFO	0x1c
-+#define TXX9_SICISR_TXALS	0x00000002
-+	while (!(__raw_readl(early_txx9_sio_port + TXX9_SICISR) &
-+		 TXX9_SICISR_TXALS))
-+		;
-+	__raw_writel(c, early_txx9_sio_port + TXX9_SITFIFO);
-+}
-+
-+void __init txx9_sio_putchar_init(unsigned long baseaddr)
-+{
-+	early_txx9_sio_port = ioremap(baseaddr, 0x24);
-+	txx9_prom_putchar = early_txx9_sio_putchar;
-+}
-+#endif /* CONFIG_EARLY_PRINTK */
-+
- /* wrappers */
- void __init plat_mem_setup(void)
- {
-diff --git a/arch/mips/txx9/jmr3927/prom.c b/arch/mips/txx9/jmr3927/prom.c
-index 23df38c..70c4c8e 100644
---- a/arch/mips/txx9/jmr3927/prom.c
-+++ b/arch/mips/txx9/jmr3927/prom.c
-@@ -41,22 +41,6 @@
- #include <asm/txx9/generic.h>
- #include <asm/txx9/jmr3927.h>
- 
--#define TIMEOUT       0xffffff
+-#include <asm/txx9/txx927.h>
 -
--void
--prom_putchar(char c)
--{
--        int i = 0;
+ #define TX3927_REG_BASE	0xfffe0000UL
+ #define TX3927_REG_SIZE	0x00010000
+ #define TX3927_SDRAMC_REG	(TX3927_REG_BASE + 0x8000)
+diff --git a/include/asm-mips/txx9/txx927.h b/include/asm-mips/txx9/txx927.h
+deleted file mode 100644
+index 97dd7ad..0000000
+--- a/include/asm-mips/txx9/txx927.h
++++ /dev/null
+@@ -1,121 +0,0 @@
+-/*
+- * Common definitions for TX3927/TX4927
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 2000 Toshiba Corporation
+- */
+-#ifndef __ASM_TXX9_TXX927_H
+-#define __ASM_TXX9_TXX927_H
 -
--        do {
--            i++;
--            if (i>TIMEOUT)
--                break;
--        } while (!(tx3927_sioptr(1)->cisr & TXx927_SICISR_TXALS));
--	tx3927_sioptr(1)->tfifo = c;
--	return;
--}
+-struct txx927_sio_reg {
+-	volatile unsigned long lcr;
+-	volatile unsigned long dicr;
+-	volatile unsigned long disr;
+-	volatile unsigned long cisr;
+-	volatile unsigned long fcr;
+-	volatile unsigned long flcr;
+-	volatile unsigned long bgr;
+-	volatile unsigned long tfifo;
+-	volatile unsigned long rfifo;
+-};
 -
- void __init jmr3927_prom_init(void)
- {
- 	/* CCFG */
-@@ -65,4 +49,5 @@ void __init jmr3927_prom_init(void)
- 
- 	prom_init_cmdline();
- 	add_memory_region(0, JMR3927_SDRAM_SIZE, BOOT_MEM_RAM);
-+	txx9_sio_putchar_init(TX3927_SIO_REG(1));
- }
-diff --git a/arch/mips/txx9/rbtx4927/prom.c b/arch/mips/txx9/rbtx4927/prom.c
-index 5c0de54..1dc0a5b 100644
---- a/arch/mips/txx9/rbtx4927/prom.c
-+++ b/arch/mips/txx9/rbtx4927/prom.c
-@@ -38,4 +38,5 @@ void __init rbtx4927_prom_init(void)
- {
- 	prom_init_cmdline();
- 	add_memory_region(0, tx4927_get_mem_size(), BOOT_MEM_RAM);
-+	txx9_sio_putchar_init(TX4927_SIO_REG(0) & 0xfffffffffULL);
- }
-diff --git a/arch/mips/txx9/rbtx4938/prom.c b/arch/mips/txx9/rbtx4938/prom.c
-index ee18951..d73123c 100644
---- a/arch/mips/txx9/rbtx4938/prom.c
-+++ b/arch/mips/txx9/rbtx4938/prom.c
-@@ -22,4 +22,5 @@ void __init rbtx4938_prom_init(void)
- 	prom_init_cmdline();
- #endif
- 	add_memory_region(0, tx4938_get_mem_size(), BOOT_MEM_RAM);
-+	txx9_sio_putchar_init(TX4938_SIO_REG(0) & 0xfffffffffULL);
- }
-diff --git a/include/asm-mips/txx9/generic.h b/include/asm-mips/txx9/generic.h
-index a295aaa..5b1ccf9 100644
---- a/include/asm-mips/txx9/generic.h
-+++ b/include/asm-mips/txx9/generic.h
-@@ -49,5 +49,14 @@ void txx9_spi_init(int busid, unsigned long base, int irq);
- void txx9_ethaddr_init(unsigned int id, unsigned char *ethaddr);
- void txx9_sio_init(unsigned long baseaddr, int irq,
- 		   unsigned int line, unsigned int sclk, int nocts);
-+void prom_putchar(char c);
-+#ifdef CONFIG_EARLY_PRINTK
-+extern void (*txx9_prom_putchar)(char c);
-+void txx9_sio_putchar_init(unsigned long baseaddr);
-+#else
-+static inline void txx9_sio_putchar_init(unsigned long baseaddr)
-+{
-+}
-+#endif
- 
- #endif /* __ASM_TXX9_GENERIC_H */
+-/*
+- * SIO
+- */
+-/* SILCR : Line Control */
+-#define TXx927_SILCR_SCS_MASK	0x00000060
+-#define TXx927_SILCR_SCS_IMCLK	0x00000000
+-#define TXx927_SILCR_SCS_IMCLK_BG	0x00000020
+-#define TXx927_SILCR_SCS_SCLK	0x00000040
+-#define TXx927_SILCR_SCS_SCLK_BG	0x00000060
+-#define TXx927_SILCR_UEPS	0x00000010
+-#define TXx927_SILCR_UPEN	0x00000008
+-#define TXx927_SILCR_USBL_MASK	0x00000004
+-#define TXx927_SILCR_USBL_1BIT	0x00000004
+-#define TXx927_SILCR_USBL_2BIT	0x00000000
+-#define TXx927_SILCR_UMODE_MASK	0x00000003
+-#define TXx927_SILCR_UMODE_8BIT	0x00000000
+-#define TXx927_SILCR_UMODE_7BIT	0x00000001
+-
+-/* SIDICR : DMA/Int. Control */
+-#define TXx927_SIDICR_TDE	0x00008000
+-#define TXx927_SIDICR_RDE	0x00004000
+-#define TXx927_SIDICR_TIE	0x00002000
+-#define TXx927_SIDICR_RIE	0x00001000
+-#define TXx927_SIDICR_SPIE	0x00000800
+-#define TXx927_SIDICR_CTSAC	0x00000600
+-#define TXx927_SIDICR_STIE_MASK	0x0000003f
+-#define TXx927_SIDICR_STIE_OERS		0x00000020
+-#define TXx927_SIDICR_STIE_CTSS		0x00000010
+-#define TXx927_SIDICR_STIE_RBRKD	0x00000008
+-#define TXx927_SIDICR_STIE_TRDY		0x00000004
+-#define TXx927_SIDICR_STIE_TXALS	0x00000002
+-#define TXx927_SIDICR_STIE_UBRKD	0x00000001
+-
+-/* SIDISR : DMA/Int. Status */
+-#define TXx927_SIDISR_UBRK	0x00008000
+-#define TXx927_SIDISR_UVALID	0x00004000
+-#define TXx927_SIDISR_UFER	0x00002000
+-#define TXx927_SIDISR_UPER	0x00001000
+-#define TXx927_SIDISR_UOER	0x00000800
+-#define TXx927_SIDISR_ERI	0x00000400
+-#define TXx927_SIDISR_TOUT	0x00000200
+-#define TXx927_SIDISR_TDIS	0x00000100
+-#define TXx927_SIDISR_RDIS	0x00000080
+-#define TXx927_SIDISR_STIS	0x00000040
+-#define TXx927_SIDISR_RFDN_MASK	0x0000001f
+-
+-/* SICISR : Change Int. Status */
+-#define TXx927_SICISR_OERS	0x00000020
+-#define TXx927_SICISR_CTSS	0x00000010
+-#define TXx927_SICISR_RBRKD	0x00000008
+-#define TXx927_SICISR_TRDY	0x00000004
+-#define TXx927_SICISR_TXALS	0x00000002
+-#define TXx927_SICISR_UBRKD	0x00000001
+-
+-/* SIFCR : FIFO Control */
+-#define TXx927_SIFCR_SWRST	0x00008000
+-#define TXx927_SIFCR_RDIL_MASK	0x00000180
+-#define TXx927_SIFCR_RDIL_1	0x00000000
+-#define TXx927_SIFCR_RDIL_4	0x00000080
+-#define TXx927_SIFCR_RDIL_8	0x00000100
+-#define TXx927_SIFCR_RDIL_12	0x00000180
+-#define TXx927_SIFCR_RDIL_MAX	0x00000180
+-#define TXx927_SIFCR_TDIL_MASK	0x00000018
+-#define TXx927_SIFCR_TDIL_MASK	0x00000018
+-#define TXx927_SIFCR_TDIL_1	0x00000000
+-#define TXx927_SIFCR_TDIL_4	0x00000001
+-#define TXx927_SIFCR_TDIL_8	0x00000010
+-#define TXx927_SIFCR_TDIL_MAX	0x00000010
+-#define TXx927_SIFCR_TFRST	0x00000004
+-#define TXx927_SIFCR_RFRST	0x00000002
+-#define TXx927_SIFCR_FRSTE	0x00000001
+-#define TXx927_SIO_TX_FIFO	8
+-#define TXx927_SIO_RX_FIFO	16
+-
+-/* SIFLCR : Flow Control */
+-#define TXx927_SIFLCR_RCS	0x00001000
+-#define TXx927_SIFLCR_TES	0x00000800
+-#define TXx927_SIFLCR_RTSSC	0x00000200
+-#define TXx927_SIFLCR_RSDE	0x00000100
+-#define TXx927_SIFLCR_TSDE	0x00000080
+-#define TXx927_SIFLCR_RTSTL_MASK	0x0000001e
+-#define TXx927_SIFLCR_RTSTL_MAX	0x0000001e
+-#define TXx927_SIFLCR_TBRK	0x00000001
+-
+-/* SIBGR : Baudrate Control */
+-#define TXx927_SIBGR_BCLK_MASK	0x00000300
+-#define TXx927_SIBGR_BCLK_T0	0x00000000
+-#define TXx927_SIBGR_BCLK_T2	0x00000100
+-#define TXx927_SIBGR_BCLK_T4	0x00000200
+-#define TXx927_SIBGR_BCLK_T6	0x00000300
+-#define TXx927_SIBGR_BRD_MASK	0x000000ff
+-
+-/*
+- * PIO
+- */
+-
+-#endif /* __ASM_TXX9_TXX927_H */
 -- 
 1.5.5.5

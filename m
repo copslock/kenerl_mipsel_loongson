@@ -1,79 +1,190 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2008 10:42:14 +0100 (BST)
-Received: from wr-out-0506.google.com ([64.233.184.230]:36025 "EHLO
-	wr-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S20035162AbYG2JmF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 29 Jul 2008 10:42:05 +0100
-Received: by wr-out-0506.google.com with SMTP id 58so5981941wri.8
-        for <linux-mips@linux-mips.org>; Tue, 29 Jul 2008 02:42:03 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from
-         :user-agent:mime-version:to:cc:subject:references:in-reply-to
-         :x-enigmail-version:content-type:content-transfer-encoding;
-        bh=B4K9+uOCaTi1jNWalT2u4mImhCygQch1wU97Hl8x+WQ=;
-        b=hstPCMGc1p141XfMeNWPq+LFBOT6We/GyHnEtsy9w1KAGzNpYmHPEHTxD9kFxQXebu
-         gfqfoRg7XfCs8ckoKPtaNCXJsPDFooHvcIFni7VAMXBzW1iSftgquEv18k1A5+/vE71j
-         v5uXjG6R+Ne1dPLOgrBLjt4xikH7/JlfoUFos=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:x-enigmail-version:content-type
-         :content-transfer-encoding;
-        b=SwMfQuAmiR9D2R+jAOBHBxofOy9j8OoFlyH2+MJzx+c+0RriLh5OM58Pq2n+SICzm5
-         onK3K1B6qV1WJHXfFbanFT/Qi7MFLUlvLnmX34axL7Ls+bQHQpZMvDsIaKNYu2bwH60r
-         fXdNTmWiVYX4neKq7DqNViaK3yk//SuZsRr24=
-Received: by 10.90.91.2 with SMTP id o2mr8996514agb.111.1217324523291;
-        Tue, 29 Jul 2008 02:42:03 -0700 (PDT)
-Received: from ?192.168.2.149? ( [88.208.94.142])
-        by mx.google.com with ESMTPS id y56sm10398328hsb.0.2008.07.29.02.42.01
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 29 Jul 2008 02:42:02 -0700 (PDT)
-Message-ID: <488EE5F0.7020302@gmail.com>
-Date:	Tue, 29 Jul 2008 11:42:08 +0200
-From:	Jiri Slaby <jirislaby@gmail.com>
-User-Agent: Thunderbird 2.0.0.16 (X11/20080720)
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1] Char: ds1286, eliminate busy waiting
-References: <1217008198-17143-1-git-send-email-jirislaby@gmail.com> <20080728230533.GB1430@linux-mips.org>
-In-Reply-To: <20080728230533.GB1430@linux-mips.org>
-X-Enigmail-Version: 0.95.6
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2008 14:08:28 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:240 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20025519AbYG2NIS (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 29 Jul 2008 14:08:18 +0100
+Received: from localhost (p7108-ipad203funabasi.chiba.ocn.ne.jp [222.146.86.108])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 67A02A9FC; Tue, 29 Jul 2008 22:08:10 +0900 (JST)
+Date:	Tue, 29 Jul 2008 22:10:08 +0900 (JST)
+Message-Id: <20080729.221008.102581021.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH 1/3] txx9: Support early_printk
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <jirislaby@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20013
+X-archive-position: 20014
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jirislaby@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle napsal(a):
-> On Fri, Jul 25, 2008 at 07:49:58PM +0200, Jiri Slaby wrote:
-> 
->> ds1286_get_time(); is not called from atomic context, sleep for 20 ms is
->> better choice than a (home-made) busy waiting for such a situation.
+Kill jmr3927-specific prom_putchar and add txx9-generic prom_putchar
+to support early_printk.
 
-> Looks ok to me I guess.  Though I don't really think it matters ...
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+This patch can be applied on top of my txx9 patch series and mips-kgdb patches.
 
-I think RT people has different opinion ;).
+ arch/mips/txx9/Kconfig          |    3 +++
+ arch/mips/txx9/generic/setup.c  |   31 +++++++++++++++++++++++++++++++
+ arch/mips/txx9/jmr3927/prom.c   |   17 +----------------
+ arch/mips/txx9/rbtx4927/prom.c  |    1 +
+ arch/mips/txx9/rbtx4938/prom.c  |    1 +
+ include/asm-mips/txx9/generic.h |    9 +++++++++
+ 6 files changed, 46 insertions(+), 16 deletions(-)
 
-> The same condition also appears in drivers/char/rtc.c and maybe a few
-> others.  Rtc.c has been copies and modified several times.
-
-In rtc.c there is something completely different:
-         while (rtc_is_updating() != 0 &&
-                time_before(jiffies, uip_watchdog + 2*HZ/100))
-                 cpu_relax();
-
-It's a conditional busy-waiting. It reads the rtc status after each busy 
-cycle while in the ds1286 there was
-         if (ds1286_is_updating() != 0)
-                 while (time_before(jiffies, uip_watchdog + 2*HZ/100))
-                         barrier();
+diff --git a/arch/mips/txx9/Kconfig b/arch/mips/txx9/Kconfig
+index 7acdedd..caec917 100644
+--- a/arch/mips/txx9/Kconfig
++++ b/arch/mips/txx9/Kconfig
+@@ -30,6 +30,7 @@ config SOC_TX3927
+ 	select IRQ_TXX9
+ 	select SWAP_IO_SPACE
+ 	select SYS_HAS_CPU_TX39XX
++	select SYS_HAS_EARLY_PRINTK
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+@@ -49,6 +50,7 @@ config SOC_TX4927
+ 	select PCI_TX4927
+ 	select SWAP_IO_SPACE
+ 	select SYS_HAS_CPU_TX49XX
++	select SYS_HAS_EARLY_PRINTK
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_64BIT_KERNEL
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+@@ -69,6 +71,7 @@ config SOC_TX4938
+ 	select PCI_TX4927
+ 	select SWAP_IO_SPACE
+ 	select SYS_HAS_CPU_TX49XX
++	select SYS_HAS_EARLY_PRINTK
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_64BIT_KERNEL
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
+index 94ce1a5..1bc57d0 100644
+--- a/arch/mips/txx9/generic/setup.c
++++ b/arch/mips/txx9/generic/setup.c
+@@ -271,6 +271,37 @@ void __init txx9_sio_init(unsigned long baseaddr, int irq,
+ #endif /* CONFIG_SERIAL_TXX9 */
+ }
+ 
++#ifdef CONFIG_EARLY_PRINTK
++static void __init null_prom_putchar(char c)
++{
++}
++void (*txx9_prom_putchar)(char c) __initdata = null_prom_putchar;
++
++void __init prom_putchar(char c)
++{
++	txx9_prom_putchar(c);
++}
++
++static void __iomem *early_txx9_sio_port;
++
++static void __init early_txx9_sio_putchar(char c)
++{
++#define TXX9_SICISR	0x0c
++#define TXX9_SITFIFO	0x1c
++#define TXX9_SICISR_TXALS	0x00000002
++	while (!(__raw_readl(early_txx9_sio_port + TXX9_SICISR) &
++		 TXX9_SICISR_TXALS))
++		;
++	__raw_writel(c, early_txx9_sio_port + TXX9_SITFIFO);
++}
++
++void __init txx9_sio_putchar_init(unsigned long baseaddr)
++{
++	early_txx9_sio_port = ioremap(baseaddr, 0x24);
++	txx9_prom_putchar = early_txx9_sio_putchar;
++}
++#endif /* CONFIG_EARLY_PRINTK */
++
+ /* wrappers */
+ void __init plat_mem_setup(void)
+ {
+diff --git a/arch/mips/txx9/jmr3927/prom.c b/arch/mips/txx9/jmr3927/prom.c
+index 23df38c..70c4c8e 100644
+--- a/arch/mips/txx9/jmr3927/prom.c
++++ b/arch/mips/txx9/jmr3927/prom.c
+@@ -41,22 +41,6 @@
+ #include <asm/txx9/generic.h>
+ #include <asm/txx9/jmr3927.h>
+ 
+-#define TIMEOUT       0xffffff
+-
+-void
+-prom_putchar(char c)
+-{
+-        int i = 0;
+-
+-        do {
+-            i++;
+-            if (i>TIMEOUT)
+-                break;
+-        } while (!(tx3927_sioptr(1)->cisr & TXx927_SICISR_TXALS));
+-	tx3927_sioptr(1)->tfifo = c;
+-	return;
+-}
+-
+ void __init jmr3927_prom_init(void)
+ {
+ 	/* CCFG */
+@@ -65,4 +49,5 @@ void __init jmr3927_prom_init(void)
+ 
+ 	prom_init_cmdline();
+ 	add_memory_region(0, JMR3927_SDRAM_SIZE, BOOT_MEM_RAM);
++	txx9_sio_putchar_init(TX3927_SIO_REG(1));
+ }
+diff --git a/arch/mips/txx9/rbtx4927/prom.c b/arch/mips/txx9/rbtx4927/prom.c
+index 5c0de54..1dc0a5b 100644
+--- a/arch/mips/txx9/rbtx4927/prom.c
++++ b/arch/mips/txx9/rbtx4927/prom.c
+@@ -38,4 +38,5 @@ void __init rbtx4927_prom_init(void)
+ {
+ 	prom_init_cmdline();
+ 	add_memory_region(0, tx4927_get_mem_size(), BOOT_MEM_RAM);
++	txx9_sio_putchar_init(TX4927_SIO_REG(0) & 0xfffffffffULL);
+ }
+diff --git a/arch/mips/txx9/rbtx4938/prom.c b/arch/mips/txx9/rbtx4938/prom.c
+index ee18951..d73123c 100644
+--- a/arch/mips/txx9/rbtx4938/prom.c
++++ b/arch/mips/txx9/rbtx4938/prom.c
+@@ -22,4 +22,5 @@ void __init rbtx4938_prom_init(void)
+ 	prom_init_cmdline();
+ #endif
+ 	add_memory_region(0, tx4938_get_mem_size(), BOOT_MEM_RAM);
++	txx9_sio_putchar_init(TX4938_SIO_REG(0) & 0xfffffffffULL);
+ }
+diff --git a/include/asm-mips/txx9/generic.h b/include/asm-mips/txx9/generic.h
+index a295aaa..5b1ccf9 100644
+--- a/include/asm-mips/txx9/generic.h
++++ b/include/asm-mips/txx9/generic.h
+@@ -49,5 +49,14 @@ void txx9_spi_init(int busid, unsigned long base, int irq);
+ void txx9_ethaddr_init(unsigned int id, unsigned char *ethaddr);
+ void txx9_sio_init(unsigned long baseaddr, int irq,
+ 		   unsigned int line, unsigned int sclk, int nocts);
++void prom_putchar(char c);
++#ifdef CONFIG_EARLY_PRINTK
++extern void (*txx9_prom_putchar)(char c);
++void txx9_sio_putchar_init(unsigned long baseaddr);
++#else
++static inline void txx9_sio_putchar_init(unsigned long baseaddr)
++{
++}
++#endif
+ 
+ #endif /* __ASM_TXX9_GENERIC_H */
+-- 
+1.5.5.5

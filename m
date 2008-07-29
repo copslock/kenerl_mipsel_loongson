@@ -1,130 +1,140 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2008 22:34:03 +0100 (BST)
-Received: from mx1.razamicroelectronics.com ([63.111.213.197]:44871 "EHLO
-	hq-ex-mb01.razamicroelectronics.com") by ftp.linux-mips.org with ESMTP
-	id S20032780AbYG2Vd6 convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 29 Jul 2008 22:33:58 +0100
-Received: from 10.8.0.25 ([10.8.0.25]) by hq-ex-mb01.razamicroelectronics.com ([10.1.1.40]) via Exchange Front-End Server webmail.razamicroelectronics.com ([10.1.1.41]) with Microsoft Exchange Server HTTP-DAV ;
- Tue, 29 Jul 2008 21:33:49 +0000
-Received: from kh-ubuntu by webmail.razamicroelectronics.com; 29 Jul 2008 16:33:54 -0500
-Subject: Re: [PATCH v4 0/10] Alchemy updates.
-From:	Kevin Hickey <khickey@rmicorp.com>
-To:	Manuel Lauss <mano@roarinelk.homelinux.net>
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20080729165853.GB8784@roarinelk.homelinux.net>
-References: <20080729165853.GB8784@roarinelk.homelinux.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-Date:	Tue, 29 Jul 2008 16:33:54 -0500
-Message-Id: <1217367234.13597.11.camel@kh-ubuntu.razamicroelectronics.com>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.22.3.1 
-Return-Path: <khickey@rmicorp.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Jul 2008 23:12:18 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:13194 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20026079AbYG2WMK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 29 Jul 2008 23:12:10 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1KNxQO-00065r-00; Wed, 30 Jul 2008 00:12:08 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 25D97C2F34; Wed, 30 Jul 2008 00:12:04 +0200 (CEST)
+From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [REPOST PATCH] gbefb: cmap FIFO timeout
+To:	linux-fbdev-devel@lists.sourceforge.net
+Cc:	linux-mips@linux-mips.org, adaplas@gmail.com,
+	akpm@linux-foundation.org
+Message-Id: <20080729221204.25D97C2F34@solo.franken.de>
+Date:	Wed, 30 Jul 2008 00:12:04 +0200 (CEST)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20044
+X-archive-position: 20045
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: khickey@rmicorp.com
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-Manuel,
+Writes to the cmap fifo while the display is blanked caused cmap FIFO
+timeout messages and a wrong colormap. To avoid this the driver now
+maintains a colormap in memory and updates the colormap after the
+display is unblanked.
 
-Thanks for sending these out again.  I've patched my tree (an up-to-date
-git of 2.6.27-rc1) and have some preliminary feedback:
-1.  I like the interface you added in patch #10.  Much better than the
-old /proc one and flexible enough for a lot of different boards.  I
-agree with your own comment that maybe it should be in the
-board-specific directories so that people can name the nodes better, but
-for now I think this is great.
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+---
 
-2.  If I use the db1200_defconfig and enable Power Management
-(CONFIG_PM), the build fails on the Au1xxx IDE and fb drivers.  Are you
-seeing this too?  I see no reason to reject this patch if they don't
-build with CONFIG_PM, I just want to make sure I'm not doing something
-wrong.
+It would be really nice to get this bugfix into 2.6.27. It was posted
+the first time 26. June 2008 and I didn't get any response at all.
 
-3.  In my preliminary testing, the system was able to suspend and resume
-correctly on a DB1200 board.  I will do some stress testing in the next
-couple of days to make sure that it is stable in the long term. 
+ drivers/video/gbefb.c |   50 +++++++++++++++++++++++++++++++++---------------
+ 1 files changed, 34 insertions(+), 16 deletions(-)
 
-Thanks again.
--Kevin
-
-
-On Tue, 2008-07-29 at 18:58 +0200, Manuel Lauss wrote:
-> Hello,
-> 
-> Here's again a new set of patches to modernize Alchemy setup and PM code.
-> All patches have been compile-tested with db1100 and db1200 defconfigs,
-> and have been runnning on a few custom Au1250 boards for now more than
-> 5 weeks.  I've suspended and resumed a few hundred times while stressing
-> the system (continuous SD + CF reads while playing some wave files and
-> compiling sources).
-> 
-> #1 removes unused functions
-> #2 removes the cpu_table and replaces it with simpler code (IMHO of course)
-> #3 enables use of cp0 counter as a fallback,
-> #4 clockevent/clocksource support using one of the 2 counters of the Au1xxx
->    this also enables the use of the 'wait' instruction; depends on #3
-> #5 cleanup made possible with #4 
-> #7 and #8 fix suspend/resume.
-> #9 adds DBDMA suspend/resume support.
-> #10 replaces sysctl suspend interface with something better (IMO).
-> 
-> All patches depend on each other, have been run-tested on a custom AU1200
-> system and compile-tested with a minimal config on db1100 and db1200.
-> 
-> Changes V3->V4:
-> - rediffed against 2.6.27-rc1
-> - add patch #10.
-> 
-> Changes V2->V3:
-> - swap patches 1 and 2 
-> - minor refinements, no function changes.
-> 
-> Changes V1->V2:
-> - address Sergei's comments wrt. config[OD] handling
-> - change TOY clocksource to RTC clocksource
-> - add another patch (#5)
-> 
-> 
->  arch/mips/Kconfig                     |    8 
->  arch/mips/au1000/Kconfig              |    4 
->  arch/mips/au1000/common/Makefile      |    4 
->  arch/mips/au1000/common/clocks.c      |   65 +++--
->  arch/mips/au1000/common/cputable.c    |   52 ----
->  arch/mips/au1000/common/dbdma.c       |   65 +++++
->  arch/mips/au1000/common/dbg_io.c      |    4 
->  arch/mips/au1000/common/irq.c         |   57 ----
->  arch/mips/au1000/common/platform.c    |  257 ++++++++++++++++++++
->  arch/mips/au1000/common/power.c       |  421 ++++++----------------------------
->  arch/mips/au1000/common/setup.c       |   39 ---
->  arch/mips/au1000/common/sleeper.S     |  121 +++++----
->  arch/mips/au1000/common/time.c        |  305 ++++++++----------------
->  arch/mips/au1000/db1x00/Makefile      |    1 
->  arch/mips/au1000/mtx-1/Makefile       |    2 
->  arch/mips/au1000/pb1000/Makefile      |    1 
->  arch/mips/au1000/pb1100/Makefile      |    1 
->  arch/mips/au1000/pb1200/Makefile      |    2 
->  arch/mips/au1000/pb1500/Makefile      |    1 
->  arch/mips/au1000/pb1550/Makefile      |    1 
->  arch/mips/au1000/xxs1500/Makefile     |    1 
->  arch/mips/kernel/Makefile             |    4 
->  arch/mips/kernel/cevt-r4k.c           |    2 
->  arch/mips/kernel/csrc-r4k.c           |    2 
->  include/asm-mips/mach-au1x00/au1000.h |   64 +++--
->  include/asm-mips/time.h               |   24 +
->  26 files changed, 719 insertions(+), 789 deletions(-)
-> 
-> Thanks,
-> 	Manuel Lauss
-> 
--- 
-Kevin Hickey
-﻿Alchemy Solutions
-RMI Corporation
-khickey@RMICorp.com
-P: 512.691.8044
+diff --git a/drivers/video/gbefb.c b/drivers/video/gbefb.c
+index 2e552d5..f89c3cc 100644
+--- a/drivers/video/gbefb.c
++++ b/drivers/video/gbefb.c
+@@ -87,6 +87,8 @@ static int gbe_revision;
+ static int ypan, ywrap;
+ 
+ static uint32_t pseudo_palette[16];
++static uint32_t gbe_cmap[256];
++static int gbe_turned_on; /* 0 turned off, 1 turned on */
+ 
+ static char *mode_option __initdata = NULL;
+ 
+@@ -208,6 +210,8 @@ void gbe_turn_off(void)
+ 	int i;
+ 	unsigned int val, x, y, vpixen_off;
+ 
++	gbe_turned_on = 0;
++
+ 	/* check if pixel counter is on */
+ 	val = gbe->vt_xy;
+ 	if (GET_GBE_FIELD(VT_XY, FREEZE, val) == 1)
+@@ -371,6 +375,22 @@ static void gbe_turn_on(void)
+ 	}
+ 	if (i == 10000)
+ 		printk(KERN_ERR "gbefb: turn on DMA timed out\n");
++
++	gbe_turned_on = 1;
++}
++
++static void gbe_loadcmap(void)
++{
++	int i, j;
++
++	for (i = 0; i < 256; i++) {
++		for (j = 0; j < 1000 && gbe->cm_fifo >= 63; j++)
++			udelay(10);
++		if (j == 1000)
++			printk(KERN_ERR "gbefb: cmap FIFO timeout\n");
++
++		gbe->cmap[i] = gbe_cmap[i];
++	}
+ }
+ 
+ /*
+@@ -382,6 +402,7 @@ static int gbefb_blank(int blank, struct fb_info *info)
+ 	switch (blank) {
+ 	case FB_BLANK_UNBLANK:		/* unblank */
+ 		gbe_turn_on();
++		gbe_loadcmap();
+ 		break;
+ 
+ 	case FB_BLANK_NORMAL:		/* blank */
+@@ -796,16 +817,10 @@ static int gbefb_set_par(struct fb_info *info)
+ 		gbe->gmap[i] = (i << 24) | (i << 16) | (i << 8);
+ 
+ 	/* Initialize the color map */
+-	for (i = 0; i < 256; i++) {
+-		int j;
+-
+-		for (j = 0; j < 1000 && gbe->cm_fifo >= 63; j++)
+-			udelay(10);
+-		if (j == 1000)
+-			printk(KERN_ERR "gbefb: cmap FIFO timeout\n");
++	for (i = 0; i < 256; i++)
++		gbe_cmap[i] = (i << 8) | (i << 16) | (i << 24);
+ 
+-		gbe->cmap[i] = (i << 8) | (i << 16) | (i << 24);
+-	}
++	gbe_loadcmap();
+ 
+ 	return 0;
+ }
+@@ -855,14 +870,17 @@ static int gbefb_setcolreg(unsigned regno, unsigned red, unsigned green,
+ 	blue >>= 8;
+ 
+ 	if (info->var.bits_per_pixel <= 8) {
+-		/* wait for the color map FIFO to have a free entry */
+-		for (i = 0; i < 1000 && gbe->cm_fifo >= 63; i++)
+-			udelay(10);
+-		if (i == 1000) {
+-			printk(KERN_ERR "gbefb: cmap FIFO timeout\n");
+-			return 1;
++		gbe_cmap[regno] = (red << 24) | (green << 16) | (blue << 8);
++		if (gbe_turned_on) {
++			/* wait for the color map FIFO to have a free entry */
++			for (i = 0; i < 1000 && gbe->cm_fifo >= 63; i++)
++				udelay(10);
++			if (i == 1000) {
++				printk(KERN_ERR "gbefb: cmap FIFO timeout\n");
++				return 1;
++			}
++			gbe->cmap[regno] = gbe_cmap[regno];
+ 		}
+-		gbe->cmap[regno] = (red << 24) | (green << 16) | (blue << 8);
+ 	} else if (regno < 16) {
+ 		switch (info->var.bits_per_pixel) {
+ 		case 15:

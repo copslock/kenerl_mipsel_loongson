@@ -1,51 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2008 14:49:36 +0100 (BST)
-Received: from ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk ([217.169.26.28]:32199
-	"EHLO ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk")
-	by ftp.linux-mips.org with ESMTP id S20034422AbYG3Nt3 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 30 Jul 2008 14:49:29 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m6UDnMIp021328;
-	Wed, 30 Jul 2008 14:49:22 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m6UDnIFp021326;
-	Wed, 30 Jul 2008 14:49:18 +0100
-Date:	Wed, 30 Jul 2008 14:49:18 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Mike Crowe <mac@mcrowe.com>
-Cc:	linux-mips@linux-mips.org,
-	Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH] MIPS: Convert printk statements during kernel setup to
-	use severity levels
-Message-ID: <20080730134918.GA20791@linux-mips.org>
-References: <20080725134454.GA26225@mcrowe.com> <Pine.LNX.4.64.0807252002490.11082@anakin> <20080726125925.GB32426@mcrowe.com> <Pine.LNX.4.64.0807261517160.14397@anakin> <20080728121251.GA17679@mcrowe.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Jul 2008 16:30:45 +0100 (BST)
+Received: from mail.zeugmasystems.com ([192.139.122.66]:4824 "EHLO
+	zeugmasystems.com") by ftp.linux-mips.org with ESMTP
+	id S20033822AbYG3Pag convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 30 Jul 2008 16:30:36 +0100
+x-mimeole: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080728121251.GA17679@mcrowe.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: Swarm IDE bug in 2.6.26.
+Date:	Wed, 30 Jul 2008 08:30:28 -0700
+Message-ID: <DDFD17CC94A9BD49A82147DDF7D545C5FC849E@exchange.ZeugmaSystems.local>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Swarm IDE bug in 2.6.26.
+Thread-Index: AcjyWTHA6G/88082RHqxz3Mzw576HQ==
+From:	"Kaz Kylheku" <KKylheku@zeugmasystems.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <KKylheku@zeugmasystems.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20052
+X-archive-position: 20053
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: KKylheku@zeugmasystems.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jul 28, 2008 at 01:12:52PM +0100, Mike Crowe wrote:
-> From: Mike Crowe <mac@mcrowe.com>
-> Date: Mon, 28 Jul 2008 13:12:52 +0100
-> To: linux-mips@linux-mips.org
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Subject: [PATCH] MIPS: Convert printk statements during kernel setup to use
-> 	severity levels
-> Content-Type: text/plain; charset=us-ascii
-> 
-> Signed-off-by: Mike Crowe <mac@mcrowe.com>
+Hi all,
 
-Thanks, applied.
+Haven't checked git; maybe you guys fixed it already.
 
-  Ralf
+In drivers/ide/mips/swarm.c, function swarm_ide_probe, the hw_regs_t
+structure is not memset to 0, leaving the struct device *dev member
+uninitialized.
+
+I found this because it caused a crash on boot. At first there was no
+crash, but then I made some kernel changes
+which caused it to repro.

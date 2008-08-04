@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Aug 2008 21:29:59 +0100 (BST)
-Received: from mail.gmx.net ([213.165.64.20]:39040 "HELO mail.gmx.net")
-	by ftp.linux-mips.org with SMTP id S20044743AbYHDU3t (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 4 Aug 2008 21:29:49 +0100
-Received: (qmail invoked by alias); 04 Aug 2008 20:29:42 -0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 Aug 2008 21:54:38 +0100 (BST)
+Received: from mail.gmx.net ([213.165.64.20]:3457 "HELO mail.gmx.net")
+	by ftp.linux-mips.org with SMTP id S20046740AbYHDUyb (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 4 Aug 2008 21:54:31 +0100
+Received: (qmail invoked by alias); 04 Aug 2008 20:54:24 -0000
 Received: from p548B1C75.dip0.t-ipconnect.de (EHLO [192.168.120.22]) [84.139.28.117]
-  by mail.gmx.net (mp057) with SMTP; 04 Aug 2008 22:29:42 +0200
+  by mail.gmx.net (mp040) with SMTP; 04 Aug 2008 22:54:24 +0200
 X-Authenticated: #16080105
-X-Provags-ID: V01U2FsdGVkX19bqGMIjW5bUMys+u1FgMvC20/wjz8tIrJ1/v45oF
-	O7Zdi8xqndMFea
-Message-ID: <489766BB.5090607@gmx.de>
-Date:	Mon, 04 Aug 2008 22:29:47 +0200
+X-Provags-ID: V01U2FsdGVkX19B8IhoX95BKDmGgssO+/jAFT6CLhyyYDvoyHgrRr
+	34rnhaY8ZtMxp7
+Message-ID: <48976C86.60701@gmx.de>
+Date:	Mon, 04 Aug 2008 22:54:30 +0200
 From:	Johannes Dickgreber <tanzy@gmx.de>
 User-Agent: Thunderbird 2.0.0.6 (X11/20070801)
 MIME-Version: 1.0
@@ -27,7 +27,7 @@ Return-Path: <tanzy@gmx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20093
+X-archive-position: 20094
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -41,48 +41,70 @@ Kumba schrieb:
 > Assuming you've already lit incense candles and sacrificed a PC to the
 > MIPS Gods above.
 > 
-> There's one change that probably needs good scrutiny, as it changes a
-> value in dma-default.c, and this'll affect other systems:
-> 
-> diff -Naurp linux-2.6.26.orig/arch/mips/mm/dma-default.c
-> linux-2.6.26/arch/mips/mm/dma-default.c
-> --- linux-2.6.26.orig/arch/mips/mm/dma-default.c        2008-07-13
-> 17:51:29.000000000 -0400
-> +++ linux-2.6.26/arch/mips/mm/dma-default.c     2008-07-25
-> 03:14:40.000000000 -0400
-> @@ -209,7 +209,7 @@ dma_addr_t dma_map_page(struct device *d
->                 dma_cache_wback_inv(addr, size);
->         }
-> 
-> -       return plat_map_dma_mem_page(dev, page) + offset;
-> +       return plat_map_dma_mem_page(dev, page, size) + offset;
->  }
-> 
-I dont think that is needed.
-IMHO This function schould map a whole page,
-offset and size are only used for a part of that page. 
-So i am using PAGE_SIZE in plat_map_dma_mem_page.
 
-your version 
-+static dma_addr_t plat_map_dma_mem_page(struct device *dev, struct page *page,
-+                                       size_t size)
-+{
-+       dma_addr_t pa = dev_to_baddr(dev, page_to_phys(page), 0, size);
-+
-+       return pa;
-+}
-+
+> That's just one example, though.  There's probably more, but I've mostly
+> done forward ports, and haven't really messed with re-writing much. 
+> Hence why I'd like to ask others to look, poke, prod, compile, and boot,
+> and see if they have other suggestions for improving and fixing this up.
 
-my version
-+static dma_addr_t plat_map_dma_mem_page(struct device *dev, struct page *page,
-+                                       size_t size)
-+{
-+       dma_addr_t pa = dev_to_baddr(dev, page_to_phys(page), 0, PAGE_SIZE);
-+
-+       return pa;
-+}
+I think there is a problem on SMP kernels.
+In include/asm-mips/mach-ip30/heart.h
 
-Maybe it is only working, because the function dma_map_page is never used in my kernel.
+> +/* HEART internal register space */
+> +#define HEART_PIU_BASE         0x900000000ff00000
+> +
+> +/* full addresses */
+> +#define HEART_MODE             ((volatile ulong *)0x900000000ff00000)
+> +#define HEART_SDRAM_MODE       ((volatile ulong *)0x900000000ff00008)
+> +#define HEART_MEM_REF          ((volatile ulong *)0x900000000ff00010)
+> +#define HEART_MEM_REQ_ARB      ((volatile ulong *)0x900000000ff00018)
+> +#define        HEART_MEMCFG0           ((volatile ulong *)0x900000000ff00020)
+> +#define        HEART_MEMCFG1           ((volatile ulong *)0x900000000ff00028)
+> +#define        HEART_MEMCFG2           ((volatile ulong *)0x900000000ff00030)
+> +#define        HEART_MEMCFG3           ((volatile ulong *)0x900000000ff00038)
+> +#define HEART_FC_MODE          ((volatile ulong *)0x900000000ff00040)
+> +#define HEART_FC_TIMER_LIMIT   ((volatile ulong *)0x900000000ff00048)
+> +#define HEART_FC0_ADDR         ((volatile ulong *)0x900000000ff00050)
+> +#define HEART_FC1_ADDR         ((volatile ulong *)0x900000000ff00058)
+> +#define HEART_FC0_CR_CNT       ((volatile ulong *)0x900000000ff00060)
+> +#define HEART_FC1_CR_CNT       ((volatile ulong *)0x900000000ff00068)
+> +#define HEART_FC0_TIMER                ((volatile ulong *)0x900000000ff00070)
+> +#define HEART_FC1_TIMER                ((volatile ulong *)0x900000000ff00078)
+> +#define HEART_STATUS           ((volatile ulong *)0x900000000ff00080)
+> +#define HEART_BERR_ADDR                ((volatile ulong *)0x900000000ff00088)
+> +#define HEART_BERR_MISC                ((volatile ulong *)0x900000000ff00090)
+> +#define HEART_MEMERR_ADDR      ((volatile ulong *)0x900000000ff00098)
+> +#define HEART_MEMERR_DATA      ((volatile ulong *)0x900000000ff000a0)
+> +#define HEART_PIUR_ACC_ERR     ((volatile ulong *)0x900000000ff000a8)
+> +#define        HEART_MLAN_CLK_DIV      ((volatile ulong *)0x900000000ff000b0)
+> +#define        HEART_MLAN_CTL          ((volatile ulong *)0x900000000ff000b8)
+
+> +#define HEART_IMR(x)           ((volatile ulong *)0x900000000ff10000 + (8 * (x)))
+
+This gives a wrong address for the second IRQ Mask Register.
+I schould be.
+
+  #define HEART_IMR(x)           ((volatile ulong *)(0x900000000ff10000 + (8 * (x))))
+                                                    .                              .
+  this two braces more , because without it 8*8*(x) was added to the base addr.
+  checked in the assembler and on a DUAL IP30.
+  without it it got stopped early with no output.
+  with it it stopped much later. sometimes i got a starting and then stopped init.
+  now it goes until initcall genl_init wich is generic netlink init.
+  a smp kernel fully works with only one cpu in both versions.
+  a patch for a 2.6.20 kernel was more like my versions too.
+
+ 
+> +#define HEART_SET_ISR          ((volatile ulong *)0x900000000ff10020)
+> +#define HEART_CLR_ISR          ((volatile ulong *)0x900000000ff10028)
+> +#define HEART_ISR              ((volatile ulong *)0x900000000ff10030)
+> +#define HEART_IMSR             ((volatile ulong *)0x900000000ff10038)
+> +#define HEART_CAUSE            ((volatile ulong *)0x900000000ff10040)
+> +#define HEART_COUNT            ((volatile ulong *)0x900000000ff20000)  /* 52-bit counter */
+> +#define HEART_COMPARE          ((volatile ulong *)0x900000000ff30000)  /* 24-bit compare */
+> +#define HEART_TRIGGER          ((volatile ulong *)0x900000000ff40000)
+> +#define HEART_PRID             ((volatile ulong *)0x900000000ff50000)
+> +#define HEART_SYNC             ((volatile ulong *)0x900000000ff60000)
 
 > Thanks!,
 > 

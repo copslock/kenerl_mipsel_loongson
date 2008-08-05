@@ -1,48 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Aug 2008 09:52:43 +0100 (BST)
-Received: from elvis.franken.de ([193.175.24.41]:8402 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S20022091AbYHEIwd (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 5 Aug 2008 09:52:33 +0100
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1KQIHO-00074E-00; Tue, 05 Aug 2008 10:52:30 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id 2ED7CC3160; Tue,  5 Aug 2008 10:52:23 +0200 (CEST)
-Date:	Tue, 5 Aug 2008 10:52:23 +0200
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH v2] IP27: Switch over to RTC class driver
-Message-ID: <20080805085222.GA6808@alpha.franken.de>
-References: <20080804170021.AAE18C2EAA@solo.franken.de> <20080805.093305.233543912.nemoto@toshiba-tops.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Aug 2008 10:38:42 +0100 (BST)
+Received: from fnoeppeil43.netpark.at ([217.175.205.171]:20680 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S20045206AbYHEJig (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 5 Aug 2008 10:38:36 +0100
+Received: (qmail 26310 invoked from network); 5 Aug 2008 11:38:32 +0200
+Received: from flagship.roarinelk.net (HELO ?192.168.0.197?) (192.168.0.197)
+  by fnoeppeil43.netpark.at with SMTP; 5 Aug 2008 11:38:32 +0200
+Message-ID: <48981F96.5040907@roarinelk.homelinux.net>
+Date:	Tue, 05 Aug 2008 11:38:30 +0200
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+Organization: Private
+User-Agent: Thunderbird 2.0.0.16 (X11/20080726)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080805.093305.233543912.nemoto@toshiba-tops.co.jp>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+To:	Kevin Hickey <khickey@rmicorp.com>
+CC:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] [MIPS] Add USB device (OTG) support for Au1200 and Au1250
+References: <> <1217881052-18797-1-git-send-email-khickey@rmicorp.com> <1217881052-18797-2-git-send-email-khickey@rmicorp.com>
+In-Reply-To: <1217881052-18797-2-git-send-email-khickey@rmicorp.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20097
+X-archive-position: 20098
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Aug 05, 2008 at 09:33:05AM +0900, Atsushi Nemoto wrote:
-> On Mon,  4 Aug 2008 19:00:21 +0200 (CEST), Thomas Bogendoerfer <tsbogend@alpha.franken.de> wrote:
-> > +	res.start = XPHYSADDR(KL_CONFIG_CH_CONS_INFO(master_nasid)->memory_base +
-> > +			      IOC3_BYTEBUS_DEV0);
-> > +	res.end = res.start + 32768;
+Hi Kevin,
+
+Kevin Hickey wrote:
+> This patch adds support for the USB Device controller on the Au1200 and Au1250.
+
+Awesome!
+
+
+> With this patch, only basic device mode is supported; full On-The-Go
+> functionality will be completed in a later release.  Two new drivers are
+> included; au1200_udc is the USB Device Controller driver and au1200_otg is the
+> portmux driver.  The portmux driver determines the mode of operation for the
+> port based on software and hardware selectors.  Currently, it only supports
+> device mode.
 > 
-> res.end should be res.start + 32767 ?
+> These drivers have been tested on a DB1200 board using the g_file_storage gadget.
 
-correct, I'll fix that.
+Apart from the usual condingstyle nits (run it through scripts/checkpatch.pl please),
+there's one thing: The GPIO code in the uoc header must go away.  Pass function
+pointers to enable/disable VBUS through platform data, but don't modify GPIOs
+directly (i.e. get rid of all code which assumes its running on DB1200).
 
-Thomas.
+You should also CC linux-usb ML.
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+Thanks,
+	Manuel Lauss

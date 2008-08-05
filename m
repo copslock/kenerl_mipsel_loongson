@@ -1,105 +1,145 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Aug 2008 22:38:50 +0100 (BST)
-Received: from zrtps0kn.nortel.com ([47.140.192.55]:48869 "EHLO
-	zrtps0kn.nortel.com") by ftp.linux-mips.org with ESMTP
-	id S20043350AbYHEVio (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 5 Aug 2008 22:38:44 +0100
-Received: from zcarhxs1.corp.nortel.com (zcarhxs1.corp.nortel.com [47.129.230.89])
-	by zrtps0kn.nortel.com (Switch-2.2.6/Switch-2.2.0) with ESMTP id m75LcVh08078;
-	Tue, 5 Aug 2008 21:38:31 GMT
-Received: from [47.130.64.132] ([47.130.64.132] RDNS failed) by zcarhxs1.corp.nortel.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 5 Aug 2008 17:38:16 -0400
-Message-ID: <4898C845.1060903@nortel.com>
-Date:	Tue, 05 Aug 2008 15:38:13 -0600
-From:	"Chris Friesen" <cfriesen@nortel.com>
-User-Agent: Mozilla Thunderbird 1.0.2-6 (X11/20050513)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Aug 2008 00:16:41 +0100 (BST)
+Received: from sj-iport-1.cisco.com ([171.71.176.70]:52803 "EHLO
+	sj-iport-1.cisco.com") by ftp.linux-mips.org with ESMTP
+	id S20040752AbYHEXQc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 6 Aug 2008 00:16:32 +0100
+X-IronPort-AV: E=Sophos;i="4.31,312,1215388800"; 
+   d="scan'208";a="61959677"
+Received: from sj-dkim-4.cisco.com ([171.71.179.196])
+  by sj-iport-1.cisco.com with ESMTP; 05 Aug 2008 23:16:23 +0000
+Received: from sj-core-5.cisco.com (sj-core-5.cisco.com [171.71.177.238])
+	by sj-dkim-4.cisco.com (8.12.11/8.12.11) with ESMTP id m75NGNcc016959
+	for <linux-mips@linux-mips.org>; Tue, 5 Aug 2008 16:16:23 -0700
+Received: from sausatlsmtp2.sciatl.com ([192.133.217.159])
+	by sj-core-5.cisco.com (8.13.8/8.13.8) with ESMTP id m75NGMEV021417
+	for <linux-mips@linux-mips.org>; Tue, 5 Aug 2008 23:16:23 GMT
+Received: from default.com ([192.133.217.159]) by sausatlsmtp2.sciatl.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 5 Aug 2008 19:16:22 -0400
+Received: from sausatlbhs01.corp.sa.net ([192.133.216.76]) by sausatlsmtp2.sciatl.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 5 Aug 2008 19:16:21 -0400
+Received: from cuplxvomd02.corp.sa.net ([64.101.20.155]) by sausatlbhs01.corp.sa.net with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 5 Aug 2008 19:16:20 -0400
+Message-ID: <4898DF3C.5010000@cisco.com>
+Date:	Tue, 05 Aug 2008 16:16:12 -0700
+From:	David VomLehn <dvomlehn@cisco.com>
+Reply-To: dvomlehn@cisco.com
+User-Agent: Thunderbird 2.0.0.14 (X11/20080501)
 MIME-Version: 1.0
-To:	Kaz Kylheku <KKylheku@zeugmasystems.com>
-CC:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: looking for help interpreting softlockup/stack trace
-References: <DDFD17CC94A9BD49A82147DDF7D545C5FC8DD5@exchange.ZeugmaSystems.local>
-In-Reply-To: <DDFD17CC94A9BD49A82147DDF7D545C5FC8DD5@exchange.ZeugmaSystems.local>
+To:	linux-mips@linux-mips.org
+Subject: [PATCH 1/1]MIPS: Support DMA mapping of all kernel "unmapped" virtual
+ address segments
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 05 Aug 2008 21:38:17.0104 (UTC) FILETIME=[92654900:01C8F743]
-Return-Path: <CFRIESEN@nortel.com>
+X-OriginalArrivalTime: 05 Aug 2008 23:16:20.0439 (UTC) FILETIME=[4522F670:01C8F751]
+X-ST-MF-Message-Resent:	8/5/2008 19:16
+DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=3202; t=1217978183; x=1218842183;
+	c=relaxed/simple; s=sjdkim4002;
+	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
+	d=cisco.com; i=dvomlehn@cisco.com;
+	z=From:=20David=20VomLehn=20<dvomlehn@cisco.com>
+	|Subject:=20[PATCH=201/1]MIPS=3A=20Support=20DMA=20mapping=
+	20of=20all=20kernel=20=22unmapped=22=20virtual=0A=20address=
+	20segments
+	|Sender:=20;
+	bh=u9O6QVjt+fhtTs68SfweRTaZ2X9KGBndJ9XlYiKuv/E=;
+	b=kjzrSlQG0i0OHX2zjKj91fe67MWdg8VWj1508b9u1hN+z/m0vZOWWhJgUV
+	kg65gMEtNZF6vQMFdLx79xgHhCF7WMbbNklwmj1pcoeeyzrnf6HWPkxaxvIM
+	TX2jx/Hyr+;
+Authentication-Results:	sj-dkim-4; header.From=dvomlehn@cisco.com; dkim=pass (
+	sig from cisco.com/sjdkim4002 verified; ); 
+Return-Path: <dvomlehn@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20121
+X-archive-position: 20122
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cfriesen@nortel.com
+X-original-sender: dvomlehn@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
-Kaz Kylheku wrote:
-> Chris Friesem wrote:
+Support DMA mapping of all kernel "unmapped" virtual address segments
+to the corresponding physical addresses for 32- and 64-bit architectures.
 
->>In the trace below, is "epc" the program counter at the time of the
->>timer interrupt?  How does "ra" fit into this, given that the function
->>whose address it contains isn't seen in the stack trace until quite a
->>ways down?
+Signed-off-by: David VomLehn <dvomlehn@cisco.com>
+---
+The current virt_to_phys function does not map KSEG1 address to the correct
+physical address, nor will it map most of the XKPHYS addresses correctly. This
+patch addresses this problem.
+
+Unfortunately, I don't have access to a 64-bit system, so I need to ask for
+someone to perform additional verification. Any volunteers?
+
+ addrspace.h |   18 +++++++++++-------
+ io.h        |    2 +-
+ 2 files changed, 12 insertions(+), 8 deletions(-)
+
+Index: linux/include/asm-mips/addrspace.h
+===================================================================
+--- linux.orig/include/asm-mips/addrspace.h
++++ linux/include/asm-mips/addrspace.h
+@@ -75,6 +75,12 @@
+ #define CKSEG2ADDR(a)		(CPHYSADDR(a) | CKSEG2)
+ #define CKSEG3ADDR(a)		(CPHYSADDR(a) | CKSEG3)
+ 
++/*
++ * The ultimate limited of the 64-bit MIPS architecture:  2 bits for selecting
++ * the region, 3 bits for the CCA mode.  This leaves 59 bits of which the
++ * R8000 implements most with its 48-bit physical address space.
++ */
++#define TO_PHYS_MASK	_CONST64_(0x07ffffffffffffff)	/* 2^59 - 1 */
+ #else
+ 
+ #define CKSEG0ADDR(a)		(CPHYSADDR(a) | KSEG0)
+@@ -106,6 +112,11 @@
+ #define CKSEG2			0xc0000000
+ #define CKSEG3			0xe0000000
+ 
++/*
++ * The ultimate limit of the 32-bit MIPS architecture. 3 bits for selecting
++ * the region, leaving 29 bits for the physical address spaces
++ */
++#define TO_PHYS_MASK		0x1fffffffl	/* 2^29 - 1 */
+ #endif
+ 
+ /*
+@@ -129,13 +140,6 @@
+ #define PHYS_TO_XKPHYS(cm, a)		(_CONST64_(0x8000000000000000) | \
+ 					 ((cm)<<59) | (a))
+ 
+-/*
+- * The ultimate limited of the 64-bit MIPS architecture:  2 bits for selecting
+- * the region, 3 bits for the CCA mode.  This leaves 59 bits of which the
+- * R8000 implements most with its 48-bit physical address space.
+- */
+-#define TO_PHYS_MASK	_CONST64_(0x07ffffffffffffff)	/* 2^^59 - 1 */
+-
+ #ifndef CONFIG_CPU_R8000
+ 
+ /*
+Index: linux/include/asm-mips/io.h
+===================================================================
+--- linux.orig/include/asm-mips/io.h
++++ linux/include/asm-mips/io.h
+@@ -118,7 +118,7 @@ static inline void set_io_port_base(unsi
+  */
+ static inline unsigned long virt_to_phys(volatile const void *address)
+ {
+-	return (unsigned long)address - PAGE_OFFSET + PHYS_OFFSET;
++	return (unsigned long)address & TO_PHYS_MASK;
+ }
+ 
+ /*
 
 
-> Mind you, these Linux MIPS stack traces are not completely
-> trustworthy; the routine just walks the stack one word at a time
-> and prints out anything that looks like the address of code.
-> So the stack trace may include stale stack data from previous
-> call chains that have already returned. It also might not
-> include the full call chain, because the return address is not
-> always stored on the stack. For instance, here it looks like
-> RA is pointing into a kernel module. But you don't actually
-> see this in the fake stack trace. Nowhere in the stack trace
-> do you see _read_lock being called by c000000001b4ab9c.
 
-Right...but it does look like it calls _read_unlock().
 
-> I would proceed by inspecting this vnb module and its use of locks.
-
-Yeah...I'll do that.
-
->>scheduler_tick() calls BUG: soft lockup detected on CPU#0!
-
-One thing I've noticed, all the softlockups are on cpu0 even though 
-other cpus are also complaining about scheduling delays.  Is there 
-something special about cpu0?
-
->>Call Trace:
->>  [<ffffffff811a251c>] softlockup_tick+0x12c/0x158
->>  [<ffffffff811126dc>] timer_interrupt+0xd4/0x4c8
->>  [<ffffffff81112890>] timer_interrupt+0x288/0x4c8
->>  [<ffffffff81101d50>] octeon_main_timer_interrupt+0x78/0x90
->>  [<ffffffff811a2c24>] handle_IRQ_event+0x45c/0x1528
->>  [<ffffffff811a3dc4>] __do_IRQ+0xd4/0x230
->>  [<ffffffff8151e448>] _read_lock+0x0/0x20
-> 
-> 
-> This read lock is almost certainly a red herring; it's
-> stuff left over on the stack that hasn't been overwritten
-> by new activation chains.
-
-Wouldn't it be part of the do_IRQ call below?
->>  [<ffffffff8110c4a8>] do_IRQ+0x440/0x1520
-> 
-> 
-> This is the timer interrupt going off, which ends up
-> detecting the lockup. So the problem is above here.
-
-I assume you mean "above" in terms of chronological order, since in 
-terms of the call trace the problem would be below.
-
->>  [<ffffffff8139263c>] neigh_lookup+0xb4/0x128
-> 
-> 
-> This may also be garbage. Basically, the stack
-> trace is not that useful, except that it provides
-> some additional circumstantial evidence implicating
-> the vnb module.
-
-It's unfortunate that the call trace isn't accurate.
-
-Thanks for the help,
-
-Chris
+     - - - - -                              Cisco                            - - - - -         
+This e-mail and any attachments may contain information which is confidential, 
+proprietary, privileged or otherwise protected by law. The information is solely 
+intended for the named addressee (or a person responsible for delivering it to 
+the addressee). If you are not the intended recipient of this message, you are 
+not authorized to read, print, retain, copy or disseminate this message or any 
+part of it. If you have received this e-mail in error, please notify the sender 
+immediately by return e-mail and delete it from your computer.

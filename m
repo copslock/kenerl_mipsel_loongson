@@ -1,49 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Aug 2008 15:45:27 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:51411 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20021374AbYHEOpV (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 5 Aug 2008 15:45:21 +0100
-Received: from localhost (p2220-ipad303funabasi.chiba.ocn.ne.jp [123.217.148.220])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id A2E70A9FF; Tue,  5 Aug 2008 23:45:13 +0900 (JST)
-Date:	Tue, 05 Aug 2008 23:45:14 +0900 (JST)
-Message-Id: <20080805.234514.39153536.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] vmlinux.lds.S: handle .text.* 
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Aug 2008 16:16:44 +0100 (BST)
+Received: from smtp239.poczta.interia.pl ([217.74.64.239]:56378 "EHLO
+	smtp239.poczta.interia.pl") by ftp.linux-mips.org with ESMTP
+	id S20022355AbYHEPQi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 5 Aug 2008 16:16:38 +0100
+Received: by smtp239.poczta.interia.pl (INTERIA.PL, from userid 502)
+	id E65DD296F7E; Tue,  5 Aug 2008 17:16:35 +0200 (CEST)
+Received: from poczta.interia.pl (mi06.poczta.interia.pl [10.217.12.6])
+	by smtp239.poczta.interia.pl (INTERIA.PL) with ESMTP id EFEE6296462;
+	Tue,  5 Aug 2008 17:16:32 +0200 (CEST)
+Received: by poczta.interia.pl (INTERIA.PL, from userid 502)
+	id AC7D51324F9; Tue,  5 Aug 2008 17:16:32 +0200 (CEST)
+Received: from krzysio.net (host-87-99-61-239.lanet.net.pl [87.99.61.239])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by www.poczta.fm (INTERIA.PL) with ESMTP id 2147B1324E4;
+	Tue,  5 Aug 2008 17:16:27 +0200 (CEST)
+Date:	Tue, 5 Aug 2008 17:22:00 +0200
+From:	Krzysztof Helt <krzysztof.h1@poczta.fm>
+To:	Manuel Lauss <mano@roarinelk.homelinux.net>
+Cc:	linux-fbdev-devel@lists.sf.net, L-M-O <linux-mips@linux-mips.org>,
+	Kevin Hickey <khickey@rmicorp.com>
+Subject: Re: [Linux-fbdev-devel] [PATCH] au1200fb: fixup PM support.
+Message-Id: <20080805172200.4f52ca12.krzysztof.h1@poczta.fm>
+In-Reply-To: <20080805124221.GA27469@roarinelk.homelinux.net>
+References: <20080805124221.GA27469@roarinelk.homelinux.net>
+X-Mailer: Sylpheed 2.4.3 (GTK+ 2.11.0; i686-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+X-EMID:	8ce2b138
+Return-Path: <krzysztof.h1@poczta.fm>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20104
+X-archive-position: 20105
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: krzysztof.h1@poczta.fm
 Precedence: bulk
 X-list: linux-mips
 
-The -ffunction-sections puts each text in .text.function_name section.
-Without this patch, most functions are placed outside _text..._etext
-area and it breaks show_stacktrace(), etc.
+On Tue, 5 Aug 2008 14:42:21 +0200
+Manuel Lauss <mano@roarinelk.homelinux.net> wrote:
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
-diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
-index b5470ce..afb119f 100644
---- a/arch/mips/kernel/vmlinux.lds.S
-+++ b/arch/mips/kernel/vmlinux.lds.S
-@@ -36,6 +36,7 @@ SECTIONS
- 		SCHED_TEXT
- 		LOCK_TEXT
- 		KPROBES_TEXT
-+		*(.text.*)
- 		*(.fixup)
- 		*(.gnu.warning)
- 	} :text = 0
+> Remove last traces of the custom Alchemy linux-2.4 PM code, implement
+> suspend/resume callbacks.
+> 
+> Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
+> ---
+>  drivers/video/au1200fb.c |  164 ++++++++++++----------------------------------
+>  1 files changed, 41 insertions(+), 123 deletions(-)
+> 
+
+Acked-by: Krzysztof Helt <krzysztof.h1@wp.pl>
+
+If you don't want to push this patch through the mips tree you may post this patch
+to Andrew Morton <akpm@linux-foundation.org> with my acked-by.
+
+Regards,
+Krzysztof
+
+----------------------------------------------------------------------
+Te newsy nakreca Cie na caly dzien!
+Sprawdz >>> http://link.interia.pl/f1e94

@@ -1,59 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Aug 2008 10:38:42 +0100 (BST)
-Received: from fnoeppeil43.netpark.at ([217.175.205.171]:20680 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S20045206AbYHEJig (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 5 Aug 2008 10:38:36 +0100
-Received: (qmail 26310 invoked from network); 5 Aug 2008 11:38:32 +0200
-Received: from flagship.roarinelk.net (HELO ?192.168.0.197?) (192.168.0.197)
-  by fnoeppeil43.netpark.at with SMTP; 5 Aug 2008 11:38:32 +0200
-Message-ID: <48981F96.5040907@roarinelk.homelinux.net>
-Date:	Tue, 05 Aug 2008 11:38:30 +0200
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-Organization: Private
-User-Agent: Thunderbird 2.0.0.16 (X11/20080726)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Aug 2008 11:37:39 +0100 (BST)
+Received: from smtp.gentoo.org ([140.211.166.183]:31695 "EHLO smtp.gentoo.org")
+	by ftp.linux-mips.org with ESMTP id S20021826AbYHEKhb (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 5 Aug 2008 11:37:31 +0100
+Received: by smtp.gentoo.org (Postfix, from userid 2204)
+	id 7369A67343; Tue,  5 Aug 2008 10:37:28 +0000 (UTC)
+Date:	Tue, 5 Aug 2008 10:37:28 +0000
+From:	Ricardo Mendoza <ricmm@gentoo.org>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org, yoichi_yuasa@tripeaks.co.jp, ricmm@gentoo.org
+Subject: [PATCH] cevt-r4k.c irq ack optimization
+Message-ID: <20080805103728.GA4628@woodpecker.gentoo.org>
 MIME-Version: 1.0
-To:	Kevin Hickey <khickey@rmicorp.com>
-CC:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] [MIPS] Add USB device (OTG) support for Au1200 and Au1250
-References: <> <1217881052-18797-1-git-send-email-khickey@rmicorp.com> <1217881052-18797-2-git-send-email-khickey@rmicorp.com>
-In-Reply-To: <1217881052-18797-2-git-send-email-khickey@rmicorp.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <mano@roarinelk.homelinux.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Return-Path: <ricmm@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20098
+X-archive-position: 20099
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: ricmm@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Kevin,
+Hello Ralf,
 
-Kevin Hickey wrote:
-> This patch adds support for the USB Device controller on the Au1200 and Au1250.
+Whereas current implementation works, the modification below can protect
+us from problems such as the pipeline hazards in vr41xx cpus without any
+added extra code length. Also, I beleive Yoichi posted something similar
+a few months ago.
 
-Awesome!
+Please apply.
 
 
-> With this patch, only basic device mode is supported; full On-The-Go
-> functionality will be completed in a later release.  Two new drivers are
-> included; au1200_udc is the USB Device Controller driver and au1200_otg is the
-> portmux driver.  The portmux driver determines the mode of operation for the
-> port based on software and hardware selectors.  Currently, it only supports
-> device mode.
-> 
-> These drivers have been tested on a DB1200 board using the g_file_storage gadget.
+     Ricardo
 
-Apart from the usual condingstyle nits (run it through scripts/checkpatch.pl please),
-there's one thing: The GPIO code in the uoc header must go away.  Pass function
-pointers to enable/disable VBUS through platform data, but don't modify GPIOs
-directly (i.e. get rid of all code which assumes its running on DB1200).
+---
 
-You should also CC linux-usb ML.
+Ack the IRQ by writing to c0_compare it's own value rather than the
+c0_count value. This prevents issues caused by pipeline hazards, on
+vr41xx for example.
 
-Thanks,
-	Manuel Lauss
+Signed-off-by: Ricardo Mendoza <ricmm@gentoo.org>
+---
+ arch/mips/kernel/cevt-r4k.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
+index 24a2d90..16e079c 100644
+--- a/arch/mips/kernel/cevt-r4k.c
++++ b/arch/mips/kernel/cevt-r4k.c
+@@ -186,7 +186,7 @@ static int c0_compare_int_usable(void)
+ 	 * IP7 already pending?  Try to clear it by acking the timer.
+ 	 */
+ 	if (c0_compare_int_pending()) {
+-		write_c0_compare(read_c0_count());
++		c0_timer_ack();
+ 		irq_disable_hazard();
+ 		if (c0_compare_int_pending())
+ 			return 0;
+@@ -208,7 +208,7 @@ static int c0_compare_int_usable(void)
+ 	if (!c0_compare_int_pending())
+ 		return 0;
+ 
+-	write_c0_compare(read_c0_count());
++	c0_timer_ack();
+ 	irq_disable_hazard();
+ 	if (c0_compare_int_pending())
+ 		return 0;

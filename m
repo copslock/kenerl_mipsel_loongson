@@ -1,53 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Aug 2008 14:10:16 +0100 (BST)
-Received: from kuber.nabble.com ([216.139.236.158]:38124 "EHLO
-	kuber.nabble.com") by ftp.linux-mips.org with ESMTP
-	id S20023701AbYHENKK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 5 Aug 2008 14:10:10 +0100
-Received: from isper.nabble.com ([192.168.236.156])
-	by kuber.nabble.com with esmtp (Exim 4.63)
-	(envelope-from <lists@nabble.com>)
-	id 1KQMIi-0006cn-Gd
-	for linux-mips@linux-mips.org; Tue, 05 Aug 2008 06:10:08 -0700
-Message-ID: <18830812.post@talk.nabble.com>
-Date:	Tue, 5 Aug 2008 06:10:08 -0700 (PDT)
-From:	TriKri <kristoferkrus@hotmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Aug 2008 15:45:27 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:51411 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20021374AbYHEOpV (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 5 Aug 2008 15:45:21 +0100
+Received: from localhost (p2220-ipad303funabasi.chiba.ocn.ne.jp [123.217.148.220])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id A2E70A9FF; Tue,  5 Aug 2008 23:45:13 +0900 (JST)
+Date:	Tue, 05 Aug 2008 23:45:14 +0900 (JST)
+Message-Id: <20080805.234514.39153536.anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
-Subject: Debugging MIPS cpu with a probe, how?
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] vmlinux.lds.S: handle .text.* 
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Nabble-From: kristoferkrus@hotmail.com
-Return-Path: <lists@nabble.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20103
+X-archive-position: 20104
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kristoferkrus@hotmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
+The -ffunction-sections puts each text in .text.function_name section.
+Without this patch, most functions are placed outside _text..._etext
+area and it breaks show_stacktrace(), etc.
 
-Hello!
-
-I have an embedded system, a box, with a MIPS processor on it, which I need
-to debug (stop and start the processor, tell what instructions it has
-previously executed, etc.). I also have an EJTAG probe, which I have
-connected between the computer's usb and the box, and written software for
-it. The software can communicate with the probe, which in its own turn can
-communicate with the box through the tap (test access port), by giving the
-tap certain instructions. It can also, through the tap, feed the MIPS
-processor with instructions, and read/write data from processor registers.
-
-The question is now, how can debug the processor? How do I stop it, do I
-have to send any certain instructions to it? How can I set a breakpoint
-(which I understand is a quite crucial point)? Can I use GDB with my
-software to help debug the processor and how do I do that?
-
-Thank you in advance!
-/Kristofer Krus
--- 
-View this message in context: http://www.nabble.com/Debugging-MIPS-cpu-with-a-probe%2C-how--tp18830812p18830812.html
-Sent from the linux-mips main mailing list archive at Nabble.com.
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
+index b5470ce..afb119f 100644
+--- a/arch/mips/kernel/vmlinux.lds.S
++++ b/arch/mips/kernel/vmlinux.lds.S
+@@ -36,6 +36,7 @@ SECTIONS
+ 		SCHED_TEXT
+ 		LOCK_TEXT
+ 		KPROBES_TEXT
++		*(.text.*)
+ 		*(.fixup)
+ 		*(.gnu.warning)
+ 	} :text = 0

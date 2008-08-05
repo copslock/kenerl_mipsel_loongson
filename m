@@ -1,77 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Aug 2008 17:07:06 +0100 (BST)
-Received: from chilli.pcug.org.au ([203.10.76.44]:11477 "EHLO smtps.tip.net.au")
-	by ftp.linux-mips.org with ESMTP id S20022066AbYHEQG6 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 5 Aug 2008 17:06:58 +0100
-Received: from ash.ozlabs.ibm.com (ta-1-1.tip.net.au [203.11.71.1])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(Client did not present a certificate)
-	by smtps.tip.net.au (Postfix) with ESMTP id CD2D7368003;
-	Wed,  6 Aug 2008 02:06:52 +1000 (EST)
-Date:	Wed, 6 Aug 2008 02:06:47 +1000
-From:	Stephen Rothwell <sfr@canb.auug.org.au>
-To:	Adrian Bunk <bunk@kernel.org>
-Cc:	Mauro Carvalho Chehab <mchehab@infradead.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	v4l-dvb-maintainer@linuxtv.org, video4linux-list@redhat.com,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: v4l/mips build problem
-Message-Id: <20080806020647.2cf11a2b.sfr@canb.auug.org.au>
-In-Reply-To: <20080805154122.GC22895@cs181140183.pp.htv.fi>
-References: <20080806012357.55625daf.sfr@canb.auug.org.au>
-	<20080805154122.GC22895@cs181140183.pp.htv.fi>
-X-Mailer: Sylpheed 2.5.0 (GTK+ 2.12.11; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pgp-signature";
- micalg="PGP-SHA1";
- boundary="Signature=_Wed__6_Aug_2008_02_06_47_+1000_hXNUOzlXW0oxCw40"
-Return-Path: <sfr@canb.auug.org.au>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Aug 2008 17:08:50 +0100 (BST)
+Received: from fnoeppeil43.netpark.at ([217.175.205.171]:48296 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S20021987AbYHEQIn (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 5 Aug 2008 17:08:43 +0100
+Received: (qmail 28927 invoked from network); 5 Aug 2008 18:08:39 +0200
+Received: from flagship.roarinelk.net (HELO ?192.168.0.197?) (192.168.0.197)
+  by fnoeppeil43.netpark.at with SMTP; 5 Aug 2008 18:08:39 +0200
+Message-ID: <48987B07.80502@roarinelk.homelinux.net>
+Date:	Tue, 05 Aug 2008 18:08:39 +0200
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+Organization: Private
+User-Agent: Thunderbird 2.0.0.16 (X11/20080726)
+MIME-Version: 1.0
+To:	Kevin Hickey <khickey@rmicorp.com>
+CC:	linux-fbdev-devel@lists.sf.net, L-M-O <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] au1200fb: fixup PM support.
+References: <20080805124221.GA27469@roarinelk.homelinux.net> <1217952137.23188.2.camel@kh-ubuntu.razamicroelectronics.com>
+In-Reply-To: <1217952137.23188.2.camel@kh-ubuntu.razamicroelectronics.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20110
+X-archive-position: 20111
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sfr@canb.auug.org.au
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
---Signature=_Wed__6_Aug_2008_02_06_47_+1000_hXNUOzlXW0oxCw40
-Content-Type: text/plain; charset=US-ASCII
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Kevin Hickey wrote:
+> On Tue, 2008-08-05 at 14:42 +0200, Manuel Lauss wrote:
+>> Remove last traces of the custom Alchemy linux-2.4 PM code, implement
+>> suspend/resume callbacks.
+>>
+>> Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
+>> ---
+>>  drivers/video/au1200fb.c |  164 ++++++++++++----------------------------------
+>>  1 files changed, 41 insertions(+), 123 deletions(-)
+>>
+> This looks good.  It applied to my tree and appears functional on my
+> board.  One question: what about dynamic brightness?  It was part of the
+> old PM interface and you seem to have removed it.  Any ideas about
+> re-integrating that into the current PM model?
 
-On Tue, 5 Aug 2008 18:41:22 +0300 Adrian Bunk <bunk@kernel.org> wrote:
->
-> On Wed, Aug 06, 2008 at 01:23:57AM +1000, Stephen Rothwell wrote:
-> > Hi all,
-> >=20
-> > Linus' current tree gets the following error during a mips allmodconfig
-> > build:
-> >=20
-> > drivers/media/video/vino.c:4364: error: implicit declaration of functio=
-n `video_usercopy'
->=20
-> Andrew fixed it with drivers-media-video-vinoc-needs-v4l2-ioctlh.patch=20
-> in -mm.
+Hm, good point.  Let me see if I can hook the 2 PWMs into the backlight
+framework somehow...   I'll repost once this works.
 
-Maybe we should send that one Linusward ...
 
---=20
-Cheers,
-Stephen Rothwell                    sfr@canb.auug.org.au
-http://www.canb.auug.org.au/~sfr/
+> Acked-by: Kevin Hickey <khickey@rmicorp.com>
 
---Signature=_Wed__6_Aug_2008_02_06_47_+1000_hXNUOzlXW0oxCw40
-Content-Type: application/pgp-signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
-
-iEYEARECAAYFAkiYepcACgkQjjKRsyhoI8wMRgCggFHLNyfoQrKrKjpkSIGfIEcX
-F1oAoIERan3FacdwFgwxh5JPDSswWwkm
-=olAO
------END PGP SIGNATURE-----
-
---Signature=_Wed__6_Aug_2008_02_06_47_+1000_hXNUOzlXW0oxCw40--
+MfG,
+	Manuel Lauss

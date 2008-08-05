@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Aug 2008 11:37:39 +0100 (BST)
-Received: from smtp.gentoo.org ([140.211.166.183]:31695 "EHLO smtp.gentoo.org")
-	by ftp.linux-mips.org with ESMTP id S20021826AbYHEKhb (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 5 Aug 2008 11:37:31 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 Aug 2008 11:43:19 +0100 (BST)
+Received: from smtp.gentoo.org ([140.211.166.183]:3276 "EHLO smtp.gentoo.org")
+	by ftp.linux-mips.org with ESMTP id S20021597AbYHEKnR (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 5 Aug 2008 11:43:17 +0100
 Received: by smtp.gentoo.org (Postfix, from userid 2204)
-	id 7369A67343; Tue,  5 Aug 2008 10:37:28 +0000 (UTC)
-Date:	Tue, 5 Aug 2008 10:37:28 +0000
+	id 5FB1D67445; Tue,  5 Aug 2008 10:43:14 +0000 (UTC)
+Date:	Tue, 5 Aug 2008 10:43:14 +0000
 From:	Ricardo Mendoza <ricmm@gentoo.org>
 To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org, yoichi_yuasa@tripeaks.co.jp, ricmm@gentoo.org
-Subject: [PATCH] cevt-r4k.c irq ack optimization
-Message-ID: <20080805103728.GA4628@woodpecker.gentoo.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, ralf@linux-mips.org, ricmm@gentoo.org
+Subject: [PATCH] vr41xx: fix problem with vr41xx_cpu_wait
+Message-ID: <20080805104314.GB4628@woodpecker.gentoo.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -18,7 +18,7 @@ Return-Path: <ricmm@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20099
+X-archive-position: 20100
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -26,48 +26,46 @@ X-original-sender: ricmm@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello Ralf,
+Hello,
 
-Whereas current implementation works, the modification below can protect
-us from problems such as the pipeline hazards in vr41xx cpus without any
-added extra code length. Also, I beleive Yoichi posted something similar
-a few months ago.
+Yoichi, please correct me if I am wrong but I think that the "standby"
+instruction does not set IE bit on its own, so calling it with
+interrupts disabled will loop the cpu away forever on standby state
+being unable to come back due to no interrupts getting through.
 
-Please apply.
+Please ack the patch if you consider it correct.
+
+Please apply afterwards, Ralf.
 
 
      Ricardo
 
 ---
 
-Ack the IRQ by writing to c0_compare it's own value rather than the
-c0_count value. This prevents issues caused by pipeline hazards, on
-vr41xx for example.
+Standby instruction can't be called with interrupts disabled
+as it doesn't set IE bit on it's own.
 
 Signed-off-by: Ricardo Mendoza <ricmm@gentoo.org>
 ---
- arch/mips/kernel/cevt-r4k.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/vr41xx/common/pmu.c |    6 ------
+ 1 files changed, 0 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
-index 24a2d90..16e079c 100644
---- a/arch/mips/kernel/cevt-r4k.c
-+++ b/arch/mips/kernel/cevt-r4k.c
-@@ -186,7 +186,7 @@ static int c0_compare_int_usable(void)
- 	 * IP7 already pending?  Try to clear it by acking the timer.
- 	 */
- 	if (c0_compare_int_pending()) {
--		write_c0_compare(read_c0_count());
-+		c0_timer_ack();
- 		irq_disable_hazard();
- 		if (c0_compare_int_pending())
- 			return 0;
-@@ -208,7 +208,7 @@ static int c0_compare_int_usable(void)
- 	if (!c0_compare_int_pending())
- 		return 0;
+diff --git a/arch/mips/vr41xx/common/pmu.c b/arch/mips/vr41xx/common/pmu.c
+index 028aaf7..6d651ec 100644
+--- a/arch/mips/vr41xx/common/pmu.c
++++ b/arch/mips/vr41xx/common/pmu.c
+@@ -48,14 +48,8 @@ static void __iomem *pmu_base;
  
--	write_c0_compare(read_c0_count());
-+	c0_timer_ack();
- 	irq_disable_hazard();
- 	if (c0_compare_int_pending())
- 		return 0;
+ static void vr41xx_cpu_wait(void)
+ {
+-	local_irq_disable();
+ 	if (!need_resched())
+-		/*
+-		 * "standby" sets IE bit of the CP0_STATUS to 1.
+-		 */
+ 		__asm__("standby;\n");
+-	else
+-		local_irq_enable();
+ }
+ 
+ static inline void software_reset(void)

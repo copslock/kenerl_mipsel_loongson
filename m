@@ -1,61 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Aug 2008 14:30:41 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:55548 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S28576009AbYHFNai (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 6 Aug 2008 14:30:38 +0100
-Received: from localhost (p7186-ipad213funabasi.chiba.ocn.ne.jp [124.85.72.186])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 0074DADA6; Wed,  6 Aug 2008 22:30:32 +0900 (JST)
-Date:	Wed, 06 Aug 2008 22:30:33 +0900 (JST)
-Message-Id: <20080806.223033.128619389.anemo@mba.ocn.ne.jp>
-To:	yoichi_yuasa@tripeaks.co.jp
-Cc:	ricmm@gentoo.org, linux-mips@linux-mips.org, ralf@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Aug 2008 17:17:21 +0100 (BST)
+Received: from smtp.gentoo.org ([140.211.166.183]:49340 "EHLO smtp.gentoo.org")
+	by ftp.linux-mips.org with ESMTP id S28575897AbYHFQRO (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 6 Aug 2008 17:17:14 +0100
+Received: by smtp.gentoo.org (Postfix, from userid 2204)
+	id 3F91065879; Wed,  6 Aug 2008 16:17:10 +0000 (UTC)
+Date:	Wed, 6 Aug 2008 16:17:10 +0000
+From:	Ricardo Mendoza <ricmm@gentoo.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips@linux-mips.org,
+	ralf@linux-mips.org
 Subject: Re: [PATCH] vr41xx: fix problem with vr41xx_cpu_wait
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <200808060440.m764eF9I021783@po-mbox303.hop.2iij.net>
-References: <200808060147.m761l4Is022564@po-mbox303.hop.2iij.net>
-	<20080806020818.GA10184@woodpecker.gentoo.org>
-	<200808060440.m764eF9I021783@po-mbox303.hop.2iij.net>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Message-ID: <20080806161710.GA22957@woodpecker.gentoo.org>
+References: <200808060147.m761l4Is022564@po-mbox303.hop.2iij.net> <20080806020818.GA10184@woodpecker.gentoo.org> <200808060440.m764eF9I021783@po-mbox303.hop.2iij.net> <20080806.223033.128619389.anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20080806.223033.128619389.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Return-Path: <ricmm@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20126
+X-archive-position: 20127
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ricmm@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 6 Aug 2008 13:42:13 +0900, Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp> wrote:
-> > Just now I got my hands on the manual, I can see that the standby
-> > instruction sets IE bit to 1 but only on Vr4131 and Vr4181A cores, all
-> > others (such as my Vr4121) need to have interrupts enabled before going
-> > into standby.
-> > 
-> > The patch will make it work on all Vr4100 derivates, or we could also
-> > add code to build the function depending on CPU type. What do you think?
+On Wed, Aug 06, 2008 at 10:30:33PM +0900, Atsushi Nemoto wrote:
+ 
+> > local_irq_disable() is included in the sample code on the User's Manul. 
+> > I think the following patch is good way of this.
+> ...
+> > +static void old_vr41xx_cpu_wait(void)
+> > +{
+> > +	__asm__("standby;\n");
+> > +}
 > 
-> local_irq_disable() is included in the sample code on the User's Manul. 
-> I think the following patch is good way of this.
-...
-> +static void old_vr41xx_cpu_wait(void)
-> +{
-> +	__asm__("standby;\n");
-> +}
+> Then, old vr41 CPUs have potential latency problem as like as other
+> CPUs with WAIT instruction.
+> 
+> Please refer "WAIT vs. tickless kernel" thread on linux-mips ML
+> archive for details.
+> 
+> I don't complain about this patch itself.
 
-Then, old vr41 CPUs have potential latency problem as like as other
-CPUs with WAIT instruction.
+I see, I hadn't read that thread before. Yoichi's rev of the patch
+should go in but we should put some effort in finding a better route for
+CPUs that are not forcefully aware by hardware of interrupts in their
+wait call.
 
-Please refer "WAIT vs. tickless kernel" thread on linux-mips ML
-archive for details.
+Was some work ever done on Ralf's idea in the "WAIT vs. tickless kernel"
+ML thread? Regarding patching the return from exception code to contain
+a check for this particular loop.
 
-I don't complain about this patch itself.
----
-Atsushi Nemoto
+
+     Ricardo

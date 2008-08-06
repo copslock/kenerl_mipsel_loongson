@@ -1,119 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Aug 2008 21:38:50 +0100 (BST)
-Received: from mx1.razamicroelectronics.com ([63.111.213.197]:11590 "EHLO
-	hq-ex-mb01.razamicroelectronics.com") by ftp.linux-mips.org with ESMTP
-	id S28577097AbYHFUir convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 6 Aug 2008 21:38:47 +0100
-Received: from 10.8.0.25 ([10.8.0.25]) by hq-ex-mb01.razamicroelectronics.com ([10.1.1.40]) via Exchange Front-End Server webmail.razamicroelectronics.com ([10.1.1.41]) with Microsoft Exchange Server HTTP-DAV ;
- Wed,  6 Aug 2008 20:38:38 +0000
-Received: from kh-ubuntu by webmail.razamicroelectronics.com; 06 Aug 2008 15:39:04 -0500
-Subject: Re: [PATCH v4 0/10] Alchemy updates.
-From:	Kevin Hickey <khickey@rmicorp.com>
-To:	Manuel Lauss <mano@roarinelk.homelinux.net>
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20080729165853.GB8784@roarinelk.homelinux.net>
-References: <20080729165853.GB8784@roarinelk.homelinux.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-Date:	Wed, 06 Aug 2008 15:39:03 -0500
-Message-Id: <1218055143.3808.9.camel@kh-ubuntu.razamicroelectronics.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 Aug 2008 21:53:09 +0100 (BST)
+Received: from server.drzeus.cx ([85.8.24.28]:56497 "EHLO smtp.drzeus.cx")
+	by ftp.linux-mips.org with ESMTP id S28577396AbYHFUxB (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 6 Aug 2008 21:53:01 +0100
+Received: from mjolnir.drzeus.cx (gateway.teknikservice.nu [::ffff:213.134.106.48])
+  (AUTH: LOGIN drzeus, TLS: TLSv1/SSLv3,256bits,AES256-SHA)
+  by smtp.drzeus.cx with esmtp; Wed, 06 Aug 2008 22:52:45 +0200
+  id 0000000000130003.00000000489A0F1E.000058A8
+Date:	Wed, 6 Aug 2008 22:52:29 +0200
+From:	Pierre Ossman <drzeus@drzeus.cx>
+To:	"Kevin Hickey" <khickey@rmicorp.com>
+Cc:	"Manuel Lauss" <mano@roarinelk.homelinux.net>,
+	"Sergei Shtylyov" <sshtylyov@ru.mvista.com>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH v2] au1xmmc: raise segment size limit.
+Message-ID: <20080806225229.7914d736@mjolnir.drzeus.cx>
+In-Reply-To: <1218052355.3808.4.camel@kh-ubuntu.razamicroelectronics.com>
+References: <20080729081049.GB3908@roarinelk.homelinux.net>
+	<1218052355.3808.4.camel@kh-ubuntu.razamicroelectronics.com>
+X-Mailer: Claws Mail 3.4.0 (GTK+ 2.13.5; i386-redhat-linux-gnu)
 Mime-Version: 1.0
-X-Mailer: Evolution 2.22.3.1 
-Return-Path: <khickey@rmicorp.com>
+Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=PGP-SHA1; boundary="=_freyr.drzeus.cx-22696-1218055969-0001-2"
+Return-Path: <drzeus@drzeus.cx>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20134
+X-archive-position: 20135
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: khickey@rmicorp.com
+X-original-sender: drzeus@drzeus.cx
 Precedence: bulk
 X-list: linux-mips
 
-Manuel et al.,
+This is a MIME-formatted message.  If you see this text it means that your
+E-mail software does not support MIME-formatted messages.
 
-I've tested these patches on a DB1200 board and they look good.  I have
-an Au1xxx IDE power management patch that depends on them that I can
-release after they've been applied.
+--=_freyr.drzeus.cx-22696-1218055969-0001-2
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-One catch - these no longer apply to the latest HEAD.  Manuel, can you
-re-spin and re-post them one more time?
+On Wed, 6 Aug 2008 12:52:35 -0700
+"Kevin Hickey" <khickey@rmicorp.com> wrote:
 
--Kevin
+> On Tue, 2008-07-29 at 10:10 +0200, Manuel Lauss wrote:
+> > ---=20
+> >=20
+> > Raise the DMA block size limit from 2048 bytes to the maximum supported
+> > by the DMA controllers on the chip (64KB on Au1100, 4MB on Au1200).
+> >=20
+> > This gives a very small performance boost and apparently fixes an oops
+> > when MMC-DMA and network traffic are active at the same time.
+> >=20
+> > Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
+> I tested this in conjunction with "Alchemy: register platform device for
+> db1200..." successfully.
+>=20
+> Acked-by: Kevin Hickey <khickey@rmicorp.com>
 
+You're about a week too late ;)
 
+--=20
+     -- Pierre Ossman
 
-On Tue, 2008-07-29 at 18:58 +0200, Manuel Lauss wrote:
-> Hello,
-> 
-> Here's again a new set of patches to modernize Alchemy setup and PM code.
-> All patches have been compile-tested with db1100 and db1200 defconfigs,
-> and have been runnning on a few custom Au1250 boards for now more than
-> 5 weeks.  I've suspended and resumed a few hundred times while stressing
-> the system (continuous SD + CF reads while playing some wave files and
-> compiling sources).
-> 
-> #1 removes unused functions
-> #2 removes the cpu_table and replaces it with simpler code (IMHO of course)
-> #3 enables use of cp0 counter as a fallback,
-> #4 clockevent/clocksource support using one of the 2 counters of the Au1xxx
->    this also enables the use of the 'wait' instruction; depends on #3
-> #5 cleanup made possible with #4 
-> #7 and #8 fix suspend/resume.
-> #9 adds DBDMA suspend/resume support.
-> #10 replaces sysctl suspend interface with something better (IMO).
-> 
-> All patches depend on each other, have been run-tested on a custom AU1200
-> system and compile-tested with a minimal config on db1100 and db1200.
-> 
-> Changes V3->V4:
-> - rediffed against 2.6.27-rc1
-> - add patch #10.
-> 
-> Changes V2->V3:
-> - swap patches 1 and 2 
-> - minor refinements, no function changes.
-> 
-> Changes V1->V2:
-> - address Sergei's comments wrt. config[OD] handling
-> - change TOY clocksource to RTC clocksource
-> - add another patch (#5)
-> 
-> 
->  arch/mips/Kconfig                     |    8 
->  arch/mips/au1000/Kconfig              |    4 
->  arch/mips/au1000/common/Makefile      |    4 
->  arch/mips/au1000/common/clocks.c      |   65 +++--
->  arch/mips/au1000/common/cputable.c    |   52 ----
->  arch/mips/au1000/common/dbdma.c       |   65 +++++
->  arch/mips/au1000/common/dbg_io.c      |    4 
->  arch/mips/au1000/common/irq.c         |   57 ----
->  arch/mips/au1000/common/platform.c    |  257 ++++++++++++++++++++
->  arch/mips/au1000/common/power.c       |  421 ++++++----------------------------
->  arch/mips/au1000/common/setup.c       |   39 ---
->  arch/mips/au1000/common/sleeper.S     |  121 +++++----
->  arch/mips/au1000/common/time.c        |  305 ++++++++----------------
->  arch/mips/au1000/db1x00/Makefile      |    1 
->  arch/mips/au1000/mtx-1/Makefile       |    2 
->  arch/mips/au1000/pb1000/Makefile      |    1 
->  arch/mips/au1000/pb1100/Makefile      |    1 
->  arch/mips/au1000/pb1200/Makefile      |    2 
->  arch/mips/au1000/pb1500/Makefile      |    1 
->  arch/mips/au1000/pb1550/Makefile      |    1 
->  arch/mips/au1000/xxs1500/Makefile     |    1 
->  arch/mips/kernel/Makefile             |    4 
->  arch/mips/kernel/cevt-r4k.c           |    2 
->  arch/mips/kernel/csrc-r4k.c           |    2 
->  include/asm-mips/mach-au1x00/au1000.h |   64 +++--
->  include/asm-mips/time.h               |   24 +
->  26 files changed, 719 insertions(+), 789 deletions(-)
-> 
-> Thanks,
-> 	Manuel Lauss
-> 
--- 
-Kevin Hickey
-﻿Alchemy Solutions
-RMI Corporation
-khickey@RMICorp.com
-P: 512.691.8044
+  WARNING: This correspondence is being monitored by the
+  Swedish government. Make sure your server uses encryption
+  for SMTP traffic and consider using PGP for end-to-end
+  encryption.
+
+--=_freyr.drzeus.cx-22696-1218055969-0001-2
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.9 (GNU/Linux)
+
+iEYEARECAAYFAkiaDxAACgkQ7b8eESbyJLj2iwCgky1fYPgGVlFjn5Wiv3sGJxZF
+J74AnjHo4SjnoQynD1MHQ3bVYgxv6SZq
+=+HL8
+-----END PGP SIGNATURE-----
+
+--=_freyr.drzeus.cx-22696-1218055969-0001-2--

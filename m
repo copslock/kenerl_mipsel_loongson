@@ -1,57 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Aug 2008 10:12:49 +0100 (BST)
-Received: from mx0.towertech.it ([213.215.222.73]:46744 "HELO mx0.towertech.it")
-	by ftp.linux-mips.org with SMTP id S20024994AbYHGJMl (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Aug 2008 10:12:41 +0100
-Received: (qmail 8690 invoked from network); 7 Aug 2008 11:12:39 +0200
-Received: from unknown (HELO i1501.lan.towertech.it) (81.208.60.204)
-  by mx0.towertech.it with SMTP; 7 Aug 2008 11:12:39 +0200
-Date:	Thu, 7 Aug 2008 11:12:38 +0200
-From:	Alessandro Zummo <alessandro.zummo@towertech.it>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Aug 2008 10:13:12 +0100 (BST)
+Received: from ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk ([217.169.26.28]:5816
+	"EHLO ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk")
+	by ftp.linux-mips.org with ESMTP id S20023944AbYHGJMr (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Aug 2008 10:12:47 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m779CYvg010436;
+	Thu, 7 Aug 2008 10:12:37 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m779CXIw010434;
+	Thu, 7 Aug 2008 10:12:33 +0100
+Date:	Thu, 7 Aug 2008 10:12:33 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
 To:	Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	rtc-linux@googlegroups.com, linux-mips@linux-mips.org,
-	ralf@linux-mips.org
+Cc:	Alessandro Zummo <alessandro.zummo@towertech.it>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	rtc-linux@googlegroups.com, linux-mips@linux-mips.org
 Subject: Re: [PATCH] DS1286: new RTC driver
-Message-ID: <20080807111238.69e7e46e@i1501.lan.towertech.it>
+Message-ID: <20080807091233.GA10389@linux-mips.org>
+References: <20080803174137.AF8071DA6F4@solo.franken.de> <20080807105249.50d6e777@i1501.lan.towertech.it> <Pine.LNX.4.64.0808071102420.23641@anakin>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <Pine.LNX.4.64.0808071102420.23641@anakin>
-References: <20080803174137.AF8071DA6F4@solo.franken.de>
-	<20080807105249.50d6e777@i1501.lan.towertech.it>
-	<Pine.LNX.4.64.0808071102420.23641@anakin>
-Organization: Tower Technologies
-X-Mailer: Sylpheed
-X-This-Is-A-Real-Message: Yes
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <alessandro.zummo@towertech.it>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20147
+X-archive-position: 20148
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alessandro.zummo@towertech.it
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 7 Aug 2008 11:03:07 +0200 (CEST)
-Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+On Thu, Aug 07, 2008 at 11:03:07AM +0200, Geert Uytterhoeven wrote:
 
-> >  sizeof(struct ds1286_priv) is a little bit cleaner.  
+> > > +	priv = kzalloc(sizeof *priv, GFP_KERNEL);
+> > 
+> >  sizeof(struct ds1286_priv) is a little bit cleaner.
 > 
 > What if the type of priv changes?
 
- It shouldn't in such a small context . however, it is not required,
- is just my personal preference about readability.
+Then this code will more changes anyway ...
 
- parentheses around the sizeof are, ont he other side, required.
-
--- 
-
- Best regards,
-
- Alessandro Zummo,
-  Tower Technologies - Torino, Italy
-
-  http://www.towertech.it
+  Ralf

@@ -1,61 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Aug 2008 15:19:30 +0100 (BST)
-Received: from relay01.mx.bawue.net ([193.7.176.67]:48365 "EHLO
-	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
-	id S20024198AbYHGOTX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 7 Aug 2008 15:19:23 +0100
-Received: from lagash (p549ADE1B.dip.t-dialin.net [84.154.222.27])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by relay01.mx.bawue.net (Postfix) with ESMTP id C6F5C48919;
-	Thu,  7 Aug 2008 16:19:21 +0200 (CEST)
-Received: from ths by lagash with local (Exim 4.69)
-	(envelope-from <ths@networkno.de>)
-	id 1KR6Km-0000Fa-JJ; Thu, 07 Aug 2008 16:19:20 +0200
-Date:	Thu, 7 Aug 2008 16:19:20 +0200
-From:	Thiemo Seufer <ths@networkno.de>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	David Daney <ddaney@avtrex.com>,
-	Chris Friesen <cfriesen@nortel.com>, linux-mips@linux-mips.org
-Subject: Re: looking for help interpreting softlockup/stack trace
-Message-ID: <20080807141920.GA27494@networkno.de>
-References: <48989AFE.5000500@nortel.com> <20080805191618.GB8629@linux-mips.org> <4899F41C.5070401@avtrex.com> <20080807134323.GA15703@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 Aug 2008 21:38:16 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:48792 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S28577857AbYHGUiK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 7 Aug 2008 21:38:10 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1KRCFN-0004nb-00; Thu, 07 Aug 2008 22:38:09 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id C3E91C315C; Thu,  7 Aug 2008 22:38:06 +0200 (CEST)
+Date:	Thu, 7 Aug 2008 22:38:06 +0200
+To:	Alessandro Zummo <alessandro.zummo@towertech.it>
+Cc:	rtc-linux@googlegroups.com, linux-mips@linux-mips.org,
+	ralf@linux-mips.org
+Subject: Re: [PATCH v2] M48T35: new RTC driver
+Message-ID: <20080807203806.GA13369@alpha.franken.de>
+References: <20080804170025.CBA97C2EAC@solo.franken.de> <20080807105555.56d38c76@i1501.lan.towertech.it>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20080807134323.GA15703@linux-mips.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ths@networkno.de>
+In-Reply-To: <20080807105555.56d38c76@i1501.lan.towertech.it>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20152
+X-archive-position: 20153
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Wed, Aug 06, 2008 at 11:57:32AM -0700, David Daney wrote:
+On Thu, Aug 07, 2008 at 10:55:55AM +0200, Alessandro Zummo wrote:
+> On Mon,  4 Aug 2008 19:00:25 +0200 (CEST)
+> Thomas Bogendoerfer <tsbogend@alpha.franken.de> wrote:
 > 
-> >>> In the trace below, is "epc" the program counter at the time of the   
-> >>> timer interrupt?  How does "ra" fit into this, given that the 
-> >>> function  whose address it contains isn't seen in the stack trace 
-> >>> until quite a  ways down?
-> >>
-> >> $LBB378 is an internal symbol.  The value of RA may not be very informative
-> >> if it was overwritten by a random subroutine call.
-> >>
-> >
-> > I have thought about eliminating these internal labels when the module's symbols are read.  Would this make any sense?
+>  seems ok, please fix that one liner and you can
+>  send it to andrew with my 
 > 
-> I think so.  Maybe that could even be done when the module is linked.  I
-> don't think there are ever any relocations against these local symbols.
-> Thiemo?
+>   Acked-by: Alessandro Zummo <a.zummo@towertech.it>
 
-AFAIR all such symbols are branch labels or debug info labels, the module
-loader should never use them. (But I don't know if kgdb uses them.)
+excellent, is it okay to pass this through the MIPS tree together
+with the MIPS specific part ?
 
+Thomas.
 
-Thiemo
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2008 18:46:16 +0100 (BST)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:31617 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2008 18:46:40 +0100 (BST)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:18592 "EHLO
 	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S28591436AbYHLRm4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 12 Aug 2008 18:42:56 +0100
-Received: (qmail 9129 invoked from network); 12 Aug 2008 19:42:53 +0200
+	id S28591739AbYHLRm7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 12 Aug 2008 18:42:59 +0100
+Received: (qmail 9108 invoked from network); 12 Aug 2008 19:42:52 +0200
 Received: from flagship.roarinelk.net (HELO localhost.localdomain) (192.168.0.197)
-  by 192.168.0.1 with SMTP; 12 Aug 2008 19:42:53 +0200
+  by 192.168.0.1 with SMTP; 12 Aug 2008 19:42:52 +0200
 From:	Manuel Lauss <mano@roarinelk.homelinux.net>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	Kevin Hickey <khickey@rmicorp.com>,
 	Linux-MIPS <linux-mips@linux-mips.org>,
 	Manuel Lauss <mano@roarinelk.homelinux.net>
-Subject: [PATCH 09/10] Alchemy: dbdma suspend/resume support.
-Date:	Tue, 12 Aug 2008 19:42:50 +0200
-Message-Id: <46ed1e347f8a291f4d48762f12e19f6ac96b7963.1218561746.git.mano@roarinelk.homelinux.net>
+Subject: [PATCH 05/10] Alchemy: move calc_clock function.
+Date:	Tue, 12 Aug 2008 19:42:46 +0200
+Message-Id: <fb9afb3b76528567fbfb26df82231ae6cb78a185.1218561745.git.mano@roarinelk.homelinux.net>
 X-Mailer: git-send-email 1.5.6.4
 In-Reply-To: <cover.1218561745.git.mano@roarinelk.homelinux.net>
 References: <cover.1218561745.git.mano@roarinelk.homelinux.net>
@@ -23,7 +23,7 @@ Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20188
+X-archive-position: 20189
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,131 +31,187 @@ X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-Implement suspend/resume for DBDMA controller and its channels.
+Now that nothing in time.c depends on calc_clock, it can
+be moved to clocks.c where it belongs.
+While at it, give it a better non-generic name and call it
+as soon as possible in plat_mem_init.
 
 Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
 ---
- arch/mips/au1000/common/dbdma.c |   65 +++++++++++++++++++++++++++++++++++++++
- arch/mips/au1000/common/power.c |   12 +++++++
- 2 files changed, 77 insertions(+), 0 deletions(-)
+ arch/mips/au1000/common/clocks.c |   54 ++++++++++++++++++++++++++++++++++++++
+ arch/mips/au1000/common/setup.c  |    9 ++++++
+ arch/mips/au1000/common/time.c   |   54 --------------------------------------
+ 3 files changed, 63 insertions(+), 54 deletions(-)
 
-diff --git a/arch/mips/au1000/common/dbdma.c b/arch/mips/au1000/common/dbdma.c
-index 601ee91..3ab6d80 100644
---- a/arch/mips/au1000/common/dbdma.c
-+++ b/arch/mips/au1000/common/dbdma.c
-@@ -174,6 +174,11 @@ static dbdev_tab_t dbdev_tab[] = {
+diff --git a/arch/mips/au1000/common/clocks.c b/arch/mips/au1000/common/clocks.c
+index a8170fd..d899185 100644
+--- a/arch/mips/au1000/common/clocks.c
++++ b/arch/mips/au1000/common/clocks.c
+@@ -27,11 +27,21 @@
+  */
  
- #define DBDEV_TAB_SIZE	ARRAY_SIZE(dbdev_tab)
+ #include <linux/module.h>
++#include <linux/spinlock.h>
++#include <asm/time.h>
+ #include <asm/mach-au1x00/au1000.h>
  
-+#ifdef CONFIG_PM
-+static u32 au1xxx_dbdma_pm_regs[NUM_DBDMA_CHANS + 1][8];
-+#endif
++/*
++ * I haven't found anyone that doesn't use a 12 MHz source clock,
++ * but just in case.....
++ */
++#define AU1000_SRC_CLK	12000000
 +
-+
- static chan_tab_t *chan_tab_ptr[NUM_DBDMA_CHANS];
+ static unsigned int au1x00_clock; /*  Hz */
+ static unsigned long uart_baud_base;
  
- static dbdev_tab_t *find_dbdev_id(u32 id)
-@@ -975,4 +980,64 @@ u32 au1xxx_dbdma_put_dscr(u32 chanid, au1x_ddma_desc_t *dscr)
- 	return nbytes;
- }
- 
-+#ifdef CONFIG_PM
-+void au1xxx_dbdma_suspend(void)
-+{
-+	int i;
-+	u32 addr;
++static DEFINE_SPINLOCK(time_lock);
 +
-+	addr = DDMA_GLOBAL_BASE;
-+	au1xxx_dbdma_pm_regs[0][0] = au_readl(addr + 0x00);
-+	au1xxx_dbdma_pm_regs[0][1] = au_readl(addr + 0x04);
-+	au1xxx_dbdma_pm_regs[0][2] = au_readl(addr + 0x08);
-+	au1xxx_dbdma_pm_regs[0][3] = au_readl(addr + 0x0c);
-+
-+	/* save channel configurations */
-+	for (i = 1, addr = DDMA_CHANNEL_BASE; i < NUM_DBDMA_CHANS; i++) {
-+		au1xxx_dbdma_pm_regs[i][0] = au_readl(addr + 0x00);
-+		au1xxx_dbdma_pm_regs[i][1] = au_readl(addr + 0x04);
-+		au1xxx_dbdma_pm_regs[i][2] = au_readl(addr + 0x08);
-+		au1xxx_dbdma_pm_regs[i][3] = au_readl(addr + 0x0c);
-+		au1xxx_dbdma_pm_regs[i][4] = au_readl(addr + 0x10);
-+		au1xxx_dbdma_pm_regs[i][5] = au_readl(addr + 0x14);
-+		au1xxx_dbdma_pm_regs[i][6] = au_readl(addr + 0x18);
-+
-+		/* halt channel */
-+		au_writel(au1xxx_dbdma_pm_regs[i][0] & ~1, addr + 0x00);
-+		au_sync();
-+		while (!(au_readl(addr + 0x14) & 1))
-+			au_sync();
-+
-+		addr += 0x100;	/* next channel base */
-+	}
-+	/* disable channel interrupts */
-+	au_writel(0, DDMA_GLOBAL_BASE + 0x0c);
-+	au_sync();
-+}
-+
-+void au1xxx_dbdma_resume(void)
-+{
-+	int i;
-+	u32 addr;
-+
-+	addr = DDMA_GLOBAL_BASE;
-+	au_writel(au1xxx_dbdma_pm_regs[0][0], addr + 0x00);
-+	au_writel(au1xxx_dbdma_pm_regs[0][1], addr + 0x04);
-+	au_writel(au1xxx_dbdma_pm_regs[0][2], addr + 0x08);
-+	au_writel(au1xxx_dbdma_pm_regs[0][3], addr + 0x0c);
-+
-+	/* restore channel configurations */
-+	for (i = 1, addr = DDMA_CHANNEL_BASE; i < NUM_DBDMA_CHANS; i++) {
-+		au_writel(au1xxx_dbdma_pm_regs[i][0], addr + 0x00);
-+		au_writel(au1xxx_dbdma_pm_regs[i][1], addr + 0x04);
-+		au_writel(au1xxx_dbdma_pm_regs[i][2], addr + 0x08);
-+		au_writel(au1xxx_dbdma_pm_regs[i][3], addr + 0x0c);
-+		au_writel(au1xxx_dbdma_pm_regs[i][4], addr + 0x10);
-+		au_writel(au1xxx_dbdma_pm_regs[i][5], addr + 0x14);
-+		au_writel(au1xxx_dbdma_pm_regs[i][6], addr + 0x18);
-+		au_sync();
-+		addr += 0x100;	/* next channel base */
-+	}
-+}
-+#endif	/* CONFIG_PM */
- #endif /* defined(CONFIG_SOC_AU1550) || defined(CONFIG_SOC_AU1200) */
-diff --git a/arch/mips/au1000/common/power.c b/arch/mips/au1000/common/power.c
-index ba4c946..1057a73 100644
---- a/arch/mips/au1000/common/power.c
-+++ b/arch/mips/au1000/common/power.c
-@@ -33,6 +33,10 @@
- extern void save_and_sleep(void);
- extern void save_au1xxx_intctl(void);
- extern void restore_au1xxx_intctl(void);
-+#if defined(CONFIG_SOC_AU1550) || defined(CONFIG_SOC_AU1200)
-+extern void au1xxx_dbdma_suspend(void);
-+extern void au1xxx_dbdma_resume(void);
-+#endif
- 
  /*
-  * We need to save/restore a bunch of core registers that are
-@@ -120,6 +124,10 @@ static void save_core_regs(void)
- 	sleep_static_memctlr[3][0] = au_readl(MEM_STCFG3);
- 	sleep_static_memctlr[3][1] = au_readl(MEM_STTIME3);
- 	sleep_static_memctlr[3][2] = au_readl(MEM_STADDR3);
-+
-+#if defined(CONFIG_SOC_AU1550) || defined(CONFIG_SOC_AU1200)
-+	au1xxx_dbdma_suspend();
-+#endif
+  * Set the au1000_clock
+  */
+@@ -60,3 +70,47 @@ void set_au1x00_uart_baud_base(unsigned long new_baud_base)
+ {
+ 	uart_baud_base = new_baud_base;
  }
- 
- static void restore_core_regs(void)
-@@ -185,6 +193,10 @@ static void restore_core_regs(void)
- 	}
- 
- 	restore_au1xxx_intctl();
 +
-+#if defined(CONFIG_SOC_AU1550) || defined(CONFIG_SOC_AU1200)
-+	au1xxx_dbdma_resume();
++/*
++ * We read the real processor speed from the PLL.  This is important
++ * because it is more accurate than computing it from the 32 KHz
++ * counter, if it exists.  If we don't have an accurate processor
++ * speed, all of the peripherals that derive their clocks based on
++ * this advertised speed will introduce error and sometimes not work
++ * properly.  This function is futher convoluted to still allow configurations
++ * to do that in case they have really, really old silicon with a
++ * write-only PLL register.			-- Dan
++ */
++unsigned long au1xxx_calc_clock(void)
++{
++	unsigned long cpu_speed;
++	unsigned long flags;
++
++	spin_lock_irqsave(&time_lock, flags);
++
++	/*
++	 * On early Au1000, sys_cpupll was write-only. Since these
++	 * silicon versions of Au1000 are not sold by AMD, we don't bend
++	 * over backwards trying to determine the frequency.
++	 */
++	if (au1xxx_cpu_has_pll_wo())
++#ifdef CONFIG_SOC_AU1000_FREQUENCY
++		cpu_speed = CONFIG_SOC_AU1000_FREQUENCY;
++#else
++		cpu_speed = 396000000;
 +#endif
- }
++	else
++		cpu_speed = (au_readl(SYS_CPUPLL) & 0x0000003f) * AU1000_SRC_CLK;
++
++	/* On Alchemy CPU:counter ratio is 1:1 */
++	mips_hpt_frequency = cpu_speed;
++	/* Equation: Baudrate = CPU / (SD * 2 * CLKDIV * 16) */
++	set_au1x00_uart_baud_base(cpu_speed / (2 * ((int)(au_readl(SYS_POWERCTRL)
++							  & 0x03) + 2) * 16));
++
++	spin_unlock_irqrestore(&time_lock, flags);
++
++	set_au1x00_speed(cpu_speed);
++
++	return cpu_speed;
++}
+diff --git a/arch/mips/au1000/common/setup.c b/arch/mips/au1000/common/setup.c
+index b6242c6..c5bd251 100644
+--- a/arch/mips/au1000/common/setup.c
++++ b/arch/mips/au1000/common/setup.c
+@@ -41,10 +41,19 @@ extern void __init board_setup(void);
+ extern void au1000_restart(char *);
+ extern void au1000_halt(void);
+ extern void au1000_power_off(void);
++extern unsigned long au1xxx_calc_clock(void);
  
- void au_sleep(void)
+ void __init plat_mem_setup(void)
+ {
+ 	char *argptr;
++	unsigned long est_freq;
++
++	/* determine core clock */
++	est_freq = au1xxx_calc_clock();
++	est_freq += 5000;    /* round */
++	est_freq -= est_freq % 10000;
++	printk(KERN_INFO "(PRId %08x) @ %lu.%02lu MHz\n", read_c0_prid(),
++	       est_freq / 1000000, ((est_freq % 1000000) * 100) / 1000000);
+ 
+ 	board_setup();  /* board specific setup */
+ 
+diff --git a/arch/mips/au1000/common/time.c b/arch/mips/au1000/common/time.c
+index fe859c1..0de9a43 100644
+--- a/arch/mips/au1000/common/time.c
++++ b/arch/mips/au1000/common/time.c
+@@ -47,53 +47,6 @@
+ 
+ extern int allow_au1k_wait; /* default off for CP0 Counter */
+ 
+-static DEFINE_SPINLOCK(time_lock);
+-
+-/*
+- * I haven't found anyone that doesn't use a 12 MHz source clock,
+- * but just in case.....
+- */
+-#define AU1000_SRC_CLK	12000000
+-
+-/*
+- * We read the real processor speed from the PLL.  This is important
+- * because it is more accurate than computing it from the 32 KHz
+- * counter, if it exists.  If we don't have an accurate processor
+- * speed, all of the peripherals that derive their clocks based on
+- * this advertised speed will introduce error and sometimes not work
+- * properly.  This function is futher convoluted to still allow configurations
+- * to do that in case they have really, really old silicon with a
+- * write-only PLL register.			-- Dan
+- */
+-unsigned long calc_clock(void)
+-{
+-	unsigned long cpu_speed;
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&time_lock, flags);
+-
+-	/*
+-	 * On early Au1000, sys_cpupll was write-only. Since these
+-	 * silicon versions of Au1000 are not sold by AMD, we don't bend
+-	 * over backwards trying to determine the frequency.
+-	 */
+-	if (au1xxx_cpu_has_pll_wo())
+-#ifdef CONFIG_SOC_AU1000_FREQUENCY
+-		cpu_speed = CONFIG_SOC_AU1000_FREQUENCY;
+-#else
+-		cpu_speed = 396000000;
+-#endif
+-	else
+-		cpu_speed = (au_readl(SYS_CPUPLL) & 0x0000003f) * AU1000_SRC_CLK;
+-	/* On Alchemy CPU:counter ratio is 1:1 */
+-	mips_hpt_frequency = cpu_speed;
+-	/* Equation: Baudrate = CPU / (SD * 2 * CLKDIV * 16) */
+-	set_au1x00_uart_baud_base(cpu_speed / (2 * ((int)(au_readl(SYS_POWERCTRL)
+-							  & 0x03) + 2) * 16));
+-	spin_unlock_irqrestore(&time_lock, flags);
+-	return cpu_speed;
+-}
+-
+ static cycle_t au1x_counter1_read(void)
+ {
+ 	return au_readl(SYS_RTCREAD);
+@@ -148,13 +101,6 @@ void __init plat_time_init(void)
+ {
+ 	struct clock_event_device *cd = &au1x_rtcmatch2_clockdev;
+ 	unsigned long t;
+-	unsigned int est_freq = calc_clock();
+-
+-	est_freq += 5000;    /* round */
+-	est_freq -= est_freq%10000;
+-	printk(KERN_INFO "(PRId %08x) @ %u.%02u MHz\n", read_c0_prid(),
+-	       est_freq / 1000000, ((est_freq % 1000000) * 100) / 1000000);
+-	set_au1x00_speed(est_freq);
+ 
+ 	/* Check if firmware (YAMON, ...) has enabled 32kHz and clock
+ 	 * has been detected.  If so install the rtcmatch2 clocksource,
 -- 
 1.5.6.4

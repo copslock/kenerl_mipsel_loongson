@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2008 18:44:38 +0100 (BST)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:22965 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2008 18:45:02 +0100 (BST)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:17565 "EHLO
 	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S28592148AbYHLRmy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 12 Aug 2008 18:42:54 +0100
-Received: (qmail 9090 invoked from network); 12 Aug 2008 19:42:52 +0200
+	id S28591387AbYHLRmz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 12 Aug 2008 18:42:55 +0100
+Received: (qmail 9114 invoked from network); 12 Aug 2008 19:42:53 +0200
 Received: from flagship.roarinelk.net (HELO localhost.localdomain) (192.168.0.197)
-  by 192.168.0.1 with SMTP; 12 Aug 2008 19:42:52 +0200
+  by 192.168.0.1 with SMTP; 12 Aug 2008 19:42:53 +0200
 From:	Manuel Lauss <mano@roarinelk.homelinux.net>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	Kevin Hickey <khickey@rmicorp.com>,
 	Linux-MIPS <linux-mips@linux-mips.org>,
 	Manuel Lauss <mano@roarinelk.homelinux.net>
-Subject: [PATCH 02/10] Alchemy: remove cpu_table.
-Date:	Tue, 12 Aug 2008 19:42:43 +0200
-Message-Id: <4a70afabbc14950dfcb583fb247afa4dad1273fa.1218561745.git.mano@roarinelk.homelinux.net>
+Subject: [PATCH 06/10] Alchemy: compile platform.c only when building for a demoboard.
+Date:	Tue, 12 Aug 2008 19:42:47 +0200
+Message-Id: <951b44bafad51280397ccb3bb6d855b9b7ffbf94.1218561745.git.mano@roarinelk.homelinux.net>
 X-Mailer: git-send-email 1.5.6.4
 In-Reply-To: <cover.1218561745.git.mano@roarinelk.homelinux.net>
 References: <cover.1218561745.git.mano@roarinelk.homelinux.net>
@@ -23,7 +23,7 @@ Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20184
+X-archive-position: 20185
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,235 +31,142 @@ X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-Remove the cpu_table:
-- move detection of whether c0_config[OD] is read-only and should be set
-  to fix various chip errata to au1000 headers.
-- move detection of write-only sys_cpupll to au1000 headers.
-- remove the BCLK switching code:  Activation of this features should be
-  left to the boards using the chips since it also affects external devices
-  tied to BCLK, and only the board designers know whether it is safe to
-  enable.
+The platform.c registers devices not all boards might need/want,
+and it makes adding platform data to drivers needlessly ugly and
+complicated.
+
+Most (all?) in-kernel users of Au1xxx are demoboards, and the file
+in question somewhat reflects that.  Remove the platform.c from the
+common Alchemy Makefile and add it to the Makefiles of the boards.
+Existing behavior of all in-kernel boards is not changed in any way.
 
 Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
 ---
- arch/mips/au1000/common/Makefile      |    2 +-
- arch/mips/au1000/common/cputable.c    |   52 -----------------------------
- arch/mips/au1000/common/setup.c       |   26 +--------------
- arch/mips/au1000/common/time.c        |    4 +-
- include/asm-mips/mach-au1x00/au1000.h |   58 +++++++++++++++++++++-----------
- 5 files changed, 42 insertions(+), 100 deletions(-)
- delete mode 100644 arch/mips/au1000/common/cputable.c
+ arch/mips/au1000/common/Makefile   |    2 +-
+ arch/mips/au1000/common/platform.c |    7 ++++++-
+ arch/mips/au1000/db1x00/Makefile   |    1 +
+ arch/mips/au1000/mtx-1/Makefile    |    2 +-
+ arch/mips/au1000/pb1000/Makefile   |    1 +
+ arch/mips/au1000/pb1100/Makefile   |    1 +
+ arch/mips/au1000/pb1200/Makefile   |    2 +-
+ arch/mips/au1000/pb1500/Makefile   |    1 +
+ arch/mips/au1000/pb1550/Makefile   |    1 +
+ arch/mips/au1000/xxs1500/Makefile  |    1 +
+ 10 files changed, 15 insertions(+), 4 deletions(-)
 
 diff --git a/arch/mips/au1000/common/Makefile b/arch/mips/au1000/common/Makefile
-index df48fd6..27bf73d 100644
+index 27bf73d..7265109 100644
 --- a/arch/mips/au1000/common/Makefile
 +++ b/arch/mips/au1000/common/Makefile
-@@ -7,7 +7,7 @@
+@@ -6,7 +6,7 @@
+ #
  
  obj-y += prom.o irq.o puts.o time.o reset.o \
- 	au1xxx_irqmap.o clocks.o platform.o power.o setup.o \
--	sleeper.o cputable.o dma.o dbdma.o gpio.o
-+	sleeper.o dma.o dbdma.o gpio.o
+-	au1xxx_irqmap.o clocks.o platform.o power.o setup.o \
++	au1xxx_irqmap.o clocks.o power.o setup.o \
+ 	sleeper.o dma.o dbdma.o gpio.o
  
  obj-$(CONFIG_PCI)		+= pci.o
+diff --git a/arch/mips/au1000/common/platform.c b/arch/mips/au1000/common/platform.c
+index dc8a67e..66d6770 100644
+--- a/arch/mips/au1000/common/platform.c
++++ b/arch/mips/au1000/common/platform.c
+@@ -1,5 +1,5 @@
+ /*
+- * Platform device support for Au1x00 SoCs.
++ * Common device support for Au1x00 demoboards.
+  *
+  * Copyright 2004, Matt Porter <mporter@kernel.crashing.org>
+  *
+@@ -9,6 +9,11 @@
+  * This file is licensed under the terms of the GNU General Public
+  * License version 2.  This program is licensed "as is" without any
+  * warranty of any kind, whether express or implied.
++ *
++ * This file is intended to be included by all db1xxx/pb1xxx demoboards,
++ * and is currently used by all the in-tree ones.  If your system does
++ * not want/need all the devices registered in here (like mine) then
++ * simply don't include it in your Makefile ;-)
+  */
  
-diff --git a/arch/mips/au1000/common/cputable.c b/arch/mips/au1000/common/cputable.c
-deleted file mode 100644
-index ba6430b..0000000
---- a/arch/mips/au1000/common/cputable.c
-+++ /dev/null
-@@ -1,52 +0,0 @@
--/*
-- *  arch/mips/au1000/common/cputable.c
-- *
-- *  Copyright (C) 2004 Dan Malek (dan@embeddededge.com)
-- *	Copied from PowerPC and updated for Alchemy Au1xxx processors.
-- *
-- *  Copyright (C) 2001 Ben. Herrenschmidt (benh@kernel.crashing.org)
-- *
-- *  This program is free software; you can redistribute it and/or
-- *  modify it under the terms of the GNU General Public License
-- *  as published by the Free Software Foundation; either version
-- *  2 of the License, or (at your option) any later version.
-- */
--
--#include <asm/mach-au1x00/au1000.h>
--
--struct cpu_spec *cur_cpu_spec[NR_CPUS];
--
--/* With some thought, we can probably use the mask to reduce the
-- * size of the table.
-- */
--struct cpu_spec cpu_specs[] = {
--	{ 0xffffffff, 0x00030100, "Au1000 DA", 1, 0, 1 },
--	{ 0xffffffff, 0x00030201, "Au1000 HA", 1, 0, 1 },
--	{ 0xffffffff, 0x00030202, "Au1000 HB", 1, 0, 1 },
--	{ 0xffffffff, 0x00030203, "Au1000 HC", 1, 1, 0 },
--	{ 0xffffffff, 0x00030204, "Au1000 HD", 1, 1, 0 },
--	{ 0xffffffff, 0x01030200, "Au1500 AB", 1, 1, 0 },
--	{ 0xffffffff, 0x01030201, "Au1500 AC", 0, 1, 0 },
--	{ 0xffffffff, 0x01030202, "Au1500 AD", 0, 1, 0 },
--	{ 0xffffffff, 0x02030200, "Au1100 AB", 1, 1, 0 },
--	{ 0xffffffff, 0x02030201, "Au1100 BA", 1, 1, 0 },
--	{ 0xffffffff, 0x02030202, "Au1100 BC", 1, 1, 0 },
--	{ 0xffffffff, 0x02030203, "Au1100 BD", 0, 1, 0 },
--	{ 0xffffffff, 0x02030204, "Au1100 BE", 0, 1, 0 },
--	{ 0xffffffff, 0x03030200, "Au1550 AA", 0, 1, 0 },
--	{ 0xffffffff, 0x04030200, "Au1200 AB", 0, 0, 0 },
--	{ 0xffffffff, 0x04030201, "Au1200 AC", 1, 0, 0 },
--	{ 0x00000000, 0x00000000, "Unknown Au1xxx", 1, 0, 0 }
--};
--
--void set_cpuspec(void)
--{
--	struct	cpu_spec *sp;
--	u32	prid;
--
--	prid = read_c0_prid();
--	sp = cpu_specs;
--	while ((prid & sp->prid_mask) != sp->prid_value)
--		sp++;
--	cur_cpu_spec[0] = sp;
--}
-diff --git a/arch/mips/au1000/common/setup.c b/arch/mips/au1000/common/setup.c
-index 1ac6b06..8f06440 100644
---- a/arch/mips/au1000/common/setup.c
-+++ b/arch/mips/au1000/common/setup.c
-@@ -41,38 +41,14 @@ extern void __init board_setup(void);
- extern void au1000_restart(char *);
- extern void au1000_halt(void);
- extern void au1000_power_off(void);
--extern void set_cpuspec(void);
+ #include <linux/dma-mapping.h>
+diff --git a/arch/mips/au1000/db1x00/Makefile b/arch/mips/au1000/db1x00/Makefile
+index 274db3b..3bfec10 100644
+--- a/arch/mips/au1000/db1x00/Makefile
++++ b/arch/mips/au1000/db1x00/Makefile
+@@ -6,3 +6,4 @@
+ #
  
- void __init plat_mem_setup(void)
- {
--	struct	cpu_spec *sp;
- 	char *argptr;
--	unsigned long prid, cpufreq, bclk;
--
--	set_cpuspec();
--	sp = cur_cpu_spec[0];
+ lib-y := init.o board_setup.o irqmap.o
++obj-y := ../common/platform.o
+diff --git a/arch/mips/au1000/mtx-1/Makefile b/arch/mips/au1000/mtx-1/Makefile
+index 7c67b3d..ef98975 100644
+--- a/arch/mips/au1000/mtx-1/Makefile
++++ b/arch/mips/au1000/mtx-1/Makefile
+@@ -7,6 +7,6 @@
+ #
  
- 	board_setup();  /* board specific setup */
+ lib-y := init.o board_setup.o irqmap.o
+-obj-y := platform.o
++obj-y := platform.o ../common/platform.o
  
--	prid = read_c0_prid();
--	if (sp->cpu_pll_wo)
--#ifdef CONFIG_SOC_AU1000_FREQUENCY
--		cpufreq = CONFIG_SOC_AU1000_FREQUENCY / 1000000;
--#else
--		cpufreq = 396;
--#endif
--	else
--		cpufreq = (au_readl(SYS_CPUPLL) & 0x3F) * 12;
--	printk(KERN_INFO "(PRID %08lx) @ %ld MHz\n", prid, cpufreq);
--
--	if (sp->cpu_bclk) {
--		/* Enable BCLK switching */
--		bclk = au_readl(SYS_POWERCTRL);
--		au_writel(bclk | 0x60, SYS_POWERCTRL);
--		printk(KERN_INFO "BCLK switching enabled!\n");
--	}
--
--	if (sp->cpu_od)
-+	if (au1xxx_cpu_needs_config_od())
- 		/* Various early Au1xx0 errata corrected by this */
- 		set_c0_config(1 << 19); /* Set Config[OD] */
- 	else
-diff --git a/arch/mips/au1000/common/time.c b/arch/mips/au1000/common/time.c
-index 68d7142..1518570 100644
---- a/arch/mips/au1000/common/time.c
-+++ b/arch/mips/au1000/common/time.c
-@@ -198,7 +198,7 @@ unsigned long calc_clock(void)
- 	 * silicon versions of Au1000 are not sold by AMD, we don't bend
- 	 * over backwards trying to determine the frequency.
- 	 */
--	if (cur_cpu_spec[0]->cpu_pll_wo)
-+	if (au1xxx_cpu_has_pll_wo())
- #ifdef CONFIG_SOC_AU1000_FREQUENCY
- 		cpu_speed = CONFIG_SOC_AU1000_FREQUENCY;
- #else
-@@ -221,7 +221,7 @@ void __init plat_time_init(void)
+ EXTRA_CFLAGS += -Werror
+diff --git a/arch/mips/au1000/pb1000/Makefile b/arch/mips/au1000/pb1000/Makefile
+index 99bbec0..41a09be 100644
+--- a/arch/mips/au1000/pb1000/Makefile
++++ b/arch/mips/au1000/pb1000/Makefile
+@@ -6,3 +6,4 @@
+ #
  
- 	est_freq += 5000;    /* round */
- 	est_freq -= est_freq%10000;
--	printk(KERN_INFO "CPU frequency %u.%02u MHz\n",
-+	printk(KERN_INFO "(PRId %08x) @ %u.%02u MHz\n", read_c0_prid(),
- 	       est_freq / 1000000, ((est_freq % 1000000) * 100) / 1000000);
- 	set_au1x00_speed(est_freq);
+ lib-y := init.o board_setup.o irqmap.o
++obj-y := ../common/platform.o
+diff --git a/arch/mips/au1000/pb1100/Makefile b/arch/mips/au1000/pb1100/Makefile
+index 793e97c..1a8cd71 100644
+--- a/arch/mips/au1000/pb1100/Makefile
++++ b/arch/mips/au1000/pb1100/Makefile
+@@ -6,3 +6,4 @@
+ #
  
-diff --git a/include/asm-mips/mach-au1x00/au1000.h b/include/asm-mips/mach-au1x00/au1000.h
-index 8d2ced6..7245960 100644
---- a/include/asm-mips/mach-au1x00/au1000.h
-+++ b/include/asm-mips/mach-au1x00/au1000.h
-@@ -91,6 +91,44 @@ static inline u32 au_readl(unsigned long reg)
- 	return *(volatile u32 *)reg;
- }
+ lib-y := init.o board_setup.o irqmap.o
++obj-y := ../common/platform.o
+diff --git a/arch/mips/au1000/pb1200/Makefile b/arch/mips/au1000/pb1200/Makefile
+index d678adf..7b9f2f5 100644
+--- a/arch/mips/au1000/pb1200/Makefile
++++ b/arch/mips/au1000/pb1200/Makefile
+@@ -3,6 +3,6 @@
+ #
  
-+/* Early Au1000 have a write-only SYS_CPUPLL register. */
-+static inline int au1xxx_cpu_has_pll_wo(void)
-+{
-+	switch (read_c0_prid()) {
-+	case 0x00030100:	/* Au1000 DA */
-+	case 0x00030201:	/* Au1000 HA */
-+	case 0x00030202:	/* Au1000 HB */
-+		return 1;
-+	}
-+	return 0;
-+}
-+
-+/* does CPU need CONFIG[OD] set to fix tons of errata? */
-+static inline int au1xxx_cpu_needs_config_od(void)
-+{
-+	/*
-+	 * c0_config.od (bit 19) was write only (and read as 0) on the
-+	 * early revisions of Alchemy SOCs.  It disables the bus trans-
-+	 * action overlapping and needs to be set to fix various errata.
-+	 */
-+	switch (read_c0_prid()) {
-+	case 0x00030100: /* Au1000 DA */
-+	case 0x00030201: /* Au1000 HA */
-+	case 0x00030202: /* Au1000 HB */
-+	case 0x01030200: /* Au1500 AB */
-+	/*
-+	 * Au1100/Au1200 errata actually keep silence about this bit,
-+	 * so we set it just in case for those revisions that require
-+	 * it to be set according to the (now gone) cpu_table.
-+	 */
-+	case 0x02030200: /* Au1100 AB */
-+	case 0x02030201: /* Au1100 BA */
-+	case 0x02030202: /* Au1100 BC */
-+	case 0x04030201: /* Au1200 AC */
-+		return 1;
-+	}
-+	return 0;
-+}
+ lib-y := init.o board_setup.o irqmap.o
+-obj-y += platform.o
++obj-y += platform.o ../common/platform.o
  
- /* arch/mips/au1000/common/clocks.c */
- extern void set_au1x00_speed(unsigned int new_freq);
-@@ -1747,24 +1785,4 @@ static AU1X00_SYS * const sys = (AU1X00_SYS *)SYS_BASE;
+ EXTRA_CFLAGS += -Werror
+diff --git a/arch/mips/au1000/pb1500/Makefile b/arch/mips/au1000/pb1500/Makefile
+index 602f38d..c12e1bd 100644
+--- a/arch/mips/au1000/pb1500/Makefile
++++ b/arch/mips/au1000/pb1500/Makefile
+@@ -6,3 +6,4 @@
+ #
  
- #endif
+ lib-y := init.o board_setup.o irqmap.o
++obj-y := ../common/platform.o
+diff --git a/arch/mips/au1000/pb1550/Makefile b/arch/mips/au1000/pb1550/Makefile
+index 7d8beca..8df0890 100644
+--- a/arch/mips/au1000/pb1550/Makefile
++++ b/arch/mips/au1000/pb1550/Makefile
+@@ -6,3 +6,4 @@
+ #
  
--/*
-- * Processor information based on PRID.
-- * Copied from PowerPC.
-- */
--#ifndef _LANGUAGE_ASSEMBLY
--struct cpu_spec {
--	/* CPU is matched via (PRID & prid_mask) == prid_value */
--	unsigned int	prid_mask;
--	unsigned int	prid_value;
--
--	char		*cpu_name;
--	unsigned char	cpu_od;		/* Set Config[OD] */
--	unsigned char	cpu_bclk;	/* Enable BCLK switching */
--	unsigned char	cpu_pll_wo;	/* sys_cpupll reg. write-only */
--};
--
--extern struct cpu_spec	cpu_specs[];
--extern struct cpu_spec	*cur_cpu_spec[];
--#endif
--
- #endif
+ lib-y := init.o board_setup.o irqmap.o
++obj-y := ../common/platform.o
+diff --git a/arch/mips/au1000/xxs1500/Makefile b/arch/mips/au1000/xxs1500/Makefile
+index db3c526..86db0f7 100644
+--- a/arch/mips/au1000/xxs1500/Makefile
++++ b/arch/mips/au1000/xxs1500/Makefile
+@@ -6,3 +6,4 @@
+ #
+ 
+ lib-y := init.o board_setup.o irqmap.o
++obj-y := ../common/platform.o
 -- 
 1.5.6.4

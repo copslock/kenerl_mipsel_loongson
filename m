@@ -1,295 +1,116 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2008 06:48:32 +0100 (BST)
-Received: from smtp14.dti.ne.jp ([202.216.231.189]:25291 "EHLO
-	smtp14.dti.ne.jp") by ftp.linux-mips.org with ESMTP
-	id S20024455AbYHLFsZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 12 Aug 2008 06:48:25 +0100
-Received: from [192.168.1.3] (PPPax964.tokyo-ip.dti.ne.jp [210.159.155.214]) by smtp14.dti.ne.jp (3.11s) with ESMTP AUTH id m7C5mGbb010822 for <linux-mips@linux-mips.org>; Tue, 12 Aug 2008 14:48:20 +0900 (JST)
-Message-ID: <48A12420.9090904@ruby.dti.ne.jp>
-Date:	Tue, 12 Aug 2008 14:48:16 +0900
-From:	Shinya Kuribayashi <skuribay@ruby.dti.ne.jp>
-User-Agent: Thunderbird 2.0.0.16 (X11/20080707)
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 Aug 2008 09:42:33 +0100 (BST)
+Received: from minnie.intcom.nl ([217.115.199.145]:65233 "EHLO
+	minnie.intcom.nl") by ftp.linux-mips.org with ESMTP
+	id S20028879AbYHLIm1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 12 Aug 2008 09:42:27 +0100
+Received: from localhost (minnie.intcom.nl [127.0.0.1])
+	by minnie.intcom.nl (Postfix) with ESMTP id 52267374848;
+	Tue, 12 Aug 2008 10:42:26 +0200 (CEST)
+X-Virus-Scanned: IntCom scan amavisd-new at minnie.intcom.nl
+Received: from minnie.intcom.nl ([127.0.0.1])
+	by localhost (minnie.intcom.nl [127.0.0.1]) (amavisd-new, port 10024)
+	with LMTP id kzsmsL-ExgrH; Tue, 12 Aug 2008 10:42:25 +0200 (CEST)
+Received: by minnie.intcom.nl (Postfix, from userid 1000)
+	id 457993748D8; Tue, 12 Aug 2008 10:42:25 +0200 (CEST)
+Date:	Tue, 12 Aug 2008 10:42:25 +0200
+From:	Freddy Spierenburg <freddy@dusktilldawn.nl>
 To:	linux-mips@linux-mips.org
-Subject: [MIPS] Add missing GPL references of some asm headers
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <skuribay@ruby.dti.ne.jp>
+Cc:	Antonino Daplas <adaplas@gmail.com>, source@embeddedalley.com
+Subject: Re: [PATCH] Fixes small option parsing bug in au1100fb.c.
+Message-ID: <20080812084225.GA5879@dusktilldawn.nl>
+References: <20080108113944.GG31548@dusktilldawn.nl>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="xXmbgvnjoT4axfJE"
+Content-Disposition: inline
+In-Reply-To: <20080108113944.GG31548@dusktilldawn.nl>
+X-User-Agent-Feature: All mail clients suck. This one just sucks less.
+X-GPG-Key: http://snarl.nl/~freddy/keys/freddyPublicKey.gpg
+User-Agent: Mutt/1.5.17+20080114 (2008-01-14)
+Return-Path: <freddy@dusktilldawn.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20173
+X-archive-position: 20174
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: skuribay@ruby.dti.ne.jp
+X-original-sender: freddy@dusktilldawn.nl
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: Shinya Kuribayashi <skuribay@ruby.dti.ne.jp>
----
-Hi list,
 
-I don't want to be a nitpicker, nor don't have the right to mention the
-header licenses, but I have trouble with some asm headers not having GPL
-reference. For example, I was going to make use of <asm/cpu.h> in U-Boot
-project, but the patch was rejected due to the lack of GPL references.
+--xXmbgvnjoT4axfJE
+Content-Type: multipart/mixed; boundary="cWoXeonUoKmBZSoM"
+Content-Disposition: inline
 
-I've looked closely into all <asm/[foo/]bar.h> files, it seems there're
-lots of headers without GPL reference. Basically, I'm not going to talk
-about all of them. Some are board-dependent, some are used as pipe- or
-proxy-method, etc. These headers might not be worth doing so.
 
-However, some asm headers which include core MIPS defines, useful macros,
-useful inline assemblers, etc. will be also useful for other projects
-than Linux. And it's highly appreciated if such header has proper GPL
-referense in it.
+--cWoXeonUoKmBZSoM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-I've created the following patch for an example. Is there any chance
-such changes are accepted?  Any comments are appreciated.
+Hi,
 
-Thanks in advance,
+On Tue, Jan 08, 2008 at 12:39:45PM +0100, Freddy Spierenburg wrote:
+> I've noticed that drivers/video/au1100fb.c contains a small time
+> option parsing bug. In the middle of an if...else if...
+> construction was inserted a lonesome if on it's own. This is
+> causing an incorrect 'unsupported option' warning, while the
+> option itself is parsed successfully.
+>=20
+> This patch makes the lonesome if part of the whole if...else
+> if... construction, like it should be. No longer the incorrect
+> warning message will be displayed.
+>=20
+>=20
+> Signed-off-by: Freddy Spierenburg <freddy@dusktilldawn.nl>
 
-  Shinya
+The email above I wrote last january. Unfortunately 2.6.26.2
+still does not feature this correction. I tested it today and
+the patch still applies cleanly. I myself use this patch and can
+confirm it works.
 
- include/asm-mips/asmmacro-32.h |    4 ++++
- include/asm-mips/asmmacro-64.h |    4 ++++
- include/asm-mips/bugs.h        |    4 ++++
- include/asm-mips/cmp.h         |   10 +++++++---
- include/asm-mips/cpu.h         |    4 ++++
- include/asm-mips/dma.h         |    4 ++++
- include/asm-mips/highmem.h     |    4 ++++
- include/asm-mips/mips_mt.h     |    4 ++++
- include/asm-mips/mipsmtregs.h  |    5 +++++
- include/asm-mips/smtc.h        |    9 ++++++---
- include/asm-mips/smtc_ipi.h    |    4 ++++
- include/asm-mips/smtc_proc.h   |    5 +++++
- include/asm-mips/smvp.h        |   10 +++++++---
- include/asm-mips/thread_info.h |    7 ++++++-
- 14 files changed, 68 insertions(+), 10 deletions(-)
+Can anybody please apply?
 
-diff --git a/include/asm-mips/asmmacro-32.h b/include/asm-mips/asmmacro-32.h
-index 5de3963..8ac6703 100644
---- a/include/asm-mips/asmmacro-32.h
-+++ b/include/asm-mips/asmmacro-32.h
-@@ -1,6 +1,10 @@
- /*
-  * asmmacro.h: Assembler macros to make things easier to read.
-  *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-  * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)
-  * Copyright (C) 1998, 1999, 2003 Ralf Baechle
-  */
-diff --git a/include/asm-mips/asmmacro-64.h b/include/asm-mips/asmmacro-64.h
-index 225feef..ab821ba 100644
---- a/include/asm-mips/asmmacro-64.h
-+++ b/include/asm-mips/asmmacro-64.h
-@@ -1,6 +1,10 @@
- /*
-  * asmmacro.h: Assembler macros to make things easier to read.
-  *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-  * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)
-  * Copyright (C) 1998, 1999 Ralf Baechle
-  * Copyright (C) 1999 Silicon Graphics, Inc.
-diff --git a/include/asm-mips/bugs.h b/include/asm-mips/bugs.h
-index 9dc10df..fb33373 100644
---- a/include/asm-mips/bugs.h
-+++ b/include/asm-mips/bugs.h
-@@ -1,6 +1,10 @@
- /*
-  * This is included by init/main.c to check for architecture-dependent bugs.
-  *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-  * Copyright (C) 2007  Maciej W. Rozycki
-  *
-  * Needs:
-diff --git a/include/asm-mips/cmp.h b/include/asm-mips/cmp.h
-index 89a73fb..88f6861 100644
---- a/include/asm-mips/cmp.h
-+++ b/include/asm-mips/cmp.h
-@@ -1,9 +1,13 @@
--#ifndef _ASM_CMP_H
--#define _ASM_CMP_H
--
- /*
-  * Definitions for CMP multitasking on MIPS cores
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-  */
-+#ifndef _ASM_CMP_H
-+#define _ASM_CMP_H
-+
- struct task_struct;
- 
- extern void cmp_smp_setup(void);
-diff --git a/include/asm-mips/cpu.h b/include/asm-mips/cpu.h
-index 229a786..dc2db1b 100644
---- a/include/asm-mips/cpu.h
-+++ b/include/asm-mips/cpu.h
-@@ -2,6 +2,10 @@
-  * cpu.h: Values of the PRId register used to match up
-  *        various MIPS cpu types.
-  *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-  * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)
-  * Copyright (C) 2004  Maciej W. Rozycki
-  */
-diff --git a/include/asm-mips/dma.h b/include/asm-mips/dma.h
-index 1353c81..864f24a 100644
---- a/include/asm-mips/dma.h
-+++ b/include/asm-mips/dma.h
-@@ -4,6 +4,10 @@
-  * High DMA channel support & info by Hannu Savolainen
-  * and John Boyd, Nov. 1992.
-  *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-  * NOTE: all this is true *only* for ISA/EISA expansions on Mips boards
-  * and can only be used for expansion cards. Onboard DMA controllers, such
-  * as the R4030 on Jazz boards behave totally different!
-diff --git a/include/asm-mips/highmem.h b/include/asm-mips/highmem.h
-index 4374ab2..6f65131 100644
---- a/include/asm-mips/highmem.h
-+++ b/include/asm-mips/highmem.h
-@@ -1,6 +1,10 @@
- /*
-  * highmem.h: virtual kernel memory mappings for high memory
-  *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-  * Used in CONFIG_HIGHMEM systems for memory pages which
-  * are not addressable by direct kernel virtual addresses.
-  *
-diff --git a/include/asm-mips/mips_mt.h b/include/asm-mips/mips_mt.h
-index ac79352..d996a42 100644
---- a/include/asm-mips/mips_mt.h
-+++ b/include/asm-mips/mips_mt.h
-@@ -2,6 +2,10 @@
-  * Definitions and decalrations for MIPS MT support
-  * that are common between SMTC, VSMP, and/or AP/SP
-  * kernel models.
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-  */
- #ifndef __ASM_MIPS_MT_H
- #define __ASM_MIPS_MT_H
-diff --git a/include/asm-mips/mipsmtregs.h b/include/asm-mips/mipsmtregs.h
-index c9420aa..2e64af4 100644
---- a/include/asm-mips/mipsmtregs.h
-+++ b/include/asm-mips/mipsmtregs.h
-@@ -1,5 +1,10 @@
- /*
-  * MT regs definitions, follows on from mipsregs.h
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-  * Copyright (C) 2004 - 2005 MIPS Technologies, Inc.  All rights reserved.
-  * Elizabeth Clarke et. al.
-  *
-diff --git a/include/asm-mips/smtc.h b/include/asm-mips/smtc.h
-index 3639b28..63ad742 100644
---- a/include/asm-mips/smtc.h
-+++ b/include/asm-mips/smtc.h
-@@ -1,9 +1,12 @@
--#ifndef _ASM_SMTC_MT_H
--#define _ASM_SMTC_MT_H
--
- /*
-  * Definitions for SMTC multitasking on MIPS MT cores
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-  */
-+#ifndef _ASM_SMTC_MT_H
-+#define _ASM_SMTC_MT_H
- 
- #include <asm/mips_mt.h>
- 
-diff --git a/include/asm-mips/smtc_ipi.h b/include/asm-mips/smtc_ipi.h
-index 8ce5175..eaf154a 100644
---- a/include/asm-mips/smtc_ipi.h
-+++ b/include/asm-mips/smtc_ipi.h
-@@ -1,5 +1,9 @@
- /*
-  * Definitions used in MIPS MT SMTC "Interprocessor Interrupt" code.
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-  */
- #ifndef __ASM_SMTC_IPI_H
- #define __ASM_SMTC_IPI_H
-diff --git a/include/asm-mips/smtc_proc.h b/include/asm-mips/smtc_proc.h
-index 25da651..9788f71 100644
---- a/include/asm-mips/smtc_proc.h
-+++ b/include/asm-mips/smtc_proc.h
-@@ -1,5 +1,10 @@
- /*
-  * Definitions for SMTC /proc entries
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-  * Copyright(C) 2005 MIPS Technologies Inc.
-  */
- #ifndef __ASM_SMTC_PROC_H
-diff --git a/include/asm-mips/smvp.h b/include/asm-mips/smvp.h
-index 0d0e80a..a8ba14b 100644
---- a/include/asm-mips/smvp.h
-+++ b/include/asm-mips/smvp.h
-@@ -1,9 +1,13 @@
--#ifndef _ASM_SMVP_H
--#define _ASM_SMVP_H
--
- /*
-  * Definitions for SMVP multitasking on MIPS MT cores
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-  */
-+#ifndef _ASM_SMVP_H
-+#define _ASM_SMVP_H
-+
- struct task_struct;
- 
- extern void smvp_smp_setup(void);
-diff --git a/include/asm-mips/thread_info.h b/include/asm-mips/thread_info.h
-index bb30606..6c06478 100644
---- a/include/asm-mips/thread_info.h
-+++ b/include/asm-mips/thread_info.h
-@@ -1,4 +1,9 @@
--/* thread_info.h: MIPS low-level thread information
-+/*
-+ * thread_info.h: MIPS low-level thread information
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-  *
-  * Copyright (C) 2002  David Howells (dhowells@redhat.com)
-  * - Incorporating suggestions made by Linus Torvalds and Dave Miller
+
+--=20
+$ cat ~/.signature
+Freddy Spierenburg <freddy@dusktilldawn.nl>  http://freddy.snarl.nl/
+GnuPG: 0x7941D1E1=3DC948 5851 26D2 FA5C 39F1  E588 6F17 FD5D 7941 D1E1
+$ # Please read http://www.ietf.org/rfc/rfc2015.txt before complain!
+
+--cWoXeonUoKmBZSoM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="au1100fb.c-patch"
+
+diff -Naur linux-2.6.23-orig/drivers/video/au1100fb.c linux-2.6.23/drivers/video/au1100fb.c
+--- linux-2.6.23-orig/drivers/video/au1100fb.c	2008-01-08 11:07:13.000000000 +0000
++++ linux-2.6.23/drivers/video/au1100fb.c	2008-01-08 11:13:37.000000000 +0000
+@@ -707,7 +707,8 @@
+  					print_warn("Panel %s not supported!", this_opt);
+ 				}
+ 			}
+-			if (!strncmp(this_opt, "nocursor", 8)) {
++			/* No cursor option */
++			else if (!strncmp(this_opt, "nocursor", 8)) {
+ 				this_opt += 8;
+ 				nocursor = 1;
+ 				print_info("Cursor disabled");
+
+--cWoXeonUoKmBZSoM--
+
+--xXmbgvnjoT4axfJE
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
+
+iD8DBQFIoUzxbxf9XXlB0eERAiAYAJ9I30Iype909AtJnQ+Pbr3jnS4OSQCgilFg
+7haSYwnpiqXJ12fCog3ycX0=
+=9te/
+-----END PGP SIGNATURE-----
+
+--xXmbgvnjoT4axfJE--

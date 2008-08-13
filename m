@@ -1,83 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Aug 2008 16:12:35 +0100 (BST)
-Received: from fg-out-1718.google.com ([72.14.220.157]:29729 "EHLO
-	fg-out-1718.google.com") by ftp.linux-mips.org with ESMTP
-	id S28593068AbYHMPM3 convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 13 Aug 2008 16:12:29 +0100
-Received: by fg-out-1718.google.com with SMTP id d23so40890fga.32
-        for <linux-mips@linux-mips.org>; Wed, 13 Aug 2008 08:12:27 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:reply-to:to:subject:date
-         :user-agent:cc:references:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:content-disposition:message-id:sender;
-        bh=eXZSNNYkoMD9Hd5tzeJTtQzVia1VjeLal8Fi31EjVIE=;
-        b=pK0qPf0wF5inUvCQOwD3qEBtJo9ZLMdM36iLCdVYm/SXcKGD5PKFh1ssT/kwUAKnIG
-         SQpu7FDdKuYt1M0pVY3xmE4YqqpDtujRIzGoR63a+cyKPNShzj4VNDVkaDYK/XkkBbJB
-         q0hMXwo7xmYp9owh3yex0OTs75e8IZLrJMRwU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:reply-to:to:subject:date:user-agent:cc:references:in-reply-to
-         :mime-version:content-type:content-transfer-encoding
-         :content-disposition:message-id:sender;
-        b=frYir0hMM7cxQrbwX7S30jDr6Cnxi+IhP90kY4GMDeD34ntrCgreQKlTOv2l/DUYqv
-         vmeVUsgeg11sTGGdobySZzQUZ9iHjYFjQq2q5DTzLM6xvfwVaRRx/MHaKGkCVjwcJbbg
-         FM3xr4OWNfma7Rm1AbNO29AWJ8TMBisX+CpsQ=
-Received: by 10.86.83.2 with SMTP id g2mr99565fgb.54.1218640347420;
-        Wed, 13 Aug 2008 08:12:27 -0700 (PDT)
-Received: from innova-card.com ( [81.252.61.1])
-        by mx.google.com with ESMTPS id d4sm1181466fga.8.2008.08.13.08.12.26
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 13 Aug 2008 08:12:26 -0700 (PDT)
-From:	Brian Foster <brian.foster@innova-card.com>
-Reply-To: Brian Foster <brian.foster@innova-card.com>
-To:	jfraser@broadcom.com
-Subject: Re: Debugging the MIPS processor using GDB
-Date:	Wed, 13 Aug 2008 17:12:34 +0200
-User-Agent: KMail/1.9.6 (enterprise 0.20070907.709405)
-Cc:	linux-mips@linux-mips.org,
-	"Maciej W. Rozycki" <macro@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Aug 2008 16:16:57 +0100 (BST)
+Received: from kirk.serum.com.pl ([213.77.9.205]:50418 "EHLO serum.com.pl")
+	by ftp.linux-mips.org with ESMTP id S20023228AbYHMPQw (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 13 Aug 2008 16:16:52 +0100
+Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
+	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m7DFGkeB001127;
+	Wed, 13 Aug 2008 17:16:46 +0200
+Received: from localhost (macro@localhost)
+	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m7DFGfhL001121;
+	Wed, 13 Aug 2008 16:16:46 +0100
+Date:	Wed, 13 Aug 2008 16:16:41 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Brian Foster <brian.foster@innova-card.com>
+cc:	linux-mips@linux-mips.org,
+	Martin Gebert <martin.gebert@alpha-bit.de>,
 	TriKri <kristoferkrus@hotmail.com>
-References: <18944199.post@talk.nabble.com> <200808130905.53671.brian.foster@innova-card.com> <1218638494.21039.6.camel@chaos.ne.broadcom.com>
-In-Reply-To: <1218638494.21039.6.camel@chaos.ne.broadcom.com>
+Subject: Re: Debugging the MIPS processor using GDB
+In-Reply-To: <200808131707.30570.brian.foster@innova-card.com>
+Message-ID: <Pine.LNX.4.55.0808131611580.390@cliff.in.clinika.pl>
+References: <18944199.post@talk.nabble.com> <200808130905.53671.brian.foster@innova-card.com>
+ <Pine.LNX.4.55.0808131441160.390@cliff.in.clinika.pl>
+ <200808131707.30570.brian.foster@innova-card.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="utf-8"
+Content-Type: TEXT/PLAIN; charset=utf-8
 Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Message-Id: <200808131712.34722.brian.foster@innova-card.com>
-Return-Path: <blf.ireland@gmail.com>
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20204
+X-archive-position: 20205
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brian.foster@innova-card.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wednesday 13 August 2008 16:41:34 Jon Fraser wrote:
-> I use the FS2 probe with sde-gdb on a nearly daily basis.
-> Are you compiling your kernel with -g -O1 ?
+On Wed, 13 Aug 2008, Brian Foster wrote:
 
-Jon,
+>   What _might_ be an issue/cause is we're using our own
+>  home-grown ‘gdb’ scripts (to init the memory, load the
+>  kernel, etc.).  I didn't write them, but I have looked
+>  them over, and they _look_ Ok to me.
 
-  ‘-g’, yes.  ‘-O1’?  Not sure, I will have to check when
- I get a chance.  (But I don't see how either would have
- the effect on breakpoints I'm suffering from?)
+ That should not matter.  For example you could boot your system in the
+usual way provided by the firmware and attach to an already running
+kernel.  The probe does not know or care about that.
 
-> You can also try 'hbreak' instead of 'break' in sde-gdb.
+>   I tried some “mdi cacheflush” at some plausible-seeming
+>  points, all to no effect.  I also tried deleting the
+>  breakpoint (after step 8), which was a disaster:  (From
+>  memory) when I then ‘c’(ontinued), ‘gdb’ hung, and the
+>  ‘sysnav’ went into an infinite loop of reporting a
+>  breakpoint.  ;-(
+> 
+>  ( I seem to recall also having an issue with hardware
+>   breakpoints, but cannot recall for certain ATM; tests
+>   will have to wait until later ....  ;-\  )
+> 
+>   All ideas and suggestions are very welcome!
 
-  I'll have to (re-)try that when I get a chance.  I did
- try it once, and have (very! vague!!) memories of some
- issue, but now cannot recall anything useful.  ;-\ 
+ Your situation looks pretty miserable -- you should definitely pester 
+FS2.
 
-cheers!
-	-blf-
-
--- 
-“How many surrealists does it take to   | Brian Foster
- change a lightbulb? Three. One calms   | somewhere in south of France
- the warthog, and two fill the bathtub  |   Stop E$$o (ExxonMobil)!
- with brightly-coloured machine tools.” |      http://www.stopesso.com
+  Maciej

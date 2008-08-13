@@ -1,107 +1,136 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Aug 2008 08:06:00 +0100 (BST)
-Received: from fg-out-1718.google.com ([72.14.220.155]:14443 "EHLO
-	fg-out-1718.google.com") by ftp.linux-mips.org with ESMTP
-	id S20037176AbYHMHFz convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 13 Aug 2008 08:05:55 +0100
-Received: by fg-out-1718.google.com with SMTP id d23so1455070fga.32
-        for <linux-mips@linux-mips.org>; Wed, 13 Aug 2008 00:05:53 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:reply-to:to:subject:date
-         :user-agent:cc:references:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:content-disposition:message-id:sender;
-        bh=2GNKLrcW+kIAAi6ibQRaGJKcht0cF3WDmD4e2bTR3nk=;
-        b=FOTgmWDKGW52EE5DtZNqi9dwt3VrUzxEJmg+5mAPFljTPMKqIHvqptOtx5pSOBe47l
-         F+8L4RzYDQAly/rakSwg01uLF5W2DFavDmHCFbEqkwvLJ8EHzjQ+EnxyaTQrdYgR0OoR
-         HTy9rAcuAdx4Qrmi6L941hbmfRsKWGnk4imH8=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:reply-to:to:subject:date:user-agent:cc:references:in-reply-to
-         :mime-version:content-type:content-transfer-encoding
-         :content-disposition:message-id:sender;
-        b=kBt+MB6XyOTRRCKQfwZsgahuVssPJU8CeUAws5Zi2CTg1YZvP9Ql7gXjETlvQzKTVO
-         w02olGCtxtBbxCMxFHjAWblGo9CjiuqA7CpGhXmPw1iq6E5f8WT/7wvNAoB60D/Mhi+5
-         EvtEDA3cV7tOg+ihoMyhwogJ3I9q8Y8UYF/o8=
-Received: by 10.86.58.3 with SMTP id g3mr11811941fga.21.1218611153823;
-        Wed, 13 Aug 2008 00:05:53 -0700 (PDT)
-Received: from innova-card.com ( [81.252.61.1])
-        by mx.google.com with ESMTPS id 4sm7522754fgg.4.2008.08.13.00.05.51
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 13 Aug 2008 00:05:52 -0700 (PDT)
-From:	Brian Foster <brian.foster@innova-card.com>
-Reply-To: Brian Foster <brian.foster@innova-card.com>
-To:	linux-mips@linux-mips.org
-Subject: Re: Debugging the MIPS processor using GDB
-Date:	Wed, 13 Aug 2008 09:05:53 +0200
-User-Agent: KMail/1.9.6 (enterprise 0.20070907.709405)
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	Martin Gebert <martin.gebert@alpha-bit.de>,
-	TriKri <kristoferkrus@hotmail.com>
-References: <18944199.post@talk.nabble.com> <200808121637.42148.brian.foster@innova-card.com> <Pine.LNX.4.55.0808121720370.24222@cliff.in.clinika.pl>
-In-Reply-To: <Pine.LNX.4.55.0808121720370.24222@cliff.in.clinika.pl>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 13 Aug 2008 13:34:38 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:49328 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20037423AbYHMMe2 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 13 Aug 2008 13:34:28 +0100
+Received: from [127.0.0.1] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id DC0D63EC9; Wed, 13 Aug 2008 05:34:22 -0700 (PDT)
+Message-ID: <48A2D4CB.1030901@ru.mvista.com>
+Date:	Wed, 13 Aug 2008 16:34:19 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Message-Id: <200808130905.53671.brian.foster@innova-card.com>
-Return-Path: <blf.ireland@gmail.com>
+To:	Manuel Lauss <mano@roarinelk.homelinux.net>
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
+	Kevin Hickey <khickey@rmicorp.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Alchemy: modernize Pb1200 IRQ cascade handling code.
+References: <1218568881-3544-2-git-send-email-mano@roarinelk.homelinux.net>
+In-Reply-To: <1218568881-3544-2-git-send-email-mano@roarinelk.homelinux.net>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20196
+X-archive-position: 20197
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brian.foster@innova-card.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tuesday 12 August 2008 18:27:42 Maciej W. Rozycki wrote:
-> On Tue, 12 Aug 2008, Brian Foster wrote:
-> >   I'm using the commercial FS² (First Silicon Systems, now owned
-> >  by MIPS) EJTAG probe.  [ ... ]  There is no ‘gdbserver’ in this
-> >  setup per se, albeit I suppose the protocol between ‘gdb’ and
-> >  the FS² software [ ... ] might be similar/identical[?]
-> 
->  Not really -- it uses a C API called MDI -- the spec is available from
-> MIPS Technologies.  I am happy to read somebody finds it useful. :) 
-> Debugging the Linux kernel with GDB and this piece of hardware is
-> certainly a lot of fun.
+Hello.
 
-Maciej,
+Manuel Lauss wrote:
 
-  Thanks for the clarification.  I didn't know if MDI
- was related to the remote-‘gdbserver’ stuff or not.
+> Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
+>   
+[...]
+> diff --git a/arch/mips/au1000/pb1200/irqmap.c b/arch/mips/au1000/pb1200/irqmap.c
+> index 2a505ad..7229f30 100644
+> --- a/arch/mips/au1000/pb1200/irqmap.c
+> +++ b/arch/mips/au1000/pb1200/irqmap.c
+> @@ -48,62 +48,26 @@ int __initdata au1xxx_nr_irqs = ARRAY_SIZE(au1xxx_irq_map);
+>  /*
+>   * Support for External interrupts on the Pb1200 Development platform.
+>   */
+> -static volatile int pb1200_cascade_en;
+>  
+> -irqreturn_t pb1200_cascade_handler(int irq, void *dev_id)
+> +static void pb1200_cascade_handler(unsigned int irq, struct irq_desc *desc)
+>  {
+>  	unsigned short bisr = bcsr->int_status;
+> -	int extirq_nr = 0;
+> -
+> -	/* Clear all the edge interrupts. This has no effect on level. */
+>   
 
-  Re the FS²:  When it works, my (somewhat limited)
- experience to-date is it works Ok.  And the use of
- TCL on the Host workstation side allows some neat
- tricks.  However, at least one thing doesn't work
- reliably for me, albeit I've never investigated:
- Breakpoints in the Linux kernel.  They do detonate.
- Then, sometimes, I can ‘c’(ontinue) or ‘s’(tep) Ok.
- But other times, when I ‘c’ or ‘s’, the breakpoint
- detonates again and I'm stuck.  I cannot proceed.
- (The same breakpoint might even work once or twice
- and then fail.)   Any ideas?   AFAICR, this can also
- happen if I try to use the ‘sysnav’ console instead
- of ‘gdb’.
+   Note this comment...
 
-  I understand my predecessor in my job I gave up on
- the FS² (very possibly because of this breakpoint
- issue?) and used a competing (E?)JTAG probe.
+> -	bcsr->int_status = bisr;
+> -	for ( ; bisr; bisr &= bisr - 1) {
+> -		extirq_nr = PB1200_INT_BEGIN + __ffs(bisr);
+> -		/* Ack and dispatch IRQ */
+> -		do_IRQ(extirq_nr);
+> -	}
+>  
+> -	return IRQ_RETVAL(1);
+> +	for ( ; bisr; bisr &= bisr - 1)
+> +		generic_handle_irq(PB1200_INT_BEGIN + __ffs(bisr));
+>  }
+>  
+> -inline void pb1200_enable_irq(unsigned int irq_nr)
+> +static void pb1200_unmask_irq(unsigned int irq_nr)
+>  {
+>  	bcsr->intset_mask = 1 << (irq_nr - PB1200_INT_BEGIN);
+>  	bcsr->intset = 1 << (irq_nr - PB1200_INT_BEGIN);
+>  }
+>  
+> -inline void pb1200_disable_irq(unsigned int irq_nr)
+> +static void pb1200_maskack_irq(unsigned int irq_nr)
+>  {
+>  	bcsr->intclr_mask = 1 << (irq_nr - PB1200_INT_BEGIN);
+>  	bcsr->intclr = 1 << (irq_nr - PB1200_INT_BEGIN);
+>   
 
-  Weirdly, I've only seen this effect with the Linux
- kernel — other kernel-mode software (e.g., the trivial
- custom bootloader) — doesn't seem to suffer from these
- “flakey FS² breakpoints”?
+   I wonder what's the difference between int{clr|set} and 
+int{clr|set}_mask registers...
 
-cheers!
-	-blf-
+[...]
+> +	bcsr->int_status = 1 << (irq_nr - PB1200_INT_BEGIN);	/* ack */
+>   
 
--- 
-“How many surrealists does it take to   | Brian Foster
- change a lightbulb? Three. One calms   | somewhere in south of France
- the warthog, and two fill the bathtub  |   Stop E$$o (ExxonMobil)!
- with brightly-coloured machine tools.” |      http://www.stopesso.com
+   The above comment said that writing to this register has no effect on 
+the level-triggered interrupts, so this statement doesn't seem to make 
+sense since you're treating all interrupts as level-triggered below.
+
+> @@ -113,12 +77,9 @@ static struct irq_chip external_irq_type = {
+>  #ifdef CONFIG_MIPS_DB1200
+>  	.name = "Db1200 Ext",
+>  #endif
+> -	.startup  = pb1200_startup_irq,
+> -	.shutdown = pb1200_shutdown_irq,
+> -	.ack      = pb1200_disable_irq,
+> -	.mask     = pb1200_disable_irq,
+> -	.mask_ack = pb1200_disable_irq,
+> -	.unmask   = pb1200_enable_irq,
+> +	.mask		= pb1200_maskack_irq,
+> +	.mask_ack	= pb1200_maskack_irq,
+>   
+
+   You can use the same function for the mask() and mask_ack() methods 
+but it only should be masking IRQ, as clearing it doesn't make sense...
+
+> @@ -147,14 +108,14 @@ void _board_init_irq(void)
+>  	}
+>  #endif
+>  
+> -	for (irq = PB1200_INT_BEGIN; irq <= PB1200_INT_END; irq++) {
+> -		set_irq_chip_and_handler(irq, &external_irq_type,
+> -					 handle_level_irq);
+> -		pb1200_disable_irq(irq);
+> -	}
+> +	/* mask & disable & ack all */
+> +	bcsr->intclr_mask = 0xffff;
+> +	bcsr->intclr = 0xffff;
+> +	bcsr->int_status = 0xffff;
+> +
+> +	for (irq = PB1200_INT_BEGIN; irq <= PB1200_INT_END; irq++)
+> +		set_irq_chip_and_handler_name(irq, &external_irq_type,
+> +					 handle_level_irq, "level");
+>   
+
+   Are all those IRQs indeed level-triggered?
+
+WBR, Sergei

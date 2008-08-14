@@ -1,52 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Aug 2008 22:31:45 +0100 (BST)
-Received: from ditditdahdahdah-dahditditditdit.dl5rb.org.uk ([217.169.26.26]:654
-	"EHLO ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk")
-	by ftp.linux-mips.org with ESMTP id S28596932AbYHNVbi (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 14 Aug 2008 22:31:38 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m7ELVb8N008807;
-	Thu, 14 Aug 2008 22:31:37 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m7ELVYuW008804;
-	Thu, 14 Aug 2008 22:31:34 +0100
-Date:	Thu, 14 Aug 2008 22:31:34 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Daniel Laird <daniel.j.laird@nxp.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [QUERY]: Website issues
-Message-ID: <20080814213134.GA4914@linux-mips.org>
-References: <1218698940.5012.1.camel@lnx32dtp04>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Aug 2008 23:06:36 +0100 (BST)
+Received: from sj-iport-2.cisco.com ([171.71.176.71]:53974 "EHLO
+	sj-iport-2.cisco.com") by ftp.linux-mips.org with ESMTP
+	id S28596841AbYHNWG2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 14 Aug 2008 23:06:28 +0100
+X-IronPort-AV: E=Sophos;i="4.32,211,1217808000"; 
+   d="scan'208,223";a="75473665"
+Received: from sj-dkim-3.cisco.com ([171.71.179.195])
+  by sj-iport-2.cisco.com with ESMTP; 14 Aug 2008 22:06:15 +0000
+Received: from sj-core-1.cisco.com (sj-core-1.cisco.com [171.71.177.237])
+	by sj-dkim-3.cisco.com (8.12.11/8.12.11) with ESMTP id m7EM6EdU001281;
+	Thu, 14 Aug 2008 15:06:14 -0700
+Received: from cliff.cisco.com (cliff.cisco.com [171.69.11.141])
+	by sj-core-1.cisco.com (8.13.8/8.13.8) with ESMTP id m7EM6AxQ026672;
+	Thu, 14 Aug 2008 22:06:10 GMT
+Received: from CUPLXSUNDISM01.corp.sa.net ([64.101.21.60]) by cliff.cisco.com (8.6.12/8.6.5) with ESMTP id WAA28304; Thu, 14 Aug 2008 22:05:46 GMT
+Message-ID: <48A4AC39.7020707@sciatl.com>
+Date:	Thu, 14 Aug 2008 15:05:45 -0700
+From:	C Michael Sundius <Michael.sundius@sciatl.com>
+User-Agent: Thunderbird 2.0.0.14 (X11/20080501)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1218698940.5012.1.camel@lnx32dtp04>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+To:	linux-mm@kvack.org, linux-mips@linux-mips.org,
+	jfraser@broadcom.com, Andy Whitcroft <apw@shadowen.org>,
+	Dave Hansen <dave@linux.vnet.ibm.com>
+Subject: sparsemem support for mips with highmem
+Content-Type: multipart/mixed;
+ boundary="------------010403040800010305090501"
+Authentication-Results:	sj-dkim-3; header.From=Michael.sundius@sciatl.com; dkim=neutral
+Return-Path: <Michael.sundius@sciatl.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20216
+X-archive-position: 20217
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: Michael.sundius@sciatl.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Aug 14, 2008 at 08:29:00AM +0100, Daniel Laird wrote:
+This is a multi-part message in MIME format.
+--------------010403040800010305090501
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> I am having issues viewing the linux-mips GIT repository from a web
-> browser.  I am sure that this used to work but at the moment all my
-> bookmarks are failing:
-> http://git.linux-mips.org/ -> An Apache Test Page
-> http://git.linux-mips.org/pub/scm/upstream-akpm.git -> Not found
-> 
-> Etc, is there a problem or have all my bookmarks got messed up?
+Hi
 
-Though it would be logic to do so git.linux-mips.org doesn't provide any
-web services.  The reason why I originally introduced this hostname was
-that I needed another IP address to run git-cvsserver.  I should probably
-run git-related web services on that hostname and turn
-www.linux-mips.org/git into a forward to it, something like that.
+I just got sparsemem working on our MIPS 32 platform. I'm not sure if 
+anyone
+has done that before since there seems to be a couple of problems in the 
+arch specific code.
 
-  Ralf
+Well I realize that it is blazingly simple to turn on sparsemem, but for 
+the idiots (like myself)
+out there I created a howto file to put in the Documentation directory 
+just because I thought
+it would be a good idea to have some official info on  it written down 
+somewhere.
+
+it saved me a ton of space by the way.  it seems to work great.
+
+Mike
+
+
+--------------010403040800010305090501
+Content-Type: text/plain;
+ name="mypatchfile"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="mypatchfile"

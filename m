@@ -1,51 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Aug 2008 08:29:15 +0100 (BST)
-Received: from be1ssnxpe2.nxp.com ([57.67.164.70]:52611 "EHLO
-	be1ssnxpe2.nxp.com") by ftp.linux-mips.org with ESMTP
-	id S28596108AbYHNH3I (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 14 Aug 2008 08:29:08 +0100
-Received: from be1ssnxpi0.nxp.com (be1ssnxpi0 [134.27.176.190])
-	by be1ssnxpe2.nxp.com (8.13.8/8.13.8) with ESMTP id m7E7T1q1014706
-	for <linux-mips@linux-mips.org>; Thu, 14 Aug 2008 09:29:01 +0200
-Received: from lnx32www01.soton.sc.philips.com (www-sls-crisp.soton.sc.philips.com [130.141.89.1])
-	by be1ssnxpi0.nxp.com (8.13.8/8.13.8) with ESMTP id m7E7T10H019035
-	for <linux-mips@linux-mips.org>; Thu, 14 Aug 2008 09:29:01 +0200
-Received: from krate.soton.sc.philips.com (root@krate [130.141.7.10])
-	by lnx32www01.soton.sc.philips.com (8.14.0/8.13.7) with ESMTP id m7E7T1AC016727
-	for <linux-mips@linux-mips.org>; Thu, 14 Aug 2008 08:29:01 +0100
-Received: from [130.141.6.53] (lnx32dtp04 [130.141.6.53])
-	by krate.soton.sc.philips.com (8.12.11/8.12.11) with ESMTP id m7E7T0wt018227
-	for <linux-mips@linux-mips.org>; Thu, 14 Aug 2008 08:29:00 +0100 (BST)
-Subject: [QUERY]: Website issues
-From:	Daniel Laird <daniel.j.laird@nxp.com>
-Reply-To: daniel.j.laird@nxp.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Aug 2008 08:50:26 +0100 (BST)
+Received: from fg-out-1718.google.com ([72.14.220.158]:53126 "EHLO
+	fg-out-1718.google.com") by ftp.linux-mips.org with ESMTP
+	id S28597398AbYHNHuT convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 14 Aug 2008 08:50:19 +0100
+Received: by fg-out-1718.google.com with SMTP id d23so287037fga.32
+        for <linux-mips@linux-mips.org>; Thu, 14 Aug 2008 00:50:18 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:reply-to:to:subject:date
+         :user-agent:cc:references:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:content-disposition:message-id:from;
+        bh=9AqL2Vjbo4stgKippHqlF717YmH1/GWUvcVqxbULTCo=;
+        b=VOwaFmoY3ZhvhVwlksQEKGTFOZ0UqbxeVtTs5YXdMEt9UgggYwwPR7Jxo9o7sb7ji1
+         BSaV+7Sld52JGZy3BUxgGnLR+Mh9cbN+WJh2MxuMJe51EaW07aS0qPxlAixYXuKPeLoo
+         UbJMtGvtuus4Fvilaj+jF34z6RsqZftOEWqBQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=reply-to:to:subject:date:user-agent:cc:references:in-reply-to
+         :mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id:from;
+        b=wUvdESamhb7vZjI9L1wbwAA0SjMY7TCrzu+13QtWd7CzkThz/j7STZZsd2kfww1RgW
+         ETozdqzRQjwnnyz/l3gGCfG53X2igzXgm1zh76PC7qqiPst+Byf1PV0I5sPpQhJlBR8X
+         mdovBLZomLhrdXqCOJaS2N9LBDY5PKVtWVGos=
+Received: by 10.86.59.18 with SMTP id h18mr1562538fga.63.1218700217871;
+        Thu, 14 Aug 2008 00:50:17 -0700 (PDT)
+Received: from innova-card.com ( [81.252.61.1])
+        by mx.google.com with ESMTPS id e20sm3608581fga.1.2008.08.14.00.50.11
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 14 Aug 2008 00:50:14 -0700 (PDT)
+Reply-To: Brian Foster <brian.foster@innova-card.com>
 To:	linux-mips@linux-mips.org
-Content-Type: text/plain
-Organization: NXP Semiconductors
-Date:	Thu, 14 Aug 2008 08:29:00 +0100
-Message-Id: <1218698940.5012.1.camel@lnx32dtp04>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.22.3.1 (2.22.3.1-1.fc9) 
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=fsecure engine=4.65.7161:2.4.4,1.2.40,4.0.164 definitions=2008-08-13_05:2008-08-12,2008-08-13,2008-08-13 signatures=0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=4.65.7161:2.4.4,1.2.40,4.0.164 definitions=2008-08-13_08:2008-08-12,2008-08-13,2008-08-13 signatures=0
-Return-Path: <daniel.j.laird@nxp.com>
+Subject: Re: [QUERY]: Website issues
+Date:	Thu, 14 Aug 2008 09:50:17 +0200
+User-Agent: KMail/1.9.6 (enterprise 0.20070907.709405)
+Cc:	daniel.j.laird@nxp.com
+References: <1218698940.5012.1.camel@lnx32dtp04>
+In-Reply-To: <1218698940.5012.1.camel@lnx32dtp04>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Message-Id: <200808140950.17378.brian.foster@innova-card.com>
+From:	Brian Foster <blf.ireland@gmail.com>
+Return-Path: <blf.ireland@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20213
+X-archive-position: 20214
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.j.laird@nxp.com
+X-original-sender: blf.ireland@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-I am having issues viewing the linux-mips GIT repository from a web
-browser.  I am sure that this used to work but at the moment all my
-bookmarks are failing:
-http://git.linux-mips.org/ -> An Apache Test Page
-http://git.linux-mips.org/pub/scm/upstream-akpm.git -> Not found
+On Thursday 14 August 2008 09:29:00 Daniel Laird wrote:
+> I am having issues viewing the linux-mips GIT repository from a web
+> browser.  I am sure that this used to work but at the moment all my
+> bookmarks are failing:
+> http://git.linux-mips.org/ -> An Apache Test Page
+> http://git.linux-mips.org/pub/scm/upstream-akpm.git -> Not found
+> 
+> Etc, is there a problem or have all my bookmarks got messed up?
 
-Etc, is there a problem or have all my bookmarks got messed up?
+Daniel,
 
-Daniel Laird
+ http://www.linux-mips.org/git
+ lists all the git repos, and seems to be working for me.
+
+cheers!
+	-blf-
+
+-- 
+“How many surrealists does it take to   | Brian Foster
+ change a lightbulb? Three. One calms   | somewhere in south of France
+ the warthog, and two fill the bathtub  |   Stop E$$o (ExxonMobil)!
+ with brightly-coloured machine tools.” |      http://www.stopesso.com

@@ -1,106 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Aug 2008 00:11:56 +0100 (BST)
-Received: from kirk.serum.com.pl ([213.77.9.205]:38136 "EHLO serum.com.pl")
-	by ftp.linux-mips.org with ESMTP id S28597184AbYHNXLr (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 15 Aug 2008 00:11:47 +0100
-Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
-	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m7ENBeMd009516;
-	Fri, 15 Aug 2008 01:11:40 +0200
-Received: from localhost (macro@localhost)
-	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m7ENBMSR009512;
-	Fri, 15 Aug 2008 00:11:31 +0100
-Date:	Fri, 15 Aug 2008 00:11:21 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Brian Foster <brian.foster@innova-card.com>
-cc:	linux-mips@linux-mips.org,
-	Martin Gebert <martin.gebert@alpha-bit.de>,
-	TriKri <kristoferkrus@hotmail.com>
-Subject: Re: Debugging the MIPS processor using GDB (and FS2 EJTAG probe
- breakpoint issues)
-In-Reply-To: <200808141342.20496.brian.foster@innova-card.com>
-Message-ID: <Pine.LNX.4.55.0808142336050.7213@cliff.in.clinika.pl>
-References: <18944199.post@talk.nabble.com> <Pine.LNX.4.55.0808131441160.390@cliff.in.clinika.pl>
- <200808131707.30570.brian.foster@innova-card.com>
- <200808141342.20496.brian.foster@innova-card.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Aug 2008 00:16:56 +0100 (BST)
+Received: from sj-iport-1.cisco.com ([171.71.176.70]:26494 "EHLO
+	sj-iport-1.cisco.com") by ftp.linux-mips.org with ESMTP
+	id S28596934AbYHNXQr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 15 Aug 2008 00:16:47 +0100
+X-IronPort-AV: E=Sophos;i="4.32,211,1217808000"; 
+   d="scan'208";a="65808060"
+Received: from sj-dkim-2.cisco.com ([171.71.179.186])
+  by sj-iport-1.cisco.com with ESMTP; 14 Aug 2008 23:16:37 +0000
+Received: from sj-core-1.cisco.com (sj-core-1.cisco.com [171.71.177.237])
+	by sj-dkim-2.cisco.com (8.12.11/8.12.11) with ESMTP id m7ENGbMk028250;
+	Thu, 14 Aug 2008 16:16:37 -0700
+Received: from cliff.cisco.com (cliff.cisco.com [171.69.11.141])
+	by sj-core-1.cisco.com (8.13.8/8.13.8) with ESMTP id m7ENGbVZ013646;
+	Thu, 14 Aug 2008 23:16:37 GMT
+Received: from CUPLXSUNDISM01.corp.sa.net ([64.101.21.60]) by cliff.cisco.com (8.6.12/8.6.5) with ESMTP id XAA17680; Thu, 14 Aug 2008 23:16:29 GMT
+Message-ID: <48A4BCCC.6090001@sciatl.com>
+Date:	Thu, 14 Aug 2008 16:16:28 -0700
+From:	C Michael Sundius <Michael.sundius@sciatl.com>
+User-Agent: Thunderbird 2.0.0.14 (X11/20080501)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <macro@linux-mips.org>
+To:	Dave Hansen <dave@linux.vnet.ibm.com>
+CC:	linux-mm@kvack.org, linux-mips@linux-mips.org,
+	jfraser@broadcom.com, Andy Whitcroft <apw@shadowen.org>
+Subject: Re: sparsemem support for mips with highmem
+References: <48A4AC39.7020707@sciatl.com> <1218753308.23641.56.camel@nimitz>
+In-Reply-To: <1218753308.23641.56.camel@nimitz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Authentication-Results:	sj-dkim-2; header.From=Michael.sundius@sciatl.com; dkim=neutral
+Return-Path: <Michael.sundius@sciatl.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20219
+X-archive-position: 20220
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: Michael.sundius@sciatl.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 14 Aug 2008, Brian Foster wrote:
 
->  Just in case someone recognizes these symptoms (or has
->  any ideas) ....
-> 
->   I tried hardware breakpoints from ‘gdb’ and got:
-> 
->      h1. gdb     hb xxx_open
->      h2. gdb says:
->            warning: Cannot query hardware breakpoint/watchpoint resources.
->            warning: Available functionality may be limited.
 
- This warning is issued because FS2's MDIlib does not implement the
-MDIHwBpQuery() call, which tells the MDI client what hardware breakpoint
-capabilities the given implementation of MDIlib provides.  They generally
-correspond to what the debug port provides, but there is room for some
-abstraction to be provided by MDIlib, for example a given library
-implementation may emulate ways to specify address ranges different to
-what hardware implements.
+>> +		if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
+>> +			continue;
+>> +
+>> +		start = PFN_UP(boot_mem_map.map[i].addr);
+>> +		end   = PFN_DOWN(boot_mem_map.map[i].addr
+>> +				    + boot_mem_map.map[i].size);
+>> +
+>> +		memory_present(0, start, end);
+>> +	}
+>>  }
+>>     
+>
+> Is that aligning really necessary?  I'm just curious because if it is,
+> it would probably be good to stick it inside memory_present().
+>
+>   
+yaknow, there are several loops in this file that look through this 
+boot_mem_ map structure.
+they all have the same basic form (but of course are slightly 
+different). Anyhow, I just
+cut and pasted. I'm wondering if the MIPS folks have comment on how best 
+to make
+this change and possibly clean up this file. I'm happy to do it, but 
+think I'd like some
+guidance on this... anyone?
 
- Therefore GDB cannot determine whether the intended breakpoint type will
-or will not fail at the time MDISetBp() is called to actually insert the
-breakpoint into the target, which only happens when execution is resumed.  
-There is a heuristic implemented in GDB that tries to figure out what the
-MDIlib supports by trial and error, but in the end the target may not 
-really support what GDB requests and you'll get a failure when you try to 
-start execution.  The message therefore serves as a precautionary warning.
 
- They really ought to implement this call -- I suppose if customers like
-you keep pushing, they may eventually decide it is worth the effort.
+I'll fix and resubmit. sorry for posting this to the two lists, but I 
+wasn't sure if I should
+put it on the linux-mm list or the linux-mips list... I'll keep the 
+distribution unless I
+her complaints.
 
- Anyway, the warning is normal and happened for all releases of FS2
-software I have ever used.
-
->      h3. target  cat /dev/xxx
->      h4. Nothing happens!  (The breakpoint does not detonate.)
-
- You should be able to see a hardware breakpoint set by GDB from their
-System Navigator console as soon as execution is resumed.  I don't
-remember the exact command to use -- it's in their reference manual.
-
- I suggest you verify this way the breakpoint is indeed set in the target
-and then whether it is really at an address that guarantees it to trigger.  
-A good way of determining whether hardware breakpoints work is to set one
-at the reset vector i.e.  0xffffffffbfc00000 (remove "f" digits as
-appropriate for your platform), resume execution and hit the NMI or soft
-reset button.
-
->  I presume I can cook up some ‘gdb’ macros to can (simplify)
->  those horrible ‘monitor bkpt ...’ commands, but I shouldn't
->  have to do that, should I?  ;-\ 
-
- You won't get proper handling from GDB side (condition checking, 
-breakpoint commands, etc.) if you set breakpoints behind GDB's back 
-anyway -- all you will get are unrecognised traps.  And resumption under 
-these circumstances is rather cumbersome as you have to perform all the 
-actions GDB normally does itself manually.
-
->   Any ideas?  (And yes, I'm attempting to pursue this with
->  FS²/MIPS, but .... .)
-
- Well, it's their product and they should be able to sort out your 
-problem.  It's not a problem with Linux nor GDB even, so it's quite 
-unlikely anybody on this list is able to provide you with any advice 
-beyond what has been written already, so I suggest we stop bothering 
-people with the noise.
-
-  Maciej
+mike

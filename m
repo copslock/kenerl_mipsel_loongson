@@ -1,174 +1,106 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 Aug 2008 23:35:49 +0100 (BST)
-Received: from e6.ny.us.ibm.com ([32.97.182.146]:31406 "EHLO e6.ny.us.ibm.com")
-	by ftp.linux-mips.org with ESMTP id S28596841AbYHNWfn (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 14 Aug 2008 23:35:43 +0100
-Received: from d01relay02.pok.ibm.com (d01relay02.pok.ibm.com [9.56.227.234])
-	by e6.ny.us.ibm.com (8.13.8/8.13.8) with ESMTP id m7EMbuQv026675
-	for <linux-mips@linux-mips.org>; Thu, 14 Aug 2008 18:37:57 -0400
-Received: from d01av04.pok.ibm.com (d01av04.pok.ibm.com [9.56.224.64])
-	by d01relay02.pok.ibm.com (8.13.8/8.13.8/NCO v9.0) with ESMTP id m7EMZEVZ119384
-	for <linux-mips@linux-mips.org>; Thu, 14 Aug 2008 18:35:14 -0400
-Received: from d01av04.pok.ibm.com (loopback [127.0.0.1])
-	by d01av04.pok.ibm.com (8.12.11.20060308/8.13.3) with ESMTP id m7EMZBvw028221
-	for <linux-mips@linux-mips.org>; Thu, 14 Aug 2008 18:35:13 -0400
-Received: from [9.48.127.148] (sig-9-48-127-148.mts.ibm.com [9.48.127.148])
-	by d01av04.pok.ibm.com (8.12.11.20060308/8.12.11) with ESMTP id m7EMZ9U6028074;
-	Thu, 14 Aug 2008 18:35:09 -0400
-Subject: Re: sparsemem support for mips with highmem
-From:	Dave Hansen <dave@linux.vnet.ibm.com>
-To:	C Michael Sundius <Michael.sundius@sciatl.com>
-Cc:	linux-mm@kvack.org, linux-mips@linux-mips.org,
-	jfraser@broadcom.com, Andy Whitcroft <apw@shadowen.org>
-In-Reply-To: <48A4AC39.7020707@sciatl.com>
-References: <48A4AC39.7020707@sciatl.com>
-Content-Type: text/plain; charset=UTF-8
-Date:	Thu, 14 Aug 2008 15:35:08 -0700
-Message-Id: <1218753308.23641.56.camel@nimitz>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.22.2 
-Content-Transfer-Encoding: 8bit
-Return-Path: <dave@linux.vnet.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Aug 2008 00:11:56 +0100 (BST)
+Received: from kirk.serum.com.pl ([213.77.9.205]:38136 "EHLO serum.com.pl")
+	by ftp.linux-mips.org with ESMTP id S28597184AbYHNXLr (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 15 Aug 2008 00:11:47 +0100
+Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
+	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m7ENBeMd009516;
+	Fri, 15 Aug 2008 01:11:40 +0200
+Received: from localhost (macro@localhost)
+	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m7ENBMSR009512;
+	Fri, 15 Aug 2008 00:11:31 +0100
+Date:	Fri, 15 Aug 2008 00:11:21 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Brian Foster <brian.foster@innova-card.com>
+cc:	linux-mips@linux-mips.org,
+	Martin Gebert <martin.gebert@alpha-bit.de>,
+	TriKri <kristoferkrus@hotmail.com>
+Subject: Re: Debugging the MIPS processor using GDB (and FS2 EJTAG probe
+ breakpoint issues)
+In-Reply-To: <200808141342.20496.brian.foster@innova-card.com>
+Message-ID: <Pine.LNX.4.55.0808142336050.7213@cliff.in.clinika.pl>
+References: <18944199.post@talk.nabble.com> <Pine.LNX.4.55.0808131441160.390@cliff.in.clinika.pl>
+ <200808131707.30570.brian.foster@innova-card.com>
+ <200808141342.20496.brian.foster@innova-card.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20218
+X-archive-position: 20219
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dave@linux.vnet.ibm.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2008-08-14 at 15:05 -0700, C Michael Sundius wrote:
-> I just got sparsemem working on our MIPS 32 platform. I'm not sure if 
-> anyone
-> has done that before since there seems to be a couple of problems in the 
-> arch specific code.
+On Thu, 14 Aug 2008, Brian Foster wrote:
+
+>  Just in case someone recognizes these symptoms (or has
+>  any ideas) ....
 > 
-> Well I realize that it is blazingly simple to turn on sparsemem, but for 
-> the idiots (like myself)
-> out there I created a howto file to put in the Documentation directory 
-> just because I thought
-> it would be a good idea to have some official info on  it written down 
-> somewhere.
+>   I tried hardware breakpoints from ‘gdb’ and got:
 > 
-> it saved me a ton of space by the way.  it seems to work great.
+>      h1. gdb     hb xxx_open
+>      h2. gdb says:
+>            warning: Cannot query hardware breakpoint/watchpoint resources.
+>            warning: Available functionality may be limited.
 
-Cool!  Thanks for writing all that up.
+ This warning is issued because FS2's MDIlib does not implement the
+MDIHwBpQuery() call, which tells the MDI client what hardware breakpoint
+capabilities the given implementation of MDIlib provides.  They generally
+correspond to what the debug port provides, but there is room for some
+abstraction to be provided by MDIlib, for example a given library
+implementation may emulate ways to specify address ranges different to
+what hardware implements.
 
->  arch/mips/kernel/setup.c     |   18 +++++++++++++++++-
->  arch/mips/mm/init.c          |    3 +++
->  include/asm-mips/sparsemem.h |    6 ++++++
->  3 files changed, 26 insertions(+), 1 deletions(-)
+ Therefore GDB cannot determine whether the intended breakpoint type will
+or will not fail at the time MDISetBp() is called to actually insert the
+breakpoint into the target, which only happens when execution is resumed.  
+There is a heuristic implemented in GDB that tries to figure out what the
+MDIlib supports by trial and error, but in the end the target may not 
+really support what GDB requests and you'll get a failure when you try to 
+start execution.  The message therefore serves as a precautionary warning.
 
-Wow!  25 lines of code.  Sparsemem is a pig! :)
+ They really ought to implement this call -- I suppose if customers like
+you keep pushing, they may eventually decide it is worth the effort.
 
-> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-> index f8a535a..6ff0f72 100644
-> --- a/arch/mips/kernel/setup.c
-> +++ b/arch/mips/kernel/setup.c
-> @@ -405,7 +405,6 @@ static void __init bootmem_init(void)
-> 
->  		/* Register lowmem ranges */
->  		free_bootmem(PFN_PHYS(start), size << PAGE_SHIFT);
-> -		memory_present(0, start, end);
->  	}
-> 
->  	/*
-> @@ -417,6 +416,23 @@ static void __init bootmem_init(void)
->  	 * Reserve initrd memory if needed.
->  	 */
->  	finalize_initrd();
-> +
-> +	/* call memory present for all the ram */
-> +	for (i = 0; i < boot_mem_map.nr_map; i++) {
-> +		unsigned long start, end;
-> +
-> +		/*
-> + * 		 * memory present only usable memory.
-> + * 		 		 */
+ Anyway, the warning is normal and happened for all releases of FS2
+software I have ever used.
 
-There's a wee bit of whitespace weirdness in here.  You might want to go
-double-check it.
+>      h3. target  cat /dev/xxx
+>      h4. Nothing happens!  (The breakpoint does not detonate.)
 
-> +		if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
-> +			continue;
-> +
-> +		start = PFN_UP(boot_mem_map.map[i].addr);
-> +		end   = PFN_DOWN(boot_mem_map.map[i].addr
-> +				    + boot_mem_map.map[i].size);
-> +
-> +		memory_present(0, start, end);
-> +	}
->  }
+ You should be able to see a hardware breakpoint set by GDB from their
+System Navigator console as soon as execution is resumed.  I don't
+remember the exact command to use -- it's in their reference manual.
 
-Is that aligning really necessary?  I'm just curious because if it is,
-it would probably be good to stick it inside memory_present().
+ I suggest you verify this way the breakpoint is indeed set in the target
+and then whether it is really at an address that guarantees it to trigger.  
+A good way of determining whether hardware breakpoints work is to set one
+at the reset vector i.e.  0xffffffffbfc00000 (remove "f" digits as
+appropriate for your platform), resume execution and hit the NMI or soft
+reset button.
 
-<snip>
-> +Sparsemem divides up physical memory in your system into N section of M
-> +bytes. Page tables are created for only those sections that
-> +actually exist (as far as the sparsemem code is concerned). This allows
-> +for holes in the physical memory without having to waste space by
-> +creating page discriptors for those pages that do not exist.
+>  I presume I can cook up some ‘gdb’ macros to can (simplify)
+>  those horrible ‘monitor bkpt ...’ commands, but I shouldn't
+>  have to do that, should I?  ;-\ 
 
-descriptors
+ You won't get proper handling from GDB side (condition checking, 
+breakpoint commands, etc.) if you set breakpoints behind GDB's back 
+anyway -- all you will get are unrecognised traps.  And resumption under 
+these circumstances is rather cumbersome as you have to perform all the 
+actions GDB normally does itself manually.
 
-> +When page_to_pfn() or pfn_to_page() are called there is a bit of overhead to
-> +look up the proper memory section to get to the page_table, but this
-> +is small compared to the memory you are likely to save. So, it's not the
-> +default, but should be used if you have big holes in physical memory.
-> +
-> +Note that discontiguous memory is more closely related to NUMA machines
-> +and if you are a single CPU system use sparsemem and not discontig. 
-> +It's much simpler. 
-> +
-> +1) CALL MEMORY_PRESENT()
-> +Existing sections are recorded once the bootmem allocator is up and running by
-> +calling the sparsemem function "memory_present(node, pfn_start, pfn_end)" for each
-> +block of memory that exists in your physical address space. The
-> +memory_present() function records valid sections in a data structure called
-> +mem_section[].
+>   Any ideas?  (And yes, I'm attempting to pursue this with
+>  FS²/MIPS, but .... .)
 
-I might reword this a bit, but it's not big deal:
+ Well, it's their product and they should be able to sort out your 
+problem.  It's not a problem with Linux nor GDB even, so it's quite 
+unlikely anybody on this list is able to provide you with any advice 
+beyond what has been written already, so I suggest we stop bothering 
+people with the noise.
 
-Once the bootmem allocator is up and running, you should call the
-sparsemem function ﻿"memory_present(node, pfn_start, pfn_end)" for each
-block of memory that exists on your system.
-
-> +6) Gotchas
-> +
-> +One trick that I encountered when I was turning this on for MIPS was that there
-> +was some code in mem_init() that set the "reserved" flag for pages that were not
-> +valid RAM. This caused my kernel to crash when I enabled sparsemem since those
-> +pages (and page descriptors) didn't actually exist. I changed my code by adding
-> +lines like below:
-> +
-> +
-> +	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
-> +		struct page *page = pfn_to_page(tmp);
-> +
-> +   +		if (!pfn_valid(tmp))
-> +   +			continue;
-> +   +
-> +		if (!page_is_ram(tmp)) {
-> +			SetPageReserved(page);
-> +			continue;
-> +		}
-> +		ClearPageReserved(page);
-> +		init_page_count(page);
-> +		__free_page(page);
-> +		physmem_record(PFN_PHYS(tmp), PAGE_SIZE, physmem_highmem);
-> +		totalhigh_pages++;
-> +	}
-> +
-> +
-> +Once I got that straight, it worked!!!! I saved 10MiB of memory.  
-
-Note: this would be a bug on both DISCONTIG and SPARSEMEM systems.  It
-is a common one where ranges of physical memory are walked without
-regard for whether there are 'struct page's backing those ares.  These
-kinds of coding errors are perhaps the most common when converting from
-FLATMEM to DISCONTIG/SPARSEMEM.
-
--- Dave
+  Maciej

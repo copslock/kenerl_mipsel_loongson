@@ -1,87 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Aug 2008 02:43:28 +0100 (BST)
-Received: from wr-out-0506.google.com ([64.233.184.234]:23478 "EHLO
-	wr-out-0506.google.com") by ftp.linux-mips.org with ESMTP
-	id S28596291AbYHOBnV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 15 Aug 2008 02:43:21 +0100
-Received: by wr-out-0506.google.com with SMTP id 58so821445wri.8
-        for <linux-mips@linux-mips.org>; Thu, 14 Aug 2008 18:43:19 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to
-         :subject:cc:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:content-disposition:references;
-        bh=MiwtNa+LrfOrTHLwP7A8dMTeP/wDi1x2+bGC1l7ggM4=;
-        b=f+8jEsBrvWTCGNtX4UCJqDDEFWbZ59W3KaV9ZOjkxY9ahmWz/15R33eH0IdeAbMvyd
-         bCKLoA0ebZuTxZFhhVDQ+uhWZkNBfSe+mGlnxi/yLjhpY0H8K1Jq+c42B8d6jbqAWOdP
-         is85qIl5xDEEsmRQgzPQMvrlgJyIq3X6DdQ2Q=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:cc:in-reply-to:mime-version
-         :content-type:content-transfer-encoding:content-disposition
-         :references;
-        b=sUVlD9ylXuDYtHPiKaEvSov3esGpudnwlN0wiP3fYgGAYFZWUx5SAZ99RN1oyIkQPc
-         Ev3yHkmxmHpeSZ/kvBxRpfbHzZOIC4GRUIVtYYo40bE/MgtucqQu3/oN3xXuIeWFroBZ
-         tmbe3tkSPs9b0Yx2y7kKM68XkvyDiFMC3+eCE=
-Received: by 10.90.55.9 with SMTP id d9mr2809433aga.23.1218764598292;
-        Thu, 14 Aug 2008 18:43:18 -0700 (PDT)
-Received: by 10.70.90.10 with HTTP; Thu, 14 Aug 2008 18:43:18 -0700 (PDT)
-Message-ID: <7d1d9c250808141843g74e4da1cte337b35c11368465@mail.gmail.com>
-Date:	Thu, 14 Aug 2008 21:43:18 -0400
-From:	"Paul Gortmaker" <paul.gortmaker@gmail.com>
-To:	daniel.j.laird@nxp.com
-Subject: Re: [QUERY]: Website issues
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <1218698940.5012.1.camel@lnx32dtp04>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Aug 2008 09:04:12 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:5014 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20025009AbYHOIEF (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 15 Aug 2008 09:04:05 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1KTuHq-0008OI-00; Fri, 15 Aug 2008 10:03:54 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 9FDD4C316F; Fri, 15 Aug 2008 10:03:31 +0200 (CEST)
+Date:	Fri, 15 Aug 2008 10:03:31 +0200
+To:	C Michael Sundius <Michael.sundius@sciatl.com>
+Cc:	Dave Hansen <dave@linux.vnet.ibm.com>, linux-mm@kvack.org,
+	linux-mips@linux-mips.org, jfraser@broadcom.com,
+	Andy Whitcroft <apw@shadowen.org>
+Subject: Re: sparsemem support for mips with highmem
+Message-ID: <20080815080331.GA6689@alpha.franken.de>
+References: <48A4AC39.7020707@sciatl.com> <1218753308.23641.56.camel@nimitz> <48A4C542.5000308@sciatl.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-References: <1218698940.5012.1.camel@lnx32dtp04>
-Return-Path: <paul.gortmaker@gmail.com>
+In-Reply-To: <48A4C542.5000308@sciatl.com>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20223
+X-archive-position: 20224
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.gortmaker@gmail.com
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Aug 14, 2008 at 3:29 AM, Daniel Laird <daniel.j.laird@nxp.com> wrote:
-> I am having issues viewing the linux-mips GIT repository from a web
-> browser.  I am sure that this used to work but at the moment all my
-> bookmarks are failing:
-> http://git.linux-mips.org/ -> An Apache Test Page
-> http://git.linux-mips.org/pub/scm/upstream-akpm.git -> Not found
->
-> Etc, is there a problem or have all my bookmarks got messed up?
+On Thu, Aug 14, 2008 at 04:52:34PM -0700, C Michael Sundius wrote:
+> +
+> +#ifndef CONFIG_64BIT
+> +#define SECTION_SIZE_BITS       27	/* 128 MiB */
+> +#define MAX_PHYSMEM_BITS        31	/* 2 GiB   */
+> +#else
+>  #define SECTION_SIZE_BITS       28
+>  #define MAX_PHYSMEM_BITS        35
+> +#endif
 
-In addition to what Ralf said, there is also this:
+why is this needed ?
 
-------
-  Linux/MIPS on kernel.org
+Thomas.
 
-A copy of the Linux/MIPS kernel repository is also maintained on
-kernel.org. It is accessible at:
-
-    * http://www.kernel.org/git/?p=linux/kernel/git/ralf/linux.git;a=summary
-(gitweb)
-    * git://git.kernel.org/pub/scm/linux/kernel/git/ralf/linux.git
-
-Note that while kernel.org has a massive total of 2 gigabit network
-bandwidth it is currently very overloaded and due two the staged
-server system on kernel.org the copy of the git tree there may lag
-anywhere between 15min to over a day behind its linux-mips.org
-equivalent.
-------
-
-Paul.
-
-
->
-> Daniel Laird
->
->
->
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

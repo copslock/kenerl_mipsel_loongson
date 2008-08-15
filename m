@@ -1,48 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Aug 2008 01:02:57 +0100 (BST)
-Received: from e33.co.us.ibm.com ([32.97.110.151]:9608 "EHLO e33.co.us.ibm.com")
-	by ftp.linux-mips.org with ESMTP id S28597183AbYHOACs (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 15 Aug 2008 01:02:48 +0100
-Received: from d03relay02.boulder.ibm.com (d03relay02.boulder.ibm.com [9.17.195.227])
-	by e33.co.us.ibm.com (8.13.8/8.13.8) with ESMTP id m7F02cak020891
-	for <linux-mips@linux-mips.org>; Thu, 14 Aug 2008 20:02:38 -0400
-Received: from d03av03.boulder.ibm.com (d03av03.boulder.ibm.com [9.17.195.169])
-	by d03relay02.boulder.ibm.com (8.13.8/8.13.8/NCO v9.0) with ESMTP id m7F02b7I184736
-	for <linux-mips@linux-mips.org>; Thu, 14 Aug 2008 18:02:37 -0600
-Received: from d03av03.boulder.ibm.com (loopback [127.0.0.1])
-	by d03av03.boulder.ibm.com (8.12.11.20060308/8.13.3) with ESMTP id m7F02bLT025803
-	for <linux-mips@linux-mips.org>; Thu, 14 Aug 2008 18:02:37 -0600
-Received: from [9.48.113.232] (sig-9-48-113-232.mts.ibm.com [9.48.113.232])
-	by d03av03.boulder.ibm.com (8.12.11.20060308/8.12.11) with ESMTP id m7F02asD025708;
-	Thu, 14 Aug 2008 18:02:36 -0600
-Subject: Re: sparsemem support for mips with highmem
-From:	Dave Hansen <dave@linux.vnet.ibm.com>
-To:	C Michael Sundius <Michael.sundius@sciatl.com>
-Cc:	linux-mm@kvack.org, linux-mips@linux-mips.org,
-	jfraser@broadcom.com, Andy Whitcroft <apw@shadowen.org>
-In-Reply-To: <48A4C542.5000308@sciatl.com>
-References: <48A4AC39.7020707@sciatl.com> <1218753308.23641.56.camel@nimitz>
-	 <48A4C542.5000308@sciatl.com>
-Content-Type: text/plain
-Date:	Thu, 14 Aug 2008 17:02:35 -0700
-Message-Id: <1218758555.23641.69.camel@nimitz>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.22.2 
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 Aug 2008 02:43:28 +0100 (BST)
+Received: from wr-out-0506.google.com ([64.233.184.234]:23478 "EHLO
+	wr-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S28596291AbYHOBnV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 15 Aug 2008 02:43:21 +0100
+Received: by wr-out-0506.google.com with SMTP id 58so821445wri.8
+        for <linux-mips@linux-mips.org>; Thu, 14 Aug 2008 18:43:19 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to
+         :subject:cc:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:content-disposition:references;
+        bh=MiwtNa+LrfOrTHLwP7A8dMTeP/wDi1x2+bGC1l7ggM4=;
+        b=f+8jEsBrvWTCGNtX4UCJqDDEFWbZ59W3KaV9ZOjkxY9ahmWz/15R33eH0IdeAbMvyd
+         bCKLoA0ebZuTxZFhhVDQ+uhWZkNBfSe+mGlnxi/yLjhpY0H8K1Jq+c42B8d6jbqAWOdP
+         is85qIl5xDEEsmRQgzPQMvrlgJyIq3X6DdQ2Q=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:cc:in-reply-to:mime-version
+         :content-type:content-transfer-encoding:content-disposition
+         :references;
+        b=sUVlD9ylXuDYtHPiKaEvSov3esGpudnwlN0wiP3fYgGAYFZWUx5SAZ99RN1oyIkQPc
+         Ev3yHkmxmHpeSZ/kvBxRpfbHzZOIC4GRUIVtYYo40bE/MgtucqQu3/oN3xXuIeWFroBZ
+         tmbe3tkSPs9b0Yx2y7kKM68XkvyDiFMC3+eCE=
+Received: by 10.90.55.9 with SMTP id d9mr2809433aga.23.1218764598292;
+        Thu, 14 Aug 2008 18:43:18 -0700 (PDT)
+Received: by 10.70.90.10 with HTTP; Thu, 14 Aug 2008 18:43:18 -0700 (PDT)
+Message-ID: <7d1d9c250808141843g74e4da1cte337b35c11368465@mail.gmail.com>
+Date:	Thu, 14 Aug 2008 21:43:18 -0400
+From:	"Paul Gortmaker" <paul.gortmaker@gmail.com>
+To:	daniel.j.laird@nxp.com
+Subject: Re: [QUERY]: Website issues
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <1218698940.5012.1.camel@lnx32dtp04>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Return-Path: <dave@linux.vnet.ibm.com>
+Content-Disposition: inline
+References: <1218698940.5012.1.camel@lnx32dtp04>
+Return-Path: <paul.gortmaker@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20222
+X-archive-position: 20223
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dave@linux.vnet.ibm.com
+X-original-sender: paul.gortmaker@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Looks great to me.  I can't test it, of course, but I don't see any
-problems with it.
+On Thu, Aug 14, 2008 at 3:29 AM, Daniel Laird <daniel.j.laird@nxp.com> wrote:
+> I am having issues viewing the linux-mips GIT repository from a web
+> browser.  I am sure that this used to work but at the moment all my
+> bookmarks are failing:
+> http://git.linux-mips.org/ -> An Apache Test Page
+> http://git.linux-mips.org/pub/scm/upstream-akpm.git -> Not found
+>
+> Etc, is there a problem or have all my bookmarks got messed up?
 
-Signed-off-by: Dave Hansen <dave@linux.vnet.ibm.com>
+In addition to what Ralf said, there is also this:
 
--- Dave
+------
+  Linux/MIPS on kernel.org
+
+A copy of the Linux/MIPS kernel repository is also maintained on
+kernel.org. It is accessible at:
+
+    * http://www.kernel.org/git/?p=linux/kernel/git/ralf/linux.git;a=summary
+(gitweb)
+    * git://git.kernel.org/pub/scm/linux/kernel/git/ralf/linux.git
+
+Note that while kernel.org has a massive total of 2 gigabit network
+bandwidth it is currently very overloaded and due two the staged
+server system on kernel.org the copy of the git tree there may lag
+anywhere between 15min to over a day behind its linux-mips.org
+equivalent.
+------
+
+Paul.
+
+
+>
+> Daniel Laird
+>
+>
+>

@@ -1,47 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Aug 2008 15:31:33 +0100 (BST)
-Received: from hiauly1.hia.nrc.ca ([132.246.100.193]:62733 "EHLO
-	hiauly1.hia.nrc.ca") by ftp.linux-mips.org with ESMTP
-	id S28577606AbYHQObZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 17 Aug 2008 15:31:25 +0100
-Received: by hiauly1.hia.nrc.ca (Postfix, from userid 1000)
-	id 7CD574E77; Sun, 17 Aug 2008 10:31:18 -0400 (EDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Aug 2008 15:49:39 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:43430 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S28577540AbYHQOtc (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 17 Aug 2008 15:49:32 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1KUjZR-0000uc-00; Sun, 17 Aug 2008 16:49:29 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id C75D8C3F17; Sun, 17 Aug 2008 16:46:51 +0200 (CEST)
+Date:	Sun, 17 Aug 2008 16:46:51 +0200
+To:	Christoph Hellwig <hch@lst.de>
+Cc:	linux-mips@linux-mips.org, linux-parisc@vger.kernel.org
 Subject: Re: missing compat_sys_ptrace conversions for mips and parisc
-To:	deller@gmx.de (Helge Deller)
-Date:	Sun, 17 Aug 2008 10:31:18 -0400 (EDT)
-From:	"John David Anglin" <dave@hiauly1.hia.nrc.ca>
-Cc:	hch@lst.de, kyle@mcmartin.ca, linux-mips@linux-mips.org,
-	linux-parisc@vger.kernel.org
-In-Reply-To: <48A8081A.4080609@gmx.de> from "Helge Deller" at Aug 17, 2008 01:14:34 pm
-X-Mailer: ELM [version 2.4 PL25]
+Message-ID: <20080817144651.GA30963@alpha.franken.de>
+References: <20080817022924.GA23625@lst.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Message-Id: <20080817143118.7CD574E77@hiauly1.hia.nrc.ca>
-Return-Path: <dave@hiauly1.hia.nrc.ca>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20080817022924.GA23625@lst.de>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20237
+X-archive-position: 20238
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dave@hiauly1.hia.nrc.ca
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-> I could take care of this for parisc. Just looked into the code and it 
-> seems it could cleanup the code nicely as well.
-> 
-> But I don't want to step on Kyle's toe, since I assume he prepares the 
-> asm-parisc/ move in the parisc-2.6 git tree during the next days.
-> 
-> Kyle: any comments? Should I prepare some patches? Or do you want to 
-> take care of the compat_sys_ptrace yourself?
+On Sun, Aug 17, 2008 at 04:29:24AM +0200, Christoph Hellwig wrote:
+> Currently mips and parisc are the only architectures not yet converted
 
-In my builds, I noticed that there are also about five "new" syscalls 
-that aren't wired up for parisc.
+I'll send a patch for mips in a couple of minutes to Ralf.
 
-Dave
+Thomas.
+
 -- 
-J. David Anglin                                  dave.anglin@nrc-cnrc.gc.ca
-National Research Council of Canada              (613) 990-0752 (FAX: 952-6602)
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

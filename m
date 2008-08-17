@@ -1,194 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Aug 2008 15:50:04 +0100 (BST)
-Received: from elvis.franken.de ([193.175.24.41]:42918 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S28577545AbYHQOtc (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 17 Aug 2008 15:49:32 +0100
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1KUjZR-0000uc-01; Sun, 17 Aug 2008 16:49:29 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id 0425BC3F17; Sun, 17 Aug 2008 16:49:25 +0200 (CEST)
-From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH] Use compat_sys_ptrace
-To:	linux-mips@linux-mips.org
-cc:	ralf@linux-mips.org
-Message-Id: <20080817144926.0425BC3F17@solo.franken.de>
-Date:	Sun, 17 Aug 2008 16:49:25 +0200 (CEST)
-Return-Path: <tsbogend@alpha.franken.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 17 Aug 2008 18:52:01 +0100 (BST)
+Received: from py-out-1112.google.com ([64.233.166.180]:62316 "EHLO
+	py-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S28578193AbYHQRvx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 17 Aug 2008 18:51:53 +0100
+Received: by py-out-1112.google.com with SMTP id z57so1225249pyg.22
+        for <linux-mips@linux-mips.org>; Sun, 17 Aug 2008 10:51:51 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:received:to:subject
+         :message-id:date:from;
+        bh=FSHUMxQ21gdilOFJK34JwQ76+3ZbrkEUw8RieimVBW8=;
+        b=ICE9pnr3E/DzVqR1PJTvUzHaPr/wyyic7wWlB02vDg/NKLuVIMT3d9DAW9k8Wxdyvk
+         zFUzjlK7CyVnatq/nXX7n+iIAZyGfNTrNel/gHUaS0aarxyMyzO9ilIC2+5sN740rlym
+         ACGUbNaRBR3vgYxS8SzJX5Zj9NkQLITP/l4ko=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=to:subject:message-id:date:from;
+        b=r5kCDR1L3o1/nmrKAY7UsJIErqXmVjMtEQLNkdxSxOE8KO3iQWm39aGca01Svj8gKy
+         4oIlhS2rI6950pZIesvZGgkDGZ19pyRDaisQWXNJjr8mjdBdOYTjmO3MjK5B+iDodWFx
+         aOhre9+PkPlVvQH1/Qgclzy7eWBA8wi/VEkY8=
+Received: by 10.65.192.19 with SMTP id u19mr9150383qbp.9.1218995511033;
+        Sun, 17 Aug 2008 10:51:51 -0700 (PDT)
+Received: from localhost ( [142.165.146.214])
+        by mx.google.com with ESMTPS id s35sm11364958qbs.13.2008.08.17.10.51.49
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sun, 17 Aug 2008 10:51:50 -0700 (PDT)
+Received: from shane by localhost with local (Exim 4.63)
+	(envelope-from <shane@localhost>)
+	id 1KUmPs-0005uZ-Du; Sun, 17 Aug 2008 11:51:48 -0600
+To:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: [MIPS] msp71xx: resolve compilation problem in msp_setup.c
+Message-Id: <E1KUmPs-0005uZ-Du@localhost>
+Date:	Sun, 17 Aug 2008 11:51:48 -0600
+From:	Shane McDonald <mcdonald.shane@gmail.com>
+Return-Path: <mcdonald.shane@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20239
+X-archive-position: 20240
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: mcdonald.shane@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-This replaces mips's sys_ptrace32 with a compat_arch_ptrace and
-enables the new generic definition of compat_sys_ptrace instead.
+The msp71xx_defconfig has never compiled in a kernel release.  This is
+because the file msp_setup.c relies on some definitions from the PMCMSP
+GPIO driver, which has not yet been accepted into the kernel.
+This patch checks for the existence of the PMCMSP GPIO driver;
+if it doesn't exist, no GPIO functions are referenced.
 
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+This patch will continue to work after the GPIO driver has been accepted,
+so no changes will be necessary when that happens.
+
+Signed-off-by: Shane McDonald <mcdonald.shane@gmail.com>
 ---
+ arch/mips/pmc-sierra/msp71xx/msp_setup.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- arch/mips/kernel/ptrace32.c    |   43 +++++++--------------------------------
- arch/mips/kernel/scall64-n32.S |    2 +-
- arch/mips/kernel/scall64-o32.S |    2 +-
- arch/mips/kernel/signal32.c    |   12 +++++++++++
- include/asm-mips/ptrace.h      |    3 ++
- 5 files changed, 25 insertions(+), 37 deletions(-)
+Note that this patch doesn't clean up all compilation problems with
+the MSP71xx: there is still a problem with a multiple definition
+of plat_timer_setup.  I'm trying to wrangle some hardware to sort
+this out.  Note that removing the definition of plat_timer_setup
+in msp_time.c allows the kernel to compile completely,
+but I don't know if it will run.
 
-diff --git a/arch/mips/kernel/ptrace32.c b/arch/mips/kernel/ptrace32.c
-index 76818be..cac56a8 100644
---- a/arch/mips/kernel/ptrace32.c
-+++ b/arch/mips/kernel/ptrace32.c
-@@ -15,6 +15,7 @@
-  * binaries.
-  */
- #include <linux/compiler.h>
-+#include <linux/compat.h>
- #include <linux/kernel.h>
- #include <linux/sched.h>
- #include <linux/mm.h>
-@@ -46,37 +47,13 @@ int ptrace_setfpregs(struct task_struct *child, __u32 __user *data);
-  * Tracing a 32-bit process with a 64-bit strace and vice versa will not
-  * work.  I don't know how to fix this.
-  */
--asmlinkage int sys32_ptrace(int request, int pid, int addr, int data)
-+long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
-+			compat_ulong_t caddr, compat_ulong_t cdata)
- {
--	struct task_struct *child;
-+	int addr = caddr;
-+	int data = cdata;
- 	int ret;
+diff -uprN orig/arch/mips/pmc-sierra/msp71xx/msp_setup.c patched/arch/mips/pmc-sierra/msp71xx/msp_setup.c
+--- orig/arch/mips/pmc-sierra/msp71xx/msp_setup.c	2008-08-17 10:15:11.000000000 -0600
++++ patched/arch/mips/pmc-sierra/msp71xx/msp_setup.c	2008-08-17 10:15:48.000000000 -0600
+@@ -19,7 +19,7 @@
+ #include <msp_prom.h>
+ #include <msp_regs.h>
  
--#if 0
--	printk("ptrace(r=%d,pid=%d,addr=%08lx,data=%08lx)\n",
--	       (int) request, (int) pid, (unsigned long) addr,
--	       (unsigned long) data);
--#endif
--	lock_kernel();
--	if (request == PTRACE_TRACEME) {
--		ret = ptrace_traceme();
--		goto out;
--	}
--
--	child = ptrace_get_task_struct(pid);
--	if (IS_ERR(child)) {
--		ret = PTR_ERR(child);
--		goto out;
--	}
--
--	if (request == PTRACE_ATTACH) {
--		ret = ptrace_attach(child);
--		goto out_tsk;
--	}
--
--	ret = ptrace_check_attach(child, request == PTRACE_KILL);
--	if (ret < 0)
--		goto out_tsk;
--
- 	switch (request) {
- 	/* when I and D space are separate, these will need to be fixed. */
- 	case PTRACE_PEEKTEXT: /* read word at location addr. */
-@@ -214,7 +191,7 @@ asmlinkage int sys32_ptrace(int request, int pid, int addr, int data)
- 			if (!cpu_has_dsp) {
- 				tmp = 0;
- 				ret = -EIO;
--				goto out_tsk;
-+				goto out;
- 			}
- 			dregs = __get_dsp_regs(child);
- 			tmp = (unsigned long) (dregs[addr - DSP_BASE]);
-@@ -224,14 +201,14 @@ asmlinkage int sys32_ptrace(int request, int pid, int addr, int data)
- 			if (!cpu_has_dsp) {
- 				tmp = 0;
- 				ret = -EIO;
--				goto out_tsk;
-+				goto out;
- 			}
- 			tmp = child->thread.dsp.dspcontrol;
- 			break;
- 		default:
- 			tmp = 0;
- 			ret = -EIO;
--			goto out_tsk;
-+			goto out;
- 		}
- 		ret = put_user(tmp, (unsigned __user *) (unsigned long) data);
- 		break;
-@@ -414,10 +391,6 @@ asmlinkage int sys32_ptrace(int request, int pid, int addr, int data)
- 		ret = ptrace_request(child, request, addr, data);
- 		break;
- 	}
--
--out_tsk:
--	put_task_struct(child);
- out:
--	unlock_kernel();
- 	return ret;
- }
-diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
-index da7f1b6..324c549 100644
---- a/arch/mips/kernel/scall64-n32.S
-+++ b/arch/mips/kernel/scall64-n32.S
-@@ -219,7 +219,7 @@ EXPORT(sysn32_call_table)
- 	PTR	compat_sys_getrusage
- 	PTR	compat_sys_sysinfo
- 	PTR	compat_sys_times
--	PTR	sys32_ptrace
-+	PTR	compat_sys_ptrace
- 	PTR	sys_getuid			/* 6100 */
- 	PTR	sys_syslog
- 	PTR	sys_getgid
-diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
-index d7cd1aa..85fedac 100644
---- a/arch/mips/kernel/scall64-o32.S
-+++ b/arch/mips/kernel/scall64-o32.S
-@@ -231,7 +231,7 @@ sys_call_table:
- 	PTR	sys_setuid
- 	PTR	sys_getuid
- 	PTR	compat_sys_stime		/* 4025 */
--	PTR	sys32_ptrace
-+	PTR	compat_sys_ptrace
- 	PTR	sys_alarm
- 	PTR	sys_ni_syscall			/* was sys_fstat */
- 	PTR	sys_pause
-diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
-index 572c610..652709b 100644
---- a/arch/mips/kernel/signal32.c
-+++ b/arch/mips/kernel/signal32.c
-@@ -482,6 +482,18 @@ int copy_siginfo_to_user32(compat_siginfo_t __user *to, siginfo_t *from)
- 	return err;
- }
+-#if defined(CONFIG_PMC_MSP7120_GW)
++#if defined(CONFIG_PMC_MSP7120_GW) && defined(CONFIG_PMCMSP_GPIO)
+ #include <msp_regops.h>
+ #include <msp_gpio.h>
+ #define MSP_BOARD_RESET_GPIO	9
+@@ -79,7 +79,7 @@ void msp7120_reset(void)
+ 	/* Wait a bit for the DDRC to settle */
+ 	for (i = 0; i < 100000000; i++);
  
-+int copy_siginfo_from_user32(siginfo_t *to, compat_siginfo_t __user *from)
-+{
-+	memset(to, 0, sizeof *to);
-+
-+	if (copy_from_user(to, from, 3*sizeof(int)) ||
-+	    copy_from_user(to->_sifields._pad,
-+			   from->_sifields._pad, SI_PAD_SIZE32))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
- asmlinkage void sys32_sigreturn(nabi_no_regargs struct pt_regs regs)
- {
- 	struct sigframe32 __user *frame;
-diff --git a/include/asm-mips/ptrace.h b/include/asm-mips/ptrace.h
-index 786f7e3..c00cca2 100644
---- a/include/asm-mips/ptrace.h
-+++ b/include/asm-mips/ptrace.h
-@@ -9,6 +9,9 @@
- #ifndef _ASM_PTRACE_H
- #define _ASM_PTRACE_H
- 
-+#ifdef CONFIG_64BIT
-+#define __ARCH_WANT_COMPAT_SYS_PTRACE
-+#endif
- 
- /* 0 - 31 are integer registers, 32 - 63 are fp registers.  */
- #define FPR_BASE	32
+-#if defined(CONFIG_PMC_MSP7120_GW)
++#if defined(CONFIG_PMC_MSP7120_GW) && defined(CONFIG_PMCMSP_GPIO)
+ 	/*
+ 	 * Set GPIO 9 HI, (tied to board reset logic)
+ 	 * GPIO 9 is the 4th GPIO of register 3

@@ -1,47 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Aug 2008 22:17:02 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:19750 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S28579416AbYHRVQ4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 18 Aug 2008 22:16:56 +0100
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B48a9e6c20000>; Mon, 18 Aug 2008 17:16:50 -0400
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 18 Aug 2008 14:16:47 -0700
-Received: from [192.168.162.80] ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 18 Aug 2008 14:16:47 -0700
-Message-ID: <48A9E6DA.8030208@caviumnetworks.com>
-Date:	Mon, 18 Aug 2008 14:17:14 -0700
-From:	Tomaso Paoletti <tpaoletti@caviumnetworks.com>
-User-Agent: Mozilla-Thunderbird 2.0.0.14 (X11/20080509)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Aug 2008 22:25:23 +0100 (BST)
+Received: from smtp1.linux-foundation.org ([140.211.169.13]:4317 "EHLO
+	smtp1.linux-foundation.org") by ftp.linux-mips.org with ESMTP
+	id S28579921AbYHRVZP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 18 Aug 2008 22:25:15 +0100
+Received: from [127.0.0.1] ([38.98.147.130])
+	(authenticated bits=0)
+	by smtp1.linux-foundation.org (8.14.2/8.13.5/Debian-3ubuntu1.1) with ESMTP id m7ILOn6K006343
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 18 Aug 2008 14:24:50 -0700
+Message-ID: <48A9E89C.4020408@linux-foundation.org>
+Date:	Mon, 18 Aug 2008 16:24:44 -0500
+From:	Christoph Lameter <cl@linux-foundation.org>
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: [PATCH 0/2] Initial support for OCTEON
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To:	Randy Dunlap <rdunlap@xenotime.net>
+CC:	C Michael Sundius <Michael.sundius@sciatl.com>,
+	Dave Hansen <dave@linux.vnet.ibm.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-mm@kvack.org, linux-mips@linux-mips.org,
+	jfraser@broadcom.com, Andy Whitcroft <apw@shadowen.org>
+Subject: Re: sparsemem support for mips with highmem
+References: <48A4AC39.7020707@sciatl.com>	<1218753308.23641.56.camel@nimitz>	<48A4C542.5000308@sciatl.com>	<20080815080331.GA6689@alpha.franken.de>	<1218815299.23641.80.camel@nimitz>	<48A5AADE.1050808@sciatl.com>	<20080815163302.GA9846@alpha.franken.de>	<48A5B9F1.3080201@sciatl.com>	<1218821875.23641.103.camel@nimitz>	<48A5C831.3070002@sciatl.com> <20080818094412.09086445.rdunlap@xenotime.net>
+In-Reply-To: <20080818094412.09086445.rdunlap@xenotime.net>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 18 Aug 2008 21:16:47.0763 (UTC) FILETIME=[B9423630:01C90177]
-Return-Path: <Tomaso.Paoletti@caviumnetworks.com>
+X-MIMEDefang-Filter: lf$Revision: 1.188 $
+X-Scanned-By: MIMEDefang 2.63 on 140.211.169.13
+Return-Path: <cl@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20243
+X-archive-position: 20244
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tpaoletti@caviumnetworks.com
+X-original-sender: cl@linux-foundation.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi all
+Randy Dunlap wrote:
 
-This is a first (trivial) set of patches to pave the way for support of 
-OCTEON processors in the kernel.
+> +Sparsemem divides up physical memory in your system into N section of M
+> 
+>                                                             sections
+> 
+> +bytes. Page descriptors are created for only those sections that
+> +actually exist (as far as the sparsemem code is concerned). This allows
+> +for holes in the physical memory without having to waste space by
+> +creating page discriptors for those pages that do not exist.
+> 
+>                descriptors
+> 
+> +When page_to_pfn() or pfn_to_page() are called there is a bit of overhead to
+> +look up the proper memory section to get to the descriptors, but this
+> +is small compared to the memory you are likely to save. So, it's not the
+> +default, but should be used if you have big holes in physical memory.
 
-The set adds:
-- Detection of OCTEON CPU variants in cpu_probe_cavium()
-- Processor ID (PrID) constants
-- Workaround (WAR) include file
-
-Please consider for inclusion.
-Thanks
-
-   Tomaso Paoletti
+This overhead can be avoided by configuring sparsemem to use a virtual vmemmap
+(CONFIG_SPARSEMEM_VMEMMAP). In that case it can be used for non NUMA since the
+overhead is less than even FLATMEM.

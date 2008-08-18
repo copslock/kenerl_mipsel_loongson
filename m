@@ -1,153 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Aug 2008 17:43:52 +0100 (BST)
-Received: from xenotime.net ([66.160.160.81]:10898 "HELO xenotime.net")
-	by ftp.linux-mips.org with SMTP id S20024447AbYHRQnq (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 18 Aug 2008 17:43:46 +0100
-Received: from chimera.site ([72.90.117.230]) by xenotime.net for <linux-mips@linux-mips.org>; Mon, 18 Aug 2008 09:43:37 -0700
-Date:	Mon, 18 Aug 2008 09:44:12 -0700
-From:	Randy Dunlap <rdunlap@xenotime.net>
-To:	C Michael Sundius <Michael.sundius@sciatl.com>
-Cc:	Dave Hansen <dave@linux.vnet.ibm.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	linux-mm@kvack.org, linux-mips@linux-mips.org,
-	jfraser@broadcom.com, Andy Whitcroft <apw@shadowen.org>
-Subject: Re: sparsemem support for mips with highmem
-Message-Id: <20080818094412.09086445.rdunlap@xenotime.net>
-In-Reply-To: <48A5C831.3070002@sciatl.com>
-References: <48A4AC39.7020707@sciatl.com>
-	<1218753308.23641.56.camel@nimitz>
-	<48A4C542.5000308@sciatl.com>
-	<20080815080331.GA6689@alpha.franken.de>
-	<1218815299.23641.80.camel@nimitz>
-	<48A5AADE.1050808@sciatl.com>
-	<20080815163302.GA9846@alpha.franken.de>
-	<48A5B9F1.3080201@sciatl.com>
-	<1218821875.23641.103.camel@nimitz>
-	<48A5C831.3070002@sciatl.com>
-Organization: YPO4
-X-Mailer: Sylpheed 2.5.0 (GTK+ 2.12.0; x86_64-unknown-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 Aug 2008 22:17:02 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:19750 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S28579416AbYHRVQ4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 18 Aug 2008 22:16:56 +0100
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B48a9e6c20000>; Mon, 18 Aug 2008 17:16:50 -0400
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 18 Aug 2008 14:16:47 -0700
+Received: from [192.168.162.80] ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 18 Aug 2008 14:16:47 -0700
+Message-ID: <48A9E6DA.8030208@caviumnetworks.com>
+Date:	Mon, 18 Aug 2008 14:17:14 -0700
+From:	Tomaso Paoletti <tpaoletti@caviumnetworks.com>
+User-Agent: Mozilla-Thunderbird 2.0.0.14 (X11/20080509)
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: [PATCH 0/2] Initial support for OCTEON
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <rdunlap@xenotime.net>
+X-OriginalArrivalTime: 18 Aug 2008 21:16:47.0763 (UTC) FILETIME=[B9423630:01C90177]
+Return-Path: <Tomaso.Paoletti@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20242
+X-archive-position: 20243
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rdunlap@xenotime.net
+X-original-sender: tpaoletti@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 15 Aug 2008 11:17:21 -0700 C Michael Sundius wrote:
+Hi all
 
-> Ah, compromise :] that's why you get paid the big bux dave. thanks.
+This is a first (trivial) set of patches to pave the way for support of 
+OCTEON processors in the kernel.
 
-Here are some documentation comments/corrections.
+The set adds:
+- Detection of OCTEON CPU variants in cpu_probe_cavium()
+- Processor ID (PrID) constants
+- Workaround (WAR) include file
 
-And please try to use inline patches instead of attachments.
-See Documenation/email-clients.txt for some help on this.
+Please consider for inclusion.
+Thanks
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-diff --git a/Documentation/sparsemem.txt b/Documentation/sparsemem.txt
-new file mode 100644
-index 0000000..89656e3
---- /dev/null
-+++ b/Documentation/sparsemem.txt
-@@ -0,0 +1,96 @@
-+Sparsemem divides up physical memory in your system into N section of M
-
-                                                            sections
-
-+bytes. Page descriptors are created for only those sections that
-+actually exist (as far as the sparsemem code is concerned). This allows
-+for holes in the physical memory without having to waste space by
-+creating page discriptors for those pages that do not exist.
-
-               descriptors
-
-+When page_to_pfn() or pfn_to_page() are called there is a bit of overhead to
-+look up the proper memory section to get to the descriptors, but this
-+is small compared to the memory you are likely to save. So, it's not the
-+default, but should be used if you have big holes in physical memory.
-+
-+Note that discontiguous memory is more closely related to NUMA machines
-+and if you are a single CPU system use sparsemem and not discontig. 
-+It's much simpler. 
-+
-+1) CALL MEMORY_PRESENT()
-+Once the bootmem allocator is up and running, you should call the
-+sparsemem function "memory_present(node, pfn_start, pfn_end)" for each
-+block of memory that exists on your system.
-+
-+2) DETERMINE AND SET THE SIZE OF SECTIONS AND PHYSMEM
-
-...
-
-+3) INITIALIZE SPARSE MEMORY
-+You should make sure that you initialize the sparse memory code by calling 
-+
-+	bootmem_init();
-+  +	sparse_init();
-+	paging_init();
-+
-+just before you call paging_init() and after the bootmem_allocator is
-+turned on in your setup_arch() code.  
-+
-+4) ENABLE SPARSEMEM IN KCONFIG
-+Add a line like this:
-+
-+	select ARCH_SPARSEMEM_ENABLE
-+
-+into the config for your platform in arch/<your_arch>/Kconfig. This will
-+ensure that turning on sparsemem is enabled for your platform. 
-+
-+5) CONFIG
-+Run make menuconfig or make gconfig, as you like, and turn on the sparsemem
-+memory model under the "Kernel Type" --> "Memory Model" and then build your
-+kernel.
-
-Wow!  A gconfig user?  I see more people using menuconfig or xconfig IIRC.
-Anyway, we usually just say something like "run make *config"...
-
-+
-+
-+6) Gotchas
-+
-+One trick that I encountered when I was turning this on for MIPS was that there
-+was some code in mem_init() that set the "reserved" flag for pages that were not
-+valid RAM. This caused my kernel to crash when I enabled sparsemem since those
-+pages (and page descriptors) didn't actually exist. I changed my code by adding
-+lines like below:
-+
-+
-+	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
-+		struct page *page = pfn_to_page(tmp);
-+
-+   +		if (!pfn_valid(tmp))
-+   +			continue;
-+   +
-+		if (!page_is_ram(tmp)) {
-+			SetPageReserved(page);
-+			continue;
-+		}
-+		ClearPageReserved(page);
-+		init_page_count(page);
-+		__free_page(page);
-+		physmem_record(PFN_PHYS(tmp), PAGE_SIZE, physmem_highmem);
-+		totalhigh_pages++;
-+	}
-+
-+
-+Once I got that straight, it worked!!!! I saved 10MiB of memory.  
-
-Please don't end patch lines with whitespace.  (like above)
-
-
-
----
-~Randy
-Linux Plumbers Conference, 17-19 September 2008, Portland, Oregon USA
-http://linuxplumbersconf.org/
+   Tomaso Paoletti

@@ -1,57 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Aug 2008 20:28:55 +0100 (BST)
-Received: from smtp4.int-evry.fr ([157.159.10.71]:3990 "EHLO smtp4.int-evry.fr")
-	by ftp.linux-mips.org with ESMTP id S28580874AbYHST2p (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 19 Aug 2008 20:28:45 +0100
-Received: from smtp2.int-evry.fr (smtp2.int-evry.fr [157.159.10.45])
-	by smtp4.int-evry.fr (Postfix) with ESMTP id C7476FE2E28;
-	Tue, 19 Aug 2008 21:28:39 +0200 (CEST)
-Received: from smtp-ext.int-evry.fr (smtp-ext.int-evry.fr [157.159.11.17])
-	by smtp2.int-evry.fr (Postfix) with ESMTP id 8FF8E3EE0E5;
-	Tue, 19 Aug 2008 21:28:23 +0200 (CEST)
-Received: from lenovo.mimichou.home (florian.mimichou.net [82.241.112.26])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp-ext.int-evry.fr (Postfix) with ESMTP id 672A390002;
-	Tue, 19 Aug 2008 21:28:23 +0200 (CEST)
-From:	Florian Fainelli <florian.fainelli@telecomint.eu>
-Date:	Tue, 19 Aug 2008 21:28:21 +0200
-Subject: [PATCH] Ignore vmlinux.lds generated files
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Aug 2008 00:20:23 +0100 (BST)
+Received: from [217.169.26.26] ([217.169.26.26]:10412 "EHLO
+	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
+	with ESMTP id S28581651AbYHSXUP (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 20 Aug 2008 00:20:15 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m7JNKALG015582;
+	Wed, 20 Aug 2008 00:20:13 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m7JNK8RE015581;
+	Wed, 20 Aug 2008 00:20:08 +0100
+Date:	Wed, 20 Aug 2008 00:20:08 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Florian Fainelli <florian.fainelli@telecomint.eu>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] Ignore vmlinux.lds generated files
+Message-ID: <20080819232008.GA15564@linux-mips.org>
+References: <200808192128.21386.florian.fainelli@telecomint.eu>
 MIME-Version: 1.0
-X-UID:	1111
-X-Length: 1159
-To:	linux-mips <linux-mips@linux-mips.org>
-Cc:	ralf@linux-mips.org
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200808192128.21386.florian.fainelli@telecomint.eu>
-X-INT-MailScanner-Information: Please contact the ISP for more information
-X-MailScanner-ID: 8FF8E3EE0E5.9D662
-X-INT-MailScanner: Found to be clean
-X-INT-MailScanner-SpamCheck: 
-X-INT-MailScanner-From:	florian.fainelli@telecomint.eu
-Return-Path: <florian.fainelli@telecomint.eu>
+In-Reply-To: <200808192128.21386.florian.fainelli@telecomint.eu>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20278
+X-archive-position: 20279
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian.fainelli@telecomint.eu
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch adds the proper .gitignore file to ignore
-vmlinux.lds generated in arch/mips/kernel/.
+On Tue, Aug 19, 2008 at 09:28:21PM +0200, Florian Fainelli wrote:
 
-Signed-off-by: Florian Fainelli <florian.fainelli@telecomint.eu>
----
-diff --git a/arch/mips/kernel/.gitignore b/arch/mips/kernel/.gitignore
-new file mode 100644
-index 0000000..c5f676c
---- /dev/null
-+++ b/arch/mips/kernel/.gitignore
-@@ -0,0 +1 @@
-+vmlinux.lds
+> This patch adds the proper .gitignore file to ignore
+> vmlinux.lds generated in arch/mips/kernel/.
+
+Thanks, applied.
+
+  Ralf

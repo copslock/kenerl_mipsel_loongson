@@ -1,58 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Aug 2008 17:06:47 +0100 (BST)
-Received: from ditditdahdahdah-dahditditditdit.dl5rb.org.uk ([217.169.26.26]:26580
-	"EHLO ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk")
-	by ftp.linux-mips.org with ESMTP id S28574522AbYHSQGk (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 19 Aug 2008 17:06:40 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m7JG6bcL006175;
-	Tue, 19 Aug 2008 17:06:38 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m7JG6ZDk006173;
-	Tue, 19 Aug 2008 17:06:35 +0100
-Date:	Tue, 19 Aug 2008 17:06:35 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Kevin Hickey <khickey@rmicorp.com>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: Compilation problem
-Message-ID: <20080819160635.GA5193@linux-mips.org>
-References: <1219151811.3948.1.camel@kh-ubuntu.razamicroelectronics.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Aug 2008 20:28:55 +0100 (BST)
+Received: from smtp4.int-evry.fr ([157.159.10.71]:3990 "EHLO smtp4.int-evry.fr")
+	by ftp.linux-mips.org with ESMTP id S28580874AbYHST2p (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 19 Aug 2008 20:28:45 +0100
+Received: from smtp2.int-evry.fr (smtp2.int-evry.fr [157.159.10.45])
+	by smtp4.int-evry.fr (Postfix) with ESMTP id C7476FE2E28;
+	Tue, 19 Aug 2008 21:28:39 +0200 (CEST)
+Received: from smtp-ext.int-evry.fr (smtp-ext.int-evry.fr [157.159.11.17])
+	by smtp2.int-evry.fr (Postfix) with ESMTP id 8FF8E3EE0E5;
+	Tue, 19 Aug 2008 21:28:23 +0200 (CEST)
+Received: from lenovo.mimichou.home (florian.mimichou.net [82.241.112.26])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp-ext.int-evry.fr (Postfix) with ESMTP id 672A390002;
+	Tue, 19 Aug 2008 21:28:23 +0200 (CEST)
+From:	Florian Fainelli <florian.fainelli@telecomint.eu>
+Date:	Tue, 19 Aug 2008 21:28:21 +0200
+Subject: [PATCH] Ignore vmlinux.lds generated files
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+X-UID:	1111
+X-Length: 1159
+To:	linux-mips <linux-mips@linux-mips.org>
+Cc:	ralf@linux-mips.org
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1219151811.3948.1.camel@kh-ubuntu.razamicroelectronics.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+Message-Id: <200808192128.21386.florian.fainelli@telecomint.eu>
+X-INT-MailScanner-Information: Please contact the ISP for more information
+X-MailScanner-ID: 8FF8E3EE0E5.9D662
+X-INT-MailScanner: Found to be clean
+X-INT-MailScanner-SpamCheck: 
+X-INT-MailScanner-From:	florian.fainelli@telecomint.eu
+Return-Path: <florian.fainelli@telecomint.eu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20277
+X-archive-position: 20278
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: florian.fainelli@telecomint.eu
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Aug 19, 2008 at 08:16:50AM -0500, Kevin Hickey wrote:
+This patch adds the proper .gitignore file to ignore
+vmlinux.lds generated in arch/mips/kernel/.
 
-> Is anyone else having trouble compiling the HEAD of LMO?  Under multiple
-> defconfigs, I get:
-> 
-> In file included from init/main.c:32:
-> include/linux/security.h: In function ‘security_ptrace_traceme’:
-> include/linux/security.h:1760: error: ‘parent’ undeclared (first use in
-> this function)
-> include/linux/security.h:1760: error: (Each undeclared identifier is
-> reported only once
-> include/linux/security.h:1760: error: for each function it appears in.)
-> make[1]: *** [init/main.o] Error 1
-> 
-> I did a clean clone to be sure that it was not anything leftover in my
-> working directory.  Is it just me?
-
-Broken code which I merged from upstream.  If that happens I usually don't
-commit the fixes locally unless the fix affects MIPS files.  So the issue
-may persist for a day or two.
-
-  Ralf
+Signed-off-by: Florian Fainelli <florian.fainelli@telecomint.eu>
+---
+diff --git a/arch/mips/kernel/.gitignore b/arch/mips/kernel/.gitignore
+new file mode 100644
+index 0000000..c5f676c
+--- /dev/null
++++ b/arch/mips/kernel/.gitignore
+@@ -0,0 +1 @@
++vmlinux.lds

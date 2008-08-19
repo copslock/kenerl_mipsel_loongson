@@ -1,65 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Aug 2008 16:02:46 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:36080 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S28574371AbYHSPCj (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 19 Aug 2008 16:02:39 +0100
-Received: from localhost (p6195-ipad311funabasi.chiba.ocn.ne.jp [123.217.216.195])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 80BFCB6B9; Wed, 20 Aug 2008 00:02:32 +0900 (JST)
-Date:	Wed, 20 Aug 2008 00:02:36 +0900 (JST)
-Message-Id: <20080820.000236.93205674.anemo@mba.ocn.ne.jp>
-To:	ralf@linux-mips.org
-Cc:	ricmm@gentoo.org, yoichi_yuasa@tripeaks.co.jp,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] vr41xx: fix problem with vr41xx_cpu_wait
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20080806171531.GA5848@linux-mips.org>
-References: <20080806161710.GA22957@woodpecker.gentoo.org>
-	<20080807.021057.59650770.anemo@mba.ocn.ne.jp>
-	<20080806171531.GA5848@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 Aug 2008 17:06:47 +0100 (BST)
+Received: from ditditdahdahdah-dahditditditdit.dl5rb.org.uk ([217.169.26.26]:26580
+	"EHLO ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk")
+	by ftp.linux-mips.org with ESMTP id S28574522AbYHSQGk (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 19 Aug 2008 17:06:40 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m7JG6bcL006175;
+	Tue, 19 Aug 2008 17:06:38 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m7JG6ZDk006173;
+	Tue, 19 Aug 2008 17:06:35 +0100
+Date:	Tue, 19 Aug 2008 17:06:35 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Kevin Hickey <khickey@rmicorp.com>
+Cc:	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: Compilation problem
+Message-ID: <20080819160635.GA5193@linux-mips.org>
+References: <1219151811.3948.1.camel@kh-ubuntu.razamicroelectronics.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1219151811.3948.1.camel@kh-ubuntu.razamicroelectronics.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20276
+X-archive-position: 20277
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 6 Aug 2008 18:15:31 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
-> > http://www.linux-mips.org/archives/linux-mips/2007-11/msg00123.html
-> > 
-> > To support vr41's standby instruction in same way, we might have to
-> > synthesise rollback_handle_int, etc. or r4k_wait at runtime...
+On Tue, Aug 19, 2008 at 08:16:50AM -0500, Kevin Hickey wrote:
+
+> Is anyone else having trouble compiling the HEAD of LMO?  Under multiple
+> defconfigs, I get:
 > 
-> The infrastructure for that is now there :-)  Another question of course
-> is if that stuff really deserve this ultimate degree of optimization.
+> In file included from init/main.c:32:
+> include/linux/security.h: In function ‘security_ptrace_traceme’:
+> include/linux/security.h:1760: error: ‘parent’ undeclared (first use in
+> this function)
+> include/linux/security.h:1760: error: (Each undeclared identifier is
+> reported only once
+> include/linux/security.h:1760: error: for each function it appears in.)
+> make[1]: *** [init/main.o] Error 1
+> 
+> I did a clean clone to be sure that it was not anything leftover in my
+> working directory.  Is it just me?
 
-Well, this patch on top of my patch might be enough.
+Broken code which I merged from upstream.  If that happens I usually don't
+commit the fixes locally unless the fix affects MIPS files.  So the issue
+may persist for a day or two.
 
---- a/arch/mips/kernel/genex.S
-+++ b/arch/mips/kernel/genex.S
-@@ -152,7 +152,7 @@ LEAF(r4k_wait)
- 	.set	push
- 	.set	noat
- 	MFC0	k0, CP0_EPC
--	PTR_LA	k1, r4k_wait
-+	PTR_L	k1, cpu_wait
- 	ori	k0, 0x1f	/* 32 byte rollback region */
- 	xori	k0, 0x1f
- 	bne	k0, k1, 9f
-
-Of course old_vr41xx_cpu_wait should be modified as like as r4k_wait
-and "rollback = (cpu_wait == r4k_wait)" lines in traps.c should be
-changed...
-
----
-Atsushi Nemoto
+  Ralf

@@ -1,128 +1,181 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Aug 2008 20:28:53 +0100 (BST)
-Received: from sj-iport-2.cisco.com ([171.71.176.71]:24175 "EHLO
-	sj-iport-2.cisco.com") by ftp.linux-mips.org with ESMTP
-	id S28583974AbYHTT2s (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 20 Aug 2008 20:28:48 +0100
-X-IronPort-AV: E=Sophos;i="4.32,240,1217808000"; 
-   d="scan'208";a="76936983"
-Received: from sj-dkim-1.cisco.com ([171.71.179.21])
-  by sj-iport-2.cisco.com with ESMTP; 20 Aug 2008 19:28:39 +0000
-Received: from sj-core-1.cisco.com (sj-core-1.cisco.com [171.71.177.237])
-	by sj-dkim-1.cisco.com (8.12.11/8.12.11) with ESMTP id m7KJSd6b004932;
-	Wed, 20 Aug 2008 12:28:39 -0700
-Received: from cliff.cisco.com (cliff.cisco.com [171.69.11.141])
-	by sj-core-1.cisco.com (8.13.8/8.13.8) with ESMTP id m7KJSckK029856;
-	Wed, 20 Aug 2008 19:28:38 GMT
-Received: from [127.0.0.1] ([64.101.20.200]) by cliff.cisco.com (8.6.12/8.6.5) with ESMTP id TAA29164; Wed, 20 Aug 2008 19:28:26 GMT
-Message-ID: <48AC7056.8070903@cisco.com>
-Date:	Wed, 20 Aug 2008 12:28:22 -0700
-From:	David VomLehn <dvomlehn@cisco.com>
-User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
-MIME-Version: 1.0
-To:	Christoph Lameter <cl@linux-foundation.org>
-CC:	Randy Dunlap <rdunlap@xenotime.net>,
-	C Michael Sundius <Michael.sundius@sciatl.com>,
-	Dave Hansen <dave@linux.vnet.ibm.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	linux-mm@kvack.org, linux-mips@linux-mips.org,
-	jfraser@broadcom.com, Andy Whitcroft <apw@shadowen.org>
-Subject: Re: sparsemem support for mips with highmem
-References: <48A4AC39.7020707@sciatl.com>	<1218753308.23641.56.camel@nimitz>	<48A4C542.5000308@sciatl.com>	<20080815080331.GA6689@alpha.franken.de>	<1218815299.23641.80.camel@nimitz>	<48A5AADE.1050808@sciatl.com>	<20080815163302.GA9846@alpha.franken.de>	<48A5B9F1.3080201@sciatl.com>	<1218821875.23641.103.camel@nimitz>	<48A5C831.3070002@sciatl.com> <20080818094412.09086445.rdunlap@xenotime.net> <48A9E89C.4020408@linux-foundation.org> <48A9F047.7050906@cisco.com> <48AAC54D.8020609@linux-foundation.org> <48AB5959.6090609@cisco.com> <48AC231B.3090801@linux-foundation.org>
-In-Reply-To: <48AC231B.3090801@linux-foundation.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=3778; t=1219260519; x=1220124519;
-	c=relaxed/simple; s=sjdkim1004;
-	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
-	d=cisco.com; i=dvomlehn@cisco.com;
-	z=From:=20David=20VomLehn=20<dvomlehn@cisco.com>
-	|Subject:=20Re=3A=20sparsemem=20support=20for=20mips=20with
-	=20highmem
-	|Sender:=20;
-	bh=wcC+eDKuc15XFdlONIuPPln4eVsoWVTIZtwBmauZYVo=;
-	b=oaYa2cmjULL1NAlihSXwt8qFgTKjfHc0weft3/G6gUva3AtKPLVldoPv2Q
-	MPa/OVB24nuEqHtqZeQW9Wom6EdnJyFs7TJv4piVuU9kfIHauFb/fZ+RnJ/5
-	4yxsZtGVVO642tdQOiQIUTIuVV937gY4mjQi0VizbriMUNGV8vAaQ=;
-Authentication-Results:	sj-dkim-1; header.From=dvomlehn@cisco.com; dkim=pass (
-	sig from cisco.com/sjdkim1004 verified; ); 
-Return-Path: <dvomlehn@cisco.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Aug 2008 21:20:26 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:64390 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S28585492AbYHTUUU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 20 Aug 2008 21:20:20 +0100
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B48ac7c7d0000>; Wed, 20 Aug 2008 16:20:13 -0400
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 20 Aug 2008 13:20:12 -0700
+Received: from localhost.localdomain ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 20 Aug 2008 13:20:12 -0700
+From:	Tomaso Paoletti <tpaoletti@caviumnetworks.com>
+To:	linux-mips@linux-mips.org
+Cc:	Tomaso Paoletti <tpaoletti@caviumnetworks.com>
+Subject: [PATCH 1/2] OCTEON: Add processor-specific constants and detection of CPU variants
+Date:	Wed, 20 Aug 2008 13:20:05 -0700
+Message-Id: <1219263605-21396-1-git-send-email-tpaoletti@caviumnetworks.com>
+X-Mailer: git-send-email 1.5.6.3
+In-Reply-To: <48A9E6DA.8030208@caviumnetworks.com>
+References: <48A9E6DA.8030208@caviumnetworks.com>
+X-OriginalArrivalTime: 20 Aug 2008 20:20:12.0226 (UTC) FILETIME=[262FE220:01C90302]
+Return-Path: <Tomaso.Paoletti@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20290
+X-archive-position: 20291
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvomlehn@cisco.com
+X-original-sender: tpaoletti@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Christoph Lameter wrote:
-> David VomLehn wrote:
-> 
->>> The virtually mapped memmap results in smaller code and is typically more
->>> effective since the processor caches the TLB entries.
->> I'm pretty ignorant on this subject, but I think this is worth
->> discussing. On a MIPS processor, access to low memory bypasses the TLB
->> entirely. I think what you are suggesting is to use mapped addresses to
->> make all of low memory virtually contiguous. On a MIPS processor, we
-> 
-> No the virtual area is only used to map the memory map (the array of page
-> structs). That is just a small fraction of memory.
-> 
-> 
->> could do this by allocating a "wired" TLB entry for each physically
->> contiguous block of memory. 
-...
-> That would consume precious resources.
-> 
-> Just place the memmap into the vmalloc area gets you there. TLB entries should
-> be loaded on demand.
-> 
-> 
->> If I'm understand what you are suggesting correctly (a big if)
-...
-> 
-> The cost going through a TLB mapping is only incurred for accesses to the
-> memmap array. Not for general memory accesses.
+Add constants for machine type, processor ID and MODULE_PROC_FAMILY for Octeon.
+Add detection of all Cavium-specific ID strings for each processor variant.
 
-The bottom line is that, no, I didn't understand correctly. And a part of my 
-brain woke me up a 3:00 this morning to say, "duh", to me. I hate it when my 
-brain does that, but I think I actually do understand this time. Let's see:
+Signed-off-by: Tomaso Paoletti <tpaoletti@caviumnetworks.com>
+---
+ arch/mips/kernel/cpu-probe.c |   35 +++++++++++++++++++++++++++++++++++
+ include/asm-mips/bootinfo.h  |    5 +++++
+ include/asm-mips/cpu.h       |   14 ++++++++++++++
+ include/asm-mips/module.h    |    2 ++
+ 4 files changed, 56 insertions(+), 0 deletions(-)
 
-For a flat memory model, the page descriptors array memmap is contiguously 
-allocated in low memory. For sparse memory, you only allocate memory to hold page 
-descriptors that actually exist. If you don't enable CONFIG_SPARSEMEM_VMEMMAP, 
-you introduce a level of indirection where the top bits of an address gives you 
-an index into an array that points to an array of page descriptors for that 
-section of memory. This has some performance impact relative to flat memory due 
-to the extra memory access to read the pointer to the array of page descriptors.
-
-If you do enable CONFIG_SPARSEMEM_VMEMMAP, you still allocate memory to hold page 
-descriptors, but you map that memory into virtual space so that a given page 
-descriptor for a physical address is at the offset from the beginning of the 
-virtual memmap corresponding to the page frame number of that address. This gives 
-you a single memmap, just like you had in the flat memory case, though memmap now 
-lives in virtual address space. Since memmap now lives in virtual address space, 
-you don't need to use any memory to back the virtual addresses that correspond to 
-the holes in your physical memory, which is how you save a lot of physical 
-memory. The performance impact relative to flag memory is now that of having to 
-go through the TLB to get to the page descriptor.
-
-If you are using CONFIG_SPARSEMEM_VMEMMAP and the corresponding TLB entry is 
-present, you expect this will be faster than the extra memory access you do when 
-CONFIG_SPARSEMEM_VMEMMAP is not enabled, even if that memory is in cache. This 
-seems like a pretty reasonable expectation to me. Since TLB entries cover much 
-more memory than the cache, it also seems like there would be a much better 
-chance that you already have the corresponding TLB entry than having the indirect 
-memory pointer in cache. And, in the worst case, reading the TLB entry is just 
-another memory access, so it's closely equivalent to not enabling 
-CONFIG_SPARSEMEM_VMEMMAP.
-
-So, if I understand this right, the overhead on a MIPS processor using flat 
-memory versus using sparse memory with CONFIG_SPARSEMEM_VMEMMAP enabled would be 
-mostly the difference between accessing unmapped memory, which doesn't go through 
-the TLB, and mapped memory, which does. Even though there is some impact due to 
-TLB misses, this should be pretty reasonable. What a way cool approach!
---
-David VomLehn
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 335a6ae..3e104db 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -160,6 +160,7 @@ static inline void check_wait(void)
+ 	case CPU_25KF:
+ 	case CPU_PR4450:
+ 	case CPU_BCM3302:
++	case CPU_CAVIUM_OCTEON:
+ 		cpu_wait = r4k_wait;
+ 		break;
+ 
+@@ -821,6 +822,35 @@ static inline void cpu_probe_broadcom(struct cpuinfo_mips *c)
+ 	}
+ }
+ 
++static inline void cpu_probe_cavium(struct cpuinfo_mips *c)
++{
++	switch (c->processor_id & 0xff00) {
++	case PRID_IMP_CAVIUM_CN38XX:
++	case PRID_IMP_CAVIUM_CN31XX:
++	case PRID_IMP_CAVIUM_CN30XX:
++	case PRID_IMP_CAVIUM_CN58XX:
++	case PRID_IMP_CAVIUM_CN56XX:
++	case PRID_IMP_CAVIUM_CN50XX:
++	case PRID_IMP_CAVIUM_CN52XX:
++		c->cputype = CPU_CAVIUM_OCTEON;
++		break;
++	default:
++		printk(KERN_INFO "Unknown Octeon chip!\n");
++		c->cputype = CPU_UNKNOWN;
++		break;
++	}
++
++	c->isa_level = MIPS_CPU_ISA_M64R2;
++	c->options = MIPS_CPU_TLB |     /* CPU has TLB */
++		     MIPS_CPU_4KEX |    /* "R4K" exception model */
++		     MIPS_CPU_COUNTER | /* Cycle count/compare */
++		     MIPS_CPU_WATCH |   /* watchpoint registers */
++		     MIPS_CPU_DIVEC |   /* dedicated int vector */
++		     MIPS_CPU_EJTAG |   /* EJTAG exception */
++		     MIPS_CPU_LLSC;     /* CPU has ll/sc instructions */
++	decode_config1(c);
++}
++
+ const char *__cpu_name[NR_CPUS];
+ 
+ /*
+@@ -902,6 +932,8 @@ static __cpuinit const char *cpu_to_name(struct cpuinfo_mips *c)
+ 	case CPU_BCM4710:	name = "Broadcom BCM4710"; break;
+ 	case CPU_PR4450:	name = "Philips PR4450"; break;
+ 	case CPU_LOONGSON2:	name = "ICT Loongson-2"; break;
++	case CPU_CAVIUM_OCTEON:	name = "Cavium Octeon"; break;
++
+ 	default:
+ 		BUG();
+ 	}
+@@ -941,6 +973,9 @@ __cpuinit void cpu_probe(void)
+ 	case PRID_COMP_NXP:
+ 		cpu_probe_nxp(c);
+ 		break;
++	case PRID_COMP_CAVIUM:
++		cpu_probe_cavium(c);
++		break;
+ 	default:
+ 		c->cputype = CPU_UNKNOWN;
+ 	}
+diff --git a/include/asm-mips/bootinfo.h b/include/asm-mips/bootinfo.h
+index 610fe3a..ac34028 100644
+--- a/include/asm-mips/bootinfo.h
++++ b/include/asm-mips/bootinfo.h
+@@ -57,6 +57,11 @@
+ #define	MACH_MIKROTIK_RB532	0	/* Mikrotik RouterBoard 532 	*/
+ #define MACH_MIKROTIK_RB532A	1	/* Mikrotik RouterBoard 532A 	*/
+ 
++/*
++ * Valid machtype for group CAVIUM
++ */
++#define  MACH_CAVIUM_OCTEON	1	/* Cavium Octeon */
++
+ #define CL_SIZE			COMMAND_LINE_SIZE
+ 
+ extern char *system_type;
+diff --git a/include/asm-mips/cpu.h b/include/asm-mips/cpu.h
+index 229a786..c018727 100644
+--- a/include/asm-mips/cpu.h
++++ b/include/asm-mips/cpu.h
+@@ -33,6 +33,7 @@
+ #define PRID_COMP_TOSHIBA	0x070000
+ #define PRID_COMP_LSI		0x080000
+ #define PRID_COMP_LEXRA		0x0b0000
++#define PRID_COMP_CAVIUM	0x0d0000
+ 
+ 
+ /*
+@@ -114,6 +115,18 @@
+ #define PRID_IMP_BCM3302	0x9000
+ 
+ /*
++ * These are the PRID's for when 23:16 == PRID_COMP_CAVIUM
++ */
++
++#define PRID_IMP_CAVIUM_CN38XX 0x0000
++#define PRID_IMP_CAVIUM_CN31XX 0x0100
++#define PRID_IMP_CAVIUM_CN30XX 0x0200
++#define PRID_IMP_CAVIUM_CN58XX 0x0300
++#define PRID_IMP_CAVIUM_CN56XX 0x0400
++#define PRID_IMP_CAVIUM_CN50XX 0x0600
++#define PRID_IMP_CAVIUM_CN52XX 0x0700
++
++/*
+  * Definitions for 7:0 on legacy processors
+  */
+ 
+@@ -203,6 +216,7 @@ enum cpu_type_enum {
+ 	 * MIPS64 class processors
+ 	 */
+ 	CPU_5KC, CPU_20KC, CPU_25KF, CPU_SB1, CPU_SB1A, CPU_LOONGSON2,
++	CPU_CAVIUM_OCTEON,
+ 
+ 	CPU_LAST
+ };
+diff --git a/include/asm-mips/module.h b/include/asm-mips/module.h
+index de6d09e..7b24183 100644
+--- a/include/asm-mips/module.h
++++ b/include/asm-mips/module.h
+@@ -114,6 +114,8 @@ search_module_dbetables(unsigned long addr)
+ #define MODULE_PROC_FAMILY "SB1 "
+ #elif defined CONFIG_CPU_LOONGSON2
+ #define MODULE_PROC_FAMILY "LOONGSON2 "
++#elif defined CONFIG_CPU_CAVIUM_OCTEON
++#define MODULE_PROC_FAMILY "OCTEON "
+ #else
+ #error MODULE_PROC_FAMILY undefined for your processor configuration
+ #endif
+-- 
+1.5.3.2

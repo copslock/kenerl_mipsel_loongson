@@ -1,62 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Aug 2008 18:58:30 +0100 (BST)
-Received: from accolon.hansenpartnership.com ([76.243.235.52]:34984 "EHLO
-	accolon.hansenpartnership.com") by ftp.linux-mips.org with ESMTP
-	id S28584849AbYHTR6T (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 20 Aug 2008 18:58:19 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by accolon.hansenpartnership.com (Postfix) with ESMTP id 2C56680B4;
-	Wed, 20 Aug 2008 12:58:11 -0500 (CDT)
-Received: from accolon.hansenpartnership.com ([127.0.0.1])
-	by localhost (redscar.int.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id veSy+Esy4M4G; Wed, 20 Aug 2008 12:58:09 -0500 (CDT)
-Received: from [153.66.150.222] (mulgrave-w.int.hansenpartnership.com [153.66.150.222])
-	by accolon.hansenpartnership.com (Postfix) with ESMTP id 9A61F806E;
-	Wed, 20 Aug 2008 12:58:09 -0500 (CDT)
-Subject: Re: [PATCH] mips: Add dma_mmap_coherent()
-From:	James Bottomley <James.Bottomley@HansenPartnership.com>
-To:	Takashi Iwai <tiwai@suse.de>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	Parisc List <linux-parisc@vger.kernel.org>
-In-Reply-To: <s5hzln7vd9d.wl%tiwai@suse.de>
-References: <s5hk5eezcfe.wl%tiwai@suse.de>
-	 <1219249633.3258.18.camel@localhost.localdomain>
-	 <s5hzln7vd9d.wl%tiwai@suse.de>
-Content-Type: text/plain
-Date:	Wed, 20 Aug 2008 12:58:08 -0500
-Message-Id: <1219255088.3258.45.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.22.3.1 (2.22.3.1-1.fc9) 
-Content-Transfer-Encoding: 7bit
-Return-Path: <James.Bottomley@HansenPartnership.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 Aug 2008 19:21:06 +0100 (BST)
+Received: from mail5.dslextreme.com ([66.51.199.81]:43473 "HELO
+	mail5.dslextreme.com") by ftp.linux-mips.org with SMTP
+	id S28585611AbYHTSVB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 20 Aug 2008 19:21:01 +0100
+Received: (qmail 27398 invoked from network); 20 Aug 2008 18:19:27 -0000
+Received: from unknown (HELO webmail.dslextreme.com) (mikeci@192.168.7.18)
+	by mail5.dslextreme.com with SMTP; Wed, 20 Aug 2008 11:19:27 -0700
+Message-ID: <1bd89af55ea11c1ca4092a.20080820111929.zvxrpv@webmail.dslextreme.com>
+In-Reply-To: <48AC39D2.3050905@walsimou.com>
+References: <48AC2EEE.5020008@dslextreme.com>
+    <48AC39D2.3050905@walsimou.com>
+Date:	Wed, 20 Aug 2008 11:19:29 -0700 (PDT)
+Subject: Re: Question about using initramfs
+From:	"Ivica Mikec" <mikeci@acm.org>
+To:	"Gaye Abdoulaye Walsimou" <walsimou@walsimou.com>
+Cc:	linux-mips@linux-mips.org
+Reply-To: mikeci@acm.org
+User-Agent: DSL Extreme Webmail (www.dslextreme.com)
+MIME-Version: 1.0
+Content-Type: text/plain;charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+X-Priority: 3
+Importance: Normal
+Return-Path: <mikeci@acm.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20288
+X-archive-position: 20289
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: James.Bottomley@HansenPartnership.com
+X-original-sender: mikeci@acm.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2008-08-20 at 18:53 +0200, Takashi Iwai wrote:
-> > I'm afraid there are several problems.  The first is that it doesn't do
-> > what you want.  You can't map a coherent page to userspace (which is at
-> > a non congruent address on parisc) and still expect it to be
-> > coherent ... there's going to have to be fiddling with the page table
-> > caches to make sure coherency isn't destroyed by aliasing effects
-> 
-> Hmm...  how bad would be the coherency with such a simple mmap method?
-> In most cases, we don't need the "perfect" coherency.  Usually one
-> process mmaps the whole buffer and keep reading/writing.  There is
-> another use case (sharing the mmapped buffer by multiple processes),
-> but this can be disabled if we know it's not feasible beforehand.
+I don't think so. ramdisk size is for initrd and not for initramfs. Can
+someone correct me if I am wrong?
 
-Unfortunately, the incoherency is between the user and the kernel.
-That's where the aliasing effects occur, so realistically, even though
-you've mapped coherent memory to the user, the coherency of that memory
-is only device <-> kernel.  When the any single user space process
-writes to it, the device won't see the write unless the user issues a
-flush.
 
-James
+Gaye Abdoulaye Walsimou
+> Ivica Mikec a écrit :
+>> Hi,
+>>
+>> I am trying to use initramfs on MIPS 24kc. Is there a size limit on
+>> memory used by initramfs?
+>>
+>> Thanks.
+> In the kernel configuration, under block devices, you can define ramdisk
+> size, may it's what you are looking for...
+> regards
+>

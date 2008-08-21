@@ -1,60 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Aug 2008 17:34:13 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:53482 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S20032288AbYHUQeH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 21 Aug 2008 17:34:07 +0100
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B48ad98c60000>; Thu, 21 Aug 2008 12:33:15 -0400
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 21 Aug 2008 09:33:09 -0700
-Received: from [192.168.162.80] ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 21 Aug 2008 09:33:09 -0700
-Message-ID: <48AD98BB.9090908@caviumnetworks.com>
-Date:	Thu, 21 Aug 2008 09:32:59 -0700
-From:	Tomaso Paoletti <tpaoletti@caviumnetworks.com>
-User-Agent: Mozilla-Thunderbird 2.0.0.16 (X11/20080724)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Aug 2008 22:41:32 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:55746 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20028094AbYHUVlZ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 21 Aug 2008 22:41:25 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1KWHuF-0001Lt-00; Thu, 21 Aug 2008 23:41:23 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 2F9F5C3F14; Thu, 21 Aug 2008 23:41:18 +0200 (CEST)
+Date:	Thu, 21 Aug 2008 23:41:18 +0200
+To:	Takashi Iwai <tiwai@suse.de>
+Cc:	ralf@linux-mips.org,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	linux-mips@linux-mips.org,
+	Parisc List <linux-parisc@vger.kernel.org>
+Subject: Re: [PATCH] mips: Add dma_mmap_coherent()
+Message-ID: <20080821214118.GA12516@alpha.franken.de>
+References: <s5hk5eezcfe.wl%tiwai@suse.de> <1219249633.3258.18.camel@localhost.localdomain> <s5hzln7vd9d.wl%tiwai@suse.de> <1219255088.3258.45.camel@localhost.localdomain> <s5hr68ivfer.wl%tiwai@suse.de> <1219326912.3265.2.camel@localhost.localdomain> <s5hhc9enyqa.wl%tiwai@suse.de> <s5hfxoynyn4.wl%tiwai@suse.de>
 MIME-Version: 1.0
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-CC:	linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/2] OCTEON: Add processor-specific constants and detection
- of CPU variants
-References: <48A9E6DA.8030208@caviumnetworks.com> <1219263605-21396-1-git-send-email-tpaoletti@caviumnetworks.com> <20080820223358.GA9770@alpha.franken.de>
-In-Reply-To: <20080820223358.GA9770@alpha.franken.de>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 21 Aug 2008 16:33:09.0712 (UTC) FILETIME=[98F2F500:01C903AB]
-Return-Path: <Tomaso.Paoletti@caviumnetworks.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <s5hfxoynyn4.wl%tiwai@suse.de>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20308
+X-archive-position: 20309
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tpaoletti@caviumnetworks.com
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-Hi Thomas
+On Thu, Aug 21, 2008 at 06:03:43PM +0200, Takashi Iwai wrote:
+> > Thanks for clarification.
+> > How about the revised patch below (for PARISC)?
 
-Thomas Bogendoerfer wrote:
-> On Wed, Aug 20, 2008 at 01:20:05PM -0700, Tomaso Paoletti wrote:
->> --- a/include/asm-mips/bootinfo.h
->> +++ b/include/asm-mips/bootinfo.h
->> @@ -57,6 +57,11 @@
->>  #define	MACH_MIKROTIK_RB532	0	/* Mikrotik RouterBoard 532 	*/
->>  #define MACH_MIKROTIK_RB532A	1	/* Mikrotik RouterBoard 532A 	*/
->>  
->> +/*
->> + * Valid machtype for group CAVIUM
->> + */
->> +#define  MACH_CAVIUM_OCTEON	1	/* Cavium Octeon */
->> +
-> 
-> no new machtypes please.
+the PARISC part will not work for 735 systems, because the CPU can't
+map memory uncached, iirc. 
 
-Thanks, I've corrected that.
-I'm waiting to see if there's more feedback, and will resend the patch 
-by this afternoon (PST).
+> ... and the below is for MIPS.
 
-   Tomaso
+for most MIPS system you need the same trick as for PARISC and use 
+uncached memory. But there are systems, which can't use uncached
+memory. 
+
+One of the is SGI IP28, which needs to be switched to a special
+slower mode for uncached accesses, which we avoid completly in the
+kernel right now and I don't think making the switch to slow mode
+possible in user space is a good idea.
+
+SGI Origin 200/2000, SGI Onyx and some Challenge Systems have a
+different problem:
+
+"Uncached Memory Access in SGI Origin 2000 and in Challenge and Onyx Series
+
+    Access to uncached memory is not supported in these systems, in which
+    cache coherency is maintained by the hardware, even under access from
+    CPUs and concurrent DMA.  There is never a need (and no approved way)
+    to access uncached memory in these systems."
+
+That's from the IRIX Device Driver guide.
+
+Right now I can't think of a solutin, which works on every MIPS system.
+
+Thomas.
+
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

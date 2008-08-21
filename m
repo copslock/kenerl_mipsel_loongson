@@ -1,77 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Aug 2008 14:56:18 +0100 (BST)
-Received: from smtp4.int-evry.fr ([157.159.10.71]:21681 "EHLO
-	smtp4.int-evry.fr") by ftp.linux-mips.org with ESMTP
-	id S20033438AbYHUN4N (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 21 Aug 2008 14:56:13 +0100
-Received: from smtp2.int-evry.fr (smtp2.int-evry.fr [157.159.10.45])
-	by smtp4.int-evry.fr (Postfix) with ESMTP id C9471FE2DA4;
-	Thu, 21 Aug 2008 15:56:12 +0200 (CEST)
-Received: from smtp-ext.int-evry.fr (smtp-ext.int-evry.fr [157.159.11.17])
-	by smtp2.int-evry.fr (Postfix) with ESMTP id B177B3EFACE;
-	Thu, 21 Aug 2008 15:55:24 +0200 (CEST)
-Received: from [192.168.10.137] (headquarters.openpattern.org [82.240.17.188])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp-ext.int-evry.fr (Postfix) with ESMTP id 5813290004;
-	Thu, 21 Aug 2008 15:55:24 +0200 (CEST)
-From:	Florian Fainelli <florian@openwrt.org>
-To:	Yoichi Yuasa <tripeaks@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Aug 2008 15:16:18 +0100 (BST)
+Received: from wa-out-1112.google.com ([209.85.146.181]:43819 "EHLO
+	wa-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20031255AbYHUOQK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 21 Aug 2008 15:16:10 +0100
+Received: by wa-out-1112.google.com with SMTP id k22so3286waf.20
+        for <linux-mips@linux-mips.org>; Thu, 21 Aug 2008 07:16:08 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:date:from:to:cc:subject
+         :in-reply-to:references:x-mailer:mime-version:content-type
+         :content-transfer-encoding:sender:message-id;
+        bh=V6nQgfKX3k9He2LmO7DKGlVV6Mzsc2ScFpUy6IlIOCU=;
+        b=FP1xxTbUx/MIX5x5obJhMXp3B/GygLWDT480LoVeZehBLitKUfcgZpkPUu5RWYfsl4
+         fzSu1ISgBWFh9l58CVxiUfwcWZIHQwez1lVRJqvv7xEFkNYBe9MtWe2yrM8qd8bBbeuS
+         4V2HRRQynXf56xA6RqtjrETgX7aK5/0xs2BoE=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=date:from:to:cc:subject:in-reply-to:references:x-mailer
+         :mime-version:content-type:content-transfer-encoding:sender
+         :message-id;
+        b=QiayY3i+V9bZ+zHCNesJBGN3EJHR/YeaJjOXkL+a96fkihv9ZFa//hXvO+Ubv68M8+
+         8gFlCplFOuYgP69fIYtJCRXkBwbpZlwCOqr0NRZJLNrAyEViTt33rLInKUpsluNzP2Fl
+         iaMv/PZVvzMM+Db/z1v+xbHCExJoaUq0ceGXw=
+Received: by 10.114.57.15 with SMTP id f15mr1424137waa.116.1219328167977;
+        Thu, 21 Aug 2008 07:16:07 -0700 (PDT)
+Received: from delta ( [125.30.7.41])
+        by mx.google.com with ESMTPS id 9sm3480943yxs.5.2008.08.21.07.16.05
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 21 Aug 2008 07:16:07 -0700 (PDT)
+Date:	Thu, 21 Aug 2008 23:16:03 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Florian Fainelli <florian@openwrt.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp,
+	"linux-mips" <linux-mips@linux-mips.org>, ralf@linux-mips.org
 Subject: Re: [PATCH] cobalt: group UART definition into header
-Date:	Thu, 21 Aug 2008 15:55:12 +0200
-User-Agent: KMail/1.9.9
-Cc:	"linux-mips" <linux-mips@linux-mips.org>, ralf@linux-mips.org
-References: <200808211303.44865.florian@openwrt.org> <48ad7195.c505be0a.3500.4a15@mx.google.com>
-In-Reply-To: <48ad7195.c505be0a.3500.4a15@mx.google.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed;
-  boundary="nextPart1269512.TutHpDuxjy";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
-Content-Transfer-Encoding: 7bit
-Message-Id: <200808211555.14603.florian@openwrt.org>
-X-INT-MailScanner-Information: Please contact the ISP for more information
-X-MailScanner-ID: B177B3EFACE.AAC3F
-X-INT-MailScanner: Found to be clean
-X-INT-MailScanner-SpamCheck: 
-X-INT-MailScanner-From:	florian@openwrt.org
-Return-Path: <florian@openwrt.org>
+In-Reply-To: <200808211555.14603.florian@openwrt.org>
+References: <200808211303.44865.florian@openwrt.org>
+	<48ad7195.c505be0a.3500.4a15@mx.google.com>
+	<200808211555.14603.florian@openwrt.org>
+X-Mailer: Sylpheed 2.4.8 (GTK+ 2.12.9; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Message-ID: <48ad78a7.8905be0a.05df.ffffc44d@mx.google.com>
+Return-Path: <tripeaks@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20303
+X-archive-position: 20304
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
---nextPart1269512.TutHpDuxjy
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+On Thu, 21 Aug 2008 15:55:12 +0200
+Florian Fainelli <florian@openwrt.org> wrote:
 
-Hi,
+> Hi,
+> 
+> Le Thursday 21 August 2008 15:45:52 Yoichi Yuasa, vous avez écrit :
+> > NAK
+> >
+> > This value is only used in serial.c.
+> > Please define in serial.c.
+> 
+> console.c also uses it, which was the rationale for my patch.
+> 
 
-Le Thursday 21 August 2008 15:45:52 Yoichi Yuasa, vous avez =E9crit=A0:
-> NAK
->
-> This value is only used in serial.c.
-> Please define in serial.c.
+Sorry, it's my fault.
 
-console.c also uses it, which was the rationale for my patch.
-
---nextPart1269512.TutHpDuxjy
-Content-Type: application/pgp-signature; name=signature.asc 
-Content-Description: This is a digitally signed message part.
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
-
-iEUEABECAAYFAkitc8AACgkQlyvkmBGtjyYezACYzwnJNFLlTJuxT8RnkbVxl8Ft
-QQCgnTnKHE9zqBK0psnx7E9NdwOv72A=
-=qgf6
------END PGP SIGNATURE-----
-
---nextPart1269512.TutHpDuxjy--
+Yoichi

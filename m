@@ -1,81 +1,167 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 Aug 2008 23:17:01 +0100 (BST)
-Received: from smtp4.int-evry.fr ([157.159.10.71]:48361 "EHLO
-	smtp4.int-evry.fr") by ftp.linux-mips.org with ESMTP
-	id S28587056AbYHUWQ1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 21 Aug 2008 23:16:27 +0100
-Received: from smtp2.int-evry.fr (smtp2.int-evry.fr [157.159.10.45])
-	by smtp4.int-evry.fr (Postfix) with ESMTP id 0F364FE2E23;
-	Fri, 22 Aug 2008 00:16:22 +0200 (CEST)
-Received: from smtp-ext.int-evry.fr (smtp-ext.int-evry.fr [157.159.11.17])
-	by smtp2.int-evry.fr (Postfix) with ESMTP id 3F3C73F00F4;
-	Fri, 22 Aug 2008 00:15:49 +0200 (CEST)
-Received: from lenovo.mimichou.home (florian.mimichou.net [82.241.112.26])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp-ext.int-evry.fr (Postfix) with ESMTP id 0E12190004;
-	Fri, 22 Aug 2008 00:15:49 +0200 (CEST)
-From:	Florian Fainelli <florian@openwrt.org>
-Date:	Fri, 22 Aug 2008 00:15:47 +0200
-Subject: [PATCH 6/6] rb532: fix id usage
-MIME-Version: 1.0
-X-Length: 1758
-To:	"linux-mips" <linux-mips@linux-mips.org>
-Cc:	ralf@linux-mips.org
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200808220015.48022.florian@openwrt.org>
-X-INT-MailScanner-Information: Please contact the ISP for more information
-X-MailScanner-ID: 3F3C73F00F4.1E76E
-X-INT-MailScanner: Found to be clean
-X-INT-MailScanner-SpamCheck: 
-X-INT-MailScanner-From:	florian@openwrt.org
-Return-Path: <florian@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Aug 2008 02:22:34 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:63041 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S28588435AbYHVBWY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 22 Aug 2008 02:22:24 +0100
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B48ae14bf0000>; Thu, 21 Aug 2008 21:22:07 -0400
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 21 Aug 2008 18:22:06 -0700
+Received: from localhost.localdomain ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 21 Aug 2008 18:22:06 -0700
+From:	Tomaso Paoletti <tpaoletti@caviumnetworks.com>
+To:	linux-mips@linux-mips.org
+Cc:	Tomaso Paoletti <tpaoletti@caviumnetworks.com>
+Subject: [PATCH v2 1/2] OCTEON: Add processor-specific constants and detection of CPU variants
+Date:	Thu, 21 Aug 2008 18:21:55 -0700
+Message-Id: <1219368115-19555-1-git-send-email-tpaoletti@caviumnetworks.com>
+X-Mailer: git-send-email 1.5.6.3
+In-Reply-To: <48A9E6DA.8030208@caviumnetworks.com>
+References: <48A9E6DA.8030208@caviumnetworks.com>
+X-OriginalArrivalTime: 22 Aug 2008 01:22:06.0171 (UTC) FILETIME=[7D5A4AB0:01C903F5]
+Return-Path: <Tomaso.Paoletti@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20315
+X-archive-position: 20316
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: tpaoletti@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-When there is only platform device of the same type, id = -1
-should be used, fix this.
+Add:
+- Processor ID constants specific to Cavium;
+- MODULE_PROC_FAMILY string for OCTEON;
+- Probe function to detect all processor variants;
+- Proper cpu_to_name() case.
 
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
+Signed-off-by: Tomaso Paoletti <tpaoletti@caviumnetworks.com>
 ---
-diff --git a/arch/mips/rb532/devices.c b/arch/mips/rb532/devices.c
-index 7b91d69..3007357 100644
---- a/arch/mips/rb532/devices.c
-+++ b/arch/mips/rb532/devices.c
-@@ -90,7 +90,7 @@ static struct korina_device korina_dev0_data = {
+ arch/mips/kernel/cpu-probe.c |   35 +++++++++++++++++++++++++++++++++++
+ include/asm-mips/cpu.h       |   14 ++++++++++++++
+ include/asm-mips/module.h    |    2 ++
+ 3 files changed, 51 insertions(+), 0 deletions(-)
+
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 335a6ae..3e104db 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -160,6 +160,7 @@ static inline void check_wait(void)
+ 	case CPU_25KF:
+ 	case CPU_PR4450:
+ 	case CPU_BCM3302:
++	case CPU_CAVIUM_OCTEON:
+ 		cpu_wait = r4k_wait;
+ 		break;
+ 
+@@ -821,6 +822,35 @@ static inline void cpu_probe_broadcom(struct cpuinfo_mips *c)
+ 	}
+ }
+ 
++static inline void cpu_probe_cavium(struct cpuinfo_mips *c)
++{
++	switch (c->processor_id & 0xff00) {
++	case PRID_IMP_CAVIUM_CN38XX:
++	case PRID_IMP_CAVIUM_CN31XX:
++	case PRID_IMP_CAVIUM_CN30XX:
++	case PRID_IMP_CAVIUM_CN58XX:
++	case PRID_IMP_CAVIUM_CN56XX:
++	case PRID_IMP_CAVIUM_CN50XX:
++	case PRID_IMP_CAVIUM_CN52XX:
++		c->cputype = CPU_CAVIUM_OCTEON;
++		break;
++	default:
++		printk(KERN_INFO "Unknown Octeon chip!\n");
++		c->cputype = CPU_UNKNOWN;
++		break;
++	}
++
++	c->isa_level = MIPS_CPU_ISA_M64R2;
++	c->options = MIPS_CPU_TLB |     /* CPU has TLB */
++		     MIPS_CPU_4KEX |    /* "R4K" exception model */
++		     MIPS_CPU_COUNTER | /* Cycle count/compare */
++		     MIPS_CPU_WATCH |   /* watchpoint registers */
++		     MIPS_CPU_DIVEC |   /* dedicated int vector */
++		     MIPS_CPU_EJTAG |   /* EJTAG exception */
++		     MIPS_CPU_LLSC;     /* CPU has ll/sc instructions */
++	decode_config1(c);
++}
++
+ const char *__cpu_name[NR_CPUS];
+ 
+ /*
+@@ -902,6 +932,8 @@ static __cpuinit const char *cpu_to_name(struct cpuinfo_mips *c)
+ 	case CPU_BCM4710:	name = "Broadcom BCM4710"; break;
+ 	case CPU_PR4450:	name = "Philips PR4450"; break;
+ 	case CPU_LOONGSON2:	name = "ICT Loongson-2"; break;
++	case CPU_CAVIUM_OCTEON:	name = "Cavium Octeon"; break;
++
+ 	default:
+ 		BUG();
+ 	}
+@@ -941,6 +973,9 @@ __cpuinit void cpu_probe(void)
+ 	case PRID_COMP_NXP:
+ 		cpu_probe_nxp(c);
+ 		break;
++	case PRID_COMP_CAVIUM:
++		cpu_probe_cavium(c);
++		break;
+ 	default:
+ 		c->cputype = CPU_UNKNOWN;
+ 	}
+diff --git a/include/asm-mips/cpu.h b/include/asm-mips/cpu.h
+index 229a786..c018727 100644
+--- a/include/asm-mips/cpu.h
++++ b/include/asm-mips/cpu.h
+@@ -33,6 +33,7 @@
+ #define PRID_COMP_TOSHIBA	0x070000
+ #define PRID_COMP_LSI		0x080000
+ #define PRID_COMP_LEXRA		0x0b0000
++#define PRID_COMP_CAVIUM	0x0d0000
+ 
+ 
+ /*
+@@ -114,6 +115,18 @@
+ #define PRID_IMP_BCM3302	0x9000
+ 
+ /*
++ * These are the PRID's for when 23:16 == PRID_COMP_CAVIUM
++ */
++
++#define PRID_IMP_CAVIUM_CN38XX 0x0000
++#define PRID_IMP_CAVIUM_CN31XX 0x0100
++#define PRID_IMP_CAVIUM_CN30XX 0x0200
++#define PRID_IMP_CAVIUM_CN58XX 0x0300
++#define PRID_IMP_CAVIUM_CN56XX 0x0400
++#define PRID_IMP_CAVIUM_CN50XX 0x0600
++#define PRID_IMP_CAVIUM_CN52XX 0x0700
++
++/*
+  * Definitions for 7:0 on legacy processors
+  */
+ 
+@@ -203,6 +216,7 @@ enum cpu_type_enum {
+ 	 * MIPS64 class processors
+ 	 */
+ 	CPU_5KC, CPU_20KC, CPU_25KF, CPU_SB1, CPU_SB1A, CPU_LOONGSON2,
++	CPU_CAVIUM_OCTEON,
+ 
+ 	CPU_LAST
  };
- 
- static struct platform_device korina_dev0 = {
--	.id = 0,
-+	.id = -1,
- 	.name = "korina",
- 	.dev.platform_data = &korina_dev0_data,
- 	.resource = korina_dev0_res,
-@@ -114,7 +114,7 @@ static struct cf_device cf_slot0_data = {
- };
- 
- static struct platform_device cf_slot0 = {
--	.id = 0,
-+	.id = -1,
- 	.name = "pata-rb532-cf",
- 	.dev.platform_data = &cf_slot0_data,
- 	.resource = cf_slot0_res,
-@@ -179,7 +179,7 @@ static struct mtd_partition rb532_partition_info[] = {
- 
- static struct platform_device rb532_led = {
- 	.name = "rb532-led",
--	.id = 0,
-+	.id = -1,
- };
- 
- static struct gpio_keys_button rb532_gpio_btn[] = {
+diff --git a/include/asm-mips/module.h b/include/asm-mips/module.h
+index de6d09e..7b24183 100644
+--- a/include/asm-mips/module.h
++++ b/include/asm-mips/module.h
+@@ -114,6 +114,8 @@ search_module_dbetables(unsigned long addr)
+ #define MODULE_PROC_FAMILY "SB1 "
+ #elif defined CONFIG_CPU_LOONGSON2
+ #define MODULE_PROC_FAMILY "LOONGSON2 "
++#elif defined CONFIG_CPU_CAVIUM_OCTEON
++#define MODULE_PROC_FAMILY "OCTEON "
+ #else
+ #error MODULE_PROC_FAMILY undefined for your processor configuration
+ #endif
+-- 
+1.5.3.2

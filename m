@@ -1,72 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Aug 2008 13:51:16 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:32075 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S28587982AbYHVMvH (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 22 Aug 2008 13:51:07 +0100
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 156393ECA; Fri, 22 Aug 2008 05:51:01 -0700 (PDT)
-Message-ID: <48AEB644.8010104@ru.mvista.com>
-Date:	Fri, 22 Aug 2008 16:51:16 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Aug 2008 15:43:59 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:46720 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S28588341AbYHVOnw (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 22 Aug 2008 15:43:52 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1KWXrh-0007dg-00; Fri, 22 Aug 2008 16:43:49 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 50DCEC3F6F; Fri, 22 Aug 2008 16:36:22 +0200 (CEST)
+Date:	Fri, 22 Aug 2008 16:36:22 +0200
+To:	Takashi Iwai <tiwai@suse.de>
+Cc:	ralf@linux-mips.org,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	linux-mips@linux-mips.org,
+	Parisc List <linux-parisc@vger.kernel.org>
+Subject: Re: [PATCH] mips: Add dma_mmap_coherent()
+Message-ID: <20080822143622.GA8413@alpha.franken.de>
+References: <s5hzln7vd9d.wl%tiwai@suse.de> <1219255088.3258.45.camel@localhost.localdomain> <s5hr68ivfer.wl%tiwai@suse.de> <1219326912.3265.2.camel@localhost.localdomain> <s5hhc9enyqa.wl%tiwai@suse.de> <s5hfxoynyn4.wl%tiwai@suse.de> <20080821214118.GA12516@alpha.franken.de> <s5hbpzl8tvz.wl%tiwai@suse.de> <20080822094131.GA6717@alpha.franken.de> <s5h7ia9nya3.wl%tiwai@suse.de>
 MIME-Version: 1.0
-To:	Florian Fainelli <florian@openwrt.org>
-Cc:	linux-mips <linux-mips@linux-mips.org>, ralf@linux-mips.org
-Subject: Re: [PATCH 2/6] rb532: use physical addresses for gpio and device
- controller registers
-References: <200808220014.27497.florian@openwrt.org>
-In-Reply-To: <200808220014.27497.florian@openwrt.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <s5h7ia9nya3.wl%tiwai@suse.de>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20327
+X-archive-position: 20328
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-Florian Fainelli wrote:
+On Fri, Aug 22, 2008 at 12:23:48PM +0200, Takashi Iwai wrote:
+> 	unsigned long prot = pgprot_val(_prot) & ~_CACHE_MASK;
+> #ifdef CONFIG_SGI_IP32
+> #ifdef CONFIG_CPU_R10000
+> 	prot = prot | _CACHE_UNCACHED_ACCELERATED;
+> #else
+> 	prot = prot | _CACHE_CACHABLE_NO_WA;
+> #endif
+> #else
+> 	prot = prot | _CACHE_UNCACHED;
+> #endif
+> 	return __pgprot(prot);
 
-> This patch fixes the misuse of virtual address which would lead to
-> serious problems while accessing ioremap'd registers in the GPIO
-> code.
+this won't work for recording channels on IP32, because the write trough
+mapping will hide updates done via DMA.
 
-> Signed-off-by: Florian Fainelli <florian@openwrt.org>
-> ---
-> diff --git a/arch/mips/rb532/gpio.c b/arch/mips/rb532/gpio.c
-> index 00a1c78..3d1632c 100644
-> --- a/arch/mips/rb532/gpio.c
-> +++ b/arch/mips/rb532/gpio.c
-> @@ -47,8 +47,8 @@ struct mpmc_device dev3;
->  static struct resource rb532_gpio_reg0_res[] = {
->  	{
->  		.name 	= "gpio_reg0",
-> -		.start 	= (u32)(IDT434_REG_BASE + GPIOBASE),
-> -		.end 	= (u32)(IDT434_REG_BASE + GPIOBASE + sizeof(struct rb532_gpio_reg)),
-> +		.start 	= (REG_BASE + GPIOBASE),
-> +		.end 	= (REG_BASE + GPIOBASE + sizeof(struct rb532_gpio_reg)),
->  		.flags 	= IORESOURCE_MEM,
->  	}
->  };
-> @@ -56,8 +56,8 @@ static struct resource rb532_gpio_reg0_res[] = {
->  static struct resource rb532_dev3_ctl_res[] = {
->  	{
->  		.name	= "dev3_ctl",
-> -		.start	= (u32)(IDT434_REG_BASE + DEV3BASE),
-> -		.end	= (u32)(IDT434_REG_BASE + DEV3BASE + sizeof(struct dev_reg)),
-> +		.start	= (REG_BASE + DEV3BASE),
-> +		.end	= (REG_BASE + DEV3BASE + sizeof(struct dev_reg)),
->  		.flags	= IORESOURCE_MEM,
->  	}
->  };
+I'd start with just
 
-    Oh, and parens are not needed in the initializers anymore...
+prot |= _CACHE_UNCACHED
 
-WBR, Sergei
+and if some MIPS system needs more specific treatment, we just add
+that later.
+
+Thomas.
+
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

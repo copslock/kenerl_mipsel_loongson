@@ -1,64 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Aug 2008 15:43:59 +0100 (BST)
-Received: from elvis.franken.de ([193.175.24.41]:46720 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S28588341AbYHVOnw (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 22 Aug 2008 15:43:52 +0100
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1KWXrh-0007dg-00; Fri, 22 Aug 2008 16:43:49 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id 50DCEC3F6F; Fri, 22 Aug 2008 16:36:22 +0200 (CEST)
-Date:	Fri, 22 Aug 2008 16:36:22 +0200
-To:	Takashi Iwai <tiwai@suse.de>
-Cc:	ralf@linux-mips.org,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	linux-mips@linux-mips.org,
-	Parisc List <linux-parisc@vger.kernel.org>
-Subject: Re: [PATCH] mips: Add dma_mmap_coherent()
-Message-ID: <20080822143622.GA8413@alpha.franken.de>
-References: <s5hzln7vd9d.wl%tiwai@suse.de> <1219255088.3258.45.camel@localhost.localdomain> <s5hr68ivfer.wl%tiwai@suse.de> <1219326912.3265.2.camel@localhost.localdomain> <s5hhc9enyqa.wl%tiwai@suse.de> <s5hfxoynyn4.wl%tiwai@suse.de> <20080821214118.GA12516@alpha.franken.de> <s5hbpzl8tvz.wl%tiwai@suse.de> <20080822094131.GA6717@alpha.franken.de> <s5h7ia9nya3.wl%tiwai@suse.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Aug 2008 15:45:56 +0100 (BST)
+Received: from smtp4.int-evry.fr ([157.159.10.71]:58308 "EHLO
+	smtp4.int-evry.fr") by ftp.linux-mips.org with ESMTP
+	id S28588426AbYHVOpt convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 22 Aug 2008 15:45:49 +0100
+Received: from smtp2.int-evry.fr (smtp2.int-evry.fr [157.159.10.45])
+	by smtp4.int-evry.fr (Postfix) with ESMTP id 14885FE2EB2;
+	Fri, 22 Aug 2008 16:45:44 +0200 (CEST)
+Received: from smtp-ext.int-evry.fr (smtp-ext.int-evry.fr [157.159.11.17])
+	by smtp2.int-evry.fr (Postfix) with ESMTP id EDF853F08C8;
+	Fri, 22 Aug 2008 16:45:24 +0200 (CEST)
+Received: from florian.headquarters.openpattern.org (headquarters.openpattern.org [82.240.17.188])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp-ext.int-evry.fr (Postfix) with ESMTP id A55AC90004;
+	Fri, 22 Aug 2008 16:45:24 +0200 (CEST)
+From:	Florian Fainelli <florian@openwrt.org>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Subject: Re: [PATCH 3/6] rb532: do not KSEG1ADDR an already virtual address
+Date:	Fri, 22 Aug 2008 16:45:21 +0200
+User-Agent: KMail/1.9.9
+Cc:	linux-mips <linux-mips@linux-mips.org>, ralf@linux-mips.org
+References: <200808220014.39030.florian@openwrt.org> <48AE89BC.3070204@ru.mvista.com>
+In-Reply-To: <48AE89BC.3070204@ru.mvista.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <s5h7ia9nya3.wl%tiwai@suse.de>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+Message-Id: <200808221645.21878.florian@openwrt.org>
+X-INT-MailScanner-Information: Please contact the ISP for more information
+X-MailScanner-ID: EDF853F08C8.770AB
+X-INT-MailScanner: Found to be clean
+X-INT-MailScanner-SpamCheck: 
+X-INT-MailScanner-From:	florian@openwrt.org
+Return-Path: <florian@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20328
+X-archive-position: 20329
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Aug 22, 2008 at 12:23:48PM +0200, Takashi Iwai wrote:
-> 	unsigned long prot = pgprot_val(_prot) & ~_CACHE_MASK;
-> #ifdef CONFIG_SGI_IP32
-> #ifdef CONFIG_CPU_R10000
-> 	prot = prot | _CACHE_UNCACHED_ACCELERATED;
-> #else
-> 	prot = prot | _CACHE_CACHABLE_NO_WA;
-> #endif
-> #else
-> 	prot = prot | _CACHE_UNCACHED;
-> #endif
-> 	return __pgprot(prot);
+Hi Sergei,
 
-this won't work for recording channels on IP32, because the write trough
-mapping will hide updates done via DMA.
+Le Friday 22 August 2008 11:41:16 Sergei Shtylyov, vous avez écrit :
+>    Why not just leave RC32434_REG_BASE + RC32434_RST and remove
+> KSEG1ADDR? BTW, the cast could be removed as well, since it's already a
+> part of RC32434_REG_BASE...
 
-I'd start with just
-
-prot |= _CACHE_UNCACHED
-
-and if some MIPS system needs more specific treatment, we just add
-that later.
-
-Thomas.
-
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+In fact,I need to cleanup other headers, so I will just drop this one for now.

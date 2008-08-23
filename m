@@ -1,70 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 Aug 2008 22:42:51 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:26466 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20034933AbYHVVmo (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 22 Aug 2008 22:42:44 +0100
-Received: from [127.0.0.1] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 4B7053ECB; Fri, 22 Aug 2008 14:42:40 -0700 (PDT)
-Message-ID: <48AF32CB.2020108@ru.mvista.com>
-Date:	Sat, 23 Aug 2008 01:42:35 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Aug 2008 17:54:59 +0100 (BST)
+Received: from smtp4.int-evry.fr ([157.159.10.71]:16044 "EHLO
+	smtp4.int-evry.fr") by ftp.linux-mips.org with ESMTP
+	id S20027061AbYHWQyu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 23 Aug 2008 17:54:50 +0100
+Received: from smtp2.int-evry.fr (smtp2.int-evry.fr [157.159.10.45])
+	by smtp4.int-evry.fr (Postfix) with ESMTP id B293EFE2E7A;
+	Sat, 23 Aug 2008 18:54:45 +0200 (CEST)
+Received: from smtp-ext.int-evry.fr (smtp-ext.int-evry.fr [157.159.11.17])
+	by smtp2.int-evry.fr (Postfix) with ESMTP id 795703F0BB0;
+	Sat, 23 Aug 2008 18:53:29 +0200 (CEST)
+Received: from florian.maisel.int-evry.fr (unknown [157.159.47.24])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp-ext.int-evry.fr (Postfix) with ESMTP id 2784790004;
+	Sat, 23 Aug 2008 18:53:29 +0200 (CEST)
+From:	Florian Fainelli <florian@openwrt.org>
+Date:	Sat, 23 Aug 2008 18:53:24 +0200
+Subject: [PATCH 1/5] rb532: remove obsolute reference to setup_serial_port
 MIME-Version: 1.0
-To:	Florian Fainelli <florian@openwrt.org>
-Cc:	linux-mips <linux-mips@linux-mips.org>, ralf@linux-mips.org
-Subject: Re: [PATCH 2/5] rb532: use physical addresses for gpio and device
- controller registers
-References: <200808221701.03810.florian@openwrt.org>
-In-Reply-To: <200808221701.03810.florian@openwrt.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-UID:	1148
+X-Length: 1270
+To:	"linux-mips" <linux-mips@linux-mips.org>
+Cc:	ralf@linux-mips.org
+Content-Type: text/plain;
+  charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Disposition: inline
+Message-Id: <200808231853.25310.florian@openwrt.org>
+X-INT-MailScanner-Information: Please contact the ISP for more information
+X-MailScanner-ID: 795703F0BB0.21545
+X-INT-MailScanner: Found to be clean
+X-INT-MailScanner-SpamCheck: 
+X-INT-MailScanner-From:	florian@openwrt.org
+Return-Path: <florian@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20336
+X-archive-position: 20337
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+We are no longer using setup_serial_port. So just remove it
+from the prom code.
 
-Florian Fainelli wrote:
-
-> This patch fixes the misuse of virtual addresses for the GPIO and third
-> device controller which would lead to problems while accessing ioremap'd
-> registers.
->
-> Signed-off-by: Florian Fainelli <florian@openwrt.org>
-> ---
-> diff --git a/arch/mips/rb532/gpio.c b/arch/mips/rb532/gpio.c
-> index 00a1c78..0628d8d 100644
-> --- a/arch/mips/rb532/gpio.c
-> +++ b/arch/mips/rb532/gpio.c
-> @@ -47,8 +47,8 @@ struct mpmc_device dev3;
->  static struct resource rb532_gpio_reg0_res[] = {
->  	{
->  		.name 	= "gpio_reg0",
-> -		.start 	= (u32)(IDT434_REG_BASE + GPIOBASE),
-> -		.end 	= (u32)(IDT434_REG_BASE + GPIOBASE + sizeof(struct rb532_gpio_reg)),
-> +		.start 	= REGBASE + GPIOBASE,
-> +		.end 	= REGBASE + GPIOBASE + sizeof(struct rb532_gpio_reg) -1,
->  		.flags 	= IORESOURCE_MEM,
->  	}
->  };
-> @@ -56,8 +56,8 @@ static struct resource rb532_gpio_reg0_res[] = {
->  static struct resource rb532_dev3_ctl_res[] = {
->  	{
->  		.name	= "dev3_ctl",
-> -		.start	= (u32)(IDT434_REG_BASE + DEV3BASE),
-> -		.end	= (u32)(IDT434_REG_BASE + DEV3BASE + sizeof(struct dev_reg)),
-> +		.start	= REGBASE + DEV3BASE,
-> +		.end	= REGBASE + DEV3BASE + sizeof(struct dev_reg) -1,
->   
-
-  Hm, your spacing is inconsistent. Why no space after -?
-
-WBR, Sergei
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
+---
+diff --git a/arch/mips/rb532/prom.c b/arch/mips/rb532/prom.c
+index c5d8868..46ca24d 100644
+--- a/arch/mips/rb532/prom.c
++++ b/arch/mips/rb532/prom.c
+@@ -37,8 +37,6 @@
+ #include <asm/mach-rc32434/ddr.h>
+ #include <asm/mach-rc32434/prom.h>
+ 
+-extern void __init setup_serial_port(void);
+-
+ unsigned int idt_cpu_freq = 132000000;
+ EXPORT_SYMBOL(idt_cpu_freq);

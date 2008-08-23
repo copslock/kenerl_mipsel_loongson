@@ -1,34 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Aug 2008 17:55:23 +0100 (BST)
-Received: from smtp4.int-evry.fr ([157.159.10.71]:24017 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 Aug 2008 17:55:47 +0100 (BST)
+Received: from smtp4.int-evry.fr ([157.159.10.71]:14284 "EHLO
 	smtp4.int-evry.fr") by ftp.linux-mips.org with ESMTP
-	id S20027114AbYHWQyv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 23 Aug 2008 17:54:51 +0100
+	id S20027281AbYHWQzJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 23 Aug 2008 17:55:09 +0100
 Received: from smtp2.int-evry.fr (smtp2.int-evry.fr [157.159.10.45])
-	by smtp4.int-evry.fr (Postfix) with ESMTP id E6B83FE2E93;
-	Sat, 23 Aug 2008 18:54:45 +0200 (CEST)
+	by smtp4.int-evry.fr (Postfix) with ESMTP id 0EC6FFE2E86;
+	Sat, 23 Aug 2008 18:55:09 +0200 (CEST)
 Received: from smtp-ext.int-evry.fr (smtp-ext.int-evry.fr [157.159.11.17])
-	by smtp2.int-evry.fr (Postfix) with ESMTP id 1CF9E3F0B38;
-	Sat, 23 Aug 2008 18:53:54 +0200 (CEST)
+	by smtp2.int-evry.fr (Postfix) with ESMTP id 6FBA63F0B2C;
+	Sat, 23 Aug 2008 18:54:38 +0200 (CEST)
 Received: from florian.maisel.int-evry.fr (unknown [157.159.47.24])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp-ext.int-evry.fr (Postfix) with ESMTP id 05D3D90004;
-	Sat, 23 Aug 2008 18:53:54 +0200 (CEST)
+	by smtp-ext.int-evry.fr (Postfix) with ESMTP id 575A090004;
+	Sat, 23 Aug 2008 18:54:38 +0200 (CEST)
 From:	Florian Fainelli <florian@openwrt.org>
-Date:	Sat, 23 Aug 2008 18:53:50 +0200
-Subject: [PATCH 2/5] rb532: cleanup the headers again
+Date:	Sat, 23 Aug 2008 18:54:34 +0200
+Subject: [PATCH 4/5] rb532: convert to GPIO lib
 MIME-Version: 1.0
-X-UID:	1149
-X-Length: 5851
+X-UID:	1151
+X-Length: 12844
 To:	"linux-mips" <linux-mips@linux-mips.org>
 Cc:	ralf@linux-mips.org
 Content-Type: text/plain;
   charset="utf-8"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200808231853.50661.florian@openwrt.org>
+Message-Id: <200808231854.35014.florian@openwrt.org>
 X-INT-MailScanner-Information: Please contact the ISP for more information
-X-MailScanner-ID: 1CF9E3F0B38.F32C8
+X-MailScanner-ID: 6FBA63F0B2C.7CA39
 X-INT-MailScanner: Found to be clean
 X-INT-MailScanner-SpamCheck: 
 X-INT-MailScanner-From:	florian@openwrt.org
@@ -36,7 +36,7 @@ Return-Path: <florian@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20338
+X-archive-position: 20339
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,154 +44,437 @@ X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch cleans up headers and regroups informations to
-where they should reside. While moving, try to have a
-consistant naming for defines.
+This patch converts the rb532 code to use gpio library
+and register its gpio chip.
 
 Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
-diff --git a/arch/mips/rb532/irq.c b/arch/mips/rb532/irq.c
-index c0d0f95..549b46d 100644
---- a/arch/mips/rb532/irq.c
-+++ b/arch/mips/rb532/irq.c
-@@ -45,7 +45,7 @@
- #include <asm/mipsregs.h>
- #include <asm/system.h>
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 4da736e..ac4ce81 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -567,7 +567,7 @@ config MIKROTIK_RB532
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select SWAP_IO_SPACE
+ 	select BOOT_RAW
+-	select GENERIC_GPIO
++	select ARCH_REQUIRE_GPIOLIB
+ 	help
+ 	  Support the Mikrotik(tm) RouterBoard 532 series,
+ 	  based on the IDT RC32434 SoC.
+diff --git a/arch/mips/rb532/gpio.c b/arch/mips/rb532/gpio.c
+index 6782127..f65deaa 100644
+--- a/arch/mips/rb532/gpio.c
++++ b/arch/mips/rb532/gpio.c
+@@ -27,20 +27,23 @@
+  */
  
--#include <asm/mach-rc32434/rc32434.h>
-+#include <asm/mach-rc32434/irq.h>
+ #include <linux/kernel.h>
+-#include <linux/gpio.h>
+ #include <linux/init.h>
+ #include <linux/types.h>
+-#include <linux/pci.h>
+ #include <linux/spinlock.h>
+-#include <linux/io.h>
+ #include <linux/platform_device.h>
+-
+-#include <asm/addrspace.h>
++#include <linux/gpio.h>
  
- struct intr_group {
- 	u32 mask;	/* mask of valid bits in pending/mask registers */
-diff --git a/arch/mips/rb532/serial.c b/arch/mips/rb532/serial.c
-index 1a05b5d..3e0d7ec 100644
---- a/arch/mips/rb532/serial.c
-+++ b/arch/mips/rb532/serial.c
-@@ -31,16 +31,16 @@
- #include <linux/serial_8250.h>
+ #include <asm/mach-rc32434/rb.h>
+-
+-struct rb532_gpio_reg __iomem *rb532_gpio_reg0;
+-EXPORT_SYMBOL(rb532_gpio_reg0);
++#include <asm/mach-rc32434/gpio.h>
++
++struct rb532_gpio_chip {
++	struct gpio_chip chip;
++	void __iomem	 *regbase;
++	void		(*set_int_level)(struct gpio_chip *chip, unsigned offset, int value);
++	int		(*get_int_level)(struct gpio_chip *chip, unsigned offset);
++	void		(*set_int_status)(struct gpio_chip *chip, unsigned offset, int value);
++	int		(*get_int_status)(struct gpio_chip *chip, unsigned offset);
++};
  
- #include <asm/serial.h>
--#include <asm/mach-rc32434/rc32434.h>
-+#include <asm/mach-rc32434/rb.h>
+ struct mpmc_device dev3;
  
- extern unsigned int idt_cpu_freq;
- 
- static struct uart_port rb532_uart = {
- 	.type = PORT_16550A,
- 	.line = 0,
--	.irq = RC32434_UART0_IRQ,
-+	.irq = UART0_IRQ,
- 	.iotype = UPIO_MEM,
--	.membase = (char *)KSEG1ADDR(RC32434_UART0_BASE),
-+	.membase = (char *)KSEG1ADDR(REGBASE + UART0BASE),
- 	.regshift = 2
+@@ -48,7 +51,7 @@ static struct resource rb532_gpio_reg0_res[] = {
+ 	{
+ 		.name 	= "gpio_reg0",
+ 		.start 	= REGBASE + GPIOBASE,
+-		.end 	= REGBASE + GPIOBASE + sizeof(struct rb532_gpio_reg) -1,
++		.end 	= REGBASE + GPIOBASE + sizeof(struct rb532_gpio_reg) - 1,
+ 		.flags 	= IORESOURCE_MEM,
+ 	}
  };
- 
-diff --git a/arch/mips/rb532/setup.c b/arch/mips/rb532/setup.c
-index 7aafa95..50f530f 100644
---- a/arch/mips/rb532/setup.c
-+++ b/arch/mips/rb532/setup.c
-@@ -9,7 +9,7 @@
- #include <asm/time.h>
- #include <linux/ioport.h>
- 
--#include <asm/mach-rc32434/rc32434.h>
-+#include <asm/mach-rc32434/rb.h>
- #include <asm/mach-rc32434/pci.h>
- 
- struct pci_reg __iomem *pci_reg;
-@@ -27,7 +27,7 @@ static struct resource pci0_res[] = {
- static void rb_machine_restart(char *command)
- {
- 	/* just jump to the reset vector */
--	writel(0x80000001, (void *)KSEG1ADDR(RC32434_REG_BASE + RC32434_RST));
-+	writel(0x80000001, IDT434_REG_BASE + RST);
- 	((void (*)(void)) KSEG1ADDR(0x1FC00000u))();
+@@ -57,7 +60,7 @@ static struct resource rb532_dev3_ctl_res[] = {
+ 	{
+ 		.name	= "dev3_ctl",
+ 		.start	= REGBASE + DEV3BASE,
+-		.end	= REGBASE + DEV3BASE + sizeof(struct dev_reg) -1,
++		.end	= REGBASE + DEV3BASE + sizeof(struct dev_reg) - 1,
+ 		.flags	= IORESOURCE_MEM,
+ 	}
+ };
+@@ -108,108 +111,199 @@ unsigned char get_latch_u5(void)
  }
+ EXPORT_SYMBOL(get_latch_u5);
  
-diff --git a/include/asm-mips/mach-rc32434/irq.h b/include/asm-mips/mach-rc32434/irq.h
-index d68318b..56738d8 100644
---- a/include/asm-mips/mach-rc32434/irq.h
-+++ b/include/asm-mips/mach-rc32434/irq.h
-@@ -4,6 +4,26 @@
- #define NR_IRQS	256
- 
- #include <asm/mach-generic/irq.h>
-+#include <asm/mach-rc32434/rb.h>
+-int rb532_gpio_get_value(unsigned gpio)
++/*
++ * Return GPIO level */
++static int rb532_gpio_get(struct gpio_chip *chip, unsigned offset)
+ {
+-	return readl(&rb532_gpio_reg0->gpiod) & (1 << gpio);
++	u32			mask = 1 << offset;
++	struct rb532_gpio_chip	*gpch;
 +
-+/* Interrupt Controller */
-+#define IC_GROUP0_PEND		(REGBASE + 0x38000)
-+#define IC_GROUP0_MASK		(REGBASE + 0x38008)
-+#define IC_GROUP_OFFSET		0x0C
++	gpch = container_of(chip, struct rb532_gpio_chip, chip);
++	return readl(gpch->regbase + GPIOD) & mask;
+ }
+-EXPORT_SYMBOL(rb532_gpio_get_value);
+ 
+-void rb532_gpio_set_value(unsigned gpio, int value)
++/*
++ * Set output GPIO level
++ */
++static void rb532_gpio_set(struct gpio_chip *chip,
++				unsigned offset, int value)
+ {
+-	unsigned tmp;
+-
+-	tmp = readl(&rb532_gpio_reg0->gpiod) & ~(1 << gpio);
++	unsigned long		flags;
++	u32			mask = 1 << offset;
++	u32			tmp;
++	struct rb532_gpio_chip	*gpch;
++	void __iomem		*gpvr;
 +
-+#define NUM_INTR_GROUPS		5
++	gpch = container_of(chip, struct rb532_gpio_chip, chip);
++	gpvr = gpch->regbase + GPIOD;
++	
++	local_irq_save(flags);
++	tmp = readl(gpvr);
+ 	if (value)
+-		tmp |= 1 << gpio;
+-
+-	writel(tmp, (void *)&rb532_gpio_reg0->gpiod);
++		tmp |= mask;
++	else
++		tmp &= ~mask;
++	writel(tmp, gpvr);
++	local_irq_restore(flags);
+ }
+-EXPORT_SYMBOL(rb532_gpio_set_value);
+ 
+-int rb532_gpio_direction_input(unsigned gpio)
++/*
++ * Set GPIO direction to input
++ */
++static int rb532_gpio_direction_input(struct gpio_chip *chip, unsigned offset)
+ {
+-	writel(readl(&rb532_gpio_reg0->gpiocfg) & ~(1 << gpio),
+-	       (void *)&rb532_gpio_reg0->gpiocfg);
++	unsigned long		flags;
++	u32			mask = 1 << offset;
++	u32			value;
++	struct rb532_gpio_chip	*gpch;
++	void __iomem		*gpdr;
 +
-+/* 16550 UARTs */
-+#define GROUP0_IRQ_BASE		8	/* GRP2 IRQ numbers start here */
-+					/* GRP3 IRQ numbers start here */
-+#define GROUP1_IRQ_BASE		(GROUP0_IRQ_BASE + 32)
-+					/* GRP4 IRQ numbers start here */
-+#define GROUP2_IRQ_BASE		(GROUP1_IRQ_BASE + 32)
-+					/* GRP5 IRQ numbers start here */
-+#define GROUP3_IRQ_BASE		(GROUP2_IRQ_BASE + 32)
-+#define GROUP4_IRQ_BASE		(GROUP3_IRQ_BASE + 32)
++	gpch = container_of(chip, struct rb532_gpio_chip, chip);
++	gpdr = gpch->regbase + GPIOCFG;
++	
++	local_irq_save(flags);
++	value = readl(gpdr);
++	value &= ~mask;
++	writel(value, gpdr);
++	local_irq_restore(flags);
+ 
+ 	return 0;
+ }
+-EXPORT_SYMBOL(rb532_gpio_direction_input);
+ 
+-int rb532_gpio_direction_output(unsigned gpio, int value)
++/*
++ * Set GPIO direction to output
++ */
++static int rb532_gpio_direction_output(struct gpio_chip *chip,
++					unsigned offset, int value)
+ {
+-	gpio_set_value(gpio, value);
+-	writel(readl(&rb532_gpio_reg0->gpiocfg) | (1 << gpio),
+-	       (void *)&rb532_gpio_reg0->gpiocfg);
++	unsigned long		flags;
++	u32			mask = 1 << offset;
++	u32			tmp;
++	struct rb532_gpio_chip	*gpch;
++	void __iomem		*gpdr;
 +
-+#define UART0_IRQ		(GROUP3_IRQ_BASE + 0)
++	gpch = container_of(chip, struct rb532_gpio_chip, chip);
++	writel(mask, gpch->regbase + GPIOD);
++	gpdr = gpch->regbase + GPIOCFG;
++	
++	local_irq_save(flags);
++	tmp = readl(gpdr);
++	tmp |= mask;
++	writel(tmp, gpdr);
++	local_irq_restore(flags);
  
- #define ETH0_DMA_RX_IRQ   	(GROUP1_IRQ_BASE + 0)
- #define ETH0_DMA_TX_IRQ   	(GROUP1_IRQ_BASE + 1)
-diff --git a/include/asm-mips/mach-rc32434/rb.h b/include/asm-mips/mach-rc32434/rb.h
-index 62ac73c..79e8ef6 100644
---- a/include/asm-mips/mach-rc32434/rb.h
-+++ b/include/asm-mips/mach-rc32434/rb.h
-@@ -19,6 +19,8 @@
+ 	return 0;
+ }
+-EXPORT_SYMBOL(rb532_gpio_direction_output);
  
- #define REGBASE		0x18000000
- #define IDT434_REG_BASE	((volatile void *) KSEG1ADDR(REGBASE))
-+#define UART0BASE	0x58000
-+#define RST		(1 << 15)
- #define DEV0BASE	0x010000
- #define DEV0MASK	0x010004
- #define DEV0C		0x010008
-diff --git a/include/asm-mips/mach-rc32434/rc32434.h b/include/asm-mips/mach-rc32434/rc32434.h
-index c4a0214..9df04b7 100644
---- a/include/asm-mips/mach-rc32434/rc32434.h
-+++ b/include/asm-mips/mach-rc32434/rc32434.h
-@@ -8,37 +8,7 @@
- #include <linux/delay.h>
- #include <linux/io.h>
+-void rb532_gpio_set_int_level(unsigned gpio, int value)
++/*
++ * Set the GPIO interrupt level
++ */
++static void rb532_gpio_set_int_level(struct gpio_chip *chip,
++					unsigned offset, int value)
+ {
+-	unsigned tmp;
+-
+-	tmp = readl(&rb532_gpio_reg0->gpioilevel) & ~(1 << gpio);
++	unsigned long		flags;
++	u32			mask = 1 << offset;
++	u32			tmp;
++	struct rb532_gpio_chip	*gpch;
++	void __iomem		*gpil;
++
++	gpch = container_of(chip, struct rb532_gpio_chip, chip);
++	gpil = gpch->regbase + GPIOILEVEL;
++	
++	local_irq_save(flags);
++	tmp = readl(gpil);
+ 	if (value)
+-		tmp |= 1 << gpio;
+-	writel(tmp, (void *)&rb532_gpio_reg0->gpioilevel);
++		tmp |= mask;
++	else
++		tmp &= ~mask;
++	writel(tmp, gpil);
++	local_irq_restore(flags);
+ }
+-EXPORT_SYMBOL(rb532_gpio_set_int_level);
  
--#define RC32434_REG_BASE	0x18000000
--#define RC32434_RST		(1 << 15)
+-int rb532_gpio_get_int_level(unsigned gpio)
+-{
+-	return readl(&rb532_gpio_reg0->gpioilevel) & (1 << gpio);
+-}
+-EXPORT_SYMBOL(rb532_gpio_get_int_level);
 -
- #define IDT_CLOCK_MULT		2
--#define MIPS_CPU_TIMER_IRQ	7
--
--/* Interrupt Controller */
--#define IC_GROUP0_PEND		(RC32434_REG_BASE + 0x38000)
--#define IC_GROUP0_MASK		(RC32434_REG_BASE + 0x38008)
--#define IC_GROUP_OFFSET		0x0C
--
--#define NUM_INTR_GROUPS		5
--
--/* 16550 UARTs */
--#define GROUP0_IRQ_BASE		8	/* GRP2 IRQ numbers start here */
--					/* GRP3 IRQ numbers start here */
--#define GROUP1_IRQ_BASE		(GROUP0_IRQ_BASE + 32)
--					/* GRP4 IRQ numbers start here */
--#define GROUP2_IRQ_BASE		(GROUP1_IRQ_BASE + 32)
--					/* GRP5 IRQ numbers start here */
--#define GROUP3_IRQ_BASE		(GROUP2_IRQ_BASE + 32)
--#define GROUP4_IRQ_BASE		(GROUP3_IRQ_BASE + 32)
--
--
--#ifdef __MIPSEB__
--#define RC32434_UART0_BASE	(RC32434_REG_BASE + 0x58003)
--#else
--#define RC32434_UART0_BASE	(RC32434_REG_BASE + 0x58000)
--#endif
--
--#define RC32434_UART0_IRQ	(GROUP3_IRQ_BASE + 0)
+-void rb532_gpio_set_int_status(unsigned gpio, int value)
++/*
++ * Get the GPIO interrupt level
++ */
++static int rb532_gpio_get_int_level(struct gpio_chip *chip, unsigned offset)
+ {
+-	unsigned tmp;
++	u32			mask = 1 << offset;
++	struct rb532_gpio_chip	*gpch;
  
- /* cpu pipeline flush */
- static inline void rc32434_sync(void)
+-	tmp = readl(&rb532_gpio_reg0->gpioistat);
+-	if (value)
+-		tmp |= 1 << gpio;
+-	writel(tmp, (void *)&rb532_gpio_reg0->gpioistat);
++	gpch = container_of(chip, struct rb532_gpio_chip, chip);
++	return readl(gpch->regbase + GPIOILEVEL) & mask;
+ }
+-EXPORT_SYMBOL(rb532_gpio_set_int_status);
+ 
+-int rb532_gpio_get_int_status(unsigned gpio)
++/*
++ * Set the GPIO interrupt status
++ */
++static void rb532_gpio_set_int_status(struct gpio_chip *chip,
++				unsigned offset, int value)
+ {
+-	return readl(&rb532_gpio_reg0->gpioistat) & (1 << gpio);
++	unsigned long		flags;
++	u32			mask = 1 << offset;
++	u32			tmp;
++	struct rb532_gpio_chip	*gpch;
++	void __iomem		*gpis;
++
++	gpch = container_of(chip, struct rb532_gpio_chip, chip);
++	gpis = gpch->regbase + GPIOISTAT;
++	
++	local_irq_save(flags);
++	tmp = readl(gpis);
++	if (value)
++		tmp |= mask;
++	else
++		tmp &= ~mask;
++	writel(tmp, gpis);
++	local_irq_restore(flags);
+ }
+-EXPORT_SYMBOL(rb532_gpio_get_int_status);
+ 
+-void rb532_gpio_set_func(unsigned gpio, int value)
++/*
++ * Get the GPIO interrupt status
++ */
++static int rb532_gpio_get_int_status(struct gpio_chip *chip, unsigned offset)
+ {
+-	unsigned tmp;
++	u32			mask = 1 << offset;
++	struct rb532_gpio_chip	*gpch;
+ 
+-	tmp = readl(&rb532_gpio_reg0->gpiofunc);
+-	if (value)
+-		tmp |= 1 << gpio;
+-	writel(tmp, (void *)&rb532_gpio_reg0->gpiofunc);
++	gpch = container_of(chip, struct rb532_gpio_chip, chip);
++	return readl(gpch->regbase + GPIOISTAT) & mask;
+ }
+-EXPORT_SYMBOL(rb532_gpio_set_func);
+ 
+-int rb532_gpio_get_func(unsigned gpio)
+-{
+-	return readl(&rb532_gpio_reg0->gpiofunc) & (1 << gpio);
+-}
+-EXPORT_SYMBOL(rb532_gpio_get_func);
++static struct rb532_gpio_chip rb532_gpio_chip[] = {
++	[0] = {
++		.chip = {
++			.label			= "gpio0",
++			.direction_input	= rb532_gpio_direction_input,
++			.direction_output	= rb532_gpio_direction_output,
++			.get			= rb532_gpio_get,
++			.set			= rb532_gpio_set,
++			.base			= 0,
++			.ngpio			= 32,
++		},
++		.get_int_level		= rb532_gpio_get_int_level,
++		.set_int_level		= rb532_gpio_set_int_level,
++		.get_int_status		= rb532_gpio_get_int_status,
++		.set_int_status		= rb532_gpio_set_int_status,
++	},
++};
+ 
+ int __init rb532_gpio_init(void)
+ {
+-	rb532_gpio_reg0 = ioremap_nocache(rb532_gpio_reg0_res[0].start,
+-				rb532_gpio_reg0_res[0].end -
+-				rb532_gpio_reg0_res[0].start);
++	struct resource *r;
+ 
+-	if (!rb532_gpio_reg0) {
++	r = rb532_gpio_reg0_res;
++	rb532_gpio_chip->regbase = ioremap_nocache(r->start, r->end - r->start);
++
++	if (!rb532_gpio_chip->regbase) {
+ 		printk(KERN_ERR "rb532: cannot remap GPIO register 0\n");
+ 		return -ENXIO;
+ 	}
+ 
+-	dev3.base = ioremap_nocache(rb532_dev3_ctl_res[0].start,
+-				rb532_dev3_ctl_res[0].end -
+-				rb532_dev3_ctl_res[0].start);
++	/* Register our GPIO chip */
++	gpiochip_add(&rb532_gpio_chip->chip);
++
++	r = rb532_dev3_ctl_res;
++	dev3.base = ioremap_nocache(r->start, r->end - r->start);
+ 
+ 	if (!dev3.base) {
+ 		printk(KERN_ERR "rb532: cannot remap device controller 3\n");
+diff --git a/include/asm-mips/mach-rc32434/gpio.h b/include/asm-mips/mach-rc32434/gpio.h
+index 4fe18db..77ac353 100644
+--- a/include/asm-mips/mach-rc32434/gpio.h
++++ b/include/asm-mips/mach-rc32434/gpio.h
+@@ -15,6 +15,16 @@
+ 
+ #include <linux/types.h>
+ 
++#define gpio_get_value __gpio_get_value
++#define gpio_set_value __gpio_set_value
++
++#define gpio_cansleep __gpio_cansleep
++
++#define gpio_to_irq(gpio)	IRQ_GPIO(gpio)
++#define irq_to_gpio(irq)	IRQ_TO_GPIO(irq)
++
++#include <asm-generic/gpio.h>
++
+ struct rb532_gpio_reg {
+ 	u32   gpiofunc;   /* GPIO Function Register
+ 			   * gpiofunc[x]==0 bit = gpio
+@@ -62,74 +72,17 @@ struct rb532_gpio_reg {
+ #define RC32434_PCI_MSU_GPIO	(1 << 13)
+ 
+ /* NAND GPIO signals */
+-#define GPIO_RDY		(1 << 0x08)
+-#define GPIO_WPX		(1 << 0x09)
+-#define GPIO_ALE		(1 << 0x0a)
+-#define GPIO_CLE		(1 << 0x0b)
++#define GPIO_RDY		8
++#define GPIO_WPX	9
++#define GPIO_ALE		10
++#define GPIO_CLE		11
+ 
+ /* Compact Flash GPIO pin */
+ #define CF_GPIO_NUM		13
+ 
+-
+ extern void set_434_reg(unsigned reg_offs, unsigned bit, unsigned len, unsigned val);
+ extern unsigned get_434_reg(unsigned reg_offs);
+ extern void set_latch_u5(unsigned char or_mask, unsigned char nand_mask);
+ extern unsigned char get_latch_u5(void);
+ 
+-extern int rb532_gpio_get_value(unsigned gpio);
+-extern void rb532_gpio_set_value(unsigned gpio, int value);
+-extern int rb532_gpio_direction_input(unsigned gpio);
+-extern int rb532_gpio_direction_output(unsigned gpio, int value);
+-extern void rb532_gpio_set_int_level(unsigned gpio, int value);
+-extern int rb532_gpio_get_int_level(unsigned gpio);
+-extern void rb532_gpio_set_int_status(unsigned gpio, int value);
+-extern int rb532_gpio_get_int_status(unsigned gpio);
+-
+-
+-/* Wrappers for the arch-neutral GPIO API */
+-
+-static inline int gpio_request(unsigned gpio, const char *label)
+-{
+-	/* Not yet implemented */
+-	return 0;
+-}
+-
+-static inline void gpio_free(unsigned gpio)
+-{
+-	/* Not yet implemented */
+-}
+-
+-static inline int gpio_direction_input(unsigned gpio)
+-{
+-	return rb532_gpio_direction_input(gpio);
+-}
+-
+-static inline int gpio_direction_output(unsigned gpio, int value)
+-{
+-	return rb532_gpio_direction_output(gpio, value);
+-}
+-
+-static inline int gpio_get_value(unsigned gpio)
+-{
+-	return rb532_gpio_get_value(gpio);
+-}
+-
+-static inline void gpio_set_value(unsigned gpio, int value)
+-{
+-	rb532_gpio_set_value(gpio, value);
+-}
+-
+-static inline int gpio_to_irq(unsigned gpio)
+-{
+-	return gpio;
+-}
+-
+-static inline int irq_to_gpio(unsigned irq)
+-{
+-	return irq;
+-}
+-
+-/* For cansleep */
+-#include <asm-generic/gpio.h>
+-
+ #endif /* _RC32434_GPIO_H_ */

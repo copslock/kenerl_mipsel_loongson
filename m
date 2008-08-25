@@ -1,46 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2008 17:57:11 +0100 (BST)
-Received: from relay01.mx.bawue.net ([193.7.176.67]:62126 "EHLO
-	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
-	id S20025817AbYHYQ5J (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 25 Aug 2008 17:57:09 +0100
-Received: from lagash (p549AF43E.dip.t-dialin.net [84.154.244.62])
-	(using TLSv1 with cipher AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by relay01.mx.bawue.net (Postfix) with ESMTP id D389248918;
-	Mon, 25 Aug 2008 18:57:08 +0200 (CEST)
-Received: from ths by lagash with local (Exim 4.69)
-	(envelope-from <ths@networkno.de>)
-	id 1KXfNL-0004Ks-ME; Mon, 25 Aug 2008 18:57:07 +0200
-Date:	Mon, 25 Aug 2008 18:57:07 +0200
-From:	Thiemo Seufer <ths@networkno.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2008 19:46:10 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:34026 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20025555AbYHYSqI (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 25 Aug 2008 19:46:08 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1KXh4p-0006wY-00; Mon, 25 Aug 2008 20:46:07 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 37310C3164; Mon, 25 Aug 2008 20:46:01 +0200 (CEST)
+Date:	Mon, 25 Aug 2008 20:46:01 +0200
 To:	David Daney <ddaney@avtrex.com>
 Cc:	MIPS Linux List <linux-mips@linux-mips.org>
 Subject: Re: What's up with cpu_is_noncoherent_r10000() ?
-Message-ID: <20080825165707.GD994@networkno.de>
+Message-ID: <20080825184600.GA8993@alpha.franken.de>
 References: <48B2DF15.5030903@avtrex.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <48B2DF15.5030903@avtrex.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ths@networkno.de>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20346
+X-archive-position: 20347
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ths@networkno.de
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-David Daney wrote:
-> I am bringing up the git HEAD on an old ATI Xilleon X226.  This nice  
-> system claims to be 4KEc, but for some reason doesn't support mips32r2,  
-> but I digress.
+On Mon, Aug 25, 2008 at 09:34:29AM -0700, David Daney wrote:
+> What is the reasoning for only doing the cache operation on  R10K based 
+> systems?
 
-FYI, early revisions of the 4KEc, most notably the TI AR7, are MIPS32R1.
+non coherent R10k need after DMA operations to get rid of remains
+of load/store speculations. Other CPUs don't pollute the cache
+after it got flushed.
+
+But this optimization is wrong, we need to do the flush for
+every non coherent device otherwise polling a descriptor via
+a cached mapping can't work. And this exactly what E100 does.
+
+Instead of if (cpu_is_noncoherent_r10000(deva)) something like
+
+if (cpu_is_noncoherent_r10000(dev) || 
+    (!plat_device_is_coherent(dev) && (direction != DMA_TO_DEVICE)))
 
 
-Thiemo
+should do the trick with minimum flushes for non R10k CPUs. But probably
+a simple
+
+if ((!plat_device_is_coherent(dev))
+
+is the safest approach.
+
+Thomas.
+
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

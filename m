@@ -1,41 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2008 13:48:29 +0100 (BST)
-Received: from ditditdahdahdah-dahditditditdit.dl5rb.org.uk ([217.169.26.26]:1247
-	"EHLO ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk")
-	by ftp.linux-mips.org with ESMTP id S20024634AbYHYMs0 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 25 Aug 2008 13:48:26 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m7PCmPfQ027871;
-	Mon, 25 Aug 2008 13:48:25 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m7PCmOas027869;
-	Mon, 25 Aug 2008 13:48:24 +0100
-Date:	Mon, 25 Aug 2008 13:48:24 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Florian Fainelli <florian@openwrt.org>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 1/5] rb532: remove obsolute reference to
-	setup_serial_port
-Message-ID: <20080825124824.GA27858@linux-mips.org>
-References: <200808231853.25310.florian@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2008 17:34:46 +0100 (BST)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.134]:1677 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S20025411AbYHYQen (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 25 Aug 2008 17:34:43 +0100
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id DA691320A15
+	for <linux-mips@linux-mips.org>; Mon, 25 Aug 2008 16:34:42 +0000 (UTC)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [173.8.135.205])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP
+	for <linux-mips@linux-mips.org>; Mon, 25 Aug 2008 16:34:42 +0000 (UTC)
+Received: from dl2.hq2.avtrex.com ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 25 Aug 2008 09:34:30 -0700
+Message-ID: <48B2DF15.5030903@avtrex.com>
+Date:	Mon, 25 Aug 2008 09:34:29 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <200808231853.25310.florian@openwrt.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+To:	MIPS Linux List <linux-mips@linux-mips.org>
+Subject: What's up with cpu_is_noncoherent_r10000() ?
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 25 Aug 2008 16:34:30.0617 (UTC) FILETIME=[72D31490:01C906D0]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20344
+X-archive-position: 20345
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Aug 23, 2008 at 06:53:24PM +0200, Florian Fainelli wrote:
+I am bringing up the git HEAD on an old ATI Xilleon X226.  This nice 
+system claims to be 4KEc, but for some reason doesn't support mips32r2, 
+but I digress.
 
-Queued up for 2.6.28 also.  Thanks!
+Among its other problems this is a CONFIG_DMA_NONCOHERENT system, so 
+drivers like net/e100.c do not function properly if the cache is not 
+appropriately flushed/invalidated when they are doing DMA.  Fortunately 
+the authors of said driver have used 
+pci_dma_sync_single_for_{cpu,device} in what seems like the appropriate 
+  manner.
 
-  Ralf
+pci_dma_sync_single_for_device() ends up in dma_sync_single_for_device() 
+(in mm/dme-default.c) and is does the cache flush as expected.  The 
+problem is with dma_sync_single_for_cpu() which for some reason only 
+does the cache flush/invalidate  if cpu_is_noncoherent_r10000() returns 
+true (which it does only for R10K CPUs).  When I hack it up so that it 
+returns true unconditionally, e100 starts functioning normally for me. 
+This leads me to think that the cache operation should be done for all 
+CONFIG_DMA_NONCOHERENT systems not just R10K based systems.
+
+What is the reasoning for only doing the cache operation on  R10K based 
+systems?
+
+David Daney

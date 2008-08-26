@@ -1,69 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Aug 2008 20:24:46 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.134]:2238 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20038724AbYHZTYo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 26 Aug 2008 20:24:44 +0100
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id D54353209AE;
-	Tue, 26 Aug 2008 19:24:46 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [173.8.135.205])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Tue, 26 Aug 2008 19:24:46 +0000 (UTC)
-Received: from dl2.hq2.avtrex.com ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 26 Aug 2008 12:24:32 -0700
-Message-ID: <48B4586F.6030201@avtrex.com>
-Date:	Tue, 26 Aug 2008 12:24:31 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Aug 2008 22:01:39 +0100 (BST)
+Received: from colo.lackof.org ([198.49.126.79]:20151 "EHLO colo.lackof.org")
+	by ftp.linux-mips.org with ESMTP id S20039017AbYHZVBh (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 26 Aug 2008 22:01:37 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by colo.lackof.org (Postfix) with ESMTP id 10ECF29806B;
+	Tue, 26 Aug 2008 15:01:29 -0600 (MDT)
+Received: from colo.lackof.org ([127.0.0.1])
+	by localhost (colo.lackof.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 27905-03; Tue, 26 Aug 2008 15:01:18 -0600 (MDT)
+Received: by colo.lackof.org (Postfix, from userid 27253)
+	id AFE1529800A; Tue, 26 Aug 2008 15:01:18 -0600 (MDT)
+Date:	Tue, 26 Aug 2008 15:01:18 -0600
+From:	Grant Grundler <grundler@parisc-linux.org>
+To:	Takashi Iwai <tiwai@suse.de>
+Cc:	Joel Soete <soete.joel@scarlet.be>,
+	"James.Bottomley" <James.Bottomley@HansenPartnership.com>,
+	linux-mips <linux-mips@linux-mips.org>,
+	ralf <ralf@linux-mips.org>,
+	linux-parisc <linux-parisc@vger.kernel.org>
+Subject: Re: [PATCH] mips: Add dma_mmap_coherent()
+Message-ID: <20080826210118.GA26235@colo.lackof.org>
+References: <K6047O$07C3A675C0E02FC7BE973C0D5DEF9AAA@scarlet.be> <s5hy72pmefh.wl%tiwai@suse.de> <48B0678E.9010208@scarlet.be> <s5hej4blrx7.wl%tiwai@suse.de>
 MIME-Version: 1.0
-To:	David Acker <dacker@roinet.com>
-Cc:	e1000-devel@lists.sourceforge.net, netdev@vger.kernel.org,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] e100: Add missing dma sync for proper operation with
- non-coherent caches.
-References: <48B3A8D0.2040108@avtrex.com> <48B45065.5050907@roinet.com>
-In-Reply-To: <48B45065.5050907@roinet.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 26 Aug 2008 19:24:32.0157 (UTC) FILETIME=[5DD44CD0:01C907B1]
-Return-Path: <ddaney@avtrex.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <s5hej4blrx7.wl%tiwai@suse.de>
+X-Home-Page: http://www.parisc-linux.org/
+User-Agent: Mutt/1.5.16 (2007-06-11)
+X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at lackof.org
+Return-Path: <grundler@lackof.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20366
+X-archive-position: 20367
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: grundler@parisc-linux.org
 Precedence: bulk
 X-list: linux-mips
 
-David Acker wrote:
-> David Daney wrote:
+On Tue, Aug 26, 2008 at 05:25:24PM +0200, Takashi Iwai wrote:
+...
+> Now updated my git tree:
+>     http://git.kernel.org/?p=linux/kernel/git/tiwai/sound-2.6.git;a=shortlog;h=topic/dma-fix
+> I'll post each patch again if preferred.
 
->> diff --git a/drivers/net/e100.c b/drivers/net/e100.c
->> index 19d32a2..fb8d551 100644
->> --- a/drivers/net/e100.c
->> +++ b/drivers/net/e100.c
->> @@ -1840,6 +1840,11 @@ static int e100_rx_indicate(struct nic *nic, 
->> struct rx *rx,
->>  
->>              if (readb(&nic->csr->scb.status) & rus_no_res)
->>                  nic->ru_running = RU_SUSPENDED;
->> +        /* We are done looking at the buffer.  Prepare it for
->> +         * more DMA.  */
->> +        pci_dma_sync_single_for_device(nic->pdev, rx->dma_addr,
->> +                           sizeof(struct rfd),
->> +                           PCI_DMA_FROMDEVICE);
->>          return -ENODATA;
->>      }
->>  
-> Should the call to pci_dma_sync_single_for_device be DMA_TO_DEVICE since 
-> we are giving the memory back to the device?
++#ifdef CONFIG_SND_COHERENT_DMA
+ #define SNDRV_DMA_TYPE_DEV_SG          3       /* generic device SG-buffer */
++#else
++#define SNDRV_DMA_TYPE_DEV_SG  SNDRV_DMA_TYPE_DEV /* no SG-buf support */
++#endif
 
-No.  We are giving the memory back to the device, but the direction of 
-the data transfer is from the device to memory.
+Hi Takashi,
+I had to look at a previous patch to figure out CONFIG_SND_COHERENT_DMA
+is an arch dependent flag:
 
-David Daney
++config SND_COHERENT_DMA
++       def_bool y
++       depends on !PPC32 || !NOT_COHERENT_CACHE
++       depends on !ARM
++       depends on !MIPS
++       depends on !PARISC
+
+In general, I don't expect this to be a compile time option.
+I'm wondering if extending the DMA API to provide an
+interface for user space to also be DMA coherent.
+Maybe something to talk about at Linux Plumbers Conf
+or kernel summit...
+
+> Do you guys see any pending issues?  I'd love to merge these patches
+> into the upstream for 2.6.28.
+
+SPARC/SPARC64 usually falls into the same category as parisc/mips.
+
+> 
+> To get things clear -- I don't intend to fix the problem of mmap on
+> every non-coherent platform perfectly (yet).  Instead, this patch
+> series is intended to fix the current behavior, at least, for the
+> sound drivers not to crash unconditionally.  It provides a (minimal)
+> way to mmap the pages taken via dma_alloc_coherent().
+
+*nod* that's reasonable.
+
+thanks,
+grant
+
+> 
+> 
+> Thanks,
+> 
+> Takashi
+> --
+> To unsubscribe from this list: send the line "unsubscribe linux-parisc" in
+> the body of a message to majordomo@vger.kernel.org
+> More majordomo info at  http://vger.kernel.org/majordomo-info.html

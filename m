@@ -1,63 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 Aug 2008 19:46:10 +0100 (BST)
-Received: from elvis.franken.de ([193.175.24.41]:34026 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S20025555AbYHYSqI (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 25 Aug 2008 19:46:08 +0100
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1KXh4p-0006wY-00; Mon, 25 Aug 2008 20:46:07 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id 37310C3164; Mon, 25 Aug 2008 20:46:01 +0200 (CEST)
-Date:	Mon, 25 Aug 2008 20:46:01 +0200
-To:	David Daney <ddaney@avtrex.com>
-Cc:	MIPS Linux List <linux-mips@linux-mips.org>
-Subject: Re: What's up with cpu_is_noncoherent_r10000() ?
-Message-ID: <20080825184600.GA8993@alpha.franken.de>
-References: <48B2DF15.5030903@avtrex.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Aug 2008 01:08:41 +0100 (BST)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.134]:40596 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S20037341AbYHZAIj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 26 Aug 2008 01:08:39 +0100
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 393E5320810
+	for <linux-mips@linux-mips.org>; Tue, 26 Aug 2008 00:08:46 +0000 (UTC)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [173.8.135.205])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP
+	for <linux-mips@linux-mips.org>; Tue, 26 Aug 2008 00:08:46 +0000 (UTC)
+Received: from dl2.hq2.avtrex.com ([192.168.7.26]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Mon, 25 Aug 2008 17:08:27 -0700
+Message-ID: <48B34979.4090504@avtrex.com>
+Date:	Mon, 25 Aug 2008 17:08:25 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+To:	MIPS Linux List <linux-mips@linux-mips.org>
+Subject: Re: What's up with cpu_is_noncoherent_r10000() ?
+References: <48B2DF15.5030903@avtrex.com>
 In-Reply-To: <48B2DF15.5030903@avtrex.com>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 26 Aug 2008 00:08:27.0426 (UTC) FILETIME=[DD3A5020:01C9070F]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20347
+X-archive-position: 20349
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Aug 25, 2008 at 09:34:29AM -0700, David Daney wrote:
+David Daney wrote:
+> I am bringing up the git HEAD on an old ATI Xilleon X226.  This nice 
+> system claims to be 4KEc, but for some reason doesn't support mips32r2, 
+> but I digress.
+> 
+> Among its other problems this is a CONFIG_DMA_NONCOHERENT system, so 
+> drivers like net/e100.c do not function properly if the cache is not 
+> appropriately flushed/invalidated when they are doing DMA.  Fortunately 
+> the authors of said driver have used 
+> pci_dma_sync_single_for_{cpu,device} in what seems like the appropriate 
+>  manner.
+> 
+> pci_dma_sync_single_for_device() ends up in dma_sync_single_for_device() 
+> (in mm/dme-default.c) and is does the cache flush as expected.  The 
+> problem is with dma_sync_single_for_cpu() which for some reason only 
+> does the cache flush/invalidate  if cpu_is_noncoherent_r10000() returns 
+> true (which it does only for R10K CPUs).  When I hack it up so that it 
+> returns true unconditionally, e100 starts functioning normally for me. 
+> This leads me to think that the cache operation should be done for all 
+> CONFIG_DMA_NONCOHERENT systems not just R10K based systems.
+> 
 > What is the reasoning for only doing the cache operation on  R10K based 
 > systems?
+> 
 
-non coherent R10k need after DMA operations to get rid of remains
-of load/store speculations. Other CPUs don't pollute the cache
-after it got flushed.
+OK, Ralf straightened me out on dma_sync_*.  It would appear that 
+mm/dme-default.c is correct and drivers/net/e100.c is missing a 
+pci_dma_sync_single_for_device().
 
-But this optimization is wrong, we need to do the flush for
-every non coherent device otherwise polling a descriptor via
-a cached mapping can't work. And this exactly what E100 does.
+I am preparing a patch for e100.c
 
-Instead of if (cpu_is_noncoherent_r10000(deva)) something like
-
-if (cpu_is_noncoherent_r10000(dev) || 
-    (!plat_device_is_coherent(dev) && (direction != DMA_TO_DEVICE)))
-
-
-should do the trick with minimum flushes for non R10k CPUs. But probably
-a simple
-
-if ((!plat_device_is_coherent(dev))
-
-is the safest approach.
-
-Thomas.
-
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+David Daney

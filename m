@@ -1,234 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Aug 2008 10:09:39 +0100 (BST)
-Received: from bigben2.bytemark.co.uk ([80.68.81.132]:42466 "EHLO
-	bigben2.bytemark.co.uk") by ftp.linux-mips.org with ESMTP
-	id S20027370AbYHZJJg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 26 Aug 2008 10:09:36 +0100
-Received: from hellhawk.shadowen.org ([80.68.90.175])
-	by bigben2.bytemark.co.uk with esmtp (Exim 4.63)
-	(envelope-from <apw@shadowen.org>)
-	id 1KXuYP-0007xB-En; Tue, 26 Aug 2008 09:09:33 +0000
-Received: from localhost ([127.0.0.1] helo=brain)
-	by hellhawk.shadowen.org with esmtp (Exim 4.63)
-	(envelope-from <apw@shadowen.org>)
-	id 1KXuYP-0000UL-4p; Tue, 26 Aug 2008 10:09:33 +0100
-Date:	Tue, 26 Aug 2008 10:09:36 +0100
-From:	Andy Whitcroft <apw@shadowen.org>
-To:	C Michael Sundius <Michael.sundius@sciatl.com>
-Cc:	Dave Hansen <dave@linux.vnet.ibm.com>, linux-mm@kvack.org,
-	linux-mips@linux-mips.org, jfraser@broadcom.com
-Subject: Re: sparsemem support for mips with highmem
-Message-ID: <20080826090936.GC29207@brain>
-References: <48A4AC39.7020707@sciatl.com> <1218753308.23641.56.camel@nimitz> <48A4C542.5000308@sciatl.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <48A4C542.5000308@sciatl.com>
-User-Agent: Mutt/1.5.17+20080114 (2008-01-14)
-Return-Path: <apw@shadowen.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 Aug 2008 13:30:07 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:20468 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20030739AbYHZMaF (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 26 Aug 2008 13:30:05 +0100
+Received: from localhost (p1241-ipad305funabasi.chiba.ocn.ne.jp [123.217.163.241])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 8EB2CA967; Tue, 26 Aug 2008 21:29:57 +0900 (JST)
+Date:	Tue, 26 Aug 2008 21:29:58 +0900 (JST)
+Message-Id: <20080826.212958.128619116.anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] TXx9: Fix txx9_pcode initialization
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20351
+X-archive-position: 20352
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: apw@shadowen.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Aug 14, 2008 at 04:52:34PM -0700, C Michael Sundius wrote:
-> fixed patch
->
->
+The txx9_pcode variable was introduced in commit
+fe1c2bc64f65003b39f331a8e4b0d15b235a4afd ("TXx9: Add 64-bit support")
+but was not initialized properly.
 
-Typically I was on holiday when you posted, how does that always happen.
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+ arch/mips/txx9/generic/setup.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-> diff --git a/Documentation/sparsemem.txt b/Documentation/sparsemem.txt
-> new file mode 100644
-> index 0000000..6aea0d1
-> --- /dev/null
-> +++ b/Documentation/sparsemem.txt
-> @@ -0,0 +1,93 @@
-> +Sparsemem divides up physical memory in your system into N section of M
-> +bytes. Page descriptors are created for only those sections that
-> +actually exist (as far as the sparsemem code is concerned). This allows
-> +for holes in the physical memory without having to waste space by
-> +creating page discriptors for those pages that do not exist.
-> +When page_to_pfn() or pfn_to_page() are called there is a bit of overhead to
-> +look up the proper memory section to get to the descriptors, but this
-> +is small compared to the memory you are likely to save. So, it's not the
-> +default, but should be used if you have big holes in physical memory.
-> +
-> +Note that discontiguous memory is more closely related to NUMA machines
-> +and if you are a single CPU system use sparsemem and not discontig. 
-> +It's much simpler. 
-> +
-> +1) CALL MEMORY_PRESENT()
-> +Once the bootmem allocator is up and running, you should call the
-> +sparsemem function "memory_present(node, pfn_start, pfn_end)" for each
-> +block of memory that exists on your system.
-> +
-> +2) DETERMINE AND SET THE SIZE OF SECTIONS AND PHYSMEM
-> +The size of N and M above depend upon your architecture
-> +and your platform and are specified in the file:
-> +
-> +      include/asm-<your_arch>/sparsemem.h
-> +
-> +and you should create the following lines similar to below: 
-> +
-> +	#ifdef CONFIG_YOUR_PLATFORM
-> +	 #define SECTION_SIZE_BITS       27	/* 128 MiB */
-> +	#endif
-> +	#define MAX_PHYSMEM_BITS        31	/* 2 GiB   */
+This patch is against current linux-mips.org main tree.
 
-This example is slightly out of step with the reality of what you add.
-I would have expected the two defines to cary together?
-
-> +
-> +if they don't already exist, where: 
-> +
-> + * SECTION_SIZE_BITS            2^M: how big each section will be
-> + * MAX_PHYSMEM_BITS             2^N: how much memory we can have in that
-> +                                     space
-> +
-> +3) INITIALIZE SPARSE MEMORY
-> +You should make sure that you initialize the sparse memory code by calling 
-> +
-> +	bootmem_init();
-> +  +	sparse_init();
-> +	paging_init();
-> +
-> +just before you call paging_init() and after the bootmem_allocator is
-> +turned on in your setup_arch() code.  
-> +
-> +4) ENABLE SPARSEMEM IN KCONFIG
-> +Add a line like this:
-> +
-> +	select ARCH_SPARSEMEM_ENABLE
-> +
-> +into the config for your platform in arch/<your_arch>/Kconfig. This will
-> +ensure that turning on sparsemem is enabled for your platform. 
-
-One other thing to to worry about here is turning any of the _ENABLEs
-on tends to turn off the default models; particularly FLATMEM tends to
-turn off if you don't explicitly ask for it.  So you may also need to
-add entries for all of your models if none are already specified.
-
-> +
-> +5) CONFIG
-> +Run make menuconfig or make gconfig, as you like, and turn on the sparsemem
-> +memory model under the "Kernel Type" --> "Memory Model" and then build your
-> +kernel.
-> +
-> +
-> +6) Gotchas
-> +
-> +One trick that I encountered when I was turning this on for MIPS was that there
-> +was some code in mem_init() that set the "reserved" flag for pages that were not
-> +valid RAM. This caused my kernel to crash when I enabled sparsemem since those
-> +pages (and page descriptors) didn't actually exist. I changed my code by adding
-> +lines like below:
-> +
-> +
-> +	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
-> +		struct page *page = pfn_to_page(tmp);
-> +
-> +   +		if (!pfn_valid(tmp))
-> +   +			continue;
-> +   +
-> +		if (!page_is_ram(tmp)) {
-> +			SetPageReserved(page);
-> +			continue;
-> +		}
-> +		ClearPageReserved(page);
-> +		init_page_count(page);
-> +		__free_page(page);
-> +		physmem_record(PFN_PHYS(tmp), PAGE_SIZE, physmem_highmem);
-> +		totalhigh_pages++;
-> +	}
-> +
-> +
-> +Once I got that straight, it worked!!!! I saved 10MiB of memory.  
-
-That documentation is good whether the mips part is merged or not.  It
-is probabally worth making it a separate patch.
-
-> +
-> +
-> +
-> diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-> index c6a063b..5b1af87 100644
-> --- a/arch/mips/kernel/setup.c
-> +++ b/arch/mips/kernel/setup.c
-> @@ -408,7 +408,6 @@ static void __init bootmem_init(void)
->  
->  		/* Register lowmem ranges */
->  		free_bootmem(PFN_PHYS(start), size << PAGE_SHIFT);
-> -		memory_present(0, start, end);
->  	}
->  
->  	/*
-> @@ -420,6 +419,23 @@ static void __init bootmem_init(void)
->  	 * Reserve initrd memory if needed.
->  	 */
->  	finalize_initrd();
-> +
-> +	/* call memory present for all the ram */
-> +	for (i = 0; i < boot_mem_map.nr_map; i++) {
-> +		unsigned long start, end;
-> +
-> +		/*
-> +		 * memory present only usable memory.
-> +		 */
-> +		if (boot_mem_map.map[i].type != BOOT_MEM_RAM)
-> +			continue;
-> +
-> +		start = PFN_UP(boot_mem_map.map[i].addr);
-> +		end   = PFN_DOWN(boot_mem_map.map[i].addr
-> +				    + boot_mem_map.map[i].size);
-> +
-> +		memory_present(0, start, end);
-> +	}
->  }
->  
->  #endif	/* CONFIG_SGI_IP27 */
-> diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-> index 137c14b..31496a1 100644
-> --- a/arch/mips/mm/init.c
-> +++ b/arch/mips/mm/init.c
-> @@ -414,6 +414,9 @@ void __init mem_init(void)
->  	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
->  		struct page *page = pfn_to_page(tmp);
->  
-> +		if (!pfn_valid(tmp))
-> +			continue;
-> +
->  		if (!page_is_ram(tmp)) {
->  			SetPageReserved(page);
->  			continue;
-> diff --git a/include/asm-mips/sparsemem.h b/include/asm-mips/sparsemem.h
-> index 795ac6c..9faaf59 100644
-> --- a/include/asm-mips/sparsemem.h
-> +++ b/include/asm-mips/sparsemem.h
-> @@ -6,8 +6,14 @@
->   * SECTION_SIZE_BITS		2^N: how big each section will be
->   * MAX_PHYSMEM_BITS		2^N: how much memory we can have in that space
->   */
-> +
-> +#ifndef CONFIG_64BIT
-> +#define SECTION_SIZE_BITS       27	/* 128 MiB */
-> +#define MAX_PHYSMEM_BITS        31	/* 2 GiB   */
-> +#else
->  #define SECTION_SIZE_BITS       28
->  #define MAX_PHYSMEM_BITS        35
-> +#endif
->  
->  #endif /* CONFIG_SPARSEMEM */
->  #endif /* _MIPS_SPARSEMEM_H */
-
-Otherwise it looks good to me.  I see from the rest of the thread that
-there is some discussion over the sizes of these, with that sorted.
-
-Acked-by: Andy Whitcroft <apw@shadowen.org>
-
--apw
+diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
+index 0afe94c..fe6bee0 100644
+--- a/arch/mips/txx9/generic/setup.c
++++ b/arch/mips/txx9/generic/setup.c
+@@ -53,6 +53,7 @@ txx9_reg_res_init(unsigned int pcode, unsigned long base, unsigned long size)
+ 		txx9_ce_res[i].name = txx9_ce_res_name[i];
+ 	}
+ 
++	txx9_pcode = pcode;
+ 	sprintf(txx9_pcode_str, "TX%x", pcode);
+ 	if (base) {
+ 		txx9_reg_res.start = base & 0xfffffffffULL;

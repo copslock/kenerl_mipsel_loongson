@@ -1,88 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Aug 2008 15:07:00 +0100 (BST)
-Received: from accolon.hansenpartnership.com ([76.243.235.52]:45025 "EHLO
-	accolon.hansenpartnership.com") by ftp.linux-mips.org with ESMTP
-	id S20025916AbYH0OG5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 27 Aug 2008 15:06:57 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by accolon.hansenpartnership.com (Postfix) with ESMTP id 9B4BC8045;
-	Wed, 27 Aug 2008 09:06:49 -0500 (CDT)
-Received: from accolon.hansenpartnership.com ([127.0.0.1])
-	by localhost (redscar.int.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id yLu-8aRmbnG5; Wed, 27 Aug 2008 09:06:48 -0500 (CDT)
-Received: from [153.66.150.222] (mulgrave-w.int.hansenpartnership.com [153.66.150.222])
-	by accolon.hansenpartnership.com (Postfix) with ESMTP id CA2E68037;
-	Wed, 27 Aug 2008 09:06:47 -0500 (CDT)
-Subject: Re: [PATCH] mips: Add dma_mmap_coherent()
-From:	James Bottomley <James.Bottomley@HansenPartnership.com>
-To:	Takashi Iwai <tiwai@suse.de>
-Cc:	Grant Grundler <grundler@parisc-linux.org>,
-	Joel Soete <soete.joel@scarlet.be>,
-	linux-mips <linux-mips@linux-mips.org>,
-	ralf <ralf@linux-mips.org>,
-	linux-parisc <linux-parisc@vger.kernel.org>
-In-Reply-To: <s5h4p57hv4h.wl%tiwai@suse.de>
-References: <K6047O$07C3A675C0E02FC7BE973C0D5DEF9AAA@scarlet.be>
-	 <s5hy72pmefh.wl%tiwai@suse.de> <48B0678E.9010208@scarlet.be>
-	 <s5hej4blrx7.wl%tiwai@suse.de> <20080826210118.GA26235@colo.lackof.org>
-	 <s5h4p57hv4h.wl%tiwai@suse.de>
-Content-Type: text/plain
-Date:	Wed, 27 Aug 2008 09:06:46 -0500
-Message-Id: <1219846006.3292.3.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.22.3.1 (2.22.3.1-1.fc9) 
-Content-Transfer-Encoding: 7bit
-Return-Path: <James.Bottomley@HansenPartnership.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Aug 2008 22:40:36 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:35213 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20032451AbYH0Vke (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 27 Aug 2008 22:40:34 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1KYSki-0007rN-00; Wed, 27 Aug 2008 23:40:32 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 1E60CDE390; Wed, 27 Aug 2008 23:40:21 +0200 (CEST)
+Date:	Wed, 27 Aug 2008 23:40:21 +0200
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Remove never used pci_probe variable
+Message-ID: <20080827214021.GA12542@alpha.franken.de>
+References: <20080419.003435.26096353.anemo@mba.ocn.ne.jp> <20080708.011426.08077033.anemo@mba.ocn.ne.jp> <20080827091935.GA28714@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20080827091935.GA28714@linux-mips.org>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20377
+X-archive-position: 20378
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: James.Bottomley@HansenPartnership.com
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2008-08-27 at 07:42 +0200, Takashi Iwai wrote:
-> At Tue, 26 Aug 2008 15:01:18 -0600,
-> Grant Grundler wrote:
-> > 
-> > On Tue, Aug 26, 2008 at 05:25:24PM +0200, Takashi Iwai wrote:
-> > ...
-> > > Now updated my git tree:
-> > >     http://git.kernel.org/?p=linux/kernel/git/tiwai/sound-2.6.git;a=shortlog;h=topic/dma-fix
-> > > I'll post each patch again if preferred.
-> > 
-> > +#ifdef CONFIG_SND_COHERENT_DMA
-> >  #define SNDRV_DMA_TYPE_DEV_SG          3       /* generic device SG-buffer */
-> > +#else
-> > +#define SNDRV_DMA_TYPE_DEV_SG  SNDRV_DMA_TYPE_DEV /* no SG-buf support */
-> > +#endif
-> > 
-> > Hi Takashi,
-> > I had to look at a previous patch to figure out CONFIG_SND_COHERENT_DMA
-> > is an arch dependent flag:
-> > 
-> > +config SND_COHERENT_DMA
-> > +       def_bool y
-> > +       depends on !PPC32 || !NOT_COHERENT_CACHE
-> > +       depends on !ARM
-> > +       depends on !MIPS
-> > +       depends on !PARISC
-> > 
-> > In general, I don't expect this to be a compile time option.
+On Wed, Aug 27, 2008 at 10:19:35AM +0100, Ralf Baechle wrote:
+> I think real problem here is that we have two variables which both serve the
+> same purpose, pci_probe_only and pci_probe, no?  Not entirely sure here
+> because the alpha defines:
 > 
-> Right now it has to be a compile-time option because
-> - dma_mmap_coherent() isn't implemented in every architecture (thus
->   fails to build), and 
-> - pages allocated via dma_mmap_coherent() aren't always suitable for
->   SG-mapping.
+> arch/alpha/include/asm/pci.h:#define pcibios_assign_all_busses()        1
+> 
+> yet it has pci_probe_only ...
 
-This is trivially fixable by the usual methods, so, as Grant says, we
-should employ them rather than non-standard ways of doing this
+as I found no code overwriting pci_probe under arch/mips, we could
+remove pci_probe and use the same #define as alpha does.
 
-Basically, you're asking to extend the DMA API, so this should be taken
-to linux-arch.  That way, it might also give visibility to the graphics
-people and we can negotiate over a unified API.
+Thomas.
 
-James
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

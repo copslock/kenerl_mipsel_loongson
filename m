@@ -1,50 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Aug 2008 14:22:59 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:22235 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20025538AbYH0NW5 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 27 Aug 2008 14:22:57 +0100
-Received: from localhost (p1019-ipad312funabasi.chiba.ocn.ne.jp [123.217.219.19])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 2ACB2BB7B; Wed, 27 Aug 2008 22:22:49 +0900 (JST)
-Date:	Wed, 27 Aug 2008 22:22:51 +0900 (JST)
-Message-Id: <20080827.222251.108121533.anemo@mba.ocn.ne.jp>
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Remove never used pci_probe variable
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20080827091935.GA28714@linux-mips.org>
-References: <20080419.003435.26096353.anemo@mba.ocn.ne.jp>
-	<20080708.011426.08077033.anemo@mba.ocn.ne.jp>
-	<20080827091935.GA28714@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Aug 2008 14:45:59 +0100 (BST)
+Received: from mx1.redhat.com ([66.187.233.31]:5829 "EHLO mx1.redhat.com")
+	by ftp.linux-mips.org with ESMTP id S20025890AbYH0Np5 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 27 Aug 2008 14:45:57 +0100
+Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
+	by mx1.redhat.com (8.13.8/8.13.8) with ESMTP id m7RDjtnl005220;
+	Wed, 27 Aug 2008 09:45:55 -0400
+Received: from pobox.devel.redhat.com (pobox.devel.redhat.com [10.11.255.8])
+	by int-mx1.corp.redhat.com (8.13.1/8.13.1) with ESMTP id m7RDjsmJ002106;
+	Wed, 27 Aug 2008 09:45:54 -0400
+Received: from warthog.cambridge.redhat.com (IDENT:U2FsdGVkX191U4PfgFzyavhbBH9pvVl0XZ5c+rZeX8o@xen4-1.farm.hsv.redhat.com [10.15.4.90])
+	by pobox.devel.redhat.com (8.13.1/8.13.1) with ESMTP id m7RDjrE5021398;
+	Wed, 27 Aug 2008 09:45:53 -0400
+Received: from [127.0.0.1] (helo=warthog.procyon.org.uk)
+	by warthog.cambridge.redhat.com with esmtp (Exim 4.68 #1 (Red Hat Linux))
+	id 1KYLLM-0005F5-Ji; Wed, 27 Aug 2008 14:45:52 +0100
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From:	David Howells <dhowells@redhat.com>
+Subject: [PATCH 02/59] CRED: Wrap task credential accesses in the MIPS arch
+To:	linux-kernel@vger.kernel.org
+Cc:	linux-security-module@vger.kernel.org,
+	David Howells <dhowells@redhat.com>,
+	Serge Hallyn <serue@us.ibm.com>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Date:	Wed, 27 Aug 2008 14:45:52 +0100
+Message-ID: <20080827134552.19980.14045.stgit@warthog.procyon.org.uk>
+In-Reply-To: <20080827134541.19980.61042.stgit@warthog.procyon.org.uk>
+References: <20080827134541.19980.61042.stgit@warthog.procyon.org.uk>
+User-Agent: StGIT/0.14.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+X-Scanned-By: MIMEDefang 2.58 on 172.16.52.254
+Return-Path: <dhowells@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20375
+X-archive-position: 20376
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: dhowells@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 27 Aug 2008 10:19:35 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
-> I think real problem here is that we have two variables which both serve the
-> same purpose, pci_probe_only and pci_probe, no?  Not entirely sure here
-> because the alpha defines:
-> 
-> arch/alpha/include/asm/pci.h:#define pcibios_assign_all_busses()        1
-> 
-> yet it has pci_probe_only ...
+Wrap access to task credentials so that they can be separated more easily from
+the task_struct during the introduction of COW creds.
 
-I'm not sure pci_probe and pci_probe_only have same purpose... My
-patch is just an cleanup and does not change current behaviour.
+Change most current->(|e|s|fs)[ug]id to current_(|e|s|fs)[ug]id().
 
-Real users of pci_probe_only might have some opinions ;)
+Change some task->e?[ug]id to task_e?[ug]id().  In some places it makes more
+sense to use RCU directly rather than a convenient wrapper; these will be
+addressed by later patches.
+
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: James Morris <jmorris@namei.org>
+Acked-by: Serge Hallyn <serue@us.ibm.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
 ---
-Atsushi Nemoto
+
+ arch/mips/kernel/mips-mt-fpaff.c |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+
+diff --git a/arch/mips/kernel/mips-mt-fpaff.c b/arch/mips/kernel/mips-mt-fpaff.c
+index df4d3f2..928c72b 100644
+--- a/arch/mips/kernel/mips-mt-fpaff.c
++++ b/arch/mips/kernel/mips-mt-fpaff.c
+@@ -51,6 +51,7 @@ asmlinkage long mipsmt_sys_sched_setaffinity(pid_t pid, unsigned int len,
+ 	int retval;
+ 	struct task_struct *p;
+ 	struct thread_info *ti;
++	uid_t euid;
+ 
+ 	if (len < sizeof(new_mask))
+ 		return -EINVAL;
+@@ -76,9 +77,9 @@ asmlinkage long mipsmt_sys_sched_setaffinity(pid_t pid, unsigned int len,
+ 	 */
+ 	get_task_struct(p);
+ 
++	euid = current_euid();
+ 	retval = -EPERM;
+-	if ((current->euid != p->euid) && (current->euid != p->uid) &&
+-			!capable(CAP_SYS_NICE)) {
++	if (euid != p->euid && euid != p->uid && !capable(CAP_SYS_NICE)) {
+ 		read_unlock(&tasklist_lock);
+ 		goto out_unlock;
+ 	}

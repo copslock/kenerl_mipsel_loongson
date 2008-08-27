@@ -1,92 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Aug 2008 14:45:59 +0100 (BST)
-Received: from mx1.redhat.com ([66.187.233.31]:5829 "EHLO mx1.redhat.com")
-	by ftp.linux-mips.org with ESMTP id S20025890AbYH0Np5 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 27 Aug 2008 14:45:57 +0100
-Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
-	by mx1.redhat.com (8.13.8/8.13.8) with ESMTP id m7RDjtnl005220;
-	Wed, 27 Aug 2008 09:45:55 -0400
-Received: from pobox.devel.redhat.com (pobox.devel.redhat.com [10.11.255.8])
-	by int-mx1.corp.redhat.com (8.13.1/8.13.1) with ESMTP id m7RDjsmJ002106;
-	Wed, 27 Aug 2008 09:45:54 -0400
-Received: from warthog.cambridge.redhat.com (IDENT:U2FsdGVkX191U4PfgFzyavhbBH9pvVl0XZ5c+rZeX8o@xen4-1.farm.hsv.redhat.com [10.15.4.90])
-	by pobox.devel.redhat.com (8.13.1/8.13.1) with ESMTP id m7RDjrE5021398;
-	Wed, 27 Aug 2008 09:45:53 -0400
-Received: from [127.0.0.1] (helo=warthog.procyon.org.uk)
-	by warthog.cambridge.redhat.com with esmtp (Exim 4.68 #1 (Red Hat Linux))
-	id 1KYLLM-0005F5-Ji; Wed, 27 Aug 2008 14:45:52 +0100
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From:	David Howells <dhowells@redhat.com>
-Subject: [PATCH 02/59] CRED: Wrap task credential accesses in the MIPS arch
-To:	linux-kernel@vger.kernel.org
-Cc:	linux-security-module@vger.kernel.org,
-	David Howells <dhowells@redhat.com>,
-	Serge Hallyn <serue@us.ibm.com>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Date:	Wed, 27 Aug 2008 14:45:52 +0100
-Message-ID: <20080827134552.19980.14045.stgit@warthog.procyon.org.uk>
-In-Reply-To: <20080827134541.19980.61042.stgit@warthog.procyon.org.uk>
-References: <20080827134541.19980.61042.stgit@warthog.procyon.org.uk>
-User-Agent: StGIT/0.14.3
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 Aug 2008 15:07:00 +0100 (BST)
+Received: from accolon.hansenpartnership.com ([76.243.235.52]:45025 "EHLO
+	accolon.hansenpartnership.com") by ftp.linux-mips.org with ESMTP
+	id S20025916AbYH0OG5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 27 Aug 2008 15:06:57 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by accolon.hansenpartnership.com (Postfix) with ESMTP id 9B4BC8045;
+	Wed, 27 Aug 2008 09:06:49 -0500 (CDT)
+Received: from accolon.hansenpartnership.com ([127.0.0.1])
+	by localhost (redscar.int.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id yLu-8aRmbnG5; Wed, 27 Aug 2008 09:06:48 -0500 (CDT)
+Received: from [153.66.150.222] (mulgrave-w.int.hansenpartnership.com [153.66.150.222])
+	by accolon.hansenpartnership.com (Postfix) with ESMTP id CA2E68037;
+	Wed, 27 Aug 2008 09:06:47 -0500 (CDT)
+Subject: Re: [PATCH] mips: Add dma_mmap_coherent()
+From:	James Bottomley <James.Bottomley@HansenPartnership.com>
+To:	Takashi Iwai <tiwai@suse.de>
+Cc:	Grant Grundler <grundler@parisc-linux.org>,
+	Joel Soete <soete.joel@scarlet.be>,
+	linux-mips <linux-mips@linux-mips.org>,
+	ralf <ralf@linux-mips.org>,
+	linux-parisc <linux-parisc@vger.kernel.org>
+In-Reply-To: <s5h4p57hv4h.wl%tiwai@suse.de>
+References: <K6047O$07C3A675C0E02FC7BE973C0D5DEF9AAA@scarlet.be>
+	 <s5hy72pmefh.wl%tiwai@suse.de> <48B0678E.9010208@scarlet.be>
+	 <s5hej4blrx7.wl%tiwai@suse.de> <20080826210118.GA26235@colo.lackof.org>
+	 <s5h4p57hv4h.wl%tiwai@suse.de>
+Content-Type: text/plain
+Date:	Wed, 27 Aug 2008 09:06:46 -0500
+Message-Id: <1219846006.3292.3.camel@localhost.localdomain>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.22.3.1 (2.22.3.1-1.fc9) 
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.58 on 172.16.52.254
-Return-Path: <dhowells@redhat.com>
+Return-Path: <James.Bottomley@HansenPartnership.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20376
+X-archive-position: 20377
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dhowells@redhat.com
+X-original-sender: James.Bottomley@HansenPartnership.com
 Precedence: bulk
 X-list: linux-mips
 
-Wrap access to task credentials so that they can be separated more easily from
-the task_struct during the introduction of COW creds.
+On Wed, 2008-08-27 at 07:42 +0200, Takashi Iwai wrote:
+> At Tue, 26 Aug 2008 15:01:18 -0600,
+> Grant Grundler wrote:
+> > 
+> > On Tue, Aug 26, 2008 at 05:25:24PM +0200, Takashi Iwai wrote:
+> > ...
+> > > Now updated my git tree:
+> > >     http://git.kernel.org/?p=linux/kernel/git/tiwai/sound-2.6.git;a=shortlog;h=topic/dma-fix
+> > > I'll post each patch again if preferred.
+> > 
+> > +#ifdef CONFIG_SND_COHERENT_DMA
+> >  #define SNDRV_DMA_TYPE_DEV_SG          3       /* generic device SG-buffer */
+> > +#else
+> > +#define SNDRV_DMA_TYPE_DEV_SG  SNDRV_DMA_TYPE_DEV /* no SG-buf support */
+> > +#endif
+> > 
+> > Hi Takashi,
+> > I had to look at a previous patch to figure out CONFIG_SND_COHERENT_DMA
+> > is an arch dependent flag:
+> > 
+> > +config SND_COHERENT_DMA
+> > +       def_bool y
+> > +       depends on !PPC32 || !NOT_COHERENT_CACHE
+> > +       depends on !ARM
+> > +       depends on !MIPS
+> > +       depends on !PARISC
+> > 
+> > In general, I don't expect this to be a compile time option.
+> 
+> Right now it has to be a compile-time option because
+> - dma_mmap_coherent() isn't implemented in every architecture (thus
+>   fails to build), and 
+> - pages allocated via dma_mmap_coherent() aren't always suitable for
+>   SG-mapping.
 
-Change most current->(|e|s|fs)[ug]id to current_(|e|s|fs)[ug]id().
+This is trivially fixable by the usual methods, so, as Grant says, we
+should employ them rather than non-standard ways of doing this
 
-Change some task->e?[ug]id to task_e?[ug]id().  In some places it makes more
-sense to use RCU directly rather than a convenient wrapper; these will be
-addressed by later patches.
+Basically, you're asking to extend the DMA API, so this should be taken
+to linux-arch.  That way, it might also give visibility to the graphics
+people and we can negotiate over a unified API.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: James Morris <jmorris@namei.org>
-Acked-by: Serge Hallyn <serue@us.ibm.com>
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
----
-
- arch/mips/kernel/mips-mt-fpaff.c |    5 +++--
- 1 files changed, 3 insertions(+), 2 deletions(-)
-
-
-diff --git a/arch/mips/kernel/mips-mt-fpaff.c b/arch/mips/kernel/mips-mt-fpaff.c
-index df4d3f2..928c72b 100644
---- a/arch/mips/kernel/mips-mt-fpaff.c
-+++ b/arch/mips/kernel/mips-mt-fpaff.c
-@@ -51,6 +51,7 @@ asmlinkage long mipsmt_sys_sched_setaffinity(pid_t pid, unsigned int len,
- 	int retval;
- 	struct task_struct *p;
- 	struct thread_info *ti;
-+	uid_t euid;
- 
- 	if (len < sizeof(new_mask))
- 		return -EINVAL;
-@@ -76,9 +77,9 @@ asmlinkage long mipsmt_sys_sched_setaffinity(pid_t pid, unsigned int len,
- 	 */
- 	get_task_struct(p);
- 
-+	euid = current_euid();
- 	retval = -EPERM;
--	if ((current->euid != p->euid) && (current->euid != p->uid) &&
--			!capable(CAP_SYS_NICE)) {
-+	if (euid != p->euid && euid != p->uid && !capable(CAP_SYS_NICE)) {
- 		read_unlock(&tasklist_lock);
- 		goto out_unlock;
- 	}
+James

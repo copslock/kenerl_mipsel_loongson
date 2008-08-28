@@ -1,35 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Aug 2008 22:38:54 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.134]:1202 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Aug 2008 22:45:19 +0100 (BST)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.134]:50366 "EHLO
 	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S28575103AbYH1Viu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 28 Aug 2008 22:38:50 +0100
+	id S28575144AbYH1VpR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 28 Aug 2008 22:45:17 +0100
 Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id D7B9A320C3B;
-	Thu, 28 Aug 2008 21:38:54 +0000 (UTC)
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 60028320CAD;
+	Thu, 28 Aug 2008 21:45:22 +0000 (UTC)
 X-Authenticated-Name: js.dnsmadeeasy
 X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
 Received: from avtrex.com (unknown [173.8.135.205])
 	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Thu, 28 Aug 2008 21:38:54 +0000 (UTC)
+	Thu, 28 Aug 2008 21:45:22 +0000 (UTC)
 Received: from silver64.hq2.avtrex.com ([192.168.7.14]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Thu, 28 Aug 2008 14:38:38 -0700
-Message-ID: <48B71ADD.601@avtrex.com>
-Date:	Thu, 28 Aug 2008 14:38:37 -0700
+	 Thu, 28 Aug 2008 14:45:05 -0700
+Message-ID: <48B71C61.3020004@avtrex.com>
+Date:	Thu, 28 Aug 2008 14:45:05 -0700
 From:	David Daney <ddaney@avtrex.com>
 User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
 MIME-Version: 1.0
 To:	linux-mips@linux-mips.org
 Cc:	linux-kernel@vger.kernel.org
-Subject: [Patch 0/6] MIPS: Hardware watch register support for gdb (version
- 3).
+Subject: Patch [1/6] MIPS: Add HARDWARE_WATCHPOINTS configure option.
+References: <48B71ADD.601@avtrex.com>
+In-Reply-To: <48B71ADD.601@avtrex.com>
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 28 Aug 2008 21:38:38.0209 (UTC) FILETIME=[6E79E710:01C90956]
+X-OriginalArrivalTime: 28 Aug 2008 21:45:05.0707 (UTC) FILETIME=[557167B0:01C90957]
 Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20379
+X-archive-position: 20380
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,38 +38,31 @@ X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-Esteemed kernel hackers,
 
-To follow is my third pass at MIPS watch register support.
+This is automatically set for all MIPS32 and MIPS64 processors.
 
-This version has been tested on:
+Signed-off-by: David Daney <ddaney@avtrex.com>
+---
+ arch/mips/Kconfig |    7 +++++++
+ 1 files changed, 7 insertions(+), 0 deletions(-)
 
-* MIPS 4KEc (mips32) with a single set of watch registers watchhi not
-  reporting I, R, and W conditions.
-
-* MIPS 4KEc (mips32r2) with four sets of watch registers.
-
-* R5000 SGI O2 (mips4 64bit) with no watch register support.
-
-The patches are against 2.6.27-rc4
-
-
-Changes from the previous version:
-
-* Agreement from gdb maintainers that the ptrace interface is
-  workable.
-
-* Work around for watchhi registers that do not report the I, R, and W
-  condition bits.
-
-* General cleanup, including making much less code conditionally
-  compiled.
-
-To really test the patch you will need a patched gdb.  My current gdb
-patch is here:
-
-http://sourceware.org/ml/gdb-patches/2008-08/msg00650.html
-
-If you have any comments or questions please let me know.
-
-David Daney
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 4da736e..f5b3fca 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1272,6 +1272,13 @@ config CPU_SUPPORTS_32BIT_KERNEL
+ config CPU_SUPPORTS_64BIT_KERNEL
+ 	bool
+ 
++#
++# Set to y for ptrace access to watch registers.
++#
++config HARDWARE_WATCHPOINTS
++       bool
++       default y if CPU_MIPS32 || CPU_MIPS64
++
+ menu "Kernel type"
+ 
+ choice
+-- 
+1.5.5.1

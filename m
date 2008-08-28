@@ -1,72 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Aug 2008 23:12:07 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.134]:20102 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S28575175AbYH1WMF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 28 Aug 2008 23:12:05 +0100
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 7D367320CA5;
-	Thu, 28 Aug 2008 22:12:15 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [67.116.42.147])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Thu, 28 Aug 2008 22:12:15 +0000 (UTC)
-Received: from silver64.hq2.avtrex.com ([192.168.7.14]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Thu, 28 Aug 2008 15:11:58 -0700
-Message-ID: <48B722AD.3000703@avtrex.com>
-Date:	Thu, 28 Aug 2008 15:11:57 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Aug 2008 23:12:27 +0100 (BST)
+Received: from kuber.nabble.com ([216.139.236.158]:23463 "EHLO
+	kuber.nabble.com") by ftp.linux-mips.org with ESMTP
+	id S28575180AbYH1WMV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 28 Aug 2008 23:12:21 +0100
+Received: from isper.nabble.com ([192.168.236.156])
+	by kuber.nabble.com with esmtp (Exim 4.63)
+	(envelope-from <lists@nabble.com>)
+	id 1KYpj1-0001E7-Tm
+	for linux-mips@linux-mips.org; Thu, 28 Aug 2008 15:12:19 -0700
+Message-ID: <19210221.post@talk.nabble.com>
+Date:	Thu, 28 Aug 2008 15:12:19 -0700 (PDT)
+From:	zhanglei459 <zhanglei459@gmail.com>
 To:	linux-mips@linux-mips.org
-Cc:	linux-kernel@vger.kernel.org
-Subject: [Patch 5/6] MIPS: Scheduler support for HARDWARE_WATCHPOINTS.
-References: <48B71ADD.601@avtrex.com>
-In-Reply-To: <48B71ADD.601@avtrex.com>
-Content-Type: text/plain; charset=ISO-8859-1
+Subject: Hope help for Baget/MIPS series
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 28 Aug 2008 22:11:58.0461 (UTC) FILETIME=[16B822D0:01C9095B]
-Return-Path: <ddaney@avtrex.com>
+X-Nabble-From: zhanglei459@gmail.com
+Return-Path: <lists@nabble.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20384
+X-archive-position: 20385
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: zhanglei459@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
 
-Here we hook up the scheduler.  Whenever we switch to a new process,
-we check to see if the watch registers should be installed, and do it
-if needed.
+Hi all:
+    Now I will develop something on BT23-202 board.But I have little
+material about
+this board.So can anyone give me some advice or information about BT23-202
+board?
+    And whether boot loader between 201 and 202 board are same?
+what's name of this boot loader?
+    Below information is got from 202 board:
+------------------------------------------------------------------
 
-Signed-off-by: David Daney <ddaney@avtrex.com>
----
- include/asm-mips/system.h |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+P0>     System loader   (0.96.20)     (size 2.0M (0x200000))
 
-diff --git a/include/asm-mips/system.h b/include/asm-mips/system.h
-index a944eda..cd30f83 100644
---- a/include/asm-mips/system.h
-+++ b/include/asm-mips/system.h
-@@ -20,6 +20,7 @@
- #include <asm/cmpxchg.h>
- #include <asm/cpu-features.h>
- #include <asm/dsp.h>
-+#include <asm/watch.h>
- #include <asm/war.h>
- 
- 
-@@ -76,6 +77,7 @@ do {									\
- 		__restore_dsp(current);					\
- 	if (cpu_has_userlocal)						\
- 		write_c0_userlocal(current_thread_info()->tp_value);	\
-+	__restore_watch();						\
- } while (0)
- 
- static inline unsigned long __xchg_u32(volatile int * m, unsigned int val)
+------------------------------------------------------------------
+
+Press 'Enter' to stop auto-boot ...
+
+-> ?
+
+General help info
+
+Type ? with the following categories
+
+       info       Information functions
+
+       dbg        Standalone debugging functions
+
+       net        Network information functions
+
+       loader     Loader functions
+
+
+Hope any advice,thank you very much!
+
+                                                  zhanglei
 -- 
-1.5.5.1
+View this message in context: http://www.nabble.com/Hope-help-for-Baget-MIPS-series-tp19210221p19210221.html
+Sent from the linux-mips main mailing list archive at Nabble.com.

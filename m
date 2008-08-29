@@ -1,251 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 Aug 2008 23:25:58 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.134]:42140 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20030332AbYH1WZz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 28 Aug 2008 23:25:55 +0100
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 0AC66320C4C;
-	Thu, 28 Aug 2008 22:26:06 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [173.8.135.205])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Thu, 28 Aug 2008 22:26:05 +0000 (UTC)
-Received: from silver64.hq2.avtrex.com ([192.168.7.14]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Thu, 28 Aug 2008 15:25:48 -0700
-Message-ID: <48B725EC.4090206@avtrex.com>
-Date:	Thu, 28 Aug 2008 15:25:48 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 Aug 2008 10:16:34 +0100 (BST)
+Received: from mgw1.diku.dk ([130.225.96.91]:149 "EHLO mgw1.diku.dk")
+	by ftp.linux-mips.org with ESMTP id S20026997AbYH2JQc (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 29 Aug 2008 10:16:32 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by mgw1.diku.dk (Postfix) with ESMTP id 7BD7552C324;
+	Fri, 29 Aug 2008 11:16:30 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at diku.dk
+Received: from mgw1.diku.dk ([127.0.0.1])
+	by localhost (mgw1.diku.dk [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 2g7FE9JnUioA; Fri, 29 Aug 2008 11:16:29 +0200 (CEST)
+Received: from nhugin.diku.dk (nhugin.diku.dk [130.225.96.140])
+	by mgw1.diku.dk (Postfix) with ESMTP id 26E3652C309;
+	Fri, 29 Aug 2008 11:16:29 +0200 (CEST)
+Received: from imap.diku.dk (imap.diku.dk [130.225.96.139])
+	by nhugin.diku.dk (Postfix) with ESMTP
+	id C625B6DF893; Fri, 29 Aug 2008 11:13:41 +0200 (CEST)
+Received: from mobil-140.diku.dk (fw-mobil.diku.dk [130.225.96.28])
+	by imap.diku.dk (Postfix) with ESMTP id 0A96161DCD;
+	Fri, 29 Aug 2008 11:16:29 +0200 (CEST)
+From:	Julien Brunel <brunel@diku.dk>
+To:	dedekind@infradead.org, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] fs/ubifs: Use an IS_ERR test rather than a NULL test
+Date:	Fri, 29 Aug 2008 11:08:32 +0200
+User-Agent: KMail/1.9.9
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Cc:	linux-kernel@vger.kernel.org
-Subject: [Patch 6/6] MIPS: Ptrace support for HARDWARE_WATCHPOINTS
-References: <48B71ADD.601@avtrex.com>
-In-Reply-To: <48B71ADD.601@avtrex.com>
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain;
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 28 Aug 2008 22:25:48.0815 (UTC) FILETIME=[05A619F0:01C9095D]
-Return-Path: <ddaney@avtrex.com>
+Content-Disposition: inline
+Message-Id: <200808291108.32958.brunel@diku.dk>
+Return-Path: <brunel@diku.dk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20386
+X-archive-position: 20387
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: brunel@diku.dk
 Precedence: bulk
 X-list: linux-mips
 
+From: Julien Brunel <brunel@diku.dk>
 
-This is the final part of the watch register patch.  Here we hook up
-ptrace so that the user space debugger (gdb), can set and read the
-registers.
+In case of error, the function kthread_create returns an ERR pointer,
+but never returns a NULL pointer. So a NULL test that comes before an
+IS_ERR test should be deleted.
 
-Signed-off-by: David Daney <ddaney@avtrex.com>
+The semantic match that finds this problem is as follows:
+(http://www.emn.fr/x-info/coccinelle/)
+
+// <smpl>
+@match_bad_null_test@
+expression x, E;
+statement S1,S2;
+@@
+x = kthread_create(...)
+... when != x = E
+* if (x == NULL) 
+S1 else S2
+// </smpl>
+
+Signed-off-by:  Julien Brunel <brunel@diku.dk>
+Signed-off-by:  Julia Lawall <julia@diku.dk>
+
 ---
- arch/mips/kernel/ptrace.c   |   97 ++++++++++++++++++++++++++++++++++++++++++-
- arch/mips/kernel/ptrace32.c |   15 +++++++
- include/asm-mips/ptrace.h   |   31 ++++++++++++++
- 3 files changed, 142 insertions(+), 1 deletions(-)
+ fs/ubifs/super.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
-index 35234b9..d12f2d4 100644
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -46,7 +46,8 @@
-  */
- void ptrace_disable(struct task_struct *child)
- {
--	/* Nothing to do.. */
-+	/* Don't load the watchpoint registers for the ex-child. */
-+	clear_tsk_thread_flag(child, TIF_LOAD_WATCH);
- }
+diff -u -p a/fs/ubifs/super.c b/fs/ubifs/super.c
+--- a/fs/ubifs/super.c
++++ b/fs/ubifs/super.c
+@@ -1027,8 +1027,6 @@ static int mount_ubifs(struct ubifs_info
+ 		sprintf(c->bgt_name, BGT_NAME_PATTERN, c->vi.ubi_num,
+ 			c->vi.vol_id);
+ 		c->bgt = kthread_create(ubifs_bg_thread, c, c->bgt_name);
+-		if (!c->bgt)
+-			c->bgt = ERR_PTR(-EINVAL);
+ 		if (IS_ERR(c->bgt)) {
+ 			err = PTR_ERR(c->bgt);
+ 			c->bgt = NULL;
+@@ -1340,8 +1338,6 @@ static int ubifs_remount_rw(struct ubifs
  
- /*
-@@ -167,6 +168,90 @@ int ptrace_setfpregs(struct task_struct *child, __u32 __user *data)
- 	return 0;
- }
- 
-+int ptrace_get_watch_regs(struct task_struct *child,
-+			  struct pt_watch_regs __user *addr)
-+{
-+	enum pt_watch_style style;
-+	int i;
-+
-+	if (!cpu_has_watch || current_cpu_data.watch_reg_use_cnt == 0)
-+		return -EIO;
-+	if (!access_ok(VERIFY_WRITE, addr, sizeof(struct pt_watch_regs)))
-+		return -EIO;
-+
-+#ifdef CONFIG_32BIT
-+	style = pt_watch_style_mips32;
-+#define WATCH_STYLE mips32
-+#else
-+	style = pt_watch_style_mips64;
-+#define WATCH_STYLE mips64
-+#endif
-+
-+	__put_user(style, &addr->style);
-+	__put_user(current_cpu_data.watch_reg_use_cnt,
-+		   &addr->WATCH_STYLE.num_valid);
-+	__put_user(current_cpu_data.watch_reg_mask,
-+		   &addr->WATCH_STYLE.reg_mask);
-+	__put_user(current_cpu_data.watch_reg_irw,
-+		   &addr->WATCH_STYLE.irw_mask);
-+	for (i = 0; i < current_cpu_data.watch_reg_use_cnt; i++) {
-+		__put_user(child->thread.watch.mips3264.watchlo[i],
-+			   &addr->WATCH_STYLE.watchlo[i]);
-+		__put_user(child->thread.watch.mips3264.watchhi[i] & 0xfff,
-+			   &addr->WATCH_STYLE.watchhi[i]);
-+	}
-+
-+	return 0;
-+}
-+
-+int ptrace_set_watch_regs(struct task_struct *child,
-+			  struct pt_watch_regs __user *addr)
-+{
-+	int i;
-+	int watch_active = 0;
-+	unsigned long lt[NUM_WATCH_REGS];
-+	unsigned int ht[NUM_WATCH_REGS];
-+
-+	if (!cpu_has_watch || current_cpu_data.watch_reg_use_cnt == 0)
-+		return -EIO;
-+	if (!access_ok(VERIFY_READ, addr, sizeof(struct pt_watch_regs)))
-+		return -EIO;
-+	/* Check the values. */
-+	for (i = 0; i < NUM_WATCH_REGS; i++) {
-+		__get_user(lt[i], &addr->WATCH_STYLE.watchlo[i]);
-+#ifdef CONFIG_32BIT
-+		if (lt[i] & __UA_LIMIT)
-+			return -EINVAL;
-+#else
-+		if (test_tsk_thread_flag(child, TIF_32BIT_ADDR)) {
-+			if (lt[i] & 0xffffffff80000000UL)
-+				return -EINVAL;
-+		} else {
-+			if (lt[i] & __UA_LIMIT)
-+				return -EINVAL;
-+		}
-+#endif
-+		__get_user(ht[i], &addr->WATCH_STYLE.watchhi[i]);
-+		if (ht[i] & ~0xff8)
-+			return -EINVAL;
-+	}
-+	/* Install them. */
-+	for (i = 0; i < NUM_WATCH_REGS; i++) {
-+		if ((lt[i] & 7) && i < current_cpu_data.watch_reg_use_cnt)
-+			watch_active = 1;
-+		child->thread.watch.mips3264.watchlo[i] = lt[i];
-+		/* Set the G bit. */
-+		child->thread.watch.mips3264.watchhi[i] = ht[i] | 0x40000000;
-+	}
-+
-+	if (watch_active)
-+		set_tsk_thread_flag(child, TIF_LOAD_WATCH);
-+	else
-+		clear_tsk_thread_flag(child, TIF_LOAD_WATCH);
-+
-+	return 0;
-+}
-+
- long arch_ptrace(struct task_struct *child, long request, long addr, long data)
- {
- 	int ret;
-@@ -440,6 +525,16 @@ long arch_ptrace(struct task_struct *child, long request, long addr, long data)
- 				(unsigned long __user *) data);
- 		break;
- 
-+	case PTRACE_GET_WATCH_REGS:
-+		ret = ptrace_get_watch_regs(child,
-+					(struct pt_watch_regs __user *) addr);
-+		break;
-+
-+	case PTRACE_SET_WATCH_REGS:
-+		ret = ptrace_set_watch_regs(child,
-+					(struct pt_watch_regs __user *) addr);
-+		break;
-+
- 	default:
- 		ret = ptrace_request(child, request, addr, data);
- 		break;
-diff --git a/arch/mips/kernel/ptrace32.c b/arch/mips/kernel/ptrace32.c
-index 76818be..3e219de 100644
---- a/arch/mips/kernel/ptrace32.c
-+++ b/arch/mips/kernel/ptrace32.c
-@@ -42,6 +42,11 @@ int ptrace_setregs(struct task_struct *child, __s64 __user *data);
- int ptrace_getfpregs(struct task_struct *child, __u32 __user *data);
- int ptrace_setfpregs(struct task_struct *child, __u32 __user *data);
- 
-+int ptrace_get_watch_regs(struct task_struct *child,
-+			  struct pt_watch_regs __user *addr);
-+int ptrace_set_watch_regs(struct task_struct *child,
-+			  struct pt_watch_regs __user *addr);
-+
- /*
-  * Tracing a 32-bit process with a 64-bit strace and vice versa will not
-  * work.  I don't know how to fix this.
-@@ -410,6 +415,16 @@ asmlinkage int sys32_ptrace(int request, int pid, int addr, int data)
- 				(unsigned long __user *) (unsigned long) data);
- 		break;
- 
-+	case PTRACE_GET_WATCH_REGS:
-+		ret = ptrace_get_watch_regs(child,
-+			(struct pt_watch_regs __user *) (unsigned long) addr);
-+		break;
-+
-+	case PTRACE_SET_WATCH_REGS:
-+		ret = ptrace_set_watch_regs(child,
-+			(struct pt_watch_regs __user *) (unsigned long) addr);
-+		break;
-+
- 	default:
- 		ret = ptrace_request(child, request, addr, data);
- 		break;
-diff --git a/include/asm-mips/ptrace.h b/include/asm-mips/ptrace.h
-index 786f7e3..d8d821d 100644
---- a/include/asm-mips/ptrace.h
-+++ b/include/asm-mips/ptrace.h
-@@ -71,6 +71,37 @@ struct pt_regs {
- #define PTRACE_POKEDATA_3264	0xc3
- #define PTRACE_GET_THREAD_AREA_3264	0xc4
- 
-+/* Read and write watchpoint registers.  */
-+enum pt_watch_style {
-+	pt_watch_style_mips32,
-+	pt_watch_style_mips64
-+};
-+struct mips32_watch_regs {
-+	uint32_t watchlo[8];
-+	uint32_t watchhi[8];
-+	uint32_t num_valid;
-+	uint32_t reg_mask;
-+	uint32_t irw_mask;
-+};
-+struct mips64_watch_regs {
-+	uint64_t watchlo[8];
-+	uint32_t watchhi[8];
-+	uint32_t num_valid;
-+	uint32_t reg_mask;
-+	uint32_t irw_mask;
-+};
-+
-+struct pt_watch_regs {
-+	enum pt_watch_style style;
-+	union {
-+		struct mips32_watch_regs mips32;
-+		struct mips32_watch_regs mips64;
-+	};
-+};
-+
-+#define PTRACE_GET_WATCH_REGS	0xd0
-+#define PTRACE_SET_WATCH_REGS	0xd1
-+
- #ifdef __KERNEL__
- 
- #include <linux/linkage.h>
--- 
-1.5.5.1
+ 	/* Create background thread */
+ 	c->bgt = kthread_create(ubifs_bg_thread, c, c->bgt_name);
+-	if (!c->bgt)
+-		c->bgt = ERR_PTR(-EINVAL);
+ 	if (IS_ERR(c->bgt)) {
+ 		err = PTR_ERR(c->bgt);
+ 		c->bgt = NULL;

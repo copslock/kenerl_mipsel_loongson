@@ -1,62 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 30 Aug 2008 09:37:21 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.134]:49359 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20023910AbYH3IhT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 30 Aug 2008 09:37:19 +0100
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 1872E32083F;
-	Sat, 30 Aug 2008 08:37:12 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [173.8.135.205])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Sat, 30 Aug 2008 08:37:11 +0000 (UTC)
-Received: from silver64.hq2.avtrex.com ([192.168.7.229]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Sat, 30 Aug 2008 01:37:06 -0700
-Message-ID: <48B906B1.3030708@avtrex.com>
-Date:	Sat, 30 Aug 2008 01:37:05 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Aug 2008 17:10:01 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:7603 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20033258AbYHaQJ7 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 31 Aug 2008 17:09:59 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1KZpUz-000467-00; Sun, 31 Aug 2008 18:09:57 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 183A2DE3B2; Sun, 31 Aug 2008 18:09:54 +0200 (CEST)
+From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH] IP22: Fix handling of memory for I2 with more than 256MB
 To:	linux-mips@linux-mips.org
-Cc:	linux-kernel@vger.kernel.org
-Subject: Re: [Patch 0/6] MIPS: Hardware watch register support for gdb (version
- 3).
-References: <48B71ADD.601@avtrex.com>
-In-Reply-To: <48B71ADD.601@avtrex.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 30 Aug 2008 08:37:06.0169 (UTC) FILETIME=[9577EE90:01C90A7B]
-Return-Path: <ddaney@avtrex.com>
+cc:	ralf@linux-mips.org
+Message-Id: <20080831160954.183A2DE3B2@solo.franken.de>
+Date:	Sun, 31 Aug 2008 18:09:54 +0200 (CEST)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20389
+X-archive-position: 20390
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-David Daney wrote:
-> Esteemed kernel hackers,
-> 
-> To follow is my third pass at MIPS watch register support.
-> 
+Indigo2 machines support up to 384MB of memory, but the memory layout
+for IP22 didn't support that and caused a lockup during kernel
+startup. IP22 uses now the default 64bit space setup like most of
+the other machines.
 
-I think there will have to be at least one more pass at this.
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+---
 
-The current design assumes that all debug registers support an identical
-set of the I, R, and W bits and Mask.
+ include/asm-mips/mach-ip22/spaces.h |   27 ---------------------------
+ 2 files changed, 0 insertions(+), 45 deletions(-)
 
-However sections 8.23 and 8.24 of my
-
-  MIPS32® Architecture For Programmers
-Volume III: The MIPS32® Privileged Resource Architecture
-
-indicate that they do not have to uniform.  I will have to augment the
-ptrace structures to report the values for each register instead of a
-single global value.
-
-David Daney
+diff --git a/include/asm-mips/mach-ip22/spaces.h b/include/asm-mips/mach-ip22/spaces.h
+deleted file mode 100644
+index 7f9fa6f..0000000
+--- a/include/asm-mips/mach-ip22/spaces.h
++++ /dev/null
+@@ -1,27 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 1994 - 1999, 2000, 03, 04 Ralf Baechle
+- * Copyright (C) 2000, 2002  Maciej W. Rozycki
+- * Copyright (C) 1990, 1999, 2000 Silicon Graphics, Inc.
+- */
+-#ifndef _ASM_MACH_IP22_SPACES_H
+-#define _ASM_MACH_IP22_SPACES_H
+-
+-
+-#ifdef CONFIG_64BIT
+-
+-#define PAGE_OFFSET		0xffffffff80000000UL
+-
+-#define CAC_BASE		0xffffffff80000000
+-#define IO_BASE			0xffffffffa0000000
+-#define UNCAC_BASE		0xffffffffa0000000
+-#define MAP_BASE		0xc000000000000000
+-
+-#endif /* CONFIG_64BIT */
+-
+-#include <asm/mach-generic/spaces.h>
+-
+-#endif /* __ASM_MACH_IP22_SPACES_H */

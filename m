@@ -1,47 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 Aug 2008 17:43:11 +0100 (BST)
-Received: from elvis.franken.de ([193.175.24.41]:45236 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S20033539AbYHaQnH (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 31 Aug 2008 17:43:07 +0100
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1KZq14-0001X5-00; Sun, 31 Aug 2008 18:43:06 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id 3D53BDE3B2; Sun, 31 Aug 2008 18:42:44 +0200 (CEST)
-Date:	Sun, 31 Aug 2008 18:42:44 +0200
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Sep 2008 13:33:07 +0100 (BST)
+Received: from ey-out-1920.google.com ([74.125.78.148]:39471 "EHLO
+	ey-out-1920.google.com") by ftp.linux-mips.org with ESMTP
+	id S20031078AbYIAMdF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 1 Sep 2008 13:33:05 +0100
+Received: by ey-out-1920.google.com with SMTP id 4so934844eyg.54
+        for <linux-mips@linux-mips.org>; Mon, 01 Sep 2008 05:33:04 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to
+         :subject:mime-version:content-type;
+        bh=7bGjR++dotgRE2mEqPqcS4KZ8IhwtZEMCtVUMQG4Cxk=;
+        b=MWDK5WPrvHTR58uxbkDZMOahzSC/rjJZxzqIG4BStqssGRg87MMp5IiCIan+EBcy8R
+         5TVNYuAKIC9UVbJTH8B+X6Oizav3RpTkYEzsJ6bU8Y7pI9SrIfnlErt7kprPAXn2x9e0
+         PEJS0MNNVOztYZG6VJEEJlFzZig+QsPnxus1U=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:mime-version:content-type;
+        b=u0s8whtQyYFARRl2ByWvffiLOZNjDtDW+n1+dyJ3Gt15iMa4taUpzRtsqC23dwGb9l
+         kHwn+//IBItp22Y5i8YE88fSDLaMBC6oKHq4VRypnQWBS4ijxjt8ZkSnrGClu4yxoEta
+         ndCMjT/Fn2RHq4MvVQ5MVyOVyv4hNkjL793JQ=
+Received: by 10.210.12.18 with SMTP id 18mr6452234ebl.104.1220272384390;
+        Mon, 01 Sep 2008 05:33:04 -0700 (PDT)
+Received: by 10.210.112.16 with HTTP; Mon, 1 Sep 2008 05:33:04 -0700 (PDT)
+Message-ID: <d712430f0809010533p251bbdaby57b1020f58f99053@mail.gmail.com>
+Date:	Mon, 1 Sep 2008 18:03:04 +0530
+From:	"amit singh" <amit10ks@gmail.com>
 To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: Re: [PATCH] IP22: Fix handling of memory for I2 with more than 256MB
-Message-ID: <20080831164244.GA15427@alpha.franken.de>
-References: <20080831160954.183A2DE3B2@solo.franken.de>
+Subject: need to join developer group
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080831160954.183A2DE3B2@solo.franken.de>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_40721_6517846.1220272384376"
+Return-Path: <amit10ks@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20393
+X-archive-position: 20394
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: amit10ks@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Aug 31, 2008 at 06:09:54PM +0200, Thomas Bogendoerfer wrote:
-> Indigo2 machines support up to 384MB of memory, but the memory layout
-> for IP22 didn't support that and caused a lockup during kernel
-> startup. IP22 uses now the default 64bit space setup like most of
-> the other machines.
+------=_Part_40721_6517846.1220272384376
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-forget that patch. It looks like not all machines are happy with this.
-I suspect a problem with some PROMs, but need to investigate further.
+hi need to join developer group
+.amit kr singh
+noida
 
-Thomas.
+------=_Part_40721_6517846.1220272384376
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+<div dir="ltr">hi need to join developer group <br>.amit kr singh<br>noida<br><br></div>
+
+------=_Part_40721_6517846.1220272384376--

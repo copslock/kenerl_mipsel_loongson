@@ -1,61 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Sep 2008 13:33:07 +0100 (BST)
-Received: from ey-out-1920.google.com ([74.125.78.148]:39471 "EHLO
-	ey-out-1920.google.com") by ftp.linux-mips.org with ESMTP
-	id S20031078AbYIAMdF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 1 Sep 2008 13:33:05 +0100
-Received: by ey-out-1920.google.com with SMTP id 4so934844eyg.54
-        for <linux-mips@linux-mips.org>; Mon, 01 Sep 2008 05:33:04 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to
-         :subject:mime-version:content-type;
-        bh=7bGjR++dotgRE2mEqPqcS4KZ8IhwtZEMCtVUMQG4Cxk=;
-        b=MWDK5WPrvHTR58uxbkDZMOahzSC/rjJZxzqIG4BStqssGRg87MMp5IiCIan+EBcy8R
-         5TVNYuAKIC9UVbJTH8B+X6Oizav3RpTkYEzsJ6bU8Y7pI9SrIfnlErt7kprPAXn2x9e0
-         PEJS0MNNVOztYZG6VJEEJlFzZig+QsPnxus1U=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:mime-version:content-type;
-        b=u0s8whtQyYFARRl2ByWvffiLOZNjDtDW+n1+dyJ3Gt15iMa4taUpzRtsqC23dwGb9l
-         kHwn+//IBItp22Y5i8YE88fSDLaMBC6oKHq4VRypnQWBS4ijxjt8ZkSnrGClu4yxoEta
-         ndCMjT/Fn2RHq4MvVQ5MVyOVyv4hNkjL793JQ=
-Received: by 10.210.12.18 with SMTP id 18mr6452234ebl.104.1220272384390;
-        Mon, 01 Sep 2008 05:33:04 -0700 (PDT)
-Received: by 10.210.112.16 with HTTP; Mon, 1 Sep 2008 05:33:04 -0700 (PDT)
-Message-ID: <d712430f0809010533p251bbdaby57b1020f58f99053@mail.gmail.com>
-Date:	Mon, 1 Sep 2008 18:03:04 +0530
-From:	"amit singh" <amit10ks@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Sep 2008 14:23:04 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:3037 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20031001AbYIANWm (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 1 Sep 2008 14:22:42 +0100
+Received: from localhost.localdomain (p5198-ipad203funabasi.chiba.ocn.ne.jp [222.146.84.198])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 707B2B339; Mon,  1 Sep 2008 22:22:37 +0900 (JST)
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
-Subject: need to join developer group
-MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_40721_6517846.1220272384376"
-Return-Path: <amit10ks@gmail.com>
+Cc:	ralf@linux-mips.org
+Subject: [PATCH 2/6] TXx9: Microoptimize interrupt handlers
+Date:	Mon,  1 Sep 2008 22:22:37 +0900
+Message-Id: <1220275361-5001-2-git-send-email-anemo@mba.ocn.ne.jp>
+X-Mailer: git-send-email 1.5.6.3
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20394
+X-archive-position: 20395
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: amit10ks@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_40721_6517846.1220272384376
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+The IOC interrupt status register on RBTX49XX only have 8 bits.  Use
+8-bit version of __fls() to optimize interrupt handlers.
 
-hi need to join developer group
-.amit kr singh
-noida
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+ arch/mips/txx9/rbtx4927/irq.c   |    6 +++---
+ arch/mips/txx9/rbtx4938/irq.c   |    8 ++++----
+ include/asm-mips/txx9/generic.h |   18 ++++++++++++++++++
+ 3 files changed, 25 insertions(+), 7 deletions(-)
 
-------=_Part_40721_6517846.1220272384376
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-<div dir="ltr">hi need to join developer group <br>.amit kr singh<br>noida<br><br></div>
-
-------=_Part_40721_6517846.1220272384376--
+diff --git a/arch/mips/txx9/rbtx4927/irq.c b/arch/mips/txx9/rbtx4927/irq.c
+index 22076e3..9c14ebb 100644
+--- a/arch/mips/txx9/rbtx4927/irq.c
++++ b/arch/mips/txx9/rbtx4927/irq.c
+@@ -133,9 +133,9 @@ static int toshiba_rbtx4927_irq_nested(int sw_irq)
+ 	u8 level3;
+ 
+ 	level3 = readb(rbtx4927_imstat_addr) & 0x1f;
+-	if (level3)
+-		sw_irq = RBTX4927_IRQ_IOC + fls(level3) - 1;
+-	return sw_irq;
++	if (unlikely(!level3))
++		return -1;
++	return RBTX4927_IRQ_IOC + __fls8(level3);
+ }
+ 
+ static void __init toshiba_rbtx4927_irq_ioc_init(void)
+diff --git a/arch/mips/txx9/rbtx4938/irq.c b/arch/mips/txx9/rbtx4938/irq.c
+index ca2f830..7d21bef 100644
+--- a/arch/mips/txx9/rbtx4938/irq.c
++++ b/arch/mips/txx9/rbtx4938/irq.c
+@@ -85,10 +85,10 @@ static int toshiba_rbtx4938_irq_nested(int sw_irq)
+ 	u8 level3;
+ 
+ 	level3 = readb(rbtx4938_imstat_addr);
+-	if (level3)
+-		/* must use fls so onboard ATA has priority */
+-		sw_irq = RBTX4938_IRQ_IOC + fls(level3) - 1;
+-	return sw_irq;
++	if (unlikely(!level3))
++		return -1;
++	/* must use fls so onboard ATA has priority */
++	return RBTX4938_IRQ_IOC + __fls8(level3);
+ }
+ 
+ static void __init
+diff --git a/include/asm-mips/txx9/generic.h b/include/asm-mips/txx9/generic.h
+index 1e1a9f2..dc85515 100644
+--- a/include/asm-mips/txx9/generic.h
++++ b/include/asm-mips/txx9/generic.h
+@@ -64,4 +64,22 @@ struct physmap_flash_data;
+ void txx9_physmap_flash_init(int no, unsigned long addr, unsigned long size,
+ 			     const struct physmap_flash_data *pdata);
+ 
++/* 8 bit version of __fls(): find first bit set (returns 0..7) */
++static inline unsigned int __fls8(unsigned char x)
++{
++	int r = 7;
++
++	if (!(x & 0xf0)) {
++		r -= 4;
++		x <<= 4;
++	}
++	if (!(x & 0xc0)) {
++		r -= 2;
++		x <<= 2;
++	}
++	if (!(x & 0x80))
++		r -= 1;
++	return r;
++}
++
+ #endif /* __ASM_TXX9_GENERIC_H */
+-- 
+1.5.6.3

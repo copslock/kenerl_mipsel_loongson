@@ -1,70 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Sep 2008 15:18:47 +0100 (BST)
-Received: from vervifontaine.sonytel.be ([80.88.33.193]:33187 "EHLO
-	vervifontaine.sonycom.com") by ftp.linux-mips.org with ESMTP
-	id S20035923AbYIBOSn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 2 Sep 2008 15:18:43 +0100
-Received: from vixen.sonytel.be (piraat.sonytel.be [43.221.60.197])
-	by vervifontaine.sonycom.com (Postfix) with ESMTP id 192A258ABD;
-	Tue,  2 Sep 2008 16:18:37 +0200 (MEST)
-Date:	Tue, 2 Sep 2008 16:18:37 +0200 (CEST)
-From:	Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 3/6] TXx9: IOC LED support
-In-Reply-To: <20080902.224507.128619319.anemo@mba.ocn.ne.jp>
-Message-ID: <Pine.LNX.4.64.0809021617450.3986@vixen.sonytel.be>
-References: <1220275361-5001-3-git-send-email-anemo@mba.ocn.ne.jp>
- <Pine.LNX.4.64.0809011821170.5424@anakin> <20080902.224507.128619319.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Sep 2008 11:04:50 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:21078 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S28657103AbYICKEs (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 3 Sep 2008 11:04:48 +0100
+Received: from [127.0.0.1] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 4ADC43ECD; Wed,  3 Sep 2008 03:04:43 -0700 (PDT)
+Message-ID: <48BE6137.1090008@ru.mvista.com>
+Date:	Wed, 03 Sep 2008 14:04:39 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
 MIME-Version: 1.0
-Content-Type: MULTIPART/MIXED; BOUNDARY="-584349381-946661120-1220365117=:3986"
-Return-Path: <Geert.Uytterhoeven@sonycom.com>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH 4/6] TXx9: Add TX4939 SoC support
+References: <1220275361-5001-4-git-send-email-anemo@mba.ocn.ne.jp>
+In-Reply-To: <1220275361-5001-4-git-send-email-anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20406
+X-archive-position: 20407
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Geert.Uytterhoeven@sonycom.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hello.
 
----584349381-946661120-1220365117=:3986
-Content-Type: TEXT/PLAIN; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Atsushi Nemoto wrote:
 
-	Hi Nemoto-san,
+> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+>   
 
-On Tue, 2 Sep 2008, Atsushi Nemoto wrote:
-> On Mon, 1 Sep 2008 18:28:29 +0200 (CEST), Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com> wrote:
-> > If I'm correct LED4 and LED5 are not connected to the IOC, but to the
-> > PIO of the TX4927. Do you have a driver for those LEDs, too?
-> > Perhaps I just missed it, I only applied this single patch.
-> 
-> Done ;)
-> 
-> Note that the patch depends on some patches in linux-queue tree, but
-> it would be simple enough so that you can apply it manually.
+   At last. Cool. I know this SoC has IDE controller. Planning on 
+submitting a driver?
 
-Thanks a lot! It works fine.
-
-With kind regards,
-
-Geert Uytterhoeven
-Software Architect
-
-Sony Techsoft Centre Europe
-The Corporate Village · Da Vincilaan 7-D1 · B-1935 Zaventem · Belgium
-
-Phone:    +32 (0)2 700 8453
-Fax:      +32 (0)2 700 8622
-E-mail:   Geert.Uytterhoeven@sonycom.com
-Internet: http://www.sony-europe.com/
-
-A division of Sony Europe (Belgium) N.V.
-VAT BE 0413.825.160 · RPR Brussels
-Fortis · BIC GEBABEBB · IBAN BE41293037680010
----584349381-946661120-1220365117=:3986--
+WBR, Sergei

@@ -1,53 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Sep 2008 15:41:23 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:40924 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S32721242AbYIDOlV (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 4 Sep 2008 15:41:21 +0100
-Received: from localhost (p7114-ipad211funabasi.chiba.ocn.ne.jp [58.91.163.114])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id C1515AFC7; Thu,  4 Sep 2008 23:41:13 +0900 (JST)
-Date:	Thu, 04 Sep 2008 23:41:14 +0900 (JST)
-Message-Id: <20080904.234114.07644635.anemo@mba.ocn.ne.jp>
-To:	sshtylyov@ru.mvista.com
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 4/6] TXx9: Add TX4939 SoC support
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <48BF0243.30801@ru.mvista.com>
-References: <48BE6137.1090008@ru.mvista.com>
-	<20080904.010229.108120775.anemo@mba.ocn.ne.jp>
-	<48BF0243.30801@ru.mvista.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Sep 2008 22:05:48 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:8401 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S36919627AbYIDVFq (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 4 Sep 2008 22:05:46 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1KbM1R-0001JT-00; Thu, 04 Sep 2008 23:05:45 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 0FD1ADE3B6; Thu,  4 Sep 2008 23:05:45 +0200 (CEST)
+From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH] IP22: Fix detection of second HPC3 on Challenge S
+To:	linux-mips@linux-mips.org
+cc:	ralf@linux-mips.org
+Message-Id: <20080904210545.0FD1ADE3B6@solo.franken.de>
+Date:	Thu,  4 Sep 2008 23:05:45 +0200 (CEST)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20413
+X-archive-position: 20416
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 04 Sep 2008 01:31:47 +0400, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
-> > It seems the drivers/ide in in deep
-> > cleanup/refactoring state.  (linux-next contains 100 patches from
-> > Bartlomiej!)
-> >
-> > Do you think a new ide driver will be accepted?
-> 
->    Of course it will. But due to much of refactoring that's been 
-> happening it will require some work to move it forward from the older 
-> version (I guess you have it as well): IDE drivers should now be pretty 
-> close to the libata ones functionally.
+The second HPC3 coulde be found only on Guiness systems (Challenge-S),
+but not on fullhouse (Indigo2) systems.
 
-I have a driver for current mainline and it is based on the driver in
-CELF patch archive.  I will try to update the driver against
-linux-next tree.
-
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 ---
-Atsushi Nemoto
+
+ arch/mips/sgi-ip22/ip22-platform.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/arch/mips/sgi-ip22/ip22-platform.c b/arch/mips/sgi-ip22/ip22-platform.c
+index 9bbb90b..deddbf0 100644
+--- a/arch/mips/sgi-ip22/ip22-platform.c
++++ b/arch/mips/sgi-ip22/ip22-platform.c
+@@ -150,7 +150,7 @@ static int __init sgiseeq_devinit(void)
+ 		return res;
+ 
+ 	/* Second HPC is missing? */
+-	if (!ip22_is_fullhouse() ||
++	if (ip22_is_fullhouse() ||
+ 	    get_dbe(tmp, (unsigned int *)&hpc3c1->pbdma[1]))
+ 		return 0;
+ 

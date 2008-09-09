@@ -1,41 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Sep 2008 21:32:34 +0100 (BST)
-Received: from aux-209-217-49-36.oklahoma.net ([209.217.49.36]:39436 "EHLO
-	proteus.paralogos.com") by ftp.linux-mips.org with ESMTP
-	id S28597845AbYIIUaq (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 9 Sep 2008 21:30:46 +0100
-Received: from [217.109.65.213] ([217.109.65.213])
-	by proteus.paralogos.com (8.9.3/8.9.3) with ESMTP id PAA23497
-	for <linux-mips@linux-mips.org>; Tue, 9 Sep 2008 15:59:46 -0500
-Message-ID: <48C6DCC7.6020705@paralogos.com>
-Date:	Tue, 09 Sep 2008 22:29:59 +0200
-From:	"Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Thunderbird 2.0.0.14 (X11/20080501)
-MIME-Version: 1.0
-To:	Linux MIPS Org <linux-mips@linux-mips.org>
-Subject: SMTC Patches [1 of 3]
-Content-Type: multipart/mixed;
- boundary="------------040406000605030509060700"
-Return-Path: <kevink@paralogos.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20426
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
-Precedence: bulk
-X-list: linux-mips
+From: Kevin D. Kissell <kevink@paralogos.com>
+Date: Tue, 9 Sep 2008 21:33:36 +0200
+Subject: [PATCH] Fixed holes in SMTC and FPU affinity support.
+ Signed-off-by: Kevin D. Kissell <kevink@paralogos.com>
+Message-ID: <20080909193336.q3vaMFu54veD3nMJhNeO4Tiiq4aW41xAhPBb9rYOpUU@z>
 
-This is a multi-part message in MIME format.
---------------040406000605030509060700
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+---
+ arch/mips/kernel/process.c |   19 ++++++++++++-------
+ 1 files changed, 12 insertions(+), 7 deletions(-)
+
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 2c09a44..75277c8 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -55,7 +55,7 @@ void __noreturn cpu_idle(void)
+ 	while (1) {
+ 		tick_nohz_stop_sched_tick();
+ 		while (!need_resched()) {
+-#ifdef CONFIG_SMTC_IDLE_HOOK_DEBUG
++#ifdef CONFIG_MIPS_MT_SMTC
+ 			extern void smtc_idle_loop_hook(void);
+ 
+ 			smtc_idle_loop_hook();
+@@ -155,14 +155,19 @@ int copy_thread(int nr, unsigned long clone_flags, unsigned long usp,
+ 	clear_tsk_thread_flag(p, TIF_USEDFPU);
+ 
+ #ifdef CONFIG_MIPS_MT_FPAFF
++	clear_tsk_thread_flag(p, TIF_FPUBOUND);
+ 	/*
+-	 * FPU affinity support is cleaner if we track the
+-	 * user-visible CPU affinity from the very beginning.
+-	 * The generic cpus_allowed mask will already have
+-	 * been copied from the parent before copy_thread
+-	 * is invoked.
++	 * FPU affinity support requires that we be subtle.
++	 * The basic fork support code will have copied
++	 * the parent's cpus_allowed set, but what the child
++	 * needs to inherit is the "user" version, which
++	 * carries the program/user controlled CPU affinity
++	 * properties that are supposed to be inherited,
++	 * but not the transient, overlayed, hardware
++	 * affinity constraints.
+ 	 */
+-	p->thread.user_cpus_allowed = p->cpus_allowed;
++	p->thread.user_cpus_allowed = current->thread.user_cpus_allowed;
++	p->cpus_allowed = current->thread.user_cpus_allowed;
+ #endif /* CONFIG_MIPS_MT_FPAFF */
+ 
+ 	if (clone_flags & CLONE_SETTLS)
+-- 
+1.5.3.3
 
 
---------------040406000605030509060700
-Content-Type: text/x-patch;
- name="0001-Fixed-holes-in-SMTC-and-FPU-affinity-support.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename*0="0001-Fixed-holes-in-SMTC-and-FPU-affinity-support.patch"
+--------------040406000605030509060700--

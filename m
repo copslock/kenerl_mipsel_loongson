@@ -1,44 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Sep 2008 17:33:10 +0100 (BST)
-Received: from homer.mvista.com ([63.81.120.155]:19515 "EHLO
-	imap.sh.mvista.com") by ftp.linux-mips.org with ESMTP
-	id S20100620AbYIJQZU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 10 Sep 2008 17:25:20 +0100
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 1CA563EC9; Wed, 10 Sep 2008 09:25:14 -0700 (PDT)
-Message-ID: <48C7F513.2090203@ru.mvista.com>
-Date:	Wed, 10 Sep 2008 20:25:55 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Sep 2008 19:51:42 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:46317 "EHLO
+	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
+	with ESMTP id S20094575AbYIJSvk (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 10 Sep 2008 19:51:40 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m8ABoMAA020671;
+	Wed, 10 Sep 2008 13:50:25 +0200
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m8ABoK6N020670;
+	Wed, 10 Sep 2008 13:50:20 +0200
+Date:	Wed, 10 Sep 2008 13:50:20 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Kevin D. Kissell" <kevink@paralogos.com>
+Cc:	Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
+	ths@networkno.de, linux-mips@linux-mips.org,
+	michael@free-electrons.com
+Subject: Re: [PATCH 1/1] mips: clear IV bit in CP0 cause if the CPU doesn't
+	support divec
+Message-ID: <20080910115020.GA19935@linux-mips.org>
+References: <1220948125-3550-1-git-send-email-thomas.petazzoni@free-electrons.com> <48C7AB71.8090106@paralogos.com>
 MIME-Version: 1.0
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org,
-	linux-ide@vger.kernel.org, bzolnier@gmail.com, ralf@linux-mips.org
-Subject: Re: [PATCH 1/2] ide: Add tx4939ide driver
-References: <20080910.010824.07456636.anemo@mba.ocn.ne.jp>	<48C6B768.4010200@ru.mvista.com> <20080911.003222.51867360.anemo@mba.ocn.ne.jp> <48C7EDE4.3090400@ru.mvista.com>
-In-Reply-To: <48C7EDE4.3090400@ru.mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <48C7AB71.8090106@paralogos.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20445
+X-archive-position: 20446
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello, I just wrote:
+On Wed, Sep 10, 2008 at 01:11:45PM +0200, Kevin D. Kissell wrote:
 
->    Acltually, this is somewhat wrong WRT the programming the command PIO 
-> timings in the bits 8..10: they should be set to the same value 
+> I think it's important to know whether it's U-Boot or Linux that's confused.
+> As Thomas Bogendoerfer pointed out, it's not good practice to flip bits  
+> whose
+> use is unknown to the kernel.  If in fact the CPU in question does  
+> support IV,
+> was correctly identified as such by U-Boot, but isn't recognized by the MIPS
+> Linux kernel, then we ought to fix Linux to recognize the CPU.  If it  
+> doesn't
+> support IV, but U-Boot thought it did, then U-Boot is broken and ought to
+> be fixed.  If you you're stuck with a broken U-Boot for some reason, then
+> there ought to be some platform-specific place to put a hack.
 
-    Hmm, probably isn't actually wrong, though usually IDE controllers have a 
-single command timings register per channel.
+What happened is this:
 
-MBR, Sergei
+        if (cpu_has_divec) {
+                if (cpu_has_mipsmt) {
+                        unsigned int vpflags = dvpe();
+                        set_c0_cause(CAUSEF_IV);
+			evpe(vpflags);
+		} else
+                        set_c0_cause(CAUSEF_IV);
+	}
+
+but include/asm-mips/mach-qemu/cpu-feature-overrides.h was defining
+cpu_has_divec as 0.  It should have been either undefined (for runtime
+probing) or 1.  Iow, it was a platform specific bug.
+
+With the large number of wild pre-MIPS32/64 architecture variants around I
+feel a little uneasy to just zero the field unless I know that bit 23
+really is the IV bit on a particular processor.  Just as an example, the
+RM7000 has the IV bit on bit 24, not bit 23 like MIPS32 and the
+functionality also differs a little.
+
+  Ralf

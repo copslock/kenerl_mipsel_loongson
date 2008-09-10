@@ -1,123 +1,126 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Sep 2008 16:29:15 +0100 (BST)
-Received: from smtp14.dti.ne.jp ([202.216.231.189]:42480 "EHLO
-	smtp14.dti.ne.jp") by ftp.linux-mips.org with ESMTP
-	id S20091840AbYIJP3L (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 10 Sep 2008 16:29:11 +0100
-Received: from [192.168.1.3] (PPPa881.tokyo-ip.dti.ne.jp [210.159.215.131]) by smtp14.dti.ne.jp (3.11s) with ESMTP AUTH id m8AFSw1r020588;Thu, 11 Sep 2008 00:29:01 +0900 (JST)
-Message-ID: <48C7E7BA.2040600@ruby.dti.ne.jp>
-Date:	Thu, 11 Sep 2008 00:28:58 +0900
-From:	Shinya Kuribayashi <skuribay@ruby.dti.ne.jp>
-User-Agent: Thunderbird 2.0.0.16 (X11/20080724)
-MIME-Version: 1.0
-To:	"Kevin D. Kissell" <kevink@paralogos.com>
-CC:	Thomas Petazzoni <thomas.petazzoni@free-electrons.com>,
-	ralf@linux-mips.org, ths@networkno.de, linux-mips@linux-mips.org,
-	michael@free-electrons.com, vlad.lungu@windriver.com
-Subject: Re: [PATCH 1/1] mips: clear IV bit in CP0 cause if the CPU doesn't
- support divec
-References: <> <1220948125-3550-1-git-send-email-thomas.petazzoni@free-electrons.com> <48C7AB71.8090106@paralogos.com>
-In-Reply-To: <48C7AB71.8090106@paralogos.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Sep 2008 16:32:21 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:5373 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20092294AbYIJPcT (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 10 Sep 2008 16:32:19 +0100
+Received: from localhost (p1216-ipad302funabasi.chiba.ocn.ne.jp [123.217.139.216])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 74DB9B3B8; Thu, 11 Sep 2008 00:32:14 +0900 (JST)
+Date:	Thu, 11 Sep 2008 00:32:22 +0900 (JST)
+Message-Id: <20080911.003222.51867360.anemo@mba.ocn.ne.jp>
+To:	sshtylyov@ru.mvista.com
+Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
+	bzolnier@gmail.com, ralf@linux-mips.org
+Subject: Re: [PATCH 1/2] ide: Add tx4939ide driver
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <48C6B768.4010200@ru.mvista.com>
+References: <20080910.010824.07456636.anemo@mba.ocn.ne.jp>
+	<48C6B768.4010200@ru.mvista.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <skuribay@ruby.dti.ne.jp>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20441
+X-archive-position: 20442
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: skuribay@ruby.dti.ne.jp
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Kevin D. Kissell wrote:
-> I think it's important to know whether it's U-Boot or Linux that's confused.
-> As Thomas Bogendoerfer pointed out, it's not good practice to flip bits whose
-> use is unknown to the kernel.  If in fact the CPU in question does support IV,
-> was correctly identified as such by U-Boot, but isn't recognized by the MIPS
-> Linux kernel, then we ought to fix Linux to recognize the CPU.  If it doesn't
-> support IV, but U-Boot thought it did, then U-Boot is broken and ought to
-> be fixed.  If you you're stuck with a broken U-Boot for some reason, then
-> there ought to be some platform-specific place to put a hack.
+On Tue, 09 Sep 2008 21:50:32 +0400, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
+> > +static void tx4939ide_set_mode(ide_drive_t *drive, const u8 speed)
+> > +{
+> > +	ide_hwif_t *hwif = HWIF(drive);
+> > +	unsigned long base = TX4939IDE_BASE(hwif);
+> > +	int is_slave = drive->dn & 1;
+> > +	u16 value;
+> > +	int safe_speed = speed;
+> > +	int i;
+> > +
+> > +	for (i = 0; i < MAX_DRIVES; i++) {
+> 
+>     Use ide_get_paired_drive() ISO this loop.
 
-It seems the culprit is U-Boot/MIPS `qemu-mips' target. It apparently
-sets IV bit in its local initialization.
+Thanks.  That's what I needed.
 
-u-boot/board/qemu-mips/lowlevel_init.S
----------------------------------------
-http://git.denx.de/?p=u-boot.git;a=blob;f=board/qemu-mips/lowlevel_init.S;hb=HEAD
+> > +		if (drive != &hwif->drives[i] &&
+> > +		    (hwif->drives[i].dev_flags & IDE_DFLAG_PRESENT))
+> > +			safe_speed = min(safe_speed,
+> > +					 (int)hwif->drives[i].current_speed);
+> 
+>     You shouldn't clamp the command PIO mode timings like this, and shouldn't 
+> do it at all when DMA mode is set. Call ide_get_best_pio_mode(255, 4) to get 
+> the mate drive's fastest PIO mode which should be a clamping value.
+> 
+> > +	/* Command Transfer Mode Select */
+> > +	switch (safe_speed) {
+> > +	case XFER_UDMA_5:
+> > +	case XFER_UDMA_4:
+> > +	case XFER_UDMA_3:
+> > +	case XFER_UDMA_2:
+> > +	case XFER_UDMA_1:
+> > +	case XFER_UDMA_0:
+> > +	case XFER_MW_DMA_2:
+> 
+>     You shouldn't change the command PIO mode when DMA mode is selected.
 
-/* Memory sub-system initialization code */
+But the "Command Transfer Mode Select" bits affects access timings on
+setting task registers for DMA command.  Hmm... do you mean I should
+not do it _here_?
 
-#include <config.h>
-#include <asm/regdef.h>
-#include <asm/mipsregs.h>
+> > +	case XFER_MW_DMA_1:
+> > +	case XFER_MW_DMA_0:
+> > +	case XFER_PIO_4:
+> 
+>     MWDMA0/1 timings don't match PIO4, they are [much] slower.
 
-	.text
-	.set noreorder
-	.set mips32
+Oh thanks.  I will fix it.
 
-	.globl	lowlevel_init
-lowlevel_init:
+> > +		hwif->select_data =
+> > +			(hwif->select_data & ~0xffff0000) | (value << 16);
+> 
+>     Why not just 0x0000ffff?
+> 
+> > +	else
+> > +		hwif->select_data = (hwif->select_data & ~0x0000ffff) | value;
+> 
+>     Why not just 0xffff0000?
 
-	/*
-	 * Step 2) Establish Status Register
-	 * (set BEV, clear ERL, clear EXL, clear IE)
-	 */
-	li	t1, 0x00400000
-	mtc0	t1, CP0_STATUS
+Indeed.
 
-	/*
-	 * Step 3) Establish CP0 Config0
-	 * (set K0=3)
-	 */
-	li	t1, 0x00000003
-	mtc0	t1, CP0_CONFIG
+> > +static void tx4939ide_set_pio_mode(ide_drive_t *drive, const u8 pio)
+> > +{
+> > +	tx4939ide_set_mode(drive, XFER_PIO_0 + pio);
+> > +}
+> 
+>     I suggest that you implement tx4939ide_set_{dma|pio}_mode() as seperate 
+> functions, possibly using a common function to do a final part. These 2 
+> methods are quite different functionally.
+> 
+> > +static int tx4939ide_dma_setup(ide_drive_t *drive)
+> > +{
+> > +	ide_hwif_t *hwif = HWIF(drive);
+> > +	unsigned long base = TX4939IDE_BASE(hwif);
+> > +	int is_slave = drive->dn & 1;
+> > +	unsigned int nframes;
+> > +	int rc, i;
+> > +	unsigned int sect_size = queue_hardsect_size(drive->queue);
+> > +	u16 select_data;
+> > +
+> > +	select_data = (hwif->select_data >> (is_slave ? 16 : 0)) & 0xffff;
+> > +	TX4939IDE_writew(select_data, base, Sys_Ctl);
+> 
+>     Unfortunately, programming the timings from the dma_setup() method isn't 
+> enough since it won't be called for PIO transfers.  You'll have to use the 
+> selectproc() method.
 
-	/*
-	 * Step 7) Establish Cause
-	 * (set IV bit)
-	 */
-	li	t1, 0x00800000
-	mtc0	t1, CP0_CAUSE
+Thanks.  I should rework whole timing setup code.
 
-	/* Establish Wired (and Random) */
-	mtc0	zero, CP0_WIRED
-	nop
-
-	jr	ra
-	nop
-
---->8--->8--->8--->8---
-
-
-On the other hand, a normal U-Boot/MIPS startup routine doesn't set any
-CP0.CAUSE bits; it just clears all bits right after system reset.
-
-u-boot/cpu/mips/start.S
-------------------------
-http://git.denx.de/?p=u-boot.git;a=blob;f=cpu/mips/start.S;hb=HEAD
-
-	(snipped)
-
-	/* Clear watch registers.
-	 */
-	mtc0	zero, CP0_WATCHLO
-	mtc0	zero, CP0_WATCHHI
-
-	/* WP(Watch Pending), SW0/1 should be cleared. */
-	mtc0	zero, CP0_CAUSE
-
-	setup_c0_status_reset
-
-	/* Init Timer */
-	mtc0	zero, CP0_COUNT
-	mtc0	zero, CP0_COMPARE
-
-	(snipped)
-
-So this issue only happens on U-Boot/MIPS `qemu-mips' target, I think.
-
-
-  Shinya
+---
+Atsushi Nemoto

@@ -1,163 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Sep 2008 15:37:06 +0100 (BST)
-Received: from mms2.broadcom.com ([216.31.210.18]:26382 "EHLO
-	mms2.broadcom.com") by ftp.linux-mips.org with ESMTP
-	id S20093941AbYIJObo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 10 Sep 2008 15:31:44 +0100
-Received: from [10.11.16.99] by mms2.broadcom.com with ESMTP (Broadcom
- SMTP Relay (Email Firewall v6.3.2)); Wed, 10 Sep 2008 07:31:28 -0700
-X-Server-Uuid: D3C04415-6FA8-4F2C-93C1-920E106A2031
-Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
- D975A2B1; Wed, 10 Sep 2008 07:31:28 -0700 (PDT)
-Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.11.18.52]) by
- mail-irva-10.broadcom.com (Postfix) with ESMTP id C5AC72B0 for
- <linux-mips@linux-mips.org>; Wed, 10 Sep 2008 07:31:28 -0700 (PDT)
-Received: from mail-sj1-12.sj.broadcom.com (mail-sj1-12.sj.broadcom.com
- [10.16.128.215]) by mail-irva-8.broadcom.com (MOS 3.7.5a-GA) with ESMTP
- id HDE89574; Wed, 10 Sep 2008 07:31:23 -0700 (PDT)
-Received: from NT-SJCA-0751.brcm.ad.broadcom.com (nt-sjca-0751
- [10.16.192.221]) by mail-sj1-12.sj.broadcom.com (Postfix) with ESMTP id
- 19FD520502 for <linux-mips@linux-mips.org>; Wed, 10 Sep 2008 07:31:23
- -0700 (PDT)
-Received: from SJEXCHHUB01.corp.ad.broadcom.com ([10.16.192.224]) by
- NT-SJCA-0751.brcm.ad.broadcom.com with Microsoft
- SMTPSVC(6.0.3790.1830); Wed, 10 Sep 2008 07:31:22 -0700
-Received: from SJEXCHCCR01.corp.ad.broadcom.com ([10.252.49.130]) by
- SJEXCHHUB01.corp.ad.broadcom.com ([10.16.192.224]) with mapi; Wed, 10
- Sep 2008 07:31:22 -0700
-From:	"Ramgopal Kota" <rkota@broadcom.com>
-To:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Date:	Wed, 10 Sep 2008 07:31:21 -0700
-Subject: Help on MTD Partitions.
-Thread-Topic: Help on MTD Partitions.
-Thread-Index: AckTUeUm/RIcnrzVRNaYFLuEmtu96g==
-Message-ID: <6C370B347C3FE8438C9692873287D2E110068DF9C3@SJEXCHCCR01.corp.ad.broadcom.com>
-Accept-Language: en-US
-Content-Language: en-US
-acceptlanguage:	en-US
-MIME-Version: 1.0
-X-OriginalArrivalTime: 10 Sep 2008 14:31:22.0982 (UTC)
- FILETIME=[E60F7060:01C91351]
-X-WSS-ID: 64D905CA3D0150015831-01-01
-Content-Type: multipart/alternative;
- boundary=_000_6C370B347C3FE8438C9692873287D2E110068DF9C3SJEXCHCCR01co_
-Return-Path: <rkota@broadcom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Sep 2008 16:06:51 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:28379 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20087612AbYIJPGr (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 10 Sep 2008 16:06:47 +0100
+Received: from localhost (p1216-ipad302funabasi.chiba.ocn.ne.jp [123.217.139.216])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 6BBC9B3B8; Thu, 11 Sep 2008 00:06:41 +0900 (JST)
+Date:	Thu, 11 Sep 2008 00:06:49 +0900 (JST)
+Message-Id: <20080911.000649.39154743.anemo@mba.ocn.ne.jp>
+To:	alan@lxorguk.ukuu.org.uk
+Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
+	bzolnier@gmail.com, ralf@linux-mips.org, sshtylyov@ru.mvista.com
+Subject: Re: [PATCH 1/2] ide: Add tx4939ide driver
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20080909174459.2aa9808a@lxorguk.ukuu.org.uk>
+References: <20080910.010824.07456636.anemo@mba.ocn.ne.jp>
+	<20080909174459.2aa9808a@lxorguk.ukuu.org.uk>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20438
+X-archive-position: 20439
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rkota@broadcom.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
+On Tue, 9 Sep 2008 17:44:59 +0100, Alan Cox <alan@lxorguk.ukuu.org.uk> wrote:
+> > command/status registers, but the register layout is swapped on big
+> > endian.  There are some other endian issue and some special registers
+> > which requires many custom dma_ops/port_ops routines.
+> 
+> It would probably be a lot cleaner using the libata framework, and also
+> go obsolete less soon.
 
---_000_6C370B347C3FE8438C9692873287D2E110068DF9C3SJEXCHCCR01co_
-Content-Type: text/plain;
- charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+Yes, that's future plan.
 
-Hi,
+> > +#define TX4939IDE_writeb(val, base, reg) \
+> > +	__raw_writeb(val, (void __iomem *)((base) + TX4939IDE_REG8(reg)))
+> 
+> It's generally frowned upon to hide all the detail in macros, it is much
+> easier to read and understand the code if you don't do this.
 
-I am facing a problem with MTD partitions with linux 2.6.
-I have a Spansion Flash of 8MB. where the number of erase regions are 2 ,
+OK, I'll try to make much readble.
 
-1st erase region has 127 64KB sectors
-2nd erase region has 8 8KB sectors.   ( This is at the end of the flash)
+> > +#define TX4939IDE_BASE(hwif)	((hwif)->io_ports.data_addr & ~0xfff)
+> 
+> Why do you have void __iomem casts all over the write methods not in the
+> _BASE() method - that would let sparse do its job properly
 
-I want to create 4 partitions.
-NAME  --  SIZE
-BOOT  --  128KB.
-OS      --  2MB
-JFFS    --  (8MB - 8KB)
-DUMP   --  8KB
+Indeed. I'll do it.
 
-Kernel prints a error message that "JFFS Partition is read-only".
-Can a partition span across 2 various erase regions ?
-(I see that there is a check for the same in the mtdpart.c while adding a p=
-artition.)
+> > +	for (i = 0; i < MAX_DRIVES; i++) {
+> > +		if (drive != &hwif->drives[i] &&
+> 
+> You don't actually need the first test. This also appears wrong. In your
+> tests MW_DMA_0 is 'faster' than PIO4 but in fact MW_DMA_0 PIO timings are
+> *slower* than PIO4 so the mode is not in fact slower.
+> 
+> > +	case XFER_MW_DMA_2:
+> > +	case XFER_MW_DMA_1:
+> > +	case XFER_MW_DMA_0:
+> > +	case XFER_PIO_4:
+> > +		value |= 0x0400;
+> > +		break;
+> 
+> This looks odd according to the speed tables. Can you clarify what is
+> going on ?
 
-Is there any work-around using MTDPART_OFS_APPEND & MTDPART_OFS_NXTBLK flag=
-s ??
-Any help is highly appreciable ??
+As you and Sergei pointed out, the code seems somewhat broken.  I'll
+rework on it.
 
-Ramgopal Kota
+> > +#ifdef __BIG_ENDIAN
+> > +	{
+> > +		unsigned int *table = hwif->dmatable_cpu;
+> > +		while (1) {
+> > +			cpu_to_le64s((u64 *)table);
+> > +			if (*table & 0x80000000)
+> > +				break;
+> 
+> You modify the table but you never ensure the data is not still in
+> temporary variables from the compiler or flushed from cache
 
---_000_6C370B347C3FE8438C9692873287D2E110068DF9C3SJEXCHCCR01co_
-Content-Type: text/html;
- charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+The dmatable_cpu is allocated by pci_alloc_consistent so that flush is
+not needed.  But... this is not PCI device.  I should not use
+ide_allocate_dma_engine().  I'll fix it.
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD>
-<META http-equiv=3DContent-Type content=3D"text/html; charset=3Dus-ascii">
-<META content=3D"MSHTML 6.00.2900.3314" name=3DGENERATOR></HEAD>
-<BODY>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DVerdana=20
-size=3D2>Hi,</FONT></SPAN></DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DVerdana=20
-size=3D2></FONT></SPAN>&nbsp;</DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DVerdana size=3D2>I am fa=
-cing a=20
-problem with MTD partitions with linux 2.6.</FONT></SPAN></DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DVerdana size=3D2>I have =
-a Spansion=20
-Flash of 8MB. where the number of erase regions are 2 ,</FONT></SPAN></DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DVerdana=20
-size=3D2></FONT></SPAN>&nbsp;</DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DVerdana size=3D2>1st era=
-se region=20
-has 127 64KB sectors</FONT></SPAN></DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DVerdana size=3D2>2nd era=
-se region=20
-has 8 8KB sectors.&nbsp;&nbsp; ( This is at the end of the=20
-flash)</FONT></SPAN></DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DVerdana=20
-size=3D2></FONT></SPAN>&nbsp;</DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DVerdana size=3D2>I want =
-to=20
-create&nbsp;4 partitions.</FONT></SPAN></DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DVerdana size=3D2>NAME&nb=
-sp;=20
---&nbsp; SIZE</FONT></SPAN></DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DVerdana size=3D2>BOOT&nb=
-sp;=20
---&nbsp; 128KB.</FONT></SPAN></DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DVerdana=20
-size=3D2>OS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --&nbsp; 2MB</FONT></SPAN></DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DVerdana=20
-size=3D2>JFFS&nbsp;&nbsp;&nbsp; --&nbsp; (8MB - 8KB)</FONT></SPAN></DIV>
-<DIV><SPAN class=3D828112214-10092008></SPAN><SPAN class=3D828112214-100920=
-08><FONT=20
-face=3DVerdana size=3D2>DUMP&nbsp;&nbsp; --&nbsp; 8KB</FONT></SPAN></DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DVerdana=20
-size=3D2></FONT></SPAN>&nbsp;</DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DVerdana size=3D2>Kernel =
-prints a=20
-error message that "JFFS Partition is read-only".</FONT></SPAN></DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DVerdana size=3D2>Can a p=
-artition=20
-span across 2 various erase regions ?</FONT></SPAN></DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DVerdana size=3D2>(I see =
-that there=20
-is a check for the same in the mtdpart.c while adding a=20
-partition.)</FONT></SPAN></DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DVerdana=20
-size=3D2></FONT></SPAN>&nbsp;</DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DVerdana size=3D2>Is ther=
-e any=20
-work-around using <FONT face=3DArial size=3D2>MTDPART_OFS_APPEND &amp; <FON=
-T=20
-face=3DArial size=3D2>MTDPART_OFS_NXTBLK flags ??</FONT></FONT></FONT></SPA=
-N></DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DArial size=3D2>Any help =
-is highly=20
-appreciable ??</FONT></SPAN></DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DArial=20
-size=3D2></FONT></SPAN>&nbsp;</DIV>
-<DIV><SPAN class=3D828112214-10092008><FONT face=3DArial size=3D2>Ramgopal=
-=20
-Kota</FONT></SPAN></DIV></BODY></HTML>
-
---_000_6C370B347C3FE8438C9692873287D2E110068DF9C3SJEXCHCCR01co_--
+Thank you for review.
+---
+Atsushi Nemoto

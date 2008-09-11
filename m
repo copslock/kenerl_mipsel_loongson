@@ -1,262 +1,188 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Sep 2008 07:07:40 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.134]:18399 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20139302AbYIKGFC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 11 Sep 2008 07:05:02 +0100
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id E5499320918;
-	Thu, 11 Sep 2008 06:04:56 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [173.8.135.205])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Thu, 11 Sep 2008 06:04:56 +0000 (UTC)
-Received: from silver64.hq2.avtrex.com ([192.168.7.222]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 10 Sep 2008 23:04:53 -0700
-Message-ID: <48C8B504.5080409@avtrex.com>
-Date:	Wed, 10 Sep 2008 23:04:52 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Sep 2008 08:27:26 +0100 (BST)
+Received: from monty.telenet-ops.be ([195.130.132.56]:47792 "EHLO
+	monty.telenet-ops.be") by ftp.linux-mips.org with ESMTP
+	id S20149849AbYIKH1U (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 11 Sep 2008 08:27:20 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by monty.telenet-ops.be (Postfix) with SMTP id A785F54030;
+	Thu, 11 Sep 2008 09:27:19 +0200 (CEST)
+Received: from anakin.of.borg (d54C15368.access.telenet.be [84.193.83.104])
+	by monty.telenet-ops.be (Postfix) with ESMTP id 8394B5402D;
+	Thu, 11 Sep 2008 09:27:19 +0200 (CEST)
+Received: from anakin.of.borg (localhost [127.0.0.1])
+	by anakin.of.borg (8.14.3/8.14.3/Debian-5) with ESMTP id m8B7RJ8M014708
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Thu, 11 Sep 2008 09:27:19 +0200
+Received: from localhost (geert@localhost)
+	by anakin.of.borg (8.14.3/8.14.3/Submit) with ESMTP id m8B7RI9O014704;
+	Thu, 11 Sep 2008 09:27:18 +0200
+X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
+Date:	Thu, 11 Sep 2008 09:27:18 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	David Daney <ddaney@avtrex.com>
+cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [Patch 2/6] MIPS: Add HARDWARE_WATCHPOINTS definitions and
+ support code.
+In-Reply-To: <48C8B2C3.4050002@avtrex.com>
+Message-ID: <Pine.LNX.4.64.0809110922090.29543@anakin>
+References: <48C8ADEF.9020305@avtrex.com> <48C8B2C3.4050002@avtrex.com>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Cc:	linux-kernel@vger.kernel.org
-Subject: [Patch 6/6] MIPS: Ptrace support for HARDWARE_WATCHPOINTS
-References: <48C8ADEF.9020305@avtrex.com>
-In-Reply-To: <48C8ADEF.9020305@avtrex.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 11 Sep 2008 06:04:53.0618 (UTC) FILETIME=[4F003D20:01C913D4]
-Return-Path: <ddaney@avtrex.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20454
+X-archive-position: 20455
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Ptrace support for HARDWARE_WATCHPOINTS
+On Wed, 10 Sep 2008, David Daney wrote:
 
-This is the final part of the watch register patch.  Here we hook up
-ptrace so that the user space debugger (gdb), can set and read the
-registers.
+Given
 
-Signed-off-by: David Daney <ddaney@avtrex.com>
----
- arch/mips/kernel/ptrace.c   |  100 ++++++++++++++++++++++++++++++++++++++++++-
- arch/mips/kernel/ptrace32.c |   15 ++++++
- include/asm-mips/ptrace.h   |   38 ++++++++++++++++
- 3 files changed, 152 insertions(+), 1 deletions(-)
+> +	case 4:
+> +		write_c0_watchlo3(watches->watchlo[3]);
+> +		/* Write 1 to the I, R, and W bits to clear them, and
+> +		   1 to G so all ASIDs are trapped. */
+> +		write_c0_watchhi3(0x40000007 | watches->watchhi[3]);
+> +	case 3:
+> +		write_c0_watchlo2(watches->watchlo[2]);
+> +		write_c0_watchhi2(0x40000007 | watches->watchhi[2]);
+> +	case 2:
+> +		write_c0_watchlo1(watches->watchlo[1]);
+> +		write_c0_watchhi1(0x40000007 | watches->watchhi[1]);
+> +	case 1:
+> +		write_c0_watchlo0(watches->watchlo[0]);
+> +		write_c0_watchhi0(0x40000007 | watches->watchhi[0]);
 
-diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
-index 35234b9..ee41f8a 100644
---- a/arch/mips/kernel/ptrace.c
-+++ b/arch/mips/kernel/ptrace.c
-@@ -46,7 +46,8 @@
-  */
- void ptrace_disable(struct task_struct *child)
- {
--	/* Nothing to do.. */
-+	/* Don't load the watchpoint registers for the ex-child. */
-+	clear_tsk_thread_flag(child, TIF_LOAD_WATCH);
- }
- 
- /*
-@@ -167,6 +168,93 @@ int ptrace_setfpregs(struct task_struct *child, __u32 __user *data)
- 	return 0;
- }
- 
-+int ptrace_get_watch_regs(struct task_struct *child,
-+			  struct pt_watch_regs __user *addr)
-+{
-+	enum pt_watch_style style;
-+	int i;
-+
-+	if (!cpu_has_watch || current_cpu_data.watch_reg_use_cnt == 0)
-+		return -EIO;
-+	if (!access_ok(VERIFY_WRITE, addr, sizeof(struct pt_watch_regs)))
-+		return -EIO;
-+
-+#ifdef CONFIG_32BIT
-+	style = pt_watch_style_mips32;
-+#define WATCH_STYLE mips32
-+#else
-+	style = pt_watch_style_mips64;
-+#define WATCH_STYLE mips64
-+#endif
-+
-+	__put_user(style, &addr->style);
-+	__put_user(current_cpu_data.watch_reg_use_cnt,
-+		   &addr->WATCH_STYLE.num_valid);
-+	for (i = 0; i < current_cpu_data.watch_reg_use_cnt; i++) {
-+		__put_user(child->thread.watch.mips3264.watchlo[i],
-+			   &addr->WATCH_STYLE.watchlo[i]);
-+		__put_user(child->thread.watch.mips3264.watchhi[i] & 0xfff,
-+			   &addr->WATCH_STYLE.watchhi[i]);
-+		__put_user(current_cpu_data.watch_reg_masks[i],
-+			   &addr->WATCH_STYLE.watch_masks[i]);
-+	}
-+	for (; i < 8; i++) {
-+		__put_user(0, &addr->WATCH_STYLE.watchlo[i]);
-+		__put_user(0, &addr->WATCH_STYLE.watchhi[i]);
-+		__put_user(0, &addr->WATCH_STYLE.watch_masks[i]);
-+	}
-+
-+	return 0;
-+}
-+
-+int ptrace_set_watch_regs(struct task_struct *child,
-+			  struct pt_watch_regs __user *addr)
-+{
-+	int i;
-+	int watch_active = 0;
-+	unsigned long lt[NUM_WATCH_REGS];
-+	u16 ht[NUM_WATCH_REGS];
-+
-+	if (!cpu_has_watch || current_cpu_data.watch_reg_use_cnt == 0)
-+		return -EIO;
-+	if (!access_ok(VERIFY_READ, addr, sizeof(struct pt_watch_regs)))
-+		return -EIO;
-+	/* Check the values. */
-+	for (i = 0; i < current_cpu_data.watch_reg_use_cnt; i++) {
-+		__get_user(lt[i], &addr->WATCH_STYLE.watchlo[i]);
-+#ifdef CONFIG_32BIT
-+		if (lt[i] & __UA_LIMIT)
-+			return -EINVAL;
-+#else
-+		if (test_tsk_thread_flag(child, TIF_32BIT_ADDR)) {
-+			if (lt[i] & 0xffffffff80000000UL)
-+				return -EINVAL;
-+		} else {
-+			if (lt[i] & __UA_LIMIT)
-+				return -EINVAL;
-+		}
-+#endif
-+		__get_user(ht[i], &addr->WATCH_STYLE.watchhi[i]);
-+		if (ht[i] & ~0xff8)
-+			return -EINVAL;
-+	}
-+	/* Install them. */
-+	for (i = 0; i < current_cpu_data.watch_reg_use_cnt; i++) {
-+		if (lt[i] & 7)
-+			watch_active = 1;
-+		child->thread.watch.mips3264.watchlo[i] = lt[i];
-+		/* Set the G bit. */
-+		child->thread.watch.mips3264.watchhi[i] = ht[i];
-+	}
-+
-+	if (watch_active)
-+		set_tsk_thread_flag(child, TIF_LOAD_WATCH);
-+	else
-+		clear_tsk_thread_flag(child, TIF_LOAD_WATCH);
-+
-+	return 0;
-+}
-+
- long arch_ptrace(struct task_struct *child, long request, long addr, long data)
- {
- 	int ret;
-@@ -440,6 +528,16 @@ long arch_ptrace(struct task_struct *child, long request, long addr, long data)
- 				(unsigned long __user *) data);
- 		break;
- 
-+	case PTRACE_GET_WATCH_REGS:
-+		ret = ptrace_get_watch_regs(child,
-+					(struct pt_watch_regs __user *) addr);
-+		break;
-+
-+	case PTRACE_SET_WATCH_REGS:
-+		ret = ptrace_set_watch_regs(child,
-+					(struct pt_watch_regs __user *) addr);
-+		break;
-+
- 	default:
- 		ret = ptrace_request(child, request, addr, data);
- 		break;
-diff --git a/arch/mips/kernel/ptrace32.c b/arch/mips/kernel/ptrace32.c
-index 76818be..3e219de 100644
---- a/arch/mips/kernel/ptrace32.c
-+++ b/arch/mips/kernel/ptrace32.c
-@@ -42,6 +42,11 @@ int ptrace_setregs(struct task_struct *child, __s64 __user *data);
- int ptrace_getfpregs(struct task_struct *child, __u32 __user *data);
- int ptrace_setfpregs(struct task_struct *child, __u32 __user *data);
- 
-+int ptrace_get_watch_regs(struct task_struct *child,
-+			  struct pt_watch_regs __user *addr);
-+int ptrace_set_watch_regs(struct task_struct *child,
-+			  struct pt_watch_regs __user *addr);
-+
- /*
-  * Tracing a 32-bit process with a 64-bit strace and vice versa will not
-  * work.  I don't know how to fix this.
-@@ -410,6 +415,16 @@ asmlinkage int sys32_ptrace(int request, int pid, int addr, int data)
- 				(unsigned long __user *) (unsigned long) data);
- 		break;
- 
-+	case PTRACE_GET_WATCH_REGS:
-+		ret = ptrace_get_watch_regs(child,
-+			(struct pt_watch_regs __user *) (unsigned long) addr);
-+		break;
-+
-+	case PTRACE_SET_WATCH_REGS:
-+		ret = ptrace_set_watch_regs(child,
-+			(struct pt_watch_regs __user *) (unsigned long) addr);
-+		break;
-+
- 	default:
- 		ret = ptrace_request(child, request, addr, data);
- 		break;
-diff --git a/include/asm-mips/ptrace.h b/include/asm-mips/ptrace.h
-index 786f7e3..a9f2201 100644
---- a/include/asm-mips/ptrace.h
-+++ b/include/asm-mips/ptrace.h
-@@ -71,6 +71,44 @@ struct pt_regs {
- #define PTRACE_POKEDATA_3264	0xc3
- #define PTRACE_GET_THREAD_AREA_3264	0xc4
- 
-+/* Read and write watchpoint registers.  */
-+enum pt_watch_style {
-+	pt_watch_style_mips32,
-+	pt_watch_style_mips64
-+};
-+struct mips32_watch_regs {
-+	uint32_t watchlo[8];
-+	/* Lower 16 bits of watchhi. */
-+	uint16_t watchhi[8];
-+	/* Valid mask and I R W bits.
-+	 * bit 0 -- 1 if W bit is usable.
-+	 * bit 1 -- 1 if R bit is usable.
-+	 * bit 2 -- 1 if I bit is usable.
-+	 * bits 3 - 11 -- Valid watchhi mask bits.
-+	 */
-+	uint16_t watch_masks[8];
-+	/* The number of valid watch register pairs.  */
-+	uint32_t num_valid;
-+} __attribute__ ((aligned (8)));
-+
-+struct mips64_watch_regs {
-+	uint64_t watchlo[8];
-+	uint16_t watchhi[8];
-+	uint16_t watch_masks[8];
-+	uint32_t num_valid;
-+} __attribute__ ((aligned (8)));
-+
-+struct pt_watch_regs {
-+	enum pt_watch_style style;
-+	union {
-+		struct mips32_watch_regs mips32;
-+		struct mips32_watch_regs mips64;
-+	};
-+};
-+
-+#define PTRACE_GET_WATCH_REGS	0xd0
-+#define PTRACE_SET_WATCH_REGS	0xd1
-+
- #ifdef __KERNEL__
- 
- #include <linux/linkage.h>
--- 
-1.5.5.1
+and
+
+> +	case 4:
+> +		watches->watchhi[3] = (read_c0_watchhi3() & 0x0fff);
+> +	case 3:
+> +		watches->watchhi[2] = (read_c0_watchhi2() & 0x0fff);
+> +	case 2:
+> +		watches->watchhi[1] = (read_c0_watchhi1() & 0x0fff);
+> +	case 1:
+> +		watches->watchhi[0] = (read_c0_watchhi0() & 0x0fff);
+
+and
+
+> +	case 8:
+> +		write_c0_watchlo7(0);
+> +	case 7:
+> +		write_c0_watchlo6(0);
+> +	case 6:
+> +		write_c0_watchlo5(0);
+> +	case 5:
+> +		write_c0_watchlo4(0);
+> +	case 4:
+> +		write_c0_watchlo3(0);
+> +	case 3:
+> +		write_c0_watchlo2(0);
+> +	case 2:
+> +		write_c0_watchlo1(0);
+> +	case 1:
+> +		write_c0_watchlo0(0);
+
+do the same for each registers, perhaps it makes sense to create
+read_c0_watchhi(), write_c0_watchlo(), and write_c0_watchhi() macros
+that take the watchdog register index as a parameter? Then the above can
+be turned in simple loops.
+
+> +	write_c0_watchlo0(7);
+> +	t = read_c0_watchlo0();
+> +	write_c0_watchlo0(0);
+> +	c->watch_reg_masks[0] = t & 7;
+> +
+> +	/* Write the mask bits and read them back to determine which
+> +	 * can be used. */
+> +	c->watch_reg_count = 1;
+> +	c->watch_reg_use_cnt = 1;
+> +	t = read_c0_watchhi0();
+> +	write_c0_watchhi0(t | 0xff8);
+> +	t = read_c0_watchhi0();
+> +	c->watch_reg_masks[0] |= (t & 0xff8);
+> +	if ((t & 0x80000000) == 0)
+> +		return;
+> +
+> +	write_c0_watchlo1(7);
+> +	t = read_c0_watchlo1();
+> +	write_c0_watchlo1(0);
+> +	c->watch_reg_masks[1] = t & 7;
+> +
+> +	c->watch_reg_count = 2;
+> +	c->watch_reg_use_cnt = 2;
+> +	t = read_c0_watchhi1();
+> +	write_c0_watchhi1(t | 0xff8);
+> +	t = read_c0_watchhi1();
+> +	c->watch_reg_masks[1] |= (t & 0xff8);
+> +	if ((t & 0x80000000) == 0)
+> +		return;
+> +
+> +	write_c0_watchlo2(7);
+> +	t = read_c0_watchlo2();
+> +	write_c0_watchlo2(0);
+> +	c->watch_reg_masks[2] = t & 7;
+> +
+> +	c->watch_reg_count = 3;
+> +	c->watch_reg_use_cnt = 3;
+> +	t = read_c0_watchhi2();
+> +	write_c0_watchhi2(t | 0xff8);
+> +	t = read_c0_watchhi2();
+> +	c->watch_reg_masks[2] |= (t & 0xff8);
+> +	if ((t & 0x80000000) == 0)
+> +		return;
+> +
+> +	write_c0_watchlo3(7);
+> +	t = read_c0_watchlo3();
+> +	write_c0_watchlo3(0);
+> +	c->watch_reg_masks[3] = t & 7;
+> +
+> +	c->watch_reg_count = 4;
+> +	c->watch_reg_use_cnt = 4;
+> +	t = read_c0_watchhi3();
+> +	write_c0_watchhi3(t | 0xff8);
+> +	t = read_c0_watchhi3();
+> +	c->watch_reg_masks[3] |= (t & 0xff8);
+> +	if ((t & 0x80000000) == 0)
+> +		return;
+
+Same here
+
+> +	/* We use at most 4, but probe and report up to 8. */
+> +	c->watch_reg_count = 5;
+> +	t = read_c0_watchhi4();
+> +	if ((t & 0x80000000) == 0)
+> +		return;
+> +
+> +	c->watch_reg_count = 6;
+> +	t = read_c0_watchhi5();
+> +	if ((t & 0x80000000) == 0)
+> +		return;
+> +
+> +	c->watch_reg_count = 7;
+> +	t = read_c0_watchhi6();
+> +	if ((t & 0x80000000) == 0)
+> +		return;
+> +
+> +	c->watch_reg_count = 8;
+
+and here
+
+BTW, no check for read_c0_watchhi7()?
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

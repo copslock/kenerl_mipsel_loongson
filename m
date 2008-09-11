@@ -1,42 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Sep 2008 15:15:40 +0100 (BST)
-Received: from aux-209-217-49-36.oklahoma.net ([209.217.49.36]:22534 "EHLO
-	proteus.paralogos.com") by ftp.linux-mips.org with ESMTP
-	id S20184321AbYIKOPc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 11 Sep 2008 15:15:32 +0100
-Received: from [217.109.65.213] ([217.109.65.213])
-	by proteus.paralogos.com (8.9.3/8.9.3) with ESMTP id JAA29493
-	for <linux-mips@linux-mips.org>; Thu, 11 Sep 2008 09:44:23 -0500
-Message-ID: <48C927D5.3050805@paralogos.com>
-Date:	Thu, 11 Sep 2008 16:14:45 +0200
-From:	"Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Thunderbird 2.0.0.14 (X11/20080501)
-MIME-Version: 1.0
-To:	Linux MIPS Org <linux-mips@linux-mips.org>
-Subject: SMTC Patches [4 of 3]
-Content-Type: multipart/mixed;
- boundary="------------080409070604030702060502"
-Return-Path: <kevink@paralogos.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20460
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
-Precedence: bulk
-X-list: linux-mips
-
-This is a multi-part message in MIME format.
---------------080409070604030702060502
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Kevin D. Kissell <kevink@paralogos.com>
+Date: Thu, 11 Sep 2008 15:42:19 +0200
+Subject: [PATCH] Fix some holes in the automated FPU affinity logic for SMTC and SMVP.
+ Signed-off-by: Kevin D. Kissell <kevink@paralogos.com>
+Message-ID: <20080911134219.JNO6LOSam2hvvkJETmL_IC-YqUDjUt4yx2-e_5W8rZE@z>
 
 
---------------080409070604030702060502
-Content-Type: text/x-patch;
- name="0004-Fix-some-holes-in-the-automated-FPU-affinity-logic-f.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename*0="0004-Fix-some-holes-in-the-automated-FPU-affinity-logic-f.pa";
- filename*1="tch"
+diff --git a/arch/mips/kernel/mips-mt-fpaff.c b/arch/mips/kernel/mips-mt-fpaff.c
+index df4d3f2..dc9eb72 100644
+--- a/arch/mips/kernel/mips-mt-fpaff.c
++++ b/arch/mips/kernel/mips-mt-fpaff.c
+@@ -159,7 +159,7 @@ __setup("fpaff=", fpaff_thresh);
+ /*
+  * FPU Use Factor empirically derived from experiments on 34K
+  */
+-#define FPUSEFACTOR 333
++#define FPUSEFACTOR 2000
+ 
+ static __init int mt_fp_affinity_init(void)
+ {
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 75277c8..8dd44ea 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -152,22 +152,18 @@ int copy_thread(int nr, unsigned long clone_flags, unsigned long usp,
+ 	 */
+ 	p->thread.cp0_status = read_c0_status() & ~(ST0_CU2|ST0_CU1);
+ 	childregs->cp0_status &= ~(ST0_CU2|ST0_CU1);
++#ifdef CONFIG_MIPS_MT_SMTC
++	/*
++	 * SMTC restores TCStatus after Status, and the CU bits
++	 * are aliased there.
++	 */
++	childregs->cp0_tcstatus &= ~(ST0_CU2|ST0_CU1);
++#endif
++
+ 	clear_tsk_thread_flag(p, TIF_USEDFPU);
+ 
+ #ifdef CONFIG_MIPS_MT_FPAFF
+ 	clear_tsk_thread_flag(p, TIF_FPUBOUND);
+-	/*
+-	 * FPU affinity support requires that we be subtle.
+-	 * The basic fork support code will have copied
+-	 * the parent's cpus_allowed set, but what the child
+-	 * needs to inherit is the "user" version, which
+-	 * carries the program/user controlled CPU affinity
+-	 * properties that are supposed to be inherited,
+-	 * but not the transient, overlayed, hardware
+-	 * affinity constraints.
+-	 */
+-	p->thread.user_cpus_allowed = current->thread.user_cpus_allowed;
+-	p->cpus_allowed = current->thread.user_cpus_allowed;
+ #endif /* CONFIG_MIPS_MT_FPAFF */
+ 
+ 	if (clone_flags & CLONE_SETTLS)
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index f9165d1..0d1329e 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -807,8 +807,10 @@ static void mt_ase_fp_affinity(void)
+ 		if (cpus_intersects(current->cpus_allowed, mt_fpu_cpumask)) {
+ 			cpumask_t tmask;
+ 
+-			cpus_and(tmask, current->thread.user_cpus_allowed,
+-			         mt_fpu_cpumask);
++			current->thread.user_cpus_allowed
++				= current->cpus_allowed;
++			cpus_and(tmask, current->cpus_allowed,
++				mt_fpu_cpumask);
+ 			set_cpus_allowed(current, tmask);
+ 			set_thread_flag(TIF_FPUBOUND);
+ 		}
+-- 
+1.5.3.3
+
+
+--------------080409070604030702060502--

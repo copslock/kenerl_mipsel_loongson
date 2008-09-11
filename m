@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Sep 2008 06:59:53 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.134]:11478 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Sep 2008 07:07:06 +0100 (BST)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.134]:60634 "EHLO
 	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S20136649AbYIKF7v (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 11 Sep 2008 06:59:51 +0100
+	id S62089637AbYIKGCH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 11 Sep 2008 07:02:07 +0100
 Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 4B6A432083F;
-	Thu, 11 Sep 2008 05:59:47 +0000 (UTC)
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 728373203EC;
+	Thu, 11 Sep 2008 06:02:03 +0000 (UTC)
 X-Authenticated-Name: js.dnsmadeeasy
 X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
 Received: from avtrex.com (unknown [173.8.135.205])
 	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
-	Thu, 11 Sep 2008 05:59:47 +0000 (UTC)
+	Thu, 11 Sep 2008 06:02:03 +0000 (UTC)
 Received: from silver64.hq2.avtrex.com ([192.168.7.222]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 10 Sep 2008 22:59:44 -0700
-Message-ID: <48C8B3CF.4000303@avtrex.com>
-Date:	Wed, 10 Sep 2008 22:59:43 -0700
+	 Wed, 10 Sep 2008 23:02:00 -0700
+Message-ID: <48C8B457.3020308@avtrex.com>
+Date:	Wed, 10 Sep 2008 23:01:59 -0700
 From:	David Daney <ddaney@avtrex.com>
 User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
 MIME-Version: 1.0
 To:	linux-mips@linux-mips.org
 Cc:	linux-kernel@vger.kernel.org
-Subject: [Patch 4/6] MIPS: Watch exception handling for HARDWARE_WATCHPOINTS.
+Subject: [Patch 5/6] MIPS: Scheduler support for HARDWARE_WATCHPOINTS.
 References: <48C8ADEF.9020305@avtrex.com>
 In-Reply-To: <48C8ADEF.9020305@avtrex.com>
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 11 Sep 2008 05:59:44.0108 (UTC) FILETIME=[9684C2C0:01C913D3]
+X-OriginalArrivalTime: 11 Sep 2008 06:02:00.0342 (UTC) FILETIME=[E7B86B60:01C913D3]
 Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20452
+X-archive-position: 20453
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,65 +38,36 @@ X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-Watch exception handling for HARDWARE_WATCHPOINTS.
+Scheduler support for HARDWARE_WATCHPOINTS.
 
-Here we hook up the watch exception handler so that it sends SIGTRAP when
-the hardware watch registers are triggered.
+Here we hook up the scheduler.  Whenever we switch to a new process,
+we check to see if the watch registers should be installed, and do it
+if needed.
 
 Signed-off-by: David Daney <ddaney@avtrex.com>
 ---
- arch/mips/kernel/genex.S |    4 ++++
- arch/mips/kernel/traps.c |   14 +++++++++-----
- 2 files changed, 13 insertions(+), 5 deletions(-)
+ include/asm-mips/system.h |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
-index c6ada98..15a9bde 100644
---- a/arch/mips/kernel/genex.S
-+++ b/arch/mips/kernel/genex.S
-@@ -416,7 +416,11 @@ NESTED(nmi_handler, PT_SIZE, sp)
- 	BUILD_HANDLER tr tr sti silent			/* #13 */
- 	BUILD_HANDLER fpe fpe fpe silent		/* #15 */
- 	BUILD_HANDLER mdmx mdmx sti silent		/* #22 */
-+#ifdef 	CONFIG_HARDWARE_WATCHPOINTS
-+	BUILD_HANDLER watch watch sti silent		/* #23 */
-+#else
- 	BUILD_HANDLER watch watch sti verbose		/* #23 */
-+#endif
- 	BUILD_HANDLER mcheck mcheck cli verbose		/* #24 */
- 	BUILD_HANDLER mt mt sti silent			/* #25 */
- 	BUILD_HANDLER dsp dsp sti silent		/* #26 */
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 6bee290..5fbf591 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -42,6 +42,7 @@
- #include <asm/tlbdebug.h>
- #include <asm/traps.h>
- #include <asm/uaccess.h>
+diff --git a/include/asm-mips/system.h b/include/asm-mips/system.h
+index a944eda..cd30f83 100644
+--- a/include/asm-mips/system.h
++++ b/include/asm-mips/system.h
+@@ -20,6 +20,7 @@
+ #include <asm/cmpxchg.h>
+ #include <asm/cpu-features.h>
+ #include <asm/dsp.h>
 +#include <asm/watch.h>
- #include <asm/mmu_context.h>
- #include <asm/types.h>
- #include <asm/stacktrace.h>
-@@ -908,12 +909,15 @@ asmlinkage void do_mdmx(struct pt_regs *regs)
- asmlinkage void do_watch(struct pt_regs *regs)
- {
- 	/*
--	 * We use the watch exception where available to detect stack
--	 * overflows.
-+	 * If the current thread has the watch registers loaded, save
-+	 * their values and send SIGTRAP.  Otherwise another thread
-+	 * left the registers set, clear them and continue.
- 	 */
--	dump_tlb_all();
--	show_regs(regs);
--	panic("Caught WATCH exception - probably caused by stack overflow.");
-+	if (test_tsk_thread_flag(current, TIF_LOAD_WATCH)) {
-+		mips_read_watch_registers();
-+		force_sig(SIGTRAP, current);
-+	} else
-+		mips_clear_watch_registers();
- }
+ #include <asm/war.h>
  
- asmlinkage void do_mcheck(struct pt_regs *regs)
+ 
+@@ -76,6 +77,7 @@ do {									\
+ 		__restore_dsp(current);					\
+ 	if (cpu_has_userlocal)						\
+ 		write_c0_userlocal(current_thread_info()->tp_value);	\
++	__restore_watch();						\
+ } while (0)
+ 
+ static inline unsigned long __xchg_u32(volatile int * m, unsigned int val)
 -- 
 1.5.5.1

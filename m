@@ -1,51 +1,106 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Sep 2008 16:03:55 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:11210 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20178482AbYIKPDw (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 11 Sep 2008 16:03:52 +0100
-Received: from localhost (p5068-ipad311funabasi.chiba.ocn.ne.jp [123.217.215.68])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 162EDB624; Fri, 12 Sep 2008 00:03:45 +0900 (JST)
-Date:	Fri, 12 Sep 2008 00:03:49 +0900 (JST)
-Message-Id: <20080912.000349.18312151.anemo@mba.ocn.ne.jp>
-To:	sshtylyov@ru.mvista.com
-Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
-	bzolnier@gmail.com, ralf@linux-mips.org
-Subject: Re: [PATCH 1/2] ide: Add tx4939ide driver
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <48C7EDE4.3090400@ru.mvista.com>
-References: <48C6B768.4010200@ru.mvista.com>
-	<20080911.003222.51867360.anemo@mba.ocn.ne.jp>
-	<48C7EDE4.3090400@ru.mvista.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Sep 2008 16:05:56 +0100 (BST)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.134]:45535 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S20178947AbYIKPFw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 11 Sep 2008 16:05:52 +0100
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 3F478320A3B;
+	Thu, 11 Sep 2008 15:05:50 +0000 (UTC)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [173.8.135.205])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP;
+	Thu, 11 Sep 2008 15:05:50 +0000 (UTC)
+Received: from silver64.hq2.avtrex.com ([192.168.7.221]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 11 Sep 2008 08:05:39 -0700
+Message-ID: <48C933C2.3070906@avtrex.com>
+Date:	Thu, 11 Sep 2008 08:05:38 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
+MIME-Version: 1.0
+To:	Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [Patch 2/6] MIPS: Add HARDWARE_WATCHPOINTS definitions and support
+ code.
+References: <48C8ADEF.9020305@avtrex.com> <48C8B2C3.4050002@avtrex.com> <Pine.LNX.4.64.0809110922090.29543@anakin>
+In-Reply-To: <Pine.LNX.4.64.0809110922090.29543@anakin>
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+X-OriginalArrivalTime: 11 Sep 2008 15:05:39.0101 (UTC) FILETIME=[DA040CD0:01C9141F]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20462
+X-archive-position: 20463
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 10 Sep 2008 19:55:16 +0400, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
-> > But the "Command Transfer Mode Select" bits affects access timings on
-> > setting task registers for DMA command.
+Geert Uytterhoeven wrote:
+> On Wed, 10 Sep 2008, David Daney wrote:
 > 
->     So what? PIO and DMA are different protocols on IDE bus, so they shouldn't 
-> affect each other. The IDE core will always tune the best PIO mode for you, so 
-> the optimal command timings will be set.
+> Given
+> 
+>> +	case 4:
+>> +		write_c0_watchlo3(watches->watchlo[3]);
+>> +		/* Write 1 to the I, R, and W bits to clear them, and
+>> +		   1 to G so all ASIDs are trapped. */
+>> +		write_c0_watchhi3(0x40000007 | watches->watchhi[3]);
+>> +	case 3:
+>> +		write_c0_watchlo2(watches->watchlo[2]);
+>> +		write_c0_watchhi2(0x40000007 | watches->watchhi[2]);
+>> +	case 2:
+>> +		write_c0_watchlo1(watches->watchlo[1]);
+>> +		write_c0_watchhi1(0x40000007 | watches->watchhi[1]);
+>> +	case 1:
+>> +		write_c0_watchlo0(watches->watchlo[0]);
+>> +		write_c0_watchhi0(0x40000007 | watches->watchhi[0]);
+> 
+> and
+> 
+>> +	case 4:
+>> +		watches->watchhi[3] = (read_c0_watchhi3() & 0x0fff);
+>> +	case 3:
+>> +		watches->watchhi[2] = (read_c0_watchhi2() & 0x0fff);
+>> +	case 2:
+>> +		watches->watchhi[1] = (read_c0_watchhi1() & 0x0fff);
+>> +	case 1:
+>> +		watches->watchhi[0] = (read_c0_watchhi0() & 0x0fff);
 
-Hmm, that would be a thing I had misunderstood.  I thought
-set_pio_mode is not called when the drive was DMA capable.
+[...]
 
-Thank you for detailed review!
+> do the same for each registers, perhaps it makes sense to create
+> read_c0_watchhi(), write_c0_watchlo(), and write_c0_watchhi() macros
+> that take the watchdog register index as a parameter? Then the above can
+> be turned in simple loops.
 
----
-Atsushi Nemoto
+I thought that too when I first started looking at it, but the
+{read,write}_c0_watchhi{0,1,2,3,4,5,6,7} macros expand to a single
+machine instruction.  The bit pattern of the instruction is determined
+at compile time, so you would need something like the switch statement
+somewhere.  Explicitly showing it in the code seemed as good as hiding
+the complexity in some macro or access function.
+
+[...]
+
+>> +	c->watch_reg_count = 7;
+>> +	t = read_c0_watchhi6();
+>> +	if ((t & 0x80000000) == 0)
+>> +		return;
+>> +
+>> +	c->watch_reg_count = 8;
+> 
+> and here
+> 
+> BTW, no check for read_c0_watchhi7()?
+> 
+
+The current patch uses a maximum of four register sets, since we are
+only reporting the number of sets, we don't care about the
+characteristics of watchhi[7] and thus don't need to read it.
+
+Thanks,
+David Daney

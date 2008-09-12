@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Sep 2008 17:43:58 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:25871 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20272594AbYILQn4 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 12 Sep 2008 17:43:56 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Sep 2008 18:20:04 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:50193 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20284677AbYILRSn (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 12 Sep 2008 18:18:43 +0100
 Received: from [192.168.1.234] (unknown [10.150.0.9])
 	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 3EAFA3ECC; Fri, 12 Sep 2008 09:43:53 -0700 (PDT)
-Message-ID: <48CA9C74.1080004@ru.mvista.com>
-Date:	Fri, 12 Sep 2008 20:44:36 +0400
+	id 530603EC9; Fri, 12 Sep 2008 10:18:39 -0700 (PDT)
+Message-ID: <48CAA498.9090804@ru.mvista.com>
+Date:	Fri, 12 Sep 2008 21:19:20 +0400
 From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
 Organization: MontaVista Software Inc.
 User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
@@ -24,15 +24,13 @@ Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20480
+X-archive-position: 20481
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
 X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
-
-Hello.
 
 Atsushi Nemoto wrote:
 
@@ -49,25 +47,12 @@ Atsushi Nemoto wrote:
 
 > Well, let me explain a bit.  The datasheed say I should wait _both_
 > XFERINT and HOST interrupt.  So, if only one of them was asserted, I
-
-    Since this is SFF-8038i compatible, you should first check if the spec'ed
-interrupt status bit (called IDE_INT here) is set. If it isn't [always] get
-set when it should, you may check for other interrupt bits (XFEREND/HOST/etc.)
-and take the necessary measures if you detect interrupt on them.
-
 > mask it and wait another one.  But on the error case, only HOST was
-> asserted and XFERINT was never asserted.
+> asserted and XFERINT was never asserted.  Then I could not exit from
+> "waiting another one" state, until timeout.
 
-    And I suspect that IDE_INT also doesn't get set, right? The check for 
-ERR=1 however is not needed. If the drive does assert its interrupt signal 
-(INTRQ), it knows better why.
-
-> Then I could not exit from "waiting another one" state, until timeout.
-
-    Well, at least most of the other [PCI] drivers will wait for timeout in 
-the case of the DMA status register bit 2 (IDE_INT here) not set -- despite 
-some IDE chips do have bits indicating the INTRQ status from IDE bus. But 
-usually, INTRQ still comes thru to this bit even if a command ends in error... 
-This isn't the case here?
+    Hmm, I got it: you decide whether it's worth waiting more for XFEREND 
+interrupt based on whether ERR is set or not. I suppose IDE_INT doesn't get 
+set in case the command gets endede with ERR set?
 
 MBR, Sergei

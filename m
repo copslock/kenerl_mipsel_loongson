@@ -1,21 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Sep 2008 14:36:59 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:42479 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S28598898AbYIMNg5 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 13 Sep 2008 14:36:57 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Sep 2008 16:49:48 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:48862 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S28662180AbYIMPtp (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 13 Sep 2008 16:49:45 +0100
 Received: from localhost (p1248-ipad201funabasi.chiba.ocn.ne.jp [222.146.64.248])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id CA47DBD08; Sat, 13 Sep 2008 22:36:51 +0900 (JST)
-Date:	Sat, 13 Sep 2008 22:37:03 +0900 (JST)
-Message-Id: <20080913.223703.108120497.anemo@mba.ocn.ne.jp>
-To:	alan@lxorguk.ukuu.org.uk
-Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
-	bzolnier@gmail.com, ralf@linux-mips.org, sshtylyov@ru.mvista.com
-Subject: Re: [PATCH 1/2] ide: Add tx4939ide driver
+	id D445BBD32; Sun, 14 Sep 2008 00:49:39 +0900 (JST)
+Date:	Sun, 14 Sep 2008 00:49:51 +0900 (JST)
+Message-Id: <20080914.004951.41872502.anemo@mba.ocn.ne.jp>
+To:	linux-sparse@vger.kernel.org
+Cc:	linux-mips@linux-mips.org, sam@ravnborg.org,
+	viro@ZenIV.linux.org.uk
+Subject: Re: [PATCH] sparse: Make pre_buffer dynamically increasable
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20080911.000649.39154743.anemo@mba.ocn.ne.jp>
-References: <20080910.010824.07456636.anemo@mba.ocn.ne.jp>
-	<20080909174459.2aa9808a@lxorguk.ukuu.org.uk>
-	<20080911.000649.39154743.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20080720.002224.108306935.anemo@mba.ocn.ne.jp>
+References: <20080720.002224.108306935.anemo@mba.ocn.ne.jp>
 X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
 X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
 X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
@@ -26,7 +24,7 @@ Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20484
+X-archive-position: 20485
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,15 +32,57 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 11 Sep 2008 00:06:49 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> The dmatable_cpu is allocated by pci_alloc_consistent so that flush is
-> not needed.  But... this is not PCI device.  I should not use
-> ide_allocate_dma_engine().  I'll fix it.
+On Sun, 20 Jul 2008 00:22:24 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> I got this error when running sparse on mips kernel with gcc 4.3:
+> 
+> builtin:272:1: warning: Newline in string or character constant
+> 
+> The linux-mips kernel uses '$(CC) -dM -E' to generates arguments for
+> sparse.  With gcc 4.3, it generates lot of '-D' options and causes
+> pre_buffer overflow.  The linux-mips kernel can filter unused symbols
+> out to avoid overflow, but sparse should be fixed anyway.
+> 
+> This patch make pre_buffer dynamically increasable and add extra
+> checking for overflow instead of silently truncating.
+> 
+> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-Fortunately such a fix will not be needed.  A patch making
-ide_allocate_dma_engine() independent from PCI already posted (
-"[PATCH 4/8] ide: switch to DMA-mapping API part 2").  I can use
-ide_allocate_dma_engine() with non-PCI device safely.  Thanks.
+Ping?
 
----
-Atsushi Nemoto
+> ---
+> diff --git a/lib.c b/lib.c
+> index 0abcc9a..6e8d09b 100644
+> --- a/lib.c
+> +++ b/lib.c
+> @@ -186,7 +186,8 @@ void die(const char *fmt, ...)
+>  }
+>  
+>  static unsigned int pre_buffer_size;
+> -static char pre_buffer[8192];
+> +static unsigned int pre_buffer_alloc_size;
+> +static char *pre_buffer;
+>  
+>  int Waddress_space = 1;
+>  int Wbitwise = 0;
+> @@ -232,12 +233,20 @@ void add_pre_buffer(const char *fmt, ...)
+>  	unsigned int size;
+>  
+>  	va_start(args, fmt);
+> +	if (pre_buffer_alloc_size < pre_buffer_size + getpagesize()) {
+> +		pre_buffer_alloc_size += getpagesize();
+> +		pre_buffer = realloc(pre_buffer, pre_buffer_alloc_size);
+> +		if (!pre_buffer)
+> +			die("Unable to allocate more pre_buffer space");
+> +	}
+>  	size = pre_buffer_size;
+>  	size += vsnprintf(pre_buffer + size,
+> -		sizeof(pre_buffer) - size,
+> +		pre_buffer_alloc_size - size,
+>  		fmt, args);
+>  	pre_buffer_size = size;
+>  	va_end(args);
+> +	if (pre_buffer_size >= pre_buffer_alloc_size - 1)
+> +		die("pre_buffer overflow");
+>  }
+>  
+>  static char **handle_switch_D(char *arg, char **next)

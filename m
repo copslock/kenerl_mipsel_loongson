@@ -1,131 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Sep 2008 20:55:08 +0100 (BST)
-Received: from fg-out-1718.google.com ([72.14.220.157]:40430 "EHLO
-	fg-out-1718.google.com") by ftp.linux-mips.org with ESMTP
-	id S20143946AbYIPTzF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 16 Sep 2008 20:55:05 +0100
-Received: by fg-out-1718.google.com with SMTP id d23so1805323fga.32
-        for <linux-mips@linux-mips.org>; Tue, 16 Sep 2008 12:55:04 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from
-         :user-agent:mime-version:to:cc:subject:references:in-reply-to
-         :content-type:content-transfer-encoding;
-        bh=HXa5qiF5NTfG8eu06kP72eZPmG9zDnqeRWrYl/Laf18=;
-        b=SewIOaGWccgc5uNXAoP6TUBA+ZHAf8WbrAQ4bxYJaVVoiqbZaQ8d/0ohq5LcKRGP0m
-         kSf1bm08r6D+OKXG0gRnWJudc7zLl5O1n7OqXZrVDeKe6la+HEHSYendfIe+skV74SOD
-         QtCWmjGcQbC8JFwGgY1ZwwafaJ3+JLuD+io+Y=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        b=QIdo4Bj5Bd7r58WaoYejtO3lyFYTfwfZgjynudEmt3ck63p9Gz+B1SzBwzWNhCgah6
-         xNN7DA4YUYxRamBzlh/pM7Vr4TlxrlTSW5twA+5J9XHz/tPfWXxCLWl1OeTp7KbMFul0
-         ZW0cZKbCrzM7E3XwelilTL9Sxueafp8m2UwnQ=
-Received: by 10.181.21.6 with SMTP id y6mr1096301bki.86.1221594903973;
-        Tue, 16 Sep 2008 12:55:03 -0700 (PDT)
-Received: from ?192.168.1.117? ( [213.46.133.62])
-        by mx.google.com with ESMTPS id h6sm9015523nfh.21.2008.09.16.12.54.59
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 16 Sep 2008 12:55:00 -0700 (PDT)
-Message-ID: <48D06372.3050809@gmail.com>
-Date:	Tue, 16 Sep 2008 21:54:58 -0400
-From:	roel kluin <roel.kluin@gmail.com>
-User-Agent: Mozilla-Thunderbird 2.0.0.9 (X11/20080110)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Sep 2008 22:02:22 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:37219 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20148115AbYIPVCU (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 16 Sep 2008 22:02:20 +0100
+Received: from [127.0.0.1] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id CF7593EC9; Tue, 16 Sep 2008 14:02:14 -0700 (PDT)
+Message-ID: <48D01ED1.2010003@ru.mvista.com>
+Date:	Wed, 17 Sep 2008 01:02:09 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
 MIME-Version: 1.0
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-CC:	ralf@linux-mips.org, yoichi_yuasa@tripeaks.co.jp,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] [MIPS] vr41xx: unsigned irq cannot be negative
-References: <48CF02EE.8050406@gmail.com> <48CF8E05.6050000@ru.mvista.com>
-In-Reply-To: <48CF8E05.6050000@ru.mvista.com>
-Content-Type: text/plain; charset=ISO-8859-1
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
+	bzolnier@gmail.com, ralf@linux-mips.org
+Subject: Re: [PATCH 1/2] ide: Add tx4939ide driver
+References: <48CC3516.9080404@ru.mvista.com>	<20080914.220512.126760706.anemo@mba.ocn.ne.jp>	<48CF8A87.6030908@ru.mvista.com> <20080917.002034.27955909.anemo@mba.ocn.ne.jp> <48CFDDAD.4050209@ru.mvista.com>
+In-Reply-To: <48CFDDAD.4050209@ru.mvista.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <roel.kluin@gmail.com>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20508
+X-archive-position: 20509
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: roel.kluin@gmail.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Sergei Shtylyov wrote:
-> Hello.
+Hello, I wrote:
 
->> @@ -79,8 +80,9 @@ static void irq_dispatch(unsigned int irq)
->>              desc->chip->mask(source_irq);
->>              desc->chip->ack(source_irq);
->>          }
->> -        irq = cascade->get_irq(irq);
->> -        if (irq < 0)
->> +        ret = cascade->get_irq(irq);
->> +        irq = ret;
->> +        if (ret < 0)
->>              atomic_inc(&irq_err_count);
->>          else
->>              irq_dispatch(irq);
->>   
-> 
->  How about this:
-> 
->         ret = cascade->get_irq(irq);
->         if (ret < 0)
->             atomic_inc(&irq_err_count);
->         else
->             irq_dispatch(ret);
-> 
-> 
-> WBR, Sergei
+>>>>>   This doesn't look consistent (aside from the TX4939IDE_REG8/16 
+>>>>> issue) -- mm_outsw_swap() calls cpu_to_le16() before writing 
+>>>>> 16-bit data but this code doesn't. So, either one of those should 
+>>>>> be wrong...
+>>>>
+>>>> Thanks, this code should be wrong.  IDE_TFLAG_OUT_DATA is totally
+>>>> untested...
+>>>
+>>>   Hum, not necessarily...
+>>>   If the data register is BE, this should work correctly, if I don't 
+>>> mistake (once you fix the data register's address).
+>
+>> Hmm... or ide_tf_load()/ide_tf_read() is broken for big endian MIPS ?
+>> (and possibly SPARC etc.)
+>
+>> __ide_mm_writesw(port, &data, 1) should be used instead of writew()
+>> for IDE_TFLAG_OUT_DATA?
+>
+>    Probably the code there relies on the writew() doing the necessary 
+> byte swapping -- the same as ata_{in|out}_data() must be reying on 
+> ins[wl]() and outs[wl]() to do that, as well as on 
+> __ide_mm_reads[wl]() and __ide_mm_writes[wl]() -- which boil down to 
+> reads[wl]() and writes[wl]() on MIPS.
+>    What's not clear to me is why in MIPS read[wlq]() vs reads[wlq](), 
+> write[wlq]() vs writes[wl], in[wlq]() vs ins[wlq](), and out[wlq]() vs 
+> outs[wlq]() are using the different byte swapping: the single form 
+> uses ioswab[wlq]() while the sting form uses __mem_ioswab[wlq]() -- 
+> and those are defined as one swapping bytes and the other not in 
+> incluse/asm-mips/mach-generic/mangle-port.h. Cananybody shed some 
+> light on this?
 
-good suggestion, but shouldn't we then remove source_irq
-as well?
+   Oh, I think I understand: the "single" versions take/return the value 
+in host endian but the "string" version must treat the data as a stream 
+of bytes.
 
-Signed-off-by: Roel Kluin <roel.kluin@gmail.com>
----
-diff --git a/arch/mips/vr41xx/common/irq.c b/arch/mips/vr41xx/common/irq.c
-index cba36a2..ab4e327 100644
---- a/arch/mips/vr41xx/common/irq.c
-+++ b/arch/mips/vr41xx/common/irq.c
-@@ -63,6 +63,7 @@ static void irq_dispatch(unsigned int irq)
- {
- 	irq_cascade_t *cascade;
- 	struct irq_desc *desc;
-+	int ret;
- 
- 	if (irq >= NR_IRQS) {
- 		atomic_inc(&irq_err_count);
-@@ -71,21 +72,22 @@ static void irq_dispatch(unsigned int irq)
- 
- 	cascade = irq_cascade + irq;
- 	if (cascade->get_irq != NULL) {
--		unsigned int source_irq = irq;
--		desc = irq_desc + source_irq;
-+		desc = irq_desc + irq;
- 		if (desc->chip->mask_ack)
--			desc->chip->mask_ack(source_irq);
-+			desc->chip->mask_ack(irq);
- 		else {
--			desc->chip->mask(source_irq);
--			desc->chip->ack(source_irq);
-+			desc->chip->mask(irq);
-+			desc->chip->ack(irq);
- 		}
--		irq = cascade->get_irq(irq);
--		if (irq < 0)
-+
-+		ret = cascade->get_irq(irq);
-+		if (ret < 0)
- 			atomic_inc(&irq_err_count);
- 		else
--			irq_dispatch(irq);
-+			irq_dispatch(ret);
-+
- 		if (!(desc->status & IRQ_DISABLED) && desc->chip->unmask)
--			desc->chip->unmask(source_irq);
-+			desc->chip->unmask(irq);
- 	} else
- 		do_IRQ(irq);
- }
+MBR, Sergei

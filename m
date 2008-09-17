@@ -1,101 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Sep 2008 22:59:35 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:20582 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20162380AbYIPV7d (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 16 Sep 2008 22:59:33 +0100
-Received: from [127.0.0.1] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 5FEE23EC9; Tue, 16 Sep 2008 14:59:29 -0700 (PDT)
-Message-ID: <48D02C3C.90705@ru.mvista.com>
-Date:	Wed, 17 Sep 2008 01:59:24 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
-	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-	ralf@linux-mips.org
-Subject: Re: [PATCH 1/2] ide: Add tx4939ide driver
-References: <20080910.010824.07456636.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20080910.010824.07456636.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Sep 2008 03:27:10 +0100 (BST)
+Received: from mail.windriver.com ([147.11.1.11]:31998 "EHLO mail.wrs.com")
+	by ftp.linux-mips.org with ESMTP id S20171182AbYIQC1H (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 17 Sep 2008 03:27:07 +0100
+Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
+	by mail.wrs.com (8.13.6/8.13.6) with ESMTP id m8H2QwBb023784;
+	Tue, 16 Sep 2008 19:26:59 -0700 (PDT)
+Received: from localhost.localdomain ([128.224.162.196]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 16 Sep 2008 19:26:57 -0700
+From:	Weiwei Wang <weiwei.wang@windriver.com>
+To:	linux-mips@linux-mips.org, jgarzik@redhat.com, ralf@linux-mips.org
+Subject: [PATCH] convert sbmac tx to spin_lock_irqsave to prevent early IRQ enable
+Date:	Wed, 17 Sep 2008 10:25:37 +0800
+Message-Id: <6781da3918e3c34d23e5f7e9cf777ab463a17d5e.1221613284.git.weiwei.wang@windriver.com>
+X-Mailer: git-send-email 1.5.5.1
+X-OriginalArrivalTime: 17 Sep 2008 02:26:57.0536 (UTC) FILETIME=[DB86F800:01C9186C]
+Return-Path: <Weiwei.Wang@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20512
+X-archive-position: 20513
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: weiwei.wang@windriver.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+Netpoll will call the interrupt handler with interrupts
+disabled when using kgdboe, so spin_lock_irqsave() should
+be used instead of spin_lock_irq() to prevent interrupts
+from being incorrectly enabled.
 
-Atsushi Nemoto wrote:
+Signed-off-by: Weiwei Wang <weiwei.wang@windriver.com>
+---
+ drivers/net/sb1250-mac.c |   12 +++++++-----
+ 1 files changed, 7 insertions(+), 5 deletions(-)
 
-> This is the driver for the Toshiba TX4939 SoC ATA controller.
->
-> This controller has standard ATA taskfile registers and DMA
-> command/status registers, but the register layout is swapped on big
-> endian.  There are some other endian issue and some special registers
-> which requires many custom dma_ops/port_ops routines.
->
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
->   
-[...]
-> diff --git a/drivers/ide/mips/tx4939ide.c b/drivers/ide/mips/tx4939ide.c
-> new file mode 100644
-> index 0000000..ba9776d
-> --- /dev/null
-> +++ b/drivers/ide/mips/tx4939ide.c
-> @@ -0,0 +1,762 @@
->   
-[...]
-> +static int __tx4939ide_dma_setup(ide_drive_t *drive)
-> +{
-> +	ide_hwif_t *hwif = drive->hwif;
-> +	struct request *rq = HWGROUP(drive)->rq;
-> +	unsigned int reading;
-> +	u8 dma_stat;
-> +	unsigned long base = TX4939IDE_BASE(hwif);
-> +
-> +	if (rq_data_dir(rq))
-> +		reading = 0;
-> +	else
-> +		reading = 1 << 3;
-> +
-> +	/* fall back to pio! */
-> +	if (!ide_build_dmatable(drive, rq)) {
-> +		ide_map_sg(drive, rq);
-> +		return 1;
-> +	}
-> +#ifdef __BIG_ENDIAN
-> +	{
-> +		unsigned int *table = hwif->dmatable_cpu;
->   
-
-   s/unsigned int/__le32/ perhaps?
-
-> +		while (1) {
-> +			cpu_to_le64s((u64 *)table);
->   
-
-   Wait, PRD is already already in LE format, so this should be 
-le64_to_cpus().
-
-> +			if (*table & 0x80000000)
->   
-
-   Hum... you don't have to check that with ide_build_dmatable() 
-returning the PRD count...
-
-> +				break;
-> +			table += 2;
-> +		}
-> +	}
-> +#endif
->   
-
-MBR, Sergei
+diff --git a/drivers/net/sb1250-mac.c b/drivers/net/sb1250-mac.c
+index fe41e4e..ce10cfa 100644
+--- a/drivers/net/sb1250-mac.c
++++ b/drivers/net/sb1250-mac.c
+@@ -2069,9 +2069,10 @@ static irqreturn_t sbmac_intr(int irq,void *dev_instance)
+ static int sbmac_start_tx(struct sk_buff *skb, struct net_device *dev)
+ {
+ 	struct sbmac_softc *sc = netdev_priv(dev);
++	unsigned long flags;
+ 
+ 	/* lock eth irq */
+-	spin_lock_irq (&sc->sbm_lock);
++	spin_lock_irqsave(&sc->sbm_lock, flags);
+ 
+ 	/*
+ 	 * Put the buffer on the transmit ring.  If we
+@@ -2081,14 +2082,14 @@ static int sbmac_start_tx(struct sk_buff *skb, struct net_device *dev)
+ 	if (sbdma_add_txbuffer(&(sc->sbm_txdma),skb)) {
+ 		/* XXX save skb that we could not send */
+ 		netif_stop_queue(dev);
+-		spin_unlock_irq(&sc->sbm_lock);
++		spin_unlock_irqrestore(&sc->sbm_lock, flags);
+ 
+ 		return 1;
+ 	}
+ 
+ 	dev->trans_start = jiffies;
+ 
+-	spin_unlock_irq (&sc->sbm_lock);
++	spin_unlock_irqrestore(&sc->sbm_lock, flags);
+ 
+ 	return 0;
+ }
+@@ -2568,14 +2569,15 @@ static void sbmac_mii_poll(struct net_device *dev)
+ static void sbmac_tx_timeout (struct net_device *dev)
+ {
+ 	struct sbmac_softc *sc = netdev_priv(dev);
++	unsigned long flags;
+ 
+-	spin_lock_irq (&sc->sbm_lock);
++	spin_lock_irqsave(&sc->sbm_lock, flags);
+ 
+ 
+ 	dev->trans_start = jiffies;
+ 	dev->stats.tx_errors++;
+ 
+-	spin_unlock_irq (&sc->sbm_lock);
++	spin_unlock_irqrestore(&sc->sbm_lock, flags);
+ 
+ 	printk (KERN_WARNING "%s: Transmit timed out\n",dev->name);
+ }
+-- 
+1.5.5.1

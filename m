@@ -1,104 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Sep 2008 11:40:28 +0100 (BST)
-Received: from kirk.serum.com.pl ([213.77.9.205]:25589 "EHLO serum.com.pl")
-	by ftp.linux-mips.org with ESMTP id S20221419AbYIQKkI (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 17 Sep 2008 11:40:08 +0100
-Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
-	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m8HAe67q017339;
-	Wed, 17 Sep 2008 12:40:06 +0200
-Received: from localhost (macro@localhost)
-	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m8HAe2oM017335;
-	Wed, 17 Sep 2008 11:40:06 +0100
-Date:	Wed, 17 Sep 2008 11:40:01 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Bryan Phillippe <u1@terran.org>
-cc:	linux-mips@linux-mips.org
-Subject: Re: MIPS checksum bug
-In-Reply-To: <B45397E7-EBE4-497B-9055-42B604A909AA@terran.org>
-Message-ID: <Pine.LNX.4.55.0809171104290.17103@cliff.in.clinika.pl>
-References: <072748C6-07A9-4167-A8A5-80D0F7D9C784@darkforest.org>
- <B45397E7-EBE4-497B-9055-42B604A909AA@terran.org>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Sep 2008 12:41:05 +0100 (BST)
+Received: from mx1.redhat.com ([66.187.233.31]:39635 "EHLO mx1.redhat.com")
+	by ftp.linux-mips.org with ESMTP id S20219996AbYIQLk7 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 17 Sep 2008 12:40:59 +0100
+Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
+	by mx1.redhat.com (8.13.8/8.13.8) with ESMTP id m8HBeqTQ027791;
+	Wed, 17 Sep 2008 07:40:52 -0400
+Received: from shell.devel.redhat.com (shell.devel.redhat.com [10.10.36.195])
+	by int-mx1.corp.redhat.com (8.13.1/8.13.1) with ESMTP id m8HBepKH009692;
+	Wed, 17 Sep 2008 07:40:51 -0400
+Received: from shell.devel.redhat.com (localhost.localdomain [127.0.0.1])
+	by shell.devel.redhat.com (8.13.8/8.13.8) with ESMTP id m8HBepL7031159;
+	Wed, 17 Sep 2008 07:40:51 -0400
+Received: (from jgarzik@localhost)
+	by shell.devel.redhat.com (8.13.8/8.13.8/Submit) id m8HBepFY031158;
+	Wed, 17 Sep 2008 07:40:51 -0400
+Date:	Wed, 17 Sep 2008 07:40:51 -0400
+From:	Jeff Garzik <jgarzik@redhat.com>
+To:	Weiwei Wang <weiwei.wang@windriver.com>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] convert sbmac tx to spin_lock_irqsave to prevent early IRQ enable
+Message-ID: <20080917114051.GA30734@shell.devel.redhat.com>
+References: <6781da3918e3c34d23e5f7e9cf777ab463a17d5e.1221613284.git.weiwei.wang@windriver.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6781da3918e3c34d23e5f7e9cf777ab463a17d5e.1221613284.git.weiwei.wang@windriver.com>
+User-Agent: Mutt/1.4.2.2i
+X-Scanned-By: MIMEDefang 2.58 on 172.16.52.254
+Return-Path: <jgarzik@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20515
+X-archive-position: 20516
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: jgarzik@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 16 Sep 2008, Bryan Phillippe wrote:
-
-> I've experimented with the following change:
+On Wed, Sep 17, 2008 at 10:25:37AM +0800, Weiwei Wang wrote:
+> Netpoll will call the interrupt handler with interrupts
+> disabled when using kgdboe, so spin_lock_irqsave() should
+> be used instead of spin_lock_irq() to prevent interrupts
+> from being incorrectly enabled.
 > 
-> --- /home/bp/tmp/csum_partial.S.orig	2008-09-16 12:01:00.000000000 -0700
-> +++ arch/mips/lib/csum_partial.S	2008-09-16 11:51:44.000000000 -0700
-> @@ -281,6 +281,23 @@
-> 	.set	reorder
-> 	/* Add the passed partial csum.  */
-> 	ADDC(sum, a2)
-> +
-> +	/* fold checksum again to clear the high bits before returning */
-> +	.set	push
-> +	.set	noat
-> +#ifdef USE_DOUBLE
-> +	dsll32	v1, sum, 0
-> +	daddu	sum, v1
-> +	sltu	v1, sum, v1
-> +	dsra32	sum, sum, 0
-> +	addu	sum, v1
-> +#endif
-> +	sll	v1, sum, 16
-> +	addu	sum, v1
-> +	sltu	v1, sum, v1
-> +	srl	sum, sum, 16
-> +	addu	sum, v1
-> +
-> 	jr	ra
-> 	.set	noreorder
-> 	END(csum_partial)
-> 
-> and it seems to fix the problem for me.  Can you comment?
+> Signed-off-by: Weiwei Wang <weiwei.wang@windriver.com>
+> ---
+>  drivers/net/sb1250-mac.c |   12 +++++++-----
+>  1 files changed, 7 insertions(+), 5 deletions(-)
 
- It seems obvious that a carry from the bit #15 in the last addition of
-the passed checksum -- ADDC(sum, a2) -- will negate the effect of the
-folding.  However a simpler fix should do as well.  Try if the following
-patch works for you.  Please note this is completely untested and further
-optimisation is possible, but I've skipped it in this version for clarity.
+Please send to jeff@garzik.org or jgarzik@pobox.com.
 
- Thanks for raising the issue.
-
-  Maciej
-
-Signed-off-by: Maciej W. Rozycki <macro@linux-mips.org>
---- a/arch/mips/lib/csum_partial.S	2008-05-05 02:55:23.000000000 
-+0000
-+++ b/arch/mips/lib/csum_partial.S	2008-09-17 10:32:37.000000000 
-+0000
-@@ -253,6 +253,9 @@ LEAF(csum_partial)
- 
- 1:	ADDC(sum, t1)
- 
-+	/* Add the passed partial csum.  */
-+	ADDC(sum, a2)
-+
- 	/* fold checksum */
- 	.set	push
- 	.set	noat
-@@ -278,11 +281,8 @@ LEAF(csum_partial)
- 	andi	sum, 0xffff
- 	.set	pop
- 1:
--	.set	reorder
--	/* Add the passed partial csum.  */
--	ADDC(sum, a2)
- 	jr	ra
--	.set	noreorder
-+	 nop
- 	END(csum_partial)
- 
- 
+	Jeff

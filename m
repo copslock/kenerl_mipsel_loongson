@@ -1,88 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Sep 2008 10:32:50 +0100 (BST)
-Received: from atlas.informatik.uni-freiburg.de ([132.230.150.3]:31217 "EHLO
-	atlas.informatik.uni-freiburg.de") by ftp.linux-mips.org with ESMTP
-	id S20045125AbYIRJcr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 18 Sep 2008 10:32:47 +0100
-Received: from login.informatik.uni-freiburg.de ([132.230.151.6])
-	by atlas.informatik.uni-freiburg.de with esmtps (TLSv1:AES256-SHA:256)
-	(Exim 4.68)
-	(envelope-from <zeisberg@informatik.uni-freiburg.de>)
-	id 1KgFsS-0000kE-V5; Thu, 18 Sep 2008 11:32:45 +0200
-Received: from zeisberg by login.informatik.uni-freiburg.de with local (Exim 4.63)
-	(envelope-from <zeisberg@login.informatik.uni-freiburg.de>)
-	id 1KgFsR-00021n-14; Thu, 18 Sep 2008 11:32:43 +0200
-Date:	Thu, 18 Sep 2008 11:32:42 +0200
-From:	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-	<ukleinek@informatik.uni-freiburg.de>
-To:	Andrew Morton <akpm@linux-foundation.org>
-Cc:	linux-kernel@vger.kernel.org, david-b@pacbell.net,
-	ralf@linux-mips.org, linux-mips@linux-mips.org,
-	g.liakhovetski@pengutronix.de, greg@kroah.com,
-	kay.sievers@vrfy.org, rmk+kernel@arm.linux.org.uk
-Subject: Re: [PATCH] gpio_free might sleep, mips architecture
-Message-ID: <20080918093242.GA7627@informatik.uni-freiburg.de>
-Mail-Followup-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@informatik.uni-freiburg.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, david-b@pacbell.net,
-	ralf@linux-mips.org, linux-mips@linux-mips.org,
-	g.liakhovetski@pengutronix.de, greg@kroah.com, kay.sievers@vrfy.org,
-	rmk+kernel@arm.linux.org.uk
-References: <1216884515-12084-1-git-send-email-Uwe.Kleine-Koenig@digi.com> <1221508963-27259-1-git-send-email-ukleinek@informatik.uni-freiburg.de> <1221508963-27259-2-git-send-email-ukleinek@informatik.uni-freiburg.de> <1221508963-27259-3-git-send-email-ukleinek@informatik.uni-freiburg.de> <20080917143955.2d3727e5.akpm@linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Sep 2008 11:06:35 +0100 (BST)
+Received: from kirk.serum.com.pl ([213.77.9.205]:33529 "EHLO serum.com.pl")
+	by ftp.linux-mips.org with ESMTP id S28586302AbYIRKG3 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 18 Sep 2008 11:06:29 +0100
+Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
+	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m8IA6RI6022751;
+	Thu, 18 Sep 2008 12:06:27 +0200
+Received: from localhost (macro@localhost)
+	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m8IA6IpW022747;
+	Thu, 18 Sep 2008 11:06:27 +0100
+Date:	Thu, 18 Sep 2008 11:06:17 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Bryan Phillippe <u1@terran.org>
+cc:	linux-mips@linux-mips.org
+Subject: Re: MIPS checksum bug
+In-Reply-To: <4A385D69-6A36-46B5-84C2-32D4C60C3543@terran.org>
+Message-ID: <Pine.LNX.4.55.0809181054410.22686@cliff.in.clinika.pl>
+References: <072748C6-07A9-4167-A8A5-80D0F7D9C784@darkforest.org>
+ <B45397E7-EBE4-497B-9055-42B604A909AA@terran.org>
+ <Pine.LNX.4.55.0809171104290.17103@cliff.in.clinika.pl>
+ <4A385D69-6A36-46B5-84C2-32D4C60C3543@terran.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20080917143955.2d3727e5.akpm@linux-foundation.org>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-Organization: Universitaet Freiburg, Institut f. Informatik
-Return-Path: <zeisberg@informatik.uni-freiburg.de>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20528
+X-archive-position: 20529
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: zeisberg@informatik.uni-freiburg.de
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+On Wed, 17 Sep 2008, Bryan Phillippe wrote:
 
-Andrew Morton wrote:
-> > diff --git a/include/asm-mips/mach-rc32434/gpio.h b/include/asm-mips/mach-rc32434/gpio.h
-> > index f946f5f..9b4722e 100644
-> > --- a/include/asm-mips/mach-rc32434/gpio.h
-> > +++ b/include/asm-mips/mach-rc32434/gpio.h
-> > @@ -13,6 +13,7 @@
-> >  #ifndef _RC32434_GPIO_H_
-> >  #define _RC32434_GPIO_H_
-> >  
-> > +#include <linux/kernel.h>
-> >  #include <linux/types.h>
-> >  
-> >  struct rb532_gpio_reg {
-> > @@ -88,6 +89,7 @@ static inline int gpio_request(unsigned gpio, const char *label)
-> >  static inline void gpio_free(unsigned gpio)
-> >  {
-> >  	/* Not yet implemented */
-> > +	might_sleep();
-> >  }
-> >  
-> 
-> There is no gpio_free() in linux-next's include/asm-mips/mach-rc32434/gpio.h
-This is OK.  This machine type is converted to GPIO lib in linus-next.
-So just drop the two hunks for this file.  (Note, you only dropped the
-addition of might_sleep, but then including linux/kernel.h isn't needed
-either.)
+> FWIW... your patch (below) seems to actually fix the checksum problem  
+> in my testing.  What was your concern about it?
 
-Best regards and thanks
-Uwe
+ For unaligned buffers the passed checksum is added before the result has
+been byte-swapped.  That is probably not seen too often as the network
+stack normally aligns IP packets, but it does not make the change correct.  
 
--- 
-Uwe Kleine-König
+ One possibility with no performance impact to the common aligned case
+would be to byte-swap the passed checksum too, but currently I am somewhat
+puzzled about the API of the function; specifically as to whether the
+checksums passed to and from it are expected to be folded or not.  The use
+of a 32-bit type does not imply it is valid for the upper 16 bits to be
+non-zero in the values passed.
 
-exit vi, lesson II:
-: w q ! <CR>
-
-NB: write the current file
+  Maciej

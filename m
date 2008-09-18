@@ -1,69 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Sep 2008 22:25:57 +0100 (BST)
-Received: from elvis.franken.de ([193.175.24.41]:15052 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S28600835AbYIRVZu (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 18 Sep 2008 22:25:50 +0100
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1KgR0W-000804-00; Thu, 18 Sep 2008 23:25:48 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id 16297C2CD7; Thu, 18 Sep 2008 23:25:46 +0200 (CEST)
-Date:	Thu, 18 Sep 2008 23:25:46 +0200
-To:	"Sadashiiv, Halesh" <halesh.sadashiv@ap.sony.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: execve errno setting on MIPS
-Message-ID: <20080918212545.GA23384@alpha.franken.de>
-References: <7B7EF7F090B9804A830ACC82F2CDE95D53F553@insardxms01.ap.sony.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Sep 2008 23:07:41 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:3989 "EHLO
+	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
+	with ESMTP id S28773946AbYIRWHj (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 18 Sep 2008 23:07:39 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m8IM7bwk020020;
+	Fri, 19 Sep 2008 00:07:37 +0200
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m8IM7ZSq020018;
+	Fri, 19 Sep 2008 00:07:35 +0200
+Date:	Fri, 19 Sep 2008 00:07:35 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, u1@terran.org,
+	linux-mips@linux-mips.org
+Subject: Re: MIPS checksum bug
+Message-ID: <20080918220734.GA19222@linux-mips.org>
+References: <Pine.LNX.4.55.0809171104290.17103@cliff.in.clinika.pl> <20080917.222350.41199051.anemo@mba.ocn.ne.jp> <Pine.LNX.4.55.0809171501450.17103@cliff.in.clinika.pl> <20080918.002705.78730226.anemo@mba.ocn.ne.jp> <Pine.LNX.4.55.0809171917580.17103@cliff.in.clinika.pl>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7B7EF7F090B9804A830ACC82F2CDE95D53F553@insardxms01.ap.sony.com>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+In-Reply-To: <Pine.LNX.4.55.0809171917580.17103@cliff.in.clinika.pl>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20535
+X-archive-position: 20536
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Sep 18, 2008 at 05:09:35PM +0530, Sadashiiv, Halesh wrote:
-> char e2BIG[ARG_MAX+1][10];
-> char *envList[]={NULL};
->  
-> int main(void)
-> {
->   int ret,ind;
->  
->   for(ind = 0; ind < ARG_MAX+1; ind++)
->     strcpy(e2BIG[ind], "helloword");
+On Wed, Sep 17, 2008 at 07:21:23PM +0100, Maciej W. Rozycki wrote:
 
-this is broken and does cause an EFAULT on x86 as well (you should
-take the warning from gcc about the second argument of execve serious).
+> > >  Hmm, what's the purpose of doing the fold in csum_partial() then?
+> > 
+> > Well, maybe odd-byte handling requires 16-bit holded values?
+> 
+>  It should be enough to swap odd and even bytes in the word in the
+> unaligned path.  Though perhaps extra code to do masking would make it no
+> shorter/faster than what we have now; however the aligned path would
+> benefit.  Hmm...
 
-Try:
+Which is a truely weird operation - but MIPS R2 happens to have a wonderful
+instruction for this operation, WSBH / DSBH.
 
-char *e2BIG[ARG_MAX+1];
-char *envList[]={NULL};
-
-int main(void)
-{
-  int ret,ind;
-
-    for(ind = 0; ind < ARG_MAX+1; ind++)
-    	e2BIG[ind] = strdup("helloword");
-
-
-And it looks like the ARG_MAX limit is bigger than my installed glibc
-thinks, because it works at least on x86. When I increase the array two
-2 * ARG_MAX I'll get the wanted E2BIG.
-
-Thomas.
-
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+  Ralf

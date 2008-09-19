@@ -1,52 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2008 11:15:16 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:51047 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S29048597AbYISKPB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 19 Sep 2008 11:15:01 +0100
-Received: from [127.0.0.1] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 5E6673ECA; Fri, 19 Sep 2008 03:14:56 -0700 (PDT)
-Message-ID: <48D37B9D.8060500@ru.mvista.com>
-Date:	Fri, 19 Sep 2008 14:14:53 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2008 11:34:36 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:57989 "EHLO
+	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
+	with ESMTP id S20307314AbYISKee (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 19 Sep 2008 11:34:34 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m8JAYY8S014709;
+	Fri, 19 Sep 2008 12:34:34 +0200
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m8JAYXDv014707;
+	Fri, 19 Sep 2008 12:34:33 +0200
+Date:	Fri, 19 Sep 2008 12:34:33 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Klatt Uwe <U.Klatt@miwe.de>
+Cc:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: Re: Same mipsel binary =?iso-8859-1?Q?f=FC?=
+	=?iso-8859-1?Q?r?= 2.4 and 2.6 kernel possible?
+Message-ID: <20080919103433.GA14602@linux-mips.org>
+References: <A1F06CF959C7E14EAC28F277F368175805686A8D6D@MAS15.arnstein.miwe.de>
 MIME-Version: 1.0
-To:	Dinar Temirbulatov <dtemirbulatov@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: mmap is broken for MIPS64 n32 and o32 abis
-References: <a664af430809182331i41c9e344w83ecb2830ac24@mail.gmail.com>
-In-Reply-To: <a664af430809182331i41c9e344w83ecb2830ac24@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <A1F06CF959C7E14EAC28F277F368175805686A8D6D@MAS15.arnstein.miwe.de>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20547
+X-archive-position: 20548
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Fri, Sep 19, 2008 at 09:58:29AM +0200, Klatt Uwe wrote:
 
-Dinar Temirbulatov wrote:
+> I have a custom hardware (AU1100) with kernel 2.4 and an working binary using floats (compiled with gcc 3.3.5).
+> Now I am testing with kernel 2.6.
+> 
+> When I use the old binary, float math isn't working anymore.
+> I have to recompile the source with new gcc 4.1.2 but then the new binary is working only on kernel 2.6.
 
-> I noticed that mmap is not working properly under n32, o32 abis in
-> MIPS64, for example if we want to map 0xb6000000 address to the
-> userland under those abis we call  mmap and because the last argument
-> in old_mmap is off_t and this type is 64-bits wide for MIPS64, we end
-> up having for example 0xffffffffb6000000 address value. I am sure that
-> this is not a glibc issue. Following patch adds 32-bit version of mmap
-> and also it adds mmap64 support for n32 abi since mmap64 was
-> implemented correctly for n32 too.
->                                           thanks, Dinar.
->   
+Are you using the kernel floating point emulator or a software floating
+point library?
 
-  Your patch (BTW, how come it didn't get quoted? -- ah, it's 
-text/x-patch) is using both tabs and spaces for indentation. Please use 
-tabs only.
-And either attach patches as text/plain or include them inline.
+Whatever, it sounds like a bug.  The kernel is supposed to be backward
+compatible with old binaries.
 
-WBR, Sergei
+  Ralf

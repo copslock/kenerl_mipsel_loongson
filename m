@@ -1,55 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2008 11:12:53 +0100 (BST)
-Received: from kirk.serum.com.pl ([213.77.9.205]:31729 "EHLO serum.com.pl")
-	by ftp.linux-mips.org with ESMTP id S29037900AbYISKMi (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 19 Sep 2008 11:12:38 +0100
-Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
-	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m8JACVOM029824;
-	Fri, 19 Sep 2008 12:12:31 +0200
-Received: from localhost (macro@localhost)
-	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m8JACNG4029814;
-	Fri, 19 Sep 2008 11:12:23 +0100
-Date:	Fri, 19 Sep 2008 11:12:22 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, u1@terran.org,
-	linux-mips@linux-mips.org
-Subject: Re: MIPS checksum bug
-In-Reply-To: <20080918220734.GA19222@linux-mips.org>
-Message-ID: <Pine.LNX.4.55.0809190112090.22686@cliff.in.clinika.pl>
-References: <Pine.LNX.4.55.0809171104290.17103@cliff.in.clinika.pl>
- <20080917.222350.41199051.anemo@mba.ocn.ne.jp>
- <Pine.LNX.4.55.0809171501450.17103@cliff.in.clinika.pl>
- <20080918.002705.78730226.anemo@mba.ocn.ne.jp>
- <Pine.LNX.4.55.0809171917580.17103@cliff.in.clinika.pl>
- <20080918220734.GA19222@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2008 11:15:16 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:51047 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S29048597AbYISKPB (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 19 Sep 2008 11:15:01 +0100
+Received: from [127.0.0.1] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 5E6673ECA; Fri, 19 Sep 2008 03:14:56 -0700 (PDT)
+Message-ID: <48D37B9D.8060500@ru.mvista.com>
+Date:	Fri, 19 Sep 2008 14:14:53 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+To:	Dinar Temirbulatov <dtemirbulatov@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: mmap is broken for MIPS64 n32 and o32 abis
+References: <a664af430809182331i41c9e344w83ecb2830ac24@mail.gmail.com>
+In-Reply-To: <a664af430809182331i41c9e344w83ecb2830ac24@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20546
+X-archive-position: 20547
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 19 Sep 2008, Ralf Baechle wrote:
+Hello.
 
-> Which is a truely weird operation - but MIPS R2 happens to have a wonderful
-> instruction for this operation, WSBH / DSBH.
+Dinar Temirbulatov wrote:
 
- Ah, finally a justification for the R2 ISA!
+> I noticed that mmap is not working properly under n32, o32 abis in
+> MIPS64, for example if we want to map 0xb6000000 address to the
+> userland under those abis we call  mmap and because the last argument
+> in old_mmap is off_t and this type is 64-bits wide for MIPS64, we end
+> up having for example 0xffffffffb6000000 address value. I am sure that
+> this is not a glibc issue. Following patch adds 32-bit version of mmap
+> and also it adds mmap64 support for n32 abi since mmap64 was
+> implemented correctly for n32 too.
+>                                           thanks, Dinar.
+>   
 
- Seriously though, I smell a caller somewhere fails to call csum_fold() on
-the result obtained from csum_partial() where it should, so it would be
-good to fix the bug rather than trying to cover it.  Bryan, would you be
-able to track down the caller?
+  Your patch (BTW, how come it didn't get quoted? -- ah, it's 
+text/x-patch) is using both tabs and spaces for indentation. Please use 
+tabs only.
+And either attach patches as text/plain or include them inline.
 
- I can see you have done the microoptimisation I had in mind meanwhile --
-thanks for saving me the effort. ;)  There is a delay slot to fill left
-though -- will you take care of it too?
-
-  Maciej
+WBR, Sergei

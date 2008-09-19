@@ -1,35 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2008 13:26:30 +0100 (BST)
-Received: from kirk.serum.com.pl ([213.77.9.205]:6648 "EHLO serum.com.pl")
-	by ftp.linux-mips.org with ESMTP id S20319138AbYISM02 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 19 Sep 2008 13:26:28 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2008 13:34:14 +0100 (BST)
+Received: from kirk.serum.com.pl ([213.77.9.205]:2297 "EHLO serum.com.pl")
+	by ftp.linux-mips.org with ESMTP id S28795868AbYISMeG (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 19 Sep 2008 13:34:06 +0100
 Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
-	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m8JCQOD2030551;
-	Fri, 19 Sep 2008 14:26:25 +0200
+	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m8JCXwqk030608;
+	Fri, 19 Sep 2008 14:33:59 +0200
 Received: from localhost (macro@localhost)
-	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m8JCQOl9030547;
-	Fri, 19 Sep 2008 13:26:24 +0100
-Date:	Fri, 19 Sep 2008 13:26:23 +0100 (BST)
+	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m8JCXw7q030604;
+	Fri, 19 Sep 2008 13:33:58 +0100
+Date:	Fri, 19 Sep 2008 13:33:58 +0100 (BST)
 From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, u1@terran.org,
-	linux-mips@linux-mips.org
-Subject: Re: MIPS checksum bug
-In-Reply-To: <20080919112304.GB13440@linux-mips.org>
-Message-ID: <Pine.LNX.4.55.0809191315590.29711@cliff.in.clinika.pl>
-References: <Pine.LNX.4.55.0809171104290.17103@cliff.in.clinika.pl>
- <20080917.222350.41199051.anemo@mba.ocn.ne.jp>
- <Pine.LNX.4.55.0809171501450.17103@cliff.in.clinika.pl>
- <20080918.002705.78730226.anemo@mba.ocn.ne.jp>
- <Pine.LNX.4.55.0809171917580.17103@cliff.in.clinika.pl>
- <20080918220734.GA19222@linux-mips.org> <Pine.LNX.4.55.0809190112090.22686@cliff.in.clinika.pl>
- <20080919112304.GB13440@linux-mips.org>
+To:	Dinar Temirbulatov <dtemirbulatov@gmail.com>
+cc:	linux-mips@linux-mips.org
+Subject: Re: mmap is broken for MIPS64 n32 and o32 abis
+In-Reply-To: <a664af430809182331i41c9e344w83ecb2830ac24@mail.gmail.com>
+Message-ID: <Pine.LNX.4.55.0809191329080.29711@cliff.in.clinika.pl>
+References: <a664af430809182331i41c9e344w83ecb2830ac24@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
 Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20555
+X-archive-position: 20556
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,24 +30,19 @@ X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 19 Sep 2008, Ralf Baechle wrote:
+On Fri, 19 Sep 2008, Dinar Temirbulatov wrote:
 
-> >  Seriously though, I smell a caller somewhere fails to call csum_fold() on
-> > the result obtained from csum_partial() where it should, so it would be
-> > good to fix the bug rather than trying to cover it.  Bryan, would you be
-> > able to track down the caller?
-> 
-> Not quite.  Internally the IP stack maintains the checksum as a 32-bit
-> value for performance sake.  It only folds it to 16-bit when it has to.
+> I noticed that mmap is not working properly under n32, o32 abis in
+> MIPS64, for example if we want to map 0xb6000000 address to the
+> userland under those abis we call  mmap and because the last argument
+> in old_mmap is off_t and this type is 64-bits wide for MIPS64, we end
+> up having for example 0xffffffffb6000000 address value. I am sure that
+> this is not a glibc issue. Following patch adds 32-bit version of mmap
+> and also it adds mmap64 support for n32 abi since mmap64 was
+> implemented correctly for n32 too.
 
- That's been my understanding from my little investigation yesterday
-evening, but Bryan's problem has come from somewhere after all and
-Atsushi-san's 32-bit addition fix didn't reportedly work while full
-folding did, so I have assumed there must be some dependency somewhere
-where the final folding does not happen.  I have referred to the original
-report concerning SPARC64 now and it seems to narrow the problem down to
-the 32 MSBs only, so I would prefer to have any confusion cleared.
-
- Bryan, can you please verify whether Ralf's fix works for you or not?
+ Well, neither with the o32 nor with the n32 ABI are 0xb6000000 or
+0xffffffffb6000000 (which is the n32's equivalent of the former) valid
+user addresses, so your concern is?
 
   Maciej

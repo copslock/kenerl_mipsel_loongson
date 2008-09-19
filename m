@@ -1,20 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2008 11:56:34 +0100 (BST)
-Received: from mail2.miwe.de ([62.225.191.126]:12480 "EHLO mail2.miwe.de")
-	by ftp.linux-mips.org with ESMTP id S20309298AbYISK41 convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2008 11:58:35 +0100 (BST)
+Received: from mail2.miwe.de ([62.225.191.126]:13760 "EHLO mail2.miwe.de")
+	by ftp.linux-mips.org with ESMTP id S29051694AbYISK6T convert rfc822-to-8bit
 	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 19 Sep 2008 11:56:27 +0100
+	Fri, 19 Sep 2008 11:58:19 +0100
 Received: from MAS15.arnstein.miwe.de ([172.16.100.182]) by
  MAS15.arnstein.miwe.de ([172.16.100.182]) with mapi; Fri, 19 Sep 2008
- 12:56:20 +0200
+ 12:58:13 +0200
 From:	Klatt Uwe <U.Klatt@miwe.de>
 To:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Date:	Fri, 19 Sep 2008 12:56:19 +0200
+Date:	Fri, 19 Sep 2008 12:58:12 +0200
 Subject: =?iso-8859-1?Q?AW:_Same_mipsel_binary_f=FCr_2.4_and_2.6_kernel_possible?=
  =?iso-8859-1?Q?=3F?=
 Thread-Topic: =?iso-8859-1?Q?Same_mipsel_binary_f=FCr_2.4_and_2.6_kernel_possible=3F?=
-Thread-Index: AckaQ1CapIHZYf2FSv2ctDVqn3FpbgAArOBw
-Message-ID: <A1F06CF959C7E14EAC28F277F368175805686A8D6F@MAS15.arnstein.miwe.de>
-In-Reply-To: <20080919103433.GA14602@linux-mips.org>
+Thread-Index: AckaO/o7ILgaat76TZ2bC2XA+4NL0gAAVx+gAAJIWtA=
+Message-ID: <A1F06CF959C7E14EAC28F277F368175805686A8D70@MAS15.arnstein.miwe.de>
 Accept-Language: de-DE
 Content-Language: de-DE
 X-MS-Has-Attach: 
@@ -28,7 +27,7 @@ Return-Path: <U.Klatt@miwe.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20549
+X-archive-position: 20550
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,21 +35,65 @@ X-original-sender: U.Klatt@miwe.de
 Precedence: bulk
 X-list: linux-mips
 
-Hello Ralf,
+Hello Markus,
 
-I link both binaries with -lm.
-Could it be a problem with libc?
-I will try to compile the new kernel with old compiler...
+I use kernel 2.6.22.6 (this version is a special version from
+hardware manufacturer).
+I have complete source and can build this kernel without
+problems (crosscompiled on x86).
 
-Bye
+I think the kernel should have fp emulator:
+"Algorithmics/MIPS FPU Emulator v1.5" is displayed on boot.
+
 Uwe
 
-> Are you using the kernel floating point emulator or a
-> software floating
-> point library?
+> -----BEGIN PGP SIGNED MESSAGE-----
+> Hash: SHA256
 >
-> Whatever, it sounds like a bug.  The kernel is supposed to be backward
-> compatible with old binaries.
+> Looks like the FPU-Emulator isn't working. Which kernel versions are
+> you using?
 >
->   Ralf
+> //Markus
+>
+> Klatt Uwe wrote:
+> > Hello,
+> >
+> > I have a custom hardware (AU1100) with kernel 2.4 and an
+> working binary
+> using floats (compiled with gcc 3.3.5).
+> > Now I am testing with kernel 2.6.
+> >
+> > When I use the old binary, float math isn't working anymore.
+> > I have to recompile the source with new gcc 4.1.2 but then the new
+> binary is working only on kernel 2.6.
+> >
+> > Can somebody give me some hints, how to chage settings for
+> kernel 2.6
+> creation or compiler settings to generate an universal binary.
+> >
+> > Thanks
+> > Uwe
+> >
+>
+>
+> - --
+> _______________________________________
+>
+> Mr Markus Gothe
+> Software Engineer
+>
+> Phone: +46 (0)13 21 81 20 (ext. 1046)
+> Fax: +46 (0)13 21 21 15
+> Mobile: +46 (0)70 348 44 35
+> Diskettgatan 11, SE-583 35 Linköping, Sweden
+> www.27m.com
+> -----BEGIN PGP SIGNATURE-----
+> Version: GnuPG v1.4.6 (GNU/Linux)
+> Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+>
+> iD8DBQFI03Pn6I0XmJx2NrwRCH4eAJwMWR2/SrFaWRJAWMul9sK/GvATdQCaAgmJ
+> LnzfYvUmO6mzyV5QMKtCmKs=
+> =dP4U
+> -----END PGP SIGNATURE-----
+>
 >

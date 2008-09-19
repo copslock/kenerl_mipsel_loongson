@@ -1,207 +1,115 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2008 04:30:50 +0100 (BST)
-Received: from outbound-va3.frontbridge.com ([216.32.180.16]:24241 "EHLO
-	VA3EHSOBE005.bigfish.com") by ftp.linux-mips.org with ESMTP
-	id S28661601AbYISDao (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 19 Sep 2008 04:30:44 +0100
-Received: from mail177-va3-R.bigfish.com (10.7.14.249) by
- VA3EHSOBE005.bigfish.com (10.7.40.25) with Microsoft SMTP Server id
- 8.1.291.1; Fri, 19 Sep 2008 03:30:35 +0000
-Received: from mail177-va3 (localhost.localdomain [127.0.0.1])	by
- mail177-va3-R.bigfish.com (Postfix) with ESMTP id 716CF1C4030C;	Fri, 19 Sep
- 2008 03:30:35 +0000 (UTC)
-X-BigFish: VPS-13(zzfadRa0dJ4015M19c2k1127izzzzz2dh6bh61h)
-X-FB-SS: 5,
-Received: by mail177-va3 (MessageSwitch) id 1221795033724756_17860; Fri, 19
- Sep 2008 03:30:33 +0000 (UCT)
-Received: from sggdcex1ns01.sony.com.sg (sggdcex1ns01.sony.com.sg
- [121.100.32.134])	(using TLSv1 with cipher EDH-RSA-DES-CBC3-SHA (168/168
- bits))	(No client certificate requested)	by mail177-va3.bigfish.com (Postfix)
- with ESMTP id 252A63F005A;	Fri, 19 Sep 2008 03:30:32 +0000 (UTC)
-Received: from sggdcwn1vs01.sony.com.sg (sggdcwn1vs01 [43.68.8.23])	by
- sggdcex1ns01.sony.com.sg (8.13.7+Sun/8.13.7) with SMTP id m8J3UUQu005300;
-	Fri, 19 Sep 2008 11:30:30 +0800 (SGT)
-Received: from (sgsesgdcid01.sony.com.sg [43.68.8.1]) by
- sggdcwn1vs01.sony.com.sg with smtp	 id
- 4bf1_4f26a192_85fb_11dd_9d83_001372631f16;	Fri, 19 Sep 2008 11:30:30 +0800
-Received: from sgapxbh05.ap.sony.com (sgapxbh05.ap.sony.com [43.68.17.37])	by
- sgsesgdcid01.sony.com.sg (8.13.7+Sun/8.13.7) with ESMTP id m8J3UT4m001099;
-	Fri, 19 Sep 2008 11:30:30 +0800 (SGT)
-Received: from insardxms01.ap.sony.com ([43.88.102.10]) by
- sgapxbh05.ap.sony.com with Microsoft SMTPSVC(6.0.3790.3959); Fri, 19 Sep 2008
- 11:30:29 +0800
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.3790.4325
-Content-Class: urn:content-classes:message
-Content-Transfer-Encoding: 7bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2008 07:31:43 +0100 (BST)
+Received: from mail-gx0-f10.google.com ([209.85.217.10]:50922 "EHLO
+	mail-gx0-f10.google.com") by ftp.linux-mips.org with ESMTP
+	id S28786612AbYISGbh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 19 Sep 2008 07:31:37 +0100
+Received: by gxk3 with SMTP id 3so357439gxk.0
+        for <linux-mips@linux-mips.org>; Thu, 18 Sep 2008 23:31:30 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to
+         :subject:mime-version:content-type;
+        bh=IVAbf6lZiuQ8gIWqC461w8CMq1CV4O1SD+ULzQEKmJ8=;
+        b=RGzUqQ42TJBGdyevdgWxBlEHuqH/GlG8+BI8OimIYSEM1rqS0cEEGUnAwha9PmQjd2
+         Dusup7LoiU61/jW4KiXkdIGtYMzuBxUYRl+ZxLM/HBHeL9rAWhNjLu5af8FD4TyxzBX1
+         lT0HYpqSQ0f94K2jH/FoA8n5wn4s4uF6VUFeg=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:mime-version:content-type;
+        b=DrH9M+E9WG7H4cYPFwxVuOGdudSM6gEA/boszXjxjSfyUIlgkXNrVAkphL+Ju2dXqT
+         TbUBrcj1rYVeXWCT12kNIjigfjdGgqLE8Sa+lPoAvjCPwDKaXgFy20FSRnGq1F4cRXpB
+         xlTXWuXDoxrawxlOjRE9UuRz00tR01v55qMkA=
+Received: by 10.90.106.6 with SMTP id e6mr6366018agc.31.1221805890000;
+        Thu, 18 Sep 2008 23:31:30 -0700 (PDT)
+Received: by 10.90.63.18 with HTTP; Thu, 18 Sep 2008 23:31:29 -0700 (PDT)
+Message-ID: <a664af430809182331i41c9e344w83ecb2830ac24@mail.gmail.com>
+Date:	Fri, 19 Sep 2008 10:31:29 +0400
+From:	"Dinar Temirbulatov" <dtemirbulatov@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: mmap is broken for MIPS64 n32 and o32 abis
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-	boundary="----_=_NextPart_001_01C91A08.0F514503"
-Subject: Re: execve errno setting on MIPS
-Importance: normal
-Priority: normal
-Date:	Fri, 19 Sep 2008 09:00:27 +0530
-Message-ID: <7B7EF7F090B9804A830ACC82F2CDE95D56DA36@insardxms01.ap.sony.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Re: execve errno setting on MIPS
-Thread-Index: AckaCA8v4R6D1uVXQOug9n4dgz7APw==
-From:	"Sadashiiv, Halesh" <halesh.sadashiv@ap.sony.com>
-To:	<ralf@linux-mips.org>
-CC:	<linux-mips@linux-mips.org>
-X-OriginalArrivalTime: 19 Sep 2008 03:30:29.0762 (UTC) FILETIME=[109DFE20:01C91A08]
-Return-Path: <halesh.sadashiv@ap.sony.com>
+Content-Type: multipart/mixed; 
+	boundary="----=_Part_1151_31304525.1221805889992"
+Return-Path: <dtemirbulatov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20540
+X-archive-position: 20541
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: halesh.sadashiv@ap.sony.com
+X-original-sender: dtemirbulatov@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-------_=_NextPart_001_01C91A08.0F514503
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+------=_Part_1151_31304525.1221805889992
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-=20
-=20
->> The one is two dimensional array, the other an array of pointers to
-char.
-=20
-Yes, Fixed the problem,=20
-But on MIPS, ARG_MAX is not considered, I was able to get the E2BIG on
-2*ARG_MAX.
-=20
-Check
-http://www.linux-mips.org/archives/linux-mips/2008-09/msg00136.html =20
-=20
+Hi,
+I noticed that mmap is not working properly under n32, o32 abis in
+MIPS64, for example if we want to map 0xb6000000 address to the
+userland under those abis we call  mmap and because the last argument
+in old_mmap is off_t and this type is 64-bits wide for MIPS64, we end
+up having for example 0xffffffffb6000000 address value. I am sure that
+this is not a glibc issue. Following patch adds 32-bit version of mmap
+and also it adds mmap64 support for n32 abi since mmap64 was
+implemented correctly for n32 too.
+                                          thanks, Dinar.
 
-Thanks,
+------=_Part_1151_31304525.1221805889992
+Content-Type: text/x-patch; name=mmap.patch
+Content-Transfer-Encoding: base64
+X-Attachment-Id: f_flafe7v30
+Content-Disposition: attachment; filename=mmap.patch
 
-Halesh
-
-
-
--------------------------------------------------------------------
-This email is confidential and intended only for the use of the =
-individual or entity named above and may contain information that is =
-privileged. If you are not the intended recipient, you are notified that =
-any dissemination, distribution or copying of this email is strictly =
-prohibited. If you have received this email in error, please notify us =
-immediately by return email or telephone and destroy the original =
-message. - This mail is sent via Sony Asia Pacific Mail Gateway.
--------------------------------------------------------------------
-
-------_=_NextPart_001_01C91A08.0F514503
-Content-Type: text/html; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-
-<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
-xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
-xmlns=3D"http://www.w3.org/TR/REC-html40">
-
-<head>
-<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
-charset=3Dus-ascii">
-<meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
-<style>
-<!--
- /* Font Definitions */
- @font-face
-	{font-family:"MS Mincho";
-	panose-1:2 2 6 9 4 2 5 8 3 4;}
-@font-face
-	{font-family:"\@MS Mincho";
-	panose-1:0 0 0 0 0 0 0 0 0 0;}
- /* Style Definitions */
- p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0in;
-	margin-bottom:.0001pt;
-	font-size:12.0pt;
-	font-family:"Times New Roman";}
-a:link, span.MsoHyperlink
-	{color:blue;
-	text-decoration:underline;}
-a:visited, span.MsoHyperlinkFollowed
-	{color:purple;
-	text-decoration:underline;}
-pre
-	{margin:0in;
-	margin-bottom:.0001pt;
-	font-size:10.0pt;
-	font-family:"Courier New";}
-span.EmailStyle17
-	{mso-style-type:personal-compose;
-	font-family:Arial;
-	color:windowtext;}
-@page Section1
-	{size:8.5in 11.0in;
-	margin:1.0in 1.25in 1.0in 1.25in;}
-div.Section1
-	{page:Section1;}
--->
-</style>
-
-</head>
-
-<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
-
-<div class=3DSection1><pre><font size=3D2 color=3Dblack face=3D"Courier =
-New"><span
-style=3D'font-size:10.0pt;color:black'><o:p>&nbsp;</o:p></span></font></p=
-re><pre><font
-size=3D2 color=3Dblack face=3D"Courier New"><span =
-style=3D'font-size:10.0pt;color:black'><o:p>&nbsp;</o:p></span></font></p=
-re><pre><font
-size=3D2 color=3Dblack face=3D"Courier New"><span =
-style=3D'font-size:10.0pt;color:black'>&gt;&gt; The one is two =
-dimensional array, the other an array of pointers to =
-char.<o:p></o:p></span></font></pre><pre><font
-size=3D2 color=3Dblack face=3D"Courier New"><span =
-style=3D'font-size:10.0pt;color:black'><o:p>&nbsp;</o:p></span></font></p=
-re><pre><font
-size=3D2 color=3Dblack face=3D"Courier New"><span =
-style=3D'font-size:10.0pt;color:black'>Yes, Fixed the problem, =
-<o:p></o:p></span></font></pre><pre><font
-size=3D2 color=3Dblack face=3D"Courier New"><span =
-style=3D'font-size:10.0pt;color:black'>But on MIPS, ARG_MAX is not =
-considered, I was able to get the E2BIG on =
-2*ARG_MAX.<o:p></o:p></span></font></pre><pre><font
-size=3D2 color=3Dblack face=3D"Courier New"><span =
-style=3D'font-size:10.0pt;color:black'><o:p>&nbsp;</o:p></span></font></p=
-re><pre><font
-size=3D2 color=3Dblack face=3D"Courier New"><span =
-style=3D'font-size:10.0pt;color:black'>Check<o:p></o:p></span></font></pr=
-e><pre><font
-size=3D2 color=3Dblack face=3D"Courier New"><span =
-style=3D'font-size:10.0pt;color:black'><a
-href=3D"http://www.linux-mips.org/archives/linux-mips/2008-09/msg00136.ht=
-ml">http://www.linux-mips.org/archives/linux-mips/2008-09/msg00136.html</=
-a>&nbsp; <o:p></o:p></span></font></pre><pre><font
-size=3D2 color=3Dblack face=3D"Courier New"><span =
-style=3D'font-size:10.0pt;color:black'><o:p>&nbsp;</o:p></span></font></p=
-re>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
-style=3D'font-size:10.0pt;
-font-family:Arial'>Thanks,<o:p></o:p></span></font></p>
-
-<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
-style=3D'font-size:10.0pt;
-font-family:Arial'>Halesh<o:p></o:p></span></font></p>
-
-</div>
-
-<p></p><hr><br>This email is confidential and intended only for the use =
-of the individual or entity named above and may contain information that =
-is privileged. If you are not the intended recipient, you are notified =
-that any dissemination, distribution or copying of this email is =
-strictly prohibited. If you have received this email in error, please =
-notify us immediately by return email or telephone and destroy the =
-original message. - This mail is sent via Sony Asia Pacific Mail =
-Gateway.<hr></body>
-
-</html>
-
-------_=_NextPart_001_01C91A08.0F514503--
+ZGlmZiAtcnVOcCBsaW51eC0yLjYuMjctcmM2L2FyY2gvbWlwcy9rZXJuZWwvc2NhbGw2NC1uMzIu
+UyBsaW51eC0yLjYuMjctcmM2LWZpeC9hcmNoL21pcHMva2VybmVsL3NjYWxsNjQtbjMyLlMKLS0t
+IGxpbnV4LTIuNi4yNy1yYzYvYXJjaC9taXBzL2tlcm5lbC9zY2FsbDY0LW4zMi5TCTIwMDgtMDkt
+MTkgMDk6MzQ6NDIuMDAwMDAwMDAwICswNDAwCisrKyBsaW51eC0yLjYuMjctcmM2LWZpeC9hcmNo
+L21pcHMva2VybmVsL3NjYWxsNjQtbjMyLlMJMjAwOC0wOS0xOSAwOTo0NzoxMy4wMDAwMDAwMDAg
+KzA0MDAKQEAgLTEyOSw3ICsxMjksNyBAQCBFWFBPUlQoc3lzbjMyX2NhbGxfdGFibGUpCiAJUFRS
+CXN5c19uZXdsc3RhdAogCVBUUglzeXNfcG9sbAogCVBUUglzeXNfbHNlZWsKLQlQVFIJb2xkX21t
+YXAKKwlQVFIJc3lzMzJfbW1hcAogCVBUUglzeXNfbXByb3RlY3QJCQkvKiA2MDEwICovCiAJUFRS
+CXN5c19tdW5tYXAKIAlQVFIJc3lzX2JyawpAQCAtNDEzLDQgKzQxMyw1IEBAIEVYUE9SVChzeXNu
+MzJfY2FsbF90YWJsZSkKIAlQVFIJc3lzX2R1cDMJCQkvKiA1MjkwICovCiAJUFRSCXN5c19waXBl
+MgogCVBUUglzeXNfaW5vdGlmeV9pbml0MQorICAgICAgICBQVFIJc3lzMzJfbW1hcDIKIAkuc2l6
+ZQlzeXNuMzJfY2FsbF90YWJsZSwuLXN5c24zMl9jYWxsX3RhYmxlCmRpZmYgLXJ1TnAgbGludXgt
+Mi42LjI3LXJjNi9hcmNoL21pcHMva2VybmVsL3NjYWxsNjQtbzMyLlMgbGludXgtMi42LjI3LXJj
+Ni1maXgvYXJjaC9taXBzL2tlcm5lbC9zY2FsbDY0LW8zMi5TCi0tLSBsaW51eC0yLjYuMjctcmM2
+L2FyY2gvbWlwcy9rZXJuZWwvc2NhbGw2NC1vMzIuUwkyMDA4LTA5LTE5IDA5OjM0OjQyLjAwMDAw
+MDAwMCArMDQwMAorKysgbGludXgtMi42LjI3LXJjNi1maXgvYXJjaC9taXBzL2tlcm5lbC9zY2Fs
+bDY0LW8zMi5TCTIwMDgtMDktMTkgMDk6NDc6MjIuMDAwMDAwMDAwICswNDAwCkBAIC0yOTUsNyAr
+Mjk1LDcgQEAgc3lzX2NhbGxfdGFibGU6CiAJUFRSCXN5c19zd2Fwb24KIAlQVFIJc3lzX3JlYm9v
+dAogCVBUUgljb21wYXRfc3lzX29sZF9yZWFkZGlyCi0JUFRSCW9sZF9tbWFwCQkJLyogNDA5MCAq
+LworCVBUUglzeXMzMl9tbWFwCQkJLyogNDA5MCAqLwogCVBUUglzeXNfbXVubWFwCiAJUFRSCXN5
+c190cnVuY2F0ZQogCVBUUglzeXNfZnRydW5jYXRlCmRpZmYgLXJ1TnAgbGludXgtMi42LjI3LXJj
+Ni9hcmNoL21pcHMva2VybmVsL3N5c2NhbGwuYyBsaW51eC0yLjYuMjctcmM2LWZpeC9hcmNoL21p
+cHMva2VybmVsL3N5c2NhbGwuYwotLS0gbGludXgtMi42LjI3LXJjNi9hcmNoL21pcHMva2VybmVs
+L3N5c2NhbGwuYwkyMDA4LTA5LTE5IDA5OjM0OjQyLjAwMDAwMDAwMCArMDQwMAorKysgbGludXgt
+Mi42LjI3LXJjNi1maXgvYXJjaC9taXBzL2tlcm5lbC9zeXNjYWxsLmMJMjAwOC0wOS0xOSAwOTo0
+Njo1Mi4wMDAwMDAwMDAgKzA0MDAKQEAgLTE3MCw2ICsxNzAsMjIgQEAgb3V0OgogfQogCiBhc21s
+aW5rYWdlIHVuc2lnbmVkIGxvbmcKK3N5czMyX21tYXAodW5zaWduZWQgbG9uZyBhZGRyLCB1bnNp
+Z25lZCBsb25nIGxlbiwgaW50IHByb3QsCisgICAgICAgIGludCBmbGFncywgaW50IGZkLCB1bnNp
+Z25lZCBpbnQgb2Zmc2V0IG9mZnNldCkKK3sKKyAgICAgICAgdW5zaWduZWQgbG9uZyByZXN1bHQ7
+CisKKyAgICAgICAgcmVzdWx0ID0gLUVJTlZBTDsKKyAgICAgICAgaWYgKG9mZnNldCAmIH5QQUdF
+X01BU0spCisgICAgICAgICAgICAgICAgZ290byBvdXQ7CisKKyAgICAgICAgcmVzdWx0ID0gZG9f
+bW1hcDIoYWRkciwgbGVuLCBwcm90LCBmbGFncywgZmQsICh1bnNpZ25lZCBsb25nKSBvZmZzZXQg
+Pj4gUEFHRV9TSElGVCk7CisKK291dDoKKyAgICAgICAgcmV0dXJuIHJlc3VsdDsKK30KKworYXNt
+bGlua2FnZSB1bnNpZ25lZCBsb25nCiBzeXNfbW1hcDIodW5zaWduZWQgbG9uZyBhZGRyLCB1bnNp
+Z25lZCBsb25nIGxlbiwgdW5zaWduZWQgbG9uZyBwcm90LAogICAgICAgICAgIHVuc2lnbmVkIGxv
+bmcgZmxhZ3MsIHVuc2lnbmVkIGxvbmcgZmQsIHVuc2lnbmVkIGxvbmcgcGdvZmYpCiB7CmRpZmYg
+LXJ1TnAgbGludXgtMi42LjI3LXJjNi9pbmNsdWRlL2FzbS1taXBzL3VuaXN0ZC5oIGxpbnV4LTIu
+Ni4yNy1yYzYtZml4L2luY2x1ZGUvYXNtLW1pcHMvdW5pc3RkLmgKLS0tIGxpbnV4LTIuNi4yNy1y
+YzYvaW5jbHVkZS9hc20tbWlwcy91bmlzdGQuaAkyMDA4LTA5LTE5IDA5OjM0OjQzLjAwMDAwMDAw
+MCArMDQwMAorKysgbGludXgtMi42LjI3LXJjNi1maXgvaW5jbHVkZS9hc20tbWlwcy91bmlzdGQu
+aAkyMDA4LTA5LTE5IDA5OjUwOjI2LjAwMDAwMDAwMCArMDQwMApAQCAtOTY2LDExICs5NjYsMTIg
+QEAKICNkZWZpbmUgX19OUl9kdXAzCQkJKF9fTlJfTGludXggKyAyOTApCiAjZGVmaW5lIF9fTlJf
+cGlwZTIJCQkoX19OUl9MaW51eCArIDI5MSkKICNkZWZpbmUgX19OUl9pbm90aWZ5X2luaXQxCQko
+X19OUl9MaW51eCArIDI5MikKKyNkZWZpbmUgX19OUl9tbWFwMgkJCShfX05SX0xpbnV4ICsgMjkz
+KQogCiAvKgogICogT2Zmc2V0IG9mIHRoZSBsYXN0IE4zMiBmbGF2b3VyZWQgc3lzY2FsbAogICov
+Ci0jZGVmaW5lIF9fTlJfTGludXhfc3lzY2FsbHMJCTI5MgorI2RlZmluZSBfX05SX0xpbnV4X3N5
+c2NhbGxzCQkyOTMKIAogI2VuZGlmIC8qIF9NSVBTX1NJTSA9PSBfTUlQU19TSU1fTkFCSTMyICov
+CiAK
+------=_Part_1151_31304525.1221805889992--

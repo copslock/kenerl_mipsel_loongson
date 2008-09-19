@@ -1,48 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2008 13:34:14 +0100 (BST)
-Received: from kirk.serum.com.pl ([213.77.9.205]:2297 "EHLO serum.com.pl")
-	by ftp.linux-mips.org with ESMTP id S28795868AbYISMeG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 19 Sep 2008 13:34:06 +0100
-Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
-	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m8JCXwqk030608;
-	Fri, 19 Sep 2008 14:33:59 +0200
-Received: from localhost (macro@localhost)
-	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m8JCXw7q030604;
-	Fri, 19 Sep 2008 13:33:58 +0100
-Date:	Fri, 19 Sep 2008 13:33:58 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Dinar Temirbulatov <dtemirbulatov@gmail.com>
-cc:	linux-mips@linux-mips.org
-Subject: Re: mmap is broken for MIPS64 n32 and o32 abis
-In-Reply-To: <a664af430809182331i41c9e344w83ecb2830ac24@mail.gmail.com>
-Message-ID: <Pine.LNX.4.55.0809191329080.29711@cliff.in.clinika.pl>
-References: <a664af430809182331i41c9e344w83ecb2830ac24@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2008 14:26:32 +0100 (BST)
+Received: from aux-209-217-49-36.oklahoma.net ([209.217.49.36]:26635 "EHLO
+	proteus.paralogos.com") by ftp.linux-mips.org with ESMTP
+	id S28795841AbYISN02 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 19 Sep 2008 14:26:28 +0100
+Received: from [127.0.0.1] ([217.109.65.213])
+	by proteus.paralogos.com (8.9.3/8.9.3) with ESMTP id IAA11418;
+	Fri, 19 Sep 2008 08:54:32 -0500
+Message-ID: <48D3A909.6020604@paralogos.com>
+Date:	Fri, 19 Sep 2008 15:28:41 +0200
+From:	"Kevin D. Kissell" <kevink@paralogos.com>
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+To:	Klatt Uwe <U.Klatt@miwe.de>
+CC:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Subject: Re: Same mipsel binary =?ISO-8859-1?Q?f=FCr_2=2E4_and_2=2E?=
+ =?ISO-8859-1?Q?6_kernel_possible=3F?=
+References: <A1F06CF959C7E14EAC28F277F368175805686A8D6D@MAS15.arnstein.miwe.de>
+In-Reply-To: <A1F06CF959C7E14EAC28F277F368175805686A8D6D@MAS15.arnstein.miwe.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kevink@paralogos.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20556
+X-archive-position: 20557
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: kevink@paralogos.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 19 Sep 2008, Dinar Temirbulatov wrote:
+When you say "float math isn't working", what do you mean?  When you say 
+that the new binary
+only works with the 2.6 kernel, what do you mean?  Are you getting bad 
+answers, or is the program
+crashing?  If it's crashing, and you run it under gdb, where is it 
+blowing up, and why?  Are you able
+to re-create the "old" binary?   If you do a static link of the program 
+using the old tools,
+does the resulting binary work better under 2.6?
 
-> I noticed that mmap is not working properly under n32, o32 abis in
-> MIPS64, for example if we want to map 0xb6000000 address to the
-> userland under those abis we call  mmap and because the last argument
-> in old_mmap is off_t and this type is 64-bits wide for MIPS64, we end
-> up having for example 0xffffffffb6000000 address value. I am sure that
-> this is not a glibc issue. Following patch adds 32-bit version of mmap
-> and also it adds mmap64 support for n32 abi since mmap64 was
-> implemented correctly for n32 too.
+The FPU emulator has bad some minor cleanup over the past few years, but 
+it's been pretty
+stable, and I can't recall having seen any serious functional or 
+compatibility problems in a long
+time.  I think it's more likely that you've got a problem with libraries 
+and/or build procedures
+for the application.
 
- Well, neither with the o32 nor with the n32 ABI are 0xb6000000 or
-0xffffffffb6000000 (which is the n32's equivalent of the former) valid
-user addresses, so your concern is?
+          Regards,
 
-  Maciej
+          Kevin K.
+
+Klatt Uwe wrote:
+> Hello,
+>
+> I have a custom hardware (AU1100) with kernel 2.4 and an working binary using floats (compiled with gcc 3.3.5).
+> Now I am testing with kernel 2.6.
+>
+> When I use the old binary, float math isn't working anymore.
+> I have to recompile the source with new gcc 4.1.2 but then the new binary is working only on kernel 2.6.
+>
+> Can somebody give me some hints, how to chage settings for kernel 2.6 creation or compiler settings to generate an universal binary.
+>
+> Thanks
+> Uwe
+>
+>
+>   

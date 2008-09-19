@@ -1,56 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2008 08:49:25 +0100 (BST)
-Received: from elvis.franken.de ([193.175.24.41]:57575 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S28787486AbYISHtR (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 19 Sep 2008 08:49:17 +0100
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1Kgajq-0003dq-00; Fri, 19 Sep 2008 09:49:14 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id A2DA0C2C01; Fri, 19 Sep 2008 09:48:51 +0200 (CEST)
-Date:	Fri, 19 Sep 2008 09:48:51 +0200
-To:	"Sadashiiv, Halesh" <halesh.sadashiv@ap.sony.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: execve errno setting on MIPS
-Message-ID: <20080919074851.GA26907@alpha.franken.de>
-References: <7B7EF7F090B9804A830ACC82F2CDE95D56DA35@insardxms01.ap.sony.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2008 08:58:42 +0100 (BST)
+Received: from mail2.miwe.de ([62.225.191.126]:6587 "EHLO mail2.miwe.de")
+	by ftp.linux-mips.org with ESMTP id S28791645AbYISH6h convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 19 Sep 2008 08:58:37 +0100
+Received: from MAS15.arnstein.miwe.de ([172.16.100.182]) by
+ MAS15.arnstein.miwe.de ([172.16.100.182]) with mapi; Fri, 19 Sep 2008
+ 09:58:30 +0200
+From:	Klatt Uwe <U.Klatt@miwe.de>
+To:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
+Date:	Fri, 19 Sep 2008 09:58:29 +0200
+Subject: =?iso-8859-1?Q?Same_mipsel_binary_f=FCr_2.4_and_2.6_kernel_possible=3F?=
+Thread-Topic: =?iso-8859-1?Q?Same_mipsel_binary_f=FCr_2.4_and_2.6_kernel_possible=3F?=
+Thread-Index: AckaLYC+LcrtWakNQGmmeJA4PlHF7Q==
+Message-ID: <A1F06CF959C7E14EAC28F277F368175805686A8D6D@MAS15.arnstein.miwe.de>
+Accept-Language: de-DE
+Content-Language: de-DE
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+acceptlanguage:	de-DE
+x-pmwin-version: 3.0.2.0, Antivirus-Engine: 2.78.0, Antivirus-Data: 4.33E
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7B7EF7F090B9804A830ACC82F2CDE95D56DA35@insardxms01.ap.sony.com>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+Return-Path: <U.Klatt@miwe.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20542
+X-archive-position: 20543
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: U.Klatt@miwe.de
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Sep 19, 2008 at 08:57:17AM +0530, Sadashiiv, Halesh wrote:
-> >And it looks like the ARG_MAX limit is bigger than my installed glibc
-> >thinks, because it works at least on x86. When I increase the array two
-> >2 * ARG_MAX I'll get the wanted E2BIG.
->  
->  Yes, on MIPS we need to increase the ARM_MAX to 2*ARG_MAX to get E2BIG.
+Hello,
 
-I've tested only on x86 and I also needed to use 2 * ARG_MAX. This all
-depends on the installed glibc, which provides ARG_MAX and the installed
-kernel, which sets the rules independand from glibc. If you look at
-fs/exec.c in the kernel source, you see these rules. Current kernels
-for example have a limit of 
+I have a custom hardware (AU1100) with kernel 2.4 and an working binary using floats (compiled with gcc 3.3.5).
+Now I am testing with kernel 2.6.
 
-#define MAX_ARG_STRINGS 0x7FFFFFFF
+When I use the old binary, float math isn't working anymore.
+I have to recompile the source with new gcc 4.1.2 but then the new binary is working only on kernel 2.6.
 
-for the number of strings. Looks like E2BIG is triggered by the space
-needed for the strings (I only had a quick look at exec.c).
+Can somebody give me some hints, how to chage settings for kernel 2.6 creation or compiler settings to generate an universal binary.
 
-Thomas.
-
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+Thanks
+Uwe

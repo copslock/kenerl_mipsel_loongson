@@ -1,130 +1,104 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2008 16:43:12 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:49100 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20311549AbYISPnF (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 19 Sep 2008 16:43:05 +0100
-Received: from localhost (p1191-ipad304funabasi.chiba.ocn.ne.jp [123.217.155.191])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id F1171AD5F; Sat, 20 Sep 2008 00:42:59 +0900 (JST)
-Date:	Sat, 20 Sep 2008 00:43:19 +0900 (JST)
-Message-Id: <20080920.004319.93205397.anemo@mba.ocn.ne.jp>
-To:	u1@terran.org
-Cc:	macro@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: MIPS checksum bug
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20080919.011704.59652451.anemo@mba.ocn.ne.jp>
-References: <20080917.222350.41199051.anemo@mba.ocn.ne.jp>
-	<BD7F24AB-4B0C-4FA4-ADB3-5A86E7A4624F@terran.org>
-	<20080919.011704.59652451.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2008 17:11:46 +0100 (BST)
+Received: from qmta01.emeryville.ca.mail.comcast.net ([76.96.30.16]:8850 "EHLO
+	QMTA01.emeryville.ca.mail.comcast.net") by ftp.linux-mips.org
+	with ESMTP id S20321209AbYISQHE (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 19 Sep 2008 17:07:04 +0100
+Received: from OMTA08.emeryville.ca.mail.comcast.net ([76.96.30.12])
+	by QMTA01.emeryville.ca.mail.comcast.net with comcast
+	id GaTR1a00C0FhH24A1g6kzT; Fri, 19 Sep 2008 16:06:44 +0000
+Received: from darkforest.org ([24.17.204.71])
+	by OMTA08.emeryville.ca.mail.comcast.net with comcast
+	id Gg6u1a0091YweuG8Ug6vXz; Fri, 19 Sep 2008 16:06:55 +0000
+X-Authority-Analysis: v=1.0 c=1 a=OLL_FvSJAAAA:8 a=l8pUnwY1uIyeGwZ2KFwA:9
+ a=AOytGTasxAENNLUyIgoA:7 a=V3_9GQRVZhPlHavre7IJUdvRmZoA:4 a=LY0hPdMaydYA:10
+Received: from asteroid-254.terran (asteroid-254.terran [192.168.216.254])
+	(authenticated bits=0)
+	by darkforest.org (8.13.8/8.13.8) with ESMTP id m8JG6rHB007633;
+	Fri, 19 Sep 2008 09:06:54 -0700 (PDT)
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
+	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
+Message-Id: <7AC05355-B44A-4AF0-ADF7-A2027781B991@terran.org>
+From:	Bryan Phillippe <u1@terran.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+In-Reply-To: <Pine.LNX.4.55.0809191315590.29711@cliff.in.clinika.pl>
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Mime-Version: 1.0 (Apple Message framework v929.2)
+Subject: Re: MIPS checksum bug
+Date:	Fri, 19 Sep 2008 09:04:47 -0700
+References: <Pine.LNX.4.55.0809171104290.17103@cliff.in.clinika.pl> <20080917.222350.41199051.anemo@mba.ocn.ne.jp> <Pine.LNX.4.55.0809171501450.17103@cliff.in.clinika.pl> <20080918.002705.78730226.anemo@mba.ocn.ne.jp> <Pine.LNX.4.55.0809171917580.17103@cliff.in.clinika.pl> <20080918220734.GA19222@linux-mips.org> <Pine.LNX.4.55.0809190112090.22686@cliff.in.clinika.pl> <20080919112304.GB13440@linux-mips.org> <Pine.LNX.4.55.0809191315590.29711@cliff.in.clinika.pl>
+X-Mailer: Apple Mail (2.929.2)
+Return-Path: <u1@terran.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20561
+X-archive-position: 20562
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: u1@terran.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 19 Sep 2008 01:17:04 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> Thank you for testing.  Though this patch did not fixed your problem,
-> I still have a doubt on 64-bit optimization.
-> 
-> If your hardware could run 32-bit kernel, could you confirm the
-> problem can happens in 32-bit too or not?
+On Sep 19, 2008, at 5:26 AM, Maciej W. Rozycki wrote:
 
-I think I found possible breakage on 64-bit path.
+> On Fri, 19 Sep 2008, Ralf Baechle wrote:
+>
+>>> Seriously though, I smell a caller somewhere fails to call  
+>>> csum_fold() on
+>>> the result obtained from csum_partial() where it should, so it  
+>>> would be
+>>> good to fix the bug rather than trying to cover it.  Bryan, would  
+>>> you be
+>>> able to track down the caller?
+>>
+>> Not quite.  Internally the IP stack maintains the checksum as a 32- 
+>> bit
+>> value for performance sake.  It only folds it to 16-bit when it has  
+>> to.
+>
+> That's been my understanding from my little investigation yesterday
+> evening, but Bryan's problem has come from somewhere after all and
+> Atsushi-san's 32-bit addition fix didn't reportedly work while full
+> folding did, so I have assumed there must be some dependency somewhere
+> where the final folding does not happen.  I have referred to the  
+> original
+> report concerning SPARC64 now and it seems to narrow the problem  
+> down to
+> the 32 MSBs only, so I would prefer to have any confusion cleared.
+>
+> Bryan, can you please verify whether Ralf's fix works for you or not?
 
-There are some "lw" (and "ulw") used in 64-bit path and they should be
-"lwu" (and "ulwu" ... but there is no such pseudo insn) to avoid
-sign-extention.
 
-Here is a completely untested patch.
+Ralph is correct on the usage of the checksum by the IP stack, and the  
+original problem report on the Sparc64 list is pretty thorough about  
+describing how the bug affects the stack.
 
-diff --git a/arch/mips/lib/csum_partial.S b/arch/mips/lib/csum_partial.S
-index 8d77841..40f9174 100644
---- a/arch/mips/lib/csum_partial.S
-+++ b/arch/mips/lib/csum_partial.S
-@@ -39,12 +39,14 @@
- #ifdef USE_DOUBLE
- 
- #define LOAD   ld
-+#define LOAD32 lwu
- #define ADD    daddu
- #define NBYTES 8
- 
- #else
- 
- #define LOAD   lw
-+#define LOAD32 lw
- #define ADD    addu
- #define NBYTES 4
- 
-@@ -60,6 +62,14 @@
- 	ADD	sum, v1;					\
- 	.set	pop
- 
-+#define ADDC32(sum,reg)						\
-+	.set	push;						\
-+	.set	noat;						\
-+	addu	sum, reg;					\
-+	sltu	v1, sum, reg;					\
-+	addu	sum, v1;					\
-+	.set	pop
-+
- #define CSUM_BIGCHUNK1(src, offset, sum, _t0, _t1, _t2, _t3)	\
- 	LOAD	_t0, (offset + UNIT(0))(src);			\
- 	LOAD	_t1, (offset + UNIT(1))(src);			\
-@@ -132,7 +142,7 @@ LEAF(csum_partial)
- 	beqz	t8, .Lqword_align
- 	 andi	t8, src, 0x8
- 
--	lw	t0, 0x00(src)
-+	LOAD32	t0, 0x00(src)
- 	LONG_SUBU	a1, a1, 0x4
- 	ADDC(sum, t0)
- 	PTR_ADDU	src, src, 0x4
-@@ -211,7 +221,7 @@ LEAF(csum_partial)
- 	LONG_SRL	t8, t8, 0x2
- 
- .Lend_words:
--	lw	t0, (src)
-+	LOAD32	t0, (src)
- 	LONG_SUBU	t8, t8, 0x1
- 	ADDC(sum, t0)
- 	.set	reorder				/* DADDI_WAR */
-@@ -229,6 +239,9 @@ LEAF(csum_partial)
- 
- 	/* Still a full word to go  */
- 	ulw	t1, (src)
-+#ifdef USE_DOUBLE
-+	add	t1, zero	/* clear upper 32bit */
-+#endif
- 	PTR_ADDIU	src, 4
- 	ADDC(sum, t1)
- 
-@@ -280,7 +293,7 @@ LEAF(csum_partial)
- 1:
- 	.set	reorder
- 	/* Add the passed partial csum.  */
--	ADDC(sum, a2)
-+	ADDC32(sum, a2)
- 	jr	ra
- 	.set	noreorder
- 	END(csum_partial)
-@@ -681,7 +694,7 @@ EXC(	sb	t0, NBYTES-2(dst), .Ls_exc)
- 	.set	pop
- 1:
- 	.set reorder
--	ADDC(sum, psum)
-+	ADDC32(sum, psum)
- 	jr	ra
- 	.set noreorder
- 
+original report: http://www.spinics.net/lists/sparclinux/msg00173.html
+resolution: http://www.spinics.net/lists/sparclinux/msg00179.html
+
+A synopsis is that when TCP resends a portion of a segment whose  
+checksum was already previously calculated (correctly), it splits the  
+segment into a new and shortened old segment [see net/ipv4/ 
+tcp_output.c:tcp_fragment "Copy and checksum data tail into the new  
+buffer" ~ line 737ish].  The new segment has its checksum calculated  
+via csum_partial_copy_nocheck(), and the shortened old segment has its  
+checksum calculated via csum_block_sub() (for fast checksum delta).   
+It is the path through csum_block_sub() where the bug occurs, in which  
+the output from csum_block_sub() has the upper bits of the csum set  
+for the carry, and later when tcp_v4_send_check() is called with the  
+skb->csum, the csum is off-by-one.  Obviously all of these need to be  
+in the non-hardware checksum case.
+
+I can test a patch later today on the Cavium CN3010 64bit; I have been  
+running with the suboptimal but apparently effective fold-relocation  
+patch and the problem is completely gone, fwiw.
+
+Also... I was thinking it would be trivial to extract the relevant  
+bits of the trigger from this repro and just write a small native app  
+to test the csum generation-and-return; I though about doing it myself  
+earlier, because I have a tcpdump capture of the segment that was  
+triggering the bug.
+
+--
+-bp

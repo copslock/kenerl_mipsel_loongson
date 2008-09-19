@@ -1,45 +1,130 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2008 16:02:54 +0100 (BST)
-Received: from kirk.serum.com.pl ([213.77.9.205]:33019 "EHLO serum.com.pl")
-	by ftp.linux-mips.org with ESMTP id S29058567AbYISPCp (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 19 Sep 2008 16:02:45 +0100
-Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
-	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m8JF2hhR031273;
-	Fri, 19 Sep 2008 17:02:43 +0200
-Received: from localhost (macro@localhost)
-	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m8JF2d7N031259;
-	Fri, 19 Sep 2008 16:02:39 +0100
-Date:	Fri, 19 Sep 2008 16:02:38 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-cc:	ralf@linux-mips.org, u1@terran.org, linux-mips@linux-mips.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH] MIPS checksum fix
-In-Reply-To: <20080919.230952.128619158.anemo@mba.ocn.ne.jp>
-Message-ID: <Pine.LNX.4.55.0809191543230.29711@cliff.in.clinika.pl>
-References: <20080919112304.GB13440@linux-mips.org> <20080919114743.GA19359@linux-mips.org>
- <20080919120752.GA19877@linux-mips.org> <20080919.230952.128619158.anemo@mba.ocn.ne.jp>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2008 16:43:12 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:49100 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20311549AbYISPnF (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 19 Sep 2008 16:43:05 +0100
+Received: from localhost (p1191-ipad304funabasi.chiba.ocn.ne.jp [123.217.155.191])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id F1171AD5F; Sat, 20 Sep 2008 00:42:59 +0900 (JST)
+Date:	Sat, 20 Sep 2008 00:43:19 +0900 (JST)
+Message-Id: <20080920.004319.93205397.anemo@mba.ocn.ne.jp>
+To:	u1@terran.org
+Cc:	macro@linux-mips.org, linux-mips@linux-mips.org
+Subject: Re: MIPS checksum bug
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20080919.011704.59652451.anemo@mba.ocn.ne.jp>
+References: <20080917.222350.41199051.anemo@mba.ocn.ne.jp>
+	<BD7F24AB-4B0C-4FA4-ADB3-5A86E7A4624F@terran.org>
+	<20080919.011704.59652451.anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20560
+X-archive-position: 20561
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 19 Sep 2008, Atsushi Nemoto wrote:
+On Fri, 19 Sep 2008 01:17:04 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> Thank you for testing.  Though this patch did not fixed your problem,
+> I still have a doubt on 64-bit optimization.
+> 
+> If your hardware could run 32-bit kernel, could you confirm the
+> problem can happens in 32-bit too or not?
 
-> I think it would be better splitting bugfix and optimization.  This
-> code is too complex to do many things at a time, isn't it?
+I think I found possible breakage on 64-bit path.
 
- It's probably easier for people to test a single patch now and it can
-then be split at the commitment time.  Of course if something actually
-breaks, then keeping changes combined won't help tracking down the cause.  
-;)
+There are some "lw" (and "ulw") used in 64-bit path and they should be
+"lwu" (and "ulwu" ... but there is no such pseudo insn) to avoid
+sign-extention.
 
-  Maciej
+Here is a completely untested patch.
+
+diff --git a/arch/mips/lib/csum_partial.S b/arch/mips/lib/csum_partial.S
+index 8d77841..40f9174 100644
+--- a/arch/mips/lib/csum_partial.S
++++ b/arch/mips/lib/csum_partial.S
+@@ -39,12 +39,14 @@
+ #ifdef USE_DOUBLE
+ 
+ #define LOAD   ld
++#define LOAD32 lwu
+ #define ADD    daddu
+ #define NBYTES 8
+ 
+ #else
+ 
+ #define LOAD   lw
++#define LOAD32 lw
+ #define ADD    addu
+ #define NBYTES 4
+ 
+@@ -60,6 +62,14 @@
+ 	ADD	sum, v1;					\
+ 	.set	pop
+ 
++#define ADDC32(sum,reg)						\
++	.set	push;						\
++	.set	noat;						\
++	addu	sum, reg;					\
++	sltu	v1, sum, reg;					\
++	addu	sum, v1;					\
++	.set	pop
++
+ #define CSUM_BIGCHUNK1(src, offset, sum, _t0, _t1, _t2, _t3)	\
+ 	LOAD	_t0, (offset + UNIT(0))(src);			\
+ 	LOAD	_t1, (offset + UNIT(1))(src);			\
+@@ -132,7 +142,7 @@ LEAF(csum_partial)
+ 	beqz	t8, .Lqword_align
+ 	 andi	t8, src, 0x8
+ 
+-	lw	t0, 0x00(src)
++	LOAD32	t0, 0x00(src)
+ 	LONG_SUBU	a1, a1, 0x4
+ 	ADDC(sum, t0)
+ 	PTR_ADDU	src, src, 0x4
+@@ -211,7 +221,7 @@ LEAF(csum_partial)
+ 	LONG_SRL	t8, t8, 0x2
+ 
+ .Lend_words:
+-	lw	t0, (src)
++	LOAD32	t0, (src)
+ 	LONG_SUBU	t8, t8, 0x1
+ 	ADDC(sum, t0)
+ 	.set	reorder				/* DADDI_WAR */
+@@ -229,6 +239,9 @@ LEAF(csum_partial)
+ 
+ 	/* Still a full word to go  */
+ 	ulw	t1, (src)
++#ifdef USE_DOUBLE
++	add	t1, zero	/* clear upper 32bit */
++#endif
+ 	PTR_ADDIU	src, 4
+ 	ADDC(sum, t1)
+ 
+@@ -280,7 +293,7 @@ LEAF(csum_partial)
+ 1:
+ 	.set	reorder
+ 	/* Add the passed partial csum.  */
+-	ADDC(sum, a2)
++	ADDC32(sum, a2)
+ 	jr	ra
+ 	.set	noreorder
+ 	END(csum_partial)
+@@ -681,7 +694,7 @@ EXC(	sb	t0, NBYTES-2(dst), .Ls_exc)
+ 	.set	pop
+ 1:
+ 	.set reorder
+-	ADDC(sum, psum)
++	ADDC32(sum, psum)
+ 	jr	ra
+ 	.set noreorder
+ 

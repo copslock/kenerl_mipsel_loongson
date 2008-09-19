@@ -1,99 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2008 11:58:35 +0100 (BST)
-Received: from mail2.miwe.de ([62.225.191.126]:13760 "EHLO mail2.miwe.de")
-	by ftp.linux-mips.org with ESMTP id S29051694AbYISK6T convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 19 Sep 2008 11:58:19 +0100
-Received: from MAS15.arnstein.miwe.de ([172.16.100.182]) by
- MAS15.arnstein.miwe.de ([172.16.100.182]) with mapi; Fri, 19 Sep 2008
- 12:58:13 +0200
-From:	Klatt Uwe <U.Klatt@miwe.de>
-To:	"'linux-mips@linux-mips.org'" <linux-mips@linux-mips.org>
-Date:	Fri, 19 Sep 2008 12:58:12 +0200
-Subject: =?iso-8859-1?Q?AW:_Same_mipsel_binary_f=FCr_2.4_and_2.6_kernel_possible?=
- =?iso-8859-1?Q?=3F?=
-Thread-Topic: =?iso-8859-1?Q?Same_mipsel_binary_f=FCr_2.4_and_2.6_kernel_possible=3F?=
-Thread-Index: AckaO/o7ILgaat76TZ2bC2XA+4NL0gAAVx+gAAJIWtA=
-Message-ID: <A1F06CF959C7E14EAC28F277F368175805686A8D70@MAS15.arnstein.miwe.de>
-Accept-Language: de-DE
-Content-Language: de-DE
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-acceptlanguage:	de-DE
-x-pmwin-version: 3.0.2.0, Antivirus-Engine: 2.78.0, Antivirus-Data: 4.33E
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Sep 2008 12:23:10 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:63360 "EHLO
+	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
+	with ESMTP id S20310910AbYISLXH (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 19 Sep 2008 12:23:07 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m8JBN5Xd015729;
+	Fri, 19 Sep 2008 13:23:06 +0200
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m8JBN4j7015727;
+	Fri, 19 Sep 2008 13:23:04 +0200
+Date:	Fri, 19 Sep 2008 13:23:04 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, u1@terran.org,
+	linux-mips@linux-mips.org
+Subject: Re: MIPS checksum bug
+Message-ID: <20080919112304.GB13440@linux-mips.org>
+References: <Pine.LNX.4.55.0809171104290.17103@cliff.in.clinika.pl> <20080917.222350.41199051.anemo@mba.ocn.ne.jp> <Pine.LNX.4.55.0809171501450.17103@cliff.in.clinika.pl> <20080918.002705.78730226.anemo@mba.ocn.ne.jp> <Pine.LNX.4.55.0809171917580.17103@cliff.in.clinika.pl> <20080918220734.GA19222@linux-mips.org> <Pine.LNX.4.55.0809190112090.22686@cliff.in.clinika.pl>
 MIME-Version: 1.0
-Return-Path: <U.Klatt@miwe.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.55.0809190112090.22686@cliff.in.clinika.pl>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20550
+X-archive-position: 20551
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: U.Klatt@miwe.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello Markus,
+On Fri, Sep 19, 2008 at 11:12:22AM +0100, Maciej W. Rozycki wrote:
 
-I use kernel 2.6.22.6 (this version is a special version from
-hardware manufacturer).
-I have complete source and can build this kernel without
-problems (crosscompiled on x86).
+> > Which is a truely weird operation - but MIPS R2 happens to have a wonderful
+> > instruction for this operation, WSBH / DSBH.
+> 
+>  Ah, finally a justification for the R2 ISA!
 
-I think the kernel should have fp emulator:
-"Algorithmics/MIPS FPU Emulator v1.5" is displayed on boot.
+As you may recall the real reason is that this instruction was designed
+not by engineers but patent law.  Which is f*cked into the head but ...
 
-Uwe
+>  Seriously though, I smell a caller somewhere fails to call csum_fold() on
+> the result obtained from csum_partial() where it should, so it would be
+> good to fix the bug rather than trying to cover it.  Bryan, would you be
+> able to track down the caller?
 
-> -----BEGIN PGP SIGNED MESSAGE-----
-> Hash: SHA256
->
-> Looks like the FPU-Emulator isn't working. Which kernel versions are
-> you using?
->
-> //Markus
->
-> Klatt Uwe wrote:
-> > Hello,
-> >
-> > I have a custom hardware (AU1100) with kernel 2.4 and an
-> working binary
-> using floats (compiled with gcc 3.3.5).
-> > Now I am testing with kernel 2.6.
-> >
-> > When I use the old binary, float math isn't working anymore.
-> > I have to recompile the source with new gcc 4.1.2 but then the new
-> binary is working only on kernel 2.6.
-> >
-> > Can somebody give me some hints, how to chage settings for
-> kernel 2.6
-> creation or compiler settings to generate an universal binary.
-> >
-> > Thanks
-> > Uwe
-> >
->
->
-> - --
-> _______________________________________
->
-> Mr Markus Gothe
-> Software Engineer
->
-> Phone: +46 (0)13 21 81 20 (ext. 1046)
-> Fax: +46 (0)13 21 21 15
-> Mobile: +46 (0)70 348 44 35
-> Diskettgatan 11, SE-583 35 Linköping, Sweden
-> www.27m.com
-> -----BEGIN PGP SIGNATURE-----
-> Version: GnuPG v1.4.6 (GNU/Linux)
-> Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
->
-> iD8DBQFI03Pn6I0XmJx2NrwRCH4eAJwMWR2/SrFaWRJAWMul9sK/GvATdQCaAgmJ
-> LnzfYvUmO6mzyV5QMKtCmKs=
-> =dP4U
-> -----END PGP SIGNATURE-----
->
->
+Not quite.  Internally the IP stack maintains the checksum as a 32-bit
+value for performance sake.  It only folds it to 16-bit when it has to.
+
+>  I can see you have done the microoptimisation I had in mind meanwhile --
+> thanks for saving me the effort. ;)  There is a delay slot to fill left
+> though -- will you take care of it too?
+
+Will do - just couldn't be bothered (too) late last night ...
+
+  Ralf

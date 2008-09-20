@@ -1,68 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Sep 2008 18:17:46 +0100 (BST)
-Received: from smtp1.dnsmadeeasy.com ([205.234.170.134]:60128 "EHLO
-	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
-	id S32733745AbYITRQv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 20 Sep 2008 18:16:51 +0100
-Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 63DDC321498
-	for <linux-mips@linux-mips.org>; Sat, 20 Sep 2008 17:16:49 +0000 (UTC)
-X-Authenticated-Name: js.dnsmadeeasy
-X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
-Received: from avtrex.com (unknown [173.8.135.205])
-	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP
-	for <linux-mips@linux-mips.org>; Sat, 20 Sep 2008 17:16:49 +0000 (UTC)
-Received: from silver64.hq2.avtrex.com ([192.168.7.226]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Sat, 20 Sep 2008 10:16:36 -0700
-Message-ID: <48D52FF4.2000905@avtrex.com>
-Date:	Sat, 20 Sep 2008 10:16:36 -0700
-From:	David Daney <ddaney@avtrex.com>
-User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Sep 2008 19:26:22 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:22710 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S32727410AbYITS0S (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 20 Sep 2008 19:26:18 +0100
+Received: from [127.0.0.1] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id EE2EF3EC9; Sat, 20 Sep 2008 11:26:09 -0700 (PDT)
+Message-ID: <48D5403D.3020100@ru.mvista.com>
+Date:	Sat, 20 Sep 2008 22:26:05 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: [PATCH] Fix include paths in malta-amon.c
-Content-Type: text/plain; charset=ISO-8859-1
+To:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
+Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org,
+	linux-ide@vger.kernel.org, ralf@linux-mips.org
+Subject: Re: [PATCH 1/2] ide: Add tx4939ide driver (v2)
+References: <20080918.001342.52129176.anemo@mba.ocn.ne.jp> <200809181645.10410.bzolnier@gmail.com> <48D37025.2030501@ru.mvista.com> <200809191010.09457.bzolnier@gmail.com>
+In-Reply-To: <200809191010.09457.bzolnier@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 20 Sep 2008 17:16:36.0387 (UTC) FILETIME=[A30A7F30:01C91B44]
-Return-Path: <ddaney@avtrex.com>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20578
+X-archive-position: 20579
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@avtrex.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
+Hello.
 
-On linux-queue, malta doesn't build after the include file relocation.
-This should fix it.
+Bartlomiej Zolnierkiewicz wrote:
 
-There some occurrences of 'asm-mips' in the comments of quite a few
-files, but this is the only place I found it in any code.
+>>>> This is the driver for the Toshiba TX4939 SoC ATA controller.
+>>>>
+>>>> This controller has standard ATA taskfile registers and DMA
+>>>> command/status registers, but the register layout is swapped on big
+>>>> endian.  There are some other endian issue and some special registers
+>>>> which requires many custom dma_ops/port_ops routines.
+>>>>
+>>>> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+>>>> ---
+>>>> This patch is against linux-next 20080916.
+>>>>
+>>>> Changes since v1:
+>>>> * rework IO accessors
+>>>> * rework pio/dma timing setup
+>>>> * use ide_get_pair_dev
+>>>> * do not do ATA hard reset
+>>>> * and so on  (Many thanks to Sergei)
+>>>>     
+>>>>         
+>>> Sergei, are you OK with this version?
+>>>   
+>>>       
+>>    I didn't have tome to look at it.
+>>     
+>
+> I didn't mean to rush you.  I just prefer to have it in pata tree
+>   
 
-Signed-off-by: David Daney <ddaney@avtrex.com>
----
- arch/mips/mti-malta/malta-amon.c |    6 +++---
- 1 files changed, 3 insertions(+), 3 deletions(-)
+   Looking at it now... Unfortunately, it doesn't look compilable. :-/
 
-diff --git a/arch/mips/mti-malta/malta-amon.c b/arch/mips/mti-malta/malta-amon.c
-index 96236bf..df9e526 100644
---- a/arch/mips/mti-malta/malta-amon.c
-+++ b/arch/mips/mti-malta/malta-amon.c
-@@ -22,9 +22,9 @@
- #include <linux/init.h>
- #include <linux/smp.h>
- 
--#include <asm-mips/addrspace.h>
--#include <asm-mips/mips-boards/launch.h>
--#include <asm-mips/mipsmtregs.h>
-+#include <asm/addrspace.h>
-+#include <asm/mips-boards/launch.h>
-+#include <asm/mipsmtregs.h>
- 
- int amon_cpu_avail(int cpu)
- {
--- 
-1.5.5.1
+MBR, Sergei

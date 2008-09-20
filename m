@@ -1,58 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Sep 2008 16:09:22 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:14050 "EHLO
-	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S28798051AbYITPJS (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 20 Sep 2008 16:09:18 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m8KF9Ggs007746;
-	Sat, 20 Sep 2008 17:09:16 +0200
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m8KF9EHH007744;
-	Sat, 20 Sep 2008 17:09:14 +0200
-Date:	Sat, 20 Sep 2008 17:09:14 +0200
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	macro@linux-mips.org, u1@terran.org, linux-mips@linux-mips.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH] MIPS checksum fix
-Message-ID: <20080920150914.GA7725@linux-mips.org>
-References: <20080919112304.GB13440@linux-mips.org> <20080919114743.GA19359@linux-mips.org> <20080919120752.GA19877@linux-mips.org> <20080919.230952.128619158.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Sep 2008 16:48:40 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:62641 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S32712841AbYITPsd (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 20 Sep 2008 16:48:33 +0100
+Received: from [127.0.0.1] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id B01E83EC9; Sat, 20 Sep 2008 08:48:28 -0700 (PDT)
+Message-ID: <48D51B48.2090400@ru.mvista.com>
+Date:	Sat, 20 Sep 2008 19:48:24 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20080919.230952.128619158.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
+	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+	ralf@linux-mips.org
+Subject: Re: [PATCH 2/2] TXx9: Add TX4939 ATA support (v2)
+References: <20080918.001358.08318211.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20080918.001358.08318211.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20576
+X-archive-position: 20577
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Sep 19, 2008 at 11:09:52PM +0900, Atsushi Nemoto wrote:
+Hello.
 
-> I think it would be better splitting bugfix and optimization.  This
-> code is too complex to do many things at a time, isn't it?
-> 
-> > @@ -53,12 +53,14 @@
-> >  #define UNIT(unit)  ((unit)*NBYTES)
-> >  
-> >  #define ADDC(sum,reg)						\
-> > -	.set	push;						\
-> > -	.set	noat;						\
-> >  	ADD	sum, reg;					\
-> >  	sltu	v1, sum, reg;					\
-> >  	ADD	sum, v1;					\
-> > -	.set	pop
-> 
-> Is this required?  Just a cleanup?
+Atsushi Nemoto wrote:
 
-It papers over potencially important warnings so had to go.  I argue the
-caller of ADDC should set noat mode, if at all.
+> Add a helper routine to register tx4939ide driver and use it on
+> RBTX4939 board.
+>   
 
-  Ralf
+  BTW, how about supporting IDE aboard RBTX4938, not worth the trouble?
+
+> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+
+Acked-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+
+MBR, Sergei

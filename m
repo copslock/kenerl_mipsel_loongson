@@ -1,48 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Sep 2008 16:48:40 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:62641 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S32712841AbYITPsd (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 20 Sep 2008 16:48:33 +0100
-Received: from [127.0.0.1] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id B01E83EC9; Sat, 20 Sep 2008 08:48:28 -0700 (PDT)
-Message-ID: <48D51B48.2090400@ru.mvista.com>
-Date:	Sat, 20 Sep 2008 19:48:24 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Sep 2008 18:17:46 +0100 (BST)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.134]:60128 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S32733745AbYITRQv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 20 Sep 2008 18:16:51 +0100
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 63DDC321498
+	for <linux-mips@linux-mips.org>; Sat, 20 Sep 2008 17:16:49 +0000 (UTC)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [173.8.135.205])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP
+	for <linux-mips@linux-mips.org>; Sat, 20 Sep 2008 17:16:49 +0000 (UTC)
+Received: from silver64.hq2.avtrex.com ([192.168.7.226]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Sat, 20 Sep 2008 10:16:36 -0700
+Message-ID: <48D52FF4.2000905@avtrex.com>
+Date:	Sat, 20 Sep 2008 10:16:36 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
 MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
-	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-	ralf@linux-mips.org
-Subject: Re: [PATCH 2/2] TXx9: Add TX4939 ATA support (v2)
-References: <20080918.001358.08318211.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20080918.001358.08318211.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To:	linux-mips@linux-mips.org
+Subject: [PATCH] Fix include paths in malta-amon.c
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+X-OriginalArrivalTime: 20 Sep 2008 17:16:36.0387 (UTC) FILETIME=[A30A7F30:01C91B44]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20577
+X-archive-position: 20578
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
 
-Atsushi Nemoto wrote:
+On linux-queue, malta doesn't build after the include file relocation.
+This should fix it.
 
-> Add a helper routine to register tx4939ide driver and use it on
-> RBTX4939 board.
->   
+There some occurrences of 'asm-mips' in the comments of quite a few
+files, but this is the only place I found it in any code.
 
-  BTW, how about supporting IDE aboard RBTX4938, not worth the trouble?
+Signed-off-by: David Daney <ddaney@avtrex.com>
+---
+ arch/mips/mti-malta/malta-amon.c |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
 
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-
-Acked-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
-
-MBR, Sergei
+diff --git a/arch/mips/mti-malta/malta-amon.c b/arch/mips/mti-malta/malta-amon.c
+index 96236bf..df9e526 100644
+--- a/arch/mips/mti-malta/malta-amon.c
++++ b/arch/mips/mti-malta/malta-amon.c
+@@ -22,9 +22,9 @@
+ #include <linux/init.h>
+ #include <linux/smp.h>
+ 
+-#include <asm-mips/addrspace.h>
+-#include <asm-mips/mips-boards/launch.h>
+-#include <asm-mips/mipsmtregs.h>
++#include <asm/addrspace.h>
++#include <asm/mips-boards/launch.h>
++#include <asm/mipsmtregs.h>
+ 
+ int amon_cpu_avail(int cpu)
+ {
+-- 
+1.5.5.1

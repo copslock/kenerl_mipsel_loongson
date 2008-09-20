@@ -1,49 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Sep 2008 00:19:13 +0100 (BST)
-Received: from kirk.serum.com.pl ([213.77.9.205]:17146 "EHLO serum.com.pl")
-	by ftp.linux-mips.org with ESMTP id S29573444AbYISXTK (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 20 Sep 2008 00:19:10 +0100
-Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
-	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m8JNJ7Ym000730;
-	Sat, 20 Sep 2008 01:19:07 +0200
-Received: from localhost (macro@localhost)
-	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m8JNIoCu000725;
-	Sat, 20 Sep 2008 00:18:50 +0100
-Date:	Sat, 20 Sep 2008 00:18:49 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Thiemo Seufer <ths@networkno.de>
-cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, u1@terran.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Sep 2008 01:13:52 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:18592 "EHLO
+	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
+	with ESMTP id S28597311AbYITANs (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 20 Sep 2008 01:13:48 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m8K0DkRO002903;
+	Sat, 20 Sep 2008 02:13:46 +0200
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m8K0DiOj002901;
+	Sat, 20 Sep 2008 02:13:44 +0200
+Date:	Sat, 20 Sep 2008 02:13:44 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, u1@terran.org,
 	linux-mips@linux-mips.org
 Subject: Re: MIPS checksum bug
-In-Reply-To: <20080919163538.GA22497@networkno.de>
-Message-ID: <Pine.LNX.4.55.0809200012030.29711@cliff.in.clinika.pl>
-References: <20080917.222350.41199051.anemo@mba.ocn.ne.jp>
- <BD7F24AB-4B0C-4FA4-ADB3-5A86E7A4624F@terran.org> <20080919.011704.59652451.anemo@mba.ocn.ne.jp>
- <20080920.004319.93205397.anemo@mba.ocn.ne.jp>
- <Pine.LNX.4.55.0809191656030.29711@cliff.in.clinika.pl>
- <20080919163538.GA22497@networkno.de>
+Message-ID: <20080920001344.GC31314@linux-mips.org>
+References: <20080917.222350.41199051.anemo@mba.ocn.ne.jp> <BD7F24AB-4B0C-4FA4-ADB3-5A86E7A4624F@terran.org> <20080919.011704.59652451.anemo@mba.ocn.ne.jp> <20080920.004319.93205397.anemo@mba.ocn.ne.jp> <Pine.LNX.4.55.0809191656030.29711@cliff.in.clinika.pl>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Pine.LNX.4.55.0809191656030.29711@cliff.in.clinika.pl>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20568
+X-archive-position: 20569
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 19 Sep 2008, Thiemo Seufer wrote:
+On Fri, Sep 19, 2008 at 05:09:17PM +0100, Maciej W. Rozycki wrote:
 
-> >  Unfortunately you can't zero-extend with a single instruction (you can
-> > use a single sll(v) to sign-extend), unless the R2 ISA provides some
-> > suitable oddity (which I haven't checked).
+> > @@ -229,6 +239,9 @@ LEAF(csum_partial)
+> >  
+> >  	/* Still a full word to go  */
+> >  	ulw	t1, (src)
+> > +#ifdef USE_DOUBLE
+> > +	add	t1, zero	/* clear upper 32bit */
+> > +#endif
+> >  	PTR_ADDIU	src, 4
+> >  	ADDC(sum, t1)
+> >  
 > 
-> AFAIR dext can do this for MIPS64 R2.
+>  Unfortunately you can't zero-extend with a single instruction (you can
+> use a single sll(v) to sign-extend), unless the R2 ISA provides some
+> suitable oddity (which I haven't checked).  You want something like:
+> 
+> 	dsll32	t1, t1, 0
+> 	dsrl32	t1, t1, 0
+> 
+> instead.
 
- Yeah, I would have thought if anything, it would be something as odd as
-that...
+For a one's complement checksum it doesn't matter in which of the 4
+halfwords the data ends is loaded.  So the easiest solution is:
 
-  Maciej
+	/* Still a full word to go  */
+	ulw     t1, (src)
+#ifdef USE_DOUBLE
+	dsll	t1, t1, 32		/* clear lower 32bit */
+#endif
+	PTR_ADDIU       src, 4
+	ADDC(sum, t1)
+
+  Ralf

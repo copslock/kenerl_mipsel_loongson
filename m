@@ -1,89 +1,136 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Sep 2008 12:09:21 +0100 (BST)
-Received: from mail-gx0-f10.google.com ([209.85.217.10]:1012 "EHLO
-	mail-gx0-f10.google.com") by ftp.linux-mips.org with ESMTP
-	id S62084084AbYIUKzd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 21 Sep 2008 11:55:33 +0100
-Received: by gxk3 with SMTP id 3so2023460gxk.0
-        for <linux-mips@linux-mips.org>; Sun, 21 Sep 2008 03:55:26 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to
-         :subject:cc:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:content-disposition:references;
-        bh=Jj1XYucARUJS3q7uPknpC9Qhabf46LKAyRnk1rT8IfE=;
-        b=C1UjDHge9+HBJ2CbgJn8brEKBiTamW4otN7R0RXZWpxTH+pnYfdy7qkLVxUzBZ6cDG
-         iP/93l90dvCyy5SM3o6IZLwq25LI3SBHOLC7CZ9hyU2GyCj7iyvIbWeK7ZxX5mUkYpOi
-         VYKkvV83Kwt+PN6kGfGZm4gbSmMTiRcK+OS/4=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:cc:in-reply-to:mime-version
-         :content-type:content-transfer-encoding:content-disposition
-         :references;
-        b=AultqCmX+6xcUO0M9h+cORitdDzmbbjmTJt55sGD8WWw91MdA89iKEQBCNd+6dHInS
-         a2rs1eo1Yn/6/bhKjdo4qBW7kXzcStnoLdiLeT9WZjwfEKN8NXe9f6RkF9AYFgSKE7mA
-         VVZbnXRg7prG3GkuVjQEJ6hdHtcms55v/iVaY=
-Received: by 10.90.79.12 with SMTP id c12mr183854agb.51.1221994526307;
-        Sun, 21 Sep 2008 03:55:26 -0700 (PDT)
-Received: by 10.90.63.18 with HTTP; Sun, 21 Sep 2008 03:55:26 -0700 (PDT)
-Message-ID: <a664af430809210355p62f6b848q87ed07f63a242c78@mail.gmail.com>
-Date:	Sun, 21 Sep 2008 14:55:26 +0400
-From:	"Dinar Temirbulatov" <dtemirbulatov@gmail.com>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Subject: Re: mmap is broken for MIPS64 n32 and o32 abis
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <Pine.LNX.4.55.0809191803390.29711@cliff.in.clinika.pl>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Sep 2008 17:33:07 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:26874 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S23858920AbYIUQco (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 21 Sep 2008 17:32:44 +0100
+Received: from localhost (p7005-ipad206funabasi.chiba.ocn.ne.jp [222.145.81.5])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 33B56A378; Mon, 22 Sep 2008 01:32:34 +0900 (JST)
+Date:	Mon, 22 Sep 2008 01:32:56 +0900 (JST)
+Message-Id: <20080922.013256.128618380.anemo@mba.ocn.ne.jp>
+To:	sshtylyov@ru.mvista.com
+Cc:	bzolnier@gmail.com, linux-mips@linux-mips.org,
+	linux-ide@vger.kernel.org, ralf@linux-mips.org
+Subject: Re: [PATCH 1/2] ide: Add tx4939ide driver (v2)
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <48D57245.8060606@ru.mvista.com>
+References: <20080918.001342.52129176.anemo@mba.ocn.ne.jp>
+	<48D57245.8060606@ru.mvista.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-References: <a664af430809182331i41c9e344w83ecb2830ac24@mail.gmail.com>
-	 <Pine.LNX.4.55.0809191329080.29711@cliff.in.clinika.pl>
-	 <a664af430809190953k486e2012hf3a09caa50c9574a@mail.gmail.com>
-	 <Pine.LNX.4.55.0809191803390.29711@cliff.in.clinika.pl>
-Return-Path: <dtemirbulatov@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20583
+X-archive-position: 20584
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dtemirbulatov@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-hi, Maciej
-I don't think it has anything to do type definition of signed or
-unsigned. I think following things happened here we called mmap() from
-n32 and as it is defined is the glibc for this abi the sixth parameter
-should be 32-bit wide integer and we transefed this 32-bit
-value(0xb6000000) in the a5(r9) register according to the mips abi,
-but we loaded this value with "lui     a5,0xb600" instruction and that
-resulted with 0xffffffffb6000000 in the 64-bit version of a5
-register(for 32-bit it is legitimate 0xb6000000). after that on the
-kernel side we have this function old_mmap() and sixth argument there
-is 64-bit wide integer (off_t type) and it does not that we called
-this function from 32-bit environment  and that is why there is
-0xffffffffb6000000 value in the end, so 0xffffffff is trash. I think
-that we need to have a separate mmap system call handler for 32-bit
-abis, also we need to add mmap2 handler for n32 as we have it for o32.
+On Sun, 21 Sep 2008 01:59:33 +0400, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
+> > +	if (pair)
+> > +		safe = min(safe, ide_get_best_pio_mode(pair, 255, 4));
+> > +	/*
+> > +	 * Update Command Transfer Mode for master/slave and Data
+> > +	 * Transfer Mode for this drive.
+> > +	 */
+> > +	mask = is_slave ? 0x07f00700 : 0x070007f0;
+> > +	val = (safe << 24) | (safe << 8) | (pio << (is_slave ? 20 : 4));
+> >   
+> 
+>    You are not obliged to set the same command rimings for both drives...
 
-thanks, Dinar.
+I thought I should use "safe" command timings for command transfer
+mode since taskfile registers should be considered as "shared" for
+both drives.  At least device selection sequence should be done in
+safe speed, isn't it?
 
+> > +		/* wait 12GBUSCLK (typ. 60ns @ GBUS200MHz) */
+> > +		ndelay(400);
+> >   
+> 
+>    But why wait 400 ns?
 
-On Fri, Sep 19, 2008 at 9:25 PM, Maciej W. Rozycki <macro@linux-mips.org> wrote:
-> On Fri, 19 Sep 2008, Dinar Temirbulatov wrote:
->
->>          mmptr = (unsigned short *)mmap((void *)0, 0x1000,
->>                              PROT_READ | PROT_WRITE, MAP_SHARED,
->>                              mmh, 0xb6000000);
->
->  Ah, so it is the file offset you are concerned about.  Fair enough then.
-> Obviously the non-LFS 32-bit variation has to sign-extend the offset as
-> this is how the off_t type has been defined in this case, though it is
-> interesting to note that the kernel treats this argument as unsigned while
-> the C library API defines it as signed and there is no range checking in
-> between.  Hmm...
->
->  Maciej
->
+Well, I should recalculate safe value for possible slowest gbus clock.
+
+> > +	if (stat & (TX4939IDE_INT_ADDRERR | TX4939IDE_INT_REACHMUL |
+> > +		    TX4939IDE_INT_DEVTIMING | TX4939IDE_INT_BUSERR))
+> > +		pr_err("%s: Error interrupt %#x (%s%s%s%s )\n",
+> > +		       hwif->name, stat,
+> > +		       (stat & TX4939IDE_INT_ADDRERR) ?
+> > +		       " Address-Error" : "",
+> > +		       (stat & TX4939IDE_INT_REACHMUL) ?
+> > +		       " Reach-Multiple" : "",
+> >   
+> 
+>    This is not an error condition and should only happen in so called 
+> VDMA mode iff you suspend the transfer, IIUC.
+
+So just masking Reach-Multiple interrupt is better?
+
+> > +	case TX4939IDE_INT_HOST | TX4939IDE_INT_XFEREND:
+> > +		dma_stat = tx4939ide_readb(base, TX4939IDE_DMA_stat);
+> > +		if (!(dma_stat & 4))
+> > +			pr_debug("%s: weird interrupt status. "
+> >   
+> 
+>    This one is worth pr_warning() or even pr_err()...
+> 
+> > +				 "DMA_stat %#02x int_ctl %#04x\n",
+> > +				 hwif->name, dma_stat, ctl);
+> >   
+> 
+>    However,  it's already done in the dma_end() method;.do we need 
+> really to print 2 messages?
+
+Yes, we don't need this usually.  So I used pr_debug() instead of
+pr_warning().  But I have no strong opinition here.  I'll drop it.
+
+> > +static void tx4939ide_init_iops(ide_hwif_t *hwif)
+> > +{
+> > +	/* use extra_base for base address of the all registers */
+> > +	hwif->extra_base = hwif->io_ports.data_addr & ~0xfff;
+> > +}
+> 
+>    Ugh... didn't realize that using hwif->extra_base necessiates the 
+> init_iops() method. But why is it necessary? We're not using 
+> hwif->extra_base to access the taskfile.
+
+The extra_base is used by TX4939IDE_BASE() everywhere...
+And I cannot find other good place to initialize extra_base.
+
+We can initialize extra_base in tx4939ide_probe by using
+ide_host_alloc()/ide_host_register() instead of ide_host_add().  Is
+this preferred?
+
+> > +static void tx4939ide_tf_load(ide_drive_t *drive, ide_task_t *task)
+> > +{
+> > +	mm_tf_load(drive, task);
+> > +	if (task->tf_flags & IDE_TFLAG_OUT_DEVICE) {
+> > +		ide_hwif_t *hwif = drive->hwif;
+> > +		void __iomem *base = TX4939IDE_BASE(hwif);
+> > +		/* Fix ATA100 CORE System Control Register */
+> > +		tx4939ide_writew(tx4939ide_readw(base, TX4939IDE_Sys_Ctl) &
+> > +				 0x07f0,
+> > +				 base, TX4939IDE_Sys_Ctl);
+> 
+>    Why? Doesn't page 17-4 of the datasheet say that these bits get 
+> auto-cleared ona  write to the device/head register? Or is this to 
+> address <CAUSION> on page 17-9?
+
+Yes, that "CAUSION".  I will put it in the comment.
+
+>    Phew, that was long review...
+
+I will address all other issues.
+
+Thank you for great review again!
+
+---
+Atsushi Nemoto

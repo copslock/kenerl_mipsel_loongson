@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 20 Sep 2008 22:59:50 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:52666 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S36901996AbYITV7o (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 20 Sep 2008 22:59:44 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Sep 2008 10:36:07 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:24780 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S62074248AbYIUJV3 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 21 Sep 2008 10:21:29 +0100
 Received: from [127.0.0.1] (unknown [10.150.0.9])
 	by imap.sh.mvista.com (Postfix) with ESMTP
-	id D40023EC9; Sat, 20 Sep 2008 14:59:38 -0700 (PDT)
-Message-ID: <48D57245.8060606@ru.mvista.com>
-Date:	Sun, 21 Sep 2008 01:59:33 +0400
+	id C39E33ECA; Sun, 21 Sep 2008 02:21:23 -0700 (PDT)
+Message-ID: <48D6120F.5000802@ru.mvista.com>
+Date:	Sun, 21 Sep 2008 13:21:19 +0400
 From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
 User-Agent: Thunderbird 2.0.0.16 (Windows/20080708)
 MIME-Version: 1.0
@@ -15,15 +15,15 @@ To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
 Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
 	ralf@linux-mips.org
 Subject: Re: [PATCH 1/2] ide: Add tx4939ide driver (v2)
-References: <20080918.001342.52129176.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20080918.001342.52129176.anemo@mba.ocn.ne.jp>
+References: <20080918.001342.52129176.anemo@mba.ocn.ne.jp> <48D57245.8060606@ru.mvista.com>
+In-Reply-To: <48D57245.8060606@ru.mvista.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20581
+X-archive-position: 20582
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,491 +31,37 @@ X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+Hello, I wrote:
 
-Atsushi Nemoto wrote:
-
-> This is the driver for the Toshiba TX4939 SoC ATA controller.
->   
-
-   Wow, the first try (by MontaVista) at submitting it was almost 3 
-years ago! It was hopless back then...
-
-> This controller has standard ATA taskfile registers and DMA
-> command/status registers, but the register layout is swapped on big
-> endian.  There are some other endian issue and some special registers
-> which requires many custom dma_ops/port_ops routines.
+>> This controller has standard ATA taskfile registers and DMA
+>> command/status registers, but the register layout is swapped on big
+>> endian.  There are some other endian issue and some special registers
+>> which requires many custom dma_ops/port_ops routines.
+>>
+>> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+>>   
 >
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
->   
-
-   I thought that I'd only have the stylyistic comments and ACK the 
-patch but it shouldn't even compile... :-/
-
-> diff --git a/drivers/ide/mips/tx4939ide.c b/drivers/ide/mips/tx4939ide.c
-> new file mode 100644
-> index 0000000..e008e1e
-> --- /dev/null
-> +++ b/drivers/ide/mips/tx4939ide.c
-> @@ -0,0 +1,744 @@
-> +/* ATA Shadow Registers (8bit except for DATA which is 16bit) */
->   
-
-   I think "8-bit" and "16-bit" would be more correct...
-
-> +#define TX4939IDE_DATA	0x000
-> +#define TX4939IDE_Error_Ft	0x001
->   
-
-   I'd suggest TX4939IDE_Error_Feature -- no point in reducing it when 
-the full name will fit in the following tab anyway. :-)
-
-> +#define TX4939IDE_Sec	0x002
-> +#define TX4939IDE_LBA0	0x003
-> +#define TX4939IDE_LBA1	0x004
-> +#define TX4939IDE_LBA2	0x005
-> +#define TX4939IDE_Device	0x006
->   
-
-   TX4939IDE_DevHead would be more exact.
-
-> +#define TX4939IDE_St_Cmd	0x007
-> +#define TX4939IDE_Alt_DevCtl	0x402
->   
-
-   I'd suggest TX4939IDE_Stat_Cmd and TX4939IDE_AltStat_DevCtl...
-
-> +/* ATA100 CORE Registers (16bit) */
-> +#define TX4939IDE_Sys_Ctl	0xc00
-> +#define TX4939IDE_Xfer_Cnt_1	0xc08
-> +#define TX4939IDE_Xfer_Cnt_2	0xc0a
-> +#define TX4939IDE_Sec_Cnt	0xc10
-> +#define TX4939IDE_Strt_AddL	0xc18
-> +#define TX4939IDE_Strt_AddU	0xc20
->   
-
-   No point in reducing Start too: suggesting 
-TX4939IDE_Start_{Lo|Up}_Addr -- for consistency with other names.
-
-> +#define TX4939IDE_Add_Ctl	0xc28
-> +#define TX4939IDE_Lo_BCnt	0xc30
-> +#define TX4939IDE_Up_BCnt	0xc38
->   
-   TX4939IDE_{Lo|Up}_Burst_Cnt
-
-> +#define TX4939IDE_PIO_Acc	0xc88
->   
-
-   Suggesting TX4939IDE_PIO_Addr...
-
-> +#define TX4939IDE_H_Rst_Tim	0xc90
-> +#define TX4939IDE_int_ctl	0xc98
-> +#define TX4939IDE_Pkt_Cmd	0xcb8
-> +#define TX4939IDE_Bxfer_cntH	0xcc0
-> +#define TX4939IDE_Bxfer_cntL	0xcc8
->   
-
-   Suggesting TX4939IDE_Bxfer_Cnt_{Hi|Lo}...
-
-
-> +#define TX4939IDE_Dev_TErr	0xcd0
-> +#define TX4939IDE_Pkt_xfer_ct	0xcd8
-> +#define TX4939IDE_Strt_AddT	0xce0
->   
-
-   No point in contracting agaim -- suggesting TX4939IDE_Pkt_Xfer_Ctl 
-and TX4939IDE_Start_TAddr.
-   Would have been good to keep the consistent naming style, i.e. either 
-always have an underscore between name words or only have them after the 
-TX4939IDE prefix and aways use uppercase to start a word...
-
-> +#define TX4939IDE_IGNORE_INTS	\
-> +	(TX4939IDE_INT_ADDRERR | TX4939IDE_INT_REACHMUL | \
-> +	 TX4939IDE_INT_DEVTIMING | TX4939IDE_INT_UDMATERM | \
-> +	 TX4939IDE_INT_TIMER)
->   
-
-   Note that interrupt on a bus error that you're ot masking is not 
-generated by the SFF-8038i compliant controllers as well...
-
-> +static void tx4939ide_set_pio_mode(ide_drive_t *drive, const u8 pio)
-> +{
-> +	ide_hwif_t *hwif = HWIF(drive);
-> +	int is_slave = drive->dn & 1;
-> +	u32 mask, val;
-> +	u8 safe = pio;
-> +	ide_drive_t *pair;
-> +
-> +	pair = ide_get_pair_dev(drive);
->   
-
-   Wait, have you tried to compile this driver? The function is called 
-ide_get_paired_drive() -- and I did name it correctly in my previous review.
-
-> +	if (pair)
-> +		safe = min(safe, ide_get_best_pio_mode(pair, 255, 4));
-> +	/*
-> +	 * Update Command Transfer Mode for master/slave and Data
-> +	 * Transfer Mode for this drive.
-> +	 */
-> +	mask = is_slave ? 0x07f00700 : 0x070007f0;
-> +	val = (safe << 24) | (safe << 8) | (pio << (is_slave ? 20 : 4));
->   
-
-   You are not obliged to set the same command rimings for both drives...
-
-> +	hwif->select_data = (hwif->select_data & ~mask) | val;
-> +	tx4939ide_selectproc(drive);
->   
-
-   No dire need to do this as ide_config_drive_speed() will be called 
-right after the set_pio_mode() method and it will call the selectproc() 
-method... unless you're dealing with a slow CompactFlash drive.
-   But actually setting the controller's timings prior to issuing SET 
-FEATURES doesn't seem safe anyway. Bart, don't you think that we should 
-always call set_{dma|pio}_mode() AFTER ide_config_drive_speed() --
-we have no guarantee that the drive will accept the mode...
-
-> +}
-> +
-> +static void tx4939ide_set_dma_mode(ide_drive_t *drive, const u8 mode)
-> +{
-> +	ide_hwif_t *hwif = HWIF(drive);
-> +	int is_slave = drive->dn & 1;
->   
-
-   It's not that you couldn't do without this variable. :-)
-
-> +	u32 mask, val;
-> +
-> +	/* Update Data Transfer Mode for this drive. */
-> +	mask = 0x00f0;
-> +	if (mode >= XFER_UDMA_0)
-> +		val = 8 + (mode - XFER_UDMA_0);
-> +	else if (mode >= XFER_MW_DMA_0)
-> +		val = 5 + (mode - XFER_MW_DMA_0);
->   
-
-  You hardly need parens above...
-
-> +	else
-> +		val = mode - XFER_PIO_0;
-> +	val <<= 4;
-> +	if (is_slave) {
-> +		mask <<= 16;
->   
-
-   Could be just:
-
-       mask = 0x00f00000;
-
-> +		val <<= 16;
-> +	}
-> +	hwif->select_data = (hwif->select_data & ~mask) | val;
-> +	tx4939ide_selectproc(drive);
->   
-
-   No dire need to do this as ide_config_drive_speed() will be called 
-right after the set_dma_mode() method, and it will surely call your 
-selectproc()...
-
-> +static void tx4939ide_check_error_ints(ide_hwif_t *hwif, u16 stat)
-> +{
->   
-
-   Might be worth reading the register right here and returning the 
-value read in the end.
-
-> +	if (stat & TX4939IDE_INT_BUSERR) {
-> +		void __iomem *base = TX4939IDE_BASE(hwif);
-> +		/* reset FIFO */
-> +		tx4939ide_writew(tx4939ide_readw(base, TX4939IDE_Sys_Ctl) |
->   
-
-   Probably worth reading the register only once...
-
-> +				 0x4000,
-> +				 base, TX4939IDE_Sys_Ctl);
-> +		/* wait 12GBUSCLK (typ. 60ns @ GBUS200MHz) */
-> +		ndelay(400);
->   
-
-   But why wait 400 ns?
-
-> +		tx4939ide_writew(tx4939ide_readw(base, TX4939IDE_Sys_Ctl) &
-> +				 ~0x4000,
-> +				 base, TX4939IDE_Sys_Ctl);
-> +	}
-> +	if (stat & (TX4939IDE_INT_ADDRERR | TX4939IDE_INT_REACHMUL |
-> +		    TX4939IDE_INT_DEVTIMING | TX4939IDE_INT_BUSERR))
-> +		pr_err("%s: Error interrupt %#x (%s%s%s%s )\n",
-> +		       hwif->name, stat,
-> +		       (stat & TX4939IDE_INT_ADDRERR) ?
-> +		       " Address-Error" : "",
-> +		       (stat & TX4939IDE_INT_REACHMUL) ?
-> +		       " Reach-Multiple" : "",
->   
-
-   This is not an error condition and should only happen in so called 
-VDMA mode iff you suspend the transfer, IIUC.
-
-> +static void tx4939ide_clear_dma_status(u8 dma_stat, void __iomem *base)
-> +{
-> +	/* clear INTR & ERROR flags */
-> +	tx4939ide_writeb(dma_stat | 6, base, TX4939IDE_DMA_stat);
-> +	/* recover intmask cleared by writing to bit2 of DMA_stat */
-> +	tx4939ide_writew(TX4939IDE_IGNORE_INTS << 8, base, TX4939IDE_int_ctl);
-> +}
->   
-
-   What I was suggesting actually was a function that reads the status, 
-then clears it, and return the status read in the end.
-
-> +static int __tx4939ide_dma_setup(ide_drive_t *drive)
-> +{
-> +	ide_hwif_t *hwif = drive->hwif;
-> +	struct request *rq = HWGROUP(drive)->rq;
-> +	unsigned int reading;
-> +	u8 dma_stat;
-> +	void __iomem *base = TX4939IDE_BASE(hwif);
-> +	int nent;
-> +
-> +	if (rq_data_dir(rq))
-> +		reading = 0;
-> +	else
-> +		reading = 1 << 3;
-> +
-> +	/* fall back to pio! */
-> +	nent = ide_build_dmatable(drive, rq);
-> +	if (!nent) {
-> +		ide_map_sg(drive, rq);
-> +		return 1;
-> +	}
-> +#ifdef __BIG_ENDIAN
-> +	{
-> +		__le64 *table = (__le64 *)hwif->dmatable_cpu;
-> +
-> +		while (nent--)
-> +			le64_to_cpus(table++);
-> +	}
-> +#endif
->   
-
-   Might be worth reimplementing ide_build_dmatable() for BE mode to 
-speed it up...
-
-> +
-> +	/* PRD table */
-> +	tx4939ide_writel(hwif->dmatable_dma, base, TX4939IDE_PRD_Ptr);
-> +
-> +	/* specify r/w */
-> +	tx4939ide_writeb(reading, base, TX4939IDE_DMA_Cmd);
-> +
-> +	/* read DMA status for INTR & ERROR flags */
-> +	dma_stat = tx4939ide_readb(base, TX4939IDE_DMA_stat);
->   
-
-   Please fold this call into tx4939ide_clear_dma_status() for mode code 
-saving...
-
-> +	/* clear INTR & ERROR flags */
-> +	tx4939ide_clear_dma_status(dma_stat, base);
-> +
-> +	drive->waiting_for_dma = 1;
-> +	return 0;
-> +}
-> +
-> +static int tx4939ide_dma_setup(ide_drive_t *drive)
-> +{
-> +	ide_hwif_t *hwif = HWIF(drive);
-> +	void __iomem *base = TX4939IDE_BASE(hwif);
-> +	int err;
-> +
-> +	err = __tx4939ide_dma_setup(drive);
->   
-
-   Not sure that you need this function at all...
-
-> +static int tx4939ide_dma_end(ide_drive_t *drive)
-> +{
-> +	ide_hwif_t *hwif = drive->hwif;
-> +	u8 dma_stat = 0, dma_cmd = 0;
-> +	void __iomem *base = TX4939IDE_BASE(hwif);
-> +	u16 ctl = tx4939ide_readw(base, TX4939IDE_int_ctl);
-> +
-> +	drive->waiting_for_dma = 0;
-> +
-> +	/* get DMA command mode */
-> +	dma_cmd = tx4939ide_readb(base, TX4939IDE_DMA_Cmd);
-> +	/* stop DMA */
-> +	tx4939ide_writeb(dma_cmd & ~1, base, TX4939IDE_DMA_Cmd);
-> +
-> +	/* get DMA status */
-> +	dma_stat = tx4939ide_readb(base, TX4939IDE_DMA_stat);
->   
-
-   Please fold this call into tx4939ide_clear_dma_status().
-
-> +/* returns 1 if dma irq issued, 0 otherwise */
-> +static int tx4939ide_dma_test_irq(ide_drive_t *drive)
-> +{
-> +	ide_hwif_t *hwif = HWIF(drive);
-> +	void __iomem *base = TX4939IDE_BASE(hwif);
-> +	u16 ctl = tx4939ide_readw(base, TX4939IDE_int_ctl);
-> +	u8 dma_stat, stat;
-> +	u16 ide_int;
-> +	int found = 0;
-> +
-> +	tx4939ide_check_error_ints(hwif, ctl);
-> +	ide_int = ctl & (TX4939IDE_INT_XFEREND | TX4939IDE_INT_HOST);
->   
-
-   Well, since you're effectively ignoring the BUSERR interrupt, there's 
-no point in enabling it...
-
-> +	switch (ide_int) {
-> +	case TX4939IDE_INT_HOST:
-> +		/* On error, XFEREND might not be asserted. */
-> +		stat = tx4939ide_readb(base, TX4939IDE_Alt_DevCtl);
-> +		if ((stat & (ATA_BUSY|ATA_DRQ|ATA_ERR)) == ATA_ERR) {
-> +			pr_err("%s: detect error %x in %s\n",
-> +			       drive->name, stat, __func__);
->   
-
-  This is a normal condition IDE-wise, so no need to emit an error 
-message. You may emit a warning or info message that the interrupt 
-workaround is used...
-
-> +			found = 1;
-> +		}
-> +		/* FALLTHRU */
-> +	case TX4939IDE_INT_XFEREND:
-> +		/*
-> +		 * If only one of XFERINT and HOST was asserted
-> +		 * (without error --- see above), mask this interrupt
-> +		 * and wait for an another one.  Note that write to
-> +		 * bit2 of DMA_stat will clear all mask bits.
-> +		 */
-> +		ctl |= ide_int << 8;
-> +		break;
->   
-
-   I'm not sure that we need to *always* unmask XFEREND interrupt. We 
-only need it after we've received HOST interrupt and decided to wait for 
-the transfer end.
-
-> +	case TX4939IDE_INT_HOST | TX4939IDE_INT_XFEREND:
-> +		dma_stat = tx4939ide_readb(base, TX4939IDE_DMA_stat);
-> +		if (!(dma_stat & 4))
-> +			pr_debug("%s: weird interrupt status. "
->   
-
-   This one is worth pr_warning() or even pr_err()...
-
-> +				 "DMA_stat %#02x int_ctl %#04x\n",
-> +				 hwif->name, dma_stat, ctl);
->   
-
-   However,  it's already done in the dma_end() method;.do we need 
-really to print 2 messages?
-
-> +static void tx4939ide_init_iops(ide_hwif_t *hwif)
-> +{
-> +	/* use extra_base for base address of the all registers */
-> +	hwif->extra_base = hwif->io_ports.data_addr & ~0xfff;
-> +}
->   
-
-   Ugh... didn't realize that using hwif->extra_base necessiates the 
-init_iops() method. But why is it necessary? We're not using 
-hwif->extra_base to access the taskfile.
-
-> +static void tx4939ide_init_hwif(ide_hwif_t *hwif)
-> +{
-> +	void __iomem *base = TX4939IDE_BASE(hwif);
-> +
-> +	/* Soft Reset */
-> +	tx4939ide_writew(0x8000, base, TX4939IDE_Sys_Ctl);
-> +	mmiowb();
-> +	udelay(1);	/* at least 20 UPSCLK (100ns for 200MHz GBUSCLK) */
->   
-
-   Hm, but your delay is 10x that value...
-
-> +static u8 tx4939ide_read_sff_dma_status(ide_hwif_t *hwif)
-> +{
-> +	void __iomem *base = TX4939IDE_BASE(hwif);
-> +	return tx4939ide_readb(base, TX4939IDE_DMA_stat);
-> +}
->   
-
-   Ah, we do use hwif->extra_base in a transport method... well, putting 
-this into ide_tp_ops was bad move, I have said that already.
-
-> +static void tx4939ide_tf_load(ide_drive_t *drive, ide_task_t *task)
-> +{
-> +	mm_tf_load(drive, task);
-> +	if (task->tf_flags & IDE_TFLAG_OUT_DEVICE) {
-> +		ide_hwif_t *hwif = drive->hwif;
-> +		void __iomem *base = TX4939IDE_BASE(hwif);
-> +		/* Fix ATA100 CORE System Control Register */
-> +		tx4939ide_writew(tx4939ide_readw(base, TX4939IDE_Sys_Ctl) &
-> +				 0x07f0,
-> +				 base, TX4939IDE_Sys_Ctl);
->   
-
-   Why? Doesn't page 17-4 of the datasheet say that these bits get 
-auto-cleared ona  write to the device/head register? Or is this to 
-address <CAUSION> on page 17-9?
-
-> +static const struct ide_tp_ops tx4939ide_tp_ops = {
-> +	.exec_command		= ide_exec_command,
-> +	.read_status		= ide_read_status,
-> +	.read_altstatus		= ide_read_altstatus,
-> +	.read_sff_dma_status	= tx4939ide_read_sff_dma_status,
-> +
-> +	.set_irq		= ide_set_irq,
-> +
-> +	.tf_load		= tx4939ide_tf_load,
-> +	.tf_read		= mm_tf_read,
-> +
-> +	.input_data		= mmio_input_data_swap,
-> +	.output_data		= mmio_output_data_swap,
->   
-
-   It would've been more consistent if you used the same function prefix...
-
-> +};
-> +#else	/* __LITTLE_ENDIAN */
-> +static void tx4939ide_tf_load(ide_drive_t *drive, ide_task_t *task)
-> +{
-> +	ide_tf_load(drive, task);
-> +	if (task->tf_flags & IDE_TFLAG_OUT_DEVICE) {
-> +		ide_hwif_t *hwif = drive->hwif;
-> +		void __iomem *base = TX4939IDE_BASE(hwif);
-> +		/* Fix ATA100 CORE System Control Register */
-> +		tx4939ide_writew(tx4939ide_readw(base, TX4939IDE_Sys_Ctl) &
-> +				 0x07f0,
-> +				 base, TX4939IDE_Sys_Ctl);
->   
-
-   Same question of why this is needed...
-
-> +static const struct ide_port_info tx4939ide_port_info __initdata = {
-> +	.init_iops = tx4939ide_init_iops,
-> +	.init_hwif = tx4939ide_init_hwif,
-> +	.init_dma = tx4939ide_init_dma,
-> +	.port_ops = &tx4939ide_port_ops,
-> +	.dma_ops = &tx4939ide_dma_ops,
-> +	.tp_ops = &tx4939ide_tp_ops,
-> +	.host_flags = IDE_HFLAG_MMIO,
-> +	.pio_mask = ATA_PIO4,
-> +	.mwdma_mask = ATA_MWDMA2,
-> +	.swdma_mask = 0,
->   
-
-   No need for explicit zero initializer.
-
-   Phew, that was long review...
+>   I thought that I'd only have the stylyistic comments and ACK the 
+> patch but it shouldn't even compile... :-/
+
+   Hm, it should compile in the context of linux-next tree..
+
+>> +static void tx4939ide_set_pio_mode(ide_drive_t *drive, const u8 pio)
+>> +{
+>> +    ide_hwif_t *hwif = HWIF(drive);
+>> +    int is_slave = drive->dn & 1;
+>> +    u32 mask, val;
+>> +    u8 safe = pio;
+>> +    ide_drive_t *pair;
+>> +
+>> +    pair = ide_get_pair_dev(drive);
+>>   
+>
+>   Wait, have you tried to compile this driver? The function is called 
+> ide_get_paired_drive() -- and I did name it correctly in my previous 
+> review.
+
+   I didn't realize that Bart has renamed the function in one of the 
+pending patches...
 
 MBR, Sergei

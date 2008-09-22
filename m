@@ -1,57 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Sep 2008 19:58:51 +0100 (BST)
-Received: from [81.2.110.250] ([81.2.110.250]:12454 "EHLO lxorguk.ukuu.org.uk")
-	by ftp.linux-mips.org with ESMTP id S20162663AbYIVSr0 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 22 Sep 2008 19:47:26 +0100
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by lxorguk.ukuu.org.uk (8.14.2/8.14.2) with ESMTP id m8MIlMOq011229;
-	Mon, 22 Sep 2008 19:47:22 +0100
-Date:	Mon, 22 Sep 2008 19:47:22 +0100
-From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	sshtylyov@ru.mvista.com, linux-mips@linux-mips.org,
-	linux-ide@vger.kernel.org, bzolnier@gmail.com, ralf@linux-mips.org
-Subject: Re: [PATCH 2/2] TXx9: Add TX4939 ATA support (v2)
-Message-ID: <20080922194722.11e9908e@lxorguk.ukuu.org.uk>
-In-Reply-To: <20080923.001602.51867636.anemo@mba.ocn.ne.jp>
-References: <48D51B48.2090400@ru.mvista.com>
-	<20080922.235608.106262139.anemo@mba.ocn.ne.jp>
-	<48D7B365.6070305@ru.mvista.com>
-	<20080923.001602.51867636.anemo@mba.ocn.ne.jp>
-X-Mailer: Claws Mail 3.5.0 (GTK+ 2.12.11; x86_64-redhat-linux-gnu)
-Organization: Red Hat UK Cyf., Amberley Place, 107-111 Peascod Street,
- Windsor, Berkshire, SL4 1TE, Y Deyrnas Gyfunol. Cofrestrwyd yng Nghymru a
- Lloegr o'r rhif cofrestru 3798903
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Sep 2008 23:53:28 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:55709 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20171992AbYIVWxW (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 22 Sep 2008 23:53:22 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1KhuHR-0003Az-00; Tue, 23 Sep 2008 00:53:21 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id A66EDC2E71; Tue, 23 Sep 2008 00:53:20 +0200 (CEST)
+From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH] IP32: add platform device for cmos rtc; remove dead code
+To:	linux-mips@linux-mips.org
+cc:	ralf@linux-mips.org
+Message-Id: <20080922225320.A66EDC2E71@solo.franken.de>
+Date:	Tue, 23 Sep 2008 00:53:20 +0200 (CEST)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20591
+X-archive-position: 20592
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 23 Sep 2008 00:16:02 +0900 (JST)
-Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+---
 
-> On Mon, 22 Sep 2008 19:01:57 +0400, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
-> > >>  BTW, how about supporting IDE aboard RBTX4938, not worth the trouble?
-> > 
-> > > Yes, next plan.  It should be much simpler than the tx4939ide driver.
-> > 
-> >     I suspect {ide|pata}_platform could be able to cover it... though I got 
-> > muddled in the timing diagrams for the TX4938 external bus...
-> 
-> We need .set_pio_mode routine to get best PIO speed, but current
-> {ide|pata}_platform driver does not provide a hook for it (please
-> correct me if I was wrong).  So current code I have does not use
-> ide_platform...
+ arch/mips/sgi-ip32/ip32-platform.c |   16 ++++++++++++++++
+ arch/mips/sgi-ip32/ip32-setup.c    |    5 -----
+ 2 files changed, 16 insertions(+), 5 deletions(-)
 
-You are correct. The platform driver is intended to be totally dumb. It's
-not clear at what point having a specific driver is more sensible as a
-libata driver is tiny anyway (especially with tejuns inherited ops stuff)
+diff --git a/arch/mips/sgi-ip32/ip32-platform.c b/arch/mips/sgi-ip32/ip32-platform.c
+index 3d63721..511e9ff 100644
+--- a/arch/mips/sgi-ip32/ip32-platform.c
++++ b/arch/mips/sgi-ip32/ip32-platform.c
+@@ -90,6 +90,22 @@ static __init int sgio2btns_devinit(void)
+ 
+ device_initcall(sgio2btns_devinit);
+ 
++static struct resource sgio2_cmos_rsrc[] = {
++	{
++		.start = 0x70,
++		.end   = 0x71,
++		.flags = IORESOURCE_IO
++	}
++};
++
++static __init int sgio2_cmos_devinit(void)
++{
++	return IS_ERR(platform_device_register_simple("rtc_cmos", -1,
++						      sgio2_cmos_rsrc, 1));
++}
++
++device_initcall(sgio2_cmos_devinit);
++
+ MODULE_AUTHOR("Ralf Baechle <ralf@linux-mips.org>");
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("8250 UART probe driver for SGI IP32 aka O2");
+diff --git a/arch/mips/sgi-ip32/ip32-setup.c b/arch/mips/sgi-ip32/ip32-setup.c
+index 1024bf4..c5a5d4a 100644
+--- a/arch/mips/sgi-ip32/ip32-setup.c
++++ b/arch/mips/sgi-ip32/ip32-setup.c
+@@ -62,11 +62,6 @@ static inline void str2eaddr(unsigned char *ea, unsigned char *str)
+ }
+ #endif
+ 
+-unsigned long read_persistent_clock(void)
+-{
+-	return mc146818_get_cmos_time();
+-}
+-
+ /* An arbitrary time; this can be decreased if reliability looks good */
+ #define WAIT_MS 10
+ 

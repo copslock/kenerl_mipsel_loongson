@@ -1,52 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Sep 2008 16:01:04 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:20786 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20135880AbYIVPBC (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 22 Sep 2008 16:01:02 +0100
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id B8E843ED0; Mon, 22 Sep 2008 08:00:56 -0700 (PDT)
-Message-ID: <48D7B365.6070305@ru.mvista.com>
-Date:	Mon, 22 Sep 2008 19:01:57 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Sep 2008 16:16:17 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:57811 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20149252AbYIVPPo (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 22 Sep 2008 16:15:44 +0100
+Received: from localhost (p7139-ipad310funabasi.chiba.ocn.ne.jp [123.217.209.139])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 988A7AA33; Tue, 23 Sep 2008 00:15:38 +0900 (JST)
+Date:	Tue, 23 Sep 2008 00:16:02 +0900 (JST)
+Message-Id: <20080923.001602.51867636.anemo@mba.ocn.ne.jp>
+To:	sshtylyov@ru.mvista.com
 Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
 	bzolnier@gmail.com, ralf@linux-mips.org
 Subject: Re: [PATCH 2/2] TXx9: Add TX4939 ATA support (v2)
-References: <20080918.001358.08318211.anemo@mba.ocn.ne.jp>	<48D51B48.2090400@ru.mvista.com> <20080922.235608.106262139.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20080922.235608.106262139.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <48D7B365.6070305@ru.mvista.com>
+References: <48D51B48.2090400@ru.mvista.com>
+	<20080922.235608.106262139.anemo@mba.ocn.ne.jp>
+	<48D7B365.6070305@ru.mvista.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20588
+X-archive-position: 20589
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Mon, 22 Sep 2008 19:01:57 +0400, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
+> >>  BTW, how about supporting IDE aboard RBTX4938, not worth the trouble?
+> 
+> > Yes, next plan.  It should be much simpler than the tx4939ide driver.
+> 
+>     I suspect {ide|pata}_platform could be able to cover it... though I got 
+> muddled in the timing diagrams for the TX4938 external bus...
 
-Atsushi Nemoto wrote:
+We need .set_pio_mode routine to get best PIO speed, but current
+{ide|pata}_platform driver does not provide a hook for it (please
+correct me if I was wrong).  So current code I have does not use
+ide_platform...
 
->>>Add a helper routine to register tx4939ide driver and use it on
->>>RBTX4939 board.
-
->>  BTW, how about supporting IDE aboard RBTX4938, not worth the trouble?
-
-> Yes, next plan.  It should be much simpler than the tx4939ide driver.
-
-    I suspect {ide|pata}_platform could be able to cover it... though I got 
-muddled in the timing diagrams for the TX4938 external bus...
-
-> ---
-> Atsushi Nemoto
-
-WBR, Sergei
+---
+Atsushi Nemoto

@@ -1,322 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Sep 2008 13:29:25 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:47324 "EHLO
-	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S20125405AbYIVM3W (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 22 Sep 2008 13:29:22 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m8MCTIk1016962;
-	Mon, 22 Sep 2008 14:29:18 +0200
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m8MCT8Fr016959;
-	Mon, 22 Sep 2008 14:29:08 +0200
-Date:	Mon, 22 Sep 2008 14:29:08 +0200
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	bzolnier@gmail.com, linux-ide@vger.kernel.org
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips@linux-mips.org
-Subject: [PATCH] IDE: Fix platform device registration in Swarm IDE driver
-Message-ID: <20080922122853.GA15210@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Sep 2008 15:55:55 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:23528 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20130388AbYIVOzv (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 22 Sep 2008 15:55:51 +0100
+Received: from localhost (p7139-ipad310funabasi.chiba.ocn.ne.jp [123.217.209.139])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id A1649A9A8; Mon, 22 Sep 2008 23:55:44 +0900 (JST)
+Date:	Mon, 22 Sep 2008 23:56:08 +0900 (JST)
+Message-Id: <20080922.235608.106262139.anemo@mba.ocn.ne.jp>
+To:	sshtylyov@ru.mvista.com
+Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
+	bzolnier@gmail.com, ralf@linux-mips.org
+Subject: Re: [PATCH 2/2] TXx9: Add TX4939 ATA support (v2)
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <48D51B48.2090400@ru.mvista.com>
+References: <20080918.001358.08318211.anemo@mba.ocn.ne.jp>
+	<48D51B48.2090400@ru.mvista.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20586
+X-archive-position: 20587
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-The Swarm IDE driver uses a release method which is defined in the driver
-itself thus potencially oopsable.  The simpel fix would be to just leak
-the device but this patch goes the full length and moves the entire
-handling of the platform device in the platform code and retains only
-the platform driver code in drivers/ide/mips/swarm.c.
+On Sat, 20 Sep 2008 19:48:24 +0400, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
+> > Add a helper routine to register tx4939ide driver and use it on
+> > RBTX4939 board.
+> 
+>   BTW, how about supporting IDE aboard RBTX4938, not worth the trouble?
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+Yes, next plan.  It should be much simpler than the tx4939ide driver.
+
 ---
-
-This patch is for 2.6.27.  The same issue exists in -stable but the patch
-won't apply due to other driver changes.
-
- arch/mips/sibyte/swarm/Makefile   |    3 
- arch/mips/sibyte/swarm/platform.c |   60 ++++++++++++++++
- drivers/ide/mips/swarm.c          |  140 +++++++++++---------------------------
- 3 files changed, 104 insertions(+), 99 deletions(-)
-
-Index: linux-mips/arch/mips/sibyte/swarm/platform.c
-===================================================================
---- /dev/null
-+++ linux-mips/arch/mips/sibyte/swarm/platform.c
-@@ -0,0 +1,60 @@
-+#include <linux/err.h>
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/io.h>
-+#include <linux/platform_device.h>
-+
-+#include <asm/sibyte/board.h>
-+#include <asm/sibyte/sb1250_genbus.h>
-+#include <asm/sibyte/sb1250_regs.h>
-+
-+#define DEV_NAME "ide-swarm"
-+
-+static struct resource swarm_ide_resource[] = {
-+	{
-+		.name	= "Swarm GenBus IDE",
-+		.flags	= IORESOURCE_MEM,
-+	}, {
-+		.name	= "Swarm GenBus IDE",
-+		.flags	= IORESOURCE_IRQ,
-+		.start	= K_INT_GB_IDE,
-+		.end	= K_INT_GB_IDE,
-+	},
-+};
-+
-+static int __init swarm_ide_init(void)
-+{
-+	struct platform_device *pdev;
-+	u8 __iomem *base;
-+	phys_t offset, size;
-+
-+	if (!SIBYTE_HAVE_IDE)
-+		return -ENODEV;
-+
-+	base = ioremap(A_IO_EXT_BASE, 0x800);
-+	offset = __raw_readq(base + R_IO_EXT_REG(R_IO_EXT_START_ADDR, IDE_CS));
-+	size = __raw_readq(base + R_IO_EXT_REG(R_IO_EXT_MULT_SIZE, IDE_CS));
-+	iounmap(base);
-+
-+	offset = G_IO_START_ADDR(offset) << S_IO_ADDRBASE;
-+	size = (G_IO_MULT_SIZE(size) + 1) << S_IO_REGSIZE;
-+	if (offset < A_PHYS_GENBUS || offset >= A_PHYS_GENBUS_END) {
-+		pr_info(DEV_NAME ": IDE interface at GenBus disabled\n");
-+
-+		return -EBUSY;
-+	}
-+
-+	pr_info(DEV_NAME ": IDE interface at GenBus slot %i\n", IDE_CS);
-+
-+	swarm_ide_resource[0].start = offset;
-+	swarm_ide_resource[0].end = offset + size - 1;
-+
-+	pdev = platform_device_register_simple(DEV_NAME, -1,
-+		       swarm_ide_resource, ARRAY_SIZE(swarm_ide_resource));
-+	if (IS_ERR(pdev))
-+		return PTR_ERR(pdev);
-+
-+	return 0;
-+}
-+
-+device_initcall(swarm_ide_init);
-Index: linux-mips/arch/mips/sibyte/swarm/Makefile
-===================================================================
---- linux-mips.orig/arch/mips/sibyte/swarm/Makefile
-+++ linux-mips/arch/mips/sibyte/swarm/Makefile
-@@ -1,3 +1,4 @@
--obj-y				:= setup.o rtc_xicor1241.o rtc_m41t81.o
-+obj-y				:= platform.o setup.o rtc_xicor1241.o \
-+				   rtc_m41t81.o
- 
- obj-$(CONFIG_I2C_BOARDINFO)	+= swarm-i2c.o
-Index: linux-mips/drivers/ide/mips/swarm.c
-===================================================================
---- linux-mips.orig/drivers/ide/mips/swarm.c
-+++ linux-mips/drivers/ide/mips/swarm.c
-@@ -46,21 +46,10 @@
- 
- #include <asm/io.h>
- 
--#include <asm/sibyte/board.h>
--#include <asm/sibyte/sb1250_genbus.h>
--#include <asm/sibyte/sb1250_regs.h>
--
- #define DRV_NAME "ide-swarm"
- 
- static char swarm_ide_string[] = DRV_NAME;
- 
--static struct resource swarm_ide_resource = {
--	.name	= "SWARM GenBus IDE",
--	.flags	= IORESOURCE_MEM,
--};
--
--static struct platform_device *swarm_ide_dev;
--
- static const struct ide_port_info swarm_port_info = {
- 	.name			= DRV_NAME,
- 	.host_flags		= IDE_HFLAG_MMIO | IDE_HFLAG_NO_DMA,
-@@ -70,41 +59,18 @@ static const struct ide_port_info swarm_
-  * swarm_ide_probe - if the board header indicates the existence of
-  * Generic Bus IDE, allocate a HWIF for it.
-  */
--static int __devinit swarm_ide_probe(struct device *dev)
-+static int __devinit swarm_ide_probe(struct platform_device *pdev)
- {
- 	u8 __iomem *base;
- 	struct ide_host *host;
- 	phys_t offset, size;
-+	struct resource *r;
- 	int i, rc;
- 	hw_regs_t hw, *hws[] = { &hw, NULL, NULL, NULL };
- 
--	if (!SIBYTE_HAVE_IDE)
--		return -ENODEV;
--
--	base = ioremap(A_IO_EXT_BASE, 0x800);
--	offset = __raw_readq(base + R_IO_EXT_REG(R_IO_EXT_START_ADDR, IDE_CS));
--	size = __raw_readq(base + R_IO_EXT_REG(R_IO_EXT_MULT_SIZE, IDE_CS));
--	iounmap(base);
--
--	offset = G_IO_START_ADDR(offset) << S_IO_ADDRBASE;
--	size = (G_IO_MULT_SIZE(size) + 1) << S_IO_REGSIZE;
--	if (offset < A_PHYS_GENBUS || offset >= A_PHYS_GENBUS_END) {
--		printk(KERN_INFO DRV_NAME
--		       ": IDE interface at GenBus disabled\n");
--		return -EBUSY;
--	}
--
--	printk(KERN_INFO DRV_NAME ": IDE interface at GenBus slot %i\n",
--	       IDE_CS);
--
--	swarm_ide_resource.start = offset;
--	swarm_ide_resource.end = offset + size - 1;
--	if (request_resource(&iomem_resource, &swarm_ide_resource)) {
--		printk(KERN_ERR DRV_NAME
--		       ": can't request I/O memory resource\n");
--		return -EBUSY;
--	}
--
-+	r = pdev->resource;
-+	offset = r->start;
-+	size = resource_size(r);
- 	base = ioremap(offset, size);
- 
- 	memset(&hw, 0, sizeof(hw));
-@@ -113,85 +79,63 @@ static int __devinit swarm_ide_probe(str
- 				(unsigned long)(base + ((0x1f0 + i) << 5));
- 	hw.io_ports.ctl_addr =
- 				(unsigned long)(base + (0x3f6 << 5));
--	hw.irq = K_INT_GB_IDE;
-+	hw.irq = r[1].start;
- 	hw.chipset = ide_generic;
- 
- 	rc = ide_host_add(&swarm_port_info, hws, &host);
--	if (rc)
--		goto err;
-+	if (rc) {
-+		iounmap(base);
-+
-+		return rc;
-+	}
- 
--	dev_set_drvdata(dev, host);
-+	platform_set_drvdata(pdev, host);
- 
- 	return 0;
--err:
--	release_resource(&swarm_ide_resource);
--	iounmap(base);
--	return rc;
- }
- 
--static struct device_driver swarm_ide_driver = {
--	.name	= swarm_ide_string,
--	.bus	= &platform_bus_type,
--	.probe	= swarm_ide_probe,
--};
--
--static void swarm_ide_platform_release(struct device *device)
-+static int __devexit swarm_ide_remove(struct platform_device *pdev)
- {
--	struct platform_device *pldev;
-+	struct ide_host *host = pdev->dev.driver_data;
- 
--	/* free device */
--	pldev = to_platform_device(device);
--	kfree(pldev);
-+	ide_host_remove(host);
-+
-+	return 0;
- }
- 
--static int __devinit swarm_ide_init_module(void)
-+static struct platform_driver swarm_ide_driver = {
-+	.driver = {
-+		.name	= swarm_ide_string,
-+		.owner	= THIS_MODULE,
-+	},
-+	.probe	= swarm_ide_probe,
-+	.remove = __devexit_p(swarm_ide_remove),
-+};
-+
-+static int __init swarm_ide_init(void)
- {
--	struct platform_device *pldev;
- 	int err;
- 
--	printk(KERN_INFO "SWARM IDE driver\n");
--
--	if (driver_register(&swarm_ide_driver)) {
--		printk(KERN_ERR "Driver registration failed\n");
--		err = -ENODEV;
--		goto out;
--	}
-+	pr_info("Swarm IDE driver\n");
- 
--        if (!(pldev = kzalloc(sizeof (*pldev), GFP_KERNEL))) {
--		err = -ENOMEM;
--		goto out_unregister_driver;
--	}
-+	err = platform_driver_register(&swarm_ide_driver);
-+	if (err) {
-+		pr_err("Driver registration failed\n");
- 
--	pldev->name		= swarm_ide_string;
--	pldev->id		= 0;
--	pldev->dev.release	= swarm_ide_platform_release;
--
--	if (platform_device_register(pldev)) {
--		err = -ENODEV;
--		goto out_free_pldev;
-+		return err;
- 	}
- 
--        if (!pldev->dev.driver) {
--		/*
--		 * The driver was not bound to this device, there was
--                 * no hardware at this address. Unregister it, as the
--		 * release fuction will take care of freeing the
--		 * allocated structure
--		 */
--		platform_device_unregister (pldev);
--	}
--
--	swarm_ide_dev = pldev;
--
- 	return 0;
-+}
- 
--out_free_pldev:
--	kfree(pldev);
--
--out_unregister_driver:
--	driver_unregister(&swarm_ide_driver);
--out:
--	return err;
-+static void __exit swarm_ide_exit(void)
-+{
-+	platform_driver_unregister(&swarm_ide_driver);
- }
- 
--module_init(swarm_ide_init_module);
-+MODULE_DESCRIPTION("Sibyte Swarm platform IDE driver");
-+MODULE_LICENSE("GPL");
-+MODULE_ALIAS("platform:ide-swarm");
-+
-+module_init(swarm_ide_init);
-+module_exit(swarm_ide_exit);
+Atsushi Nemoto

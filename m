@@ -1,77 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Sep 2008 23:53:28 +0100 (BST)
-Received: from elvis.franken.de ([193.175.24.41]:55709 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S20171992AbYIVWxW (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 22 Sep 2008 23:53:22 +0100
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1KhuHR-0003Az-00; Tue, 23 Sep 2008 00:53:21 +0200
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id A66EDC2E71; Tue, 23 Sep 2008 00:53:20 +0200 (CEST)
-From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH] IP32: add platform device for cmos rtc; remove dead code
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Sep 2008 08:02:30 +0100 (BST)
+Received: from smtp1.dnsmadeeasy.com ([205.234.170.134]:7046 "EHLO
+	smtp1.dnsmadeeasy.com") by ftp.linux-mips.org with ESMTP
+	id S20183260AbYIWHCX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 23 Sep 2008 08:02:23 +0100
+Received: from smtp1.dnsmadeeasy.com (localhost [127.0.0.1])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP id 8D41A3213C0
+	for <linux-mips@linux-mips.org>; Tue, 23 Sep 2008 07:02:13 +0000 (UTC)
+X-Authenticated-Name: js.dnsmadeeasy
+X-Transit-System: In case of SPAM please contact abuse@dnsmadeeasy.com
+Received: from avtrex.com (unknown [173.8.135.205])
+	by smtp1.dnsmadeeasy.com (Postfix) with ESMTP
+	for <linux-mips@linux-mips.org>; Tue, 23 Sep 2008 07:02:13 +0000 (UTC)
+Received: from silver64.hq2.avtrex.com ([192.168.7.229]) by avtrex.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 23 Sep 2008 00:02:08 -0700
+Message-ID: <48D89470.5090404@avtrex.com>
+Date:	Tue, 23 Sep 2008 00:02:08 -0700
+From:	David Daney <ddaney@avtrex.com>
+User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
+MIME-Version: 1.0
 To:	linux-mips@linux-mips.org
-cc:	ralf@linux-mips.org
-Message-Id: <20080922225320.A66EDC2E71@solo.franken.de>
-Date:	Tue, 23 Sep 2008 00:53:20 +0200 (CEST)
-Return-Path: <tsbogend@alpha.franken.de>
+Subject: Patch 0/6] MIPS: Hardware watch register support for gdb (version
+ 5).
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 23 Sep 2008 07:02:08.0780 (UTC) FILETIME=[4B795CC0:01C91D4A]
+Return-Path: <ddaney@avtrex.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20592
+X-archive-position: 20593
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: ddaney@avtrex.com
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
----
+Esteemed kernel hackers,
 
- arch/mips/sgi-ip32/ip32-platform.c |   16 ++++++++++++++++
- arch/mips/sgi-ip32/ip32-setup.c    |    5 -----
- 2 files changed, 16 insertions(+), 5 deletions(-)
+To follow is my fifth pass at MIPS watch register support.
 
-diff --git a/arch/mips/sgi-ip32/ip32-platform.c b/arch/mips/sgi-ip32/ip32-platform.c
-index 3d63721..511e9ff 100644
---- a/arch/mips/sgi-ip32/ip32-platform.c
-+++ b/arch/mips/sgi-ip32/ip32-platform.c
-@@ -90,6 +90,22 @@ static __init int sgio2btns_devinit(void)
- 
- device_initcall(sgio2btns_devinit);
- 
-+static struct resource sgio2_cmos_rsrc[] = {
-+	{
-+		.start = 0x70,
-+		.end   = 0x71,
-+		.flags = IORESOURCE_IO
-+	}
-+};
-+
-+static __init int sgio2_cmos_devinit(void)
-+{
-+	return IS_ERR(platform_device_register_simple("rtc_cmos", -1,
-+						      sgio2_cmos_rsrc, 1));
-+}
-+
-+device_initcall(sgio2_cmos_devinit);
-+
- MODULE_AUTHOR("Ralf Baechle <ralf@linux-mips.org>");
- MODULE_LICENSE("GPL");
- MODULE_DESCRIPTION("8250 UART probe driver for SGI IP32 aka O2");
-diff --git a/arch/mips/sgi-ip32/ip32-setup.c b/arch/mips/sgi-ip32/ip32-setup.c
-index 1024bf4..c5a5d4a 100644
---- a/arch/mips/sgi-ip32/ip32-setup.c
-+++ b/arch/mips/sgi-ip32/ip32-setup.c
-@@ -62,11 +62,6 @@ static inline void str2eaddr(unsigned char *ea, unsigned char *str)
- }
- #endif
- 
--unsigned long read_persistent_clock(void)
--{
--	return mc146818_get_cmos_time();
--}
--
- /* An arbitrary time; this can be decreased if reliability looks good */
- #define WAIT_MS 10
- 
+The differences from the previous version: 
+http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=48C8ADEF.9020305%40avtrex.com
+
+* Respun against linux-queue.
+
+* Clear the WP bit in cause register on watch exception.
+
+The corresponding GDB patch is here:
+
+http://sourceware.org/ml/gdb-patches/2008-09/msg00230.html
+
+Six patches to follow.
+
+Thanks
+David Daney

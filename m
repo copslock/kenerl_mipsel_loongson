@@ -1,67 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Sep 2008 13:33:01 +0100 (BST)
-Received: from kirk.serum.com.pl ([213.77.9.205]:25337 "EHLO serum.com.pl")
-	by ftp.linux-mips.org with ESMTP id S20051387AbYIWMc4 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 23 Sep 2008 13:32:56 +0100
-Received: from serum.com.pl (IDENT:macro@localhost [127.0.0.1])
-	by serum.com.pl (8.12.11/8.12.11) with ESMTP id m8NCWr8m027042;
-	Tue, 23 Sep 2008 14:32:53 +0200
-Received: from localhost (macro@localhost)
-	by serum.com.pl (8.12.11/8.12.11/Submit) with ESMTP id m8NCWmuS027038;
-	Tue, 23 Sep 2008 13:32:53 +0100
-Date:	Tue, 23 Sep 2008 13:32:47 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Dinar Temirbulatov <dtemirbulatov@gmail.com>
-cc:	linux-mips@linux-mips.org
-Subject: Re: mmap is broken for MIPS64 n32 and o32 abis
-In-Reply-To: <a664af430809210355p62f6b848q87ed07f63a242c78@mail.gmail.com>
-Message-ID: <Pine.LNX.4.55.0809231238390.26757@cliff.in.clinika.pl>
-References: <a664af430809182331i41c9e344w83ecb2830ac24@mail.gmail.com> 
- <Pine.LNX.4.55.0809191329080.29711@cliff.in.clinika.pl> 
- <a664af430809190953k486e2012hf3a09caa50c9574a@mail.gmail.com> 
- <Pine.LNX.4.55.0809191803390.29711@cliff.in.clinika.pl>
- <a664af430809210355p62f6b848q87ed07f63a242c78@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Sep 2008 16:11:03 +0100 (BST)
+Received: from mail.windriver.com ([147.11.1.11]:34992 "EHLO mail.wrs.com")
+	by ftp.linux-mips.org with ESMTP id S28641160AbYIWOuy (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 23 Sep 2008 15:50:54 +0100
+Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
+	by mail.wrs.com (8.13.6/8.13.6) with ESMTP id m8NEoho3021829;
+	Tue, 23 Sep 2008 07:50:43 -0700 (PDT)
+Received: from ala-mail06.corp.ad.wrs.com ([147.11.57.147]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 23 Sep 2008 07:50:43 -0700
+Received: from localhost.localdomain ([128.224.162.72]) by ala-mail06.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 23 Sep 2008 07:50:42 -0700
+From:	jack.tan@windriver.com
+To:	ralf@linux-mips.com
+Cc:	linux-mips@linux-mips.org, jack.tan@windriver.com,
+	Dajie Tan <jiankemeng@gmail.com>
+Subject: [PATCH] Fixed the definition of PTRS_PER_PGD
+Date:	Tue, 23 Sep 2008 22:52:34 +0800
+Message-Id: <1222181554-4318-1-git-send-email-jack.tan@windriver.com>
+X-Mailer: git-send-email 1.5.6.5
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 23 Sep 2008 14:50:42.0974 (UTC) FILETIME=[C0D6EBE0:01C91D8B]
+Return-Path: <Jack.Tan@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20601
+X-archive-position: 20602
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: jack.tan@windriver.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Dinar,
+From: Jack Tan <jack.tan@windriver.com>
 
-> I don't think it has anything to do type definition of signed or
-> unsigned. I think following things happened here we called mmap() from
-> n32 and as it is defined is the glibc for this abi the sixth parameter
-> should be 32-bit wide integer and we transefed this 32-bit
-> value(0xb6000000) in the a5(r9) register according to the mips abi,
-> but we loaded this value with "lui     a5,0xb600" instruction and that
-> resulted with 0xffffffffb6000000 in the 64-bit version of a5
-> register(for 32-bit it is legitimate 0xb6000000). after that on the
+When we use > 4KB's page size the original definition is not consistent
+with PGDIR_SIZE. For exeample, if we use 16KB page size the PGDIR_SHIFT is
+(14-2) + 14 = 26, PGDIR_SIZE is 2^26，so the PTRS_PER_PGD should be:
 
- Which is correct, as this is how 32-bit integers are represented by
-64-bit MIPS platforms.
+	2^32/2^26 = 2^6
 
-> kernel side we have this function old_mmap() and sixth argument there
-> is 64-bit wide integer (off_t type) and it does not that we called
-> this function from 32-bit environment  and that is why there is
-> 0xffffffffb6000000 value in the end, so 0xffffffff is trash. I think
-> that we need to have a separate mmap system call handler for 32-bit
-> abis, also we need to add mmap2 handler for n32 as we have it for o32.
+but the original definition of PTRS_PER_PGD is 4096 (PGDIR_ORDER = 0).
 
- The problem is you cannot represent the file offset of 3053453312 or
-0x00000000b6000000 using the 32-bit interface.  What you can represent is
--1241513984 or 0xffffffffb6000000 and that is a valid offset for calls
-like lseek(), but not necessarily mmap() (though arguably we have a
-bug/feature in Linux where negative offsets are not explicitly checked for
-in mmap()).  To represent 3053453312 or 0x00000000b6000000 correctly you
-need to use the 64-bit interface LFS calls provide.  In this case that
-would be mmap64() or use _FILE_OFFSET_BITS as appropriate.
+So, this definition needs to be consistent with the PGDIR_SIZE.
 
-  Maciej
+And the new definition is consistent with the PGD init in pagetable_init().
+
+Signed-off-by: Dajie Tan <jiankemeng@gmail.com>
+---
+ include/asm-mips/pgtable-32.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/include/asm-mips/pgtable-32.h b/include/asm-mips/pgtable-32.h
+index 4396e9f..55813d6 100644
+--- a/include/asm-mips/pgtable-32.h
++++ b/include/asm-mips/pgtable-32.h
+@@ -57,7 +57,7 @@ extern int add_temporary_entry(unsigned long entrylo0, unsigned long entrylo1,
+ #define PMD_ORDER	1
+ #define PTE_ORDER	0
+ 
+-#define PTRS_PER_PGD	((PAGE_SIZE << PGD_ORDER) / sizeof(pgd_t))
++#define PTRS_PER_PGD	(USER_PTRS_PER_PGD * 2)
+ #define PTRS_PER_PTE	((PAGE_SIZE << PTE_ORDER) / sizeof(pte_t))
+ 
+ #define USER_PTRS_PER_PGD	(0x80000000UL/PGDIR_SIZE)
+-- 
+1.5.5.4

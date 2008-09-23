@@ -1,65 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Sep 2008 18:19:17 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:41381 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S28643180AbYIWRTL (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 23 Sep 2008 18:19:11 +0100
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id F35613ECC; Tue, 23 Sep 2008 10:19:05 -0700 (PDT)
-Message-ID: <48D92545.7050307@ru.mvista.com>
-Date:	Tue, 23 Sep 2008 21:20:05 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Sep 2008 18:48:55 +0100 (BST)
+Received: from mail30g.wh2.ocn.ne.jp ([220.111.41.239]:25761 "HELO
+	mail30g.wh2.ocn.ne.jp") by ftp.linux-mips.org with SMTP
+	id S28595016AbYIWRsp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 23 Sep 2008 18:48:45 +0100
+Received: from vs30a.wh2.ocn.ne.jp (220.111.41.231)
+	by mail30g.wh2.ocn.ne.jp (RS ver 1.0.95vs) with SMTP id 0-0707642116;
+	Wed, 24 Sep 2008 02:48:39 +0900 (JST)
+From:	Bruno Randolf <br1@einfach.org>
+Subject: [PATCH] au1000: fix gpio direction
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org
+Date:	Tue, 23 Sep 2008 19:48:36 +0200
+Message-ID: <20080923174828.8694.12510.stgit@void>
+User-Agent: StGIT/0.14.3
 MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	bzolnier@gmail.com, linux-mips@linux-mips.org,
-	linux-ide@vger.kernel.org, ralf@linux-mips.org
-Subject: Re: [PATCH 1/2] ide: Add tx4939ide driver (v2)
-References: <20080918.001342.52129176.anemo@mba.ocn.ne.jp>	<48D57245.8060606@ru.mvista.com> <20080924.020459.128619366.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20080924.020459.128619366.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+X-SF-Loop: 1
+Return-Path: <br1@einfach.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20604
+X-archive-position: 20605
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: br1@einfach.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+when setting the direction of one GPIO pin we have to keep the state of the
+other pins, hence use binary OR. also gpio_direction_output() wants to set an
+initial value, so add that too.
 
-Atsushi Nemoto wrote:
+this fixes a problem with the USB power switch on mtx-1 boards.
 
->>>+static int tx4939ide_dma_test_irq(ide_drive_t *drive)
->>>+{
->>>+	ide_hwif_t *hwif = HWIF(drive);
->>>+	void __iomem *base = TX4939IDE_BASE(hwif);
->>>+	u16 ctl = tx4939ide_readw(base, TX4939IDE_int_ctl);
->>>+	u8 dma_stat, stat;
->>>+	u16 ide_int;
->>>+	int found = 0;
->>>+
->>>+	tx4939ide_check_error_ints(hwif, ctl);
->>>+	ide_int = ctl & (TX4939IDE_INT_XFEREND | TX4939IDE_INT_HOST);
+Signed-off-by: Bruno Randolf <br1@einfach.org>
+---
 
->>   Well, since you're effectively ignoring the BUSERR interrupt, there's 
->>no point in enabling it...
+ arch/mips/au1000/common/gpio.c |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
 
-> The BUSERR is not ignored.  tx4939ide_check_error_ints() will print a
-> message.  It would be better than just ignoring.
-
-     I mean you're not accounting it as an interrupt.  It will be reported 
-anyway when the dma_timeout() method will call this method on timeout... ah, 
-it wouldn't be called in this case since dma_time_expiry() will most probably 
-return -1 seeing bit 1 of DMA status register set.  You're right then...
-
-> ---
-> Atsushi Nemoto
-
-MBR, Sergei
+diff --git a/arch/mips/au1000/common/gpio.c b/arch/mips/au1000/common/gpio.c
+index b485d94..1f05843 100644
+--- a/arch/mips/au1000/common/gpio.c
++++ b/arch/mips/au1000/common/gpio.c
+@@ -61,7 +61,8 @@ static int au1xxx_gpio2_direction_input(unsigned gpio)
+ static int au1xxx_gpio2_direction_output(unsigned gpio, int value)
+ {
+ 	gpio -= AU1XXX_GPIO_BASE;
+-	gpio2->dir = (0x01 << gpio) | (value << gpio);
++	gpio2->dir |= 0x01 << gpio;
++	gpio2->output = (GPIO2_OUTPUT_ENABLE_MASK << gpio) | (value << gpio);
+ 	return 0;
+ }
+ 
+@@ -90,6 +91,7 @@ static int au1xxx_gpio1_direction_input(unsigned gpio)
+ static int au1xxx_gpio1_direction_output(unsigned gpio, int value)
+ {
+ 	gpio1->trioutclr = (0x01 & gpio);
++	au1xxx_gpio1_write(gpio, value);
+ 	return 0;
+ }
+ 

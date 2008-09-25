@@ -1,71 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2008 13:33:13 +0100 (BST)
-Received: from hall.aurel32.net ([91.121.138.14]:17318 "EHLO hall.aurel32.net")
-	by ftp.linux-mips.org with ESMTP id S30636215AbYIYMdI (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 25 Sep 2008 13:33:08 +0100
-Received: from anguille.univ-lyon1.fr ([134.214.4.207])
-	by hall.aurel32.net with esmtpsa (TLS-1.0:DHE_RSA_AES_256_CBC_SHA1:32)
-	(Exim 4.63)
-	(envelope-from <aurelien@aurel32.net>)
-	id 1Kiq1m-0006z2-1e; Thu, 25 Sep 2008 14:33:02 +0200
-Message-ID: <48DB84F8.7050806@aurel32.net>
-Date:	Thu, 25 Sep 2008 14:32:56 +0200
-From:	Aurelien Jarno <aurelien@aurel32.net>
-User-Agent: Mozilla-Thunderbird 2.0.0.16 (X11/20080724)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2008 13:35:02 +0100 (BST)
+Received: from mail-gx0-f10.google.com ([209.85.217.10]:16843 "EHLO
+	mail-gx0-f10.google.com") by ftp.linux-mips.org with ESMTP
+	id S30637619AbYIYMez (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 25 Sep 2008 13:34:55 +0100
+Received: by gxk3 with SMTP id 3so6706948gxk.0
+        for <linux-mips@linux-mips.org>; Thu, 25 Sep 2008 05:34:49 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to
+         :subject:cc:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:content-disposition:references;
+        bh=3wRVwg6FI/hOc2vZWLHsN106Xg5NQULHkgkDs55nsO8=;
+        b=TeBCWVhHb6oE0o9GCFVE3k6qbnIzAtnRL9oTfLmnx71eePO1O9gfTDNkWbbc0hMWB6
+         62CpMbIewWGi83T70g5q20CPxwgodJUO7kyeTTnspKdAAJI8qHDnb/cVCR2/azVp+R5S
+         n0y6CLrFmsxedV2nuWEDkwsEKYv+0uuPJ3n+Q=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:cc:in-reply-to:mime-version
+         :content-type:content-transfer-encoding:content-disposition
+         :references;
+        b=JGNQauwlqGSUoep317FFfEwQs7sJa97DEfNTRpZcR/crl9DnxfnuaPWS4qUZ3qINRb
+         LeKiultQNDWGhzcx4gsC/NzrqHzEeolzyQ7Es7fcO4zIp5nRdAYKyuWblLheAcLhQX+Q
+         EcAtoHQmO3M+d7JgHkUnQLVunFrNduBMkgg9s=
+Received: by 10.90.68.20 with SMTP id q20mr9915383aga.96.1222346088977;
+        Thu, 25 Sep 2008 05:34:48 -0700 (PDT)
+Received: by 10.90.63.18 with HTTP; Thu, 25 Sep 2008 05:34:48 -0700 (PDT)
+Message-ID: <a664af430809250534i10ead6d0ydb25bb6646d3fdb1@mail.gmail.com>
+Date:	Thu, 25 Sep 2008 16:34:48 +0400
+From:	"Dinar Temirbulatov" <dtemirbulatov@gmail.com>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: Re: mmap is broken for MIPS64 n32 and o32 abis
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <Pine.LNX.4.55.0809231238390.26757@cliff.in.clinika.pl>
 MIME-Version: 1.0
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-CC:	"John W. Linville" <linville@tuxdriver.com>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	Michael Buesch <mb@bu3sch.de>
-Subject: Re: [PATCH 1/6] [MIPS] BCM47xx: Add platform specific PCI code
-References: <48DABBBE.7060201@ru.mvista.com> <1222301918-3888-1-git-send-email-linville@linville-t61.local> <48DB6258.8010506@ru.mvista.com>
-In-Reply-To: <48DB6258.8010506@ru.mvista.com>
 Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <aurelien@aurel32.net>
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+References: <a664af430809182331i41c9e344w83ecb2830ac24@mail.gmail.com>
+	 <Pine.LNX.4.55.0809191329080.29711@cliff.in.clinika.pl>
+	 <a664af430809190953k486e2012hf3a09caa50c9574a@mail.gmail.com>
+	 <Pine.LNX.4.55.0809191803390.29711@cliff.in.clinika.pl>
+	 <a664af430809210355p62f6b848q87ed07f63a242c78@mail.gmail.com>
+	 <Pine.LNX.4.55.0809231238390.26757@cliff.in.clinika.pl>
+Return-Path: <dtemirbulatov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20629
+X-archive-position: 20630
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: dtemirbulatov@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Sergei Shtylyov a écrit :
-> Hello.
-> 
-> John W. Linville wrote:
-> 
->> From: Aurelien Jarno <aurelien@aurel32.net>
->>
->> This patch, ported from OpenWRT SVN, defines pcibios_map_irq() and
->> pcibios_plat_dev_init() for the BCM47xx platform.
->>
->> It fixes the regression introduced by commit
->> aab547ce0d1493d400b6468c521a0137cd8c1edf ("ssb: Add Gigabit Ethernet
->> driver").
->>
->> Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
->> Reviewed-by: Michael Buesch <mb@bu3sch.de>
->> Signed-off-by: John W. Linville <linville@tuxdriver.com>
->>   
-> 
->    Thanks for addessing my nitpicking (which you could have ignored :-).
->    I'm only seeing this patch posted on April 21st before yesterday (and 
-> receiving no comments) -- probably Aurilen hasn't been persevering 
-> enough for Ralf to merge it. I've been a victim of Ralf's 
-> "forgetfullness" as well, so I can sympathise. :-)
+On Tue, Sep 23, 2008 at 4:32 PM, Maciej W. Rozycki <macro@linux-mips.org> wrote:
 
-You probably forget messages like:
-http://www.linux-mips.org/archives/linux-mips/2008-05/msg00300.html
-http://www.linux-mips.org/archives/linux-mips/2008-06/msg00128.html
+>  The problem is you cannot represent the file offset of 3053453312 or
+> 0x00000000b6000000 using the 32-bit interface.  What you can represent is
+> -1241513984 or 0xffffffffb6000000 and that is a valid offset for calls
+> like lseek(), but not necessarily mmap() (though arguably we have a
+> bug/feature in Linux where negative offsets are not explicitly checked for
+> in mmap()).  To represent 3053453312 or 0x00000000b6000000 correctly you
+> need to use the 64-bit interface LFS calls provide.  In this case that
+> would be mmap64() or use _FILE_OFFSET_BITS as appropriate.
+yes, this is correct, thanks Maciej.
 
-and the numerous IRC pings.
+but there is another problem on n32 abi, kernel does not provide
+mmap64() system call for n32 and that results on following problem of
+the glibc side: The generic implementation of __mmap64() returns an
+error if the value passed in for the "offset" parameter is greater
+than what can fit in a __off_t, which for  n32 is 2^32. This prevents
+mmap64() from being used to map file offsets greater than 2^32 bytes
+for n32.
 
--- 
-  .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
- : :' :  Debian developer           | Electrical Engineer
- `. `'   aurel32@debian.org         | aurelien@aurel32.net
-   `-    people.debian.org/~aurel32 | www.aurel32.net
+
+I think this change is required:
+
+diff -ruNp linux-2.6.27-rc6/arch/mips/kernel/scall64-n32.S
+linux-2.6.27-rc6-fix/arch/mips/kernel/scall64-n32.S
+--- linux-2.6.27-rc6/arch/mips/kernel/scall64-n32.S     2008-09-19
+09:34:42.000000000 +0400
++++ linux-2.6.27-rc6-fix/arch/mips/kernel/scall64-n32.S 2008-09-25
+16:21:52.000000000 +0400
+@@ -413,4 +413,5 @@ EXPORT(sysn32_call_table)
+        PTR     sys_dup3                        /* 5290 */
+        PTR     sys_pipe2
+        PTR     sys_inotify_init1
++        PTR    sys32_mmap2
+        .size   sysn32_call_table,.-sysn32_call_table
+diff -ruNp linux-2.6.27-rc6/include/asm-mips/unistd.h
+linux-2.6.27-rc6-fix/include/asm-mips/unistd.h
+--- linux-2.6.27-rc6/include/asm-mips/unistd.h  2008-09-19
+09:34:43.000000000 +0400
++++ linux-2.6.27-rc6-fix/include/asm-mips/unistd.h      2008-09-19
+09:50:26.000000000 +0400
+@@ -966,11 +966,12 @@
+ #define __NR_dup3                      (__NR_Linux + 290)
+ #define __NR_pipe2                     (__NR_Linux + 291)
+ #define __NR_inotify_init1             (__NR_Linux + 292)
++#define __NR_mmap2                     (__NR_Linux + 293)
+
+ /*
+  * Offset of the last N32 flavoured syscall
+  */
+-#define __NR_Linux_syscalls            292
++#define __NR_Linux_syscalls            293
+
+ #endif /* _MIPS_SIM == _MIPS_SIM_NABI32 */
+
+                                             thanks, Dinar.

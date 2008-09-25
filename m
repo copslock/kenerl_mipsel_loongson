@@ -1,71 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2008 18:25:36 +0100 (BST)
-Received: from charlotte.tuxdriver.com ([70.61.120.58]:43196 "EHLO
-	smtp.tuxdriver.com") by ftp.linux-mips.org with ESMTP
-	id S32732472AbYIYRZ3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 25 Sep 2008 18:25:29 +0100
-Received: from wireless-nat-pool-rdu.redhat.com ([66.187.233.201] helo=localhost)
-	by smtp.tuxdriver.com with esmtpsa (TLSv1:AES128-SHA:128)
-	(Exim 4.63)
-	(envelope-from <"linville@TUXDRIVER.COM"@tuxdriver.com>)
-	id 1KiuaR-0002rE-Tv; Thu, 25 Sep 2008 13:25:23 -0400
-Date:	Thu, 25 Sep 2008 13:24:30 -0400
-From:	"John W. Linville" <linville@tuxdriver.com>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	Michael Buesch <mb@bu3sch.de>,
-	Aurelien Jarno <aurelien@aurel32.net>
-Subject: Re: [PATCH 1/6] [MIPS] BCM47xx: Add platform specific PCI code
-Message-ID: <20080925172429.GB3277@tuxdriver.com>
-References: <48DABBBE.7060201@ru.mvista.com> <1222301918-3888-1-git-send-email-linville@linville-t61.local> <48DB6258.8010506@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2008 20:33:52 +0100 (BST)
+Received: from srv5.dvmed.net ([207.36.208.214]:55440 "EHLO mail.dvmed.net")
+	by ftp.linux-mips.org with ESMTP id S32722821AbYIYTdr (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 25 Sep 2008 20:33:47 +0100
+Received: from cpe-069-134-153-115.nc.res.rr.com ([69.134.153.115] helo=core.yyz.us)
+	by mail.dvmed.net with esmtpsa (Exim 4.69 #1 (Red Hat Linux))
+	id 1Kiwar-00012S-GL; Thu, 25 Sep 2008 19:33:43 +0000
+Message-ID: <48DBE794.9010309@garzik.org>
+Date:	Thu, 25 Sep 2008 15:33:40 -0400
+From:	Jeff Garzik <jeff@garzik.org>
+User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <48DB6258.8010506@ru.mvista.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <"linville@TUXDRIVER.COM"@tuxdriver.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	Jeff Garzik <jgarzik@redhat.com>,
+	Weiwei Wang <weiwei.wang@windriver.com>,
+	linux-mips@linux-mips.org, netdev@vger.kernel.org
+Subject: Re: [PATCH] convert sbmac tx to spin_lock_irqsave to prevent early
+ IRQ enable
+References: <6781da3918e3c34d23e5f7e9cf777ab463a17d5e.1221613284.git.weiwei.wang@windriver.com> <20080917114051.GA30734@shell.devel.redhat.com> <20080920201839.GA27700@linux-mips.org>
+In-Reply-To: <20080920201839.GA27700@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <jeff@garzik.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20635
+X-archive-position: 20636
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linville@tuxdriver.com
+X-original-sender: jeff@garzik.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Sep 25, 2008 at 02:05:12PM +0400, Sergei Shtylyov wrote:
-> Hello.
->
-> John W. Linville wrote:
->
->> From: Aurelien Jarno <aurelien@aurel32.net>
->>
->> This patch, ported from OpenWRT SVN, defines pcibios_map_irq() and
->> pcibios_plat_dev_init() for the BCM47xx platform.
->>
->> It fixes the regression introduced by commit
->> aab547ce0d1493d400b6468c521a0137cd8c1edf ("ssb: Add Gigabit Ethernet
->> driver").
->>
->> Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
->> Reviewed-by: Michael Buesch <mb@bu3sch.de>
->> Signed-off-by: John W. Linville <linville@tuxdriver.com>
->>   
->
->   Thanks for addessing my nitpicking (which you could have ignored :-).
->   I'm only seeing this patch posted on April 21st before yesterday (and  
-> receiving no comments) -- probably Aurilen hasn't been persevering  
-> enough for Ralf to merge it. I've been a victim of Ralf's  
-> "forgetfullness" as well, so I can sympathise. :-)
+Ralf Baechle wrote:
+> On Wed, Sep 17, 2008 at 07:40:51AM -0400, Jeff Garzik wrote:
+> 
+>> On Wed, Sep 17, 2008 at 10:25:37AM +0800, Weiwei Wang wrote:
+>>> Netpoll will call the interrupt handler with interrupts
+>>> disabled when using kgdboe, so spin_lock_irqsave() should
+>>> be used instead of spin_lock_irq() to prevent interrupts
+>>> from being incorrectly enabled.
+>>>
+>>> Signed-off-by: Weiwei Wang <weiwei.wang@windriver.com>
+>>> ---
+>>>  drivers/net/sb1250-mac.c |   12 +++++++-----
+>>>  1 files changed, 7 insertions(+), 5 deletions(-)
+>> Please send to jeff@garzik.org or jgarzik@pobox.com.
+> 
+> Jeff - I haven't looked at kgdboe but if he's right half of drivers/net
+> will need to be fixed ...
 
-Sergei, I'm sorry if I was rude to you.
+Oh indeed.  I mainly do it on a case-by-case basis where people care.  I 
+overall think its a bogus change that deserves pushback, but that 
+involves non-networking layers.  In the end, case-by-case application 
+seemed to win.
 
-Ralf, given the OpenWRT and SSB connection, I could probably merge
-this series through my tree if you don't want to take it in yours
-for some reason.
-
-John
--- 
-John W. Linville		Linux should be at the core
-linville@tuxdriver.com			of your literate lifestyle.
+	Jeff

@@ -1,75 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Sep 2008 22:34:56 +0100 (BST)
-Received: from bu3sch.de ([62.75.166.246]:7623 "EHLO vs166246.vserver.de")
-	by ftp.linux-mips.org with ESMTP id S32729692AbYIYVdV (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 25 Sep 2008 22:33:21 +0100
-Received: from p5b09e9af.dip.t-dialin.net ([91.9.233.175] helo=powermac.local)
-	by vs166246.vserver.de with esmtpa (Exim 4.63)
-	(envelope-from <mb@bu3sch.de>)
-	id 1Kixvw-00044L-F7; Thu, 25 Sep 2008 20:59:32 +0000
-From:	Michael Buesch <mb@bu3sch.de>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Subject: Re: [PATCH 1/6] [MIPS] BCM47xx: Add platform specific PCI code
-Date:	Thu, 25 Sep 2008 22:59:10 +0200
-User-Agent: KMail/1.9.6 (enterprise 0.20070907.709405)
-Cc:	Aurelien Jarno <aurelien@aurel32.net>,
-	"John W. Linville" <linville@tuxdriver.com>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-References: <48DABBBE.7060201@ru.mvista.com> <48DB84F8.7050806@aurel32.net> <48DBA2AE.8020304@ru.mvista.com>
-In-Reply-To: <48DBA2AE.8020304@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2008 00:50:14 +0100 (BST)
+Received: from ditditdahdahdah-dahditditditdit.dl5rb.org.uk ([217.169.26.26]:15039
+	"EHLO ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk")
+	by ftp.linux-mips.org with ESMTP id S36902019AbYIYXuH (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 26 Sep 2008 00:50:07 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m8PNnBFC011128;
+	Fri, 26 Sep 2008 00:49:11 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m8PNnAU3011126;
+	Fri, 26 Sep 2008 00:49:10 +0100
+Date:	Fri, 26 Sep 2008 00:49:10 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Jeff Garzik <jeff@garzik.org>
+Cc:	Jeff Garzik <jgarzik@redhat.com>,
+	Weiwei Wang <weiwei.wang@windriver.com>,
+	linux-mips@linux-mips.org, netdev@vger.kernel.org
+Subject: Re: [PATCH] convert sbmac tx to spin_lock_irqsave to prevent early
+	IRQ enable
+Message-ID: <20080925234910.GA11092@linux-mips.org>
+References: <6781da3918e3c34d23e5f7e9cf777ab463a17d5e.1221613284.git.weiwei.wang@windriver.com> <20080917114051.GA30734@shell.devel.redhat.com> <20080920201839.GA27700@linux-mips.org> <48DBE794.9010309@garzik.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200809252259.10817.mb@bu3sch.de>
-Return-Path: <mb@bu3sch.de>
+In-Reply-To: <48DBE794.9010309@garzik.org>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20638
+X-archive-position: 20639
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mb@bu3sch.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thursday 25 September 2008 16:39:42 Sergei Shtylyov wrote:
-> Hello.
-> 
-> Aurelien Jarno wrote:
-> 
-> >>>This patch, ported from OpenWRT SVN, defines pcibios_map_irq() and
-> >>>pcibios_plat_dev_init() for the BCM47xx platform.
-> 
-> >>>It fixes the regression introduced by commit
-> >>>aab547ce0d1493d400b6468c521a0137cd8c1edf ("ssb: Add Gigabit Ethernet
-> >>>driver").
-> 
-> >>>Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
-> >>>Reviewed-by: Michael Buesch <mb@bu3sch.de>
-> >>>Signed-off-by: John W. Linville <linville@tuxdriver.com>
-> 
-> >>   Thanks for addessing my nitpicking (which you could have ignored :-).
-> >>   I'm only seeing this patch posted on April 21st before yesterday (and 
-> >>receiving no comments) -- probably Aurilen hasn't been persevering 
-> >>enough for Ralf to merge it. I've been a victim of Ralf's 
-> >>"forgetfullness" as well, so I can sympathise. :-)
-> 
-> > You probably forget messages like:
-> > http://www.linux-mips.org/archives/linux-mips/2008-05/msg00300.html
-> > http://www.linux-mips.org/archives/linux-mips/2008-06/msg00128.html
-> 
->     Yes, I have overlooked these since they had different subject.
-> 
-> > and the numerous IRC pings.
-> 
->     I've been thru that before. :-)
+On Thu, Sep 25, 2008 at 03:33:40PM -0400, Jeff Garzik wrote:
 
-And one private discussion and the bugzilla entry. ;)
+>>> On Wed, Sep 17, 2008 at 10:25:37AM +0800, Weiwei Wang wrote:
+>>>> Netpoll will call the interrupt handler with interrupts
+>>>> disabled when using kgdboe, so spin_lock_irqsave() should
+>>>> be used instead of spin_lock_irq() to prevent interrupts
+>>>> from being incorrectly enabled.
+>>>>
+>>>> Signed-off-by: Weiwei Wang <weiwei.wang@windriver.com>
+>>>> ---
+>>>>  drivers/net/sb1250-mac.c |   12 +++++++-----
+>>>>  1 files changed, 7 insertions(+), 5 deletions(-)
+>>> Please send to jeff@garzik.org or jgarzik@pobox.com.
+>>
+>> Jeff - I haven't looked at kgdboe but if he's right half of drivers/net
+>> will need to be fixed ...
+>
+> Oh indeed.  I mainly do it on a case-by-case basis where people care.  I  
+> overall think its a bogus change that deserves pushback, but that  
+> involves non-networking layers.  In the end, case-by-case application  
+> seemed to win.
 
-That's why I'm going to submit it to akpm or John, is it's not applied
-to the mips tree until October the 5th.
+Turns out kgdboe isn't upstream yet - but netconsole apparently hast the
+same issue.
 
--- 
-Greetings Michael.
+  Ralf

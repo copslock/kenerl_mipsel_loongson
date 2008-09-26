@@ -1,55 +1,140 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2008 16:42:49 +0100 (BST)
-Received: from ditditdahdahdah-dahditditditdit.dl5rb.org.uk ([217.169.26.26]:46769
-	"EHLO ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk")
-	by ftp.linux-mips.org with ESMTP id S62089831AbYIZPmp (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 26 Sep 2008 16:42:45 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m8QFgZ7P003291;
-	Fri, 26 Sep 2008 16:42:35 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m8QFgYqF003289;
-	Fri, 26 Sep 2008 16:42:34 +0100
-Date:	Fri, 26 Sep 2008 16:42:34 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	Aurelien Jarno <aurelien@aurel32.net>, linux-mips@linux-mips.org,
-	Michael Buesch <mb@bu3sch.de>
-Subject: Re: [PATCH 1/6] [MIPS] BCM47xx: Add platform specific PCI code
-Message-ID: <20080926154233.GA3086@linux-mips.org>
-References: <20080924191840.GA18700@volta.aurel32.net> <20080924191955.GB18700@volta.aurel32.net> <48DABBBE.7060201@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2008 19:23:56 +0100 (BST)
+Received: from hall.aurel32.net ([91.121.138.14]:48328 "EHLO hall.aurel32.net")
+	by ftp.linux-mips.org with ESMTP id S62093887AbYIZSXt (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 26 Sep 2008 19:23:49 +0100
+Received: from volta.aurel32.net ([2002:52e8:2fb:1:21e:8cff:feb0:693b])
+	by hall.aurel32.net with esmtpsa (TLS-1.0:RSA_AES_256_CBC_SHA1:32)
+	(Exim 4.63)
+	(envelope-from <aurelien@aurel32.net>)
+	id 1KjHyj-0002LR-7r; Fri, 26 Sep 2008 20:23:45 +0200
+Received: from aurel32 by volta.aurel32.net with local (Exim 4.69)
+	(envelope-from <aurelien@aurel32.net>)
+	id 1KjHyg-0003hN-Ub; Fri, 26 Sep 2008 20:23:42 +0200
+Date:	Fri, 26 Sep 2008 20:23:42 +0200
+From:	Aurelien Jarno <aurelien@aurel32.net>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, Michael Buesch <mb@bu3sch.de>
+Subject: [PATCH 1/6 v2] [MIPS] BCM47xx: Add platform specific PCI code
+Message-ID: <20080926182342.GA13542@volta.aurel32.net>
+References: <20080924191840.GA18700@volta.aurel32.net> <20080924191955.GB18700@volta.aurel32.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-15
 Content-Disposition: inline
-In-Reply-To: <48DABBBE.7060201@ru.mvista.com>
+In-Reply-To: <20080924191955.GB18700@volta.aurel32.net>
+X-Mailer: Mutt 1.5.18 (2008-05-17)
 User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20643
+X-archive-position: 20644
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Sep 25, 2008 at 02:14:22AM +0400, Sergei Shtylyov wrote:
+Please find below the version 2 of this patch that addresses all he
+comments. It removes the unneeded braces and brackets, and add __init
+to pcibios_map_irq().
 
->> +	res = ssb_pcibios_map_irq(dev, slot, pin);
->> +	if (res < 0) {
->> +		printk(KERN_ALERT "PCI: Failed to map IRQ of device %s\n",
->> +		       dev->dev.bus_id);
->> +		return 0;
->> +	}
->> +	/* IRQ-0 and IRQ-1 are software interrupts. */
->> +	WARN_ON((res == 0) || (res == 1));
->>   
->
->   Unneeded ()...
+---
 
-My rule of thumb for the use of parenthesis is that the reader of a piece
-of code should not have to know much about operator precendence, so the
-occasional avoidable parenthesis if it serves readability.
+This patch, ported from OpenWRT SVN, defines pcibios_map_irq() and
+pcibios_plat_dev_init() for the BCM47xx platform.
 
-  Ralf
+It fixes the regression introduced by commit
+aab547ce0d1493d400b6468c521a0137cd8c1edf.
+
+Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
+---
+ arch/mips/pci/Makefile      |    1 +
+ arch/mips/pci/pci-bcm47xx.c |   57 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 58 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/pci/pci-bcm47xx.c
+
+diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
+index 15e01ae..c8c32f4 100644
+--- a/arch/mips/pci/Makefile
++++ b/arch/mips/pci/Makefile
+@@ -15,6 +15,7 @@ obj-$(CONFIG_SOC_TX3927)	+= ops-tx3927.o
+ obj-$(CONFIG_PCI_VR41XX)	+= ops-vr41xx.o pci-vr41xx.o
+ obj-$(CONFIG_MARKEINS)		+= ops-emma2rh.o pci-emma2rh.o fixup-emma2rh.o
+ obj-$(CONFIG_PCI_TX4927)	+= ops-tx4927.o
++obj-$(CONFIG_BCM47XX)		+= pci-bcm47xx.o
+ 
+ #
+ # These are still pretty much in the old state, watch, go blind.
+diff --git a/arch/mips/pci/pci-bcm47xx.c b/arch/mips/pci/pci-bcm47xx.c
+new file mode 100644
+index 0000000..853a7e9
+--- /dev/null
++++ b/arch/mips/pci/pci-bcm47xx.c
+@@ -0,0 +1,57 @@
++/*
++ *  Copyright (C) 2008 Michael Buesch <mb@bu3sch.de>
++ *  Copyright (C) 2008 Aurelien Jarno <aurelien@aurel32.net>
++ *
++ *  This program is free software; you can redistribute  it and/or modify it
++ *  under  the terms of  the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the  License, or (at your
++ *  option) any later version.
++ *
++ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
++ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
++ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
++ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
++ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#include <linux/types.h>
++#include <linux/pci.h>
++#include <linux/ssb/ssb.h>
++
++int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++{
++	int res;
++
++	res = ssb_pcibios_map_irq(dev, slot, pin);
++	if (res < 0) {
++		printk(KERN_ALERT "PCI: Failed to map IRQ of device %s\n",
++		       dev->dev.bus_id);
++		return 0;
++	}
++	/* IRQ-0 and IRQ-1 are software interrupts. */
++	WARN_ON(res == 0 || res == 1);
++
++	return res;
++}
++
++int pcibios_plat_dev_init(struct pci_dev *dev)
++{
++	int err;
++
++	err = ssb_pcibios_plat_dev_init(dev);
++	if (err)
++		printk(KERN_ALERT "PCI: Failed to init device %s\n",
++		       pci_name(dev));
++
++	return err;
++}
++
+-- 
+1.5.6.5
+
+
+-- 
+  .''`.  Aurelien Jarno	            | GPG: 1024D/F1BCDB73
+ : :' :  Debian developer           | Electrical Engineer
+ `. `'   aurel32@debian.org         | aurelien@aurel32.net
+   `-    people.debian.org/~aurel32 | www.aurel32.net

@@ -1,34 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2008 00:50:14 +0100 (BST)
-Received: from ditditdahdahdah-dahditditditdit.dl5rb.org.uk ([217.169.26.26]:15039
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Sep 2008 16:42:49 +0100 (BST)
+Received: from ditditdahdahdah-dahditditditdit.dl5rb.org.uk ([217.169.26.26]:46769
 	"EHLO ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk")
-	by ftp.linux-mips.org with ESMTP id S36902019AbYIYXuH (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 26 Sep 2008 00:50:07 +0100
+	by ftp.linux-mips.org with ESMTP id S62089831AbYIZPmp (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 26 Sep 2008 16:42:45 +0100
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m8PNnBFC011128;
-	Fri, 26 Sep 2008 00:49:11 +0100
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m8QFgZ7P003291;
+	Fri, 26 Sep 2008 16:42:35 +0100
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m8PNnAU3011126;
-	Fri, 26 Sep 2008 00:49:10 +0100
-Date:	Fri, 26 Sep 2008 00:49:10 +0100
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m8QFgYqF003289;
+	Fri, 26 Sep 2008 16:42:34 +0100
+Date:	Fri, 26 Sep 2008 16:42:34 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Jeff Garzik <jeff@garzik.org>
-Cc:	Jeff Garzik <jgarzik@redhat.com>,
-	Weiwei Wang <weiwei.wang@windriver.com>,
-	linux-mips@linux-mips.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] convert sbmac tx to spin_lock_irqsave to prevent early
-	IRQ enable
-Message-ID: <20080925234910.GA11092@linux-mips.org>
-References: <6781da3918e3c34d23e5f7e9cf777ab463a17d5e.1221613284.git.weiwei.wang@windriver.com> <20080917114051.GA30734@shell.devel.redhat.com> <20080920201839.GA27700@linux-mips.org> <48DBE794.9010309@garzik.org>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Cc:	Aurelien Jarno <aurelien@aurel32.net>, linux-mips@linux-mips.org,
+	Michael Buesch <mb@bu3sch.de>
+Subject: Re: [PATCH 1/6] [MIPS] BCM47xx: Add platform specific PCI code
+Message-ID: <20080926154233.GA3086@linux-mips.org>
+References: <20080924191840.GA18700@volta.aurel32.net> <20080924191955.GB18700@volta.aurel32.net> <48DABBBE.7060201@ru.mvista.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <48DBE794.9010309@garzik.org>
+In-Reply-To: <48DABBBE.7060201@ru.mvista.com>
 User-Agent: Mutt/1.5.18 (2008-05-17)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20639
+X-archive-position: 20643
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,29 +34,22 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Sep 25, 2008 at 03:33:40PM -0400, Jeff Garzik wrote:
+On Thu, Sep 25, 2008 at 02:14:22AM +0400, Sergei Shtylyov wrote:
 
->>> On Wed, Sep 17, 2008 at 10:25:37AM +0800, Weiwei Wang wrote:
->>>> Netpoll will call the interrupt handler with interrupts
->>>> disabled when using kgdboe, so spin_lock_irqsave() should
->>>> be used instead of spin_lock_irq() to prevent interrupts
->>>> from being incorrectly enabled.
->>>>
->>>> Signed-off-by: Weiwei Wang <weiwei.wang@windriver.com>
->>>> ---
->>>>  drivers/net/sb1250-mac.c |   12 +++++++-----
->>>>  1 files changed, 7 insertions(+), 5 deletions(-)
->>> Please send to jeff@garzik.org or jgarzik@pobox.com.
->>
->> Jeff - I haven't looked at kgdboe but if he's right half of drivers/net
->> will need to be fixed ...
+>> +	res = ssb_pcibios_map_irq(dev, slot, pin);
+>> +	if (res < 0) {
+>> +		printk(KERN_ALERT "PCI: Failed to map IRQ of device %s\n",
+>> +		       dev->dev.bus_id);
+>> +		return 0;
+>> +	}
+>> +	/* IRQ-0 and IRQ-1 are software interrupts. */
+>> +	WARN_ON((res == 0) || (res == 1));
+>>   
 >
-> Oh indeed.  I mainly do it on a case-by-case basis where people care.  I  
-> overall think its a bogus change that deserves pushback, but that  
-> involves non-networking layers.  In the end, case-by-case application  
-> seemed to win.
+>   Unneeded ()...
 
-Turns out kgdboe isn't upstream yet - but netconsole apparently hast the
-same issue.
+My rule of thumb for the use of parenthesis is that the reader of a piece
+of code should not have to know much about operator precendence, so the
+occasional avoidable parenthesis if it serves readability.
 
   Ralf

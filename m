@@ -1,35 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Sep 2008 12:40:17 +0100 (BST)
-Received: from ditditdahdahdah-dahditditditdit.dl5rb.org.uk ([217.169.26.26]:6839
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Sep 2008 12:47:56 +0100 (BST)
+Received: from ditditdahdahdah-dahditditditdit.dl5rb.org.uk ([217.169.26.26]:41172
 	"EHLO ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk")
-	by ftp.linux-mips.org with ESMTP id S20166131AbYI1Ljf (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 28 Sep 2008 12:39:35 +0100
+	by ftp.linux-mips.org with ESMTP id S28582711AbYI1LrO (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 28 Sep 2008 12:47:14 +0100
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m8SBdWKA009454;
-	Sun, 28 Sep 2008 12:39:32 +0100
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m8SBlBrI009615;
+	Sun, 28 Sep 2008 12:47:11 +0100
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m8SBdVDF009451;
-	Sun, 28 Sep 2008 12:39:31 +0100
-Date:	Sun, 28 Sep 2008 12:39:31 +0100
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m8SBlB0C009613;
+	Sun, 28 Sep 2008 12:47:11 +0100
+Date:	Sun, 28 Sep 2008 12:47:11 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
-Cc:	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
-	linux-ide@vger.kernel.org,
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Cc:	bzolnier@gmail.com, linux-ide@vger.kernel.org,
 	"Maciej W. Rozycki" <macro@linux-mips.org>,
 	linux-mips@linux-mips.org
 Subject: Re: [PATCH] IDE: Fix platform device registration in Swarm IDE
 	driver
-Message-ID: <20080928113931.GA9207@linux-mips.org>
-References: <20080922122853.GA15210@linux-mips.org> <48DA1F9D.6000501@ru.mvista.com> <200809271859.55304.bzolnier@gmail.com>
+Message-ID: <20080928114711.GB9207@linux-mips.org>
+References: <20080922122853.GA15210@linux-mips.org> <48DA1F9D.6000501@ru.mvista.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <200809271859.55304.bzolnier@gmail.com>
+In-Reply-To: <48DA1F9D.6000501@ru.mvista.com>
 User-Agent: Mutt/1.5.18 (2008-05-17)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20655
+X-archive-position: 20656
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,32 +36,28 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Sep 27, 2008 at 06:59:55PM +0200, Bartlomiej Zolnierkiewicz wrote:
+On Wed, Sep 24, 2008 at 03:08:13PM +0400, Sergei Shtylyov wrote:
 
-> > > -	swarm_ide_resource.start = offset;
-> > > -	swarm_ide_resource.end = offset + size - 1;
-> > > -	if (request_resource(&iomem_resource, &swarm_ide_resource)) {
-> > >   
-> > 
-> >    Why drop request_resource() completely? Replace it by 
-> > request_mem_region().
-> 
-> Yes, this needs fixing (otherwise everything looks good).
+>> +{
+>>   
+> [...]
+>> +	pdev = platform_device_register_simple(DEV_NAME, -1,
+>> +		       swarm_ide_resource, ARRAY_SIZE(swarm_ide_resource));
+>>   
+>
+>   If you have the resources as static array anyway, why not have the  
+> device in the static variable too and use platform_device_register()?
 
-No, platform_device_add which is called by platform_device_register*
-will take care of adding the resources - but only if if's told about them
-which the old driver didn't.
+It saves a few lines of code.
 
-Also, in case of a resource conflict a device should not be added at all but
-exactly that is what the old code did.  A resource conflict would have been
-caught by the platform_driver probing code well too late.
+>> -static struct platform_device *swarm_ide_dev;
+>>   
+>
+>   Platform device in the driver itself? Interesting... :-)
 
-> Ralf: I guess that your next step will be dropping swarm-specific platform ide
-> driver in favor of generic one (please see drivers/ide/legacy/ide_platform.c)
-> as they are _very_ similar now? :)
-
-Good point - I was already wondering if something like that does exist.
-What's left over of the swarm driver way too much looks like it can be
-squeezed into some sort of template.
+It works and isn't a too bad idea for certain drivers where adding one half
+of the code to a platform file, another to the driver file is just too
+much fuzz.  It's just that this wasn't done right in case of the Swarm so
+I'm gluing that now.
 
   Ralf

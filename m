@@ -1,76 +1,124 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Sep 2008 16:10:27 +0100 (BST)
-Received: from accolon.hansenpartnership.com ([76.243.235.52]:32954 "EHLO
-	accolon.hansenpartnership.com") by ftp.linux-mips.org with ESMTP
-	id S29565680AbYI3PKZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 30 Sep 2008 16:10:25 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by accolon.hansenpartnership.com (Postfix) with ESMTP id 459C2856E;
-	Tue, 30 Sep 2008 10:10:16 -0500 (CDT)
-Received: from accolon.hansenpartnership.com ([127.0.0.1])
-	by localhost (redscar.int.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Qye3tjrpgSBZ; Tue, 30 Sep 2008 10:10:14 -0500 (CDT)
-Received: from [153.66.150.222] (mulgrave-w.int.hansenpartnership.com [153.66.150.222])
-	by accolon.hansenpartnership.com (Postfix) with ESMTP id 1217F8048;
-	Tue, 30 Sep 2008 10:10:14 -0500 (CDT)
-Subject: Re: [PATCH 1/2] ide: Add tx4939ide driver
-From:	James Bottomley <James.Bottomley@HansenPartnership.com>
-To:	Tejun Heo <htejun@gmail.com>
-Cc:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, sshtylyov@ru.mvista.com,
-	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
-	ralf@linux-mips.org, Jens Axboe <jens.axboe@oracle.com>
-In-Reply-To: <48DEAF1F.8040200@gmail.com>
-References: <48C851ED.4090607@ru.mvista.com>
-	 <48CA8BEE.1090305@ru.mvista.com>
-	 <20080913.005904.07457691.anemo@mba.ocn.ne.jp>
-	 <200809271819.19510.bzolnier@gmail.com>  <48DEAF1F.8040200@gmail.com>
-Content-Type: text/plain
-Date:	Tue, 30 Sep 2008 10:09:47 -0500
-Message-Id: <1222787387.3232.26.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.22.3.1 (2.22.3.1-1.fc9) 
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Oct 2008 19:31:02 +0100 (BST)
+Received: from ik-out-1112.google.com ([66.249.90.182]:5465 "EHLO
+	ik-out-1112.google.com") by ftp.linux-mips.org with ESMTP
+	id S20284711AbYJASbA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 1 Oct 2008 19:31:00 +0100
+Received: by ik-out-1112.google.com with SMTP id c30so654831ika.0
+        for <linux-mips@linux-mips.org>; Wed, 01 Oct 2008 11:30:59 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:reply-to:organization:to
+         :subject:date:user-agent:x-face:mime-version:content-type
+         :content-transfer-encoding:content-disposition:message-id;
+        bh=zThGdXRlHndV1qOCktoG/1q18Bk7AmMDVHVewpWKVNk=;
+        b=D/JM0Bs7MPRmIm7TEvLYqpFD2aqZFgMI4Vfj7yKqoj4IxR/WA5tPz8d9fuLGLeXOT1
+         Jm8wufRw0oYC4W8T7d0aA1UXgvb4m91SWAMqlKqGMAu18tRUnr0HIacKeRNSP0nQTXqE
+         NnERFp4ApspgI7r3cuvVjEP7Uws08ha5EsmaU=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:reply-to:organization:to:subject:date:user-agent:x-face
+         :mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id;
+        b=Ddl9O213KSuemODZo/s1z099oEWvpoNZvW/397rg7BqLHkYKY+7CMr7bRU9KUvc/MU
+         kfgv9cjIQVaK6Gr6PaAEINpcq3cs5SqkwQoVUUz+RRpiApOFJ3o9r+06JlfQDLCUzno8
+         OHQZ6Iz5JjUBRR4SXJrylnFY/JZMBxZ66stC4=
+Received: by 10.86.92.7 with SMTP id p7mr7645163fgb.8.1222885859365;
+        Wed, 01 Oct 2008 11:30:59 -0700 (PDT)
+Received: from cartesio.localnet ( [85.46.108.250])
+        by mx.google.com with ESMTPS id l19sm6677564fgb.7.2008.10.01.11.30.57
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 01 Oct 2008 11:30:58 -0700 (PDT)
+From:	"Luigi 'Comio' Mantellini" <luigi.mantellini.ml@gmail.com>
+Reply-To: luigi.mantellini.ml@gmail.com
+Organization: Industrie Dial Face S.p.A.
+To:	linux-mips@linux-mips.org
+Subject: Huge buffer allocation: best place
+Date:	Wed, 1 Oct 2008 20:30:53 +0200
+User-Agent: KMail/1.10.1 (Linux/2.6.24-21-generic; KDE/4.1.1; i686; ; )
+X-Face:	'6!%DGk.Oa/l`>tHr&^29|<`2s/|PIbM@0,\4g%@-F7xr9V,K@Iu<A>G-jQ\T_t@ZM5UC7
+	.l0\.nz[=$C9^`vJt;P=ZRBk2+x+pB)\8;"bA3>@5aI66l5Xfw*X8#+kcy1ybOBUNMnc;s
+	UXb\&]+8*bloRi<euepX(,esSS\}3j|oU|_Xku72+-?C0miI}a^~$j-O-/ELA-gTX/IVUi
+	%fmY6(!tfc}&,mzme<IwkA;^CKV:vIY</xKrN8F6`X~EPI#-B4*e"I;edO
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+  boundary="Boundary-00=_eH84Ihmvxn+0UD7"
 Content-Transfer-Encoding: 7bit
-Return-Path: <James.Bottomley@HansenPartnership.com>
+Content-Disposition: inline
+Message-Id: <200810012030.54480.luigi.mantellini.ml@gmail.com>
+Return-Path: <luigi.mantellini.ml@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20667
+X-archive-position: 20670
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: James.Bottomley@HansenPartnership.com
+X-original-sender: luigi.mantellini.ml@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 2008-09-28 at 07:09 +0900, Tejun Heo wrote:
-> Bartlomiej Zolnierkiewicz wrote:
-> > On Friday 12 September 2008, Atsushi Nemoto wrote:
-> >> On Fri, 12 Sep 2008 19:34:06 +0400, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
-> > 
-> > [...]
-> > 
-> >>>>>> +	__ide_flush_dcache_range((unsigned long)addr, size);
-> >>>>>   Why is this needed BTW?
-> >>>> Do you mean __ide_flush_dcache_range?  This is needed to avoid cache
-> >>>> inconsistency on PIO drive.  PIO transfer only writes to cache but
-> >>>> upper layers expects the data is in main memory.
-> >>>     Hum, then I wonder why it's MIPS specific...
-> >> SPARC also have it.  And there were some discussions for ARM IIRC.
-> > 
-> > I was under the impression that it has been addressed by Tejun at
-> > the higher-layer level (for both ide/libata) long time ago and that
-> > MIPS/SPARC code are just a left-overs which could be removed now?
-> 
-> cc'ing Jens and James.  IIRC, I posted several patches but they never
-> went in.  I don't remember what the objections were or whether any
-> alternative fix went in.
+--Boundary-00=_eH84Ihmvxn+0UD7
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-Which patches were these?  We have several methods of doing PIO
-fallback, the most common one being
-scatterlist.c:sg_copy_from/to_buffer() which does the cache coherency.
+Hi ml,
 
-James
+I need to allocate a huge contiguous buffer (~6MByte) shared with a secondary 
+cpu (a packet processor). Which is the best place and the best way to do this?
+
+The main problem is that using a simple kmalloc at module init time there 
+isn't sufficient contiguous memory to cover the request. I should use (I 
+suppose) the alloc_bootmem_* macros but I'm not sure where is the best place 
+to reserve my memory.
+
+For now I defined a global bad huge vector... but I'm not happy for this 
+solution...
+
+thanks in advance.
+
+luigi
+
+-- 
+Luigi Mantellini
+R&D - Software
+Industrie Dial Face S.p.A.
+Via Canzo, 4
+20068 Peschiera Borromeo (MI), Italy
+Tel.:  +39 02 5167 2813
+Fax:   +39 02 5167 2459
+Email: luigi.mantellini@idf-hit.com
 
 
-> Thanks.
-> 
+--Boundary-00=_eH84Ihmvxn+0UD7
+Content-Type: text/html;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+<html><head><meta name="qrichtext" content="1" /><style type="text/css">
+p, li { white-space: pre-wrap; }
+</style></head><body style=" font-family:'DejaVu Sans'; font-size:10pt; font-weight:400; font-style:normal;">
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">Hi ml,</p>
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">I need to allocate a huge contiguous buffer (~6MByte) shared with a secondary cpu (a packet processor). Which is the best place and the best way to do this?</p>
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">The main problem is that using a simple kmalloc at module init time there isn't sufficient contiguous memory to cover the request. I should use (I suppose) the alloc_bootmem_* macros but I'm not sure where is the best place to reserve my memory.</p>
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">For now I defined a global bad huge vector... but I'm not happy for this solution...</p>
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">thanks in advance.</p>
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">luigi</p>
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"></p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">-- </p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">Luigi Mantellini</p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">R&amp;D - Software</p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">Industrie Dial Face S.p.A.</p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">Via Canzo, 4</p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">20068 Peschiera Borromeo (MI), Italy</p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">Tel.:  +39 02 5167 2813</p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">Fax:   +39 02 5167 2459</p>
+<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;">Email: luigi.mantellini@idf-hit.com</p>
+<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; -qt-user-state:0;"></p></body></html>
+--Boundary-00=_eH84Ihmvxn+0UD7--

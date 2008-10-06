@@ -1,73 +1,113 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Oct 2008 21:16:31 +0100 (BST)
-Received: from rtp-iport-2.cisco.com ([64.102.122.149]:45635 "EHLO
-	rtp-iport-2.cisco.com") by ftp.linux-mips.org with ESMTP
-	id S20756365AbYJFUQN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 6 Oct 2008 21:16:13 +0100
-X-IronPort-AV: E=Sophos;i="4.33,369,1220227200"; 
-   d="scan'208,223";a="23386227"
-Received: from rtp-dkim-1.cisco.com ([64.102.121.158])
-  by rtp-iport-2.cisco.com with ESMTP; 06 Oct 2008 20:15:54 +0000
-Received: from rtp-core-2.cisco.com (rtp-core-2.cisco.com [64.102.124.13])
-	by rtp-dkim-1.cisco.com (8.12.11/8.12.11) with ESMTP id m96KFsFM029005
-	for <linux-mips@linux-mips.org>; Mon, 6 Oct 2008 16:15:54 -0400
-Received: from sausatlsmtp1.sciatl.com (sausatlsmtp1.cisco.com [192.133.217.33])
-	by rtp-core-2.cisco.com (8.13.8/8.13.8) with ESMTP id m96KFrRF020512
-	for <linux-mips@linux-mips.org>; Mon, 6 Oct 2008 20:15:53 GMT
-Received: from default.com ([192.133.217.33]) by sausatlsmtp1.sciatl.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 6 Oct 2008 16:15:53 -0400
-Received: from sausatlbhs02.corp.sa.net ([192.133.216.42]) by sausatlsmtp1.sciatl.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 6 Oct 2008 16:15:51 -0400
-Received: from CUPLXSUNDISM01.corp.sa.net ([64.101.21.60]) by sausatlbhs02.corp.sa.net with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 6 Oct 2008 16:15:50 -0400
-Message-ID: <48EA71F5.1040200@sciatl.com>
-Date:	Mon, 06 Oct 2008 13:15:49 -0700
-From:	C Michael Sundius <Michael.sundius@sciatl.com>
-User-Agent: Thunderbird 2.0.0.14 (X11/20080501)
-MIME-Version: 1.0
-To:	Andy Whitcroft <apw@shadowen.org>,
-	Dave Hansen <dave@linux.vnet.ibm.com>, linux-mm@kvack.org,
-	linux-mips@linux-mips.org, "VomLehn, David" <dvomlehn@cisco.com>,
-	me94043@yahoo.com
-Subject: Re: Have ever checked in your mips sparsemem code into mips-linux
- tree?
-Content-Type: multipart/mixed;
- boundary="------------060208040407070002090605"
-X-OriginalArrivalTime: 06 Oct 2008 20:15:50.0923 (UTC) FILETIME=[53DA75B0:01C927F0]
-X-ST-MF-Message-Resent:	10/6/2008 16:15
-Authentication-Results:	rtp-dkim-1; header.From=Michael.sundius@sciatl.com; dkim=neutral
-Return-Path: <michael.sundius@sciatl.com>
-X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-Orcpt: rfc822;linux-mips@linux-mips.org
-Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20687
-X-ecartis-version: Ecartis v1.0.0
-Sender: linux-mips-bounce@linux-mips.org
-Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Michael.sundius@sciatl.com
-Precedence: bulk
-X-list: linux-mips
+From: Sundis <sundism@CUPLXSUNDISM01.corp.sa.net>
+Date: Mon, 6 Oct 2008 10:31:08 -0700
+Subject: [PATCH] mips sparsemem howto
+Message-ID: <20081006173108.z-vUzn9lwaJ7tNjFheJAlMWZA8NKHJ0BIOn0x-npF2U@z>
 
-This is a multi-part message in MIME format.
---------------060208040407070002090605
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+---
+ Documentation/sparsemem.txt |   92 +++++++++++++++++++++++++++++++++++++++++++
+ 1 files changed, 92 insertions(+), 0 deletions(-)
+ create mode 100644 Documentation/sparsemem.txt
 
-adding patch 2  containing Documentation:
+diff --git a/Documentation/sparsemem.txt b/Documentation/sparsemem.txt
+new file mode 100644
+index 0000000..0b36412
+--- /dev/null
++++ b/Documentation/sparsemem.txt
+@@ -0,0 +1,92 @@
++Sparsemem divides up physical memory in your system into N sections of M
++bytes. Page tables are created for only those sections that
++actually exist (as far as the sparsemem code is concerned). This allows
++for holes in the physical memory without having to waste space by
++creating page descriptors for those pages that do not exist.
++When page_to_pfn() or pfn_to_page() are called there is a bit of overhead to
++look up the proper memory section to get to the page_table, but this
++is small compared to the memory you are likely to save. So, it's not the
++default, but should be used if you have big holes in physical memory.
++
++Note that discontiguous memory is more closely related to NUMA machines
++and if you are a single CPU system use sparsemem and not discontig. 
++It's much simpler. 
++
++1) CALL MEMORY_PRESENT()
++Existing sections are recorded once the bootmem allocator is up and running by
++calling the sparsemem function "memory_present(node, pfn_start, pfn_end)" for each
++block of memory that exists in your physical address space. The
++memory_present() function records valid sections in a data structure called
++mem_section[].
++
++2) DETERMINE AND SET THE SIZE OF SECTIONS AND PHYSMEM
++The size of N and M above depend upon your architecture
++and your platform and are specified in the file:
++
++      include/asm-<your_arch>/sparsemem.h
++
++and you should create the following lines similar to below: 
++
++	#ifdef CONFIG_YOUR_PLATFORM
++	 #define SECTION_SIZE_BITS       27	/* 128 MiB */
++	#endif
++	#define MAX_PHYSMEM_BITS        31	/* 2 GiB   */
++
++if they don't already exist, where: 
++
++ * SECTION_SIZE_BITS            2^M: how big each section will be
++ * MAX_PHYSMEM_BITS             2^N: how much memory we can have in that
++                                     space
++
++3) INITIALIZE SPARSE MEMORY
++You should make sure that you initialize the sparse memory code by calling 
++
++	bootmem_init();
++  +	sparse_init();
++	paging_init();
++
++just before you call paging_init() and after the bootmem_allocator is
++turned on in your setup_arch() code.  
++
++4) ENABLE SPARSEMEM IN KCONFIG
++Add a line like this:
++
++	select ARCH_SPARSEMEM_ENABLE
++
++into the config for your platform in arch/<your_arch>/Kconfig. This will
++ensure that turning on sparsemem is enabled for your platform. 
++
++5) CONFIG
++Run make *config, as you like, and turn on the sparsemem
++memory model under the "Kernel Type" --> "Memory Model" and then build your
++kernel.
++
++
++6) Gotchas
++
++One trick that I encountered when I was turning this on for MIPS was that there
++was some code in mem_init() that set the "reserved" flag for pages that were not
++valid RAM. This caused my kernel to crash when I enabled sparsemem since those
++pages (and page descriptors) didn't actually exist. I changed my code by adding
++lines like below:
++
++
++	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
++		struct page *page = pfn_to_page(tmp);
++
++   +		if (!pfn_valid(tmp))
++   +			continue;
++   +
++		if (!page_is_ram(tmp)) {
++			SetPageReserved(page);
++			continue;
++		}
++		ClearPageReserved(page);
++		init_page_count(page);
++		__free_page(page);
++		physmem_record(PFN_PHYS(tmp), PAGE_SIZE, physmem_highmem);
++		totalhigh_pages++;
++	}
++
++
++Once I got that straight, it worked!!!! I saved 10MiB of memory.  
+-- 
+1.5.4.1
 
 
-
-
-     - - - - -                              Cisco                            - - - - -         
-This e-mail and any attachments may contain information which is confidential, 
-proprietary, privileged or otherwise protected by law. The information is solely 
-intended for the named addressee (or a person responsible for delivering it to 
-the addressee). If you are not the intended recipient of this message, you are 
-not authorized to read, print, retain, copy or disseminate this message or any 
-part of it. If you have received this e-mail in error, please notify the sender 
-immediately by return e-mail and delete it from your computer.
---------------060208040407070002090605
-Content-Type: text/x-patch;
- name="0002-mips-sparsemem-howto.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="0002-mips-sparsemem-howto.patch"
+--------------060208040407070002090605--

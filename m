@@ -1,230 +1,212 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2008 00:37:10 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:23512 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S20765164AbYJFXhA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 7 Oct 2008 00:37:00 +0100
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B48eaa10d0000>; Mon, 06 Oct 2008 19:36:45 -0400
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 6 Oct 2008 16:36:42 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 6 Oct 2008 16:36:42 -0700
-Message-ID: <48EAA109.10509@caviumnetworks.com>
-Date:	Mon, 06 Oct 2008 16:36:41 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2008 01:33:33 +0100 (BST)
+Received: from web51404.mail.re2.yahoo.com ([206.190.38.183]:19851 "HELO
+	web51404.mail.re2.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S20766933AbYJGAd3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 7 Oct 2008 01:33:29 +0100
+Received: (qmail 38362 invoked by uid 60001); 7 Oct 2008 00:33:20 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=X-YMail-OSG:Received:X-Mailer:Date:From:Reply-To:Subject:To:In-Reply-To:MIME-Version:Content-Type:Message-ID;
+  b=zpEUlzkSyWm/mLLxFXDC8RKOygQjxhUN9emhi9X356k8/WD6YZt0oDYBBdjabo4cNmTDn3UehmzcLp0dtFJk4b7iD9wLsKUy8xnVBQvdUmhV1bOPTkpyxebYntrrhalxpvl5lFyzbeBgtUGyzWUtVleT9cLYmeXCO+fTGbWn8Tw=;
+X-YMail-OSG: v0e1rDQVM1lSsJe7v1dt_Gy5up7DsJv6dbuPeoL.ji70PYyuKBb2Qpqa.MkdS2vQ5w--
+Received: from [75.62.122.2] by web51404.mail.re2.yahoo.com via HTTP; Mon, 06 Oct 2008 17:33:19 PDT
+X-Mailer: YahooMailWebService/0.7.218.2
+Date:	Mon, 6 Oct 2008 17:33:19 -0700 (PDT)
+From:	John <me94043@yahoo.com>
+Reply-To: me94043@yahoo.com
+Subject: Re: Have ever checked in your mips sparsemem code into mips-linux tree?
+To:	Andy Whitcroft <apw@shadowen.org>,
+	Dave Hansen <dave@linux.vnet.ibm.com>, linux-mm@kvack.org,
+	linux-mips@linux-mips.org, "VomLehn, David" <dvomlehn@cisco.com>,
+	C Michael Sundius <Michael.sundius@sciatl.com>
+In-Reply-To: <48EA71F5.1040200@sciatl.com>
 MIME-Version: 1.0
-To:	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mips@linux-mips.org
-CC:	"Paoletti, Tomaso" <Tomaso.Paoletti@caviumnetworks.com>
-Subject: Re: [PATCH 2/2] serial: Move UPIO_TSI register access to processor
- specific file.
-References: <48EA9DB8.1000309@caviumnetworks.com>
-In-Reply-To: <48EA9DB8.1000309@caviumnetworks.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 06 Oct 2008 23:36:42.0123 (UTC) FILETIME=[62EDA5B0:01C9280C]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: text/plain; charset=us-ascii
+Message-ID: <800696.38003.qm@web51404.mail.re2.yahoo.com>
+Return-Path: <me94043@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20690
+X-archive-position: 20691
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: me94043@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a completely untested example of how the processor specific
-code could be removed from the 8250 UART driver if the first part of
-the patch were accepted.
+Thank you Michael! I will try it out, and will post results later, but not next couple of days, since I have some stuff on hands approaching the deadline.
 
-The register access code is moved from drivers/serial/8250.c to
-arch/powerpc/kernel/legacy_serial.c
+John
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
----
- arch/powerpc/kernel/legacy_serial.c |   35 +++++++++++++++++++++++++++--------
- drivers/serial/8250.c               |   25 -------------------------
- drivers/serial/serial_core.c        |    2 --
- include/linux/serial_core.h         |    5 ++---
- 4 files changed, 29 insertions(+), 38 deletions(-)
+--- On Mon, 10/6/08, C Michael Sundius <Michael.sundius@sciatl.com> wrote:
 
-diff --git a/arch/powerpc/kernel/legacy_serial.c b/arch/powerpc/kernel/legacy_serial.c
-index 9ddfaef..3a56fc1 100644
---- a/arch/powerpc/kernel/legacy_serial.c
-+++ b/arch/powerpc/kernel/legacy_serial.c
-@@ -46,10 +46,27 @@ static struct __initdata of_device_id legacy_serial_parents[] = {
- static unsigned int legacy_serial_count;
- static int legacy_serial_console = -1;
- 
-+static unsigned int tsi_serial_in(struct uart_port *up, int offset)
-+{
-+	unsigned int tmp;
-+	if (offset == UART_IIR) {
-+		tmp = readl(p->membase + (UART_IIR & ~3));
-+		return (tmp >> 16) & 0xff; /* UART_IIR % 4 == 2 */
-+	} else
-+		return readb(p->membase + offset);
-+}
-+
-+static void tsi_serial_out(struct uart_port *up, int offset, int value)
-+{
-+	if (!((offset == UART_IER) && (value & UART_IER_UUE)))
-+		writeb(value, p->membase + offset);
-+}
-+
- static int __init add_legacy_port(struct device_node *np, int want_index,
- 				  int iotype, phys_addr_t base,
- 				  phys_addr_t taddr, unsigned long irq,
--				  upf_t flags, int irq_check_parent)
-+				  upf_t flags, int irq_check_parent,
-+				  int tsi_war)
- {
- 	const u32 *clk, *spd;
- 	u32 clock = BASE_BAUD * 16;
-@@ -105,6 +122,10 @@ static int __init add_legacy_port(struct device_node *np, int want_index,
- 	legacy_serial_ports[index].uartclk = clock;
- 	legacy_serial_ports[index].irq = irq;
- 	legacy_serial_ports[index].flags = flags;
-+	if (tsi_war) {
-+		legacy_serial_ports[index].serial_in_fn = tsi_serial_in;
-+		legacy_serial_ports[index].serial_out_fn = tsi_serial_out;
-+	}
- 	legacy_serial_infos[index].taddr = taddr;
- 	legacy_serial_infos[index].np = of_node_get(np);
- 	legacy_serial_infos[index].clock = clock;
-@@ -158,10 +179,8 @@ static int __init add_legacy_soc_port(struct device_node *np,
- 	/* Add port, irq will be dealt with later. We passed a translated
- 	 * IO port value. It will be fixed up later along with the irq
- 	 */
--	if (tsi && !strcmp(tsi->type, "tsi-bridge"))
--		return add_legacy_port(np, -1, UPIO_TSI, addr, addr, NO_IRQ, flags, 0);
--	else
--		return add_legacy_port(np, -1, UPIO_MEM, addr, addr, NO_IRQ, flags, 0);
-+	return add_legacy_port(np, -1, UPIO_MEM, addr, addr, NO_IRQ, flags, 0,
-+			       tsi && !strcmp(tsi->type, "tsi-bridge"));
- }
- 
- static int __init add_legacy_isa_port(struct device_node *np,
-@@ -202,7 +221,7 @@ static int __init add_legacy_isa_port(struct device_node *np,
- 
- 	/* Add port, irq will be dealt with later */
- 	return add_legacy_port(np, index, UPIO_PORT, reg[1], taddr,
--			       NO_IRQ, UPF_BOOT_AUTOCONF, 0);
-+			NO_IRQ, UPF_BOOT_AUTOCONF, 0, 0);
- 
- }
- 
-@@ -275,7 +294,7 @@ static int __init add_legacy_pci_port(struct device_node *np,
- 	 * IO port value. It will be fixed up later along with the irq
- 	 */
- 	return add_legacy_port(np, index, iotype, base, addr, NO_IRQ,
--			       UPF_BOOT_AUTOCONF, np != pci_dev);
-+			UPF_BOOT_AUTOCONF, np != pci_dev, 0);
- }
- #endif
- 
-@@ -482,7 +501,7 @@ static int __init serial_dev_init(void)
- 			fixup_port_irq(i, np, port);
- 		if (port->iotype == UPIO_PORT)
- 			fixup_port_pio(i, np, port);
--		if ((port->iotype == UPIO_MEM) || (port->iotype == UPIO_TSI))
-+		if (port->iotype == UPIO_MEM)
- 			fixup_port_mmio(i, np, port);
- 	}
- 
-diff --git a/drivers/serial/8250.c b/drivers/serial/8250.c
-index 2ef79e9..24cff9a 100644
---- a/drivers/serial/8250.c
-+++ b/drivers/serial/8250.c
-@@ -407,24 +407,6 @@ static void au_serial_out_fn(struct uart_port *p, int offset, int value)
- }
- #endif
- 
--static unsigned int tsi_serial_in_fn(struct uart_port *p, int offset)
--{
--	unsigned int tmp;
--	offset = map_8250_in_reg(p, offset) << p->regshift;
--	if (offset == UART_IIR) {
--		tmp = readl(p->membase + (UART_IIR & ~3));
--		return (tmp >> 16) & 0xff; /* UART_IIR % 4 == 2 */
--	} else
--		return readb(p->membase + offset);
--}
--
--static void tsi_serial_out_fn(struct uart_port *p, int offset, int value)
--{
--	offset = map_8250_out_reg(p, offset) << p->regshift;
--	if (!((offset == UART_IER) && (value & UART_IER_UUE)))
--		writeb(value, p->membase + offset);
--}
--
- static void dwapb_serial_out_fn(struct uart_port *p, int offset, int value)
- {
- 	int save_offset = offset;
-@@ -479,11 +461,6 @@ static void set_io_fns_from_upio(struct uart_port *p)
- 		p->serial_out_fn = au_serial_out_fn;
- 		break;
- #endif
--	case UPIO_TSI:
--		p->serial_in_fn = tsi_serial_in_fn;
--		p->serial_out_fn = tsi_serial_out_fn;
--		break;
--
- 	case UPIO_DWAPB:
- 		p->serial_in_fn = mem_serial_in_fn;
- 		p->serial_out_fn = dwapb_serial_out_fn;
-@@ -2364,7 +2341,6 @@ static int serial8250_request_std_resource(struct uart_8250_port *up)
- 	case UPIO_AU:
- 		size = 0x100000;
- 		/* fall thru */
--	case UPIO_TSI:
- 	case UPIO_MEM32:
- 	case UPIO_MEM:
- 	case UPIO_DWAPB:
-@@ -2403,7 +2379,6 @@ static void serial8250_release_std_resource(struct uart_8250_port *up)
- 	case UPIO_AU:
- 		size = 0x100000;
- 		/* fall thru */
--	case UPIO_TSI:
- 	case UPIO_MEM32:
- 	case UPIO_MEM:
- 	case UPIO_DWAPB:
-diff --git a/drivers/serial/serial_core.c b/drivers/serial/serial_core.c
-index f977c98..14e051d 100644
---- a/drivers/serial/serial_core.c
-+++ b/drivers/serial/serial_core.c
-@@ -2164,7 +2164,6 @@ uart_report_port(struct uart_driver *drv, struct uart_port *port)
- 	case UPIO_MEM:
- 	case UPIO_MEM32:
- 	case UPIO_AU:
--	case UPIO_TSI:
- 	case UPIO_DWAPB:
- 		snprintf(address, sizeof(address),
- 			 "MMIO 0x%llx", (unsigned long long)port->mapbase);
-@@ -2578,7 +2577,6 @@ int uart_match_port(struct uart_port *port1, struct uart_port *port2)
- 	case UPIO_MEM:
- 	case UPIO_MEM32:
- 	case UPIO_AU:
--	case UPIO_TSI:
- 	case UPIO_DWAPB:
- 		return (port1->mapbase == port2->mapbase);
- 	}
-diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
-index 6f49385..60c8bf8 100644
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -259,9 +259,8 @@ struct uart_port {
- #define UPIO_MEM		(2)
- #define UPIO_MEM32		(3)
- #define UPIO_AU			(4)			/* Au1x00 type IO */
--#define UPIO_TSI		(5)			/* Tsi108/109 type IO */
--#define UPIO_DWAPB		(6)			/* DesignWare APB UART */
--#define UPIO_RM9000		(7)			/* RM9000 type IO */
-+#define UPIO_DWAPB		(5)			/* DesignWare APB UART */
-+#define UPIO_RM9000		(6)			/* RM9000 type IO */
- 
- 	unsigned int		read_status_mask;	/* driver specific */
- 	unsigned int		ignore_status_mask;	/* driver specific */
+> From: C Michael Sundius <Michael.sundius@sciatl.com>
+> Subject: Re: Have ever checked in your mips sparsemem code into mips-linux tree?
+> To: "Andy Whitcroft" <apw@shadowen.org>, "Dave Hansen" <dave@linux.vnet.ibm.com>, linux-mm@kvack.org, linux-mips@linux-mips.org, "VomLehn, David" <dvomlehn@cisco.com>, me94043@yahoo.com
+> Date: Monday, October 6, 2008, 1:15 PM
+> adding patch 2  containing Documentation:
+> 
+> 
+> 
+> 
+>      - - - - -                              Cisco          
+>                  - - - - -         
+> This e-mail and any attachments may contain information
+> which is confidential, 
+> proprietary, privileged or otherwise protected by law. The
+> information is solely 
+> intended for the named addressee (or a person responsible
+> for delivering it to 
+> the addressee). If you are not the intended recipient of
+> this message, you are 
+> not authorized to read, print, retain, copy or disseminate
+> this message or any 
+> part of it. If you have received this e-mail in error,
+> please notify the sender 
+> immediately by return e-mail and delete it from your
+> computer.From e01ad377b29c0e5c39289bece382e1f78f6e7e2c Mon
+> Sep 17 00:00:00 2001
+> From: Sundis <sundism@CUPLXSUNDISM01.corp.sa.net>
+> Date: Mon, 6 Oct 2008 10:31:08 -0700
+> Subject: [PATCH] mips sparsemem howto
+> 
+> ---
+>  Documentation/sparsemem.txt |   92
+> +++++++++++++++++++++++++++++++++++++++++++
+>  1 files changed, 92 insertions(+), 0 deletions(-)
+>  create mode 100644 Documentation/sparsemem.txt
+> 
+> diff --git a/Documentation/sparsemem.txt
+> b/Documentation/sparsemem.txt
+> new file mode 100644
+> index 0000000..0b36412
+> --- /dev/null
+> +++ b/Documentation/sparsemem.txt
+> @@ -0,0 +1,92 @@
+> +Sparsemem divides up physical memory in your system into N
+> sections of M
+> +bytes. Page tables are created for only those sections
+> that
+> +actually exist (as far as the sparsemem code is
+> concerned). This allows
+> +for holes in the physical memory without having to waste
+> space by
+> +creating page descriptors for those pages that do not
+> exist.
+> +When page_to_pfn() or pfn_to_page() are called there is a
+> bit of overhead to
+> +look up the proper memory section to get to the
+> page_table, but this
+> +is small compared to the memory you are likely to save.
+> So, it's not the
+> +default, but should be used if you have big holes in
+> physical memory.
+> +
+> +Note that discontiguous memory is more closely related to
+> NUMA machines
+> +and if you are a single CPU system use sparsemem and not
+> discontig. 
+> +It's much simpler. 
+> +
+> +1) CALL MEMORY_PRESENT()
+> +Existing sections are recorded once the bootmem allocator
+> is up and running by
+> +calling the sparsemem function "memory_present(node,
+> pfn_start, pfn_end)" for each
+> +block of memory that exists in your physical address
+> space. The
+> +memory_present() function records valid sections in a data
+> structure called
+> +mem_section[].
+> +
+> +2) DETERMINE AND SET THE SIZE OF SECTIONS AND PHYSMEM
+> +The size of N and M above depend upon your architecture
+> +and your platform and are specified in the file:
+> +
+> +      include/asm-<your_arch>/sparsemem.h
+> +
+> +and you should create the following lines similar to
+> below: 
+> +
+> +	#ifdef CONFIG_YOUR_PLATFORM
+> +	 #define SECTION_SIZE_BITS       27	/* 128 MiB */
+> +	#endif
+> +	#define MAX_PHYSMEM_BITS        31	/* 2 GiB   */
+> +
+> +if they don't already exist, where: 
+> +
+> + * SECTION_SIZE_BITS            2^M: how big each section
+> will be
+> + * MAX_PHYSMEM_BITS             2^N: how much memory we
+> can have in that
+> +                                     space
+> +
+> +3) INITIALIZE SPARSE MEMORY
+> +You should make sure that you initialize the sparse memory
+> code by calling 
+> +
+> +	bootmem_init();
+> +  +	sparse_init();
+> +	paging_init();
+> +
+> +just before you call paging_init() and after the
+> bootmem_allocator is
+> +turned on in your setup_arch() code.  
+> +
+> +4) ENABLE SPARSEMEM IN KCONFIG
+> +Add a line like this:
+> +
+> +	select ARCH_SPARSEMEM_ENABLE
+> +
+> +into the config for your platform in
+> arch/<your_arch>/Kconfig. This will
+> +ensure that turning on sparsemem is enabled for your
+> platform. 
+> +
+> +5) CONFIG
+> +Run make *config, as you like, and turn on the sparsemem
+> +memory model under the "Kernel Type" -->
+> "Memory Model" and then build your
+> +kernel.
+> +
+> +
+> +6) Gotchas
+> +
+> +One trick that I encountered when I was turning this on
+> for MIPS was that there
+> +was some code in mem_init() that set the
+> "reserved" flag for pages that were not
+> +valid RAM. This caused my kernel to crash when I enabled
+> sparsemem since those
+> +pages (and page descriptors) didn't actually exist. I
+> changed my code by adding
+> +lines like below:
+> +
+> +
+> +	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
+> +		struct page *page = pfn_to_page(tmp);
+> +
+> +   +		if (!pfn_valid(tmp))
+> +   +			continue;
+> +   +
+> +		if (!page_is_ram(tmp)) {
+> +			SetPageReserved(page);
+> +			continue;
+> +		}
+> +		ClearPageReserved(page);
+> +		init_page_count(page);
+> +		__free_page(page);
+> +		physmem_record(PFN_PHYS(tmp), PAGE_SIZE,
+> physmem_highmem);
+> +		totalhigh_pages++;
+> +	}
+> +
+> +
+> +Once I got that straight, it worked!!!! I saved 10MiB of
+> memory.  
+> -- 
+> 1.5.4.1
+
+
+      

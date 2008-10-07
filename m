@@ -1,125 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2008 12:29:32 +0100 (BST)
-Received: from ti-out-0910.google.com ([209.85.142.185]:62370 "EHLO
-	ti-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20818966AbYJGL3W (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 7 Oct 2008 12:29:22 +0100
-Received: by ti-out-0910.google.com with SMTP id i7so1740210tid.20
-        for <linux-mips@linux-mips.org>; Tue, 07 Oct 2008 04:29:19 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to
-         :subject:mime-version:content-type;
-        bh=mkC4s1BC8TYGg6qLhGnT1i5X6vCpv4q5HKok0+AQlhg=;
-        b=mtQqPLyKuijDgrTPDSoNjJQklQ43Jmf3PePRy5N9CoQKlFAlpy4Ohysmr+HOBoXwQ/
-         3+X3ZT91FIaCW9DapAwAWm2XFC3iE0x3uMdVkvS9nQMPQZ7tQ9bHPx5EqjLhQb/1sqjU
-         rwFOstHZKXRXQmlY0SszDUyjZ12Xzqb9twy6Y=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:mime-version:content-type;
-        b=lSnU9cKB1xN3MH8shsYOqT7iWh7RBVGUu8Cc5xaDSvj5M69oX+41LdQb66kRUxndpU
-         I3OXYq0h4nGIr+0Rz/+PKp6SsR7oAgVT2D6zT7Ppc5V90kUo6kbGMhv/RD1vJz9qCw8k
-         vpS7eCinqMYGYdiqlNfVpCLuXXdNqlvw5UjAc=
-Received: by 10.110.7.5 with SMTP id 5mr7950092tig.7.1223378959100;
-        Tue, 07 Oct 2008 04:29:19 -0700 (PDT)
-Received: by 10.110.47.3 with HTTP; Tue, 7 Oct 2008 04:29:19 -0700 (PDT)
-Message-ID: <da30b7ef0810070429k67b99995y18ffc251ed58ba70@mail.gmail.com>
-Date:	Tue, 7 Oct 2008 16:59:19 +0530
-From:	"V!j@y Chandran" <vijayachandran.m@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: Reg: Microwindow on Mips.
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2008 13:10:14 +0100 (BST)
+Received: from pasmtpa.tele.dk ([80.160.77.114]:3797 "EHLO pasmtpA.tele.dk")
+	by ftp.linux-mips.org with ESMTP id S20821136AbYJGMKG (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 7 Oct 2008 13:10:06 +0100
+Received: from kernel.dk (brick.kernel.dk [93.163.65.50])
+	by pasmtpA.tele.dk (Postfix) with ESMTP id 43B188006EA;
+	Tue,  7 Oct 2008 14:10:03 +0200 (CEST)
+Received: by kernel.dk (Postfix, from userid 500)
+	id B705C257BC0; Tue,  7 Oct 2008 14:09:35 +0200 (CEST)
+Date:	Tue, 7 Oct 2008 14:09:35 +0200
+From:	Jens Axboe <jens.axboe@oracle.com>
+To:	Tejun Heo <htejun@gmail.com>
+Cc:	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, sshtylyov@ru.mvista.com,
+	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
+	ralf@linux-mips.org
+Subject: Re: [PATCH 1/2] ide: Add tx4939ide driver
+Message-ID: <20081007120935.GX19428@kernel.dk>
+References: <48C851ED.4090607@ru.mvista.com> <48CA8BEE.1090305@ru.mvista.com> <20080913.005904.07457691.anemo@mba.ocn.ne.jp> <200809271819.19510.bzolnier@gmail.com> <48DEAF1F.8040200@gmail.com> <1222787387.3232.26.camel@localhost.localdomain> <48E6DB55.2050800@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/alternative; 
-	boundary="----=_Part_4283_12361670.1223378959082"
-Return-Path: <vijayachandran.m@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <48E6DB55.2050800@gmail.com>
+Return-Path: <axboe@kernel.dk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20695
+X-archive-position: 20696
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vijayachandran.m@gmail.com
+X-original-sender: jens.axboe@oracle.com
 Precedence: bulk
 X-list: linux-mips
 
-------=_Part_4283_12361670.1223378959082
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+On Sat, Oct 04 2008, Tejun Heo wrote:
+> James Bottomley wrote:
+> > On Sun, 2008-09-28 at 07:09 +0900, Tejun Heo wrote:
+> >> Bartlomiej Zolnierkiewicz wrote:
+> >>> On Friday 12 September 2008, Atsushi Nemoto wrote:
+> >>>> On Fri, 12 Sep 2008 19:34:06 +0400, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
+> >>> [...]
+> >>>
+> >>>>>>>> +	__ide_flush_dcache_range((unsigned long)addr, size);
+> >>>>>>>   Why is this needed BTW?
+> >>>>>> Do you mean __ide_flush_dcache_range?  This is needed to avoid cache
+> >>>>>> inconsistency on PIO drive.  PIO transfer only writes to cache but
+> >>>>>> upper layers expects the data is in main memory.
+> >>>>>     Hum, then I wonder why it's MIPS specific...
+> >>>> SPARC also have it.  And there were some discussions for ARM IIRC.
+> >>> I was under the impression that it has been addressed by Tejun at
+> >>> the higher-layer level (for both ide/libata) long time ago and that
+> >>> MIPS/SPARC code are just a left-overs which could be removed now?
+> >> cc'ing Jens and James.  IIRC, I posted several patches but they never
+> >> went in.  I don't remember what the objections were or whether any
+> >> alternative fix went in.
+> > 
+> > Which patches were these?  We have several methods of doing PIO
+> > fallback, the most common one being
+> > scatterlist.c:sg_copy_from/to_buffer() which does the cache coherency.
+> 
+> The thread Atsushi found seems to be the correct one.
+> 
+>   http://lkml.org/lkml/2006/1/13/156
+> 
+> Thanks.
 
-Hello,
-
-I am trying to port Microwindow on MIPS based Hardware.
-
-While crosscompiling Microwindows (microwindows-src-snapshot.tar.gz) for
-MIPS, i am getting linking error.
-
-Linking /opt/stb/microwindows-0.90/src/bin/nano-X ...
-/opt/stb/crosstools/bin/../lib/gcc/mipsel-linux-uclibc/3.4.6/../../../../mipsel-linux-uclibc/bin/ld:
-
-warning: ld-uClibc.so.0, needed by
-/opt/stb/crosstools/bin/../lib/gcc/mipsel-linux-uclibc/3.4.6/../../../../mipsel-linux-uclibc/lib/libc.so,
-
-not found (try using -rpath or -rpath-link)
-/opt/stb/crosstools/bin/../lib/gcc/mipsel-linux-uclibc/3.4.6/../../../../mipsel-linux-uclibc/lib/libc.so:
-
-undefined reference to `__libc_stack_end'
-collect2: ld returned 1 exit status
-make[1]: *** [/opt/stb/microwindows-0.90/src/bin/nano-X] Error 1
-make: *** [subdir-nanox] Error 2
-
-i have no idea to fix this. can you help me please.
-
+I agreed to them last time... Shall we get this merged up?
 
 -- 
-Cheers
-Vijaya Chandran.M
-
-------=_Part_4283_12361670.1223378959082
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-
-<div dir="ltr"><br clear="all"><font class="swb">Hello,<br>
-
-<br>
-
-I am trying to port Microwindow on MIPS based Hardware.<br>
-<br>
-
-While crosscompiling Microwindows (microwindows-src-snapshot.tar.gz) for <br>
-
-MIPS, i am getting linking error.<br>
-
-<br>
-
-Linking /opt/stb/microwindows-0.90/src/bin/nano-X ...<br>
-
-/opt/stb/crosstools/bin/../lib/gcc/mipsel-linux-uclibc/3.4.6/../../../../mipsel-linux-uclibc/bin/ld: <br>
-
-warning: ld-uClibc.so.0, needed by <br>
-
-/opt/stb/crosstools/bin/../lib/gcc/mipsel-linux-uclibc/3.4.6/../../../../mipsel-linux-uclibc/lib/libc.so, <br>
-
-not found (try using -rpath or -rpath-link)<br>
-
-/opt/stb/crosstools/bin/../lib/gcc/mipsel-linux-uclibc/3.4.6/../../../../mipsel-linux-uclibc/lib/libc.so: <br>
-
-undefined reference to `__libc_stack_end&#39;<br>
-
-collect2: ld returned 1 exit status<br>
-
-make[1]: *** [/opt/stb/microwindows-0.90/src/bin/nano-X] Error 1<br>
-
-make: *** [subdir-nanox] Error 2<br>
-
-<br>
-
-i have no idea to fix this. can you help me please.<br>
-
-<br>
-
-</font><br>-- <br>Cheers<br>Vijaya Chandran.M<br>
-</div>
-
-------=_Part_4283_12361670.1223378959082--
+Jens Axboe

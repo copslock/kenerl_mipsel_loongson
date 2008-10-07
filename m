@@ -1,212 +1,167 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2008 01:33:33 +0100 (BST)
-Received: from web51404.mail.re2.yahoo.com ([206.190.38.183]:19851 "HELO
-	web51404.mail.re2.yahoo.com") by ftp.linux-mips.org with SMTP
-	id S20766933AbYJGAd3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 7 Oct 2008 01:33:29 +0100
-Received: (qmail 38362 invoked by uid 60001); 7 Oct 2008 00:33:20 -0000
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=X-YMail-OSG:Received:X-Mailer:Date:From:Reply-To:Subject:To:In-Reply-To:MIME-Version:Content-Type:Message-ID;
-  b=zpEUlzkSyWm/mLLxFXDC8RKOygQjxhUN9emhi9X356k8/WD6YZt0oDYBBdjabo4cNmTDn3UehmzcLp0dtFJk4b7iD9wLsKUy8xnVBQvdUmhV1bOPTkpyxebYntrrhalxpvl5lFyzbeBgtUGyzWUtVleT9cLYmeXCO+fTGbWn8Tw=;
-X-YMail-OSG: v0e1rDQVM1lSsJe7v1dt_Gy5up7DsJv6dbuPeoL.ji70PYyuKBb2Qpqa.MkdS2vQ5w--
-Received: from [75.62.122.2] by web51404.mail.re2.yahoo.com via HTTP; Mon, 06 Oct 2008 17:33:19 PDT
-X-Mailer: YahooMailWebService/0.7.218.2
-Date:	Mon, 6 Oct 2008 17:33:19 -0700 (PDT)
-From:	John <me94043@yahoo.com>
-Reply-To: me94043@yahoo.com
-Subject: Re: Have ever checked in your mips sparsemem code into mips-linux tree?
-To:	Andy Whitcroft <apw@shadowen.org>,
-	Dave Hansen <dave@linux.vnet.ibm.com>, linux-mm@kvack.org,
-	linux-mips@linux-mips.org, "VomLehn, David" <dvomlehn@cisco.com>,
-	C Michael Sundius <Michael.sundius@sciatl.com>
-In-Reply-To: <48EA71F5.1040200@sciatl.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Oct 2008 01:39:25 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:38936 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S20767017AbYJGAjR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 7 Oct 2008 01:39:17 +0100
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B48eaaf9b0000>; Mon, 06 Oct 2008 20:38:51 -0400
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 6 Oct 2008 17:38:48 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 6 Oct 2008 17:38:48 -0700
+Message-ID: <48EAAF97.8050307@caviumnetworks.com>
+Date:	Mon, 06 Oct 2008 17:38:47 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Message-ID: <800696.38003.qm@web51404.mail.re2.yahoo.com>
-Return-Path: <me94043@yahoo.com>
+To:	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mips@linux-mips.org
+CC:	"Paoletti, Tomaso" <Tomaso.Paoletti@caviumnetworks.com>
+Subject: [PATCH] serial: Add Cavium OCTEON UART definitions.
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 07 Oct 2008 00:38:48.0005 (UTC) FILETIME=[0FBA1F50:01C92815]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20691
+X-archive-position: 20692
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: me94043@yahoo.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Thank you Michael! I will try it out, and will post results later, but not next couple of days, since I have some stuff on hands approaching the deadline.
+cavium: 8250 serial driver changes
 
-John
+As mentioned in '[PATCH 1/2] serial: Allow for replaceable I/O
+functions in 8250 driver.', we are in the process of preparing kernel
+support for the Cavium Networks OCTEON processor for inclusion in the
+main-line kernel sources.
 
---- On Mon, 10/6/08, C Michael Sundius <Michael.sundius@sciatl.com> wrote:
+The OCTEON's UART differs from the existing uart_configs, so we add a
+new uart_config and check for it in several places.
 
-> From: C Michael Sundius <Michael.sundius@sciatl.com>
-> Subject: Re: Have ever checked in your mips sparsemem code into mips-linux tree?
-> To: "Andy Whitcroft" <apw@shadowen.org>, "Dave Hansen" <dave@linux.vnet.ibm.com>, linux-mm@kvack.org, linux-mips@linux-mips.org, "VomLehn, David" <dvomlehn@cisco.com>, me94043@yahoo.com
-> Date: Monday, October 6, 2008, 1:15 PM
-> adding patch 2  containing Documentation:
-> 
-> 
-> 
-> 
->      - - - - -                              Cisco          
->                  - - - - -         
-> This e-mail and any attachments may contain information
-> which is confidential, 
-> proprietary, privileged or otherwise protected by law. The
-> information is solely 
-> intended for the named addressee (or a person responsible
-> for delivering it to 
-> the addressee). If you are not the intended recipient of
-> this message, you are 
-> not authorized to read, print, retain, copy or disseminate
-> this message or any 
-> part of it. If you have received this e-mail in error,
-> please notify the sender 
-> immediately by return e-mail and delete it from your
-> computer.From e01ad377b29c0e5c39289bece382e1f78f6e7e2c Mon
-> Sep 17 00:00:00 2001
-> From: Sundis <sundism@CUPLXSUNDISM01.corp.sa.net>
-> Date: Mon, 6 Oct 2008 10:31:08 -0700
-> Subject: [PATCH] mips sparsemem howto
-> 
-> ---
->  Documentation/sparsemem.txt |   92
-> +++++++++++++++++++++++++++++++++++++++++++
->  1 files changed, 92 insertions(+), 0 deletions(-)
->  create mode 100644 Documentation/sparsemem.txt
-> 
-> diff --git a/Documentation/sparsemem.txt
-> b/Documentation/sparsemem.txt
-> new file mode 100644
-> index 0000000..0b36412
-> --- /dev/null
-> +++ b/Documentation/sparsemem.txt
-> @@ -0,0 +1,92 @@
-> +Sparsemem divides up physical memory in your system into N
-> sections of M
-> +bytes. Page tables are created for only those sections
-> that
-> +actually exist (as far as the sparsemem code is
-> concerned). This allows
-> +for holes in the physical memory without having to waste
-> space by
-> +creating page descriptors for those pages that do not
-> exist.
-> +When page_to_pfn() or pfn_to_page() are called there is a
-> bit of overhead to
-> +look up the proper memory section to get to the
-> page_table, but this
-> +is small compared to the memory you are likely to save.
-> So, it's not the
-> +default, but should be used if you have big holes in
-> physical memory.
-> +
-> +Note that discontiguous memory is more closely related to
-> NUMA machines
-> +and if you are a single CPU system use sparsemem and not
-> discontig. 
-> +It's much simpler. 
-> +
-> +1) CALL MEMORY_PRESENT()
-> +Existing sections are recorded once the bootmem allocator
-> is up and running by
-> +calling the sparsemem function "memory_present(node,
-> pfn_start, pfn_end)" for each
-> +block of memory that exists in your physical address
-> space. The
-> +memory_present() function records valid sections in a data
-> structure called
-> +mem_section[].
-> +
-> +2) DETERMINE AND SET THE SIZE OF SECTIONS AND PHYSMEM
-> +The size of N and M above depend upon your architecture
-> +and your platform and are specified in the file:
-> +
-> +      include/asm-<your_arch>/sparsemem.h
-> +
-> +and you should create the following lines similar to
-> below: 
-> +
-> +	#ifdef CONFIG_YOUR_PLATFORM
-> +	 #define SECTION_SIZE_BITS       27	/* 128 MiB */
-> +	#endif
-> +	#define MAX_PHYSMEM_BITS        31	/* 2 GiB   */
-> +
-> +if they don't already exist, where: 
-> +
-> + * SECTION_SIZE_BITS            2^M: how big each section
-> will be
-> + * MAX_PHYSMEM_BITS             2^N: how much memory we
-> can have in that
-> +                                     space
-> +
-> +3) INITIALIZE SPARSE MEMORY
-> +You should make sure that you initialize the sparse memory
-> code by calling 
-> +
-> +	bootmem_init();
-> +  +	sparse_init();
-> +	paging_init();
-> +
-> +just before you call paging_init() and after the
-> bootmem_allocator is
-> +turned on in your setup_arch() code.  
-> +
-> +4) ENABLE SPARSEMEM IN KCONFIG
-> +Add a line like this:
-> +
-> +	select ARCH_SPARSEMEM_ENABLE
-> +
-> +into the config for your platform in
-> arch/<your_arch>/Kconfig. This will
-> +ensure that turning on sparsemem is enabled for your
-> platform. 
-> +
-> +5) CONFIG
-> +Run make *config, as you like, and turn on the sparsemem
-> +memory model under the "Kernel Type" -->
-> "Memory Model" and then build your
-> +kernel.
-> +
-> +
-> +6) Gotchas
-> +
-> +One trick that I encountered when I was turning this on
-> for MIPS was that there
-> +was some code in mem_init() that set the
-> "reserved" flag for pages that were not
-> +valid RAM. This caused my kernel to crash when I enabled
-> sparsemem since those
-> +pages (and page descriptors) didn't actually exist. I
-> changed my code by adding
-> +lines like below:
-> +
-> +
-> +	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
-> +		struct page *page = pfn_to_page(tmp);
-> +
-> +   +		if (!pfn_valid(tmp))
-> +   +			continue;
-> +   +
-> +		if (!page_is_ram(tmp)) {
-> +			SetPageReserved(page);
-> +			continue;
-> +		}
-> +		ClearPageReserved(page);
-> +		init_page_count(page);
-> +		__free_page(page);
-> +		physmem_record(PFN_PHYS(tmp), PAGE_SIZE,
-> physmem_highmem);
-> +		totalhigh_pages++;
-> +	}
-> +
-> +
-> +Once I got that straight, it worked!!!! I saved 10MiB of
-> memory.  
-> -- 
-> 1.5.4.1
+This patch depends on the aforementioned 'Allow for replaceable I/O
+functions in 8250 driver' patch.
 
+Since this patch is part of the Cavium OCTEON processor port, we don't
+expect that it would be committed until the rest of the port is
+accepted.  However we would like feedback so that it might be
+adjusted if necessary.
 
-      
+Signed-off-by: Tomaso Paoletti <tpaoletti@caviumnetworks.com>
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+---
+ drivers/serial/8250.c       |   30 +++++++++++++++++++++++++++---
+ include/linux/serial_core.h |    3 ++-
+ include/linux/serial_reg.h  |    6 ++++++
+ 3 files changed, 35 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/serial/8250.c b/drivers/serial/8250.c
+index 02771d6..2ef79e9 100644
+--- a/drivers/serial/8250.c
++++ b/drivers/serial/8250.c
+@@ -264,6 +264,13 @@ static const struct serial8250_config uart_config[] = {
+ 		.fcr		= UART_FCR_ENABLE_FIFO | UART_FCR_R_TRIG_10,
+ 		.flags		= UART_CAP_FIFO,
+ 	},
++	[PORT_OCTEON] = {
++		.name		= "OCTEON",
++		.fifo_size	= 64,
++		.tx_loadsz	= 64,
++		.fcr		= UART_FCR_ENABLE_FIFO | UART_FCR_R_TRIG_10,
++		.flags		= UART_CAP_FIFO,
++	},
+ };
+ 
+ #if defined (CONFIG_SERIAL_8250_AU1X00)
+@@ -902,7 +909,14 @@ static void autoconfig_16550a(struct uart_8250_port *up)
+ 	unsigned char status1, status2;
+ 	unsigned int iersave;
+ 
+-	up->port.type = PORT_16550A;
++#ifdef CONFIG_CPU_CAVIUM_OCTEON
++	/* UPF_FIXED_PORT indicates an internal UART.  */
++	if (up->port.flags & UPF_FIXED_PORT)
++		up->port.type = PORT_OCTEON;
++	else
++#endif
++		up->port.type = PORT_16550A;
++
+ 	up->capabilities |= UART_CAP_FIFO;
+ 
+ 	/*
+@@ -948,7 +962,8 @@ static void autoconfig_16550a(struct uart_8250_port *up)
+ 
+ 	if (!((status2 ^ status1) & UART_MCR_LOOP)) {
+ 		serial_outp(up, UART_LCR, 0);
+-		serial_outp(up, UART_MCR, status1 ^ UART_MCR_LOOP);
++		if (up->port.type != PORT_OCTEON)
++			serial_outp(up, UART_MCR, status1 ^ UART_MCR_LOOP);
+ 		serial_outp(up, UART_LCR, 0xE0);
+ 		status2 = serial_in(up, 0x02); /* EXCR1 */
+ 		serial_outp(up, UART_LCR, 0);
+@@ -1002,6 +1017,9 @@ static void autoconfig_16550a(struct uart_8250_port *up)
+ 		return;
+ 	}
+ 
++	if (up->port.type == PORT_OCTEON)
++		return;
++
+ 	/*
+ 	 * Try writing and reading the UART_IER_UUE bit (b6).
+ 	 * If it works, this is probably one of the Xscale platform's
+@@ -1539,6 +1557,12 @@ static irqreturn_t serial8250_interrupt(int irq, void *dev_id)
+ 		up = list_entry(l, struct uart_8250_port, list);
+ 
+ 		iir = serial_in(up, UART_IIR);
++		if (up->port.type == PORT_OCTEON && (iir & 0xf) == 7) {
++			/* Busy interrupt */
++			serial_in(up, UART_OCTEON_USR);
++			iir = serial_in(up, UART_IIR);
++		}
++
+ 		if (!(iir & UART_IIR_NO_INT)) {
+ 			serial8250_handle_port(up);
+ 
+@@ -1657,7 +1681,7 @@ static void serial8250_timeout(unsigned long data)
+ 	unsigned int iir;
+ 
+ 	iir = serial_in(up, UART_IIR);
+-	if (!(iir & UART_IIR_NO_INT))
++	if (!(iir & UART_IIR_NO_INT) || up->port.type == PORT_OCTEON)
+ 		serial8250_handle_port(up);
+ 	mod_timer(&up->timer, jiffies + poll_timeout(up->port.timeout));
+ }
+diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
+index 3a4afcf..6f49385 100644
+--- a/include/linux/serial_core.h
++++ b/include/linux/serial_core.h
+@@ -40,7 +40,8 @@
+ #define PORT_NS16550A	14
+ #define PORT_XSCALE	15
+ #define PORT_RM9000	16	/* PMC-Sierra RM9xxx internal UART */
+-#define PORT_MAX_8250	16	/* max port ID */
++#define PORT_OCTEON	17	/* Cavium OCTEON internal UART */
++#define PORT_MAX_8250	17	/* max port ID */
+ 
+ /*
+  * ARM specific type numbers.  These are not currently guaranteed
+diff --git a/include/linux/serial_reg.h b/include/linux/serial_reg.h
+index 96c0d93..a96bd50 100644
+--- a/include/linux/serial_reg.h
++++ b/include/linux/serial_reg.h
+@@ -324,5 +324,11 @@
+ #define UART_OMAP_SYSC		0x15	/* System configuration register */
+ #define UART_OMAP_SYSS		0x16	/* System status register */
+ 
++/*
++ * Extra serial register definitions for the internal UARTs in Cavium
++ * Networks OCTEON processors.
++ */
++#define UART_OCTEON_USR		0x27	/* UART Status Register */
++
+ #endif /* _LINUX_SERIAL_REG_H */
+ 

@@ -1,64 +1,115 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Oct 2008 01:30:13 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:25260 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S20876071AbYJHAaH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 8 Oct 2008 01:30:07 +0100
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B48ebfee80000>; Tue, 07 Oct 2008 20:29:28 -0400
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 7 Oct 2008 17:29:26 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 7 Oct 2008 17:29:25 -0700
-Message-ID: <48EBFEE5.7010401@caviumnetworks.com>
-Date:	Tue, 07 Oct 2008 17:29:25 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Oct 2008 17:39:48 +0100 (BST)
+Received: from sj-iport-6.cisco.com ([171.71.176.117]:22149 "EHLO
+	sj-iport-6.cisco.com") by ftp.linux-mips.org with ESMTP
+	id S20953984AbYJHQjm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 8 Oct 2008 17:39:42 +0100
+X-IronPort-AV: E=Sophos;i="4.33,379,1220227200"; 
+   d="scan'208";a="171221113"
+Received: from sj-dkim-1.cisco.com ([171.71.179.21])
+  by sj-iport-6.cisco.com with ESMTP; 08 Oct 2008 16:39:34 +0000
+Received: from sj-core-2.cisco.com (sj-core-2.cisco.com [171.71.177.254])
+	by sj-dkim-1.cisco.com (8.12.11/8.12.11) with ESMTP id m98GdWW4001218
+	for <linux-mips@linux-mips.org>; Wed, 8 Oct 2008 09:39:32 -0700
+Received: from sausatlsmtp2.sciatl.com ([192.133.217.159])
+	by sj-core-2.cisco.com (8.13.8/8.13.8) with ESMTP id m98GdWQq012746
+	for <linux-mips@linux-mips.org>; Wed, 8 Oct 2008 16:39:32 GMT
+Received: from default.com ([192.133.217.159]) by sausatlsmtp2.sciatl.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 8 Oct 2008 12:39:31 -0400
+Received: from sausatlbhs02.corp.sa.net ([192.133.216.42]) by sausatlsmtp2.sciatl.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 8 Oct 2008 12:39:30 -0400
+Received: from CUPLXSUNDISM01.corp.sa.net ([64.101.21.60]) by sausatlbhs02.corp.sa.net with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 8 Oct 2008 12:39:29 -0400
+Message-ID: <48ECE240.5050306@sciatl.com>
+Date:	Wed, 08 Oct 2008 09:39:28 -0700
+From:	C Michael Sundius <Michael.sundius@sciatl.com>
+User-Agent: Thunderbird 2.0.0.14 (X11/20080501)
 MIME-Version: 1.0
-To:	"H. Peter Anvin" <hpa@zytor.com>
-CC:	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mips@linux-mips.org,
-	"Paoletti, Tomaso" <Tomaso.Paoletti@caviumnetworks.com>
-Subject: Re: [PATCH 1/4] serial: 8250 driver replaceable i/o functions.
-References: <48EBF426.9080500@caviumnetworks.com> <48EBF56D.3030203@caviumnetworks.com> <48EBFAFC.3020501@zytor.com>
-In-Reply-To: <48EBFAFC.3020501@zytor.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To:	linux-mips@linux-mips.org, luigi.mantellini.ml@gmail.com,
+	msundius@sundius.com
+Subject: Re: Huge buffer allocation: best place
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 08 Oct 2008 00:29:25.0944 (UTC) FILETIME=[EB202B80:01C928DC]
-Return-Path: <David.Daney@caviumnetworks.com>
+X-OriginalArrivalTime: 08 Oct 2008 16:39:29.0845 (UTC) FILETIME=[6F5AA650:01C92964]
+X-ST-MF-Message-Resent:	10/8/2008 12:39
+Authentication-Results:	sj-dkim-1; header.From=Michael.sundius@sciatl.com; dkim=neutral
+Return-Path: <michael.sundius@sciatl.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20706
+X-archive-position: 20707
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: Michael.sundius@sciatl.com
 Precedence: bulk
 X-list: linux-mips
 
-H. Peter Anvin wrote:
-> David Daney wrote:
->> /* sane hardware needs no mapping */
->> -static inline int map_8250_in_reg(struct uart_8250_port *up, int offset)
->> +static inline int map_8250_in_reg(struct uart_port *p, int offset)
->> {
->> -    if (up->port.iotype != UPIO_AU)
->> +    if (p->iotype != UPIO_AU)
->>         return offset;
->>     return au_io_in_map[offset];
->> }
-> 
-> With your changes, these functions cannot be called with p->iotype != 
-> UPIO_AU anymore, correct?  So there is no need for this test...
-> 
+Luigi 'Comio' Mantellini Wrote:
 
-I think you are probably correct.  However, with the patch it is 
-possible to move all this target specific code out of the driver.  So if 
-the patch is accepted, a better follow up would be to get rid of the 
-UPIO_AU things altogether.
+ > I need to allocate a huge contiguous buffer (~6MByte) shared with a 
+secondary cpu
+ > (a packet processor).  Which is the best place and the best way to do 
+this?
 
-I gave an example of how that could be done with UPIO_TSI here:
+ >
+ > The main problem is that using a simple kmalloc at module init time 
+there isn't sufficient
+ > contiguous memory to cover the request. I should use (I suppose) the 
+alloc_bootmem_*
+ > macros but I'm not sure where is the best place to reserve my memory. 
+For now I defined
+ > a global bad huge vector... but I'm not happy for this solution...
 
-http://marc.info/?l=linux-serial&m=122333633802691&w=2
 
-David Daney
+I have seen a similar need and allocate driver buffers from the bootmem 
+allocator, however
+if you use Highmem you might prefer to use memory in high memory since 
+the low memory
+is limited. This presents a problem since the bootmem allocator does not 
+manage memory
+in the high memory zone.
+
+I am currently working on a extremely simple allocation method for 
+allocating large driver buffers
+early (say after paging_init() and sparse_init() but before mem_init() ) 
+for exactly this
+purpose.
+
+I'm wondering if anyone else out there has run into these problems and 
+how they solved them.
+up to now, we have blindly carved off a huge chunk of the highmemory and 
+required each
+driver to allocate the driver memory resource at compile time. (via a 
+big ugly struct with lots of
+magic numbers the drivers map (kmap) these memory areas in separately). 
+This error prone a best and
+is problematic since each version of our box has different resource 
+needs (and we want just one
+ kernel). Thus the need for runtime allocation of such resources.
+
+Luigi, are you running w/ highmem enabled? if not I suggest just using 
+the bootmem allocator.
+we call a function called platform_alloc_bootmem() which is in our 
+platform specific code, it is
+called just after (or at the end of) the bootmem_init() function in the 
+setup.c (after they reserve
+space for the initrd and kernel).
+
+there is another function called resource_init() which I think could be 
+a good place for you to
+make a call to some platform_specific resource allocation function.
+(one other question: is any of that resource --from resrouce.c-- used in 
+the mips code?)
+
+Mike
+
+
+
+     - - - - -                              Cisco                            - - - - -         
+This e-mail and any attachments may contain information which is confidential, 
+proprietary, privileged or otherwise protected by law. The information is solely 
+intended for the named addressee (or a person responsible for delivering it to 
+the addressee). If you are not the intended recipient of this message, you are 
+not authorized to read, print, retain, copy or disseminate this message or any 
+part of it. If you have received this e-mail in error, please notify the sender 
+immediately by return e-mail and delete it from your computer.

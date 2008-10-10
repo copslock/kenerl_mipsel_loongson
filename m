@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2008 18:58:48 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:56916 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2008 20:40:35 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:36927 "EHLO
 	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S21161859AbYJJR6q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 10 Oct 2008 18:58:46 +0100
+	id S21167543AbYJJTkd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 10 Oct 2008 20:40:33 +0100
 Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B48ef97ca0000>; Fri, 10 Oct 2008 13:58:39 -0400
+	id <B48efaf9f0000>; Fri, 10 Oct 2008 15:40:15 -0400
 Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Fri, 10 Oct 2008 10:58:34 -0700
+	 Fri, 10 Oct 2008 12:40:14 -0700
 Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Fri, 10 Oct 2008 10:58:33 -0700
-Message-ID: <48EF97C9.7080101@caviumnetworks.com>
-Date:	Fri, 10 Oct 2008 10:58:33 -0700
+	 Fri, 10 Oct 2008 12:40:14 -0700
+Message-ID: <48EFAF9E.9010806@caviumnetworks.com>
+Date:	Fri, 10 Oct 2008 12:40:14 -0700
 From:	David Daney <ddaney@caviumnetworks.com>
 User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
 MIME-Version: 1.0
 To:	linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: Report all watch register masks in /proc/cpuinfo (version
- 2).
+CC:	"Paoletti, Tomaso" <Tomaso.Paoletti@caviumnetworks.com>
+Subject: [PATCH] MIPS: Add missing include in arch/mips/include/asm/ptrace.h.
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 10 Oct 2008 17:58:33.0920 (UTC) FILETIME=[CFDE8C00:01C92B01]
+X-OriginalArrivalTime: 10 Oct 2008 19:40:14.0522 (UTC) FILETIME=[041C89A0:01C92B10]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20713
+X-archive-position: 20714
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,47 +32,27 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Report all watch register masks in /proc/cpuinfo.
+Add missing include in arch/mips/include/asm/ptrace.h.
 
-This version actually passes checkpatch.pl!
-
-Some CPUs have heterogeneous watch register properties.  Let's show
-them all.
+Recent reorganization seems to have lost this include.  You cannot
+build without it.
 
 Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+Signed-off-by: Tomaso Paoletti <tpaoletti@caviumnetworks.com>
 ---
- arch/mips/kernel/proc.c |   14 +++++++++-----
- 1 files changed, 9 insertions(+), 5 deletions(-)
+ arch/mips/include/asm/ptrace.h |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
-index 0dda76c..87cab9f 100644
---- a/arch/mips/kernel/proc.c
-+++ b/arch/mips/kernel/proc.c
-@@ -23,6 +23,7 @@ static int show_cpuinfo(struct seq_file *m, void *v)
- 	unsigned int fp_vers;
- 	unsigned long n = (unsigned long) v - 1;
- 	char fmt [64];
-+	int i;
+diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
+index 7fe9812..36872b8 100644
+--- a/arch/mips/include/asm/ptrace.h
++++ b/arch/mips/include/asm/ptrace.h
+@@ -120,6 +120,8 @@ struct pt_watch_regs {
  
- 	preempt_disable();
- 	version = current_cpu_data.processor_id;
-@@ -59,11 +60,14 @@ static int show_cpuinfo(struct seq_file *m, void *v)
- 	              cpu_has_divec ? "yes" : "no");
- 	seq_printf(m, "hardware watchpoint\t: %s",
- 		   cpu_has_watch ? "yes, " : "no\n");
--	if (cpu_has_watch)
--		seq_printf(m,
--			   "count: %d, address/irw mask: 0x%04x\n",
--			   cpu_data[n].watch_reg_count,
--			   cpu_data[n].watch_reg_masks[0]);
-+	if (cpu_has_watch) {
-+		seq_printf(m, "count: %d, address/irw mask: [",
-+			   cpu_data[n].watch_reg_count);
-+		for (i = 0; i < cpu_data[n].watch_reg_count; i++)
-+			seq_printf(m, "%s0x%04x", i ? ", " : "" ,
-+				   cpu_data[n].watch_reg_masks[i]);
-+		seq_printf(m, "]\n");
-+	}
- 	seq_printf(m, "ASEs implemented\t:%s%s%s%s%s%s\n",
- 		      cpu_has_mips16 ? " mips16" : "",
- 		      cpu_has_mdmx ? " mdmx" : "",
+ #include <linux/compiler.h>
+ #include <linux/linkage.h>
++#include <linux/sched.h>
++
+ #include <asm/isadep.h>
+ 
+ extern int ptrace_getregs(struct task_struct *child, __s64 __user *data);

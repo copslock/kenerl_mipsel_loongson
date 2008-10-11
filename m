@@ -1,58 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Oct 2008 20:40:35 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:36927 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S21167543AbYJJTkd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 10 Oct 2008 20:40:33 +0100
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B48efaf9f0000>; Fri, 10 Oct 2008 15:40:15 -0400
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Fri, 10 Oct 2008 12:40:14 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Fri, 10 Oct 2008 12:40:14 -0700
-Message-ID: <48EFAF9E.9010806@caviumnetworks.com>
-Date:	Fri, 10 Oct 2008 12:40:14 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Oct 2008 08:41:37 +0100 (BST)
+Received: from wilson.telenet-ops.be ([195.130.132.42]:59780 "EHLO
+	wilson.telenet-ops.be") by ftp.linux-mips.org with ESMTP
+	id S21197111AbYJKHlf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 11 Oct 2008 08:41:35 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by wilson.telenet-ops.be (Postfix) with SMTP id 6038334031;
+	Sat, 11 Oct 2008 09:41:34 +0200 (CEST)
+Received: from anakin.of.borg (d54C15368.access.telenet.be [84.193.83.104])
+	by wilson.telenet-ops.be (Postfix) with ESMTP id 2CC593402B;
+	Sat, 11 Oct 2008 09:41:33 +0200 (CEST)
+Received: from anakin.of.borg (localhost [127.0.0.1])
+	by anakin.of.borg (8.14.3/8.14.3/Debian-5) with ESMTP id m9B7fWEf023092
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Sat, 11 Oct 2008 09:41:33 +0200
+Received: from localhost (geert@localhost)
+	by anakin.of.borg (8.14.3/8.14.3/Submit) with ESMTP id m9B7fVbl023089;
+	Sat, 11 Oct 2008 09:41:32 +0200
+X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
+Date:	Sat, 11 Oct 2008 09:41:31 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	David Daney <ddaney@caviumnetworks.com>
+cc:	linux-mips@linux-mips.org,
+	"Paoletti, Tomaso" <Tomaso.Paoletti@caviumnetworks.com>
+Subject: Re: [PATCH] MIPS: Add missing include in arch/mips/include/asm/ptrace.h.
+In-Reply-To: <48EFAF9E.9010806@caviumnetworks.com>
+Message-ID: <Pine.LNX.4.64.0810110941020.8063@anakin>
+References: <48EFAF9E.9010806@caviumnetworks.com>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-CC:	"Paoletti, Tomaso" <Tomaso.Paoletti@caviumnetworks.com>
-Subject: [PATCH] MIPS: Add missing include in arch/mips/include/asm/ptrace.h.
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 10 Oct 2008 19:40:14.0522 (UTC) FILETIME=[041C89A0:01C92B10]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20714
+X-archive-position: 20715
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Add missing include in arch/mips/include/asm/ptrace.h.
+On Fri, 10 Oct 2008, David Daney wrote:
+> diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
+> index 7fe9812..36872b8 100644
+> --- a/arch/mips/include/asm/ptrace.h
+> +++ b/arch/mips/include/asm/ptrace.h
+> @@ -120,6 +120,8 @@ struct pt_watch_regs {
+> 
+> #include <linux/compiler.h>
+  ^
+> #include <linux/linkage.h>
+  ^
+> +#include <linux/sched.h>
+> +
+> #include <asm/isadep.h>
+  ^
+> 
+  ^
+> extern int ptrace_getregs(struct task_struct *child, __s64 __user *data);
+  ^
 
-Recent reorganization seems to have lost this include.  You cannot
-build without it.
+Oops, you mailer removed some spaces again...
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-Signed-off-by: Tomaso Paoletti <tpaoletti@caviumnetworks.com>
----
- arch/mips/include/asm/ptrace.h |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+Gr{oetje,eeting}s,
 
-diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
-index 7fe9812..36872b8 100644
---- a/arch/mips/include/asm/ptrace.h
-+++ b/arch/mips/include/asm/ptrace.h
-@@ -120,6 +120,8 @@ struct pt_watch_regs {
- 
- #include <linux/compiler.h>
- #include <linux/linkage.h>
-+#include <linux/sched.h>
-+
- #include <asm/isadep.h>
- 
- extern int ptrace_getregs(struct task_struct *child, __s64 __user *data);
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

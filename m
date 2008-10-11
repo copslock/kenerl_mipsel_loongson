@@ -1,74 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Oct 2008 08:41:37 +0100 (BST)
-Received: from wilson.telenet-ops.be ([195.130.132.42]:59780 "EHLO
-	wilson.telenet-ops.be") by ftp.linux-mips.org with ESMTP
-	id S21197111AbYJKHlf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 11 Oct 2008 08:41:35 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by wilson.telenet-ops.be (Postfix) with SMTP id 6038334031;
-	Sat, 11 Oct 2008 09:41:34 +0200 (CEST)
-Received: from anakin.of.borg (d54C15368.access.telenet.be [84.193.83.104])
-	by wilson.telenet-ops.be (Postfix) with ESMTP id 2CC593402B;
-	Sat, 11 Oct 2008 09:41:33 +0200 (CEST)
-Received: from anakin.of.borg (localhost [127.0.0.1])
-	by anakin.of.borg (8.14.3/8.14.3/Debian-5) with ESMTP id m9B7fWEf023092
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Sat, 11 Oct 2008 09:41:33 +0200
-Received: from localhost (geert@localhost)
-	by anakin.of.borg (8.14.3/8.14.3/Submit) with ESMTP id m9B7fVbl023089;
-	Sat, 11 Oct 2008 09:41:32 +0200
-X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
-Date:	Sat, 11 Oct 2008 09:41:31 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Oct 2008 15:57:37 +0100 (BST)
+Received: from h4.dl5rb.org.uk ([81.2.74.4]:65157 "EHLO
+	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
+	with ESMTP id S21221711AbYJKO5f (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 11 Oct 2008 15:57:35 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m9BEvT1v006674;
+	Sat, 11 Oct 2008 15:57:29 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m9BEvSpU006672;
+	Sat, 11 Oct 2008 15:57:28 +0100
+Date:	Sat, 11 Oct 2008 15:57:28 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
 To:	David Daney <ddaney@caviumnetworks.com>
-cc:	linux-mips@linux-mips.org,
+Cc:	linux-mips@linux-mips.org,
 	"Paoletti, Tomaso" <Tomaso.Paoletti@caviumnetworks.com>
-Subject: Re: [PATCH] MIPS: Add missing include in arch/mips/include/asm/ptrace.h.
-In-Reply-To: <48EFAF9E.9010806@caviumnetworks.com>
-Message-ID: <Pine.LNX.4.64.0810110941020.8063@anakin>
+Subject: Re: [PATCH] MIPS: Add missing include in
+	arch/mips/include/asm/ptrace.h.
+Message-ID: <20081011145728.GA6570@linux-mips.org>
 References: <48EFAF9E.9010806@caviumnetworks.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <48EFAF9E.9010806@caviumnetworks.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20715
+X-archive-position: 20716
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 10 Oct 2008, David Daney wrote:
+On Fri, Oct 10, 2008 at 12:40:14PM -0700, David Daney wrote:
+
+> Add missing include in arch/mips/include/asm/ptrace.h.
+>
+> Recent reorganization seems to have lost this include.  You cannot
+> build without it.
+>
+> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+> Signed-off-by: Tomaso Paoletti <tpaoletti@caviumnetworks.com>
+> ---
+> arch/mips/include/asm/ptrace.h |    2 ++
+> 1 files changed, 2 insertions(+), 0 deletions(-)
+>
 > diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
 > index 7fe9812..36872b8 100644
 > --- a/arch/mips/include/asm/ptrace.h
 > +++ b/arch/mips/include/asm/ptrace.h
 > @@ -120,6 +120,8 @@ struct pt_watch_regs {
-> 
+>
 > #include <linux/compiler.h>
-  ^
 > #include <linux/linkage.h>
-  ^
 > +#include <linux/sched.h>
-> +
-> #include <asm/isadep.h>
-  ^
-> 
-  ^
-> extern int ptrace_getregs(struct task_struct *child, __s64 __user *data);
-  ^
 
-Oops, you mailer removed some spaces again...
+Sched.h is one of those include files that drag in way to many other
+header files.  So I went for a forward declaration of struct task_struct
+instead.
 
-Gr{oetje,eeting}s,
+Thanks,
 
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+  Ralf

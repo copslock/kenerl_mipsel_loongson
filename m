@@ -1,27 +1,27 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Oct 2008 13:54:25 +0100 (BST)
-Received: from smtp5.pp.htv.fi ([213.243.153.39]:58812 "EHLO smtp5.pp.htv.fi")
-	by ftp.linux-mips.org with ESMTP id S21283729AbYJLMyX (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 12 Oct 2008 13:54:23 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Oct 2008 14:02:35 +0100 (BST)
+Received: from smtp6.pp.htv.fi ([213.243.153.40]:47799 "EHLO smtp6.pp.htv.fi")
+	by ftp.linux-mips.org with ESMTP id S21283832AbYJLNCd (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 12 Oct 2008 14:02:33 +0100
 Received: from cs181140183.pp.htv.fi (cs181140183.pp.htv.fi [82.181.140.183])
-	by smtp5.pp.htv.fi (Postfix) with ESMTP id 8AB365BC00C;
-	Sun, 12 Oct 2008 15:54:22 +0300 (EEST)
-Date:	Sun, 12 Oct 2008 15:53:27 +0300
+	by smtp6.pp.htv.fi (Postfix) with ESMTP id 165815BC024;
+	Sun, 12 Oct 2008 16:02:31 +0300 (EEST)
+Date:	Sun, 12 Oct 2008 16:01:35 +0300
 From:	Adrian Bunk <bunk@kernel.org>
-To:	David Daney <ddaney@avtrex.com>, Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Fix include paths in malta-amon.c
-Message-ID: <20081012125326.GJ31153@cs181140183.pp.htv.fi>
-References: <48D52FF4.2000905@avtrex.com>
+To:	Florian Fainelli <florian@openwrt.org>,
+	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [2.6 patch] mips/pci/fixup-rc32434.c must #include
+	<asm/mach-rc32434/irq.h>
+Message-ID: <20081012130135.GK31153@cs181140183.pp.htv.fi>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <48D52FF4.2000905@avtrex.com>
 User-Agent: Mutt/1.5.18 (2008-05-17)
 Return-Path: <bunk@kernel.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20723
+X-archive-position: 20724
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -29,41 +29,36 @@ X-original-sender: bunk@kernel.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf, can you apply David's patch?
+This patch fixes the following compile error caused by
+commit 606a083b1e1a357cb66454e4581b80f1a67d8368
+(MIPS: RB532: Cleanup the headers again):
 
-The build error is now in Linus' tree.
+<--  snip  -->
 
-TIA
-Adrian
+...
+  CC      arch/mips/pci/fixup-rc32434.o
+arch/mips/pci/fixup-rc32434.c: In function 'pcibios_map_irq':
+arch/mips/pci/fixup-rc32434.c:46: error: 'GROUP4_IRQ_BASE' undeclared (first use in this function)
+arch/mips/pci/fixup-rc32434.c:46: error: (Each undeclared identifier is reported only once
+arch/mips/pci/fixup-rc32434.c:46: error: for each function it appears in.)
+make[2]: *** [arch/mips/pci/fixup-rc32434.o] Error 1
+
+<--  snip  -->
 
 
-On Sat, Sep 20, 2008 at 10:16:36AM -0700, David Daney wrote:
-> 
-> On linux-queue, malta doesn't build after the include file relocation.
-> This should fix it.
-> 
-> There some occurrences of 'asm-mips' in the comments of quite a few
-> files, but this is the only place I found it in any code.
-> 
-> Signed-off-by: David Daney <ddaney@avtrex.com>
-> ---
->  arch/mips/mti-malta/malta-amon.c |    6 +++---
->  1 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/mips/mti-malta/malta-amon.c b/arch/mips/mti-malta/malta-amon.c
-> index 96236bf..df9e526 100644
-> --- a/arch/mips/mti-malta/malta-amon.c
-> +++ b/arch/mips/mti-malta/malta-amon.c
-> @@ -22,9 +22,9 @@
->  #include <linux/init.h>
->  #include <linux/smp.h>
->  
-> -#include <asm-mips/addrspace.h>
-> -#include <asm-mips/mips-boards/launch.h>
-> -#include <asm-mips/mipsmtregs.h>
-> +#include <asm/addrspace.h>
-> +#include <asm/mips-boards/launch.h>
-> +#include <asm/mipsmtregs.h>
->  
->  int amon_cpu_avail(int cpu)
->  {
+Signed-off-by: Adrian Bunk <bunk@kernel.org>
+
+---
+
+diff --git a/arch/mips/pci/fixup-rc32434.c b/arch/mips/pci/fixup-rc32434.c
+index 75b90dc..3d86823 100644
+--- a/arch/mips/pci/fixup-rc32434.c
++++ b/arch/mips/pci/fixup-rc32434.c
+@@ -30,6 +30,7 @@
+ #include <linux/init.h>
+ 
+ #include <asm/mach-rc32434/rc32434.h>
++#include <asm/mach-rc32434/irq.h>
+ 
+ static int __devinitdata irq_map[2][12] = {
+ 	{0, 0, 2, 3, 2, 3, 0, 0, 0, 0, 0, 1},

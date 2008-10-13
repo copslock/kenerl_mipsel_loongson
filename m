@@ -1,61 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Oct 2008 17:29:14 +0100 (BST)
-Received: from h4.dl5rb.org.uk ([81.2.74.4]:24715 "EHLO
-	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S21394774AbYJMQ3L (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 13 Oct 2008 17:29:11 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m9DGT65Z008875;
-	Mon, 13 Oct 2008 17:29:06 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m9DGT6Vi008873;
-	Mon, 13 Oct 2008 17:29:06 +0100
-Date:	Mon, 13 Oct 2008 17:29:06 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	weiwei wang <veivei.vang@gmail.com>, mason@broadcom.com,
-	linux-mips@linux-mips.org
-Subject: Re: [Fwd: [bug report] 0xffffffffc0000000 can't be used on bcm1250]
-Message-ID: <20081013162906.GB7144@linux-mips.org>
-References: <48EC9894.4080201@gmail.com> <20081008115001.GA21596@linux-mips.org> <48ED5BA5.4070301@gmail.com> <20081009131554.GB22796@linux-mips.org> <48EEBFE8.1000501@gmail.com> <alpine.LFD.1.10.0810101138180.19747@ftp.linux-mips.org> <48F2BC15.70408@gmail.com> <alpine.LFD.1.10.0810131508390.9667@ftp.linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.LFD.1.10.0810131508390.9667@ftp.linux-mips.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Oct 2008 18:37:21 +0100 (BST)
+Received: from mail.gmx.net ([213.165.64.20]:28893 "HELO mail.gmx.net")
+	by ftp.linux-mips.org with SMTP id S21402561AbYJMRhT (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 13 Oct 2008 18:37:19 +0100
+Received: (qmail invoked by alias); 13 Oct 2008 17:37:12 -0000
+Received: from p548B3450.dip0.t-ipconnect.de (EHLO localhost.localdomain) [84.139.52.80]
+  by mail.gmx.net (mp047) with SMTP; 13 Oct 2008 19:37:12 +0200
+X-Authenticated: #16080105
+X-Provags-ID: V01U2FsdGVkX1+zvIpJx62zIM5lqDupC1VALfZb+i8X5N/zI+iN42
+	CQoYIrB4Rqwq93
+From:	Johannes Dickgreber <tanzy@gmx.de>
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org
+Subject: [PATCH 2/2] show_cpuinfo prints the name of the calling CPU, which i think is wrong.
+Date:	Mon, 13 Oct 2008 19:36:21 +0200
+Message-Id: <1223919381-24521-1-git-send-email-tanzy@gmx.de>
+X-Mailer: git-send-email 1.6.0.2
+X-Y-GMX-Trusted: 0
+X-FuHaFi: 0.53
+Return-Path: <tanzy@gmx.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20728
+X-archive-position: 20729
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: tanzy@gmx.de
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Oct 13, 2008 at 04:18:04PM +0100, Maciej W. Rozycki wrote:
+Signed-off-by: Johannes Dickgreber <tanzy@gmx.de>
+---
+ arch/mips/kernel/proc.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
->  /*
-> + * To avoid the BCM1250 M3 erratum check whether EntryHi is consistent
-> + * with BadVAddr and return for the exception to retrigger if not.
-> + */
-> +static void __cpuinit build_bcm1250_m3_war(u32 **p, struct uasm_reloc **r)
-> +{
-> +	uasm_i_dmfc0(p, K0, C0_BADVADDR);
-> +	uasm_i_dmfc0(p, K1, C0_ENTRYHI);
-> +	uasm_i_xor(p, K0, K0, K1);
-> +	uasm_i_dsll(p, K1, K0, 24);
-> +	uasm_i_dsrl32(p, K1, K1, (24 + PAGE_SHIFT + 1) - 32);
-> +	uasm_i_dsrl32(p, K0, K0, 30);
-> +	uasm_i_or(p, K0, K0, K1);
-> +	uasm_il_bnez(p, r, K0, label_leave);
-
-The workaround is beginning to be relativly expensive.  We're investing 8
-instructions extra only to verify that the content of c0_entryhi is
-correct.  I haven't tried yet but me seems by avoiding the use of c0_context
-entirely relying only on badvaddr we may be able to get away cheaper.
-
-Btw, adding linux-mips to the cc list.  This really should be public.
-
-  Ralf
+diff --git a/arch/mips/kernel/proc.c b/arch/mips/kernel/proc.c
+index 9d60679..8897c53 100644
+--- a/arch/mips/kernel/proc.c
++++ b/arch/mips/kernel/proc.c
+@@ -38,7 +38,7 @@ static int show_cpuinfo(struct seq_file *m, void *v)
+ 	seq_printf(m, "processor\t\t: %ld\n", n);
+ 	sprintf(fmt, "cpu model\t\t: %%s V%%d.%%d%s\n",
+ 	        cpu_data[n].options & MIPS_CPU_FPU ? "  FPU V%d.%d" : "");
+-	seq_printf(m, fmt, __cpu_name[smp_processor_id()],
++	seq_printf(m, fmt, __cpu_name[n],
+ 	                           (version >> 4) & 0x0f, version & 0x0f,
+ 	                           (fp_vers >> 4) & 0x0f, fp_vers & 0x0f);
+ 	seq_printf(m, "BogoMIPS\t\t: %lu.%02lu\n",
+-- 
+1.6.0.2

@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Oct 2008 16:18:02 +0100 (BST)
-Received: from elvis.franken.de ([193.175.24.41]:62399 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S21487819AbYJNPRk (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Oct 2008 16:18:23 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:62655 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S21487820AbYJNPRk (ORCPT
 	<rfc822;linux-mips@linux-mips.org>); Tue, 14 Oct 2008 16:17:40 +0100
 Received: from uucp (helo=solo.franken.de)
 	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1KpleS-0005UJ-03; Tue, 14 Oct 2008 17:17:36 +0200
+	id 1KpleS-0005UJ-01; Tue, 14 Oct 2008 17:17:36 +0200
 Received: by solo.franken.de (Postfix, from userid 1000)
-	id DBFA3C3AEA; Tue, 14 Oct 2008 17:17:32 +0200 (CEST)
+	id D67E3C3AEA; Tue, 14 Oct 2008 17:16:59 +0200 (CEST)
 From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH v4] M48T35: new RTC driver
+Subject: [PATCH v3] DS1286: new RTC driver
 To:	rtc-linux@googlegroups.com, linux-mips@linux-mips.org
 cc:	a.zummo@towertech.it, ralf@linux-mips.org
-Message-Id: <20081014151732.DBFA3C3AEA@solo.franken.de>
-Date:	Tue, 14 Oct 2008 17:17:32 +0200 (CEST)
+Message-Id: <20081014151659.D67E3C3AEA@solo.franken.de>
+Date:	Tue, 14 Oct 2008 17:16:59 +0200 (CEST)
 Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20750
+X-archive-position: 20751
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -25,8 +25,8 @@ X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-This driver replaces the broken ip27-rtc driver in drivers/char and
-gives back RTC support for SGI IP27 machines.
+This driver replaces the broken DS1286 driver in drivers/char and
+gives back RTC support for SGI IP22 and IP28 machines.
 
 Acked-by: Alessandro Zummo <alessandro.zummo@towertech.it>
 Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
@@ -34,59 +34,53 @@ Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
 Please apply for 2.6.28
 
-Changes since v3:
+Changes since v2:
 
 - removed superflous and wrong check in set_time
 
- drivers/rtc/Kconfig      |    9 ++
+ drivers/rtc/Kconfig      |    5 +
  drivers/rtc/Makefile     |    1 +
- drivers/rtc/rtc-m48t35.c |  234 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 244 insertions(+), 0 deletions(-)
+ drivers/rtc/rtc-ds1286.c |  409 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 415 insertions(+), 0 deletions(-)
 
 diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
-index b57fba5..0ef68c2 100644
+index b57fba5..2421700 100644
 --- a/drivers/rtc/Kconfig
 +++ b/drivers/rtc/Kconfig
-@@ -405,6 +405,15 @@ config RTC_DRV_M48T86
- 	  This driver can also be built as a module. If so, the module
- 	  will be called rtc-m48t86.
- 
-+config RTC_DRV_M48T35
-+	tristate "ST M48T35"
-+	help
-+	  If you say Y here you will get support for the
-+	  ST M48T35 RTC chip.
-+
-+	  This driver can also be built as a module, if so, the module
-+	  will be called "rtc-m48t35".
-+
- config RTC_DRV_M48T59
- 	tristate "ST M48T59/M48T08/M48T02"
+@@ -352,6 +352,11 @@ config RTC_DRV_DS1216
  	help
+ 	  If you say yes here you get support for the Dallas DS1216 RTC chips.
+ 
++config RTC_DRV_DS1286
++	tristate "Dallas DS1286"
++	help
++	  If you say yes here you get support for the Dallas DS1286 RTC chips.
++
+ config RTC_DRV_DS1302
+ 	tristate "Dallas DS1302"
+ 	depends on SH_SECUREEDGE5410
 diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
-index 10f41f8..cf53912 100644
+index 10f41f8..a320808 100644
 --- a/drivers/rtc/Makefile
 +++ b/drivers/rtc/Makefile
-@@ -36,6 +36,7 @@ obj-$(CONFIG_RTC_DRV_FM3130)	+= rtc-fm3130.o
- obj-$(CONFIG_RTC_DRV_ISL1208)	+= rtc-isl1208.o
- obj-$(CONFIG_RTC_DRV_M41T80)	+= rtc-m41t80.o
- obj-$(CONFIG_RTC_DRV_M41T94)	+= rtc-m41t94.o
-+obj-$(CONFIG_RTC_DRV_M48T35)	+= rtc-m48t35.o
- obj-$(CONFIG_RTC_DRV_M48T59)	+= rtc-m48t59.o
- obj-$(CONFIG_RTC_DRV_M48T86)	+= rtc-m48t86.o
- obj-$(CONFIG_RTC_DRV_BQ4802)	+= rtc-bq4802.o
-diff --git a/drivers/rtc/rtc-m48t35.c b/drivers/rtc/rtc-m48t35.c
+@@ -23,6 +23,7 @@ obj-$(CONFIG_RTC_DRV_AT91SAM9)	+= rtc-at91sam9.o
+ obj-$(CONFIG_RTC_DRV_BFIN)	+= rtc-bfin.o
+ obj-$(CONFIG_RTC_DRV_CMOS)	+= rtc-cmos.o
+ obj-$(CONFIG_RTC_DRV_DS1216)	+= rtc-ds1216.o
++obj-$(CONFIG_RTC_DRV_DS1286)	+= rtc-ds1286.o
+ obj-$(CONFIG_RTC_DRV_DS1302)	+= rtc-ds1302.o
+ obj-$(CONFIG_RTC_DRV_DS1305)	+= rtc-ds1305.o
+ obj-$(CONFIG_RTC_DRV_DS1307)	+= rtc-ds1307.o
+diff --git a/drivers/rtc/rtc-ds1286.c b/drivers/rtc/rtc-ds1286.c
 new file mode 100644
-index 0000000..b9c1fe4
+index 0000000..4b4c1b6
 --- /dev/null
-+++ b/drivers/rtc/rtc-m48t35.c
-@@ -0,0 +1,234 @@
++++ b/drivers/rtc/rtc-ds1286.c
+@@ -0,0 +1,409 @@
 +/*
-+ * Driver for the SGS-Thomson M48T35 Timekeeper RAM chip
++ * DS1286 Real Time Clock interface for Linux
 + *
-+ * Copyright (C) 2000 Silicon Graphics, Inc.
-+ * Written by Ulf Carlsson (ulfc@engr.sgi.com)
-+ *
++ * Copyright (C) 1998, 1999, 2000 Ralf Baechle
 + * Copyright (C) 2008 Thomas Bogendoerfer
 + *
 + * Based on code written by Paul Gortmaker.
@@ -101,36 +95,159 @@ index 0000000..b9c1fe4
 +#include <linux/rtc.h>
 +#include <linux/platform_device.h>
 +#include <linux/bcd.h>
++#include <linux/ds1286.h>
 +
 +#define DRV_VERSION		"1.0"
 +
-+struct m48t35_rtc {
-+	u8	pad[0x7ff8];    /* starts at 0x7ff8 */
-+	u8	control;
-+	u8	sec;
-+	u8	min;
-+	u8	hour;
-+	u8	day;
-+	u8	date;
-+	u8	month;
-+	u8	year;
-+};
-+
-+#define M48T35_RTC_SET		0x80
-+#define M48T35_RTC_READ		0x40
-+
-+struct m48t35_priv {
++struct ds1286_priv {
 +	struct rtc_device *rtc;
-+	struct m48t35_rtc __iomem *reg;
++	u32 __iomem *rtcregs;
 +	size_t size;
 +	unsigned long baseaddr;
 +	spinlock_t lock;
 +};
 +
-+static int m48t35_read_time(struct device *dev, struct rtc_time *tm)
++static inline u8 ds1286_rtc_read(struct ds1286_priv *priv, int reg)
 +{
-+	struct m48t35_priv *priv = dev_get_drvdata(dev);
-+	u8 control;
++	return __raw_readl(&priv->rtcregs[reg]) & 0xff;
++}
++
++static inline void ds1286_rtc_write(struct ds1286_priv *priv, u8 data, int reg)
++{
++	__raw_writel(data, &priv->rtcregs[reg]);
++}
++
++#ifdef CONFIG_RTC_INTF_DEV
++
++static int ds1286_ioctl(struct device *dev, unsigned int cmd, unsigned long arg)
++{
++	struct ds1286_priv *priv = dev_get_drvdata(dev);
++	unsigned long flags;
++	unsigned char val;
++
++	switch (cmd) {
++	case RTC_AIE_OFF:
++		/* Mask alarm int. enab. bit	*/
++		spin_lock_irqsave(&priv->lock, flags);
++		val = ds1286_rtc_read(priv, RTC_CMD);
++		val |=  RTC_TDM;
++		ds1286_rtc_write(priv, val, RTC_CMD);
++		spin_unlock_irqrestore(&priv->lock, flags);
++		break;
++	case RTC_AIE_ON:
++		/* Allow alarm interrupts.	*/
++		spin_lock_irqsave(&priv->lock, flags);
++		val = ds1286_rtc_read(priv, RTC_CMD);
++		val &=  ~RTC_TDM;
++		ds1286_rtc_write(priv, val, RTC_CMD);
++		spin_unlock_irqrestore(&priv->lock, flags);
++		break;
++	case RTC_WIE_OFF:
++		/* Mask watchdog int. enab. bit	*/
++		spin_lock_irqsave(&priv->lock, flags);
++		val = ds1286_rtc_read(priv, RTC_CMD);
++		val |= RTC_WAM;
++		ds1286_rtc_write(priv, val, RTC_CMD);
++		spin_unlock_irqrestore(&priv->lock, flags);
++		break;
++	case RTC_WIE_ON:
++		/* Allow watchdog interrupts.	*/
++		spin_lock_irqsave(&priv->lock, flags);
++		val = ds1286_rtc_read(priv, RTC_CMD);
++		val &= ~RTC_WAM;
++		ds1286_rtc_write(priv, val, RTC_CMD);
++		spin_unlock_irqrestore(&priv->lock, flags);
++		break;
++	default:
++		return -ENOIOCTLCMD;
++	}
++	return 0;
++}
++
++#else
++#define ds1286_ioctl    NULL
++#endif
++
++#ifdef CONFIG_PROC_FS
++
++static int ds1286_proc(struct device *dev, struct seq_file *seq)
++{
++	struct ds1286_priv *priv = dev_get_drvdata(dev);
++	unsigned char month, cmd, amode;
++	const char *s;
++
++	month = ds1286_rtc_read(priv, RTC_MONTH);
++	seq_printf(seq,
++		   "oscillator\t: %s\n"
++		   "square_wave\t: %s\n",
++		   (month & RTC_EOSC) ? "disabled" : "enabled",
++		   (month & RTC_ESQW) ? "disabled" : "enabled");
++
++	amode = ((ds1286_rtc_read(priv, RTC_MINUTES_ALARM) & 0x80) >> 5) |
++		((ds1286_rtc_read(priv, RTC_HOURS_ALARM) & 0x80) >> 6) |
++		((ds1286_rtc_read(priv, RTC_DAY_ALARM) & 0x80) >> 7);
++	switch (amode) {
++	case 7:
++		s = "each minute";
++		break;
++	case 3:
++		s = "minutes match";
++		break;
++	case 1:
++		s = "hours and minutes match";
++		break;
++	case 0:
++		s = "days, hours and minutes match";
++		break;
++	default:
++		s = "invalid";
++		break;
++	}
++	seq_printf(seq, "alarm_mode\t: %s\n", s);
++
++	cmd = ds1286_rtc_read(priv, RTC_CMD);
++	seq_printf(seq,
++		   "alarm_enable\t: %s\n"
++		   "wdog_alarm\t: %s\n"
++		   "alarm_mask\t: %s\n"
++		   "wdog_alarm_mask\t: %s\n"
++		   "interrupt_mode\t: %s\n"
++		   "INTB_mode\t: %s_active\n"
++		   "interrupt_pins\t: %s\n",
++		   (cmd & RTC_TDF) ? "yes" : "no",
++		   (cmd & RTC_WAF) ? "yes" : "no",
++		   (cmd & RTC_TDM) ? "disabled" : "enabled",
++		   (cmd & RTC_WAM) ? "disabled" : "enabled",
++		   (cmd & RTC_PU_LVL) ? "pulse" : "level",
++		   (cmd & RTC_IBH_LO) ? "low" : "high",
++		   (cmd & RTC_IPSW) ? "unswapped" : "swapped");
++	return 0;
++}
++
++#else
++#define ds1286_proc     NULL
++#endif
++
++static int ds1286_read_time(struct device *dev, struct rtc_time *tm)
++{
++	struct ds1286_priv *priv = dev_get_drvdata(dev);
++	unsigned char save_control;
++	unsigned long flags;
++	unsigned long uip_watchdog = jiffies;
++
++	/*
++	 * read RTC once any update in progress is done. The update
++	 * can take just over 2ms. We wait 10 to 20ms. There is no need to
++	 * to poll-wait (up to 1s - eeccch) for the falling edge of RTC_UIP.
++	 * If you need to know *exactly* when a second has started, enable
++	 * periodic update complete interrupts, (via ioctl) and then
++	 * immediately read /dev/rtc which will block until you get the IRQ.
++	 * Once the read clears, read the RTC time (again via ioctl). Easy.
++	 */
++
++	if (ds1286_rtc_read(priv, RTC_CMD) & RTC_TE)
++		while (time_before(jiffies, uip_watchdog + 2*HZ/100))
++			barrier();
 +
 +	/*
 +	 * Only the values that we read from the RTC are set. We leave
@@ -138,17 +255,19 @@ index 0000000..b9c1fe4
 +	 * RTC has RTC_DAY_OF_WEEK, we ignore it, as it is only updated
 +	 * by the RTC when initially set to a non-zero value.
 +	 */
-+	spin_lock_irq(&priv->lock);
-+	control = readb(&priv->reg->control);
-+	writeb(control | M48T35_RTC_READ, &priv->reg->control);
-+	tm->tm_sec = readb(&priv->reg->sec);
-+	tm->tm_min = readb(&priv->reg->min);
-+	tm->tm_hour = readb(&priv->reg->hour);
-+	tm->tm_mday = readb(&priv->reg->date);
-+	tm->tm_mon = readb(&priv->reg->month);
-+	tm->tm_year = readb(&priv->reg->year);
-+	writeb(control, &priv->reg->control);
-+	spin_unlock_irq(&priv->lock);
++	spin_lock_irqsave(&priv->lock, flags);
++	save_control = ds1286_rtc_read(priv, RTC_CMD);
++	ds1286_rtc_write(priv, (save_control|RTC_TE), RTC_CMD);
++
++	tm->tm_sec = ds1286_rtc_read(priv, RTC_SECONDS);
++	tm->tm_min = ds1286_rtc_read(priv, RTC_MINUTES);
++	tm->tm_hour = ds1286_rtc_read(priv, RTC_HOURS) & 0x3f;
++	tm->tm_mday = ds1286_rtc_read(priv, RTC_DATE);
++	tm->tm_mon = ds1286_rtc_read(priv, RTC_MONTH) & 0x1f;
++	tm->tm_year = ds1286_rtc_read(priv, RTC_YEAR);
++
++	ds1286_rtc_write(priv, save_control, RTC_CMD);
++	spin_unlock_irqrestore(&priv->lock, flags);
 +
 +	tm->tm_sec = bcd2bin(tm->tm_sec);
 +	tm->tm_min = bcd2bin(tm->tm_min);
@@ -161,20 +280,24 @@ index 0000000..b9c1fe4
 +	 * Account for differences between how the RTC uses the values
 +	 * and how they are defined in a struct rtc_time;
 +	 */
-+	tm->tm_year += 70;
-+	if (tm->tm_year <= 69)
++	if (tm->tm_year < 45)
++		tm->tm_year += 30;
++	tm->tm_year += 40;
++	if (tm->tm_year < 70)
 +		tm->tm_year += 100;
 +
 +	tm->tm_mon--;
++
 +	return rtc_valid_tm(tm);
 +}
 +
-+static int m48t35_set_time(struct device *dev, struct rtc_time *tm)
++static int ds1286_set_time(struct device *dev, struct rtc_time *tm)
 +{
-+	struct m48t35_priv *priv = dev_get_drvdata(dev);
++	struct ds1286_priv *priv = dev_get_drvdata(dev);
 +	unsigned char mon, day, hrs, min, sec;
++	unsigned char save_control;
 +	unsigned int yrs;
-+	u8 control;
++	unsigned long flags;
 +
 +	yrs = tm->tm_year + 1900;
 +	mon = tm->tm_mon + 1;   /* tm_mon starts at zero */
@@ -186,11 +309,8 @@ index 0000000..b9c1fe4
 +	if (yrs < 1970)
 +		return -EINVAL;
 +
-+	yrs -= 1970;
++	yrs -= 1940;
 +	if (yrs > 255)    /* They are unsigned */
-+		return -EINVAL;
-+
-+	if (yrs > 169)
 +		return -EINVAL;
 +
 +	if (yrs >= 100)
@@ -203,59 +323,112 @@ index 0000000..b9c1fe4
 +	mon = bin2bcd(mon);
 +	yrs = bin2bcd(yrs);
 +
-+	spin_lock_irq(&priv->lock);
-+	control = readb(&priv->reg->control);
-+	writeb(control | M48T35_RTC_SET, &priv->reg->control);
-+	writeb(yrs, &priv->reg->year);
-+	writeb(mon, &priv->reg->month);
-+	writeb(day, &priv->reg->date);
-+	writeb(hrs, &priv->reg->hour);
-+	writeb(min, &priv->reg->min);
-+	writeb(sec, &priv->reg->sec);
-+	writeb(control, &priv->reg->control);
-+	spin_unlock_irq(&priv->lock);
++	spin_lock_irqsave(&priv->lock, flags);
++	save_control = ds1286_rtc_read(priv, RTC_CMD);
++	ds1286_rtc_write(priv, (save_control|RTC_TE), RTC_CMD);
++
++	ds1286_rtc_write(priv, yrs, RTC_YEAR);
++	ds1286_rtc_write(priv, mon, RTC_MONTH);
++	ds1286_rtc_write(priv, day, RTC_DATE);
++	ds1286_rtc_write(priv, hrs, RTC_HOURS);
++	ds1286_rtc_write(priv, min, RTC_MINUTES);
++	ds1286_rtc_write(priv, sec, RTC_SECONDS);
++	ds1286_rtc_write(priv, 0, RTC_HUNDREDTH_SECOND);
++
++	ds1286_rtc_write(priv, save_control, RTC_CMD);
++	spin_unlock_irqrestore(&priv->lock, flags);
 +	return 0;
 +}
 +
-+static const struct rtc_class_ops m48t35_ops = {
-+	.read_time	= m48t35_read_time,
-+	.set_time	= m48t35_set_time,
++static int ds1286_read_alarm(struct device *dev, struct rtc_wkalrm *alm)
++{
++	struct ds1286_priv *priv = dev_get_drvdata(dev);
++	unsigned char cmd;
++	unsigned long flags;
++
++	/*
++	 * Only the values that we read from the RTC are set. That
++	 * means only tm_wday, tm_hour, tm_min.
++	 */
++	spin_lock_irqsave(&priv->lock, flags);
++	alm->time.tm_min = ds1286_rtc_read(priv, RTC_MINUTES_ALARM) & 0x7f;
++	alm->time.tm_hour = ds1286_rtc_read(priv, RTC_HOURS_ALARM)  & 0x1f;
++	alm->time.tm_wday = ds1286_rtc_read(priv, RTC_DAY_ALARM)    & 0x07;
++	cmd = ds1286_rtc_read(priv, RTC_CMD);
++	spin_unlock_irqrestore(&priv->lock, flags);
++
++	alm->time.tm_min = bcd2bin(alm->time.tm_min);
++	alm->time.tm_hour = bcd2bin(alm->time.tm_hour);
++	alm->time.tm_sec = 0;
++	return 0;
++}
++
++static int ds1286_set_alarm(struct device *dev, struct rtc_wkalrm *alm)
++{
++	struct ds1286_priv *priv = dev_get_drvdata(dev);
++	unsigned char hrs, min, sec;
++
++	hrs = alm->time.tm_hour;
++	min = alm->time.tm_min;
++	sec = alm->time.tm_sec;
++
++	if (hrs >= 24)
++		hrs = 0xff;
++
++	if (min >= 60)
++		min = 0xff;
++
++	if (sec != 0)
++		return -EINVAL;
++
++	min = bin2bcd(min);
++	hrs = bin2bcd(hrs);
++
++	spin_lock(&priv->lock);
++	ds1286_rtc_write(priv, hrs, RTC_HOURS_ALARM);
++	ds1286_rtc_write(priv, min, RTC_MINUTES_ALARM);
++	spin_unlock(&priv->lock);
++
++	return 0;
++}
++
++static const struct rtc_class_ops ds1286_ops = {
++	.ioctl   	= ds1286_ioctl,
++	.proc   	= ds1286_proc,
++	.read_time	= ds1286_read_time,
++	.set_time	= ds1286_set_time,
++	.read_alarm	= ds1286_read_alarm,
++	.set_alarm	= ds1286_set_alarm,
 +};
 +
-+static int __devinit m48t35_probe(struct platform_device *pdev)
++static int __devinit ds1286_probe(struct platform_device *pdev)
 +{
 +	struct rtc_device *rtc;
 +	struct resource *res;
-+	struct m48t35_priv *priv;
++	struct ds1286_priv *priv;
 +	int ret = 0;
 +
 +	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 +	if (!res)
 +		return -ENODEV;
-+	priv = kzalloc(sizeof(struct m48t35_priv), GFP_KERNEL);
++	priv = kzalloc(sizeof(struct ds1286_priv), GFP_KERNEL);
 +	if (!priv)
 +		return -ENOMEM;
 +
 +	priv->size = res->end - res->start + 1;
-+	/*
-+	 * kludge: remove the #ifndef after ioc3 resource
-+	 * conflicts are resolved
-+	 */
-+#ifndef CONFIG_SGI_IP27
 +	if (!request_mem_region(res->start, priv->size, pdev->name)) {
 +		ret = -EBUSY;
 +		goto out;
 +	}
-+#endif
 +	priv->baseaddr = res->start;
-+	priv->reg = ioremap(priv->baseaddr, priv->size);
-+	if (!priv->reg) {
++	priv->rtcregs = ioremap(priv->baseaddr, priv->size);
++	if (!priv->rtcregs) {
 +		ret = -ENOMEM;
 +		goto out;
 +	}
 +	spin_lock_init(&priv->lock);
-+	rtc = rtc_device_register("m48t35", &pdev->dev,
-+				  &m48t35_ops, THIS_MODULE);
++	rtc = rtc_device_register("ds1286", &pdev->dev,
++				  &ds1286_ops, THIS_MODULE);
 +	if (IS_ERR(rtc)) {
 +		ret = PTR_ERR(rtc);
 +		goto out;
@@ -267,51 +440,49 @@ index 0000000..b9c1fe4
 +out:
 +	if (priv->rtc)
 +		rtc_device_unregister(priv->rtc);
-+	if (priv->reg)
-+		iounmap(priv->reg);
++	if (priv->rtcregs)
++		iounmap(priv->rtcregs);
 +	if (priv->baseaddr)
 +		release_mem_region(priv->baseaddr, priv->size);
 +	kfree(priv);
 +	return ret;
 +}
 +
-+static int __devexit m48t35_remove(struct platform_device *pdev)
++static int __devexit ds1286_remove(struct platform_device *pdev)
 +{
-+	struct m48t35_priv *priv = platform_get_drvdata(pdev);
++	struct ds1286_priv *priv = platform_get_drvdata(pdev);
 +
 +	rtc_device_unregister(priv->rtc);
-+	iounmap(priv->reg);
-+#ifndef CONFIG_SGI_IP27
++	iounmap(priv->rtcregs);
 +	release_mem_region(priv->baseaddr, priv->size);
-+#endif
 +	kfree(priv);
 +	return 0;
 +}
 +
-+static struct platform_driver m48t35_platform_driver = {
++static struct platform_driver ds1286_platform_driver = {
 +	.driver		= {
-+		.name	= "rtc-m48t35",
++		.name	= "rtc-ds1286",
 +		.owner	= THIS_MODULE,
 +	},
-+	.probe		= m48t35_probe,
-+	.remove		= __devexit_p(m48t35_remove),
++	.probe		= ds1286_probe,
++	.remove		= __devexit_p(ds1286_remove),
 +};
 +
-+static int __init m48t35_init(void)
++static int __init ds1286_init(void)
 +{
-+	return platform_driver_register(&m48t35_platform_driver);
++	return platform_driver_register(&ds1286_platform_driver);
 +}
 +
-+static void __exit m48t35_exit(void)
++static void __exit ds1286_exit(void)
 +{
-+	platform_driver_unregister(&m48t35_platform_driver);
++	platform_driver_unregister(&ds1286_platform_driver);
 +}
 +
 +MODULE_AUTHOR("Thomas Bogendoerfer <tsbogend@alpha.franken.de>");
-+MODULE_DESCRIPTION("M48T35 RTC driver");
++MODULE_DESCRIPTION("DS1286 RTC driver");
 +MODULE_LICENSE("GPL");
 +MODULE_VERSION(DRV_VERSION);
-+MODULE_ALIAS("platform:rtc-m48t35");
++MODULE_ALIAS("platform:rtc-ds1286");
 +
-+module_init(m48t35_init);
-+module_exit(m48t35_exit);
++module_init(ds1286_init);
++module_exit(ds1286_exit);

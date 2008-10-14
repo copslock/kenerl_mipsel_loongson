@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Oct 2008 16:17:42 +0100 (BST)
-Received: from elvis.franken.de ([193.175.24.41]:61631 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S21487818AbYJNPRk (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Oct 2008 16:18:02 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:62399 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S21487819AbYJNPRk (ORCPT
 	<rfc822;linux-mips@linux-mips.org>); Tue, 14 Oct 2008 16:17:40 +0100
 Received: from uucp (helo=solo.franken.de)
 	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1KpleS-0005UJ-00; Tue, 14 Oct 2008 17:17:36 +0200
+	id 1KpleS-0005UJ-03; Tue, 14 Oct 2008 17:17:36 +0200
 Received: by solo.franken.de (Postfix, from userid 1000)
-	id 355A7C3AE9; Tue, 14 Oct 2008 17:16:55 +0200 (CEST)
+	id DBFA3C3AEA; Tue, 14 Oct 2008 17:17:32 +0200 (CEST)
 From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH v3] IP22/28: Switch over to RTC class driver
-To:	linux-mips@linux-mips.org
-cc:	ralf@linux-mips.org
-Message-Id: <20081014151655.355A7C3AE9@solo.franken.de>
-Date:	Tue, 14 Oct 2008 17:16:55 +0200 (CEST)
+Subject: [PATCH v4] M48T35: new RTC driver
+To:	rtc-linux@googlegroups.com, linux-mips@linux-mips.org
+cc:	a.zummo@towertech.it, ralf@linux-mips.org
+Message-Id: <20081014151732.DBFA3C3AEA@solo.franken.de>
+Date:	Tue, 14 Oct 2008 17:17:32 +0200 (CEST)
 Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20749
+X-archive-position: 20750
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -25,183 +25,293 @@ X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-This patchset removes some dead code and creates a platform device
-for the RTC class driver.
+This driver replaces the broken ip27-rtc driver in drivers/char and
+gives back RTC support for SGI IP27 machines.
 
+Acked-by: Alessandro Zummo <alessandro.zummo@towertech.it>
 Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 ---
 
 Please apply for 2.6.28
 
- arch/mips/include/asm/mach-ip22/ds1286.h |   18 --------
- arch/mips/include/asm/mach-ip28/ds1286.h |    4 --
- arch/mips/sgi-ip22/ip22-platform.c       |   15 +++++++
- arch/mips/sgi-ip22/ip22-setup.c          |    1 -
- arch/mips/sgi-ip22/ip22-time.c           |   64 ------------------------------
- include/linux/ds1286.h                   |    2 -
- 6 files changed, 15 insertions(+), 89 deletions(-)
+Changes since v3:
 
-diff --git a/arch/mips/include/asm/mach-ip22/ds1286.h b/arch/mips/include/asm/mach-ip22/ds1286.h
-deleted file mode 100644
-index f19f1ea..0000000
---- a/arch/mips/include/asm/mach-ip22/ds1286.h
-+++ /dev/null
-@@ -1,18 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License.  See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * Copyright (C) 1998, 2001, 03 by Ralf Baechle
-- *
-- * RTC routines for PC style attached Dallas chip.
-- */
--#ifndef __ASM_MACH_IP22_DS1286_H
--#define __ASM_MACH_IP22_DS1286_H
--
--#include <asm/sgi/hpc3.h>
--
--#define rtc_read(reg)		(hpc3c0->rtcregs[(reg)] & 0xff)
--#define rtc_write(data, reg)	do { hpc3c0->rtcregs[(reg)] = (data); } while(0)
--
--#endif /* __ASM_MACH_IP22_DS1286_H */
-diff --git a/arch/mips/include/asm/mach-ip28/ds1286.h b/arch/mips/include/asm/mach-ip28/ds1286.h
-deleted file mode 100644
-index 471bb9a..0000000
---- a/arch/mips/include/asm/mach-ip28/ds1286.h
-+++ /dev/null
-@@ -1,4 +0,0 @@
--#ifndef __ASM_MACH_IP28_DS1286_H
--#define __ASM_MACH_IP28_DS1286_H
--#include <asm/mach-ip22/ds1286.h>
--#endif /* __ASM_MACH_IP28_DS1286_H */
-diff --git a/arch/mips/sgi-ip22/ip22-platform.c b/arch/mips/sgi-ip22/ip22-platform.c
-index 52486c4..deddbf0 100644
---- a/arch/mips/sgi-ip22/ip22-platform.c
-+++ b/arch/mips/sgi-ip22/ip22-platform.c
-@@ -192,3 +192,18 @@ static int __init sgi_button_devinit(void)
- }
+- removed superflous and wrong check in set_time
+
+ drivers/rtc/Kconfig      |    9 ++
+ drivers/rtc/Makefile     |    1 +
+ drivers/rtc/rtc-m48t35.c |  234 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 244 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/rtc/Kconfig b/drivers/rtc/Kconfig
+index b57fba5..0ef68c2 100644
+--- a/drivers/rtc/Kconfig
++++ b/drivers/rtc/Kconfig
+@@ -405,6 +405,15 @@ config RTC_DRV_M48T86
+ 	  This driver can also be built as a module. If so, the module
+ 	  will be called rtc-m48t86.
  
- device_initcall(sgi_button_devinit);
++config RTC_DRV_M48T35
++	tristate "ST M48T35"
++	help
++	  If you say Y here you will get support for the
++	  ST M48T35 RTC chip.
 +
-+static int __init sgi_ds1286_devinit(void)
++	  This driver can also be built as a module, if so, the module
++	  will be called "rtc-m48t35".
++
+ config RTC_DRV_M48T59
+ 	tristate "ST M48T59/M48T08/M48T02"
+ 	help
+diff --git a/drivers/rtc/Makefile b/drivers/rtc/Makefile
+index 10f41f8..cf53912 100644
+--- a/drivers/rtc/Makefile
++++ b/drivers/rtc/Makefile
+@@ -36,6 +36,7 @@ obj-$(CONFIG_RTC_DRV_FM3130)	+= rtc-fm3130.o
+ obj-$(CONFIG_RTC_DRV_ISL1208)	+= rtc-isl1208.o
+ obj-$(CONFIG_RTC_DRV_M41T80)	+= rtc-m41t80.o
+ obj-$(CONFIG_RTC_DRV_M41T94)	+= rtc-m41t94.o
++obj-$(CONFIG_RTC_DRV_M48T35)	+= rtc-m48t35.o
+ obj-$(CONFIG_RTC_DRV_M48T59)	+= rtc-m48t59.o
+ obj-$(CONFIG_RTC_DRV_M48T86)	+= rtc-m48t86.o
+ obj-$(CONFIG_RTC_DRV_BQ4802)	+= rtc-bq4802.o
+diff --git a/drivers/rtc/rtc-m48t35.c b/drivers/rtc/rtc-m48t35.c
+new file mode 100644
+index 0000000..b9c1fe4
+--- /dev/null
++++ b/drivers/rtc/rtc-m48t35.c
+@@ -0,0 +1,234 @@
++/*
++ * Driver for the SGS-Thomson M48T35 Timekeeper RAM chip
++ *
++ * Copyright (C) 2000 Silicon Graphics, Inc.
++ * Written by Ulf Carlsson (ulfc@engr.sgi.com)
++ *
++ * Copyright (C) 2008 Thomas Bogendoerfer
++ *
++ * Based on code written by Paul Gortmaker.
++ *
++ * This program is free software; you can redistribute it and/or modify it
++ * under the terms of the GNU General Public License as published by the
++ * Free Software Foundation; either version 2 of the License, or (at your
++ * option) any later version.
++ */
++
++#include <linux/module.h>
++#include <linux/rtc.h>
++#include <linux/platform_device.h>
++#include <linux/bcd.h>
++
++#define DRV_VERSION		"1.0"
++
++struct m48t35_rtc {
++	u8	pad[0x7ff8];    /* starts at 0x7ff8 */
++	u8	control;
++	u8	sec;
++	u8	min;
++	u8	hour;
++	u8	day;
++	u8	date;
++	u8	month;
++	u8	year;
++};
++
++#define M48T35_RTC_SET		0x80
++#define M48T35_RTC_READ		0x40
++
++struct m48t35_priv {
++	struct rtc_device *rtc;
++	struct m48t35_rtc __iomem *reg;
++	size_t size;
++	unsigned long baseaddr;
++	spinlock_t lock;
++};
++
++static int m48t35_read_time(struct device *dev, struct rtc_time *tm)
 +{
-+	struct resource res;
++	struct m48t35_priv *priv = dev_get_drvdata(dev);
++	u8 control;
 +
-+	memset(&res, 0, sizeof(res));
-+	res.start = HPC3_CHIP0_BASE + offsetof(struct hpc3_regs, rtcregs);
-+	res.end = res.start + sizeof(hpc3c0->rtcregs) - 1;
-+	res.flags = IORESOURCE_MEM;
++	/*
++	 * Only the values that we read from the RTC are set. We leave
++	 * tm_wday, tm_yday and tm_isdst untouched. Even though the
++	 * RTC has RTC_DAY_OF_WEEK, we ignore it, as it is only updated
++	 * by the RTC when initially set to a non-zero value.
++	 */
++	spin_lock_irq(&priv->lock);
++	control = readb(&priv->reg->control);
++	writeb(control | M48T35_RTC_READ, &priv->reg->control);
++	tm->tm_sec = readb(&priv->reg->sec);
++	tm->tm_min = readb(&priv->reg->min);
++	tm->tm_hour = readb(&priv->reg->hour);
++	tm->tm_mday = readb(&priv->reg->date);
++	tm->tm_mon = readb(&priv->reg->month);
++	tm->tm_year = readb(&priv->reg->year);
++	writeb(control, &priv->reg->control);
++	spin_unlock_irq(&priv->lock);
 +
-+	return IS_ERR(platform_device_register_simple("rtc-ds1286", -1,
-+						      &res, 1));
++	tm->tm_sec = bcd2bin(tm->tm_sec);
++	tm->tm_min = bcd2bin(tm->tm_min);
++	tm->tm_hour = bcd2bin(tm->tm_hour);
++	tm->tm_mday = bcd2bin(tm->tm_mday);
++	tm->tm_mon = bcd2bin(tm->tm_mon);
++	tm->tm_year = bcd2bin(tm->tm_year);
++
++	/*
++	 * Account for differences between how the RTC uses the values
++	 * and how they are defined in a struct rtc_time;
++	 */
++	tm->tm_year += 70;
++	if (tm->tm_year <= 69)
++		tm->tm_year += 100;
++
++	tm->tm_mon--;
++	return rtc_valid_tm(tm);
 +}
 +
-+device_initcall(sgi_ds1286_devinit);
-diff --git a/arch/mips/sgi-ip22/ip22-setup.c b/arch/mips/sgi-ip22/ip22-setup.c
-index 896a1ef..b9a9313 100644
---- a/arch/mips/sgi-ip22/ip22-setup.c
-+++ b/arch/mips/sgi-ip22/ip22-setup.c
-@@ -4,7 +4,6 @@
-  * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)
-  * Copyright (C) 1997, 1998 Ralf Baechle (ralf@gnu.org)
-  */
--#include <linux/ds1286.h>
- #include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/kdev_t.h>
-diff --git a/arch/mips/sgi-ip22/ip22-time.c b/arch/mips/sgi-ip22/ip22-time.c
-index 10e5054..3dcb27e 100644
---- a/arch/mips/sgi-ip22/ip22-time.c
-+++ b/arch/mips/sgi-ip22/ip22-time.c
-@@ -10,7 +10,6 @@
-  * Copyright (C) 2003, 06 Ralf Baechle (ralf@linux-mips.org)
-  */
- #include <linux/bcd.h>
--#include <linux/ds1286.h>
- #include <linux/init.h>
- #include <linux/irq.h>
- #include <linux/kernel.h>
-@@ -29,69 +28,6 @@
- #include <asm/sgi/hpc3.h>
- #include <asm/sgi/ip22.h>
- 
--/*
-- * Note that mktime uses month from 1 to 12 while rtc_time_to_tm
-- * uses 0 to 11.
-- */
--unsigned long read_persistent_clock(void)
--{
--	unsigned int yrs, mon, day, hrs, min, sec;
--	unsigned int save_control;
--	unsigned long flags;
--
--	spin_lock_irqsave(&rtc_lock, flags);
--	save_control = hpc3c0->rtcregs[RTC_CMD] & 0xff;
--	hpc3c0->rtcregs[RTC_CMD] = save_control | RTC_TE;
--
--	sec = BCD2BIN(hpc3c0->rtcregs[RTC_SECONDS] & 0xff);
--	min = BCD2BIN(hpc3c0->rtcregs[RTC_MINUTES] & 0xff);
--	hrs = BCD2BIN(hpc3c0->rtcregs[RTC_HOURS] & 0x3f);
--	day = BCD2BIN(hpc3c0->rtcregs[RTC_DATE] & 0xff);
--	mon = BCD2BIN(hpc3c0->rtcregs[RTC_MONTH] & 0x1f);
--	yrs = BCD2BIN(hpc3c0->rtcregs[RTC_YEAR] & 0xff);
--
--	hpc3c0->rtcregs[RTC_CMD] = save_control;
--	spin_unlock_irqrestore(&rtc_lock, flags);
--
--	if (yrs < 45)
--		yrs += 30;
--	if ((yrs += 40) < 70)
--		yrs += 100;
--
--	return mktime(yrs + 1900, mon, day, hrs, min, sec);
--}
--
--int rtc_mips_set_time(unsigned long tim)
--{
--	struct rtc_time tm;
--	unsigned int save_control;
--	unsigned long flags;
--
--	rtc_time_to_tm(tim, &tm);
--
--	tm.tm_mon += 1;		/* tm_mon starts at zero */
--	tm.tm_year -= 40;
--	if (tm.tm_year >= 100)
--		tm.tm_year -= 100;
--
--	spin_lock_irqsave(&rtc_lock, flags);
--	save_control = hpc3c0->rtcregs[RTC_CMD] & 0xff;
--	hpc3c0->rtcregs[RTC_CMD] = save_control | RTC_TE;
--
--	hpc3c0->rtcregs[RTC_YEAR] = BIN2BCD(tm.tm_year);
--	hpc3c0->rtcregs[RTC_MONTH] = BIN2BCD(tm.tm_mon);
--	hpc3c0->rtcregs[RTC_DATE] = BIN2BCD(tm.tm_mday);
--	hpc3c0->rtcregs[RTC_HOURS] = BIN2BCD(tm.tm_hour);
--	hpc3c0->rtcregs[RTC_MINUTES] = BIN2BCD(tm.tm_min);
--	hpc3c0->rtcregs[RTC_SECONDS] = BIN2BCD(tm.tm_sec);
--	hpc3c0->rtcregs[RTC_HUNDREDTH_SECOND] = 0;
--
--	hpc3c0->rtcregs[RTC_CMD] = save_control;
--	spin_unlock_irqrestore(&rtc_lock, flags);
--
--	return 0;
--}
--
- static unsigned long dosample(void)
- {
- 	u32 ct0, ct1;
-diff --git a/include/linux/ds1286.h b/include/linux/ds1286.h
-index d898986..45ea0aa 100644
---- a/include/linux/ds1286.h
-+++ b/include/linux/ds1286.h
-@@ -8,8 +8,6 @@
- #ifndef __LINUX_DS1286_H
- #define __LINUX_DS1286_H
- 
--#include <asm/ds1286.h>
--
- /**********************************************************************
-  * register summary
-  **********************************************************************/
++static int m48t35_set_time(struct device *dev, struct rtc_time *tm)
++{
++	struct m48t35_priv *priv = dev_get_drvdata(dev);
++	unsigned char mon, day, hrs, min, sec;
++	unsigned int yrs;
++	u8 control;
++
++	yrs = tm->tm_year + 1900;
++	mon = tm->tm_mon + 1;   /* tm_mon starts at zero */
++	day = tm->tm_mday;
++	hrs = tm->tm_hour;
++	min = tm->tm_min;
++	sec = tm->tm_sec;
++
++	if (yrs < 1970)
++		return -EINVAL;
++
++	yrs -= 1970;
++	if (yrs > 255)    /* They are unsigned */
++		return -EINVAL;
++
++	if (yrs > 169)
++		return -EINVAL;
++
++	if (yrs >= 100)
++		yrs -= 100;
++
++	sec = bin2bcd(sec);
++	min = bin2bcd(min);
++	hrs = bin2bcd(hrs);
++	day = bin2bcd(day);
++	mon = bin2bcd(mon);
++	yrs = bin2bcd(yrs);
++
++	spin_lock_irq(&priv->lock);
++	control = readb(&priv->reg->control);
++	writeb(control | M48T35_RTC_SET, &priv->reg->control);
++	writeb(yrs, &priv->reg->year);
++	writeb(mon, &priv->reg->month);
++	writeb(day, &priv->reg->date);
++	writeb(hrs, &priv->reg->hour);
++	writeb(min, &priv->reg->min);
++	writeb(sec, &priv->reg->sec);
++	writeb(control, &priv->reg->control);
++	spin_unlock_irq(&priv->lock);
++	return 0;
++}
++
++static const struct rtc_class_ops m48t35_ops = {
++	.read_time	= m48t35_read_time,
++	.set_time	= m48t35_set_time,
++};
++
++static int __devinit m48t35_probe(struct platform_device *pdev)
++{
++	struct rtc_device *rtc;
++	struct resource *res;
++	struct m48t35_priv *priv;
++	int ret = 0;
++
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!res)
++		return -ENODEV;
++	priv = kzalloc(sizeof(struct m48t35_priv), GFP_KERNEL);
++	if (!priv)
++		return -ENOMEM;
++
++	priv->size = res->end - res->start + 1;
++	/*
++	 * kludge: remove the #ifndef after ioc3 resource
++	 * conflicts are resolved
++	 */
++#ifndef CONFIG_SGI_IP27
++	if (!request_mem_region(res->start, priv->size, pdev->name)) {
++		ret = -EBUSY;
++		goto out;
++	}
++#endif
++	priv->baseaddr = res->start;
++	priv->reg = ioremap(priv->baseaddr, priv->size);
++	if (!priv->reg) {
++		ret = -ENOMEM;
++		goto out;
++	}
++	spin_lock_init(&priv->lock);
++	rtc = rtc_device_register("m48t35", &pdev->dev,
++				  &m48t35_ops, THIS_MODULE);
++	if (IS_ERR(rtc)) {
++		ret = PTR_ERR(rtc);
++		goto out;
++	}
++	priv->rtc = rtc;
++	platform_set_drvdata(pdev, priv);
++	return 0;
++
++out:
++	if (priv->rtc)
++		rtc_device_unregister(priv->rtc);
++	if (priv->reg)
++		iounmap(priv->reg);
++	if (priv->baseaddr)
++		release_mem_region(priv->baseaddr, priv->size);
++	kfree(priv);
++	return ret;
++}
++
++static int __devexit m48t35_remove(struct platform_device *pdev)
++{
++	struct m48t35_priv *priv = platform_get_drvdata(pdev);
++
++	rtc_device_unregister(priv->rtc);
++	iounmap(priv->reg);
++#ifndef CONFIG_SGI_IP27
++	release_mem_region(priv->baseaddr, priv->size);
++#endif
++	kfree(priv);
++	return 0;
++}
++
++static struct platform_driver m48t35_platform_driver = {
++	.driver		= {
++		.name	= "rtc-m48t35",
++		.owner	= THIS_MODULE,
++	},
++	.probe		= m48t35_probe,
++	.remove		= __devexit_p(m48t35_remove),
++};
++
++static int __init m48t35_init(void)
++{
++	return platform_driver_register(&m48t35_platform_driver);
++}
++
++static void __exit m48t35_exit(void)
++{
++	platform_driver_unregister(&m48t35_platform_driver);
++}
++
++MODULE_AUTHOR("Thomas Bogendoerfer <tsbogend@alpha.franken.de>");
++MODULE_DESCRIPTION("M48T35 RTC driver");
++MODULE_LICENSE("GPL");
++MODULE_VERSION(DRV_VERSION);
++MODULE_ALIAS("platform:rtc-m48t35");
++
++module_init(m48t35_init);
++module_exit(m48t35_exit);

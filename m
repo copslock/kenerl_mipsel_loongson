@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Oct 2008 10:44:50 +0100 (BST)
-Received: from hall.aurel32.net ([88.191.82.174]:7561 "EHLO hall.aurel32.net")
-	by ftp.linux-mips.org with ESMTP id S21457796AbYJNJop (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 14 Oct 2008 10:44:45 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Oct 2008 10:45:15 +0100 (BST)
+Received: from hall.aurel32.net ([88.191.82.174]:41856 "EHLO hall.aurel32.net")
+	by ftp.linux-mips.org with ESMTP id S21457813AbYJNJpK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 14 Oct 2008 10:45:10 +0100
 Received: from volta.aurel32.net ([2002:52e8:2fb:1:21e:8cff:feb0:693b])
 	by hall.aurel32.net with esmtpsa (TLS-1.0:RSA_AES_256_CBC_SHA1:32)
 	(Exim 4.63)
 	(envelope-from <aurelien@aurel32.net>)
-	id 1KpgSK-0007kg-GK; Tue, 14 Oct 2008 11:44:44 +0200
+	id 1KpgSj-0007qd-UJ; Tue, 14 Oct 2008 11:45:10 +0200
 Received: from aurel32 by volta.aurel32.net with local (Exim 4.69)
 	(envelope-from <aurelien@aurel32.net>)
-	id 1KpgSJ-000761-VQ; Tue, 14 Oct 2008 11:44:43 +0200
-Date:	Tue, 14 Oct 2008 11:44:43 +0200
+	id 1KpgSj-00076O-CY; Tue, 14 Oct 2008 11:45:09 +0200
+Date:	Tue, 14 Oct 2008 11:45:09 +0200
 From:	Aurelien Jarno <aurelien@aurel32.net>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	linux-mips@linux-mips.org
-Subject: [PATCH 4/5] [MIPS] Add WGT634U reset button support
-Message-ID: <20081014094443.GE26560@volta.aurel32.net>
+Subject: [PATCH 5/5] [MIPS] Scan PCI busses when they are registered
+Message-ID: <20081014094509.GF26560@volta.aurel32.net>
 References: <20081014094043.GA26560@volta.aurel32.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-15
@@ -27,7 +27,7 @@ Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20745
+X-archive-position: 20746
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,76 +35,135 @@ X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 X-list: linux-mips
 
-This patch adds support for the reset button of WGT634U machine, using
-GPIO interrupts. Based on a patch from Michel Lespinasse.
+The patch below changes register_pci_controller() such that controllers
+being added after pcibios_init() has run are be scanned immediately.
+
+This is needed for example by the BCM47xx PCI controller, which is
+located on the SSB bus, which is now initialized after the PCI
+subsystem.
 
 Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
 ---
- arch/mips/bcm47xx/wgt634u.c |   37 +++++++++++++++++++++++++++++++++++++
- 1 files changed, 37 insertions(+), 0 deletions(-)
+ arch/mips/pci/pci.c |   80 +++++++++++++++++++++++++++++++++-----------------
+ 1 files changed, 53 insertions(+), 27 deletions(-)
 
-diff --git a/arch/mips/bcm47xx/wgt634u.c b/arch/mips/bcm47xx/wgt634u.c
-index f9e309a..db1a72f 100644
---- a/arch/mips/bcm47xx/wgt634u.c
-+++ b/arch/mips/bcm47xx/wgt634u.c
-@@ -11,6 +11,9 @@
- #include <linux/leds.h>
- #include <linux/mtd/physmap.h>
- #include <linux/ssb/ssb.h>
-+#include <linux/interrupt.h>
-+#include <linux/reboot.h>
-+#include <asm/gpio.h>
- #include <asm/mach-bcm47xx/bcm47xx.h>
+diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
+index c7fe6ec..a377e9d 100644
+--- a/arch/mips/pci/pci.c
++++ b/arch/mips/pci/pci.c
+@@ -34,6 +34,8 @@ static struct pci_controller *hose_head, **hose_tail = &hose_head;
+ unsigned long PCIBIOS_MIN_IO	= 0x0000;
+ unsigned long PCIBIOS_MIN_MEM	= 0;
  
- /* GPIO definitions for the WGT634U */
-@@ -99,6 +102,30 @@ static struct platform_device *wgt634u_devices[] __initdata = {
- 	&wgt634u_gpio_leds,
- };
++static int pci_initialized;
++
+ /*
+  * We need to avoid collisions with `mirrored' VGA ports
+  * and other strange ISA hardware, so we always want the
+@@ -74,6 +76,42 @@ pcibios_align_resource(void *data, struct resource *res,
+ 	res->start = start;
+ }
  
-+static irqreturn_t gpio_interrupt(int irq, void *ignored)
++static void __devinit pcibios_scanbus(struct pci_controller *hose)
 +{
-+	int state;
++	static int next_busno;
++	static int need_domain_info;
++	struct pci_bus *bus;
 +
-+	/* Interrupts are shared, check if the current one is
-+	   a GPIO interrupt. */
-+	if (!ssb_chipco_irq_status(&ssb_bcm47xx.chipco,
-+				   SSB_CHIPCO_IRQ_GPIO))
-+		return IRQ_NONE;
++	if (!hose->iommu)
++		PCI_DMA_BUS_IS_PHYS = 1;
 +
-+	state = gpio_get_value(WGT634U_GPIO_RESET);
++	if (hose->get_busno && pci_probe_only)
++		next_busno = (*hose->get_busno)();
 +
-+	/* Interrupt are level triggered, revert the interrupt polarity
-+	   to clear the interrupt. */
-+	gpio_polarity(WGT634U_GPIO_RESET, state);
++	bus = pci_scan_bus(next_busno, hose->pci_ops, hose);
++	hose->bus = bus;
 +
-+	if (!state) {
-+		printk(KERN_INFO "Reset button pressed");
-+		ctrl_alt_del();
-+	}
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int __init wgt634u_init(void)
- {
- 	/* There is no easy way to detect that we are running on a WGT634U
-@@ -115,6 +142,16 @@ static int __init wgt634u_init(void)
- 
- 		printk(KERN_INFO "WGT634U machine detected.\n");
- 
-+		if (!request_irq(gpio_to_irq(WGT634U_GPIO_RESET),
-+				 gpio_interrupt, IRQF_SHARED,
-+				 "WGT634U GPIO", &ssb_bcm47xx.chipco)) {
-+			gpio_direction_input(WGT634U_GPIO_RESET);
-+			gpio_intmask(WGT634U_GPIO_RESET, 1);
-+			ssb_chipco_irq_mask(&ssb_bcm47xx.chipco,
-+					    SSB_CHIPCO_IRQ_GPIO,
-+					    SSB_CHIPCO_IRQ_GPIO);
++	need_domain_info = need_domain_info || hose->index;
++	hose->need_domain_info = need_domain_info;
++	if (bus) {
++		next_busno = bus->subordinate + 1;
++		/* Don't allow 8-bit bus number overflow inside the hose -
++		   reserve some space for bridges. */
++		if (next_busno > 224) {
++			next_busno = 0;
++			need_domain_info = 1;
 +		}
 +
- 		wgt634u_flash_data.width = mcore->flash_buswidth;
- 		wgt634u_flash_resource.start = mcore->flash_window;
- 		wgt634u_flash_resource.end = mcore->flash_window
++		if (!pci_probe_only) {
++			pci_bus_size_bridges(bus);
++			pci_bus_assign_resources(bus);
++			pci_enable_bridges(bus);
++		}
++	}
++}
++
++static DEFINE_MUTEX(pci_scan_mutex);
++
+ void __devinit register_pci_controller(struct pci_controller *hose)
+ {
+ 	if (request_resource(&iomem_resource, hose->mem_resource) < 0)
+@@ -93,6 +131,17 @@ void __devinit register_pci_controller(struct pci_controller *hose)
+ 		printk(KERN_WARNING
+ 		       "registering PCI controller with io_map_base unset\n");
+ 	}
++
++	/*
++	 * Scan the bus if it is register after the PCI subsystem
++	 * initialization.
++	 */
++	if (pci_initialized) {
++		mutex_lock(&pci_scan_mutex);
++		pcibios_scanbus(hose);
++		mutex_unlock(&pci_scan_mutex);
++	}
++
+ 	return;
+ 
+ out:
+@@ -125,38 +174,15 @@ static u8 __init common_swizzle(struct pci_dev *dev, u8 *pinp)
+ static int __init pcibios_init(void)
+ {
+ 	struct pci_controller *hose;
+-	struct pci_bus *bus;
+-	int next_busno;
+-	int need_domain_info = 0;
+ 
+ 	/* Scan all of the recorded PCI controllers.  */
+-	for (next_busno = 0, hose = hose_head; hose; hose = hose->next) {
+-
+-		if (!hose->iommu)
+-			PCI_DMA_BUS_IS_PHYS = 1;
+-
+-		if (hose->get_busno && pci_probe_only)
+-			next_busno = (*hose->get_busno)();
+-
+-		bus = pci_scan_bus(next_busno, hose->pci_ops, hose);
+-		hose->bus = bus;
+-		need_domain_info = need_domain_info || hose->index;
+-		hose->need_domain_info = need_domain_info;
+-		if (bus) {
+-			next_busno = bus->subordinate + 1;
+-			/* Don't allow 8-bit bus number overflow inside the hose -
+-			   reserve some space for bridges. */
+-			if (next_busno > 224) {
+-				next_busno = 0;
+-				need_domain_info = 1;
+-			}
+-		}
+-	}
++	for (hose = hose_head; hose; hose = hose->next)
++		pcibios_scanbus(hose);
+ 
+-	if (!pci_probe_only)
+-		pci_assign_unassigned_resources();
+ 	pci_fixup_irqs(common_swizzle, pcibios_map_irq);
+ 
++	pci_initialized = 1;
++
+ 	return 0;
+ }
+ 
 -- 
 1.5.6.5
 

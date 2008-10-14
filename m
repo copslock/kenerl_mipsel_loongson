@@ -1,57 +1,207 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Oct 2008 11:46:14 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:58798 "EHLO
-	localhost.localdomain") by ftp.linux-mips.org with ESMTP
-	id S21468867AbYJNKqM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 14 Oct 2008 11:46:12 +0100
-Date:	Tue, 14 Oct 2008 11:46:12 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Weiwei Wang <weiwei.wang@windriver.com>
-cc:	Ralf Baechle <ralf@linux-mips.org>,
-	weiwei wang <veivei.vang@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: [Fwd: [bug report] 0xffffffffc0000000 can't be used on
- bcm1250]
-In-Reply-To: <48F4706A.2010401@windriver.com>
-Message-ID: <alpine.LFD.1.10.0810141131550.1618@ftp.linux-mips.org>
-References: <48EC9894.4080201@gmail.com> <20081008115001.GA21596@linux-mips.org> <48ED5BA5.4070301@gmail.com> <20081009131554.GB22796@linux-mips.org> <48EEBFE8.1000501@gmail.com> <alpine.LFD.1.10.0810101138180.19747@ftp.linux-mips.org> <48F2BC15.70408@gmail.com>
- <alpine.LFD.1.10.0810131508390.9667@ftp.linux-mips.org> <20081013162906.GB7144@linux-mips.org> <alpine.LFD.1.10.0810131842430.9667@ftp.linux-mips.org> <48F3F499.3010508@windriver.com> <48F4706A.2010401@windriver.com>
-User-Agent: Alpine 1.10 (LFD 962 2008-03-14)
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Oct 2008 16:17:42 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:61631 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S21487818AbYJNPRk (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 14 Oct 2008 16:17:40 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1KpleS-0005UJ-00; Tue, 14 Oct 2008 17:17:36 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 355A7C3AE9; Tue, 14 Oct 2008 17:16:55 +0200 (CEST)
+From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH v3] IP22/28: Switch over to RTC class driver
+To:	linux-mips@linux-mips.org
+cc:	ralf@linux-mips.org
+Message-Id: <20081014151655.355A7C3AE9@solo.franken.de>
+Date:	Tue, 14 Oct 2008 17:16:55 +0200 (CEST)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20748
+X-archive-position: 20749
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 14 Oct 2008, Weiwei Wang wrote:
+This patchset removes some dead code and creates a platform device
+for the RTC class driver.
 
-> I checked the sb-1 core user manual, and finally confirm the virtual
-> address space is 44 bits wide, not 40 bits. so for function
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+---
 
- Lucky you to have access to this thing!  Anyway, Ralf has promised us a 
-brand new wonderful alternative solution, so let's wait for that to happen 
-first before fiddling with my proposal any further.  Thanks for the note 
-though.
+Please apply for 2.6.28
 
-> But another issue is confusing me right now. Since the bit 44-61 in
-> entryhi is not valid, and are read as 0,  so when issue command tlbwr,
-> the cpu will copy the contents of EntryHi, EntryLo, and PageMask into
-> the TLB entry, including the invalid bits in VPN2 of entryhi.  Here I
-> think tlb entry conflict may appear. Take address 0xc0000fffc0000000 and
-> 0xffffffffc0000000 for example, the two address may get the same tlb
-> entry. am i getting it wrong? can you give me your understanding.
+ arch/mips/include/asm/mach-ip22/ds1286.h |   18 --------
+ arch/mips/include/asm/mach-ip28/ds1286.h |    4 --
+ arch/mips/sgi-ip22/ip22-platform.c       |   15 +++++++
+ arch/mips/sgi-ip22/ip22-setup.c          |    1 -
+ arch/mips/sgi-ip22/ip22-time.c           |   64 ------------------------------
+ include/linux/ds1286.h                   |    2 -
+ 6 files changed, 15 insertions(+), 89 deletions(-)
 
- If you have a close look at the MIPS64 architecture spec, then you'll 
-notice that the last 2GB of the XKSEG space are reserved.  This is exactly 
-so that the clash you are concerned about does not happen.  Any EntryHi 
-value written with the value of R set to 0x3 and all the bits of VPN2 
-starting from the most significant one down to the bit #31 set to 1 refers 
-to the compatibility segment.
-
-  Maciej
+diff --git a/arch/mips/include/asm/mach-ip22/ds1286.h b/arch/mips/include/asm/mach-ip22/ds1286.h
+deleted file mode 100644
+index f19f1ea..0000000
+--- a/arch/mips/include/asm/mach-ip22/ds1286.h
++++ /dev/null
+@@ -1,18 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 1998, 2001, 03 by Ralf Baechle
+- *
+- * RTC routines for PC style attached Dallas chip.
+- */
+-#ifndef __ASM_MACH_IP22_DS1286_H
+-#define __ASM_MACH_IP22_DS1286_H
+-
+-#include <asm/sgi/hpc3.h>
+-
+-#define rtc_read(reg)		(hpc3c0->rtcregs[(reg)] & 0xff)
+-#define rtc_write(data, reg)	do { hpc3c0->rtcregs[(reg)] = (data); } while(0)
+-
+-#endif /* __ASM_MACH_IP22_DS1286_H */
+diff --git a/arch/mips/include/asm/mach-ip28/ds1286.h b/arch/mips/include/asm/mach-ip28/ds1286.h
+deleted file mode 100644
+index 471bb9a..0000000
+--- a/arch/mips/include/asm/mach-ip28/ds1286.h
++++ /dev/null
+@@ -1,4 +0,0 @@
+-#ifndef __ASM_MACH_IP28_DS1286_H
+-#define __ASM_MACH_IP28_DS1286_H
+-#include <asm/mach-ip22/ds1286.h>
+-#endif /* __ASM_MACH_IP28_DS1286_H */
+diff --git a/arch/mips/sgi-ip22/ip22-platform.c b/arch/mips/sgi-ip22/ip22-platform.c
+index 52486c4..deddbf0 100644
+--- a/arch/mips/sgi-ip22/ip22-platform.c
++++ b/arch/mips/sgi-ip22/ip22-platform.c
+@@ -192,3 +192,18 @@ static int __init sgi_button_devinit(void)
+ }
+ 
+ device_initcall(sgi_button_devinit);
++
++static int __init sgi_ds1286_devinit(void)
++{
++	struct resource res;
++
++	memset(&res, 0, sizeof(res));
++	res.start = HPC3_CHIP0_BASE + offsetof(struct hpc3_regs, rtcregs);
++	res.end = res.start + sizeof(hpc3c0->rtcregs) - 1;
++	res.flags = IORESOURCE_MEM;
++
++	return IS_ERR(platform_device_register_simple("rtc-ds1286", -1,
++						      &res, 1));
++}
++
++device_initcall(sgi_ds1286_devinit);
+diff --git a/arch/mips/sgi-ip22/ip22-setup.c b/arch/mips/sgi-ip22/ip22-setup.c
+index 896a1ef..b9a9313 100644
+--- a/arch/mips/sgi-ip22/ip22-setup.c
++++ b/arch/mips/sgi-ip22/ip22-setup.c
+@@ -4,7 +4,6 @@
+  * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)
+  * Copyright (C) 1997, 1998 Ralf Baechle (ralf@gnu.org)
+  */
+-#include <linux/ds1286.h>
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/kdev_t.h>
+diff --git a/arch/mips/sgi-ip22/ip22-time.c b/arch/mips/sgi-ip22/ip22-time.c
+index 10e5054..3dcb27e 100644
+--- a/arch/mips/sgi-ip22/ip22-time.c
++++ b/arch/mips/sgi-ip22/ip22-time.c
+@@ -10,7 +10,6 @@
+  * Copyright (C) 2003, 06 Ralf Baechle (ralf@linux-mips.org)
+  */
+ #include <linux/bcd.h>
+-#include <linux/ds1286.h>
+ #include <linux/init.h>
+ #include <linux/irq.h>
+ #include <linux/kernel.h>
+@@ -29,69 +28,6 @@
+ #include <asm/sgi/hpc3.h>
+ #include <asm/sgi/ip22.h>
+ 
+-/*
+- * Note that mktime uses month from 1 to 12 while rtc_time_to_tm
+- * uses 0 to 11.
+- */
+-unsigned long read_persistent_clock(void)
+-{
+-	unsigned int yrs, mon, day, hrs, min, sec;
+-	unsigned int save_control;
+-	unsigned long flags;
+-
+-	spin_lock_irqsave(&rtc_lock, flags);
+-	save_control = hpc3c0->rtcregs[RTC_CMD] & 0xff;
+-	hpc3c0->rtcregs[RTC_CMD] = save_control | RTC_TE;
+-
+-	sec = BCD2BIN(hpc3c0->rtcregs[RTC_SECONDS] & 0xff);
+-	min = BCD2BIN(hpc3c0->rtcregs[RTC_MINUTES] & 0xff);
+-	hrs = BCD2BIN(hpc3c0->rtcregs[RTC_HOURS] & 0x3f);
+-	day = BCD2BIN(hpc3c0->rtcregs[RTC_DATE] & 0xff);
+-	mon = BCD2BIN(hpc3c0->rtcregs[RTC_MONTH] & 0x1f);
+-	yrs = BCD2BIN(hpc3c0->rtcregs[RTC_YEAR] & 0xff);
+-
+-	hpc3c0->rtcregs[RTC_CMD] = save_control;
+-	spin_unlock_irqrestore(&rtc_lock, flags);
+-
+-	if (yrs < 45)
+-		yrs += 30;
+-	if ((yrs += 40) < 70)
+-		yrs += 100;
+-
+-	return mktime(yrs + 1900, mon, day, hrs, min, sec);
+-}
+-
+-int rtc_mips_set_time(unsigned long tim)
+-{
+-	struct rtc_time tm;
+-	unsigned int save_control;
+-	unsigned long flags;
+-
+-	rtc_time_to_tm(tim, &tm);
+-
+-	tm.tm_mon += 1;		/* tm_mon starts at zero */
+-	tm.tm_year -= 40;
+-	if (tm.tm_year >= 100)
+-		tm.tm_year -= 100;
+-
+-	spin_lock_irqsave(&rtc_lock, flags);
+-	save_control = hpc3c0->rtcregs[RTC_CMD] & 0xff;
+-	hpc3c0->rtcregs[RTC_CMD] = save_control | RTC_TE;
+-
+-	hpc3c0->rtcregs[RTC_YEAR] = BIN2BCD(tm.tm_year);
+-	hpc3c0->rtcregs[RTC_MONTH] = BIN2BCD(tm.tm_mon);
+-	hpc3c0->rtcregs[RTC_DATE] = BIN2BCD(tm.tm_mday);
+-	hpc3c0->rtcregs[RTC_HOURS] = BIN2BCD(tm.tm_hour);
+-	hpc3c0->rtcregs[RTC_MINUTES] = BIN2BCD(tm.tm_min);
+-	hpc3c0->rtcregs[RTC_SECONDS] = BIN2BCD(tm.tm_sec);
+-	hpc3c0->rtcregs[RTC_HUNDREDTH_SECOND] = 0;
+-
+-	hpc3c0->rtcregs[RTC_CMD] = save_control;
+-	spin_unlock_irqrestore(&rtc_lock, flags);
+-
+-	return 0;
+-}
+-
+ static unsigned long dosample(void)
+ {
+ 	u32 ct0, ct1;
+diff --git a/include/linux/ds1286.h b/include/linux/ds1286.h
+index d898986..45ea0aa 100644
+--- a/include/linux/ds1286.h
++++ b/include/linux/ds1286.h
+@@ -8,8 +8,6 @@
+ #ifndef __LINUX_DS1286_H
+ #define __LINUX_DS1286_H
+ 
+-#include <asm/ds1286.h>
+-
+ /**********************************************************************
+  * register summary
+  **********************************************************************/

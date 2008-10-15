@@ -1,74 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Oct 2008 01:03:52 +0100 (BST)
-Received: from sj-iport-6.cisco.com ([171.71.176.117]:2259 "EHLO
-	sj-iport-6.cisco.com") by ftp.linux-mips.org with ESMTP
-	id S21521528AbYJOADt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 15 Oct 2008 01:03:49 +0100
-X-IronPort-AV: E=Sophos;i="4.33,411,1220227200"; 
-   d="scan'208";a="175217896"
-Received: from sj-dkim-3.cisco.com ([171.71.179.195])
-  by sj-iport-6.cisco.com with ESMTP; 15 Oct 2008 00:03:42 +0000
-Received: from sj-core-2.cisco.com (sj-core-2.cisco.com [171.71.177.254])
-	by sj-dkim-3.cisco.com (8.12.11/8.12.11) with ESMTP id m9F03gLG002718;
-	Tue, 14 Oct 2008 17:03:42 -0700
-Received: from cliff.cisco.com (cliff.cisco.com [171.69.11.141])
-	by sj-core-2.cisco.com (8.13.8/8.13.8) with ESMTP id m9F03ggs016813;
-	Wed, 15 Oct 2008 00:03:42 GMT
-Received: from [127.0.0.1] ([64.101.20.200]) by cliff.cisco.com (8.6.12/8.6.5) with ESMTP id AAA19632; Wed, 15 Oct 2008 00:03:41 GMT
-Message-ID: <48F53357.4040708@cisco.com>
-Date:	Tue, 14 Oct 2008 17:03:35 -0700
-From:	David VomLehn <dvomlehn@cisco.com>
-User-Agent: Thunderbird 2.0.0.17 (Windows/20080914)
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Oct 2008 08:10:38 +0100 (BST)
+Received: from monty.telenet-ops.be ([195.130.132.56]:21929 "EHLO
+	monty.telenet-ops.be") by ftp.linux-mips.org with ESMTP
+	id S21545003AbYJOHKg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 15 Oct 2008 08:10:36 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by monty.telenet-ops.be (Postfix) with SMTP id 6139E54043;
+	Wed, 15 Oct 2008 09:10:35 +0200 (CEST)
+Received: from anakin.of.borg (d54C15368.access.telenet.be [84.193.83.104])
+	by monty.telenet-ops.be (Postfix) with ESMTP id 3574854054;
+	Wed, 15 Oct 2008 09:10:35 +0200 (CEST)
+Received: from anakin.of.borg (localhost [127.0.0.1])
+	by anakin.of.borg (8.14.3/8.14.3/Debian-5) with ESMTP id m9F7AYeV023411
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Wed, 15 Oct 2008 09:10:34 +0200
+Received: from localhost (geert@localhost)
+	by anakin.of.borg (8.14.3/8.14.3/Submit) with ESMTP id m9F7AXVf023408;
+	Wed, 15 Oct 2008 09:10:34 +0200
+X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
+Date:	Wed, 15 Oct 2008 09:10:33 +0200 (CEST)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
 To:	David Daney <ddaney@caviumnetworks.com>
-CC:	linux-mips@linux-mips.org,
+cc:	linux-mips@linux-mips.org, dvomlehn@cisco.com,
 	"Paoletti, Tomaso" <Tomaso.Paoletti@caviumnetworks.com>
 Subject: Re: [PATCH] MIPS: Rewrite cpu_to_name so it has one statement per
  line (version 2).
-References: <48F51BF7.2040906@caviumnetworks.com>
 In-Reply-To: <48F51BF7.2040906@caviumnetworks.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=452; t=1224029022; x=1224893022;
-	c=relaxed/simple; s=sjdkim3002;
-	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
-	d=cisco.com; i=dvomlehn@cisco.com;
-	z=From:=20David=20VomLehn=20<dvomlehn@cisco.com>
-	|Subject:=20Re=3A=20[PATCH]=20MIPS=3A=20Rewrite=20cpu_to_na
-	me=20so=20it=20has=20one=20statement=20per=0A=20line=20(vers
-	ion=202).
-	|Sender:=20;
-	bh=qee1ulnXsvvw7/Nx8Ue05vJywOB09Eogo3buzXCqpZA=;
-	b=Q9Y/GM05g/X8QluVoad8cBkM0SLZd94S2BdvVodeGnG7h3TKsY+Hhueg50
-	1+KOnRJEDDbAzPVA0bUQX10753XWVXdE9BXDeNyxRMGhDVzQBRDlP8Ok1YvH
-	lGy7n5fEll;
-Authentication-Results:	sj-dkim-3; header.From=dvomlehn@cisco.com; dkim=pass (
-	sig from cisco.com/sjdkim3002 verified; ); 
-Return-Path: <dvomlehn@cisco.com>
+Message-ID: <Pine.LNX.4.64.0810150908430.25759@anakin>
+References: <48F51BF7.2040906@caviumnetworks.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20767
+X-archive-position: 20768
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvomlehn@cisco.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-David Daney wrote:
-> Rewrite cpu_to_name so it has one statement per line.
-> 
-> David VomLehn shamed me into it...
-> 
-> Future changes can now pass checkpatch.pl
-> 
-> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+On Tue, 14 Oct 2008, David Daney wrote:
+> +static const char *mips_cpu_names[] = {
 
-<opensource_humor level="obscure" 
-a="http://www.kernel.org/pub/linux/kernel/people/jsipek/guilt/man/">
+    [...]
 
-So, Jeff Sipek isn't the only one who can use guilt to create patches.
+> +	[CPU_LAST]		= NULL
+> +};
 
-</opensource_humor>
+> +	if (c->cputype >= CPU_LAST)
+                       ^^
+Either you can use `>' here, or remove the [CPU_LAST] entry in
+mips_cpu_names[].
 
-David VomLehn
+> +		BUG();
+> +	name = mips_cpu_names[c->cputype];
+> +	if (!name)
+> 		BUG();
+> -	}
+> -
+> 	return name;
+> }
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

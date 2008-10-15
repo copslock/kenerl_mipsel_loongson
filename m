@@ -1,75 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Oct 2008 08:10:38 +0100 (BST)
-Received: from monty.telenet-ops.be ([195.130.132.56]:21929 "EHLO
-	monty.telenet-ops.be") by ftp.linux-mips.org with ESMTP
-	id S21545003AbYJOHKg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 15 Oct 2008 08:10:36 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by monty.telenet-ops.be (Postfix) with SMTP id 6139E54043;
-	Wed, 15 Oct 2008 09:10:35 +0200 (CEST)
-Received: from anakin.of.borg (d54C15368.access.telenet.be [84.193.83.104])
-	by monty.telenet-ops.be (Postfix) with ESMTP id 3574854054;
-	Wed, 15 Oct 2008 09:10:35 +0200 (CEST)
-Received: from anakin.of.borg (localhost [127.0.0.1])
-	by anakin.of.borg (8.14.3/8.14.3/Debian-5) with ESMTP id m9F7AYeV023411
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Wed, 15 Oct 2008 09:10:34 +0200
-Received: from localhost (geert@localhost)
-	by anakin.of.borg (8.14.3/8.14.3/Submit) with ESMTP id m9F7AXVf023408;
-	Wed, 15 Oct 2008 09:10:34 +0200
-X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
-Date:	Wed, 15 Oct 2008 09:10:33 +0200 (CEST)
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	David Daney <ddaney@caviumnetworks.com>
-cc:	linux-mips@linux-mips.org, dvomlehn@cisco.com,
-	"Paoletti, Tomaso" <Tomaso.Paoletti@caviumnetworks.com>
-Subject: Re: [PATCH] MIPS: Rewrite cpu_to_name so it has one statement per
- line (version 2).
-In-Reply-To: <48F51BF7.2040906@caviumnetworks.com>
-Message-ID: <Pine.LNX.4.64.0810150908430.25759@anakin>
-References: <48F51BF7.2040906@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Oct 2008 22:34:38 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:36692 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S21581036AbYJOSfN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 15 Oct 2008 19:35:13 +0100
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B48f61f880000>; Wed, 15 Oct 2008 12:51:20 -0400
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 15 Oct 2008 09:51:19 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 15 Oct 2008 09:51:19 -0700
+Message-ID: <48F61F86.5020108@caviumnetworks.com>
+Date:	Wed, 15 Oct 2008 09:51:18 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <geert@linux-m68k.org>
+To:	linux-serial@vger.kernel.org
+CC:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	"Paoletti, Tomaso" <Tomaso.Paoletti@caviumnetworks.com>
+Subject: [PATCH] 8250: Don't clobber spinlocks in 8250.
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 15 Oct 2008 16:51:19.0047 (UTC) FILETIME=[3EF68970:01C92EE6]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20768
+X-archive-position: 20769
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 14 Oct 2008, David Daney wrote:
-> +static const char *mips_cpu_names[] = {
+Don't clobber spinlocks in 8250.
 
-    [...]
+In serial8250_isa_init_ports(), the port's lock is initialized.  We
+should not overwrite it.  Only copy in the fields we need.
 
-> +	[CPU_LAST]		= NULL
-> +};
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+Signed-off-by: Tomaso Paoletti <tpaoletti@caviumnetworks.com>
+---
+ drivers/serial/8250.c |   16 ++++++++++++++--
+ 1 files changed, 14 insertions(+), 2 deletions(-)
 
-> +	if (c->cputype >= CPU_LAST)
-                       ^^
-Either you can use `>' here, or remove the [CPU_LAST] entry in
-mips_cpu_names[].
-
-> +		BUG();
-> +	name = mips_cpu_names[c->cputype];
-> +	if (!name)
-> 		BUG();
-> -	}
-> -
-> 	return name;
-> }
-
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+diff --git a/drivers/serial/8250.c b/drivers/serial/8250.c
+index d3ca7d3..da65fea 100644
+--- a/drivers/serial/8250.c
++++ b/drivers/serial/8250.c
+@@ -2699,12 +2699,24 @@ static struct uart_driver serial8250_reg = {
+  */
+ int __init early_serial_setup(struct uart_port *port)
+ {
++	struct uart_port *p;
++
+ 	if (port->line >= ARRAY_SIZE(serial8250_ports))
+ 		return -ENODEV;
+ 
+ 	serial8250_isa_init_ports();
+-	serial8250_ports[port->line].port	= *port;
+-	serial8250_ports[port->line].port.ops	= &serial8250_pops;
++	p = &serial8250_ports[port->line].port;
++	p->iobase       = port->iobase;
++	p->membase      = port->membase;
++	p->irq          = port->irq;
++	p->uartclk      = port->uartclk;
++	p->fifosize     = port->fifosize;
++	p->regshift     = port->regshift;
++	p->iotype       = port->iotype;
++	p->flags        = port->flags;
++	p->mapbase      = port->mapbase;
++	p->private_data = port->private_data;
++	p->ops		= &serial8250_pops;
+ 	return 0;
+ }
+ 

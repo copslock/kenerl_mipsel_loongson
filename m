@@ -1,102 +1,185 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Oct 2008 17:50:25 +0100 (BST)
-Received: from ey-out-1920.google.com ([74.125.78.144]:3204 "EHLO
-	ey-out-1920.google.com") by ftp.linux-mips.org with ESMTP
-	id S21728116AbYJQQuW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 17 Oct 2008 17:50:22 +0100
-Received: by ey-out-1920.google.com with SMTP id 4so314862eyg.54
-        for <linux-mips@linux-mips.org>; Fri, 17 Oct 2008 09:50:21 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:subject:date
-         :user-agent:cc:references:in-reply-to:mime-version
-         :content-disposition:message-id:content-type
-         :content-transfer-encoding;
-        bh=uiWn5KFpmCKKG0qXd/vQHVhYyNUEYWCOKy3xGOi3nHU=;
-        b=q+gTYAjMfAlGGe/0DTO4kMm6MuhW96XtV+jr9p8y7/EnGoM61CIBn5B1yLk2701zut
-         dRsmVfCKzkOIT1Pwb8oFlMDgiTgmADIKKKZxzZOAqZOFgKtCZcK/GTdFLo6/W7f/fIGa
-         AtSTqqAcaM1R8WypFdGVtblsjzL16KLZ9yu1g=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:subject:date:user-agent:cc:references:in-reply-to
-         :mime-version:content-disposition:message-id:content-type
-         :content-transfer-encoding;
-        b=N4d34wOOjd9guHy62GMmdaVTtuonDVYoHtIEDrweg2wu8BfcpDie77kA84Uedt0+X3
-         SZTachWEX0lZfZnXwvmhWlXfXBpHkIJ3IfaylbbMauYKNiB4/pMfWHN4BYQytJXYfMTK
-         l46YZUKAIL+DBpGbfwxdMC6rFwqo26k3hNHYg=
-Received: by 10.103.249.19 with SMTP id b19mr2325886mus.50.1224262221414;
-        Fri, 17 Oct 2008 09:50:21 -0700 (PDT)
-Received: from ?192.168.123.7? (chello089077041080.chello.pl [89.77.41.80])
-        by mx.google.com with ESMTPS id j10sm6713139muh.1.2008.10.17.09.50.18
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 17 Oct 2008 09:50:20 -0700 (PDT)
-From:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] ide: Add tx4939ide driver (v4)
-Date:	Fri, 17 Oct 2008 18:46:34 +0200
-User-Agent: KMail/1.9.10
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org,
-	linux-ide@vger.kernel.org, sshtylyov@ru.mvista.com
-References: <20081017.230825.95059872.anemo@mba.ocn.ne.jp> <20081017141310.GA14999@linux-mips.org>
-In-Reply-To: <20081017141310.GA14999@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Oct 2008 18:43:45 +0100 (BST)
+Received: from smtp15.dti.ne.jp ([202.216.231.190]:31370 "EHLO
+	smtp15.dti.ne.jp") by ftp.linux-mips.org with ESMTP
+	id S21730086AbYJQRnm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 17 Oct 2008 18:43:42 +0100
+Received: from [192.168.1.3] (PPPa2341.tokyo-ip.dti.ne.jp [61.195.18.91]) by smtp15.dti.ne.jp (3.11s) with ESMTP AUTH id m9HHhZwK016888 for <linux-mips@linux-mips.org>; Sat, 18 Oct 2008 02:43:35 +0900 (JST)
+Message-ID: <48F8CEC6.4030605@ruby.dti.ne.jp>
+Date:	Sat, 18 Oct 2008 02:43:34 +0900
+From:	Shinya Kuribayashi <skuribay@ruby.dti.ne.jp>
+User-Agent: Thunderbird 2.0.0.17 (X11/20080925)
 MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <200810171846.35109.bzolnier@gmail.com>
-Content-Type: text/plain;
-  charset="iso-8859-1"
+To:	linux-mips@linux-mips.org
+Subject: MIPS: Add CONFIG_CPU_R5500 for NEC VR5500 series processors
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <bzolnier@gmail.com>
+Return-Path: <skuribay@ruby.dti.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20789
+X-archive-position: 20790
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bzolnier@gmail.com
+X-original-sender: skuribay@ruby.dti.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Friday 17 October 2008, Ralf Baechle wrote:
-> On Fri, Oct 17, 2008 at 11:08:25PM +0900, Atsushi Nemoto wrote:
-> 
-> > This is the driver for the Toshiba TX4939 SoC ATA controller.
-> > 
-> > This controller has standard ATA taskfile registers and DMA
-> > command/status registers, but the register layout is swapped on big
-> > endian.  There are some other endian issue and some special registers
-> > which requires many custom dma_ops/tp_ops routines and build_dmatable.
-> > 
-> > Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-> > ---
-> > This patch is against current linux-mips tree.
-> > 
-> > Changes since v3:
-> > * more consistent symbol naming
-> > * handle only DMA mode in set_dma_mode
-> > * rename tx4939ide_read_and_clear_dma_status to tx4939ide_clear_dma_status
-> > * use standard ide_read_sff_dma_status in LE mode
-> > * remove CS5530 workaround from tx4939ide_build_dmatable
-> > * use ide_host_alloc/ide_host_register instead of ide_host_alloc
-> > * fold tx4939ide_insw_swap into tx4939ide_input_data_swap
-> > * more informative printk
-> > * whitespace cleanups and spelling fixes
-> > 
-> >  drivers/ide/Kconfig          |    6 +
-> >  drivers/ide/mips/Makefile    |    1 +
-> >  drivers/ide/mips/tx4939ide.c |  755 ++++++++++++++++++++++++++++++++++++++++++
-> 
-> Btw, I don't think architecture specific subdirectories in subsystems are
-> generally usefull.  Just as in this example this IDE controller happens
-> only to be in use on a particular MIPS-based SOC but there is nothing
-> really architecture specific in most such devices.
+We already have sufficient infrastructure to support VR5500 and VR5500A
+series processors.  Here's a Makefile support to make it selectable by
+ports, and enable it for NEC EMMA2RH Mark-eins board.
 
-I fully agree with you.
+This patch also fixes a confused target help, and adds 1Gb PageMask bits
+supported by VR5500 and its variants.
 
-I was going to remove arch/bus specific subdirs in .29 but since the change
-should be really straightforward and we're ahead of the merge schedule for
-.28 I think we may as well do it now...
+Signed-off-by: Shinya Kuribayashi <shinya.kuribayashi@necel.com>
+---
+Hi,
 
-I'll prepare corresponding IDE git pull request next week.
+For NEC VR5500 processors, it's better to use -march=r5500 than r5000.
+Please review.
 
 Thanks,
-Bart
+
+  Shinya
+
+ arch/mips/Kconfig                |   18 +++++++++++++++---
+ arch/mips/Makefile               |    2 ++
+ arch/mips/include/asm/mipsregs.h |    1 +
+ arch/mips/include/asm/module.h   |    2 ++
+ arch/mips/kernel/Makefile        |    1 +
+ arch/mips/lib/Makefile           |    1 +
+ arch/mips/lib/dump_tlb.c         |    1 +
+ arch/mips/mm/Makefile            |    1 +
+ 8 files changed, 24 insertions(+), 3 deletions(-)
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index b905744..1efc366 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -249,10 +249,9 @@ config MARKEINS
+ 	select SYS_SUPPORTS_32BIT_KERNEL
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+-	select SYS_HAS_CPU_R5000
++	select SYS_HAS_CPU_R5500
+ 	help
+-	  This enables support for the R5432-based NEC Mark-eins
+-	  boards with R5500 CPU.
++	  This enables support for the NEC Mark-eins board with VR5500 CPU.
+ 
+ config MACH_VR41XX
+ 	bool "NEC VR4100 series based machines"
+@@ -1092,6 +1091,16 @@ config CPU_R5432
+ 	select CPU_SUPPORTS_32BIT_KERNEL
+ 	select CPU_SUPPORTS_64BIT_KERNEL
+ 
++config CPU_R5500
++	bool "R5500"
++	depends on SYS_HAS_CPU_R5500
++	select CPU_HAS_LLSC
++	select CPU_SUPPORTS_32BIT_KERNEL
++	select CPU_SUPPORTS_64BIT_KERNEL
++	help
++	  NEC VR5500 and VR5500A series processors implement 64-bit MIPS IV
++	  instruction set.
++
+ config CPU_R6000
+ 	bool "R6000"
+ 	depends on EXPERIMENTAL
+@@ -1202,6 +1211,9 @@ config SYS_HAS_CPU_R5000
+ config SYS_HAS_CPU_R5432
+ 	bool
+ 
++config SYS_HAS_CPU_R5500
++	bool
++
+ config SYS_HAS_CPU_R6000
+ 	bool
+ 
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 7f39fd8..c2197c3 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -131,6 +131,8 @@ cflags-$(CONFIG_CPU_MIPS64_R2)	+= $(call cc-option,-march=mips64r2,-mips64r2 -U_
+ cflags-$(CONFIG_CPU_R5000)	+= -march=r5000 -Wa,--trap
+ cflags-$(CONFIG_CPU_R5432)	+= $(call cc-option,-march=r5400,-march=r5000) \
+ 			-Wa,--trap
++cflags-$(CONFIG_CPU_R5500)	+= $(call cc-option,-march=r5500,-march=r5000) \
++			-Wa,--trap
+ cflags-$(CONFIG_CPU_NEVADA)	+= $(call cc-option,-march=rm5200,-march=r5000) \
+ 			-Wa,--trap
+ cflags-$(CONFIG_CPU_RM7000)	+= $(call cc-option,-march=rm7000,-march=r5000) \
+diff --git a/arch/mips/include/asm/mipsregs.h b/arch/mips/include/asm/mipsregs.h
+index 9798660..9316324 100644
+--- a/arch/mips/include/asm/mipsregs.h
++++ b/arch/mips/include/asm/mipsregs.h
+@@ -192,6 +192,7 @@
+ #define PM_16M		0x01ffe000
+ #define PM_64M		0x07ffe000
+ #define PM_256M		0x1fffe000
++#define PM_1G		0x7fffe000
+ 
+ #endif
+ 
+diff --git a/arch/mips/include/asm/module.h b/arch/mips/include/asm/module.h
+index de6d09e..e2e09b2 100644
+--- a/arch/mips/include/asm/module.h
++++ b/arch/mips/include/asm/module.h
+@@ -98,6 +98,8 @@ search_module_dbetables(unsigned long addr)
+ #define MODULE_PROC_FAMILY "R5000 "
+ #elif defined CONFIG_CPU_R5432
+ #define MODULE_PROC_FAMILY "R5432 "
++#elif defined CONFIG_CPU_R5500
++#define MODULE_PROC_FAMILY "R5500 "
+ #elif defined CONFIG_CPU_R6000
+ #define MODULE_PROC_FAMILY "R6000 "
+ #elif defined CONFIG_CPU_NEVADA
+diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+index d9da711..b1372c2 100644
+--- a/arch/mips/kernel/Makefile
++++ b/arch/mips/kernel/Makefile
+@@ -33,6 +33,7 @@ obj-$(CONFIG_CPU_R4X00)		+= r4k_fpu.o r4k_switch.o
+ obj-$(CONFIG_CPU_R5000)		+= r4k_fpu.o r4k_switch.o
+ obj-$(CONFIG_CPU_R6000)		+= r6000_fpu.o r4k_switch.o
+ obj-$(CONFIG_CPU_R5432)		+= r4k_fpu.o r4k_switch.o
++obj-$(CONFIG_CPU_R5500)		+= r4k_fpu.o r4k_switch.o
+ obj-$(CONFIG_CPU_R8000)		+= r4k_fpu.o r4k_switch.o
+ obj-$(CONFIG_CPU_RM7000)	+= r4k_fpu.o r4k_switch.o
+ obj-$(CONFIG_CPU_RM9000)	+= r4k_fpu.o r4k_switch.o
+diff --git a/arch/mips/lib/Makefile b/arch/mips/lib/Makefile
+index 8810dfb..dbcf651 100644
+--- a/arch/mips/lib/Makefile
++++ b/arch/mips/lib/Makefile
+@@ -18,6 +18,7 @@ obj-$(CONFIG_CPU_R4300)		+= dump_tlb.o
+ obj-$(CONFIG_CPU_R4X00)		+= dump_tlb.o
+ obj-$(CONFIG_CPU_R5000)		+= dump_tlb.o
+ obj-$(CONFIG_CPU_R5432)		+= dump_tlb.o
++obj-$(CONFIG_CPU_R5500)		+= dump_tlb.o
+ obj-$(CONFIG_CPU_R6000)		+=
+ obj-$(CONFIG_CPU_R8000)		+=
+ obj-$(CONFIG_CPU_RM7000)	+= dump_tlb.o
+diff --git a/arch/mips/lib/dump_tlb.c b/arch/mips/lib/dump_tlb.c
+index 465ff0e..779821c 100644
+--- a/arch/mips/lib/dump_tlb.c
++++ b/arch/mips/lib/dump_tlb.c
+@@ -25,6 +25,7 @@ static inline const char *msk2str(unsigned int mask)
+ 	case PM_16M:	return "16Mb";
+ 	case PM_64M:	return "64Mb";
+ 	case PM_256M:	return "256Mb";
++	case PM_1G:	return "1Gb";
+ #endif
+ 	}
+ 	return "";
+diff --git a/arch/mips/mm/Makefile b/arch/mips/mm/Makefile
+index 44e8dd8..95ba32b 100644
+--- a/arch/mips/mm/Makefile
++++ b/arch/mips/mm/Makefile
+@@ -19,6 +19,7 @@ obj-$(CONFIG_CPU_R4300)		+= c-r4k.o cex-gen.o tlb-r4k.o
+ obj-$(CONFIG_CPU_R4X00)		+= c-r4k.o cex-gen.o tlb-r4k.o
+ obj-$(CONFIG_CPU_R5000)		+= c-r4k.o cex-gen.o tlb-r4k.o
+ obj-$(CONFIG_CPU_R5432)		+= c-r4k.o cex-gen.o tlb-r4k.o
++obj-$(CONFIG_CPU_R5500)		+= c-r4k.o cex-gen.o tlb-r4k.o
+ obj-$(CONFIG_CPU_R8000)		+= c-r4k.o cex-gen.o tlb-r8k.o
+ obj-$(CONFIG_CPU_RM7000)	+= c-r4k.o cex-gen.o tlb-r4k.o
+ obj-$(CONFIG_CPU_RM9000)	+= c-r4k.o cex-gen.o tlb-r4k.o

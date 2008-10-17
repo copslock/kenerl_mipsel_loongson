@@ -1,71 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Oct 2008 15:13:22 +0100 (BST)
-Received: from h4.dl5rb.org.uk ([81.2.74.4]:59339 "EHLO
-	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S21717619AbYJQONP (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 17 Oct 2008 15:13:15 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m9HEDD6P015180;
-	Fri, 17 Oct 2008 15:13:13 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m9HEDAuS015178;
-	Fri, 17 Oct 2008 15:13:10 +0100
-Date:	Fri, 17 Oct 2008 15:13:10 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
-	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-	sshtylyov@ru.mvista.com
-Subject: Re: [PATCH] ide: Add tx4939ide driver (v4)
-Message-ID: <20081017141310.GA14999@linux-mips.org>
-References: <20081017.230825.95059872.anemo@mba.ocn.ne.jp>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20081017.230825.95059872.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Oct 2008 15:37:08 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:45527 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S21720110AbYJQOhG (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 17 Oct 2008 15:37:06 +0100
+Received: from localhost (p4148-ipad203funabasi.chiba.ocn.ne.jp [222.146.83.148])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id D19B9AC0A; Fri, 17 Oct 2008 23:37:01 +0900 (JST)
+Date:	Fri, 17 Oct 2008 23:37:11 +0900 (JST)
+Message-Id: <20081017.233711.08319236.anemo@mba.ocn.ne.jp>
+To:	zhaolei@cn.fujitsu.com
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Fix debugfs_create_*'s error checking method for
+ mips/kernel/
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <48F87323.6020303@cn.fujitsu.com>
+References: <48F87323.6020303@cn.fujitsu.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20783
+X-archive-position: 20784
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Oct 17, 2008 at 11:08:25PM +0900, Atsushi Nemoto wrote:
+On Fri, 17 Oct 2008 19:12:35 +0800, Zhaolei <zhaolei@cn.fujitsu.com> wrote:
+> debugfs_create_*() returns NULL if an error occurs, returns -ENODEV
+> when debugfs is not enabled in the kernel.
+> 
+> Signed-off-by: Zhao Lei <zhaolei@cn.fujitsu.com>
 
-> This is the driver for the Toshiba TX4939 SoC ATA controller.
-> 
-> This controller has standard ATA taskfile registers and DMA
-> command/status registers, but the register layout is swapped on big
-> endian.  There are some other endian issue and some special registers
-> which requires many custom dma_ops/tp_ops routines and build_dmatable.
-> 
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-> ---
-> This patch is against current linux-mips tree.
-> 
-> Changes since v3:
-> * more consistent symbol naming
-> * handle only DMA mode in set_dma_mode
-> * rename tx4939ide_read_and_clear_dma_status to tx4939ide_clear_dma_status
-> * use standard ide_read_sff_dma_status in LE mode
-> * remove CS5530 workaround from tx4939ide_build_dmatable
-> * use ide_host_alloc/ide_host_register instead of ide_host_alloc
-> * fold tx4939ide_insw_swap into tx4939ide_input_data_swap
-> * more informative printk
-> * whitespace cleanups and spelling fixes
-> 
->  drivers/ide/Kconfig          |    6 +
->  drivers/ide/mips/Makefile    |    1 +
->  drivers/ide/mips/tx4939ide.c |  755 ++++++++++++++++++++++++++++++++++++++++++
+Oh that was my fault.  Thank you for fixing it.
 
-Btw, I don't think architecture specific subdirectories in subsystems are
-generally usefull.  Just as in this example this IDE controller happens
-only to be in use on a particular MIPS-based SOC but there is nothing
-really architecture specific in most such devices.
-
-  Ralf
+Acked-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>

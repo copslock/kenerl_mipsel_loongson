@@ -1,52 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Oct 2008 18:29:09 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:53494 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S21652636AbYJPR3G (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 16 Oct 2008 18:29:06 +0100
-Received: from localhost (p6178-ipad311funabasi.chiba.ocn.ne.jp [123.217.216.178])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 74FFBAA8C; Fri, 17 Oct 2008 02:29:02 +0900 (JST)
-Date:	Fri, 17 Oct 2008 02:29:10 +0900 (JST)
-Message-Id: <20081017.022910.95501548.anemo@mba.ocn.ne.jp>
-To:	sshtylyov@ru.mvista.com
-Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
-	bzolnier@gmail.com, ralf@linux-mips.org
-Subject: Re: [PATCH] ide: Add tx4939ide driver (v3)
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <48F7787B.2060807@ru.mvista.com>
-References: <48F7391D.8050109@ru.mvista.com>
-	<20081017.013101.128619577.anemo@mba.ocn.ne.jp>
-	<48F7787B.2060807@ru.mvista.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Oct 2008 12:14:04 +0100 (BST)
+Received: from cn.fujitsu.com ([222.73.24.84]:18651 "EHLO song.cn.fujitsu.com")
+	by ftp.linux-mips.org with ESMTP id S21707404AbYJQLN7 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 17 Oct 2008 12:13:59 +0100
+Received: from tang.cn.fujitsu.com (tang.cn.fujitsu.com [10.167.250.3])
+	by song.cn.fujitsu.com (Postfix) with ESMTP id 798211700BD;
+	Fri, 17 Oct 2008 19:13:47 +0800 (CST)
+Received: from fnst.cn.fujitsu.com (localhost.localdomain [127.0.0.1])
+	by tang.cn.fujitsu.com (8.13.1/8.13.1) with ESMTP id m9HBDjQM016135;
+	Fri, 17 Oct 2008 19:13:45 +0800
+Received: from [127.0.0.1] (unknown [10.167.141.121])
+	by fnst.cn.fujitsu.com (Postfix) with ESMTPA id 03EEBD42AA;
+	Fri, 17 Oct 2008 19:19:02 +0800 (CST)
+Message-ID: <48F87323.6020303@cn.fujitsu.com>
+Date:	Fri, 17 Oct 2008 19:12:35 +0800
+From:	Zhaolei <zhaolei@cn.fujitsu.com>
+User-Agent: Thunderbird 2.0.0.6 (Windows/20070728)
+MIME-Version: 1.0
+To:	ralf@linux-mips.org
+CC:	linux-mips@linux-mips.org,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: [PATCH] Fix debugfs_create_*'s error checking method for mips/kernel/
+Content-Type: text/plain; charset=GB2312
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <zhaolei@cn.fujitsu.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20777
+X-archive-position: 20778
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: zhaolei@cn.fujitsu.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 16 Oct 2008 21:23:07 +0400, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
-> >>>+	if ((dma_stat & 7) == 0 &&
-> >>>+	    (ctl & (TX4939IDE_INT_XFEREND | TX4939IDE_INT_HOST)) ==
-> >>>+	    (TX4939IDE_INT_XFEREND | TX4939IDE_INT_HOST))
-> >>
-> >>   Parens around & and | are hardly needed...
-> 
-> > You mean more parens are needed?
-> 
->     I mean less. :-)
+Hi, 
 
-Well, I think all above parens are required.  '&' and '|' are weaker
-than '==', no?
+debugfs_create_*() returns NULL if an error occurs, returns -ENODEV
+when debugfs is not enabled in the kernel.
 
+Signed-off-by: Zhao Lei <zhaolei@cn.fujitsu.com>
 ---
-Atsushi Nemoto
+ arch/mips/kernel/setup.c     |    4 ++--
+ arch/mips/kernel/unaligned.c |    8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 16f8edf..4430a1f 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -601,8 +601,8 @@ static int __init debugfs_mips(void)
+ 	struct dentry *d;
+ 
+ 	d = debugfs_create_dir("mips", NULL);
+-	if (IS_ERR(d))
+-		return PTR_ERR(d);
++	if (!d)
++		return -ENOMEM;
+ 	mips_debugfs_dir = d;
+ 	return 0;
+ }
+diff --git a/arch/mips/kernel/unaligned.c b/arch/mips/kernel/unaligned.c
+index c327b21..2070966 100644
+--- a/arch/mips/kernel/unaligned.c
++++ b/arch/mips/kernel/unaligned.c
+@@ -560,12 +560,12 @@ static int __init debugfs_unaligned(void)
+ 		return -ENODEV;
+ 	d = debugfs_create_u32("unaligned_instructions", S_IRUGO,
+ 			       mips_debugfs_dir, &unaligned_instructions);
+-	if (IS_ERR(d))
+-		return PTR_ERR(d);
++	if (!d)
++		return -ENOMEM;
+ 	d = debugfs_create_u32("unaligned_action", S_IRUGO | S_IWUSR,
+ 			       mips_debugfs_dir, &unaligned_action);
+-	if (IS_ERR(d))
+-		return PTR_ERR(d);
++	if (!d)
++		return -ENOMEM;
+ 	return 0;
+ }
+ __initcall(debugfs_unaligned);
+-- 
+1.5.5.3

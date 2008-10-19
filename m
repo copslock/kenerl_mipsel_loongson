@@ -1,23 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Oct 2008 03:09:48 +0100 (BST)
-Received: from sakura.staff.proxad.net ([213.228.1.107]:43476 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Oct 2008 03:10:08 +0100 (BST)
+Received: from sakura.staff.proxad.net ([213.228.1.107]:44500 "EHLO
 	sakura.staff.proxad.net") by ftp.linux-mips.org with ESMTP
-	id S21816162AbYJSCHG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 19 Oct 2008 03:07:06 +0100
+	id S21816166AbYJSCHI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 19 Oct 2008 03:07:08 +0100
 Received: by sakura.staff.proxad.net (Postfix, from userid 1000)
-	id 0EB871124071; Sun, 19 Oct 2008 04:07:03 +0200 (CEST)
+	id 67797112404F; Sun, 19 Oct 2008 04:07:03 +0200 (CEST)
 From:	Maxime Bizon <mbizon@freebox.fr>
-To:	dbrownell@users.sourceforge.net
-Cc:	linux-mips@linux-mips.org, linux-usb@vger.kernel.org,
-	Maxime Bizon <mbizon@freebox.fr>
-Subject: [PATCH/RFC v1 07/12] [MIPS] BCM63XX: Add USB OHCI support.
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org, Maxime Bizon <mbizon@freebox.fr>
+Subject: [PATCH/RFC v1 11/12] [MIPS] BCM63XX: Add preliminary board support.
 Date:	Sun, 19 Oct 2008 04:07:03 +0200
-Message-Id: <1224382023-24342-1-git-send-email-mbizon@freebox.fr>
+Message-Id: <1224382023-24436-1-git-send-email-mbizon@freebox.fr>
 X-Mailer: git-send-email 1.5.4.3
 Return-Path: <max@sakura.staff.proxad.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20804
+X-archive-position: 20805
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,53 +26,71 @@ X-list: linux-mips
 
 Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
 ---
- arch/mips/bcm63xx/Kconfig                          |    6 +
- arch/mips/bcm63xx/Makefile                         |    1 +
- arch/mips/bcm63xx/dev-usb-ohci.c                   |   50 ++++++
- .../asm/mach-bcm63xx/bcm63xx_dev_usb_ohci.h        |    6 +
- drivers/usb/host/ohci-bcm63xx.c                    |  159 ++++++++++++++++++++
- drivers/usb/host/ohci-hcd.c                        |    5 +
- drivers/usb/host/ohci.h                            |    7 +-
- 7 files changed, 233 insertions(+), 1 deletions(-)
- create mode 100644 arch/mips/bcm63xx/dev-usb-ohci.c
- create mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_usb_ohci.h
- create mode 100644 drivers/usb/host/ohci-bcm63xx.c
+ arch/mips/bcm63xx/Kconfig                          |    2 +
+ arch/mips/bcm63xx/Makefile                         |    2 +
+ arch/mips/bcm63xx/boards/Kconfig                   |   10 +
+ arch/mips/bcm63xx/boards/Makefile                  |    1 +
+ arch/mips/bcm63xx/boards/board_bcm963xx.c          |  328 ++++++++++++++++++++
+ arch/mips/bcm63xx/prom.c                           |    4 +
+ arch/mips/bcm63xx/setup.c                          |   16 +-
+ arch/mips/include/asm/mach-bcm63xx/bcm63xx_board.h |   12 +
+ .../mips/include/asm/mach-bcm63xx/board_bcm963xx.h |   50 +++
+ 9 files changed, 423 insertions(+), 2 deletions(-)
+ create mode 100644 arch/mips/bcm63xx/boards/Kconfig
+ create mode 100644 arch/mips/bcm63xx/boards/Makefile
+ create mode 100644 arch/mips/bcm63xx/boards/board_bcm963xx.c
+ create mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_board.h
+ create mode 100644 arch/mips/include/asm/mach-bcm63xx/board_bcm963xx.h
 
 diff --git a/arch/mips/bcm63xx/Kconfig b/arch/mips/bcm63xx/Kconfig
-index 7ca370a..f2ddb87 100644
+index be120f7..8c192e7 100644
 --- a/arch/mips/bcm63xx/Kconfig
 +++ b/arch/mips/bcm63xx/Kconfig
-@@ -4,8 +4,14 @@ menu "CPU support"
- config BCM63XX_CPU_6348
- 	bool "support 6348 CPU"
- 	select HW_HAS_PCI
-+	select USB_ARCH_HAS_OHCI
-+	select USB_OHCI_BIG_ENDIAN_DESC
-+	select USB_OHCI_BIG_ENDIAN_MMIO
- 
- config BCM63XX_CPU_6358
- 	bool "support 6358 CPU"
- 	select HW_HAS_PCI
-+	select USB_ARCH_HAS_OHCI
-+	select USB_OHCI_BIG_ENDIAN_DESC
-+	select USB_OHCI_BIG_ENDIAN_MMIO
+@@ -17,3 +17,5 @@ config BCM63XX_CPU_6358
+ 	select USB_ARCH_HAS_EHCI
+ 	select USB_EHCI_BIG_ENDIAN_MMIO
  endmenu
++
++source "arch/mips/bcm63xx/boards/Kconfig"
 diff --git a/arch/mips/bcm63xx/Makefile b/arch/mips/bcm63xx/Makefile
-index 456e915..75f0d54 100644
+index 5358093..10462ae 100644
 --- a/arch/mips/bcm63xx/Makefile
 +++ b/arch/mips/bcm63xx/Makefile
-@@ -1,4 +1,5 @@
- obj-y		+= clk.o cpu.o cs.o gpio.o irq.o prom.o setup.o timer.o
- obj-y		+= dev-uart.o
- obj-y		+= dev-pcmcia.o
-+obj-y		+= dev-usb-ohci.o
+@@ -5,3 +5,5 @@ obj-y		+= dev-usb-ohci.o
+ obj-y		+= dev-usb-ehci.o
+ obj-y		+= dev-enet.o
  obj-$(CONFIG_EARLY_PRINTK)	+= early_printk.o
-diff --git a/arch/mips/bcm63xx/dev-usb-ohci.c b/arch/mips/bcm63xx/dev-usb-ohci.c
++
++obj-y		+= boards/
+diff --git a/arch/mips/bcm63xx/boards/Kconfig b/arch/mips/bcm63xx/boards/Kconfig
 new file mode 100644
-index 0000000..377e67c
+index 0000000..da5eeaa
 --- /dev/null
-+++ b/arch/mips/bcm63xx/dev-usb-ohci.c
-@@ -0,0 +1,50 @@
++++ b/arch/mips/bcm63xx/boards/Kconfig
+@@ -0,0 +1,10 @@
++choice
++	prompt "Board support"
++	depends on BCM63XX
++	default BOARD_BCM963XX
++
++config BOARD_BCM963XX
++       bool "Generic Broadcom 963xx boards"
++       help
++
++endchoice
+diff --git a/arch/mips/bcm63xx/boards/Makefile b/arch/mips/bcm63xx/boards/Makefile
+new file mode 100644
+index 0000000..af07c1a
+--- /dev/null
++++ b/arch/mips/bcm63xx/boards/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_BOARD_BCM963XX)		+= board_bcm963xx.o
+diff --git a/arch/mips/bcm63xx/boards/board_bcm963xx.c b/arch/mips/bcm63xx/boards/board_bcm963xx.c
+new file mode 100644
+index 0000000..3e2b47a
+--- /dev/null
++++ b/arch/mips/bcm63xx/boards/board_bcm963xx.c
+@@ -0,0 +1,328 @@
 +/*
 + * This file is subject to the terms and conditions of the GNU General Public
 + * License.  See the file "COPYING" in the main directory of this archive
@@ -84,263 +101,465 @@ index 0000000..377e67c
 +
 +#include <linux/init.h>
 +#include <linux/kernel.h>
++#include <linux/string.h>
 +#include <linux/platform_device.h>
-+#include <bcm63xx_cpu.h>
-+#include <bcm63xx_dev_usb_ohci.h>
-+
-+static struct resource ohci_resources[] = {
-+	{
-+		.start		= -1, /* filled at runtime */
-+		.end		= -1, /* filled at runtime */
-+		.flags		= IORESOURCE_MEM,
-+	},
-+	{
-+		.start		= -1, /* filled at runtime */
-+		.flags		= IORESOURCE_IRQ,
-+	},
-+};
-+
-+static u64 ohci_dmamask = ~(u32)0;
-+
-+static struct platform_device bcm63xx_ohci_device = {
-+	.name		= "bcm63xx_ohci",
-+	.id		= 0,
-+	.num_resources	= ARRAY_SIZE(ohci_resources),
-+	.resource	= ohci_resources,
-+	.dev		= {
-+		.dma_mask		= &ohci_dmamask,
-+		.coherent_dma_mask	= 0xffffffff,
-+	},
-+};
-+
-+int __init bcm63xx_ohci_register(void)
-+{
-+	if (!BCMCPU_IS_6348() && !BCMCPU_IS_6358())
-+		return 0;
-+
-+	ohci_resources[0].start = bcm63xx_regset_address(RSET_OHCI0);
-+	ohci_resources[0].end = ohci_resources[0].start;
-+	ohci_resources[0].end += RSET_OHCI_SIZE - 1;
-+	ohci_resources[1].start = bcm63xx_get_irq_number(IRQ_OHCI0);
-+	return platform_device_register(&bcm63xx_ohci_device);
-+}
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_usb_ohci.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_usb_ohci.h
-new file mode 100644
-index 0000000..518a04d
---- /dev/null
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_usb_ohci.h
-@@ -0,0 +1,6 @@
-+#ifndef BCM63XX_DEV_USB_OHCI_H_
-+#define BCM63XX_DEV_USB_OHCI_H_
-+
-+int bcm63xx_ohci_register(void);
-+
-+#endif /* BCM63XX_DEV_USB_OHCI_H_ */
-diff --git a/drivers/usb/host/ohci-bcm63xx.c b/drivers/usb/host/ohci-bcm63xx.c
-new file mode 100644
-index 0000000..08807d9
---- /dev/null
-+++ b/drivers/usb/host/ohci-bcm63xx.c
-@@ -0,0 +1,159 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2008 Maxime Bizon <mbizon@freebox.fr>
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/clk.h>
-+#include <linux/platform_device.h>
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/partitions.h>
++#include <linux/mtd/physmap.h>
++#include <asm/addrspace.h>
++#include <bcm63xx_board.h>
 +#include <bcm63xx_cpu.h>
 +#include <bcm63xx_regs.h>
 +#include <bcm63xx_io.h>
++#include <bcm63xx_board.h>
++#include <bcm63xx_dev_pci.h>
++#include <bcm63xx_dev_uart.h>
++#include <bcm63xx_dev_enet.h>
++#include <bcm63xx_dev_pcmcia.h>
++#include <bcm63xx_dev_usb_ohci.h>
++#include <bcm63xx_dev_usb_ehci.h>
++#include <board_bcm963xx.h>
 +
-+static struct clk *usb_host_clock;
++#define PFX	"board_bcm963xx: "
 +
-+static int __devinit ohci_bcm63xx_start(struct usb_hcd *hcd)
-+{
-+	struct ohci_hcd *ohci = hcd_to_ohci(hcd);
-+	int ret;
++static struct bcm963xx_nvram nvram;
++static unsigned int mac_addr_used;
++static struct board_info board;
 +
-+	ret = ohci_init(ohci);
-+	if (ret < 0)
-+		return ret;
++/*
++ * known 6348 boards
++ */
++#ifdef CONFIG_BCM63XX_CPU_6348
++static struct board_info __initdata board_96348r = {
++	.name				= "96348R",
++	.expected_cpu_id		= 0x6348,
 +
-+	/* FIXME: autodetected port 2 is shared with USB slave */
++	.has_enet0			= 1,
++	.has_pci			= 1,
 +
-+	ret = ohci_run(ohci);
-+	if (ret < 0) {
-+		err("can't start %s", hcd->self.bus_name);
-+		ohci_stop(hcd);
-+		return ret;
-+	}
-+	return 0;
-+}
-+
-+static const struct hc_driver ohci_bcm63xx_hc_driver = {
-+	.description =		hcd_name,
-+	.product_desc =		"BCM63XX integrated OHCI controller",
-+	.hcd_priv_size =	sizeof(struct ohci_hcd),
-+
-+	.irq =			ohci_irq,
-+	.flags =		HCD_USB11 | HCD_MEMORY,
-+	.start =		ohci_bcm63xx_start,
-+	.stop =			ohci_stop,
-+	.shutdown =		ohci_shutdown,
-+	.urb_enqueue =		ohci_urb_enqueue,
-+	.urb_dequeue =		ohci_urb_dequeue,
-+	.endpoint_disable =	ohci_endpoint_disable,
-+	.get_frame_number =	ohci_get_frame,
-+	.hub_status_data =	ohci_hub_status_data,
-+	.hub_control =		ohci_hub_control,
-+	.start_port_reset =	ohci_start_port_reset,
-+};
-+
-+static int __devinit ohci_hcd_bcm63xx_drv_probe(struct platform_device *pdev)
-+{
-+	struct resource *res_mem, *res_irq;
-+	struct usb_hcd *hcd;
-+	struct ohci_hcd *ohci;
-+	u32 reg;
-+	int ret;
-+
-+	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	res_irq = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
-+	if (!res_mem || !res_irq)
-+		return -ENODEV;
-+
-+	if (BCMCPU_IS_6348()) {
-+		struct clk *clk;
-+		/* enable USB host clock */
-+		clk = clk_get(&pdev->dev, "usbh");
-+		if (IS_ERR(clk))
-+			return -ENODEV;
-+
-+		clk_enable(clk);
-+		usb_host_clock = clk;
-+		bcm_rset_writel(RSET_OHCI_PRIV, 0, OHCI_PRIV_REG);
-+
-+	} else if (BCMCPU_IS_6358()) {
-+		reg = bcm_rset_readl(RSET_USBH_PRIV, USBH_PRIV_SWAP_REG);
-+		reg &= ~USBH_PRIV_SWAP_OHCI_ENDN_MASK;
-+		reg |= USBH_PRIV_SWAP_OHCI_DATA_MASK;
-+		bcm_rset_writel(RSET_USBH_PRIV, reg, USBH_PRIV_SWAP_REG);
-+		/* don't ask... */
-+		bcm_rset_writel(RSET_USBH_PRIV, 0x1c0020, USBH_PRIV_TEST_REG);
-+	} else
-+		return 0;
-+
-+	hcd = usb_create_hcd(&ohci_bcm63xx_hc_driver, &pdev->dev, "bcm63xx");
-+	if (!hcd)
-+		return -ENOMEM;
-+	hcd->rsrc_start = res_mem->start;
-+	hcd->rsrc_len = res_mem->end - res_mem->start + 1;
-+
-+	if (!request_mem_region(hcd->rsrc_start, hcd->rsrc_len, hcd_name)) {
-+		pr_debug("request_mem_region failed\n");
-+		ret = -EBUSY;
-+		goto out;
-+	}
-+
-+	hcd->regs = ioremap(hcd->rsrc_start, hcd->rsrc_len);
-+	if (!hcd->regs) {
-+		pr_debug("ioremap failed\n");
-+		ret = -EIO;
-+		goto out1;
-+	}
-+
-+	ohci = hcd_to_ohci(hcd);
-+	ohci->flags |= OHCI_QUIRK_BE_MMIO | OHCI_QUIRK_BE_DESC |
-+		OHCI_QUIRK_FRAME_NO;
-+	ohci_hcd_init(ohci);
-+
-+	ret = usb_add_hcd(hcd, res_irq->start, IRQF_DISABLED);
-+	if (ret)
-+		goto out2;
-+
-+	platform_set_drvdata(pdev, hcd);
-+	return 0;
-+
-+out2:
-+	iounmap(hcd->regs);
-+out1:
-+	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
-+out:
-+	usb_put_hcd(hcd);
-+	return ret;
-+}
-+
-+static int __devexit ohci_hcd_bcm63xx_drv_remove(struct platform_device *pdev)
-+{
-+	struct usb_hcd *hcd;
-+
-+	hcd = platform_get_drvdata(pdev);
-+	usb_remove_hcd(hcd);
-+	iounmap(hcd->regs);
-+	usb_put_hcd(hcd);
-+	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
-+	if (usb_host_clock) {
-+		clk_disable(usb_host_clock);
-+		clk_put(usb_host_clock);
-+	}
-+	platform_set_drvdata(pdev, NULL);
-+	return 0;
-+}
-+
-+static struct platform_driver ohci_hcd_bcm63xx_driver = {
-+	.probe		= ohci_hcd_bcm63xx_drv_probe,
-+	.remove		= __devexit_p(ohci_hcd_bcm63xx_drv_remove),
-+	.shutdown	= usb_hcd_platform_shutdown,
-+	.driver		= {
-+		.name	= "bcm63xx_ohci",
-+		.owner	= THIS_MODULE,
-+		.bus	= &platform_bus_type
++	.enet0 = {
++		.has_phy		= 1,
++		.use_internal_phy	= 1,
 +	},
 +};
 +
-+MODULE_ALIAS("platform:bcm63xx_ohci");
-diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c
-index 8990196..7e360ef 100644
---- a/drivers/usb/host/ohci-hcd.c
-+++ b/drivers/usb/host/ohci-hcd.c
-@@ -1050,6 +1050,11 @@ MODULE_LICENSE ("GPL");
- #define PLATFORM_DRIVER		usb_hcd_pnx4008_driver
- #endif
- 
-+#ifdef CONFIG_BCM63XX
-+#include "ohci-bcm63xx.c"
-+#define PLATFORM_DRIVER		ohci_hcd_bcm63xx_driver
++static struct board_info __initdata board_96348gw = {
++	.name				= "96348GW",
++	.expected_cpu_id		= 0x6348,
++
++	.has_enet0			= 1,
++	.has_pci			= 1,
++
++	.enet0 = {
++		.has_phy		= 1,
++		.use_internal_phy	= 1,
++	},
++};
 +#endif
 +
- #if defined(CONFIG_CPU_SUBTYPE_SH7720) || \
-     defined(CONFIG_CPU_SUBTYPE_SH7721) || \
-     defined(CONFIG_CPU_SUBTYPE_SH7763)
-diff --git a/drivers/usb/host/ohci.h b/drivers/usb/host/ohci.h
-index faf622e..947e240 100644
---- a/drivers/usb/host/ohci.h
-+++ b/drivers/usb/host/ohci.h
-@@ -549,6 +549,11 @@ static inline struct usb_hcd *ohci_to_hcd (const struct ohci_hcd *ohci)
- #define writel_be(val, addr)	out_be32((__force unsigned *)addr, val)
- #endif
- 
-+#if defined(CONFIG_MIPS) && defined(CONFIG_BCM63XX)
-+#define readl_be(addr)		__raw_readl((__force unsigned *)addr)
-+#define writel_be(val, addr)	__raw_writel(val, (__force unsigned *)addr)
++/*
++ * known 6358 boards
++ */
++#ifdef CONFIG_BCM63XX_CPU_6358
++static struct board_info __initdata board_96358vw2 = {
++	.name				= "96358VW2",
++	.expected_cpu_id		= 0x6358,
++
++	.has_enet0			= 1,
++	.has_enet1			= 1,
++	.has_pci			= 1,
++
++	.enet0 = {
++		.has_phy		= 1,
++		.use_internal_phy	= 1,
++	},
++
++	.enet1 = {
++		.force_speed_100	= 1,
++		.force_duplex_full	= 1,
++	},
++
++
++	.has_ohci0 = 1,
++	.has_pccard = 1,
++	.has_ehci0 = 1,
++};
 +#endif
 +
- static inline unsigned int _ohci_readl (const struct ohci_hcd *ohci,
- 					__hc32 __iomem * regs)
++/*
++ * all boards
++ */
++static const struct board_info __initdata *bcm963xx_boards[] = {
++#ifdef CONFIG_BCM63XX_CPU_6348
++	&board_96348r,
++	&board_96348gw,
++#endif
++
++#ifdef CONFIG_BCM63XX_CPU_6358
++	&board_96358vw2,
++#endif
++};
++
++/*
++ * early init callback, read nvram data from flash and checksum it
++ */
++void __init board_prom_init(void)
++{
++	unsigned int check_len, i;
++	u8 *boot_addr, *cfe, *p;
++	char cfe_version[32];
++	u32 val;
++
++	/* read base address of boot chip select (0) */
++	val = bcm_mpi_readl(MPI_CSBASE_REG(0));
++	val &= MPI_CSBASE_BASE_MASK;
++	boot_addr = (u8 *)KSEG1ADDR(val);
++
++	/* dump cfe version */
++	cfe = boot_addr + BCM963XX_CFE_VERSION_OFFSET;
++	if (!memcmp(cfe, "cfe-v", 5))
++		snprintf(cfe_version, sizeof(cfe_version), "%u.%u.%u-%u.%u",
++			 cfe[5], cfe[6], cfe[7], cfe[8], cfe[9]);
++	else
++		strcpy(cfe_version, "unknown");
++	printk(KERN_INFO PFX "CFE version: %s\n", cfe_version);
++
++	/* extract nvram data */
++	memcpy(&nvram, boot_addr + BCM963XX_NVRAM_OFFSET, sizeof(nvram));
++
++	/* check checksum before using data */
++	if (nvram.version <= 4)
++		check_len = offsetof(struct bcm963xx_nvram, checksum_old);
++	else
++		check_len = sizeof(nvram);
++	val = 0;
++	p = (u8 *)&nvram;
++	while (check_len--)
++		val += *p;
++	if (val) {
++		printk(KERN_ERR PFX "invalid nvram checksum\n");
++		return;
++	}
++
++	/* find board by name */
++	for (i = 0; i < ARRAY_SIZE(bcm963xx_boards); i++) {
++		if (strncmp(nvram.name, bcm963xx_boards[i]->name,
++			    sizeof(nvram.name)))
++			continue;
++		/* copy, board desc array is marked initdata */
++		memcpy(&board, bcm963xx_boards[i], sizeof(board));
++		break;
++	}
++
++	/* bail out if board is not found, will complain later */
++	if (!board.name[0]) {
++		char name[17];
++		memcpy(name, nvram.name, 16);
++		name[16] = 0;
++		printk(KERN_ERR PFX "unknown bcm963xx board: %s\n",
++		       name);
++		return;
++	}
++
++	/* setup pin multiplexing depending on board enabled device,
++	 * this has to be done this early since PCI init is done
++	 * inside arch_initcall */
++	val = 0;
++
++	if (board.has_pci) {
++		bcm63xx_pci_enabled = 1;
++		if (BCMCPU_IS_6348())
++			val |= GPIO_MODE_6348_G2_PCI;
++	}
++
++	if (board.has_pccard) {
++		if (BCMCPU_IS_6348())
++			val |= GPIO_MODE_6348_G1_MII_PCCARD;
++	}
++
++	if (board.has_enet0 && !board.enet0.use_internal_phy) {
++		if (BCMCPU_IS_6348())
++			val |= GPIO_MODE_6348_G3_EXT_MII |
++				GPIO_MODE_6348_G0_EXT_MII;
++	}
++
++	if (board.has_enet1 && !board.enet1.use_internal_phy) {
++		if (BCMCPU_IS_6348())
++			val |= GPIO_MODE_6348_G3_EXT_MII |
++				GPIO_MODE_6348_G0_EXT_MII;
++	}
++
++	bcm_gpio_writel(val, GPIO_MODE_REG);
++}
++
++/*
++ * second stage init callback, good time to panic if we couldn't
++ * identify on which board we're running since early printk is working
++ */
++void __init board_setup(void)
++{
++	if (!board.name[0])
++		panic("unable to detect bcm963xx board");
++	printk(KERN_INFO PFX "board name: %s\n", board.name);
++
++	/* make sure we're running on expected cpu */
++	if (bcm63xx_get_cpu_id() != board.expected_cpu_id)
++		panic("unexpected CPU for bcm963xx board");
++}
++
++/*
++ * return board name for /proc/cpuinfo
++ */
++const char *board_get_name(void)
++{
++	return board.name;
++}
++
++/*
++ * register & return a new board mac address
++ */
++static int board_get_mac_address(u8 *mac)
++{
++	u8 *p;
++	int count;
++
++	if (mac_addr_used >= nvram.mac_addr_count) {
++		printk(KERN_ERR PFX "not enough mac address\n");
++		return -ENODEV;
++	}
++
++	memcpy(mac, nvram.mac_addr_base, ETH_ALEN);
++	p = mac + ETH_ALEN - 1;
++	count = mac_addr_used;
++
++	while (count--) {
++		do {
++			(*p)++;
++			if (*p != 0)
++				break;
++			p--;
++		} while (p != mac);
++	}
++
++	if (p == mac) {
++		printk(KERN_ERR PFX "unable to fetch mac address\n");
++		return -ENODEV;
++	}
++
++	mac_addr_used++;
++	return 0;
++}
++
++static struct mtd_partition mtd_partitions[] = {
++	{
++		.name		= "cfe",
++		.offset		= 0x0,
++		.size		= 0x40000,
++	}
++};
++
++static struct physmap_flash_data flash_data = {
++	.width			= 2,
++	.nr_parts		= ARRAY_SIZE(mtd_partitions),
++	.parts			= mtd_partitions,
++};
++
++static struct resource mtd_resources[] = {
++	{
++		.start		= 0,	/* filled at runtime */
++		.end		= 0,	/* filled at runtime */
++		.flags		= IORESOURCE_MEM,
++	}
++};
++
++static struct platform_device mtd_dev = {
++	.name			= "physmap-flash",
++	.resource		= mtd_resources,
++	.num_resources		= ARRAY_SIZE(mtd_resources),
++	.dev			= {
++		.platform_data	= &flash_data,
++	},
++};
++
++/*
++ * third stage init callback, register all board devices.
++ */
++int __init board_register_devices(void)
++{
++	u32 val;
++
++	bcm63xx_uart_register();
++
++	if (board.has_pccard)
++		bcm63xx_pcmcia_register();
++
++	if (board.has_enet0 &&
++	    !board_get_mac_address(board.enet0.mac_addr))
++		bcm63xx_enet_register(0, &board.enet0);
++
++	if (board.has_enet1 &&
++	    !board_get_mac_address(board.enet1.mac_addr))
++		bcm63xx_enet_register(1, &board.enet1);
++
++	if (board.has_ohci0)
++		bcm63xx_ohci_register();
++
++	if (board.has_ehci0)
++		bcm63xx_ehci_register();
++
++
++	/* read base address of boot chip select (0) */
++	val = bcm_mpi_readl(MPI_CSBASE_REG(0));
++	val &= MPI_CSBASE_BASE_MASK;
++	mtd_resources[0].start = val;
++	mtd_resources[0].end = 0x1FFFFFFF;
++
++	platform_device_register(&mtd_dev);
++
++	return 0;
++}
++
+diff --git a/arch/mips/bcm63xx/prom.c b/arch/mips/bcm63xx/prom.c
+index f0b49e8..d97ceed 100644
+--- a/arch/mips/bcm63xx/prom.c
++++ b/arch/mips/bcm63xx/prom.c
+@@ -9,6 +9,7 @@
+ #include <linux/init.h>
+ #include <linux/bootmem.h>
+ #include <asm/bootinfo.h>
++#include <bcm63xx_board.h>
+ #include <bcm63xx_cpu.h>
+ #include <bcm63xx_io.h>
+ #include <bcm63xx_regs.h>
+@@ -36,6 +37,9 @@ void __init prom_init(void)
+ 
+ 	/* assign command line from kernel config */
+ 	strcpy(arcs_cmdline, CONFIG_CMDLINE);
++
++	/* do low level board init */
++	board_prom_init();
+ }
+ 
+ void __init prom_free_prom_memory(void)
+diff --git a/arch/mips/bcm63xx/setup.c b/arch/mips/bcm63xx/setup.c
+index 4d8b127..8f4b1fa 100644
+--- a/arch/mips/bcm63xx/setup.c
++++ b/arch/mips/bcm63xx/setup.c
+@@ -16,6 +16,7 @@
+ #include <asm/time.h>
+ #include <asm/reboot.h>
+ #include <asm/cacheflush.h>
++#include <bcm63xx_board.h>
+ #include <bcm63xx_cpu.h>
+ #include <bcm63xx_regs.h>
+ #include <bcm63xx_io.h>
+@@ -87,8 +88,9 @@ static void __bcm63xx_machine_reboot(char *p)
+ const char *get_system_type(void)
  {
-@@ -654,7 +659,7 @@ static inline u32 hc32_to_cpup (const struct ohci_hcd *ohci, const __hc32 *x)
-  * some big-endian SOC implementations.  Same thing happens with PSW access.
-  */
+ 	static char buf[128];
+-	sprintf(buf, "bcm963xx (0x%04x/0x%04X)",
+-		bcm63xx_get_cpu_id(), bcm63xx_get_cpu_rev());
++	snprintf(buf, sizeof(buf), "bcm63xx/%s (0x%04x/0x%04X)",
++		 board_get_name(),
++		 bcm63xx_get_cpu_id(), bcm63xx_get_cpu_rev());
+ 	return buf;
+ }
  
--#ifdef CONFIG_PPC_MPC52xx
-+#if defined(CONFIG_PPC_MPC52xx) || defined(CONFIG_BCM63XX)
- #define big_endian_frame_no_quirk(ohci)	(ohci->flags & OHCI_QUIRK_FRAME_NO)
- #else
- #define big_endian_frame_no_quirk(ohci)	0
+@@ -96,6 +98,7 @@ void __init plat_time_init(void)
+ {
+ 	mips_hpt_frequency = bcm63xx_get_cpu_freq() / 2;
+ }
++
+ void __init plat_mem_setup(void)
+ {
+ 	add_memory_region(0, bcm63xx_get_memory_size(), BOOT_MEM_RAM);
+@@ -107,4 +110,13 @@ void __init plat_mem_setup(void)
+ 	set_io_port_base(0);
+ 	ioport_resource.start = 0;
+ 	ioport_resource.end = ~0;
++
++	board_setup();
++}
++
++int __init bcm63xx_register_devices(void)
++{
++	return board_register_devices();
+ }
++
++device_initcall(bcm63xx_register_devices);
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_board.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_board.h
+new file mode 100644
+index 0000000..fa3e7e6
+--- /dev/null
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_board.h
+@@ -0,0 +1,12 @@
++#ifndef BCM63XX_BOARD_H_
++#define BCM63XX_BOARD_H_
++
++const char *board_get_name(void);
++
++void board_prom_init(void);
++
++void board_setup(void);
++
++int board_register_devices(void);
++
++#endif /* ! BCM63XX_BOARD_H_ */
+diff --git a/arch/mips/include/asm/mach-bcm63xx/board_bcm963xx.h b/arch/mips/include/asm/mach-bcm63xx/board_bcm963xx.h
+new file mode 100644
+index 0000000..17e4e7e
+--- /dev/null
++++ b/arch/mips/include/asm/mach-bcm63xx/board_bcm963xx.h
+@@ -0,0 +1,50 @@
++#ifndef BOARD_BCM963XX_H_
++#define BOARD_BCM963XX_H_
++
++#include <linux/types.h>
++#include <bcm63xx_dev_enet.h>
++
++/*
++ * flash mapping
++ */
++#define BCM963XX_CFE_VERSION_OFFSET	0x570
++#define BCM963XX_NVRAM_OFFSET		0x580
++
++/*
++ * nvram structure
++ */
++struct bcm963xx_nvram {
++	u32	version;
++	u8	reserved1[256];
++	u8	name[16];
++	u32	main_tp_number;
++	u32	psi_size;
++	u32	mac_addr_count;
++	u8	mac_addr_base[6];
++	u8	reserved2[2];
++	u32	checksum_old;
++	u8	reserved3[720];
++	u32	checksum_high;
++};
++
++/*
++ * board definition
++ */
++struct board_info {
++	u8		name[16];
++	unsigned int	expected_cpu_id;
++
++	/* enabled feature/device */
++	unsigned int	has_enet0:1;
++	unsigned int	has_enet1:1;
++	unsigned int	has_pci:1;
++	unsigned int	has_pccard:1;
++	unsigned int	has_ohci0:1;
++	unsigned int	has_ehci0:1;
++
++	/* ethernet config */
++	struct bcm63xx_enet_platform_data enet0;
++	struct bcm63xx_enet_platform_data enet1;
++};
++
++#endif /* ! BOARD_BCM963XX_H_ */
 -- 
 1.5.4.3

@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Oct 2008 17:32:38 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:46372 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S21854790AbYJSQcf (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 19 Oct 2008 17:32:35 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Oct 2008 19:34:29 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:52519 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S21860907AbYJSSe1 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 19 Oct 2008 19:34:27 +0100
 Received: from [192.168.1.234] (unknown [10.150.0.9])
 	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 58BFA3ECA; Sun, 19 Oct 2008 09:32:29 -0700 (PDT)
-Message-ID: <48FB610D.3020901@ru.mvista.com>
-Date:	Sun, 19 Oct 2008 20:32:13 +0400
+	id 1E9463ECA; Sun, 19 Oct 2008 11:34:23 -0700 (PDT)
+Message-ID: <48FB7D9E.4030803@ru.mvista.com>
+Date:	Sun, 19 Oct 2008 22:34:06 +0400
 From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
 Organization: MontaVista Software Inc.
 User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
@@ -16,16 +16,16 @@ To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
 	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
 	ralf@linux-mips.org
-Subject: Re: [PATCH] ide: Add tx4938ide driver
-References: <20081017.231130.82350696.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20081017.231130.82350696.anemo@mba.ocn.ne.jp>
+Subject: Re: [PATCH] TXx9: Add TX4938 ATA support
+References: <20081017.231036.26097587.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20081017.231036.26097587.anemo@mba.ocn.ne.jp>
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20810
+X-archive-position: 20811
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,141 +37,64 @@ Hello.
 
 Atsushi Nemoto wrote:
 
-> This is the driver for the Toshiba TX4938 SoC EBUS controller ATA mode.
-> It has custom set_pio_mode and some hacks for big endian.
+> Add a helper routine to register tx4938ide driver and use it on
+> RBTX4938 board.
 
 > Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-[...]
-
-> diff --git a/drivers/ide/mips/tx4938ide.c b/drivers/ide/mips/tx4938ide.c
-> new file mode 100644
-> index 0000000..2e5778d
-> --- /dev/null
-> +++ b/drivers/ide/mips/tx4938ide.c
-> @@ -0,0 +1,319 @@
-[...]
-> +static void tx4938ide_tune_ebusc(unsigned int ebus_ch,
-> +				 unsigned int gbus_clock,
-> +				 u8 pio)
+> diff --git a/arch/mips/txx9/generic/setup_tx4938.c b/arch/mips/txx9/generic/setup_tx4938.c
+> index af724e5..a5951ed 100644
+> --- a/arch/mips/txx9/generic/setup_tx4938.c
+> +++ b/arch/mips/txx9/generic/setup_tx4938.c
+> @@ -16,6 +16,7 @@
+>  #include <linux/param.h>
+>  #include <linux/ptrace.h>
+>  #include <linux/mtd/physmap.h>
+> +#include <linux/platform_device.h>
+>  #include <asm/reboot.h>
+>  #include <asm/traps.h>
+>  #include <asm/txx9irq.h>
+> @@ -335,6 +336,43 @@ void __init tx4938_mtd_init(int ch)
+>  	txx9_physmap_flash_init(ch, start, size, &pdata);
+>  }
+>  
+> +void __init tx4938_ata_init(unsigned int irq, unsigned int shift, int tune)
 > +{
-> +	struct ide_timing *t = ide_timing_find_mode(XFER_PIO_0 + pio);
-> +	u64 cr = __raw_readq(&tx4938_ebuscptr->cr[ebus_ch]);
-> +	unsigned int sp = ((unsigned int)cr >> 4) & 3;
-> +	unsigned int clock = gbus_clock / (4 - sp);
-> +	unsigned int cycle = 1000000000 / clock;
-> +	unsigned int wt, shwt;
-> +
-> +	/* IORDY setup time: 35ns */
-> +	wt = (35 + cycle - 1) / cycle;
+> +	struct platform_device *pdev;
+> +	struct resource res[] = {
+> +		{
+> +			.start = irq,
+> +			.flags = IORESOURCE_IRQ,
+> +		},
+> +	};
 
-    It's not that simple I'm afraid: you can't just wait IORDY for 35 ns as 
-that won't guarantee the minimum DIOx- actime time for the current PIO mode; 
-so t->act8 (since it's >= t->act) should be part of the equation here, 
-possibly with subtraction of couple cycles, if I'm interpreting the timing 
-diagrams in the datasheet correctly...
-    And please use DIV_ROUND_UP() -- like the other drivers do.
+    Device without a resource for its registers? That's... interesting. :-)
 
-> +	/* actual wait-cycle is max(wt & ~1, 1) */
+> +	struct tx4938ide_platform_info pdata = {
+> +		.ioport_shift = shift,
+> +		.gbus_clock = tune ? txx9_gbus_clock : 0,
 
-    I got an impression that WT[0] bit is used otherwise in the ready mode, 
-and PWT[1:0]:WT[3:1] = 00000 would mean 0 cycles, not 1...
+    Any reason not to supply the GBUS clock?
+    I'm afraid you can't just early return from the set_pio_mode() method...
 
-> +	if (wt > 2 && (wt & 1))
-> +		wt++;
-> +	wt &= ~1;
-> +	/* Address valid to DIOR/DIOW setup */
-> +	shwt = (t->setup + cycle - 1) / cycle;
-
-    Use DIV_ROUND_UP() here too.
-
-> +
-> +	pr_debug("tx4938ide: ebus %d, bus cycle %dns, WT %d, SHWT %d\n",
-> +		 ebus_ch, cycle, wt, shwt);
-> +
-> +	__raw_writeq((cr & ~(0x3f007ull)) | (wt << 12) | shwt,
-> +		     &tx4938_ebuscptr->cr[ebus_ch]);
-> +}
-
-[...]
-
-> +static const struct ide_port_info tx4938ide_port_info __initdata = {
-> +	.port_ops = &tx4938ide_port_ops,
-> +#ifdef __BIG_ENDIAN
-> +	.tp_ops = &tx4938ide_tp_ops,
-> +#endif
-> +	.host_flags = IDE_HFLAG_MMIO | IDE_HFLAG_NO_DMA, /* no SFF-style DMA */
-
-    DMA is not required to be SFF-style. It's just that TX4938 doesn't support 
-any kind of IDE DMA, IIUC...
-
-> +	.pio_mask = ATA_PIO5,
-> +};
-> +
-> +static int __init tx4938ide_probe(struct platform_device *pdev)
-> +{
-> +	hw_regs_t hw;
-> +	hw_regs_t *hws[] = { &hw, NULL, NULL, NULL };
-> +	struct ide_host *host;
-> +	unsigned long port[2], port_size[2];
-> +	void __iomem *mmport[2];
-> +	struct tx4938ide_platform_info *pdata = pdev->dev.platform_data;
-> +	unsigned int ebus_ch;
-> +	int irq;
-> +	int ret;
+> +	};
 > +	int i;
-
-    Why not declare all 3 on the same line?
-
 > +
-> +	irq = platform_get_irq(pdev, 0);
-> +	if (irq < 0)
-> +		return -ENODEV;
-> +
-> +	ebus_ch = pdata->ebus_ch;
-> +	port[0] = ((__raw_readq(&tx4938_ebuscptr->cr[ebus_ch]) >> 48) << 20)
-> +		+ 0x10000;
-> +	port[1] = port[0] + 0x10000;
-
-    Why not pass these as platform device resources?
-
-> +	port_size[0] = 8;
-> +	port_size[1] = 1;
-> +	port[1] += (6 << pdata->ioport_shift);
-> +	for (i = 0; i < 2; i++)
-> +		port_size[i] <<= pdata->ioport_shift;
-
-    Why not do it right in the assignments above?
-
-> +	for (i = 0; i < 2; i++) {
-> +		if (!devm_request_mem_region(&pdev->dev,
-> +					     port[i], port_size[i],
-> +					     "tx4938ide"))
-> +			return -EBUSY;
-
-    From the datasheet I got an impression that whole 128 KB at offset 0x10000 
-trigger IDE -CS0/1 signals, so why not request all 128 KB?
-
-> +		mmport[i] = devm_ioremap(&pdev->dev, port[i], port_size[i]);
-> +		if (!mmport[i])
-> +			return -EBUSY;
+> +	if ((__raw_readq(&tx4938_ccfgptr->pcfg) &
+> +	     (TX4938_PCFG_ATA_SEL | TX4938_PCFG_NDF_SEL))
+> +	    != TX4938_PCFG_ATA_SEL)
+> +		return;
+> +	for (i = 0; i < 8; i++) {
+> +		/* check EBCCRn.ISA, EBCCRn.BSZ, EBCCRn.ME */
+> +		if ((__raw_readq(&tx4938_ebuscptr->cr[i]) & 0x00f00008)
+> +		    == 0x00e00008)
+> +			break;
 > +	}
-> +
-> +	memset(&hw, 0, sizeof(hw));
-> +	if (pdata->ioport_shift) {
-> +		hw.io_ports_array[0] = (unsigned long)mmport[0];
-> +#ifdef __BIG_ENDIAN
-> +		mmport[0]++;
-> +		mmport[1]++;
-> +#endif
-> +		for (i = 1; i <= 7; i++)
-> +			hw.io_ports_array[i] = (unsigned long)mmport[0] +
-> +				(i << pdata->ioport_shift);
-> +		hw.io_ports.ctl_addr = (unsigned long)mmport[1];
-> +	} else
-> +		ide_std_init_ports(&hw, (unsigned long)mmport[0],
-> +				   (unsigned long)mmport[1]);
+> +	if (i == 8)
+> +		return;
+> +	pdata.ebus_ch = i;
 
-    From the datasheet I got an impression that this case is not possible...
+    Why not grab the base address from this register as well and put it into 
+the resource?
 
-MBR, Sergei
+WBR, Sergei

@@ -1,86 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Oct 2008 13:44:03 +0100 (BST)
-Received: from h4.dl5rb.org.uk ([81.2.74.4]:3041 "EHLO
-	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S21784969AbYJRMoA (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 18 Oct 2008 13:44:00 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m9IChx5E011853;
-	Sat, 18 Oct 2008 13:43:59 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m9IChxtF011851;
-	Sat, 18 Oct 2008 13:43:59 +0100
-Date:	Sat, 18 Oct 2008 13:43:59 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Anirban Sinha <ASinha@zeugmasystems.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: stop_this_cpu - redundant code?
-Message-ID: <20081018124358.GC17322@linux-mips.org>
-References: <DDFD17CC94A9BD49A82147DDF7D545C50130734A@exchange.ZeugmaSystems.local>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DDFD17CC94A9BD49A82147DDF7D545C50130734A@exchange.ZeugmaSystems.local>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Oct 2008 03:07:08 +0100 (BST)
+Received: from sakura.staff.proxad.net ([213.228.1.107]:37588 "EHLO
+	sakura.staff.proxad.net") by ftp.linux-mips.org with ESMTP
+	id S21816155AbYJSCHD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 19 Oct 2008 03:07:03 +0100
+Received: by sakura.staff.proxad.net (Postfix, from userid 1000)
+	id 6B501112404E; Sun, 19 Oct 2008 04:07:02 +0200 (CEST)
+From:	Maxime Bizon <mbizon@freebox.fr>
+To:	ralf@linux-mips.org
+Cc:	netdev@vger.kernel.org, afleming@freescale.com, jgarzik@pobox.com,
+	linux-usb@vger.kernel.org, dbrownell@users.sourceforge.net,
+	linux-pcmcia@lists.infradead.org, linux-serial@vger.kernel.org,
+	linux-mips@linux-mips.org, Maxime Bizon <mbizon@freebox.fr>
+Subject: [PATCH/RFC v1 00/12] Support for Broadcom 63xx SOCs
+Date:	Sun, 19 Oct 2008 04:07:02 +0200
+Message-Id: <1224382022-24173-1-git-send-email-mbizon@freebox.fr>
+X-Mailer: git-send-email 1.5.4.3
+Return-Path: <max@sakura.staff.proxad.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20795
+X-archive-position: 20796
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mbizon@freebox.fr
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Oct 17, 2008 at 07:57:12PM -0700, Anirban Sinha wrote:
+[first try at patch series mailing, if you're in to/cc list by mistake
+please tell me]
 
-> This function  (stop_this_cpu) in /arch/mips/kernel/smp.c does a
-> local_irq_enable() and the adjacent comment says that it's because it
-> may need to service _machine_restart IPI. Unfortunately,
-> smp_call_function only sends IPIs to cores that are still online ( it
-> uses the cpu_online_map U all_but_myself_map in
-> smp_call_function_map()).
 
-Usually a system would be restarted through some hardware mechanism -
-probably a reset - anyway.
+Hello everyone,
 
-> So the bottom-line is, should we still keep the local irqs enabled or is
-> this code totally redundant? I have seen other similar functions in
-> other archs where they actually disable the local irqs.
+This is a set of patches that add support for the Broadcom 63xx series
+of CPUs and  (some) integrated devices. These are  popular MIPS32 SOCs
+found in a lot of DSL modems.
 
-You're right.  The code is ancient old and once uppon a time it made sense
-to do things this way but the MIPS version was never updates.  Stop_this_cpu
-also should try to minimize the power consumption by using the WAIT
-instruction or whatever else a particular process has to offer.
+CPUs supported are  6348 and 6358. Support is  provided for integrated
+UART,  USB OHCI  and  EHCI, PCI  controller,  ethernet MAC  & PHY  and
+PCMCIA/Cardbus controller.
 
-I didn't try to optimize this for the 34K where a TC could try to halt
-itself - there isn't really a point, I think.
+Board support is still rough, each vendor seems to have its own way of
+identifying the board  type in nvram, that's why  it will probably not
+work out of  the box.  So DON'T FLASH IT BLINDLY  on your modem unless
+you have a serial cable, prefer tftpboot/nfsroot for testing.
 
-A few other architectures are explicitly disabling interrupts but that's
-also redundant because smp_call_function() invokes the function on other
-processors with interrupts disabled.
+I used linux-mips git tree  master to generate theses patches, this is
+probably  inappropriate considering  they  touch multiple  subsystems.
+Since all patches  depends on first two of the series  I wonder how to
+submit this properly for inclusion in one merge window (if that's even
+do-able).
 
-Thanks for posting this,
+Patches are also available here in case they were too big:
+http://88.191.35.171/bcm63xx/patches/linux-mips-bcm63xx/v1/
 
-  Ralf
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+I would like to thank my company for letting me release this (hi
+boss), and also Broadcom who gave its blessing.
 
-diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-index 7b59cfb..b79ea70 100644
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -163,8 +163,10 @@ static void stop_this_cpu(void *dummy)
- 	 * Remove this CPU:
- 	 */
- 	cpu_clear(smp_processor_id(), cpu_online_map);
--	local_irq_enable();	/* May need to service _machine_restart IPI */
--	for (;;);		/* Wait if available. */
-+	for (;;) {
-+		if (cpu_wait)
-+			(*cpu_wait)();		/* Wait if available. */
-+	}
- }
- 
- void smp_send_stop(void)
+Happy hacking !
+
+-- 
+Maxime

@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Oct 2008 03:09:29 +0100 (BST)
-Received: from sakura.staff.proxad.net ([213.228.1.107]:43732 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Oct 2008 03:09:48 +0100 (BST)
+Received: from sakura.staff.proxad.net ([213.228.1.107]:43476 "EHLO
 	sakura.staff.proxad.net") by ftp.linux-mips.org with ESMTP
-	id S21816161AbYJSCHG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	id S21816162AbYJSCHG (ORCPT <rfc822;linux-mips@linux-mips.org>);
 	Sun, 19 Oct 2008 03:07:06 +0100
 Received: by sakura.staff.proxad.net (Postfix, from userid 1000)
-	id 241DD1124072; Sun, 19 Oct 2008 04:07:03 +0200 (CEST)
+	id 0EB871124071; Sun, 19 Oct 2008 04:07:03 +0200 (CEST)
 From:	Maxime Bizon <mbizon@freebox.fr>
 To:	dbrownell@users.sourceforge.net
 Cc:	linux-mips@linux-mips.org, linux-usb@vger.kernel.org,
 	Maxime Bizon <mbizon@freebox.fr>
-Subject: [PATCH/RFC v1 08/12] [MIPS] BCM63XX: Add USB EHCI support.
+Subject: [PATCH/RFC v1 07/12] [MIPS] BCM63XX: Add USB OHCI support.
 Date:	Sun, 19 Oct 2008 04:07:03 +0200
-Message-Id: <1224382023-24364-1-git-send-email-mbizon@freebox.fr>
+Message-Id: <1224382023-24342-1-git-send-email-mbizon@freebox.fr>
 X-Mailer: git-send-email 1.5.4.3
 Return-Path: <max@sakura.staff.proxad.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20803
+X-archive-position: 20804
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,44 +27,52 @@ X-list: linux-mips
 
 Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
 ---
- arch/mips/bcm63xx/Kconfig                          |    2 +
+ arch/mips/bcm63xx/Kconfig                          |    6 +
  arch/mips/bcm63xx/Makefile                         |    1 +
- arch/mips/bcm63xx/dev-usb-ehci.c                   |   50 +++++++
- .../asm/mach-bcm63xx/bcm63xx_dev_usb_ehci.h        |    6 +
- drivers/usb/host/ehci-bcm63xx.c                    |  152 ++++++++++++++++++++
- drivers/usb/host/ehci-hcd.c                        |    5 +
- drivers/usb/host/ehci.h                            |    5 +
- 7 files changed, 221 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/bcm63xx/dev-usb-ehci.c
- create mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_usb_ehci.h
- create mode 100644 drivers/usb/host/ehci-bcm63xx.c
+ arch/mips/bcm63xx/dev-usb-ohci.c                   |   50 ++++++
+ .../asm/mach-bcm63xx/bcm63xx_dev_usb_ohci.h        |    6 +
+ drivers/usb/host/ohci-bcm63xx.c                    |  159 ++++++++++++++++++++
+ drivers/usb/host/ohci-hcd.c                        |    5 +
+ drivers/usb/host/ohci.h                            |    7 +-
+ 7 files changed, 233 insertions(+), 1 deletions(-)
+ create mode 100644 arch/mips/bcm63xx/dev-usb-ohci.c
+ create mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_usb_ohci.h
+ create mode 100644 drivers/usb/host/ohci-bcm63xx.c
 
 diff --git a/arch/mips/bcm63xx/Kconfig b/arch/mips/bcm63xx/Kconfig
-index f2ddb87..be120f7 100644
+index 7ca370a..f2ddb87 100644
 --- a/arch/mips/bcm63xx/Kconfig
 +++ b/arch/mips/bcm63xx/Kconfig
-@@ -14,4 +14,6 @@ config BCM63XX_CPU_6358
- 	select USB_ARCH_HAS_OHCI
- 	select USB_OHCI_BIG_ENDIAN_DESC
- 	select USB_OHCI_BIG_ENDIAN_MMIO
-+	select USB_ARCH_HAS_EHCI
-+	select USB_EHCI_BIG_ENDIAN_MMIO
+@@ -4,8 +4,14 @@ menu "CPU support"
+ config BCM63XX_CPU_6348
+ 	bool "support 6348 CPU"
+ 	select HW_HAS_PCI
++	select USB_ARCH_HAS_OHCI
++	select USB_OHCI_BIG_ENDIAN_DESC
++	select USB_OHCI_BIG_ENDIAN_MMIO
+ 
+ config BCM63XX_CPU_6358
+ 	bool "support 6358 CPU"
+ 	select HW_HAS_PCI
++	select USB_ARCH_HAS_OHCI
++	select USB_OHCI_BIG_ENDIAN_DESC
++	select USB_OHCI_BIG_ENDIAN_MMIO
  endmenu
 diff --git a/arch/mips/bcm63xx/Makefile b/arch/mips/bcm63xx/Makefile
-index 75f0d54..99e335d 100644
+index 456e915..75f0d54 100644
 --- a/arch/mips/bcm63xx/Makefile
 +++ b/arch/mips/bcm63xx/Makefile
-@@ -2,4 +2,5 @@ obj-y		+= clk.o cpu.o cs.o gpio.o irq.o prom.o setup.o timer.o
+@@ -1,4 +1,5 @@
+ obj-y		+= clk.o cpu.o cs.o gpio.o irq.o prom.o setup.o timer.o
  obj-y		+= dev-uart.o
  obj-y		+= dev-pcmcia.o
- obj-y		+= dev-usb-ohci.o
-+obj-y		+= dev-usb-ehci.o
++obj-y		+= dev-usb-ohci.o
  obj-$(CONFIG_EARLY_PRINTK)	+= early_printk.o
-diff --git a/arch/mips/bcm63xx/dev-usb-ehci.c b/arch/mips/bcm63xx/dev-usb-ehci.c
+diff --git a/arch/mips/bcm63xx/dev-usb-ohci.c b/arch/mips/bcm63xx/dev-usb-ohci.c
 new file mode 100644
-index 0000000..7885405
+index 0000000..377e67c
 --- /dev/null
-+++ b/arch/mips/bcm63xx/dev-usb-ehci.c
++++ b/arch/mips/bcm63xx/dev-usb-ohci.c
 @@ -0,0 +1,50 @@
 +/*
 + * This file is subject to the terms and conditions of the GNU General Public
@@ -78,9 +86,9 @@ index 0000000..7885405
 +#include <linux/kernel.h>
 +#include <linux/platform_device.h>
 +#include <bcm63xx_cpu.h>
-+#include <bcm63xx_dev_usb_ehci.h>
++#include <bcm63xx_dev_usb_ohci.h>
 +
-+static struct resource ehci_resources[] = {
++static struct resource ohci_resources[] = {
 +	{
 +		.start		= -1, /* filled at runtime */
 +		.end		= -1, /* filled at runtime */
@@ -92,48 +100,48 @@ index 0000000..7885405
 +	},
 +};
 +
-+static u64 ehci_dmamask = ~(u32)0;
++static u64 ohci_dmamask = ~(u32)0;
 +
-+static struct platform_device bcm63xx_ehci_device = {
-+	.name		= "bcm63xx_ehci",
++static struct platform_device bcm63xx_ohci_device = {
++	.name		= "bcm63xx_ohci",
 +	.id		= 0,
-+	.num_resources	= ARRAY_SIZE(ehci_resources),
-+	.resource	= ehci_resources,
++	.num_resources	= ARRAY_SIZE(ohci_resources),
++	.resource	= ohci_resources,
 +	.dev		= {
-+		.dma_mask		= &ehci_dmamask,
++		.dma_mask		= &ohci_dmamask,
 +		.coherent_dma_mask	= 0xffffffff,
 +	},
 +};
 +
-+int __init bcm63xx_ehci_register(void)
++int __init bcm63xx_ohci_register(void)
 +{
-+	if (!BCMCPU_IS_6358())
++	if (!BCMCPU_IS_6348() && !BCMCPU_IS_6358())
 +		return 0;
 +
-+	ehci_resources[0].start = bcm63xx_regset_address(RSET_EHCI0);
-+	ehci_resources[0].end = ehci_resources[0].start;
-+	ehci_resources[0].end += RSET_EHCI_SIZE - 1;
-+	ehci_resources[1].start = bcm63xx_get_irq_number(IRQ_EHCI0);
-+	return platform_device_register(&bcm63xx_ehci_device);
++	ohci_resources[0].start = bcm63xx_regset_address(RSET_OHCI0);
++	ohci_resources[0].end = ohci_resources[0].start;
++	ohci_resources[0].end += RSET_OHCI_SIZE - 1;
++	ohci_resources[1].start = bcm63xx_get_irq_number(IRQ_OHCI0);
++	return platform_device_register(&bcm63xx_ohci_device);
 +}
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_usb_ehci.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_usb_ehci.h
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_usb_ohci.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_usb_ohci.h
 new file mode 100644
-index 0000000..17fb519
+index 0000000..518a04d
 --- /dev/null
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_usb_ehci.h
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_usb_ohci.h
 @@ -0,0 +1,6 @@
-+#ifndef BCM63XX_DEV_USB_EHCI_H_
-+#define BCM63XX_DEV_USB_EHCI_H_
++#ifndef BCM63XX_DEV_USB_OHCI_H_
++#define BCM63XX_DEV_USB_OHCI_H_
 +
-+int bcm63xx_ehci_register(void);
++int bcm63xx_ohci_register(void);
 +
-+#endif /* BCM63XX_DEV_USB_EHCI_H_ */
-diff --git a/drivers/usb/host/ehci-bcm63xx.c b/drivers/usb/host/ehci-bcm63xx.c
++#endif /* BCM63XX_DEV_USB_OHCI_H_ */
+diff --git a/drivers/usb/host/ohci-bcm63xx.c b/drivers/usb/host/ohci-bcm63xx.c
 new file mode 100644
-index 0000000..2fef571
+index 0000000..08807d9
 --- /dev/null
-+++ b/drivers/usb/host/ehci-bcm63xx.c
-@@ -0,0 +1,152 @@
++++ b/drivers/usb/host/ohci-bcm63xx.c
+@@ -0,0 +1,159 @@
 +/*
 + * This file is subject to the terms and conditions of the GNU General Public
 + * License.  See the file "COPYING" in the main directory of this archive
@@ -143,64 +151,58 @@ index 0000000..2fef571
 + */
 +
 +#include <linux/init.h>
++#include <linux/clk.h>
 +#include <linux/platform_device.h>
 +#include <bcm63xx_cpu.h>
 +#include <bcm63xx_regs.h>
 +#include <bcm63xx_io.h>
 +
-+static int ehci_bcm63xx_setup(struct usb_hcd *hcd)
++static struct clk *usb_host_clock;
++
++static int __devinit ohci_bcm63xx_start(struct usb_hcd *hcd)
 +{
-+	struct ehci_hcd *ehci = hcd_to_ehci(hcd);
-+	int retval;
++	struct ohci_hcd *ohci = hcd_to_ohci(hcd);
++	int ret;
 +
-+	retval = ehci_halt(ehci);
-+	if (retval)
-+		return retval;
++	ret = ohci_init(ohci);
++	if (ret < 0)
++		return ret;
 +
-+	retval = ehci_init(hcd);
-+	if (retval)
-+		return retval;
++	/* FIXME: autodetected port 2 is shared with USB slave */
 +
-+	hcd->has_tt = 1;
-+	ehci_reset(ehci);
-+	ehci_port_power(ehci, 0);
-+
-+	return retval;
++	ret = ohci_run(ohci);
++	if (ret < 0) {
++		err("can't start %s", hcd->self.bus_name);
++		ohci_stop(hcd);
++		return ret;
++	}
++	return 0;
 +}
 +
-+
-+static const struct hc_driver ehci_bcm63xx_hc_driver = {
++static const struct hc_driver ohci_bcm63xx_hc_driver = {
 +	.description =		hcd_name,
-+	.product_desc =		"BCM63XX integrated EHCI controller",
-+	.hcd_priv_size =	sizeof(struct ehci_hcd),
++	.product_desc =		"BCM63XX integrated OHCI controller",
++	.hcd_priv_size =	sizeof(struct ohci_hcd),
 +
-+	.irq =			ehci_irq,
-+	.flags =		HCD_MEMORY | HCD_USB2,
-+
-+	.reset =		ehci_bcm63xx_setup,
-+	.start =		ehci_run,
-+	.stop =			ehci_stop,
-+	.shutdown =		ehci_shutdown,
-+
-+	.urb_enqueue =		ehci_urb_enqueue,
-+	.urb_dequeue =		ehci_urb_dequeue,
-+	.endpoint_disable =	ehci_endpoint_disable,
-+
-+	.get_frame_number =	ehci_get_frame,
-+
-+	.hub_status_data =	ehci_hub_status_data,
-+	.hub_control =		ehci_hub_control,
-+	.bus_suspend =		ehci_bus_suspend,
-+	.bus_resume =		ehci_bus_resume,
-+	.relinquish_port =	ehci_relinquish_port,
-+	.port_handed_over =	ehci_port_handed_over,
++	.irq =			ohci_irq,
++	.flags =		HCD_USB11 | HCD_MEMORY,
++	.start =		ohci_bcm63xx_start,
++	.stop =			ohci_stop,
++	.shutdown =		ohci_shutdown,
++	.urb_enqueue =		ohci_urb_enqueue,
++	.urb_dequeue =		ohci_urb_dequeue,
++	.endpoint_disable =	ohci_endpoint_disable,
++	.get_frame_number =	ohci_get_frame,
++	.hub_status_data =	ohci_hub_status_data,
++	.hub_control =		ohci_hub_control,
++	.start_port_reset =	ohci_start_port_reset,
 +};
 +
-+static int __devinit ehci_hcd_bcm63xx_drv_probe(struct platform_device *pdev)
++static int __devinit ohci_hcd_bcm63xx_drv_probe(struct platform_device *pdev)
 +{
 +	struct resource *res_mem, *res_irq;
 +	struct usb_hcd *hcd;
-+	struct ehci_hcd *ehci;
++	struct ohci_hcd *ohci;
 +	u32 reg;
 +	int ret;
 +
@@ -209,15 +211,28 @@ index 0000000..2fef571
 +	if (!res_mem || !res_irq)
 +		return -ENODEV;
 +
-+	reg = bcm_rset_readl(RSET_USBH_PRIV, USBH_PRIV_SWAP_REG);
-+	reg &= ~USBH_PRIV_SWAP_EHCI_DATA_MASK;
-+	reg |= USBH_PRIV_SWAP_EHCI_ENDN_MASK;
-+	bcm_rset_writel(RSET_USBH_PRIV, reg, USBH_PRIV_SWAP_REG);
++	if (BCMCPU_IS_6348()) {
++		struct clk *clk;
++		/* enable USB host clock */
++		clk = clk_get(&pdev->dev, "usbh");
++		if (IS_ERR(clk))
++			return -ENODEV;
 +
-+	/* don't ask... */
-+	bcm_rset_writel(RSET_USBH_PRIV, 0x1c0020, USBH_PRIV_TEST_REG);
++		clk_enable(clk);
++		usb_host_clock = clk;
++		bcm_rset_writel(RSET_OHCI_PRIV, 0, OHCI_PRIV_REG);
 +
-+	hcd = usb_create_hcd(&ehci_bcm63xx_hc_driver, &pdev->dev, "bcm63xx");
++	} else if (BCMCPU_IS_6358()) {
++		reg = bcm_rset_readl(RSET_USBH_PRIV, USBH_PRIV_SWAP_REG);
++		reg &= ~USBH_PRIV_SWAP_OHCI_ENDN_MASK;
++		reg |= USBH_PRIV_SWAP_OHCI_DATA_MASK;
++		bcm_rset_writel(RSET_USBH_PRIV, reg, USBH_PRIV_SWAP_REG);
++		/* don't ask... */
++		bcm_rset_writel(RSET_USBH_PRIV, 0x1c0020, USBH_PRIV_TEST_REG);
++	} else
++		return 0;
++
++	hcd = usb_create_hcd(&ohci_bcm63xx_hc_driver, &pdev->dev, "bcm63xx");
 +	if (!hcd)
 +		return -ENOMEM;
 +	hcd->rsrc_start = res_mem->start;
@@ -236,14 +251,10 @@ index 0000000..2fef571
 +		goto out1;
 +	}
 +
-+	ehci = hcd_to_ehci(hcd);
-+	ehci->big_endian_mmio = 1;
-+	ehci->big_endian_desc = 0;
-+	ehci->caps = hcd->regs;
-+	ehci->regs = hcd->regs +
-+		HC_LENGTH(ehci_readl(ehci, &ehci->caps->hc_capbase));
-+	ehci->hcs_params = ehci_readl(ehci, &ehci->caps->hcs_params);
-+	ehci->sbrn = 0x20;
++	ohci = hcd_to_ohci(hcd);
++	ohci->flags |= OHCI_QUIRK_BE_MMIO | OHCI_QUIRK_BE_DESC |
++		OHCI_QUIRK_FRAME_NO;
++	ohci_hcd_init(ohci);
 +
 +	ret = usb_add_hcd(hcd, res_irq->start, IRQF_DISABLED);
 +	if (ret)
@@ -261,7 +272,7 @@ index 0000000..2fef571
 +	return ret;
 +}
 +
-+static int __devexit ehci_hcd_bcm63xx_drv_remove(struct platform_device *pdev)
++static int __devexit ohci_hcd_bcm63xx_drv_remove(struct platform_device *pdev)
 +{
 +	struct usb_hcd *hcd;
 +
@@ -270,44 +281,48 @@ index 0000000..2fef571
 +	iounmap(hcd->regs);
 +	usb_put_hcd(hcd);
 +	release_mem_region(hcd->rsrc_start, hcd->rsrc_len);
++	if (usb_host_clock) {
++		clk_disable(usb_host_clock);
++		clk_put(usb_host_clock);
++	}
 +	platform_set_drvdata(pdev, NULL);
 +	return 0;
 +}
 +
-+static struct platform_driver ehci_hcd_bcm63xx_driver = {
-+	.probe		= ehci_hcd_bcm63xx_drv_probe,
-+	.remove		= __devexit_p(ehci_hcd_bcm63xx_drv_remove),
++static struct platform_driver ohci_hcd_bcm63xx_driver = {
++	.probe		= ohci_hcd_bcm63xx_drv_probe,
++	.remove		= __devexit_p(ohci_hcd_bcm63xx_drv_remove),
 +	.shutdown	= usb_hcd_platform_shutdown,
 +	.driver		= {
-+		.name	= "bcm63xx_ehci",
++		.name	= "bcm63xx_ohci",
 +		.owner	= THIS_MODULE,
 +		.bus	= &platform_bus_type
 +	},
 +};
 +
-+MODULE_ALIAS("platform:bcm63xx_ehci");
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index 8409e07..3230ba3 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -1040,6 +1040,11 @@ MODULE_LICENSE ("GPL");
- #define	PLATFORM_DRIVER		ixp4xx_ehci_driver
++MODULE_ALIAS("platform:bcm63xx_ohci");
+diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c
+index 8990196..7e360ef 100644
+--- a/drivers/usb/host/ohci-hcd.c
++++ b/drivers/usb/host/ohci-hcd.c
+@@ -1050,6 +1050,11 @@ MODULE_LICENSE ("GPL");
+ #define PLATFORM_DRIVER		usb_hcd_pnx4008_driver
  #endif
  
 +#ifdef CONFIG_BCM63XX
-+#include "ehci-bcm63xx.c"
-+#define	PLATFORM_DRIVER		ehci_hcd_bcm63xx_driver
++#include "ohci-bcm63xx.c"
++#define PLATFORM_DRIVER		ohci_hcd_bcm63xx_driver
 +#endif
 +
- #if !defined(PCI_DRIVER) && !defined(PLATFORM_DRIVER) && \
-     !defined(PS3_SYSTEM_BUS_DRIVER) && !defined(OF_PLATFORM_DRIVER)
- #error "missing bus glue for ehci-hcd"
-diff --git a/drivers/usb/host/ehci.h b/drivers/usb/host/ehci.h
-index b697a13..5aae343 100644
---- a/drivers/usb/host/ehci.h
-+++ b/drivers/usb/host/ehci.h
-@@ -619,6 +619,11 @@ ehci_port_speed(struct ehci_hcd *ehci, unsigned int portsc)
- #define writel_be(val, addr)	__raw_writel(val, (__force unsigned *)addr)
+ #if defined(CONFIG_CPU_SUBTYPE_SH7720) || \
+     defined(CONFIG_CPU_SUBTYPE_SH7721) || \
+     defined(CONFIG_CPU_SUBTYPE_SH7763)
+diff --git a/drivers/usb/host/ohci.h b/drivers/usb/host/ohci.h
+index faf622e..947e240 100644
+--- a/drivers/usb/host/ohci.h
++++ b/drivers/usb/host/ohci.h
+@@ -549,6 +549,11 @@ static inline struct usb_hcd *ohci_to_hcd (const struct ohci_hcd *ohci)
+ #define writel_be(val, addr)	out_be32((__force unsigned *)addr, val)
  #endif
  
 +#if defined(CONFIG_MIPS) && defined(CONFIG_BCM63XX)
@@ -315,8 +330,17 @@ index b697a13..5aae343 100644
 +#define writel_be(val, addr)	__raw_writel(val, (__force unsigned *)addr)
 +#endif
 +
- static inline unsigned int ehci_readl(const struct ehci_hcd *ehci,
- 		__u32 __iomem * regs)
+ static inline unsigned int _ohci_readl (const struct ohci_hcd *ohci,
+ 					__hc32 __iomem * regs)
  {
+@@ -654,7 +659,7 @@ static inline u32 hc32_to_cpup (const struct ohci_hcd *ohci, const __hc32 *x)
+  * some big-endian SOC implementations.  Same thing happens with PSW access.
+  */
+ 
+-#ifdef CONFIG_PPC_MPC52xx
++#if defined(CONFIG_PPC_MPC52xx) || defined(CONFIG_BCM63XX)
+ #define big_endian_frame_no_quirk(ohci)	(ohci->flags & OHCI_QUIRK_FRAME_NO)
+ #else
+ #define big_endian_frame_no_quirk(ohci)	0
 -- 
 1.5.4.3

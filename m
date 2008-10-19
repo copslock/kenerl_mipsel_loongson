@@ -1,22 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Oct 2008 03:07:28 +0100 (BST)
-Received: from sakura.staff.proxad.net ([213.228.1.107]:37844 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Oct 2008 03:07:50 +0100 (BST)
+Received: from sakura.staff.proxad.net ([213.228.1.107]:40148 "EHLO
 	sakura.staff.proxad.net") by ftp.linux-mips.org with ESMTP
-	id S21816156AbYJSCHD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	id S21816157AbYJSCHD (ORCPT <rfc822;linux-mips@linux-mips.org>);
 	Sun, 19 Oct 2008 03:07:03 +0100
 Received: by sakura.staff.proxad.net (Postfix, from userid 1000)
-	id 80D64112404F; Sun, 19 Oct 2008 04:07:02 +0200 (CEST)
+	id C25611124052; Sun, 19 Oct 2008 04:07:02 +0200 (CEST)
 From:	Maxime Bizon <mbizon@freebox.fr>
 To:	ralf@linux-mips.org
 Cc:	linux-mips@linux-mips.org, Maxime Bizon <mbizon@freebox.fr>
-Subject: [PATCH/RFC v1 01/12] [MIPS] BCM63XX: Add Broadcom 63xx CPU definitions.
+Subject: [PATCH/RFC v1 04/12] [MIPS] BCM63XX: Add PCI support.
 Date:	Sun, 19 Oct 2008 04:07:02 +0200
-Message-Id: <1224382022-24196-1-git-send-email-mbizon@freebox.fr>
+Message-Id: <1224382022-24271-1-git-send-email-mbizon@freebox.fr>
 X-Mailer: git-send-email 1.5.4.3
 Return-Path: <max@sakura.staff.proxad.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20797
+X-archive-position: 20798
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -26,105 +26,499 @@ X-list: linux-mips
 
 Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
 ---
- arch/mips/include/asm/cpu.h  |    7 +++++++
- arch/mips/kernel/cpu-probe.c |   25 +++++++++++++++++++++++++
- arch/mips/mm/tlbex.c         |    4 ++++
- 3 files changed, 36 insertions(+), 0 deletions(-)
+ arch/mips/bcm63xx/Kconfig                          |    2 +
+ arch/mips/bcm63xx/setup.c                          |    2 +
+ .../include/asm/mach-bcm63xx/bcm63xx_dev_pci.h     |    6 +
+ arch/mips/pci/Makefile                             |    2 +
+ arch/mips/pci/fixup-bcm63xx.c                      |   21 +++
+ arch/mips/pci/ops-bcm63xx.c                        |  179 ++++++++++++++++++++
+ arch/mips/pci/pci-bcm63xx.c                        |  178 +++++++++++++++++++
+ arch/mips/pci/pci-bcm63xx.h                        |   27 +++
+ 8 files changed, 417 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_pci.h
+ create mode 100644 arch/mips/pci/fixup-bcm63xx.c
+ create mode 100644 arch/mips/pci/ops-bcm63xx.c
+ create mode 100644 arch/mips/pci/pci-bcm63xx.c
+ create mode 100644 arch/mips/pci/pci-bcm63xx.h
 
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index 229a786..538bcde 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -112,6 +112,12 @@
+diff --git a/arch/mips/bcm63xx/Kconfig b/arch/mips/bcm63xx/Kconfig
+index e6d2699..7ca370a 100644
+--- a/arch/mips/bcm63xx/Kconfig
++++ b/arch/mips/bcm63xx/Kconfig
+@@ -3,7 +3,9 @@ menu "CPU support"
  
- #define PRID_IMP_BCM4710	0x4000
- #define PRID_IMP_BCM3302	0x9000
-+#define PRID_IMP_BCM6338	0x9000
-+#define PRID_IMP_BCM6345	0x8000
-+#define PRID_IMP_BCM6348	0x9100
-+#define PRID_IMP_BCM4350	0xA000
-+#define PRID_REV_BCM6358	0x0010
-+#define PRID_REV_BCM6368	0x0030
+ config BCM63XX_CPU_6348
+ 	bool "support 6348 CPU"
++	select HW_HAS_PCI
  
- /*
-  * Definitions for 7:0 on legacy processors
-@@ -198,6 +204,7 @@ enum cpu_type_enum {
- 	CPU_4KC, CPU_4KEC, CPU_4KSC, CPU_24K, CPU_34K, CPU_1004K, CPU_74K,
- 	CPU_AU1000, CPU_AU1100, CPU_AU1200, CPU_AU1210, CPU_AU1250, CPU_AU1500,
- 	CPU_AU1550, CPU_PR4450, CPU_BCM3302, CPU_BCM4710,
-+	CPU_BCM6338, CPU_BCM6345, CPU_BCM6348, CPU_BCM6358,
+ config BCM63XX_CPU_6358
+ 	bool "support 6358 CPU"
++	select HW_HAS_PCI
+ endmenu
+diff --git a/arch/mips/bcm63xx/setup.c b/arch/mips/bcm63xx/setup.c
+index 55c51a9..4d8b127 100644
+--- a/arch/mips/bcm63xx/setup.c
++++ b/arch/mips/bcm63xx/setup.c
+@@ -105,4 +105,6 @@ void __init plat_mem_setup(void)
+ 	pm_power_off = bcm63xx_machine_halt;
  
- 	/*
- 	 * MIPS64 class processors
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index 0cf1545..6dd396c 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -154,6 +154,10 @@ void __init check_wait(void)
- 	case CPU_25KF:
- 	case CPU_PR4450:
- 	case CPU_BCM3302:
-+	case CPU_BCM6338:
-+	case CPU_BCM6345:
-+	case CPU_BCM6348:
-+	case CPU_BCM6358:
- 		cpu_wait = r4k_wait;
- 		break;
+ 	set_io_port_base(0);
++	ioport_resource.start = 0;
++	ioport_resource.end = ~0;
+ }
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_pci.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_pci.h
+new file mode 100644
+index 0000000..c549344
+--- /dev/null
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_pci.h
+@@ -0,0 +1,6 @@
++#ifndef BCM63XX_DEV_PCI_H_
++#define BCM63XX_DEV_PCI_H_
++
++extern int bcm63xx_pci_enabled;
++
++#endif /* BCM63XX_DEV_PCI_H_ */
+diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
+index b188624..6feb7f1 100644
+--- a/arch/mips/pci/Makefile
++++ b/arch/mips/pci/Makefile
+@@ -16,6 +16,8 @@ obj-$(CONFIG_PCI_VR41XX)	+= ops-vr41xx.o pci-vr41xx.o
+ obj-$(CONFIG_MARKEINS)		+= ops-emma2rh.o pci-emma2rh.o fixup-emma2rh.o
+ obj-$(CONFIG_PCI_TX4927)	+= ops-tx4927.o
+ obj-$(CONFIG_BCM47XX)		+= pci-bcm47xx.o
++obj-$(CONFIG_BCM63XX)		+= pci-bcm63xx.o fixup-bcm63xx.o \
++					ops-bcm63xx.o
  
-@@ -804,11 +808,28 @@ static inline void cpu_probe_broadcom(struct cpuinfo_mips *c)
- 	decode_configs(c);
- 	switch (c->processor_id & 0xff00) {
- 	case PRID_IMP_BCM3302:
-+	/* same as PRID_IMP_BCM6338 */
- 		c->cputype = CPU_BCM3302;
- 		break;
- 	case PRID_IMP_BCM4710:
- 		c->cputype = CPU_BCM4710;
- 		break;
-+	case PRID_IMP_BCM6345:
-+		c->cputype = CPU_BCM6345;
+ #
+ # These are still pretty much in the old state, watch, go blind.
+diff --git a/arch/mips/pci/fixup-bcm63xx.c b/arch/mips/pci/fixup-bcm63xx.c
+new file mode 100644
+index 0000000..3408630
+--- /dev/null
++++ b/arch/mips/pci/fixup-bcm63xx.c
+@@ -0,0 +1,21 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2008 Maxime Bizon <mbizon@freebox.fr>
++ */
++
++#include <linux/types.h>
++#include <linux/pci.h>
++#include <bcm63xx_cpu.h>
++
++int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++{
++	return bcm63xx_get_irq_number(IRQ_PCI);
++}
++
++int pcibios_plat_dev_init(struct pci_dev *dev)
++{
++	return 0;
++}
+diff --git a/arch/mips/pci/ops-bcm63xx.c b/arch/mips/pci/ops-bcm63xx.c
+new file mode 100644
+index 0000000..f8dce9d
+--- /dev/null
++++ b/arch/mips/pci/ops-bcm63xx.c
+@@ -0,0 +1,179 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2008 Maxime Bizon <mbizon@freebox.fr>
++ */
++
++#include <linux/types.h>
++#include <linux/pci.h>
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/delay.h>
++#include <linux/io.h>
++
++#include "pci-bcm63xx.h"
++
++/*
++ * swizzle 32bits data to return only the needed part
++ */
++static int postprocess_read(u32 data, int where, unsigned int size)
++{
++	u32 ret;
++
++	ret = 0;
++	switch (size) {
++	case 1:
++		ret = (data >> ((where & 3) << 3)) & 0xff;
 +		break;
-+	case PRID_IMP_BCM6348:
-+		c->cputype = CPU_BCM6348;
++	case 2:
++		ret = (data >> ((where & 3) << 3)) & 0xffff;
 +		break;
-+	case PRID_IMP_BCM4350:
-+		switch (c->processor_id & 0xf0) {
-+		case PRID_REV_BCM6358:
-+			c->cputype = CPU_BCM6358;
-+			break;
-+		default:
-+			c->cputype = CPU_UNKNOWN;
-+			break;
-+		}
++	case 4:
++		ret = data;
 +		break;
- 	default:
- 		c->cputype = CPU_UNKNOWN;
- 		break;
-@@ -894,6 +915,10 @@ static __cpuinit const char *cpu_to_name(struct cpuinfo_mips *c)
- 	case CPU_SR71000:	name = "Sandcraft SR71000"; break;
- 	case CPU_BCM3302:	name = "Broadcom BCM3302"; break;
- 	case CPU_BCM4710:	name = "Broadcom BCM4710"; break;
-+	case CPU_BCM6338:	name = "Broadcom BCM6338"; break;
-+	case CPU_BCM6345:	name = "Broadcom BCM6345"; break;
-+	case CPU_BCM6348:	name = "Broadcom BCM6348"; break;
-+	case CPU_BCM6358:	name = "Broadcom BCM6358"; break;
- 	case CPU_PR4450:	name = "Philips PR4450"; break;
- 	case CPU_LOONGSON2:	name = "ICT Loongson-2"; break;
- 	default:
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 979cf91..f6deda3 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -317,6 +317,10 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
- 	case CPU_BCM3302:
- 	case CPU_BCM4710:
- 	case CPU_LOONGSON2:
-+	case CPU_BCM6338:
-+	case CPU_BCM6345:
-+	case CPU_BCM6348:
-+	case CPU_BCM6358:
- 		if (m4kc_tlbp_war())
- 			uasm_i_nop(p);
- 		tlbw(p);
++	}
++	return ret;
++}
++
++static int preprocess_write(u32 orig_data, u32 val, int where,
++			    unsigned int size)
++{
++	u32 ret;
++
++	ret = 0;
++	switch (size) {
++	case 1:
++		ret = (orig_data & ~(0xff << ((where & 3) << 3))) |
++			(val << ((where & 3) << 3));
++		break;
++	case 2:
++		ret = (orig_data & ~(0xffff << ((where & 3) << 3))) |
++			(val << ((where & 3) << 3));
++		break;
++	case 4:
++		ret = val;
++		break;
++	}
++	return ret;
++}
++
++/*
++ * setup hardware for a configuration cycle with given parameters
++ */
++static int bcm63xx_setup_cfg_access(int type, unsigned int busn,
++				    unsigned int devfn, int where)
++{
++	unsigned int slot, func, reg;
++	u32 val;
++
++	slot = PCI_SLOT(devfn);
++	func = PCI_FUNC(devfn);
++	reg = where >> 2;
++
++	/* sanity check */
++	if (slot > (MPI_L2PCFG_DEVNUM_MASK >> MPI_L2PCFG_DEVNUM_SHIFT))
++		return 1;
++
++	if (func > (MPI_L2PCFG_FUNC_MASK >> MPI_L2PCFG_FUNC_SHIFT))
++		return 1;
++
++	if (reg > (MPI_L2PCFG_REG_MASK >> MPI_L2PCFG_REG_SHIFT))
++		return 1;
++
++	/* ok, setup config access */
++	val = (reg << MPI_L2PCFG_REG_SHIFT);
++	val |= (func << MPI_L2PCFG_FUNC_SHIFT);
++	val |= (slot << MPI_L2PCFG_DEVNUM_SHIFT);
++	val |= MPI_L2PCFG_CFG_USEREG_MASK;
++	val |= MPI_L2PCFG_CFG_SEL_MASK;
++	/* type 0 cycle for local bus, type 1 cycle for anything else */
++	if (type != 0) {
++		/* FIXME: how to specify bus ??? */
++		val |= (1 << MPI_L2PCFG_CFG_TYPE_SHIFT);
++	}
++	bcm_mpi_writel(val, MPI_L2PCFG_REG);
++
++	return 0;
++}
++
++static int bcm63xx_do_cfg_read(int type, unsigned int busn,
++				unsigned int devfn, int where, int size,
++				u32 *val)
++{
++	u32 data;
++
++	/* two phase cycle, first we write address, then read data at
++	 * another location, caller already has a spinlock so no need
++	 * to add one here  */
++	if (bcm63xx_setup_cfg_access(type, busn, devfn, where))
++		return PCIBIOS_DEVICE_NOT_FOUND;
++	iob();
++	data = le32_to_cpu(__raw_readl(pci_iospace_start));
++	/* restore IO space normal behaviour */
++	bcm_mpi_writel(0, MPI_L2PCFG_REG);
++
++	*val = postprocess_read(data, where, size);
++
++	return PCIBIOS_SUCCESSFUL;
++}
++
++static int bcm63xx_do_cfg_write(int type, unsigned int busn,
++				 unsigned int devfn, int where, int size,
++				 u32 val)
++{
++	u32 data;
++
++	/* two phase cycle, first we write address, then write data to
++	 * another location, caller already has a spinlock so no need
++	 * to add one here  */
++	if (bcm63xx_setup_cfg_access(type, busn, devfn, where))
++		return PCIBIOS_DEVICE_NOT_FOUND;
++	iob();
++
++	data = le32_to_cpu(__raw_readl(pci_iospace_start));
++	data = preprocess_write(data, val, where, size);
++
++	__raw_writel(cpu_to_le32(data), pci_iospace_start);
++	wmb();
++	/* no way to know the access is done, we have to wait */
++	udelay(500);
++	/* restore IO space normal behaviour */
++	bcm_mpi_writel(0, MPI_L2PCFG_REG);
++
++	return PCIBIOS_SUCCESSFUL;
++}
++
++static int bcm63xx_pci_read(struct pci_bus *bus, unsigned int devfn,
++			     int where, int size, u32 *val)
++{
++	int type;
++
++	type = bus->parent ? 1 : 0;
++
++	if (type == 0 && PCI_SLOT(devfn) == CARDBUS_PCI_IDSEL)
++		return PCIBIOS_DEVICE_NOT_FOUND;
++
++	return bcm63xx_do_cfg_read(type, bus->number, devfn,
++				    where, size, val);
++}
++
++static int bcm63xx_pci_write(struct pci_bus *bus, unsigned int devfn,
++			      int where, int size, u32 val)
++{
++	int type;
++
++	type = bus->parent ? 1 : 0;
++
++	if (type == 0 && PCI_SLOT(devfn) == CARDBUS_PCI_IDSEL)
++		return PCIBIOS_DEVICE_NOT_FOUND;
++
++	return bcm63xx_do_cfg_write(type, bus->number, devfn,
++				     where, size, val);
++}
++
++struct pci_ops bcm63xx_pci_ops = {
++	.read   = bcm63xx_pci_read,
++	.write  = bcm63xx_pci_write
++};
+diff --git a/arch/mips/pci/pci-bcm63xx.c b/arch/mips/pci/pci-bcm63xx.c
+new file mode 100644
+index 0000000..52bac8e
+--- /dev/null
++++ b/arch/mips/pci/pci-bcm63xx.c
+@@ -0,0 +1,178 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2008 Maxime Bizon <mbizon@freebox.fr>
++ */
++
++#include <linux/types.h>
++#include <linux/pci.h>
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <asm/bootinfo.h>
++
++#include "pci-bcm63xx.h"
++
++/* allow PCI to be disabled at runtime depending on board nvram
++ * configuration */
++int bcm63xx_pci_enabled = 0;
++
++static struct resource bcm_pci_mem_resource = {
++	.name   = "bcm63xx PCI memory space",
++	.start  = BCM_PCI_MEM_BASE_PA,
++	.end    = BCM_PCI_MEM_END_PA,
++	.flags  = IORESOURCE_MEM
++};
++
++static struct resource bcm_pci_io_resource = {
++	.name   = "bcm63xx PCI IO space",
++	.start  = BCM_PCI_IO_BASE_PA,
++	.end    = BCM_PCI_IO_END_PA,
++	.flags  = IORESOURCE_IO
++};
++
++struct pci_controller bcm63xx_controller = {
++	.pci_ops	= &bcm63xx_pci_ops,
++	.io_resource	= &bcm_pci_io_resource,
++	.mem_resource	= &bcm_pci_mem_resource,
++};
++
++static u32 bcm63xx_int_cfg_readl(u32 reg)
++{
++	u32 tmp;
++
++	tmp = reg & MPI_PCICFGCTL_CFGADDR_MASK;
++	tmp |= MPI_PCICFGCTL_WRITEEN_MASK;
++	bcm_mpi_writel(tmp, MPI_PCICFGCTL_REG);
++	iob();
++	return bcm_mpi_readl(MPI_PCICFGDATA_REG);
++}
++
++static void bcm63xx_int_cfg_writel(u32 val, u32 reg)
++{
++	u32 tmp;
++
++	tmp = reg & MPI_PCICFGCTL_CFGADDR_MASK;
++	tmp |=  MPI_PCICFGCTL_WRITEEN_MASK;
++	bcm_mpi_writel(tmp, MPI_PCICFGCTL_REG);
++	bcm_mpi_writel(val, MPI_PCICFGDATA_REG);
++}
++
++void __iomem *pci_iospace_start;
++
++static int __init bcm63xx_pci_init(void)
++{
++	unsigned int mem_size;
++	u32 val;
++
++	if (!BCMCPU_IS_6348() && !BCMCPU_IS_6358())
++		return -ENODEV;
++
++	if (!bcm63xx_pci_enabled)
++		return -ENODEV;
++
++	/*
++	 * configuration  access are  done through  IO space,  remap 4
++	 * first bytes to access it from CPU.
++	 *
++	 * this means that  no io access from CPU  should happen while
++	 * we do a configuration cycle,  but there's no way we can add
++	 * a spinlock for each io access, so this is currently kind of
++	 * broken on SMP.
++	 */
++	pci_iospace_start = ioremap_nocache(BCM_PCI_IO_BASE_PA, 4);
++	if (!pci_iospace_start)
++		return -ENOMEM;
++
++	/* setup local bus to PCI access (PCI memory) */
++	val = BCM_PCI_MEM_BASE_PA & MPI_L2P_BASE_MASK;
++	bcm_mpi_writel(val, MPI_L2PMEMBASE1_REG);
++	bcm_mpi_writel(~(BCM_PCI_MEM_SIZE - 1), MPI_L2PMEMRANGE1_REG);
++	bcm_mpi_writel(val | MPI_L2PREMAP_ENABLED_MASK, MPI_L2PMEMREMAP1_REG);
++
++	/* set Cardbus IDSEL (type 0 cfg access on primary bus for
++	 * this IDSEL will be done on Cardbus instead) */
++	val = bcm_pcmcia_readl(PCMCIA_C1_REG);
++	val &= ~PCMCIA_C1_CBIDSEL_MASK;
++	val |= (CARDBUS_PCI_IDSEL << PCMCIA_C1_CBIDSEL_SHIFT);
++	bcm_pcmcia_writel(val, PCMCIA_C1_REG);
++
++	/* disable second access windows */
++	bcm_mpi_writel(0, MPI_L2PMEMREMAP2_REG);
++
++	/* setup local bus  to PCI access (IO memory),  we have only 1
++	 * IO window  for both PCI  and cardbus, but it  cannot handle
++	 * both  at the  same time,  assume standard  PCI for  now, if
++	 * cardbus card has  IO zone, PCI fixup will  change window to
++	 * cardbus */
++	val = BCM_PCI_IO_BASE_PA & MPI_L2P_BASE_MASK;
++	bcm_mpi_writel(val, MPI_L2PIOBASE_REG);
++	bcm_mpi_writel(~(BCM_PCI_IO_SIZE - 1), MPI_L2PIORANGE_REG);
++	bcm_mpi_writel(val | MPI_L2PREMAP_ENABLED_MASK, MPI_L2PIOREMAP_REG);
++
++	/* enable PCI related GPIO pins */
++	bcm_mpi_writel(MPI_LOCBUSCTL_EN_PCI_GPIO_MASK, MPI_LOCBUSCTL_REG);
++
++	/* setup PCI to local bus access, used by PCI device to target
++	 * local RAM while bus mastering */
++	bcm63xx_int_cfg_writel(0, PCI_BASE_ADDRESS_3);
++	if (BCMCPU_IS_6358())
++		val = MPI_SP0_REMAP_ENABLE_MASK;
++	else
++		val = 0;
++	bcm_mpi_writel(val, MPI_SP0_REMAP_REG);
++
++	bcm63xx_int_cfg_writel(0x0, PCI_BASE_ADDRESS_4);
++	bcm_mpi_writel(0, MPI_SP1_REMAP_REG);
++
++	mem_size = bcm63xx_get_memory_size();
++
++	/* 6348 before rev b0 exposes only 16 MB of RAM memory through
++	 * PCI, throw a warning if we have more memory */
++	if (BCMCPU_IS_6348() && (bcm63xx_get_cpu_rev() & 0xf0) == 0xa0) {
++		if (mem_size > (16 * 1024 * 1024))
++			printk(KERN_WARNING "bcm63xx: this CPU "
++			       "revision cannot handle more than 16MB "
++			       "of RAM for PCI bus mastering\n");
++	} else {
++		/* setup sp0 range to local RAM size */
++		bcm_mpi_writel(~(mem_size - 1), MPI_SP0_RANGE_REG);
++		bcm_mpi_writel(0, MPI_SP1_RANGE_REG);
++	}
++
++	/* change  host bridge  retry  counter to  infinite number  of
++	 * retry,  needed for  some broadcom  wifi cards  with Silicon
++	 * Backplane bus where access to srom seems very slow  */
++	val = bcm63xx_int_cfg_readl(BCMPCI_REG_TIMERS);
++	val &= ~REG_TIMER_RETRY_MASK;
++	bcm63xx_int_cfg_writel(val, BCMPCI_REG_TIMERS);
++
++	/* enable memory decoder and bus mastering */
++	val = bcm63xx_int_cfg_readl(PCI_COMMAND);
++	val |= (PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER);
++	bcm63xx_int_cfg_writel(val, PCI_COMMAND);
++
++	/* enable read prefetching & disable byte swapping for bus
++	 * mastering transfers */
++	val = bcm_mpi_readl(MPI_PCIMODESEL_REG);
++	val &= ~MPI_PCIMODESEL_BAR1_NOSWAP_MASK;
++	val &= ~MPI_PCIMODESEL_BAR2_NOSWAP_MASK;
++	val &= ~MPI_PCIMODESEL_PREFETCH_MASK;
++	val |= (8 << MPI_PCIMODESEL_PREFETCH_SHIFT);
++	bcm_mpi_writel(val, MPI_PCIMODESEL_REG);
++
++	/* enable pci interrupt */
++	val = bcm_mpi_readl(MPI_LOCINT_REG);
++	val |= MPI_LOCINT_MASK(MPI_LOCINT_EXT_PCI_INT);
++	bcm_mpi_writel(val, MPI_LOCINT_REG);
++
++	register_pci_controller(&bcm63xx_controller);
++
++	/* mark memory space used for IO mapping as reserved */
++	request_mem_region(BCM_PCI_IO_BASE_PA, BCM_PCI_IO_SIZE,
++			   "bcm63xx PCI IO space");
++	return 0;
++}
++
++arch_initcall(bcm63xx_pci_init);
+diff --git a/arch/mips/pci/pci-bcm63xx.h b/arch/mips/pci/pci-bcm63xx.h
+new file mode 100644
+index 0000000..a6e594e
+--- /dev/null
++++ b/arch/mips/pci/pci-bcm63xx.h
+@@ -0,0 +1,27 @@
++#ifndef PCI_BCM63XX_H_
++#define PCI_BCM63XX_H_
++
++#include <bcm63xx_cpu.h>
++#include <bcm63xx_io.h>
++#include <bcm63xx_regs.h>
++#include <bcm63xx_dev_pci.h>
++
++/*
++ * Cardbus shares  the PCI bus, but has  no IDSEL, so a  special id is
++ * reserved for it.  If you have a standard PCI device at this id, you
++ * need to change the following definition.
++ */
++#define CARDBUS_PCI_IDSEL	0x8
++
++/*
++ * defined in ops-bcm63xx.c
++ */
++extern struct pci_ops bcm63xx_pci_ops;
++extern struct pci_ops bcm63xx_cb_ops;
++
++/*
++ * defined in pci-bcm63xx.c
++ */
++extern void __iomem *pci_iospace_start;
++
++#endif /* ! PCI_BCM63XX_H_ */
 -- 
 1.5.4.3

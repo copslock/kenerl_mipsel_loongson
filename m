@@ -1,144 +1,132 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2008 20:05:56 +0100 (BST)
-Received: from mail.zeugmasystems.com ([192.139.122.66]:5165 "EHLO
-	zeugmasystems.com") by ftp.linux-mips.org with ESMTP
-	id S21939935AbYJTTFw convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 20 Oct 2008 20:05:52 +0100
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: panic logic defeats arch dependent code 
-Date:	Mon, 20 Oct 2008 12:05:43 -0700
-Message-ID: <DDFD17CC94A9BD49A82147DDF7D545C501307489@exchange.ZeugmaSystems.local>
-In-Reply-To: <20081018124358.GC17322@linux-mips.org>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: panic logic defeats arch dependent code 
-Thread-Index: AckxHzSgIhsqNmSQR5GVNcsp0HowPgBxj+Sg
-References: <DDFD17CC94A9BD49A82147DDF7D545C50130734A@exchange.ZeugmaSystems.local> <20081018124358.GC17322@linux-mips.org>
-From:	"Anirban Sinha" <ASinha@zeugmasystems.com>
-To:	"Ralf Baechle" <ralf@linux-mips.org>
-Cc:	<linux-mips@linux-mips.org>
-Return-Path: <ASinha@zeugmasystems.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Oct 2008 22:18:32 +0100 (BST)
+Received: from smtp1.linux-foundation.org ([140.211.169.13]:32417 "EHLO
+	smtp1.linux-foundation.org") by ftp.linux-mips.org with ESMTP
+	id S21945791AbYJTVSa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 20 Oct 2008 22:18:30 +0100
+Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [140.211.169.55])
+	by smtp1.linux-foundation.org (8.14.2/8.13.5/Debian-3ubuntu1.1) with ESMTP id m9KLHpJe020056
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 20 Oct 2008 14:17:52 -0700
+Received: from akpm.corp.google.com (localhost [127.0.0.1])
+	by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with SMTP id m9KLHoSd018625;
+	Mon, 20 Oct 2008 14:17:50 -0700
+Date:	Mon, 20 Oct 2008 14:17:50 -0700
+From:	Andrew Morton <akpm@linux-foundation.org>
+To:	David Daney <ddaney@caviumnetworks.com>
+Cc:	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mips@linux-mips.org, Tomaso.Paoletti@caviumnetworks.com
+Subject: Re: [PATCH] serial: Initialize spinlocks in 8250 and don't clobber
+ them.
+Message-Id: <20081020141750.d0610586.akpm@linux-foundation.org>
+In-Reply-To: <48F51114.2010105@caviumnetworks.com>
+References: <48F51114.2010105@caviumnetworks.com>
+X-Mailer: Sylpheed version 2.2.4 (GTK+ 2.8.20; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-MIMEDefang-Filter: lf$Revision: 1.188 $
+X-Scanned-By: MIMEDefang 2.63 on 140.211.169.13
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20822
+X-archive-position: 20823
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ASinha@zeugmasystems.com
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf:
+On Tue, 14 Oct 2008 14:37:24 -0700
+David Daney <ddaney@caviumnetworks.com> wrote:
 
-Thanks for responding and posting the patch. There is actually a another
-important issue of a more general nature. I have already posted this in
-the general Linux kernel mailing list under the subject "panic() logic".
-The crux of the issue is:
+> Initialize spinlocks in 8250 and don't clobber them.
 
-The panic() call does a smp_send_stop() pretty early in the call
-process for SMP systems. smp_send_stop basically marks all the other
-cores as 'down' and
-updates the cpu bitmap. One implication of this is that you cannot do
-an IPI later on to other cores. However, interestingly, mips sibyte
-processor tries to do a cfe_exit() through an IPI as a part of
-emergency_reboot() that is called pretty late in the panic() logic. 
+That's actually quite bad.  There's no reason why an all-zeroes pattern
+for a spinlock_t correctly represents the unlocked state.  I guess we
+got lucky on the architectures which use this code.
 
-As a consequence of this, if a panic happens on a back core, the system
-simply hangs and never actually does a "rebooting in 5 sec" thing. 
+> Spinlock debugging fails in 8250.c because the lock fields in
+> irq_lists are not initialized.  Initialize them.
+> 
+> In serial8250_isa_init_ports(), the port's lock is initialized.  We
+> should not overwrite it.  Only copy in the fields we need.
+> 
+> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+> Signed-off-by: Tomaso Paoletti <tpaoletti@caviumnetworks.com>
+> ---
+>  drivers/serial/8250.c |   19 +++++++++++++++++--
+>  1 files changed, 17 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/serial/8250.c b/drivers/serial/8250.c
+> index d4104a3..0688799 100644
+> --- a/drivers/serial/8250.c
+> +++ b/drivers/serial/8250.c
+> @@ -2494,6 +2494,9 @@ static void __init serial8250_isa_init_ports(void)
+>  		return;
+>  	first = 0;
+>  
+> +	for (i = 0; i < ARRAY_SIZE(irq_lists); i++)
+> +		spin_lock_init(&irq_lists[i].lock);
 
-I believe the way panic logic is organized is in conflict with the
-requirements of some archs, for example our mips sibyte arch. Currently,
-the arch independent logic defeats the main purpose of the arch
-dependent emergency_restart() function which is to restart the system.
-In a vast majority of the cases, we do have a perfectly sane and
-functional front core and we are just not able to gracefully reboot the
-system because we are limited by the way panic() handles the shutdown
-logic. If there are other archs that does a similar specific operation
-for the front core as a part of 'emergency restart', they are all
-defeated.
+OK..  But serial8250_isa_init_ports() has so many callsites that I'd
+worry that we end up running this initialisation multiple times.  Say,
+if the right combination of boot options is provided?  This is probably
+a benign thing, but it's not desirable.
 
-I believe, the way to solve this problem is that the archs themselves
-take the responsibility of shutting down the core and not the generic
-panic() call. The actual power down mechanism is arch dependent anyway,
-so I guess it can be made to be a part of emergency_shutdown(). The arch
-independent kernel code will then simply do the necessary arch
-independent things to handle panic and simply call emergency_reboot() to
-do the rest of the arch specific stuff, including powering down the
-cores.
+A simple "fix" would be
 
-What do you think? 
+static void __init irq_lists_init(void)
+{
+	static unsigned long done;
 
-Thanks.
+	if (!test_and_set_bit(0, &done)) {
+		int i;
 
-Ani
+		for (i = 0; i < ARRAY_SIZE(irq_lists); i++)
+			spin_lock_init(&irq_lists[i].lock);
+	}
+}
 
+A better fix would be to initialise all those spinlocks at compile
+time.  But given the need to pass the address of each lock into each
+lock's initialiser, that could be tricky.
 
->-----Original Message-----
->From: Ralf Baechle [mailto:ralf@linux-mips.org]
->Sent: Saturday, October 18, 2008 5:44 AM
->To: Anirban Sinha
->Cc: linux-mips@linux-mips.org
->Subject: Re: stop_this_cpu - redundant code?
->
->On Fri, Oct 17, 2008 at 07:57:12PM -0700, Anirban Sinha wrote:
->
->> This function  (stop_this_cpu) in /arch/mips/kernel/smp.c does a
->> local_irq_enable() and the adjacent comment says that it's because it
->> may need to service _machine_restart IPI. Unfortunately,
->> smp_call_function only sends IPIs to cores that are still online ( it
->> uses the cpu_online_map U all_but_myself_map in
->> smp_call_function_map()).
->
->Usually a system would be restarted through some hardware mechanism -
->probably a reset - anyway.
->
->> So the bottom-line is, should we still keep the local irqs enabled or
->is
->> this code totally redundant? I have seen other similar functions in
->> other archs where they actually disable the local irqs.
->
->You're right.  The code is ancient old and once uppon a time it made
->sense
->to do things this way but the MIPS version was never updates.
->Stop_this_cpu
->also should try to minimize the power consumption by using the WAIT
->instruction or whatever else a particular process has to offer.
->
->I didn't try to optimize this for the 34K where a TC could try to halt
->itself - there isn't really a point, I think.
->
->A few other architectures are explicitly disabling interrupts but
-that's
->also redundant because smp_call_function() invokes the function on
-other
->processors with interrupts disabled.
->
->Thanks for posting this,
->
->  Ralf
->
->Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
->
->diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
->index 7b59cfb..b79ea70 100644
->--- a/arch/mips/kernel/smp.c
->+++ b/arch/mips/kernel/smp.c
->@@ -163,8 +163,10 @@ static void stop_this_cpu(void *dummy)
-> 	 * Remove this CPU:
-> 	 */
-> 	cpu_clear(smp_processor_id(), cpu_online_map);
->-	local_irq_enable();	/* May need to service _machine_restart
->IPI */
->-	for (;;);		/* Wait if available. */
->+	for (;;) {
->+		if (cpu_wait)
->+			(*cpu_wait)();		/* Wait if available. */
->+	}
-> }
->
-> void smp_send_stop(void)
+>  	for (i = 0; i < nr_uarts; i++) {
+>  		struct uart_8250_port *up = &serial8250_ports[i];
+>  
+> @@ -2699,12 +2702,24 @@ static struct uart_driver serial8250_reg = {
+>   */
+>  int __init early_serial_setup(struct uart_port *port)
+>  {
+> +	struct uart_port *p;
+> +
+>  	if (port->line >= ARRAY_SIZE(serial8250_ports))
+>  		return -ENODEV;
+>  
+>  	serial8250_isa_init_ports();
+> -	serial8250_ports[port->line].port	= *port;
+> -	serial8250_ports[port->line].port.ops	= &serial8250_pops;
+> +	p = &serial8250_ports[port->line].port;
+> +	p->iobase       = port->iobase;
+> +	p->membase      = port->membase;
+> +	p->irq          = port->irq;
+> +	p->uartclk      = port->uartclk;
+> +	p->fifosize     = port->fifosize;
+> +	p->regshift     = port->regshift;
+> +	p->iotype       = port->iotype;
+> +	p->flags        = port->flags;
+> +	p->mapbase      = port->mapbase;
+> +	p->private_data = port->private_data;
+> +	p->ops		= &serial8250_pops;
+>  	return 0;
+>  }
+
+Having to spell out each member like this is pretty nasty from a
+maintainability point of view.  If new fields are added to uart_port,
+we surely will forget to update this code.
+
+But yes, copying a spinlock by value is quite wrong.  Perhaps we could
+retain the struct assigment and then run spin_lock_init() to get the
+spinlock into a sane state?

@@ -1,55 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Oct 2008 02:00:30 +0100 (BST)
-Received: from fg-out-1718.google.com ([72.14.220.158]:45591 "EHLO
-	fg-out-1718.google.com") by ftp.linux-mips.org with ESMTP
-	id S21949422AbYJUBA1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 21 Oct 2008 02:00:27 +0100
-Received: by fg-out-1718.google.com with SMTP id d23so1627183fga.32
-        for <linux-mips@linux-mips.org>; Mon, 20 Oct 2008 18:00:27 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to
-         :subject:mime-version:content-type:content-transfer-encoding
-         :content-disposition;
-        bh=jeg01U1jRQzl37mUKaVafUN8sIkwzCCqHV1Q7xRx75I=;
-        b=jP0o5r7W8QGT/sWad0iL0i17E+BSakshbBUTSG+Ym15xjfXu+M1/B5zY9P2+T/OVMq
-         vJFPMrdPU2o4y/JWJlPe/6+8qLnXB/S55d/ppmE74If7zAD4KlpE9EuyQeGOvh/XW3Yu
-         5BAjHrZZAdVZd7nYUdRQ0ZcaBOrD3fc2uZhAE=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:mime-version:content-type
-         :content-transfer-encoding:content-disposition;
-        b=UnN4tK28PuRBqCsXewtgxWGmnC3kC+l59KRO1gdg60k/mr1R4jCgOd3IM5EhX8yh2o
-         sIcSt+vxn6idRVbCvMC6dqiPobH3zcweNR/3oNIddlV2sjPHrE/HDNvHTLXE/3sIc7Tf
-         On4QKXV/Lk8C/aw6M6KthO8BfvA24CJCXCWyc=
-Received: by 10.86.4.2 with SMTP id 2mr7378503fgd.21.1224550827000;
-        Mon, 20 Oct 2008 18:00:27 -0700 (PDT)
-Received: by 10.86.9.6 with HTTP; Mon, 20 Oct 2008 18:00:26 -0700 (PDT)
-Message-ID: <c62985530810201800r3ddfbb99s1a0809f2eba45cdf@mail.gmail.com>
-Date:	Tue, 21 Oct 2008 03:00:26 +0200
-From:	"=?ISO-8859-1?Q?Fr=E9d=E9ric_Weisbecker?=" <fweisbec@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: Support for ftrace in MIPS
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Oct 2008 06:15:32 +0100 (BST)
+Received: from srv5.dvmed.net ([207.36.208.214]:205 "EHLO mail.dvmed.net")
+	by ftp.linux-mips.org with ESMTP id S21968465AbYJUFP3 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 21 Oct 2008 06:15:29 +0100
+Received: from cpe-069-134-158-197.nc.res.rr.com ([69.134.158.197] helo=core.yyz.us)
+	by mail.dvmed.net with esmtpsa (Exim 4.69 #1 (Red Hat Linux))
+	id 1Ks9aW-00070Y-62; Tue, 21 Oct 2008 05:15:26 +0000
+Message-ID: <48FD656B.7040304@garzik.org>
+Date:	Tue, 21 Oct 2008 01:15:23 -0400
+From:	Jeff Garzik <jeff@garzik.org>
+User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+CC:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] net: Make SMC91X selectable on other MIPS boards
+References: <1224514829-16163-1-git-send-email-anemo@mba.ocn.ne.jp>
+In-Reply-To: <1224514829-16163-1-git-send-email-anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Return-Path: <fweisbec@gmail.com>
+Return-Path: <jeff@garzik.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20825
+X-archive-position: 20826
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fweisbec@gmail.com
+X-original-sender: jeff@garzik.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello everyone,
+Atsushi Nemoto wrote:
+> RBTX4939 board has SMC91X chip and there can be other MIPS boards with
+> that chip.  Make SMC91X selectable on all MIPS board would be better than
+> enumerating each boards in Kconfig.
+> 
+> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> Cc: jeff@garzik.org
+> ---
+>  drivers/net/Kconfig |    2 +-
+>  1 files changed, 1 insertions(+), 1 deletions(-)
+> 
+> diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+> index 096735f..be3c4b2 100644
+> --- a/drivers/net/Kconfig
+> +++ b/drivers/net/Kconfig
+> @@ -888,7 +888,7 @@ config SMC91X
+>  	select CRC32
+>  	select MII
+>  	depends on ARM || REDWOOD_5 || REDWOOD_6 || M32R || SUPERH || \
+> -		SOC_AU1X00 || BLACKFIN || MN10300
+> +		MIPS || BLACKFIN || MN10300
 
-I saw that there is no implementation of ftrace in mips currently and
-I would like to know if someone is currently working on it. If not I
-would be glad
-to work on patches for that.
-
-Thanks...
+applied

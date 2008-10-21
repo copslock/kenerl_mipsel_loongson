@@ -1,196 +1,116 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Oct 2008 17:09:05 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:3605 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S22015914AbYJUQJC (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 21 Oct 2008 17:09:02 +0100
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 7D5833EC9; Tue, 21 Oct 2008 09:08:58 -0700 (PDT)
-Message-ID: <48FDFE89.5030501@ru.mvista.com>
-Date:	Tue, 21 Oct 2008 20:08:41 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
-	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-	ralf@linux-mips.org
-Subject: Re: [PATCH] ide: Add tx4939ide driver (v5)
-References: <20081020.212701.59651580.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20081020.212701.59651580.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Oct 2008 18:09:23 +0100 (BST)
+Received: from az33egw02.freescale.net ([192.88.158.103]:43195 "EHLO
+	az33egw02.freescale.net") by ftp.linux-mips.org with ESMTP
+	id S22018698AbYJURJU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 21 Oct 2008 18:09:20 +0100
+Received: from az33smr01.freescale.net (az33smr01.freescale.net [10.64.34.199])
+	by az33egw02.freescale.net (8.12.11/az33egw02) with ESMTP id m9LH92gL007087;
+	Tue, 21 Oct 2008 10:09:03 -0700 (MST)
+Received: from [192.168.2.4] (mvp-10-214-73-95.am.freescale.net [10.214.73.95])
+	by az33smr01.freescale.net (8.13.1/8.13.0) with ESMTP id m9LH91PK007673;
+	Tue, 21 Oct 2008 12:09:01 -0500 (CDT)
+Cc:	linux-mips@linux-mips.org, netdev@vger.kernel.org
+Message-Id: <B812781E-031F-4A1E-8FDB-E0482F495325@freescale.com>
+From:	Andy Fleming <afleming@freescale.com>
+To:	Maxime Bizon <mbizon@freebox.fr>
+In-Reply-To: <1224382023-24412-1-git-send-email-mbizon@freebox.fr>
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Mime-Version: 1.0 (Apple Message framework v929.2)
+Subject: Re: [PATCH/RFC v1 10/12] [MIPS] BCM63XX: Add integrated ethernet PHY support for phylib.
+Date:	Tue, 21 Oct 2008 12:08:54 -0500
+References: <1224382023-24412-1-git-send-email-mbizon@freebox.fr>
+X-Mailer: Apple Mail (2.929.2)
+Return-Path: <afleming@freescale.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20831
+X-archive-position: 20832
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: afleming@freescale.com
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
 
-> This is the driver for the Toshiba TX4939 SoC ATA controller.
+On Oct 18, 2008, at 21:07, Maxime Bizon wrote:
 
-> This controller has standard ATA taskfile registers and DMA
-> command/status registers, but the register layout is swapped on big
-> endian.  There are some other endian issue and some special registers
-> which requires many custom dma_ops/tp_ops routines and build_dmatable.
+> Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
+> ---
+> drivers/net/phy/Kconfig   |    6 ++
+> drivers/net/phy/Makefile  |    1 +
+> drivers/net/phy/bcm63xx.c |  132 ++++++++++++++++++++++++++++++++++++ 
+> +++++++++
+> 3 files changed, 139 insertions(+), 0 deletions(-)
+> create mode 100644 drivers/net/phy/bcm63xx.c
+>
+> diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+> index d55932a..a5d2c2d 100644
+> --- a/drivers/net/phy/Kconfig
+> +++ b/drivers/net/phy/Kconfig
+> @@ -56,6 +56,12 @@ config BROADCOM_PHY
+> 	  Currently supports the BCM5411, BCM5421, BCM5461, BCM5464, BCM5481
+> 	  and BCM5482 PHYs.
+>
+> +config BCM63XX_PHY
+> +	tristate "Drivers for Broadcom 63xx SOCs internal PHY"
+> +	depends on BCM63XX
 
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-    I'm inclined to ACK the driver (besides, TX49xx patches are holding up my 
-own series of patches since it needs to modify both these drivers) but I'm not 
-sure about the error cleanup path now that I looked at it again -- probably' 
-devres' handles all that automagically but peering into the sources didn't 
-enlignten me on how it does it, so I would like to be explicitly assured. :-)
-    There are also some nits, mostly ignorable...
+This is probably right, but just to check: These PHYs will never be  
+used outside of the BCM63xx family?
 
-> diff --git a/drivers/ide/mips/tx4939ide.c b/drivers/ide/mips/tx4939ide.c
+
+>
+> +	---help---
+> +	  Currently supports the 6348 and 6358 PHYs.
+> +
+> config ICPLUS_PHY
+> 	tristate "Drivers for ICPlus PHYs"
+> 	---help---
+> diff --git a/drivers/net/phy/bcm63xx.c b/drivers/net/phy/bcm63xx.c
 > new file mode 100644
-> index 0000000..9a42f83
-> --- /dev/null
-> +++ b/drivers/ide/mips/tx4939ide.c
-> @@ -0,0 +1,756 @@
-[...]
-> +static void tx4939ide_set_pio_mode(ide_drive_t *drive, const u8 pio)
-> +{
-> +	ide_hwif_t *hwif = drive->hwif;
-> +	int is_slave = drive->dn & 1;
+> index 0000000..4fed95e
 
-    Here and elsewhere ANDing drive->dn with 1 seems superfluous since TX4939 
-IDE controllers are single channel and therefore drive->dn should be 0 or 1...
-
-> +static u16 tx4939ide_check_error_ints(ide_hwif_t *hwif)
+> +static int bcm63xx_config_init(struct phy_device *phydev)
 > +{
-> +	void __iomem *base = TX4939IDE_BASE(hwif);
-> +	u16 ctl = tx4939ide_readw(base, TX4939IDE_Int_Ctl);
+> +	int reg, err;
 > +
-> +	if (ctl & TX4939IDE_INT_BUSERR) {
-> +		/* reset FIFO */
-> +		u16 sysctl = tx4939ide_readw(base, TX4939IDE_Sys_Ctl);
-
-    Missed a missing newline here too. :-)
-
-> +		pr_err("%s: Error interrupt %#x (%s%s%s )\n",
-> +		       hwif->name, ctl,
-> +		       (ctl & TX4939IDE_INT_ADDRERR) ?
-> +		       " Address-Error" : "",
-> +		       (ctl & TX4939IDE_INT_DEVTIMING) ?
-> +		       " DEV-Timing" : "",
-> +		       (ctl & TX4939IDE_INT_BUSERR) ?
-
-    Parens around & shouldn't be needed...
-
-> +static u8 tx4939ide_cable_detect(ide_hwif_t *hwif)
-> +{
-> +	void __iomem *base = TX4939IDE_BASE(hwif);
+> +	reg = phy_read(phydev, MII_BCM63XX_IR);
+> +	if (reg < 0)
+> +		return reg;
 > +
-> +	return (tx4939ide_readw(base, TX4939IDE_Sys_Ctl) & 0x2000) ?
-
-    Here as well...
-
-> +static u8 tx4939ide_clear_dma_status(void __iomem *base)
-> +{
-> +	u8 dma_stat;
+> +	/* Mask interrupts globally.  */
+> +	reg |= MII_BCM63XX_IR_GMASK;
+> +	err = phy_write(phydev, MII_BCM63XX_IR, reg);
+> +	if (err < 0)
+> +		return err;
 > +
-> +	/* read DMA status for INTR & ERROR flags */
-> +	dma_stat = tx4939ide_readb(base, TX4939IDE_DMA_Stat);
-> +	/* clear INTR & ERROR flags */
-> +	tx4939ide_writeb(dma_stat | 6, base, TX4939IDE_DMA_Stat);
+> +	/* Unmask events we are interested in  */
+> +	reg = ~(MII_BCM63XX_IR_DUPLEX |
+> +		MII_BCM63XX_IR_SPEED |
+> +		MII_BCM63XX_IR_LINK) |
+> +		MII_BCM63XX_IR_EN;
 
-    Should replace 6 with ATA_DMA_INTR | ATA_DMA_ERR to be consistent with 
-other changes...
+You just cleared the global interrupt mask.  I have two problems with  
+that:
 
-> +#ifdef __BIG_ENDIAN
-> +/* custom ide_build_dmatable to handle swapped layout */
-> +static int tx4939ide_build_dmatable(ide_drive_t *drive, struct request *rq)
-> +{
-[...]
-> +		/*
-> +		 * Fill in the dma table, without crossing any 64kB boundaries.
+1) If there's some reason you need to mask and then unmask interrupts,  
+you should make that clear in the comments.  If there's not a reason,  
+then it's a bit silly to do both.
 
-    s/dma/DMA/
+2) Interrupts should not be enabled until the PHY's config_intr()  
+function is called, and asks for them to be enabled.
 
-> +static int tx4939ide_dma_setup(ide_drive_t *drive)
-> +{
-[...]
-> +	/* fall back to pio! */
+Maybe you just wanted that to be:
 
-    s/pio/PIO/
+  reg &= ~(MII_BCM63XX_IR_DUPLEX |
+...
 
-> +	tx4939ide_writew(SECTOR_SIZE / 2, base, (drive->dn & 1) ?
 
-    Parens around & unneeded?
+The other comment I have is that these probably should go in the  
+broadcom.c file.  I'm not deeply tied to the notion of one file per  
+company, but it has become the way it is done.
 
-> +/* returns 1 if DMA IRQ issued, 0 otherwise */
-> +static int tx4939ide_dma_test_irq(ide_drive_t *drive)
-> +{
-> +	ide_hwif_t *hwif = drive->hwif;
-> +	void __iomem *base = TX4939IDE_BASE(hwif);
-> +	u16 ctl;
-> +	u8 dma_stat, stat;
-> +	u16 ide_int;
-
-    Could be on the same line with 'ctl'...
-
-> +static void tx4939ide_init_hwif(ide_hwif_t *hwif)
-> +{
-
-[...]
-
-> +	tx4939ide_writew(0x0008, base, TX4939IDE_Lo_Burst_Cnt);
-> +	tx4939ide_writew(0, base, TX4939IDE_Up_Burst_Cnt);
-
-    I think that these fit better to tx4939ide_init_dma().
-
-> +}
-> +
-> +static int tx4939ide_init_dma(ide_hwif_t *hwif, const struct ide_port_info *d)
-> +{
-> +	hwif->dma_base = hwif->extra_base +
-> +		tx4939ide_swizzleb(TX4939IDE_DMA_Cmd);
-
-    Doesn't it fit on the same line now?
-
-> +	/*
-> +	 * Note that we cannot use ATA_DMA_TABLE_OFS,ATA_DMA_STATUS
-
-    No space after comma...
-
-> +static int __init tx4939ide_probe(struct platform_device *pdev)
-> +{
-[...]
-> +	if (!devm_request_mem_region(&pdev->dev, res->start,
-> +				     res->end - res->start + 1, "tx4938ide"))
-> +		return -EBUSY;
-> +	mapbase = (unsigned long)devm_ioremap(&pdev->dev, res->start,
-> +					      res->end - res->start + 1);
-> +	if (!mapbase)
-> +		return -EBUSY;
-
-    Do you mean that on devm_ioremap() failure the memory region will be 
-auto-released?
-
-> +	host = ide_host_alloc(&tx4939ide_port_info, hws);
-> +	if (!host)
-> +		return -ENOMEM;
-> +	/* use extra_base for base address of the all registers */
-> +	host->ports[0]->extra_base = mapbase;
-> +	ret = ide_host_register(host, &tx4939ide_port_info, hws);
-> +	if (ret) {
-> +		ide_host_free(host);
-> +		return ret;
-> +	}
-
-    Same question about the error cleanup here -- will the acquired resources 
-be auto-released? If so, then:
-
-Acked-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
-
-MBR, Sergei
+Andy

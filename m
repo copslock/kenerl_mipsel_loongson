@@ -1,57 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Oct 2008 19:38:20 +0100 (BST)
-Received: from mx0.towertech.it ([213.215.222.73]:10186 "HELO mx0.towertech.it")
-	by ftp.linux-mips.org with SMTP id S22034470AbYJUSiR (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 21 Oct 2008 19:38:17 +0100
-Received: (qmail 15390 invoked from network); 21 Oct 2008 20:38:16 +0200
-Received: from unknown (HELO i1501.lan.towertech.it) (81.208.60.204)
-  by mx0.towertech.it with SMTP; 21 Oct 2008 20:38:16 +0200
-Date:	Tue, 21 Oct 2008 20:38:15 +0200
-From:	Alessandro Zummo <alessandro.zummo@towertech.it>
-To:	rtc-linux@googlegroups.com
-Cc:	mano@roarinelk.homelinux.net,
-	Linux-MIPS <linux-mips@linux-mips.org>,
-	Kevin Hickey <khickey@rmicorp.com>
-Subject: Re: [rtc-linux] [RFC PATCH] Au1xxx on-chip counter-as-RTC driver
-Message-ID: <20081021203815.1a0a246d@i1501.lan.towertech.it>
-In-Reply-To: <20080809161402.15e24b2e@flagship.roarinelk.net>
-References: <20080809161402.15e24b2e@flagship.roarinelk.net>
-Organization: Tower Technologies
-X-Mailer: Sylpheed
-X-This-Is-A-Real-Message: Yes
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2008 02:04:00 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:62125 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S22053893AbYJVBD6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 22 Oct 2008 02:03:58 +0100
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B48fe7bee0000>; Tue, 21 Oct 2008 21:03:42 -0400
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 21 Oct 2008 18:03:40 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 21 Oct 2008 18:03:40 -0700
+Message-ID: <48FE7BEB.80906@caviumnetworks.com>
+Date:	Tue, 21 Oct 2008 18:03:39 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: Question about rdhwr emulation.
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <alessandro.zummo@towertech.it>
+X-OriginalArrivalTime: 22 Oct 2008 01:03:40.0180 (UTC) FILETIME=[05543540:01C933E2]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20834
+X-archive-position: 20835
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alessandro.zummo@towertech.it
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 9 Aug 2008 16:14:02 +0200
-Manuel Lauss <mano@roarinelk.homelinux.net> wrote:
+I was looking at the rdhwr emulation code in genex.S and wondering about the following:
 
-> It works so far on the DB1200 board; however it takes up
-> to 5 seconds until the written value actually hits the
-> register, so the hardware clock is always off (the minimum
-> seems to be 3 seconds on the DB1200).  I'd like to get
-> some feedback on how to work around this "anomaly".
+If cpu_has_vtag_icache is true we run handle_ri_rdhwr_vivt() instead of handle_ri_rdhwr().
 
- Hi Manuel,
+And handle_ri_rdhwr_vivt() probes the tlb to see if the faulting instruction can be reached through the TLB, if it can the 'fast path' is taken, otherwise the 'slow path'.
 
-  any news on this driver? I'd need feedback from linux-mips
- to get it thru.
+Why is this probe of the TLB necessary?  Or perhaps more concisely under which conditions can I set cpu_has_vtag_icache to false (noting that for our cpu this is the only place cpu_has_vtag_icache is tested)?
 
--- 
-
- Best regards,
-
- Alessandro Zummo,
-  Tower Technologies - Torino, Italy
-
-  http://www.towertech.it
+Thanks in advance for enlightening me,
+David Daney

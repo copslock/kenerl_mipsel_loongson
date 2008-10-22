@@ -1,101 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2008 14:58:46 +0100 (BST)
-Received: from gv-out-0910.google.com ([216.239.58.188]:20197 "EHLO
-	gv-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S22135265AbYJVN6k (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 22 Oct 2008 14:58:40 +0100
-Received: by gv-out-0910.google.com with SMTP id e6so582247gvc.2
-        for <linux-mips@linux-mips.org>; Wed, 22 Oct 2008 06:58:39 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:subject:date
-         :user-agent:cc:references:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:message-id:sender;
-        bh=iBgQ7gQVVBaG6boxU22cryKlfy6MplACS74LcrtVX+c=;
-        b=Q+8tKgj1ulvETV9HdwzFjb4BScYcuzCVAV3pz2Ya+F2hxFy+ruPGgYHln6l4LXsqxy
-         MwIlgnzt0cir84RxKcbgzev/7sR+DI8NSFsnEmXV3O5iZuXhqLTK0ooVF0z/sMf0Cx4k
-         gp1BJs1LQbwaTuY7dPlvex9hOGmoWyl+BHAFA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:subject:date:user-agent:cc:references:in-reply-to
-         :mime-version:content-type:content-transfer-encoding:message-id
-         :sender;
-        b=IFJ8XOXjHs1XCumeuaBrmP4wfzpZrEHVesKo7aMvC++wjqlwc/HbS+t+Vpyvxo+omB
-         ePIZ9/vLpaJTeAx/GLHiHYgLWGGbgfxSGwwD++P/riVRh8V5YAr3eMD7ZW7aPxtzgVTo
-         4tSzlaLAb4kn5aCCZe4zA0aAzXIR8KAbhtIyE=
-Received: by 10.103.226.20 with SMTP id d20mr5216774mur.10.1224683919164;
-        Wed, 22 Oct 2008 06:58:39 -0700 (PDT)
-Received: from florian.headquarters.openpattern.org (headquarters.openpattern.org [82.240.17.188])
-        by mx.google.com with ESMTPS id y37sm17524171mug.13.2008.10.22.06.58.37
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 22 Oct 2008 06:58:38 -0700 (PDT)
-From:	Florian Fainelli <florian@openwrt.org>
-To:	Maxime Bizon <mbizon@freebox.fr>
-Subject: Re: [PATCH/RFC v1 00/12] Support for Broadcom 63xx SOCs
-Date:	Wed, 22 Oct 2008 15:58:23 +0200
-User-Agent: KMail/1.9.9
-Cc:	ralf@linux-mips.org, netdev@vger.kernel.org,
-	afleming@freescale.com, jgarzik@pobox.com,
-	linux-usb@vger.kernel.org, dbrownell@users.sourceforge.net,
-	linux-pcmcia@lists.infradead.org, linux-serial@vger.kernel.org,
-	linux-mips@linux-mips.org
-References: <1224382022-24173-1-git-send-email-mbizon@freebox.fr>
-In-Reply-To: <1224382022-24173-1-git-send-email-mbizon@freebox.fr>
-MIME-Version: 1.0
-Content-Type: multipart/signed;
-  boundary="nextPart2962902.4p7LAVTyHT";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2008 17:00:50 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:53758 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S22142991AbYJVQAr (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 22 Oct 2008 17:00:47 +0100
+Received: from localhost (p3012-ipad305funabasi.chiba.ocn.ne.jp [123.217.165.12])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id A5552AE4F; Thu, 23 Oct 2008 01:00:40 +0900 (JST)
+Date:	Thu, 23 Oct 2008 01:00:55 +0900 (JST)
+Message-Id: <20081023.010055.128619796.anemo@mba.ocn.ne.jp>
+To:	sshtylyov@ru.mvista.com
+Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
+	bzolnier@gmail.com, ralf@linux-mips.org
+Subject: Re: [PATCH] ide: Add tx4939ide driver (v5)
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <48FDFE89.5030501@ru.mvista.com>
+References: <20081020.212701.59651580.anemo@mba.ocn.ne.jp>
+	<48FDFE89.5030501@ru.mvista.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Message-Id: <200810221558.27338.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20838
+X-archive-position: 20839
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
---nextPart2962902.4p7LAVTyHT
-Content-Type: text/plain;
-  charset="iso-8859-15"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+On Tue, 21 Oct 2008 20:08:41 +0400, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
+> > This is the driver for the Toshiba TX4939 SoC ATA controller.
+> 
+>     I'm inclined to ACK the driver (besides, TX49xx patches are
+> holding up my own series of patches since it needs to modify both
+> these drivers) but I'm not sure about the error cleanup path now
+> that I looked at it again -- probably' devres' handles all that
+> automagically but peering into the sources didn't enlignten me on
+> how it does it, so I would like to be explicitly assured. :-)
 
-Hello,
+Yes, devres do it, as written in Documentation/driver-model/devres.txt.
 
-Le Sunday 19 October 2008 04:07:02 Maxime Bizon, vous avez =E9crit=A0:
-> CPUs supported are  6348 and 6358. Support is  provided for integrated
-> UART,  USB OHCI  and  EHCI, PCI  controller,  ethernet MAC  & PHY  and
-> PCMCIA/Cardbus controller.
+If in doubt, 'probe_failed:' label in drivers/base/dd.c:really_probe()
+is probably where you want to look at :-)
 
-I got some pending patches on top of yours to add support for earlier : 633=
-8=20
-and 6345, as well as newer revisions of the SoC : 6368 and 6816.=20
-Additionnaly, the cable version (BCM3348/BCM3349) should be fairly well=20
-supported now, for which I need to have a serious try.
+>     There are also some nits, mostly ignorable...
 
-I prefer you get some feedback on your patches first before submitting my=20
-changes.
-=2D-=20
-Best regards, Florian Fainelli
-Email : florian@openwrt.org
-http://openwrt.org
-=2D------------------------------
+OK, I will send v6 patch which fixes most of them.
 
---nextPart2962902.4p7LAVTyHT
-Content-Type: application/pgp-signature; name=signature.asc 
-Content-Description: This is a digitally signed message part.
+> > +	tx4939ide_writew(0x0008, base, TX4939IDE_Lo_Burst_Cnt);
+> > +	tx4939ide_writew(0, base, TX4939IDE_Up_Burst_Cnt);
+> 
+>     I think that these fit better to tx4939ide_init_dma().
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
+Unfortunately (and surprisingly) this did not work.  The kernel
+crashed with strange memory corruption.  It seems Burst_Cnt must be
+initialized before any transfer including PIO.  I don't know why...
 
-iEYEABECAAYFAkj/MYEACgkQlyvkmBGtjyamHwCggOIQTTLwf5Y2y0CH7tme3706
-CssAnRZXTrJJgdZrFmSwCuVctVowUk15
-=PSMQ
------END PGP SIGNATURE-----
+>     Same question about the error cleanup here -- will the acquired resources 
+> be auto-released? If so, then:
+> 
+> Acked-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
---nextPart2962902.4p7LAVTyHT--
+Yes.  So I will send v6 patch with your Acked-by line.  Thank you very
+much!
+
+---
+Atsushi Nemoto

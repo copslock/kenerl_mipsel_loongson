@@ -1,43 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2008 02:04:00 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:62125 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S22053893AbYJVBD6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 22 Oct 2008 02:03:58 +0100
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B48fe7bee0000>; Tue, 21 Oct 2008 21:03:42 -0400
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 21 Oct 2008 18:03:40 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 21 Oct 2008 18:03:40 -0700
-Message-ID: <48FE7BEB.80906@caviumnetworks.com>
-Date:	Tue, 21 Oct 2008 18:03:39 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2008 02:35:26 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:21739 "EHLO
+	localhost.localdomain") by ftp.linux-mips.org with ESMTP
+	id S22055198AbYJVBfV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 22 Oct 2008 02:35:21 +0100
+Date:	Wed, 22 Oct 2008 02:35:21 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	David Daney <ddaney@caviumnetworks.com>
+cc:	linux-mips@linux-mips.org
+Subject: Re: Question about rdhwr emulation.
+In-Reply-To: <48FE7BEB.80906@caviumnetworks.com>
+Message-ID: <alpine.LFD.1.10.0810220218310.29554@ftp.linux-mips.org>
+References: <48FE7BEB.80906@caviumnetworks.com>
+User-Agent: Alpine 1.10 (LFD 962 2008-03-14)
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Question about rdhwr emulation.
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 22 Oct 2008 01:03:40.0180 (UTC) FILETIME=[05543540:01C933E2]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20835
+X-archive-position: 20836
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-I was looking at the rdhwr emulation code in genex.S and wondering about the following:
+On Tue, 21 Oct 2008, David Daney wrote:
 
-If cpu_has_vtag_icache is true we run handle_ri_rdhwr_vivt() instead of handle_ri_rdhwr().
+> I was looking at the rdhwr emulation code in genex.S and wondering about the
+> following:
+> 
+> If cpu_has_vtag_icache is true we run handle_ri_rdhwr_vivt() instead of
+> handle_ri_rdhwr().
+> 
+> And handle_ri_rdhwr_vivt() probes the tlb to see if the faulting instruction
+> can be reached through the TLB, if it can the 'fast path' is taken, otherwise
+> the 'slow path'.
+> 
+> Why is this probe of the TLB necessary?  Or perhaps more concisely under which
+> conditions can I set cpu_has_vtag_icache to false (noting that for our cpu
+> this is the only place cpu_has_vtag_icache is tested)?
 
-And handle_ri_rdhwr_vivt() probes the tlb to see if the faulting instruction can be reached through the TLB, if it can the 'fast path' is taken, otherwise the 'slow path'.
+ Hmm, if the I-cache is physically tagged?
 
-Why is this probe of the TLB necessary?  Or perhaps more concisely under which conditions can I set cpu_has_vtag_icache to false (noting that for our cpu this is the only place cpu_has_vtag_icache is tested)?
+ This probe is necessary, because for a VIVT I-cache, code from there may 
+be executed even if there is no mapping stored for the virtual address of 
+the instruction in the TLB anymore.  However this trap handler wants to 
+read the instruction word from the memory and obviously this goes through 
+the D-cache which is not virtually tagged.  As such a TLB refill exception 
+would happen if the mapping was indeed absent.
 
-Thanks in advance for enlightening me,
-David Daney
+ However, please note that this piece of code runs at the exception level 
+and therefore such a scenario would qualify as a nested exception.  Which 
+means the general exception vector would be used and the TLBL or TLBS 
+handler invoked as appropriate.  Neither of which are currently prepared 
+to do a refill.  Changing that would be rather trivial as it boils down to 
+checking the value of cp0.index.p and executiong TLBWR rather than TLBWI 
+as usual, but that is in the fast path, so we do not want to waste cycles 
+for such a corner case as RDHWR emulation.
+
+ I hope this helps.
+
+  Maciej

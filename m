@@ -1,44 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2008 18:17:49 +0100 (BST)
-Received: from sitar.i-cable.com ([203.83.115.100]:46981 "HELO
-	sitar.i-cable.com") by ftp.linux-mips.org with SMTP
-	id S22145401AbYJVRRr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 22 Oct 2008 18:17:47 +0100
-Received: (qmail 26774 invoked by uid 508); 22 Oct 2008 17:17:36 -0000
-Received: from 203.83.114.121 by sitar (envelope-from <robert.zhangle@gmail.com>, uid 505) with qmail-scanner-1.25 
- (clamdscan: 0.93.3/7708.  
- Clear:RC:1(203.83.114.121):. 
- Processed in 0.084993 secs); 22 Oct 2008 17:17:36 -0000
-Received: from ip114121.hkicable.com (HELO silicon.i-cable.com) (203.83.114.121)
-  by 0 with SMTP; 22 Oct 2008 17:17:35 -0000
-Received: from localhost (cm222-167-208-75.hkcable.com.hk [222.167.208.75])
-	by silicon.i-cable.com (8.13.5/8.13.5) with ESMTP id m9MHHZHO008115
-	for <linux-mips@linux-mips.org>; Thu, 23 Oct 2008 01:17:35 +0800 (HKT)
-Date:	Thu, 23 Oct 2008 01:17:31 +0800
-From:	Zhang Le <r0bertz@gentoo.org>
-To:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] added io_map_base to pci_controller on Lemote 2e box
-Message-ID: <20081022171730.GA26166@adriano.hkcable.com.hk>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <1224722939-18557-1-git-send-email-r0bertz@gentoo.org> <1224722939-18557-2-git-send-email-r0bertz@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Oct 2008 19:56:02 +0100 (BST)
+Received: from relay01.mx.bawue.net ([193.7.176.67]:44755 "EHLO
+	relay01.mx.bawue.net") by ftp.linux-mips.org with ESMTP
+	id S22150821AbYJVSz6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 22 Oct 2008 19:55:58 +0100
+Received: from lagash (p549AE91D.dip.t-dialin.net [84.154.233.29])
+	(using TLSv1 with cipher AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by relay01.mx.bawue.net (Postfix) with ESMTP id 644EB48916;
+	Wed, 22 Oct 2008 20:55:55 +0200 (CEST)
+Received: from ths by lagash with local (Exim 4.69)
+	(envelope-from <ths@networkno.de>)
+	id 1Ksis6-0004I2-Ft; Wed, 22 Oct 2008 20:55:54 +0200
+Date:	Wed, 22 Oct 2008 20:55:54 +0200
+From:	Thiemo Seufer <ths@networkno.de>
+To:	Zhang Le <r0bertz@gentoo.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] defined a macro for lemote 2e box IO base
+Message-ID: <20081022185554.GA13842@networkno.de>
+References: <1224722939-18557-1-git-send-email-r0bertz@gentoo.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1224722939-18557-2-git-send-email-r0bertz@gentoo.org>
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <robert.zhangle@gmail.com>
+In-Reply-To: <1224722939-18557-1-git-send-email-r0bertz@gentoo.org>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ths@networkno.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20845
+X-archive-position: 20846
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: r0bertz@gentoo.org
+X-original-sender: ths@networkno.de
 Precedence: bulk
 X-list: linux-mips
 
-Sorry, I should've added -n and -s option to git format-patch.
-If the patches themselves are ok, I will post them again, of course with
-signed-off-by.
+Zhang Le wrote:
+> ---
+>  arch/mips/include/asm/lemote/pci.h |   31 +++++++++++++++++++++++++++++++
+>  arch/mips/lemote/lm2e/setup.c      |    9 ++-------
+>  2 files changed, 33 insertions(+), 7 deletions(-)
+>  create mode 100644 arch/mips/include/asm/lemote/pci.h
+> 
+> diff --git a/arch/mips/include/asm/lemote/pci.h b/arch/mips/include/asm/lemote/pci.h
+> new file mode 100644
+> index 0000000..8e5c9c3
+> --- /dev/null
+> +++ b/arch/mips/include/asm/lemote/pci.h
+> @@ -0,0 +1,31 @@
+> +/*
+> + * Copyright (c) 2008 Zhang Le <r0bertz@gentoo.org>
+> + *
+> + *     This program is free software; you can redistribute it
+> + *     and/or modify it under the terms of the GNU General
+> + *     Public License as published by the Free Software
+> + *     Foundation; either version 2 of the License, or (at your
+> + *     option) any later version.
+> + *
+> + *     This program is distributed in the hope that it will be
+> + *     useful, but WITHOUT ANY WARRANTY; without even the implied
+> + *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+> + *     PURPOSE.  See the GNU General Public License for more
+> + *     details.
+> + *
+> + *     You should have received a copy of the GNU General Public
+> + *     License along with this program; if not, write to the Free
+> + *     Software Foundation, Inc., 675 Mass Ave, Cambridge, MA
+> + *     02139, USA.
+> + */
+> +
+> +#ifndef _LEMOTE_PCI_H_
+> +#define _LEMOTE_PCI_H_
+> +
+> +#ifdef CONFIG_64BIT
+> +#define LEMOTE_IO_PORT_BASE 0xffffffffbfd00000
+> +#else
+> +#define LEMOTE_IO_PORT_BASE 0xbfd00000
+> +#endif
 
-Zhang, Le
+Why not "((const long)0xbfd00000)" instead? AFAICS it is never used in
+assembly code.
+
+
+Thiemo

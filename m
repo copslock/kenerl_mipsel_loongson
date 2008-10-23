@@ -1,139 +1,140 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2008 18:20:38 +0100 (BST)
-Received: from mail.lysator.liu.se ([130.236.254.3]:30133 "EHLO
-	mail.lysator.liu.se") by ftp.linux-mips.org with ESMTP
-	id S22231754AbYJWRUd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 23 Oct 2008 18:20:33 +0100
-Received: from mail.lysator.liu.se (localhost [127.0.0.1])
-	by mail.lysator.liu.se (Postfix) with ESMTP id 6F2A64001C;
-	Thu, 23 Oct 2008 19:20:31 +0200 (CEST)
-Received: from [192.168.27.166] (152-186-96-87.cust.blixtvik.se [87.96.186.152])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.lysator.liu.se (Postfix) with ESMTP id 05B8840017;
-	Thu, 23 Oct 2008 19:20:30 +0200 (CEST)
-Message-ID: <4900B260.1090808@27m.se>
-Date:	Thu, 23 Oct 2008 19:20:32 +0200
-From:	Markus Gothe <markus.gothe@27m.se>
-User-Agent: Thunderbird 2.0.0.17 (X11/20080925)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2008 18:39:17 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:25655 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S22232599AbYJWRjK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 23 Oct 2008 18:39:10 +0100
+Received: from [192.168.1.234] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id F39313ECC; Thu, 23 Oct 2008 10:39:05 -0700 (PDT)
+Message-ID: <4900B6A8.30705@ru.mvista.com>
+Date:	Thu, 23 Oct 2008 21:38:48 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-To:	Shinya Kuribayashi <skuribay@ruby.dti.ne.jp>
-CC:	linux-mips@linux-mips.org, shinya.kuribayashi@necel.com
-Subject: Re: [PATCH 08/12] MIPS: EMMA2RH: Remove emma2rh_gpio_irq_base
-References: <4900A510.3000101@ruby.dti.ne.jp> <4900A70B.4040401@ruby.dti.ne.jp>
-In-Reply-To: <4900A70B.4040401@ruby.dti.ne.jp>
-X-Enigmail-Version: 0.95.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <markus.gothe@27m.se>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
+	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+	ralf@linux-mips.org
+Subject: Re: [PATCH] ide: Add tx4938ide driver (v2)
+References: <20081023.012013.52129771.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20081023.012013.52129771.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20872
+X-archive-position: 20873
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markus.gothe@27m.se
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+Hello.
 
-Reminds me of the I2C driver for EMMA2RH that MontaVista posted, I
-ought to take the time to shape it up...
+Atsushi Nemoto wrote:
 
-//Markus
+> This is the driver for the Toshiba TX4938 SoC EBUS controller ATA mode.
+> It has custom set_pio_mode and some hacks for big endian.
 
-Shinya Kuribayashi wrote:
-> Let's use immediate value, instead.  This also saves memory
-> footprint, and probably a little bit faster.
->
-> Signed-off-by: Shinya Kuribayashi <shinya.kuribayashi@necel.com>
-> --- arch/mips/emma/markeins/irq.c          |    4 ++--
-> arch/mips/emma/markeins/irq_markeins.c |   19 ++++++++----------- 2
-> files changed, 10 insertions(+), 13 deletions(-)
->
-> diff --git a/arch/mips/emma/markeins/irq.c
-> b/arch/mips/emma/markeins/irq.c index c0f9d46..3577fd5 100644 ---
-> a/arch/mips/emma/markeins/irq.c +++ b/arch/mips/emma/markeins/irq.c
->  @@ -54,7 +54,7 @@ */
->
-> extern void emma2rh_sw_irq_init(void); -extern void
-> emma2rh_gpio_irq_init(u32 base); +extern void
-> emma2rh_gpio_irq_init(void); extern void emma2rh_irq_init(void);
-> extern void emma2rh_irq_dispatch(void);
->
-> @@ -104,7 +104,7 @@ void __init arch_init_irq(void) /* init all
-> controllers */ emma2rh_irq_init(); emma2rh_sw_irq_init(); -
-> emma2rh_gpio_irq_init(EMMA2RH_GPIO_IRQ_BASE); +
-> emma2rh_gpio_irq_init(); mips_cpu_irq_init();
->
-> /* setup cascade interrupts */ diff --git
-> a/arch/mips/emma/markeins/irq_markeins.c
-> b/arch/mips/emma/markeins/irq_markeins.c index 1883421..ea27ec5
-> 100644 --- a/arch/mips/emma/markeins/irq_markeins.c +++
-> b/arch/mips/emma/markeins/irq_markeins.c @@ -30,8 +30,6 @@ #include
-> <asm/debug.h> #include <asm/emma/emma2rh.h>
->
-> -static int emma2rh_gpio_irq_base = -1; - void
-> ll_emma2rh_sw_irq_enable(int reg); void
-> ll_emma2rh_sw_irq_disable(int reg); void
-> ll_emma2rh_gpio_irq_enable(int reg); @@ -91,17 +89,17 @@ void
-> ll_emma2rh_sw_irq_disable(int irq)
->
-> static void emma2rh_gpio_irq_enable(unsigned int irq) { -
-> ll_emma2rh_gpio_irq_enable(irq - emma2rh_gpio_irq_base); +
-> ll_emma2rh_gpio_irq_enable(irq - EMMA2RH_GPIO_IRQ_BASE); }
->
-> static void emma2rh_gpio_irq_disable(unsigned int irq) { -
-> ll_emma2rh_gpio_irq_disable(irq - emma2rh_gpio_irq_base); +
-> ll_emma2rh_gpio_irq_disable(irq - EMMA2RH_GPIO_IRQ_BASE); }
->
-> static void emma2rh_gpio_irq_ack(unsigned int irq) { -    irq -=
-> emma2rh_gpio_irq_base; +    irq -= EMMA2RH_GPIO_IRQ_BASE;
-> emma2rh_out32(EMMA2RH_GPIO_INT_ST, ~(1 << irq));
-> ll_emma2rh_gpio_irq_disable(irq); } @@ -109,7 +107,7 @@ static void
-> emma2rh_gpio_irq_ack(unsigned int irq) static void
-> emma2rh_gpio_irq_end(unsigned int irq) { if (!(irq_desc[irq].status
-> & (IRQ_DISABLED | IRQ_INPROGRESS))) -
-> ll_emma2rh_gpio_irq_enable(irq - emma2rh_gpio_irq_base); +
-> ll_emma2rh_gpio_irq_enable(irq - EMMA2RH_GPIO_IRQ_BASE); }
->
-> struct irq_chip emma2rh_gpio_irq_controller = { @@ -121,14 +119,13
-> @@ struct irq_chip emma2rh_gpio_irq_controller = { .end =
-> emma2rh_gpio_irq_end, };
->
-> -void emma2rh_gpio_irq_init(u32 irq_base) +void
-> emma2rh_gpio_irq_init(void) { u32 i;
->
-> -    for (i = irq_base; i < irq_base + NUM_EMMA2RH_IRQ_GPIO; i++) -
-> set_irq_chip(i, &emma2rh_gpio_irq_controller); - -
-> emma2rh_gpio_irq_base = irq_base; +    for (i = 0; i <
-> NUM_EMMA2RH_IRQ_GPIO; i++) +
-> set_irq_chip(EMMA2RH_GPIO_IRQ_BASE + i, +
-> &emma2rh_gpio_irq_controller); }
->
-> void ll_emma2rh_gpio_irq_enable(int irq)
->
+> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
+> diff --git a/drivers/ide/mips/tx4938ide.c b/drivers/ide/mips/tx4938ide.c
+> new file mode 100644
+> index 0000000..fa660f9
+> --- /dev/null
+> +++ b/drivers/ide/mips/tx4938ide.c
+> @@ -0,0 +1,310 @@
+> +/*
+> + * TX4938 internal IDE driver
+> + * Based on tx4939ide.c.
+> + *
+> + * This file is subject to the terms and conditions of the GNU General Public
+> + * License.  See the file "COPYING" in the main directory of this archive
+> + * for more details.
+> + *
+> + * (C) Copyright TOSHIBA CORPORATION 2005-2007
+> + */
+> +
+> +#include <linux/module.h>
+> +#include <linux/types.h>
+> +#include <linux/ide.h>
+> +#include <linux/init.h>
+> +#include <linux/platform_device.h>
+> +#include <linux/io.h>
+> +#include <asm/txx9/tx4938.h>
+> +
+> +static void tx4938ide_tune_ebusc(unsigned int ebus_ch,
+> +				 unsigned int gbus_clock,
+> +				 u8 pio)
+> +{
+> +	struct ide_timing *t = ide_timing_find_mode(XFER_PIO_0 + pio);
+> +	u64 cr = __raw_readq(&tx4938_ebuscptr->cr[ebus_ch]);
+> +	unsigned int sp = (cr >> 4) & 3;
+> +	unsigned int clock = gbus_clock / (4 - sp);
+> +	unsigned int cycle = 1000000000 / clock;
 
-- --
-_______________________________________
+    Hm, couldn't all these values be calculated only once?
 
-Mr Markus Gothe
-Software Engineer
+> +	unsigned int wt, shwt;
+> +
+> +	/* Minimum DIOx- active time */
+> +	wt = DIV_ROUND_UP(t->act8b, cycle) - 2;
+> +	/* IORDY setup time: 35ns */
+> +	wt = max(wt, DIV_ROUND_UP(35, cycle));
 
-Phone: +46 (0)13 21 81 20 (ext. 1046)
-Fax: +46 (0)13 21 21 15
-Mobile: +46 (0)70 348 44 35
-Diskettgatan 11, SE-583 35 Linköping, Sweden
-www.27m.com
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.6 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+    Same comment about calculating only once...
 
-iD8DBQFJALJe6I0XmJx2NrwRCAkwAJwLnvjgZSCkD9+lc4kDtUxoOIaOGwCg0m8f
-tZSAE26XNDffF7fmBLRp6sI=
-=WD43
------END PGP SIGNATURE-----
+> +	/* actual wait-cycle is max(wt & ~1, 1) */
+> +	if (wt > 2 && (wt & 1))
+> +		wt++;
+> +	wt &= ~1;
+> +	/* Address-valid to DIOR/DIOW setup */
+
+    It's really address valid to -CSx assertion and -CSx to -DIOx assertion
+setup time, and contrarywise, -DIOx to -CSx release and -CSx release to 
+address invalid hold time, so it actualy applies 4 times and so constitutes 
+-DIOx recovery time. It's worth to check if the minimum cycle time is reached 
+with the setup time -- for PIO mode 0, minimum setup is 70 ns, multiplying 
+that by 4 gives 280 ns recovery and adding 290 ns active time gives 570 ns 
+cycle while the minimum is 600 ns.  Luckily, PIO0 seems the only problematic 
+mode as I doubt that EBUS controller can do back-to-back IDE reads/writes 
+keeping address and/or -CSx asserted in-between amounting to recovery time 
+being only 2x/3x setup times -- in the worst, 2x case PIO mode 3 would also 
+have too little cycle/recovery time...
+
+> +	shwt = DIV_ROUND_UP(t->setup, cycle);
+> +
+> +	pr_debug("tx4938ide: ebus %d, bus cycle %dns, WT %d, SHWT %d\n",
+> +		 ebus_ch, cycle, wt, shwt);
+> +
+> +	__raw_writeq((cr & ~(0x3f007ull)) | (wt << 12) | shwt,
+> +		     &tx4938_ebuscptr->cr[ebus_ch]);
+
+    Unneeded parens around the numeric constant.
+
+> +static int __init tx4938ide_probe(struct platform_device *pdev)
+> +{
+[...]
+> +	mapbase = (unsigned long)devm_ioremap(&pdev->dev, res->start,
+> +					      res->end - res->start + 1);
+
+    Calling devm_ioremap() on the whole 128 KB region wasn't such a great idea 
+perhaps...
+
+> +	ret = ide_host_add(&d, hws, &host);
+> +	if (ret)
+> +		return ret;
+> +	platform_set_drvdata(pdev, host);
+> +	return 0;
+
+    I'd suggest shorter:
+
+	if (!ret)
+		platform_set_drvdata(pdev, host);
+	return ret;
+
+MBR, Sergei

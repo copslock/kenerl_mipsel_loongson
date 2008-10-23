@@ -1,104 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2008 16:06:35 +0100 (BST)
-Received: from mail.lysator.liu.se ([130.236.254.3]:1923 "EHLO
-	mail.lysator.liu.se") by ftp.linux-mips.org with ESMTP
-	id S22215387AbYJWPG3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 23 Oct 2008 16:06:29 +0100
-Received: from mail.lysator.liu.se (localhost [127.0.0.1])
-	by mail.lysator.liu.se (Postfix) with ESMTP id 028D64002B;
-	Thu, 23 Oct 2008 17:06:27 +0200 (CEST)
-Received: from [192.168.27.166] (152-186-96-87.cust.blixtvik.se [87.96.186.152])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.lysator.liu.se (Postfix) with ESMTP id DCAFC40017;
-	Thu, 23 Oct 2008 17:06:26 +0200 (CEST)
-Message-ID: <490092F4.2020004@27m.se>
-Date:	Thu, 23 Oct 2008 17:06:28 +0200
-From:	Markus Gothe <markus.gothe@27m.se>
-User-Agent: Thunderbird 2.0.0.17 (X11/20080925)
-MIME-Version: 1.0
-To:	"Arao H. Filho" <eletronicaecia@gmail.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re: AR7 MIPS development tools
-References: <4d5c51d30810221714g740c9285n7d72f17c2ff487d2@mail.gmail.com>
-In-Reply-To: <4d5c51d30810221714g740c9285n7d72f17c2ff487d2@mail.gmail.com>
-X-Enigmail-Version: 0.95.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <markus.gothe@27m.se>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2008 16:21:27 +0100 (BST)
+Received: from apollo.i-cable.com ([203.83.115.103]:54494 "HELO
+	apollo.i-cable.com") by ftp.linux-mips.org with SMTP
+	id S22227021AbYJWPVW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 23 Oct 2008 16:21:22 +0100
+Received: (qmail 11619 invoked by uid 508); 23 Oct 2008 15:21:17 -0000
+Received: from 203.83.114.122 by apollo (envelope-from <r0bertz@gentoo.org>, uid 505) with qmail-scanner-1.25 
+ (clamdscan: 0.93.3/7730.  
+ Clear:RC:1(203.83.114.122):. 
+ Processed in 0.177468 secs); 23 Oct 2008 15:21:17 -0000
+Received: from ip114122.hkicable.com (HELO xenon.i-cable.com) (203.83.114.122)
+  by 0 with SMTP; 23 Oct 2008 15:21:17 -0000
+Received: from localhost.localdomain (cm222-167-208-75.hkcable.com.hk [222.167.208.75])
+	by xenon.i-cable.com (8.13.5/8.13.5) with ESMTP id m9NFLFMG021434;
+	Thu, 23 Oct 2008 23:21:16 +0800 (CST)
+From:	Zhang Le <r0bertz@gentoo.org>
+To:	linux-mips@linux-mips.org
+Cc:	Zhang Le <r0bertz@gentoo.org>
+Subject: [PATCH 1/2] defined LEMOTE_IO_PORT_BASE for Lemote Loonson 2E box's IO base
+Date:	Thu, 23 Oct 2008 23:02:21 +0000
+Message-Id: <1224802942-5969-1-git-send-email-r0bertz@gentoo.org>
+X-Mailer: git-send-email 1.6.0.2
+In-Reply-To: <n>
+References: <n>
+Return-Path: <r0bertz@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20856
+X-archive-position: 20857
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markus.gothe@27m.se
+X-original-sender: r0bertz@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+Signed-off-by: Zhang Le <r0bertz@gentoo.org>
+---
+ arch/mips/include/asm/lemote/pci.h |   27 +++++++++++++++++++++++++++
+ arch/mips/lemote/lm2e/setup.c      |    9 ++-------
+ 2 files changed, 29 insertions(+), 7 deletions(-)
+ create mode 100644 arch/mips/include/asm/lemote/pci.h
 
-Could you precise the question a bit more?
-Which JTAG-probe are you using and which software for it?
-Do you have a schematic layout and datasheet?
-
-Since this list is for Linux, you should be surprised if you get some
-more help.
-As well the format doesn't matter as long as your JTAG-software is
-able to handle it, myself I prefer Motorola SREC.
-
-//Markus
-
-Arao H. Filho wrote:
-> Hi, I work with microcontrollers,  (8051, 68hc11, avr, pic, arm
-> based, real time programs) and I have some DSL-500t (dlink) boards,
-> that I want to use as development boards, loading and running some
-> C programs on it board and debugging with the JTAG port.
->
->
-> 1- How do I find some information of how to find some .h headers
-> for the i/o's and serial? (i/o register address locations)
->
-> 2-How did I "upload" the program to the flash? The JTAG pinout I
-> found, I need the software name.
->
-> 3-Which format did I use on this file? (.bin/intel hex/motorola
-> hex, special?)
->
-> -All these questions are whitout the linux kernel!, running the
-> program without any operating system.
->
-> I work with C on PIC, 8051, AVR and ARM7TDMI, where there's a lot
-> of information for how to do these tasks, if you can help please
-> email me.
->
->
-> Thanks so much! --
->
->
-> Arao H. F.
->
->
-
-
-- --
-_______________________________________
-
-Mr Markus Gothe
-Software Engineer
-
-Phone: +46 (0)13 21 81 20 (ext. 1046)
-Fax: +46 (0)13 21 21 15
-Mobile: +46 (0)70 348 44 35
-Diskettgatan 11, SE-583 35 Linköping, Sweden
-www.27m.com
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.6 (GNU/Linux)
-Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
-
-iD8DBQFJAJLx6I0XmJx2NrwRCAmfAKDBMEo2pcLdUv/xvbfJBngNhElLRwCguLaa
-Tfj+FpEe8FEJHUozP4uYiRM=
-=Z2tM
------END PGP SIGNATURE-----
+diff --git a/arch/mips/include/asm/lemote/pci.h b/arch/mips/include/asm/lemote/pci.h
+new file mode 100644
+index 0000000..c49eddb
+--- /dev/null
++++ b/arch/mips/include/asm/lemote/pci.h
+@@ -0,0 +1,27 @@
++/*
++ * Copyright (c) 2008 Zhang Le <r0bertz@gentoo.org>
++ *
++ * This program is free software; you can redistribute it
++ * and/or modify it under the terms of the GNU General
++ * Public License as published by the Free Software
++ * Foundation; either version 2 of the License, or (at your
++ * option) any later version.
++ *
++ * This program is distributed in the hope that it will be
++ * useful, but WITHOUT ANY WARRANTY; without even the implied
++ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
++ * PURPOSE.  See the GNU General Public License for more
++ * details.
++ *
++ * You should have received a copy of the GNU General Public
++ * License along with this program; if not, write to the Free
++ * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA
++ * 02139, USA.
++ */
++
++#ifndef _LEMOTE_PCI_H_
++#define _LEMOTE_PCI_H_
++
++#define LEMOTE_IO_PORT_BASE         CKSEG1ADDR(0xbfd00000)
++
++#endif /* !_LEMOTE_PCI_H_ */
+diff --git a/arch/mips/lemote/lm2e/setup.c b/arch/mips/lemote/lm2e/setup.c
+index 2cc6745..6f7076d 100644
+--- a/arch/mips/lemote/lm2e/setup.c
++++ b/arch/mips/lemote/lm2e/setup.c
+@@ -34,6 +34,7 @@
+ #include <asm/mc146818-time.h>
+ #include <asm/time.h>
+ #include <asm/wbflush.h>
++#include <asm/lemote/pci.h>
+ 
+ #ifdef CONFIG_VT
+ #include <linux/console.h>
+@@ -42,12 +43,6 @@
+ 
+ extern void mips_reboot_setup(void);
+ 
+-#ifdef CONFIG_64BIT
+-#define PTR_PAD(p) ((0xffffffff00000000)|((unsigned long long)(p)))
+-#else
+-#define PTR_PAD(p) (p)
+-#endif
+-
+ unsigned long cpu_clock_freq;
+ unsigned long bus_clock;
+ unsigned int memsize;
+@@ -80,7 +75,7 @@ static void wbflush_loongson2e(void)
+ 
+ void __init plat_mem_setup(void)
+ {
+-	set_io_port_base(PTR_PAD(0xbfd00000));
++	set_io_port_base(LEMOTE_IO_PORT_BASE);
+ 
+ 	mips_reboot_setup();
+ 
+-- 
+1.6.0.2

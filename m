@@ -1,41 +1,104 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2008 15:53:24 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:51909 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S22214949AbYJWOxV (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 23 Oct 2008 15:53:21 +0100
-Received: from localhost (p4025-ipad307funabasi.chiba.ocn.ne.jp [123.217.182.25])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 26F4A9D56; Thu, 23 Oct 2008 23:53:17 +0900 (JST)
-Date:	Thu, 23 Oct 2008 23:53:33 +0900 (JST)
-Message-Id: <20081023.235333.130241546.anemo@mba.ocn.ne.jp>
-To:	Geert.Uytterhoeven@sonycom.com
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] txx9: CONFIG_TOSHIBA_RBTX4939 spelling
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <Pine.LNX.4.64.0810231641400.11300@vixen.sonytel.be>
-References: <Pine.LNX.4.64.0810231641400.11300@vixen.sonytel.be>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2008 16:06:35 +0100 (BST)
+Received: from mail.lysator.liu.se ([130.236.254.3]:1923 "EHLO
+	mail.lysator.liu.se") by ftp.linux-mips.org with ESMTP
+	id S22215387AbYJWPG3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 23 Oct 2008 16:06:29 +0100
+Received: from mail.lysator.liu.se (localhost [127.0.0.1])
+	by mail.lysator.liu.se (Postfix) with ESMTP id 028D64002B;
+	Thu, 23 Oct 2008 17:06:27 +0200 (CEST)
+Received: from [192.168.27.166] (152-186-96-87.cust.blixtvik.se [87.96.186.152])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.lysator.liu.se (Postfix) with ESMTP id DCAFC40017;
+	Thu, 23 Oct 2008 17:06:26 +0200 (CEST)
+Message-ID: <490092F4.2020004@27m.se>
+Date:	Thu, 23 Oct 2008 17:06:28 +0200
+From:	Markus Gothe <markus.gothe@27m.se>
+User-Agent: Thunderbird 2.0.0.17 (X11/20080925)
+MIME-Version: 1.0
+To:	"Arao H. Filho" <eletronicaecia@gmail.com>
+CC:	linux-mips@linux-mips.org
+Subject: Re: AR7 MIPS development tools
+References: <4d5c51d30810221714g740c9285n7d72f17c2ff487d2@mail.gmail.com>
+In-Reply-To: <4d5c51d30810221714g740c9285n7d72f17c2ff487d2@mail.gmail.com>
+X-Enigmail-Version: 0.95.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <markus.gothe@27m.se>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20855
+X-archive-position: 20856
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: markus.gothe@27m.se
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 23 Oct 2008 16:43:13 +0200 (CEST), Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com> wrote:
-> Fix a typo in the comment for the TOSHIBA_RBTX4939 config option
-> 
-> Signed-off-by: Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-ACK!  Thanks.
+Could you precise the question a bit more?
+Which JTAG-probe are you using and which software for it?
+Do you have a schematic layout and datasheet?
 
-Acked-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Since this list is for Linux, you should be surprised if you get some
+more help.
+As well the format doesn't matter as long as your JTAG-software is
+able to handle it, myself I prefer Motorola SREC.
+
+//Markus
+
+Arao H. Filho wrote:
+> Hi, I work with microcontrollers,  (8051, 68hc11, avr, pic, arm
+> based, real time programs) and I have some DSL-500t (dlink) boards,
+> that I want to use as development boards, loading and running some
+> C programs on it board and debugging with the JTAG port.
+>
+>
+> 1- How do I find some information of how to find some .h headers
+> for the i/o's and serial? (i/o register address locations)
+>
+> 2-How did I "upload" the program to the flash? The JTAG pinout I
+> found, I need the software name.
+>
+> 3-Which format did I use on this file? (.bin/intel hex/motorola
+> hex, special?)
+>
+> -All these questions are whitout the linux kernel!, running the
+> program without any operating system.
+>
+> I work with C on PIC, 8051, AVR and ARM7TDMI, where there's a lot
+> of information for how to do these tasks, if you can help please
+> email me.
+>
+>
+> Thanks so much! --
+>
+>
+> Arao H. F.
+>
+>
+
+
+- --
+_______________________________________
+
+Mr Markus Gothe
+Software Engineer
+
+Phone: +46 (0)13 21 81 20 (ext. 1046)
+Fax: +46 (0)13 21 21 15
+Mobile: +46 (0)70 348 44 35
+Diskettgatan 11, SE-583 35 Linköping, Sweden
+www.27m.com
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+
+iD8DBQFJAJLx6I0XmJx2NrwRCAmfAKDBMEo2pcLdUv/xvbfJBngNhElLRwCguLaa
+Tfj+FpEe8FEJHUozP4uYiRM=
+=Z2tM
+-----END PGP SIGNATURE-----

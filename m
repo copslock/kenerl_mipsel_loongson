@@ -1,84 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2008 14:07:17 +0100 (BST)
-Received: from h4.dl5rb.org.uk ([81.2.74.4]:13977 "EHLO
-	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S22209401AbYJWNHO (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 23 Oct 2008 14:07:14 +0100
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m9ND7DvG006556;
-	Thu, 23 Oct 2008 14:07:13 +0100
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m9ND7D5V006555;
-	Thu, 23 Oct 2008 14:07:13 +0100
-Date:	Thu, 23 Oct 2008 14:07:13 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Anirban Sinha <ASinha@zeugmasystems.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: panic logic defeats arch dependent code
-Message-ID: <20081023130712.GB16564@linux-mips.org>
-References: <DDFD17CC94A9BD49A82147DDF7D545C50130734A@exchange.ZeugmaSystems.local> <20081018124358.GC17322@linux-mips.org> <DDFD17CC94A9BD49A82147DDF7D545C501307489@exchange.ZeugmaSystems.local>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2008 14:38:14 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:43557 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S22210602AbYJWNiM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 23 Oct 2008 14:38:12 +0100
+Received: from [127.0.0.1] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id EBCFD3EC9; Thu, 23 Oct 2008 06:38:04 -0700 (PDT)
+Message-ID: <49007E37.5080605@ru.mvista.com>
+Date:	Thu, 23 Oct 2008 17:37:59 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+User-Agent: Thunderbird 2.0.0.17 (Windows/20080914)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DDFD17CC94A9BD49A82147DDF7D545C501307489@exchange.ZeugmaSystems.local>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
+	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+	ralf@linux-mips.org
+Subject: Re: [PATCH] TXx9: Add TX4938 ATA support (v2)
+References: <20081023.011646.51867355.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20081023.011646.51867355.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20851
+X-archive-position: 20852
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Oct 20, 2008 at 12:05:43PM -0700, Anirban Sinha wrote:
+Hello.
 
-> Thanks for responding and posting the patch. There is actually a another
-> important issue of a more general nature. I have already posted this in
-> the general Linux kernel mailing list under the subject "panic() logic".
-> The crux of the issue is:
-> 
-> The panic() call does a smp_send_stop() pretty early in the call
-> process for SMP systems. smp_send_stop basically marks all the other
-> cores as 'down' and
-> updates the cpu bitmap. One implication of this is that you cannot do
-> an IPI later on to other cores. However, interestingly, mips sibyte
-> processor tries to do a cfe_exit() through an IPI as a part of
-> emergency_reboot() that is called pretty late in the panic() logic. 
-> 
-> As a consequence of this, if a panic happens on a back core, the system
-> simply hangs and never actually does a "rebooting in 5 sec" thing. 
+Atsushi Nemoto wrote:
 
-Interesting.  I've observed this effect frequently.  But without researching
-the issue further I did blame CFE for it.
+> Add a helper routine to register tx4938ide driver and use it on
+> RBTX4938 board.
+>
+> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+>   
 
-> I believe the way panic logic is organized is in conflict with the
-> requirements of some archs, for example our mips sibyte arch. Currently,
-> the arch independent logic defeats the main purpose of the arch
-> dependent emergency_restart() function which is to restart the system.
-> In a vast majority of the cases, we do have a perfectly sane and
-> functional front core and we are just not able to gracefully reboot the
-> system because we are limited by the way panic() handles the shutdown
-> logic. If there are other archs that does a similar specific operation
-> for the front core as a part of 'emergency restart', they are all
-> defeated.
+Acked-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
-SMP systems generally have some sledgehammer mechanism that can be used to
-trigger a hardware reset of another or all cores.  We probably should
-use that instead of relying on firmware - which in many cases becomes
-unusable after Linux initialization.
+> diff --git a/arch/mips/include/asm/txx9/tx4938.h b/arch/mips/include/asm/txx9/tx4938.h
+> index 989e775..3dada66 100644
+> --- a/arch/mips/include/asm/txx9/tx4938.h
+> +++ b/arch/mips/include/asm/txx9/tx4938.h
+> @@ -292,4 +292,17 @@ void tx4938_setup_pcierr_irq(void);
+>  void tx4938_irq_init(void);
+>  void tx4938_mtd_init(int ch);
+>  
+> +struct tx4938ide_platform_info {
+> +	/*
+> +	 * I/O port shift, for platforms with ports that are
+> +	 * constantly spaced and need larger than the 1-byte
+> +	 * spacing used by ata_std_ports().
+> +	 */
+> +	unsigned int ioport_shift;
+> +	unsigned int gbus_clock;	/*  0 means no-autotune. */
+>   
 
-> I believe, the way to solve this problem is that the archs themselves
-> take the responsibility of shutting down the core and not the generic
-> panic() call. The actual power down mechanism is arch dependent anyway,
-> so I guess it can be made to be a part of emergency_shutdown(). The arch
-> independent kernel code will then simply do the necessary arch
-> independent things to handle panic and simply call emergency_reboot() to
-> do the rest of the arch specific stuff, including powering down the
-> cores.
+   I'd say "no PIO mode tuning" since the mode can also be changed via 
+HDIO_SET_PIO_MODE which e.g. 'hdparm -p' calls...
 
-It would certainly make some sense in this particular scenario.
+> diff --git a/arch/mips/txx9/generic/setup_tx4938.c b/arch/mips/txx9/generic/setup_tx4938.c
+> index af724e5..e6c558e 100644
+> --- a/arch/mips/txx9/generic/setup_tx4938.c
+> +++ b/arch/mips/txx9/generic/setup_tx4938.c
+>   
+[...]
+> @@ -335,6 +336,52 @@ void __init tx4938_mtd_init(int ch)
+>  	txx9_physmap_flash_init(ch, start, size, &pdata);
+>  }
+>  
+> +void __init tx4938_ata_init(unsigned int irq, unsigned int shift, int tune)
+> +{
+> +	struct platform_device *pdev;
+> +	struct resource res[] = {
+> +		{
+> +			/* .start and .end are filled in later */
+> +			.flags = IORESOURCE_MEM,
+> +		}, {
+> +			.start = irq,
+> +			.flags = IORESOURCE_IRQ,
+> +		},
+> +	};
+> +	struct tx4938ide_platform_info pdata = {
+> +		.ioport_shift = shift,
+> +		/*
+> +		 * The ide driver should not do autotune if other ISA
+>   
 
-  Ralf
+  "The IDE driver should not change bus timings", I'd say.
+
+MBR, Sergei

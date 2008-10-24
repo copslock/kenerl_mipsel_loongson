@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2008 02:10:09 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:21607 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2008 02:10:28 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:21095 "EHLO
 	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S22251759AbYJXA6q (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 24 Oct 2008 01:58:46 +0100
+	id S22251758AbYJXA6r (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 24 Oct 2008 01:58:47 +0100
 Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B49011d680002>; Thu, 23 Oct 2008 20:57:12 -0400
+	id <B49011d680001>; Thu, 23 Oct 2008 20:57:12 -0400
 Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
 	 Thu, 23 Oct 2008 17:57:11 -0700
 Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
 	 Thu, 23 Oct 2008 17:57:10 -0700
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id m9O0v5EE005657;
+	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id m9O0v5Ak005649;
 	Thu, 23 Oct 2008 17:57:05 -0700
 Received: (from ddaney@localhost)
-	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id m9O0v5r7005656;
+	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id m9O0v5DN005648;
 	Thu, 23 Oct 2008 17:57:05 -0700
 From:	ddaney@caviumnetworks.com
 To:	linux-mips@linux-mips.org
 Cc:	David Daney <ddaney@caviumnetworks.com>,
 	Tomaso Paoletti <tpaoletti@caviumnetworks.com>
-Subject: [PATCH 24/37] Cavium OCTEON: PT vs MFC0 reorder, multiplier state preservation.
-Date:	Thu, 23 Oct 2008 17:56:48 -0700
-Message-Id: <1224809821-5532-25-git-send-email-ddaney@caviumnetworks.com>
+Subject: [PATCH 22/37] Add Cavium OCTEON specific registers to ptrace.h and asm-offsets.c
+Date:	Thu, 23 Oct 2008 17:56:46 -0700
+Message-Id: <1224809821-5532-23-git-send-email-ddaney@caviumnetworks.com>
 X-Mailer: git-send-email 1.5.5.1
 In-Reply-To: <1224809821-5532-1-git-send-email-ddaney@caviumnetworks.com>
 References: <1224809821-5532-1-git-send-email-ddaney@caviumnetworks.com>
-X-OriginalArrivalTime: 24 Oct 2008 00:57:10.0532 (UTC) FILETIME=[71E82440:01C93573]
+X-OriginalArrivalTime: 24 Oct 2008 00:57:10.0204 (UTC) FILETIME=[71B617C0:01C93573]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20905
+X-archive-position: 20906
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,125 +40,73 @@ X-list: linux-mips
 
 From: David Daney <ddaney@caviumnetworks.com>
 
-For cavium, reorder PT ops to be after mfc0 and not before.
-Also implement a save and restore of the multiplier state
-so that if it gets corrupted, it will not impact things.
-
-Signed-off-by: Tomaso Paoletti <tpaoletti@caviumnetworks.com>
 Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+Signed-off-by: Tomaso Paoletti <tpaoletti@caviumnetworks.com>
 ---
- arch/mips/include/asm/stackframe.h |   46 ++++++++++++++++++++++++++++++++++++
- 1 files changed, 46 insertions(+), 0 deletions(-)
+ arch/mips/include/asm/ptrace.h |    4 ++++
+ arch/mips/kernel/asm-offsets.c |   31 +++++++++++++++++++++++++++++++
+ 2 files changed, 35 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
-index 4c37c4e..bcaac81 100644
---- a/arch/mips/include/asm/stackframe.h
-+++ b/arch/mips/include/asm/stackframe.h
-@@ -51,10 +51,12 @@
- 		LONG_S	v1, PT_ACX(sp)
- #else
- 		mfhi	v1
-+#ifndef CONFIG_CPU_CAVIUM_OCTEON
- 		LONG_S	v1, PT_HI(sp)
- 		mflo	v1
- 		LONG_S	v1, PT_LO(sp)
- #endif
-+#endif
- #ifdef CONFIG_32BIT
- 		LONG_S	$8, PT_R8(sp)
- 		LONG_S	$9, PT_R9(sp)
-@@ -62,10 +64,17 @@
- 		LONG_S	$10, PT_R10(sp)
- 		LONG_S	$11, PT_R11(sp)
- 		LONG_S	$12, PT_R12(sp)
-+#ifdef CONFIG_CPU_CAVIUM_OCTEON
-+		LONG_S	v1, PT_HI(sp)
-+		mflo	v1
-+#endif
- 		LONG_S	$13, PT_R13(sp)
- 		LONG_S	$14, PT_R14(sp)
- 		LONG_S	$15, PT_R15(sp)
- 		LONG_S	$24, PT_R24(sp)
-+#ifdef CONFIG_CPU_CAVIUM_OCTEON
-+		LONG_S	v1, PT_LO(sp)
-+#endif
- 		.endm
- 
- 		.macro	SAVE_STATIC
-@@ -166,7 +175,9 @@
- 		LONG_S	$0, PT_R0(sp)
- 		mfc0	v1, CP0_STATUS
- 		LONG_S	$2, PT_R2(sp)
-+#ifndef CONFIG_CPU_CAVIUM_OCTEON
- 		LONG_S	v1, PT_STATUS(sp)
-+#endif
+diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
+index 9c22571..3356873 100644
+--- a/arch/mips/include/asm/ptrace.h
++++ b/arch/mips/include/asm/ptrace.h
+@@ -52,6 +52,10 @@ struct pt_regs {
  #ifdef CONFIG_MIPS_MT_SMTC
- 		/*
- 		 * Ideally, these instructions would be shuffled in
-@@ -178,22 +189,53 @@
- 		LONG_S	v1, PT_TCSTATUS(sp)
+ 	unsigned long cp0_tcstatus;
  #endif /* CONFIG_MIPS_MT_SMTC */
- 		LONG_S	$4, PT_R4(sp)
-+#ifndef CONFIG_CPU_CAVIUM_OCTEON
- 		mfc0	v1, CP0_CAUSE
-+#endif
- 		LONG_S	$5, PT_R5(sp)
 +#ifdef CONFIG_CPU_CAVIUM_OCTEON
-+		LONG_S	v1, PT_STATUS(sp)
-+		mfc0	v1, CP0_CAUSE
-+#else
- 		LONG_S	v1, PT_CAUSE(sp)
++	unsigned long long mpl[3];        /* MTM{0,1,2} */
++	unsigned long long mtp[3];        /* MTP{0,1,2} */
 +#endif
- 		LONG_S	$6, PT_R6(sp)
-+#ifndef CONFIG_CPU_CAVIUM_OCTEON
- 		MFC0	v1, CP0_EPC
-+#endif
- 		LONG_S	$7, PT_R7(sp)
-+#ifdef CONFIG_CPU_CAVIUM_OCTEON
-+		LONG_S	v1, PT_CAUSE(sp)
-+		MFC0	v1, CP0_EPC
-+#endif
- #ifdef CONFIG_64BIT
- 		LONG_S	$8, PT_R8(sp)
- 		LONG_S	$9, PT_R9(sp)
- #endif
-+#ifndef CONFIG_CPU_CAVIUM_OCTEON
- 		LONG_S	v1, PT_EPC(sp)
-+#endif
- 		LONG_S	$25, PT_R25(sp)
- 		LONG_S	$28, PT_R28(sp)
- 		LONG_S	$31, PT_R31(sp)
-+#ifdef CONFIG_CPU_CAVIUM_OCTEON
-+		LONG_S	v1, PT_EPC(sp)
-+#endif
- 		ori	$28, sp, _THREAD_MASK
- 		xori	$28, _THREAD_MASK
-+#ifdef CONFIG_CPU_CAVIUM_OCTEON
-+		.set    mips64
-+		pref    0, 0($28)       /* Prefetch the current pointer */
-+		pref    0, PT_R31(sp)   /* Prefetch the $31(ra) */
-+		/* The Octeon multiplier state is affected by general multiply
-+		    instructions. It must be saved before and kernel code might
-+		    corrupt it */
-+		jal     octeon_mult_save
-+		LONG_L  v1, 0($28)  /* Load the current pointer */
-+			 /* Restore $31(ra) that was changed by the jal */
-+		LONG_L  ra, PT_R31(sp)
-+		pref    0, 0(v1)    /* Prefetch the current thread */
-+#endif
- 		.set	pop
- 		.endm
+ } __attribute__ ((aligned (8)));
  
-@@ -324,6 +366,10 @@
- 		DVPE	5				# dvpe a1
- 		jal	mips_ihb
+ /* Arbitrarily choose the same ptrace numbers as used by the Sparc code. */
+diff --git a/arch/mips/kernel/asm-offsets.c b/arch/mips/kernel/asm-offsets.c
+index 7294222..c901c22 100644
+--- a/arch/mips/kernel/asm-offsets.c
++++ b/arch/mips/kernel/asm-offsets.c
+@@ -64,6 +64,10 @@ void output_ptreg_defines(void)
+ #ifdef CONFIG_MIPS_MT_SMTC
+ 	OFFSET(PT_TCSTATUS, pt_regs, cp0_tcstatus);
  #endif /* CONFIG_MIPS_MT_SMTC */
 +#ifdef CONFIG_CPU_CAVIUM_OCTEON
-+		/* Restore the Octeon multiplier state */
-+		jal	octeon_mult_restore
++	OFFSET(PT_MPL, pt_regs, mpl);
++	OFFSET(PT_MTP, pt_regs, mtp);
++#endif /* CONFIG_CPU_CAVIUM_OCTEON */
+ 	DEFINE(PT_SIZE, sizeof(struct pt_regs));
+ 	BLANK();
+ }
+@@ -295,3 +299,30 @@ void output_irq_cpustat_t_defines(void)
+ 	DEFINE(IC_IRQ_CPUSTAT_T, sizeof(irq_cpustat_t));
+ 	BLANK();
+ }
++
++#ifdef CONFIG_CPU_CAVIUM_OCTEON
++void output_octeon_cop2_state_defines(void)
++{
++	COMMENT("Octeon specific octeon_cop2_state offsets.");
++	OFFSET(OCTEON_CP2_CRC_IV,	octeon_cop2_state, cop2_crc_iv);
++	OFFSET(OCTEON_CP2_CRC_LENGTH,	octeon_cop2_state, cop2_crc_length);
++	OFFSET(OCTEON_CP2_CRC_POLY,	octeon_cop2_state, cop2_crc_poly);
++	OFFSET(OCTEON_CP2_LLM_DAT,	octeon_cop2_state, cop2_llm_dat);
++	OFFSET(OCTEON_CP2_3DES_IV,	octeon_cop2_state, cop2_3des_iv);
++	OFFSET(OCTEON_CP2_3DES_KEY,	octeon_cop2_state, cop2_3des_key);
++	OFFSET(OCTEON_CP2_3DES_RESULT,	octeon_cop2_state, cop2_3des_result);
++	OFFSET(OCTEON_CP2_AES_INP0,	octeon_cop2_state, cop2_aes_inp0);
++	OFFSET(OCTEON_CP2_AES_IV,	octeon_cop2_state, cop2_aes_iv);
++	OFFSET(OCTEON_CP2_AES_KEY,	octeon_cop2_state, cop2_aes_key);
++	OFFSET(OCTEON_CP2_AES_KEYLEN,	octeon_cop2_state, cop2_aes_keylen);
++	OFFSET(OCTEON_CP2_AES_RESULT,	octeon_cop2_state, cop2_aes_result);
++	OFFSET(OCTEON_CP2_GFM_MULT,	octeon_cop2_state, cop2_gfm_mult);
++	OFFSET(OCTEON_CP2_GFM_POLY,	octeon_cop2_state, cop2_gfm_poly);
++	OFFSET(OCTEON_CP2_GFM_RESULT,	octeon_cop2_state, cop2_gfm_result);
++	OFFSET(OCTEON_CP2_HSH_DATW,	octeon_cop2_state, cop2_hsh_datw);
++	OFFSET(OCTEON_CP2_HSH_IVW,	octeon_cop2_state, cop2_hsh_ivw);
++	OFFSET(THREAD_CP2,	task_struct, thread.cp2);
++	OFFSET(THREAD_CVMSEG,	task_struct, thread.cvmseg.cvmseg);
++	BLANK();
++}
 +#endif
- 		mfc0	a0, CP0_STATUS
- 		ori	a0, STATMASK
- 		xori	a0, STATMASK
 -- 
 1.5.5.1

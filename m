@@ -1,55 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Oct 2008 23:21:29 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:19529 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S22249285AbYJWWV1 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 23 Oct 2008 23:21:27 +0100
-Received: from [127.0.0.1] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 196063EC9; Thu, 23 Oct 2008 15:21:23 -0700 (PDT)
-Message-ID: <4900F8DE.4070203@ru.mvista.com>
-Date:	Fri, 24 Oct 2008 02:21:18 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-User-Agent: Thunderbird 2.0.0.17 (Windows/20080914)
-MIME-Version: 1.0
-To:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org,
-	linux-ide@vger.kernel.org, ralf@linux-mips.org
-Subject: Re: [PATCH] TXx9: Add TX4938 ATA support (v2)
-References: <20081023.011646.51867355.anemo@mba.ocn.ne.jp> <20081023.231618.126142426.anemo@mba.ocn.ne.jp> <4900ACA8.2030303@ru.mvista.com> <200810232206.50973.bzolnier@gmail.com>
-In-Reply-To: <200810232206.50973.bzolnier@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2008 01:57:39 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:3686 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S22251717AbYJXA53 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 24 Oct 2008 01:57:29 +0100
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B49011d630000>; Thu, 23 Oct 2008 20:57:07 -0400
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 23 Oct 2008 17:57:06 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 23 Oct 2008 17:57:06 -0700
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id m9O0v168005561
+	for <linux-mips@linux-mips.org>; Thu, 23 Oct 2008 17:57:01 -0700
+Received: (from ddaney@localhost)
+	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id m9O0v1vW005559
+	for linux-mips@linux-mips.org; Thu, 23 Oct 2008 17:57:01 -0700
+From:	ddaney@caviumnetworks.com
+To:	linux-mips@linux-mips.org
+Subject: [PATCH 00/37] Add Cavium OCTEON processor support.
+Date:	Thu, 23 Oct 2008 17:56:24 -0700
+Message-Id: <1224809821-5532-1-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.5.5.1
+X-OriginalArrivalTime: 24 Oct 2008 00:57:06.0501 (UTC) FILETIME=[6F810F50:01C93573]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20879
+X-archive-position: 20880
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+This patch set introduces preliminary support for Cavium Networks'
+OCTEON processor family.  More information about these processors may
+be obtained here:
 
-Bartlomiej Zolnierkiewicz wrote:
+http://www.caviumnetworks.com/OCTEON_MIPS64.html
 
->>> From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
->>> Subject: [PATCH] TXx9: Add TX4938 ATA support (v3)
->>>       
->>> Add a helper routine to register tx4938ide driver and use it on
->>> RBTX4938 board.
->>>       
->>> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
->>>       
->>     The patch already had my
->>
->> Acked-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
->>     
->
-> applied
->   
+This initial patch set adds support for booting an initramfs to a
+serial console.  Follow-on patch sets will add support for the on-chip
+ethernet, USB, PCI, PCIe, I2c and other peripherals.
 
-   Hm, I thought that one was for Ralf...
+Patches:
+	 1  - 6  add OCTEON specific files.
+	 7       generic support for booting processors other than CPU0
+	 14      generic cpu_to_name improvements.
+	 29 - 32 generic 8250 serial port changes.
+	 33      OCTEON serial port additions.
+	 34      generic mips dma changes to support these patches.
+	 37	 defconfig
+	 
+The remainder just hook things up.
 
-MBR, Sergei
+
+Feedback certainly welcome,
+David Daney

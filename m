@@ -1,33 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2008 22:41:09 +0100 (BST)
-Received: from h4.dl5rb.org.uk ([81.2.74.4]:21183 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2008 22:49:20 +0100 (BST)
+Received: from h4.dl5rb.org.uk ([81.2.74.4]:22756 "EHLO
 	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S22318548AbYJXVlB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 24 Oct 2008 22:41:01 +0100
+	with ESMTP id S22318657AbYJXVtL (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 24 Oct 2008 22:49:11 +0100
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m9OLexmJ000674;
-	Fri, 24 Oct 2008 22:40:59 +0100
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m9OLnA6b000893;
+	Fri, 24 Oct 2008 22:49:10 +0100
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m9OLewEL000673;
-	Fri, 24 Oct 2008 22:40:58 +0100
-Date:	Fri, 24 Oct 2008 22:40:58 +0100
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m9OLnAta000891;
+	Fri, 24 Oct 2008 22:49:10 +0100
+Date:	Fri, 24 Oct 2008 22:49:10 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
-Cc:	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-	linux-mips@linux-mips.org, linux-ide@vger.kernel.org
-Subject: Re: [PATCH] TXx9: Add TX4938 ATA support (v2)
-Message-ID: <20081024214057.GJ25297@linux-mips.org>
-References: <20081023.011646.51867355.anemo@mba.ocn.ne.jp> <200810232206.50973.bzolnier@gmail.com> <4900F8DE.4070203@ru.mvista.com> <200810242252.25327.bzolnier@gmail.com>
+To:	Manuel Lauss <mano@roarinelk.homelinux.net>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Alchemy: wire up SD controller on DB/PB1200 boards.
+Message-ID: <20081024214910.GK25297@linux-mips.org>
+References: <20081021065914.GA1930@roarinelk.homelinux.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <200810242252.25327.bzolnier@gmail.com>
+In-Reply-To: <20081021065914.GA1930@roarinelk.homelinux.net>
 User-Agent: Mutt/1.5.18 (2008-05-17)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20958
+X-archive-position: 20959
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,26 +33,11 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Oct 24, 2008 at 10:52:25PM +0200, Bartlomiej Zolnierkiewicz wrote:
+On Tue, Oct 21, 2008 at 08:59:14AM +0200, Manuel Lauss wrote:
 
-> > > applied
-> > >   
-> > 
-> >    Hm, I thought that one was for Ralf...
-> 
-> Ralf ACK-ed the change and was fine with it going through ide tree.
-> 
-> Anyway it really doesn't matter through whose tree such patches are
-> going in as long as people are fine with them.
-> 
+> Add au1xmmc platform data for PB1200/DB1200 boards
+> and wire up the 2 SD controllers for them.
 
-To explain why - there were no ordering constraints but it's always nice
-if all bits make it to kernel.org in one pull.  The arch part was rather
-minor compared to the IDE part so this should preferably go through the
-IDE tree.
-
-> No need to add some more rigid kernel bureaucracy...
-
-Wildy-acked-by: Ralf Baechle <ralf@linux-mips.org> :-)
+Applied.  Thanks,
 
   Ralf

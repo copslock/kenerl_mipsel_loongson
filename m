@@ -1,83 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2008 15:06:57 +0100 (BST)
-Received: from vervifontaine.sonytel.be ([80.88.33.193]:62363 "EHLO
-	vervifontaine.sonycom.com") by ftp.linux-mips.org with ESMTP
-	id S22296527AbYJXOGp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 24 Oct 2008 15:06:45 +0100
-Received: from vixen.sonytel.be (piraat.sonytel.be [43.221.60.197])
-	by vervifontaine.sonycom.com (Postfix) with ESMTP id 4A1FC58ABD;
-	Fri, 24 Oct 2008 16:06:28 +0200 (MEST)
-Date:	Fri, 24 Oct 2008 16:06:28 +0200 (CEST)
-From:	Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-cc:	linux-mips@linux-mips.org
-Subject: Re: RBTX4927 with VxWorks boot loader crashes in prom_getenv()
-In-Reply-To: <20081024.230250.59651236.anemo@mba.ocn.ne.jp>
-Message-ID: <Pine.LNX.4.64.0810241605380.23415@vixen.sonytel.be>
-References: <Pine.LNX.4.64.0810241118120.27263@vixen.sonytel.be>
- <20081024.230250.59651236.anemo@mba.ocn.ne.jp>
-MIME-Version: 1.0
-Content-Type: MULTIPART/MIXED; BOUNDARY="-584349381-1683427686-1224857188=:23415"
-Return-Path: <Geert.Uytterhoeven@sonycom.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2008 15:20:57 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:23536 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S22297247AbYJXOUu (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 24 Oct 2008 15:20:50 +0100
+Received: from localhost (p4039-ipad210funabasi.chiba.ocn.ne.jp [58.88.123.39])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 8B997AC53; Fri, 24 Oct 2008 23:20:44 +0900 (JST)
+Date:	Fri, 24 Oct 2008 23:20:57 +0900 (JST)
+Message-Id: <20081024.232057.85420526.anemo@mba.ocn.ne.jp>
+To:	sshtylyov@ru.mvista.com
+Cc:	bzolnier@gmail.com, linux-mips@linux-mips.org,
+	linux-ide@vger.kernel.org, ralf@linux-mips.org
+Subject: Re: [PATCH] ide: Add tx4938ide driver (v2)
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <4901AD8F.4000007@ru.mvista.com>
+References: <20081023.012013.52129771.anemo@mba.ocn.ne.jp>
+	<200810232247.05686.bzolnier@gmail.com>
+	<4901AD8F.4000007@ru.mvista.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20927
+X-archive-position: 20928
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Geert.Uytterhoeven@sonycom.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Fri, 24 Oct 2008 15:12:15 +0400, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
+>    I've realized that I have a question to Atsushi on why he chose the 
+> same way of implemnting the register accesses as on TX4939 despite 
+> TX4938 IDE is not really a SoC but a board level device (so probable 
+> should be using the normal, not the "raw" I/O accessors)...
 
----584349381-1683427686-1224857188=:23415
-Content-Type: TEXT/PLAIN; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Well, because it behaves like SoC registers, not as other PCI IDE
+registers (which are swapped on big endian).
 
-	Hi Nemoto-san,
+Maybe new board designer can chose another option, so it might be
+worth to add 'do_swap' member in tx4938ide_platform_info.  But anyway
+current code just works with both endian on RBTX4938 board :-)
 
-On Fri, 24 Oct 2008, Atsushi Nemoto wrote:
-> On Fri, 24 Oct 2008 11:39:07 +0200 (CEST), Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com> wrote:
-> > My RBTX4927 with VxWorks boot loader crashes in prom_getenv() since commit
-> > 860e546c19d88c21819c7f0861c505debd2d6eed ("MIPS: TXx9: Early command-line
-> > preprocessing"):
-> ...
-> > | fw_arg0 = 0x80002000
-> > | fw_arg1 = 0x80001fe0
-> > | fw_arg2 = 0x2000
-> > | fw_arg3 = 0x20
-> > 
-> > So your assumption that bootloaders other than YAMON pass NULL for fw_arg2 is
-> > apparently wrong.
-> 
-> Indeed.  We should know what sort of value was passed by fw_arg2, and
-> I hope auto-detection.
-> 
-> Do you know what value the boot loader passes via fw_arg2?  If fw_arg2
-
-Unfortunately not. I'll try to Google a bit for it...
-
-> is always small integer (i.e. a not KSEG0/KSEG1 address), we can
-> autodetect fw_arg2 was a pointer or not.
-
-Exactly my thoughts.
-
-With kind regards,
-
-Geert Uytterhoeven
-Software Architect
-
-Sony Techsoft Centre Europe
-The Corporate Village · Da Vincilaan 7-D1 · B-1935 Zaventem · Belgium
-
-Phone:    +32 (0)2 700 8453
-Fax:      +32 (0)2 700 8622
-E-mail:   Geert.Uytterhoeven@sonycom.com
-Internet: http://www.sony-europe.com/
-
-A division of Sony Europe (Belgium) N.V.
-VAT BE 0413.825.160 · RPR Brussels
-Fortis · BIC GEBABEBB · IBAN BE41293037680010
----584349381-1683427686-1224857188=:23415--
+---
+Atsushi Nemoto

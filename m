@@ -1,62 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2008 15:35:45 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:41711 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S22299274AbYJXOf1 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 24 Oct 2008 15:35:27 +0100
-Received: from localhost (p4039-ipad210funabasi.chiba.ocn.ne.jp [58.88.123.39])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id DC0E3AC53; Fri, 24 Oct 2008 23:35:20 +0900 (JST)
-Date:	Fri, 24 Oct 2008 23:35:38 +0900 (JST)
-Message-Id: <20081024.233538.48533304.anemo@mba.ocn.ne.jp>
-To:	Geert.Uytterhoeven@sonycom.com
-Cc:	linux-mips@linux-mips.org
-Subject: Re: RBTX4927 with VxWorks boot loader crashes in prom_getenv()
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <Pine.LNX.4.64.0810241605380.23415@vixen.sonytel.be>
-References: <Pine.LNX.4.64.0810241118120.27263@vixen.sonytel.be>
-	<20081024.230250.59651236.anemo@mba.ocn.ne.jp>
-	<Pine.LNX.4.64.0810241605380.23415@vixen.sonytel.be>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2008 16:12:11 +0100 (BST)
+Received: from [210.128.50.54] ([210.128.50.54]:18969 "EHLO mo31.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S22301418AbYJXPLo (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 24 Oct 2008 16:11:44 +0100
+Received: by mo.po.2iij.net (mo31) id m9OFBcTj011865; Sat, 25 Oct 2008 00:11:38 +0900 (JST)
+Received: from delta (187.24.30.125.dy.iij4u.or.jp [125.30.24.187])
+	by mbox.po.2iij.net (po-mbox304) id m9OFBXP0025177
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Sat, 25 Oct 2008 00:11:33 +0900
+Date:	Sat, 25 Oct 2008 00:11:33 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] Cobalt: add select PCI
+Message-Id: <20081025001133.6aa25158.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed 2.4.8 (GTK+ 2.12.9; i486-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20929
+X-archive-position: 20930
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 24 Oct 2008 16:06:28 +0200 (CEST), Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com> wrote:
-> > > | fw_arg0 = 0x80002000
-> > > | fw_arg1 = 0x80001fe0
-> > > | fw_arg2 = 0x2000
-> > > | fw_arg3 = 0x20
-> > > 
-> > > So your assumption that bootloaders other than YAMON pass NULL for fw_arg2 is
-> > > apparently wrong.
-> > 
-> > Indeed.  We should know what sort of value was passed by fw_arg2, and
-> > I hope auto-detection.
-> > 
-> > Do you know what value the boot loader passes via fw_arg2?  If fw_arg2
-> 
-> Unfortunately not. I'll try to Google a bit for it...
+PCI bus is always necessary for Cobalt ID.
 
-BTW, it looks fw_arg0 is not 'argc'.  Fortunately current code just
-ignores argv if argc was negative, but it is not intentional
-behaviour, just a luck ;)
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-You can put a string starting with "-" in CONFIG_CMDLINE, so that
-fw_arg0 is ignored regardless of its value.  Hmm... putting "noenv" or
-something in CONFIG_CMDLINE (and check it in preprocess_cmdline()) can
-be an another workaround for getenv problem...
-
----
-Atsushi Nemoto
+diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/arch/mips/Kconfig linux/arch/mips/Kconfig
+--- linux-orig/arch/mips/Kconfig	2008-10-19 22:36:34.973823677 +0900
++++ linux/arch/mips/Kconfig	2008-10-19 22:33:58.440903373 +0900
+@@ -72,6 +72,7 @@ config MIPS_COBALT
+ 	select IRQ_CPU
+ 	select IRQ_GT641XX
+ 	select PCI_GT64XXX_PCI0
++	select PCI
+ 	select SYS_HAS_CPU_NEVADA
+ 	select SYS_HAS_EARLY_PRINTK
+ 	select SYS_SUPPORTS_32BIT_KERNEL

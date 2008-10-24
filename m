@@ -1,30 +1,28 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2008 11:46:26 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:17547 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S22284994AbYJXKqS (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 24 Oct 2008 11:46:18 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2008 12:12:39 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:65165 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S22285785AbYJXLM2 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 24 Oct 2008 12:12:28 +0100
 Received: from [127.0.0.1] (unknown [10.150.0.9])
 	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 0E5E73ECC; Fri, 24 Oct 2008 03:46:14 -0700 (PDT)
-Message-ID: <4901A771.2030909@ru.mvista.com>
-Date:	Fri, 24 Oct 2008 14:46:09 +0400
+	id F12873ECB; Fri, 24 Oct 2008 04:12:20 -0700 (PDT)
+Message-ID: <4901AD8F.4000007@ru.mvista.com>
+Date:	Fri, 24 Oct 2008 15:12:15 +0400
 From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
 User-Agent: Thunderbird 2.0.0.17 (Windows/20080914)
 MIME-Version: 1.0
-To:	ddaney@caviumnetworks.com
-Cc:	linux-mips@linux-mips.org,
-	Tomaso Paoletti <tpaoletti@caviumnetworks.com>,
-	Paul Gortmaker <Paul.Gortmaker@windriver.com>
-Subject: Re: [PATCH 08/37] For Cavium OCTEON handle hazzards as per the R10000
- handling.
-References: <1224809821-5532-1-git-send-email-ddaney@caviumnetworks.com> <1224809821-5532-9-git-send-email-ddaney@caviumnetworks.com>
-In-Reply-To: <1224809821-5532-9-git-send-email-ddaney@caviumnetworks.com>
+To:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
+Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org,
+	linux-ide@vger.kernel.org, ralf@linux-mips.org
+Subject: Re: [PATCH] ide: Add tx4938ide driver (v2)
+References: <20081023.012013.52129771.anemo@mba.ocn.ne.jp> <200810232247.05686.bzolnier@gmail.com>
+In-Reply-To: <200810232247.05686.bzolnier@gmail.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
 Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20921
+X-archive-position: 20922
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,12 +32,22 @@ X-list: linux-mips
 
 Hello.
 
-ddaney@caviumnetworks.com wrote:
+Bartlomiej Zolnierkiewicz wrote:
 
-> For Cavium CPU, we treat the same as R10000, in that all hazzards
-> are dealt with in hardware.
+>> This is the driver for the Toshiba TX4938 SoC EBUS controller ATA mode.
+>> It has custom set_pio_mode and some hacks for big endian.
+>>
+>> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+>>     
+>
+> I applied it so please address issues left (if any) with incremental patches.
 >   
 
-   Only they're haZards. :-)
+   I'm not sure there was really a need to haste it into -rc1 (if you 
+could push it to Linus later anyway)...
+   I've realized that I have a question to Atsushi on why he chose the 
+same way of implemnting the register accesses as on TX4939 despite 
+TX4938 IDE is not really a SoC but a board level device (so probable 
+should be using the normal, not the "raw" I/O accessors)...
 
-WBR, Sergei
+MBR, Sergei

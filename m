@@ -1,68 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2008 18:18:53 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:55962 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S22307410AbYJXRSV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 24 Oct 2008 18:18:21 +0100
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B490203530000>; Fri, 24 Oct 2008 13:18:11 -0400
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Fri, 24 Oct 2008 10:18:10 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Fri, 24 Oct 2008 10:18:10 -0700
-Message-ID: <49020352.1060705@caviumnetworks.com>
-Date:	Fri, 24 Oct 2008 10:18:10 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2008 18:54:18 +0100 (BST)
+Received: from yw-out-1718.google.com ([74.125.46.152]:45428 "EHLO
+	yw-out-1718.google.com") by ftp.linux-mips.org with ESMTP
+	id S22309070AbYJXRyN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 24 Oct 2008 18:54:13 +0100
+Received: by yw-out-1718.google.com with SMTP id 9so345999ywk.24
+        for <linux-mips@linux-mips.org>; Fri, 24 Oct 2008 10:54:09 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:date:subject
+         :mime-version:x-uid:x-length:to:cc:content-type
+         :content-transfer-encoding:content-disposition:message-id:sender;
+        bh=/TKtnDoZ0exXSMlOU58toncIMgjxNsFcGuEkBb9nnug=;
+        b=RR8HjUAIbRjtPDuzZzzdTLcrMSuPlHRKjM4B41ELAYTdo5V+AKe7znJYkNJVqjjE7y
+         hpbA9BE8HyWNLVMsG6FsZ2HuwXjbSX3FfXrgFYo1RTUyjYj5RWRwS6e2zE/h4HjvhZcH
+         sorplXF0LLfyNVAQS5m9u0GrN396Znwzee4UY=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:date:subject:mime-version:x-uid:x-length:to:cc:content-type
+         :content-transfer-encoding:content-disposition:message-id:sender;
+        b=RA6yBURS/42xdjg3O1rrOOUWRBU6OOB/CurJPoXORNmP5jgrkyRdj0X6olTesOo3Ur
+         abRuKgX2yIq3aM9RMaFHUTjXx3NThH7XWSnfI+tQ14Xgq7VZjdQZe0NKC/ccLJJM4qil
+         44cXy9BKquZRcGLs9jSFkvk8vu8sK0JHln3is=
+Received: by 10.181.229.7 with SMTP id g7mr1003668bkr.135.1224870848490;
+        Fri, 24 Oct 2008 10:54:08 -0700 (PDT)
+Received: from florian.headquarters.openpattern.org (headquarters.openpattern.org [82.240.17.188])
+        by mx.google.com with ESMTPS id 3sm1004973fge.3.2008.10.24.10.54.07
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Fri, 24 Oct 2008 10:54:07 -0700 (PDT)
+From:	Florian Fainelli <florian@openwrt.org>
+Date:	Fri, 24 Oct 2008 19:53:55 +0200
+Subject: [PATCH] rb532: set gpio interrupt status and level for CompactFlash
 MIME-Version: 1.0
+X-UID:	6
+X-Length: 1412
 To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH][MIPS] fix kgdb build error
-References: <20081025001725.7ac18a1b.yoichi_yuasa@tripeaks.co.jp> <4901F851.8010103@caviumnetworks.com> <20081024170950.GC25297@linux-mips.org>
-In-Reply-To: <20081024170950.GC25297@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Cc:	Phil Sutter <n0-1@freewrt.org>,
+	"linux-mips" <linux-mips@linux-mips.org>
+Content-Type: text/plain;
+  charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 24 Oct 2008 17:18:10.0503 (UTC) FILETIME=[7D2EF570:01C935FC]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Disposition: inline
+Message-Id: <200810241953.55841.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20948
+X-archive-position: 20949
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Fri, Oct 24, 2008 at 09:31:13AM -0700, David Daney wrote:
-> 
->> Yoichi Yuasa wrote:
->>> ptrace.h needs #include <linux/types.h>
->>>
->> [...]
->>
->> Can you try this completely untested patch instead?
->>
->> If it works, I will give it a more thorough test over the next few
->> weeks.
-> 
-> This looks correct, I think.
-> 
-> Though I was wondering about two special cases:
-> 
->   o 32-bit debugger debugging a 64-bit process
->   o 64-bit debugger debugging a 32-bit process
-> 
-> The unions make we wonder if that case was considered ...
-> 
+This patch sets the correct interrupt status and level
+in order to get the CompactFlash adapter working.
 
-The ptrace interface only gives access to the raw watch registers, their 
-width and thus the union element used is determined by how the kernel 
-was built (32 or 64 bit).
-
-It is up to the user space debugger to handle address space size issues. 
-  The current gdb patch has only been tested on 32 bit systems.
-
-David Daney
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
+---
+diff --git a/arch/mips/rb532/gpio.c b/arch/mips/rb532/gpio.c
+index 76a7fd9..70c4a67 100644
+--- a/arch/mips/rb532/gpio.c
++++ b/arch/mips/rb532/gpio.c
+@@ -310,6 +310,10 @@ int __init rb532_gpio_init(void)
+ 		return -ENXIO;
+ 	}
+ 
++	/* Set the interrupt status and level for the CF pin */
++	rb532_gpio_set_int_level(&rb532_gpio_chip->chip, CF_GPIO_NUM, 1);
++	rb532_gpio_set_int_status(&rb532_gpio_chip->chip, CF_GPIO_NUM, 0);
++
+ 	return 0;
+ }
+ arch_initcall(rb532_gpio_init);

@@ -1,46 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2008 17:17:43 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:738 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S22304552AbYJXQRM (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 24 Oct 2008 17:17:12 +0100
-Received: from localhost.localdomain (p4039-ipad210funabasi.chiba.ocn.ne.jp [58.88.123.39])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id E34CBA9C7; Sat, 25 Oct 2008 01:17:05 +0900 (JST)
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] Set ENOSYS to errno on illegal system call number for syscall(2)
-Date:	Sat, 25 Oct 2008 01:17:23 +0900
-Message-Id: <1224865043-3430-2-git-send-email-anemo@mba.ocn.ne.jp>
-X-Mailer: git-send-email 1.5.6.3
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2008 17:24:32 +0100 (BST)
+Received: from h4.dl5rb.org.uk ([81.2.74.4]:42709 "EHLO
+	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
+	with ESMTP id S22304759AbYJXQYZ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 24 Oct 2008 17:24:25 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m9OGOGqH026425;
+	Fri, 24 Oct 2008 17:24:16 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m9OGOAvj026423;
+	Fri, 24 Oct 2008 17:24:10 +0100
+Date:	Fri, 24 Oct 2008 17:24:10 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Set positive error number to errno on illegal_syscall
+Message-ID: <20081024162409.GA25297@linux-mips.org>
+References: <1224865043-3430-1-git-send-email-anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1224865043-3430-1-git-send-email-anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20939
+X-archive-position: 20940
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
- arch/mips/kernel/scall32-o32.S |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+On Sat, Oct 25, 2008 at 01:17:22AM +0900, Atsushi Nemoto wrote:
 
-diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
-index ffa23bd..759f680 100644
---- a/arch/mips/kernel/scall32-o32.S
-+++ b/arch/mips/kernel/scall32-o32.S
-@@ -293,7 +293,7 @@ bad_alignment:
- 	jr	t2
- 	/* Unreached */
- 
--einval:	li	v0, -EINVAL
-+einval:	li	v0, -ENOSYS
- 	jr	ra
- 	END(sys_syscall)
- 
--- 
-1.5.6.3
+Thanks, applied.
+
+  Ralf

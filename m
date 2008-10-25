@@ -1,75 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Oct 2008 09:30:53 +0100 (BST)
-Received: from mo32.po.2iij.NET ([210.128.50.17]:1832 "EHLO mo32.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S22341850AbYJYIao (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 25 Oct 2008 09:30:44 +0100
-Received: by mo.po.2iij.net (mo32) id m9P8Ud28063569; Sat, 25 Oct 2008 17:30:39 +0900 (JST)
-Received: from delta (187.24.30.125.dy.iij4u.or.jp [125.30.24.187])
-	by mbox.po.2iij.net (po-mbox301) id m9P8UYGv003255
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Sat, 25 Oct 2008 17:30:35 +0900
-Date:	Sat, 25 Oct 2008 17:30:35 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp,
-	linux-mips <linux-mips@linux-mips.org>,
-	David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH][MIPS] fix kgdb build error
-Message-Id: <20081025173035.6e05f8dc.yoichi_yuasa@tripeaks.co.jp>
-In-Reply-To: <20081024164241.GB21892@linux-mips.org>
-References: <20081025001725.7ac18a1b.yoichi_yuasa@tripeaks.co.jp>
-	<20081024164241.GB21892@linux-mips.org>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed 2.4.8 (GTK+ 2.12.9; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Oct 2008 15:28:01 +0100 (BST)
+Received: from h4.dl5rb.org.uk ([81.2.74.4]:18312 "EHLO
+	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
+	with ESMTP id S22362499AbYJYO1w (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 25 Oct 2008 15:27:52 +0100
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m9PERp3w004049;
+	Sat, 25 Oct 2008 15:27:51 +0100
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m9PERiKH004047;
+	Sat, 25 Oct 2008 15:27:44 +0100
+Date:	Sat, 25 Oct 2008 15:27:44 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] [MIPS] IP22: Small cleanups
+Message-ID: <20081025142740.GB1827@linux-mips.org>
+References: <1224888417-26494-1-git-send-email-dmitri.vorobiev@movial.fi>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1224888417-26494-1-git-send-email-dmitri.vorobiev@movial.fi>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20966
+X-archive-position: 20967
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 24 Oct 2008 17:42:41 +0100
-Ralf Baechle <ralf@linux-mips.org> wrote:
+On Sat, Oct 25, 2008 at 01:46:56AM +0300, Dmitri Vorobiev wrote:
 
-> 
-> <asm/ptrace.h> is exported to userland so we can't include these types.
-> Basically <linux/types.h> or <stdint.h> are polluting the namespace.  So
-> either we use some __* type and include only those or we get entirely
-> rid of typedef'ed types - as in the patch that you've posted while I was
-> writing this.
+> diff --git a/arch/mips/sgi-ip22/ip22-int.c b/arch/mips/sgi-ip22/ip22-int.c
+> index f6d9bf4..5b9b4f3 100644
+> --- a/arch/mips/sgi-ip22/ip22-int.c
+> +++ b/arch/mips/sgi-ip22/ip22-int.c
+> @@ -16,6 +16,7 @@
+>  #include <linux/sched.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/irq.h>
+> +#include <linux/time.h>
+>  
+>  #include <asm/mipsregs.h>
+>  #include <asm/addrspace.h>
+> @@ -23,7 +24,6 @@
+>  #include <asm/sgi/ioc.h>
+>  #include <asm/sgi/hpc3.h>
+>  #include <asm/sgi/ip22.h>
+> -#include <asm/time.h>
 
-Thank you for your comment.
-KGDB still has a problem. This is kernel part in ptrace.h.
+<linux/time.h> does not include <asm/time.h>.  This sort of stuff happens
+if you believe checkpatch.pl.  You only got away because the header isn't
+needed anyway.  I'll apply the patch with this bit dropped.
 
----
+  Ralf
 
-Fix KGDB build error
-
-In file included from include/linux/ptrace.h:49,
-                 from arch/mips/kernel/kgdb.c:25:
-/home/yuasa/src/linux/test/mips/linux/arch/mips/include/asm/ptrace.h:123: error: expected declaration specifiers or '...' before '__s64'
-/home/yuasa/src/linux/test/mips/linux/arch/mips/include/asm/ptrace.h:124: error: expected declaration specifiers or '...' before '__s64'
-/home/yuasa/src/linux/test/mips/linux/arch/mips/include/asm/ptrace.h:126: error: expected declaration specifiers or '...' before '__u32'
-/home/yuasa/src/linux/test/mips/linux/arch/mips/include/asm/ptrace.h:127: error: expected declaration specifiers or '...' before '__u32'
-make[1]: *** [arch/mips/kernel/kgdb.o] Error 1
-
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-
-diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/arch/mips/include/asm/ptrace.h linux/arch/mips/include/asm/ptrace.h
---- linux-orig/arch/mips/include/asm/ptrace.h	2008-10-25 14:12:22.034139781 +0900
-+++ linux/arch/mips/include/asm/ptrace.h	2008-10-25 16:39:36.031229216 +0900
-@@ -116,6 +116,7 @@ struct pt_watch_regs {
- 
- #include <linux/compiler.h>
- #include <linux/linkage.h>
-+#include <linux/types.h>
- #include <asm/isadep.h>
- 
- struct task_struct;
+PS: Suspicion breeds confidence.  At least in case of checkpatch ;-)

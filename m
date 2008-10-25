@@ -1,108 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Oct 2008 23:47:34 +0100 (BST)
-Received: from smtp.movial.fi ([62.236.91.34]:31659 "EHLO smtp.movial.fi")
-	by ftp.linux-mips.org with ESMTP id S22319682AbYJXWrE (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 24 Oct 2008 23:47:04 +0100
-Received: from localhost (mailscanner.hel.movial.fi [172.17.81.9])
-	by smtp.movial.fi (Postfix) with ESMTP id B1EE5C8103;
-	Sat, 25 Oct 2008 01:46:57 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at movial.fi
-Received: from smtp.movial.fi ([62.236.91.34])
-	by localhost (mailscanner.hel.movial.fi [172.17.81.9]) (amavisd-new, port 10026)
-	with ESMTP id ue-95y+e9juX; Sat, 25 Oct 2008 01:46:57 +0300 (EEST)
-Received: from sd048.hel.movial.fi (sd048.hel.movial.fi [172.17.49.48])
-	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp.movial.fi (Postfix) with ESMTP id 88AC5C80D3;
-	Sat, 25 Oct 2008 01:46:57 +0300 (EEST)
-Received: by sd048.hel.movial.fi (Postfix, from userid 30120)
-	id 47D32108020; Sat, 25 Oct 2008 01:46:56 +0300 (EEST)
-From:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
-To:	ralf@linux-mips.org, linux-mips@linux-mips.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] [MIPS] IP22: Small cleanups
-Date:	Sat, 25 Oct 2008 01:46:56 +0300
-Message-Id: <1224888417-26494-1-git-send-email-dmitri.vorobiev@movial.fi>
-X-Mailer: git-send-email 1.5.6.5
-Return-Path: <dvorobye@movial.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Oct 2008 08:32:28 +0100 (BST)
+Received: from apollo.i-cable.com ([203.83.115.103]:992 "HELO
+	apollo.i-cable.com") by ftp.linux-mips.org with SMTP
+	id S22339221AbYJYHcU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 25 Oct 2008 08:32:20 +0100
+Received: (qmail 28545 invoked by uid 508); 25 Oct 2008 07:32:12 -0000
+Received: from 203.83.114.121 by apollo (envelope-from <robert.zhangle@gmail.com>, uid 505) with qmail-scanner-1.25 
+ (clamdscan: 0.93.3/7730.  
+ Clear:RC:1(203.83.114.121):. 
+ Processed in 0.155551 secs); 25 Oct 2008 07:32:12 -0000
+Received: from ip114121.hkicable.com (HELO silicon.i-cable.com) (203.83.114.121)
+  by 0 with SMTP; 25 Oct 2008 07:32:11 -0000
+Received: from localhost (cm222-167-208-75.hkcable.com.hk [222.167.208.75])
+	by silicon.i-cable.com (8.13.5/8.13.5) with ESMTP id m9P7Vx10023588;
+	Sat, 25 Oct 2008 15:32:11 +0800 (HKT)
+Date:	Sat, 25 Oct 2008 15:31:54 +0800
+From:	Zhang Le <r0bertz@gentoo.org>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] defined a macro for lemote 2e box IO base
+Message-ID: <20081025073153.GB4142@adriano.hkcable.com.hk>
+Mail-Followup-To: "Maciej W. Rozycki" <macro@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+References: <1224722939-18557-1-git-send-email-r0bertz@gentoo.org> <20081022202812.GB10625@linux-mips.org> <20081024072745.GA14652@adriano.hkcable.com.hk> <alpine.LFD.1.10.0810242119430.31223@ftp.linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.LFD.1.10.0810242119430.31223@ftp.linux-mips.org>
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Return-Path: <robert.zhangle@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 20964
+X-archive-position: 20965
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@movial.fi
+X-original-sender: r0bertz@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-The following functions
+On 21:24 Fri 24 Oct     , Maciej W. Rozycki wrote:
+> On Fri, 24 Oct 2008, Zhang Le wrote:
+> 
+> > Thanks for the comment.
+> > I have checked how other platforms handle this problem.
+> > Many have used CKSEG1ADDR.
+> 
+>  Please note long-term we want CKSEG1ADDR() to go away from board/platform 
+> code and possibly only keep it for some generic use if at all.  Have you 
+> considered using ioremap()?  With a literal physical address it should get 
+> optimised to the same code as the use of CKSEG1ADDR() produces, yet keep 
+> the source portable and in line with the rest of the kernel.
 
-disable_local1_irq()
-disable_local2_irq()
-disable_local3_irq()
+Thank you!
+I will make a new patch.
 
-are needlessly defined global, so make them static. While at
-it, fix a couple of coding style errors in the same file.
-
-Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
----
- arch/mips/sgi-ip22/ip22-int.c |   10 +++++-----
- 1 files changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/arch/mips/sgi-ip22/ip22-int.c b/arch/mips/sgi-ip22/ip22-int.c
-index f6d9bf4..5b9b4f3 100644
---- a/arch/mips/sgi-ip22/ip22-int.c
-+++ b/arch/mips/sgi-ip22/ip22-int.c
-@@ -16,6 +16,7 @@
- #include <linux/sched.h>
- #include <linux/interrupt.h>
- #include <linux/irq.h>
-+#include <linux/time.h>
- 
- #include <asm/mipsregs.h>
- #include <asm/addrspace.h>
-@@ -23,7 +24,6 @@
- #include <asm/sgi/ioc.h>
- #include <asm/sgi/hpc3.h>
- #include <asm/sgi/ip22.h>
--#include <asm/time.h>
- 
- /* #define DEBUG_SGINT */
- 
-@@ -68,7 +68,7 @@ static void enable_local1_irq(unsigned int irq)
- 		sgint->imask1 |= (1 << (irq - SGINT_LOCAL1));
- }
- 
--void disable_local1_irq(unsigned int irq)
-+static void disable_local1_irq(unsigned int irq)
- {
- 	sgint->imask1 &= ~(1 << (irq - SGINT_LOCAL1));
- }
-@@ -87,7 +87,7 @@ static void enable_local2_irq(unsigned int irq)
- 	sgint->cmeimask0 |= (1 << (irq - SGINT_LOCAL2));
- }
- 
--void disable_local2_irq(unsigned int irq)
-+static void disable_local2_irq(unsigned int irq)
- {
- 	sgint->cmeimask0 &= ~(1 << (irq - SGINT_LOCAL2));
- 	if (!sgint->cmeimask0)
-@@ -108,7 +108,7 @@ static void enable_local3_irq(unsigned int irq)
- 	sgint->cmeimask1 |= (1 << (irq - SGINT_LOCAL3));
- }
- 
--void disable_local3_irq(unsigned int irq)
-+static void disable_local3_irq(unsigned int irq)
- {
- 	sgint->cmeimask1 &= ~(1 << (irq - SGINT_LOCAL3));
- 	if (!sgint->cmeimask1)
-@@ -344,6 +344,6 @@ void __init arch_init_irq(void)
- 
- #ifdef CONFIG_EISA
- 	if (ip22_is_fullhouse())	/* Only Indigo-2 has EISA stuff */
--	        ip22_eisa_init();
-+		ip22_eisa_init();
- #endif
- }
--- 
-1.5.4.3
+Zhang, Le

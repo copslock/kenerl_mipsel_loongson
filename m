@@ -1,65 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2008 13:30:35 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:24276 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S22582824AbYJ1Na1 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 28 Oct 2008 13:30:27 +0000
-Received: from localhost (p3097-ipad313funabasi.chiba.ocn.ne.jp [123.217.229.97])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id EF2E0AF04; Tue, 28 Oct 2008 22:30:21 +0900 (JST)
-Date:	Tue, 28 Oct 2008 22:30:23 +0900 (JST)
-Message-Id: <20081028.223023.93205850.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	Jeff Garzik <jeff@garzik.org>, netdev@vger.kernel.org
-Subject: [PATCH] tc35815: Define more Rx status bits
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2008 16:02:49 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:55182 "EHLO
+	localhost.localdomain") by ftp.linux-mips.org with ESMTP
+	id S22593681AbYJ1QCo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 28 Oct 2008 16:02:44 +0000
+Date:	Tue, 28 Oct 2008 16:02:44 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org,
+	Tomaso Paoletti <tpaoletti@caviumnetworks.com>,
+	Paul Gortmaker <Paul.Gortmaker@windriver.com>
+Subject: Re: [PATCH 02/36] Add Cavium OCTEON files to
+ arch/mips/include/asm/mach-cavium-octeon
+In-Reply-To: <20081028075733.GB20858@linux-mips.org>
+Message-ID: <alpine.LFD.1.10.0810281600460.27396@ftp.linux-mips.org>
+References: <490655B6.4030406@caviumnetworks.com> <1225152181-3221-1-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-2-git-send-email-ddaney@caviumnetworks.com> <20081028075733.GB20858@linux-mips.org>
+User-Agent: Alpine 1.10 (LFD 962 2008-03-14)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21056
+X-archive-position: 21057
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This change does not change driver's behaviour, just make its debug
-output a bit meaningful.
+On Tue, 28 Oct 2008, Ralf Baechle wrote:
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
- drivers/net/tc35815.c |    5 +++--
- 1 files changed, 3 insertions(+), 2 deletions(-)
+> > +/* 144 - 151 represent the i8259 master */
+> > +#define OCTEON_IRQ_I8259M0      144
+> > +#define OCTEON_IRQ_I8259M1      145
+> > +#define OCTEON_IRQ_I8259M2      146
+> > +#define OCTEON_IRQ_I8259M3      147
+> > +#define OCTEON_IRQ_I8259M4      148
+> > +#define OCTEON_IRQ_I8259M5      149
+> > +#define OCTEON_IRQ_I8259M6      150
+> > +#define OCTEON_IRQ_I8259M7      151
+> > +/* 152 - 159 represent the i8259 slave */
+> > +#define OCTEON_IRQ_I8259S0      152
+> > +#define OCTEON_IRQ_I8259S1      153
+> > +#define OCTEON_IRQ_I8259S2      154
+> > +#define OCTEON_IRQ_I8259S3      155
+> > +#define OCTEON_IRQ_I8259S4      156
+> > +#define OCTEON_IRQ_I8259S5      157
+> > +#define OCTEON_IRQ_I8259S6      158
+> > +#define OCTEON_IRQ_I8259S7      159
+> 
+> You have some code for an i8259.  Since ISA interrupts are well known
+> numbers which are even hardcoded in drivers, manuals, printed on PCBs
+> etc. I recommend to renumber interrupts such that i8259 interrupts are
+> interrupts 0..15 and everything else follows after.  Oh the pleassures
+> of ISA cruft.
 
-diff --git a/drivers/net/tc35815.c b/drivers/net/tc35815.c
-index df20caf..385b174 100644
---- a/drivers/net/tc35815.c
-+++ b/drivers/net/tc35815.c
-@@ -236,7 +236,7 @@ struct tc35815_regs {
- #define Rx_Halted	       0x00008000 /* Rx Halted			     */
- #define Rx_Good		       0x00004000 /* Rx Good			     */
- #define Rx_RxPar	       0x00002000 /* Rx Parity Error		     */
--			    /* 0x00001000    not use			     */
-+#define Rx_TypePkt	       0x00001000 /* Rx Type Packet		     */
- #define Rx_LongErr	       0x00000800 /* Rx Long Error		     */
- #define Rx_Over		       0x00000400 /* Rx Overflow		     */
- #define Rx_CRCErr	       0x00000200 /* Rx CRC Error		     */
-@@ -244,8 +244,9 @@ struct tc35815_regs {
- #define Rx_10Stat	       0x00000080 /* Rx 10Mbps Status		     */
- #define Rx_IntRx	       0x00000040 /* Rx Interrupt		     */
- #define Rx_CtlRecd	       0x00000020 /* Rx Control Receive		     */
-+#define Rx_InLenErr	       0x00000010 /* Rx In Range Frame Length Error  */
- 
--#define Rx_Stat_Mask	       0x0000EFC0 /* Rx All Status Mask		     */
-+#define Rx_Stat_Mask	       0x0000FFF0 /* Rx All Status Mask		     */
- 
- /* Int_En bit asign -------------------------------------------------------- */
- #define Int_NRAbtEn	       0x00000800 /* 1:Non-recoverable Abort Enable  */
--- 
-1.5.6.3
+ I have long had plans to lift this stupid assumption and if I finally 
+lose my patience, I may even actually do it one day. ;)
+
+  Maciej

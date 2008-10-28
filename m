@@ -1,64 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2008 10:17:26 +0000 (GMT)
-Received: from mx0.towertech.it ([213.215.222.73]:55442 "HELO mx0.towertech.it")
-	by ftp.linux-mips.org with SMTP id S22566517AbYJ1KRQ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 28 Oct 2008 10:17:16 +0000
-Received: (qmail 29338 invoked from network); 28 Oct 2008 11:17:14 +0100
-Received: from unknown (HELO i1501.lan.towertech.it) (81.208.60.204)
-  by mx0.towertech.it with SMTP; 28 Oct 2008 11:17:14 +0100
-Date:	Tue, 28 Oct 2008 11:17:04 +0100
-From:	Alessandro Zummo <alessandro.zummo@towertech.it>
-To:	rtc-linux@googlegroups.com
-Cc:	mano@roarinelk.homelinux.net,
-	Linux-MIPS <linux-mips@linux-mips.org>,
-	Kevin Hickey <khickey@rmicorp.com>
-Subject: Re: [rtc-linux] Re: [RFC PATCH] Au1xxx on-chip counter-as-RTC
- driver
-Message-ID: <20081028111704.2feb3b53@i1501.lan.towertech.it>
-In-Reply-To: <20081022073114.GA11169@roarinelk.homelinux.net>
-References: <20080809161402.15e24b2e@flagship.roarinelk.net>
-	<20081021203815.1a0a246d@i1501.lan.towertech.it>
-	<20081022073114.GA11169@roarinelk.homelinux.net>
-Organization: Tower Technologies
-X-Mailer: Sylpheed
-X-This-Is-A-Real-Message: Yes
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2008 10:36:29 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:20666 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S22568038AbYJ1KgU (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 28 Oct 2008 10:36:20 +0000
+Received: from [127.0.0.1] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 4C32F3ECB; Tue, 28 Oct 2008 03:36:14 -0700 (PDT)
+Message-ID: <4906EB1A.8050006@ru.mvista.com>
+Date:	Tue, 28 Oct 2008 13:36:10 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+User-Agent: Thunderbird 2.0.0.17 (Windows/20080914)
+MIME-Version: 1.0
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org,
+	Tomaso Paoletti <tpaoletti@caviumnetworks.com>,
+	Paul Gortmaker <Paul.Gortmaker@windriver.com>
+Subject: Re: [PATCH 02/36] Add Cavium OCTEON files to	arch/mips/include/asm/mach-cavium-octeon
+References: <490655B6.4030406@caviumnetworks.com> <1225152181-3221-1-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-2-git-send-email-ddaney@caviumnetworks.com> <20081028075733.GB20858@linux-mips.org>
+In-Reply-To: <20081028075733.GB20858@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <alessandro.zummo@towertech.it>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21051
+X-archive-position: 21052
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alessandro.zummo@towertech.it
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 22 Oct 2008 09:31:14 +0200
-Manuel Lauss <mano@roarinelk.homelinux.net> wrote:
+Hello.
 
-> Here's a slightly updated version which has been running on a DB1200
-> demoboard for almost 2 months now.  I received no feedback on the
-> original, unfortunately.
-> 
-> Thanks!
-> 	Manuel Lauss
+Ralf Baechle wrote:
 
- Hi Manuel,
+>> +/**
+>> + * Write a 32bit value to the Octeon NPI register space
+>> + *
+>> + * @param address Address to write to
+>> + * @param val     Value to write
+>> + */
+>>     
+>
+> Linux coding style - comments are:
+>
+> /*
+>  * blah frobnicate zumbitso
+>  */
+>
+> sed is your friend to fix this.
+>   
 
- I'd need some feedback from linux-mips, otherwise
- I can only Sign-off for the entries in drivers/rtc .
+   This is kernel-doc style but looking wrong anyway. It should be:
 
- Btw why are you using a lock? the rtc class core
- already provides his own lock for the ops calls.
+/**
+ * octeon_npi_write32 - write a 32bit value to the Octeon NPI register space
+ *
+ * @address:    address to write to
+ * @val :         value to write
+ */
 
--- 
-
- Best regards,
-
- Alessandro Zummo,
-  Tower Technologies - Torino, Italy
-
-  http://www.towertech.it
+WBR, Sergei

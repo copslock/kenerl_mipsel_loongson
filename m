@@ -1,34 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2008 07:57:53 +0000 (GMT)
-Received: from h4.dl5rb.org.uk ([81.2.74.4]:10677 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Oct 2008 09:57:09 +0000 (GMT)
+Received: from h4.dl5rb.org.uk ([81.2.74.4]:27622 "EHLO
 	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S22554626AbYJ1H5j (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 28 Oct 2008 07:57:39 +0000
+	with ESMTP id S22563786AbYJ1J5A (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 28 Oct 2008 09:57:00 +0000
 Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m9S7vYW6021826;
-	Tue, 28 Oct 2008 07:57:34 GMT
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m9S9uuZ9006402;
+	Tue, 28 Oct 2008 09:56:56 GMT
 Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m9S7vX7k021824;
-	Tue, 28 Oct 2008 07:57:33 GMT
-Date:	Tue, 28 Oct 2008 07:57:33 +0000
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m9S9utlr006400;
+	Tue, 28 Oct 2008 09:56:55 GMT
+Date:	Tue, 28 Oct 2008 09:56:55 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
 To:	David Daney <ddaney@caviumnetworks.com>
 Cc:	linux-mips@linux-mips.org,
-	Tomaso Paoletti <tpaoletti@caviumnetworks.com>,
-	Paul Gortmaker <Paul.Gortmaker@windriver.com>
-Subject: Re: [PATCH 02/36] Add Cavium OCTEON files to
-	arch/mips/include/asm/mach-cavium-octeon
-Message-ID: <20081028075733.GB20858@linux-mips.org>
-References: <490655B6.4030406@caviumnetworks.com> <1225152181-3221-1-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-2-git-send-email-ddaney@caviumnetworks.com>
+	Tomaso Paoletti <tpaoletti@caviumnetworks.com>
+Subject: Re: [PATCH 11/36] MIPSR2 ebase isn't just CAC_BASE
+Message-ID: <20081028095655.GB18610@linux-mips.org>
+References: <1225152181-3221-2-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-3-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-4-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-5-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-6-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-7-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-8-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-9-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-10-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-11-git-send-email-ddaney@caviumnetworks.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1225152181-3221-2-git-send-email-ddaney@caviumnetworks.com>
+In-Reply-To: <1225152181-3221-11-git-send-email-ddaney@caviumnetworks.com>
 User-Agent: Mutt/1.5.18 (2008-05-17)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21049
+X-archive-position: 21050
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,86 +34,71 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Oct 27, 2008 at 05:02:34PM -0700, David Daney wrote:
+On Mon, Oct 27, 2008 at 05:02:43PM -0700, David Daney wrote:
 
-> +#ifdef CONFIG_SMP
-> +#define cpu_has_llsc		1
-> +#else
-> +/* Disable LL/SC on non SMP systems. It is faster to disable interrupts for
-> +   atomic access than a LL/SC */
-> +#define cpu_has_llsc		0
-> +#endif
+> On mips{32,64}r2, the ebase isn't just CAC_BASE, but also the part of
+> read_c0_ebase() too.
 
-It also means the resulting kernel won't have support for futex which
-essentially means you're cut off from modern libcs.
+That's a standard R2 feature - yet you were hiding it behind some ifdef
+Cavium.  No good.  The patch was also missing another location to fix
+up, set_uncached_handler().
 
-It is possible to get this to work - but nobody bothered so far; ll/sc-less
-R2000 class processors are very rare these days.  My recommendation is
-to keep cpu_has_llsc as 1 until you've fixed up the futex implementation,
-if you deciede so.
+Another thing I noticed is that we don't use write_c0_ebase(), so the
+firmware better setup this correctly or we crash and burn.  We better
+should initialize that right ...
 
-> +static inline int read_current_timer(unsigned long *result)
-> +{
-> +	asm volatile ("rdhwr %0,$31\n"
-> +#ifndef CONFIG_64BIT
-> +		      "sll %0, 0\n"
-> +#endif
-> +		      : "=r" (*result));
-> +	return 0;
-> +}
-
-This function is unused.  And anyway, this header file wasn't meant as
-the place for random code but only a way to describe the procesors a
-system may feature as tightly as possible.
-
-> +#ifndef __OCTEON_IRQ_H__
-> +#define __OCTEON_IRQ_H__
-> +
-> +#define NR_IRQS OCTEON_IRQ_LAST
-> +#define MIPS_CPU_IRQ_BASE 0
-> +
-> +/* 0 - 7 represent the 8 MIPS standard interrupt sources */
-
-[...]
-
-> +/* 144 - 151 represent the i8259 master */
-> +#define OCTEON_IRQ_I8259M0      144
-> +#define OCTEON_IRQ_I8259M1      145
-> +#define OCTEON_IRQ_I8259M2      146
-> +#define OCTEON_IRQ_I8259M3      147
-> +#define OCTEON_IRQ_I8259M4      148
-> +#define OCTEON_IRQ_I8259M5      149
-> +#define OCTEON_IRQ_I8259M6      150
-> +#define OCTEON_IRQ_I8259M7      151
-> +/* 152 - 159 represent the i8259 slave */
-> +#define OCTEON_IRQ_I8259S0      152
-> +#define OCTEON_IRQ_I8259S1      153
-> +#define OCTEON_IRQ_I8259S2      154
-> +#define OCTEON_IRQ_I8259S3      155
-> +#define OCTEON_IRQ_I8259S4      156
-> +#define OCTEON_IRQ_I8259S5      157
-> +#define OCTEON_IRQ_I8259S6      158
-> +#define OCTEON_IRQ_I8259S7      159
-
-You have some code for an i8259.  Since ISA interrupts are well known
-numbers which are even hardcoded in drivers, manuals, printed on PCBs
-etc. I recommend to renumber interrupts such that i8259 interrupts are
-interrupts 0..15 and everything else follows after.  Oh the pleassures
-of ISA cruft.
-
-> +/**
-> + * Write a 32bit value to the Octeon NPI register space
-> + *
-> + * @param address Address to write to
-> + * @param val     Value to write
-> + */
-
-Linux coding style - comments are:
-
-/*
- * blah frobnicate zumbitso
- */
-
-sed is your friend to fix this.
+So below my version which solves the first mentioned problem.  Just like
+the bitops patch I posted earlier today this patch has become entirely
+unrelated to the rest of the series so can applied before or after the
+rest of the series.
 
   Ralf
+
+Signed-off-by: Tomaso Paoletti <tpaoletti@caviumnetworks.com>
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+ arch/mips/kernel/traps.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+Index: linux-mips/arch/mips/kernel/traps.c
+===================================================================
+--- linux-mips.orig/arch/mips/kernel/traps.c
++++ linux-mips/arch/mips/kernel/traps.c
+@@ -1576,6 +1576,8 @@ void __cpuinit set_uncached_handler(unsi
+ #ifdef CONFIG_64BIT
+ 	unsigned long uncached_ebase = TO_UNCAC(ebase);
+ #endif
++	if (cpu_has_mips_r2)
++		ebase += (read_c0_ebase() & 0x3ffff000);
+ 
+ 	if (!addr)
+ 		panic(panic_null_cerr);
+@@ -1609,8 +1611,11 @@ void __init trap_init(void)
+ 
+ 	if (cpu_has_veic || cpu_has_vint)
+ 		ebase = (unsigned long) alloc_bootmem_low_pages(0x200 + VECTORSPACING*64);
+-	else
++	else {
+ 		ebase = CAC_BASE;
++		if (cpu_has_mips_r2)
++			ebase += (read_c0_ebase() & 0x3ffff000);
++	}
+ 
+ 	per_cpu_trap_init();
+ 
+@@ -1718,11 +1723,11 @@ void __init trap_init(void)
+ 
+ 	if (cpu_has_vce)
+ 		/* Special exception: R4[04]00 uses also the divec space. */
+-		memcpy((void *)(CAC_BASE + 0x180), &except_vec3_r4000, 0x100);
++		memcpy((void *)(ebase + 0x180), &except_vec3_r4000, 0x100);
+ 	else if (cpu_has_4kex)
+-		memcpy((void *)(CAC_BASE + 0x180), &except_vec3_generic, 0x80);
++		memcpy((void *)(ebase + 0x180), &except_vec3_generic, 0x80);
+ 	else
+-		memcpy((void *)(CAC_BASE + 0x080), &except_vec3_generic, 0x80);
++		memcpy((void *)(ebase + 0x080), &except_vec3_generic, 0x80);
+ 
+ 	signal_init();
+ #ifdef CONFIG_MIPS32_COMPAT

@@ -1,85 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2008 19:28:20 +0000 (GMT)
-Received: from verein.lst.de ([213.95.11.210]:36309 "EHLO verein.lst.de")
-	by ftp.linux-mips.org with ESMTP id S22676088AbYJ2T2G (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2008 19:28:06 +0000
-Received: from verein.lst.de (localhost [127.0.0.1])
-	by verein.lst.de (8.12.3/8.12.3/Debian-7.1) with ESMTP id m9TJRvIF002608
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
-	Wed, 29 Oct 2008 20:27:57 +0100
-Received: (from hch@localhost)
-	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id m9TJRuWt002606;
-	Wed, 29 Oct 2008 20:27:56 +0100
-Date:	Wed, 29 Oct 2008 20:27:56 +0100
-From:	Christoph Hellwig <hch@lst.de>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	Christoph Hellwig <hch@lst.de>, linux-mips@linux-mips.org,
-	Tomaso Paoletti <tpaoletti@caviumnetworks.com>
-Subject: Re: [PATCH 06/36] Add Cavium OCTEON processor CSR definitions
-Message-ID: <20081029192756.GA2449@lst.de>
-References: <490655B6.4030406@caviumnetworks.com> <1225152181-3221-1-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-2-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-3-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-4-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-5-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-6-git-send-email-ddaney@caviumnetworks.com> <20081029184552.GB32500@lst.de> <4908B717.3010603@caviumnetworks.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2008 19:29:04 +0000 (GMT)
+Received: from gv-out-0910.google.com ([216.239.58.191]:14073 "EHLO
+	gv-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S22676116AbYJ2T2w (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 29 Oct 2008 19:28:52 +0000
+Received: by gv-out-0910.google.com with SMTP id e6so106290gvc.2
+        for <linux-mips@linux-mips.org>; Wed, 29 Oct 2008 12:28:49 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:subject:date
+         :user-agent:cc:references:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:content-disposition:message-id;
+        bh=vpLr9Xve0Fc6K+HiOQ7odtm2v9h8lfpXavFwqPBTWXY=;
+        b=fwQD/c5jrvR7NktipmnvXSbUWd5yIXhnWYeDjXlKKictxl0doQtWIqstlkMX4GiAp8
+         KbIL8NvE5N4Gw8rmb9NC+ZocZ50FEPAP4NmpXdCm12zi/8g0Io9nGxrz76RUAmdVRFgr
+         94AW4Ousr4xVN1kDTpsMXXLK1Kj6zABNtdug4=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:subject:date:user-agent:cc:references:in-reply-to
+         :mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id;
+        b=QquMAmvxpiKabR/mQfW+L13KpfYclQt+wMOPsjj1DWRrC9wI2d5RuS6AQXSObsQqCF
+         YIWAEmqsRnO2B9SPaxTKeyhu8uPpprvCmAp4N8itbBQjvzcG8hya7ah5EseUuvi68SAI
+         HYEPExD+NprAUiAaacHYCKZNO/gdRmp/KVpG4=
+Received: by 10.103.40.5 with SMTP id s5mr4384964muj.133.1225308529058;
+        Wed, 29 Oct 2008 12:28:49 -0700 (PDT)
+Received: from ?192.168.123.7? (chello089077041080.chello.pl [89.77.41.80])
+        by mx.google.com with ESMTPS id j10sm599903mue.17.2008.10.29.12.28.46
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 29 Oct 2008 12:28:47 -0700 (PDT)
+From:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Subject: Re: [PATCH 1/2] tx4938ide: Check minimum cycle time and SHWT range
+Date:	Wed, 29 Oct 2008 20:12:19 +0100
+User-Agent: KMail/1.9.10
+Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org,
+	linux-ide@vger.kernel.org, ralf@linux-mips.org
+References: <20081027.223913.128619425.anemo@mba.ocn.ne.jp> <20081027.235224.82088530.anemo@mba.ocn.ne.jp> <49064ACA.20200@ru.mvista.com>
+In-Reply-To: <49064ACA.20200@ru.mvista.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-In-Reply-To: <4908B717.3010603@caviumnetworks.com>
-User-Agent: Mutt/1.3.28i
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <hch@lst.de>
+Message-Id: <200810292012.19750.bzolnier@gmail.com>
+Return-Path: <bzolnier@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21087
+X-archive-position: 21088
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: bzolnier@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 29, 2008 at 12:18:47PM -0700, David Daney wrote:
-> Christoph Hellwig wrote:
-> >On Mon, Oct 27, 2008 at 05:02:38PM -0700, David Daney wrote:
-> >>Signed-off-by: Tomaso Paoletti <tpaoletti@caviumnetworks.com>
-> >>Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-> >>---
-> >> .../cavium-octeon/executive/cvmx-csr-addresses.h   | 8391 ++++++
-> >> arch/mips/cavium-octeon/executive/cvmx-csr-enums.h |   86 +
-> >> .../cavium-octeon/executive/cvmx-csr-typedefs.h    |27517 
-> >> ++++++++++++++++++++
+On Tuesday 28 October 2008, Sergei Shtylyov wrote:
+> Hello.
+> 
+> Atsushi Nemoto wrote:
+> 
+> > From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> > Subject: [PATCH] tx4938ide: Check minimum cycle time and SHWT range (v2)
 > >
-> >27517 lines in a header and it's all junk?  
+> > SHWT value is used as address valid to -CSx assertion and -CSx to -DIOx
+> > assertion setup time, and contrarywise, -DIOx to -CSx release and -CSx
+> > release to address invalid hold time, so it actualy applies 4 times and
+> > so constitutes -DIOx recovery time.  Check requirement of the recovery
+> > time and cycle time.  Also check SHWT maximum value.
 > >
+> > Suggested-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+> > Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> >   
 > 
-> I'm glad you asked.  No it is not all junk.
-> 
-> That file contains the bit definitions for all on-chip registers.
-> 
-> We are interested in transforming this information into a form suitable 
-> for inclusion in the kernel.  Any specific suggestions as to improve the 
-> patch will be considered.
-> 
-> Several possibilities are:
-> 
-> 1) Don't typedef all the unions in  cvmx-csr-typedefs.h.  An rename the 
-> file so it doesn't contain the reprehensible word 'typedef'
-> 
-> 2) Break cvmx-csr-addresses.h and cvmx-csr-typedefs.h into several 
-> parts, one for each functional block in the processor.
+> Acked-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
 
-The two are very good ideas, but not really the important part.
-
-Adding a massive inline for every single bit somewhere in a register
-just doesn't make sense.  Take a look at normal hardware defintion
-headers in the tree.
-
-Have a simple define for each _register_ (applied relative to a bank/chip
-or whatever is appropriate) and if the individual bits in it are
-important add bit defintions, too - leaving the arithmetics for it to
-the caller.
-
-Also please don't add defintions for those blocks of the chip that
-aren't actually used in your submission.  That's best done with one
-header per block that can be added with the driver supporting that
-block.
-
-And yes, we had this a few times.  Eventually I'll make a fortune
-by selling a perl script generating proper headers out of common HDLs..
+applied

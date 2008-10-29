@@ -1,56 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2008 01:29:29 +0000 (GMT)
-Received: from h4.dl5rb.org.uk ([81.2.74.4]:54925 "EHLO
-	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S22617978AbYJ2B3Q (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2008 01:29:16 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m9T1TC1w013364;
-	Wed, 29 Oct 2008 01:29:12 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m9T1TBJ0013362;
-	Wed, 29 Oct 2008 01:29:11 GMT
-Date:	Wed, 29 Oct 2008 01:29:11 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-mips@linux-mips.org,
-	Tomaso Paoletti <tpaoletti@caviumnetworks.com>,
-	Paul Gortmaker <Paul.Gortmaker@windriver.com>
-Subject: Re: [PATCH 02/36] Add Cavium OCTEON files to
-	arch/mips/include/asm/mach-cavium-octeon
-Message-ID: <20081029012911.GA13328@linux-mips.org>
-References: <490655B6.4030406@caviumnetworks.com> <1225152181-3221-1-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-2-git-send-email-ddaney@caviumnetworks.com> <20081028075733.GB20858@linux-mips.org> <4907A586.40409@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2008 07:38:27 +0000 (GMT)
+Received: from fg-out-1718.google.com ([72.14.220.153]:64211 "EHLO
+	fg-out-1718.google.com") by ftp.linux-mips.org with ESMTP
+	id S22632640AbYJ2HiU convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2008 07:38:20 +0000
+Received: by fg-out-1718.google.com with SMTP id d23so2641249fga.32
+        for <linux-mips@linux-mips.org>; Wed, 29 Oct 2008 00:38:16 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:reply-to:to:subject:date
+         :user-agent:cc:references:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:content-disposition:message-id:sender;
+        bh=7wH9VwzxdHDuwBOA2sclJh5R+Bn59EpeTeL7CDqQZQg=;
+        b=LQHSR23gPpMBBLx3wE7kZ1JrpjkIcyIeT7SFDTINkfHduSGx7Cj8mPdH8JKHJ6Lero
+         fQTV40tKyKD0tmosEJhD87qcnRU5uoWCCbR05XU3iaIgfYtMoavyQIDTtI/8oiohq6mC
+         7Ee/UmEdnRtR/4RFXJjYPqBhrXYt4ZLhiUDQk=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:reply-to:to:subject:date:user-agent:cc:references:in-reply-to
+         :mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id:sender;
+        b=GkVRwHuAnX1cSnfMcJfYhFOc35oOeTs46hUQbrD2Xa+ygvqCnrFj9yssl5oWqYebI2
+         x+Vyxtgy4sxvAQRepRv52k+MLjoi4hupDoWUbx91oyORu0MoT/cYPzPWuz2K72X567Xk
+         bFGwuzZX2TASKgoTsmaFxUc6/V8LKuPr32U3E=
+Received: by 10.86.61.13 with SMTP id j13mr5378276fga.71.1225265895844;
+        Wed, 29 Oct 2008 00:38:15 -0700 (PDT)
+Received: from innova-card.com (1-61.252-81.static-ip.oleane.fr [81.252.61.1])
+        by mx.google.com with ESMTPS id l12sm3782547fgb.6.2008.10.29.00.38.11
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 29 Oct 2008 00:38:13 -0700 (PDT)
+From:	Brian Foster <brian.foster@innova-card.com>
+Reply-To: Brian Foster <brian.foster@innova-card.com>
+To:	Chad Reese <kreese@caviumnetworks.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 11/36] MIPSR2 ebase isn't just CAC_BASE
+Date:	Wed, 29 Oct 2008 08:38:01 +0100
+User-Agent: KMail/1.9.6 (enterprise 0.20070907.709405)
+Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	David Daney <ddaney@caviumnetworks.com>,
+	Tomaso Paoletti <tpaoletti@caviumnetworks.com>
+References: <1225152181-3221-2-git-send-email-ddaney@caviumnetworks.com> <alpine.LFD.1.10.0810281604250.27396@ftp.linux-mips.org> <49073A38.3070808@caviumnetworks.com>
+In-Reply-To: <49073A38.3070808@caviumnetworks.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <4907A586.40409@caviumnetworks.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+Message-Id: <200810290838.01691.brian.foster@innova-card.com>
+Return-Path: <blf.ireland@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21070
+X-archive-position: 21071
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: brian.foster@innova-card.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Oct 28, 2008 at 04:51:34PM -0700, David Daney wrote:
+On Tuesday 28 October 2008 17:13:44 Chad Reese wrote:
+> Maciej W. Rozycki wrote:
+> > On Tue, 28 Oct 2008, Ralf Baechle wrote:
+> >> Another thing I noticed is that we don't use write_c0_ebase(), so the
+> >> firmware better setup this correctly or we crash and burn.  We better
+> >> should initialize that right ...
+> > 
+> >  Well, your version still does not do it...
+> 
+> From an Octeon perspective, we'd prefer that the kernel not touch ebase
+> as we set it in the bootloader. The bootloader sets the proper value
+> based on the number of kernels being loaded and which cores the kernel
+> is loaded on. This allows some interesting things, like running 16
+> kernels each on a different CPU. Although 16 kernels is just a toy
+> project, we have a number of customers that run two kernels. They choose
+> which cores the kernels run on dynamically at boot time.
 
->> It also means the resulting kernel won't have support for futex which
->> essentially means you're cut off from modern libcs.
->>
->> It is possible to get this to work - but nobody bothered so far; ll/sc-less
->> R2000 class processors are very rare these days.  My recommendation is
->> to keep cpu_has_llsc as 1 until you've fixed up the futex implementation,
->> if you deciede so.
->
-> Someone should tell ip32 w/ R5000 this.  It seems that it is broken too.
->
-> This could explain why my R5000 O2 does weird things with glibc 2.8...
+ Our system (4KSd-based) also has the bootloader setting EBASE,
+ so like Chad, I'd prefer it if the kernel doesn't (always?) do
+ it, please.  (We're not doing anything tricky like what Chad
+ mentions, it's just that on the SoC in question, it's perhaps
+ the easiest way of handling the situation.)
 
-The R5000 has a hardware bug with LL/SC on XKPHYS addresses so we
-can't ...
+cheers!
+	-blf-
 
-  Ralf
+-- 
+“How many surrealists does it take to   | Brian Foster
+ change a lightbulb? Three. One calms   | somewhere in south of France
+ the warthog, and two fill the bathtub  |   Stop E$$o (ExxonMobil)!
+ with brightly-coloured machine tools.” |      http://www.stopesso.com

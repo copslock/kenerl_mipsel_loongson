@@ -1,45 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2008 17:39:15 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:55798 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S22671862AbYJ2RjF (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2008 17:39:05 +0000
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 4F2F23EC9; Wed, 29 Oct 2008 10:38:57 -0700 (PDT)
-Message-ID: <49089F9E.8060409@ru.mvista.com>
-Date:	Wed, 29 Oct 2008 20:38:38 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2008 18:10:11 +0000 (GMT)
+Received: from h4.dl5rb.org.uk ([81.2.74.4]:62339 "EHLO
+	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
+	with ESMTP id S22673443AbYJ2SKC (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2008 18:10:02 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m9TI9xax027532;
+	Wed, 29 Oct 2008 18:09:59 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m9TI9xAe027530;
+	Wed, 29 Oct 2008 18:09:59 GMT
+Date:	Wed, 29 Oct 2008 18:09:58 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	David Daney <ddaney@caviumnetworks.com>
+Cc:	linux-mips@linux-mips.org,
 	Tomaso Paoletti <tpaoletti@caviumnetworks.com>,
 	Paul Gortmaker <Paul.Gortmaker@windriver.com>
-Subject: Re: [PATCH 15/36] Probe for Cavium OCTEON CPUs.
-References: <1225152181-3221-6-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-7-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-8-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-9-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-10-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-11-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-12-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-13-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-14-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-15-git-send-email-ddaney@caviumnetworks.com> <20081029121737.GA26256@linux-mips.org>
-In-Reply-To: <20081029121737.GA26256@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Subject: Re: [PATCH 04/36] Add Cavium OCTEON processor support files to
+	arch/mips/mm.
+Message-ID: <20081029180958.GE26256@linux-mips.org>
+References: <490655B6.4030406@caviumnetworks.com> <1225152181-3221-1-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-2-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-3-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-4-git-send-email-ddaney@caviumnetworks.com> <20081029160710.GB26256@linux-mips.org> <49088E81.7080604@caviumnetworks.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <49088E81.7080604@caviumnetworks.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21080
+X-archive-position: 21081
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Wed, Oct 29, 2008 at 09:25:37AM -0700, David Daney wrote:
 
-Ralf Baechle wrote:
+>>  The probability is not so high
+>> for typical apps but it's entirely possibly that on a preemptable kernel
+>> the thread that wrote the trampoline code gets rescheduled to another
+>> CPU before the flush is executed.  Or after the SYNCI happened on the one
+>> core the thread is rescheduled to another CPU which then may try to
+>> return with an inconsistent I-cache.  Boom.
+>
+>
+> This is the problem I mentioned yesterday on IRC.  I had come to the  
+> same conclusion and think we need to invalidate the icache on all cores  
+> here.
+>
+> The real solution to this problem is to place the signal trampolines in  
+> a VDSO.  But that is a project for another day.
 
-> We probably should move the mips_probe_watch_registers() into
-> mips_probe_watch_registers().  I notice the function is only getting
+Or we once more rely on abusing the address error exception.  Place an
+address in the kernel space into $ra before jumping to the signal handler.
+Once finished the signal handler then will trigger an address error.
+Ugly.  Efficient.  And it would get rid of all the fun
+"Don't let your children do this ..." stunts of sigreturn.
 
-    Move the function into itself? ;-)
-
-WBR, Sergei
+  Ralf

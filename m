@@ -1,59 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2008 00:26:13 +0000 (GMT)
-Received: from h4.dl5rb.org.uk ([81.2.74.4]:63952 "EHLO
-	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S22687488AbYJ2XTl (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2008 23:19:41 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m9TNJ69V002420;
-	Wed, 29 Oct 2008 23:19:06 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m9TNJ5AD002418;
-	Wed, 29 Oct 2008 23:19:05 GMT
-Date:	Wed, 29 Oct 2008 23:19:05 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	akpm@linux-foundation.org
-Cc:	linux-mips@linux-mips.org, alessandro.zummo@towertech.it,
-	tsbogend@alpha.franken.de
-Subject: Re: [patch 2/3] drivers/rtc/rtc-ds1286.c is borked
-Message-ID: <20081029231905.GA2370@linux-mips.org>
-References: <200810292121.m9TLLXQF019907@imap1.linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2008 00:27:04 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:19976 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S22686192AbYJ2XDV (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2008 23:03:21 +0000
+Received: from [127.0.0.1] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 4C2623EC9; Wed, 29 Oct 2008 16:03:15 -0700 (PDT)
+Message-ID: <4908EBAF.4060709@ru.mvista.com>
+Date:	Thu, 30 Oct 2008 02:03:11 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+User-Agent: Thunderbird 2.0.0.17 (Windows/20080914)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <200810292121.m9TLLXQF019907@imap1.linux-foundation.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+To:	Christoph Hellwig <hch@lst.de>
+Cc:	David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org,
+	Tomaso Paoletti <tpaoletti@caviumnetworks.com>
+Subject: Re: [PATCH 05/36] Add Cavium OCTEON processor support files to and
+ arch/mips/cavium-octeon/executive
+References: <490655B6.4030406@caviumnetworks.com> <1225152181-3221-1-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-2-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-3-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-4-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-5-git-send-email-ddaney@caviumnetworks.com> <20081029184517.GA32500@lst.de>
+In-Reply-To: <20081029184517.GA32500@lst.de>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21098
+X-archive-position: 21099
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 29, 2008 at 02:21:33PM -0700, akpm@linux-foundation.org wrote:
-> From: akpm@linux-foundation.org
-> Date: Wed, 29 Oct 2008 14:21:33 -0700
-> To: ralf@linux-mips.org
-> Cc: linux-mips@linux-mips.org, akpm@linux-foundation.org,
-> 	alessandro.zummo@towertech.it, tsbogend@alpha.franken.de
-> Subject: [patch 2/3] drivers/rtc/rtc-ds1286.c is borked
-> 
-> From: Andrew Morton <akpm@linux-foundation.org>
-> 
-> drivers/rtc/rtc-ds1286.c: In function 'ds1286_rtc_read':
-> drivers/rtc/rtc-ds1286.c:33: error: implicit declaration of function '__raw_readl'
-> drivers/rtc/rtc-ds1286.c: In function 'ds1286_rtc_write':
-> drivers/rtc/rtc-ds1286.c:38: error: implicit declaration of function '__raw_writel'
-> drivers/rtc/rtc-ds1286.c: In function 'ds1286_probe':
-> drivers/rtc/rtc-ds1286.c:345: error: implicit declaration of function 'ioremap'
-> drivers/rtc/rtc-ds1286.c:345: warning: assignment makes pointer from integer without a cast
-> drivers/rtc/rtc-ds1286.c:365: error: implicit declaration of function 'iounmap'
+Hello.
 
-Geert's patch commit ID d7a6119f457f48a94985fdbdc400cbb03e136a76 should
-have solved this so you can drop this one.
+Christoph Hellwig wrote:
 
-  Ralf
+> So what is all this crappy code actually supposed to do?
+>
+> A little explanation would help, or in this case I suspect even an
+> explanation might not help anyore.
+>   
+
+   Hey, leaving behind 220 KB of unreplied quoting was kind of rude...
+
+WBR, Sergei

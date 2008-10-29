@@ -1,46 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2008 18:46:04 +0000 (GMT)
-Received: from verein.lst.de ([213.95.11.210]:50641 "EHLO verein.lst.de")
-	by ftp.linux-mips.org with ESMTP id S22674729AbYJ2Sp4 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2008 18:45:56 +0000
-Received: from verein.lst.de (localhost [127.0.0.1])
-	by verein.lst.de (8.12.3/8.12.3/Debian-7.1) with ESMTP id m9TIjqIF032613
-	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NO);
-	Wed, 29 Oct 2008 19:45:52 +0100
-Received: (from hch@localhost)
-	by verein.lst.de (8.12.3/8.12.3/Debian-6.6) id m9TIjqCc032611;
-	Wed, 29 Oct 2008 19:45:52 +0100
-Date:	Wed, 29 Oct 2008 19:45:52 +0100
-From:	Christoph Hellwig <hch@lst.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2008 19:15:10 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:23170 "EHLO
+	localhost.localdomain") by ftp.linux-mips.org with ESMTP
+	id S22675708AbYJ2TPG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 29 Oct 2008 19:15:06 +0000
+Date:	Wed, 29 Oct 2008 19:15:06 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
 To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-mips@linux-mips.org,
-	Tomaso Paoletti <tpaoletti@caviumnetworks.com>
-Subject: Re: [PATCH 06/36] Add Cavium OCTEON processor CSR definitions
-Message-ID: <20081029184552.GB32500@lst.de>
-References: <490655B6.4030406@caviumnetworks.com> <1225152181-3221-1-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-2-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-3-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-4-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-5-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-6-git-send-email-ddaney@caviumnetworks.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1225152181-3221-6-git-send-email-ddaney@caviumnetworks.com>
-User-Agent: Mutt/1.3.28i
-X-Scanned-By: MIMEDefang 2.39
-Return-Path: <hch@lst.de>
+cc:	linux-mips <linux-mips@linux-mips.org>,
+	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Paoletti, Tomaso" <Tomaso.Paoletti@caviumnetworks.com>
+Subject: Re: [PATCH 00/36] Add Cavium OCTEON processor support (v2).
+In-Reply-To: <490655B6.4030406@caviumnetworks.com>
+Message-ID: <alpine.LFD.1.10.0810291905020.13373@ftp.linux-mips.org>
+References: <490655B6.4030406@caviumnetworks.com>
+User-Agent: Alpine 1.10 (LFD 962 2008-03-14)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21083
+X-archive-position: 21084
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: hch@lst.de
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Oct 27, 2008 at 05:02:38PM -0700, David Daney wrote:
-> Signed-off-by: Tomaso Paoletti <tpaoletti@caviumnetworks.com>
-> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-> ---
->  .../cavium-octeon/executive/cvmx-csr-addresses.h   | 8391 ++++++
->  arch/mips/cavium-octeon/executive/cvmx-csr-enums.h |   86 +
->  .../cavium-octeon/executive/cvmx-csr-typedefs.h    |27517 ++++++++++++++++++++
+On Mon, 27 Oct 2008, David Daney wrote:
 
-27517 lines in a header and it's all junk?  
+> This patch set introduces preliminary support for Cavium Networks'
+> OCTEON processor family.  More information about these processors may
+> be obtained here:
+> 
+> http://www.caviumnetworks.com/OCTEON_MIPS64.html
+
+ Well, in the context of a technical mailing list there isn't much more 
+information available at the link you've quoted; although I do understand 
+you might not be the most appropriate person to point it to.  Honestly, 
+stating: "The family comprises SOC devices built around MIPS64 cores" 
+would provide about as much (little) information as the web site does. :(
+
+  Maciej

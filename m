@@ -1,108 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2008 20:00:28 +0000 (GMT)
-Received: from orbit.nwl.cc ([81.169.176.177]:13466 "EHLO
-	mail.ifyouseekate.net") by ftp.linux-mips.org with ESMTP
-	id S22678111AbYJ2UAY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 29 Oct 2008 20:00:24 +0000
-Received: from base (localhost [127.0.0.1])
-	by mail.ifyouseekate.net (Postfix) with ESMTP id DA4FF3891A92;
-	Wed, 29 Oct 2008 21:00:12 +0100 (CET)
-From:	Phil Sutter <n0-1@freewrt.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Florian Fainelli <florian@openwrt.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Oct 2008 20:08:14 +0000 (GMT)
+Received: from ug-out-1314.google.com ([66.249.92.175]:16647 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S22678266AbYJ2UIC convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2008 20:08:02 +0000
+Received: by ug-out-1314.google.com with SMTP id k40so934593ugc.2
+        for <linux-mips@linux-mips.org>; Wed, 29 Oct 2008 13:07:59 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:subject:date
+         :user-agent:cc:references:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:content-disposition:message-id:sender;
+        bh=ZdD7KOYm4oH8XSs3j+Y/Jl+JmtSkjenbt/Uvlvjbp54=;
+        b=THPIkUbHD7jU0kN8uQzhAMJomfqufXuwjMnhhix3+d2vJ4262Npl/XJR1XevKGaXc8
+         4EwuFF3K5ATH20ONbPjEXyzCtxrlFFl5nBgu3V0WRpsC5LVrSGDFl081ca3QDOcTydcj
+         pmCd4+Vhc3jFM/dHh9FsWuzhWXfqH3smjOGlg=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:subject:date:user-agent:cc:references:in-reply-to
+         :mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id:sender;
+        b=ZIoS6Kir0HV+fttgwdD2lKUTtnojQEuRuflWErZ1LI4SWA5Tzb9X/JdbXfZLwJD0s+
+         Jc+dGlvaOXM8ewuUuhiC6A0sS8xkrI8x8dymdU8ro4mEa/wLBVjaPp63nNEDLoI9LCvH
+         F1+H/mKx2pMIi4w4GffZ0NwzEORmfBFwA7tec=
+Received: by 10.103.213.19 with SMTP id p19mr4432335muq.12.1225310878712;
+        Wed, 29 Oct 2008 13:07:58 -0700 (PDT)
+Received: from lenovo.mimichou.home (florian.mimichou.net [82.241.112.26])
+        by mx.google.com with ESMTPS id w5sm1651923mue.10.2008.10.29.13.07.55
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 29 Oct 2008 13:07:57 -0700 (PDT)
+From:	Florian Fainelli <florian@openwrt.org>
+To:	Phil Sutter <n0-1@freewrt.org>
+Subject: Re: [PATCH] provide functions for gpio configuration
+Date:	Wed, 29 Oct 2008 21:07:42 +0100
+User-Agent: KMail/1.9.9
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
 	Linux-Mips List <linux-mips@linux-mips.org>
-Subject: [PATCH] provide functions for gpio configuration
-Date:	Wed, 29 Oct 2008 21:00:09 +0100
-Message-Id: <1225310409-4440-1-git-send-email-n0-1@freewrt.org>
-X-Mailer: git-send-email 1.5.6.4
-Return-Path: <phil@nwl.cc>
+References: <1225310409-4440-1-git-send-email-n0-1@freewrt.org>
+In-Reply-To: <1225310409-4440-1-git-send-email-n0-1@freewrt.org>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="iso-8859-15"
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Message-Id: <200810292107.43818.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21091
+X-archive-position: 21092
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: n0-1@freewrt.org
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-As gpiolib doesn't support pin multiplexing, it provides no way to
-access the GPIOFUNC register. Also there is no support for setting
-interrupt status and level. These functions provide access to them and
-are needed by the CompactFlash driver.
+Hi Phil,
 
-The function rb532_gpio_set_cfg is redundant with
-rb532_gpio_direction_{input,output} but was added for simplicity's sake.
-Maybe gpiolib support could be dropped completely as there are not many
-users of it.
+Le Wednesday 29 October 2008 21:00:09 Phil Sutter, vous avez écrit :
+> As gpiolib doesn't support pin multiplexing, it provides no way to
+> access the GPIOFUNC register. Also there is no support for setting
+> interrupt status and level. These functions provide access to them and
+> are needed by the CompactFlash driver.
 
-Signed-off-by: Phil Sutter <n0-1@freewrt.org>
----
- arch/mips/include/asm/mach-rc32434/rb.h |    1 +
- arch/mips/rb532/gpio.c                  |   39 +++++++++++++++++++++++++++++++
- 2 files changed, 40 insertions(+), 0 deletions(-)
+Right, but we do have interrupt level and status fuctions, registered as 
+callbacks to an extended gpiochip structure. These two functions can remain 
+static to the gpio.c file since we should perform interrupt status and level 
+initialisation at gpiochip init time. Not sure which code you based your work 
+on, but linux-queue tree at linux-mips.org has such code.
 
-diff --git a/arch/mips/include/asm/mach-rc32434/rb.h b/arch/mips/include/asm/mach-rc32434/rb.h
-index 0cb9466..f25a849 100644
---- a/arch/mips/include/asm/mach-rc32434/rb.h
-+++ b/arch/mips/include/asm/mach-rc32434/rb.h
-@@ -41,6 +41,7 @@
- #define BTCOMPARE	0x010044
- #define GPIOBASE	0x050000
- /* Offsets relative to GPIOBASE */
-+#define GPIOFUNC	0x00
- #define GPIOCFG		0x04
- #define GPIOD		0x08
- #define GPIOILEVEL	0x0C
-diff --git a/arch/mips/rb532/gpio.c b/arch/mips/rb532/gpio.c
-index 70c4a67..f56f73b 100644
---- a/arch/mips/rb532/gpio.c
-+++ b/arch/mips/rb532/gpio.c
-@@ -287,6 +287,45 @@ static struct rb532_gpio_chip rb532_gpio_chip[] = {
- 	},
- };
- 
-+static void rb532_do_gpio_set(int bit, unsigned gpio, void __iomem *addr)
-+{
-+	unsigned long flags;
-+	u32 val;
-+
-+	local_irq_save(flags);
-+	val = readl(addr);
-+	if (bit)
-+		val |= (1 << gpio);
-+	else
-+		val &= ~(1 << gpio);
-+	writel(val, addr);
-+	local_irq_restore(flags);
-+}
-+
-+void  rb532_gpio_set_func(int bit, unsigned gpio)
-+{
-+	rb532_do_gpio_set(bit, gpio, rb532_gpio_chip->regbase + GPIOFUNC);
-+}
-+EXPORT_SYMBOL(rb532_gpio_set_func);
-+
-+void  rb532_gpio_set_cfg(int bit, unsigned gpio)
-+{
-+	rb532_do_gpio_set(bit, gpio, rb532_gpio_chip->regbase + GPIOCFG);
-+}
-+EXPORT_SYMBOL(rb532_gpio_set_cfg);
-+
-+void  rb532_gpio_set_ilevel(int bit, unsigned gpio)
-+{
-+	rb532_do_gpio_set(bit, gpio, rb532_gpio_chip->regbase + GPIOILEVEL);
-+}
-+EXPORT_SYMBOL(rb532_gpio_set_ilevel);
-+
-+void  rb532_gpio_set_istat(int bit, unsigned gpio)
-+{
-+	rb532_do_gpio_set(bit, gpio, rb532_gpio_chip->regbase + GPIOISTAT);
-+}
-+EXPORT_SYMBOL(rb532_gpio_set_istat);
-+
- int __init rb532_gpio_init(void)
- {
- 	struct resource *r;
+>
+> The function rb532_gpio_set_cfg is redundant with
+> rb532_gpio_direction_{input,output} but was added for simplicity's sake.
+> Maybe gpiolib support could be dropped completely as there are not many
+> users of it.
+
+Sticking with the gpiolib has two advantages to me :
+- you can use gpio_set_value/get_value for other 
+- GPIO initialisation should be done right after gpiochip registering
+
+I would be rather in favor of adding the other missing callbacks to the 
+rb532_gpio_chip and make them look like the standard get/set functions. Just 
+like what was done with the interrupt level and status functions.
 -- 
-1.5.6.4
+Best regards, Florian Fainelli
+Email : florian@openwrt.org
+http://openwrt.org
+-------------------------------

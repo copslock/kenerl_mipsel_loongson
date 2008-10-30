@@ -1,107 +1,155 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2008 11:14:07 +0000 (GMT)
-Received: from h4.dl5rb.org.uk ([81.2.74.4]:44442 "EHLO
-	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S22721716AbYJ3LN6 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2008 11:13:58 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m9UBDtvk010947;
-	Thu, 30 Oct 2008 11:13:55 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m9UBDs6F010945;
-	Thu, 30 Oct 2008 11:13:54 GMT
-Date:	Thu, 30 Oct 2008 11:13:54 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	Christoph Hellwig <hch@lst.de>, linux-mips@linux-mips.org,
-	Tomaso Paoletti <tpaoletti@caviumnetworks.com>
-Subject: Re: [PATCH 06/36] Add Cavium OCTEON processor CSR definitions
-Message-ID: <20081030111354.GF26256@linux-mips.org>
-References: <490655B6.4030406@caviumnetworks.com> <1225152181-3221-1-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-2-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-3-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-4-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-5-git-send-email-ddaney@caviumnetworks.com> <1225152181-3221-6-git-send-email-ddaney@caviumnetworks.com> <20081029184552.GB32500@lst.de> <4908B717.3010603@caviumnetworks.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4908B717.3010603@caviumnetworks.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2008 11:15:10 +0000 (GMT)
+Received: from mail.windriver.com ([147.11.1.11]:13822 "EHLO mail.wrs.com")
+	by ftp.linux-mips.org with ESMTP id S22721847AbYJ3LO5 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2008 11:14:57 +0000
+Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
+	by mail.wrs.com (8.13.6/8.13.6) with ESMTP id m9UBEk19002643;
+	Thu, 30 Oct 2008 04:14:46 -0700 (PDT)
+Received: from localhost.localdomain ([128.224.162.71]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 30 Oct 2008 04:14:45 -0700
+From:	Tiejun Chen <tiejun.chen@windriver.com>
+To:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:	Tiejun Chen <tiejun.chen@windriver.com>
+Subject: [PATCH] Support RTC on Malta
+Date:	Thu, 30 Oct 2008 19:15:44 +0800
+Message-Id: <1225365345-15635-1-git-send-email-tiejun.chen@windriver.com>
+X-Mailer: git-send-email 1.5.5.1
+X-OriginalArrivalTime: 30 Oct 2008 11:14:45.0638 (UTC) FILETIME=[B6F31A60:01C93A80]
+Return-Path: <Tiejun.Chen@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21109
+X-archive-position: 21110
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: tiejun.chen@windriver.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 29, 2008 at 12:18:47PM -0700, David Daney wrote:
+To create platform device for RTC to call platform driver successfully.
 
-> That file contains the bit definitions for all on-chip registers.
->
-> We are interested in transforming this information into a form suitable  
-> for inclusion in the kernel.  Any specific suggestions as to improve the  
-> patch will be considered.
->
-> Several possibilities are:
->
-> 1) Don't typedef all the unions in  cvmx-csr-typedefs.h.  An rename the  
-> file so it doesn't contain the reprehensible word 'typedef'
->
-> 2) Break cvmx-csr-addresses.h and cvmx-csr-typedefs.h into several  
-> parts, one for each functional block in the processor.
->
-> There are obviously other options as well...
+Signed-off-by: Tiejun Chen <tiejun.chen@windriver.com>
+---
+ arch/mips/configs/malta_defconfig |    4 +-
+ arch/mips/mti-malta/Makefile      |    2 +-
+ arch/mips/mti-malta/malta-rtc.c   |   73 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 76 insertions(+), 3 deletions(-)
+ create mode 100644 arch/mips/mti-malta/malta-rtc.c
 
-The use of bitfields also fires back:
-
-+       struct cvmx_ciu_intx_en1_w1c_cn58xx {
-+#if __BYTE_ORDER == __BIG_ENDIAN
-+               uint64_t reserved_16_63:48;
-+               uint64_t wdog:16;
-+#else
-+               uint64_t wdog:16;
-+               uint64_t reserved_16_63:48;
-+#endif
-
-You see, everything was defined twice.  And gcc even recent gccs tend to
-do silly stuff with bitfields when combined with volatile:
-
-struct foo {
-	unsigned int	x:1;
-	unsigned int	y:4;
-};
-
-void bar(volatile struct foo *p)
-{
-	p->x = 1;
-	p->y++;
-}
-
-which gcc 4.3 for a MIPS32R2 target will compile into:
-
-	lw	$3, 0($4)
-	li	$2, 1
-	ins	$3, $2, 31, 1
-	sw	$3, 0($4)
-	lw	$2, 0($4)
-	lw	$3, 0($4)
-	ext	$2, $2, 27, 4
-	addiu	$2, $2, 1
-	ins	$3, $2, 27, 4
-	sw	$3, 0($4)
-	j	$31
-	nop
-
-Imagine struct foo was describing a hardware register so the pointer to it
-was marked volatile.  A human coder wouldn't have done multiple loads /
-stores.  Worse, if you actually want to change multiple fields in a
-register atomically then with bitfields you have _no_ possibility to enforce
-that.
-
-The Linux programming programming model relies on accessor functions like
-readl, ioread32 etc.  Those take addresses as arguments - but bitfields
-don't have addresses in C ...
-
-So exec summary: bitfields bad for such low-level stuff.
-
-  Ralf
+diff --git a/arch/mips/configs/malta_defconfig b/arch/mips/configs/malta_defconfig
+index 74daa0c..f84bdf6 100644
+--- a/arch/mips/configs/malta_defconfig
++++ b/arch/mips/configs/malta_defconfig
+@@ -1126,7 +1126,6 @@ CONFIG_LEGACY_PTY_COUNT=256
+ # CONFIG_IPMI_HANDLER is not set
+ # CONFIG_WATCHDOG is not set
+ CONFIG_HW_RANDOM=m
+-CONFIG_RTC=y
+ # CONFIG_R3964 is not set
+ # CONFIG_APPLICOM is not set
+ # CONFIG_DRM is not set
+@@ -1199,7 +1198,8 @@ CONFIG_USB_ARCH_HAS_EHCI=y
+ # CONFIG_MMC is not set
+ # CONFIG_NEW_LEDS is not set
+ # CONFIG_INFINIBAND is not set
+-# CONFIG_RTC_CLASS is not set
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_DRV_CMOS=y
+ 
+ #
+ # DMA Engine support
+diff --git a/arch/mips/mti-malta/Makefile b/arch/mips/mti-malta/Makefile
+index cef2db8..26284fc 100644
+--- a/arch/mips/mti-malta/Makefile
++++ b/arch/mips/mti-malta/Makefile
+@@ -9,7 +9,7 @@ obj-y				:= malta-amon.o malta-cmdline.o \
+ 				   malta-display.o malta-init.o malta-int.o \
+ 				   malta-memory.o malta-mtd.o \
+ 				   malta-platform.o malta-reset.o \
+-				   malta-setup.o malta-time.o
++				   malta-setup.o malta-time.o malta-rtc.o
+ 
+ obj-$(CONFIG_EARLY_PRINTK)	+= malta-console.o
+ obj-$(CONFIG_PCI)		+= malta-pci.o
+diff --git a/arch/mips/mti-malta/malta-rtc.c b/arch/mips/mti-malta/malta-rtc.c
+new file mode 100644
+index 0000000..b987c31
+--- /dev/null
++++ b/arch/mips/mti-malta/malta-rtc.c
+@@ -0,0 +1,73 @@
++/*
++ *  Registration of Malta RTC platform device.
++ *
++ *  Copyright (C) 2008  Tiejun Chen <tiejun.chen@windriver.com>
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, write to the Free Software
++ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++#include <linux/mc146818rtc.h>
++#include <linux/platform_device.h>
++#include <linux/errno.h>
++#include <linux/init.h>
++#include <linux/ioport.h>
++
++static struct resource malta_platform_rtc_resource[] __initdata = {
++	{
++		.start	= RTC_PORT(0),
++		.end	= RTC_PORT(7),
++		.flags	= IORESOURCE_IO,
++	},
++	{
++		.start	= RTC_IRQ,
++		.end	= RTC_IRQ,
++		.flags	= IORESOURCE_IRQ,
++	},
++};
++
++static __init int malta_platform_rtc_add(void)
++{
++	struct platform_device *pdev;
++	int ret;
++
++	pdev = platform_device_alloc("rtc_cmos", -1);
++	if (!pdev)
++		return -ENOMEM;
++
++	ret = platform_device_add_resources(pdev, malta_platform_rtc_resource,
++	                                       ARRAY_SIZE(malta_platform_rtc_resource));
++	if (ret)
++		goto err;
++
++	ret = platform_device_add(pdev);
++	if (ret)
++		goto err;
++
++	/* Try setting rtc as BCD mode to support
++	 * current alarm code if possible.
++	 */
++	if (!RTC_ALWAYS_BCD)
++		CMOS_WRITE(CMOS_READ(RTC_CONTROL) & ~RTC_DM_BINARY, RTC_CONTROL);
++
++	return 0;
++
++err:
++	platform_device_put(pdev);
++
++	return ret;
++}
++
++device_initcall(malta_platform_rtc_add);
++
+-- 
+1.5.5.1

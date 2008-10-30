@@ -1,63 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2008 15:02:25 +0000 (GMT)
-Received: from zrtps0kp.nortel.com ([47.140.192.56]:44942 "EHLO
-	zrtps0kp.nortel.com") by ftp.linux-mips.org with ESMTP
-	id S22735937AbYJ3PCO (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 30 Oct 2008 15:02:14 +0000
-Received: from zcarhxs1.corp.nortel.com (zcarhxs1.corp.nortel.com [47.129.230.89])
-	by zrtps0kp.nortel.com (Switch-2.2.6/Switch-2.2.0) with ESMTP id m9UF1Oi27672;
-	Thu, 30 Oct 2008 15:01:24 GMT
-Received: from [47.130.80.67] ([47.130.80.67] RDNS failed) by zcarhxs1.corp.nortel.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 30 Oct 2008 11:01:23 -0400
-Message-ID: <4909CC40.1010106@nortel.com>
-Date:	Thu, 30 Oct 2008 09:01:20 -0600
-From:	"Chris Friesen" <cfriesen@nortel.com>
-User-Agent: Mozilla Thunderbird 1.0.2-6 (X11/20050513)
-X-Accept-Language: en-us, en
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2008 17:13:17 +0000 (GMT)
+Received: from fg-out-1718.google.com ([72.14.220.153]:15635 "EHLO
+	fg-out-1718.google.com") by ftp.linux-mips.org with ESMTP
+	id S22751237AbYJ3RNN convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2008 17:13:13 +0000
+Received: by fg-out-1718.google.com with SMTP id d23so574861fga.32
+        for <linux-mips@linux-mips.org>; Thu, 30 Oct 2008 10:13:10 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:subject:date
+         :user-agent:cc:references:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:content-disposition:message-id:sender;
+        bh=1apHrDdzgsXpX7yocXthbc9MsAGssHGA8PG9UC5HVaQ=;
+        b=NcJpwOn6GGx+aq/QNGz5Jn3GGKGoV5r3KuKQ8LT13KMYxC78eKZ1Hpbz3mW6ppO5ze
+         Nc1p8omRJPhuEOs4MrmBvHgiGasmhG10LhRqffsbqa/22LehLckPGhLmiH7hp6ZJuwio
+         CQNDAoNXSJyXtttUnSgRoTfl4gQ2hCtqA/CTg=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:subject:date:user-agent:cc:references:in-reply-to
+         :mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id:sender;
+        b=xMiaUj7iuvfPCrhzUGSjGEZ3pFfMYQB+2+Z9V9DeLa6IApebi/eJ0E5zXCzY8rAoQV
+         xomHqCLwRg1kk9tlrYKBVFKfnmwsn1gIZZXQPcqFdl4GtjBbvP/l0bJqFB/Sh6Yrg09X
+         2yX0hF9pJPE/0pSE0j474iYo5wgAlCAqHq2Ik=
+Received: by 10.181.226.2 with SMTP id d2mr383356bkr.204.1225386790648;
+        Thu, 30 Oct 2008 10:13:10 -0700 (PDT)
+Received: from florian.headquarters.openpattern.org (headquarters.openpattern.org [82.240.17.188])
+        by mx.google.com with ESMTPS id 21sm990362fkx.13.2008.10.30.10.13.08
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 30 Oct 2008 10:13:09 -0700 (PDT)
+From:	Florian Fainelli <florian@openwrt.org>
+To:	Phil Sutter <n0-1@freewrt.org>
+Subject: Re: [PATCH] provide functions for gpio configuration
+Date:	Thu, 30 Oct 2008 18:13:05 +0100
+User-Agent: KMail/1.9.9
+Cc:	Linux-Mips List <linux-mips@linux-mips.org>
+References: <1225310409-4440-1-git-send-email-n0-1@freewrt.org> <200810292107.43818.florian@openwrt.org> <20081029211046.GC17108@nuty>
+In-Reply-To: <20081029211046.GC17108@nuty>
 MIME-Version: 1.0
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-CC:	David Daney <ddaney@caviumnetworks.com>,
-	linux-mips <linux-mips@linux-mips.org>,
-	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Paoletti, Tomaso" <Tomaso.Paoletti@caviumnetworks.com>
-Subject: Re: [PATCH 00/36] Add Cavium OCTEON processor support (v2).
-References: <490655B6.4030406@caviumnetworks.com> <alpine.LFD.1.10.0810291905020.13373@ftp.linux-mips.org>
-In-Reply-To: <alpine.LFD.1.10.0810291905020.13373@ftp.linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 30 Oct 2008 15:01:24.0071 (UTC) FILETIME=[603F4F70:01C93AA0]
-Return-Path: <CFRIESEN@nortel.com>
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Message-Id: <200810301813.05710.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21121
+X-archive-position: 21122
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cfriesen@nortel.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Maciej W. Rozycki wrote:
-> On Mon, 27 Oct 2008, David Daney wrote:
-> 
-> 
->>This patch set introduces preliminary support for Cavium Networks'
->>OCTEON processor family.  More information about these processors may
->>be obtained here:
->>
->>http://www.caviumnetworks.com/OCTEON_MIPS64.html
-> 
-> 
->  Well, in the context of a technical mailing list there isn't much more 
-> information available at the link you've quoted; although I do understand 
-> you might not be the most appropriate person to point it to.  Honestly, 
-> stating: "The family comprises SOC devices built around MIPS64 cores" 
-> would provide about as much (little) information as the web site does. :(
+Hi Phil,
 
-You can register for free at www.cnusers.org and they have a bit more 
-information there as well as existing SDKs with full linux source for 
-older versions.  However, it looks like the really gory details are 
-available only after signing an NDA.
+Le Wednesday 29 October 2008 22:10:46 Phil Sutter, vous avez écrit :
+> Yes it does, but that's not part of gpiolib itself. Accessing them needs
+> a combination of gpio_to_chip() and container_of() to be used, which I
+> doubt makes sense on a device with a single, platform gpio chip.
 
-Chris
+Yes, that makes it unexportable the way it is done yet. What I suggest is not 
+overriding the struct rb532_gpio_chip with thoses callbacks, but do like you 
+suggested initially.
+
+> I'm not sure if this is absolutely true. The original CompactFlash
+> driver e.g. clears interrupt level in cf_irq_handler() and sets it in
+> prepare_cf_irq(). The latter function is called more than once.
+
+This should be moved the IRQ handler, where a specific check for the IRQ being 
+a GPIO one should set the interrupt status and level accordingly.
+
+Thanks.
+-- 
+Best regards, Florian Fainelli
+Email : florian@openwrt.org
+http://openwrt.org
+-------------------------------

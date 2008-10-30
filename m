@@ -1,40 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2008 00:30:11 +0000 (GMT)
-Received: from h4.dl5rb.org.uk ([81.2.74.4]:49541 "EHLO
-	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S22687131AbYJ2XOh (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 29 Oct 2008 23:14:37 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id m9TNE1Pi002304;
-	Wed, 29 Oct 2008 23:14:01 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id m9TNE0CS002302;
-	Wed, 29 Oct 2008 23:14:00 GMT
-Date:	Wed, 29 Oct 2008 23:14:00 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	akpm@linux-foundation.org
-Cc:	linux-mips@linux-mips.org, harvey.harrison@gmail.com
-Subject: Re: [patch 1/3] mips: use the new byteorder headers
-Message-ID: <20081029231359.GA2138@linux-mips.org>
-References: <200810292121.m9TLLWA6019890@imap1.linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Oct 2008 11:04:15 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:21287 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S22720742AbYJ3LDz (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Oct 2008 11:03:55 +0000
+Received: from [127.0.0.1] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id CA94D3EC9; Thu, 30 Oct 2008 04:03:48 -0700 (PDT)
+Message-ID: <4909948F.3090202@ru.mvista.com>
+Date:	Thu, 30 Oct 2008 14:03:43 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+User-Agent: Thunderbird 2.0.0.17 (Windows/20080914)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <200810292121.m9TLLWA6019890@imap1.linux-foundation.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+To:	akpm@linux-foundation.org
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org,
+	alessandro.zummo@towertech.it, tsbogend@alpha.franken.de
+Subject: Re: [patch 3/3] drivers/rtc/rtc-m48t35.c is borked too
+References: <200810292121.m9TLLYjd019910@imap1.linux-foundation.org>
+In-Reply-To: <200810292121.m9TLLYjd019910@imap1.linux-foundation.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21103
+X-archive-position: 21107
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 29, 2008 at 02:21:32PM -0700, akpm@linux-foundation.org wrote:
+Hello.
 
-Thanks, applied.
+akpm@linux-foundation.org wrote:
 
-  Ralf
+> From: Andrew Morton <akpm@linux-foundation.org>
+>
+> drivers/rtc/rtc-m48t35.c: In function 'm48t35_read_time':
+> drivers/rtc/rtc-m48t35.c:59: error: implicit declaration of function 'readb'
+> drivers/rtc/rtc-m48t35.c:60: error: implicit declaration of function 'writeb'
+> drivers/rtc/rtc-m48t35.c: In function 'm48t35_probe':
+> drivers/rtc/rtc-m48t35.c:168: error: implicit declaration of function 'ioremap'
+> drivers/rtc/rtc-m48t35.c:168: warning: assignment makes pointer from integer without a cast
+> drivers/rtc/rtc-m48t35.c:188: error: implicit declaration of function 'iounmap'
+>   
+
+   I wonder how that's possible with the correct #include's?
+
+> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> Cc: Alessandro Zummo <alessandro.zummo@towertech.it>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+>   
+[...]
+> diff -puN drivers/rtc/Kconfig~drivers-rtc-rtc-m48t35c-is-borked-too drivers/rtc/Kconfig
+> --- a/drivers/rtc/Kconfig~drivers-rtc-rtc-m48t35c-is-borked-too
+> +++ a/drivers/rtc/Kconfig
+> @@ -432,6 +432,7 @@ config RTC_DRV_M48T86
+>  
+>  config RTC_DRV_M48T35
+>  	tristate "ST M48T35"
+> +	depends on MIPS
+>   
+
+   It shouldn't really be MIPS specific -- the patch seems wrong.
+
+WBR, Sergei

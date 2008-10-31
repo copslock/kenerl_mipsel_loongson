@@ -1,101 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Nov 2008 08:36:40 +0000 (GMT)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:52570 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S22852175AbYJaSTF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 31 Oct 2008 18:19:05 +0000
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B490b4c070001>; Fri, 31 Oct 2008 14:18:47 -0400
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Fri, 31 Oct 2008 11:18:46 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Fri, 31 Oct 2008 11:18:46 -0700
-Message-ID: <490B4C06.3050400@caviumnetworks.com>
-Date:	Fri, 31 Oct 2008 11:18:46 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
-MIME-Version: 1.0
-To:	linux-mips <linux-mips@linux-mips.org>
-CC:	"Malov, Vlad" <Vlad.Malov@caviumnetworks.com>
-Subject: [PATCH] MIPS: Check the range of the syscall number for o32 syscall
- on 64bit kernel (v2).
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 31 Oct 2008 18:18:46.0541 (UTC) FILETIME=[1D5293D0:01C93B85]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Nov 2008 08:39:16 +0000 (GMT)
+Received: from orbit.nwl.cc ([81.169.176.177]:18081 "EHLO
+	mail.ifyouseekate.net") by ftp.linux-mips.org with ESMTP
+	id S22828128AbYJaNYo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 31 Oct 2008 13:24:44 +0000
+Received: from base (localhost [127.0.0.1])
+	by mail.ifyouseekate.net (Postfix) with ESMTP id 7C5DF38CE86F;
+	Fri, 31 Oct 2008 14:24:33 +0100 (CET)
+From:	Phil Sutter <n0-1@freewrt.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>
+Subject: [PATCH] rb532: gpio register offsets are relatives to GPIOBASE
+Date:	Fri, 31 Oct 2008 14:24:29 +0100
+Message-Id: <1225459469-12279-1-git-send-email-n0-1@freewrt.org>
+X-Mailer: git-send-email 1.5.6.4
+In-Reply-To: <200810261112.37008.florian@openwrt.org>
+References: <200810261112.37008.florian@openwrt.org>
+Return-Path: <phil@nwl.cc>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21146
+X-archive-position: 21147
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: n0-1@freewrt.org
 Precedence: bulk
 X-list: linux-mips
 
-From: Vlad Malov <Vlad.Malov@caviumnetworks.com>
+From: Florian Fainelli <florian@openwrt.org>
 
-On a 64 bit kernel if an o32 syscall was made with a syscall number
-less than 4000, we would read the function from outside of the bounds
-of the syscall table.  This led to non-deterministic behavior
-including system crashes.
+This patch fixes the wrong use of GPIO register offsets
+in devices.c. To avoid further problems, use gpio_get_value
+to return the NAND status instead of our own expanded code.
 
-While we were at it we reworked the 32 bit version as well to use
-fewer instructions.
+Also define the zero offset of the alternate function register to allow
+consistent access.
 
-This version two should address the concerns Maciej raised.  gas seems
-to expand this instruction ordering with no nops in the delay slots.
-
-Signed-off-by: Vlad Malov <Vlad.Malov@caviumnetworks.com>
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+Signef-off-by: Phil Sutter <n0-1@freewrt.org>
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
- arch/mips/kernel/scall32-o32.S |    7 ++-----
- arch/mips/kernel/scall64-o32.S |   12 +++++-------
- 2 files changed, 7 insertions(+), 12 deletions(-)
+ arch/mips/include/asm/mach-rc32434/rb.h |   14 ++++++++------
+ arch/mips/rb532/devices.c               |    2 +-
+ 2 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
-index 759f680..4a77438 100644
---- a/arch/mips/kernel/scall32-o32.S
-+++ b/arch/mips/kernel/scall32-o32.S
-@@ -261,15 +261,12 @@ bad_alignment:
+diff --git a/arch/mips/include/asm/mach-rc32434/rb.h b/arch/mips/include/asm/mach-rc32434/rb.h
+index 79e8ef6..f25a849 100644
+--- a/arch/mips/include/asm/mach-rc32434/rb.h
++++ b/arch/mips/include/asm/mach-rc32434/rb.h
+@@ -40,12 +40,14 @@
+ #define BTCS		0x010040
+ #define BTCOMPARE	0x010044
+ #define GPIOBASE	0x050000
+-#define GPIOCFG		0x050004
+-#define GPIOD		0x050008
+-#define GPIOILEVEL	0x05000C
+-#define GPIOISTAT	0x050010
+-#define GPIONMIEN	0x050014
+-#define IMASK6		0x038038
++/* Offsets relative to GPIOBASE */
++#define GPIOFUNC	0x00
++#define GPIOCFG		0x04
++#define GPIOD		0x08
++#define GPIOILEVEL	0x0C
++#define GPIOISTAT	0x10
++#define GPIONMIEN	0x14
++#define IMASK6		0x38
+ #define LO_WPX		(1 << 0)
+ #define LO_ALE		(1 << 1)
+ #define LO_CLE		(1 << 2)
+diff --git a/arch/mips/rb532/devices.c b/arch/mips/rb532/devices.c
+index 31619c6..c40be04 100644
+--- a/arch/mips/rb532/devices.c
++++ b/arch/mips/rb532/devices.c
+@@ -118,7 +118,7 @@ static struct platform_device cf_slot0 = {
+ /* Resources and device for NAND */
+ static int rb532_dev_ready(struct mtd_info *mtd)
+ {
+-	return readl(IDT434_REG_BASE + GPIOD) & GPIO_RDY;
++	return gpio_get_value(GPIO_RDY);
+ }
  
- 	LEAF(sys_syscall)
- 	subu	t0, a0, __NR_O32_Linux	# check syscall number
--	sltiu	v0, t0, __NR_O32_Linux_syscalls + 1
-+	sltiu	v0, a0, __NR_O32_Linux + __NR_O32_Linux_syscalls + 1
-+	beqz	t0, einval		# do not recurse
- 	sll	t1, t0, 3
- 	beqz	v0, einval
--
- 	lw	t2, sys_call_table(t1)		# syscall routine
- 
--	li	v1, 4000 - __NR_O32_Linux	# index of sys_syscall
--	beq	t0, v1, einval			# do not recurse
--
- 	/* Some syscalls like execve get their arguments from struct pt_regs
- 	   and claim zero arguments in the syscall table. Thus we have to
- 	   assume the worst case and shuffle around all potential arguments.
-diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
-index 6c7ef83..d9299ae 100644
---- a/arch/mips/kernel/scall64-o32.S
-+++ b/arch/mips/kernel/scall64-o32.S
-@@ -174,14 +174,12 @@ not_o32_scall:
- 	END(handle_sys)
- 
- LEAF(sys32_syscall)
--	sltu	v0, a0, __NR_O32_Linux + __NR_O32_Linux_syscalls + 1
-+	subu	t0, a0, __NR_O32_Linux	# check syscall number
-+	sltiu	v0, a0, __NR_O32_Linux + __NR_O32_Linux_syscalls + 1
-+	beqz	t0, einval		# do not recurse
-+	dsll	t1, t0, 3
- 	beqz	v0, einval
--
--	dsll	v0, a0, 3
--	ld	t2, (sys_call_table - (__NR_O32_Linux * 8))(v0)
--
--	li	v1, 4000		# indirect syscall number
--	beq	a0, v1, einval		# do not recurse
-+	ld	t2, sys_call_table(t1)		# syscall routine
- 
- 	move	a0, a1			# shift argument registers
- 	move	a1, a2
+ static void rb532_cmd_ctrl(struct mtd_info *mtd, int cmd, unsigned int ctrl)
+-- 
+1.5.6.4

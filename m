@@ -1,70 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Oct 2008 00:48:03 +0000 (GMT)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:22459 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S22777942AbYJaAr5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 31 Oct 2008 00:47:57 +0000
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B490a55b30000>; Thu, 30 Oct 2008 20:47:47 -0400
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 30 Oct 2008 17:47:47 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 30 Oct 2008 17:47:47 -0700
-Message-ID: <490A55B2.5080300@caviumnetworks.com>
-Date:	Thu, 30 Oct 2008 17:47:46 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Oct 2008 01:42:15 +0000 (GMT)
+Received: from mail.windriver.com ([147.11.1.11]:61173 "EHLO mail.wrs.com")
+	by ftp.linux-mips.org with ESMTP id S22780355AbYJaBmE (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 31 Oct 2008 01:42:04 +0000
+Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
+	by mail.wrs.com (8.13.6/8.13.6) with ESMTP id m9V1fph4012262;
+	Thu, 30 Oct 2008 18:41:52 -0700 (PDT)
+Received: from ism-mail02.corp.ad.wrs.com ([128.224.200.19]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Thu, 30 Oct 2008 18:41:50 -0700
+Received: from [128.224.162.71] ([128.224.162.71]) by ism-mail02.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Fri, 31 Oct 2008 02:41:47 +0100
+Message-ID: <490A6298.8080002@windriver.com>
+Date:	Fri, 31 Oct 2008 09:42:48 +0800
+From:	"tiejun.chen" <tiejun.chen@windriver.com>
+User-Agent: Thunderbird 2.0.0.17 (X11/20080925)
 MIME-Version: 1.0
-To:	linux-mips <linux-mips@linux-mips.org>
-CC:	"Malov, Vlad" <Vlad.Malov@caviumnetworks.com>
-Subject: Re: [PATCH] MIPS: Check the range of the syscall number for o32 syscall
- on 64bit kernel.
-References: <490A4D3F.10700@caviumnetworks.com>
-In-Reply-To: <490A4D3F.10700@caviumnetworks.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Reserve stack/heap area for RP program
+References: <1225365345-15635-1-git-send-email-tiejun.chen@windriver.com> <1225365345-15635-2-git-send-email-tiejun.chen@windriver.com> <20081030121707.GJ26256@linux-mips.org>
+In-Reply-To: <20081030121707.GJ26256@linux-mips.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 31 Oct 2008 00:47:47.0165 (UTC) FILETIME=[4B0168D0:01C93AF2]
-Return-Path: <David.Daney@caviumnetworks.com>
+X-OriginalArrivalTime: 31 Oct 2008 01:41:47.0728 (UTC) FILETIME=[D6881500:01C93AF9]
+Return-Path: <Tiejun.Chen@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21135
+X-archive-position: 21136
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: tiejun.chen@windriver.com
 Precedence: bulk
 X-list: linux-mips
 
-David Daney wrote:
-[...]
-> diff --git a/arch/mips/kernel/scall64-o32.S 
-> b/arch/mips/kernel/scall64-o32.S
-> index 6c7ef83..d8b3cb1 100644
-> --- a/arch/mips/kernel/scall64-o32.S
-> +++ b/arch/mips/kernel/scall64-o32.S
-> @@ -174,14 +174,14 @@ not_o32_scall:
->     END(handle_sys)
+Ralf Baechle wrote:
+> On Thu, Oct 30, 2008 at 07:15:45PM +0800, Tiejun Chen wrote:
 > 
-> LEAF(sys32_syscall)
-> -    sltu    v0, a0, __NR_O32_Linux + __NR_O32_Linux_syscalls + 1
-> +    .set    noreorder
-> +    subu    t0, a0, __NR_O32_Linux    # check syscall number
-> +    beqz    t0, einval        # do not recurse
-> +    sltu    v0, t0, __NR_O32_Linux_syscalls + 1
-> +    dsll    t1, t0, 3
->     beqz    v0, einval
-> -
-> -    dsll    v0, a0, 3
-> -    ld    t2, (sys_call_table - (__NR_O32_Linux * 8))(v0)
-> -
-> -    li    v1, 4000        # indirect syscall number
-> -    beq    a0, v1, einval        # do not recurse
-> +    .set    reorder
-> +    lw    t2, sys_call_table(t1)        # syscall routine
+>> When you want to run a program on RP it's necessary to reserve
+>> corresponding stack/heap area of that program.
+> 
+> The official method is to pass a mem= argument when booting the kernel and
+> adjust by the amount required.  Which certainly is more flexible than
+> having to hack a constant deeply hidden in the kernel code as in your
+> proposed patch.
 > 
 
-        ^^^ Clearly that should be ld not lw.  Not sure how that slipped 
-in, Vlad's original patch had it correct.  Re-testing...
+This issue is not related to pass "mem= " if enable CONFIG_MIPS_VPE_LOADER_TOM.
+That way is only load RP on the hidden memory to run. Anyway we still not
+reserve necessary memory for stack/heap of RP which may be overwrite by AP such
+as linux so you will found kernel crash.
 
-
-David Daney
+>   Ralf
+> 

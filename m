@@ -1,49 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Oct 2008 00:26:16 +0000 (GMT)
-Received: from orbit.nwl.cc ([81.169.176.177]:59573 "EHLO
-	mail.ifyouseekate.net") by ftp.linux-mips.org with ESMTP
-	id S22776818AbYJaA0J (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 31 Oct 2008 00:26:09 +0000
-Received: from base (localhost [127.0.0.1])
-	by mail.ifyouseekate.net (Postfix) with ESMTP id 6321D38C5FB6
-	for <linux-mips@linux-mips.org>; Fri, 31 Oct 2008 01:26:00 +0100 (CET)
-From:	Phil Sutter <n0-1@freewrt.org>
-To:	Linux-Mips List <linux-mips@linux-mips.org>
-Subject: [PATCH] add prototypes for the exported symbols
-Date:	Fri, 31 Oct 2008 01:25:57 +0100
-Message-Id: <1225412757-17894-1-git-send-email-n0-1@freewrt.org>
-X-Mailer: git-send-email 1.5.6.4
-In-Reply-To: <1225398000-24020-1-git-send-email-n0-1@freewrt.org>
-References: <1225398000-24020-1-git-send-email-n0-1@freewrt.org>
-Return-Path: <phil@nwl.cc>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Oct 2008 00:48:03 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:22459 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S22777942AbYJaAr5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 31 Oct 2008 00:47:57 +0000
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B490a55b30000>; Thu, 30 Oct 2008 20:47:47 -0400
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 30 Oct 2008 17:47:47 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 30 Oct 2008 17:47:47 -0700
+Message-ID: <490A55B2.5080300@caviumnetworks.com>
+Date:	Thu, 30 Oct 2008 17:47:46 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
+MIME-Version: 1.0
+To:	linux-mips <linux-mips@linux-mips.org>
+CC:	"Malov, Vlad" <Vlad.Malov@caviumnetworks.com>
+Subject: Re: [PATCH] MIPS: Check the range of the syscall number for o32 syscall
+ on 64bit kernel.
+References: <490A4D3F.10700@caviumnetworks.com>
+In-Reply-To: <490A4D3F.10700@caviumnetworks.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 31 Oct 2008 00:47:47.0165 (UTC) FILETIME=[4B0168D0:01C93AF2]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21134
+X-archive-position: 21135
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: n0-1@freewrt.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Forgot to include them in the original patch.
+David Daney wrote:
+[...]
+> diff --git a/arch/mips/kernel/scall64-o32.S 
+> b/arch/mips/kernel/scall64-o32.S
+> index 6c7ef83..d8b3cb1 100644
+> --- a/arch/mips/kernel/scall64-o32.S
+> +++ b/arch/mips/kernel/scall64-o32.S
+> @@ -174,14 +174,14 @@ not_o32_scall:
+>     END(handle_sys)
+> 
+> LEAF(sys32_syscall)
+> -    sltu    v0, a0, __NR_O32_Linux + __NR_O32_Linux_syscalls + 1
+> +    .set    noreorder
+> +    subu    t0, a0, __NR_O32_Linux    # check syscall number
+> +    beqz    t0, einval        # do not recurse
+> +    sltu    v0, t0, __NR_O32_Linux_syscalls + 1
+> +    dsll    t1, t0, 3
+>     beqz    v0, einval
+> -
+> -    dsll    v0, a0, 3
+> -    ld    t2, (sys_call_table - (__NR_O32_Linux * 8))(v0)
+> -
+> -    li    v1, 4000        # indirect syscall number
+> -    beq    a0, v1, einval        # do not recurse
+> +    .set    reorder
+> +    lw    t2, sys_call_table(t1)        # syscall routine
+> 
 
-Signed-off-by: Phil Sutter <n0-1@freewrt.org>
----
- arch/mips/include/asm/mach-rc32434/gpio.h |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+        ^^^ Clearly that should be ld not lw.  Not sure how that slipped 
+in, Vlad's original patch had it correct.  Re-testing...
 
-diff --git a/arch/mips/include/asm/mach-rc32434/gpio.h b/arch/mips/include/asm/mach-rc32434/gpio.h
-index c8e554e..b5cf645 100644
---- a/arch/mips/include/asm/mach-rc32434/gpio.h
-+++ b/arch/mips/include/asm/mach-rc32434/gpio.h
-@@ -84,5 +84,7 @@ extern void set_434_reg(unsigned reg_offs, unsigned bit, unsigned len, unsigned
- extern unsigned get_434_reg(unsigned reg_offs);
- extern void set_latch_u5(unsigned char or_mask, unsigned char nand_mask);
- extern unsigned char get_latch_u5(void);
-+extern void rb532_gpio_set_ilevel(int bit, unsigned gpio);
-+extern void rb532_gpio_set_istat(int bit, unsigned gpio);
- 
- #endif /* _RC32434_GPIO_H_ */
--- 
-1.5.6.4
+
+David Daney

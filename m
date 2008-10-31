@@ -1,58 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Nov 2008 08:36:16 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:64448 "EHLO
-	localhost.localdomain") by ftp.linux-mips.org with ESMTP
-	id S22831518AbYJaORg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 31 Oct 2008 14:17:36 +0000
-Date:	Fri, 31 Oct 2008 14:17:36 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	David Daney <ddaney@caviumnetworks.com>
-cc:	linux-mips <linux-mips@linux-mips.org>,
-	"Malov, Vlad" <Vlad.Malov@caviumnetworks.com>
-Subject: Re: [PATCH] MIPS: Check the range of the syscall number for o32
- syscall on 64bit kernel.
-In-Reply-To: <490A4D3F.10700@caviumnetworks.com>
-Message-ID: <alpine.LFD.1.10.0810311410020.11348@ftp.linux-mips.org>
-References: <490A4D3F.10700@caviumnetworks.com>
-User-Agent: Alpine 1.10 (LFD 962 2008-03-14)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Nov 2008 08:36:40 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:52570 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S22852175AbYJaSTF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 31 Oct 2008 18:19:05 +0000
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B490b4c070001>; Fri, 31 Oct 2008 14:18:47 -0400
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 31 Oct 2008 11:18:46 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 31 Oct 2008 11:18:46 -0700
+Message-ID: <490B4C06.3050400@caviumnetworks.com>
+Date:	Fri, 31 Oct 2008 11:18:46 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+To:	linux-mips <linux-mips@linux-mips.org>
+CC:	"Malov, Vlad" <Vlad.Malov@caviumnetworks.com>
+Subject: [PATCH] MIPS: Check the range of the syscall number for o32 syscall
+ on 64bit kernel (v2).
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 31 Oct 2008 18:18:46.0541 (UTC) FILETIME=[1D5293D0:01C93B85]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21145
+X-archive-position: 21146
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 30 Oct 2008, David Daney wrote:
+From: Vlad Malov <Vlad.Malov@caviumnetworks.com>
 
-> @@ -260,16 +260,15 @@ bad_alignment:
-> 	END(sys_sysmips)
-> 
-> 	LEAF(sys_syscall)
-> +	.set	noreorder
+On a 64 bit kernel if an o32 syscall was made with a syscall number
+less than 4000, we would read the function from outside of the bounds
+of the syscall table.  This led to non-deterministic behavior
+including system crashes.
 
- Please indent branch delay slot instructions by one space if using this
-mode.
+While we were at it we reworked the 32 bit version as well to use
+fewer instructions.
 
-> 	subu	t0, a0, __NR_O32_Linux	# check syscall number
-> -	sltiu	v0, t0, __NR_O32_Linux_syscalls + 1
-> +	beqz	t0, einval		# do not recurse
-> +	sltu	v0, t0, __NR_O32_Linux_syscalls + 1
+This version two should address the concerns Maciej raised.  gas seems
+to expand this instruction ordering with no nops in the delay slots.
 
- Why not sltiu?  You do want to fit in the delay slot here.  Besides you 
-should not need .set noreorder here -- GAS should be smart enough to swap 
-sltiu with beqz here (and then you can actually use sltu quite safely).  
-The rule of thumb is not to use .set noreorder unless absolutely necessary 
-(such as modifying one of the registers used by a branch instruction 
-immediately afterwards in its delay slot) as you have to take all the 
-pesky details of instruction scheduling into account, including but not 
-limited to the MIPS I load delay slots not everybody seems to be aware of.
+Signed-off-by: Vlad Malov <Vlad.Malov@caviumnetworks.com>
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+---
+ arch/mips/kernel/scall32-o32.S |    7 ++-----
+ arch/mips/kernel/scall64-o32.S |   12 +++++-------
+ 2 files changed, 7 insertions(+), 12 deletions(-)
 
- Adjust for the other hunk accordingly.
-
-  Maciej
+diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
+index 759f680..4a77438 100644
+--- a/arch/mips/kernel/scall32-o32.S
++++ b/arch/mips/kernel/scall32-o32.S
+@@ -261,15 +261,12 @@ bad_alignment:
+ 
+ 	LEAF(sys_syscall)
+ 	subu	t0, a0, __NR_O32_Linux	# check syscall number
+-	sltiu	v0, t0, __NR_O32_Linux_syscalls + 1
++	sltiu	v0, a0, __NR_O32_Linux + __NR_O32_Linux_syscalls + 1
++	beqz	t0, einval		# do not recurse
+ 	sll	t1, t0, 3
+ 	beqz	v0, einval
+-
+ 	lw	t2, sys_call_table(t1)		# syscall routine
+ 
+-	li	v1, 4000 - __NR_O32_Linux	# index of sys_syscall
+-	beq	t0, v1, einval			# do not recurse
+-
+ 	/* Some syscalls like execve get their arguments from struct pt_regs
+ 	   and claim zero arguments in the syscall table. Thus we have to
+ 	   assume the worst case and shuffle around all potential arguments.
+diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
+index 6c7ef83..d9299ae 100644
+--- a/arch/mips/kernel/scall64-o32.S
++++ b/arch/mips/kernel/scall64-o32.S
+@@ -174,14 +174,12 @@ not_o32_scall:
+ 	END(handle_sys)
+ 
+ LEAF(sys32_syscall)
+-	sltu	v0, a0, __NR_O32_Linux + __NR_O32_Linux_syscalls + 1
++	subu	t0, a0, __NR_O32_Linux	# check syscall number
++	sltiu	v0, a0, __NR_O32_Linux + __NR_O32_Linux_syscalls + 1
++	beqz	t0, einval		# do not recurse
++	dsll	t1, t0, 3
+ 	beqz	v0, einval
+-
+-	dsll	v0, a0, 3
+-	ld	t2, (sys_call_table - (__NR_O32_Linux * 8))(v0)
+-
+-	li	v1, 4000		# indirect syscall number
+-	beq	a0, v1, einval		# do not recurse
++	ld	t2, sys_call_table(t1)		# syscall routine
+ 
+ 	move	a0, a1			# shift argument registers
+ 	move	a1, a2

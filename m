@@ -1,168 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Nov 2008 08:20:00 +0000 (GMT)
-Received: from qmta03.emeryville.ca.mail.comcast.net ([76.96.30.32]:23274 "EHLO
-	QMTA03.emeryville.ca.mail.comcast.net") by ftp.linux-mips.org
-	with ESMTP id S22783588AbYJaFCG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 31 Oct 2008 05:02:06 +0000
-Received: from OMTA11.emeryville.ca.mail.comcast.net ([76.96.30.36])
-	by QMTA03.emeryville.ca.mail.comcast.net with comcast
-	id ZEpW1a00F0mlR8UA3H1zBg; Fri, 31 Oct 2008 05:01:59 +0000
-Received: from [192.168.1.13] ([69.140.18.238])
-	by OMTA11.emeryville.ca.mail.comcast.net with comcast
-	id ZH1v1a00258Be2l8XH1weg; Fri, 31 Oct 2008 05:01:57 +0000
-X-Authority-Analysis: v=1.0 c=1 a=kIlm2E0NotEA:10 a=SCsKgWfUi10A:10
- a=xNf9USuDAAAA:8 a=SVGbZonO5hFbUcMDE-IA:9 a=PzzOTLDUO664q09MNtAA:7
- a=Smumbny_icKJZdKbs_W64S7RabEA:4 a=WeOa-AV5lc8A:10 a=uVawpVqKyvgA:10
- a=LnGxEkVVx1SQnmjCPzUA:9 a=BWmtDHnANUKbgaC4nfMA:7
- a=cVqo9mW4FAXU5nLubo9XDxYi1LkA:4 a=NfA2RSpTaHsA:10
-Message-ID: <490A912A.8030901@gentoo.org>
-Date:	Fri, 31 Oct 2008 01:01:30 -0400
-From:	Kumba <kumba@gentoo.org>
-User-Agent: Thunderbird 2.0.0.17 (Windows/20080914)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Nov 2008 08:24:43 +0000 (GMT)
+Received: from smtp.movial.fi ([62.236.91.34]:55981 "EHLO smtp.movial.fi")
+	by ftp.linux-mips.org with ESMTP id S22826604AbYJaM4I (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 31 Oct 2008 12:56:08 +0000
+Received: from localhost (mailscanner.hel.movial.fi [172.17.81.9])
+	by smtp.movial.fi (Postfix) with ESMTP id 3D703C80E6;
+	Fri, 31 Oct 2008 14:56:01 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at movial.fi
+Received: from smtp.movial.fi ([62.236.91.34])
+	by localhost (mailscanner.hel.movial.fi [172.17.81.9]) (amavisd-new, port 10026)
+	with ESMTP id wtfSJXCIIBMq; Fri, 31 Oct 2008 14:56:01 +0200 (EET)
+Received: from [172.17.49.48] (sd048.hel.movial.fi [172.17.49.48])
+	by smtp.movial.fi (Postfix) with ESMTP id 1FFA2C80D7;
+	Fri, 31 Oct 2008 14:56:01 +0200 (EET)
+Message-ID: <490B0060.3030709@movial.fi>
+Date:	Fri, 31 Oct 2008 14:56:00 +0200
+From:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+Organization: Movial Creative Technologies
+User-Agent: Icedove 1.5.0.14eol (X11/20080724)
 MIME-Version: 1.0
-To:	libc-ports@sources.redhat.com
-CC:	Daniel Jacobowitz <drow@false.org>,
-	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: [PATCH]: R10000 Needs LL/SC Workaround in Glibc
-Content-Type: multipart/mixed;
- boundary="------------010606030803010409040608"
-Return-Path: <kumba@gentoo.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	David Daney <ddaney@avtrex.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Fix include paths in malta-amon.c
+References: <48D52FF4.2000905@avtrex.com> <20081015143804.GA18506@linux-mips.org>
+In-Reply-To: <20081015143804.GA18506@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <dmitri.vorobiev@movial.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21139
+X-archive-position: 21140
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: dmitri.vorobiev@movial.fi
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------010606030803010409040608
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+Ralf Baechle wrote:
+> On Sat, Sep 20, 2008 at 10:16:36AM -0700, David Daney wrote:
+> 
+>> On linux-queue, malta doesn't build after the include file relocation.
+>> This should fix it.
+>>
+>> There some occurrences of 'asm-mips' in the comments of quite a few
+>> files, but this is the only place I found it in any code.
+>>
+>> Signed-off-by: David Daney <ddaney@avtrex.com>
+> 
+> Thanks, applied.
 
+Hi,
 
-The attached patch adds a workaround for R10000 CPUs to use the branch likely 
-(beqzl) instruction in atomic operations, because revisions of the CPU before 
-3.0 misbehave, while revisions 2.6 and earlier will deadlock.  This issue has 
-been noted on SGI IP28 (Indigo2 Impact R10000) systems and SGI IP27 Origin systems.
+The fix is still not in Linus' tree.
 
-I drafted it after some discussion with several people in the Linux/MIPS IRC 
-Channel after discovering glibc didn't work quite right on my IP28 machine.  The 
-patch is based on Debian bug #462112, viewable here:
-http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=462112
+Dmitri
 
-Feedback would be welcome on any suggestions for improving this patch (please 
-CC, as I'm not subscribed to the ML).
-
-Thanks!
-
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-
-"The past tempts us, the present confuses us, the future frightens us.  And our 
-lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
-
---------------010606030803010409040608
-Content-Type: text/plain;
- name="glibc-trunk-r10k-beqzl.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="glibc-trunk-r10k-beqzl.patch"
-
-diff -Naurp libc.orig/ports/sysdeps/mips/bits/atomic.h libc/ports/sysdeps/mips/bits/atomic.h
---- libc.orig/ports/sysdeps/mips/bits/atomic.h	2005-03-28 04:14:59.000000000 -0500
-+++ libc/ports/sysdeps/mips/bits/atomic.h	2008-10-30 23:39:37.000000000 -0400
-@@ -53,6 +53,31 @@ typedef uintmax_t uatomic_max_t;
- #define MIPS_SYNC_STR_1(X) MIPS_SYNC_STR_2(X)
- #define MIPS_SYNC_STR MIPS_SYNC_STR_1(MIPS_SYNC)
- 
-+/* Certain revisions of the R10000 Processor need an LL/SC Workaround
-+   enabled.  Revisions before 3.0 misbehave on atomic operations, and
-+   Revs 2.6 and lower deadlock after several seconds due to other errata.
-+
-+   To quote the R10K Errata:
-+     Workaround: The basic idea is to inhibit the four instructions
-+     from simultaneously becoming active in R10000. Padding all
-+     ll/sc sequences with nops or changing the looping branch in the
-+     routines to a branch likely (which is always predicted taken
-+     by R10000) will work. The nops should go after the loop, and the
-+     number of them should be 28. This number could be decremented for
-+     each additional instruction in the ll/sc loop such as the lock
-+     modifier(s) between the ll and sc, the looping branch and its
-+     delay slot. For typical short routines with one ll/sc loop, any
-+     instructions after the loop could also count as a decrement. The
-+     nop workaround pollutes the cache more but would be a few cycles
-+     faster if all the code is in the cache and the looping branch
-+     is predicted not taken.  */
-+
-+#ifndef (_MIPS_ARCH_R10000)
-+#define R10K_BEQZ_INSN "beqz	%1,1b\n"
-+#else
-+#define R10K_BEQZ_INSN "beqzl	%1,1b\n"
-+#endif
-+
- /* Compare and exchange.  For all of the "xxx" routines, we expect a
-    "__prev" and a "__cmp" variable to be provided by the enclosing scope,
-    in which values are returned.  */
-@@ -74,7 +99,7 @@ typedef uintmax_t uatomic_max_t;
-      "bne	%0,%2,2f\n\t"						      \
-      "move	%1,%3\n\t"						      \
-      "sc	%1,%4\n\t"						      \
--     "beqz	%1,1b\n"						      \
-+     R10K_BEQZ_INSN							      \
-      acq	"\n\t"							      \
-      ".set	pop\n"							      \
-      "2:\n\t"								      \
-@@ -98,7 +123,7 @@ typedef uintmax_t uatomic_max_t;
-      "bne	%0,%2,2f\n\t"						      \
-      "move	%1,%3\n\t"						      \
-      "scd	%1,%4\n\t"						      \
--     "beqz	%1,1b\n"						      \
-+     R10K_BEQZ_INSN							      \
-      acq	"\n\t"							      \
-      ".set	pop\n"							      \
-      "2:\n\t"								      \
-@@ -192,7 +217,7 @@ typedef uintmax_t uatomic_max_t;
-      "ll	%0,%3\n\t"						      \
-      "move	%1,%2\n\t"						      \
-      "sc	%1,%3\n\t"						      \
--     "beqz	%1,1b\n"						      \
-+     R10K_BEQZ_INSN							      \
-      acq	"\n\t"							      \
-      ".set	pop\n"							      \
-      "2:\n\t"								      \
-@@ -216,7 +241,7 @@ typedef uintmax_t uatomic_max_t;
-      "lld	%0,%3\n\t"						      \
-      "move	%1,%2\n\t"						      \
-      "scd	%1,%3\n\t"						      \
--     "beqz	%1,1b\n"						      \
-+     R10K_BEQZ_INSN							      \
-      acq	"\n\t"							      \
-      ".set	pop\n"							      \
-      "2:\n\t"								      \
-@@ -251,7 +276,7 @@ typedef uintmax_t uatomic_max_t;
-      "ll	%0,%3\n\t"						      \
-      "addu	%1,%0,%2\n\t"						      \
-      "sc	%1,%3\n\t"						      \
--     "beqz	%1,1b\n"						      \
-+     R10K_BEQZ_INSN							      \
-      acq	"\n\t"							      \
-      ".set	pop\n"							      \
-      "2:\n\t"								      \
-@@ -275,7 +300,7 @@ typedef uintmax_t uatomic_max_t;
-      "lld	%0,%3\n\t"						      \
-      "daddu	%1,%0,%2\n\t"						      \
-      "scd	%1,%3\n\t"						      \
--     "beqz	%1,1b\n"						      \
-+     R10K_BEQZ_INSN							      \
-      acq	"\n\t"							      \
-      ".set	pop\n"							      \
-      "2:\n\t"								      \
-
---------------010606030803010409040608--
+> 
+>   Ralf
+> 

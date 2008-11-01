@@ -1,98 +1,116 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Nov 2008 17:41:48 +0000 (GMT)
-Received: from nf-out-0910.google.com ([64.233.182.184]:46211 "EHLO
-	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S22924855AbYKARlk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 1 Nov 2008 17:41:40 +0000
-Received: by nf-out-0910.google.com with SMTP id h3so153715nfh.14
-        for <linux-mips@linux-mips.org>; Sat, 01 Nov 2008 10:41:37 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:mail-followup-to:cc
-         :subject:references:date:in-reply-to:message-id:user-agent
-         :mime-version:content-type;
-        bh=7ukXR8OVOckUiENM3ccYv+2tSTaUC+BTCGjwUT9tAbM=;
-        b=PqbWDGhaNNqbEKrHTOyOGnqWItaeFvMWltdq8G5x9o5OPs/ujMbkxJAa5Ypm+kYNQi
-         qSCh2C7n/sXpGT/8ABYCbxq0uF1bDHNvUUFj2ReYh/nRxtjln+tEuNBCSB8IDNYImvxB
-         Xdbgv9qvgSTqaSDNA4rhhaB+sD5BSN4U3Fvnk=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=from:to:mail-followup-to:cc:subject:references:date:in-reply-to
-         :message-id:user-agent:mime-version:content-type;
-        b=VIjIGPOKxXHRReenwH77Fj9fA7slyW/IOzBGeIlgLIIlvvly/OLvqV6uwQD4fRU1go
-         MMU7JC7+H4PmZeq//YbY4IkV0EDE/Boz+Uhi2T8nZL8QuhgXYPR13VyuznLEyiBoN7FJ
-         1STWjWYfCfV/s4mOtmkWU5kUz1ovSZZCa6lS0=
-Received: by 10.210.22.8 with SMTP id 8mr15266089ebv.46.1225561297467;
-        Sat, 01 Nov 2008 10:41:37 -0700 (PDT)
-Received: from localhost (79-67-45-8.dynamic.dsl.as9105.com [79.67.45.8])
-        by mx.google.com with ESMTPS id z37sm4202649ikz.4.2008.11.01.10.41.35
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sat, 01 Nov 2008 10:41:36 -0700 (PDT)
-From:	Richard Sandiford <rdsandiford@googlemail.com>
-To:	Kumba <kumba@gentoo.org>
-Mail-Followup-To: Kumba <kumba@gentoo.org>,gcc-patches@gcc.gnu.org,  Linux MIPS List <linux-mips@linux-mips.org>, rdsandiford@googlemail.com
-Cc:	gcc-patches@gcc.gnu.org,
-	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH]: R10000 Needs LL/SC Workaround in Gcc
-References: <490A90F4.6040601@gentoo.org> <490C05A9.9070707@gentoo.org>
-Date:	Sat, 01 Nov 2008 17:41:30 +0000
-In-Reply-To: <490C05A9.9070707@gentoo.org> (kumba@gentoo.org's message of
-	"Sat\, 01 Nov 2008 03\:30\:49 -0400")
-Message-ID: <87abcjibsl.fsf@firetop.home>
-User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/22.1 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Nov 2008 18:50:25 +0000 (GMT)
+Received: from qmta02.emeryville.ca.mail.comcast.net ([76.96.30.24]:2717 "EHLO
+	QMTA02.emeryville.ca.mail.comcast.net") by ftp.linux-mips.org
+	with ESMTP id S22931460AbYKASuN (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 1 Nov 2008 18:50:13 +0000
+Received: from OMTA08.emeryville.ca.mail.comcast.net ([76.96.30.12])
+	by QMTA02.emeryville.ca.mail.comcast.net with comcast
+	id ZuFE1a00j0FhH24A2uq5eK; Sat, 01 Nov 2008 18:50:05 +0000
+Received: from [192.168.1.13] ([69.140.18.238])
+	by OMTA08.emeryville.ca.mail.comcast.net with comcast
+	id Zuq31a00358Be2l8Uuq4LH; Sat, 01 Nov 2008 18:50:05 +0000
+X-Authority-Analysis: v=1.0 c=1 a=se7utVhDntQA:10 a=sj6Exy8oVBoA:10
+ a=JDIJrWWbvAlX_w-enlgA:9 a=P6SsapNdiOh3WgKqRoIA:7
+ a=a6S2sZ5keg1bGVh2vSNHfV6o79EA:4 a=w6-myHctKckA:10 a=oVP8SKXuTwoA:10
+ a=q88rVGSDDDoA:10 a=WeOa-AV5lc8A:10 a=4iXfik_MsjQA:10
+Message-ID: <490CA4C8.40904@gentoo.org>
+Date:	Sat, 01 Nov 2008 14:49:44 -0400
+From:	Kumba <kumba@gentoo.org>
+User-Agent: Thunderbird 2.0.0.17 (Windows/20080914)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <rdsandiford@googlemail.com>
+To:	gcc-patches@gcc.gnu.org
+CC:	Linux MIPS List <linux-mips@linux-mips.org>,
+	rdsandiford@googlemail.com
+Subject: Re: [PATCH]: R10000 Needs LL/SC Workaround in Gcc
+References: <490A90F4.6040601@gentoo.org> <490C05A9.9070707@gentoo.org> <87abcjibsl.fsf@firetop.home>
+In-Reply-To: <87abcjibsl.fsf@firetop.home>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21156
+X-archive-position: 21157
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rdsandiford@googlemail.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-Kumba <kumba@gentoo.org> writes:
-> Kumba wrote:
->> The attached patch adds a workaround to have gcc emit branch likely 
->> instructions (beqzl) in atomic operations for R10000 CPUs.  This is 
->> because revisions of this CPU before 3.0 misbehave, while revisions 2.6 
->> and earlier will deadlock.  This issue has been noted on SGI IP28 
->> (Indigo2 Impact R10000) systems and SGI IP27 Origin systems.
->> 
->> After creating a patch to glibc based off of Debian Bug #462112 
->> (http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=462112), it was 
->> suggested by David Daney that a similar patch be created for GCC.
->> 
->> Feedback would be welcome on any suggestions for improving this patch 
->> (please CC, as I'm not subscribed to the ML).
->> 
->> Thanks!
->
-> Oops, typo in my first patch.  Stray parenthesis around the macro
-> check.  Fixed patch is included.
->
-> I'm wondering whether this should be limited to _MIPS_ARCH_R10000,
-> though.  Maybe _MIPS_ARCH_MIPS4 instead, because the R10000 is at
-> minimum, a MIPS-IV CPU, and there might be cases where a userland
-> compiled with -march=mips4 could get used instead of one optimized for
-> -march=r10000?
->
-> Or would MIPS-II be better, which is when the branch likely
-> instruction was added?
+Richard Sandiford wrote:
+> 
+> As Maciej said, this should really be controlled by an -mfix-r10000
+> command-line option, not by the _MIPS_ARCH_* macro.  (In this context,
+> _MIPS_ARCH_* is a property of the compiler that you're using to build
+> gcc itself.)
+> 
+> There are two ways we could handle this:
+> 
+>   - Make -mfix-r10000 require -mbranch-likely.  (It mustn't _imply_
+>     -mbranch-likely.  It should simply check that -mbranch-likely is
+>     already in effect.)
+> 
+>   - Make -mfix-r10000 insert nops when -mbranch-likely is not in effect.
 
-As Maciej said, this should really be controlled by an -mfix-r10000
-command-line option, not by the _MIPS_ARCH_* macro.  (In this context,
-_MIPS_ARCH_* is a property of the compiler that you're using to build
-gcc itself.)
+Does using -mbranch-likely change the output of those specific asm commands that 
+my original patch was altering?  Or will -mfix-r10000 need to not only check the 
+status of -mbranch-likely and set it if not set, but also need to modify the 
+referenced beq/beqzl sets in mips.h?
 
-There are two ways we could handle this:
+If so, I assume a test for both TARGET_FIX_R10000 and TARGET_BRANCHLIKELY would 
+be needed, and then if TARGET_BRANCHLIKELY doesn't exist, but TARGET_FIX_R10000 
+is, insert 28 nops before beq.  Sound correct?
 
-  - Make -mfix-r10000 require -mbranch-likely.  (It mustn't _imply_
-    -mbranch-likely.  It should simply check that -mbranch-likely is
-    already in effect.)
 
-  - Make -mfix-r10000 insert nops when -mbranch-likely is not in effect.
+On setting -mbranch-likely, I found what I think is the appropriate section in 
+mips.c around Line 13810:
 
-Richard
+   /* If neither -mbranch-likely nor -mno-branch-likely was given
+      on the command line, set MASK_BRANCHLIKELY based on the target
+      architecture and tuning flags.  Annulled delay slots are a
+      size win, so we only consider the processor-specific tuning
+      for !optimize_size.  */
+   if ((target_flags_explicit & MASK_BRANCHLIKELY) == 0)
+     {
+       if (ISA_HAS_BRANCHLIKELY
+           && (optimize_size
+               || (mips_tune_info->tune_flags & PTF_AVOID_BRANCHLIKELY) == 0))
+         target_flags |= MASK_BRANCHLIKELY;
+       else
+         target_flags &= ~MASK_BRANCHLIKELY;
+     }
+   else if (TARGET_BRANCHLIKELY && !ISA_HAS_BRANCHLIKELY)
+     warning (0, "the %qs architecture does not support branch-likely"
+              " instructions", mips_arch_info->name);
+
+I'm kind of thinking that the -mfix-r10000 setting to include -mbranch-likely 
+would fit here (Assuming this is what can enable/disable that option via 
+MASK_BRANCHLIKELY), but if I'm reading it right, optimizing for size disables 
+brach-likely instructions.  Shouldn't -mfix-r10000 override that?
+
+Would an equivalent conditional like this be close?:
+
+       if (ISA_HAS_BRANCHLIKELY
+           && ((optimize_size || TARGET_FIX_R10000)
+               || (mips_tune_info->tune_flags & PTF_AVOID_BRANCHLIKELY) == 0))
+
+
+Also, does anyone have a copy of the R10000 Silicon Errata documentation kicking 
+around?  Thiemo brought up a point that we may need ssnop instead of nop, but 
+I'd need to check the errata for that, and that doesn't seem to exist anywhere 
+anymore.  I found an old link to it on MIPS' site, but nothing else.  I've only 
+got Vr10000 manuals from SGI and NEC, and they don't seem to cover 
+revision-specific errata any.
+
+Thanks!
+
+-- 
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+
+"The past tempts us, the present confuses us, the future frightens us.  And our 
+lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

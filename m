@@ -1,59 +1,215 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Nov 2008 08:24:45 +0000 (GMT)
-Received: from kuber.nabble.com ([216.139.236.158]:53397 "EHLO
-	kuber.nabble.com") by ftp.linux-mips.org with ESMTP
-	id S22963081AbYKBIYf convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 2 Nov 2008 08:24:35 +0000
-Received: from isper.nabble.com ([192.168.236.156])
-	by kuber.nabble.com with esmtp (Exim 4.63)
-	(envelope-from <lists@nabble.com>)
-	id 1KwYG5-0002Cq-Py
-	for linux-mips@linux-mips.org; Sun, 02 Nov 2008 01:24:29 -0700
-Message-ID: <20287845.post@talk.nabble.com>
-Date:	Sun, 2 Nov 2008 01:24:29 -0700 (PDT)
-From:	cola99 <cola99a@yahoo.com.tw>
-To:	linux-mips@linux-mips.org
-Subject: About extendable stacks in non VM-system
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Nov 2008 10:00:33 +0000 (GMT)
+Received: from ey-out-1920.google.com ([74.125.78.144]:4506 "EHLO
+	ey-out-1920.google.com") by ftp.linux-mips.org with ESMTP
+	id S22967945AbYKBKAX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 2 Nov 2008 10:00:23 +0000
+Received: by ey-out-1920.google.com with SMTP id 4so813219eyg.54
+        for <linux-mips@linux-mips.org>; Sun, 02 Nov 2008 02:00:19 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:mail-followup-to:cc
+         :subject:references:date:in-reply-to:message-id:user-agent
+         :mime-version:content-type;
+        bh=IznM/BehsY9NMjha5aIVzseowLFqDM0SMzMaNxx8FE4=;
+        b=hIPNlp07T4RtewNyZoedBRWhznAtlf/h2qbJnMCRwUXH2l0eRocHae2suv9a7/a2Xr
+         VnB7IQxszvN/xRvO4kFJtBuG5IaNeTaInfDtpeqS8wMcaiXCp/gPJBP4BvJOLOR3vyvS
+         Ee3CdbMvJIjInUWBNB6TSBl/ZmUnU69P8/ft0=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=from:to:mail-followup-to:cc:subject:references:date:in-reply-to
+         :message-id:user-agent:mime-version:content-type;
+        b=f26Ln3uY1lHOvAP71gSjJ8S/hO3K5P4kAxbGoz9y8A0e3FzWPAc7kunAq46qFtlKOE
+         BAzqZr035RTA14BJ6fjyT1gwsTZwlWBPE2R4SqKo5owvvRkMdvbVVGcZMku/Ley3u6kA
+         hO3TQG7houfcXynjXDf0vUjy87xrOLIZijFxU=
+Received: by 10.210.142.6 with SMTP id p6mr16048913ebd.100.1225620019430;
+        Sun, 02 Nov 2008 02:00:19 -0800 (PST)
+Received: from localhost (79-67-45-8.dynamic.dsl.as9105.com [79.67.45.8])
+        by mx.google.com with ESMTPS id z37sm4672251ikz.4.2008.11.02.02.00.17
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sun, 02 Nov 2008 02:00:18 -0800 (PST)
+From:	Richard Sandiford <rdsandiford@googlemail.com>
+To:	Kumba <kumba@gentoo.org>
+Mail-Followup-To: Kumba <kumba@gentoo.org>,gcc-patches@gcc.gnu.org,  Linux MIPS List <linux-mips@linux-mips.org>, rdsandiford@googlemail.com
+Cc:	gcc-patches@gcc.gnu.org,
+	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: [PATCH]: R10000 Needs LL/SC Workaround in Gcc
+References: <490A90F4.6040601@gentoo.org> <490C05A9.9070707@gentoo.org>
+	<87abcjibsl.fsf@firetop.home> <490CA4C8.40904@gentoo.org>
+	<87tzargrn4.fsf@firetop.home> <490CEDB9.6030600@gentoo.org>
+Date:	Sun, 02 Nov 2008 10:00:15 +0000
+In-Reply-To: <490CEDB9.6030600@gentoo.org> (kumba@gentoo.org's message of
+	"Sat\, 01 Nov 2008 20\:00\:57 -0400")
+Message-ID: <87prleh2hc.fsf@firetop.home>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/22.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-Nabble-From: cola99a@yahoo.com.tw
-Return-Path: <lists@nabble.com>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <rdsandiford@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21162
+X-archive-position: 21163
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cola99a@yahoo.com.tw
+X-original-sender: rdsandiford@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
+Kumba <kumba@gentoo.org> writes:
+> Richard Sandiford wrote:
+>> 
+>> To be clear, the first option above was to check -- in mips_override_options --
+>> that -mfix-r10000 is only used in cases where -mbranch-likely is in effect.
+>> If we pick that option, it would be an error to use -mfix-r10000 in
+>> other cases, and any code protected by TARGET_FIX_R10000 would be free
+>> to use branch-likely instructions.  (Actually, we should use sorry()
+>> instead of error() to report something like this.)
+>
+> [snip]
+>
+>> That's the second option above, yes.  In other words, -mfix-r10000
+>> would support both -mbranch-likely and -mno-branch-likely, and act
+>> accordingly.
+>
+> So do I need to worry about modifying the asm templates at all?  Or is
+> that only needed if pursuing option #2?
 
-I don't understand what this say~~~~
+You need to modify the asm templates whatever you do.
 
-Extendable stacks and heaps in a non-VM system: Even when you don’t
-have a disk and have no intention of supporting full demand paging, it
-can still be useful to grow an application’s stack and heap on demand
-while monitoring its growth. In this case you’ll need the TLB to map
-the stack/heap addresses, and you’ll use TLB miss events to decide
-whether to allocate more memory or whether the application is out
-of control.
+> The branch-likely stuff is only going to work for MIPS-II or higher
+> targets.  In the odd (but possible) cases where MIPS-I might be used
+> with -mfix-r10000, I assume we'll still have to emit 28 nops prior to
+> a beq/beqz instruction.  Is this already taken care of someplace?
 
-and this 
+Hmm?  No, option #2 was supposed to include this work.
 
-in the EntryLO Valid bit
-Refill TLB is optimized for speed and doesn’t want to check for special
-case. When some further processing is needed before a program can use a page
-referred to by the memory-held table, the memory-held entry can be left
-marked invalid. After TLB refill, this will cause a different kind of trap,
-invoking special processing without having to put a test in every software
-refill event
+I feel we're talking at cross-purposes, so just to be clear:
 
-I can't understant why ??
+ - In current gcc sources, the code generated by the __sync*() functions
+   is not suitable for R10K processors.  That's true for all current
+   command-line options.  We therefore need to add a new command-line
+   option (-mfix-r10000) that selects the required behaviour.
 
-Or someone can recommand where can discuss "see mips run " this book~~~~
+ - As you said in your original message, there are two workarounds
+   for the R10K errata:
 
--- 
-View this message in context: http://www.nabble.com/About-extendable-stacks-in-non-VM-system-tp20287845p20287845.html
-Sent from the linux-mips main mailing list archive at Nabble.com.
+   a) Make the asm templates use branch-likely instructions instead of
+      normal branches when -mfix-r10000 is in effect.
+
+   b) Separate loops by at least 28 instructions when -mfix-r10000 is
+      in effect.
+
+   Both workarounds require work, because gcc does neither of these
+   things at present.  However, (a) is much easier to implement than (b).
+
+   So it seems to me that there are two possible ways of implementing
+   the -mfix-r10000 option:
+
+   1) Only do (a).  Make it an error to use -mfix-r10000 when
+      branch-likely instructions are not available.  We should
+      check for this error in mips_override_options and use
+      sorry() rather than error() to report it.
+
+      Branch-likely instructions are not available if either:
+
+      i) the command line includes -mno-branch-likely; or
+      ii) both of the following hold:
+          - the selected architecture does not provide branch-likely
+            instructions; and
+          - the command line does not include -mbranch-likely.
+
+      The C condition for this is the one I gave in my previous message:
+
+      (target_flags_explicit & MASK_BRANCHLIKELY) == 0
+       ? !ISA_HAS_BRANCH_LIKELY
+       ? !TARGET_BRANCH_LIKELY)
+
+      So we should give up and call sorry() if:
+
+          TARGET_FIX_R10000
+          && (target_flags_explicit & MASK_BRANCHLIKELY) == 0
+              ? !ISA_HAS_BRANCHLIKELY
+              ? !TARGET_BRANCHLIKELY)
+
+      is true.
+
+      If we take this approach, any gcc code guarded by TARGET_FIX_R10000
+      can make free use of branch-likely instructions.  No separate
+      *_BRANCHLIKELY condition would be needed.
+
+      In other words, the asm template could always use branch-likely
+      instructions when TARGET_FIX_R10000 is true, and always use the
+      current branch sequences otherwise.
+
+   2) Implement both (a) and (b).  In this case, any gcc code guarded
+      by TARGET_FIX_R10000 would need to check whether branch-likely
+      instructions are available.  If they are, we can use either
+      workaround (a) or workaroudn (b).  If they aren't, we must
+      use workaround (b).
+
+   These two options correspond to the two in my original reply.
+
+>> ...that's a good question.  My take is "no".  I don't think we want
+>> -mfix-r10000 to enable branch-likely instructions in cases where
+>> it isn't necessary for R10000 errata.  If we take the first option,
+>> we can simply raise an error if:
+>
+> Hmm, okay.  Might this work to enable -mbranch-likely if -mfix-r10000?
+> (Kind of guessing by looking at other segments of code).
+>
+>    if ((target_flags_explicit & MASK_BRANCHLIKELY) == 0)
+>      {
+>        if (ISA_HAS_BRANCHLIKELY
+>            && (optimize_size
+>                || (!(target_flags_explicit & MASK_FIX_R10000) == 0)
+>                || (mips_tune_info->tune_flags & PTF_AVOID_BRANCHLIKELY) == 0))
+>          target_flags |= MASK_BRANCHLIKELY;
+>        else
+>          target_flags &= ~MASK_BRANCHLIKELY;
+>      }
+
+No.  What I was trying to say in the quoted text was: -mfix-r10000
+should have _no_ effect on whether branch-likely instructions are
+available for general use.
+
+As the comment above this code says:
+
+  /* If neither -mbranch-likely nor -mno-branch-likely was given
+     on the command line, set MASK_BRANCHLIKELY based on the target
+     architecture and tuning flags.  Annulled delay slots are a
+     size win, so we only consider the processor-specific tuning
+     for !optimize_size.  */
+
+In other words, this bit of the condition:
+
+           (optimize_size
+            || (mips_tune_info->tune_flags & PTF_AVOID_BRANCHLIKELY) == 0)
+
+is a _tuning_ decision.  It is used in cases where both
+TARGET_BRANCHLIKELY and !TARGET_BRANCH_LIKELY would be OK from
+a correctness standpoint.
+
+So suppose we only implement workaround (a) (== option (1) above).
+We now need branch-likely instructions _for correctness_, but only
+in certain asm templates.  It's therefore OK to override the _tuning_
+decision for those asm templates: correctness trumps tuning.  But we
+shouldn't change the tuning decision for _other_ branches (i.e. for
+branches where -mfix-r10000 does not require a branch-likely instruction).
+
+> My understanding so far for -mfix-r10000:
+> - Gets enabled if -march=r10000 is passed (done)
+
+Yes, provided that you never override an explicit -mfix-r10000 or
+-mno-fix-r10000.
+
+>> Yeah, I was wondering that too.  I did a search, but couldn't
+>> find anything.
+>
+> It seems we just need to use nop only and not worry about ssnop.
+
+Actually, I meant: I was wondering about the fact that there seems
+to be no online copy of the errata sheet that describes this problem.
+I've only ever seen a description of the workaround.  I've never seen
+a verbatim copy of the errata itself.
+
+Richard

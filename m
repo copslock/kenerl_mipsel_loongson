@@ -1,75 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Nov 2008 15:28:13 +0000 (GMT)
-Received: from be1ssnxpe1.nxp.com ([57.67.164.69]:39314 "EHLO
-	be1ssnxpe1.nxp.com") by ftp.linux-mips.org with ESMTP
-	id S23057046AbYKCP2L convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 3 Nov 2008 15:28:11 +0000
-Received: from EU1RDCRDC1VW025.exi.nxp.com ([134.27.176.170])
-	by be1ssnxpe1.nxp.com (8.13.8/8.13.8) with ESMTP id mA3FS5XE031174
-	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=NOT);
-	Mon, 3 Nov 2008 16:28:05 +0100
-Received: from EU1RDCRDC1WX029.exi.nxp.com ([134.27.176.238]) by
- EU1RDCRDC1VW025.exi.nxp.com ([134.27.176.170]) with mapi; Mon, 3 Nov 2008
- 16:27:37 +0100
-From:	Daniel J Laird <daniel.j.laird@nxp.com>
-To:	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>
-CC:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Date:	Mon, 3 Nov 2008 16:28:06 +0100
-Subject: [PATCH] Enabling PNX8XXX serial for NXP devices other than PNX8550.
-Thread-Topic: [PATCH] Enabling PNX8XXX serial for NXP devices other than
- PNX8550.
-Thread-Index: Ack9yMUZBESO4IE3S3eEIpWztVvPKA==
-Message-ID: <C13DBBE85AD6974B85C118C35890CA5F13B22CBA46@EU1RDCRDC1WX029.exi.nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Nov 2008 16:52:01 +0000 (GMT)
+Received: from ausxippc101.us.dell.com ([143.166.85.207]:35344 "EHLO
+	ausxippc101.us.dell.com") by ftp.linux-mips.org with ESMTP
+	id S23063459AbYKCQv7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 3 Nov 2008 16:51:59 +0000
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Subject: RE: [PATCH]: R10000 Needs LL/SC Workaround in Gcc
+Date:	Mon, 3 Nov 2008 10:51:49 -0600
+Message-ID: <B135486A342E6244AEE1EB13118903BA01A222DD@ausx3mpc106.aus.amer.dell.com>
+In-Reply-To: <alpine.LFD.1.10.0811021036330.20461@ftp.linux-mips.org>
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
-acceptlanguage:	en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=4.65.7400:2.4.4,1.2.40,4.0.164 definitions=2008-11-03_07:2008-10-10,2008-11-03,2008-11-03 signatures=0
-Return-Path: <daniel.j.laird@nxp.com>
+Thread-Topic: [PATCH]: R10000 Needs LL/SC Workaround in Gcc
+thread-index: Ack82OjfUvzB2ktXQC2D76Rks6NIIgA+2yHw
+References: <490A90F4.6040601@gentoo.org> <490C05A9.9070707@gentoo.org> <87abcjibsl.fsf@firetop.home> <490CA4C8.40904@gentoo.org> <87tzargrn4.fsf@firetop.home> <490CEDB9.6030600@gentoo.org> <alpine.LFD.1.10.0811021036330.20461@ftp.linux-mips.org>
+From:	<Paul_Koning@Dell.com>
+To:	<macro@linux-mips.org>, <kumba@gentoo.org>
+Cc:	<gcc-patches@gcc.gnu.org>, <linux-mips@linux-mips.org>,
+	<rdsandiford@googlemail.com>
+X-OriginalArrivalTime: 03 Nov 2008 16:51:50.0523 (UTC) FILETIME=[7792A4B0:01C93DD4]
+Return-Path: <Paul_Koning@Dell.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21172
+X-archive-position: 21173
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: daniel.j.laird@nxp.com
+X-original-sender: Paul_Koning@Dell.com
 Precedence: bulk
 X-list: linux-mips
 
-NXP PNX83XX SOCs use the same serial IP block as PNX8550 yet cannot select it
-due to KConfig dependencies.  This patch enables support for PNX8550 and PNX83XX SoCs.
-
-Kconfig |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-Signed-off-by: daniel.j.laird <daniel.j.laird@nxp.com>
-
-diff -urN linux.git.orig/drivers/serial/Kconfig linux.git.new/drivers/serial/Kconfig
---- linux.git.orig/drivers/serial/Kconfig	2008-10-27 14:40:31.000000000 +0000
-+++ linux.git.new/drivers/serial/Kconfig	2008-11-03 15:01:54.000000000 +0000
-@@ -959,10 +959,10 @@
- 
- config SERIAL_PNX8XXX
- 	bool "Enable PNX8XXX SoCs' UART Support"
--	depends on MIPS && SOC_PNX8550
-+	depends on MIPS && (SOC_PNX8550 || SOC_PNX833X)
- 	select SERIAL_CORE
- 	help
--	  If you have a MIPS-based Philips SoC such as PNX8550 or PNX8330
-+	  If you have a MIPS-based NXP SoC such as PNX8550 or PNX8330/2/5
- 	  and you want to use serial ports, say Y.  Otherwise, say N.
- 
- config SERIAL_PNX8XXX_CONSOLE
-@@ -970,7 +970,7 @@
- 	depends on SERIAL_PNX8XXX
- 	select SERIAL_CORE_CONSOLE
- 	help
--	  If you have a MIPS-based Philips SoC such as PNX8550 or PNX8330
-+	  If you have a MIPS-based NXP SoC such as PNX8550 or PNX8330/2/5
- 	  and you want to use serial console, say Y. Otherwise, say N.
- 
- config SERIAL_CORE
+PkZyb206IE1hY2llaiBXLiBSb3p5Y2tpIFttYWlsdG86bWFjcm9AbGludXgtbWlwcy5vcmddIA0K
+Pg0KPiBJIGJlbGlldmUgKGJ1dCBoYXZlIG5vdCBjaGVja2VkKSB0aGF0IGFsbCBDUFVzL0lTQXMg
+dGhhdCBhcmUgd2l0aGluIHRoZSANCj5NSVBTIElJIC0gTUlQUyBJViByYW5nZSBlbmFibGUgLW1i
+cmFuY2gtbGlrZWx5IGJ5IGRlZmF1bHQsIA0KDQpOb3QgcXVpdGUuICBzYjEgaGFzIG5vLWJyYW5j
+aC1saWtlbHkuICBJdCBhY3R1YWxseSBkb2VzIGltcGxlbWVudCB0aGUgaW5zdHJ1Y3Rpb24gYnV0
+IHRoZSBkb2N1bWVudGF0aW9uIGNsZWFybHkgc3RhdGVzIHRoYXQgaXQgc2hvdWxkIGJlIGF2b2lk
+ZWQuDQoNCglwYXVsDQo=

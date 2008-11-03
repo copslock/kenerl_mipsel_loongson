@@ -1,99 +1,141 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Apr 2009 03:15:22 +0100 (BST)
-Received: from sj-iport-1.cisco.com ([171.71.176.70]:37621 "EHLO
-	sj-iport-1.cisco.com") by ftp.linux-mips.org with ESMTP
-	id S29581754AbZDVSaA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 22 Apr 2009 19:30:00 +0100
-X-IronPort-AV: E=Sophos;i="4.40,231,1238976000"; 
-   d="scan'208";a="175360874"
-Received: from sj-dkim-2.cisco.com ([171.71.179.186])
-  by sj-iport-1.cisco.com with ESMTP; 22 Apr 2009 18:28:30 +0000
-Received: from sj-core-2.cisco.com (sj-core-2.cisco.com [171.71.177.254])
-	by sj-dkim-2.cisco.com (8.12.11/8.12.11) with ESMTP id n3MISUIK022305;
-	Wed, 22 Apr 2009 11:28:30 -0700
-Received: from cliff.cisco.com (cliff.cisco.com [171.69.11.141])
-	by sj-core-2.cisco.com (8.13.8/8.13.8) with ESMTP id n3MISU0S025858;
-	Wed, 22 Apr 2009 18:28:30 GMT
-Received: from cuplxvomd02.corp.sa.net ([64.101.20.155]) by cliff.cisco.com (8.6.12/8.6.5) with ESMTP id SAA07136; Wed, 22 Apr 2009 18:28:30 GMT
-Date:	Wed, 22 Apr 2009 11:28:30 -0700
-From:	David VomLehn <dvomlehn@cisco.com>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 1/2] MIPS: Preliminary vdso.
-Message-ID: <20090422182830.GA9184@cuplxvomd02.corp.sa.net>
-References: <49EE3B0F.3040506@caviumnetworks.com> <1240349605-1921-1-git-send-email-ddaney@caviumnetworks.com> <20090422175044.GA28623@cuplxvomd02.corp.sa.net> <49EF5C62.9080803@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Apr 2009 07:12:52 +0100 (BST)
+Received: from qmta07.emeryville.ca.mail.comcast.net ([76.96.30.64]:21218 "EHLO
+	QMTA07.emeryville.ca.mail.comcast.net") by ftp.linux-mips.org
+	with ESMTP id S23033668AbYKCJCN (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 3 Nov 2008 09:02:13 +0000
+Received: from OMTA12.emeryville.ca.mail.comcast.net ([76.96.30.44])
+	by QMTA07.emeryville.ca.mail.comcast.net with comcast
+	id aYkR1a00B0x6nqcA7Z1uU5; Mon, 03 Nov 2008 09:01:54 +0000
+Received: from [192.168.1.13] ([69.140.18.238])
+	by OMTA12.emeryville.ca.mail.comcast.net with comcast
+	id aZ1s1a00158Be2l8YZ1tJj; Mon, 03 Nov 2008 09:01:54 +0000
+X-Authority-Analysis: v=1.0 c=1 a=se7utVhDntQA:10 a=sj6Exy8oVBoA:10
+ a=dZRdnw54RLLAP4UkDQAA:9 a=ROiGRGIIV9sf-rlHcA4A:7
+ a=khN03sL6quQGr3a6YjP5gieClQkA:4 a=w6-myHctKckA:10 a=mylFLmerCdIA:10
+ a=PGOabtAob_8A:10 a=NInlibteEDoA:10 a=eZPNQgvkeWMA:10 a=WeOa-AV5lc8A:10
+ a=4iXfik_MsjQA:10
+Message-ID: <490EBDE2.6010709@gentoo.org>
+Date:	Mon, 03 Nov 2008 04:01:22 -0500
+From:	Kumba <kumba@gentoo.org>
+User-Agent: Thunderbird 2.0.0.17 (Windows/20080914)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <49EF5C62.9080803@caviumnetworks.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=1246; t=1240424910; x=1241288910;
-	c=relaxed/simple; s=sjdkim2002;
-	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
-	d=cisco.com; i=dvomlehn@cisco.com;
-	z=From:=20David=20VomLehn=20<dvomlehn@cisco.com>
-	|Subject:=20Re=3A=20[PATCH=201/2]=20MIPS=3A=20Preliminary=2
-	0vdso.
-	|Sender:=20;
-	bh=cKFsFv3okm0sC/S6GRuCGgkyfmaisLA4gJfgGBO8bVQ=;
-	b=lO64XAJkzjYMNiPwswKXjtsvKHLxlwt7YkxNf6WmHlCJ/BTqHlUoRXpScF
-	SyYgg9GrmsPrUcNvI8h8TMQwPiowshUVshWrlOCGGoKuKZL5QBsUpT+tCyNF
-	hZuEUfLQTW;
-Authentication-Results:	sj-dkim-2; header.From=dvomlehn@cisco.com; dkim=pass (
-	sig from cisco.com/sjdkim2002 verified; ); 
-Return-Path: <dvomlehn@cisco.com>
+To:	gcc-patches@gcc.gnu.org
+CC:	Linux MIPS List <linux-mips@linux-mips.org>,
+	rdsandiford@googlemail.com
+Subject: Re: [PATCH]: R10000 Needs LL/SC Workaround in Gcc
+References: <490A90F4.6040601@gentoo.org> <490C05A9.9070707@gentoo.org>	<87abcjibsl.fsf@firetop.home> <490CA4C8.40904@gentoo.org>	<87tzargrn4.fsf@firetop.home> <490CEDB9.6030600@gentoo.org> <87prleh2hc.fsf@firetop.home>
+In-Reply-To: <87prleh2hc.fsf@firetop.home>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22429
+X-archive-position: 22430
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvomlehn@cisco.com
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
->>> +int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
->>> +{
->>> +	int ret;
->>> +	unsigned long addr;
->>> +	struct mm_struct *mm = current->mm;
->>> +
->>> +	down_write(&mm->mmap_sem);
->>> +
->>> +	addr = vdso_addr(mm->start_stack);
->>> +
->>> +	addr = get_unmapped_area(NULL, addr, PAGE_SIZE, 0, 0);
->>> +	if (IS_ERR_VALUE(addr)) {
->>> +		ret = addr;
->>> +		goto up_fail;
->>> +	}
->>> +
->>> +	ret = install_special_mapping(mm, addr, PAGE_SIZE,
->>> +				      VM_READ|VM_EXEC|
->>> +				      VM_MAYREAD|VM_MAYWRITE|VM_MAYEXEC|
->>> +				      VM_ALWAYSDUMP,
->>> +				      &vdso_page);
->>> +
->>> +	if (ret)
->>> +		goto up_fail;
->>> +
->>> +	mm->context.vdso = (void *)addr;
->>> +
->>> +up_fail:
->>
->> It seems that this is an unexpected condition that probably indicates
->> a failure of the expected state of the process at this point. Perhaps
->> a pr_err() or pr_warning() would be appropriate?
->>
->>> +	up_write(&mm->mmap_sem);
->>> +	return ret;
->>> +}
->
-> Really it should always succeed.  Something is seriously wrong if you  
-> cannot map that page and we should probably panic().
+Richard Sandiford wrote:
 
-It seems like it may be recoverable, so perhaps BUG() is better.
+(Quoting out of order)
 
-> David Daney
+> 
+> I feel we're talking at cross-purposes, so just to be clear:
 
-David VomLehn
+Not really cross-purposes.  I'm just rather new to patching something big like a 
+full-blown, multi-target compiler with 20 years of history to it.  Mostly trying 
+to get an appropriate understanding of your two options so I can work the logic 
+out in my head and know how to go about attacking this.
+
+This is a step up from writing a md file for processor scheduling :)
+
+
+>    2) Implement both (a) and (b).  In this case, any gcc code guarded
+>       by TARGET_FIX_R10000 would need to check whether branch-likely
+>       instructions are available.  If they are, we can use either
+>       workaround (a) or workaroudn (b).  If they aren't, we must
+>       use workaround (b).
+
+I think it's better to target this path.  While it's probably an extremely rare 
+case, because this problem only affects a specific set of processor revisions, 
+triggering a problem only noticed (so far) on SGI machines running Linux, I tend 
+to err on the side of caution and think it's probably a good idea to do it right 
+the first time.
+
+Also, Murphy's Law.
+
+
+> You need to modify the asm templates whatever you do.
+
+This is what has me a little perplexed.  The asm templates are #define macros, 
+and it's kind of dawned on me that my attempts made so far to correct the errata 
+has me using preprocessor macros that are going to get translated into something 
+else when gcc itself is compiled, rather than gcc changing what it outputs based 
+on the flags we send it.
+
+So I'm assuming that, poking around in the sync.md file some, the better 
+approach might be to pass an extra argument to these atomic macros as they're 
+evaluated in sync.md.  This extra argument being the resultant branch likely 
+instruction:
+
+	- If -mfix-r10000 isn't needed or -mbranch-likely isn't called,
+	  "beq" gets passed in.
+	- If -mfix-r10000 is called, and ISA_HAS_BRANCHLIKELY is false,
+	  pass in 28 nops plus "beq" (is there some kind of macro that can
+	  expand a single nop 28 times?).
+	- If -mfix-r10000 is called and ISA_HAS_BRANCHLIKELY is true
+	  and -mno-branch-likely was not called, then pass in the beqzl
+	  instruction.
+
+I think that's all the relevant combinations.  It's also probably a good idea 
+too to determine the value to pass as the extra argument before the atomic macro 
+is called.
+
+Is this kind of check something that would need to be done in the md file 
+directly, referencing the various macros as needed, or would it need to be 
+defined as a function in mips.c and called inline in sync.md, returning a string 
+value to the function as it exists?  Or is there a better way?
+
+
+> Yes, provided that you never override an explicit -mfix-r10000 or
+> -mno-fix-r10000.
+
+I copied the same code for R4000 and R4400 for this:
+
+   /* Default to working around R10000 errata only if the processor
+      was selected explicitly.  */
+   if ((target_flags_explicit & MASK_FIX_R10000) == 0
+       && mips_matching_cpu_name_p (mips_arch_info->name, "r10000"))
+     target_flags |= MASK_FIX_R10000;
+
+I assume that won't fire on r12000/r14000/r16000, right?  I know R14K isn't 
+affected, but I haven't tried plugging my old R12K module back into the system 
+to see what it does.  R16K is likely safe.
+
+
+> Actually, I meant: I was wondering about the fact that there seems
+> to be no online copy of the errata sheet that describes this problem.
+> I've only ever seen a description of the workaround.  I've never seen
+> a verbatim copy of the errata itself.
+
+I tried seeing whether archive.org had anything old off of the mips.com site, 
+but nothing close to the old directory structure seems to exist.  If I new what 
+the PDF file name was, it might be possible to track something down on Google 
+pertaining to the last publicly released revision.  Bit surprised, too, on why 
+NEC doesn't have anything on necel.com.  They produced the actual silicon and 
+had a hand in designing it, if I'm not mistaken.  I'd think they would at least 
+have a copy if no one else.
+
+-- 
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+
+"The past tempts us, the present confuses us, the future frightens us.  And our 
+lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic

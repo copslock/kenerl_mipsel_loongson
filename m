@@ -1,256 +1,223 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Nov 2008 05:54:27 +0000 (GMT)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:7822 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S23375600AbYKHFyY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 8 Nov 2008 05:54:24 +0000
-Received: (qmail 12672 invoked from network); 8 Nov 2008 06:51:50 +0100
-Received: from scarran.roarinelk.net (192.168.0.242)
-  by fnoeppeil48.netpark.at with SMTP; 8 Nov 2008 06:51:50 +0100
-Date:	Sat, 8 Nov 2008 06:54:23 +0100
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 3/3] Alchemy: common reset code is evalboard code.
-Message-ID: <20081108065423.04826ed2@scarran.roarinelk.net>
-In-Reply-To: <4914CB2E.1020100@ru.mvista.com>
-References: <cover.1226082445.git.mano@roarinelk.homelinux.net>
-	<0b1dcd4090411d59e2272ca94da0fb4f5a4bbceb.1226083170.git.mano@roarinelk.homelinux.net>
-	<7fe9325e464ace53dae1affdb98681f6c4c59d53.1226083170.git.mano@roarinelk.homelinux.net>
-	<9bf5c9c78b0e2bada64f8f337d9397efb8781ac1.1226083170.git.mano@roarinelk.homelinux.net>
-	<4914CB2E.1020100@ru.mvista.com>
-Organization: Private
-X-Mailer: Claws Mail 3.6.1 (GTK+ 2.14.4; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <mano@roarinelk.homelinux.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Nov 2008 09:37:45 +0000 (GMT)
+Received: from nf-out-0910.google.com ([64.233.182.184]:46322 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S23381062AbYKHJhm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 8 Nov 2008 09:37:42 +0000
+Received: by nf-out-0910.google.com with SMTP id h3so891122nfh.14
+        for <linux-mips@linux-mips.org>; Sat, 08 Nov 2008 01:37:41 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:mail-followup-to:cc
+         :subject:references:date:in-reply-to:message-id:user-agent
+         :mime-version:content-type;
+        bh=qmlQwlIDKMvIzgAe5ElRKTQoRbf+C8TeCiIZ1ycGJZ8=;
+        b=K/4Kl2v+wvyBhQWrGPwb00CblAwwardWK9L4hayxvCuGbmyEu+lonf50D9XSZI2h6j
+         IaYMMfKwPGH9t7BFo7lzN2en/kMtVixiHATYaGgBlBUGgYMnZpiEIgJf6Ara0r+WaXsD
+         Kyi2pfBvS+Tx6vWtKB6b07DUfkyIpPFOsfco8=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=from:to:mail-followup-to:cc:subject:references:date:in-reply-to
+         :message-id:user-agent:mime-version:content-type;
+        b=wtmq+g6Zc1KFP3U2RWefrU0SuiQooJ2SVYEwM8QVHDMowd9ShlKpFMkzJlah27zZyK
+         xI5LoRHXsINSEGqHO1jH3mYUpj9gdNlLEugCtrwmUoH9aDRctBgGV7bKJXsKpOYKyVv9
+         p8KKvYGSwSunkQbDz/2vvMomiPtDHbVCKIG7I=
+Received: by 10.210.75.6 with SMTP id x6mr4317175eba.61.1226137061008;
+        Sat, 08 Nov 2008 01:37:41 -0800 (PST)
+Received: from localhost (79-67-45-8.dynamic.dsl.as9105.com [79.67.45.8])
+        by mx.google.com with ESMTPS id y37sm227003iky.6.2008.11.08.01.37.38
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sat, 08 Nov 2008 01:37:39 -0800 (PST)
+From:	Richard Sandiford <rdsandiford@googlemail.com>
+To:	Kumba <kumba@gentoo.org>
+Mail-Followup-To: Kumba <kumba@gentoo.org>,gcc-patches@gcc.gnu.org,  Linux MIPS List <linux-mips@linux-mips.org>, rdsandiford@googlemail.com
+Cc:	gcc-patches@gcc.gnu.org,
+	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: [PATCH]: R10000 Needs LL/SC Workaround in Gcc
+References: <490A90F4.6040601@gentoo.org> <490C05A9.9070707@gentoo.org>
+	<87abcjibsl.fsf@firetop.home> <490CA4C8.40904@gentoo.org>
+	<87tzargrn4.fsf@firetop.home> <490CEDB9.6030600@gentoo.org>
+	<87prleh2hc.fsf@firetop.home> <490EBDE2.6010709@gentoo.org>
+	<87myggilk2.fsf@firetop.home> <490FF63A.7010900@gentoo.org>
+Date:	Sat, 08 Nov 2008 09:37:32 +0000
+In-Reply-To: <490FF63A.7010900@gentoo.org> (kumba@gentoo.org's message of
+	"Tue\, 04 Nov 2008 02\:14\:02 -0500")
+Message-ID: <8763mypnhf.fsf@firetop.home>
+User-Agent: Gnus/5.110006 (No Gnus v0.6) Emacs/22.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <rdsandiford@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21241
+X-archive-position: 21242
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: rdsandiford@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 08 Nov 2008 02:11:42 +0300
-Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
+Kumba <kumba@gentoo.org> writes:
+> Richard Sandiford wrote:
+>> Agreed, but that's just as true of option 1.  Each option is as correct
+>> as the other.  It's just a question of whether we need the combination:
+>> 
+>>   -mips1 -mllsc -mfix-r10000
+>> 
+>> to be accepted, or whether we can treat it as a compile-time error.
+>
+> Hmm, which do you think makes sense?  From a usage perspective, most
+> developers are working in the MIPS32/MIPS64 ISA stuff.  In Gentoo, the
+> mips port mostly supports SGI systems, mostly anything with a MIPS-IV
+> capable processor (haven't decided on MIPS-III's fate just yet).
+> Debian I know has switched off of MIPS-I being the default for their
+> binaries, and I think is MIPS-II now.  In all these cases, the target
+> OS is usually Linux, although I know there are some Irix folks still
+> out there, plus the *BSDs all got their own ports.
+>
+> But I guess the question I'm pondering, is just how rare would it be
+> for someone to actually need a MIPS-I binary with ll/sc and
+> branch-likely fixes to run on something like an R10000?  Rare enough
+> to justify denying them that particular command argument combination,
+> and thus taking Option #1?  Or go the extra mile for Option #2?  I
+> don't know if that's my call to really make, since I lack the
+> statistical data to know who would be affected, and in what ways
+> (i.e., do they have alternative methods, such as MIPS-II, etc..).
 
-> Hello.
-> 
-> Manuel Lauss wrote:
-> 
-> > Move common/reset.c contents to evalboard code where it belongs.
-> >   
-> 
->    I'm not sure it belongs there...
+I'm not sure I have the statistical knowledge either.  I've tended
+to work in embedded environments where -march=<my cpu> is almost always
+the right option to use.  But like Maciej, I suspect it isn't worth
+supporting the combination.  So my preference is for option #1.
 
-Oh yes it does (most of it, anyway).  From my
-"Im-not-a-au1200-evalboard" perspective most of the code in
-alchemy/common is crap/hackery for the evalboards. reset.c is such a
-case. I want it gone ;-) (just like common/platform.c).
+You make a convincing case that the combination isn't useful for current
+Linux distributions.  And it isn't useful for IRIX 6 either: the o32
+system libraries are -mips2 rather than -mips1, and both GCC and
+MIPSpro default to -mips2 for o32.
 
+Also, I believe the glibc patch doesn't cope with -mips1 -mllsc either.
+Is that right?  If so, that's another reason not to worry about it
+for GCC.
 
-> > Add reboot hook initialization to mtx-1 and xxs1500 boards.
-> >
-> > Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
-> 
->    That's all good but doesn't look equivalent to the old code...
-cf. end of this mail
+I don't have a strong opinion though.
 
-> > diff --git a/arch/mips/alchemy/common/setup.c b/arch/mips/alchemy/common/setup.c
-> > index 1ac6b06..cfb531e 100644
-> > --- a/arch/mips/alchemy/common/setup.c
-> > +++ b/arch/mips/alchemy/common/setup.c
-> > @@ -28,25 +28,14 @@
-> >  #include <linux/init.h>
-> >  #include <linux/ioport.h>
-> >  #include <linux/module.h>
-> > -#include <linux/pm.h>
-> > -
-> > -#include <asm/mipsregs.h>
-> > -#include <asm/reboot.h>
-> > -#include <asm/time.h>
-> > -
-> >  #include <au1000.h>
-> > -#include <prom.h>
-> >  
-> >  extern void __init board_setup(void);
-> > -extern void au1000_restart(char *);
-> > -extern void au1000_halt(void);
-> > -extern void au1000_power_off(void);
-> >  extern void set_cpuspec(void);
-> >  
-> >  void __init plat_mem_setup(void)
-> >  {
-> >  	struct	cpu_spec *sp;
-> > -	char *argptr;
-> >  	unsigned long prid, cpufreq, bclk;
-> >  
-> >  	set_cpuspec();
-> > @@ -79,34 +68,6 @@ void __init plat_mem_setup(void)
-> >  		/* Clear to obtain best system bus performance */
-> >  		clear_c0_config(1 << 19); /* Clear Config[OD] */
-> >  
-> > -	argptr = prom_getcmdline();
-> > -
-> > -#ifdef CONFIG_SERIAL_8250_CONSOLE
-> > -	argptr = strstr(argptr, "console=");
-> > -	if (argptr == NULL) {
-> > -		argptr = prom_getcmdline();
-> > -		strcat(argptr, " console=ttyS0,115200");
-> > -	}
-> > -#endif
-> > -
-> > -#ifdef CONFIG_FB_AU1100
-> > -	argptr = strstr(argptr, "video=");
-> > -	if (argptr == NULL) {
-> > -		argptr = prom_getcmdline();
-> > -		/* default panel */
-> > -		/*strcat(argptr, " video=au1100fb:panel:Sharp_320x240_16");*/
-> > -	}
-> > -#endif
-> > -
-> > -#if defined(CONFIG_SOUND_AU1X00) && !defined(CONFIG_SOC_AU1000)
-> > -	/* au1000 does not support vra, au1500 and au1100 do */
-> > -	strcat(argptr, " au1000_audio=vra");
-> > -	argptr = prom_getcmdline();
-> > -#endif
-> > -	_machine_restart = au1000_restart;
-> > -	_machine_halt = au1000_halt;
-> > -	pm_power_off = au1000_power_off;
-> > -
-> >  	/* IO/MEM resources. */
-> >  	set_io_port_base(0);
-> >  	ioport_resource.start = IOPORT_RESOURCE_START;
-> >   
-> 
->    How is this change related to the patch's purpose?
+>> If you do go for option 2, you then have to decide whether to insert
+>> 28 nops after every LL/SC loop, or whether you try to do some analysis
+>> to avoid unnecessary nops.  The natural place for this analysis would
+>> be mips_avoid_hazard.
+>
+> Hmm, just looking at this out of curiosity to get an idea of what I might have 
+> to tackle, but this particular sequence looks like the key:
+>
+>    /* Work out how many nops are needed.  Note that we only care about
+>       registers that are explicitly mentioned in the instruction's pattern.
+>       It doesn't matter that calls use the argument registers or that they
+>       clobber hi and lo.  */
+>    if (*hilo_delay < 2 && reg_set_p (lo_reg, pattern))
+>      nops = 2 - *hilo_delay;
+>    else if (*delayed_reg != 0 && reg_referenced_p (*delayed_reg, pattern))
+>      nops = 1;
+>    else
+>      nops = 0;
+>
+> I'd have to do some reading around the code to get an understanding of
+> how this function works and is called, but I'm taking a guess that
+> it's just an extra 'else if ... nops = 28 ...' for the simple approach
+> (more complex if one were to try actual analysis).  Ot at minimum,
+> another entire if block, since this does look like it's specifically
+> for HI/LO checks.
 
-Agrees, most belongs in the previous patch
+It's a bit more complicated than that.  The current code takes advantage
+of a nice property: that a gap of two instructions will avoid all the
+hazards that we currently handle.  So if we come across a branch,
+we only ever need to look at the branch and its delay slot; we never
+need to look at the target of a branch.  For the R10000 errata,
+you would either:
 
- 
-> > diff --git a/arch/mips/alchemy/evalboards/common.c b/arch/mips/alchemy/evalboards/common.c
-> > index d112fcf..7c78d54 100644
-> > --- a/arch/mips/alchemy/evalboards/common.c
-> > +++ b/arch/mips/alchemy/evalboards/common.c
-> >   
-> [...]
-> > +static void evalboard_halt(void)
-> > +{
-> > +#if defined(CONFIG_MIPS_PB1550) || defined(CONFIG_MIPS_DB1550)
-> > +	/* Power off system */
-> > +	printk(KERN_NOTICE "\n** Powering off...\n");
-> > +	au_writew(au_readw(0xAF00001C) | (3 << 14), 0xAF00001C);
-> > +	au_sync();
-> > +	while (1)
-> > +		; /* should not get here */
-> > +#else
-> > +	printk(KERN_NOTICE "\n** You can safely turn off the power\n");
-> > +#ifdef CONFIG_MIPS_MIRAGE
-> > +	au_writel((1 << 26) | (1 << 10), GPIO2_OUTPUT);
-> > +#endif
-> > +#ifdef CONFIG_MIPS_DB1200
-> > +	au_writew(au_readw(0xB980001C) | (1 << 14), 0xB980001C);
-> > +#endif
-> > +#ifdef CONFIG_PM
-> > +	au_sleep();
-> > +
-> > +	/* Should not get here */
-> > +	printk(KERN_ERR "Unable to put CPU in sleep mode\n");
-> > +	while (1)
-> > +		;
-> > +#else
-> > +	while (1)
-> > +		__asm__(".set\tmips3\n\t"
-> > +			"wait\n\t"
-> > +			".set\tmips0");
-> > +#endif
-> > +#endif /* defined(CONFIG_MIPS_PB1550) || defined(CONFIG_MIPS_DB1550) */
-> > +}
-> >   
-> 
->    So you moved this code only to leave the board specific #ifdef'ery 
-> where it was? ;-)
+  (1) need to do proper global (inter-block) analaysis, which is
+      a fair bit of new code; or
 
-Read the patch description: I just moved it out of common.  If you
-prefer I could remove this block and add shutdown/reboot hooks in every
-board file.
+  (2) conservatively assume that the target of a branch might be a
+      __sync_*() operation.
 
+Also, the "nops =" part of the current code inserts "#nop" rather than
+"nop" for ".set reorder" functions, because the assembler is supposed
+to avoid the hazards in that case.  Unless you make GAS do the same
+for this errata, you would need to:
 
-> > +
-> > +void __init evalboard_common_init(void)
-> > +{
-> > +	char *argptr;
-> > +
-> > +	argptr = prom_getcmdline();
-> > +
-> > +#ifdef CONFIG_SERIAL_8250_CONSOLE
-> > +	argptr = strstr(argptr, "console=");
-> > +	if (argptr == NULL) {
-> > +		argptr = prom_getcmdline();
-> > +		strcat(argptr, " console=ttyS0,115200");
-> > +	}
-> > +#endif
-> > +
-> > +#ifdef CONFIG_FB_AU1100
-> > +	argptr = strstr(argptr, "video=");
-> > +	if (argptr == NULL) {
-> > +		argptr = prom_getcmdline();
-> > +		/* default panel */
-> > +		/*strcat(argptr, " video=au1100fb:panel:Sharp_320x240_16");*/
-> > +	}
-> > +#endif
-> > +
-> > +#if defined(CONFIG_SOUND_AU1X00) && !defined(CONFIG_SOC_AU1000)
-> > +	/* au1000 does not support vra, au1500 and au1100 do */
-> > +	strcat(argptr, " au1000_audio=vra");
-> > +	argptr = prom_getcmdline();
-> > +#endif
-> >   
-> 
->    This probably needs to be in another patch...
+  (1) insert a real nop instead of a hazard_nop; and
 
-Agreed,
+  (2) treat any asm as a potential atomic operation.
 
+>> If you go for option 1, you could replace things like:
+>> 
+>>   "\tbeq\t%@,%.,1b\n"				\
+>>   "\tnop\n"					\
+>> 
+>> with:
+>> 
+>>   "\tbeq%?\t%@,%.,1b\n"				\
+>>   "\tnop\n"					\
+>
+> Looks simple enough.  I found the block explaining what the %?
+> parameter does.  Is that in any actual documentation aside from a
+> comment block in mips.c?  I'm only looking at the 4.3.2 Internals
+> Manual, cause I don't know if 4.4.x Internals is online yet.  Wasn't
+> sure if that was addressed from a documentation standpoint (or whether
+> it's something that even needs to be listed online).
 
-> > +	_machine_restart = evalboard_restart;
-> >   
-> 
->    I'm not sure that the name fits well since there's nothing board 
-> specific in this particular function, just SoC specific...
+The internals manual intentionally doesn't cover things like this.
+It's for target-independent stuff, not for internal details about
+each port.  So the mips.c comment _is_ the documentation.
 
-My custom au1200 platform reboots just fine without this (as
-does the DB1200), and the only in-tree users seem to be the
-evalboards.
+>> and make the .md insn do:
+>> 
+>>   mips_branch_likely = TARGET_FIX_R10000;
+>
+> Can this go anywhere in sync.md (i.e., at the top in a proper place),
+> or does it need to go before any call to the macro templates?
 
+mips_branch_likely only applies to the _current_ insn, so it needs
+to go before any call the macro templates.  Please use a helper
+function such as:
 
-> > diff --git a/arch/mips/alchemy/mtx-1/board_setup.c b/arch/mips/alchemy/mtx-1/board_setup.c
-> > index 2e26465..4712ce4 100644
-> > --- a/arch/mips/alchemy/mtx-1/board_setup.c
-> > +++ b/arch/mips/alchemy/mtx-1/board_setup.c
-> > @@ -122,6 +123,8 @@ void __init board_setup(void)
-> >  
-> >  	board_pci_idsel = mtx1_pci_idsel;
-> >  
-> > +	_machine_restart = board_reset;
-> >   
-> 
->    Hey, that bypasses the restart code that was executed before this 
-> patch...
+const char *
+mips_output_sync_insn (const char *template)
+{
+  mips_branch_likely = TARGET_FIX_R10000;
+  return template;
+}
 
-Yes, but are you absolutely sure its really necessary?  I never had any
-problems rebooting through the _machine_restart function without that
-removed code on the DB1200 or my other AU1200 platform.  Especially
-since the default platform init file in yamon takes care of what the
-now-bypassed code did (of course I don't know that in the MTX-1/XXS1500
-case but I hope the designers of those boards just modified an existing
-demoboard init file).
+>> But something nattier is needed for MIPS_SYNC_NEW_OP and MIPS_SYNC_NEW_NAND,
+>> where the branch delay slot is not a nop.  In this case, we need to replace
+>> things like:
+>> 
+>>   "\tbeq\t%@,%.,1b\n"				\
+>>   "\t" INSN "\t%0,%0,%2\n"			\
+>> 
+>> with:
+>> 
+>>   "\tbeql\t%@,%.,1b\n"				\
+>>   "\tnop\n"					\
+>>   "\t" INSN "\t%0,%0,%2\n"			\
+>
+> Looking at what %# and %/ do, Maybe a new punctuation character that simply 
+> dumps out a nop instead if mips_branch_likely is true?  I.e.:
+>
+>      case '~':
+>        if (mips_branch_likely)
+>          fputs ("\n\tnop", file);
+>        break;
+>
+> And:
+>
+>      "\tbeq%?\t%@,%.,1b%~\n"				\
+>      "\t" INSN "\t%0,%0,%2\n"			\
+>
+> '~' seems to be one of the last unused characters on my keyboard.
+> Seems like a good fit.
 
-Do you have access to any of the not-DB1200 testboards? Can you please
-test whether reboot/shutdown still works after this change?
+Yeah, looks good.  I'm a bit worried about running of % characters,
+but like I say, we could always replace the templates with individual
+output_asm_insns at some point in the future.
 
-Thank you!
-	Manuel Lauss
+Richard

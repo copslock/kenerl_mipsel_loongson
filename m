@@ -1,283 +1,1072 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Nov 2008 18:20:28 +0000 (GMT)
-Received: from mail.lysator.liu.se ([130.236.254.3]:37283 "EHLO
-	mail.lysator.liu.se") by ftp.linux-mips.org with ESMTP
-	id S23406719AbYKHSUZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 8 Nov 2008 18:20:25 +0000
-Received: from mail.lysator.liu.se (localhost [127.0.0.1])
-	by mail.lysator.liu.se (Postfix) with ESMTP id 94EDE4002A;
-	Sat,  8 Nov 2008 19:20:19 +0100 (CET)
-Received: from [192.168.10.105] (c-5fbbe555.035-105-73746f38.cust.bredbandsbolaget.se [85.229.187.95])
-	(using TLSv1 with cipher AES128-SHA (128/128 bits))
-	(No client certificate requested)
-	by mail.lysator.liu.se (Postfix) with ESMTP id 68EEF4001B;
-	Sat,  8 Nov 2008 19:20:19 +0100 (CET)
-Cc:	Kumba <kumba@gentoo.org>, gcc-patches@gcc.gnu.org,
-	Linux MIPS List <linux-mips@linux-mips.org>
-Message-Id: <BC4F8B38-68DD-4E72-AA0D-928A379813A9@27m.se>
-From:	Markus Gothe <markus.gothe@27m.se>
-To:	Richard Sandiford <rdsandiford@googlemail.com>
-In-Reply-To: <8763mypnhf.fsf@firetop.home>
-Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha1; boundary="Apple-Mail-12-900597536"
-Content-Transfer-Encoding: 7bit
-Mime-Version: 1.0 (Apple Message framework v929.2)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Nov 2008 06:10:31 +0000 (GMT)
+Received: from qmta01.westchester.pa.mail.comcast.net ([76.96.62.16]:25581
+	"EHLO QMTA01.westchester.pa.mail.comcast.net") by ftp.linux-mips.org
+	with ESMTP id S23487377AbYKJGK0 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 10 Nov 2008 06:10:26 +0000
+Received: from OMTA08.westchester.pa.mail.comcast.net ([76.96.62.12])
+	by QMTA01.westchester.pa.mail.comcast.net with comcast
+	id dJ7r1a0030Fqzac51JAK6E; Mon, 10 Nov 2008 06:10:19 +0000
+Received: from [192.168.1.13] ([69.140.18.238])
+	by OMTA08.westchester.pa.mail.comcast.net with comcast
+	id dJAJ1a00358Be2l3UJAJAK; Mon, 10 Nov 2008 06:10:19 +0000
+X-Authority-Analysis: v=1.0 c=1 a=se7utVhDntQA:10 a=sj6Exy8oVBoA:10
+ a=TM4QF-CV3ApqrFGkac4A:9 a=HEpt_0ue3Z8Fyi2k6IEA:7
+ a=M3L59knwdKb3tAer_KIkpBVTAOUA:4 a=w6-myHctKckA:10 a=WeOa-AV5lc8A:10
+ a=4iXfik_MsjQA:10 a=hd5ZDugPuapMM0Cr4_kA:9 a=3BcQn6lpcM_tRnhoCAoA:7
+ a=noIq93Pr2dnfIYHfnrsaEeU7z90A:4 a=oVP8SKXuTwoA:10 a=tFnb6wovh8EA:10
+ a=mylFLmerCdIA:10 a=vhuCkwUcEWQA:10 a=NfA2RSpTaHsA:10
+ a=jAUcCuUMnAv2-L_zwfMA:9 a=cVP2Ca7bBscggBpVWIoA:7
+ a=ADDSMoQASUuom2_ylhlQlov6kjwA:4
+Message-ID: <4917D01B.8080508@gentoo.org>
+Date:	Mon, 10 Nov 2008 01:09:31 -0500
+From:	Kumba <kumba@gentoo.org>
+User-Agent: Thunderbird 2.0.0.17 (Windows/20080914)
+MIME-Version: 1.0
+To:	gcc-patches@gcc.gnu.org
+CC:	Linux MIPS List <linux-mips@linux-mips.org>,
+	rdsandiford@googlemail.com
 Subject: Re: [PATCH]: R10000 Needs LL/SC Workaround in Gcc
-Date:	Sat, 8 Nov 2008 19:20:16 +0100
-References: <490A90F4.6040601@gentoo.org> <490C05A9.9070707@gentoo.org> <87abcjibsl.fsf@firetop.home> <490CA4C8.40904@gentoo.org> <87tzargrn4.fsf@firetop.home> <490CEDB9.6030600@gentoo.org> <87prleh2hc.fsf@firetop.home> <490EBDE2.6010709@gentoo.org> <87myggilk2.fsf@firetop.home> <490FF63A.7010900@gentoo.org> <8763mypnhf.fsf@firetop.home>
-X-Pgp-Agent: GPGMail d53 (v53, Leopard)
-X-Mailer: Apple Mail (2.929.2)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <markus.gothe@27m.se>
+References: <490A90F4.6040601@gentoo.org> <490C05A9.9070707@gentoo.org>	<87abcjibsl.fsf@firetop.home> <490CA4C8.40904@gentoo.org>	<87tzargrn4.fsf@firetop.home> <490CEDB9.6030600@gentoo.org>	<87prleh2hc.fsf@firetop.home> <490EBDE2.6010709@gentoo.org>	<87myggilk2.fsf@firetop.home> <490FF63A.7010900@gentoo.org> <8763mypnhf.fsf@firetop.home>
+In-Reply-To: <8763mypnhf.fsf@firetop.home>
+Content-Type: multipart/mixed;
+ boundary="------------090103070700080004080404"
+Return-Path: <kumba@gentoo.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21247
+X-archive-position: 21249
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: markus.gothe@27m.se
+X-original-sender: kumba@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---Apple-Mail-12-900597536
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed; delsp=yes
-Content-Transfer-Encoding: quoted-printable
+This is a multi-part message in MIME format.
+--------------090103070700080004080404
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
-For what it's worth:
-
-R10K should be able to compile with -mips4
-
-On SGI-systems I think they deprecated all the R3K and earlier systems =20=
-
-with IRIX 5.3 IIRC.
-
-My old SGI Indigo (yeah, the original Indigo) R4K still runs fine with =20=
-
-IRIX 6.5.22 and -mips3/n32-binaries last time I checked.
-
-If in doubt ask on http://www.nekochan.net
-
-//Markus
-
-On 8 Nov 2008, at 10:37, Richard Sandiford wrote:
-
-> Kumba <kumba@gentoo.org> writes:
->> Richard Sandiford wrote:
->>> Agreed, but that's just as true of option 1.  Each option is as =20
->>> correct
->>> as the other.  It's just a question of whether we need the =20
->>> combination:
->>>
->>>  -mips1 -mllsc -mfix-r10000
->>>
->>> to be accepted, or whether we can treat it as a compile-time error.
->>
->> Hmm, which do you think makes sense?  =46rom a usage perspective, =
-most
->> developers are working in the MIPS32/MIPS64 ISA stuff.  In Gentoo, =20=
-
->> the
->> mips port mostly supports SGI systems, mostly anything with a MIPS-IV
->> capable processor (haven't decided on MIPS-III's fate just yet).
->> Debian I know has switched off of MIPS-I being the default for their
->> binaries, and I think is MIPS-II now.  In all these cases, the target
->> OS is usually Linux, although I know there are some Irix folks still
->> out there, plus the *BSDs all got their own ports.
->>
->> But I guess the question I'm pondering, is just how rare would it be
->> for someone to actually need a MIPS-I binary with ll/sc and
->> branch-likely fixes to run on something like an R10000?  Rare enough
->> to justify denying them that particular command argument combination,
->> and thus taking Option #1?  Or go the extra mile for Option #2?  I
->> don't know if that's my call to really make, since I lack the
->> statistical data to know who would be affected, and in what ways
->> (i.e., do they have alternative methods, such as MIPS-II, etc..).
->
+Richard Sandiford wrote:
+> 
 > I'm not sure I have the statistical knowledge either.  I've tended
-> to work in embedded environments where -march=3D<my cpu> is almost =20
-> always
+> to work in embedded environments where -march=<my cpu> is almost always
 > the right option to use.  But like Maciej, I suspect it isn't worth
 > supporting the combination.  So my preference is for option #1.
->
-> You make a convincing case that the combination isn't useful for =20
-> current
+> 
+> You make a convincing case that the combination isn't useful for current
 > Linux distributions.  And it isn't useful for IRIX 6 either: the o32
 > system libraries are -mips2 rather than -mips1, and both GCC and
 > MIPSpro default to -mips2 for o32.
->
-> Also, I believe the glibc patch doesn't cope with -mips1 -mllsc =20
-> either.
+
+Yeah, trying to handle MIPS-I stuff looks like it'll be above my head for now, 
+so I'm going to aim at the second option after all.
+
+FYI, I explain about the two different patches attached to this below.  They're 
+not final by any means, but I'm doing something wrong somewhere in both them.
+
+
+> Also, I believe the glibc patch doesn't cope with -mips1 -mllsc either.
 > Is that right?  If so, that's another reason not to worry about it
 > for GCC.
->
-> I don't have a strong opinion though.
->
->>> If you do go for option 2, you then have to decide whether to insert
->>> 28 nops after every LL/SC loop, or whether you try to do some =20
->>> analysis
->>> to avoid unnecessary nops.  The natural place for this analysis =20
->>> would
->>> be mips_avoid_hazard.
->>
->> Hmm, just looking at this out of curiosity to get an idea of what I =20=
 
->> might have
->> to tackle, but this particular sequence looks like the key:
->>
->>   /* Work out how many nops are needed.  Note that we only care about
->>      registers that are explicitly mentioned in the instruction's =20
->> pattern.
->>      It doesn't matter that calls use the argument registers or =20
->> that they
->>      clobber hi and lo.  */
->>   if (*hilo_delay < 2 && reg_set_p (lo_reg, pattern))
->>     nops =3D 2 - *hilo_delay;
->>   else if (*delayed_reg !=3D 0 && reg_referenced_p (*delayed_reg, =20
->> pattern))
->>     nops =3D 1;
->>   else
->>     nops =3D 0;
->>
->> I'd have to do some reading around the code to get an understanding =20=
+It doesn't as I coded it.  I plan on addressing that patch after the gcc-side of 
+things.  Ralf suggested in that patch on libc-ports that I handle the MIPS-I 
+case there, though, but if we're not going to support it in the gcc patch, then 
+it probably isn't needed in the glibc patch either.  We'll see, though!
 
->> of
->> how this function works and is called, but I'm taking a guess that
->> it's just an extra 'else if ... nops =3D 28 ...' for the simple =20
->> approach
->> (more complex if one were to try actual analysis).  Ot at minimum,
->> another entire if block, since this does look like it's specifically
->> for HI/LO checks.
->
-> It's a bit more complicated than that.  The current code takes =20
-> advantage
-> of a nice property: that a gap of two instructions will avoid all the
-> hazards that we currently handle.  So if we come across a branch,
-> we only ever need to look at the branch and its delay slot; we never
-> need to look at the target of a branch.  For the R10000 errata,
-> you would either:
->
->  (1) need to do proper global (inter-block) analaysis, which is
->      a fair bit of new code; or
->
->  (2) conservatively assume that the target of a branch might be a
->      __sync_*() operation.
->
-> Also, the "nops =3D" part of the current code inserts "#nop" rather =
-than
-> "nop" for ".set reorder" functions, because the assembler is supposed
-> to avoid the hazards in that case.  Unless you make GAS do the same
-> for this errata, you would need to:
->
->  (1) insert a real nop instead of a hazard_nop; and
->
->  (2) treat any asm as a potential atomic operation.
->
->>> If you go for option 1, you could replace things like:
->>>
->>>  "\tbeq\t%@,%.,1b\n"				\
->>>  "\tnop\n"					\
->>>
->>> with:
->>>
->>>  "\tbeq%?\t%@,%.,1b\n"				\
->>>  "\tnop\n"					\
->>
->> Looks simple enough.  I found the block explaining what the %?
->> parameter does.  Is that in any actual documentation aside from a
->> comment block in mips.c?  I'm only looking at the 4.3.2 Internals
->> Manual, cause I don't know if 4.4.x Internals is online yet.  Wasn't
->> sure if that was addressed from a documentation standpoint (or =20
->> whether
->> it's something that even needs to be listed online).
->
-> The internals manual intentionally doesn't cover things like this.
-> It's for target-independent stuff, not for internal details about
-> each port.  So the mips.c comment _is_ the documentation.
->
->>> and make the .md insn do:
->>>
->>>  mips_branch_likely =3D TARGET_FIX_R10000;
->>
->> Can this go anywhere in sync.md (i.e., at the top in a proper place),
->> or does it need to go before any call to the macro templates?
->
+
 > mips_branch_likely only applies to the _current_ insn, so it needs
 > to go before any call the macro templates.  Please use a helper
 > function such as:
->
+> 
 > const char *
 > mips_output_sync_insn (const char *template)
 > {
->  mips_branch_likely =3D TARGET_FIX_R10000;
->  return template;
+>   mips_branch_likely = TARGET_FIX_R10000;
+>   return template;
 > }
->
->>> But something nattier is needed for MIPS_SYNC_NEW_OP and =20
->>> MIPS_SYNC_NEW_NAND,
->>> where the branch delay slot is not a nop.  In this case, we need =20
->>> to replace
->>> things like:
->>>
->>>  "\tbeq\t%@,%.,1b\n"				\
->>>  "\t" INSN "\t%0,%0,%2\n"			\
->>>
->>> with:
->>>
->>>  "\tbeql\t%@,%.,1b\n"				\
->>>  "\tnop\n"					\
->>>  "\t" INSN "\t%0,%0,%2\n"			\
->>
->> Looking at what %# and %/ do, Maybe a new punctuation character =20
->> that simply
->> dumps out a nop instead if mips_branch_likely is true?  I.e.:
->>
->>     case '~':
->>       if (mips_branch_likely)
->>         fputs ("\n\tnop", file);
->>       break;
->>
->> And:
->>
->>     "\tbeq%?\t%@,%.,1b%~\n"				\
->>     "\t" INSN "\t%0,%0,%2\n"			\
->>
->> '~' seems to be one of the last unused characters on my keyboard.
->> Seems like a good fit.
->
+> 
+
+Done.  This is referenced in the first patch (gcc-4.4-trunk-fixr10k-z1.patch). 
+The second patch (gcc-4.4-trunk-fixr10k-z2.patch) contains a form whereby I just 
+re-declared mips_branch_likely and set it once-per template.  More on this below.
+
+
 > Yeah, looks good.  I'm a bit worried about running of % characters,
 > but like I say, we could always replace the templates with individual
 > output_asm_insns at some point in the future.
->
-> Richard
->
 
-_______________________________________
-
-Mr Markus Gothe
-Software Engineer
-
-Phone: +46 (0)13 21 81 20 (ext. 1046)
-Fax: +46 (0)13 21 21 15
-Mobile: +46 (0)70 348 44 35
-Diskettgatan 11, SE-583 35 Link=F6ping, Sweden
-www.27m.com
+Yeah, ~ is one of the last characters that doesn't seem to be completely used up 
+and looks good.  That still leaves !, &, {, }, and a comma.  But those could 
+look confusing with surrounding characters.
 
 
 
 
---Apple-Mail-12-900597536
-content-type: application/pgp-signature; x-mac-type=70674453;
-	name=PGP.sig
-content-description: This is a digitally signed message part
-content-disposition: inline; filename=PGP.sig
-content-transfer-encoding: 7bit
+So about the two patches.  Both of these appears to accomplish the job, and 
+allow gcc to begin compiling, but at one point about two hours into the build, 
+genautomata will segfault when attempting to output tmp-automata.c.  I don't 
+know which stage this is in...it's one of the early stages, and it's using xgcc 
+at this point.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.8 (Darwin)
+I tried running gdb on that particular invocation of genautomata, but it there's 
+not much data I could gather, since the -O2 optimization removes some of the 
+useful debugging info.  It segfaults at an fprintf() invocation, and 
+tmp-automata.c is 0 bytes.
 
-iEYEARECAAYFAkkV2GEACgkQ6I0XmJx2NrwqrwCdH320D1fAKgjSRWZdtP2W1jJP
-LaYAoM4GIKrcUBVkQwqPTU2SdI2DH/Oi
-=erbf
------END PGP SIGNATURE-----
+Here's the last few lines I get:
 
---Apple-Mail-12-900597536--
+/usr/cvsroot/gcc/host-mips-unknown-linux-gnu/prev-gcc/xgcc 
+-B/usr/cvsroot/gcc/host-mips-unknown-linux-gnu/prev-gcc/ 
+-B/usr//mips-unknown-linux-gnu/bin/  -g -O2 -DIN_GCC   -W -Wall -Wwrite-strings 
+-Wstrict-prototypes -Wmissing-prototypes -Wcast-qual -Wold-style-definition 
+-Wc++-compat -Wmissing-format-attribute -pedantic -Wno-long-long 
+-Wno-variadic-macros -Wno-overlength-strings   -DHAVE_CONFIG_H -DGENERATOR_FILE 
+  -o build/genautomata \
+             build/genautomata.o build/rtl.o build/read-rtl.o build/ggc-none.o 
+build/vec.o build/min-insn-modes.o build/gensupport.o build/print-rtl.o 
+build/errors.o ../../host-mips-unknown-linux-gnu/libiberty/libiberty.a -lm
+build/genautomata ../.././gcc/config/mips/mips.md \
+           insn-conditions.md > tmp-automata.c
+/bin/sh: line 1: 28620 Segmentation fault      build/genautomata 
+../.././gcc/config/mips/mips.md insn-conditions.md > tmp-automata.c
+make[3]: *** [s-automata] Error 139
+make[3]: Leaving directory `/usr/cvsroot/gcc/host-mips-unknown-linux-gnu/gcc'
+make[2]: *** [all-stage2-gcc] Error 2
+make[2]: Leaving directory `/usr/cvsroot/gcc'
+make[1]: *** [stage2-bubble] Error 2
+make[1]: Leaving directory `/usr/cvsroot/gcc'
+make: *** [all] Error 2
+
+
+I thought at first, it was the use of the helper function, so I backed that out 
+and went with the form seen in the second patch, but that didn't help things 
+either.  So I'm assuming this is related to the changes to the atomic macro 
+templates, and xgcc must have something inside itself that's a little wonky. 
+Not real sure how to approach this.
+
+However, there's more.  If I rebuild genautomata by hand (using args from the 
+command line), and I drop the optimization down a notch to -O1, then I can run 
+the command to create tmp-automata.c, and it'll complete successfully (and the 
+output in that file looks good).  So I'm a bit baffled.  I assume the issue is 
+caused by my patch, unless I'm running into a regression in trunk that my patch 
+simply exposes.
+
+Is there another way to maybe extract some info on what's causing this?
+
+
+Thanks!
+
+-- 
+Joshua Kinard
+Gentoo/MIPS
+kumba@gentoo.org
+
+"The past tempts us, the present confuses us, the future frightens us.  And our 
+lives slip away, moment by moment, lost in that vast, terrible in-between."
+
+--Emperor Turhan, Centauri Republic
+
+--------------090103070700080004080404
+Content-Type: text/plain;
+ name="gcc-4.4-trunk-fixr10k-z1.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="gcc-4.4-trunk-fixr10k-z1.patch"
+
+diff -Naurp -x .svn gcc.orig/gcc/config/mips/mips.c gcc/gcc/config/mips/mips.c
+--- gcc.orig/gcc/config/mips/mips.c	2008-11-06 00:35:19.000000000 -0500
++++ gcc/gcc/config/mips/mips.c	2008-11-09 02:10:40.000000000 -0500
+@@ -6909,6 +6909,7 @@ mips_print_operand_reloc (FILE *file, rt
+    '#'	Print a nop if in a ".set noreorder" block.
+    '/'	Like '#', but do nothing within a delayed-branch sequence.
+    '?'	Print "l" if mips_branch_likely is true
++   '~'	Print a nop if mips_branch_likely is true
+    '.'	Print the name of the register with a hard-wired zero (zero or $0).
+    '@'	Print the name of the assembler temporary register (at or $1).
+    '^'	Print the name of the pic call-through register (t9 or $25).
+@@ -6983,6 +6984,11 @@ mips_print_operand_punctuation (FILE *fi
+ 	putc ('l', file);
+       break;
+ 
++    case '~':
++      if (mips_branch_likely)
++	fputs ("\n\tnop", file);
++      break;
++
+     case '.':
+       fputs (reg_names[GP_REG_FIRST + 0], file);
+       break;
+@@ -7026,7 +7032,7 @@ mips_init_print_operand_punct (void)
+ {
+   const char *p;
+ 
+-  for (p = "()[]<>*#/?.@^+$|-"; *p; p++)
++  for (p = "()[]<>*#/?~.@^+$|-"; *p; p++)
+     mips_print_operand_punct[(unsigned char) *p] = true;
+ }
+ 
+@@ -10250,6 +10256,17 @@ mips_output_order_conditional_branch (rt
+   return mips_output_conditional_branch (insn, operands, branch[1], branch[0]);
+ }
+ 
++/* Return a template for the __sync_* functions after setting mips_branch_likely
++   to the value of TARGET_FIX_R10000 to enable a proper workaround of R10000
++   errata.  */
++
++const char *
++mips_output_sync_insn (const char *template)
++{
++  mips_branch_likely = TARGET_FIX_R10000;
++  return template;
++}
++
+ /* Return the assembly code for DIV or DDIV instruction DIVISION, which has
+    the operands given by OPERANDS.  Add in a divide-by-zero check if needed.
+ 
+@@ -13824,6 +13841,17 @@ mips_override_options (void)
+     warning (0, "the %qs architecture does not support branch-likely"
+ 	     " instructions", mips_arch_info->name);
+ 
++  /* Check to see whether branch-likely instructions are not available
++     when using -mfix-r10000.  This will be true if:
++	1. -mno-branch-likely was passed.
++	2. The selected ISA does not support branch-likely and
++	   the command line does not include -mbranch-likely  */
++  if ((TARGET_FIX_R10000
++       && (target_flags_explicit & MASK_BRANCHLIKELY) == 0)
++          ? !ISA_HAS_BRANCHLIKELY
++          ? !TARGET_BRANCHLIKELY : false : false)
++    sorry ("branch-likely instructions not available");
++
+   /* The effect of -mabicalls isn't defined for the EABI.  */
+   if (mips_abi == ABI_EABI && TARGET_ABICALLS)
+     {
+@@ -13971,6 +13999,12 @@ mips_override_options (void)
+       && mips_matching_cpu_name_p (mips_arch_info->name, "r4400"))
+     target_flags |= MASK_FIX_R4400;
+ 
++  /* Default to working around R10000 errata only if the processor
++     was selected explicitly.  */
++  if ((target_flags_explicit & MASK_FIX_R10000) == 0
++      && mips_matching_cpu_name_p (mips_arch_info->name, "r10000"))
++    target_flags |= MASK_FIX_R10000;
++
+   /* Save base state of options.  */
+   mips_base_target_flags = target_flags;
+   mips_base_delayed_branch = flag_delayed_branch;
+diff -Naurp -x .svn gcc.orig/gcc/config/mips/mips.h gcc/gcc/config/mips/mips.h
+--- gcc.orig/gcc/config/mips/mips.h	2008-11-01 13:21:41.000000000 -0400
++++ gcc/gcc/config/mips/mips.h	2008-11-09 02:10:40.000000000 -0500
+@@ -3083,7 +3083,7 @@ while (0)
+   "\tbne\t%0,%z2,2f\n"				\
+   "\t" OP "\t%@,%3\n"				\
+   "\tsc" SUFFIX "\t%@,%1\n"			\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)\n"				\
+   "2:\n"
+@@ -3108,7 +3108,7 @@ while (0)
+   "\tand\t%@,%0,%3\n"				\
+   OPS						\
+   "\tsc\t%@,%1\n"				\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)\n"				\
+   "2:\n"
+@@ -3128,7 +3128,7 @@ while (0)
+   "1:\tll" SUFFIX "\t%@,%0\n"			\
+   "\t" INSN "\t%@,%@,%1\n"			\
+   "\tsc" SUFFIX "\t%@,%0\n"			\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)"
+ 
+@@ -3153,7 +3153,7 @@ while (0)
+   "\tand\t%4,%4,%1\n"				\
+   "\tor\t%@,%@,%4\n"				\
+   "\tsc\t%@,%0\n"				\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)"
+ 
+@@ -3186,7 +3186,7 @@ while (0)
+   "\tand\t%5,%5,%2\n"				\
+   "\tor\t%@,%@,%5\n"				\
+   "\tsc\t%@,%1\n"				\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)"
+ 
+@@ -3216,7 +3216,7 @@ while (0)
+   "\tand\t%0,%0,%2\n"				\
+   "\tor\t%@,%@,%0\n"				\
+   "\tsc\t%@,%1\n"				\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)"
+ 
+@@ -3236,7 +3236,7 @@ while (0)
+   "1:\tll" SUFFIX "\t%0,%1\n"			\
+   "\t" INSN "\t%@,%0,%2\n"			\
+   "\tsc" SUFFIX "\t%@,%1\n"			\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)"
+ 
+@@ -3253,7 +3253,7 @@ while (0)
+   "1:\tll" SUFFIX "\t%0,%1\n"			\
+   "\t" INSN "\t%@,%0,%2\n"			\
+   "\tsc" SUFFIX "\t%@,%1\n"			\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b%~\n"			\
+   "\t" INSN "\t%0,%0,%2\n"			\
+   "\tsync%-%]%>%)"
+ 
+@@ -3270,7 +3270,7 @@ while (0)
+   "\tnor\t%@,%@,%.\n"				\
+   "\t" INSN "\t%@,%@,%1\n"			\
+   "\tsc" SUFFIX "\t%@,%0\n"			\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)"
+ 
+@@ -3289,7 +3289,7 @@ while (0)
+   "\tnor\t%@,%0,%.\n"				\
+   "\t" INSN "\t%@,%@,%2\n"			\
+   "\tsc" SUFFIX "\t%@,%1\n"			\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)"
+ 
+@@ -3308,7 +3308,7 @@ while (0)
+   "\tnor\t%0,%0,%.\n"				\
+   "\t" INSN "\t%@,%0,%2\n"			\
+   "\tsc" SUFFIX "\t%@,%1\n"			\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b%~\n"			\
+   "\t" INSN "\t%0,%0,%2\n"			\
+   "\tsync%-%]%>%)"
+ 
+@@ -3326,7 +3326,7 @@ while (0)
+   "1:\tll" SUFFIX "\t%0,%1\n"			\
+   "\t" OP "\t%@,%2\n"				\
+   "\tsc" SUFFIX "\t%@,%1\n"			\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)"
+ 
+@@ -3350,7 +3350,7 @@ while (0)
+   "\tand\t%@,%0,%3\n"				\
+   OPS						\
+   "\tsc\t%@,%1\n"				\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)"
+ 
+diff -Naurp -x .svn gcc.orig/gcc/config/mips/mips.opt gcc/gcc/config/mips/mips.opt
+--- gcc.orig/gcc/config/mips/mips.opt	2008-10-30 22:20:27.000000000 -0400
++++ gcc/gcc/config/mips/mips.opt	2008-11-09 02:10:40.000000000 -0500
+@@ -112,6 +112,10 @@ mfix-r4400
+ Target Report Mask(FIX_R4400)
+ Work around certain R4400 errata
+ 
++mfix-r10000
++Target Report Mask(FIX_R10000)
++Work around certain R10000 errata
++
+ mfix-sb1
+ Target Report Var(TARGET_FIX_SB1)
+ Work around errata for early SB-1 revision 2 cores
+diff -Naurp -x .svn gcc.orig/gcc/config/mips/sync.md gcc/gcc/config/mips/sync.md
+--- gcc.orig/gcc/config/mips/sync.md	2008-10-30 22:20:27.000000000 -0400
++++ gcc/gcc/config/mips/sync.md	2008-11-09 02:10:40.000000000 -0500
+@@ -43,9 +43,9 @@
+   "GENERATE_LL_SC"
+ {
+   if (which_alternative == 0)
+-    return MIPS_COMPARE_AND_SWAP ("<d>", "li");
++    return mips_output_sync_insn (MIPS_COMPARE_AND_SWAP ("<d>", "li"));
+   else
+-    return MIPS_COMPARE_AND_SWAP ("<d>", "move");
++    return mips_output_sync_insn (MIPS_COMPARE_AND_SWAP ("<d>", "move"));
+ }
+   [(set_attr "length" "32")])
+ 
+@@ -76,9 +76,9 @@
+   "GENERATE_LL_SC"
+ {
+   if (which_alternative == 0)
+-    return MIPS_COMPARE_AND_SWAP_12 (MIPS_COMPARE_AND_SWAP_12_NONZERO_OP);
++    return mips_output_sync_insn (MIPS_COMPARE_AND_SWAP_12 (MIPS_COMPARE_AND_SWAP_12_NONZERO_OP));
+   else
+-    return MIPS_COMPARE_AND_SWAP_12 (MIPS_COMPARE_AND_SWAP_12_ZERO_OP);
++    return mips_output_sync_insn (MIPS_COMPARE_AND_SWAP_12 (MIPS_COMPARE_AND_SWAP_12_ZERO_OP));
+ }
+   [(set_attr "length" "40,36")])
+ 
+@@ -91,9 +91,9 @@
+   "GENERATE_LL_SC"
+ {
+   if (which_alternative == 0)
+-    return MIPS_SYNC_OP ("<d>", "<d>addiu");	
++    return mips_output_sync_insn (MIPS_SYNC_OP ("<d>", "<d>addiu"));
+   else
+-    return MIPS_SYNC_OP ("<d>", "<d>addu");	
++    return mips_output_sync_insn (MIPS_SYNC_OP ("<d>", "<d>addu"));
+ }
+   [(set_attr "length" "28")])
+ 
+@@ -124,7 +124,7 @@
+    (clobber (match_scratch:SI 4 "=&d"))]
+   "GENERATE_LL_SC"
+ {
+-    return MIPS_SYNC_OP_12 ("<insn>", MIPS_SYNC_OP_12_NOT_NOP);	
++    return mips_output_sync_insn (MIPS_SYNC_OP_12 ("<insn>", MIPS_SYNC_OP_12_NOT_NOP));
+ }
+   [(set_attr "length" "40")])
+ 
+@@ -160,8 +160,9 @@
+    (clobber (match_scratch:SI 5 "=&d"))]
+   "GENERATE_LL_SC"
+ {
+-    return MIPS_SYNC_OLD_OP_12 ("<insn>", MIPS_SYNC_OLD_OP_12_NOT_NOP,
+-				MIPS_SYNC_OLD_OP_12_NOT_NOP_REG);	
++    return mips_output_sync_insn (MIPS_SYNC_OLD_OP_12 ("<insn>",
++				    MIPS_SYNC_OLD_OP_12_NOT_NOP,
++				    MIPS_SYNC_OLD_OP_12_NOT_NOP_REG));	
+ }
+   [(set_attr "length" "40")])
+ 
+@@ -202,7 +203,8 @@
+ 	   (match_dup 4)] UNSPEC_SYNC_NEW_OP_12))]
+   "GENERATE_LL_SC"
+ {
+-    return MIPS_SYNC_NEW_OP_12 ("<insn>", MIPS_SYNC_NEW_OP_12_NOT_NOP);
++    return mips_output_sync_insn (MIPS_SYNC_NEW_OP_12 ("<insn>",
++				    MIPS_SYNC_NEW_OP_12_NOT_NOP));
+ }
+   [(set_attr "length" "40")])
+ 
+@@ -233,7 +235,8 @@
+    (clobber (match_scratch:SI 4 "=&d"))]
+   "GENERATE_LL_SC"
+ {
+-    return MIPS_SYNC_OP_12 ("and", MIPS_SYNC_OP_12_NOT_NOT);	
++    return mips_output_sync_insn (MIPS_SYNC_OP_12 ("and",
++				    MIPS_SYNC_OP_12_NOT_NOT));	
+ }
+   [(set_attr "length" "44")])
+ 
+@@ -267,8 +270,9 @@
+    (clobber (match_scratch:SI 5 "=&d"))]
+   "GENERATE_LL_SC"
+ {
+-    return MIPS_SYNC_OLD_OP_12 ("and", MIPS_SYNC_OLD_OP_12_NOT_NOT,
+-				MIPS_SYNC_OLD_OP_12_NOT_NOT_REG);	
++    return mips_output_sync_insn (MIPS_SYNC_OLD_OP_12 ("and",
++				    MIPS_SYNC_OLD_OP_12_NOT_NOT,
++				    MIPS_SYNC_OLD_OP_12_NOT_NOT_REG));	
+ }
+   [(set_attr "length" "44")])
+ 
+@@ -307,7 +311,8 @@
+ 	   (match_dup 4)] UNSPEC_SYNC_NEW_OP_12))]
+   "GENERATE_LL_SC"
+ {
+-    return MIPS_SYNC_NEW_OP_12 ("and", MIPS_SYNC_NEW_OP_12_NOT_NOT);
++    return mips_output_sync_insn (MIPS_SYNC_NEW_OP_12 ("and",
++				    MIPS_SYNC_NEW_OP_12_NOT_NOT));
+ }
+   [(set_attr "length" "40")])
+ 
+@@ -319,7 +324,7 @@
+ 	 UNSPEC_SYNC_OLD_OP))]
+   "GENERATE_LL_SC"
+ {
+-  return MIPS_SYNC_OP ("<d>", "<d>subu");	
++  return mips_output_sync_insn (MIPS_SYNC_OP ("<d>", "<d>subu"));	
+ }
+   [(set_attr "length" "28")])
+ 
+@@ -334,9 +339,9 @@
+   "GENERATE_LL_SC"
+ {
+   if (which_alternative == 0)
+-    return MIPS_SYNC_OLD_OP ("<d>", "<d>addiu");	
++    return mips_output_sync_insn (MIPS_SYNC_OLD_OP ("<d>", "<d>addiu"));	
+   else
+-    return MIPS_SYNC_OLD_OP ("<d>", "<d>addu");	
++    return mips_output_sync_insn (MIPS_SYNC_OLD_OP ("<d>", "<d>addu"));	
+ }
+   [(set_attr "length" "28")])
+ 
+@@ -350,7 +355,7 @@
+ 	 UNSPEC_SYNC_OLD_OP))]
+   "GENERATE_LL_SC"
+ {
+-  return MIPS_SYNC_OLD_OP ("<d>", "<d>subu");	
++  return mips_output_sync_insn (MIPS_SYNC_OLD_OP ("<d>", "<d>subu"));	
+ }
+   [(set_attr "length" "28")])
+ 
+@@ -365,9 +370,9 @@
+   "GENERATE_LL_SC"
+ {
+   if (which_alternative == 0)
+-    return MIPS_SYNC_NEW_OP ("<d>", "<d>addiu");	
++    return mips_output_sync_insn (MIPS_SYNC_NEW_OP ("<d>", "<d>addiu"));	
+   else
+-    return MIPS_SYNC_NEW_OP ("<d>", "<d>addu");	
++    return mips_output_sync_insn (MIPS_SYNC_NEW_OP ("<d>", "<d>addu"));	
+ }
+   [(set_attr "length" "28")])
+ 
+@@ -381,7 +386,7 @@
+ 	 UNSPEC_SYNC_NEW_OP))]
+   "GENERATE_LL_SC"
+ {
+-  return MIPS_SYNC_NEW_OP ("<d>", "<d>subu");	
++  return mips_output_sync_insn (MIPS_SYNC_NEW_OP ("<d>", "<d>subu"));	
+ }
+   [(set_attr "length" "28")])
+ 
+@@ -394,9 +399,9 @@
+   "GENERATE_LL_SC"
+ {
+   if (which_alternative == 0)
+-    return MIPS_SYNC_OP ("<d>", "<immediate_insn>");	
++    return mips_output_sync_insn (MIPS_SYNC_OP ("<d>", "<immediate_insn>"));	
+   else
+-    return MIPS_SYNC_OP ("<d>", "<insn>");	
++    return mips_output_sync_insn (MIPS_SYNC_OP ("<d>", "<insn>"));	
+ }
+   [(set_attr "length" "28")])
+ 
+@@ -411,9 +416,9 @@
+   "GENERATE_LL_SC"
+ {
+   if (which_alternative == 0)
+-    return MIPS_SYNC_OLD_OP ("<d>", "<immediate_insn>");	
++    return mips_output_sync_insn (MIPS_SYNC_OLD_OP ("<d>", "<immediate_insn>"));	
+   else
+-    return MIPS_SYNC_OLD_OP ("<d>", "<insn>");	
++    return mips_output_sync_insn (MIPS_SYNC_OLD_OP ("<d>", "<insn>"));	
+ }
+   [(set_attr "length" "28")])
+ 
+@@ -428,9 +433,9 @@
+   "GENERATE_LL_SC"
+ {
+   if (which_alternative == 0)
+-    return MIPS_SYNC_NEW_OP ("<d>", "<immediate_insn>");	
++    return mips_output_sync_insn (MIPS_SYNC_NEW_OP ("<d>", "<immediate_insn>"));	
+   else
+-    return MIPS_SYNC_NEW_OP ("<d>", "<insn>");	
++    return mips_output_sync_insn (MIPS_SYNC_NEW_OP ("<d>", "<insn>"));	
+ }
+   [(set_attr "length" "28")])
+ 
+@@ -441,9 +446,9 @@
+   "GENERATE_LL_SC"
+ {
+   if (which_alternative == 0)
+-    return MIPS_SYNC_NAND ("<d>", "andi");	
++    return mips_output_sync_insn (MIPS_SYNC_NAND ("<d>", "andi"));	
+   else
+-    return MIPS_SYNC_NAND ("<d>", "and");	
++    return mips_output_sync_insn (MIPS_SYNC_NAND ("<d>", "and"));	
+ }
+   [(set_attr "length" "32")])
+ 
+@@ -456,9 +461,9 @@
+   "GENERATE_LL_SC"
+ {
+   if (which_alternative == 0)
+-    return MIPS_SYNC_OLD_NAND ("<d>", "andi");	
++    return mips_output_sync_insn (MIPS_SYNC_OLD_NAND ("<d>", "andi"));	
+   else
+-    return MIPS_SYNC_OLD_NAND ("<d>", "and");	
++    return mips_output_sync_insn (MIPS_SYNC_OLD_NAND ("<d>", "and"));	
+ }
+   [(set_attr "length" "32")])
+ 
+@@ -471,9 +476,9 @@
+   "GENERATE_LL_SC"
+ {
+   if (which_alternative == 0)
+-    return MIPS_SYNC_NEW_NAND ("<d>", "andi");	
++    return mips_output_sync_insn (MIPS_SYNC_NEW_NAND ("<d>", "andi"));	
+   else
+-    return MIPS_SYNC_NEW_NAND ("<d>", "and");	
++    return mips_output_sync_insn (MIPS_SYNC_NEW_NAND ("<d>", "and"));	
+ }
+   [(set_attr "length" "32")])
+ 
+@@ -486,9 +491,9 @@
+   "GENERATE_LL_SC"
+ {
+   if (which_alternative == 0)
+-    return MIPS_SYNC_EXCHANGE ("<d>", "li");
++    return mips_output_sync_insn (MIPS_SYNC_EXCHANGE ("<d>", "li"));
+   else
+-    return MIPS_SYNC_EXCHANGE ("<d>", "move");
++    return mips_output_sync_insn (MIPS_SYNC_EXCHANGE ("<d>", "move"));
+ }
+   [(set_attr "length" "24")])
+ 
+@@ -516,8 +521,8 @@
+   "GENERATE_LL_SC"
+ {
+   if (which_alternative == 0)
+-    return MIPS_SYNC_EXCHANGE_12 (MIPS_SYNC_EXCHANGE_12_NONZERO_OP);
++    return mips_output_sync_insn (MIPS_SYNC_EXCHANGE_12 (MIPS_SYNC_EXCHANGE_12_NONZERO_OP));
+   else
+-    return MIPS_SYNC_EXCHANGE_12 (MIPS_SYNC_EXCHANGE_12_ZERO_OP);
++    return mips_output_sync_insn (MIPS_SYNC_EXCHANGE_12 (MIPS_SYNC_EXCHANGE_12_ZERO_OP));
+ }
+   [(set_attr "length" "28,24")])
+diff -Naurp -x .svn gcc.orig/gcc/doc/invoke.texi gcc/gcc/doc/invoke.texi
+--- gcc.orig/gcc/doc/invoke.texi	2008-10-30 22:14:29.000000000 -0400
++++ gcc/gcc/doc/invoke.texi	2008-11-03 02:15:16.000000000 -0500
+@@ -666,7 +666,7 @@ Objective-C and Objective-C++ Dialects}.
+ -mdivide-traps  -mdivide-breaks @gol
+ -mmemcpy  -mno-memcpy  -mlong-calls  -mno-long-calls @gol
+ -mmad  -mno-mad  -mfused-madd  -mno-fused-madd  -nocpp @gol
+--mfix-r4000  -mno-fix-r4000  -mfix-r4400  -mno-fix-r4400 @gol
++-mfix-r4000  -mno-fix-r4000  -mfix-r4400  -mno-fix-r4400 -mfix-r10000 -mno-fix-r10000 @gol
+ -mfix-vr4120  -mno-fix-vr4120  -mfix-vr4130  -mno-fix-vr4130 @gol
+ -mfix-sb1  -mno-fix-sb1 @gol
+ -mflush-func=@var{func}  -mno-flush-func @gol
+
+--------------090103070700080004080404
+Content-Type: text/plain;
+ name="gcc-4.4-trunk-fixr10k-z2.patch"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline;
+ filename="gcc-4.4-trunk-fixr10k-z2.patch"
+
+diff -Naurp -x .svn gcc.orig/gcc/config/mips/mips.c gcc/gcc/config/mips/mips.c
+--- gcc.orig/gcc/config/mips/mips.c	2008-11-06 00:35:19.000000000 -0500
++++ gcc/gcc/config/mips/mips.c	2008-11-09 23:05:02.000000000 -0500
+@@ -6909,6 +6909,7 @@ mips_print_operand_reloc (FILE *file, rt
+    '#'	Print a nop if in a ".set noreorder" block.
+    '/'	Like '#', but do nothing within a delayed-branch sequence.
+    '?'	Print "l" if mips_branch_likely is true
++   '~'	Print a nop if mips_branch_likely is true
+    '.'	Print the name of the register with a hard-wired zero (zero or $0).
+    '@'	Print the name of the assembler temporary register (at or $1).
+    '^'	Print the name of the pic call-through register (t9 or $25).
+@@ -6983,6 +6984,11 @@ mips_print_operand_punctuation (FILE *fi
+ 	putc ('l', file);
+       break;
+ 
++    case '~':
++      if (mips_branch_likely)
++	fputs ("\n\tnop", file);
++      break;
++
+     case '.':
+       fputs (reg_names[GP_REG_FIRST + 0], file);
+       break;
+@@ -7026,7 +7032,7 @@ mips_init_print_operand_punct (void)
+ {
+   const char *p;
+ 
+-  for (p = "()[]<>*#/?.@^+$|-"; *p; p++)
++  for (p = "()[]<>*#/?~.@^+$|-"; *p; p++)
+     mips_print_operand_punct[(unsigned char) *p] = true;
+ }
+ 
+@@ -13824,6 +13830,17 @@ mips_override_options (void)
+     warning (0, "the %qs architecture does not support branch-likely"
+ 	     " instructions", mips_arch_info->name);
+ 
++  /* Check to see whether branch-likely instructions are not available
++     when using -mfix-r10000.  This will be true if:
++	1. -mno-branch-likely was passed.
++	2. The selected ISA does not support branch-likely and
++	   the command line does not include -mbranch-likely  */
++  if ((TARGET_FIX_R10000
++       && (target_flags_explicit & MASK_BRANCHLIKELY) == 0)
++          ? !ISA_HAS_BRANCHLIKELY
++          ? !TARGET_BRANCHLIKELY : false : false)
++    sorry ("branch-likely instructions not available");
++
+   /* The effect of -mabicalls isn't defined for the EABI.  */
+   if (mips_abi == ABI_EABI && TARGET_ABICALLS)
+     {
+@@ -13971,6 +13988,12 @@ mips_override_options (void)
+       && mips_matching_cpu_name_p (mips_arch_info->name, "r4400"))
+     target_flags |= MASK_FIX_R4400;
+ 
++  /* Default to working around R10000 errata only if the processor
++     was selected explicitly.  */
++  if ((target_flags_explicit & MASK_FIX_R10000) == 0
++      && mips_matching_cpu_name_p (mips_arch_info->name, "r10000"))
++    target_flags |= MASK_FIX_R10000;
++
+   /* Save base state of options.  */
+   mips_base_target_flags = target_flags;
+   mips_base_delayed_branch = flag_delayed_branch;
+diff -Naurp -x .svn gcc.orig/gcc/config/mips/mips.h gcc/gcc/config/mips/mips.h
+--- gcc.orig/gcc/config/mips/mips.h	2008-11-01 13:21:41.000000000 -0400
++++ gcc/gcc/config/mips/mips.h	2008-11-09 23:05:02.000000000 -0500
+@@ -3083,7 +3083,7 @@ while (0)
+   "\tbne\t%0,%z2,2f\n"				\
+   "\t" OP "\t%@,%3\n"				\
+   "\tsc" SUFFIX "\t%@,%1\n"			\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)\n"				\
+   "2:\n"
+@@ -3108,7 +3108,7 @@ while (0)
+   "\tand\t%@,%0,%3\n"				\
+   OPS						\
+   "\tsc\t%@,%1\n"				\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)\n"				\
+   "2:\n"
+@@ -3128,7 +3128,7 @@ while (0)
+   "1:\tll" SUFFIX "\t%@,%0\n"			\
+   "\t" INSN "\t%@,%@,%1\n"			\
+   "\tsc" SUFFIX "\t%@,%0\n"			\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)"
+ 
+@@ -3153,7 +3153,7 @@ while (0)
+   "\tand\t%4,%4,%1\n"				\
+   "\tor\t%@,%@,%4\n"				\
+   "\tsc\t%@,%0\n"				\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)"
+ 
+@@ -3186,7 +3186,7 @@ while (0)
+   "\tand\t%5,%5,%2\n"				\
+   "\tor\t%@,%@,%5\n"				\
+   "\tsc\t%@,%1\n"				\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)"
+ 
+@@ -3216,7 +3216,7 @@ while (0)
+   "\tand\t%0,%0,%2\n"				\
+   "\tor\t%@,%@,%0\n"				\
+   "\tsc\t%@,%1\n"				\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)"
+ 
+@@ -3236,7 +3236,7 @@ while (0)
+   "1:\tll" SUFFIX "\t%0,%1\n"			\
+   "\t" INSN "\t%@,%0,%2\n"			\
+   "\tsc" SUFFIX "\t%@,%1\n"			\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)"
+ 
+@@ -3253,7 +3253,7 @@ while (0)
+   "1:\tll" SUFFIX "\t%0,%1\n"			\
+   "\t" INSN "\t%@,%0,%2\n"			\
+   "\tsc" SUFFIX "\t%@,%1\n"			\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b%~\n"			\
+   "\t" INSN "\t%0,%0,%2\n"			\
+   "\tsync%-%]%>%)"
+ 
+@@ -3270,7 +3270,7 @@ while (0)
+   "\tnor\t%@,%@,%.\n"				\
+   "\t" INSN "\t%@,%@,%1\n"			\
+   "\tsc" SUFFIX "\t%@,%0\n"			\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)"
+ 
+@@ -3289,7 +3289,7 @@ while (0)
+   "\tnor\t%@,%0,%.\n"				\
+   "\t" INSN "\t%@,%@,%2\n"			\
+   "\tsc" SUFFIX "\t%@,%1\n"			\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)"
+ 
+@@ -3308,7 +3308,7 @@ while (0)
+   "\tnor\t%0,%0,%.\n"				\
+   "\t" INSN "\t%@,%0,%2\n"			\
+   "\tsc" SUFFIX "\t%@,%1\n"			\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b%~\n"			\
+   "\t" INSN "\t%0,%0,%2\n"			\
+   "\tsync%-%]%>%)"
+ 
+@@ -3326,7 +3326,7 @@ while (0)
+   "1:\tll" SUFFIX "\t%0,%1\n"			\
+   "\t" OP "\t%@,%2\n"				\
+   "\tsc" SUFFIX "\t%@,%1\n"			\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)"
+ 
+@@ -3350,7 +3350,7 @@ while (0)
+   "\tand\t%@,%0,%3\n"				\
+   OPS						\
+   "\tsc\t%@,%1\n"				\
+-  "\tbeq\t%@,%.,1b\n"				\
++  "\tbeq%?\t%@,%.,1b\n"				\
+   "\tnop\n"					\
+   "\tsync%-%]%>%)"
+ 
+diff -Naurp -x .svn gcc.orig/gcc/config/mips/mips.opt gcc/gcc/config/mips/mips.opt
+--- gcc.orig/gcc/config/mips/mips.opt	2008-10-30 22:20:27.000000000 -0400
++++ gcc/gcc/config/mips/mips.opt	2008-11-09 23:05:02.000000000 -0500
+@@ -112,6 +112,10 @@ mfix-r4400
+ Target Report Mask(FIX_R4400)
+ Work around certain R4400 errata
+ 
++mfix-r10000
++Target Report Mask(FIX_R10000)
++Work around certain R10000 errata
++
+ mfix-sb1
+ Target Report Var(TARGET_FIX_SB1)
+ Work around errata for early SB-1 revision 2 cores
+diff -Naurp -x .svn gcc.orig/gcc/config/mips/sync.md gcc/gcc/config/mips/sync.md
+--- gcc.orig/gcc/config/mips/sync.md	2008-10-30 22:20:27.000000000 -0400
++++ gcc/gcc/config/mips/sync.md	2008-11-09 23:05:19.000000000 -0500
+@@ -42,6 +42,8 @@
+ 	 UNSPEC_COMPARE_AND_SWAP))]
+   "GENERATE_LL_SC"
+ {
++  static bool mips_branch_likely;
++  mips_branch_likely = TARGET_FIX_R10000;
+   if (which_alternative == 0)
+     return MIPS_COMPARE_AND_SWAP ("<d>", "li");
+   else
+@@ -75,6 +77,8 @@
+ 			    UNSPEC_COMPARE_AND_SWAP_12))]
+   "GENERATE_LL_SC"
+ {
++  static bool mips_branch_likely;
++  mips_branch_likely = TARGET_FIX_R10000;
+   if (which_alternative == 0)
+     return MIPS_COMPARE_AND_SWAP_12 (MIPS_COMPARE_AND_SWAP_12_NONZERO_OP);
+   else
+@@ -90,6 +94,8 @@
+ 	  UNSPEC_SYNC_OLD_OP))]
+   "GENERATE_LL_SC"
+ {
++  static bool mips_branch_likely;
++  mips_branch_likely = TARGET_FIX_R10000;
+   if (which_alternative == 0)
+     return MIPS_SYNC_OP ("<d>", "<d>addiu");	
+   else
+@@ -124,6 +130,8 @@
+    (clobber (match_scratch:SI 4 "=&d"))]
+   "GENERATE_LL_SC"
+ {
++    static bool mips_branch_likely;
++    mips_branch_likely = TARGET_FIX_R10000;
+     return MIPS_SYNC_OP_12 ("<insn>", MIPS_SYNC_OP_12_NOT_NOP);	
+ }
+   [(set_attr "length" "40")])
+@@ -160,6 +168,8 @@
+    (clobber (match_scratch:SI 5 "=&d"))]
+   "GENERATE_LL_SC"
+ {
++    static bool mips_branch_likely;
++    mips_branch_likely = TARGET_FIX_R10000;
+     return MIPS_SYNC_OLD_OP_12 ("<insn>", MIPS_SYNC_OLD_OP_12_NOT_NOP,
+ 				MIPS_SYNC_OLD_OP_12_NOT_NOP_REG);	
+ }
+@@ -202,6 +212,8 @@
+ 	   (match_dup 4)] UNSPEC_SYNC_NEW_OP_12))]
+   "GENERATE_LL_SC"
+ {
++    static bool mips_branch_likely;
++    mips_branch_likely = TARGET_FIX_R10000;
+     return MIPS_SYNC_NEW_OP_12 ("<insn>", MIPS_SYNC_NEW_OP_12_NOT_NOP);
+ }
+   [(set_attr "length" "40")])
+@@ -233,6 +245,8 @@
+    (clobber (match_scratch:SI 4 "=&d"))]
+   "GENERATE_LL_SC"
+ {
++    static bool mips_branch_likely;
++    mips_branch_likely = TARGET_FIX_R10000;
+     return MIPS_SYNC_OP_12 ("and", MIPS_SYNC_OP_12_NOT_NOT);	
+ }
+   [(set_attr "length" "44")])
+@@ -267,6 +281,8 @@
+    (clobber (match_scratch:SI 5 "=&d"))]
+   "GENERATE_LL_SC"
+ {
++    static bool mips_branch_likely;
++    mips_branch_likely = TARGET_FIX_R10000;
+     return MIPS_SYNC_OLD_OP_12 ("and", MIPS_SYNC_OLD_OP_12_NOT_NOT,
+ 				MIPS_SYNC_OLD_OP_12_NOT_NOT_REG);	
+ }
+@@ -307,6 +323,8 @@
+ 	   (match_dup 4)] UNSPEC_SYNC_NEW_OP_12))]
+   "GENERATE_LL_SC"
+ {
++    static bool mips_branch_likely;
++    mips_branch_likely = TARGET_FIX_R10000;
+     return MIPS_SYNC_NEW_OP_12 ("and", MIPS_SYNC_NEW_OP_12_NOT_NOT);
+ }
+   [(set_attr "length" "40")])
+@@ -319,6 +337,8 @@
+ 	 UNSPEC_SYNC_OLD_OP))]
+   "GENERATE_LL_SC"
+ {
++  static bool mips_branch_likely;
++  mips_branch_likely = TARGET_FIX_R10000;
+   return MIPS_SYNC_OP ("<d>", "<d>subu");	
+ }
+   [(set_attr "length" "28")])
+@@ -333,6 +353,8 @@
+ 	 UNSPEC_SYNC_OLD_OP))]
+   "GENERATE_LL_SC"
+ {
++  static bool mips_branch_likely;
++  mips_branch_likely = TARGET_FIX_R10000;
+   if (which_alternative == 0)
+     return MIPS_SYNC_OLD_OP ("<d>", "<d>addiu");	
+   else
+@@ -350,6 +372,8 @@
+ 	 UNSPEC_SYNC_OLD_OP))]
+   "GENERATE_LL_SC"
+ {
++  static bool mips_branch_likely;
++  mips_branch_likely = TARGET_FIX_R10000;
+   return MIPS_SYNC_OLD_OP ("<d>", "<d>subu");	
+ }
+   [(set_attr "length" "28")])
+@@ -364,6 +388,8 @@
+ 	 UNSPEC_SYNC_NEW_OP))]
+   "GENERATE_LL_SC"
+ {
++  static bool mips_branch_likely;
++  mips_branch_likely = TARGET_FIX_R10000;
+   if (which_alternative == 0)
+     return MIPS_SYNC_NEW_OP ("<d>", "<d>addiu");	
+   else
+@@ -381,6 +407,8 @@
+ 	 UNSPEC_SYNC_NEW_OP))]
+   "GENERATE_LL_SC"
+ {
++  static bool mips_branch_likely;
++  mips_branch_likely = TARGET_FIX_R10000;
+   return MIPS_SYNC_NEW_OP ("<d>", "<d>subu");	
+ }
+   [(set_attr "length" "28")])
+@@ -393,6 +421,8 @@
+ 	 UNSPEC_SYNC_OLD_OP))]
+   "GENERATE_LL_SC"
+ {
++  static bool mips_branch_likely;
++  mips_branch_likely = TARGET_FIX_R10000;
+   if (which_alternative == 0)
+     return MIPS_SYNC_OP ("<d>", "<immediate_insn>");	
+   else
+@@ -410,6 +440,8 @@
+ 	 UNSPEC_SYNC_OLD_OP))]
+   "GENERATE_LL_SC"
+ {
++  static bool mips_branch_likely;
++  mips_branch_likely = TARGET_FIX_R10000;
+   if (which_alternative == 0)
+     return MIPS_SYNC_OLD_OP ("<d>", "<immediate_insn>");	
+   else
+@@ -427,6 +459,8 @@
+ 	 UNSPEC_SYNC_NEW_OP))]
+   "GENERATE_LL_SC"
+ {
++  static bool mips_branch_likely;
++  mips_branch_likely = TARGET_FIX_R10000;
+   if (which_alternative == 0)
+     return MIPS_SYNC_NEW_OP ("<d>", "<immediate_insn>");	
+   else
+@@ -440,6 +474,8 @@
+ 	 UNSPEC_SYNC_OLD_OP))]
+   "GENERATE_LL_SC"
+ {
++  static bool mips_branch_likely;
++  mips_branch_likely = TARGET_FIX_R10000;
+   if (which_alternative == 0)
+     return MIPS_SYNC_NAND ("<d>", "andi");	
+   else
+@@ -455,6 +491,8 @@
+ 	 UNSPEC_SYNC_OLD_OP))]
+   "GENERATE_LL_SC"
+ {
++  static bool mips_branch_likely;
++  mips_branch_likely = TARGET_FIX_R10000;
+   if (which_alternative == 0)
+     return MIPS_SYNC_OLD_NAND ("<d>", "andi");	
+   else
+@@ -470,6 +508,8 @@
+ 	 UNSPEC_SYNC_NEW_OP))]
+   "GENERATE_LL_SC"
+ {
++  static bool mips_branch_likely;
++  mips_branch_likely = TARGET_FIX_R10000;
+   if (which_alternative == 0)
+     return MIPS_SYNC_NEW_NAND ("<d>", "andi");	
+   else
+@@ -485,6 +525,8 @@
+ 	 UNSPEC_SYNC_EXCHANGE))]
+   "GENERATE_LL_SC"
+ {
++  static bool mips_branch_likely;
++  mips_branch_likely = TARGET_FIX_R10000;
+   if (which_alternative == 0)
+     return MIPS_SYNC_EXCHANGE ("<d>", "li");
+   else
+@@ -515,6 +557,8 @@
+ 	  UNSPEC_SYNC_EXCHANGE_12))]
+   "GENERATE_LL_SC"
+ {
++  static bool mips_branch_likely;
++  mips_branch_likely = TARGET_FIX_R10000;
+   if (which_alternative == 0)
+     return MIPS_SYNC_EXCHANGE_12 (MIPS_SYNC_EXCHANGE_12_NONZERO_OP);
+   else
+diff -Naurp -x .svn gcc.orig/gcc/doc/invoke.texi gcc/gcc/doc/invoke.texi
+--- gcc.orig/gcc/doc/invoke.texi	2008-10-30 22:14:29.000000000 -0400
++++ gcc/gcc/doc/invoke.texi	2008-11-09 23:05:03.000000000 -0500
+@@ -666,7 +666,7 @@ Objective-C and Objective-C++ Dialects}.
+ -mdivide-traps  -mdivide-breaks @gol
+ -mmemcpy  -mno-memcpy  -mlong-calls  -mno-long-calls @gol
+ -mmad  -mno-mad  -mfused-madd  -mno-fused-madd  -nocpp @gol
+--mfix-r4000  -mno-fix-r4000  -mfix-r4400  -mno-fix-r4400 @gol
++-mfix-r4000  -mno-fix-r4000  -mfix-r4400  -mno-fix-r4400 -mfix-r10000 -mno-fix-r10000 @gol
+ -mfix-vr4120  -mno-fix-vr4120  -mfix-vr4130  -mno-fix-vr4130 @gol
+ -mfix-sb1  -mno-fix-sb1 @gol
+ -mflush-func=@var{func}  -mno-flush-func @gol
+
+--------------090103070700080004080404--

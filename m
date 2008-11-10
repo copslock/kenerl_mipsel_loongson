@@ -1,1072 +1,575 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Nov 2008 06:10:31 +0000 (GMT)
-Received: from qmta01.westchester.pa.mail.comcast.net ([76.96.62.16]:25581
-	"EHLO QMTA01.westchester.pa.mail.comcast.net") by ftp.linux-mips.org
-	with ESMTP id S23487377AbYKJGK0 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 10 Nov 2008 06:10:26 +0000
-Received: from OMTA08.westchester.pa.mail.comcast.net ([76.96.62.12])
-	by QMTA01.westchester.pa.mail.comcast.net with comcast
-	id dJ7r1a0030Fqzac51JAK6E; Mon, 10 Nov 2008 06:10:19 +0000
-Received: from [192.168.1.13] ([69.140.18.238])
-	by OMTA08.westchester.pa.mail.comcast.net with comcast
-	id dJAJ1a00358Be2l3UJAJAK; Mon, 10 Nov 2008 06:10:19 +0000
-X-Authority-Analysis: v=1.0 c=1 a=se7utVhDntQA:10 a=sj6Exy8oVBoA:10
- a=TM4QF-CV3ApqrFGkac4A:9 a=HEpt_0ue3Z8Fyi2k6IEA:7
- a=M3L59knwdKb3tAer_KIkpBVTAOUA:4 a=w6-myHctKckA:10 a=WeOa-AV5lc8A:10
- a=4iXfik_MsjQA:10 a=hd5ZDugPuapMM0Cr4_kA:9 a=3BcQn6lpcM_tRnhoCAoA:7
- a=noIq93Pr2dnfIYHfnrsaEeU7z90A:4 a=oVP8SKXuTwoA:10 a=tFnb6wovh8EA:10
- a=mylFLmerCdIA:10 a=vhuCkwUcEWQA:10 a=NfA2RSpTaHsA:10
- a=jAUcCuUMnAv2-L_zwfMA:9 a=cVP2Ca7bBscggBpVWIoA:7
- a=ADDSMoQASUuom2_ylhlQlov6kjwA:4
-Message-ID: <4917D01B.8080508@gentoo.org>
-Date:	Mon, 10 Nov 2008 01:09:31 -0500
-From:	Kumba <kumba@gentoo.org>
-User-Agent: Thunderbird 2.0.0.17 (Windows/20080914)
-MIME-Version: 1.0
-To:	gcc-patches@gcc.gnu.org
-CC:	Linux MIPS List <linux-mips@linux-mips.org>,
-	rdsandiford@googlemail.com
-Subject: Re: [PATCH]: R10000 Needs LL/SC Workaround in Gcc
-References: <490A90F4.6040601@gentoo.org> <490C05A9.9070707@gentoo.org>	<87abcjibsl.fsf@firetop.home> <490CA4C8.40904@gentoo.org>	<87tzargrn4.fsf@firetop.home> <490CEDB9.6030600@gentoo.org>	<87prleh2hc.fsf@firetop.home> <490EBDE2.6010709@gentoo.org>	<87myggilk2.fsf@firetop.home> <490FF63A.7010900@gentoo.org> <8763mypnhf.fsf@firetop.home>
-In-Reply-To: <8763mypnhf.fsf@firetop.home>
-Content-Type: multipart/mixed;
- boundary="------------090103070700080004080404"
-Return-Path: <kumba@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Nov 2008 06:52:28 +0000 (GMT)
+Received: from mail.windriver.com ([147.11.1.11]:55276 "EHLO mail.wrs.com")
+	by ftp.linux-mips.org with ESMTP id S23488379AbYKJGwZ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 10 Nov 2008 06:52:25 +0000
+Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
+	by mail.wrs.com (8.13.6/8.13.6) with ESMTP id mAA6qIHH022431;
+	Sun, 9 Nov 2008 22:52:18 -0800 (PST)
+Received: from ism-mail03.corp.ad.wrs.com ([128.224.200.20]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Sun, 9 Nov 2008 22:52:17 -0800
+Received: from 128.224.162.197 ([128.224.162.197]) by ism-mail03.corp.ad.wrs.com ([128.224.200.20]) via Exchange Front-End Server webmail-na.wrs.com ([147.11.57.147]) with Microsoft Exchange Server HTTP-DAV ;
+ Mon, 10 Nov 2008 06:51:23 +0000
+Received: from PEK-GGAO-D1 by webmail-na.wrs.com; 10 Nov 2008 14:51:00 +0800
+Subject: Re: [PATCH 03/29] MIPS: Add Cavium OCTEON processor support files
+	to arch/mips/kernel.
+From:	Guijin Gao <guijin.gao@windriver.com>
+To:	David Daney <ddaney@caviumnetworks.com>
+Cc:	linux-mips@linux-mips.org,
+	Tomaso Paoletti <tpaoletti@caviumnetworks.com>,
+	Paul Gortmaker <Paul.Gortmaker@windriver.com>
+In-Reply-To: <1226004875-27654-3-git-send-email-ddaney@caviumnetworks.com>
+References: <491358F5.7040002@caviumnetworks.com>
+	 <1226004875-27654-3-git-send-email-ddaney@caviumnetworks.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Date:	Mon, 10 Nov 2008 14:51:00 +0800
+Message-Id: <1226299860.31627.9.camel@PEK-GGAO-D1>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.10.1 
+X-OriginalArrivalTime: 10 Nov 2008 06:52:17.0559 (UTC) FILETIME=[DEE83270:01C94300]
+Return-Path: <Guijin.Gao@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21249
+X-archive-position: 21250
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: guijin.gao@windriver.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------090103070700080004080404
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-
-Richard Sandiford wrote:
+On Thu, 2008-11-06 at 12:54 -0800, David Daney wrote:
+> Signed-off-by: Tomaso Paoletti <tpaoletti@caviumnetworks.com>
+> Signed-off-by: Paul Gortmaker <Paul.Gortmaker@windriver.com>
+> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+> ---
+>  arch/mips/kernel/octeon_switch.S |  506 ++++++++++++++++++++++++++++++++++++++
+>  1 files changed, 506 insertions(+), 0 deletions(-)
+>  create mode 100644 arch/mips/kernel/octeon_switch.S
 > 
-> I'm not sure I have the statistical knowledge either.  I've tended
-> to work in embedded environments where -march=<my cpu> is almost always
-> the right option to use.  But like Maciej, I suspect it isn't worth
-> supporting the combination.  So my preference is for option #1.
-> 
-> You make a convincing case that the combination isn't useful for current
-> Linux distributions.  And it isn't useful for IRIX 6 either: the o32
-> system libraries are -mips2 rather than -mips1, and both GCC and
-> MIPSpro default to -mips2 for o32.
+> diff --git a/arch/mips/kernel/octeon_switch.S b/arch/mips/kernel/octeon_switch.S
+> new file mode 100644
+> index 0000000..d523896
+> --- /dev/null
+> +++ b/arch/mips/kernel/octeon_switch.S
+> @@ -0,0 +1,506 @@
+> +/*
+> + * This file is subject to the terms and conditions of the GNU General Public
+> + * License.  See the file "COPYING" in the main directory of this archive
+> + * for more details.
+> + *
+> + * Copyright (C) 1994, 1995, 1996, 1998, 1999, 2002, 2003 Ralf Baechle
+> + * Copyright (C) 1996 David S. Miller (dm@engr.sgi.com)
+> + * Copyright (C) 1994, 1995, 1996, by Andreas Busse
+> + * Copyright (C) 1999 Silicon Graphics, Inc.
+> + * Copyright (C) 2000 MIPS Technologies, Inc.
+> + *    written by Carsten Langgaard, carstenl@mips.com
+> + */
+> +#include <asm/asm.h>
+> +#include <asm/cachectl.h>
+> +#include <asm/fpregdef.h>
+> +#include <asm/mipsregs.h>
+> +#include <asm/asm-offsets.h>
+> +#include <asm/page.h>
+> +#include <asm/pgtable-bits.h>
+> +#include <asm/regdef.h>
+> +#include <asm/stackframe.h>
+> +#include <asm/thread_info.h>
+> +
+> +#include <asm/asmmacro.h>
+> +
+> +/*
+> + * Offset to the current process status flags, the first 32 bytes of the
+> + * stack are not used.
+> + */
+> +#define ST_OFF (_THREAD_SIZE - 32 - PT_SIZE + PT_STATUS)
+> +
+> +/*
+> + * task_struct *resume(task_struct *prev, task_struct *next,
+> + *                     struct thread_info *next_ti)
+> + */
+> +	.align	7
+> +	LEAF(resume)
+> +	.set arch=octeon
+> +#ifndef CONFIG_CPU_HAS_LLSC
+> +	sw	zero, ll_bit
+> +#endif
+> +	mfc0	t1, CP0_STATUS
+> +	LONG_S	t1, THREAD_STATUS(a0)
+> +	cpu_save_nonscratch a0
+> +	LONG_S	ra, THREAD_REG31(a0)
+> +
+> +	/* check if we need to save COP2 registers */
+> +	PTR_L	t2, TASK_THREAD_INFO(a0)
+> +	LONG_L	t0, ST_OFF(t2)
+> +	bbit0	t0, 30, 1f
 
-Yeah, trying to handle MIPS-I stuff looks like it'll be above my head for now, 
-so I'm going to aim at the second option after all.
+Above instructions don't take "kernel thread" into consideration.
+If "prev" is kernel thread, there is no frame of "pt_regs" at the bottom
+of the stack. Stack of "kernel_thread_helper" start from "THREAD_SIZE -
+32".
 
-FYI, I explain about the two different patches attached to this below.  They're 
-not final by any means, but I'm doing something wrong somewhere in both them.
+> +
+> +	/* Disable COP2 in the stored process state */
+> +	li	t1, ST0_CU2
+> +	xor	t0, t1
+> +	LONG_S	t0, ST_OFF(t2)
 
+And then if it's context of a kernel thread, the above instructions
+corrupted the stack.
 
-> Also, I believe the glibc patch doesn't cope with -mips1 -mllsc either.
-> Is that right?  If so, that's another reason not to worry about it
-> for GCC.
+Thanks,
+Guijn
 
-It doesn't as I coded it.  I plan on addressing that patch after the gcc-side of 
-things.  Ralf suggested in that patch on libc-ports that I handle the MIPS-I 
-case there, though, but if we're not going to support it in the gcc patch, then 
-it probably isn't needed in the glibc patch either.  We'll see, though!
-
-
-> mips_branch_likely only applies to the _current_ insn, so it needs
-> to go before any call the macro templates.  Please use a helper
-> function such as:
-> 
-> const char *
-> mips_output_sync_insn (const char *template)
-> {
->   mips_branch_likely = TARGET_FIX_R10000;
->   return template;
-> }
-> 
-
-Done.  This is referenced in the first patch (gcc-4.4-trunk-fixr10k-z1.patch). 
-The second patch (gcc-4.4-trunk-fixr10k-z2.patch) contains a form whereby I just 
-re-declared mips_branch_likely and set it once-per template.  More on this below.
-
-
-> Yeah, looks good.  I'm a bit worried about running of % characters,
-> but like I say, we could always replace the templates with individual
-> output_asm_insns at some point in the future.
-
-Yeah, ~ is one of the last characters that doesn't seem to be completely used up 
-and looks good.  That still leaves !, &, {, }, and a comma.  But those could 
-look confusing with surrounding characters.
-
-
-
-
-So about the two patches.  Both of these appears to accomplish the job, and 
-allow gcc to begin compiling, but at one point about two hours into the build, 
-genautomata will segfault when attempting to output tmp-automata.c.  I don't 
-know which stage this is in...it's one of the early stages, and it's using xgcc 
-at this point.
-
-I tried running gdb on that particular invocation of genautomata, but it there's 
-not much data I could gather, since the -O2 optimization removes some of the 
-useful debugging info.  It segfaults at an fprintf() invocation, and 
-tmp-automata.c is 0 bytes.
-
-Here's the last few lines I get:
-
-/usr/cvsroot/gcc/host-mips-unknown-linux-gnu/prev-gcc/xgcc 
--B/usr/cvsroot/gcc/host-mips-unknown-linux-gnu/prev-gcc/ 
--B/usr//mips-unknown-linux-gnu/bin/  -g -O2 -DIN_GCC   -W -Wall -Wwrite-strings 
--Wstrict-prototypes -Wmissing-prototypes -Wcast-qual -Wold-style-definition 
--Wc++-compat -Wmissing-format-attribute -pedantic -Wno-long-long 
--Wno-variadic-macros -Wno-overlength-strings   -DHAVE_CONFIG_H -DGENERATOR_FILE 
-  -o build/genautomata \
-             build/genautomata.o build/rtl.o build/read-rtl.o build/ggc-none.o 
-build/vec.o build/min-insn-modes.o build/gensupport.o build/print-rtl.o 
-build/errors.o ../../host-mips-unknown-linux-gnu/libiberty/libiberty.a -lm
-build/genautomata ../.././gcc/config/mips/mips.md \
-           insn-conditions.md > tmp-automata.c
-/bin/sh: line 1: 28620 Segmentation fault      build/genautomata 
-../.././gcc/config/mips/mips.md insn-conditions.md > tmp-automata.c
-make[3]: *** [s-automata] Error 139
-make[3]: Leaving directory `/usr/cvsroot/gcc/host-mips-unknown-linux-gnu/gcc'
-make[2]: *** [all-stage2-gcc] Error 2
-make[2]: Leaving directory `/usr/cvsroot/gcc'
-make[1]: *** [stage2-bubble] Error 2
-make[1]: Leaving directory `/usr/cvsroot/gcc'
-make: *** [all] Error 2
-
-
-I thought at first, it was the use of the helper function, so I backed that out 
-and went with the form seen in the second patch, but that didn't help things 
-either.  So I'm assuming this is related to the changes to the atomic macro 
-templates, and xgcc must have something inside itself that's a little wonky. 
-Not real sure how to approach this.
-
-However, there's more.  If I rebuild genautomata by hand (using args from the 
-command line), and I drop the optimization down a notch to -O1, then I can run 
-the command to create tmp-automata.c, and it'll complete successfully (and the 
-output in that file looks good).  So I'm a bit baffled.  I assume the issue is 
-caused by my patch, unless I'm running into a regression in trunk that my patch 
-simply exposes.
-
-Is there another way to maybe extract some info on what's causing this?
-
-
-Thanks!
-
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-
-"The past tempts us, the present confuses us, the future frightens us.  And our 
-lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
-
---------------090103070700080004080404
-Content-Type: text/plain;
- name="gcc-4.4-trunk-fixr10k-z1.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="gcc-4.4-trunk-fixr10k-z1.patch"
-
-diff -Naurp -x .svn gcc.orig/gcc/config/mips/mips.c gcc/gcc/config/mips/mips.c
---- gcc.orig/gcc/config/mips/mips.c	2008-11-06 00:35:19.000000000 -0500
-+++ gcc/gcc/config/mips/mips.c	2008-11-09 02:10:40.000000000 -0500
-@@ -6909,6 +6909,7 @@ mips_print_operand_reloc (FILE *file, rt
-    '#'	Print a nop if in a ".set noreorder" block.
-    '/'	Like '#', but do nothing within a delayed-branch sequence.
-    '?'	Print "l" if mips_branch_likely is true
-+   '~'	Print a nop if mips_branch_likely is true
-    '.'	Print the name of the register with a hard-wired zero (zero or $0).
-    '@'	Print the name of the assembler temporary register (at or $1).
-    '^'	Print the name of the pic call-through register (t9 or $25).
-@@ -6983,6 +6984,11 @@ mips_print_operand_punctuation (FILE *fi
- 	putc ('l', file);
-       break;
- 
-+    case '~':
-+      if (mips_branch_likely)
-+	fputs ("\n\tnop", file);
-+      break;
-+
-     case '.':
-       fputs (reg_names[GP_REG_FIRST + 0], file);
-       break;
-@@ -7026,7 +7032,7 @@ mips_init_print_operand_punct (void)
- {
-   const char *p;
- 
--  for (p = "()[]<>*#/?.@^+$|-"; *p; p++)
-+  for (p = "()[]<>*#/?~.@^+$|-"; *p; p++)
-     mips_print_operand_punct[(unsigned char) *p] = true;
- }
- 
-@@ -10250,6 +10256,17 @@ mips_output_order_conditional_branch (rt
-   return mips_output_conditional_branch (insn, operands, branch[1], branch[0]);
- }
- 
-+/* Return a template for the __sync_* functions after setting mips_branch_likely
-+   to the value of TARGET_FIX_R10000 to enable a proper workaround of R10000
-+   errata.  */
-+
-+const char *
-+mips_output_sync_insn (const char *template)
-+{
-+  mips_branch_likely = TARGET_FIX_R10000;
-+  return template;
-+}
-+
- /* Return the assembly code for DIV or DDIV instruction DIVISION, which has
-    the operands given by OPERANDS.  Add in a divide-by-zero check if needed.
- 
-@@ -13824,6 +13841,17 @@ mips_override_options (void)
-     warning (0, "the %qs architecture does not support branch-likely"
- 	     " instructions", mips_arch_info->name);
- 
-+  /* Check to see whether branch-likely instructions are not available
-+     when using -mfix-r10000.  This will be true if:
-+	1. -mno-branch-likely was passed.
-+	2. The selected ISA does not support branch-likely and
-+	   the command line does not include -mbranch-likely  */
-+  if ((TARGET_FIX_R10000
-+       && (target_flags_explicit & MASK_BRANCHLIKELY) == 0)
-+          ? !ISA_HAS_BRANCHLIKELY
-+          ? !TARGET_BRANCHLIKELY : false : false)
-+    sorry ("branch-likely instructions not available");
-+
-   /* The effect of -mabicalls isn't defined for the EABI.  */
-   if (mips_abi == ABI_EABI && TARGET_ABICALLS)
-     {
-@@ -13971,6 +13999,12 @@ mips_override_options (void)
-       && mips_matching_cpu_name_p (mips_arch_info->name, "r4400"))
-     target_flags |= MASK_FIX_R4400;
- 
-+  /* Default to working around R10000 errata only if the processor
-+     was selected explicitly.  */
-+  if ((target_flags_explicit & MASK_FIX_R10000) == 0
-+      && mips_matching_cpu_name_p (mips_arch_info->name, "r10000"))
-+    target_flags |= MASK_FIX_R10000;
-+
-   /* Save base state of options.  */
-   mips_base_target_flags = target_flags;
-   mips_base_delayed_branch = flag_delayed_branch;
-diff -Naurp -x .svn gcc.orig/gcc/config/mips/mips.h gcc/gcc/config/mips/mips.h
---- gcc.orig/gcc/config/mips/mips.h	2008-11-01 13:21:41.000000000 -0400
-+++ gcc/gcc/config/mips/mips.h	2008-11-09 02:10:40.000000000 -0500
-@@ -3083,7 +3083,7 @@ while (0)
-   "\tbne\t%0,%z2,2f\n"				\
-   "\t" OP "\t%@,%3\n"				\
-   "\tsc" SUFFIX "\t%@,%1\n"			\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)\n"				\
-   "2:\n"
-@@ -3108,7 +3108,7 @@ while (0)
-   "\tand\t%@,%0,%3\n"				\
-   OPS						\
-   "\tsc\t%@,%1\n"				\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)\n"				\
-   "2:\n"
-@@ -3128,7 +3128,7 @@ while (0)
-   "1:\tll" SUFFIX "\t%@,%0\n"			\
-   "\t" INSN "\t%@,%@,%1\n"			\
-   "\tsc" SUFFIX "\t%@,%0\n"			\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)"
- 
-@@ -3153,7 +3153,7 @@ while (0)
-   "\tand\t%4,%4,%1\n"				\
-   "\tor\t%@,%@,%4\n"				\
-   "\tsc\t%@,%0\n"				\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)"
- 
-@@ -3186,7 +3186,7 @@ while (0)
-   "\tand\t%5,%5,%2\n"				\
-   "\tor\t%@,%@,%5\n"				\
-   "\tsc\t%@,%1\n"				\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)"
- 
-@@ -3216,7 +3216,7 @@ while (0)
-   "\tand\t%0,%0,%2\n"				\
-   "\tor\t%@,%@,%0\n"				\
-   "\tsc\t%@,%1\n"				\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)"
- 
-@@ -3236,7 +3236,7 @@ while (0)
-   "1:\tll" SUFFIX "\t%0,%1\n"			\
-   "\t" INSN "\t%@,%0,%2\n"			\
-   "\tsc" SUFFIX "\t%@,%1\n"			\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)"
- 
-@@ -3253,7 +3253,7 @@ while (0)
-   "1:\tll" SUFFIX "\t%0,%1\n"			\
-   "\t" INSN "\t%@,%0,%2\n"			\
-   "\tsc" SUFFIX "\t%@,%1\n"			\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b%~\n"			\
-   "\t" INSN "\t%0,%0,%2\n"			\
-   "\tsync%-%]%>%)"
- 
-@@ -3270,7 +3270,7 @@ while (0)
-   "\tnor\t%@,%@,%.\n"				\
-   "\t" INSN "\t%@,%@,%1\n"			\
-   "\tsc" SUFFIX "\t%@,%0\n"			\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)"
- 
-@@ -3289,7 +3289,7 @@ while (0)
-   "\tnor\t%@,%0,%.\n"				\
-   "\t" INSN "\t%@,%@,%2\n"			\
-   "\tsc" SUFFIX "\t%@,%1\n"			\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)"
- 
-@@ -3308,7 +3308,7 @@ while (0)
-   "\tnor\t%0,%0,%.\n"				\
-   "\t" INSN "\t%@,%0,%2\n"			\
-   "\tsc" SUFFIX "\t%@,%1\n"			\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b%~\n"			\
-   "\t" INSN "\t%0,%0,%2\n"			\
-   "\tsync%-%]%>%)"
- 
-@@ -3326,7 +3326,7 @@ while (0)
-   "1:\tll" SUFFIX "\t%0,%1\n"			\
-   "\t" OP "\t%@,%2\n"				\
-   "\tsc" SUFFIX "\t%@,%1\n"			\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)"
- 
-@@ -3350,7 +3350,7 @@ while (0)
-   "\tand\t%@,%0,%3\n"				\
-   OPS						\
-   "\tsc\t%@,%1\n"				\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)"
- 
-diff -Naurp -x .svn gcc.orig/gcc/config/mips/mips.opt gcc/gcc/config/mips/mips.opt
---- gcc.orig/gcc/config/mips/mips.opt	2008-10-30 22:20:27.000000000 -0400
-+++ gcc/gcc/config/mips/mips.opt	2008-11-09 02:10:40.000000000 -0500
-@@ -112,6 +112,10 @@ mfix-r4400
- Target Report Mask(FIX_R4400)
- Work around certain R4400 errata
- 
-+mfix-r10000
-+Target Report Mask(FIX_R10000)
-+Work around certain R10000 errata
-+
- mfix-sb1
- Target Report Var(TARGET_FIX_SB1)
- Work around errata for early SB-1 revision 2 cores
-diff -Naurp -x .svn gcc.orig/gcc/config/mips/sync.md gcc/gcc/config/mips/sync.md
---- gcc.orig/gcc/config/mips/sync.md	2008-10-30 22:20:27.000000000 -0400
-+++ gcc/gcc/config/mips/sync.md	2008-11-09 02:10:40.000000000 -0500
-@@ -43,9 +43,9 @@
-   "GENERATE_LL_SC"
- {
-   if (which_alternative == 0)
--    return MIPS_COMPARE_AND_SWAP ("<d>", "li");
-+    return mips_output_sync_insn (MIPS_COMPARE_AND_SWAP ("<d>", "li"));
-   else
--    return MIPS_COMPARE_AND_SWAP ("<d>", "move");
-+    return mips_output_sync_insn (MIPS_COMPARE_AND_SWAP ("<d>", "move"));
- }
-   [(set_attr "length" "32")])
- 
-@@ -76,9 +76,9 @@
-   "GENERATE_LL_SC"
- {
-   if (which_alternative == 0)
--    return MIPS_COMPARE_AND_SWAP_12 (MIPS_COMPARE_AND_SWAP_12_NONZERO_OP);
-+    return mips_output_sync_insn (MIPS_COMPARE_AND_SWAP_12 (MIPS_COMPARE_AND_SWAP_12_NONZERO_OP));
-   else
--    return MIPS_COMPARE_AND_SWAP_12 (MIPS_COMPARE_AND_SWAP_12_ZERO_OP);
-+    return mips_output_sync_insn (MIPS_COMPARE_AND_SWAP_12 (MIPS_COMPARE_AND_SWAP_12_ZERO_OP));
- }
-   [(set_attr "length" "40,36")])
- 
-@@ -91,9 +91,9 @@
-   "GENERATE_LL_SC"
- {
-   if (which_alternative == 0)
--    return MIPS_SYNC_OP ("<d>", "<d>addiu");	
-+    return mips_output_sync_insn (MIPS_SYNC_OP ("<d>", "<d>addiu"));
-   else
--    return MIPS_SYNC_OP ("<d>", "<d>addu");	
-+    return mips_output_sync_insn (MIPS_SYNC_OP ("<d>", "<d>addu"));
- }
-   [(set_attr "length" "28")])
- 
-@@ -124,7 +124,7 @@
-    (clobber (match_scratch:SI 4 "=&d"))]
-   "GENERATE_LL_SC"
- {
--    return MIPS_SYNC_OP_12 ("<insn>", MIPS_SYNC_OP_12_NOT_NOP);	
-+    return mips_output_sync_insn (MIPS_SYNC_OP_12 ("<insn>", MIPS_SYNC_OP_12_NOT_NOP));
- }
-   [(set_attr "length" "40")])
- 
-@@ -160,8 +160,9 @@
-    (clobber (match_scratch:SI 5 "=&d"))]
-   "GENERATE_LL_SC"
- {
--    return MIPS_SYNC_OLD_OP_12 ("<insn>", MIPS_SYNC_OLD_OP_12_NOT_NOP,
--				MIPS_SYNC_OLD_OP_12_NOT_NOP_REG);	
-+    return mips_output_sync_insn (MIPS_SYNC_OLD_OP_12 ("<insn>",
-+				    MIPS_SYNC_OLD_OP_12_NOT_NOP,
-+				    MIPS_SYNC_OLD_OP_12_NOT_NOP_REG));	
- }
-   [(set_attr "length" "40")])
- 
-@@ -202,7 +203,8 @@
- 	   (match_dup 4)] UNSPEC_SYNC_NEW_OP_12))]
-   "GENERATE_LL_SC"
- {
--    return MIPS_SYNC_NEW_OP_12 ("<insn>", MIPS_SYNC_NEW_OP_12_NOT_NOP);
-+    return mips_output_sync_insn (MIPS_SYNC_NEW_OP_12 ("<insn>",
-+				    MIPS_SYNC_NEW_OP_12_NOT_NOP));
- }
-   [(set_attr "length" "40")])
- 
-@@ -233,7 +235,8 @@
-    (clobber (match_scratch:SI 4 "=&d"))]
-   "GENERATE_LL_SC"
- {
--    return MIPS_SYNC_OP_12 ("and", MIPS_SYNC_OP_12_NOT_NOT);	
-+    return mips_output_sync_insn (MIPS_SYNC_OP_12 ("and",
-+				    MIPS_SYNC_OP_12_NOT_NOT));	
- }
-   [(set_attr "length" "44")])
- 
-@@ -267,8 +270,9 @@
-    (clobber (match_scratch:SI 5 "=&d"))]
-   "GENERATE_LL_SC"
- {
--    return MIPS_SYNC_OLD_OP_12 ("and", MIPS_SYNC_OLD_OP_12_NOT_NOT,
--				MIPS_SYNC_OLD_OP_12_NOT_NOT_REG);	
-+    return mips_output_sync_insn (MIPS_SYNC_OLD_OP_12 ("and",
-+				    MIPS_SYNC_OLD_OP_12_NOT_NOT,
-+				    MIPS_SYNC_OLD_OP_12_NOT_NOT_REG));	
- }
-   [(set_attr "length" "44")])
- 
-@@ -307,7 +311,8 @@
- 	   (match_dup 4)] UNSPEC_SYNC_NEW_OP_12))]
-   "GENERATE_LL_SC"
- {
--    return MIPS_SYNC_NEW_OP_12 ("and", MIPS_SYNC_NEW_OP_12_NOT_NOT);
-+    return mips_output_sync_insn (MIPS_SYNC_NEW_OP_12 ("and",
-+				    MIPS_SYNC_NEW_OP_12_NOT_NOT));
- }
-   [(set_attr "length" "40")])
- 
-@@ -319,7 +324,7 @@
- 	 UNSPEC_SYNC_OLD_OP))]
-   "GENERATE_LL_SC"
- {
--  return MIPS_SYNC_OP ("<d>", "<d>subu");	
-+  return mips_output_sync_insn (MIPS_SYNC_OP ("<d>", "<d>subu"));	
- }
-   [(set_attr "length" "28")])
- 
-@@ -334,9 +339,9 @@
-   "GENERATE_LL_SC"
- {
-   if (which_alternative == 0)
--    return MIPS_SYNC_OLD_OP ("<d>", "<d>addiu");	
-+    return mips_output_sync_insn (MIPS_SYNC_OLD_OP ("<d>", "<d>addiu"));	
-   else
--    return MIPS_SYNC_OLD_OP ("<d>", "<d>addu");	
-+    return mips_output_sync_insn (MIPS_SYNC_OLD_OP ("<d>", "<d>addu"));	
- }
-   [(set_attr "length" "28")])
- 
-@@ -350,7 +355,7 @@
- 	 UNSPEC_SYNC_OLD_OP))]
-   "GENERATE_LL_SC"
- {
--  return MIPS_SYNC_OLD_OP ("<d>", "<d>subu");	
-+  return mips_output_sync_insn (MIPS_SYNC_OLD_OP ("<d>", "<d>subu"));	
- }
-   [(set_attr "length" "28")])
- 
-@@ -365,9 +370,9 @@
-   "GENERATE_LL_SC"
- {
-   if (which_alternative == 0)
--    return MIPS_SYNC_NEW_OP ("<d>", "<d>addiu");	
-+    return mips_output_sync_insn (MIPS_SYNC_NEW_OP ("<d>", "<d>addiu"));	
-   else
--    return MIPS_SYNC_NEW_OP ("<d>", "<d>addu");	
-+    return mips_output_sync_insn (MIPS_SYNC_NEW_OP ("<d>", "<d>addu"));	
- }
-   [(set_attr "length" "28")])
- 
-@@ -381,7 +386,7 @@
- 	 UNSPEC_SYNC_NEW_OP))]
-   "GENERATE_LL_SC"
- {
--  return MIPS_SYNC_NEW_OP ("<d>", "<d>subu");	
-+  return mips_output_sync_insn (MIPS_SYNC_NEW_OP ("<d>", "<d>subu"));	
- }
-   [(set_attr "length" "28")])
- 
-@@ -394,9 +399,9 @@
-   "GENERATE_LL_SC"
- {
-   if (which_alternative == 0)
--    return MIPS_SYNC_OP ("<d>", "<immediate_insn>");	
-+    return mips_output_sync_insn (MIPS_SYNC_OP ("<d>", "<immediate_insn>"));	
-   else
--    return MIPS_SYNC_OP ("<d>", "<insn>");	
-+    return mips_output_sync_insn (MIPS_SYNC_OP ("<d>", "<insn>"));	
- }
-   [(set_attr "length" "28")])
- 
-@@ -411,9 +416,9 @@
-   "GENERATE_LL_SC"
- {
-   if (which_alternative == 0)
--    return MIPS_SYNC_OLD_OP ("<d>", "<immediate_insn>");	
-+    return mips_output_sync_insn (MIPS_SYNC_OLD_OP ("<d>", "<immediate_insn>"));	
-   else
--    return MIPS_SYNC_OLD_OP ("<d>", "<insn>");	
-+    return mips_output_sync_insn (MIPS_SYNC_OLD_OP ("<d>", "<insn>"));	
- }
-   [(set_attr "length" "28")])
- 
-@@ -428,9 +433,9 @@
-   "GENERATE_LL_SC"
- {
-   if (which_alternative == 0)
--    return MIPS_SYNC_NEW_OP ("<d>", "<immediate_insn>");	
-+    return mips_output_sync_insn (MIPS_SYNC_NEW_OP ("<d>", "<immediate_insn>"));	
-   else
--    return MIPS_SYNC_NEW_OP ("<d>", "<insn>");	
-+    return mips_output_sync_insn (MIPS_SYNC_NEW_OP ("<d>", "<insn>"));	
- }
-   [(set_attr "length" "28")])
- 
-@@ -441,9 +446,9 @@
-   "GENERATE_LL_SC"
- {
-   if (which_alternative == 0)
--    return MIPS_SYNC_NAND ("<d>", "andi");	
-+    return mips_output_sync_insn (MIPS_SYNC_NAND ("<d>", "andi"));	
-   else
--    return MIPS_SYNC_NAND ("<d>", "and");	
-+    return mips_output_sync_insn (MIPS_SYNC_NAND ("<d>", "and"));	
- }
-   [(set_attr "length" "32")])
- 
-@@ -456,9 +461,9 @@
-   "GENERATE_LL_SC"
- {
-   if (which_alternative == 0)
--    return MIPS_SYNC_OLD_NAND ("<d>", "andi");	
-+    return mips_output_sync_insn (MIPS_SYNC_OLD_NAND ("<d>", "andi"));	
-   else
--    return MIPS_SYNC_OLD_NAND ("<d>", "and");	
-+    return mips_output_sync_insn (MIPS_SYNC_OLD_NAND ("<d>", "and"));	
- }
-   [(set_attr "length" "32")])
- 
-@@ -471,9 +476,9 @@
-   "GENERATE_LL_SC"
- {
-   if (which_alternative == 0)
--    return MIPS_SYNC_NEW_NAND ("<d>", "andi");	
-+    return mips_output_sync_insn (MIPS_SYNC_NEW_NAND ("<d>", "andi"));	
-   else
--    return MIPS_SYNC_NEW_NAND ("<d>", "and");	
-+    return mips_output_sync_insn (MIPS_SYNC_NEW_NAND ("<d>", "and"));	
- }
-   [(set_attr "length" "32")])
- 
-@@ -486,9 +491,9 @@
-   "GENERATE_LL_SC"
- {
-   if (which_alternative == 0)
--    return MIPS_SYNC_EXCHANGE ("<d>", "li");
-+    return mips_output_sync_insn (MIPS_SYNC_EXCHANGE ("<d>", "li"));
-   else
--    return MIPS_SYNC_EXCHANGE ("<d>", "move");
-+    return mips_output_sync_insn (MIPS_SYNC_EXCHANGE ("<d>", "move"));
- }
-   [(set_attr "length" "24")])
- 
-@@ -516,8 +521,8 @@
-   "GENERATE_LL_SC"
- {
-   if (which_alternative == 0)
--    return MIPS_SYNC_EXCHANGE_12 (MIPS_SYNC_EXCHANGE_12_NONZERO_OP);
-+    return mips_output_sync_insn (MIPS_SYNC_EXCHANGE_12 (MIPS_SYNC_EXCHANGE_12_NONZERO_OP));
-   else
--    return MIPS_SYNC_EXCHANGE_12 (MIPS_SYNC_EXCHANGE_12_ZERO_OP);
-+    return mips_output_sync_insn (MIPS_SYNC_EXCHANGE_12 (MIPS_SYNC_EXCHANGE_12_ZERO_OP));
- }
-   [(set_attr "length" "28,24")])
-diff -Naurp -x .svn gcc.orig/gcc/doc/invoke.texi gcc/gcc/doc/invoke.texi
---- gcc.orig/gcc/doc/invoke.texi	2008-10-30 22:14:29.000000000 -0400
-+++ gcc/gcc/doc/invoke.texi	2008-11-03 02:15:16.000000000 -0500
-@@ -666,7 +666,7 @@ Objective-C and Objective-C++ Dialects}.
- -mdivide-traps  -mdivide-breaks @gol
- -mmemcpy  -mno-memcpy  -mlong-calls  -mno-long-calls @gol
- -mmad  -mno-mad  -mfused-madd  -mno-fused-madd  -nocpp @gol
---mfix-r4000  -mno-fix-r4000  -mfix-r4400  -mno-fix-r4400 @gol
-+-mfix-r4000  -mno-fix-r4000  -mfix-r4400  -mno-fix-r4400 -mfix-r10000 -mno-fix-r10000 @gol
- -mfix-vr4120  -mno-fix-vr4120  -mfix-vr4130  -mno-fix-vr4130 @gol
- -mfix-sb1  -mno-fix-sb1 @gol
- -mflush-func=@var{func}  -mno-flush-func @gol
-
---------------090103070700080004080404
-Content-Type: text/plain;
- name="gcc-4.4-trunk-fixr10k-z2.patch"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="gcc-4.4-trunk-fixr10k-z2.patch"
-
-diff -Naurp -x .svn gcc.orig/gcc/config/mips/mips.c gcc/gcc/config/mips/mips.c
---- gcc.orig/gcc/config/mips/mips.c	2008-11-06 00:35:19.000000000 -0500
-+++ gcc/gcc/config/mips/mips.c	2008-11-09 23:05:02.000000000 -0500
-@@ -6909,6 +6909,7 @@ mips_print_operand_reloc (FILE *file, rt
-    '#'	Print a nop if in a ".set noreorder" block.
-    '/'	Like '#', but do nothing within a delayed-branch sequence.
-    '?'	Print "l" if mips_branch_likely is true
-+   '~'	Print a nop if mips_branch_likely is true
-    '.'	Print the name of the register with a hard-wired zero (zero or $0).
-    '@'	Print the name of the assembler temporary register (at or $1).
-    '^'	Print the name of the pic call-through register (t9 or $25).
-@@ -6983,6 +6984,11 @@ mips_print_operand_punctuation (FILE *fi
- 	putc ('l', file);
-       break;
- 
-+    case '~':
-+      if (mips_branch_likely)
-+	fputs ("\n\tnop", file);
-+      break;
-+
-     case '.':
-       fputs (reg_names[GP_REG_FIRST + 0], file);
-       break;
-@@ -7026,7 +7032,7 @@ mips_init_print_operand_punct (void)
- {
-   const char *p;
- 
--  for (p = "()[]<>*#/?.@^+$|-"; *p; p++)
-+  for (p = "()[]<>*#/?~.@^+$|-"; *p; p++)
-     mips_print_operand_punct[(unsigned char) *p] = true;
- }
- 
-@@ -13824,6 +13830,17 @@ mips_override_options (void)
-     warning (0, "the %qs architecture does not support branch-likely"
- 	     " instructions", mips_arch_info->name);
- 
-+  /* Check to see whether branch-likely instructions are not available
-+     when using -mfix-r10000.  This will be true if:
-+	1. -mno-branch-likely was passed.
-+	2. The selected ISA does not support branch-likely and
-+	   the command line does not include -mbranch-likely  */
-+  if ((TARGET_FIX_R10000
-+       && (target_flags_explicit & MASK_BRANCHLIKELY) == 0)
-+          ? !ISA_HAS_BRANCHLIKELY
-+          ? !TARGET_BRANCHLIKELY : false : false)
-+    sorry ("branch-likely instructions not available");
-+
-   /* The effect of -mabicalls isn't defined for the EABI.  */
-   if (mips_abi == ABI_EABI && TARGET_ABICALLS)
-     {
-@@ -13971,6 +13988,12 @@ mips_override_options (void)
-       && mips_matching_cpu_name_p (mips_arch_info->name, "r4400"))
-     target_flags |= MASK_FIX_R4400;
- 
-+  /* Default to working around R10000 errata only if the processor
-+     was selected explicitly.  */
-+  if ((target_flags_explicit & MASK_FIX_R10000) == 0
-+      && mips_matching_cpu_name_p (mips_arch_info->name, "r10000"))
-+    target_flags |= MASK_FIX_R10000;
-+
-   /* Save base state of options.  */
-   mips_base_target_flags = target_flags;
-   mips_base_delayed_branch = flag_delayed_branch;
-diff -Naurp -x .svn gcc.orig/gcc/config/mips/mips.h gcc/gcc/config/mips/mips.h
---- gcc.orig/gcc/config/mips/mips.h	2008-11-01 13:21:41.000000000 -0400
-+++ gcc/gcc/config/mips/mips.h	2008-11-09 23:05:02.000000000 -0500
-@@ -3083,7 +3083,7 @@ while (0)
-   "\tbne\t%0,%z2,2f\n"				\
-   "\t" OP "\t%@,%3\n"				\
-   "\tsc" SUFFIX "\t%@,%1\n"			\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)\n"				\
-   "2:\n"
-@@ -3108,7 +3108,7 @@ while (0)
-   "\tand\t%@,%0,%3\n"				\
-   OPS						\
-   "\tsc\t%@,%1\n"				\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)\n"				\
-   "2:\n"
-@@ -3128,7 +3128,7 @@ while (0)
-   "1:\tll" SUFFIX "\t%@,%0\n"			\
-   "\t" INSN "\t%@,%@,%1\n"			\
-   "\tsc" SUFFIX "\t%@,%0\n"			\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)"
- 
-@@ -3153,7 +3153,7 @@ while (0)
-   "\tand\t%4,%4,%1\n"				\
-   "\tor\t%@,%@,%4\n"				\
-   "\tsc\t%@,%0\n"				\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)"
- 
-@@ -3186,7 +3186,7 @@ while (0)
-   "\tand\t%5,%5,%2\n"				\
-   "\tor\t%@,%@,%5\n"				\
-   "\tsc\t%@,%1\n"				\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)"
- 
-@@ -3216,7 +3216,7 @@ while (0)
-   "\tand\t%0,%0,%2\n"				\
-   "\tor\t%@,%@,%0\n"				\
-   "\tsc\t%@,%1\n"				\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)"
- 
-@@ -3236,7 +3236,7 @@ while (0)
-   "1:\tll" SUFFIX "\t%0,%1\n"			\
-   "\t" INSN "\t%@,%0,%2\n"			\
-   "\tsc" SUFFIX "\t%@,%1\n"			\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)"
- 
-@@ -3253,7 +3253,7 @@ while (0)
-   "1:\tll" SUFFIX "\t%0,%1\n"			\
-   "\t" INSN "\t%@,%0,%2\n"			\
-   "\tsc" SUFFIX "\t%@,%1\n"			\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b%~\n"			\
-   "\t" INSN "\t%0,%0,%2\n"			\
-   "\tsync%-%]%>%)"
- 
-@@ -3270,7 +3270,7 @@ while (0)
-   "\tnor\t%@,%@,%.\n"				\
-   "\t" INSN "\t%@,%@,%1\n"			\
-   "\tsc" SUFFIX "\t%@,%0\n"			\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)"
- 
-@@ -3289,7 +3289,7 @@ while (0)
-   "\tnor\t%@,%0,%.\n"				\
-   "\t" INSN "\t%@,%@,%2\n"			\
-   "\tsc" SUFFIX "\t%@,%1\n"			\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)"
- 
-@@ -3308,7 +3308,7 @@ while (0)
-   "\tnor\t%0,%0,%.\n"				\
-   "\t" INSN "\t%@,%0,%2\n"			\
-   "\tsc" SUFFIX "\t%@,%1\n"			\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b%~\n"			\
-   "\t" INSN "\t%0,%0,%2\n"			\
-   "\tsync%-%]%>%)"
- 
-@@ -3326,7 +3326,7 @@ while (0)
-   "1:\tll" SUFFIX "\t%0,%1\n"			\
-   "\t" OP "\t%@,%2\n"				\
-   "\tsc" SUFFIX "\t%@,%1\n"			\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)"
- 
-@@ -3350,7 +3350,7 @@ while (0)
-   "\tand\t%@,%0,%3\n"				\
-   OPS						\
-   "\tsc\t%@,%1\n"				\
--  "\tbeq\t%@,%.,1b\n"				\
-+  "\tbeq%?\t%@,%.,1b\n"				\
-   "\tnop\n"					\
-   "\tsync%-%]%>%)"
- 
-diff -Naurp -x .svn gcc.orig/gcc/config/mips/mips.opt gcc/gcc/config/mips/mips.opt
---- gcc.orig/gcc/config/mips/mips.opt	2008-10-30 22:20:27.000000000 -0400
-+++ gcc/gcc/config/mips/mips.opt	2008-11-09 23:05:02.000000000 -0500
-@@ -112,6 +112,10 @@ mfix-r4400
- Target Report Mask(FIX_R4400)
- Work around certain R4400 errata
- 
-+mfix-r10000
-+Target Report Mask(FIX_R10000)
-+Work around certain R10000 errata
-+
- mfix-sb1
- Target Report Var(TARGET_FIX_SB1)
- Work around errata for early SB-1 revision 2 cores
-diff -Naurp -x .svn gcc.orig/gcc/config/mips/sync.md gcc/gcc/config/mips/sync.md
---- gcc.orig/gcc/config/mips/sync.md	2008-10-30 22:20:27.000000000 -0400
-+++ gcc/gcc/config/mips/sync.md	2008-11-09 23:05:19.000000000 -0500
-@@ -42,6 +42,8 @@
- 	 UNSPEC_COMPARE_AND_SWAP))]
-   "GENERATE_LL_SC"
- {
-+  static bool mips_branch_likely;
-+  mips_branch_likely = TARGET_FIX_R10000;
-   if (which_alternative == 0)
-     return MIPS_COMPARE_AND_SWAP ("<d>", "li");
-   else
-@@ -75,6 +77,8 @@
- 			    UNSPEC_COMPARE_AND_SWAP_12))]
-   "GENERATE_LL_SC"
- {
-+  static bool mips_branch_likely;
-+  mips_branch_likely = TARGET_FIX_R10000;
-   if (which_alternative == 0)
-     return MIPS_COMPARE_AND_SWAP_12 (MIPS_COMPARE_AND_SWAP_12_NONZERO_OP);
-   else
-@@ -90,6 +94,8 @@
- 	  UNSPEC_SYNC_OLD_OP))]
-   "GENERATE_LL_SC"
- {
-+  static bool mips_branch_likely;
-+  mips_branch_likely = TARGET_FIX_R10000;
-   if (which_alternative == 0)
-     return MIPS_SYNC_OP ("<d>", "<d>addiu");	
-   else
-@@ -124,6 +130,8 @@
-    (clobber (match_scratch:SI 4 "=&d"))]
-   "GENERATE_LL_SC"
- {
-+    static bool mips_branch_likely;
-+    mips_branch_likely = TARGET_FIX_R10000;
-     return MIPS_SYNC_OP_12 ("<insn>", MIPS_SYNC_OP_12_NOT_NOP);	
- }
-   [(set_attr "length" "40")])
-@@ -160,6 +168,8 @@
-    (clobber (match_scratch:SI 5 "=&d"))]
-   "GENERATE_LL_SC"
- {
-+    static bool mips_branch_likely;
-+    mips_branch_likely = TARGET_FIX_R10000;
-     return MIPS_SYNC_OLD_OP_12 ("<insn>", MIPS_SYNC_OLD_OP_12_NOT_NOP,
- 				MIPS_SYNC_OLD_OP_12_NOT_NOP_REG);	
- }
-@@ -202,6 +212,8 @@
- 	   (match_dup 4)] UNSPEC_SYNC_NEW_OP_12))]
-   "GENERATE_LL_SC"
- {
-+    static bool mips_branch_likely;
-+    mips_branch_likely = TARGET_FIX_R10000;
-     return MIPS_SYNC_NEW_OP_12 ("<insn>", MIPS_SYNC_NEW_OP_12_NOT_NOP);
- }
-   [(set_attr "length" "40")])
-@@ -233,6 +245,8 @@
-    (clobber (match_scratch:SI 4 "=&d"))]
-   "GENERATE_LL_SC"
- {
-+    static bool mips_branch_likely;
-+    mips_branch_likely = TARGET_FIX_R10000;
-     return MIPS_SYNC_OP_12 ("and", MIPS_SYNC_OP_12_NOT_NOT);	
- }
-   [(set_attr "length" "44")])
-@@ -267,6 +281,8 @@
-    (clobber (match_scratch:SI 5 "=&d"))]
-   "GENERATE_LL_SC"
- {
-+    static bool mips_branch_likely;
-+    mips_branch_likely = TARGET_FIX_R10000;
-     return MIPS_SYNC_OLD_OP_12 ("and", MIPS_SYNC_OLD_OP_12_NOT_NOT,
- 				MIPS_SYNC_OLD_OP_12_NOT_NOT_REG);	
- }
-@@ -307,6 +323,8 @@
- 	   (match_dup 4)] UNSPEC_SYNC_NEW_OP_12))]
-   "GENERATE_LL_SC"
- {
-+    static bool mips_branch_likely;
-+    mips_branch_likely = TARGET_FIX_R10000;
-     return MIPS_SYNC_NEW_OP_12 ("and", MIPS_SYNC_NEW_OP_12_NOT_NOT);
- }
-   [(set_attr "length" "40")])
-@@ -319,6 +337,8 @@
- 	 UNSPEC_SYNC_OLD_OP))]
-   "GENERATE_LL_SC"
- {
-+  static bool mips_branch_likely;
-+  mips_branch_likely = TARGET_FIX_R10000;
-   return MIPS_SYNC_OP ("<d>", "<d>subu");	
- }
-   [(set_attr "length" "28")])
-@@ -333,6 +353,8 @@
- 	 UNSPEC_SYNC_OLD_OP))]
-   "GENERATE_LL_SC"
- {
-+  static bool mips_branch_likely;
-+  mips_branch_likely = TARGET_FIX_R10000;
-   if (which_alternative == 0)
-     return MIPS_SYNC_OLD_OP ("<d>", "<d>addiu");	
-   else
-@@ -350,6 +372,8 @@
- 	 UNSPEC_SYNC_OLD_OP))]
-   "GENERATE_LL_SC"
- {
-+  static bool mips_branch_likely;
-+  mips_branch_likely = TARGET_FIX_R10000;
-   return MIPS_SYNC_OLD_OP ("<d>", "<d>subu");	
- }
-   [(set_attr "length" "28")])
-@@ -364,6 +388,8 @@
- 	 UNSPEC_SYNC_NEW_OP))]
-   "GENERATE_LL_SC"
- {
-+  static bool mips_branch_likely;
-+  mips_branch_likely = TARGET_FIX_R10000;
-   if (which_alternative == 0)
-     return MIPS_SYNC_NEW_OP ("<d>", "<d>addiu");	
-   else
-@@ -381,6 +407,8 @@
- 	 UNSPEC_SYNC_NEW_OP))]
-   "GENERATE_LL_SC"
- {
-+  static bool mips_branch_likely;
-+  mips_branch_likely = TARGET_FIX_R10000;
-   return MIPS_SYNC_NEW_OP ("<d>", "<d>subu");	
- }
-   [(set_attr "length" "28")])
-@@ -393,6 +421,8 @@
- 	 UNSPEC_SYNC_OLD_OP))]
-   "GENERATE_LL_SC"
- {
-+  static bool mips_branch_likely;
-+  mips_branch_likely = TARGET_FIX_R10000;
-   if (which_alternative == 0)
-     return MIPS_SYNC_OP ("<d>", "<immediate_insn>");	
-   else
-@@ -410,6 +440,8 @@
- 	 UNSPEC_SYNC_OLD_OP))]
-   "GENERATE_LL_SC"
- {
-+  static bool mips_branch_likely;
-+  mips_branch_likely = TARGET_FIX_R10000;
-   if (which_alternative == 0)
-     return MIPS_SYNC_OLD_OP ("<d>", "<immediate_insn>");	
-   else
-@@ -427,6 +459,8 @@
- 	 UNSPEC_SYNC_NEW_OP))]
-   "GENERATE_LL_SC"
- {
-+  static bool mips_branch_likely;
-+  mips_branch_likely = TARGET_FIX_R10000;
-   if (which_alternative == 0)
-     return MIPS_SYNC_NEW_OP ("<d>", "<immediate_insn>");	
-   else
-@@ -440,6 +474,8 @@
- 	 UNSPEC_SYNC_OLD_OP))]
-   "GENERATE_LL_SC"
- {
-+  static bool mips_branch_likely;
-+  mips_branch_likely = TARGET_FIX_R10000;
-   if (which_alternative == 0)
-     return MIPS_SYNC_NAND ("<d>", "andi");	
-   else
-@@ -455,6 +491,8 @@
- 	 UNSPEC_SYNC_OLD_OP))]
-   "GENERATE_LL_SC"
- {
-+  static bool mips_branch_likely;
-+  mips_branch_likely = TARGET_FIX_R10000;
-   if (which_alternative == 0)
-     return MIPS_SYNC_OLD_NAND ("<d>", "andi");	
-   else
-@@ -470,6 +508,8 @@
- 	 UNSPEC_SYNC_NEW_OP))]
-   "GENERATE_LL_SC"
- {
-+  static bool mips_branch_likely;
-+  mips_branch_likely = TARGET_FIX_R10000;
-   if (which_alternative == 0)
-     return MIPS_SYNC_NEW_NAND ("<d>", "andi");	
-   else
-@@ -485,6 +525,8 @@
- 	 UNSPEC_SYNC_EXCHANGE))]
-   "GENERATE_LL_SC"
- {
-+  static bool mips_branch_likely;
-+  mips_branch_likely = TARGET_FIX_R10000;
-   if (which_alternative == 0)
-     return MIPS_SYNC_EXCHANGE ("<d>", "li");
-   else
-@@ -515,6 +557,8 @@
- 	  UNSPEC_SYNC_EXCHANGE_12))]
-   "GENERATE_LL_SC"
- {
-+  static bool mips_branch_likely;
-+  mips_branch_likely = TARGET_FIX_R10000;
-   if (which_alternative == 0)
-     return MIPS_SYNC_EXCHANGE_12 (MIPS_SYNC_EXCHANGE_12_NONZERO_OP);
-   else
-diff -Naurp -x .svn gcc.orig/gcc/doc/invoke.texi gcc/gcc/doc/invoke.texi
---- gcc.orig/gcc/doc/invoke.texi	2008-10-30 22:14:29.000000000 -0400
-+++ gcc/gcc/doc/invoke.texi	2008-11-09 23:05:03.000000000 -0500
-@@ -666,7 +666,7 @@ Objective-C and Objective-C++ Dialects}.
- -mdivide-traps  -mdivide-breaks @gol
- -mmemcpy  -mno-memcpy  -mlong-calls  -mno-long-calls @gol
- -mmad  -mno-mad  -mfused-madd  -mno-fused-madd  -nocpp @gol
---mfix-r4000  -mno-fix-r4000  -mfix-r4400  -mno-fix-r4400 @gol
-+-mfix-r4000  -mno-fix-r4000  -mfix-r4400  -mno-fix-r4400 -mfix-r10000 -mno-fix-r10000 @gol
- -mfix-vr4120  -mno-fix-vr4120  -mfix-vr4130  -mno-fix-vr4130 @gol
- -mfix-sb1  -mno-fix-sb1 @gol
- -mflush-func=@var{func}  -mno-flush-func @gol
-
---------------090103070700080004080404--
+> +
+> +	/* Enable COP2 so we can save it */
+> +	mfc0	t0, CP0_STATUS
+> +	or	t0, t1
+> +	mtc0	t0, CP0_STATUS
+> +
+> +	/* Save COP2 */
+> +	daddu	a0, THREAD_CP2
+> +	jal octeon_cop2_save
+> +	dsubu	a0, THREAD_CP2
+> +
+> +	/* Disable COP2 now that we are done */
+> +	mfc0	t0, CP0_STATUS
+> +	li	t1, ST0_CU2
+> +	xor	t0, t1
+> +	mtc0	t0, CP0_STATUS
+> +
+> +1:
+> +#if CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE > 0
+> +	/* Check if we need to store CVMSEG state */
+> +	mfc0	t0, $11,7 	/* CvmMemCtl */
+> +	bbit0	t0, 6, 3f	/* Is user access enabled? */
+> +
+> +	/* Store the CVMSEG state */
+> +	/* Extract the size of CVMSEG */
+> +	andi	t0, 0x3f
+> +	/* Multiply * (cache line size/sizeof(long)/2) */
+> +	sll	t0, 7-LONGLOG-1
+> +	li	t1, -32768 	/* Base address of CVMSEG */
+> +	LONG_ADDI t2, a0, THREAD_CVMSEG	/* Where to store CVMSEG to */
+> +	synciobdma
+> +2:
+> +	.set noreorder
+> +	LONG_L	t8, 0(t1)	/* Load from CVMSEG */
+> +	subu	t0, 1		/* Decrement loop var */
+> +	LONG_L	t9, LONGSIZE(t1)/* Load from CVMSEG */
+> +	LONG_ADDU t1, LONGSIZE*2 /* Increment loc in CVMSEG */
+> +	LONG_S	t8, 0(t2)	/* Store CVMSEG to thread storage */
+> +	LONG_ADDU t2, LONGSIZE*2 /* Increment loc in thread storage */
+> +	bnez	t0, 2b		/* Loop until we've copied it all */
+> +	 LONG_S	t9, -LONGSIZE(t2)/* Store CVMSEG to thread storage */
+> +	.set reorder
+> +
+> +	/* Disable access to CVMSEG */
+> +	mfc0	t0, $11,7 	/* CvmMemCtl */
+> +	xori	t0, t0, 0x40	/* Bit 6 is CVMSEG user enable */
+> +	mtc0	t0, $11,7 	/* CvmMemCtl */
+> +#endif
+> +3:
+> +	/*
+> +	 * The order of restoring the registers takes care of the race
+> +	 * updating $28, $29 and kernelsp without disabling ints.
+> +	 */
+> +	move	$28, a2
+> +	cpu_restore_nonscratch a1
+> +
+> +#if (_THREAD_SIZE - 32) < 0x8000
+> +	PTR_ADDIU	t0, $28, _THREAD_SIZE - 32
+> +#else
+> +	PTR_LI		t0, _THREAD_SIZE - 32
+> +	PTR_ADDU	t0, $28
+> +#endif
+> +	set_saved_sp	t0, t1, t2
+> +
+> +	mfc0	t1, CP0_STATUS		/* Do we really need this? */
+> +	li	a3, 0xff01
+> +	and	t1, a3
+> +	LONG_L	a2, THREAD_STATUS(a1)
+> +	nor	a3, $0, a3
+> +	and	a2, a3
+> +	or	a2, t1
+> +	mtc0	a2, CP0_STATUS
+> +	move	v0, a0
+> +	jr	ra
+> +	END(resume)
+> +
+> +/*
+> + * void octeon_cop2_save(struct octeon_cop2_state *a0)
+> + */
+> +	.align	7
+> +	LEAF(octeon_cop2_save)
+> +
+> +	dmfc0	t9, $9,7	/* CvmCtl register. */
+> +
+> +        /* Save the COP2 CRC state */
+> +	dmfc2	t0, 0x0201
+> +	dmfc2	t1, 0x0202
+> +	dmfc2	t2, 0x0200
+> +	sd	t0, OCTEON_CP2_CRC_IV(a0)
+> +	sd	t1, OCTEON_CP2_CRC_LENGTH(a0)
+> +	sd	t2, OCTEON_CP2_CRC_POLY(a0)
+> +	/* Skip next instructions if CvmCtl[NODFA_CP2] set */
+> +	bbit1	t9, 28, 1f
+> +
+> +	/* Save the LLM state */
+> +	dmfc2	t0, 0x0402
+> +	dmfc2	t1, 0x040A
+> +	sd	t0, OCTEON_CP2_LLM_DAT(a0)
+> +	sd	t1, OCTEON_CP2_LLM_DAT+8(a0)
+> +
+> +1:      bbit1	t9, 26, 3f	/* done if CvmCtl[NOCRYPTO] set */
+> +
+> +	/* Save the COP2 crypto state */
+> +        /* this part is mostly common to both pass 1 and later revisions */
+> +	dmfc2 	t0, 0x0084
+> +	dmfc2 	t1, 0x0080
+> +	dmfc2 	t2, 0x0081
+> +	dmfc2 	t3, 0x0082
+> +	sd	t0, OCTEON_CP2_3DES_IV(a0)
+> +	dmfc2 	t0, 0x0088
+> +	sd	t1, OCTEON_CP2_3DES_KEY(a0)
+> +	dmfc2 	t1, 0x0111                      /* only necessary for pass 1 */
+> +	sd	t2, OCTEON_CP2_3DES_KEY+8(a0)
+> +	dmfc2 	t2, 0x0102
+> +	sd	t3, OCTEON_CP2_3DES_KEY+16(a0)
+> +	dmfc2 	t3, 0x0103
+> +	sd	t0, OCTEON_CP2_3DES_RESULT(a0)
+> +	dmfc2 	t0, 0x0104
+> +	sd	t1, OCTEON_CP2_AES_INP0(a0)     /* only necessary for pass 1 */
+> +	dmfc2 	t1, 0x0105
+> +	sd	t2, OCTEON_CP2_AES_IV(a0)
+> +	dmfc2	t2, 0x0106
+> +	sd	t3, OCTEON_CP2_AES_IV+8(a0)
+> +	dmfc2 	t3, 0x0107
+> +	sd	t0, OCTEON_CP2_AES_KEY(a0)
+> +	dmfc2	t0, 0x0110
+> +	sd	t1, OCTEON_CP2_AES_KEY+8(a0)
+> +	dmfc2	t1, 0x0100
+> +	sd	t2, OCTEON_CP2_AES_KEY+16(a0)
+> +	dmfc2	t2, 0x0101
+> +	sd	t3, OCTEON_CP2_AES_KEY+24(a0)
+> +	mfc0	t3, $15,0 	/* Get the processor ID register */
+> +	sd	t0, OCTEON_CP2_AES_KEYLEN(a0)
+> +	li	t0, 0x000d0000	/* This is the processor ID of Octeon Pass1 */
+> +	sd	t1, OCTEON_CP2_AES_RESULT(a0)
+> +	sd	t2, OCTEON_CP2_AES_RESULT+8(a0)
+> +	/* Skip to the Pass1 version of the remainder of the COP2 state */
+> +	beq	t3, t0, 2f
+> +
+> +        /* the non-pass1 state when !CvmCtl[NOCRYPTO] */
+> +	dmfc2	t1, 0x0240
+> +	dmfc2	t2, 0x0241
+> +	dmfc2	t3, 0x0242
+> +	dmfc2	t0, 0x0243
+> +	sd	t1, OCTEON_CP2_HSH_DATW(a0)
+> +	dmfc2	t1, 0x0244
+> +	sd	t2, OCTEON_CP2_HSH_DATW+8(a0)
+> +	dmfc2	t2, 0x0245
+> +	sd	t3, OCTEON_CP2_HSH_DATW+16(a0)
+> +	dmfc2	t3, 0x0246
+> +	sd	t0, OCTEON_CP2_HSH_DATW+24(a0)
+> +	dmfc2	t0, 0x0247
+> +	sd	t1, OCTEON_CP2_HSH_DATW+32(a0)
+> +	dmfc2	t1, 0x0248
+> +	sd	t2, OCTEON_CP2_HSH_DATW+40(a0)
+> +	dmfc2	t2, 0x0249
+> +	sd	t3, OCTEON_CP2_HSH_DATW+48(a0)
+> +	dmfc2	t3, 0x024A
+> +	sd	t0, OCTEON_CP2_HSH_DATW+56(a0)
+> +	dmfc2	t0, 0x024B
+> +	sd	t1, OCTEON_CP2_HSH_DATW+64(a0)
+> +	dmfc2	t1, 0x024C
+> +	sd	t2, OCTEON_CP2_HSH_DATW+72(a0)
+> +	dmfc2	t2, 0x024D
+> +	sd	t3, OCTEON_CP2_HSH_DATW+80(a0)
+> +	dmfc2 	t3, 0x024E
+> +	sd	t0, OCTEON_CP2_HSH_DATW+88(a0)
+> +	dmfc2	t0, 0x0250
+> +	sd	t1, OCTEON_CP2_HSH_DATW+96(a0)
+> +	dmfc2	t1, 0x0251
+> +	sd	t2, OCTEON_CP2_HSH_DATW+104(a0)
+> +	dmfc2	t2, 0x0252
+> +	sd	t3, OCTEON_CP2_HSH_DATW+112(a0)
+> +	dmfc2	t3, 0x0253
+> +	sd	t0, OCTEON_CP2_HSH_IVW(a0)
+> +	dmfc2	t0, 0x0254
+> +	sd	t1, OCTEON_CP2_HSH_IVW+8(a0)
+> +	dmfc2	t1, 0x0255
+> +	sd	t2, OCTEON_CP2_HSH_IVW+16(a0)
+> +	dmfc2	t2, 0x0256
+> +	sd	t3, OCTEON_CP2_HSH_IVW+24(a0)
+> +	dmfc2	t3, 0x0257
+> +	sd	t0, OCTEON_CP2_HSH_IVW+32(a0)
+> +	dmfc2 	t0, 0x0258
+> +	sd	t1, OCTEON_CP2_HSH_IVW+40(a0)
+> +	dmfc2 	t1, 0x0259
+> +	sd	t2, OCTEON_CP2_HSH_IVW+48(a0)
+> +	dmfc2	t2, 0x025E
+> +	sd	t3, OCTEON_CP2_HSH_IVW+56(a0)
+> +	dmfc2	t3, 0x025A
+> +	sd	t0, OCTEON_CP2_GFM_MULT(a0)
+> +	dmfc2	t0, 0x025B
+> +	sd	t1, OCTEON_CP2_GFM_MULT+8(a0)
+> +	sd	t2, OCTEON_CP2_GFM_POLY(a0)
+> +	sd	t3, OCTEON_CP2_GFM_RESULT(a0)
+> +	sd	t0, OCTEON_CP2_GFM_RESULT+8(a0)
+> +	jr	ra
+> +
+> +2:      /* pass 1 special stuff when !CvmCtl[NOCRYPTO] */
+> +	dmfc2	t3, 0x0040
+> +	dmfc2	t0, 0x0041
+> +	dmfc2	t1, 0x0042
+> +	dmfc2	t2, 0x0043
+> +	sd	t3, OCTEON_CP2_HSH_DATW(a0)
+> +	dmfc2	t3, 0x0044
+> +	sd	t0, OCTEON_CP2_HSH_DATW+8(a0)
+> +	dmfc2	t0, 0x0045
+> +	sd	t1, OCTEON_CP2_HSH_DATW+16(a0)
+> +	dmfc2	t1, 0x0046
+> +	sd	t2, OCTEON_CP2_HSH_DATW+24(a0)
+> +	dmfc2	t2, 0x0048
+> +	sd	t3, OCTEON_CP2_HSH_DATW+32(a0)
+> +	dmfc2	t3, 0x0049
+> +	sd	t0, OCTEON_CP2_HSH_DATW+40(a0)
+> +	dmfc2	t0, 0x004A
+> +	sd	t1, OCTEON_CP2_HSH_DATW+48(a0)
+> +	sd	t2, OCTEON_CP2_HSH_IVW(a0)
+> +	sd	t3, OCTEON_CP2_HSH_IVW+8(a0)
+> +	sd	t0, OCTEON_CP2_HSH_IVW+16(a0)
+> +
+> +3:      /* pass 1 or CvmCtl[NOCRYPTO] set */
+> +	jr	ra
+> +	END(octeon_cop2_save)
+> +
+> +/*
+> + * void octeon_cop2_restore(struct octeon_cop2_state *a0)
+> + */
+> +	.align	7
+> +	.set push
+> +	.set noreorder
+> +	LEAF(octeon_cop2_restore)
+> +        /* First cache line was prefetched before the call */
+> +        pref    4,  128(a0)
+> +	dmfc0	t9, $9,7	/* CvmCtl register. */
+> +
+> +        pref    4,  256(a0)
+> +	ld	t0, OCTEON_CP2_CRC_IV(a0)
+> +        pref    4,  384(a0)
+> +	ld	t1, OCTEON_CP2_CRC_LENGTH(a0)
+> +	ld	t2, OCTEON_CP2_CRC_POLY(a0)
+> +
+> +	/* Restore the COP2 CRC state */
+> +	dmtc2	t0, 0x0201
+> +	dmtc2 	t1, 0x1202
+> +	bbit1	t9, 28, 2f	/* Skip LLM if CvmCtl[NODFA_CP2] is set */
+> +	 dmtc2	t2, 0x4200
+> +
+> +	/* Restore the LLM state */
+> +	ld	t0, OCTEON_CP2_LLM_DAT(a0)
+> +	ld	t1, OCTEON_CP2_LLM_DAT+8(a0)
+> +	dmtc2	t0, 0x0402
+> +	dmtc2	t1, 0x040A
+> +
+> +2:
+> +	bbit1	t9, 26, done_restore	/* done if CvmCtl[NOCRYPTO] set */
+> +	 nop
+> +
+> +	/* Restore the COP2 crypto state common to pass 1 and pass 2 */
+> +	ld	t0, OCTEON_CP2_3DES_IV(a0)
+> +	ld	t1, OCTEON_CP2_3DES_KEY(a0)
+> +	ld	t2, OCTEON_CP2_3DES_KEY+8(a0)
+> +	dmtc2 	t0, 0x0084
+> +	ld	t0, OCTEON_CP2_3DES_KEY+16(a0)
+> +	dmtc2 	t1, 0x0080
+> +	ld	t1, OCTEON_CP2_3DES_RESULT(a0)
+> +	dmtc2 	t2, 0x0081
+> +	ld	t2, OCTEON_CP2_AES_INP0(a0) /* only really needed for pass 1 */
+> +	dmtc2	t0, 0x0082
+> +	ld	t0, OCTEON_CP2_AES_IV(a0)
+> +	dmtc2 	t1, 0x0098
+> +	ld	t1, OCTEON_CP2_AES_IV+8(a0)
+> +	dmtc2 	t2, 0x010A                  /* only really needed for pass 1 */
+> +	ld	t2, OCTEON_CP2_AES_KEY(a0)
+> +	dmtc2 	t0, 0x0102
+> +	ld	t0, OCTEON_CP2_AES_KEY+8(a0)
+> +	dmtc2	t1, 0x0103
+> +	ld	t1, OCTEON_CP2_AES_KEY+16(a0)
+> +	dmtc2	t2, 0x0104
+> +	ld	t2, OCTEON_CP2_AES_KEY+24(a0)
+> +	dmtc2	t0, 0x0105
+> +	ld	t0, OCTEON_CP2_AES_KEYLEN(a0)
+> +	dmtc2	t1, 0x0106
+> +	ld	t1, OCTEON_CP2_AES_RESULT(a0)
+> +	dmtc2	t2, 0x0107
+> +	ld	t2, OCTEON_CP2_AES_RESULT+8(a0)
+> +	mfc0	t3, $15,0 	/* Get the processor ID register */
+> +	dmtc2	t0, 0x0110
+> +	li	t0, 0x000d0000	/* This is the processor ID of Octeon Pass1 */
+> +	dmtc2	t1, 0x0100
+> +	bne	t0, t3, 3f	/* Skip the next stuff for non-pass1 */
+> +	 dmtc2	t2, 0x0101
+> +
+> +        /* this code is specific for pass 1 */
+> +	ld	t0, OCTEON_CP2_HSH_DATW(a0)
+> +	ld	t1, OCTEON_CP2_HSH_DATW+8(a0)
+> +	ld	t2, OCTEON_CP2_HSH_DATW+16(a0)
+> +	dmtc2	t0, 0x0040
+> +	ld	t0, OCTEON_CP2_HSH_DATW+24(a0)
+> +	dmtc2	t1, 0x0041
+> +	ld	t1, OCTEON_CP2_HSH_DATW+32(a0)
+> +	dmtc2	t2, 0x0042
+> +	ld	t2, OCTEON_CP2_HSH_DATW+40(a0)
+> +	dmtc2	t0, 0x0043
+> +	ld	t0, OCTEON_CP2_HSH_DATW+48(a0)
+> +	dmtc2	t1, 0x0044
+> +	ld	t1, OCTEON_CP2_HSH_IVW(a0)
+> +	dmtc2	t2, 0x0045
+> +	ld	t2, OCTEON_CP2_HSH_IVW+8(a0)
+> +	dmtc2	t0, 0x0046
+> +	ld	t0, OCTEON_CP2_HSH_IVW+16(a0)
+> +	dmtc2	t1, 0x0048
+> +	dmtc2	t2, 0x0049
+> +        b done_restore   /* unconditional branch */
+> +	 dmtc2	t0, 0x004A
+> +
+> +3:      /* this is post-pass1 code */
+> +	ld	t2, OCTEON_CP2_HSH_DATW(a0)
+> +	ld	t0, OCTEON_CP2_HSH_DATW+8(a0)
+> +	ld	t1, OCTEON_CP2_HSH_DATW+16(a0)
+> +	dmtc2	t2, 0x0240
+> +	ld	t2, OCTEON_CP2_HSH_DATW+24(a0)
+> +	dmtc2	t0, 0x0241
+> +	ld	t0, OCTEON_CP2_HSH_DATW+32(a0)
+> +	dmtc2	t1, 0x0242
+> +	ld	t1, OCTEON_CP2_HSH_DATW+40(a0)
+> +	dmtc2	t2, 0x0243
+> +	ld	t2, OCTEON_CP2_HSH_DATW+48(a0)
+> +	dmtc2	t0, 0x0244
+> +	ld	t0, OCTEON_CP2_HSH_DATW+56(a0)
+> +	dmtc2	t1, 0x0245
+> +	ld	t1, OCTEON_CP2_HSH_DATW+64(a0)
+> +	dmtc2	t2, 0x0246
+> +	ld	t2, OCTEON_CP2_HSH_DATW+72(a0)
+> +	dmtc2	t0, 0x0247
+> +	ld	t0, OCTEON_CP2_HSH_DATW+80(a0)
+> +	dmtc2	t1, 0x0248
+> +	ld	t1, OCTEON_CP2_HSH_DATW+88(a0)
+> +	dmtc2	t2, 0x0249
+> +	ld	t2, OCTEON_CP2_HSH_DATW+96(a0)
+> +	dmtc2	t0, 0x024A
+> +	ld	t0, OCTEON_CP2_HSH_DATW+104(a0)
+> +	dmtc2	t1, 0x024B
+> +	ld	t1, OCTEON_CP2_HSH_DATW+112(a0)
+> +	dmtc2	t2, 0x024C
+> +	ld	t2, OCTEON_CP2_HSH_IVW(a0)
+> +	dmtc2	t0, 0x024D
+> +	ld	t0, OCTEON_CP2_HSH_IVW+8(a0)
+> +	dmtc2	t1, 0x024E
+> +	ld	t1, OCTEON_CP2_HSH_IVW+16(a0)
+> +	dmtc2	t2, 0x0250
+> +	ld	t2, OCTEON_CP2_HSH_IVW+24(a0)
+> +	dmtc2	t0, 0x0251
+> +	ld	t0, OCTEON_CP2_HSH_IVW+32(a0)
+> +	dmtc2	t1, 0x0252
+> +	ld	t1, OCTEON_CP2_HSH_IVW+40(a0)
+> +	dmtc2	t2, 0x0253
+> +	ld	t2, OCTEON_CP2_HSH_IVW+48(a0)
+> +	dmtc2	t0, 0x0254
+> +	ld	t0, OCTEON_CP2_HSH_IVW+56(a0)
+> +	dmtc2	t1, 0x0255
+> +	ld	t1, OCTEON_CP2_GFM_MULT(a0)
+> +	dmtc2	t2, 0x0256
+> +	ld	t2, OCTEON_CP2_GFM_MULT+8(a0)
+> +	dmtc2	t0, 0x0257
+> +	ld	t0, OCTEON_CP2_GFM_POLY(a0)
+> +	dmtc2	t1, 0x0258
+> +	ld	t1, OCTEON_CP2_GFM_RESULT(a0)
+> +	dmtc2	t2, 0x0259
+> +	ld	t2, OCTEON_CP2_GFM_RESULT+8(a0)
+> +	dmtc2	t0, 0x025E
+> +	dmtc2	t1, 0x025A
+> +	dmtc2	t2, 0x025B
+> +
+> +done_restore:
+> +	jr	ra
+> +	 nop
+> +	END(octeon_cop2_restore)
+> +	.set pop
+> +
+> +/*
+> + * void octeon_mult_save()
+> + * sp is assumed to point to a struct pt_regs
+> + *
+> + * NOTE: This is called in SAVE_SOME in stackframe.h. It can only
+> + *       safely modify k0 and k1.
+> + */
+> +	.align	7
+> +	.set push
+> +	.set noreorder
+> +	LEAF(octeon_mult_save)
+> +	dmfc0	k0, $9,7	/* CvmCtl register. */
+> +	bbit1	k0, 27, 1f	/* Skip CvmCtl[NOMUL] */
+> +	 nop
+> +
+> +	/* Save the multiplier state */
+> +	v3mulu	k0, $0, $0
+> +	v3mulu	k1, $0, $0
+> +	sd	k0, PT_MTP(sp)        /* PT_MTP    has P0 */
+> +	v3mulu	k0, $0, $0
+> +	sd	k1, PT_MTP+8(sp)      /* PT_MTP+8  has P1 */
+> +	ori	k1, $0, 1
+> +	v3mulu	k1, k1, $0
+> +	sd	k0, PT_MTP+16(sp)     /* PT_MTP+16 has P2 */
+> +	v3mulu	k0, $0, $0
+> +	sd	k1, PT_MPL(sp)        /* PT_MPL    has MPL0 */
+> +	v3mulu	k1, $0, $0
+> +	sd	k0, PT_MPL+8(sp)      /* PT_MPL+8  has MPL1 */
+> +	jr	ra
+> +	 sd	k1, PT_MPL+16(sp)     /* PT_MPL+16 has MPL2 */
+> +
+> +1:	/* Resume here if CvmCtl[NOMUL] */
+> +	jr	ra
+> +	END(octeon_mult_save)
+> +	.set pop
+> +
+> +/*
+> + * void octeon_mult_restore()
+> + * sp is assumed to point to a struct pt_regs
+> + *
+> + * NOTE: This is called in RESTORE_SOME in stackframe.h.
+> + */
+> +	.align	7
+> +	.set push
+> +	.set noreorder
+> +	LEAF(octeon_mult_restore)
+> +	dmfc0	k1, $9,7		/* CvmCtl register. */
+> +	ld	v0, PT_MPL(sp)        	/* MPL0 */
+> +	ld	v1, PT_MPL+8(sp)      	/* MPL1 */
+> +	ld	k0, PT_MPL+16(sp)     	/* MPL2 */
+> +	bbit1	k1, 27, 1f		/* Skip CvmCtl[NOMUL] */
+> +	/* Normally falls through, so no time wasted here */
+> +	nop
+> +
+> +	/* Restore the multiplier state */
+> +	ld	k1, PT_MTP+16(sp)     	/* P2 */
+> +	MTM0	v0			/* MPL0 */
+> +	ld	v0, PT_MTP+8(sp)	/* P1 */
+> +	MTM1	v1			/* MPL1 */
+> +	ld	v1, PT_MTP(sp)   	/* P0 */
+> +	MTM2	k0			/* MPL2 */
+> +	MTP2	k1			/* P2 */
+> +	MTP1	v0			/* P1 */
+> +	jr	ra
+> +	 MTP0	v1			/* P0 */
+> +
+> +1:	/* Resume here if CvmCtl[NOMUL] */
+> +	jr	ra
+> +	 nop
+> +	END(octeon_mult_restore)
+> +	.set pop
+> +

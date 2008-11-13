@@ -1,72 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2008 17:13:55 +0000 (GMT)
-Received: from smtp2.caviumnetworks.com ([209.113.159.134]:36645 "EHLO
-	smtp2.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S23659100AbYKMRNt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 13 Nov 2008 17:13:49 +0000
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by smtp2.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B491c60460000>; Thu, 13 Nov 2008 12:13:42 -0500
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 13 Nov 2008 17:25:09 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:57218 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S23659229AbYKMRZH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 13 Nov 2008 17:25:07 +0000
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B491c62d50000>; Thu, 13 Nov 2008 12:24:37 -0500
 Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 13 Nov 2008 09:08:33 -0800
-Received: from [192.168.162.106] ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 13 Nov 2008 09:08:33 -0800
-Message-ID: <491C5F0F.5050602@caviumnetworks.com>
-Date:	Thu, 13 Nov 2008 09:08:31 -0800
-From:	Chad Reese <kreese@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.8.0.14eol) Gecko/20070505 Iceape/1.0.9 (Debian-1.0.13~pre080323b-0etch3)
+	 Thu, 13 Nov 2008 09:23:56 -0800
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 13 Nov 2008 09:23:55 -0800
+Message-ID: <491C62AB.8020208@caviumnetworks.com>
+Date:	Thu, 13 Nov 2008 09:23:55 -0800
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
 MIME-Version: 1.0
 To:	Ken Hicks <hicks@nortel.com>
 CC:	linux-mips@linux-mips.org
 Subject: Re: MIPS Unaligned Access Question
 References: <238C6E77EA42504DA038BAEE6D1C11ECADB661@zcarhxm0.corp.nortel.com>
 In-Reply-To: <238C6E77EA42504DA038BAEE6D1C11ECADB661@zcarhxm0.corp.nortel.com>
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 13 Nov 2008 17:08:33.0309 (UTC) FILETIME=[756924D0:01C945B2]
-Return-Path: <Kenneth.Reese@caviumnetworks.com>
+X-OriginalArrivalTime: 13 Nov 2008 17:23:55.0913 (UTC) FILETIME=[9B535790:01C945B4]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21279
+X-archive-position: 21280
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kreese@caviumnetworks.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
-
-> Address                Exception
-> 0x0001000000000000:    page fault
-> 0x0010000000000000:    unaligned access
-
-Neither address is a valid userspace address as the number of virtual
-bits supported by the kernel under Linux is 40 bits. Early Octeon
-kernels did not range check the lookup in the page tables, which caused
-the kernel to fail in unusual ways. This has been fixed in newer kernels
-from Cavium Networks.
-
-I believe this is not a problem in the normal mainline Linux kernel.
-
-Chad
 
 Ken Hicks wrote:
 > Hi,
 > 
-> This is my first post. I hope I'm following correct etiquette.  Here we
+> This is my first post. I hope I'm following correct etiquette.  Here we 
 > go....
 > 
-> I'm investigating why an Unaligned Access exception is generated on MIPS
+> I'm investigating why an Unaligned Access exception is generated on MIPS 
 > from an accesses which are not misaligned.
 > 
-> The issue is that a kernel access two different unmapped addresses
+> The issue is that a kernel access two different unmapped addresses 
 > results in different exceptions:
 > Address                Exception
 > 0x0001000000000000:    page fault
 > 0x0010000000000000:    unaligned access
 > 
-> I'm using a Cavium CPU with a custom linux based on 2.6.14 but the code
+
+You get the 'unaligned access' reported for any Address Error Exceptions 
+(see section 5.2.8 of the MIPS64 Privileged Resource Architecture manual).
+
+Since we don't know the contents of the TLB, It is hard to know the 
+exact cause, but it is probably one of the non-unaligned access causes 
+and is erroneously being reported as 'unaligned access'
+
+David Daney
+
+
+> I'm using a Cavium CPU with a custom linux based on 2.6.14 but the code 
 > in question hasn't changed widly in more recent kernels.
 > 
-> I have observed this several times, so I have manually recreated the
+> I have observed this several times, so I have manually recreated the 
 > behaviour by intentionally accessing known unmapped addresses.
 > 
 > In this first case, I forced an access to 0x0001000000000000:
@@ -110,7 +107,7 @@ Ken Hicks wrote:
 > Cause : 40808014
 > BadVA : 0010000000000000
 > 
-> In the second case, the address is not unaligned, but it is reported as
+> In the second case, the address is not unaligned, but it is reported as 
 > an unaligned access error.
 > 
 > Is this behaviour related to some memory mapping?
@@ -129,7 +126,7 @@ Ken Hicks wrote:
 > 
 > Is this a bug, or intentional behaviour?
 > 
-> In any case, would anyone be able to explain why the two accesses are
+> In any case, would anyone be able to explain why the two accesses are 
 > reported differently.
 > I'd just like to understand it.
 > 

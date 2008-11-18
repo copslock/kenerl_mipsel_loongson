@@ -1,36 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Nov 2008 22:28:14 +0000 (GMT)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:43822 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Nov 2008 22:28:41 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:55086 "EHLO
 	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S23754603AbYKRWYQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 18 Nov 2008 22:24:16 +0000
+	id S23754605AbYKRWYT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 18 Nov 2008 22:24:19 +0000
 Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B4923406f0004>; Tue, 18 Nov 2008 17:23:43 -0500
+	id <B4923406e0003>; Tue, 18 Nov 2008 17:23:42 -0500
 Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 18 Nov 2008 14:23:41 -0800
+	 Tue, 18 Nov 2008 14:23:40 -0800
 Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 18 Nov 2008 14:23:41 -0800
+	 Tue, 18 Nov 2008 14:23:39 -0800
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id mAIMNauJ004855;
-	Tue, 18 Nov 2008 14:23:36 -0800
+	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id mAIMNZu6004826;
+	Tue, 18 Nov 2008 14:23:35 -0800
 Received: (from ddaney@localhost)
-	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id mAIMNa5D004854;
-	Tue, 18 Nov 2008 14:23:36 -0800
+	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id mAIMNZiX004825;
+	Tue, 18 Nov 2008 14:23:35 -0800
 From:	David Daney <ddaney@caviumnetworks.com>
 To:	linux-mips@linux-mips.org
 Cc:	David Daney <ddaney@caviumnetworks.com>,
-	Tomaso Paoletti <tpaoletti@caviumnetworks.com>
-Subject: [PATCH 12/26] MIPS: Add Cavium OCTEON cop2/cvmseg state entries to processor.h.
-Date:	Tue, 18 Nov 2008 14:23:27 -0800
-Message-Id: <1227047013-4785-12-git-send-email-ddaney@caviumnetworks.com>
+	Tomaso Paoletti <tpaoletti@caviumnetworks.com>,
+	Paul Gortmaker <Paul.Gortmaker@windriver.com>
+Subject: [PATCH 05/26] MIPS: For Cavium OCTEON set hwrena and lazily restore CP2 state.
+Date:	Tue, 18 Nov 2008 14:23:20 -0800
+Message-Id: <1227047013-4785-5-git-send-email-ddaney@caviumnetworks.com>
 X-Mailer: git-send-email 1.5.6.5
 In-Reply-To: <49233FDE.3010404@caviumnetworks.com>
 References: <49233FDE.3010404@caviumnetworks.com>
-X-OriginalArrivalTime: 18 Nov 2008 22:23:41.0112 (UTC) FILETIME=[4F67AB80:01C949CC]
+X-OriginalArrivalTime: 18 Nov 2008 22:23:39.0987 (UTC) FILETIME=[4EBC0230:01C949CC]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21314
+X-archive-position: 21315
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,115 +39,74 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Add in the cop2 and cvmseg state info to the known proc reg
-data for Cavium so that it can be tracked, saved, restored.
+If on Cavium, be aware of cop2 and hwrena during do_cpu().
 
 Signed-off-by: Tomaso Paoletti <tpaoletti@caviumnetworks.com>
+Signed-off-by: Paul Gortmaker <Paul.Gortmaker@windriver.com>
 Signed-off-by: David Daney <ddaney@caviumnetworks.com>
 ---
- arch/mips/include/asm/processor.h |   69 +++++++++++++++++++++++++++++++++++++
- 1 files changed, 69 insertions(+), 0 deletions(-)
+ arch/mips/kernel/traps.c |   21 +++++++++++++++++++++
+ 1 files changed, 21 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
-index 18ee58e..0f926aa 100644
---- a/arch/mips/include/asm/processor.h
-+++ b/arch/mips/include/asm/processor.h
-@@ -118,6 +118,60 @@ union mips_watch_reg_state {
- 	struct mips3264_watch_reg_state mips3264;
- };
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 3530561..f6083c6 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -47,6 +47,7 @@
+ #include <asm/mmu_context.h>
+ #include <asm/types.h>
+ #include <asm/stacktrace.h>
++#include <asm/irq.h>
+ 
+ extern void check_wait(void);
+ extern asmlinkage void r4k_wait(void);
+@@ -78,6 +79,10 @@ extern asmlinkage void handle_reserved(void);
+ extern int fpu_emulator_cop1Handler(struct pt_regs *xcp,
+ 	struct mips_fpu_struct *ctx, int has_fpu);
  
 +#ifdef CONFIG_CPU_CAVIUM_OCTEON
-+
-+struct octeon_cop2_state {
-+	/* DMFC2 rt, 0x0201 */
-+	unsigned long   cop2_crc_iv;
-+	/* DMFC2 rt, 0x0202 (Set with DMTC2 rt, 0x1202) */
-+	unsigned long   cop2_crc_length;
-+	/* DMFC2 rt, 0x0200 (set with DMTC2 rt, 0x4200) */
-+	unsigned long   cop2_crc_poly;
-+	/* DMFC2 rt, 0x0402; DMFC2 rt, 0x040A */
-+	unsigned long   cop2_llm_dat[2];
-+       /* DMFC2 rt, 0x0084 */
-+	unsigned long   cop2_3des_iv;
-+	/* DMFC2 rt, 0x0080; DMFC2 rt, 0x0081; DMFC2 rt, 0x0082 */
-+	unsigned long   cop2_3des_key[3];
-+	/* DMFC2 rt, 0x0088 (Set with DMTC2 rt, 0x0098) */
-+	unsigned long   cop2_3des_result;
-+	/* DMFC2 rt, 0x0111 (FIXME: Read Pass1 Errata) */
-+	unsigned long   cop2_aes_inp0;
-+	/* DMFC2 rt, 0x0102; DMFC2 rt, 0x0103 */
-+	unsigned long   cop2_aes_iv[2];
-+	/* DMFC2 rt, 0x0104; DMFC2 rt, 0x0105; DMFC2 rt, 0x0106; DMFC2
-+	 * rt, 0x0107 */
-+	unsigned long   cop2_aes_key[4];
-+	/* DMFC2 rt, 0x0110 */
-+	unsigned long   cop2_aes_keylen;
-+	/* DMFC2 rt, 0x0100; DMFC2 rt, 0x0101 */
-+	unsigned long   cop2_aes_result[2];
-+	/* DMFC2 rt, 0x0240; DMFC2 rt, 0x0241; DMFC2 rt, 0x0242; DMFC2
-+	 * rt, 0x0243; DMFC2 rt, 0x0244; DMFC2 rt, 0x0245; DMFC2 rt,
-+	 * 0x0246; DMFC2 rt, 0x0247; DMFC2 rt, 0x0248; DMFC2 rt,
-+	 * 0x0249; DMFC2 rt, 0x024A; DMFC2 rt, 0x024B; DMFC2 rt,
-+	 * 0x024C; DMFC2 rt, 0x024D; DMFC2 rt, 0x024E - Pass2 */
-+	unsigned long   cop2_hsh_datw[15];
-+	/* DMFC2 rt, 0x0250; DMFC2 rt, 0x0251; DMFC2 rt, 0x0252; DMFC2
-+	 * rt, 0x0253; DMFC2 rt, 0x0254; DMFC2 rt, 0x0255; DMFC2 rt,
-+	 * 0x0256; DMFC2 rt, 0x0257 - Pass2 */
-+	unsigned long   cop2_hsh_ivw[8];
-+	/* DMFC2 rt, 0x0258; DMFC2 rt, 0x0259 - Pass2 */
-+	unsigned long   cop2_gfm_mult[2];
-+	/* DMFC2 rt, 0x025E - Pass2 */
-+	unsigned long   cop2_gfm_poly;
-+	/* DMFC2 rt, 0x025A; DMFC2 rt, 0x025B - Pass2 */
-+	unsigned long   cop2_gfm_result[2];
-+};
-+#define INIT_OCTEON_COP2 {0,}
-+
-+struct octeon_cvmseg_state {
-+	unsigned long cvmseg[CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE]
-+			    [cpu_dcache_line_size() / sizeof(unsigned long)];
-+};
-+
++extern asmlinkage void octeon_cop2_restore(struct octeon_cop2_state *task);
 +#endif
 +
- typedef struct {
- 	unsigned long seg;
- } mm_segment_t;
-@@ -160,6 +214,10 @@ struct thread_struct {
- 	unsigned long trap_no;
- 	unsigned long irix_trampoline;  /* Wheee... */
- 	unsigned long irix_oldctx;
+ void (*board_be_init)(void);
+ int (*board_be_handler)(struct pt_regs *regs, int is_fixup);
+ void (*board_nmi_handler_setup)(void);
+@@ -860,6 +865,7 @@ asmlinkage void do_cpu(struct pt_regs *regs)
+ 	unsigned int opcode;
+ 	unsigned int cpid;
+ 	int status;
++	unsigned long __maybe_unused flags;
+ 
+ 	die_if_kernel("do_cpu invoked from kernel context!", regs);
+ 
+@@ -915,6 +921,17 @@ asmlinkage void do_cpu(struct pt_regs *regs)
+ 		return;
+ 
+ 	case 2:
 +#ifdef CONFIG_CPU_CAVIUM_OCTEON
-+    struct octeon_cop2_state cp2 __attribute__ ((__aligned__(128)));
-+    struct octeon_cvmseg_state cvmseg __attribute__ ((__aligned__(128)));
++		prefetch(&current->thread.cp2);
++		local_irq_save(flags);
++		KSTK_STATUS(current) |= ST0_CU2;
++		status = read_c0_status();
++		write_c0_status(status | ST0_CU2);
++		octeon_cop2_restore(&(current->thread.cp2));
++		write_c0_status(status & ~ST0_CU2);
++		local_irq_restore(flags);
++		return;
 +#endif
- 	struct mips_abi *abi;
- };
- 
-@@ -171,6 +229,13 @@ struct thread_struct {
- #define FPAFF_INIT
- #endif /* CONFIG_MIPS_MT_FPAFF */
+ 	case 3:
+ 		break;
+ 	}
+@@ -1488,6 +1505,10 @@ void __cpuinit per_cpu_trap_init(void)
+ 		write_c0_hwrena(enable);
+ 	}
  
 +#ifdef CONFIG_CPU_CAVIUM_OCTEON
-+#define OCTEON_INIT						\
-+	.cp2			= INIT_OCTEON_COP2,
-+#else
-+#define OCTEON_INIT
-+#endif /* CONFIG_CPU_CAVIUM_OCTEON */
++	write_c0_hwrena(0xc000000f); /* Octeon has register 30 and 31 */
++#endif
 +
- #define INIT_THREAD  {						\
-         /*							\
-          * Saved main processor registers			\
-@@ -221,6 +286,10 @@ struct thread_struct {
- 	.trap_no		= 0,				\
- 	.irix_trampoline	= 0,				\
- 	.irix_oldctx		= 0,				\
-+	/*							\
-+	 * Cavium Octeon specifics (null if not Octeon)		\
-+	 */							\
-+	OCTEON_INIT						\
- }
- 
- struct task_struct;
+ #ifdef CONFIG_MIPS_MT_SMTC
+ 	if (!secondaryTC) {
+ #endif /* CONFIG_MIPS_MT_SMTC */
 -- 
 1.5.6.5

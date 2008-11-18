@@ -1,37 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Nov 2008 22:33:31 +0000 (GMT)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:44079 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Nov 2008 22:33:58 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:7728 "EHLO
 	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S23754615AbYKRWYw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 18 Nov 2008 22:24:52 +0000
+	id S23754592AbYKRWZK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 18 Nov 2008 22:25:10 +0000
 Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B492340970004>; Tue, 18 Nov 2008 17:24:23 -0500
+	id <B492340be0000>; Tue, 18 Nov 2008 17:25:02 -0500
 Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 18 Nov 2008 14:24:21 -0800
+	 Tue, 18 Nov 2008 14:25:00 -0800
 Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 18 Nov 2008 14:24:20 -0800
+	 Tue, 18 Nov 2008 14:25:00 -0800
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id mAIMOI8q004944;
-	Tue, 18 Nov 2008 14:24:18 -0800
+	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id mAIMOveF005010;
+	Tue, 18 Nov 2008 14:24:57 -0800
 Received: (from ddaney@localhost)
-	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id mAIMOI3V004943;
-	Tue, 18 Nov 2008 14:24:18 -0800
+	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id mAIMOv13005009;
+	Tue, 18 Nov 2008 14:24:57 -0800
 From:	David Daney <ddaney@caviumnetworks.com>
-To:	linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
-	akpm@linux-foundation.org
-Cc:	linux-kernel@vger.kernel.org,
-	David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH 21/26] Serial: Allow port type to be specified when calling serial8250_register_port.
-Date:	Tue, 18 Nov 2008 14:24:15 -0800
-Message-Id: <1227047057-4911-3-git-send-email-ddaney@caviumnetworks.com>
+To:	linux-mips@linux-mips.org
+Cc:	David Daney <ddaney@caviumnetworks.com>
+Subject: [PATCH 24/26] MIPS: Adjust the dma-common.c platform hooks.
+Date:	Tue, 18 Nov 2008 14:24:55 -0800
+Message-Id: <1227047097-4986-1-git-send-email-ddaney@caviumnetworks.com>
 X-Mailer: git-send-email 1.5.6.5
 In-Reply-To: <49233FDE.3010404@caviumnetworks.com>
 References: <49233FDE.3010404@caviumnetworks.com>
-X-OriginalArrivalTime: 18 Nov 2008 22:24:20.0853 (UTC) FILETIME=[6717AA50:01C949CC]
+X-OriginalArrivalTime: 18 Nov 2008 22:25:00.0481 (UTC) FILETIME=[7EB66B10:01C949CC]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21326
+X-archive-position: 21327
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -39,98 +37,324 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Add flag value UPF_FIXED_TYPE which specifies that the UART type is
-known and should not be probed.  For this case the UARTs properties
-are just copied out of the uart_config entry.
+Cavium OCTEON CPU support, requires a couple of additional hooks in
+dem-default.c
 
-This allows us to keep SOC specific 8250 probe code out of 8250.c.  In
-this case we know the serial hardware will not be changing as it is on
-the same silicon as the CPU, and we can specify it with certainty in
-the board/cpu setup code.
-
-The alternative is to load up 8250.c with a bunch of OCTEON specific
-special cases in the probing code.
+Other than add a dev parameter to plat_unmap_dma_mem(), and hooks for
+plat_dma_supported() and plat_extra_sync_for_device() which should be
+nop changes for all existing targets, the only real change is to call
+plat_unmap_dma_mem() from dma_free_{,non}coherent().  This is a nop
+for all targets except jazz, and I expect that it is needed there.
+Really if you map the memory in dma_alloc*, you should unmap it in
+dma_free*.
 
 Signed-off-by: David Daney <ddaney@caviumnetworks.com>
 ---
- drivers/serial/8250.c        |    9 +++++++++
- drivers/serial/serial_core.c |    7 +++++--
- include/linux/serial_8250.h  |    1 +
- include/linux/serial_core.h  |    2 ++
- 4 files changed, 17 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/mach-generic/dma-coherence.h |   26 +++++++++++++++++++-
+ arch/mips/include/asm/mach-ip27/dma-coherence.h    |   26 +++++++++++++++++++-
+ arch/mips/include/asm/mach-ip32/dma-coherence.h    |   26 +++++++++++++++++++-
+ arch/mips/include/asm/mach-jazz/dma-coherence.h    |   26 +++++++++++++++++++-
+ arch/mips/include/asm/mach-lemote/dma-coherence.h  |   26 +++++++++++++++++++-
+ arch/mips/mm/dma-default.c                         |   24 ++++++++----------
+ 6 files changed, 136 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/serial/8250.c b/drivers/serial/8250.c
-index 564edd1..37a6f4c 100644
---- a/drivers/serial/8250.c
-+++ b/drivers/serial/8250.c
-@@ -2903,6 +2903,7 @@ static int __devinit serial8250_probe(struct platform_device *dev)
- 		port.mapbase		= p->mapbase;
- 		port.hub6		= p->hub6;
- 		port.private_data	= p->private_data;
-+		port.type		= p->type;
- 		port.serial_in_fn	= p->serial_in_fn;
- 		port.serial_out_fn	= p->serial_out_fn;
- 		port.dev		= &dev->dev;
-@@ -3058,6 +3059,14 @@ int serial8250_register_port(struct uart_port *port)
- 		uart->port.private_data = port->private_data;
- 		if (port->dev)
- 			uart->port.dev = port->dev;
+diff --git a/arch/mips/include/asm/mach-generic/dma-coherence.h b/arch/mips/include/asm/mach-generic/dma-coherence.h
+index 76e04e7..36c611b 100644
+--- a/arch/mips/include/asm/mach-generic/dma-coherence.h
++++ b/arch/mips/include/asm/mach-generic/dma-coherence.h
+@@ -28,10 +28,34 @@ static inline unsigned long plat_dma_addr_to_phys(dma_addr_t dma_addr)
+ 	return dma_addr;
+ }
+ 
+-static inline void plat_unmap_dma_mem(dma_addr_t dma_addr)
++static inline void plat_unmap_dma_mem(struct device *dev, dma_addr_t dma_addr)
+ {
+ }
+ 
++static inline int plat_dma_supported(struct device *dev, u64 mask)
++{
++	/*
++	 * we fall back to GFP_DMA when the mask isn't all 1s,
++	 * so we can't guarantee allocations that must be
++	 * within a tighter range than GFP_DMA..
++	 */
++	if (mask < DMA_BIT_MASK(24))
++		return 0;
 +
-+		if (port->flags & UPF_FIXED_TYPE) {
-+			uart->port.type = port->type;
-+			uart->port.fifosize = uart_config[port->type].fifo_size;
-+			uart->capabilities = uart_config[port->type].flags;
-+			uart->tx_loadsz = uart_config[port->type].tx_loadsz;
-+		}
++	return 1;
++}
 +
- 		set_io_fns_from_upio(&uart->port);
- 		/* Possibly override default I/O functions.  */
- 		if (port->serial_in_fn)
-diff --git a/drivers/serial/serial_core.c b/drivers/serial/serial_core.c
-index 874786a..7fef45e 100644
---- a/drivers/serial/serial_core.c
-+++ b/drivers/serial/serial_core.c
-@@ -2198,11 +2198,14 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
- 	 * Now do the auto configuration stuff.  Note that config_port
- 	 * is expected to claim the resources and map the port for us.
- 	 */
--	flags = UART_CONFIG_TYPE;
-+	flags = 0;
- 	if (port->flags & UPF_AUTO_IRQ)
- 		flags |= UART_CONFIG_IRQ;
- 	if (port->flags & UPF_BOOT_AUTOCONF) {
--		port->type = PORT_UNKNOWN;
-+		if (!(port->flags & UPF_FIXED_TYPE)) {
-+			port->type = PORT_UNKNOWN;
-+			flags |= UART_CONFIG_TYPE;
-+		}
- 		port->ops->config_port(port, flags);
++static inline void plat_extra_sync_for_device(struct device *dev)
++{
++	return;
++}
++
++static inline int plat_dma_mapping_error(struct device *dev,
++					 dma_addr_t dma_addr)
++{
++	return 0;
++}
++
+ static inline int plat_device_is_coherent(struct device *dev)
+ {
+ #ifdef CONFIG_DMA_COHERENT
+diff --git a/arch/mips/include/asm/mach-ip27/dma-coherence.h b/arch/mips/include/asm/mach-ip27/dma-coherence.h
+index ed7e622..4c21bfc 100644
+--- a/arch/mips/include/asm/mach-ip27/dma-coherence.h
++++ b/arch/mips/include/asm/mach-ip27/dma-coherence.h
+@@ -38,10 +38,34 @@ static unsigned long plat_dma_addr_to_phys(dma_addr_t dma_addr)
+ 	return dma_addr & ~(0xffUL << 56);
+ }
+ 
+-static inline void plat_unmap_dma_mem(dma_addr_t dma_addr)
++static inline void plat_unmap_dma_mem(struct device *dev, dma_addr_t dma_addr)
+ {
+ }
+ 
++static inline int plat_dma_supported(struct device *dev, u64 mask)
++{
++	/*
++	 * we fall back to GFP_DMA when the mask isn't all 1s,
++	 * so we can't guarantee allocations that must be
++	 * within a tighter range than GFP_DMA..
++	 */
++	if (mask < DMA_BIT_MASK(24))
++		return 0;
++
++	return 1;
++}
++
++static inline void plat_extra_sync_for_device(struct device *dev)
++{
++	return;
++}
++
++static inline int plat_dma_mapping_error(struct device *dev,
++					 dma_addr_t dma_addr)
++{
++	return 0;
++}
++
+ static inline int plat_device_is_coherent(struct device *dev)
+ {
+ 	return 1;		/* IP27 non-cohernet mode is unsupported */
+diff --git a/arch/mips/include/asm/mach-ip32/dma-coherence.h b/arch/mips/include/asm/mach-ip32/dma-coherence.h
+index a5511eb..7ae40f4 100644
+--- a/arch/mips/include/asm/mach-ip32/dma-coherence.h
++++ b/arch/mips/include/asm/mach-ip32/dma-coherence.h
+@@ -60,10 +60,34 @@ static unsigned long plat_dma_addr_to_phys(dma_addr_t dma_addr)
+ 	return addr;
+ }
+ 
+-static inline void plat_unmap_dma_mem(dma_addr_t dma_addr)
++static inline void plat_unmap_dma_mem(struct device *dev, dma_addr_t dma_addr)
+ {
+ }
+ 
++static inline int plat_dma_supported(struct device *dev, u64 mask)
++{
++	/*
++	 * we fall back to GFP_DMA when the mask isn't all 1s,
++	 * so we can't guarantee allocations that must be
++	 * within a tighter range than GFP_DMA..
++	 */
++	if (mask < DMA_BIT_MASK(24))
++		return 0;
++
++	return 1;
++}
++
++static inline void plat_extra_sync_for_device(struct device *dev)
++{
++	return;
++}
++
++static inline int plat_dma_mapping_error(struct device *dev,
++					 dma_addr_t dma_addr)
++{
++	return 0;
++}
++
+ static inline int plat_device_is_coherent(struct device *dev)
+ {
+ 	return 0;		/* IP32 is non-cohernet */
+diff --git a/arch/mips/include/asm/mach-jazz/dma-coherence.h b/arch/mips/include/asm/mach-jazz/dma-coherence.h
+index d66979a..1c7cd27 100644
+--- a/arch/mips/include/asm/mach-jazz/dma-coherence.h
++++ b/arch/mips/include/asm/mach-jazz/dma-coherence.h
+@@ -27,11 +27,35 @@ static unsigned long plat_dma_addr_to_phys(dma_addr_t dma_addr)
+ 	return vdma_log2phys(dma_addr);
+ }
+ 
+-static void plat_unmap_dma_mem(dma_addr_t dma_addr)
++static void plat_unmap_dma_mem(struct device *dev, dma_addr_t dma_addr)
+ {
+ 	vdma_free(dma_addr);
+ }
+ 
++static inline int plat_dma_supported(struct device *dev, u64 mask)
++{
++	/*
++	 * we fall back to GFP_DMA when the mask isn't all 1s,
++	 * so we can't guarantee allocations that must be
++	 * within a tighter range than GFP_DMA..
++	 */
++	if (mask < DMA_BIT_MASK(24))
++		return 0;
++
++	return 1;
++}
++
++static inline void plat_extra_sync_for_device(struct device *dev)
++{
++	return;
++}
++
++static inline int plat_dma_mapping_error(struct device *dev,
++					 dma_addr_t dma_addr)
++{
++	return 0;
++}
++
+ static inline int plat_device_is_coherent(struct device *dev)
+ {
+ 	return 0;
+diff --git a/arch/mips/include/asm/mach-lemote/dma-coherence.h b/arch/mips/include/asm/mach-lemote/dma-coherence.h
+index 7e91477..38fad7d 100644
+--- a/arch/mips/include/asm/mach-lemote/dma-coherence.h
++++ b/arch/mips/include/asm/mach-lemote/dma-coherence.h
+@@ -30,10 +30,34 @@ static inline unsigned long plat_dma_addr_to_phys(dma_addr_t dma_addr)
+ 	return dma_addr & 0x7fffffff;
+ }
+ 
+-static inline void plat_unmap_dma_mem(dma_addr_t dma_addr)
++static inline void plat_unmap_dma_mem(struct device *dev, dma_addr_t dma_addr)
+ {
+ }
+ 
++static inline int plat_dma_supported(struct device *dev, u64 mask)
++{
++	/*
++	 * we fall back to GFP_DMA when the mask isn't all 1s,
++	 * so we can't guarantee allocations that must be
++	 * within a tighter range than GFP_DMA..
++	 */
++	if (mask < DMA_BIT_MASK(24))
++		return 0;
++
++	return 1;
++}
++
++static inline void plat_extra_sync_for_device(struct device *dev)
++{
++	return;
++}
++
++static inline int plat_dma_mapping_error(struct device *dev,
++					 dma_addr_t dma_addr)
++{
++	return 0;
++}
++
+ static inline int plat_device_is_coherent(struct device *dev)
+ {
+ 	return 0;
+diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+index 5b98d0e..546e697 100644
+--- a/arch/mips/mm/dma-default.c
++++ b/arch/mips/mm/dma-default.c
+@@ -111,6 +111,7 @@ EXPORT_SYMBOL(dma_alloc_coherent);
+ void dma_free_noncoherent(struct device *dev, size_t size, void *vaddr,
+ 	dma_addr_t dma_handle)
+ {
++	plat_unmap_dma_mem(dev, dma_handle);
+ 	free_pages((unsigned long) vaddr, get_order(size));
+ }
+ 
+@@ -121,6 +122,8 @@ void dma_free_coherent(struct device *dev, size_t size, void *vaddr,
+ {
+ 	unsigned long addr = (unsigned long) vaddr;
+ 
++	plat_unmap_dma_mem(dev, dma_handle);
++
+ 	if (!plat_device_is_coherent(dev))
+ 		addr = CAC_ADDR(addr);
+ 
+@@ -170,7 +173,7 @@ void dma_unmap_single(struct device *dev, dma_addr_t dma_addr, size_t size,
+ 		__dma_sync(dma_addr_to_virt(dma_addr), size,
+ 		           direction);
+ 
+-	plat_unmap_dma_mem(dma_addr);
++	plat_unmap_dma_mem(dev, dma_addr);
+ }
+ 
+ EXPORT_SYMBOL(dma_unmap_single);
+@@ -226,7 +229,7 @@ void dma_unmap_page(struct device *dev, dma_addr_t dma_address, size_t size,
+ 		dma_cache_wback_inv(addr, size);
  	}
  
-diff --git a/include/linux/serial_8250.h b/include/linux/serial_8250.h
-index eb08b04..92c06af 100644
---- a/include/linux/serial_8250.h
-+++ b/include/linux/serial_8250.h
-@@ -28,6 +28,7 @@ struct plat_serial8250_port {
- 	unsigned char	iotype;		/* UPIO_* */
- 	unsigned char	hub6;
- 	upf_t		flags;		/* UPF_* flags */
-+	unsigned int	type;		/* If UPF_FIXED_TYPE */
- 	unsigned int	(*serial_in_fn)(struct uart_port *, int);
- 	void		(*serial_out_fn)(struct uart_port *, int, int);
- };
-diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
-index 6e70ff4..4a72a7b 100644
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -293,6 +293,8 @@ struct uart_port {
- #define UPF_MAGIC_MULTIPLIER	((__force upf_t) (1 << 16))
- #define UPF_CONS_FLOW		((__force upf_t) (1 << 23))
- #define UPF_SHARE_IRQ		((__force upf_t) (1 << 24))
-+/* The exact UART type is known and should not be probed.  */
-+#define UPF_FIXED_TYPE		((__force upf_t) (1 << 27))
- #define UPF_BOOT_AUTOCONF	((__force upf_t) (1 << 28))
- #define UPF_FIXED_PORT		((__force upf_t) (1 << 29))
- #define UPF_DEAD		((__force upf_t) (1 << 30))
+-	plat_unmap_dma_mem(dma_address);
++	plat_unmap_dma_mem(dev, dma_address);
+ }
+ 
+ EXPORT_SYMBOL(dma_unmap_page);
+@@ -246,7 +249,7 @@ void dma_unmap_sg(struct device *dev, struct scatterlist *sg, int nhwentries,
+ 			if (addr)
+ 				__dma_sync(addr, sg->length, direction);
+ 		}
+-		plat_unmap_dma_mem(sg->dma_address);
++		plat_unmap_dma_mem(dev, sg->dma_address);
+ 	}
+ }
+ 
+@@ -272,6 +275,7 @@ void dma_sync_single_for_device(struct device *dev, dma_addr_t dma_handle,
+ {
+ 	BUG_ON(direction == DMA_NONE);
+ 
++	plat_extra_sync_for_device(dev);
+ 	if (!plat_device_is_coherent(dev)) {
+ 		unsigned long addr;
+ 
+@@ -302,6 +306,7 @@ void dma_sync_single_range_for_device(struct device *dev, dma_addr_t dma_handle,
+ {
+ 	BUG_ON(direction == DMA_NONE);
+ 
++	plat_extra_sync_for_device(dev);
+ 	if (!plat_device_is_coherent(dev)) {
+ 		unsigned long addr;
+ 
+@@ -348,22 +353,14 @@ EXPORT_SYMBOL(dma_sync_sg_for_device);
+ 
+ int dma_mapping_error(struct device *dev, dma_addr_t dma_addr)
+ {
+-	return 0;
++	return plat_dma_mapping_error(dev, dma_addr);
+ }
+ 
+ EXPORT_SYMBOL(dma_mapping_error);
+ 
+ int dma_supported(struct device *dev, u64 mask)
+ {
+-	/*
+-	 * we fall back to GFP_DMA when the mask isn't all 1s,
+-	 * so we can't guarantee allocations that must be
+-	 * within a tighter range than GFP_DMA..
+-	 */
+-	if (mask < DMA_BIT_MASK(24))
+-		return 0;
+-
+-	return 1;
++	return plat_dma_supported(dev, mask);
+ }
+ 
+ EXPORT_SYMBOL(dma_supported);
+@@ -380,6 +377,7 @@ void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
+ {
+ 	BUG_ON(direction == DMA_NONE);
+ 
++	plat_extra_sync_for_device(dev);
+ 	if (!plat_device_is_coherent(dev))
+ 		__dma_sync((unsigned long)vaddr, size, direction);
+ }
 -- 
 1.5.6.5

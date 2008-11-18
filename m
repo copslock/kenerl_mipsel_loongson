@@ -1,30 +1,29 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Nov 2008 23:06:05 +0000 (GMT)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:38534 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Nov 2008 23:33:23 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:13498 "EHLO
 	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S23754840AbYKRXF4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 18 Nov 2008 23:05:56 +0000
+	id S23755514AbYKRXdP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 18 Nov 2008 23:33:15 +0000
 Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B49234a4e0000>; Tue, 18 Nov 2008 18:05:50 -0500
+	id <B492350a90001>; Tue, 18 Nov 2008 18:32:57 -0500
 Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 18 Nov 2008 15:05:46 -0800
+	 Tue, 18 Nov 2008 15:32:17 -0800
 Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 18 Nov 2008 15:05:46 -0800
-Message-ID: <49234A4A.2090707@caviumnetworks.com>
-Date:	Tue, 18 Nov 2008 15:05:46 -0800
+	 Tue, 18 Nov 2008 15:32:16 -0800
+Message-ID: <49235080.3070202@caviumnetworks.com>
+Date:	Tue, 18 Nov 2008 15:32:16 -0800
 From:	David Daney <ddaney@caviumnetworks.com>
 User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
 MIME-Version: 1.0
 To:	linux-mips <linux-mips@linux-mips.org>
-CC:	"Malov, Vlad" <Vlad.Malov@caviumnetworks.com>
-Subject: [PATCH] MIPS: Fix potential DOS by untrusted user app.
+Subject: [PATCH] MIPS: Reorder operations in stackframe.h for better scheduling
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 18 Nov 2008 23:05:46.0585 (UTC) FILETIME=[30B44490:01C949D2]
+X-OriginalArrivalTime: 18 Nov 2008 23:32:16.0949 (UTC) FILETIME=[E4A28E50:01C949D5]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21332
+X-archive-position: 21333
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,73 +31,72 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Vlad Malov <Vlad.Malov@caviumnetworks.com>
+Reorder PT ops to avoid pipeline stalls.
 
-Fix potential DOS by untrusted user app.
-
-Version 3: Fix stupid typo I introduced.  This version has received
-extensive testing with the LTP where it fixes kernel crashes.
-
-On a 64 bit kernel if an o32 syscall was made with a syscall number
-less than 4000, we would read the function from outside of the bounds
-of the syscall table.  This led to non-deterministic behavior
-including system crashes.
-
-While we were at it we reworked the 32 bit version as well to use
-fewer instructions.  Both 32 and 64 bit versions are use the same code
-now.
-
-This version two should address the concerns Maciej raised.  gas seems
-to expand this instruction ordering with no nops in the delay slots.
-
-Signed-off-by: Vlad Malov <Vlad.Malov@caviumnetworks.com>
+Signed-off-by: Tomaso Paoletti <tpaoletti@caviumnetworks.com>
 Signed-off-by: David Daney <ddaney@caviumnetworks.com>
 ---
- arch/mips/kernel/scall32-o32.S |    5 +----
- arch/mips/kernel/scall64-o32.S |   12 +++++-------
- 2 files changed, 6 insertions(+), 11 deletions(-)
+ arch/mips/include/asm/stackframe.h |   16 ++++++++--------
+ 1 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/kernel/scall32-o32.S b/arch/mips/kernel/scall32-o32.S
-index 759f680..34a4dbd 100644
---- a/arch/mips/kernel/scall32-o32.S
-+++ b/arch/mips/kernel/scall32-o32.S
-@@ -262,14 +262,11 @@ bad_alignment:
- 	LEAF(sys_syscall)
- 	subu	t0, a0, __NR_O32_Linux	# check syscall number
- 	sltiu	v0, t0, __NR_O32_Linux_syscalls + 1
-+	beqz	t0, einval		# do not recurse
- 	sll	t1, t0, 3
- 	beqz	v0, einval
--
- 	lw	t2, sys_call_table(t1)		# syscall routine
+diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
+index db0fa7b..b858d52 100644
+--- a/arch/mips/include/asm/stackframe.h
++++ b/arch/mips/include/asm/stackframe.h
+@@ -51,9 +51,6 @@
+ 		LONG_S	v1, PT_ACX(sp)
+ #else
+ 		mfhi	v1
+-		LONG_S	v1, PT_HI(sp)
+-		mflo	v1
+-		LONG_S	v1, PT_LO(sp)
+ #endif
+ #ifdef CONFIG_32BIT
+ 		LONG_S	$8, PT_R8(sp)
+@@ -62,10 +59,13 @@
+ 		LONG_S	$10, PT_R10(sp)
+ 		LONG_S	$11, PT_R11(sp)
+ 		LONG_S	$12, PT_R12(sp)
++		LONG_S	v1, PT_HI(sp)
++		mflo	v1
+ 		LONG_S	$13, PT_R13(sp)
+ 		LONG_S	$14, PT_R14(sp)
+ 		LONG_S	$15, PT_R15(sp)
+ 		LONG_S	$24, PT_R24(sp)
++		LONG_S	v1, PT_LO(sp)
+ 		.endm
  
--	li	v1, 4000 - __NR_O32_Linux	# index of sys_syscall
--	beq	t0, v1, einval			# do not recurse
--
- 	/* Some syscalls like execve get their arguments from struct pt_regs
- 	   and claim zero arguments in the syscall table. Thus we have to
- 	   assume the worst case and shuffle around all potential arguments.
-diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
-index 6c7ef83..facb41a 100644
---- a/arch/mips/kernel/scall64-o32.S
-+++ b/arch/mips/kernel/scall64-o32.S
-@@ -174,14 +174,12 @@ not_o32_scall:
- 	END(handle_sys)
- 
- LEAF(sys32_syscall)
--	sltu	v0, a0, __NR_O32_Linux + __NR_O32_Linux_syscalls + 1
-+	subu	t0, a0, __NR_O32_Linux	# check syscall number
-+	sltiu	v0, t0, __NR_O32_Linux_syscalls + 1
-+	beqz	t0, einval		# do not recurse
-+	dsll	t1, t0, 3
- 	beqz	v0, einval
--
--	dsll	v0, a0, 3
--	ld	t2, (sys_call_table - (__NR_O32_Linux * 8))(v0)
--
--	li	v1, 4000		# indirect syscall number
--	beq	a0, v1, einval		# do not recurse
-+	ld	t2, sys_call_table(t1)		# syscall routine
- 
- 	move	a0, a1			# shift argument registers
- 	move	a1, a2
+ 		.macro	SAVE_STATIC
+@@ -166,7 +166,6 @@
+ 		LONG_S	$0, PT_R0(sp)
+ 		mfc0	v1, CP0_STATUS
+ 		LONG_S	$2, PT_R2(sp)
+-		LONG_S	v1, PT_STATUS(sp)
+ #ifdef CONFIG_MIPS_MT_SMTC
+ 		/*
+ 		 * Ideally, these instructions would be shuffled in
+@@ -178,19 +177,20 @@
+ 		LONG_S	v1, PT_TCSTATUS(sp)
+ #endif /* CONFIG_MIPS_MT_SMTC */
+ 		LONG_S	$4, PT_R4(sp)
+-		mfc0	v1, CP0_CAUSE
+ 		LONG_S	$5, PT_R5(sp)
+-		LONG_S	v1, PT_CAUSE(sp)
++		LONG_S	v1, PT_STATUS(sp)
++		mfc0	v1, CP0_CAUSE
+ 		LONG_S	$6, PT_R6(sp)
+-		MFC0	v1, CP0_EPC
+ 		LONG_S	$7, PT_R7(sp)
++		LONG_S	v1, PT_CAUSE(sp)
++		MFC0	v1, CP0_EPC
+ #ifdef CONFIG_64BIT
+ 		LONG_S	$8, PT_R8(sp)
+ 		LONG_S	$9, PT_R9(sp)
+ #endif
+-		LONG_S	v1, PT_EPC(sp)
+ 		LONG_S	$25, PT_R25(sp)
+ 		LONG_S	$28, PT_R28(sp)
+ 		LONG_S	$31, PT_R31(sp)
++		LONG_S	v1, PT_EPC(sp)
+ 		ori	$28, sp, _THREAD_MASK
+ 		xori	$28, _THREAD_MASK

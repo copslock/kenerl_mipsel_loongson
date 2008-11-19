@@ -1,143 +1,148 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Nov 2008 23:54:27 +0000 (GMT)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:60642 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S23755748AbYKRXyS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 18 Nov 2008 23:54:18 +0000
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B492355a40000>; Tue, 18 Nov 2008 18:54:12 -0500
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 18 Nov 2008 15:54:10 -0800
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 18 Nov 2008 15:54:10 -0800
-Message-ID: <492355A2.30607@caviumnetworks.com>
-Date:	Tue, 18 Nov 2008 15:54:10 -0800
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 19 Nov 2008 00:19:15 +0000 (GMT)
+Received: from mail.zeugmasystems.com ([192.139.122.66]:2612 "EHLO
+	zeugmasystems.com") by ftp.linux-mips.org with ESMTP
+	id S23755906AbYKSATI convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 19 Nov 2008 00:19:08 +0000
+x-mimeole: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-To:	David Daney <ddaney@caviumnetworks.com>
-CC:	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH] MIPS: Reorder operations in stackframe.h for better scheduling
- (v2)
-References: <49235080.3070202@caviumnetworks.com>
-In-Reply-To: <49235080.3070202@caviumnetworks.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 18 Nov 2008 23:54:10.0394 (UTC) FILETIME=[F3825BA0:01C949D8]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: [PATCH] ptrace syscall cleanups for mips compat archs
+Date:	Tue, 18 Nov 2008 16:18:58 -0800
+Message-ID: <DDFD17CC94A9BD49A82147DDF7D545C50144C46B@exchange.ZeugmaSystems.local>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: [PATCH] ptrace syscall cleanups for mips compat archs
+Thread-Index: AclFyQZMlMwnGZlJQ4ORamqDWC1rqQEEwAhQ
+From:	"Anirban Sinha" <ASinha@zeugmasystems.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <ASinha@zeugmasystems.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21334
+X-archive-position: 21335
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: ASinha@zeugmasystems.com
 Precedence: bulk
 X-list: linux-mips
 
-David Daney wrote:
-> Reorder PT ops to avoid pipeline stalls.
-> 
-> --- a/arch/mips/include/asm/stackframe.h
-> +++ b/arch/mips/include/asm/stackframe.h
-> @@ -51,9 +51,6 @@
->         LONG_S    v1, PT_ACX(sp)
-> #else
->         mfhi    v1
-> -        LONG_S    v1, PT_HI(sp)
-> -        mflo    v1
-> -        LONG_S    v1, PT_LO(sp)
-> #endif
-> #ifdef CONFIG_32BIT
->         LONG_S    $8, PT_R8(sp)
-> @@ -62,10 +59,13 @@
->         LONG_S    $10, PT_R10(sp)
->         LONG_S    $11, PT_R11(sp)
->         LONG_S    $12, PT_R12(sp)
-> +        LONG_S    v1, PT_HI(sp)
-> +        mflo    v1
->         LONG_S    $13, PT_R13(sp)
->         LONG_S    $14, PT_R14(sp)
->         LONG_S    $15, PT_R15(sp)
->         LONG_S    $24, PT_R24(sp)
-> +        LONG_S    v1, PT_LO(sp)
->         .endm
+Can someone please respond to this patch please? Even something like
+"it's a total crap" would be fine! 
 
-Those changes escaped the CONFIG_CPU_HAS_SMARTMIPS, please try this
-version instead:
 
-MIPS: Reorder operations in stackframe.h for better scheduling
-
-Reorder PT ops to avoid pipeline stalls.
-
-Signed-off-by: Tomaso Paoletti <tpaoletti@caviumnetworks.com>
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
----
- arch/mips/include/asm/stackframe.h |   20 ++++++++++++--------
- 1 files changed, 12 insertions(+), 8 deletions(-)
-
-diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
-index db0fa7b..dd7e220 100644
---- a/arch/mips/include/asm/stackframe.h
-+++ b/arch/mips/include/asm/stackframe.h
-@@ -51,9 +51,6 @@
- 		LONG_S	v1, PT_ACX(sp)
- #else
- 		mfhi	v1
--		LONG_S	v1, PT_HI(sp)
--		mflo	v1
--		LONG_S	v1, PT_LO(sp)
- #endif
- #ifdef CONFIG_32BIT
- 		LONG_S	$8, PT_R8(sp)
-@@ -62,10 +59,17 @@
- 		LONG_S	$10, PT_R10(sp)
- 		LONG_S	$11, PT_R11(sp)
- 		LONG_S	$12, PT_R12(sp)
-+#ifndef CONFIG_CPU_HAS_SMARTMIPS
-+		LONG_S	v1, PT_HI(sp)
-+		mflo	v1
-+#endif
- 		LONG_S	$13, PT_R13(sp)
- 		LONG_S	$14, PT_R14(sp)
- 		LONG_S	$15, PT_R15(sp)
- 		LONG_S	$24, PT_R24(sp)
-+#ifndef CONFIG_CPU_HAS_SMARTMIPS
-+		LONG_S	v1, PT_LO(sp)
-+#endif
- 		.endm
+Index: mips-git/arch/mips/kernel/ptrace32.c
+===================================================================
+--- mips-git.orig/arch/mips/kernel/ptrace32.c
++++ mips-git/arch/mips/kernel/ptrace32.c
+@@ -49,19 +49,6 @@ long compat_arch_ptrace(struct task_stru
+ 	int ret;
  
- 		.macro	SAVE_STATIC
-@@ -166,7 +170,6 @@
- 		LONG_S	$0, PT_R0(sp)
- 		mfc0	v1, CP0_STATUS
- 		LONG_S	$2, PT_R2(sp)
--		LONG_S	v1, PT_STATUS(sp)
- #ifdef CONFIG_MIPS_MT_SMTC
- 		/*
- 		 * Ideally, these instructions would be shuffled in
-@@ -178,19 +181,20 @@
- 		LONG_S	v1, PT_TCSTATUS(sp)
- #endif /* CONFIG_MIPS_MT_SMTC */
- 		LONG_S	$4, PT_R4(sp)
--		mfc0	v1, CP0_CAUSE
- 		LONG_S	$5, PT_R5(sp)
--		LONG_S	v1, PT_CAUSE(sp)
-+		LONG_S	v1, PT_STATUS(sp)
-+		mfc0	v1, CP0_CAUSE
- 		LONG_S	$6, PT_R6(sp)
--		MFC0	v1, CP0_EPC
- 		LONG_S	$7, PT_R7(sp)
-+		LONG_S	v1, PT_CAUSE(sp)
-+		MFC0	v1, CP0_EPC
- #ifdef CONFIG_64BIT
- 		LONG_S	$8, PT_R8(sp)
- 		LONG_S	$9, PT_R9(sp)
- #endif
--		LONG_S	v1, PT_EPC(sp)
- 		LONG_S	$25, PT_R25(sp)
- 		LONG_S	$28, PT_R28(sp)
- 		LONG_S	$31, PT_R31(sp)
-+		LONG_S	v1, PT_EPC(sp)
- 		ori	$28, sp, _THREAD_MASK
- 		xori	$28, _THREAD_MASK
+ 	switch (request) {
+-	/* when I and D space are separate, these will need to be fixed.
+*/
+-	case PTRACE_PEEKTEXT: /* read word at location addr. */
+-	case PTRACE_PEEKDATA: {
+-		unsigned int tmp;
+-		int copied;
+-
+-		copied = access_process_vm(child, addr, &tmp,
+sizeof(tmp), 0);
+-		ret = -EIO;
+-		if (copied != sizeof(tmp))
+-			break;
+-		ret = put_user(tmp, (unsigned int __user *) (unsigned
+long) data);
+-		break;
+-	}
+ 
+ 	/*
+ 	 * Read 4 bytes of the other process' storage
+@@ -208,16 +195,6 @@ long compat_arch_ptrace(struct task_stru
+ 		break;
+ 	}
+ 
+-	/* when I and D space are separate, this will have to be fixed.
+*/
+-	case PTRACE_POKETEXT: /* write the word at location addr. */
+-	case PTRACE_POKEDATA:
+-		ret = 0;
+-		if (access_process_vm(child, addr, &data, sizeof(data),
+1)
+-		    == sizeof(data))
+-			break;
+-		ret = -EIO;
+-		break;
+-
+ 	/*
+ 	 * Write 4 bytes into the other process' storage
+ 	 *  data is the 4 bytes that the user wants written
+@@ -332,50 +309,11 @@ long compat_arch_ptrace(struct task_stru
+ 		ret = ptrace_setfpregs(child, (__u32 __user *) (__u64)
+data);
+ 		break;
+ 
+-	case PTRACE_SYSCALL: /* continue and stop at next (return from)
+syscall */
+-	case PTRACE_CONT: { /* restart after signal. */
+-		ret = -EIO;
+-		if (!valid_signal(data))
+-			break;
+-		if (request == PTRACE_SYSCALL) {
+-			set_tsk_thread_flag(child, TIF_SYSCALL_TRACE);
+-		}
+-		else {
+-			clear_tsk_thread_flag(child, TIF_SYSCALL_TRACE);
+-		}
+-		child->exit_code = data;
+-		wake_up_process(child);
+-		ret = 0;
+-		break;
+-	}
+-
+-	/*
+-	 * make the child exit.  Best I can do is send it a sigkill.
+-	 * perhaps it should be put in the status that it wants to
+-	 * exit.
+-	 */
+-	case PTRACE_KILL:
+-		ret = 0;
+-		if (child->exit_state == EXIT_ZOMBIE)	/* already dead
+*/
+-			break;
+-		child->exit_code = SIGKILL;
+-		wake_up_process(child);
+-		break;
+-
+ 	case PTRACE_GET_THREAD_AREA:
+ 		ret = put_user(task_thread_info(child)->tp_value,
+ 				(unsigned int __user *) (unsigned long)
+data);
+ 		break;
+ 
+-	case PTRACE_DETACH: /* detach a process that was attached. */
+-		ret = ptrace_detach(child, data);
+-		break;
+-
+-	case PTRACE_GETEVENTMSG:
+-		ret = put_user(child->ptrace_message,
+-			       (unsigned int __user *) (unsigned long)
+data);
+-		break;
+-
+ 	case PTRACE_GET_THREAD_AREA_3264:
+ 		ret = put_user(task_thread_info(child)->tp_value,
+ 				(unsigned long __user *) (unsigned long)
+data);
+@@ -392,7 +330,7 @@ long compat_arch_ptrace(struct task_stru
+ 		break;
+ 
+ 	default:
+-		ret = ptrace_request(child, request, addr, data);
++		ret = compat_ptrace_request(child, request, addr, data);
+ 		break;
+ 	}
+ out:

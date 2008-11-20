@@ -1,47 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Nov 2008 20:06:33 +0000 (GMT)
-Received: from earthlight.etchedpixels.co.uk ([81.2.110.250]:3790 "EHLO
-	lxorguk.ukuu.org.uk") by ftp.linux-mips.org with ESMTP
-	id S23796450AbYKTUGX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 20 Nov 2008 20:06:23 +0000
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by lxorguk.ukuu.org.uk (8.14.2/8.14.2) with ESMTP id mAKK6Vmd025044;
-	Thu, 20 Nov 2008 20:06:31 GMT
-Date:	Thu, 20 Nov 2008 20:06:30 +0000
-From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-mips@linux-mips.org, linux-serial@vger.kernel.org,
-	akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-	David Daney <ddaney@caviumnetworks.com>,
-	Tomaso Paoletti <tpaoletti@caviumnetworks.com>
-Subject: Re: [PATCH 23/26] Serial: UART driver changes for Cavium OCTEON.
-Message-ID: <20081120200630.33111a2f@lxorguk.ukuu.org.uk>
-In-Reply-To: <1227047057-4911-5-git-send-email-ddaney@caviumnetworks.com>
-References: <49233FDE.3010404@caviumnetworks.com>
-	<1227047057-4911-5-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: Claws Mail 3.5.0 (GTK+ 2.12.12; x86_64-redhat-linux-gnu)
-Organization: Red Hat UK Cyf., Amberley Place, 107-111 Peascod Street,
- Windsor, Berkshire, SL4 1TE, Y Deyrnas Gyfunol. Cofrestrwyd yng Nghymru a
- Lloegr o'r rhif cofrestru 3798903
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Nov 2008 21:05:43 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:5334 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S23797432AbYKTVFa (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 20 Nov 2008 21:05:30 +0000
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B4925d0f10004>; Thu, 20 Nov 2008 16:04:49 -0500
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 20 Nov 2008 13:00:47 -0800
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 20 Nov 2008 13:00:47 -0800
+Message-ID: <4925CFFF.9010502@caviumnetworks.com>
+Date:	Thu, 20 Nov 2008 13:00:47 -0800
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
+MIME-Version: 1.0
+To:	Alan Cox <alan@lxorguk.ukuu.org.uk>,
+	linux-mips <linux-mips@linux-mips.org>,
+	linux-serial@vger.kernel.org
+Subject: Re: [PATCH 21/26] Serial: Allow port type to be specified when calling
+ serial8250_register_port.
+References: <49233FDE.3010404@caviumnetworks.com>	<1227047057-4911-3-git-send-email-ddaney@caviumnetworks.com> <20081120200256.73f98e09@lxorguk.ukuu.org.uk>
+In-Reply-To: <20081120200256.73f98e09@lxorguk.ukuu.org.uk>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+X-OriginalArrivalTime: 20 Nov 2008 21:00:47.0560 (UTC) FILETIME=[0FC35C80:01C94B53]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21348
+X-archive-position: 21349
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-> +		if ((up->bugs & UART_BUG_OCTEON_IIR) && (iir & 0xf) == 7) {
-> +			/* Busy interrupt */
-> +			serial_in(up, UART_OCTEON_USR);
-> +			iir = serial_in(up, UART_IIR);
-> +		}
+Alan Cox wrote:
+> On Tue, 18 Nov 2008 14:24:15 -0800
+> David Daney <ddaney@caviumnetworks.com> wrote:
+> 
+>> Add flag value UPF_FIXED_TYPE which specifies that the UART type is
+>> known and should not be probed.  For this case the UARTs properties
+>> are just copied out of the uart_config entry.
+> 
+> Looks fine to me
 
-Could this not be hidden in the register read method for the octeon and
-thus kept out of core code ?
+Re-adding the lists...
+
+Does that mean I an add Acked-by you to this patch?
+
+David Daney

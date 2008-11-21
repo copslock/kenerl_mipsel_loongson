@@ -1,53 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Nov 2008 17:46:53 +0000 (GMT)
-Received: from [81.2.110.250] ([81.2.110.250]:5308 "EHLO lxorguk.ukuu.org.uk")
-	by ftp.linux-mips.org with ESMTP id S23819380AbYKURqg (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 21 Nov 2008 17:46:36 +0000
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by lxorguk.ukuu.org.uk (8.14.2/8.14.2) with ESMTP id mALHkhOK011212;
-	Fri, 21 Nov 2008 17:46:43 GMT
-Date:	Fri, 21 Nov 2008 17:46:42 +0000
-From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Nov 2008 17:49:36 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:57399 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S23819408AbYKURt3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 21 Nov 2008 17:49:29 +0000
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B4926f4800001>; Fri, 21 Nov 2008 12:48:52 -0500
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 21 Nov 2008 09:47:55 -0800
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 21 Nov 2008 09:47:55 -0800
+Message-ID: <4926F44B.2090205@caviumnetworks.com>
+Date:	Fri, 21 Nov 2008 09:47:55 -0800
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
+MIME-Version: 1.0
 To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	David Daney <ddaney@caviumnetworks.com>, linux-ide@vger.kernel.org,
+CC:	Alan Cox <alan@lxorguk.ukuu.org.uk>, linux-ide@vger.kernel.org,
 	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] ide: New libata driver for OCTEON SOC Compact Flash
- interface.
-Message-ID: <20081121174642.2fdaac4f@lxorguk.ukuu.org.uk>
-In-Reply-To: <4926E467.9020305@ru.mvista.com>
-References: <49261BE5.2010406@caviumnetworks.com>
-	<4926E467.9020305@ru.mvista.com>
-X-Mailer: Claws Mail 3.5.0 (GTK+ 2.12.12; x86_64-redhat-linux-gnu)
-Organization: Red Hat UK Cyf., Amberley Place, 107-111 Peascod Street,
- Windsor, Berkshire, SL4 1TE, Y Deyrnas Gyfunol. Cofrestrwyd yng Nghymru a
- Lloegr o'r rhif cofrestru 3798903
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Subject: Re: [PATCH] ide: New libata driver for OCTEON SOC Compact Flash interface.
+References: <49261BE5.2010406@caviumnetworks.com> <20081121102137.634616c5@lxorguk.ukuu.org.uk> <4926EA6A.7040704@caviumnetworks.com> <4926EF55.7080004@ru.mvista.com>
+In-Reply-To: <4926EF55.7080004@ru.mvista.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+X-OriginalArrivalTime: 21 Nov 2008 17:47:55.0547 (UTC) FILETIME=[48B80EB0:01C94C01]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21368
+X-archive-position: 21369
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-> > +                iowrite16(*(uint16_t *)buffer, data_addr);
+Sergei Shtylyov wrote:
+> David Daney wrote:
+[...]
 > 
->     Not seeing the reason to use iowrite16() and not writew() as registers are 
-> always memory mapped...
-
-iomap uses iowrite/ioread, writew is for the older ioremap stuff. Mixing
-them up is not guaranteed to work for all ports.
-
-> > + * Get the status of the DMA engine. The results of this function
-> > + * must emulate the BMDMA engine expected by libata.
+>>> What stops the following occuring
 > 
->     Ugh... At least the IDE core is not so retarded.
+>>>     ATA irq
+>>>         BUSY still set
+>>>         Queue tasklet
+> 
+>>>     Other irq on same line
+>>>     ATA busy clear
+>>>         Handle command
+> 
+>    Is CF interrupt indeed shared with anything?
+> 
+>>>     Tasklet runs but command was sorted out
+> 
+>>> (or a reset of the ata controller in the gap)
+> 
+>> Probably nothing.  I will try to sort it out.
+> 
+>    It's the need for the tasklet that seems doubtful to me...
+> 
 
-Nor is libata, but he is piggybacking on the SFF code hence this.
+The interrupt occurs *before* the device de-asserts BUSY.  A small pause 
+is needed to allow the device to clear BUSY and allow libata to function 
+normally.
 
-Alan
+Calling ata_sff_host_intr() while BUSY is asserted causes the driver to 
+fail, as it is expecting to be called from a true IDE interrupt routine. 
+  Delaying calling ata_sff_host_intr() until BUSY is clear (using the 
+tasklet) seemed to be the cleanest way to write the driver given that we 
+are using an interrupt generated by DMA complete.
+
+David Daney.

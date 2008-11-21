@@ -1,86 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Nov 2008 22:17:19 +0000 (GMT)
-Received: from h4.dl5rb.org.uk ([81.2.74.4]:55743 "EHLO
-	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S23822400AbYKUWRN (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 21 Nov 2008 22:17:13 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id mALMGN23031611;
-	Fri, 21 Nov 2008 22:16:23 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id mALMGJ9F031609;
-	Fri, 21 Nov 2008 22:16:19 GMT
-Date:	Fri, 21 Nov 2008 22:16:19 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:	David Daney <ddaney@caviumnetworks.com>, gcc@gcc.gnu.org,
-	Alan Cox <alan@lxorguk.ukuu.org.uk>,
-	linux-mips <linux-mips@linux-mips.org>,
-	linux-kernel@vger.kernel.org,
-	Adam Nemet <anemet@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Nov 2008 23:01:12 +0000 (GMT)
+Received: from smtp1.linux-foundation.org ([140.211.169.13]:5834 "EHLO
+	smtp1.linux-foundation.org") by ftp.linux-mips.org with ESMTP
+	id S23822789AbYKUXBC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 21 Nov 2008 23:01:02 +0000
+Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [140.211.169.55])
+	by smtp1.linux-foundation.org (8.14.2/8.13.5/Debian-3ubuntu1.1) with ESMTP id mALN0OfU008704
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Fri, 21 Nov 2008 15:00:25 -0800
+Received: from akpm.corp.google.com (localhost [127.0.0.1])
+	by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with SMTP id mALN0NRH009588;
+	Fri, 21 Nov 2008 15:00:23 -0800
+Date:	Fri, 21 Nov 2008 15:00:23 -0800
+From:	Andrew Morton <akpm@linux-foundation.org>
+To:	David Daney <ddaney@caviumnetworks.com>
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] MIPS: Make BUG() __noreturn.
-Message-ID: <20081121221619.GB28154@linux-mips.org>
-References: <49260E4C.8080500@caviumnetworks.com> <20081121100035.3f5a640b@lxorguk.ukuu.org.uk> <Pine.LNX.4.64.0811211126420.26004@anakin> <4926E499.4070706@caviumnetworks.com> <Pine.LNX.4.64.0811211940450.29539@anakin>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64.0811211940450.29539@anakin>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+Message-Id: <20081121150023.032f7b5b.akpm@linux-foundation.org>
+In-Reply-To: <49260E4C.8080500@caviumnetworks.com>
+References: <49260E4C.8080500@caviumnetworks.com>
+X-Mailer: Sylpheed version 2.2.4 (GTK+ 2.8.20; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-MIMEDefang-Filter: lf$Revision: 1.188 $
+X-Scanned-By: MIMEDefang 2.63 on 140.211.169.13
+Return-Path: <akpm@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21376
+X-archive-position: 21377
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: akpm@linux-foundation.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Nov 21, 2008 at 07:46:43PM +0100, Geert Uytterhoeven wrote:
+On Thu, 20 Nov 2008 17:26:36 -0800
+David Daney <ddaney@caviumnetworks.com> wrote:
 
-> > up with a couple of options:
-> > 
-> > 1) Enhance the _builtin_trap() function so that we can specify the
-> >   break code that is emitted.  This would allow us to do something
-> >   like:
-> > 
-> > static inline void __attribute__((noreturn)) BUG()
-> > {
-> > 	__builtin_trap(0x200);
-> > }
-
-I had suggested this one before ...
-
-> > 2) Create a new builtin '__builtin_noreturn()' that expands to nothing
-> >   but has no CFG edges leaving it, which would allow:
-> > 
-> > static inline void __attribute__((noreturn)) BUG()
-> > {
-> > 	__asm__ __volatile__("break %0" : : "i" (0x200));
-> > 	__builtin_noreturn();
-> > }
+> MIPS: Make BUG() __noreturn.
 > 
-> Now I remember, yes, __builtin_trap() is how we fixed it on m68k:
-
-I like this interface.
-
-> http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git;a=commit;h=e8006b060f3982a969c5170aa869628d54dd30d8
+> Often we do things like put BUG() in the default clause of a case
+> statement.  Since it was not declared __noreturn, this could sometimes
+> lead to bogus compiler warnings that variables were used
+> uninitialized.
 > 
-> Of course, if you need a different trap code than the default, you're in
-> trouble.
+> There is a small problem in that we have to put a magic while(1); loop to
+> fool GCC into really thinking it is noreturn.  This makes the new
+> BUG() function 3 instructions long instead of just 1, but I think it
+> is worth it as it is now unnecessary to do extra work to silence the
+> 'used uninitialized' warnings.
+> 
+> I also re-wrote BUG_ON so that if it is given a constant condition, it
+> just does BUG() instead of loading a constant value in to a register
+> and testing it.
+> 
 
-MIPS ISA newer than MIPS I also have conditional break codes allowing
-something like this:
+Yup, this change will fix some compile warnings which will never be
+fixed in any other way for mips.
 
-#define BUG_ON(condition)                                               \
-do {                                                                    \
-        __asm__ __volatile__("tne $0, %0, %1"                           \
-                             : : "r" (condition), "i" (BRK_BUG));       \
-} while (0)
+> +static inline void __noreturn BUG(void)
+> +{
+> +	__asm__ __volatile__("break %0" : : "i" (BRK_BUG));
+> +	/* Fool GCC into thinking the function doesn't return. */
+> +	while (1)
+> +		;
+> +}
 
-that is test of condition and the trap as a single instruction.  Note there
-are break and trap instructions on MIPS and they are basically doing the
-same job ...
+This kind of sucks, doesn't it?  It adds instructions into the kernel
+text, very frequently on fast paths.  Those instructions are never
+executed, and we're blowing away i-cache just to quash compiler
+warnings.
 
-  Ralf
+For example, this:
+
+--- a/arch/x86/include/asm/bug.h~a
++++ a/arch/x86/include/asm/bug.h
+@@ -22,14 +22,12 @@ do {								\
+ 		     ".popsection"				\
+ 		     : : "i" (__FILE__), "i" (__LINE__),	\
+ 		     "i" (sizeof(struct bug_entry)));		\
+-	for (;;) ;						\
+ } while (0)
+ 
+ #else
+ #define BUG()							\
+ do {								\
+ 	asm volatile("ud2");					\
+-	for (;;) ;						\
+ } while (0)
+ #endif
+ 
+_
+
+reduces the size of i386 mm/vmalloc.o text by 56 bytes.
+
+I wonder if there is any clever way in which we can do this without
+introducing additional runtime cost.

@@ -1,21 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Nov 2008 17:50:00 +0000 (GMT)
-Received: from [81.2.110.250] ([81.2.110.250]:6588 "EHLO lxorguk.ukuu.org.uk")
-	by ftp.linux-mips.org with ESMTP id S23819411AbYKURts (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 21 Nov 2008 17:49:48 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Nov 2008 18:07:13 +0000 (GMT)
+Received: from earthlight.etchedpixels.co.uk ([81.2.110.250]:57990 "EHLO
+	lxorguk.ukuu.org.uk") by ftp.linux-mips.org with ESMTP
+	id S23819558AbYKUSHK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 21 Nov 2008 18:07:10 +0000
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by lxorguk.ukuu.org.uk (8.14.2/8.14.2) with ESMTP id mALHnjeD011258;
-	Fri, 21 Nov 2008 17:49:45 GMT
-Date:	Fri, 21 Nov 2008 17:49:44 +0000
+	by lxorguk.ukuu.org.uk (8.14.2/8.14.2) with ESMTP id mALI7Lg5011602;
+	Fri, 21 Nov 2008 18:07:21 GMT
+Date:	Fri, 21 Nov 2008 18:07:21 +0000
 From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-ide@vger.kernel.org, linux-mips <linux-mips@linux-mips.org>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Cc:	David Daney <ddaney@caviumnetworks.com>, linux-ide@vger.kernel.org,
+	linux-mips <linux-mips@linux-mips.org>
 Subject: Re: [PATCH] ide: New libata driver for OCTEON SOC Compact Flash
  interface.
-Message-ID: <20081121174944.23a4a7d9@lxorguk.ukuu.org.uk>
-In-Reply-To: <4926EA6A.7040704@caviumnetworks.com>
+Message-ID: <20081121180721.357f4c99@lxorguk.ukuu.org.uk>
+In-Reply-To: <4926EF55.7080004@ru.mvista.com>
 References: <49261BE5.2010406@caviumnetworks.com>
 	<20081121102137.634616c5@lxorguk.ukuu.org.uk>
 	<4926EA6A.7040704@caviumnetworks.com>
+	<4926EF55.7080004@ru.mvista.com>
 X-Mailer: Claws Mail 3.5.0 (GTK+ 2.12.12; x86_64-redhat-linux-gnu)
 Organization: Red Hat UK Cyf., Amberley Place, 107-111 Peascod Street,
  Windsor, Berkshire, SL4 1TE, Y Deyrnas Gyfunol. Cofrestrwyd yng Nghymru a
@@ -27,7 +30,7 @@ Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21370
+X-archive-position: 21371
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,25 +38,29 @@ X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-> > Even if you wanted to do it this way you could just use arrays and lookup
-> > tables as many other drivers do - ie
-> > 
-> > 	pio = dev->pio_mode - XFER_PIO_0;
-> > 	t1 = data[pio];
-> > 
+> >> If you get a request for an odd length you should write an extra word
+> >> containing the last byte and one other. See how the standard methods
+> >> handle this.
 > 
-> The timing calculations are based on the CPU clock rate, It is difficult 
-> to encapsulate that in a table.
+> > OK.
+> 
+>     I don't think you need to bother doing that with CF.
 
-The lookup part of the switch you can however. If you can use the
-ata_timing interface then it will also do the clock adjusting for you and
-has a FIT() macro that can be quite handy for clipping.
+Look at it the other way around is the best thing to do given an odd
+sized I/O (eg if a CF format ATAPI drive comes along) to crash the
+machine.
 
-> It appears to be broken.  One would expect ioread16 and ioread16_rep to 
-> do endian swapping in the same manner.  On MIPS they do not.  Perhaps it 
-> would be better to fix the problem at the source.
+> > Perhaps it would be better to fix the problem at the source.
+> 
+>     I don't think there's a problem there. The string versions of the 
+> functions treat memory as a string of bytes.
 
-I think the MIPS tree needs fixing then.
+Double checking the docs you are right. How dumb, but dumb or not that is
+what it is specified to do.
 
+> > Probably nothing.  I will try to sort it out.
+> 
+>     It's the need for the tasklet that seems doubtful to me...
 
-Alan
+I was wondering but assumed it was some kind of hardware feature where
+the end of IRQ occurs too early to do some of the cleanup.

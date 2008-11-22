@@ -1,103 +1,119 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Nov 2008 15:13:30 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:42332 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S23834811AbYKVPNV (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 22 Nov 2008 15:13:21 +0000
-Received: from [127.0.0.1] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 0B2493EC9; Sat, 22 Nov 2008 07:13:15 -0800 (PST)
-Message-ID: <49282187.8090602@ru.mvista.com>
-Date:	Sat, 22 Nov 2008 18:13:11 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-User-Agent: Thunderbird 2.0.0.18 (Windows/20081105)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Nov 2008 15:36:08 +0000 (GMT)
+Received: from h4.dl5rb.org.uk ([81.2.74.4]:36267 "EHLO
+	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
+	with ESMTP id S23834983AbYKVPfx (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 22 Nov 2008 15:35:53 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id mAMFZhSd016888;
+	Sat, 22 Nov 2008 15:35:43 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id mAMFZgtb016887;
+	Sat, 22 Nov 2008 15:35:42 GMT
+Date:	Sat, 22 Nov 2008 15:35:42 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Kevin D. Kissell" <kevink@paralogos.com>
+Cc:	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Chad Reese <kreese@caviumnetworks.com>,
+	linux-mips@linux-mips.org
+Subject: Re: Is there no way to shared code with Linux and other OSes?
+Message-ID: <20081122153542.GB31703@linux-mips.org>
+References: <4927C34F.4000201@caviumnetworks.com> <4927D6E0.4020009@paralogos.com> <Pine.LNX.4.64.0811221109330.29539@anakin> <4927E2A4.5000702@paralogos.com>
 MIME-Version: 1.0
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	David Daney <ddaney@caviumnetworks.com>, linux-ide@vger.kernel.org,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] ide: New libata driver for OCTEON SOC Compact Flash interface.
-References: <49261BE5.2010406@caviumnetworks.com> <49280FC5.3040608@ru.mvista.com>
-In-Reply-To: <49280FC5.3040608@ru.mvista.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4927E2A4.5000702@paralogos.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21390
+X-archive-position: 21391
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello, I wrote:
+On Sat, Nov 22, 2008 at 04:44:52AM -0600, Kevin D. Kissell wrote:
 
->> As part of our efforts to get the Cavium OCTEON processor support
->> merged (see: http://marc.info/?l=linux-mips&m=122704699515601), we
->> have this CF driver for your consideration.
+>>   
+>>> [This should be good for some useless weekend flaming.]
+>>>     
 >>
->> Most OCTEON variants have *no* DMA or interrupt support on the CF
->> interface so for these, only PIO is supported.  Although if DMA is
->> available, we do take advantage of it.
->>
->> The register definitions are part of the chip support patch set
->> mentioned above, and are not included here.
->>
->> At this point I would like to get feedback on the patch and would
->> expect that it would merge via the linux-mips tree along with the rest
->> of the chip support.
->>
->> Thanks,
->>
->> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-> [...]
->> diff --git a/drivers/ata/pata_octeon_cf.c b/drivers/ata/pata_octeon_cf.c
->> new file mode 100644
->> index 0000000..e8712c0
->> --- /dev/null
->> +++ b/drivers/ata/pata_octeon_cf.c
->> @@ -0,0 +1,942 @@
-> [...]
->> +/**
->> + * Get the status of the DMA engine. The results of this function
->> + * must emulate the BMDMA engine expected by libata.
->> + *
->> + * @ap:     ATA port to check status on
->> + *
->> + * Returns BMDMA status bits
->> + */
->> +static uint8_t octeon_cf_bmdma_status(struct ata_port *ap)
->> +{
->> +    struct octeon_cf_data *ocd = ap->dev->platform_data;
->> +    cvmx_mio_boot_dma_intx_t mio_boot_dma_int;
->> +    cvmx_mio_boot_dma_cfgx_t mio_boot_dma_cfg;
->> +    uint8_t result = 0;
->> +
->> +    mio_boot_dma_int.u64 =
->> +        cvmx_read_csr(CVMX_MIO_BOOT_DMA_INTX(ocd->dma_engine));
->> +    if (mio_boot_dma_int.s.done)
->> +        result |= ATA_DMA_INTR;
->
->   But if you're saying that there is only DMA completion inetrrupt, 
-> you *cannot* completely emulate SFF-8038i BMDMA since its interrupt 
-> status is the (delayed) IDE INTRQ status. I suggest that you move away 
-> from the emulation -- Alan has said it's possible.
+>> Yeah! ;-)
 
-   My suggestion then is not to emulate the ATA_DMA_INTR bit (always 
-returning it as 0) and use:
+With the oil price down so far we gotta make some good use of that ;-)
 
-    mio_boot_dma_int.u64 = 
-cvmx_read_csr(CVMX_MIO_BOOT_DMA_INTX(ocd->dma_engine));
-    if (mio_boot_dma_int.s.done)
+> That's a better argument than the one in the HTML version of  
+> Documentation/CodingStyle.txt that I had bookmarked (which was what I  
+> cited).  Interestingly, if I look at the *current* Linux  
+> Documentation/CodingStyle.txt for 2.6.28-rc6, the blanket interdiction  
+> of typedefs is no longer there!  Things *have* evolved, as I said they'd  
+> have to, to recognize 5 (a good Illuminati number) cases where typedefs  
+> are permitted.  Superficially, based on Chad's description (I admit that  
+> I haven't been reviewing his patches) the Cavium case would seem to fall  
+> into the first category. Is the MIPS Linux community now some kind of  
+> ultra-orthodox sub-sect of the Linux cult? ;o)
 
-directly in octeon_cf_interrupt().
+There was never a blanket interdiction of typedefs though it may seem to
+and unfortunately scripts/checkpatch.pl also bitches about every typedef,
+no matter what.  It was rather a restriction to only using typedefs for
+simple types such as char, int or pointers but not on structs - otherwise
+the definitions for u32 etc. would not have made it in.  In a 2002 OLS
+paper giving a bit of a rationale for the Linux coding standard Greg KH
+writes:
 
-   Also, this fragment of octeon_cf_bmdma_status() looks doubtful to me:
+[...]
+typedef is evil
 
-> +    else if (mio_boot_dma_cfg.s.size != 0xfffff)
-> +        result |= ATA_DMA_ERR; 
+typedef should not be used in naming any of your structures. Almost all main
+kernel structures do not have a typedef to shorten their usage. This
+includes the following:
 
-   I suppose this only makes sense when DMA interrupt is active. What 
-does this bitfield mean?
+	struct inode
+	struct dentry
+	struct file
+	struct buffer_head
+	struct user
+	struct task_struct
 
-MBR, Sergei
+Using typedef tries to hide the real type of a variable. There have been
+records of some kernel code using typedefs nested up to 4 layers deep,
+preventing the programmer from telling what type of variable they are really
+using. This can easily cause very large structures to be accidentally
+declared on the stack, or to be returned from functions if the programmer
+does not realize the size of the structure.  typedef can also be used as a
+crutch to keep from typing long structure denitions. If this is the case,
+the structure names should be made shorter, according to the above listed
+naming rules.  Never define a typedef to just signify a pointer to a
+structure, as in the following example:
+
+	typedef struct foo
+	{
+		int bar;
+		int baz;
+	} foo t, *pfoo_t;
+
+This again hides the true type of the variable, and is using the name of
+the variable type to define what is is (see the comment about Hungarian
+notation previously.
+
+Some examples of where typedef is badly used are in the include/raid/md*.h
+files where every structure has a typedef assigned to it, and in the
+drivers/acpi/include/*.h files, where a lot of the structures do not even
+have a name assigned to them, only a typedef.
+
+The only place that using typedef is acceptable, is in declaring function
+prototypes. These can be difcult to type out every time, so declaring a
+typedef for these is nice to do. An example of this is the bh_end_io_t
+typedef which is used as a parameter in the init buffer() call. This is
+defined in include/fs.h as:
+
+	typedef void (bh_end_io_t)(struct buffer_head *bh, int uptodate);
+
+[...]
+
+The full paper is available at http://www.kroah.com/linux/talks/ols_2002_kernel_codingstyle_paper/codingstyle.ps
+
+  Ralf

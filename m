@@ -1,65 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Nov 2008 10:45:13 +0000 (GMT)
-Received: from aux-209-217-49-36.oklahoma.net ([209.217.49.36]:23827 "EHLO
-	proteus.paralogos.com") by ftp.linux-mips.org with ESMTP
-	id S23830644AbYKVKpE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 22 Nov 2008 10:45:04 +0000
-Received: from [192.168.236.58] ([217.109.65.213])
-	by proteus.paralogos.com (8.9.3/8.9.3) with ESMTP id EAA13611;
-	Sat, 22 Nov 2008 04:43:50 -0600
-Message-ID: <4927E2A4.5000702@paralogos.com>
-Date:	Sat, 22 Nov 2008 04:44:52 -0600
-From:	"Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Thunderbird 2.0.0.18 (Windows/20081105)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Nov 2008 13:55:44 +0000 (GMT)
+Received: from n6b.bullet.mail.ac4.yahoo.com ([76.13.13.76]:63310 "HELO
+	n6b.bullet.mail.ac4.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S23833455AbYKVNz3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 22 Nov 2008 13:55:29 +0000
+Received: from [76.13.13.26] by n6.bullet.mail.ac4.yahoo.com with NNFMP; 22 Nov 2008 13:55:23 -0000
+Received: from [76.13.10.165] by t3.bullet.mail.ac4.yahoo.com with NNFMP; 22 Nov 2008 13:55:23 -0000
+Received: from [127.0.0.1] by omp106.mail.ac4.yahoo.com with NNFMP; 22 Nov 2008 13:55:23 -0000
+X-Yahoo-Newman-Property: ymail-3
+X-Yahoo-Newman-Id: 183605.20367.bm@omp106.mail.ac4.yahoo.com
+Received: (qmail 91741 invoked by uid 60001); 22 Nov 2008 13:55:23 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=X-YMail-OSG:Received:X-Mailer:Date:From:Reply-To:Subject:To:MIME-Version:Content-Type:Message-ID;
+  b=K0xB8DIm4emutc4XoMks6Dw/qf7lz1256Hiz6H+lIDN+MmSHRN5CK51tFgsEXkpyMw4N9s285AblYgqSY+4ONUgjND3slIvXsqDY57p3tO2K4cqQRpAxtJrILhZG07bCNmyIqsId2S6IgXSCoME4EkAF1tXXdzKNw5oTPclLThY=;
+X-YMail-OSG: x5I_7KgVM1kq5wNNq4S.rKCIkGF5FolhgjeRI3tF5Pu7QKyAebZ9fzLDRI25MyHZiHFSrbyqvlOqLuorMJCAugSJhY90J_30qwU7XgGq42v9Y.Jb7doIwHON1v8qS8QzlHNnZ1s-
+Received: from [84.204.225.1] by web59801.mail.ac4.yahoo.com via HTTP; Sat, 22 Nov 2008 05:55:20 PST
+X-Mailer: YahooMailWebService/0.7.260.1
+Date:	Sat, 22 Nov 2008 05:55:20 -0800 (PST)
+From:	Andrew Randrianasulu <randrik_a@yahoo.com>
+Reply-To: randrik_a@yahoo.com
+Subject: old binutils-2.13-msp.diff and binutils 2.19
+To:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-To:	Geert Uytterhoeven <geert@linux-m68k.org>
-CC:	Chad Reese <kreese@caviumnetworks.com>, linux-mips@linux-mips.org
-Subject: Re: Is there no way to shared code with Linux and other OSes?
-References: <4927C34F.4000201@caviumnetworks.com> <4927D6E0.4020009@paralogos.com> <Pine.LNX.4.64.0811221109330.29539@anakin>
-In-Reply-To: <Pine.LNX.4.64.0811221109330.29539@anakin>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kevink@paralogos.com>
+Content-Type: text/plain; charset=us-ascii
+Message-ID: <922652.90789.qm@web59801.mail.ac4.yahoo.com>
+Return-Path: <randrik_a@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21385
+X-archive-position: 21386
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
+X-original-sender: randrik_a@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Geert Uytterhoeven wrote:
-> On Sat, 22 Nov 2008, Kevin D. Kissell wrote:
->   
->> [This should be good for some useless weekend flaming.]
->>     
->
-> Yeah! ;-)
->
->   
->> Chad Reese wrote:
->>     
-Don't blame Chad for this quote, it was me!
->> to move away from such arbitrary dogmatism.  The argument given for banning
->> typedefs altogether is that nested typedefs are confusing to programmers.  I
->>     
->
-> I thought the main reason was that you can't have forward declarations of
-> typedefs, while you can have for structs.
->   
-That's a better argument than the one in the HTML version of 
-Documentation/CodingStyle.txt that I had bookmarked (which was what I 
-cited).  Interestingly, if I look at the *current* Linux 
-Documentation/CodingStyle.txt for 2.6.28-rc6, the blanket interdiction 
-of typedefs is no longer there!  Things *have* evolved, as I said they'd 
-have to, to recognize 5 (a good Illuminati number) cases where typedefs 
-are permitted.  Superficially, based on Chad's description (I admit that 
-I haven't been reviewing his patches) the Cavium case would seem to fall 
-into the first category. Is the MIPS Linux community now some kind of 
-ultra-orthodox sub-sect of the Linux cult? ;o)
+Hello. Sorry for asking this question - but while trying to move forward this patch, i faced with duplicated opcode in opcodes/mips-ops.c One "vmulu" was defined for Octeon, and one - for SGI O2 VICE coprocessor. After commenting out one from Octeon - my [patched] binutils finally was able to pass gcc-3.4.6 compilation. I saw some duplicates in this file, apart from my case,  but i'm really unsure what to do in this case? Move patch parts around? But moving them in random order will break assembler, already learned this ....
 
-          Regards,
+Also I'm lost in gas/config/tc-mips.c Original patch was designed for (K, m, n) [i don't know what they mean .. some form of internal markers?] and i changed it for (+K, +m,+n). But i'm really lost in those big switches there. Right now my new code disabled, looking at old patch i must add some logic before yet another switch. Where is the best place for discussing this - here or on gcc mail list?
 
-          Kevin K.
+
+      

@@ -1,71 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Nov 2008 09:39:43 +0000 (GMT)
-Received: from h4.dl5rb.org.uk ([81.2.74.4]:21124 "EHLO
-	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S23830068AbYKVJjk (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 22 Nov 2008 09:39:40 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id mAM9dbl4011381;
-	Sat, 22 Nov 2008 09:39:37 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id mAM9daHi011379;
-	Sat, 22 Nov 2008 09:39:36 GMT
-Date:	Sat, 22 Nov 2008 09:39:35 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-mips <linux-mips@linux-mips.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: Make BUG() __noreturn.
-Message-ID: <20081122093935.GA31703@linux-mips.org>
-References: <49260E4C.8080500@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Nov 2008 09:54:59 +0000 (GMT)
+Received: from aux-209-217-49-36.oklahoma.net ([209.217.49.36]:17171 "EHLO
+	proteus.paralogos.com") by ftp.linux-mips.org with ESMTP
+	id S23830229AbYKVJys (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 22 Nov 2008 09:54:48 +0000
+Received: from [192.168.236.58] ([217.109.65.213])
+	by proteus.paralogos.com (8.9.3/8.9.3) with ESMTP id DAA11387;
+	Sat, 22 Nov 2008 03:53:41 -0600
+Message-ID: <4927D6E0.4020009@paralogos.com>
+Date:	Sat, 22 Nov 2008 03:54:40 -0600
+From:	"Kevin D. Kissell" <kevink@paralogos.com>
+User-Agent: Thunderbird 2.0.0.18 (Windows/20081105)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <49260E4C.8080500@caviumnetworks.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+To:	Chad Reese <kreese@caviumnetworks.com>
+CC:	linux-mips@linux-mips.org
+Subject: Re: Is there no way to shared code with Linux and other OSes?
+References: <4927C34F.4000201@caviumnetworks.com>
+In-Reply-To: <4927C34F.4000201@caviumnetworks.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <kevink@paralogos.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21382
+X-archive-position: 21383
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: kevink@paralogos.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Nov 20, 2008 at 05:26:36PM -0800, David Daney wrote:
-> From: David Daney <ddaney@caviumnetworks.com>
-> Date: Thu, 20 Nov 2008 17:26:36 -0800
-> To: linux-mips <linux-mips@linux-mips.org>
-> CC: linux-kernel@vger.kernel.org
-> Subject: [PATCH] MIPS: Make BUG() __noreturn.
-> Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-> 
-> MIPS: Make BUG() __noreturn.
+[This should be good for some useless weekend flaming.]
 
-Please don't repeat the subject in the body of a patch email.  Git takes
-the subject followed by the body upto the --- line as the log message so
-this is just duplication that will need to be manually deleted again.
-
-> Often we do things like put BUG() in the default clause of a case
-> statement.  Since it was not declared __noreturn, this could sometimes
-> lead to bogus compiler warnings that variables were used
-> uninitialized.
+Chad Reese wrote:
+> Watching the discussion about Octeon patches submitted by Cavium
+> Networks, it seems apparent the majority of the problems simply come
+> from the fact that the code was written to be shared between multiple
+> operating systems. Code for programming the low level details of
+> hardware doesn't really change if the OS is Linux, VxWorks, BSD, or
+> something else. I've found it very depressing that most of the comments
+> basically come down to "this doesn't match the kernel coding standard,
+> change it". Obviously rewriting code for every coding standard and OS is
+> just a bug farm. Fixes will never get merged into all the rewrites.
+>   
+If one had a fixed list of OSes that one wanted to support, each of 
+which had a stable set of coding standards, then in principle it might 
+be possible to derive some lowest-common-denominator coding standards 
+from the intersection of sets.  As you point out, the resulting 
+constraints (no typedefs for Linux, no identifiers more than N 
+characters for other environments, etc.) may directly with efficient 
+coding and maintenance.  That's a trade-off you get to make versus 
+maintaining multiple variants.
+> Cavium can't be the first to want to share code. We'd like Octeon to be
+> well supported in the Linux kernel, but we'd also like other OSes to
+> work well too. There has to be some sort of middle ground here. Our base
+> "library" that is completely OS agnostic is actually license under the
+> BSD license to allow maximum portability between various OSes. What have
+> other people done before?
 >
-> There is a small problem in that we have to put a magic while(1); loop to
-> fool GCC into really thinking it is noreturn.  This makes the new
-> BUG() function 3 instructions long instead of just 1, but I think it
-> is worth it as it is now unnecessary to do extra work to silence the
-> 'used uninitialized' warnings.
->
-> I also re-wrote BUG_ON so that if it is given a constant condition, it
-> just does BUG() instead of loading a constant value in to a register
-> and testing it.
+> Through the discussion on the Octeon patches a number of bugs have been
+> uncovered and code has been improved. This part of the kernel submit
+> process is truly great. It just bothers me that so much needs to be
+> rewritten for arbitrary reasons.
+>   
+A consistent coding style is, I think you'll agree, an aid to coding and 
+maintenence in large-scale programming, and while the Linux kernel isn't 
+really all that big as software systems go, it's big enough to warrant a 
+consistent style.  What's disconcerting is the "feature creep" in the 
+coding standard.  Typedefs weren't banned by Linux in the beginning, and 
+there are legacy typedefs in the system for exactly the reasons why 
+software engineers working in C have used them for generations.  At some 
+point, if Linux isn't going to become the Latin liturgy of operating 
+systems, the standard will need to move away from such arbitrary 
+dogmatism.  The argument given for banning typedefs altogether is that 
+nested typedefs are confusing to programmers.  I strongly suspect that 
+there's a coding rule that would exclude the kinds of abuses that 
+provoked the rule while allowing sensible use of typedefs for 
+portability and future-proofing. But that's not going to happen any time 
+real soon.
+> For example, there has been lots of complaints that we use typedefs
+> throughout our code. Some people may not like them, but they have been
+> useful in the past. Some code used to use structures to reference chip
+> registers. Later due to new features, we found it necessary to change
+> the struct to a union with anonymous members. Because of the typedefs we
+> were able to change the fields for the new features without breaking
+> compatibility with existing code. If we'd used "struct" everywhere
+> instead of a typedef, all existing code would have to change for no
+> other reason except to substitute "union" for "struct". Not everyone has
+>  the freedom of the kernel programmers to ignore code outside of the
+> project.
+>   
+I had a similar experience of annoyance with Linux dogma years ago, so I 
+very much sympathize with your reaction.  However, isn't there a less 
+elegant but functional alternative, such as passing pointers to void 
+around and casting to type as appropriate, that you could have used had 
+you known in advance that the Linux priesthood would reject typedefs as 
+heresy?
 
-I don't like the endless loop in the BUG() macros but at this time it seems
-the best solution.  Looking forward to __builtin_noreturn().
+          Regards,
 
-Patch applied,
-
-  Ralf
+          Kevin K.

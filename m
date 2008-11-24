@@ -1,58 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2008 19:04:43 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:58278 "EHLO
-	localhost.localdomain") by ftp.linux-mips.org with ESMTP
-	id S23892287AbYKXTEk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 24 Nov 2008 19:04:40 +0000
-Date:	Mon, 24 Nov 2008 19:04:40 +0000 (GMT)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-cc:	Geert Uytterhoeven <geert@linux-m68k.org>,
-	David Daney <ddaney@caviumnetworks.com>, gcc@gcc.gnu.org,
-	Alan Cox <alan@lxorguk.ukuu.org.uk>,
-	linux-mips <linux-mips@linux-mips.org>,
-	linux-kernel@vger.kernel.org,
-	Adam Nemet <anemet@caviumnetworks.com>
-Subject: Re: [PATCH] MIPS: Make BUG() __noreturn.
-In-Reply-To: <20081121221619.GB28154@linux-mips.org>
-Message-ID: <alpine.LFD.1.10.0811241854520.3793@ftp.linux-mips.org>
-References: <49260E4C.8080500@caviumnetworks.com> <20081121100035.3f5a640b@lxorguk.ukuu.org.uk> <Pine.LNX.4.64.0811211126420.26004@anakin> <4926E499.4070706@caviumnetworks.com> <Pine.LNX.4.64.0811211940450.29539@anakin>
- <20081121221619.GB28154@linux-mips.org>
-User-Agent: Alpine 1.10 (LFD 962 2008-03-14)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2008 20:41:31 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:26367 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S23894393AbYKXUlX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 24 Nov 2008 20:41:23 +0000
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B492b11570000>; Mon, 24 Nov 2008 15:40:55 -0500
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 24 Nov 2008 12:40:52 -0800
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 24 Nov 2008 12:40:52 -0800
+Message-ID: <492B1153.5080001@caviumnetworks.com>
+Date:	Mon, 24 Nov 2008 12:40:51 -0800
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+To:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+CC:	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
+	linux-ide@vger.kernel.org, linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH] ide: New libata driver for OCTEON SOC Compact Flash interface.
+References: <49261BE5.2010406@caviumnetworks.com>	<49280FC5.3040608@ru.mvista.com> <20081122145204.52270dbe@lxorguk.ukuu.org.uk>
+In-Reply-To: <20081122145204.52270dbe@lxorguk.ukuu.org.uk>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 24 Nov 2008 20:40:52.0070 (UTC) FILETIME=[F0D91060:01C94E74]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21405
+X-archive-position: 21406
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 21 Nov 2008, Ralf Baechle wrote:
-
-> MIPS ISA newer than MIPS I also have conditional break codes allowing
-> something like this:
+Alan Cox wrote:
+>>    But if you're saying that there is only DMA completion inetrrupt, you 
+>> *cannot* completely emulate SFF-8038i BMDMA since its interrupt status 
+>> is the (delayed) IDE INTRQ status. I suggest that you move away from the 
+>> emulation -- Alan has said it's possible.
 > 
-> #define BUG_ON(condition)                                               \
-> do {                                                                    \
->         __asm__ __volatile__("tne $0, %0, %1"                           \
->                              : : "r" (condition), "i" (BRK_BUG));       \
-> } while (0)
+> I don't see whats wrong with treating it that way if it keeps the amount
+> of code needed down.
 > 
-> that is test of condition and the trap as a single instruction.  Note there
-> are break and trap instructions on MIPS and they are basically doing the
-> same job ...
 
- GCC is actually smart enough to combine sequences like:
+For exactly that reason, I intend to continue to try to emulate it.
 
-if (something)
-	__builtin_trap();
-
-into appropriate conditional trap instructions on MIPS.  As noted by David 
-trap codes other than the default cannot be emitted this way though.
-
-  Maciej
+David Daney

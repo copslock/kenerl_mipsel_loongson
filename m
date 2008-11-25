@@ -1,77 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2008 17:02:27 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:28573 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S23909330AbYKYRCU (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Nov 2008 17:02:20 +0000
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id D17653ECA; Tue, 25 Nov 2008 09:02:14 -0800 (PST)
-Message-ID: <492C2F97.3000400@ru.mvista.com>
-Date:	Tue, 25 Nov 2008 20:02:15 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2008 17:05:13 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:65038 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S23909389AbYKYRFK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 25 Nov 2008 17:05:10 +0000
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B492c30330002>; Tue, 25 Nov 2008 12:04:51 -0500
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 25 Nov 2008 09:04:49 -0800
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 25 Nov 2008 09:04:49 -0800
+Message-ID: <492C3031.2000408@caviumnetworks.com>
+Date:	Tue, 25 Nov 2008 09:04:49 -0800
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
 MIME-Version: 1.0
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-ide@vger.kernel.org, linux-mips@linux-mips.org
+To:	Jeff Garzik <jeff@garzik.org>
+CC:	linux-ide@vger.kernel.org, linux-mips@linux-mips.org,
+	Alan Cox <alan@lxorguk.ukuu.org.uk>
 Subject: Re: [PATCH 1/2] libata: Add three more columns to the ata_timing
  table.
-References: <492B56B0.9030409@caviumnetworks.com> <1227577181-30206-1-git-send-email-ddaney@caviumnetworks.com> <492BDB28.8020103@ru.mvista.com> <492C2BCE.60409@caviumnetworks.com>
-In-Reply-To: <492C2BCE.60409@caviumnetworks.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
+References: <492B56B0.9030409@caviumnetworks.com> <1227577181-30206-1-git-send-email-ddaney@caviumnetworks.com> <492C2F23.8050105@garzik.org>
+In-Reply-To: <492C2F23.8050105@garzik.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+X-OriginalArrivalTime: 25 Nov 2008 17:04:49.0246 (UTC) FILETIME=[ECD0D7E0:01C94F1F]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21420
+X-archive-position: 21421
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-David Daney wrote:
+Jeff Garzik wrote:
+> David Daney wrote:
+>> The forthcoming OCTEON SOC Compact Flash driver needs a few more
+>> timing values than were available in the ata_timing table.  I add new
+>> columns for write_hold, read_hold, and read_holdz times.  The values
+>> were obtained from the Compact Flash specification Rev 4.1.
+>>
+>> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+>> ---
+>>  drivers/ata/libata-core.c |   76 
+>> ++++++++++++++++++++++++--------------------
+>>  include/linux/libata.h    |   14 ++++++--
+>>  2 files changed, 52 insertions(+), 38 deletions(-)
+> 
+> I would be happy to go ahead and apply this...  Alan, any last minute 
+> objections?
+> 
 
->>> diff --git a/include/linux/libata.h b/include/linux/libata.h
->>> index 59b0f1c..7c44e45 100644
->>> --- a/include/linux/libata.h
->>> +++ b/include/linux/libata.h
+Sergei had some comments that I am trying to address.  Perhaps we should 
+hold off a little, while I figure out how what to do WRT those comments.
 
->> [...]
-
->>> @@ -863,6 +868,9 @@ struct ata_timing {
->>>      unsigned short cyc8b;        /* t0 for 8-bit I/O */
->>>      unsigned short active;        /* t2 or tD */
->>>      unsigned short recover;        /* t2i or tK */
->>> +    unsigned short write_hold;    /* t4 */
->>> +    unsigned short read_hold;    /* t6 */
-
->>   -DIOR hold time is 5 ns for all PIO and MWDMA modes -- there's no 
->> sense in storing it here.
-
-    Oops, that doesn't follow indeed...
-
-> By storing it here, ata_timing_compute() will compute the bus clock 
-> counts for me.  Makes perfect sense to me.
-
-    Then let's just put *every* timing specified by the ATA standard there. 
-That would be consistent at least. :-)
-
->>> +    unsigned short read_holdz;    /* t6z  or tj */
-
->>   T6z and Tj are not the same timing. Well, you specify it as 0 for  
->> DMA modes anyway...
-
-> I had intended to overload this column for DMA, but somehow screwed it 
-> up.  For my next patch I plan to populate this column for DMA modes.
-
-    There seems to be no timing "parallel" for T6z in the DMA transfers, so 
-you'll need another field then. Remember, the PIO and DMA timings are also 
-"mergeable" -- by selecting the maximum field value of 2 'struct ata_timing' 
-instances, so there should be no arbitrary field overloading.
-
-> David Daney
-
-WBR, Sergei
+David Daney

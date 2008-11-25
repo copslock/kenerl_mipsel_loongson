@@ -1,55 +1,106 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2008 19:10:36 +0000 (GMT)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:56968 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S23911832AbYKYTKc (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 25 Nov 2008 19:10:32 +0000
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B492c4d7c0000>; Tue, 25 Nov 2008 14:09:53 -0500
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 25 Nov 2008 11:09:46 -0800
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 25 Nov 2008 11:09:45 -0800
-Message-ID: <492C4D79.4050300@caviumnetworks.com>
-Date:	Tue, 25 Nov 2008 11:09:45 -0800
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2008 23:12:43 +0000 (GMT)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:16064 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S23914932AbYKYXMe (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 25 Nov 2008 23:12:34 +0000
+Received: (qmail 10397 invoked by uid 1000); 26 Nov 2008 00:12:30 +0100
+Date:	Wed, 26 Nov 2008 00:12:30 +0100
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+To:	LMO <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH v2] Alchemy: cpu feature override constants.
+Message-ID: <20081125231230.GA10366@roarinelk.homelinux.net>
 MIME-Version: 1.0
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-CC:	linux-ide@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/2] libata: Add three more columns to the ata_timing
- table.
-References: <492B56B0.9030409@caviumnetworks.com> <1227577181-30206-1-git-send-email-ddaney@caviumnetworks.com> <492BDB28.8020103@ru.mvista.com> <492C2BCE.60409@caviumnetworks.com> <492C4936.2030305@ru.mvista.com>
-In-Reply-To: <492C4936.2030305@ru.mvista.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 25 Nov 2008 19:09:45.0970 (UTC) FILETIME=[61362520:01C94F31]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21431
+X-archive-position: 21432
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-Sergei Shtylyov wrote:
-> David Daney wrote:
-> 
->>>   Wrong, -DIOR hold time is 5 ns for MWDMA0 as well as for all other 
->>> modes.
-> 
->> Point taken.
-> 
->    Besides, I'm not sure how useful that timing could be for the host 
-> controller since it's apparently not determined by the host side -- it's 
-> for how long the device holds valid data after -DIOR is released IIRC.
-> 
+Add cpu feature override constants for Alchemy.
 
-Yes, I think you are correct.  This is a property of the device and 
-cannot be controlled by the driver, so I will just remove this column in 
-the next version of the patch.
+This helps code generation: fls() for instance is compiled without
+using the clz instruction; other macros which do runtime feature
+detection fall back on safe legacy code as well.  Adding this override
+fixes that.  As a sideeffect, the size of a kernel built with an
+extended db1200 defconfig is reduced by over 200kB:
 
-David Daney
+   text    data     bss     dec     hex filename
+3901089  124160  436528 4461777  4414d1 vmlinux
+3676433  124096  436528 4237057  40a701 vmlinux-patched
+
+Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
+---
+This v2 version fixes a few typos.
+
+ .../asm/mach-au1x00/cpu-feature-overrides.h        |   51 ++++++++++++++++++++
+ 1 files changed, 51 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
+
+diff --git a/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h b/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
+new file mode 100644
+index 0000000..c22492e
+--- /dev/null
++++ b/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
+@@ -0,0 +1,51 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ */
++
++#ifndef __ASM_MACH_AU1X00_CPU_FEATURE_OVERRIDES_H
++#define __ASM_MACH_AU1X00_CPU_FEATURE_OVERRIDES_H
++
++#define cpu_has_tlb		1
++#define cpu_has_4kex		1
++#define cpu_has_3k_cache	0
++#define cpu_has_4k_cache	1
++#define cpu_has_tx39_cache	0
++#define cpu_has_fpu		0
++#define cpu_has_32fpr		0
++#define cpu_has_counter		1
++#define cpu_has_watch		1
++#define cpu_has_divec		1
++#define cpu_has_vce		0
++#define cpu_has_cache_cdex_p	0
++#define cpu_has_cache_cdex_s	0
++#define cpu_has_mcheck		1
++#define cpu_has_ejtag		1
++#define cpu_has_llsc		1
++#define cpu_has_mips16		0
++#define cpu_has_mdmx		0
++#define cpu_has_mips3d		0
++#define cpu_has_smartmips	0
++#define cpu_has_vtag_icache	0
++#define cpu_has_dc_aliases	0
++#define cpu_has_ic_fills_f_dc	1
++#define cpu_has_pindexed_cache	0
++#define cpu_has_mips32r1	1
++#define cpu_has_mips32r2	0
++#define cpu_has_mips64r1	0
++#define cpu_has_mips64r2	0
++#define cpu_has_dsp		0
++#define cpu_has_mipsmt		0
++#define cpu_has_userlocal	0
++#define cpu_has_nofpuex		0
++#define cpu_has_64bits		0
++#define cpu_has_64bit_zero_reg	0
++#define cpu_has_vint		0
++#define cpu_has_veic		0
++#define cpu_has_inclusive_pcaches 0
++
++#define cpu_dcache_line_size()	32
++#define cpu_icache_line_size()  32
++
++#endif /* __ASM_MACH_AU1X00_CPU_FEATURE_OVERRIDES_H */
+-- 
+1.6.0.4

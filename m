@@ -1,41 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2008 00:27:03 +0000 (GMT)
-Received: from h4.dl5rb.org.uk ([81.2.74.4]:34953 "EHLO
-	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S23896599AbYKYA0y (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Nov 2008 00:26:54 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id mAP0QpZQ032230;
-	Tue, 25 Nov 2008 00:26:51 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id mAP0QoFR032228;
-	Tue, 25 Nov 2008 00:26:50 GMT
-Date:	Tue, 25 Nov 2008 00:26:50 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-mips <linux-mips@linux-mips.org>,
-	"Malov, Vlad" <Vlad.Malov@caviumnetworks.com>
-Subject: Re: [PATCH] MIPS: Fix potential DOS by untrusted user app.
-Message-ID: <20081125002650.GA31284@linux-mips.org>
-References: <49234A4A.2090707@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2008 01:37:25 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:63974 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S23896990AbYKYBhS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 25 Nov 2008 01:37:18 +0000
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B492b56b30000>; Mon, 24 Nov 2008 20:36:51 -0500
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 24 Nov 2008 17:36:49 -0800
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 24 Nov 2008 17:36:48 -0800
+Message-ID: <492B56B0.9030409@caviumnetworks.com>
+Date:	Mon, 24 Nov 2008 17:36:48 -0800
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <49234A4A.2090707@caviumnetworks.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+To:	IDE/ATA development list <linux-ide@vger.kernel.org>
+CC:	linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH 0/2] libata: Cavium OCTEON SOC Compact Flash driver (v2)
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 25 Nov 2008 01:36:48.0948 (UTC) FILETIME=[48C59F40:01C94E9E]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21409
+X-archive-position: 21410
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 18, 2008 at 03:05:46PM -0800, David Daney wrote:
+As part of our efforts to get the Cavium OCTEON processor support
+merged (see: http://marc.info/?l=linux-mips&m=122704699515601), I
+have a new version of our CF driver for your consideration.
 
-Thanks, applied.
+This second version I split into two separate patches.  The first adds
+some entries to the ata_timing table in libata-core.  The second is
+the driver proper.
 
-  Ralf
+I will reply with the two patches.
+
+David Daney (2):
+   libata: Add three more columns to the ata_timing table.
+   libata: New driver for OCTEON SOC Compact Flash interface (v2).
+
+  drivers/ata/Kconfig          |    9 +
+  drivers/ata/Makefile         |    1 +
+  drivers/ata/libata-core.c    |   76 ++--
+  drivers/ata/pata_octeon_cf.c |  904 
+++++++++++++++++++++++++++++++++++++++++++
+  include/linux/libata.h       |   14 +-
+  5 files changed, 966 insertions(+), 38 deletions(-)
+  create mode 100644 drivers/ata/pata_octeon_cf.c

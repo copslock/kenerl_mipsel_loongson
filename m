@@ -1,46 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2008 18:51:47 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:52389 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S23911589AbYKYSvh (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Nov 2008 18:51:37 +0000
-Received: from [192.168.1.234] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 454EF3EC9; Tue, 25 Nov 2008 10:51:33 -0800 (PST)
-Message-ID: <492C4936.2030305@ru.mvista.com>
-Date:	Tue, 25 Nov 2008 21:51:34 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2008 19:03:29 +0000 (GMT)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:42179 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S23911750AbYKYTDT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 25 Nov 2008 19:03:19 +0000
+Received: (qmail 8665 invoked by uid 1000); 25 Nov 2008 20:03:14 +0100
+Date:	Tue, 25 Nov 2008 20:03:14 +0100
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+To:	Ralf Baechle <ralf@linux-mips.org>, LMO <linux-mips@linux-mips.org>
+Subject: [PATCH] Alchemy: cpu feature override constants.
+Message-ID: <20081125190314.GA8621@roarinelk.homelinux.net>
 MIME-Version: 1.0
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-ide@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/2] libata: Add three more columns to the ata_timing
- table.
-References: <492B56B0.9030409@caviumnetworks.com> <1227577181-30206-1-git-send-email-ddaney@caviumnetworks.com> <492BDB28.8020103@ru.mvista.com> <492C2BCE.60409@caviumnetworks.com>
-In-Reply-To: <492C2BCE.60409@caviumnetworks.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21429
+X-archive-position: 21430
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-David Daney wrote:
+Add cpu feature override constants for Alchemy.
 
->>   Wrong, -DIOR hold time is 5 ns for MWDMA0 as well as for all other 
->> modes.
+This helps code generation: __fls() for instance is compiled without
+using the 'clz' instruction;  other macros which do runtime feature
+detection fall back on safe legacy code as well.  Adding this override
+fixes that.
 
-> Point taken.
+Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
+---
+ .../asm/mach-au1x00/cpu-feature-overrides.h        |   52 ++++++++++++++++++++
+ 1 files changed, 52 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
 
-    Besides, I'm not sure how useful that timing could be for the host 
-controller since it's apparently not determined by the host side -- it's for 
-how long the device holds valid data after -DIOR is released IIRC.
-
-WBR, Sergei
+diff --git a/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h b/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
+new file mode 100644
+index 0000000..a0db90d
+--- /dev/null
++++ b/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
+@@ -0,0 +1,52 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ */
++
++#ifndef __ASM_MACH_ALCHEMY_CPU_FEATURE_OVERRIDES_H
++#define __ASM_MACH_ALCHEMY_CPU_FEATURE_OVERRIDES_H
++
++#define cpu_has_tlb		1
++#define cpu_has_4kex		1
++#define cpu_has_3k_cache	0
++#define cpu_has_4kcache		1
++#define cpu_has_tx39_cache	0
++#define cpu_has_fpu		0
++#define cpu_has_32fpr		0
++#define cpu_has_counter		1
++#define cpu_has_watch		1
++#define cpu_has_divec		1
++#define cpu_has_vce		0
++#define cpu_has_cache_cdex_p	0
++#define cpu_has_cache_cdex_s	0
++#define cpu_has_mcheck		1
++#define cpu_has_ejtag		1
++#define cpu_has_llsc		1
++#define cpu_has_mips16		0
++#define cpu_has_mdmx		0
++#define cpu_has_mips3d		0
++#define cpu_has_smartmips	0
++#define cpu_has_vtag_icache	0
++#define cpu_has_dc_aliases	0
++#define cpu_has_ic_fills_f_dc	1
++#define cpu_has_pindexed_cache	0
++#define cpu_has_dsp		0
++#define cpu_has_mipsmt		0
++#define cpu_has_userlocal	0
++#define cpu_has_nofpuex		0
++#define cpu_has_mips32r1	1
++#define cpu_has_mips32r2	0
++#define cpu_has_mips64r1	0
++#define cpu_has_mips64r2	0
++
++#define cpu_has_64bits		0
++#define cpu_has_6bit_zero_reg	0
++#define cpu_has_vint		0
++#define cpu_has_veic		0
++#define cpu_has_inclusive_pcaches 0
++
++#define cpu_dcache_line_size()	32
++#define cpu_icache_line_size()  32
++
++#endif /* __ASM_MACH_ALCHEMY_CPU_FEATURE_OVERRIDES_H */
+-- 
+1.6.0.4

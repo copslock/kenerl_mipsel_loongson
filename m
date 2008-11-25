@@ -1,100 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2008 19:03:29 +0000 (GMT)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:42179 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S23911750AbYKYTDT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 25 Nov 2008 19:03:19 +0000
-Received: (qmail 8665 invoked by uid 1000); 25 Nov 2008 20:03:14 +0100
-Date:	Tue, 25 Nov 2008 20:03:14 +0100
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	Ralf Baechle <ralf@linux-mips.org>, LMO <linux-mips@linux-mips.org>
-Subject: [PATCH] Alchemy: cpu feature override constants.
-Message-ID: <20081125190314.GA8621@roarinelk.homelinux.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2008 19:10:36 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:56968 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S23911832AbYKYTKc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 25 Nov 2008 19:10:32 +0000
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B492c4d7c0000>; Tue, 25 Nov 2008 14:09:53 -0500
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 25 Nov 2008 11:09:46 -0800
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 25 Nov 2008 11:09:45 -0800
+Message-ID: <492C4D79.4050300@caviumnetworks.com>
+Date:	Tue, 25 Nov 2008 11:09:45 -0800
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <mano@roarinelk.homelinux.net>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+CC:	linux-ide@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/2] libata: Add three more columns to the ata_timing
+ table.
+References: <492B56B0.9030409@caviumnetworks.com> <1227577181-30206-1-git-send-email-ddaney@caviumnetworks.com> <492BDB28.8020103@ru.mvista.com> <492C2BCE.60409@caviumnetworks.com> <492C4936.2030305@ru.mvista.com>
+In-Reply-To: <492C4936.2030305@ru.mvista.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 25 Nov 2008 19:09:45.0970 (UTC) FILETIME=[61362520:01C94F31]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21430
+X-archive-position: 21431
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Add cpu feature override constants for Alchemy.
+Sergei Shtylyov wrote:
+> David Daney wrote:
+> 
+>>>   Wrong, -DIOR hold time is 5 ns for MWDMA0 as well as for all other 
+>>> modes.
+> 
+>> Point taken.
+> 
+>    Besides, I'm not sure how useful that timing could be for the host 
+> controller since it's apparently not determined by the host side -- it's 
+> for how long the device holds valid data after -DIOR is released IIRC.
+> 
 
-This helps code generation: __fls() for instance is compiled without
-using the 'clz' instruction;  other macros which do runtime feature
-detection fall back on safe legacy code as well.  Adding this override
-fixes that.
+Yes, I think you are correct.  This is a property of the device and 
+cannot be controlled by the driver, so I will just remove this column in 
+the next version of the patch.
 
-Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
----
- .../asm/mach-au1x00/cpu-feature-overrides.h        |   52 ++++++++++++++++++++
- 1 files changed, 52 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
-
-diff --git a/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h b/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
-new file mode 100644
-index 0000000..a0db90d
---- /dev/null
-+++ b/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
-@@ -0,0 +1,52 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ */
-+
-+#ifndef __ASM_MACH_ALCHEMY_CPU_FEATURE_OVERRIDES_H
-+#define __ASM_MACH_ALCHEMY_CPU_FEATURE_OVERRIDES_H
-+
-+#define cpu_has_tlb		1
-+#define cpu_has_4kex		1
-+#define cpu_has_3k_cache	0
-+#define cpu_has_4kcache		1
-+#define cpu_has_tx39_cache	0
-+#define cpu_has_fpu		0
-+#define cpu_has_32fpr		0
-+#define cpu_has_counter		1
-+#define cpu_has_watch		1
-+#define cpu_has_divec		1
-+#define cpu_has_vce		0
-+#define cpu_has_cache_cdex_p	0
-+#define cpu_has_cache_cdex_s	0
-+#define cpu_has_mcheck		1
-+#define cpu_has_ejtag		1
-+#define cpu_has_llsc		1
-+#define cpu_has_mips16		0
-+#define cpu_has_mdmx		0
-+#define cpu_has_mips3d		0
-+#define cpu_has_smartmips	0
-+#define cpu_has_vtag_icache	0
-+#define cpu_has_dc_aliases	0
-+#define cpu_has_ic_fills_f_dc	1
-+#define cpu_has_pindexed_cache	0
-+#define cpu_has_dsp		0
-+#define cpu_has_mipsmt		0
-+#define cpu_has_userlocal	0
-+#define cpu_has_nofpuex		0
-+#define cpu_has_mips32r1	1
-+#define cpu_has_mips32r2	0
-+#define cpu_has_mips64r1	0
-+#define cpu_has_mips64r2	0
-+
-+#define cpu_has_64bits		0
-+#define cpu_has_6bit_zero_reg	0
-+#define cpu_has_vint		0
-+#define cpu_has_veic		0
-+#define cpu_has_inclusive_pcaches 0
-+
-+#define cpu_dcache_line_size()	32
-+#define cpu_icache_line_size()  32
-+
-+#endif /* __ASM_MACH_ALCHEMY_CPU_FEATURE_OVERRIDES_H */
--- 
-1.6.0.4
+David Daney

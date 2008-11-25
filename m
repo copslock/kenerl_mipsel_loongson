@@ -1,98 +1,172 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2008 11:02:18 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:61038 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S23903338AbYKYLCN (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Nov 2008 11:02:13 +0000
-Received: from [127.0.0.1] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 2CD173EC9; Tue, 25 Nov 2008 03:02:05 -0800 (PST)
-Message-ID: <492BDB28.8020103@ru.mvista.com>
-Date:	Tue, 25 Nov 2008 14:02:00 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-User-Agent: Thunderbird 2.0.0.18 (Windows/20081105)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2008 13:12:45 +0000 (GMT)
+Received: from mgw1.diku.dk ([130.225.96.91]:26839 "EHLO mgw1.diku.dk")
+	by ftp.linux-mips.org with ESMTP id S23905403AbYKYNMg (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Nov 2008 13:12:36 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by mgw1.diku.dk (Postfix) with ESMTP id D5F3652C313;
+	Tue, 25 Nov 2008 14:12:34 +0100 (CET)
+X-Virus-Scanned: amavisd-new at diku.dk
+Received: from mgw1.diku.dk ([127.0.0.1])
+	by localhost (mgw1.diku.dk [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 9hHambDzlz6m; Tue, 25 Nov 2008 14:12:32 +0100 (CET)
+Received: from nhugin.diku.dk (nhugin.diku.dk [130.225.96.140])
+	by mgw1.diku.dk (Postfix) with ESMTP id 3879452C31F;
+	Tue, 25 Nov 2008 14:12:32 +0100 (CET)
+Received: from pc-004.diku.dk (pc-004.diku.dk [130.225.97.4])
+	by nhugin.diku.dk (Postfix) with ESMTP
+	id 7D0DE6DFAB2; Tue, 25 Nov 2008 14:10:25 +0100 (CET)
+Received: by pc-004.diku.dk (Postfix, from userid 3767)
+	id 0FB0B9C4D4; Tue, 25 Nov 2008 14:12:32 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by pc-004.diku.dk (Postfix) with ESMTP id 0D49B9C14A;
+	Tue, 25 Nov 2008 14:12:32 +0100 (CET)
+Date:	Tue, 25 Nov 2008 14:12:32 +0100 (CET)
+From:	Julia Lawall <julia@diku.dk>
+To:	ralf@linux-mips.org, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH 1/5] arch/mips/alchemy: change strict_strtol to strict_strtoul
+Message-ID: <Pine.LNX.4.64.0811251412010.11897@pc-004.diku.dk>
 MIME-Version: 1.0
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-ide@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/2] libata: Add three more columns to the ata_timing
- table.
-References: <492B56B0.9030409@caviumnetworks.com> <1227577181-30206-1-git-send-email-ddaney@caviumnetworks.com>
-In-Reply-To: <1227577181-30206-1-git-send-email-ddaney@caviumnetworks.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <julia@diku.dk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21414
+X-archive-position: 21415
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: julia@diku.dk
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+From: Julia Lawall <julia@diku.dk>
 
-David Daney wrote:
+Since memsize is unsigned, it would seem better to use strict_strtoul that
+strict_strtol.
 
-> The forthcoming OCTEON SOC Compact Flash driver needs a few more
-> timing values than were available in the ata_timing table.  I add new
-> columns for write_hold, read_hold, and read_holdz times.  The values
-> were obtained from the Compact Flash specification Rev 4.1.
->
-> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
->   
+A simplified version of the semantic patch that makes this change is as
+follows: (http://www.emn.fr/x-info/coccinelle/)
 
-   Not quite correct...
+// <smpl>
+@s2@
+long e;
+position p;
+@@
 
-> diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-> index 4214bfb..b29b7df 100644
-> --- a/drivers/ata/libata-core.c
-> +++ b/drivers/ata/libata-core.c
-> @@ -2946,33 +2946,33 @@ int sata_set_spd(struct ata_link *link)
->   */
->  
->  static const struct ata_timing ata_timing[] = {
->   
-[...]
-> +/*	{ XFER_PIO_SLOW, 120, 290, 240, 960, 290, 240, 30, 5, 30, 960,   0 }, */
-> +	{ XFER_PIO_0,     70, 290, 240, 600, 165, 150, 30, 5, 30, 600,   0 },
-> +	{ XFER_PIO_1,     50, 290,  93, 383, 125, 100, 20, 5, 30, 383,   0 },
-> +	{ XFER_PIO_2,     30, 290,  40, 330, 100,  90, 15, 5, 30, 240,   0 },
-> +	{ XFER_PIO_3,     30,  80,  70, 180,  80,  70, 10, 5, 30, 180,   0 },
-> +	{ XFER_PIO_4,     25,  70,  25, 120,  70,  25, 10, 5, 30, 120,   0 },
-> +	{ XFER_PIO_5,     15,  65,  25, 100,  65,  25,  5, 5, 20, 100,   0 },
-> +	{ XFER_PIO_6,     10,  55,  20,  80,  55,  20,  5, 5, 20,  80,   0 },
-> +
-> +	{ XFER_SW_DMA_0, 120,   0,   0,   0, 480, 480, 30, 5, 0,  960,   0 },
-> +	{ XFER_SW_DMA_1,  90,   0,   0,   0, 240, 240, 30, 5, 0,  480,   0 },
-> +	{ XFER_SW_DMA_2,  60,   0,   0,   0, 120, 120, 15, 5, 0,  240,   0 },
-> +
-> +	{ XFER_MW_DMA_0,  60,   0,   0,   0, 215, 215, 20, 20, 0, 480,   0 },
->   
+strict_strtol@p(...,&e)
 
-   Wrong, -DIOR hold time is 5 ns for MWDMA0 as well as for all other modes.
+@@
+position p != s2.p;
+type T;
+T e;
+@@
 
-> diff --git a/include/linux/libata.h b/include/linux/libata.h
-> index 59b0f1c..7c44e45 100644
-> --- a/include/linux/libata.h
-> +++ b/include/linux/libata.h
->   
-[...]
-> @@ -863,6 +868,9 @@ struct ata_timing {
->  	unsigned short cyc8b;		/* t0 for 8-bit I/O */
->  	unsigned short active;		/* t2 or tD */
->  	unsigned short recover;		/* t2i or tK */
-> +	unsigned short write_hold;	/* t4 */
-> +	unsigned short read_hold;	/* t6 */
->   
+- strict_strtol@p
++ strict_strtoul
+  (...,&e)
+// </smpl>
 
-   -DIOR hold time is 5 ns for all PIO and MWDMA modes -- there's no 
-sense in storing it here.
+Signed-off-by: Julia Lawall <julia@diku.dk>
 
-> +	unsigned short read_holdz;	/* t6z  or tj */
->   
+---
 
-   T6z and Tj are not the same timing. Well, you specify it as 0 for  
-DMA modes anyway...
+ arch/mips/alchemy/db1x00/init.c  |    2 +-
+ arch/mips/alchemy/mtx-1/init.c   |    2 +-
+ arch/mips/alchemy/pb1000/init.c  |    2 +-
+ arch/mips/alchemy/pb1100/init.c  |    2 +-
+ arch/mips/alchemy/pb1200/init.c  |    2 +-
+ arch/mips/alchemy/pb1500/init.c  |    2 +-
+ arch/mips/alchemy/pb1550/init.c  |    2 +-
+ arch/mips/alchemy/xxs1500/init.c |    2 +-
+ 8 files changed, 8 insertions(+), 8 deletions(-)
 
-MBR, Sergei
+diff -u -p a/arch/mips/alchemy/db1x00/init.c b/arch/mips/alchemy/db1x00/init.c
+--- a/arch/mips/alchemy/db1x00/init.c
++++ b/arch/mips/alchemy/db1x00/init.c
+@@ -57,6 +57,6 @@ void __init prom_init(void)
+ 	if (!memsize_str)
+ 		memsize = 0x04000000;
+ 	else
+-		strict_strtol(memsize_str, 0, &memsize);
++		strict_strtoul(memsize_str, 0, &memsize);
+ 	add_memory_region(0, memsize, BOOT_MEM_RAM);
+ }
+diff -u -p a/arch/mips/alchemy/mtx-1/init.c b/arch/mips/alchemy/mtx-1/init.c
+--- a/arch/mips/alchemy/mtx-1/init.c
++++ b/arch/mips/alchemy/mtx-1/init.c
+@@ -55,6 +55,6 @@ void __init prom_init(void)
+ 	if (!memsize_str)
+ 		memsize = 0x04000000;
+ 	else
+-		strict_strtol(memsize_str, 0, &memsize);
++		strict_strtoul(memsize_str, 0, &memsize);
+ 	add_memory_region(0, memsize, BOOT_MEM_RAM);
+ }
+diff -u -p a/arch/mips/alchemy/pb1000/init.c b/arch/mips/alchemy/pb1000/init.c
+--- a/arch/mips/alchemy/pb1000/init.c
++++ b/arch/mips/alchemy/pb1000/init.c
+@@ -52,6 +52,6 @@ void __init prom_init(void)
+ 	if (!memsize_str)
+ 		memsize = 0x04000000;
+ 	else
+-		strict_strtol(memsize_str, 0, &memsize);
++		strict_strtoul(memsize_str, 0, &memsize);
+ 	add_memory_region(0, memsize, BOOT_MEM_RAM);
+ }
+diff -u -p a/arch/mips/alchemy/pb1100/init.c b/arch/mips/alchemy/pb1100/init.c
+--- a/arch/mips/alchemy/pb1100/init.c
++++ b/arch/mips/alchemy/pb1100/init.c
+@@ -54,7 +54,7 @@ void __init prom_init(void)
+ 	if (!memsize_str)
+ 		memsize = 0x04000000;
+ 	else
+-		strict_strtol(memsize_str, 0, &memsize);
++		strict_strtoul(memsize_str, 0, &memsize);
+ 
+ 	add_memory_region(0, memsize, BOOT_MEM_RAM);
+ }
+diff -u -p a/arch/mips/alchemy/pb1200/init.c b/arch/mips/alchemy/pb1200/init.c
+--- a/arch/mips/alchemy/pb1200/init.c
++++ b/arch/mips/alchemy/pb1200/init.c
+@@ -53,6 +53,6 @@ void __init prom_init(void)
+ 	if (!memsize_str)
+ 		memsize = 0x08000000;
+ 	else
+-		strict_strtol(memsize_str, 0, &memsize);
++		strict_strtoul(memsize_str, 0, &memsize);
+ 	add_memory_region(0, memsize, BOOT_MEM_RAM);
+ }
+diff -u -p a/arch/mips/alchemy/pb1500/init.c b/arch/mips/alchemy/pb1500/init.c
+--- a/arch/mips/alchemy/pb1500/init.c
++++ b/arch/mips/alchemy/pb1500/init.c
+@@ -53,6 +53,6 @@ void __init prom_init(void)
+ 	if (!memsize_str)
+ 		memsize = 0x04000000;
+ 	else
+-		strict_strtol(memsize_str, 0, &memsize);
++		strict_strtoul(memsize_str, 0, &memsize);
+ 	add_memory_region(0, memsize, BOOT_MEM_RAM);
+ }
+diff -u -p a/arch/mips/alchemy/pb1550/init.c b/arch/mips/alchemy/pb1550/init.c
+--- a/arch/mips/alchemy/pb1550/init.c
++++ b/arch/mips/alchemy/pb1550/init.c
+@@ -53,6 +53,6 @@ void __init prom_init(void)
+ 	if (!memsize_str)
+ 		memsize = 0x08000000;
+ 	else
+-		strict_strtol(memsize_str, 0, &memsize);
++		strict_strtoul(memsize_str, 0, &memsize);
+ 	add_memory_region(0, memsize, BOOT_MEM_RAM);
+ }
+diff -u -p a/arch/mips/alchemy/xxs1500/init.c b/arch/mips/alchemy/xxs1500/init.c
+--- a/arch/mips/alchemy/xxs1500/init.c
++++ b/arch/mips/alchemy/xxs1500/init.c
+@@ -53,6 +53,6 @@ void __init prom_init(void)
+ 	if (!memsize_str)
+ 		memsize = 0x04000000;
+ 	else
+-		strict_strtol(memsize_str, 0, &memsize);
++		strict_strtoul(memsize_str, 0, &memsize);
+ 	add_memory_region(0, memsize, BOOT_MEM_RAM);
+ }

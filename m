@@ -1,143 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2008 08:32:12 +0000 (GMT)
-Received: from mail.windriver.com ([147.11.1.11]:26325 "EHLO mail.wrs.com")
-	by ftp.linux-mips.org with ESMTP id S23901478AbYKYIcB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Nov 2008 08:32:01 +0000
-Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
-	by mail.wrs.com (8.13.6/8.13.6) with ESMTP id mAP8VroU020053;
-	Tue, 25 Nov 2008 00:31:53 -0800 (PST)
-Received: from localhost.localdomain ([128.224.162.71]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 25 Nov 2008 00:31:52 -0800
-From:	Tiejun Chen <tiejun.chen@windriver.com>
-To:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Cc:	Tiejun Chen <tiejun.chen@windriver.com>
-Subject: [PATCH v2] Support RTC on Malta
-Date:	Tue, 25 Nov 2008 16:33:20 +0800
-Message-Id: <1227602000-11618-1-git-send-email-tiejun.chen@windriver.com>
-X-Mailer: git-send-email 1.5.5.1
-X-OriginalArrivalTime: 25 Nov 2008 08:31:52.0711 (UTC) FILETIME=[44924970:01C94ED8]
-Return-Path: <Tiejun.Chen@windriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2008 11:02:18 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:61038 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S23903338AbYKYLCN (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Nov 2008 11:02:13 +0000
+Received: from [127.0.0.1] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 2CD173EC9; Tue, 25 Nov 2008 03:02:05 -0800 (PST)
+Message-ID: <492BDB28.8020103@ru.mvista.com>
+Date:	Tue, 25 Nov 2008 14:02:00 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+User-Agent: Thunderbird 2.0.0.18 (Windows/20081105)
+MIME-Version: 1.0
+To:	David Daney <ddaney@caviumnetworks.com>
+Cc:	linux-ide@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/2] libata: Add three more columns to the ata_timing
+ table.
+References: <492B56B0.9030409@caviumnetworks.com> <1227577181-30206-1-git-send-email-ddaney@caviumnetworks.com>
+In-Reply-To: <1227577181-30206-1-git-send-email-ddaney@caviumnetworks.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21413
+X-archive-position: 21414
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tiejun.chen@windriver.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-To create platform device for RTC to call platform driver successfully.
+Hello.
 
-Signed-off-by: Tiejun Chen <tiejun.chen@windriver.com>
----
- arch/mips/configs/malta_defconfig    |    8 ++++-
- arch/mips/mti-malta/malta-platform.c |   47 +++++++++++++++++++++++++++++----
- 2 files changed, 47 insertions(+), 8 deletions(-)
+David Daney wrote:
 
-diff --git a/arch/mips/configs/malta_defconfig b/arch/mips/configs/malta_defconfig
-index 74daa0c..aec64d0 100644
---- a/arch/mips/configs/malta_defconfig
-+++ b/arch/mips/configs/malta_defconfig
-@@ -1126,7 +1126,6 @@ CONFIG_LEGACY_PTY_COUNT=256
- # CONFIG_IPMI_HANDLER is not set
- # CONFIG_WATCHDOG is not set
- CONFIG_HW_RANDOM=m
--CONFIG_RTC=y
- # CONFIG_R3964 is not set
- # CONFIG_APPLICOM is not set
- # CONFIG_DRM is not set
-@@ -1199,7 +1198,12 @@ CONFIG_USB_ARCH_HAS_EHCI=y
- # CONFIG_MMC is not set
- # CONFIG_NEW_LEDS is not set
- # CONFIG_INFINIBAND is not set
--# CONFIG_RTC_CLASS is not set
-+CONFIG_RTC_CLASS=y
-+
-+#
-+# Platform RTC drivers
-+#
-+CONFIG_RTC_DRV_CMOS=y
- 
- #
- # DMA Engine support
-diff --git a/arch/mips/mti-malta/malta-platform.c b/arch/mips/mti-malta/malta-platform.c
-index 83b9bab..039e6e6 100644
---- a/arch/mips/mti-malta/malta-platform.c
-+++ b/arch/mips/mti-malta/malta-platform.c
-@@ -6,7 +6,10 @@
-  * Copyright (C) 2007 MIPS Technologies, Inc.
-  *   written by Ralf Baechle (ralf@linux-mips.org)
-  *
-- * Probe driver for the Malta's UART ports:
-+ * Copyright (C) 2008 Wind River Systems, Inc. 
-+ *   updated by Tiejun Chen <tiejun.chen@windriver.com> 
-+ *
-+ * 1. Probe driver for the Malta's UART ports:
-  *
-  *   o 2 ports in the SMC SuperIO
-  *   o 1 port in the CBUS UART, a discrete 16550 which normally is only used
-@@ -14,10 +17,14 @@
-  *
-  * We don't use 8250_platform.c on Malta as it would result in the CBUS
-  * UART becoming ttyS0.
-+ *
-+ * 2. Register RTC-CMOS platform device on Malta.
-  */
- #include <linux/module.h>
- #include <linux/init.h>
- #include <linux/serial_8250.h>
-+#include <linux/mc146818rtc.h>
-+#include <linux/platform_device.h>
- 
- #define SMC_PORT(base, int)						\
- {									\
-@@ -53,13 +60,41 @@ static struct platform_device uart8250_device = {
- 	},
- };
- 
--static int __init uart8250_init(void)
-+static int __init malta_uart8250_init(void)
- {
- 	return platform_device_register(&uart8250_device);
- }
- 
--module_init(uart8250_init);
-+struct resource malta_rtc_resource[] = {
-+	{
-+		.start	= RTC_PORT(0),			
-+		.end	= RTC_PORT(7),
-+		.flags	= IORESOURCE_IO,
-+	}, {
-+		.start	= RTC_IRQ,
-+		.end	= RTC_IRQ,
-+		.flags	= IORESOURCE_IRQ,
-+	}
-+};
-+
-+static int __init malta_rtc_init(void)
-+{
-+	struct platform_device *pd;
-+	
-+	pd = platform_device_register_simple("rtc_cmos", -1, malta_rtc_resource, 
-+						ARRAY_SIZE(malta_rtc_resource));
-+
-+	if (IS_ERR(pd))
-+		return PTR_ERR(pd);
-+	
-+	/* Try setting rtc as BCD mode to support
-+	 * current alarm code if possible.
-+	 */
-+	if (!RTC_ALWAYS_BCD)
-+		CMOS_WRITE(CMOS_READ(RTC_CONTROL) & ~RTC_DM_BINARY, RTC_CONTROL);
-+
-+	return 0;
-+}
- 
--MODULE_AUTHOR("Ralf Baechle <ralf@linux-mips.org>");
--MODULE_LICENSE("GPL");
--MODULE_DESCRIPTION("8250 UART probe driver for the Malta CBUS UART");
-+device_initcall(malta_rtc_init);
-+device_initcall(malta_uart8250_init);
--- 
-1.5.5.1
+> The forthcoming OCTEON SOC Compact Flash driver needs a few more
+> timing values than were available in the ata_timing table.  I add new
+> columns for write_hold, read_hold, and read_holdz times.  The values
+> were obtained from the Compact Flash specification Rev 4.1.
+>
+> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+>   
+
+   Not quite correct...
+
+> diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+> index 4214bfb..b29b7df 100644
+> --- a/drivers/ata/libata-core.c
+> +++ b/drivers/ata/libata-core.c
+> @@ -2946,33 +2946,33 @@ int sata_set_spd(struct ata_link *link)
+>   */
+>  
+>  static const struct ata_timing ata_timing[] = {
+>   
+[...]
+> +/*	{ XFER_PIO_SLOW, 120, 290, 240, 960, 290, 240, 30, 5, 30, 960,   0 }, */
+> +	{ XFER_PIO_0,     70, 290, 240, 600, 165, 150, 30, 5, 30, 600,   0 },
+> +	{ XFER_PIO_1,     50, 290,  93, 383, 125, 100, 20, 5, 30, 383,   0 },
+> +	{ XFER_PIO_2,     30, 290,  40, 330, 100,  90, 15, 5, 30, 240,   0 },
+> +	{ XFER_PIO_3,     30,  80,  70, 180,  80,  70, 10, 5, 30, 180,   0 },
+> +	{ XFER_PIO_4,     25,  70,  25, 120,  70,  25, 10, 5, 30, 120,   0 },
+> +	{ XFER_PIO_5,     15,  65,  25, 100,  65,  25,  5, 5, 20, 100,   0 },
+> +	{ XFER_PIO_6,     10,  55,  20,  80,  55,  20,  5, 5, 20,  80,   0 },
+> +
+> +	{ XFER_SW_DMA_0, 120,   0,   0,   0, 480, 480, 30, 5, 0,  960,   0 },
+> +	{ XFER_SW_DMA_1,  90,   0,   0,   0, 240, 240, 30, 5, 0,  480,   0 },
+> +	{ XFER_SW_DMA_2,  60,   0,   0,   0, 120, 120, 15, 5, 0,  240,   0 },
+> +
+> +	{ XFER_MW_DMA_0,  60,   0,   0,   0, 215, 215, 20, 20, 0, 480,   0 },
+>   
+
+   Wrong, -DIOR hold time is 5 ns for MWDMA0 as well as for all other modes.
+
+> diff --git a/include/linux/libata.h b/include/linux/libata.h
+> index 59b0f1c..7c44e45 100644
+> --- a/include/linux/libata.h
+> +++ b/include/linux/libata.h
+>   
+[...]
+> @@ -863,6 +868,9 @@ struct ata_timing {
+>  	unsigned short cyc8b;		/* t0 for 8-bit I/O */
+>  	unsigned short active;		/* t2 or tD */
+>  	unsigned short recover;		/* t2i or tK */
+> +	unsigned short write_hold;	/* t4 */
+> +	unsigned short read_hold;	/* t6 */
+>   
+
+   -DIOR hold time is 5 ns for all PIO and MWDMA modes -- there's no 
+sense in storing it here.
+
+> +	unsigned short read_holdz;	/* t6z  or tj */
+>   
+
+   T6z and Tj are not the same timing. Well, you specify it as 0 for  
+DMA modes anyway...
+
+MBR, Sergei

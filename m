@@ -1,77 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2008 17:25:59 +0000 (GMT)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:56093 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S23910479AbYKYRZx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 25 Nov 2008 17:25:53 +0000
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B492c350b0000>; Tue, 25 Nov 2008 12:25:31 -0500
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 25 Nov 2008 09:25:29 -0800
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 25 Nov 2008 09:25:29 -0800
-Message-ID: <492C3509.8010408@caviumnetworks.com>
-Date:	Tue, 25 Nov 2008 09:25:29 -0800
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
-MIME-Version: 1.0
-To:	Jeff Garzik <jeff@garzik.org>
-CC:	linux-ide@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/2] libata: New driver for OCTEON SOC Compact Flash interface
- (v2).
-References: <492B56B0.9030409@caviumnetworks.com> <1227577181-30206-2-git-send-email-ddaney@caviumnetworks.com> <492C2EE2.3090702@garzik.org>
-In-Reply-To: <492C2EE2.3090702@garzik.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2008 17:34:20 +0000 (GMT)
+Received: from [81.2.110.250] ([81.2.110.250]:59088 "EHLO lxorguk.ukuu.org.uk")
+	by ftp.linux-mips.org with ESMTP id S23910608AbYKYReP (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Nov 2008 17:34:15 +0000
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by lxorguk.ukuu.org.uk (8.14.2/8.14.2) with ESMTP id mAPHY2pd011726;
+	Tue, 25 Nov 2008 17:34:02 GMT
+Date:	Tue, 25 Nov 2008 17:34:01 +0000
+From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+To:	David Daney <ddaney@caviumnetworks.com>
+Cc:	Jeff Garzik <jeff@garzik.org>, linux-ide@vger.kernel.org,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/2] libata: New driver for OCTEON SOC Compact Flash
+ interface (v2).
+Message-ID: <20081125173401.44c28e17@lxorguk.ukuu.org.uk>
+In-Reply-To: <492C3509.8010408@caviumnetworks.com>
+References: <492B56B0.9030409@caviumnetworks.com>
+	<1227577181-30206-2-git-send-email-ddaney@caviumnetworks.com>
+	<492C2EE2.3090702@garzik.org>
+	<492C3509.8010408@caviumnetworks.com>
+X-Mailer: Claws Mail 3.5.0 (GTK+ 2.12.12; x86_64-redhat-linux-gnu)
+Organization: Red Hat UK Cyf., Amberley Place, 107-111 Peascod Street,
+ Windsor, Berkshire, SL4 1TE, Y Deyrnas Gyfunol. Cofrestrwyd yng Nghymru a
+ Lloegr o'r rhif cofrestru 3798903
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 25 Nov 2008 17:25:29.0316 (UTC) FILETIME=[CFF48240:01C94F22]
-Return-Path: <David.Daney@caviumnetworks.com>
+Return-Path: <alan@lxorguk.ukuu.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21423
+X-archive-position: 21424
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: alan@lxorguk.ukuu.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-Jeff Garzik wrote:
-> David Daney wrote:
->> +
->> +/* Timing multiple used for configuring the boot bus DMA engine */
->> +#define CF_DMA_TIMING_MULT    4
->> +
->> +static struct scsi_host_template octeon_cf_sht = {
->> +    ATA_PIO_SHT(DRV_NAME),
->> +};
->> +
->> +static int mwdmamodes = 0x1f;    /* Support Multiword DMA 0-4 */
->> +module_param(mwdmamodes, int, 0444);
->> +MODULE_PARM_DESC(mwdmamodes,
->> +         "Bitmask controlling which MWDMA modes are supported.  "
->> +         "Default is 0x1f for MWDMA 0-4.");
-> 
-> Two comments:
-> 
-> * perhaps I missed this, but why is this module param necessary?  In 
-> general we avoid things like this.
-> 
+> system.  The only recourse is to cycle power to the board.  By allowing 
+> DMA to be disabled, we eliminate this problem.
 
-The CF interface is on the SOC's Boot Bus.  Under some circumstances a 
-  board wide hardware reset can occur while DMA is in progress, this 
-results in the CF driving the Boot Bus while the processor is trying to 
-read the boot code from the boot ROM which results in an unbootable 
-system.  The only recourse is to cycle power to the board.  By allowing 
-DMA to be disabled, we eliminate this problem.
-
-
-> * I would avoid pretending to be an SFF DMA engine, and just code it in 
-> the style of a custom DMA engine with SFF registers/mode, such as 
-> sata_mv or sata_promise.
-> 
-
-It is certainly possible to do that, however I think it will result in a 
-much larger driver.  If you strongly object, we would have to bite the 
-bullet and do as you suggest.
-
-David Daney
+You can already do this via the existing libata option functions that
+Tejun added a while back, or there is libata.dma=0 which is applied to
+all interfaces.

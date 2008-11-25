@@ -1,52 +1,107 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 24 Nov 2008 22:33:53 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:64803 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S23895326AbYKXWdp (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 24 Nov 2008 22:33:45 +0000
-Received: from [127.0.0.1] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 0A75E3EC9; Mon, 24 Nov 2008 14:33:39 -0800 (PST)
-Message-ID: <492B2BBE.4080403@ru.mvista.com>
-Date:	Tue, 25 Nov 2008 01:33:34 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-User-Agent: Thunderbird 2.0.0.18 (Windows/20081105)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2008 00:16:50 +0000 (GMT)
+Received: from gw.goop.org ([64.81.55.164]:26583 "EHLO mail.goop.org")
+	by ftp.linux-mips.org with ESMTP id S23896563AbYKYAQm (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Nov 2008 00:16:42 +0000
+Received: by lurch.goop.org (Postfix, from userid 525)
+	id CAFC82C8044; Mon, 24 Nov 2008 16:16:37 -0800 (PST)
+Received: from lurch.goop.org (localhost [127.0.0.1])
+	by lurch.goop.org (Postfix) with ESMTP id 6523A2C8042;
+	Mon, 24 Nov 2008 16:16:37 -0800 (PST)
+Received: from abulafia.goop.org (adsl-76-233-236-102.dsl.pltn13.sbcglobal.net [76.233.236.102])
+	by lurch.goop.org (Postfix) with ESMTPSA;
+	Mon, 24 Nov 2008 16:16:37 -0800 (PST)
+Message-ID: <492B43E4.2020607@goop.org>
+Date:	Mon, 24 Nov 2008 16:16:36 -0800
+From:	Jeremy Fitzhardinge <jeremy@goop.org>
+User-Agent: Thunderbird 2.0.0.17 (X11/20081009)
 MIME-Version: 1.0
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	Alan Cox <alan@lxorguk.ukuu.org.uk>, linux-ide@vger.kernel.org,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] ide: New libata driver for OCTEON SOC Compact Flash interface.
-References: <49261BE5.2010406@caviumnetworks.com>	<49280FC5.3040608@ru.mvista.com> <20081122145204.52270dbe@lxorguk.ukuu.org.uk> <492B1153.5080001@caviumnetworks.com>
-In-Reply-To: <492B1153.5080001@caviumnetworks.com>
+To:	Ingo Molnar <mingo@elte.hu>
+CC:	Andrew Morton <akpm@linux-foundation.org>,
+	David Daney <ddaney@caviumnetworks.com>,
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] MIPS: Make BUG() __noreturn.
+References: <49260E4C.8080500@caviumnetworks.com> <20081121150023.032f7b5b.akpm@linux-foundation.org> <20081123095818.GU30453@elte.hu>
+In-Reply-To: <20081123095818.GU30453@elte.hu>
+X-Enigmail-Version: 0.95.6
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+X-Virus-Scanned: ClamAV using ClamSMTP by lurch.goop.org
+Return-Path: <jeremy@goop.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21407
+X-archive-position: 21408
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: jeremy@goop.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
-
-David Daney wrote:
-
->>>    But if you're saying that there is only DMA completion inetrrupt, 
->>> you *cannot* completely emulate SFF-8038i BMDMA since its interrupt 
->>> status is the (delayed) IDE INTRQ status. I suggest that you move 
->>> away from the emulation -- Alan has said it's possible.
->>
->> I don't see whats wrong with treating it that way if it keeps the amount
->> of code needed down.
->>
+Ingo Molnar wrote:
+> * Andrew Morton <akpm@linux-foundation.org> wrote:
 >
-> For exactly that reason, I intend to continue to try to emulate it.
+>   
+>>> +static inline void __noreturn BUG(void)
+>>> +{
+>>> +	__asm__ __volatile__("break %0" : : "i" (BRK_BUG));
+>>> +	/* Fool GCC into thinking the function doesn't return. */
+>>> +	while (1)
+>>> +		;
+>>> +}
+>>>       
+>> This kind of sucks, doesn't it?  It adds instructions into the 
+>> kernel text, very frequently on fast paths.  Those instructions are 
+>> never executed, and we're blowing away i-cache just to quash 
+>> compiler warnings.
+>>
+>> For example, this:
+>>
+>> --- a/arch/x86/include/asm/bug.h~a
+>> +++ a/arch/x86/include/asm/bug.h
+>> @@ -22,14 +22,12 @@ do {								\
+>>  		     ".popsection"				\
+>>  		     : : "i" (__FILE__), "i" (__LINE__),	\
+>>  		     "i" (sizeof(struct bug_entry)));		\
+>> -	for (;;) ;						\
+>>  } while (0)
+>>  
+>>  #else
+>>  #define BUG()							\
+>>  do {								\
+>>  	asm volatile("ud2");					\
+>> -	for (;;) ;						\
+>>  } while (0)
+>>  #endif
+>>  
+>> _
+>>
+>> reduces the size of i386 mm/vmalloc.o text by 56 bytes.
+>>     
+>
+> yes - the total image effect is significantly - recently looked at how 
+> much larger !CONFIG_BUG builds would get if we inserted an infinite 
+> loop into them - it was in the 50K text range (!).
+>
+> but in the x86 ud2 case we could guarantee that we wont ever return 
+> from that exception. Mind sending a patch with a signoff, a 
+> description and an infinite loop in the u2d handler?
+>   
 
-   "You do or you do not. There is no try." :-D
+There are two arguments against making BUG() a noreturn:
 
-> David Daney
+    * if you compile without BUG enabled, then it won't be noreturn anyway
+    * making it noreturn kills the lifetime of any variables that would
+      otherwise be considered alive, making the DWARF debug info at that
+      point less reliable (which is a pain even for post-mortem debugging)
 
-MBR, Sergei
+The counter-argument is that not making it noreturn will keep variables 
+alive that wouldn't otherwise be, causing greater register pressure, 
+spillage, etc.
+
+If adding an infinite loop really adds 50k to the image, the extra size 
+must come from the changes to variable lifetime rather than the loop 
+instructions themselves (which are only 2 bytes per instance, and we 
+don't have 25,000 BUGs in the kernel, do we?).
+
+    J

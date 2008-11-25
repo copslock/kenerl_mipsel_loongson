@@ -1,45 +1,128 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2008 16:00:36 +0000 (GMT)
-Received: from h4.dl5rb.org.uk ([81.2.74.4]:4580 "EHLO
-	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S23908129AbYKYQA3 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 25 Nov 2008 16:00:29 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id mAPG0QuT021379;
-	Tue, 25 Nov 2008 16:00:26 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id mAPG0PiL021378;
-	Tue, 25 Nov 2008 16:00:25 GMT
-Date:	Tue, 25 Nov 2008 16:00:25 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Julia Lawall <julia@diku.dk>
-Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 1/5] arch/mips/alchemy: change strict_strtol to
-	strict_strtoul
-Message-ID: <20081125160025.GA18083@linux-mips.org>
-References: <Pine.LNX.4.64.0811251412010.11897@pc-004.diku.dk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 25 Nov 2008 16:47:11 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:46335 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S23908943AbYKYQrF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 25 Nov 2008 16:47:05 +0000
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B492c2bd00000>; Tue, 25 Nov 2008 11:46:12 -0500
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 25 Nov 2008 08:46:06 -0800
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 25 Nov 2008 08:46:06 -0800
+Message-ID: <492C2BCE.60409@caviumnetworks.com>
+Date:	Tue, 25 Nov 2008 08:46:06 -0800
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.16 (X11/20080723)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64.0811251412010.11897@pc-004.diku.dk>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+CC:	linux-ide@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/2] libata: Add three more columns to the ata_timing
+ table.
+References: <492B56B0.9030409@caviumnetworks.com> <1227577181-30206-1-git-send-email-ddaney@caviumnetworks.com> <492BDB28.8020103@ru.mvista.com>
+In-Reply-To: <492BDB28.8020103@ru.mvista.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 25 Nov 2008 16:46:06.0707 (UTC) FILETIME=[4FBAFC30:01C94F1D]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21416
+X-archive-position: 21417
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 25, 2008 at 02:12:32PM +0100, Julia Lawall wrote:
+Sergei Shtylyov wrote:
+> Hello.
+> 
+> David Daney wrote:
+> 
+>> The forthcoming OCTEON SOC Compact Flash driver needs a few more
+>> timing values than were available in the ata_timing table.  I add new
+>> columns for write_hold, read_hold, and read_holdz times.  The values
+>> were obtained from the Compact Flash specification Rev 4.1.
+>>
+>> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+>>   
+> 
+>   Not quite correct...
+> 
+>> diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+>> index 4214bfb..b29b7df 100644
+>> --- a/drivers/ata/libata-core.c
+>> +++ b/drivers/ata/libata-core.c
+>> @@ -2946,33 +2946,33 @@ int sata_set_spd(struct ata_link *link)
+>>   */
+>>  
+>>  static const struct ata_timing ata_timing[] = {
+>>   
+> [...]
+>> +/*    { XFER_PIO_SLOW, 120, 290, 240, 960, 290, 240, 30, 5, 30, 
+>> 960,   0 }, */
+>> +    { XFER_PIO_0,     70, 290, 240, 600, 165, 150, 30, 5, 30, 600,   
+>> 0 },
+>> +    { XFER_PIO_1,     50, 290,  93, 383, 125, 100, 20, 5, 30, 383,   
+>> 0 },
+>> +    { XFER_PIO_2,     30, 290,  40, 330, 100,  90, 15, 5, 30, 240,   
+>> 0 },
+>> +    { XFER_PIO_3,     30,  80,  70, 180,  80,  70, 10, 5, 30, 180,   
+>> 0 },
+>> +    { XFER_PIO_4,     25,  70,  25, 120,  70,  25, 10, 5, 30, 120,   
+>> 0 },
+>> +    { XFER_PIO_5,     15,  65,  25, 100,  65,  25,  5, 5, 20, 100,   
+>> 0 },
+>> +    { XFER_PIO_6,     10,  55,  20,  80,  55,  20,  5, 5, 20,  80,   
+>> 0 },
+>> +
+>> +    { XFER_SW_DMA_0, 120,   0,   0,   0, 480, 480, 30, 5, 0,  960,   
+>> 0 },
+>> +    { XFER_SW_DMA_1,  90,   0,   0,   0, 240, 240, 30, 5, 0,  480,   
+>> 0 },
+>> +    { XFER_SW_DMA_2,  60,   0,   0,   0, 120, 120, 15, 5, 0,  240,   
+>> 0 },
+>> +
+>> +    { XFER_MW_DMA_0,  60,   0,   0,   0, 215, 215, 20, 20, 0, 480,   
+>> 0 },
+>>   
+> 
+>   Wrong, -DIOR hold time is 5 ns for MWDMA0 as well as for all other modes.
 
-> Since memsize is unsigned, it would seem better to use strict_strtoul that
-> strict_strtol.
+Point taken.
 
-Thanks, applied.
+> 
+>> diff --git a/include/linux/libata.h b/include/linux/libata.h
+>> index 59b0f1c..7c44e45 100644
+>> --- a/include/linux/libata.h
+>> +++ b/include/linux/libata.h
+>>   
+> [...]
+>> @@ -863,6 +868,9 @@ struct ata_timing {
+>>      unsigned short cyc8b;        /* t0 for 8-bit I/O */
+>>      unsigned short active;        /* t2 or tD */
+>>      unsigned short recover;        /* t2i or tK */
+>> +    unsigned short write_hold;    /* t4 */
+>> +    unsigned short read_hold;    /* t6 */
+>>   
+> 
+>   -DIOR hold time is 5 ns for all PIO and MWDMA modes -- there's no 
+> sense in storing it here.
+> 
 
-  Ralf
+By storing it here, ata_timing_compute() will compute the bus clock 
+counts for me.  Makes perfect sense to me.
+
+
+>> +    unsigned short read_holdz;    /* t6z  or tj */
+>>   
+> 
+>   T6z and Tj are not the same timing. Well, you specify it as 0 for  DMA 
+> modes anyway...
+> 
+
+I had intended to overload this column for DMA, but somehow screwed it 
+up.  For my next patch I plan to populate this column for DMA modes.
+
+David Daney

@@ -1,62 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2008 14:38:40 +0000 (GMT)
-Received: from smtp.movial.fi ([62.236.91.34]:54955 "EHLO smtp.movial.fi")
-	by ftp.linux-mips.org with ESMTP id S23931943AbYKZOib (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 26 Nov 2008 14:38:31 +0000
-Received: from localhost (mailscanner.hel.movial.fi [172.17.81.9])
-	by smtp.movial.fi (Postfix) with ESMTP id 4F19DC80D3;
-	Wed, 26 Nov 2008 16:38:25 +0200 (EET)
-X-Virus-Scanned: Debian amavisd-new at movial.fi
-Received: from smtp.movial.fi ([62.236.91.34])
-	by localhost (mailscanner.hel.movial.fi [172.17.81.9]) (amavisd-new, port 10026)
-	with ESMTP id 6WuXxjQS4-bj; Wed, 26 Nov 2008 16:38:25 +0200 (EET)
-Received: from [172.17.49.48] (sd048.hel.movial.fi [172.17.49.48])
-	by smtp.movial.fi (Postfix) with ESMTP id 28D9CC8001;
-	Wed, 26 Nov 2008 16:38:25 +0200 (EET)
-Message-ID: <492D5F60.9050505@movial.fi>
-Date:	Wed, 26 Nov 2008 16:38:24 +0200
-From:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
-Organization: Movial Creative Technologies
-User-Agent: Icedove 1.5.0.14eol (X11/20080724)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2008 17:31:14 +0000 (GMT)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:61890 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S23935572AbYKZRbM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 26 Nov 2008 17:31:12 +0000
+Received: (qmail 17665 invoked by uid 1000); 26 Nov 2008 18:31:10 +0100
+Date:	Wed, 26 Nov 2008 18:31:10 +0100
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+To:	LMO <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH v3] Alchemy: provide cpu feature overrides.
+Message-ID: <20081126173110.GA17631@roarinelk.homelinux.net>
 MIME-Version: 1.0
-To:	jscottkasten@yahoo.com
-CC:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>,
-	linux-mips@linux-mips.org
-Subject: Re: Looking for Extreme graphics technical documentation
-References: <512303.25969.qm@web35408.mail.mud.yahoo.com>
-In-Reply-To: <512303.25969.qm@web35408.mail.mud.yahoo.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <dmitri.vorobiev@movial.fi>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21449
+X-archive-position: 21450
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@movial.fi
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-jscottkasten@yahoo.com wrote:
-> Hi Dmitri,
+Code generated for Alchemy does not use all MIPS32r1 features.  Add cpu
+feature overrides tailored for Alchemy chips and help GCC create better
+code.  As a nice sideeffect the size of the resulting kernel is reduced
+by a few kilobytes (~200kB for a non-modular db1200 devboard build).
 
-Hi,
+Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
+---
+v3: indentation corrected
+v2: typo fixes
 
-> 
-> I'm going to wish you luck here.  I should point you to this thread
-> between "Kumba" and myself over on the Gentoo Mips list from days long past.
-> 
-> http://www.gossamer-threads.com/lists/gentoo/mips/58437
+ .../asm/mach-au1x00/cpu-feature-overrides.h        |   51 ++++++++++++++++++++
+ 1 files changed, 51 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
 
-Thanks, I have already seen this thread. I'm going to try the kernel produced by "Onion".
-
-> 
-> In short, someone did get basic functionality, but wouldn't release his
-> work for anyone to see.  I tried nicely to contact the guy a few times
-> myself.  No dice.
-
-Well, maybe I'll approach the author again. Let's see if he agrees to share the code.
-
-Thanks,
-Dmitri
+diff --git a/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h b/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
+new file mode 100644
+index 0000000..725e575
+--- /dev/null
++++ b/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
+@@ -0,0 +1,51 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ */
++
++#ifndef __ASM_MACH_AU1X00_CPU_FEATURE_OVERRIDES_H
++#define __ASM_MACH_AU1X00_CPU_FEATURE_OVERRIDES_H
++
++#define cpu_has_tlb			1
++#define cpu_has_4kex			1
++#define cpu_has_3k_cache		0
++#define cpu_has_4k_cache		1
++#define cpu_has_tx39_cache		0
++#define cpu_has_fpu			0
++#define cpu_has_32fpr			0
++#define cpu_has_counter			1
++#define cpu_has_watch			1
++#define cpu_has_divec			1
++#define cpu_has_vce			0
++#define cpu_has_cache_cdex_p		0
++#define cpu_has_cache_cdex_s		0
++#define cpu_has_mcheck			1
++#define cpu_has_ejtag			1
++#define cpu_has_llsc			1
++#define cpu_has_mips16			0
++#define cpu_has_mdmx			0
++#define cpu_has_mips3d			0
++#define cpu_has_smartmips		0
++#define cpu_has_vtag_icache		0
++#define cpu_has_dc_aliases		0
++#define cpu_has_ic_fills_f_dc		1
++#define cpu_has_pindexed_cache		0
++#define cpu_has_mips32r1		1
++#define cpu_has_mips32r2		0
++#define cpu_has_mips64r1		0
++#define cpu_has_mips64r2		0
++#define cpu_has_dsp			0
++#define cpu_has_mipsmt			0
++#define cpu_has_userlocal		0
++#define cpu_has_nofpuex			0
++#define cpu_has_64bits			0
++#define cpu_has_64bit_zero_reg		0
++#define cpu_has_vint			0
++#define cpu_has_veic			0
++#define cpu_has_inclusive_pcaches	0
++
++#define cpu_dcache_line_size()		32
++#define cpu_icache_line_size()		32
++
++#endif /* __ASM_MACH_AU1X00_CPU_FEATURE_OVERRIDES_H */
+-- 
+1.6.0.4

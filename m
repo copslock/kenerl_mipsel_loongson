@@ -1,140 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2008 13:34:51 +0000 (GMT)
-Received: from smtp.movial.fi ([62.236.91.34]:51672 "EHLO smtp.movial.fi")
-	by ftp.linux-mips.org with ESMTP id S23931267AbYKZNej (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 26 Nov 2008 13:34:39 +0000
-Received: from localhost (mailscanner.hel.movial.fi [172.17.81.9])
-	by smtp.movial.fi (Postfix) with ESMTP id 38951C8092;
-	Wed, 26 Nov 2008 15:34:33 +0200 (EET)
-X-Virus-Scanned: Debian amavisd-new at movial.fi
-Received: from smtp.movial.fi ([62.236.91.34])
-	by localhost (mailscanner.hel.movial.fi [172.17.81.9]) (amavisd-new, port 10026)
-	with ESMTP id fCEpZVLaNuvN; Wed, 26 Nov 2008 15:34:33 +0200 (EET)
-Received: from sd048.hel.movial.fi (sd048.hel.movial.fi [172.17.49.48])
-	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp.movial.fi (Postfix) with ESMTP id 12A3BC8001;
-	Wed, 26 Nov 2008 15:34:33 +0200 (EET)
-Received: by sd048.hel.movial.fi (Postfix, from userid 30120)
-	id 0093FB4010; Wed, 26 Nov 2008 15:34:32 +0200 (EET)
-From:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
-To:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Cc:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
-Subject: [PATCH] [MIPS] Remove unused header file gio.h
-Date:	Wed, 26 Nov 2008 15:34:32 +0200
-Message-Id: <1227706472-16219-1-git-send-email-dmitri.vorobiev@movial.fi>
-X-Mailer: git-send-email 1.5.6.5
-Return-Path: <dvorobye@movial.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2008 14:27:52 +0000 (GMT)
+Received: from web35408.mail.mud.yahoo.com ([66.163.179.117]:58246 "HELO
+	web35408.mail.mud.yahoo.com") by ftp.linux-mips.org with SMTP
+	id S23931844AbYKZO1p (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 26 Nov 2008 14:27:45 +0000
+Received: (qmail 26096 invoked by uid 60001); 26 Nov 2008 14:27:36 -0000
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=X-YMail-OSG:Received:X-Mailer:Date:From:Reply-To:Subject:To:Cc:MIME-Version:Content-Type:Message-ID;
+  b=mqCV7LfVdFNyPl8FLXwyG4RBe9/8ZfwK8YayIiU9hWAE3+71EOvzX1ii2rtk3xnHKzvPVKScDrfXoCeoPHjkT/Ria0WwK+NRW5WwBq4AYcq1mbQ8J4S/SlUdGugmSjxJQZpUnlk6bp01WBWsUODX+KPiPaz0BBPl1BVFUsQTP7c=;
+X-YMail-OSG: agdWzBgVM1nTlYMggsKv8sR7N4ifyp07Jzv88e9os2h6VSvNseFa.xRwgVDm1WICvsJ97HHDJ0taElnBtIbzoMe30q0D2jPv_ta17NajF5l.CNY0ovgmYoRGY6xJKir6pbrhyIVDfZgdb9aFJkyNJSvMyo15r7AgoacmiTzSpOLnsOxJ6MEtGiBuaZI-
+Received: from [170.129.50.120] by web35408.mail.mud.yahoo.com via HTTP; Wed, 26 Nov 2008 06:27:36 PST
+X-Mailer: YahooMailWebService/0.7.260.1
+Date:	Wed, 26 Nov 2008 06:27:36 -0800 (PST)
+From:	jscottkasten@yahoo.com
+Reply-To: jscottkasten@yahoo.com
+Subject: Re: Looking for Extreme graphics technical documentation
+To:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
+Cc:	linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="0-866311890-1227709656=:25969"
+Message-ID: <512303.25969.qm@web35408.mail.mud.yahoo.com>
+Return-Path: <jscottkasten@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21447
+X-archive-position: 21448
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@movial.fi
+X-original-sender: jscottkasten@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-Grepping reveals that arch/mips/include/asm/sgi/gio.h is
-not used by anyone, so let's delete the orphan header.
+--0-866311890-1227709656=:25969
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
----
- arch/mips/include/asm/sgi/gio.h |   86 ---------------------------------------
- 1 files changed, 0 insertions(+), 86 deletions(-)
- delete mode 100644 arch/mips/include/asm/sgi/gio.h
+Hi Dmitri,
 
-diff --git a/arch/mips/include/asm/sgi/gio.h b/arch/mips/include/asm/sgi/gio.h
-deleted file mode 100644
-index 889cf02..0000000
---- a/arch/mips/include/asm/sgi/gio.h
-+++ /dev/null
-@@ -1,86 +0,0 @@
--/*
-- * This file is subject to the terms and conditions of the GNU General Public
-- * License. See the file "COPYING" in the main directory of this archive
-- * for more details.
-- *
-- * gio.h: Definitions for SGI GIO bus
-- *
-- * Copyright (C) 2002 Ladislav Michl
-- */
--
--#ifndef _SGI_GIO_H
--#define _SGI_GIO_H
--
--/*
-- * GIO bus addresses
-- *
-- * The Indigo and Indy have two GIO bus connectors. Indigo2 (all models) have
-- * three physical connectors, but only two slots, GFX and EXP0.
-- *
-- * There is 10MB of GIO address space for GIO64 slot devices
-- * slot#   slot type address range            size
-- * -----   --------- ----------------------- -----
-- *   0     GFX       0x1f000000 - 0x1f3fffff   4MB
-- *   1     EXP0      0x1f400000 - 0x1f5fffff   2MB
-- *   2     EXP1      0x1f600000 - 0x1f9fffff   4MB
-- *
-- * There are un-slotted devices, HPC, I/O and misc devices, which are grouped
-- * into the HPC address space.
-- *   -     MISC      0x1fb00000 - 0x1fbfffff   1MB
-- *
-- * Following space is reserved and unused
-- *   -     RESERVED  0x18000000 - 0x1effffff 112MB
-- *
-- * GIO bus IDs
-- *
-- * Each GIO bus device identifies itself to the system by answering a
-- * read with an "ID" value. IDs are either 8 or 32 bits long. IDs less
-- * than 128 are 8 bits long, with the most significant 24 bits read from
-- * the slot undefined.
-- *
-- * 32-bit IDs are divided into
-- *	bits 0:6        the product ID; ranges from 0x00 to 0x7F.
-- *	bit 7		0=GIO Product ID is 8 bits wide
-- *			1=GIO Product ID is 32 bits wide.
-- *	bits 8:15       manufacturer version for the product.
-- *	bit 16		0=GIO32 and GIO32-bis, 1=GIO64.
-- *	bit 17		0=no ROM present
-- *			1=ROM present on this board AND next three words
-- *			space define the ROM.
-- *	bits 18:31	up to manufacturer.
-- *
-- * IDs above 0x50/0xd0 are of 3rd party boards.
-- *
-- * 8-bit IDs
-- *	0x01		XPI low cost FDDI
-- *	0x02		GTR TokenRing
-- *	0x04		Synchronous ISDN
-- *	0x05		ATM board [*]
-- *	0x06		Canon Interface
-- *	0x07		16 bit SCSI Card [*]
-- *	0x08		JPEG (Double Wide)
-- *	0x09		JPEG (Single Wide)
-- *	0x0a		XPI mez. FDDI device 0
-- *	0x0b		XPI mez. FDDI device 1
-- *	0x0c		SMPTE 259M Video [*]
-- *	0x0d		Babblefish Compression [*]
-- *	0x0e		E-Plex 8-port Ethernet
-- *	0x30		Lyon Lamb IVAS
-- *	0xb8		GIO 100BaseTX Fast Ethernet (gfe)
-- *
-- * [*] Device provide 32-bit ID.
-- *
-- */
--
--#define GIO_ID(x)		(x & 0x7f)
--#define GIO_32BIT_ID		0x80
--#define GIO_REV(x)		((x >> 8) & 0xff)
--#define GIO_64BIT_IFACE		0x10000
--#define GIO_ROM_PRESENT		0x20000
--#define GIO_VENDOR_CODE(x)	((x >> 18) & 0x3fff)
--
--#define GIO_SLOT_GFX_BASE	0x1f000000
--#define GIO_SLOT_EXP0_BASE	0x1f400000
--#define GIO_SLOT_EXP1_BASE	0x1f600000
--
--#endif /* _SGI_GIO_H */
--- 
-1.5.3
+I'm going to wish you luck here.=A0 I should point you to this thread betwe=
+en "Kumba" and myself over on the Gentoo Mips list from days long past.
+
+http://www.gossamer-threads.com/lists/gentoo/mips/58437
+
+In short, someone did get basic functionality, but wouldn't release his wor=
+k for anyone to see.=A0 I tried nicely to contact the guy a few times mysel=
+f.=A0 No dice.
+
+Regards,
+
+-S-
+
+--- On Tue, 11/25/08, Dmitri Vorobiev <dmitri.vorobiev@gmail.com> wrote:
+From: Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
+Subject: Looking for Extreme graphics technical documentation
+To: linux-mips@linux-mips.org
+Date: Tuesday, November 25, 2008, 5:49
+ PM
+
+Hi,
+
+I am looking for Extreme graphics technical documentation. Indigo2
+PROM reports the graphics board as follows:
+
+controller display SGI-GU1-Extreme key 0 ( ConsoleOut Output )
+p: video(0)
+  peripheral monitor key 0
+  p: video(0)monitor(0)
+
+So far I have been able to find (apart from a handful of marketing
+documents) only the following two sources:
+
+http://en.wikipedia.org/wiki/Extreme_Graphics
+http://www.futuretech.blinkenlights.nl/i2sec5.html#5.6
+
+These, however, do not seem to be enough to write a console driver.
+
+Can anyone help, please?
+
+Thanks,
+Dmitri
+
+
+--0-866311890-1227709656=:25969
+Content-Type: text/html; charset=us-ascii
+
+<table cellspacing="0" cellpadding="0" border="0" ><tr><td valign="top" style="font: inherit;"><div id="yiv1599467549">Hi Dmitri,<br><br>I'm going to wish you luck here.&nbsp; I should point you to this thread between "Kumba" and myself over on the Gentoo Mips list from days long past.<br><br>http://www.gossamer-threads.com/lists/gentoo/mips/58437<br><br>In short, someone did get basic functionality, but wouldn't release his work for anyone to see.&nbsp; I tried nicely to contact the guy a few times myself.&nbsp; No dice.<br><br>Regards,<br><br>-S-<br><br>--- On <b>Tue, 11/25/08, Dmitri Vorobiev <i>&lt;dmitri.vorobiev@gmail.com&gt;</i></b> wrote:<br><blockquote style="border-left: 2px solid rgb(16, 16, 255); margin-left: 5px; padding-left: 5px;">From: Dmitri Vorobiev &lt;dmitri.vorobiev@gmail.com&gt;<br>Subject: Looking for Extreme graphics technical documentation<br>To: linux-mips@linux-mips.org<br>Date: Tuesday, November 25, 2008, 5:49
+ PM<br><br><pre>Hi,<br><br>I am looking for Extreme graphics technical documentation. Indigo2<br>PROM reports the graphics board as follows:<br><br>controller display SGI-GU1-Extreme key 0 ( ConsoleOut Output )<br>p: video(0)<br>  peripheral monitor key 0<br>  p: video(0)monitor(0)<br><br>So far I have been able to find (apart from a handful of marketing<br>documents) only the following two sources:<br><br>http://en.wikipedia.org/wiki/Extreme_Graphics<br>http://www.futuretech.blinkenlights.nl/i2sec5.html#5.6<br><br>These, however, do not seem to be enough to write a console driver.<br><br>Can anyone help, please?<br><br>Thanks,<br>Dmitri<br><br></pre></blockquote></div></td></tr></table>
+--0-866311890-1227709656=:25969--

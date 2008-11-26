@@ -1,104 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2008 01:18:09 +0000 (GMT)
-Received: from mail.windriver.com ([147.11.1.11]:15834 "EHLO mail.wrs.com")
-	by ftp.linux-mips.org with ESMTP id S23916756AbYKZBR6 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 26 Nov 2008 01:17:58 +0000
-Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
-	by mail.wrs.com (8.13.6/8.13.6) with ESMTP id mAQ1Hh5X001644;
-	Tue, 25 Nov 2008 17:17:48 -0800 (PST)
-Received: from ism-mail02.corp.ad.wrs.com ([128.224.200.19]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Tue, 25 Nov 2008 17:17:43 -0800
-Received: from [128.224.162.71] ([128.224.162.71]) by ism-mail02.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 26 Nov 2008 02:17:40 +0100
-Message-ID: <492CA410.70202@windriver.com>
-Date:	Wed, 26 Nov 2008 09:19:12 +0800
-From:	"tiejun.chen" <tiejun.chen@windriver.com>
-User-Agent: Thunderbird 2.0.0.17 (X11/20080925)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2008 01:49:38 +0000 (GMT)
+Received: from fk-out-0910.google.com ([209.85.128.189]:6826 "EHLO
+	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S23917183AbYKZBt0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 26 Nov 2008 01:49:26 +0000
+Received: by fk-out-0910.google.com with SMTP id b27so198335fka.0
+        for <linux-mips@linux-mips.org>; Tue, 25 Nov 2008 17:49:22 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to
+         :subject:mime-version:content-type:content-transfer-encoding
+         :content-disposition;
+        bh=9QNa1Bqx7miJPeOUfFSuFbagZqGPHsDgf1jXQomvJ+E=;
+        b=GcJ/BWlIDVWo+P2J296KDXeQPXhFIEWk5GOoaLWpQbiBx/4H705UEKbt9CM7Bt5FU6
+         VUpX4S+Xkj9VwlFadennBDT0JFbJC9ZgEC2lQP6Vl7fLbyuRsYZ0XB2M86eTPmWeEAa1
+         W5+0GzFvK5HgTsIA2ASGgozaBeihPwCEtQkqU=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:mime-version:content-type
+         :content-transfer-encoding:content-disposition;
+        b=bgBuFlMxYnbNa4zdq0Z8Y91vVk1Vfj/b38aCJozyQGM/pyHFQ7iziD2WjcfL7AfxrX
+         EBL447O6P3Y6JrwZi9zUxLhrL4PFKLTc1Mxqlmvjlq8WkXVNztSjOpbcIPvigzl1ioKh
+         ML4rHYBpzGe8b8DpaLGc0qqD98T637HoyaVSA=
+Received: by 10.181.210.14 with SMTP id m14mr1741737bkq.163.1227664161604;
+        Tue, 25 Nov 2008 17:49:21 -0800 (PST)
+Received: by 10.180.239.14 with HTTP; Tue, 25 Nov 2008 17:49:21 -0800 (PST)
+Message-ID: <90edad820811251749l59ac0aaam3eaa1cc26674bc91@mail.gmail.com>
+Date:	Wed, 26 Nov 2008 03:49:21 +0200
+From:	"Dmitri Vorobiev" <dmitri.vorobiev@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Looking for Extreme graphics technical documentation
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Support RTC on Malta
-References: <1225365345-15635-1-git-send-email-tiejun.chen@windriver.com> <20081030120510.GH26256@linux-mips.org>
-In-Reply-To: <20081030120510.GH26256@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 26 Nov 2008 01:17:40.0542 (UTC) FILETIME=[C6AE85E0:01C94F64]
-Return-Path: <Tiejun.Chen@windriver.com>
+Content-Disposition: inline
+Return-Path: <dmitri.vorobiev@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21440
+X-archive-position: 21441
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tiejun.chen@windriver.com
+X-original-sender: dmitri.vorobiev@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Thu, Oct 30, 2008 at 07:15:44PM +0800, Tiejun Chen wrote:
-> 
-> Looks reasonable but I have a few comments:
-> 
->> diff --git a/arch/mips/mti-malta/Makefile b/arch/mips/mti-malta/Makefile
->> index cef2db8..26284fc 100644
->> --- a/arch/mips/mti-malta/Makefile
->> +++ b/arch/mips/mti-malta/Makefile
->> @@ -9,7 +9,7 @@ obj-y				:= malta-amon.o malta-cmdline.o \
->>  				   malta-display.o malta-init.o malta-int.o \
->>  				   malta-memory.o malta-mtd.o \
->>  				   malta-platform.o malta-reset.o \
->> -				   malta-setup.o malta-time.o
->> +				   malta-setup.o malta-time.o malta-rtc.o
-> 
-> Could you please fold malta-rtc.c into the existing malta-platform.c instead
-> of creating a new file?
-> 
->> +++ b/arch/mips/mti-malta/malta-rtc.c
->> @@ -0,0 +1,73 @@
-> 
->> +	struct platform_device *pdev;
->> +	int ret;
->> +
->> +	pdev = platform_device_alloc("rtc_cmos", -1);
->> +	if (!pdev)
->> +		return -ENOMEM;
->> +
->> +	ret = platform_device_add_resources(pdev, malta_platform_rtc_resource,
->> +	                                       ARRAY_SIZE(malta_platform_rtc_resource));
->> +	if (ret)
->> +		goto err;
->> +
->> +	ret = platform_device_add(pdev);
->> +	if (ret)
->> +		goto err;
-> 
-> You can simplify this a bit by using a static struct platform_device like:
-> 
-> static struct platform_device rtc_device = {
->         .name                   = "rtc_cmos",
->         .id                     = -1,
-> 	.resource		= &malta_platform_rtc_resource,
-> 	.num_resources		= ARRAY_SIZE(malta_platform_rtc_resource),
-> };
-> 
->> +
->> +	/* Try setting rtc as BCD mode to support
->> +	 * current alarm code if possible.
->> +	 */
->> +	if (!RTC_ALWAYS_BCD)
->> +		CMOS_WRITE(CMOS_READ(RTC_CONTROL) & ~RTC_DM_BINARY, RTC_CONTROL);
-> 
-> RTC_ALWAYS_BCD is 0, so the if condition is always true and the if can be
-> eleminated.
-> 
-> Can you fix that?
-> 
+Hi,
 
-Ralf,
+I am looking for Extreme graphics technical documentation. Indigo2
+PROM reports the graphics board as follows:
 
-I already re-sended another patch, [PATCH v2] Support RTC on Malta.
+controller display SGI-GU1-Extreme key 0 ( ConsoleOut Output )
+p: video(0)
+  peripheral monitor key 0
+  p: video(0)monitor(0)
 
-Best Regards
-Tiejun
->   Ralf
-> 
+So far I have been able to find (apart from a handful of marketing
+documents) only the following two sources:
+
+http://en.wikipedia.org/wiki/Extreme_Graphics
+http://www.futuretech.blinkenlights.nl/i2sec5.html#5.6
+
+These, however, do not seem to be enough to write a console driver.
+
+Can anyone help, please?
+
+Thanks,
+Dmitri

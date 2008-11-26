@@ -1,69 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2008 01:49:38 +0000 (GMT)
-Received: from fk-out-0910.google.com ([209.85.128.189]:6826 "EHLO
-	fk-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S23917183AbYKZBt0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 26 Nov 2008 01:49:26 +0000
-Received: by fk-out-0910.google.com with SMTP id b27so198335fka.0
-        for <linux-mips@linux-mips.org>; Tue, 25 Nov 2008 17:49:22 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to
-         :subject:mime-version:content-type:content-transfer-encoding
-         :content-disposition;
-        bh=9QNa1Bqx7miJPeOUfFSuFbagZqGPHsDgf1jXQomvJ+E=;
-        b=GcJ/BWlIDVWo+P2J296KDXeQPXhFIEWk5GOoaLWpQbiBx/4H705UEKbt9CM7Bt5FU6
-         VUpX4S+Xkj9VwlFadennBDT0JFbJC9ZgEC2lQP6Vl7fLbyuRsYZ0XB2M86eTPmWeEAa1
-         W5+0GzFvK5HgTsIA2ASGgozaBeihPwCEtQkqU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:mime-version:content-type
-         :content-transfer-encoding:content-disposition;
-        b=bgBuFlMxYnbNa4zdq0Z8Y91vVk1Vfj/b38aCJozyQGM/pyHFQ7iziD2WjcfL7AfxrX
-         EBL447O6P3Y6JrwZi9zUxLhrL4PFKLTc1Mxqlmvjlq8WkXVNztSjOpbcIPvigzl1ioKh
-         ML4rHYBpzGe8b8DpaLGc0qqD98T637HoyaVSA=
-Received: by 10.181.210.14 with SMTP id m14mr1741737bkq.163.1227664161604;
-        Tue, 25 Nov 2008 17:49:21 -0800 (PST)
-Received: by 10.180.239.14 with HTTP; Tue, 25 Nov 2008 17:49:21 -0800 (PST)
-Message-ID: <90edad820811251749l59ac0aaam3eaa1cc26674bc91@mail.gmail.com>
-Date:	Wed, 26 Nov 2008 03:49:21 +0200
-From:	"Dmitri Vorobiev" <dmitri.vorobiev@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: Looking for Extreme graphics technical documentation
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 26 Nov 2008 05:51:06 +0000 (GMT)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:46061 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S23920604AbYKZFu6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 26 Nov 2008 05:50:58 +0000
+Received: (qmail 12862 invoked by uid 1000); 26 Nov 2008 06:50:53 +0100
+Date:	Wed, 26 Nov 2008 06:50:53 +0100
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+To:	David Daney <ddaney@caviumnetworks.com>
+Cc:	LMO <linux-mips@linux-mips.org>, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH v2] Alchemy: cpu feature override constants.
+Message-ID: <20081126055053.GA12831@roarinelk.homelinux.net>
+References: <20081125231230.GA10366@roarinelk.homelinux.net> <492C8904.5040202@caviumnetworks.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Return-Path: <dmitri.vorobiev@gmail.com>
+In-Reply-To: <492C8904.5040202@caviumnetworks.com>
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21441
+X-archive-position: 21442
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@gmail.com
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Hi David,
 
-I am looking for Extreme graphics technical documentation. Indigo2
-PROM reports the graphics board as follows:
+On Tue, Nov 25, 2008 at 03:23:48PM -0800, David Daney wrote:
+> Manuel Lauss wrote:
+> [...]
+>> +#define cpu_has_tlb		1
+>> +#define cpu_has_4kex		1
+>> +#define cpu_has_3k_cache	0
+>> +#define cpu_has_4k_cache	1
+>> +#define cpu_has_tx39_cache	0
+>> +#define cpu_has_fpu		0
+>> +#define cpu_has_32fpr		0
+>> +#define cpu_has_counter		1
+>> +#define cpu_has_watch		1
+>> +#define cpu_has_divec		1
+>> +#define cpu_has_vce		0
+>> +#define cpu_has_cache_cdex_p	0
+>> +#define cpu_has_cache_cdex_s	0
+>> +#define cpu_has_mcheck		1
+>> +#define cpu_has_ejtag		1
+>> +#define cpu_has_llsc		1
+>> +#define cpu_has_mips16		0
+>> +#define cpu_has_mdmx		0
+>> +#define cpu_has_mips3d		0
+>> +#define cpu_has_smartmips	0
+>> +#define cpu_has_vtag_icache	0
+>> +#define cpu_has_dc_aliases	0
+>> +#define cpu_has_ic_fills_f_dc	1
+>> +#define cpu_has_pindexed_cache	0
+>> +#define cpu_has_mips32r1	1
+>> +#define cpu_has_mips32r2	0
+>> +#define cpu_has_mips64r1	0
+>> +#define cpu_has_mips64r2	0
+>> +#define cpu_has_dsp		0
+>> +#define cpu_has_mipsmt		0
+>> +#define cpu_has_userlocal	0
+>> +#define cpu_has_nofpuex		0
+>> +#define cpu_has_64bits		0
+>> +#define cpu_has_64bit_zero_reg	0
+>> +#define cpu_has_vint		0
+>> +#define cpu_has_veic		0
+>> +#define cpu_has_inclusive_pcaches 0
+>> +
+>> +#define cpu_dcache_line_size()	32
+>> +#define cpu_icache_line_size()  32
+>
+> The probe routines in cpu-probe.c should get at least some of that correct. 
+>  How about just overriding the things that cpu-probe.c doesn't get right?
 
-controller display SGI-GU1-Extreme key 0 ( ConsoleOut Output )
-p: video(0)
-  peripheral monitor key 0
-  p: video(0)monitor(0)
+CPU detection gets them all right, it's just that somehow GCC does not use
+the information correctly;  i.e. in the __fls() case it blindly falls back
+on the C version instead of using the asm macro with clz in it.  I scanned
+a few callsites of __fls() and there's not 'clz' to be found anywhere.  With
+this addition the clz is used and the binary is a _lot_ smaller.
 
-So far I have been able to find (apart from a handful of marketing
-documents) only the following two sources:
+I believe this is a gcc thing, but this seemed to be the obvious quick
+remedy.
 
-http://en.wikipedia.org/wiki/Extreme_Graphics
-http://www.futuretech.blinkenlights.nl/i2sec5.html#5.6
-
-These, however, do not seem to be enough to write a console driver.
-
-Can anyone help, please?
-
-Thanks,
-Dmitri
+Thanks!
+	Manuel Lauss

@@ -1,61 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Nov 2008 10:37:33 +0000 (GMT)
-Received: from elvis.franken.de ([193.175.24.41]:63459 "EHLO elvis.franken.de")
-	by ftp.linux-mips.org with ESMTP id S23948104AbYK0Kh0 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 27 Nov 2008 10:37:26 +0000
-Received: from uucp (helo=solo.franken.de)
-	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-	id 1L5eFP-000335-00; Thu, 27 Nov 2008 11:37:23 +0100
-Received: by solo.franken.de (Postfix, from userid 1000)
-	id BE048C313F; Thu, 27 Nov 2008 11:37:06 +0100 (CET)
-Date:	Thu, 27 Nov 2008 11:37:06 +0100
-To:	Vorobiev Dmitri <dmitri.vorobiev@movial.fi>
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] [MIPS] Remove unused header file gio.h
-Message-ID: <20081127103706.GA6929@alpha.franken.de>
-References: <1227706472-16219-1-git-send-email-dmitri.vorobiev@movial.fi> <20081127091619.GA6255@alpha.franken.de> <43787.88.114.226.209.1227781466.squirrel@webmail.movial.fi>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Nov 2008 11:09:42 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:17113 "EHLO
+	localhost.localdomain") by ftp.linux-mips.org with ESMTP
+	id S23948529AbYK0LJi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 27 Nov 2008 11:09:38 +0000
+Date:	Thu, 27 Nov 2008 11:09:38 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Mark E Mason <mason@broadcom.com>
+cc:	Andrew Sharp <andy.sharp@onstor.com>,
+	LMO <linux-mips@linux-mips.org>,
+	"mmason@upwardaccess.com" <mmason@upwardaccess.com>
+Subject: RE: Booting top-of-tree bcm47xx as nfs-root with cfe only (no
+ sibyl)
+In-Reply-To: <BD3F7F1EFBA6D54DB056C4FFA45140080348EC805C@SJEXCHCCR01.corp.ad.broadcom.com>
+Message-ID: <alpine.LFD.1.10.0811271105100.27505@ftp.linux-mips.org>
+References: <BD3F7F1EFBA6D54DB056C4FFA45140080348EC801C@SJEXCHCCR01.corp.ad.broadcom.com> <alpine.LFD.1.10.0811262304510.23566@ftp.linux-mips.org> <BD3F7F1EFBA6D54DB056C4FFA45140080348EC8037@SJEXCHCCR01.corp.ad.broadcom.com> <20081126153115.24dda1dc@ripper.onstor.net>
+ <BD3F7F1EFBA6D54DB056C4FFA45140080348EC805C@SJEXCHCCR01.corp.ad.broadcom.com>
+User-Agent: Alpine 1.10 (LFD 962 2008-03-14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <43787.88.114.226.209.1227781466.squirrel@webmail.movial.fi>
-User-Agent: Mutt/1.5.13 (2006-08-11)
-From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
-Return-Path: <tsbogend@alpha.franken.de>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21459
+X-archive-position: 21460
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tsbogend@alpha.franken.de
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Nov 27, 2008 at 12:24:26PM +0200, Vorobiev Dmitri wrote:
-> > On Wed, Nov 26, 2008 at 03:34:32PM +0200, Dmitri Vorobiev wrote:
-> >> Grepping reveals that arch/mips/include/asm/sgi/gio.h is
-> >> not used by anyone, so let's delete the orphan header.
-> >>
-> >> Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
-> >> ---
-> >
-> > NAK, I have work in progress, which adds GIO devices and uses this
-> > file.
-> >
-> 
-> That's interesting news! May I ask you which ones you're working on?
+On Wed, 26 Nov 2008, Mark E Mason wrote:
 
-first step is to introduce GIO devices similair to PCI devices. My
-current working GIO device is solid impact. I also looked at
-supporting Phobos G160 cards, but the current set of 2114x drivers
-is not useable for that...
+> Data bus error, epc == 803ef178, ra == 80017030
+> Oops[#1]:
+> Cpu 0
+> $ 0   : 00000000 1000a800 fffd9000 00000001
+> $ 4   : 810a6000 fffd9000 810a6f00 fffd9000
 
-The big missing thing in the GIO framework right now is a bullet proof
-detection for non standard GIO cards, like newport and XZ cards. They
-don't provide ID information...
+ This is a load from 0(a1) which is 0xfffd9000 and which looks suspicious.  
+You can investigate code at epc to see why it is happening.
 
-Thomas.
-
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessary a
-good idea.                                                [ RFC1925, 2.3 ]
+  Maciej

@@ -1,73 +1,107 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Nov 2008 07:54:20 +0000 (GMT)
-Received: from fg-out-1718.google.com ([72.14.220.153]:37775 "EHLO
-	fg-out-1718.google.com") by ftp.linux-mips.org with ESMTP
-	id S23965619AbYK1HyL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 28 Nov 2008 07:54:11 +0000
-Received: by fg-out-1718.google.com with SMTP id d23so887094fga.32
-        for <linux-mips@linux-mips.org>; Thu, 27 Nov 2008 23:54:10 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:date:from:to:cc:subject
-         :message-id:mime-version:content-type:content-disposition:user-agent;
-        bh=/9FTYiVkkzF9Rxqtd8okiSajwMtqEcMhbrx2A0EIpGU=;
-        b=eLGcP5Vov2GbClVnBVaLphVCofm9B83yp2ZOVztxcCX8FKY/07PQjB7Bdj/LtZR2Jo
-         KTRvMB6fHkWZnAg2AdgV1qktNrGimfU6Vfc+w2w92kI8lYwjbfzb/ze7x8EKyPO95Q48
-         fYb1IVPtOC1u3zDkmeisfGXC1zHbhDkEU6NRk=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=date:from:to:cc:subject:message-id:mime-version:content-type
-         :content-disposition:user-agent;
-        b=jkOZA1n/6xKhKCvTxItKGwUg3JGCJUwiVOtAdvlx9wbzYSOauQeapU3/lHJ7WZs+bn
-         ZvpsmwX26jP4WvIawpVBYIdKQAIenpYyuvVfeSU4hdhuzM3Y42pA3tuvDIZRSAkJhwpV
-         2912ktWxbs9KUN+/olFZb8DEpvK5h/TYtbi3Q=
-Received: by 10.86.62.3 with SMTP id k3mr296290fga.46.1227858850631;
-        Thu, 27 Nov 2008 23:54:10 -0800 (PST)
-Received: from localhost (122.229.broadband3.iol.cz [85.70.229.122])
-        by mx.google.com with ESMTPS id 4sm540914fgg.4.2008.11.27.23.54.09
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 27 Nov 2008 23:54:10 -0800 (PST)
-Date:	Fri, 28 Nov 2008 08:52:58 +0100
-From:	Jan Nikitenko <jan.nikitenko@gmail.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: fix oops in dma_unmap_page on not coherent mips platforms
-Message-ID: <20081128075258.GA10200@nikitenko.systek.local>
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Nov 2008 19:33:39 +0000 (GMT)
+Received: from orbit.nwl.cc ([81.169.176.177]:17611 "EHLO
+	mail.ifyouseekate.net") by ftp.linux-mips.org with ESMTP
+	id S23974180AbYK1Td3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 28 Nov 2008 19:33:29 +0000
+Received: from nuty (localhost [127.0.0.1])
+	by mail.ifyouseekate.net (Postfix) with ESMTP id D103C386DBBE;
+	Fri, 28 Nov 2008 20:33:22 +0100 (CET)
+Date:	Fri, 28 Nov 2008 20:35:57 +0100
+From:	Phil Sutter <n0-1@freewrt.org>
+To:	David Brownell <david-b@pacbell.net>
+Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	linux-ide@vger.kernel.org, Jeff Garzik <jeff@garzik.org>,
+	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
+Subject: Re: MIPS: RB532: Provide functions for gpio configuration
+Mail-Followup-To: David Brownell <david-b@pacbell.net>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	linux-ide@vger.kernel.org, Jeff Garzik <jeff@garzik.org>,
+	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
+References: <200811202002.16178.david-b@pacbell.net>
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <jan.nikitenko@gmail.com>
+In-Reply-To: <200811202002.16178.david-b@pacbell.net>
+User-Agent: Mutt/1.5.11
+Message-Id: <20081128193322.D103C386DBBE@mail.ifyouseekate.net>
+Return-Path: <n0-1@freewrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21466
+X-archive-position: 21467
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jan.nikitenko@gmail.com
+X-original-sender: n0-1@freewrt.org
 Precedence: bulk
 X-list: linux-mips
 
-dma_cache_wback_inv() expects virtual address, but physical was provided
-due to translation via plat_dma_addr_to_phys().
-If replaced with dma_addr_to_virt(), page fault oops from dma_unmap_page()
-is gone on au1550 platform.
+Hi!
 
-Signed-off-by: Jan Nikitenko <jan.nikitenko@gmail.com>
----
- arch/mips/mm/dma-default.c |    2 +-
-  1 file changed, 1 insertion(+), 1 deletion(-)
+I fullquote here because of the lists and people added to Cc.
 
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index 5b98d0e..5f336c1 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -222,7 +222,7 @@ void dma_unmap_page(struct device *dev, dma_addr_t dma_address, size_t size,
- 	if (!plat_device_is_coherent(dev) && direction != DMA_TO_DEVICE) {
- 		unsigned long addr;
- 
--		addr = plat_dma_addr_to_phys(dma_address);
-+		addr = dma_addr_to_virt(dma_address);
- 		dma_cache_wback_inv(addr, size);
- 	}
- 
+On Thu, Nov 20, 2008 at 08:02:15PM -0800, David Brownell wrote:
+> I just noticed:
+> 
+> > commit 2e373952cc893207a8b47a5e68c2f5155f912449
+> > Author: Phil Sutter <n0-1@freewrt.org>
+> > Date:   Sat Nov 1 15:13:21 2008 +0100
+> >
+> >     MIPS: RB532: Provide functions for gpio configuration
+> >
+> >     As gpiolib doesn't support pin multiplexing, it provides no way to
+> >     access the GPIOFUNC register. Also there is no support for setting
+> >     interrupt status and level. These functions provide access to them and
+> >     are needed by the CompactFlash driver.
+> >
+> >     Signed-off-by: Phil Sutter <n0-1@freewrt.org>
+> >     Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+> 
+> The conventional way to do most of that is through the irq_chip
+> associated with that block of IRQ-capable GPIOs.
+> 
+> 
+> So ...
+> 
+> > -       /* Set the interrupt status and level for the CF pin */
+> > -       rb532_gpio_set_int_level(&rb532_gpio_chip->chip, CF_GPIO_NUM, 1);
+> > -       rb532_gpio_set_int_status(&rb532_gpio_chip->chip, CF_GPIO_NUM, 0);
+> > +       /* configure CF_GPIO_NUM as CFRDY IRQ source */
+> > +       rb532_gpio_set_func(0, CF_GPIO_NUM);
+> 
+> ... the pinmux would indeed be a SOC-specific mechanism, kicked in
+> only for boards that use that GPIO in that way, but ...
+> 
+> 
+> > +       rb532_gpio_direction_input(&rb532_gpio_chip->chip, CF_GPIO_NUM);
+> 
+> ... normal gpio_request() + gpio_direction_input() would set the pin up, and ...
+> 
+> 
+> > +       rb532_gpio_set_ilevel(1, CF_GPIO_NUM);
+> > +       rb532_gpio_set_istat(0, CF_GPIO_NUM);
+> 
+> 	status = request_irq(gpio_to_irq(CF_GPIO_NUM), ... )
+> 
+> with appropriate IRQF_TRIGGER_* flags should solve that problem.
+> Or even just set_irq_type().  (At least for one of the two
+> registers updated there ... I can't guess what "istat" would be.)
+> 
+> Just FYI at this point.  Maybe you have a reason not to fit into
+> the genirq framework.
+> 
+> - Dave
+
+Thanks for your hints, Dave. I already had a patch flying around adding
+a set_type() function to the irq_chip (merely a dummy to shut up
+warnings in the boot log). After extending it to cover the needs of the
+mapped GPIO pins and some other work, I could drop that CompactFlash
+initialisation code in gpio.c completely.
+
+As a side effect, many of my changes to pata-rb532-cf got unnecessary
+which I consider a very good sign.
+
+I'll reply to this mail with the relevant patches for each list and
+maintainer. 
+
+Greetings, Phil

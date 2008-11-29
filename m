@@ -1,64 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Nov 2008 04:42:45 +0000 (GMT)
-Received: from fg-out-1718.google.com ([72.14.220.158]:65018 "EHLO
-	fg-out-1718.google.com") by ftp.linux-mips.org with ESMTP
-	id S23981166AbYK2Emf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 29 Nov 2008 04:42:35 +0000
-Received: by fg-out-1718.google.com with SMTP id d23so1149518fga.32
-        for <linux-mips@linux-mips.org>; Fri, 28 Nov 2008 20:42:34 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 29 Nov 2008 14:45:23 +0000 (GMT)
+Received: from ug-out-1314.google.com ([66.249.92.170]:10643 "EHLO
+	ug-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S23988122AbYK2OpQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 29 Nov 2008 14:45:16 +0000
+Received: by ug-out-1314.google.com with SMTP id k40so2291948ugc.2
+        for <linux-mips@linux-mips.org>; Sat, 29 Nov 2008 06:45:13 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from:to
-         :subject:mime-version:content-type:content-transfer-encoding
-         :content-disposition;
-        bh=90NnJesHb7cJOOXoDJTA695VZcBFQ7zuzOFaEYbOVw4=;
-        b=FBMSPKkr0Gdkidl2XRzX9eFf+jnAi/JvV0LZV6ShkDAWu5D9QfZOu8rsWwyTks9kSE
-         mKqG7tWqfBfGnXQZqouppO+mx7ZIp/ZMBmeUkI8FGK5j7ksNSjZ67RuNog0UymD9EfjY
-         RcH4TUDsZtbJVpHGsgaZL1atTqzkghHXJCI/A=
+        h=domainkey-signature:received:received:message-id:date:from
+         :user-agent:mime-version:to:cc:subject:content-type
+         :content-transfer-encoding;
+        bh=NlMTtXDyEZlkaEaQb+s9hnZux9rYQ33ngRsG+90sdzg=;
+        b=dIYAEyJBP/Sc5p3Iz3bkOB5CSgNRq2MQMwx9EskHn3MXdPOjbyV3ogEsS1Uujhpwin
+         Lbv2SdHTse1tFEBLHAx/X54KymEqv1PYZ27xW0FF3SGTrrzYThpMa74HxatNRSVK7dJS
+         GcJ5Ci5jUMgBXsEW8S5Ok5trs6QzEUTtr0QBI=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=message-id:date:from:to:subject:mime-version:content-type
-         :content-transfer-encoding:content-disposition;
-        b=S8LvC/o2S+J1mYPqPeWyEo0BaWQ0vW/efN0VW+hVxqaR3jb0LoLN4RctS1fno9RJ31
-         M1AyeOU8IGeMisUPqSsRHIAokLutIhwmDiNgUNVuR3bRQt7Hvhz0+Ky0tzoT4zDu+pAP
-         v6ZKCnsEYEUwVqTIWfOBTyY2ow1xM9lK04Hs0=
-Received: by 10.181.48.4 with SMTP id a4mr3013865bkk.59.1227933753691;
-        Fri, 28 Nov 2008 20:42:33 -0800 (PST)
-Received: by 10.180.231.13 with HTTP; Fri, 28 Nov 2008 20:42:33 -0800 (PST)
-Message-ID: <5c9cd53b0811282042w677979bawc692d3ffbbe6686b@mail.gmail.com>
-Date:	Fri, 28 Nov 2008 20:42:33 -0800
-From:	"mike zheng" <mail4mz@gmail.com>
-To:	linux-mips@linux-mips.org
-Subject: How to start Linux kernel on MIPS32
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :content-type:content-transfer-encoding;
+        b=T4zKDBUqBQxtjbaDsuQfmQmYfxlXOMgIDAYLjwdtGi3ZRYb+4ap6cXgIiBVIagc5LI
+         lBNtT5iAz5tPl/3Ms4j3N1S8Xb96ORRcsTrT1TgW8Y868cTAW6uITDiqWLP/ydRsH0AQ
+         KMS2IORDr+NaMFQpSKHQhcLhDzFaZVhIwVCu8=
+Received: by 10.66.222.6 with SMTP id u6mr1767961ugg.19.1227969912888;
+        Sat, 29 Nov 2008 06:45:12 -0800 (PST)
+Received: from ?192.168.1.117? (d133062.upc-d.chello.nl [213.46.133.62])
+        by mx.google.com with ESMTPS id o30sm3753272ugd.52.2008.11.29.06.45.11
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sat, 29 Nov 2008 06:45:11 -0800 (PST)
+Message-ID: <49315574.7080006@gmail.com>
+Date:	Sat, 29 Nov 2008 09:45:08 -0500
+From:	roel kluin <roel.kluin@gmail.com>
+User-Agent: Mozilla-Thunderbird 2.0.0.9 (X11/20080110)
 MIME-Version: 1.0
+To:	ralf@linux-mips.org
+CC:	linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: unsigned result >= 0 is always true
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Return-Path: <mail4mz@gmail.com>
+Return-Path: <roel.kluin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21472
+X-archive-position: 21473
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mail4mz@gmail.com
+X-original-sender: roel.kluin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+unsigned result >= 0 is always true. Make sure that the return value
+is zero or more if atomic_sub is successful.
 
-I am doing development on a MIPS32 processor. However it failed to
-boot when I try to use a boot loader to start the kernel in the
-memory. The boot loader uses following command to jump to kernel entry
-point in the memory:
-         entryPoint = (void *) 0x8036a000;
-         entryPoint();
-I confirm the kernel image is able to boot up. Using JTAG debugger. I
-set PC to the entry point of memory 0x8036a000, the kernel boots up. I
-also disable the Cache before the jump.
+Signed-off-by: Roel Kluin <roel.kluin@gmail.com>
+---
+UNTESTED! please confirm whether this is the right fix.
 
-Any idea on this issue?
-
-Thanks,
-
-Mike
+diff --git a/arch/mips/include/asm/atomic.h b/arch/mips/include/asm/atomic.h
+index 1232be3..e0b5604 100644
+--- a/arch/mips/include/asm/atomic.h
++++ b/arch/mips/include/asm/atomic.h
+@@ -248,7 +248,7 @@ static __inline__ int atomic_sub_return(int i, atomic_t * v)
+  */
+ static __inline__ int atomic_sub_if_positive(int i, atomic_t * v)
+ {
+-	unsigned long result;
++	int result;
+ 
+ 	smp_llsc_mb();
+ 
+@@ -296,9 +296,10 @@ static __inline__ int atomic_sub_if_positive(int i, atomic_t * v)
+ 
+ 		raw_local_irq_save(flags);
+ 		result = v->counter;
+-		result -= i;
+-		if (result >= 0)
+-			v->counter = result;
++		if (v->counter >= i)
++			v->counter -= i;
++		else
++			result -= i;
+ 		raw_local_irq_restore(flags);
+ 	}
+ 

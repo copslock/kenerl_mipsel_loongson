@@ -1,36 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Dec 2008 23:48:21 +0000 (GMT)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:16023 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Dec 2008 23:48:48 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:23703 "EHLO
 	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S24087249AbYLCXpK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 3 Dec 2008 23:45:10 +0000
+	id S24087253AbYLCXpU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 3 Dec 2008 23:45:20 +0000
 Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B493719e70005>; Wed, 03 Dec 2008 18:44:39 -0500
+	id <B493719e80002>; Wed, 03 Dec 2008 18:44:40 -0500
 Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 3 Dec 2008 15:44:38 -0800
+	 Wed, 3 Dec 2008 15:44:39 -0800
 Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
 	 Wed, 3 Dec 2008 15:44:38 -0800
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id mB3NiXs4015618;
-	Wed, 3 Dec 2008 15:44:33 -0800
+	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id mB3NiYge015634;
+	Wed, 3 Dec 2008 15:44:34 -0800
 Received: (from ddaney@localhost)
-	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id mB3NiXSd015617;
-	Wed, 3 Dec 2008 15:44:33 -0800
+	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id mB3NiYKS015633;
+	Wed, 3 Dec 2008 15:44:34 -0800
 From:	David Daney <ddaney@caviumnetworks.com>
 To:	linux-mips@linux-mips.org
 Cc:	David Daney <ddaney@caviumnetworks.com>,
 	Tomaso Paoletti <tpaoletti@caviumnetworks.com>
-Subject: [PATCH 08/21] MIPS: Add Cavium OCTEON processor constants and CPU probe.
-Date:	Wed,  3 Dec 2008 15:44:18 -0800
-Message-Id: <1228347871-15563-8-git-send-email-ddaney@caviumnetworks.com>
+Subject: [PATCH 12/21] MIPS: Add Cavium OCTEON cop2/cvmseg state entries to processor.h.
+Date:	Wed,  3 Dec 2008 15:44:22 -0800
+Message-Id: <1228347871-15563-12-git-send-email-ddaney@caviumnetworks.com>
 X-Mailer: git-send-email 1.5.6.5
 In-Reply-To: <493718EA.40703@caviumnetworks.com>
 References: <493718EA.40703@caviumnetworks.com>
-X-OriginalArrivalTime: 03 Dec 2008 23:44:38.0289 (UTC) FILETIME=[1AB45010:01C955A1]
+X-OriginalArrivalTime: 03 Dec 2008 23:44:38.0992 (UTC) FILETIME=[1B1F9500:01C955A1]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21514
+X-archive-position: 21515
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,119 +38,115 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Add OCTEON constants to asm/cpu.h and asm/module.h.
-
-Add probe function for Cavium OCTEON CPUs and hook it up.
+Add in the cop2 and cvmseg state info to the known proc reg
+data for Cavium so that it can be tracked, saved, restored.
 
 Signed-off-by: Tomaso Paoletti <tpaoletti@caviumnetworks.com>
 Signed-off-by: David Daney <ddaney@caviumnetworks.com>
 ---
- arch/mips/include/asm/cpu.h    |   14 ++++++++++++++
- arch/mips/include/asm/module.h |    2 ++
- arch/mips/kernel/cpu-probe.c   |   25 +++++++++++++++++++++++++
- 3 files changed, 41 insertions(+), 0 deletions(-)
+ arch/mips/include/asm/processor.h |   69 +++++++++++++++++++++++++++++++++++++
+ 1 files changed, 69 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
-index 229a786..c018727 100644
---- a/arch/mips/include/asm/cpu.h
-+++ b/arch/mips/include/asm/cpu.h
-@@ -33,6 +33,7 @@
- #define PRID_COMP_TOSHIBA	0x070000
- #define PRID_COMP_LSI		0x080000
- #define PRID_COMP_LEXRA		0x0b0000
-+#define PRID_COMP_CAVIUM	0x0d0000
- 
- 
- /*
-@@ -114,6 +115,18 @@
- #define PRID_IMP_BCM3302	0x9000
- 
- /*
-+ * These are the PRID's for when 23:16 == PRID_COMP_CAVIUM
-+ */
-+
-+#define PRID_IMP_CAVIUM_CN38XX 0x0000
-+#define PRID_IMP_CAVIUM_CN31XX 0x0100
-+#define PRID_IMP_CAVIUM_CN30XX 0x0200
-+#define PRID_IMP_CAVIUM_CN58XX 0x0300
-+#define PRID_IMP_CAVIUM_CN56XX 0x0400
-+#define PRID_IMP_CAVIUM_CN50XX 0x0600
-+#define PRID_IMP_CAVIUM_CN52XX 0x0700
-+
-+/*
-  * Definitions for 7:0 on legacy processors
-  */
- 
-@@ -203,6 +216,7 @@ enum cpu_type_enum {
- 	 * MIPS64 class processors
- 	 */
- 	CPU_5KC, CPU_20KC, CPU_25KF, CPU_SB1, CPU_SB1A, CPU_LOONGSON2,
-+	CPU_CAVIUM_OCTEON,
- 
- 	CPU_LAST
+diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
+index 18ee58e..0f926aa 100644
+--- a/arch/mips/include/asm/processor.h
++++ b/arch/mips/include/asm/processor.h
+@@ -118,6 +118,60 @@ union mips_watch_reg_state {
+ 	struct mips3264_watch_reg_state mips3264;
  };
-diff --git a/arch/mips/include/asm/module.h b/arch/mips/include/asm/module.h
-index e2e09b2..d94085a 100644
---- a/arch/mips/include/asm/module.h
-+++ b/arch/mips/include/asm/module.h
-@@ -116,6 +116,8 @@ search_module_dbetables(unsigned long addr)
- #define MODULE_PROC_FAMILY "SB1 "
- #elif defined CONFIG_CPU_LOONGSON2
- #define MODULE_PROC_FAMILY "LOONGSON2 "
-+#elif defined CONFIG_CPU_CAVIUM_OCTEON
-+#define MODULE_PROC_FAMILY "OCTEON "
- #else
- #error MODULE_PROC_FAMILY undefined for your processor configuration
- #endif
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index c9207b5..6b3c63d 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -154,6 +154,7 @@ void __init check_wait(void)
- 	case CPU_25KF:
- 	case CPU_PR4450:
- 	case CPU_BCM3302:
-+	case CPU_CAVIUM_OCTEON:
- 		cpu_wait = r4k_wait;
- 		break;
  
-@@ -875,6 +876,27 @@ static inline void cpu_probe_broadcom(struct cpuinfo_mips *c, unsigned int cpu)
- 	}
++#ifdef CONFIG_CPU_CAVIUM_OCTEON
++
++struct octeon_cop2_state {
++	/* DMFC2 rt, 0x0201 */
++	unsigned long   cop2_crc_iv;
++	/* DMFC2 rt, 0x0202 (Set with DMTC2 rt, 0x1202) */
++	unsigned long   cop2_crc_length;
++	/* DMFC2 rt, 0x0200 (set with DMTC2 rt, 0x4200) */
++	unsigned long   cop2_crc_poly;
++	/* DMFC2 rt, 0x0402; DMFC2 rt, 0x040A */
++	unsigned long   cop2_llm_dat[2];
++       /* DMFC2 rt, 0x0084 */
++	unsigned long   cop2_3des_iv;
++	/* DMFC2 rt, 0x0080; DMFC2 rt, 0x0081; DMFC2 rt, 0x0082 */
++	unsigned long   cop2_3des_key[3];
++	/* DMFC2 rt, 0x0088 (Set with DMTC2 rt, 0x0098) */
++	unsigned long   cop2_3des_result;
++	/* DMFC2 rt, 0x0111 (FIXME: Read Pass1 Errata) */
++	unsigned long   cop2_aes_inp0;
++	/* DMFC2 rt, 0x0102; DMFC2 rt, 0x0103 */
++	unsigned long   cop2_aes_iv[2];
++	/* DMFC2 rt, 0x0104; DMFC2 rt, 0x0105; DMFC2 rt, 0x0106; DMFC2
++	 * rt, 0x0107 */
++	unsigned long   cop2_aes_key[4];
++	/* DMFC2 rt, 0x0110 */
++	unsigned long   cop2_aes_keylen;
++	/* DMFC2 rt, 0x0100; DMFC2 rt, 0x0101 */
++	unsigned long   cop2_aes_result[2];
++	/* DMFC2 rt, 0x0240; DMFC2 rt, 0x0241; DMFC2 rt, 0x0242; DMFC2
++	 * rt, 0x0243; DMFC2 rt, 0x0244; DMFC2 rt, 0x0245; DMFC2 rt,
++	 * 0x0246; DMFC2 rt, 0x0247; DMFC2 rt, 0x0248; DMFC2 rt,
++	 * 0x0249; DMFC2 rt, 0x024A; DMFC2 rt, 0x024B; DMFC2 rt,
++	 * 0x024C; DMFC2 rt, 0x024D; DMFC2 rt, 0x024E - Pass2 */
++	unsigned long   cop2_hsh_datw[15];
++	/* DMFC2 rt, 0x0250; DMFC2 rt, 0x0251; DMFC2 rt, 0x0252; DMFC2
++	 * rt, 0x0253; DMFC2 rt, 0x0254; DMFC2 rt, 0x0255; DMFC2 rt,
++	 * 0x0256; DMFC2 rt, 0x0257 - Pass2 */
++	unsigned long   cop2_hsh_ivw[8];
++	/* DMFC2 rt, 0x0258; DMFC2 rt, 0x0259 - Pass2 */
++	unsigned long   cop2_gfm_mult[2];
++	/* DMFC2 rt, 0x025E - Pass2 */
++	unsigned long   cop2_gfm_poly;
++	/* DMFC2 rt, 0x025A; DMFC2 rt, 0x025B - Pass2 */
++	unsigned long   cop2_gfm_result[2];
++};
++#define INIT_OCTEON_COP2 {0,}
++
++struct octeon_cvmseg_state {
++	unsigned long cvmseg[CONFIG_CAVIUM_OCTEON_CVMSEG_SIZE]
++			    [cpu_dcache_line_size() / sizeof(unsigned long)];
++};
++
++#endif
++
+ typedef struct {
+ 	unsigned long seg;
+ } mm_segment_t;
+@@ -160,6 +214,10 @@ struct thread_struct {
+ 	unsigned long trap_no;
+ 	unsigned long irix_trampoline;  /* Wheee... */
+ 	unsigned long irix_oldctx;
++#ifdef CONFIG_CPU_CAVIUM_OCTEON
++    struct octeon_cop2_state cp2 __attribute__ ((__aligned__(128)));
++    struct octeon_cvmseg_state cvmseg __attribute__ ((__aligned__(128)));
++#endif
+ 	struct mips_abi *abi;
+ };
+ 
+@@ -171,6 +229,13 @@ struct thread_struct {
+ #define FPAFF_INIT
+ #endif /* CONFIG_MIPS_MT_FPAFF */
+ 
++#ifdef CONFIG_CPU_CAVIUM_OCTEON
++#define OCTEON_INIT						\
++	.cp2			= INIT_OCTEON_COP2,
++#else
++#define OCTEON_INIT
++#endif /* CONFIG_CPU_CAVIUM_OCTEON */
++
+ #define INIT_THREAD  {						\
+         /*							\
+          * Saved main processor registers			\
+@@ -221,6 +286,10 @@ struct thread_struct {
+ 	.trap_no		= 0,				\
+ 	.irix_trampoline	= 0,				\
+ 	.irix_oldctx		= 0,				\
++	/*							\
++	 * Cavium Octeon specifics (null if not Octeon)		\
++	 */							\
++	OCTEON_INIT						\
  }
  
-+static inline void cpu_probe_cavium(struct cpuinfo_mips *c, unsigned int cpu)
-+{
-+	decode_configs(c);
-+	switch (c->processor_id & 0xff00) {
-+	case PRID_IMP_CAVIUM_CN38XX:
-+	case PRID_IMP_CAVIUM_CN31XX:
-+	case PRID_IMP_CAVIUM_CN30XX:
-+	case PRID_IMP_CAVIUM_CN58XX:
-+	case PRID_IMP_CAVIUM_CN56XX:
-+	case PRID_IMP_CAVIUM_CN50XX:
-+	case PRID_IMP_CAVIUM_CN52XX:
-+		c->cputype = CPU_CAVIUM_OCTEON;
-+		__cpu_name[cpu] = "Cavium Octeon";
-+		break;
-+	default:
-+		printk(KERN_INFO "Unknown Octeon chip!\n");
-+		c->cputype = CPU_UNKNOWN;
-+		break;
-+	}
-+}
-+
- const char *__cpu_name[NR_CPUS];
- 
- __cpuinit void cpu_probe(void)
-@@ -909,6 +931,9 @@ __cpuinit void cpu_probe(void)
- 	case PRID_COMP_NXP:
- 		cpu_probe_nxp(c, cpu);
- 		break;
-+	case PRID_COMP_CAVIUM:
-+		cpu_probe_cavium(c, cpu);
-+		break;
- 	}
- 
- 	BUG_ON(!__cpu_name[cpu]);
+ struct task_struct;
 -- 
 1.5.6.5

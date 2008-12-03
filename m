@@ -1,46 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Dec 2008 15:47:19 +0000 (GMT)
-Received: from earthlight.etchedpixels.co.uk ([81.2.110.250]:43970 "EHLO
-	lxorguk.ukuu.org.uk") by ftp.linux-mips.org with ESMTP
-	id S24079689AbYLCPrH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 3 Dec 2008 15:47:07 +0000
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by lxorguk.ukuu.org.uk (8.14.2/8.14.2) with ESMTP id mB3FkxVc010221;
-	Wed, 3 Dec 2008 15:46:59 GMT
-Date:	Wed, 3 Dec 2008 15:46:58 +0000
-From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-serial@vger.kernel.org, akpm@linux-foundation.org,
-	linux-mips@linux-mips.org, David Daney <ddaney@caviumnetworks.com>,
-	Tomaso Paoletti <tpaoletti@caviumnetworks.com>
-Subject: Re: [PATCH 4/4] Serial: UART driver changes for Cavium OCTEON.
-Message-ID: <20081203154658.7f54144c@lxorguk.ukuu.org.uk>
-In-Reply-To: <1228175368-5536-4-git-send-email-ddaney@caviumnetworks.com>
-References: <4934774E.6080805@caviumnetworks.com>
-	<1228175368-5536-4-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: Claws Mail 3.5.0 (GTK+ 2.12.12; x86_64-redhat-linux-gnu)
-Organization: Red Hat UK Cyf., Amberley Place, 107-111 Peascod Street,
- Windsor, Berkshire, SL4 1TE, Y Deyrnas Gyfunol. Cofrestrwyd yng Nghymru a
- Lloegr o'r rhif cofrestru 3798903
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Dec 2008 16:25:10 +0000 (GMT)
+Received: from smtp.movial.fi ([62.236.91.34]:9384 "EHLO smtp.movial.fi")
+	by ftp.linux-mips.org with ESMTP id S24080089AbYLCQZB (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 3 Dec 2008 16:25:01 +0000
+Received: from localhost (mailscanner.hel.movial.fi [172.17.81.9])
+	by smtp.movial.fi (Postfix) with ESMTP id AAD5BC808B;
+	Wed,  3 Dec 2008 18:24:54 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at movial.fi
+Received: from smtp.movial.fi ([62.236.91.34])
+	by localhost (mailscanner.hel.movial.fi [172.17.81.9]) (amavisd-new, port 10026)
+	with ESMTP id nnJanuoomePY; Wed,  3 Dec 2008 18:24:54 +0200 (EET)
+Received: from webmail.movial.fi (webmail.movial.fi [62.236.91.25])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp.movial.fi (Postfix) with ESMTP id 8F165C8012;
+	Wed,  3 Dec 2008 18:24:54 +0200 (EET)
+Received: by webmail.movial.fi (Postfix, from userid 33)
+	id 806F223CDB7; Wed,  3 Dec 2008 18:24:54 +0200 (EET)
+Received: from 88.114.226.209
+        (SquirrelMail authenticated user dvorobye)
+        by webmail.movial.fi with HTTP;
+        Wed, 3 Dec 2008 18:24:54 +0200 (EET)
+Message-ID: <46353.88.114.226.209.1228321494.squirrel@webmail.movial.fi>
+In-Reply-To: <1227140357-29921-1-git-send-email-dmitri.vorobiev@movial.fi>
+References:  <1227140357-29921-1-git-send-email-dmitri.vorobiev@movial.fi>
+Date:	Wed, 3 Dec 2008 18:24:54 +0200 (EET)
+Subject: Re: [PATCH] SCSI: fix the return type of the remove() method in 
+     sgiwd93.c
+From:	"Vorobiev Dmitri" <dmitri.vorobiev@movial.fi>
+To:	"Dmitri Vorobiev" <dmitri.vorobiev@movial.fi>
+Cc:	linux-scsi@vger.kernel.org, james.bottomley@hansenpartnership.com,
+	linux-mips@linux-mips.org,
+	"Dmitri Vorobiev" <dmitri.vorobiev@movial.fi>
+User-Agent: SquirrelMail/1.4.9a
+MIME-Version: 1.0
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+Return-Path: <dmitri.vorobiev@movial.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21488
+X-archive-position: 21489
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: dmitri.vorobiev@movial.fi
 Precedence: bulk
 X-list: linux-mips
 
-On Mon,  1 Dec 2008 15:49:28 -0800
-David Daney <ddaney@caviumnetworks.com> wrote:
+> This patch fixes the following compilation warning:
+>
+>   CC [M]  drivers/scsi/sgiwd93.o
+> drivers/scsi/sgiwd93.c:314: warning: initialization from incompatible
+> pointer type
+>
 
-> Cavium UART implementation is not covered by existing uart_configS.
-> Define a new uart_config (PORT_OCTEON) which is specified by OCTEON
-> platform device registration code.
+Hello James,
 
-All 4 queued
+Any news about this one? I think this patch should go via linux-scsi,
+unless you would be insisting on pushing it via linux-mips, in which case
+I'll politely bug Ralf about it. :)
+
+Thanks,
+Dmitri
+
+> Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+> ---
+>  drivers/scsi/sgiwd93.c |    4 +++-
+>  1 files changed, 3 insertions(+), 1 deletions(-)
+>
+> diff --git a/drivers/scsi/sgiwd93.c b/drivers/scsi/sgiwd93.c
+> index 31fe605..672a521 100644
+> --- a/drivers/scsi/sgiwd93.c
+> +++ b/drivers/scsi/sgiwd93.c
+> @@ -297,7 +297,7 @@ out:
+>  	return err;
+>  }
+>
+> -static void __exit sgiwd93_remove(struct platform_device *pdev)
+> +static int __exit sgiwd93_remove(struct platform_device *pdev)
+>  {
+>  	struct Scsi_Host *host = platform_get_drvdata(pdev);
+>  	struct ip22_hostdata *hdata = (struct ip22_hostdata *) host->hostdata;
+> @@ -307,6 +307,8 @@ static void __exit sgiwd93_remove(struct
+> platform_device *pdev)
+>  	free_irq(pd->irq, host);
+>  	dma_free_noncoherent(&pdev->dev, HPC_DMA_SIZE, hdata->cpu, hdata->dma);
+>  	scsi_host_put(host);
+> +
+> +	return 0;
+>  }
+>
+>  static struct platform_driver sgiwd93_driver = {
+> --
+> 1.5.4.3
+>
+>
+>

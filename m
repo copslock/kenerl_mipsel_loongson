@@ -1,61 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Dec 2008 17:59:12 +0000 (GMT)
-Received: from mx1.moondrake.net ([212.85.150.166]:15588 "EHLO
-	mx1.mandriva.com") by ftp.linux-mips.org with ESMTP
-	id S24145223AbYLER7F (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 5 Dec 2008 17:59:05 +0000
-Received: by mx1.mandriva.com (Postfix, from userid 501)
-	id 25EC527400E; Fri,  5 Dec 2008 18:59:01 +0100 (CET)
-Received: from office-abk.mandriva.com (office-abk.mandriva.com [84.55.162.90])
-	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mx1.mandriva.com (Postfix) with ESMTP id 5505527401C
-	for <linux-mips@linux-mips.org>; Fri,  5 Dec 2008 18:58:59 +0100 (CET)
-Received: from anduin.mandriva.com (fw2.mandriva.com [192.168.2.3])
-	by office-abk.mandriva.com (Postfix) with ESMTP id 124E18291C
-	for <linux-mips@linux-mips.org>; Fri,  5 Dec 2008 19:00:15 +0100 (CET)
-Received: from anduin.mandriva.com (localhost [127.0.0.1])
-	by anduin.mandriva.com (Postfix) with ESMTP id C333FFF855
-	for <linux-mips@linux-mips.org>; Fri,  5 Dec 2008 18:59:35 +0100 (CET)
-From:	Arnaud Patard <apatard@mandriva.com>
-To:	linux-mips@linux-mips.org
-Subject: Re: xorg-server-1.5.2 doesn't work because of missing sysfs pci resource files
-References: <20081205154339.GA14327@adriano.hkcable.com.hk>
-Organization: Mandriva
-Date:	Fri, 05 Dec 2008 18:59:35 +0100
-In-Reply-To: <20081205154339.GA14327@adriano.hkcable.com.hk> (Zhang Le's message of "Fri, 5 Dec 2008 23:43:42 +0800")
-Message-ID: <m3ljuumrjs.fsf@anduin.mandriva.com>
-User-Agent: Gnus/5.1008 (Gnus v5.10.8) Emacs/22.1 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Dec 2008 18:08:16 +0000 (GMT)
+Received: from h4.dl5rb.org.uk ([81.2.74.4]:38832 "EHLO
+	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
+	with ESMTP id S24145211AbYLESIH (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 5 Dec 2008 18:08:07 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id mB5I86ef019657;
+	Fri, 5 Dec 2008 18:08:06 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id mB5I86th019655;
+	Fri, 5 Dec 2008 18:08:06 GMT
+Date:	Fri, 5 Dec 2008 18:08:06 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Arnaud Patard <apatard@mandriva.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: xorg-server-1.5.2 doesn't work because of missing sysfs pci
+	resource files
+Message-ID: <20081205180806.GA19217@linux-mips.org>
+References: <20081205154339.GA14327@adriano.hkcable.com.hk> <m3ljuumrjs.fsf@anduin.mandriva.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Return-Path: <arnaud.patard@mandriva.com>
+Content-Disposition: inline
+In-Reply-To: <m3ljuumrjs.fsf@anduin.mandriva.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21533
+X-archive-position: 21534
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: apatard@mandriva.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Zhang Le <r0bertz@gentoo.org> writes:
+On Fri, Dec 05, 2008 at 06:59:35PM +0100, Arnaud Patard wrote:
 
-> Hi, all,
+Arnaud,
 
-Hi,
+> > Then I tried to read kernel code. I found it seems that for mips linux to have
+> > this file, HAVE_PCI_MMAP must be defined. However, it is currently not defined.
+> >
+> > Since I am not familiar with PCI, yet.
+> > So could someone please shed some light on this?
+> > Why HAVE_PCI_MMAP is not defined?
+> 
+> HAVE_PCI_MMAP must be defined when you have a pci_mmap_page_range()
+> function (see Documentation/filesystems/sysfs-pci.txt) and we don't have
+> a pci_mmap_page_range() on mips.
 
-> Then I tried to read kernel code. I found it seems that for mips linux to have
-> this file, HAVE_PCI_MMAP must be defined. However, it is currently not defined.
->
-> Since I am not familiar with PCI, yet.
-> So could someone please shed some light on this?
-> Why HAVE_PCI_MMAP is not defined?
+Correct - but if the code is not present the kernel does not use an
+alternative implementation.  I just looked into implementing that and it
+seems nothing that I could do quickly to still get it into 2.6.28, sorry ...
 
-HAVE_PCI_MMAP must be defined when you have a pci_mmap_page_range()
-function (see Documentation/filesystems/sysfs-pci.txt) and we don't have
-a pci_mmap_page_range() on mips.
-
-Hope that helps you.
-
-Arnaud
+  Ralf

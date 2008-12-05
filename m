@@ -1,48 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Dec 2008 21:03:15 +0000 (GMT)
-Received: from vps1.tull.net ([66.180.172.116]:14045 "HELO vps1.tull.net")
-	by ftp.linux-mips.org with SMTP id S24149833AbYLEVDD (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 5 Dec 2008 21:03:03 +0000
-Received: (qmail 2854 invoked by uid 1015); 6 Dec 2008 08:02:56 +1100
-Received: from [10.0.0.67] (HELO tull.net) (10.0.0.67) by vps1.tull.net (qpsmtpd/0.26) with SMTP; Sat, 06 Dec 2008 08:02:56 +1100
-Received: (qmail 20892 invoked by uid 1000); 6 Dec 2008 08:02:53 +1100
-Date:	Sat, 6 Dec 2008 08:02:53 +1100
-From:	Nick Andrew <nick@nick-andrew.net>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Jonathan Corbet <corbet@lwn.net>,
-	"Kevin D. Kissell" <kevink@paralogos.com>,
-	Lucas Woods <woodzy@gmail.com>, linux-mips@linux-mips.org,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: Fix incorrect use of loose in vpe.c
-Message-ID: <20081205210253.GD5957@mail.local.tull.net>
-References: <S24119814AbYLEAhF/20081205003705Z+5882@ftp.linux-mips.org> <20081205155654.GA2765@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Dec 2008 23:07:16 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:3227 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S24152981AbYLEXHM (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 5 Dec 2008 23:07:12 +0000
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B4939b4040000>; Fri, 05 Dec 2008 18:06:44 -0500
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 5 Dec 2008 15:06:43 -0800
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 5 Dec 2008 15:06:43 -0800
+Message-ID: <4939B402.9010004@caviumnetworks.com>
+Date:	Fri, 05 Dec 2008 15:06:42 -0800
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.18 (X11/20081119)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20081205155654.GA2765@linux-mips.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-SMTPD: qpsmtpd/0.26, http://develooper.com/code/qpsmtpd/
-Return-Path: <nick@tull.net>
+To:	IDE/ATA development list <linux-ide@vger.kernel.org>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH 0/2] libata: Cavium OCTEON SOC Compact Flash driver (v3)
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 05 Dec 2008 23:06:43.0065 (UTC) FILETIME=[23642E90:01C9572E]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21536
+X-archive-position: 21537
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nick@nick-andrew.net
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Dec 05, 2008 at 03:56:54PM +0000, Ralf Baechle wrote:
-> Thanks, applied.  Note that the address you used for Kevin Kissel to post
-> your patch is no longer valid.
+As part of our efforts to get the Cavium OCTEON processor support
+merged (see: http://marc.info/?l=linux-mips&m=122834773330212), we
+have this CF driver for your consideration.
 
-Yep. By default the get_maintainers.pl script which I used trawls through
-'git log' to find everybody who was involved in a commit in each affected
-file during the last 12 months. Kevin signed off commit b618336aac14 from
-his old address.
+This version is split into two separate patches.  The first adds
+some entries to the ata_timing table in libata-core.  The second is
+the driver proper.
 
-Nick.
--- 
-PGP Key ID = 0x418487E7                      http://www.nick-andrew.net/
-PGP Key fingerprint = B3ED 6894 8E49 1770 C24A  67E3 6266 6EB9 4184 87E7
+I will reply with the two patches.
+
+Thanks,
+
+David Daney (2):
+   libata: Add two more columns to the ata_timing table.
+   libata: New driver for OCTEON SOC Compact Flash interface (v3).
+
+  drivers/ata/Kconfig          |    9 +
+  drivers/ata/Makefile         |    1 +
+  drivers/ata/libata-core.c    |   74 ++--
+  drivers/ata/pata_octeon_cf.c |  956 
+++++++++++++++++++++++++++++++++++++++++++
+  include/linux/libata.h       |   12 +-
+  5 files changed, 1014 insertions(+), 38 deletions(-)
+  create mode 100644 drivers/ata/pata_octeon_cf.c

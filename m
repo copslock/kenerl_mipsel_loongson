@@ -1,68 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Dec 2008 16:23:46 +0000 (GMT)
-Received: from aux-209-217-49-36.oklahoma.net ([209.217.49.36]:40206 "EHLO
-	proteus.paralogos.com") by ftp.linux-mips.org with ESMTP
-	id S24141426AbYLEQXh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 5 Dec 2008 16:23:37 +0000
-Received: from [192.168.236.58] ([217.109.65.213])
-	by proteus.paralogos.com (8.9.3/8.9.3) with ESMTP id KAA27419;
-	Fri, 5 Dec 2008 10:21:24 -0600
-Message-ID: <4939557F.1000609@paralogos.com>
-Date:	Fri, 05 Dec 2008 10:23:27 -0600
-From:	"Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Thunderbird 2.0.0.18 (Windows/20081105)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Dec 2008 17:59:12 +0000 (GMT)
+Received: from mx1.moondrake.net ([212.85.150.166]:15588 "EHLO
+	mx1.mandriva.com") by ftp.linux-mips.org with ESMTP
+	id S24145223AbYLER7F (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 5 Dec 2008 17:59:05 +0000
+Received: by mx1.mandriva.com (Postfix, from userid 501)
+	id 25EC527400E; Fri,  5 Dec 2008 18:59:01 +0100 (CET)
+Received: from office-abk.mandriva.com (office-abk.mandriva.com [84.55.162.90])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mx1.mandriva.com (Postfix) with ESMTP id 5505527401C
+	for <linux-mips@linux-mips.org>; Fri,  5 Dec 2008 18:58:59 +0100 (CET)
+Received: from anduin.mandriva.com (fw2.mandriva.com [192.168.2.3])
+	by office-abk.mandriva.com (Postfix) with ESMTP id 124E18291C
+	for <linux-mips@linux-mips.org>; Fri,  5 Dec 2008 19:00:15 +0100 (CET)
+Received: from anduin.mandriva.com (localhost [127.0.0.1])
+	by anduin.mandriva.com (Postfix) with ESMTP id C333FFF855
+	for <linux-mips@linux-mips.org>; Fri,  5 Dec 2008 18:59:35 +0100 (CET)
+From:	Arnaud Patard <apatard@mandriva.com>
+To:	linux-mips@linux-mips.org
+Subject: Re: xorg-server-1.5.2 doesn't work because of missing sysfs pci resource files
+References: <20081205154339.GA14327@adriano.hkcable.com.hk>
+Organization: Mandriva
+Date:	Fri, 05 Dec 2008 18:59:35 +0100
+In-Reply-To: <20081205154339.GA14327@adriano.hkcable.com.hk> (Zhang Le's message of "Fri, 5 Dec 2008 23:43:42 +0800")
+Message-ID: <m3ljuumrjs.fsf@anduin.mandriva.com>
+User-Agent: Gnus/5.1008 (Gnus v5.10.8) Emacs/22.1 (gnu/linux)
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Nick Andrew <nick@nick-andrew.net>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lucas Woods <woodzy@gmail.com>, linux-mips@linux-mips.org,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: Fix incorrect use of loose in vpe.c
-References: <S24119814AbYLEAhF/20081205003705Z+5882@ftp.linux-mips.org> <20081205155654.GA2765@linux-mips.org>
-In-Reply-To: <20081205155654.GA2765@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kevink@paralogos.com>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <arnaud.patard@mandriva.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21532
+X-archive-position: 21533
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
+X-original-sender: apatard@mandriva.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Fri, Dec 05, 2008 at 11:36:54AM +1100, Nick Andrew wrote:
->   
->> From: Nick Andrew <nick@nick-andrew.net>
->> Date: Fri, 05 Dec 2008 11:36:54 +1100
->> To: Jonathan Corbet <corbet@lwn.net>, "Kevin D. Kissell" <kevink@mips.com>,
->> 	Lucas Woods <woodzy@gmail.com>, Nick Andrew <nick@nick-andrew.net>,
->> 	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
->> Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
->> Subject: Fix incorrect use of loose in vpe.c
->>
->> Fix incorrect use of loose in vpe.c
->>
->> From: Nick Andrew <nick@nick-andrew.net>
->>
->> It should be 'lose', not 'loose'.
->>
->> Signed-off-by: Nick Andrew <nick@nick-andrew.net>
->>     
+Zhang Le <r0bertz@gentoo.org> writes:
+
+> Hi, all,
+
+Hi,
+
+> Then I tried to read kernel code. I found it seems that for mips linux to have
+> this file, HAVE_PCI_MMAP must be defined. However, it is currently not defined.
 >
-> Thanks, applied.  Note that the address you used for Kevin Kissel to post
-> your patch is no longer valid.
->   
-Yeah, but I'm still on the mailing list, so I saw it.  I don't "own" 
-that particular module,
-but for whatever it's worth, I'm OK with fixing the comment - though I'm 
-surprised
-that checkpatch let a non-canonical multi-line comment block like that 
-go by.  ;o)
+> Since I am not familiar with PCI, yet.
+> So could someone please shed some light on this?
+> Why HAVE_PCI_MMAP is not defined?
 
-          Regards,
+HAVE_PCI_MMAP must be defined when you have a pci_mmap_page_range()
+function (see Documentation/filesystems/sysfs-pci.txt) and we don't have
+a pci_mmap_page_range() on mips.
 
-          Kevin K.
+Hope that helps you.
+
+Arnaud

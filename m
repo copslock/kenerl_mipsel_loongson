@@ -1,114 +1,125 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Dec 2008 10:20:34 +0000 (GMT)
-Received: from h4.dl5rb.org.uk ([81.2.74.4]:2762 "EHLO
-	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S24163313AbYLFKUb (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 6 Dec 2008 10:20:31 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id mB6AKURM015300
-	for <linux-mips@linux-mips.org>; Sat, 6 Dec 2008 10:20:30 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id mB6AKUf1015299
-	for linux-mips@linux-mips.org; Sat, 6 Dec 2008 10:20:30 GMT
-Date:	Sat, 6 Dec 2008 10:20:30 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	linux-mips@linux-mips.org
-Subject: Re: xorg-server-1.5.2 doesn't work because of missing sysfs pci
-	resource files
-Message-ID: <20081206102030.GA9410@linux-mips.org>
-References: <20081205154339.GA14327@adriano.hkcable.com.hk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Dec 2008 10:31:24 +0000 (GMT)
+Received: from sj-iport-1.cisco.com ([171.71.176.70]:32967 "EHLO
+	sj-iport-1.cisco.com") by ftp.linux-mips.org with ESMTP
+	id S24163331AbYLFKbR convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 6 Dec 2008 10:31:17 +0000
+X-IronPort-AV: E=Sophos;i="4.33,724,1220227200"; 
+   d="scan'208";a="114477216"
+Received: from sj-dkim-1.cisco.com ([171.71.179.21])
+  by sj-iport-1.cisco.com with ESMTP; 06 Dec 2008 10:31:10 +0000
+Received: from sj-core-1.cisco.com (sj-core-1.cisco.com [171.71.177.237])
+	by sj-dkim-1.cisco.com (8.12.11/8.12.11) with ESMTP id mB6AVAHd002674
+	for <linux-mips@linux-mips.org>; Sat, 6 Dec 2008 02:31:10 -0800
+Received: from sausatlsmtp1.sciatl.com (sausatlsmtp1.cisco.com [192.133.217.33])
+	by sj-core-1.cisco.com (8.13.8/8.13.8) with ESMTP id mB6AV6jx010146
+	for <linux-mips@linux-mips.org>; Sat, 6 Dec 2008 10:31:07 GMT
+Received: from default.com ([192.133.217.33]) by sausatlsmtp1.sciatl.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Sat, 6 Dec 2008 05:27:50 -0500
+Received: from sausatlbhs02.corp.sa.net ([192.133.216.42]) by sausatlsmtp1.sciatl.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 5 Dec 2008 21:46:14 -0500
+Received: from sausatlexch4.corp.sa.net ([192.133.216.28]) by sausatlbhs02.corp.sa.net with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 5 Dec 2008 21:46:13 -0500
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20081205154339.GA14327@adriano.hkcable.com.hk>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: question regarding system memory whatever
+Date:	Fri, 5 Dec 2008 21:46:12 -0500
+Message-ID: <1C18506EA6ACF94097F87E8D358338F501F558@sausatlexch4.corp.sa.net>
+In-Reply-To: <20081205181737.2fc890bc@ripper.onstor.net>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: question regarding system memory whatever
+Thread-Index: AclXSQvmR4JUstECSeW0/by8VP5gegAA4sFw
+References: <20081205181737.2fc890bc@ripper.onstor.net>
+From:	"VomLehn, David" <dvomlehn@cisco.com>
+To:	"Andrew Sharp" <andy.sharp@onstor.com>, <linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 06 Dec 2008 02:46:13.0964 (UTC) FILETIME=[CDDBE0C0:01C9574C]
+X-ST-MF-Message-Resent:	12/6/2008 05:27
+DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=2581; t=1228559470; x=1229423470;
+	c=relaxed/simple; s=sjdkim1004;
+	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
+	d=cisco.com; i=dvomlehn@cisco.com;
+	z=From:=20=22VomLehn,=20David=22=20<dvomlehn@cisco.com>
+	|Subject:=20RE=3A=20question=20regarding=20system=20memory=
+	20whatever
+	|Sender:=20;
+	bh=IGcTZVBgeXnWsvpwyIDrnC7z7Va04PoFCdZTdVldZuQ=;
+	b=sxlH/sLwCiPdyZjzskhtnVp6on/k8sZDq7KVhP8lCR4L4j/wVB2wYQbqlR
+	F+ByXKBQ7JMXi+qLQ7mGMz8mDmi/Zn2xD/lFIz0Rr0vwzIn7VqOsQzdD1vK0
+	MrkrX5oyYiS9A5NE4h0GsgQLDyqE2U1SGFGDuwtwErn4EBHfUr/6o=;
+Authentication-Results:	sj-dkim-1; header.From=dvomlehn@cisco.com; dkim=pass (
+	sig from cisco.com/sjdkim1004 verified; ); 
+Return-Path: <dvomlehn@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21542
+X-archive-position: 21543
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: dvomlehn@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Dec 05, 2008 at 11:43:42PM +0800, Zhang Le wrote:
-
-> I have tried xorg-server-1.5.2 on loongson 2f recently.
-> But I found it doesn't work.
-> It's mainly because of this change:
-> http://www.x.org/wiki/PciReworkProposal
-> 
-> In short:
-> "Rather than duplicating the efforts of kernel developers, X.org needs to use the
-> interfaces provided by the kernel as much as possible."
-> 
-> I have read some code of libpciaccess, the new library utilizing kernel function
-> to access pci bus. It will try to mmap this file:
-> /sys/bus/pci/devices/0000:0x:xx.x/resource0
-> (replace x with any digit appropriate)
-> Note there is a 0 at the end of the file name. This file's permission is 600.
-> 
-> However, I found on my loongson system, there is only 
-> /sys/bus/pci/devices/0000:0x:xx.x/resource
-> Note there is no 0 at the end.
-> 
-> Then I tried to read kernel code. I found it seems that for mips linux to have
-> this file, HAVE_PCI_MMAP must be defined. However, it is currently not defined.
-> 
-> Since I am not familiar with PCI, yet.
-> So could someone please shed some light on this?
-> Why HAVE_PCI_MMAP is not defined?
-
-Here is a quick'n'dirty solution which I've not tested beyond just
-compiling.  It should work but performance will be bad.  Either way, I'm
-interested in a test report with X.
-
-  Ralf
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
-diff --git a/arch/mips/include/asm/pci.h b/arch/mips/include/asm/pci.h
-index 5510c53..053e463 100644
---- a/arch/mips/include/asm/pci.h
-+++ b/arch/mips/include/asm/pci.h
-@@ -79,6 +79,11 @@ static inline void pcibios_penalize_isa_irq(int irq, int active)
- 	/* We don't do dynamic PCI IRQ allocation */
- }
+(Resend, the linux-mips email address was mangled the first time)
  
-+#define HAVE_PCI_MMAP
-+
-+extern int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
-+	enum pci_mmap_state mmap_state, int write_combine);
-+
- /*
-  * Dynamic DMA mapping stuff.
-  * MIPS has everything mapped statically.
-diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
-index a377e9d..9233193 100644
---- a/arch/mips/pci/pci.c
-+++ b/arch/mips/pci/pci.c
-@@ -354,6 +354,22 @@ EXPORT_SYMBOL(PCIBIOS_MIN_IO);
- EXPORT_SYMBOL(PCIBIOS_MIN_MEM);
- #endif
- 
-+int pci_mmap_page_range(struct pci_dev *dev, struct vm_area_struct *vma,
-+			enum pci_mmap_state mmap_state, int write_combine)
-+{
-+	unsigned long prot;
-+
-+	/*
-+	 * Ignore write-combine; for now only return uncached mappings.
-+	 */
-+	prot = pgprot_val(vma->vm_page_prot);
-+	prot = (prot & ~_CACHE_MASK) | _CACHE_UNCACHED;
-+	vma->vm_page_prot = __pgprot(prot);
-+
-+	return remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff,
-+		vma->vm_end - vma->vm_start, vma->vm_page_prot);
-+}
-+
- char * (*pcibios_plat_setup)(char *str) __devinitdata;
- 
- char *__devinit pcibios_setup(char *str)
+Er, it's kind of a good news/bad news joke...
+
+The bad news is that MIPS Linux isn't smart enough, at least as of
+2.6.24, to use memory that precedes the kernel.
+
+The good news is that we've got changes that will handle this.
+
+The bad news is that I'm so backed up even getting a basic patchset to
+add our platform to the kernel mainline that I don't know how long it
+will take until I'm be able to get these additional patches out.
+
+I'll cc the guy who did the changes to see if he can extract a patch for
+this.
+> -----Original Message-----
+> From: linux-mips-bounce@linux-mips.org 
+> [mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Andrew Sharp
+> Sent: Friday, December 05, 2008 6:18 PM
+> To: linux-mips@
+> Subject: question regarding system memory whatever
+> 
+> I recently changed plat_mem_setup() or equivalent in my platform code
+> to not mark the first 32M of memory as BOOT_MEM_ROM_DATA and instead
+> have the first BOOT_MEM_RAM memory region start at 0.  Here is the two
+> lines of output from mem_init() for the two different versions:
+> 
+> Memory: 433408k/475136k available (2202k kernel code, 41556k 
+> reserved, 690k data, 112k init, 0k highmem)
+> 
+> Memory: 433408k/507904k available (2202k kernel code, 74324k 
+> reserved, 689k data, 112k init, 0k highmem)
+> 
+> As you can see, the 32M got added to "reserved" memory (?) and only
+> added to the right hand number of the "available".  OK, so what does
+> that mean?  I promised our monkey userspace programmers that they
+> would have another 32M of memory to slosh around in, but before I
+> release this change on them I'd like to know what these numbers are
+> telling me.
+> 
+> This is on 2.6.22 from l.m.o on a Sibyte 1125 in 64bit LE.
+> CONFIG_FLATMEM=y which was the fashion at the time.
+> 
+> Cheers,
+> 
+> a
+> 
+> 
+
+
+
+     - - - - -                              Cisco                            - - - - -         
+This e-mail and any attachments may contain information which is confidential, 
+proprietary, privileged or otherwise protected by law. The information is solely 
+intended for the named addressee (or a person responsible for delivering it to 
+the addressee). If you are not the intended recipient of this message, you are 
+not authorized to read, print, retain, copy or disseminate this message or any 
+part of it. If you have received this e-mail in error, please notify the sender 
+immediately by return e-mail and delete it from your computer.

@@ -1,58 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Dec 2008 01:44:55 +0000 (GMT)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:50768 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S24207536AbYLIBnt (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 9 Dec 2008 01:43:49 +0000
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B493dcd300003>; Mon, 08 Dec 2008 20:43:12 -0500
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 8 Dec 2008 17:37:47 -0800
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 8 Dec 2008 17:37:46 -0800
-Message-ID: <493DCBEA.9090007@caviumnetworks.com>
-Date:	Mon, 08 Dec 2008 17:37:46 -0800
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.18 (X11/20081119)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Dec 2008 17:23:30 +0000 (GMT)
+Received: from apollo.i-cable.com ([203.83.115.103]:48514 "HELO
+	apollo.i-cable.com") by ftp.linux-mips.org with SMTP
+	id S24108197AbYLIRXZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 9 Dec 2008 17:23:25 +0000
+Received: (qmail 2231 invoked by uid 508); 9 Dec 2008 17:23:14 -0000
+Received: from 203.83.114.122 by apollo (envelope-from <robert.zhangle@gmail.com>, uid 505) with qmail-scanner-1.25 
+ (clamdscan: 0.93.3/7730.  
+ Clear:RC:1(203.83.114.122):. 
+ Processed in 0.161732 secs); 09 Dec 2008 17:23:14 -0000
+Received: from ip114122.hkicable.com (HELO xenon.i-cable.com) (203.83.114.122)
+  by 0 with SMTP; 9 Dec 2008 17:23:14 -0000
+Received: from localhost (cm222-167-208-75.hkcable.com.hk [222.167.208.75])
+	by xenon.i-cable.com (8.13.5/8.13.5) with ESMTP id mB9HN28v026937;
+	Wed, 10 Dec 2008 01:23:14 +0800 (CST)
+Date:	Wed, 10 Dec 2008 01:22:46 +0800
+From:	Zhang Le <r0bertz@gentoo.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: xorg-server-1.5.2 doesn't work because of missing sysfs pci
+	resource files
+Message-ID: <20081209172245.GA2741@adriano.hkcable.com.hk>
+Mail-Followup-To: Ralf Baechle <ralf@linux-mips.org>,
+	linux-mips@linux-mips.org
+References: <20081205154339.GA14327@adriano.hkcable.com.hk> <20081206102030.GA9410@linux-mips.org> <20081206164706.GB14327@adriano.hkcable.com.hk>
 MIME-Version: 1.0
-To:	IDE/ATA development list <linux-ide@vger.kernel.org>
-CC:	linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH 0/3] libata: Cavium OCTEON SOC Compact Flash driver (v4)
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 09 Dec 2008 01:37:46.0852 (UTC) FILETIME=[BD119240:01C9599E]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20081206164706.GB14327@adriano.hkcable.com.hk>
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Return-Path: <robert.zhangle@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21556
+X-archive-position: 21557
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: r0bertz@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-As part of our efforts to get the Cavium OCTEON processor support
-merged (see: http://marc.info/?l=linux-mips&m=122834773330212), we
-have this CF driver for your consideration.
+On 00:47 Sun 07 Dec     , Zhang Le wrote:
+> On 10:20 Sat 06 Dec     , Ralf Baechle wrote:
+> > On Fri, Dec 05, 2008 at 11:43:42PM +0800, Zhang Le wrote:
+> > > Then I tried to read kernel code. I found it seems that for mips linux to have
+> > > this file, HAVE_PCI_MMAP must be defined. However, it is currently not defined.
+> > > 
+> > > Since I am not familiar with PCI, yet.
+> > > So could someone please shed some light on this?
+> > > Why HAVE_PCI_MMAP is not defined?
+> > 
+> > Here is a quick'n'dirty solution which I've not tested beyond just
+> > compiling.  It should work but performance will be bad.  Either way, I'm
+> > interested in a test report with X.
 
-This version is split into three separate patches.  The first adds
-some entries to the ata_timing table in libata-core.  The Second adds
-some special handling to ata_pio_need_iordy() for Compact Flash
-devices, The final patch is is the driver proper.
+Hi, Ralf,
 
-I will reply with the three patches.
+I have build a new kernel with this patch.
+Now I have the resource{0,1} file with permission 600.
+However, X is not working yet, since there is an undefined reference in sis's
+X driver.
 
-David Daney (3):
-   libata: Add two more columns to the ata_timing table.
-   libata: Add special ata_pio_need_iordy() handling for Compact Flash.
-   libata: New driver for OCTEON SOC Compact Flash interface (v3).
+I will try to fix it and report back.
 
-  drivers/ata/Kconfig          |    9 +
-  drivers/ata/Makefile         |    1 +
-  drivers/ata/libata-core.c    |   78 ++--
-  drivers/ata/pata_octeon_cf.c |  945 
-++++++++++++++++++++++++++++++++++++++++++
-  include/linux/libata.h       |   12 +-
-  5 files changed, 1007 insertions(+), 38 deletions(-)
-  create mode 100644 drivers/ata/pata_octeon_cf.c
+Zhang, Le

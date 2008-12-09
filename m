@@ -1,67 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Dec 2008 17:39:48 +0000 (GMT)
-Received: from crux.i-cable.com ([203.83.115.104]:50056 "HELO crux.i-cable.com")
-	by ftp.linux-mips.org with SMTP id S24108197AbYLIRjm (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 9 Dec 2008 17:39:42 +0000
-Received: (qmail 23537 invoked by uid 107); 9 Dec 2008 17:39:30 -0000
-Received: from 203.83.114.122 by crux (envelope-from <robert.zhangle@gmail.com>, uid 104) with qmail-scanner-2.01 
- (clamdscan: 0.93.3/7716. spamassassin: 2.63.  
- Clear:RC:1(203.83.114.122):SA:0(2.6/5.0):. 
- Processed in 5.524709 secs); 09 Dec 2008 17:39:30 -0000
-Received: from ip114122.hkicable.com (HELO xenon.i-cable.com) (203.83.114.122)
-  by 0 with SMTP; 9 Dec 2008 17:39:25 -0000
-Received: from localhost (cm222-167-208-75.hkcable.com.hk [222.167.208.75])
-	by xenon.i-cable.com (8.13.5/8.13.5) with ESMTP id mB9HdOJT027713;
-	Wed, 10 Dec 2008 01:39:24 +0800 (CST)
-Date:	Wed, 10 Dec 2008 01:39:08 +0800
-From:	Zhang Le <r0bertz@gentoo.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Dec 2008 17:57:05 +0000 (GMT)
+Received: from h4.dl5rb.org.uk ([81.2.74.4]:9659 "EHLO
+	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
+	with ESMTP id S24108197AbYLIR5D (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 9 Dec 2008 17:57:03 +0000
+Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
+	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id mB9Hv2tZ022750
+	for <linux-mips@linux-mips.org>; Tue, 9 Dec 2008 17:57:02 GMT
+Received: (from ralf@localhost)
+	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id mB9Hv2h8022748
+	for linux-mips@linux-mips.org; Tue, 9 Dec 2008 17:57:02 GMT
+Date:	Tue, 9 Dec 2008 17:57:02 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	linux-mips@linux-mips.org
 Subject: Re: xorg-server-1.5.2 doesn't work because of missing sysfs pci
 	resource files
-Message-ID: <20081209173907.GB2741@adriano.hkcable.com.hk>
-Mail-Followup-To: Ralf Baechle <ralf@linux-mips.org>,
-	linux-mips@linux-mips.org
-References: <20081205154339.GA14327@adriano.hkcable.com.hk> <20081206102030.GA9410@linux-mips.org> <20081206164706.GB14327@adriano.hkcable.com.hk> <20081209172245.GA2741@adriano.hkcable.com.hk>
+Message-ID: <20081209175701.GA22661@linux-mips.org>
+References: <20081205154339.GA14327@adriano.hkcable.com.hk> <20081206102030.GA9410@linux-mips.org> <20081206164706.GB14327@adriano.hkcable.com.hk> <20081209172245.GA2741@adriano.hkcable.com.hk> <20081209173907.GB2741@adriano.hkcable.com.hk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20081209172245.GA2741@adriano.hkcable.com.hk>
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <robert.zhangle@gmail.com>
+In-Reply-To: <20081209173907.GB2741@adriano.hkcable.com.hk>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21558
+X-archive-position: 21559
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: r0bertz@gentoo.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On 01:22 Wed 10 Dec     , Zhang Le wrote:
-> On 00:47 Sun 07 Dec     , Zhang Le wrote:
-> > On 10:20 Sat 06 Dec     , Ralf Baechle wrote:
-> > > On Fri, Dec 05, 2008 at 11:43:42PM +0800, Zhang Le wrote:
-> > > > Then I tried to read kernel code. I found it seems that for mips linux to have
-> > > > this file, HAVE_PCI_MMAP must be defined. However, it is currently not defined.
-> > > > 
-> > > > Since I am not familiar with PCI, yet.
-> > > > So could someone please shed some light on this?
-> > > > Why HAVE_PCI_MMAP is not defined?
-> > > 
-> > > Here is a quick'n'dirty solution which I've not tested beyond just
-> > > compiling.  It should work but performance will be bad.  Either way, I'm
-> > > interested in a test report with X.
-> 
-> Hi, Ralf,
-> 
-> I have build a new kernel with this patch.
-> Now I have the resource{0,1} file with permission 600.
-> However, X is not working yet, since there is an undefined reference in sis's
-> X driver.
+On Wed, Dec 10, 2008 at 01:39:08AM +0800, Zhang Le wrote:
 
-It is working now! Just forget to load "vbe" module.
-Thanks!
+> > I have build a new kernel with this patch.
+> > Now I have the resource{0,1} file with permission 600.
+> > However, X is not working yet, since there is an undefined reference in sis's
+> > X driver.
+> 
+> It is working now! Just forget to load "vbe" module.
+> Thanks!
 
-Zhang, Le
+Wonderful, thanks for testing!
+
+Now, my patch doesn't try to handle all the caching modes.  Any mapping
+will be uncached which is guaranteed to deliver the lowest possible
+performance.  Registers should be mapped uncached but a framebuffer
+will usually work best if mapped in uncached accelerated mode.  On
+most MIPS implementations the effect of mapping something multiple times
+in different caching modes is undefined so that needs to be avoided
+which will require some bookkeeping etc.  Too much for 2.6.28 but this
+simple solution seems harmless enough to be pushed for 2.6.28 and
+-stable.
+
+  Ralf

@@ -1,75 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 09 Dec 2008 19:01:00 +0000 (GMT)
-Received: from mx1.moondrake.net ([212.85.150.166]:41884 "EHLO
-	mx1.mandriva.com") by ftp.linux-mips.org with ESMTP
-	id S24109657AbYLITAw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 9 Dec 2008 19:00:52 +0000
-Received: by mx1.mandriva.com (Postfix, from userid 501)
-	id 226DC274011; Tue,  9 Dec 2008 20:00:48 +0100 (CET)
-Received: from office-abk.mandriva.com (office-abk.mandriva.com [84.55.162.90])
-	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mx1.mandriva.com (Postfix) with ESMTP id 030D0274002;
-	Tue,  9 Dec 2008 20:00:47 +0100 (CET)
-Received: from anduin.mandriva.com (fw2.mandriva.com [192.168.2.3])
-	by office-abk.mandriva.com (Postfix) with ESMTP id F21FC8285F;
-	Tue,  9 Dec 2008 20:02:14 +0100 (CET)
-Received: from anduin.mandriva.com (localhost [127.0.0.1])
-	by anduin.mandriva.com (Postfix) with ESMTP id 47501FF855;
-	Tue,  9 Dec 2008 20:01:57 +0100 (CET)
-From:	Arnaud Patard <apatard@mandriva.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: xorg-server-1.5.2 doesn't work because of missing sysfs pci resource files
-References: <20081205154339.GA14327@adriano.hkcable.com.hk>
-	<20081206102030.GA9410@linux-mips.org>
-	<m3k5a9kyc6.fsf@anduin.mandriva.com>
-	<20081209183634.GA2418@linux-mips.org>
-Organization: Mandriva
-Date:	Tue, 09 Dec 2008 20:01:57 +0100
-In-Reply-To: <20081209183634.GA2418@linux-mips.org> (Ralf Baechle's message of "Tue, 9 Dec 2008 18:36:34 +0000")
-Message-ID: <m3fxkxkw9m.fsf@anduin.mandriva.com>
-User-Agent: Gnus/5.1008 (Gnus v5.10.8) Emacs/22.1 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Dec 2008 11:42:41 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:4960 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S24038846AbYLJLmg (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 10 Dec 2008 11:42:36 +0000
+Received: from [127.0.0.1] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 76DCB3EC9; Wed, 10 Dec 2008 03:42:29 -0800 (PST)
+Message-ID: <493FAB21.2030905@ru.mvista.com>
+Date:	Wed, 10 Dec 2008 14:42:25 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+User-Agent: Thunderbird 2.0.0.18 (Windows/20081105)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <arnaud.patard@mandriva.com>
+To:	David Daney <ddaney@caviumnetworks.com>
+Cc:	linux-ide@vger.kernel.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/3] libata: Add two more columns to the ata_timing table.
+References: <493DCBEA.9090007@caviumnetworks.com> <1228786798-20369-1-git-send-email-ddaney@caviumnetworks.com>
+In-Reply-To: <1228786798-20369-1-git-send-email-ddaney@caviumnetworks.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21562
+X-archive-position: 21563
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: apatard@mandriva.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle <ralf@linux-mips.org> writes:
+Hello.
 
-Hi,
+David Daney wrote:
 
-> On Tue, Dec 09, 2008 at 07:17:13PM +0100, Arnaud Patard wrote:
+> The forthcoming OCTEON SOC Compact Flash driver needs a few more
+> timing values than were available in the ata_timing table.  I add new
+> columns for write_hold and dmack_hold times.  The values were obtained
+> from the Compact Flash specification Rev 4.1.
 >
->> What about things like _CACHE_UNCACHED_ACCELERATED ? Is there a way to
->> use this flag ?
->
-> That's possible but will require some additional care in the code.
-> Multiple mappings using different cache modes need to be avoided and
-> also not all processors support _CACHE_UNCACHED_ACCELERATED.
+> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+>   
 
-well, for that, one can always define a Kconfig entry for that. It would
-be usefull for using _CACHE_UNCACHED_ACCELERATED in fb_pgprotect in
-asm/fb.h too.
+   Well, you got it right except fot the SWDMA modes. :-)
 
->
-> If you know your software is playing nice and your CPU supports
-> _CACHE_UNCACHED_ACCELERATED, you can hack the mmap function to use
-> _CACHE_UNCACHED_ACCELERATED if write_combine is set.  Just for now
-> and for something which I'm planning to push for 2.6.28 I don't want
-> anything that's more than trivial.
+> diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+> index 5e2eb74..b156d83 100644
+> --- a/drivers/ata/libata-core.c
+> +++ b/drivers/ata/libata-core.c
+> @@ -2953,33 +2953,33 @@ int sata_set_spd(struct ata_link *link) 
+>   
+[...]
+> +	{ XFER_SW_DMA_0, 120,   0,   0,   0, 480, 480, 30, 20, 960,   0 },
+> +	{ XFER_SW_DMA_1,  90,   0,   0,   0, 240, 240, 30, 20, 480,   0 },
+> +	{ XFER_SW_DMA_2,  60,   0,   0,   0, 120, 120, 15, 20, 240,   0 },
+>   
 
-Ok, no problem. I'm only asking if it will be possible to use it. For
-now, I don't have the pci_mmap_page_range requirement on my systems.
+   Well, I don't know what CF 4.1 has but ATA/ATA-2 have minimum -DIOx 
+to -DMACK hold time (tJ) for SW DMA modes always 0 ns, and -DIOW data 
+hold time (tH) of 50, 30, and 20 for modes 0, 1, and 2 respectfully.
 
+> @@ -864,6 +868,8 @@ struct ata_timing {
+>  	unsigned short cyc8b;		/* t0 for 8-bit I/O */
+>  	unsigned short active;		/* t2 or tD */
+>  	unsigned short recover;		/* t2i or tK */
+> +	unsigned short write_hold;	/* t4 */
+>   
 
-Thanks,
-Arnaud
+   The comment should be "t4 or tH", to be completely correct.
+
+MBR, Sergei

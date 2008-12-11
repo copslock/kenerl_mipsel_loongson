@@ -1,112 +1,204 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Dec 2008 18:51:41 +0000 (GMT)
-Received: from exch1.onstor.com ([66.201.51.80]:27588 "EHLO exch1.onstor.com")
-	by ftp.linux-mips.org with ESMTP id S24207725AbYLKSvj (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 11 Dec 2008 18:51:39 +0000
-Received: from ripper.onstor.net (10.0.0.42) by exch1.onstor.net (10.0.0.225)
- with Microsoft SMTP Server (TLS) id 8.1.311.2; Thu, 11 Dec 2008 10:51:28
- -0800
-Date:	Thu, 11 Dec 2008 10:51:28 -0800
-From:	Andrew Sharp <andy.sharp@onstor.com>
-CC:	"linux-mips@" <linux-mips.org linux-mips@linux-mips.org>
-Subject: Re: question regarding system memory whatever
-Message-ID: <20081211105128.77be77d1@ripper.onstor.net>
-In-Reply-To: <493D52D3.3000503@cisco.com>
-References: <20081205181737.2fc890bc@ripper.onstor.net>
- <1C18506EA6ACF94097F87E8D358338F501F557@sausatlexch4.corp.sa.net>
- <493D52D3.3000503@cisco.com>
-Organization: Onstor
-X-Mailer: Sylpheed-Claws 2.6.0 (GTK+ 2.8.20; x86_64-pc-linux-gnu)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Dec 2008 23:32:39 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:47905 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S24207776AbYLKXce (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 11 Dec 2008 23:32:34 +0000
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B4941a2fe0000>; Thu, 11 Dec 2008 18:32:14 -0500
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 11 Dec 2008 15:32:06 -0800
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 11 Dec 2008 15:32:06 -0800
+Message-ID: <4941A2F5.1010202@caviumnetworks.com>
+Date:	Thu, 11 Dec 2008 15:32:05 -0800
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.18 (X11/20081119)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+To:	linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH 00/20] Add Cavium OCTEON processor support (v6).
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-EMS-Proccessed: 2K3Xl1OQTInXD6xxuA8z3Q==
-X-EMS-STAMP: AUdrPw4mfXrgmB5JBMH77Q==
-To:	unlisted-recipients:; (no To-header on input)
-Return-Path: <andy.sharp@onstor.com>
+X-OriginalArrivalTime: 11 Dec 2008 23:32:06.0239 (UTC) FILETIME=[ADC096F0:01C95BE8]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21584
+X-archive-position: 21585
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andy.sharp@onstor.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Resending because list address was garbled on the first try.
+This is the sixth revision of the patch set introduces preliminary
+support for Cavium Networks' OCTEON processor family.  More (but not
+detailed) information about these processors may be obtained here:
 
-On Mon, 8 Dec 2008 09:01:07 -0800 Michael Sundius <msundius@cisco.com>
-wrote:
+http://www.caviumnetworks.com/OCTEON_MIPS64.html
 
-> well, attached is a patch for arch/mips/kernel/setup.c
-> 
-> we've done lots of other stuff to this file this but I think  this is 
-> the essential
-> part you need to make sure that the bootmem allocator knows
-> about the memory before your kernel.
-> 
-> note that I  moved the call to memory_present() not for this issue but
-> to make sparsemem work (though I've changed that again
-> to call memory_present() from add_memory_region() since it
-> seems to make more sense to call it there.
-> 
-> you may also want to think about using sparse memory model
-> as it will likely give your ap developers even more room.
+These patches depend on the '[PATCH 0/4] serial: Patches for OCTEON
+CPU support (version 2).' set that Alan Cox already has queued up.
+They can be seen here:
 
-Well thanks for this, it seems pretty straight forward.  I thought
-maybe there was something more nefarious preventing this from working
-so I'll work it in and see how it goes.
+http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=4934774E.6080805%40caviumnetworks.com
 
-Cheers,
+This initial patch set adds support for booting an initramfs to a
+serial console.  Follow-on patch sets will add support for the on-chip
+Compact Flash, ethernet, USB, PCI, PCIe, I2c and other peripherals.
 
-a
+With this sixth revision of the patches I think we have address all
+the issues explicitly flagged as objectionable in the preceding
+revisions.  The main change from the previous set is the addition of a
+clock source driver.  Previously the clock source had been broken.
 
-> good luck.
-> Mike
-> 
-> VomLehn, David wrote:
-> > Er, it's kind of a good news/bad news joke...
-> >
-> > The bad news is that MIPS Linux isn't smart enough, at least as of
-> > 2.6.24, to use memory that precedes the kernel.
-> >
-> > The good news is that we've got changes that will handle this.
-> >
-> > The bad news is that I'm so backed up even getting a basic patchset
-> > to add our platform to the kernel mainline that I don't know how
-> > long it will take until I'm be able to get these additional patches
-> > out.
-> >
-> > I'll cc the guy who did the changes to see if he can extract a
-> > patch for this.
-> >
-> >   
-> >> -----Original Message-----
-> >> From: linux-mips-bounce@linux-mips.org 
-> >> [mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Andrew Sharp
-> >> Sent: Friday, December 05, 2008 6:18 PM
-> >> To: linux-mips@
-> >> Subject: question regarding system memory whatever
-> >>
-> >> I recently changed plat_mem_setup() or equivalent in my platform
-> >> code to not mark the first 32M of memory as BOOT_MEM_ROM_DATA and
-> >> instead have the first BOOT_MEM_RAM memory region start at 0.
-> >> Here is the two lines of output from mem_init() for the two
-> >> different versions:
-> >>
-> >> Memory: 433408k/475136k available (2202k kernel code, 41556k 
-> >> reserved, 690k data, 112k init, 0k highmem)
-> >>
-> >> Memory: 433408k/507904k available (2202k kernel code, 74324k 
-> >> reserved, 689k data, 112k init, 0k highmem)
-> >>
-> >> As you can see, the 32M got added to "reserved" memory (?) and only
-> >> added to the right hand number of the "available".  OK, so what
-> >> does that mean?  I promised our monkey userspace programmers that
-> >> they would have another 32M of memory to slosh around in, but
-> >> before I release this change on them I'd like to know what these
-> >> numbers are telling me.
-> >>
-> >> This is on 2.6.22 from l.m.o on a Sibyte 1125 in 64bit LE.
-> >> CONFIG_FLATMEM=y which was the fashion at the time.
+20 patches to follow as replies.
+
+David Daney (20):
+  MIPS: Add Cavium OCTEON processor CSR definitions
+  MIPS: Add Cavium OCTEON processor support files to
+    arch/mips/cavium-octeon/executive and asm/octeon.
+  MIPS: Add Cavium OCTEON processor support files to
+    arch/mips/cavium-octeon.
+  MIPS: For Cavium OCTEON handle hazards as per the R10000 handling.
+  MIPS: For Cavium OCTEON set hwrena and lazily restore CP2 state.
+  MIPS: Add Cavium OCTEON specific register definitions to mipsregs.h
+  MIPS: Override assembler target architecture for octeon.
+  MIPS: Add Cavium OCTEON processor constants and CPU probe.
+  MIPS: Hook Cavium OCTEON cache init into cache.c
+  MIPS: Hook up Cavium OCTEON in arch/mips.
+  MIPS: Modify core io.h macros to account for the Octeon Errata
+    Core-301.
+  MIPS: Add Cavium OCTEON cop2/cvmseg state entries to processor.h.
+  MIPS: Add Cavium OCTEON specific registers to ptrace.h and
+    asm-offsets.c
+  MIPS: Add SMP_ICACHE_FLUSH for the Cavium CPU family.
+  MIPS: Cavium OCTEON multiplier state preservation.
+  MIPS:  Compute branch returns for Cavium OCTEON specific branch
+    instructions.
+  MIPS: Add Cavium OCTEON slot into proper tlb category.
+  MIPS: Adjust the dma-common.c platform hooks.
+  MIPS: Add defconfig for Cavium OCTEON.
+  MIPS: Add Cavium OCTEON to arch/mips/Kconfig
+
+ arch/mips/Kconfig                                  |   63 +-
+ arch/mips/Makefile                                 |   16 +
+ arch/mips/cavium-octeon/Kconfig                    |   85 +
+ arch/mips/cavium-octeon/Makefile                   |   16 +
+ arch/mips/cavium-octeon/csrc-octeon.c              |   51 +
+ arch/mips/cavium-octeon/dma-octeon.c               |   32 +
+ arch/mips/cavium-octeon/executive/Makefile         |   13 +
+ arch/mips/cavium-octeon/executive/cvmx-bootmem.c   |  586 ++++++
+ arch/mips/cavium-octeon/executive/cvmx-l2c.c       |  734 +++++++
+ arch/mips/cavium-octeon/executive/cvmx-sysinfo.c   |  116 ++
+ arch/mips/cavium-octeon/executive/octeon-model.c   |  340 ++++
+ arch/mips/cavium-octeon/flash_setup.c              |   84 +
+ arch/mips/cavium-octeon/octeon-irq.c               |  496 +++++
+ arch/mips/cavium-octeon/octeon-memcpy.S            |  521 +++++
+ arch/mips/cavium-octeon/serial.c                   |  136 ++
+ arch/mips/cavium-octeon/setup.c                    |  934 +++++++++
+ arch/mips/cavium-octeon/smp.c                      |  211 ++
+ arch/mips/configs/cavium-octeon_defconfig          |  943 +++++++++
+ arch/mips/include/asm/cpu-features.h               |    3 +
+ arch/mips/include/asm/cpu.h                        |   14 +
+ arch/mips/include/asm/hazards.h                    |    4 +-
+ arch/mips/include/asm/io.h                         |   14 +
+ .../asm/mach-cavium-octeon/cpu-feature-overrides.h |   58 +
+ .../include/asm/mach-cavium-octeon/dma-coherence.h |   64 +
+ arch/mips/include/asm/mach-cavium-octeon/irq.h     |  244 +++
+ .../asm/mach-cavium-octeon/kernel-entry-init.h     |  131 ++
+ arch/mips/include/asm/mach-cavium-octeon/war.h     |   26 +
+ arch/mips/include/asm/mach-generic/dma-coherence.h |   26 +-
+ arch/mips/include/asm/mach-ip27/dma-coherence.h    |   26 +-
+ arch/mips/include/asm/mach-ip32/dma-coherence.h    |   26 +-
+ arch/mips/include/asm/mach-jazz/dma-coherence.h    |   26 +-
+ arch/mips/include/asm/mach-lemote/dma-coherence.h  |   26 +-
+ arch/mips/include/asm/mipsregs.h                   |   22 +
+ arch/mips/include/asm/module.h                     |    2 +
+ arch/mips/include/asm/octeon/cvmx-asm.h            |  128 ++
+ arch/mips/include/asm/octeon/cvmx-bootinfo.h       |  262 +++
+ arch/mips/include/asm/octeon/cvmx-bootmem.h        |  288 +++
+ arch/mips/include/asm/octeon/cvmx-ciu-defs.h       | 1616 ++++++++++++++++
+ arch/mips/include/asm/octeon/cvmx-gpio-defs.h      |  219 +++
+ arch/mips/include/asm/octeon/cvmx-iob-defs.h       |  530 ++++++
+ arch/mips/include/asm/octeon/cvmx-ipd-defs.h       |  877 +++++++++
+ arch/mips/include/asm/octeon/cvmx-l2c-defs.h       |  963 ++++++++++
+ arch/mips/include/asm/octeon/cvmx-l2c.h            |  325 ++++
+ arch/mips/include/asm/octeon/cvmx-l2d-defs.h       |  369 ++++
+ arch/mips/include/asm/octeon/cvmx-l2t-defs.h       |  141 ++
+ arch/mips/include/asm/octeon/cvmx-led-defs.h       |  240 +++
+ arch/mips/include/asm/octeon/cvmx-mio-defs.h       | 2004 ++++++++++++++++++++
+ arch/mips/include/asm/octeon/cvmx-packet.h         |   61 +
+ arch/mips/include/asm/octeon/cvmx-platform.h       |   56 +
+ arch/mips/include/asm/octeon/cvmx-pow-defs.h       |  698 +++++++
+ arch/mips/include/asm/octeon/cvmx-spinlock.h       |  232 +++
+ arch/mips/include/asm/octeon/cvmx-sysinfo.h        |  152 ++
+ arch/mips/include/asm/octeon/cvmx.h                |  503 +++++
+ arch/mips/include/asm/octeon/octeon-feature.h      |  119 ++
+ arch/mips/include/asm/octeon/octeon-model.h        |  276 +++
+ arch/mips/include/asm/octeon/octeon.h              |  248 +++
+ arch/mips/include/asm/processor.h                  |   69 +
+ arch/mips/include/asm/ptrace.h                     |    4 +
+ arch/mips/include/asm/smp.h                        |    3 +
+ arch/mips/include/asm/stackframe.h                 |   17 +
+ arch/mips/kernel/Makefile                          |    1 +
+ arch/mips/kernel/asm-offsets.c                     |   31 +
+ arch/mips/kernel/branch.c                          |   33 +
+ arch/mips/kernel/cpu-probe.c                       |   25 +
+ arch/mips/kernel/genex.S                           |    4 +
+ arch/mips/kernel/octeon_switch.S                   |  506 +++++
+ arch/mips/kernel/traps.c                           |   21 +
+ arch/mips/lib/Makefile                             |    1 +
+ arch/mips/mm/Makefile                              |    1 +
+ arch/mips/mm/c-octeon.c                            |  307 +++
+ arch/mips/mm/cache.c                               |    6 +
+ arch/mips/mm/cex-oct.S                             |   70 +
+ arch/mips/mm/dma-default.c                         |   25 +-
+ arch/mips/mm/tlbex.c                               |    1 +
+ 74 files changed, 17497 insertions(+), 24 deletions(-)
+ create mode 100644 arch/mips/cavium-octeon/Kconfig
+ create mode 100644 arch/mips/cavium-octeon/Makefile
+ create mode 100644 arch/mips/cavium-octeon/csrc-octeon.c
+ create mode 100644 arch/mips/cavium-octeon/dma-octeon.c
+ create mode 100644 arch/mips/cavium-octeon/executive/Makefile
+ create mode 100644 arch/mips/cavium-octeon/executive/cvmx-bootmem.c
+ create mode 100644 arch/mips/cavium-octeon/executive/cvmx-l2c.c
+ create mode 100644 arch/mips/cavium-octeon/executive/cvmx-sysinfo.c
+ create mode 100644 arch/mips/cavium-octeon/executive/octeon-model.c
+ create mode 100644 arch/mips/cavium-octeon/flash_setup.c
+ create mode 100644 arch/mips/cavium-octeon/octeon-irq.c
+ create mode 100644 arch/mips/cavium-octeon/octeon-memcpy.S
+ create mode 100644 arch/mips/cavium-octeon/serial.c
+ create mode 100644 arch/mips/cavium-octeon/setup.c
+ create mode 100644 arch/mips/cavium-octeon/smp.c
+ create mode 100644 arch/mips/configs/cavium-octeon_defconfig
+ create mode 100644 arch/mips/include/asm/mach-cavium-octeon/cpu-feature-overrides.h
+ create mode 100644 arch/mips/include/asm/mach-cavium-octeon/dma-coherence.h
+ create mode 100644 arch/mips/include/asm/mach-cavium-octeon/irq.h
+ create mode 100644 arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
+ create mode 100644 arch/mips/include/asm/mach-cavium-octeon/war.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-asm.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-bootinfo.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-bootmem.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-ciu-defs.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-gpio-defs.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-iob-defs.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-ipd-defs.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-l2c-defs.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-l2c.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-l2d-defs.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-l2t-defs.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-led-defs.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-mio-defs.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-packet.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-platform.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-pow-defs.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-spinlock.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-sysinfo.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx.h
+ create mode 100644 arch/mips/include/asm/octeon/octeon-feature.h
+ create mode 100644 arch/mips/include/asm/octeon/octeon-model.h
+ create mode 100644 arch/mips/include/asm/octeon/octeon.h
+ create mode 100644 arch/mips/kernel/octeon_switch.S
+ create mode 100644 arch/mips/mm/c-octeon.c
+ create mode 100644 arch/mips/mm/cex-oct.S

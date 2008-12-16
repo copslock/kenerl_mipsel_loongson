@@ -1,54 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Dec 2008 10:02:29 +0000 (GMT)
-Received: from wmproxy1-g27.free.fr ([212.27.42.91]:49965 "EHLO
-	wmproxy1-g27.free.fr") by ftp.linux-mips.org with ESMTP
-	id S24037360AbYLOKCW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 15 Dec 2008 10:02:22 +0000
-Received: from UNKNOWN (imp2-g19.priv.proxad.net [172.20.243.132])
-	by wmproxy1-g27.free.fr (Postfix) with ESMTP id B24EE516F2
-	for <linux-mips@linux-mips.org>; Mon, 15 Dec 2008 11:57:00 +0100 (CET)
-Received: by UNKNOWN (Postfix, from userid 0)
-	id 1CC904906A939; Mon, 15 Dec 2008 11:02:22 +0100 (CET)
-Received: from  ([83.154.50.51]) 
-	by imp.free.fr (IMP) with HTTP 
-	for <s.boutayeb@172.20.243.55>; Mon, 15 Dec 2008 11:02:22 +0100
-Message-ID: <1229335342.49462b2e0a5d8@imp.free.fr>
-Date:	Mon, 15 Dec 2008 11:02:22 +0100
-From:	s.boutayeb@free.fr
-To:	linux-mips@linux-mips.org
-Subject: New project: GNewSenseToMIPS
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
-User-Agent: Internet Messaging Program (IMP) 3.2.8
-X-Originating-IP: 83.154.50.51
-Return-Path: <s.boutayeb@free.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 16 Dec 2008 13:04:56 +0000 (GMT)
+Received: from smtp.movial.fi ([62.236.91.34]:13197 "EHLO smtp.movial.fi")
+	by ftp.linux-mips.org with ESMTP id S24207395AbYLPNEv (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 16 Dec 2008 13:04:51 +0000
+Received: from localhost (mailscanner.hel.movial.fi [172.17.81.9])
+	by smtp.movial.fi (Postfix) with ESMTP id 75292C8073;
+	Tue, 16 Dec 2008 15:04:45 +0200 (EET)
+X-Virus-Scanned: Debian amavisd-new at movial.fi
+Received: from smtp.movial.fi ([62.236.91.34])
+	by localhost (mailscanner.hel.movial.fi [172.17.81.9]) (amavisd-new, port 10026)
+	with ESMTP id 6WQRvbEv2VbX; Tue, 16 Dec 2008 15:04:45 +0200 (EET)
+Received: from sd048.hel.movial.fi (sd048.hel.movial.fi [172.17.49.48])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp.movial.fi (Postfix) with ESMTP id 53627C8012;
+	Tue, 16 Dec 2008 15:04:45 +0200 (EET)
+Received: by sd048.hel.movial.fi (Postfix, from userid 30120)
+	id 12A64B4018; Tue, 16 Dec 2008 15:04:44 +0200 (EET)
+From:	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+To:	linux-scsi@vger.kernel.org, James.Bottomley@HansenPartnership.com
+Cc:	linux-mips@linux-mips.org,
+	Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+Subject: [PATCH RESEND] [SCSI] Fix compilation warning in sgiwd93.c
+Date:	Tue, 16 Dec 2008 15:04:44 +0200
+Message-Id: <1229432684-20444-1-git-send-email-dmitri.vorobiev@movial.fi>
+X-Mailer: git-send-email 1.5.6.5
+Return-Path: <dvorobye@movial.fi>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21608
+X-archive-position: 21609
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: s.boutayeb@free.fr
+X-original-sender: dmitri.vorobiev@movial.fi
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
+The remove() callback in platform drivers should return int in
+accordance to the definition of the platform_driver structure.
+However, the SGI-specific WD93 SCSI controller driver defines
+the callback as a void function, which causes the following
+compilation warning:
 
-I am glad to announce the creation of the project GNewSenseToMIPS
+drivers/scsi/sgiwd93.c:314: warning: initialization from
+incompatible pointer type
 
-This project is created after the call for volunteers:
-http://wiki.gnewsense.org/ForumMain/GNewSenseMIPSPort
+This patch fixes the warning by changing the return type of
+the remove() callback to what the core driver code requires.
 
-The project will realize the intention of The Free Software Foundation to port
-the gNewSense distribution (http://www.gnewsense.org/static/homepage/ ) on the
-Yeelong laptop (http://www.lemote.com/english/yeeloong.html ) manufactured by
-Lemote Tech (http://www.lemote.com/ ).
+Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@movial.fi>
+---
+ drivers/scsi/sgiwd93.c |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
 
-We have a first project page here:
-
-http://wiki.gnewsense.org/Projects/GNewSenseToMIPS
-
-Best regards
-
-Samy
+diff --git a/drivers/scsi/sgiwd93.c b/drivers/scsi/sgiwd93.c
+index 31fe605..0807b26 100644
+--- a/drivers/scsi/sgiwd93.c
++++ b/drivers/scsi/sgiwd93.c
+@@ -297,7 +297,7 @@ out:
+ 	return err;
+ }
+ 
+-static void __exit sgiwd93_remove(struct platform_device *pdev)
++static int __exit sgiwd93_remove(struct platform_device *pdev)
+ {
+ 	struct Scsi_Host *host = platform_get_drvdata(pdev);
+ 	struct ip22_hostdata *hdata = (struct ip22_hostdata *) host->hostdata;
+@@ -307,6 +307,7 @@ static void __exit sgiwd93_remove(struct platform_device *pdev)
+ 	free_irq(pd->irq, host);
+ 	dma_free_noncoherent(&pdev->dev, HPC_DMA_SIZE, hdata->cpu, hdata->dma);
+ 	scsi_host_put(host);
++	return 0;
+ }
+ 
+ static struct platform_driver sgiwd93_driver = {
+-- 
+1.5.4.3

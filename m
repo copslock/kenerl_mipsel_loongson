@@ -1,63 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2008 08:07:46 +0000 (GMT)
-Received: from h4.dl5rb.org.uk ([81.2.74.4]:27367 "EHLO
-	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S24006162AbYLRIHn (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 18 Dec 2008 08:07:43 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id mBI87fg2028704;
-	Thu, 18 Dec 2008 08:07:41 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id mBI87e3F028702;
-	Thu, 18 Dec 2008 08:07:40 GMT
-Date:	Thu, 18 Dec 2008 08:07:40 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Define  __arch_swab64 for all mips r2 cpus.
-Message-ID: <20081218080740.GA15338@linux-mips.org>
-References: <1229546644-3030-1-git-send-email-ddaney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2008 14:06:39 +0000 (GMT)
+Received: from wf-out-1314.google.com ([209.85.200.169]:52278 "EHLO
+	wf-out-1314.google.com") by ftp.linux-mips.org with ESMTP
+	id S24208181AbYLROGh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 18 Dec 2008 14:06:37 +0000
+Received: by wf-out-1314.google.com with SMTP id 27so478787wfd.21
+        for <linux-mips@linux-mips.org>; Thu, 18 Dec 2008 06:06:34 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to
+         :subject:mime-version:content-type;
+        bh=HevR1seW7MjmCk0rEkKloHcZQY6LKxTAc/3U20EybSY=;
+        b=k3ysva4RDxxm2gcdN5K78X28BvKPSoi6CVptwdORXrAyoMxzaJzu8jZRJrarXw2mdT
+         zV5Ev3hB8WhEveq8lPomQRwoukxq8L5j3FV1TPlzfAAWG7y+69bDqjOaB5IFxitcwNPO
+         6MeQm2qdtoNyveMMeNDA+Ofu96ud2fOBl4594=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:mime-version:content-type;
+        b=WMzf2rfuGbRPB7ZVwM0TqrMjEkR5oDhXZAYjYeYE5Fsb3Qb0dBKruy/1QSPEM3mmao
+         gPjitWGSBFyoFq2aMBwYOke0Ie32E+vhh5NQUTN8LAM5+utMc72y4fT2KlQn+8kqRzEH
+         /L/BCGOuNJCFiEs7sL11FmJXDexICaGSXhOLk=
+Received: by 10.142.134.17 with SMTP id h17mr821012wfd.228.1229609194443;
+        Thu, 18 Dec 2008 06:06:34 -0800 (PST)
+Received: by 10.143.35.18 with HTTP; Thu, 18 Dec 2008 06:06:34 -0800 (PST)
+Message-ID: <f2e0c4580812180606h4699be41x1128c97086ebb902@mail.gmail.com>
+Date:	Thu, 18 Dec 2008 19:36:34 +0530
+From:	Viswanath <rviswanathreddy@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Gprofiling Missing gcrt1.o Object file
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1229546644-3030-1-git-send-email-ddaney@caviumnetworks.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_35126_12878630.1229609194416"
+Return-Path: <rviswanathreddy@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21620
+X-archive-position: 21621
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: rviswanathreddy@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Dec 17, 2008 at 12:44:04PM -0800, David Daney wrote:
+------=_Part_35126_12878630.1229609194416
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-> Some CPUs implement mipsr2, but because they are a super-set of
-> mips64r2 do not define CONFIG_CPU_MIPS64_R2.  Cavium OCTEON falls into
-> this category.  We would still like to use the optimized
-> implementation, so since we have already checked for
-> CONFIG_CPU_MIPSR2, checking for CONFIG_64BIT instead of
-> CONFIG_CPU_MIPS64_R2 is sufficient.
-> 
-> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-> ---
->  arch/mips/include/asm/byteorder.h |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
-> 
-> diff --git a/arch/mips/include/asm/byteorder.h b/arch/mips/include/asm/byteorder.h
-> index 2988d29..92ec1e1 100644
-> --- a/arch/mips/include/asm/byteorder.h
-> +++ b/arch/mips/include/asm/byteorder.h
-> @@ -46,7 +46,7 @@ static inline __attribute_const__ __u32 __arch_swab32(__u32 x)
->  }
->  #define __arch_swab32 __arch_swab32
->  
-> -#ifdef CONFIG_CPU_MIPS64_R2
-> +#ifdef CONFIG_64BIT
+Hi,
+          I am trying to profile (gprof profiling) my application which is
+cross-compiled for the target Mips system [*Linux Mips 2.6.8.1]* and UCLIBC
+*uclibc-crosstools_gcc-3.4.2_uclibc-20050502. *As far as i searched in the
+google i could see a requirement of gcrt1.o object file for the mips linux
+which is not available on the mips-linux.
 
-This breaks every non-R2 64-bit processor.
+          I tried linking with crt1.o but i could not get accurate profiling
+information. I came to know that gcrt1.o is required to get the accurate
+information. Where can i get the so called gcrt1.o for Mips-linux.
 
-  Ralf
+Thanks & Regards,
+Viswanath.
+
+------=_Part_35126_12878630.1229609194416
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+Hi,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; I am trying to profile (gprof profiling) my application which is cross-compiled for the target Mips system [<b>Linux Mips 2.6.8.1]</b> and UCLIBC <b>uclibc-crosstools_gcc-3.4.2_uclibc-20050502. </b>As far as i searched in the google i could see a requirement of gcrt1.o object file for the mips linux which is not available on the mips-linux. <br>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; I tried linking with crt1.o but i could not get accurate profiling information. I came to know that gcrt1.o is required to get the accurate information. Where can i get the so called gcrt1.o for Mips-linux.<br>
+<br>Thanks &amp; Regards,<br>Viswanath.<br>
+
+------=_Part_35126_12878630.1229609194416--

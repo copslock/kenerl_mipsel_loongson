@@ -1,47 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2008 17:06:11 +0000 (GMT)
-Received: from h4.dl5rb.org.uk ([81.2.74.4]:2719 "EHLO
-	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S24037373AbYLRRGG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 18 Dec 2008 17:06:06 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id mBIH63W1007340;
-	Thu, 18 Dec 2008 17:06:03 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id mBIH62b6007338;
-	Thu, 18 Dec 2008 17:06:02 GMT
-Date:	Thu, 18 Dec 2008 17:06:02 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Define  __arch_swab64 for all mips r2 cpus.
-Message-ID: <20081218170602.GC6868@linux-mips.org>
-References: <1229546644-3030-1-git-send-email-ddaney@caviumnetworks.com> <20081218080740.GA15338@linux-mips.org> <494A7D5F.6060103@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Dec 2008 17:07:23 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:28284 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S24207341AbYLRRHU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 18 Dec 2008 17:07:20 +0000
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B494a83410000>; Thu, 18 Dec 2008 12:07:13 -0500
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 18 Dec 2008 08:58:41 -0800
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 18 Dec 2008 08:58:41 -0800
+Message-ID: <494A8141.2050006@caviumnetworks.com>
+Date:	Thu, 18 Dec 2008 08:58:41 -0800
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.18 (X11/20081119)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <494A7D5F.6060103@caviumnetworks.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+To:	Viswanath <rviswanathreddy@gmail.com>
+CC:	linux-mips@linux-mips.org
+Subject: Re: Gprofiling Missing gcrt1.o Object file
+References: <f2e0c4580812180606h4699be41x1128c97086ebb902@mail.gmail.com>
+In-Reply-To: <f2e0c4580812180606h4699be41x1128c97086ebb902@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 18 Dec 2008 16:58:41.0465 (UTC) FILETIME=[E11A2A90:01C96131]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21623
+X-archive-position: 21624
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Dec 18, 2008 at 08:42:07AM -0800, David Daney wrote:
+Viswanath wrote:
+> Hi,
+>           I am trying to profile (gprof profiling) my application which 
+> is cross-compiled for the target Mips system [*Linux Mips 2.6.8.1]* and 
+> UCLIBC *uclibc-crosstools_gcc-3.4.2_uclibc-20050502. *As far as i 
+> searched in the google i could see a requirement of gcrt1.o object file 
+> for the mips linux which is not available on the mips-linux.
+> 
+>           I tried linking with crt1.o but i could not get accurate 
+> profiling information. I came to know that gcrt1.o is required to get 
+> the accurate information. Where can i get the so called gcrt1.o for 
+> Mips-linux.
+> 
 
->> This breaks every non-R2 64-bit processor.
->>
-> I disagree. As I said before, the entire block is wrapped by #ifdef  
-> MIPS_R2.  non-R2 processors will not get any of the optimized byte  
-> swapping code.  I just want to allow all 64 bit R2 processors to use the  
-> optimized code.
+gcrt1.o should be part of the C library (uClibc in your case).  If it is 
+  not providing it, it is a bug in uClibc.
 
-Whops sorry.  I missed that this was wrapped into yet another #ifdef.
+Actually I don't even know it uClibc supplies a gcrt1.o.  Our build 
+doesn't seem to have one.  If you build a glibc based system, that would 
+give you a working gcrt1.o
 
-  Ralf
+David Daney

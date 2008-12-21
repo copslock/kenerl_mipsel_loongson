@@ -1,53 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Dec 2008 17:11:04 +0000 (GMT)
-Received: from h4.dl5rb.org.uk ([81.2.74.4]:29933 "EHLO
-	ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk") by ftp.linux-mips.org
-	with ESMTP id S24207671AbYLURLC (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 21 Dec 2008 17:11:02 +0000
-Received: from denk.linux-mips.net (denk.linux-mips.net [127.0.0.1])
-	by ditditdahdahdah-dahdahdahditdit.dl5rb.org.uk (8.14.2/8.14.1) with ESMTP id mBLHB1Jd017975;
-	Sun, 21 Dec 2008 17:11:01 GMT
-Received: (from ralf@localhost)
-	by denk.linux-mips.net (8.14.2/8.14.2/Submit) id mBLHB1sd017973;
-	Sun, 21 Dec 2008 17:11:01 GMT
-Date:	Sun, 21 Dec 2008 17:11:01 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Manuel Lauss <mano@roarinelk.homelinux.net>
-Cc:	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 02/14] Alchemy: devboards: consolidate files
-Message-ID: <20081221171101.GB10532@linux-mips.org>
-References: <cover.1229846410.git.mano@roarinelk.homelinux.net> <80cf5c7a0db39a7230bae7766264acbfc68d200e.1229846412.git.mano@roarinelk.homelinux.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 21 Dec 2008 18:14:07 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:63090 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S24207822AbYLUSOF (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 21 Dec 2008 18:14:05 +0000
+Received: from [192.168.1.234] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id D9AA33ECA; Sun, 21 Dec 2008 10:14:02 -0800 (PST)
+Message-ID: <494E8786.2040103@ru.mvista.com>
+Date:	Sun, 21 Dec 2008 21:14:30 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <80cf5c7a0db39a7230bae7766264acbfc68d200e.1229846412.git.mano@roarinelk.homelinux.net>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Manuel Lauss <mano@roarinelk.homelinux.net>,
+	Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 01/14] Alchemy: move development board code to common
+ subdirectory
+References: <cover.1229846410.git.mano@roarinelk.homelinux.net> <caebb02f97491d8e5830438e1a746b0e02fa2c7c.1229846411.git.mano@roarinelk.homelinux.net> <20081221170806.GA10532@linux-mips.org>
+In-Reply-To: <20081221170806.GA10532@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21651
+X-archive-position: 21652
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Dec 21, 2008 at 09:26:15AM +0100, Manuel Lauss wrote:
+Hello.
 
-> Share some code and merge small files:
-> - Extract the prom init code from all devboard files (they only differ in
->   memory configuration).
-> - Merge the irq configuration into board setup code.
-> - Merge smaller files into board setup code.
-> 
-> Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
+Ralf Baechle wrote:
 
-Same comment as for 01/14 for this patch:
+>>Move alchemy development board code to common subdirectory. This should
+>>ease sharing of common devboard code.
 
-You're submitting this for 2.6.28 please ensure your patches apply
-against the -queue tree.  There is already another patch in -queue touching
-the Alchemy code so this patch rejects.  I fixed it up but it's avoidable
-work ...
+>>Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
 
-  Ralf
+> You're submitting this for 2.6.28 please ensure your patches apply
+> against the -queue tree.  There is already another patch in -queue touching
+
+    I'm sure you meant to type 2.6.29. :-)
+
+>   Ralf
+
+WBR, Sergei

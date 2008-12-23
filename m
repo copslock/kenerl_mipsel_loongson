@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Dec 2008 19:47:08 +0000 (GMT)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:14225 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 23 Dec 2008 19:59:32 +0000 (GMT)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:65471 "EHLO
 	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S24208003AbYLWTrG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 23 Dec 2008 19:47:06 +0000
-Received: (qmail 24626 invoked from network); 23 Dec 2008 20:47:04 +0100
+	id S24207993AbYLWT7a (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 23 Dec 2008 19:59:30 +0000
+Received: (qmail 24690 invoked from network); 23 Dec 2008 20:59:29 +0100
 Received: from scarran.roarinelk.net (HELO localhost.localdomain) (192.168.0.242)
-  by 192.168.0.1 with SMTP; 23 Dec 2008 20:47:04 +0100
+  by 192.168.0.1 with SMTP; 23 Dec 2008 20:59:29 +0100
 From:	Manuel Lauss <mano@roarinelk.homelinux.net>
 To:	Linux-MIPS <linux-mips@linux-mips.org>
 Cc:	Manuel Lauss <mano@roarinelk.homelinux.net>
-Subject: [PATCH] Alchemy: fix gpio_to_irq().
-Date:	Tue, 23 Dec 2008 20:47:03 +0100
-Message-Id: <1230061623-24717-1-git-send-email-mano@roarinelk.homelinux.net>
+Subject: [PATCH v2] Alchemy: fix gpio_to_irq().
+Date:	Tue, 23 Dec 2008 20:59:24 +0100
+Message-Id: <1230062364-24788-1-git-send-email-mano@roarinelk.homelinux.net>
 X-Mailer: git-send-email 1.6.0.4
 Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21661
+X-archive-position: 21662
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -30,12 +30,14 @@ irq-capable and every CPU model has them wired up differently.
 
 Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
 ---
- arch/mips/alchemy/common/gpio.c          |  101 +++++++++++++++++++++++++++---
- arch/mips/include/asm/mach-au1x00/gpio.h |    7 +-
- 2 files changed, 97 insertions(+), 11 deletions(-)
+This update removes all but one EINVAL.
+
+ arch/mips/alchemy/common/gpio.c          |   88 +++++++++++++++++++++++++++---
+ arch/mips/include/asm/mach-au1x00/gpio.h |    7 ++-
+ 2 files changed, 84 insertions(+), 11 deletions(-)
 
 diff --git a/arch/mips/alchemy/common/gpio.c b/arch/mips/alchemy/common/gpio.c
-index e660ddd..9f22b52 100644
+index e660ddd..7bac8f7 100644
 --- a/arch/mips/alchemy/common/gpio.c
 +++ b/arch/mips/alchemy/common/gpio.c
 @@ -40,27 +40,27 @@ static struct au1x00_gpio2 *const gpio2 = (struct au1x00_gpio2 *) GPIO2_BASE;
@@ -106,7 +108,7 @@ index e660ddd..9f22b52 100644
  #if defined(CONFIG_SOC_AU1000)
  		return -ENODEV;
  #else
-@@ -146,3 +146,88 @@ int au1xxx_gpio_direction_output(unsigned gpio, int value)
+@@ -146,3 +146,75 @@ int au1xxx_gpio_direction_output(unsigned gpio, int value)
  	return au1xxx_gpio1_direction_output(gpio, value);
  }
  EXPORT_SYMBOL(au1xxx_gpio_direction_output);
@@ -120,9 +122,7 @@ index e660ddd..9f22b52 100644
 +{
 +#ifdef CONFIG_SOC_AU1000
 +
-+	if (gpio >= AU1XXX_GPIO2_BASE)
-+		return -EINVAL;
-+	else
++	if ((gpio >= 0) && (gpio <= 31))
 +		return MAKE_IRQ(1, gpio);
 +
 +#elif defined(CONFIG_SOC_AU1100)
@@ -130,8 +130,6 @@ index e660ddd..9f22b52 100644
 +	if (gpio >= AU1XXX_GPIO2_BASE) {
 +		if ((gpio >= GPIO2(8)) && (gpio <= GPIO2(15)))
 +			return MAKE_IRQ(0, 29);
-+		else
-+			return -EINVAL;
 +	} else
 +		return MAKE_IRQ(1, gpio);
 +
@@ -144,14 +142,10 @@ index e660ddd..9f22b52 100644
 +			return MAKE_GPIO2_IRQ(1, 21, gpio - 4);
 +		else if ((gpio >= GPIO2(6)) && (gpio <= GPIO2(7)))
 +			return MAKE_GPIO2_IRQ(1, 29, gpio - 6);
-+		else
-+			return -EINVAL;
 +	} else {
 +		if (((gpio >= 0) && (gpio <= 15)) || (gpio == 20) ||
 +		    ((gpio >= 23) && (gpio <= 28)))
 +			return MAKE_IRQ(1, gpio);
-+		else
-+			return -EINVAL;
 +	}
 +
 +#elif defined(CONFIG_SOC_AU1550)
@@ -171,8 +165,6 @@ index e660ddd..9f22b52 100644
 +			return MAKE_IRQ(1, gpio);
 +		else if ((gpio >= 16) && (gpio <= 17))
 +			return MAKE_IRQ(1, gpio + 2);
-+		else
-+			return -EINVAL;
 +	}
 +
 +#elif defined(CONFIG_SOC_AU1200)
@@ -186,13 +178,10 @@ index e660ddd..9f22b52 100644
 +			return MAKE_GPIO2_IRQ(0, 24, gpio - 4);
 +		else if ((gpio >= GPIO2(8)) && (gpio <= GPIO2(15)))
 +			return MAKE_IRQ(0, 28);
-+		else
-+			return -EINVAL;
 +	} else
 +		return MAKE_IRQ(1, gpio);
-+#else
-+	return -EINVAL;
 +#endif
++	return -EINVAL;
 +}
 +EXPORT_SYMBOL(au1xxx_gpio_to_irq);
 diff --git a/arch/mips/include/asm/mach-au1x00/gpio.h b/arch/mips/include/asm/mach-au1x00/gpio.h

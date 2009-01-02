@@ -1,64 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Dec 2008 19:02:34 +0000 (GMT)
-Received: from mail-bw0-f13.google.com ([209.85.218.13]:3275 "EHLO
-	mail-bw0-f13.google.com") by ftp.linux-mips.org with ESMTP
-	id S24208343AbYL2TCM (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 29 Dec 2008 19:02:12 +0000
-Received: by bwz6 with SMTP id 6so13179826bwz.0
-        for <linux-mips@linux-mips.org>; Mon, 29 Dec 2008 11:02:06 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Jan 2009 15:10:04 +0000 (GMT)
+Received: from nf-out-0910.google.com ([64.233.182.184]:26696 "EHLO
+	nf-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S22774218AbZABPJ7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 2 Jan 2009 15:09:59 +0000
+Received: by nf-out-0910.google.com with SMTP id h3so872995nfh.14
+        for <multiple recipients>; Fri, 02 Jan 2009 07:09:58 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:subject:date
-         :user-agent:cc:references:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:content-disposition:message-id;
-        bh=+aLRc3gJHwU3Je9tZp2q/G8BclxZ7ucuh38nB5Lsi/M=;
-        b=F61ikEgGjKFBDx53epy0gPD0NKBxpt/EIMwzHgvQfiRv/9S7/pHKFh5eE75EHcgaPG
-         lkBXL9kJcvCXsXFALJTphl5CzZHXVfI4YM6OhgQEpy+Jh4s6xhwU2Wus6o+QiBKg8tEl
-         EGei9d3IMkAKz5IPFQJ+8PgJF5gOOguIYzC04=
+        h=domainkey-signature:received:received:message-id:date:from
+         :user-agent:mime-version:to:cc:subject:content-type
+         :content-transfer-encoding;
+        bh=dmnEB+GhJDgh6sg5w0OitCDzYTiMlF4/FRw0HkgpiYY=;
+        b=KMESLaVQtX8Qg2RU6kZSYcnWFxIW2ysJEHk2IdKpaiFM2Y/odzb5xu3xJdIMytY9+c
+         kiVtbHoGLdEq/6deap9pZyub2JhnpMlmqjmoYAEJPP5ENUSzbkfVbqlEg1j30kIdREpi
+         uEnjJn83OX563KjdQ2QBEFNfYT7gCRYAtsHjo=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:subject:date:user-agent:cc:references:in-reply-to
-         :mime-version:content-type:content-transfer-encoding
-         :content-disposition:message-id;
-        b=AWom/l5Nxyj+aPTH67b2j2N95w++BF1U+MHWgZSS6lHwAO6YhnXs0DKYTqoB3q23Jg
-         WQlEvWJMwxdCk1cMWs6CvKwOqHnRzoCE+5lA3vb7HCZOq3PHYjMNUSBomS5e8kNyYqi7
-         QAD5giOFY3nmQxLkmHXz9uDc0tKQP0ngSlHaA=
-Received: by 10.103.40.5 with SMTP id s5mr4973095muj.4.1230577326126;
-        Mon, 29 Dec 2008 11:02:06 -0800 (PST)
-Received: from localhost.localdomain (chello089077051219.chello.pl [89.77.51.219])
-        by mx.google.com with ESMTPS id u26sm31119357mug.26.2008.12.29.11.02.04
+        h=message-id:date:from:user-agent:mime-version:to:cc:subject
+         :content-type:content-transfer-encoding;
+        b=uGvGsUj8IlYgw6v6uhX4Rxwm2CYZK/GwUqDCCjj690n5q9T5zZeA5VwBcqY7uCgZOf
+         6SZ2hrasBlmvNfz3Ab+06mry2DuqBnHFvDmPengzaxPXIja52UEcWWqENwXGZu5e8rN0
+         YKFE1Td7A8MnjRQWtkN902Rd+8IMCrLFB5PEs=
+Received: by 10.210.109.10 with SMTP id h10mr21005103ebc.10.1230908998270;
+        Fri, 02 Jan 2009 07:09:58 -0800 (PST)
+Received: from ?192.168.1.148? (d133062.upc-d.chello.nl [213.46.133.62])
+        by mx.google.com with ESMTPS id f3sm31650819nfh.34.2009.01.02.07.09.57
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 29 Dec 2008 11:02:05 -0800 (PST)
-From:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Subject: Re: [PATCH] tx4939ide: Do not use zero count PRD entry
-Date:	Mon, 29 Dec 2008 19:38:14 +0100
-User-Agent: KMail/1.10.3 (Linux/2.6.28-rc8-next-20081219; KDE/4.1.3; i686; ; )
-Cc:	linux-ide@vger.kernel.org, sshtylyov@ru.mvista.com,
-	linux-mips@linux-mips.org, stable <stable@kernel.org>
-References: <1230215558-9197-1-git-send-email-anemo@mba.ocn.ne.jp>
-In-Reply-To: <1230215558-9197-1-git-send-email-anemo@mba.ocn.ne.jp>
+        Fri, 02 Jan 2009 07:09:57 -0800 (PST)
+Message-ID: <495E2E47.6080605@gmail.com>
+Date:	Fri, 02 Jan 2009 16:09:59 +0100
+From:	Roel Kluin <roel.kluin@gmail.com>
+User-Agent: Thunderbird 2.0.0.18 (X11/20081105)
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="utf-8"
+To:	ralf@linux-mips.org
+CC:	linux-mips@linux-mips.org
+Subject: [PATCH] MIPS: unsigned result is always greater than 0
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200812291938.14580.bzolnier@gmail.com>
-Return-Path: <bzolnier@gmail.com>
+Return-Path: <roel.kluin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21675
+X-archive-position: 21678
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bzolnier@gmail.com
+X-original-sender: roel.kluin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thursday 25 December 2008, Atsushi Nemoto wrote:
-> This fixes data corruption on some heavy load.
-> 
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-> Cc: stable <stable@kernel.org>
+unsigned result is always greater than 0
 
-applied
+Signed-off-by: Roel Kluin <roel.kluin@gmail.com>
+---
+I cannot determine whether the same bug occurs as well in assembly.
+Also shouldn't similar checks occur in atomic64_sub_return and in
+atomic64_add_return for negative values of i?
+
+diff --git a/arch/mips/include/asm/atomic.h b/arch/mips/include/asm/atomic.h
+index 1232be3..3cd07a9 100644
+--- a/arch/mips/include/asm/atomic.h
++++ b/arch/mips/include/asm/atomic.h
+@@ -296,9 +296,10 @@ static __inline__ int atomic_sub_if_positive(int i, atomic_t * v)
+ 
+ 		raw_local_irq_save(flags);
+ 		result = v->counter;
+-		result -= i;
+-		if (result >= 0)
++		if (i <= result) {
++			result -= i;
+ 			v->counter = result;
++		}
+ 		raw_local_irq_restore(flags);
+ 	}
+ 
+@@ -677,9 +678,10 @@ static __inline__ long atomic64_sub_if_positive(long i, atomic64_t * v)
+ 
+ 		raw_local_irq_save(flags);
+ 		result = v->counter;
+-		result -= i;
+-		if (result >= 0)
++		if (i >= result) {
++			result -= i;
+ 			v->counter = result;
++		}
+ 		raw_local_irq_restore(flags);
+ 	}
+ 

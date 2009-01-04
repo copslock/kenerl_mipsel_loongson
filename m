@@ -1,67 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Jan 2009 16:33:10 +0000 (GMT)
-Received: from accolon.hansenpartnership.com ([76.243.235.52]:17856 "EHLO
-	accolon.hansenpartnership.com") by ftp.linux-mips.org with ESMTP
-	id S24208002AbZABQdI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 2 Jan 2009 16:33:08 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by accolon.hansenpartnership.com (Postfix) with ESMTP id 569D481DC;
-	Fri,  2 Jan 2009 10:33:01 -0600 (CST)
-Received: from accolon.hansenpartnership.com ([127.0.0.1])
-	by localhost (redscar.int.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id KorKJGzqVqKG; Fri,  2 Jan 2009 10:33:00 -0600 (CST)
-Received: from [153.66.150.222] (mulgrave-w.int.hansenpartnership.com [153.66.150.222])
-	by accolon.hansenpartnership.com (Postfix) with ESMTP id 2D0C97F63;
-	Fri,  2 Jan 2009 10:33:00 -0600 (CST)
-Subject: Re: [PATCH] SCSI: fix the return type of the remove() method in
-	sgiwd93.c
-From:	James Bottomley <James.Bottomley@HansenPartnership.com>
-To:	Kay Sievers <kay.sievers@vrfy.org>
-Cc:	Vorobiev Dmitri <dmitri.vorobiev@movial.fi>,
-	linux-scsi@vger.kernel.org, linux-mips@linux-mips.org,
-	Greg KH <greg@kroah.com>
-In-Reply-To: <ac3eb2510901020831q5c17f38cr65fa8cb9f49bb077@mail.gmail.com>
-References: <1227140357-29921-1-git-send-email-dmitri.vorobiev@movial.fi>
-	 <1228330800.5551.58.camel@localhost.localdomain>
-	 <ac3eb2510812031229l51912169o3e96346ed51c48f0@mail.gmail.com>
-	 <1228337529.5551.72.camel@localhost.localdomain>
-	 <ac3eb2510812031259v1a4ebe25tc841daaa2fe5a722@mail.gmail.com>
-	 <1228338142.5551.77.camel@localhost.localdomain>
-	 <ac3eb2510812031328x38559660rcc13db195e01ea15@mail.gmail.com>
-	 <1228340025.5551.87.camel@localhost.localdomain>
-	 <1228340496.6977.19.camel@nga>
-	 <1230913510.3304.2.camel@localhost.localdomain>
-	 <ac3eb2510901020831q5c17f38cr65fa8cb9f49bb077@mail.gmail.com>
-Content-Type: text/plain
-Date:	Fri, 02 Jan 2009 10:32:59 -0600
-Message-Id: <1230913979.3304.3.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.22.3.1 (2.22.3.1-1.fc9) 
-Content-Transfer-Encoding: 7bit
-Return-Path: <James.Bottomley@HansenPartnership.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Jan 2009 14:54:06 +0000 (GMT)
+Received: from main.gmane.org ([80.91.229.2]:19842 "EHLO ciao.gmane.org")
+	by ftp.linux-mips.org with ESMTP id S24207815AbZADOyE (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 4 Jan 2009 14:54:04 +0000
+Received: from list by ciao.gmane.org with local (Exim 4.43)
+	id 1LJUMd-00017h-6K
+	for linux-mips@linux-mips.org; Sun, 04 Jan 2009 14:54:03 +0000
+Received: from vpn40.rz.tu-ilmenau.de ([141.24.172.40])
+        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+        id 1AlnuQ-0007hv-00
+        for <linux-mips@linux-mips.org>; Sun, 04 Jan 2009 14:54:03 +0000
+Received: from opencode by vpn40.rz.tu-ilmenau.de with local (Gmexim 0.1 (Debian))
+        id 1AlnuQ-0007hv-00
+        for <linux-mips@linux-mips.org>; Sun, 04 Jan 2009 14:54:03 +0000
+X-Injected-Via-Gmane: http://gmane.org/
+To:	linux-mips@linux-mips.org
+From:	Andi <opencode@gmx.net>
+Subject:  SMP8634 Linux boot
+Date:	Sun, 04 Jan 2009 15:53:50 +0100
+Message-ID: <gjqihv$h6m$1@ger.gmane.org>
+Mime-Version:  1.0
+Content-Type:  text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding:  7bit
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: vpn40.rz.tu-ilmenau.de
+User-Agent: Thunderbird 2.0.0.18 (X11/20081125)
+Return-Path: <sgi-linux-mips@m.gmane.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21681
+X-archive-position: 21682
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: James.Bottomley@HansenPartnership.com
+X-original-sender: opencode@gmx.net
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2009-01-02 at 17:31 +0100, Kay Sievers wrote:
-> On Fri, Jan 2, 2009 at 17:25, James Bottomley
-> <James.Bottomley@hansenpartnership.com> wrote:
-> > Sorry, dropped the ball a bit on this.  I've attached the updated
-> > version: it copes with the legacy 20 character copy in the ioctl by
-> > brute force and also adds several other dev->bus_id -> dev_name(dev)
-> > conversions.
-> 
-> Very nice. Thanks!
-> 
-> Will you get that in 2.6.29 through your SCSI tree, or should the copy
-> in Greg's tree be updated?
+Hi List,
 
-I'll send it with my next set.
+First of all, sorry for asking a slightly off topic question on that
+list but it has something to do with MIPS and Linux though.
+As I don't have a working zboot image, I am trying to load zboot or
+yamon via JTAG to a SMP8634 board in order to boot Linux afterwards. I
+followed the instructions described in smp8634-documentation and was
+able to build a yamon and reboot image which successfully loads on a
+plain smp8634. Unfortunately, this is not the case when building yamon
+with XENV support or when trying to load a zboot image instead. On the
+other hand I can't load Linux on a yamon without XENV support, yet.
+After loading xboot which fails to load zboot now, do I have to
+initialize the memory mapping or other registers prior loading any other
+code like yamon or zboot? If so, which one?
 
-James
+Any help to load Linux is very appreciated.
+
+Best regards,
+	Andi

@@ -1,49 +1,122 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jan 2009 09:34:59 +0000 (GMT)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:31958 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S24053316AbZAFJey (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 6 Jan 2009 09:34:54 +0000
-Received: (qmail 8452 invoked from network); 6 Jan 2009 10:34:53 +0100
-Received: from scarran.roarinelk.net (HELO localhost.localdomain) (192.168.0.242)
-  by 192.168.0.1 with SMTP; 6 Jan 2009 10:34:53 +0100
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	Linux-MIPS <linux-mips@linux-mips.org>
-Cc:	Manuel Lauss <mano@roarinelk.homelinux.net>
-Subject: [PATCH] Alchemy: time.c build fix
-Date:	Tue,  6 Jan 2009 10:34:52 +0100
-Message-Id: <1231234492-25733-1-git-send-email-mano@roarinelk.homelinux.net>
-X-Mailer: git-send-email 1.6.0.6
-Return-Path: <mano@roarinelk.homelinux.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 06 Jan 2009 21:46:38 +0000 (GMT)
+Received: from rtp-iport-1.cisco.com ([64.102.122.148]:33128 "EHLO
+	rtp-iport-1.cisco.com") by ftp.linux-mips.org with ESMTP
+	id S21102852AbZAFVqf convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 6 Jan 2009 21:46:35 +0000
+X-IronPort-AV: E=Sophos;i="4.37,221,1231113600"; 
+   d="scan'208";a="32901298"
+Received: from rtp-dkim-2.cisco.com ([64.102.121.159])
+  by rtp-iport-1.cisco.com with ESMTP; 06 Jan 2009 21:46:28 +0000
+Received: from rtp-core-1.cisco.com (rtp-core-1.cisco.com [64.102.124.12])
+	by rtp-dkim-2.cisco.com (8.12.11/8.12.11) with ESMTP id n06LkRGE029640;
+	Tue, 6 Jan 2009 16:46:27 -0500
+Received: from xbh-rtp-211.amer.cisco.com (xbh-rtp-211.cisco.com [64.102.31.102])
+	by rtp-core-1.cisco.com (8.13.8/8.13.8) with ESMTP id n06LkR62004272;
+	Tue, 6 Jan 2009 21:46:28 GMT
+Received: from xmb-rtp-218.amer.cisco.com ([64.102.31.117]) by xbh-rtp-211.amer.cisco.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Tue, 6 Jan 2009 16:46:27 -0500
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: [PATCH] MIPS: unsigned result is always greater than 0
+Date:	Tue, 6 Jan 2009 16:46:19 -0500
+Message-ID: <FF038EB85946AA46B18DFEE6E6F8A2896606BB@xmb-rtp-218.amer.cisco.com>
+In-Reply-To: <495E2E47.6080605@gmail.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: [PATCH] MIPS: unsigned result is always greater than 0
+Thread-Index: Acls7EfWnUJEqqivROa5wJWiY2zpvQDWuIJg
+References: <495E2E47.6080605@gmail.com>
+From:	"David VomLehn (dvomlehn)" <dvomlehn@cisco.com>
+To:	"Roel Kluin" <roel.kluin@gmail.com>, <ralf@linux-mips.org>
+Cc:	<linux-mips@linux-mips.org>
+X-OriginalArrivalTime: 06 Jan 2009 21:46:27.0831 (UTC) FILETIME=[3A81C870:01C97048]
+DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=1894; t=1231278387; x=1232142387;
+	c=relaxed/simple; s=rtpdkim2001;
+	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
+	d=cisco.com; i=dvomlehn@cisco.com;
+	z=From:=20=22David=20VomLehn=20(dvomlehn)=22=20<dvomlehn@cis
+	co.com>
+	|Subject:=20RE=3A=20[PATCH]=20MIPS=3A=20unsigned=20result=2
+	0is=20always=20greater=20than=200
+	|Sender:=20
+	|To:=20=22Roel=20Kluin=22=20<roel.kluin@gmail.com>,=20<ralf
+	@linux-mips.org>;
+	bh=jWocxyxDaCUg6B9soHVdslVwborpn2SdrpMosvPKt5g=;
+	b=o1CdR8E+mq0D2iyvmxmn4adI2dGkEh5rR6b5vBKZUAB+3eke1Fsfu3V7Ur
+	JmOMaojtM1NG+J0dARJOWvOdwwCevC5Zr3kKpC4h3HCdN4JK6jCIjmYW4mNT
+	G1mZm080s4;
+Authentication-Results:	rtp-dkim-2; header.From=dvomlehn@cisco.com; dkim=pass (
+	sig from cisco.com/rtpdkim2001 verified; ); 
+Return-Path: <dvomlehn@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21686
+X-archive-position: 21688
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: dvomlehn@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
-in Linus' current -git the cpumask member is now a pointer.
-
-Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
----
- arch/mips/alchemy/common/time.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
-
-diff --git a/arch/mips/alchemy/common/time.c b/arch/mips/alchemy/common/time.c
-index 307514f..183180a 100644
---- a/arch/mips/alchemy/common/time.c
-+++ b/arch/mips/alchemy/common/time.c
-@@ -69,7 +69,7 @@ static struct clock_event_device au1x_rtcmatch2_clockdev = {
- 	.irq		= AU1000_RTC_MATCH2_INT,
- 	.set_next_event	= au1x_rtcmatch2_set_next_event,
- 	.set_mode	= au1x_rtcmatch2_set_mode,
--	.cpumask	= CPU_MASK_ALL,
-+	.cpumask	= CPU_MASK_ALL_PTR,
- };
  
- static struct irqaction au1x_rtcmatch2_irqaction = {
--- 
-1.6.0.6
+
+> -----Original Message-----
+> From: linux-mips-bounce@linux-mips.org 
+> [mailto:linux-mips-bounce@linux-mips.org] On Behalf Of Roel Kluin
+> Sent: Friday, January 02, 2009 7:10 AM
+> To: ralf@linux-mips.org
+> Cc: linux-mips@linux-mips.org
+> Subject: [PATCH] MIPS: unsigned result is always greater than 0
+> 
+> unsigned result is always greater than 0
+> 
+> Signed-off-by: Roel Kluin <roel.kluin@gmail.com>
+> ---
+> I cannot determine whether the same bug occurs as well in assembly.
+> Also shouldn't similar checks occur in atomic64_sub_return and in
+> atomic64_add_return for negative values of i?
+> 
+> diff --git a/arch/mips/include/asm/atomic.h 
+> b/arch/mips/include/asm/atomic.h
+> index 1232be3..3cd07a9 100644
+> --- a/arch/mips/include/asm/atomic.h
+> +++ b/arch/mips/include/asm/atomic.h
+> @@ -296,9 +296,10 @@ static __inline__ int 
+> atomic_sub_if_positive(int i, atomic_t * v)
+>  
+>  		raw_local_irq_save(flags);
+>  		result = v->counter;
+> -		result -= i;
+> -		if (result >= 0)
+> +		if (i <= result) {
+> +			result -= i;
+>  			v->counter = result;
+> +		}
+>  		raw_local_irq_restore(flags);
+>  	}
+>  
+> @@ -677,9 +678,10 @@ static __inline__ long 
+> atomic64_sub_if_positive(long i, atomic64_t * v)
+>  
+>  		raw_local_irq_save(flags);
+>  		result = v->counter;
+> -		result -= i;
+> -		if (result >= 0)
+> +		if (i >= result) {
+> +			result -= i;
+>  			v->counter = result;
+> +		}
+>  		raw_local_irq_restore(flags);
+>  	}
+
+I agree that the code as it exists is wrong, but, as I see it, the
+problem is that the type of result should be changed from unsigned long
+to int. This fixes the comparison so it works correctly. In addition,
+such a change means that result would be the same type as the counter
+element of atomic_t, avoiding possible surprises should longs be larger
+than ints.

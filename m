@@ -1,64 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jan 2009 21:25:57 +0000 (GMT)
-Received: from relay1.sgi.com ([192.48.179.29]:29374 "EHLO relay.sgi.com")
-	by ftp.linux-mips.org with ESMTP id S21365035AbZAHVZz (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 8 Jan 2009 21:25:55 +0000
-Received: from cthulhu.engr.sgi.com (cthulhu.engr.sgi.com [150.166.39.100])
-	by relay1.corp.sgi.com (Postfix) with ESMTP id AB64F8F80A5;
-	Thu,  8 Jan 2009 13:25:48 -0800 (PST)
-Received: from [134.15.31.35] (vpn-2-travis.corp.sgi.com [134.15.31.35])
-	by cthulhu.engr.sgi.com (8.12.10/8.12.10/SuSE Linux 0.7) with ESMTP id n08LPlF5029428;
-	Thu, 8 Jan 2009 13:25:47 -0800
-Message-ID: <49666F5B.2090605@sgi.com>
-Date:	Thu, 08 Jan 2009 13:25:47 -0800
-From:	Mike Travis <travis@sgi.com>
-User-Agent: Thunderbird 2.0.0.6 (X11/20070801)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Jan 2009 22:54:29 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:52887 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S21365046AbZAHWy1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 8 Jan 2009 22:54:27 +0000
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B496683f20000>; Thu, 08 Jan 2009 17:53:38 -0500
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 8 Jan 2009 14:53:04 -0800
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 8 Jan 2009 14:53:04 -0800
+Message-ID: <496683D0.6000509@caviumnetworks.com>
+Date:	Thu, 08 Jan 2009 14:53:04 -0800
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.19 (X11/20090105)
 MIME-Version: 1.0
-To:	David Daney <ddaney@caviumnetworks.com>
-CC:	Linus Torvalds <torvalds@linux-foundation.org>,
-	rusty@rustcorp.com.au, linux-kernel@vger.kernel.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] cpumask fallout: Initialize irq_default_affinity earlier.
-References: <1231446081-8448-1-git-send-email-ddaney@caviumnetworks.com> <alpine.LFD.2.00.0901081227360.3283@localhost.localdomain> <496666CE.3050205@caviumnetworks.com>
-In-Reply-To: <496666CE.3050205@caviumnetworks.com>
-Content-Type: text/plain; charset=ISO-8859-1
+To:	Linus Torvalds <torvalds@linux-foundation.org>,
+	Rusty Russell <rusty@rustcorp.com.au>
+CC:	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Mike Travis <travis@sgi.com>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH 0/2] cpumask fallout: Initialize irq_default_affinity earlier
+ et al.
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <travis@sgi.com>
+X-OriginalArrivalTime: 08 Jan 2009 22:53:04.0638 (UTC) FILETIME=[DD9DA1E0:01C971E3]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21698
+X-archive-position: 21699
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: travis@sgi.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-David Daney wrote:
-> Linus Torvalds wrote:
-> [...]
->> In fact, I think it already is a no-op in the UP case, and you can
->> literally just do
->>
->>     static inline void __init init_irq_default_affinity(void)
->>     {
->>          alloc_cpumask_var(&irq_default_affinity, GFP_KERNEL);
->>          cpumask_setall(irq_default_affinity);
->>     }
->>
->> and be done with it. I think it should all compile away to nothing if
->> CONFIG_SMP isn't set.
-> 
-> The 'inline' seems gratuitous to me.  Since it is static GCC should do
-> the Right Thing.  However since you suggested it, I am testing it that way.
-> 
-> David Daney
 
-It will probably need to be:
+As I said in 2/2:
 
-	alloc_bootmem_cpumask_var(&irq_default_affinity);
+    Move the initialization of irq_default_affinity to early_irq_init
+    as core_initcall is too late.
 
-I am testing it on x86_64 as well.
+    irq_default_affinity can be used in init_IRQ and potentially timer
+    and SMP init as well.  All of these happen before core_initcall.
+    Moving the initialization to early_irq_init ensures that it is
+    initialized before it is used.
 
-Thanks,
-Mike
+Mike Travis pointed out that irq_default_affinity depends on
+CONFIG_GENERIC_HARDIRQS in addition to CONFIG_SMP.  So to make things
+consistent, I added 1/2 so that the irq_*_affinity functions and
+irq_default_affinity are defined for the same conditions that they are
+declared.
+
+I Took Linus' suggestion to move init_irq_default_affinity over to
+kernel/irq/handle.c, however due to the way that cpumask_*() are
+defined, it is still necessary to have the ugly ifdefs, but now they
+are localized to init_irq_default_affinity.
+
+Mike Travis also suggested that alloc_bootmem_cpumask_var() be used in
+preference to alloc_cpumask_var, so I incorporated that suggestion as
+well.
+
+I tested both with and without CONFIG_SMP, on mips/cavium_octeon, Mike
+tested a similar(but not identical patch) on x86_64.
+
+I will reply with the two patches.
+
+David Daney (2):
+  Make irq_*_affinity depend on CONFIG_GENERIC_HARDIRQS too.
+  cpumask fallout: Initialize irq_default_affinity earlier (v2).
+
+ kernel/irq/handle.c |   12 ++++++++++++
+ kernel/irq/manage.c |   10 +---------
+ 2 files changed, 13 insertions(+), 9 deletions(-)

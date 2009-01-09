@@ -1,260 +1,119 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jan 2009 02:34:33 +0000 (GMT)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:65437 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S21365019AbZAICeb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 9 Jan 2009 02:34:31 +0000
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B4966b7a30000>; Thu, 08 Jan 2009 21:34:11 -0500
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 8 Jan 2009 18:33:12 -0800
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 8 Jan 2009 18:33:12 -0800
-Message-ID: <4966B768.9050909@caviumnetworks.com>
-Date:	Thu, 08 Jan 2009 18:33:12 -0800
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.19 (X11/20090105)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Jan 2009 12:08:30 +0000 (GMT)
+Received: from fg-out-1718.google.com ([72.14.220.152]:62530 "EHLO
+	fg-out-1718.google.com") by ftp.linux-mips.org with ESMTP
+	id S21103375AbZAIMI2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 9 Jan 2009 12:08:28 +0000
+Received: by fg-out-1718.google.com with SMTP id d23so3263603fga.32
+        for <linux-mips@linux-mips.org>; Fri, 09 Jan 2009 04:08:27 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from:to
+         :subject:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:content-disposition:references;
+        bh=Jar7yL2qhUXE4QGstr6UCqWlu8vpMWc/mZ1jcZlq7Mw=;
+        b=U2CqLesy0VMzRVXqmrUA/+I6ROSE10dM5CPgm9fnHZ9K2RyDVVVvOLsOvMCM3K5Ep4
+         h+IOyw26sKagMWAMY8g1MFcRgoTEIuMrCaSINnon7NI9zagHLrd8TAuk9wtwa1edzc+c
+         53h1PYf15GElhO1Q2IDGwGHwtrvaxieQUFPtk=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:to:subject:in-reply-to:mime-version
+         :content-type:content-transfer-encoding:content-disposition
+         :references;
+        b=cJxOam+WtFUzOKI/LYGJrW5HNDY3u+1I0BBi0TomfNJCfJdf/HqsWs0FGfwzlVBNYX
+         zGX4XAB2+iJM3ftt2sROpMRIUVHtRvnGFEtdWSZXlfed2HYR6UkcwVvdTlzANh7eBi4o
+         KM3MuuVcTOSsuUunV0vLw0kPRNHA9b70nZT1w=
+Received: by 10.86.65.9 with SMTP id n9mr14830524fga.61.1231502906822;
+        Fri, 09 Jan 2009 04:08:26 -0800 (PST)
+Received: by 10.86.72.13 with HTTP; Fri, 9 Jan 2009 04:08:26 -0800 (PST)
+Message-ID: <164c42ea0901090408h377e9f4eqb417443ef7a1ad@mail.gmail.com>
+Date:	Fri, 9 Jan 2009 13:08:26 +0100
+From:	"Per Andreas Gulbrandsen" <theperan@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Problem compiling glibc
+In-Reply-To: <164c42ea0901080443sace24b2v176bcc0a4d23836a@mail.gmail.com>
 MIME-Version: 1.0
-To:	dvomlehn@cisco.com
-CC:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Add option for running kernel in mapped address
- space.
-References: <1231378896-25925-1-git-send-email-ddaney@caviumnetworks.com> <1231464371.32488.43.camel@cuplxvomd02.corp.sa.net>
-In-Reply-To: <1231464371.32488.43.camel@cuplxvomd02.corp.sa.net>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 09 Jan 2009 02:33:12.0093 (UTC) FILETIME=[9DDF54D0:01C97202]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Disposition: inline
+References: <164c42ea0901080443sace24b2v176bcc0a4d23836a@mail.gmail.com>
+Return-Path: <theperan@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21706
+X-archive-position: 21707
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: theperan@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-David VomLehn wrote:
-> On Wed, 2009-01-07 at 17:41 -0800, David Daney wrote:
->> This is a preliminary patch to allow the kernel to run in mapped
->> address space via a wired TLB entry.  Probably in a future version I
->> would factor out the OCTEON specific parts to a separate patch.
-> 
-> Yes, please do the factoring.
+Hi.
 
-Everything in good time.  My real intent was to generate feedback about 
-the general ideas.
+I first sent this mail to clfs-support (cross-compile linux from
+scratch), but got the advice to try asking for help here.
 
-> 
->> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
->> index 780b520..d9c46a4 100644
->> --- a/arch/mips/Kconfig
->> +++ b/arch/mips/Kconfig
->> @@ -1431,6 +1431,23 @@ config PAGE_SIZE_64KB
->>  
->>  endchoice
->>  
->> +config MAPPED_KERNEL
->> +	bool "Mapped kernel"
->> +	help
->> +	  Select this option if you want the kernel's code and data to
->> +	  be in mapped memory.  The kernel will be mapped using a
->> +	  single wired TLB entry, thus reducing the number of
->> +	  available TLB entries by one.  Kernel modules will be able
->> +	  to use a more efficient calling convention.
-> 
-> This is currently only supported on 64-bit processors, so this should
-> depend on CONFIG_64BIT.
+I'm following the clfs guide for cross compiling a linux system for
+mips (alchemy, CLFS_TARGET="mipsel-unknown-linux-gnu"). SVN Version
+SVN-20090107-MIPS. My host system is openSuse 11
+(CLFS_HOST="x86_64-cross-linux-gnu"). I've checked host requirements
+and I have all tools specified there.
 
-It should be trivial to extend to 32-bit kernels as well.  I may try it 
-on the mips32 based STB I have at home.  But as it currently stands, you 
-are correct.
+I get stuck in 5.11, Constructing Cross-Compile Tools - glibc. When I
+try to make glibc I get the following error:
+mipsel-unknown-linux-gnu-gcc -mabi=32
+../sysdeps/unix/sysv/linux/sa_len.c -c -std=gnu99 -fgnu89-inline -O2
+-Wall -Winline -Wwrite-strings -fmerge-all-constants -g
+-Wstrict-prototypes      -I../include
+-I/mnt/clfs/sources/glibc-build/socket -I/mnt/clfs/sources/glibc-build
+-I../ports/sysdeps/mips/elf
+-I../ports/sysdeps/unix/sysv/linux/mips/mips32
+-I../ports/sysdeps/unix/sysv/linux/mips/nptl
+-I../ports/sysdeps/unix/sysv/linux/mips
+-I../nptl/sysdeps/unix/sysv/linux -I../nptl/sysdeps/pthread
+-I../sysdeps/pthread -I../ports/sysdeps/unix/sysv/linux
+-I../sysdeps/unix/sysv/linux -I../sysdeps/gnu -I../sysdeps/unix/common
+-I../sysdeps/unix/mman -I../sysdeps/unix/inet
+-I../nptl/sysdeps/unix/sysv -I../ports/sysdeps/unix/sysv
+-I../sysdeps/unix/sysv -I../ports/sysdeps/unix/mips/mips32
+-I../ports/sysdeps/unix/mips -I../nptl/sysdeps/unix
+-I../ports/sysdeps/unix -I../sysdeps/unix -I../sysdeps/posix
+-I../ports/sysdeps/mips/mips32 -I../ports/sysdeps/mips
+-I../sysdeps/ieee754/flt-32 -I../sysdeps/ieee754/dbl-64
+-I../sysdeps/wordsize-32 -I../ports/sysdeps/mips/fpu
+-I../ports/sysdeps/mips/nptl -I../sysdeps/ieee754
+-I../sysdeps/generic/elf -I../sysdeps/generic -I../nptl -I../ports
+-I.. -I../libio -I. -nostdinc -isystem
+/mnt/clfs/cross-tools/bin/../lib/gcc/mipsel-unknown-linux-gnu/4.3.2/include
+-isystem /mnt/clfs/cross-tools/bin/../lib/gcc/mipsel-unknown-linux-gnu/4.3.2/include-fixed
+-isystem /tools/include -D_LIBC_REENTRANT -include
+../include/libc-symbols.h  -DPIC     -o
+/mnt/clfs/sources/glibc-build/socket/sa_len.o -MD -MP -MF
+/mnt/clfs/sources/glibc-build/socket/sa_len.o.dt
+-MT/mnt/clfs/sources/glibc-build/socket/sa_len.o
+In file included from /tools/include/asm/byteorder.h:65,
+                from /tools/include/linux/atalk.h:4,
+                from ../sysdeps/unix/sysv/linux/netatalk/at.h:25,
+                from ../sysdeps/unix/sysv/linux/sa_len.c:22:
+/tools/include/linux/byteorder.h:8:3: error: #error Fix
+asm/byteorder.h to define one endianness
+make[2]: *** [/mnt/clfs/sources/glibc-build/socket/sa_len.o] Error 1
+make[2]: Leaving directory `/mnt/clfs/sources/glibc-2.8/socket'
+make[1]: *** [socket/subdir_lib] Error 2
+make[1]: Leaving directory `/mnt/clfs/sources/glibc-2.8'
+make: *** [all] Error 2
 
->  
->> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
->> index 0bc2120..5468f6d 100644
->> --- a/arch/mips/Makefile
->> +++ b/arch/mips/Makefile
-> ...
->> @@ -662,7 +670,7 @@ OBJCOPYFLAGS		+= --remove-section=.reginfo
->>  
->>  CPPFLAGS_vmlinux.lds := \
->>  	$(KBUILD_CFLAGS) \
->> -	-D"LOADADDR=$(load-y)" \
->> +	-D"LOADADDR=$(load-y)" $(PHYS_LOAD_ADDRESS) \
->>  	-D"JIFFIES=$(JIFFIES)" \
->>  	-D"DATAOFFSET=$(if $(dataoffset-y),$(dataoffset-y),0)"
-> 
-> It seems more consistent to just eliminate PHYS_LOAD_ADDRESS entirely
-> and add a line here reading:
-> 	-D"PHYSADDR=0x$(CONFIG_PHYS_LOAD_ADDRESS)" \
+I've looked at asm/byteorder.h, but I can't figure out what to do. I
+can't understand how I'm suppose to "fix" it. I've tried different
+stuff, i.e. undefing __MIPSEB__ and/or __BIG_ENDIAN if __MIPSEB__ is
+defined. But I still get the same error.
+However, If I undef __BIG_ENDIAN in /tools/include/linux/byteorder.h
+just before the check that triggers the error it compiles. But this
+doesn't seem like a very good solution. Seems like I should get rid of
+the initial definition of __BIG_ENDIAN (alt. __MIPSEB). Can anyone
+please advice? I'd like to get this right, and not just hack my way
+through it.
 
-There is some macro trickery in vmlinux.lds.S that checks to see if it 
-is defined, so I cannot unconditionally define it.
-
-> 
->>  
->> diff --git a/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h b/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
->> index 0b2b5eb..bf36d82 100644
->> --- a/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
->> +++ b/arch/mips/include/asm/mach-cavium-octeon/kernel-entry-init.h
->> @@ -27,6 +27,56 @@
->>  	# a3 = address of boot descriptor block
->>  	.set push
->>  	.set arch=octeon
->> +#ifdef CONFIG_MAPPED_KERNEL
->> +	# Set up the TLB index 0 for wired access to kernel.
->> +	# Assume we were loaded with sufficient alignment so that we
->> +	# can cover the image with two pages.
-> 
-> This seems like a pretty big assumption. Possible ways to handle this:
-> o Generalize to handle n pages.
-
-This is an optimization, burning through TLB entries is not going to 
-help things.
-
-> o Hang in a loop here if the assumption is not met
-
-Possible.
-
-> o Check later on whether the assumption was true and print a message.
-> I'm not really sure how to do this last one, though.
-
-Also possible.
-
-This is all very low-level board code, if you want the optimization, you 
-need to load at a suitable physical address.
-
-> 
->> +	dla	v0, _end
->> +	dla	v1, _text
->> +	dsubu	v0, v0, v1	# size of image
->> +	move	v1, zero
->> +	li	t1, -1		# shift count.
->> +1:	dsrl	v0, v0, 1	# mask into v1
->> +	dsll	v1, v1, 1
->> +	daddiu	t1, t1, 1
->> +	ori	v1, v1, 1
->> +	bne	v0, zero, 1b
->> +	daddiu	t2, t1, -6
->> +	mtc0	v1, $5, 0	# PageMask
->> +	dla	t3, 0xffffffffc0000000 # kernel address
-> 
-> I think this should be CKSSEG rather than a magic constant.
-> 
->> +	dmtc0	t3, $10, 0	# EntryHi
->> +	bal	1f
->> +1:	dla	v0, 0x7fffffff
-> 
-> Another magic constant; don't know if there is already a define that
-> really applies, though. Perhaps add something to asm-mips/inst.h?
-> 
-
-Both are worth investigating.  Each board could (and may have to) do it 
-differently.
-
->> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
->> index 1055348..b44bcf8 100644
->> --- a/arch/mips/kernel/traps.c
->> +++ b/arch/mips/kernel/traps.c
->> @@ -49,6 +49,8 @@
->>  #include <asm/stacktrace.h>
->>  #include <asm/irq.h>
->>  
->> +#include "../mm/uasm.h"
-> 
-> This looks like it would be a good idea to consider moving uasm.h to
-> include/asm-mips, or possibly splitting it into two header files, one of
-> which would move to include/asm-mips.
-> 
-
-That was my thought as well.  This being a quick-and-dirty hack, I took 
-the low road and did it this way.
-
->> +
->>  extern void check_wait(void);
->>  extern asmlinkage void r4k_wait(void);
->>  extern asmlinkage void rollback_handle_int(void);
->> @@ -1295,9 +1297,18 @@ void *set_except_vector(int n, void *addr)
->>  
->>  	exception_handlers[n] = handler;
->>  	if (n == 0 && cpu_has_divec) {
->> -		*(u32 *)(ebase + 0x200) = 0x08000000 |
->> -					  (0x03ffffff & (handler >> 2));
->> -		local_flush_icache_range(ebase + 0x200, ebase + 0x204);
->> +		unsigned long jump_mask = ~((1 << 28) - 1);
-> 
-> The 28 is a magic constant specifying the number of bits of the offset
-> in a jump instruction. Perhaps define jump_mask in asm-mips/inst.h since
-> it is related to the instruction format?
-
-Correct.
-
-> 
->> +		u32 *buf = (u32 *)(ebase + 0x200);
->> +		unsigned int k0 = 26;
-> 
-> You are using k0 as a constant by defining it as a variable. You could
-> just have a #define here, but my suggestion is that it would be better
-> to add defines to asm-mips/inst.h (something like "#define REG_K0 26"
-> might be suitable for meeting this particular need)
-
-Yes, the constants should probably be factored out of the TLB and page 
-code.  Then they could be used here as well.
-
-[...]
->>  
->> -	if (cpu_has_veic || cpu_has_vint)
->> +	if (cpu_has_veic || cpu_has_vint) {
->>  		ebase = (unsigned long) alloc_bootmem_low_pages(0x200 + VECTORSPACING*64);
->> -	else {
->> +	} else {
-> 
-> Checkpatch will complain about this, and it doesn't really add value to
-> make the change.
-> 
-
-IANACPL (I am not a checkpatch lawyer), but I think it is correct.  If 
-one clause of an if has braces they both should.  However that was left 
-over from my debugging and if it were to be changed, should be part of a 
-code cleanup patch.
-
->> diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
->> index 1417c64..0070aa0 100644
->> --- a/arch/mips/mm/page.c
->> +++ b/arch/mips/mm/page.c
->> @@ -687,3 +687,9 @@ void copy_page(void *to, void *from)
->>  }
->>  
->>  #endif /* CONFIG_SIBYTE_DMA_PAGEOPS */
->> +
->> +#ifdef CONFIG_MAPPED_KERNEL
->> +/* Initialized so it is not clobbered when .bss is zeroed.  */
->> +unsigned long phys_to_kernel_offset = 1;
->> +unsigned long kernel_image_end = 1;
->> +#endif
-> 
-> Clearly there is some magic happening here, but the such wizardry needs
-> more documentation.
-
-Clearly.
-
-> I can deduce that these must be overwritten before
-> we get to kernel_entry;
-
-One of the first things done at kernel_entry is to zero out .bss, if you 
-want to communicate with things that happen before kernel_entry, you 
-cannot use .bss.
-
-> who sets these?
-
-The code in kernel-entry-init.h
-
-> I don't know for sure what kernel_image_end is, but I am guessing that
-> it is the physical address of the end of the kernel.
-
-It is the virtual address of the first page past the kernel's virtual 
-mapping.  This is where we can start mapping modules.
-
-David Daney
+--
+mvh
+Per Andreas Gulbrandsen

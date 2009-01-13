@@ -1,35 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2009 18:47:53 +0000 (GMT)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:51515 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2009 18:49:52 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:17471 "EHLO
 	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S21103675AbZAMSrv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 13 Jan 2009 18:47:51 +0000
+	id S21103679AbZAMStt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 13 Jan 2009 18:49:49 +0000
 Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B496ce18c0000>; Tue, 13 Jan 2009 13:46:41 -0500
+	id <B496ce20d0000>; Tue, 13 Jan 2009 13:48:46 -0500
 Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 13 Jan 2009 10:45:40 -0800
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 13 Jan 2009 10:45:40 -0800
-Message-ID: <496CE153.5010802@caviumnetworks.com>
-Date:	Tue, 13 Jan 2009 10:45:39 -0800
+	 Tue, 13 Jan 2009 10:47:44 -0800
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 13 Jan 2009 10:47:43 -0800
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n0DIldDc021246;
+	Tue, 13 Jan 2009 10:47:39 -0800
+Received: (from ddaney@localhost)
+	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n0DIlddc021245;
+	Tue, 13 Jan 2009 10:47:39 -0800
 From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.19 (X11/20090105)
-MIME-Version: 1.0
-To:	Andrew Morton <akpm@linux-foundation.org>,
-	Rusty Russell <rusty@rustcorp.com.au>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-CC:	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	linux-mips <linux-mips@linux-mips.org>,
-	Mike Travis <travis@sgi.com>
-Subject: [PATCH 0/2] cpumask fallout: Initialize irq_default_affinity earlier
- et al. (v3)
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 13 Jan 2009 18:45:40.0076 (UTC) FILETIME=[21A1FAC0:01C975AF]
+To:	rusty@rustcorp.com.au, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org
+Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	travis@sgi.com, David Daney <ddaney@caviumnetworks.com>
+Subject: [PATCH 2/2] cpumask fallout: Initialize irq_default_affinity earlier (v3).
+Date:	Tue, 13 Jan 2009 10:47:38 -0800
+Message-Id: <1231872458-21218-2-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.5.6.6
+In-Reply-To: <496CE153.5010802@caviumnetworks.com>
+References: <496CE153.5010802@caviumnetworks.com>
+X-OriginalArrivalTime: 13 Jan 2009 18:47:43.0949 (UTC) FILETIME=[6B777FD0:01C975AF]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21729
+X-archive-position: 21730
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,56 +39,80 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Now that mips/OCTEON support has been merged, this patch set has 
-slightly more urgency.
+Move the initialization of irq_default_affinity to early_irq_init as
+core_initcall is too late.
 
-The interrupt affinity on OCTEON is determined by irq_default_affinity,
-because that is what the code in kernel/irq/manage.c uses to set 
-affinity.  Since for the majority of devices (Serial, Compact Flash,
-Network...) we want interrupts to be handled on a single CPU, we set
-irq_default_affinity to the boot CPU in init_IRQ().  The problem we
-have is that with the new cpumask infrastructure, irq_default_affinity
-is being initialized in core_initcall which undoes our initialization.
+irq_default_affinity can be used in init_IRQ and potentially timer and
+SMP init as well.  All of these happen before core_initcall.  Moving
+the initialization to early_irq_init ensures that it is initialized
+before it is used.
 
-As I said in 2/2:
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+Acked-by: Mike Travis <travis@sgi.com>
+---
+ kernel/irq/handle.c |   16 ++++++++++++++++
+ kernel/irq/manage.c |    8 --------
+ 2 files changed, 16 insertions(+), 8 deletions(-)
 
-     Move the initialization of irq_default_affinity to early_irq_init
-     as core_initcall is too late.
-
-     irq_default_affinity can be used in init_IRQ and potentially timer
-     and SMP init as well.  All of these happen before core_initcall.
-     Moving the initialization to early_irq_init ensures that it is
-     initialized before it is used.
-
-Mike Travis pointed out that irq_default_affinity depends on
-CONFIG_GENERIC_HARDIRQS in addition to CONFIG_SMP.  So to make things
-consistent, I added 1/2 so that the irq_*_affinity functions and
-irq_default_affinity are defined for the same conditions that they are
-declared.
-
-I Took Linus' suggestion to move init_irq_default_affinity over to
-kernel/irq/handle.c, however due to the way that cpumask_*() are
-defined, it is still necessary to have the ugly ifdefs, but now they
-are localized to init_irq_default_affinity.
-
-Mike Travis also suggested that alloc_bootmem_cpumask_var() be used in
-preference to alloc_cpumask_var, so I incorporated that suggestion as
-well.
-
-I tested both with and without CONFIG_SMP, on mips/cavium_octeon, Mike
-tested a similar(but not identical patch) on x86_64.
-
-Changes from v2 of this set are just a small rearrangement of the
-#ifdefs suggested by Ihar Hrachyshka that make the code look a bit
-cleaner.
-
-
-I will reply with the two patches.
-
-David Daney (2):
-   Make irq_*_affinity depend on CONFIG_GENERIC_HARDIRQS too.
-   cpumask fallout: Initialize irq_default_affinity earlier (v3).
-
-  kernel/irq/handle.c |   16 ++++++++++++++++
-  kernel/irq/manage.c |   10 +---------
-  2 files changed, 17 insertions(+), 9 deletions(-)
+diff --git a/kernel/irq/handle.c b/kernel/irq/handle.c
+index c20db0b..3aba8d1 100644
+--- a/kernel/irq/handle.c
++++ b/kernel/irq/handle.c
+@@ -39,6 +39,18 @@ void handle_bad_irq(unsigned int irq, struct irq_desc *desc)
+ 	ack_bad_irq(irq);
+ }
+ 
++#if defined(CONFIG_SMP) && defined(CONFIG_GENERIC_HARDIRQS)
++static void __init init_irq_default_affinity(void)
++{
++	alloc_bootmem_cpumask_var(&irq_default_affinity);
++	cpumask_setall(irq_default_affinity);
++}
++#else
++static void __init init_irq_default_affinity(void)
++{
++}
++#endif
++
+ /*
+  * Linux has a controller-independent interrupt architecture.
+  * Every controller has a 'controller-template', that is used
+@@ -134,6 +146,8 @@ int __init early_irq_init(void)
+ 	int legacy_count;
+ 	int i;
+ 
++	init_irq_default_affinity();
++
+ 	desc = irq_desc_legacy;
+ 	legacy_count = ARRAY_SIZE(irq_desc_legacy);
+ 
+@@ -219,6 +233,8 @@ int __init early_irq_init(void)
+ 	int count;
+ 	int i;
+ 
++	init_irq_default_affinity();
++
+ 	desc = irq_desc;
+ 	count = ARRAY_SIZE(irq_desc);
+ 
+diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
+index 618a64f..291f036 100644
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -18,14 +18,6 @@
+ #if defined(CONFIG_SMP) && defined(CONFIG_GENERIC_HARDIRQS)
+ cpumask_var_t irq_default_affinity;
+ 
+-static int init_irq_default_affinity(void)
+-{
+-	alloc_cpumask_var(&irq_default_affinity, GFP_KERNEL);
+-	cpumask_setall(irq_default_affinity);
+-	return 0;
+-}
+-core_initcall(init_irq_default_affinity);
+-
+ /**
+  *	synchronize_irq - wait for pending IRQ handlers (on other CPUs)
+  *	@irq: interrupt number to wait for
+-- 
+1.5.6.6

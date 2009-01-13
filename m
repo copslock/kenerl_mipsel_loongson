@@ -1,75 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2009 18:15:21 +0000 (GMT)
-Received: from mail-bw0-f13.google.com ([209.85.218.13]:36016 "EHLO
-	mail-bw0-f13.google.com") by ftp.linux-mips.org with ESMTP
-	id S21103632AbZAMSPT convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 13 Jan 2009 18:15:19 +0000
-Received: by bwz6 with SMTP id 6so451725bwz.0
-        for <linux-mips@linux-mips.org>; Tue, 13 Jan 2009 10:15:13 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=Rh5iKykZkzkGf+gn8VustrI+zNR4eBFUFTiFIKFUvgw=;
-        b=SBUh1dn3zCrDr7Yg+ayQAFM1z5N7bYUA/1e4XFAqPCQJuUIN55arbC4DEFDnpFsAI3
-         05rrEI76RpouRTxvTdeEvgqZA5kkaNB/uZcAEpFfvQkYz4z8ZNArF1ZYVACE/JenyAIq
-         ucGE4qxqwOAoVuaH64sF4kX9jCAJLslGPcXXU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=M+TUkasBx1T0HJKu1eS+ey4vs7YgCC5vf9/YkJczR1axjcp5YoXOcfvCG2F+58FYrD
-         ZRBr912srQWfzu4G2MLH84pciglF8/dkwQdwSTI5Z6dkULilY2IDZXBq6acfqbCrN0x3
-         4z5t/fRLsETkJzUNQrZdFtm/gI9jOaWzWYX0E=
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2009 18:47:53 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:51515 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S21103675AbZAMSrv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 13 Jan 2009 18:47:51 +0000
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B496ce18c0000>; Tue, 13 Jan 2009 13:46:41 -0500
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 13 Jan 2009 10:45:40 -0800
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 13 Jan 2009 10:45:40 -0800
+Message-ID: <496CE153.5010802@caviumnetworks.com>
+Date:	Tue, 13 Jan 2009 10:45:39 -0800
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.19 (X11/20090105)
 MIME-Version: 1.0
-Received: by 10.181.235.6 with SMTP id m6mr11470022bkr.131.1231870512750; Tue, 
-	13 Jan 2009 10:15:12 -0800 (PST)
-In-Reply-To: <200901131830.32900.florian@openwrt.org>
-References: <1231859270.25974.32.camel@EPBYMINW0568>
-	 <200901131830.32900.florian@openwrt.org>
-Date:	Tue, 13 Jan 2009 20:15:12 +0200
-Message-ID: <fce2a370901131015m46c64a02i48fef2636f0168fe@mail.gmail.com>
-Subject: Re: [pnx833x_port]: device name prefix - ttyS or ttySA?
-From:	Ihar Hrachyshka <ihar.hrachyshka@gmail.com>
-To:	Florian Fainelli <florian@openwrt.org>
-Cc:	linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <ihar.hrachyshka@gmail.com>
+To:	Andrew Morton <akpm@linux-foundation.org>,
+	Rusty Russell <rusty@rustcorp.com.au>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+CC:	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	linux-mips <linux-mips@linux-mips.org>,
+	Mike Travis <travis@sgi.com>
+Subject: [PATCH 0/2] cpumask fallout: Initialize irq_default_affinity earlier
+ et al. (v3)
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 13 Jan 2009 18:45:40.0076 (UTC) FILETIME=[21A1FAC0:01C975AF]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21728
+X-archive-position: 21729
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ihar.hrachyshka@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jan 13, 2009 at 7:30 PM, Florian Fainelli <florian@openwrt.org> wrote:
-> Hi,
->
-> Le Tuesday 13 January 2009 16:07:50 Ihar Hrachyshka, vous avez écrit :
->> In 'drivers/serial/pnx833x_port.c' we define the prefix for UART serial
->> device as "ttyS". Anyway, we use major:minor numbers for SA1100 serial
->> driver (that are 204:5). Why don't we use "ttySA" prefix then? That's
->> what different embedded build systems expect for populating /dev (f.e.
->> buildroot).
->
-> In my experience, everything that is not ttyS is a bit confusing either when
-> creating the devices in the roots, or when using the serial console in the
-> kernel command line. So I will vote for ttyS.
+Now that mips/OCTEON support has been merged, this patch set has 
+slightly more urgency.
 
-The problem is that use-case with generic 8250 and board specific
-serial drivers both enabled is not a fantasy. So we need to
-differentiate between them.
+The interrupt affinity on OCTEON is determined by irq_default_affinity,
+because that is what the code in kernel/irq/manage.c uses to set 
+affinity.  Since for the majority of devices (Serial, Compact Flash,
+Network...) we want interrupts to be handled on a single CPU, we set
+irq_default_affinity to the boot CPU in init_IRQ().  The problem we
+have is that with the new cpumask infrastructure, irq_default_affinity
+is being initialized in core_initcall which undoes our initialization.
 
->
-> My 2 cents.
-> --
-> Best regards, Florian Fainelli
-> Email : florian@openwrt.org
-> http://openwrt.org
-> -------------------------------
->
+As I said in 2/2:
+
+     Move the initialization of irq_default_affinity to early_irq_init
+     as core_initcall is too late.
+
+     irq_default_affinity can be used in init_IRQ and potentially timer
+     and SMP init as well.  All of these happen before core_initcall.
+     Moving the initialization to early_irq_init ensures that it is
+     initialized before it is used.
+
+Mike Travis pointed out that irq_default_affinity depends on
+CONFIG_GENERIC_HARDIRQS in addition to CONFIG_SMP.  So to make things
+consistent, I added 1/2 so that the irq_*_affinity functions and
+irq_default_affinity are defined for the same conditions that they are
+declared.
+
+I Took Linus' suggestion to move init_irq_default_affinity over to
+kernel/irq/handle.c, however due to the way that cpumask_*() are
+defined, it is still necessary to have the ugly ifdefs, but now they
+are localized to init_irq_default_affinity.
+
+Mike Travis also suggested that alloc_bootmem_cpumask_var() be used in
+preference to alloc_cpumask_var, so I incorporated that suggestion as
+well.
+
+I tested both with and without CONFIG_SMP, on mips/cavium_octeon, Mike
+tested a similar(but not identical patch) on x86_64.
+
+Changes from v2 of this set are just a small rearrangement of the
+#ifdefs suggested by Ihar Hrachyshka that make the code look a bit
+cleaner.
+
+
+I will reply with the two patches.
+
+David Daney (2):
+   Make irq_*_affinity depend on CONFIG_GENERIC_HARDIRQS too.
+   cpumask fallout: Initialize irq_default_affinity earlier (v3).
+
+  kernel/irq/handle.c |   16 ++++++++++++++++
+  kernel/irq/manage.c |   10 +---------
+  2 files changed, 17 insertions(+), 9 deletions(-)

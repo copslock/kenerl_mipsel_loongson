@@ -1,76 +1,123 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2009 14:20:20 +0000 (GMT)
-Received: from mail-bw0-f13.google.com ([209.85.218.13]:18679 "EHLO
-	mail-bw0-f13.google.com") by ftp.linux-mips.org with ESMTP
-	id S21103557AbZAMOUR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 13 Jan 2009 14:20:17 +0000
-Received: by bwz6 with SMTP id 6so83930bwz.0
-        for <linux-mips@linux-mips.org>; Tue, 13 Jan 2009 06:20:10 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:content-type
-         :content-transfer-encoding;
-        bh=5zrVlxErMebRBTLOeExn+B0oBeXsmDTxkUUzYHrte8g=;
-        b=LdMevHpIcLIoPzhVsWGIQ+h42mIEGmH8I+yj45j5zCmCNNDsOllvBY3VOeaV5tnhRb
-         T/2J8gdzvzvU49UZvMna9qhpV2bVW44poPDRNd+DJAr3PGAflkaSSE0aCQce/OE2320R
-         wbjustD040wz6JarsK36TEFRXVJziCm1V9IMg=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :content-type:content-transfer-encoding;
-        b=XUpRNbTDVyWzb6Nr41Car8Op1edrQbYnFeAsjU3ydC5LNRe+xOyhYRajnvqn7RgL46
-         IbDQCKfW/0288MQoodefZH1DBIXOP2+sW/o048a5amWK0Pho5h3vR0s2Ru34dmk6JK5J
-         CmuFvlwxDZSHlPgyJz7LPxMReHb4TWxjzlv0g=
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Jan 2009 14:38:56 +0000 (GMT)
+Received: from fnoeppeil36.netpark.at ([217.175.205.164]:10624 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S21103512AbZAMOiy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 13 Jan 2009 14:38:54 +0000
+Received: (qmail 18794 invoked by uid 1000); 13 Jan 2009 15:35:52 +0100
+Date:	Tue, 13 Jan 2009 15:35:52 +0100
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+To:	Linux-MIPS <linux-mips@linux-mips.org>
+Subject: [RFC PATCH] Alchemy: detect Au1300
+Message-ID: <20090113143552.GA18721@roarinelk.homelinux.net>
+References: <20090113135302.GA18442@roarinelk.homelinux.net>
 MIME-Version: 1.0
-Received: by 10.181.216.12 with SMTP id t12mr11399669bkq.122.1231856410419; 
-	Tue, 13 Jan 2009 06:20:10 -0800 (PST)
-In-Reply-To: <1231855886.25974.22.camel@EPBYMINW0568>
-References: <1231855886.25974.22.camel@EPBYMINW0568>
-Date:	Tue, 13 Jan 2009 16:20:10 +0200
-Message-ID: <fce2a370901130620r33e97c7bp18594245bde66d1d@mail.gmail.com>
-Subject: Re: [PATCH] Added serial UART support for PNX833X devices.
-From:	Ihar Hrachyshka <ihar.hrachyshka@gmail.com>
-To:	linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <ihar.hrachyshka@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20090113135302.GA18442@roarinelk.homelinux.net>
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21720
+X-archive-position: 21721
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ihar.hrachyshka@gmail.com
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-Sorry guys. That patch had a wrong signer one ;) Resent.
+Add code to detect Au1300 and its variants.  c0_prid uses a layout
+different from previous Alchemy chips and company ID switched to RMI.
 
-On Tue, Jan 13, 2009 at 4:11 PM, Ihar Hrachyshka
-<ihar.hrachyshka@gmail.com> wrote:
-> Enabled serial UART driver for PNX833X devices.
->
-> Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
-> ---
->  drivers/serial/Kconfig |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
->
-> diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-> index 3e525e3..7d7f576 100644
-> --- a/drivers/serial/Kconfig
-> +++ b/drivers/serial/Kconfig
-> @@ -982,7 +982,7 @@ config SERIAL_SH_SCI_CONSOLE
->
->  config SERIAL_PNX8XXX
->        bool "Enable PNX8XXX SoCs' UART Support"
-> -       depends on MIPS && SOC_PNX8550
-> +       depends on MIPS && (SOC_PNX8550 || SOC_PNX833X)
->        select SERIAL_CORE
->        help
->          If you have a MIPS-based Philips SoC such as PNX8550 or PNX8330
-> --
-> 1.5.6.3
->
->
->
+Core and cache-wise it is compatible with previous Alchemy chips.
+
+Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
+---
+This patch depends on "Alchemy: remove superfluous cpu-model constants."
+Information was pieced together from the Au1300 databook, and obviously
+only compile tested. (Also, the irq controller looks completely different
+so this patch alone is insufficient to get linux working on it).
+
+ arch/mips/include/asm/cpu.h  |    1 +
+ arch/mips/kernel/cpu-probe.c |   39 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 40 insertions(+), 0 deletions(-)
+
+diff --git a/arch/mips/include/asm/cpu.h b/arch/mips/include/asm/cpu.h
+index 3bdc0e3..8dd3038 100644
+--- a/arch/mips/include/asm/cpu.h
++++ b/arch/mips/include/asm/cpu.h
+@@ -33,6 +33,7 @@
+ #define PRID_COMP_TOSHIBA	0x070000
+ #define PRID_COMP_LSI		0x080000
+ #define PRID_COMP_LEXRA		0x0b0000
++#define PRID_COMP_RMI		0x0c0000
+ #define PRID_COMP_CAVIUM	0x0d0000
+ 
+ 
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 0f33858..9499610 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -19,6 +19,7 @@
+ #include <asm/bugs.h>
+ #include <asm/cpu.h>
+ #include <asm/fpu.h>
++#include <asm/io.h>
+ #include <asm/mipsregs.h>
+ #include <asm/system.h>
+ #include <asm/watch.h>
+@@ -886,6 +887,41 @@ static inline void cpu_probe_cavium(struct cpuinfo_mips *c, unsigned int cpu)
+ 	}
+ }
+ 
++static inline void cpu_probe_rmi(struct cpuinfo_mips *c, unsigned int cpu)
++{
++	decode_configs(c);
++	switch (c->processor_id & 0xff000000) {
++	case 0x80000000:		/* Au1300 */
++		c->cputype = CPU_ALCHEMY;
++
++		/* OTP-ROM Config0 register indicates the presence
++		 * of various peripherals.  Combinations of those
++		 * bits are marketed unter different names.
++		 */
++		switch (__raw_readl((void *)0xb0002000)) {
++		case 0x00000000:
++			__cpu_name[cpu] = "Au1380";
++			break;
++		case 0x0000000d:
++			__cpu_name[cpu] = "Au1370";
++			break;
++		case 0x00000010:
++			__cpu_name[cpu] = "Au1350";
++			break;
++		case 0x0000001d:
++			__cpu_name[cpu] = "Au1340";
++			break;
++		default:
++			__cpu_name[cpu] = "Au1300";
++			break;
++		}
++	default:
++		printk(KERN_INFO "Unknown RMI chip!\n");
++		c->cputype = CPU_UNKNOWN;
++		break;
++	}
++}
++
+ const char *__cpu_name[NR_CPUS];
+ 
+ __cpuinit void cpu_probe(void)
+@@ -920,6 +956,9 @@ __cpuinit void cpu_probe(void)
+ 	case PRID_COMP_NXP:
+ 		cpu_probe_nxp(c, cpu);
+ 		break;
++	case PRID_COMP_RMI:
++		cpu_probe_rmi(c, cpu);
++		break;
+ 	case PRID_COMP_CAVIUM:
+ 		cpu_probe_cavium(c, cpu);
+ 		break;
+-- 
+1.6.1

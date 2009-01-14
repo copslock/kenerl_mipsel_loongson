@@ -1,61 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jan 2009 17:31:22 +0000 (GMT)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:31309 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S21365776AbZANRbU (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 14 Jan 2009 17:31:20 +0000
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B496e21560004>; Wed, 14 Jan 2009 12:31:02 -0500
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 14 Jan 2009 09:30:52 -0800
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 14 Jan 2009 09:30:52 -0800
-Message-ID: <496E214C.4090206@caviumnetworks.com>
-Date:	Wed, 14 Jan 2009 09:30:52 -0800
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.19 (X11/20090105)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Jan 2009 17:52:46 +0000 (GMT)
+Received: from mail-bw0-f13.google.com ([209.85.218.13]:455 "EHLO
+	mail-bw0-f13.google.com") by ftp.linux-mips.org with ESMTP
+	id S21365086AbZANRwn convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 14 Jan 2009 17:52:43 +0000
+Received: by bwz6 with SMTP id 6so1979178bwz.0
+        for <multiple recipients>; Wed, 14 Jan 2009 09:52:37 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:from:to:subject:date
+         :user-agent:cc:references:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:content-disposition:message-id;
+        bh=b24Tn7uxHsu4PkCmu4kjy+V6Jn4JnfB0fMTsfut/Yts=;
+        b=aF/pXf+mZMxqetW/ZL3oxRAY2NfmOyimBly9CZMT3Bf8s7Vg8wnArxcW6yu+7Qz3hS
+         foFu/QBZJ/DU465bNbca/4QlZcmBZCFZwZLf9Ib6fhM2ypVuQS2SVLXcgaXo3mfCp5r0
+         O0YK87JjF3Uw5zV63AZ5o8rvBtSzd2K6sqKb8=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
+         :mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id;
+        b=a5T1uXk/s9UJOp3hEHse73/hBzf6EUat/W43+hja8+qMBunLt+6IvgoQwqgPauXAsb
+         FAcp/GbR4yZtBKwGHCjLf6jne1eXkush3ryDlnuXDauU4Kd142rKRizpg25P6tzBU/rT
+         S6ARJEgsIclzEHujZrx3vIP+utVftAC8cKMIE=
+Received: by 10.103.229.12 with SMTP id g12mr208623mur.16.1231955557223;
+        Wed, 14 Jan 2009 09:52:37 -0800 (PST)
+Received: from ?157.159.15.69? ([157.159.15.69])
+        by mx.google.com with ESMTPS id s10sm61458664muh.7.2009.01.14.09.52.36
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 14 Jan 2009 09:52:36 -0800 (PST)
+From:	Florian Fainelli <florian@openwrt.org>
+To:	Phil Sutter <n0-1@freewrt.org>
+Subject: Re: [PATCH] MIPS: rb532: detect uart type, add platform device
+Date:	Wed, 14 Jan 2009 18:52:20 +0100
+User-Agent: KMail/1.9.9
+Cc:	Linux-Mips List <linux-mips@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	David Daney <ddaney@caviumnetworks.com>
+References: <1231954029-13860-1-git-send-email-n0-1@freewrt.org>
+In-Reply-To: <1231954029-13860-1-git-send-email-n0-1@freewrt.org>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] 8250: Initialize more fields in early_serial_setup.
-References: <1231879604-30140-1-git-send-email-ddaney@caviumnetworks.com>
-In-Reply-To: <1231879604-30140-1-git-send-email-ddaney@caviumnetworks.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 14 Jan 2009 17:30:52.0284 (UTC) FILETIME=[D91D03C0:01C9766D]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: text/plain;
+  charset="iso-8859-15"
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Message-Id: <200901141852.20918.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21735
+X-archive-position: 21736
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-David Daney wrote:
-> The initial patch that initialized the fields individually omitted a
-> couple that evidently are required by mips/rb532.  This should fix it.
-> 
-> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-> ---
->  drivers/serial/8250.c |    2 ++
->  1 files changed, 2 insertions(+), 0 deletions(-)
-> 
-> diff --git a/drivers/serial/8250.c b/drivers/serial/8250.c
-> index 1889a63..e2c3a85 100644
-> --- a/drivers/serial/8250.c
-> +++ b/drivers/serial/8250.c
-> @@ -2837,6 +2837,8 @@ int __init early_serial_setup(struct uart_port *port)
->  	p->regshift     = port->regshift;
->  	p->iotype       = port->iotype;
->  	p->flags        = port->flags;
-> +	p->type		= port->type;
-> +	p->line		= port->line;
->  	p->mapbase      = port->mapbase;
->  	p->private_data = port->private_data;
->  
-Some one got to this before I did.  Linus already committed a 
-substantially similar patch as  125c97d8a59888c5678734c2b70cbd08c847bd99
+Hi Phil,
 
-David Daney
+Le Wednesday 14 January 2009 18:27:09 Phil Sutter, vous avez écrit :
+> Auto-detection works just fine, so use it instead of specifying the type
+> manually. Also define a platform device for the uart, as suggested by
+> David Daney.
+
+Thanks !
+
+>
+> Signed-off-by: Phil Sutter <n0-1@freewrt.org>
+Acked-by: Florian Fainelli <florian@openwrt.org>
+
+-- 
+Best regards, Florian Fainelli
+Email : florian@openwrt.org
+http://openwrt.org
+-------------------------------

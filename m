@@ -1,82 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2009 19:50:41 +0000 (GMT)
-Received: from fnoeppeil36.netpark.at ([217.175.205.164]:58064 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S21365967AbZAOTuh (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 15 Jan 2009 19:50:37 +0000
-Received: (qmail 8812 invoked by uid 1000); 15 Jan 2009 20:49:21 +0100
-Date:	Thu, 15 Jan 2009 20:49:21 +0100
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	Linux-MIPS <linux-mips@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2009 19:59:22 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:10562 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S21365965AbZAOT7T (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 15 Jan 2009 19:59:19 +0000
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B496f95910001>; Thu, 15 Jan 2009 14:59:13 -0500
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 15 Jan 2009 11:58:50 -0800
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 15 Jan 2009 11:58:49 -0800
+Message-ID: <496F9579.7050300@caviumnetworks.com>
+Date:	Thu, 15 Jan 2009 11:58:49 -0800
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.19 (X11/20090105)
+MIME-Version: 1.0
+To:	Manuel Lauss <mano@roarinelk.homelinux.net>
+CC:	Linux-MIPS <linux-mips@linux-mips.org>,
 	Ralf Baechle <ralf@linux-mips.org>
 Subject: Re: [PATCH 06/14] MIPS: print irq handler description
-Message-ID: <20090115194921.GB8656@roarinelk.homelinux.net>
-References: <cover.1229846410.git.mano@roarinelk.homelinux.net> <caebb02f97491d8e5830438e1a746b0e02fa2c7c.1229846411.git.mano@roarinelk.homelinux.net> <80cf5c7a0db39a7230bae7766264acbfc68d200e.1229846412.git.mano@roarinelk.homelinux.net> <e6862a9acc480a4f00d0b7ae738e8a355a7e4810.1229846412.git.mano@roarinelk.homelinux.net> <ac2064c64b746420a21008fa4e9e7c4ecf048d7a.1229846413.git.mano@roarinelk.homelinux.net> <dc79b2a4d9da426f867de084c75940109eff1287.1229846413.git.mano@roarinelk.homelinux.net> <535458cb8c8f570089b2712a1e73ca7314d5b7c7.1229846413.git.mano@roarinelk.homelinux.net> <496F90AA.7070407@caviumnetworks.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <496F90AA.7070407@caviumnetworks.com>
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <mano@roarinelk.homelinux.net>
+References: <cover.1229846410.git.mano@roarinelk.homelinux.net> <caebb02f97491d8e5830438e1a746b0e02fa2c7c.1229846411.git.mano@roarinelk.homelinux.net> <80cf5c7a0db39a7230bae7766264acbfc68d200e.1229846412.git.mano@roarinelk.homelinux.net> <e6862a9acc480a4f00d0b7ae738e8a355a7e4810.1229846412.git.mano@roarinelk.homelinux.net> <ac2064c64b746420a21008fa4e9e7c4ecf048d7a.1229846413.git.mano@roarinelk.homelinux.net> <dc79b2a4d9da426f867de084c75940109eff1287.1229846413.git.mano@roarinelk.homelinux.net> <535458cb8c8f570089b2712a1e73ca7314d5b7c7.1229846413.git.mano@roarinelk.homelinux.net> <496F90AA.7070407@caviumnetworks.com> <20090115194921.GB8656@roarinelk.homelinux.net>
+In-Reply-To: <20090115194921.GB8656@roarinelk.homelinux.net>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 15 Jan 2009 19:58:49.0781 (UTC) FILETIME=[AEED4E50:01C9774B]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21758
+X-archive-position: 21759
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi David,
+Manuel Lauss wrote:
+[...]
+> Or how about this?
+> 
+[...]  		seq_printf(p, " %14s", irq_desc[i].chip->name);
+> -		seq_printf(p, "-%-8s", irq_desc[i].name);
+> +		if (irq_desc[i].name)
+> +			seq_printf(p, "-%-8s", irq_desc[i].name);
+>  		seq_printf(p, "  %s", action->name);
 
-On Thu, Jan 15, 2009 at 11:38:18AM -0800, David Daney wrote:
->> Add the name set by set_irq_chip_and_handler_name() to the output of
->
-> Alchemy is the only mips cpu that uses set_irq_chip_and_handler_name()...
-> ... so for most mips CPUs we now get something ugly like this:
->
-> octeon:~# cat /proc/interrupts
->            CPU0       CPU1       CPU2       CPU3
->  23:       7371       7120       5747       5373            Core-<NULL>    
-> timer
+I will let you and Ralf decide.  However it would be nice if 
+action->name lined up with a mixture of NULL and non-NULL 
+irq_desc[i].name.  It is not clear to me if this is the case with your 
+patch.
 
-Ouch, I see.  Well, I certainly have no objections if you want to revert
-the patch, but I like that I can see how triggers are set up (nice esp.
-for gpio's and my homebrew userspace gpio interface).
-
-Or how about this?
-
---- 
-
-From: Manuel Lauss <mano@roarinelk.homelinux.net>
-Subject: [PATCH] MIPS: only print handler name if its actually set.
-
-David Daney reports that Alchemy is the only in-tree user of
-set_irq_handler_and_name().  On other systems this leaves ugly
-"-<NULL>" strings in cpuinfo.
-
-So, only print the handler string if it was actually set.
-
-Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
----
- arch/mips/kernel/irq.c |    3 ++-
- 1 files changed, 2 insertions(+), 1 deletions(-)
-
-diff --git a/arch/mips/kernel/irq.c b/arch/mips/kernel/irq.c
-index a0ff2b6..9061ae9 100644
---- a/arch/mips/kernel/irq.c
-+++ b/arch/mips/kernel/irq.c
-@@ -111,7 +111,8 @@ int show_interrupts(struct seq_file *p, void *v)
- 			seq_printf(p, "%10u ", kstat_cpu(j).irqs[i]);
- #endif
- 		seq_printf(p, " %14s", irq_desc[i].chip->name);
--		seq_printf(p, "-%-8s", irq_desc[i].name);
-+		if (irq_desc[i].name)
-+			seq_printf(p, "-%-8s", irq_desc[i].name);
- 		seq_printf(p, "  %s", action->name);
- 
- 		for (action=action->next; action; action = action->next)
--- 
-1.6.0.6
+David Daney

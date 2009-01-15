@@ -1,86 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2009 17:57:45 +0000 (GMT)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:45700 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S21365949AbZAOR5l (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 15 Jan 2009 17:57:41 +0000
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B496f79090002>; Thu, 15 Jan 2009 12:57:29 -0500
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 15 Jan 2009 09:56:31 -0800
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 15 Jan 2009 09:56:31 -0800
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n0FHuR3C004838;
-	Thu, 15 Jan 2009 09:56:27 -0800
-Received: (from ddaney@localhost)
-	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n0FHuRSC004837;
-	Thu, 15 Jan 2009 09:56:27 -0800
-From:	David Daney <ddaney@caviumnetworks.com>
-To:	linux-mips@linux-mips.org
-Cc:	David Daney <ddaney@caviumnetworks.com>,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Subject: [PATCH] MIPS: Only allow Cavium OCTEON to be configured for boards that support it (v2).
-Date:	Thu, 15 Jan 2009 09:56:27 -0800
-Message-Id: <1232042187-4814-1-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.5.6.6
-X-OriginalArrivalTime: 15 Jan 2009 17:56:31.0552 (UTC) FILETIME=[99006C00:01C9773A]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2009 18:00:03 +0000 (GMT)
+Received: from ns2.suse.de ([195.135.220.15]:34770 "EHLO mx2.suse.de")
+	by ftp.linux-mips.org with ESMTP id S21365949AbZAOSAB (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 15 Jan 2009 18:00:01 +0000
+Received: from Relay1.suse.de (mail2.suse.de [195.135.221.8])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mx2.suse.de (Postfix) with ESMTP id 4628A483BB;
+	Thu, 15 Jan 2009 18:59:57 +0100 (CET)
+From:	Andreas Schwab <schwab@suse.de>
+To:	Mike Travis <travis@sgi.com>
+Cc:	Ingo Molnar <mingo@elte.hu>, Rusty Russell <rusty@rustcorp.com.au>,
+	Yinghai Lu <yinghai@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"H. Peter Anvin" <hpa@zytor.com>, Tony Luck <tony.luck@intel.com>,
+	IA64 <linux-ia64@vger.kernel.org>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	David Howells <dhowells@redhat.com>,
+	Koichi Yasutake <yasutake.koichi@jp.panasonic.com>,
+	linux-am33-list@redhat.com,
+	"David S. Miller" <davem@davemloft.net>,
+	SPARC <sparclinux@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>
+Subject: Re: crash: IP: [<ffffffff80478092>] __bitmap_intersects+0x48/0x73 [PATCH supplied]
+References: <496BF6D5.9030403@sgi.com> <20090113130048.GB31147@elte.hu>
+	<496CAF5A.3010304@sgi.com> <496D0F46.2010907@sgi.com>
+	<496D2172.6030608@sgi.com> <20090114165431.GA18826@elte.hu>
+	<20090114165524.GA21742@elte.hu> <20090114175126.GA21078@elte.hu>
+	<496E78BA.5040609@sgi.com> <20090115101428.GG5833@elte.hu>
+	<496F67D8.4060507@sgi.com>
+X-Yow:	NOW, I'm supposed to SCRAMBLE two, and HOLD th' MAYO!!
+Date:	Thu, 15 Jan 2009 18:59:54 +0100
+In-Reply-To: <496F67D8.4060507@sgi.com> (Mike Travis's message of "Thu, 15 Jan
+	2009 08:44:08 -0800")
+Message-ID: <jepriolaat.fsf@sykes.suse.de>
+User-Agent: Gnus/5.110009 (No Gnus v0.9) Emacs/22.3 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Return-Path: <schwab@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21755
+X-archive-position: 21756
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: schwab@suse.de
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-CC: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
- arch/mips/Kconfig |    8 ++++++--
- 1 files changed, 6 insertions(+), 2 deletions(-)
+Mike Travis <travis@sgi.com> writes:
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 6dddea3..31191c5 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -603,7 +603,7 @@ config CAVIUM_OCTEON_SIMULATOR
- 	select SYS_SUPPORTS_64BIT_KERNEL
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select SYS_SUPPORTS_HIGHMEM
--	select CPU_CAVIUM_OCTEON
-+	select SYS_HAS_CPU_CAVIUM_OCTEON
- 	help
- 	  The Octeon simulator is software performance model of the Cavium
- 	  Octeon Processor. It supports simulating Octeon processors on x86
-@@ -618,7 +618,7 @@ config CAVIUM_OCTEON_REFERENCE_BOARD
- 	select SYS_SUPPORTS_BIG_ENDIAN
- 	select SYS_SUPPORTS_HIGHMEM
- 	select SYS_HAS_EARLY_PRINTK
--	select CPU_CAVIUM_OCTEON
-+	select SYS_HAS_CPU_CAVIUM_OCTEON
- 	select SWAP_IO_SPACE
- 	help
- 	  This option supports all of the Octeon reference boards from Cavium
-@@ -1237,6 +1237,7 @@ config CPU_SB1
- 
- config CPU_CAVIUM_OCTEON
- 	bool "Cavium Octeon processor"
-+	depends on SYS_HAS_CPU_CAVIUM_OCTEON
- 	select IRQ_CPU
- 	select IRQ_CPU_OCTEON
- 	select CPU_HAS_PREFETCH
-@@ -1317,6 +1318,9 @@ config SYS_HAS_CPU_RM9000
- config SYS_HAS_CPU_SB1
- 	bool
- 
-+config SYS_HAS_CPU_CAVIUM_OCTEON
-+	bool
-+
- #
- # CPU may reorder R->R, R->W, W->R, W->W
- # Reordering beyond LL and SC is handled in WEAK_REORDERING_BEYOND_LLSC
+>  23> git-remote update
+> Updating linus
+> Updating tip
+
+This only updates the remotes, but does not merge anything into your
+local branch.  You need to run "git merge tip" to do that.
+
+Andreas.
+
 -- 
-1.5.6.6
+Andreas Schwab, SuSE Labs, schwab@suse.de
+SuSE Linux Products GmbH, Maxfeldstraße 5, 90409 Nürnberg, Germany
+PGP key fingerprint = 58CA 54C7 6D53 942B 1756  01D3 44D5 214B 8276 4ED5
+"And now for something completely different."

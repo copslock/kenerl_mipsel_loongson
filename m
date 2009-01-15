@@ -1,54 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2009 20:23:28 +0000 (GMT)
-Received: from fnoeppeil36.netpark.at ([217.175.205.164]:61573 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S21365339AbZAOUX0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 15 Jan 2009 20:23:26 +0000
-Received: (qmail 9201 invoked by uid 1000); 15 Jan 2009 21:22:10 +0100
-Date:	Thu, 15 Jan 2009 21:22:10 +0100
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	Linux-MIPS <linux-mips@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 06/14] MIPS: print irq handler description
-Message-ID: <20090115202210.GC8656@roarinelk.homelinux.net>
-References: <cover.1229846410.git.mano@roarinelk.homelinux.net> <caebb02f97491d8e5830438e1a746b0e02fa2c7c.1229846411.git.mano@roarinelk.homelinux.net> <80cf5c7a0db39a7230bae7766264acbfc68d200e.1229846412.git.mano@roarinelk.homelinux.net> <e6862a9acc480a4f00d0b7ae738e8a355a7e4810.1229846412.git.mano@roarinelk.homelinux.net> <ac2064c64b746420a21008fa4e9e7c4ecf048d7a.1229846413.git.mano@roarinelk.homelinux.net> <dc79b2a4d9da426f867de084c75940109eff1287.1229846413.git.mano@roarinelk.homelinux.net> <535458cb8c8f570089b2712a1e73ca7314d5b7c7.1229846413.git.mano@roarinelk.homelinux.net> <496F90AA.7070407@caviumnetworks.com> <20090115194921.GB8656@roarinelk.homelinux.net> <496F9579.7050300@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Jan 2009 20:57:52 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:51878 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S21365972AbZAOU51 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 15 Jan 2009 20:57:27 +0000
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B496fa31b0004>; Thu, 15 Jan 2009 15:56:59 -0500
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 15 Jan 2009 12:56:10 -0800
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 15 Jan 2009 12:56:10 -0800
+Message-ID: <496FA2E9.9030403@caviumnetworks.com>
+Date:	Thu, 15 Jan 2009 12:56:09 -0800
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.19 (X11/20090105)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <496F9579.7050300@caviumnetworks.com>
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <mano@roarinelk.homelinux.net>
+To:	IDE/ATA development list <linux-ide@vger.kernel.org>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH 0/2] libata: Add OCTEON Compact Flash driver.
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 15 Jan 2009 20:56:10.0112 (UTC) FILETIME=[B1862800:01C97753]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21760
+X-archive-position: 21761
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-David,
+Greetings ata hackers,
 
-On Thu, Jan 15, 2009 at 11:58:49AM -0800, David Daney wrote:
-> Manuel Lauss wrote:
-> [...]
->> Or how about this?
-> [...]  		seq_printf(p, " %14s", irq_desc[i].chip->name);
->> -		seq_printf(p, "-%-8s", irq_desc[i].name);
->> +		if (irq_desc[i].name)
->> +			seq_printf(p, "-%-8s", irq_desc[i].name);
->>  		seq_printf(p, "  %s", action->name);
->
-> I will let you and Ralf decide.  However it would be nice if action->name 
-> lined up with a mixture of NULL and non-NULL irq_desc[i].name.  It is not 
-> clear to me if this is the case with your patch.
+Linus recently merged support for the mips/Octeon cpu.
 
-Good point, no it's not the case unfortunately; the gap between
-the controller and irq names becomes unaesthetically wide.
+Please consider adding this driver for the Compact Flash system
+present on many of the OCTEON development boards.
 
-So please revert the patch.
+This is a two part patch set, the first part adds a new column to the
+ata_timing table (for dmack_hold).  This is used by the second patch
+which is the driver itself.
 
-Thanks!
-	Manuel Lauss
+I will reply with the two patches.
+
+Thanks,
+
+David Daney (2):
+   libata: Add another column to the ata_timing table.
+   libata: New driver for OCTEON SOC Compact Flash interface (v6).
+
+  drivers/ata/Kconfig          |    9 +
+  drivers/ata/Makefile         |    1 +
+  drivers/ata/libata-core.c    |   72 ++--
+  drivers/ata/pata_octeon_cf.c |  956 
+++++++++++++++++++++++++++++++++++++++++++
+  include/linux/libata.h       |    9 +-
+  5 files changed, 1009 insertions(+), 38 deletions(-)
+  create mode 100644 drivers/ata/pata_octeon_cf.c

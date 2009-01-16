@@ -1,66 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2009 13:05:22 +0000 (GMT)
-Received: from h155.mvista.com ([63.81.120.155]:36540 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S21366038AbZAPMvp (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 16 Jan 2009 12:51:45 +0000
-Received: from [127.0.0.1] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id B408F3ECC; Fri, 16 Jan 2009 04:51:32 -0800 (PST)
-Message-ID: <497082D1.5030504@ru.mvista.com>
-Date:	Fri, 16 Jan 2009 15:51:29 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-User-Agent: Thunderbird 2.0.0.19 (Windows/20081209)
-MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-ide@vger.kernel.org,
-	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-	linux-mips@linux-mips.org, stable <stable@kernel.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Jan 2009 14:26:08 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:15612 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S21365860AbZAPOZa (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 16 Jan 2009 14:25:30 +0000
+Received: from localhost (p4226-ipad212funabasi.chiba.ocn.ne.jp [58.91.168.226])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id B799B9CEC; Fri, 16 Jan 2009 23:25:24 +0900 (JST)
+Date:	Fri, 16 Jan 2009 23:25:27 +0900 (JST)
+Message-Id: <20090116.232527.59651191.anemo@mba.ocn.ne.jp>
+To:	sshtylyov@ru.mvista.com
+Cc:	linux-ide@vger.kernel.org, bzolnier@gmail.com,
+	linux-mips@linux-mips.org, stable@kernel.org
 Subject: Re: [PATCH] tx4939ide: Do not use zero count PRD entry
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <497082D1.5030504@ru.mvista.com>
 References: <1230215558-9197-1-git-send-email-anemo@mba.ocn.ne.jp>
-In-Reply-To: <1230215558-9197-1-git-send-email-anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+	<497082D1.5030504@ru.mvista.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21770
+X-archive-position: 21771
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Fri, 16 Jan 2009 15:51:29 +0300, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
+> > +			 * This workaround for zero count seems required.
+> > +			 * (standard ide_build_dmatable do it too)
+> 
+>     s/do/does/
 
-Atsushi Nemoto wrote:
+Thanks!
 
-> This fixes data corruption on some heavy load.
->
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
->   
+> > +			if ((bcount & 0xffff) == 0x0000)
+> 
+>    Why not just bcount == 0x10000?
 
-Acked-by: Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Indeed.  It is just because ide_build_dmatable does so :)
 
-> diff --git a/drivers/ide/tx4939ide.c b/drivers/ide/tx4939ide.c
-> index bafb7d1..30d0d25 100644
-> --- a/drivers/ide/tx4939ide.c
-> +++ b/drivers/ide/tx4939ide.c
-> @@ -259,6 +259,12 @@ static int tx4939ide_build_dmatable(ide_drive_t *drive, struct request *rq)
->  			bcount = 0x10000 - (cur_addr & 0xffff);
->  			if (bcount > cur_len)
->  				bcount = cur_len;
-> +			/*
-> +			 * This workaround for zero count seems required.
-> +			 * (standard ide_build_dmatable do it too)
->   
+I will prepare another patch, while the patch is already mainlined and
+queued for stable, and this time changes are not suitable for stable
+tree.
 
-    s/do/does/
-
-> +			 */
-> +			if ((bcount & 0xffff) == 0x0000)
->   
-
-   Why not just bcount == 0x10000?
-
-MBR, Sergei
+---
+Atsushi Nemoto

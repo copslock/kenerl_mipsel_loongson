@@ -1,24 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Jan 2009 17:44:17 +0000 (GMT)
-Received: from fnoeppeil36.netpark.at ([217.175.205.164]:15528 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 17 Jan 2009 17:59:32 +0000 (GMT)
+Received: from fnoeppeil36.netpark.at ([217.175.205.164]:2973 "EHLO
 	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S21366117AbZAQRoN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 17 Jan 2009 17:44:13 +0000
-Received: (qmail 27309 invoked from network); 17 Jan 2009 18:44:11 +0100
+	id S21366120AbZAQR73 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 17 Jan 2009 17:59:29 +0000
+Received: (qmail 27414 invoked from network); 17 Jan 2009 18:59:27 +0100
 Received: from scarran.roarinelk.net (HELO localhost.localdomain) (192.168.0.242)
-  by 192.168.0.1 with SMTP; 17 Jan 2009 18:44:11 +0100
+  by 192.168.0.1 with SMTP; 17 Jan 2009 18:59:27 +0100
 From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	irda-users@lists.sourceforge.net
+To:	irda-users@lists.sourceforge.net, Samuel Ortiz <samuel@sortiz.org>
 Cc:	Linux-MIPS <linux-mips@linux-mips.org>,
 	Manuel Lauss <mano@roarinelk.homelinux.net>
-Subject: [RFC PATCH] au1k_ir.c: convert to platform device
-Date:	Sat, 17 Jan 2009 18:44:22 +0100
-Message-Id: <1232214262-20322-1-git-send-email-mano@roarinelk.homelinux.net>
+Subject: [RFC PATCH] au1k_ir.c: convert to platform device v2
+Date:	Sat, 17 Jan 2009 18:59:36 +0100
+Message-Id: <1232215176-21969-1-git-send-email-mano@roarinelk.homelinux.net>
 X-Mailer: git-send-email 1.6.0.6
 Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21774
+X-archive-position: 21775
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,22 +27,23 @@ Precedence: bulk
 X-list: linux-mips
 
 General driver overhaul:  Compile fixes and platform_device
-conversion; removal of devboard-specific hacks in favour of
+conversion; removal of devboard-specific hacks in favor of
 platform data.
 
 Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
 ---
 Compile-tested only; I don't have the hardware.  I'll send the
-platform-specific parts later once this patch has been accepted
-(shouldn't be a big deal, this driver didn't compile for ages
-and noone noticed).
+platform-specific parts later once this patch has been accepted.
+
+V2: dropped net_device_stats from au1k_priv since netdev
+provides those too.
 
  arch/mips/include/asm/mach-au1x00/au1000-irda.h |   18 +
  arch/mips/include/asm/mach-au1x00/au1000.h      |   39 -
  drivers/net/irda/Kconfig                        |    9 +-
  drivers/net/irda/au1000_ircc.h                  |  125 ---
- drivers/net/irda/au1k_ir.c                      | 1140 +++++++++++++----------
- 5 files changed, 664 insertions(+), 667 deletions(-)
+ drivers/net/irda/au1k_ir.c                      | 1145 +++++++++++++----------
+ 5 files changed, 665 insertions(+), 671 deletions(-)
  create mode 100644 arch/mips/include/asm/mach-au1x00/au1000-irda.h
  delete mode 100644 drivers/net/irda/au1000_ircc.h
 
@@ -272,10 +273,10 @@ index c072c09..0000000
 -};
 -#endif /* AU1000_IRCC_H */
 diff --git a/drivers/net/irda/au1k_ir.c b/drivers/net/irda/au1k_ir.c
-index 9411640..3ecb631 100644
+index 9411640..be84af5 100644
 --- a/drivers/net/irda/au1k_ir.c
 +++ b/drivers/net/irda/au1k_ir.c
-@@ -18,96 +18,197 @@
+@@ -18,96 +18,196 @@
   *  with this program; if not, write to the Free Software Foundation, Inc.,
   *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
   */
@@ -433,7 +434,6 @@ index 9411640..3ecb631 100644
 +	iobuff_t rx_buff;
 +
 +	struct net_device *netdev;
-+	struct net_device_stats stats;
 +	struct timeval stamp;
 +	struct timeval now;
 +	struct qos_info qos;
@@ -527,7 +527,7 @@ index 9411640..3ecb631 100644
  /*
    DMA memory allocation, derived from pci_alloc_consistent.
    However, the Au1000 data cache is coherent (when programmed
-@@ -136,56 +237,20 @@ static void dma_free(void *vaddr, size_t size)
+@@ -136,56 +236,20 @@ static void dma_free(void *vaddr, size_t size)
  }
  
  
@@ -589,7 +589,7 @@ index 9411640..3ecb631 100644
  static int au1k_irda_init_iobuf(iobuff_t *io, int size)
  {
  	io->head = kmalloc(size, GFP_KERNEL);
-@@ -198,104 +263,123 @@ static int au1k_irda_init_iobuf(iobuff_t *io, int size)
+@@ -198,104 +262,123 @@ static int au1k_irda_init_iobuf(iobuff_t *io, int size)
  	return io->head ? 0 : -ENOMEM;
  }
  
@@ -792,7 +792,7 @@ index 9411640..3ecb631 100644
  static int au1k_init(struct net_device *dev)
  {
  	struct au1k_private *aup = netdev_priv(dev);
-@@ -305,7 +389,7 @@ static int au1k_init(struct net_device *dev)
+@@ -305,7 +388,7 @@ static int au1k_init(struct net_device *dev)
  
  	/* bring the device out of reset */
  	control = 0xe; /* coherent, clock enable, one half system clock */
@@ -801,7 +801,7 @@ index 9411640..3ecb631 100644
  #ifndef CONFIG_CPU_LITTLE_ENDIAN
  	control |= 1;
  #endif
-@@ -317,106 +401,48 @@ static int au1k_init(struct net_device *dev)
+@@ -317,109 +400,49 @@ static int au1k_init(struct net_device *dev)
  		aup->rx_ring[i]->flags = AU_OWN;
  	}
  
@@ -900,8 +900,8 @@ index 9411640..3ecb631 100644
 +static void update_rx_stats(struct net_device *dev, u32 status, u32 count)
  {
 -	struct net_device *dev = ir_devs[0];
- 	struct au1k_private *aup = netdev_priv(dev);
-+	struct net_device_stats *ps = &aup->stats;
+-	struct au1k_private *aup = netdev_priv(dev);
++	struct net_device_stats *ps = &dev->stats;
  
 -	unregister_netdev(dev);
 +	ps->rx_packets++;
@@ -929,9 +929,13 @@ index 9411640..3ecb631 100644
 -update_tx_stats(struct net_device *dev, u32 status, u32 pkt_len)
 +static void update_tx_stats(struct net_device *dev, u32 status, u32 pkt_len)
  {
- 	struct au1k_private *aup = netdev_priv(dev);
- 	struct net_device_stats *ps = &aup->stats;
-@@ -430,15 +456,14 @@ update_tx_stats(struct net_device *dev, u32 status, u32 pkt_len)
+-	struct au1k_private *aup = netdev_priv(dev);
+-	struct net_device_stats *ps = &aup->stats;
++	struct net_device_stats *ps = &dev->stats;
+ 
+ 	ps->tx_packets++;
+ 	ps->tx_bytes += pkt_len;
+@@ -430,15 +453,14 @@ update_tx_stats(struct net_device *dev, u32 status, u32 pkt_len)
  	}
  }
  
@@ -949,7 +953,7 @@ index 9411640..3ecb631 100644
  				ptxd->count_1<<8 | ptxd->count_0);
  		ptxd->count_0 = 0;
  		ptxd->count_1 = 0;
-@@ -457,131 +482,28 @@ static void au1k_tx_ack(struct net_device *dev)
+@@ -457,131 +479,28 @@ static void au1k_tx_ack(struct net_device *dev)
  		if (aup->newspeed) {
  			au1k_irda_set_speed(dev, aup->newspeed);
  			aup->newspeed = 0;
@@ -1089,7 +1093,7 @@ index 9411640..3ecb631 100644
  
  	prxd = aup->rx_ring[aup->rx_head];
  	flags = prxd->flags;
-@@ -589,10 +511,10 @@ static int au1k_irda_rx(struct net_device *dev)
+@@ -589,12 +508,12 @@ static int au1k_irda_rx(struct net_device *dev)
  	while (!(flags & AU_OWN))  {
  		pDB = aup->rx_db_inuse[aup->rx_head];
  		count = prxd->count_1<<8 | prxd->count_0;
@@ -1100,9 +1104,12 @@ index 9411640..3ecb631 100644
 -			skb=alloc_skb(count+1,GFP_ATOMIC);
 +			skb = alloc_skb(count + 1, GFP_ATOMIC);
  			if (skb == NULL) {
- 				aup->netdev->stats.rx_dropped++;
+-				aup->netdev->stats.rx_dropped++;
++				dev->stats.rx_dropped++;
  				continue;
-@@ -602,7 +524,8 @@ static int au1k_irda_rx(struct net_device *dev)
+ 			}
+ 			skb_reserve(skb, 1);
+@@ -602,7 +521,8 @@ static int au1k_irda_rx(struct net_device *dev)
  				skb_put(skb, count);
  			else
  				skb_put(skb, count-2);
@@ -1112,7 +1119,7 @@ index 9411640..3ecb631 100644
  			skb->dev = dev;
  			skb_reset_mac_header(skb);
  			skb->protocol = htons(ETH_P_IRDA);
-@@ -612,7 +535,7 @@ static int au1k_irda_rx(struct net_device *dev)
+@@ -612,7 +532,7 @@ static int au1k_irda_rx(struct net_device *dev)
  		}
  		prxd->flags |= AU_OWN;
  		aup->rx_head = (aup->rx_head + 1) & (NUM_IR_DESC - 1);
@@ -1121,7 +1128,7 @@ index 9411640..3ecb631 100644
  		au_sync();
  
  		/* next descriptor */
-@@ -623,12 +546,12 @@ static int au1k_irda_rx(struct net_device *dev)
+@@ -623,12 +543,12 @@ static int au1k_irda_rx(struct net_device *dev)
  	return 0;
  }
  
@@ -1136,7 +1143,7 @@ index 9411640..3ecb631 100644
  
  	au1k_irda_rx(dev);
  	au1k_tx_ack(dev);
-@@ -636,159 +559,168 @@ static irqreturn_t au1k_irda_interrupt(int dummy, void *dev_id)
+@@ -636,159 +556,168 @@ static irqreturn_t au1k_irda_interrupt(int dummy, void *dev_id)
  	return IRQ_HANDLED;
  }
  
@@ -1428,7 +1435,7 @@ index 9411640..3ecb631 100644
  au1k_irda_ioctl(struct net_device *dev, struct ifreq *ifreq, int cmd)
  {
  	struct if_irda_req *rq = (struct if_irda_req *)ifreq;
-@@ -830,8 +762,214 @@ au1k_irda_ioctl(struct net_device *dev, struct ifreq *ifreq, int cmd)
+@@ -830,8 +759,214 @@ au1k_irda_ioctl(struct net_device *dev, struct ifreq *ifreq, int cmd)
  	return ret;
  }
  

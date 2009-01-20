@@ -1,23 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2009 14:13:01 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:12513 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S21366211AbZATOMR (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Jan 2009 14:12:17 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2009 14:13:20 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:44257 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S21366220AbZATOMS (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Jan 2009 14:12:18 +0000
 Received: from localhost.localdomain (p1210-ipad205funabasi.chiba.ocn.ne.jp [222.146.96.210])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id C5989A4D2; Tue, 20 Jan 2009 23:12:11 +0900 (JST)
+	id 1AA35A99C; Tue, 20 Jan 2009 23:12:14 +0900 (JST)
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
 Cc:	ralf@linux-mips.org, linux-mtd@lists.infradead.org,
 	dwmw2@infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 1/5] TXx9: Add NDFMC support
-Date:	Tue, 20 Jan 2009 23:12:15 +0900
-Message-Id: <1232460738-4714-1-git-send-email-anemo@mba.ocn.ne.jp>
+Subject: [PATCH 4/5] MTD: RBTX4939 map driver
+Date:	Tue, 20 Jan 2009 23:12:18 +0900
+Message-Id: <1232460738-4714-4-git-send-email-anemo@mba.ocn.ne.jp>
 X-Mailer: git-send-email 1.5.6.3
 Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21788
+X-archive-position: 21789
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -25,222 +25,252 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Add platform support for NAND Flash Memory Controller of TXx9 SoCs.
+This is a map driver for NOR flash chips on RBTX4939 board.
 
 Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
- arch/mips/include/asm/txx9/ndfmc.h    |   30 ++++++++++++++++++++++++++++++
- arch/mips/include/asm/txx9/tx4938.h   |    1 +
- arch/mips/include/asm/txx9/tx4939.h   |    2 ++
- arch/mips/txx9/generic/setup.c        |   21 +++++++++++++++++++++
- arch/mips/txx9/generic/setup_tx4938.c |   21 +++++++++++++++++++++
- arch/mips/txx9/generic/setup_tx4939.c |   17 +++++++++++++++++
- arch/mips/txx9/rbtx4938/setup.c       |    2 ++
- arch/mips/txx9/rbtx4939/setup.c       |    4 ++++
- 8 files changed, 98 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/include/asm/txx9/ndfmc.h
+ drivers/mtd/maps/Kconfig          |    6 +
+ drivers/mtd/maps/Makefile         |    1 +
+ drivers/mtd/maps/rbtx4939-flash.c |  205 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 212 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/mtd/maps/rbtx4939-flash.c
 
-diff --git a/arch/mips/include/asm/txx9/ndfmc.h b/arch/mips/include/asm/txx9/ndfmc.h
+diff --git a/drivers/mtd/maps/Kconfig b/drivers/mtd/maps/Kconfig
+index 0225cbb..162f32b 100644
+--- a/drivers/mtd/maps/Kconfig
++++ b/drivers/mtd/maps/Kconfig
+@@ -542,6 +542,12 @@ config MTD_INTEL_VR_NOR
+ 	  Map driver for a NOR flash bank located on the Expansion Bus of the
+ 	  Intel Vermilion Range chipset.
+ 
++config MTD_RBTX4939
++	tristate "Map driver for RBTX4939 board"
++	depends on TOSHIBA_RBTX4939 && MTD_CFI && MTD_COMPLEX_MAPPINGS
++	help
++	  Map driver for NOR flash chips on RBTX4939 board.
++
+ config MTD_PLATRAM
+ 	tristate "Map driver for platform device RAM (mtd-ram)"
+ 	select MTD_RAM
+diff --git a/drivers/mtd/maps/Makefile b/drivers/mtd/maps/Makefile
+index 6d9ba35..f53a7dc 100644
+--- a/drivers/mtd/maps/Makefile
++++ b/drivers/mtd/maps/Makefile
+@@ -61,3 +61,4 @@ obj-$(CONFIG_MTD_PLATRAM)	+= plat-ram.o
+ obj-$(CONFIG_MTD_OMAP_NOR)	+= omap_nor.o
+ obj-$(CONFIG_MTD_INTEL_VR_NOR)	+= intel_vr_nor.o
+ obj-$(CONFIG_MTD_BFIN_ASYNC)	+= bfin-async-flash.o
++obj-$(CONFIG_MTD_RBTX4939)	+= rbtx4939-flash.o
+diff --git a/drivers/mtd/maps/rbtx4939-flash.c b/drivers/mtd/maps/rbtx4939-flash.c
 new file mode 100644
-index 0000000..fa67f3d
+index 0000000..389b60f
 --- /dev/null
-+++ b/arch/mips/include/asm/txx9/ndfmc.h
-@@ -0,0 +1,30 @@
++++ b/drivers/mtd/maps/rbtx4939-flash.c
+@@ -0,0 +1,205 @@
 +/*
++ * rbtx4939-flash (based on physmap.c)
++ *
++ * This is a simplified physmap driver with map_init callback function.
++ *
 + * This program is free software; you can redistribute it and/or modify
 + * it under the terms of the GNU General Public License version 2 as
 + * published by the Free Software Foundation.
 + *
-+ * (C) Copyright TOSHIBA CORPORATION 2007
++ * Copyright (C) 2009 Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 + */
-+#ifndef __ASM_TXX9_NDFMC_H
-+#define __ASM_TXX9_NDFMC_H
 +
-+#define NDFMC_PLAT_FLAG_USE_BSPRT	0x01
-+#define NDFMC_PLAT_FLAG_NO_RSTR		0x02
-+#define NDFMC_PLAT_FLAG_HOLDADD		0x04
-+#define NDFMC_PLAT_FLAG_DUMMYWRITE	0x08
++#include <linux/module.h>
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/slab.h>
++#include <linux/device.h>
++#include <linux/platform_device.h>
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/map.h>
++#include <linux/mtd/partitions.h>
++#include <asm/txx9/rbtx4939.h>
 +
-+struct txx9ndfmc_platform_data {
-+	unsigned int shift;
-+	unsigned int gbus_clock;
-+	unsigned int hold;		/* hold time in nanosecond */
-+	unsigned int spw;		/* strobe pulse width in nanosecond */
-+	unsigned int flags;
-+	unsigned char ch_mask;		/* available channel bitmask */
-+	unsigned char wp_mask;		/* write-protect bitmask */
-+	unsigned char wide_mask;	/* 16bit-nand bitmask */
++struct rbtx4939_flash_info {
++	struct mtd_info *mtd;
++	struct map_info map;
++#ifdef CONFIG_MTD_PARTITIONS
++	int nr_parts;
++#endif
 +};
 +
-+void txx9_ndfmc_init(unsigned long baseaddr,
-+		     const struct txx9ndfmc_platform_data *plat_data);
-+
-+#endif /* __ASM_TXX9_NDFMC_H */
-diff --git a/arch/mips/include/asm/txx9/tx4938.h b/arch/mips/include/asm/txx9/tx4938.h
-index 0b06815..cd8bc20 100644
---- a/arch/mips/include/asm/txx9/tx4938.h
-+++ b/arch/mips/include/asm/txx9/tx4938.h
-@@ -291,6 +291,7 @@ int tx4938_pcic1_map_irq(const struct pci_dev *dev, u8 slot);
- void tx4938_setup_pcierr_irq(void);
- void tx4938_irq_init(void);
- void tx4938_mtd_init(int ch);
-+void tx4938_ndfmc_init(unsigned int hold, unsigned int spw);
- 
- struct tx4938ide_platform_info {
- 	/*
-diff --git a/arch/mips/include/asm/txx9/tx4939.h b/arch/mips/include/asm/txx9/tx4939.h
-index 964ef7e..af456c7 100644
---- a/arch/mips/include/asm/txx9/tx4939.h
-+++ b/arch/mips/include/asm/txx9/tx4939.h
-@@ -541,6 +541,8 @@ void tx4939_irq_init(void);
- int tx4939_irq(void);
- void tx4939_mtd_init(int ch);
- void tx4939_ata_init(void);
-+void tx4939_ndfmc_init(unsigned int hold, unsigned int spw,
-+		       unsigned char ch_mask, unsigned char wide_mask);
- void tx4939_rtc_init(void);
- 
- #endif /* __ASM_TXX9_TX4939_H */
-diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
-index a13a08b..8a266c6 100644
---- a/arch/mips/txx9/generic/setup.c
-+++ b/arch/mips/txx9/generic/setup.c
-@@ -32,6 +32,7 @@
- #include <asm/txx9/generic.h>
- #include <asm/txx9/pci.h>
- #include <asm/txx9tmr.h>
-+#include <asm/txx9/ndfmc.h>
- #ifdef CONFIG_CPU_TX49XX
- #include <asm/txx9/tx4938.h>
- #endif
-@@ -691,6 +692,26 @@ void __init txx9_physmap_flash_init(int no, unsigned long addr,
- #endif
- }
- 
-+void __init txx9_ndfmc_init(unsigned long baseaddr,
-+			    const struct txx9ndfmc_platform_data *pdata)
++static int rbtx4939_flash_remove(struct platform_device *dev)
 +{
-+#if defined(CONFIG_MTD_NAND_TXX9NDFMC) || \
-+	defined(CONFIG_MTD_NAND_TXX9NDFMC_MODULE)
-+	struct resource res = {
-+		.start = baseaddr,
-+		.end = baseaddr + 0x1000 - 1,
-+		.flags = IORESOURCE_MEM,
-+	};
-+	struct platform_device *pdev = platform_device_alloc("txx9ndfmc", -1);
++	struct rbtx4939_flash_info *info;
 +
-+	if (!pdev ||
-+	    platform_device_add_resources(pdev, &res, 1) ||
-+	    platform_device_add_data(pdev, pdata, sizeof(*pdata)) ||
-+	    platform_device_add(pdev))
-+		platform_device_put(pdev);
++	info = platform_get_drvdata(dev);
++	if (!info)
++		return 0;
++	platform_set_drvdata(dev, NULL);
++
++	if (info->mtd) {
++#ifdef CONFIG_MTD_PARTITIONS
++		struct rbtx4939_flash_data *pdata = dev->dev.platform_data;
++
++		if (info->nr_parts || pdata->nr_parts)
++			del_mtd_partitions(info->mtd);
++		else
++			del_mtd_device(info->mtd);
++#else
++		del_mtd_device(info->mtd);
 +#endif
++		map_destroy(info->mtd);
++	}
++	return 0;
 +}
 +
- #if defined(CONFIG_LEDS_GPIO) || defined(CONFIG_LEDS_GPIO_MODULE)
- static DEFINE_SPINLOCK(txx9_iocled_lock);
- 
-diff --git a/arch/mips/txx9/generic/setup_tx4938.c b/arch/mips/txx9/generic/setup_tx4938.c
-index 25819ff..f0844f8 100644
---- a/arch/mips/txx9/generic/setup_tx4938.c
-+++ b/arch/mips/txx9/generic/setup_tx4938.c
-@@ -23,6 +23,7 @@
- #include <asm/txx9tmr.h>
- #include <asm/txx9pio.h>
- #include <asm/txx9/generic.h>
-+#include <asm/txx9/ndfmc.h>
- #include <asm/txx9/tx4938.h>
- 
- static void __init tx4938_wdr_init(void)
-@@ -382,6 +383,26 @@ void __init tx4938_ata_init(unsigned int irq, unsigned int shift, int tune)
- 		platform_device_put(pdev);
- }
- 
-+void __init tx4938_ndfmc_init(unsigned int hold, unsigned int spw)
-+{
-+	struct txx9ndfmc_platform_data plat_data = {
-+		.shift = 1,
-+		.gbus_clock = txx9_gbus_clock,
-+		.hold = hold,
-+		.spw = spw,
-+		.ch_mask = 1,
-+	};
-+	unsigned long baseaddr = TX4938_NDFMC_REG & 0xfffffffffULL;
-+
-+#ifdef __BIG_ENDIAN
-+	baseaddr += 4;
++static const char *rom_probe_types[] = { "cfi_probe", "jedec_probe", NULL };
++#ifdef CONFIG_MTD_PARTITIONS
++static const char *part_probe_types[] = { "cmdlinepart", NULL };
 +#endif
-+	if ((__raw_readq(&tx4938_ccfgptr->pcfg) &
-+	     (TX4938_PCFG_ATA_SEL|TX4938_PCFG_ISA_SEL|TX4938_PCFG_NDF_SEL)) ==
-+	    TX4938_PCFG_NDF_SEL)
-+		txx9_ndfmc_init(baseaddr, &plat_data);
-+}
 +
- static void __init tx4938_stop_unused_modules(void)
- {
- 	__u64 pcfg, rst = 0, ckd = 0;
-diff --git a/arch/mips/txx9/generic/setup_tx4939.c b/arch/mips/txx9/generic/setup_tx4939.c
-index 5544096..ec56b91 100644
---- a/arch/mips/txx9/generic/setup_tx4939.c
-+++ b/arch/mips/txx9/generic/setup_tx4939.c
-@@ -27,6 +27,7 @@
- #include <asm/txx9irq.h>
- #include <asm/txx9tmr.h>
- #include <asm/txx9/generic.h>
-+#include <asm/txx9/ndfmc.h>
- #include <asm/txx9/tx4939.h>
- 
- static void __init tx4939_wdr_init(void)
-@@ -435,6 +436,22 @@ void __init tx4939_ata_init(void)
- 		platform_device_register(&ata1_dev);
- }
- 
-+void __init tx4939_ndfmc_init(unsigned int hold, unsigned int spw,
-+			      unsigned char ch_mask, unsigned char wide_mask)
++static int rbtx4939_flash_probe(struct platform_device *dev)
 +{
-+	struct txx9ndfmc_platform_data plat_data = {
-+		.shift = 1,
-+		.gbus_clock = txx9_gbus_clock,
-+		.hold = hold,
-+		.spw = spw,
-+		.flags = NDFMC_PLAT_FLAG_NO_RSTR | NDFMC_PLAT_FLAG_HOLDADD |
-+			 NDFMC_PLAT_FLAG_DUMMYWRITE,
-+		.ch_mask = ch_mask,
-+		.wide_mask = wide_mask,
-+	};
-+	txx9_ndfmc_init(TX4939_NDFMC_REG & 0xfffffffffULL, &plat_data);
++	struct rbtx4939_flash_data *pdata;
++	struct rbtx4939_flash_info *info;
++	struct resource *res;
++	const char **probe_type;
++	int err = 0;
++	unsigned long size;
++#ifdef CONFIG_MTD_PARTITIONS
++	struct mtd_partition *parts;
++#endif
++
++	pdata = dev->dev.platform_data;
++	if (!pdata)
++		return -ENODEV;
++
++	res = platform_get_resource(dev, IORESOURCE_MEM, 0);
++	if (!res)
++		return -ENODEV;
++	info = devm_kzalloc(&dev->dev, sizeof(struct rbtx4939_flash_info),
++			    GFP_KERNEL);
++	if (!info)
++		return -ENOMEM;
++
++	platform_set_drvdata(dev, info);
++
++	size = resource_size(res);
++	pr_notice("rbtx4939 platform flash device: %pR\n", res);
++
++	if (!devm_request_mem_region(&dev->dev, res->start, size,
++				     dev_name(&dev->dev)))
++		return -EBUSY;
++
++	info->map.name = dev_name(&dev->dev);
++	info->map.phys = res->start;
++	info->map.size = size;
++	info->map.bankwidth = pdata->width;
++
++	info->map.virt = devm_ioremap(&dev->dev, info->map.phys, size);
++	if (!info->map.virt)
++		return -EBUSY;
++
++	if (pdata->map_init)
++		(*pdata->map_init)(&info->map);
++	else
++		simple_map_init(&info->map);
++
++	probe_type = rom_probe_types;
++	for (; !info->mtd && *probe_type; probe_type++)
++		info->mtd = do_map_probe(*probe_type, &info->map);
++	if (!info->mtd) {
++		dev_err(&dev->dev, "map_probe failed\n");
++		err = -ENXIO;
++		goto err_out;
++	}
++	info->mtd->owner = THIS_MODULE;
++	if (err)
++		goto err_out;
++
++#ifdef CONFIG_MTD_PARTITIONS
++	err = parse_mtd_partitions(info->mtd, part_probe_types, &parts, 0);
++	if (err > 0) {
++		add_mtd_partitions(info->mtd, parts, err);
++		return 0;
++	}
++
++	if (pdata->nr_parts) {
++		pr_notice("Using rbtx4939 partition information\n");
++		add_mtd_partitions(info->mtd, pdata->parts, pdata->nr_parts);
++		return 0;
++	}
++#endif
++
++	add_mtd_device(info->mtd);
++	return 0;
++
++err_out:
++	rbtx4939_flash_remove(dev);
++	return err;
 +}
 +
- void __init tx4939_rtc_init(void)
- {
- 	static struct resource res[] = {
-diff --git a/arch/mips/txx9/rbtx4938/setup.c b/arch/mips/txx9/rbtx4938/setup.c
-index 547ff29..65d13df 100644
---- a/arch/mips/txx9/rbtx4938/setup.c
-+++ b/arch/mips/txx9/rbtx4938/setup.c
-@@ -352,6 +352,8 @@ static void __init rbtx4938_device_init(void)
- 	rbtx4938_ne_init();
- 	tx4938_wdt_init();
- 	rbtx4938_mtd_init();
-+	/* TC58DVM82A1FT: tDH=10ns, tWP=tRP=tREADID=35ns */
-+	tx4938_ndfmc_init(10, 35);
- 	tx4938_ata_init(RBTX4938_IRQ_IOC_ATA, 0, 1);
- 	txx9_iocled_init(RBTX4938_LED_ADDR - IO_BASE, -1, 8, 1, "green", NULL);
- }
-diff --git a/arch/mips/txx9/rbtx4939/setup.c b/arch/mips/txx9/rbtx4939/setup.c
-index 656603b..74839f2 100644
---- a/arch/mips/txx9/rbtx4939/setup.c
-+++ b/arch/mips/txx9/rbtx4939/setup.c
-@@ -333,6 +333,10 @@ static void __init rbtx4939_device_init(void)
- 	    platform_device_add_data(pdev, &smc_pdata, sizeof(smc_pdata)) ||
- 	    platform_device_add(pdev))
- 		platform_device_put(pdev);
-+	/* TC58DVM82A1FT: tDH=10ns, tWP=tRP=tREADID=35ns */
-+	tx4939_ndfmc_init(10, 35,
-+			  (1 << 1) | (1 << 2),
-+			  (1 << 2)); /* ch1:8bit, ch2:16bit */
- 	rbtx4939_led_setup();
- 	tx4939_wdt_init();
- 	tx4939_ata_init();
++#ifdef CONFIG_PM
++static int rbtx4939_flash_suspend(struct platform_device *dev,
++				  pm_message_t state)
++{
++	struct rbtx4939_flash_info *info = platform_get_drvdata(dev);
++
++	if (info->mtd->suspend)
++		return info->mtd->suspend(info->mtd);
++	return 0;
++}
++
++static int rbtx4939_flash_resume(struct platform_device *dev)
++{
++	struct rbtx4939_flash_info *info = platform_get_drvdata(dev);
++
++	if (info->mtd->resume)
++		info->mtd->resume(info->mtd);
++	return 0;
++}
++
++static void rbtx4939_flash_shutdown(struct platform_device *dev)
++{
++	struct rbtx4939_flash_info *info = platform_get_drvdata(dev);
++
++	if (info->mtd->suspend && info->mtd->resume)
++		if (info->mtd->suspend(info->mtd) == 0)
++			info->mtd->resume(info->mtd);
++}
++#else
++#define rbtx4939_flash_suspend NULL
++#define rbtx4939_flash_resume NULL
++#define rbtx4939_flash_shutdown NULL
++#endif
++
++static struct platform_driver rbtx4939_flash_driver = {
++	.probe		= rbtx4939_flash_probe,
++	.remove		= rbtx4939_flash_remove,
++	.suspend	= rbtx4939_flash_suspend,
++	.resume		= rbtx4939_flash_resume,
++	.shutdown	= rbtx4939_flash_shutdown,
++	.driver		= {
++		.name	= "rbtx4939-flash",
++		.owner	= THIS_MODULE,
++	},
++};
++
++static int __init rbtx4939_flash_init(void)
++{
++	return platform_driver_register(&rbtx4939_flash_driver);
++}
++
++static void __exit rbtx4939_flash_exit(void)
++{
++	platform_driver_unregister(&rbtx4939_flash_driver);
++}
++
++module_init(rbtx4939_flash_init);
++module_exit(rbtx4939_flash_exit);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("RBTX4939 MTD map driver");
++MODULE_ALIAS("platform:rbtx4939-flash");
 -- 
 1.5.6.3

@@ -1,110 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2009 10:03:56 +0000 (GMT)
-Received: from fnoeppeil36.netpark.at ([217.175.205.164]:7629 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S21366208AbZATKDy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 20 Jan 2009 10:03:54 +0000
-Received: (qmail 19003 invoked by uid 1000); 20 Jan 2009 11:03:53 +0100
-Date:	Tue, 20 Jan 2009 11:03:53 +0100
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: [PATCH] Alchemy: fix edge irq handling
-Message-ID: <20090120100353.GA18971@roarinelk.homelinux.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <mano@roarinelk.homelinux.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2009 14:07:42 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:13523 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S21365133AbZATOHj (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Jan 2009 14:07:39 +0000
+Received: from localhost.localdomain (p1210-ipad205funabasi.chiba.ocn.ne.jp [222.146.96.210])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 65E94A108; Tue, 20 Jan 2009 23:07:34 +0900 (JST)
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] TXx9: Add support for TX4939 internal RTC
+Date:	Tue, 20 Jan 2009 23:07:41 +0900
+Message-Id: <1232460461-4325-1-git-send-email-anemo@mba.ocn.ne.jp>
+X-Mailer: git-send-email 1.5.6.3
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21784
+X-archive-position: 21785
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Introduce separate mack_ack callbacks which really do shut up the
-edge-triggered irqs when called.  Without this change, high-frequency
-edge interrupts can result in an endless irq storm, hanging the system.
+Add platform support to use rtc-tx4939 driver.
 
-This can be easily triggered for example by setting an irq to falling
-edge type and manually connecting the associated pin to ground.
-
-Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
- arch/mips/alchemy/common/irq.c |   32 ++++++++++++++++++++++++--------
- 1 files changed, 24 insertions(+), 8 deletions(-)
+ arch/mips/include/asm/txx9/tx4939.h   |    1 +
+ arch/mips/txx9/generic/setup_tx4939.c |   22 ++++++++++++++++++++++
+ arch/mips/txx9/rbtx4939/setup.c       |    1 +
+ 3 files changed, 24 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/alchemy/common/irq.c b/arch/mips/alchemy/common/irq.c
-index c88c821..60da581 100644
---- a/arch/mips/alchemy/common/irq.c
-+++ b/arch/mips/alchemy/common/irq.c
-@@ -320,6 +320,16 @@ static void au1x_ic0_mask(unsigned int irq_nr)
- 	au_sync();
+diff --git a/arch/mips/include/asm/txx9/tx4939.h b/arch/mips/include/asm/txx9/tx4939.h
+index 88badb4..964ef7e 100644
+--- a/arch/mips/include/asm/txx9/tx4939.h
++++ b/arch/mips/include/asm/txx9/tx4939.h
+@@ -541,5 +541,6 @@ void tx4939_irq_init(void);
+ int tx4939_irq(void);
+ void tx4939_mtd_init(int ch);
+ void tx4939_ata_init(void);
++void tx4939_rtc_init(void);
+ 
+ #endif /* __ASM_TXX9_TX4939_H */
+diff --git a/arch/mips/txx9/generic/setup_tx4939.c b/arch/mips/txx9/generic/setup_tx4939.c
+index 6c0049a..5544096 100644
+--- a/arch/mips/txx9/generic/setup_tx4939.c
++++ b/arch/mips/txx9/generic/setup_tx4939.c
+@@ -435,6 +435,28 @@ void __init tx4939_ata_init(void)
+ 		platform_device_register(&ata1_dev);
  }
  
-+static void au1x_ic0_maskack(unsigned int irq_nr)
++void __init tx4939_rtc_init(void)
 +{
-+	unsigned int bit = irq_nr - AU1000_INTC0_INT_BASE;
-+	au_writel(1 << bit, IC0_MASKCLR);
-+	au_writel(1 << bit, IC0_WAKECLR);
-+	au_writel(1 << bit, IC0_FALLINGCLR);
-+	au_writel(1 << bit, IC0_RISINGCLR);
-+	au_sync();
++	static struct resource res[] = {
++		{
++			.start = TX4939_RTC_REG & 0xfffffffffULL,
++			.end = (TX4939_RTC_REG & 0xfffffffffULL) + 0x100 - 1,
++			.flags = IORESOURCE_MEM,
++		}, {
++			.start = TXX9_IRQ_BASE + TX4939_IR_RTC,
++			.flags = IORESOURCE_IRQ,
++		},
++	};
++	static struct platform_device rtc_dev = {
++		.name = "tx4939rtc",
++		.id = -1,
++		.num_resources = ARRAY_SIZE(res),
++		.resource = res,
++	};
++
++	platform_device_register(&rtc_dev);
 +}
 +
- static void au1x_ic1_mask(unsigned int irq_nr)
+ static void __init tx4939_stop_unused_modules(void)
  {
- 	unsigned int bit = irq_nr - AU1000_INTC1_INT_BASE;
-@@ -328,6 +338,16 @@ static void au1x_ic1_mask(unsigned int irq_nr)
- 	au_sync();
+ 	__u64 pcfg, rst = 0, ckd = 0;
+diff --git a/arch/mips/txx9/rbtx4939/setup.c b/arch/mips/txx9/rbtx4939/setup.c
+index 98fbd93..656603b 100644
+--- a/arch/mips/txx9/rbtx4939/setup.c
++++ b/arch/mips/txx9/rbtx4939/setup.c
+@@ -336,6 +336,7 @@ static void __init rbtx4939_device_init(void)
+ 	rbtx4939_led_setup();
+ 	tx4939_wdt_init();
+ 	tx4939_ata_init();
++	tx4939_rtc_init();
  }
  
-+static void au1x_ic1_maskack(unsigned int irq_nr)
-+{
-+	unsigned int bit = irq_nr - AU1000_INTC1_INT_BASE;
-+	au_writel(1 << bit, IC1_MASKCLR);
-+	au_writel(1 << bit, IC1_WAKECLR);
-+	au_writel(1 << bit, IC1_FALLINGCLR);
-+	au_writel(1 << bit, IC1_RISINGCLR);
-+	au_sync();
-+}
-+
- static void au1x_ic0_ack(unsigned int irq_nr)
- {
- 	unsigned int bit = irq_nr - AU1000_INTC0_INT_BASE;
-@@ -379,25 +399,21 @@ static int au1x_ic1_setwake(unsigned int irq, unsigned int on)
- /*
-  * irq_chips for both ICs; this way the mask handlers can be
-  * as short as possible.
-- *
-- * NOTE: the ->ack() callback is used by the handle_edge_irq
-- *	 flowhandler only, the ->mask_ack() one by handle_level_irq,
-- *	 so no need for an irq_chip for each type of irq (level/edge).
-  */
- static struct irq_chip au1x_ic0_chip = {
- 	.name		= "Alchemy-IC0",
--	.ack		= au1x_ic0_ack,		/* edge */
-+	.ack		= au1x_ic0_ack,
- 	.mask		= au1x_ic0_mask,
--	.mask_ack	= au1x_ic0_mask,	/* level */
-+	.mask_ack	= au1x_ic0_maskack,
- 	.unmask		= au1x_ic0_unmask,
- 	.set_type	= au1x_ic_settype,
- };
- 
- static struct irq_chip au1x_ic1_chip = {
- 	.name		= "Alchemy-IC1",
--	.ack		= au1x_ic1_ack,		/* edge */
-+	.ack		= au1x_ic1_ack,
- 	.mask		= au1x_ic1_mask,
--	.mask_ack	= au1x_ic1_mask,	/* level */
-+	.mask_ack	= au1x_ic1_maskack,
- 	.unmask		= au1x_ic1_unmask,
- 	.set_type	= au1x_ic_settype,
- 	.set_wake	= au1x_ic1_setwake,
+ static void __init rbtx4939_setup(void)
 -- 
-1.6.1
+1.5.6.3

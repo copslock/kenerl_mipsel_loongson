@@ -1,22 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2009 14:07:42 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:13523 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S21365133AbZATOHj (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Jan 2009 14:07:39 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Jan 2009 14:12:20 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:29921 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S21366218AbZATOMR (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Jan 2009 14:12:17 +0000
 Received: from localhost.localdomain (p1210-ipad205funabasi.chiba.ocn.ne.jp [222.146.96.210])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 65E94A108; Tue, 20 Jan 2009 23:07:34 +0900 (JST)
+	id 9CE15AA85; Tue, 20 Jan 2009 23:12:12 +0900 (JST)
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] TXx9: Add support for TX4939 internal RTC
-Date:	Tue, 20 Jan 2009 23:07:41 +0900
-Message-Id: <1232460461-4325-1-git-send-email-anemo@mba.ocn.ne.jp>
+Cc:	ralf@linux-mips.org, linux-mtd@lists.infradead.org,
+	dwmw2@infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 2/5] RBTX4939: Add MTD support
+Date:	Tue, 20 Jan 2009 23:12:16 +0900
+Message-Id: <1232460738-4714-2-git-send-email-anemo@mba.ocn.ne.jp>
 X-Mailer: git-send-email 1.5.6.3
 Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21785
+X-archive-position: 21786
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -24,70 +25,214 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Add platform support to use rtc-tx4939 driver.
+Add platform support for NOR flash chips on RBTX4939 board.
+This board has complex flash mappings, controlled by its DIPSW setting.
 
 Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
- arch/mips/include/asm/txx9/tx4939.h   |    1 +
- arch/mips/txx9/generic/setup_tx4939.c |   22 ++++++++++++++++++++++
- arch/mips/txx9/rbtx4939/setup.c       |    1 +
- 3 files changed, 24 insertions(+), 0 deletions(-)
+ arch/mips/include/asm/txx9/rbtx4939.h |    9 ++
+ arch/mips/txx9/rbtx4939/setup.c       |  157 +++++++++++++++++++++++++++++++++
+ 2 files changed, 166 insertions(+), 0 deletions(-)
 
-diff --git a/arch/mips/include/asm/txx9/tx4939.h b/arch/mips/include/asm/txx9/tx4939.h
-index 88badb4..964ef7e 100644
---- a/arch/mips/include/asm/txx9/tx4939.h
-+++ b/arch/mips/include/asm/txx9/tx4939.h
-@@ -541,5 +541,6 @@ void tx4939_irq_init(void);
- int tx4939_irq(void);
- void tx4939_mtd_init(int ch);
- void tx4939_ata_init(void);
-+void tx4939_rtc_init(void);
+diff --git a/arch/mips/include/asm/txx9/rbtx4939.h b/arch/mips/include/asm/txx9/rbtx4939.h
+index 1acf428..e517899 100644
+--- a/arch/mips/include/asm/txx9/rbtx4939.h
++++ b/arch/mips/include/asm/txx9/rbtx4939.h
+@@ -130,4 +130,13 @@
+ void rbtx4939_prom_init(void);
+ void rbtx4939_irq_setup(void);
  
- #endif /* __ASM_TXX9_TX4939_H */
-diff --git a/arch/mips/txx9/generic/setup_tx4939.c b/arch/mips/txx9/generic/setup_tx4939.c
-index 6c0049a..5544096 100644
---- a/arch/mips/txx9/generic/setup_tx4939.c
-+++ b/arch/mips/txx9/generic/setup_tx4939.c
-@@ -435,6 +435,28 @@ void __init tx4939_ata_init(void)
- 		platform_device_register(&ata1_dev);
- }
- 
-+void __init tx4939_rtc_init(void)
-+{
-+	static struct resource res[] = {
-+		{
-+			.start = TX4939_RTC_REG & 0xfffffffffULL,
-+			.end = (TX4939_RTC_REG & 0xfffffffffULL) + 0x100 - 1,
-+			.flags = IORESOURCE_MEM,
-+		}, {
-+			.start = TXX9_IRQ_BASE + TX4939_IR_RTC,
-+			.flags = IORESOURCE_IRQ,
-+		},
-+	};
-+	static struct platform_device rtc_dev = {
-+		.name = "tx4939rtc",
-+		.id = -1,
-+		.num_resources = ARRAY_SIZE(res),
-+		.resource = res,
-+	};
++struct mtd_partition;
++struct map_info;
++struct rbtx4939_flash_data {
++	unsigned int width;
++	unsigned int nr_parts;
++	struct mtd_partition *parts;
++	void (*map_init)(struct map_info *map);
++};
 +
-+	platform_device_register(&rtc_dev);
-+}
-+
- static void __init tx4939_stop_unused_modules(void)
- {
- 	__u64 pcfg, rst = 0, ckd = 0;
+ #endif /* __ASM_TXX9_RBTX4939_H */
 diff --git a/arch/mips/txx9/rbtx4939/setup.c b/arch/mips/txx9/rbtx4939/setup.c
-index 98fbd93..656603b 100644
+index 74839f2..eee8763 100644
 --- a/arch/mips/txx9/rbtx4939/setup.c
 +++ b/arch/mips/txx9/rbtx4939/setup.c
-@@ -336,6 +336,7 @@ static void __init rbtx4939_device_init(void)
- 	rbtx4939_led_setup();
- 	tx4939_wdt_init();
- 	tx4939_ata_init();
-+	tx4939_rtc_init();
+@@ -16,6 +16,9 @@
+ #include <linux/leds.h>
+ #include <linux/interrupt.h>
+ #include <linux/smc91x.h>
++#include <linux/mtd/mtd.h>
++#include <linux/mtd/partitions.h>
++#include <linux/mtd/map.h>
+ #include <asm/reboot.h>
+ #include <asm/txx9/generic.h>
+ #include <asm/txx9/pci.h>
+@@ -282,6 +285,159 @@ static void rbtx4939_7segled_putc(unsigned int pos, unsigned char val)
+ 	__rbtx4939_7segled_putc(pos, val);
  }
  
- static void __init rbtx4939_setup(void)
++#if defined(CONFIG_MTD_RBTX4939) || defined(CONFIG_MTD_RBTX4939_MODULE)
++/* special mapping for boot rom */
++static unsigned long rbtx4939_flash_fixup_ofs(unsigned long ofs)
++{
++	u8 bdipsw = readb(rbtx4939_bdipsw_addr) & 0x0f;
++	unsigned char shift;
++
++	if (bdipsw & 8) {
++		/* BOOT Mode: USER ROM1 / USER ROM2 */
++		shift = bdipsw & 3;
++		/* rotate A[23:22] */
++		return (ofs & ~0xc00000) | ((((ofs >> 22) + shift) & 3) << 22);
++	}
++#ifdef __BIG_ENDIAN
++	if (bdipsw == 0)
++		/* BOOT Mode: Monitor ROM */
++		ofs ^= 0x400000;	/* swap A[22] */
++#endif
++	return ofs;
++}
++
++static map_word rbtx4939_flash_read16(struct map_info *map, unsigned long ofs)
++{
++	map_word r;
++
++	ofs = rbtx4939_flash_fixup_ofs(ofs);
++	r.x[0] = __raw_readw(map->virt + ofs);
++	return r;
++}
++
++static void rbtx4939_flash_write16(struct map_info *map, const map_word datum,
++				   unsigned long ofs)
++{
++	ofs = rbtx4939_flash_fixup_ofs(ofs);
++	__raw_writew(datum.x[0], map->virt + ofs);
++	mb();	/* see inline_map_write() in mtd/map.h */
++}
++
++static void rbtx4939_flash_copy_from(struct map_info *map, void *to,
++				     unsigned long from, ssize_t len)
++{
++	u8 bdipsw = readb(rbtx4939_bdipsw_addr) & 0x0f;
++	unsigned char shift;
++	ssize_t curlen;
++
++	from += (unsigned long)map->virt;
++	if (bdipsw & 8) {
++		/* BOOT Mode: USER ROM1 / USER ROM2 */
++		shift = bdipsw & 3;
++		while (len) {
++			curlen = min((unsigned long)len,
++				     0x400000 -	(from & (0x400000 - 1)));
++			memcpy(to,
++			       (void *)((from & ~0xc00000) |
++					((((from >> 22) + shift) & 3) << 22)),
++			       curlen);
++			len -= curlen;
++			from += curlen;
++			to += curlen;
++		}
++		return;
++	}
++#ifdef __BIG_ENDIAN
++	if (bdipsw == 0) {
++		/* BOOT Mode: Monitor ROM */
++		while (len) {
++			curlen = min((unsigned long)len,
++				     0x400000 - (from & (0x400000 - 1)));
++			memcpy(to, (void *)(from ^ 0x400000), curlen);
++			len -= curlen;
++			from += curlen;
++			to += curlen;
++		}
++		return;
++	}
++#endif
++	memcpy(to, (void *)from, len);
++}
++
++static void rbtx4939_flash_map_init(struct map_info *map)
++{
++	map->read = rbtx4939_flash_read16;
++	map->write = rbtx4939_flash_write16;
++	map->copy_from = rbtx4939_flash_copy_from;
++}
++
++static void __init rbtx4939_mtd_init(void)
++{
++	static struct {
++		struct platform_device dev;
++		struct resource res;
++		struct rbtx4939_flash_data data;
++	} pdevs[4];
++	int i;
++	static char names[4][8];
++	static struct mtd_partition parts[4];
++	struct rbtx4939_flash_data *boot_pdata = &pdevs[0].data;
++	u8 bdipsw = readb(rbtx4939_bdipsw_addr) & 0x0f;
++
++	if (bdipsw & 8) {
++		/* BOOT Mode: USER ROM1 / USER ROM2 */
++		boot_pdata->nr_parts = 4;
++		for (i = 0; i < boot_pdata->nr_parts; i++) {
++			sprintf(names[i], "img%d", 4 - i);
++			parts[i].name = names[i];
++			parts[i].size = 0x400000;
++			parts[i].offset = MTDPART_OFS_NXTBLK;
++		}
++	} else if (bdipsw == 0) {
++		/* BOOT Mode: Monitor ROM */
++		boot_pdata->nr_parts = 2;
++		strcpy(names[0], "big");
++		strcpy(names[1], "little");
++		for (i = 0; i < boot_pdata->nr_parts; i++) {
++			parts[i].name = names[i];
++			parts[i].size = 0x400000;
++			parts[i].offset = MTDPART_OFS_NXTBLK;
++		}
++	} else {
++		/* BOOT Mode: ROM Emulator */
++		boot_pdata->nr_parts = 2;
++		parts[0].name = "boot";
++		parts[0].offset = 0xc00000;
++		parts[0].size = 0x400000;
++		parts[1].name = "user";
++		parts[1].offset = 0;
++		parts[1].size = 0xc00000;
++	}
++	boot_pdata->parts = parts;
++	boot_pdata->map_init = rbtx4939_flash_map_init;
++
++	for (i = 0; i < ARRAY_SIZE(pdevs); i++) {
++		struct resource *r = &pdevs[i].res;
++		struct platform_device *dev = &pdevs[i].dev;
++
++		r->start = 0x1f000000 - i * 0x1000000;
++		r->end = r->start + 0x1000000 - 1;
++		r->flags = IORESOURCE_MEM;
++		pdevs[i].data.width = 2;
++		dev->num_resources = 1;
++		dev->resource = r;
++		dev->id = i;
++		dev->name = "rbtx4939-flash";
++		dev->dev.platform_data = &pdevs[i].data;
++		platform_device_register(dev);
++	}
++}
++#else
++static void __init rbtx4939_mtd_init(void)
++{
++}
++#endif
++
+ static void __init rbtx4939_arch_init(void)
+ {
+ 	rbtx4939_pci_setup();
+@@ -333,6 +489,7 @@ static void __init rbtx4939_device_init(void)
+ 	    platform_device_add_data(pdev, &smc_pdata, sizeof(smc_pdata)) ||
+ 	    platform_device_add(pdev))
+ 		platform_device_put(pdev);
++	rbtx4939_mtd_init();
+ 	/* TC58DVM82A1FT: tDH=10ns, tWP=tRP=tREADID=35ns */
+ 	tx4939_ndfmc_init(10, 35,
+ 			  (1 << 1) | (1 << 2),
 -- 
 1.5.6.3

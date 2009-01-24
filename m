@@ -1,70 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jan 2009 07:57:40 +0000 (GMT)
-Received: from fnoeppeil36.netpark.at ([217.175.205.164]:34964 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S21366147AbZAXH5X (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 24 Jan 2009 07:57:23 +0000
-Received: (qmail 22699 invoked from network); 24 Jan 2009 08:57:20 +0100
-Received: from scarran.roarinelk.net (192.168.0.242)
-  by fnoeppeil36.netpark.at with SMTP; 24 Jan 2009 08:57:20 +0100
-Date:	Sat, 24 Jan 2009 08:57:34 +0100
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	Frank Neuber <linux-mips@kernelport.de>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Au1550 with kernel linux-2.6.28.1
-Message-ID: <20090124085734.5b6b5c66@scarran.roarinelk.net>
-In-Reply-To: <1232739600.28527.289.camel@t60p>
-References: <1232739600.28527.289.camel@t60p>
-Organization: Private
-X-Mailer: Claws Mail 3.6.1 (GTK+ 2.14.5; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <mano@roarinelk.homelinux.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jan 2009 08:34:58 +0000 (GMT)
+Received: from monty.telenet-ops.be ([195.130.132.56]:53383 "EHLO
+	monty.telenet-ops.be") by ftp.linux-mips.org with ESMTP
+	id S21366151AbZAXIex (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 24 Jan 2009 08:34:53 +0000
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by monty.telenet-ops.be (Postfix) with SMTP id 5FB2C54007;
+	Sat, 24 Jan 2009 09:34:52 +0100 (CET)
+Received: from anakin.of.borg (d54C15368.access.telenet.be [84.193.83.104])
+	by monty.telenet-ops.be (Postfix) with ESMTP id 40DD65403D;
+	Sat, 24 Jan 2009 09:34:46 +0100 (CET)
+Received: from anakin.of.borg (localhost [127.0.0.1])
+	by anakin.of.borg (8.14.3/8.14.3/Debian-5) with ESMTP id n0O8Yj3l002485
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Sat, 24 Jan 2009 09:34:45 +0100
+Received: from localhost (geert@localhost)
+	by anakin.of.borg (8.14.3/8.14.3/Submit) with ESMTP id n0O8YiMS002373;
+	Sat, 24 Jan 2009 09:34:44 +0100
+X-Authentication-Warning: anakin.of.borg: geert owned process doing -bs
+Date:	Sat, 24 Jan 2009 09:34:43 +0100 (CET)
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Phil Sutter <n0-1@freewrt.org>
+cc:	Dmitry Torokhov <dtor@mail.ru>, linux-input@vger.kernel.org,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	Florian Fainelli <florian@openwrt.org>
+Subject: Re: [PATCH 2/2] input: add driver for S1 button of rb532
+In-Reply-To: <20090122191216.15285400E106@mail.nwl.cc>
+Message-ID: <Pine.LNX.4.64.0901240934040.13803@anakin>
+References: <1232651528-19870-1-git-send-email-n0-1@freewrt.org>
+ <1232651528-19870-2-git-send-email-n0-1@freewrt.org> <20090122191216.15285400E106@mail.nwl.cc>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <geert@linux-m68k.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21803
+X-archive-position: 21804
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Hallo Frank,
-
-On Fri, 23 Jan 2009 20:40:00 +0100
-Frank Neuber <linux-mips@kernelport.de> wrote:
-> at the moment I run a 2.6.16.11 on this core. Because of some trouble
-> with the USB 2.0 EHCI controller (which is wired on the internal PCI
-> bus) I am thinking about running a more recent kernel. 
-> It was easy to build linux-2.6.28.1 based on the db1550_defconfig using
-> the mips_4KCle-gcc (gcc version 4.0.0 (DENX ELDK 4.1 4.0.0)) toolchain.
-> But I see nothing on the serial console after starting the kernel. Some
-> time ago (10 month I think) I was testing the head of the git mips
-> kernel and the system was booting with some trouble on the pci bus but I
-> was able so see someting on the serial console.
+On Thu, 22 Jan 2009, Phil Sutter wrote:
+> Mikrotik's Routerboard 532 has two builtin buttons, from which one
+> triggers a hardware reset. The other one is accessible through GPIO pin
+> 1. Sadly, this pin is being multiplexed with UART0 input, so enabling it
+> as interrupt source (as implied by the gpio-keys driver) is not possible
+> unless UART0 has been turned off. The later one though is a rather bad
+> idea as the Routerboard is an embedded device with only a single serial
+> port, so it's almost always used as serial console device.
 > 
-> A quick search on this list show me
-> http://www.linux-mips.org/archives/linux-mips/2008-11/msg00099.html
-> the last activity on the alchemy chip.
+> This patch adds a driver based on INPUT_POLLDEV, which disables the UART
+> and reconfigures GPIO pin 1 temporarily while reading the button state.
+> This procedure works fine and has been tested as part of another,
+> unpublished driver for this device.
 
-That stuff went in in time for 2.6.29-rc2, so it's unlikely to be the
-cause of your problems.
+What happens when you receive UART input while the UART is disabled? Is it
+lost?
 
+Gr{oetje,eeting}s,
 
-> I just want to ask who is working with the au1550 on a more recent
-> kernel than 2.6.16.11. 
-> I'll start now with some early printk to solve booting problems and than
-> we will see .....
+						Geert
 
-I know of at least one person running 2.6.26 or .27 on a Au1550.
-You should start by throwing away the defconfig ;-).  Create a new
-config with only au1x00 serial and serial console enabled and then add
-new devices one at a time and see where it breaks.
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-(Btw, which board?  I'd love to get my hands on other alchemy boards to
-test on).
-
-Thanks!
-	Manuel Lauss
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

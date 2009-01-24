@@ -1,79 +1,105 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jan 2009 08:57:40 +0000 (GMT)
-Received: from mail.bugwerft.de ([212.112.241.193]:29134 "EHLO
-	mail.bugwerft.de") by ftp.linux-mips.org with ESMTP
-	id S21366144AbZAXI5i (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 24 Jan 2009 08:57:38 +0000
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.bugwerft.de (Postfix) with ESMTP id A6D068F849D;
-	Sat, 24 Jan 2009 09:57:32 +0100 (CET)
-Received: from mail.bugwerft.de ([127.0.0.1])
-	by localhost (mail.bugwerft.de [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 3Xe2-7LZt6En; Sat, 24 Jan 2009 09:57:31 +0100 (CET)
-Received: from [10.1.1.26] (unknown [192.168.22.14])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.bugwerft.de (Postfix) with ESMTP id 68CD68F849C;
-	Sat, 24 Jan 2009 09:57:30 +0100 (CET)
-Subject: Re: Au1550 with kernel linux-2.6.28.1
-From:	Frank Neuber <linux-mips@kernelport.de>
-To:	Manuel Lauss <mano@roarinelk.homelinux.net>
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <20090124085734.5b6b5c66@scarran.roarinelk.net>
-References: <1232739600.28527.289.camel@t60p>
-	 <20090124085734.5b6b5c66@scarran.roarinelk.net>
-Content-Type: text/plain
-Date:	Sat, 24 Jan 2009 09:57:28 +0100
-Message-Id: <1232787448.28527.302.camel@t60p>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jan 2009 13:15:50 +0000 (GMT)
+Received: from mow300.po.2iij.NET ([210.128.50.200]:30892 "EHLO
+	mow.po.2iij.net") by ftp.linux-mips.org with ESMTP
+	id S21365744AbZAXNPs (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 24 Jan 2009 13:15:48 +0000
+Received: by mow.po.2iij.net (mow300) id n0ODFiYZ003613; Sat, 24 Jan 2009 22:15:44 +0900
+Received: from delta (133.6.30.125.dy.iij4u.or.jp [125.30.6.133])
+	by mbox.po.2iij.net (po-mbox304) id n0ODFgML029203
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Sat, 24 Jan 2009 22:15:43 +0900
+Date:	Sat, 24 Jan 2009 22:15:42 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] fix oops in r4k_dma_cache_inv
+Message-Id: <20090124221542.bcc6c19f.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed 2.4.8 (GTK+ 2.12.9; i486-pc-linux-gnu)
 Mime-Version: 1.0
-X-Mailer: Evolution 2.12.1 
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Return-Path: <linux-mips@kernelport.de>
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21805
+X-archive-position: 21806
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linux-mips@kernelport.de
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi Manuel,
-thank you for your quick response.
+This patch adds alignment for cache operation address in r4k_dma_cache_inv().
+The following oops is fixed by it. 
 
-Am Samstag, den 24.01.2009, 08:57 +0100 schrieb Manuel Lauss:
-> > I just want to ask who is working with the au1550 on a more recent
-> > kernel than 2.6.16.11. 
-> > I'll start now with some early printk to solve booting problems and than
-> > we will see .....
-> 
-> I know of at least one person running 2.6.26 or .27 on a Au1550.
-> You should start by throwing away the defconfig ;-).  Create a new
-> config with only au1x00 serial and serial console enabled and then add
-> new devices one at a time and see where it breaks.
-Yestoday I tested the earlyprintk stuff witout luck :-(
-I simply added this CMDLINE earlycon=uart,mmio,0x11100000,115200n8
-console=ttyS0,115200n8 panic=1
-The drivers/serial/8250_early.o is build in the kernel but without
-adding CONFIG_EARLY_PRINTK or CONFIG_SYS_HAS_EARLY_PRINTK. Maybe this is
-the problem.
-On the running kernel I see this.
-Serial: 8250/16550 driver $Revision: 1.90 $ 5 ports, IRQ sharing enabled
-serial8250.7: ttyS0 at MMIO 0x11100000 (irq = 0) is a 16550A
-serial8250.7: ttyS1 at MMIO 0x11200000 (irq = 8) is a 16550A
-serial8250.7: ttyS2 at MMIO 0x11400000 (irq = 9) is a 16550A
-The console is console=ttyS0,115200n8 ....
+Unhandled kernel unaligned access or invalid instruction[#1]:
+Cpu 0
+$ 0   : 00000000 9000c400 8f9a9fff 803e0000
+$ 4   : 8f9a9000 00001000 00000001 00000002
+$ 8   : 00000000 00000000 8f998084 8f986600
+$12   : 00000000 00000000 00000008 00000008
+$16   : 8f9a9000 8f9a3500 00000000 00000001
+$20   : 00000002 803e0000 803d0000 00000000
+$24   : 00000000 80240000                  
+$28   : 8f81a000 8f81b708 803d0000 8009560c
+Hi    : 10623d20
+Lo    : 4fdf2cc8
+epc   : 80098470 r4k_dma_cache_inv+0x28/0x64
+    Not tainted
+ra    : 8009560c dma_map_sg+0xf8/0x14c
+Status: 9000c402    KERNEL EXL 
+Cause : 00800010
+BadVA : 8f9a9fff
+PrId  : 000028a0 (Nevada)
+Modules linked in:
+Process swapper (pid: 1, threadinfo=8f81a000, task=8f820000, tls=00000000)
+Stack : 8f967424 8f967510 8f9a03ee 8f99e140 8f999300 8f998074 8f998000 00000003
+        803e0000 80253a38 8f967424 8f967510 80370000 8024e344 00000000 8f9a3580
+        00000008 8f81b770 8f998074 8f99e140 802389fc 8f999458 8f998000 80253a38
+        80253db4 80253cbc 800df150 00000000 80257af8 8f9a0360 8f99e140 9000c401
+        8f9a0360 8f99e140 8f986600 8f9674a8 802391ac 8f81b844 8f967400 80224788
+        ...
+Call Trace:
+[<80098470>] r4k_dma_cache_inv+0x28/0x64
+[<8009560c>] dma_map_sg+0xf8/0x14c
+[<8024e344>] ata_qc_issue+0x1ec/0x308
+[<80253db4>] ata_scsi_translate+0x134/0x1e8
+[<802391ac>] scsi_dispatch_cmd+0x10c/0x270
+[<8024028c>] scsi_request_fn+0x28c/0x53c
 
-Now I'll go more deep into the kernel. 
-> 
-> (Btw, which board?  I'd love to get my hands on other alchemy boards to
-> test on).
-It is a customer board not available on the market.
 
-It is possible for you to connect me to this person. Maybe we can share
-some know how. At the moment I work on USB Analog/DVB stuff more deep on
-MIPS.
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-Kind Regards,
- Frank
+diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/arch/mips/mm/c-r4k.c linux/arch/mips/mm/c-r4k.c
+--- linux-orig/arch/mips/mm/c-r4k.c	2009-01-15 10:27:30.170434561 +0900
++++ linux/arch/mips/mm/c-r4k.c	2009-01-15 17:06:07.326434524 +0900
+@@ -612,6 +612,8 @@ static void r4k_dma_cache_wback_inv(unsi
+ 
+ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
+ {
++	unsigned long lsize = cpu_dcache_line_size();
++
+ 	/* Catch bad driver code */
+ 	BUG_ON(size == 0);
+ 
+@@ -620,7 +622,8 @@ static void r4k_dma_cache_inv(unsigned l
+ 			r4k_blast_scache();
+ 		else {
+ 			cache_op(Hit_Writeback_Inv_SD, addr);
+-			cache_op(Hit_Writeback_Inv_SD, addr + size - 1);
++			cache_op(Hit_Writeback_Inv_SD,
++				 (addr + size - 1) & ~(lsize - 1));
+ 			blast_inv_scache_range(addr, addr + size);
+ 		}
+ 		return;
+@@ -631,7 +634,7 @@ static void r4k_dma_cache_inv(unsigned l
+ 	} else {
+ 		R4600_HIT_CACHEOP_WAR_IMPL;
+ 		cache_op(Hit_Writeback_Inv_D, addr);
+-		cache_op(Hit_Writeback_Inv_D, addr + size - 1);
++		cache_op(Hit_Writeback_Inv_D, (addr + size - 1) & ~(lsize - 1));
+ 		blast_inv_dcache_range(addr, addr + size);
+ 	}
+ 

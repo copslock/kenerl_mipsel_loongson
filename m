@@ -1,85 +1,111 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jan 2009 19:11:05 +0000 (GMT)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:34199 "EHLO h5.dl5rb.org.uk")
-	by ftp.linux-mips.org with ESMTP id S21366177AbZAXTK7 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 24 Jan 2009 19:10:59 +0000
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n0OJAvhY014533;
-	Sat, 24 Jan 2009 19:10:58 GMT
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n0OJAtxV014518;
-	Sat, 24 Jan 2009 19:10:55 GMT
-Date:	Sat, 24 Jan 2009 19:10:55 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-Cc:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH][MIPS] fix oops in r4k_dma_cache_inv
-Message-ID: <20090124191055.GA29966@linux-mips.org>
-References: <20090124221542.bcc6c19f.yoichi_yuasa@tripeaks.co.jp>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20090124221542.bcc6c19f.yoichi_yuasa@tripeaks.co.jp>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@h5.dl5rb.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jan 2009 23:20:38 +0000 (GMT)
+Received: from mail.bugwerft.de ([212.112.241.193]:37595 "EHLO
+	mail.bugwerft.de") by ftp.linux-mips.org with ESMTP
+	id S21366305AbZAXXUg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 24 Jan 2009 23:20:36 +0000
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.bugwerft.de (Postfix) with ESMTP id 84C1E8F849D;
+	Sun, 25 Jan 2009 00:20:30 +0100 (CET)
+Received: from mail.bugwerft.de ([127.0.0.1])
+	by localhost (mail.bugwerft.de [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id uUijuvTGdGZo; Sun, 25 Jan 2009 00:20:29 +0100 (CET)
+Received: from [10.1.1.26] (ip-77-25-15-184.web.vodafone.de [77.25.15.184])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.bugwerft.de (Postfix) with ESMTP id 82BC78F849C;
+	Sun, 25 Jan 2009 00:20:27 +0100 (CET)
+Subject: Re: Au1550 with kernel linux-2.6.28.1
+From:	Frank Neuber <frank.neuber@kernelport.de>
+To:	Manuel Lauss <mano@roarinelk.homelinux.net>
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <1232787448.28527.302.camel@t60p>
+References: <1232739600.28527.289.camel@t60p>
+	 <20090124085734.5b6b5c66@scarran.roarinelk.net>
+	 <1232787448.28527.302.camel@t60p>
+Content-Type: text/plain
+Date:	Sun, 25 Jan 2009 00:20:24 +0100
+Message-Id: <1232839224.28527.336.camel@t60p>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.12.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <frank.neuber@kernelport.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21809
+X-archive-position: 21810
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: frank.neuber@kernelport.de
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Jan 24, 2009 at 10:15:42PM +0900, Yoichi Yuasa wrote:
-
-Patch looks ok - but I think we also have to assume that the starting
-address of the range might be miss-aligned, so how about this patch?
-
-  Ralf
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
-diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
-index 56290a7..c43f4b2 100644
---- a/arch/mips/mm/c-r4k.c
-+++ b/arch/mips/mm/c-r4k.c
-@@ -619,8 +619,20 @@ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
- 		if (size >= scache_size)
- 			r4k_blast_scache();
- 		else {
--			cache_op(Hit_Writeback_Inv_SD, addr);
--			cache_op(Hit_Writeback_Inv_SD, addr + size - 1);
-+			unsigned long lsize = cpu_scache_line_size();
-+			unsigned long almask = ~(lsize - 1);
-+
-+			/*
-+			 * There is no clearly documented alignment requirement
-+			 * for the cache instruction on MIPS processors and
-+			 * some processors, among them the RM5200 and RM7000
-+			 * QED processors will throw an address error for cache
-+			 * hit ops with insufficient alignment.  Solved by
-+			 * aligning the address to cache line size.
-+			 */
-+			cache_op(Hit_Writeback_Inv_SD, addr & almask);
-+			cache_op(Hit_Writeback_Inv_SD,
-+				 (addr + size - 1) & almask);
- 			blast_inv_scache_range(addr, addr + size);
- 		}
- 		return;
-@@ -629,9 +641,12 @@ static void r4k_dma_cache_inv(unsigned long addr, unsigned long size)
- 	if (cpu_has_safe_index_cacheops && size >= dcache_size) {
- 		r4k_blast_dcache();
- 	} else {
-+		unsigned long lsize = cpu_dcache_line_size();
-+		unsigned long almask = ~(lsize - 1);
-+
- 		R4600_HIT_CACHEOP_WAR_IMPL;
--		cache_op(Hit_Writeback_Inv_D, addr);
--		cache_op(Hit_Writeback_Inv_D, addr + size - 1);
-+		cache_op(Hit_Writeback_Inv_D, addr & almask);
-+		cache_op(Hit_Writeback_Inv_D, (addr + size - 1)  & almask);
- 		blast_inv_dcache_range(addr, addr + size);
- 	}
+Hi Manuel,
+after trying the standard early printk without luck I implemented my
+own:
  
+--- kernel/printk.c.orig        2009-01-24 23:48:08.000000000 +0100
++++ kernel/printk.c     2009-01-24 23:49:42.000000000 +0100
+@@ -481,8 +481,30 @@
+        _call_console_drivers(start_print, end, msg_level);
+ }
+ 
++#include <linux/serial_8250.h>
++#include <asm/mach-au1x00/au1000.h>
++
++void serial_putc (const char c)
++{
++        volatile u32 *uart_lsr = (volatile u32*)(UART0_ADDR+UART_LSR);
++        volatile u32 *uart_tx = (volatile u32*)(UART0_ADDR+UART_TX);
++
++        if (c == '\n') serial_putc ('\r');
++
++        /* Wait for fifo to shift out some bytes */
++        while((*uart_lsr&UART_LSR_THRE)==0);
++
++        *uart_tx = (u32)c;
++}
++
+ static void emit_log_char(char c)
+ {
++#if 1
++        if (c == '\n'){
++                serial_putc('\r');
++        }
++        serial_putc(c);
++#endif
+        LOG_BUF(log_end) = c;
+        log_end++;
+        if (log_end - log_start > log_buf_len)
+
+The same result, I see nothing :-(
+
+This means I run into trouble in the very early assembler part of the
+kernel. I know the ARM kernel has some debug features implemented (using
+the serial port).
+Has the mips kernel a comparable debug possebility?
+
+I striped down the defconfig as you sad and start the kernel using
+uboot:
+
+tc# bootm 0x80500000
+## Booting image at 80500000 ...
+   Image Name:   Linux-2.6.28.1
+   Created:      2009-01-24  21:39:57 UTC
+   Image Type:   MIPS Linux Kernel Image (gzip compressed)
+   Data Size:    894213 Bytes = 873.3 kB
+   Load Address: 80100000
+   Entry Point:  80104690
+   Verifying Checksum ... OK
+   Uncompressing Kernel Image ... OK
+
+Starting kernel ...
+
+Could the entry point be the problem? He is very close to the load
+address. Because I have no JTAG for mips it is not easy to check what is
+going on here .... 
+
+Now I have no idea what can I do next ...
+
+Kind Regards,
+ Frank

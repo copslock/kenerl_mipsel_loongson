@@ -1,111 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Jan 2009 23:20:38 +0000 (GMT)
-Received: from mail.bugwerft.de ([212.112.241.193]:37595 "EHLO
-	mail.bugwerft.de") by ftp.linux-mips.org with ESMTP
-	id S21366305AbZAXXUg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 24 Jan 2009 23:20:36 +0000
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.bugwerft.de (Postfix) with ESMTP id 84C1E8F849D;
-	Sun, 25 Jan 2009 00:20:30 +0100 (CET)
-Received: from mail.bugwerft.de ([127.0.0.1])
-	by localhost (mail.bugwerft.de [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id uUijuvTGdGZo; Sun, 25 Jan 2009 00:20:29 +0100 (CET)
-Received: from [10.1.1.26] (ip-77-25-15-184.web.vodafone.de [77.25.15.184])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mail.bugwerft.de (Postfix) with ESMTP id 82BC78F849C;
-	Sun, 25 Jan 2009 00:20:27 +0100 (CET)
-Subject: Re: Au1550 with kernel linux-2.6.28.1
-From:	Frank Neuber <frank.neuber@kernelport.de>
-To:	Manuel Lauss <mano@roarinelk.homelinux.net>
-Cc:	linux-mips@linux-mips.org
-In-Reply-To: <1232787448.28527.302.camel@t60p>
-References: <1232739600.28527.289.camel@t60p>
-	 <20090124085734.5b6b5c66@scarran.roarinelk.net>
-	 <1232787448.28527.302.camel@t60p>
-Content-Type: text/plain
-Date:	Sun, 25 Jan 2009 00:20:24 +0100
-Message-Id: <1232839224.28527.336.camel@t60p>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.12.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <frank.neuber@kernelport.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Jan 2009 01:59:53 +0000 (GMT)
+Received: from rtp-iport-1.cisco.com ([64.102.122.148]:33455 "EHLO
+	rtp-iport-1.cisco.com") by ftp.linux-mips.org with ESMTP
+	id S21366344AbZAYB7u convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 25 Jan 2009 01:59:50 +0000
+X-IronPort-AV: E=Sophos;i="4.37,320,1231113600"; 
+   d="scan'208";a="34805453"
+Received: from rtp-dkim-1.cisco.com ([64.102.121.158])
+  by rtp-iport-1.cisco.com with ESMTP; 25 Jan 2009 01:59:43 +0000
+Received: from rtp-core-2.cisco.com (rtp-core-2.cisco.com [64.102.124.13])
+	by rtp-dkim-1.cisco.com (8.12.11/8.12.11) with ESMTP id n0P1xhsb026661;
+	Sat, 24 Jan 2009 20:59:43 -0500
+Received: from xbh-rtp-201.amer.cisco.com (xbh-rtp-201.cisco.com [64.102.31.12])
+	by rtp-core-2.cisco.com (8.13.8/8.13.8) with ESMTP id n0P1xhgx021990;
+	Sun, 25 Jan 2009 01:59:43 GMT
+Received: from xmb-rtp-218.amer.cisco.com ([64.102.31.117]) by xbh-rtp-201.amer.cisco.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Sat, 24 Jan 2009 20:59:43 -0500
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: 2.6.28 will not boot on 24K processor, ebase incorrectly modified in set_uncached_handler
+Date:	Sat, 24 Jan 2009 20:59:42 -0500
+Message-ID: <FF038EB85946AA46B18DFEE6E6F8A28976825D@xmb-rtp-218.amer.cisco.com>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: 2.6.28 will not boot on 24K processor, ebase incorrectly modified in set_uncached_handler
+Thread-Index: Acl+kJaro0S6RTnZTS6pVkaviRzJAg==
+From:	"David VomLehn (dvomlehn)" <dvomlehn@cisco.com>
+To:	<linux-mips@linux-mips.org>
+Cc:	"Dezhong Diao (dediao)" <dediao@cisco.com>,
+	"Victor Williams Jr (williavi)" <williavi@cisco.com>,
+	"Michael Sundius -X (msundius - Yoh Services LLC at Cisco)" 
+	<msundius@cisco.com>
+X-OriginalArrivalTime: 25 Jan 2009 01:59:43.0592 (UTC) FILETIME=[97526680:01C97E90]
+DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=676; t=1232848783; x=1233712783;
+	c=relaxed/simple; s=rtpdkim1001;
+	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
+	d=cisco.com; i=dvomlehn@cisco.com;
+	z=From:=20=22David=20VomLehn=20(dvomlehn)=22=20<dvomlehn@cis
+	co.com>
+	|Subject:=202.6.28=20will=20not=20boot=20on=2024K=20process
+	or,=20ebase=20incorrectly=20modified=20in=20set_uncached_han
+	dler
+	|Sender:=20
+	|To:=20<linux-mips@linux-mips.org>;
+	bh=TLeCNFAsy+bYEhPXFDWM8OyPL5qx09X8z2ozNv/p5Vg=;
+	b=OOT3xTMuZNY7PPSRLuMZsb3tE0n6NGn4eTklXKU+qtu/YkrrgfNgU/dKS5
+	f6tb9DbWnntTaKpo7iS9JXWkVz82t9YPLQwzvq1D3xsXfPnBA4u6IwVmKrKD
+	nOqm9ahLkg;
+Authentication-Results:	rtp-dkim-1; header.From=dvomlehn@cisco.com; dkim=pass (
+	sig from cisco.com/rtpdkim1001 verified; ); 
+Return-Path: <dvomlehn@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21810
+X-archive-position: 21811
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: frank.neuber@kernelport.de
+X-original-sender: dvomlehn@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Manuel,
-after trying the standard early printk without luck I implemented my
-own:
- 
---- kernel/printk.c.orig        2009-01-24 23:48:08.000000000 +0100
-+++ kernel/printk.c     2009-01-24 23:49:42.000000000 +0100
-@@ -481,8 +481,30 @@
-        _call_console_drivers(start_print, end, msg_level);
- }
- 
-+#include <linux/serial_8250.h>
-+#include <asm/mach-au1x00/au1000.h>
-+
-+void serial_putc (const char c)
-+{
-+        volatile u32 *uart_lsr = (volatile u32*)(UART0_ADDR+UART_LSR);
-+        volatile u32 *uart_tx = (volatile u32*)(UART0_ADDR+UART_TX);
-+
-+        if (c == '\n') serial_putc ('\r');
-+
-+        /* Wait for fifo to shift out some bytes */
-+        while((*uart_lsr&UART_LSR_THRE)==0);
-+
-+        *uart_tx = (u32)c;
-+}
-+
- static void emit_log_char(char c)
- {
-+#if 1
-+        if (c == '\n'){
-+                serial_putc('\r');
-+        }
-+        serial_putc(c);
-+#endif
-        LOG_BUF(log_end) = c;
-        log_end++;
-        if (log_end - log_start > log_buf_len)
+The 2.6.28 kernel dies in memcpy when called from set_vi_srs_handler on
+a
+24K processor. The problem is that ebase has an invalid value. The
+original
+value of ebase comes from a bootmem allocation, but the following code
+in
+set_uncached_handler takes a perfectly good kseg0 address and turns it
+into
+an invalid kseg1 address.
 
-The same result, I see nothing :-(
+	if (cpu_has_mips_r2)
+		ebase += (read_c0_ebase() & 0x3ffff000);
 
-This means I run into trouble in the very early assembler part of the
-kernel. I know the ARM kernel has some debug features implemented (using
-the serial port).
-Has the mips kernel a comparable debug possebility?
-
-I striped down the defconfig as you sad and start the kernel using
-uboot:
-
-tc# bootm 0x80500000
-## Booting image at 80500000 ...
-   Image Name:   Linux-2.6.28.1
-   Created:      2009-01-24  21:39:57 UTC
-   Image Type:   MIPS Linux Kernel Image (gzip compressed)
-   Data Size:    894213 Bytes = 873.3 kB
-   Load Address: 80100000
-   Entry Point:  80104690
-   Verifying Checksum ... OK
-   Uncompressing Kernel Image ... OK
-
-Starting kernel ...
-
-Could the entry point be the problem? He is very close to the load
-address. Because I have no JTAG for mips it is not easy to check what is
-going on here .... 
-
-Now I have no idea what can I do next ...
-
-Kind Regards,
- Frank
+This code was added in commit 566f74f6b2f8b85d5b8d6caaf97e5672cecd3e3e.
+I
+have no idea why ebase needs to be modified at all, so I have no patch
+to
+offer. When I removed these two lines, my kernel booted to a shell
+prompt.
+--
+David VomLehn, dvomlehn@cisco.com

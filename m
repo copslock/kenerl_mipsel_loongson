@@ -1,116 +1,111 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 25 Jan 2009 21:50:56 +0000 (GMT)
-Received: from rtp-iport-2.cisco.com ([64.102.122.149]:43293 "EHLO
-	rtp-iport-2.cisco.com") by ftp.linux-mips.org with ESMTP
-	id S21365236AbZAYVus convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 25 Jan 2009 21:50:48 +0000
-X-IronPort-AV: E=Sophos;i="4.37,323,1231113600"; 
-   d="scan'208";a="34796660"
-Received: from rtp-dkim-1.cisco.com ([64.102.121.158])
-  by rtp-iport-2.cisco.com with ESMTP; 25 Jan 2009 21:50:27 +0000
-Received: from rtp-core-1.cisco.com (rtp-core-1.cisco.com [64.102.124.12])
-	by rtp-dkim-1.cisco.com (8.12.11/8.12.11) with ESMTP id n0PLoRrj014113;
-	Sun, 25 Jan 2009 16:50:27 -0500
-Received: from xbh-rtp-211.amer.cisco.com (xbh-rtp-211.cisco.com [64.102.31.102])
-	by rtp-core-1.cisco.com (8.13.8/8.13.8) with ESMTP id n0PLoRR1018130;
-	Sun, 25 Jan 2009 21:50:27 GMT
-Received: from xmb-rtp-218.amer.cisco.com ([64.102.31.117]) by xbh-rtp-211.amer.cisco.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Sun, 25 Jan 2009 16:50:26 -0500
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: 2.6.28 will not boot on 24K processor, ebase incorrectly modified in set_uncached_handler
-Date:	Sun, 25 Jan 2009 16:50:25 -0500
-Message-ID: <FF038EB85946AA46B18DFEE6E6F8A28976828C@xmb-rtp-218.amer.cisco.com>
-In-Reply-To: <497C3C6F.3000209@paralogos.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: 2.6.28 will not boot on 24K processor, ebase incorrectly modified in set_uncached_handler
-Thread-Index: Acl+1kXP3jArc75MQT+Qvx8eRtjzGgAYEbsQ
-References: <FF038EB85946AA46B18DFEE6E6F8A28976825D@xmb-rtp-218.amer.cisco.com> <497C3C6F.3000209@paralogos.com>
-From:	"David VomLehn (dvomlehn)" <dvomlehn@cisco.com>
-To:	"Kevin D. Kissell" <kevink@paralogos.com>
-Cc:	<linux-mips@linux-mips.org>,
-	"Dezhong Diao (dediao)" <dediao@cisco.com>,
-	"Victor Williams Jr (williavi)" <williavi@cisco.com>,
-	"Michael Sundius -X (msundius - Yoh Services LLC at Cisco)" 
-	<msundius@cisco.com>
-X-OriginalArrivalTime: 25 Jan 2009 21:50:26.0804 (UTC) FILETIME=[EECB6B40:01C97F36]
-DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=1754; t=1232920227; x=1233784227;
-	c=relaxed/simple; s=rtpdkim1001;
-	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
-	d=cisco.com; i=dvomlehn@cisco.com;
-	z=From:=20=22David=20VomLehn=20(dvomlehn)=22=20<dvomlehn@cis
-	co.com>
-	|Subject:=20RE=3A=202.6.28=20will=20not=20boot=20on=2024K=2
-	0processor,=20ebase=20incorrectly=20modified=20in=20set_unca
-	ched_handler
-	|Sender:=20
-	|To:=20=22Kevin=20D.=20Kissell=22=20<kevink@paralogos.com>;
-	bh=BXqohsHEWbPE2dT/MTS0xpFkavViVUpDSf92xFRsphQ=;
-	b=rdKPFDedOx+xMcc/4pslfCUjlcnoyQAlA6US4sXVWZyiEjMPHtROV8hpt4
-	cSqI+tPKvycp7wCHIv4TVQR4RMTkC930fUyIu6QrqG0raIyO2QB5AmQfSJTL
-	gnyb4mAM8q;
-Authentication-Results:	rtp-dkim-1; header.From=dvomlehn@cisco.com; dkim=pass (
-	sig from cisco.com/rtpdkim1001 verified; ); 
-Return-Path: <dvomlehn@cisco.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Jan 2009 10:21:49 +0000 (GMT)
+Received: from mail.bugwerft.de ([212.112.241.193]:18890 "EHLO
+	mail.bugwerft.de") by ftp.linux-mips.org with ESMTP
+	id S21189190AbZAZKVq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 26 Jan 2009 10:21:46 +0000
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.bugwerft.de (Postfix) with ESMTP id 961958F849D
+	for <linux-mips@linux-mips.org>; Mon, 26 Jan 2009 11:21:40 +0100 (CET)
+Received: from mail.bugwerft.de ([127.0.0.1])
+	by localhost (mail.bugwerft.de [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id bDL3AU3bYx6T for <linux-mips@linux-mips.org>;
+	Mon, 26 Jan 2009 11:21:40 +0100 (CET)
+Received: from [10.1.1.26] (unknown [192.168.22.14])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.bugwerft.de (Postfix) with ESMTP id AA9788F849C
+	for <linux-mips@linux-mips.org>; Mon, 26 Jan 2009 11:21:38 +0100 (CET)
+Subject: Au1550 with kernel linux-2.6.28.1 PCI Cardbus mappings too large
+From:	Frank Neuber <linux-mips@kernelport.de>
+To:	linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <1232871616.28527.347.camel@t60p>
+References: <1232739600.28527.289.camel@t60p>
+	 <20090124085734.5b6b5c66@scarran.roarinelk.net>
+	 <1232787448.28527.302.camel@t60p>  <1232839224.28527.336.camel@t60p>
+	 <1232871616.28527.347.camel@t60p>
+Content-Type: text/plain
+Date:	Mon, 26 Jan 2009 11:21:36 +0100
+Message-Id: <1232965296.28527.427.camel@t60p>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.12.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <linux-mips@kernelport.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21819
+X-archive-position: 21820
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvomlehn@cisco.com
+X-original-sender: linux-mips@kernelport.de
 Precedence: bulk
 X-list: linux-mips
 
-> From: Kevin D. Kissell [mailto:kevink@paralogos.com] 
-> Sent: Sunday, January 25, 2009 2:18 AM
-> To: David VomLehn (dvomlehn)
-> Cc: linux-mips@linux-mips.org; Dezhong Diao (dediao); Victor 
-> Williams Jr (williavi); Michael Sundius -X (msundius - Yoh 
-> Services LLC at Cisco)
-> Subject: Re: 2.6.28 will not boot on 24K processor, ebase 
-> incorrectly modified in set_uncached_handler
-> 
-> David VomLehn (dvomlehn) wrote:
-> > The 2.6.28 kernel dies in memcpy when called from 
-> set_vi_srs_handler on
-> > a
-> > 24K processor. The problem is that ebase has an invalid value. The
-> > original
-> > value of ebase comes from a bootmem allocation, but the 
-> following code
-> > in
-> > set_uncached_handler takes a perfectly good kseg0 address 
-> and turns it
-> > into
-> > an invalid kseg1 address.
-> >
-> > 	if (cpu_has_mips_r2)
-> > 		ebase += (read_c0_ebase() & 0x3ffff000);
-> >
-> > This code was added in commit 
-> 566f74f6b2f8b85d5b8d6caaf97e5672cecd3e3e.
-> >   
-> I remember worrying about why it was "+=" and not "=" when others had 
-> problems with that patch. See the thread "NXP STB225 board 
-> support" from 
-> January 8 or so.  When I asked about that, I got a comment 
-> that the add 
-> operation was correct, but that patch *should* have said 
-> "uncached_ebase 
-> += (read_c0_ebase() & 0x3ffff000);"  I guess uncache_ebase is 
-> assumed to 
-> contain something interesting in some non-address bits. Try 
-> pre-pending 
-> "uncached_" to that "ebase"...
+Hello again,
+as I sad I want to use a USB controller wired on the pci bus.
+The EHCI Probe (usb_hcd_pci_probe) fails with "controller already in
+use" error because the request_mem_region gives an error.
 
-Just adding uncached_ to the ebase doesn't appear to work. Looking at
-the git
-log makes it a bit unclear as to exactly who made this change, but it
-would
-be helpful to know what was intended.
+I think the Problem is that the CardBus bridge eat the mem.
+As a refence you can compare the CadrBus mem window on 2.6.28.1 with
+2.6.16.11.
+At the moment I have no idea how can I fix this resource conflict ...
+
+I found a pcibios_fixup_bus fuction that reorganize the dev->resource[i]
+values but I'm not sure if this is called during pci init. I'll check
+this now.
+Is there a PCI guru for mips on the list?
+
+Kind regards,
+ Frank
+ 
+Kernel 2.6.28.1 output
+pci 0000:00:0c.0: PME# supported from D1 D3hot D3cold
+pci 0000:00:0c.0: PME# disabled
+pci 0000:00:0c.1: PME# supported from D1 D3hot D3cold
+pci 0000:00:0c.1: PME# disabled
+pci 0000:00:0c.2: PME# supported from D0 D1 D2 D3hot D3cold
+pci 0000:00:0c.2: PME# disabled
+pci 0000:00:0d.0: PME# supported from D0 D1 D2 D3hot D3cold
+pci 0000:00:0d.0: PME# disabled
+pci 0000:00:0d.1: PME# supported from D0 D1 D2 D3hot D3cold
+pci 0000:00:0d.1: PME# disabled
+pci 0000:00:0c.0: BAR 0: can't allocate mem resource
+[0x50000000-0x4fffffff]
+pci 0000:00:0c.1: BAR 0: can't allocate mem resource
+[0x50000000-0x4fffffff]
+pci 0000:00:0d.0: BAR 0: can't allocate mem resource
+[0x50000000-0x4fffffff]
+pci 0000:00:0d.1: BAR 0: can't allocate mem resource
+[0x50000000-0x4fffffff]
+pci 0000:00:0c.2: BAR 0: can't allocate mem resource
+[0x50000000-0x4fffffff]
+pci 0000:00:0d.0: CardBus bridge, secondary bus 0000:01
+pci 0000:00:0d.0:   IO window: 0x001000-0x0010ff
+pci 0000:00:0d.0:   IO window: 0x001400-0x0014ff
+pci 0000:00:0d.0:   PREFETCH window: 0x40000000-0x43ffffff
+pci 0000:00:0d.0:   MEM window: 0x44000000-0x47ffffff
+pci 0000:00:0d.1: CardBus bridge, secondary bus 0000:05
+pci 0000:00:0d.1:   IO window: 0x001800-0x0018ff
+pci 0000:00:0d.1:   IO window: 0x001c00-0x001cff
+pci 0000:00:0d.1:   PREFETCH window: 0x48000000-0x4bffffff
+pci 0000:00:0d.1:   MEM window: 0x4c000000-0x4fffffff
+PCI: Enabling device 0000:00:0d.0 (0000 -> 0003)
+PCI: Enabling device 0000:00:0d.1 (0000 -> 0003)
+
+
+Kernel 2.6.16.11 output
+PCI: Bus 1, cardbus bridge: 0000:00:0d.0
+  IO window: 00001000-000010ff
+  IO window: 00001400-000014ff
+  PREFETCH window: 40000000-41ffffff
+  MEM window: 42000000-43ffffff
+PCI: Bus 5, cardbus bridge: 0000:00:0d.1
+  IO window: 00001800-000018ff
+  IO window: 00001c00-00001cff
+  PREFETCH window: 44000000-45ffffff
+  MEM window: 46000000-47ffffff
+PCI: Enabling device 0000:00:0d.0 (0000 -> 0003)
+PCI: Setting latency timer of device 0000:00:0d.0 to 64
+PCI: Enabling device 0000:00:0d.1 (0000 -> 0003)
+PCI: Setting latency timer of device 0000:00:0d.1 to 64

@@ -1,55 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Jan 2009 17:49:19 +0000 (GMT)
-Received: from 39.mail-out.ovh.net ([213.251.138.60]:60607 "HELO
-	39.mail-out.ovh.net") by ftp.linux-mips.org with SMTP
-	id S21103029AbZA0RtQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 27 Jan 2009 17:49:16 +0000
-Received: (qmail 16194 invoked by uid 503); 27 Jan 2009 17:49:36 -0000
-Received: from b6.ovh.net (HELO mail148.ha.ovh.net) (213.186.33.56)
-  by 39.mail-out.ovh.net with SMTP; 27 Jan 2009 17:49:36 -0000
-Received: from b0.ovh.net (HELO queue-out) (213.186.33.50)
-	by b0.ovh.net with SMTP; 27 Jan 2009 17:49:00 -0000
-Received: from unknown (HELO ?192.168.1.101?) (laurent%guerby.net@79.90.156.11)
-  by ns0.ovh.net with SMTP; 27 Jan 2009 17:48:57 -0000
-Subject: IP35 Origin 300/3000 support?
-From:	Laurent GUERBY <laurent@guerby.net>
-To:	Linux MIPS List <linux-mips@linux-mips.org>,
-	Debian MIPS <debian-mips@lists.debian.org>
-Content-Type: text/plain
-Date:	Tue, 27 Jan 2009 18:49:10 +0100
-Message-Id: <1233078550.17541.573.camel@localhost>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.24.2 
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Jan 2009 17:51:44 +0000 (GMT)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:5362 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S21103029AbZA0Rvm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 27 Jan 2009 17:51:42 +0000
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B497f492b0001>; Tue, 27 Jan 2009 12:49:36 -0500
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 27 Jan 2009 09:48:34 -0800
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 27 Jan 2009 09:48:34 -0800
+Message-ID: <497F48F2.90309@caviumnetworks.com>
+Date:	Tue, 27 Jan 2009 09:48:34 -0800
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.19 (X11/20090105)
+MIME-Version: 1.0
+To:	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+CC:	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	linux-mips <linux-mips@linux-mips.org>,
+	Mike Travis <travis@sgi.com>
+Subject: [Resend PATCH 0/2] cpumask fallout: Initialize irq_default_affinity
+ earlier et al. (v3)
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 5262737641428491939
-X-Ovh-Remote: 79.90.156.11 ()
-X-Ovh-Local: 213.186.33.20 (ns0.ovh.net)
-Return-Path: <laurent@guerby.net>
+X-OriginalArrivalTime: 27 Jan 2009 17:48:34.0161 (UTC) FILETIME=[79695610:01C980A7]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21839
+X-archive-position: 21840
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: laurent@guerby.net
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+This seems to have fallen through the cracks, so I am resending:
 
-The wiki page:
+Now that mips/OCTEON support has been merged, this patch set has
+slightly more urgency.
 
-http://www.linux-mips.org/wiki/IP35
+The interrupt affinity on OCTEON is determined by
+irq_default_affinity, as that is what the code in kernel/irq/manage.c
+uses to set affinity.  Since for the majority of devices (Serial,
+Compact Flash, Network...) we want interrupts to be handled on a
+single CPU, we set irq_default_affinity to the boot CPU in init_IRQ().
+The problem we have is that with the new cpumask infrastructure,
+irq_default_affinity is being initialized in core_initcall which
+undoes our initialization.
 
-states "IP35 is not yet supported by Linux. A port initially targeting
-only the Origin 300 has been started".
+As I said in 2/2:
 
-The last edit of the wiki was in 2007, does anyone know if it is now
-supported by Linux/Debian?
+    Move the initialization of irq_default_affinity to early_irq_init
+    as core_initcall is too late.
 
-Would access to hardware help?
+    irq_default_affinity can be used in init_IRQ and potentially timer
+    and SMP init as well.  All of these happen before core_initcall.
+    Moving the initialization to early_irq_init ensures that it is
+    initialized before it is used.
 
-Thanks in advance,
+Mike Travis pointed out that irq_default_affinity depends on
+CONFIG_GENERIC_HARDIRQS in addition to CONFIG_SMP.  So to make things
+consistent, I added 1/2 so that the irq_*_affinity functions and
+irq_default_affinity are defined for the same conditions that they are
+declared.
 
-Laurent
-http://gcc.gnu.org/wiki/CompileFarm
+I Took Linus' suggestion to move init_irq_default_affinity over to
+kernel/irq/handle.c, however due to the way that cpumask_*() are
+defined, it is still necessary to have the ugly ifdefs, but now they
+are localized to init_irq_default_affinity.
+
+Mike Travis also suggested that alloc_bootmem_cpumask_var() be used in
+preference to alloc_cpumask_var, so I incorporated that suggestion as
+well.
+
+I tested both with and without CONFIG_SMP, on mips/cavium_octeon, Mike
+tested a similar(but not identical patch) on x86_64.
+
+Changes from v2 of this set are just a small rearrangement of the
+#ifdefs suggested by Ihar Hrachyshka that make the code look a bit
+cleaner.
+
+
+I will reply with the two patches.
+
+David Daney (2):
+  Make irq_*_affinity depend on CONFIG_GENERIC_HARDIRQS too.
+  cpumask fallout: Initialize irq_default_affinity earlier (v3).
+
+ kernel/irq/handle.c |   16 ++++++++++++++++
+ kernel/irq/manage.c |   10 +---------
+ 2 files changed, 17 insertions(+), 9 deletions(-)

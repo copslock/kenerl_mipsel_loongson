@@ -1,114 +1,124 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jan 2009 18:31:26 +0000 (GMT)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:20625 "EHLO h5.dl5rb.org.uk")
-	by ftp.linux-mips.org with ESMTP id S21366446AbZA1SbX (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Jan 2009 18:31:23 +0000
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n0SIUsn7001740;
-	Wed, 28 Jan 2009 18:30:54 GMT
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n0SIUlLn001737;
-	Wed, 28 Jan 2009 18:30:47 GMT
-Date:	Wed, 28 Jan 2009 18:30:47 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	ddaney@caviumnetworks.com, msundius@cisco.com,
-	linux-mips@linux-mips.org, dvomlehn@cisco.com, msundius@sundius.com
-Subject: Re: memcpy and prefetch
-Message-ID: <20090128183047.GA1691@linux-mips.org>
-References: <497F9214.1000609@cisco.com> <497F93C1.3090401@caviumnetworks.com> <20090128103753.GC2234@linux-mips.org> <20090129.002850.118974677.anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jan 2009 19:28:38 +0000 (GMT)
+Received: from rtp-iport-2.cisco.com ([64.102.122.149]:19568 "EHLO
+	rtp-iport-2.cisco.com") by ftp.linux-mips.org with ESMTP
+	id S21366464AbZA1T2f (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 28 Jan 2009 19:28:35 +0000
+X-IronPort-AV: E=Sophos;i="4.37,339,1231113600"; 
+   d="scan'208";a="35134497"
+Received: from rtp-dkim-2.cisco.com ([64.102.121.159])
+  by rtp-iport-2.cisco.com with ESMTP; 28 Jan 2009 19:28:14 +0000
+Received: from rtp-core-1.cisco.com (rtp-core-1.cisco.com [64.102.124.12])
+	by rtp-dkim-2.cisco.com (8.12.11/8.12.11) with ESMTP id n0SJSEvu000865
+	for <linux-mips@linux-mips.org>; Wed, 28 Jan 2009 14:28:14 -0500
+Received: from sausatlsmtp1.sciatl.com (sausatlsmtp1.cisco.com [192.133.217.33])
+	by rtp-core-1.cisco.com (8.13.8/8.13.8) with ESMTP id n0SJSEsY010672
+	for <linux-mips@linux-mips.org>; Wed, 28 Jan 2009 19:28:14 GMT
+Received: from default.com ([192.133.217.33]) by sausatlsmtp1.sciatl.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 28 Jan 2009 14:28:13 -0500
+Received: from sausatlbhs02.corp.sa.net ([192.133.216.42]) by sausatlsmtp1.sciatl.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 28 Jan 2009 14:28:12 -0500
+Received: from CUPLXSUNDISM01.corp.sa.net ([64.101.21.60]) by sausatlbhs02.corp.sa.net with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 28 Jan 2009 14:28:11 -0500
+Message-ID: <4980B1CA.4060505@cisco.com>
+Date:	Wed, 28 Jan 2009 11:28:10 -0800
+From:	Michael Sundius <msundius@cisco.com>
+User-Agent: Thunderbird 2.0.0.14 (X11/20080501)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20090129.002850.118974677.anemo@mba.ocn.ne.jp>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@h5.dl5rb.org.uk>
+To:	David Daney <ddaney@caviumnetworks.com>
+CC:	linux-mips@linux-mips.org, "VomLehn, David" <dvomlehn@cisco.com>,
+	msundius@sundius.com
+Subject: Re: memcpy and prefetch
+References: <497F9214.1000609@cisco.com> <497F93C1.3090401@caviumnetworks.com>
+In-Reply-To: <497F93C1.3090401@caviumnetworks.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 28 Jan 2009 19:28:11.0623 (UTC) FILETIME=[8EAB6770:01C9817E]
+X-ST-MF-Message-Resent:	1/28/2009 14:28
+DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=2360; t=1233170894; x=1234034894;
+	c=relaxed/simple; s=rtpdkim2001;
+	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
+	d=cisco.com; i=msundius@cisco.com;
+	z=From:=20Michael=20Sundius=20<msundius@cisco.com>
+	|Subject:=20Re=3A=20memcpy=20and=20prefetch
+	|Sender:=20
+	|To:=20David=20Daney=20<ddaney@caviumnetworks.com>;
+	bh=nekCxxdYkz1nAM+XWlK/wjU52MOHKmY0ReSjITtALU4=;
+	b=czuZuoBcrUzTXp1pshWU+F38ISVQyrwAxG5ppaN/Cyue3FSIH/K+ejjKBJ
+	y8Fhs8vGZFWwK+Vs9yEaD/2ZPlczTkmdRILtj6+VNfrZMscGXnbsiGvnfjcC
+	10ko876JYg;
+Authentication-Results:	rtp-dkim-2; header.From=msundius@cisco.com; dkim=pass (
+	sig from cisco.com/rtpdkim2001 verified; ); 
+Return-Path: <msundius@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21861
+X-archive-position: 21862
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: msundius@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jan 29, 2009 at 12:28:50AM +0900, Atsushi Nemoto wrote:
+David Daney wrote:
+> Michael Sundius wrote:
+>> I know this topic has been written about but so excuse me if I am 
+>> redundant.
+>> I saw lots of talk in the archives but I don't know if a solution was 
+>> ever arrived
+>> at. so:
+>>
+>> what is the current state of the use of prefetch in memcpy()? it 
+>> seems that
+>> it is #undef-ed if CONFIG_DMA_COHERENT is not turned on.
+>>
+>> is this still because the memcpy does not check to prevent a prefetch of
+>> addresses beyond the end of the buffer?
+>>
+>> If so, what was the reason a solution was abandoned....
+>>
+>> also  has anyone out there written a memcopy that does use prefetch
+>> intelligently (for mips32 that is)?
+>>
+>
+> The Cavium OCTEON port overrides the default memcpy and does use 
+> prefetch.  It was recently merged (2.6.29-rc2).  Look at octeon-memcpy.S
+>
+> I have thought that memcpy could be generated by mm/page.c as 
+> copy_page and clear_page are.
+>
+> David Daney
+David,
 
-> #if !defined(CONFIG_DMA_COHERENT) || !defined(CONFIG_DMA_IP27)
-> #undef CONFIG_CPU_HAS_PREFETCH
-> #endif
-> #ifdef CONFIG_MIPS_MALTA
-> #undef CONFIG_CPU_HAS_PREFETCH
-> #endif
-> 
-> Are there any configuration which do not undef CONFIG_CPU_HAS_PREFETCH ? ;-)
+thanks!!! that's really useful. I have a few questions tho:
 
-Yes, that's been a long standing one.  Fixed also.
+1) So you made this function explicitly for the Octeon. and that is 
+because you know the cache-line is 128 bytes long
+on the octeon? is that right?
 
-  Ralf
+2) It seems as though you always prefectch the first cache line..  what 
+happens if the memcopy is less than 1 cache line long?
+wouldn't you risk prefetching beyond the end of the buffer?
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+3) why do you only do the "pref   0 offset(src)" and not a prefetch for 
+the destination?
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 52c80c2..71e8ebd 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -351,7 +351,7 @@ config SGI_IP27
- 	select ARC64
- 	select BOOT_ELF64
- 	select DEFAULT_SGI_PARTITION
--	select DMA_IP27
-+	select DMA_COHERENT
- 	select SYS_HAS_EARLY_PRINTK
- 	select HW_HAS_PCI
- 	select NR_CPUS_DEFAULT_64
-@@ -761,9 +761,6 @@ config CFE
- config DMA_COHERENT
- 	bool
- 
--config DMA_IP27
--	bool
--
- config DMA_NONCOHERENT
- 	bool
- 	select DMA_NEED_PCI_MAP_STATE
-diff --git a/arch/mips/configs/ip27_defconfig b/arch/mips/configs/ip27_defconfig
-index 34ea319..f2baea3 100644
---- a/arch/mips/configs/ip27_defconfig
-+++ b/arch/mips/configs/ip27_defconfig
-@@ -53,7 +53,7 @@ CONFIG_GENERIC_TIME=y
- CONFIG_SCHED_NO_NO_OMIT_FRAME_POINTER=y
- CONFIG_GENERIC_HARDIRQS_NO__DO_IRQ=y
- CONFIG_ARC=y
--CONFIG_DMA_IP27=y
-+CONFIG_DMA_COHERENT=y
- CONFIG_EARLY_PRINTK=y
- CONFIG_SYS_HAS_EARLY_PRINTK=y
- # CONFIG_NO_IOPORT is not set
-diff --git a/arch/mips/lib/memcpy-inatomic.S b/arch/mips/lib/memcpy-inatomic.S
-index 736d0fb..68853a0 100644
---- a/arch/mips/lib/memcpy-inatomic.S
-+++ b/arch/mips/lib/memcpy-inatomic.S
-@@ -21,7 +21,7 @@
-  * end of memory on some systems.  It's also a seriously bad idea on non
-  * dma-coherent systems.
-  */
--#if !defined(CONFIG_DMA_COHERENT) || !defined(CONFIG_DMA_IP27)
-+#ifdef CONFIG_DMA_NONCOHERENT
- #undef CONFIG_CPU_HAS_PREFETCH
- #endif
- #ifdef CONFIG_MIPS_MALTA
-diff --git a/arch/mips/lib/memcpy.S b/arch/mips/lib/memcpy.S
-index c06cccf..56a1f85 100644
---- a/arch/mips/lib/memcpy.S
-+++ b/arch/mips/lib/memcpy.S
-@@ -21,7 +21,7 @@
-  * end of memory on some systems.  It's also a seriously bad idea on non
-  * dma-coherent systems.
-  */
--#if !defined(CONFIG_DMA_COHERENT) || !defined(CONFIG_DMA_IP27)
-+#ifdef CONFIG_DMA_NONCOHERENT
- #undef CONFIG_CPU_HAS_PREFETCH
- #endif
- #ifdef CONFIG_MIPS_MALTA
+4) on line 244 you check to see if len is less than 128. while on the 
+other checks you check for (offset)+1
+why would you not do the prefetch if len was exactly 256 bytes? (or 128 
+in the case of line 196)?
+
+thanks.
+
+
+
+
+
+     - - - - -                              Cisco                            - - - - -         
+This e-mail and any attachments may contain information which is confidential, 
+proprietary, privileged or otherwise protected by law. The information is solely 
+intended for the named addressee (or a person responsible for delivering it to 
+the addressee). If you are not the intended recipient of this message, you are 
+not authorized to read, print, retain, copy or disseminate this message or any 
+part of it. If you have received this e-mail in error, please notify the sender 
+immediately by return e-mail and delete it from your computer.

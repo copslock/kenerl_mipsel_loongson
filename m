@@ -1,79 +1,131 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jan 2009 22:02:28 +0000 (GMT)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:54805 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S21365084AbZA1WC0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 28 Jan 2009 22:02:26 +0000
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B4980d5d10000>; Wed, 28 Jan 2009 17:01:53 -0500
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 28 Jan 2009 13:52:22 -0800
-Received: from [192.168.162.106] ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 28 Jan 2009 13:52:22 -0800
-Message-ID: <4980D396.5020302@caviumnetworks.com>
-Date:	Wed, 28 Jan 2009 13:52:22 -0800
-From:	Chad Reese <kreese@caviumnetworks.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.8.0.14eol) Gecko/20070505 Iceape/1.0.9 (Debian-1.0.13~pre080614i-0etch1)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jan 2009 22:40:12 +0000 (GMT)
+Received: from ey-out-1920.google.com ([74.125.78.144]:44147 "EHLO
+	ey-out-1920.google.com") by ftp.linux-mips.org with ESMTP
+	id S21366393AbZA1WkJ convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Jan 2009 22:40:09 +0000
+Received: by ey-out-1920.google.com with SMTP id 5so73922eyb.54
+        for <linux-mips@linux-mips.org>; Wed, 28 Jan 2009 14:40:08 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:from:to:subject:date
+         :user-agent:mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id;
+        bh=lX3TxLbIXRznA7ISqIrXnOC5RLxQh7Ak2ELRJjSQ7Q0=;
+        b=sMwHvYh1SrOfAvLAS8JP0IvUzKEJ+O9K+wdNAVKAUNcjPndxWIiTrJaHV18ae5Js4O
+         +9z7VaN49/1Wsv/vlxskmjtadq9OWU9D1XDNPZFCrlO0AKcgjCysayorH25zItIYf8G8
+         PKh89f1t1fHdEYz7JeBGcVhuIwTFh4aZ4cjtg=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:from:to:subject:date:user-agent:mime-version:content-type
+         :content-transfer-encoding:content-disposition:message-id;
+        b=vRWDqOQ+siDYexEQ8kacticgdfjq/cIuW/fi/etaOyIgd2sC86oZ4fD4eIwY01jPpK
+         +xJCwtGidwySDLLF3tI/3BCNAcZDkivdfc8x2NTF3+DWNXcQmtHwbqOrGTjLwb5oHyxc
+         qJKaVxI5koi2sWsaUW+1FKmzmrMS4xxKQqYmA=
+Received: by 10.103.192.2 with SMTP id u2mr3003350mup.2.1233182408085;
+        Wed, 28 Jan 2009 14:40:08 -0800 (PST)
+Received: from flowlan.maisel.int-evry.fr ([157.159.47.25])
+        by mx.google.com with ESMTPS id g1sm20931982muf.17.2009.01.28.14.40.07
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 28 Jan 2009 14:40:07 -0800 (PST)
+From:	Florian Fainelli <florian@openwrt.org>
+To:	linux-mips@linux-mips.org
+Subject: Call for Presentation for the "Embedded Systems and Open Hardware" session of the 10th Libre Software Meeting (Nantes, France, July 2009)
+Date:	Wed, 28 Jan 2009 23:39:33 +0100
+User-Agent: KMail/1.9.9
 MIME-Version: 1.0
-To:	David Daney <ddaney@caviumnetworks.com>
-CC:	Michael Sundius <msundius@cisco.com>, linux-mips@linux-mips.org,
-	"VomLehn, David" <dvomlehn@cisco.com>, msundius@sundius.com
-Subject: Re: memcpy and prefetch
-References: <497F9214.1000609@cisco.com> <497F93C1.3090401@caviumnetworks.com> <4980B1CA.4060505@cisco.com> <4980B7DB.3090304@caviumnetworks.com>
-In-Reply-To: <4980B7DB.3090304@caviumnetworks.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 28 Jan 2009 21:52:22.0551 (UTC) FILETIME=[B3064270:01C98192]
-Return-Path: <Kenneth.Reese@caviumnetworks.com>
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Message-Id: <200901282339.33864.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21865
+X-archive-position: 21866
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kreese@caviumnetworks.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-> Michael Sundius wrote:
->> David Daney wrote:
->> 2) It seems as though you always prefectch the first cache line..  what 
->> happens if the memcopy is less than 1 cache line long?
->> wouldn't you risk prefetching beyond the end of the buffer?
-> 
-> It is a risk we were willing to take.  Cache lines are loaded with 
-> unneeded data all the time.
+Dear all,
 
-If you assume that the memcpy is going to copy at least one byte, then
-it is always safe to prefetch the first source address.
+Please find below the Call For Presentation to the LSM meeting for the 
+"Embedded Systems and Open Hardware" session.
 
->> 3) why do you only do the "pref   0 offset(src)" and not a prefetch for 
->> the destination?
-> 
-> I don't know.  But the interaction between the writeback buffers, the 
-> cache and RAM are somewhat complicated.  It may not be enough of a win 
-> to overcome the cost of the code that would determine when to do it.
+Sincerely Yours;
 
-Octeon's write buffer merges all writes to single store transactions.
-Since this store contains a full cache line, the L2 controller
-automatically optimizes for it. With Octeon, the prepare to store
-operations normally slow things down by creating needless bus traffic.
-There are a few times where it is useful, but a generic memcpy isn't one
-of them.
+Florian.
 
->> 4) on line 244 you check to see if len is less than 128. while on the 
->> other checks you check for (offset)+1
->> why would you not do the prefetch if len was exactly 256 bytes? (or 128 
->> in the case of line 196)?
-> 
-> We are always prefetching 256 bytes ahead of the current position.  If 
-> we prefetch beyound the end of the buffer it is truly wasting memory 
-> bandwidth, also if we prefetch to memory addresses where there is no 
-> physical memory, bad things happen.
+===========================================================================
+The Libre Software Meeting (LSM) is an annual event on free software 
+taking place in july in France since 2000. The LSM meeting is organized 
+this year in Nantes from 7th to 11th july.
 
-We prefetch 256 bytes ahead on every 128 bytes copied except for the
-last two. Since we are fetching two lines ahead, the last two iterations
-don't need prefetches. I think the code stops prefetching at the correct
-time, but there is always the possibility that I messed up...
+This text is the Call For Presentation (CFP) of the "Embedded Systems 
+and Open Hardware" session. The other topics can be found on the LSM Web 
+site: http://2009.rmll.info/.
 
-Chad
+The embedded systems are increasingly present in our life. The embedded 
+system community usually used commercial software solutions with 
+royalties to reverse each time a system is sold. Since few years, a 
+reversal of tendency has appeared with the use of free software for 
+embedded systems. That is made possible by the adaptation of the Linux 
+kernel to the constraints of atypical embedded system (no MMU, small 
+memory footprint, filesystem in FLASH memory...) and its port on various 
+types of processors.
+
+Along with free software for embedded systems, Open Hardware is becoming 
+more and more important. Open Hardware provides access to all the 
+specifications of an electronic device design and is reproductible by 
+everyone. This allows design reuse because one knows how it works. Open 
+Hardware also increases its life because it can be reused in another use.
+
+The purpose of the "Embedded Systems and Open Hardware" session is to 
+give the state of the art of free software for embedded systems and Open 
+Hardware.
+
+Technical topics of this session include but are not limited to:
+
+* Embedded OS Development kernel architecture, implementation and port 
+for embedded systems
+* Embedded Development Tools: tool chains and project cases (tool chain 
+projects, packaging for cross compilation, portability ...)
+* Embedded Linux: µClinux...
+* Real-time extensions for Linux: RTLinux, RTAI...
+* Hard real-time kernels: eCos, RTEMS, ADEOS, Xenomai...
+* Soft Real-time kernels
+* Embedded Java
+* GUI for embedded systems: Gtk, Qt, Nano/X...
+* Linux and System on Chip (SoC)
+* Open Hardware, Open design, free IP modules (Intellectual Property) 
+and softcores: opencores, OpenRISC, NIOS, Microblaze, LEONSparc, FPGA...
+
+Submissions with industrial applications and experiences are specially 
+encouraged.
+
+Precisions for the speakers:
+
+The conference will last 30 minutes, questions included. Round tables 
+will be organized.
+
+Synthetic presentations are scheduled to last 20 minutes. PDF versions 
+of the presentation are not mandatory but they will be greatly 
+appreciated (with a web online access just after the LSM event, they are 
+a very useful documentation to the entire community).
+
+If you plan to participate and to propose a presentation, please send as 
+soon as possible a message to the following address: embarque at rmll.info 
+with a summary of your presentation (and if you can, an english summary 
+too) no later than 15th march 2009. Feel free to forward this Call For 
+Presentation everywhere or to everyone you think to be interested in.
+
+We have limited resources for public transportation (only for those who 
+can not be refunded by their administration) but there is no fees for 
+the conference and accommodation at very low cost is proposed on the site.
+
+The chairmen of the "Embedded Systems and Open Hardware" for LSM ’09: 
+Florian Fainelli, Patrice Kadionik, Thomas Petazzoni et Pierre Ficheux.
+===========================================================================

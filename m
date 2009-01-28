@@ -1,124 +1,140 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jan 2009 19:28:38 +0000 (GMT)
-Received: from rtp-iport-2.cisco.com ([64.102.122.149]:19568 "EHLO
-	rtp-iport-2.cisco.com") by ftp.linux-mips.org with ESMTP
-	id S21366464AbZA1T2f (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 28 Jan 2009 19:28:35 +0000
-X-IronPort-AV: E=Sophos;i="4.37,339,1231113600"; 
-   d="scan'208";a="35134497"
-Received: from rtp-dkim-2.cisco.com ([64.102.121.159])
-  by rtp-iport-2.cisco.com with ESMTP; 28 Jan 2009 19:28:14 +0000
-Received: from rtp-core-1.cisco.com (rtp-core-1.cisco.com [64.102.124.12])
-	by rtp-dkim-2.cisco.com (8.12.11/8.12.11) with ESMTP id n0SJSEvu000865
-	for <linux-mips@linux-mips.org>; Wed, 28 Jan 2009 14:28:14 -0500
-Received: from sausatlsmtp1.sciatl.com (sausatlsmtp1.cisco.com [192.133.217.33])
-	by rtp-core-1.cisco.com (8.13.8/8.13.8) with ESMTP id n0SJSEsY010672
-	for <linux-mips@linux-mips.org>; Wed, 28 Jan 2009 19:28:14 GMT
-Received: from default.com ([192.133.217.33]) by sausatlsmtp1.sciatl.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 28 Jan 2009 14:28:13 -0500
-Received: from sausatlbhs02.corp.sa.net ([192.133.216.42]) by sausatlsmtp1.sciatl.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 28 Jan 2009 14:28:12 -0500
-Received: from CUPLXSUNDISM01.corp.sa.net ([64.101.21.60]) by sausatlbhs02.corp.sa.net with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 28 Jan 2009 14:28:11 -0500
-Message-ID: <4980B1CA.4060505@cisco.com>
-Date:	Wed, 28 Jan 2009 11:28:10 -0800
-From:	Michael Sundius <msundius@cisco.com>
-User-Agent: Thunderbird 2.0.0.14 (X11/20080501)
-MIME-Version: 1.0
-To:	David Daney <ddaney@caviumnetworks.com>
-CC:	linux-mips@linux-mips.org, "VomLehn, David" <dvomlehn@cisco.com>,
-	msundius@sundius.com
-Subject: Re: memcpy and prefetch
-References: <497F9214.1000609@cisco.com> <497F93C1.3090401@caviumnetworks.com>
-In-Reply-To: <497F93C1.3090401@caviumnetworks.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Jan 2009 19:29:01 +0000 (GMT)
+Received: from mail.bugwerft.de ([212.112.241.193]:35016 "EHLO
+	mail.bugwerft.de") by ftp.linux-mips.org with ESMTP
+	id S21366465AbZA1T2h (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 28 Jan 2009 19:28:37 +0000
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.bugwerft.de (Postfix) with ESMTP id 7027249400C
+	for <linux-mips@linux-mips.org>; Wed, 28 Jan 2009 20:28:31 +0100 (CET)
+Received: from mail.bugwerft.de ([127.0.0.1])
+	by localhost (mail.bugwerft.de [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 9GARCa4v-mDC for <linux-mips@linux-mips.org>;
+	Wed, 28 Jan 2009 20:28:31 +0100 (CET)
+Received: from [10.1.1.26] (ip-77-25-15-184.web.vodafone.de [77.25.15.184])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mail.bugwerft.de (Postfix) with ESMTP id 4118149400B
+	for <linux-mips@linux-mips.org>; Wed, 28 Jan 2009 20:28:30 +0100 (CET)
+Subject: (SOLVED) Re: Au1550 with kernel linux-2.6.28.1 PCI Cardbus
+	mappings too large (SOLVED)
+From:	Frank Neuber <frank.neuber@kernelport.de>
+To:	linux-mips <linux-mips@linux-mips.org>
+In-Reply-To: <1232965296.28527.427.camel@t60p>
+References: <1232739600.28527.289.camel@t60p>
+	 <20090124085734.5b6b5c66@scarran.roarinelk.net>
+	 <1232787448.28527.302.camel@t60p>  <1232839224.28527.336.camel@t60p>
+	 <1232871616.28527.347.camel@t60p>  <1232965296.28527.427.camel@t60p>
+Content-Type: text/plain
+Date:	Wed, 28 Jan 2009 20:28:24 +0100
+Message-Id: <1233170905.28527.559.camel@t60p>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.12.1 
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 28 Jan 2009 19:28:11.0623 (UTC) FILETIME=[8EAB6770:01C9817E]
-X-ST-MF-Message-Resent:	1/28/2009 14:28
-DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=2360; t=1233170894; x=1234034894;
-	c=relaxed/simple; s=rtpdkim2001;
-	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
-	d=cisco.com; i=msundius@cisco.com;
-	z=From:=20Michael=20Sundius=20<msundius@cisco.com>
-	|Subject:=20Re=3A=20memcpy=20and=20prefetch
-	|Sender:=20
-	|To:=20David=20Daney=20<ddaney@caviumnetworks.com>;
-	bh=nekCxxdYkz1nAM+XWlK/wjU52MOHKmY0ReSjITtALU4=;
-	b=czuZuoBcrUzTXp1pshWU+F38ISVQyrwAxG5ppaN/Cyue3FSIH/K+ejjKBJ
-	y8Fhs8vGZFWwK+Vs9yEaD/2ZPlczTkmdRILtj6+VNfrZMscGXnbsiGvnfjcC
-	10ko876JYg;
-Authentication-Results:	rtp-dkim-2; header.From=msundius@cisco.com; dkim=pass (
-	sig from cisco.com/rtpdkim2001 verified; ); 
-Return-Path: <msundius@cisco.com>
+Return-Path: <frank.neuber@kernelport.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21862
+X-archive-position: 21863
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: msundius@cisco.com
+X-original-sender: frank.neuber@kernelport.de
 Precedence: bulk
 X-list: linux-mips
 
-David Daney wrote:
-> Michael Sundius wrote:
->> I know this topic has been written about but so excuse me if I am 
->> redundant.
->> I saw lots of talk in the archives but I don't know if a solution was 
->> ever arrived
->> at. so:
->>
->> what is the current state of the use of prefetch in memcpy()? it 
->> seems that
->> it is #undef-ed if CONFIG_DMA_COHERENT is not turned on.
->>
->> is this still because the memcpy does not check to prevent a prefetch of
->> addresses beyond the end of the buffer?
->>
->> If so, what was the reason a solution was abandoned....
->>
->> also  has anyone out there written a memcopy that does use prefetch
->> intelligently (for mips32 that is)?
->>
->
-> The Cavium OCTEON port overrides the default memcpy and does use 
-> prefetch.  It was recently merged (2.6.29-rc2).  Look at octeon-memcpy.S
->
-> I have thought that memcpy could be generated by mm/page.c as 
-> copy_page and clear_page are.
->
-> David Daney
-David,
+Hi,
+I found a woking solution to use my pci wired ehci controller on the
+au1550 :-)
+I did this in drivers/pci/pci.c here is the patch:
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index e491fde..3422ff4 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -29,7 +29,7 @@ int pci_domains_supported = 1;
+ #endif
+ 
+ #define DEFAULT_CARDBUS_IO_SIZE                (256)
+-#define DEFAULT_CARDBUS_MEM_SIZE       (64*1024*1024)
++#define DEFAULT_CARDBUS_MEM_SIZE       (32*1024*1024)
+ /* pci=cbmemsize=nnM,cbiosize=nn can override this */
+ unsigned long pci_cardbus_io_size = DEFAULT_CARDBUS_IO_SIZE;
+ unsigned long pci_cardbus_mem_size = DEFAULT_CARDBUS_MEM_SIZE;
 
-thanks!!! that's really useful. I have a few questions tho:
+Because this code is working on i386 with 64 bit memsize we need a
+au1550 specific solution. 
+I don't know how is the rigth way.
 
-1) So you made this function explicitly for the Octeon. and that is 
-because you know the cache-line is 128 bytes long
-on the octeon? is that right?
+Kind Regards,
+ Frank
 
-2) It seems as though you always prefectch the first cache line..  what 
-happens if the memcopy is less than 1 cache line long?
-wouldn't you risk prefetching beyond the end of the buffer?
-
-3) why do you only do the "pref   0 offset(src)" and not a prefetch for 
-the destination?
-
-4) on line 244 you check to see if len is less than 128. while on the 
-other checks you check for (offset)+1
-why would you not do the prefetch if len was exactly 256 bytes? (or 128 
-in the case of line 196)?
-
-thanks.
-
-
-
-
-
-     - - - - -                              Cisco                            - - - - -         
-This e-mail and any attachments may contain information which is confidential, 
-proprietary, privileged or otherwise protected by law. The information is solely 
-intended for the named addressee (or a person responsible for delivering it to 
-the addressee). If you are not the intended recipient of this message, you are 
-not authorized to read, print, retain, copy or disseminate this message or any 
-part of it. If you have received this e-mail in error, please notify the sender 
-immediately by return e-mail and delete it from your computer.
+Am Montag, den 26.01.2009, 11:21 +0100 schrieb Frank Neuber:
+> Hello again,
+> as I sad I want to use a USB controller wired on the pci bus.
+> The EHCI Probe (usb_hcd_pci_probe) fails with "controller already in
+> use" error because the request_mem_region gives an error.
+> 
+> I think the Problem is that the CardBus bridge eat the mem.
+> As a refence you can compare the CadrBus mem window on 2.6.28.1 with
+> 2.6.16.11.
+> At the moment I have no idea how can I fix this resource conflict ...
+> 
+> I found a pcibios_fixup_bus fuction that reorganize the dev->resource[i]
+> values but I'm not sure if this is called during pci init. I'll check
+> this now.
+> Is there a PCI guru for mips on the list?
+> 
+> Kind regards,
+>  Frank
+>  
+> Kernel 2.6.28.1 output
+> pci 0000:00:0c.0: PME# supported from D1 D3hot D3cold
+> pci 0000:00:0c.0: PME# disabled
+> pci 0000:00:0c.1: PME# supported from D1 D3hot D3cold
+> pci 0000:00:0c.1: PME# disabled
+> pci 0000:00:0c.2: PME# supported from D0 D1 D2 D3hot D3cold
+> pci 0000:00:0c.2: PME# disabled
+> pci 0000:00:0d.0: PME# supported from D0 D1 D2 D3hot D3cold
+> pci 0000:00:0d.0: PME# disabled
+> pci 0000:00:0d.1: PME# supported from D0 D1 D2 D3hot D3cold
+> pci 0000:00:0d.1: PME# disabled
+> pci 0000:00:0c.0: BAR 0: can't allocate mem resource
+> [0x50000000-0x4fffffff]
+> pci 0000:00:0c.1: BAR 0: can't allocate mem resource
+> [0x50000000-0x4fffffff]
+> pci 0000:00:0d.0: BAR 0: can't allocate mem resource
+> [0x50000000-0x4fffffff]
+> pci 0000:00:0d.1: BAR 0: can't allocate mem resource
+> [0x50000000-0x4fffffff]
+> pci 0000:00:0c.2: BAR 0: can't allocate mem resource
+> [0x50000000-0x4fffffff]
+> pci 0000:00:0d.0: CardBus bridge, secondary bus 0000:01
+> pci 0000:00:0d.0:   IO window: 0x001000-0x0010ff
+> pci 0000:00:0d.0:   IO window: 0x001400-0x0014ff
+> pci 0000:00:0d.0:   PREFETCH window: 0x40000000-0x43ffffff
+> pci 0000:00:0d.0:   MEM window: 0x44000000-0x47ffffff
+> pci 0000:00:0d.1: CardBus bridge, secondary bus 0000:05
+> pci 0000:00:0d.1:   IO window: 0x001800-0x0018ff
+> pci 0000:00:0d.1:   IO window: 0x001c00-0x001cff
+> pci 0000:00:0d.1:   PREFETCH window: 0x48000000-0x4bffffff
+> pci 0000:00:0d.1:   MEM window: 0x4c000000-0x4fffffff
+> PCI: Enabling device 0000:00:0d.0 (0000 -> 0003)
+> PCI: Enabling device 0000:00:0d.1 (0000 -> 0003)
+> 
+> 
+> Kernel 2.6.16.11 output
+> PCI: Bus 1, cardbus bridge: 0000:00:0d.0
+>   IO window: 00001000-000010ff
+>   IO window: 00001400-000014ff
+>   PREFETCH window: 40000000-41ffffff
+>   MEM window: 42000000-43ffffff
+> PCI: Bus 5, cardbus bridge: 0000:00:0d.1
+>   IO window: 00001800-000018ff
+>   IO window: 00001c00-00001cff
+>   PREFETCH window: 44000000-45ffffff
+>   MEM window: 46000000-47ffffff
+> PCI: Enabling device 0000:00:0d.0 (0000 -> 0003)
+> PCI: Setting latency timer of device 0000:00:0d.0 to 64
+> PCI: Enabling device 0000:00:0d.1 (0000 -> 0003)
+> PCI: Setting latency timer of device 0000:00:0d.1 to 64
+> 
+> 

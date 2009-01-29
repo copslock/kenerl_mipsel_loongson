@@ -1,31 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2009 18:18:40 +0000 (GMT)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:15332 "EHLO h5.dl5rb.org.uk")
-	by ftp.linux-mips.org with ESMTP id S21365752AbZA2SSi (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 29 Jan 2009 18:18:38 +0000
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Jan 2009 21:36:05 +0000 (GMT)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:54412 "EHLO h5.dl5rb.org.uk")
+	by ftp.linux-mips.org with ESMTP id S21365772AbZA2VgD (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 29 Jan 2009 21:36:03 +0000
 Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n0TIIbqN005863;
-	Thu, 29 Jan 2009 18:18:37 GMT
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n0TLa12u010107;
+	Thu, 29 Jan 2009 21:36:01 GMT
 Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n0TIIYN1005861;
-	Thu, 29 Jan 2009 18:18:34 GMT
-Date:	Thu, 29 Jan 2009 18:18:32 +0000
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n0TLZx7W010106;
+	Thu, 29 Jan 2009 21:35:59 GMT
+Date:	Thu, 29 Jan 2009 21:35:58 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Brian Foster <brian.foster@innova-card.com>
-Cc:	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: Syntax error in include/asm-mips/gdb-stub.h
-Message-ID: <20090129181830.GC4135@linux-mips.org>
-References: <200901291430.30275.brian.foster@innova-card.com>
+To:	Manuel Lauss <mano@roarinelk.homelinux.net>
+Cc:	Frank Neuber <linux-mips@kernelport.de>,
+	Florian Fainelli <florian@openwrt.org>,
+	Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: AU1550 Kernel bug detected[#1]  clockevents_register_device
+Message-ID: <20090129213558.GA7358@linux-mips.org>
+References: <1233045842.28527.459.camel@t60p> <20090127091107.GA15890@roarinelk.homelinux.net> <1233051181.28527.485.camel@t60p> <20090127121123.GA17132@roarinelk.homelinux.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <200901291430.30275.brian.foster@innova-card.com>
+In-Reply-To: <20090127121123.GA17132@roarinelk.homelinux.net>
 User-Agent: Mutt/1.5.18 (2008-05-17)
 Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21885
+X-archive-position: 21886
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,23 +34,17 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jan 29, 2009 at 02:30:29PM +0100, Brian Foster wrote:
+On Tue, Jan 27, 2009 at 01:11:23PM +0100, Manuel Lauss wrote:
 
-> apologies for not sending a patch — I'm working with a rather
-> old tree (2.6.21-ish vintage) and am uncertain how useful one
-> would be — but just collided with a trivial syntax error in
-> include/asm-mips/gdb-stub.h
+> > Thank you all,
+> > now the head kernel comes up.
+> > Why is that fix not in the git? Maby I use the wrong git repository for
+> > MIPS kernel. At the moment I use the linus git:
+> > git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux-2.6.git
 > 
->         long    lo;
-> #ifdef CONFIG_CPU_HAS_SMARTMIPS
->         long    acx
-> #endif
->         long    cp0_badvaddr;
-> 
-> there is missing semicolon (‘;’) on the centre line (acx).
-> this mistake is seems to exist in at least the following
-> (and very probably elsewhere (I'm not a git expert!)):
+> I sent a patch for this 2 weeks ago; Ralf is probably busy with other stuff
+> atm.
 
-Or in simpler words, in all -stable branches upto and including 2.6.26.
+Indeed - but as you may have noticed I'm trying to catch up ...
 
   Ralf

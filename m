@@ -1,108 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jan 2009 18:43:55 +0000 (GMT)
-Received: from rtp-iport-1.cisco.com ([64.102.122.148]:29201 "EHLO
-	rtp-iport-1.cisco.com") by ftp.linux-mips.org with ESMTP
-	id S21366066AbZA3Snw convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 30 Jan 2009 18:43:52 +0000
-X-IronPort-AV: E=Sophos;i="4.37,352,1231113600"; 
-   d="scan'208";a="35439582"
-Received: from rtp-dkim-1.cisco.com ([64.102.121.158])
-  by rtp-iport-1.cisco.com with ESMTP; 30 Jan 2009 18:43:42 +0000
-Received: from rtp-core-1.cisco.com (rtp-core-1.cisco.com [64.102.124.12])
-	by rtp-dkim-1.cisco.com (8.12.11/8.12.11) with ESMTP id n0UIhg1J024836;
-	Fri, 30 Jan 2009 13:43:42 -0500
-Received: from xbh-rtp-211.amer.cisco.com (xbh-rtp-211.cisco.com [64.102.31.102])
-	by rtp-core-1.cisco.com (8.13.8/8.13.8) with ESMTP id n0UIhggv012412;
-	Fri, 30 Jan 2009 18:43:42 GMT
-Received: from xmb-rtp-218.amer.cisco.com ([64.102.31.117]) by xbh-rtp-211.amer.cisco.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Fri, 30 Jan 2009 13:43:42 -0500
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Jan 2009 19:02:58 +0000 (GMT)
+Received: from fnoeppeil36.netpark.at ([217.175.205.164]:44460 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S21365325AbZA3TCz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 30 Jan 2009 19:02:55 +0000
+Received: (qmail 16903 invoked by uid 1000); 30 Jan 2009 20:02:54 +0100
+Date:	Fri, 30 Jan 2009 20:02:54 +0100
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Linux-MIPS <linux-mips@linux-mips.org>
+Subject: [PATCH v2 2/3] Alchemy: provide cpu feature overrides.
+Message-ID: <20090130190254.GA16895@roarinelk.homelinux.net>
+References: <1233336611-6450-1-git-send-email-mano@roarinelk.homelinux.net> <1233336611-6450-2-git-send-email-mano@roarinelk.homelinux.net> <20090130182708.GB22790@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: [PATCH] MIPS: Allocate exception vector on 64 KiB boundary
-Date:	Fri, 30 Jan 2009 13:43:42 -0500
-Message-ID: <FF038EB85946AA46B18DFEE6E6F8A28982392E@xmb-rtp-218.amer.cisco.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: [PATCH] MIPS: Allocate exception vector on 64 KiB boundary
-Thread-Index: AcmDCqxxcwzDWyJoRLCej1ccrrdgBw==
-From:	"David VomLehn (dvomlehn)" <dvomlehn@cisco.com>
-To:	<linux-mips@linux-mips.org>, <ralf@linux-mips.org>,
-	"David Daney" <ddaney@caviumnetworks.com>
-X-OriginalArrivalTime: 30 Jan 2009 18:43:42.0452 (UTC) FILETIME=[AC8BBB40:01C9830A]
-DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=1434; t=1233341022; x=1234205022;
-	c=relaxed/simple; s=rtpdkim1001;
-	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
-	d=cisco.com; i=dvomlehn@cisco.com;
-	z=From:=20=22David=20VomLehn=20(dvomlehn)=22=20<dvomlehn@cis
-	co.com>
-	|Subject:=20[PATCH]=20MIPS=3A=20Allocate=20exception=20vect
-	or=20on=2064=20KiB=20boundary
-	|Sender:=20
-	|To:=20<linux-mips@linux-mips.org>,=20<ralf@linux-mips.org>
-	,=0A=20=20=20=20=20=20=20=20=22David=20Daney=22=20<ddaney@ca
-	viumnetworks.com>;
-	bh=1fPf7N58tN7YZWhB1AIoYIBqO60adTZQriJQ7euI2hA=;
-	b=XLZSPPIp8iEtRs/p9YVbOluSRm7EkqWBoqBilq2iiuUfW88ImMZNA29zJP
-	VtRhQbeVcgmIno6LhQv1+kgWGwv4MS9SkCUQIUEWY/GHDdAm1xpXi4M7IBOx
-	/asHqD7U0d;
-Authentication-Results:	rtp-dkim-1; header.From=dvomlehn@cisco.com; dkim=pass (
-	sig from cisco.com/rtpdkim1001 verified; ); 
-Return-Path: <dvomlehn@cisco.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20090130182708.GB22790@linux-mips.org>
+User-Agent: Mutt/1.5.16 (2007-06-09)
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21899
+X-archive-position: 21900
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvomlehn@cisco.com
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-Fix problem with code that incorrectly modifies ebase.
+Add cpu feature override constants tailored for all Alchemy variants
+currently in existence.
 
-Commit 566f74f6b2f8b85d5b8d6caaf97e5672cecd3e3e had a change that
-incorrectly
-modified ebase. This backs out the lines that modified ebase and then
-modified
-the code to allocate the exception vector with an alignment that
-guarantees
-that bits 15..12 are always zero. This is a good thing in any case as it
-will work regardless of the interrupt vector spacing, and may be what
-the
-original code was attempting to accomplish.
-
-Signed-off-by: David VomLehn <dvomlehn@cisco.com>
+Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
 ---
- arch/mips/kernel/traps.c |    5 ++---
- 1 files changed, 2 insertions(+), 3 deletions(-)
+ v2: removes unused has_pindexed_cache and has_32fpr.
 
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 3530561..a0ce7fc 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1571,8 +1571,6 @@ void __cpuinit set_uncached_handler(unsigned long
-offset, void *addr,
- #ifdef CONFIG_64BIT
- 	unsigned long uncached_ebase = TO_UNCAC(ebase);
- #endif
--	if (cpu_has_mips_r2)
--		ebase += (read_c0_ebase() & 0x3ffff000);
- 
- 	if (!addr)
- 		panic(panic_null_cerr);
-@@ -1605,7 +1603,8 @@ void __init trap_init(void)
- #endif
- 
- 	if (cpu_has_veic || cpu_has_vint)
--		ebase = (unsigned long) alloc_bootmem_low_pages(0x200 +
-VECTORSPACING*64);
-+		ebase = (unsigned long)
-+			__alloc_bootmem(0x200 + VECTORSPACING*64, 1 <<
-16, 0);
- 	else {
- 		ebase = CAC_BASE;
- 		if (cpu_has_mips_r2)
+ .../asm/mach-au1x00/cpu-feature-overrides.h        |   49 ++++++++++++++++++++
+ 1 files changed, 49 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
+
+diff --git a/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h b/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
+new file mode 100644
+index 0000000..d5df0ca
+--- /dev/null
++++ b/arch/mips/include/asm/mach-au1x00/cpu-feature-overrides.h
+@@ -0,0 +1,49 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ */
++
++#ifndef __ASM_MACH_AU1X00_CPU_FEATURE_OVERRIDES_H
++#define __ASM_MACH_AU1X00_CPU_FEATURE_OVERRIDES_H
++
++#define cpu_has_tlb			1
++#define cpu_has_4kex			1
++#define cpu_has_3k_cache		0
++#define cpu_has_4k_cache		1
++#define cpu_has_tx39_cache		0
++#define cpu_has_fpu			0
++#define cpu_has_counter			1
++#define cpu_has_watch			1
++#define cpu_has_divec			1
++#define cpu_has_vce			0
++#define cpu_has_cache_cdex_p		0
++#define cpu_has_cache_cdex_s		0
++#define cpu_has_mcheck			1
++#define cpu_has_ejtag			1
++#define cpu_has_llsc			1
++#define cpu_has_mips16			0
++#define cpu_has_mdmx			0
++#define cpu_has_mips3d			0
++#define cpu_has_smartmips		0
++#define cpu_has_vtag_icache		0
++#define cpu_has_dc_aliases		0
++#define cpu_has_ic_fills_f_dc		1
++#define cpu_has_mips32r1		1
++#define cpu_has_mips32r2		0
++#define cpu_has_mips64r1		0
++#define cpu_has_mips64r2		0
++#define cpu_has_dsp			0
++#define cpu_has_mipsmt			0
++#define cpu_has_userlocal		0
++#define cpu_has_nofpuex			0
++#define cpu_has_64bits			0
++#define cpu_has_64bit_zero_reg		0
++#define cpu_has_vint			0
++#define cpu_has_veic			0
++#define cpu_has_inclusive_pcaches	0
++
++#define cpu_dcache_line_size()		32
++#define cpu_icache_line_size()		32
++
++#endif /* __ASM_MACH_AU1X00_CPU_FEATURE_OVERRIDES_H */
+-- 
+1.6.1.1

@@ -1,59 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Feb 2009 14:57:43 +0000 (GMT)
-Received: from orbit.nwl.cc ([91.121.169.95]:30384 "EHLO orbit.nwl.cc")
-	by ftp.linux-mips.org with ESMTP id S21366278AbZBGO5j (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 7 Feb 2009 14:57:39 +0000
-Received: from orbit.nwl.cc (localhost [127.0.0.1])
-	by orbit.nwl.cc (Postfix) with ESMTP id E38904CEB7;
-	Sat,  7 Feb 2009 15:57:33 +0100 (CET)
-Received: from base (localhost [127.0.0.1])
-	by orbit.nwl.cc (Postfix) with ESMTP id ABA9E4CE8B;
-	Sat,  7 Feb 2009 15:57:33 +0100 (CET)
-From:	Phil Sutter <n0-1@freewrt.org>
-To:	Linux-Mips List <linux-mips@linux-mips.org>
-Cc:	Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH] MIPS: rb532: use mdelay to sleep when atomic
-Date:	Sat,  7 Feb 2009 15:57:26 +0100
-X-Mailer: git-send-email 1.5.6.4
-Message-Id: <20090207145733.ABA9E4CE8B@orbit.nwl.cc>
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <n0-1@nwl.cc>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Feb 2009 11:45:12 +0000 (GMT)
+Received: from h155.mvista.com ([63.81.120.155]:56261 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S21103038AbZBHLpJ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 8 Feb 2009 11:45:09 +0000
+Received: from [127.0.0.1] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 5586D3EDB; Sun,  8 Feb 2009 03:45:03 -0800 (PST)
+Message-ID: <498EC5BA.4080002@ru.mvista.com>
+Date:	Sun, 08 Feb 2009 14:44:58 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+User-Agent: Thunderbird 2.0.0.19 (Windows/20081209)
+MIME-Version: 1.0
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, linux-ide@vger.kernel.org,
+	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+	ralf@linux-mips.org
+Subject: Re: [PATCH] ide: Add tx4938ide driver (v2)
+References: <20081023.012013.52129771.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20081023.012013.52129771.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21909
+X-archive-position: 21911
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: n0-1@freewrt.org
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-In fact, using msleep() here triggers scheduling when the kernel has
-been built with CONFIG_PREEMPT, which in turn causes the kernel to
-complain about scheduling when being atomic.
+Hello.
 
-The delay itself is basically a hack to allow the rb564 daughter board
-(FIXME: right?) to be detected correctly. Maybe there is some real fix
-for this issue, but sadly I can't test as I don't have any hardware
-requiring this delay.
+Atsushi Nemoto wrote:
 
-Signed-off-by: Phil Sutter <n0-1@freewrt.org>
----
- arch/mips/pci/ops-rc32434.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+> This is the driver for the Toshiba TX4938 SoC EBUS controller ATA mode.
+> It has custom set_pio_mode and some hacks for big endian.
+>
+> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+>   
+[...]
+> +static void tx4938ide_input_data_swap(ide_drive_t *drive, struct request *rq,
+> +				void *buf, unsigned int len)
+> +{
+> +	unsigned long port = drive->hwif->io_ports.data_addr;
+> +	unsigned short *ptr = buf;
+> +	unsigned int count = (len + 1) / 2;
+> +
+> +	while (count--)
+> +		*ptr++ = cpu_to_le16(__raw_readw((void __iomem *)port));
+> +	__ide_flush_dcache_range((unsigned long)buf, count * 2);
+> +}
+> +
+> +static void tx4938ide_output_data_swap(ide_drive_t *drive, struct request *rq,
+> +				void *buf, unsigned int len)
+> +{
+> +	unsigned long port = drive->hwif->io_ports.data_addr;
+> +	unsigned short *ptr = buf;
+> +	unsigned int count = (len + 1) / 2;
+> +
+> +	while (count--) {
+> +		__raw_writew(le16_to_cpu(*ptr), (void __iomem *)port);
+> +		ptr++;
+> +	}
+> +	__ide_flush_dcache_range((unsigned long)buf, count * 2);
+> +}
 
-diff --git a/arch/mips/pci/ops-rc32434.c b/arch/mips/pci/ops-rc32434.c
-index d1f8fa2..0999e91 100644
---- a/arch/mips/pci/ops-rc32434.c
-+++ b/arch/mips/pci/ops-rc32434.c
-@@ -118,7 +118,7 @@ retry:
- 			if (delay > 4)
- 				return 0;
- 			delay *= 2;
--			msleep(delay);
-+			mdelay(delay);
- 			goto retry;
- 		}
- 	}
--- 
-1.5.6.4
+   Atsushi, does TX49 really suffer from the issue that these flushes 
+are trying to address?
+
+MBR, Sergei

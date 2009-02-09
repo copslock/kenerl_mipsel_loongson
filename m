@@ -1,46 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Feb 2009 11:19:30 +0000 (GMT)
-Received: from ozlabs.org ([203.10.76.45]:54969 "EHLO ozlabs.org")
-	by ftp.linux-mips.org with ESMTP id S21365433AbZBILT1 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Feb 2009 11:19:27 +0000
-Received: from vivaldi.localnet (unknown [150.101.102.135])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(Client did not present a certificate)
-	by ozlabs.org (Postfix) with ESMTPSA id BD649DDD1C;
-	Mon,  9 Feb 2009 22:19:19 +1100 (EST)
-From:	Rusty Russell <rusty@rustcorp.com.au>
-To:	"Kevin D. Kissell" <kevink@paralogos.com>
-Subject: Strange initialization in  arch/mips/kernel/smtc.c:1094?
-Date:	Mon, 9 Feb 2009 21:49:16 +1030
-User-Agent: KMail/1.11.0 (Linux/2.6.27-11-generic; KDE/4.2.0; i686; ; )
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Feb 2009 11:57:37 +0000 (GMT)
+Received: from aux-209-217-49-36.oklahoma.net ([209.217.49.36]:48646 "EHLO
+	proteus.paralogos.com") by ftp.linux-mips.org with ESMTP
+	id S21365442AbZBIL5f (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 9 Feb 2009 11:57:35 +0000
+Received: from [192.168.236.58] ([217.109.65.213])
+	by proteus.paralogos.com (8.9.3/8.9.3) with ESMTP id LAA05170;
+	Sun, 8 Feb 2009 11:40:10 -0600
+Message-ID: <49901A28.6030604@paralogos.com>
+Date:	Mon, 09 Feb 2009 05:57:28 -0600
+From:	"Kevin D. Kissell" <kevink@paralogos.com>
+User-Agent: Thunderbird 2.0.0.19 (Windows/20081209)
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="utf-8"
+To:	Rusty Russell <rusty@rustcorp.com.au>
+CC:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: Strange initialization in  arch/mips/kernel/smtc.c:1094?
+References: <200902092149.16573.rusty@rustcorp.com.au>
+In-Reply-To: <200902092149.16573.rusty@rustcorp.com.au>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200902092149.16573.rusty@rustcorp.com.au>
-Return-Path: <rusty@rustcorp.com.au>
+Return-Path: <kevink@paralogos.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21914
+X-archive-position: 21915
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rusty@rustcorp.com.au
+X-original-sender: kevink@paralogos.com
 Precedence: bulk
 X-list: linux-mips
 
-Latest Linus kernel, but it's been there a while:
+Rusty Russell wrote:
+> Latest Linus kernel, but it's been there a while:
+>
+> static struct irqaction irq_ipi = {
+> 	.handler	= ipi_interrupt,
+> 	.flags		= IRQF_DISABLED,
+> 	.name		= "SMTC_IPI",
+> 	.flags		= IRQF_PERCPU
+> };
+>
+> .flags is initialized twice: I'm amazed this even compiles.
+>   
+I don't know where that came from.  The very earliest versions of smtc.c 
+didn't have a declaration initialization at all, but filled the fields 
+in setup_cross_vpe_interrupts().  The IRQ was PERCPU since day one.  The 
+initial DISABLED state came later.  I'm guessing someone added that 
+hastily and didn't notice the pre-existing .flags definition.  I'm 
+curious as to which bit(s) are actually set.
 
-static struct irqaction irq_ipi = {
-	.handler	= ipi_interrupt,
-	.flags		= IRQF_DISABLED,
-	.name		= "SMTC_IPI",
-	.flags		= IRQF_PERCPU
-};
+          Regards,
 
-.flags is initialized twice: I'm amazed this even compiles.
-
-Cheers,
-Rusty.
+          Kevin K.

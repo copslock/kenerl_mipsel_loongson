@@ -1,45 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Feb 2009 23:56:10 +0000 (GMT)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:62929 "EHLO h5.dl5rb.org.uk")
-	by ftp.linux-mips.org with ESMTP id S21367134AbZBMX4I (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 13 Feb 2009 23:56:08 +0000
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n1DNu479032299;
-	Fri, 13 Feb 2009 23:56:05 GMT
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n1DNu3cH032297;
-	Fri, 13 Feb 2009 23:56:03 GMT
-Date:	Fri, 13 Feb 2009 23:56:03 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	peter fuerst <post@pfrst.de>
-Cc:	naresh kamboju <naresh.kernel@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: cacheflush system call-MIPS
-Message-ID: <20090213235603.GA32274@linux-mips.org>
-References: <f5a7b3810902100716t2658ce95t2dcc7f85634522@mail.gmail.com> <20090211131649.GA1365@linux-mips.org> <Pine.LNX.4.58.0902140002180.408@Indigo2.Peter>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.58.0902140002180.408@Indigo2.Peter>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@h5.dl5rb.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Feb 2009 08:09:37 +0000 (GMT)
+Received: from mow300.po.2iij.NET ([210.128.50.200]:4278 "EHLO mow.po.2iij.net")
+	by ftp.linux-mips.org with ESMTP id S21364923AbZBNIJe (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 14 Feb 2009 08:09:34 +0000
+Received: by mow.po.2iij.net (mow300) id n1E89TtY017558; Sat, 14 Feb 2009 17:09:29 +0900
+Received: from delta (133.6.30.125.dy.iij4u.or.jp [125.30.6.133])
+	by mbox.po.2iij.net (po-mbox303) id n1E89QGA019880
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
+	Sat, 14 Feb 2009 17:09:26 +0900
+Date:	Sat, 14 Feb 2009 17:09:26 +0900
+From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
+Subject: [PATCH][MIPS] remove "support for" from Cavium system type
+Message-Id: <20090214170926.d750aaaf.yoichi_yuasa@tripeaks.co.jp>
+Organization: TriPeaks Corporation
+X-Mailer: Sylpheed 2.4.8 (GTK+ 2.12.9; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoichi_yuasa@tripeaks.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21937
+X-archive-position: 21938
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yoichi_yuasa@tripeaks.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Feb 14, 2009 at 12:50:46AM +0100, peter fuerst wrote:
 
-> there is one more good reason to ... : the Impact Xserver needs to do
-> a cacheflush(a,w,DCACHE) as part of the refresh-sequence.
-> And hence requires a sys_cacheflush, let's say, more conforming to the
-> man-page (or some disgusting new ioctl in the Impact kernel-driver to
-> do an equivalent operation ;-)
+Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
 
-Why does it need that flush?
-
-  Ralf
+diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/arch/mips/Kconfig linux/arch/mips/Kconfig
+--- linux-orig/arch/mips/Kconfig	2009-02-14 16:56:19.274686578 +0900
++++ linux/arch/mips/Kconfig	2009-02-14 16:57:14.474681145 +0900
+@@ -596,7 +596,7 @@ config WR_PPMC
+ 	  board, which is based on GT64120 bridge chip.
+ 
+ config CAVIUM_OCTEON_SIMULATOR
+-	bool "Support for the Cavium Networks Octeon Simulator"
++	bool "Cavium Networks Octeon Simulator"
+ 	select CEVT_R4K
+ 	select 64BIT_PHYS_ADDR
+ 	select DMA_COHERENT
+@@ -610,7 +610,7 @@ config CAVIUM_OCTEON_SIMULATOR
+ 	  hardware.
+ 
+ config CAVIUM_OCTEON_REFERENCE_BOARD
+-	bool "Support for the Cavium Networks Octeon reference board"
++	bool "Cavium Networks Octeon reference board"
+ 	select CEVT_R4K
+ 	select 64BIT_PHYS_ADDR
+ 	select DMA_COHERENT

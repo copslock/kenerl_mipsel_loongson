@@ -1,56 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Feb 2009 08:09:37 +0000 (GMT)
-Received: from mow300.po.2iij.NET ([210.128.50.200]:4278 "EHLO mow.po.2iij.net")
-	by ftp.linux-mips.org with ESMTP id S21364923AbZBNIJe (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 14 Feb 2009 08:09:34 +0000
-Received: by mow.po.2iij.net (mow300) id n1E89TtY017558; Sat, 14 Feb 2009 17:09:29 +0900
-Received: from delta (133.6.30.125.dy.iij4u.or.jp [125.30.6.133])
-	by mbox.po.2iij.net (po-mbox303) id n1E89QGA019880
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Sat, 14 Feb 2009 17:09:26 +0900
-Date:	Sat, 14 Feb 2009 17:09:26 +0900
-From:	Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	yoichi_yuasa@tripeaks.co.jp, linux-mips <linux-mips@linux-mips.org>
-Subject: [PATCH][MIPS] remove "support for" from Cavium system type
-Message-Id: <20090214170926.d750aaaf.yoichi_yuasa@tripeaks.co.jp>
-Organization: TriPeaks Corporation
-X-Mailer: Sylpheed 2.4.8 (GTK+ 2.12.9; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <yoichi_yuasa@tripeaks.co.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Feb 2009 18:14:00 +0000 (GMT)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:50628 "EHLO h5.dl5rb.org.uk")
+	by ftp.linux-mips.org with ESMTP id S21365683AbZBNSN5 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 14 Feb 2009 18:13:57 +0000
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n1EIDu9O025733;
+	Sat, 14 Feb 2009 18:13:56 GMT
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n1EIDtpb025731;
+	Sat, 14 Feb 2009 18:13:55 GMT
+Date:	Sat, 14 Feb 2009 18:13:55 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Andrew Randrianasulu <randrik_a@yahoo.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: gcc-4.4 svn and 2.6.29-rc4 compile error
+Message-ID: <20090214181355.GA12982@linux-mips.org>
+References: <549158.21115.qm@web59815.mail.ac4.yahoo.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <549158.21115.qm@web59815.mail.ac4.yahoo.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21938
+X-archive-position: 21939
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yoichi_yuasa@tripeaks.co.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Fri, Feb 13, 2009 at 03:10:13PM -0800, Andrew Randrianasulu wrote:
 
-Signed-off-by: Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
+> and restart make with with LANG=C give this
+> 
+> guest@slax:/mnt/hdb1/src/linux-git/linux-2.6$ make ARCH=mips CROSS_COMPILE=mips-unknown-linux-gnu- 
+>   CHK     include/linux/version.h
+>   CHK     include/linux/utsrelease.h
+>   SYMLINK include/asm -> include/asm-mips
+>   Checking missing-syscalls for O32
+>   CALL    scripts/checksyscalls.sh
+>   CALL    scripts/checksyscalls.sh
+>   CHK     include/linux/compile.h
+>   CC      arch/mips/sgi-ip32/ip32-reset.o
+> cc1: warnings being treated as errors
+> arch/mips/sgi-ip32/ip32-reset.c: In function 'debounce':
+> arch/mips/sgi-ip32/ip32-reset.c:97: error: 'reg_a' is used uninitialized in this function
+> make[1]: *** [arch/mips/sgi-ip32/ip32-reset.o] Error 1
+> make: *** [arch/mips/sgi-ip32] Error 2
+> 
+> Is this known error? Or I should downgrade toolchain/kernel?
 
-diff -pruN -X /home/yuasa/Memo/dontdiff linux-orig/arch/mips/Kconfig linux/arch/mips/Kconfig
---- linux-orig/arch/mips/Kconfig	2009-02-14 16:56:19.274686578 +0900
-+++ linux/arch/mips/Kconfig	2009-02-14 16:57:14.474681145 +0900
-@@ -596,7 +596,7 @@ config WR_PPMC
- 	  board, which is based on GT64120 bridge chip.
- 
- config CAVIUM_OCTEON_SIMULATOR
--	bool "Support for the Cavium Networks Octeon Simulator"
-+	bool "Cavium Networks Octeon Simulator"
- 	select CEVT_R4K
- 	select 64BIT_PHYS_ADDR
- 	select DMA_COHERENT
-@@ -610,7 +610,7 @@ config CAVIUM_OCTEON_SIMULATOR
- 	  hardware.
- 
- config CAVIUM_OCTEON_REFERENCE_BOARD
--	bool "Support for the Cavium Networks Octeon reference board"
-+	bool "Cavium Networks Octeon reference board"
- 	select CEVT_R4K
- 	select 64BIT_PHYS_ADDR
- 	select DMA_COHERENT
+The error message is correct.  Congratulations, you (or gcc) have found a
+bug that's lurking in the kernel since April 7, 2003 :-)
+
+  Ralf

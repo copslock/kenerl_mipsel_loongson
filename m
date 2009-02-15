@@ -1,59 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Feb 2009 18:14:00 +0000 (GMT)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:50628 "EHLO h5.dl5rb.org.uk")
-	by ftp.linux-mips.org with ESMTP id S21365683AbZBNSN5 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 14 Feb 2009 18:13:57 +0000
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n1EIDu9O025733;
-	Sat, 14 Feb 2009 18:13:56 GMT
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n1EIDtpb025731;
-	Sat, 14 Feb 2009 18:13:55 GMT
-Date:	Sat, 14 Feb 2009 18:13:55 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Andrew Randrianasulu <randrik_a@yahoo.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Feb 2009 02:23:55 +0000 (GMT)
+Received: from mail1.pearl-online.net ([62.159.194.147]:31314 "EHLO
+	mail1.pearl-online.net") by ftp.linux-mips.org with ESMTP
+	id S20643871AbZBOCXw (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 15 Feb 2009 02:23:52 +0000
+Received: from Mobile0.Peter (194.105.100.66.dynamic.cablesurf.de [194.105.100.66])
+	by mail1.pearl-online.net (Postfix) with ESMTP id 12507D5BA;
+	Sun, 15 Feb 2009 03:23:43 +0100 (CET)
+Received: from Indigo2.Peter (Indigo2.Peter [192.168.1.28])
+	by Mobile0.Peter (8.12.6/8.12.6/Sendmail/Linux 2.2.13) with ESMTP id n1F3PK1E001242;
+	Sun, 15 Feb 2009 03:25:20 GMT
+Received: from Indigo2.Peter (localhost [127.0.0.1])
+	by Indigo2.Peter (8.12.6/8.12.6/Sendmail/Linux 2.6.14-rc2-ip28) with ESMTP id n1F2K4BQ000478;
+	Sun, 15 Feb 2009 03:20:05 +0100
+Received: from localhost (pf@localhost)
+	by Indigo2.Peter (8.12.6/8.12.6/Submit) with ESMTP id n1F2K4IN000475;
+	Sun, 15 Feb 2009 03:20:04 +0100
+X-Authentication-Warning: Indigo2.Peter: pf owned process doing -bs
+Date:	Sun, 15 Feb 2009 03:20:04 +0100 (CET)
+From:	peter fuerst <post@pfrst.de>
+X-X-Sender: pf@Indigo2.Peter
+Reply-To: post@pfrst.de
+To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	linux-mips@linux-mips.org
-Subject: Re: gcc-4.4 svn and 2.6.29-rc4 compile error
-Message-ID: <20090214181355.GA12982@linux-mips.org>
-References: <549158.21115.qm@web59815.mail.ac4.yahoo.com>
+Subject: Re: cacheflush system call-MIPS
+In-Reply-To: <20090213235603.GA32274@linux-mips.org>
+Message-ID: <Pine.LNX.4.58.0902150312460.459@Indigo2.Peter>
+References: <f5a7b3810902100716t2658ce95t2dcc7f85634522@mail.gmail.com>
+ <20090211131649.GA1365@linux-mips.org> <Pine.LNX.4.58.0902140002180.408@Indigo2.Peter>
+ <20090213235603.GA32274@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <549158.21115.qm@web59815.mail.ac4.yahoo.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@h5.dl5rb.org.uk>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <post@pfrst.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21939
+X-archive-position: 21940
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: post@pfrst.de
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Feb 13, 2009 at 03:10:13PM -0800, Andrew Randrianasulu wrote:
 
-> and restart make with with LANG=C give this
-> 
-> guest@slax:/mnt/hdb1/src/linux-git/linux-2.6$ make ARCH=mips CROSS_COMPILE=mips-unknown-linux-gnu- 
->   CHK     include/linux/version.h
->   CHK     include/linux/utsrelease.h
->   SYMLINK include/asm -> include/asm-mips
->   Checking missing-syscalls for O32
->   CALL    scripts/checksyscalls.sh
->   CALL    scripts/checksyscalls.sh
->   CHK     include/linux/compile.h
->   CC      arch/mips/sgi-ip32/ip32-reset.o
-> cc1: warnings being treated as errors
-> arch/mips/sgi-ip32/ip32-reset.c: In function 'debounce':
-> arch/mips/sgi-ip32/ip32-reset.c:97: error: 'reg_a' is used uninitialized in this function
-> make[1]: *** [arch/mips/sgi-ip32/ip32-reset.o] Error 1
-> make: *** [arch/mips/sgi-ip32] Error 2
-> 
-> Is this known error? Or I should downgrade toolchain/kernel?
+> Why does it need that flush?
 
-The error message is correct.  Congratulations, you (or gcc) have found a
-bug that's lurking in the kernel since April 7, 2003 :-)
+To prepare the update-area (in the Shadow-FB) for DMA to RE.
 
-  Ralf
+
+kind regards
+
+
+
+On Fri, 13 Feb 2009, Ralf Baechle wrote:
+
+> Date: Fri, 13 Feb 2009 23:56:03 +0000
+> From: Ralf Baechle <ralf@linux-mips.org>
+> To: peter fuerst <post@pfrst.de>
+> Cc: naresh kamboju <naresh.kernel@gmail.com>, linux-mips@linux-mips.org
+> Subject: Re: cacheflush system call-MIPS
+>
+> On Sat, Feb 14, 2009 at 12:50:46AM +0100, peter fuerst wrote:
+>
+> > there is one more good reason to ... : the Impact Xserver needs to do
+> > a cacheflush(a,w,DCACHE) as part of the refresh-sequence.
+> > And hence requires a sys_cacheflush, let's say, more conforming to the
+> > man-page (or some disgusting new ioctl in the Impact kernel-driver to
+> > do an equivalent operation ;-)
+>
+> Why does it need that flush?
+>
+>   Ralf
+>
+>

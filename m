@@ -1,63 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Feb 2009 13:02:36 +0000 (GMT)
-Received: from crux.i-cable.com ([203.83.115.104]:43231 "HELO crux.i-cable.com")
-	by ftp.linux-mips.org with SMTP id S21299246AbZBTNCd (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 20 Feb 2009 13:02:33 +0000
-Received: (qmail 23893 invoked by uid 107); 20 Feb 2009 13:02:19 -0000
-Received: from 203.83.114.121 by crux (envelope-from <robert.zhangle@gmail.com>, uid 104) with qmail-scanner-2.01 
- (clamdscan: 0.93.3/8786. spamassassin: 2.63.  
- Clear:RC:1(203.83.114.121):SA:0(-2.2/5.0):. 
- Processed in 5.415651 secs); 20 Feb 2009 13:02:19 -0000
-Received: from ip114121.hkicable.com (HELO silicon.i-cable.com) (203.83.114.121)
-  by 0 with SMTP; 20 Feb 2009 13:02:13 -0000
-Received: from localhost (cm222-167-208-75.hkcable.com.hk [222.167.208.75])
-	by silicon.i-cable.com (8.13.5/8.13.5) with ESMTP id n1KD22wp024057
-	for <linux-mips@linux-mips.org>; Fri, 20 Feb 2009 21:02:13 +0800 (HKT)
-Date:	Fri, 20 Feb 2009 21:01:57 +0800
-From:	Zhang Le <r0bertz@gentoo.org>
-To:	linux-mips@linux-mips.org
-Subject: [RFC] implement syscall pciconfig_iobase
-Message-ID: <20090220130156.GA14095@adriano.hkcable.com.hk>
-Mail-Followup-To: linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Feb 2009 13:47:33 +0000 (GMT)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:55991 "EHLO h5.dl5rb.org.uk")
+	by ftp.linux-mips.org with ESMTP id S21299246AbZBTNrb (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 20 Feb 2009 13:47:31 +0000
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n1KDlUY8023357;
+	Fri, 20 Feb 2009 13:47:30 GMT
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n1KDlTLH023354;
+	Fri, 20 Feb 2009 13:47:29 GMT
+Date:	Fri, 20 Feb 2009 13:47:29 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Chris Rhodin <chris@notav8.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: plat_irq_dispatch
+Message-ID: <20090220134729.GC19924@linux-mips.org>
+References: <499E6AC5.5070404@notav8.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <robert.zhangle@gmail.com>
+In-Reply-To: <499E6AC5.5070404@notav8.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21948
+X-archive-position: 21949
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: r0bertz@gentoo.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This is for xorg-server support.
+On Fri, Feb 20, 2009 at 12:33:09AM -0800, Chris Rhodin wrote:
 
-Currently, xorg-server on loongson need a patch:
-http://www.gentoo-cn.org/gitweb/?p=loongson;a=blob;f=x11-base/xorg-server/files/xorg-server-1.5.3-loongson.patch;h=9c48b3752b7f14b6603524f46ae832f312e7c6fe;hb=HEAD#l37
-Please note that line 37, the last parameter to mmap, which is the ioBase_phys,
-is hardcoded.
+> I've been digging through the interrupt code trying to figure out what  
+> would be required to make it "generic irq" clean.  I have a couple of  
+> questions that I haven't been able to answer myself.
+>
+> 1) I count 24 different versions of plat_irq_dispatch, many of them only  
+> seem to vary in the use and priority of the 8 sources in the cause  
+> register.  Is this really the case or am I missing something subtle?
 
-This patch no long applies to xorg-server git master.
-So I took at look at the code trying to find out why. And then I found powerpc
-has implemented this syscall: pciconfig_iobase
+No, you're correct.  Part of why all these plat_irq_dispatch versions
+do exist is that there are different versions of CPU interrupt controllers.
+There is the basic MIPS CPU integrated interrupt controller providing
+6 level-sensitive inputs and 2 software interrupts.  Some processors
+such as the RM7000 processors and E9000 cores extend this in vendor-
+specific ways.  Outside of the actual processor in most cases there is
+a system-specific hierarchy of interrupt controllers attached which
+needs to be polled in software to find the source of a pending interrupt
+and compute an interrupt number for use by the generic code.
 
-Please take a look at the following code:
-http://cgit.freedesktop.org/xorg/xserver/tree/hw/xfree86/os-support/linux/lnx_video.c#n517
+plat_irq_dispatch came into existence in commit
+5476b529ad3ba9db6e189c79d692d2929c1d1f95 as the hardware-specific part
+of the former platform-specific handle_int family of functions and for
+sanity reasons is written in C, no longer assembler.
 
-At the first glance, it is absolutely a good idea to implement this for mips,
-too. However when I read pciconfig_iobase's manpage, I found this sentence:
+> 2) Why isn't plat_irq_dispatch looping until all active interrupts are  
+> serviced?
 
-       Most  of  the interaction with PCI devices is already handled by the
-       kernel PCI layer, and thus these calls should not normally need to be
-       accessed from userspace.
+The assumption is that most often there won't be another interrupt
+pending and that it is faster on average to just take another interrupt
+exception than to always perform the check.
 
-So I decided to bring this issue here, so that you guys could give me some
-advice.
+> I already have what I believe is a generic plat_irq_dispatch that finds  
+> the highest priority irq in (almost) constant time.  It needs one block  
+> of defines to identify the 8 sources and another block to set the  
+> priorities.
 
-Thanks in advance!
+I'm not sure how important priorities actually are these days.  In the dark
+past of Linux the SCSI code did go braindead if timer interrupts were not
+handled at higher priority than device interrupts.  That's got fixed
+eons ago.  Some embedded devices may have requirements there?
 
-Zhang, Le
+  Ralf

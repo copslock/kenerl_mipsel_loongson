@@ -1,53 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Feb 2009 20:11:10 +0000 (GMT)
-Received: from ix.technologeek.org ([213.41.253.186]:14472 "EHLO
-	sonic.technologeek.org") by ftp.linux-mips.org with ESMTP
-	id S20807911AbZBVULI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 22 Feb 2009 20:11:08 +0000
-Received: by sonic.technologeek.org (Postfix, from userid 1000)
-	id BBCA5185592E; Sun, 22 Feb 2009 21:11:08 +0100 (CET)
-From:	Julien BLACHE <jb@jblache.org>
-To:	linux-mips@linux-mips.org
-Subject: Re: (Newport) console problems on IP22
-References: <873ae6ck2h.fsf@sonic.technologeek.org>
-Date:	Sun, 22 Feb 2009 21:11:08 +0100
-In-Reply-To: <873ae6ck2h.fsf@sonic.technologeek.org> (Julien BLACHE's message
-	of "Sun, 22 Feb 2009 21:07:02 +0100")
-Message-ID: <87y6vyb5b7.fsf@sonic.technologeek.org>
-User-Agent: Gnus/5.110006 (No Gnus v0.6) XEmacs/21.4.21 (linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2009 09:29:56 +0000 (GMT)
+Received: from mx1.moondrake.net ([212.85.150.166]:23172 "EHLO
+	mx1.mandriva.com") by ftp.linux-mips.org with ESMTP
+	id S20808006AbZBWJ3x (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 23 Feb 2009 09:29:53 +0000
+Received: by mx1.mandriva.com (Postfix, from userid 501)
+	id 2C0A4274002; Mon, 23 Feb 2009 10:29:53 +0100 (CET)
+Received: from office-abk.mandriva.com (office-abk.mandriva.com [84.55.162.90])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mx1.mandriva.com (Postfix) with ESMTP id A3EA1274003;
+	Mon, 23 Feb 2009 10:29:49 +0100 (CET)
+Received: from anduin.mandriva.com (fw2.mandriva.com [192.168.2.3])
+	by office-abk.mandriva.com (Postfix) with ESMTP id E1E7C82816;
+	Mon, 23 Feb 2009 10:30:26 +0100 (CET)
+Received: from anduin.mandriva.com (localhost [127.0.0.1])
+	by anduin.mandriva.com (Postfix) with ESMTP id 9213BFF855;
+	Mon, 23 Feb 2009 10:30:36 +0100 (CET)
+From:	Arnaud Patard <apatard@mandriva.com>
+To:	wurststulle <wurststulle@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: kexec on mips - anyone has it working?
+References: <483BCB75.4050901@wpkg.org>
+	<200805271405.55346.nschichan@freebox.fr> <483C0135.9070203@wpkg.org>
+	<200805271449.45124.nschichan@freebox.fr> <483C4F73.4040909@wpkg.org>
+	<200805291347.05196.nschichan@freebox.fr> <483F0EF3.3060500@wpkg.org>
+	<200805301327.11925.nschichan@freebox.fr> <483FE764.1090901@wpkg.org>
+	<200807011542.29274.nschichan@freebox.fr> <486A6F0D.4070802@wpkg.org>
+	<200807012000.40421.nschichan@freebox.fr> <486A759D.6080803@wpkg.org>
+	<22148789.post@talk.nabble.com>
+Organization: Mandriva
+Date:	Mon, 23 Feb 2009 10:30:36 +0100
+In-Reply-To: <22148789.post@talk.nabble.com> (wurststulle@gmail.com's message of "Sun, 22 Feb 2009 08:50:27 -0800 (PST)")
+Message-ID: <m3d4d9o5z7.fsf@anduin.mandriva.com>
+User-Agent: Gnus/5.1008 (Gnus v5.10.8) Emacs/22.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Return-Path: <jb@jblache.org>
+Return-Path: <arnaud.patard@mandriva.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21955
+X-archive-position: 21956
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jb@jblache.org
+X-original-sender: apatard@mandriva.com
 Precedence: bulk
 X-list: linux-mips
 
-Julien BLACHE <jb@jblache.org> wrote:
+wurststulle <wurststulle@gmail.com> writes:
 
->  - getty process stuck
->
->  root      1226 98.7  0.0      0     0 tty1     Rs+  19:48   9:22 [getty]
->
-> gettys on tty[2-6] might also be stuck somewhere. Can't strace the
-> getty on tty1 (operation not permitted) and strace on tty[2-6]
-> attaches to the process but doesn't print anything and is stuck from
-> here on. Cannot detach or anything. Processes are of course
-> unkillable.
+Hi,
 
-Looks like the strace on the getty process on tty2 led to something
-hanging to the point my serial console on ttyS0 was hung after that.
+> is there any solution for this, i have the same problem
 
-But I could still log in via SSH, so the kernel keeps running fine
-despite that.
+What's your exact problem ? It hangs right after saying 'Bye...' ?
+Some monthes ago, I played with the patch from M. Syrchin [ sorry, I don't
+remember if it was on linux-mips or on the kexec list ]. I've made on it
+a small modification (compare the machine_kexec_prepare function in my
+version [1] and the original function) and it was somewhat working on
+Qemu and on my box. It was not perfect but at least with a very minimal
+test system, it was working. Maybe you can try it and see if it works
+for you too. Depending on your platform, you may have to define machine
+specific hooks too.
 
-JB.
+Regards,
+Arnaud
 
--- 
-Julien BLACHE                                   <http://www.jblache.org> 
-<jb@jblache.org>                                  GPG KeyID 0xF5D65169
+[1] http://people.mandriva.com/~apatard/kexec_mips.patch

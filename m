@@ -1,83 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2009 17:34:33 +0000 (GMT)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:46287 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S20808073AbZBWRe3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 23 Feb 2009 17:34:29 +0000
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B49a2dde00001>; Mon, 23 Feb 2009 12:33:25 -0500
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 23 Feb 2009 09:33:17 -0800
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 23 Feb 2009 09:33:17 -0800
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n1NHXFWq018661;
-	Mon, 23 Feb 2009 09:33:15 -0800
-Received: (from ddaney@localhost)
-	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n1NHXENh018659;
-	Mon, 23 Feb 2009 09:33:14 -0800
-From:	David Daney <ddaney@caviumnetworks.com>
-To:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:	David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH] MIPS: Finish fixing CVE-2009-0029.
-Date:	Mon, 23 Feb 2009 09:33:14 -0800
-Message-Id: <1235410394-18636-1-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.5.6.6
-X-OriginalArrivalTime: 23 Feb 2009 17:33:17.0229 (UTC) FILETIME=[D007DDD0:01C995DC]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Feb 2009 18:42:39 +0000 (GMT)
+Received: from kuber.nabble.com ([216.139.236.158]:57252 "EHLO
+	kuber.nabble.com") by ftp.linux-mips.org with ESMTP
+	id S20808047AbZBWSmh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 23 Feb 2009 18:42:37 +0000
+Received: from isper.nabble.com ([192.168.236.156])
+	by kuber.nabble.com with esmtp (Exim 4.63)
+	(envelope-from <lists@nabble.com>)
+	id 1LbflD-0002RU-Ck
+	for linux-mips@linux-mips.org; Mon, 23 Feb 2009 10:42:35 -0800
+Message-ID: <22167417.post@talk.nabble.com>
+Date:	Mon, 23 Feb 2009 10:42:35 -0800 (PST)
+From:	wurststulle <wurststulle@gmail.com>
+To:	linux-mips@linux-mips.org
+Subject: Re: kexec on mips - anyone has it working?
+In-Reply-To: <m3d4d9o5z7.fsf@anduin.mandriva.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Nabble-From: wurststulle@gmail.com
+References: <483BCB75.4050901@wpkg.org> <200805271405.55346.nschichan@freebox.fr> <483C0135.9070203@wpkg.org> <200805271449.45124.nschichan@freebox.fr> <483C4F73.4040909@wpkg.org> <200805291347.05196.nschichan@freebox.fr> <483F0EF3.3060500@wpkg.org> <200805301327.11925.nschichan@freebox.fr> <483FE764.1090901@wpkg.org> <200807011542.29274.nschichan@freebox.fr> <486A6F0D.4070802@wpkg.org> <200807012000.40421.nschichan@freebox.fr> <486A759D.6080803@wpkg.org> <22148789.post@talk.nabble.com> <m3d4d9o5z7.fsf@anduin.mandriva.com>
+Return-Path: <lists@nabble.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21958
+X-archive-position: 21959
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: wurststulle@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-The initial patch for CVE-2009-0029 lacked a couple of changes in the
-syscall tables.  sys32_sysctl and sys32_ipc were renamed.
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
----
- arch/mips/kernel/scall64-n32.S |    2 +-
- arch/mips/kernel/scall64-o32.S |    4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+hi, thank you for the patch, but there is a mistake, that i can not fix:
 
-diff --git a/arch/mips/kernel/scall64-n32.S b/arch/mips/kernel/scall64-n32.S
-index e423ba2..7438e92 100644
---- a/arch/mips/kernel/scall64-n32.S
-+++ b/arch/mips/kernel/scall64-n32.S
-@@ -272,7 +272,7 @@ EXPORT(sysn32_call_table)
- 	PTR	sys_munlockall
- 	PTR	sys_vhangup			/* 6150 */
- 	PTR	sys_pivot_root
--	PTR	sys32_sysctl
-+	PTR	sys_32_sysctl
- 	PTR	sys_prctl
- 	PTR	compat_sys_adjtimex
- 	PTR	compat_sys_setrlimit		/* 6155 */
-diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
-index 6ee7997..b0fef4f 100644
---- a/arch/mips/kernel/scall64-o32.S
-+++ b/arch/mips/kernel/scall64-o32.S
-@@ -320,7 +320,7 @@ sys_call_table:
- 	PTR	compat_sys_wait4
- 	PTR	sys_swapoff			/* 4115 */
- 	PTR	compat_sys_sysinfo
--	PTR	sys32_ipc
-+	PTR	sys_32_ipc
- 	PTR	sys_fsync
- 	PTR	sys32_sigreturn
- 	PTR	sys32_clone			/* 4120 */
-@@ -356,7 +356,7 @@ sys_call_table:
- 	PTR	sys_ni_syscall			/* 4150 */
- 	PTR	sys_getsid
- 	PTR	sys_fdatasync
--	PTR	sys32_sysctl
-+	PTR	sys_32_sysctl
- 	PTR	sys_mlock
- 	PTR	sys_munlock			/* 4155 */
- 	PTR	sys_mlockall
++#ifdef CONFIG_CRASH_DUMP
++    if (crashk_res.start != crashk_res.end)
++        reserve_bootmem(crashk_res.start,
++                crashk_res.end - crashk_res.start + 1);
++#endif
+
+the function reserve_bootmem need i think three arguments. while compiling
+this error occurs:
+
+arch/mips/kernel/setup.c: In function 'arch_mem_init':
+arch/mips/kernel/setup.c:493: error: too few arguments to function
+'reserve_bootmem'
+make[6]: *** [arch/mips/kernel/setup.o] Error 1
+
+thanks!
+
+
+Arnaud Patard wrote:
+> 
+> wurststulle <wurststulle@gmail.com> writes:
+> 
+> Hi,
+> 
+>> is there any solution for this, i have the same problem
+> 
+> What's your exact problem ? It hangs right after saying 'Bye...' ?
+> Some monthes ago, I played with the patch from M. Syrchin [ sorry, I don't
+> remember if it was on linux-mips or on the kexec list ]. I've made on it
+> a small modification (compare the machine_kexec_prepare function in my
+> version [1] and the original function) and it was somewhat working on
+> Qemu and on my box. It was not perfect but at least with a very minimal
+> test system, it was working. Maybe you can try it and see if it works
+> for you too. Depending on your platform, you may have to define machine
+> specific hooks too.
+> 
+> Regards,
+> Arnaud
+> 
+> [1] http://people.mandriva.com/~apatard/kexec_mips.patch
+> 
+> 
+> 
+
 -- 
-1.5.6.6
+View this message in context: http://www.nabble.com/kexec-on-mips---anyone-has-it-working--tp17485898p22167417.html
+Sent from the linux-mips main mailing list archive at Nabble.com.

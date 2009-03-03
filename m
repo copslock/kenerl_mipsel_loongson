@@ -1,138 +1,320 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Mar 2009 09:05:19 +0000 (GMT)
-Received: from TYO202.gate.nec.co.jp ([202.32.8.206]:30336 "EHLO
-	tyo202.gate.nec.co.jp") by ftp.linux-mips.org with ESMTP
-	id S19202101AbZCCJFQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 3 Mar 2009 09:05:16 +0000
-Received: from relay31.aps.necel.com ([10.29.19.54])
-	by tyo202.gate.nec.co.jp (8.13.8/8.13.4) with ESMTP id n2395BWZ004166
-	for <linux-mips@linux-mips.org>; Tue, 3 Mar 2009 18:05:11 +0900 (JST)
-Received: from realmbox21.aps.necel.com ([10.29.19.32] [10.29.19.32]) by relay31.aps.necel.com with ESMTP; Tue, 3 Mar 2009 18:05:11 +0900
-Received: from [10.114.181.78] ([10.114.181.78] [10.114.181.78]) by mbox02.aps.necel.com with ESMTP; Tue, 3 Mar 2009 18:05:11 +0900
-Message-Id: <49ACF2EF.3080903@necel.com>
-Date:	Tue, 03 Mar 2009 18:05:51 +0900
-From:	Shinya Kuribayashi <shinya.kuribayashi@necel.com>
-User-Agent: Thunderbird 2.0.0.19 (Windows/20081209)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Mar 2009 11:08:42 +0000 (GMT)
+Received: from tx2ehsobe005.messaging.microsoft.com ([65.55.88.15]:19800 "EHLO
+	TX2EHSOBE009.bigfish.com") by ftp.linux-mips.org with ESMTP
+	id S19202471AbZCCLIj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 3 Mar 2009 11:08:39 +0000
+Received: from mail234-tx2-R.bigfish.com (10.9.14.248) by
+ TX2EHSOBE009.bigfish.com (10.9.40.29) with Microsoft SMTP Server id
+ 8.1.340.0; Tue, 3 Mar 2009 11:08:33 +0000
+Received: from mail234-tx2 (localhost.localdomain [127.0.0.1])	by
+ mail234-tx2-R.bigfish.com (Postfix) with ESMTP id 878F134685F4;	Tue,  3 Mar
+ 2009 11:08:32 +0000 (UTC)
+X-BigFish: VPS-77(zz709fM1432R62a3L98dR936eQ4015M1805M936fK8d0R655O13ddRzzzzz32i6bh61h)
+X-FB-SS: 5,
+Received: by mail234-tx2 (MessageSwitch) id 1236078486301073_16714; Tue,  3
+ Mar 2009 11:08:06 +0000 (UCT)
+Received: from svlb1extmailp02.amd.com (unknown [139.95.251.11])	(using TLSv1
+ with cipher DHE-RSA-AES256-SHA (256/256 bits))	(No client certificate
+ requested)	by mail234-tx2.bigfish.com (Postfix) with ESMTP id A95A64F10055;
+	Tue,  3 Mar 2009 11:08:05 +0000 (UTC)
+Received: from svlb1twp01.amd.com ([139.95.250.34])	by svlb1extmailp02.amd.com
+ (Switch-3.2.7/Switch-3.2.7) with ESMTP id n23B7sGs029832;	Tue, 3 Mar 2009
+ 03:07:57 -0800
+X-WSS-ID: 0KFXG98-03-9BX-01
+Received: from SSVLEXBH2.amd.com (ssvlexbh2.amd.com [139.95.53.183])	by
+ svlb1twp01.amd.com (Tumbleweed MailGate 3.5.1) with ESMTP id 26903884941;
+	Tue,  3 Mar 2009 03:07:56 -0800 (PST)
+Received: from ssvlexmb2.amd.com ([139.95.53.7]) by SSVLEXBH2.amd.com with
+ Microsoft SMTPSVC(6.0.3790.3959);	 Tue, 3 Mar 2009 03:07:59 -0800
+Received: from SF36EXMB1.amd.com ([172.19.4.24]) by ssvlexmb2.amd.com with
+ Microsoft SMTPSVC(6.0.3790.3959);	 Tue, 3 Mar 2009 03:07:59 -0800
+Received: from seurexmb1.amd.com ([165.204.82.130]) by SF36EXMB1.amd.com with
+ Microsoft SMTPSVC(6.0.3790.3959);	 Tue, 3 Mar 2009 12:07:56 +0100
+Received: from erda.amd.com ([165.204.85.17]) by seurexmb1.amd.com with
+ Microsoft SMTPSVC(6.0.3790.3959);	 Tue, 3 Mar 2009 12:07:56 +0100
+Received: by erda.amd.com (Postfix, from userid 35569)	id 19B32800D; Tue,  3
+ Mar 2009 12:07:56 +0100 (CET)
+Date:	Tue, 3 Mar 2009 12:07:56 +0100
+From:	Robert Richter <robert.richter@amd.com>
+To:	Mark Asselstine <mark.asselstine@windriver.com>,
+	Ralf Baechle <ralf@linux-mips.org>
+CC:	linux-mips@linux-mips.org, oprofile-list@lists.sf.net
+Subject: Re: [PATCH V2] oprofile: VR5500 performance counter driver
+Message-ID: <20090303110755.GD10085@erda.amd.com>
+References: <20090225165953.GF25042@erda.amd.com> <1235681374-19952-1-git-send-email-mark.asselstine@windriver.com>
 MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: NEC VR5500 processor support fixup
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <shinya.kuribayashi@necel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <1235681374-19952-1-git-send-email-mark.asselstine@windriver.com>
+User-Agent: Mutt/1.5.16 (2007-06-09)
+X-OriginalArrivalTime: 03 Mar 2009 11:07:56.0182 (UTC) FILETIME=[4E1E1360:01C99BF0]
+Return-Path: <robert.richter@amd.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 21994
+X-archive-position: 21995
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: shinya.kuribayashi@necel.com
+X-original-sender: robert.richter@amd.com
 Precedence: bulk
 X-list: linux-mips
 
-Current VR5500 processor support lacks of some functions which are
-expected to be configured/syhthesized on arch initialization.
+On 26.02.09 15:49:34, Mark Asselstine wrote:
+> This is inspired by op_model_mipsxx.c with some modification
+> in regards to register layout and overflow handling. This has
+> been tested on a NEC VR5500 board and shown to produce sane
+> results.
+> 
+> Signed-off-by: Mark Asselstine <mark.asselstine@windriver.com>
+> ---
+> 
+> I have left this as a new file as there is enough differences
+> to make combining it combersome. If pushed I would possibly
+> change my mind but I am not convinced yet. The userspace
+> events are seen as mips/vr5500 so if there is a desire to
+> have everything be r5500 some userspace changes would need
+> to be made.
+> 
+>  arch/mips/oprofile/Makefile         |    1 +
+>  arch/mips/oprofile/common.c         |    5 +
+>  arch/mips/oprofile/op_model_r5500.c |  161 +++++++++++++++++++++++++++++++++++
 
-Here're some VR5500A spec notes:
 
-* all execution hazards are handled in hardware.
+Mark,
 
-* Once VR5500A stops the operation of the pipeline by WAIT instruction,
-  it could return from the standby mode only when either a reset, NMI
-  request, or all enabled interrupts is/are detected.  In other words,
-  if interrupts are disabled by Status.IE=0, it keeps in standby mode
-  even when interrupts are internally asserted.
+the Kconfig option for CONFIG_CPU_R5500 is still missing otherwise the
+patch itself looks fine.
 
-  Notes on WAIT: The operation of the processor is undefined if WAIT
-  insn is in the branch delay slot.  The operation is also undefined
-  if WAIT insn is executed when Status.EXL and Status.ERL are set to 1.
+Ralf,
 
-* VR5500A core only implements the Load prefetch.
+do you agree on introducing a separate file for this cpu model?
+Please ack.
 
-With these changes, it boots fine.
+Thanks,
 
-Signed-off-by: Shinya Kuribayashi <shinya.kuribayashi@necel.com>
----
+-Robert
 
-Hi,
+>  3 files changed, 167 insertions(+), 0 deletions(-)
+>  create mode 100644 arch/mips/oprofile/op_model_r5500.c
+>  
+> diff --git a/arch/mips/oprofile/Makefile b/arch/mips/oprofile/Makefile
+> index bf3be6f..586e64e 100644
+> --- a/arch/mips/oprofile/Makefile
+> +++ b/arch/mips/oprofile/Makefile
+> @@ -14,4 +14,5 @@ oprofile-$(CONFIG_CPU_MIPS32)		+= op_model_mipsxx.o
+>  oprofile-$(CONFIG_CPU_MIPS64)		+= op_model_mipsxx.o
+>  oprofile-$(CONFIG_CPU_R10000)		+= op_model_mipsxx.o
+>  oprofile-$(CONFIG_CPU_SB1)		+= op_model_mipsxx.o
+> +oprofile-$(CONFIG_CPU_R5500)		+= op_model_r5500.o
+>  oprofile-$(CONFIG_CPU_RM9000)		+= op_model_rm9000.o
+> diff --git a/arch/mips/oprofile/common.c b/arch/mips/oprofile/common.c
+> index 3bf3354..26780c7 100644
+> --- a/arch/mips/oprofile/common.c
+> +++ b/arch/mips/oprofile/common.c
+> @@ -16,6 +16,7 @@
+>  
+>  extern struct op_mips_model op_model_mipsxx_ops __attribute__((weak));
+>  extern struct op_mips_model op_model_rm9000_ops __attribute__((weak));
+> +extern struct op_mips_model op_model_r5500_ops __attribute__((weak));
+>  
+>  static struct op_mips_model *model;
+>  
+> @@ -93,6 +94,10 @@ int __init oprofile_arch_init(struct oprofile_operations *ops)
+>  	case CPU_RM9000:
+>  		lmodel = &op_model_rm9000_ops;
+>  		break;
+> +
+> +	case CPU_R5500:
+> +		lmodel = &op_model_r5500_ops;
+> +		break;
+>  	};
+>  
+>  	if (!lmodel)
+> diff --git a/arch/mips/oprofile/op_model_r5500.c b/arch/mips/oprofile/op_model_r5500.c
+> new file mode 100644
+> index 0000000..9b0d20f
+> --- /dev/null
+> +++ b/arch/mips/oprofile/op_model_r5500.c
+> @@ -0,0 +1,161 @@
+> +/*
+> + * This file is subject to the terms and conditions of the GNU General Public
+> + * License.  See the file "COPYING" in the main directory of this archive
+> + * for more details.
+> + *
+> + * Copyright (c) 2009 Wind River Systems, Inc.
+> + *
+> + * Derived from op_model_mipsxx.c Copyright Ralf Baechle, MIPS Technologies Inc
+> + */
+> +#include <linux/oprofile.h>
+> +#include <linux/interrupt.h>
+> +#include <asm/irq_regs.h>
+> +
+> +#include "op_impl.h"
+> +
+> +#define M_PERFCTL_EXL			(1UL      <<  0)
+> +#define M_PERFCTL_KERNEL		(1UL      <<  1)
+> +#define M_PERFCTL_SUPERVISOR		(1UL      <<  2)
+> +#define M_PERFCTL_USER			(1UL      <<  3)
+> +#define M_PERFCTL_INTERRUPT_ENABLE	(1UL      <<  4)
+> +#define M_PERFCTL_INTERRUPT		(1UL      <<  5)
+> +#define M_PERFCTL_EVENT(event)		(((event) & 0xf)  << 6)
+> +#define M_PERFCTL_COUNT_ENABLE		(1UL      <<  10)
+> +
+> +#define NUM_COUNTERS                    2
+> +
+> +static int (*save_perf_irq) (void);
+> +
+> +struct op_mips_model op_model_r5500_ops;
+> +
+> +static struct r5500_register_config {
+> +	unsigned int control[NUM_COUNTERS];
+> +	unsigned int counter[NUM_COUNTERS];
+> +} reg;
+> +
+> +/* Compute all of the registers in preparation for enabling profiling.  */
+> +static void r5500_reg_setup(struct op_counter_config *ctr)
+> +{
+> +	int i;
+> +	unsigned int counters = NUM_COUNTERS;
+> +
+> +	/* Compute the performance counter control word.  */
+> +	for (i = 0; i < counters; i++) {
+> +		reg.control[i] = 0;
+> +		reg.counter[i] = 0;
+> +
+> +		if (!ctr[i].enabled)
+> +			continue;
+> +
+> +		reg.control[i] = M_PERFCTL_EVENT(ctr[i].event) |
+> +		    M_PERFCTL_INTERRUPT_ENABLE | M_PERFCTL_COUNT_ENABLE;
+> +		if (ctr[i].kernel)
+> +			reg.control[i] |= M_PERFCTL_KERNEL;
+> +		if (ctr[i].user)
+> +			reg.control[i] |= M_PERFCTL_USER;
+> +		if (ctr[i].exl)
+> +			reg.control[i] |= M_PERFCTL_EXL;
+> +
+> +		reg.counter[i] = 0xffffffff - ctr[i].count + 1;
+> +	}
+> +}
+> +
+> +/* Program all of the registers in preparation for enabling profiling.  */
+> +static void r5500_cpu_setup(void *args)
+> +{
+> +	write_c0_perfctrl1(0);
+> +	write_c0_perfcntr1(reg.counter[1]);
+> +
+> +	write_c0_perfctrl0(0);
+> +	write_c0_perfcntr0(reg.counter[0]);
+> +}
+> +
+> +/* Start all counters on current CPU */
+> +static void r5500_cpu_start(void *args)
+> +{
+> +	write_c0_perfctrl1(reg.control[1]);
+> +	write_c0_perfctrl0(reg.control[0]);
+> +}
+> +
+> +/* Stop all counters on current CPU */
+> +static void r5500_cpu_stop(void *args)
+> +{
+> +	write_c0_perfctrl1(0);
+> +	write_c0_perfctrl0(0);
+> +}
+> +
+> +static int r5500_perfcount_handler(void)
+> +{
+> +	unsigned int control;
+> +	unsigned int counter;
+> +	int handled = IRQ_NONE;
+> +
+> +	control = read_c0_perfctrl0();
+> +	counter = read_c0_perfcntr0();
+> +	if ((control & M_PERFCTL_INTERRUPT_ENABLE) &&
+> +			(control & M_PERFCTL_INTERRUPT)) {
+> +		oprofile_add_sample(get_irq_regs(), 0);
+> +		write_c0_perfcntr0(reg.counter[0]);
+> +		write_c0_perfctrl0(control & ~M_PERFCTL_INTERRUPT);
+> +		handled = IRQ_HANDLED;
+> +	}
+> +
+> +	control = read_c0_perfctrl1();
+> +	counter = read_c0_perfcntr1();
+> +	if ((control & M_PERFCTL_INTERRUPT_ENABLE) &&
+> +			(control & M_PERFCTL_INTERRUPT)) {
+> +		oprofile_add_sample(get_irq_regs(), 1);
+> +		write_c0_perfcntr1(reg.counter[1]);
+> +		write_c0_perfctrl1(control & ~M_PERFCTL_INTERRUPT);
+> +		handled = IRQ_HANDLED;
+> +	}
+> +
+> +	return handled;
+> +}
+> +
+> +static void reset_counters(void *arg)
+> +{
+> +	write_c0_perfctrl1(0);
+> +	write_c0_perfcntr1(0);
+> +
+> +	write_c0_perfctrl0(0);
+> +	write_c0_perfcntr0(0);
+> +}
+> +
+> +static int __init r5500_init(void)
+> +{
+> +	on_each_cpu(reset_counters, NULL, 1);
+> +
+> +	switch (current_cpu_type()) {
+> +	case CPU_R5500:
+> +		op_model_r5500_ops.cpu_type = "mips/vr5500";
+> +		break;
+> +
+> +	default:
+> +		printk(KERN_ERR "Profiling unsupported for this CPU\n");
+> +
+> +		return -ENODEV;
+> +	}
+> +
+> +	save_perf_irq = perf_irq;
+> +	perf_irq = r5500_perfcount_handler;
+> +
+> +	return 0;
+> +}
+> +
+> +static void r5500_exit(void)
+> +{
+> +	on_each_cpu(reset_counters, NULL, 1);
+> +
+> +	perf_irq = save_perf_irq;
+> +}
+> +
+> +struct op_mips_model op_model_r5500_ops = {
+> +	.reg_setup     = r5500_reg_setup,
+> +	.cpu_setup     = r5500_cpu_setup,
+> +	.init          = r5500_init,
+> +	.exit          = r5500_exit,
+> +	.cpu_start     = r5500_cpu_start,
+> +	.cpu_stop      = r5500_cpu_stop,
+> +	.num_counters  = NUM_COUNTERS,
+> +};
+> -- 
+> 1.6.0.3
+> 
+> 
+> ------------------------------------------------------------------------------
+> Open Source Business Conference (OSBC), March 24-25, 2009, San Francisco, CA
+> -OSBC tackles the biggest issue in open source: Open Sourcing the Enterprise
+> -Strategies to boost innovation and cut costs with open source participation
+> -Receive a $600 discount off the registration fee with the source code: SFAD
+> http://p.sf.net/sfu/XcvMzF8H
+> _______________________________________________
+> oprofile-list mailing list
+> oprofile-list@lists.sourceforge.net
+> https://lists.sourceforge.net/lists/listinfo/oprofile-list
+> 
 
-I have several EMMA2RH markeins patches in my local branch, but before
-anything else, here's a VR5500 support patch.  Please review.
-
-I'm afraid that I might put CPU_R5500 enum in incorrect position.  If
-it doesn't suit for you, please let me know.
-
-  Shinya
-
- arch/mips/include/asm/hazards.h  |    3 ++-
- arch/mips/include/asm/prefetch.h |    2 +-
- arch/mips/kernel/cpu-probe.c     |    1 +
- arch/mips/mm/page.c              |    3 ++-
- arch/mips/mm/tlbex.c             |    1 +
- 5 files changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/arch/mips/include/asm/hazards.h b/arch/mips/include/asm/hazards.h
-index 43baed1..134e1fc 100644
---- a/arch/mips/include/asm/hazards.h
-+++ b/arch/mips/include/asm/hazards.h
-@@ -138,7 +138,8 @@ do {									\
- 		__instruction_hazard();					\
- } while (0)
- 
--#elif defined(CONFIG_CPU_R10000) || defined(CONFIG_CPU_CAVIUM_OCTEON)
-+#elif defined(CONFIG_CPU_R10000) || defined(CONFIG_CPU_CAVIUM_OCTEON) || \
-+      defined(CONFIG_CPU_R5500)
- 
- /*
-  * R10000 rocks - all hazards handled in hardware, so this becomes a nobrainer.
-diff --git a/arch/mips/include/asm/prefetch.h b/arch/mips/include/asm/prefetch.h
-index 1785083..b5b2103 100644
---- a/arch/mips/include/asm/prefetch.h
-+++ b/arch/mips/include/asm/prefetch.h
-@@ -26,7 +26,7 @@
-  * Pref_WriteBackInvalidate is a nop and Pref_PrepareForStore is broken in
-  * current versions due to erratum G105.
-  *
-- * VR7701 only implements the Load prefetch.
-+ * VR5500 (including VR5701 and VR7701) only implements the Load prefetch.
-  *
-  * Finally MIPS32 and MIPS64 implement all of the following hints.
-  */
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index a7162a4..1bdbcad 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -149,6 +149,7 @@ void __init check_wait(void)
- 	case CPU_R4650:
- 	case CPU_R4700:
- 	case CPU_R5000:
-+	case CPU_R5500:
- 	case CPU_NEVADA:
- 	case CPU_4KC:
- 	case CPU_4KEC:
-diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
-index 1417c64..48060c6 100644
---- a/arch/mips/mm/page.c
-+++ b/arch/mips/mm/page.c
-@@ -172,8 +172,9 @@ static void __cpuinit set_prefetch_parameters(void)
- 		 */
- 		cache_line_size = cpu_dcache_line_size();
- 		switch (current_cpu_type()) {
-+		case CPU_R5500:
- 		case CPU_TX49XX:
--			/* TX49 supports only Pref_Load */
-+			/* These processors only support the Pref_Load. */
- 			pref_bias_copy_load = 256;
- 			break;
- 
-diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-index 4294203..f335cf6 100644
---- a/arch/mips/mm/tlbex.c
-+++ b/arch/mips/mm/tlbex.c
-@@ -318,6 +318,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
- 	case CPU_BCM4710:
- 	case CPU_LOONGSON2:
- 	case CPU_CAVIUM_OCTEON:
-+	case CPU_R5500:
- 		if (m4kc_tlbp_war())
- 			uasm_i_nop(p);
- 		tlbw(p);
+-- 
+Advanced Micro Devices, Inc.
+Operating System Research Center
+email: robert.richter@amd.com

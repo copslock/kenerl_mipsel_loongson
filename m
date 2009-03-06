@@ -1,114 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Mar 2009 22:08:32 +0000 (GMT)
-Received: from sj-iport-1.cisco.com ([171.71.176.70]:7782 "EHLO
-	sj-iport-1.cisco.com") by ftp.linux-mips.org with ESMTP
-	id S20808936AbZCEWI3 convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 5 Mar 2009 22:08:29 +0000
-X-IronPort-AV: E=Sophos;i="4.38,309,1233532800"; 
-   d="scan'208";a="151553296"
-Received: from rtp-dkim-1.cisco.com ([64.102.121.158])
-  by sj-iport-1.cisco.com with ESMTP; 05 Mar 2009 22:08:21 +0000
-Received: from rtp-core-1.cisco.com (rtp-core-1.cisco.com [64.102.124.12])
-	by rtp-dkim-1.cisco.com (8.12.11/8.12.11) with ESMTP id n25M8J3D005004;
-	Thu, 5 Mar 2009 17:08:19 -0500
-Received: from xbh-rtp-201.amer.cisco.com (xbh-rtp-201.cisco.com [64.102.31.12])
-	by rtp-core-1.cisco.com (8.13.8/8.13.8) with ESMTP id n25M8JnX016173;
-	Thu, 5 Mar 2009 22:08:19 GMT
-Received: from xmb-rtp-218.amer.cisco.com ([64.102.31.117]) by xbh-rtp-201.amer.cisco.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Thu, 5 Mar 2009 17:08:19 -0500
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: [PATCH, RFC] MIPS: Implement the getcontext API
-Date:	Thu, 5 Mar 2009 17:08:18 -0500
-Message-ID: <FF038EB85946AA46B18DFEE6E6F8A289BE0EF8@xmb-rtp-218.amer.cisco.com>
-In-Reply-To: <Pine.LNX.4.64.0903052148500.12710@digraph.polyomino.org.uk>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: [PATCH, RFC] MIPS: Implement the getcontext API
-Thread-Index: Acmd3Nkuz4Q900bBQfa7KqWkCfRlNAAAWe2w
-References: <alpine.DEB.1.10.0902282326580.4064@tp.orcam.me.uk> <49AD6139.60209@caviumnetworks.com> <alpine.DEB.1.10.0903051530080.6558@tp.orcam.me.uk> <49B004AA.8050006@caviumnetworks.com> <FF038EB85946AA46B18DFEE6E6F8A289BE0DC1@xmb-rtp-218.amer.cisco.com> <20090305213653.GB12355@linux-mips.org> <Pine.LNX.4.64.0903052148500.12710@digraph.polyomino.org.uk>
-From:	"David VomLehn (dvomlehn)" <dvomlehn@cisco.com>
-To:	"Joseph Myers" <joseph@codesourcery.com>,
-	"Ralf Baechle" <ralf@linux-mips.org>
-Cc:	"David Daney" <ddaney@caviumnetworks.com>,
-	"Maciej W. Rozycki" <macro@codesourcery.com>,
-	<linux-mips@linux-mips.org>, <libc-ports@sourceware.org>,
-	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	"Richard Sandiford" <rdsandiford@googlemail.com>
-X-OriginalArrivalTime: 05 Mar 2009 22:08:19.0261 (UTC) FILETIME=[E4239ED0:01C99DDE]
-DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=1880; t=1236290899; x=1237154899;
-	c=relaxed/simple; s=rtpdkim1001;
-	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
-	d=cisco.com; i=dvomlehn@cisco.com;
-	z=From:=20=22David=20VomLehn=20(dvomlehn)=22=20<dvomlehn@cis
-	co.com>
-	|Subject:=20RE=3A=20[PATCH,=20RFC]=20MIPS=3A=20Implement=20
-	the=20getcontext=20API
-	|Sender:=20
-	|To:=20=22Joseph=20Myers=22=20<joseph@codesourcery.com>,=0A
-	=20=20=20=20=20=20=20=20=22Ralf=20Baechle=22=20<ralf@linux-m
-	ips.org>;
-	bh=vKwgj+ZUuHHGblUz09Hyc+6ZekVPHss3LRmLtMGe4dk=;
-	b=nenzj3N3T8pwglFHjCQ0D0MwHthZoPL0rjljCO+bzmqZGmHvyPv3606oeh
-	AqDkKsRHzwWuVLlotkJgZWa70bb6PddsvRjFydV+2tu6hU4PJ93d4MDsDrt+
-	5osxkm5Iq1;
-Authentication-Results:	rtp-dkim-1; header.From=dvomlehn@cisco.com; dkim=pass (
-	sig from cisco.com/rtpdkim1001 verified; ); 
-Return-Path: <dvomlehn@cisco.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Mar 2009 16:20:18 +0000 (GMT)
+Received: from mx1.rmicorp.com ([63.111.213.197]:35445 "EHLO mx1.rmicorp.com")
+	by ftp.linux-mips.org with ESMTP id S20808195AbZCFQUP (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 6 Mar 2009 16:20:15 +0000
+Received: from sark.razamicroelectronics.com ([10.8.0.254]) by mx1.rmicorp.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 6 Mar 2009 08:20:09 -0800
+Received: from localhost.localdomain (unknown [10.8.0.23])
+	by sark.razamicroelectronics.com (Postfix) with ESMTP id BF26E6E1D04;
+	Fri,  6 Mar 2009 09:42:10 -0600 (CST)
+From:	Kevin Hickey <khickey@rmicorp.com>
+To:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: Alchemy: Support for RMI Alchemy Au1300 and DBAu1300
+Date:	Fri,  6 Mar 2009 10:19:59 -0600
+Message-Id: <1236356409-32357-1-git-send-email-khickey@rmicorp.com>
+X-Mailer: git-send-email 1.5.4.3
+In-Reply-To: <>
+References: <>
+X-OriginalArrivalTime: 06 Mar 2009 16:20:09.0278 (UTC) FILETIME=[6B26EDE0:01C99E77]
+Return-Path: <khickey@rmicorp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22015
+X-archive-position: 22016
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvomlehn@cisco.com
+X-original-sender: khickey@rmicorp.com
 Precedence: bulk
 X-list: linux-mips
 
-> -----Original Message-----
-> From: Joseph Myers [mailto:joseph@codesourcery.com] 
-> Sent: Thursday, March 05, 2009 1:53 PM
-> To: Ralf Baechle
-> Cc: David VomLehn (dvomlehn); David Daney; Maciej W. Rozycki; 
-> linux-mips@linux-mips.org; libc-ports@sourceware.org; Maciej 
-> W. Rozycki; Richard Sandiford
-> Subject: Re: [PATCH, RFC] MIPS: Implement the getcontext API
-> 
-> On Thu, 5 Mar 2009, Ralf Baechle wrote:
-> 
-> > stillborn EABI and NUBI variants.  Add various Linux and 
-> GNU specific
-> > enhancements and deviations from the previously mentioned 
-> documents for
-> > example for TLS.  Frequently the documentation really is 
-> just in the code,
-> > a mailing list archive or in the back of somebody's brain ...
-> 
-> (Although it took a while for the documentation to catch up with the 
-> implementation and changes made in the course of patch 
-> review, as far as I 
-> know <http://www.linux-mips.org/wiki/NPTL> is now an accurate 
-> description 
-> of TLS for MIPS.)
-> 
-> > Somebody could probably earn a medal by writing a single 
-> consolidated
-> > and readable piece of documentation.
-> 
-> Anyone seriously wishing to produce a complete and current and 
-> copyright-clean description of what the MIPS ABIs now are 
-> might wish to 
-> note that a similar project for (32-bit) Power Architecture 
-> has been going 
-> on since late 2006 and we still haven't quite got to the point of 
-> releasing a public review draft.  There is a lot of work involved.
 
-I spent two years as Chair of the MIPS ABI Group Technical Committee
-working on the MIPS psABI and I can attest to how much work it is.
-Still, if there were enough of people involved from the kernel,
-compiler/library, and appropriate utility communities willing to try to
-pull things together, I could see spending time on it.
+This patch series introduces support for the RMI Alchemy Au1300 series of SOCs
+and the DBAu1300 (or DB1300) development board.  With this set the basic CPU
+and board are supported, as well as a few of the system peripherals.  USB, LCD,
+UART, MMC/SD and ethernet drivers are included.  Other drivers are currently in
+development and will be released in a later patch set.  All included code has
+been tested and verified working on a DB1300 board.
+
+Though some of the new code added here could be useful for other boards (the
+DB1200 in particular), I did my best to limit this patch set to additions only.
+It should not disturb any other boards.  To verify this I built and tested the
+updated directory for an on a DB1200 board.  A future patch set may include
+some integration of this new code into the DB1200 configuration.
+
+ arch/mips/Kconfig                                |    1 +
+ arch/mips/Makefile                               |    6 +
+ arch/mips/alchemy/Kconfig                        |   22 +
+ arch/mips/alchemy/common/Makefile                |    4 +-
+ arch/mips/alchemy/common/au13xx_res.c            |  104 +
+ arch/mips/alchemy/common/dbdma.c                 |   46 +-
+ arch/mips/alchemy/common/gpio_int.c              |  268 +
+ arch/mips/alchemy/common/irq.c                   |    3 +
+ arch/mips/alchemy/common/platform.c              |   76 +-
+ arch/mips/alchemy/common/time.c                  |   16 +
+ arch/mips/alchemy/devboards/Makefile             |    6 +
+ arch/mips/alchemy/devboards/cascade_irq.c        |  142 +
+ arch/mips/alchemy/devboards/db1300/Makefile      |    6 +
+ arch/mips/alchemy/devboards/db1300/board_setup.c |  123 +
+ arch/mips/alchemy/devboards/db1300/mmc.c         |  154 +
+ arch/mips/alchemy/devboards/leds.c               |   58 +
+ arch/mips/configs/db1300_defconfig               | 1216 ++++
+ arch/mips/include/asm/cpu.h                      |   10 +-
+ arch/mips/include/asm/mach-au1x00/au1000.h       |   49 +
+ arch/mips/include/asm/mach-au1x00/au13xx.h       |  207 +
+ arch/mips/include/asm/mach-au1x00/au1xxx.h       |    3 +
+ arch/mips/include/asm/mach-au1x00/au1xxx_dbdma.h |   33 +
+ arch/mips/include/asm/mach-au1x00/dev_boards.h   |   44 +
+ arch/mips/include/asm/mach-au1x00/gpio_int.h     |  239 +
+ arch/mips/include/asm/mach-au1x00/irq.h          |   34 +
+ arch/mips/include/asm/mips-boards/db1300.h       |  120 +
+ arch/mips/kernel/cpu-probe.c                     |   20 +
+ arch/mips/mm/c-r4k.c                             |    1 +
+ arch/mips/mm/tlbex.c                             |    1 +
+ drivers/mmc/host/Kconfig                         |    2 +-
+ drivers/mmc/host/au1xmmc.c                       |   18 +-
+ drivers/net/Kconfig                              |    6 +
+ drivers/net/Makefile                             |    3 +
+ drivers/net/smsc9210/Makefile                    |    9 +
+ drivers/net/smsc9210/ioctl_118.h                 |  298 +
+ drivers/net/smsc9210/platform_alchemy.c          |   88 +
+ drivers/net/smsc9210/platform_alchemy.h          |  117 +
+ drivers/net/smsc9210/smsc9210.h                  |   23 +
+ drivers/net/smsc9210/smsc9210_main.c             | 7189 ++++++++++++++++++++++
+ drivers/usb/Kconfig                              |    1 +
+ drivers/usb/host/ehci-au13xx.c                   |  213 +
+ drivers/usb/host/ehci-hcd.c                      |    5 +
+ drivers/video/Kconfig                            |    2 +-
+ 43 files changed, 10969 insertions(+), 17 deletions(-)

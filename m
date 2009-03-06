@@ -1,32 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Mar 2009 16:20:39 +0000 (GMT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Mar 2009 16:21:02 +0000 (GMT)
 Received: from mx1.rmicorp.com ([63.111.213.197]:35445 "EHLO mx1.rmicorp.com")
-	by ftp.linux-mips.org with ESMTP id S20808213AbZCFQUQ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 6 Mar 2009 16:20:16 +0000
+	by ftp.linux-mips.org with ESMTP id S20808295AbZCFQUR (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 6 Mar 2009 16:20:17 +0000
 Received: from sark.razamicroelectronics.com ([10.8.0.254]) by mx1.rmicorp.com with Microsoft SMTPSVC(6.0.3790.3959);
 	 Fri, 6 Mar 2009 08:20:09 -0800
 Received: from localhost.localdomain (unknown [10.8.0.23])
-	by sark.razamicroelectronics.com (Postfix) with ESMTP id C78F0EE76A7;
+	by sark.razamicroelectronics.com (Postfix) with ESMTP id C9BC0EE76A9;
 	Fri,  6 Mar 2009 09:42:10 -0600 (CST)
 From:	Kevin Hickey <khickey@rmicorp.com>
 To:	ralf@linux-mips.org, linux-mips@linux-mips.org
 Cc:	Kevin Hickey <khickey@rmicorp.com>
-Subject: [PATCH 03/10] Alchemy: Au1300/DB1300 UART support
-Date:	Fri,  6 Mar 2009 10:20:02 -0600
-Message-Id: <7afc5c84989c4bc0f94181397369f284f2bb6924.1236354153.git.khickey@rmicorp.com>
+Subject: [PATCH 04/10] Alchemy: Au1300/DB1300 peripheral resource declarations
+Date:	Fri,  6 Mar 2009 10:20:03 -0600
+Message-Id: <0946334bbaf9883076889fe060a362b72d31e6f4.1236354153.git.khickey@rmicorp.com>
 X-Mailer: git-send-email 1.5.4.3
-In-Reply-To: <0b447f7e26be90a9179bdf89ca2cfd1f34c5d16e.1236354153.git.khickey@rmicorp.com>
+In-Reply-To: <7afc5c84989c4bc0f94181397369f284f2bb6924.1236354153.git.khickey@rmicorp.com>
 References: <>
  <1236356409-32357-1-git-send-email-khickey@rmicorp.com>
  <788248524efc28ba2608ed79bfb7080ee476b12d.1236354153.git.khickey@rmicorp.com>
  <0b447f7e26be90a9179bdf89ca2cfd1f34c5d16e.1236354153.git.khickey@rmicorp.com>
+ <7afc5c84989c4bc0f94181397369f284f2bb6924.1236354153.git.khickey@rmicorp.com>
 In-Reply-To: <788248524efc28ba2608ed79bfb7080ee476b12d.1236354153.git.khickey@rmicorp.com>
 References: <788248524efc28ba2608ed79bfb7080ee476b12d.1236354153.git.khickey@rmicorp.com>
-X-OriginalArrivalTime: 06 Mar 2009 16:20:09.0418 (UTC) FILETIME=[6B3C4AA0:01C99E77]
+X-OriginalArrivalTime: 06 Mar 2009 16:20:09.0434 (UTC) FILETIME=[6B3EBBA0:01C99E77]
 Return-Path: <khickey@rmicorp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22017
+X-archive-position: 22018
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,60 +35,329 @@ X-original-sender: khickey@rmicorp.com
 Precedence: bulk
 X-list: linux-mips
 
-Adds support for the UART on the Au1300 SOC and the DB1300 board.  This
-includes enabling EARLY_PRINTK for Alchemy.
+This adds some declarations for peripheral resouces for the first few supported
+peripherals.  This includes USB, LCD, IDE and MMC.
 
 Signed-off-by: Kevin Hickey <khickey@rmicorp.com>
 ---
- arch/mips/Kconfig                          |    1 +
- arch/mips/alchemy/common/platform.c        |    5 +++++
- arch/mips/include/asm/mach-au1x00/au1000.h |    5 +++++
- 3 files changed, 11 insertions(+), 0 deletions(-)
+ arch/mips/alchemy/common/au13xx_res.c            |  104 ++++++++++++++++++++++
+ arch/mips/alchemy/common/dbdma.c                 |   46 +++++++++-
+ arch/mips/alchemy/common/platform.c              |   69 ++++++++++++++-
+ arch/mips/include/asm/mach-au1x00/au1xxx_dbdma.h |   33 +++++++
+ 4 files changed, 250 insertions(+), 2 deletions(-)
+ create mode 100644 arch/mips/alchemy/common/au13xx_res.c
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index e61465a..b030770 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -21,6 +21,7 @@ choice
+diff --git a/arch/mips/alchemy/common/au13xx_res.c b/arch/mips/alchemy/common/au13xx_res.c
+new file mode 100644
+index 0000000..206c2f8
+--- /dev/null
++++ b/arch/mips/alchemy/common/au13xx_res.c
+@@ -0,0 +1,104 @@
++/*
++ * Copyright 2003-2008 RMI Corporation. All rights reserved.
++ * Author: Kevin Hickey <khickey@rmicorp.com>
++ *
++ *  This program is free software; you can redistribute  it and/or modify it
++ *  under  the terms of  the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the  License, or (at your
++ *  option) any later version.
++ *
++ * THIS SOFTWARE IS PROVIDED BY RMI Corporation 'AS IS' AND ANY EXPRESS OR
++ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
++ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN
++ * NO EVENT SHALL RMI OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
++ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
++ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
++ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#include <linux/platform_device.h>
++#include <linux/dma-mapping.h>
++#include <linux/init.h>
++
++#include <asm/mach-au1x00/au1000.h>
++
++#ifdef CONFIG_SOC_AU13XX
++/*
++ * USB Resources for Au13xx
++ */
++static struct resource au13xx_usb_ehci_resources[] = {
++	[0] = {
++		.start		= USB_EHCI_BASE,
++		.end		= USB_EHCI_BASE + USB_EHCI_LEN - 1,
++		.flags		= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start		= AU1300_IRQ_USB + GPINT_LINUX_IRQ_OFFSET,
++		.end		= AU1300_IRQ_USB + GPINT_LINUX_IRQ_OFFSET,
++		.flags		= IORESOURCE_IRQ,
++	},
++};
++
++static u64 ehci_dmamask = DMA_32BIT_MASK;
++
++static struct platform_device au13xx_usb_ehci_device = {
++	.name		= "au13xx-ehci",
++	.id		= 0,
++	.dev = {
++		.dma_mask		= &ehci_dmamask,
++		.coherent_dma_mask	= DMA_32BIT_MASK,
++	},
++	.num_resources	= ARRAY_SIZE(au13xx_usb_ehci_resources),
++	.resource	= au13xx_usb_ehci_resources,
++};
++
++/* OHCI (USB full speed host controller) */
++static struct resource au13xx_usb_ohci_resources[] = {
++	[0] = {
++		.start		= USB_OHCI_BASE,
++		.end		= USB_OHCI_BASE + USB_OHCI_LEN - 1,
++		.flags		= IORESOURCE_MEM,
++	},
++	[1] = {
++		.start		= AU1300_IRQ_USB + GPINT_LINUX_IRQ_OFFSET,
++		.end		= AU1300_IRQ_USB + GPINT_LINUX_IRQ_OFFSET,
++		.flags		= IORESOURCE_IRQ,
++	},
++};
++
++/* The dmamask must be set for OHCI to work */
++static u64 ohci_dmamask = DMA_32BIT_MASK;
++
++static struct platform_device au13xx_usb_ohci_device = {
++	.name		= "au1xxx-ohci",
++	.id		= 0,
++	.dev = {
++		.dma_mask		= &ohci_dmamask,
++		.coherent_dma_mask	= DMA_32BIT_MASK,
++	},
++	.num_resources	= ARRAY_SIZE(au13xx_usb_ohci_resources),
++	.resource	= au13xx_usb_ohci_resources,
++};
++
++
++static struct platform_device *au13xx_platform_devices[] __initdata = {
++	&au13xx_usb_ehci_device,
++	&au13xx_usb_ohci_device,
++};
++
++static int __init au13xx_add_devices(void)
++{
++	return platform_add_devices(au13xx_platform_devices,
++			     ARRAY_SIZE(au13xx_platform_devices));
++}
++
++arch_initcall(au13xx_add_devices);
++
++#endif /* CONFIG_SOC_AU13XX */
+diff --git a/arch/mips/alchemy/common/dbdma.c b/arch/mips/alchemy/common/dbdma.c
+index 3ab6d80..7fda56b 100644
+--- a/arch/mips/alchemy/common/dbdma.c
++++ b/arch/mips/alchemy/common/dbdma.c
+@@ -38,7 +38,8 @@
+ #include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-au1x00/au1xxx_dbdma.h>
  
- config MACH_ALCHEMY
- 	bool "Alchemy processor based machines"
-+	select SYS_HAS_EARLY_PRINTK
+-#if defined(CONFIG_SOC_AU1550) || defined(CONFIG_SOC_AU1200)
++#if defined(CONFIG_SOC_AU1550) || defined(CONFIG_SOC_AU1200) || \
++    defined(CONFIG_SOC_AU13XX)
  
- config BASLER_EXCITE
- 	bool "Basler eXcite smart camera"
+ /*
+  * The Descriptor Based DMA supports up to 16 channels.
+@@ -150,6 +151,47 @@ static dbdev_tab_t dbdev_tab[] = {
+ 
+ #endif /* CONFIG_SOC_AU1200 */
+ 
++#ifdef CONFIG_SOC_AU13XX
++	{ DSCR_CMD0_UART0_TX, DEV_FLAGS_OUT, 0, 8,  0x10100004, 0, 0 },
++	{ DSCR_CMD0_UART0_RX, DEV_FLAGS_IN,  0, 8,  0x10100000, 0, 0 },
++	{ DSCR_CMD0_UART1_TX, DEV_FLAGS_OUT, 0, 8,  0x01011004, 0, 0 },
++	{ DSCR_CMD0_UART1_RX, DEV_FLAGS_IN,  0, 8,  0x10101000, 0, 0 },
++	{ DSCR_CMD0_UART2_TX, DEV_FLAGS_OUT, 0, 8,  0x01012004, 0, 0 },
++	{ DSCR_CMD0_UART2_RX, DEV_FLAGS_IN,  0, 8,  0x10102000, 0, 0 },
++	{ DSCR_CMD0_UART3_TX, DEV_FLAGS_OUT, 0, 8,  0x01013004, 0, 0 },
++	{ DSCR_CMD0_UART3_RX, DEV_FLAGS_IN,  0, 8,  0x10103000, 0, 0 },
++
++	{ DSCR_CMD0_SDMS_TX0, DEV_FLAGS_OUT, 4, 8,  0x10600000, 0, 0 },
++	{ DSCR_CMD0_SDMS_RX0, DEV_FLAGS_IN,  4, 8,  0x10600004, 0, 0 },
++	{ DSCR_CMD0_SDMS_TX1, DEV_FLAGS_OUT, 8, 8,  0x10601000, 0, 0 },
++	{ DSCR_CMD0_SDMS_RX1, DEV_FLAGS_IN,  8, 8,  0x10601004, 0, 0 },
++
++	{ DSCR_CMD0_AES_RX, DEV_FLAGS_IN ,   4, 32, 0x10300008, 0, 0 },
++	{ DSCR_CMD0_AES_TX, DEV_FLAGS_OUT,   4, 32, 0x10300004, 0, 0 },
++
++	{ DSCR_CMD0_PSC0_TX, DEV_FLAGS_OUT,  0, 16, 0x10a0001c, 0, 0 },
++	{ DSCR_CMD0_PSC0_RX, DEV_FLAGS_IN,   0, 16, 0x10a0001c, 0, 0 },
++	{ DSCR_CMD0_PSC1_TX, DEV_FLAGS_OUT,  0, 16, 0x10a0101c, 0, 0 },
++	{ DSCR_CMD0_PSC1_RX, DEV_FLAGS_IN,   0, 16, 0x10a0101c, 0, 0 },
++	{ DSCR_CMD0_PSC2_TX, DEV_FLAGS_OUT,  0, 16, 0x10a0201c, 0, 0 },
++	{ DSCR_CMD0_PSC2_RX, DEV_FLAGS_IN,   0, 16, 0x10a0201c, 0, 0 },
++	{ DSCR_CMD0_PSC3_TX, DEV_FLAGS_OUT,  0, 16, 0x10a0301c, 0, 0 },
++	{ DSCR_CMD0_PSC3_RX, DEV_FLAGS_IN,   0, 16, 0x10a0301c, 0, 0 },
++
++	{ DSCR_CMD0_LCD, DEV_FLAGS_ANYUSE,   0, 0,  0x00000000, 0, 0 },
++	{ DSCR_CMD0_NAND_FLASH, DEV_FLAGS_IN, 0, 0, 0x00000000, 0, 0 },
++
++	{ DSCR_CMD0_SDMS_TX2, DEV_FLAGS_OUT, 4, 8,  0x10602000, 0, 0 },
++	{ DSCR_CMD0_SDMS_RX2, DEV_FLAGS_IN,  4, 8,  0x10602004, 0, 0 },
++
++	{ DSCR_CMD0_CIM_SYNC, DEV_FLAGS_ANYUSE, 0, 0, 0x00000000, 0, 0 },
++
++	{ DSCR_CMD0_UDMA, DEV_FLAGS_ANYUSE,  0, 32, 0x14001810, 0, 0 },
++
++	{ DSCR_CMD0_DMA_REQ0, 0, 0, 0, 0x00000000, 0, 0 },
++	{ DSCR_CMD0_DMA_REQ1, 0, 0, 0, 0x00000000, 0, 0 },
++#endif /* CONFIG_SOC_AU13XX */
++
+ 	{ DSCR_CMD0_THROTTLE, DEV_FLAGS_ANYUSE, 0, 0, 0x00000000, 0, 0 },
+ 	{ DSCR_CMD0_ALWAYS, DEV_FLAGS_ANYUSE, 0, 0, 0x00000000, 0, 0 },
+ 
+@@ -881,6 +923,8 @@ static void au1xxx_dbdma_init(void)
+ 	irq_nr = AU1550_DDMA_INT;
+ #elif defined(CONFIG_SOC_AU1200)
+ 	irq_nr = AU1200_DDMA_INT;
++#elif defined(CONFIG_SOC_AU13XX)
++	irq_nr = AU1300_IRQ_DDMA + GPINT_LINUX_IRQ_OFFSET;
+ #else
+ 	#error Unknown Au1x00 SOC
+ #endif
 diff --git a/arch/mips/alchemy/common/platform.c b/arch/mips/alchemy/common/platform.c
-index fd096d1..d53d3a0 100644
+index d53d3a0..d1b370d 100644
 --- a/arch/mips/alchemy/common/platform.c
 +++ b/arch/mips/alchemy/common/platform.c
-@@ -52,6 +52,11 @@ static struct plat_serial8250_port au1x00_uart_data[] = {
- #elif defined(CONFIG_SOC_AU1200)
- 	PORT(UART0_ADDR, AU1200_UART0_INT),
- 	PORT(UART1_ADDR, AU1200_UART1_INT),
-+#elif defined(CONFIG_SOC_AU13XX)
-+	PORT(UART2_ADDR, AU1300_IRQ_UART2 + GPINT_LINUX_IRQ_OFFSET),
-+	PORT(UART0_ADDR, AU1300_IRQ_UART0 + GPINT_LINUX_IRQ_OFFSET),
-+	PORT(UART1_ADDR, AU1300_IRQ_UART1 + GPINT_LINUX_IRQ_OFFSET),
-+	PORT(UART3_ADDR, AU1300_IRQ_UART3 + GPINT_LINUX_IRQ_OFFSET),
+@@ -338,14 +338,81 @@ static struct platform_device pbdb_smbus_device = {
+ };
  #endif
- #endif	/* CONFIG_SERIAL_8250_AU1X00 */
- 	{ },
-diff --git a/arch/mips/include/asm/mach-au1x00/au1000.h b/arch/mips/include/asm/mach-au1x00/au1000.h
-index ddebb84..debf896 100644
---- a/arch/mips/include/asm/mach-au1x00/au1000.h
-+++ b/arch/mips/include/asm/mach-au1x00/au1000.h
-@@ -1276,7 +1276,12 @@ enum soc_au1200_ints {
- #define MAC_RX_BUFF3_ADDR	0x34
  
- /* UARTS 0-3 */
-+#ifdef  CONFIG_SOC_AU13XX
-+#define UART_BASE		UART2_ADDR
-+#else
- #define UART_BASE		UART0_ADDR
++#ifdef CONFIG_SOC_AU13XX
++static struct resource au1200_lcd_resources[] = {
++	[0] = {
++		.start          = LCD_PHYS_ADDR,
++		.end            = LCD_PHYS_ADDR + 0x800 - 1,
++		.flags          = IORESOURCE_MEM,
++	},
++	[1] = {
++		.start          = AU1300_IRQ_LCD + 8,
++		.end            = AU1300_IRQ_LCD + 8,
++		.flags          = IORESOURCE_IRQ,
++	}
++};
++
++static u64 au1200_lcd_dmamask = DMA_32BIT_MASK;
++
++static struct platform_device au1200_lcd_device = {
++	.name           = "au1200-lcd",
++	.id             = 0,
++	.dev = {
++		.dma_mask               = &au1200_lcd_dmamask,
++		.coherent_dma_mask      = DMA_32BIT_MASK,
++	},
++	.num_resources  = ARRAY_SIZE(au1200_lcd_resources),
++	.resource       = au1200_lcd_resources,
++};
++
++extern struct platform_device au13xx_mmc0_device;
++extern struct platform_device au13xx_mmc1_device;
++
++
++extern struct au1xmmc_platform_data au1xmmc_platdata[2];
++static struct resource ide_resources[] = {
++	[0] = {
++		.start	= IDE_PHYS_ADDR,
++		.end 	= IDE_PHYS_ADDR + IDE_PHYS_LEN - 1,
++		.flags	= IORESOURCE_MEM
++	},
++	[1] = {
++		.start	= IDE_INT,
++		.end	= IDE_INT,
++		.flags	= IORESOURCE_IRQ
++	}
++};
++
++static u64 ide_dmamask = DMA_32BIT_MASK;
++
++static struct platform_device ide_device = {
++	.name		= "au1200-ide",
++	.id		= 0,
++	.dev = {
++		.dma_mask 		= &ide_dmamask,
++		.coherent_dma_mask	= DMA_32BIT_MASK,
++	},
++	.num_resources	= ARRAY_SIZE(ide_resources),
++	.resource	= ide_resources
++};
++
 +#endif
 +
- #ifdef	CONFIG_SOC_AU1200
- #define UART_DEBUG_BASE 	UART1_ADDR
- #else
++
+ static struct platform_device *au1xxx_platform_devices[] __initdata = {
+ 	&au1xx0_uart_device,
+-	&au1xxx_usb_ohci_device,
++#ifdef CONFIG_SOC_AU13XX
++	&au1200_lcd_device,
++	&ide_device,
++	//&au13xx_mmc0_device,
++	&au13xx_mmc1_device,
++#endif
+ 	&au1x00_pcmcia_device,
+ #ifdef CONFIG_FB_AU1100
+ 	&au1100_lcd_device,
+ #endif
+ #ifdef CONFIG_SOC_AU1200
++	&au1xxx_usb_ohci_device,
+ 	&au1xxx_usb_ehci_device,
+ 	&au1xxx_usb_gdt_device,
+ 	&au1xxx_usb_otg_device,
+diff --git a/arch/mips/include/asm/mach-au1x00/au1xxx_dbdma.h b/arch/mips/include/asm/mach-au1x00/au1xxx_dbdma.h
+index 06f68f4..1c36b9f 100644
+--- a/arch/mips/include/asm/mach-au1x00/au1xxx_dbdma.h
++++ b/arch/mips/include/asm/mach-au1x00/au1xxx_dbdma.h
+@@ -195,6 +195,39 @@ typedef volatile struct au1xxx_ddma_desc {
+ #define DSCR_CMD0_CIM_SYNC	26
+ #endif /* CONFIG_SOC_AU1200 */
+ 
++#ifdef CONFIG_SOC_AU13XX
++#define DSCR_CMD0_UART0_TX	0
++#define DSCR_CMD0_UART0_RX	1
++#define DSCR_CMD0_UART1_TX	2
++#define DSCR_CMD0_UART1_RX	3
++#define DSCR_CMD0_UART2_TX	4
++#define DSCR_CMD0_UART2_RX	5
++#define DSCR_CMD0_UART3_TX	6
++#define DSCR_CMD0_UART3_RX	7
++#define DSCR_CMD0_SDMS_TX0	8
++#define DSCR_CMD0_SDMS_RX0	9
++#define DSCR_CMD0_SDMS_TX1	10
++#define DSCR_CMD0_SDMS_RX1	11
++#define DSCR_CMD0_AES_TX	12
++#define DSCR_CMD0_AES_RX	13
++#define DSCR_CMD0_PSC0_TX	14
++#define DSCR_CMD0_PSC0_RX	15
++#define DSCR_CMD0_PSC1_TX	16
++#define DSCR_CMD0_PSC1_RX	17
++#define DSCR_CMD0_PSC2_TX	18
++#define DSCR_CMD0_PSC2_RX	19
++#define DSCR_CMD0_PSC3_TX	20
++#define DSCR_CMD0_PSC3_RX	21
++#define DSCR_CMD0_LCD		22
++#define DSCR_CMD0_NAND_FLASH	23
++#define DSCR_CMD0_SDMS_TX2	24
++#define DSCR_CMD0_SDMS_RX2	25
++#define DSCR_CMD0_CIM_SYNC	26
++#define DSCR_CMD0_UDMA		27
++#define DSCR_CMD0_DMA_REQ0	28
++#define DSCR_CMD0_DMA_REQ1	29
++#endif /* CONFIG_SOC_AU13XX */
++
+ #define DSCR_CMD0_THROTTLE	30
+ #define DSCR_CMD0_ALWAYS	31
+ #define DSCR_NDEV_IDS		32
 -- 
 1.5.4.3

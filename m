@@ -1,113 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Mar 2009 14:53:59 +0000 (GMT)
-Received: from mail.lysator.liu.se ([130.236.254.3]:7101 "EHLO
-	mail.lysator.liu.se") by ftp.linux-mips.org with ESMTP
-	id S20808646AbZCHOxz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 8 Mar 2009 14:53:55 +0000
-Received: from mail.lysator.liu.se (localhost [127.0.0.1])
-	by mail.lysator.liu.se (Postfix) with ESMTP id B701940055;
-	Sun,  8 Mar 2009 15:53:46 +0100 (CET)
-Received: from [192.168.10.105] (c-30bde555.035-105-73746f38.cust.bredbandsbolaget.se [85.229.189.48])
-	(using TLSv1 with cipher AES128-SHA (128/128 bits))
-	(No client certificate requested)
-	by mail.lysator.liu.se (Postfix) with ESMTP id 990244004F;
-	Sun,  8 Mar 2009 15:53:46 +0100 (CET)
-Cc:	linux-mips@linux-mips.org
-Message-Id: <F2075B11-1B80-4C7B-9316-C82A0CE448C1@lysator.liu.se>
-From:	Markus Gothe <nietzsche@lysator.liu.se>
-To:	Nils Faerber <nils.faerber@kernelconcepts.de>
-In-Reply-To: <49B1510B.8020606@kernelconcepts.de>
-Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha1; boundary="Apple-Mail-3-518791976"
-Content-Transfer-Encoding: 7bit
-Mime-Version: 1.0 (Apple Message framework v930.3)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Mar 2009 16:03:42 +0000 (GMT)
+Received: from gw-cistron.kwaak.net ([62.216.22.210]:21176 "EHLO
+	mail.kwaak.net") by ftp.linux-mips.org with ESMTP id S21103620AbZCHQDj
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 8 Mar 2009 16:03:39 +0000
+Received: from shell2.kwaak.net ([2001:7b8:32d::6]:60117)
+	by mail.kwaak.net with esmtp (Exim 4.50)
+	id 1LgLTM-0006gl-GK
+	for linux-mips@linux-mips.org; Sun, 08 Mar 2009 17:03:28 +0100
+Received: from ard by shell2.kwaak.net with local (Exim 4.69)
+	(envelope-from <ard@kwaak.net>)
+	id 1LgLTM-0005O1-4f
+	for linux-mips@linux-mips.org; Sun, 08 Mar 2009 17:03:28 +0100
+Date:	Sun, 8 Mar 2009 17:03:28 +0100
+From:	ard <ard+lm@kwaak.net>
+To:	linux-mips@linux-mips.org
 Subject: Re: Ingenic JZ4730 - illegal instruction
-Date:	Sun, 8 Mar 2009 15:53:49 +0100
-References: <49B1510B.8020606@kernelconcepts.de>
-X-Pgp-Agent: GPGMail 1.2.0 (v56)
-X-Mailer: Apple Mail (2.930.3)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <nietzsche@lysator.liu.se>
+Message-ID: <20090308160328.GC9943@kwaak.net>
+References: <49B1510B.8020606@kernelconcepts.de> <F2075B11-1B80-4C7B-9316-C82A0CE448C1@lysator.liu.se>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <F2075B11-1B80-4C7B-9316-C82A0CE448C1@lysator.liu.se>
+User-Agent: Mutt/1.5.17+20080114 (2008-01-14)
+X-kwaak-MailScanner: Found to be clean
+X-kwaak-MailScanner-SpamCheck: not spam, SpamAssassin (score=-5.899,
+	required 5, autolearn=not spam, ALL_TRUSTED -3.30, BAYES_00 -2.60)
+X-MailScanner-From: ard@kwaak.net
+Return-Path: <ard@kwaak.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22040
+X-archive-position: 22041
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nietzsche@lysator.liu.se
+X-original-sender: ard+lm@kwaak.net
 Precedence: bulk
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---Apple-Mail-3-518791976
-Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
-Content-Transfer-Encoding: 7bit
+Hello,
 
-Well, the Xburst-arch seems to be pretty fucked up beyond all repair.
+On Sun, Mar 08, 2009 at 03:53:49PM +0100, Markus Gothe wrote:
+> Well, the Xburst-arch seems to be pretty fucked up beyond all repair.
 
-//Markus
+Hmmm, that doesn't sound promising. But do you have references
+for that?
+Maybe google has some more info than since I first started
+searching.
+Anyway: for now it happily runs debian, and for what I can see,
+the kernel patches have no real changes except for extra drivers
+and extra board and powermanagement drivers.
+So if you have hints in which way the xburst deviates from
+"standard" mips, it could help us a lot.
+In the mean time I am going to subscribe to the ingenic forum
+( http://www.ingenic.cn/eng/forum/vvFrmDefault.aspx )
+that contains more characters that I can't read than characters
+that I can read :-(.
 
-On 6 Mar 2009, at 17:36, Nils Faerber wrote:
-
-> Hello!
-> I am rather playing than really working on a Ingenic JZ4730 based
-> device. The JZ4730 is a MIPS32 SOC included in many types of devices,
-> like media players and thelike but also in small power efficient
-> subnotebooks (this is the device I am trying to support based on the
-> Ingebic Linux kernel patch).
->
-> The current kernel patch from Ingenic
->
-> http://www.ingenic.cn/eng/productServ/App/JZ4730/pfCustomPage.aspx
-> or
-> ftp://ftp.ingenic.cn/3sw/01linux/02kernel/linux-2.6.24/linux-2.6.24.3-jz-20090218.patch.gz
->
-> for the patch (I used an even older patch to start my board support  
-> but
-> they basically only added newer CPU types in later patches).
->
-> The support for my board is almost in place but I see from time to  
-> time
-> failing applications with "illegal instruction" faults. Most shell
-> applications work pretty fine, especially more complex GUI  
-> applications
-> seem to fail, like a webbrowser or such.
-> I also tested this with different GCC and glibc version which makes me
-> pretty sure that I am seeing a kernel problem here rather than a
-> userspace problem.
->
-> I am pretty clueless how to debug this. Apropos debig as another hint:
-> Some application work if I start them in GDB but fail outside.
->
-> Any hint how to start debugging this would be greatly appreciated!  
-> And a
-> fix would be like a dream ;)
->
-> Many thanks!
->
-> Cheers
->  nils faerber
->
-> -- 
-> kernel concepts GbR        Tel: +49-271-771091-12
-> Sieghuetter Hauptweg 48    Fax: +49-271-771091-19
-> D-57072 Siegen             Mob: +49-176-21024535
-> http://www.kernelconcepts.de
->
+Regards,
+Ard
 
 
---Apple-Mail-3-518791976
-content-type: application/pgp-signature; x-mac-type=70674453;
-	name=PGP.sig
-content-description: This is a digitally signed message part
-content-disposition: inline; filename=PGP.sig
-content-transfer-encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.8 (Darwin)
-
-iEYEARECAAYFAkmz2/0ACgkQ6I0XmJx2NrwsGgCffg2xSRrF2Efmtt53fBsrG51+
-NQ4AnjDzkdqiqqL7OwFJUYAMH6We6mOh
-=z60D
------END PGP SIGNATURE-----
-
---Apple-Mail-3-518791976--
+-- 
+.signature not found

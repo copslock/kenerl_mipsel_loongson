@@ -1,245 +1,229 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Mar 2009 13:40:11 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:2710 "EHLO h5.dl5rb.org.uk")
-	by ftp.linux-mips.org with ESMTP id S21366941AbZCINkH (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Mar 2009 13:40:07 +0000
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n29De5xV022470;
-	Mon, 9 Mar 2009 14:40:05 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n29De4a1022468;
-	Mon, 9 Mar 2009 14:40:04 +0100
-Date:	Mon, 9 Mar 2009 14:40:03 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Kevin Hickey <khickey@rmicorp.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH 01/10] Initial Au1300 and DBAu1300 support
-Message-ID: <20090309134003.GE6492@linux-mips.org>
-References: <1236356409-32357-1-git-send-email-khickey@rmicorp.com> <788248524efc28ba2608ed79bfb7080ee476b12d.1236354153.git.khickey@rmicorp.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Mar 2009 14:12:10 +0000 (GMT)
+Received: from aux-209-217-49-36.oklahoma.net ([209.217.49.36]:4359 "EHLO
+	proteus.paralogos.com") by ftp.linux-mips.org with ESMTP
+	id S21367011AbZCIOMI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 9 Mar 2009 14:12:08 +0000
+Received: from [127.0.0.1] ([217.109.65.213])
+	by proteus.paralogos.com (8.9.3/8.9.3) with ESMTP id NAA12849;
+	Sun, 8 Mar 2009 13:49:56 -0600
+Message-ID: <49B523B6.6090006@paralogos.com>
+Date:	Mon, 09 Mar 2009 15:12:06 +0100
+From:	"Kevin D. Kissell" <kevink@paralogos.com>
+User-Agent: Thunderbird 2.0.0.19 (Windows/20081209)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <788248524efc28ba2608ed79bfb7080ee476b12d.1236354153.git.khickey@rmicorp.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@h5.dl5rb.org.uk>
+To:	Nils Faerber <nils.faerber@kernelconcepts.de>
+CC:	linux-mips@linux-mips.org
+Subject: Re: Ingenic JZ4730 - illegal instruction
+References: <49B1510B.8020606@kernelconcepts.de> <49B4D5BC.5020203@paralogos.com> <49B4E8BB.8080704@kernelconcepts.de>
+In-Reply-To: <49B4E8BB.8080704@kernelconcepts.de>
+X-Enigmail-Version: 0.95.7
+Content-Type: multipart/alternative;
+ boundary="------------070104040208070002010004"
+Return-Path: <kevink@paralogos.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22046
+X-archive-position: 22047
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: kevink@paralogos.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Mar 06, 2009 at 10:20:00AM -0600, Kevin Hickey wrote:
+This is a multi-part message in MIME format.
+--------------070104040208070002010004
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> @@ -135,3 +147,9 @@ config SOC_AU1X00
->  	select SYS_SUPPORTS_32BIT_KERNEL
->  	select SYS_SUPPORTS_APM_EMULATION
->  	select GENERIC_HARDIRQS_NO__DO_IRQ
-> +
-> +config AU_INT_CNTLR
-> +	bool
-> +
-> +config AU_GPIO_INT_CNTLR
-> +	bool
+I don't have time to go chasing this stuff any further on your behalf,
+but it *does* smell to me like an icache management problem.  Remember,
+MIPS processors almost universally have split I/D caches and no
+coherence support between them, so if you either (a) forget to do an
+explicit D-cache write-back operation after copying to a page mapped
+write-back that's going to be used as instructions/text, or (b) forget
+to do an explicit I-cache invalidate when you re-use a page for
+instructions that has been previously used for a different instruction
+page, you will have problems, even without going into DMA I/O coherence
+issues.  If your problem were (b), though, you'd be seeing bad answers,
+segmentation violations, bus errors, etc., at least as often as you'd be
+seeing illegal instruction exceptions.  So my money would be on (a).
 
-These two definitions should be in patch 2/10 with the code that uses it.
+The need for cache management is so fundamental to Linux for MIPS that
+all the necessary general hooks have been there for years.  If I were
+you, I'd focus on the definitions of the primitives that you spotted in
+c-r4k.c.  Does the stuff in the JZ_RISC section correspond to the
+assembly language flush sequence done in the Ingenic patch to head.S? 
+Are you sure that the JZ_RISC section is in fact the version of those
+functions that's being built into your kernel?
 
-> diff --git a/arch/mips/alchemy/common/platform.c b/arch/mips/alchemy/common/platform.c
-> index 5c76c64..fd096d1 100644
-> --- a/arch/mips/alchemy/common/platform.c
-> +++ b/arch/mips/alchemy/common/platform.c
-> @@ -65,6 +65,7 @@ static struct platform_device au1xx0_uart_device = {
->  	},
->  };
->  
-> +#ifndef CONFIG_SOC_AU13XX
->  /* OHCI (USB full speed host controller) */
->  static struct resource au1xxx_usb_ohci_resources[] = {
->  	[0] = {
-> @@ -92,6 +93,7 @@ static struct platform_device au1xxx_usb_ohci_device = {
->  	.num_resources	= ARRAY_SIZE(au1xxx_usb_ohci_resources),
->  	.resource	= au1xxx_usb_ohci_resources,
->  };
-> +#endif
+          Regards,
 
-Try to avoid this kind of #ifdef.  It'll only get more ugly in the future
-when there are more members of the SOC family that don't have the USB.
+          Kevin K.
 
-> +#if 0
-> +void __init prom_init(void)
-> +{
-> +       unsigned char *memsize_str;
-> +       unsigned long memsize;
-> +
-> +       prom_argc = (int)fw_arg0;
-> +       prom_argv = (char **)fw_arg1;
-> +       prom_envp = (char **)fw_arg2;
-> +
-> +       prom_init_cmdline();
-> +       memsize_str = prom_getenv("memsize");
-> +       /* KH: TODO - Change back to 128 MB when the second DDR channel is working. */
-> +       if (!memsize_str)
-> +               memsize = 0x04000000;
-> +       else
-> +               strict_strtol(memsize_str, 0, &memsize);
-> +       add_memory_region(0, memsize, BOOT_MEM_RAM);
-> +}
-> +#endif
+Nils Faerber wrote:
+> Hi Kevin!
+>
+> Kevin D. Kissell schrieb:
+>   
+>> The only thing that you've mentioned below that really makes me think
+>> that you're looking at a kernel bug is the comment about things not
+>> failing under GDB.  But if *any* of the programs that are failing fail
+>> under gdb, I'd want to know just what instruction is at the place where
+>> they're taking a SIGILL. If gdb heisenbergs things too much, then the
+>> basic brute force thing to do would be to instrument the kernel itself
+>> to report on what happened, and what it sees at the "bad instruction"
+>> address, using printk.  If the memory value actually looks like a legit
+>> instruction, it would confirm the hypothesis that you've got an icache
+>> maintenance problem.  I note that the Ingenic patch has a "flushcaches"
+>> routine that has hardwired assumptions about the cache organization. 
+>> Could those be incorrect on the chip you're using?
+>>     
+>
+> Thanks for having a thought about the issue!
+>
+> By now I pitily have to admit that my GDB assumption was not all that
+> correct :( After *a*lot* more tries I found an application that actually
+> also fails inside GDB. But with some more tries I can now confirm that
+> applications fail at random points - it is not a single instruction that
+> causes the fault but rather random points.
+> So I think your memory/cache issue theory sounds pretty interesting...
+> I just had a look at the JZ4730 code (in arch/mips/jz4730/) and the only
+>  mention of a cache flush is in pm.c which will only be executed in case
+> of going to sleep (i.e. CPU deep sleep aka s2ram).
+> arch/mips/mm/c-r4k.c also contains a JZ_RISC section for setting up
+> cache options and arch/mips/mm/tlbex.c a TLB case special for the JZ.
+>
+> Those look promising!
+> I could very well think of cases where a wrong cache flush could cause
+> such or similar problems.
+>
+>   
+>>          Regards, and happy hunting,
+>>     
+>
+> Happy? When I found it maybe. The annoying thing about this is that
+> Ingenic is not very helpful. I emailed them several times already asking
+> for the full datasheet of the CPU with no replay at all yet. The
+> datasheet they hae on their webpage is just the brief with about 60
+> pages and not very helpful when you ar elooking for details like cache
+> handling etc.
+>
+> So I will have to resort to experiments - trial an error.
+>
+> Thank you very much for your thoughts and idea!
+>
+>   
+>>          Kevin K.
+>>     
+> Cheers
+>   nils faerber
+>
+>   
 
-#if 0, so delete?
+--------------070104040208070002010004
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-> --- a/arch/mips/include/asm/mach-au1x00/au1000.h
-> +++ b/arch/mips/include/asm/mach-au1x00/au1000.h
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html;charset=UTF-8" http-equiv="Content-Type">
+</head>
+<body bgcolor="#ffffff" text="#000000">
+I don't have time to go chasing this stuff any further on your behalf,
+but it *does* smell to me like an icache management problem.  Remember,
+MIPS processors almost universally have split I/D caches and no
+coherence support between them, so if you either (a) forget to do an
+explicit D-cache write-back operation after copying to a page mapped
+write-back that's going to be used as instructions/text, or (b) forget
+to do an explicit I-cache invalidate when you re-use a page for
+instructions that has been previously used for a different instruction
+page, you will have problems, even without going into DMA I/O coherence
+issues.  If your problem were (b), though, you'd be seeing bad answers,
+segmentation violations, bus errors, etc., at least as often as you'd
+be seeing illegal instruction exceptions.  So my money would be on (a).<br>
+<br>
+The need for cache management is so fundamental to Linux for MIPS that
+all the necessary general hooks have been there for years.  If I were
+you, I'd focus on the definitions of the primitives that you spotted in
+c-r4k.c.  Does the stuff in the JZ_RISC section correspond to the
+assembly language flush sequence done in the Ingenic patch to head.S? 
+Are you sure that the JZ_RISC section is in fact the version of those
+functions that's being built into your kernel?<br>
+<br>
+          Regards,<br>
+<br>
+          Kevin K.<br>
+<br>
+Nils Faerber wrote:
+<blockquote cite="mid:49B4E8BB.8080704@kernelconcepts.de" type="cite">
+  <pre wrap="">Hi Kevin!
 
-> +void static inline au_iowrite32(u32 val, volatile u32 *reg)
-> +{
-> +	*reg = val;
-> +}
-> +
-> +static inline u32 au_ioread32(volatile u32 *reg)
-> +{
-> +	return *reg;
-> +}
-> +
-> +#define AU_SET_BITS_16(mask, reg) \
-> +do { \
-> +	au_iowrite16((au_ioread16(reg) | mask ), reg); \
-> +} while(0)
+Kevin D. Kissell schrieb:
+  </pre>
+  <blockquote type="cite">
+    <pre wrap="">The only thing that you've mentioned below that really makes me think
+that you're looking at a kernel bug is the comment about things not
+failing under GDB.  But if *any* of the programs that are failing fail
+under gdb, I'd want to know just what instruction is at the place where
+they're taking a SIGILL. If gdb heisenbergs things too much, then the
+basic brute force thing to do would be to instrument the kernel itself
+to report on what happened, and what it sees at the "bad instruction"
+address, using printk.  If the memory value actually looks like a legit
+instruction, it would confirm the hypothesis that you've got an icache
+maintenance problem.  I note that the Ingenic patch has a "flushcaches"
+routine that has hardwired assumptions about the cache organization. 
+Could those be incorrect on the chip you're using?
+    </pre>
+  </blockquote>
+  <pre wrap=""><!---->
+Thanks for having a thought about the issue!
 
-Macros should be bullet proof against side effects:
+By now I pitily have to admit that my GDB assumption was not all that
+correct :( After *a*lot* more tries I found an application that actually
+also fails inside GDB. But with some more tries I can now confirm that
+applications fail at random points - it is not a single instruction that
+causes the fault but rather random points.
+So I think your memory/cache issue theory sounds pretty interesting...
+I just had a look at the JZ4730 code (in arch/mips/jz4730/) and the only
+ mention of a cache flush is in pm.c which will only be executed in case
+of going to sleep (i.e. CPU deep sleep aka s2ram).
+arch/mips/mm/c-r4k.c also contains a JZ_RISC section for setting up
+cache options and arch/mips/mm/tlbex.c a TLB case special for the JZ.
 
-#define au_set_bits_16(mask, reg)					\
-do {									\
-	volatile u16 *__r = (reg);					\
-									\
-	au_iowrite16((au_ioread16(__r) | (mask)), __r);			\
-} while(0)
+Those look promising!
+I could very well think of cases where a wrong cache flush could cause
+such or similar problems.
 
-Or simply use an inline function instead.
+  </pre>
+  <blockquote type="cite">
+    <pre wrap="">         Regards, and happy hunting,
+    </pre>
+  </blockquote>
+  <pre wrap=""><!---->
+Happy? When I found it maybe. The annoying thing about this is that
+Ingenic is not very helpful. I emailed them several times already asking
+for the full datasheet of the CPU with no replay at all yet. The
+datasheet they hae on their webpage is just the brief with about 60
+pages and not very helpful when you ar elooking for details like cache
+handling etc.
 
-> +#define AU_CLEAR_BITS_16(mask, reg) \
-> +do { \
-> +	au_iowrite16((au_ioread16(reg) & ~mask ), reg); \
-> +} while(0)
-> +
-> +#define AU_SET_BITS_32(mask, reg) \
-> +do { \
-> +	au_iowrite32((au_ioread32(reg) | mask), reg); \
-> +} while(0)
-> +
-> +#define AU_CLEAR_BITS_32(mask, reg) \
-> +do { \
-> +	au_iowrite32((au_ioread32(reg) & ~mask), reg); \
-> +} while(0)
-> +
->  /* arch/mips/au1000/common/clocks.c */
->  extern void set_au1x00_speed(unsigned int new_freq);
->  extern unsigned int get_au1x00_speed(void);
+So I will have to resort to experiments - trial an error.
 
-> --- /dev/null
-> +++ b/arch/mips/include/asm/mach-au1x00/au13xx.h
-> @@ -0,0 +1,207 @@
+Thank you very much for your thoughts and idea!
 
-> +#ifdef CONFIG_SOC_AU13XX
-> +
-> +#define NR_INTS			255
+  </pre>
+  <blockquote type="cite">
+    <pre wrap="">         Kevin K.
+    </pre>
+  </blockquote>
+  <pre wrap=""><!---->Cheers
+  nils faerber
 
-Unused macro - did you mean NR_IRQS?  Also keep the value of
-NR_IRQS a multiple of BITS_PER_LONG or unpleasant things might happen.
+  </pre>
+</blockquote>
+</body>
+</html>
 
-> +#define UART0_ADDR		0xB0100000
-> +#define UART1_ADDR		0xB0101000
-> +#define UART2_ADDR		0xB0102000
-> +#define UART3_ADDR		0xB0103000
-> +
-> +#define KSEG1_OFFSET		0xA0000000
-
-This constant duplicates KSEG1 defined in <asm/addrspace.h>.
-
-> +#define GPIO_INT_CTRLR_BASE	0x10200000
-> +/*
-> + * Linux uses IRQ 0-7 for the 8 causes.  That means that all of our channel
-> + * bits need to be offset by 8 either when passed to do_IRQ or when received
-> + * through the irq_chip calls
-> + *
-> + * KH: TODO - This is duplicated from gpio_int.h  Is that the right thing to do?
-> + */
-> +#define	GPINT_LINUX_IRQ_OFFSET		8
-> +
-> +#define AU1300_IRQ_UART1	17
-> +#define AU1300_IRQ_UART2	25
-> +#define AU1300_IRQ_UART3	27
-> +#define AU1300_IRQ_SD1		32
-> +#define AU1300_IRQ_SD2		38
-> +#define AU1300_IRQ_PSC0		48
-> +#define AU1300_IRQ_PSC1		52
-> +#define AU1300_IRQ_PSC2		56
-> +#define AU1300_IRQ_PSC3		60
-> +#define AU1300_IRQ_NAND		62
-> +#define AU1300_IRQ_DDMA		75
-> +#define AU1300_IRQ_GPU		78
-> +#define AU1300_IRQ_MPU		77
-> +#define AU1300_IRQ_MMU		76
-> +#define AU1300_IRQ_UDMA		79
-> +#define AU1300_IRQ_TOY_TICK	80
-> +#define AU1300_IRQ_TOYMATCH_0	81
-> +#define AU1300_IRQ_TOYMATCH_1	82
-> +#define AU1300_IRQ_TOYMATCH_2	83
-> +#define AU1300_IRQ_RTC_TICK	84
-> +#define AU1300_IRQ_RTCMATCH_0	85
-> +#define AU1300_IRQ_RTCMATCH_1	86
-> +#define AU1300_IRQ_RTCMATCH_2	87
-> +#define AU1300_IRQ_UART0	88
-> +#define AU1300_IRQ_SD0		89
-> +#define AU1300_IRQ_USB		90
-> +#define AU1300_IRQ_LCD		91
-> +#define AU1300_IRQ_BSA		94
-> +#define AU1300_IRQ_MPE		93
-> +#define AU1300_IRQ_ITE		92
-> +#define AU1300_IRQ_AES		95
-> +#define AU1300_IRQ_CIM		96
-> +
-> +#define LCD_PHYS_ADDR		0x15000000
-> +
-> +#define AU1200_LCD_INT		(GPINT_LINUX_IRQ_OFFSET + AU1300_IRQ_LCD)
-> +#define AU1000_RTC_MATCH2_INT	(GPINT_LINUX_IRQ_OFFSET + AU1300_IRQ_RTCMATCH_2)
-> +
-> +#define SD0_PHYS_ADDR		0x10600000
-> +#define SD1_PHYS_ADDR		0x10601000
-> +
-> +
-> +#define	USB_BASE_PHYS_ADDR	0x14021000
-> +#define USB_EHCI_BASE		0x14020000
-> +#define USB_EHCI_LEN		0x400
-> +#define USB_OHCI_BASE		0x14020800
-> +#define USB_OHCI_LEN		0x400
-> +#define USB_UOC_BASE		0x14022000
-> +#define USB_UOC_LEN		0x20
-> +#define USB_UDC_BASE		0x14022000
-> +#define USB_UDC_LEN		0x2000
-> +
-> +#if !defined(ASSEMBLER)
-
-There is no ASSEMBLER macro defined by cpp.  Within the kernel please use
-#ifndef __ASSEMBLY__ instead.  However this bug suggests you don't use this
-header in assembly code at all so maybe the whole ifdef should go?
-
-> +typedef volatile struct
-
-See Documentation/volatile-considered-harmful.txt ...
-
-> +{
-> +    // setup registers
-
-Please use /* ... */ only within the kernel.
-
-You did run your patches through scripts/checkpatch.pl, no?
-
-> +    u32 dwc_ctrl1;           //0x0000
-
-See Documentation/volatile-considered-harmful.txt ...
-
-  Ralf
+--------------070104040208070002010004--

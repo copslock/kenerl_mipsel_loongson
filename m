@@ -1,86 +1,138 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Mar 2009 14:17:08 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:6866 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20808984AbZCMORB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 13 Mar 2009 14:17:01 +0000
-Received: from localhost (p3109-ipad301funabasi.chiba.ocn.ne.jp [122.17.253.109])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id ED075A95A; Fri, 13 Mar 2009 23:16:53 +0900 (JST)
-Date:	Fri, 13 Mar 2009 23:16:59 +0900 (JST)
-Message-Id: <20090313.231659.41197617.anemo@mba.ocn.ne.jp>
-To:	dan.j.williams@intel.com
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	linux-kernel@vger.kernel.org, haavard.skinnemoen@atmel.com
-Subject: Re: [PATCH 1/2] dmaengine: TXx9 Soc DMA Controller driver
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20090313.011950.61509382.anemo@mba.ocn.ne.jp>
-References: <e9c3a7c20902251745t314c1e0cs114d2199ccc8cf36@mail.gmail.com>
-	<20090227.002436.106263719.anemo@mba.ocn.ne.jp>
-	<20090313.011950.61509382.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Mar 2009 15:31:53 +0000 (GMT)
+Received: from smtp14.dti.ne.jp ([202.216.231.189]:15777 "EHLO
+	smtp14.dti.ne.jp") by ftp.linux-mips.org with ESMTP
+	id S20037526AbZCMPbr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 13 Mar 2009 15:31:47 +0000
+Received: from shinya-kuribayashis-macbook.local (PPPa360.tokyo-ip.dti.ne.jp [210.159.231.110]) by smtp14.dti.ne.jp (3.11s) with ESMTP AUTH id n2DFVXeE015241;Sat, 14 Mar 2009 00:31:33 +0900 (JST)
+Message-ID: <49BA7C55.5020600@ruby.dti.ne.jp>
+Date:	Sat, 14 Mar 2009 00:31:33 +0900
+From:	Shinya Kuribayashi <skuribay@ruby.dti.ne.jp>
+User-Agent: Thunderbird 2.0.0.19 (Macintosh/20081209)
+MIME-Version: 1.0
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	linux-mips@linux-mips.org, Thomas Gleixner <tglx@linutronix.de>
+Subject: MIPS: EMMA2RH: Use handle_edge_irq() handler for GPIO interrupts
+References: <20090311112806.GA24541@linux-mips.org>
+In-Reply-To: <20090311112806.GA24541@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <skuribay@ruby.dti.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22074
+X-archive-position: 22075
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: skuribay@ruby.dti.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 13 Mar 2009 01:19:50 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> Subject: dmaengine: Use chan_id provided by DMA device driver
-> From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-> 
-> If chan_id was already given by the DMA device driver, use it.
-> Otherwise assign an incremental number for each channels.
-> 
-> This allows the DMA device driver to reserve some channel ID numbers.
-...
-> @@ -663,7 +664,9 @@ int dma_async_device_register(struct dma_device *device)
->  			continue;
->  		}
->  
-> -		chan->chan_id = chancnt++;
-> +		if (!chan->chan_id)
-> +			chan->chan_id = chan_id++;
-> +		chancnt++;
->  		chan->dev->device.class = &dma_devclass;
->  		chan->dev->device.parent = device->dev;
->  		chan->dev->chan = chan;
+EMMA's GPIO interrupts are latched by GPIO interrupt status register.
+In this case, we're encouraged to use handle_edge_irq() handler.
 
-This patch will fix another potential problem.  Some driver, for
-example ipu, assumes chan_id is an index of its internal array.  But
-dmaengine core does not guarantee it.
+The following changes are made along with replacing set_irq_chip() with
+set_irq_chip_and_handler_name(,,handle_edge_irq,"edge"):
 
-	/* represent channels in sysfs. Probably want devs too */
-	list_for_each_entry(chan, &device->channels, device_node) {
-		chan->local = alloc_percpu(typeof(*chan->local));
-		if (chan->local == NULL)
-			continue;
-		chan->dev = kzalloc(sizeof(*chan->dev), GFP_KERNEL);
-		if (chan->dev == NULL) {
-			free_percpu(chan->local);
-			continue;
-		}
+* Fix emma2rh_gpio_irq_ack not to disable interrupts
 
-		chan->chan_id = chancnt++;
-		...
-	}
-	device->chancnt = chancnt;
+  With handle_edge_irq(), we're not expected to disable interrupts
+  when chip->ack is served, so fix it accordingly.  We also add a
+  new emma2rh_gpio_irq_mask_ack() for chip->mask_ack operation.
 
-If alloc_percpu or kzalloc failed, chan_id does not match with its
-position in device->channels list.
+* Remove emma2rh_gpio_irq_end() as chip->end is no longer served.
 
-
-And above "continue" looks buggy anyway.  Keeping incomplete channels
-in device->channels list looks very dangerous...
-
+Signed-off-by: Shinya Kuribayashi <shinya.kuribayashi@necel.com>
 ---
-Atsushi Nemoto
+
+Ralf Baechle wrote:
+> __do_IRQ() is deprecated since a long time and there are plans to remove
+> it for 2.6.30.  The MIPS platforms seem to fall into three classes:
+[snip]
+>  o Platforms that still seem to rely on __do_IRQ():
+>      o All Sibyte platforms:
+> 	bigsur_defconfig and sb1250-swarm_defconfig
+> 
+>      o All Alchemy platforms:
+> 	db1000_defconfig, db1100_defconfig, db1200_defconfig, db1500_defconfig,
+> 	db1550_defconfig, mtx1_defconfig, pb1100_defconfig, pb1500_defconfig
+> 	and pb1550_defconfig
+> 
+>      o malta_defconfig.  The platform code itself is ok but irq-gic.c,
+> 	irq-msc01.c, irq-msc01.c and irq_cpu.c are still using set_irq_chip
+> 	and need fixing.
+> 
+>      o And the rest:
+> 	decstation_defconfig, emma2rh_defconfig, ip32_defconfig,
+> 	yosemite_defconfig, mipssim_defconfig and rm200_defconfig.
+
+Here's a patch for EMMA2RH not to call __do_IRQ(). Please review.
+
+Thanks,
+
+  Shinya
+
+ arch/mips/emma/markeins/irq.c |   28 ++++++++++------------------
+ 1 files changed, 10 insertions(+), 18 deletions(-)
+
+diff --git a/arch/mips/emma/markeins/irq.c b/arch/mips/emma/markeins/irq.c
+index ce8f5f2..d15556c 100644
+--- a/arch/mips/emma/markeins/irq.c
++++ b/arch/mips/emma/markeins/irq.c
+@@ -149,37 +149,28 @@ static void emma2rh_gpio_irq_disable(unsigned int irq)
+ 
+ static void emma2rh_gpio_irq_ack(unsigned int irq)
+ {
+-	u32 reg;
+-
+ 	irq -= EMMA2RH_GPIO_IRQ_BASE;
+ 	emma2rh_out32(EMMA2RH_GPIO_INT_ST, ~(1 << irq));
+-
+-	reg = emma2rh_in32(EMMA2RH_GPIO_INT_MASK);
+-	reg &= ~(1 << irq);
+-	emma2rh_out32(EMMA2RH_GPIO_INT_MASK, reg);
+ }
+ 
+-static void emma2rh_gpio_irq_end(unsigned int irq)
++static void emma2rh_gpio_irq_mask_ack(unsigned int irq)
+ {
+ 	u32 reg;
+ 
+-	if (!(irq_desc[irq].status & (IRQ_DISABLED | IRQ_INPROGRESS))) {
+-
+-		irq -= EMMA2RH_GPIO_IRQ_BASE;
++	irq -= EMMA2RH_GPIO_IRQ_BASE;
++	emma2rh_out32(EMMA2RH_GPIO_INT_ST, ~(1 << irq));
+ 
+-		reg = emma2rh_in32(EMMA2RH_GPIO_INT_MASK);
+-		reg |= 1 << irq;
+-		emma2rh_out32(EMMA2RH_GPIO_INT_MASK, reg);
+-	}
++	reg = emma2rh_in32(EMMA2RH_GPIO_INT_MASK);
++	reg &= ~(1 << irq);
++	emma2rh_out32(EMMA2RH_GPIO_INT_MASK, reg);
+ }
+ 
+ struct irq_chip emma2rh_gpio_irq_controller = {
+ 	.name = "emma2rh_gpio_irq",
+ 	.ack = emma2rh_gpio_irq_ack,
+ 	.mask = emma2rh_gpio_irq_disable,
+-	.mask_ack = emma2rh_gpio_irq_ack,
++	.mask_ack = emma2rh_gpio_irq_mask_ack,
+ 	.unmask = emma2rh_gpio_irq_enable,
+-	.end = emma2rh_gpio_irq_end,
+ };
+ 
+ void emma2rh_gpio_irq_init(void)
+@@ -187,8 +178,9 @@ void emma2rh_gpio_irq_init(void)
+ 	u32 i;
+ 
+ 	for (i = 0; i < NUM_EMMA2RH_IRQ_GPIO; i++)
+-		set_irq_chip(EMMA2RH_GPIO_IRQ_BASE + i,
+-			     &emma2rh_gpio_irq_controller);
++		set_irq_chip_and_handler_name(EMMA2RH_GPIO_IRQ_BASE + i,
++					      &emma2rh_gpio_irq_controller,
++					      handle_edge_irq, "edge");
+ }
+ 
+ static struct irqaction irq_cascade = {

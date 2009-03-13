@@ -1,82 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Mar 2009 16:19:59 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:7152 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S21367622AbZCLQTv (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 12 Mar 2009 16:19:51 +0000
-Received: from localhost (p7055-ipad304funabasi.chiba.ocn.ne.jp [123.217.161.55])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id D8172A840; Fri, 13 Mar 2009 01:19:44 +0900 (JST)
-Date:	Fri, 13 Mar 2009 01:19:50 +0900 (JST)
-Message-Id: <20090313.011950.61509382.anemo@mba.ocn.ne.jp>
-To:	dan.j.williams@intel.com
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	linux-kernel@vger.kernel.org, haavard.skinnemoen@atmel.com
-Subject: Re: [PATCH 1/2] dmaengine: TXx9 Soc DMA Controller driver
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20090227.002436.106263719.anemo@mba.ocn.ne.jp>
-References: <1234538938-23479-1-git-send-email-anemo@mba.ocn.ne.jp>
-	<e9c3a7c20902251745t314c1e0cs114d2199ccc8cf36@mail.gmail.com>
-	<20090227.002436.106263719.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Mar 2009 09:29:22 +0000 (GMT)
+Received: from elvis.franken.de ([193.175.24.41]:55473 "EHLO elvis.franken.de")
+	by ftp.linux-mips.org with ESMTP id S20807695AbZCMJ3P (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 13 Mar 2009 09:29:15 +0000
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1Li3ha-0001YX-00; Fri, 13 Mar 2009 10:29:14 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 2B1F2DE3ED; Fri, 13 Mar 2009 10:29:07 +0100 (CET)
+Date:	Fri, 13 Mar 2009 10:29:07 +0100
+To:	VomLehn <dvomlehn@cisco.com>
+Cc:	Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH][MIPS] Use CP0 Count register to implement more granular ndelay
+Message-ID: <20090313092906.GA6526@alpha.franken.de>
+References: <20090312032850.GA9379@cuplxvomd02.corp.sa.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20090312032850.GA9379@cuplxvomd02.corp.sa.net>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22070
+X-archive-position: 22072
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 27 Feb 2009 00:24:36 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> > Can you explain how reserved channels work?  It looks like you are
-> > working around the generic dma channel allocator, maybe it requires
-> > updating to meet your needs.
-...
-> I need the reserved_chan to make channel 3 named "dma0chan3".  If I
-> can chose chan_id for each channels in dma_device, the reserved_chan
-> is not needed.
+On Wed, Mar 11, 2009 at 08:28:50PM -0700, VomLehn wrote:
+>  #
+> +# Collect various processors by instruction family
+> +#
+> +config MIPS1
+> +	bool
+> +	default y if CPU_R3000 || CPU_TX39XX
+> +
+> +config MIPS2
+> +	bool
+> +	default y if CPU_R6000
+> +
+> +config MIPS3
+> +	bool
+> +	default y if CPU_LOONGSON2 || CPU_R4300 || CPU_R4X00 || CPU_TX49XX || \
+> +		CPU_VR41XX
+> +
+> +config MIPS4
+> +	bool
+> +	default y if CPU_R8000 || CPU_R10000
+> +
 
-So, how about this?  If it was accepted, I can remove reserved_chan
-from txx9dmac driver.
+what about all the R5k CPUs ?
 
-------------------------------------------------------
-Subject: dmaengine: Use chan_id provided by DMA device driver
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Thomas.
 
-If chan_id was already given by the DMA device driver, use it.
-Otherwise assign an incremental number for each channels.
-
-This allows the DMA device driver to reserve some channel ID numbers.
-
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
-diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
-index 280a9d2..a3679a7 100644
---- a/drivers/dma/dmaengine.c
-+++ b/drivers/dma/dmaengine.c
-@@ -609,6 +609,7 @@ EXPORT_SYMBOL(dmaengine_put);
- int dma_async_device_register(struct dma_device *device)
- {
- 	int chancnt = 0, rc;
-+	unsigned int chan_id = 0;
- 	struct dma_chan* chan;
- 	atomic_t *idr_ref;
- 
-@@ -663,7 +664,9 @@ int dma_async_device_register(struct dma_device *device)
- 			continue;
- 		}
- 
--		chan->chan_id = chancnt++;
-+		if (!chan->chan_id)
-+			chan->chan_id = chan_id++;
-+		chancnt++;
- 		chan->dev->device.class = &dma_devclass;
- 		chan->dev->device.parent = device->dev;
- 		chan->dev->chan = chan;
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

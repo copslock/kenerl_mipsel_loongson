@@ -1,51 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 14 Mar 2009 16:17:53 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:1530 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S21367734AbZCNQRr (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 14 Mar 2009 16:17:47 +0000
-Received: from localhost (p7238-ipad212funabasi.chiba.ocn.ne.jp [58.91.171.238])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 9DB77B5A7; Sun, 15 Mar 2009 01:17:40 +0900 (JST)
-Date:	Sun, 15 Mar 2009 01:17:48 +0900 (JST)
-Message-Id: <20090315.011748.128619265.anemo@mba.ocn.ne.jp>
-To:	ralf@linux-mips.org
-Cc:	jan.nikitenko@gmail.com, linux-mips@linux-mips.org
-Subject: Re: fix oops in dma_unmap_page on not coherent mips platforms
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20090313230049.GA30319@linux-mips.org>
-References: <20081128075258.GA10200@nikitenko.systek.local>
-	<20090313230049.GA30319@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 15 Mar 2009 09:23:44 +0000 (GMT)
+Received: from mail-ew0-f180.google.com ([209.85.219.180]:38652 "EHLO
+	mail-ew0-f180.google.com") by ftp.linux-mips.org with ESMTP
+	id S20808875AbZCOJXg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 15 Mar 2009 09:23:36 +0000
+Received: by ewy28 with SMTP id 28so3396415ewy.0
+        for <linux-mips@linux-mips.org>; Sun, 15 Mar 2009 02:23:30 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.216.39.85 with SMTP id c63mr1385897web.103.1237109010733; Sun, 
+	15 Mar 2009 02:23:30 -0700 (PDT)
+Date:	Sun, 15 Mar 2009 11:23:30 +0200
+Message-ID: <26d57bbb0903150223u7e0cc8bcl28e011f8fea9aa6c@mail.gmail.com>
+Subject: Printing register value inside kernel panic
+From:	Ori Idan <ori@helicontech.co.il>
+To:	linux-mips@linux-mips.org
+Content-Type: multipart/alternative; boundary=0016365ee476221c35046524e301
+Return-Path: <ori@helicontech.co.il>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22079
+X-archive-position: 22080
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ori@helicontech.co.il
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 14 Mar 2009 00:00:49 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
-> > dma_cache_wback_inv() expects virtual address, but physical was provided
-> > due to translation via plat_dma_addr_to_phys().
-> > If replaced with dma_addr_to_virt(), page fault oops from dma_unmap_page()
-> > is gone on au1550 platform.
-> > 
-> > Signed-off-by: Jan Nikitenko <jan.nikitenko@gmail.com>
-> 
-> Applied, finally ...
+--0016365ee476221c35046524e301
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 
-Good news!
+I would like to print register values using the function show_registers
+(defined in traps.c), this function needs a struct pt_regs as a parameter
+and I have no idea how to fill values inside this struct
 
-And please take a look at this too:
-http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=1232638931-6203-1-git-send-email-anemo%40mba.ocn.ne.jp
+-- 
+Ori Idan
 
----
-Atsushi Nemoto
+--0016365ee476221c35046524e301
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+<div dir="ltr">I would like to print register values using the function show_registers (defined in traps.c), this function needs a struct pt_regs as a parameter and I have no idea how to fill values inside this struct<br><br>
+-- <br>Ori Idan<br><br></div>
+
+--0016365ee476221c35046524e301--

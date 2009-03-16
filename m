@@ -1,49 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Mar 2009 21:21:06 +0000 (GMT)
-Received: from wa-out-1112.google.com ([209.85.146.183]:40197 "EHLO
-	wa-out-1112.google.com") by ftp.linux-mips.org with ESMTP
-	id S21368802AbZCPVU6 convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 16 Mar 2009 21:20:58 +0000
-Received: by wa-out-1112.google.com with SMTP id k40so1625003wah.0
-        for <multiple recipients>; Mon, 16 Mar 2009 14:20:56 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:sender:received:in-reply-to
-         :references:date:x-google-sender-auth:message-id:subject:from:to:cc
-         :content-type:content-transfer-encoding;
-        bh=rh65yimJLUOeclwc2iRiIW46PYmDLRKdVvFqqBdg3Tc=;
-        b=A8oWo3V3Jm1YNBP29oWi98is7mmf02iunvW9q7Qt5pmMwr4MifK4vnkS8ii2mWZDxZ
-         G9yUELUXCV3U8EOIvvW7MPX35cADLt8R2VAI8CFN+9v/Hds/sFTDrP8vcKfa1cbAsUb8
-         hgp/+OX2FZ8B74PAWpwDPLbox2mI3N3EcGiVM=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        b=XbFoBZsH3XLRTm3jfncuWpNGHRQLsANwS4NCMWHt6ZB3KGFUgi5pc4sOiVOzoysnhj
-         VTW8y1P935ot4Xmt+FWYX4mdTCbPmXRkysY7ZX1TLmPyIic6QtAuUJFDv3u/yiW+O60M
-         q9k/Wiocgu/vL5r9wtOQiKdzFOCEDBQlclMho=
-MIME-Version: 1.0
-Received: by 10.114.195.19 with SMTP id s19mr3577131waf.10.1237238456217; Mon, 
-	16 Mar 2009 14:20:56 -0700 (PDT)
-In-Reply-To: <20090227.002436.106263719.anemo@mba.ocn.ne.jp>
-References: <1234538938-23479-1-git-send-email-anemo@mba.ocn.ne.jp>
-	 <e9c3a7c20902251745t314c1e0cs114d2199ccc8cf36@mail.gmail.com>
-	 <20090227.002436.106263719.anemo@mba.ocn.ne.jp>
-Date:	Mon, 16 Mar 2009 14:20:56 -0700
-X-Google-Sender-Auth: f4811340525b1313
-Message-ID: <e9c3a7c20903161420u7568e7f9jfb10d518a3ca6fea@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Mar 2009 21:51:02 +0000 (GMT)
+Received: from mga01.intel.com ([192.55.52.88]:38424 "EHLO mga01.intel.com")
+	by ftp.linux-mips.org with ESMTP id S20808557AbZCPVuy (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 16 Mar 2009 21:50:54 +0000
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga101.fm.intel.com with ESMTP; 16 Mar 2009 14:42:56 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="4.38,375,1233561600"; 
+   d="scan'208";a="439402677"
+Received: from dwillia2-linux.ch.intel.com (HELO [10.2.42.224]) ([10.2.42.224])
+  by fmsmga002.fm.intel.com with ESMTP; 16 Mar 2009 14:46:18 -0700
 Subject: Re: [PATCH 1/2] dmaengine: TXx9 Soc DMA Controller driver
 From:	Dan Williams <dan.j.williams@intel.com>
 To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	linux-kernel@vger.kernel.org, haavard.skinnemoen@atmel.com
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <dan.j.williams@gmail.com>
+Cc:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+	"ralf@linux-mips.org" <ralf@linux-mips.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"haavard.skinnemoen@atmel.com" <haavard.skinnemoen@atmel.com>
+In-Reply-To: <20090313.231659.41197617.anemo@mba.ocn.ne.jp>
+References: <e9c3a7c20902251745t314c1e0cs114d2199ccc8cf36@mail.gmail.com>
+	 <20090227.002436.106263719.anemo@mba.ocn.ne.jp>
+	 <20090313.011950.61509382.anemo@mba.ocn.ne.jp>
+	 <20090313.231659.41197617.anemo@mba.ocn.ne.jp>
+Content-Type: text/plain
+Date:	Mon, 16 Mar 2009 14:50:46 -0700
+Message-Id: <1237240246.27945.6.camel@dwillia2-linux.ch.intel.com>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.22.3.1 (2.22.3.1-1.fc9) 
+Content-Transfer-Encoding: 7bit
+Return-Path: <dan.j.williams@intel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22083
+X-archive-position: 22084
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,147 +39,102 @@ X-original-sender: dan.j.williams@intel.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Feb 26, 2009 at 8:24 AM, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> On Wed, 25 Feb 2009 18:45:28 -0700, Dan Williams <dan.j.williams@intel.com> wrote:
->> Some comments and questions below.
->
-> Thank you for review.
->
->> > +static struct txx9dmac_dev *to_txx9dmac_dev(struct dma_device *ddev)
->> > +{
->> > +       if (ddev->device_prep_dma_memcpy)
->> > +               return container_of(ddev, struct txx9dmac_dev, dma_memcpy);
->> > +       return container_of(ddev, struct txx9dmac_dev, dma);
->> > +}
->>
->> Can you explain why you need two dma_devices per txx9dmac_dev?  My
->> initial reaction is that it should be a bug if callers to
->> to_txx9dmac_dev() don't know what type of channel they are holding.
->
-> I created two dma_devices: one for private slave dma channels and one
-> for public memcpy channel.  I will explain later in this mail.
->
->> > +       dma_async_tx_descriptor_init(&desc->txd, &dc->chan);
->> > +       desc->txd.tx_submit = txx9dmac_tx_submit;
->> > +       desc->txd.flags = DMA_CTRL_ACK;
->> > +       INIT_LIST_HEAD(&desc->txd.tx_list);
->> > +       desc->txd.phys = dma_map_single(chan2parent(&dc->chan), &desc->hwdesc,
->> > +                                       ddev->descsize, DMA_TO_DEVICE);
->> > +       return desc;
->> > +}
->>
->> By setting DMA_CTRL_ACK by default this means that async_tx can never
->> attach attach a dependent operation to a txx9 descriptor.  This may
->> not be a problem in practice because async_tx will only do this to
->> satisfy inter-channel dependencies.  For example memcpy on chan-foo
->> followed by xor on chan-bar.  For future proofing the driver I would
->> rely on clients properly setting the ack bit when they call
->> ->device_prep_dma_memcpy
->
-> The desc->txd.flags will be overwritten in txx9dmac_prep_xxx.  The
-> reason setting DMA_CTRL_ACK here is to make the desc can be pulled
-> from freelist in txx9dmac_desc_get().
+On Fri, 2009-03-13 at 07:16 -0700, Atsushi Nemoto wrote:
+> On Fri, 13 Mar 2009 01:19:50 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> > Subject: dmaengine: Use chan_id provided by DMA device driver
+> > From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> > 
+> > If chan_id was already given by the DMA device driver, use it.
+> > Otherwise assign an incremental number for each channels.
+> > 
+> > This allows the DMA device driver to reserve some channel ID numbers.
+> ...
+> > @@ -663,7 +664,9 @@ int dma_async_device_register(struct dma_device *device)
+> >  			continue;
+> >  		}
+> >  
+> > -		chan->chan_id = chancnt++;
+> > +		if (!chan->chan_id)
+> > +			chan->chan_id = chan_id++;
+> > +		chancnt++;
+> >  		chan->dev->device.class = &dma_devclass;
+> >  		chan->dev->device.parent = device->dev;
+> >  		chan->dev->chan = chan;
+> 
+> This patch will fix another potential problem.  Some driver, for
+> example ipu, assumes chan_id is an index of its internal array.  But
+> dmaengine core does not guarantee it.
+> 
+> 	/* represent channels in sysfs. Probably want devs too */
+> 	list_for_each_entry(chan, &device->channels, device_node) {
+> 		chan->local = alloc_percpu(typeof(*chan->local));
+> 		if (chan->local == NULL)
+> 			continue;
+> 		chan->dev = kzalloc(sizeof(*chan->dev), GFP_KERNEL);
+> 		if (chan->dev == NULL) {
+> 			free_percpu(chan->local);
+> 			continue;
+> 		}
+> 
+> 		chan->chan_id = chancnt++;
+> 		...
+> 	}
+> 	device->chancnt = chancnt;
+> 
+> If alloc_percpu or kzalloc failed, chan_id does not match with its
+> position in device->channels list.
+> 
+> 
+> And above "continue" looks buggy anyway.  Keeping incomplete channels
+> in device->channels list looks very dangerous...
 
-Thanks for clarification...
+Yes it does.  Here is the proposed fix:
+----->
+dmaengine: fail device registration if channel registration fails
 
-> Maybe I should move this DMA_CTRL_ACK setting to txx9dmac_desc_put()?
+From: Dan Williams <dan.j.williams@intel.com>
 
-Perhaps a comment.  I think this scheme is ok, it just raised alarm
-bells as I read it.
+Atsushi points out:
+"If alloc_percpu or kzalloc failed, chan_id does not match with its
+position in device->channels list.
 
-[..]
->> > +static irqreturn_t txx9dmac_interrupt(int irq, void *dev_id)
->> > +{
->> > +#ifdef TXX9_DMA_HAVE_IRQ_PER_CHAN
->> > +       struct txx9dmac_chan *dc = dev_id;
->> > +
->> > +       dev_vdbg(chan2dev(&dc->chan), "interrupt: status=%#x\n",
->> > +                       channel_readl(dc, CSR));
->> > +
->> > +       tasklet_schedule(&dc->tasklet);
->> > +#else
->> > +       struct txx9dmac_dev *ddev = dev_id;
->> > +
->> > +       dev_vdbg(ddev->dma.dev, "interrupt: status=%#x\n",
->> > +                       dma_readl(ddev, MCR));
->> > +
->> > +       tasklet_schedule(&ddev->tasklet);
->> > +#endif
->> > +       /*
->> > +        * Just disable the interrupts. We'll turn them back on in the
->> > +        * softirq handler.
->> > +        */
->> > +       disable_irq_nosync(irq);
->> > +
->> > +       return IRQ_HANDLED;
->> > +}
->>
->> Why do you need to disable interrupts here?
->
-> Because interrupts are not cleared until txx9dmac_tasklet() calls
-> txx9dmac_scan_descriptors() and it writes to CSR.  Touching CSR in
-> txx9dmac_interrupt() seems bad while dc->lock spinlock does not
-> protect from interrupts.  I chose calling disable_irq here instead of
-> replace all spin_lock with spin_lock_irqsave.
+And above "continue" looks buggy anyway.  Keeping incomplete channels
+in device->channels list looks very dangerous..."
 
-I believe in this case you are protected by the fact this IRQ handler
-will not race against itself, i.e. even though other interrupts are
-enabled this handler will be masked until it returns.
+Reported-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+---
+ drivers/dma/dmaengine.c |    8 ++++++--
+ 1 files changed, 6 insertions(+), 2 deletions(-)
 
->
->> > +       dev_vdbg(chan2dev(chan), "alloc_chan_resources\n");
->> > +
->> > +       if (chan == &ddev->reserved_chan) {
->> > +               /* reserved */
->> > +               return 0;
->> > +       }
->>
->> Can you explain how reserved channels work?  It looks like you are
->> working around the generic dma channel allocator, maybe it requires
->> updating to meet your needs.
->
-> OK, let me try to explain.  This DMAC have four channels and one FIFO
-> buffer.  Each channel can be configured for memory-memory or
-> device-memory transfer, but only one channel can do alignment-free
-> memory-memory transfer at a time while the channel should occupy the
-> FIFO buffer for effective transfers.
->
-> Instead of dynamically assign the FIFO buffer to channels, I chose
-> make one dedicated channel for memory-memory transfer.  The dedicated
-> channel is public.  Other channels are private and used for slave
-> transfer.  Some devices in the SoC are wired to certain DMA channel.
-> The platform code will give a channel number for memory-memory
-> transfer via platform_data.
->
-> The txx9dmac_probe() creates two dma_device: one for private slave
-> channels and one for a public memory channel.  It also creates five
-> dma_chan: four dma_chan are wrapped by txx9dmac_chan and other one
-> dma_chan is used to reserve a memcpy channel number in slave
-> dma_device.
->
-> For example, if channel 2 was selected for memcpy, the dma_device for
-> slave (txx9dmac_dev.dma) contains txx9dmac_chan[0,1], reserved_chan
-> and txx9dmac_chan[3] in this order and the dma_device for memcpy
-> (txx9dmac_dev.dma_memcpy) contains txx9dmac_chan[2].
->
-> Now we have dma0chan0, dma0chan1, dma0chan2, dma0chan3 and dma1chan0.
->
-> The txx9dmac_probe() calls dma_request_channel() to reserve dma0chan2.
->
-> I need the reserved_chan to make channel 3 named "dma0chan3".  If I
-> can chose chan_id for each channels in dma_device, the reserved_chan
-> is not needed.
-
-Can you post the code that communicates chan_id to the routine calling
-dma_request_channel?  I am not understanding why you need to control
-chan_id.  Why not have the filter_fn passed to dma_request_channel
-ignore non-private devices?
-
-> And if I could make only one channel in dma_device public, I need only
-> one dma_device.  But I suppose it is not easy while DMA_PRIVATE is not
-> per-channel attribute now.
-
-Yes, that would be awkward given how the other capability bits are handled.
-
---
-Dan
+diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
+index a589930..fa14e8b 100644
+--- a/drivers/dma/dmaengine.c
++++ b/drivers/dma/dmaengine.c
+@@ -652,13 +652,15 @@ int dma_async_device_register(struct dma_device *device)
+ 
+ 	/* represent channels in sysfs. Probably want devs too */
+ 	list_for_each_entry(chan, &device->channels, device_node) {
++		rc = -ENOMEM;
+ 		chan->local = alloc_percpu(typeof(*chan->local));
+ 		if (chan->local == NULL)
+-			continue;
++			goto err_out;
+ 		chan->dev = kzalloc(sizeof(*chan->dev), GFP_KERNEL);
+ 		if (chan->dev == NULL) {
+ 			free_percpu(chan->local);
+-			continue;
++			chan->local = NULL;
++			goto err_out;
+ 		}
+ 
+ 		chan->chan_id = chancnt++;
+@@ -675,6 +677,8 @@ int dma_async_device_register(struct dma_device *device)
+ 		if (rc) {
+ 			free_percpu(chan->local);
+ 			chan->local = NULL;
++			kfree(chan->dev);
++			atomic_dec(idr_ref);
+ 			goto err_out;
+ 		}
+ 		chan->client_count = 0;

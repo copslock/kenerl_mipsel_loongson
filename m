@@ -1,140 +1,118 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Mar 2009 21:51:02 +0000 (GMT)
-Received: from mga01.intel.com ([192.55.52.88]:38424 "EHLO mga01.intel.com")
-	by ftp.linux-mips.org with ESMTP id S20808557AbZCPVuy (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 16 Mar 2009 21:50:54 +0000
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga101.fm.intel.com with ESMTP; 16 Mar 2009 14:42:56 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="4.38,375,1233561600"; 
-   d="scan'208";a="439402677"
-Received: from dwillia2-linux.ch.intel.com (HELO [10.2.42.224]) ([10.2.42.224])
-  by fmsmga002.fm.intel.com with ESMTP; 16 Mar 2009 14:46:18 -0700
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 17 Mar 2009 01:52:49 +0000 (GMT)
+Received: from fwtops.0.225.230.202.in-addr.arpa ([202.230.225.126]:21983 "EHLO
+	topsms.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
+	id S21368806AbZCQBwm convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 17 Mar 2009 01:52:42 +0000
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 647E942BFB;
+	Tue, 17 Mar 2009 10:46:03 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 4F39D1DCFC;
+	Tue, 17 Mar 2009 10:46:03 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id n2H1qVnf026516;
+	Tue, 17 Mar 2009 10:52:31 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Tue, 17 Mar 2009 10:52:30 +0900 (JST)
+Message-Id: <20090317.105230.118904211.nemoto@toshiba-tops.co.jp>
+To:	dan.j.williams@intel.com
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
+	linux-kernel@vger.kernel.org, haavard.skinnemoen@atmel.com
 Subject: Re: [PATCH 1/2] dmaengine: TXx9 Soc DMA Controller driver
-From:	Dan Williams <dan.j.williams@intel.com>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-	"ralf@linux-mips.org" <ralf@linux-mips.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"haavard.skinnemoen@atmel.com" <haavard.skinnemoen@atmel.com>
-In-Reply-To: <20090313.231659.41197617.anemo@mba.ocn.ne.jp>
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <e9c3a7c20903161420u7568e7f9jfb10d518a3ca6fea@mail.gmail.com>
 References: <e9c3a7c20902251745t314c1e0cs114d2199ccc8cf36@mail.gmail.com>
-	 <20090227.002436.106263719.anemo@mba.ocn.ne.jp>
-	 <20090313.011950.61509382.anemo@mba.ocn.ne.jp>
-	 <20090313.231659.41197617.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain
-Date:	Mon, 16 Mar 2009 14:50:46 -0700
-Message-Id: <1237240246.27945.6.camel@dwillia2-linux.ch.intel.com>
+	<20090227.002436.106263719.anemo@mba.ocn.ne.jp>
+	<e9c3a7c20903161420u7568e7f9jfb10d518a3ca6fea@mail.gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 6.1 on Emacs 22.2 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-X-Mailer: Evolution 2.22.3.1 (2.22.3.1-1.fc9) 
-Content-Transfer-Encoding: 7bit
-Return-Path: <dan.j.williams@intel.com>
+Content-Type: Text/Plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22084
+X-archive-position: 22085
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan.j.williams@intel.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2009-03-13 at 07:16 -0700, Atsushi Nemoto wrote:
-> On Fri, 13 Mar 2009 01:19:50 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> > Subject: dmaengine: Use chan_id provided by DMA device driver
-> > From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-> > 
-> > If chan_id was already given by the DMA device driver, use it.
-> > Otherwise assign an incremental number for each channels.
-> > 
-> > This allows the DMA device driver to reserve some channel ID numbers.
-> ...
-> > @@ -663,7 +664,9 @@ int dma_async_device_register(struct dma_device *device)
-> >  			continue;
-> >  		}
-> >  
-> > -		chan->chan_id = chancnt++;
-> > +		if (!chan->chan_id)
-> > +			chan->chan_id = chan_id++;
-> > +		chancnt++;
-> >  		chan->dev->device.class = &dma_devclass;
-> >  		chan->dev->device.parent = device->dev;
-> >  		chan->dev->chan = chan;
+On Mon, 16 Mar 2009 14:20:56 -0700, Dan Williams <dan.j.williams@intel.com> wrote:
+> > Maybe I should move this DMA_CTRL_ACK setting to txx9dmac_desc_put()?
 > 
-> This patch will fix another potential problem.  Some driver, for
-> example ipu, assumes chan_id is an index of its internal array.  But
-> dmaengine core does not guarantee it.
-> 
-> 	/* represent channels in sysfs. Probably want devs too */
-> 	list_for_each_entry(chan, &device->channels, device_node) {
-> 		chan->local = alloc_percpu(typeof(*chan->local));
-> 		if (chan->local == NULL)
-> 			continue;
-> 		chan->dev = kzalloc(sizeof(*chan->dev), GFP_KERNEL);
-> 		if (chan->dev == NULL) {
-> 			free_percpu(chan->local);
-> 			continue;
-> 		}
-> 
-> 		chan->chan_id = chancnt++;
-> 		...
-> 	}
-> 	device->chancnt = chancnt;
-> 
-> If alloc_percpu or kzalloc failed, chan_id does not match with its
-> position in device->channels list.
-> 
-> 
-> And above "continue" looks buggy anyway.  Keeping incomplete channels
-> in device->channels list looks very dangerous...
+> Perhaps a comment.  I think this scheme is ok, it just raised alarm
+> bells as I read it.
 
-Yes it does.  Here is the proposed fix:
------>
-dmaengine: fail device registration if channel registration fails
+OK, I will do.
 
-From: Dan Williams <dan.j.williams@intel.com>
+> >> > +       disable_irq_nosync(irq);
+> >> > +
+> >> > +       return IRQ_HANDLED;
+> >> > +}
+> >>
+> >> Why do you need to disable interrupts here?
+> >
+> > Because interrupts are not cleared until txx9dmac_tasklet() calls
+> > txx9dmac_scan_descriptors() and it writes to CSR.  Touching CSR in
+> > txx9dmac_interrupt() seems bad while dc->lock spinlock does not
+> > protect from interrupts.  I chose calling disable_irq here instead of
+> > replace all spin_lock with spin_lock_irqsave.
+> 
+> I believe in this case you are protected by the fact this IRQ handler
+> will not race against itself, i.e. even though other interrupts are
+> enabled this handler will be masked until it returns.
 
-Atsushi points out:
-"If alloc_percpu or kzalloc failed, chan_id does not match with its
-position in device->channels list.
+Yes, IRQ handler will be masked, but tasklet will not be masked.  If I
+did not disable irq here, the kernel hangs just after returning from
+this IRQ handler (and before tasklet routine is invoked).
 
-And above "continue" looks buggy anyway.  Keeping incomplete channels
-in device->channels list looks very dangerous..."
+> > I need the reserved_chan to make channel 3 named "dma0chan3".  If I
+> > can chose chan_id for each channels in dma_device, the reserved_chan
+> > is not needed.
+> 
+> Can you post the code that communicates chan_id to the routine calling
+> dma_request_channel?  I am not understanding why you need to control
+> chan_id.  Why not have the filter_fn passed to dma_request_channel
+> ignore non-private devices?
 
-Reported-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+You mean the filter_fn provided by client driver?  I don't want to let
+client driver know which channel is used for memcpy.  And if
+"dma0chan3" was not the Ch3 of the DMAC, it looks confusing...
+
+Here is an excerpt from client under construction.
+
+struct txx9aclc_dmadata {
+	struct resource *dma_res;
+	struct txx9dmac_slave dma_slave;
+	struct dma_chan *dma_chan;
+	...
+};
+
+static bool filter(struct dma_chan *chan, void *param)
+{
+	struct txx9aclc_dmadata *dmadata = param;
+
+	if (strcmp(dev_name(chan->device->dev), dmadata->dma_res->name) == 0 &&
+	    dmadata->dma_res->start == chan->chan_id) {
+		chan->private = &dmadata->dma_slave;
+		return true;
+	}
+	return false;
+}
+
+	struct txx9dmac_slave *ds = &dmadata->dma_slave;
+	...
+	dmadata->dma_res = platform_get_resource(pdev, IORESOURCE_DMA, 0);
+	...
+	dmadata->dma_chan = dma_request_channel(mask, filter, dmadata);
+
+The IORESOURCE_DMA resource for the client device contains a name of a
+DMA driver (dma_res->name) and its channel ID (dma_res->start).
+
 ---
- drivers/dma/dmaengine.c |    8 ++++++--
- 1 files changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
-index a589930..fa14e8b 100644
---- a/drivers/dma/dmaengine.c
-+++ b/drivers/dma/dmaengine.c
-@@ -652,13 +652,15 @@ int dma_async_device_register(struct dma_device *device)
- 
- 	/* represent channels in sysfs. Probably want devs too */
- 	list_for_each_entry(chan, &device->channels, device_node) {
-+		rc = -ENOMEM;
- 		chan->local = alloc_percpu(typeof(*chan->local));
- 		if (chan->local == NULL)
--			continue;
-+			goto err_out;
- 		chan->dev = kzalloc(sizeof(*chan->dev), GFP_KERNEL);
- 		if (chan->dev == NULL) {
- 			free_percpu(chan->local);
--			continue;
-+			chan->local = NULL;
-+			goto err_out;
- 		}
- 
- 		chan->chan_id = chancnt++;
-@@ -675,6 +677,8 @@ int dma_async_device_register(struct dma_device *device)
- 		if (rc) {
- 			free_percpu(chan->local);
- 			chan->local = NULL;
-+			kfree(chan->dev);
-+			atomic_dec(idr_ref);
- 			goto err_out;
- 		}
- 		chan->client_count = 0;
+Atsushi Nemoto

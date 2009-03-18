@@ -1,65 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Mar 2009 00:49:54 +0000 (GMT)
-Received: from fwtops.0.225.230.202.in-addr.arpa ([202.230.225.126]:5520 "EHLO
-	topsms.toshiba-tops.co.jp") by ftp.linux-mips.org with ESMTP
-	id S21369240AbZCRAtq convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 18 Mar 2009 00:49:46 +0000
-Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
-	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id 2C63B42CE2;
-	Wed, 18 Mar 2009 09:43:05 +0900 (JST)
-Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
-	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id 1FCE642B7A;
-	Wed, 18 Mar 2009 09:43:05 +0900 (JST)
-Received: from localhost (fragile [172.17.28.65])
-	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id n2I0nZnf030763;
-	Wed, 18 Mar 2009 09:49:36 +0900 (JST)
-	(envelope-from anemo@mba.ocn.ne.jp)
-Date:	Wed, 18 Mar 2009 09:49:35 +0900 (JST)
-Message-Id: <20090318.094935.238694196.nemoto@toshiba-tops.co.jp>
-To:	dan.j.williams@intel.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Mar 2009 01:23:56 +0000 (GMT)
+Received: from yx-out-1718.google.com ([74.125.44.157]:65531 "EHLO
+	yx-out-1718.google.com") by ftp.linux-mips.org with ESMTP
+	id S21369164AbZCRBXt convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 18 Mar 2009 01:23:49 +0000
+Received: by yx-out-1718.google.com with SMTP id 3so182340yxi.24
+        for <multiple recipients>; Tue, 17 Mar 2009 18:23:47 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:sender:received:in-reply-to
+         :references:date:x-google-sender-auth:message-id:subject:from:to:cc
+         :content-type:content-transfer-encoding;
+        bh=q+UUpo1M3Pk8FcE8+NLeOArNUlMO+QfeBw4F84KMbJE=;
+        b=JVwML4bJzEjP+Mm8fOYZ1IeT4q7qw+b+4Jx2JVAbpFxwBaGDZmgILSte+C3E4VA3kF
+         /FRNdm5AmamaPW6CAZe3qeuha7yczM2luybbHnUglTVAwoS7c8iqDmT9eCQ0B8Ozg18S
+         i1ZpddrnjpYcEXZWc30MCuNUP8CPCPFy8nOcQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        b=CH9mMjHavDdvxhVHtYjdx+ZUy3xBxKnq64nXM1hgSET19K8scRfyit0iP43gfswgW0
+         7JukRp37rZ+CM9UtL1kpgC24vl1S3QEV3s0q6hiU2gO5Kon+CntCvfA8/MM3ik+5x+TV
+         DyabHlt/lmiM2k55wjDXiBmzkDxMBXNQlCrKw=
+MIME-Version: 1.0
+Received: by 10.114.147.7 with SMTP id u7mr386842wad.138.1237339427032; Tue, 
+	17 Mar 2009 18:23:47 -0700 (PDT)
+In-Reply-To: <20090318.094935.238694196.nemoto@toshiba-tops.co.jp>
+References: <e9c3a7c20903162152w6b73b4b8hba8004e7b349c447@mail.gmail.com>
+	 <20090318.010939.128619068.anemo@mba.ocn.ne.jp>
+	 <e9c3a7c20903171002n50964148v8366fa2f00e3164c@mail.gmail.com>
+	 <20090318.094935.238694196.nemoto@toshiba-tops.co.jp>
+Date:	Tue, 17 Mar 2009 18:23:46 -0700
+X-Google-Sender-Auth: c02529558b46bc28
+Message-ID: <e9c3a7c20903171823g1e6c42b9t5f042d550a6ddd47@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dmaengine: TXx9 Soc DMA Controller driver
+From:	Dan Williams <dan.j.williams@intel.com>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
 	linux-kernel@vger.kernel.org, haavard.skinnemoen@atmel.com
-Subject: Re: [PATCH 1/2] dmaengine: TXx9 Soc DMA Controller driver
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <e9c3a7c20903171002n50964148v8366fa2f00e3164c@mail.gmail.com>
-References: <e9c3a7c20903162152w6b73b4b8hba8004e7b349c447@mail.gmail.com>
-	<20090318.010939.128619068.anemo@mba.ocn.ne.jp>
-	<e9c3a7c20903171002n50964148v8366fa2f00e3164c@mail.gmail.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 6.1 on Emacs 22.2 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=iso-8859-1
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8BIT
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <dan.j.williams@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22095
+X-archive-position: 22096
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: dan.j.williams@intel.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 17 Mar 2009 10:02:14 -0700, Dan Williams <dan.j.williams@intel.com> wrote:
-> >> The sysfs device has a longer lifetime than dma_device.  See commit
-> >> 41d5e59c [1].
-> >
-> > The sysfs device for dma_chan (dma_chan_dev) has a shorter lifetime
-> > than dma_device, doesn't it?
-> 
-> No,  dma_async_device_unregister(), and the freeing of dma_device, may
-> finish before chan_dev_release is called.  Userspace gates the final
-> release of dma_chan_dev objects.
+On Tue, Mar 17, 2009 at 5:49 PM, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> On Tue, 17 Mar 2009 10:02:14 -0700, Dan Williams <dan.j.williams@intel.com> wrote:
+> BTW, there are another holes in dma_async_device_register.  If
+> idr_pre_get or idr_get_new was failed, idr_ref will not be freed.
 
-You mean, if the sysfs device file was opened when
-dma_async_device_unregister() was called, the sysfs device will not be
-released until the sysfs device file is closed, right?  If so I can
-see.
+Thanks for these fixlets, I appreciate it.
 
-BTW, there are another holes in dma_async_device_register.  If
-idr_pre_get or idr_get_new was failed, idr_ref will not be freed.
+Now, back to the issue at hand.  Does your driver still need direct
+control over chan->chan_id, or can it now rely on the fact that
+dma_async_device_register() will fail if a channel is not initialized?
+ Or, just use some platform_data to identify the channel in the same
+manner as atmel-mci?
 
----
-Atsushi Nemoto
+Regards,
+Dan

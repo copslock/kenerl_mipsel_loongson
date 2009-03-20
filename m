@@ -1,92 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Mar 2009 19:30:14 +0000 (GMT)
-Received: from sitar.i-cable.com ([203.83.115.100]:40184 "HELO
-	sitar.i-cable.com") by ftp.linux-mips.org with SMTP
-	id S21369896AbZCTTaH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 20 Mar 2009 19:30:07 +0000
-Received: (qmail 24083 invoked by uid 508); 20 Mar 2009 19:29:59 -0000
-Received: from 203.83.114.122 by sitar (envelope-from <robert.zhangle@gmail.com>, uid 505) with qmail-scanner-1.25 
- (clamdscan: 0.93.3/8786.  
- Clear:RC:1(203.83.114.122):. 
- Processed in 0.096849 secs); 20 Mar 2009 19:29:59 -0000
-Received: from ip114122.hkicable.com (HELO xenon.i-cable.com) (203.83.114.122)
-  by 0 with SMTP; 20 Mar 2009 19:29:59 -0000
-Received: from localhost (cm222-167-208-75.hkcable.com.hk [222.167.208.75])
-	by xenon.i-cable.com (8.13.5/8.13.5) with ESMTP id n2KJTwn1029021
-	for <linux-mips@linux-mips.org>; Sat, 21 Mar 2009 03:29:59 +0800 (CST)
-Date:	Sat, 21 Mar 2009 03:29:55 +0800
-From:	Zhang Le <r0bertz@gentoo.org>
-To:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: rename CPU_LOONGSON2 to CPU_LOONGSON2E
-Message-ID: <20090320192954.GB14445@adriano.hkcable.com.hk>
-Mail-Followup-To: linux-mips@linux-mips.org
-References: <1237576220-4479-1-git-send-email-r0bertz@gentoo.org> <20090320192419.GA14445@adriano.hkcable.com.hk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20090320192419.GA14445@adriano.hkcable.com.hk>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <robert.zhangle@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Mar 2009 20:52:03 +0000 (GMT)
+Received: from mx1.rmicorp.com ([63.111.213.197]:60824 "EHLO mx1.rmicorp.com")
+	by ftp.linux-mips.org with ESMTP id S21368294AbZCTUv4 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 20 Mar 2009 20:51:56 +0000
+Received: from sark.razamicroelectronics.com ([10.8.0.254]) by mx1.rmicorp.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 20 Mar 2009 13:51:46 -0700
+Received: from localhost.localdomain (unknown [10.8.0.60])
+	by sark.razamicroelectronics.com (Postfix) with ESMTP id 28AC6EE76A6;
+	Fri, 20 Mar 2009 14:11:47 -0600 (CST)
+From:	Kevin Hickey <khickey@rmicorp.com>
+To:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: [PATCH v2 0/6] Alchemy: Basic Au1300 and DBAu1300 support
+Date:	Fri, 20 Mar 2009 15:51:40 -0500
+Message-Id: <1237582306-10800-1-git-send-email-khickey@rmicorp.com>
+X-Mailer: git-send-email 1.5.4.3
+In-Reply-To: <>
+References: <>
+X-OriginalArrivalTime: 20 Mar 2009 20:51:47.0696 (UTC) FILETIME=[AF8CA700:01C9A99D]
+Return-Path: <khickey@rmicorp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22103
+X-archive-position: 22104
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: r0bertz@gentoo.org
+X-original-sender: khickey@rmicorp.com
 Precedence: bulk
 X-list: linux-mips
 
-On 03:24 Sat 21 Mar     , Zhang Le wrote:
-> On 03:10 Sat 21 Mar     , Zhang Le wrote:
-> > This is for future inclusion of Loongson 2F patches. Because Gcc 4.4 (not
-> > released yet) has different -march argument for these two CPUs, we should
-> > be able to distinguish them.
-> 
-> Sorry, please hold on. It seems I missed something.
-> I will send another soon.
+This patch series introduces support for the RMI Alchemy Au1300 series of SOCs
+and the DBAu1300 (or DB1300) development board.  With this set the basic CPU
+and board are supported.  I have code for several of the peripherals, including
+USB, MMC, IDE, and Ethernet and will submit those patches after these have been
+accepted.
 
-Oops, this requires much more changes than I originally thought.
-I will see what I can come up with.
-Sorry.
+Though some of the new code added here could be useful for other boards (the
+DB1200 in particular), I did my best to limit this patch set to additions only.
+It should not disturb any other boards.  To verify this I built and tested the
+updated directory for an on a DB1200 board.  A future patch set may include
+some integration of this new code into the DB1200 configuration.
 
-> 
-> > 
-> > Signed-off-by: Zhang Le <r0bertz@gentoo.org>
-> > ---
-> >  arch/mips/Kconfig  |    4 ++--
-> >  arch/mips/Makefile |    2 +-
-> >  2 files changed, 3 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> > index 206cb79..dcb675d 100644
-> > --- a/arch/mips/Kconfig
-> > +++ b/arch/mips/Kconfig
-> > @@ -1014,8 +1014,8 @@ choice
-> >  	prompt "CPU type"
-> >  	default CPU_R4X00
-> >  
-> > -config CPU_LOONGSON2
-> > -	bool "Loongson 2"
-> > +config CPU_LOONGSON2E
-> > +	bool "Loongson 2E"
-> >  	depends on SYS_HAS_CPU_LOONGSON2
-> >  	select CPU_SUPPORTS_32BIT_KERNEL
-> >  	select CPU_SUPPORTS_64BIT_KERNEL
-> > diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> > index 22dab2e..097a7fa 100644
-> > --- a/arch/mips/Makefile
-> > +++ b/arch/mips/Makefile
-> > @@ -119,7 +119,7 @@ cflags-$(CONFIG_CPU_R4300)	+= -march=r4300 -Wa,--trap
-> >  cflags-$(CONFIG_CPU_VR41XX)	+= -march=r4100 -Wa,--trap
-> >  cflags-$(CONFIG_CPU_R4X00)	+= -march=r4600 -Wa,--trap
-> >  cflags-$(CONFIG_CPU_TX49XX)	+= -march=r4600 -Wa,--trap
-> > -cflags-$(CONFIG_CPU_LOONGSON2)	+= -march=r4600 -Wa,--trap
-> > +cflags-$(CONFIG_CPU_LOONGSON2E)	+= -march=r4600 -Wa,--trap
-> >  cflags-$(CONFIG_CPU_MIPS32_R1)	+= $(call cc-option,-march=mips32,-mips32 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) \
-> >  			-Wa,-mips32 -Wa,--trap
-> >  cflags-$(CONFIG_CPU_MIPS32_R2)	+= $(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) \
-> > -- 
-> > 1.6.2
-> > 
-> 
+=Kevin
+
+ arch/mips/Kconfig                                |    1 +
+ arch/mips/Makefile                               |    6 +
+ arch/mips/alchemy/Kconfig                        |   22 ++
+ arch/mips/alchemy/common/Makefile                |    6 +-
+ arch/mips/alchemy/common/au13xx_res.c            |   74 ++++++
+ arch/mips/alchemy/common/dbdma.c                 |   46 ++++-
+ arch/mips/alchemy/common/gpio_int.c              |  265 ++++++++++++++++++++++
+ arch/mips/alchemy/common/platform.c              |   70 ++++++
+ arch/mips/alchemy/common/time.c                  |    5 +
+ arch/mips/alchemy/devboards/Makefile             |    6 +
+ arch/mips/alchemy/devboards/cascade_irq.c        |  142 ++++++++++++
+ arch/mips/alchemy/devboards/db1300/Makefile      |    6 +
+ arch/mips/alchemy/devboards/db1300/board_setup.c |  124 ++++++++++
+ arch/mips/alchemy/devboards/leds.c               |   58 +++++
+ arch/mips/include/asm/cpu.h                      |   10 +-
+ arch/mips/include/asm/mach-au1x00/au1000.h       |   50 ++++
+ arch/mips/include/asm/mach-au1x00/au13xx.h       |  201 ++++++++++++++++
+ arch/mips/include/asm/mach-au1x00/au1xxx.h       |    3 +
+ arch/mips/include/asm/mach-au1x00/au1xxx_dbdma.h |   33 +++
+ arch/mips/include/asm/mach-au1x00/dev_boards.h   |   44 ++++
+ arch/mips/include/asm/mach-au1x00/gpio_int.h     |  237 +++++++++++++++++++
+ arch/mips/include/asm/mach-au1x00/irq.h          |   34 +++
+ arch/mips/include/asm/mips-boards/db1300.h       |  121 ++++++++++
+ arch/mips/kernel/cpu-probe.c                     |   20 ++
+ arch/mips/mm/c-r4k.c                             |    1 +
+ arch/mips/mm/tlbex.c                             |    1 +
+ drivers/video/Kconfig                            |    2 +-
+ 27 files changed, 1582 insertions(+), 6 deletions(-)

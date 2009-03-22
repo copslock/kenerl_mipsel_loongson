@@ -1,62 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Mar 2009 13:11:58 +0000 (GMT)
-Received: from smtp14.dti.ne.jp ([202.216.231.189]:3968 "EHLO smtp14.dti.ne.jp")
-	by ftp.linux-mips.org with ESMTP id S21369751AbZCUNLw (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 21 Mar 2009 13:11:52 +0000
-Received: from [192.168.1.5] (PPPax1767.tokyo-ip.dti.ne.jp [210.159.179.17]) by smtp14.dti.ne.jp (3.11s) with ESMTP AUTH id n2LDBnwY018643;Sat, 21 Mar 2009 22:11:50 +0900 (JST)
-Message-ID: <49C4E795.4070400@ruby.dti.ne.jp>
-Date:	Sat, 21 Mar 2009 22:11:49 +0900
-From:	Shinya Kuribayashi <skuribay@ruby.dti.ne.jp>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090318)
-MIME-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Mar 2009 22:12:50 +0000 (GMT)
+Received: from gw01.mail.saunalahti.fi ([195.197.172.115]:45974 "EHLO
+	gw01.mail.saunalahti.fi") by ftp.linux-mips.org with ESMTP
+	id S21370127AbZCVWMj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 22 Mar 2009 22:12:39 +0000
+Received: from localhost.localdomain (a88-114-245-69.elisa-laajakaista.fi [88.114.245.69])
+	by gw01.mail.saunalahti.fi (Postfix) with ESMTP id 29C8F151410;
+	Mon, 23 Mar 2009 00:12:34 +0200 (EET)
+From:	Dmitri Vorobiev <dmitri.vorobiev@movial.com>
 To:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: [PATCH] MIPS: EMMA2RH: Set UART mapbase
-References: <49C4E5D5.4070408@ruby.dti.ne.jp> <49C4E646.7010309@ruby.dti.ne.jp> <49C4E6BC.8040902@ruby.dti.ne.jp>
-In-Reply-To: <49C4E6BC.8040902@ruby.dti.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <skuribay@ruby.dti.ne.jp>
+Subject: [PATCH 0/3] A few MIPS cleanups
+Date:	Mon, 23 Mar 2009 00:12:26 +0200
+Message-Id: <1237759949-8223-1-git-send-email-dmitri.vorobiev@movial.com>
+X-Mailer: git-send-email 1.5.6.3
+Return-Path: <dmitri.vorobiev@movial.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22118
+X-archive-position: 22119
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: skuribay@ruby.dti.ne.jp
+X-original-sender: dmitri.vorobiev@movial.com
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: Shinya Kuribayashi <shinya.kuribayashi@necel.com>
----
+Hi Ralf,
 
- arch/mips/emma/markeins/platform.c |    3 +++
- 1 files changed, 3 insertions(+), 0 deletions(-)
+A couple of cleanup patches follow. Please consider.
 
-diff --git a/arch/mips/emma/markeins/platform.c b/arch/mips/emma/markeins/platform.c
-index d5f47e4..80ae12e 100644
---- a/arch/mips/emma/markeins/platform.c
-+++ b/arch/mips/emma/markeins/platform.c
-@@ -110,6 +110,7 @@ struct platform_device i2c_emma_devices[] = {
- static struct  plat_serial8250_port platform_serial_ports[] = {
- 	[0] = {
- 		.membase= (void __iomem*)KSEG1ADDR(EMMA2RH_PFUR0_BASE + 3),
-+		.mapbase = EMMA2RH_PFUR0_BASE + 3,
- 		.irq = EMMA2RH_IRQ_PFUR0,
- 		.uartclk = EMMA2RH_SERIAL_CLOCK,
- 		.regshift = 4,
-@@ -117,6 +118,7 @@ static struct  plat_serial8250_port platform_serial_ports[] = {
- 		.flags = EMMA2RH_SERIAL_FLAGS,
-        }, [1] = {
- 		.membase = (void __iomem*)KSEG1ADDR(EMMA2RH_PFUR1_BASE + 3),
-+		.mapbase = EMMA2RH_PFUR1_BASE + 3,
- 		.irq = EMMA2RH_IRQ_PFUR1,
- 		.uartclk = EMMA2RH_SERIAL_CLOCK,
- 		.regshift = 4,
-@@ -124,6 +126,7 @@ static struct  plat_serial8250_port platform_serial_ports[] = {
- 		.flags = EMMA2RH_SERIAL_FLAGS,
-        }, [2] = {
- 		.membase = (void __iomem*)KSEG1ADDR(EMMA2RH_PFUR2_BASE + 3),
-+		.mapbase = EMMA2RH_PFUR2_BASE + 3,
- 		.irq = EMMA2RH_IRQ_PFUR2,
- 		.uartclk = EMMA2RH_SERIAL_CLOCK,
- 		.regshift = 4,
+Thanks,
+Dmitri

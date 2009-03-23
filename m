@@ -1,55 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Mar 2009 15:02:56 +0000 (GMT)
-Received: from smtp14.dti.ne.jp ([202.216.231.189]:65471 "EHLO
-	smtp14.dti.ne.jp") by ftp.linux-mips.org with ESMTP
-	id S21367713AbZCWPCv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 23 Mar 2009 15:02:51 +0000
-Received: from shinya-kuribayashis-macbook.local (PPPax1767.tokyo-ip.dti.ne.jp [210.159.179.17]) by smtp14.dti.ne.jp (3.11s) with ESMTP AUTH id n2NF2leW001804;Tue, 24 Mar 2009 00:02:47 +0900 (JST)
-Message-ID: <49C7A497.3020801@ruby.dti.ne.jp>
-Date:	Tue, 24 Mar 2009 00:02:47 +0900
-From:	Shinya Kuribayashi <skuribay@ruby.dti.ne.jp>
-User-Agent: Thunderbird 2.0.0.21 (Macintosh/20090302)
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Mar 2009 15:36:14 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:52679 "EHLO h5.dl5rb.org.uk")
+	by ftp.linux-mips.org with ESMTP id S21367813AbZCWPgM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 23 Mar 2009 15:36:12 +0000
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n2NFa8Qi027351;
+	Mon, 23 Mar 2009 16:36:10 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n2NFa6Vp027294;
+	Mon, 23 Mar 2009 16:36:06 +0100
+Date:	Mon, 23 Mar 2009 16:36:05 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Shinya Kuribayashi <skuribay@ruby.dti.ne.jp>
+Cc:	linux-mips@linux-mips.org
 Subject: Re: [PATCH] MIPS: Mark Eins: Fix cascading interrupt dispatcher
-References: <49C4E5D5.4070408@ruby.dti.ne.jp> <20090323135239.GA21286@linux-mips.org>
-In-Reply-To: <20090323135239.GA21286@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <skuribay@ruby.dti.ne.jp>
+Message-ID: <20090323153605.GA26942@linux-mips.org>
+References: <49C4E5D5.4070408@ruby.dti.ne.jp> <20090323135239.GA21286@linux-mips.org> <49C7A497.3020801@ruby.dti.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <49C7A497.3020801@ruby.dti.ne.jp>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22129
+X-archive-position: 22130
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: skuribay@ruby.dti.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> Looks ok - but this patch series conflicts with your earlier patch
-> 
-> http://www.linux-mips.org/git?p=linux-queue.git;a=commit;h=45d0f39ad6ecc84fa5a3ca301497842ea68bd633
-> 
-> Let me know what to do.  Thanks.
+On Tue, Mar 24, 2009 at 12:02:47AM +0900, Shinya Kuribayashi wrote:
 
-If possible, please drop the commit above, then apply new four patches.
-Or, apply three patches except for "MIPS: EMMA2RH: Use handle_edge_irq()
-handler".  I hope they don't conflict with the commit above.
+> Ralf Baechle wrote:
+>> Looks ok - but this patch series conflicts with your earlier patch
+>>
+>> http://www.linux-mips.org/git?p=linux-queue.git;a=commit;h=45d0f39ad6ecc84fa5a3ca301497842ea68bd633
+>>
+>> Let me know what to do.  Thanks.
+>
+> If possible, please drop the commit above, then apply new four patches.
+> Or, apply three patches except for "MIPS: EMMA2RH: Use handle_edge_irq()
+> handler".  I hope they don't conflict with the commit above.
 
-  MIPS: Mark Eins: Fix cascading interrupt dispatcher
-* MIPS: EMMA2RH: Use handle_edge_irq() handler for GPIO interrupts
-  MIPS: EMMA2RH: Use set_irq_chip_and_handler_name
-  MIPS: EMMA2RH: Set UART mapbase
+Okay, done.
 
-Sorry for inconvenience,
+>> * Prevent cascading interrupt from bits being processed afterward
+>
+> I would like to say `prevent A from B', of course...
 
-P.S.
+Fixed.
 
-> * Prevent cascading interrupt bits being processed afterward
-
-I would like to say `prevent A from B', of course...
-
-  Shinya
+  Ralf

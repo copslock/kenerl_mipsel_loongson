@@ -1,64 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Mar 2009 03:02:00 +0000 (GMT)
-Received: from colo.lackof.org ([198.49.126.79]:38536 "EHLO colo.lackof.org")
-	by ftp.linux-mips.org with ESMTP id S21370459AbZCXDBy (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Mar 2009 03:01:54 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by colo.lackof.org (Postfix) with ESMTP id 0EAA1818A
-	for <linux-mips@linux-mips.org>; Mon, 23 Mar 2009 21:01:47 -0600 (MDT)
-Received: from colo.lackof.org ([127.0.0.1])
-	by localhost (colo.lackof.org [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 02099-04 for <linux-mips@linux-mips.org>;
-	Mon, 23 Mar 2009 21:01:35 -0600 (MDT)
-Received: by colo.lackof.org (Postfix, from userid 1012)
-	id 80C0B8188; Mon, 23 Mar 2009 21:01:33 -0600 (MDT)
-Date:	Mon, 23 Mar 2009 21:01:33 -0600
-From:	dann frazier <dannf@dannf.org>
-To:	linux-mips@linux-mips.org
-Subject: syscall wrapper changes cause llseek failure
-Message-ID: <20090324030132.GA29907@colo.lackof.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Mar 2009 13:17:12 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:25304 "EHLO h5.dl5rb.org.uk")
+	by ftp.linux-mips.org with ESMTP id S21366676AbZCXNRK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Mar 2009 13:17:10 +0000
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n2ODH8lH011515;
+	Tue, 24 Mar 2009 14:17:09 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n2ODH7Ji011513;
+	Tue, 24 Mar 2009 14:17:07 +0100
+Date:	Tue, 24 Mar 2009 14:17:07 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Kevin Hickey <khickey@rmicorp.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH v2 5/6] Alchemy: DB1300 blink leds on timer tick
+Message-ID: <20090324131707.GA6509@linux-mips.org>
+References: <1237582306-10800-1-git-send-email-khickey@rmicorp.com> <1237582306-10800-2-git-send-email-khickey@rmicorp.com> <1237582306-10800-3-git-send-email-khickey@rmicorp.com> <1237582306-10800-4-git-send-email-khickey@rmicorp.com> <1237582306-10800-5-git-send-email-khickey@rmicorp.com> <1237582306-10800-6-git-send-email-khickey@rmicorp.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.16 (2007-06-11)
-X-Virus-Scanned: by amavisd-new-20030616-p10 (Debian) at lackof.org
-Return-Path: <dannf@lackof.org>
+In-Reply-To: <1237582306-10800-6-git-send-email-khickey@rmicorp.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22132
+X-archive-position: 22133
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dannf@dannf.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-hey,
- I had a report today of a possible regression caused by the syscall
-wrapper changes. On a pristine 64-bit 2.6.29-rc8 kernel, llseek seems
-to always return -EINVAL. This was noticed on one of the Debian
-infrastructure machines where, after an upgrade, e2fsck began failing
-with errors like:
+On Fri, Mar 20, 2009 at 03:51:45PM -0500, Kevin Hickey wrote:
 
-  Error reading block 524290 (Invalid argument) while getting next inode
-  from scan.  Ignore error<y>? 
+> Blinks the dots on the hex display on the DB1300 board every 1000 timer ticks.
+> This can help tell the difference between a soft and hard hung board.
 
-I believe this is due to the syswrapper changes because its easy to
-reproduce with Debian's 2.6.26 patched w/ the syswrapper changes, but
-goes away if we back the syswrapper changes back out.
+How about putting this into a software timer.  The Malta does that for its
+ASCII display, see arch/mips/mti-malta/malta-display.c.
 
-I compared strace output between a working and failing kernel:
-
-no syscall wrappers:
-_llseek(3, 2147491840, [2147491840], SEEK_SET) = 0
-_llseek(3, 2147524608, [2147524608], SEEK_SET) = 0
-
-syscall wrappers:
-_llseek(3, 2147491840, 0x7fa5d7f0, SEEK_SET) = -1 EINVAL (Invalid argument)
-_llseek(3, 2147491840, 0x7fa5d6d0, SEEK_SET) = -1 EINVAL (Invalid argument)
-
-config is available here;
- http://dannf.org/mips.config
-
--- 
-dann frazier
+  Ralf

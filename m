@@ -1,48 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Mar 2009 15:44:24 +0000 (GMT)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:2003 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S21366526AbZCXPoR (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Mar 2009 15:44:17 +0000
-Received: from localhost (p8221-ipad206funabasi.chiba.ocn.ne.jp [222.145.82.221])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id C631DA142; Wed, 25 Mar 2009 00:44:10 +0900 (JST)
-Date:	Wed, 25 Mar 2009 00:44:19 +0900 (JST)
-Message-Id: <20090325.004419.39153027.anemo@mba.ocn.ne.jp>
-To:	ralf@linux-mips.org
-Cc:	khickey@rmicorp.com, linux-mips@linux-mips.org
-Subject: Re: [PATCH v2 5/6] Alchemy: DB1300 blink leds on timer tick
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20090324131707.GA6509@linux-mips.org>
-References: <1237582306-10800-5-git-send-email-khickey@rmicorp.com>
-	<1237582306-10800-6-git-send-email-khickey@rmicorp.com>
-	<20090324131707.GA6509@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Mar 2009 18:24:26 +0000 (GMT)
+Received: from localhost.localdomain ([127.0.0.1]:39615 "EHLO h5.dl5rb.org.uk")
+	by ftp.linux-mips.org with ESMTP id S21368289AbZCXSYX (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Mar 2009 18:24:23 +0000
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n2OIOJ6Q022312;
+	Tue, 24 Mar 2009 19:24:20 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n2OIOI9j022310;
+	Tue, 24 Mar 2009 19:24:18 +0100
+Date:	Tue, 24 Mar 2009 19:24:18 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	linux-arch@vger.kernel.org
+Cc:	dann frazier <dannf@dannf.org>, linux-mips@linux-mips.org
+Subject: Sign extension problem in llseek(2)
+Message-ID: <20090324182418.GC6509@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22135
+X-archive-position: 22136
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 24 Mar 2009 14:17:07 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
-> > Blinks the dots on the hex display on the DB1300 board every 1000 timer ticks.
-> > This can help tell the difference between a soft and hard hung board.
-> 
-> How about putting this into a software timer.  The Malta does that for its
-> ASCII display, see arch/mips/mti-malta/malta-display.c.
+In fs/read_write.c:
 
-Or you can implement a LED driver or GPIO accessors (with leds-gpio)
-and enable LEDS_TRIGGER_HEARTBEAT.  As a bonus you can control these
-dots from userland and/or use them as HDD access LEDs, etc.
+SYSCALL_DEFINE5(llseek, unsigned int, fd, unsigned long, offset_high,
+                unsigned long, offset_low, loff_t __user *, result,
+                unsigned int, origin)
+...
+	offset = vfs_llseek(file, ((loff_t) offset_high << 32) | offset_low,
+                        origin);
+ 
+On a 64-bit system that define CONFIG_HAVE_SYSCALL_WRAPPERS SYSCALL_DEFINEx
+will truncate long arguments to 32-bit and on some architectures such as
+MIPS sign-extended to 64-bit again.  On such architectures passing a
+value with bit 31 in offset_low set will result in a huge 64-bit offset
+being passed to vfs_llseek() and it failiing with EINVAL.
 
----
-Atsushi Nemoto
+MIPS is affected by this issue.  Other 64-bit architectures which also
+set CONFIG_HAVE_SYSCALL_WRAPPERS and __ARCH_WANT_SYS_LLSEEK are PowerPC,
+S390 and sparc.
+
+The issue was discovered on Debian's MIPS infrastructure machines running
+e2fsck:
+
+[...]
+                          This was noticed on one of the Debian
+infrastructure machines where, after an upgrade, e2fsck began failing
+with errors like:
+
+  Error reading block 524290 (Invalid argument) while getting next inode
+  from scan.  Ignore error<y>?
+[...]
+
+  Ralf

@@ -1,76 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Mar 2009 01:38:13 +0000 (GMT)
-Received: from mail.windriver.com ([147.11.1.11]:63691 "EHLO mail.wrs.com")
-	by ftp.linux-mips.org with ESMTP id S28574658AbZCZBiH (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 26 Mar 2009 01:38:07 +0000
-Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
-	by mail.wrs.com (8.13.6/8.13.6) with ESMTP id n2Q1bwiC023642;
-	Wed, 25 Mar 2009 18:37:58 -0700 (PDT)
-Received: from ism-mail02.corp.ad.wrs.com ([128.224.200.19]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Wed, 25 Mar 2009 18:37:57 -0700
-Received: from [128.224.162.71] ([128.224.162.71]) by ism-mail02.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
-	 Thu, 26 Mar 2009 02:37:55 +0100
-Message-ID: <49CADD9A.5030508@windriver.com>
-Date:	Thu, 26 Mar 2009 09:42:50 +0800
-From:	"tiejun.chen" <tiejun.chen@windriver.com>
-User-Agent: Thunderbird 2.0.0.17 (X11/20080925)
-MIME-Version: 1.0
-To:	Alan Wu <alan.wu@mstarsemi.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re: VPE loader support on 34K
-References: <B34CE01D80AD4D309E259934BA1361AA@mstarsemi.com.tw>
-In-Reply-To: <B34CE01D80AD4D309E259934BA1361AA@mstarsemi.com.tw>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 26 Mar 2009 01:37:55.0517 (UTC) FILETIME=[7C6EFED0:01C9ADB3]
-Return-Path: <Tiejun.Chen@windriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Mar 2009 14:12:50 +0000 (GMT)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:27339 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20030082AbZCZOMj (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 26 Mar 2009 14:12:39 +0000
+Received: from localhost (p4201-ipad309funabasi.chiba.ocn.ne.jp [123.217.198.201])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id D3628A41D; Thu, 26 Mar 2009 23:12:32 +0900 (JST)
+Date:	Thu, 26 Mar 2009 23:12:43 +0900 (JST)
+Message-Id: <20090326.231243.112855442.anemo@mba.ocn.ne.jp>
+To:	dan.j.williams@intel.com
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
+	linux-kernel@vger.kernel.org, haavard.skinnemoen@atmel.com
+Subject: Re: [PATCH 1/2] dmaengine: TXx9 Soc DMA Controller driver
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20090321.212920.25912728.anemo@mba.ocn.ne.jp>
+References: <20090318.110154.76582864.nemoto@toshiba-tops.co.jp>
+	<e9c3a7c20903181026h1801ef6i945e6ce9ccb36b8a@mail.gmail.com>
+	<20090321.212920.25912728.anemo@mba.ocn.ne.jp>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22155
+X-archive-position: 22156
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tiejun.chen@windriver.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Alan Wu wrote:
-> Hello,
+On Sat, 21 Mar 2009 21:29:20 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> > I think creating a dma_device instance per channel and specifying that
+> > device like atmel-mci is the more future-proof way to go.
 > 
-> I'm porting 2.6.26 Linux on the platform of MIPS 34K. Currently, the uni-processor 
-> kernel model(1 VPE) and SMP model (2 VPE) are up and work perfectly.
+> Well, I have considered it but it looks overkill for me at that time.
+> Maybe time to think again...
 > 
-> Now, I need to port the AP/SP model on a normal Linux uniprocessor kernel model. 
-> I'd like to load an application program (ELF ?) into kernel space where this 
-> application will run on a Secondary VPE undisturbed by the Linux kernel.
+> > > And I want to call Channel-3 of DMAC-0 "dma0chan3" even if Channel-2
+> > > was assigned to for public memcpy channel.
+> > 
+> > The problem is you could pass in the chan_id to guarantee 'chan3', but
+> > there is no guarantee that you will get 'dma0', as the driver has no
+> > knowledge of what other dma devices may be in the system.
 > 
-> After I enabled the MIPS_VPE_LOADER [=y] in .config , the kernel is up without
-> any error/warning message.
+> Yes, I do not expect 'dma0'.  My filter function uses
+> dev_name(chan->device->dev), which is "txx9dmac.0" in this case.
 > 
-> Please help :
-> 
-> 1. How to load the application into VPE1 from VPE0 ? (cat XYZapp >/dev/vpe1 ?)
+> Anyway, "one dma-device per channel" manner will make things much simpler.
 
-Exactly.
+Unfortunately, not so simple.  If I created a dma_device for each
+channel, all chan->chan_id will be 0 and all chan->device->dev points
+same platform device.  This makes client driver hard to select the
+particular channel.  Making a platform device for each channel will
+solve this, but it looks wrong way to go for me.
 
-> 2. Is there any sample "Hello World" application for this ? 
-> 3. Any specific tool chain needed ?
+So I will go back to multiple channels per device style, and try to
+simplify "reservation".  While all client should know correct channel
+number, the reservation is just for detecting bad configuration.
 
-I recommend you refer to the file, MIPS® SDE Programmers' Guide (.pdf).
-http://www.mips.com/products/product-materials/processor/software/
-
-It's easy to build the sample with SDE. And ever I program a sample to output
-some messages from UART to validate AP/AP. I think even you can implement the
-same to display something from the LED.
-
-Best Regards
-Tiejun
-
-> 
-> Thanks.
-> 
-> 
-> 
-> 
-> 
-> 
+---
+Atsushi Nemoto

@@ -1,56 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Mar 2009 16:36:09 +0100 (BST)
-Received: from mout.perfora.net ([74.208.4.195]:57074 "EHLO mout.perfora.net")
-	by ftp.linux-mips.org with ESMTP id S20026284AbZC2PgD (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 29 Mar 2009 16:36:03 +0100
-Received: from [192.168.1.100] (CPE001310d36801-CM00194792a882.cpe.net.cable.rogers.com [99.240.144.190])
-	by mrelay.perfora.net (node=mrus1) with ESMTP (Nemesis)
-	id 0MKpCa-1Lnx3B0qW5-000d7p; Sun, 29 Mar 2009 11:35:57 -0400
-Message-ID: <49CF9558.6030604@cooper-street.com>
-Date:	Sun, 29 Mar 2009 11:35:52 -0400
-From:	Charles Eidsness <charles@cooper-street.com>
-Reply-To: charles@cooper-street.com
-Organization: Cooper Street Innovations Inc.
-User-Agent: Thunderbird 2.0.0.21 (X11/20090318)
-MIME-Version: 1.0
-To:	Manuel Lauss <mano@roarinelk.homelinux.net>
-CC:	alsa-devel <alsa-devel@alsa-project.org>,
-	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] ALSA: au1x00: convert to platform device
-References: <1238320026-4936-1-git-send-email-mano@roarinelk.homelinux.net>
-In-Reply-To: <1238320026-4936-1-git-send-email-mano@roarinelk.homelinux.net>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Mar 2009 16:43:53 +0100 (BST)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:65488 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S20025315AbZC2Pnq (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 29 Mar 2009 16:43:46 +0100
+Received: (qmail 24622 invoked from network); 29 Mar 2009 17:43:12 +0200
+Received: from scarran.roarinelk.net (192.168.0.242)
+  by fnoeppeil48.netpark.at with SMTP; 29 Mar 2009 17:43:12 +0200
+Date:	Sun, 29 Mar 2009 17:43:47 +0200
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Cc:	Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 0/3] Alchemy: platform updates
+Message-ID: <20090329174347.0ebccf00@scarran.roarinelk.net>
+In-Reply-To: <49CF71BE.2070109@ru.mvista.com>
+References: <1238318822-4772-1-git-send-email-mano@roarinelk.homelinux.net>
+	<49CF5CE6.1070003@ru.mvista.com>
+	<20090329143802.0a09baca@scarran.roarinelk.net>
+	<49CF71BE.2070109@ru.mvista.com>
+Organization: Private
+X-Mailer: Claws Mail 3.7.1 (GTK+ 2.14.7; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V01U2FsdGVkX1/mrblXJBioUTaRIkX/NHaEaHIG7/WKpVvPU12
- xzb3kzh6NQfNGvzaL0EfwtKE4CTIgfpR6FNxboaWcm3Nx3ir8o
- LWfsOpch2DzP2VXhCNBmw==
-Return-Path: <charles@cooper-street.com>
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22177
+X-archive-position: 22178
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: charles@cooper-street.com
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-omelinux.net wrote:
+Hi Sergei,
 
-> ---
-> Compile-tested only; I don't have the right hardware to test this.
+On Sun, 29 Mar 2009 17:03:58 +0400
+Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
+> > Please elaborate.  Shall I check for a config symbol or if bootloader
+> > has enabled the peripherals?  The latter is IMO stupid since the
+> > bootloader should only load an OS and not preemptively enable every
+> > device which might some day be used just because the running OS doesn't
+> > know what it wants...
+> >   
 > 
-> Charles: If you still have access to the hardware, could you please test
-> this patch?  Just add something like the following to your board's
-> platform device registration:
-> 
+>    It should check what the board code (or bootloader) has enabled. I 
+> remember the board code writes some config registers...
 
-Hi,
+I'd rather duplicate simple, known-working code than go around looking
+whether some other part of the boards software system has set enable
+bits. (Think of a linux bootloader akin to the simplicity of a QNX IPL
+which doesn't enable anything but the debug port, if at all)
 
-I wish I could but it's been years since I worked on that project and I'm pretty 
-sure that I don't have any hardware around anymore, but I will do a thorough 
-search next week anyway. There may be something hiding in the back of a dusty 
-closet that I've forgotten about, if I find something I will let you know.
+In short, consider these patches withdrawn.
 
-Cheers,
-Charles
+Thanks!
+	Manuel Lauss

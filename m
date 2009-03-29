@@ -1,52 +1,181 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Mar 2009 16:50:59 +0000 (GMT)
-Received: from localhost.localdomain ([127.0.0.1]:10708 "EHLO h5.dl5rb.org.uk")
-	by ftp.linux-mips.org with ESMTP id S20023955AbZC1Qu5 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 28 Mar 2009 16:50:57 +0000
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n2SGotwN007749;
-	Sat, 28 Mar 2009 17:50:56 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n2SGossk007747;
-	Sat, 28 Mar 2009 17:50:54 +0100
-Date:	Sat, 28 Mar 2009 17:50:54 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Manuel Lauss <mano@roarinelk.homelinux.net>
-Cc:	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 0/6] Alchemy updates for 2.6.30
-Message-ID: <20090328165053.GB23938@linux-mips.org>
-References: <1237999773-5174-1-git-send-email-mano@roarinelk.homelinux.net> <20090328150320.37bfd6be@scarran.roarinelk.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20090328150320.37bfd6be@scarran.roarinelk.net>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@h5.dl5rb.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Mar 2009 10:27:11 +0100 (BST)
+Received: from fnoeppeil48.netpark.at ([217.175.205.176]:45520 "EHLO
+	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
+	id S20032629AbZC2J1C (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 29 Mar 2009 10:27:02 +0100
+Received: (qmail 22290 invoked from network); 29 Mar 2009 11:26:14 +0200
+Received: from flagship.roarinelk.net (HELO localhost.localdomain) (192.168.0.197)
+  by 192.168.0.1 with SMTP; 29 Mar 2009 11:26:14 +0200
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+To:	Linux-MIPS <linux-mips@linux-mips.org>
+Cc:	Manuel Lauss <mano@roarinelk.homelinux.net>
+Subject: [PATCH 2/3] Alchemy: add RTC device to devboards
+Date:	Sun, 29 Mar 2009 11:27:01 +0200
+Message-Id: <1238318822-4772-3-git-send-email-mano@roarinelk.homelinux.net>
+X-Mailer: git-send-email 1.6.2
+In-Reply-To: <1238318822-4772-2-git-send-email-mano@roarinelk.homelinux.net>
+References: <1238318822-4772-1-git-send-email-mano@roarinelk.homelinux.net>
+ <1238318822-4772-2-git-send-email-mano@roarinelk.homelinux.net>
+Return-Path: <mano@roarinelk.homelinux.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22163
+X-archive-position: 22164
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Mar 28, 2009 at 03:03:20PM +0100, Manuel Lauss wrote:
+Add a platform_device for on-chip RTC (32kHz counter0) on all devboards
 
-> > #5    I dislike the alchemy/common/platform.c file because it makes passing
-> >       platform data to drivers ugly (the platdata struct and the consumer
-> >       are in different files) and I also don't like the fact that every
-> >       conceivable piece of alchemy hardware has a driver registered whether
-> >       I like it or not.  To not change existing behaviour, the platform.c
-> >       file is now invoked by the board Makefiles instead of the one in common/.
-> > 
-> > #6    Adds more complete DB1200 support (see patch for more info).
-> 
-> Please ignore patches 5 and 6.  I'm working on a better solution for
-> the problem #5 is supposed to fix,  and #6 depends on a patch to the
-> 8250 driver which has not received any feedback.
+Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
+---
+Tested on the DB1200 only;  according to their schematics, all other
+devboards do have a 32.768kHz crystal too and this patch should work.
 
-Okay, dropped.
+ arch/mips/alchemy/devboards/db1x00/platform.c |    6 ++++++
+ arch/mips/alchemy/devboards/pb1000/platform.c |    6 ++++++
+ arch/mips/alchemy/devboards/pb1100/platform.c |    6 ++++++
+ arch/mips/alchemy/devboards/pb1200/platform.c |    6 ++++++
+ arch/mips/alchemy/devboards/pb1500/platform.c |    6 ++++++
+ arch/mips/alchemy/devboards/pb1550/platform.c |    6 ++++++
+ 6 files changed, 36 insertions(+), 0 deletions(-)
 
-  Ralf
+diff --git a/arch/mips/alchemy/devboards/db1x00/platform.c b/arch/mips/alchemy/devboards/db1x00/platform.c
+index 49d6e5c..a6fb6bd 100644
+--- a/arch/mips/alchemy/devboards/db1x00/platform.c
++++ b/arch/mips/alchemy/devboards/db1x00/platform.c
+@@ -137,6 +137,11 @@ static struct platform_device pbdb_smbus_device = {
+ };
+ #endif
+ 
++static struct platform_device au1xxx_rtc_device = {
++	.name		= "rtc-au1xxx",
++	.id		= -1,
++};
++
+ static struct platform_device *au1xxx_platform_devices[] __initdata = {
+ 	&au1xx0_uart_device,
+ 	&au1xxx_usb_ohci_device,
+@@ -147,6 +152,7 @@ static struct platform_device *au1xxx_platform_devices[] __initdata = {
+ #ifdef SMBUS_PSC_BASE
+ 	&pbdb_smbus_device,
+ #endif
++	&au1xxx_rtc_device,
+ };
+ 
+ static int __init au1xxx_platform_init(void)
+diff --git a/arch/mips/alchemy/devboards/pb1000/platform.c b/arch/mips/alchemy/devboards/pb1000/platform.c
+index 0661a49..9f42f4c 100644
+--- a/arch/mips/alchemy/devboards/pb1000/platform.c
++++ b/arch/mips/alchemy/devboards/pb1000/platform.c
+@@ -68,10 +68,16 @@ static struct platform_device pb1000_pcmcia_device = {
+ 	.id 		= 0,
+ };
+ 
++static struct platform_device au1xxx_rtc_device = {
++	.name 		= "rtc-au1xxx",
++	.id 		= -1,
++};
++
+ static struct platform_device *pb1000_devices[] = {
+ 	&pb1000_uart_device,
+ 	&au1xxx_usb_ohci_device,
+ 	&pb1000_pcmcia_device,
++	&au1xxx_rtc_device,
+ };
+ 
+ static int __init pb1000_platform_init(void)
+diff --git a/arch/mips/alchemy/devboards/pb1100/platform.c b/arch/mips/alchemy/devboards/pb1100/platform.c
+index 276db5a..42759f9 100644
+--- a/arch/mips/alchemy/devboards/pb1100/platform.c
++++ b/arch/mips/alchemy/devboards/pb1100/platform.c
+@@ -93,11 +93,17 @@ static struct platform_device au1100_lcd_device = {
+ 	.resource       = au1100_lcd_resources,
+ };
+ 
++static struct platform_device au1xxx_rtc_device = {
++	.name 		= "rtc-au1xxx",
++	.id 		= -1,
++};
++
+ static struct platform_device *pb1100_devices[] = {
+ 	&pb1100_uart_device,
+ 	&au1xxx_usb_ohci_device,
+ 	&pb1100_pcmcia_device,
+ 	&au1100_lcd_device,
++	&au1xxx_rtc_device,
+ };
+ 
+ static int __init pb1100_platform_init(void)
+diff --git a/arch/mips/alchemy/devboards/pb1200/platform.c b/arch/mips/alchemy/devboards/pb1200/platform.c
+index ff446a5..f32391e 100644
+--- a/arch/mips/alchemy/devboards/pb1200/platform.c
++++ b/arch/mips/alchemy/devboards/pb1200/platform.c
+@@ -326,6 +326,11 @@ static struct platform_device pb1200_smbus_device = {
+ 	.resource	= pb1200_smbus_resources,
+ };
+ 
++static struct platform_device au1xxx_rtc_device = {
++	.name 		= "rtc-au1xxx",
++	.id 		= -1,
++};
++
+ static struct platform_device *board_platform_devices[] __initdata = {
+ 	&au1200_uart_device,
+ 	&ide_device,
+@@ -336,6 +341,7 @@ static struct platform_device *board_platform_devices[] __initdata = {
+ 	&au1xxx_usb_otg_device,
+ 	&au1200_lcd_device,
+ 	&pb1200_smbus_device,
++	&au1xxx_rtc_device,
+ };
+ 
+ static int __init board_register_devices(void)
+diff --git a/arch/mips/alchemy/devboards/pb1500/platform.c b/arch/mips/alchemy/devboards/pb1500/platform.c
+index 5c68d68..affb3e1 100644
+--- a/arch/mips/alchemy/devboards/pb1500/platform.c
++++ b/arch/mips/alchemy/devboards/pb1500/platform.c
+@@ -66,10 +66,16 @@ static struct platform_device pb1500_pcmcia_device = {
+ 	.id 		= 0,
+ };
+ 
++static struct platform_device au1xxx_rtc_device = {
++	.name 		= "rtc-au1xxx",
++	.id 		= -1,
++};
++
+ static struct platform_device *pb1500_devices[] = {
+ 	&pb1500_uart_device,
+ 	&au1xxx_usb_ohci_device,
+ 	&pb1500_pcmcia_device,
++	&au1xxx_rtc_device,
+ };
+ 
+ static int __init pb1500_platform_init(void)
+diff --git a/arch/mips/alchemy/devboards/pb1550/platform.c b/arch/mips/alchemy/devboards/pb1550/platform.c
+index f653193..717ff02 100644
+--- a/arch/mips/alchemy/devboards/pb1550/platform.c
++++ b/arch/mips/alchemy/devboards/pb1550/platform.c
+@@ -83,11 +83,17 @@ static struct platform_device pb1550_smbus_device = {
+ 	.resource	= pb1550_smbus_resources,
+ };
+ 
++static struct platform_device au1xxx_rtc_device = {
++	.name 		= "rtc-au1xxx",
++	.id 		= -1,
++};
++
+ static struct platform_device *pb1550_devices[] = {
+ 	&pb1550_uart_device,
+ 	&au1xxx_usb_ohci_device,
+ 	&pb1550_pcmcia_device,
+ 	&pb1550_smbus_device,
++	&au1xxx_rtc_device,
+ };
+ 
+ static int __init pb1550_platform_init(void)
+-- 
+1.6.2

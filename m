@@ -1,12 +1,12 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Mar 2009 12:37:09 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:31612 "EHLO imap.sh.mvista.com")
-	by ftp.linux-mips.org with ESMTP id S20023362AbZC2LhC (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 29 Mar 2009 12:37:02 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Mar 2009 12:37:34 +0100 (BST)
+Received: from h155.mvista.com ([63.81.120.155]:33404 "EHLO imap.sh.mvista.com")
+	by ftp.linux-mips.org with ESMTP id S20024587AbZC2LhM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 29 Mar 2009 12:37:12 +0100
 Received: from [127.0.0.1] (unknown [10.150.0.9])
 	by imap.sh.mvista.com (Postfix) with ESMTP
-	id 2E9F13EC9; Sun, 29 Mar 2009 04:37:00 -0700 (PDT)
-Message-ID: <49CF5D58.70907@ru.mvista.com>
-Date:	Sun, 29 Mar 2009 15:36:56 +0400
+	id 9EA8F3EC9; Sun, 29 Mar 2009 04:37:09 -0700 (PDT)
+Message-ID: <49CF5D61.7090104@ru.mvista.com>
+Date:	Sun, 29 Mar 2009 15:37:05 +0400
 From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
 User-Agent: Thunderbird 2.0.0.21 (Windows/20090302)
 MIME-Version: 1.0
@@ -21,7 +21,7 @@ Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22172
+X-archive-position: 22173
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

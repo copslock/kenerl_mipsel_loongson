@@ -1,61 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2009 09:11:29 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:55272 "EHLO h5.dl5rb.org.uk")
-	by ftp.linux-mips.org with ESMTP id S20028983AbZCaIL1 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2009 09:11:27 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n2V8BL5V018533;
-	Tue, 31 Mar 2009 10:11:23 +0200
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n2V8BHX1018529;
-	Tue, 31 Mar 2009 10:11:17 +0200
-Date:	Tue, 31 Mar 2009 10:11:13 +0200
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	=?utf-8?B?5p6X5bu65a6J?= <colin@realtek.com.tw>,
-	linux-mips@linux-mips.org
-Subject: Re: The impact to change page size to 16k for cache alias
-Message-ID: <20090331081113.GA17934@linux-mips.org>
-References: <9BDA961341E843F29C1C1ECDB54FD0CF@realtek.com.tw> <20090330082414.GA4797@adriano.hkcable.com.hk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2009 10:36:30 +0100 (BST)
+Received: from inet-tsb5.toshiba.co.jp ([202.33.96.24]:21892 "EHLO
+	imx2.toshiba.co.jp") by ftp.linux-mips.org with ESMTP
+	id S20024683AbZCaJgZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 31 Mar 2009 10:36:25 +0100
+Received: from arc1.toshiba.co.jp ([133.199.194.235])
+	by imx2.toshiba.co.jp  with ESMTP id n2V9YDob007443;
+	Tue, 31 Mar 2009 18:34:13 +0900 (JST)
+Received: (from root@localhost)
+	by arc1.toshiba.co.jp  id n2V9YDSK013183;
+	Tue, 31 Mar 2009 18:34:13 +0900 (JST)
+Received: from unknown [133.199.192.144] 
+	 by arc1.toshiba.co.jp with ESMTP id UAA13182;
+	 Tue, 31 Mar 2009 18:34:13 +0900
+Received: from mx12.toshiba.co.jp (localhost [127.0.0.1])
+	by ovp2.toshiba.co.jp  with ESMTP id n2V9YCJh024670;
+	Tue, 31 Mar 2009 18:34:12 +0900 (JST)
+Received: from BK2211.rdc.toshiba.co.jp by toshiba.co.jp id n2V9YCkK017829; Tue, 31 Mar 2009 18:34:12 +0900 (JST)
+Received: from island.swc.toshiba.co.jp (localhost [127.0.0.1])
+	by BK2211.rdc.toshiba.co.jp (8.13.8+Sun/8.13.8) with ESMTP id n2V9YCST003528;
+	Tue, 31 Mar 2009 18:34:12 +0900 (JST)
+Received: from [133.196.123.121] (dhcp-b021 [133.196.123.121])
+	by island.swc.toshiba.co.jp (Postfix) with ESMTP
+	id 0A8A540002; Tue, 31 Mar 2009 18:34:07 +0900 (JST)
+Message-ID: <49D1E384.8080009@toshiba.co.jp>
+Date:	Tue, 31 Mar 2009 18:33:56 +0900
+From:	KOBAYASHI Yoshitake <yoshitake.kobayashi@toshiba.co.jp>
+User-Agent: Thunderbird 2.0.0.19 (Windows/20081209)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20090330082414.GA4797@adriano.hkcable.com.hk>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@h5.dl5rb.org.uk>
+To:	Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>,
+	IDE/ATA Devel <linux-ide@vger.kernel.org>
+Cc:	Grant Grundler <grundler@google.com>,
+	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+	LKML <linux-kernel@google.com>,
+	Linux/MIPS Development <linux-mips@linux-mips.org>,
+	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+	Linux/PPC Development <linuxppc-dev@ozlabs.org>
+Subject: Re: [PATCH] linux-next remove wmb() from ide-dma-sff.c and scc_pata.c
+References: <da824cf30903301739l688e8eb2r46086953245ebbe5@mail.gmail.com> <alpine.LRH.2.00.0903310950040.9551@vixen.sonytel.be>
+In-Reply-To: <alpine.LRH.2.00.0903310950040.9551@vixen.sonytel.be>
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=ISO-8859-15
+Content-Transfer-Encoding: 7bit
+Return-Path: <yoshitake.kobayashi@toshiba.co.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22194
+X-archive-position: 22195
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: yoshitake.kobayashi@toshiba.co.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Mar 30, 2009 at 04:24:15PM +0800, Zhang Le wrote:
-
-> > Hi all,
-> > We are willing to use 16k page size to avoid cache alias problem.
-> > The Linux version we use is 2.6.12. If we just upgrade mm system to 
-> > support 16k page size, what else problems will happen?
-> > There is already one thing we know that applications of ELF format  
-> > applications should be transformed to be 16k alignment.
-> > Another one, we think, highly suspected to be problematic is that many  
-> > drivers will be ok for 4k page size but fails for 16k.
-> > That is because 4k page size had been seemed to be natural for a very 
-> > long long time.
-> > Any other problem that shall happen for 16k page size?
+2009/03/31 16:51, Geert Uytterhoeven wrote:
+> On Mon, 30 Mar 2009, Grant Grundler wrote:
+>> Followup to "[PATCH 03/10] ide: destroy DMA mappings after ending DMA"
+>> email on March 14th:
+>>     http://lkml.org/lkml/2009/3/14/17
+>>
+>> No maintainer is listed for "Toshiba CELL Reference Set IDE" (BLK_DEV_CELLEB)
+>> or tx4939ide.c in MAINTAINERS. I've CC'd "Ishizaki Kou" @Toshiba (Maintainer for
+>> "Spidernet Network Driver for CELL") and linuxppc-dev list in the hope
+>> someone else
+>> would know or would be able to ACK this patch.
 > 
-> Linux on Loongson 2E and 2F uses 16k page size to avoid cache alias problem, too.
-> However, I haven't encountered any problem on Linux kernel itself due to 16k page
-> size.
-> 
-> Anyway, I am not 100% familiar with Loongson patches, so I am not sure whether
-> the page size problem is already been taken care of in the patch. If you are
-> interested to find out yourself, you can get the whole source here:
-> http://repo.or.cz/w/linux-2.6/linux-loongson.git
+> tx49xx is MIPS, for Nemoto-san.
 
-I've got a report that Fulong is currently only working with 16k pages.  So
-4k is no longer the bullet proof choice for all cases :)
+The patch looks good for Toshiba Cell Reference Set.
+I think the patch will be acked by IDE maintainer.
 
-  Ralf
+Thank you for informing me of the contribution.
+
+Regards,
+
+-- Yoshi

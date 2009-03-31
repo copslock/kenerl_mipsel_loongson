@@ -1,47 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2009 20:44:22 +0100 (BST)
-Received: from static-72-72-73-123.bstnma.east.verizon.net ([72.72.73.123]:44206
-	"EHLO imap-1.sicortex.com") by ftp.linux-mips.org with ESMTP
-	id S20023325AbZCaToP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 31 Mar 2009 20:44:15 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by imap-1.sicortex.com (Postfix) with ESMTP id 2EC8BB9E61;
-	Tue, 31 Mar 2009 15:44:08 -0400 (EDT)
-X-Virus-Scanned: amavisd-new at sicortex.com
-Received: from imap-1.sicortex.com ([127.0.0.1])
-	by localhost (imap-1.sicortex.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id VMPyfMIWAtvd; Tue, 31 Mar 2009 15:44:03 -0400 (EDT)
-Received: from [10.0.1.104] (gs104.sicortex.com [10.0.1.104])
-	by imap-1.sicortex.com (Postfix) with ESMTP id 0CC3FB9E53;
-	Tue, 31 Mar 2009 15:43:50 -0400 (EDT)
-Message-ID: <49D27275.6060006@sicortex.com>
-Date:	Tue, 31 Mar 2009 15:43:49 -0400
-From:	Peter Watkins <pwatkins@sicortex.com>
-User-Agent: Mozilla Thunderbird 1.0.6 (X11/20050831)
-X-Accept-Language: en-us, en
-MIME-Version: 1.0
-To:	colin@realtek.com.tw
-CC:	linux-mips@linux-mips.org
-Subject: Re: The impact to change page size to 16k for cache alias
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <pwatkins@sicortex.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2009 23:05:39 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:56511 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S20025306AbZCaWFd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 31 Mar 2009 23:05:33 +0100
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B49d293910002>; Tue, 31 Mar 2009 18:05:05 -0400
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 31 Mar 2009 15:04:45 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 31 Mar 2009 15:04:44 -0700
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n2VM4em2002610;
+	Tue, 31 Mar 2009 15:04:40 -0700
+Received: (from ddaney@localhost)
+	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n2VM4d8a002609;
+	Tue, 31 Mar 2009 15:04:39 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+To:	linux-ide@vger.kernel.org, jgarzik@redhat.com
+Cc:	linux-mips@linux-mips.org, David Daney <ddaney@caviumnetworks.com>
+Subject: [PATCH] libata: Remove some redundant casts from pata_octeon_cf.c
+Date:	Tue, 31 Mar 2009 15:04:39 -0700
+Message-Id: <1238537079-2584-1-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.6.0.6
+X-OriginalArrivalTime: 31 Mar 2009 22:04:44.0860 (UTC) FILETIME=[B3161FC0:01C9B24C]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22220
+X-archive-position: 22221
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pwatkins@sicortex.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Colin,
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+---
 
-When we went to 64K pages we had to get a firmware upgrade for a myrinet card. As I recall it was already OK for 16K pages. 
+Please consider for 2.6.30.
 
-For mellanox cards we had to set a .ini parameter, log2_uar_bar_megabytes. Send me a note if you want more details.
+ drivers/ata/pata_octeon_cf.c |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
 
-Other than that, the drivers we tried just worked (qla24xxx, e1000, tg3, sata sil, sil24).
-
---Peter
+diff --git a/drivers/ata/pata_octeon_cf.c b/drivers/ata/pata_octeon_cf.c
+index 0fe4ef3..0e71be1 100644
+--- a/drivers/ata/pata_octeon_cf.c
++++ b/drivers/ata/pata_octeon_cf.c
+@@ -503,7 +503,7 @@ static void octeon_cf_dma_setup(struct ata_queued_cmd *qc)
+ 	struct ata_port *ap = qc->ap;
+ 	struct octeon_cf_port *cf_port;
+ 
+-	cf_port = (struct octeon_cf_port *)ap->private_data;
++	cf_port = ap->private_data;
+ 	DPRINTK("ENTER\n");
+ 	/* issue r/w command */
+ 	qc->cursg = qc->sg;
+@@ -596,7 +596,7 @@ static unsigned int octeon_cf_dma_finished(struct ata_port *ap,
+ 	if (ap->hsm_task_state != HSM_ST_LAST)
+ 		return 0;
+ 
+-	cf_port = (struct octeon_cf_port *)ap->private_data;
++	cf_port = ap->private_data;
+ 
+ 	dma_cfg.u64 = cvmx_read_csr(CVMX_MIO_BOOT_DMA_CFGX(ocd->dma_engine));
+ 	if (dma_cfg.s.size != 0xfffff) {
+@@ -657,7 +657,7 @@ static irqreturn_t octeon_cf_interrupt(int irq, void *dev_instance)
+ 			continue;
+ 
+ 		ocd = ap->dev->platform_data;
+-		cf_port = (struct octeon_cf_port *)ap->private_data;
++		cf_port = ap->private_data;
+ 		dma_int.u64 =
+ 			cvmx_read_csr(CVMX_MIO_BOOT_DMA_INTX(ocd->dma_engine));
+ 		dma_cfg.u64 =
+-- 
+1.6.0.6

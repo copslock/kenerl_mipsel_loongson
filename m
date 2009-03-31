@@ -1,64 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2009 16:32:22 +0100 (BST)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:32423 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S20021805AbZCaPcP (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 31 Mar 2009 16:32:15 +0100
-Received: (qmail 11243 invoked by uid 1000); 31 Mar 2009 17:32:13 +0200
-Date:	Tue, 31 Mar 2009 17:32:13 +0200
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	Ralf Baechle <ralf@linux-mips.org>,
-	"Kevin D. Kissell" <kevink@paralogos.com>
-Cc:	Linux MIPS org <linux-mips@linux-mips.org>
-Subject: Re: PATCH for SMTC: Fix Name Collision in _clockevent_init
-	functions
-Message-ID: <20090331153213.GA11043@roarinelk.homelinux.net>
-References: <49D1FA28.4030308@paralogos.com> <20090331131251.GC3804@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20090331131251.GC3804@linux-mips.org>
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <mano@roarinelk.homelinux.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2009 17:15:49 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:7372 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20023836AbZCaQPl (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2009 17:15:41 +0100
+Received: from localhost.localdomain (p6205-ipad211funabasi.chiba.ocn.ne.jp [58.91.162.205])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 2B80DA9E6; Wed,  1 Apr 2009 01:15:34 +0900 (JST)
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+To:	Grant Grundler <grundler@google.com>
+Cc:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+	linux-ide@vger.kernel.org, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] tx4939ide: remove wmb()
+Date:	Wed,  1 Apr 2009 01:15:36 +0900
+Message-Id: <1238516136-15852-1-git-send-email-anemo@mba.ocn.ne.jp>
+X-Mailer: git-send-email 1.5.6.3
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22201
+X-archive-position: 22202
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi Kevin, Ralf,
+* define CHECK_DMA_MASK
+* remove use of wmb()
 
-On Tue, Mar 31, 2009 at 03:12:51PM +0200, Ralf Baechle wrote:
-> On Tue, Mar 31, 2009 at 01:10:32PM +0200, Kevin D. Kissell wrote:
-> > From: "Kevin D. Kissell" <kevink@paralogos.com>
-> > Date: Tue, 31 Mar 2009 13:10:32 +0200
-> > To: Linux MIPS org <linux-mips@linux-mips.org>
-> > Subject: PATCH for SMTC: Fix Name Collision in _clockevent_init functions
-> > Content-Type: multipart/mixed;
-> > 	boundary="------------070601030706030107070108"
-> > 
-> > Commit 779e7d41ad004946603da139da99ba775f74cb1c created a name collision
-> > in SMTC builds.  The attached patch corrects this in a a
+Suggested-by: Grant Grundler <grundler@google.com>
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+This patch is against linux-next 20090331.
 
-Oh, I'm sorry.
+ drivers/ide/tx4939ide.c |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
 
-
-> > not-too-terribly-ugly manner.  Note that the SMTC case has to come
-> > first, because CEVT_R4K will also be true.
-
-I'm curious: Is it required to use the CP0 counter for SMTC kernels, or
-could the SMTC-specific parts somehow be abstracted out and called by
-other timer backends? (for a hypothetical SMTC-enhanced Alchemy core)
-
-
-> Looks ok but I won't apply it immediately to give Manuel a chance to
-> comment.
-
-It works for me (both alchemy and CP0 timers).
-
-Thanks!
-	Manuel Lauss
+diff --git a/drivers/ide/tx4939ide.c b/drivers/ide/tx4939ide.c
+index cc269c0..48186ae 100644
+--- a/drivers/ide/tx4939ide.c
++++ b/drivers/ide/tx4939ide.c
+@@ -327,15 +327,15 @@ static int tx4939ide_dma_end(ide_drive_t *drive)
+ 	/* read and clear the INTR & ERROR bits */
+ 	dma_stat = tx4939ide_clear_dma_status(base);
+ 
+-	wmb();
++#define CHECK_DMA_MASK (ATA_DMA_ACTIVE | ATA_DMA_ERR | ATA_DMA_INTR)
+ 
+ 	/* verify good DMA status */
+-	if ((dma_stat & (ATA_DMA_INTR | ATA_DMA_ERR | ATA_DMA_ACTIVE)) == 0 &&
++	if ((dma_stat & CHECK_DMA_MASK) == 0 &&
+ 	    (ctl & (TX4939IDE_INT_XFEREND | TX4939IDE_INT_HOST)) ==
+ 	    (TX4939IDE_INT_XFEREND | TX4939IDE_INT_HOST))
+ 		/* INT_IDE lost... bug? */
+ 		return 0;
+-	return ((dma_stat & (ATA_DMA_INTR | ATA_DMA_ERR | ATA_DMA_ACTIVE)) !=
++	return ((dma_stat & CHECK_DMA_MASK) !=
+ 		ATA_DMA_INTR) ? 0x10 | dma_stat : 0;
+ }
+ 
+-- 
+1.5.6.3

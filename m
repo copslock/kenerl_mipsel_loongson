@@ -1,105 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2009 17:36:28 +0100 (BST)
-Received: from smtp-out.google.com ([216.239.45.13]:56638 "EHLO
-	smtp-out.google.com") by ftp.linux-mips.org with ESMTP
-	id S20024241AbZCaQgV convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2009 17:36:21 +0100
-Received: from wpaz29.hot.corp.google.com (wpaz29.hot.corp.google.com [172.24.198.93])
-	by smtp-out.google.com with ESMTP id n2VGaHFw018291
-	for <linux-mips@linux-mips.org>; Tue, 31 Mar 2009 09:36:18 -0700
-DKIM-Signature:	v=1; a=rsa-sha1; c=relaxed/relaxed; d=google.com; s=beta;
-	t=1238517378; bh=57vL9RXOM2zmshfEFQaoJc6qhrc=;
-	h=DomainKey-Signature:MIME-Version:In-Reply-To:References:Date:
-	 Message-ID:Subject:From:To:Cc:Content-Type:
-	 Content-Transfer-Encoding:X-System-Of-Record; b=AcSjZHqrf0793UD44u
-	+nJ4GUV/8QvIN5zNGesqBK8J5+qnIlax5OcCIuIAjUnzRo7cLHvVkTDKGOH8jW9VyXH
-	A==
-DomainKey-Signature: a=rsa-sha1; s=beta; d=google.com; c=nofws; q=dns;
-	h=mime-version:in-reply-to:references:date:message-id:subject:from:to:
-	cc:content-type:content-transfer-encoding:x-system-of-record;
-	b=xyZVkMJrRcx49SOtdW3KP5nrOKQbfFM7wStLis4aVN29IkkCZtwbWafD7IY1kTnjh
-	9Bk0iWmuFveupWMyEhMMA==
-Received: from gxk8 (gxk8.prod.google.com [10.202.11.8])
-	by wpaz29.hot.corp.google.com with ESMTP id n2VGZFM1002459
-	for <linux-mips@linux-mips.org>; Tue, 31 Mar 2009 09:36:16 -0700
-Received: by gxk8 with SMTP id 8so5601433gxk.5
-        for <linux-mips@linux-mips.org>; Tue, 31 Mar 2009 09:36:16 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 10.231.20.2 with SMTP id d2mr1406971ibb.37.1238517375660; Tue, 31 
-	Mar 2009 09:36:15 -0700 (PDT)
-In-Reply-To: <1238516136-15852-1-git-send-email-anemo@mba.ocn.ne.jp>
-References: <1238516136-15852-1-git-send-email-anemo@mba.ocn.ne.jp>
-Date:	Tue, 31 Mar 2009 09:36:15 -0700
-Message-ID: <da824cf30903310936p75469518j9bb28421b1ee81b8@mail.gmail.com>
-Subject: Re: [PATCH] tx4939ide: remove wmb()
-From:	Grant Grundler <grundler@google.com>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-	linux-ide@vger.kernel.org, linux-mips@linux-mips.org,
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-System-Of-Record: true
-Return-Path: <grundler@google.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2009 17:44:46 +0100 (BST)
+Received: from mail-fx0-f175.google.com ([209.85.220.175]:50859 "EHLO
+	mail-fx0-f175.google.com") by ftp.linux-mips.org with ESMTP
+	id S20023873AbZCaQok (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 31 Mar 2009 17:44:40 +0100
+Received: by fxm23 with SMTP id 23so2669397fxm.0
+        for <linux-mips@linux-mips.org>; Tue, 31 Mar 2009 09:44:34 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:from:to:cc:subject
+         :date:message-id:x-mailer;
+        bh=VxL010dIDZVMVkLNAA0yodbJ2I3lur2OfBRxBHDjv6U=;
+        b=rT6vVGoXvi+JsHXXW+NyTt35B3KoGrePAnGWA0l+rW3WwWuDR+RIZRUK1QgcK51+ej
+         m4mDbOcw/gz5+4f6Cg9csVN8LauT1gp97OZqxBZ6VU7zgP/oDY8u1XdZElHOz712ydXh
+         cvkQRLVc6zT2P30BEVuZYb20cSIN+i5gU3Su0=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=sender:from:to:cc:subject:date:message-id:x-mailer;
+        b=dFyOcl0Qbij/cXvybVMpRFOs3Mrkr8vLTUGbsHfXGyndGw8FRUbcMqNtajFjCrlxOr
+         I2x4rrM/nC28AkYdgXu7rqEIvb5KI4bZXXf3FiNm9vFBrvfyXa7avth1lIKLcJIG+Gul
+         2eVqh1+y7VIta3azDOt9HE+asBrq1ajofMPGI=
+Received: by 10.103.213.10 with SMTP id p10mr2357452muq.49.1238517874497;
+        Tue, 31 Mar 2009 09:44:34 -0700 (PDT)
+Received: from localhost.localdomain (p5496E20F.dip.t-dialin.net [84.150.226.15])
+        by mx.google.com with ESMTPS id t10sm12414544muh.29.2009.03.31.09.44.33
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Tue, 31 Mar 2009 09:44:34 -0700 (PDT)
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+To:	Linux-MIPS <linux-mips@linux-mips.org>
+Cc:	Manuel Lauss <mano@roarinelk.homelinux.net>
+Subject: [PATCH] au1xxx-ide: fix build with CONFIG_PM
+Date:	Tue, 31 Mar 2009 18:44:36 +0200
+Message-Id: <1238517876-4724-1-git-send-email-mano@roarinelk.homelinux.net>
+X-Mailer: git-send-email 1.6.2
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22205
+X-archive-position: 22206
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: grundler@google.com
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Mar 31, 2009 at 9:15 AM, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> * define CHECK_DMA_MASK
-> * remove use of wmb()
->
-> Suggested-by: Grant Grundler <grundler@google.com>
+au1xxx_ide_dev_t is never defined;  get rid of all PM stuff as
+well since it is not in the driver source anyway.
 
-Thank you for the attribution!
+Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
+---
+Tested on DB1200.
 
-But I think proper header would be:
-    Reported-by: Grant Grundler <grundler@google.com>
+ arch/mips/include/asm/mach-au1x00/au1xxx_ide.h |   17 -----------------
+ 1 files changed, 0 insertions(+), 17 deletions(-)
 
-But in this case, since i've looked at the code and am under the
-illusion I understand it, I'm comfortable with:
-    Reviewed-by: Grant Grundler <grundler@google.com>
-
-thanks!
-grant
-
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-> ---
-> This patch is against linux-next 20090331.
->
->  drivers/ide/tx4939ide.c |    6 +++---
->  1 files changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/ide/tx4939ide.c b/drivers/ide/tx4939ide.c
-> index cc269c0..48186ae 100644
-> --- a/drivers/ide/tx4939ide.c
-> +++ b/drivers/ide/tx4939ide.c
-> @@ -327,15 +327,15 @@ static int tx4939ide_dma_end(ide_drive_t *drive)
->        /* read and clear the INTR & ERROR bits */
->        dma_stat = tx4939ide_clear_dma_status(base);
->
-> -       wmb();
-> +#define CHECK_DMA_MASK (ATA_DMA_ACTIVE | ATA_DMA_ERR | ATA_DMA_INTR)
->
->        /* verify good DMA status */
-> -       if ((dma_stat & (ATA_DMA_INTR | ATA_DMA_ERR | ATA_DMA_ACTIVE)) == 0 &&
-> +       if ((dma_stat & CHECK_DMA_MASK) == 0 &&
->            (ctl & (TX4939IDE_INT_XFEREND | TX4939IDE_INT_HOST)) ==
->            (TX4939IDE_INT_XFEREND | TX4939IDE_INT_HOST))
->                /* INT_IDE lost... bug? */
->                return 0;
-> -       return ((dma_stat & (ATA_DMA_INTR | ATA_DMA_ERR | ATA_DMA_ACTIVE)) !=
-> +       return ((dma_stat & CHECK_DMA_MASK) !=
->                ATA_DMA_INTR) ? 0x10 | dma_stat : 0;
->  }
->
-> --
-> 1.5.6.3
->
->
+diff --git a/arch/mips/include/asm/mach-au1x00/au1xxx_ide.h b/arch/mips/include/asm/mach-au1x00/au1xxx_ide.h
+index 60638b8..5656c72 100644
+--- a/arch/mips/include/asm/mach-au1x00/au1xxx_ide.h
++++ b/arch/mips/include/asm/mach-au1x00/au1xxx_ide.h
+@@ -46,20 +46,6 @@
+ #define CONFIG_BLK_DEV_IDE_AU1XXX_BURSTABLE_ON	0
+ #endif
+ 
+-#ifdef CONFIG_PM
+-/*
+- * This will enable the device to be powered up when write() or read()
+- * is called. If this is not defined, the driver will return -EBUSY.
+- */
+-#define WAKE_ON_ACCESS 1
+-
+-typedef struct {
+-	spinlock_t		lock;	/* Used to block on state transitions */
+-	au1xxx_power_dev_t	*dev;	/* Power Managers device structure */
+-	unsigned		stopped; /* Used to signal device is stopped */
+-} pm_state;
+-#endif
+-
+ typedef struct {
+ 	u32			tx_dev_id, rx_dev_id, target_dev_id;
+ 	u32			tx_chan, rx_chan;
+@@ -72,9 +58,6 @@ typedef struct {
+ #endif
+ 	int			irq;
+ 	u32			regbase;
+-#ifdef CONFIG_PM
+-	pm_state		pm;
+-#endif
+ } _auide_hwif;
+ 
+ /******************************************************************************/
+-- 
+1.6.2

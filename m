@@ -1,67 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2009 19:06:48 +0100 (BST)
-Received: from mail-fx0-f175.google.com ([209.85.220.175]:10949 "EHLO
-	mail-fx0-f175.google.com") by ftp.linux-mips.org with ESMTP
-	id S20024407AbZCaSGX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 31 Mar 2009 19:06:23 +0100
-Received: by fxm23 with SMTP id 23so2707642fxm.0
-        for <linux-mips@linux-mips.org>; Tue, 31 Mar 2009 11:06:16 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:to:cc:subject
-         :date:message-id:x-mailer;
-        bh=FSAVD1iRQIjn1w+vJAtIrydczmVaNr44VvVe5tUxeJI=;
-        b=tVyyrwWGVUF/CzbhrIdDykRxqY4mriiqZOCtfauxkOgz/A8BKFi5IaL0XqewVuST93
-         6jjR6spakypxsB83KV8gSlGlDt9bWynJSzUZ2dhLJdkbz5KgbIsSDqgnCh4wXGJvCkIj
-         MGeIrxNqkQj1kFI6AIaNBGW/yqfr1+JbdC2uk=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=sender:from:to:cc:subject:date:message-id:x-mailer;
-        b=a7bWW4YHFOb4UWMIm/Vx4H/xXi3Bt79LEsX3rDX4R4pN2Wgr3OQbN2zchMCyo/WJuh
-         bx5fiRtcsgUISwCBnUph+Wbgj/EbhjEPa0in5XtOdk5CNORDlXHoGDT1/sE0eribzw1W
-         GO4xw5HxN8QItOwU5fXQbKvCnJw7YIl2f+UWI=
-Received: by 10.103.238.4 with SMTP id p4mr2395618mur.68.1238522776780;
-        Tue, 31 Mar 2009 11:06:16 -0700 (PDT)
-Received: from localhost.localdomain (p5496E20F.dip.t-dialin.net [84.150.226.15])
-        by mx.google.com with ESMTPS id u9sm12288569muf.55.2009.03.31.11.06.14
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 31 Mar 2009 11:06:16 -0700 (PDT)
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	Linux-MIPS <linux-mips@linux-mips.org>
-Cc:	Manuel Lauss <mano@roarinelk.homelinux.net>
-Subject: [PATCH 1/2] Alchemy: Fix AU1100 interrupt numbers off-by-one
-Date:	Tue, 31 Mar 2009 20:06:16 +0200
-Message-Id: <1238522777-20811-1-git-send-email-mano@roarinelk.homelinux.net>
-X-Mailer: git-send-email 1.6.2
-Return-Path: <manuel.lauss@googlemail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2009 19:10:08 +0100 (BST)
+Received: from pyxis.i-cable.com ([203.83.115.105]:58356 "HELO
+	pyxis.i-cable.com") by ftp.linux-mips.org with SMTP
+	id S20024683AbZCaSKD (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 31 Mar 2009 19:10:03 +0100
+Received: (qmail 25706 invoked by uid 104); 31 Mar 2009 18:09:55 -0000
+Received: from 203.83.114.122 by pyxis (envelope-from <robert.zhangle@gmail.com>, uid 101) with qmail-scanner-2.01 
+ (clamdscan: 0.93.3/7733.  
+ Clear:RC:1(203.83.114.122):. 
+ Processed in 0.213007 secs); 31 Mar 2009 18:09:55 -0000
+Received: from ip114122.hkicable.com (HELO xenon.i-cable.com) (203.83.114.122)
+  by 0 with SMTP; 31 Mar 2009 18:09:54 -0000
+Received: from localhost (cm222-167-208-75.hkcable.com.hk [222.167.208.75])
+	by xenon.i-cable.com (8.13.5/8.13.5) with ESMTP id n2VI9n2P028801;
+	Wed, 1 Apr 2009 02:09:53 +0800 (CST)
+Date:	Wed, 1 Apr 2009 02:09:37 +0800
+From:	Zhang Le <r0bertz@gentoo.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	=?utf-8?B?5p6X5bu65a6J?= <colin@realtek.com.tw>,
+	linux-mips@linux-mips.org
+Subject: Re: The impact to change page size to 16k for cache alias
+Message-ID: <20090331180936.GC4918@adriano.hkcable.com.hk>
+Mail-Followup-To: Ralf Baechle <ralf@linux-mips.org>,
+	=?utf-8?B?5p6X5bu65a6J?= <colin@realtek.com.tw>,
+	linux-mips@linux-mips.org
+References: <9BDA961341E843F29C1C1ECDB54FD0CF@realtek.com.tw> <20090330082414.GA4797@adriano.hkcable.com.hk> <20090331081113.GA17934@linux-mips.org> <20090331165412.GA4918@adriano.hkcable.com.hk> <20090331171225.GC24154@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20090331171225.GC24154@linux-mips.org>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <robert.zhangle@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22217
+X-archive-position: 22218
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: r0bertz@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
+On 19:12 Tue 31 Mar     , Ralf Baechle wrote:
+> On Wed, Apr 01, 2009 at 12:54:12AM +0800, Zhang Le wrote:
+> 
+> > > > Linux on Loongson 2E and 2F uses 16k page size to avoid cache alias problem, too.
+> > > > However, I haven't encountered any problem on Linux kernel itself due to 16k page
+> > > > size.
+> > > > 
+> > > > Anyway, I am not 100% familiar with Loongson patches, so I am not sure whether
+> > > > the page size problem is already been taken care of in the patch. If you are
+> > > > interested to find out yourself, you can get the whole source here:
+> > > > http://repo.or.cz/w/linux-2.6/linux-loongson.git
+> > > 
+> > > I've got a report that Fulong is currently only working with 16k pages.  So
+> > > 4k is no longer the bullet proof choice for all cases :)
+> > 
+> > Yes, at least from what I can tell.
+> > I have tried 4k before, because I heard someone told me the aliasing problem
+> > already can be taken care by software, namely Linux. But as it turned out, 16k
+> > is still necessary for the Loongson boxes to function properly.
+> 
+> Linux knows how to handle aliasing caches - the vast majority of MIPS
+> systems have aliasing caches and are running at 4k page size.  So the
+> issue is Loongson-specific.  This might be due to processor detection
+> not detecting the cache size, cache line size, number of ways correctly
+> or because loongson's caches has some unusual cache properties which the
+> Linux kernel is not designed to handle yet.
+> 
+> Btw, I just noticed that there is no
+> arch/mips/include/asm/mach-lemote/cpu-feature-overrides.h which is going
+> to impact code size and performance.
 
-Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
----
- arch/mips/include/asm/mach-au1x00/au1000.h |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+Thanks for the reminder. I didn't know it before. I am gonna take a look.
 
-diff --git a/arch/mips/include/asm/mach-au1x00/au1000.h b/arch/mips/include/asm/mach-au1x00/au1000.h
-index 62f91f5..87a1659 100644
---- a/arch/mips/include/asm/mach-au1x00/au1000.h
-+++ b/arch/mips/include/asm/mach-au1x00/au1000.h
-@@ -715,7 +715,7 @@ enum soc_au1500_ints {
- #ifdef CONFIG_SOC_AU1100
- enum soc_au1100_ints {
- 	AU1100_FIRST_INT	= MIPS_CPU_IRQ_BASE + 8,
--	AU1100_UART0_INT,
-+	AU1100_UART0_INT	= AU1100_FIRST_INT,
- 	AU1100_UART1_INT,
- 	AU1100_SD_INT,
- 	AU1100_UART3_INT,
--- 
-1.6.2
+Zhang, Le
+http://zhangle.is-a-geek.org

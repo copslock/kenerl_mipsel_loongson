@@ -1,145 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2009 08:52:09 +0100 (BST)
-Received: from vervifontaine.sonytel.be ([80.88.33.193]:3495 "EHLO
-	vervifontaine.sonycom.com") by ftp.linux-mips.org with ESMTP
-	id S20027117AbZCaHwE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 31 Mar 2009 08:52:04 +0100
-Received: from vixen.sonytel.be (piraat.sonytel.be [43.221.60.197])
-	by vervifontaine.sonycom.com (Postfix) with ESMTP id BE29358ADF;
-	Tue, 31 Mar 2009 09:51:53 +0200 (MEST)
-Date:	Tue, 31 Mar 2009 09:51:53 +0200 (CEST)
-From:	Geert Uytterhoeven <Geert.Uytterhoeven@sonycom.com>
-To:	Grant Grundler <grundler@google.com>,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-cc:	IDE/ATA Devel <linux-ide@vger.kernel.org>,
-	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-	Linux/PPC Development <linuxppc-dev@ozlabs.org>,
-	Linux/MIPS Development <linux-mips@linux-mips.org>,
-	LKML <linux-kernel@google.com>
-Subject: Re: [PATCH] linux-next remove wmb() from ide-dma-sff.c and
- scc_pata.c
-In-Reply-To: <da824cf30903301739l688e8eb2r46086953245ebbe5@mail.gmail.com>
-Message-ID: <alpine.LRH.2.00.0903310950040.9551@vixen.sonytel.be>
-References: <da824cf30903301739l688e8eb2r46086953245ebbe5@mail.gmail.com>
-User-Agent: Alpine 2.00 (LRH 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2009 09:11:29 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:55272 "EHLO h5.dl5rb.org.uk")
+	by ftp.linux-mips.org with ESMTP id S20028983AbZCaIL1 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2009 09:11:27 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n2V8BL5V018533;
+	Tue, 31 Mar 2009 10:11:23 +0200
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n2V8BHX1018529;
+	Tue, 31 Mar 2009 10:11:17 +0200
+Date:	Tue, 31 Mar 2009 10:11:13 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	=?utf-8?B?5p6X5bu65a6J?= <colin@realtek.com.tw>,
+	linux-mips@linux-mips.org
+Subject: Re: The impact to change page size to 16k for cache alias
+Message-ID: <20090331081113.GA17934@linux-mips.org>
+References: <9BDA961341E843F29C1C1ECDB54FD0CF@realtek.com.tw> <20090330082414.GA4797@adriano.hkcable.com.hk>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=ISO-8859-15
-Content-Transfer-Encoding: 8BIT
-Return-Path: <Geert.Uytterhoeven@sonycom.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20090330082414.GA4797@adriano.hkcable.com.hk>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22193
+X-archive-position: 22194
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Geert.Uytterhoeven@sonycom.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 30 Mar 2009, Grant Grundler wrote:
-> Followup to "[PATCH 03/10] ide: destroy DMA mappings after ending DMA"
-> email on March 14th:
->     http://lkml.org/lkml/2009/3/14/17
+On Mon, Mar 30, 2009 at 04:24:15PM +0800, Zhang Le wrote:
+
+> > Hi all,
+> > We are willing to use 16k page size to avoid cache alias problem.
+> > The Linux version we use is 2.6.12. If we just upgrade mm system to 
+> > support 16k page size, what else problems will happen?
+> > There is already one thing we know that applications of ELF format  
+> > applications should be transformed to be 16k alignment.
+> > Another one, we think, highly suspected to be problematic is that many  
+> > drivers will be ok for 4k page size but fails for 16k.
+> > That is because 4k page size had been seemed to be natural for a very 
+> > long long time.
+> > Any other problem that shall happen for 16k page size?
 > 
-> No maintainer is listed for "Toshiba CELL Reference Set IDE" (BLK_DEV_CELLEB)
-> or tx4939ide.c in MAINTAINERS. I've CC'd "Ishizaki Kou" @Toshiba (Maintainer for
-> "Spidernet Network Driver for CELL") and linuxppc-dev list in the hope
-> someone else
-> would know or would be able to ACK this patch.
-
-tx49xx is MIPS, for Nemoto-san.
-
-> This patch:
-> o replaces "mask" variable in ide_dma_end() with #define.
-> o removes use of wmb() in ide-dma-sff.c and scc_pata.c.
-> o is not tested - I don't have (or want) the HW.
+> Linux on Loongson 2E and 2F uses 16k page size to avoid cache alias problem, too.
+> However, I haven't encountered any problem on Linux kernel itself due to 16k page
+> size.
 > 
-> I did NOT remove wmb() use in tx4939ide.c. tx4939ide.c __raw_writeb()
-> for MMIO transactions. __raw_writeb() does NOT guarantee memory
-> transaction ordering.
-> 
-> tx4939ide also uses mmiowb(). AFAIK, mmiowb() only has an effect on
-> SGI IA64 NUMA machines. I'm not going to guess how this driver might work.
-> 
-> Gmail is broken for sending patches (word wrap). My apologies.
-> I've attached the patch: diff-next-remove_wmb_from_ide-01.txt
-> 
-> Patch is against linux-next tree:
->      git://git.kernel.org/pub/scm/linux/kernel/git/sfr/linux-next
-> 
-> Signed-off-by: Grant Grundler <grundler@google.com>
+> Anyway, I am not 100% familiar with Loongson patches, so I am not sure whether
+> the page size problem is already been taken care of in the patch. If you are
+> interested to find out yourself, you can get the whole source here:
+> http://repo.or.cz/w/linux-2.6/linux-loongson.git
 
-[ attachment converted to inline ]
+I've got a report that Fulong is currently only working with 16k pages.  So
+4k is no longer the bullet proof choice for all cases :)
 
-> diff --git a/drivers/ide/ide-dma-sff.c b/drivers/ide/ide-dma-sff.c
-> index 16fc46e..e4cdf78 100644
-> --- a/drivers/ide/ide-dma-sff.c
-> +++ b/drivers/ide/ide-dma-sff.c
-> @@ -277,8 +277,6 @@ void ide_dma_start(ide_drive_t *drive)
->  		dma_cmd = inb(hwif->dma_base + ATA_DMA_CMD);
->  		outb(dma_cmd | ATA_DMA_START, hwif->dma_base + ATA_DMA_CMD);
->  	}
-> -
-> -	wmb();
->  }
->  EXPORT_SYMBOL_GPL(ide_dma_start);
->  
-> @@ -286,7 +284,7 @@ EXPORT_SYMBOL_GPL(ide_dma_start);
->  int ide_dma_end(ide_drive_t *drive)
->  {
->  	ide_hwif_t *hwif = drive->hwif;
-> -	u8 dma_stat = 0, dma_cmd = 0, mask;
-> +	u8 dma_stat = 0, dma_cmd = 0;
->  
->  	/* stop DMA */
->  	if (hwif->host_flags & IDE_HFLAG_MMIO) {
-> @@ -304,11 +302,10 @@ int ide_dma_end(ide_drive_t *drive)
->  	/* clear INTR & ERROR bits */
->  	ide_dma_sff_write_status(hwif, dma_stat | ATA_DMA_ERR | ATA_DMA_INTR);
->  
-> -	wmb();
-> +#define CHECK_DMA_MASK (ATA_DMA_ACTIVE | ATA_DMA_ERR | ATA_DMA_INTR)
->  
->  	/* verify good DMA status */
-> -	mask = ATA_DMA_ACTIVE | ATA_DMA_ERR | ATA_DMA_INTR;
-> -	if ((dma_stat & mask) != ATA_DMA_INTR)
-> +	if ((dma_stat & CHECK_DMA_MASK) != ATA_DMA_INTR)
->  		return 0x10 | dma_stat;
->  	return 0;
->  }
-> diff --git a/drivers/ide/scc_pata.c b/drivers/ide/scc_pata.c
-> index 97f8e0e..dcbb299 100644
-> --- a/drivers/ide/scc_pata.c
-> +++ b/drivers/ide/scc_pata.c
-> @@ -337,7 +337,6 @@ static void scc_dma_start(ide_drive_t *drive)
->  
->  	/* start DMA */
->  	scc_ide_outb(dma_cmd | 1, hwif->dma_base);
-> -	wmb();
->  }
->  
->  static int __scc_dma_end(ide_drive_t *drive)
-> @@ -354,7 +353,6 @@ static int __scc_dma_end(ide_drive_t *drive)
->  	/* clear the INTR & ERROR bits */
->  	scc_ide_outb(dma_stat | 6, hwif->dma_base + 4);
->  	/* verify good DMA status */
-> -	wmb();
->  	return (dma_stat & 7) != 4 ? (0x10 | dma_stat) : 0;
->  }
-
-With kind regards,
-
-Geert Uytterhoeven
-Software Architect
-
-Sony Techsoft Centre Europe
-The Corporate Village · Da Vincilaan 7-D1 · B-1935 Zaventem · Belgium
-
-Phone:    +32 (0)2 700 8453
-Fax:      +32 (0)2 700 8622
-E-mail:   Geert.Uytterhoeven@sonycom.com
-Internet: http://www.sony-europe.com/
-
-A division of Sony Europe (Belgium) N.V.
-VAT BE 0413.825.160 · RPR Brussels
-Fortis · BIC GEBABEBB · IBAN BE41293037680010
+  Ralf

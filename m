@@ -1,44 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2009 18:45:40 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:41609 "EHLO h5.dl5rb.org.uk")
-	by ftp.linux-mips.org with ESMTP id S20031238AbZCaRpY (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2009 18:45:24 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n2VHjOPg032536;
-	Tue, 31 Mar 2009 19:45:24 +0200
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n2VHjNOv032526;
-	Tue, 31 Mar 2009 19:45:23 +0200
-Date:	Tue, 31 Mar 2009 19:45:23 +0200
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Manuel Lauss <mano@roarinelk.homelinux.net>
-Cc:	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: [PATCH 2/2] Alchemy: add missing Au1200 GPIO203 interrupt
-Message-ID: <20090331174523.GB32307@linux-mips.org>
-References: <1238518288-5162-1-git-send-email-mano@roarinelk.homelinux.net> <1238518288-5162-2-git-send-email-mano@roarinelk.homelinux.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2009 18:53:39 +0100 (BST)
+Received: from crux.i-cable.com ([203.83.115.104]:29317 "HELO crux.i-cable.com")
+	by ftp.linux-mips.org with SMTP id S20025753AbZCaRxe (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2009 18:53:34 +0100
+Received: (qmail 3957 invoked by uid 107); 31 Mar 2009 17:53:25 -0000
+Received: from 203.83.114.122 by crux (envelope-from <robert.zhangle@gmail.com>, uid 104) with qmail-scanner-2.01 
+ (clamdscan: 0.94.2/9149. spamassassin: 2.63.   
+ Clear:RC:1(203.83.114.122):SA:0(2.6/5.0):. 
+ Processed in 8.615324 secs); 31 Mar 2009 17:53:25 -0000
+Received: from ip114122.hkicable.com (HELO xenon.i-cable.com) (203.83.114.122)
+  by 0 with SMTP; 31 Mar 2009 17:53:16 -0000
+Received: from localhost (cm222-167-208-75.hkcable.com.hk [222.167.208.75])
+	by xenon.i-cable.com (8.13.5/8.13.5) with ESMTP id n2VHr5Mt027897;
+	Wed, 1 Apr 2009 01:53:05 +0800 (CST)
+Date:	Wed, 1 Apr 2009 01:52:53 +0800
+From:	Zhang Le <r0bertz@gentoo.org>
+To:	zhangfx@lemote.com
+Cc:	gnewsense-dev@nongnu.org, linux-mips@linux-mips.org,
+	loongson@bjlx.org.cn, yanh@lemote.com
+Subject: yeloong or yeeloong
+Message-ID: <20090331175252.GB4918@adriano.hkcable.com.hk>
+Mail-Followup-To: zhangfx@lemote.com, gnewsense-dev@nongnu.org,
+	linux-mips@linux-mips.org, loongson@bjlx.org.cn, yanh@lemote.com
+References: <15359.159.226.43.42.1238459390.squirrel@mail.lemote.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1238518288-5162-2-git-send-email-mano@roarinelk.homelinux.net>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@h5.dl5rb.org.uk>
+In-Reply-To: <15359.159.226.43.42.1238459390.squirrel@mail.lemote.com>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <robert.zhangle@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22213
+X-archive-position: 22214
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: r0bertz@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Mar 31, 2009 at 06:51:28PM +0200, Manuel Lauss wrote:
-> From: Manuel Lauss <mano@roarinelk.homelinux.net>
-> Date: Tue, 31 Mar 2009 18:51:28 +0200
-> To: Linux-MIPS <linux-mips@linux-mips.org>
-> Cc: Manuel Lauss <mano@roarinelk.homelinux.net>
-> Subject: [PATCH 2/2] Alchemy: add missing Au1200 GPIO203 interrupt
+Sorry for cross posting, but I just want to bring this issue to a wider
+audience.
 
-Applied - but missing Singed-off-by!
+Maybe I am not the one who should be worried about this. But since more and
+more people will get these machines, we should settle it down as early as
+possible.
 
-  Ralf
+This is a bikeshedding problem[1], so _everyone_ is welcome to comment.
+
+First of all, this problem is first discovered by Liu Shiwei, the manager of
+Beijing Loongson Club. If you search 'yeloong', this post will appear in the
+first page:
+http://www.lemote.com/bbs/redirect.php?tid=21768&goto=lastpost
+
+Then, I have proposed a naming convention change to lemote. That was a patch
+which I didn't post it to a public mailing list. But you can get it here:
+http://repo.or.cz/w/linux-2.6/linux-loongson.git?a=shortlog;h=refs/heads/lemote-naming-convention
+In that patch, I sugguest keep fuloong, but call the notebook yeeloong instead
+of yeloong.
+
+The following are the rationales behind my suggestions:
+
+  1. Fulong -> Fuloong.
+
+    This one is good. For those who has a box, please cat your /proc/cpuinfo.
+    It should still be fulong. And I believe the fulong should be a typo.
+
+  2. Yeeloong -> Yeloong. 
+
+    I think this one is controversial. The e in Yeloong, to me, sounds like e
+    in yes, not ee in eel. So that the sound is changed, this action is by
+    itself bad. And Yeloong may make people connect it with the word yell,
+    which is not quite good a word. Moreover, the original sound is more like 
+    its Chinese brand name.
+
+And, recently I have just noticed that at the long long last lemote is going
+to push Loongson 2F patches to upstream, which is good. However, I found the
+notebook's name is still yeloong:
+http://dev.lemote.com/git?p=linux_loongson.git;a=shortlog;h=refs/heads/to-mips
+
+So, I hope lemote could seriously take my suggestion in consideration. And if my
+suggestion were rejected, please give your reason behind the rejection.
+
+Thanks for everyone's time!
+
+Zhang, Le
+http://zhangle.is-a-geek.org
+
+[1] http://en.wikipedia.org/wiki/Color_of_the_bikeshed

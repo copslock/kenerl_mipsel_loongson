@@ -1,78 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2009 19:10:08 +0100 (BST)
-Received: from pyxis.i-cable.com ([203.83.115.105]:58356 "HELO
-	pyxis.i-cable.com") by ftp.linux-mips.org with SMTP
-	id S20024683AbZCaSKD (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 31 Mar 2009 19:10:03 +0100
-Received: (qmail 25706 invoked by uid 104); 31 Mar 2009 18:09:55 -0000
-Received: from 203.83.114.122 by pyxis (envelope-from <robert.zhangle@gmail.com>, uid 101) with qmail-scanner-2.01 
- (clamdscan: 0.93.3/7733.  
- Clear:RC:1(203.83.114.122):. 
- Processed in 0.213007 secs); 31 Mar 2009 18:09:55 -0000
-Received: from ip114122.hkicable.com (HELO xenon.i-cable.com) (203.83.114.122)
-  by 0 with SMTP; 31 Mar 2009 18:09:54 -0000
-Received: from localhost (cm222-167-208-75.hkcable.com.hk [222.167.208.75])
-	by xenon.i-cable.com (8.13.5/8.13.5) with ESMTP id n2VI9n2P028801;
-	Wed, 1 Apr 2009 02:09:53 +0800 (CST)
-Date:	Wed, 1 Apr 2009 02:09:37 +0800
-From:	Zhang Le <r0bertz@gentoo.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	=?utf-8?B?5p6X5bu65a6J?= <colin@realtek.com.tw>,
-	linux-mips@linux-mips.org
-Subject: Re: The impact to change page size to 16k for cache alias
-Message-ID: <20090331180936.GC4918@adriano.hkcable.com.hk>
-Mail-Followup-To: Ralf Baechle <ralf@linux-mips.org>,
-	=?utf-8?B?5p6X5bu65a6J?= <colin@realtek.com.tw>,
-	linux-mips@linux-mips.org
-References: <9BDA961341E843F29C1C1ECDB54FD0CF@realtek.com.tw> <20090330082414.GA4797@adriano.hkcable.com.hk> <20090331081113.GA17934@linux-mips.org> <20090331165412.GA4918@adriano.hkcable.com.hk> <20090331171225.GC24154@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2009 20:35:09 +0100 (BST)
+Received: from rv-out-0708.google.com ([209.85.198.245]:17893 "EHLO
+	rv-out-0506.google.com") by ftp.linux-mips.org with ESMTP
+	id S20023740AbZCaTfC convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 31 Mar 2009 20:35:02 +0100
+Received: by rv-out-0506.google.com with SMTP id b17so1668105rvf.0
+        for <multiple recipients>; Tue, 31 Mar 2009 12:34:59 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:sender:received:in-reply-to
+         :references:date:x-google-sender-auth:message-id:subject:from:to:cc
+         :content-type:content-transfer-encoding;
+        bh=cL9WIvUvZQA+dBNMltyy+yY7mfo7xk8stSTL+Hwr2dQ=;
+        b=DFnHVrOI8mBbrBA4b488ZZrR2A8scyhegqPi//YZkReN89VzvN6ipbT8vvYtsFbQXr
+         yqf+RKlnpTrwmGkJaHf28GwKWGBVo9FlgXvDlud5jg4zBxwJoI+UnLGAaoEFCXVC6AQF
+         CYUH1FhXrM6KcicrHL1NGOQcs3TRlB8YmnmtQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        b=xrqXYMiJmYBSIWl9LpgRjfkETTa/WdGPoxCHLvLBW5wIf87hJmwQ/JmRYZVIh6EARe
+         PO00K9dTJbxU7TADxtI3Y23HTcVkZBTxjtOr70PT5LI8qJsesaC8fPYVkxw7IEFgxeSH
+         73Vp3jmVxFaoyg4jWjYZ2nX2rfR8U2yjMPXuk=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20090331171225.GC24154@linux-mips.org>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <robert.zhangle@gmail.com>
+Received: by 10.114.174.2 with SMTP id w2mr4603332wae.195.1238528099289; Tue, 
+	31 Mar 2009 12:34:59 -0700 (PDT)
+In-Reply-To: <20090326.231243.112855442.anemo@mba.ocn.ne.jp>
+References: <20090318.110154.76582864.nemoto@toshiba-tops.co.jp>
+	 <e9c3a7c20903181026h1801ef6i945e6ce9ccb36b8a@mail.gmail.com>
+	 <20090321.212920.25912728.anemo@mba.ocn.ne.jp>
+	 <20090326.231243.112855442.anemo@mba.ocn.ne.jp>
+Date:	Tue, 31 Mar 2009 12:34:59 -0700
+X-Google-Sender-Auth: ef1f37b66b6e19c6
+Message-ID: <e9c3a7c20903311234t63335987l46480cd27a326022@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dmaengine: TXx9 Soc DMA Controller driver
+From:	Dan Williams <dan.j.williams@intel.com>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
+	linux-kernel@vger.kernel.org, haavard.skinnemoen@atmel.com
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <dan.j.williams@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22218
+X-archive-position: 22219
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: r0bertz@gentoo.org
+X-original-sender: dan.j.williams@intel.com
 Precedence: bulk
 X-list: linux-mips
 
-On 19:12 Tue 31 Mar     , Ralf Baechle wrote:
-> On Wed, Apr 01, 2009 at 12:54:12AM +0800, Zhang Le wrote:
-> 
-> > > > Linux on Loongson 2E and 2F uses 16k page size to avoid cache alias problem, too.
-> > > > However, I haven't encountered any problem on Linux kernel itself due to 16k page
-> > > > size.
-> > > > 
-> > > > Anyway, I am not 100% familiar with Loongson patches, so I am not sure whether
-> > > > the page size problem is already been taken care of in the patch. If you are
-> > > > interested to find out yourself, you can get the whole source here:
-> > > > http://repo.or.cz/w/linux-2.6/linux-loongson.git
-> > > 
-> > > I've got a report that Fulong is currently only working with 16k pages.  So
-> > > 4k is no longer the bullet proof choice for all cases :)
-> > 
-> > Yes, at least from what I can tell.
-> > I have tried 4k before, because I heard someone told me the aliasing problem
-> > already can be taken care by software, namely Linux. But as it turned out, 16k
-> > is still necessary for the Loongson boxes to function properly.
-> 
-> Linux knows how to handle aliasing caches - the vast majority of MIPS
-> systems have aliasing caches and are running at 4k page size.  So the
-> issue is Loongson-specific.  This might be due to processor detection
-> not detecting the cache size, cache line size, number of ways correctly
-> or because loongson's caches has some unusual cache properties which the
-> Linux kernel is not designed to handle yet.
-> 
-> Btw, I just noticed that there is no
-> arch/mips/include/asm/mach-lemote/cpu-feature-overrides.h which is going
-> to impact code size and performance.
+On Thu, Mar 26, 2009 at 7:12 AM, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> On Sat, 21 Mar 2009 21:29:20 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+> Unfortunately, not so simple.  If I created a dma_device for each
+> channel, all chan->chan_id will be 0 and all chan->device->dev points
+> same platform device.  This makes client driver hard to select the
+> particular channel.  Making a platform device for each channel will
+> solve this, but it looks wrong way to go for me.
 
-Thanks for the reminder. I didn't know it before. I am gonna take a look.
-
-Zhang, Le
-http://zhangle.is-a-geek.org
+Why?  mv_xor, iop-adma, and ioat each have a platform or pci device
+per channel so you would be in good company.

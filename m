@@ -1,78 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 31 Mar 2009 23:05:39 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:56511 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S20025306AbZCaWFd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 31 Mar 2009 23:05:33 +0100
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B49d293910002>; Tue, 31 Mar 2009 18:05:05 -0400
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 31 Mar 2009 15:04:45 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 31 Mar 2009 15:04:44 -0700
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n2VM4em2002610;
-	Tue, 31 Mar 2009 15:04:40 -0700
-Received: (from ddaney@localhost)
-	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n2VM4d8a002609;
-	Tue, 31 Mar 2009 15:04:39 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-To:	linux-ide@vger.kernel.org, jgarzik@redhat.com
-Cc:	linux-mips@linux-mips.org, David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH] libata: Remove some redundant casts from pata_octeon_cf.c
-Date:	Tue, 31 Mar 2009 15:04:39 -0700
-Message-Id: <1238537079-2584-1-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.6.0.6
-X-OriginalArrivalTime: 31 Mar 2009 22:04:44.0860 (UTC) FILETIME=[B3161FC0:01C9B24C]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Apr 2009 01:35:31 +0100 (BST)
+Received: from [222.92.8.141] ([222.92.8.141]:38375 "EHLO lemote.com")
+	by ftp.linux-mips.org with ESMTP id S20027460AbZDAAfT (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Apr 2009 01:35:19 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by lemote.com (Postfix) with ESMTP id D3431340B6;
+	Wed,  1 Apr 2009 08:32:38 +0800 (CST)
+X-Virus-Scanned: Debian amavisd-new at lemote.com
+Received: from lemote.com ([127.0.0.1])
+	by localhost (www.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id I8Yb7eCBrB2f; Wed,  1 Apr 2009 08:32:31 +0800 (CST)
+Received: from [127.0.0.1] (unknown [222.92.8.142])
+	by lemote.com (Postfix) with ESMTP id 339D33409D;
+	Wed,  1 Apr 2009 08:32:31 +0800 (CST)
+Message-ID: <49D2B6B3.9080101@lemote.com>
+Date:	Wed, 01 Apr 2009 08:34:59 +0800
+From:	yanhua <yanh@lemote.com>
+User-Agent: Thunderbird 2.0.0.21 (Windows/20090302)
+MIME-Version: 1.0
+To:	zhangfx@lemote.com, gnewsense-dev@nongnu.org,
+	linux-mips@linux-mips.org, loongson@bjlx.org.cn, yanh@lemote.com
+Subject: Re: yeloong or yeeloong
+References: <15359.159.226.43.42.1238459390.squirrel@mail.lemote.com> <20090331175252.GB4918@adriano.hkcable.com.hk>
+In-Reply-To: <20090331175252.GB4918@adriano.hkcable.com.hk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Return-Path: <yanh@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22221
+X-archive-position: 22222
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: yanh@lemote.com
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
----
+The original name is changed to yeeloong so as to it has a consistent 
+name with the machines.
 
-Please consider for 2.6.30.
+Zhang Le 写道:
+> Sorry for cross posting, but I just want to bring this issue to a wider
+> audience.
+>
+> Maybe I am not the one who should be worried about this. But since more and
+> more people will get these machines, we should settle it down as early as
+> possible.
+>
+> This is a bikeshedding problem[1], so _everyone_ is welcome to comment.
+>
+> First of all, this problem is first discovered by Liu Shiwei, the manager of
+> Beijing Loongson Club. If you search 'yeloong', this post will appear in the
+> first page:
+> http://www.lemote.com/bbs/redirect.php?tid=21768&goto=lastpost
+>
+> Then, I have proposed a naming convention change to lemote. That was a patch
+> which I didn't post it to a public mailing list. But you can get it here:
+> http://repo.or.cz/w/linux-2.6/linux-loongson.git?a=shortlog;h=refs/heads/lemote-naming-convention
+> In that patch, I sugguest keep fuloong, but call the notebook yeeloong instead
+> of yeloong.
+>
+> The following are the rationales behind my suggestions:
+>
+>   1. Fulong -> Fuloong.
+>
+>     This one is good. For those who has a box, please cat your /proc/cpuinfo.
+>     It should still be fulong. And I believe the fulong should be a typo.
+>
+>   2. Yeeloong -> Yeloong. 
+>
+>     I think this one is controversial. The e in Yeloong, to me, sounds like e
+>     in yes, not ee in eel. So that the sound is changed, this action is by
+>     itself bad. And Yeloong may make people connect it with the word yell,
+>     which is not quite good a word. Moreover, the original sound is more like 
+>     its Chinese brand name.
+>
+> And, recently I have just noticed that at the long long last lemote is going
+> to push Loongson 2F patches to upstream, which is good. However, I found the
+> notebook's name is still yeloong:
+> http://dev.lemote.com/git?p=linux_loongson.git;a=shortlog;h=refs/heads/to-mips
+>
+> So, I hope lemote could seriously take my suggestion in consideration. And if my
+> suggestion were rejected, please give your reason behind the rejection.
+>
+> Thanks for everyone's time!
+>
+> Zhang, Le
+> http://zhangle.is-a-geek.org
+>
+> [1] http://en.wikipedia.org/wiki/Color_of_the_bikeshed
+>
+>   
 
- drivers/ata/pata_octeon_cf.c |    6 +++---
- 1 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ata/pata_octeon_cf.c b/drivers/ata/pata_octeon_cf.c
-index 0fe4ef3..0e71be1 100644
---- a/drivers/ata/pata_octeon_cf.c
-+++ b/drivers/ata/pata_octeon_cf.c
-@@ -503,7 +503,7 @@ static void octeon_cf_dma_setup(struct ata_queued_cmd *qc)
- 	struct ata_port *ap = qc->ap;
- 	struct octeon_cf_port *cf_port;
- 
--	cf_port = (struct octeon_cf_port *)ap->private_data;
-+	cf_port = ap->private_data;
- 	DPRINTK("ENTER\n");
- 	/* issue r/w command */
- 	qc->cursg = qc->sg;
-@@ -596,7 +596,7 @@ static unsigned int octeon_cf_dma_finished(struct ata_port *ap,
- 	if (ap->hsm_task_state != HSM_ST_LAST)
- 		return 0;
- 
--	cf_port = (struct octeon_cf_port *)ap->private_data;
-+	cf_port = ap->private_data;
- 
- 	dma_cfg.u64 = cvmx_read_csr(CVMX_MIO_BOOT_DMA_CFGX(ocd->dma_engine));
- 	if (dma_cfg.s.size != 0xfffff) {
-@@ -657,7 +657,7 @@ static irqreturn_t octeon_cf_interrupt(int irq, void *dev_instance)
- 			continue;
- 
- 		ocd = ap->dev->platform_data;
--		cf_port = (struct octeon_cf_port *)ap->private_data;
-+		cf_port = ap->private_data;
- 		dma_int.u64 =
- 			cvmx_read_csr(CVMX_MIO_BOOT_DMA_INTX(ocd->dma_engine));
- 		dma_cfg.u64 =
 -- 
-1.6.0.6
+晏华

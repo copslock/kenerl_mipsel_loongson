@@ -1,45 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Apr 2009 02:46:56 +0100 (BST)
-Received: from [222.92.8.141] ([222.92.8.141]:6086 "EHLO lemote.com")
-	by ftp.linux-mips.org with ESMTP id S20021796AbZDABqv (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Apr 2009 02:46:51 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by lemote.com (Postfix) with ESMTP id F1E5D340B6;
-	Wed,  1 Apr 2009 09:44:11 +0800 (CST)
-X-Virus-Scanned: Debian amavisd-new at lemote.com
-Received: from lemote.com ([127.0.0.1])
-	by localhost (www.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id fqRgAFm3kBxa; Wed,  1 Apr 2009 09:44:06 +0800 (CST)
-Received: from [127.0.0.1] (unknown [222.92.8.142])
-	by lemote.com (Postfix) with ESMTP id 3B97B3409D;
-	Wed,  1 Apr 2009 09:44:06 +0800 (CST)
-Message-ID: <49D2C77E.4090105@lemote.com>
-Date:	Wed, 01 Apr 2009 09:46:38 +0800
-From:	yanhua <yanh@lemote.com>
-User-Agent: Thunderbird 2.0.0.21 (Windows/20090302)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Apr 2009 05:20:43 +0100 (BST)
+Received: from webmail.ict.ac.cn ([159.226.39.7]:12989 "EHLO ict.ac.cn")
+	by ftp.linux-mips.org with ESMTP id S20021763AbZDAEUi convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 1 Apr 2009 05:20:38 +0100
+Received: (qmail 8274 invoked by uid 507); 1 Apr 2009 12:33:27 +0800
+Received: from unknown (HELO localhost.localdomain) (fxzhang@10.2.0.23)
+  by ict.ac.cn with SMTP; 1 Apr 2009 12:33:27 +0800
+Message-ID: <49D2EB62.601@ict.ac.cn>
+Date:	Wed, 01 Apr 2009 12:19:46 +0800
+From:	fxzhang <fxzhang@ict.ac.cn>
+User-Agent: Mozilla-Thunderbird 2.0.0.9 (X11/20080110)
 MIME-Version: 1.0
 To:	zhangfx@lemote.com, gnewsense-dev@nongnu.org,
-	linux-mips@linux-mips.org, loongson@bjlx.org.cn, yanh@lemote.com
+	linux-mips@linux-mips.org, loongson@bjlx.org.cn,
+	"yanh@lemote.com >> 'yanhua'" <yanh@lemote.com>
 Subject: Re: yeloong or yeeloong
 References: <15359.159.226.43.42.1238459390.squirrel@mail.lemote.com> <20090331175252.GB4918@adriano.hkcable.com.hk>
 In-Reply-To: <20090331175252.GB4918@adriano.hkcable.com.hk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <yanh@lemote.com>
+Content-Transfer-Encoding: 8BIT
+Return-Path: <fxzhang@ict.ac.cn>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22224
+X-archive-position: 22225
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yanh@lemote.com
+X-original-sender: fxzhang@ict.ac.cn
 Precedence: bulk
 X-list: linux-mips
 
-There are really yeloong and yeeloong fix using. That is a mistake. Now 
-I have all of them changed to yeeloong for consistency. The latest is 
-already in our git repos.
+It should be Yeeloong, any yeloong will be a mistake.
 
+I will require our guys to take actions to correct it. As for your 
+patch, Yanhua is working on merging it into newest linux/mips tree and 
+push it upstream, he is some what slow due to too much work.
+
+Thank you for your support and work on Loongson.
+
+Best Regards
 Zhang Le 写道:
 > Sorry for cross posting, but I just want to bring this issue to a wider
 > audience.
@@ -92,7 +92,3 @@ Zhang Le 写道:
 > [1] http://en.wikipedia.org/wiki/Color_of_the_bikeshed
 >
 >   
-
-
--- 
-晏华

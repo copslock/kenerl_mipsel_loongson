@@ -1,64 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Apr 2009 13:28:52 +0100 (BST)
-Received: from smtp.movial.fi ([62.236.91.34]:62608 "EHLO smtp.movial.fi")
-	by ftp.linux-mips.org with ESMTP id S20024052AbZDBM2n (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Apr 2009 13:28:43 +0100
-Received: from localhost (mailscanner.hel.movial.fi [172.17.81.9])
-	by smtp.movial.fi (Postfix) with ESMTP id 17FEDC84A9;
-	Thu,  2 Apr 2009 15:28:37 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at movial.fi
-Received: from smtp.movial.fi ([62.236.91.34])
-	by localhost (mailscanner.hel.movial.fi [172.17.81.9]) (amavisd-new, port 10026)
-	with ESMTP id eexa2iu3Tpma; Thu,  2 Apr 2009 15:28:36 +0300 (EEST)
-Received: from [172.17.49.48] (sd048.hel.movial.fi [172.17.49.48])
-	by smtp.movial.fi (Postfix) with ESMTP id EEEAFC84A5;
-	Thu,  2 Apr 2009 15:28:36 +0300 (EEST)
-Message-ID: <49D4AF74.5010901@movial.com>
-Date:	Thu, 02 Apr 2009 15:28:36 +0300
-From:	Dmitri Vorobiev <dmitri.vorobiev@movial.com>
-Organization: Movial Creative Technologies
-User-Agent: Icedove 1.5.0.14eol (X11/20090105)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Apr 2009 14:19:39 +0100 (BST)
+Received: from [222.92.8.141] ([222.92.8.141]:26556 "EHLO lemote.com")
+	by ftp.linux-mips.org with ESMTP id S20022608AbZDBNTV (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Apr 2009 14:19:21 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by lemote.com (Postfix) with ESMTP id 6621334100;
+	Thu,  2 Apr 2009 21:16:40 +0800 (CST)
+X-Virus-Scanned: Debian amavisd-new at lemote.com
+Received: from lemote.com ([127.0.0.1])
+	by localhost (www.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id XgXNNsGUpaeG; Thu,  2 Apr 2009 21:16:35 +0800 (CST)
+Received: from mail.lemote.com (localhost [127.0.0.1])
+	by lemote.com (Postfix) with ESMTP id 0FB8B340FB;
+	Thu,  2 Apr 2009 21:16:35 +0800 (CST)
+Received: from 222.92.8.142
+        (SquirrelMail authenticated user wuzj@lemote.com)
+        by mail.lemote.com with HTTP;
+        Thu, 2 Apr 2009 21:16:35 +0800 (CST)
+Message-ID: <26244.222.92.8.142.1238678195.squirrel@mail.lemote.com>
+Date:	Thu, 2 Apr 2009 21:16:35 +0800 (CST)
+Subject: Re: [PATCH] added Loongson cpu-feature-overrides.h
+From:	=?gb2312?Q?=CE=E2=D5=C2=BD=F0?= <wuzj@lemote.com>
+To:	"Ralf Baechle" <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, "Zhang Le" <r0bertz@gentoo.org>
+User-Agent: SquirrelMail/1.4.11
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips@linux-mips.org
-Subject: Re: [PATCH 0/4] Some cleanups for IP32
-References: <1238442806-11013-1-git-send-email-dmitri.vorobiev@movial.com> <20090402122244.GC4070@linux-mips.org>
-In-Reply-To: <20090402122244.GC4070@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <dmitri.vorobiev@movial.com>
+Content-Type: text/plain;charset=gb2312
+Content-Transfer-Encoding: 8bit
+X-Priority: 3 (Normal)
+Importance: Normal
+Return-Path: <wuzj@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22242
+X-archive-position: 22243
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@movial.com
+X-original-sender: wuzj@lemote.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> On Mon, Mar 30, 2009 at 10:53:22PM +0300, Dmitri Vorobiev wrote:
->> From: Dmitri Vorobiev <dmitri.vorobiev@movial.com>
->> Date: Mon, 30 Mar 2009 22:53:22 +0300
->> To: ralf@linux-mips.org, linux-mips@linux-mips.org
->> Subject: [PATCH 0/4] Some cleanups for IP32
+
+> On Thu, Apr 02, 2009 at 06:56:13PM +0800, Zhang Le wrote:
+>
+>> On 15:41 Thu 02 Apr     , Zhang Le wrote:
+>> > diff --git a/arch/mips/include/asm/mach-lemote/cpu-feature-overrides.h
+>> b/arch/mips/include/asm/mach-lemote/cpu-feature-overrides.h
+>> > new file mode 100644
+>> > index 0000000..550a10d
+>> > --- /dev/null
+>> > +++ b/arch/mips/include/asm/mach-lemote/cpu-feature-overrides.h
 >>
->> Hi Ralf,
+>> [snip]
 >>
->> Following are some cleanups for IP32. Please consider.
-> 
-> You've probably already noticed that I applied this series a few days ago.
+>> > +#define cpu_icache_snoops_remote_store	1
+>>
+>> This maybe should not exist here, since this only matters on SMP.
+>> It exists in Wu's version. Maybe Wu could explain it. Maybe it is just a
+>> typo.
 
-Actually, I have not :)
+ooh, sorry, when i firstly edit this file, I really only need cpu_has_llsc
+there, so the other options are copied from another mips board and only
+be checked via the "loongson2f user manual" and "cat /proc/cpuinfo" with a
+modified cpu_showinfo function.
 
-> 
-> Thanks!
-
-Thanks.
-
-Dmitri
-
-> 
+>>
+>> Pulling him in.
+>
+> This simply doesn't matter on a uniprocessor system.
+>
 >   Ralf
-> 
+>

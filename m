@@ -1,73 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Apr 2009 14:39:05 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:38835 "EHLO h5.dl5rb.org.uk")
-	by ftp.linux-mips.org with ESMTP id S20032374AbZDBNjC (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Apr 2009 14:39:02 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n32Dcv6B015553;
-	Thu, 2 Apr 2009 15:38:57 +0200
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n32Dctps015551;
-	Thu, 2 Apr 2009 15:38:55 +0200
-Date:	Thu, 2 Apr 2009 15:38:55 +0200
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"David VomLehn (dvomlehn)" <dvomlehn@cisco.com>
-Cc:	Brian Foster <brian.foster@innova-card.com>,
-	David Daney <ddaney@caviumnetworks.com>,
-	"Maciej W. Rozycki" <macro@codesourcery.com>,
-	linux-mips@linux-mips.org, libc-ports@sourceware.org,
-	"Maciej W. Rozycki" <macro@linux-mips.org>
-Subject: Re: [PATCH, RFC] MIPS: Implement the getcontext API
-Message-ID: <20090402133855.GC15021@linux-mips.org>
-References: <alpine.DEB.1.10.0902282326580.4064@tp.orcam.me.uk> <49AD6139.60209@caviumnetworks.com> <200903040919.29294.brian.foster@innova-card.com> <20090304154418.GA13464@linux-mips.org> <FF038EB85946AA46B18DFEE6E6F8A289BE0B68@xmb-rtp-218.amer.cisco.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <FF038EB85946AA46B18DFEE6E6F8A289BE0B68@xmb-rtp-218.amer.cisco.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@h5.dl5rb.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Apr 2009 17:01:43 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:20699 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20030761AbZDBQBY (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Apr 2009 17:01:24 +0100
+Received: from localhost.localdomain (p2240-ipad309funabasi.chiba.ocn.ne.jp [123.217.196.240])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 3B783A7D1; Fri,  3 Apr 2009 01:01:17 +0900 (JST)
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] TXx9: Fix possible overflow in clock calculations
+Date:	Fri,  3 Apr 2009 01:01:21 +0900
+Message-Id: <1238688081-6329-1-git-send-email-anemo@mba.ocn.ne.jp>
+X-Mailer: git-send-email 1.5.6.3
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22246
+X-archive-position: 22247
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Mar 04, 2009 at 05:25:35PM -0500, David VomLehn (dvomlehn) wrote:
+Addition of -fwrapv option in 2.6.29 discloses possible overflow with
+signed arithmetics.  For example, result of "a * 6 / 12" (int a =
+400000000) is 200000000 without -fwrapv but -157913941 with -fwrapv.
 
-> > >  it's more a matter of "when" rather than "if".
-> > >  there is still an intention here to use XI (we
-> > >  have SmartMIPS), which requires not using the
-> > >  signal (or FP) trampoline on the stack.
-> > > 
-> > >  moving the signal trampoline to a vdso (which
-> > >  is(? was?) called, maybe misleadingly, 'vsyscall',
-> > >  on other architectures) is the obvious solution to
-> > >  that part of the puzzle.  and yes, it is possible
-> > >  to maintain the ABI; the signal trampoline is still
-> > >  also put on the stack, and modulo XI, would work if
-> > >  used - the trampoline-on-stack is simply not used
-> > >  if there is a vdso with the signal trampoline.
-> > 
-> > We generally want to get rid of stack trampolines.  
-> > Trampolines require
-> > cacheflushing which especially on SMP systems can be a rather 
-> > expensive
-> > operation.
-> 
-> If I understand this correctly, using a vdso would allow a stack without
-> execute permission on those processors that differentiate between read
-> and execute permission. This defeats attaches that use buffer overrun to
-> write code to be executed onto the stack, a nice thing for more secure
-> systems.
+Change some variable to unsigned to avoid such overflows.
 
-The good news is that many of these stack buffer overruns don't work on
-MIPS anyway due to the somewhat unusual stack frame.  Don't rely on that
-too much for security though - like 10 years ago Phrack published an
-article under the title "Smashing the stack for fun and profit" explaining
-how to write exploits for IRIX 5 which als was using o32.
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+ arch/mips/txx9/generic/setup_tx4927.c |    2 +-
+ arch/mips/txx9/generic/setup_tx4938.c |    2 +-
+ arch/mips/txx9/generic/setup_tx4939.c |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-  Ralf
+diff --git a/arch/mips/txx9/generic/setup_tx4927.c b/arch/mips/txx9/generic/setup_tx4927.c
+index 778078a..6b681cd 100644
+--- a/arch/mips/txx9/generic/setup_tx4927.c
++++ b/arch/mips/txx9/generic/setup_tx4927.c
+@@ -89,7 +89,7 @@ void __init tx4927_setup(void)
+ {
+ 	int i;
+ 	__u32 divmode;
+-	int cpuclk = 0;
++	unsigned int cpuclk = 0;
+ 	u64 ccfg;
+ 
+ 	txx9_reg_res_init(TX4927_REV_PCODE(), TX4927_REG_BASE,
+diff --git a/arch/mips/txx9/generic/setup_tx4938.c b/arch/mips/txx9/generic/setup_tx4938.c
+index 5d2cbbf..b2b8529 100644
+--- a/arch/mips/txx9/generic/setup_tx4938.c
++++ b/arch/mips/txx9/generic/setup_tx4938.c
+@@ -94,7 +94,7 @@ void __init tx4938_setup(void)
+ {
+ 	int i;
+ 	__u32 divmode;
+-	int cpuclk = 0;
++	unsigned int cpuclk = 0;
+ 	u64 ccfg;
+ 
+ 	txx9_reg_res_init(TX4938_REV_PCODE(), TX4938_REG_BASE,
+diff --git a/arch/mips/txx9/generic/setup_tx4939.c b/arch/mips/txx9/generic/setup_tx4939.c
+index d48eee1..f0beba8 100644
+--- a/arch/mips/txx9/generic/setup_tx4939.c
++++ b/arch/mips/txx9/generic/setup_tx4939.c
+@@ -115,7 +115,7 @@ void __init tx4939_setup(void)
+ 	int i;
+ 	__u32 divmode;
+ 	__u64 pcfg;
+-	int cpuclk = 0;
++	unsigned int cpuclk = 0;
+ 
+ 	txx9_reg_res_init(TX4939_REV_PCODE(), TX4939_REG_BASE,
+ 			  TX4939_REG_SIZE);
+-- 
+1.5.6.3

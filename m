@@ -1,69 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Apr 2009 13:09:38 +0100 (BST)
-Received: from latitanza.investici.org ([82.94.249.234]:31659 "EHLO
-	latitanza.investici.org") by ftp.linux-mips.org with ESMTP
-	id S20031367AbZDBMJd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 2 Apr 2009 13:09:33 +0100
-Received: from [127.0.0.1] (localhost [127.0.0.1]) (Authenticated sender: arc@autistici.org) with ESMTP id A5FA598058
-Message-ID: <49D4AAF7.40309@gnu.org>
-Date:	Thu, 02 Apr 2009 14:09:27 +0200
-From:	Graziano Sorbaioli <graziano@gnu.org>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090318)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Apr 2009 13:16:24 +0100 (BST)
+Received: from pyxis.i-cable.com ([203.83.115.105]:16256 "HELO
+	pyxis.i-cable.com") by ftp.linux-mips.org with SMTP
+	id S20031367AbZDBMQS (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 2 Apr 2009 13:16:18 +0100
+Received: (qmail 8582 invoked by uid 104); 2 Apr 2009 12:16:10 -0000
+Received: from 203.83.114.122 by pyxis (envelope-from <robert.zhangle@gmail.com>, uid 101) with qmail-scanner-2.01 
+ (clamdscan: 0.93.3/7733.  
+ Clear:RC:1(203.83.114.122):. 
+ Processed in 0.176931 secs); 02 Apr 2009 12:16:10 -0000
+Received: from ip114122.hkicable.com (HELO xenon.i-cable.com) (203.83.114.122)
+  by 0 with SMTP; 2 Apr 2009 12:16:09 -0000
+Received: from localhost (cm222-167-208-75.hkcable.com.hk [222.167.208.75])
+	by xenon.i-cable.com (8.13.5/8.13.5) with ESMTP id n32CG8nl002973;
+	Thu, 2 Apr 2009 20:16:09 +0800 (CST)
+Date:	Thu, 2 Apr 2009 20:15:56 +0800
+From:	Zhang Le <r0bertz@gentoo.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] added Loongson cpu-feature-overrides.h
+Message-ID: <20090402121556.GA6629@adriano.hkcable.com.hk>
+Mail-Followup-To: Ralf Baechle <ralf@linux-mips.org>,
+	linux-mips@linux-mips.org
+References: <1238658105-23260-1-git-send-email-r0bertz@gentoo.org> <20090402111607.GB1678@linux-mips.org> <20090402112739.GD28319@adriano.hkcable.com.hk> <20090402114746.GC1678@linux-mips.org>
 MIME-Version: 1.0
-To:	Graziano Sorbaioli <graziano@gnu.org>, linux-mips@linux-mips.org
-Subject: Re: getcontext needs to be implemented on mips
-References: <49D376E4.4090503@gnu.org> <20090402074641.GB28319@adriano.hkcable.com.hk>
-In-Reply-To: <20090402074641.GB28319@adriano.hkcable.com.hk>
-X-Enigmail-Version: 0.95.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <graziano@gnu.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20090402114746.GC1678@linux-mips.org>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <robert.zhangle@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22239
+X-archive-position: 22240
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: graziano@gnu.org
+X-original-sender: r0bertz@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
+On 13:47 Thu 02 Apr     , Ralf Baechle wrote:
+> On Thu, Apr 02, 2009 at 07:27:39PM +0800, Zhang Le wrote:
+> 
+> > > > I have taken Wu Zhangjin's and Philippe Vachon's version as references, did a
+> > > > little modification and tested on 16K page size kernel. It works well.
+> > > > 
+> > > > Unfornately although it already has defined cpu_has_dc_aliases as 1, 4k page
+> > > > size still not working. More work needed here.
+> > > 
+> > > Adding this file is only a matter of kernel optimization.  You may have
+> > > saved as much as several hundred kb!  But it won't get a kernel
+> > > that wasn't working before to work.  If anything the opposite ...
+> > 
+> > I see. Thanks.
+> > BTW, I have just made another little change:
+> > 
+> > #define cpu_has_dc_aliases      (PAGE_SIZE < 0x4000)
+> > 
+> > Since waysize is 16k.
+> > 
+> > Anyway, it is good to include this file now, or postpone it a little later?
+> > If yes, then I will send a new version soon.
+> 
+> Correct - but this alone doesn't get all 4k or 64k pages to work so how
+> about we deal with this one later?
 
-Zhang Le ha scritto:
+OK, then, ;)
 
-> Could you please just try glibc 2.9? Is there any difficulties with that?
-> Backporting is no fun, I am afraid. Few, if not none, people would like to do
-> that, unless paid.
-
-
-Unfortunately gNewSense mips-l is a more conservative port staying with
-Debian 5.0 lenny packages, which means staying with glibc-2.7.
-
-This is why I asked for help.
-
-Some references.
-
-gNewSense mips-l:
-http://wiki.gnewsense.org/Projects/GNewSenseToMIPS
-
-our BTS:
-http://bugs.gnewsense.org/
-
-mips getcontext bug:
-http://bugs.gnewsense.org/Bugs/00261
-
-
-- --
-Graziano Sorbaioli ~ sorbaioli.org
-
-Libre Planet Italia
-http://libreplanet.org/index.php/LibrePlanetItalia
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.6 (GNU/Linux)
-
-iD8DBQFJ1Kr3Ttn97LA90HMRAo7jAKDryxuyQuJ40pWeokjKlZ/YAD9s3wCgnQ7f
-3Y4HPGvHHFMyfOl7Rlswumo=
-=4KcC
------END PGP SIGNATURE-----
+Zhang, Le

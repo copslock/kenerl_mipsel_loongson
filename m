@@ -1,49 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Apr 2009 19:24:56 +0100 (BST)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:23202 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S20026935AbZDFSYr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 6 Apr 2009 19:24:47 +0100
-Received: (qmail 3437 invoked by uid 1000); 6 Apr 2009 20:24:45 +0200
-Date:	Mon, 6 Apr 2009 20:24:45 +0200
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	Charles Eidsness <charles@cooper-street.com>
-Cc:	alsa-devel <alsa-devel@alsa-project.org>,
-	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] ALSA: au1x00: convert to platform device
-Message-ID: <20090406182445.GA3432@roarinelk.homelinux.net>
-References: <1238320026-4936-1-git-send-email-mano@roarinelk.homelinux.net> <49CF9558.6030604@cooper-street.com> <20090329175407.570af32d@scarran.roarinelk.net> <49D75464.2060704@cooper-street.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 07 Apr 2009 01:02:12 +0100 (BST)
+Received: from srv5.dvmed.net ([207.36.208.214]:6103 "EHLO mail.dvmed.net")
+	by ftp.linux-mips.org with ESMTP id S20034517AbZDGACG (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 7 Apr 2009 01:02:06 +0100
+Received: from cpe-069-134-158-197.nc.res.rr.com ([69.134.158.197] helo=bd.yyz.us)
+	by mail.dvmed.net with esmtpsa (Exim 4.69 #1 (Red Hat Linux))
+	id 1LqylL-0004JQ-EO; Tue, 07 Apr 2009 00:02:01 +0000
+Message-ID: <49DA97F6.6030202@garzik.org>
+Date:	Mon, 06 Apr 2009 20:01:58 -0400
+From:	Jeff Garzik <jeff@garzik.org>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <49D75464.2060704@cooper-street.com>
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <mano@roarinelk.homelinux.net>
+To:	David Daney <ddaney@caviumnetworks.com>
+CC:	linux-ide@vger.kernel.org, jgarzik@redhat.com,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] libata: Remove some redundant casts from pata_octeon_cf.c
+References: <1238537079-2584-1-git-send-email-ddaney@caviumnetworks.com>
+In-Reply-To: <1238537079-2584-1-git-send-email-ddaney@caviumnetworks.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <jeff@garzik.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22268
+X-archive-position: 22269
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: jeff@garzik.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Apr 04, 2009 at 08:36:52AM -0400, Charles Eidsness wrote:
->>> Hi,
->>>
->>> I wish I could but it's been years since I worked on that project and I'm 
->>> pretty sure that I don't have any hardware around anymore, but I will do 
->>> a thorough search next week anyway. There may be something hiding in the 
->>> back of a dusty closet that I've forgotten about, if I find something I 
->>> will let you know.
->> Thanks! I really appreciate it!
->> 	Manuel Lauss
->
-> Hi Manuel,
->
-> Sorry, but I wasn't able to find any working hardware.
+David Daney wrote:
+> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
 
-Bummer.  Thanks for trying though!
-
-	Manuel
+applied

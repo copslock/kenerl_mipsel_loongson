@@ -1,74 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Apr 2009 18:10:11 +0100 (BST)
-Received: from main.gmane.org ([80.91.229.2]:56215 "EHLO ciao.gmane.org")
-	by ftp.linux-mips.org with ESMTP id S20025723AbZDHRKE (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 8 Apr 2009 18:10:04 +0100
-Received: from root by ciao.gmane.org with local (Exim 4.43)
-	id 1LrbHm-0001XV-9T
-	for linux-mips@linux-mips.org; Wed, 08 Apr 2009 17:10:02 +0000
-Received: from gate-ca119.motorola.com ([144.189.100.25])
-        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Wed, 08 Apr 2009 17:10:02 +0000
-Received: from dave+gmane by gate-ca119.motorola.com with local (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Wed, 08 Apr 2009 17:10:02 +0000
-X-Injected-Via-Gmane: http://gmane.org/
-To:	linux-mips@linux-mips.org
-From:	David Wuertele <dave+gmane@wuertele.com>
-Subject:  What is the right way to setup MIPS timer irq in 2.6.29?
-Date:	Wed, 8 Apr 2009 16:57:33 +0000 (UTC)
-Message-ID:  <loom.20090408T165537-312@post.gmane.org>
-Mime-Version:  1.0
-Content-Type:  text/plain; charset=us-ascii
-Content-Transfer-Encoding:  7bit
-X-Complaints-To: usenet@ger.gmane.org
-X-Gmane-NNTP-Posting-Host: main.gmane.org
-User-Agent: Loom/3.14 (http://gmane.org/)
-X-Loom-IP: 144.189.100.25 (Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.8) Gecko/2009032608 Firefox/3.0.8)
-Return-Path: <sgi-linux-mips@m.gmane.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Apr 2009 22:53:48 +0100 (BST)
+Received: from mms1.broadcom.com ([216.31.210.17]:52240 "EHLO
+	mms1.broadcom.com") by ftp.linux-mips.org with ESMTP
+	id S20024647AbZDHVxl (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 8 Apr 2009 22:53:41 +0100
+Received: from [10.11.16.99] by mms1.broadcom.com with ESMTP (Broadcom
+ SMTP Relay (Email Firewall v6.3.2)); Wed, 08 Apr 2009 14:53:21 -0700
+X-Server-Uuid: 02CED230-5797-4B57-9875-D5D2FEE4708A
+Received: by mail-irva-10.broadcom.com (Postfix, from userid 47) id
+ 5F2D32C1; Wed, 8 Apr 2009 14:53:21 -0700 (PDT)
+Received: from mail-irva-8.broadcom.com (mail-irva-8 [10.11.18.52]) by
+ mail-irva-10.broadcom.com (Postfix) with ESMTP id 4B6EA2B0 for
+ <linux-mips@linux-mips.org>; Wed, 8 Apr 2009 14:53:21 -0700 (PDT)
+Received: from mail-irva-13.broadcom.com (mail-irva-13.broadcom.com
+ [10.11.16.103]) by mail-irva-8.broadcom.com (MOS 3.7.5a-GA) with ESMTP
+ id HPF96418; Wed, 8 Apr 2009 14:53:20 -0700 (PDT)
+Received: from [10.28.6.13] (lab-mhtb-013.ne.broadcom.com [10.28.6.13])
+ by mail-irva-13.broadcom.com (Postfix) with ESMTP id 2180874D03 for
+ <linux-mips@linux-mips.org>; Wed, 8 Apr 2009 14:53:20 -0700 (PDT)
+Subject: linux-mips on big_sur (broadcom 1480)
+From:	"Jon Fraser" <jfraser@broadcom.com>
+Reply-to: jfraser@broadcom.com
+To:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Organization: Broadcom
+Date:	Wed, 08 Apr 2009 17:53:18 -0400
+Message-ID: <1239227598.14558.39.camel@chaos.ne.broadcom.com>
+MIME-Version: 1.0
+X-Mailer: Evolution 2.12.3 (2.12.3-5.fc8)
+X-WSS-ID: 65C3C35B3843923541-01-01
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Return-Path: <jfraser@broadcom.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22276
+X-archive-position: 22277
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dave+gmane@wuertele.com
+X-original-sender: jfraser@broadcom.com
 Precedence: bulk
 X-list: linux-mips
 
-Has the system timer paradigm changed between 2.6.18 and 2.6.29?
-I'm trying to update my Broadcom-based embedded system to 2.6.29,
-and I'm running into problems getting the system timer to run.
-I'm looking for a clue about how to port forward my arch/mips/brcmstb/*
-files, specifically I want to write a plat_time_init() function
-that does for 2.6.29 what plat_timer_setup(struct irqaction *irq)
-did for 2.6.18.
+Hello,
 
-In 2.6.18, arch/mips/kernel/time.c defines a high-level ISR called
-timer_interrupt (which does things like lock xtime_lock, call
-mips_hpt_read() and do_timer(regs), and return IRQ_HANDLED). time.c
-then defines a struct irqaction timer_irqaction and sets
-timer_interrupt to be the .handler field.  Finally, time.c calls
-plat_timer_setup(timer_irqaction), which is defined by the Broadcom
-patches to call setup_irq(timer_irqaction).
+Can anybody confirm the running any of the sibyte processors on any of
+the latest kernels?  We're trying to do a quick test of the big_sur
+(1480) processor/eval board on 2.6.28.
 
-In 2.6.29, arch/mips/kernel/time.c has a comment saying that the new
-plat_time_init hook does not receive the irqaction pointer argument
-anymore, because each "clock_event_device" should use its own struct
-irqrequest.
+If you have run this lately, can you let me know the config?
+32 vs 64 bit
+big vs little endian
 
-I tried having the broadcom arch's plat_time_init() function create an
-irqaction and call setup_irq(), but the timer_interrupt() function
-that used to be in arch/mips/kernel/time.c doesn't exist anymore, and
-I can't seem to find the replacement.
-
-Is there a replacement for timer_interrupt()?  I thought that maybe
-the hrtimer_interrupt() might be the one, but it requires something
-called a struct clock_event_device.  When I looked at clock_event_device
-it was very complex, and I get the feeling I'm barking up the wrong tree.
-
-Can anyone offer pointers on how to call setup_irq() from plat_time_init()?
+if 32 bit, highmem vs no-highmem.
 
 Thanks,
-Dave
+Jon Fraser
+Broadcom

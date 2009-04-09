@@ -1,222 +1,196 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Apr 2009 15:18:41 +0100 (BST)
-Received: from stout.engsoc.carleton.ca ([134.117.69.22]:56544 "EHLO
-	stout.engsoc.carleton.ca") by ftp.linux-mips.org with ESMTP
-	id S28640826AbZDIOQy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 9 Apr 2009 15:16:54 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by stout.engsoc.carleton.ca (Postfix) with ESMTP id EB2465840C0;
-	Thu,  9 Apr 2009 10:16:45 -0400 (EDT)
-Received: from stout.engsoc.carleton.ca ([127.0.0.1])
-	by localhost (stout.engsoc.org [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 9ICdQLzcTLkD; Thu,  9 Apr 2009 10:16:45 -0400 (EDT)
-Received: from mobius.cowpig.ca (cowpig.ca [134.117.69.79])
-	by stout.engsoc.carleton.ca (Postfix) with ESMTP id C61645840BC;
-	Thu,  9 Apr 2009 10:16:45 -0400 (EDT)
-Received: by mobius.cowpig.ca (Postfix, from userid 1000)
-	id EF5FD160189; Thu,  9 Apr 2009 10:16:34 -0400 (EDT)
-Date:	Thu, 9 Apr 2009 10:16:34 -0400
-From:	Philippe Vachon <philippe@cowpig.ca>
-To:	yanhua <yanh@lemote.com>
-Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-	?????? <penglj@lemote.com>,
-	"zhangfx@lemote.com" <zhangfx@lemote.com>
-Subject: Re: [PATCH 1/14] lemote: Loongson2F based machines support
-Message-ID: <20090409141634.GA17941@cowpig.ca>
-References: <49DD7E88.7040305@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Apr 2009 15:28:14 +0100 (BST)
+Received: from exprod8og101.obsmtp.com ([64.18.3.82]:57510 "HELO
+	exprod8og101.obsmtp.com") by ftp.linux-mips.org with SMTP
+	id S20032485AbZDIO2E (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 9 Apr 2009 15:28:04 +0100
+Received: from source ([12.239.216.72]) by exprod8ob101.postini.com ([64.18.7.12]) with SMTP
+	ID DSNKSd4F8evXN6EVtIJIq7ERlG+GL4Ddzc0n@postini.com; Thu, 09 Apr 2009 07:28:03 PDT
+Received: from 10.8.0.44 ([10.8.0.44]) by hq-ex-mb01.razamicroelectronics.com ([10.1.1.40]) via Exchange Front-End Server webmail.razamicroelectronics.com ([10.1.1.41]) with Microsoft Exchange Server HTTP-DAV ;
+ Thu,  9 Apr 2009 14:27:58 +0000
+Received: from kh-d820 by webmail.razamicroelectronics.com; 09 Apr 2009 09:27:58 -0500
+Subject: Re: [PATCH v3 2/5] Alchemy: Au1300 new interrupt controller
+From:	Kevin Hickey <khickey@rmicorp.com>
+To:	Manuel Lauss <mano@roarinelk.homelinux.net>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+In-Reply-To: <20090409120715.1f53f12c@scarran.roarinelk.net>
+References: <1239233768-11927-1-git-send-email-khickey@rmicorp.com>
+	 <1239233768-11927-2-git-send-email-khickey@rmicorp.com>
+	 <1239233768-11927-3-git-send-email-khickey@rmicorp.com>
+	 <20090409120715.1f53f12c@scarran.roarinelk.net>
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Date:	Thu, 09 Apr 2009 09:27:58 -0500
+Message-Id: <1239287278.5812.6.camel@kh-d820>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <49DD7E88.7040305@lemote.com>
-User-Agent: Mutt/1.5.9i
-Return-Path: <philippe@cowpig.ca>
+X-Mailer: Evolution 2.22.3.1 
+Return-Path: <khickey@rmicorp.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22310
+X-archive-position: 22311
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: philippe@cowpig.ca
+X-original-sender: khickey@rmicorp.com
 Precedence: bulk
 X-list: linux-mips
 
-I think this patch would be a lot better off broken up into several
-pieces, but I also have found there's a lot of code that is duplicated
-in there that needs to be tidied up (even if the implementation isn't
-identical, the functionality is). This comment in particular applies to
-the yeelong/ and fuloong/ directories.
+On Thu, 2009-04-09 at 12:07 +0200, Manuel Lauss wrote:
+> Hi Kevin!
+> 
+> Some major nits:
+> 
+> > --- /dev/null
+> > +++ b/arch/mips/alchemy/common/gpio_int.c
+> > +static struct irq_chip gpio_int_irq_type = {
+> > +	.name 		= "Au GPIO/INT",
+> > +	.ack		= gpio_int_ack,
+> > +	.mask		= gpio_int_mask,
+> > +	.unmask		= gpio_int_unmask,
+> > +	.mask_ack	= gpio_int_mask_ack
+> > +void __init arch_init_irq(void)
+> > +{
+>  [...]
+> > +	for (i = 0; i < nr_basic_irqs; ++i) {
+> > +		printk(KERN_DEBUG "Initializing IRQ %d\n",
+> > +			basic_irqs[i].number);
+> > +		set_pin_cfg(&basic_irqs[i]);
+> > +		if (basic_irqs[i].intcfg == LEVEL_LOW)
+> > +			set_irq_chip_and_handler_name(
+> > +				basic_irqs[i].number + GPINT_LINUX_IRQ_OFFSET,
+> > +				&gpio_int_irq_type,
+> > +				handle_level_irq,
+> > +				"lowlevel");
+> > +		else if (basic_irqs[i].intcfg == LEVEL_HIGH)
+> > +			set_irq_chip_and_handler_name(
+> > +				basic_irqs[i].number + GPINT_LINUX_IRQ_OFFSET,
+> > +				&gpio_int_irq_type,
+> > +				handle_level_irq,
+> > +				"highlevel");
+> > +		else if (basic_irqs[i].intcfg == FALLING)
+> > +			set_irq_chip_and_handler_name(
+> > +				basic_irqs[i].number + GPINT_LINUX_IRQ_OFFSET,
+> > +				&gpio_int_irq_type,
+> > +				handle_edge_irq,
+> > +				"fallingedge");
+> > +		else if (basic_irqs[i].intcfg == RISING)
+> > +			set_irq_chip_and_handler_name(
+> > +				basic_irqs[i].number + GPINT_LINUX_IRQ_OFFSET,
+> > +				&gpio_int_irq_type,
+> > +				handle_edge_irq,
+> > +				"risingedge");
+> > +		else if (basic_irqs[i].intcfg == ANY_CHANGE)
+> > +			set_irq_chip_and_handler_name(
+> > +				basic_irqs[i].number + GPINT_LINUX_IRQ_OFFSET,
+> > +				&gpio_int_irq_type,
+> > +				handle_edge_irq,
+> > +				"bothedge");
+> > +		else
+> > +			set_irq_chip(
+> > +				basic_irqs[i].number + GPINT_LINUX_IRQ_OFFSET,
+> > +				&gpio_int_irq_type);
+> > +	}
+> 
+> Please please move this to a irq_chip.set_irq_type hook,  and replace
+> LEVEL_LOW and friends with linux' IRQ_TYPE_LEVEL_LOW... constants
+> (So one can pass IRQ flags via platform resource information).
+> 
+> 
+> > diff --git a/arch/mips/alchemy/devboards/cascade_irq.c b/arch/mips/alchemy/devboards/cascade_irq.c
+> > + * The following must be declared/defined in an included file:
+> > + * - volatile struct bcsr_regs (declared)
+> > + *   (which much include fields int_status, intset_mask, intclr_mask, intset,
+> > + *   and intclr)
+> > + * - volatile struct bcsr_regs *const bcsr (defined)
+> > + * - CASCADE_IRQ_MIN
+> > + * - CASCADE_IRQ_MAX
+> > + * - CASCADE_IRQ_TYPE_STRING
+> > + * - CASCADE_IRQ (System IRQ to which the cascade is connected)
+> > + */
+> > +
+> > +void __init board_init_irq(void);
+> > +
+> > +irqreturn_t cascade_handler(int irq, void *dev_id)
+> > +{
+> > +	u16 int_status = au_ioread16(&db_bcsr->int_status);
+> > +	int irq_in_service;
+> > +
+> > +	au_iowrite16(int_status, &db_bcsr->int_status);
+> > +	for ( ; int_status; int_status &= int_status - 1) {
+> > +		irq_in_service = CASCADE_IRQ_MIN + __ffs(int_status);
+> > +		db_set_hex((u8)(irq_in_service));
+> > +		do_IRQ(irq_in_service);
+> 
+> generic_handle_irq() please,
+> 
+> 
+> > +static unsigned int cascade_startup(unsigned int irq)
+> > +{
+> > +	int retval = 0;
+> > +
+> > +	mutex_lock(&cascade_use_count_mutex);
+> > +	++cascade_use_count;
+> > +	if (cascade_use_count == 1)
+> > +		retval = request_irq(CASCADE_IRQ,
+> > +				&cascade_handler, 0, "Cascade",
+> > +				&cascade_handler);
+> 
+> Use "set_irq_chained_handler" after registering the cascades and the
+> startup/shutdown hooks can go away.
+> 
+> Also, "cascade" is too generic, maybe call it "db1300cascade". The
+> Db1200 too has a cascade but works slightly different (I even doubt it
+> makes sense to place this code outside the directory.  As it currently
+> is, it's not generic enough to be usable by the Db1200/Pb1200; and
+> the code is rather tiny anyway).
+> 
+To address all of your comments, I wrote this code some time ago and
+have not had time to digest some of the changes that have been posted to
+the DB1200 interrupt code since then.  I have every intention of finding
+some time down the line to revisit this and merge it with the DB1200
+cascade code.  The controllers are very similar - in fact in my local
+tree I am using this same code on both platforms.
 
-As well, there's pretty egregious abuse of inline asm to do things that
-really don't require inline asm, like manipulating MMIO registers.
+In the interest of time and schedule, I was hoping to have this version
+included in 2.6.30 so that I had something to build on for future
+updates and something to release other driver and peripheral patches
+against.
 
-The feedback I've provided is generally at a glance, though I have some
-familiarity with Lemote's code, so some of these are issues I've
-anticipated would come up. :-)
+> (Off topic:  why the 2-stage mask/unmask system [the 'enable' and
+> 'mask' bits] I didn't make sense to me on the DB1200 either...)
+> 
+I'm not really sure either but I can ask the folks responsible for the
+CPLD.  My guess is that it is just because traditionally interrupt
+controllers have both enables and masks and that's how it was written.
 
-I've also avoided stylistic feedback -- I think there are people who are
-far better qualified to comment on that.
+> 
+> > +/*
+> > + * Set the GPIO to the specified value.  The value must be 0 or 1.  Any other
+> > + * value results in a no-op.
+> > + *
+> > + * This call will implicitly reconfigure the pin to be a GPIO if it is
+> > + * configured as a device pin.
+> > + */
+> > +void set_gpio(u8 gpio, u8 value);
+> > +
+> > +/*
+> > + * Get the value of any GPIO pin (including those controlled by devices).
+> > + *
+> > + * This will not change the pin configuration
+> > + */
+> > +u8 get_gpio(u8 gpio);
+> > +
+> > +#endif /* _GPIO_INT_H */
+> > +
+> 
+> no support for linux' GPIO framework?
+Again, at the time I was unaware of any GPIO standards.  I will probably
+revise this to use gpiolib or whaterver down the line.
+> 
 
-On Thu, Apr 09, 2009 at 12:50:16PM +0800, yanhua wrote:
-> +#ifdef CONFIG_TRACE_BOOT
-> + printk(KERN_INFO"arch_initcall:pcibios_init\n");
-> + printk(KERN_INFO"register_pci_controller :
-> %x\n",&loongson2f_pci_controller);
-> +#endif
-> +
-> +#ifdef CONFIG_64BIT
-> + loongson2f_pci_mem_resource.start = 0x50000000UL;
-> + loongson2f_pci_mem_resource.end = 0x7fffffffUL;
-> + __asm__(".set mips3\n"
-> + "dli $2,0x900000003ff00000\n"
-> + "li $3,0x40000000\n"
-> + "sd $3,0x18($2)\n"
-> + "or $3,1\n"
-> + "sd $3,0x58($2)\n"
-> + "dli $3,0xffffffffc0000000\n"
-> + "sd $3,0x38($2)\n"
-> + ".set mips0\n"
-> + :::"$2","$3","memory"
-> + );
-
-This is completely unnecessary and should be rewritten without the
-inline asm; I've prepared a header that has both register offsets and
-bases, as well as accessor macros that look a lot neater than this mess.
-
-This can be found at: 
-http://git.linux-cisco.org/?p=linux-mips.git;a=blob;f=arch/mips/include/asm/mach-stls2f/stls2f.h;h=9dbbb5d068618a1530c9396af32dfc4a394ea826;hb=refs/heads/linux-gdium
-
-(pardon the long URL)
-
-> +++ b/arch/mips/lemote/lm2f/fuloong/dbg_io.c
-> @@ -0,0 +1,182 @@
-*snip*
-> +#ifdef CONFIG_64BIT
-> +#define BASE (0xffffffffbff003f8)
-> +#else
-> +#define BASE (0xbff003f8)
-> +#endif
-> +
-> +#else /* USE_CS5536_UART1/2 */
-> +
-> +#ifdef CONFIG_64BIT
-> +#define BASE 0xffffffffbfd002f8
-> +#else
-> +#define BASE 0xbfd002f8
-> +#endif
-> +
-> +#endif /* end of USE_GODSON2F_UART */
-
-More magic numbers that should likely be moved into a header.
-
-*more code snipped*
-
-> +++ b/arch/mips/lemote/lm2f/fuloong/prom.c
-> +
-> +#ifdef CONFIG_32BIT
-> + *(volatile u32*)0xbfe00180 |= 0x7;
-> +#else
-> + *(volatile u32*)0xffffffffbfe00180 |= 0x7;
-> +#endif
-> + _rdmsr(0xe0000014, &hi, &lo);
-> + lo |= 0x00000001;
-> + _wrmsr(0xe0000014, hi, lo);
-> +
-
-More magic numbers that should have names. Accesses to MMIO registers
-should be done through accessors.
-
-> + printk("Hard reset not take effect!!\n");
-> + __asm__ __volatile__ (
-> + ".long 0x3c02bfc0\n"
-> + ".long 0x00400008\n"
-> + :::"v0"
-> + );
-
-This is really REALLY scary. Perhaps it'd be even slightly neater to
-convert that jump to a void function pointer -- something like
-
-((void (*)(void))(RESET_VECTOR)))();
-
-(note that I haven't tested that, and RESET_VECTOR would have to be
-something appropriate, i.e. CKSEG1ADDR(BONITO_BOOT_BASE) in this case,
-though I think CKSEG1ADDR is frowned upon)
-
-
-> +static void loongson2f_halt(void)
-> +{
-> +#ifdef CONFIG_32BIT
-> + u32 base;
-> +#else
-> + u64 base;
-> +#endif
-> + u32 hi, lo, val;
-> +
-> + _rdmsr(0x8000000c, &hi, &lo);
-> +#ifdef CONFIG_32BIT
-> + base = (lo & 0xff00) | 0xbfd00000;
-> +#else
-> + base = (lo & 0xff00) | 0xffffffffbfd00000ULL;
-> +#endif
-> + val = (val & ~(1 << (16 + 13))) | (1 << 13);
-> + delay();
-> + *(__volatile__ u32 *)(base + 0x04) = val;
-> + delay();
-> + val = (val & ~(1 << (13))) | (1 << (16 + 13));
-> + delay();
-> + *(__volatile__ u32 *)(base + 0x00) = val;
-> + delay();
-> +}
-
-See above, re: magic numbers.
-
-*snip*
-
-> +++ b/arch/mips/lemote/lm2f/fuloong/setup.c
-> +
-> +#ifdef CONFIG_64BIT
-> +#define PTR_PAD(p) ((0xffffffff00000000)|((unsigned long long)(p)))
-> +#else
-> +#define PTR_PAD(p) (p)
-> +#endif
-
-This shouldn't be necessary at all.
-
-> +#ifdef CONFIG_64BIT
-> + __asm__(
-> + ".set mips3\n"
-> + "dli $2, 0x900000003ff00000\n"
-> + "dli $3, 0x0000000080000000\n"
-> + "sd $3, 0x10($2)\n"
-> + "sd $0, 0x50($2)\n"
-> + "dli $3, 0xffffffff80000000\n"
-> + "sd $3, 0x30($2)\n"
-> + ".set mips0\n"
-> + :::"$2","$3","memory");
-> + if (highmemsize > 0) {
-> + add_memory_region(0x90000000, highmemsize << 20, BOOT_MEM_RAM);
-> + }
-> +#endif
-
-This can all be done using accessors, as described above.
-
-I notice there seems to be a lot of duplicated code in the yeelong
-directory. Perhaps it is worthwhile to try to further consolidate some
-of it?
-
-My comments above seem to largely apply to the Yeelong code as well.
-
-> +++ b/arch/mips/pci/fixup-fl2f.c
-> +#ifdef CONFIG_64BIT
-> + *(volatile u32*)0xffffffffbfe0004c = 0xd2000001;
-> +#else
-> + *(volatile u32*)0xbfe0004c = 0xd2000001;
-> +#endif
-
-Again, stuff like this is really unnecessary.
-
-I generally mirror Arnaud's sentiment about the structuring of the code
--- I suspect a loongson/ directory in arch/mips makes more sense, then 
-followed by an ls2f/ and ls2e/ directory.
-
-Cheers,
-Phil
+-- 
+Kevin Hickey
+Alchemy Solutions
+RMI Corporation
+khickey@rmicorp.com
+P:  512.691.8044

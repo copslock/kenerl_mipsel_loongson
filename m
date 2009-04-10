@@ -1,99 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Apr 2009 11:12:55 +0100 (BST)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:46794 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S28586594AbZDJKJC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 10 Apr 2009 11:09:02 +0100
-Received: (qmail 8991 invoked from network); 10 Apr 2009 12:09:01 +0200
-Received: from scarran.roarinelk.net (HELO localhost.localdomain) (192.168.0.242)
-  by 192.168.0.1 with SMTP; 10 Apr 2009 12:09:01 +0200
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	Linux-MIPS <linux-mips@linux-mips.org>
-Cc:	Manuel Lauss <mano@roarinelk.homelinux.net>
-Subject: [PATCH v4 2/2] Alchemy: remove unused au1000_gpio.h header
-Date:	Fri, 10 Apr 2009 12:09:00 +0200
-Message-Id: <1239358140-20923-2-git-send-email-mano@roarinelk.homelinux.net>
-X-Mailer: git-send-email 1.6.2
-In-Reply-To: <1239358140-20923-1-git-send-email-mano@roarinelk.homelinux.net>
-References: <1239358140-20923-1-git-send-email-mano@roarinelk.homelinux.net>
-Return-Path: <mano@roarinelk.homelinux.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Apr 2009 19:43:03 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:32870 "EHLO
+	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
+	id S20024675AbZDJSm5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 10 Apr 2009 19:42:57 +0100
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B49df931f0000>; Fri, 10 Apr 2009 14:42:39 -0400
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 10 Apr 2009 11:41:42 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 10 Apr 2009 11:41:41 -0700
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n3AIfb2T027331;
+	Fri, 10 Apr 2009 11:41:37 -0700
+Received: (from ddaney@localhost)
+	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n3AIfadA027329;
+	Fri, 10 Apr 2009 11:41:36 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+To:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:	David Daney <ddaney@caviumnetworks.com>
+Subject: [PATCH] MIPS: Include linux/errno.h from arch/mips/include/asm/compat.h
+Date:	Fri, 10 Apr 2009 11:41:35 -0700
+Message-Id: <1239388895-27305-1-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.6.0.6
+X-OriginalArrivalTime: 10 Apr 2009 18:41:41.0850 (UTC) FILETIME=[FD93D3A0:01C9BA0B]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22325
+X-archive-position: 22326
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
----
- arch/mips/include/asm/mach-au1x00/au1000_gpio.h |   56 -----------------------
- 1 files changed, 0 insertions(+), 56 deletions(-)
- delete mode 100644 arch/mips/include/asm/mach-au1x00/au1000_gpio.h
+The recent change that added #include <linux/seccomp.h> breaks
+(because EINVAL is not defined) when building
+arch/mips/kernel/asm-offsets.s if CONFIG_SECCOMP is not defined.
+Including errno.h fixes the problem.
 
-diff --git a/arch/mips/include/asm/mach-au1x00/au1000_gpio.h b/arch/mips/include/asm/mach-au1x00/au1000_gpio.h
-deleted file mode 100644
-index d8c96fd..0000000
---- a/arch/mips/include/asm/mach-au1x00/au1000_gpio.h
-+++ /dev/null
-@@ -1,56 +0,0 @@
--/*
-- * FILE NAME au1000_gpio.h
-- *
-- * BRIEF MODULE DESCRIPTION
-- *	API to Alchemy Au1xx0 GPIO device.
-- *
-- *  Author: MontaVista Software, Inc.  <source@mvista.com>
-- *          Steve Longerbeam
-- *
-- * Copyright 2001, 2008 MontaVista Software Inc.
-- *
-- *  This program is free software; you can redistribute  it and/or modify it
-- *  under  the terms of  the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at your
-- *  option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- */
--
--#ifndef __AU1000_GPIO_H
--#define __AU1000_GPIO_H
--
--#include <linux/ioctl.h>
--
--#define AU1000GPIO_IOC_MAGIC 'A'
--
--#define AU1000GPIO_IN		_IOR(AU1000GPIO_IOC_MAGIC, 0, int)
--#define AU1000GPIO_SET		_IOW(AU1000GPIO_IOC_MAGIC, 1, int)
--#define AU1000GPIO_CLEAR	_IOW(AU1000GPIO_IOC_MAGIC, 2, int)
--#define AU1000GPIO_OUT		_IOW(AU1000GPIO_IOC_MAGIC, 3, int)
--#define AU1000GPIO_TRISTATE	_IOW(AU1000GPIO_IOC_MAGIC, 4, int)
--#define AU1000GPIO_AVAIL_MASK	_IOR(AU1000GPIO_IOC_MAGIC, 5, int)
--
--#ifdef __KERNEL__
--extern u32 get_au1000_avail_gpio_mask(void);
--extern int au1000gpio_tristate(u32 data);
--extern int au1000gpio_in(u32 *data);
--extern int au1000gpio_set(u32 data);
--extern int au1000gpio_clear(u32 data);
--extern int au1000gpio_out(u32 data);
--#endif
--
--#endif
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+---
+ arch/mips/include/asm/compat.h |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/arch/mips/include/asm/compat.h b/arch/mips/include/asm/compat.h
+index 6c5b409..b88434e 100644
+--- a/arch/mips/include/asm/compat.h
++++ b/arch/mips/include/asm/compat.h
+@@ -3,6 +3,7 @@
+ /*
+  * Architecture specific compatibility types
+  */
++#include <linux/errno.h>
+ #include <linux/seccomp.h>
+ #include <linux/thread_info.h>
+ #include <linux/types.h>
 -- 
-1.6.2
+1.6.0.6

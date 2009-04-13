@@ -1,73 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 11 Apr 2009 15:32:07 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:58083 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20023535AbZDKOcB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 11 Apr 2009 15:32:01 +0100
-Received: from localhost (p7156-ipad205funabasi.chiba.ocn.ne.jp [222.146.102.156])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id C6587A828; Sat, 11 Apr 2009 23:31:54 +0900 (JST)
-Date:	Sat, 11 Apr 2009 23:31:50 +0900 (JST)
-Message-Id: <20090411.233150.25909696.anemo@mba.ocn.ne.jp>
-To:	ralf@linux-mips.org
-Cc:	ddaney@caviumnetworks.com, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Include linux/errno.h from
- arch/mips/include/asm/compat.h
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20090410191611.GB23582@linux-mips.org>
-References: <1239388895-27305-1-git-send-email-ddaney@caviumnetworks.com>
-	<20090410191611.GB23582@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Apr 2009 11:49:10 +0100 (BST)
+Received: from pyxis.i-cable.com ([203.83.115.105]:6306 "HELO
+	pyxis.i-cable.com") by ftp.linux-mips.org with SMTP
+	id S20024029AbZDMKtE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 13 Apr 2009 11:49:04 +0100
+Received: (qmail 26201 invoked by uid 104); 13 Apr 2009 10:48:47 -0000
+Received: from 203.83.114.122 by pyxis (envelope-from <robert.zhangle@gmail.com>, uid 101) with qmail-scanner-2.01 
+ (clamdscan: 0.93.3/7733.  
+ Clear:RC:1(203.83.114.122):. 
+ Processed in 0.168977 secs); 13 Apr 2009 10:48:47 -0000
+Received: from ip114122.hkicable.com (HELO xenon.i-cable.com) (203.83.114.122)
+  by 0 with SMTP; 13 Apr 2009 10:48:43 -0000
+Received: from localhost (cm222-167-208-75.hkcable.com.hk [222.167.208.75])
+	by xenon.i-cable.com (8.13.5/8.13.5) with ESMTP id n3DAmY6j021130;
+	Mon, 13 Apr 2009 18:48:35 +0800 (CST)
+Date:	Mon, 13 Apr 2009 18:48:17 +0800
+From:	Zhang Le <r0bertz@gentoo.org>
+To:	yanhua <yanh@lemote.com>
+Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+	=?utf-8?B?5b2t5Lqu6ZSm?= <penglj@lemote.com>,
+	"zhangfx@lemote.com" <zhangfx@lemote.com>
+Subject: Re: [PATCH 10/14] lemote: rtc driver binary mode support
+Message-ID: <20090413104816.GA6137@adriano.hkcable.com.hk>
+Mail-Followup-To: yanhua <yanh@lemote.com>, linux-mips@linux-mips.org,
+	Ralf Baechle <ralf@linux-mips.org>,
+	=?utf-8?B?5b2t5Lqu6ZSm?= <penglj@lemote.com>,
+	"zhangfx@lemote.com" <zhangfx@lemote.com>
+References: <49DD8238.7060609@lemote.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <49DD8238.7060609@lemote.com>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <robert.zhangle@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22329
+X-archive-position: 22330
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: r0bertz@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 10 Apr 2009 12:16:11 -0700, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Fri, Apr 10, 2009 at 11:41:35AM -0700, David Daney wrote:
-> 
-> > The recent change that added #include <linux/seccomp.h> breaks
-> > (because EINVAL is not defined) when building
-> > arch/mips/kernel/asm-offsets.s if CONFIG_SECCOMP is not defined.
-> > Including errno.h fixes the problem.
-> 
-> NAK, <linux/seccomp.h> should include <linux/errno.h>.
+On 13:06 Thu 09 Apr     , yanhua wrote:
+> if (is_valid_irq(rtc_irq) &&
+> - (!(rtc_control & RTC_24H) || (rtc_control & (RTC_DM_BINARY)))) {
+> + (!(rtc_control & RTC_24H) /*|| (rtc_control & (RTC_DM_BINARY))*/)) {
 
-Then how about this?
+Why not just remove this part "/*|| (rtc_control & (RTC_DM_BINARY))*/" ?
 
-------------------------------------------------------
-Subject: [PATCH] Do not include seccomp.h from compat.h
-From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+> dev_dbg(dev, "only 24-hr BCD mode supported\n");
+> retval = -ENXIO;
+> goto cleanup1;
 
-The compat.h does not need seccomp.h since TIF_32BIT was moved to
-thread_info.h
-
-This fixes a build error of 64-bit kernel without CONFIG_SECCOMP.
-
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
- arch/mips/include/asm/compat.h |    1 -
- 1 files changed, 0 insertions(+), 1 deletions(-)
-
-diff --git a/arch/mips/include/asm/compat.h b/arch/mips/include/asm/compat.h
-index 6c5b409..f58aed3 100644
---- a/arch/mips/include/asm/compat.h
-+++ b/arch/mips/include/asm/compat.h
-@@ -3,7 +3,6 @@
- /*
-  * Architecture specific compatibility types
-  */
--#include <linux/seccomp.h>
- #include <linux/thread_info.h>
- #include <linux/types.h>
- #include <asm/page.h>
+Zhang, Le

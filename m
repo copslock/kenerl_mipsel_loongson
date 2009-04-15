@@ -1,61 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Apr 2009 10:02:11 +0100 (BST)
-Received: from sitar.i-cable.com ([203.83.115.100]:38338 "HELO
-	sitar.i-cable.com") by ftp.linux-mips.org with SMTP
-	id S20022882AbZDOJCF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 15 Apr 2009 10:02:05 +0100
-Received: (qmail 757 invoked by uid 508); 15 Apr 2009 09:01:56 -0000
-Received: from 203.83.114.122 by sitar (envelope-from <r0bertz@gentoo.org>, uid 505) with qmail-scanner-1.25 
- (clamdscan: 0.93.3/8786.  
- Clear:RC:1(203.83.114.122):. 
- Processed in 0.107237 secs); 15 Apr 2009 09:01:56 -0000
-Received: from ip114122.hkicable.com (HELO xenon.i-cable.com) (203.83.114.122)
-  by 0 with SMTP; 15 Apr 2009 09:01:56 -0000
-Received: from localhost.localdomain (cm222-167-208-75.hkcable.com.hk [222.167.208.75])
-	by xenon.i-cable.com (8.13.5/8.13.5) with ESMTP id n3F91rak004975;
-	Wed, 15 Apr 2009 17:01:55 +0800 (CST)
-From:	Zhang Le <r0bertz@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Apr 2009 18:22:31 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:43202 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20028894AbZDORWW (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 15 Apr 2009 18:22:22 +0100
+Received: from localhost.localdomain (p3165-ipad313funabasi.chiba.ocn.ne.jp [123.217.229.165])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 495C3A48C; Thu, 16 Apr 2009 02:22:15 +0900 (JST)
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
-Cc:	yanh@lemote.com, zhangfx@lemote.com, penglj@lemote.com,
-	Zhang Le <r0bertz@gentoo.org>
-Subject: [PATCH] Loongson 2 requires no NOP insns to work around hazards
-Date:	Wed, 15 Apr 2009 17:01:52 +0800
-Message-Id: <1239786112-22120-1-git-send-email-r0bertz@gentoo.org>
-X-Mailer: git-send-email 1.6.2
-Return-Path: <r0bertz@gentoo.org>
+Cc:	ralf@linux-mips.org, ralf.roesch@rw-gmbh.de
+Subject: [PATCH] rbtx4939: Fix typo in system name
+Date:	Thu, 16 Apr 2009 02:22:21 +0900
+Message-Id: <1239816141-8139-1-git-send-email-anemo@mba.ocn.ne.jp>
+X-Mailer: git-send-email 1.5.6.3
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22338
+X-archive-position: 22339
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: r0bertz@gentoo.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Quoting from Loongson2FUserGuide.pdf:
-
-5.22.1 Hazards
-The processor detects most of the pipeline hazards in hardware, including CP0 hazards and
-load hazards. No NOP instructions are required to correct instruction sequences.
-
-Signed-off-by: Zhang Le <r0bertz@gentoo.org>
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
- arch/mips/include/asm/hazards.h |    2 +-
+ arch/mips/txx9/rbtx4939/setup.c |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/arch/mips/include/asm/hazards.h b/arch/mips/include/asm/hazards.h
-index 134e1fc..19d1141 100644
---- a/arch/mips/include/asm/hazards.h
-+++ b/arch/mips/include/asm/hazards.h
-@@ -139,7 +139,7 @@ do {									\
- } while (0)
+diff --git a/arch/mips/txx9/rbtx4939/setup.c b/arch/mips/txx9/rbtx4939/setup.c
+index d5ef662..91f2ec8 100644
+--- a/arch/mips/txx9/rbtx4939/setup.c
++++ b/arch/mips/txx9/rbtx4939/setup.c
+@@ -537,7 +537,7 @@ static void __init rbtx4939_setup(void)
+ }
  
- #elif defined(CONFIG_CPU_R10000) || defined(CONFIG_CPU_CAVIUM_OCTEON) || \
--      defined(CONFIG_CPU_R5500)
-+      defined(CONFIG_CPU_R5500) || defined(CONFIG_CPU_LOONGSON2)
- 
- /*
-  * R10000 rocks - all hazards handled in hardware, so this becomes a nobrainer.
+ struct txx9_board_vec rbtx4939_vec __initdata = {
+-	.system = "Tothiba RBTX4939",
++	.system = "Toshiba RBTX4939",
+ 	.prom_init = rbtx4939_prom_init,
+ 	.mem_setup = rbtx4939_setup,
+ 	.irq_setup = rbtx4939_irq_setup,
 -- 
-1.6.2
+1.5.6.3

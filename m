@@ -1,67 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Apr 2009 06:01:43 +0100 (BST)
-Received: from pyxis.i-cable.com ([203.83.115.105]:18942 "HELO
-	pyxis.i-cable.com") by ftp.linux-mips.org with SMTP
-	id S20021867AbZDPFBi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 16 Apr 2009 06:01:38 +0100
-Received: (qmail 14137 invoked by uid 104); 16 Apr 2009 05:01:25 -0000
-Received: from 203.83.114.121 by pyxis (envelope-from <robert.zhangle@gmail.com>, uid 101) with qmail-scanner-2.01 
- (clamdscan: 0.93.3/7733.  
- Clear:RC:1(203.83.114.121):. 
- Processed in 0.181438 secs); 16 Apr 2009 05:01:25 -0000
-Received: from ip114121.hkicable.com (HELO silicon.i-cable.com) (203.83.114.121)
-  by 0 with SMTP; 16 Apr 2009 05:01:24 -0000
-Received: from localhost (cm222-167-208-75.hkcable.com.hk [222.167.208.75])
-	by silicon.i-cable.com (8.13.5/8.13.5) with ESMTP id n3G51HBI014161;
-	Thu, 16 Apr 2009 13:01:23 +0800 (HKT)
-Date:	Thu, 16 Apr 2009 13:01:14 +0800
-From:	Zhang Le <r0bertz@gentoo.org>
-To:	gnewsense-dev@nongnu.org
-Cc:	linux-mips@linux-mips.org, yanh@lemote.com, zhangfx@lemote.com,
-	penglj@lemote.com, loongson@bjlx.org.cn
-Subject: [ANN] loongson-dev mailing list
-Message-ID: <20090416050113.GA24790@adriano.hkcable.com.hk>
-Mail-Followup-To: gnewsense-dev@nongnu.org, linux-mips@linux-mips.org,
-	yanh@lemote.com, zhangfx@lemote.com, penglj@lemote.com,
-	loongson@bjlx.org.cn
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Apr 2009 07:44:45 +0100 (BST)
+Received: from mail-bw0-f177.google.com ([209.85.218.177]:30110 "EHLO
+	mail-bw0-f177.google.com") by ftp.linux-mips.org with ESMTP
+	id S20023378AbZDPGoj (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 16 Apr 2009 07:44:39 +0100
+Received: by bwz25 with SMTP id 25so254471bwz.0
+        for <linux-mips@linux-mips.org>; Wed, 15 Apr 2009 23:44:33 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=7RlUuxCAZ1UMBN+5BpuLVWWUwWuUPWvijqPNEnejBGU=;
+        b=BcoqjldJTq9r49zsZ9m1YHcSewEcA5xAIZg9wj7MvpgVSUjZeOcM2tvuMQnd592mfc
+         b6BMv+PHnUvEmk8Y8fGVdSxxIBIBkcGfqV3XTXXo+ZUR52KCIr5UbqDxpRqjoNdCbBNl
+         n5U+PQekQL4OJ7Gg7Foq8TQmECBeuNP78CaSY=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=BUI7Bhyccl/XRZDU00zsbBqH8oL1Bd3hCLN2zrvvwC4/CIkVpiCB5z0KV2A9ajJ34k
+         E32AkHv+YKgvD9ZcnWcQuwObwpylT6SsJV+OvzYXS3ZiNVKW6DM2pnt0f72TWO0eXkOv
+         uuCcfJ8ti5eLAxtxsZdJ0MT2knzDM/3XYUWh8=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <robert.zhangle@gmail.com>
+Received: by 10.103.240.5 with SMTP id s5mr569115mur.133.1239864273498; Wed, 
+	15 Apr 2009 23:44:33 -0700 (PDT)
+In-Reply-To: <49E644A9.6040503@canonical.com>
+References: <49E644A9.6040503@canonical.com>
+Date:	Thu, 16 Apr 2009 08:44:33 +0200
+Message-ID: <f861ec6f0904152344i781f794dkb463909d734c77f3@mail.gmail.com>
+Subject: Re: Crazy idea: run linux on a mips-based photo frame
+From:	Manuel Lauss <manuel.lauss@googlemail.com>
+To:	Adilson Oliveira <adilson@canonical.com>
+Cc:	linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22347
+X-archive-position: 22348
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: r0bertz@gentoo.org
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-Loongson should have a mailing list where all interested parties can discuss
-Loongson specific development issues. But we don't have such a mailing list
-before.
+Hi!
 
-gnewsense-dev is for gnewsense distro, not all loongson based machine use
-gnewsense.
+> I have a SPF-83V photo frame from Samsung and his software (WinCE 5)
+> sucks. I've being toying with the idea of running Linux on it and I
+> discovered this page[1] that shows a little bit about it's guts. I have
+> some experience with arm-based devices but never tried any mips-based
+> one but for what I can see, the hardware is pretty standard, the SoC is
+> an Alchemy AU-1200.
 
-linux-mips is for Linux only, not suitable for userland stuff related
-discussion.
+Shouldn't be too hard: from the debug output logs it seems to be derived from
+the Db1200 (the CE-port at least).  Find out the configuration of the memory and
+statis bus controllers and you should be set to run Raza's YAMON on it.
 
-lemote.com's forum has so many noises. It has been flooded with posts like why
-not develop our own OS, why not develop Chinese programming language.
-
-So here it is the shiny new loongson-dev mailing list:
-http://groups.google.com/group/loongson-dev
-
-I hope every interested party could join this mailing list, even though I am not
-the creator of this mailing list.
-
-And English only. Thanks!
-
-PS: this is the original post on lemote's forum:
-http://www.lemote.com/bbs/viewthread.php?tid=22480
-
-Zhang, Le
-http://zhangle.is-a-geek.org
+Best regards,
+      Manuel Lauss

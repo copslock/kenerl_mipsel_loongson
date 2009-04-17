@@ -1,67 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Apr 2009 02:23:52 +0100 (BST)
-Received: from mail-qy0-f103.google.com ([209.85.221.103]:39886 "EHLO
-	mail-qy0-f103.google.com") by ftp.linux-mips.org with ESMTP
-	id S20031333AbZDQBXo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 17 Apr 2009 02:23:44 +0100
-Received: by qyk1 with SMTP id 1so1488798qyk.22
-        for <multiple recipients>; Thu, 16 Apr 2009 18:23:35 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:sender:received:in-reply-to
-         :references:date:x-google-sender-auth:message-id:subject:from:to:cc
-         :content-type:content-transfer-encoding;
-        bh=YW6Pdxt0ERo1zcDoHMIC8LsRs5n6sppgGqWPcJbY2Lw=;
-        b=law/CMeRDydUNYhfqbb5CpBGAMa0TYdYk7QeoSdmWpFai7HI9ltzFIJbsQjBc6cmgO
-         Gn+SKvilTY8SFdSs+X45izcSElOJQTKoqQ2+QVtAtCuueSmQy5N8u4cQu6nRj4FGhKJZ
-         oc1cHjQMOP0hz7i4raWd4u4q4FviBpWFhFm0o=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        b=jB27auqdAZ6Ph0kNROFiisv6jZS+rYx8136tAte976J+gGtbrJvxWG9oS9MJWqneGZ
-         cFAPP7XEA+5BxhfD6+kGxtD9mravNTTjfjZdqIPxU6/rfqoaW+hrfW4uS3r0WaihDupv
-         tloBv1gouE+4pzgmWQeaIZ37sYiH/XkDaoPTg=
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Apr 2009 07:53:41 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:38080 "EHLO h5.dl5rb.org.uk")
+	by ftp.linux-mips.org with ESMTP id S20024514AbZDQGxf (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 17 Apr 2009 07:53:35 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n3H5rKOK017677;
+	Fri, 17 Apr 2009 07:58:41 +0200
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n3H5rHXr017675;
+	Fri, 17 Apr 2009 07:53:17 +0200
+Date:	Fri, 17 Apr 2009 07:53:17 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Markus Gothe <nietzsche@lysator.liu.se>
+Cc:	"David VomLehn (dvomlehn)" <dvomlehn@cisco.com>,
+	Brian Foster <brian.foster@innova-card.com>,
+	David Daney <ddaney@caviumnetworks.com>,
+	"Maciej W. Rozycki" <macro@codesourcery.com>,
+	linux-mips@linux-mips.org, libc-ports@sourceware.org,
+	"Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: Re: [PATCH, RFC] MIPS: Implement the getcontext API
+Message-ID: <20090417055317.GA6898@linux-mips.org>
+References: <alpine.DEB.1.10.0902282326580.4064@tp.orcam.me.uk> <49AD6139.60209@caviumnetworks.com> <200903040919.29294.brian.foster@innova-card.com> <20090304154418.GA13464@linux-mips.org> <FF038EB85946AA46B18DFEE6E6F8A289BE0B68@xmb-rtp-218.amer.cisco.com> <20090402133855.GC15021@linux-mips.org> <5A24253D-8F6F-46CE-A121-AD5CADC6D7C8@lysator.liu.se>
 MIME-Version: 1.0
-Received: by 10.224.89.76 with SMTP id d12mr2709744qam.378.1239931415159; Thu, 
-	16 Apr 2009 18:23:35 -0700 (PDT)
-In-Reply-To: <1239033288-3086-1-git-send-email-anemo@mba.ocn.ne.jp>
-References: <1239033288-3086-1-git-send-email-anemo@mba.ocn.ne.jp>
-Date:	Thu, 16 Apr 2009 18:23:35 -0700
-X-Google-Sender-Auth: 4b97977ee1523b34
-Message-ID: <e9c3a7c20904161823j2cce3a6fpea95ba79ccf871a3@mail.gmail.com>
-Subject: Re: [PATCH] DMA: TXx9 Soc DMA Controller driver (v2)
-From:	Dan Williams <dan.j.williams@intel.com>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <dan.j.williams@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5A24253D-8F6F-46CE-A121-AD5CADC6D7C8@lysator.liu.se>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22352
+X-archive-position: 22353
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dan.j.williams@intel.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Apr 6, 2009 at 8:54 AM, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> This patch adds support for the integrated DMAC of the TXx9 family.
+On Thu, Apr 16, 2009 at 05:46:56AM +0200, Markus Gothe wrote:
+
+> That article is a classic one, just the name itself...
 >
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-> ---
+> However the article itself is based on M68K and Intel x86 IIRC.
 
-Just so you know I have not forgotten about this...  I have pulled
-this version and integrated it into my cross-compile environment, so
-far so good.  I will try to get you an Acked-by by tomorrow.
+There is a variant or extension of it which specifically looks at MIPS
+o32 issues.
 
-Ralf, I think I will leave the merge up to you.  As long as NET_DMA=n
-and ASYNC_TX_DMA=n the chance for a regression is low, but it's your
-call.
+> Indeed, IRIX < 6.2 was all o32, correct me if I'm wrong.
+>
+> To get back on track, what about a kernel that can be compiled by  
+> MIPSPro C and not relaying on glibc and GNUisms (al right, 'asmlinkage' 
+> cracked that idea once and for all a few years ago), but my point is to 
+> change the libc as little as possible.
 
-Regards,
-Dan
+Do you have a MIPSpro compiler that is hosted on a non-IRIX?  Asmlinkage
+is just an empty define.
+
+> I hope I brought a grasp of light on the issue (and yes $ra is fun to  
+> play with), and as Ralph pointed out: the special stack frame makes the 
+> return address traceability disappear after one step as __GNUC__ knows 
+> it.
+
+The first problem with the usual stack smashing techniques is that the
+return address of a leaf function is not getting stored on the stack at
+all, so can't be smashed by a stack overflow.  So the caller's return
+address is becoming the new attack target.
+
+  Ralf
+
+PS: Who's that Ralph?

@@ -1,71 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Apr 2009 08:38:46 +0100 (BST)
-Received: from chilli.pcug.org.au ([203.10.76.44]:44241 "EHLO smtps.tip.net.au")
-	by ftp.linux-mips.org with ESMTP id S20023544AbZDSHij (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 19 Apr 2009 08:38:39 +0100
-Received: from ash.ozlabs.ibm.com (ta-1-1.tip.net.au [203.11.71.1])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtps.tip.net.au (Postfix) with ESMTPSA id 0BA7C14405D;
-	Sun, 19 Apr 2009 17:38:30 +1000 (EST)
-Date:	Sun, 19 Apr 2009 17:38:25 +1000
-From:	Stephen Rothwell <sfr@canb.auug.org.au>
-To:	wuzhangjin@gmail.com
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Apr 2009 09:17:08 +0100 (BST)
+Received: from mx3.mail.elte.hu ([157.181.1.138]:23963 "EHLO mx3.mail.elte.hu")
+	by ftp.linux-mips.org with ESMTP id S20025957AbZDSIRC (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 19 Apr 2009 09:17:02 +0100
+Received: from elvis.elte.hu ([157.181.1.14])
+	by mx3.mail.elte.hu with esmtp (Exim)
+	id 1LvSCj-0001ve-Ew
+	from <mingo@elte.hu>; Sun, 19 Apr 2009 10:16:58 +0200
+Received: by elvis.elte.hu (Postfix, from userid 1004)
+	id 8D02E3E2138; Sun, 19 Apr 2009 10:16:39 +0200 (CEST)
+Date:	Sun, 19 Apr 2009 10:16:41 +0200
+From:	Ingo Molnar <mingo@elte.hu>
+To:	Wu Zhangjin <wuzhangjin@gmail.com>
+Cc:	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Ralf Baechle <ralf@linux-mips.org>,
 	LKML <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org,
 	Eduard - Gabriel Munteanu <eduard.munteanu@linux360.ro>,
-	Pekka Enberg <penberg@cs.helsinki.fi>,
-	Ingo Molnar <mingo@elte.hu>
+	Pekka Enberg <penberg@cs.helsinki.fi>
 Subject: Re: mips build failure
-Message-Id: <20090419173825.29bc6f02.sfr@canb.auug.org.au>
+Message-ID: <20090419081641.GA23906@elte.hu>
+References: <20090419172436.6d0e741a.sfr@canb.auug.org.au> <1240126361.3423.5.camel@falcon>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <1240126361.3423.5.camel@falcon>
-References: <20090419172436.6d0e741a.sfr@canb.auug.org.au>
-	<1240126361.3423.5.camel@falcon>
-X-Mailer: Sylpheed 2.6.0 (GTK+ 2.14.7; i486-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pgp-signature";
- micalg="PGP-SHA1";
- boundary="Signature=_Sun__19_Apr_2009_17_38_25_+1000_1mZuFtPmgLFl.VOD"
-Return-Path: <sfr@canb.auug.org.au>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Received-SPF: neutral (mx3: 157.181.1.14 is neither permitted nor denied by domain of elte.hu) client-ip=157.181.1.14; envelope-from=mingo@elte.hu; helo=elvis.elte.hu;
+X-ELTE-VirusStatus: clean
+X-ELTE-SpamScore: -1.5
+X-ELTE-SpamLevel: 
+X-ELTE-SpamCheck: no
+X-ELTE-SpamVersion: ELTE 2.0 
+X-ELTE-SpamCheck-Details: score=-1.5 required=5.9 tests=BAYES_00 autolearn=no SpamAssassin version=3.2.3
+	-1.5 BAYES_00               BODY: Bayesian spam probability is 0 to 1%
+	[score: 0.0000]
+Return-Path: <mingo@elte.hu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22371
+X-archive-position: 22372
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sfr@canb.auug.org.au
+X-original-sender: mingo@elte.hu
 Precedence: bulk
 X-list: linux-mips
 
---Signature=_Sun__19_Apr_2009_17_38_25_+1000_1mZuFtPmgLFl.VOD
-Content-Type: text/plain; charset=US-ASCII
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
+* Wu Zhangjin <wuzhangjin@gmail.com> wrote:
 
-On Sun, 19 Apr 2009 15:32:41 +0800 Wu Zhangjin <wuzhangjin@gmail.com> wrote:
->
+> On Sun, 2009-04-19 at 17:24 +1000, Stephen Rothwell wrote:
+> > Hi Ralf,
+> > 
+> > You probably already now about this, but our build (mips ip32_defconfig)
+> > of Linus' tree (commit aefe6475720bd5eb8aacbc881488f3aa65618562 "Merge
+> > branch 'upstream-linus' of
+> > git://git.kernel.org/pub/scm/linux/kernel/git/jgarzik/libata-dev") gets
+> > these errors (we have actually been getting these errors since 2.6.30-rc1):
+> > 
+> > In file included from arch/mips/include/asm/compat.h:7,
+> >                  from include/linux/compat.h:15,
+> >                  from arch/mips/kernel/asm-offsets.c:12:
+> > include/linux/seccomp.h: In function 'prctl_get_seccomp':
+> > include/linux/seccomp.h:30: error: 'EINVAL' undeclared (first use in this function)
+> > include/linux/seccomp.h:30: error: (Each undeclared identifier is reported only once
+> > include/linux/seccomp.h:30: error: for each function it appears in.)
+> > include/linux/seccomp.h: In function 'prctl_set_seccomp':
+> > include/linux/seccomp.h:35: error: 'EINVAL' undeclared (first use in this function)
+> > 
+> 
+> perhaps you can fix it like this:
+> 
+> include/linux/seccomp.h
+> 
+>  22 #else /* CONFIG_SECCOMP */
+>  23 
+>  24 +#include <asm-generic/errno-base.h>
+>  25 
+>  26 typedef struct { } seccomp_t;
+> 
 > in reality, there is a previous email sent by Ralf for it:
->=20
+> 
 > http://lkml.indiana.edu/hypermail/linux/kernel/0904.2/01152.html
 
-Thanks.
+Yes, that looks like the right kind of fix.
 
---=20
-Cheers,
-Stephen Rothwell                    sfr@canb.auug.org.au
-http://www.canb.auug.org.au/~sfr/
+Ralf, will you push that fix upstream, or should i do it?
 
---Signature=_Sun__19_Apr_2009_17_38_25_+1000_1mZuFtPmgLFl.VOD
-Content-Type: application/pgp-signature
+Thanks,
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
-
-iEYEARECAAYFAknq1PEACgkQjjKRsyhoI8w8cwCeI4pRu5adiJ0hkSKOJfnLwNII
-hGsAn3AGrt1y7L1Lsl8ZzSQmRlpch7wU
-=KlRL
------END PGP SIGNATURE-----
-
---Signature=_Sun__19_Apr_2009_17_38_25_+1000_1mZuFtPmgLFl.VOD--
+	Ingo

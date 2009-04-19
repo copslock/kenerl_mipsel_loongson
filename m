@@ -1,91 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Apr 2009 09:17:08 +0100 (BST)
-Received: from mx3.mail.elte.hu ([157.181.1.138]:23963 "EHLO mx3.mail.elte.hu")
-	by ftp.linux-mips.org with ESMTP id S20025957AbZDSIRC (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 19 Apr 2009 09:17:02 +0100
-Received: from elvis.elte.hu ([157.181.1.14])
-	by mx3.mail.elte.hu with esmtp (Exim)
-	id 1LvSCj-0001ve-Ew
-	from <mingo@elte.hu>; Sun, 19 Apr 2009 10:16:58 +0200
-Received: by elvis.elte.hu (Postfix, from userid 1004)
-	id 8D02E3E2138; Sun, 19 Apr 2009 10:16:39 +0200 (CEST)
-Date:	Sun, 19 Apr 2009 10:16:41 +0200
-From:	Ingo Molnar <mingo@elte.hu>
-To:	Wu Zhangjin <wuzhangjin@gmail.com>
-Cc:	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Apr 2009 12:41:35 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:45778 "EHLO h5.dl5rb.org.uk")
+	by ftp.linux-mips.org with ESMTP id S20027132AbZDSLl1 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 19 Apr 2009 12:41:27 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n3JBfJOx018834;
+	Sun, 19 Apr 2009 13:41:20 +0200
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n3JBfFRE018832;
+	Sun, 19 Apr 2009 13:41:15 +0200
+Date:	Sun, 19 Apr 2009 13:41:15 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Ingo Molnar <mingo@elte.hu>
+Cc:	Wu Zhangjin <wuzhangjin@gmail.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
 	LKML <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org,
 	Eduard - Gabriel Munteanu <eduard.munteanu@linux360.ro>,
 	Pekka Enberg <penberg@cs.helsinki.fi>
 Subject: Re: mips build failure
-Message-ID: <20090419081641.GA23906@elte.hu>
-References: <20090419172436.6d0e741a.sfr@canb.auug.org.au> <1240126361.3423.5.camel@falcon>
+Message-ID: <20090419114115.GA28982@linux-mips.org>
+References: <20090419172436.6d0e741a.sfr@canb.auug.org.au> <1240126361.3423.5.camel@falcon> <20090419081641.GA23906@elte.hu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1240126361.3423.5.camel@falcon>
+In-Reply-To: <20090419081641.GA23906@elte.hu>
 User-Agent: Mutt/1.5.18 (2008-05-17)
-Received-SPF: neutral (mx3: 157.181.1.14 is neither permitted nor denied by domain of elte.hu) client-ip=157.181.1.14; envelope-from=mingo@elte.hu; helo=elvis.elte.hu;
-X-ELTE-VirusStatus: clean
-X-ELTE-SpamScore: -1.5
-X-ELTE-SpamLevel: 
-X-ELTE-SpamCheck: no
-X-ELTE-SpamVersion: ELTE 2.0 
-X-ELTE-SpamCheck-Details: score=-1.5 required=5.9 tests=BAYES_00 autolearn=no SpamAssassin version=3.2.3
-	-1.5 BAYES_00               BODY: Bayesian spam probability is 0 to 1%
-	[score: 0.0000]
-Return-Path: <mingo@elte.hu>
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22372
+X-archive-position: 22373
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mingo@elte.hu
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Sun, Apr 19, 2009 at 10:16:41AM +0200, Ingo Molnar wrote:
 
-* Wu Zhangjin <wuzhangjin@gmail.com> wrote:
-
-> On Sun, 2009-04-19 at 17:24 +1000, Stephen Rothwell wrote:
-> > Hi Ralf,
+> > in reality, there is a previous email sent by Ralf for it:
 > > 
-> > You probably already now about this, but our build (mips ip32_defconfig)
-> > of Linus' tree (commit aefe6475720bd5eb8aacbc881488f3aa65618562 "Merge
-> > branch 'upstream-linus' of
-> > git://git.kernel.org/pub/scm/linux/kernel/git/jgarzik/libata-dev") gets
-> > these errors (we have actually been getting these errors since 2.6.30-rc1):
-> > 
-> > In file included from arch/mips/include/asm/compat.h:7,
-> >                  from include/linux/compat.h:15,
-> >                  from arch/mips/kernel/asm-offsets.c:12:
-> > include/linux/seccomp.h: In function 'prctl_get_seccomp':
-> > include/linux/seccomp.h:30: error: 'EINVAL' undeclared (first use in this function)
-> > include/linux/seccomp.h:30: error: (Each undeclared identifier is reported only once
-> > include/linux/seccomp.h:30: error: for each function it appears in.)
-> > include/linux/seccomp.h: In function 'prctl_set_seccomp':
-> > include/linux/seccomp.h:35: error: 'EINVAL' undeclared (first use in this function)
-> > 
+> > http://lkml.indiana.edu/hypermail/linux/kernel/0904.2/01152.html
 > 
-> perhaps you can fix it like this:
+> Yes, that looks like the right kind of fix.
 > 
-> include/linux/seccomp.h
-> 
->  22 #else /* CONFIG_SECCOMP */
->  23 
->  24 +#include <asm-generic/errno-base.h>
->  25 
->  26 typedef struct { } seccomp_t;
-> 
-> in reality, there is a previous email sent by Ralf for it:
-> 
-> http://lkml.indiana.edu/hypermail/linux/kernel/0904.2/01152.html
+> Ralf, will you push that fix upstream, or should i do it?
 
-Yes, that looks like the right kind of fix.
+Linus is cc'ed on that patch so expect this patch to show up in his tree
+right after the weekend.
 
-Ralf, will you push that fix upstream, or should i do it?
-
-Thanks,
-
-	Ingo
+  Ralf

@@ -1,74 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Apr 2009 10:00:55 +0100 (BST)
-Received: from qw-out-1920.google.com ([74.125.92.147]:14045 "EHLO
-	qw-out-1920.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022852AbZDTJAr convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 20 Apr 2009 10:00:47 +0100
-Received: by qw-out-1920.google.com with SMTP id 9so885983qwj.54
-        for <linux-mips@linux-mips.org>; Mon, 20 Apr 2009 02:00:43 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:to:subject:date
-         :user-agent:cc:references:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:content-disposition:message-id;
-        bh=rjkn4ibiQzeUH6K0h/0P7skkDfI7n12gfPXyh4IYg1E=;
-        b=RlBGQhTvk+9gmLbhP01P2xfb3CZxg0d3bAJrFpABIg9mDlDKnMnPgMyxpfSEo8uVJJ
-         wAN4Omo3orgLvJy9lmKuJADIC3KhiKHNYugiYhhBv1Ey55Laj/deurCCl3Ci9LSQ3uQU
-         3R14w5JaaJw2n/8II0afeh4wV/KocFYdVzI10=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
-         :mime-version:content-type:content-transfer-encoding
-         :content-disposition:message-id;
-        b=BftIHwDxPHfo8iOVuuozsRegZnkVUra5J37wwz3SiCIFNPCdq9Ahnm1FTp9YB0nlxI
-         9vx1Fr4p0lua13psMvfrToFIeuGU/fAHdtUqenkRVue2M+Q4AjqOpkhARVyBhvtgcQtI
-         HLxYELpYBAt0dZjCWUXK6OT3gTshz8wQs/5Q4=
-Received: by 10.220.45.135 with SMTP id e7mr5560695vcf.7.1240218043734;
-        Mon, 20 Apr 2009 02:00:43 -0700 (PDT)
-Received: from florian.lab.openpattern.org (lab.openpattern.org [82.240.16.241])
-        by mx.google.com with ESMTPS id 9sm7086739yxs.23.2009.04.20.02.00.42
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 20 Apr 2009 02:00:43 -0700 (PDT)
-From:	Florian Fainelli <florian@openwrt.org>
-To:	nagalakshmi veeramallu <lucky.veeramallu@gmail.com>
-Subject: Re: in mips how to change the start address to the new second boot loader  ?
-Date:	Mon, 20 Apr 2009 11:00:38 +0200
-User-Agent: KMail/1.9.9
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Apr 2009 11:15:04 +0100 (BST)
+Received: from mail.sysgo.com ([62.8.134.5]:60063 "EHLO mail.sysgo.com")
+	by ftp.linux-mips.org with ESMTP id S20024137AbZDTKO5 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 20 Apr 2009 11:14:57 +0100
+Received: by mail.sysgo.com (Postfix, from userid 1001)
+	id 3F1136001D; Mon, 20 Apr 2009 12:14:50 +0200 (CEST)
+Received: from mail.sysgo.com (localhost [127.0.0.1])
+	by mail.sysgo.com (Postfix) with ESMTP id 922916001F;
+	Mon, 20 Apr 2009 12:14:41 +0200 (CEST)
+Received: from www.sysgo.com (www.sysgo.com [62.8.134.6])
+	by mail.sysgo.com (Postfix) with ESMTP id 8563C6001D;
+	Mon, 20 Apr 2009 12:14:41 +0200 (CEST)
+Received: by www.sysgo.com (Postfix, from userid 33)
+	id 6BF44134316; Mon, 20 Apr 2009 12:14:40 +0200 (CEST)
+Received: from 192.100.130.228 ([192.100.130.228]) 
+	by www.sysgo.com (IMP) with HTTP 
+	for <cam@172.20.1.30>; Mon, 20 Apr 2009 12:14:40 +0200
+Message-ID: <1240222480.49ec4b105b59b@www.sysgo.com>
+Date:	Mon, 20 Apr 2009 12:14:40 +0200
+From:	Carlos Mitidieri <cam@sysgo.com>
+To:	Florian Fainelli <florian@openwrt.org>
 Cc:	linux-mips@linux-mips.org
-References: <d77cedf30904142309na4355e6w63ecea63b0966c92@mail.gmail.com>
-In-Reply-To: <d77cedf30904142309na4355e6w63ecea63b0966c92@mail.gmail.com>
+Subject: Re: Boot program interface
+References: <1240213045.49ec26350fa49@www.sysgo.com> <200904201057.04833.florian@openwrt.org>
+In-Reply-To: <200904201057.04833.florian@openwrt.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Message-Id: <200904201100.39164.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+User-Agent: Internet Messaging Program (IMP) 3.2.6
+X-Originating-IP: 192.100.130.228
+X-AV-Checked: ClamAV using ClamSMTP
+Return-Path: <cam@sysgo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22382
+X-archive-position: 22383
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: cam@sysgo.com
 Precedence: bulk
 X-list: linux-mips
 
 Hi,
 
-Le Wednesday 15 April 2009 08:09:01 nagalakshmi veeramallu, vous avez écrit :
-> Hi ,
->  I have a KMC board with mips VR4131 processor. The target board already
->  having cmon boot loader on flash. Now I need to put my yamon boot loader
->  which I modified according to the requirement on the flash. As we know
-> MIPS have fixed starting address 0xbfc00000, how to change this address to
-> other address so that after power on it can enter to the new address (boot
-> loader).
+> Hi Carlos,
+>
+> Le Monday 20 April 2009 09:37:25 Carlos Mitidieri, vous avez �crit :
+> > Hello,
+> >
+> > I am working on a project that requires an extensive boot program
+> > interface.
+> >
+> > It turns out that the device tree used on PPC architecture meets the
+> > requirements.
+> >
+> > I have been looking, and I could not find any similar concept implemented
+> > for MIPS.
+>
+> I do not know any MIPS board using a device tree either.
+>
+> >
+> > So, I am now considering to port the OFDT library into the MIPS arch.
+> >
+> > What do you think about this? Is there anyone working on a similar project?
+>
+> You should see how Sparc, PowerPC and Microblaze use it and how they do share
+> code. Also condiser seeing how u-boot handles device trees, specifically on
+> PowerPC and Microblaze.
 
-You cannot indeed change the boot address, but you can place a routine, or 
-even a bootloader at 0x1fc00000 which jumps to an arbitrary address.
+
+Ok, but what you think about doing such a port? I mean, is it something that
+could be eventually accepted by the MIPS Linux community? Or do you have
+problems with this approach?
+
+I am looking forward for your answers.
+
+Kind regards,
+
 -- 
-Best regards, Florian Fainelli
-Email : florian@openwrt.org
-http://openwrt.org
--------------------------------
+Carlos Mitidieri
+Project Engineer

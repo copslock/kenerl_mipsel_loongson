@@ -1,52 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Apr 2009 09:57:27 +0100 (BST)
-Received: from mail-qy0-f103.google.com ([209.85.221.103]:7341 "EHLO
-	mail-qy0-f103.google.com") by ftp.linux-mips.org with ESMTP
-	id S20024164AbZDTI5R (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 20 Apr 2009 09:57:17 +0100
-Received: by qyk1 with SMTP id 1so3694311qyk.22
-        for <linux-mips@linux-mips.org>; Mon, 20 Apr 2009 01:57:10 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Apr 2009 10:00:55 +0100 (BST)
+Received: from qw-out-1920.google.com ([74.125.92.147]:14045 "EHLO
+	qw-out-1920.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022852AbZDTJAr convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 20 Apr 2009 10:00:47 +0100
+Received: by qw-out-1920.google.com with SMTP id 9so885983qwj.54
+        for <linux-mips@linux-mips.org>; Mon, 20 Apr 2009 02:00:43 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:sender:from:to:subject:date
          :user-agent:cc:references:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:message-id;
-        bh=IywtukjQfrz3/QEePxOzU6hndG+XMhh0kdlnbDkJ8k8=;
-        b=oHvdLfHWq8HguOJXl/JVs5H+qAAogSNvIFp/REJW1PsIV3O/AXM3PInhAnaIi6Gz9b
-         MxpBOkPmPIBpmhe2Hc0Fh5TT7z9T0X32F8GuCAfGCJMfHnBRj9KNt7yJaxL3vJJN4WTY
-         J8gQpTa7i6lzuXlJNIrioAJVXwDkKvscn3ZOA=
+         :content-transfer-encoding:content-disposition:message-id;
+        bh=rjkn4ibiQzeUH6K0h/0P7skkDfI7n12gfPXyh4IYg1E=;
+        b=RlBGQhTvk+9gmLbhP01P2xfb3CZxg0d3bAJrFpABIg9mDlDKnMnPgMyxpfSEo8uVJJ
+         wAN4Omo3orgLvJy9lmKuJADIC3KhiKHNYugiYhhBv1Ey55Laj/deurCCl3Ci9LSQ3uQU
+         3R14w5JaaJw2n/8II0afeh4wV/KocFYdVzI10=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
-         :mime-version:content-type:content-transfer-encoding:message-id;
-        b=u5a02ztDYDLnCJz6jjWdTePpT6rcyerLAD4K5D0okgect8iqORjXjhTRzQz/C+3ZoL
-         Rr9OpzDJxUBXU8lm6PE3PhCtUu7EhuktFIms+Sk+WPNVWpiWUMBVDvijAq0gmA3OSHZs
-         GLKq0rgkpWDSd1cWXpJ8wywPDjvpdaWbfH7qE=
-Received: by 10.220.92.80 with SMTP id q16mr5515487vcm.58.1240217829913;
-        Mon, 20 Apr 2009 01:57:09 -0700 (PDT)
+         :mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id;
+        b=BftIHwDxPHfo8iOVuuozsRegZnkVUra5J37wwz3SiCIFNPCdq9Ahnm1FTp9YB0nlxI
+         9vx1Fr4p0lua13psMvfrToFIeuGU/fAHdtUqenkRVue2M+Q4AjqOpkhARVyBhvtgcQtI
+         HLxYELpYBAt0dZjCWUXK6OT3gTshz8wQs/5Q4=
+Received: by 10.220.45.135 with SMTP id e7mr5560695vcf.7.1240218043734;
+        Mon, 20 Apr 2009 02:00:43 -0700 (PDT)
 Received: from florian.lab.openpattern.org (lab.openpattern.org [82.240.16.241])
-        by mx.google.com with ESMTPS id 6sm16993085yxg.30.2009.04.20.01.57.08
+        by mx.google.com with ESMTPS id 9sm7086739yxs.23.2009.04.20.02.00.42
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 20 Apr 2009 01:57:09 -0700 (PDT)
+        Mon, 20 Apr 2009 02:00:43 -0700 (PDT)
 From:	Florian Fainelli <florian@openwrt.org>
-To:	Carlos Mitidieri <cam@sysgo.com>
-Subject: Re: Boot program interface
-Date:	Mon, 20 Apr 2009 10:57:02 +0200
+To:	nagalakshmi veeramallu <lucky.veeramallu@gmail.com>
+Subject: Re: in mips how to change the start address to the new second boot loader  ?
+Date:	Mon, 20 Apr 2009 11:00:38 +0200
 User-Agent: KMail/1.9.9
 Cc:	linux-mips@linux-mips.org
-References: <1240213045.49ec26350fa49@www.sysgo.com>
-In-Reply-To: <1240213045.49ec26350fa49@www.sysgo.com>
+References: <d77cedf30904142309na4355e6w63ecea63b0966c92@mail.gmail.com>
+In-Reply-To: <d77cedf30904142309na4355e6w63ecea63b0966c92@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed;
-  boundary="nextPart1571897.qfJFpkZRCP";
-  protocol="application/pgp-signature";
-  micalg=pgp-sha1
-Content-Transfer-Encoding: 7bit
-Message-Id: <200904201057.04833.florian@openwrt.org>
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Message-Id: <200904201100.39164.florian@openwrt.org>
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22381
+X-archive-position: 22382
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,57 +54,21 @@ X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
---nextPart1571897.qfJFpkZRCP
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+Hi,
 
-Hi Carlos,
+Le Wednesday 15 April 2009 08:09:01 nagalakshmi veeramallu, vous avez écrit :
+> Hi ,
+>  I have a KMC board with mips VR4131 processor. The target board already
+>  having cmon boot loader on flash. Now I need to put my yamon boot loader
+>  which I modified according to the requirement on the flash. As we know
+> MIPS have fixed starting address 0xbfc00000, how to change this address to
+> other address so that after power on it can enter to the new address (boot
+> loader).
 
-Le Monday 20 April 2009 09:37:25 Carlos Mitidieri, vous avez =E9crit=A0:
-> Hello,
->
-> I am working on a project that requires an extensive boot program
-> interface.
->
-> It turns out that the device tree used on PPC architecture meets the
-> requirements.
->
-> I have been looking, and I could not find any similar concept implemented
-> for MIPS.
-
-I do not know any MIPS board using a device tree either.
-
->
-> So, I am now considering to port the OFDT library into the MIPS arch.
->
-> What do you think about this? Is there anyone working on a similar projec=
-t?
-
-You should see how Sparc, PowerPC and Microblaze use it and how they do sha=
-re=20
-code. Also condiser seeing how u-boot handles device trees, specifically on=
-=20
-PowerPC and Microblaze.
-
-Hope that helps.
-=2D-=20
+You cannot indeed change the boot address, but you can place a routine, or 
+even a bootloader at 0x1fc00000 which jumps to an arbitrary address.
+-- 
 Best regards, Florian Fainelli
 Email : florian@openwrt.org
 http://openwrt.org
-=2D------------------------------
-
---nextPart1571897.qfJFpkZRCP
-Content-Type: application/pgp-signature; name=signature.asc 
-Content-Description: This is a digitally signed message part.
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
-
-iEYEABECAAYFAknsON8ACgkQlyvkmBGtjyZG/QCfcS5lD/LS5PrbZs46wXvdd5uR
-ZwkAn02SDY2BzRGWcm4cDhBmy2Q7l6Zd
-=+98k
------END PGP SIGNATURE-----
-
---nextPart1571897.qfJFpkZRCP--
+-------------------------------

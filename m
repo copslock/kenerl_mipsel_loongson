@@ -1,87 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Apr 2009 03:13:02 +0100 (BST)
-Received: from ti-out-0910.google.com ([209.85.142.185]:34299 "EHLO
-	ti-out-0910.google.com") by ftp.linux-mips.org with ESMTP
-	id S20029868AbZDTCM4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 20 Apr 2009 03:12:56 +0100
-Received: by ti-out-0910.google.com with SMTP id 11so1064560tim.20
-        for <multiple recipients>; Sun, 19 Apr 2009 19:12:52 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :content-type:organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        bh=/YvVWGSu/LPf11rv8QihU/KmtSiR8NE4SrajnCYHLxs=;
-        b=vEkuCakQYFkry6xt/DAzctHNkoCzrUSMJY2foyiqbiDv2U8zGpltPfUsAeKZfp15N0
-         MyWYXCrpDm/WVMYLrVHSqnQM61lZt8rsfqMfak8u5vZQr0pCHHeAVaDfpBGV8qzRzjHM
-         ZzUzOsefBQTHCjw4E1NSAKlaFlY2cYUZDh6Ds=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:content-type:organization:date
-         :message-id:mime-version:x-mailer:content-transfer-encoding;
-        b=iedzYVKcY+/TdgEceCfDkCMNCc5iRR6hx9qDlb1+IINmvdyEU4AjCC2kBl7gah8D9i
-         KzvLBoZFhciigjXis0MPMRcdrKwlG2qrjNYcrmMOfe6bBRMVPRcD26LLZy68HbLmJZ0O
-         LoBU97h06t+A400B3K22i7nKDQjPtNA1srZ0k=
-Received: by 10.110.31.5 with SMTP id e5mr5678145tie.35.1240193572530;
-        Sun, 19 Apr 2009 19:12:52 -0700 (PDT)
-Received: from ?172.16.18.144? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 2sm40635tif.5.2009.04.19.19.12.46
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 19 Apr 2009 19:12:51 -0700 (PDT)
-Subject: "RT_PREEMPT for loongson" is updated to patch-2.6.29.1-rt8
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:	linux-kernel@vger.kernel.org
-Cc:	Nicholas Mc Guire <hofrat@hofr.at>, Ingo Molnar <mingo@elte.hu>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Apr 2009 06:05:09 +0100 (BST)
+Received: from apollo.i-cable.com ([203.83.115.103]:4745 "HELO
+	apollo.i-cable.com") by ftp.linux-mips.org with SMTP
+	id S28579424AbZDTFEz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 20 Apr 2009 06:04:55 +0100
+Received: (qmail 12658 invoked by uid 508); 20 Apr 2009 05:04:47 -0000
+Received: from 203.83.114.122 by apollo (envelope-from <robert.zhangle@gmail.com>, uid 505) with qmail-scanner-1.25 
+ (clamdscan: 0.93.3/7730.  
+ Clear:RC:1(203.83.114.122):. 
+ Processed in 0.169512 secs); 20 Apr 2009 05:04:47 -0000
+Received: from ip114122.hkicable.com (HELO xenon.i-cable.com) (203.83.114.122)
+  by 0 with SMTP; 20 Apr 2009 05:04:46 -0000
+Received: from localhost (cm222-167-208-75.hkcable.com.hk [222.167.208.75])
+	by xenon.i-cable.com (8.13.5/8.13.5) with ESMTP id n3K54Sok017224;
+	Mon, 20 Apr 2009 13:04:28 +0800 (CST)
+Date:	Mon, 20 Apr 2009 13:04:20 +0800
+From:	Zhang Le <r0bertz@gentoo.org>
+To:	Wu Zhangjin <wuzhangjin@gmail.com>
+Cc:	linux-kernel@vger.kernel.org, Nicholas Mc Guire <hofrat@hofr.at>,
+	Ingo Molnar <mingo@elte.hu>,
 	Thomas Gleixner <tglx@linutronix.de>, zhangfx@lemote.com,
 	loongson-dev@googlegroups.com, yanh@lemote.com,
 	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	Zhang Le <r0bertz@gentoo.org>, linux-rt-users@vger.kernel.org
-Content-Type: text/plain
-Organization: DSLab, Lanzhou University, China
-Date:	Mon, 20 Apr 2009 10:12:27 +0800
-Message-Id: <1240193547.25532.52.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.24.3 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+	linux-rt-users@vger.kernel.org
+Subject: Re: "RT_PREEMPT for loongson" is updated to patch-2.6.29.1-rt8
+Message-ID: <20090420050419.GA22520@adriano.hkcable.com.hk>
+Mail-Followup-To: Wu Zhangjin <wuzhangjin@gmail.com>,
+	linux-kernel@vger.kernel.org, Nicholas Mc Guire <hofrat@hofr.at>,
+	Ingo Molnar <mingo@elte.hu>, Thomas Gleixner <tglx@linutronix.de>,
+	zhangfx@lemote.com, loongson-dev@googlegroups.com, yanh@lemote.com,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	linux-rt-users@vger.kernel.org
+References: <1240193547.25532.52.camel@falcon>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="opJtzjQTFsWo+cga"
+Content-Disposition: inline
+In-Reply-To: <1240193547.25532.52.camel@falcon>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <robert.zhangle@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22376
+X-archive-position: 22377
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: r0bertz@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
-hi, all
 
-I just update "RT_PREEMPT for loongson" to the latest RT_PREEMPT
-(patch-2.6.29.1-rt8), welcome to pull & test it.
+--opJtzjQTFsWo+cga
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-$ git clone git://dev.lemote.com/rt4ls.git
-or
-http://dev.lemote.com/http_git/rt4ls.git
+Hi, Zhangjin,
 
-this version include basic-RT support for mips, ftrace support for mips
-(static function tracer/dynamic function tracer/function graph
-tracer/system call tracer). 
+Ralf told me he has a ftrace implementation too.
 
-* current status
+11:47 < Ralf> r0bertz: ftrace looks nice but not yet mergable yet.
+11:47 < Ralf> r0bertz: I also have my own ftrace implementation which in so=
+me
+parts is better, in some is worse.=20
+11:47 < Ralf> r0bertz: So this is going to be quite a job. =20
 
-the "system call tracer" need to fix when compiled in 64bit, because
-there are several sys_call_table entries for different mips64
-standards(o32, n32), currently, i only use the one in
-arch/mips/kernel/scall64-o32.S via EXPORT(sys_call_table).
+So I think you can talk to Ralf about how to get this merged, :)
 
-the "function graph tracer" is not stable under 100% load(lots of
-"find /" background). 
+--=20
+Zhang, Le
+Gentoo/Loongson Developer
+http://zhangle.is-a-geek.org
+0260 C902 B8F8 6506 6586 2B90 BC51 C808 1E4E 2973
 
-best regards,
-Wu Zhangjin
+--opJtzjQTFsWo+cga
+Content-Type: application/pgp-signature
+Content-Disposition: inline
 
--- 
-Wu Zhangjin
-DSLab, Lanzhou University, China
-www.lemote.com, Jiangsu Province, China
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.11 (GNU/Linux)
+
+iEYEARECAAYFAknsAlMACgkQvFHICB5OKXP8FACgjDtvahfiKVOXeBVoi4RDq22y
+TGwAoITlCsglF5WzSujLFiECiM3YVA8V
+=QGmr
+-----END PGP SIGNATURE-----
+
+--opJtzjQTFsWo+cga--

@@ -1,98 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 19 Apr 2009 19:36:47 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:739 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20032325AbZDSSem convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 19 Apr 2009 19:34:42 +0100
-Received: from localhost (p8233-ipad303funabasi.chiba.ocn.ne.jp [123.217.154.233])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id C8E329D86; Mon, 20 Apr 2009 03:34:35 +0900 (JST)
-Date:	Mon, 20 Apr 2009 03:34:46 +0900 (JST)
-Message-Id: <20090420.033446.65190767.anemo@mba.ocn.ne.jp>
-To:	dan.j.williams@intel.com
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] DMA: TXx9 Soc DMA Controller driver (v2)
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <e9c3a7c20904181305l5a7ea5dcy881b7faec8e447bf@mail.gmail.com>
-References: <1239033288-3086-1-git-send-email-anemo@mba.ocn.ne.jp>
-	<e9c3a7c20904181305l5a7ea5dcy881b7faec8e447bf@mail.gmail.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 21.4 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Apr 2009 03:13:02 +0100 (BST)
+Received: from ti-out-0910.google.com ([209.85.142.185]:34299 "EHLO
+	ti-out-0910.google.com") by ftp.linux-mips.org with ESMTP
+	id S20029868AbZDTCM4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 20 Apr 2009 03:12:56 +0100
+Received: by ti-out-0910.google.com with SMTP id 11so1064560tim.20
+        for <multiple recipients>; Sun, 19 Apr 2009 19:12:52 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :content-type:organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        bh=/YvVWGSu/LPf11rv8QihU/KmtSiR8NE4SrajnCYHLxs=;
+        b=vEkuCakQYFkry6xt/DAzctHNkoCzrUSMJY2foyiqbiDv2U8zGpltPfUsAeKZfp15N0
+         MyWYXCrpDm/WVMYLrVHSqnQM61lZt8rsfqMfak8u5vZQr0pCHHeAVaDfpBGV8qzRzjHM
+         ZzUzOsefBQTHCjw4E1NSAKlaFlY2cYUZDh6Ds=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:content-type:organization:date
+         :message-id:mime-version:x-mailer:content-transfer-encoding;
+        b=iedzYVKcY+/TdgEceCfDkCMNCc5iRR6hx9qDlb1+IINmvdyEU4AjCC2kBl7gah8D9i
+         KzvLBoZFhciigjXis0MPMRcdrKwlG2qrjNYcrmMOfe6bBRMVPRcD26LLZy68HbLmJZ0O
+         LoBU97h06t+A400B3K22i7nKDQjPtNA1srZ0k=
+Received: by 10.110.31.5 with SMTP id e5mr5678145tie.35.1240193572530;
+        Sun, 19 Apr 2009 19:12:52 -0700 (PDT)
+Received: from ?172.16.18.144? ([222.92.8.142])
+        by mx.google.com with ESMTPS id 2sm40635tif.5.2009.04.19.19.12.46
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sun, 19 Apr 2009 19:12:51 -0700 (PDT)
+Subject: "RT_PREEMPT for loongson" is updated to patch-2.6.29.1-rt8
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:	linux-kernel@vger.kernel.org
+Cc:	Nicholas Mc Guire <hofrat@hofr.at>, Ingo Molnar <mingo@elte.hu>,
+	Thomas Gleixner <tglx@linutronix.de>, zhangfx@lemote.com,
+	loongson-dev@googlegroups.com, yanh@lemote.com,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	Zhang Le <r0bertz@gentoo.org>, linux-rt-users@vger.kernel.org
+Content-Type: text/plain
+Organization: DSLab, Lanzhou University, China
+Date:	Mon, 20 Apr 2009 10:12:27 +0800
+Message-Id: <1240193547.25532.52.camel@falcon>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <anemo@mba.ocn.ne.jp>
+X-Mailer: Evolution 2.24.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22374
+X-archive-position: 22376
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 18 Apr 2009 13:05:15 -0700, Dan Williams <dan.j.williams@intel.com> wrote:
-> Not quite "ackable" yet...
+hi, all
 
-Thank you for review!
+I just update "RT_PREEMPT for loongson" to the latest RT_PREEMPT
+(patch-2.6.29.1-rt8), welcome to pull & test it.
 
-> > +#ifdef CONFIG_MACH_TX49XX
-> > +#define TXX9_DMA_MAY_HAVE_64BIT_REGS
-> > +#define TXX9_DMA_HAVE_CCR_LE
-> > +#define TXX9_DMA_HAVE_SMPCHN
-> > +#define TXX9_DMA_HAVE_IRQ_PER_CHAN
-> > +#endif
-> > +
-> > +#ifdef TXX9_DMA_HAVE_SMPCHN
-> > +#define TXX9_DMA_USE_SIMPLE_CHAIN
-> > +#endif
-> > +
-> 
-> There seems to be a lot of ifdef magic in the code based on these
-> defines.  Can we move this magic and some of the pure definitions to
-> drivers/dma/txx9dmac.h?  (See the "#ifdefs are ugly" section of
-> Documentation/SubmittingPatches)
+$ git clone git://dev.lemote.com/rt4ls.git
+or
+http://dev.lemote.com/http_git/rt4ls.git
 
-OK, I will try to clean them up.  But since I don't want to export
-internal implementation details, some of the magics will be left in
-txx9dmac.c, perhaps.
+this version include basic-RT support for mips, ftrace support for mips
+(static function tracer/dynamic function tracer/function graph
+tracer/system call tracer). 
 
-> > +static struct dma_async_tx_descriptor *
-> > +txx9dmac_prep_dma_memcpy(struct dma_chan *chan, dma_addr_t dest, dma_addr_t src,
-> > +               size_t len, unsigned long flags)
-> [..]
-> > +               if (!first) {
-> > +                       first = desc;
-> > +               } else {
-> > +                       desc_write_CHAR(dc, prev, desc->txd.phys);
-> > +                       dma_sync_single_for_device(chan2parent(&dc->chan),
-> > +                                       prev->txd.phys, ddev->descsize,
-> > +                                       DMA_TO_DEVICE);
-> > +                       list_add_tail(&desc->desc_node,
-> > +                                       &first->txd.tx_list);
-> > +               }
-> 
-> Is there a reason to keep f'irst' off of the tx_list?  It seems like
-> you could simplify this logic and get rid of the scary looking
-> list_splice followed by list_add in txx9dmac_desc_put.  It also seems
-> odd that the descriptors on tx_list are not reachable from the
-> dc->queue list after a submit... but maybe I am missing a subtle
-> detail?
+* current status
 
-Well, I'm not sure what do you mean...
+the "system call tracer" need to fix when compiled in 64bit, because
+there are several sys_call_table entries for different mips64
+standards(o32, n32), currently, i only use the one in
+arch/mips/kernel/scall64-o32.S via EXPORT(sys_call_table).
 
-The completion callback handler of the first descriptor should be
-called _after_ the completion of the _last_ child of the descriptor.
-Also I use desc_node for both dc->queue, dc->active_list and
-txd.tx_list.  So if I putted all children to dc->queue or
-dc->active_list, txx9dmac_descriptor_complete() (or its caller) will
-be more complex.
+the "function graph tracer" is not stable under 100% load(lots of
+"find /" background). 
 
-Or do you mean adding another list_head to maintain txd.tx_list?  Or
-something another at all?
+best regards,
+Wu Zhangjin
 
----
-Atsushi Nemoto
+-- 
+Wu Zhangjin
+DSLab, Lanzhou University, China
+www.lemote.com, Jiangsu Province, China

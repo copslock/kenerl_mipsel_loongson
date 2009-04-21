@@ -1,220 +1,269 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2009 15:21:07 +0100 (BST)
-Received: from yx-out-1718.google.com ([74.125.44.157]:29029 "EHLO
-	yx-out-1718.google.com") by ftp.linux-mips.org with ESMTP
-	id S20026873AbZDUOUw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 21 Apr 2009 15:20:52 +0100
-Received: by yx-out-1718.google.com with SMTP id 4so960051yxp.24
-        for <linux-mips@linux-mips.org>; Tue, 21 Apr 2009 07:20:48 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type;
-        bh=+oCurNygi2RpgrobN1wQAYky/3cn4T2ir040RZr6Ht0=;
-        b=Bo1G2wFhbQBMLdfUgT+jLnCWuW9O+OMa+xZR41YI7H59049+xNA21FRDRMGix7QYzg
-         xfobKRPypPRlRzi6PfPmhkPGLdcfHSeF6buWyhWw0TsfkP3XkEJiRWWFMs1XEAcZv4ZL
-         ur7+9kcJcdNfjbmDjNrOb/7EASSL+YRLtauEc=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=fuiWAax1aU9lHvb9vGCk6HloE2tFkdI3brgQpt72i3UJ8UTPektWdp7Qe7qzQlwBCg
-         EwlwBvKGcNR2iLzgtMukzZVTpyc8+JfQiII2vy83G/KHTZbAyglSTmxk/Tvdzq/BGpHh
-         UpK7Fhs5lBPKJDYTOXuF1JjpZyuYbvgcLjmEw=
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2009 15:32:10 +0100 (BST)
+Received: from gateway12.websitewelcome.com ([67.18.44.21]:19419 "HELO
+	gateway12.websitewelcome.com") by ftp.linux-mips.org with SMTP
+	id S20026873AbZDUOcA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 21 Apr 2009 15:32:00 +0100
+Received: (qmail 26411 invoked from network); 21 Apr 2009 14:34:01 -0000
+Received: from gator750.hostgator.com (174.132.194.2)
+  by gateway12.websitewelcome.com with SMTP; 21 Apr 2009 14:34:01 -0000
+Received: from [217.109.65.213] (port=1675 helo=[127.0.0.1])
+	by gator750.hostgator.com with esmtpa (Exim 4.69)
+	(envelope-from <kevink@paralogos.com>)
+	id 1LwH0q-0006Tg-11; Tue, 21 Apr 2009 09:31:52 -0500
+Message-ID: <49EDD8DA.7060009@paralogos.com>
+Date:	Tue, 21 Apr 2009 16:31:54 +0200
+From:	"Kevin D. Kissell" <kevink@paralogos.com>
+User-Agent: Thunderbird 2.0.0.21 (Windows/20090302)
 MIME-Version: 1.0
-Received: by 10.100.46.10 with SMTP id t10mr9713621ant.116.1240323648511; Tue, 
-	21 Apr 2009 07:20:48 -0700 (PDT)
-In-Reply-To: <10f740e80904210710sdc9e5c2ic310e689ca6677b5@mail.gmail.com>
-References: <d77cedf30904142309na4355e6w63ecea63b0966c92@mail.gmail.com>
-	 <200904201100.39164.florian@openwrt.org>
-	 <20090420.085929.-1089997132.imp@bsdimp.com>
-	 <d77cedf30904202350g602c740dh26641f145677ddd5@mail.gmail.com>
-	 <49EDC965.60507@paralogos.com>
-	 <d77cedf30904210646v2ea71655ye83c8b57fecab761@mail.gmail.com>
-	 <10f740e80904210710sdc9e5c2ic310e689ca6677b5@mail.gmail.com>
-Date:	Tue, 21 Apr 2009 19:50:48 +0530
-Message-ID: <d77cedf30904210720m1a5862ccx220fea16f3a0f01a@mail.gmail.com>
-Subject: Re: in mips how to change the start address to the new second boot 
-	loader ?
-From:	nagalakshmi veeramallu <lucky.veeramallu@gmail.com>
-To:	Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:	"Kevin D. Kissell" <kevink@paralogos.com>,
+To:	nagalakshmi veeramallu <lucky.veeramallu@gmail.com>
+CC:	Geert Uytterhoeven <geert@linux-m68k.org>,
 	"M. Warner Losh" <imp@bsdimp.com>, florian@openwrt.org,
 	linux-mips@linux-mips.org
-Content-Type: multipart/alternative; boundary=001485f945a679e0870468115a2d
-Return-Path: <lucky.veeramallu@gmail.com>
+Subject: Re: in mips how to change the start address to the new second boot
+ 	loader ?
+References: <d77cedf30904142309na4355e6w63ecea63b0966c92@mail.gmail.com>	 <200904201100.39164.florian@openwrt.org>	 <20090420.085929.-1089997132.imp@bsdimp.com>	 <d77cedf30904202350g602c740dh26641f145677ddd5@mail.gmail.com>	 <49EDC965.60507@paralogos.com>	 <d77cedf30904210646v2ea71655ye83c8b57fecab761@mail.gmail.com>	 <10f740e80904210710sdc9e5c2ic310e689ca6677b5@mail.gmail.com> <d77cedf30904210720m1a5862ccx220fea16f3a0f01a@mail.gmail.com>
+In-Reply-To: <d77cedf30904210720m1a5862ccx220fea16f3a0f01a@mail.gmail.com>
+Content-Type: multipart/alternative;
+ boundary="------------080803030107080303060308"
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator750.hostgator.com
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - paralogos.com
+Return-Path: <kevink@paralogos.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22400
+X-archive-position: 22401
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: lucky.veeramallu@gmail.com
+X-original-sender: kevink@paralogos.com
 Precedence: bulk
 X-list: linux-mips
 
---001485f945a679e0870468115a2d
+This is a multi-part message in MIME format.
+--------------080803030107080303060308
 Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi,
-will this approach work? if i used "start" environmental variable will it g=
-o
-to new boot loader address directly.
+Either you have control of what is in the boot ROM at 0x1fc00000 or you
+do not.  If you have control, you can do whatever you like - read
+switches, reference environment variables stored in FLASH somehow,
+whatever - to decide how you want to proceed.  But it's your problem to
+know where the switches are, where and how the NVRAM is to be accessed
+and interpreted, etc.  If you do not have control over the code at
+0x1fc00000, you need to find out what options it provides, either by
+RTFM or by reverse engineering.
 
-Regards,
-Lucky
+There is no magic here, just low-level, brute-force programming.
+
+          Regards,
+
+          Kevin K.
+
+nagalakshmi veeramallu wrote:
+> Hi,
+> will this approach work? if i used "start" environmental variable will
+> it go to new boot loader address directly.
+>
+>
+> Regards,
+> Lucky
+>
+>
+> On Tue, Apr 21, 2009 at 7:40 PM, Geert Uytterhoeven
+> <geert@linux-m68k.org <mailto:geert@linux-m68k.org>> wrote:
+>
+>     On Tue, Apr 21, 2009 at 15:46, nagalakshmi veeramallu
+>     <lucky.veeramallu@gmail.com <mailto:lucky.veeramallu@gmail.com>>
+>     wrote:
+>     > hi,
+>     >          --          if we set environmental variable “start” as “go
+>     > new_address”, will it go directly to the new bootloader in the next
+>     > power-on.
+>     > what about using system environmental "start" ,can you tell me
+>     at which
+>     > context after power on environmental variables come onto picture.
+>
+>     Environment variables are parsed by the boot loader, whose code
+>     resides at,
+>     guess what, 0x1fc00000...
+>
+>     > On Tue, Apr 21, 2009 at 6:55 PM, Kevin D. Kissell
+>     <kevink@paralogos.com <mailto:kevink@paralogos.com>>
+>     > wrote:
+>     >>
+>     >> nagalakshmi veeramallu wrote:
+>     >>
+>     >> -           Mips atlas board has jumper  which will redirect
+>     accesses from
+>     >> “Bootcode” range to either “Monitor flash” (0x1e000000) or the
+>     upper 4MB of
+>     >> “System flash” (0x1dc00000) based on jumper settings. if my kmc
+>     board have
+>     >> some jumper like this, can I redirect the start address.
+>     >>
+>     >> Of course, what is really happening there is that the Atlas
+>     boot ROM has a
+>     >> vector at 0x1fc00000 which reads the jumper and jumps to one
+>     address or the
+>     >> other depending on the jumper setting. If you control what is
+>     in ROM at
+>     >> 0x1fc00000 and you have a software-readable jumper on your KMC
+>     board, you
+>     >> can do the same thing.
+>     >>
+>     >>           Regards,
+>     >>
+>     >>           Kevin K.
+>     >>
+>     >
+>     >
+>
+>
+>
+>     --
+>     Gr{oetje,eeting}s,
+>
+>                                                    Geert
+>
+>     --
+>     Geert Uytterhoeven -- There's lots of Linux beyond ia32 --
+>     geert@linux-m68k.org <mailto:geert@linux-m68k.org>
+>
+>     In personal conversations with technical people, I call myself a
+>     hacker. But
+>     when I'm talking to journalists I just say "programmer" or
+>     something like that.
+>                                                                --
+>     Linus Torvalds
+>
+>
 
 
-On Tue, Apr 21, 2009 at 7:40 PM, Geert Uytterhoeven <geert@linux-m68k.org>w=
-rote:
-
-> On Tue, Apr 21, 2009 at 15:46, nagalakshmi veeramallu
-> <lucky.veeramallu@gmail.com> wrote:
-> > hi,
-> >          --          if we set environmental variable =93start=94 as =
-=93go
-> > new_address=94, will it go directly to the new bootloader in the next
-> > power-on.
-> > what about using system environmental "start" ,can you tell me at which
-> > context after power on environmental variables come onto picture.
->
-> Environment variables are parsed by the boot loader, whose code resides a=
-t,
-> guess what, 0x1fc00000...
->
-> > On Tue, Apr 21, 2009 at 6:55 PM, Kevin D. Kissell <kevink@paralogos.com=
->
-> > wrote:
-> >>
-> >> nagalakshmi veeramallu wrote:
-> >>
-> >> -           Mips atlas board has jumper  which will redirect accesses
-> from
-> >> =93Bootcode=94 range to either =93Monitor flash=94 (0x1e000000) or the=
- upper 4MB
-> of
-> >> =93System flash=94 (0x1dc00000) based on jumper settings. if my kmc bo=
-ard
-> have
-> >> some jumper like this, can I redirect the start address.
-> >>
-> >> Of course, what is really happening there is that the Atlas boot ROM h=
-as
-> a
-> >> vector at 0x1fc00000 which reads the jumper and jumps to one address o=
-r
-> the
-> >> other depending on the jumper setting. If you control what is in ROM a=
-t
-> >> 0x1fc00000 and you have a software-readable jumper on your KMC board,
-> you
-> >> can do the same thing.
-> >>
-> >>           Regards,
-> >>
-> >>           Kevin K.
-> >>
-> >
-> >
->
->
->
-> --
-> Gr{oetje,eeting}s,
->
->                                                Geert
->
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 --
-> geert@linux-m68k.org
->
-> In personal conversations with technical people, I call myself a hacker.
-> But
-> when I'm talking to journalists I just say "programmer" or something like
-> that.
->                                                            -- Linus
-> Torvalds
->
-
---001485f945a679e0870468115a2d
+--------------080803030107080303060308
 Content-Type: text/html; charset=windows-1252
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-<div>Hi,</div>will this=A0approach=A0work? if i used &quot;start&quot; envi=
-ronmental variable will it go to new boot loader address directly.<div><br>=
-<br></div><div>Regards,</div><div>Lucky</div><div><br></div><div><br><div c=
-lass=3D"gmail_quote">
-On Tue, Apr 21, 2009 at 7:40 PM, Geert Uytterhoeven <span dir=3D"ltr">&lt;<=
-a href=3D"mailto:geert@linux-m68k.org">geert@linux-m68k.org</a>&gt;</span> =
-wrote:<br><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;bord=
-er-left:1px #ccc solid;padding-left:1ex;">
-On Tue, Apr 21, 2009 at 15:46, nagalakshmi veeramallu<br>
-<div class=3D"im">&lt;<a href=3D"mailto:lucky.veeramallu@gmail.com">lucky.v=
-eeramallu@gmail.com</a>&gt; wrote:<br>
-</div><div class=3D"im">&gt; hi,<br>
-&gt; =A0=A0 =A0 =A0 =A0 --=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0if we set environme=
-ntal variable =93start=94 as =93go<br>
-&gt; new_address=94, will it go directly to the new bootloader in the next<=
-br>
-&gt; power-on.<br>
-&gt; what about using system environmental &quot;start&quot; ,can you tell =
-me at which<br>
-&gt; context after power on environmental variables come onto picture.<br>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html;charset=windows-1252"
+ http-equiv="Content-Type">
+</head>
+<body bgcolor="#ffffff" text="#000000">
+Either you have control of what is in the boot ROM at 0x1fc00000 or you
+do not.  If you have control, you can do whatever you like - read
+switches, reference environment variables stored in FLASH somehow,
+whatever - to decide how you want to proceed.  But it's your problem to
+know where the switches are, where and how the NVRAM is to be accessed
+and interpreted, etc.  If you do not have control over the code at
+0x1fc00000, you need to find out what options it provides, either by
+RTFM or by reverse engineering.<br>
 <br>
-</div>Environment variables are parsed by the boot loader, whose code resid=
-es at,<br>
+There is no magic here, just low-level, brute-force programming.<br>
+<br>
+          Regards,<br>
+<br>
+          Kevin K.<br>
+<br>
+nagalakshmi veeramallu wrote:
+<blockquote
+ cite="mid:d77cedf30904210720m1a5862ccx220fea16f3a0f01a@mail.gmail.com"
+ type="cite">
+  <div>Hi,</div>
+will this approach work? if i used "start" environmental variable will
+it go to new boot loader address directly.
+  <div><br>
+  <br>
+  </div>
+  <div>Regards,</div>
+  <div>Lucky</div>
+  <div><br>
+  </div>
+  <div><br>
+  <div class="gmail_quote">On Tue, Apr 21, 2009 at 7:40 PM, Geert
+Uytterhoeven <span dir="ltr">&lt;<a moz-do-not-send="true"
+ href="mailto:geert@linux-m68k.org">geert@linux-m68k.org</a>&gt;</span>
+wrote:<br>
+  <blockquote class="gmail_quote"
+ style="border-left: 1px solid rgb(204, 204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;">On
+Tue, Apr 21, 2009 at 15:46, nagalakshmi veeramallu<br>
+    <div class="im">&lt;<a moz-do-not-send="true"
+ href="mailto:lucky.veeramallu@gmail.com">lucky.veeramallu@gmail.com</a>&gt;
+wrote:<br>
+    </div>
+    <div class="im">&gt; hi,<br>
+&gt;          --          if we set environmental variable “start” as
+“go<br>
+&gt; new_address”, will it go directly to the new bootloader in the next<br>
+&gt; power-on.<br>
+&gt; what about using system environmental "start" ,can you tell me at
+which<br>
+&gt; context after power on environmental variables come onto picture.<br>
+    <br>
+    </div>
+Environment variables are parsed by the boot loader, whose code resides
+at,<br>
 guess what, 0x1fc00000...<br>
-<div class=3D"im"><br>
-&gt; On Tue, Apr 21, 2009 at 6:55 PM, Kevin D. Kissell &lt;<a href=3D"mailt=
-o:kevink@paralogos.com">kevink@paralogos.com</a>&gt;<br>
+    <div class="im"><br>
+&gt; On Tue, Apr 21, 2009 at 6:55 PM, Kevin D. Kissell &lt;<a
+ moz-do-not-send="true" href="mailto:kevink@paralogos.com">kevink@paralogos.com</a>&gt;<br>
 &gt; wrote:<br>
 &gt;&gt;<br>
 &gt;&gt; nagalakshmi veeramallu wrote:<br>
 &gt;&gt;<br>
-&gt;&gt; -=A0=A0=A0=A0=A0=A0=A0=A0=A0 =A0Mips atlas board has jumper =A0whi=
-ch will redirect accesses from<br>
-&gt;&gt; =93Bootcode=94 range to either =93Monitor flash=94 (0x1e000000) or=
- the upper 4MB of<br>
-&gt;&gt; =93System flash=94 (0x1dc00000) based on jumper settings. if=A0my =
+&gt;&gt; -           Mips atlas board has jumper  which will redirect
+accesses from<br>
+&gt;&gt; “Bootcode” range to either “Monitor flash” (0x1e000000) or the
+upper 4MB of<br>
+&gt;&gt; “System flash” (0x1dc00000) based on jumper settings. if my
 kmc board have<br>
 &gt;&gt; some jumper like this, can I redirect the start address.<br>
 &gt;&gt;<br>
-&gt;&gt; Of course, what is really happening there is that the Atlas boot R=
-OM has a<br>
-&gt;&gt; vector at 0x1fc00000 which reads the jumper and jumps to one addre=
-ss or the<br>
-&gt;&gt; other depending on the jumper setting. If you control what is in R=
-OM at<br>
-&gt;&gt; 0x1fc00000 and you have a software-readable jumper on your KMC boa=
-rd, you<br>
+&gt;&gt; Of course, what is really happening there is that the Atlas
+boot ROM has a<br>
+&gt;&gt; vector at 0x1fc00000 which reads the jumper and jumps to one
+address or the<br>
+&gt;&gt; other depending on the jumper setting. If you control what is
+in ROM at<br>
+&gt;&gt; 0x1fc00000 and you have a software-readable jumper on your KMC
+board, you<br>
 &gt;&gt; can do the same thing.<br>
 &gt;&gt;<br>
-&gt;&gt; =A0=A0=A0 =A0=A0 =A0=A0 Regards,<br>
+&gt;&gt;           Regards,<br>
 &gt;&gt;<br>
-&gt;&gt; =A0=A0=A0 =A0=A0 =A0=A0 Kevin K.<br>
+&gt;&gt;           Kevin K.<br>
 &gt;&gt;<br>
 &gt;<br>
 &gt;<br>
-<br>
-<br>
-<br>
-</div>--<br>
-Gr{oetje,eeting}s,<br>
-<br>
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 =A0 =A0 =A0 =A0Geert<br>
-<font color=3D"#888888"><br>
+    <br>
+    <br>
+    <br>
+    </div>
 --<br>
-Geert Uytterhoeven -- There&#39;s lots of Linux beyond ia32 -- <a href=3D"m=
-ailto:geert@linux-m68k.org">geert@linux-m68k.org</a><br>
+Gr{oetje,eeting}s,<br>
+    <br>
+                                               Geert<br>
+    <font color="#888888"><br>
+--<br>
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- <a
+ moz-do-not-send="true" href="mailto:geert@linux-m68k.org">geert@linux-m68k.org</a><br>
+    <br>
+In personal conversations with technical people, I call myself a
+hacker. But<br>
+when I'm talking to journalists I just say "programmer" or something
+like that.<br>
+                                                           -- Linus
+Torvalds<br>
+    </font></blockquote>
+  </div>
+  <br>
+  </div>
+</blockquote>
 <br>
-In personal conversations with technical people, I call myself a hacker. Bu=
-t<br>
-when I&#39;m talking to journalists I just say &quot;programmer&quot; or so=
-mething like that.<br>
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =
-=A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0-- Linus Torvalds<br>
-</font></blockquote></div><br></div>
+</body>
+</html>
 
---001485f945a679e0870468115a2d--
+--------------080803030107080303060308--

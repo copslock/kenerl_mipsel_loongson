@@ -1,26 +1,26 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2009 22:34:45 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:698 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Apr 2009 22:35:11 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:442 "EHLO
 	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S20029819AbZDUVeg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	id S20030057AbZDUVeg (ORCPT <rfc822;linux-mips@linux-mips.org>);
 	Tue, 21 Apr 2009 22:34:36 +0100
 Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B49ee3bdc0002>; Tue, 21 Apr 2009 17:34:20 -0400
+	id <B49ee3bdc0001>; Tue, 21 Apr 2009 17:34:20 -0400
 Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
 	 Tue, 21 Apr 2009 14:33:29 -0700
 Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
 	 Tue, 21 Apr 2009 14:33:29 -0700
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n3LLXQJ3001947;
+	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n3LLXQWj001951;
 	Tue, 21 Apr 2009 14:33:26 -0700
 Received: (from ddaney@localhost)
-	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n3LLXPvt001945;
-	Tue, 21 Apr 2009 14:33:25 -0700
+	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n3LLXQH9001950;
+	Tue, 21 Apr 2009 14:33:26 -0700
 From:	David Daney <ddaney@caviumnetworks.com>
 To:	linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:	David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH 1/2] MIPS: Preliminary vdso.
-Date:	Tue, 21 Apr 2009 14:33:24 -0700
-Message-Id: <1240349605-1921-1-git-send-email-ddaney@caviumnetworks.com>
+Subject: [PATCH 2/2] MIPS: Move signal trampolines off of the stack.
+Date:	Tue, 21 Apr 2009 14:33:25 -0700
+Message-Id: <1240349605-1921-2-git-send-email-ddaney@caviumnetworks.com>
 X-Mailer: git-send-email 1.6.0.6
 In-Reply-To: <49EE3B0F.3040506@caviumnetworks.com>
 References: <49EE3B0F.3040506@caviumnetworks.com>
@@ -29,7 +29,7 @@ Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22405
+X-archive-position: 22406
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,262 +37,467 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a preliminary patch to add a vdso to all user processes.
-Still missing are ELF headers and .eh_frame information.  But it is
-enough to allow us to move signal trampolines off of the stack.
+This is a follow on to the vdso patch.
 
-We allocate a single page (the vdso) and write all possible signal
-trampolines into it.  The stack is moved down by one page and the vdso
-is mapped into this space.
+Since all processes now have signal trampolines permanently mapped, we
+can use those instead of putting the trampoline on the stack and
+invalidating the corresponding icache across all CPUs.  We also get
+rid of a bunch of ICACHE_REFILLS_WORKAROUND_WAR code.
 
 Signed-off-by: David Daney <ddaney@caviumnetworks.com>
 ---
- arch/mips/include/asm/elf.h         |    4 +
- arch/mips/include/asm/mmu.h         |    5 +-
- arch/mips/include/asm/mmu_context.h |    2 +-
- arch/mips/include/asm/processor.h   |    5 +-
- arch/mips/include/asm/vdso.h        |   29 ++++++++++
- arch/mips/kernel/Makefile           |    2 +-
- arch/mips/kernel/syscall.c          |    2 +-
- arch/mips/kernel/vdso.c             |  104 +++++++++++++++++++++++++++++++++++
- 8 files changed, 147 insertions(+), 6 deletions(-)
- create mode 100644 arch/mips/include/asm/vdso.h
- create mode 100644 arch/mips/kernel/vdso.c
+ arch/mips/include/asm/abi.h      |    6 ++-
+ arch/mips/kernel/signal-common.h |    5 --
+ arch/mips/kernel/signal.c        |   86 ++++++++-----------------------------
+ arch/mips/kernel/signal32.c      |   55 ++++++------------------
+ arch/mips/kernel/signal_n32.c    |   26 +++---------
+ 5 files changed, 43 insertions(+), 135 deletions(-)
 
-diff --git a/arch/mips/include/asm/elf.h b/arch/mips/include/asm/elf.h
-index d58f128..08b3bc5 100644
---- a/arch/mips/include/asm/elf.h
-+++ b/arch/mips/include/asm/elf.h
-@@ -364,4 +364,8 @@ extern int dump_task_fpu(struct task_struct *, elf_fpregset_t *);
- #define ELF_ET_DYN_BASE         (TASK_SIZE / 3 * 2)
- #endif
+diff --git a/arch/mips/include/asm/abi.h b/arch/mips/include/asm/abi.h
+index 1dd74fb..9252d9b 100644
+--- a/arch/mips/include/asm/abi.h
++++ b/arch/mips/include/asm/abi.h
+@@ -13,12 +13,14 @@
+ #include <asm/siginfo.h>
  
-+#define ARCH_HAS_SETUP_ADDITIONAL_PAGES 1
-+struct linux_binprm;
-+extern int arch_setup_additional_pages(struct linux_binprm *bprm,
-+				       int uses_interp);
- #endif /* _ASM_ELF_H */
-diff --git a/arch/mips/include/asm/mmu.h b/arch/mips/include/asm/mmu.h
-index 4063edd..c436138 100644
---- a/arch/mips/include/asm/mmu.h
-+++ b/arch/mips/include/asm/mmu.h
-@@ -1,6 +1,9 @@
- #ifndef __ASM_MMU_H
- #define __ASM_MMU_H
+ struct mips_abi {
+-	int (* const setup_frame)(struct k_sigaction * ka,
++	int (* const setup_frame)(void *sig_return, struct k_sigaction *ka,
+ 	                          struct pt_regs *regs, int signr,
+ 	                          sigset_t *set);
+-	int (* const setup_rt_frame)(struct k_sigaction * ka,
++	const unsigned long	signal_return_offset;
++	int (* const setup_rt_frame)(void *sig_return, struct k_sigaction *ka,
+ 	                       struct pt_regs *regs, int signr,
+ 	                       sigset_t *set, siginfo_t *info);
++	const unsigned long	rt_signal_return_offset;
+ 	const unsigned long	restart;
+ };
  
--typedef unsigned long mm_context_t[NR_CPUS];
-+typedef struct {
-+	unsigned long asid[NR_CPUS];
-+	void *vdso;
-+} mm_context_t;
- 
- #endif /* __ASM_MMU_H */
-diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
-index d7f3eb0..62bcf13 100644
---- a/arch/mips/include/asm/mmu_context.h
-+++ b/arch/mips/include/asm/mmu_context.h
-@@ -73,7 +73,7 @@ extern unsigned long smtc_asid_mask;
- 
- #endif
- 
--#define cpu_context(cpu, mm)	((mm)->context[cpu])
-+#define cpu_context(cpu, mm)	((mm)->context.asid[cpu])
- #define cpu_asid(cpu, mm)	(cpu_context((cpu), (mm)) & ASID_MASK)
- #define asid_cache(cpu)		(cpu_data[cpu].asid_cache)
- 
-diff --git a/arch/mips/include/asm/processor.h b/arch/mips/include/asm/processor.h
-index 0f926aa..530b01f 100644
---- a/arch/mips/include/asm/processor.h
-+++ b/arch/mips/include/asm/processor.h
-@@ -39,7 +39,7 @@ extern unsigned int vced_count, vcei_count;
-  * so don't change it unless you know what you are doing.
+diff --git a/arch/mips/kernel/signal-common.h b/arch/mips/kernel/signal-common.h
+index 6c8e8c4..10263b4 100644
+--- a/arch/mips/kernel/signal-common.h
++++ b/arch/mips/kernel/signal-common.h
+@@ -26,11 +26,6 @@
   */
- #define TASK_SIZE	0x7fff8000UL
--#define STACK_TOP	TASK_SIZE
-+#define STACK_TOP	(TASK_SIZE - PAGE_SIZE)
+ extern void __user *get_sigframe(struct k_sigaction *ka, struct pt_regs *regs,
+ 				 size_t frame_size);
+-/*
+- * install trampoline code to get back from the sig handler
+- */
+-extern int install_sigtramp(unsigned int __user *tramp, unsigned int syscall);
+-
+ /* Check and clear pending FPU exceptions in saved CSR */
+ extern int fpcsr_pending(unsigned int __user *fpcsr);
  
- /*
-  * This decides where the kernel will search for a free chunk of vm
-@@ -59,7 +59,8 @@ extern unsigned int vced_count, vcei_count;
- #define TASK_SIZE32	0x7fff8000UL
- #define TASK_SIZE	0x10000000000UL
- #define STACK_TOP	\
--      (test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 : TASK_SIZE)
-+	((test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 : TASK_SIZE) - \
-+	 PAGE_SIZE)
- 
- /*
-  * This decides where the kernel will search for a free chunk of vm
-diff --git a/arch/mips/include/asm/vdso.h b/arch/mips/include/asm/vdso.h
-new file mode 100644
-index 0000000..cca56aa
---- /dev/null
-+++ b/arch/mips/include/asm/vdso.h
-@@ -0,0 +1,29 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2009 Cavium Networks
-+ */
-+
-+#ifndef __ASM_VDSO_H
-+#define __ASM_VDSO_H
-+
-+#include <linux/types.h>
-+
-+
-+#ifdef CONFIG_32BIT
-+struct mips_vdso {
-+	u32 signal_trampoline[2];
-+	u32 rt_signal_trampoline[2];
-+};
-+#else  /* !CONFIG_32BIT */
-+struct mips_vdso {
-+	u32 o32_signal_trampoline[2];
-+	u32 o32_rt_signal_trampoline[2];
-+	u32 rt_signal_trampoline[2];
-+	u32 n32_rt_signal_trampoline[2];
-+};
-+#endif /* CONFIG_32BIT */
-+
-+#endif /* __ASM_VDSO_H */
-diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-index e961221..b8158b5 100644
---- a/arch/mips/kernel/Makefile
-+++ b/arch/mips/kernel/Makefile
-@@ -6,7 +6,7 @@ extra-y		:= head.o init_task.o vmlinux.lds
- 
- obj-y		+= cpu-probe.o branch.o entry.o genex.o irq.o process.o \
- 		   ptrace.o reset.o setup.o signal.o syscall.o \
--		   time.o topology.o traps.o unaligned.o watch.o
-+		   time.o topology.o traps.o unaligned.o watch.o vdso.o
- 
- obj-$(CONFIG_CEVT_BCM1480)	+= cevt-bcm1480.o
- obj-$(CONFIG_CEVT_R4K_LIB)	+= cevt-r4k.o
-diff --git a/arch/mips/kernel/syscall.c b/arch/mips/kernel/syscall.c
-index 955c5f0..491e5be 100644
---- a/arch/mips/kernel/syscall.c
-+++ b/arch/mips/kernel/syscall.c
-@@ -77,7 +77,7 @@ unsigned long arch_get_unmapped_area(struct file *filp, unsigned long addr,
- 	int do_color_align;
- 	unsigned long task_size;
- 
--	task_size = STACK_TOP;
-+	task_size = test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 : TASK_SIZE;
- 
- 	if (len > task_size)
- 		return -ENOMEM;
-diff --git a/arch/mips/kernel/vdso.c b/arch/mips/kernel/vdso.c
-new file mode 100644
-index 0000000..a1f38a6
---- /dev/null
-+++ b/arch/mips/kernel/vdso.c
-@@ -0,0 +1,104 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2009 Cavium Networks
-+ */
-+
-+
-+#include <linux/kernel.h>
-+#include <linux/err.h>
-+#include <linux/sched.h>
-+#include <linux/mm.h>
-+#include <linux/init.h>
-+#include <linux/binfmts.h>
-+#include <linux/elf.h>
-+#include <linux/vmalloc.h>
-+#include <linux/unistd.h>
-+
+diff --git a/arch/mips/kernel/signal.c b/arch/mips/kernel/signal.c
+index 830c5ef..2d83902 100644
+--- a/arch/mips/kernel/signal.c
++++ b/arch/mips/kernel/signal.c
+@@ -31,50 +31,24 @@
+ #include <asm/ucontext.h>
+ #include <asm/cpu-features.h>
+ #include <asm/war.h>
 +#include <asm/vdso.h>
-+
-+/*
-+ * Including <asm/unistd.h> would give use the 64-bit syscall numbers ...
-+ */
-+#define __NR_O32_sigreturn		4119
-+#define __NR_O32_rt_sigreturn		4193
-+#define __NR_N32_rt_sigreturn		6211
-+
-+static struct page *vdso_page;
-+
-+static void __init install_trampoline(u32 *tramp, unsigned int sigreturn)
-+{
-+	tramp[0] = 0x24020000 + sigreturn;	/* li v0, sigreturn */
-+	tramp[1] = 0x0000000c;			/* syscall */
-+}
-+
-+static int __init init_vdso(void)
-+{
-+	struct mips_vdso *vdso;
-+
-+	vdso_page = alloc_page(GFP_KERNEL);
-+	if (!vdso_page)
-+		panic("Cannot allocate vdso");
-+
-+	vdso = vmap(&vdso_page, 1, 0, PAGE_KERNEL);
-+	if (!vdso)
-+		panic("Cannot map vdso");
-+	clear_page(vdso);
-+
-+	install_trampoline(vdso->rt_signal_trampoline, __NR_rt_sigreturn);
-+#ifdef CONFIG_32BIT
-+	install_trampoline(vdso->signal_trampoline, __NR_sigreturn);
-+#else
-+	install_trampoline(vdso->n32_rt_signal_trampoline,
-+			   __NR_N32_rt_sigreturn);
-+	install_trampoline(vdso->o32_signal_trampoline, __NR_O32_sigreturn);
-+	install_trampoline(vdso->o32_rt_signal_trampoline,
-+			   __NR_O32_rt_sigreturn);
-+#endif
-+
-+	vunmap(vdso);
-+
-+	pr_notice("init_vdso successfull\n");
-+
-+	return 0;
-+}
-+device_initcall(init_vdso);
-+
-+static unsigned long vdso_addr(unsigned long start)
-+{
-+	return STACK_TOP;
-+}
-+
-+int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
-+{
-+	int ret;
-+	unsigned long addr;
-+	struct mm_struct *mm = current->mm;
-+
-+	down_write(&mm->mmap_sem);
-+
-+	addr = vdso_addr(mm->start_stack);
-+
-+	addr = get_unmapped_area(NULL, addr, PAGE_SIZE, 0, 0);
-+	if (IS_ERR_VALUE(addr)) {
-+		ret = addr;
-+		goto up_fail;
-+	}
-+
-+	ret = install_special_mapping(mm, addr, PAGE_SIZE,
-+				      VM_READ|VM_EXEC|
-+				      VM_MAYREAD|VM_MAYWRITE|VM_MAYEXEC|
-+				      VM_ALWAYSDUMP,
-+				      &vdso_page);
-+
-+	if (ret)
-+		goto up_fail;
-+
-+	mm->context.vdso = (void *)addr;
-+
-+up_fail:
-+	up_write(&mm->mmap_sem);
-+	return ret;
-+}
+ 
+ #include "signal-common.h"
+ 
+-/*
+- * Horribly complicated - with the bloody RM9000 workarounds enabled
+- * the signal trampolines is moving to the end of the structure so we can
+- * increase the alignment without breaking software compatibility.
+- */
+-#if ICACHE_REFILLS_WORKAROUND_WAR == 0
+-
+ struct sigframe {
+ 	u32 sf_ass[4];		/* argument save space for o32 */
+-	u32 sf_code[2];		/* signal trampoline */
++	u32 sf_pad[2];		/*  Was: signal trampoline */
+ 	struct sigcontext sf_sc;
+ 	sigset_t sf_mask;
+ };
+ 
+ struct rt_sigframe {
+ 	u32 rs_ass[4];		/* argument save space for o32 */
+-	u32 rs_code[2];		/* signal trampoline */
++	u32 rs_pad[2];		/*  Was: signal trampoline */
+ 	struct siginfo rs_info;
+ 	struct ucontext rs_uc;
+ };
+ 
+-#else
+-
+-struct sigframe {
+-	u32 sf_ass[4];			/* argument save space for o32 */
+-	u32 sf_pad[2];
+-	struct sigcontext sf_sc;	/* hw context */
+-	sigset_t sf_mask;
+-	u32 sf_code[8] ____cacheline_aligned;	/* signal trampoline */
+-};
+-
+-struct rt_sigframe {
+-	u32 rs_ass[4];			/* argument save space for o32 */
+-	u32 rs_pad[2];
+-	struct siginfo rs_info;
+-	struct ucontext rs_uc;
+-	u32 rs_code[8] ____cacheline_aligned;	/* signal trampoline */
+-};
+-
+-#endif
+-
+ /*
+  * Helper routines
+  */
+@@ -256,32 +230,6 @@ void __user *get_sigframe(struct k_sigaction *ka, struct pt_regs *regs,
+ 	return (void __user *)((sp - frame_size) & (ICACHE_REFILLS_WORKAROUND_WAR ? ~(cpu_icache_line_size()-1) : ALMASK));
+ }
+ 
+-int install_sigtramp(unsigned int __user *tramp, unsigned int syscall)
+-{
+-	int err;
+-
+-	/*
+-	 * Set up the return code ...
+-	 *
+-	 *         li      v0, __NR__foo_sigreturn
+-	 *         syscall
+-	 */
+-
+-	err = __put_user(0x24020000 + syscall, tramp + 0);
+-	err |= __put_user(0x0000000c         , tramp + 1);
+-	if (ICACHE_REFILLS_WORKAROUND_WAR) {
+-		err |= __put_user(0, tramp + 2);
+-		err |= __put_user(0, tramp + 3);
+-		err |= __put_user(0, tramp + 4);
+-		err |= __put_user(0, tramp + 5);
+-		err |= __put_user(0, tramp + 6);
+-		err |= __put_user(0, tramp + 7);
+-	}
+-	flush_cache_sigtramp((unsigned long) tramp);
+-
+-	return err;
+-}
+-
+ /*
+  * Atomically swap in the new signal mask, and wait for a signal.
+  */
+@@ -474,8 +422,8 @@ badframe:
+ }
+ 
+ #ifdef CONFIG_TRAD_SIGNALS
+-static int setup_frame(struct k_sigaction * ka, struct pt_regs *regs,
+-	int signr, sigset_t *set)
++static int setup_frame(void *sig_return, struct k_sigaction *ka,
++		       struct pt_regs *regs, int signr, sigset_t *set)
+ {
+ 	struct sigframe __user *frame;
+ 	int err = 0;
+@@ -484,8 +432,6 @@ static int setup_frame(struct k_sigaction * ka, struct pt_regs *regs,
+ 	if (!access_ok(VERIFY_WRITE, frame, sizeof (*frame)))
+ 		goto give_sigsegv;
+ 
+-	err |= install_sigtramp(frame->sf_code, __NR_sigreturn);
+-
+ 	err |= setup_sigcontext(regs, &frame->sf_sc);
+ 	err |= __copy_to_user(&frame->sf_mask, set, sizeof(*set));
+ 	if (err)
+@@ -505,7 +451,7 @@ static int setup_frame(struct k_sigaction * ka, struct pt_regs *regs,
+ 	regs->regs[ 5] = 0;
+ 	regs->regs[ 6] = (unsigned long) &frame->sf_sc;
+ 	regs->regs[29] = (unsigned long) frame;
+-	regs->regs[31] = (unsigned long) frame->sf_code;
++	regs->regs[31] = (unsigned long) sig_return;
+ 	regs->cp0_epc = regs->regs[25] = (unsigned long) ka->sa.sa_handler;
+ 
+ 	DEBUGP("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%lx\n",
+@@ -519,8 +465,9 @@ give_sigsegv:
+ }
+ #endif
+ 
+-static int setup_rt_frame(struct k_sigaction * ka, struct pt_regs *regs,
+-	int signr, sigset_t *set, siginfo_t *info)
++static int setup_rt_frame(void *sig_return, struct k_sigaction *ka,
++			  struct pt_regs *regs,	int signr, sigset_t *set,
++			  siginfo_t *info)
+ {
+ 	struct rt_sigframe __user *frame;
+ 	int err = 0;
+@@ -529,8 +476,6 @@ static int setup_rt_frame(struct k_sigaction * ka, struct pt_regs *regs,
+ 	if (!access_ok(VERIFY_WRITE, frame, sizeof (*frame)))
+ 		goto give_sigsegv;
+ 
+-	err |= install_sigtramp(frame->rs_code, __NR_rt_sigreturn);
+-
+ 	/* Create siginfo.  */
+ 	err |= copy_siginfo_to_user(&frame->rs_info, info);
+ 
+@@ -563,7 +508,7 @@ static int setup_rt_frame(struct k_sigaction * ka, struct pt_regs *regs,
+ 	regs->regs[ 5] = (unsigned long) &frame->rs_info;
+ 	regs->regs[ 6] = (unsigned long) &frame->rs_uc;
+ 	regs->regs[29] = (unsigned long) frame;
+-	regs->regs[31] = (unsigned long) frame->rs_code;
++	regs->regs[31] = (unsigned long) sig_return;
+ 	regs->cp0_epc = regs->regs[25] = (unsigned long) ka->sa.sa_handler;
+ 
+ 	DEBUGP("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%lx\n",
+@@ -580,8 +525,11 @@ give_sigsegv:
+ struct mips_abi mips_abi = {
+ #ifdef CONFIG_TRAD_SIGNALS
+ 	.setup_frame	= setup_frame,
++	.signal_return_offset = offsetof(struct mips_vdso, signal_trampoline),
+ #endif
+ 	.setup_rt_frame	= setup_rt_frame,
++	.rt_signal_return_offset =
++		offsetof(struct mips_vdso, rt_signal_trampoline),
+ 	.restart	= __NR_restart_syscall
+ };
+ 
+@@ -589,6 +537,8 @@ static int handle_signal(unsigned long sig, siginfo_t *info,
+ 	struct k_sigaction *ka, sigset_t *oldset, struct pt_regs *regs)
+ {
+ 	int ret;
++	struct mips_abi *abi = current->thread.abi;
++	void *vdso = current->mm->context.vdso;
+ 
+ 	switch(regs->regs[0]) {
+ 	case ERESTART_RESTARTBLOCK:
+@@ -609,9 +559,11 @@ static int handle_signal(unsigned long sig, siginfo_t *info,
+ 	regs->regs[0] = 0;		/* Don't deal with this again.  */
+ 
+ 	if (sig_uses_siginfo(ka))
+-		ret = current->thread.abi->setup_rt_frame(ka, regs, sig, oldset, info);
++		ret = abi->setup_rt_frame(vdso + abi->rt_signal_return_offset,
++					  ka, regs, sig, oldset, info);
+ 	else
+-		ret = current->thread.abi->setup_frame(ka, regs, sig, oldset);
++		ret = abi->setup_frame(vdso + abi->signal_return_offset,
++				       ka, regs, sig, oldset);
+ 
+ 	spin_lock_irq(&current->sighand->siglock);
+ 	sigorsets(&current->blocked, &current->blocked, &ka->sa.sa_mask);
+diff --git a/arch/mips/kernel/signal32.c b/arch/mips/kernel/signal32.c
+index 2e74075..0507608 100644
+--- a/arch/mips/kernel/signal32.c
++++ b/arch/mips/kernel/signal32.c
+@@ -32,14 +32,13 @@
+ #include <asm/system.h>
+ #include <asm/fpu.h>
+ #include <asm/war.h>
++#include <asm/vdso.h>
+ 
+ #include "signal-common.h"
+ 
+ /*
+  * Including <asm/unistd.h> would give use the 64-bit syscall numbers ...
+  */
+-#define __NR_O32_sigreturn		4119
+-#define __NR_O32_rt_sigreturn		4193
+ #define __NR_O32_restart_syscall        4253
+ 
+ /* 32-bit compatibility types */
+@@ -68,47 +67,20 @@ struct ucontext32 {
+ 	compat_sigset_t     uc_sigmask;   /* mask last for extensibility */
+ };
+ 
+-/*
+- * Horribly complicated - with the bloody RM9000 workarounds enabled
+- * the signal trampolines is moving to the end of the structure so we can
+- * increase the alignment without breaking software compatibility.
+- */
+-#if ICACHE_REFILLS_WORKAROUND_WAR == 0
+-
+ struct sigframe32 {
+ 	u32 sf_ass[4];		/* argument save space for o32 */
+-	u32 sf_code[2];		/* signal trampoline */
++	u32 sf_pad[2];		/* Was: signal trampoline */
+ 	struct sigcontext32 sf_sc;
+ 	compat_sigset_t sf_mask;
+ };
+ 
+ struct rt_sigframe32 {
+ 	u32 rs_ass[4];			/* argument save space for o32 */
+-	u32 rs_code[2];			/* signal trampoline */
++	u32 rs_pad[2];			/* Was: signal trampoline */
+ 	compat_siginfo_t rs_info;
+ 	struct ucontext32 rs_uc;
+ };
+ 
+-#else  /* ICACHE_REFILLS_WORKAROUND_WAR */
+-
+-struct sigframe32 {
+-	u32 sf_ass[4];			/* argument save space for o32 */
+-	u32 sf_pad[2];
+-	struct sigcontext32 sf_sc;	/* hw context */
+-	compat_sigset_t sf_mask;
+-	u32 sf_code[8] ____cacheline_aligned;	/* signal trampoline */
+-};
+-
+-struct rt_sigframe32 {
+-	u32 rs_ass[4];			/* argument save space for o32 */
+-	u32 rs_pad[2];
+-	compat_siginfo_t rs_info;
+-	struct ucontext32 rs_uc;
+-	u32 rs_code[8] __attribute__((aligned(32)));	/* signal trampoline */
+-};
+-
+-#endif	/* !ICACHE_REFILLS_WORKAROUND_WAR */
+-
+ /*
+  * sigcontext handlers
+  */
+@@ -589,8 +561,8 @@ badframe:
+ 	force_sig(SIGSEGV, current);
+ }
+ 
+-static int setup_frame_32(struct k_sigaction * ka, struct pt_regs *regs,
+-	int signr, sigset_t *set)
++static int setup_frame_32(void *sig_return, struct k_sigaction *ka,
++			  struct pt_regs *regs, int signr, sigset_t *set)
+ {
+ 	struct sigframe32 __user *frame;
+ 	int err = 0;
+@@ -599,8 +571,6 @@ static int setup_frame_32(struct k_sigaction * ka, struct pt_regs *regs,
+ 	if (!access_ok(VERIFY_WRITE, frame, sizeof (*frame)))
+ 		goto give_sigsegv;
+ 
+-	err |= install_sigtramp(frame->sf_code, __NR_O32_sigreturn);
+-
+ 	err |= setup_sigcontext32(regs, &frame->sf_sc);
+ 	err |= __copy_conv_sigset_to_user(&frame->sf_mask, set);
+ 
+@@ -621,7 +591,7 @@ static int setup_frame_32(struct k_sigaction * ka, struct pt_regs *regs,
+ 	regs->regs[ 5] = 0;
+ 	regs->regs[ 6] = (unsigned long) &frame->sf_sc;
+ 	regs->regs[29] = (unsigned long) frame;
+-	regs->regs[31] = (unsigned long) frame->sf_code;
++	regs->regs[31] = (unsigned long) sig_return;
+ 	regs->cp0_epc = regs->regs[25] = (unsigned long) ka->sa.sa_handler;
+ 
+ 	DEBUGP("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%lx\n",
+@@ -635,8 +605,9 @@ give_sigsegv:
+ 	return -EFAULT;
+ }
+ 
+-static int setup_rt_frame_32(struct k_sigaction * ka, struct pt_regs *regs,
+-	int signr, sigset_t *set, siginfo_t *info)
++static int setup_rt_frame_32(void *sig_return, struct k_sigaction *ka,
++			     struct pt_regs *regs, int signr, sigset_t *set,
++			     siginfo_t *info)
+ {
+ 	struct rt_sigframe32 __user *frame;
+ 	int err = 0;
+@@ -646,8 +617,6 @@ static int setup_rt_frame_32(struct k_sigaction * ka, struct pt_regs *regs,
+ 	if (!access_ok(VERIFY_WRITE, frame, sizeof (*frame)))
+ 		goto give_sigsegv;
+ 
+-	err |= install_sigtramp(frame->rs_code, __NR_O32_rt_sigreturn);
+-
+ 	/* Convert (siginfo_t -> compat_siginfo_t) and copy to user. */
+ 	err |= copy_siginfo_to_user32(&frame->rs_info, info);
+ 
+@@ -681,7 +650,7 @@ static int setup_rt_frame_32(struct k_sigaction * ka, struct pt_regs *regs,
+ 	regs->regs[ 5] = (unsigned long) &frame->rs_info;
+ 	regs->regs[ 6] = (unsigned long) &frame->rs_uc;
+ 	regs->regs[29] = (unsigned long) frame;
+-	regs->regs[31] = (unsigned long) frame->rs_code;
++	regs->regs[31] = (unsigned long) sig_return;
+ 	regs->cp0_epc = regs->regs[25] = (unsigned long) ka->sa.sa_handler;
+ 
+ 	DEBUGP("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%lx\n",
+@@ -700,7 +669,11 @@ give_sigsegv:
+  */
+ struct mips_abi mips_abi_32 = {
+ 	.setup_frame	= setup_frame_32,
++	.signal_return_offset =
++		offsetof(struct mips_vdso, o32_signal_trampoline),
+ 	.setup_rt_frame	= setup_rt_frame_32,
++	.rt_signal_return_offset =
++		offsetof(struct mips_vdso, o32_rt_signal_trampoline),
+ 	.restart	= __NR_O32_restart_syscall
+ };
+ 
+diff --git a/arch/mips/kernel/signal_n32.c b/arch/mips/kernel/signal_n32.c
+index bb277e8..2c5df81 100644
+--- a/arch/mips/kernel/signal_n32.c
++++ b/arch/mips/kernel/signal_n32.c
+@@ -39,13 +39,13 @@
+ #include <asm/fpu.h>
+ #include <asm/cpu-features.h>
+ #include <asm/war.h>
++#include <asm/vdso.h>
+ 
+ #include "signal-common.h"
+ 
+ /*
+  * Including <asm/unistd.h> would give use the 64-bit syscall numbers ...
+  */
+-#define __NR_N32_rt_sigreturn		6211
+ #define __NR_N32_restart_syscall	6214
+ 
+ extern int setup_sigcontext(struct pt_regs *, struct sigcontext __user *);
+@@ -67,27 +67,13 @@ struct ucontextn32 {
+ 	compat_sigset_t     uc_sigmask;   /* mask last for extensibility */
+ };
+ 
+-#if ICACHE_REFILLS_WORKAROUND_WAR == 0
+-
+-struct rt_sigframe_n32 {
+-	u32 rs_ass[4];			/* argument save space for o32 */
+-	u32 rs_code[2];			/* signal trampoline */
+-	struct compat_siginfo rs_info;
+-	struct ucontextn32 rs_uc;
+-};
+-
+-#else  /* ICACHE_REFILLS_WORKAROUND_WAR */
+-
+ struct rt_sigframe_n32 {
+ 	u32 rs_ass[4];			/* argument save space for o32 */
+-	u32 rs_pad[2];
++	u32 rs_pad[2];			/* Was: signal trampoline */
+ 	struct compat_siginfo rs_info;
+ 	struct ucontextn32 rs_uc;
+-	u32 rs_code[8] ____cacheline_aligned;		/* signal trampoline */
+ };
+ 
+-#endif	/* !ICACHE_REFILLS_WORKAROUND_WAR */
+-
+ extern void sigset_from_compat(sigset_t *set, compat_sigset_t *compat);
+ 
+ asmlinkage int sysn32_rt_sigsuspend(nabi_no_regargs struct pt_regs regs)
+@@ -173,7 +159,7 @@ badframe:
+ 	force_sig(SIGSEGV, current);
+ }
+ 
+-static int setup_rt_frame_n32(struct k_sigaction * ka,
++static int setup_rt_frame_n32(void *sig_return, struct k_sigaction *ka,
+ 	struct pt_regs *regs, int signr, sigset_t *set, siginfo_t *info)
+ {
+ 	struct rt_sigframe_n32 __user *frame;
+@@ -184,8 +170,6 @@ static int setup_rt_frame_n32(struct k_sigaction * ka,
+ 	if (!access_ok(VERIFY_WRITE, frame, sizeof (*frame)))
+ 		goto give_sigsegv;
+ 
+-	install_sigtramp(frame->rs_code, __NR_N32_rt_sigreturn);
+-
+ 	/* Create siginfo.  */
+ 	err |= copy_siginfo_to_user32(&frame->rs_info, info);
+ 
+@@ -219,7 +203,7 @@ static int setup_rt_frame_n32(struct k_sigaction * ka,
+ 	regs->regs[ 5] = (unsigned long) &frame->rs_info;
+ 	regs->regs[ 6] = (unsigned long) &frame->rs_uc;
+ 	regs->regs[29] = (unsigned long) frame;
+-	regs->regs[31] = (unsigned long) frame->rs_code;
++	regs->regs[31] = (unsigned long) sig_return;
+ 	regs->cp0_epc = regs->regs[25] = (unsigned long) ka->sa.sa_handler;
+ 
+ 	DEBUGP("SIG deliver (%s:%d): sp=0x%p pc=0x%lx ra=0x%lx\n",
+@@ -235,5 +219,7 @@ give_sigsegv:
+ 
+ struct mips_abi mips_abi_n32 = {
+ 	.setup_rt_frame	= setup_rt_frame_n32,
++	.rt_signal_return_offset =
++		offsetof(struct mips_vdso, n32_rt_signal_trampoline),
+ 	.restart	= __NR_N32_restart_syscall
+ };
 -- 
 1.6.0.6

@@ -1,67 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Apr 2009 10:35:48 +0100 (BST)
-Received: from gateway06.websitewelcome.com ([67.18.15.14]:9134 "HELO
-	gateway06.websitewelcome.com") by ftp.linux-mips.org with SMTP
-	id S20025167AbZDVJfk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 22 Apr 2009 10:35:40 +0100
-Received: (qmail 17427 invoked from network); 22 Apr 2009 09:38:22 -0000
-Received: from gator750.hostgator.com (174.132.194.2)
-  by gateway06.websitewelcome.com with SMTP; 22 Apr 2009 09:38:22 -0000
-Received: from [217.109.65.213] (port=3481 helo=[127.0.0.1])
-	by gator750.hostgator.com with esmtpa (Exim 4.69)
-	(envelope-from <kevink@paralogos.com>)
-	id 1LwYoW-0003Cr-1p; Wed, 22 Apr 2009 04:32:20 -0500
-Message-ID: <49EEE4EA.8040100@paralogos.com>
-Date:	Wed, 22 Apr 2009 11:35:38 +0200
-From:	"Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Thunderbird 2.0.0.21 (Windows/20090302)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Apr 2009 11:47:32 +0100 (BST)
+Received: from mx1.moondrake.net ([212.85.150.166]:56240 "EHLO
+	mx1.mandriva.com") by ftp.linux-mips.org with ESMTP
+	id S20021600AbZDVKrZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 22 Apr 2009 11:47:25 +0100
+Received: by mx1.mandriva.com (Postfix, from userid 501)
+	id 21D1F274010; Wed, 22 Apr 2009 12:47:24 +0200 (CEST)
+Received: from office-abk.mandriva.com (office-abk.mandriva.com [84.55.162.90])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mx1.mandriva.com (Postfix) with ESMTP id 24D8E27400C;
+	Wed, 22 Apr 2009 12:47:23 +0200 (CEST)
+Received: from anduin.mandriva.com (fw2.mandriva.com [192.168.2.3])
+	by office-abk.mandriva.com (Postfix) with ESMTP id 3F5D6828BE;
+	Wed, 22 Apr 2009 12:50:53 +0200 (CEST)
+Received: from anduin.mandriva.com (localhost [127.0.0.1])
+	by anduin.mandriva.com (Postfix) with ESMTP id F08AEFF855;
+	Wed, 22 Apr 2009 12:50:36 +0200 (CEST)
+From:	Arnaud Patard <apatard@mandriva.com>
+To:	fredtan <tanflying@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: how to clear the D_cache and I_cache in the MIPS linux ?
+References: <23172497.post@talk.nabble.com>
+Organization: Mandriva
+Date:	Wed, 22 Apr 2009 12:50:36 +0200
+In-Reply-To: <23172497.post@talk.nabble.com> (fredtan's message of "Wed, 22 Apr 2009 02:08:13 -0700 (PDT)")
+Message-ID: <m31vrlgdxf.fsf@anduin.mandriva.com>
+User-Agent: Gnus/5.1008 (Gnus v5.10.8) Emacs/22.1 (gnu/linux)
 MIME-Version: 1.0
-To:	David Daney <ddaney@caviumnetworks.com>
-CC:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 1/2] MIPS: Preliminary vdso.
-References: <49EE3B0F.3040506@caviumnetworks.com> <1240349605-1921-1-git-send-email-ddaney@caviumnetworks.com>
-In-Reply-To: <1240349605-1921-1-git-send-email-ddaney@caviumnetworks.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator750.hostgator.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - paralogos.com
-Return-Path: <kevink@paralogos.com>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <arnaud.patard@mandriva.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22416
+X-archive-position: 22417
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
+X-original-sender: apatard@mandriva.com
 Precedence: bulk
 X-list: linux-mips
 
-David Daney wrote:
-> This is a preliminary patch to add a vdso to all user processes.
-> Still missing are ELF headers and .eh_frame information.  But it is
-> enough to allow us to move signal trampolines off of the stack.
->
-> We allocate a single page (the vdso) and write all possible signal
-> trampolines into it.  The stack is moved down by one page and the vdso
-> is mapped into this space.
->
-> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-Note that for FPU-less CPUs, the kernel FP emulator also uses a user
-stack trampoline to execute instructions in the delay slots of emulated
-FP branches.  I didn't see any of the math-emu modules being tweaked in
-either part of your patch.  Presumably, one would want to move that
-operation into the vdso as well.  With the proposed patch, I'm not sure
-whether things would continue working normally as before, still using
-the user stack, or whether the dsemulret code depends on something that
-is changed by the patch, and will now implode.  Probably the former, but
-paranoia is not a character defect in OS kernel work. I don't have a
-test case handy (nor a test system any more), but compiling something
-like whetstone or linpack in C with a high degree of optimization will
-*probably* generate FP branches with live delay slots.
+fredtan <tanflying@gmail.com> writes:
 
-          Regards,
+> D_CACHE,then invalidate I_CACHE,then run the code. My MIPS does not have
+> SYNCI instruction,Cache 
+>
+> instruction is a privilege instruction, the program has no right to use it.
+> So , What can I do ?
 
-          Kevin K.
+use cacheflush()
+
+Arnaud

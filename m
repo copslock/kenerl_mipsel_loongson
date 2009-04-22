@@ -1,82 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Apr 2009 02:47:08 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:48173 "EHLO
-	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S29576064AbZDVSO6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 22 Apr 2009 19:14:58 +0100
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B49ef5e800000>; Wed, 22 Apr 2009 14:14:24 -0400
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 22 Apr 2009 11:13:44 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 22 Apr 2009 11:13:44 -0700
-Message-ID: <49EF5E58.2040901@caviumnetworks.com>
-Date:	Wed, 22 Apr 2009 11:13:44 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Apr 2009 02:50:59 +0100 (BST)
+Received: from sj-iport-6.cisco.com ([171.71.176.117]:65029 "EHLO
+	sj-iport-6.cisco.com") by ftp.linux-mips.org with ESMTP
+	id S29567973AbZDVR5v (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 22 Apr 2009 18:57:51 +0100
+X-IronPort-AV: E=Sophos;i="4.40,231,1238976000"; 
+   d="scan'208";a="290935396"
+Received: from sj-dkim-3.cisco.com ([171.71.179.195])
+  by sj-iport-6.cisco.com with ESMTP; 22 Apr 2009 17:57:33 +0000
+Received: from sj-core-1.cisco.com (sj-core-1.cisco.com [171.71.177.237])
+	by sj-dkim-3.cisco.com (8.12.11/8.12.11) with ESMTP id n3MHvWUh031950;
+	Wed, 22 Apr 2009 10:57:32 -0700
+Received: from cliff.cisco.com (cliff.cisco.com [171.69.11.141])
+	by sj-core-1.cisco.com (8.13.8/8.13.8) with ESMTP id n3MHvW9l022583;
+	Wed, 22 Apr 2009 17:57:32 GMT
+Received: from cuplxvomd02.corp.sa.net ([64.101.20.155]) by cliff.cisco.com (8.6.12/8.6.5) with ESMTP id RAA25322; Wed, 22 Apr 2009 17:57:32 GMT
+Date:	Wed, 22 Apr 2009 10:57:32 -0700
+From:	David VomLehn <dvomlehn@cisco.com>
+To:	David Daney <ddaney@caviumnetworks.com>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH 2/2] MIPS: Move signal trampolines off of the stack.
+Message-ID: <20090422175732.GB28623@cuplxvomd02.corp.sa.net>
+References: <49EE3B0F.3040506@caviumnetworks.com> <1240349605-1921-2-git-send-email-ddaney@caviumnetworks.com>
 MIME-Version: 1.0
-To:	David VomLehn <dvomlehn@cisco.com>
-CC:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 0/2] MIPS: Move signal return trampolines off the stack.
-References: <49EE3B0F.3040506@caviumnetworks.com> <20090422180447.GC28623@cuplxvomd02.corp.sa.net>
-In-Reply-To: <20090422180447.GC28623@cuplxvomd02.corp.sa.net>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 22 Apr 2009 18:13:44.0460 (UTC) FILETIME=[12BB6CC0:01C9C376]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1240349605-1921-2-git-send-email-ddaney@caviumnetworks.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=530; t=1240423052; x=1241287052;
+	c=relaxed/simple; s=sjdkim3002;
+	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
+	d=cisco.com; i=dvomlehn@cisco.com;
+	z=From:=20David=20VomLehn=20<dvomlehn@cisco.com>
+	|Subject:=20Re=3A=20[PATCH=202/2]=20MIPS=3A=20Move=20signal
+	=20trampolines=20off=20of=20the=20stack.
+	|Sender:=20;
+	bh=Z6lFNZuBwLa4bXdMlVEUxri/yoqUYJ42Htj4f3iYvnM=;
+	b=qasB7TuDly6lWvxpAz2Z9AqYAf/8MZUGk1VB7zhEvrmpmQLSJq27MGStmy
+	KBlaQ0+e6hbaIzF5qBD1NO3Ff8zQUp6rRvfsL/9L2lSWDlr02HX7BijVP98H
+	18eOUjQU7S;
+Authentication-Results:	sj-dkim-3; header.From=dvomlehn@cisco.com; dkim=pass (
+	sig from cisco.com/sjdkim3002 verified; ); 
+Return-Path: <dvomlehn@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22425
+X-archive-position: 22426
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: dvomlehn@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
-David VomLehn wrote:
-> On Tue, Apr 21, 2009 at 02:30:55PM -0700, David Daney wrote:
->> This patch set (against 2.6.29.1) creates a vdso and moves the signal
->> trampolines to it from their previous home on the stack.
->>
->> Tested with a 64-bit kernel on a Cavium Octeon cn3860 where I have the
->> following results from lmbench2:
->>
->> Before:
->> n64 - Signal handler overhead: 14.517 microseconds
->> n32 - Signal handler overhead: 14.497 microseconds
->> o32 - Signal handler overhead: 16.637 microseconds
->>
->> After:
->>
->> n64 - Signal handler overhead: 7.935 microseconds
->> n32 - Signal handler overhead: 7.334 microseconds
->> o32 - Signal handler overhead: 8.628 microseconds
+On Tue, Apr 21, 2009 at 02:33:25PM -0700, David Daney wrote:
+> This is a follow on to the vdso patch.
 > 
-> Nice numbers, and something that will be even more critical as real-time
-> features are added and used!
-> 
+> Since all processes now have signal trampolines permanently mapped, we
+> can use those instead of putting the trampoline on the stack and
+> invalidating the corresponding icache across all CPUs.  We also get
+> rid of a bunch of ICACHE_REFILLS_WORKAROUND_WAR code.
 
-non-SMP systems will probably not see so much improvement.
+This sure gets rid of some ugly code!
 
-Although the numbers are nice, they are not the primary motivation 
-behind the patch.  The real gains are in not having to interrupt all 
-cores to invalidate their caches, and the possibility of eXecute Inhibit 
-on the stack.
+> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
 
->> Comments encourged.
-> 
-> Only one comment, which I would not want to hold up acceptance:
-> based on some numbers sent out recently, it looks like the kernel is
-> experiencing some performance issues with exec() and I think this change will
-> make it slightly slower. You could avoid this by deferring installation of
-> the trampoline to the first use of a system call that registers a signal
-> handler.
-> 
-
-I should try to measure this too.  Although this is what x86 et al. do. 
-  It is by far much simpler and less prone to bugs that trying to hook 
-into the system calls.  After an executable has had the chance to start 
-additional threads and establish arbitrary mappings things get complicated.
-
-David Daney
+Reviewed by: David VomLehn <dvomlehn@cisco.com>

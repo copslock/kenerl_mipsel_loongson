@@ -1,151 +1,321 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Apr 2009 06:24:26 +0100 (BST)
-Received: from mail-qy0-f103.google.com ([209.85.221.103]:46571 "EHLO
-	mail-qy0-f103.google.com") by ftp.linux-mips.org with ESMTP
-	id S20026329AbZDVFYR (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 22 Apr 2009 06:24:17 +0100
-Received: by qyk1 with SMTP id 1so5741069qyk.22
-        for <multiple recipients>; Tue, 21 Apr 2009 22:24:08 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type;
-        bh=sr5DyaUB8M9Lgf7rihRoqyNb7m/vciMMYFfHq6v60KI=;
-        b=vuvaGYzVoddA2nucSvzVdeNOHJT4305N2QUk0He6Q04AeKwucYGzjmMbNVrPsmOK15
-         YQSRLSNQ5fTj4Ja96kk8CprtzIRYmuOc6/aYrw1xBz7OWeQDhKSrQ9esIP3z7SL368T/
-         V0GJ6AJ+LVqRvteWpSts5ty/g6tQJJtxb+FsU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=P+FIg4S8TA9NdEW0VDwHbNP3AWplKakwaf0i4VFADHUMUcpePtTh4w6rqvz2+/4/Dn
-         Tc6AwUP/8Aj89Riz3LD9P5WF9eoHaV3Y3SNhWxJg3w2pP0KdLYzE8LC61DCthgTczqTt
-         vrbTnoGy6cvD8Vjq6qqncrZzw+Y2VifLLT9Lw=
-MIME-Version: 1.0
-Received: by 10.220.95.202 with SMTP id e10mr10169448vcn.12.1240377847803; 
-	Tue, 21 Apr 2009 22:24:07 -0700 (PDT)
-In-Reply-To: <1240349605-1921-1-git-send-email-ddaney@caviumnetworks.com>
-References: <49EE3B0F.3040506@caviumnetworks.com>
-	 <1240349605-1921-1-git-send-email-ddaney@caviumnetworks.com>
-Date:	Tue, 21 Apr 2009 23:24:07 -0600
-Message-ID: <b2b2f2320904212224l1223737en95bffec015f1907e@mail.gmail.com>
-Subject: Re: [PATCH 1/2] MIPS: Preliminary vdso.
-From:	Shane McDonald <mcdonald.shane@gmail.com>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Content-Type: multipart/alternative; boundary=0016e64eacb401739c04681df9cc
-Return-Path: <mcdonald.shane@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Apr 2009 06:58:26 +0100 (BST)
+Received: from stout.engsoc.carleton.ca ([134.117.69.22]:20867 "EHLO
+	stout.engsoc.carleton.ca") by ftp.linux-mips.org with ESMTP
+	id S20024657AbZDVF6T (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 22 Apr 2009 06:58:19 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by stout.engsoc.carleton.ca (Postfix) with ESMTP id 3F6615840B0;
+	Wed, 22 Apr 2009 01:58:11 -0400 (EDT)
+Received: from stout.engsoc.carleton.ca ([127.0.0.1])
+	by localhost (stout.engsoc.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id H3PHS7UQYac5; Wed, 22 Apr 2009 01:58:11 -0400 (EDT)
+Received: from mobius.cowpig.ca (cowpig.ca [134.117.69.79])
+	by stout.engsoc.carleton.ca (Postfix) with ESMTP id 0B03A5840AF;
+	Wed, 22 Apr 2009 01:58:11 -0400 (EDT)
+Received: by mobius.cowpig.ca (Postfix, from userid 1000)
+	id B46F916018B; Wed, 22 Apr 2009 01:58:09 -0400 (EDT)
+Date:	Wed, 22 Apr 2009 01:58:09 -0400
+From:	Philippe Vachon <philippe@cowpig.ca>
+To:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: [PATCH] Clean up Lemote Loongson 2E Support
+Message-ID: <20090422055809.GA1821@cowpig.ca>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.9i
+Return-Path: <philippe@cowpig.ca>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22407
+X-archive-position: 22408
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mcdonald.shane@gmail.com
+X-original-sender: philippe@cowpig.ca
 Precedence: bulk
 X-list: linux-mips
 
---0016e64eacb401739c04681df9cc
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+This patch eliminates magic numbers and accessors for memory-mapped
+registers. As well, it removes some inline assembly and restructures how
+the early printk code behaves.
 
-Hello David:
+Signed-off-by: Philippe Vachon <philippe@cowpig.ca>
+---
+ arch/mips/include/asm/mach-lemote/loongson2e.h |   58 +++++++++++
+ arch/mips/lemote/lm2e/dbg_io.c                 |  125 ++---------------------
+ arch/mips/lemote/lm2e/prom.c                   |   10 +--
+ arch/mips/lemote/lm2e/reset.c                  |   18 ++--
+ 4 files changed, 80 insertions(+), 131 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-lemote/loongson2e.h
 
-On Tue, Apr 21, 2009 at 3:33 PM, David Daney <ddaney@caviumnetworks.com>wrote:
-
-> This is a preliminary patch to add a vdso to all user processes.
-> Still missing are ELF headers and .eh_frame information.  But it is
-> enough to allow us to move signal trampolines off of the stack.
->
-> We allocate a single page (the vdso) and write all possible signal
-> trampolines into it.  The stack is moved down by one page and the vdso
-> is mapped into this space.
-
-
-This patch fails to compile for me with an RM7035C-based system (out of
-tree, sadly).  The error I see is:
-
-  CC      arch/mips/kernel/syscall.o
-arch/mips/kernel/syscall.c: In function 'arch_get_unmapped_area':
-arch/mips/kernel/syscall.c:80: error: 'TASK_SIZE32' undeclared (first use in
-this function)
-arch/mips/kernel/syscall.c:80: error: (Each undeclared identifier is
-reported only once
-arch/mips/kernel/syscall.c:80: error: for each function it appears in.)
-make[1]: *** [arch/mips/kernel/syscall.o] Error 1
-
-I believe it is related to the following portion of the patch:
-
-diff --git a/arch/mips/kernel/syscall.c b/arch/mips/kernel/syscall.c
-> index 955c5f0..491e5be 100644
-> --- a/arch/mips/kernel/syscall.c
-> +++ b/arch/mips/kernel/syscall.c
-> @@ -77,7 +77,7 @@ unsigned long arch_get_unmapped_area(struct file *filp,
-> unsigned long addr,
->        int do_color_align;
->        unsigned long task_size;
->
-> -       task_size = STACK_TOP;
-> +       task_size = test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 :
-> TASK_SIZE;
->
->        if (len > task_size)
->                return -ENOMEM;
->
-
-On my system, CONFIG_32BIT is defined and CONFIG_64BIT is not -- looking at
-arch/mips/include/asm/processor.h, it appears that TASK_SIZE32 is only
-defined when CONFIG_64BIT is defined.
-
-Shane McDonald
-
---0016e64eacb401739c04681df9cc
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-Hello David:<br><br><div class=3D"gmail_quote">On Tue, Apr 21, 2009 at 3:33=
- PM, David Daney <span dir=3D"ltr">&lt;<a href=3D"mailto:ddaney@caviumnetwo=
-rks.com">ddaney@caviumnetworks.com</a>&gt;</span> wrote:<br><blockquote cla=
-ss=3D"gmail_quote" style=3D"border-left: 1px solid rgb(204, 204, 204); marg=
-in: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;">
-This is a preliminary patch to add a vdso to all user processes.<br>
-Still missing are ELF headers and .eh_frame information. =A0But it is<br>
-enough to allow us to move signal trampolines off of the stack.<br>
-<br>
-We allocate a single page (the vdso) and write all possible signal<br>
-trampolines into it. =A0The stack is moved down by one page and the vdso<br=
->
-is mapped into this space.</blockquote><div><br>This patch fails to compile=
- for me with an RM7035C-based system (out of tree, sadly).=A0 The error I s=
-ee is:<br><br>=A0 CC=A0=A0=A0=A0=A0 arch/mips/kernel/syscall.o<br>arch/mips=
-/kernel/syscall.c: In function &#39;arch_get_unmapped_area&#39;:<br>
-arch/mips/kernel/syscall.c:80: error: &#39;TASK_SIZE32&#39; undeclared (fir=
-st use in this function)<br>arch/mips/kernel/syscall.c:80: error: (Each und=
-eclared identifier is reported only once<br>arch/mips/kernel/syscall.c:80: =
-error: for each function it appears in.)<br>
-make[1]: *** [arch/mips/kernel/syscall.o] Error 1<br><br>I believe it is re=
-lated to the following portion of the patch:<br><br></div><blockquote class=
-=3D"gmail_quote" style=3D"border-left: 1px solid rgb(204, 204, 204); margin=
-: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;">
-
-diff --git a/arch/mips/kernel/syscall.c b/arch/mips/kernel/syscall.c<br>
-index 955c5f0..491e5be 100644<br>
---- a/arch/mips/kernel/syscall.c<br>
-+++ b/arch/mips/kernel/syscall.c<br>
-@@ -77,7 +77,7 @@ unsigned long arch_get_unmapped_area(struct file *filp, u=
-nsigned long addr,<br>
- =A0 =A0 =A0 =A0int do_color_align;<br>
- =A0 =A0 =A0 =A0unsigned long task_size;<br>
-<br>
-- =A0 =A0 =A0 task_size =3D STACK_TOP;<br>
-+ =A0 =A0 =A0 task_size =3D test_thread_flag(TIF_32BIT_ADDR) ? TASK_SIZE32 =
-: TASK_SIZE;<br>
-<br>
- =A0 =A0 =A0 =A0if (len &gt; task_size)<br>
- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0return -ENOMEM;<br>
-</blockquote></div><br>On my system, CONFIG_32BIT is defined and CONFIG_64B=
-IT is not -- looking at arch/mips/include/asm/processor.h, it appears that =
-TASK_SIZE32 is only defined when CONFIG_64BIT is defined.<br><br>Shane McDo=
-nald<br>
-
---0016e64eacb401739c04681df9cc--
+diff --git a/arch/mips/include/asm/mach-lemote/loongson2e.h b/arch/mips/include/asm/mach-lemote/loongson2e.h
+new file mode 100644
+index 0000000..558eaca
+--- /dev/null
++++ b/arch/mips/include/asm/mach-lemote/loongson2e.h
+@@ -0,0 +1,58 @@
++/* Accessor functions for the Loongson 2E MMIO registers
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ *
++ */
++#ifndef __ASM_MACH_LEMOTE_LOONGSON2E
++#define __ASM_MACH_LEMOTE_LOONGSON2E
++
++#include <linux/types.h>
++
++/* Loongson 2E Control Registers */
++#define LS2E_REG_BASE		0x1fe00100 /* start of config registers */
++#define LS2E_GENCFG_REG		(LS2E_REG_BASE + 0x04)
++
++#define LS2E_RESET_VECTOR	0x1fc00000 /* this should be obvious! */
++
++/* UART address (16550 -- on the Fulong) */
++#define LS2E_UART_BASE		0x1fd003f8
++
++/* Various system parameters passed from PMON */
++extern unsigned long bus_clock;
++extern unsigned long cpu_clock_freq;
++extern unsigned int memsize, highmemsize;
++
++static inline void ls2e_writeb(uint8_t value, phys_addr_t addr)
++{
++	*(volatile uint8_t *)addr = value;
++}
++
++static inline void ls2e_writew(uint16_t value, phys_addr_t addr)
++{
++	*(volatile uint16_t *)addr = value;
++}
++
++static inline void ls2e_writel(uint32_t value, phys_addr_t addr)
++{
++	*(volatile uint32_t *)addr = value;
++}
++
++static inline uint8_t ls2e_readb(phys_addr_t addr)
++{
++	return *(volatile uint8_t *)addr;
++}
++
++static inline uint16_t ls2e_readw(phys_addr_t addr)
++{
++	return *(volatile uint16_t *)addr;
++}
++
++static inline uint32_t ls2e_readl(phys_addr_t addr)
++{
++	return *(volatile uint32_t *)addr;
++}
++
++#endif /* __ASM_MACH_LEMOTE_LOONGSON2E */
+diff --git a/arch/mips/lemote/lm2e/dbg_io.c b/arch/mips/lemote/lm2e/dbg_io.c
+index 6c95da3..988491f 100644
+--- a/arch/mips/lemote/lm2e/dbg_io.c
++++ b/arch/mips/lemote/lm2e/dbg_io.c
+@@ -1,10 +1,6 @@
+-/*
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
+- * Copyright (C) 2000, 2001 Ralf Baechle (ralf@gnu.org)
++/*  Support for the 16550 on the Lemote Fulong.
+  *
+- * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
+- * Author: Fuxin Zhang, zhangfx@lemote.com
++ *  Copyright (c) 2009 Philippe Vachon <philippe@cowpig.ca>
+  *
+  *  This program is free software; you can redistribute  it and/or modify it
+  *  under  the terms of  the GNU General  Public License as published by the
+@@ -29,118 +25,19 @@
+  */
+ 
+ #include <linux/io.h>
+-#include <linux/init.h>
+ #include <linux/types.h>
++#include <linux/serial_reg.h>
+ 
+-#include <asm/serial.h>
++#include <loongson2e.h>
+ 
+-#define         UART16550_BAUD_2400             2400
+-#define         UART16550_BAUD_4800             4800
+-#define         UART16550_BAUD_9600             9600
+-#define         UART16550_BAUD_19200            19200
+-#define         UART16550_BAUD_38400            38400
+-#define         UART16550_BAUD_57600            57600
+-#define         UART16550_BAUD_115200           115200
+-
+-#define         UART16550_PARITY_NONE           0
+-#define         UART16550_PARITY_ODD            0x08
+-#define         UART16550_PARITY_EVEN           0x18
+-#define         UART16550_PARITY_MARK           0x28
+-#define         UART16550_PARITY_SPACE          0x38
+-
+-#define         UART16550_DATA_5BIT             0x0
+-#define         UART16550_DATA_6BIT             0x1
+-#define         UART16550_DATA_7BIT             0x2
+-#define         UART16550_DATA_8BIT             0x3
+-
+-#define         UART16550_STOP_1BIT             0x0
+-#define         UART16550_STOP_2BIT             0x4
+-
+-/* ----------------------------------------------------- */
+-
+-/* === CONFIG === */
+-#ifdef CONFIG_64BIT
+-#define         BASE                    (0xffffffffbfd003f8)
+-#else
+-#define         BASE                    (0xbfd003f8)
+-#endif
+-
+-#define         MAX_BAUD                BASE_BAUD
+-/* === END OF CONFIG === */
+-
+-#define         REG_OFFSET              1
+-
+-/* register offset */
+-#define         OFS_RCV_BUFFER          0
+-#define         OFS_TRANS_HOLD          0
+-#define         OFS_SEND_BUFFER         0
+-#define         OFS_INTR_ENABLE         (1*REG_OFFSET)
+-#define         OFS_INTR_ID             (2*REG_OFFSET)
+-#define         OFS_DATA_FORMAT         (3*REG_OFFSET)
+-#define         OFS_LINE_CONTROL        (3*REG_OFFSET)
+-#define         OFS_MODEM_CONTROL       (4*REG_OFFSET)
+-#define         OFS_RS232_OUTPUT        (4*REG_OFFSET)
+-#define         OFS_LINE_STATUS         (5*REG_OFFSET)
+-#define         OFS_MODEM_STATUS        (6*REG_OFFSET)
+-#define         OFS_RS232_INPUT         (6*REG_OFFSET)
+-#define         OFS_SCRATCH_PAD         (7*REG_OFFSET)
+-
+-#define         OFS_DIVISOR_LSB         (0*REG_OFFSET)
+-#define         OFS_DIVISOR_MSB         (1*REG_OFFSET)
+-
+-/* memory-mapped read/write of the port */
+-#define         UART16550_READ(y)	readb((char *)BASE + (y))
+-#define         UART16550_WRITE(y, z)	writeb(z, (char *)BASE + (y))
+-
+-void debugInit(u32 baud, u8 data, u8 parity, u8 stop)
++void prom_putchar(char c)
+ {
+-	u32 divisor;
+-
+-	/* disable interrupts */
+-	UART16550_WRITE(OFS_INTR_ENABLE, 0);
++	int timeout;
++	phys_addr_t uart_base = (phys_addr_t)ioremap_nocache(LS2E_UART_BASE, 8);
++	char reg = ls2e_readb(uart_base + UART_LSR) & UART_LSR_THRE;
+ 
+-	/* set up buad rate */
+-	/* set DIAB bit */
+-	UART16550_WRITE(OFS_LINE_CONTROL, 0x80);
+-
+-	/* set divisor */
+-	divisor = MAX_BAUD / baud;
+-	UART16550_WRITE(OFS_DIVISOR_LSB, divisor & 0xff);
+-	UART16550_WRITE(OFS_DIVISOR_MSB, (divisor & 0xff00) >> 8);
+-
+-	/* clear DIAB bit */
+-	UART16550_WRITE(OFS_LINE_CONTROL, 0x0);
+-
+-	/* set data format */
+-	UART16550_WRITE(OFS_DATA_FORMAT, data | parity | stop);
+-}
+-
+-static int remoteDebugInitialized;
+-
+-u8 getDebugChar(void)
+-{
+-	if (!remoteDebugInitialized) {
+-		remoteDebugInitialized = 1;
+-		debugInit(UART16550_BAUD_115200,
+-			  UART16550_DATA_8BIT,
+-			  UART16550_PARITY_NONE, UART16550_STOP_1BIT);
+-	}
+-
+-	while ((UART16550_READ(OFS_LINE_STATUS) & 0x1) == 0) ;
+-	return UART16550_READ(OFS_RCV_BUFFER);
+-}
+-
+-int putDebugChar(u8 byte)
+-{
+-	if (!remoteDebugInitialized) {
+-		remoteDebugInitialized = 1;
+-		/*
+-		   debugInit(UART16550_BAUD_115200,
+-		   UART16550_DATA_8BIT,
+-		   UART16550_PARITY_NONE, UART16550_STOP_1BIT); */
+-	}
++	for (timeout = 1024; reg == 0 && timeout > 0; timeout--)
++		reg = ls2e_readb(uart_base + UART_LSR) & UART_LSR_THRE;
+ 
+-	while ((UART16550_READ(OFS_LINE_STATUS) & 0x20) == 0) ;
+-	UART16550_WRITE(OFS_SEND_BUFFER, byte);
+-	return 1;
++	ls2e_writeb(c, uart_base + UART_TX);
+ }
+diff --git a/arch/mips/lemote/lm2e/prom.c b/arch/mips/lemote/lm2e/prom.c
+index 7edc15d..83777bd 100644
+--- a/arch/mips/lemote/lm2e/prom.c
++++ b/arch/mips/lemote/lm2e/prom.c
+@@ -18,10 +18,7 @@
+ #include <linux/bootmem.h>
+ #include <asm/bootinfo.h>
+ 
+-extern unsigned long bus_clock;
+-extern unsigned long cpu_clock_freq;
+-extern unsigned int memsize, highmemsize;
+-extern int putDebugChar(unsigned char byte);
++#include <loongson2e.h>
+ 
+ static int argc;
+ /* pmon passes arguments in 32bit pointers */
+@@ -90,8 +87,3 @@ do {									\
+ void __init prom_free_prom_memory(void)
+ {
+ }
+-
+-void prom_putchar(char c)
+-{
+-	putDebugChar(c);
+-}
+diff --git a/arch/mips/lemote/lm2e/reset.c b/arch/mips/lemote/lm2e/reset.c
+index 099387a..0989d28 100644
+--- a/arch/mips/lemote/lm2e/reset.c
++++ b/arch/mips/lemote/lm2e/reset.c
+@@ -7,20 +7,22 @@
+  * Copyright (C) 2007 Lemote, Inc. & Institute of Computing Technology
+  * Author: Fuxin Zhang, zhangfx@lemote.com
+  */
++
+ #include <linux/pm.h>
++#include <linux/io.h>
++#include <loongson2e.h>
+ 
+ #include <asm/reboot.h>
+ 
+ static void loongson2e_restart(char *command)
+ {
+-#ifdef CONFIG_32BIT
+-	*(unsigned long *)0xbfe00104 &= ~(1 << 2);
+-	*(unsigned long *)0xbfe00104 |= (1 << 2);
+-#else
+-	*(unsigned long *)0xffffffffbfe00104 &= ~(1 << 2);
+-	*(unsigned long *)0xffffffffbfe00104 |= (1 << 2);
+-#endif
+-	__asm__ __volatile__("jr\t%0"::"r"(0xbfc00000));
++	uint32_t ctl =
++		(ls2e_readl((phys_addr_t)ioremap_nocache(LS2E_GENCFG_REG, 4))
++		& ~(1 << 2)) | 1 << 2;
++
++	ls2e_writel(ctl, (phys_addr_t)ioremap_nocache(LS2E_GENCFG_REG, 4));
++
++	((void (*)(void))ioremap_nocache(LS2E_RESET_VECTOR, 4))();
+ }
+ 
+ static void loongson2e_halt(void)
+-- 
+1.6.1

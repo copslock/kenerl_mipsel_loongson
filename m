@@ -1,105 +1,333 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 22 Apr 2009 17:01:55 +0100 (BST)
-Received: from hall.aurel32.net ([88.191.82.174]:974 "EHLO hall.aurel32.net")
-	by ftp.linux-mips.org with ESMTP id S28588235AbZDVNQq (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 22 Apr 2009 14:16:46 +0100
-Received: from aurel32 by hall.aurel32.net with local (Exim 4.69)
-	(envelope-from <aurelien@aurel32.net>)
-	id 1LwcJb-0006CK-Mj
-	for linux-mips@linux-mips.org; Wed, 22 Apr 2009 15:16:39 +0200
-Date:	Wed, 22 Apr 2009 15:16:39 +0200
-From:	Aurelien Jarno <aurelien@aurel32.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Apr 2009 01:14:27 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:22257 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S29051799AbZDVPk0 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 22 Apr 2009 16:40:26 +0100
+Received: from localhost.localdomain (p2187-ipad213funabasi.chiba.ocn.ne.jp [124.85.67.187])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 771179A42; Thu, 23 Apr 2009 00:40:19 +0900 (JST)
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 To:	linux-mips@linux-mips.org
-Subject: kernel for a Broadcom Swarm board
-Message-ID: <20090422131639.GQ10866@hall.aurel32.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-X-Mailer: Mutt 1.5.18 (2008-05-17)
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <aurelien@aurel32.net>
+Cc:	ralf@linux-mips.org, dan.j.williams@intel.com,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] TXx9: Add DMAC support (v3)
+Date:	Thu, 23 Apr 2009 00:40:31 +0900
+Message-Id: <1240414831-20429-2-git-send-email-anemo@mba.ocn.ne.jp>
+X-Mailer: git-send-email 1.5.6.3
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22419
+X-archive-position: 22420
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
+Add platform support for DMAC of TXx9 SoCs.
 
-We (Debian) have problems with Broadcom BCM91250A boards aka (Swarm) 
-which do not boot with recent kernels. We tried 2.6.29 from linus tree 
-and lmo, including with the swarm defconfig.
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+Changes since v2:
+* add per channel IRQ resource
 
-As those boards are installed remotely it is not really easy to do
-debugging. That's why I am calling from help here.
+ arch/mips/include/asm/txx9/dmac.h     |    3 ++
+ arch/mips/include/asm/txx9/tx4927.h   |    2 +
+ arch/mips/include/asm/txx9/tx4938.h   |    1 +
+ arch/mips/include/asm/txx9/tx4939.h   |    1 +
+ arch/mips/txx9/generic/setup.c        |   55 +++++++++++++++++++++++++++++++++
+ arch/mips/txx9/generic/setup_tx4927.c |   12 +++++++
+ arch/mips/txx9/generic/setup_tx4938.c |   21 +++++++++---
+ arch/mips/txx9/generic/setup_tx4939.c |   21 +++++++++---
+ arch/mips/txx9/rbtx4927/setup.c       |    4 ++
+ arch/mips/txx9/rbtx4938/setup.c       |    1 +
+ arch/mips/txx9/rbtx4939/setup.c       |    1 +
+ 11 files changed, 112 insertions(+), 10 deletions(-)
 
-Here is the boot log:
-
-| CFE> boot -tftp 192.168.1.138:sibyl
-| Loader:raw Filesys:tftp Dev:eth0 File:192.168.1.138:sibyl Options:(null)
-| Loading: ....... 130116 bytes read
-| Entry at 0x0000000020000000
-| Closing network.
-| Starting program at 0x0000000020000000
-| SiByte Loader, version 2.4.2
-| Built on Oct  4 2005
-| Network device 'eth0' configured
-| Getting configuration file tftp:192.168.1.138:sibyl.conf...
-| Config file retrieved.
-| Available configurations:
-|   deb-tftp
-| Boot which configuration [deb-tftp]:
-| Loading kernel (ELF64):
-|     4950976@0x80100000
-| done
-| Set up command line arguments to: root=/dev/hdc1 console=duart0
-| Setting up initial prom_init arguments
-| Cleaning up state...
-| Transferring control to the kernel.
-| Kernel entry point is at 0x80105970
-| [    0.000000] Initializing cgroup subsys cpuset
-| [    0.000000] Initializing cgroup subsys cpu
-| [    0.000000] Linux version 2.6.29-1-sb1-bcm91250a (Debian 2.6.29-2) (waldi@debian.org) (gcc version 4.3.3 (Debian 4.3.3-5) ) #1 SMP Sun Apr 5 11:11:13 UTC 2009
-| [    0.000000] console [early0] enabled
-| [    0.000000] CPU revision is: 01040102 (SiByte SB1)
-| [    0.000000] FPU revision is: 000f0102
-| [    0.000000] Checking for the multiply/shift bug... no.
-| [    0.000000] Checking for the daddiu bug... no.
-| [    0.000000] Broadcom SiByte BCM1250 B2 @ 800 MHz (SB1 rev 2)
-| [    0.000000] Board type: SiByte BCM91250A (SWARM)
-| [    0.000000] This kernel optimized for board runs with CFE
-| [    0.000000] Determined physical RAM map:
-| [    0.000000]  memory: 000000000fe47e00 @ 0000000000000000 (usable)
-| [    0.000000] Initrd not found or empty - disabling initrd
-| [    0.000000] Zone PFN ranges:
-| [    0.000000]   DMA32    0x00000000 -> 0x00100000
-| [    0.000000]   Normal   0x00100000 -> 0x00100000
-| [    0.000000] Movable zone start PFN for each node
-| [    0.000000] early_node_map[1] active PFN ranges
-| [    0.000000]     0: 0x00000000 -> 0x0000fe47
-| [    0.000000] Detected 1 available secondary CPU(s)
-| [    0.000000] Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 64205
-| [    0.000000] Kernel command line: root=/dev/hdc1 console=duart0
-| [    0.000000] Primary instruction cache 32kB, VIVT, 4-way, linesize 32 bytes.
-| [    0.000000] Primary data cache 32kB, 4-way, PIPT, no aliases, linesize 32 bytes
-| [    0.000000] PID hash table entries: 1024 (order: 10, 8192 bytes)
-
-And then it hangs...
-
-First of all, does someone have experienced the same problem? Any
-patches floating around?
-
-Alternatively I am interested to know about a not too old kernel version
-(let's say >= 2.6.20) working for this board, and the associated .config
-file. Thanks in advance.
-
-Regards,
-Aurelien
-
+diff --git a/arch/mips/include/asm/txx9/dmac.h b/arch/mips/include/asm/txx9/dmac.h
+index a87d1c3..5e9151f 100644
+--- a/arch/mips/include/asm/txx9/dmac.h
++++ b/arch/mips/include/asm/txx9/dmac.h
+@@ -45,4 +45,7 @@ struct txx9dmac_slave {
+ 	unsigned int	reg_width;
+ };
+ 
++void txx9_dmac_init(int id, unsigned long baseaddr, int irq,
++		    const struct txx9dmac_platform_data *pdata);
++
+ #endif /* __ASM_TXX9_DMAC_H */
+diff --git a/arch/mips/include/asm/txx9/tx4927.h b/arch/mips/include/asm/txx9/tx4927.h
+index 7d813f1..d92ae07 100644
+--- a/arch/mips/include/asm/txx9/tx4927.h
++++ b/arch/mips/include/asm/txx9/tx4927.h
+@@ -41,6 +41,7 @@
+ 
+ #define TX4927_SDRAMC_REG	(TX4927_REG_BASE + 0x8000)
+ #define TX4927_EBUSC_REG	(TX4927_REG_BASE + 0x9000)
++#define TX4927_DMA_REG		(TX4927_REG_BASE + 0xb000)
+ #define TX4927_PCIC_REG		(TX4927_REG_BASE + 0xd000)
+ #define TX4927_CCFG_REG		(TX4927_REG_BASE + 0xe000)
+ #define TX4927_IRC_REG		(TX4927_REG_BASE + 0xf600)
+@@ -265,5 +266,6 @@ int tx4927_pciclk66_setup(void);
+ void tx4927_setup_pcierr_irq(void);
+ void tx4927_irq_init(void);
+ void tx4927_mtd_init(int ch);
++void tx4927_dmac_init(int memcpy_chan);
+ 
+ #endif /* __ASM_TXX9_TX4927_H */
+diff --git a/arch/mips/include/asm/txx9/tx4938.h b/arch/mips/include/asm/txx9/tx4938.h
+index cd8bc20..0758a0c 100644
+--- a/arch/mips/include/asm/txx9/tx4938.h
++++ b/arch/mips/include/asm/txx9/tx4938.h
+@@ -305,5 +305,6 @@ struct tx4938ide_platform_info {
+ };
+ 
+ void tx4938_ata_init(unsigned int irq, unsigned int shift, int tune);
++void tx4938_dmac_init(int memcpy_chan0, int memcpy_chan1);
+ 
+ #endif
+diff --git a/arch/mips/include/asm/txx9/tx4939.h b/arch/mips/include/asm/txx9/tx4939.h
+index f02c50b..1be9798 100644
+--- a/arch/mips/include/asm/txx9/tx4939.h
++++ b/arch/mips/include/asm/txx9/tx4939.h
+@@ -544,5 +544,6 @@ void tx4939_ata_init(void);
+ void tx4939_rtc_init(void);
+ void tx4939_ndfmc_init(unsigned int hold, unsigned int spw,
+ 		       unsigned char ch_mask, unsigned char wide_mask);
++void tx4939_dmac_init(int memcpy_chan0, int memcpy_chan1);
+ 
+ #endif /* __ASM_TXX9_TX4939_H */
+diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
+index 8a266c6..369d863 100644
+--- a/arch/mips/txx9/generic/setup.c
++++ b/arch/mips/txx9/generic/setup.c
+@@ -33,6 +33,7 @@
+ #include <asm/txx9/pci.h>
+ #include <asm/txx9tmr.h>
+ #include <asm/txx9/ndfmc.h>
++#include <asm/txx9/dmac.h>
+ #ifdef CONFIG_CPU_TX49XX
+ #include <asm/txx9/tx4938.h>
+ #endif
+@@ -821,3 +822,57 @@ void __init txx9_iocled_init(unsigned long baseaddr,
+ {
+ }
+ #endif /* CONFIG_LEDS_GPIO */
++
++void __init txx9_dmac_init(int id, unsigned long baseaddr, int irq,
++			   const struct txx9dmac_platform_data *pdata)
++{
++#if defined(CONFIG_TXX9_DMAC) || defined(CONFIG_TXX9_DMAC_MODULE)
++	struct resource res[] = {
++		{
++			.start = baseaddr,
++			.end = baseaddr + 0x800 - 1,
++			.flags = IORESOURCE_MEM,
++#ifndef CONFIG_MACH_TX49XX
++		}, {
++			.start = irq,
++			.flags = IORESOURCE_IRQ,
++#endif
++		}
++	};
++#ifdef CONFIG_MACH_TX49XX
++	struct resource chan_res[] = {
++		{
++			.flags = IORESOURCE_IRQ,
++		}
++	};
++#endif
++	struct platform_device *pdev = platform_device_alloc("txx9dmac", id);
++	struct txx9dmac_chan_platform_data cpdata;
++	int i;
++
++	if (!pdev ||
++	    platform_device_add_resources(pdev, res, ARRAY_SIZE(res)) ||
++	    platform_device_add_data(pdev, pdata, sizeof(*pdata)) ||
++	    platform_device_add(pdev)) {
++		platform_device_put(pdev);
++		return;
++	}
++	memset(&cpdata, 0, sizeof(cpdata));
++	cpdata.dmac_dev = pdev;
++	for (i = 0; i < TXX9_DMA_MAX_NR_CHANNELS; i++) {
++#ifdef CONFIG_MACH_TX49XX
++		chan_res[0].start = irq + i;
++#endif
++		pdev = platform_device_alloc("txx9dmac-chan",
++					     id * TXX9_DMA_MAX_NR_CHANNELS + i);
++		if (!pdev ||
++#ifdef CONFIG_MACH_TX49XX
++		    platform_device_add_resources(pdev, chan_res,
++						  ARRAY_SIZE(chan_res)) ||
++#endif
++		    platform_device_add_data(pdev, &cpdata, sizeof(cpdata)) ||
++		    platform_device_add(pdev))
++			platform_device_put(pdev);
++	}
++#endif
++}
+diff --git a/arch/mips/txx9/generic/setup_tx4927.c b/arch/mips/txx9/generic/setup_tx4927.c
+index 1093549..6b681cd 100644
+--- a/arch/mips/txx9/generic/setup_tx4927.c
++++ b/arch/mips/txx9/generic/setup_tx4927.c
+@@ -22,6 +22,7 @@
+ #include <asm/txx9tmr.h>
+ #include <asm/txx9pio.h>
+ #include <asm/txx9/generic.h>
++#include <asm/txx9/dmac.h>
+ #include <asm/txx9/tx4927.h>
+ 
+ static void __init tx4927_wdr_init(void)
+@@ -253,6 +254,17 @@ void __init tx4927_mtd_init(int ch)
+ 	txx9_physmap_flash_init(ch, start, size, &pdata);
+ }
+ 
++void __init tx4927_dmac_init(int memcpy_chan)
++{
++	struct txx9dmac_platform_data plat_data = {
++		.memcpy_chan = memcpy_chan,
++		.have_64bit_regs = true,
++	};
++
++	txx9_dmac_init(0, TX4927_DMA_REG & 0xfffffffffULL,
++		       TXX9_IRQ_BASE + TX4927_IR_DMA(0), &plat_data);
++}
++
+ static void __init tx4927_stop_unused_modules(void)
+ {
+ 	__u64 pcfg, rst = 0, ckd = 0;
+diff --git a/arch/mips/txx9/generic/setup_tx4938.c b/arch/mips/txx9/generic/setup_tx4938.c
+index 3925219..b2b8529 100644
+--- a/arch/mips/txx9/generic/setup_tx4938.c
++++ b/arch/mips/txx9/generic/setup_tx4938.c
+@@ -24,6 +24,7 @@
+ #include <asm/txx9pio.h>
+ #include <asm/txx9/generic.h>
+ #include <asm/txx9/ndfmc.h>
++#include <asm/txx9/dmac.h>
+ #include <asm/txx9/tx4938.h>
+ 
+ static void __init tx4938_wdr_init(void)
+@@ -239,11 +240,6 @@ void __init tx4938_setup(void)
+ 	for (i = 0; i < TX4938_NR_TMR; i++)
+ 		txx9_tmr_init(TX4938_TMR_REG(i) & 0xfffffffffULL);
+ 
+-	/* DMA */
+-	for (i = 0; i < 2; i++)
+-		____raw_writeq(TX4938_DMA_MCR_MSTEN,
+-			       (void __iomem *)(TX4938_DMA_REG(i) + 0x50));
+-
+ 	/* PIO */
+ 	txx9_gpio_init(TX4938_PIO_REG & 0xfffffffffULL, 0, TX4938_NUM_PIO);
+ 	__raw_writel(0, &tx4938_pioptr->maskcpu);
+@@ -403,6 +399,21 @@ void __init tx4938_ndfmc_init(unsigned int hold, unsigned int spw)
+ 		txx9_ndfmc_init(baseaddr, &plat_data);
+ }
+ 
++void __init tx4938_dmac_init(int memcpy_chan0, int memcpy_chan1)
++{
++	struct txx9dmac_platform_data plat_data = {
++		.have_64bit_regs = true,
++	};
++	int i;
++
++	for (i = 0; i < 2; i++) {
++		plat_data.memcpy_chan = i ? memcpy_chan1 : memcpy_chan0;
++		txx9_dmac_init(i, TX4938_DMA_REG(i) & 0xfffffffffULL,
++			       TXX9_IRQ_BASE + TX4938_IR_DMA(i, 0),
++			       &plat_data);
++	}
++}
++
+ static void __init tx4938_stop_unused_modules(void)
+ {
+ 	__u64 pcfg, rst = 0, ckd = 0;
+diff --git a/arch/mips/txx9/generic/setup_tx4939.c b/arch/mips/txx9/generic/setup_tx4939.c
+index c2bf150..98effef 100644
+--- a/arch/mips/txx9/generic/setup_tx4939.c
++++ b/arch/mips/txx9/generic/setup_tx4939.c
+@@ -28,6 +28,7 @@
+ #include <asm/txx9tmr.h>
+ #include <asm/txx9/generic.h>
+ #include <asm/txx9/ndfmc.h>
++#include <asm/txx9/dmac.h>
+ #include <asm/txx9/tx4939.h>
+ 
+ static void __init tx4939_wdr_init(void)
+@@ -259,11 +260,6 @@ void __init tx4939_setup(void)
+ 	for (i = 0; i < TX4939_NR_TMR; i++)
+ 		txx9_tmr_init(TX4939_TMR_REG(i) & 0xfffffffffULL);
+ 
+-	/* DMA */
+-	for (i = 0; i < 2; i++)
+-		____raw_writeq(TX4938_DMA_MCR_MSTEN,
+-			       (void __iomem *)(TX4939_DMA_REG(i) + 0x50));
+-
+ 	/* set PCIC1 reset (required to prevent hangup on BIST) */
+ 	txx9_set64(&tx4939_ccfgptr->clkctr, TX4939_CLKCTR_PCI1RST);
+ 	pcfg = ____raw_readq(&tx4939_ccfgptr->pcfg);
+@@ -474,6 +470,21 @@ void __init tx4939_ndfmc_init(unsigned int hold, unsigned int spw,
+ 	txx9_ndfmc_init(TX4939_NDFMC_REG & 0xfffffffffULL, &plat_data);
+ }
+ 
++void __init tx4939_dmac_init(int memcpy_chan0, int memcpy_chan1)
++{
++	struct txx9dmac_platform_data plat_data = {
++		.have_64bit_regs = true,
++	};
++	int i;
++
++	for (i = 0; i < 2; i++) {
++		plat_data.memcpy_chan = i ? memcpy_chan1 : memcpy_chan0;
++		txx9_dmac_init(i, TX4939_DMA_REG(i) & 0xfffffffffULL,
++			       TXX9_IRQ_BASE + TX4939_IR_DMA(i, 0),
++			       &plat_data);
++	}
++}
++
+ static void __init tx4939_stop_unused_modules(void)
+ {
+ 	__u64 pcfg, rst = 0, ckd = 0;
+diff --git a/arch/mips/txx9/rbtx4927/setup.c b/arch/mips/txx9/rbtx4927/setup.c
+index 01129a9..332cdbc 100644
+--- a/arch/mips/txx9/rbtx4927/setup.c
++++ b/arch/mips/txx9/rbtx4927/setup.c
+@@ -337,6 +337,10 @@ static void __init rbtx4927_device_init(void)
+ 	rbtx4927_ne_init();
+ 	tx4927_wdt_init();
+ 	rbtx4927_mtd_init();
++	if (TX4927_REV_PCODE() == 0x4927)
++		tx4927_dmac_init(2);
++	else
++		tx4938_dmac_init(0, 2);
+ 	txx9_iocled_init(RBTX4927_LED_ADDR - IO_BASE, -1, 3, 1, "green", NULL);
+ 	rbtx4927_gpioled_init();
+ }
+diff --git a/arch/mips/txx9/rbtx4938/setup.c b/arch/mips/txx9/rbtx4938/setup.c
+index 65d13df..37c5e3d 100644
+--- a/arch/mips/txx9/rbtx4938/setup.c
++++ b/arch/mips/txx9/rbtx4938/setup.c
+@@ -355,6 +355,7 @@ static void __init rbtx4938_device_init(void)
+ 	/* TC58DVM82A1FT: tDH=10ns, tWP=tRP=tREADID=35ns */
+ 	tx4938_ndfmc_init(10, 35);
+ 	tx4938_ata_init(RBTX4938_IRQ_IOC_ATA, 0, 1);
++	tx4938_dmac_init(0, 2);
+ 	txx9_iocled_init(RBTX4938_LED_ADDR - IO_BASE, -1, 8, 1, "green", NULL);
+ }
+ 
+diff --git a/arch/mips/txx9/rbtx4939/setup.c b/arch/mips/txx9/rbtx4939/setup.c
+index 4199c6f..91f2ec8 100644
+--- a/arch/mips/txx9/rbtx4939/setup.c
++++ b/arch/mips/txx9/rbtx4939/setup.c
+@@ -498,6 +498,7 @@ static void __init rbtx4939_device_init(void)
+ 	tx4939_wdt_init();
+ 	tx4939_ata_init();
+ 	tx4939_rtc_init();
++	tx4939_dmac_init(0, 2);
+ }
+ 
+ static void __init rbtx4939_setup(void)
 -- 
-Aurelien Jarno	                        GPG: 1024D/F1BCDB73
-aurelien@aurel32.net                 http://www.aurel32.net
+1.5.6.3

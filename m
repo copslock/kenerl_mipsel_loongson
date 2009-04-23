@@ -1,101 +1,183 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Apr 2009 13:51:52 +0100 (BST)
-Received: from apollo.i-cable.com ([203.83.115.103]:2710 "HELO
-	apollo.i-cable.com") by ftp.linux-mips.org with SMTP
-	id S20021887AbZDWMvn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 23 Apr 2009 13:51:43 +0100
-Received: (qmail 15445 invoked by uid 508); 23 Apr 2009 12:51:30 -0000
-Received: from 203.83.114.121 by apollo (envelope-from <robert.zhangle@gmail.com>, uid 505) with qmail-scanner-1.25 
- (clamdscan: 0.93.3/7730.  
- Clear:RC:1(203.83.114.121):. 
- Processed in 0.230722 secs); 23 Apr 2009 12:51:30 -0000
-Received: from ip114121.hkicable.com (HELO silicon.i-cable.com) (203.83.114.121)
-  by 0 with SMTP; 23 Apr 2009 12:51:30 -0000
-Received: from localhost (cm222-167-208-75.hkcable.com.hk [222.167.208.75])
-	by silicon.i-cable.com (8.13.5/8.13.5) with ESMTP id n3NCp3Nu024446;
-	Thu, 23 Apr 2009 20:51:14 +0800 (HKT)
-Date:	Thu, 23 Apr 2009 20:50:56 +0800
-From:	Zhang Le <r0bertz@gentoo.org>
-To:	Philippe Vachon <philippe@cowpig.ca>
-Cc:	Arnaud Patard <apatard@mandriva.com>, linux-mips@linux-mips.org,
-	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] Clean up Lemote Loongson 2E Support
-Message-ID: <20090423125055.GG6707@adriano.hkcable.com.hk>
-Mail-Followup-To: Philippe Vachon <philippe@cowpig.ca>,
-	Arnaud Patard <apatard@mandriva.com>, linux-mips@linux-mips.org,
-	Ralf Baechle <ralf@linux-mips.org>
-References: <20090422063747.GA2009@cowpig.ca> <m363gxgic8.fsf@anduin.mandriva.com> <20090422161631.GA2317@cowpig.ca> <m3skjzg4mk.fsf@anduin.mandriva.com> <20090423100312.GC6138@cowpig.ca>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="JkW1gnuWHDypiMFO"
-Content-Disposition: inline
-In-Reply-To: <20090423100312.GC6138@cowpig.ca>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <robert.zhangle@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Apr 2009 16:10:54 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:57563 "HELO smtp.mba.ocn.ne.jp")
+	by ftp.linux-mips.org with SMTP id S20022675AbZDWPKp (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 23 Apr 2009 16:10:45 +0100
+Received: from localhost.localdomain (p8154-ipad310funabasi.chiba.ocn.ne.jp [123.217.210.154])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 7631CA9A8; Fri, 24 Apr 2009 00:10:36 +0900 (JST)
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] TXx9: micro optimization for clocksource and clock_event
+Date:	Fri, 24 Apr 2009 00:10:36 +0900
+Message-Id: <1240499436-8246-1-git-send-email-anemo@mba.ocn.ne.jp>
+X-Mailer: git-send-email 1.5.6.3
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22440
+X-archive-position: 22441
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: r0bertz@gentoo.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
+Use container structure for clocksource, clock_event_device and hold a
+pointer to txx9_tmr_reg in it.
 
---JkW1gnuWHDypiMFO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This saves a few instructions in clocksource and clock_event handlers.
 
-On 06:03 Thu 23 Apr     , Philippe Vachon wrote:
-> I've laid out the directories as follows:
->=20
-> arch/mips/
-> 	+- loongson/
-> 	|	+- common/ /* common code */
-> 	|	+- gdium/    /* all the other directories are for */
-> 	|	+- fulong-2e /* particular platforms */
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+ arch/mips/kernel/cevt-txx9.c |   67 +++++++++++++++++++++++++++---------------
+ 1 files changed, 43 insertions(+), 24 deletions(-)
 
-Hi, Philippe,
-
-Sorry for nitpicking, but fulong actually was a typo which slipped in someh=
-ow.
-The correct English name should be fuloong as shown here:
-http://www.lemote.com/english/fuloong.html
-
-Also please take a look at this:
-http://www.linux-mips.org/archives/linux-mips/2009-03/msg00225.html
-
-BTW, Thank you for hard work on this. I really hope loongson 2f's code woul=
-d be
-merged soon, and have all the loongson related code sorted out.
-
-> 	|
-> 	...
-> 	+- include/asm/
-> 		+- mach-loongson/=20
-> 			/* platform-specific headers */
-> 			+- fulong-2e/
-> 			+- gdium/
->=20
-
---=20
-Zhang, Le
-Gentoo/Loongson Developer
-http://zhangle.is-a-geek.org
-0260 C902 B8F8 6506 6586 2B90 BC51 C808 1E4E 2973
-
---JkW1gnuWHDypiMFO
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.11 (GNU/Linux)
-
-iEYEARECAAYFAknwZC8ACgkQvFHICB5OKXPEygCeKhnme11P88UM2aVRQnA8cEQL
-kUQAoIXGYZ/h33o0zaHeNu+2LTZy90rS
-=1LKJ
------END PGP SIGNATURE-----
-
---JkW1gnuWHDypiMFO--
+diff --git a/arch/mips/kernel/cevt-txx9.c b/arch/mips/kernel/cevt-txx9.c
+index 2e911e3..0037f21 100644
+--- a/arch/mips/kernel/cevt-txx9.c
++++ b/arch/mips/kernel/cevt-txx9.c
+@@ -20,22 +20,29 @@
+ #define TIMER_CCD	0	/* 1/2 */
+ #define TIMER_CLK(imclk)	((imclk) / (2 << TIMER_CCD))
+ 
+-static struct txx9_tmr_reg __iomem *txx9_cs_tmrptr;
++struct txx9_clocksource {
++	struct clocksource cs;
++	struct txx9_tmr_reg __iomem *tmrptr;
++};
+ 
+ static cycle_t txx9_cs_read(struct clocksource *cs)
+ {
+-	return __raw_readl(&txx9_cs_tmrptr->trr);
++	struct txx9_clocksource *txx9_cs =
++		container_of(cs, struct txx9_clocksource, cs);
++	return __raw_readl(&txx9_cs->tmrptr->trr);
+ }
+ 
+ /* Use 1 bit smaller width to use full bits in that width */
+ #define TXX9_CLOCKSOURCE_BITS (TXX9_TIMER_BITS - 1)
+ 
+-static struct clocksource txx9_clocksource = {
+-	.name		= "TXx9",
+-	.rating		= 200,
+-	.read		= txx9_cs_read,
+-	.mask		= CLOCKSOURCE_MASK(TXX9_CLOCKSOURCE_BITS),
+-	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
++static struct txx9_clocksource txx9_clocksource = {
++	.cs = {
++		.name		= "TXx9",
++		.rating		= 200,
++		.read		= txx9_cs_read,
++		.mask		= CLOCKSOURCE_MASK(TXX9_CLOCKSOURCE_BITS),
++		.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
++	},
+ };
+ 
+ void __init txx9_clocksource_init(unsigned long baseaddr,
+@@ -43,8 +50,8 @@ void __init txx9_clocksource_init(unsigned long baseaddr,
+ {
+ 	struct txx9_tmr_reg __iomem *tmrptr;
+ 
+-	clocksource_set_clock(&txx9_clocksource, TIMER_CLK(imbusclk));
+-	clocksource_register(&txx9_clocksource);
++	clocksource_set_clock(&txx9_clocksource.cs, TIMER_CLK(imbusclk));
++	clocksource_register(&txx9_clocksource.cs);
+ 
+ 	tmrptr = ioremap(baseaddr, sizeof(struct txx9_tmr_reg));
+ 	__raw_writel(TCR_BASE, &tmrptr->tcr);
+@@ -53,10 +60,13 @@ void __init txx9_clocksource_init(unsigned long baseaddr,
+ 	__raw_writel(TXx9_TMITMR_TZCE, &tmrptr->itmr);
+ 	__raw_writel(1 << TXX9_CLOCKSOURCE_BITS, &tmrptr->cpra);
+ 	__raw_writel(TCR_BASE | TXx9_TMTCR_TCE, &tmrptr->tcr);
+-	txx9_cs_tmrptr = tmrptr;
++	txx9_clocksource.tmrptr = tmrptr;
+ }
+ 
+-static struct txx9_tmr_reg __iomem *txx9_tmrptr;
++struct txx9_clock_event_device {
++	struct clock_event_device cd;
++	struct txx9_tmr_reg __iomem *tmrptr;
++};
+ 
+ static void txx9tmr_stop_and_clear(struct txx9_tmr_reg __iomem *tmrptr)
+ {
+@@ -69,7 +79,9 @@ static void txx9tmr_stop_and_clear(struct txx9_tmr_reg __iomem *tmrptr)
+ static void txx9tmr_set_mode(enum clock_event_mode mode,
+ 			     struct clock_event_device *evt)
+ {
+-	struct txx9_tmr_reg __iomem *tmrptr = txx9_tmrptr;
++	struct txx9_clock_event_device *txx9_cd =
++		container_of(evt, struct txx9_clock_event_device, cd);
++	struct txx9_tmr_reg __iomem *tmrptr = txx9_cd->tmrptr;
+ 
+ 	txx9tmr_stop_and_clear(tmrptr);
+ 	switch (mode) {
+@@ -99,7 +111,9 @@ static void txx9tmr_set_mode(enum clock_event_mode mode,
+ static int txx9tmr_set_next_event(unsigned long delta,
+ 				  struct clock_event_device *evt)
+ {
+-	struct txx9_tmr_reg __iomem *tmrptr = txx9_tmrptr;
++	struct txx9_clock_event_device *txx9_cd =
++		container_of(evt, struct txx9_clock_event_device, cd);
++	struct txx9_tmr_reg __iomem *tmrptr = txx9_cd->tmrptr;
+ 
+ 	txx9tmr_stop_and_clear(tmrptr);
+ 	/* start timer */
+@@ -108,18 +122,22 @@ static int txx9tmr_set_next_event(unsigned long delta,
+ 	return 0;
+ }
+ 
+-static struct clock_event_device txx9tmr_clock_event_device = {
+-	.name		= "TXx9",
+-	.features	= CLOCK_EVT_FEAT_PERIODIC | CLOCK_EVT_FEAT_ONESHOT,
+-	.rating		= 200,
+-	.set_mode	= txx9tmr_set_mode,
+-	.set_next_event	= txx9tmr_set_next_event,
++static struct txx9_clock_event_device txx9_clock_event_device = {
++	.cd = {
++		.name		= "TXx9",
++		.features	= CLOCK_EVT_FEAT_PERIODIC |
++				  CLOCK_EVT_FEAT_ONESHOT,
++		.rating		= 200,
++		.set_mode	= txx9tmr_set_mode,
++		.set_next_event	= txx9tmr_set_next_event,
++	},
+ };
+ 
+ static irqreturn_t txx9tmr_interrupt(int irq, void *dev_id)
+ {
+-	struct clock_event_device *cd = &txx9tmr_clock_event_device;
+-	struct txx9_tmr_reg __iomem *tmrptr = txx9_tmrptr;
++	struct txx9_clock_event_device *txx9_cd = dev_id;
++	struct clock_event_device *cd = &txx9_cd->cd;
++	struct txx9_tmr_reg __iomem *tmrptr = txx9_cd->tmrptr;
+ 
+ 	__raw_writel(0, &tmrptr->tisr);	/* ack interrupt */
+ 	cd->event_handler(cd);
+@@ -130,19 +148,20 @@ static struct irqaction txx9tmr_irq = {
+ 	.handler	= txx9tmr_interrupt,
+ 	.flags		= IRQF_DISABLED | IRQF_PERCPU,
+ 	.name		= "txx9tmr",
++	.dev_id		= &txx9_clock_event_device,
+ };
+ 
+ void __init txx9_clockevent_init(unsigned long baseaddr, int irq,
+ 				 unsigned int imbusclk)
+ {
+-	struct clock_event_device *cd = &txx9tmr_clock_event_device;
++	struct clock_event_device *cd = &txx9_clock_event_device.cd;
+ 	struct txx9_tmr_reg __iomem *tmrptr;
+ 
+ 	tmrptr = ioremap(baseaddr, sizeof(struct txx9_tmr_reg));
+ 	txx9tmr_stop_and_clear(tmrptr);
+ 	__raw_writel(TIMER_CCD, &tmrptr->ccdr);
+ 	__raw_writel(0, &tmrptr->itmr);
+-	txx9_tmrptr = tmrptr;
++	txx9_clock_event_device.tmrptr = tmrptr;
+ 
+ 	clockevent_set_clock(cd, TIMER_CLK(imbusclk));
+ 	cd->max_delta_ns =
+-- 
+1.5.6.3

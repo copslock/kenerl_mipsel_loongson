@@ -1,183 +1,131 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Apr 2009 16:10:54 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:57563 "HELO smtp.mba.ocn.ne.jp")
-	by ftp.linux-mips.org with SMTP id S20022675AbZDWPKp (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 23 Apr 2009 16:10:45 +0100
-Received: from localhost.localdomain (p8154-ipad310funabasi.chiba.ocn.ne.jp [123.217.210.154])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 7631CA9A8; Fri, 24 Apr 2009 00:10:36 +0900 (JST)
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] TXx9: micro optimization for clocksource and clock_event
-Date:	Fri, 24 Apr 2009 00:10:36 +0900
-Message-Id: <1240499436-8246-1-git-send-email-anemo@mba.ocn.ne.jp>
-X-Mailer: git-send-email 1.5.6.3
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Apr 2009 16:42:46 +0100 (BST)
+Received: from yx-out-1718.google.com ([74.125.44.157]:1009 "EHLO
+	yx-out-1718.google.com") by ftp.linux-mips.org with ESMTP
+	id S20022986AbZDWPmg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 23 Apr 2009 16:42:36 +0100
+Received: by yx-out-1718.google.com with SMTP id 4so364458yxp.24
+        for <multiple recipients>; Thu, 23 Apr 2009 08:42:34 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :content-type:organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        bh=gYVQRW3mvzgPEGrDuKq+BAJcIp8igzOTF3oEg0zdZZY=;
+        b=TPwzsn5Hl1LNUMgbtKfMu7pkXroUvRw+QbMX8J+fGZi5aXeVv2Mr8Vg0YUmj6pBw1N
+         64L3mhrJ39HHdLpuTHwstMtGj1ZPYKloQVgcDx1zERHn8aRVUZLNzNGweEysJv5nGEgo
+         y3Nw9wHGL0WvhZO08oboNlnhAV63DRmlGoQb4=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:content-type:organization:date
+         :message-id:mime-version:x-mailer:content-transfer-encoding;
+        b=lX7lLlWZS2Pluk9511HNoleeAUm7dtjUKnk6JDSPlaqpHvrF740m7Jaaa8QKDT9IGj
+         aJrg4p9xeS/MrtSI7pMPNneSYKq8K9B9xZGQPWgFunHpzylTMiTEOh/vLllKj5rpoaqc
+         OHgGtKX2OC/DoSCtrBRwMGrHOFwUWaCQ10VRk=
+Received: by 10.142.239.11 with SMTP id m11mr379142wfh.120.1240501354081;
+        Thu, 23 Apr 2009 08:42:34 -0700 (PDT)
+Received: from ?172.16.18.144? ([222.92.8.142])
+        by mx.google.com with ESMTPS id 27sm241551wff.31.2009.04.23.08.42.29
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 23 Apr 2009 08:42:33 -0700 (PDT)
+Subject: a pre-release of merging loongson patchs to linux-2.6.29.1
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:	loongson-dev@googlegroups.com
+Cc:	yanh@lemote.com, zhangfx@lemote.com, penglj@lemote.com,
+	huhb@lemote.com, taohl@lemote.com, linux-mips@linux-mips.org,
+	Ralf Baechle <ralf@linux-mips.org>
+Content-Type: text/plain
+Organization: DSLab, Lanzhou University, China
+Date:	Thu, 23 Apr 2009 23:42:12 +0800
+Message-Id: <1240501332.28136.24.camel@falcon>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.24.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22441
+X-archive-position: 22442
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Use container structure for clocksource, clock_event_device and hold a
-pointer to txx9_tmr_reg in it.
+hi, all
 
-This saves a few instructions in clocksource and clock_event handlers.
+these days, I am working on merging loongson patchs to linux-2.6.29.1, 
+the fuloong(2f) & yeeloong source code have been completely merged to an
+2f directory, most of the 2e & 2f source code have been merged except
+the irq.c & reset.c, fixup-loongson2e.c & fixup-loongson2f.c.
 
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
- arch/mips/kernel/cevt-txx9.c |   67 +++++++++++++++++++++++++++---------------
- 1 files changed, 43 insertions(+), 24 deletions(-)
+the current directory architecture is as following:
 
-diff --git a/arch/mips/kernel/cevt-txx9.c b/arch/mips/kernel/cevt-txx9.c
-index 2e911e3..0037f21 100644
---- a/arch/mips/kernel/cevt-txx9.c
-+++ b/arch/mips/kernel/cevt-txx9.c
-@@ -20,22 +20,29 @@
- #define TIMER_CCD	0	/* 1/2 */
- #define TIMER_CLK(imclk)	((imclk) / (2 << TIMER_CCD))
- 
--static struct txx9_tmr_reg __iomem *txx9_cs_tmrptr;
-+struct txx9_clocksource {
-+	struct clocksource cs;
-+	struct txx9_tmr_reg __iomem *tmrptr;
-+};
- 
- static cycle_t txx9_cs_read(struct clocksource *cs)
- {
--	return __raw_readl(&txx9_cs_tmrptr->trr);
-+	struct txx9_clocksource *txx9_cs =
-+		container_of(cs, struct txx9_clocksource, cs);
-+	return __raw_readl(&txx9_cs->tmrptr->trr);
- }
- 
- /* Use 1 bit smaller width to use full bits in that width */
- #define TXX9_CLOCKSOURCE_BITS (TXX9_TIMER_BITS - 1)
- 
--static struct clocksource txx9_clocksource = {
--	.name		= "TXx9",
--	.rating		= 200,
--	.read		= txx9_cs_read,
--	.mask		= CLOCKSOURCE_MASK(TXX9_CLOCKSOURCE_BITS),
--	.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
-+static struct txx9_clocksource txx9_clocksource = {
-+	.cs = {
-+		.name		= "TXx9",
-+		.rating		= 200,
-+		.read		= txx9_cs_read,
-+		.mask		= CLOCKSOURCE_MASK(TXX9_CLOCKSOURCE_BITS),
-+		.flags		= CLOCK_SOURCE_IS_CONTINUOUS,
-+	},
- };
- 
- void __init txx9_clocksource_init(unsigned long baseaddr,
-@@ -43,8 +50,8 @@ void __init txx9_clocksource_init(unsigned long baseaddr,
- {
- 	struct txx9_tmr_reg __iomem *tmrptr;
- 
--	clocksource_set_clock(&txx9_clocksource, TIMER_CLK(imbusclk));
--	clocksource_register(&txx9_clocksource);
-+	clocksource_set_clock(&txx9_clocksource.cs, TIMER_CLK(imbusclk));
-+	clocksource_register(&txx9_clocksource.cs);
- 
- 	tmrptr = ioremap(baseaddr, sizeof(struct txx9_tmr_reg));
- 	__raw_writel(TCR_BASE, &tmrptr->tcr);
-@@ -53,10 +60,13 @@ void __init txx9_clocksource_init(unsigned long baseaddr,
- 	__raw_writel(TXx9_TMITMR_TZCE, &tmrptr->itmr);
- 	__raw_writel(1 << TXX9_CLOCKSOURCE_BITS, &tmrptr->cpra);
- 	__raw_writel(TCR_BASE | TXx9_TMTCR_TCE, &tmrptr->tcr);
--	txx9_cs_tmrptr = tmrptr;
-+	txx9_clocksource.tmrptr = tmrptr;
- }
- 
--static struct txx9_tmr_reg __iomem *txx9_tmrptr;
-+struct txx9_clock_event_device {
-+	struct clock_event_device cd;
-+	struct txx9_tmr_reg __iomem *tmrptr;
-+};
- 
- static void txx9tmr_stop_and_clear(struct txx9_tmr_reg __iomem *tmrptr)
- {
-@@ -69,7 +79,9 @@ static void txx9tmr_stop_and_clear(struct txx9_tmr_reg __iomem *tmrptr)
- static void txx9tmr_set_mode(enum clock_event_mode mode,
- 			     struct clock_event_device *evt)
- {
--	struct txx9_tmr_reg __iomem *tmrptr = txx9_tmrptr;
-+	struct txx9_clock_event_device *txx9_cd =
-+		container_of(evt, struct txx9_clock_event_device, cd);
-+	struct txx9_tmr_reg __iomem *tmrptr = txx9_cd->tmrptr;
- 
- 	txx9tmr_stop_and_clear(tmrptr);
- 	switch (mode) {
-@@ -99,7 +111,9 @@ static void txx9tmr_set_mode(enum clock_event_mode mode,
- static int txx9tmr_set_next_event(unsigned long delta,
- 				  struct clock_event_device *evt)
- {
--	struct txx9_tmr_reg __iomem *tmrptr = txx9_tmrptr;
-+	struct txx9_clock_event_device *txx9_cd =
-+		container_of(evt, struct txx9_clock_event_device, cd);
-+	struct txx9_tmr_reg __iomem *tmrptr = txx9_cd->tmrptr;
- 
- 	txx9tmr_stop_and_clear(tmrptr);
- 	/* start timer */
-@@ -108,18 +122,22 @@ static int txx9tmr_set_next_event(unsigned long delta,
- 	return 0;
- }
- 
--static struct clock_event_device txx9tmr_clock_event_device = {
--	.name		= "TXx9",
--	.features	= CLOCK_EVT_FEAT_PERIODIC | CLOCK_EVT_FEAT_ONESHOT,
--	.rating		= 200,
--	.set_mode	= txx9tmr_set_mode,
--	.set_next_event	= txx9tmr_set_next_event,
-+static struct txx9_clock_event_device txx9_clock_event_device = {
-+	.cd = {
-+		.name		= "TXx9",
-+		.features	= CLOCK_EVT_FEAT_PERIODIC |
-+				  CLOCK_EVT_FEAT_ONESHOT,
-+		.rating		= 200,
-+		.set_mode	= txx9tmr_set_mode,
-+		.set_next_event	= txx9tmr_set_next_event,
-+	},
- };
- 
- static irqreturn_t txx9tmr_interrupt(int irq, void *dev_id)
- {
--	struct clock_event_device *cd = &txx9tmr_clock_event_device;
--	struct txx9_tmr_reg __iomem *tmrptr = txx9_tmrptr;
-+	struct txx9_clock_event_device *txx9_cd = dev_id;
-+	struct clock_event_device *cd = &txx9_cd->cd;
-+	struct txx9_tmr_reg __iomem *tmrptr = txx9_cd->tmrptr;
- 
- 	__raw_writel(0, &tmrptr->tisr);	/* ack interrupt */
- 	cd->event_handler(cd);
-@@ -130,19 +148,20 @@ static struct irqaction txx9tmr_irq = {
- 	.handler	= txx9tmr_interrupt,
- 	.flags		= IRQF_DISABLED | IRQF_PERCPU,
- 	.name		= "txx9tmr",
-+	.dev_id		= &txx9_clock_event_device,
- };
- 
- void __init txx9_clockevent_init(unsigned long baseaddr, int irq,
- 				 unsigned int imbusclk)
- {
--	struct clock_event_device *cd = &txx9tmr_clock_event_device;
-+	struct clock_event_device *cd = &txx9_clock_event_device.cd;
- 	struct txx9_tmr_reg __iomem *tmrptr;
- 
- 	tmrptr = ioremap(baseaddr, sizeof(struct txx9_tmr_reg));
- 	txx9tmr_stop_and_clear(tmrptr);
- 	__raw_writel(TIMER_CCD, &tmrptr->ccdr);
- 	__raw_writel(0, &tmrptr->itmr);
--	txx9_tmrptr = tmrptr;
-+	txx9_clock_event_device.tmrptr = tmrptr;
- 
- 	clockevent_set_clock(cd, TIMER_CLK(imbusclk));
- 	cd->max_delta_ns =
+$ tree arch/mips/loongson/
+arch/mips/loongson/
+|-- 2e
+|   |-- Makefile
+|   |-- irq.c
+|   `-- reset.c
+|-- 2f
+|   |-- 8250.c
+|   |-- Makefile
+|   |-- clock.c
+|   |-- cs5536.h
+|   |-- cs5536_pci.h
+|   |-- cs5536_vsm.c
+|   |-- irq.c
+|   |-- mfgpt.c
+|   |-- mipsdha.c
+|   |-- pcireg.h
+|   `-- reset.c
+|-- Kconfig
+`-- common
+    |-- Makefile
+    |-- bonito-irq.c
+    |-- dbg_io.c
+    |-- mem.c
+    |-- pci.c
+    |-- prom.c
+    `-- setup.c
+
+$ tree arch/mips/include/asm/mach-loongson/
+arch/mips/include/asm/mach-loongson/
+|-- cpu-feature-overrides.h
+|-- dma-coherence.h
+|-- mc146818rtc.h
+|-- mem.h
+|-- pci.h
+|-- prom.h
+`-- war.h
+
+$ ls arch/mips/pci/*loongson*
+arch/mips/pci/fixup-loongson2e.c  arch/mips/pci/fixup-loongson2f.c
+
+a current version is released to git://dev.lemote.com/rt4ls.git, 
+(for avoid creating another git repository for it, i just use my
+RT_PREEMPT git tree instead, so, it may be very big :-( )
+
+$ git clone git://dev.lemote.com/rt4ls.git
+$ git checkout linux-2.6.29-stable-loongson --track
+origin/linux-2.6.29-stable-loongson
+
+TODO:
+
+   * clean up some of the commits carefully, especially the following
+files:
+   arch/mips/pci/fixup-loongson2*
+   arch/mips/loongson/2f/cs5536* 
+   irq.c, reset.c
+
+   * try to merge the left files if possible.
+   * update it to the latest mainline kernel and push it in.
+
+best regards,
+Wu Zhangjin
+
 -- 
-1.5.6.3
+Wu Zhangjin
+DSLab, Lanzhou University, China
+www.lemote.com, Jiangsu Province, China

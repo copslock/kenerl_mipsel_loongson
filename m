@@ -1,131 +1,92 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Apr 2009 16:42:46 +0100 (BST)
-Received: from yx-out-1718.google.com ([74.125.44.157]:1009 "EHLO
-	yx-out-1718.google.com") by ftp.linux-mips.org with ESMTP
-	id S20022986AbZDWPmg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 23 Apr 2009 16:42:36 +0100
-Received: by yx-out-1718.google.com with SMTP id 4so364458yxp.24
-        for <multiple recipients>; Thu, 23 Apr 2009 08:42:34 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :content-type:organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        bh=gYVQRW3mvzgPEGrDuKq+BAJcIp8igzOTF3oEg0zdZZY=;
-        b=TPwzsn5Hl1LNUMgbtKfMu7pkXroUvRw+QbMX8J+fGZi5aXeVv2Mr8Vg0YUmj6pBw1N
-         64L3mhrJ39HHdLpuTHwstMtGj1ZPYKloQVgcDx1zERHn8aRVUZLNzNGweEysJv5nGEgo
-         y3Nw9wHGL0WvhZO08oboNlnhAV63DRmlGoQb4=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:content-type:organization:date
-         :message-id:mime-version:x-mailer:content-transfer-encoding;
-        b=lX7lLlWZS2Pluk9511HNoleeAUm7dtjUKnk6JDSPlaqpHvrF740m7Jaaa8QKDT9IGj
-         aJrg4p9xeS/MrtSI7pMPNneSYKq8K9B9xZGQPWgFunHpzylTMiTEOh/vLllKj5rpoaqc
-         OHgGtKX2OC/DoSCtrBRwMGrHOFwUWaCQ10VRk=
-Received: by 10.142.239.11 with SMTP id m11mr379142wfh.120.1240501354081;
-        Thu, 23 Apr 2009 08:42:34 -0700 (PDT)
-Received: from ?172.16.18.144? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 27sm241551wff.31.2009.04.23.08.42.29
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 23 Apr 2009 08:42:33 -0700 (PDT)
-Subject: a pre-release of merging loongson patchs to linux-2.6.29.1
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 23 Apr 2009 19:13:26 +0100 (BST)
+Received: from zhongguo.thiscow.com ([88.191.99.114]:30428 "EHLO
+	zhongguo.thiscow.com") by ftp.linux-mips.org with ESMTP
+	id S20021612AbZDWSNT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 23 Apr 2009 19:13:19 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by zhongguo.thiscow.com (Postfix) with ESMTP id 5E3CC1AE238;
+	Thu, 23 Apr 2009 20:13:18 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at thiscow.com
+Received: from zhongguo.thiscow.com ([127.0.0.1])
+	by localhost (zhongguo.thiscow.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id mcgadJ7D3xNz; Thu, 23 Apr 2009 20:13:17 +0200 (CEST)
+Received: from [192.168.0.5] (chl35-1-88-163-125-22.fbx.proxad.net [88.163.125.22])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: erwan@thiscow.fr)
+	by zhongguo.thiscow.com (Postfix) with ESMTPSA id 2DF3C1AE00B;
+	Thu, 23 Apr 2009 20:13:17 +0200 (CEST)
+Message-ID: <49F0AFA3.6080408@thiscow.com>
+Date:	Thu, 23 Apr 2009 20:12:51 +0200
+From:	Erwan Lerale <erwan@thiscow.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090321)
+MIME-Version: 1.0
 To:	loongson-dev@googlegroups.com
-Cc:	yanh@lemote.com, zhangfx@lemote.com, penglj@lemote.com,
+CC:	yanh@lemote.com, zhangfx@lemote.com, penglj@lemote.com,
 	huhb@lemote.com, taohl@lemote.com, linux-mips@linux-mips.org,
 	Ralf Baechle <ralf@linux-mips.org>
-Content-Type: text/plain
-Organization: DSLab, Lanzhou University, China
-Date:	Thu, 23 Apr 2009 23:42:12 +0800
-Message-Id: <1240501332.28136.24.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.24.3 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Subject: Re: [loongson-dev] a pre-release of merging loongson patchs to linux-2.6.29.1
+References: <1240501332.28136.24.camel@falcon>
+In-Reply-To: <1240501332.28136.24.camel@falcon>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Return-Path: <erwan@thiscow.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22442
+X-archive-position: 22443
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: erwan@thiscow.com
 Precedence: bulk
 X-list: linux-mips
 
-hi, all
+Wu Zhangjin wrote:
+> hi, all
+>
+> these days, I am working on merging loongson patchs to linux-2.6.29.1, 
+> the fuloong(2f) & yeeloong source code have been completely merged to an
+> 2f directory, most of the 2e & 2f source code have been merged except
+> the irq.c & reset.c, fixup-loongson2e.c & fixup-loongson2f.c.
+>   
 
-these days, I am working on merging loongson patchs to linux-2.6.29.1, 
-the fuloong(2f) & yeeloong source code have been completely merged to an
-2f directory, most of the 2e & 2f source code have been merged except
-the irq.c & reset.c, fixup-loongson2e.c & fixup-loongson2f.c.
+Cool ! :)
 
-the current directory architecture is as following:
+[...]
 
-$ tree arch/mips/loongson/
-arch/mips/loongson/
-|-- 2e
-|   |-- Makefile
-|   |-- irq.c
-|   `-- reset.c
-|-- 2f
-|   |-- 8250.c
-|   |-- Makefile
-|   |-- clock.c
-|   |-- cs5536.h
-|   |-- cs5536_pci.h
-|   |-- cs5536_vsm.c
-|   |-- irq.c
-|   |-- mfgpt.c
-|   |-- mipsdha.c
-|   |-- pcireg.h
-|   `-- reset.c
-|-- Kconfig
-`-- common
-    |-- Makefile
-    |-- bonito-irq.c
-    |-- dbg_io.c
-    |-- mem.c
-    |-- pci.c
-    |-- prom.c
-    `-- setup.c
+> a current version is released to git://dev.lemote.com/rt4ls.git, 
+> (for avoid creating another git repository for it, i just use my
+> RT_PREEMPT git tree instead, so, it may be very big :-( )
+>
+> $ git clone git://dev.lemote.com/rt4ls.git
+> $ git checkout linux-2.6.29-stable-loongson --track
+> origin/linux-2.6.29-stable-loongson
+>   
 
-$ tree arch/mips/include/asm/mach-loongson/
-arch/mips/include/asm/mach-loongson/
-|-- cpu-feature-overrides.h
-|-- dma-coherence.h
-|-- mc146818rtc.h
-|-- mem.h
-|-- pci.h
-|-- prom.h
-`-- war.h
+You meant :
 
-$ ls arch/mips/pci/*loongson*
-arch/mips/pci/fixup-loongson2e.c  arch/mips/pci/fixup-loongson2f.c
-
-a current version is released to git://dev.lemote.com/rt4ls.git, 
-(for avoid creating another git repository for it, i just use my
-RT_PREEMPT git tree instead, so, it may be very big :-( )
-
-$ git clone git://dev.lemote.com/rt4ls.git
-$ git checkout linux-2.6.29-stable-loongson --track
+git checkout -b linux-2.6.29-stable-loongson --track
 origin/linux-2.6.29-stable-loongson
 
-TODO:
+don't you ?
 
-   * clean up some of the commits carefully, especially the following
-files:
-   arch/mips/pci/fixup-loongson2*
-   arch/mips/loongson/2f/cs5536* 
-   irq.c, reset.c
 
-   * try to merge the left files if possible.
-   * update it to the latest mainline kernel and push it in.
+I can not compile it :
 
-best regards,
-Wu Zhangjin
+  CC      arch/mips/loongson/common/bonito-irq.o
+  CC      arch/mips/loongson/common/mem.o
+  CC      arch/mips/loongson/common/dbg_io.o
+cc1: warnings being treated as errors
+arch/mips/loongson/common/dbg_io.c: In function �prom_printf
+arch/mips/loongson/common/dbg_io.c:178: error: the frame size of 1040
+bytes is larger than 1024 bytes
+make[1]: *** [arch/mips/loongson/common/dbg_io.o] Error 1
+make: *** [arch/mips/loongson/common] Error 2
 
--- 
-Wu Zhangjin
-DSLab, Lanzhou University, China
-www.lemote.com, Jiangsu Province, China
+I have used the config file from here :
+arch/mips/configs/yeeloong2f_defconfig
+
+Cheers and thanks for your work !
+
+Erwan

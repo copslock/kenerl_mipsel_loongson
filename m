@@ -1,272 +1,137 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2009 06:41:42 +0100 (BST)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:8636 "EHLO
-	roarinelk.homelinux.net") by ftp.linux-mips.org with ESMTP
-	id S20023422AbZDXFl3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 24 Apr 2009 06:41:29 +0100
-Received: (qmail 7141 invoked by uid 1000); 24 Apr 2009 07:41:28 +0200
-Date:	Fri, 24 Apr 2009 07:41:28 +0200
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	Linux-MIPS <linux-mips@linux-mips.org>
-Cc:	Ralf Baechle <ralf@linux-mips.org>
-Subject: [RFC PATCH] MIPS: move out Alchemy stuff to separate Makefile
-Message-ID: <20090424054128.GA7093@roarinelk.homelinux.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2009 07:00:22 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:26764 "EHLO h5.dl5rb.org.uk")
+	by ftp.linux-mips.org with ESMTP id S20021400AbZDXGAS (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 24 Apr 2009 07:00:18 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n3O60HO7024935;
+	Fri, 24 Apr 2009 08:00:17 +0200
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n3O60FnB024932;
+	Fri, 24 Apr 2009 08:00:15 +0200
+Date:	Fri, 24 Apr 2009 08:00:15 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Manuel Lauss <mano@roarinelk.homelinux.net>
+Cc:	Linux-MIPS <linux-mips@linux-mips.org>,
+	Sam Ravnborg <sam@ravnborg.org>
+Subject: Re: [RFC PATCH] MIPS: move out Alchemy stuff to separate Makefile
+Message-ID: <20090424060015.GA24625@linux-mips.org>
+References: <20090424054128.GA7093@roarinelk.homelinux.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <mano@roarinelk.homelinux.net>
+In-Reply-To: <20090424054128.GA7093@roarinelk.homelinux.net>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22458
+X-archive-position: 22459
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Move Makefile information on all Alchemy boards to a separate file
-in the arch subdir.
+On Fri, Apr 24, 2009 at 07:41:28AM +0200, Manuel Lauss wrote:
 
-Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
----
-Applies on top of my Alchemy-gpio patches;  builds and runs fine on a few
-different alchemy systems.  It seems nicer to not have to modify the main
-mips makefile when adding new alchemy boards. What do you all think?
+> Move Makefile information on all Alchemy boards to a separate file
+> in the arch subdir.
+> 
+> Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
+> ---
+> Applies on top of my Alchemy-gpio patches;  builds and runs fine on a few
+> different alchemy systems.  It seems nicer to not have to modify the main
+> mips makefile when adding new alchemy boards. What do you all think?
+> 
+>  arch/mips/Makefile         |  104 +------------------------------------------
+>  arch/mips/alchemy/Makefile |  106 ++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 108 insertions(+), 102 deletions(-)
+>  create mode 100644 arch/mips/alchemy/Makefile
 
- arch/mips/Makefile         |  104 +------------------------------------------
- arch/mips/alchemy/Makefile |  106 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 108 insertions(+), 102 deletions(-)
- create mode 100644 arch/mips/alchemy/Makefile
+I think Sam Ravnbord has written something like the grand plan for the
+cleanup a few days ago; I append his mail below.
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 676f8d4..91740f2 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -180,109 +180,9 @@ cflags-$(CONFIG_MACH_JAZZ)	+= -I$(srctree)/arch/mips/include/asm/mach-jazz
- load-$(CONFIG_MACH_JAZZ)	+= 0xffffffff80080000
- 
- #
--# Common Alchemy Au1x00 stuff
-+# Alchemy-based systems
- #
--core-$(CONFIG_SOC_AU1X00)	+= arch/mips/alchemy/common/
--
--#
--# AMD Alchemy Pb1000 eval board
--#
--core-$(CONFIG_MIPS_PB1000)	+= arch/mips/alchemy/devboards/
--cflags-$(CONFIG_MIPS_PB1000)	+= -I$(srctree)/arch/mips/include/asm/mach-pb1x00
--load-$(CONFIG_MIPS_PB1000)	+= 0xffffffff80100000
--
--#
--# AMD Alchemy Pb1100 eval board
--#
--core-$(CONFIG_MIPS_PB1100)	+= arch/mips/alchemy/devboards/
--cflags-$(CONFIG_MIPS_PB1100)	+= -I$(srctree)/arch/mips/include/asm/mach-pb1x00
--load-$(CONFIG_MIPS_PB1100)	+= 0xffffffff80100000
--
--#
--# AMD Alchemy Pb1500 eval board
--#
--core-$(CONFIG_MIPS_PB1500)	+= arch/mips/alchemy/devboards/
--cflags-$(CONFIG_MIPS_PB1500)	+= -I$(srctree)/arch/mips/include/asm/mach-pb1x00
--load-$(CONFIG_MIPS_PB1500)	+= 0xffffffff80100000
--
--#
--# AMD Alchemy Pb1550 eval board
--#
--core-$(CONFIG_MIPS_PB1550)	+= arch/mips/alchemy/devboards/
--cflags-$(CONFIG_MIPS_PB1550)	+= -I$(srctree)/arch/mips/include/asm/mach-pb1x00
--load-$(CONFIG_MIPS_PB1550)	+= 0xffffffff80100000
--
--#
--# AMD Alchemy Pb1200 eval board
--#
--core-$(CONFIG_MIPS_PB1200)	+= arch/mips/alchemy/devboards/
--cflags-$(CONFIG_MIPS_PB1200)	+= -I$(srctree)/arch/mips/include/asm/mach-pb1x00
--load-$(CONFIG_MIPS_PB1200)	+= 0xffffffff80100000
--
--#
--# AMD Alchemy Db1000 eval board
--#
--core-$(CONFIG_MIPS_DB1000)	+= arch/mips/alchemy/devboards/
--cflags-$(CONFIG_MIPS_DB1000)	+= -I$(srctree)/arch/mips/include/asm/mach-db1x00
--load-$(CONFIG_MIPS_DB1000)	+= 0xffffffff80100000
--
--#
--# AMD Alchemy Db1100 eval board
--#
--core-$(CONFIG_MIPS_DB1100)	+= arch/mips/alchemy/devboards/
--cflags-$(CONFIG_MIPS_DB1100)	+= -I$(srctree)/arch/mips/include/asm/mach-db1x00
--load-$(CONFIG_MIPS_DB1100)	+= 0xffffffff80100000
--
--#
--# AMD Alchemy Db1500 eval board
--#
--core-$(CONFIG_MIPS_DB1500)	+= arch/mips/alchemy/devboards/
--cflags-$(CONFIG_MIPS_DB1500)	+= -I$(srctree)/arch/mips/include/asm/mach-db1x00
--load-$(CONFIG_MIPS_DB1500)	+= 0xffffffff80100000
--
--#
--# AMD Alchemy Db1550 eval board
--#
--core-$(CONFIG_MIPS_DB1550)	+= arch/mips/alchemy/devboards/
--cflags-$(CONFIG_MIPS_DB1550)	+= -I$(srctree)/arch/mips/include/asm/mach-db1x00
--load-$(CONFIG_MIPS_DB1550)	+= 0xffffffff80100000
--
--#
--# AMD Alchemy Db1200 eval board
--#
--core-$(CONFIG_MIPS_DB1200)	+= arch/mips/alchemy/devboards/
--cflags-$(CONFIG_MIPS_DB1200)	+= -I$(srctree)/arch/mips/include/asm/mach-db1x00
--load-$(CONFIG_MIPS_DB1200)	+= 0xffffffff80100000
--
--#
--# AMD Alchemy Bosporus eval board
--#
--core-$(CONFIG_MIPS_BOSPORUS)	+= arch/mips/alchemy/devboards/
--cflags-$(CONFIG_MIPS_BOSPORUS)	+= -I$(srctree)/arch/mips/include/asm/mach-db1x00
--load-$(CONFIG_MIPS_BOSPORUS)	+= 0xffffffff80100000
--
--#
--# AMD Alchemy Mirage eval board
--#
--core-$(CONFIG_MIPS_MIRAGE)	+= arch/mips/alchemy/devboards/
--cflags-$(CONFIG_MIPS_MIRAGE)	+= -I$(srctree)/arch/mips/include/asm/mach-db1x00
--load-$(CONFIG_MIPS_MIRAGE)	+= 0xffffffff80100000
--
--#
--# 4G-Systems eval board
--#
--libs-$(CONFIG_MIPS_MTX1)	+= arch/mips/alchemy/mtx-1/
--load-$(CONFIG_MIPS_MTX1)	+= 0xffffffff80100000
--
--#
--# MyCable eval board
--#
--libs-$(CONFIG_MIPS_XXS1500)	+= arch/mips/alchemy/xxs1500/
--load-$(CONFIG_MIPS_XXS1500)	+= 0xffffffff80100000
--
--# must be last for Alchemy systems for GPIO to work properly
--cflags-$(CONFIG_SOC_AU1X00)	+= -I$(srctree)/arch/mips/include/asm/mach-au1x00
--
-+include $(srctree)/arch/mips/alchemy/Makefile
- 
- #
- # Cobalt Server
-diff --git a/arch/mips/alchemy/Makefile b/arch/mips/alchemy/Makefile
-new file mode 100644
-index 0000000..19c79fa
---- /dev/null
-+++ b/arch/mips/alchemy/Makefile
-@@ -0,0 +1,106 @@
-+#
-+# Common Alchemy Au1x00 stuff
-+#
-+# NOTE: this file is included by the MIPS Makefile!
-+#
-+
-+core-$(CONFIG_SOC_AU1X00)	+= arch/mips/alchemy/common/
-+
-+#
-+# AMD Alchemy Pb1000 eval board
-+#
-+core-$(CONFIG_MIPS_PB1000)	+= arch/mips/alchemy/devboards/
-+cflags-$(CONFIG_MIPS_PB1000)	+= -I$(srctree)/arch/mips/include/asm/mach-pb1x00
-+load-$(CONFIG_MIPS_PB1000)	+= 0xffffffff80100000
-+
-+#
-+# AMD Alchemy Pb1100 eval board
-+#
-+core-$(CONFIG_MIPS_PB1100)	+= arch/mips/alchemy/devboards/
-+cflags-$(CONFIG_MIPS_PB1100)	+= -I$(srctree)/arch/mips/include/asm/mach-pb1x00
-+load-$(CONFIG_MIPS_PB1100)	+= 0xffffffff80100000
-+
-+#
-+# AMD Alchemy Pb1500 eval board
-+#
-+core-$(CONFIG_MIPS_PB1500)	+= arch/mips/alchemy/devboards/
-+cflags-$(CONFIG_MIPS_PB1500)	+= -I$(srctree)/arch/mips/include/asm/mach-pb1x00
-+load-$(CONFIG_MIPS_PB1500)	+= 0xffffffff80100000
-+
-+#
-+# AMD Alchemy Pb1550 eval board
-+#
-+core-$(CONFIG_MIPS_PB1550)	+= arch/mips/alchemy/devboards/
-+cflags-$(CONFIG_MIPS_PB1550)	+= -I$(srctree)/arch/mips/include/asm/mach-pb1x00
-+load-$(CONFIG_MIPS_PB1550)	+= 0xffffffff80100000
-+
-+#
-+# AMD Alchemy Pb1200 eval board
-+#
-+core-$(CONFIG_MIPS_PB1200)	+= arch/mips/alchemy/devboards/
-+cflags-$(CONFIG_MIPS_PB1200)	+= -I$(srctree)/arch/mips/include/asm/mach-pb1x00
-+load-$(CONFIG_MIPS_PB1200)	+= 0xffffffff80100000
-+
-+#
-+# AMD Alchemy Db1000 eval board
-+#
-+core-$(CONFIG_MIPS_DB1000)	+= arch/mips/alchemy/devboards/
-+cflags-$(CONFIG_MIPS_DB1000)	+= -I$(srctree)/arch/mips/include/asm/mach-db1x00
-+load-$(CONFIG_MIPS_DB1000)	+= 0xffffffff80100000
-+
-+#
-+# AMD Alchemy Db1100 eval board
-+#
-+core-$(CONFIG_MIPS_DB1100)	+= arch/mips/alchemy/devboards/
-+cflags-$(CONFIG_MIPS_DB1100)	+= -I$(srctree)/arch/mips/include/asm/mach-db1x00
-+load-$(CONFIG_MIPS_DB1100)	+= 0xffffffff80100000
-+
-+#
-+# AMD Alchemy Db1500 eval board
-+#
-+core-$(CONFIG_MIPS_DB1500)	+= arch/mips/alchemy/devboards/
-+cflags-$(CONFIG_MIPS_DB1500)	+= -I$(srctree)/arch/mips/include/asm/mach-db1x00
-+load-$(CONFIG_MIPS_DB1500)	+= 0xffffffff80100000
-+
-+#
-+# AMD Alchemy Db1550 eval board
-+#
-+core-$(CONFIG_MIPS_DB1550)	+= arch/mips/alchemy/devboards/
-+cflags-$(CONFIG_MIPS_DB1550)	+= -I$(srctree)/arch/mips/include/asm/mach-db1x00
-+load-$(CONFIG_MIPS_DB1550)	+= 0xffffffff80100000
-+
-+#
-+# AMD Alchemy Db1200 eval board
-+#
-+core-$(CONFIG_MIPS_DB1200)	+= arch/mips/alchemy/devboards/
-+cflags-$(CONFIG_MIPS_DB1200)	+= -I$(srctree)/arch/mips/include/asm/mach-db1x00
-+load-$(CONFIG_MIPS_DB1200)	+= 0xffffffff80100000
-+
-+#
-+# AMD Alchemy Bosporus eval board
-+#
-+core-$(CONFIG_MIPS_BOSPORUS)	+= arch/mips/alchemy/devboards/
-+cflags-$(CONFIG_MIPS_BOSPORUS)	+= -I$(srctree)/arch/mips/include/asm/mach-db1x00
-+load-$(CONFIG_MIPS_BOSPORUS)	+= 0xffffffff80100000
-+
-+#
-+# AMD Alchemy Mirage eval board
-+#
-+core-$(CONFIG_MIPS_MIRAGE)	+= arch/mips/alchemy/devboards/
-+cflags-$(CONFIG_MIPS_MIRAGE)	+= -I$(srctree)/arch/mips/include/asm/mach-db1x00
-+load-$(CONFIG_MIPS_MIRAGE)	+= 0xffffffff80100000
-+
-+#
-+# 4G-Systems eval board
-+#
-+core-$(CONFIG_MIPS_MTX1)	+= arch/mips/alchemy/mtx-1/
-+load-$(CONFIG_MIPS_MTX1)	+= 0xffffffff80100000
-+
-+#
-+# MyCable eval board
-+#
-+core-$(CONFIG_MIPS_XXS1500)	+= arch/mips/alchemy/xxs1500/
-+load-$(CONFIG_MIPS_XXS1500)	+= 0xffffffff80100000
-+
-+# must be last in case board has provided alternative gpio.h header
-+cflags-$(CONFIG_SOC_AU1X00)	+= -I$(srctree)/arch/mips/include/asm/mach-au1x00
--- 
-1.6.2.3
+  Ralf
+
+Date:	Tue, 21 Apr 2009 21:43:43 +0200
+From:	Sam Ravnborg <sam@ravnborg.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-arch@vger.kernel.org
+Subject: Re: introduce arch/$ARCH/Kbuild ?
+Message-ID: <20090421194343.GA24535@uranus.ravnborg.org>
+References: <20090416183701.GA5810@uranus.ravnborg.org> <20090421131430.GA25098@linux-mips.org>
+In-Reply-To: <20090421131430.GA25098@linux-mips.org>
+
+> 
+> Most of arch/mips uses -Werror these days and while painful at times it
+> keeps everybody on their toes hopefully cleaner, less buggy code.  So if
+> your solution allows adding -Werror to all subdirs automatically with
+> a mechanism to remove -Werror from a few selected dirs then I'm interested.
+
+It is already present in mainline - so go wild.
+
+I took a look at mips.
+mips supports an impressive amount of platform/boards.
+The has resulted in lines like the following in the arch Makefile:
+
+core-$(CONFIG_SGI_IP32)         += arch/mips/sgi-ip32/
+cflags-$(CONFIG_SGI_IP32)       += -I$(srctree)/arch/mips/include/asm/mach-ip32
+load-$(CONFIG_SGI_IP32)         += 0xffffffff80004000
+
+But this is less then optimal. If two people add a paltform you will
+have a merge issue.
+And centralize information like that is also questionable.
+
+mips would be better suited if you had all sgi_ip32 information located
+in a single directory.
+
+How about a setup like this:
+
+arch/mips/sgi_ip32/Platform:
+platfrom-y                      += arch/mips/sgi-ip32/
+cflags-$(CONFIG_SGI_IP32)       += -I$(srctree)/arch/mips/include/asm/mach-ip32
+load-$(CONFIG_SGI_IP32)         += 0xffffffff80004000
+
+
+arch/mips/Kbuild.platforms:
+#All platforms listed in alphabetic order
+platforms-y += lasat/
+platforms-y += sgi_ip32/
+
+#include the platform specific files
+include $(patsubst %, arch/misp/%Platform)
+
+
+arch/mips/Kbuild:
+subdir-ccflags-y := -Werror
+
+include arch/mips/Kbuild.platforms
+obj-y += $(platform-y)
+
+obj-y +=  arch/mips/kernel/ arch/mips/mm/ arch/mips/math-emu/
+
+
+arch/mips/Makefile:
+core-y += arch/mips/
+include arch/mips/Kbuild.platforms
+
+
+
+The above does a few things:
+1) It decentralize the plaform stuff (to the Platform files)
+2) In troduces a arch/mips/Kbuild file that specify everything
+   that is linked in as core-y
+3) It adds a single subdir-ccflags-y := -Werror that covers
+   all platforms and the core part of the kernel
+   (Everything specified in arch/mips/Kbuild)
+4) It reuses Kbuild.platforms in Kbuild and
+   in Makefile.
+   In Makefile it is used to find ccflags-y
+   and load-y definitions.
+   In Kbuild it is used to find the objects to add to obj-y.
+
+
+The above is entirely untested - but I hope to have adressed the principles.
+
+	Sam

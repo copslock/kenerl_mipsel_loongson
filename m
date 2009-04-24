@@ -1,44 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2009 02:46:49 +0100 (BST)
-Received: from mail-gx0-f157.google.com ([209.85.217.157]:18355 "EHLO
-	mail-gx0-f157.google.com") by ftp.linux-mips.org with ESMTP
-	id S20021975AbZDXBqe (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 24 Apr 2009 02:46:34 +0100
-Received: by gxk1 with SMTP id 1so1851454gxk.0
-        for <linux-mips@linux-mips.org>; Thu, 23 Apr 2009 18:46:27 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2009 02:54:35 +0100 (BST)
+Received: from yx-out-1718.google.com ([74.125.44.155]:62 "EHLO
+	yx-out-1718.google.com") by ftp.linux-mips.org with ESMTP
+	id S20021971AbZDXBy1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 24 Apr 2009 02:54:27 +0100
+Received: by yx-out-1718.google.com with SMTP id 4so536277yxp.24
+        for <linux-mips@linux-mips.org>; Thu, 23 Apr 2009 18:54:25 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=ILsNZLnJDe3/MHAp5kat1Bzy8d3HoLWNhpiCr5s1OaM=;
-        b=QfafP+lZamrucKoWjuClSJwra+Q6kuy6VRkCqZfPvM7Aoq7zy6ZJBGWg66GWv2XVT+
-         KqHksb+B0L3o5mamBXIgbb6O0feFVqrJUMsZoC3MS4jgbLfvMIgGEPfpOohb2wbKAIhq
-         J1dSw9OvEPzJbXYWdgKc88fsA8cFAzFQEdDpQ=
+        h=domainkey-signature:mime-version:received:date:message-id:subject
+         :from:to:cc:content-type:content-transfer-encoding;
+        bh=Rat3mxqVvqo4+xxx6TeCFBPZCzPTS+urfHEijabHWKg=;
+        b=uDMethAZ8GSxWmrIqL6LV4/ZwaIpqxYioPAZtKOdmcfUVPcnaRmx+p9DMWBP7G0TLz
+         JinyCW/+s5fd+YtZw6nT9Xhu9B+Q09ch8YMjH5d+Nvpt0WIHmYLnWL2isBc23RvqhA04
+         GTLiQplsFdDWCi35MyEeEohu4YF4+7WcoaZ9A=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=YCQ1sYl0xYW8lA/sb+cFPHlxvjSvUQgwol/KozwQTaX5Jna1Z1t6gxI9UFRktqBFfc
-         IxrdX3m8/6/Na6k/Uxi89u8rN3DIM+BfU9RWlsfSxymCv/20wzqnQKkDZeEz27pieqZf
-         B1OyOCbG0R/u3GONWwo7iJzOe5404Dn7zPnEk=
+        h=mime-version:date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        b=UFuQ9Kl7CcpxHBubDR5kAFQnUpipKmZAp1IYe8SMjwZKqvdl92y3TJF9yjNuoVhH9n
+         1s1s0Ece99MJuaGFoG8EwSnaD0n12a+N/COXzZ2csu5736LX0aL6eRLDeN17IoAeH2bN
+         //wvGAO7+77kcEBZLBGiVFvYkIE0d8Ksw7hB8=
 MIME-Version: 1.0
-Received: by 10.151.121.11 with SMTP id y11mr1443118ybm.106.1240537587837; 
-	Thu, 23 Apr 2009 18:46:27 -0700 (PDT)
-In-Reply-To: <0483452db22e72f57289e63fcf097120d94c2a37.1240533480.git@localhost>
-References: <0483452db22e72f57289e63fcf097120d94c2a37.1240533480.git@localhost>
-Date:	Fri, 24 Apr 2009 09:46:27 +0800
-Message-ID: <777f39b10904231846v1d5419bby3deaebd826848e1a@mail.gmail.com>
-Subject: Re: [PATCH 0/3] MIPS: Extend plat_* abstractions, cache support
+Received: by 10.151.131.2 with SMTP id i2mr1493887ybn.206.1240538064744; Thu, 
+	23 Apr 2009 18:54:24 -0700 (PDT)
+Date:	Fri, 24 Apr 2009 09:54:24 +0800
+Message-ID: <777f39b10904231854m13605b8ayf4ff89e9a853c077@mail.gmail.com>
+Subject: kernel panic when resume ( I am porting suspend2 patch into MIPS 
+	architecture)
 From:	Bob Zhang <2004.zhang@gmail.com>
-To:	linux-mips@linux-mips.org
-Cc:	linux-kernel@vger.kernel.org
+To:	alex@alexlab.net
+Cc:	linux-mips@linux-mips.org,
+	"bob.zhang2004" <bob.zhang2004@gmail.com>,
+	Bob Zhang <2004.zhang@gmail.com>
 Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 7bit
 Return-Path: <2004.zhang@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22454
+X-archive-position: 22455
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,6 +46,19 @@ X-original-sender: 2004.zhang@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi alex ,
+
+from this url :
+http://www.linux-mips.org/archives/linux-mips/2007-11/msg00034.html ,I
+am very happly to know you are doing similar thing , it is too good
+for me.
+I want to know if you have fixed this bug ?
+
+now I have the similar bug. any comments will be welcome.
+thanks a lot.
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++
 Now , I have ported suspend2 code (based on 2.4.21 patch) into mips
 architecture, my kernel version is 2.4.21.
 

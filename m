@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2009 01:45:59 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:62998 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Apr 2009 01:46:28 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:62742 "EHLO
 	mail3.caviumnetworks.com") by ftp.linux-mips.org with ESMTP
-	id S20021649AbZDXApu (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 24 Apr 2009 01:45:50 +0100
+	id S20021638AbZDXApy (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 24 Apr 2009 01:45:54 +0100
 Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B49f10bb30001>; Thu, 23 Apr 2009 20:45:39 -0400
+	id <B49f10bb30000>; Thu, 23 Apr 2009 20:45:39 -0400
 Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 23 Apr 2009 17:44:44 -0700
+	 Thu, 23 Apr 2009 17:44:42 -0700
 Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 23 Apr 2009 17:44:43 -0700
+	 Thu, 23 Apr 2009 17:44:42 -0700
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n3O0id2t025326;
+	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n3O0idpL025322;
 	Thu, 23 Apr 2009 17:44:39 -0700
 Received: (from ddaney@localhost)
-	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n3O0id2I025325;
-	Thu, 23 Apr 2009 17:44:39 -0700
+	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n3O0icHU025320;
+	Thu, 23 Apr 2009 17:44:38 -0700
 From:	David Daney <ddaney@caviumnetworks.com>
 To:	linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:	David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH 2/2] MIPS: Add Cavium OCTEON PCI support.
-Date:	Thu, 23 Apr 2009 17:44:38 -0700
-Message-Id: <1240533878-25296-2-git-send-email-ddaney@caviumnetworks.com>
+Subject: [PATCH 1/2] MIPS: Add register definitions for PCI.
+Date:	Thu, 23 Apr 2009 17:44:37 -0700
+Message-Id: <1240533878-25296-1-git-send-email-ddaney@caviumnetworks.com>
 X-Mailer: git-send-email 1.6.0.6
 In-Reply-To: <49F10B38.7070808@caviumnetworks.com>
 References: <49F10B38.7070808@caviumnetworks.com>
-X-OriginalArrivalTime: 24 Apr 2009 00:44:43.0939 (UTC) FILETIME=[DC159730:01C9C475]
+X-OriginalArrivalTime: 24 Apr 2009 00:44:42.0064 (UTC) FILETIME=[DAF77D00:01C9C475]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22446
+X-archive-position: 22447
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -37,414 +37,33 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-This patch adds support for PCI and PCIe to the base Cavium OCTEON
-processor support.
+Here we add the register definitions for the processor blocks used by
+the following PCI support patch.
 
 Signed-off-by: David Daney <ddaney@caviumnetworks.com>
 ---
- arch/mips/Kconfig                                  |    2 +
- arch/mips/cavium-octeon/Makefile                   |    4 +
- arch/mips/cavium-octeon/dma-octeon.c               |  311 +++++-
- arch/mips/cavium-octeon/executive/Makefile         |    1 +
- .../cavium-octeon/executive/cvmx-helper-errata.c   |   70 +
- .../cavium-octeon/executive/cvmx-helper-jtag.c     |  144 ++
- arch/mips/cavium-octeon/msi.c                      |  288 ++++
- arch/mips/cavium-octeon/octeon-irq.c               |    2 +
- arch/mips/cavium-octeon/pci-common.c               |  137 ++
- arch/mips/cavium-octeon/pci-common.h               |   39 +
- arch/mips/cavium-octeon/pci.c                      |  568 ++++++++
- arch/mips/cavium-octeon/pcie.c                     | 1370 ++++++++++++++++++++
- arch/mips/include/asm/octeon/cvmx-helper-errata.h  |   33 +
- arch/mips/include/asm/octeon/cvmx-helper-jtag.h    |   43 +
- arch/mips/include/asm/octeon/cvmx.h                |   12 +
- arch/mips/include/asm/octeon/octeon.h              |    2 +
- 16 files changed, 3024 insertions(+), 2 deletions(-)
- create mode 100644 arch/mips/cavium-octeon/executive/cvmx-helper-errata.c
- create mode 100644 arch/mips/cavium-octeon/executive/cvmx-helper-jtag.c
- create mode 100644 arch/mips/cavium-octeon/msi.c
- create mode 100644 arch/mips/cavium-octeon/pci-common.c
- create mode 100644 arch/mips/cavium-octeon/pci-common.h
- create mode 100644 arch/mips/cavium-octeon/pci.c
- create mode 100644 arch/mips/cavium-octeon/pcie.c
- create mode 100644 arch/mips/include/asm/octeon/cvmx-helper-errata.h
- create mode 100644 arch/mips/include/asm/octeon/cvmx-helper-jtag.h
+ arch/mips/include/asm/octeon/cvmx-npei-defs.h    | 2560 ++++++++++++++++++++++
+ arch/mips/include/asm/octeon/cvmx-npi-defs.h     | 1735 +++++++++++++++
+ arch/mips/include/asm/octeon/cvmx-pci-defs.h     | 1645 ++++++++++++++
+ arch/mips/include/asm/octeon/cvmx-pcieep-defs.h  | 1365 ++++++++++++
+ arch/mips/include/asm/octeon/cvmx-pciercx-defs.h | 1397 ++++++++++++
+ arch/mips/include/asm/octeon/cvmx-pescx-defs.h   |  410 ++++
+ arch/mips/include/asm/octeon/cvmx-pexp-defs.h    |  229 ++
+ 7 files changed, 9341 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-npei-defs.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-npi-defs.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-pci-defs.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-pcieep-defs.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-pciercx-defs.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-pescx-defs.h
+ create mode 100644 arch/mips/include/asm/octeon/cvmx-pexp-defs.h
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 09b1287..c4a84a6 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -617,6 +617,8 @@ config CAVIUM_OCTEON_REFERENCE_BOARD
- 	select SYS_HAS_EARLY_PRINTK
- 	select SYS_HAS_CPU_CAVIUM_OCTEON
- 	select SWAP_IO_SPACE
-+	select HW_HAS_PCI
-+	select ARCH_SUPPORTS_MSI
- 	help
- 	  This option supports all of the Octeon reference boards from Cavium
- 	  Networks. It builds a kernel that dynamically determines the Octeon
-diff --git a/arch/mips/cavium-octeon/Makefile b/arch/mips/cavium-octeon/Makefile
-index d6903c3..7c0528b 100644
---- a/arch/mips/cavium-octeon/Makefile
-+++ b/arch/mips/cavium-octeon/Makefile
-@@ -14,5 +14,9 @@ obj-y += dma-octeon.o flash_setup.o
- obj-y += octeon-memcpy.o
- 
- obj-$(CONFIG_SMP)                     += smp.o
-+obj-$(CONFIG_PCI)                     += pci-common.o
-+obj-$(CONFIG_PCI)                     += pci.o
-+obj-$(CONFIG_PCI)                     += pcie.o
-+obj-$(CONFIG_PCI_MSI)                 += msi.o
- 
- EXTRA_CFLAGS += -Werror
-diff --git a/arch/mips/cavium-octeon/dma-octeon.c b/arch/mips/cavium-octeon/dma-octeon.c
-index 01b1ef9..627c162 100644
---- a/arch/mips/cavium-octeon/dma-octeon.c
-+++ b/arch/mips/cavium-octeon/dma-octeon.c
-@@ -13,20 +13,327 @@
-  */
- #include <linux/types.h>
- #include <linux/mm.h>
-+#include <linux/module.h>
-+#include <linux/string.h>
-+#include <linux/dma-mapping.h>
-+#include <linux/platform_device.h>
-+#include <linux/scatterlist.h>
-+
-+#include <linux/cache.h>
-+#include <linux/io.h>
-+
-+#include <asm/octeon/octeon.h>
-+#include <asm/octeon/cvmx-npi-defs.h>
-+#include <asm/octeon/cvmx-pci-defs.h>
- 
- #include <dma-coherence.h>
- 
-+#ifdef CONFIG_PCI
-+#include "pci-common.h"
-+#endif
-+
-+#define BAR2_PCI_ADDRESS 0x8000000000ul
-+
-+struct bar1_index_state {
-+	int16_t ref_count;	/* Number of PCI mappings using this index */
-+	uint16_t address_bits;	/* Upper bits of physical address. This is
-+				   shifted 22 bits */
-+};
-+
-+#ifdef CONFIG_PCI
-+static DEFINE_SPINLOCK(bar1_lock);
-+static struct bar1_index_state bar1_state[32];
-+#endif
-+
- dma_addr_t octeon_map_dma_mem(struct device *dev, void *ptr, size_t size)
- {
-+#ifndef CONFIG_PCI
- 	/* Without PCI/PCIe this function can be called for Octeon internal
- 	   devices such as USB. These devices all support 64bit addressing */
- 	mb();
- 	return virt_to_phys(ptr);
-+#else
-+	unsigned long flags;
-+	uint64_t dma_mask;
-+	int64_t start_index;
-+	dma_addr_t result = -1;
-+	uint64_t physical = virt_to_phys(ptr);
-+	int64_t index;
-+
-+	mb();
-+	/*
-+	 * Use the DMA masks to determine the allowed memory
-+	 * region. For us it doesn't limit the actual memory, just the
-+	 * address visible over PCI.  Devices with limits need to use
-+	 * lower indexed Bar1 entries.
-+	 */
-+	if (dev) {
-+		dma_mask = dev->coherent_dma_mask;
-+		if (dev->dma_mask)
-+			dma_mask = *dev->dma_mask;
-+	} else {
-+		dma_mask = 0xfffffffful;
-+	}
-+
-+	/*
-+	 * Platform devices, such as the internal USB, skip all
-+	 * translation and use Octeon physical addresses directly.
-+	 */
-+	if (!dev || dev->bus == &platform_bus_type)
-+		return physical;
-+
-+	switch (octeon_dma_bar_type) {
-+	case OCTEON_DMA_BAR_TYPE_PCIE:
-+		if (unlikely(physical < (16ul << 10)))
-+			panic("dma_map_single: Not allowed to map first 16KB."
-+			      " It interferes with BAR0 special area\n");
-+		else if ((physical + size >= (256ul << 20)) &&
-+			 (physical < (512ul << 20)))
-+			panic("dma_map_single: Not allowed to map bootbus\n");
-+		else if ((physical + size >= 0x400000000ull) &&
-+			 physical < 0x410000000ull)
-+			panic("dma_map_single: "
-+			      "Attempt to map illegal memory address 0x%llx\n",
-+			      physical);
-+		else if (physical >= 0x420000000ull)
-+			panic("dma_map_single: "
-+			      "Attempt to map illegal memory address 0x%llx\n",
-+			      physical);
-+		else if ((physical + size >=
-+			  (4ull<<30) - (OCTEON_PCI_BAR1_HOLE_SIZE<<20))
-+			 && physical < (4ull<<30))
-+			pr_warning("dma_map_single: Warning: "
-+				   "Mapping memory address that might "
-+				   "conflict with devices 0x%llx-0x%llx\n",
-+				   physical, physical+size-1);
-+		/* The 2nd 256MB is mapped at 256<<20 instead of 0x410000000 */
-+		if ((physical >= 0x410000000ull) && physical < 0x420000000ull)
-+			result = physical - 0x400000000ull;
-+		else
-+			result = physical;
-+		if (((result+size-1) & dma_mask) != result+size-1)
-+			panic("dma_map_single: Attempt to map address "
-+			      "0x%llx-0x%llx, which can't be accessed "
-+			      "according to the dma mask 0x%llx\n",
-+			      physical, physical+size-1, dma_mask);
-+		goto done;
-+
-+	case OCTEON_DMA_BAR_TYPE_BIG:
-+#ifdef CONFIG_64BIT
-+		/* If the device supports 64bit addressing, then use BAR2 */
-+		if (dma_mask > BAR2_PCI_ADDRESS) {
-+			result = physical + BAR2_PCI_ADDRESS;
-+			goto done;
-+		}
-+#endif
-+		if (unlikely(physical < (4ul << 10))) {
-+			panic("dma_map_single: Not allowed to map first 4KB. "
-+			      "It interferes with BAR0 special area\n");
-+		} else if (physical < (256ul << 20)) {
-+			if (unlikely(physical + size > (256ul << 20)))
-+				panic("dma_map_single: Requested memory spans "
-+				      "Bar0 0:256MB and bootbus\n");
-+			result = physical;
-+			goto done;
-+		} else if (unlikely(physical < (512ul << 20))) {
-+			panic("dma_map_single: Not allowed to map bootbus\n");
-+		} else if (physical < (2ul << 30)) {
-+			if (unlikely(physical + size > (2ul << 30)))
-+				panic("dma_map_single: Requested memory spans "
-+				      "Bar0 512MB:2GB and BAR1\n");
-+			result = physical;
-+			goto done;
-+		} else if (physical < (2ul << 30) + (128 << 20)) {
-+			/* Fall through */
-+		} else if (physical <
-+			   (4ul << 30) - (OCTEON_PCI_BAR1_HOLE_SIZE << 20)) {
-+			if (unlikely
-+			    (physical + size >
-+			     (4ul << 30) - (OCTEON_PCI_BAR1_HOLE_SIZE << 20)))
-+				panic("dma_map_single: Requested memory "
-+				      "extends past Bar1 (4GB-%luMB)\n",
-+				      OCTEON_PCI_BAR1_HOLE_SIZE);
-+			result = physical;
-+			goto done;
-+		} else if ((physical >= 0x410000000ull) &&
-+			   (physical < 0x420000000ull)) {
-+			if (unlikely(physical + size > 0x420000000ull))
-+				panic("dma_map_single: Requested memory spans "
-+				      "non existant memory\n");
-+			/* BAR0 fixed mapping 256MB:512MB ->
-+			 * 16GB+256MB:16GB+512MB */
-+			result = physical - 0x400000000ull;
-+			goto done;
-+		} else {
-+			/* Continued below switch statement */
-+		}
-+		break;
-+
-+	case OCTEON_DMA_BAR_TYPE_SMALL:
-+#ifdef CONFIG_64BIT
-+		/* If the device supports 64bit addressing, then use BAR2 */
-+		if (dma_mask > BAR2_PCI_ADDRESS) {
-+			result = physical + BAR2_PCI_ADDRESS;
-+			goto done;
-+		}
-+#endif
-+		/* Continued below switch statement */
-+		break;
-+
-+	default:
-+		panic("dma_map_single: Invalid octeon_dma_bar_type\n");
-+	}
-+
-+	/* Don't allow mapping to span multiple Bar entries. The hardware guys
-+	   won't guarantee that DMA across boards work */
-+	if (unlikely((physical >> 22) != ((physical + size - 1) >> 22)))
-+		panic("dma_map_single: "
-+		      "Requested memory spans more than one Bar1 entry\n");
-+
-+	if (octeon_dma_bar_type == OCTEON_DMA_BAR_TYPE_BIG)
-+		start_index = 31;
-+	else if (unlikely(dma_mask < (1ul << 27)))
-+		start_index = (dma_mask >> 22);
-+	else
-+		start_index = 31;
-+
-+	/* Only one processor can access the Bar register at once */
-+	spin_lock_irqsave(&bar1_lock, flags);
-+
-+	/* Look through Bar1 for existing mapping that will work */
-+	for (index = start_index; index >= 0; index--) {
-+		if ((bar1_state[index].address_bits == physical >> 22) &&
-+		    (bar1_state[index].ref_count)) {
-+			/* An existing mapping will work, use it */
-+			bar1_state[index].ref_count++;
-+			if (unlikely(bar1_state[index].ref_count < 0))
-+				panic("dma_map_single: "
-+				      "Bar1[%d] reference count overflowed\n",
-+				      (int) index);
-+			result = (index << 22) | (physical & ((1 << 22) - 1));
-+			/* Large BAR1 is offset at 2GB */
-+			if (octeon_dma_bar_type == OCTEON_DMA_BAR_TYPE_BIG)
-+				result += 2ul << 30;
-+			goto done_unlock;
-+		}
-+	}
-+
-+	/* No existing mappings, look for a free entry */
-+	for (index = start_index; index >= 0; index--) {
-+		if (unlikely(bar1_state[index].ref_count == 0)) {
-+			union cvmx_pci_bar1_indexx bar1_index;
-+			/* We have a free entry, use it */
-+			bar1_state[index].ref_count = 1;
-+			bar1_state[index].address_bits = physical >> 22;
-+			bar1_index.u32 = 0;
-+			/* Address bits[35:22] sent to L2C */
-+			bar1_index.s.addr_idx = physical >> 22;
-+			/* Don't put PCI accesses in L2. */
-+			bar1_index.s.ca = 1;
-+			/* Endian Swap Mode */
-+			bar1_index.s.end_swp = 1;
-+			/* Set '1' when the selected address range is valid. */
-+			bar1_index.s.addr_v = 1;
-+			octeon_npi_write32(CVMX_NPI_PCI_BAR1_INDEXX(index),
-+					   bar1_index.u32);
-+			/* An existing mapping will work, use it */
-+			result = (index << 22) | (physical & ((1 << 22) - 1));
-+			/* Large BAR1 is offset at 2GB */
-+			if (octeon_dma_bar_type == OCTEON_DMA_BAR_TYPE_BIG)
-+				result += 2ul << 30;
-+			goto done_unlock;
-+		}
-+	}
-+
-+	pr_err("dma_map_single: "
-+	       "Can't find empty BAR1 index for physical mapping 0x%llx\n",
-+	       (unsigned long long) physical);
-+
-+done_unlock:
-+	spin_unlock_irqrestore(&bar1_lock, flags);
-+done:
-+	pr_debug("dma_map_single 0x%llx->0x%llx\n", physical, result);
-+	return result;
-+#endif
- }
- 
- void octeon_unmap_dma_mem(struct device *dev, dma_addr_t dma_addr)
- {
--	/* Without PCI/PCIe this function can be called for Octeon internal
--	 * devices such as USB. These devices all support 64bit addressing */
-+#ifndef CONFIG_PCI
-+	/*
-+	 * Without PCI/PCIe this function can be called for Octeon internal
-+	 * devices such as USB. These devices all support 64bit addressing.
-+	 */
-+	return;
-+#else
-+	unsigned long flags;
-+	uint64_t index;
-+
-+	/*
-+	 * Platform devices, such as the internal USB, skip all
-+	 * translation and use Octeon physical addresses directly.
-+	 */
-+	if (dev->bus == &platform_bus_type)
-+		return;
-+
-+	switch (octeon_dma_bar_type) {
-+	case OCTEON_DMA_BAR_TYPE_PCIE:
-+		/* Nothing to do, all mappings are static */
-+		goto done;
-+
-+	case OCTEON_DMA_BAR_TYPE_BIG:
-+#ifdef CONFIG_64BIT
-+		/* Nothing to do for addresses using BAR2 */
-+		if (dma_addr >= BAR2_PCI_ADDRESS)
-+			goto done;
-+#endif
-+		if (unlikely(dma_addr < (4ul << 10)))
-+			panic("dma_unmap_single: Unexpect DMA address 0x%llx\n",
-+			      dma_addr);
-+		else if (dma_addr < (2ul << 30))
-+			/* Nothing to do for addresses using BAR0 */
-+			goto done;
-+		else if (dma_addr < (2ul << 30) + (128ul << 20))
-+			/* Need to unmap, fall through */
-+			index = (dma_addr - (2ul << 30)) >> 22;
-+		else if (dma_addr <
-+			 (4ul << 30) - (OCTEON_PCI_BAR1_HOLE_SIZE << 20))
-+			goto done;	/* Nothing to do for the rest of BAR1 */
-+		else
-+			panic("dma_unmap_single: Unexpect DMA address 0x%llx\n",
-+			      dma_addr);
-+		/* Continued below switch statement */
-+		break;
-+
-+	case OCTEON_DMA_BAR_TYPE_SMALL:
-+#ifdef CONFIG_64BIT
-+		/* Nothing to do for addresses using BAR2 */
-+		if (dma_addr >= BAR2_PCI_ADDRESS)
-+			goto done;
-+#endif
-+		index = dma_addr >> 22;
-+		/* Continued below switch statement */
-+		break;
-+
-+	default:
-+		panic("dma_unmap_single: Invalid octeon_dma_bar_type\n");
-+	}
-+
-+	if (unlikely(index > 31))
-+		panic("dma_unmap_single: "
-+		      "Attempt to unmap an invalid address (0x%llx)\n",
-+		      dma_addr);
-+
-+	spin_lock_irqsave(&bar1_lock, flags);
-+	bar1_state[index].ref_count--;
-+	if (bar1_state[index].ref_count == 0)
-+		octeon_npi_write32(CVMX_NPI_PCI_BAR1_INDEXX(index), 0);
-+	else if (unlikely(bar1_state[index].ref_count < 0))
-+		panic("dma_unmap_single: Bar1[%u] reference count < 0\n",
-+		      (int) index);
-+	spin_unlock_irqrestore(&bar1_lock, flags);
-+done:
-+	pr_debug("dma_unmap_single 0x%llx\n", dma_addr);
- 	return;
-+#endif
- }
-diff --git a/arch/mips/cavium-octeon/executive/Makefile b/arch/mips/cavium-octeon/executive/Makefile
-index 80d6cb2..2fd66db 100644
---- a/arch/mips/cavium-octeon/executive/Makefile
-+++ b/arch/mips/cavium-octeon/executive/Makefile
-@@ -11,3 +11,4 @@
- 
- obj-y += cvmx-bootmem.o cvmx-l2c.o cvmx-sysinfo.o octeon-model.o
- 
-+obj-$(CONFIG_PCI) += cvmx-helper-errata.o cvmx-helper-jtag.o
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-errata.c b/arch/mips/cavium-octeon/executive/cvmx-helper-errata.c
+diff --git a/arch/mips/include/asm/octeon/cvmx-npei-defs.h b/arch/mips/include/asm/octeon/cvmx-npei-defs.h
 new file mode 100644
-index 0000000..8fb8205
+index 0000000..4b347bb
 --- /dev/null
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-errata.c
-@@ -0,0 +1,70 @@
++++ b/arch/mips/include/asm/octeon/cvmx-npei-defs.h
+@@ -0,0 +1,2560 @@
 +/***********************license start***************
 + * Author: Cavium Networks
 + *
@@ -472,2650 +91,2545 @@ index 0000000..8fb8205
 + * Contact Cavium Networks for more information
 + ***********************license end**************************************/
 +
-+/**
-+ *
-+ * Fixes and workaround for Octeon chip errata. This file
-+ * contains functions called by cvmx-helper to workaround known
-+ * chip errata. For the most part, code doesn't need to call
-+ * these functions directly.
-+ *
-+ */
-+#include <asm/octeon/octeon.h>
-+
-+#include <asm/octeon/cvmx-helper-jtag.h>
-+
-+/**
-+ * Due to errata G-720, the 2nd order CDR circuit on CN52XX pass
-+ * 1 doesn't work properly. The following code disables 2nd order
-+ * CDR for the specified QLM.
-+ *
-+ * @qlm:    QLM to disable 2nd order CDR for.
-+ */
-+void __cvmx_helper_errata_qlm_disable_2nd_order_cdr(int qlm)
-+{
-+	int lane;
-+	cvmx_helper_qlm_jtag_init();
-+	/* We need to load all four lanes of the QLM, a total of 1072 bits */
-+	for (lane = 0; lane < 4; lane++) {
-+		/*
-+		 * Each lane has 268 bits. We need to set
-+		 * cfg_cdr_incx<67:64> = 3 and cfg_cdr_secord<77> =
-+		 * 1. All other bits are zero. Bits go in LSB first,
-+		 * so start off with the zeros for bits <63:0>.
-+		 */
-+		cvmx_helper_qlm_jtag_shift_zeros(qlm, 63 - 0 + 1);
-+		/* cfg_cdr_incx<67:64>=3 */
-+		cvmx_helper_qlm_jtag_shift(qlm, 67 - 64 + 1, 3);
-+		/* Zeros for bits <76:68> */
-+		cvmx_helper_qlm_jtag_shift_zeros(qlm, 76 - 68 + 1);
-+		/* cfg_cdr_secord<77>=1 */
-+		cvmx_helper_qlm_jtag_shift(qlm, 77 - 77 + 1, 1);
-+		/* Zeros for bits <267:78> */
-+		cvmx_helper_qlm_jtag_shift_zeros(qlm, 267 - 78 + 1);
-+	}
-+	cvmx_helper_qlm_jtag_update(qlm);
-+}
-diff --git a/arch/mips/cavium-octeon/executive/cvmx-helper-jtag.c b/arch/mips/cavium-octeon/executive/cvmx-helper-jtag.c
-new file mode 100644
-index 0000000..c1c5489
---- /dev/null
-+++ b/arch/mips/cavium-octeon/executive/cvmx-helper-jtag.c
-@@ -0,0 +1,144 @@
-+
-+/***********************license start***************
-+ * Author: Cavium Networks
-+ *
-+ * Contact: support@caviumnetworks.com
-+ * This file is part of the OCTEON SDK
-+ *
-+ * Copyright (c) 2003-2008 Cavium Networks
-+ *
-+ * This file is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License, Version 2, as
-+ * published by the Free Software Foundation.
-+ *
-+ * This file is distributed in the hope that it will be useful, but
-+ * AS-IS and WITHOUT ANY WARRANTY; without even the implied warranty
-+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE, TITLE, or
-+ * NONINFRINGEMENT.  See the GNU General Public License for more
-+ * details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this file; if not, write to the Free Software
-+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-+ * or visit http://www.gnu.org/licenses/.
-+ *
-+ * This file may also be available under a different license from Cavium.
-+ * Contact Cavium Networks for more information
-+ ***********************license end**************************************/
-+
-+/**
-+ *
-+ * Helper utilities for qlm_jtag.
-+ *
-+ */
-+
-+#include <asm/octeon/octeon.h>
-+#include <asm/octeon/cvmx-helper-jtag.h>
-+
-+
-+/**
-+ * Initialize the internal QLM JTAG logic to allow programming
-+ * of the JTAG chain by the cvmx_helper_qlm_jtag_*() functions.
-+ * These functions should only be used at the direction of Cavium
-+ * Networks. Programming incorrect values into the JTAG chain
-+ * can cause chip damage.
-+ */
-+void cvmx_helper_qlm_jtag_init(void)
-+{
-+	union cvmx_ciu_qlm_jtgc jtgc;
-+	uint32_t clock_div = 0;
-+	uint32_t divisor = cvmx_sysinfo_get()->cpu_clock_hz / (25 * 1000000);
-+	divisor = (divisor - 1) >> 2;
-+	/* Convert the divisor into a power of 2 shift */
-+	while (divisor) {
-+		clock_div++;
-+		divisor = divisor >> 1;
-+	}
-+
-+	/*
-+	 * Clock divider for QLM JTAG operations.  eclk is divided by
-+	 * 2^(CLK_DIV + 2)
-+	 */
-+	jtgc.u64 = 0;
-+	jtgc.s.clk_div = clock_div;
-+	jtgc.s.mux_sel = 0;
-+	if (OCTEON_IS_MODEL(OCTEON_CN52XX))
-+		jtgc.s.bypass = 0x3;
-+	else
-+		jtgc.s.bypass = 0xf;
-+	cvmx_write_csr(CVMX_CIU_QLM_JTGC, jtgc.u64);
-+	cvmx_read_csr(CVMX_CIU_QLM_JTGC);
-+}
-+
-+/**
-+ * Write up to 32bits into the QLM jtag chain. Bits are shifted
-+ * into the MSB and out the LSB, so you should shift in the low
-+ * order bits followed by the high order bits. The JTAG chain is
-+ * 4 * 268 bits long, or 1072.
-+ *
-+ * @qlm:    QLM to shift value into
-+ * @bits:   Number of bits to shift in (1-32).
-+ * @data:   Data to shift in. Bit 0 enters the chain first, followed by
-+ *               bit 1, etc.
-+ *
-+ * Returns The low order bits of the JTAG chain that shifted out of the
-+ *         circle.
-+ */
-+uint32_t cvmx_helper_qlm_jtag_shift(int qlm, int bits, uint32_t data)
-+{
-+	union cvmx_ciu_qlm_jtgd jtgd;
-+	jtgd.u64 = 0;
-+	jtgd.s.shift = 1;
-+	jtgd.s.shft_cnt = bits - 1;
-+	jtgd.s.shft_reg = data;
-+	if (!OCTEON_IS_MODEL(OCTEON_CN56XX_PASS1_X))
-+		jtgd.s.select = 1 << qlm;
-+	cvmx_write_csr(CVMX_CIU_QLM_JTGD, jtgd.u64);
-+	do {
-+		jtgd.u64 = cvmx_read_csr(CVMX_CIU_QLM_JTGD);
-+	} while (jtgd.s.shift);
-+	return jtgd.s.shft_reg >> (32 - bits);
-+}
-+
-+/**
-+ * Shift long sequences of zeros into the QLM JTAG chain. It is
-+ * common to need to shift more than 32 bits of zeros into the
-+ * chain. This function is a convience wrapper around
-+ * cvmx_helper_qlm_jtag_shift() to shift more than 32 bits of
-+ * zeros at a time.
-+ *
-+ * @qlm:    QLM to shift zeros into
-+ * @bits:
-+ */
-+void cvmx_helper_qlm_jtag_shift_zeros(int qlm, int bits)
-+{
-+	while (bits > 0) {
-+		int n = bits;
-+		if (n > 32)
-+			n = 32;
-+		cvmx_helper_qlm_jtag_shift(qlm, n, 0);
-+		bits -= n;
-+	}
-+}
-+
-+/**
-+ * Program the QLM JTAG chain into all lanes of the QLM. You must
-+ * have already shifted in 268*4, or 1072 bits into the JTAG
-+ * chain. Updating invalid values can possibly cause chip damage.
-+ *
-+ * @qlm:    QLM to program
-+ */
-+void cvmx_helper_qlm_jtag_update(int qlm)
-+{
-+	union cvmx_ciu_qlm_jtgd jtgd;
-+
-+	/* Update the new data */
-+	jtgd.u64 = 0;
-+	jtgd.s.update = 1;
-+	if (!OCTEON_IS_MODEL(OCTEON_CN56XX_PASS1_X))
-+		jtgd.s.select = 1 << qlm;
-+	cvmx_write_csr(CVMX_CIU_QLM_JTGD, jtgd.u64);
-+	do {
-+		jtgd.u64 = cvmx_read_csr(CVMX_CIU_QLM_JTGD);
-+	} while (jtgd.s.update);
-+}
-diff --git a/arch/mips/cavium-octeon/msi.c b/arch/mips/cavium-octeon/msi.c
-new file mode 100644
-index 0000000..964b03b
---- /dev/null
-+++ b/arch/mips/cavium-octeon/msi.c
-@@ -0,0 +1,288 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2005-2007 Cavium Networks
-+ */
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/msi.h>
-+#include <linux/spinlock.h>
-+#include <linux/interrupt.h>
-+
-+#include <asm/octeon/octeon.h>
-+#include <asm/octeon/cvmx-npi-defs.h>
-+#include <asm/octeon/cvmx-pci-defs.h>
-+#include <asm/octeon/cvmx-npei-defs.h>
-+#include <asm/octeon/cvmx-pexp-defs.h>
-+
-+#include "pci-common.h"
-+
-+/*
-+ * Each bit in msi_free_irq_bitmask represents a MSI interrupt that is
-+ * in use.
-+ */
-+static uint64_t msi_free_irq_bitmask;
-+
-+/*
-+ * Each bit in msi_multiple_irq_bitmask tells that the device using
-+ * this bit in msi_free_irq_bitmask is also using the next bit. This
-+ * is used so we can disable all of the MSI interrupts when a device
-+ * uses multiple.
-+ */
-+static uint64_t msi_multiple_irq_bitmask;
-+
-+/*
-+ * This lock controls updates to msi_free_irq_bitmask and
-+ * msi_multiple_irq_bitmask.
-+ */
-+static DEFINE_SPINLOCK(msi_free_irq_bitmask_lock);
-+
-+
-+/**
-+ * Called when a driver request MSI interrupts instead of the
-+ * legacy INT A-D. This routine will allocate multiple interrupts
-+ * for MSI devices that support them. A device can override this by
-+ * programming the MSI control bits [6:4] before calling
-+ * pci_enable_msi().
-+ *
-+ * @param dev    Device requesting MSI interrupts
-+ * @param desc   MSI descriptor
-+ *
-+ * Returns 0 on success.
-+ */
-+int arch_setup_msi_irq(struct pci_dev *dev, struct msi_desc *desc)
-+{
-+	struct msi_msg msg;
-+	uint16_t control;
-+	int configured_private_bits;
-+	int request_private_bits;
-+	int irq;
-+	int irq_step;
-+	uint64_t search_mask;
-+
-+	/*
-+	 * Read the MSI config to figure out how many IRQs this device
-+	 * wants.  Most devices only want 1, which will give
-+	 * configured_private_bits and request_private_bits equal 0.
-+	 */
-+	pci_read_config_word(dev, desc->msi_attrib.pos + PCI_MSI_FLAGS,
-+			     &control);
-+
-+	/*
-+	 * If the number of private bits has been configured then use
-+	 * that value instead of the requested number. This gives the
-+	 * driver the chance to override the number of interrupts
-+	 * before calling pci_enable_msi().
-+	 */
-+	configured_private_bits = (control & PCI_MSI_FLAGS_QSIZE) >> 4;
-+	if (configured_private_bits == 0) {
-+		/* Nothing is configured, so use the hardware requested size */
-+		request_private_bits = (control & PCI_MSI_FLAGS_QMASK) >> 1;
-+	} else {
-+		/*
-+		 * Use the number of configured bits, assuming the
-+		 * driver wanted to override the hardware request
-+		 * value.
-+		 */
-+		request_private_bits = configured_private_bits;
-+	}
-+
-+	/*
-+	 * The PCI 2.3 spec mandates that there are at most 32
-+	 * interrupts. If this device asks for more, only give it one.
-+	 */
-+	if (request_private_bits > 5)
-+		request_private_bits = 0;
-+
-+try_only_one:
-+	/*
-+	 * The IRQs have to be aligned on a power of two based on the
-+	 * number being requested.
-+	 */
-+	irq_step = 1 << request_private_bits;
-+
-+	/* Mask with one bit for each IRQ */
-+	search_mask = (1 << irq_step) - 1;
-+
-+	/*
-+	 * We're going to search msi_free_irq_bitmask_lock for zero
-+	 * bits. This represents an MSI interrupt number that isn't in
-+	 * use.
-+	 */
-+	spin_lock(&msi_free_irq_bitmask_lock);
-+	for (irq = 0; irq < 64; irq += irq_step) {
-+		if ((msi_free_irq_bitmask & (search_mask << irq)) == 0) {
-+			msi_free_irq_bitmask |= search_mask << irq;
-+			msi_multiple_irq_bitmask |= (search_mask >> 1) << irq;
-+			break;
-+		}
-+	}
-+	spin_unlock(&msi_free_irq_bitmask_lock);
-+
-+	/* Make sure the search for available interrupts didn't fail */
-+	if (irq >= 64) {
-+		if (request_private_bits) {
-+			pr_err("arch_setup_msi_irq: Unable to find %d free "
-+			       "interrupts, trying just one",
-+			       1 << request_private_bits);
-+			request_private_bits = 0;
-+			goto try_only_one;
-+		} else
-+			panic("arch_setup_msi_irq: Unable to find a free MSI "
-+			      "interrupt");
-+	}
-+
-+	/* MSI interrupts start at logical IRQ OCTEON_IRQ_MSI_BIT0 */
-+	irq += OCTEON_IRQ_MSI_BIT0;
-+
-+	switch (octeon_dma_bar_type) {
-+	case OCTEON_DMA_BAR_TYPE_SMALL:
-+		/* When not using big bar, Bar 0 is based at 128MB */
-+		msg.address_lo =
-+			((128ul << 20) + CVMX_PCI_MSI_RCV) & 0xffffffff;
-+		msg.address_hi = ((128ul << 20) + CVMX_PCI_MSI_RCV) >> 32;
-+	case OCTEON_DMA_BAR_TYPE_BIG:
-+		/* When using big bar, Bar 0 is based at 0 */
-+		msg.address_lo = (0 + CVMX_PCI_MSI_RCV) & 0xffffffff;
-+		msg.address_hi = (0 + CVMX_PCI_MSI_RCV) >> 32;
-+		break;
-+	case OCTEON_DMA_BAR_TYPE_PCIE:
-+		/* When using PCIe, Bar 0 is based at 0 */
-+		/* FIXME CVMX_NPEI_MSI_RCV* other than 0? */
-+		msg.address_lo = (0 + CVMX_NPEI_PCIE_MSI_RCV) & 0xffffffff;
-+		msg.address_hi = (0 + CVMX_NPEI_PCIE_MSI_RCV) >> 32;
-+		break;
-+	default:
-+		panic("arch_setup_msi_irq: Invalid octeon_dma_bar_type\n");
-+	}
-+	msg.data = irq - OCTEON_IRQ_MSI_BIT0;
-+
-+	/* Update the number of IRQs the device has available to it */
-+	control &= ~PCI_MSI_FLAGS_QSIZE;
-+	control |= request_private_bits << 4;
-+	pci_write_config_word(dev, desc->msi_attrib.pos + PCI_MSI_FLAGS,
-+			      control);
-+
-+	set_irq_msi(irq, desc);
-+	write_msi_msg(irq, &msg);
-+	return 0;
-+}
-+
-+
-+/**
-+ * Called when a device no longer needs its MSI interrupts. All
-+ * MSI interrupts for the device are freed.
-+ *
-+ * @irq:    The devices first irq number. There may be multple in sequence.
-+ */
-+void arch_teardown_msi_irq(unsigned int irq)
-+{
-+	int number_irqs;
-+	uint64_t bitmask;
-+
-+	if ((irq < OCTEON_IRQ_MSI_BIT0) || (irq > OCTEON_IRQ_MSI_BIT63))
-+		panic("arch_teardown_msi_irq: Attempted to teardown illegal "
-+		      "MSI interrupt (%d)", irq);
-+	irq -= OCTEON_IRQ_MSI_BIT0;
-+
-+	/*
-+	 * Count the number of IRQs we need to free by looking at the
-+	 * msi_multiple_irq_bitmask. Each bit set means that the next
-+	 * IRQ is also owned by this device.
-+	 */
-+	number_irqs = 0;
-+	while ((irq+number_irqs < 64) &&
-+	       (msi_multiple_irq_bitmask & (1ull << (irq + number_irqs))))
-+		number_irqs++;
-+	number_irqs++;
-+	/* Mask with one bit for each IRQ */
-+	bitmask = (1 << number_irqs) - 1;
-+	/* Shift the mask to the correct bit location */
-+	bitmask <<= irq;
-+	if ((msi_free_irq_bitmask & bitmask) != bitmask)
-+		panic("arch_teardown_msi_irq: Attempted to teardown MSI "
-+		      "interrupt (%d) not in use", irq);
-+
-+	/* Checks are done, update the in use bitmask */
-+	spin_lock(&msi_free_irq_bitmask_lock);
-+	msi_free_irq_bitmask &= ~bitmask;
-+	msi_multiple_irq_bitmask &= ~bitmask;
-+	spin_unlock(&msi_free_irq_bitmask_lock);
-+}
-+
-+
-+/**
-+ * Called by the interrupt handling code when an MSI interrupt
-+ * occurs.
-+ *
-+ * @param cpl
-+ * @param dev_id
-+ *
-+ * @return
-+ */
-+static irqreturn_t octeon_msi_interrupt(int cpl, void *dev_id)
-+{
-+	uint64_t msi_bits;
-+	int irq;
-+
-+	if (octeon_dma_bar_type == OCTEON_DMA_BAR_TYPE_PCIE)
-+		msi_bits = cvmx_read_csr(CVMX_PEXP_NPEI_MSI_RCV0);
-+	else
-+		msi_bits = cvmx_read_csr(CVMX_NPI_NPI_MSI_RCV);
-+	irq = fls64(msi_bits);
-+	if (irq) {
-+		irq += OCTEON_IRQ_MSI_BIT0 - 1;
-+		if (irq_desc[irq].action) {
-+			do_IRQ(irq);
-+			return IRQ_HANDLED;
-+		} else {
-+			pr_err("Spurious MSI interrupt %d\n", irq);
-+			if (octeon_has_feature(OCTEON_FEATURE_PCIE)) {
-+				/* These chips have PCIe */
-+				cvmx_write_csr(CVMX_PEXP_NPEI_MSI_RCV0,
-+					       1ull << (irq -
-+							OCTEON_IRQ_MSI_BIT0));
-+			} else {
-+				/* These chips have PCI */
-+				cvmx_write_csr(CVMX_NPI_NPI_MSI_RCV,
-+					       1ull << (irq -
-+							OCTEON_IRQ_MSI_BIT0));
-+			}
-+		}
-+	}
-+	return IRQ_NONE;
-+}
-+
-+
-+/**
-+ * Initializes the MSI interrupt handling code
-+ *
-+ * @return
-+ */
-+int octeon_msi_initialize(void)
-+{
-+	int r;
-+	if (octeon_has_feature(OCTEON_FEATURE_PCIE)) {
-+		r = request_irq(OCTEON_IRQ_PCI_MSI0, octeon_msi_interrupt,
-+				IRQF_SHARED,
-+				"MSI[0:63]", octeon_msi_interrupt);
-+	} else if (octeon_is_pci_host()) {
-+		r = request_irq(OCTEON_IRQ_PCI_MSI0, octeon_msi_interrupt,
-+				IRQF_SHARED,
-+				"MSI[0:15]", octeon_msi_interrupt);
-+		r += request_irq(OCTEON_IRQ_PCI_MSI1, octeon_msi_interrupt,
-+				 IRQF_SHARED,
-+				 "MSI[16:31]", octeon_msi_interrupt);
-+		r += request_irq(OCTEON_IRQ_PCI_MSI2, octeon_msi_interrupt,
-+				 IRQF_SHARED,
-+				 "MSI[32:47]", octeon_msi_interrupt);
-+		r += request_irq(OCTEON_IRQ_PCI_MSI3, octeon_msi_interrupt,
-+				 IRQF_SHARED,
-+				 "MSI[48:63]", octeon_msi_interrupt);
-+	}
-+	return 0;
-+}
-+
-+subsys_initcall(octeon_msi_initialize);
-diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
-index 1c19af8..7afcd03 100644
---- a/arch/mips/cavium-octeon/octeon-irq.c
-+++ b/arch/mips/cavium-octeon/octeon-irq.c
-@@ -10,6 +10,8 @@
- #include <linux/hardirq.h>
- 
- #include <asm/octeon/octeon.h>
-+#include <asm/octeon/cvmx-pexp-defs.h>
-+#include <asm/octeon/cvmx-npi-defs.h>
- 
- DEFINE_RWLOCK(octeon_irq_ciu0_rwlock);
- DEFINE_RWLOCK(octeon_irq_ciu1_rwlock);
-diff --git a/arch/mips/cavium-octeon/pci-common.c b/arch/mips/cavium-octeon/pci-common.c
-new file mode 100644
-index 0000000..cd029f8
---- /dev/null
-+++ b/arch/mips/cavium-octeon/pci-common.c
-@@ -0,0 +1,137 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2005-2007 Cavium Networks
-+ */
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/pci.h>
-+#include <linux/interrupt.h>
-+#include <linux/time.h>
-+#include <linux/delay.h>
-+#include "pci-common.h"
-+
-+typeof(pcibios_map_irq) *octeon_pcibios_map_irq;
-+enum octeon_dma_bar_type octeon_dma_bar_type = OCTEON_DMA_BAR_TYPE_INVALID;
-+
-+/**
-+ * Map a PCI device to the appropriate interrupt line
-+ *
-+ * @param dev    The Linux PCI device structure for the device to map
-+ * @param slot   The slot number for this device on __BUS 0__. Linux
-+ *               enumerates through all the bridges and figures out the
-+ *               slot on Bus 0 where this device eventually hooks to.
-+ * @param pin    The PCI interrupt pin read from the device, then swizzled
-+ *               as it goes through each bridge.
-+ * @return Interrupt number for the device
-+ */
-+int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-+{
-+	if (octeon_pcibios_map_irq)
-+		return octeon_pcibios_map_irq(dev, slot, pin);
-+	else
-+		panic("octeon_pcibios_map_irq doesn't point to a "
-+		      "pcibios_map_irq() function");
-+}
-+
-+
-+/**
-+ * Called to perform platform specific PCI setup
-+ *
-+ * @param dev
-+ * @return
-+ */
-+int pcibios_plat_dev_init(struct pci_dev *dev)
-+{
-+	uint16_t config;
-+	uint32_t dconfig;
-+	int pos;
-+	/*
-+	 * Force the Cache line setting to 64 bytes. The standard
-+	 * Linux bus scan doesn't seem to set it. Octeon really has
-+	 * 128 byte lines, but Intel bridges get really upset if you
-+	 * try and set values above 64 bytes. Value is specified in
-+	 * 32bit words.
-+	 */
-+	pci_write_config_byte(dev, PCI_CACHE_LINE_SIZE, 64 / 4);
-+	/* Set latency timers for all devices */
-+	pci_write_config_byte(dev, PCI_LATENCY_TIMER, 48);
-+
-+	/* Enable reporting System errors and parity errors on all devices */
-+	/* Enable parity checking and error reporting */
-+	pci_read_config_word(dev, PCI_COMMAND, &config);
-+	config |= PCI_COMMAND_PARITY | PCI_COMMAND_SERR;
-+	pci_write_config_word(dev, PCI_COMMAND, config);
-+
-+	if (dev->subordinate) {
-+		/* Set latency timers on sub bridges */
-+		pci_write_config_byte(dev, PCI_SEC_LATENCY_TIMER, 48);
-+		/* More bridge error detection */
-+		pci_read_config_word(dev, PCI_BRIDGE_CONTROL, &config);
-+		config |= PCI_BRIDGE_CTL_PARITY | PCI_BRIDGE_CTL_SERR;
-+		pci_write_config_word(dev, PCI_BRIDGE_CONTROL, config);
-+	}
-+
-+	/* Enable the PCIe normal error reporting */
-+	pos = pci_find_capability(dev, PCI_CAP_ID_EXP);
-+	if (pos) {
-+		/* Update Device Control */
-+		pci_read_config_word(dev, pos + PCI_EXP_DEVCTL, &config);
-+		/* Correctable Error Reporting */
-+		config |= PCI_EXP_DEVCTL_CERE;
-+		/* Non-Fatal Error Reporting */
-+		config |= PCI_EXP_DEVCTL_NFERE;
-+		/* Fatal Error Reporting */
-+		config |= PCI_EXP_DEVCTL_FERE;
-+		/* Unsupported Request */
-+		config |= PCI_EXP_DEVCTL_URRE;
-+		pci_write_config_word(dev, pos + PCI_EXP_DEVCTL, config);
-+	}
-+
-+	/* Find the Advanced Error Reporting capability */
-+	pos = pci_find_ext_capability(dev, PCI_EXT_CAP_ID_ERR);
-+	if (pos) {
-+		/* Clear Uncorrectable Error Status */
-+		pci_read_config_dword(dev, pos + PCI_ERR_UNCOR_STATUS,
-+				      &dconfig);
-+		pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_STATUS,
-+				       dconfig);
-+		/* Enable reporting of all uncorrectable errors */
-+		/* Uncorrectable Error Mask - turned on bits disable errors */
-+		pci_write_config_dword(dev, pos + PCI_ERR_UNCOR_MASK, 0);
-+		/*
-+		 * Leave severity at HW default. This only controls if
-+		 * errors are reported as uncorrectable or
-+		 * correctable, not if the error is reported.
-+		 */
-+		/* PCI_ERR_UNCOR_SEVER - Uncorrectable Error Severity */
-+		/* Clear Correctable Error Status */
-+		pci_read_config_dword(dev, pos + PCI_ERR_COR_STATUS, &dconfig);
-+		pci_write_config_dword(dev, pos + PCI_ERR_COR_STATUS, dconfig);
-+		/* Enable reporting of all correctable errors */
-+		/* Correctable Error Mask - turned on bits disable errors */
-+		pci_write_config_dword(dev, pos + PCI_ERR_COR_MASK, 0);
-+		/* Advanced Error Capabilities */
-+		pci_read_config_dword(dev, pos + PCI_ERR_CAP, &dconfig);
-+		/* ECRC Generation Enable */
-+		if (config & PCI_ERR_CAP_ECRC_GENC)
-+			config |= PCI_ERR_CAP_ECRC_GENE;
-+		/* ECRC Check Enable */
-+		if (config & PCI_ERR_CAP_ECRC_CHKC)
-+			config |= PCI_ERR_CAP_ECRC_CHKE;
-+		pci_write_config_dword(dev, pos + PCI_ERR_CAP, dconfig);
-+		/* PCI_ERR_HEADER_LOG - Header Log Register (16 bytes) */
-+		/* Report all errors to the root complex */
-+		pci_write_config_dword(dev, pos + PCI_ERR_ROOT_COMMAND,
-+				       PCI_ERR_ROOT_CMD_COR_EN |
-+				       PCI_ERR_ROOT_CMD_NONFATAL_EN |
-+				       PCI_ERR_ROOT_CMD_FATAL_EN);
-+		/* Clear the Root status register */
-+		pci_read_config_dword(dev, pos + PCI_ERR_ROOT_STATUS, &dconfig);
-+		pci_write_config_dword(dev, pos + PCI_ERR_ROOT_STATUS, dconfig);
-+	}
-+
-+	return 0;
-+}
-diff --git a/arch/mips/cavium-octeon/pci-common.h b/arch/mips/cavium-octeon/pci-common.h
-new file mode 100644
-index 0000000..74ae799
---- /dev/null
-+++ b/arch/mips/cavium-octeon/pci-common.h
-@@ -0,0 +1,39 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2005-2007 Cavium Networks
-+ */
-+#ifndef __OCTEON_PCI_COMMON_H__
-+#define __OCTEON_PCI_COMMON_H__
-+
-+#include <linux/pci.h>
-+
-+/* Some PCI cards require delays when accessing config space. */
-+#define PCI_CONFIG_SPACE_DELAY 10000
-+
-+/* pcibios_map_irq() is defined inside pci-common.c. All it does is call the
-+   Octeon specific version pointed to by this variable. This function needs to
-+   change for PCI or PCIe based hosts */
-+extern typeof(pcibios_map_irq) *octeon_pcibios_map_irq;
-+
-+/* The following defines are only used when octeon_dma_bar_type =
-+   OCTEON_DMA_BAR_TYPE_BIG */
-+#define OCTEON_PCI_BAR1_HOLE_BITS 5
-+#define OCTEON_PCI_BAR1_HOLE_SIZE (1ul<<(OCTEON_PCI_BAR1_HOLE_BITS+3))
-+
-+enum octeon_dma_bar_type {
-+	OCTEON_DMA_BAR_TYPE_INVALID,
-+	OCTEON_DMA_BAR_TYPE_SMALL,
-+	OCTEON_DMA_BAR_TYPE_BIG,
-+	OCTEON_DMA_BAR_TYPE_PCIE
-+};
-+
-+/**
-+ * This is a variable to tell the DMA mapping system in dma-octeon.c
-+ * how to map PCI DMA addresses.
-+ */
-+extern enum octeon_dma_bar_type octeon_dma_bar_type;
-+
-+#endif
-diff --git a/arch/mips/cavium-octeon/pci.c b/arch/mips/cavium-octeon/pci.c
-new file mode 100644
-index 0000000..67c0ff5
---- /dev/null
-+++ b/arch/mips/cavium-octeon/pci.c
-@@ -0,0 +1,568 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2005-2007 Cavium Networks
-+ */
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/pci.h>
-+#include <linux/interrupt.h>
-+#include <linux/time.h>
-+#include <linux/delay.h>
-+
-+#include <asm/time.h>
-+
-+#include <asm/octeon/octeon.h>
-+#include <asm/octeon/cvmx-npi-defs.h>
-+#include <asm/octeon/cvmx-pci-defs.h>
-+
-+#include "pci-common.h"
-+
-+#define USE_OCTEON_INTERNAL_ARBITER
-+
-+/*
-+ * Octeon's PCI controller uses did=3, subdid=2 for PCI IO
-+ * addresses. Use PCI endian swapping 1 so no address swapping is
-+ * necessary. The Linux io routines will endian swap the data.
-+ */
-+#define OCTEON_PCI_IOSPACE_BASE     0x80011a0400000000ull
-+#define OCTEON_PCI_IOSPACE_SIZE     (1ull<<32)
-+
-+/* Octeon't PCI controller uses did=3, subdid=3 for PCI memory. */
-+#define OCTEON_PCI_MEMSPACE_OFFSET  (0x00011b0000000000ull)
-+
-+/**
-+ * This is the bit decoding used for the Octeon PCI controller addresses
-+ */
-+union octeon_pci_address {
-+	uint64_t u64;
-+	struct {
-+		uint64_t upper:2;
-+		uint64_t reserved:13;
-+		uint64_t io:1;
-+		uint64_t did:5;
-+		uint64_t subdid:3;
-+		uint64_t reserved2:4;
-+		uint64_t endian_swap:2;
-+		uint64_t reserved3:10;
-+		uint64_t bus:8;
-+		uint64_t dev:5;
-+		uint64_t func:3;
-+		uint64_t reg:8;
++#ifndef __CVMX_NPEI_DEFS_H__
++#define __CVMX_NPEI_DEFS_H__
++
++#define CVMX_NPEI_BAR1_INDEXX(offset) \
++	 (0x0000000000000000ull + (((offset) & 31) * 16))
++#define CVMX_NPEI_BIST_STATUS \
++	 (0x0000000000000580ull)
++#define CVMX_NPEI_BIST_STATUS2 \
++	 (0x0000000000000680ull)
++#define CVMX_NPEI_CTL_PORT0 \
++	 (0x0000000000000250ull)
++#define CVMX_NPEI_CTL_PORT1 \
++	 (0x0000000000000260ull)
++#define CVMX_NPEI_CTL_STATUS \
++	 (0x0000000000000570ull)
++#define CVMX_NPEI_CTL_STATUS2 \
++	 (0x0000000000003C00ull)
++#define CVMX_NPEI_DATA_OUT_CNT \
++	 (0x00000000000005F0ull)
++#define CVMX_NPEI_DBG_DATA \
++	 (0x0000000000000510ull)
++#define CVMX_NPEI_DBG_SELECT \
++	 (0x0000000000000500ull)
++#define CVMX_NPEI_DMA0_INT_LEVEL \
++	 (0x00000000000005C0ull)
++#define CVMX_NPEI_DMA1_INT_LEVEL \
++	 (0x00000000000005D0ull)
++#define CVMX_NPEI_DMAX_COUNTS(offset) \
++	 (0x0000000000000450ull + (((offset) & 7) * 16))
++#define CVMX_NPEI_DMAX_DBELL(offset) \
++	 (0x00000000000003B0ull + (((offset) & 7) * 16))
++#define CVMX_NPEI_DMAX_IBUFF_SADDR(offset) \
++	 (0x0000000000000400ull + (((offset) & 7) * 16))
++#define CVMX_NPEI_DMAX_NADDR(offset) \
++	 (0x00000000000004A0ull + (((offset) & 7) * 16))
++#define CVMX_NPEI_DMA_CNTS \
++	 (0x00000000000005E0ull)
++#define CVMX_NPEI_DMA_CONTROL \
++	 (0x00000000000003A0ull)
++#define CVMX_NPEI_INT_A_ENB \
++	 (0x0000000000000560ull)
++#define CVMX_NPEI_INT_A_ENB2 \
++	 (0x0000000000003CE0ull)
++#define CVMX_NPEI_INT_A_SUM \
++	 (0x0000000000000550ull)
++#define CVMX_NPEI_INT_ENB \
++	 (0x0000000000000540ull)
++#define CVMX_NPEI_INT_ENB2 \
++	 (0x0000000000003CD0ull)
++#define CVMX_NPEI_INT_INFO \
++	 (0x0000000000000590ull)
++#define CVMX_NPEI_INT_SUM \
++	 (0x0000000000000530ull)
++#define CVMX_NPEI_INT_SUM2 \
++	 (0x0000000000003CC0ull)
++#define CVMX_NPEI_LAST_WIN_RDATA0 \
++	 (0x0000000000000600ull)
++#define CVMX_NPEI_LAST_WIN_RDATA1 \
++	 (0x0000000000000610ull)
++#define CVMX_NPEI_MEM_ACCESS_CTL \
++	 (0x00000000000004F0ull)
++#define CVMX_NPEI_MEM_ACCESS_SUBIDX(offset) \
++	 (0x0000000000000340ull + (((offset) & 31) * 16) - 16 * 12)
++#define CVMX_NPEI_MSI_ENB0 \
++	 (0x0000000000003C50ull)
++#define CVMX_NPEI_MSI_ENB1 \
++	 (0x0000000000003C60ull)
++#define CVMX_NPEI_MSI_ENB2 \
++	 (0x0000000000003C70ull)
++#define CVMX_NPEI_MSI_ENB3 \
++	 (0x0000000000003C80ull)
++#define CVMX_NPEI_MSI_RCV0 \
++	 (0x0000000000003C10ull)
++#define CVMX_NPEI_MSI_RCV1 \
++	 (0x0000000000003C20ull)
++#define CVMX_NPEI_MSI_RCV2 \
++	 (0x0000000000003C30ull)
++#define CVMX_NPEI_MSI_RCV3 \
++	 (0x0000000000003C40ull)
++#define CVMX_NPEI_MSI_RD_MAP \
++	 (0x0000000000003CA0ull)
++#define CVMX_NPEI_MSI_W1C_ENB0 \
++	 (0x0000000000003CF0ull)
++#define CVMX_NPEI_MSI_W1C_ENB1 \
++	 (0x0000000000003D00ull)
++#define CVMX_NPEI_MSI_W1C_ENB2 \
++	 (0x0000000000003D10ull)
++#define CVMX_NPEI_MSI_W1C_ENB3 \
++	 (0x0000000000003D20ull)
++#define CVMX_NPEI_MSI_W1S_ENB0 \
++	 (0x0000000000003D30ull)
++#define CVMX_NPEI_MSI_W1S_ENB1 \
++	 (0x0000000000003D40ull)
++#define CVMX_NPEI_MSI_W1S_ENB2 \
++	 (0x0000000000003D50ull)
++#define CVMX_NPEI_MSI_W1S_ENB3 \
++	 (0x0000000000003D60ull)
++#define CVMX_NPEI_MSI_WR_MAP \
++	 (0x0000000000003C90ull)
++#define CVMX_NPEI_PCIE_CREDIT_CNT \
++	 (0x0000000000003D70ull)
++#define CVMX_NPEI_PCIE_MSI_RCV \
++	 (0x0000000000003CB0ull)
++#define CVMX_NPEI_PCIE_MSI_RCV_B1 \
++	 (0x0000000000000650ull)
++#define CVMX_NPEI_PCIE_MSI_RCV_B2 \
++	 (0x0000000000000660ull)
++#define CVMX_NPEI_PCIE_MSI_RCV_B3 \
++	 (0x0000000000000670ull)
++#define CVMX_NPEI_PKTX_CNTS(offset) \
++	 (0x0000000000002400ull + (((offset) & 31) * 16))
++#define CVMX_NPEI_PKTX_INSTR_BADDR(offset) \
++	 (0x0000000000002800ull + (((offset) & 31) * 16))
++#define CVMX_NPEI_PKTX_INSTR_BAOFF_DBELL(offset) \
++	 (0x0000000000002C00ull + (((offset) & 31) * 16))
++#define CVMX_NPEI_PKTX_INSTR_FIFO_RSIZE(offset) \
++	 (0x0000000000003000ull + (((offset) & 31) * 16))
++#define CVMX_NPEI_PKTX_INSTR_HEADER(offset) \
++	 (0x0000000000003400ull + (((offset) & 31) * 16))
++#define CVMX_NPEI_PKTX_IN_BP(offset) \
++	 (0x0000000000003800ull + (((offset) & 31) * 16))
++#define CVMX_NPEI_PKTX_SLIST_BADDR(offset) \
++	 (0x0000000000001400ull + (((offset) & 31) * 16))
++#define CVMX_NPEI_PKTX_SLIST_BAOFF_DBELL(offset) \
++	 (0x0000000000001800ull + (((offset) & 31) * 16))
++#define CVMX_NPEI_PKTX_SLIST_FIFO_RSIZE(offset) \
++	 (0x0000000000001C00ull + (((offset) & 31) * 16))
++#define CVMX_NPEI_PKT_CNT_INT \
++	 (0x0000000000001110ull)
++#define CVMX_NPEI_PKT_CNT_INT_ENB \
++	 (0x0000000000001130ull)
++#define CVMX_NPEI_PKT_DATA_OUT_ES \
++	 (0x00000000000010B0ull)
++#define CVMX_NPEI_PKT_DATA_OUT_NS \
++	 (0x00000000000010A0ull)
++#define CVMX_NPEI_PKT_DATA_OUT_ROR \
++	 (0x0000000000001090ull)
++#define CVMX_NPEI_PKT_DPADDR \
++	 (0x0000000000001080ull)
++#define CVMX_NPEI_PKT_INPUT_CONTROL \
++	 (0x0000000000001150ull)
++#define CVMX_NPEI_PKT_INSTR_ENB \
++	 (0x0000000000001000ull)
++#define CVMX_NPEI_PKT_INSTR_RD_SIZE \
++	 (0x0000000000001190ull)
++#define CVMX_NPEI_PKT_INSTR_SIZE \
++	 (0x0000000000001020ull)
++#define CVMX_NPEI_PKT_INT_LEVELS \
++	 (0x0000000000001100ull)
++#define CVMX_NPEI_PKT_IN_BP \
++	 (0x00000000000006B0ull)
++#define CVMX_NPEI_PKT_IN_DONEX_CNTS(offset) \
++	 (0x0000000000002000ull + (((offset) & 31) * 16))
++#define CVMX_NPEI_PKT_IN_INSTR_COUNTS \
++	 (0x00000000000006A0ull)
++#define CVMX_NPEI_PKT_IN_PCIE_PORT \
++	 (0x00000000000011A0ull)
++#define CVMX_NPEI_PKT_IPTR \
++	 (0x0000000000001070ull)
++#define CVMX_NPEI_PKT_OUTPUT_WMARK \
++	 (0x0000000000001160ull)
++#define CVMX_NPEI_PKT_OUT_BMODE \
++	 (0x00000000000010D0ull)
++#define CVMX_NPEI_PKT_OUT_ENB \
++	 (0x0000000000001010ull)
++#define CVMX_NPEI_PKT_PCIE_PORT \
++	 (0x00000000000010E0ull)
++#define CVMX_NPEI_PKT_PORT_IN_RST \
++	 (0x0000000000000690ull)
++#define CVMX_NPEI_PKT_SLIST_ES \
++	 (0x0000000000001050ull)
++#define CVMX_NPEI_PKT_SLIST_ID_SIZE \
++	 (0x0000000000001180ull)
++#define CVMX_NPEI_PKT_SLIST_NS \
++	 (0x0000000000001040ull)
++#define CVMX_NPEI_PKT_SLIST_ROR \
++	 (0x0000000000001030ull)
++#define CVMX_NPEI_PKT_TIME_INT \
++	 (0x0000000000001120ull)
++#define CVMX_NPEI_PKT_TIME_INT_ENB \
++	 (0x0000000000001140ull)
++#define CVMX_NPEI_RSL_INT_BLOCKS \
++	 (0x0000000000000520ull)
++#define CVMX_NPEI_SCRATCH_1 \
++	 (0x0000000000000270ull)
++#define CVMX_NPEI_STATE1 \
++	 (0x0000000000000620ull)
++#define CVMX_NPEI_STATE2 \
++	 (0x0000000000000630ull)
++#define CVMX_NPEI_STATE3 \
++	 (0x0000000000000640ull)
++#define CVMX_NPEI_WINDOW_CTL \
++	 (0x0000000000000380ull)
++#define CVMX_NPEI_WIN_RD_ADDR \
++	 (0x0000000000000210ull)
++#define CVMX_NPEI_WIN_RD_DATA \
++	 (0x0000000000000240ull)
++#define CVMX_NPEI_WIN_WR_ADDR \
++	 (0x0000000000000200ull)
++#define CVMX_NPEI_WIN_WR_DATA \
++	 (0x0000000000000220ull)
++#define CVMX_NPEI_WIN_WR_MASK \
++	 (0x0000000000000230ull)
++
++union cvmx_npei_bar1_indexx {
++	uint32_t u32;
++	struct cvmx_npei_bar1_indexx_s {
++		uint32_t reserved_18_31:14;
++		uint32_t addr_idx:14;
++		uint32_t ca:1;
++		uint32_t end_swp:2;
++		uint32_t addr_v:1;
 +	} s;
++	struct cvmx_npei_bar1_indexx_s cn52xx;
++	struct cvmx_npei_bar1_indexx_s cn52xxp1;
++	struct cvmx_npei_bar1_indexx_s cn56xx;
++	struct cvmx_npei_bar1_indexx_s cn56xxp1;
 +};
 +
-+/**
-+ * Return the mapping of PCI device number to IRQ line. Each
-+ * character in the return string represents the interrupt
-+ * line for the device at that position. Device 1 maps to the
-+ * first character, etc. The characters A-D are used for PCI
-+ * interrupts.
-+ *
-+ * Returns PCI interrupt mapping
-+ */
-+const char *octeon_get_pci_interrupts(void)
-+{
-+	/*
-+	 * Returning an empty string causes the interrupts to be
-+	 * routed based on the PCI specification. From the PCI spec:
-+	 *
-+	 * INTA# of Device Number 0 is connected to IRQW on the system
-+	 * board.  (Device Number has no significance regarding being
-+	 * located on the system board or in a connector.) INTA# of
-+	 * Device Number 1 is connected to IRQX on the system
-+	 * board. INTA# of Device Number 2 is connected to IRQY on the
-+	 * system board. INTA# of Device Number 3 is connected to IRQZ
-+	 * on the system board. The table below describes how each
-+	 * agent's INTx# lines are connected to the system board
-+	 * interrupt lines. The following equation can be used to
-+	 * determine to which INTx# signal on the system board a given
-+	 * device's INTx# line(s) is connected.
-+	 *
-+	 * MB = (D + I) MOD 4 MB = System board Interrupt (IRQW = 0,
-+	 * IRQX = 1, IRQY = 2, and IRQZ = 3) D = Device Number I =
-+	 * Interrupt Number (INTA# = 0, INTB# = 1, INTC# = 2, and
-+	 * INTD# = 3)
-+	 */
-+	switch (octeon_bootinfo->board_type) {
-+	case CVMX_BOARD_TYPE_NAO38:
-+		/* This is really the NAC38 */
-+		return "AAAAADABAAAAAAAAAAAAAAAAAAAAAAAA";
-+	case CVMX_BOARD_TYPE_THUNDER:
-+		return "";
-+	case CVMX_BOARD_TYPE_EBH3000:
-+		return "";
-+	case CVMX_BOARD_TYPE_EBH3100:
-+	case CVMX_BOARD_TYPE_CN3010_EVB_HS5:
-+	case CVMX_BOARD_TYPE_CN3005_EVB_HS5:
-+		return "AAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-+	case CVMX_BOARD_TYPE_BBGW_REF:
-+		return "AABCD";
-+	default:
-+		return "";
-+	}
-+}
-+
-+/**
-+ * Map a PCI device to the appropriate interrupt line
-+ *
-+ * @dev:    The Linux PCI device structure for the device to map
-+ * @slot:   The slot number for this device on __BUS 0__. Linux
-+ *               enumerates through all the bridges and figures out the
-+ *               slot on Bus 0 where this device eventually hooks to.
-+ * @pin:    The PCI interrupt pin read from the device, then swizzled
-+ *               as it goes through each bridge.
-+ * Returns Interrupt number for the device
-+ */
-+int __init octeon_pci_pcibios_map_irq(const struct pci_dev *dev,
-+				      u8 slot, u8 pin)
-+{
-+	int irq_num;
-+	const char *interrupts;
-+	int dev_num;
-+
-+	/* Get the board specific interrupt mapping */
-+	interrupts = octeon_get_pci_interrupts();
-+
-+	dev_num = dev->devfn >> 3;
-+	if (dev_num < strlen(interrupts))
-+		irq_num = ((interrupts[dev_num] - 'A' + pin - 1) & 3) +
-+			OCTEON_IRQ_PCI_INT0;
-+	else
-+		irq_num = ((slot + pin - 3) & 3) + OCTEON_IRQ_PCI_INT0;
-+	return irq_num;
-+}
-+
-+
-+/**
-+ * Read a value from configuration space
-+ *
-+ */
-+static int octeon_read_config(struct pci_bus *bus, unsigned int devfn,
-+			      int reg, int size, u32 *val)
-+{
-+	union octeon_pci_address pci_addr;
-+
-+	pci_addr.u64 = 0;
-+	pci_addr.s.upper = 2;
-+	pci_addr.s.io = 1;
-+	pci_addr.s.did = 3;
-+	pci_addr.s.subdid = 1;
-+	pci_addr.s.endian_swap = 1;
-+	pci_addr.s.bus = bus->number;
-+	pci_addr.s.dev = devfn >> 3;
-+	pci_addr.s.func = devfn & 0x7;
-+	pci_addr.s.reg = reg;
-+
-+#if PCI_CONFIG_SPACE_DELAY
-+	udelay(PCI_CONFIG_SPACE_DELAY);
-+#endif
-+	switch (size) {
-+	case 4:
-+		*val = le32_to_cpu(cvmx_read64_uint32(pci_addr.u64));
-+		return PCIBIOS_SUCCESSFUL;
-+	case 2:
-+		*val = le16_to_cpu(cvmx_read64_uint16(pci_addr.u64));
-+		return PCIBIOS_SUCCESSFUL;
-+	case 1:
-+		*val = cvmx_read64_uint8(pci_addr.u64);
-+		return PCIBIOS_SUCCESSFUL;
-+	}
-+	return PCIBIOS_FUNC_NOT_SUPPORTED;
-+}
-+
-+
-+/**
-+ * Write a value to PCI configuration space
-+ *
-+ * @bus:
-+ * @devfn:
-+ * @reg:
-+ * @size:
-+ * @val:
-+ * Returns
-+ */
-+static int octeon_write_config(struct pci_bus *bus, unsigned int devfn,
-+			       int reg, int size, u32 val)
-+{
-+	union octeon_pci_address pci_addr;
-+
-+	pci_addr.u64 = 0;
-+	pci_addr.s.upper = 2;
-+	pci_addr.s.io = 1;
-+	pci_addr.s.did = 3;
-+	pci_addr.s.subdid = 1;
-+	pci_addr.s.endian_swap = 1;
-+	pci_addr.s.bus = bus->number;
-+	pci_addr.s.dev = devfn >> 3;
-+	pci_addr.s.func = devfn & 0x7;
-+	pci_addr.s.reg = reg;
-+
-+#if PCI_CONFIG_SPACE_DELAY
-+	udelay(PCI_CONFIG_SPACE_DELAY);
-+#endif
-+	switch (size) {
-+	case 4:
-+		cvmx_write64_uint32(pci_addr.u64, cpu_to_le32(val));
-+		return PCIBIOS_SUCCESSFUL;
-+	case 2:
-+		cvmx_write64_uint16(pci_addr.u64, cpu_to_le16(val));
-+		return PCIBIOS_SUCCESSFUL;
-+	case 1:
-+		cvmx_write64_uint8(pci_addr.u64, val);
-+		return PCIBIOS_SUCCESSFUL;
-+	}
-+	return PCIBIOS_FUNC_NOT_SUPPORTED;
-+}
-+
-+
-+static struct pci_ops octeon_pci_ops = {
-+	octeon_read_config,
-+	octeon_write_config,
-+};
-+
-+static struct resource octeon_pci_mem_resource = {
-+	.start = 0,
-+	.end = 0,
-+	.name = "Octeon PCI MEM",
-+	.flags = IORESOURCE_MEM,
-+};
-+
-+/*
-+ * PCI ports must be above 16KB so the ISA bus filtering in the PCI-X to PCI
-+ * bridge
-+ */
-+static struct resource octeon_pci_io_resource = {
-+	.start = 0x4000,
-+	.end = OCTEON_PCI_IOSPACE_SIZE - 1,
-+	.name = "Octeon PCI IO",
-+	.flags = IORESOURCE_IO,
-+};
-+
-+static struct pci_controller octeon_pci_controller = {
-+	.pci_ops = &octeon_pci_ops,
-+	.mem_resource = &octeon_pci_mem_resource,
-+	.mem_offset = OCTEON_PCI_MEMSPACE_OFFSET,
-+	.io_resource = &octeon_pci_io_resource,
-+	.io_offset = 0,
-+	.io_map_base = OCTEON_PCI_IOSPACE_BASE,
-+};
-+
-+
-+/**
-+ * Low level initialize the Octeon PCI controller
-+ *
-+ * Returns
-+ */
-+static void octeon_pci_initialize(void)
-+{
-+	union cvmx_pci_cfg01 cfg01;
-+	union cvmx_npi_ctl_status ctl_status;
-+	union cvmx_pci_ctl_status_2 ctl_status_2;
-+	union cvmx_pci_cfg19 cfg19;
-+	union cvmx_pci_cfg16 cfg16;
-+	union cvmx_pci_cfg22 cfg22;
-+	union cvmx_pci_cfg56 cfg56;
-+
-+	/* Reset the PCI Bus */
-+	cvmx_write_csr(CVMX_CIU_SOFT_PRST, 0x1);
-+	cvmx_read_csr(CVMX_CIU_SOFT_PRST);
-+
-+	udelay(2000);		/* Hold PCI reset for 2 ms */
-+
-+	ctl_status.u64 = 0;	/* cvmx_read_csr(CVMX_NPI_CTL_STATUS); */
-+	ctl_status.s.max_word = 1;
-+	ctl_status.s.timer = 1;
-+	cvmx_write_csr(CVMX_NPI_CTL_STATUS, ctl_status.u64);
-+
-+	/* Deassert PCI reset and advertize PCX Host Mode Device Capability
-+	   (64b) */
-+	cvmx_write_csr(CVMX_CIU_SOFT_PRST, 0x4);
-+	cvmx_read_csr(CVMX_CIU_SOFT_PRST);
-+
-+	udelay(2000);		/* Wait 2 ms after deasserting PCI reset */
-+
-+	ctl_status_2.u32 = 0;
-+	ctl_status_2.s.tsr_hwm = 1;	/* Initializes to 0.  Must be set
-+					   before any PCI reads. */
-+	ctl_status_2.s.bar2pres = 1;	/* Enable BAR2 */
-+	ctl_status_2.s.bar2_enb = 1;
-+	ctl_status_2.s.bar2_cax = 1;	/* Don't use L2 */
-+	ctl_status_2.s.bar2_esx = 1;
-+	ctl_status_2.s.pmo_amod = 1;	/* Round robin priority */
-+	if (octeon_dma_bar_type == OCTEON_DMA_BAR_TYPE_BIG) {
-+		/* BAR1 hole */
-+		ctl_status_2.s.bb1_hole = OCTEON_PCI_BAR1_HOLE_BITS;
-+		ctl_status_2.s.bb1_siz = 1;  /* BAR1 is 2GB */
-+		ctl_status_2.s.bb_ca = 1;    /* Don't use L2 with big bars */
-+		ctl_status_2.s.bb_es = 1;    /* Big bar in byte swap mode */
-+		ctl_status_2.s.bb1 = 1;      /* BAR1 is big */
-+		ctl_status_2.s.bb0 = 1;      /* BAR0 is big */
-+	}
-+
-+	octeon_npi_write32(CVMX_NPI_PCI_CTL_STATUS_2, ctl_status_2.u32);
-+	udelay(2000);		/* Wait 2 ms before doing PCI reads */
-+
-+	ctl_status_2.u32 = octeon_npi_read32(CVMX_NPI_PCI_CTL_STATUS_2);
-+	pr_notice("PCI Status: %s %s-bit\n",
-+		  ctl_status_2.s.ap_pcix ? "PCI-X" : "PCI",
-+		  ctl_status_2.s.ap_64ad ? "64" : "32");
-+
-+	if (OCTEON_IS_MODEL(OCTEON_CN58XX) || OCTEON_IS_MODEL(OCTEON_CN50XX)) {
-+		union cvmx_pci_cnt_reg cnt_reg_start;
-+		union cvmx_pci_cnt_reg cnt_reg_end;
-+		unsigned long cycles, pci_clock;
-+
-+		cnt_reg_start.u64 = cvmx_read_csr(CVMX_NPI_PCI_CNT_REG);
-+		cycles = read_c0_cvmcount();
-+		udelay(1000);
-+		cnt_reg_end.u64 = cvmx_read_csr(CVMX_NPI_PCI_CNT_REG);
-+		cycles = read_c0_cvmcount() - cycles;
-+		pci_clock = (cnt_reg_end.s.pcicnt - cnt_reg_start.s.pcicnt) /
-+			    (cycles / (mips_hpt_frequency / 1000000));
-+		pr_notice("PCI Clock: %lu MHz\n", pci_clock);
-+	}
-+
-+	/*
-+	 * TDOMC must be set to one in PCI mode. TDOMC should be set to 4
-+	 * in PCI-X mode to allow four oustanding splits. Otherwise,
-+	 * should not change from its reset value. Don't write PCI_CFG19
-+	 * in PCI mode (0x82000001 reset value), write it to 0x82000004
-+	 * after PCI-X mode is known. MRBCI,MDWE,MDRE -> must be zero.
-+	 * MRBCM -> must be one.
-+	 */
-+	if (ctl_status_2.s.ap_pcix) {
-+		cfg19.u32 = 0;
-+		/*
-+		 * Target Delayed/Split request outstanding maximum
-+		 * count. [1..31] and 0=32.  NOTE: If the user
-+		 * programs these bits beyond the Designed Maximum
-+		 * outstanding count, then the designed maximum table
-+		 * depth will be used instead.  No additional
-+		 * Deferred/Split transactions will be accepted if
-+		 * this outstanding maximum count is
-+		 * reached. Furthermore, no additional deferred/split
-+		 * transactions will be accepted if the I/O delay/ I/O
-+		 * Split Request outstanding maximum is reached.
-+		 */
-+		cfg19.s.tdomc = 4;
-+		/*
-+		 * Master Deferred Read Request Outstanding Max Count
-+		 * (PCI only).  CR4C[26:24] Max SAC cycles MAX DAC
-+		 * cycles 000 8 4 001 1 0 010 2 1 011 3 1 100 4 2 101
-+		 * 5 2 110 6 3 111 7 3 For example, if these bits are
-+		 * programmed to 100, the core can support 2 DAC
-+		 * cycles, 4 SAC cycles or a combination of 1 DAC and
-+		 * 2 SAC cycles. NOTE: For the PCI-X maximum
-+		 * outstanding split transactions, refer to
-+		 * CRE0[22:20].
-+		 */
-+		cfg19.s.mdrrmc = 2;
-+		/*
-+		 * Master Request (Memory Read) Byte Count/Byte Enable
-+		 * select. 0 = Byte Enables valid. In PCI mode, a
-+		 * burst transaction cannot be performed using Memory
-+		 * Read command=4?h6. 1 = DWORD Byte Count valid
-+		 * (default). In PCI Mode, the memory read byte
-+		 * enables are automatically generated by the
-+		 * core. Note: N3 Master Request transaction sizes are
-+		 * always determined through the
-+		 * am_attr[<35:32>|<7:0>] field.
-+		 */
-+		cfg19.s.mrbcm = 1;
-+		octeon_npi_write32(CVMX_NPI_PCI_CFG19, cfg19.u32);
-+	}
-+
-+
-+	cfg01.u32 = 0;
-+	cfg01.s.msae = 1;	/* Memory Space Access Enable */
-+	cfg01.s.me = 1;		/* Master Enable */
-+	cfg01.s.pee = 1;	/* PERR# Enable */
-+	cfg01.s.see = 1;	/* System Error Enable */
-+	cfg01.s.fbbe = 1;	/* Fast Back to Back Transaction Enable */
-+
-+	octeon_npi_write32(CVMX_NPI_PCI_CFG01, cfg01.u32);
-+
-+#ifdef USE_OCTEON_INTERNAL_ARBITER
-+	/*
-+	 * When OCTEON is a PCI host, most systems will use OCTEON's
-+	 * internal arbiter, so must enable it before any PCI/PCI-X
-+	 * traffic can occur.
-+	 */
-+	{
-+		union cvmx_npi_pci_int_arb_cfg pci_int_arb_cfg;
-+
-+		pci_int_arb_cfg.u64 = 0;
-+		pci_int_arb_cfg.s.en = 1;	/* Internal arbiter enable */
-+		cvmx_write_csr(CVMX_NPI_PCI_INT_ARB_CFG, pci_int_arb_cfg.u64);
-+	}
-+#endif				/* USE_OCTEON_INTERNAL_ARBITER */
-+
-+	/*
-+	 * Preferrably written to 1 to set MLTD. [RDSATI,TRTAE,
-+	 * TWTAE,TMAE,DPPMR -> must be zero. TILT -> must not be set to
-+	 * 1..7.
-+	 */
-+	cfg16.u32 = 0;
-+	cfg16.s.mltd = 1;	/* Master Latency Timer Disable */
-+	octeon_npi_write32(CVMX_NPI_PCI_CFG16, cfg16.u32);
-+
-+	/*
-+	 * Should be written to 0x4ff00. MTTV -> must be zero.
-+	 * FLUSH -> must be 1. MRV -> should be 0xFF.
-+	 */
-+	cfg22.u32 = 0;
-+	/* Master Retry Value [1..255] and 0=infinite */
-+	cfg22.s.mrv = 0xff;
-+	/*
-+	 * AM_DO_FLUSH_I control NOTE: This bit MUST BE ONE for proper
-+	 * N3K operation.
-+	 */
-+	cfg22.s.flush = 1;
-+	octeon_npi_write32(CVMX_NPI_PCI_CFG22, cfg22.u32);
-+
-+	/*
-+	 * MOST Indicates the maximum number of outstanding splits (in -1
-+	 * notation) when OCTEON is in PCI-X mode.  PCI-X performance is
-+	 * affected by the MOST selection.  Should generally be written
-+	 * with one of 0x3be807, 0x2be807, 0x1be807, or 0x0be807,
-+	 * depending on the desired MOST of 3, 2, 1, or 0, respectively.
-+	 */
-+	cfg56.u32 = 0;
-+	cfg56.s.pxcid = 7;	/* RO - PCI-X Capability ID */
-+	cfg56.s.ncp = 0xe8;	/* RO - Next Capability Pointer */
-+	cfg56.s.dpere = 1;	/* Data Parity Error Recovery Enable */
-+	cfg56.s.roe = 1;	/* Relaxed Ordering Enable */
-+	cfg56.s.mmbc = 1;	/* Maximum Memory Byte Count
-+				   [0=512B,1=1024B,2=2048B,3=4096B] */
-+	cfg56.s.most = 3;	/* Maximum outstanding Split transactions [0=1
-+				   .. 7=32] */
-+
-+	octeon_npi_write32(CVMX_NPI_PCI_CFG56, cfg56.u32);
-+
-+	/*
-+	 * Affects PCI performance when OCTEON services reads to its
-+	 * BAR1/BAR2. Refer to Section 10.6.1.  The recommended values are
-+	 * 0x22, 0x33, and 0x33 for PCI_READ_CMD_6, PCI_READ_CMD_C, and
-+	 * PCI_READ_CMD_E, respectively. Unfortunately due to errata DDR-700,
-+	 * these values need to be changed so they won't possibly prefetch off
-+	 * of the end of memory if PCI is DMAing a buffer at the end of
-+	 * memory. Note that these values differ from their reset values.
-+	 */
-+	octeon_npi_write32(CVMX_NPI_PCI_READ_CMD_6, 0x21);
-+	octeon_npi_write32(CVMX_NPI_PCI_READ_CMD_C, 0x31);
-+	octeon_npi_write32(CVMX_NPI_PCI_READ_CMD_E, 0x31);
-+}
-+
-+
-+/**
-+ * Initialize the Octeon PCI controller
-+ *
-+ * Returns
-+ */
-+static int __init octeon_pci_setup(void)
-+{
-+	union cvmx_npi_mem_access_subidx mem_access;
-+	int index;
-+
-+	/* Only these chips have PCI */
-+	if (octeon_has_feature(OCTEON_FEATURE_PCIE))
-+		return 0;
-+
-+	/* Point pcibios_map_irq() to the PCI version of it */
-+	octeon_pcibios_map_irq = octeon_pci_pcibios_map_irq;
-+
-+	/* Only use the big bars on chips that support it */
-+	if (OCTEON_IS_MODEL(OCTEON_CN31XX) ||
-+	    OCTEON_IS_MODEL(OCTEON_CN38XX_PASS2) ||
-+	    OCTEON_IS_MODEL(OCTEON_CN38XX_PASS1))
-+		octeon_dma_bar_type = OCTEON_DMA_BAR_TYPE_SMALL;
-+	else
-+		octeon_dma_bar_type = OCTEON_DMA_BAR_TYPE_BIG;
-+
-+	/* PCI I/O and PCI MEM values */
-+	set_io_port_base(OCTEON_PCI_IOSPACE_BASE);
-+	ioport_resource.start = 0;
-+	ioport_resource.end = OCTEON_PCI_IOSPACE_SIZE - 1;
-+	if (!octeon_is_pci_host()) {
-+		pr_notice("Not in host mode, PCI Controller not initialized\n");
-+		return 0;
-+	}
-+
-+	pr_notice("%s Octeon big bar support\n",
-+		  (octeon_dma_bar_type ==
-+		  OCTEON_DMA_BAR_TYPE_BIG) ? "Enabling" : "Disabling");
-+
-+	octeon_pci_initialize();
-+
-+	mem_access.u64 = 0;
-+	mem_access.s.esr = 1;	/* Endian-Swap on read. */
-+	mem_access.s.esw = 1;	/* Endian-Swap on write. */
-+	mem_access.s.nsr = 0;	/* No-Snoop on read. */
-+	mem_access.s.nsw = 0;	/* No-Snoop on write. */
-+	mem_access.s.ror = 0;	/* Relax Read on read. */
-+	mem_access.s.row = 0;	/* Relax Order on write. */
-+	mem_access.s.ba = 0;	/* PCI Address bits [63:36]. */
-+	cvmx_write_csr(CVMX_NPI_MEM_ACCESS_SUBID3, mem_access.u64);
-+
-+	/*
-+	 * Remap the Octeon BAR 2 above all 32 bit devices
-+	 * (0x8000000000ul).  This is done here so it is remapped
-+	 * before the readl()'s below. We don't want BAR2 overlapping
-+	 * with BAR0/BAR1 during these reads.
-+	 */
-+	octeon_npi_write32(CVMX_NPI_PCI_CFG08, 0);
-+	octeon_npi_write32(CVMX_NPI_PCI_CFG09, 0x80);
-+
-+	/* Disable the BAR1 movable mappings */
-+	for (index = 0; index < 32; index++)
-+		octeon_npi_write32(CVMX_NPI_PCI_BAR1_INDEXX(index), 0);
-+
-+	if (octeon_dma_bar_type == OCTEON_DMA_BAR_TYPE_BIG) {
-+		/* Remap the Octeon BAR 0 to 0-2GB */
-+		octeon_npi_write32(CVMX_NPI_PCI_CFG04, 0);
-+		octeon_npi_write32(CVMX_NPI_PCI_CFG05, 0);
-+
-+		/*
-+		 * Remap the Octeon BAR 1 to map 2GB-4GB (minus the
-+		 * BAR 1 hole).
-+		 */
-+		octeon_npi_write32(CVMX_NPI_PCI_CFG06, 2ul << 30);
-+		octeon_npi_write32(CVMX_NPI_PCI_CFG07, 0);
-+
-+		/* Devices go after BAR1 */
-+		octeon_pci_mem_resource.start =
-+			OCTEON_PCI_MEMSPACE_OFFSET + (4ul << 30) -
-+			(OCTEON_PCI_BAR1_HOLE_SIZE << 20);
-+		octeon_pci_mem_resource.end =
-+			octeon_pci_mem_resource.start + (1ul << 30);
-+	} else {
-+		/* Remap the Octeon BAR 0 to map 128MB-(128MB+4KB) */
-+		octeon_npi_write32(CVMX_NPI_PCI_CFG04, 128ul << 20);
-+		octeon_npi_write32(CVMX_NPI_PCI_CFG05, 0);
-+
-+		/* Remap the Octeon BAR 1 to map 0-128MB */
-+		octeon_npi_write32(CVMX_NPI_PCI_CFG06, 0);
-+		octeon_npi_write32(CVMX_NPI_PCI_CFG07, 0);
-+
-+		/* Devices go after BAR0 */
-+		octeon_pci_mem_resource.start =
-+			OCTEON_PCI_MEMSPACE_OFFSET + (128ul << 20) +
-+			(4ul << 10);
-+		octeon_pci_mem_resource.end =
-+			octeon_pci_mem_resource.start + (1ul << 30);
-+	}
-+
-+	register_pci_controller(&octeon_pci_controller);
-+
-+	/*
-+	 * Clear any errors that might be pending from before the bus
-+	 * was setup properly.
-+	 */
-+	cvmx_write_csr(CVMX_NPI_PCI_INT_SUM2, -1);
-+	return 0;
-+}
-+
-+arch_initcall(octeon_pci_setup);
-diff --git a/arch/mips/cavium-octeon/pcie.c b/arch/mips/cavium-octeon/pcie.c
-new file mode 100644
-index 0000000..49d1408
---- /dev/null
-+++ b/arch/mips/cavium-octeon/pcie.c
-@@ -0,0 +1,1370 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2007, 2008 Cavium Networks
-+ */
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/pci.h>
-+#include <linux/interrupt.h>
-+#include <linux/time.h>
-+#include <linux/delay.h>
-+
-+#include <asm/octeon/octeon.h>
-+#include <asm/octeon/cvmx-npei-defs.h>
-+#include <asm/octeon/cvmx-pciercx-defs.h>
-+#include <asm/octeon/cvmx-pescx-defs.h>
-+#include <asm/octeon/cvmx-pexp-defs.h>
-+#include <asm/octeon/cvmx-helper-errata.h>
-+
-+#include "pci-common.h"
-+
-+union cvmx_pcie_address {
++union cvmx_npei_bist_status {
 +	uint64_t u64;
-+	struct {
-+		uint64_t upper:2;	/* Normally 2 for XKPHYS */
-+		uint64_t reserved_49_61:13;	/* Must be zero */
-+		uint64_t io:1;	/* 1 for IO space access */
-+		uint64_t did:5;	/* PCIe DID = 3 */
-+		uint64_t subdid:3;	/* PCIe SubDID = 1 */
-+		uint64_t reserved_36_39:4;	/* Must be zero */
-+		uint64_t es:2;	/* Endian swap = 1 */
-+		uint64_t port:2;	/* PCIe port 0,1 */
-+		uint64_t reserved_29_31:3;	/* Must be zero */
-+		/*
-+		 * Selects the type of the configuration request (0 = type 0,
-+		 * 1 = type 1).
-+		 */
-+		uint64_t ty:1;
-+		/* Target bus number sent in the ID in the request. */
-+		uint64_t bus:8;
-+		/*
-+		 * Target device number sent in the ID in the
-+		 * request. Note that Dev must be zero for type 0
-+		 * configuration requests.
-+		 */
-+		uint64_t dev:5;
-+		/* Target function number sent in the ID in the request. */
-+		uint64_t func:3;
-+		/*
-+		 * Selects a register in the configuration space of
-+		 * the target.
-+		 */
-+		uint64_t reg:12;
-+	} config;
-+	struct {
-+		uint64_t upper:2;	/* Normally 2 for XKPHYS */
-+		uint64_t reserved_49_61:13;	/* Must be zero */
-+		uint64_t io:1;	/* 1 for IO space access */
-+		uint64_t did:5;	/* PCIe DID = 3 */
-+		uint64_t subdid:3;	/* PCIe SubDID = 2 */
-+		uint64_t reserved_36_39:4;	/* Must be zero */
-+		uint64_t es:2;	/* Endian swap = 1 */
-+		uint64_t port:2;	/* PCIe port 0,1 */
-+		uint64_t address:32;	/* PCIe IO address */
-+	} io;
-+	struct {
-+		uint64_t upper:2;	/* Normally 2 for XKPHYS */
-+		uint64_t reserved_49_61:13;	/* Must be zero */
-+		uint64_t io:1;	/* 1 for IO space access */
-+		uint64_t did:5;	/* PCIe DID = 3 */
-+		uint64_t subdid:3;	/* PCIe SubDID = 3-6 */
-+		uint64_t reserved_36_39:4;	/* Must be zero */
-+		uint64_t address:36;	/* PCIe Mem address */
-+	} mem;
++	struct cvmx_npei_bist_status_s {
++		uint64_t pkt_rdf:1;
++		uint64_t pkt_pmem:1;
++		uint64_t pkt_p1:1;
++		uint64_t reserved_60_60:1;
++		uint64_t pcr_gim:1;
++		uint64_t pkt_pif:1;
++		uint64_t pcsr_int:1;
++		uint64_t pcsr_im:1;
++		uint64_t pcsr_cnt:1;
++		uint64_t pcsr_id:1;
++		uint64_t pcsr_sl:1;
++		uint64_t reserved_50_52:3;
++		uint64_t pkt_ind:1;
++		uint64_t pkt_slm:1;
++		uint64_t reserved_36_47:12;
++		uint64_t d0_pst:1;
++		uint64_t d1_pst:1;
++		uint64_t d2_pst:1;
++		uint64_t d3_pst:1;
++		uint64_t reserved_31_31:1;
++		uint64_t n2p0_c:1;
++		uint64_t n2p0_o:1;
++		uint64_t n2p1_c:1;
++		uint64_t n2p1_o:1;
++		uint64_t cpl_p0:1;
++		uint64_t cpl_p1:1;
++		uint64_t p2n1_po:1;
++		uint64_t p2n1_no:1;
++		uint64_t p2n1_co:1;
++		uint64_t p2n0_po:1;
++		uint64_t p2n0_no:1;
++		uint64_t p2n0_co:1;
++		uint64_t p2n0_c0:1;
++		uint64_t p2n0_c1:1;
++		uint64_t p2n0_n:1;
++		uint64_t p2n0_p0:1;
++		uint64_t p2n0_p1:1;
++		uint64_t p2n1_c0:1;
++		uint64_t p2n1_c1:1;
++		uint64_t p2n1_n:1;
++		uint64_t p2n1_p0:1;
++		uint64_t p2n1_p1:1;
++		uint64_t csm0:1;
++		uint64_t csm1:1;
++		uint64_t dif0:1;
++		uint64_t dif1:1;
++		uint64_t dif2:1;
++		uint64_t dif3:1;
++		uint64_t reserved_2_2:1;
++		uint64_t msi:1;
++		uint64_t ncb_cmd:1;
++	} s;
++	struct cvmx_npei_bist_status_cn52xx {
++		uint64_t pkt_rdf:1;
++		uint64_t pkt_pmem:1;
++		uint64_t pkt_p1:1;
++		uint64_t reserved_60_60:1;
++		uint64_t pcr_gim:1;
++		uint64_t pkt_pif:1;
++		uint64_t pcsr_int:1;
++		uint64_t pcsr_im:1;
++		uint64_t pcsr_cnt:1;
++		uint64_t pcsr_id:1;
++		uint64_t pcsr_sl:1;
++		uint64_t pkt_imem:1;
++		uint64_t pkt_pfm:1;
++		uint64_t pkt_pof:1;
++		uint64_t reserved_48_49:2;
++		uint64_t pkt_pop0:1;
++		uint64_t pkt_pop1:1;
++		uint64_t d0_mem:1;
++		uint64_t d1_mem:1;
++		uint64_t d2_mem:1;
++		uint64_t d3_mem:1;
++		uint64_t d4_mem:1;
++		uint64_t ds_mem:1;
++		uint64_t reserved_36_39:4;
++		uint64_t d0_pst:1;
++		uint64_t d1_pst:1;
++		uint64_t d2_pst:1;
++		uint64_t d3_pst:1;
++		uint64_t d4_pst:1;
++		uint64_t n2p0_c:1;
++		uint64_t n2p0_o:1;
++		uint64_t n2p1_c:1;
++		uint64_t n2p1_o:1;
++		uint64_t cpl_p0:1;
++		uint64_t cpl_p1:1;
++		uint64_t p2n1_po:1;
++		uint64_t p2n1_no:1;
++		uint64_t p2n1_co:1;
++		uint64_t p2n0_po:1;
++		uint64_t p2n0_no:1;
++		uint64_t p2n0_co:1;
++		uint64_t p2n0_c0:1;
++		uint64_t p2n0_c1:1;
++		uint64_t p2n0_n:1;
++		uint64_t p2n0_p0:1;
++		uint64_t p2n0_p1:1;
++		uint64_t p2n1_c0:1;
++		uint64_t p2n1_c1:1;
++		uint64_t p2n1_n:1;
++		uint64_t p2n1_p0:1;
++		uint64_t p2n1_p1:1;
++		uint64_t csm0:1;
++		uint64_t csm1:1;
++		uint64_t dif0:1;
++		uint64_t dif1:1;
++		uint64_t dif2:1;
++		uint64_t dif3:1;
++		uint64_t dif4:1;
++		uint64_t msi:1;
++		uint64_t ncb_cmd:1;
++	} cn52xx;
++	struct cvmx_npei_bist_status_cn52xxp1 {
++		uint64_t reserved_46_63:18;
++		uint64_t d0_mem0:1;
++		uint64_t d1_mem1:1;
++		uint64_t d2_mem2:1;
++		uint64_t d3_mem3:1;
++		uint64_t dr0_mem:1;
++		uint64_t d0_mem:1;
++		uint64_t d1_mem:1;
++		uint64_t d2_mem:1;
++		uint64_t d3_mem:1;
++		uint64_t dr1_mem:1;
++		uint64_t d0_pst:1;
++		uint64_t d1_pst:1;
++		uint64_t d2_pst:1;
++		uint64_t d3_pst:1;
++		uint64_t dr2_mem:1;
++		uint64_t n2p0_c:1;
++		uint64_t n2p0_o:1;
++		uint64_t n2p1_c:1;
++		uint64_t n2p1_o:1;
++		uint64_t cpl_p0:1;
++		uint64_t cpl_p1:1;
++		uint64_t p2n1_po:1;
++		uint64_t p2n1_no:1;
++		uint64_t p2n1_co:1;
++		uint64_t p2n0_po:1;
++		uint64_t p2n0_no:1;
++		uint64_t p2n0_co:1;
++		uint64_t p2n0_c0:1;
++		uint64_t p2n0_c1:1;
++		uint64_t p2n0_n:1;
++		uint64_t p2n0_p0:1;
++		uint64_t p2n0_p1:1;
++		uint64_t p2n1_c0:1;
++		uint64_t p2n1_c1:1;
++		uint64_t p2n1_n:1;
++		uint64_t p2n1_p0:1;
++		uint64_t p2n1_p1:1;
++		uint64_t csm0:1;
++		uint64_t csm1:1;
++		uint64_t dif0:1;
++		uint64_t dif1:1;
++		uint64_t dif2:1;
++		uint64_t dif3:1;
++		uint64_t dr3_mem:1;
++		uint64_t msi:1;
++		uint64_t ncb_cmd:1;
++	} cn52xxp1;
++	struct cvmx_npei_bist_status_cn56xx {
++		uint64_t pkt_rdf:1;
++		uint64_t reserved_60_62:3;
++		uint64_t pcr_gim:1;
++		uint64_t pkt_pif:1;
++		uint64_t pcsr_int:1;
++		uint64_t pcsr_im:1;
++		uint64_t pcsr_cnt:1;
++		uint64_t pcsr_id:1;
++		uint64_t pcsr_sl:1;
++		uint64_t pkt_imem:1;
++		uint64_t pkt_pfm:1;
++		uint64_t pkt_pof:1;
++		uint64_t reserved_48_49:2;
++		uint64_t pkt_pop0:1;
++		uint64_t pkt_pop1:1;
++		uint64_t d0_mem:1;
++		uint64_t d1_mem:1;
++		uint64_t d2_mem:1;
++		uint64_t d3_mem:1;
++		uint64_t d4_mem:1;
++		uint64_t ds_mem:1;
++		uint64_t reserved_36_39:4;
++		uint64_t d0_pst:1;
++		uint64_t d1_pst:1;
++		uint64_t d2_pst:1;
++		uint64_t d3_pst:1;
++		uint64_t d4_pst:1;
++		uint64_t n2p0_c:1;
++		uint64_t n2p0_o:1;
++		uint64_t n2p1_c:1;
++		uint64_t n2p1_o:1;
++		uint64_t cpl_p0:1;
++		uint64_t cpl_p1:1;
++		uint64_t p2n1_po:1;
++		uint64_t p2n1_no:1;
++		uint64_t p2n1_co:1;
++		uint64_t p2n0_po:1;
++		uint64_t p2n0_no:1;
++		uint64_t p2n0_co:1;
++		uint64_t p2n0_c0:1;
++		uint64_t p2n0_c1:1;
++		uint64_t p2n0_n:1;
++		uint64_t p2n0_p0:1;
++		uint64_t p2n0_p1:1;
++		uint64_t p2n1_c0:1;
++		uint64_t p2n1_c1:1;
++		uint64_t p2n1_n:1;
++		uint64_t p2n1_p0:1;
++		uint64_t p2n1_p1:1;
++		uint64_t csm0:1;
++		uint64_t csm1:1;
++		uint64_t dif0:1;
++		uint64_t dif1:1;
++		uint64_t dif2:1;
++		uint64_t dif3:1;
++		uint64_t dif4:1;
++		uint64_t msi:1;
++		uint64_t ncb_cmd:1;
++	} cn56xx;
++	struct cvmx_npei_bist_status_cn56xxp1 {
++		uint64_t reserved_58_63:6;
++		uint64_t pcsr_int:1;
++		uint64_t pcsr_im:1;
++		uint64_t pcsr_cnt:1;
++		uint64_t pcsr_id:1;
++		uint64_t pcsr_sl:1;
++		uint64_t pkt_pout:1;
++		uint64_t pkt_imem:1;
++		uint64_t pkt_cntm:1;
++		uint64_t pkt_ind:1;
++		uint64_t pkt_slm:1;
++		uint64_t pkt_odf:1;
++		uint64_t pkt_oif:1;
++		uint64_t pkt_out:1;
++		uint64_t pkt_i0:1;
++		uint64_t pkt_i1:1;
++		uint64_t pkt_s0:1;
++		uint64_t pkt_s1:1;
++		uint64_t d0_mem:1;
++		uint64_t d1_mem:1;
++		uint64_t d2_mem:1;
++		uint64_t d3_mem:1;
++		uint64_t d4_mem:1;
++		uint64_t d0_pst:1;
++		uint64_t d1_pst:1;
++		uint64_t d2_pst:1;
++		uint64_t d3_pst:1;
++		uint64_t d4_pst:1;
++		uint64_t n2p0_c:1;
++		uint64_t n2p0_o:1;
++		uint64_t n2p1_c:1;
++		uint64_t n2p1_o:1;
++		uint64_t cpl_p0:1;
++		uint64_t cpl_p1:1;
++		uint64_t p2n1_po:1;
++		uint64_t p2n1_no:1;
++		uint64_t p2n1_co:1;
++		uint64_t p2n0_po:1;
++		uint64_t p2n0_no:1;
++		uint64_t p2n0_co:1;
++		uint64_t p2n0_c0:1;
++		uint64_t p2n0_c1:1;
++		uint64_t p2n0_n:1;
++		uint64_t p2n0_p0:1;
++		uint64_t p2n0_p1:1;
++		uint64_t p2n1_c0:1;
++		uint64_t p2n1_c1:1;
++		uint64_t p2n1_n:1;
++		uint64_t p2n1_p0:1;
++		uint64_t p2n1_p1:1;
++		uint64_t csm0:1;
++		uint64_t csm1:1;
++		uint64_t dif0:1;
++		uint64_t dif1:1;
++		uint64_t dif2:1;
++		uint64_t dif3:1;
++		uint64_t dif4:1;
++		uint64_t msi:1;
++		uint64_t ncb_cmd:1;
++	} cn56xxp1;
 +};
 +
-+/**
-+ * Return the Core virtual base address for PCIe IO access. IOs are
-+ * read/written as an offset from this address.
-+ *
-+ * @pcie_port: PCIe port the IO is for
-+ *
-+ * Returns 64bit Octeon IO base address for read/write
-+ */
-+static inline uint64_t cvmx_pcie_get_io_base_address(int pcie_port)
-+{
-+	union cvmx_pcie_address pcie_addr;
-+	pcie_addr.u64 = 0;
-+	pcie_addr.io.upper = 0;
-+	pcie_addr.io.io = 1;
-+	pcie_addr.io.did = 3;
-+	pcie_addr.io.subdid = 2;
-+	pcie_addr.io.es = 1;
-+	pcie_addr.io.port = pcie_port;
-+	return pcie_addr.u64;
-+}
-+
-+/**
-+ * Size of the IO address region returned at address
-+ * cvmx_pcie_get_io_base_address()
-+ *
-+ * @pcie_port: PCIe port the IO is for
-+ *
-+ * Returns Size of the IO window
-+ */
-+static inline uint64_t cvmx_pcie_get_io_size(int pcie_port)
-+{
-+	return 1ull << 32;
-+}
-+
-+/**
-+ * Return the Core virtual base address for PCIe MEM access. Memory is
-+ * read/written as an offset from this address.
-+ *
-+ * @pcie_port: PCIe port the IO is for
-+ *
-+ * Returns 64bit Octeon IO base address for read/write
-+ */
-+static inline uint64_t cvmx_pcie_get_mem_base_address(int pcie_port)
-+{
-+	union cvmx_pcie_address pcie_addr;
-+	pcie_addr.u64 = 0;
-+	pcie_addr.mem.upper = 0;
-+	pcie_addr.mem.io = 1;
-+	pcie_addr.mem.did = 3;
-+	pcie_addr.mem.subdid = 3 + pcie_port;
-+	return pcie_addr.u64;
-+}
-+
-+/**
-+ * Size of the Mem address region returned at address
-+ * cvmx_pcie_get_mem_base_address()
-+ *
-+ * @pcie_port: PCIe port the IO is for
-+ *
-+ * Returns Size of the Mem window
-+ */
-+static inline uint64_t cvmx_pcie_get_mem_size(int pcie_port)
-+{
-+	return 1ull << 36;
-+}
-+
-+/**
-+ * Read a PCIe config space register indirectly. This is used for
-+ * registers of the form PCIEEP_CFG??? and PCIERC?_CFG???.
-+ *
-+ * @pcie_port:  PCIe port to read from
-+ * @cfg_offset: Address to read
-+ *
-+ * Returns Value read
-+ */
-+static uint32_t cvmx_pcie_cfgx_read(int pcie_port, uint32_t cfg_offset)
-+{
-+	union cvmx_pescx_cfg_rd pescx_cfg_rd;
-+	pescx_cfg_rd.u64 = 0;
-+	pescx_cfg_rd.s.addr = cfg_offset;
-+	cvmx_write_csr(CVMX_PESCX_CFG_RD(pcie_port), pescx_cfg_rd.u64);
-+	pescx_cfg_rd.u64 = cvmx_read_csr(CVMX_PESCX_CFG_RD(pcie_port));
-+	return pescx_cfg_rd.s.data;
-+}
-+
-+/**
-+ * Write a PCIe config space register indirectly. This is used for
-+ * registers of the form PCIEEP_CFG??? and PCIERC?_CFG???.
-+ *
-+ * @pcie_port:  PCIe port to write to
-+ * @cfg_offset: Address to write
-+ * @val:        Value to write
-+ */
-+static void cvmx_pcie_cfgx_write(int pcie_port, uint32_t cfg_offset,
-+				 uint32_t val)
-+{
-+	union cvmx_pescx_cfg_wr pescx_cfg_wr;
-+	pescx_cfg_wr.u64 = 0;
-+	pescx_cfg_wr.s.addr = cfg_offset;
-+	pescx_cfg_wr.s.data = val;
-+	cvmx_write_csr(CVMX_PESCX_CFG_WR(pcie_port), pescx_cfg_wr.u64);
-+}
-+
-+/**
-+ * Build a PCIe config space request address for a device
-+ *
-+ * @pcie_port: PCIe port to access
-+ * @bus:       Sub bus
-+ * @dev:       Device ID
-+ * @fn:        Device sub function
-+ * @reg:       Register to access
-+ *
-+ * Returns 64bit Octeon IO address
-+ */
-+static inline uint64_t __cvmx_pcie_build_config_addr(int pcie_port, int bus,
-+						     int dev, int fn, int reg)
-+{
-+	union cvmx_pcie_address pcie_addr;
-+	union cvmx_pciercx_cfg006 pciercx_cfg006;
-+
-+	pciercx_cfg006.u32 =
-+	    cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG006(pcie_port));
-+	if ((bus <= pciercx_cfg006.s.pbnum) && (dev != 0))
-+		return 0;
-+
-+	pcie_addr.u64 = 0;
-+	pcie_addr.config.upper = 2;
-+	pcie_addr.config.io = 1;
-+	pcie_addr.config.did = 3;
-+	pcie_addr.config.subdid = 1;
-+	pcie_addr.config.es = 1;
-+	pcie_addr.config.port = pcie_port;
-+	pcie_addr.config.ty = (bus > pciercx_cfg006.s.pbnum);
-+	pcie_addr.config.bus = bus;
-+	pcie_addr.config.dev = dev;
-+	pcie_addr.config.func = fn;
-+	pcie_addr.config.reg = reg;
-+	return pcie_addr.u64;
-+}
-+
-+/**
-+ * Read 8bits from a Device's config space
-+ *
-+ * @pcie_port: PCIe port the device is on
-+ * @bus:       Sub bus
-+ * @dev:       Device ID
-+ * @fn:        Device sub function
-+ * @reg:       Register to access
-+ *
-+ * Returns Result of the read
-+ */
-+static uint8_t cvmx_pcie_config_read8(int pcie_port, int bus, int dev,
-+				      int fn, int reg)
-+{
-+	uint64_t address =
-+	    __cvmx_pcie_build_config_addr(pcie_port, bus, dev, fn, reg);
-+	if (address)
-+		return cvmx_read64_uint8(address);
-+	else
-+		return 0xff;
-+}
-+
-+/**
-+ * Read 16bits from a Device's config space
-+ *
-+ * @pcie_port: PCIe port the device is on
-+ * @bus:       Sub bus
-+ * @dev:       Device ID
-+ * @fn:        Device sub function
-+ * @reg:       Register to access
-+ *
-+ * Returns Result of the read
-+ */
-+static uint16_t cvmx_pcie_config_read16(int pcie_port, int bus, int dev,
-+					int fn, int reg)
-+{
-+	uint64_t address =
-+	    __cvmx_pcie_build_config_addr(pcie_port, bus, dev, fn, reg);
-+	if (address)
-+		return le16_to_cpu(cvmx_read64_uint16(address));
-+	else
-+		return 0xffff;
-+}
-+
-+/**
-+ * Read 32bits from a Device's config space
-+ *
-+ * @pcie_port: PCIe port the device is on
-+ * @bus:       Sub bus
-+ * @dev:       Device ID
-+ * @fn:        Device sub function
-+ * @reg:       Register to access
-+ *
-+ * Returns Result of the read
-+ */
-+static uint32_t cvmx_pcie_config_read32(int pcie_port, int bus, int dev,
-+					int fn, int reg)
-+{
-+	uint64_t address =
-+	    __cvmx_pcie_build_config_addr(pcie_port, bus, dev, fn, reg);
-+	if (address)
-+		return le32_to_cpu(cvmx_read64_uint32(address));
-+	else
-+		return 0xffffffff;
-+}
-+
-+/**
-+ * Write 8bits to a Device's config space
-+ *
-+ * @pcie_port: PCIe port the device is on
-+ * @bus:       Sub bus
-+ * @dev:       Device ID
-+ * @fn:        Device sub function
-+ * @reg:       Register to access
-+ * @val:       Value to write
-+ */
-+static void cvmx_pcie_config_write8(int pcie_port, int bus, int dev, int fn,
-+				    int reg, uint8_t val)
-+{
-+	uint64_t address =
-+	    __cvmx_pcie_build_config_addr(pcie_port, bus, dev, fn, reg);
-+	if (address)
-+		cvmx_write64_uint8(address, val);
-+}
-+
-+/**
-+ * Write 16bits to a Device's config space
-+ *
-+ * @pcie_port: PCIe port the device is on
-+ * @bus:       Sub bus
-+ * @dev:       Device ID
-+ * @fn:        Device sub function
-+ * @reg:       Register to access
-+ * @val:       Value to write
-+ */
-+static void cvmx_pcie_config_write16(int pcie_port, int bus, int dev, int fn,
-+				     int reg, uint16_t val)
-+{
-+	uint64_t address =
-+	    __cvmx_pcie_build_config_addr(pcie_port, bus, dev, fn, reg);
-+	if (address)
-+		cvmx_write64_uint16(address, cpu_to_le16(val));
-+}
-+
-+/**
-+ * Write 32bits to a Device's config space
-+ *
-+ * @pcie_port: PCIe port the device is on
-+ * @bus:       Sub bus
-+ * @dev:       Device ID
-+ * @fn:        Device sub function
-+ * @reg:       Register to access
-+ * @val:       Value to write
-+ */
-+static void cvmx_pcie_config_write32(int pcie_port, int bus, int dev, int fn,
-+				     int reg, uint32_t val)
-+{
-+	uint64_t address =
-+	    __cvmx_pcie_build_config_addr(pcie_port, bus, dev, fn, reg);
-+	if (address)
-+		cvmx_write64_uint32(address, cpu_to_le32(val));
-+}
-+
-+/**
-+ * Initialize the RC config space CSRs
-+ *
-+ * @pcie_port: PCIe port to initialize
-+ */
-+static void __cvmx_pcie_rc_initialize_config_space(int pcie_port)
-+{
-+	union cvmx_pciercx_cfg030 pciercx_cfg030;
-+	union cvmx_npei_ctl_status2 npei_ctl_status2;
-+	union cvmx_pciercx_cfg070 pciercx_cfg070;
-+	union cvmx_pciercx_cfg001 pciercx_cfg001;
-+	union cvmx_pciercx_cfg032 pciercx_cfg032;
-+	union cvmx_pciercx_cfg006 pciercx_cfg006;
-+	union cvmx_pciercx_cfg008 pciercx_cfg008;
-+	union cvmx_pciercx_cfg009 pciercx_cfg009;
-+	union cvmx_pciercx_cfg010 pciercx_cfg010;
-+	union cvmx_pciercx_cfg011 pciercx_cfg011;
-+	union cvmx_pciercx_cfg035 pciercx_cfg035;
-+	union cvmx_pciercx_cfg075 pciercx_cfg075;
-+	union cvmx_pciercx_cfg034 pciercx_cfg034;
-+
-+	/* Max Payload Size (PCIE*_CFG030[MPS]) */
-+	/* Max Read Request Size (PCIE*_CFG030[MRRS]) */
-+	/* Relaxed-order, no-snoop enables (PCIE*_CFG030[RO_EN,NS_EN] */
-+	/* Error Message Enables (PCIE*_CFG030[CE_EN,NFE_EN,FE_EN,UR_EN]) */
-+	pciercx_cfg030.u32 =
-+		cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG030(pcie_port));
-+	/*
-+	 * Max payload size = 128 bytes for best Octeon DMA
-+	 * performance.
-+	 */
-+	pciercx_cfg030.s.mps = 0;
-+	/*
-+	 * Max read request size = 128 bytes for best Octeon DMA
-+	 * performance.
-+	 */
-+	pciercx_cfg030.s.mrrs = 0;
-+	/* Enable relaxed ordering. */
-+	pciercx_cfg030.s.ro_en = 1;
-+	/* Enable no snoop. */
-+	pciercx_cfg030.s.ns_en = 1;
-+	/* Correctable error reporting enable. */
-+	pciercx_cfg030.s.ce_en = 1;
-+	/* Non-fatal error reporting enable. */
-+	pciercx_cfg030.s.nfe_en = 1;
-+	/* Fatal error reporting enable. */
-+	pciercx_cfg030.s.fe_en = 1;
-+	/* Unsupported request reporting enable. */
-+	pciercx_cfg030.s.ur_en = 1;
-+	cvmx_pcie_cfgx_write(pcie_port, CVMX_PCIERCX_CFG030(pcie_port),
-+			     pciercx_cfg030.u32);
-+
-+	/*
-+	 * Max Payload Size (NPEI_CTL_STATUS2[MPS]) must match
-+	 * PCIE*_CFG030[MPS]
-+	 *
-+	 * Max Read Request Size (NPEI_CTL_STATUS2[MRRS]) must not
-+	 * exceed PCIE*_CFG030[MRRS].
-+	 */
-+	npei_ctl_status2.u64 = cvmx_read_csr(CVMX_PEXP_NPEI_CTL_STATUS2);
-+	/* Max payload size = 128 bytes for best Octeon DMA performance */
-+	npei_ctl_status2.s.mps = 0;
-+	/* Max read request size = 128 bytes for best Octeon DMA performance */
-+	npei_ctl_status2.s.mrrs = 0;
-+	cvmx_write_csr(CVMX_PEXP_NPEI_CTL_STATUS2, npei_ctl_status2.u64);
-+
-+	/* ECRC Generation (PCIE*_CFG070[GE,CE]) */
-+	pciercx_cfg070.u32 =
-+		cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG070(pcie_port));
-+	pciercx_cfg070.s.ge = 1;	/* ECRC generation enable. */
-+	pciercx_cfg070.s.ce = 1;	/* ECRC check enable. */
-+	cvmx_pcie_cfgx_write(pcie_port, CVMX_PCIERCX_CFG070(pcie_port),
-+			     pciercx_cfg070.u32);
-+
-+	/*
-+	 * Access Enables (PCIE*_CFG001[MSAE,ME]) ME and MSAE should
-+	 * always be set.
-+	 *
-+	 * Interrupt Disable (PCIE*_CFG001[I_DIS]) System Error
-+	 * Message Enable (PCIE*_CFG001[SEE])
-+	 */
-+	pciercx_cfg001.u32 =
-+		cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG001(pcie_port));
-+	pciercx_cfg001.s.msae = 1;	/* Memory space enable. */
-+	pciercx_cfg001.s.me = 1;	/* Bus master enable. */
-+	pciercx_cfg001.s.i_dis = 1;	/* INTx assertion disable. */
-+	pciercx_cfg001.s.see = 1;	/* SERR# enable */
-+	cvmx_pcie_cfgx_write(pcie_port, CVMX_PCIERCX_CFG001(pcie_port),
-+			pciercx_cfg001.u32);
-+
-+	/* Advanced Error Recovery Message Enables */
-+	/* (PCIE*_CFG066,PCIE*_CFG067,PCIE*_CFG069) */
-+	cvmx_pcie_cfgx_write(pcie_port, CVMX_PCIERCX_CFG066(pcie_port), 0);
-+	/* Use CVMX_PCIERCX_CFG067 hardware default */
-+	cvmx_pcie_cfgx_write(pcie_port, CVMX_PCIERCX_CFG069(pcie_port), 0);
-+
-+	/* Active State Power Management (PCIE*_CFG032[ASLPC]) */
-+	pciercx_cfg032.u32 =
-+		cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG032(pcie_port));
-+	pciercx_cfg032.s.aslpc = 0;	/* Active state Link PM control. */
-+	cvmx_pcie_cfgx_write(pcie_port, CVMX_PCIERCX_CFG032(pcie_port),
-+			     pciercx_cfg032.u32);
-+
-+	/* Entrance Latencies (PCIE*_CFG451[L0EL,L1EL]) */
-+
-+	/*
-+	 * Link Width Mode (PCIERCn_CFG452[LME]) - Set during
-+	 * cvmx_pcie_rc_initialize_link()
-+	 *
-+	 * Primary Bus Number (PCIERCn_CFG006[PBNUM])
-+	 *
-+	 * We set the primary bus number to 1 so IDT bridges are
-+	 * happy. They don't like zero.
-+	 */
-+	pciercx_cfg006.u32 = 0;
-+	pciercx_cfg006.s.pbnum = 1;
-+	pciercx_cfg006.s.sbnum = 1;
-+	pciercx_cfg006.s.subbnum = 1;
-+	cvmx_pcie_cfgx_write(pcie_port, CVMX_PCIERCX_CFG006(pcie_port),
-+			     pciercx_cfg006.u32);
-+
-+	/*
-+	 * Memory-mapped I/O BAR (PCIERCn_CFG008)
-+	 * Most applications should disable the memory-mapped I/O BAR by
-+	 * setting PCIERCn_CFG008[ML_ADDR] < PCIERCn_CFG008[MB_ADDR]
-+	 */
-+	pciercx_cfg008.u32 = 0;
-+	pciercx_cfg008.s.mb_addr = 0x100;
-+	pciercx_cfg008.s.ml_addr = 0;
-+	cvmx_pcie_cfgx_write(pcie_port, CVMX_PCIERCX_CFG008(pcie_port),
-+			     pciercx_cfg008.u32);
-+
-+	/*
-+	 * Prefetchable BAR (PCIERCn_CFG009,PCIERCn_CFG010,PCIERCn_CFG011)
-+	 * Most applications should disable the prefetchable BAR by setting
-+	 * PCIERCn_CFG011[UMEM_LIMIT],PCIERCn_CFG009[LMEM_LIMIT] <
-+	 * PCIERCn_CFG010[UMEM_BASE],PCIERCn_CFG009[LMEM_BASE]
-+	 */
-+	pciercx_cfg009.u32 =
-+		cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG009(pcie_port));
-+	pciercx_cfg010.u32 =
-+		cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG010(pcie_port));
-+	pciercx_cfg011.u32 =
-+		cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG011(pcie_port));
-+	pciercx_cfg009.s.lmem_base = 0x100;
-+	pciercx_cfg009.s.lmem_limit = 0;
-+	pciercx_cfg010.s.umem_base = 0x100;
-+	pciercx_cfg011.s.umem_limit = 0;
-+	cvmx_pcie_cfgx_write(pcie_port, CVMX_PCIERCX_CFG009(pcie_port),
-+			     pciercx_cfg009.u32);
-+	cvmx_pcie_cfgx_write(pcie_port, CVMX_PCIERCX_CFG010(pcie_port),
-+			     pciercx_cfg010.u32);
-+	cvmx_pcie_cfgx_write(pcie_port, CVMX_PCIERCX_CFG011(pcie_port),
-+			     pciercx_cfg011.u32);
-+
-+	/*
-+	 * System Error Interrupt Enables (PCIERCn_CFG035[SECEE,SEFEE,SENFEE])
-+	 * PME Interrupt Enables (PCIERCn_CFG035[PMEIE])
-+	 */
-+	pciercx_cfg035.u32 =
-+		cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG035(pcie_port));
-+	/* System error on correctable error enable. */
-+	pciercx_cfg035.s.secee = 1;
-+	/* System error on fatal error enable. */
-+	pciercx_cfg035.s.sefee = 1;
-+	/* System error on non-fatal error enable. */
-+	pciercx_cfg035.s.senfee = 1;
-+	/* PME interrupt enable. */
-+	pciercx_cfg035.s.pmeie = 1;
-+	cvmx_pcie_cfgx_write(pcie_port, CVMX_PCIERCX_CFG035(pcie_port),
-+			     pciercx_cfg035.u32);
-+
-+	/*
-+	 * Advanced Error Recovery Interrupt Enables
-+	 * (PCIERCn_CFG075[CERE,NFERE,FERE])
-+	 */
-+	pciercx_cfg075.u32 =
-+		cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG075(pcie_port));
-+	/* Correctable error reporting enable. */
-+	pciercx_cfg075.s.cere = 1;
-+	/* Non-fatal error reporting enable. */
-+	pciercx_cfg075.s.nfere = 1;
-+	/* Fatal error reporting enable. */
-+	pciercx_cfg075.s.fere = 1;
-+	cvmx_pcie_cfgx_write(pcie_port, CVMX_PCIERCX_CFG075(pcie_port),
-+			     pciercx_cfg075.u32);
-+
-+	/* HP Interrupt Enables (PCIERCn_CFG034[HPINT_EN],
-+	 * PCIERCn_CFG034[DLLS_EN,CCINT_EN])
-+	 */
-+	pciercx_cfg034.u32 =
-+		cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG034(pcie_port));
-+	/* Hot-plug interrupt enable. */
-+	pciercx_cfg034.s.hpint_en = 1;
-+	/* Data Link Layer state changed enable */
-+	pciercx_cfg034.s.dlls_en = 1;
-+	/* Command completed interrupt enable. */
-+	pciercx_cfg034.s.ccint_en = 1;
-+	cvmx_pcie_cfgx_write(pcie_port, CVMX_PCIERCX_CFG034(pcie_port),
-+			     pciercx_cfg034.u32);
-+}
-+
-+/**
-+ * Initialize a host mode PCIe link. This function takes a PCIe
-+ * port from reset to a link up state. Software can then begin
-+ * configuring the rest of the link.
-+ *
-+ * @pcie_port: PCIe port to initialize
-+ *
-+ * Returns Zero on success
-+ */
-+static int __cvmx_pcie_rc_initialize_link(int pcie_port)
-+{
-+	uint64_t start_cycle;
-+	union cvmx_pescx_ctl_status pescx_ctl_status;
-+	union cvmx_pciercx_cfg452 pciercx_cfg452;
-+	union cvmx_pciercx_cfg032 pciercx_cfg032;
-+	union cvmx_pciercx_cfg448 pciercx_cfg448;
-+
-+	/* Set the lane width */
-+	pciercx_cfg452.u32 =
-+	    cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG452(pcie_port));
-+	pescx_ctl_status.u64 = cvmx_read_csr(CVMX_PESCX_CTL_STATUS(pcie_port));
-+	if (pescx_ctl_status.s.qlm_cfg == 0) {
-+		/* We're in 8 lane (56XX) or 4 lane (54XX) mode */
-+		pciercx_cfg452.s.lme = 0xf;
-+	} else {
-+		/* We're in 4 lane (56XX) or 2 lane (52XX) mode */
-+		pciercx_cfg452.s.lme = 0x7;
-+	}
-+	cvmx_pcie_cfgx_write(pcie_port, CVMX_PCIERCX_CFG452(pcie_port),
-+			     pciercx_cfg452.u32);
-+
-+	/*
-+	 * CN52XX pass 1.x has an errata where length mismatches on UR
-+	 * responses can cause bus errors on 64bit memory
-+	 * reads. Turning off length error checking fixes this.
-+	 */
-+	if (OCTEON_IS_MODEL(OCTEON_CN52XX_PASS1_X)) {
-+		union cvmx_pciercx_cfg455 pciercx_cfg455;
-+		pciercx_cfg455.u32 =
-+		    cvmx_pcie_cfgx_read(pcie_port,
-+					CVMX_PCIERCX_CFG455(pcie_port));
-+		pciercx_cfg455.s.m_cpl_len_err = 1;
-+		cvmx_pcie_cfgx_write(pcie_port, CVMX_PCIERCX_CFG455(pcie_port),
-+				     pciercx_cfg455.u32);
-+	}
-+
-+	/* Lane swap needs to be manually enabled for CN52XX */
-+	if (OCTEON_IS_MODEL(OCTEON_CN52XX) && (pcie_port == 1)) {
-+		pescx_ctl_status.s.lane_swp = 1;
-+		cvmx_write_csr(CVMX_PESCX_CTL_STATUS(pcie_port),
-+			       pescx_ctl_status.u64);
-+	}
-+
-+	/* Bring up the link */
-+	pescx_ctl_status.u64 = cvmx_read_csr(CVMX_PESCX_CTL_STATUS(pcie_port));
-+	pescx_ctl_status.s.lnk_enb = 1;
-+	cvmx_write_csr(CVMX_PESCX_CTL_STATUS(pcie_port), pescx_ctl_status.u64);
-+
-+	/*
-+	 * CN52XX pass 1.0: Due to a bug in 2nd order CDR, it needs to
-+	 * be disabled.
-+	 */
-+	if (OCTEON_IS_MODEL(OCTEON_CN52XX_PASS1_0))
-+		__cvmx_helper_errata_qlm_disable_2nd_order_cdr(0);
-+
-+	/* Wait for the link to come up */
-+	cvmx_dprintf("PCIe: Waiting for port %d link\n", pcie_port);
-+	start_cycle = cvmx_get_cycle();
-+	do {
-+		if (cvmx_get_cycle() - start_cycle >
-+		    2 * cvmx_sysinfo_get()->cpu_clock_hz) {
-+			cvmx_dprintf("PCIe: Port %d link timeout\n",
-+				     pcie_port);
-+			return -1;
-+		}
-+		cvmx_wait(10000);
-+		pciercx_cfg032.u32 =
-+		    cvmx_pcie_cfgx_read(pcie_port,
-+					CVMX_PCIERCX_CFG032(pcie_port));
-+	} while (pciercx_cfg032.s.dlla == 0);
-+
-+	/* Display the link status */
-+	cvmx_dprintf("PCIe: Port %d link active, %d lanes\n", pcie_port,
-+		     pciercx_cfg032.s.nlw);
-+
-+	/*
-+	 * Update the Replay Time Limit. Empirically, some PCIe
-+	 * devices take a little longer to respond than expected under
-+	 * load. As a workaround for this we configure the Replay Time
-+	 * Limit to the value expected for a 512 byte MPS instead of
-+	 * our actual 256 byte MPS. The numbers below are directly
-+	 * from the PCIe spec table 3-4.
-+	 */
-+	pciercx_cfg448.u32 =
-+	    cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG448(pcie_port));
-+	switch (pciercx_cfg032.s.nlw) {
-+	case 1:		/* 1 lane */
-+		pciercx_cfg448.s.rtl = 1677;
-+		break;
-+	case 2:		/* 2 lanes */
-+		pciercx_cfg448.s.rtl = 867;
-+		break;
-+	case 4:		/* 4 lanes */
-+		pciercx_cfg448.s.rtl = 462;
-+		break;
-+	case 8:		/* 8 lanes */
-+		pciercx_cfg448.s.rtl = 258;
-+		break;
-+	}
-+	cvmx_pcie_cfgx_write(pcie_port, CVMX_PCIERCX_CFG448(pcie_port),
-+			     pciercx_cfg448.u32);
-+
-+	return 0;
-+}
-+
-+/**
-+ * Initialize a PCIe port for use in host(RC) mode. It doesn't
-+ * enumerate the bus.
-+ *
-+ * @pcie_port: PCIe port to initialize
-+ *
-+ * Returns Zero on success
-+ */
-+static int cvmx_pcie_rc_initialize(int pcie_port)
-+{
-+	int i;
-+	union cvmx_ciu_soft_prst ciu_soft_prst;
-+	union cvmx_pescx_bist_status pescx_bist_status;
-+	union cvmx_pescx_bist_status2 pescx_bist_status2;
-+	union cvmx_npei_ctl_status npei_ctl_status;
-+	union cvmx_npei_mem_access_ctl npei_mem_access_ctl;
-+	union cvmx_npei_mem_access_subidx mem_access_subid;
-+	union cvmx_npei_dbg_data npei_dbg_data;
-+	union cvmx_pescx_ctl_status2 pescx_ctl_status2;
-+
-+	/*
-+	 * Make sure we aren't trying to setup a target mode interface
-+	 * in host mode.
-+	 */
-+	npei_ctl_status.u64 = cvmx_read_csr(CVMX_PEXP_NPEI_CTL_STATUS);
-+	if ((pcie_port == 0) && !npei_ctl_status.s.host_mode) {
-+		cvmx_dprintf("PCIe: ERROR: cvmx_pcie_rc_initialize() called "
-+			     "on port0, but port0 is not in host mode\n");
-+		return -1;
-+	}
-+
-+	/*
-+	 * Make sure a CN52XX isn't trying to bring up port 1 when it
-+	 * is disabled.
-+	 */
-+	if (OCTEON_IS_MODEL(OCTEON_CN52XX)) {
-+		npei_dbg_data.u64 = cvmx_read_csr(CVMX_PEXP_NPEI_DBG_DATA);
-+		if ((pcie_port == 1) && npei_dbg_data.cn52xx.qlm0_link_width) {
-+			cvmx_dprintf("PCIe: ERROR: cvmx_pcie_rc_initialize() "
-+				     "called on port1, but port1 is "
-+				     "disabled\n");
-+			return -1;
-+		}
-+	}
-+
-+	/*
-+	 * PCIe switch arbitration mode. '0' == fixed priority NPEI,
-+	 * PCIe0, then PCIe1. '1' == round robin.
-+	 */
-+	npei_ctl_status.s.arb = 1;
-+	/* Allow up to 0x20 config retries */
-+	npei_ctl_status.s.cfg_rtry = 0x20;
-+	/*
-+	 * CN52XX pass1.x has an errata where P0_NTAGS and P1_NTAGS
-+	 * don't reset.
-+	 */
-+	if (OCTEON_IS_MODEL(OCTEON_CN52XX_PASS1_X)) {
-+		npei_ctl_status.s.p0_ntags = 0x20;
-+		npei_ctl_status.s.p1_ntags = 0x20;
-+	}
-+	cvmx_write_csr(CVMX_PEXP_NPEI_CTL_STATUS, npei_ctl_status.u64);
-+
-+	/* Bring the PCIe out of reset */
-+	if (cvmx_sysinfo_get()->board_type == CVMX_BOARD_TYPE_EBH5200) {
-+		/*
-+		 * The EBH5200 board swapped the PCIe reset lines on
-+		 * the board. As a workaround for this bug, we bring
-+		 * both PCIe ports out of reset at the same time
-+		 * instead of on separate calls. So for port 0, we
-+		 * bring both out of reset and do nothing on port 1.
-+		 */
-+		if (pcie_port == 0) {
-+			ciu_soft_prst.u64 = cvmx_read_csr(CVMX_CIU_SOFT_PRST);
-+			/*
-+			 * After a chip reset the PCIe will also be in
-+			 * reset. If it isn't, most likely someone is
-+			 * trying to init it again without a proper
-+			 * PCIe reset.
-+			 */
-+			if (ciu_soft_prst.s.soft_prst == 0) {
-+				/* Reset the ports */
-+				ciu_soft_prst.s.soft_prst = 1;
-+				cvmx_write_csr(CVMX_CIU_SOFT_PRST,
-+					       ciu_soft_prst.u64);
-+				ciu_soft_prst.u64 =
-+				    cvmx_read_csr(CVMX_CIU_SOFT_PRST1);
-+				ciu_soft_prst.s.soft_prst = 1;
-+				cvmx_write_csr(CVMX_CIU_SOFT_PRST1,
-+					       ciu_soft_prst.u64);
-+				/* Wait until pcie resets the ports. */
-+				udelay(2000);
-+			}
-+			ciu_soft_prst.u64 = cvmx_read_csr(CVMX_CIU_SOFT_PRST1);
-+			ciu_soft_prst.s.soft_prst = 0;
-+			cvmx_write_csr(CVMX_CIU_SOFT_PRST1, ciu_soft_prst.u64);
-+			ciu_soft_prst.u64 = cvmx_read_csr(CVMX_CIU_SOFT_PRST);
-+			ciu_soft_prst.s.soft_prst = 0;
-+			cvmx_write_csr(CVMX_CIU_SOFT_PRST, ciu_soft_prst.u64);
-+		}
-+	} else {
-+		/*
-+		 * The normal case: The PCIe ports are completely
-+		 * separate and can be brought out of reset
-+		 * independently.
-+		 */
-+		if (pcie_port)
-+			ciu_soft_prst.u64 = cvmx_read_csr(CVMX_CIU_SOFT_PRST1);
-+		else
-+			ciu_soft_prst.u64 = cvmx_read_csr(CVMX_CIU_SOFT_PRST);
-+		/*
-+		 * After a chip reset the PCIe will also be in
-+		 * reset. If it isn't, most likely someone is trying
-+		 * to init it again without a proper PCIe reset.
-+		 */
-+		if (ciu_soft_prst.s.soft_prst == 0) {
-+			/* Reset the port */
-+			ciu_soft_prst.s.soft_prst = 1;
-+			if (pcie_port)
-+				cvmx_write_csr(CVMX_CIU_SOFT_PRST1,
-+					       ciu_soft_prst.u64);
-+			else
-+				cvmx_write_csr(CVMX_CIU_SOFT_PRST,
-+					       ciu_soft_prst.u64);
-+			/* Wait until pcie resets the ports. */
-+			udelay(2000);
-+		}
-+		if (pcie_port) {
-+			ciu_soft_prst.u64 = cvmx_read_csr(CVMX_CIU_SOFT_PRST1);
-+			ciu_soft_prst.s.soft_prst = 0;
-+			cvmx_write_csr(CVMX_CIU_SOFT_PRST1, ciu_soft_prst.u64);
-+		} else {
-+			ciu_soft_prst.u64 = cvmx_read_csr(CVMX_CIU_SOFT_PRST);
-+			ciu_soft_prst.s.soft_prst = 0;
-+			cvmx_write_csr(CVMX_CIU_SOFT_PRST, ciu_soft_prst.u64);
-+		}
-+	}
-+
-+	/*
-+	 * Wait for PCIe reset to complete. Due to errata PCIE-700, we
-+	 * don't poll PESCX_CTL_STATUS2[PCIERST], but simply wait a
-+	 * fixed number of cycles.
-+	 */
-+	cvmx_wait(400000);
-+
-+	/* PESCX_BIST_STATUS2[PCLK_RUN] was missing on pass 1 of CN56XX and
-+	   CN52XX, so we only probe it on newer chips */
-+	if (!OCTEON_IS_MODEL(OCTEON_CN56XX_PASS1_X)
-+	    && !OCTEON_IS_MODEL(OCTEON_CN52XX_PASS1_X)) {
-+		/* Clear PCLK_RUN so we can check if the clock is running */
-+		pescx_ctl_status2.u64 =
-+		    cvmx_read_csr(CVMX_PESCX_CTL_STATUS2(pcie_port));
-+		pescx_ctl_status2.s.pclk_run = 1;
-+		cvmx_write_csr(CVMX_PESCX_CTL_STATUS2(pcie_port),
-+			       pescx_ctl_status2.u64);
-+		/*
-+		 * Now that we cleared PCLK_RUN, wait for it to be set
-+		 * again telling us the clock is running.
-+		 */
-+		if (CVMX_WAIT_FOR_FIELD64(CVMX_PESCX_CTL_STATUS2(pcie_port),
-+					  union cvmx_pescx_ctl_status2,
-+					  pclk_run, ==, 1, 10000)) {
-+			cvmx_dprintf("PCIe: Port %d isn't clocked, skipping.\n",
-+				     pcie_port);
-+			return -1;
-+		}
-+	}
-+
-+	/*
-+	 * Check and make sure PCIe came out of reset. If it doesn't
-+	 * the board probably hasn't wired the clocks up and the
-+	 * interface should be skipped.
-+	 */
-+	pescx_ctl_status2.u64 =
-+	    cvmx_read_csr(CVMX_PESCX_CTL_STATUS2(pcie_port));
-+	if (pescx_ctl_status2.s.pcierst) {
-+		cvmx_dprintf("PCIe: Port %d stuck in reset, skipping.\n",
-+			     pcie_port);
-+		return -1;
-+	}
-+
-+	/*
-+	 * Check BIST2 status. If any bits are set skip this interface. This
-+	 * is an attempt to catch PCIE-813 on pass 1 parts.
-+	 */
-+	pescx_bist_status2.u64 =
-+	    cvmx_read_csr(CVMX_PESCX_BIST_STATUS2(pcie_port));
-+	if (pescx_bist_status2.u64) {
-+		cvmx_dprintf("PCIe: Port %d BIST2 failed. Most likely this "
-+			     "port isn't hooked up, skipping.\n",
-+			     pcie_port);
-+		return -1;
-+	}
-+
-+	/* Check BIST status */
-+	pescx_bist_status.u64 =
-+	    cvmx_read_csr(CVMX_PESCX_BIST_STATUS(pcie_port));
-+	if (pescx_bist_status.u64)
-+		cvmx_dprintf("PCIe: BIST FAILED for port %d (0x%016llx)\n",
-+			     pcie_port, CAST64(pescx_bist_status.u64));
-+
-+	/* Initialize the config space CSRs */
-+	__cvmx_pcie_rc_initialize_config_space(pcie_port);
-+
-+	/* Bring the link up */
-+	if (__cvmx_pcie_rc_initialize_link(pcie_port)) {
-+		cvmx_dprintf
-+		    ("PCIe: ERROR: cvmx_pcie_rc_initialize_link() failed\n");
-+		return -1;
-+	}
-+
-+	/* Store merge control (NPEI_MEM_ACCESS_CTL[TIMER,MAX_WORD]) */
-+	npei_mem_access_ctl.u64 = cvmx_read_csr(CVMX_PEXP_NPEI_MEM_ACCESS_CTL);
-+	/* Allow 16 words to combine */
-+	npei_mem_access_ctl.s.max_word = 0;
-+	/* Wait up to 127 cycles for more data */
-+	npei_mem_access_ctl.s.timer = 127;
-+	cvmx_write_csr(CVMX_PEXP_NPEI_MEM_ACCESS_CTL, npei_mem_access_ctl.u64);
-+
-+	/* Setup Mem access SubDIDs */
-+	mem_access_subid.u64 = 0;
-+	/* Port the request is sent to. */
-+	mem_access_subid.s.port = pcie_port;
-+	/* Due to an errata on pass 1 chips, no merging is allowed. */
-+	mem_access_subid.s.nmerge = 1;
-+	/* Endian-swap for Reads. */
-+	mem_access_subid.s.esr = 1;
-+	/* Endian-swap for Writes. */
-+	mem_access_subid.s.esw = 1;
-+	/* No Snoop for Reads. */
-+	mem_access_subid.s.nsr = 1;
-+	/* No Snoop for Writes. */
-+	mem_access_subid.s.nsw = 1;
-+	/* Disable Relaxed Ordering for Reads. */
-+	mem_access_subid.s.ror = 0;
-+	/* Disable Relaxed Ordering for Writes. */
-+	mem_access_subid.s.row = 0;
-+	/* PCIe Adddress Bits <63:34>. */
-+	mem_access_subid.s.ba = 0;
-+
-+	/*
-+	 * Setup mem access 12-15 for port 0, 16-19 for port 1,
-+	 * supplying 36 bits of address space.
-+	 */
-+	for (i = 12 + pcie_port * 4; i < 16 + pcie_port * 4; i++) {
-+		cvmx_write_csr(CVMX_PEXP_NPEI_MEM_ACCESS_SUBIDX(i),
-+			       mem_access_subid.u64);
-+		/* Set each SUBID to extend the addressable range */
-+		mem_access_subid.s.ba += 1;
-+	}
-+
-+	/*
-+	 * Disable the peer to peer forwarding register. This must be
-+	 * setup by the OS after it enumerates the bus and assigns
-+	 * addresses to the PCIe busses.
-+	 */
-+	for (i = 0; i < 4; i++) {
-+		cvmx_write_csr(CVMX_PESCX_P2P_BARX_START(i, pcie_port), -1);
-+		cvmx_write_csr(CVMX_PESCX_P2P_BARX_END(i, pcie_port), -1);
-+	}
-+
-+	/* Set Octeon's BAR0 to decode 0-16KB. It overlaps with Bar2 */
-+	cvmx_write_csr(CVMX_PESCX_P2N_BAR0_START(pcie_port), 0);
-+
-+	/*
-+	 * Disable Octeon's BAR1. It isn't needed in RC mode since
-+	 * BAR2 maps all of memory. BAR2 also maps 256MB-512MB into
-+	 * the 2nd 256MB of memory.
-+	 */
-+	cvmx_write_csr(CVMX_PESCX_P2N_BAR1_START(pcie_port), -1);
-+
-+	/*
-+	 * Set Octeon's BAR2 to decode 0-2^39. Bar0 and Bar1 take
-+	 * precedence where they overlap. It also overlaps with the
-+	 * device addresses, so make sure the peer to peer forwarding
-+	 * is set right.
-+	 */
-+	cvmx_write_csr(CVMX_PESCX_P2N_BAR2_START(pcie_port), 0);
-+
-+	/*
-+	 * Setup BAR2 attributes
-+	 *
-+	 * Relaxed Ordering (NPEI_CTL_PORTn[PTLP_RO,CTLP_RO, WAIT_COM])
-+	 * - PTLP_RO,CTLP_RO should normally be set (except for debug).
-+	 * - WAIT_COM=0 will likely work for all applications.
-+	 *
-+	 * Load completion relaxed ordering (NPEI_CTL_PORTn[WAITL_COM]).
-+	 */
-+	if (pcie_port) {
-+		union cvmx_npei_ctl_port1 npei_ctl_port;
-+		npei_ctl_port.u64 = cvmx_read_csr(CVMX_PEXP_NPEI_CTL_PORT1);
-+		npei_ctl_port.s.bar2_enb = 1;
-+		npei_ctl_port.s.bar2_esx = 1;
-+		npei_ctl_port.s.bar2_cax = 0;
-+		npei_ctl_port.s.ptlp_ro = 1;
-+		npei_ctl_port.s.ctlp_ro = 1;
-+		npei_ctl_port.s.wait_com = 0;
-+		npei_ctl_port.s.waitl_com = 0;
-+		cvmx_write_csr(CVMX_PEXP_NPEI_CTL_PORT1, npei_ctl_port.u64);
-+	} else {
-+		union cvmx_npei_ctl_port0 npei_ctl_port;
-+		npei_ctl_port.u64 = cvmx_read_csr(CVMX_PEXP_NPEI_CTL_PORT0);
-+		npei_ctl_port.s.bar2_enb = 1;
-+		npei_ctl_port.s.bar2_esx = 1;
-+		npei_ctl_port.s.bar2_cax = 0;
-+		npei_ctl_port.s.ptlp_ro = 1;
-+		npei_ctl_port.s.ctlp_ro = 1;
-+		npei_ctl_port.s.wait_com = 0;
-+		npei_ctl_port.s.waitl_com = 0;
-+		cvmx_write_csr(CVMX_PEXP_NPEI_CTL_PORT0, npei_ctl_port.u64);
-+	}
-+	return 0;
-+}
-+
-+
-+/* Above was cvmx-pcie.c, below original pcie.c */
-+
-+
-+/**
-+ * Map a PCI device to the appropriate interrupt line
-+ *
-+ * @param dev    The Linux PCI device structure for the device to map
-+ * @param slot   The slot number for this device on __BUS 0__. Linux
-+ *               enumerates through all the bridges and figures out the
-+ *               slot on Bus 0 where this device eventually hooks to.
-+ * @param pin    The PCI interrupt pin read from the device, then swizzled
-+ *               as it goes through each bridge.
-+ * @return Interrupt number for the device
-+ */
-+int __init octeon_pcie_pcibios_map_irq(const struct pci_dev *dev,
-+				       u8 slot, u8 pin)
-+{
-+	/*
-+	 * The EBH5600 board with the PCI to PCIe bridge mistakenly
-+	 * wires the first slot for both device id 2 and interrupt
-+	 * A. According to the PCI spec, device id 2 should be C. The
-+	 * following kludge attempts to fix this.
-+	 */
-+	if (strstr(octeon_board_type_string(), "EBH5600") &&
-+	    dev->bus && dev->bus->parent) {
-+		/*
-+		 * Iterate all the way up the device chain and find
-+		 * the root bus.
-+		 */
-+		while (dev->bus && dev->bus->parent)
-+			dev = to_pci_dev(dev->bus->bridge);
-+		/* If the root bus is number 0 and the PEX 8114 is the
-+		 * root, assume we are behind the miswired bus. We
-+		 * need to correct the swizzle level by two. Yuck.
-+		 */
-+		if ((dev->bus->number == 0) &&
-+		    (dev->vendor == 0x10b5) && (dev->device == 0x8114)) {
-+			/*
-+			 * The pin field is one based, not zero. We
-+			 * need to swizzle it by minus two.
-+			 */
-+			pin = ((pin - 3) & 3) + 1;
-+		}
-+	}
-+	/*
-+	 * The -1 is because pin starts with one, not zero. It might
-+	 * be that this equation needs to include the slot number, but
-+	 * I don't have hardware to check that against.
-+	 */
-+	return pin - 1 + OCTEON_IRQ_PCI_INT0;
-+}
-+
-+/**
-+ * Read a value from configuration space
-+ *
-+ * @param bus
-+ * @param devfn
-+ * @param reg
-+ * @param size
-+ * @param val
-+ * @return
-+ */
-+static inline int octeon_pcie_read_config(int pcie_port, struct pci_bus *bus,
-+					  unsigned int devfn, int reg, int size,
-+					  u32 *val)
-+{
-+	union octeon_cvmemctl cvmmemctl;
-+	union octeon_cvmemctl cvmmemctl_save;
-+	int bus_number = bus->number;
-+
-+	/*
-+	 * We need to force the bus number to be zero on the root
-+	 * bus. Linux numbers the 2nd root bus to start after all
-+	 * buses on root 0.
-+	 */
-+	if (bus->parent == NULL)
-+		bus_number = 0;
-+
-+	/*
-+	 * PCIe only has a single device connected to Octeon. It is
-+	 * always device ID 0. Don't bother doing reads for other
-+	 * device IDs on the first segment.
-+	 */
-+	if ((bus_number == 0) && (devfn >> 3 != 0))
-+		return PCIBIOS_FUNC_NOT_SUPPORTED;
-+
-+	/*
-+	 * The following is a workaround for the CN57XX, CN56XX,
-+	 * CN55XX, and CN54XX errata with PCIe config reads from non
-+	 * existent devices.  These chips will hang the PCIe link if a
-+	 * config read is performed that causes a UR response.
-+	 */
-+	if (OCTEON_IS_MODEL(OCTEON_CN56XX_PASS1) ||
-+	    OCTEON_IS_MODEL(OCTEON_CN56XX_PASS1_1)) {
-+		/*
-+		 * For our EBH5600 board, port 0 has a bridge with two
-+		 * PCI-X slots. We need a new special checks to make
-+		 * sure we only probe valid stuff.  The PCIe->PCI-X
-+		 * bridge only respondes to device ID 0, function
-+		 * 0-1
-+		 */
-+		if ((bus_number == 0) && (devfn >= 2))
-+			return PCIBIOS_FUNC_NOT_SUPPORTED;
-+		/*
-+		 * The PCI-X slots are device ID 2,3. Choose one of
-+		 * the below "if" blocks based on what is plugged into
-+		 * the board.
-+		 */
-+#if 1
-+		/* Use this option if you aren't using either slot */
-+		if (bus_number == 1)
-+			return PCIBIOS_FUNC_NOT_SUPPORTED;
-+#elif 0
-+		/*
-+		 * Use this option if you are using the first slot but
-+		 * not the second.
-+		 */
-+		if ((bus_number == 1) && (devfn >> 3 != 2))
-+			return PCIBIOS_FUNC_NOT_SUPPORTED;
-+#elif 0
-+		/*
-+		 * Use this option if you are using the second slot
-+		 * but not the first.
-+		 */
-+		if ((bus_number == 1) && (devfn >> 3 != 3))
-+			return PCIBIOS_FUNC_NOT_SUPPORTED;
-+#elif 0
-+		/* Use this opion if you are using both slots */
-+		if ((bus_number == 1) &&
-+		    !((devfn == (2 << 3)) || (devfn == (3 << 3))))
-+			return PCIBIOS_FUNC_NOT_SUPPORTED;
++union cvmx_npei_bist_status2 {
++	uint64_t u64;
++	struct cvmx_npei_bist_status2_s {
++		uint64_t reserved_5_63:59;
++		uint64_t psc_p0:1;
++		uint64_t psc_p1:1;
++		uint64_t pkt_gd:1;
++		uint64_t pkt_gl:1;
++		uint64_t pkt_blk:1;
++	} s;
++	struct cvmx_npei_bist_status2_s cn52xx;
++	struct cvmx_npei_bist_status2_s cn56xx;
++};
++
++union cvmx_npei_ctl_port0 {
++	uint64_t u64;
++	struct cvmx_npei_ctl_port0_s {
++		uint64_t reserved_21_63:43;
++		uint64_t waitl_com:1;
++		uint64_t intd:1;
++		uint64_t intc:1;
++		uint64_t intb:1;
++		uint64_t inta:1;
++		uint64_t intd_map:2;
++		uint64_t intc_map:2;
++		uint64_t intb_map:2;
++		uint64_t inta_map:2;
++		uint64_t ctlp_ro:1;
++		uint64_t reserved_6_6:1;
++		uint64_t ptlp_ro:1;
++		uint64_t bar2_enb:1;
++		uint64_t bar2_esx:2;
++		uint64_t bar2_cax:1;
++		uint64_t wait_com:1;
++	} s;
++	struct cvmx_npei_ctl_port0_s cn52xx;
++	struct cvmx_npei_ctl_port0_s cn52xxp1;
++	struct cvmx_npei_ctl_port0_s cn56xx;
++	struct cvmx_npei_ctl_port0_s cn56xxp1;
++};
++
++union cvmx_npei_ctl_port1 {
++	uint64_t u64;
++	struct cvmx_npei_ctl_port1_s {
++		uint64_t reserved_21_63:43;
++		uint64_t waitl_com:1;
++		uint64_t intd:1;
++		uint64_t intc:1;
++		uint64_t intb:1;
++		uint64_t inta:1;
++		uint64_t intd_map:2;
++		uint64_t intc_map:2;
++		uint64_t intb_map:2;
++		uint64_t inta_map:2;
++		uint64_t ctlp_ro:1;
++		uint64_t reserved_6_6:1;
++		uint64_t ptlp_ro:1;
++		uint64_t bar2_enb:1;
++		uint64_t bar2_esx:2;
++		uint64_t bar2_cax:1;
++		uint64_t wait_com:1;
++	} s;
++	struct cvmx_npei_ctl_port1_s cn52xx;
++	struct cvmx_npei_ctl_port1_s cn52xxp1;
++	struct cvmx_npei_ctl_port1_s cn56xx;
++	struct cvmx_npei_ctl_port1_s cn56xxp1;
++};
++
++union cvmx_npei_ctl_status {
++	uint64_t u64;
++	struct cvmx_npei_ctl_status_s {
++		uint64_t reserved_44_63:20;
++		uint64_t p1_ntags:6;
++		uint64_t p0_ntags:6;
++		uint64_t cfg_rtry:16;
++		uint64_t ring_en:1;
++		uint64_t lnk_rst:1;
++		uint64_t arb:1;
++		uint64_t pkt_bp:4;
++		uint64_t host_mode:1;
++		uint64_t chip_rev:8;
++	} s;
++	struct cvmx_npei_ctl_status_s cn52xx;
++	struct cvmx_npei_ctl_status_cn52xxp1 {
++		uint64_t reserved_44_63:20;
++		uint64_t p1_ntags:6;
++		uint64_t p0_ntags:6;
++		uint64_t cfg_rtry:16;
++		uint64_t reserved_15_15:1;
++		uint64_t lnk_rst:1;
++		uint64_t arb:1;
++		uint64_t reserved_9_12:4;
++		uint64_t host_mode:1;
++		uint64_t chip_rev:8;
++	} cn52xxp1;
++	struct cvmx_npei_ctl_status_s cn56xx;
++	struct cvmx_npei_ctl_status_cn56xxp1 {
++		uint64_t reserved_16_63:48;
++		uint64_t ring_en:1;
++		uint64_t lnk_rst:1;
++		uint64_t arb:1;
++		uint64_t pkt_bp:4;
++		uint64_t host_mode:1;
++		uint64_t chip_rev:8;
++	} cn56xxp1;
++};
++
++union cvmx_npei_ctl_status2 {
++	uint64_t u64;
++	struct cvmx_npei_ctl_status2_s {
++		uint64_t reserved_16_63:48;
++		uint64_t mps:1;
++		uint64_t mrrs:3;
++		uint64_t c1_w_flt:1;
++		uint64_t c0_w_flt:1;
++		uint64_t c1_b1_s:3;
++		uint64_t c0_b1_s:3;
++		uint64_t c1_wi_d:1;
++		uint64_t c1_b0_d:1;
++		uint64_t c0_wi_d:1;
++		uint64_t c0_b0_d:1;
++	} s;
++	struct cvmx_npei_ctl_status2_s cn52xx;
++	struct cvmx_npei_ctl_status2_s cn52xxp1;
++	struct cvmx_npei_ctl_status2_s cn56xx;
++	struct cvmx_npei_ctl_status2_s cn56xxp1;
++};
++
++union cvmx_npei_data_out_cnt {
++	uint64_t u64;
++	struct cvmx_npei_data_out_cnt_s {
++		uint64_t reserved_44_63:20;
++		uint64_t p1_ucnt:16;
++		uint64_t p1_fcnt:6;
++		uint64_t p0_ucnt:16;
++		uint64_t p0_fcnt:6;
++	} s;
++	struct cvmx_npei_data_out_cnt_s cn52xx;
++	struct cvmx_npei_data_out_cnt_s cn52xxp1;
++	struct cvmx_npei_data_out_cnt_s cn56xx;
++	struct cvmx_npei_data_out_cnt_s cn56xxp1;
++};
++
++union cvmx_npei_dbg_data {
++	uint64_t u64;
++	struct cvmx_npei_dbg_data_s {
++		uint64_t reserved_28_63:36;
++		uint64_t qlm0_rev_lanes:1;
++		uint64_t reserved_25_26:2;
++		uint64_t qlm1_spd:2;
++		uint64_t c_mul:5;
++		uint64_t dsel_ext:1;
++		uint64_t data:17;
++	} s;
++	struct cvmx_npei_dbg_data_cn52xx {
++		uint64_t reserved_29_63:35;
++		uint64_t qlm0_link_width:1;
++		uint64_t qlm0_rev_lanes:1;
++		uint64_t qlm1_mode:2;
++		uint64_t qlm1_spd:2;
++		uint64_t c_mul:5;
++		uint64_t dsel_ext:1;
++		uint64_t data:17;
++	} cn52xx;
++	struct cvmx_npei_dbg_data_cn52xx cn52xxp1;
++	struct cvmx_npei_dbg_data_cn56xx {
++		uint64_t reserved_29_63:35;
++		uint64_t qlm2_rev_lanes:1;
++		uint64_t qlm0_rev_lanes:1;
++		uint64_t qlm3_spd:2;
++		uint64_t qlm1_spd:2;
++		uint64_t c_mul:5;
++		uint64_t dsel_ext:1;
++		uint64_t data:17;
++	} cn56xx;
++	struct cvmx_npei_dbg_data_cn56xx cn56xxp1;
++};
++
++union cvmx_npei_dbg_select {
++	uint64_t u64;
++	struct cvmx_npei_dbg_select_s {
++		uint64_t reserved_16_63:48;
++		uint64_t dbg_sel:16;
++	} s;
++	struct cvmx_npei_dbg_select_s cn52xx;
++	struct cvmx_npei_dbg_select_s cn52xxp1;
++	struct cvmx_npei_dbg_select_s cn56xx;
++	struct cvmx_npei_dbg_select_s cn56xxp1;
++};
++
++union cvmx_npei_dmax_counts {
++	uint64_t u64;
++	struct cvmx_npei_dmax_counts_s {
++		uint64_t reserved_39_63:25;
++		uint64_t fcnt:7;
++		uint64_t dbell:32;
++	} s;
++	struct cvmx_npei_dmax_counts_s cn52xx;
++	struct cvmx_npei_dmax_counts_s cn52xxp1;
++	struct cvmx_npei_dmax_counts_s cn56xx;
++	struct cvmx_npei_dmax_counts_s cn56xxp1;
++};
++
++union cvmx_npei_dmax_dbell {
++	uint32_t u32;
++	struct cvmx_npei_dmax_dbell_s {
++		uint32_t reserved_16_31:16;
++		uint32_t dbell:16;
++	} s;
++	struct cvmx_npei_dmax_dbell_s cn52xx;
++	struct cvmx_npei_dmax_dbell_s cn52xxp1;
++	struct cvmx_npei_dmax_dbell_s cn56xx;
++	struct cvmx_npei_dmax_dbell_s cn56xxp1;
++};
++
++union cvmx_npei_dmax_ibuff_saddr {
++	uint64_t u64;
++	struct cvmx_npei_dmax_ibuff_saddr_s {
++		uint64_t reserved_37_63:27;
++		uint64_t idle:1;
++		uint64_t saddr:29;
++		uint64_t reserved_0_6:7;
++	} s;
++	struct cvmx_npei_dmax_ibuff_saddr_cn52xx {
++		uint64_t reserved_36_63:28;
++		uint64_t saddr:29;
++		uint64_t reserved_0_6:7;
++	} cn52xx;
++	struct cvmx_npei_dmax_ibuff_saddr_cn52xx cn52xxp1;
++	struct cvmx_npei_dmax_ibuff_saddr_s cn56xx;
++	struct cvmx_npei_dmax_ibuff_saddr_cn52xx cn56xxp1;
++};
++
++union cvmx_npei_dmax_naddr {
++	uint64_t u64;
++	struct cvmx_npei_dmax_naddr_s {
++		uint64_t reserved_36_63:28;
++		uint64_t addr:36;
++	} s;
++	struct cvmx_npei_dmax_naddr_s cn52xx;
++	struct cvmx_npei_dmax_naddr_s cn52xxp1;
++	struct cvmx_npei_dmax_naddr_s cn56xx;
++	struct cvmx_npei_dmax_naddr_s cn56xxp1;
++};
++
++union cvmx_npei_dma0_int_level {
++	uint64_t u64;
++	struct cvmx_npei_dma0_int_level_s {
++		uint64_t time:32;
++		uint64_t cnt:32;
++	} s;
++	struct cvmx_npei_dma0_int_level_s cn52xx;
++	struct cvmx_npei_dma0_int_level_s cn52xxp1;
++	struct cvmx_npei_dma0_int_level_s cn56xx;
++	struct cvmx_npei_dma0_int_level_s cn56xxp1;
++};
++
++union cvmx_npei_dma1_int_level {
++	uint64_t u64;
++	struct cvmx_npei_dma1_int_level_s {
++		uint64_t time:32;
++		uint64_t cnt:32;
++	} s;
++	struct cvmx_npei_dma1_int_level_s cn52xx;
++	struct cvmx_npei_dma1_int_level_s cn52xxp1;
++	struct cvmx_npei_dma1_int_level_s cn56xx;
++	struct cvmx_npei_dma1_int_level_s cn56xxp1;
++};
++
++union cvmx_npei_dma_cnts {
++	uint64_t u64;
++	struct cvmx_npei_dma_cnts_s {
++		uint64_t dma1:32;
++		uint64_t dma0:32;
++	} s;
++	struct cvmx_npei_dma_cnts_s cn52xx;
++	struct cvmx_npei_dma_cnts_s cn52xxp1;
++	struct cvmx_npei_dma_cnts_s cn56xx;
++	struct cvmx_npei_dma_cnts_s cn56xxp1;
++};
++
++union cvmx_npei_dma_control {
++	uint64_t u64;
++	struct cvmx_npei_dma_control_s {
++		uint64_t reserved_39_63:25;
++		uint64_t dma4_enb:1;
++		uint64_t dma3_enb:1;
++		uint64_t dma2_enb:1;
++		uint64_t dma1_enb:1;
++		uint64_t dma0_enb:1;
++		uint64_t b0_lend:1;
++		uint64_t dwb_denb:1;
++		uint64_t dwb_ichk:9;
++		uint64_t fpa_que:3;
++		uint64_t o_add1:1;
++		uint64_t o_ro:1;
++		uint64_t o_ns:1;
++		uint64_t o_es:2;
++		uint64_t o_mode:1;
++		uint64_t csize:14;
++	} s;
++	struct cvmx_npei_dma_control_s cn52xx;
++	struct cvmx_npei_dma_control_cn52xxp1 {
++		uint64_t reserved_38_63:26;
++		uint64_t dma3_enb:1;
++		uint64_t dma2_enb:1;
++		uint64_t dma1_enb:1;
++		uint64_t dma0_enb:1;
++		uint64_t b0_lend:1;
++		uint64_t dwb_denb:1;
++		uint64_t dwb_ichk:9;
++		uint64_t fpa_que:3;
++		uint64_t o_add1:1;
++		uint64_t o_ro:1;
++		uint64_t o_ns:1;
++		uint64_t o_es:2;
++		uint64_t o_mode:1;
++		uint64_t csize:14;
++	} cn52xxp1;
++	struct cvmx_npei_dma_control_s cn56xx;
++	struct cvmx_npei_dma_control_s cn56xxp1;
++};
++
++union cvmx_npei_int_a_enb {
++	uint64_t u64;
++	struct cvmx_npei_int_a_enb_s {
++		uint64_t reserved_10_63:54;
++		uint64_t pout_err:1;
++		uint64_t pin_bp:1;
++		uint64_t p1_rdlk:1;
++		uint64_t p0_rdlk:1;
++		uint64_t pgl_err:1;
++		uint64_t pdi_err:1;
++		uint64_t pop_err:1;
++		uint64_t pins_err:1;
++		uint64_t dma1_cpl:1;
++		uint64_t dma0_cpl:1;
++	} s;
++	struct cvmx_npei_int_a_enb_cn52xx {
++		uint64_t reserved_8_63:56;
++		uint64_t p1_rdlk:1;
++		uint64_t p0_rdlk:1;
++		uint64_t pgl_err:1;
++		uint64_t pdi_err:1;
++		uint64_t pop_err:1;
++		uint64_t pins_err:1;
++		uint64_t dma1_cpl:1;
++		uint64_t dma0_cpl:1;
++	} cn52xx;
++	struct cvmx_npei_int_a_enb_cn52xxp1 {
++		uint64_t reserved_2_63:62;
++		uint64_t dma1_cpl:1;
++		uint64_t dma0_cpl:1;
++	} cn52xxp1;
++	struct cvmx_npei_int_a_enb_s cn56xx;
++};
++
++union cvmx_npei_int_a_enb2 {
++	uint64_t u64;
++	struct cvmx_npei_int_a_enb2_s {
++		uint64_t reserved_10_63:54;
++		uint64_t pout_err:1;
++		uint64_t pin_bp:1;
++		uint64_t p1_rdlk:1;
++		uint64_t p0_rdlk:1;
++		uint64_t pgl_err:1;
++		uint64_t pdi_err:1;
++		uint64_t pop_err:1;
++		uint64_t pins_err:1;
++		uint64_t dma1_cpl:1;
++		uint64_t dma0_cpl:1;
++	} s;
++	struct cvmx_npei_int_a_enb2_cn52xx {
++		uint64_t reserved_8_63:56;
++		uint64_t p1_rdlk:1;
++		uint64_t p0_rdlk:1;
++		uint64_t pgl_err:1;
++		uint64_t pdi_err:1;
++		uint64_t pop_err:1;
++		uint64_t pins_err:1;
++		uint64_t reserved_0_1:2;
++	} cn52xx;
++	struct cvmx_npei_int_a_enb2_cn52xxp1 {
++		uint64_t reserved_2_63:62;
++		uint64_t dma1_cpl:1;
++		uint64_t dma0_cpl:1;
++	} cn52xxp1;
++	struct cvmx_npei_int_a_enb2_s cn56xx;
++};
++
++union cvmx_npei_int_a_sum {
++	uint64_t u64;
++	struct cvmx_npei_int_a_sum_s {
++		uint64_t reserved_10_63:54;
++		uint64_t pout_err:1;
++		uint64_t pin_bp:1;
++		uint64_t p1_rdlk:1;
++		uint64_t p0_rdlk:1;
++		uint64_t pgl_err:1;
++		uint64_t pdi_err:1;
++		uint64_t pop_err:1;
++		uint64_t pins_err:1;
++		uint64_t dma1_cpl:1;
++		uint64_t dma0_cpl:1;
++	} s;
++	struct cvmx_npei_int_a_sum_cn52xx {
++		uint64_t reserved_8_63:56;
++		uint64_t p1_rdlk:1;
++		uint64_t p0_rdlk:1;
++		uint64_t pgl_err:1;
++		uint64_t pdi_err:1;
++		uint64_t pop_err:1;
++		uint64_t pins_err:1;
++		uint64_t dma1_cpl:1;
++		uint64_t dma0_cpl:1;
++	} cn52xx;
++	struct cvmx_npei_int_a_sum_cn52xxp1 {
++		uint64_t reserved_2_63:62;
++		uint64_t dma1_cpl:1;
++		uint64_t dma0_cpl:1;
++	} cn52xxp1;
++	struct cvmx_npei_int_a_sum_s cn56xx;
++};
++
++union cvmx_npei_int_enb {
++	uint64_t u64;
++	struct cvmx_npei_int_enb_s {
++		uint64_t mio_inta:1;
++		uint64_t reserved_62_62:1;
++		uint64_t int_a:1;
++		uint64_t c1_ldwn:1;
++		uint64_t c0_ldwn:1;
++		uint64_t c1_exc:1;
++		uint64_t c0_exc:1;
++		uint64_t c1_up_wf:1;
++		uint64_t c0_up_wf:1;
++		uint64_t c1_un_wf:1;
++		uint64_t c0_un_wf:1;
++		uint64_t c1_un_bx:1;
++		uint64_t c1_un_wi:1;
++		uint64_t c1_un_b2:1;
++		uint64_t c1_un_b1:1;
++		uint64_t c1_un_b0:1;
++		uint64_t c1_up_bx:1;
++		uint64_t c1_up_wi:1;
++		uint64_t c1_up_b2:1;
++		uint64_t c1_up_b1:1;
++		uint64_t c1_up_b0:1;
++		uint64_t c0_un_bx:1;
++		uint64_t c0_un_wi:1;
++		uint64_t c0_un_b2:1;
++		uint64_t c0_un_b1:1;
++		uint64_t c0_un_b0:1;
++		uint64_t c0_up_bx:1;
++		uint64_t c0_up_wi:1;
++		uint64_t c0_up_b2:1;
++		uint64_t c0_up_b1:1;
++		uint64_t c0_up_b0:1;
++		uint64_t c1_hpint:1;
++		uint64_t c1_pmei:1;
++		uint64_t c1_wake:1;
++		uint64_t crs1_dr:1;
++		uint64_t c1_se:1;
++		uint64_t crs1_er:1;
++		uint64_t c1_aeri:1;
++		uint64_t c0_hpint:1;
++		uint64_t c0_pmei:1;
++		uint64_t c0_wake:1;
++		uint64_t crs0_dr:1;
++		uint64_t c0_se:1;
++		uint64_t crs0_er:1;
++		uint64_t c0_aeri:1;
++		uint64_t ptime:1;
++		uint64_t pcnt:1;
++		uint64_t pidbof:1;
++		uint64_t psldbof:1;
++		uint64_t dtime1:1;
++		uint64_t dtime0:1;
++		uint64_t dcnt1:1;
++		uint64_t dcnt0:1;
++		uint64_t dma1fi:1;
++		uint64_t dma0fi:1;
++		uint64_t dma4dbo:1;
++		uint64_t dma3dbo:1;
++		uint64_t dma2dbo:1;
++		uint64_t dma1dbo:1;
++		uint64_t dma0dbo:1;
++		uint64_t iob2big:1;
++		uint64_t bar0_to:1;
++		uint64_t rml_wto:1;
++		uint64_t rml_rto:1;
++	} s;
++	struct cvmx_npei_int_enb_s cn52xx;
++	struct cvmx_npei_int_enb_cn52xxp1 {
++		uint64_t mio_inta:1;
++		uint64_t reserved_62_62:1;
++		uint64_t int_a:1;
++		uint64_t c1_ldwn:1;
++		uint64_t c0_ldwn:1;
++		uint64_t c1_exc:1;
++		uint64_t c0_exc:1;
++		uint64_t c1_up_wf:1;
++		uint64_t c0_up_wf:1;
++		uint64_t c1_un_wf:1;
++		uint64_t c0_un_wf:1;
++		uint64_t c1_un_bx:1;
++		uint64_t c1_un_wi:1;
++		uint64_t c1_un_b2:1;
++		uint64_t c1_un_b1:1;
++		uint64_t c1_un_b0:1;
++		uint64_t c1_up_bx:1;
++		uint64_t c1_up_wi:1;
++		uint64_t c1_up_b2:1;
++		uint64_t c1_up_b1:1;
++		uint64_t c1_up_b0:1;
++		uint64_t c0_un_bx:1;
++		uint64_t c0_un_wi:1;
++		uint64_t c0_un_b2:1;
++		uint64_t c0_un_b1:1;
++		uint64_t c0_un_b0:1;
++		uint64_t c0_up_bx:1;
++		uint64_t c0_up_wi:1;
++		uint64_t c0_up_b2:1;
++		uint64_t c0_up_b1:1;
++		uint64_t c0_up_b0:1;
++		uint64_t c1_hpint:1;
++		uint64_t c1_pmei:1;
++		uint64_t c1_wake:1;
++		uint64_t crs1_dr:1;
++		uint64_t c1_se:1;
++		uint64_t crs1_er:1;
++		uint64_t c1_aeri:1;
++		uint64_t c0_hpint:1;
++		uint64_t c0_pmei:1;
++		uint64_t c0_wake:1;
++		uint64_t crs0_dr:1;
++		uint64_t c0_se:1;
++		uint64_t crs0_er:1;
++		uint64_t c0_aeri:1;
++		uint64_t ptime:1;
++		uint64_t pcnt:1;
++		uint64_t pidbof:1;
++		uint64_t psldbof:1;
++		uint64_t dtime1:1;
++		uint64_t dtime0:1;
++		uint64_t dcnt1:1;
++		uint64_t dcnt0:1;
++		uint64_t dma1fi:1;
++		uint64_t dma0fi:1;
++		uint64_t reserved_8_8:1;
++		uint64_t dma3dbo:1;
++		uint64_t dma2dbo:1;
++		uint64_t dma1dbo:1;
++		uint64_t dma0dbo:1;
++		uint64_t iob2big:1;
++		uint64_t bar0_to:1;
++		uint64_t rml_wto:1;
++		uint64_t rml_rto:1;
++	} cn52xxp1;
++	struct cvmx_npei_int_enb_s cn56xx;
++	struct cvmx_npei_int_enb_cn56xxp1 {
++		uint64_t mio_inta:1;
++		uint64_t reserved_61_62:2;
++		uint64_t c1_ldwn:1;
++		uint64_t c0_ldwn:1;
++		uint64_t c1_exc:1;
++		uint64_t c0_exc:1;
++		uint64_t c1_up_wf:1;
++		uint64_t c0_up_wf:1;
++		uint64_t c1_un_wf:1;
++		uint64_t c0_un_wf:1;
++		uint64_t c1_un_bx:1;
++		uint64_t c1_un_wi:1;
++		uint64_t c1_un_b2:1;
++		uint64_t c1_un_b1:1;
++		uint64_t c1_un_b0:1;
++		uint64_t c1_up_bx:1;
++		uint64_t c1_up_wi:1;
++		uint64_t c1_up_b2:1;
++		uint64_t c1_up_b1:1;
++		uint64_t c1_up_b0:1;
++		uint64_t c0_un_bx:1;
++		uint64_t c0_un_wi:1;
++		uint64_t c0_un_b2:1;
++		uint64_t c0_un_b1:1;
++		uint64_t c0_un_b0:1;
++		uint64_t c0_up_bx:1;
++		uint64_t c0_up_wi:1;
++		uint64_t c0_up_b2:1;
++		uint64_t c0_up_b1:1;
++		uint64_t c0_up_b0:1;
++		uint64_t c1_hpint:1;
++		uint64_t c1_pmei:1;
++		uint64_t c1_wake:1;
++		uint64_t reserved_29_29:1;
++		uint64_t c1_se:1;
++		uint64_t reserved_27_27:1;
++		uint64_t c1_aeri:1;
++		uint64_t c0_hpint:1;
++		uint64_t c0_pmei:1;
++		uint64_t c0_wake:1;
++		uint64_t reserved_22_22:1;
++		uint64_t c0_se:1;
++		uint64_t reserved_20_20:1;
++		uint64_t c0_aeri:1;
++		uint64_t ptime:1;
++		uint64_t pcnt:1;
++		uint64_t pidbof:1;
++		uint64_t psldbof:1;
++		uint64_t dtime1:1;
++		uint64_t dtime0:1;
++		uint64_t dcnt1:1;
++		uint64_t dcnt0:1;
++		uint64_t dma1fi:1;
++		uint64_t dma0fi:1;
++		uint64_t dma4dbo:1;
++		uint64_t dma3dbo:1;
++		uint64_t dma2dbo:1;
++		uint64_t dma1dbo:1;
++		uint64_t dma0dbo:1;
++		uint64_t iob2big:1;
++		uint64_t bar0_to:1;
++		uint64_t rml_wto:1;
++		uint64_t rml_rto:1;
++	} cn56xxp1;
++};
++
++union cvmx_npei_int_enb2 {
++	uint64_t u64;
++	struct cvmx_npei_int_enb2_s {
++		uint64_t reserved_62_63:2;
++		uint64_t int_a:1;
++		uint64_t c1_ldwn:1;
++		uint64_t c0_ldwn:1;
++		uint64_t c1_exc:1;
++		uint64_t c0_exc:1;
++		uint64_t c1_up_wf:1;
++		uint64_t c0_up_wf:1;
++		uint64_t c1_un_wf:1;
++		uint64_t c0_un_wf:1;
++		uint64_t c1_un_bx:1;
++		uint64_t c1_un_wi:1;
++		uint64_t c1_un_b2:1;
++		uint64_t c1_un_b1:1;
++		uint64_t c1_un_b0:1;
++		uint64_t c1_up_bx:1;
++		uint64_t c1_up_wi:1;
++		uint64_t c1_up_b2:1;
++		uint64_t c1_up_b1:1;
++		uint64_t c1_up_b0:1;
++		uint64_t c0_un_bx:1;
++		uint64_t c0_un_wi:1;
++		uint64_t c0_un_b2:1;
++		uint64_t c0_un_b1:1;
++		uint64_t c0_un_b0:1;
++		uint64_t c0_up_bx:1;
++		uint64_t c0_up_wi:1;
++		uint64_t c0_up_b2:1;
++		uint64_t c0_up_b1:1;
++		uint64_t c0_up_b0:1;
++		uint64_t c1_hpint:1;
++		uint64_t c1_pmei:1;
++		uint64_t c1_wake:1;
++		uint64_t crs1_dr:1;
++		uint64_t c1_se:1;
++		uint64_t crs1_er:1;
++		uint64_t c1_aeri:1;
++		uint64_t c0_hpint:1;
++		uint64_t c0_pmei:1;
++		uint64_t c0_wake:1;
++		uint64_t crs0_dr:1;
++		uint64_t c0_se:1;
++		uint64_t crs0_er:1;
++		uint64_t c0_aeri:1;
++		uint64_t ptime:1;
++		uint64_t pcnt:1;
++		uint64_t pidbof:1;
++		uint64_t psldbof:1;
++		uint64_t dtime1:1;
++		uint64_t dtime0:1;
++		uint64_t dcnt1:1;
++		uint64_t dcnt0:1;
++		uint64_t dma1fi:1;
++		uint64_t dma0fi:1;
++		uint64_t dma4dbo:1;
++		uint64_t dma3dbo:1;
++		uint64_t dma2dbo:1;
++		uint64_t dma1dbo:1;
++		uint64_t dma0dbo:1;
++		uint64_t iob2big:1;
++		uint64_t bar0_to:1;
++		uint64_t rml_wto:1;
++		uint64_t rml_rto:1;
++	} s;
++	struct cvmx_npei_int_enb2_s cn52xx;
++	struct cvmx_npei_int_enb2_cn52xxp1 {
++		uint64_t reserved_62_63:2;
++		uint64_t int_a:1;
++		uint64_t c1_ldwn:1;
++		uint64_t c0_ldwn:1;
++		uint64_t c1_exc:1;
++		uint64_t c0_exc:1;
++		uint64_t c1_up_wf:1;
++		uint64_t c0_up_wf:1;
++		uint64_t c1_un_wf:1;
++		uint64_t c0_un_wf:1;
++		uint64_t c1_un_bx:1;
++		uint64_t c1_un_wi:1;
++		uint64_t c1_un_b2:1;
++		uint64_t c1_un_b1:1;
++		uint64_t c1_un_b0:1;
++		uint64_t c1_up_bx:1;
++		uint64_t c1_up_wi:1;
++		uint64_t c1_up_b2:1;
++		uint64_t c1_up_b1:1;
++		uint64_t c1_up_b0:1;
++		uint64_t c0_un_bx:1;
++		uint64_t c0_un_wi:1;
++		uint64_t c0_un_b2:1;
++		uint64_t c0_un_b1:1;
++		uint64_t c0_un_b0:1;
++		uint64_t c0_up_bx:1;
++		uint64_t c0_up_wi:1;
++		uint64_t c0_up_b2:1;
++		uint64_t c0_up_b1:1;
++		uint64_t c0_up_b0:1;
++		uint64_t c1_hpint:1;
++		uint64_t c1_pmei:1;
++		uint64_t c1_wake:1;
++		uint64_t crs1_dr:1;
++		uint64_t c1_se:1;
++		uint64_t crs1_er:1;
++		uint64_t c1_aeri:1;
++		uint64_t c0_hpint:1;
++		uint64_t c0_pmei:1;
++		uint64_t c0_wake:1;
++		uint64_t crs0_dr:1;
++		uint64_t c0_se:1;
++		uint64_t crs0_er:1;
++		uint64_t c0_aeri:1;
++		uint64_t ptime:1;
++		uint64_t pcnt:1;
++		uint64_t pidbof:1;
++		uint64_t psldbof:1;
++		uint64_t dtime1:1;
++		uint64_t dtime0:1;
++		uint64_t dcnt1:1;
++		uint64_t dcnt0:1;
++		uint64_t dma1fi:1;
++		uint64_t dma0fi:1;
++		uint64_t reserved_8_8:1;
++		uint64_t dma3dbo:1;
++		uint64_t dma2dbo:1;
++		uint64_t dma1dbo:1;
++		uint64_t dma0dbo:1;
++		uint64_t iob2big:1;
++		uint64_t bar0_to:1;
++		uint64_t rml_wto:1;
++		uint64_t rml_rto:1;
++	} cn52xxp1;
++	struct cvmx_npei_int_enb2_s cn56xx;
++	struct cvmx_npei_int_enb2_cn56xxp1 {
++		uint64_t reserved_61_63:3;
++		uint64_t c1_ldwn:1;
++		uint64_t c0_ldwn:1;
++		uint64_t c1_exc:1;
++		uint64_t c0_exc:1;
++		uint64_t c1_up_wf:1;
++		uint64_t c0_up_wf:1;
++		uint64_t c1_un_wf:1;
++		uint64_t c0_un_wf:1;
++		uint64_t c1_un_bx:1;
++		uint64_t c1_un_wi:1;
++		uint64_t c1_un_b2:1;
++		uint64_t c1_un_b1:1;
++		uint64_t c1_un_b0:1;
++		uint64_t c1_up_bx:1;
++		uint64_t c1_up_wi:1;
++		uint64_t c1_up_b2:1;
++		uint64_t c1_up_b1:1;
++		uint64_t c1_up_b0:1;
++		uint64_t c0_un_bx:1;
++		uint64_t c0_un_wi:1;
++		uint64_t c0_un_b2:1;
++		uint64_t c0_un_b1:1;
++		uint64_t c0_un_b0:1;
++		uint64_t c0_up_bx:1;
++		uint64_t c0_up_wi:1;
++		uint64_t c0_up_b2:1;
++		uint64_t c0_up_b1:1;
++		uint64_t c0_up_b0:1;
++		uint64_t c1_hpint:1;
++		uint64_t c1_pmei:1;
++		uint64_t c1_wake:1;
++		uint64_t reserved_29_29:1;
++		uint64_t c1_se:1;
++		uint64_t reserved_27_27:1;
++		uint64_t c1_aeri:1;
++		uint64_t c0_hpint:1;
++		uint64_t c0_pmei:1;
++		uint64_t c0_wake:1;
++		uint64_t reserved_22_22:1;
++		uint64_t c0_se:1;
++		uint64_t reserved_20_20:1;
++		uint64_t c0_aeri:1;
++		uint64_t ptime:1;
++		uint64_t pcnt:1;
++		uint64_t pidbof:1;
++		uint64_t psldbof:1;
++		uint64_t dtime1:1;
++		uint64_t dtime0:1;
++		uint64_t dcnt1:1;
++		uint64_t dcnt0:1;
++		uint64_t dma1fi:1;
++		uint64_t dma0fi:1;
++		uint64_t dma4dbo:1;
++		uint64_t dma3dbo:1;
++		uint64_t dma2dbo:1;
++		uint64_t dma1dbo:1;
++		uint64_t dma0dbo:1;
++		uint64_t iob2big:1;
++		uint64_t bar0_to:1;
++		uint64_t rml_wto:1;
++		uint64_t rml_rto:1;
++	} cn56xxp1;
++};
++
++union cvmx_npei_int_info {
++	uint64_t u64;
++	struct cvmx_npei_int_info_s {
++		uint64_t reserved_12_63:52;
++		uint64_t pidbof:6;
++		uint64_t psldbof:6;
++	} s;
++	struct cvmx_npei_int_info_s cn52xx;
++	struct cvmx_npei_int_info_s cn56xx;
++	struct cvmx_npei_int_info_s cn56xxp1;
++};
++
++union cvmx_npei_int_sum {
++	uint64_t u64;
++	struct cvmx_npei_int_sum_s {
++		uint64_t mio_inta:1;
++		uint64_t reserved_62_62:1;
++		uint64_t int_a:1;
++		uint64_t c1_ldwn:1;
++		uint64_t c0_ldwn:1;
++		uint64_t c1_exc:1;
++		uint64_t c0_exc:1;
++		uint64_t c1_up_wf:1;
++		uint64_t c0_up_wf:1;
++		uint64_t c1_un_wf:1;
++		uint64_t c0_un_wf:1;
++		uint64_t c1_un_bx:1;
++		uint64_t c1_un_wi:1;
++		uint64_t c1_un_b2:1;
++		uint64_t c1_un_b1:1;
++		uint64_t c1_un_b0:1;
++		uint64_t c1_up_bx:1;
++		uint64_t c1_up_wi:1;
++		uint64_t c1_up_b2:1;
++		uint64_t c1_up_b1:1;
++		uint64_t c1_up_b0:1;
++		uint64_t c0_un_bx:1;
++		uint64_t c0_un_wi:1;
++		uint64_t c0_un_b2:1;
++		uint64_t c0_un_b1:1;
++		uint64_t c0_un_b0:1;
++		uint64_t c0_up_bx:1;
++		uint64_t c0_up_wi:1;
++		uint64_t c0_up_b2:1;
++		uint64_t c0_up_b1:1;
++		uint64_t c0_up_b0:1;
++		uint64_t c1_hpint:1;
++		uint64_t c1_pmei:1;
++		uint64_t c1_wake:1;
++		uint64_t crs1_dr:1;
++		uint64_t c1_se:1;
++		uint64_t crs1_er:1;
++		uint64_t c1_aeri:1;
++		uint64_t c0_hpint:1;
++		uint64_t c0_pmei:1;
++		uint64_t c0_wake:1;
++		uint64_t crs0_dr:1;
++		uint64_t c0_se:1;
++		uint64_t crs0_er:1;
++		uint64_t c0_aeri:1;
++		uint64_t ptime:1;
++		uint64_t pcnt:1;
++		uint64_t pidbof:1;
++		uint64_t psldbof:1;
++		uint64_t dtime1:1;
++		uint64_t dtime0:1;
++		uint64_t dcnt1:1;
++		uint64_t dcnt0:1;
++		uint64_t dma1fi:1;
++		uint64_t dma0fi:1;
++		uint64_t dma4dbo:1;
++		uint64_t dma3dbo:1;
++		uint64_t dma2dbo:1;
++		uint64_t dma1dbo:1;
++		uint64_t dma0dbo:1;
++		uint64_t iob2big:1;
++		uint64_t bar0_to:1;
++		uint64_t rml_wto:1;
++		uint64_t rml_rto:1;
++	} s;
++	struct cvmx_npei_int_sum_s cn52xx;
++	struct cvmx_npei_int_sum_cn52xxp1 {
++		uint64_t mio_inta:1;
++		uint64_t reserved_62_62:1;
++		uint64_t int_a:1;
++		uint64_t c1_ldwn:1;
++		uint64_t c0_ldwn:1;
++		uint64_t c1_exc:1;
++		uint64_t c0_exc:1;
++		uint64_t c1_up_wf:1;
++		uint64_t c0_up_wf:1;
++		uint64_t c1_un_wf:1;
++		uint64_t c0_un_wf:1;
++		uint64_t c1_un_bx:1;
++		uint64_t c1_un_wi:1;
++		uint64_t c1_un_b2:1;
++		uint64_t c1_un_b1:1;
++		uint64_t c1_un_b0:1;
++		uint64_t c1_up_bx:1;
++		uint64_t c1_up_wi:1;
++		uint64_t c1_up_b2:1;
++		uint64_t c1_up_b1:1;
++		uint64_t c1_up_b0:1;
++		uint64_t c0_un_bx:1;
++		uint64_t c0_un_wi:1;
++		uint64_t c0_un_b2:1;
++		uint64_t c0_un_b1:1;
++		uint64_t c0_un_b0:1;
++		uint64_t c0_up_bx:1;
++		uint64_t c0_up_wi:1;
++		uint64_t c0_up_b2:1;
++		uint64_t c0_up_b1:1;
++		uint64_t c0_up_b0:1;
++		uint64_t c1_hpint:1;
++		uint64_t c1_pmei:1;
++		uint64_t c1_wake:1;
++		uint64_t crs1_dr:1;
++		uint64_t c1_se:1;
++		uint64_t crs1_er:1;
++		uint64_t c1_aeri:1;
++		uint64_t c0_hpint:1;
++		uint64_t c0_pmei:1;
++		uint64_t c0_wake:1;
++		uint64_t crs0_dr:1;
++		uint64_t c0_se:1;
++		uint64_t crs0_er:1;
++		uint64_t c0_aeri:1;
++		uint64_t reserved_15_18:4;
++		uint64_t dtime1:1;
++		uint64_t dtime0:1;
++		uint64_t dcnt1:1;
++		uint64_t dcnt0:1;
++		uint64_t dma1fi:1;
++		uint64_t dma0fi:1;
++		uint64_t reserved_8_8:1;
++		uint64_t dma3dbo:1;
++		uint64_t dma2dbo:1;
++		uint64_t dma1dbo:1;
++		uint64_t dma0dbo:1;
++		uint64_t iob2big:1;
++		uint64_t bar0_to:1;
++		uint64_t rml_wto:1;
++		uint64_t rml_rto:1;
++	} cn52xxp1;
++	struct cvmx_npei_int_sum_s cn56xx;
++	struct cvmx_npei_int_sum_cn56xxp1 {
++		uint64_t mio_inta:1;
++		uint64_t reserved_61_62:2;
++		uint64_t c1_ldwn:1;
++		uint64_t c0_ldwn:1;
++		uint64_t c1_exc:1;
++		uint64_t c0_exc:1;
++		uint64_t c1_up_wf:1;
++		uint64_t c0_up_wf:1;
++		uint64_t c1_un_wf:1;
++		uint64_t c0_un_wf:1;
++		uint64_t c1_un_bx:1;
++		uint64_t c1_un_wi:1;
++		uint64_t c1_un_b2:1;
++		uint64_t c1_un_b1:1;
++		uint64_t c1_un_b0:1;
++		uint64_t c1_up_bx:1;
++		uint64_t c1_up_wi:1;
++		uint64_t c1_up_b2:1;
++		uint64_t c1_up_b1:1;
++		uint64_t c1_up_b0:1;
++		uint64_t c0_un_bx:1;
++		uint64_t c0_un_wi:1;
++		uint64_t c0_un_b2:1;
++		uint64_t c0_un_b1:1;
++		uint64_t c0_un_b0:1;
++		uint64_t c0_up_bx:1;
++		uint64_t c0_up_wi:1;
++		uint64_t c0_up_b2:1;
++		uint64_t c0_up_b1:1;
++		uint64_t c0_up_b0:1;
++		uint64_t c1_hpint:1;
++		uint64_t c1_pmei:1;
++		uint64_t c1_wake:1;
++		uint64_t reserved_29_29:1;
++		uint64_t c1_se:1;
++		uint64_t reserved_27_27:1;
++		uint64_t c1_aeri:1;
++		uint64_t c0_hpint:1;
++		uint64_t c0_pmei:1;
++		uint64_t c0_wake:1;
++		uint64_t reserved_22_22:1;
++		uint64_t c0_se:1;
++		uint64_t reserved_20_20:1;
++		uint64_t c0_aeri:1;
++		uint64_t ptime:1;
++		uint64_t pcnt:1;
++		uint64_t pidbof:1;
++		uint64_t psldbof:1;
++		uint64_t dtime1:1;
++		uint64_t dtime0:1;
++		uint64_t dcnt1:1;
++		uint64_t dcnt0:1;
++		uint64_t dma1fi:1;
++		uint64_t dma0fi:1;
++		uint64_t dma4dbo:1;
++		uint64_t dma3dbo:1;
++		uint64_t dma2dbo:1;
++		uint64_t dma1dbo:1;
++		uint64_t dma0dbo:1;
++		uint64_t iob2big:1;
++		uint64_t bar0_to:1;
++		uint64_t rml_wto:1;
++		uint64_t rml_rto:1;
++	} cn56xxp1;
++};
++
++union cvmx_npei_int_sum2 {
++	uint64_t u64;
++	struct cvmx_npei_int_sum2_s {
++		uint64_t mio_inta:1;
++		uint64_t reserved_62_62:1;
++		uint64_t int_a:1;
++		uint64_t c1_ldwn:1;
++		uint64_t c0_ldwn:1;
++		uint64_t c1_exc:1;
++		uint64_t c0_exc:1;
++		uint64_t c1_up_wf:1;
++		uint64_t c0_up_wf:1;
++		uint64_t c1_un_wf:1;
++		uint64_t c0_un_wf:1;
++		uint64_t c1_un_bx:1;
++		uint64_t c1_un_wi:1;
++		uint64_t c1_un_b2:1;
++		uint64_t c1_un_b1:1;
++		uint64_t c1_un_b0:1;
++		uint64_t c1_up_bx:1;
++		uint64_t c1_up_wi:1;
++		uint64_t c1_up_b2:1;
++		uint64_t c1_up_b1:1;
++		uint64_t c1_up_b0:1;
++		uint64_t c0_un_bx:1;
++		uint64_t c0_un_wi:1;
++		uint64_t c0_un_b2:1;
++		uint64_t c0_un_b1:1;
++		uint64_t c0_un_b0:1;
++		uint64_t c0_up_bx:1;
++		uint64_t c0_up_wi:1;
++		uint64_t c0_up_b2:1;
++		uint64_t c0_up_b1:1;
++		uint64_t c0_up_b0:1;
++		uint64_t c1_hpint:1;
++		uint64_t c1_pmei:1;
++		uint64_t c1_wake:1;
++		uint64_t crs1_dr:1;
++		uint64_t c1_se:1;
++		uint64_t crs1_er:1;
++		uint64_t c1_aeri:1;
++		uint64_t c0_hpint:1;
++		uint64_t c0_pmei:1;
++		uint64_t c0_wake:1;
++		uint64_t crs0_dr:1;
++		uint64_t c0_se:1;
++		uint64_t crs0_er:1;
++		uint64_t c0_aeri:1;
++		uint64_t reserved_15_18:4;
++		uint64_t dtime1:1;
++		uint64_t dtime0:1;
++		uint64_t dcnt1:1;
++		uint64_t dcnt0:1;
++		uint64_t dma1fi:1;
++		uint64_t dma0fi:1;
++		uint64_t reserved_8_8:1;
++		uint64_t dma3dbo:1;
++		uint64_t dma2dbo:1;
++		uint64_t dma1dbo:1;
++		uint64_t dma0dbo:1;
++		uint64_t iob2big:1;
++		uint64_t bar0_to:1;
++		uint64_t rml_wto:1;
++		uint64_t rml_rto:1;
++	} s;
++	struct cvmx_npei_int_sum2_s cn52xx;
++	struct cvmx_npei_int_sum2_s cn52xxp1;
++	struct cvmx_npei_int_sum2_s cn56xx;
++};
++
++union cvmx_npei_last_win_rdata0 {
++	uint64_t u64;
++	struct cvmx_npei_last_win_rdata0_s {
++		uint64_t data:64;
++	} s;
++	struct cvmx_npei_last_win_rdata0_s cn52xx;
++	struct cvmx_npei_last_win_rdata0_s cn52xxp1;
++	struct cvmx_npei_last_win_rdata0_s cn56xx;
++	struct cvmx_npei_last_win_rdata0_s cn56xxp1;
++};
++
++union cvmx_npei_last_win_rdata1 {
++	uint64_t u64;
++	struct cvmx_npei_last_win_rdata1_s {
++		uint64_t data:64;
++	} s;
++	struct cvmx_npei_last_win_rdata1_s cn52xx;
++	struct cvmx_npei_last_win_rdata1_s cn52xxp1;
++	struct cvmx_npei_last_win_rdata1_s cn56xx;
++	struct cvmx_npei_last_win_rdata1_s cn56xxp1;
++};
++
++union cvmx_npei_mem_access_ctl {
++	uint64_t u64;
++	struct cvmx_npei_mem_access_ctl_s {
++		uint64_t reserved_14_63:50;
++		uint64_t max_word:4;
++		uint64_t timer:10;
++	} s;
++	struct cvmx_npei_mem_access_ctl_s cn52xx;
++	struct cvmx_npei_mem_access_ctl_s cn52xxp1;
++	struct cvmx_npei_mem_access_ctl_s cn56xx;
++	struct cvmx_npei_mem_access_ctl_s cn56xxp1;
++};
++
++union cvmx_npei_mem_access_subidx {
++	uint64_t u64;
++	struct cvmx_npei_mem_access_subidx_s {
++		uint64_t reserved_42_63:22;
++		uint64_t zero:1;
++		uint64_t port:2;
++		uint64_t nmerge:1;
++		uint64_t esr:2;
++		uint64_t esw:2;
++		uint64_t nsr:1;
++		uint64_t nsw:1;
++		uint64_t ror:1;
++		uint64_t row:1;
++		uint64_t ba:30;
++	} s;
++	struct cvmx_npei_mem_access_subidx_s cn52xx;
++	struct cvmx_npei_mem_access_subidx_s cn52xxp1;
++	struct cvmx_npei_mem_access_subidx_s cn56xx;
++	struct cvmx_npei_mem_access_subidx_s cn56xxp1;
++};
++
++union cvmx_npei_msi_enb0 {
++	uint64_t u64;
++	struct cvmx_npei_msi_enb0_s {
++		uint64_t enb:64;
++	} s;
++	struct cvmx_npei_msi_enb0_s cn52xx;
++	struct cvmx_npei_msi_enb0_s cn52xxp1;
++	struct cvmx_npei_msi_enb0_s cn56xx;
++	struct cvmx_npei_msi_enb0_s cn56xxp1;
++};
++
++union cvmx_npei_msi_enb1 {
++	uint64_t u64;
++	struct cvmx_npei_msi_enb1_s {
++		uint64_t enb:64;
++	} s;
++	struct cvmx_npei_msi_enb1_s cn52xx;
++	struct cvmx_npei_msi_enb1_s cn52xxp1;
++	struct cvmx_npei_msi_enb1_s cn56xx;
++	struct cvmx_npei_msi_enb1_s cn56xxp1;
++};
++
++union cvmx_npei_msi_enb2 {
++	uint64_t u64;
++	struct cvmx_npei_msi_enb2_s {
++		uint64_t enb:64;
++	} s;
++	struct cvmx_npei_msi_enb2_s cn52xx;
++	struct cvmx_npei_msi_enb2_s cn52xxp1;
++	struct cvmx_npei_msi_enb2_s cn56xx;
++	struct cvmx_npei_msi_enb2_s cn56xxp1;
++};
++
++union cvmx_npei_msi_enb3 {
++	uint64_t u64;
++	struct cvmx_npei_msi_enb3_s {
++		uint64_t enb:64;
++	} s;
++	struct cvmx_npei_msi_enb3_s cn52xx;
++	struct cvmx_npei_msi_enb3_s cn52xxp1;
++	struct cvmx_npei_msi_enb3_s cn56xx;
++	struct cvmx_npei_msi_enb3_s cn56xxp1;
++};
++
++union cvmx_npei_msi_rcv0 {
++	uint64_t u64;
++	struct cvmx_npei_msi_rcv0_s {
++		uint64_t intr:64;
++	} s;
++	struct cvmx_npei_msi_rcv0_s cn52xx;
++	struct cvmx_npei_msi_rcv0_s cn52xxp1;
++	struct cvmx_npei_msi_rcv0_s cn56xx;
++	struct cvmx_npei_msi_rcv0_s cn56xxp1;
++};
++
++union cvmx_npei_msi_rcv1 {
++	uint64_t u64;
++	struct cvmx_npei_msi_rcv1_s {
++		uint64_t intr:64;
++	} s;
++	struct cvmx_npei_msi_rcv1_s cn52xx;
++	struct cvmx_npei_msi_rcv1_s cn52xxp1;
++	struct cvmx_npei_msi_rcv1_s cn56xx;
++	struct cvmx_npei_msi_rcv1_s cn56xxp1;
++};
++
++union cvmx_npei_msi_rcv2 {
++	uint64_t u64;
++	struct cvmx_npei_msi_rcv2_s {
++		uint64_t intr:64;
++	} s;
++	struct cvmx_npei_msi_rcv2_s cn52xx;
++	struct cvmx_npei_msi_rcv2_s cn52xxp1;
++	struct cvmx_npei_msi_rcv2_s cn56xx;
++	struct cvmx_npei_msi_rcv2_s cn56xxp1;
++};
++
++union cvmx_npei_msi_rcv3 {
++	uint64_t u64;
++	struct cvmx_npei_msi_rcv3_s {
++		uint64_t intr:64;
++	} s;
++	struct cvmx_npei_msi_rcv3_s cn52xx;
++	struct cvmx_npei_msi_rcv3_s cn52xxp1;
++	struct cvmx_npei_msi_rcv3_s cn56xx;
++	struct cvmx_npei_msi_rcv3_s cn56xxp1;
++};
++
++union cvmx_npei_msi_rd_map {
++	uint64_t u64;
++	struct cvmx_npei_msi_rd_map_s {
++		uint64_t reserved_16_63:48;
++		uint64_t rd_int:8;
++		uint64_t msi_int:8;
++	} s;
++	struct cvmx_npei_msi_rd_map_s cn52xx;
++	struct cvmx_npei_msi_rd_map_s cn52xxp1;
++	struct cvmx_npei_msi_rd_map_s cn56xx;
++	struct cvmx_npei_msi_rd_map_s cn56xxp1;
++};
++
++union cvmx_npei_msi_w1c_enb0 {
++	uint64_t u64;
++	struct cvmx_npei_msi_w1c_enb0_s {
++		uint64_t clr:64;
++	} s;
++	struct cvmx_npei_msi_w1c_enb0_s cn52xx;
++	struct cvmx_npei_msi_w1c_enb0_s cn56xx;
++};
++
++union cvmx_npei_msi_w1c_enb1 {
++	uint64_t u64;
++	struct cvmx_npei_msi_w1c_enb1_s {
++		uint64_t clr:64;
++	} s;
++	struct cvmx_npei_msi_w1c_enb1_s cn52xx;
++	struct cvmx_npei_msi_w1c_enb1_s cn56xx;
++};
++
++union cvmx_npei_msi_w1c_enb2 {
++	uint64_t u64;
++	struct cvmx_npei_msi_w1c_enb2_s {
++		uint64_t clr:64;
++	} s;
++	struct cvmx_npei_msi_w1c_enb2_s cn52xx;
++	struct cvmx_npei_msi_w1c_enb2_s cn56xx;
++};
++
++union cvmx_npei_msi_w1c_enb3 {
++	uint64_t u64;
++	struct cvmx_npei_msi_w1c_enb3_s {
++		uint64_t clr:64;
++	} s;
++	struct cvmx_npei_msi_w1c_enb3_s cn52xx;
++	struct cvmx_npei_msi_w1c_enb3_s cn56xx;
++};
++
++union cvmx_npei_msi_w1s_enb0 {
++	uint64_t u64;
++	struct cvmx_npei_msi_w1s_enb0_s {
++		uint64_t set:64;
++	} s;
++	struct cvmx_npei_msi_w1s_enb0_s cn52xx;
++	struct cvmx_npei_msi_w1s_enb0_s cn56xx;
++};
++
++union cvmx_npei_msi_w1s_enb1 {
++	uint64_t u64;
++	struct cvmx_npei_msi_w1s_enb1_s {
++		uint64_t set:64;
++	} s;
++	struct cvmx_npei_msi_w1s_enb1_s cn52xx;
++	struct cvmx_npei_msi_w1s_enb1_s cn56xx;
++};
++
++union cvmx_npei_msi_w1s_enb2 {
++	uint64_t u64;
++	struct cvmx_npei_msi_w1s_enb2_s {
++		uint64_t set:64;
++	} s;
++	struct cvmx_npei_msi_w1s_enb2_s cn52xx;
++	struct cvmx_npei_msi_w1s_enb2_s cn56xx;
++};
++
++union cvmx_npei_msi_w1s_enb3 {
++	uint64_t u64;
++	struct cvmx_npei_msi_w1s_enb3_s {
++		uint64_t set:64;
++	} s;
++	struct cvmx_npei_msi_w1s_enb3_s cn52xx;
++	struct cvmx_npei_msi_w1s_enb3_s cn56xx;
++};
++
++union cvmx_npei_msi_wr_map {
++	uint64_t u64;
++	struct cvmx_npei_msi_wr_map_s {
++		uint64_t reserved_16_63:48;
++		uint64_t ciu_int:8;
++		uint64_t msi_int:8;
++	} s;
++	struct cvmx_npei_msi_wr_map_s cn52xx;
++	struct cvmx_npei_msi_wr_map_s cn52xxp1;
++	struct cvmx_npei_msi_wr_map_s cn56xx;
++	struct cvmx_npei_msi_wr_map_s cn56xxp1;
++};
++
++union cvmx_npei_pcie_credit_cnt {
++	uint64_t u64;
++	struct cvmx_npei_pcie_credit_cnt_s {
++		uint64_t reserved_48_63:16;
++		uint64_t p1_ccnt:8;
++		uint64_t p1_ncnt:8;
++		uint64_t p1_pcnt:8;
++		uint64_t p0_ccnt:8;
++		uint64_t p0_ncnt:8;
++		uint64_t p0_pcnt:8;
++	} s;
++	struct cvmx_npei_pcie_credit_cnt_s cn52xx;
++	struct cvmx_npei_pcie_credit_cnt_s cn56xx;
++};
++
++union cvmx_npei_pcie_msi_rcv {
++	uint64_t u64;
++	struct cvmx_npei_pcie_msi_rcv_s {
++		uint64_t reserved_8_63:56;
++		uint64_t intr:8;
++	} s;
++	struct cvmx_npei_pcie_msi_rcv_s cn52xx;
++	struct cvmx_npei_pcie_msi_rcv_s cn52xxp1;
++	struct cvmx_npei_pcie_msi_rcv_s cn56xx;
++	struct cvmx_npei_pcie_msi_rcv_s cn56xxp1;
++};
++
++union cvmx_npei_pcie_msi_rcv_b1 {
++	uint64_t u64;
++	struct cvmx_npei_pcie_msi_rcv_b1_s {
++		uint64_t reserved_16_63:48;
++		uint64_t intr:8;
++		uint64_t reserved_0_7:8;
++	} s;
++	struct cvmx_npei_pcie_msi_rcv_b1_s cn52xx;
++	struct cvmx_npei_pcie_msi_rcv_b1_s cn52xxp1;
++	struct cvmx_npei_pcie_msi_rcv_b1_s cn56xx;
++	struct cvmx_npei_pcie_msi_rcv_b1_s cn56xxp1;
++};
++
++union cvmx_npei_pcie_msi_rcv_b2 {
++	uint64_t u64;
++	struct cvmx_npei_pcie_msi_rcv_b2_s {
++		uint64_t reserved_24_63:40;
++		uint64_t intr:8;
++		uint64_t reserved_0_15:16;
++	} s;
++	struct cvmx_npei_pcie_msi_rcv_b2_s cn52xx;
++	struct cvmx_npei_pcie_msi_rcv_b2_s cn52xxp1;
++	struct cvmx_npei_pcie_msi_rcv_b2_s cn56xx;
++	struct cvmx_npei_pcie_msi_rcv_b2_s cn56xxp1;
++};
++
++union cvmx_npei_pcie_msi_rcv_b3 {
++	uint64_t u64;
++	struct cvmx_npei_pcie_msi_rcv_b3_s {
++		uint64_t reserved_32_63:32;
++		uint64_t intr:8;
++		uint64_t reserved_0_23:24;
++	} s;
++	struct cvmx_npei_pcie_msi_rcv_b3_s cn52xx;
++	struct cvmx_npei_pcie_msi_rcv_b3_s cn52xxp1;
++	struct cvmx_npei_pcie_msi_rcv_b3_s cn56xx;
++	struct cvmx_npei_pcie_msi_rcv_b3_s cn56xxp1;
++};
++
++union cvmx_npei_pktx_cnts {
++	uint64_t u64;
++	struct cvmx_npei_pktx_cnts_s {
++		uint64_t reserved_54_63:10;
++		uint64_t timer:22;
++		uint64_t cnt:32;
++	} s;
++	struct cvmx_npei_pktx_cnts_s cn52xx;
++	struct cvmx_npei_pktx_cnts_s cn56xx;
++	struct cvmx_npei_pktx_cnts_s cn56xxp1;
++};
++
++union cvmx_npei_pktx_in_bp {
++	uint64_t u64;
++	struct cvmx_npei_pktx_in_bp_s {
++		uint64_t wmark:32;
++		uint64_t cnt:32;
++	} s;
++	struct cvmx_npei_pktx_in_bp_s cn52xx;
++	struct cvmx_npei_pktx_in_bp_s cn56xx;
++	struct cvmx_npei_pktx_in_bp_s cn56xxp1;
++};
++
++union cvmx_npei_pktx_instr_baddr {
++	uint64_t u64;
++	struct cvmx_npei_pktx_instr_baddr_s {
++		uint64_t addr:61;
++		uint64_t reserved_0_2:3;
++	} s;
++	struct cvmx_npei_pktx_instr_baddr_s cn52xx;
++	struct cvmx_npei_pktx_instr_baddr_s cn56xx;
++	struct cvmx_npei_pktx_instr_baddr_s cn56xxp1;
++};
++
++union cvmx_npei_pktx_instr_baoff_dbell {
++	uint64_t u64;
++	struct cvmx_npei_pktx_instr_baoff_dbell_s {
++		uint64_t aoff:32;
++		uint64_t dbell:32;
++	} s;
++	struct cvmx_npei_pktx_instr_baoff_dbell_s cn52xx;
++	struct cvmx_npei_pktx_instr_baoff_dbell_s cn56xx;
++	struct cvmx_npei_pktx_instr_baoff_dbell_s cn56xxp1;
++};
++
++union cvmx_npei_pktx_instr_fifo_rsize {
++	uint64_t u64;
++	struct cvmx_npei_pktx_instr_fifo_rsize_s {
++		uint64_t max:9;
++		uint64_t rrp:9;
++		uint64_t wrp:9;
++		uint64_t fcnt:5;
++		uint64_t rsize:32;
++	} s;
++	struct cvmx_npei_pktx_instr_fifo_rsize_s cn52xx;
++	struct cvmx_npei_pktx_instr_fifo_rsize_s cn56xx;
++	struct cvmx_npei_pktx_instr_fifo_rsize_s cn56xxp1;
++};
++
++union cvmx_npei_pktx_instr_header {
++	uint64_t u64;
++	struct cvmx_npei_pktx_instr_header_s {
++		uint64_t reserved_44_63:20;
++		uint64_t pbp:1;
++		uint64_t rsv_f:5;
++		uint64_t rparmode:2;
++		uint64_t rsv_e:1;
++		uint64_t rskp_len:7;
++		uint64_t rsv_d:6;
++		uint64_t use_ihdr:1;
++		uint64_t rsv_c:5;
++		uint64_t par_mode:2;
++		uint64_t rsv_b:1;
++		uint64_t skp_len:7;
++		uint64_t rsv_a:6;
++	} s;
++	struct cvmx_npei_pktx_instr_header_s cn52xx;
++	struct cvmx_npei_pktx_instr_header_s cn56xx;
++	struct cvmx_npei_pktx_instr_header_s cn56xxp1;
++};
++
++union cvmx_npei_pktx_slist_baddr {
++	uint64_t u64;
++	struct cvmx_npei_pktx_slist_baddr_s {
++		uint64_t addr:60;
++		uint64_t reserved_0_3:4;
++	} s;
++	struct cvmx_npei_pktx_slist_baddr_s cn52xx;
++	struct cvmx_npei_pktx_slist_baddr_s cn56xx;
++	struct cvmx_npei_pktx_slist_baddr_s cn56xxp1;
++};
++
++union cvmx_npei_pktx_slist_baoff_dbell {
++	uint64_t u64;
++	struct cvmx_npei_pktx_slist_baoff_dbell_s {
++		uint64_t aoff:32;
++		uint64_t dbell:32;
++	} s;
++	struct cvmx_npei_pktx_slist_baoff_dbell_s cn52xx;
++	struct cvmx_npei_pktx_slist_baoff_dbell_s cn56xx;
++	struct cvmx_npei_pktx_slist_baoff_dbell_s cn56xxp1;
++};
++
++union cvmx_npei_pktx_slist_fifo_rsize {
++	uint64_t u64;
++	struct cvmx_npei_pktx_slist_fifo_rsize_s {
++		uint64_t reserved_32_63:32;
++		uint64_t rsize:32;
++	} s;
++	struct cvmx_npei_pktx_slist_fifo_rsize_s cn52xx;
++	struct cvmx_npei_pktx_slist_fifo_rsize_s cn56xx;
++	struct cvmx_npei_pktx_slist_fifo_rsize_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_cnt_int {
++	uint64_t u64;
++	struct cvmx_npei_pkt_cnt_int_s {
++		uint64_t reserved_32_63:32;
++		uint64_t port:32;
++	} s;
++	struct cvmx_npei_pkt_cnt_int_s cn52xx;
++	struct cvmx_npei_pkt_cnt_int_s cn56xx;
++	struct cvmx_npei_pkt_cnt_int_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_cnt_int_enb {
++	uint64_t u64;
++	struct cvmx_npei_pkt_cnt_int_enb_s {
++		uint64_t reserved_32_63:32;
++		uint64_t port:32;
++	} s;
++	struct cvmx_npei_pkt_cnt_int_enb_s cn52xx;
++	struct cvmx_npei_pkt_cnt_int_enb_s cn56xx;
++	struct cvmx_npei_pkt_cnt_int_enb_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_data_out_es {
++	uint64_t u64;
++	struct cvmx_npei_pkt_data_out_es_s {
++		uint64_t es:64;
++	} s;
++	struct cvmx_npei_pkt_data_out_es_s cn52xx;
++	struct cvmx_npei_pkt_data_out_es_s cn56xx;
++	struct cvmx_npei_pkt_data_out_es_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_data_out_ns {
++	uint64_t u64;
++	struct cvmx_npei_pkt_data_out_ns_s {
++		uint64_t reserved_32_63:32;
++		uint64_t nsr:32;
++	} s;
++	struct cvmx_npei_pkt_data_out_ns_s cn52xx;
++	struct cvmx_npei_pkt_data_out_ns_s cn56xx;
++	struct cvmx_npei_pkt_data_out_ns_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_data_out_ror {
++	uint64_t u64;
++	struct cvmx_npei_pkt_data_out_ror_s {
++		uint64_t reserved_32_63:32;
++		uint64_t ror:32;
++	} s;
++	struct cvmx_npei_pkt_data_out_ror_s cn52xx;
++	struct cvmx_npei_pkt_data_out_ror_s cn56xx;
++	struct cvmx_npei_pkt_data_out_ror_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_dpaddr {
++	uint64_t u64;
++	struct cvmx_npei_pkt_dpaddr_s {
++		uint64_t reserved_32_63:32;
++		uint64_t dptr:32;
++	} s;
++	struct cvmx_npei_pkt_dpaddr_s cn52xx;
++	struct cvmx_npei_pkt_dpaddr_s cn56xx;
++	struct cvmx_npei_pkt_dpaddr_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_in_bp {
++	uint64_t u64;
++	struct cvmx_npei_pkt_in_bp_s {
++		uint64_t reserved_32_63:32;
++		uint64_t bp:32;
++	} s;
++	struct cvmx_npei_pkt_in_bp_s cn56xx;
++};
++
++union cvmx_npei_pkt_in_donex_cnts {
++	uint64_t u64;
++	struct cvmx_npei_pkt_in_donex_cnts_s {
++		uint64_t reserved_32_63:32;
++		uint64_t cnt:32;
++	} s;
++	struct cvmx_npei_pkt_in_donex_cnts_s cn52xx;
++	struct cvmx_npei_pkt_in_donex_cnts_s cn56xx;
++	struct cvmx_npei_pkt_in_donex_cnts_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_in_instr_counts {
++	uint64_t u64;
++	struct cvmx_npei_pkt_in_instr_counts_s {
++		uint64_t wr_cnt:32;
++		uint64_t rd_cnt:32;
++	} s;
++	struct cvmx_npei_pkt_in_instr_counts_s cn52xx;
++	struct cvmx_npei_pkt_in_instr_counts_s cn56xx;
++};
++
++union cvmx_npei_pkt_in_pcie_port {
++	uint64_t u64;
++	struct cvmx_npei_pkt_in_pcie_port_s {
++		uint64_t pp:64;
++	} s;
++	struct cvmx_npei_pkt_in_pcie_port_s cn52xx;
++	struct cvmx_npei_pkt_in_pcie_port_s cn56xx;
++};
++
++union cvmx_npei_pkt_input_control {
++	uint64_t u64;
++	struct cvmx_npei_pkt_input_control_s {
++		uint64_t reserved_23_63:41;
++		uint64_t pkt_rr:1;
++		uint64_t pbp_dhi:13;
++		uint64_t d_nsr:1;
++		uint64_t d_esr:2;
++		uint64_t d_ror:1;
++		uint64_t use_csr:1;
++		uint64_t nsr:1;
++		uint64_t esr:2;
++		uint64_t ror:1;
++	} s;
++	struct cvmx_npei_pkt_input_control_s cn52xx;
++	struct cvmx_npei_pkt_input_control_s cn56xx;
++	struct cvmx_npei_pkt_input_control_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_instr_enb {
++	uint64_t u64;
++	struct cvmx_npei_pkt_instr_enb_s {
++		uint64_t reserved_32_63:32;
++		uint64_t enb:32;
++	} s;
++	struct cvmx_npei_pkt_instr_enb_s cn52xx;
++	struct cvmx_npei_pkt_instr_enb_s cn56xx;
++	struct cvmx_npei_pkt_instr_enb_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_instr_rd_size {
++	uint64_t u64;
++	struct cvmx_npei_pkt_instr_rd_size_s {
++		uint64_t rdsize:64;
++	} s;
++	struct cvmx_npei_pkt_instr_rd_size_s cn52xx;
++	struct cvmx_npei_pkt_instr_rd_size_s cn56xx;
++};
++
++union cvmx_npei_pkt_instr_size {
++	uint64_t u64;
++	struct cvmx_npei_pkt_instr_size_s {
++		uint64_t reserved_32_63:32;
++		uint64_t is_64b:32;
++	} s;
++	struct cvmx_npei_pkt_instr_size_s cn52xx;
++	struct cvmx_npei_pkt_instr_size_s cn56xx;
++	struct cvmx_npei_pkt_instr_size_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_int_levels {
++	uint64_t u64;
++	struct cvmx_npei_pkt_int_levels_s {
++		uint64_t reserved_54_63:10;
++		uint64_t time:22;
++		uint64_t cnt:32;
++	} s;
++	struct cvmx_npei_pkt_int_levels_s cn52xx;
++	struct cvmx_npei_pkt_int_levels_s cn56xx;
++	struct cvmx_npei_pkt_int_levels_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_iptr {
++	uint64_t u64;
++	struct cvmx_npei_pkt_iptr_s {
++		uint64_t reserved_32_63:32;
++		uint64_t iptr:32;
++	} s;
++	struct cvmx_npei_pkt_iptr_s cn52xx;
++	struct cvmx_npei_pkt_iptr_s cn56xx;
++	struct cvmx_npei_pkt_iptr_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_out_bmode {
++	uint64_t u64;
++	struct cvmx_npei_pkt_out_bmode_s {
++		uint64_t reserved_32_63:32;
++		uint64_t bmode:32;
++	} s;
++	struct cvmx_npei_pkt_out_bmode_s cn52xx;
++	struct cvmx_npei_pkt_out_bmode_s cn56xx;
++	struct cvmx_npei_pkt_out_bmode_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_out_enb {
++	uint64_t u64;
++	struct cvmx_npei_pkt_out_enb_s {
++		uint64_t reserved_32_63:32;
++		uint64_t enb:32;
++	} s;
++	struct cvmx_npei_pkt_out_enb_s cn52xx;
++	struct cvmx_npei_pkt_out_enb_s cn56xx;
++	struct cvmx_npei_pkt_out_enb_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_output_wmark {
++	uint64_t u64;
++	struct cvmx_npei_pkt_output_wmark_s {
++		uint64_t reserved_32_63:32;
++		uint64_t wmark:32;
++	} s;
++	struct cvmx_npei_pkt_output_wmark_s cn52xx;
++	struct cvmx_npei_pkt_output_wmark_s cn56xx;
++};
++
++union cvmx_npei_pkt_pcie_port {
++	uint64_t u64;
++	struct cvmx_npei_pkt_pcie_port_s {
++		uint64_t pp:64;
++	} s;
++	struct cvmx_npei_pkt_pcie_port_s cn52xx;
++	struct cvmx_npei_pkt_pcie_port_s cn56xx;
++	struct cvmx_npei_pkt_pcie_port_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_port_in_rst {
++	uint64_t u64;
++	struct cvmx_npei_pkt_port_in_rst_s {
++		uint64_t in_rst:32;
++		uint64_t out_rst:32;
++	} s;
++	struct cvmx_npei_pkt_port_in_rst_s cn52xx;
++	struct cvmx_npei_pkt_port_in_rst_s cn56xx;
++};
++
++union cvmx_npei_pkt_slist_es {
++	uint64_t u64;
++	struct cvmx_npei_pkt_slist_es_s {
++		uint64_t es:64;
++	} s;
++	struct cvmx_npei_pkt_slist_es_s cn52xx;
++	struct cvmx_npei_pkt_slist_es_s cn56xx;
++	struct cvmx_npei_pkt_slist_es_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_slist_id_size {
++	uint64_t u64;
++	struct cvmx_npei_pkt_slist_id_size_s {
++		uint64_t reserved_23_63:41;
++		uint64_t isize:7;
++		uint64_t bsize:16;
++	} s;
++	struct cvmx_npei_pkt_slist_id_size_s cn52xx;
++	struct cvmx_npei_pkt_slist_id_size_s cn56xx;
++	struct cvmx_npei_pkt_slist_id_size_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_slist_ns {
++	uint64_t u64;
++	struct cvmx_npei_pkt_slist_ns_s {
++		uint64_t reserved_32_63:32;
++		uint64_t nsr:32;
++	} s;
++	struct cvmx_npei_pkt_slist_ns_s cn52xx;
++	struct cvmx_npei_pkt_slist_ns_s cn56xx;
++	struct cvmx_npei_pkt_slist_ns_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_slist_ror {
++	uint64_t u64;
++	struct cvmx_npei_pkt_slist_ror_s {
++		uint64_t reserved_32_63:32;
++		uint64_t ror:32;
++	} s;
++	struct cvmx_npei_pkt_slist_ror_s cn52xx;
++	struct cvmx_npei_pkt_slist_ror_s cn56xx;
++	struct cvmx_npei_pkt_slist_ror_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_time_int {
++	uint64_t u64;
++	struct cvmx_npei_pkt_time_int_s {
++		uint64_t reserved_32_63:32;
++		uint64_t port:32;
++	} s;
++	struct cvmx_npei_pkt_time_int_s cn52xx;
++	struct cvmx_npei_pkt_time_int_s cn56xx;
++	struct cvmx_npei_pkt_time_int_s cn56xxp1;
++};
++
++union cvmx_npei_pkt_time_int_enb {
++	uint64_t u64;
++	struct cvmx_npei_pkt_time_int_enb_s {
++		uint64_t reserved_32_63:32;
++		uint64_t port:32;
++	} s;
++	struct cvmx_npei_pkt_time_int_enb_s cn52xx;
++	struct cvmx_npei_pkt_time_int_enb_s cn56xx;
++	struct cvmx_npei_pkt_time_int_enb_s cn56xxp1;
++};
++
++union cvmx_npei_rsl_int_blocks {
++	uint64_t u64;
++	struct cvmx_npei_rsl_int_blocks_s {
++		uint64_t reserved_31_63:33;
++		uint64_t iob:1;
++		uint64_t lmc1:1;
++		uint64_t agl:1;
++		uint64_t reserved_24_27:4;
++		uint64_t asxpcs1:1;
++		uint64_t asxpcs0:1;
++		uint64_t reserved_21_21:1;
++		uint64_t pip:1;
++		uint64_t reserved_18_19:2;
++		uint64_t lmc0:1;
++		uint64_t l2c:1;
++		uint64_t usb1:1;
++		uint64_t rad:1;
++		uint64_t usb:1;
++		uint64_t pow:1;
++		uint64_t tim:1;
++		uint64_t pko:1;
++		uint64_t ipd:1;
++		uint64_t reserved_8_8:1;
++		uint64_t zip:1;
++		uint64_t reserved_6_6:1;
++		uint64_t fpa:1;
++		uint64_t key:1;
++		uint64_t npei:1;
++		uint64_t gmx1:1;
++		uint64_t gmx0:1;
++		uint64_t mio:1;
++	} s;
++	struct cvmx_npei_rsl_int_blocks_s cn52xx;
++	struct cvmx_npei_rsl_int_blocks_s cn52xxp1;
++	struct cvmx_npei_rsl_int_blocks_cn56xx {
++		uint64_t reserved_31_63:33;
++		uint64_t iob:1;
++		uint64_t lmc1:1;
++		uint64_t agl:1;
++		uint64_t reserved_24_27:4;
++		uint64_t asxpcs1:1;
++		uint64_t asxpcs0:1;
++		uint64_t reserved_21_21:1;
++		uint64_t pip:1;
++		uint64_t reserved_18_19:2;
++		uint64_t lmc0:1;
++		uint64_t l2c:1;
++		uint64_t reserved_15_15:1;
++		uint64_t rad:1;
++		uint64_t usb:1;
++		uint64_t pow:1;
++		uint64_t tim:1;
++		uint64_t pko:1;
++		uint64_t ipd:1;
++		uint64_t reserved_8_8:1;
++		uint64_t zip:1;
++		uint64_t reserved_6_6:1;
++		uint64_t fpa:1;
++		uint64_t key:1;
++		uint64_t npei:1;
++		uint64_t gmx1:1;
++		uint64_t gmx0:1;
++		uint64_t mio:1;
++	} cn56xx;
++	struct cvmx_npei_rsl_int_blocks_cn56xx cn56xxp1;
++};
++
++union cvmx_npei_scratch_1 {
++	uint64_t u64;
++	struct cvmx_npei_scratch_1_s {
++		uint64_t data:64;
++	} s;
++	struct cvmx_npei_scratch_1_s cn52xx;
++	struct cvmx_npei_scratch_1_s cn52xxp1;
++	struct cvmx_npei_scratch_1_s cn56xx;
++	struct cvmx_npei_scratch_1_s cn56xxp1;
++};
++
++union cvmx_npei_state1 {
++	uint64_t u64;
++	struct cvmx_npei_state1_s {
++		uint64_t cpl1:12;
++		uint64_t cpl0:12;
++		uint64_t arb:1;
++		uint64_t csr:39;
++	} s;
++	struct cvmx_npei_state1_s cn52xx;
++	struct cvmx_npei_state1_s cn52xxp1;
++	struct cvmx_npei_state1_s cn56xx;
++	struct cvmx_npei_state1_s cn56xxp1;
++};
++
++union cvmx_npei_state2 {
++	uint64_t u64;
++	struct cvmx_npei_state2_s {
++		uint64_t reserved_48_63:16;
++		uint64_t npei:1;
++		uint64_t rac:1;
++		uint64_t csm1:15;
++		uint64_t csm0:15;
++		uint64_t nnp0:8;
++		uint64_t nnd:8;
++	} s;
++	struct cvmx_npei_state2_s cn52xx;
++	struct cvmx_npei_state2_s cn52xxp1;
++	struct cvmx_npei_state2_s cn56xx;
++	struct cvmx_npei_state2_s cn56xxp1;
++};
++
++union cvmx_npei_state3 {
++	uint64_t u64;
++	struct cvmx_npei_state3_s {
++		uint64_t reserved_56_63:8;
++		uint64_t psm1:15;
++		uint64_t psm0:15;
++		uint64_t nsm1:13;
++		uint64_t nsm0:13;
++	} s;
++	struct cvmx_npei_state3_s cn52xx;
++	struct cvmx_npei_state3_s cn52xxp1;
++	struct cvmx_npei_state3_s cn56xx;
++	struct cvmx_npei_state3_s cn56xxp1;
++};
++
++union cvmx_npei_win_rd_addr {
++	uint64_t u64;
++	struct cvmx_npei_win_rd_addr_s {
++		uint64_t reserved_51_63:13;
++		uint64_t ld_cmd:2;
++		uint64_t iobit:1;
++		uint64_t rd_addr:48;
++	} s;
++	struct cvmx_npei_win_rd_addr_s cn52xx;
++	struct cvmx_npei_win_rd_addr_s cn52xxp1;
++	struct cvmx_npei_win_rd_addr_s cn56xx;
++	struct cvmx_npei_win_rd_addr_s cn56xxp1;
++};
++
++union cvmx_npei_win_rd_data {
++	uint64_t u64;
++	struct cvmx_npei_win_rd_data_s {
++		uint64_t rd_data:64;
++	} s;
++	struct cvmx_npei_win_rd_data_s cn52xx;
++	struct cvmx_npei_win_rd_data_s cn52xxp1;
++	struct cvmx_npei_win_rd_data_s cn56xx;
++	struct cvmx_npei_win_rd_data_s cn56xxp1;
++};
++
++union cvmx_npei_win_wr_addr {
++	uint64_t u64;
++	struct cvmx_npei_win_wr_addr_s {
++		uint64_t reserved_49_63:15;
++		uint64_t iobit:1;
++		uint64_t wr_addr:46;
++		uint64_t reserved_0_1:2;
++	} s;
++	struct cvmx_npei_win_wr_addr_s cn52xx;
++	struct cvmx_npei_win_wr_addr_s cn52xxp1;
++	struct cvmx_npei_win_wr_addr_s cn56xx;
++	struct cvmx_npei_win_wr_addr_s cn56xxp1;
++};
++
++union cvmx_npei_win_wr_data {
++	uint64_t u64;
++	struct cvmx_npei_win_wr_data_s {
++		uint64_t wr_data:64;
++	} s;
++	struct cvmx_npei_win_wr_data_s cn52xx;
++	struct cvmx_npei_win_wr_data_s cn52xxp1;
++	struct cvmx_npei_win_wr_data_s cn56xx;
++	struct cvmx_npei_win_wr_data_s cn56xxp1;
++};
++
++union cvmx_npei_win_wr_mask {
++	uint64_t u64;
++	struct cvmx_npei_win_wr_mask_s {
++		uint64_t reserved_8_63:56;
++		uint64_t wr_mask:8;
++	} s;
++	struct cvmx_npei_win_wr_mask_s cn52xx;
++	struct cvmx_npei_win_wr_mask_s cn52xxp1;
++	struct cvmx_npei_win_wr_mask_s cn56xx;
++	struct cvmx_npei_win_wr_mask_s cn56xxp1;
++};
++
++union cvmx_npei_window_ctl {
++	uint64_t u64;
++	struct cvmx_npei_window_ctl_s {
++		uint64_t reserved_32_63:32;
++		uint64_t time:32;
++	} s;
++	struct cvmx_npei_window_ctl_s cn52xx;
++	struct cvmx_npei_window_ctl_s cn52xxp1;
++	struct cvmx_npei_window_ctl_s cn56xx;
++	struct cvmx_npei_window_ctl_s cn56xxp1;
++};
++
 +#endif
-+
-+		/*
-+		 * Shorten the DID timeout so bus errors for PCIe
-+		 * config reads from non existent devices happen
-+		 * faster. This allows us to continue booting even if
-+		 * the above "if" checks are wrong.  Once one of these
-+		 * errors happens, the PCIe port is dead.
-+		 */
-+		cvmmemctl_save.u64 = __read_64bit_c0_register($11, 7);
-+		cvmmemctl.u64 = cvmmemctl_save.u64;
-+		cvmmemctl.s.didtto = 2;
-+		__write_64bit_c0_register($11, 7, cvmmemctl.u64);
-+	}
-+
-+	switch (size) {
-+	case 4:
-+		*val = cvmx_pcie_config_read32(pcie_port, bus_number,
-+					       devfn >> 3, devfn & 0x7, reg);
-+		break;
-+	case 2:
-+		*val = cvmx_pcie_config_read16(pcie_port, bus_number,
-+					       devfn >> 3, devfn & 0x7, reg);
-+		break;
-+	case 1:
-+		*val = cvmx_pcie_config_read8(pcie_port, bus_number, devfn >> 3,
-+					      devfn & 0x7, reg);
-+		break;
-+	default:
-+		return PCIBIOS_FUNC_NOT_SUPPORTED;
-+	}
-+
-+	if (OCTEON_IS_MODEL(OCTEON_CN56XX_PASS1) ||
-+	    OCTEON_IS_MODEL(OCTEON_CN56XX_PASS1_1))
-+		__write_64bit_c0_register($11, 7, cvmmemctl_save.u64);
-+	return PCIBIOS_SUCCESSFUL;
-+}
-+
-+static int octeon_pcie0_read_config(struct pci_bus *bus, unsigned int devfn,
-+				    int reg, int size, u32 *val)
-+{
-+	return octeon_pcie_read_config(0, bus, devfn, reg, size, val);
-+}
-+
-+static int octeon_pcie1_read_config(struct pci_bus *bus, unsigned int devfn,
-+				    int reg, int size, u32 *val)
-+{
-+	return octeon_pcie_read_config(1, bus, devfn, reg, size, val);
-+}
-+
-+
-+
-+/**
-+ * Write a value to PCI configuration space
-+ *
-+ * @param bus
-+ * @param devfn
-+ * @param reg
-+ * @param size
-+ * @param val
-+ * @return
-+ */
-+static inline int octeon_pcie_write_config(int pcie_port, struct pci_bus *bus,
-+					   unsigned int devfn, int reg,
-+					   int size, u32 val)
-+{
-+	int bus_number = bus->number;
-+	/*
-+	 * We need to force the bus number to be zero on the root
-+	 * bus. Linux numbers the 2nd root bus to start after all
-+	 * busses on root 0.
-+	 */
-+	if (bus->parent == NULL)
-+		bus_number = 0;
-+
-+	switch (size) {
-+	case 4:
-+		cvmx_pcie_config_write32(pcie_port, bus_number, devfn >> 3,
-+					 devfn & 0x7, reg, val);
-+		return PCIBIOS_SUCCESSFUL;
-+	case 2:
-+		cvmx_pcie_config_write16(pcie_port, bus_number, devfn >> 3,
-+					 devfn & 0x7, reg, val);
-+		return PCIBIOS_SUCCESSFUL;
-+	case 1:
-+		cvmx_pcie_config_write8(pcie_port, bus_number, devfn >> 3,
-+					devfn & 0x7, reg, val);
-+		return PCIBIOS_SUCCESSFUL;
-+	}
-+#if PCI_CONFIG_SPACE_DELAY
-+	udelay(PCI_CONFIG_SPACE_DELAY);
-+#endif
-+	return PCIBIOS_FUNC_NOT_SUPPORTED;
-+}
-+
-+static int octeon_pcie0_write_config(struct pci_bus *bus, unsigned int devfn,
-+				     int reg, int size, u32 val)
-+{
-+	return octeon_pcie_write_config(0, bus, devfn, reg, size, val);
-+}
-+
-+static int octeon_pcie1_write_config(struct pci_bus *bus, unsigned int devfn,
-+				     int reg, int size, u32 val)
-+{
-+	return octeon_pcie_write_config(1, bus, devfn, reg, size, val);
-+}
-+
-+static struct pci_ops octeon_pcie0_ops = {
-+	octeon_pcie0_read_config,
-+	octeon_pcie0_write_config,
-+};
-+
-+static struct resource octeon_pcie0_mem_resource = {
-+	.name = "Octeon PCIe0 MEM",
-+	.flags = IORESOURCE_MEM,
-+};
-+
-+static struct resource octeon_pcie0_io_resource = {
-+	.name = "Octeon PCIe0 IO",
-+	.flags = IORESOURCE_IO,
-+};
-+
-+static struct pci_controller octeon_pcie0_controller = {
-+	.pci_ops = &octeon_pcie0_ops,
-+	.mem_resource = &octeon_pcie0_mem_resource,
-+	.io_resource = &octeon_pcie0_io_resource,
-+};
-+
-+static struct pci_ops octeon_pcie1_ops = {
-+	octeon_pcie1_read_config,
-+	octeon_pcie1_write_config,
-+};
-+
-+static struct resource octeon_pcie1_mem_resource = {
-+	.name = "Octeon PCIe1 MEM",
-+	.flags = IORESOURCE_MEM,
-+};
-+
-+static struct resource octeon_pcie1_io_resource = {
-+	.name = "Octeon PCIe1 IO",
-+	.flags = IORESOURCE_IO,
-+};
-+
-+static struct pci_controller octeon_pcie1_controller = {
-+	.pci_ops = &octeon_pcie1_ops,
-+	.mem_resource = &octeon_pcie1_mem_resource,
-+	.io_resource = &octeon_pcie1_io_resource,
-+};
-+
-+
-+/**
-+ * Initialize the Octeon PCIe controllers
-+ *
-+ * @return
-+ */
-+static int __init octeon_pcie_setup(void)
-+{
-+	union cvmx_npei_ctl_status npei_ctl_status;
-+	int result;
-+
-+	/* These chips don't have PCIe */
-+	if (!octeon_has_feature(OCTEON_FEATURE_PCIE))
-+		return 0;
-+
-+	/* Point pcibios_map_irq() to the PCIe version of it */
-+	octeon_pcibios_map_irq = octeon_pcie_pcibios_map_irq;
-+
-+	/* Use the PCIe based DMA mappings */
-+	octeon_dma_bar_type = OCTEON_DMA_BAR_TYPE_PCIE;
-+
-+	/*
-+	 * PCIe I/O range. It is based on port 0 but includes up until
-+	 * port 1's end.
-+	 */
-+	set_io_port_base(CVMX_ADD_IO_SEG(cvmx_pcie_get_io_base_address(0)));
-+	ioport_resource.start = 0;
-+	ioport_resource.end =
-+		cvmx_pcie_get_io_base_address(1) -
-+		cvmx_pcie_get_io_base_address(0) + cvmx_pcie_get_io_size(1) - 1;
-+
-+	npei_ctl_status.u64 = cvmx_read_csr(CVMX_PEXP_NPEI_CTL_STATUS);
-+	if (npei_ctl_status.s.host_mode) {
-+		pr_notice("PCIe: Initializing port 0\n");
-+		result = cvmx_pcie_rc_initialize(0);
-+		if (result == 0) {
-+			/* Memory offsets are physical addresses */
-+			octeon_pcie0_controller.mem_offset =
-+				cvmx_pcie_get_mem_base_address(0);
-+			/* IO offsets are Mips virtual addresses */
-+			octeon_pcie0_controller.io_map_base =
-+				CVMX_ADD_IO_SEG(cvmx_pcie_get_io_base_address
-+						(0));
-+			octeon_pcie0_controller.io_offset = 0;
-+			/*
-+			 * To keep things similar to PCI, we start
-+			 * device addresses at the same place as PCI
-+			 * uisng big bar support. This normally
-+			 * translates to 4GB-256MB, which is the same
-+			 * as most x86 PCs.
-+			 */
-+			octeon_pcie0_controller.mem_resource->start =
-+				cvmx_pcie_get_mem_base_address(0) +
-+				(4ul << 30) - (OCTEON_PCI_BAR1_HOLE_SIZE << 20);
-+			octeon_pcie0_controller.mem_resource->end =
-+				cvmx_pcie_get_mem_base_address(0) +
-+				cvmx_pcie_get_mem_size(0) - 1;
-+			/*
-+			 * Ports must be above 16KB for the ISA bus
-+			 * filtering in the PCI-X to PCI bridge.
-+			 */
-+			octeon_pcie0_controller.io_resource->start = 4 << 10;
-+			octeon_pcie0_controller.io_resource->end =
-+				cvmx_pcie_get_io_size(0) - 1;
-+			register_pci_controller(&octeon_pcie0_controller);
-+		}
-+	} else {
-+		pr_notice("PCIe: Port 0 in endpoint mode, skipping.\n");
-+	}
-+
-+	/* Skip the 2nd port on CN52XX if port 0 is in 4 lane mode */
-+	if (OCTEON_IS_MODEL(OCTEON_CN52XX)) {
-+		union cvmx_npei_dbg_data npei_dbg_data;
-+		npei_dbg_data.u64 = cvmx_read_csr(CVMX_PEXP_NPEI_DBG_DATA);
-+		if (npei_dbg_data.cn52xx.qlm0_link_width)
-+			return 0;
-+	}
-+
-+	pr_notice("PCIe: Initializing port 1\n");
-+	result = cvmx_pcie_rc_initialize(1);
-+	if (result == 0) {
-+		/* Memory offsets are physical addresses */
-+		octeon_pcie1_controller.mem_offset =
-+			cvmx_pcie_get_mem_base_address(1);
-+		/* IO offsets are Mips virtual addresses */
-+		octeon_pcie1_controller.io_map_base =
-+			CVMX_ADD_IO_SEG(cvmx_pcie_get_io_base_address(1));
-+		octeon_pcie1_controller.io_offset =
-+			cvmx_pcie_get_io_base_address(1) -
-+			cvmx_pcie_get_io_base_address(0);
-+		/*
-+		 * To keep things similar to PCI, we start device
-+		 * addresses at the same place as PCI uisng big bar
-+		 * support. This normally translates to 4GB-256MB,
-+		 * which is the same as most x86 PCs.
-+		 */
-+		octeon_pcie1_controller.mem_resource->start =
-+			cvmx_pcie_get_mem_base_address(1) + (4ul << 30) -
-+			(OCTEON_PCI_BAR1_HOLE_SIZE << 20);
-+		octeon_pcie1_controller.mem_resource->end =
-+			cvmx_pcie_get_mem_base_address(1) +
-+			cvmx_pcie_get_mem_size(1) - 1;
-+		/*
-+		 * Ports must be above 16KB for the ISA bus filtering
-+		 * in the PCI-X to PCI bridge.
-+		 */
-+		octeon_pcie1_controller.io_resource->start =
-+			cvmx_pcie_get_io_base_address(1) -
-+			cvmx_pcie_get_io_base_address(0);
-+		octeon_pcie1_controller.io_resource->end =
-+			octeon_pcie1_controller.io_resource->start +
-+			cvmx_pcie_get_io_size(1) - 1;
-+		register_pci_controller(&octeon_pcie1_controller);
-+	}
-+	return 0;
-+}
-+
-+arch_initcall(octeon_pcie_setup);
-diff --git a/arch/mips/include/asm/octeon/cvmx-helper-errata.h b/arch/mips/include/asm/octeon/cvmx-helper-errata.h
+diff --git a/arch/mips/include/asm/octeon/cvmx-npi-defs.h b/arch/mips/include/asm/octeon/cvmx-npi-defs.h
 new file mode 100644
-index 0000000..5fc9918
+index 0000000..4e03cd8
 --- /dev/null
-+++ b/arch/mips/include/asm/octeon/cvmx-helper-errata.h
-@@ -0,0 +1,33 @@
++++ b/arch/mips/include/asm/octeon/cvmx-npi-defs.h
+@@ -0,0 +1,1735 @@
 +/***********************license start***************
 + * Author: Cavium Networks
 + *
@@ -3143,18 +2657,6561 @@ index 0000000..5fc9918
 + * Contact Cavium Networks for more information
 + ***********************license end**************************************/
 +
-+#ifndef __CVMX_HELPER_ERRATA_H__
-+#define __CVMX_HELPER_ERRATA_H__
++#ifndef __CVMX_NPI_DEFS_H__
++#define __CVMX_NPI_DEFS_H__
 +
-+extern void __cvmx_helper_errata_qlm_disable_2nd_order_cdr(int qlm);
++#define CVMX_NPI_BASE_ADDR_INPUT0 \
++	 CVMX_ADD_IO_SEG(0x00011F0000000070ull)
++#define CVMX_NPI_BASE_ADDR_INPUT1 \
++	 CVMX_ADD_IO_SEG(0x00011F0000000080ull)
++#define CVMX_NPI_BASE_ADDR_INPUT2 \
++	 CVMX_ADD_IO_SEG(0x00011F0000000090ull)
++#define CVMX_NPI_BASE_ADDR_INPUT3 \
++	 CVMX_ADD_IO_SEG(0x00011F00000000A0ull)
++#define CVMX_NPI_BASE_ADDR_INPUTX(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F0000000070ull + (((offset) & 3) * 16))
++#define CVMX_NPI_BASE_ADDR_OUTPUT0 \
++	 CVMX_ADD_IO_SEG(0x00011F00000000B8ull)
++#define CVMX_NPI_BASE_ADDR_OUTPUT1 \
++	 CVMX_ADD_IO_SEG(0x00011F00000000C0ull)
++#define CVMX_NPI_BASE_ADDR_OUTPUT2 \
++	 CVMX_ADD_IO_SEG(0x00011F00000000C8ull)
++#define CVMX_NPI_BASE_ADDR_OUTPUT3 \
++	 CVMX_ADD_IO_SEG(0x00011F00000000D0ull)
++#define CVMX_NPI_BASE_ADDR_OUTPUTX(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F00000000B8ull + (((offset) & 3) * 8))
++#define CVMX_NPI_BIST_STATUS \
++	 CVMX_ADD_IO_SEG(0x00011F00000003F8ull)
++#define CVMX_NPI_BUFF_SIZE_OUTPUT0 \
++	 CVMX_ADD_IO_SEG(0x00011F00000000E0ull)
++#define CVMX_NPI_BUFF_SIZE_OUTPUT1 \
++	 CVMX_ADD_IO_SEG(0x00011F00000000E8ull)
++#define CVMX_NPI_BUFF_SIZE_OUTPUT2 \
++	 CVMX_ADD_IO_SEG(0x00011F00000000F0ull)
++#define CVMX_NPI_BUFF_SIZE_OUTPUT3 \
++	 CVMX_ADD_IO_SEG(0x00011F00000000F8ull)
++#define CVMX_NPI_BUFF_SIZE_OUTPUTX(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F00000000E0ull + (((offset) & 3) * 8))
++#define CVMX_NPI_COMP_CTL \
++	 CVMX_ADD_IO_SEG(0x00011F0000000218ull)
++#define CVMX_NPI_CTL_STATUS \
++	 CVMX_ADD_IO_SEG(0x00011F0000000010ull)
++#define CVMX_NPI_DBG_SELECT \
++	 CVMX_ADD_IO_SEG(0x00011F0000000008ull)
++#define CVMX_NPI_DMA_CONTROL \
++	 CVMX_ADD_IO_SEG(0x00011F0000000128ull)
++#define CVMX_NPI_DMA_HIGHP_COUNTS \
++	 CVMX_ADD_IO_SEG(0x00011F0000000148ull)
++#define CVMX_NPI_DMA_HIGHP_NADDR \
++	 CVMX_ADD_IO_SEG(0x00011F0000000158ull)
++#define CVMX_NPI_DMA_LOWP_COUNTS \
++	 CVMX_ADD_IO_SEG(0x00011F0000000140ull)
++#define CVMX_NPI_DMA_LOWP_NADDR \
++	 CVMX_ADD_IO_SEG(0x00011F0000000150ull)
++#define CVMX_NPI_HIGHP_DBELL \
++	 CVMX_ADD_IO_SEG(0x00011F0000000120ull)
++#define CVMX_NPI_HIGHP_IBUFF_SADDR \
++	 CVMX_ADD_IO_SEG(0x00011F0000000110ull)
++#define CVMX_NPI_INPUT_CONTROL \
++	 CVMX_ADD_IO_SEG(0x00011F0000000138ull)
++#define CVMX_NPI_INT_ENB \
++	 CVMX_ADD_IO_SEG(0x00011F0000000020ull)
++#define CVMX_NPI_INT_SUM \
++	 CVMX_ADD_IO_SEG(0x00011F0000000018ull)
++#define CVMX_NPI_LOWP_DBELL \
++	 CVMX_ADD_IO_SEG(0x00011F0000000118ull)
++#define CVMX_NPI_LOWP_IBUFF_SADDR \
++	 CVMX_ADD_IO_SEG(0x00011F0000000108ull)
++#define CVMX_NPI_MEM_ACCESS_SUBID3 \
++	 CVMX_ADD_IO_SEG(0x00011F0000000028ull)
++#define CVMX_NPI_MEM_ACCESS_SUBID4 \
++	 CVMX_ADD_IO_SEG(0x00011F0000000030ull)
++#define CVMX_NPI_MEM_ACCESS_SUBID5 \
++	 CVMX_ADD_IO_SEG(0x00011F0000000038ull)
++#define CVMX_NPI_MEM_ACCESS_SUBID6 \
++	 CVMX_ADD_IO_SEG(0x00011F0000000040ull)
++#define CVMX_NPI_MEM_ACCESS_SUBIDX(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F0000000028ull + (((offset) & 7) * 8) - 8 * 3)
++#define CVMX_NPI_MSI_RCV \
++	 (0x0000000000000190ull)
++#define CVMX_NPI_NPI_MSI_RCV \
++	 CVMX_ADD_IO_SEG(0x00011F0000001190ull)
++#define CVMX_NPI_NUM_DESC_OUTPUT0 \
++	 CVMX_ADD_IO_SEG(0x00011F0000000050ull)
++#define CVMX_NPI_NUM_DESC_OUTPUT1 \
++	 CVMX_ADD_IO_SEG(0x00011F0000000058ull)
++#define CVMX_NPI_NUM_DESC_OUTPUT2 \
++	 CVMX_ADD_IO_SEG(0x00011F0000000060ull)
++#define CVMX_NPI_NUM_DESC_OUTPUT3 \
++	 CVMX_ADD_IO_SEG(0x00011F0000000068ull)
++#define CVMX_NPI_NUM_DESC_OUTPUTX(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F0000000050ull + (((offset) & 3) * 8))
++#define CVMX_NPI_OUTPUT_CONTROL \
++	 CVMX_ADD_IO_SEG(0x00011F0000000100ull)
++#define CVMX_NPI_P0_DBPAIR_ADDR \
++	 CVMX_ADD_IO_SEG(0x00011F0000000180ull)
++#define CVMX_NPI_P0_INSTR_ADDR \
++	 CVMX_ADD_IO_SEG(0x00011F00000001C0ull)
++#define CVMX_NPI_P0_INSTR_CNTS \
++	 CVMX_ADD_IO_SEG(0x00011F00000001A0ull)
++#define CVMX_NPI_P0_PAIR_CNTS \
++	 CVMX_ADD_IO_SEG(0x00011F0000000160ull)
++#define CVMX_NPI_P1_DBPAIR_ADDR \
++	 CVMX_ADD_IO_SEG(0x00011F0000000188ull)
++#define CVMX_NPI_P1_INSTR_ADDR \
++	 CVMX_ADD_IO_SEG(0x00011F00000001C8ull)
++#define CVMX_NPI_P1_INSTR_CNTS \
++	 CVMX_ADD_IO_SEG(0x00011F00000001A8ull)
++#define CVMX_NPI_P1_PAIR_CNTS \
++	 CVMX_ADD_IO_SEG(0x00011F0000000168ull)
++#define CVMX_NPI_P2_DBPAIR_ADDR \
++	 CVMX_ADD_IO_SEG(0x00011F0000000190ull)
++#define CVMX_NPI_P2_INSTR_ADDR \
++	 CVMX_ADD_IO_SEG(0x00011F00000001D0ull)
++#define CVMX_NPI_P2_INSTR_CNTS \
++	 CVMX_ADD_IO_SEG(0x00011F00000001B0ull)
++#define CVMX_NPI_P2_PAIR_CNTS \
++	 CVMX_ADD_IO_SEG(0x00011F0000000170ull)
++#define CVMX_NPI_P3_DBPAIR_ADDR \
++	 CVMX_ADD_IO_SEG(0x00011F0000000198ull)
++#define CVMX_NPI_P3_INSTR_ADDR \
++	 CVMX_ADD_IO_SEG(0x00011F00000001D8ull)
++#define CVMX_NPI_P3_INSTR_CNTS \
++	 CVMX_ADD_IO_SEG(0x00011F00000001B8ull)
++#define CVMX_NPI_P3_PAIR_CNTS \
++	 CVMX_ADD_IO_SEG(0x00011F0000000178ull)
++#define CVMX_NPI_PCI_BAR1_INDEXX(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F0000001100ull + (((offset) & 31) * 4))
++#define CVMX_NPI_PCI_BIST_REG \
++	 CVMX_ADD_IO_SEG(0x00011F00000011C0ull)
++#define CVMX_NPI_PCI_BURST_SIZE \
++	 CVMX_ADD_IO_SEG(0x00011F00000000D8ull)
++#define CVMX_NPI_PCI_CFG00 \
++	 CVMX_ADD_IO_SEG(0x00011F0000001800ull)
++#define CVMX_NPI_PCI_CFG01 \
++	 CVMX_ADD_IO_SEG(0x00011F0000001804ull)
++#define CVMX_NPI_PCI_CFG02 \
++	 CVMX_ADD_IO_SEG(0x00011F0000001808ull)
++#define CVMX_NPI_PCI_CFG03 \
++	 CVMX_ADD_IO_SEG(0x00011F000000180Cull)
++#define CVMX_NPI_PCI_CFG04 \
++	 CVMX_ADD_IO_SEG(0x00011F0000001810ull)
++#define CVMX_NPI_PCI_CFG05 \
++	 CVMX_ADD_IO_SEG(0x00011F0000001814ull)
++#define CVMX_NPI_PCI_CFG06 \
++	 CVMX_ADD_IO_SEG(0x00011F0000001818ull)
++#define CVMX_NPI_PCI_CFG07 \
++	 CVMX_ADD_IO_SEG(0x00011F000000181Cull)
++#define CVMX_NPI_PCI_CFG08 \
++	 CVMX_ADD_IO_SEG(0x00011F0000001820ull)
++#define CVMX_NPI_PCI_CFG09 \
++	 CVMX_ADD_IO_SEG(0x00011F0000001824ull)
++#define CVMX_NPI_PCI_CFG10 \
++	 CVMX_ADD_IO_SEG(0x00011F0000001828ull)
++#define CVMX_NPI_PCI_CFG11 \
++	 CVMX_ADD_IO_SEG(0x00011F000000182Cull)
++#define CVMX_NPI_PCI_CFG12 \
++	 CVMX_ADD_IO_SEG(0x00011F0000001830ull)
++#define CVMX_NPI_PCI_CFG13 \
++	 CVMX_ADD_IO_SEG(0x00011F0000001834ull)
++#define CVMX_NPI_PCI_CFG15 \
++	 CVMX_ADD_IO_SEG(0x00011F000000183Cull)
++#define CVMX_NPI_PCI_CFG16 \
++	 CVMX_ADD_IO_SEG(0x00011F0000001840ull)
++#define CVMX_NPI_PCI_CFG17 \
++	 CVMX_ADD_IO_SEG(0x00011F0000001844ull)
++#define CVMX_NPI_PCI_CFG18 \
++	 CVMX_ADD_IO_SEG(0x00011F0000001848ull)
++#define CVMX_NPI_PCI_CFG19 \
++	 CVMX_ADD_IO_SEG(0x00011F000000184Cull)
++#define CVMX_NPI_PCI_CFG20 \
++	 CVMX_ADD_IO_SEG(0x00011F0000001850ull)
++#define CVMX_NPI_PCI_CFG21 \
++	 CVMX_ADD_IO_SEG(0x00011F0000001854ull)
++#define CVMX_NPI_PCI_CFG22 \
++	 CVMX_ADD_IO_SEG(0x00011F0000001858ull)
++#define CVMX_NPI_PCI_CFG56 \
++	 CVMX_ADD_IO_SEG(0x00011F00000018E0ull)
++#define CVMX_NPI_PCI_CFG57 \
++	 CVMX_ADD_IO_SEG(0x00011F00000018E4ull)
++#define CVMX_NPI_PCI_CFG58 \
++	 CVMX_ADD_IO_SEG(0x00011F00000018E8ull)
++#define CVMX_NPI_PCI_CFG59 \
++	 CVMX_ADD_IO_SEG(0x00011F00000018ECull)
++#define CVMX_NPI_PCI_CFG60 \
++	 CVMX_ADD_IO_SEG(0x00011F00000018F0ull)
++#define CVMX_NPI_PCI_CFG61 \
++	 CVMX_ADD_IO_SEG(0x00011F00000018F4ull)
++#define CVMX_NPI_PCI_CFG62 \
++	 CVMX_ADD_IO_SEG(0x00011F00000018F8ull)
++#define CVMX_NPI_PCI_CFG63 \
++	 CVMX_ADD_IO_SEG(0x00011F00000018FCull)
++#define CVMX_NPI_PCI_CNT_REG \
++	 CVMX_ADD_IO_SEG(0x00011F00000011B8ull)
++#define CVMX_NPI_PCI_CTL_STATUS_2 \
++	 CVMX_ADD_IO_SEG(0x00011F000000118Cull)
++#define CVMX_NPI_PCI_INT_ARB_CFG \
++	 CVMX_ADD_IO_SEG(0x00011F0000000130ull)
++#define CVMX_NPI_PCI_INT_ENB2 \
++	 CVMX_ADD_IO_SEG(0x00011F00000011A0ull)
++#define CVMX_NPI_PCI_INT_SUM2 \
++	 CVMX_ADD_IO_SEG(0x00011F0000001198ull)
++#define CVMX_NPI_PCI_READ_CMD \
++	 CVMX_ADD_IO_SEG(0x00011F0000000048ull)
++#define CVMX_NPI_PCI_READ_CMD_6 \
++	 CVMX_ADD_IO_SEG(0x00011F0000001180ull)
++#define CVMX_NPI_PCI_READ_CMD_C \
++	 CVMX_ADD_IO_SEG(0x00011F0000001184ull)
++#define CVMX_NPI_PCI_READ_CMD_E \
++	 CVMX_ADD_IO_SEG(0x00011F0000001188ull)
++#define CVMX_NPI_PCI_SCM_REG \
++	 CVMX_ADD_IO_SEG(0x00011F00000011A8ull)
++#define CVMX_NPI_PCI_TSR_REG \
++	 CVMX_ADD_IO_SEG(0x00011F00000011B0ull)
++#define CVMX_NPI_PORT32_INSTR_HDR \
++	 CVMX_ADD_IO_SEG(0x00011F00000001F8ull)
++#define CVMX_NPI_PORT33_INSTR_HDR \
++	 CVMX_ADD_IO_SEG(0x00011F0000000200ull)
++#define CVMX_NPI_PORT34_INSTR_HDR \
++	 CVMX_ADD_IO_SEG(0x00011F0000000208ull)
++#define CVMX_NPI_PORT35_INSTR_HDR \
++	 CVMX_ADD_IO_SEG(0x00011F0000000210ull)
++#define CVMX_NPI_PORT_BP_CONTROL \
++	 CVMX_ADD_IO_SEG(0x00011F00000001F0ull)
++#define CVMX_NPI_PX_DBPAIR_ADDR(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F0000000180ull + (((offset) & 3) * 8))
++#define CVMX_NPI_PX_INSTR_ADDR(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F00000001C0ull + (((offset) & 3) * 8))
++#define CVMX_NPI_PX_INSTR_CNTS(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F00000001A0ull + (((offset) & 3) * 8))
++#define CVMX_NPI_PX_PAIR_CNTS(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F0000000160ull + (((offset) & 3) * 8))
++#define CVMX_NPI_RSL_INT_BLOCKS \
++	 CVMX_ADD_IO_SEG(0x00011F0000000000ull)
++#define CVMX_NPI_SIZE_INPUT0 \
++	 CVMX_ADD_IO_SEG(0x00011F0000000078ull)
++#define CVMX_NPI_SIZE_INPUT1 \
++	 CVMX_ADD_IO_SEG(0x00011F0000000088ull)
++#define CVMX_NPI_SIZE_INPUT2 \
++	 CVMX_ADD_IO_SEG(0x00011F0000000098ull)
++#define CVMX_NPI_SIZE_INPUT3 \
++	 CVMX_ADD_IO_SEG(0x00011F00000000A8ull)
++#define CVMX_NPI_SIZE_INPUTX(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F0000000078ull + (((offset) & 3) * 16))
++#define CVMX_NPI_WIN_READ_TO \
++	 CVMX_ADD_IO_SEG(0x00011F00000001E0ull)
++
++union cvmx_npi_base_addr_inputx {
++	uint64_t u64;
++	struct cvmx_npi_base_addr_inputx_s {
++		uint64_t baddr:61;
++		uint64_t reserved_0_2:3;
++	} s;
++	struct cvmx_npi_base_addr_inputx_s cn30xx;
++	struct cvmx_npi_base_addr_inputx_s cn31xx;
++	struct cvmx_npi_base_addr_inputx_s cn38xx;
++	struct cvmx_npi_base_addr_inputx_s cn38xxp2;
++	struct cvmx_npi_base_addr_inputx_s cn50xx;
++	struct cvmx_npi_base_addr_inputx_s cn58xx;
++	struct cvmx_npi_base_addr_inputx_s cn58xxp1;
++};
++
++union cvmx_npi_base_addr_outputx {
++	uint64_t u64;
++	struct cvmx_npi_base_addr_outputx_s {
++		uint64_t baddr:61;
++		uint64_t reserved_0_2:3;
++	} s;
++	struct cvmx_npi_base_addr_outputx_s cn30xx;
++	struct cvmx_npi_base_addr_outputx_s cn31xx;
++	struct cvmx_npi_base_addr_outputx_s cn38xx;
++	struct cvmx_npi_base_addr_outputx_s cn38xxp2;
++	struct cvmx_npi_base_addr_outputx_s cn50xx;
++	struct cvmx_npi_base_addr_outputx_s cn58xx;
++	struct cvmx_npi_base_addr_outputx_s cn58xxp1;
++};
++
++union cvmx_npi_bist_status {
++	uint64_t u64;
++	struct cvmx_npi_bist_status_s {
++		uint64_t reserved_20_63:44;
++		uint64_t csr_bs:1;
++		uint64_t dif_bs:1;
++		uint64_t rdp_bs:1;
++		uint64_t pcnc_bs:1;
++		uint64_t pcn_bs:1;
++		uint64_t rdn_bs:1;
++		uint64_t pcac_bs:1;
++		uint64_t pcad_bs:1;
++		uint64_t rdnl_bs:1;
++		uint64_t pgf_bs:1;
++		uint64_t pig_bs:1;
++		uint64_t pof0_bs:1;
++		uint64_t pof1_bs:1;
++		uint64_t pof2_bs:1;
++		uint64_t pof3_bs:1;
++		uint64_t pos_bs:1;
++		uint64_t nus_bs:1;
++		uint64_t dob_bs:1;
++		uint64_t pdf_bs:1;
++		uint64_t dpi_bs:1;
++	} s;
++	struct cvmx_npi_bist_status_cn30xx {
++		uint64_t reserved_20_63:44;
++		uint64_t csr_bs:1;
++		uint64_t dif_bs:1;
++		uint64_t rdp_bs:1;
++		uint64_t pcnc_bs:1;
++		uint64_t pcn_bs:1;
++		uint64_t rdn_bs:1;
++		uint64_t pcac_bs:1;
++		uint64_t pcad_bs:1;
++		uint64_t rdnl_bs:1;
++		uint64_t pgf_bs:1;
++		uint64_t pig_bs:1;
++		uint64_t pof0_bs:1;
++		uint64_t reserved_5_7:3;
++		uint64_t pos_bs:1;
++		uint64_t nus_bs:1;
++		uint64_t dob_bs:1;
++		uint64_t pdf_bs:1;
++		uint64_t dpi_bs:1;
++	} cn30xx;
++	struct cvmx_npi_bist_status_s cn31xx;
++	struct cvmx_npi_bist_status_s cn38xx;
++	struct cvmx_npi_bist_status_s cn38xxp2;
++	struct cvmx_npi_bist_status_cn50xx {
++		uint64_t reserved_20_63:44;
++		uint64_t csr_bs:1;
++		uint64_t dif_bs:1;
++		uint64_t rdp_bs:1;
++		uint64_t pcnc_bs:1;
++		uint64_t pcn_bs:1;
++		uint64_t rdn_bs:1;
++		uint64_t pcac_bs:1;
++		uint64_t pcad_bs:1;
++		uint64_t rdnl_bs:1;
++		uint64_t pgf_bs:1;
++		uint64_t pig_bs:1;
++		uint64_t pof0_bs:1;
++		uint64_t pof1_bs:1;
++		uint64_t reserved_5_6:2;
++		uint64_t pos_bs:1;
++		uint64_t nus_bs:1;
++		uint64_t dob_bs:1;
++		uint64_t pdf_bs:1;
++		uint64_t dpi_bs:1;
++	} cn50xx;
++	struct cvmx_npi_bist_status_s cn58xx;
++	struct cvmx_npi_bist_status_s cn58xxp1;
++};
++
++union cvmx_npi_buff_size_outputx {
++	uint64_t u64;
++	struct cvmx_npi_buff_size_outputx_s {
++		uint64_t reserved_23_63:41;
++		uint64_t isize:7;
++		uint64_t bsize:16;
++	} s;
++	struct cvmx_npi_buff_size_outputx_s cn30xx;
++	struct cvmx_npi_buff_size_outputx_s cn31xx;
++	struct cvmx_npi_buff_size_outputx_s cn38xx;
++	struct cvmx_npi_buff_size_outputx_s cn38xxp2;
++	struct cvmx_npi_buff_size_outputx_s cn50xx;
++	struct cvmx_npi_buff_size_outputx_s cn58xx;
++	struct cvmx_npi_buff_size_outputx_s cn58xxp1;
++};
++
++union cvmx_npi_comp_ctl {
++	uint64_t u64;
++	struct cvmx_npi_comp_ctl_s {
++		uint64_t reserved_10_63:54;
++		uint64_t pctl:5;
++		uint64_t nctl:5;
++	} s;
++	struct cvmx_npi_comp_ctl_s cn50xx;
++	struct cvmx_npi_comp_ctl_s cn58xx;
++	struct cvmx_npi_comp_ctl_s cn58xxp1;
++};
++
++union cvmx_npi_ctl_status {
++	uint64_t u64;
++	struct cvmx_npi_ctl_status_s {
++		uint64_t reserved_63_63:1;
++		uint64_t chip_rev:8;
++		uint64_t dis_pniw:1;
++		uint64_t out3_enb:1;
++		uint64_t out2_enb:1;
++		uint64_t out1_enb:1;
++		uint64_t out0_enb:1;
++		uint64_t ins3_enb:1;
++		uint64_t ins2_enb:1;
++		uint64_t ins1_enb:1;
++		uint64_t ins0_enb:1;
++		uint64_t ins3_64b:1;
++		uint64_t ins2_64b:1;
++		uint64_t ins1_64b:1;
++		uint64_t ins0_64b:1;
++		uint64_t pci_wdis:1;
++		uint64_t wait_com:1;
++		uint64_t reserved_37_39:3;
++		uint64_t max_word:5;
++		uint64_t reserved_10_31:22;
++		uint64_t timer:10;
++	} s;
++	struct cvmx_npi_ctl_status_cn30xx {
++		uint64_t reserved_63_63:1;
++		uint64_t chip_rev:8;
++		uint64_t dis_pniw:1;
++		uint64_t reserved_51_53:3;
++		uint64_t out0_enb:1;
++		uint64_t reserved_47_49:3;
++		uint64_t ins0_enb:1;
++		uint64_t reserved_43_45:3;
++		uint64_t ins0_64b:1;
++		uint64_t pci_wdis:1;
++		uint64_t wait_com:1;
++		uint64_t reserved_37_39:3;
++		uint64_t max_word:5;
++		uint64_t reserved_10_31:22;
++		uint64_t timer:10;
++	} cn30xx;
++	struct cvmx_npi_ctl_status_cn31xx {
++		uint64_t reserved_63_63:1;
++		uint64_t chip_rev:8;
++		uint64_t dis_pniw:1;
++		uint64_t reserved_52_53:2;
++		uint64_t out1_enb:1;
++		uint64_t out0_enb:1;
++		uint64_t reserved_48_49:2;
++		uint64_t ins1_enb:1;
++		uint64_t ins0_enb:1;
++		uint64_t reserved_44_45:2;
++		uint64_t ins1_64b:1;
++		uint64_t ins0_64b:1;
++		uint64_t pci_wdis:1;
++		uint64_t wait_com:1;
++		uint64_t reserved_37_39:3;
++		uint64_t max_word:5;
++		uint64_t reserved_10_31:22;
++		uint64_t timer:10;
++	} cn31xx;
++	struct cvmx_npi_ctl_status_s cn38xx;
++	struct cvmx_npi_ctl_status_s cn38xxp2;
++	struct cvmx_npi_ctl_status_cn31xx cn50xx;
++	struct cvmx_npi_ctl_status_s cn58xx;
++	struct cvmx_npi_ctl_status_s cn58xxp1;
++};
++
++union cvmx_npi_dbg_select {
++	uint64_t u64;
++	struct cvmx_npi_dbg_select_s {
++		uint64_t reserved_16_63:48;
++		uint64_t dbg_sel:16;
++	} s;
++	struct cvmx_npi_dbg_select_s cn30xx;
++	struct cvmx_npi_dbg_select_s cn31xx;
++	struct cvmx_npi_dbg_select_s cn38xx;
++	struct cvmx_npi_dbg_select_s cn38xxp2;
++	struct cvmx_npi_dbg_select_s cn50xx;
++	struct cvmx_npi_dbg_select_s cn58xx;
++	struct cvmx_npi_dbg_select_s cn58xxp1;
++};
++
++union cvmx_npi_dma_control {
++	uint64_t u64;
++	struct cvmx_npi_dma_control_s {
++		uint64_t reserved_36_63:28;
++		uint64_t b0_lend:1;
++		uint64_t dwb_denb:1;
++		uint64_t dwb_ichk:9;
++		uint64_t fpa_que:3;
++		uint64_t o_add1:1;
++		uint64_t o_ro:1;
++		uint64_t o_ns:1;
++		uint64_t o_es:2;
++		uint64_t o_mode:1;
++		uint64_t hp_enb:1;
++		uint64_t lp_enb:1;
++		uint64_t csize:14;
++	} s;
++	struct cvmx_npi_dma_control_s cn30xx;
++	struct cvmx_npi_dma_control_s cn31xx;
++	struct cvmx_npi_dma_control_s cn38xx;
++	struct cvmx_npi_dma_control_s cn38xxp2;
++	struct cvmx_npi_dma_control_s cn50xx;
++	struct cvmx_npi_dma_control_s cn58xx;
++	struct cvmx_npi_dma_control_s cn58xxp1;
++};
++
++union cvmx_npi_dma_highp_counts {
++	uint64_t u64;
++	struct cvmx_npi_dma_highp_counts_s {
++		uint64_t reserved_39_63:25;
++		uint64_t fcnt:7;
++		uint64_t dbell:32;
++	} s;
++	struct cvmx_npi_dma_highp_counts_s cn30xx;
++	struct cvmx_npi_dma_highp_counts_s cn31xx;
++	struct cvmx_npi_dma_highp_counts_s cn38xx;
++	struct cvmx_npi_dma_highp_counts_s cn38xxp2;
++	struct cvmx_npi_dma_highp_counts_s cn50xx;
++	struct cvmx_npi_dma_highp_counts_s cn58xx;
++	struct cvmx_npi_dma_highp_counts_s cn58xxp1;
++};
++
++union cvmx_npi_dma_highp_naddr {
++	uint64_t u64;
++	struct cvmx_npi_dma_highp_naddr_s {
++		uint64_t reserved_40_63:24;
++		uint64_t state:4;
++		uint64_t addr:36;
++	} s;
++	struct cvmx_npi_dma_highp_naddr_s cn30xx;
++	struct cvmx_npi_dma_highp_naddr_s cn31xx;
++	struct cvmx_npi_dma_highp_naddr_s cn38xx;
++	struct cvmx_npi_dma_highp_naddr_s cn38xxp2;
++	struct cvmx_npi_dma_highp_naddr_s cn50xx;
++	struct cvmx_npi_dma_highp_naddr_s cn58xx;
++	struct cvmx_npi_dma_highp_naddr_s cn58xxp1;
++};
++
++union cvmx_npi_dma_lowp_counts {
++	uint64_t u64;
++	struct cvmx_npi_dma_lowp_counts_s {
++		uint64_t reserved_39_63:25;
++		uint64_t fcnt:7;
++		uint64_t dbell:32;
++	} s;
++	struct cvmx_npi_dma_lowp_counts_s cn30xx;
++	struct cvmx_npi_dma_lowp_counts_s cn31xx;
++	struct cvmx_npi_dma_lowp_counts_s cn38xx;
++	struct cvmx_npi_dma_lowp_counts_s cn38xxp2;
++	struct cvmx_npi_dma_lowp_counts_s cn50xx;
++	struct cvmx_npi_dma_lowp_counts_s cn58xx;
++	struct cvmx_npi_dma_lowp_counts_s cn58xxp1;
++};
++
++union cvmx_npi_dma_lowp_naddr {
++	uint64_t u64;
++	struct cvmx_npi_dma_lowp_naddr_s {
++		uint64_t reserved_40_63:24;
++		uint64_t state:4;
++		uint64_t addr:36;
++	} s;
++	struct cvmx_npi_dma_lowp_naddr_s cn30xx;
++	struct cvmx_npi_dma_lowp_naddr_s cn31xx;
++	struct cvmx_npi_dma_lowp_naddr_s cn38xx;
++	struct cvmx_npi_dma_lowp_naddr_s cn38xxp2;
++	struct cvmx_npi_dma_lowp_naddr_s cn50xx;
++	struct cvmx_npi_dma_lowp_naddr_s cn58xx;
++	struct cvmx_npi_dma_lowp_naddr_s cn58xxp1;
++};
++
++union cvmx_npi_highp_dbell {
++	uint64_t u64;
++	struct cvmx_npi_highp_dbell_s {
++		uint64_t reserved_16_63:48;
++		uint64_t dbell:16;
++	} s;
++	struct cvmx_npi_highp_dbell_s cn30xx;
++	struct cvmx_npi_highp_dbell_s cn31xx;
++	struct cvmx_npi_highp_dbell_s cn38xx;
++	struct cvmx_npi_highp_dbell_s cn38xxp2;
++	struct cvmx_npi_highp_dbell_s cn50xx;
++	struct cvmx_npi_highp_dbell_s cn58xx;
++	struct cvmx_npi_highp_dbell_s cn58xxp1;
++};
++
++union cvmx_npi_highp_ibuff_saddr {
++	uint64_t u64;
++	struct cvmx_npi_highp_ibuff_saddr_s {
++		uint64_t reserved_36_63:28;
++		uint64_t saddr:36;
++	} s;
++	struct cvmx_npi_highp_ibuff_saddr_s cn30xx;
++	struct cvmx_npi_highp_ibuff_saddr_s cn31xx;
++	struct cvmx_npi_highp_ibuff_saddr_s cn38xx;
++	struct cvmx_npi_highp_ibuff_saddr_s cn38xxp2;
++	struct cvmx_npi_highp_ibuff_saddr_s cn50xx;
++	struct cvmx_npi_highp_ibuff_saddr_s cn58xx;
++	struct cvmx_npi_highp_ibuff_saddr_s cn58xxp1;
++};
++
++union cvmx_npi_input_control {
++	uint64_t u64;
++	struct cvmx_npi_input_control_s {
++		uint64_t reserved_23_63:41;
++		uint64_t pkt_rr:1;
++		uint64_t pbp_dhi:13;
++		uint64_t d_nsr:1;
++		uint64_t d_esr:2;
++		uint64_t d_ror:1;
++		uint64_t use_csr:1;
++		uint64_t nsr:1;
++		uint64_t esr:2;
++		uint64_t ror:1;
++	} s;
++	struct cvmx_npi_input_control_cn30xx {
++		uint64_t reserved_22_63:42;
++		uint64_t pbp_dhi:13;
++		uint64_t d_nsr:1;
++		uint64_t d_esr:2;
++		uint64_t d_ror:1;
++		uint64_t use_csr:1;
++		uint64_t nsr:1;
++		uint64_t esr:2;
++		uint64_t ror:1;
++	} cn30xx;
++	struct cvmx_npi_input_control_cn30xx cn31xx;
++	struct cvmx_npi_input_control_s cn38xx;
++	struct cvmx_npi_input_control_cn30xx cn38xxp2;
++	struct cvmx_npi_input_control_s cn50xx;
++	struct cvmx_npi_input_control_s cn58xx;
++	struct cvmx_npi_input_control_s cn58xxp1;
++};
++
++union cvmx_npi_int_enb {
++	uint64_t u64;
++	struct cvmx_npi_int_enb_s {
++		uint64_t reserved_62_63:2;
++		uint64_t q1_a_f:1;
++		uint64_t q1_s_e:1;
++		uint64_t pdf_p_f:1;
++		uint64_t pdf_p_e:1;
++		uint64_t pcf_p_f:1;
++		uint64_t pcf_p_e:1;
++		uint64_t rdx_s_e:1;
++		uint64_t rwx_s_e:1;
++		uint64_t pnc_a_f:1;
++		uint64_t pnc_s_e:1;
++		uint64_t com_a_f:1;
++		uint64_t com_s_e:1;
++		uint64_t q3_a_f:1;
++		uint64_t q3_s_e:1;
++		uint64_t q2_a_f:1;
++		uint64_t q2_s_e:1;
++		uint64_t pcr_a_f:1;
++		uint64_t pcr_s_e:1;
++		uint64_t fcr_a_f:1;
++		uint64_t fcr_s_e:1;
++		uint64_t iobdma:1;
++		uint64_t p_dperr:1;
++		uint64_t win_rto:1;
++		uint64_t i3_pperr:1;
++		uint64_t i2_pperr:1;
++		uint64_t i1_pperr:1;
++		uint64_t i0_pperr:1;
++		uint64_t p3_ptout:1;
++		uint64_t p2_ptout:1;
++		uint64_t p1_ptout:1;
++		uint64_t p0_ptout:1;
++		uint64_t p3_pperr:1;
++		uint64_t p2_pperr:1;
++		uint64_t p1_pperr:1;
++		uint64_t p0_pperr:1;
++		uint64_t g3_rtout:1;
++		uint64_t g2_rtout:1;
++		uint64_t g1_rtout:1;
++		uint64_t g0_rtout:1;
++		uint64_t p3_perr:1;
++		uint64_t p2_perr:1;
++		uint64_t p1_perr:1;
++		uint64_t p0_perr:1;
++		uint64_t p3_rtout:1;
++		uint64_t p2_rtout:1;
++		uint64_t p1_rtout:1;
++		uint64_t p0_rtout:1;
++		uint64_t i3_overf:1;
++		uint64_t i2_overf:1;
++		uint64_t i1_overf:1;
++		uint64_t i0_overf:1;
++		uint64_t i3_rtout:1;
++		uint64_t i2_rtout:1;
++		uint64_t i1_rtout:1;
++		uint64_t i0_rtout:1;
++		uint64_t po3_2sml:1;
++		uint64_t po2_2sml:1;
++		uint64_t po1_2sml:1;
++		uint64_t po0_2sml:1;
++		uint64_t pci_rsl:1;
++		uint64_t rml_wto:1;
++		uint64_t rml_rto:1;
++	} s;
++	struct cvmx_npi_int_enb_cn30xx {
++		uint64_t reserved_62_63:2;
++		uint64_t q1_a_f:1;
++		uint64_t q1_s_e:1;
++		uint64_t pdf_p_f:1;
++		uint64_t pdf_p_e:1;
++		uint64_t pcf_p_f:1;
++		uint64_t pcf_p_e:1;
++		uint64_t rdx_s_e:1;
++		uint64_t rwx_s_e:1;
++		uint64_t pnc_a_f:1;
++		uint64_t pnc_s_e:1;
++		uint64_t com_a_f:1;
++		uint64_t com_s_e:1;
++		uint64_t q3_a_f:1;
++		uint64_t q3_s_e:1;
++		uint64_t q2_a_f:1;
++		uint64_t q2_s_e:1;
++		uint64_t pcr_a_f:1;
++		uint64_t pcr_s_e:1;
++		uint64_t fcr_a_f:1;
++		uint64_t fcr_s_e:1;
++		uint64_t iobdma:1;
++		uint64_t p_dperr:1;
++		uint64_t win_rto:1;
++		uint64_t reserved_36_38:3;
++		uint64_t i0_pperr:1;
++		uint64_t reserved_32_34:3;
++		uint64_t p0_ptout:1;
++		uint64_t reserved_28_30:3;
++		uint64_t p0_pperr:1;
++		uint64_t reserved_24_26:3;
++		uint64_t g0_rtout:1;
++		uint64_t reserved_20_22:3;
++		uint64_t p0_perr:1;
++		uint64_t reserved_16_18:3;
++		uint64_t p0_rtout:1;
++		uint64_t reserved_12_14:3;
++		uint64_t i0_overf:1;
++		uint64_t reserved_8_10:3;
++		uint64_t i0_rtout:1;
++		uint64_t reserved_4_6:3;
++		uint64_t po0_2sml:1;
++		uint64_t pci_rsl:1;
++		uint64_t rml_wto:1;
++		uint64_t rml_rto:1;
++	} cn30xx;
++	struct cvmx_npi_int_enb_cn31xx {
++		uint64_t reserved_62_63:2;
++		uint64_t q1_a_f:1;
++		uint64_t q1_s_e:1;
++		uint64_t pdf_p_f:1;
++		uint64_t pdf_p_e:1;
++		uint64_t pcf_p_f:1;
++		uint64_t pcf_p_e:1;
++		uint64_t rdx_s_e:1;
++		uint64_t rwx_s_e:1;
++		uint64_t pnc_a_f:1;
++		uint64_t pnc_s_e:1;
++		uint64_t com_a_f:1;
++		uint64_t com_s_e:1;
++		uint64_t q3_a_f:1;
++		uint64_t q3_s_e:1;
++		uint64_t q2_a_f:1;
++		uint64_t q2_s_e:1;
++		uint64_t pcr_a_f:1;
++		uint64_t pcr_s_e:1;
++		uint64_t fcr_a_f:1;
++		uint64_t fcr_s_e:1;
++		uint64_t iobdma:1;
++		uint64_t p_dperr:1;
++		uint64_t win_rto:1;
++		uint64_t reserved_37_38:2;
++		uint64_t i1_pperr:1;
++		uint64_t i0_pperr:1;
++		uint64_t reserved_33_34:2;
++		uint64_t p1_ptout:1;
++		uint64_t p0_ptout:1;
++		uint64_t reserved_29_30:2;
++		uint64_t p1_pperr:1;
++		uint64_t p0_pperr:1;
++		uint64_t reserved_25_26:2;
++		uint64_t g1_rtout:1;
++		uint64_t g0_rtout:1;
++		uint64_t reserved_21_22:2;
++		uint64_t p1_perr:1;
++		uint64_t p0_perr:1;
++		uint64_t reserved_17_18:2;
++		uint64_t p1_rtout:1;
++		uint64_t p0_rtout:1;
++		uint64_t reserved_13_14:2;
++		uint64_t i1_overf:1;
++		uint64_t i0_overf:1;
++		uint64_t reserved_9_10:2;
++		uint64_t i1_rtout:1;
++		uint64_t i0_rtout:1;
++		uint64_t reserved_5_6:2;
++		uint64_t po1_2sml:1;
++		uint64_t po0_2sml:1;
++		uint64_t pci_rsl:1;
++		uint64_t rml_wto:1;
++		uint64_t rml_rto:1;
++	} cn31xx;
++	struct cvmx_npi_int_enb_s cn38xx;
++	struct cvmx_npi_int_enb_cn38xxp2 {
++		uint64_t reserved_42_63:22;
++		uint64_t iobdma:1;
++		uint64_t p_dperr:1;
++		uint64_t win_rto:1;
++		uint64_t i3_pperr:1;
++		uint64_t i2_pperr:1;
++		uint64_t i1_pperr:1;
++		uint64_t i0_pperr:1;
++		uint64_t p3_ptout:1;
++		uint64_t p2_ptout:1;
++		uint64_t p1_ptout:1;
++		uint64_t p0_ptout:1;
++		uint64_t p3_pperr:1;
++		uint64_t p2_pperr:1;
++		uint64_t p1_pperr:1;
++		uint64_t p0_pperr:1;
++		uint64_t g3_rtout:1;
++		uint64_t g2_rtout:1;
++		uint64_t g1_rtout:1;
++		uint64_t g0_rtout:1;
++		uint64_t p3_perr:1;
++		uint64_t p2_perr:1;
++		uint64_t p1_perr:1;
++		uint64_t p0_perr:1;
++		uint64_t p3_rtout:1;
++		uint64_t p2_rtout:1;
++		uint64_t p1_rtout:1;
++		uint64_t p0_rtout:1;
++		uint64_t i3_overf:1;
++		uint64_t i2_overf:1;
++		uint64_t i1_overf:1;
++		uint64_t i0_overf:1;
++		uint64_t i3_rtout:1;
++		uint64_t i2_rtout:1;
++		uint64_t i1_rtout:1;
++		uint64_t i0_rtout:1;
++		uint64_t po3_2sml:1;
++		uint64_t po2_2sml:1;
++		uint64_t po1_2sml:1;
++		uint64_t po0_2sml:1;
++		uint64_t pci_rsl:1;
++		uint64_t rml_wto:1;
++		uint64_t rml_rto:1;
++	} cn38xxp2;
++	struct cvmx_npi_int_enb_cn31xx cn50xx;
++	struct cvmx_npi_int_enb_s cn58xx;
++	struct cvmx_npi_int_enb_s cn58xxp1;
++};
++
++union cvmx_npi_int_sum {
++	uint64_t u64;
++	struct cvmx_npi_int_sum_s {
++		uint64_t reserved_62_63:2;
++		uint64_t q1_a_f:1;
++		uint64_t q1_s_e:1;
++		uint64_t pdf_p_f:1;
++		uint64_t pdf_p_e:1;
++		uint64_t pcf_p_f:1;
++		uint64_t pcf_p_e:1;
++		uint64_t rdx_s_e:1;
++		uint64_t rwx_s_e:1;
++		uint64_t pnc_a_f:1;
++		uint64_t pnc_s_e:1;
++		uint64_t com_a_f:1;
++		uint64_t com_s_e:1;
++		uint64_t q3_a_f:1;
++		uint64_t q3_s_e:1;
++		uint64_t q2_a_f:1;
++		uint64_t q2_s_e:1;
++		uint64_t pcr_a_f:1;
++		uint64_t pcr_s_e:1;
++		uint64_t fcr_a_f:1;
++		uint64_t fcr_s_e:1;
++		uint64_t iobdma:1;
++		uint64_t p_dperr:1;
++		uint64_t win_rto:1;
++		uint64_t i3_pperr:1;
++		uint64_t i2_pperr:1;
++		uint64_t i1_pperr:1;
++		uint64_t i0_pperr:1;
++		uint64_t p3_ptout:1;
++		uint64_t p2_ptout:1;
++		uint64_t p1_ptout:1;
++		uint64_t p0_ptout:1;
++		uint64_t p3_pperr:1;
++		uint64_t p2_pperr:1;
++		uint64_t p1_pperr:1;
++		uint64_t p0_pperr:1;
++		uint64_t g3_rtout:1;
++		uint64_t g2_rtout:1;
++		uint64_t g1_rtout:1;
++		uint64_t g0_rtout:1;
++		uint64_t p3_perr:1;
++		uint64_t p2_perr:1;
++		uint64_t p1_perr:1;
++		uint64_t p0_perr:1;
++		uint64_t p3_rtout:1;
++		uint64_t p2_rtout:1;
++		uint64_t p1_rtout:1;
++		uint64_t p0_rtout:1;
++		uint64_t i3_overf:1;
++		uint64_t i2_overf:1;
++		uint64_t i1_overf:1;
++		uint64_t i0_overf:1;
++		uint64_t i3_rtout:1;
++		uint64_t i2_rtout:1;
++		uint64_t i1_rtout:1;
++		uint64_t i0_rtout:1;
++		uint64_t po3_2sml:1;
++		uint64_t po2_2sml:1;
++		uint64_t po1_2sml:1;
++		uint64_t po0_2sml:1;
++		uint64_t pci_rsl:1;
++		uint64_t rml_wto:1;
++		uint64_t rml_rto:1;
++	} s;
++	struct cvmx_npi_int_sum_cn30xx {
++		uint64_t reserved_62_63:2;
++		uint64_t q1_a_f:1;
++		uint64_t q1_s_e:1;
++		uint64_t pdf_p_f:1;
++		uint64_t pdf_p_e:1;
++		uint64_t pcf_p_f:1;
++		uint64_t pcf_p_e:1;
++		uint64_t rdx_s_e:1;
++		uint64_t rwx_s_e:1;
++		uint64_t pnc_a_f:1;
++		uint64_t pnc_s_e:1;
++		uint64_t com_a_f:1;
++		uint64_t com_s_e:1;
++		uint64_t q3_a_f:1;
++		uint64_t q3_s_e:1;
++		uint64_t q2_a_f:1;
++		uint64_t q2_s_e:1;
++		uint64_t pcr_a_f:1;
++		uint64_t pcr_s_e:1;
++		uint64_t fcr_a_f:1;
++		uint64_t fcr_s_e:1;
++		uint64_t iobdma:1;
++		uint64_t p_dperr:1;
++		uint64_t win_rto:1;
++		uint64_t reserved_36_38:3;
++		uint64_t i0_pperr:1;
++		uint64_t reserved_32_34:3;
++		uint64_t p0_ptout:1;
++		uint64_t reserved_28_30:3;
++		uint64_t p0_pperr:1;
++		uint64_t reserved_24_26:3;
++		uint64_t g0_rtout:1;
++		uint64_t reserved_20_22:3;
++		uint64_t p0_perr:1;
++		uint64_t reserved_16_18:3;
++		uint64_t p0_rtout:1;
++		uint64_t reserved_12_14:3;
++		uint64_t i0_overf:1;
++		uint64_t reserved_8_10:3;
++		uint64_t i0_rtout:1;
++		uint64_t reserved_4_6:3;
++		uint64_t po0_2sml:1;
++		uint64_t pci_rsl:1;
++		uint64_t rml_wto:1;
++		uint64_t rml_rto:1;
++	} cn30xx;
++	struct cvmx_npi_int_sum_cn31xx {
++		uint64_t reserved_62_63:2;
++		uint64_t q1_a_f:1;
++		uint64_t q1_s_e:1;
++		uint64_t pdf_p_f:1;
++		uint64_t pdf_p_e:1;
++		uint64_t pcf_p_f:1;
++		uint64_t pcf_p_e:1;
++		uint64_t rdx_s_e:1;
++		uint64_t rwx_s_e:1;
++		uint64_t pnc_a_f:1;
++		uint64_t pnc_s_e:1;
++		uint64_t com_a_f:1;
++		uint64_t com_s_e:1;
++		uint64_t q3_a_f:1;
++		uint64_t q3_s_e:1;
++		uint64_t q2_a_f:1;
++		uint64_t q2_s_e:1;
++		uint64_t pcr_a_f:1;
++		uint64_t pcr_s_e:1;
++		uint64_t fcr_a_f:1;
++		uint64_t fcr_s_e:1;
++		uint64_t iobdma:1;
++		uint64_t p_dperr:1;
++		uint64_t win_rto:1;
++		uint64_t reserved_37_38:2;
++		uint64_t i1_pperr:1;
++		uint64_t i0_pperr:1;
++		uint64_t reserved_33_34:2;
++		uint64_t p1_ptout:1;
++		uint64_t p0_ptout:1;
++		uint64_t reserved_29_30:2;
++		uint64_t p1_pperr:1;
++		uint64_t p0_pperr:1;
++		uint64_t reserved_25_26:2;
++		uint64_t g1_rtout:1;
++		uint64_t g0_rtout:1;
++		uint64_t reserved_21_22:2;
++		uint64_t p1_perr:1;
++		uint64_t p0_perr:1;
++		uint64_t reserved_17_18:2;
++		uint64_t p1_rtout:1;
++		uint64_t p0_rtout:1;
++		uint64_t reserved_13_14:2;
++		uint64_t i1_overf:1;
++		uint64_t i0_overf:1;
++		uint64_t reserved_9_10:2;
++		uint64_t i1_rtout:1;
++		uint64_t i0_rtout:1;
++		uint64_t reserved_5_6:2;
++		uint64_t po1_2sml:1;
++		uint64_t po0_2sml:1;
++		uint64_t pci_rsl:1;
++		uint64_t rml_wto:1;
++		uint64_t rml_rto:1;
++	} cn31xx;
++	struct cvmx_npi_int_sum_s cn38xx;
++	struct cvmx_npi_int_sum_cn38xxp2 {
++		uint64_t reserved_42_63:22;
++		uint64_t iobdma:1;
++		uint64_t p_dperr:1;
++		uint64_t win_rto:1;
++		uint64_t i3_pperr:1;
++		uint64_t i2_pperr:1;
++		uint64_t i1_pperr:1;
++		uint64_t i0_pperr:1;
++		uint64_t p3_ptout:1;
++		uint64_t p2_ptout:1;
++		uint64_t p1_ptout:1;
++		uint64_t p0_ptout:1;
++		uint64_t p3_pperr:1;
++		uint64_t p2_pperr:1;
++		uint64_t p1_pperr:1;
++		uint64_t p0_pperr:1;
++		uint64_t g3_rtout:1;
++		uint64_t g2_rtout:1;
++		uint64_t g1_rtout:1;
++		uint64_t g0_rtout:1;
++		uint64_t p3_perr:1;
++		uint64_t p2_perr:1;
++		uint64_t p1_perr:1;
++		uint64_t p0_perr:1;
++		uint64_t p3_rtout:1;
++		uint64_t p2_rtout:1;
++		uint64_t p1_rtout:1;
++		uint64_t p0_rtout:1;
++		uint64_t i3_overf:1;
++		uint64_t i2_overf:1;
++		uint64_t i1_overf:1;
++		uint64_t i0_overf:1;
++		uint64_t i3_rtout:1;
++		uint64_t i2_rtout:1;
++		uint64_t i1_rtout:1;
++		uint64_t i0_rtout:1;
++		uint64_t po3_2sml:1;
++		uint64_t po2_2sml:1;
++		uint64_t po1_2sml:1;
++		uint64_t po0_2sml:1;
++		uint64_t pci_rsl:1;
++		uint64_t rml_wto:1;
++		uint64_t rml_rto:1;
++	} cn38xxp2;
++	struct cvmx_npi_int_sum_cn31xx cn50xx;
++	struct cvmx_npi_int_sum_s cn58xx;
++	struct cvmx_npi_int_sum_s cn58xxp1;
++};
++
++union cvmx_npi_lowp_dbell {
++	uint64_t u64;
++	struct cvmx_npi_lowp_dbell_s {
++		uint64_t reserved_16_63:48;
++		uint64_t dbell:16;
++	} s;
++	struct cvmx_npi_lowp_dbell_s cn30xx;
++	struct cvmx_npi_lowp_dbell_s cn31xx;
++	struct cvmx_npi_lowp_dbell_s cn38xx;
++	struct cvmx_npi_lowp_dbell_s cn38xxp2;
++	struct cvmx_npi_lowp_dbell_s cn50xx;
++	struct cvmx_npi_lowp_dbell_s cn58xx;
++	struct cvmx_npi_lowp_dbell_s cn58xxp1;
++};
++
++union cvmx_npi_lowp_ibuff_saddr {
++	uint64_t u64;
++	struct cvmx_npi_lowp_ibuff_saddr_s {
++		uint64_t reserved_36_63:28;
++		uint64_t saddr:36;
++	} s;
++	struct cvmx_npi_lowp_ibuff_saddr_s cn30xx;
++	struct cvmx_npi_lowp_ibuff_saddr_s cn31xx;
++	struct cvmx_npi_lowp_ibuff_saddr_s cn38xx;
++	struct cvmx_npi_lowp_ibuff_saddr_s cn38xxp2;
++	struct cvmx_npi_lowp_ibuff_saddr_s cn50xx;
++	struct cvmx_npi_lowp_ibuff_saddr_s cn58xx;
++	struct cvmx_npi_lowp_ibuff_saddr_s cn58xxp1;
++};
++
++union cvmx_npi_mem_access_subidx {
++	uint64_t u64;
++	struct cvmx_npi_mem_access_subidx_s {
++		uint64_t reserved_38_63:26;
++		uint64_t shortl:1;
++		uint64_t nmerge:1;
++		uint64_t esr:2;
++		uint64_t esw:2;
++		uint64_t nsr:1;
++		uint64_t nsw:1;
++		uint64_t ror:1;
++		uint64_t row:1;
++		uint64_t ba:28;
++	} s;
++	struct cvmx_npi_mem_access_subidx_s cn30xx;
++	struct cvmx_npi_mem_access_subidx_cn31xx {
++		uint64_t reserved_36_63:28;
++		uint64_t esr:2;
++		uint64_t esw:2;
++		uint64_t nsr:1;
++		uint64_t nsw:1;
++		uint64_t ror:1;
++		uint64_t row:1;
++		uint64_t ba:28;
++	} cn31xx;
++	struct cvmx_npi_mem_access_subidx_s cn38xx;
++	struct cvmx_npi_mem_access_subidx_cn31xx cn38xxp2;
++	struct cvmx_npi_mem_access_subidx_s cn50xx;
++	struct cvmx_npi_mem_access_subidx_s cn58xx;
++	struct cvmx_npi_mem_access_subidx_s cn58xxp1;
++};
++
++union cvmx_npi_msi_rcv {
++	uint64_t u64;
++	struct cvmx_npi_msi_rcv_s {
++		uint64_t int_vec:64;
++	} s;
++	struct cvmx_npi_msi_rcv_s cn30xx;
++	struct cvmx_npi_msi_rcv_s cn31xx;
++	struct cvmx_npi_msi_rcv_s cn38xx;
++	struct cvmx_npi_msi_rcv_s cn38xxp2;
++	struct cvmx_npi_msi_rcv_s cn50xx;
++	struct cvmx_npi_msi_rcv_s cn58xx;
++	struct cvmx_npi_msi_rcv_s cn58xxp1;
++};
++
++union cvmx_npi_num_desc_outputx {
++	uint64_t u64;
++	struct cvmx_npi_num_desc_outputx_s {
++		uint64_t reserved_32_63:32;
++		uint64_t size:32;
++	} s;
++	struct cvmx_npi_num_desc_outputx_s cn30xx;
++	struct cvmx_npi_num_desc_outputx_s cn31xx;
++	struct cvmx_npi_num_desc_outputx_s cn38xx;
++	struct cvmx_npi_num_desc_outputx_s cn38xxp2;
++	struct cvmx_npi_num_desc_outputx_s cn50xx;
++	struct cvmx_npi_num_desc_outputx_s cn58xx;
++	struct cvmx_npi_num_desc_outputx_s cn58xxp1;
++};
++
++union cvmx_npi_output_control {
++	uint64_t u64;
++	struct cvmx_npi_output_control_s {
++		uint64_t reserved_49_63:15;
++		uint64_t pkt_rr:1;
++		uint64_t p3_bmode:1;
++		uint64_t p2_bmode:1;
++		uint64_t p1_bmode:1;
++		uint64_t p0_bmode:1;
++		uint64_t o3_es:2;
++		uint64_t o3_ns:1;
++		uint64_t o3_ro:1;
++		uint64_t o2_es:2;
++		uint64_t o2_ns:1;
++		uint64_t o2_ro:1;
++		uint64_t o1_es:2;
++		uint64_t o1_ns:1;
++		uint64_t o1_ro:1;
++		uint64_t o0_es:2;
++		uint64_t o0_ns:1;
++		uint64_t o0_ro:1;
++		uint64_t o3_csrm:1;
++		uint64_t o2_csrm:1;
++		uint64_t o1_csrm:1;
++		uint64_t o0_csrm:1;
++		uint64_t reserved_20_23:4;
++		uint64_t iptr_o3:1;
++		uint64_t iptr_o2:1;
++		uint64_t iptr_o1:1;
++		uint64_t iptr_o0:1;
++		uint64_t esr_sl3:2;
++		uint64_t nsr_sl3:1;
++		uint64_t ror_sl3:1;
++		uint64_t esr_sl2:2;
++		uint64_t nsr_sl2:1;
++		uint64_t ror_sl2:1;
++		uint64_t esr_sl1:2;
++		uint64_t nsr_sl1:1;
++		uint64_t ror_sl1:1;
++		uint64_t esr_sl0:2;
++		uint64_t nsr_sl0:1;
++		uint64_t ror_sl0:1;
++	} s;
++	struct cvmx_npi_output_control_cn30xx {
++		uint64_t reserved_45_63:19;
++		uint64_t p0_bmode:1;
++		uint64_t reserved_32_43:12;
++		uint64_t o0_es:2;
++		uint64_t o0_ns:1;
++		uint64_t o0_ro:1;
++		uint64_t reserved_25_27:3;
++		uint64_t o0_csrm:1;
++		uint64_t reserved_17_23:7;
++		uint64_t iptr_o0:1;
++		uint64_t reserved_4_15:12;
++		uint64_t esr_sl0:2;
++		uint64_t nsr_sl0:1;
++		uint64_t ror_sl0:1;
++	} cn30xx;
++	struct cvmx_npi_output_control_cn31xx {
++		uint64_t reserved_46_63:18;
++		uint64_t p1_bmode:1;
++		uint64_t p0_bmode:1;
++		uint64_t reserved_36_43:8;
++		uint64_t o1_es:2;
++		uint64_t o1_ns:1;
++		uint64_t o1_ro:1;
++		uint64_t o0_es:2;
++		uint64_t o0_ns:1;
++		uint64_t o0_ro:1;
++		uint64_t reserved_26_27:2;
++		uint64_t o1_csrm:1;
++		uint64_t o0_csrm:1;
++		uint64_t reserved_18_23:6;
++		uint64_t iptr_o1:1;
++		uint64_t iptr_o0:1;
++		uint64_t reserved_8_15:8;
++		uint64_t esr_sl1:2;
++		uint64_t nsr_sl1:1;
++		uint64_t ror_sl1:1;
++		uint64_t esr_sl0:2;
++		uint64_t nsr_sl0:1;
++		uint64_t ror_sl0:1;
++	} cn31xx;
++	struct cvmx_npi_output_control_s cn38xx;
++	struct cvmx_npi_output_control_cn38xxp2 {
++		uint64_t reserved_48_63:16;
++		uint64_t p3_bmode:1;
++		uint64_t p2_bmode:1;
++		uint64_t p1_bmode:1;
++		uint64_t p0_bmode:1;
++		uint64_t o3_es:2;
++		uint64_t o3_ns:1;
++		uint64_t o3_ro:1;
++		uint64_t o2_es:2;
++		uint64_t o2_ns:1;
++		uint64_t o2_ro:1;
++		uint64_t o1_es:2;
++		uint64_t o1_ns:1;
++		uint64_t o1_ro:1;
++		uint64_t o0_es:2;
++		uint64_t o0_ns:1;
++		uint64_t o0_ro:1;
++		uint64_t o3_csrm:1;
++		uint64_t o2_csrm:1;
++		uint64_t o1_csrm:1;
++		uint64_t o0_csrm:1;
++		uint64_t reserved_20_23:4;
++		uint64_t iptr_o3:1;
++		uint64_t iptr_o2:1;
++		uint64_t iptr_o1:1;
++		uint64_t iptr_o0:1;
++		uint64_t esr_sl3:2;
++		uint64_t nsr_sl3:1;
++		uint64_t ror_sl3:1;
++		uint64_t esr_sl2:2;
++		uint64_t nsr_sl2:1;
++		uint64_t ror_sl2:1;
++		uint64_t esr_sl1:2;
++		uint64_t nsr_sl1:1;
++		uint64_t ror_sl1:1;
++		uint64_t esr_sl0:2;
++		uint64_t nsr_sl0:1;
++		uint64_t ror_sl0:1;
++	} cn38xxp2;
++	struct cvmx_npi_output_control_cn50xx {
++		uint64_t reserved_49_63:15;
++		uint64_t pkt_rr:1;
++		uint64_t reserved_46_47:2;
++		uint64_t p1_bmode:1;
++		uint64_t p0_bmode:1;
++		uint64_t reserved_36_43:8;
++		uint64_t o1_es:2;
++		uint64_t o1_ns:1;
++		uint64_t o1_ro:1;
++		uint64_t o0_es:2;
++		uint64_t o0_ns:1;
++		uint64_t o0_ro:1;
++		uint64_t reserved_26_27:2;
++		uint64_t o1_csrm:1;
++		uint64_t o0_csrm:1;
++		uint64_t reserved_18_23:6;
++		uint64_t iptr_o1:1;
++		uint64_t iptr_o0:1;
++		uint64_t reserved_8_15:8;
++		uint64_t esr_sl1:2;
++		uint64_t nsr_sl1:1;
++		uint64_t ror_sl1:1;
++		uint64_t esr_sl0:2;
++		uint64_t nsr_sl0:1;
++		uint64_t ror_sl0:1;
++	} cn50xx;
++	struct cvmx_npi_output_control_s cn58xx;
++	struct cvmx_npi_output_control_s cn58xxp1;
++};
++
++union cvmx_npi_px_dbpair_addr {
++	uint64_t u64;
++	struct cvmx_npi_px_dbpair_addr_s {
++		uint64_t reserved_63_63:1;
++		uint64_t state:2;
++		uint64_t naddr:61;
++	} s;
++	struct cvmx_npi_px_dbpair_addr_s cn30xx;
++	struct cvmx_npi_px_dbpair_addr_s cn31xx;
++	struct cvmx_npi_px_dbpair_addr_s cn38xx;
++	struct cvmx_npi_px_dbpair_addr_s cn38xxp2;
++	struct cvmx_npi_px_dbpair_addr_s cn50xx;
++	struct cvmx_npi_px_dbpair_addr_s cn58xx;
++	struct cvmx_npi_px_dbpair_addr_s cn58xxp1;
++};
++
++union cvmx_npi_px_instr_addr {
++	uint64_t u64;
++	struct cvmx_npi_px_instr_addr_s {
++		uint64_t state:3;
++		uint64_t naddr:61;
++	} s;
++	struct cvmx_npi_px_instr_addr_s cn30xx;
++	struct cvmx_npi_px_instr_addr_s cn31xx;
++	struct cvmx_npi_px_instr_addr_s cn38xx;
++	struct cvmx_npi_px_instr_addr_s cn38xxp2;
++	struct cvmx_npi_px_instr_addr_s cn50xx;
++	struct cvmx_npi_px_instr_addr_s cn58xx;
++	struct cvmx_npi_px_instr_addr_s cn58xxp1;
++};
++
++union cvmx_npi_px_instr_cnts {
++	uint64_t u64;
++	struct cvmx_npi_px_instr_cnts_s {
++		uint64_t reserved_38_63:26;
++		uint64_t fcnt:6;
++		uint64_t avail:32;
++	} s;
++	struct cvmx_npi_px_instr_cnts_s cn30xx;
++	struct cvmx_npi_px_instr_cnts_s cn31xx;
++	struct cvmx_npi_px_instr_cnts_s cn38xx;
++	struct cvmx_npi_px_instr_cnts_s cn38xxp2;
++	struct cvmx_npi_px_instr_cnts_s cn50xx;
++	struct cvmx_npi_px_instr_cnts_s cn58xx;
++	struct cvmx_npi_px_instr_cnts_s cn58xxp1;
++};
++
++union cvmx_npi_px_pair_cnts {
++	uint64_t u64;
++	struct cvmx_npi_px_pair_cnts_s {
++		uint64_t reserved_37_63:27;
++		uint64_t fcnt:5;
++		uint64_t avail:32;
++	} s;
++	struct cvmx_npi_px_pair_cnts_s cn30xx;
++	struct cvmx_npi_px_pair_cnts_s cn31xx;
++	struct cvmx_npi_px_pair_cnts_s cn38xx;
++	struct cvmx_npi_px_pair_cnts_s cn38xxp2;
++	struct cvmx_npi_px_pair_cnts_s cn50xx;
++	struct cvmx_npi_px_pair_cnts_s cn58xx;
++	struct cvmx_npi_px_pair_cnts_s cn58xxp1;
++};
++
++union cvmx_npi_pci_burst_size {
++	uint64_t u64;
++	struct cvmx_npi_pci_burst_size_s {
++		uint64_t reserved_14_63:50;
++		uint64_t wr_brst:7;
++		uint64_t rd_brst:7;
++	} s;
++	struct cvmx_npi_pci_burst_size_s cn30xx;
++	struct cvmx_npi_pci_burst_size_s cn31xx;
++	struct cvmx_npi_pci_burst_size_s cn38xx;
++	struct cvmx_npi_pci_burst_size_s cn38xxp2;
++	struct cvmx_npi_pci_burst_size_s cn50xx;
++	struct cvmx_npi_pci_burst_size_s cn58xx;
++	struct cvmx_npi_pci_burst_size_s cn58xxp1;
++};
++
++union cvmx_npi_pci_int_arb_cfg {
++	uint64_t u64;
++	struct cvmx_npi_pci_int_arb_cfg_s {
++		uint64_t reserved_13_63:51;
++		uint64_t hostmode:1;
++		uint64_t pci_ovr:4;
++		uint64_t reserved_5_7:3;
++		uint64_t en:1;
++		uint64_t park_mod:1;
++		uint64_t park_dev:3;
++	} s;
++	struct cvmx_npi_pci_int_arb_cfg_cn30xx {
++		uint64_t reserved_5_63:59;
++		uint64_t en:1;
++		uint64_t park_mod:1;
++		uint64_t park_dev:3;
++	} cn30xx;
++	struct cvmx_npi_pci_int_arb_cfg_cn30xx cn31xx;
++	struct cvmx_npi_pci_int_arb_cfg_cn30xx cn38xx;
++	struct cvmx_npi_pci_int_arb_cfg_cn30xx cn38xxp2;
++	struct cvmx_npi_pci_int_arb_cfg_s cn50xx;
++	struct cvmx_npi_pci_int_arb_cfg_s cn58xx;
++	struct cvmx_npi_pci_int_arb_cfg_s cn58xxp1;
++};
++
++union cvmx_npi_pci_read_cmd {
++	uint64_t u64;
++	struct cvmx_npi_pci_read_cmd_s {
++		uint64_t reserved_11_63:53;
++		uint64_t cmd_size:11;
++	} s;
++	struct cvmx_npi_pci_read_cmd_s cn30xx;
++	struct cvmx_npi_pci_read_cmd_s cn31xx;
++	struct cvmx_npi_pci_read_cmd_s cn38xx;
++	struct cvmx_npi_pci_read_cmd_s cn38xxp2;
++	struct cvmx_npi_pci_read_cmd_s cn50xx;
++	struct cvmx_npi_pci_read_cmd_s cn58xx;
++	struct cvmx_npi_pci_read_cmd_s cn58xxp1;
++};
++
++union cvmx_npi_port32_instr_hdr {
++	uint64_t u64;
++	struct cvmx_npi_port32_instr_hdr_s {
++		uint64_t reserved_44_63:20;
++		uint64_t pbp:1;
++		uint64_t rsv_f:5;
++		uint64_t rparmode:2;
++		uint64_t rsv_e:1;
++		uint64_t rskp_len:7;
++		uint64_t rsv_d:6;
++		uint64_t use_ihdr:1;
++		uint64_t rsv_c:5;
++		uint64_t par_mode:2;
++		uint64_t rsv_b:1;
++		uint64_t skp_len:7;
++		uint64_t rsv_a:6;
++	} s;
++	struct cvmx_npi_port32_instr_hdr_s cn30xx;
++	struct cvmx_npi_port32_instr_hdr_s cn31xx;
++	struct cvmx_npi_port32_instr_hdr_s cn38xx;
++	struct cvmx_npi_port32_instr_hdr_s cn38xxp2;
++	struct cvmx_npi_port32_instr_hdr_s cn50xx;
++	struct cvmx_npi_port32_instr_hdr_s cn58xx;
++	struct cvmx_npi_port32_instr_hdr_s cn58xxp1;
++};
++
++union cvmx_npi_port33_instr_hdr {
++	uint64_t u64;
++	struct cvmx_npi_port33_instr_hdr_s {
++		uint64_t reserved_44_63:20;
++		uint64_t pbp:1;
++		uint64_t rsv_f:5;
++		uint64_t rparmode:2;
++		uint64_t rsv_e:1;
++		uint64_t rskp_len:7;
++		uint64_t rsv_d:6;
++		uint64_t use_ihdr:1;
++		uint64_t rsv_c:5;
++		uint64_t par_mode:2;
++		uint64_t rsv_b:1;
++		uint64_t skp_len:7;
++		uint64_t rsv_a:6;
++	} s;
++	struct cvmx_npi_port33_instr_hdr_s cn31xx;
++	struct cvmx_npi_port33_instr_hdr_s cn38xx;
++	struct cvmx_npi_port33_instr_hdr_s cn38xxp2;
++	struct cvmx_npi_port33_instr_hdr_s cn50xx;
++	struct cvmx_npi_port33_instr_hdr_s cn58xx;
++	struct cvmx_npi_port33_instr_hdr_s cn58xxp1;
++};
++
++union cvmx_npi_port34_instr_hdr {
++	uint64_t u64;
++	struct cvmx_npi_port34_instr_hdr_s {
++		uint64_t reserved_44_63:20;
++		uint64_t pbp:1;
++		uint64_t rsv_f:5;
++		uint64_t rparmode:2;
++		uint64_t rsv_e:1;
++		uint64_t rskp_len:7;
++		uint64_t rsv_d:6;
++		uint64_t use_ihdr:1;
++		uint64_t rsv_c:5;
++		uint64_t par_mode:2;
++		uint64_t rsv_b:1;
++		uint64_t skp_len:7;
++		uint64_t rsv_a:6;
++	} s;
++	struct cvmx_npi_port34_instr_hdr_s cn38xx;
++	struct cvmx_npi_port34_instr_hdr_s cn38xxp2;
++	struct cvmx_npi_port34_instr_hdr_s cn58xx;
++	struct cvmx_npi_port34_instr_hdr_s cn58xxp1;
++};
++
++union cvmx_npi_port35_instr_hdr {
++	uint64_t u64;
++	struct cvmx_npi_port35_instr_hdr_s {
++		uint64_t reserved_44_63:20;
++		uint64_t pbp:1;
++		uint64_t rsv_f:5;
++		uint64_t rparmode:2;
++		uint64_t rsv_e:1;
++		uint64_t rskp_len:7;
++		uint64_t rsv_d:6;
++		uint64_t use_ihdr:1;
++		uint64_t rsv_c:5;
++		uint64_t par_mode:2;
++		uint64_t rsv_b:1;
++		uint64_t skp_len:7;
++		uint64_t rsv_a:6;
++	} s;
++	struct cvmx_npi_port35_instr_hdr_s cn38xx;
++	struct cvmx_npi_port35_instr_hdr_s cn38xxp2;
++	struct cvmx_npi_port35_instr_hdr_s cn58xx;
++	struct cvmx_npi_port35_instr_hdr_s cn58xxp1;
++};
++
++union cvmx_npi_port_bp_control {
++	uint64_t u64;
++	struct cvmx_npi_port_bp_control_s {
++		uint64_t reserved_8_63:56;
++		uint64_t bp_on:4;
++		uint64_t enb:4;
++	} s;
++	struct cvmx_npi_port_bp_control_s cn30xx;
++	struct cvmx_npi_port_bp_control_s cn31xx;
++	struct cvmx_npi_port_bp_control_s cn38xx;
++	struct cvmx_npi_port_bp_control_s cn38xxp2;
++	struct cvmx_npi_port_bp_control_s cn50xx;
++	struct cvmx_npi_port_bp_control_s cn58xx;
++	struct cvmx_npi_port_bp_control_s cn58xxp1;
++};
++
++union cvmx_npi_rsl_int_blocks {
++	uint64_t u64;
++	struct cvmx_npi_rsl_int_blocks_s {
++		uint64_t reserved_32_63:32;
++		uint64_t rint_31:1;
++		uint64_t iob:1;
++		uint64_t reserved_28_29:2;
++		uint64_t rint_27:1;
++		uint64_t rint_26:1;
++		uint64_t rint_25:1;
++		uint64_t rint_24:1;
++		uint64_t asx1:1;
++		uint64_t asx0:1;
++		uint64_t rint_21:1;
++		uint64_t pip:1;
++		uint64_t spx1:1;
++		uint64_t spx0:1;
++		uint64_t lmc:1;
++		uint64_t l2c:1;
++		uint64_t rint_15:1;
++		uint64_t reserved_13_14:2;
++		uint64_t pow:1;
++		uint64_t tim:1;
++		uint64_t pko:1;
++		uint64_t ipd:1;
++		uint64_t rint_8:1;
++		uint64_t zip:1;
++		uint64_t dfa:1;
++		uint64_t fpa:1;
++		uint64_t key:1;
++		uint64_t npi:1;
++		uint64_t gmx1:1;
++		uint64_t gmx0:1;
++		uint64_t mio:1;
++	} s;
++	struct cvmx_npi_rsl_int_blocks_cn30xx {
++		uint64_t reserved_32_63:32;
++		uint64_t rint_31:1;
++		uint64_t iob:1;
++		uint64_t rint_29:1;
++		uint64_t rint_28:1;
++		uint64_t rint_27:1;
++		uint64_t rint_26:1;
++		uint64_t rint_25:1;
++		uint64_t rint_24:1;
++		uint64_t asx1:1;
++		uint64_t asx0:1;
++		uint64_t rint_21:1;
++		uint64_t pip:1;
++		uint64_t spx1:1;
++		uint64_t spx0:1;
++		uint64_t lmc:1;
++		uint64_t l2c:1;
++		uint64_t rint_15:1;
++		uint64_t rint_14:1;
++		uint64_t usb:1;
++		uint64_t pow:1;
++		uint64_t tim:1;
++		uint64_t pko:1;
++		uint64_t ipd:1;
++		uint64_t rint_8:1;
++		uint64_t zip:1;
++		uint64_t dfa:1;
++		uint64_t fpa:1;
++		uint64_t key:1;
++		uint64_t npi:1;
++		uint64_t gmx1:1;
++		uint64_t gmx0:1;
++		uint64_t mio:1;
++	} cn30xx;
++	struct cvmx_npi_rsl_int_blocks_cn30xx cn31xx;
++	struct cvmx_npi_rsl_int_blocks_cn38xx {
++		uint64_t reserved_32_63:32;
++		uint64_t rint_31:1;
++		uint64_t iob:1;
++		uint64_t rint_29:1;
++		uint64_t rint_28:1;
++		uint64_t rint_27:1;
++		uint64_t rint_26:1;
++		uint64_t rint_25:1;
++		uint64_t rint_24:1;
++		uint64_t asx1:1;
++		uint64_t asx0:1;
++		uint64_t rint_21:1;
++		uint64_t pip:1;
++		uint64_t spx1:1;
++		uint64_t spx0:1;
++		uint64_t lmc:1;
++		uint64_t l2c:1;
++		uint64_t rint_15:1;
++		uint64_t rint_14:1;
++		uint64_t rint_13:1;
++		uint64_t pow:1;
++		uint64_t tim:1;
++		uint64_t pko:1;
++		uint64_t ipd:1;
++		uint64_t rint_8:1;
++		uint64_t zip:1;
++		uint64_t dfa:1;
++		uint64_t fpa:1;
++		uint64_t key:1;
++		uint64_t npi:1;
++		uint64_t gmx1:1;
++		uint64_t gmx0:1;
++		uint64_t mio:1;
++	} cn38xx;
++	struct cvmx_npi_rsl_int_blocks_cn38xx cn38xxp2;
++	struct cvmx_npi_rsl_int_blocks_cn50xx {
++		uint64_t reserved_31_63:33;
++		uint64_t iob:1;
++		uint64_t lmc1:1;
++		uint64_t agl:1;
++		uint64_t reserved_24_27:4;
++		uint64_t asx1:1;
++		uint64_t asx0:1;
++		uint64_t reserved_21_21:1;
++		uint64_t pip:1;
++		uint64_t spx1:1;
++		uint64_t spx0:1;
++		uint64_t lmc:1;
++		uint64_t l2c:1;
++		uint64_t reserved_15_15:1;
++		uint64_t rad:1;
++		uint64_t usb:1;
++		uint64_t pow:1;
++		uint64_t tim:1;
++		uint64_t pko:1;
++		uint64_t ipd:1;
++		uint64_t reserved_8_8:1;
++		uint64_t zip:1;
++		uint64_t dfa:1;
++		uint64_t fpa:1;
++		uint64_t key:1;
++		uint64_t npi:1;
++		uint64_t gmx1:1;
++		uint64_t gmx0:1;
++		uint64_t mio:1;
++	} cn50xx;
++	struct cvmx_npi_rsl_int_blocks_cn38xx cn58xx;
++	struct cvmx_npi_rsl_int_blocks_cn38xx cn58xxp1;
++};
++
++union cvmx_npi_size_inputx {
++	uint64_t u64;
++	struct cvmx_npi_size_inputx_s {
++		uint64_t reserved_32_63:32;
++		uint64_t size:32;
++	} s;
++	struct cvmx_npi_size_inputx_s cn30xx;
++	struct cvmx_npi_size_inputx_s cn31xx;
++	struct cvmx_npi_size_inputx_s cn38xx;
++	struct cvmx_npi_size_inputx_s cn38xxp2;
++	struct cvmx_npi_size_inputx_s cn50xx;
++	struct cvmx_npi_size_inputx_s cn58xx;
++	struct cvmx_npi_size_inputx_s cn58xxp1;
++};
++
++union cvmx_npi_win_read_to {
++	uint64_t u64;
++	struct cvmx_npi_win_read_to_s {
++		uint64_t reserved_32_63:32;
++		uint64_t time:32;
++	} s;
++	struct cvmx_npi_win_read_to_s cn30xx;
++	struct cvmx_npi_win_read_to_s cn31xx;
++	struct cvmx_npi_win_read_to_s cn38xx;
++	struct cvmx_npi_win_read_to_s cn38xxp2;
++	struct cvmx_npi_win_read_to_s cn50xx;
++	struct cvmx_npi_win_read_to_s cn58xx;
++	struct cvmx_npi_win_read_to_s cn58xxp1;
++};
 +
 +#endif
-diff --git a/arch/mips/include/asm/octeon/cvmx-helper-jtag.h b/arch/mips/include/asm/octeon/cvmx-helper-jtag.h
+diff --git a/arch/mips/include/asm/octeon/cvmx-pci-defs.h b/arch/mips/include/asm/octeon/cvmx-pci-defs.h
 new file mode 100644
-index 0000000..29f016d
+index 0000000..90f8d65
 --- /dev/null
-+++ b/arch/mips/include/asm/octeon/cvmx-helper-jtag.h
-@@ -0,0 +1,43 @@
++++ b/arch/mips/include/asm/octeon/cvmx-pci-defs.h
+@@ -0,0 +1,1645 @@
++/***********************license start***************
++ * Author: Cavium Networks
++ *
++ * Contact: support@caviumnetworks.com
++ * This file is part of the OCTEON SDK
++ *
++ * Copyright (c) 2003-2008 Cavium Networks
++ *
++ * This file is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License, Version 2, as
++ * published by the Free Software Foundation.
++ *
++ * This file is distributed in the hope that it will be useful, but
++ * AS-IS and WITHOUT ANY WARRANTY; without even the implied warranty
++ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE, TITLE, or
++ * NONINFRINGEMENT.  See the GNU General Public License for more
++ * details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this file; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
++ * or visit http://www.gnu.org/licenses/.
++ *
++ * This file may also be available under a different license from Cavium.
++ * Contact Cavium Networks for more information
++ ***********************license end**************************************/
++
++#ifndef __CVMX_PCI_DEFS_H__
++#define __CVMX_PCI_DEFS_H__
++
++#define CVMX_PCI_BAR1_INDEXX(offset) \
++	 (0x0000000000000100ull + (((offset) & 31) * 4))
++#define CVMX_PCI_BIST_REG \
++	 (0x00000000000001C0ull)
++#define CVMX_PCI_CFG00 \
++	 (0x0000000000000000ull)
++#define CVMX_PCI_CFG01 \
++	 (0x0000000000000004ull)
++#define CVMX_PCI_CFG02 \
++	 (0x0000000000000008ull)
++#define CVMX_PCI_CFG03 \
++	 (0x000000000000000Cull)
++#define CVMX_PCI_CFG04 \
++	 (0x0000000000000010ull)
++#define CVMX_PCI_CFG05 \
++	 (0x0000000000000014ull)
++#define CVMX_PCI_CFG06 \
++	 (0x0000000000000018ull)
++#define CVMX_PCI_CFG07 \
++	 (0x000000000000001Cull)
++#define CVMX_PCI_CFG08 \
++	 (0x0000000000000020ull)
++#define CVMX_PCI_CFG09 \
++	 (0x0000000000000024ull)
++#define CVMX_PCI_CFG10 \
++	 (0x0000000000000028ull)
++#define CVMX_PCI_CFG11 \
++	 (0x000000000000002Cull)
++#define CVMX_PCI_CFG12 \
++	 (0x0000000000000030ull)
++#define CVMX_PCI_CFG13 \
++	 (0x0000000000000034ull)
++#define CVMX_PCI_CFG15 \
++	 (0x000000000000003Cull)
++#define CVMX_PCI_CFG16 \
++	 (0x0000000000000040ull)
++#define CVMX_PCI_CFG17 \
++	 (0x0000000000000044ull)
++#define CVMX_PCI_CFG18 \
++	 (0x0000000000000048ull)
++#define CVMX_PCI_CFG19 \
++	 (0x000000000000004Cull)
++#define CVMX_PCI_CFG20 \
++	 (0x0000000000000050ull)
++#define CVMX_PCI_CFG21 \
++	 (0x0000000000000054ull)
++#define CVMX_PCI_CFG22 \
++	 (0x0000000000000058ull)
++#define CVMX_PCI_CFG56 \
++	 (0x00000000000000E0ull)
++#define CVMX_PCI_CFG57 \
++	 (0x00000000000000E4ull)
++#define CVMX_PCI_CFG58 \
++	 (0x00000000000000E8ull)
++#define CVMX_PCI_CFG59 \
++	 (0x00000000000000ECull)
++#define CVMX_PCI_CFG60 \
++	 (0x00000000000000F0ull)
++#define CVMX_PCI_CFG61 \
++	 (0x00000000000000F4ull)
++#define CVMX_PCI_CFG62 \
++	 (0x00000000000000F8ull)
++#define CVMX_PCI_CFG63 \
++	 (0x00000000000000FCull)
++#define CVMX_PCI_CNT_REG \
++	 (0x00000000000001B8ull)
++#define CVMX_PCI_CTL_STATUS_2 \
++	 (0x000000000000018Cull)
++#define CVMX_PCI_DBELL_0 \
++	 (0x0000000000000080ull)
++#define CVMX_PCI_DBELL_1 \
++	 (0x0000000000000088ull)
++#define CVMX_PCI_DBELL_2 \
++	 (0x0000000000000090ull)
++#define CVMX_PCI_DBELL_3 \
++	 (0x0000000000000098ull)
++#define CVMX_PCI_DBELL_X(offset) \
++	 (0x0000000000000080ull + (((offset) & 3) * 8))
++#define CVMX_PCI_DMA_CNT0 \
++	 (0x00000000000000A0ull)
++#define CVMX_PCI_DMA_CNT1 \
++	 (0x00000000000000A8ull)
++#define CVMX_PCI_DMA_CNTX(offset) \
++	 (0x00000000000000A0ull + (((offset) & 1) * 8))
++#define CVMX_PCI_DMA_INT_LEV0 \
++	 (0x00000000000000A4ull)
++#define CVMX_PCI_DMA_INT_LEV1 \
++	 (0x00000000000000ACull)
++#define CVMX_PCI_DMA_INT_LEVX(offset) \
++	 (0x00000000000000A4ull + (((offset) & 1) * 8))
++#define CVMX_PCI_DMA_TIME0 \
++	 (0x00000000000000B0ull)
++#define CVMX_PCI_DMA_TIME1 \
++	 (0x00000000000000B4ull)
++#define CVMX_PCI_DMA_TIMEX(offset) \
++	 (0x00000000000000B0ull + (((offset) & 1) * 4))
++#define CVMX_PCI_INSTR_COUNT0 \
++	 (0x0000000000000084ull)
++#define CVMX_PCI_INSTR_COUNT1 \
++	 (0x000000000000008Cull)
++#define CVMX_PCI_INSTR_COUNT2 \
++	 (0x0000000000000094ull)
++#define CVMX_PCI_INSTR_COUNT3 \
++	 (0x000000000000009Cull)
++#define CVMX_PCI_INSTR_COUNTX(offset) \
++	 (0x0000000000000084ull + (((offset) & 3) * 8))
++#define CVMX_PCI_INT_ENB \
++	 (0x0000000000000038ull)
++#define CVMX_PCI_INT_ENB2 \
++	 (0x00000000000001A0ull)
++#define CVMX_PCI_INT_SUM \
++	 (0x0000000000000030ull)
++#define CVMX_PCI_INT_SUM2 \
++	 (0x0000000000000198ull)
++#define CVMX_PCI_MSI_RCV \
++	 (0x00000000000000F0ull)
++#define CVMX_PCI_PKTS_SENT0 \
++	 (0x0000000000000040ull)
++#define CVMX_PCI_PKTS_SENT1 \
++	 (0x0000000000000050ull)
++#define CVMX_PCI_PKTS_SENT2 \
++	 (0x0000000000000060ull)
++#define CVMX_PCI_PKTS_SENT3 \
++	 (0x0000000000000070ull)
++#define CVMX_PCI_PKTS_SENTX(offset) \
++	 (0x0000000000000040ull + (((offset) & 3) * 16))
++#define CVMX_PCI_PKTS_SENT_INT_LEV0 \
++	 (0x0000000000000048ull)
++#define CVMX_PCI_PKTS_SENT_INT_LEV1 \
++	 (0x0000000000000058ull)
++#define CVMX_PCI_PKTS_SENT_INT_LEV2 \
++	 (0x0000000000000068ull)
++#define CVMX_PCI_PKTS_SENT_INT_LEV3 \
++	 (0x0000000000000078ull)
++#define CVMX_PCI_PKTS_SENT_INT_LEVX(offset) \
++	 (0x0000000000000048ull + (((offset) & 3) * 16))
++#define CVMX_PCI_PKTS_SENT_TIME0 \
++	 (0x000000000000004Cull)
++#define CVMX_PCI_PKTS_SENT_TIME1 \
++	 (0x000000000000005Cull)
++#define CVMX_PCI_PKTS_SENT_TIME2 \
++	 (0x000000000000006Cull)
++#define CVMX_PCI_PKTS_SENT_TIME3 \
++	 (0x000000000000007Cull)
++#define CVMX_PCI_PKTS_SENT_TIMEX(offset) \
++	 (0x000000000000004Cull + (((offset) & 3) * 16))
++#define CVMX_PCI_PKT_CREDITS0 \
++	 (0x0000000000000044ull)
++#define CVMX_PCI_PKT_CREDITS1 \
++	 (0x0000000000000054ull)
++#define CVMX_PCI_PKT_CREDITS2 \
++	 (0x0000000000000064ull)
++#define CVMX_PCI_PKT_CREDITS3 \
++	 (0x0000000000000074ull)
++#define CVMX_PCI_PKT_CREDITSX(offset) \
++	 (0x0000000000000044ull + (((offset) & 3) * 16))
++#define CVMX_PCI_READ_CMD_6 \
++	 (0x0000000000000180ull)
++#define CVMX_PCI_READ_CMD_C \
++	 (0x0000000000000184ull)
++#define CVMX_PCI_READ_CMD_E \
++	 (0x0000000000000188ull)
++#define CVMX_PCI_READ_TIMEOUT \
++	 CVMX_ADD_IO_SEG(0x00011F00000000B0ull)
++#define CVMX_PCI_SCM_REG \
++	 (0x00000000000001A8ull)
++#define CVMX_PCI_TSR_REG \
++	 (0x00000000000001B0ull)
++#define CVMX_PCI_WIN_RD_ADDR \
++	 (0x0000000000000008ull)
++#define CVMX_PCI_WIN_RD_DATA \
++	 (0x0000000000000020ull)
++#define CVMX_PCI_WIN_WR_ADDR \
++	 (0x0000000000000000ull)
++#define CVMX_PCI_WIN_WR_DATA \
++	 (0x0000000000000010ull)
++#define CVMX_PCI_WIN_WR_MASK \
++	 (0x0000000000000018ull)
++
++union cvmx_pci_bar1_indexx {
++	uint32_t u32;
++	struct cvmx_pci_bar1_indexx_s {
++		uint32_t reserved_18_31:14;
++		uint32_t addr_idx:14;
++		uint32_t ca:1;
++		uint32_t end_swp:2;
++		uint32_t addr_v:1;
++	} s;
++	struct cvmx_pci_bar1_indexx_s cn30xx;
++	struct cvmx_pci_bar1_indexx_s cn31xx;
++	struct cvmx_pci_bar1_indexx_s cn38xx;
++	struct cvmx_pci_bar1_indexx_s cn38xxp2;
++	struct cvmx_pci_bar1_indexx_s cn50xx;
++	struct cvmx_pci_bar1_indexx_s cn58xx;
++	struct cvmx_pci_bar1_indexx_s cn58xxp1;
++};
++
++union cvmx_pci_bist_reg {
++	uint64_t u64;
++	struct cvmx_pci_bist_reg_s {
++		uint64_t reserved_10_63:54;
++		uint64_t rsp_bs:1;
++		uint64_t dma0_bs:1;
++		uint64_t cmd0_bs:1;
++		uint64_t cmd_bs:1;
++		uint64_t csr2p_bs:1;
++		uint64_t csrr_bs:1;
++		uint64_t rsp2p_bs:1;
++		uint64_t csr2n_bs:1;
++		uint64_t dat2n_bs:1;
++		uint64_t dbg2n_bs:1;
++	} s;
++	struct cvmx_pci_bist_reg_s cn50xx;
++};
++
++union cvmx_pci_cfg00 {
++	uint32_t u32;
++	struct cvmx_pci_cfg00_s {
++		uint32_t devid:16;
++		uint32_t vendid:16;
++	} s;
++	struct cvmx_pci_cfg00_s cn30xx;
++	struct cvmx_pci_cfg00_s cn31xx;
++	struct cvmx_pci_cfg00_s cn38xx;
++	struct cvmx_pci_cfg00_s cn38xxp2;
++	struct cvmx_pci_cfg00_s cn50xx;
++	struct cvmx_pci_cfg00_s cn58xx;
++	struct cvmx_pci_cfg00_s cn58xxp1;
++};
++
++union cvmx_pci_cfg01 {
++	uint32_t u32;
++	struct cvmx_pci_cfg01_s {
++		uint32_t dpe:1;
++		uint32_t sse:1;
++		uint32_t rma:1;
++		uint32_t rta:1;
++		uint32_t sta:1;
++		uint32_t devt:2;
++		uint32_t mdpe:1;
++		uint32_t fbb:1;
++		uint32_t reserved_22_22:1;
++		uint32_t m66:1;
++		uint32_t cle:1;
++		uint32_t i_stat:1;
++		uint32_t reserved_11_18:8;
++		uint32_t i_dis:1;
++		uint32_t fbbe:1;
++		uint32_t see:1;
++		uint32_t ads:1;
++		uint32_t pee:1;
++		uint32_t vps:1;
++		uint32_t mwice:1;
++		uint32_t scse:1;
++		uint32_t me:1;
++		uint32_t msae:1;
++		uint32_t isae:1;
++	} s;
++	struct cvmx_pci_cfg01_s cn30xx;
++	struct cvmx_pci_cfg01_s cn31xx;
++	struct cvmx_pci_cfg01_s cn38xx;
++	struct cvmx_pci_cfg01_s cn38xxp2;
++	struct cvmx_pci_cfg01_s cn50xx;
++	struct cvmx_pci_cfg01_s cn58xx;
++	struct cvmx_pci_cfg01_s cn58xxp1;
++};
++
++union cvmx_pci_cfg02 {
++	uint32_t u32;
++	struct cvmx_pci_cfg02_s {
++		uint32_t cc:24;
++		uint32_t rid:8;
++	} s;
++	struct cvmx_pci_cfg02_s cn30xx;
++	struct cvmx_pci_cfg02_s cn31xx;
++	struct cvmx_pci_cfg02_s cn38xx;
++	struct cvmx_pci_cfg02_s cn38xxp2;
++	struct cvmx_pci_cfg02_s cn50xx;
++	struct cvmx_pci_cfg02_s cn58xx;
++	struct cvmx_pci_cfg02_s cn58xxp1;
++};
++
++union cvmx_pci_cfg03 {
++	uint32_t u32;
++	struct cvmx_pci_cfg03_s {
++		uint32_t bcap:1;
++		uint32_t brb:1;
++		uint32_t reserved_28_29:2;
++		uint32_t bcod:4;
++		uint32_t ht:8;
++		uint32_t lt:8;
++		uint32_t cls:8;
++	} s;
++	struct cvmx_pci_cfg03_s cn30xx;
++	struct cvmx_pci_cfg03_s cn31xx;
++	struct cvmx_pci_cfg03_s cn38xx;
++	struct cvmx_pci_cfg03_s cn38xxp2;
++	struct cvmx_pci_cfg03_s cn50xx;
++	struct cvmx_pci_cfg03_s cn58xx;
++	struct cvmx_pci_cfg03_s cn58xxp1;
++};
++
++union cvmx_pci_cfg04 {
++	uint32_t u32;
++	struct cvmx_pci_cfg04_s {
++		uint32_t lbase:20;
++		uint32_t lbasez:8;
++		uint32_t pf:1;
++		uint32_t typ:2;
++		uint32_t mspc:1;
++	} s;
++	struct cvmx_pci_cfg04_s cn30xx;
++	struct cvmx_pci_cfg04_s cn31xx;
++	struct cvmx_pci_cfg04_s cn38xx;
++	struct cvmx_pci_cfg04_s cn38xxp2;
++	struct cvmx_pci_cfg04_s cn50xx;
++	struct cvmx_pci_cfg04_s cn58xx;
++	struct cvmx_pci_cfg04_s cn58xxp1;
++};
++
++union cvmx_pci_cfg05 {
++	uint32_t u32;
++	struct cvmx_pci_cfg05_s {
++		uint32_t hbase:32;
++	} s;
++	struct cvmx_pci_cfg05_s cn30xx;
++	struct cvmx_pci_cfg05_s cn31xx;
++	struct cvmx_pci_cfg05_s cn38xx;
++	struct cvmx_pci_cfg05_s cn38xxp2;
++	struct cvmx_pci_cfg05_s cn50xx;
++	struct cvmx_pci_cfg05_s cn58xx;
++	struct cvmx_pci_cfg05_s cn58xxp1;
++};
++
++union cvmx_pci_cfg06 {
++	uint32_t u32;
++	struct cvmx_pci_cfg06_s {
++		uint32_t lbase:5;
++		uint32_t lbasez:23;
++		uint32_t pf:1;
++		uint32_t typ:2;
++		uint32_t mspc:1;
++	} s;
++	struct cvmx_pci_cfg06_s cn30xx;
++	struct cvmx_pci_cfg06_s cn31xx;
++	struct cvmx_pci_cfg06_s cn38xx;
++	struct cvmx_pci_cfg06_s cn38xxp2;
++	struct cvmx_pci_cfg06_s cn50xx;
++	struct cvmx_pci_cfg06_s cn58xx;
++	struct cvmx_pci_cfg06_s cn58xxp1;
++};
++
++union cvmx_pci_cfg07 {
++	uint32_t u32;
++	struct cvmx_pci_cfg07_s {
++		uint32_t hbase:32;
++	} s;
++	struct cvmx_pci_cfg07_s cn30xx;
++	struct cvmx_pci_cfg07_s cn31xx;
++	struct cvmx_pci_cfg07_s cn38xx;
++	struct cvmx_pci_cfg07_s cn38xxp2;
++	struct cvmx_pci_cfg07_s cn50xx;
++	struct cvmx_pci_cfg07_s cn58xx;
++	struct cvmx_pci_cfg07_s cn58xxp1;
++};
++
++union cvmx_pci_cfg08 {
++	uint32_t u32;
++	struct cvmx_pci_cfg08_s {
++		uint32_t lbasez:28;
++		uint32_t pf:1;
++		uint32_t typ:2;
++		uint32_t mspc:1;
++	} s;
++	struct cvmx_pci_cfg08_s cn30xx;
++	struct cvmx_pci_cfg08_s cn31xx;
++	struct cvmx_pci_cfg08_s cn38xx;
++	struct cvmx_pci_cfg08_s cn38xxp2;
++	struct cvmx_pci_cfg08_s cn50xx;
++	struct cvmx_pci_cfg08_s cn58xx;
++	struct cvmx_pci_cfg08_s cn58xxp1;
++};
++
++union cvmx_pci_cfg09 {
++	uint32_t u32;
++	struct cvmx_pci_cfg09_s {
++		uint32_t hbase:25;
++		uint32_t hbasez:7;
++	} s;
++	struct cvmx_pci_cfg09_s cn30xx;
++	struct cvmx_pci_cfg09_s cn31xx;
++	struct cvmx_pci_cfg09_s cn38xx;
++	struct cvmx_pci_cfg09_s cn38xxp2;
++	struct cvmx_pci_cfg09_s cn50xx;
++	struct cvmx_pci_cfg09_s cn58xx;
++	struct cvmx_pci_cfg09_s cn58xxp1;
++};
++
++union cvmx_pci_cfg10 {
++	uint32_t u32;
++	struct cvmx_pci_cfg10_s {
++		uint32_t cisp:32;
++	} s;
++	struct cvmx_pci_cfg10_s cn30xx;
++	struct cvmx_pci_cfg10_s cn31xx;
++	struct cvmx_pci_cfg10_s cn38xx;
++	struct cvmx_pci_cfg10_s cn38xxp2;
++	struct cvmx_pci_cfg10_s cn50xx;
++	struct cvmx_pci_cfg10_s cn58xx;
++	struct cvmx_pci_cfg10_s cn58xxp1;
++};
++
++union cvmx_pci_cfg11 {
++	uint32_t u32;
++	struct cvmx_pci_cfg11_s {
++		uint32_t ssid:16;
++		uint32_t ssvid:16;
++	} s;
++	struct cvmx_pci_cfg11_s cn30xx;
++	struct cvmx_pci_cfg11_s cn31xx;
++	struct cvmx_pci_cfg11_s cn38xx;
++	struct cvmx_pci_cfg11_s cn38xxp2;
++	struct cvmx_pci_cfg11_s cn50xx;
++	struct cvmx_pci_cfg11_s cn58xx;
++	struct cvmx_pci_cfg11_s cn58xxp1;
++};
++
++union cvmx_pci_cfg12 {
++	uint32_t u32;
++	struct cvmx_pci_cfg12_s {
++		uint32_t erbar:16;
++		uint32_t erbarz:5;
++		uint32_t reserved_1_10:10;
++		uint32_t erbar_en:1;
++	} s;
++	struct cvmx_pci_cfg12_s cn30xx;
++	struct cvmx_pci_cfg12_s cn31xx;
++	struct cvmx_pci_cfg12_s cn38xx;
++	struct cvmx_pci_cfg12_s cn38xxp2;
++	struct cvmx_pci_cfg12_s cn50xx;
++	struct cvmx_pci_cfg12_s cn58xx;
++	struct cvmx_pci_cfg12_s cn58xxp1;
++};
++
++union cvmx_pci_cfg13 {
++	uint32_t u32;
++	struct cvmx_pci_cfg13_s {
++		uint32_t reserved_8_31:24;
++		uint32_t cp:8;
++	} s;
++	struct cvmx_pci_cfg13_s cn30xx;
++	struct cvmx_pci_cfg13_s cn31xx;
++	struct cvmx_pci_cfg13_s cn38xx;
++	struct cvmx_pci_cfg13_s cn38xxp2;
++	struct cvmx_pci_cfg13_s cn50xx;
++	struct cvmx_pci_cfg13_s cn58xx;
++	struct cvmx_pci_cfg13_s cn58xxp1;
++};
++
++union cvmx_pci_cfg15 {
++	uint32_t u32;
++	struct cvmx_pci_cfg15_s {
++		uint32_t ml:8;
++		uint32_t mg:8;
++		uint32_t inta:8;
++		uint32_t il:8;
++	} s;
++	struct cvmx_pci_cfg15_s cn30xx;
++	struct cvmx_pci_cfg15_s cn31xx;
++	struct cvmx_pci_cfg15_s cn38xx;
++	struct cvmx_pci_cfg15_s cn38xxp2;
++	struct cvmx_pci_cfg15_s cn50xx;
++	struct cvmx_pci_cfg15_s cn58xx;
++	struct cvmx_pci_cfg15_s cn58xxp1;
++};
++
++union cvmx_pci_cfg16 {
++	uint32_t u32;
++	struct cvmx_pci_cfg16_s {
++		uint32_t trdnpr:1;
++		uint32_t trdard:1;
++		uint32_t rdsati:1;
++		uint32_t trdrs:1;
++		uint32_t trtae:1;
++		uint32_t twsei:1;
++		uint32_t twsen:1;
++		uint32_t twtae:1;
++		uint32_t tmae:1;
++		uint32_t tslte:3;
++		uint32_t tilt:4;
++		uint32_t pbe:12;
++		uint32_t dppmr:1;
++		uint32_t reserved_2_2:1;
++		uint32_t tswc:1;
++		uint32_t mltd:1;
++	} s;
++	struct cvmx_pci_cfg16_s cn30xx;
++	struct cvmx_pci_cfg16_s cn31xx;
++	struct cvmx_pci_cfg16_s cn38xx;
++	struct cvmx_pci_cfg16_s cn38xxp2;
++	struct cvmx_pci_cfg16_s cn50xx;
++	struct cvmx_pci_cfg16_s cn58xx;
++	struct cvmx_pci_cfg16_s cn58xxp1;
++};
++
++union cvmx_pci_cfg17 {
++	uint32_t u32;
++	struct cvmx_pci_cfg17_s {
++		uint32_t tscme:32;
++	} s;
++	struct cvmx_pci_cfg17_s cn30xx;
++	struct cvmx_pci_cfg17_s cn31xx;
++	struct cvmx_pci_cfg17_s cn38xx;
++	struct cvmx_pci_cfg17_s cn38xxp2;
++	struct cvmx_pci_cfg17_s cn50xx;
++	struct cvmx_pci_cfg17_s cn58xx;
++	struct cvmx_pci_cfg17_s cn58xxp1;
++};
++
++union cvmx_pci_cfg18 {
++	uint32_t u32;
++	struct cvmx_pci_cfg18_s {
++		uint32_t tdsrps:32;
++	} s;
++	struct cvmx_pci_cfg18_s cn30xx;
++	struct cvmx_pci_cfg18_s cn31xx;
++	struct cvmx_pci_cfg18_s cn38xx;
++	struct cvmx_pci_cfg18_s cn38xxp2;
++	struct cvmx_pci_cfg18_s cn50xx;
++	struct cvmx_pci_cfg18_s cn58xx;
++	struct cvmx_pci_cfg18_s cn58xxp1;
++};
++
++union cvmx_pci_cfg19 {
++	uint32_t u32;
++	struct cvmx_pci_cfg19_s {
++		uint32_t mrbcm:1;
++		uint32_t mrbci:1;
++		uint32_t mdwe:1;
++		uint32_t mdre:1;
++		uint32_t mdrimc:1;
++		uint32_t mdrrmc:3;
++		uint32_t tmes:8;
++		uint32_t teci:1;
++		uint32_t tmei:1;
++		uint32_t tmse:1;
++		uint32_t tmdpes:1;
++		uint32_t tmapes:1;
++		uint32_t reserved_9_10:2;
++		uint32_t tibcd:1;
++		uint32_t tibde:1;
++		uint32_t reserved_6_6:1;
++		uint32_t tidomc:1;
++		uint32_t tdomc:5;
++	} s;
++	struct cvmx_pci_cfg19_s cn30xx;
++	struct cvmx_pci_cfg19_s cn31xx;
++	struct cvmx_pci_cfg19_s cn38xx;
++	struct cvmx_pci_cfg19_s cn38xxp2;
++	struct cvmx_pci_cfg19_s cn50xx;
++	struct cvmx_pci_cfg19_s cn58xx;
++	struct cvmx_pci_cfg19_s cn58xxp1;
++};
++
++union cvmx_pci_cfg20 {
++	uint32_t u32;
++	struct cvmx_pci_cfg20_s {
++		uint32_t mdsp:32;
++	} s;
++	struct cvmx_pci_cfg20_s cn30xx;
++	struct cvmx_pci_cfg20_s cn31xx;
++	struct cvmx_pci_cfg20_s cn38xx;
++	struct cvmx_pci_cfg20_s cn38xxp2;
++	struct cvmx_pci_cfg20_s cn50xx;
++	struct cvmx_pci_cfg20_s cn58xx;
++	struct cvmx_pci_cfg20_s cn58xxp1;
++};
++
++union cvmx_pci_cfg21 {
++	uint32_t u32;
++	struct cvmx_pci_cfg21_s {
++		uint32_t scmre:32;
++	} s;
++	struct cvmx_pci_cfg21_s cn30xx;
++	struct cvmx_pci_cfg21_s cn31xx;
++	struct cvmx_pci_cfg21_s cn38xx;
++	struct cvmx_pci_cfg21_s cn38xxp2;
++	struct cvmx_pci_cfg21_s cn50xx;
++	struct cvmx_pci_cfg21_s cn58xx;
++	struct cvmx_pci_cfg21_s cn58xxp1;
++};
++
++union cvmx_pci_cfg22 {
++	uint32_t u32;
++	struct cvmx_pci_cfg22_s {
++		uint32_t mac:7;
++		uint32_t reserved_19_24:6;
++		uint32_t flush:1;
++		uint32_t mra:1;
++		uint32_t mtta:1;
++		uint32_t mrv:8;
++		uint32_t mttv:8;
++	} s;
++	struct cvmx_pci_cfg22_s cn30xx;
++	struct cvmx_pci_cfg22_s cn31xx;
++	struct cvmx_pci_cfg22_s cn38xx;
++	struct cvmx_pci_cfg22_s cn38xxp2;
++	struct cvmx_pci_cfg22_s cn50xx;
++	struct cvmx_pci_cfg22_s cn58xx;
++	struct cvmx_pci_cfg22_s cn58xxp1;
++};
++
++union cvmx_pci_cfg56 {
++	uint32_t u32;
++	struct cvmx_pci_cfg56_s {
++		uint32_t reserved_23_31:9;
++		uint32_t most:3;
++		uint32_t mmbc:2;
++		uint32_t roe:1;
++		uint32_t dpere:1;
++		uint32_t ncp:8;
++		uint32_t pxcid:8;
++	} s;
++	struct cvmx_pci_cfg56_s cn30xx;
++	struct cvmx_pci_cfg56_s cn31xx;
++	struct cvmx_pci_cfg56_s cn38xx;
++	struct cvmx_pci_cfg56_s cn38xxp2;
++	struct cvmx_pci_cfg56_s cn50xx;
++	struct cvmx_pci_cfg56_s cn58xx;
++	struct cvmx_pci_cfg56_s cn58xxp1;
++};
++
++union cvmx_pci_cfg57 {
++	uint32_t u32;
++	struct cvmx_pci_cfg57_s {
++		uint32_t reserved_30_31:2;
++		uint32_t scemr:1;
++		uint32_t mcrsd:3;
++		uint32_t mostd:3;
++		uint32_t mmrbcd:2;
++		uint32_t dc:1;
++		uint32_t usc:1;
++		uint32_t scd:1;
++		uint32_t m133:1;
++		uint32_t w64:1;
++		uint32_t bn:8;
++		uint32_t dn:5;
++		uint32_t fn:3;
++	} s;
++	struct cvmx_pci_cfg57_s cn30xx;
++	struct cvmx_pci_cfg57_s cn31xx;
++	struct cvmx_pci_cfg57_s cn38xx;
++	struct cvmx_pci_cfg57_s cn38xxp2;
++	struct cvmx_pci_cfg57_s cn50xx;
++	struct cvmx_pci_cfg57_s cn58xx;
++	struct cvmx_pci_cfg57_s cn58xxp1;
++};
++
++union cvmx_pci_cfg58 {
++	uint32_t u32;
++	struct cvmx_pci_cfg58_s {
++		uint32_t pmes:5;
++		uint32_t d2s:1;
++		uint32_t d1s:1;
++		uint32_t auxc:3;
++		uint32_t dsi:1;
++		uint32_t reserved_20_20:1;
++		uint32_t pmec:1;
++		uint32_t pcimiv:3;
++		uint32_t ncp:8;
++		uint32_t pmcid:8;
++	} s;
++	struct cvmx_pci_cfg58_s cn30xx;
++	struct cvmx_pci_cfg58_s cn31xx;
++	struct cvmx_pci_cfg58_s cn38xx;
++	struct cvmx_pci_cfg58_s cn38xxp2;
++	struct cvmx_pci_cfg58_s cn50xx;
++	struct cvmx_pci_cfg58_s cn58xx;
++	struct cvmx_pci_cfg58_s cn58xxp1;
++};
++
++union cvmx_pci_cfg59 {
++	uint32_t u32;
++	struct cvmx_pci_cfg59_s {
++		uint32_t pmdia:8;
++		uint32_t bpccen:1;
++		uint32_t bd3h:1;
++		uint32_t reserved_16_21:6;
++		uint32_t pmess:1;
++		uint32_t pmedsia:2;
++		uint32_t pmds:4;
++		uint32_t pmeens:1;
++		uint32_t reserved_2_7:6;
++		uint32_t ps:2;
++	} s;
++	struct cvmx_pci_cfg59_s cn30xx;
++	struct cvmx_pci_cfg59_s cn31xx;
++	struct cvmx_pci_cfg59_s cn38xx;
++	struct cvmx_pci_cfg59_s cn38xxp2;
++	struct cvmx_pci_cfg59_s cn50xx;
++	struct cvmx_pci_cfg59_s cn58xx;
++	struct cvmx_pci_cfg59_s cn58xxp1;
++};
++
++union cvmx_pci_cfg60 {
++	uint32_t u32;
++	struct cvmx_pci_cfg60_s {
++		uint32_t reserved_24_31:8;
++		uint32_t m64:1;
++		uint32_t mme:3;
++		uint32_t mmc:3;
++		uint32_t msien:1;
++		uint32_t ncp:8;
++		uint32_t msicid:8;
++	} s;
++	struct cvmx_pci_cfg60_s cn30xx;
++	struct cvmx_pci_cfg60_s cn31xx;
++	struct cvmx_pci_cfg60_s cn38xx;
++	struct cvmx_pci_cfg60_s cn38xxp2;
++	struct cvmx_pci_cfg60_s cn50xx;
++	struct cvmx_pci_cfg60_s cn58xx;
++	struct cvmx_pci_cfg60_s cn58xxp1;
++};
++
++union cvmx_pci_cfg61 {
++	uint32_t u32;
++	struct cvmx_pci_cfg61_s {
++		uint32_t msi31t2:30;
++		uint32_t reserved_0_1:2;
++	} s;
++	struct cvmx_pci_cfg61_s cn30xx;
++	struct cvmx_pci_cfg61_s cn31xx;
++	struct cvmx_pci_cfg61_s cn38xx;
++	struct cvmx_pci_cfg61_s cn38xxp2;
++	struct cvmx_pci_cfg61_s cn50xx;
++	struct cvmx_pci_cfg61_s cn58xx;
++	struct cvmx_pci_cfg61_s cn58xxp1;
++};
++
++union cvmx_pci_cfg62 {
++	uint32_t u32;
++	struct cvmx_pci_cfg62_s {
++		uint32_t msi:32;
++	} s;
++	struct cvmx_pci_cfg62_s cn30xx;
++	struct cvmx_pci_cfg62_s cn31xx;
++	struct cvmx_pci_cfg62_s cn38xx;
++	struct cvmx_pci_cfg62_s cn38xxp2;
++	struct cvmx_pci_cfg62_s cn50xx;
++	struct cvmx_pci_cfg62_s cn58xx;
++	struct cvmx_pci_cfg62_s cn58xxp1;
++};
++
++union cvmx_pci_cfg63 {
++	uint32_t u32;
++	struct cvmx_pci_cfg63_s {
++		uint32_t reserved_16_31:16;
++		uint32_t msimd:16;
++	} s;
++	struct cvmx_pci_cfg63_s cn30xx;
++	struct cvmx_pci_cfg63_s cn31xx;
++	struct cvmx_pci_cfg63_s cn38xx;
++	struct cvmx_pci_cfg63_s cn38xxp2;
++	struct cvmx_pci_cfg63_s cn50xx;
++	struct cvmx_pci_cfg63_s cn58xx;
++	struct cvmx_pci_cfg63_s cn58xxp1;
++};
++
++union cvmx_pci_cnt_reg {
++	uint64_t u64;
++	struct cvmx_pci_cnt_reg_s {
++		uint64_t reserved_38_63:26;
++		uint64_t hm_pcix:1;
++		uint64_t hm_speed:2;
++		uint64_t ap_pcix:1;
++		uint64_t ap_speed:2;
++		uint64_t pcicnt:32;
++	} s;
++	struct cvmx_pci_cnt_reg_s cn50xx;
++	struct cvmx_pci_cnt_reg_s cn58xx;
++	struct cvmx_pci_cnt_reg_s cn58xxp1;
++};
++
++union cvmx_pci_ctl_status_2 {
++	uint32_t u32;
++	struct cvmx_pci_ctl_status_2_s {
++		uint32_t reserved_29_31:3;
++		uint32_t bb1_hole:3;
++		uint32_t bb1_siz:1;
++		uint32_t bb_ca:1;
++		uint32_t bb_es:2;
++		uint32_t bb1:1;
++		uint32_t bb0:1;
++		uint32_t erst_n:1;
++		uint32_t bar2pres:1;
++		uint32_t scmtyp:1;
++		uint32_t scm:1;
++		uint32_t en_wfilt:1;
++		uint32_t reserved_14_14:1;
++		uint32_t ap_pcix:1;
++		uint32_t ap_64ad:1;
++		uint32_t b12_bist:1;
++		uint32_t pmo_amod:1;
++		uint32_t pmo_fpc:3;
++		uint32_t tsr_hwm:3;
++		uint32_t bar2_enb:1;
++		uint32_t bar2_esx:2;
++		uint32_t bar2_cax:1;
++	} s;
++	struct cvmx_pci_ctl_status_2_s cn30xx;
++	struct cvmx_pci_ctl_status_2_cn31xx {
++		uint32_t reserved_20_31:12;
++		uint32_t erst_n:1;
++		uint32_t bar2pres:1;
++		uint32_t scmtyp:1;
++		uint32_t scm:1;
++		uint32_t en_wfilt:1;
++		uint32_t reserved_14_14:1;
++		uint32_t ap_pcix:1;
++		uint32_t ap_64ad:1;
++		uint32_t b12_bist:1;
++		uint32_t pmo_amod:1;
++		uint32_t pmo_fpc:3;
++		uint32_t tsr_hwm:3;
++		uint32_t bar2_enb:1;
++		uint32_t bar2_esx:2;
++		uint32_t bar2_cax:1;
++	} cn31xx;
++	struct cvmx_pci_ctl_status_2_s cn38xx;
++	struct cvmx_pci_ctl_status_2_cn31xx cn38xxp2;
++	struct cvmx_pci_ctl_status_2_s cn50xx;
++	struct cvmx_pci_ctl_status_2_s cn58xx;
++	struct cvmx_pci_ctl_status_2_s cn58xxp1;
++};
++
++union cvmx_pci_dbellx {
++	uint32_t u32;
++	struct cvmx_pci_dbellx_s {
++		uint32_t reserved_16_31:16;
++		uint32_t inc_val:16;
++	} s;
++	struct cvmx_pci_dbellx_s cn30xx;
++	struct cvmx_pci_dbellx_s cn31xx;
++	struct cvmx_pci_dbellx_s cn38xx;
++	struct cvmx_pci_dbellx_s cn38xxp2;
++	struct cvmx_pci_dbellx_s cn50xx;
++	struct cvmx_pci_dbellx_s cn58xx;
++	struct cvmx_pci_dbellx_s cn58xxp1;
++};
++
++union cvmx_pci_dma_cntx {
++	uint32_t u32;
++	struct cvmx_pci_dma_cntx_s {
++		uint32_t dma_cnt:32;
++	} s;
++	struct cvmx_pci_dma_cntx_s cn30xx;
++	struct cvmx_pci_dma_cntx_s cn31xx;
++	struct cvmx_pci_dma_cntx_s cn38xx;
++	struct cvmx_pci_dma_cntx_s cn38xxp2;
++	struct cvmx_pci_dma_cntx_s cn50xx;
++	struct cvmx_pci_dma_cntx_s cn58xx;
++	struct cvmx_pci_dma_cntx_s cn58xxp1;
++};
++
++union cvmx_pci_dma_int_levx {
++	uint32_t u32;
++	struct cvmx_pci_dma_int_levx_s {
++		uint32_t pkt_cnt:32;
++	} s;
++	struct cvmx_pci_dma_int_levx_s cn30xx;
++	struct cvmx_pci_dma_int_levx_s cn31xx;
++	struct cvmx_pci_dma_int_levx_s cn38xx;
++	struct cvmx_pci_dma_int_levx_s cn38xxp2;
++	struct cvmx_pci_dma_int_levx_s cn50xx;
++	struct cvmx_pci_dma_int_levx_s cn58xx;
++	struct cvmx_pci_dma_int_levx_s cn58xxp1;
++};
++
++union cvmx_pci_dma_timex {
++	uint32_t u32;
++	struct cvmx_pci_dma_timex_s {
++		uint32_t dma_time:32;
++	} s;
++	struct cvmx_pci_dma_timex_s cn30xx;
++	struct cvmx_pci_dma_timex_s cn31xx;
++	struct cvmx_pci_dma_timex_s cn38xx;
++	struct cvmx_pci_dma_timex_s cn38xxp2;
++	struct cvmx_pci_dma_timex_s cn50xx;
++	struct cvmx_pci_dma_timex_s cn58xx;
++	struct cvmx_pci_dma_timex_s cn58xxp1;
++};
++
++union cvmx_pci_instr_countx {
++	uint32_t u32;
++	struct cvmx_pci_instr_countx_s {
++		uint32_t icnt:32;
++	} s;
++	struct cvmx_pci_instr_countx_s cn30xx;
++	struct cvmx_pci_instr_countx_s cn31xx;
++	struct cvmx_pci_instr_countx_s cn38xx;
++	struct cvmx_pci_instr_countx_s cn38xxp2;
++	struct cvmx_pci_instr_countx_s cn50xx;
++	struct cvmx_pci_instr_countx_s cn58xx;
++	struct cvmx_pci_instr_countx_s cn58xxp1;
++};
++
++union cvmx_pci_int_enb {
++	uint64_t u64;
++	struct cvmx_pci_int_enb_s {
++		uint64_t reserved_34_63:30;
++		uint64_t ill_rd:1;
++		uint64_t ill_wr:1;
++		uint64_t win_wr:1;
++		uint64_t dma1_fi:1;
++		uint64_t dma0_fi:1;
++		uint64_t idtime1:1;
++		uint64_t idtime0:1;
++		uint64_t idcnt1:1;
++		uint64_t idcnt0:1;
++		uint64_t iptime3:1;
++		uint64_t iptime2:1;
++		uint64_t iptime1:1;
++		uint64_t iptime0:1;
++		uint64_t ipcnt3:1;
++		uint64_t ipcnt2:1;
++		uint64_t ipcnt1:1;
++		uint64_t ipcnt0:1;
++		uint64_t irsl_int:1;
++		uint64_t ill_rrd:1;
++		uint64_t ill_rwr:1;
++		uint64_t idperr:1;
++		uint64_t iaperr:1;
++		uint64_t iserr:1;
++		uint64_t itsr_abt:1;
++		uint64_t imsc_msg:1;
++		uint64_t imsi_mabt:1;
++		uint64_t imsi_tabt:1;
++		uint64_t imsi_per:1;
++		uint64_t imr_tto:1;
++		uint64_t imr_abt:1;
++		uint64_t itr_abt:1;
++		uint64_t imr_wtto:1;
++		uint64_t imr_wabt:1;
++		uint64_t itr_wabt:1;
++	} s;
++	struct cvmx_pci_int_enb_cn30xx {
++		uint64_t reserved_34_63:30;
++		uint64_t ill_rd:1;
++		uint64_t ill_wr:1;
++		uint64_t win_wr:1;
++		uint64_t dma1_fi:1;
++		uint64_t dma0_fi:1;
++		uint64_t idtime1:1;
++		uint64_t idtime0:1;
++		uint64_t idcnt1:1;
++		uint64_t idcnt0:1;
++		uint64_t reserved_22_24:3;
++		uint64_t iptime0:1;
++		uint64_t reserved_18_20:3;
++		uint64_t ipcnt0:1;
++		uint64_t irsl_int:1;
++		uint64_t ill_rrd:1;
++		uint64_t ill_rwr:1;
++		uint64_t idperr:1;
++		uint64_t iaperr:1;
++		uint64_t iserr:1;
++		uint64_t itsr_abt:1;
++		uint64_t imsc_msg:1;
++		uint64_t imsi_mabt:1;
++		uint64_t imsi_tabt:1;
++		uint64_t imsi_per:1;
++		uint64_t imr_tto:1;
++		uint64_t imr_abt:1;
++		uint64_t itr_abt:1;
++		uint64_t imr_wtto:1;
++		uint64_t imr_wabt:1;
++		uint64_t itr_wabt:1;
++	} cn30xx;
++	struct cvmx_pci_int_enb_cn31xx {
++		uint64_t reserved_34_63:30;
++		uint64_t ill_rd:1;
++		uint64_t ill_wr:1;
++		uint64_t win_wr:1;
++		uint64_t dma1_fi:1;
++		uint64_t dma0_fi:1;
++		uint64_t idtime1:1;
++		uint64_t idtime0:1;
++		uint64_t idcnt1:1;
++		uint64_t idcnt0:1;
++		uint64_t reserved_23_24:2;
++		uint64_t iptime1:1;
++		uint64_t iptime0:1;
++		uint64_t reserved_19_20:2;
++		uint64_t ipcnt1:1;
++		uint64_t ipcnt0:1;
++		uint64_t irsl_int:1;
++		uint64_t ill_rrd:1;
++		uint64_t ill_rwr:1;
++		uint64_t idperr:1;
++		uint64_t iaperr:1;
++		uint64_t iserr:1;
++		uint64_t itsr_abt:1;
++		uint64_t imsc_msg:1;
++		uint64_t imsi_mabt:1;
++		uint64_t imsi_tabt:1;
++		uint64_t imsi_per:1;
++		uint64_t imr_tto:1;
++		uint64_t imr_abt:1;
++		uint64_t itr_abt:1;
++		uint64_t imr_wtto:1;
++		uint64_t imr_wabt:1;
++		uint64_t itr_wabt:1;
++	} cn31xx;
++	struct cvmx_pci_int_enb_s cn38xx;
++	struct cvmx_pci_int_enb_s cn38xxp2;
++	struct cvmx_pci_int_enb_cn31xx cn50xx;
++	struct cvmx_pci_int_enb_s cn58xx;
++	struct cvmx_pci_int_enb_s cn58xxp1;
++};
++
++union cvmx_pci_int_enb2 {
++	uint64_t u64;
++	struct cvmx_pci_int_enb2_s {
++		uint64_t reserved_34_63:30;
++		uint64_t ill_rd:1;
++		uint64_t ill_wr:1;
++		uint64_t win_wr:1;
++		uint64_t dma1_fi:1;
++		uint64_t dma0_fi:1;
++		uint64_t rdtime1:1;
++		uint64_t rdtime0:1;
++		uint64_t rdcnt1:1;
++		uint64_t rdcnt0:1;
++		uint64_t rptime3:1;
++		uint64_t rptime2:1;
++		uint64_t rptime1:1;
++		uint64_t rptime0:1;
++		uint64_t rpcnt3:1;
++		uint64_t rpcnt2:1;
++		uint64_t rpcnt1:1;
++		uint64_t rpcnt0:1;
++		uint64_t rrsl_int:1;
++		uint64_t ill_rrd:1;
++		uint64_t ill_rwr:1;
++		uint64_t rdperr:1;
++		uint64_t raperr:1;
++		uint64_t rserr:1;
++		uint64_t rtsr_abt:1;
++		uint64_t rmsc_msg:1;
++		uint64_t rmsi_mabt:1;
++		uint64_t rmsi_tabt:1;
++		uint64_t rmsi_per:1;
++		uint64_t rmr_tto:1;
++		uint64_t rmr_abt:1;
++		uint64_t rtr_abt:1;
++		uint64_t rmr_wtto:1;
++		uint64_t rmr_wabt:1;
++		uint64_t rtr_wabt:1;
++	} s;
++	struct cvmx_pci_int_enb2_cn30xx {
++		uint64_t reserved_34_63:30;
++		uint64_t ill_rd:1;
++		uint64_t ill_wr:1;
++		uint64_t win_wr:1;
++		uint64_t dma1_fi:1;
++		uint64_t dma0_fi:1;
++		uint64_t rdtime1:1;
++		uint64_t rdtime0:1;
++		uint64_t rdcnt1:1;
++		uint64_t rdcnt0:1;
++		uint64_t reserved_22_24:3;
++		uint64_t rptime0:1;
++		uint64_t reserved_18_20:3;
++		uint64_t rpcnt0:1;
++		uint64_t rrsl_int:1;
++		uint64_t ill_rrd:1;
++		uint64_t ill_rwr:1;
++		uint64_t rdperr:1;
++		uint64_t raperr:1;
++		uint64_t rserr:1;
++		uint64_t rtsr_abt:1;
++		uint64_t rmsc_msg:1;
++		uint64_t rmsi_mabt:1;
++		uint64_t rmsi_tabt:1;
++		uint64_t rmsi_per:1;
++		uint64_t rmr_tto:1;
++		uint64_t rmr_abt:1;
++		uint64_t rtr_abt:1;
++		uint64_t rmr_wtto:1;
++		uint64_t rmr_wabt:1;
++		uint64_t rtr_wabt:1;
++	} cn30xx;
++	struct cvmx_pci_int_enb2_cn31xx {
++		uint64_t reserved_34_63:30;
++		uint64_t ill_rd:1;
++		uint64_t ill_wr:1;
++		uint64_t win_wr:1;
++		uint64_t dma1_fi:1;
++		uint64_t dma0_fi:1;
++		uint64_t rdtime1:1;
++		uint64_t rdtime0:1;
++		uint64_t rdcnt1:1;
++		uint64_t rdcnt0:1;
++		uint64_t reserved_23_24:2;
++		uint64_t rptime1:1;
++		uint64_t rptime0:1;
++		uint64_t reserved_19_20:2;
++		uint64_t rpcnt1:1;
++		uint64_t rpcnt0:1;
++		uint64_t rrsl_int:1;
++		uint64_t ill_rrd:1;
++		uint64_t ill_rwr:1;
++		uint64_t rdperr:1;
++		uint64_t raperr:1;
++		uint64_t rserr:1;
++		uint64_t rtsr_abt:1;
++		uint64_t rmsc_msg:1;
++		uint64_t rmsi_mabt:1;
++		uint64_t rmsi_tabt:1;
++		uint64_t rmsi_per:1;
++		uint64_t rmr_tto:1;
++		uint64_t rmr_abt:1;
++		uint64_t rtr_abt:1;
++		uint64_t rmr_wtto:1;
++		uint64_t rmr_wabt:1;
++		uint64_t rtr_wabt:1;
++	} cn31xx;
++	struct cvmx_pci_int_enb2_s cn38xx;
++	struct cvmx_pci_int_enb2_s cn38xxp2;
++	struct cvmx_pci_int_enb2_cn31xx cn50xx;
++	struct cvmx_pci_int_enb2_s cn58xx;
++	struct cvmx_pci_int_enb2_s cn58xxp1;
++};
++
++union cvmx_pci_int_sum {
++	uint64_t u64;
++	struct cvmx_pci_int_sum_s {
++		uint64_t reserved_34_63:30;
++		uint64_t ill_rd:1;
++		uint64_t ill_wr:1;
++		uint64_t win_wr:1;
++		uint64_t dma1_fi:1;
++		uint64_t dma0_fi:1;
++		uint64_t dtime1:1;
++		uint64_t dtime0:1;
++		uint64_t dcnt1:1;
++		uint64_t dcnt0:1;
++		uint64_t ptime3:1;
++		uint64_t ptime2:1;
++		uint64_t ptime1:1;
++		uint64_t ptime0:1;
++		uint64_t pcnt3:1;
++		uint64_t pcnt2:1;
++		uint64_t pcnt1:1;
++		uint64_t pcnt0:1;
++		uint64_t rsl_int:1;
++		uint64_t ill_rrd:1;
++		uint64_t ill_rwr:1;
++		uint64_t dperr:1;
++		uint64_t aperr:1;
++		uint64_t serr:1;
++		uint64_t tsr_abt:1;
++		uint64_t msc_msg:1;
++		uint64_t msi_mabt:1;
++		uint64_t msi_tabt:1;
++		uint64_t msi_per:1;
++		uint64_t mr_tto:1;
++		uint64_t mr_abt:1;
++		uint64_t tr_abt:1;
++		uint64_t mr_wtto:1;
++		uint64_t mr_wabt:1;
++		uint64_t tr_wabt:1;
++	} s;
++	struct cvmx_pci_int_sum_cn30xx {
++		uint64_t reserved_34_63:30;
++		uint64_t ill_rd:1;
++		uint64_t ill_wr:1;
++		uint64_t win_wr:1;
++		uint64_t dma1_fi:1;
++		uint64_t dma0_fi:1;
++		uint64_t dtime1:1;
++		uint64_t dtime0:1;
++		uint64_t dcnt1:1;
++		uint64_t dcnt0:1;
++		uint64_t reserved_22_24:3;
++		uint64_t ptime0:1;
++		uint64_t reserved_18_20:3;
++		uint64_t pcnt0:1;
++		uint64_t rsl_int:1;
++		uint64_t ill_rrd:1;
++		uint64_t ill_rwr:1;
++		uint64_t dperr:1;
++		uint64_t aperr:1;
++		uint64_t serr:1;
++		uint64_t tsr_abt:1;
++		uint64_t msc_msg:1;
++		uint64_t msi_mabt:1;
++		uint64_t msi_tabt:1;
++		uint64_t msi_per:1;
++		uint64_t mr_tto:1;
++		uint64_t mr_abt:1;
++		uint64_t tr_abt:1;
++		uint64_t mr_wtto:1;
++		uint64_t mr_wabt:1;
++		uint64_t tr_wabt:1;
++	} cn30xx;
++	struct cvmx_pci_int_sum_cn31xx {
++		uint64_t reserved_34_63:30;
++		uint64_t ill_rd:1;
++		uint64_t ill_wr:1;
++		uint64_t win_wr:1;
++		uint64_t dma1_fi:1;
++		uint64_t dma0_fi:1;
++		uint64_t dtime1:1;
++		uint64_t dtime0:1;
++		uint64_t dcnt1:1;
++		uint64_t dcnt0:1;
++		uint64_t reserved_23_24:2;
++		uint64_t ptime1:1;
++		uint64_t ptime0:1;
++		uint64_t reserved_19_20:2;
++		uint64_t pcnt1:1;
++		uint64_t pcnt0:1;
++		uint64_t rsl_int:1;
++		uint64_t ill_rrd:1;
++		uint64_t ill_rwr:1;
++		uint64_t dperr:1;
++		uint64_t aperr:1;
++		uint64_t serr:1;
++		uint64_t tsr_abt:1;
++		uint64_t msc_msg:1;
++		uint64_t msi_mabt:1;
++		uint64_t msi_tabt:1;
++		uint64_t msi_per:1;
++		uint64_t mr_tto:1;
++		uint64_t mr_abt:1;
++		uint64_t tr_abt:1;
++		uint64_t mr_wtto:1;
++		uint64_t mr_wabt:1;
++		uint64_t tr_wabt:1;
++	} cn31xx;
++	struct cvmx_pci_int_sum_s cn38xx;
++	struct cvmx_pci_int_sum_s cn38xxp2;
++	struct cvmx_pci_int_sum_cn31xx cn50xx;
++	struct cvmx_pci_int_sum_s cn58xx;
++	struct cvmx_pci_int_sum_s cn58xxp1;
++};
++
++union cvmx_pci_int_sum2 {
++	uint64_t u64;
++	struct cvmx_pci_int_sum2_s {
++		uint64_t reserved_34_63:30;
++		uint64_t ill_rd:1;
++		uint64_t ill_wr:1;
++		uint64_t win_wr:1;
++		uint64_t dma1_fi:1;
++		uint64_t dma0_fi:1;
++		uint64_t dtime1:1;
++		uint64_t dtime0:1;
++		uint64_t dcnt1:1;
++		uint64_t dcnt0:1;
++		uint64_t ptime3:1;
++		uint64_t ptime2:1;
++		uint64_t ptime1:1;
++		uint64_t ptime0:1;
++		uint64_t pcnt3:1;
++		uint64_t pcnt2:1;
++		uint64_t pcnt1:1;
++		uint64_t pcnt0:1;
++		uint64_t rsl_int:1;
++		uint64_t ill_rrd:1;
++		uint64_t ill_rwr:1;
++		uint64_t dperr:1;
++		uint64_t aperr:1;
++		uint64_t serr:1;
++		uint64_t tsr_abt:1;
++		uint64_t msc_msg:1;
++		uint64_t msi_mabt:1;
++		uint64_t msi_tabt:1;
++		uint64_t msi_per:1;
++		uint64_t mr_tto:1;
++		uint64_t mr_abt:1;
++		uint64_t tr_abt:1;
++		uint64_t mr_wtto:1;
++		uint64_t mr_wabt:1;
++		uint64_t tr_wabt:1;
++	} s;
++	struct cvmx_pci_int_sum2_cn30xx {
++		uint64_t reserved_34_63:30;
++		uint64_t ill_rd:1;
++		uint64_t ill_wr:1;
++		uint64_t win_wr:1;
++		uint64_t dma1_fi:1;
++		uint64_t dma0_fi:1;
++		uint64_t dtime1:1;
++		uint64_t dtime0:1;
++		uint64_t dcnt1:1;
++		uint64_t dcnt0:1;
++		uint64_t reserved_22_24:3;
++		uint64_t ptime0:1;
++		uint64_t reserved_18_20:3;
++		uint64_t pcnt0:1;
++		uint64_t rsl_int:1;
++		uint64_t ill_rrd:1;
++		uint64_t ill_rwr:1;
++		uint64_t dperr:1;
++		uint64_t aperr:1;
++		uint64_t serr:1;
++		uint64_t tsr_abt:1;
++		uint64_t msc_msg:1;
++		uint64_t msi_mabt:1;
++		uint64_t msi_tabt:1;
++		uint64_t msi_per:1;
++		uint64_t mr_tto:1;
++		uint64_t mr_abt:1;
++		uint64_t tr_abt:1;
++		uint64_t mr_wtto:1;
++		uint64_t mr_wabt:1;
++		uint64_t tr_wabt:1;
++	} cn30xx;
++	struct cvmx_pci_int_sum2_cn31xx {
++		uint64_t reserved_34_63:30;
++		uint64_t ill_rd:1;
++		uint64_t ill_wr:1;
++		uint64_t win_wr:1;
++		uint64_t dma1_fi:1;
++		uint64_t dma0_fi:1;
++		uint64_t dtime1:1;
++		uint64_t dtime0:1;
++		uint64_t dcnt1:1;
++		uint64_t dcnt0:1;
++		uint64_t reserved_23_24:2;
++		uint64_t ptime1:1;
++		uint64_t ptime0:1;
++		uint64_t reserved_19_20:2;
++		uint64_t pcnt1:1;
++		uint64_t pcnt0:1;
++		uint64_t rsl_int:1;
++		uint64_t ill_rrd:1;
++		uint64_t ill_rwr:1;
++		uint64_t dperr:1;
++		uint64_t aperr:1;
++		uint64_t serr:1;
++		uint64_t tsr_abt:1;
++		uint64_t msc_msg:1;
++		uint64_t msi_mabt:1;
++		uint64_t msi_tabt:1;
++		uint64_t msi_per:1;
++		uint64_t mr_tto:1;
++		uint64_t mr_abt:1;
++		uint64_t tr_abt:1;
++		uint64_t mr_wtto:1;
++		uint64_t mr_wabt:1;
++		uint64_t tr_wabt:1;
++	} cn31xx;
++	struct cvmx_pci_int_sum2_s cn38xx;
++	struct cvmx_pci_int_sum2_s cn38xxp2;
++	struct cvmx_pci_int_sum2_cn31xx cn50xx;
++	struct cvmx_pci_int_sum2_s cn58xx;
++	struct cvmx_pci_int_sum2_s cn58xxp1;
++};
++
++union cvmx_pci_msi_rcv {
++	uint32_t u32;
++	struct cvmx_pci_msi_rcv_s {
++		uint32_t reserved_6_31:26;
++		uint32_t intr:6;
++	} s;
++	struct cvmx_pci_msi_rcv_s cn30xx;
++	struct cvmx_pci_msi_rcv_s cn31xx;
++	struct cvmx_pci_msi_rcv_s cn38xx;
++	struct cvmx_pci_msi_rcv_s cn38xxp2;
++	struct cvmx_pci_msi_rcv_s cn50xx;
++	struct cvmx_pci_msi_rcv_s cn58xx;
++	struct cvmx_pci_msi_rcv_s cn58xxp1;
++};
++
++union cvmx_pci_pkt_creditsx {
++	uint32_t u32;
++	struct cvmx_pci_pkt_creditsx_s {
++		uint32_t pkt_cnt:16;
++		uint32_t ptr_cnt:16;
++	} s;
++	struct cvmx_pci_pkt_creditsx_s cn30xx;
++	struct cvmx_pci_pkt_creditsx_s cn31xx;
++	struct cvmx_pci_pkt_creditsx_s cn38xx;
++	struct cvmx_pci_pkt_creditsx_s cn38xxp2;
++	struct cvmx_pci_pkt_creditsx_s cn50xx;
++	struct cvmx_pci_pkt_creditsx_s cn58xx;
++	struct cvmx_pci_pkt_creditsx_s cn58xxp1;
++};
++
++union cvmx_pci_pkts_sentx {
++	uint32_t u32;
++	struct cvmx_pci_pkts_sentx_s {
++		uint32_t pkt_cnt:32;
++	} s;
++	struct cvmx_pci_pkts_sentx_s cn30xx;
++	struct cvmx_pci_pkts_sentx_s cn31xx;
++	struct cvmx_pci_pkts_sentx_s cn38xx;
++	struct cvmx_pci_pkts_sentx_s cn38xxp2;
++	struct cvmx_pci_pkts_sentx_s cn50xx;
++	struct cvmx_pci_pkts_sentx_s cn58xx;
++	struct cvmx_pci_pkts_sentx_s cn58xxp1;
++};
++
++union cvmx_pci_pkts_sent_int_levx {
++	uint32_t u32;
++	struct cvmx_pci_pkts_sent_int_levx_s {
++		uint32_t pkt_cnt:32;
++	} s;
++	struct cvmx_pci_pkts_sent_int_levx_s cn30xx;
++	struct cvmx_pci_pkts_sent_int_levx_s cn31xx;
++	struct cvmx_pci_pkts_sent_int_levx_s cn38xx;
++	struct cvmx_pci_pkts_sent_int_levx_s cn38xxp2;
++	struct cvmx_pci_pkts_sent_int_levx_s cn50xx;
++	struct cvmx_pci_pkts_sent_int_levx_s cn58xx;
++	struct cvmx_pci_pkts_sent_int_levx_s cn58xxp1;
++};
++
++union cvmx_pci_pkts_sent_timex {
++	uint32_t u32;
++	struct cvmx_pci_pkts_sent_timex_s {
++		uint32_t pkt_time:32;
++	} s;
++	struct cvmx_pci_pkts_sent_timex_s cn30xx;
++	struct cvmx_pci_pkts_sent_timex_s cn31xx;
++	struct cvmx_pci_pkts_sent_timex_s cn38xx;
++	struct cvmx_pci_pkts_sent_timex_s cn38xxp2;
++	struct cvmx_pci_pkts_sent_timex_s cn50xx;
++	struct cvmx_pci_pkts_sent_timex_s cn58xx;
++	struct cvmx_pci_pkts_sent_timex_s cn58xxp1;
++};
++
++union cvmx_pci_read_cmd_6 {
++	uint32_t u32;
++	struct cvmx_pci_read_cmd_6_s {
++		uint32_t reserved_9_31:23;
++		uint32_t min_data:6;
++		uint32_t prefetch:3;
++	} s;
++	struct cvmx_pci_read_cmd_6_s cn30xx;
++	struct cvmx_pci_read_cmd_6_s cn31xx;
++	struct cvmx_pci_read_cmd_6_s cn38xx;
++	struct cvmx_pci_read_cmd_6_s cn38xxp2;
++	struct cvmx_pci_read_cmd_6_s cn50xx;
++	struct cvmx_pci_read_cmd_6_s cn58xx;
++	struct cvmx_pci_read_cmd_6_s cn58xxp1;
++};
++
++union cvmx_pci_read_cmd_c {
++	uint32_t u32;
++	struct cvmx_pci_read_cmd_c_s {
++		uint32_t reserved_9_31:23;
++		uint32_t min_data:6;
++		uint32_t prefetch:3;
++	} s;
++	struct cvmx_pci_read_cmd_c_s cn30xx;
++	struct cvmx_pci_read_cmd_c_s cn31xx;
++	struct cvmx_pci_read_cmd_c_s cn38xx;
++	struct cvmx_pci_read_cmd_c_s cn38xxp2;
++	struct cvmx_pci_read_cmd_c_s cn50xx;
++	struct cvmx_pci_read_cmd_c_s cn58xx;
++	struct cvmx_pci_read_cmd_c_s cn58xxp1;
++};
++
++union cvmx_pci_read_cmd_e {
++	uint32_t u32;
++	struct cvmx_pci_read_cmd_e_s {
++		uint32_t reserved_9_31:23;
++		uint32_t min_data:6;
++		uint32_t prefetch:3;
++	} s;
++	struct cvmx_pci_read_cmd_e_s cn30xx;
++	struct cvmx_pci_read_cmd_e_s cn31xx;
++	struct cvmx_pci_read_cmd_e_s cn38xx;
++	struct cvmx_pci_read_cmd_e_s cn38xxp2;
++	struct cvmx_pci_read_cmd_e_s cn50xx;
++	struct cvmx_pci_read_cmd_e_s cn58xx;
++	struct cvmx_pci_read_cmd_e_s cn58xxp1;
++};
++
++union cvmx_pci_read_timeout {
++	uint64_t u64;
++	struct cvmx_pci_read_timeout_s {
++		uint64_t reserved_32_63:32;
++		uint64_t enb:1;
++		uint64_t cnt:31;
++	} s;
++	struct cvmx_pci_read_timeout_s cn30xx;
++	struct cvmx_pci_read_timeout_s cn31xx;
++	struct cvmx_pci_read_timeout_s cn38xx;
++	struct cvmx_pci_read_timeout_s cn38xxp2;
++	struct cvmx_pci_read_timeout_s cn50xx;
++	struct cvmx_pci_read_timeout_s cn58xx;
++	struct cvmx_pci_read_timeout_s cn58xxp1;
++};
++
++union cvmx_pci_scm_reg {
++	uint64_t u64;
++	struct cvmx_pci_scm_reg_s {
++		uint64_t reserved_32_63:32;
++		uint64_t scm:32;
++	} s;
++	struct cvmx_pci_scm_reg_s cn30xx;
++	struct cvmx_pci_scm_reg_s cn31xx;
++	struct cvmx_pci_scm_reg_s cn38xx;
++	struct cvmx_pci_scm_reg_s cn38xxp2;
++	struct cvmx_pci_scm_reg_s cn50xx;
++	struct cvmx_pci_scm_reg_s cn58xx;
++	struct cvmx_pci_scm_reg_s cn58xxp1;
++};
++
++union cvmx_pci_tsr_reg {
++	uint64_t u64;
++	struct cvmx_pci_tsr_reg_s {
++		uint64_t reserved_36_63:28;
++		uint64_t tsr:36;
++	} s;
++	struct cvmx_pci_tsr_reg_s cn30xx;
++	struct cvmx_pci_tsr_reg_s cn31xx;
++	struct cvmx_pci_tsr_reg_s cn38xx;
++	struct cvmx_pci_tsr_reg_s cn38xxp2;
++	struct cvmx_pci_tsr_reg_s cn50xx;
++	struct cvmx_pci_tsr_reg_s cn58xx;
++	struct cvmx_pci_tsr_reg_s cn58xxp1;
++};
++
++union cvmx_pci_win_rd_addr {
++	uint64_t u64;
++	struct cvmx_pci_win_rd_addr_s {
++		uint64_t reserved_49_63:15;
++		uint64_t iobit:1;
++		uint64_t reserved_0_47:48;
++	} s;
++	struct cvmx_pci_win_rd_addr_cn30xx {
++		uint64_t reserved_49_63:15;
++		uint64_t iobit:1;
++		uint64_t rd_addr:46;
++		uint64_t reserved_0_1:2;
++	} cn30xx;
++	struct cvmx_pci_win_rd_addr_cn30xx cn31xx;
++	struct cvmx_pci_win_rd_addr_cn38xx {
++		uint64_t reserved_49_63:15;
++		uint64_t iobit:1;
++		uint64_t rd_addr:45;
++		uint64_t reserved_0_2:3;
++	} cn38xx;
++	struct cvmx_pci_win_rd_addr_cn38xx cn38xxp2;
++	struct cvmx_pci_win_rd_addr_cn30xx cn50xx;
++	struct cvmx_pci_win_rd_addr_cn38xx cn58xx;
++	struct cvmx_pci_win_rd_addr_cn38xx cn58xxp1;
++};
++
++union cvmx_pci_win_rd_data {
++	uint64_t u64;
++	struct cvmx_pci_win_rd_data_s {
++		uint64_t rd_data:64;
++	} s;
++	struct cvmx_pci_win_rd_data_s cn30xx;
++	struct cvmx_pci_win_rd_data_s cn31xx;
++	struct cvmx_pci_win_rd_data_s cn38xx;
++	struct cvmx_pci_win_rd_data_s cn38xxp2;
++	struct cvmx_pci_win_rd_data_s cn50xx;
++	struct cvmx_pci_win_rd_data_s cn58xx;
++	struct cvmx_pci_win_rd_data_s cn58xxp1;
++};
++
++union cvmx_pci_win_wr_addr {
++	uint64_t u64;
++	struct cvmx_pci_win_wr_addr_s {
++		uint64_t reserved_49_63:15;
++		uint64_t iobit:1;
++		uint64_t wr_addr:45;
++		uint64_t reserved_0_2:3;
++	} s;
++	struct cvmx_pci_win_wr_addr_s cn30xx;
++	struct cvmx_pci_win_wr_addr_s cn31xx;
++	struct cvmx_pci_win_wr_addr_s cn38xx;
++	struct cvmx_pci_win_wr_addr_s cn38xxp2;
++	struct cvmx_pci_win_wr_addr_s cn50xx;
++	struct cvmx_pci_win_wr_addr_s cn58xx;
++	struct cvmx_pci_win_wr_addr_s cn58xxp1;
++};
++
++union cvmx_pci_win_wr_data {
++	uint64_t u64;
++	struct cvmx_pci_win_wr_data_s {
++		uint64_t wr_data:64;
++	} s;
++	struct cvmx_pci_win_wr_data_s cn30xx;
++	struct cvmx_pci_win_wr_data_s cn31xx;
++	struct cvmx_pci_win_wr_data_s cn38xx;
++	struct cvmx_pci_win_wr_data_s cn38xxp2;
++	struct cvmx_pci_win_wr_data_s cn50xx;
++	struct cvmx_pci_win_wr_data_s cn58xx;
++	struct cvmx_pci_win_wr_data_s cn58xxp1;
++};
++
++union cvmx_pci_win_wr_mask {
++	uint64_t u64;
++	struct cvmx_pci_win_wr_mask_s {
++		uint64_t reserved_8_63:56;
++		uint64_t wr_mask:8;
++	} s;
++	struct cvmx_pci_win_wr_mask_s cn30xx;
++	struct cvmx_pci_win_wr_mask_s cn31xx;
++	struct cvmx_pci_win_wr_mask_s cn38xx;
++	struct cvmx_pci_win_wr_mask_s cn38xxp2;
++	struct cvmx_pci_win_wr_mask_s cn50xx;
++	struct cvmx_pci_win_wr_mask_s cn58xx;
++	struct cvmx_pci_win_wr_mask_s cn58xxp1;
++};
++
++#endif
+diff --git a/arch/mips/include/asm/octeon/cvmx-pcieep-defs.h b/arch/mips/include/asm/octeon/cvmx-pcieep-defs.h
+new file mode 100644
+index 0000000..d553f8e
+--- /dev/null
++++ b/arch/mips/include/asm/octeon/cvmx-pcieep-defs.h
+@@ -0,0 +1,1365 @@
++/***********************license start***************
++ * Author: Cavium Networks
++ *
++ * Contact: support@caviumnetworks.com
++ * This file is part of the OCTEON SDK
++ *
++ * Copyright (c) 2003-2008 Cavium Networks
++ *
++ * This file is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License, Version 2, as
++ * published by the Free Software Foundation.
++ *
++ * This file is distributed in the hope that it will be useful, but
++ * AS-IS and WITHOUT ANY WARRANTY; without even the implied warranty
++ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE, TITLE, or
++ * NONINFRINGEMENT.  See the GNU General Public License for more
++ * details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this file; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
++ * or visit http://www.gnu.org/licenses/.
++ *
++ * This file may also be available under a different license from Cavium.
++ * Contact Cavium Networks for more information
++ ***********************license end**************************************/
++
++#ifndef __CVMX_PCIEEP_DEFS_H__
++#define __CVMX_PCIEEP_DEFS_H__
++
++#define CVMX_PCIEEP_CFG000 \
++	 (0x0000000000000000ull)
++#define CVMX_PCIEEP_CFG001 \
++	 (0x0000000000000004ull)
++#define CVMX_PCIEEP_CFG002 \
++	 (0x0000000000000008ull)
++#define CVMX_PCIEEP_CFG003 \
++	 (0x000000000000000Cull)
++#define CVMX_PCIEEP_CFG004 \
++	 (0x0000000000000010ull)
++#define CVMX_PCIEEP_CFG004_MASK \
++	 (0x0000000080000010ull)
++#define CVMX_PCIEEP_CFG005 \
++	 (0x0000000000000014ull)
++#define CVMX_PCIEEP_CFG005_MASK \
++	 (0x0000000080000014ull)
++#define CVMX_PCIEEP_CFG006 \
++	 (0x0000000000000018ull)
++#define CVMX_PCIEEP_CFG006_MASK \
++	 (0x0000000080000018ull)
++#define CVMX_PCIEEP_CFG007 \
++	 (0x000000000000001Cull)
++#define CVMX_PCIEEP_CFG007_MASK \
++	 (0x000000008000001Cull)
++#define CVMX_PCIEEP_CFG008 \
++	 (0x0000000000000020ull)
++#define CVMX_PCIEEP_CFG008_MASK \
++	 (0x0000000080000020ull)
++#define CVMX_PCIEEP_CFG009 \
++	 (0x0000000000000024ull)
++#define CVMX_PCIEEP_CFG009_MASK \
++	 (0x0000000080000024ull)
++#define CVMX_PCIEEP_CFG010 \
++	 (0x0000000000000028ull)
++#define CVMX_PCIEEP_CFG011 \
++	 (0x000000000000002Cull)
++#define CVMX_PCIEEP_CFG012 \
++	 (0x0000000000000030ull)
++#define CVMX_PCIEEP_CFG012_MASK \
++	 (0x0000000080000030ull)
++#define CVMX_PCIEEP_CFG013 \
++	 (0x0000000000000034ull)
++#define CVMX_PCIEEP_CFG015 \
++	 (0x000000000000003Cull)
++#define CVMX_PCIEEP_CFG016 \
++	 (0x0000000000000040ull)
++#define CVMX_PCIEEP_CFG017 \
++	 (0x0000000000000044ull)
++#define CVMX_PCIEEP_CFG020 \
++	 (0x0000000000000050ull)
++#define CVMX_PCIEEP_CFG021 \
++	 (0x0000000000000054ull)
++#define CVMX_PCIEEP_CFG022 \
++	 (0x0000000000000058ull)
++#define CVMX_PCIEEP_CFG023 \
++	 (0x000000000000005Cull)
++#define CVMX_PCIEEP_CFG028 \
++	 (0x0000000000000070ull)
++#define CVMX_PCIEEP_CFG029 \
++	 (0x0000000000000074ull)
++#define CVMX_PCIEEP_CFG030 \
++	 (0x0000000000000078ull)
++#define CVMX_PCIEEP_CFG031 \
++	 (0x000000000000007Cull)
++#define CVMX_PCIEEP_CFG032 \
++	 (0x0000000000000080ull)
++#define CVMX_PCIEEP_CFG033 \
++	 (0x0000000000000084ull)
++#define CVMX_PCIEEP_CFG034 \
++	 (0x0000000000000088ull)
++#define CVMX_PCIEEP_CFG037 \
++	 (0x0000000000000094ull)
++#define CVMX_PCIEEP_CFG038 \
++	 (0x0000000000000098ull)
++#define CVMX_PCIEEP_CFG039 \
++	 (0x000000000000009Cull)
++#define CVMX_PCIEEP_CFG040 \
++	 (0x00000000000000A0ull)
++#define CVMX_PCIEEP_CFG041 \
++	 (0x00000000000000A4ull)
++#define CVMX_PCIEEP_CFG042 \
++	 (0x00000000000000A8ull)
++#define CVMX_PCIEEP_CFG064 \
++	 (0x0000000000000100ull)
++#define CVMX_PCIEEP_CFG065 \
++	 (0x0000000000000104ull)
++#define CVMX_PCIEEP_CFG066 \
++	 (0x0000000000000108ull)
++#define CVMX_PCIEEP_CFG067 \
++	 (0x000000000000010Cull)
++#define CVMX_PCIEEP_CFG068 \
++	 (0x0000000000000110ull)
++#define CVMX_PCIEEP_CFG069 \
++	 (0x0000000000000114ull)
++#define CVMX_PCIEEP_CFG070 \
++	 (0x0000000000000118ull)
++#define CVMX_PCIEEP_CFG071 \
++	 (0x000000000000011Cull)
++#define CVMX_PCIEEP_CFG072 \
++	 (0x0000000000000120ull)
++#define CVMX_PCIEEP_CFG073 \
++	 (0x0000000000000124ull)
++#define CVMX_PCIEEP_CFG074 \
++	 (0x0000000000000128ull)
++#define CVMX_PCIEEP_CFG448 \
++	 (0x0000000000000700ull)
++#define CVMX_PCIEEP_CFG449 \
++	 (0x0000000000000704ull)
++#define CVMX_PCIEEP_CFG450 \
++	 (0x0000000000000708ull)
++#define CVMX_PCIEEP_CFG451 \
++	 (0x000000000000070Cull)
++#define CVMX_PCIEEP_CFG452 \
++	 (0x0000000000000710ull)
++#define CVMX_PCIEEP_CFG453 \
++	 (0x0000000000000714ull)
++#define CVMX_PCIEEP_CFG454 \
++	 (0x0000000000000718ull)
++#define CVMX_PCIEEP_CFG455 \
++	 (0x000000000000071Cull)
++#define CVMX_PCIEEP_CFG456 \
++	 (0x0000000000000720ull)
++#define CVMX_PCIEEP_CFG458 \
++	 (0x0000000000000728ull)
++#define CVMX_PCIEEP_CFG459 \
++	 (0x000000000000072Cull)
++#define CVMX_PCIEEP_CFG460 \
++	 (0x0000000000000730ull)
++#define CVMX_PCIEEP_CFG461 \
++	 (0x0000000000000734ull)
++#define CVMX_PCIEEP_CFG462 \
++	 (0x0000000000000738ull)
++#define CVMX_PCIEEP_CFG463 \
++	 (0x000000000000073Cull)
++#define CVMX_PCIEEP_CFG464 \
++	 (0x0000000000000740ull)
++#define CVMX_PCIEEP_CFG465 \
++	 (0x0000000000000744ull)
++#define CVMX_PCIEEP_CFG466 \
++	 (0x0000000000000748ull)
++#define CVMX_PCIEEP_CFG467 \
++	 (0x000000000000074Cull)
++#define CVMX_PCIEEP_CFG468 \
++	 (0x0000000000000750ull)
++#define CVMX_PCIEEP_CFG490 \
++	 (0x00000000000007A8ull)
++#define CVMX_PCIEEP_CFG491 \
++	 (0x00000000000007ACull)
++#define CVMX_PCIEEP_CFG492 \
++	 (0x00000000000007B0ull)
++#define CVMX_PCIEEP_CFG516 \
++	 (0x0000000000000810ull)
++#define CVMX_PCIEEP_CFG517 \
++	 (0x0000000000000814ull)
++
++union cvmx_pcieep_cfg000 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg000_s {
++		uint32_t devid:16;
++		uint32_t vendid:16;
++	} s;
++	struct cvmx_pcieep_cfg000_s cn52xx;
++	struct cvmx_pcieep_cfg000_s cn52xxp1;
++	struct cvmx_pcieep_cfg000_s cn56xx;
++	struct cvmx_pcieep_cfg000_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg001 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg001_s {
++		uint32_t dpe:1;
++		uint32_t sse:1;
++		uint32_t rma:1;
++		uint32_t rta:1;
++		uint32_t sta:1;
++		uint32_t devt:2;
++		uint32_t mdpe:1;
++		uint32_t fbb:1;
++		uint32_t reserved_22_22:1;
++		uint32_t m66:1;
++		uint32_t cl:1;
++		uint32_t i_stat:1;
++		uint32_t reserved_11_18:8;
++		uint32_t i_dis:1;
++		uint32_t fbbe:1;
++		uint32_t see:1;
++		uint32_t ids_wcc:1;
++		uint32_t per:1;
++		uint32_t vps:1;
++		uint32_t mwice:1;
++		uint32_t scse:1;
++		uint32_t me:1;
++		uint32_t msae:1;
++		uint32_t isae:1;
++	} s;
++	struct cvmx_pcieep_cfg001_s cn52xx;
++	struct cvmx_pcieep_cfg001_s cn52xxp1;
++	struct cvmx_pcieep_cfg001_s cn56xx;
++	struct cvmx_pcieep_cfg001_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg002 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg002_s {
++		uint32_t bcc:8;
++		uint32_t sc:8;
++		uint32_t pi:8;
++		uint32_t rid:8;
++	} s;
++	struct cvmx_pcieep_cfg002_s cn52xx;
++	struct cvmx_pcieep_cfg002_s cn52xxp1;
++	struct cvmx_pcieep_cfg002_s cn56xx;
++	struct cvmx_pcieep_cfg002_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg003 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg003_s {
++		uint32_t bist:8;
++		uint32_t mfd:1;
++		uint32_t chf:7;
++		uint32_t lt:8;
++		uint32_t cls:8;
++	} s;
++	struct cvmx_pcieep_cfg003_s cn52xx;
++	struct cvmx_pcieep_cfg003_s cn52xxp1;
++	struct cvmx_pcieep_cfg003_s cn56xx;
++	struct cvmx_pcieep_cfg003_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg004 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg004_s {
++		uint32_t lbab:18;
++		uint32_t reserved_4_13:10;
++		uint32_t pf:1;
++		uint32_t typ:2;
++		uint32_t mspc:1;
++	} s;
++	struct cvmx_pcieep_cfg004_s cn52xx;
++	struct cvmx_pcieep_cfg004_s cn52xxp1;
++	struct cvmx_pcieep_cfg004_s cn56xx;
++	struct cvmx_pcieep_cfg004_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg004_mask {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg004_mask_s {
++		uint32_t lmask:31;
++		uint32_t enb:1;
++	} s;
++	struct cvmx_pcieep_cfg004_mask_s cn52xx;
++	struct cvmx_pcieep_cfg004_mask_s cn52xxp1;
++	struct cvmx_pcieep_cfg004_mask_s cn56xx;
++	struct cvmx_pcieep_cfg004_mask_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg005 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg005_s {
++		uint32_t ubab:32;
++	} s;
++	struct cvmx_pcieep_cfg005_s cn52xx;
++	struct cvmx_pcieep_cfg005_s cn52xxp1;
++	struct cvmx_pcieep_cfg005_s cn56xx;
++	struct cvmx_pcieep_cfg005_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg005_mask {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg005_mask_s {
++		uint32_t umask:32;
++	} s;
++	struct cvmx_pcieep_cfg005_mask_s cn52xx;
++	struct cvmx_pcieep_cfg005_mask_s cn52xxp1;
++	struct cvmx_pcieep_cfg005_mask_s cn56xx;
++	struct cvmx_pcieep_cfg005_mask_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg006 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg006_s {
++		uint32_t lbab:6;
++		uint32_t reserved_4_25:22;
++		uint32_t pf:1;
++		uint32_t typ:2;
++		uint32_t mspc:1;
++	} s;
++	struct cvmx_pcieep_cfg006_s cn52xx;
++	struct cvmx_pcieep_cfg006_s cn52xxp1;
++	struct cvmx_pcieep_cfg006_s cn56xx;
++	struct cvmx_pcieep_cfg006_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg006_mask {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg006_mask_s {
++		uint32_t lmask:31;
++		uint32_t enb:1;
++	} s;
++	struct cvmx_pcieep_cfg006_mask_s cn52xx;
++	struct cvmx_pcieep_cfg006_mask_s cn52xxp1;
++	struct cvmx_pcieep_cfg006_mask_s cn56xx;
++	struct cvmx_pcieep_cfg006_mask_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg007 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg007_s {
++		uint32_t ubab:32;
++	} s;
++	struct cvmx_pcieep_cfg007_s cn52xx;
++	struct cvmx_pcieep_cfg007_s cn52xxp1;
++	struct cvmx_pcieep_cfg007_s cn56xx;
++	struct cvmx_pcieep_cfg007_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg007_mask {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg007_mask_s {
++		uint32_t umask:32;
++	} s;
++	struct cvmx_pcieep_cfg007_mask_s cn52xx;
++	struct cvmx_pcieep_cfg007_mask_s cn52xxp1;
++	struct cvmx_pcieep_cfg007_mask_s cn56xx;
++	struct cvmx_pcieep_cfg007_mask_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg008 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg008_s {
++		uint32_t reserved_4_31:28;
++		uint32_t pf:1;
++		uint32_t typ:2;
++		uint32_t mspc:1;
++	} s;
++	struct cvmx_pcieep_cfg008_s cn52xx;
++	struct cvmx_pcieep_cfg008_s cn52xxp1;
++	struct cvmx_pcieep_cfg008_s cn56xx;
++	struct cvmx_pcieep_cfg008_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg008_mask {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg008_mask_s {
++		uint32_t lmask:31;
++		uint32_t enb:1;
++	} s;
++	struct cvmx_pcieep_cfg008_mask_s cn52xx;
++	struct cvmx_pcieep_cfg008_mask_s cn52xxp1;
++	struct cvmx_pcieep_cfg008_mask_s cn56xx;
++	struct cvmx_pcieep_cfg008_mask_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg009 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg009_s {
++		uint32_t ubab:25;
++		uint32_t reserved_0_6:7;
++	} s;
++	struct cvmx_pcieep_cfg009_s cn52xx;
++	struct cvmx_pcieep_cfg009_s cn52xxp1;
++	struct cvmx_pcieep_cfg009_s cn56xx;
++	struct cvmx_pcieep_cfg009_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg009_mask {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg009_mask_s {
++		uint32_t umask:32;
++	} s;
++	struct cvmx_pcieep_cfg009_mask_s cn52xx;
++	struct cvmx_pcieep_cfg009_mask_s cn52xxp1;
++	struct cvmx_pcieep_cfg009_mask_s cn56xx;
++	struct cvmx_pcieep_cfg009_mask_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg010 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg010_s {
++		uint32_t cisp:32;
++	} s;
++	struct cvmx_pcieep_cfg010_s cn52xx;
++	struct cvmx_pcieep_cfg010_s cn52xxp1;
++	struct cvmx_pcieep_cfg010_s cn56xx;
++	struct cvmx_pcieep_cfg010_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg011 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg011_s {
++		uint32_t ssid:16;
++		uint32_t ssvid:16;
++	} s;
++	struct cvmx_pcieep_cfg011_s cn52xx;
++	struct cvmx_pcieep_cfg011_s cn52xxp1;
++	struct cvmx_pcieep_cfg011_s cn56xx;
++	struct cvmx_pcieep_cfg011_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg012 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg012_s {
++		uint32_t eraddr:16;
++		uint32_t reserved_1_15:15;
++		uint32_t er_en:1;
++	} s;
++	struct cvmx_pcieep_cfg012_s cn52xx;
++	struct cvmx_pcieep_cfg012_s cn52xxp1;
++	struct cvmx_pcieep_cfg012_s cn56xx;
++	struct cvmx_pcieep_cfg012_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg012_mask {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg012_mask_s {
++		uint32_t mask:31;
++		uint32_t enb:1;
++	} s;
++	struct cvmx_pcieep_cfg012_mask_s cn52xx;
++	struct cvmx_pcieep_cfg012_mask_s cn52xxp1;
++	struct cvmx_pcieep_cfg012_mask_s cn56xx;
++	struct cvmx_pcieep_cfg012_mask_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg013 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg013_s {
++		uint32_t reserved_8_31:24;
++		uint32_t cp:8;
++	} s;
++	struct cvmx_pcieep_cfg013_s cn52xx;
++	struct cvmx_pcieep_cfg013_s cn52xxp1;
++	struct cvmx_pcieep_cfg013_s cn56xx;
++	struct cvmx_pcieep_cfg013_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg015 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg015_s {
++		uint32_t ml:8;
++		uint32_t mg:8;
++		uint32_t inta:8;
++		uint32_t il:8;
++	} s;
++	struct cvmx_pcieep_cfg015_s cn52xx;
++	struct cvmx_pcieep_cfg015_s cn52xxp1;
++	struct cvmx_pcieep_cfg015_s cn56xx;
++	struct cvmx_pcieep_cfg015_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg016 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg016_s {
++		uint32_t pmes:5;
++		uint32_t d2s:1;
++		uint32_t d1s:1;
++		uint32_t auxc:3;
++		uint32_t dsi:1;
++		uint32_t reserved_20_20:1;
++		uint32_t pme_clock:1;
++		uint32_t pmsv:3;
++		uint32_t ncp:8;
++		uint32_t pmcid:8;
++	} s;
++	struct cvmx_pcieep_cfg016_s cn52xx;
++	struct cvmx_pcieep_cfg016_s cn52xxp1;
++	struct cvmx_pcieep_cfg016_s cn56xx;
++	struct cvmx_pcieep_cfg016_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg017 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg017_s {
++		uint32_t pmdia:8;
++		uint32_t bpccee:1;
++		uint32_t bd3h:1;
++		uint32_t reserved_16_21:6;
++		uint32_t pmess:1;
++		uint32_t pmedsia:2;
++		uint32_t pmds:4;
++		uint32_t pmeens:1;
++		uint32_t reserved_4_7:4;
++		uint32_t nsr:1;
++		uint32_t reserved_2_2:1;
++		uint32_t ps:2;
++	} s;
++	struct cvmx_pcieep_cfg017_s cn52xx;
++	struct cvmx_pcieep_cfg017_s cn52xxp1;
++	struct cvmx_pcieep_cfg017_s cn56xx;
++	struct cvmx_pcieep_cfg017_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg020 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg020_s {
++		uint32_t reserved_24_31:8;
++		uint32_t m64:1;
++		uint32_t mme:3;
++		uint32_t mmc:3;
++		uint32_t msien:1;
++		uint32_t ncp:8;
++		uint32_t msicid:8;
++	} s;
++	struct cvmx_pcieep_cfg020_s cn52xx;
++	struct cvmx_pcieep_cfg020_s cn52xxp1;
++	struct cvmx_pcieep_cfg020_s cn56xx;
++	struct cvmx_pcieep_cfg020_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg021 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg021_s {
++		uint32_t lmsi:30;
++		uint32_t reserved_0_1:2;
++	} s;
++	struct cvmx_pcieep_cfg021_s cn52xx;
++	struct cvmx_pcieep_cfg021_s cn52xxp1;
++	struct cvmx_pcieep_cfg021_s cn56xx;
++	struct cvmx_pcieep_cfg021_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg022 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg022_s {
++		uint32_t umsi:32;
++	} s;
++	struct cvmx_pcieep_cfg022_s cn52xx;
++	struct cvmx_pcieep_cfg022_s cn52xxp1;
++	struct cvmx_pcieep_cfg022_s cn56xx;
++	struct cvmx_pcieep_cfg022_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg023 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg023_s {
++		uint32_t reserved_16_31:16;
++		uint32_t msimd:16;
++	} s;
++	struct cvmx_pcieep_cfg023_s cn52xx;
++	struct cvmx_pcieep_cfg023_s cn52xxp1;
++	struct cvmx_pcieep_cfg023_s cn56xx;
++	struct cvmx_pcieep_cfg023_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg028 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg028_s {
++		uint32_t reserved_30_31:2;
++		uint32_t imn:5;
++		uint32_t si:1;
++		uint32_t dpt:4;
++		uint32_t pciecv:4;
++		uint32_t ncp:8;
++		uint32_t pcieid:8;
++	} s;
++	struct cvmx_pcieep_cfg028_s cn52xx;
++	struct cvmx_pcieep_cfg028_s cn52xxp1;
++	struct cvmx_pcieep_cfg028_s cn56xx;
++	struct cvmx_pcieep_cfg028_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg029 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg029_s {
++		uint32_t reserved_28_31:4;
++		uint32_t cspls:2;
++		uint32_t csplv:8;
++		uint32_t reserved_16_17:2;
++		uint32_t rber:1;
++		uint32_t reserved_12_14:3;
++		uint32_t el1al:3;
++		uint32_t el0al:3;
++		uint32_t etfs:1;
++		uint32_t pfs:2;
++		uint32_t mpss:3;
++	} s;
++	struct cvmx_pcieep_cfg029_s cn52xx;
++	struct cvmx_pcieep_cfg029_s cn52xxp1;
++	struct cvmx_pcieep_cfg029_s cn56xx;
++	struct cvmx_pcieep_cfg029_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg030 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg030_s {
++		uint32_t reserved_22_31:10;
++		uint32_t tp:1;
++		uint32_t ap_d:1;
++		uint32_t ur_d:1;
++		uint32_t fe_d:1;
++		uint32_t nfe_d:1;
++		uint32_t ce_d:1;
++		uint32_t reserved_15_15:1;
++		uint32_t mrrs:3;
++		uint32_t ns_en:1;
++		uint32_t ap_en:1;
++		uint32_t pf_en:1;
++		uint32_t etf_en:1;
++		uint32_t mps:3;
++		uint32_t ro_en:1;
++		uint32_t ur_en:1;
++		uint32_t fe_en:1;
++		uint32_t nfe_en:1;
++		uint32_t ce_en:1;
++	} s;
++	struct cvmx_pcieep_cfg030_s cn52xx;
++	struct cvmx_pcieep_cfg030_s cn52xxp1;
++	struct cvmx_pcieep_cfg030_s cn56xx;
++	struct cvmx_pcieep_cfg030_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg031 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg031_s {
++		uint32_t pnum:8;
++		uint32_t reserved_22_23:2;
++		uint32_t lbnc:1;
++		uint32_t dllarc:1;
++		uint32_t sderc:1;
++		uint32_t cpm:1;
++		uint32_t l1el:3;
++		uint32_t l0el:3;
++		uint32_t aslpms:2;
++		uint32_t mlw:6;
++		uint32_t mls:4;
++	} s;
++	struct cvmx_pcieep_cfg031_s cn52xx;
++	struct cvmx_pcieep_cfg031_s cn52xxp1;
++	struct cvmx_pcieep_cfg031_s cn56xx;
++	struct cvmx_pcieep_cfg031_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg032 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg032_s {
++		uint32_t reserved_30_31:2;
++		uint32_t dlla:1;
++		uint32_t scc:1;
++		uint32_t lt:1;
++		uint32_t reserved_26_26:1;
++		uint32_t nlw:6;
++		uint32_t ls:4;
++		uint32_t reserved_10_15:6;
++		uint32_t hawd:1;
++		uint32_t ecpm:1;
++		uint32_t es:1;
++		uint32_t ccc:1;
++		uint32_t rl:1;
++		uint32_t ld:1;
++		uint32_t rcb:1;
++		uint32_t reserved_2_2:1;
++		uint32_t aslpc:2;
++	} s;
++	struct cvmx_pcieep_cfg032_s cn52xx;
++	struct cvmx_pcieep_cfg032_s cn52xxp1;
++	struct cvmx_pcieep_cfg032_s cn56xx;
++	struct cvmx_pcieep_cfg032_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg033 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg033_s {
++		uint32_t ps_num:13;
++		uint32_t nccs:1;
++		uint32_t emip:1;
++		uint32_t sp_ls:2;
++		uint32_t sp_lv:8;
++		uint32_t hp_c:1;
++		uint32_t hp_s:1;
++		uint32_t pip:1;
++		uint32_t aip:1;
++		uint32_t mrlsp:1;
++		uint32_t pcp:1;
++		uint32_t abp:1;
++	} s;
++	struct cvmx_pcieep_cfg033_s cn52xx;
++	struct cvmx_pcieep_cfg033_s cn52xxp1;
++	struct cvmx_pcieep_cfg033_s cn56xx;
++	struct cvmx_pcieep_cfg033_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg034 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg034_s {
++		uint32_t reserved_25_31:7;
++		uint32_t dlls_c:1;
++		uint32_t emis:1;
++		uint32_t pds:1;
++		uint32_t mrlss:1;
++		uint32_t ccint_d:1;
++		uint32_t pd_c:1;
++		uint32_t mrls_c:1;
++		uint32_t pf_d:1;
++		uint32_t abp_d:1;
++		uint32_t reserved_13_15:3;
++		uint32_t dlls_en:1;
++		uint32_t emic:1;
++		uint32_t pcc:1;
++		uint32_t pic:2;
++		uint32_t aic:2;
++		uint32_t hpint_en:1;
++		uint32_t ccint_en:1;
++		uint32_t pd_en:1;
++		uint32_t mrls_en:1;
++		uint32_t pf_en:1;
++		uint32_t abp_en:1;
++	} s;
++	struct cvmx_pcieep_cfg034_s cn52xx;
++	struct cvmx_pcieep_cfg034_s cn52xxp1;
++	struct cvmx_pcieep_cfg034_s cn56xx;
++	struct cvmx_pcieep_cfg034_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg037 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg037_s {
++		uint32_t reserved_5_31:27;
++		uint32_t ctds:1;
++		uint32_t ctrs:4;
++	} s;
++	struct cvmx_pcieep_cfg037_s cn52xx;
++	struct cvmx_pcieep_cfg037_s cn52xxp1;
++	struct cvmx_pcieep_cfg037_s cn56xx;
++	struct cvmx_pcieep_cfg037_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg038 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg038_s {
++		uint32_t reserved_5_31:27;
++		uint32_t ctd:1;
++		uint32_t ctv:4;
++	} s;
++	struct cvmx_pcieep_cfg038_s cn52xx;
++	struct cvmx_pcieep_cfg038_s cn52xxp1;
++	struct cvmx_pcieep_cfg038_s cn56xx;
++	struct cvmx_pcieep_cfg038_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg039 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg039_s {
++		uint32_t reserved_0_31:32;
++	} s;
++	struct cvmx_pcieep_cfg039_s cn52xx;
++	struct cvmx_pcieep_cfg039_s cn52xxp1;
++	struct cvmx_pcieep_cfg039_s cn56xx;
++	struct cvmx_pcieep_cfg039_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg040 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg040_s {
++		uint32_t reserved_0_31:32;
++	} s;
++	struct cvmx_pcieep_cfg040_s cn52xx;
++	struct cvmx_pcieep_cfg040_s cn52xxp1;
++	struct cvmx_pcieep_cfg040_s cn56xx;
++	struct cvmx_pcieep_cfg040_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg041 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg041_s {
++		uint32_t reserved_0_31:32;
++	} s;
++	struct cvmx_pcieep_cfg041_s cn52xx;
++	struct cvmx_pcieep_cfg041_s cn52xxp1;
++	struct cvmx_pcieep_cfg041_s cn56xx;
++	struct cvmx_pcieep_cfg041_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg042 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg042_s {
++		uint32_t reserved_0_31:32;
++	} s;
++	struct cvmx_pcieep_cfg042_s cn52xx;
++	struct cvmx_pcieep_cfg042_s cn52xxp1;
++	struct cvmx_pcieep_cfg042_s cn56xx;
++	struct cvmx_pcieep_cfg042_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg064 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg064_s {
++		uint32_t nco:12;
++		uint32_t cv:4;
++		uint32_t pcieec:16;
++	} s;
++	struct cvmx_pcieep_cfg064_s cn52xx;
++	struct cvmx_pcieep_cfg064_s cn52xxp1;
++	struct cvmx_pcieep_cfg064_s cn56xx;
++	struct cvmx_pcieep_cfg064_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg065 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg065_s {
++		uint32_t reserved_21_31:11;
++		uint32_t ures:1;
++		uint32_t ecrces:1;
++		uint32_t mtlps:1;
++		uint32_t ros:1;
++		uint32_t ucs:1;
++		uint32_t cas:1;
++		uint32_t cts:1;
++		uint32_t fcpes:1;
++		uint32_t ptlps:1;
++		uint32_t reserved_6_11:6;
++		uint32_t sdes:1;
++		uint32_t dlpes:1;
++		uint32_t reserved_0_3:4;
++	} s;
++	struct cvmx_pcieep_cfg065_s cn52xx;
++	struct cvmx_pcieep_cfg065_s cn52xxp1;
++	struct cvmx_pcieep_cfg065_s cn56xx;
++	struct cvmx_pcieep_cfg065_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg066 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg066_s {
++		uint32_t reserved_21_31:11;
++		uint32_t urem:1;
++		uint32_t ecrcem:1;
++		uint32_t mtlpm:1;
++		uint32_t rom:1;
++		uint32_t ucm:1;
++		uint32_t cam:1;
++		uint32_t ctm:1;
++		uint32_t fcpem:1;
++		uint32_t ptlpm:1;
++		uint32_t reserved_6_11:6;
++		uint32_t sdem:1;
++		uint32_t dlpem:1;
++		uint32_t reserved_0_3:4;
++	} s;
++	struct cvmx_pcieep_cfg066_s cn52xx;
++	struct cvmx_pcieep_cfg066_s cn52xxp1;
++	struct cvmx_pcieep_cfg066_s cn56xx;
++	struct cvmx_pcieep_cfg066_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg067 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg067_s {
++		uint32_t reserved_21_31:11;
++		uint32_t ures:1;
++		uint32_t ecrces:1;
++		uint32_t mtlps:1;
++		uint32_t ros:1;
++		uint32_t ucs:1;
++		uint32_t cas:1;
++		uint32_t cts:1;
++		uint32_t fcpes:1;
++		uint32_t ptlps:1;
++		uint32_t reserved_6_11:6;
++		uint32_t sdes:1;
++		uint32_t dlpes:1;
++		uint32_t reserved_0_3:4;
++	} s;
++	struct cvmx_pcieep_cfg067_s cn52xx;
++	struct cvmx_pcieep_cfg067_s cn52xxp1;
++	struct cvmx_pcieep_cfg067_s cn56xx;
++	struct cvmx_pcieep_cfg067_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg068 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg068_s {
++		uint32_t reserved_14_31:18;
++		uint32_t anfes:1;
++		uint32_t rtts:1;
++		uint32_t reserved_9_11:3;
++		uint32_t rnrs:1;
++		uint32_t bdllps:1;
++		uint32_t btlps:1;
++		uint32_t reserved_1_5:5;
++		uint32_t res:1;
++	} s;
++	struct cvmx_pcieep_cfg068_s cn52xx;
++	struct cvmx_pcieep_cfg068_s cn52xxp1;
++	struct cvmx_pcieep_cfg068_s cn56xx;
++	struct cvmx_pcieep_cfg068_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg069 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg069_s {
++		uint32_t reserved_14_31:18;
++		uint32_t anfem:1;
++		uint32_t rttm:1;
++		uint32_t reserved_9_11:3;
++		uint32_t rnrm:1;
++		uint32_t bdllpm:1;
++		uint32_t btlpm:1;
++		uint32_t reserved_1_5:5;
++		uint32_t rem:1;
++	} s;
++	struct cvmx_pcieep_cfg069_s cn52xx;
++	struct cvmx_pcieep_cfg069_s cn52xxp1;
++	struct cvmx_pcieep_cfg069_s cn56xx;
++	struct cvmx_pcieep_cfg069_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg070 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg070_s {
++		uint32_t reserved_9_31:23;
++		uint32_t ce:1;
++		uint32_t cc:1;
++		uint32_t ge:1;
++		uint32_t gc:1;
++		uint32_t fep:5;
++	} s;
++	struct cvmx_pcieep_cfg070_s cn52xx;
++	struct cvmx_pcieep_cfg070_s cn52xxp1;
++	struct cvmx_pcieep_cfg070_s cn56xx;
++	struct cvmx_pcieep_cfg070_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg071 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg071_s {
++		uint32_t dword1:32;
++	} s;
++	struct cvmx_pcieep_cfg071_s cn52xx;
++	struct cvmx_pcieep_cfg071_s cn52xxp1;
++	struct cvmx_pcieep_cfg071_s cn56xx;
++	struct cvmx_pcieep_cfg071_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg072 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg072_s {
++		uint32_t dword2:32;
++	} s;
++	struct cvmx_pcieep_cfg072_s cn52xx;
++	struct cvmx_pcieep_cfg072_s cn52xxp1;
++	struct cvmx_pcieep_cfg072_s cn56xx;
++	struct cvmx_pcieep_cfg072_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg073 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg073_s {
++		uint32_t dword3:32;
++	} s;
++	struct cvmx_pcieep_cfg073_s cn52xx;
++	struct cvmx_pcieep_cfg073_s cn52xxp1;
++	struct cvmx_pcieep_cfg073_s cn56xx;
++	struct cvmx_pcieep_cfg073_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg074 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg074_s {
++		uint32_t dword4:32;
++	} s;
++	struct cvmx_pcieep_cfg074_s cn52xx;
++	struct cvmx_pcieep_cfg074_s cn52xxp1;
++	struct cvmx_pcieep_cfg074_s cn56xx;
++	struct cvmx_pcieep_cfg074_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg448 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg448_s {
++		uint32_t rtl:16;
++		uint32_t rtltl:16;
++	} s;
++	struct cvmx_pcieep_cfg448_s cn52xx;
++	struct cvmx_pcieep_cfg448_s cn52xxp1;
++	struct cvmx_pcieep_cfg448_s cn56xx;
++	struct cvmx_pcieep_cfg448_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg449 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg449_s {
++		uint32_t omr:32;
++	} s;
++	struct cvmx_pcieep_cfg449_s cn52xx;
++	struct cvmx_pcieep_cfg449_s cn52xxp1;
++	struct cvmx_pcieep_cfg449_s cn56xx;
++	struct cvmx_pcieep_cfg449_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg450 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg450_s {
++		uint32_t lpec:8;
++		uint32_t reserved_22_23:2;
++		uint32_t link_state:6;
++		uint32_t force_link:1;
++		uint32_t reserved_8_14:7;
++		uint32_t link_num:8;
++	} s;
++	struct cvmx_pcieep_cfg450_s cn52xx;
++	struct cvmx_pcieep_cfg450_s cn52xxp1;
++	struct cvmx_pcieep_cfg450_s cn56xx;
++	struct cvmx_pcieep_cfg450_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg451 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg451_s {
++		uint32_t reserved_30_31:2;
++		uint32_t l1el:3;
++		uint32_t l0el:3;
++		uint32_t n_fts_cc:8;
++		uint32_t n_fts:8;
++		uint32_t ack_freq:8;
++	} s;
++	struct cvmx_pcieep_cfg451_s cn52xx;
++	struct cvmx_pcieep_cfg451_s cn52xxp1;
++	struct cvmx_pcieep_cfg451_s cn56xx;
++	struct cvmx_pcieep_cfg451_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg452 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg452_s {
++		uint32_t reserved_26_31:6;
++		uint32_t eccrc:1;
++		uint32_t reserved_22_24:3;
++		uint32_t lme:6;
++		uint32_t reserved_8_15:8;
++		uint32_t flm:1;
++		uint32_t reserved_6_6:1;
++		uint32_t dllle:1;
++		uint32_t reserved_4_4:1;
++		uint32_t ra:1;
++		uint32_t le:1;
++		uint32_t sd:1;
++		uint32_t omr:1;
++	} s;
++	struct cvmx_pcieep_cfg452_s cn52xx;
++	struct cvmx_pcieep_cfg452_s cn52xxp1;
++	struct cvmx_pcieep_cfg452_s cn56xx;
++	struct cvmx_pcieep_cfg452_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg453 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg453_s {
++		uint32_t dlld:1;
++		uint32_t reserved_26_30:5;
++		uint32_t ack_nak:1;
++		uint32_t fcd:1;
++		uint32_t ilst:24;
++	} s;
++	struct cvmx_pcieep_cfg453_s cn52xx;
++	struct cvmx_pcieep_cfg453_s cn52xxp1;
++	struct cvmx_pcieep_cfg453_s cn56xx;
++	struct cvmx_pcieep_cfg453_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg454 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg454_s {
++		uint32_t reserved_29_31:3;
++		uint32_t tmfcwt:5;
++		uint32_t tmanlt:5;
++		uint32_t tmrt:5;
++		uint32_t reserved_11_13:3;
++		uint32_t nskps:3;
++		uint32_t reserved_4_7:4;
++		uint32_t ntss:4;
++	} s;
++	struct cvmx_pcieep_cfg454_s cn52xx;
++	struct cvmx_pcieep_cfg454_s cn52xxp1;
++	struct cvmx_pcieep_cfg454_s cn56xx;
++	struct cvmx_pcieep_cfg454_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg455 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg455_s {
++		uint32_t m_cfg0_filt:1;
++		uint32_t m_io_filt:1;
++		uint32_t msg_ctrl:1;
++		uint32_t m_cpl_ecrc_filt:1;
++		uint32_t m_ecrc_filt:1;
++		uint32_t m_cpl_len_err:1;
++		uint32_t m_cpl_attr_err:1;
++		uint32_t m_cpl_tc_err:1;
++		uint32_t m_cpl_fun_err:1;
++		uint32_t m_cpl_rid_err:1;
++		uint32_t m_cpl_tag_err:1;
++		uint32_t m_lk_filt:1;
++		uint32_t m_cfg1_filt:1;
++		uint32_t m_bar_match:1;
++		uint32_t m_pois_filt:1;
++		uint32_t m_fun:1;
++		uint32_t dfcwt:1;
++		uint32_t reserved_11_14:4;
++		uint32_t skpiv:11;
++	} s;
++	struct cvmx_pcieep_cfg455_s cn52xx;
++	struct cvmx_pcieep_cfg455_s cn52xxp1;
++	struct cvmx_pcieep_cfg455_s cn56xx;
++	struct cvmx_pcieep_cfg455_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg456 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg456_s {
++		uint32_t reserved_2_31:30;
++		uint32_t m_vend1_drp:1;
++		uint32_t m_vend0_drp:1;
++	} s;
++	struct cvmx_pcieep_cfg456_s cn52xx;
++	struct cvmx_pcieep_cfg456_s cn52xxp1;
++	struct cvmx_pcieep_cfg456_s cn56xx;
++	struct cvmx_pcieep_cfg456_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg458 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg458_s {
++		uint32_t dbg_info_l32:32;
++	} s;
++	struct cvmx_pcieep_cfg458_s cn52xx;
++	struct cvmx_pcieep_cfg458_s cn52xxp1;
++	struct cvmx_pcieep_cfg458_s cn56xx;
++	struct cvmx_pcieep_cfg458_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg459 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg459_s {
++		uint32_t dbg_info_u32:32;
++	} s;
++	struct cvmx_pcieep_cfg459_s cn52xx;
++	struct cvmx_pcieep_cfg459_s cn52xxp1;
++	struct cvmx_pcieep_cfg459_s cn56xx;
++	struct cvmx_pcieep_cfg459_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg460 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg460_s {
++		uint32_t reserved_20_31:12;
++		uint32_t tphfcc:8;
++		uint32_t tpdfcc:12;
++	} s;
++	struct cvmx_pcieep_cfg460_s cn52xx;
++	struct cvmx_pcieep_cfg460_s cn52xxp1;
++	struct cvmx_pcieep_cfg460_s cn56xx;
++	struct cvmx_pcieep_cfg460_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg461 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg461_s {
++		uint32_t reserved_20_31:12;
++		uint32_t tchfcc:8;
++		uint32_t tcdfcc:12;
++	} s;
++	struct cvmx_pcieep_cfg461_s cn52xx;
++	struct cvmx_pcieep_cfg461_s cn52xxp1;
++	struct cvmx_pcieep_cfg461_s cn56xx;
++	struct cvmx_pcieep_cfg461_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg462 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg462_s {
++		uint32_t reserved_20_31:12;
++		uint32_t tchfcc:8;
++		uint32_t tcdfcc:12;
++	} s;
++	struct cvmx_pcieep_cfg462_s cn52xx;
++	struct cvmx_pcieep_cfg462_s cn52xxp1;
++	struct cvmx_pcieep_cfg462_s cn56xx;
++	struct cvmx_pcieep_cfg462_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg463 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg463_s {
++		uint32_t reserved_3_31:29;
++		uint32_t rqne:1;
++		uint32_t trbne:1;
++		uint32_t rtlpfccnr:1;
++	} s;
++	struct cvmx_pcieep_cfg463_s cn52xx;
++	struct cvmx_pcieep_cfg463_s cn52xxp1;
++	struct cvmx_pcieep_cfg463_s cn56xx;
++	struct cvmx_pcieep_cfg463_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg464 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg464_s {
++		uint32_t wrr_vc3:8;
++		uint32_t wrr_vc2:8;
++		uint32_t wrr_vc1:8;
++		uint32_t wrr_vc0:8;
++	} s;
++	struct cvmx_pcieep_cfg464_s cn52xx;
++	struct cvmx_pcieep_cfg464_s cn52xxp1;
++	struct cvmx_pcieep_cfg464_s cn56xx;
++	struct cvmx_pcieep_cfg464_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg465 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg465_s {
++		uint32_t wrr_vc7:8;
++		uint32_t wrr_vc6:8;
++		uint32_t wrr_vc5:8;
++		uint32_t wrr_vc4:8;
++	} s;
++	struct cvmx_pcieep_cfg465_s cn52xx;
++	struct cvmx_pcieep_cfg465_s cn52xxp1;
++	struct cvmx_pcieep_cfg465_s cn56xx;
++	struct cvmx_pcieep_cfg465_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg466 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg466_s {
++		uint32_t rx_queue_order:1;
++		uint32_t type_ordering:1;
++		uint32_t reserved_24_29:6;
++		uint32_t queue_mode:3;
++		uint32_t reserved_20_20:1;
++		uint32_t header_credits:8;
++		uint32_t data_credits:12;
++	} s;
++	struct cvmx_pcieep_cfg466_s cn52xx;
++	struct cvmx_pcieep_cfg466_s cn52xxp1;
++	struct cvmx_pcieep_cfg466_s cn56xx;
++	struct cvmx_pcieep_cfg466_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg467 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg467_s {
++		uint32_t reserved_24_31:8;
++		uint32_t queue_mode:3;
++		uint32_t reserved_20_20:1;
++		uint32_t header_credits:8;
++		uint32_t data_credits:12;
++	} s;
++	struct cvmx_pcieep_cfg467_s cn52xx;
++	struct cvmx_pcieep_cfg467_s cn52xxp1;
++	struct cvmx_pcieep_cfg467_s cn56xx;
++	struct cvmx_pcieep_cfg467_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg468 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg468_s {
++		uint32_t reserved_24_31:8;
++		uint32_t queue_mode:3;
++		uint32_t reserved_20_20:1;
++		uint32_t header_credits:8;
++		uint32_t data_credits:12;
++	} s;
++	struct cvmx_pcieep_cfg468_s cn52xx;
++	struct cvmx_pcieep_cfg468_s cn52xxp1;
++	struct cvmx_pcieep_cfg468_s cn56xx;
++	struct cvmx_pcieep_cfg468_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg490 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg490_s {
++		uint32_t reserved_26_31:6;
++		uint32_t header_depth:10;
++		uint32_t reserved_14_15:2;
++		uint32_t data_depth:14;
++	} s;
++	struct cvmx_pcieep_cfg490_s cn52xx;
++	struct cvmx_pcieep_cfg490_s cn52xxp1;
++	struct cvmx_pcieep_cfg490_s cn56xx;
++	struct cvmx_pcieep_cfg490_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg491 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg491_s {
++		uint32_t reserved_26_31:6;
++		uint32_t header_depth:10;
++		uint32_t reserved_14_15:2;
++		uint32_t data_depth:14;
++	} s;
++	struct cvmx_pcieep_cfg491_s cn52xx;
++	struct cvmx_pcieep_cfg491_s cn52xxp1;
++	struct cvmx_pcieep_cfg491_s cn56xx;
++	struct cvmx_pcieep_cfg491_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg492 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg492_s {
++		uint32_t reserved_26_31:6;
++		uint32_t header_depth:10;
++		uint32_t reserved_14_15:2;
++		uint32_t data_depth:14;
++	} s;
++	struct cvmx_pcieep_cfg492_s cn52xx;
++	struct cvmx_pcieep_cfg492_s cn52xxp1;
++	struct cvmx_pcieep_cfg492_s cn56xx;
++	struct cvmx_pcieep_cfg492_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg516 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg516_s {
++		uint32_t phy_stat:32;
++	} s;
++	struct cvmx_pcieep_cfg516_s cn52xx;
++	struct cvmx_pcieep_cfg516_s cn52xxp1;
++	struct cvmx_pcieep_cfg516_s cn56xx;
++	struct cvmx_pcieep_cfg516_s cn56xxp1;
++};
++
++union cvmx_pcieep_cfg517 {
++	uint32_t u32;
++	struct cvmx_pcieep_cfg517_s {
++		uint32_t phy_ctrl:32;
++	} s;
++	struct cvmx_pcieep_cfg517_s cn52xx;
++	struct cvmx_pcieep_cfg517_s cn52xxp1;
++	struct cvmx_pcieep_cfg517_s cn56xx;
++	struct cvmx_pcieep_cfg517_s cn56xxp1;
++};
++
++#endif
+diff --git a/arch/mips/include/asm/octeon/cvmx-pciercx-defs.h b/arch/mips/include/asm/octeon/cvmx-pciercx-defs.h
+new file mode 100644
+index 0000000..75574c9
+--- /dev/null
++++ b/arch/mips/include/asm/octeon/cvmx-pciercx-defs.h
+@@ -0,0 +1,1397 @@
++/***********************license start***************
++ * Author: Cavium Networks
++ *
++ * Contact: support@caviumnetworks.com
++ * This file is part of the OCTEON SDK
++ *
++ * Copyright (c) 2003-2008 Cavium Networks
++ *
++ * This file is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License, Version 2, as
++ * published by the Free Software Foundation.
++ *
++ * This file is distributed in the hope that it will be useful, but
++ * AS-IS and WITHOUT ANY WARRANTY; without even the implied warranty
++ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE, TITLE, or
++ * NONINFRINGEMENT.  See the GNU General Public License for more
++ * details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this file; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
++ * or visit http://www.gnu.org/licenses/.
++ *
++ * This file may also be available under a different license from Cavium.
++ * Contact Cavium Networks for more information
++ ***********************license end**************************************/
++
++#ifndef __CVMX_PCIERCX_DEFS_H__
++#define __CVMX_PCIERCX_DEFS_H__
++
++#define CVMX_PCIERCX_CFG000(offset) \
++	 (0x0000000000000000ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG001(offset) \
++	 (0x0000000000000004ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG002(offset) \
++	 (0x0000000000000008ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG003(offset) \
++	 (0x000000000000000Cull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG004(offset) \
++	 (0x0000000000000010ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG005(offset) \
++	 (0x0000000000000014ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG006(offset) \
++	 (0x0000000000000018ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG007(offset) \
++	 (0x000000000000001Cull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG008(offset) \
++	 (0x0000000000000020ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG009(offset) \
++	 (0x0000000000000024ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG010(offset) \
++	 (0x0000000000000028ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG011(offset) \
++	 (0x000000000000002Cull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG012(offset) \
++	 (0x0000000000000030ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG013(offset) \
++	 (0x0000000000000034ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG014(offset) \
++	 (0x0000000000000038ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG015(offset) \
++	 (0x000000000000003Cull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG016(offset) \
++	 (0x0000000000000040ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG017(offset) \
++	 (0x0000000000000044ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG020(offset) \
++	 (0x0000000000000050ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG021(offset) \
++	 (0x0000000000000054ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG022(offset) \
++	 (0x0000000000000058ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG023(offset) \
++	 (0x000000000000005Cull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG028(offset) \
++	 (0x0000000000000070ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG029(offset) \
++	 (0x0000000000000074ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG030(offset) \
++	 (0x0000000000000078ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG031(offset) \
++	 (0x000000000000007Cull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG032(offset) \
++	 (0x0000000000000080ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG033(offset) \
++	 (0x0000000000000084ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG034(offset) \
++	 (0x0000000000000088ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG035(offset) \
++	 (0x000000000000008Cull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG036(offset) \
++	 (0x0000000000000090ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG037(offset) \
++	 (0x0000000000000094ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG038(offset) \
++	 (0x0000000000000098ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG039(offset) \
++	 (0x000000000000009Cull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG040(offset) \
++	 (0x00000000000000A0ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG041(offset) \
++	 (0x00000000000000A4ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG042(offset) \
++	 (0x00000000000000A8ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG064(offset) \
++	 (0x0000000000000100ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG065(offset) \
++	 (0x0000000000000104ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG066(offset) \
++	 (0x0000000000000108ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG067(offset) \
++	 (0x000000000000010Cull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG068(offset) \
++	 (0x0000000000000110ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG069(offset) \
++	 (0x0000000000000114ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG070(offset) \
++	 (0x0000000000000118ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG071(offset) \
++	 (0x000000000000011Cull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG072(offset) \
++	 (0x0000000000000120ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG073(offset) \
++	 (0x0000000000000124ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG074(offset) \
++	 (0x0000000000000128ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG075(offset) \
++	 (0x000000000000012Cull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG076(offset) \
++	 (0x0000000000000130ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG077(offset) \
++	 (0x0000000000000134ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG448(offset) \
++	 (0x0000000000000700ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG449(offset) \
++	 (0x0000000000000704ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG450(offset) \
++	 (0x0000000000000708ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG451(offset) \
++	 (0x000000000000070Cull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG452(offset) \
++	 (0x0000000000000710ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG453(offset) \
++	 (0x0000000000000714ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG454(offset) \
++	 (0x0000000000000718ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG455(offset) \
++	 (0x000000000000071Cull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG456(offset) \
++	 (0x0000000000000720ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG458(offset) \
++	 (0x0000000000000728ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG459(offset) \
++	 (0x000000000000072Cull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG460(offset) \
++	 (0x0000000000000730ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG461(offset) \
++	 (0x0000000000000734ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG462(offset) \
++	 (0x0000000000000738ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG463(offset) \
++	 (0x000000000000073Cull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG464(offset) \
++	 (0x0000000000000740ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG465(offset) \
++	 (0x0000000000000744ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG466(offset) \
++	 (0x0000000000000748ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG467(offset) \
++	 (0x000000000000074Cull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG468(offset) \
++	 (0x0000000000000750ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG490(offset) \
++	 (0x00000000000007A8ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG491(offset) \
++	 (0x00000000000007ACull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG492(offset) \
++	 (0x00000000000007B0ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG516(offset) \
++	 (0x0000000000000810ull + (((offset) & 1) * 0))
++#define CVMX_PCIERCX_CFG517(offset) \
++	 (0x0000000000000814ull + (((offset) & 1) * 0))
++
++union cvmx_pciercx_cfg000 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg000_s {
++		uint32_t devid:16;
++		uint32_t vendid:16;
++	} s;
++	struct cvmx_pciercx_cfg000_s cn52xx;
++	struct cvmx_pciercx_cfg000_s cn52xxp1;
++	struct cvmx_pciercx_cfg000_s cn56xx;
++	struct cvmx_pciercx_cfg000_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg001 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg001_s {
++		uint32_t dpe:1;
++		uint32_t sse:1;
++		uint32_t rma:1;
++		uint32_t rta:1;
++		uint32_t sta:1;
++		uint32_t devt:2;
++		uint32_t mdpe:1;
++		uint32_t fbb:1;
++		uint32_t reserved_22_22:1;
++		uint32_t m66:1;
++		uint32_t cl:1;
++		uint32_t i_stat:1;
++		uint32_t reserved_11_18:8;
++		uint32_t i_dis:1;
++		uint32_t fbbe:1;
++		uint32_t see:1;
++		uint32_t ids_wcc:1;
++		uint32_t per:1;
++		uint32_t vps:1;
++		uint32_t mwice:1;
++		uint32_t scse:1;
++		uint32_t me:1;
++		uint32_t msae:1;
++		uint32_t isae:1;
++	} s;
++	struct cvmx_pciercx_cfg001_s cn52xx;
++	struct cvmx_pciercx_cfg001_s cn52xxp1;
++	struct cvmx_pciercx_cfg001_s cn56xx;
++	struct cvmx_pciercx_cfg001_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg002 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg002_s {
++		uint32_t bcc:8;
++		uint32_t sc:8;
++		uint32_t pi:8;
++		uint32_t rid:8;
++	} s;
++	struct cvmx_pciercx_cfg002_s cn52xx;
++	struct cvmx_pciercx_cfg002_s cn52xxp1;
++	struct cvmx_pciercx_cfg002_s cn56xx;
++	struct cvmx_pciercx_cfg002_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg003 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg003_s {
++		uint32_t bist:8;
++		uint32_t mfd:1;
++		uint32_t chf:7;
++		uint32_t lt:8;
++		uint32_t cls:8;
++	} s;
++	struct cvmx_pciercx_cfg003_s cn52xx;
++	struct cvmx_pciercx_cfg003_s cn52xxp1;
++	struct cvmx_pciercx_cfg003_s cn56xx;
++	struct cvmx_pciercx_cfg003_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg004 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg004_s {
++		uint32_t reserved_0_31:32;
++	} s;
++	struct cvmx_pciercx_cfg004_s cn52xx;
++	struct cvmx_pciercx_cfg004_s cn52xxp1;
++	struct cvmx_pciercx_cfg004_s cn56xx;
++	struct cvmx_pciercx_cfg004_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg005 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg005_s {
++		uint32_t reserved_0_31:32;
++	} s;
++	struct cvmx_pciercx_cfg005_s cn52xx;
++	struct cvmx_pciercx_cfg005_s cn52xxp1;
++	struct cvmx_pciercx_cfg005_s cn56xx;
++	struct cvmx_pciercx_cfg005_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg006 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg006_s {
++		uint32_t slt:8;
++		uint32_t subbnum:8;
++		uint32_t sbnum:8;
++		uint32_t pbnum:8;
++	} s;
++	struct cvmx_pciercx_cfg006_s cn52xx;
++	struct cvmx_pciercx_cfg006_s cn52xxp1;
++	struct cvmx_pciercx_cfg006_s cn56xx;
++	struct cvmx_pciercx_cfg006_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg007 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg007_s {
++		uint32_t dpe:1;
++		uint32_t sse:1;
++		uint32_t rma:1;
++		uint32_t rta:1;
++		uint32_t sta:1;
++		uint32_t devt:2;
++		uint32_t mdpe:1;
++		uint32_t fbb:1;
++		uint32_t reserved_22_22:1;
++		uint32_t m66:1;
++		uint32_t reserved_16_20:5;
++		uint32_t lio_limi:4;
++		uint32_t reserved_9_11:3;
++		uint32_t io32b:1;
++		uint32_t lio_base:4;
++		uint32_t reserved_1_3:3;
++		uint32_t io32a:1;
++	} s;
++	struct cvmx_pciercx_cfg007_s cn52xx;
++	struct cvmx_pciercx_cfg007_s cn52xxp1;
++	struct cvmx_pciercx_cfg007_s cn56xx;
++	struct cvmx_pciercx_cfg007_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg008 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg008_s {
++		uint32_t ml_addr:12;
++		uint32_t reserved_16_19:4;
++		uint32_t mb_addr:12;
++		uint32_t reserved_0_3:4;
++	} s;
++	struct cvmx_pciercx_cfg008_s cn52xx;
++	struct cvmx_pciercx_cfg008_s cn52xxp1;
++	struct cvmx_pciercx_cfg008_s cn56xx;
++	struct cvmx_pciercx_cfg008_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg009 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg009_s {
++		uint32_t lmem_limit:12;
++		uint32_t reserved_17_19:3;
++		uint32_t mem64b:1;
++		uint32_t lmem_base:12;
++		uint32_t reserved_1_3:3;
++		uint32_t mem64a:1;
++	} s;
++	struct cvmx_pciercx_cfg009_s cn52xx;
++	struct cvmx_pciercx_cfg009_s cn52xxp1;
++	struct cvmx_pciercx_cfg009_s cn56xx;
++	struct cvmx_pciercx_cfg009_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg010 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg010_s {
++		uint32_t umem_base:32;
++	} s;
++	struct cvmx_pciercx_cfg010_s cn52xx;
++	struct cvmx_pciercx_cfg010_s cn52xxp1;
++	struct cvmx_pciercx_cfg010_s cn56xx;
++	struct cvmx_pciercx_cfg010_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg011 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg011_s {
++		uint32_t umem_limit:32;
++	} s;
++	struct cvmx_pciercx_cfg011_s cn52xx;
++	struct cvmx_pciercx_cfg011_s cn52xxp1;
++	struct cvmx_pciercx_cfg011_s cn56xx;
++	struct cvmx_pciercx_cfg011_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg012 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg012_s {
++		uint32_t uio_limit:16;
++		uint32_t uio_base:16;
++	} s;
++	struct cvmx_pciercx_cfg012_s cn52xx;
++	struct cvmx_pciercx_cfg012_s cn52xxp1;
++	struct cvmx_pciercx_cfg012_s cn56xx;
++	struct cvmx_pciercx_cfg012_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg013 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg013_s {
++		uint32_t reserved_8_31:24;
++		uint32_t cp:8;
++	} s;
++	struct cvmx_pciercx_cfg013_s cn52xx;
++	struct cvmx_pciercx_cfg013_s cn52xxp1;
++	struct cvmx_pciercx_cfg013_s cn56xx;
++	struct cvmx_pciercx_cfg013_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg014 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg014_s {
++		uint32_t reserved_0_31:32;
++	} s;
++	struct cvmx_pciercx_cfg014_s cn52xx;
++	struct cvmx_pciercx_cfg014_s cn52xxp1;
++	struct cvmx_pciercx_cfg014_s cn56xx;
++	struct cvmx_pciercx_cfg014_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg015 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg015_s {
++		uint32_t reserved_28_31:4;
++		uint32_t dtsees:1;
++		uint32_t dts:1;
++		uint32_t sdt:1;
++		uint32_t pdt:1;
++		uint32_t fbbe:1;
++		uint32_t sbrst:1;
++		uint32_t mam:1;
++		uint32_t vga16d:1;
++		uint32_t vgae:1;
++		uint32_t isae:1;
++		uint32_t see:1;
++		uint32_t pere:1;
++		uint32_t inta:8;
++		uint32_t il:8;
++	} s;
++	struct cvmx_pciercx_cfg015_s cn52xx;
++	struct cvmx_pciercx_cfg015_s cn52xxp1;
++	struct cvmx_pciercx_cfg015_s cn56xx;
++	struct cvmx_pciercx_cfg015_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg016 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg016_s {
++		uint32_t pmes:5;
++		uint32_t d2s:1;
++		uint32_t d1s:1;
++		uint32_t auxc:3;
++		uint32_t dsi:1;
++		uint32_t reserved_20_20:1;
++		uint32_t pme_clock:1;
++		uint32_t pmsv:3;
++		uint32_t ncp:8;
++		uint32_t pmcid:8;
++	} s;
++	struct cvmx_pciercx_cfg016_s cn52xx;
++	struct cvmx_pciercx_cfg016_s cn52xxp1;
++	struct cvmx_pciercx_cfg016_s cn56xx;
++	struct cvmx_pciercx_cfg016_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg017 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg017_s {
++		uint32_t pmdia:8;
++		uint32_t bpccee:1;
++		uint32_t bd3h:1;
++		uint32_t reserved_16_21:6;
++		uint32_t pmess:1;
++		uint32_t pmedsia:2;
++		uint32_t pmds:4;
++		uint32_t pmeens:1;
++		uint32_t reserved_4_7:4;
++		uint32_t nsr:1;
++		uint32_t reserved_2_2:1;
++		uint32_t ps:2;
++	} s;
++	struct cvmx_pciercx_cfg017_s cn52xx;
++	struct cvmx_pciercx_cfg017_s cn52xxp1;
++	struct cvmx_pciercx_cfg017_s cn56xx;
++	struct cvmx_pciercx_cfg017_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg020 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg020_s {
++		uint32_t reserved_24_31:8;
++		uint32_t m64:1;
++		uint32_t mme:3;
++		uint32_t mmc:3;
++		uint32_t msien:1;
++		uint32_t ncp:8;
++		uint32_t msicid:8;
++	} s;
++	struct cvmx_pciercx_cfg020_s cn52xx;
++	struct cvmx_pciercx_cfg020_s cn52xxp1;
++	struct cvmx_pciercx_cfg020_s cn56xx;
++	struct cvmx_pciercx_cfg020_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg021 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg021_s {
++		uint32_t lmsi:30;
++		uint32_t reserved_0_1:2;
++	} s;
++	struct cvmx_pciercx_cfg021_s cn52xx;
++	struct cvmx_pciercx_cfg021_s cn52xxp1;
++	struct cvmx_pciercx_cfg021_s cn56xx;
++	struct cvmx_pciercx_cfg021_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg022 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg022_s {
++		uint32_t umsi:32;
++	} s;
++	struct cvmx_pciercx_cfg022_s cn52xx;
++	struct cvmx_pciercx_cfg022_s cn52xxp1;
++	struct cvmx_pciercx_cfg022_s cn56xx;
++	struct cvmx_pciercx_cfg022_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg023 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg023_s {
++		uint32_t reserved_16_31:16;
++		uint32_t msimd:16;
++	} s;
++	struct cvmx_pciercx_cfg023_s cn52xx;
++	struct cvmx_pciercx_cfg023_s cn52xxp1;
++	struct cvmx_pciercx_cfg023_s cn56xx;
++	struct cvmx_pciercx_cfg023_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg028 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg028_s {
++		uint32_t reserved_30_31:2;
++		uint32_t imn:5;
++		uint32_t si:1;
++		uint32_t dpt:4;
++		uint32_t pciecv:4;
++		uint32_t ncp:8;
++		uint32_t pcieid:8;
++	} s;
++	struct cvmx_pciercx_cfg028_s cn52xx;
++	struct cvmx_pciercx_cfg028_s cn52xxp1;
++	struct cvmx_pciercx_cfg028_s cn56xx;
++	struct cvmx_pciercx_cfg028_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg029 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg029_s {
++		uint32_t reserved_28_31:4;
++		uint32_t cspls:2;
++		uint32_t csplv:8;
++		uint32_t reserved_16_17:2;
++		uint32_t rber:1;
++		uint32_t reserved_12_14:3;
++		uint32_t el1al:3;
++		uint32_t el0al:3;
++		uint32_t etfs:1;
++		uint32_t pfs:2;
++		uint32_t mpss:3;
++	} s;
++	struct cvmx_pciercx_cfg029_s cn52xx;
++	struct cvmx_pciercx_cfg029_s cn52xxp1;
++	struct cvmx_pciercx_cfg029_s cn56xx;
++	struct cvmx_pciercx_cfg029_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg030 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg030_s {
++		uint32_t reserved_22_31:10;
++		uint32_t tp:1;
++		uint32_t ap_d:1;
++		uint32_t ur_d:1;
++		uint32_t fe_d:1;
++		uint32_t nfe_d:1;
++		uint32_t ce_d:1;
++		uint32_t reserved_15_15:1;
++		uint32_t mrrs:3;
++		uint32_t ns_en:1;
++		uint32_t ap_en:1;
++		uint32_t pf_en:1;
++		uint32_t etf_en:1;
++		uint32_t mps:3;
++		uint32_t ro_en:1;
++		uint32_t ur_en:1;
++		uint32_t fe_en:1;
++		uint32_t nfe_en:1;
++		uint32_t ce_en:1;
++	} s;
++	struct cvmx_pciercx_cfg030_s cn52xx;
++	struct cvmx_pciercx_cfg030_s cn52xxp1;
++	struct cvmx_pciercx_cfg030_s cn56xx;
++	struct cvmx_pciercx_cfg030_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg031 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg031_s {
++		uint32_t pnum:8;
++		uint32_t reserved_22_23:2;
++		uint32_t lbnc:1;
++		uint32_t dllarc:1;
++		uint32_t sderc:1;
++		uint32_t cpm:1;
++		uint32_t l1el:3;
++		uint32_t l0el:3;
++		uint32_t aslpms:2;
++		uint32_t mlw:6;
++		uint32_t mls:4;
++	} s;
++	struct cvmx_pciercx_cfg031_s cn52xx;
++	struct cvmx_pciercx_cfg031_s cn52xxp1;
++	struct cvmx_pciercx_cfg031_s cn56xx;
++	struct cvmx_pciercx_cfg031_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg032 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg032_s {
++		uint32_t lab:1;
++		uint32_t lbm:1;
++		uint32_t dlla:1;
++		uint32_t scc:1;
++		uint32_t lt:1;
++		uint32_t reserved_26_26:1;
++		uint32_t nlw:6;
++		uint32_t ls:4;
++		uint32_t reserved_12_15:4;
++		uint32_t lab_int_enb:1;
++		uint32_t lbm_int_enb:1;
++		uint32_t hawd:1;
++		uint32_t ecpm:1;
++		uint32_t es:1;
++		uint32_t ccc:1;
++		uint32_t rl:1;
++		uint32_t ld:1;
++		uint32_t rcb:1;
++		uint32_t reserved_2_2:1;
++		uint32_t aslpc:2;
++	} s;
++	struct cvmx_pciercx_cfg032_s cn52xx;
++	struct cvmx_pciercx_cfg032_s cn52xxp1;
++	struct cvmx_pciercx_cfg032_s cn56xx;
++	struct cvmx_pciercx_cfg032_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg033 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg033_s {
++		uint32_t ps_num:13;
++		uint32_t nccs:1;
++		uint32_t emip:1;
++		uint32_t sp_ls:2;
++		uint32_t sp_lv:8;
++		uint32_t hp_c:1;
++		uint32_t hp_s:1;
++		uint32_t pip:1;
++		uint32_t aip:1;
++		uint32_t mrlsp:1;
++		uint32_t pcp:1;
++		uint32_t abp:1;
++	} s;
++	struct cvmx_pciercx_cfg033_s cn52xx;
++	struct cvmx_pciercx_cfg033_s cn52xxp1;
++	struct cvmx_pciercx_cfg033_s cn56xx;
++	struct cvmx_pciercx_cfg033_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg034 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg034_s {
++		uint32_t reserved_25_31:7;
++		uint32_t dlls_c:1;
++		uint32_t emis:1;
++		uint32_t pds:1;
++		uint32_t mrlss:1;
++		uint32_t ccint_d:1;
++		uint32_t pd_c:1;
++		uint32_t mrls_c:1;
++		uint32_t pf_d:1;
++		uint32_t abp_d:1;
++		uint32_t reserved_13_15:3;
++		uint32_t dlls_en:1;
++		uint32_t emic:1;
++		uint32_t pcc:1;
++		uint32_t pic:2;
++		uint32_t aic:2;
++		uint32_t hpint_en:1;
++		uint32_t ccint_en:1;
++		uint32_t pd_en:1;
++		uint32_t mrls_en:1;
++		uint32_t pf_en:1;
++		uint32_t abp_en:1;
++	} s;
++	struct cvmx_pciercx_cfg034_s cn52xx;
++	struct cvmx_pciercx_cfg034_s cn52xxp1;
++	struct cvmx_pciercx_cfg034_s cn56xx;
++	struct cvmx_pciercx_cfg034_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg035 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg035_s {
++		uint32_t reserved_17_31:15;
++		uint32_t crssv:1;
++		uint32_t reserved_5_15:11;
++		uint32_t crssve:1;
++		uint32_t pmeie:1;
++		uint32_t sefee:1;
++		uint32_t senfee:1;
++		uint32_t secee:1;
++	} s;
++	struct cvmx_pciercx_cfg035_s cn52xx;
++	struct cvmx_pciercx_cfg035_s cn52xxp1;
++	struct cvmx_pciercx_cfg035_s cn56xx;
++	struct cvmx_pciercx_cfg035_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg036 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg036_s {
++		uint32_t reserved_18_31:14;
++		uint32_t pme_pend:1;
++		uint32_t pme_stat:1;
++		uint32_t pme_rid:16;
++	} s;
++	struct cvmx_pciercx_cfg036_s cn52xx;
++	struct cvmx_pciercx_cfg036_s cn52xxp1;
++	struct cvmx_pciercx_cfg036_s cn56xx;
++	struct cvmx_pciercx_cfg036_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg037 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg037_s {
++		uint32_t reserved_5_31:27;
++		uint32_t ctds:1;
++		uint32_t ctrs:4;
++	} s;
++	struct cvmx_pciercx_cfg037_s cn52xx;
++	struct cvmx_pciercx_cfg037_s cn52xxp1;
++	struct cvmx_pciercx_cfg037_s cn56xx;
++	struct cvmx_pciercx_cfg037_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg038 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg038_s {
++		uint32_t reserved_5_31:27;
++		uint32_t ctd:1;
++		uint32_t ctv:4;
++	} s;
++	struct cvmx_pciercx_cfg038_s cn52xx;
++	struct cvmx_pciercx_cfg038_s cn52xxp1;
++	struct cvmx_pciercx_cfg038_s cn56xx;
++	struct cvmx_pciercx_cfg038_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg039 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg039_s {
++		uint32_t reserved_0_31:32;
++	} s;
++	struct cvmx_pciercx_cfg039_s cn52xx;
++	struct cvmx_pciercx_cfg039_s cn52xxp1;
++	struct cvmx_pciercx_cfg039_s cn56xx;
++	struct cvmx_pciercx_cfg039_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg040 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg040_s {
++		uint32_t reserved_0_31:32;
++	} s;
++	struct cvmx_pciercx_cfg040_s cn52xx;
++	struct cvmx_pciercx_cfg040_s cn52xxp1;
++	struct cvmx_pciercx_cfg040_s cn56xx;
++	struct cvmx_pciercx_cfg040_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg041 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg041_s {
++		uint32_t reserved_0_31:32;
++	} s;
++	struct cvmx_pciercx_cfg041_s cn52xx;
++	struct cvmx_pciercx_cfg041_s cn52xxp1;
++	struct cvmx_pciercx_cfg041_s cn56xx;
++	struct cvmx_pciercx_cfg041_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg042 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg042_s {
++		uint32_t reserved_0_31:32;
++	} s;
++	struct cvmx_pciercx_cfg042_s cn52xx;
++	struct cvmx_pciercx_cfg042_s cn52xxp1;
++	struct cvmx_pciercx_cfg042_s cn56xx;
++	struct cvmx_pciercx_cfg042_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg064 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg064_s {
++		uint32_t nco:12;
++		uint32_t cv:4;
++		uint32_t pcieec:16;
++	} s;
++	struct cvmx_pciercx_cfg064_s cn52xx;
++	struct cvmx_pciercx_cfg064_s cn52xxp1;
++	struct cvmx_pciercx_cfg064_s cn56xx;
++	struct cvmx_pciercx_cfg064_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg065 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg065_s {
++		uint32_t reserved_21_31:11;
++		uint32_t ures:1;
++		uint32_t ecrces:1;
++		uint32_t mtlps:1;
++		uint32_t ros:1;
++		uint32_t ucs:1;
++		uint32_t cas:1;
++		uint32_t cts:1;
++		uint32_t fcpes:1;
++		uint32_t ptlps:1;
++		uint32_t reserved_6_11:6;
++		uint32_t sdes:1;
++		uint32_t dlpes:1;
++		uint32_t reserved_0_3:4;
++	} s;
++	struct cvmx_pciercx_cfg065_s cn52xx;
++	struct cvmx_pciercx_cfg065_s cn52xxp1;
++	struct cvmx_pciercx_cfg065_s cn56xx;
++	struct cvmx_pciercx_cfg065_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg066 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg066_s {
++		uint32_t reserved_21_31:11;
++		uint32_t urem:1;
++		uint32_t ecrcem:1;
++		uint32_t mtlpm:1;
++		uint32_t rom:1;
++		uint32_t ucm:1;
++		uint32_t cam:1;
++		uint32_t ctm:1;
++		uint32_t fcpem:1;
++		uint32_t ptlpm:1;
++		uint32_t reserved_6_11:6;
++		uint32_t sdem:1;
++		uint32_t dlpem:1;
++		uint32_t reserved_0_3:4;
++	} s;
++	struct cvmx_pciercx_cfg066_s cn52xx;
++	struct cvmx_pciercx_cfg066_s cn52xxp1;
++	struct cvmx_pciercx_cfg066_s cn56xx;
++	struct cvmx_pciercx_cfg066_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg067 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg067_s {
++		uint32_t reserved_21_31:11;
++		uint32_t ures:1;
++		uint32_t ecrces:1;
++		uint32_t mtlps:1;
++		uint32_t ros:1;
++		uint32_t ucs:1;
++		uint32_t cas:1;
++		uint32_t cts:1;
++		uint32_t fcpes:1;
++		uint32_t ptlps:1;
++		uint32_t reserved_6_11:6;
++		uint32_t sdes:1;
++		uint32_t dlpes:1;
++		uint32_t reserved_0_3:4;
++	} s;
++	struct cvmx_pciercx_cfg067_s cn52xx;
++	struct cvmx_pciercx_cfg067_s cn52xxp1;
++	struct cvmx_pciercx_cfg067_s cn56xx;
++	struct cvmx_pciercx_cfg067_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg068 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg068_s {
++		uint32_t reserved_14_31:18;
++		uint32_t anfes:1;
++		uint32_t rtts:1;
++		uint32_t reserved_9_11:3;
++		uint32_t rnrs:1;
++		uint32_t bdllps:1;
++		uint32_t btlps:1;
++		uint32_t reserved_1_5:5;
++		uint32_t res:1;
++	} s;
++	struct cvmx_pciercx_cfg068_s cn52xx;
++	struct cvmx_pciercx_cfg068_s cn52xxp1;
++	struct cvmx_pciercx_cfg068_s cn56xx;
++	struct cvmx_pciercx_cfg068_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg069 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg069_s {
++		uint32_t reserved_14_31:18;
++		uint32_t anfem:1;
++		uint32_t rttm:1;
++		uint32_t reserved_9_11:3;
++		uint32_t rnrm:1;
++		uint32_t bdllpm:1;
++		uint32_t btlpm:1;
++		uint32_t reserved_1_5:5;
++		uint32_t rem:1;
++	} s;
++	struct cvmx_pciercx_cfg069_s cn52xx;
++	struct cvmx_pciercx_cfg069_s cn52xxp1;
++	struct cvmx_pciercx_cfg069_s cn56xx;
++	struct cvmx_pciercx_cfg069_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg070 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg070_s {
++		uint32_t reserved_9_31:23;
++		uint32_t ce:1;
++		uint32_t cc:1;
++		uint32_t ge:1;
++		uint32_t gc:1;
++		uint32_t fep:5;
++	} s;
++	struct cvmx_pciercx_cfg070_s cn52xx;
++	struct cvmx_pciercx_cfg070_s cn52xxp1;
++	struct cvmx_pciercx_cfg070_s cn56xx;
++	struct cvmx_pciercx_cfg070_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg071 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg071_s {
++		uint32_t dword1:32;
++	} s;
++	struct cvmx_pciercx_cfg071_s cn52xx;
++	struct cvmx_pciercx_cfg071_s cn52xxp1;
++	struct cvmx_pciercx_cfg071_s cn56xx;
++	struct cvmx_pciercx_cfg071_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg072 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg072_s {
++		uint32_t dword2:32;
++	} s;
++	struct cvmx_pciercx_cfg072_s cn52xx;
++	struct cvmx_pciercx_cfg072_s cn52xxp1;
++	struct cvmx_pciercx_cfg072_s cn56xx;
++	struct cvmx_pciercx_cfg072_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg073 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg073_s {
++		uint32_t dword3:32;
++	} s;
++	struct cvmx_pciercx_cfg073_s cn52xx;
++	struct cvmx_pciercx_cfg073_s cn52xxp1;
++	struct cvmx_pciercx_cfg073_s cn56xx;
++	struct cvmx_pciercx_cfg073_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg074 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg074_s {
++		uint32_t dword4:32;
++	} s;
++	struct cvmx_pciercx_cfg074_s cn52xx;
++	struct cvmx_pciercx_cfg074_s cn52xxp1;
++	struct cvmx_pciercx_cfg074_s cn56xx;
++	struct cvmx_pciercx_cfg074_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg075 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg075_s {
++		uint32_t reserved_3_31:29;
++		uint32_t fere:1;
++		uint32_t nfere:1;
++		uint32_t cere:1;
++	} s;
++	struct cvmx_pciercx_cfg075_s cn52xx;
++	struct cvmx_pciercx_cfg075_s cn52xxp1;
++	struct cvmx_pciercx_cfg075_s cn56xx;
++	struct cvmx_pciercx_cfg075_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg076 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg076_s {
++		uint32_t aeimn:5;
++		uint32_t reserved_7_26:20;
++		uint32_t femr:1;
++		uint32_t nfemr:1;
++		uint32_t fuf:1;
++		uint32_t multi_efnfr:1;
++		uint32_t efnfr:1;
++		uint32_t multi_ecr:1;
++		uint32_t ecr:1;
++	} s;
++	struct cvmx_pciercx_cfg076_s cn52xx;
++	struct cvmx_pciercx_cfg076_s cn52xxp1;
++	struct cvmx_pciercx_cfg076_s cn56xx;
++	struct cvmx_pciercx_cfg076_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg077 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg077_s {
++		uint32_t efnfsi:16;
++		uint32_t ecsi:16;
++	} s;
++	struct cvmx_pciercx_cfg077_s cn52xx;
++	struct cvmx_pciercx_cfg077_s cn52xxp1;
++	struct cvmx_pciercx_cfg077_s cn56xx;
++	struct cvmx_pciercx_cfg077_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg448 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg448_s {
++		uint32_t rtl:16;
++		uint32_t rtltl:16;
++	} s;
++	struct cvmx_pciercx_cfg448_s cn52xx;
++	struct cvmx_pciercx_cfg448_s cn52xxp1;
++	struct cvmx_pciercx_cfg448_s cn56xx;
++	struct cvmx_pciercx_cfg448_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg449 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg449_s {
++		uint32_t omr:32;
++	} s;
++	struct cvmx_pciercx_cfg449_s cn52xx;
++	struct cvmx_pciercx_cfg449_s cn52xxp1;
++	struct cvmx_pciercx_cfg449_s cn56xx;
++	struct cvmx_pciercx_cfg449_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg450 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg450_s {
++		uint32_t lpec:8;
++		uint32_t reserved_22_23:2;
++		uint32_t link_state:6;
++		uint32_t force_link:1;
++		uint32_t reserved_8_14:7;
++		uint32_t link_num:8;
++	} s;
++	struct cvmx_pciercx_cfg450_s cn52xx;
++	struct cvmx_pciercx_cfg450_s cn52xxp1;
++	struct cvmx_pciercx_cfg450_s cn56xx;
++	struct cvmx_pciercx_cfg450_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg451 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg451_s {
++		uint32_t reserved_30_31:2;
++		uint32_t l1el:3;
++		uint32_t l0el:3;
++		uint32_t n_fts_cc:8;
++		uint32_t n_fts:8;
++		uint32_t ack_freq:8;
++	} s;
++	struct cvmx_pciercx_cfg451_s cn52xx;
++	struct cvmx_pciercx_cfg451_s cn52xxp1;
++	struct cvmx_pciercx_cfg451_s cn56xx;
++	struct cvmx_pciercx_cfg451_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg452 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg452_s {
++		uint32_t reserved_26_31:6;
++		uint32_t eccrc:1;
++		uint32_t reserved_22_24:3;
++		uint32_t lme:6;
++		uint32_t reserved_8_15:8;
++		uint32_t flm:1;
++		uint32_t reserved_6_6:1;
++		uint32_t dllle:1;
++		uint32_t reserved_4_4:1;
++		uint32_t ra:1;
++		uint32_t le:1;
++		uint32_t sd:1;
++		uint32_t omr:1;
++	} s;
++	struct cvmx_pciercx_cfg452_s cn52xx;
++	struct cvmx_pciercx_cfg452_s cn52xxp1;
++	struct cvmx_pciercx_cfg452_s cn56xx;
++	struct cvmx_pciercx_cfg452_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg453 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg453_s {
++		uint32_t dlld:1;
++		uint32_t reserved_26_30:5;
++		uint32_t ack_nak:1;
++		uint32_t fcd:1;
++		uint32_t ilst:24;
++	} s;
++	struct cvmx_pciercx_cfg453_s cn52xx;
++	struct cvmx_pciercx_cfg453_s cn52xxp1;
++	struct cvmx_pciercx_cfg453_s cn56xx;
++	struct cvmx_pciercx_cfg453_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg454 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg454_s {
++		uint32_t reserved_29_31:3;
++		uint32_t tmfcwt:5;
++		uint32_t tmanlt:5;
++		uint32_t tmrt:5;
++		uint32_t reserved_11_13:3;
++		uint32_t nskps:3;
++		uint32_t reserved_4_7:4;
++		uint32_t ntss:4;
++	} s;
++	struct cvmx_pciercx_cfg454_s cn52xx;
++	struct cvmx_pciercx_cfg454_s cn52xxp1;
++	struct cvmx_pciercx_cfg454_s cn56xx;
++	struct cvmx_pciercx_cfg454_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg455 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg455_s {
++		uint32_t m_cfg0_filt:1;
++		uint32_t m_io_filt:1;
++		uint32_t msg_ctrl:1;
++		uint32_t m_cpl_ecrc_filt:1;
++		uint32_t m_ecrc_filt:1;
++		uint32_t m_cpl_len_err:1;
++		uint32_t m_cpl_attr_err:1;
++		uint32_t m_cpl_tc_err:1;
++		uint32_t m_cpl_fun_err:1;
++		uint32_t m_cpl_rid_err:1;
++		uint32_t m_cpl_tag_err:1;
++		uint32_t m_lk_filt:1;
++		uint32_t m_cfg1_filt:1;
++		uint32_t m_bar_match:1;
++		uint32_t m_pois_filt:1;
++		uint32_t m_fun:1;
++		uint32_t dfcwt:1;
++		uint32_t reserved_11_14:4;
++		uint32_t skpiv:11;
++	} s;
++	struct cvmx_pciercx_cfg455_s cn52xx;
++	struct cvmx_pciercx_cfg455_s cn52xxp1;
++	struct cvmx_pciercx_cfg455_s cn56xx;
++	struct cvmx_pciercx_cfg455_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg456 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg456_s {
++		uint32_t reserved_2_31:30;
++		uint32_t m_vend1_drp:1;
++		uint32_t m_vend0_drp:1;
++	} s;
++	struct cvmx_pciercx_cfg456_s cn52xx;
++	struct cvmx_pciercx_cfg456_s cn52xxp1;
++	struct cvmx_pciercx_cfg456_s cn56xx;
++	struct cvmx_pciercx_cfg456_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg458 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg458_s {
++		uint32_t dbg_info_l32:32;
++	} s;
++	struct cvmx_pciercx_cfg458_s cn52xx;
++	struct cvmx_pciercx_cfg458_s cn52xxp1;
++	struct cvmx_pciercx_cfg458_s cn56xx;
++	struct cvmx_pciercx_cfg458_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg459 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg459_s {
++		uint32_t dbg_info_u32:32;
++	} s;
++	struct cvmx_pciercx_cfg459_s cn52xx;
++	struct cvmx_pciercx_cfg459_s cn52xxp1;
++	struct cvmx_pciercx_cfg459_s cn56xx;
++	struct cvmx_pciercx_cfg459_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg460 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg460_s {
++		uint32_t reserved_20_31:12;
++		uint32_t tphfcc:8;
++		uint32_t tpdfcc:12;
++	} s;
++	struct cvmx_pciercx_cfg460_s cn52xx;
++	struct cvmx_pciercx_cfg460_s cn52xxp1;
++	struct cvmx_pciercx_cfg460_s cn56xx;
++	struct cvmx_pciercx_cfg460_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg461 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg461_s {
++		uint32_t reserved_20_31:12;
++		uint32_t tchfcc:8;
++		uint32_t tcdfcc:12;
++	} s;
++	struct cvmx_pciercx_cfg461_s cn52xx;
++	struct cvmx_pciercx_cfg461_s cn52xxp1;
++	struct cvmx_pciercx_cfg461_s cn56xx;
++	struct cvmx_pciercx_cfg461_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg462 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg462_s {
++		uint32_t reserved_20_31:12;
++		uint32_t tchfcc:8;
++		uint32_t tcdfcc:12;
++	} s;
++	struct cvmx_pciercx_cfg462_s cn52xx;
++	struct cvmx_pciercx_cfg462_s cn52xxp1;
++	struct cvmx_pciercx_cfg462_s cn56xx;
++	struct cvmx_pciercx_cfg462_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg463 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg463_s {
++		uint32_t reserved_3_31:29;
++		uint32_t rqne:1;
++		uint32_t trbne:1;
++		uint32_t rtlpfccnr:1;
++	} s;
++	struct cvmx_pciercx_cfg463_s cn52xx;
++	struct cvmx_pciercx_cfg463_s cn52xxp1;
++	struct cvmx_pciercx_cfg463_s cn56xx;
++	struct cvmx_pciercx_cfg463_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg464 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg464_s {
++		uint32_t wrr_vc3:8;
++		uint32_t wrr_vc2:8;
++		uint32_t wrr_vc1:8;
++		uint32_t wrr_vc0:8;
++	} s;
++	struct cvmx_pciercx_cfg464_s cn52xx;
++	struct cvmx_pciercx_cfg464_s cn52xxp1;
++	struct cvmx_pciercx_cfg464_s cn56xx;
++	struct cvmx_pciercx_cfg464_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg465 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg465_s {
++		uint32_t wrr_vc7:8;
++		uint32_t wrr_vc6:8;
++		uint32_t wrr_vc5:8;
++		uint32_t wrr_vc4:8;
++	} s;
++	struct cvmx_pciercx_cfg465_s cn52xx;
++	struct cvmx_pciercx_cfg465_s cn52xxp1;
++	struct cvmx_pciercx_cfg465_s cn56xx;
++	struct cvmx_pciercx_cfg465_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg466 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg466_s {
++		uint32_t rx_queue_order:1;
++		uint32_t type_ordering:1;
++		uint32_t reserved_24_29:6;
++		uint32_t queue_mode:3;
++		uint32_t reserved_20_20:1;
++		uint32_t header_credits:8;
++		uint32_t data_credits:12;
++	} s;
++	struct cvmx_pciercx_cfg466_s cn52xx;
++	struct cvmx_pciercx_cfg466_s cn52xxp1;
++	struct cvmx_pciercx_cfg466_s cn56xx;
++	struct cvmx_pciercx_cfg466_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg467 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg467_s {
++		uint32_t reserved_24_31:8;
++		uint32_t queue_mode:3;
++		uint32_t reserved_20_20:1;
++		uint32_t header_credits:8;
++		uint32_t data_credits:12;
++	} s;
++	struct cvmx_pciercx_cfg467_s cn52xx;
++	struct cvmx_pciercx_cfg467_s cn52xxp1;
++	struct cvmx_pciercx_cfg467_s cn56xx;
++	struct cvmx_pciercx_cfg467_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg468 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg468_s {
++		uint32_t reserved_24_31:8;
++		uint32_t queue_mode:3;
++		uint32_t reserved_20_20:1;
++		uint32_t header_credits:8;
++		uint32_t data_credits:12;
++	} s;
++	struct cvmx_pciercx_cfg468_s cn52xx;
++	struct cvmx_pciercx_cfg468_s cn52xxp1;
++	struct cvmx_pciercx_cfg468_s cn56xx;
++	struct cvmx_pciercx_cfg468_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg490 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg490_s {
++		uint32_t reserved_26_31:6;
++		uint32_t header_depth:10;
++		uint32_t reserved_14_15:2;
++		uint32_t data_depth:14;
++	} s;
++	struct cvmx_pciercx_cfg490_s cn52xx;
++	struct cvmx_pciercx_cfg490_s cn52xxp1;
++	struct cvmx_pciercx_cfg490_s cn56xx;
++	struct cvmx_pciercx_cfg490_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg491 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg491_s {
++		uint32_t reserved_26_31:6;
++		uint32_t header_depth:10;
++		uint32_t reserved_14_15:2;
++		uint32_t data_depth:14;
++	} s;
++	struct cvmx_pciercx_cfg491_s cn52xx;
++	struct cvmx_pciercx_cfg491_s cn52xxp1;
++	struct cvmx_pciercx_cfg491_s cn56xx;
++	struct cvmx_pciercx_cfg491_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg492 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg492_s {
++		uint32_t reserved_26_31:6;
++		uint32_t header_depth:10;
++		uint32_t reserved_14_15:2;
++		uint32_t data_depth:14;
++	} s;
++	struct cvmx_pciercx_cfg492_s cn52xx;
++	struct cvmx_pciercx_cfg492_s cn52xxp1;
++	struct cvmx_pciercx_cfg492_s cn56xx;
++	struct cvmx_pciercx_cfg492_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg516 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg516_s {
++		uint32_t phy_stat:32;
++	} s;
++	struct cvmx_pciercx_cfg516_s cn52xx;
++	struct cvmx_pciercx_cfg516_s cn52xxp1;
++	struct cvmx_pciercx_cfg516_s cn56xx;
++	struct cvmx_pciercx_cfg516_s cn56xxp1;
++};
++
++union cvmx_pciercx_cfg517 {
++	uint32_t u32;
++	struct cvmx_pciercx_cfg517_s {
++		uint32_t phy_ctrl:32;
++	} s;
++	struct cvmx_pciercx_cfg517_s cn52xx;
++	struct cvmx_pciercx_cfg517_s cn52xxp1;
++	struct cvmx_pciercx_cfg517_s cn56xx;
++	struct cvmx_pciercx_cfg517_s cn56xxp1;
++};
++
++#endif
+diff --git a/arch/mips/include/asm/octeon/cvmx-pescx-defs.h b/arch/mips/include/asm/octeon/cvmx-pescx-defs.h
+new file mode 100644
+index 0000000..f40cfaf
+--- /dev/null
++++ b/arch/mips/include/asm/octeon/cvmx-pescx-defs.h
+@@ -0,0 +1,410 @@
++/***********************license start***************
++ * Author: Cavium Networks
++ *
++ * Contact: support@caviumnetworks.com
++ * This file is part of the OCTEON SDK
++ *
++ * Copyright (c) 2003-2008 Cavium Networks
++ *
++ * This file is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License, Version 2, as
++ * published by the Free Software Foundation.
++ *
++ * This file is distributed in the hope that it will be useful, but
++ * AS-IS and WITHOUT ANY WARRANTY; without even the implied warranty
++ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE, TITLE, or
++ * NONINFRINGEMENT.  See the GNU General Public License for more
++ * details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this file; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
++ * or visit http://www.gnu.org/licenses/.
++ *
++ * This file may also be available under a different license from Cavium.
++ * Contact Cavium Networks for more information
++ ***********************license end**************************************/
++
++#ifndef __CVMX_PESCX_DEFS_H__
++#define __CVMX_PESCX_DEFS_H__
++
++#define CVMX_PESCX_BIST_STATUS(block_id) \
++	 CVMX_ADD_IO_SEG(0x00011800C8000018ull + (((block_id) & 1) * 0x8000000ull))
++#define CVMX_PESCX_BIST_STATUS2(block_id) \
++	 CVMX_ADD_IO_SEG(0x00011800C8000418ull + (((block_id) & 1) * 0x8000000ull))
++#define CVMX_PESCX_CFG_RD(block_id) \
++	 CVMX_ADD_IO_SEG(0x00011800C8000030ull + (((block_id) & 1) * 0x8000000ull))
++#define CVMX_PESCX_CFG_WR(block_id) \
++	 CVMX_ADD_IO_SEG(0x00011800C8000028ull + (((block_id) & 1) * 0x8000000ull))
++#define CVMX_PESCX_CPL_LUT_VALID(block_id) \
++	 CVMX_ADD_IO_SEG(0x00011800C8000098ull + (((block_id) & 1) * 0x8000000ull))
++#define CVMX_PESCX_CTL_STATUS(block_id) \
++	 CVMX_ADD_IO_SEG(0x00011800C8000000ull + (((block_id) & 1) * 0x8000000ull))
++#define CVMX_PESCX_CTL_STATUS2(block_id) \
++	 CVMX_ADD_IO_SEG(0x00011800C8000400ull + (((block_id) & 1) * 0x8000000ull))
++#define CVMX_PESCX_DBG_INFO(block_id) \
++	 CVMX_ADD_IO_SEG(0x00011800C8000008ull + (((block_id) & 1) * 0x8000000ull))
++#define CVMX_PESCX_DBG_INFO_EN(block_id) \
++	 CVMX_ADD_IO_SEG(0x00011800C80000A0ull + (((block_id) & 1) * 0x8000000ull))
++#define CVMX_PESCX_DIAG_STATUS(block_id) \
++	 CVMX_ADD_IO_SEG(0x00011800C8000020ull + (((block_id) & 1) * 0x8000000ull))
++#define CVMX_PESCX_P2N_BAR0_START(block_id) \
++	 CVMX_ADD_IO_SEG(0x00011800C8000080ull + (((block_id) & 1) * 0x8000000ull))
++#define CVMX_PESCX_P2N_BAR1_START(block_id) \
++	 CVMX_ADD_IO_SEG(0x00011800C8000088ull + (((block_id) & 1) * 0x8000000ull))
++#define CVMX_PESCX_P2N_BAR2_START(block_id) \
++	 CVMX_ADD_IO_SEG(0x00011800C8000090ull + (((block_id) & 1) * 0x8000000ull))
++#define CVMX_PESCX_P2P_BARX_END(offset, block_id) \
++	 CVMX_ADD_IO_SEG(0x00011800C8000048ull + (((offset) & 3) * 16) + (((block_id) & 1) * 0x8000000ull))
++#define CVMX_PESCX_P2P_BARX_START(offset, block_id) \
++	 CVMX_ADD_IO_SEG(0x00011800C8000040ull + (((offset) & 3) * 16) + (((block_id) & 1) * 0x8000000ull))
++#define CVMX_PESCX_TLP_CREDITS(block_id) \
++	 CVMX_ADD_IO_SEG(0x00011800C8000038ull + (((block_id) & 1) * 0x8000000ull))
++
++union cvmx_pescx_bist_status {
++	uint64_t u64;
++	struct cvmx_pescx_bist_status_s {
++		uint64_t reserved_13_63:51;
++		uint64_t rqdata5:1;
++		uint64_t ctlp_or:1;
++		uint64_t ntlp_or:1;
++		uint64_t ptlp_or:1;
++		uint64_t retry:1;
++		uint64_t rqdata0:1;
++		uint64_t rqdata1:1;
++		uint64_t rqdata2:1;
++		uint64_t rqdata3:1;
++		uint64_t rqdata4:1;
++		uint64_t rqhdr1:1;
++		uint64_t rqhdr0:1;
++		uint64_t sot:1;
++	} s;
++	struct cvmx_pescx_bist_status_s cn52xx;
++	struct cvmx_pescx_bist_status_cn52xxp1 {
++		uint64_t reserved_12_63:52;
++		uint64_t ctlp_or:1;
++		uint64_t ntlp_or:1;
++		uint64_t ptlp_or:1;
++		uint64_t retry:1;
++		uint64_t rqdata0:1;
++		uint64_t rqdata1:1;
++		uint64_t rqdata2:1;
++		uint64_t rqdata3:1;
++		uint64_t rqdata4:1;
++		uint64_t rqhdr1:1;
++		uint64_t rqhdr0:1;
++		uint64_t sot:1;
++	} cn52xxp1;
++	struct cvmx_pescx_bist_status_s cn56xx;
++	struct cvmx_pescx_bist_status_cn52xxp1 cn56xxp1;
++};
++
++union cvmx_pescx_bist_status2 {
++	uint64_t u64;
++	struct cvmx_pescx_bist_status2_s {
++		uint64_t reserved_14_63:50;
++		uint64_t cto_p2e:1;
++		uint64_t e2p_cpl:1;
++		uint64_t e2p_n:1;
++		uint64_t e2p_p:1;
++		uint64_t e2p_rsl:1;
++		uint64_t dbg_p2e:1;
++		uint64_t peai_p2e:1;
++		uint64_t rsl_p2e:1;
++		uint64_t pef_tpf1:1;
++		uint64_t pef_tpf0:1;
++		uint64_t pef_tnf:1;
++		uint64_t pef_tcf1:1;
++		uint64_t pef_tc0:1;
++		uint64_t ppf:1;
++	} s;
++	struct cvmx_pescx_bist_status2_s cn52xx;
++	struct cvmx_pescx_bist_status2_s cn52xxp1;
++	struct cvmx_pescx_bist_status2_s cn56xx;
++	struct cvmx_pescx_bist_status2_s cn56xxp1;
++};
++
++union cvmx_pescx_cfg_rd {
++	uint64_t u64;
++	struct cvmx_pescx_cfg_rd_s {
++		uint64_t data:32;
++		uint64_t addr:32;
++	} s;
++	struct cvmx_pescx_cfg_rd_s cn52xx;
++	struct cvmx_pescx_cfg_rd_s cn52xxp1;
++	struct cvmx_pescx_cfg_rd_s cn56xx;
++	struct cvmx_pescx_cfg_rd_s cn56xxp1;
++};
++
++union cvmx_pescx_cfg_wr {
++	uint64_t u64;
++	struct cvmx_pescx_cfg_wr_s {
++		uint64_t data:32;
++		uint64_t addr:32;
++	} s;
++	struct cvmx_pescx_cfg_wr_s cn52xx;
++	struct cvmx_pescx_cfg_wr_s cn52xxp1;
++	struct cvmx_pescx_cfg_wr_s cn56xx;
++	struct cvmx_pescx_cfg_wr_s cn56xxp1;
++};
++
++union cvmx_pescx_cpl_lut_valid {
++	uint64_t u64;
++	struct cvmx_pescx_cpl_lut_valid_s {
++		uint64_t reserved_32_63:32;
++		uint64_t tag:32;
++	} s;
++	struct cvmx_pescx_cpl_lut_valid_s cn52xx;
++	struct cvmx_pescx_cpl_lut_valid_s cn52xxp1;
++	struct cvmx_pescx_cpl_lut_valid_s cn56xx;
++	struct cvmx_pescx_cpl_lut_valid_s cn56xxp1;
++};
++
++union cvmx_pescx_ctl_status {
++	uint64_t u64;
++	struct cvmx_pescx_ctl_status_s {
++		uint64_t reserved_28_63:36;
++		uint64_t dnum:5;
++		uint64_t pbus:8;
++		uint64_t qlm_cfg:2;
++		uint64_t lane_swp:1;
++		uint64_t pm_xtoff:1;
++		uint64_t pm_xpme:1;
++		uint64_t ob_p_cmd:1;
++		uint64_t reserved_7_8:2;
++		uint64_t nf_ecrc:1;
++		uint64_t dly_one:1;
++		uint64_t lnk_enb:1;
++		uint64_t ro_ctlp:1;
++		uint64_t reserved_2_2:1;
++		uint64_t inv_ecrc:1;
++		uint64_t inv_lcrc:1;
++	} s;
++	struct cvmx_pescx_ctl_status_s cn52xx;
++	struct cvmx_pescx_ctl_status_s cn52xxp1;
++	struct cvmx_pescx_ctl_status_cn56xx {
++		uint64_t reserved_28_63:36;
++		uint64_t dnum:5;
++		uint64_t pbus:8;
++		uint64_t qlm_cfg:2;
++		uint64_t reserved_12_12:1;
++		uint64_t pm_xtoff:1;
++		uint64_t pm_xpme:1;
++		uint64_t ob_p_cmd:1;
++		uint64_t reserved_7_8:2;
++		uint64_t nf_ecrc:1;
++		uint64_t dly_one:1;
++		uint64_t lnk_enb:1;
++		uint64_t ro_ctlp:1;
++		uint64_t reserved_2_2:1;
++		uint64_t inv_ecrc:1;
++		uint64_t inv_lcrc:1;
++	} cn56xx;
++	struct cvmx_pescx_ctl_status_cn56xx cn56xxp1;
++};
++
++union cvmx_pescx_ctl_status2 {
++	uint64_t u64;
++	struct cvmx_pescx_ctl_status2_s {
++		uint64_t reserved_2_63:62;
++		uint64_t pclk_run:1;
++		uint64_t pcierst:1;
++	} s;
++	struct cvmx_pescx_ctl_status2_s cn52xx;
++	struct cvmx_pescx_ctl_status2_cn52xxp1 {
++		uint64_t reserved_1_63:63;
++		uint64_t pcierst:1;
++	} cn52xxp1;
++	struct cvmx_pescx_ctl_status2_s cn56xx;
++	struct cvmx_pescx_ctl_status2_cn52xxp1 cn56xxp1;
++};
++
++union cvmx_pescx_dbg_info {
++	uint64_t u64;
++	struct cvmx_pescx_dbg_info_s {
++		uint64_t reserved_31_63:33;
++		uint64_t ecrc_e:1;
++		uint64_t rawwpp:1;
++		uint64_t racpp:1;
++		uint64_t ramtlp:1;
++		uint64_t rarwdns:1;
++		uint64_t caar:1;
++		uint64_t racca:1;
++		uint64_t racur:1;
++		uint64_t rauc:1;
++		uint64_t rqo:1;
++		uint64_t fcuv:1;
++		uint64_t rpe:1;
++		uint64_t fcpvwt:1;
++		uint64_t dpeoosd:1;
++		uint64_t rtwdle:1;
++		uint64_t rdwdle:1;
++		uint64_t mre:1;
++		uint64_t rte:1;
++		uint64_t acto:1;
++		uint64_t rvdm:1;
++		uint64_t rumep:1;
++		uint64_t rptamrc:1;
++		uint64_t rpmerc:1;
++		uint64_t rfemrc:1;
++		uint64_t rnfemrc:1;
++		uint64_t rcemrc:1;
++		uint64_t rpoison:1;
++		uint64_t recrce:1;
++		uint64_t rtlplle:1;
++		uint64_t rtlpmal:1;
++		uint64_t spoison:1;
++	} s;
++	struct cvmx_pescx_dbg_info_s cn52xx;
++	struct cvmx_pescx_dbg_info_s cn52xxp1;
++	struct cvmx_pescx_dbg_info_s cn56xx;
++	struct cvmx_pescx_dbg_info_s cn56xxp1;
++};
++
++union cvmx_pescx_dbg_info_en {
++	uint64_t u64;
++	struct cvmx_pescx_dbg_info_en_s {
++		uint64_t reserved_31_63:33;
++		uint64_t ecrc_e:1;
++		uint64_t rawwpp:1;
++		uint64_t racpp:1;
++		uint64_t ramtlp:1;
++		uint64_t rarwdns:1;
++		uint64_t caar:1;
++		uint64_t racca:1;
++		uint64_t racur:1;
++		uint64_t rauc:1;
++		uint64_t rqo:1;
++		uint64_t fcuv:1;
++		uint64_t rpe:1;
++		uint64_t fcpvwt:1;
++		uint64_t dpeoosd:1;
++		uint64_t rtwdle:1;
++		uint64_t rdwdle:1;
++		uint64_t mre:1;
++		uint64_t rte:1;
++		uint64_t acto:1;
++		uint64_t rvdm:1;
++		uint64_t rumep:1;
++		uint64_t rptamrc:1;
++		uint64_t rpmerc:1;
++		uint64_t rfemrc:1;
++		uint64_t rnfemrc:1;
++		uint64_t rcemrc:1;
++		uint64_t rpoison:1;
++		uint64_t recrce:1;
++		uint64_t rtlplle:1;
++		uint64_t rtlpmal:1;
++		uint64_t spoison:1;
++	} s;
++	struct cvmx_pescx_dbg_info_en_s cn52xx;
++	struct cvmx_pescx_dbg_info_en_s cn52xxp1;
++	struct cvmx_pescx_dbg_info_en_s cn56xx;
++	struct cvmx_pescx_dbg_info_en_s cn56xxp1;
++};
++
++union cvmx_pescx_diag_status {
++	uint64_t u64;
++	struct cvmx_pescx_diag_status_s {
++		uint64_t reserved_4_63:60;
++		uint64_t pm_dst:1;
++		uint64_t pm_stat:1;
++		uint64_t pm_en:1;
++		uint64_t aux_en:1;
++	} s;
++	struct cvmx_pescx_diag_status_s cn52xx;
++	struct cvmx_pescx_diag_status_s cn52xxp1;
++	struct cvmx_pescx_diag_status_s cn56xx;
++	struct cvmx_pescx_diag_status_s cn56xxp1;
++};
++
++union cvmx_pescx_p2n_bar0_start {
++	uint64_t u64;
++	struct cvmx_pescx_p2n_bar0_start_s {
++		uint64_t addr:50;
++		uint64_t reserved_0_13:14;
++	} s;
++	struct cvmx_pescx_p2n_bar0_start_s cn52xx;
++	struct cvmx_pescx_p2n_bar0_start_s cn52xxp1;
++	struct cvmx_pescx_p2n_bar0_start_s cn56xx;
++	struct cvmx_pescx_p2n_bar0_start_s cn56xxp1;
++};
++
++union cvmx_pescx_p2n_bar1_start {
++	uint64_t u64;
++	struct cvmx_pescx_p2n_bar1_start_s {
++		uint64_t addr:38;
++		uint64_t reserved_0_25:26;
++	} s;
++	struct cvmx_pescx_p2n_bar1_start_s cn52xx;
++	struct cvmx_pescx_p2n_bar1_start_s cn52xxp1;
++	struct cvmx_pescx_p2n_bar1_start_s cn56xx;
++	struct cvmx_pescx_p2n_bar1_start_s cn56xxp1;
++};
++
++union cvmx_pescx_p2n_bar2_start {
++	uint64_t u64;
++	struct cvmx_pescx_p2n_bar2_start_s {
++		uint64_t addr:25;
++		uint64_t reserved_0_38:39;
++	} s;
++	struct cvmx_pescx_p2n_bar2_start_s cn52xx;
++	struct cvmx_pescx_p2n_bar2_start_s cn52xxp1;
++	struct cvmx_pescx_p2n_bar2_start_s cn56xx;
++	struct cvmx_pescx_p2n_bar2_start_s cn56xxp1;
++};
++
++union cvmx_pescx_p2p_barx_end {
++	uint64_t u64;
++	struct cvmx_pescx_p2p_barx_end_s {
++		uint64_t addr:52;
++		uint64_t reserved_0_11:12;
++	} s;
++	struct cvmx_pescx_p2p_barx_end_s cn52xx;
++	struct cvmx_pescx_p2p_barx_end_s cn52xxp1;
++	struct cvmx_pescx_p2p_barx_end_s cn56xx;
++	struct cvmx_pescx_p2p_barx_end_s cn56xxp1;
++};
++
++union cvmx_pescx_p2p_barx_start {
++	uint64_t u64;
++	struct cvmx_pescx_p2p_barx_start_s {
++		uint64_t addr:52;
++		uint64_t reserved_0_11:12;
++	} s;
++	struct cvmx_pescx_p2p_barx_start_s cn52xx;
++	struct cvmx_pescx_p2p_barx_start_s cn52xxp1;
++	struct cvmx_pescx_p2p_barx_start_s cn56xx;
++	struct cvmx_pescx_p2p_barx_start_s cn56xxp1;
++};
++
++union cvmx_pescx_tlp_credits {
++	uint64_t u64;
++	struct cvmx_pescx_tlp_credits_s {
++		uint64_t reserved_0_63:64;
++	} s;
++	struct cvmx_pescx_tlp_credits_cn52xx {
++		uint64_t reserved_56_63:8;
++		uint64_t peai_ppf:8;
++		uint64_t pesc_cpl:8;
++		uint64_t pesc_np:8;
++		uint64_t pesc_p:8;
++		uint64_t npei_cpl:8;
++		uint64_t npei_np:8;
++		uint64_t npei_p:8;
++	} cn52xx;
++	struct cvmx_pescx_tlp_credits_cn52xxp1 {
++		uint64_t reserved_38_63:26;
++		uint64_t peai_ppf:8;
++		uint64_t pesc_cpl:5;
++		uint64_t pesc_np:5;
++		uint64_t pesc_p:5;
++		uint64_t npei_cpl:5;
++		uint64_t npei_np:5;
++		uint64_t npei_p:5;
++	} cn52xxp1;
++	struct cvmx_pescx_tlp_credits_cn52xx cn56xx;
++	struct cvmx_pescx_tlp_credits_cn52xxp1 cn56xxp1;
++};
++
++#endif
+diff --git a/arch/mips/include/asm/octeon/cvmx-pexp-defs.h b/arch/mips/include/asm/octeon/cvmx-pexp-defs.h
+new file mode 100644
+index 0000000..5ea5dc5
+--- /dev/null
++++ b/arch/mips/include/asm/octeon/cvmx-pexp-defs.h
+@@ -0,0 +1,229 @@
 +/***********************license start***************
 + * Author: Cavium Networks
 + *
@@ -3183,54 +9240,206 @@ index 0000000..29f016d
 + ***********************license end**************************************/
 +
 +/**
-+ * @file
++ * cvmx-pexp-defs.h
 + *
-+ *  Helper utilities for qlm_jtag.
-+ *
-+ */
-+
-+#ifndef __CVMX_HELPER_JTAG_H__
-+#define __CVMX_HELPER_JTAG_H__
-+
-+extern void cvmx_helper_qlm_jtag_init(void);
-+extern uint32_t cvmx_helper_qlm_jtag_shift(int qlm, int bits, uint32_t data);
-+extern void cvmx_helper_qlm_jtag_shift_zeros(int qlm, int bits);
-+extern void cvmx_helper_qlm_jtag_update(int qlm);
-+
-+#endif /* __CVMX_HELPER_JTAG_H__ */
-diff --git a/arch/mips/include/asm/octeon/cvmx.h b/arch/mips/include/asm/octeon/cvmx.h
-index 03fddfa..e31e3fe 100644
---- a/arch/mips/include/asm/octeon/cvmx.h
-+++ b/arch/mips/include/asm/octeon/cvmx.h
-@@ -376,6 +376,18 @@ static inline uint64_t cvmx_get_cycle(void)
- }
- 
- /**
-+ * Wait for the specified number of cycle
++ * Configuration and status register (CSR) definitions for
++ * OCTEON PEXP.
 + *
 + */
-+static inline void cvmx_wait(uint64_t cycles)
-+{
-+	uint64_t done = cvmx_get_cycle() + cycles;
++#ifndef __CVMX_PEXP_DEFS_H__
++#define __CVMX_PEXP_DEFS_H__
 +
-+	while (cvmx_get_cycle() < done)
-+		; /* Spin */
-+}
++#define CVMX_PEXP_NPEI_BAR1_INDEXX(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F0000008000ull + (((offset) & 31) * 16))
++#define CVMX_PEXP_NPEI_BIST_STATUS \
++	 CVMX_ADD_IO_SEG(0x00011F0000008580ull)
++#define CVMX_PEXP_NPEI_BIST_STATUS2 \
++	 CVMX_ADD_IO_SEG(0x00011F0000008680ull)
++#define CVMX_PEXP_NPEI_CTL_PORT0 \
++	 CVMX_ADD_IO_SEG(0x00011F0000008250ull)
++#define CVMX_PEXP_NPEI_CTL_PORT1 \
++	 CVMX_ADD_IO_SEG(0x00011F0000008260ull)
++#define CVMX_PEXP_NPEI_CTL_STATUS \
++	 CVMX_ADD_IO_SEG(0x00011F0000008570ull)
++#define CVMX_PEXP_NPEI_CTL_STATUS2 \
++	 CVMX_ADD_IO_SEG(0x00011F000000BC00ull)
++#define CVMX_PEXP_NPEI_DATA_OUT_CNT \
++	 CVMX_ADD_IO_SEG(0x00011F00000085F0ull)
++#define CVMX_PEXP_NPEI_DBG_DATA \
++	 CVMX_ADD_IO_SEG(0x00011F0000008510ull)
++#define CVMX_PEXP_NPEI_DBG_SELECT \
++	 CVMX_ADD_IO_SEG(0x00011F0000008500ull)
++#define CVMX_PEXP_NPEI_DMA0_INT_LEVEL \
++	 CVMX_ADD_IO_SEG(0x00011F00000085C0ull)
++#define CVMX_PEXP_NPEI_DMA1_INT_LEVEL \
++	 CVMX_ADD_IO_SEG(0x00011F00000085D0ull)
++#define CVMX_PEXP_NPEI_DMAX_COUNTS(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F0000008450ull + (((offset) & 7) * 16))
++#define CVMX_PEXP_NPEI_DMAX_DBELL(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F00000083B0ull + (((offset) & 7) * 16))
++#define CVMX_PEXP_NPEI_DMAX_IBUFF_SADDR(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F0000008400ull + (((offset) & 7) * 16))
++#define CVMX_PEXP_NPEI_DMAX_NADDR(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F00000084A0ull + (((offset) & 7) * 16))
++#define CVMX_PEXP_NPEI_DMA_CNTS \
++	 CVMX_ADD_IO_SEG(0x00011F00000085E0ull)
++#define CVMX_PEXP_NPEI_DMA_CONTROL \
++	 CVMX_ADD_IO_SEG(0x00011F00000083A0ull)
++#define CVMX_PEXP_NPEI_INT_A_ENB \
++	 CVMX_ADD_IO_SEG(0x00011F0000008560ull)
++#define CVMX_PEXP_NPEI_INT_A_ENB2 \
++	 CVMX_ADD_IO_SEG(0x00011F000000BCE0ull)
++#define CVMX_PEXP_NPEI_INT_A_SUM \
++	 CVMX_ADD_IO_SEG(0x00011F0000008550ull)
++#define CVMX_PEXP_NPEI_INT_ENB \
++	 CVMX_ADD_IO_SEG(0x00011F0000008540ull)
++#define CVMX_PEXP_NPEI_INT_ENB2 \
++	 CVMX_ADD_IO_SEG(0x00011F000000BCD0ull)
++#define CVMX_PEXP_NPEI_INT_INFO \
++	 CVMX_ADD_IO_SEG(0x00011F0000008590ull)
++#define CVMX_PEXP_NPEI_INT_SUM \
++	 CVMX_ADD_IO_SEG(0x00011F0000008530ull)
++#define CVMX_PEXP_NPEI_INT_SUM2 \
++	 CVMX_ADD_IO_SEG(0x00011F000000BCC0ull)
++#define CVMX_PEXP_NPEI_LAST_WIN_RDATA0 \
++	 CVMX_ADD_IO_SEG(0x00011F0000008600ull)
++#define CVMX_PEXP_NPEI_LAST_WIN_RDATA1 \
++	 CVMX_ADD_IO_SEG(0x00011F0000008610ull)
++#define CVMX_PEXP_NPEI_MEM_ACCESS_CTL \
++	 CVMX_ADD_IO_SEG(0x00011F00000084F0ull)
++#define CVMX_PEXP_NPEI_MEM_ACCESS_SUBIDX(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F0000008280ull + (((offset) & 31) * 16) - 16 * 12)
++#define CVMX_PEXP_NPEI_MSI_ENB0 \
++	 CVMX_ADD_IO_SEG(0x00011F000000BC50ull)
++#define CVMX_PEXP_NPEI_MSI_ENB1 \
++	 CVMX_ADD_IO_SEG(0x00011F000000BC60ull)
++#define CVMX_PEXP_NPEI_MSI_ENB2 \
++	 CVMX_ADD_IO_SEG(0x00011F000000BC70ull)
++#define CVMX_PEXP_NPEI_MSI_ENB3 \
++	 CVMX_ADD_IO_SEG(0x00011F000000BC80ull)
++#define CVMX_PEXP_NPEI_MSI_RCV0 \
++	 CVMX_ADD_IO_SEG(0x00011F000000BC10ull)
++#define CVMX_PEXP_NPEI_MSI_RCV1 \
++	 CVMX_ADD_IO_SEG(0x00011F000000BC20ull)
++#define CVMX_PEXP_NPEI_MSI_RCV2 \
++	 CVMX_ADD_IO_SEG(0x00011F000000BC30ull)
++#define CVMX_PEXP_NPEI_MSI_RCV3 \
++	 CVMX_ADD_IO_SEG(0x00011F000000BC40ull)
++#define CVMX_PEXP_NPEI_MSI_RD_MAP \
++	 CVMX_ADD_IO_SEG(0x00011F000000BCA0ull)
++#define CVMX_PEXP_NPEI_MSI_W1C_ENB0 \
++	 CVMX_ADD_IO_SEG(0x00011F000000BCF0ull)
++#define CVMX_PEXP_NPEI_MSI_W1C_ENB1 \
++	 CVMX_ADD_IO_SEG(0x00011F000000BD00ull)
++#define CVMX_PEXP_NPEI_MSI_W1C_ENB2 \
++	 CVMX_ADD_IO_SEG(0x00011F000000BD10ull)
++#define CVMX_PEXP_NPEI_MSI_W1C_ENB3 \
++	 CVMX_ADD_IO_SEG(0x00011F000000BD20ull)
++#define CVMX_PEXP_NPEI_MSI_W1S_ENB0 \
++	 CVMX_ADD_IO_SEG(0x00011F000000BD30ull)
++#define CVMX_PEXP_NPEI_MSI_W1S_ENB1 \
++	 CVMX_ADD_IO_SEG(0x00011F000000BD40ull)
++#define CVMX_PEXP_NPEI_MSI_W1S_ENB2 \
++	 CVMX_ADD_IO_SEG(0x00011F000000BD50ull)
++#define CVMX_PEXP_NPEI_MSI_W1S_ENB3 \
++	 CVMX_ADD_IO_SEG(0x00011F000000BD60ull)
++#define CVMX_PEXP_NPEI_MSI_WR_MAP \
++	 CVMX_ADD_IO_SEG(0x00011F000000BC90ull)
++#define CVMX_PEXP_NPEI_PCIE_CREDIT_CNT \
++	 CVMX_ADD_IO_SEG(0x00011F000000BD70ull)
++#define CVMX_PEXP_NPEI_PCIE_MSI_RCV \
++	 CVMX_ADD_IO_SEG(0x00011F000000BCB0ull)
++#define CVMX_PEXP_NPEI_PCIE_MSI_RCV_B1 \
++	 CVMX_ADD_IO_SEG(0x00011F0000008650ull)
++#define CVMX_PEXP_NPEI_PCIE_MSI_RCV_B2 \
++	 CVMX_ADD_IO_SEG(0x00011F0000008660ull)
++#define CVMX_PEXP_NPEI_PCIE_MSI_RCV_B3 \
++	 CVMX_ADD_IO_SEG(0x00011F0000008670ull)
++#define CVMX_PEXP_NPEI_PKTX_CNTS(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F000000A400ull + (((offset) & 31) * 16))
++#define CVMX_PEXP_NPEI_PKTX_INSTR_BADDR(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F000000A800ull + (((offset) & 31) * 16))
++#define CVMX_PEXP_NPEI_PKTX_INSTR_BAOFF_DBELL(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F000000AC00ull + (((offset) & 31) * 16))
++#define CVMX_PEXP_NPEI_PKTX_INSTR_FIFO_RSIZE(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F000000B000ull + (((offset) & 31) * 16))
++#define CVMX_PEXP_NPEI_PKTX_INSTR_HEADER(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F000000B400ull + (((offset) & 31) * 16))
++#define CVMX_PEXP_NPEI_PKTX_IN_BP(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F000000B800ull + (((offset) & 31) * 16))
++#define CVMX_PEXP_NPEI_PKTX_SLIST_BADDR(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F0000009400ull + (((offset) & 31) * 16))
++#define CVMX_PEXP_NPEI_PKTX_SLIST_BAOFF_DBELL(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F0000009800ull + (((offset) & 31) * 16))
++#define CVMX_PEXP_NPEI_PKTX_SLIST_FIFO_RSIZE(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F0000009C00ull + (((offset) & 31) * 16))
++#define CVMX_PEXP_NPEI_PKT_CNT_INT \
++	 CVMX_ADD_IO_SEG(0x00011F0000009110ull)
++#define CVMX_PEXP_NPEI_PKT_CNT_INT_ENB \
++	 CVMX_ADD_IO_SEG(0x00011F0000009130ull)
++#define CVMX_PEXP_NPEI_PKT_DATA_OUT_ES \
++	 CVMX_ADD_IO_SEG(0x00011F00000090B0ull)
++#define CVMX_PEXP_NPEI_PKT_DATA_OUT_NS \
++	 CVMX_ADD_IO_SEG(0x00011F00000090A0ull)
++#define CVMX_PEXP_NPEI_PKT_DATA_OUT_ROR \
++	 CVMX_ADD_IO_SEG(0x00011F0000009090ull)
++#define CVMX_PEXP_NPEI_PKT_DPADDR \
++	 CVMX_ADD_IO_SEG(0x00011F0000009080ull)
++#define CVMX_PEXP_NPEI_PKT_INPUT_CONTROL \
++	 CVMX_ADD_IO_SEG(0x00011F0000009150ull)
++#define CVMX_PEXP_NPEI_PKT_INSTR_ENB \
++	 CVMX_ADD_IO_SEG(0x00011F0000009000ull)
++#define CVMX_PEXP_NPEI_PKT_INSTR_RD_SIZE \
++	 CVMX_ADD_IO_SEG(0x00011F0000009190ull)
++#define CVMX_PEXP_NPEI_PKT_INSTR_SIZE \
++	 CVMX_ADD_IO_SEG(0x00011F0000009020ull)
++#define CVMX_PEXP_NPEI_PKT_INT_LEVELS \
++	 CVMX_ADD_IO_SEG(0x00011F0000009100ull)
++#define CVMX_PEXP_NPEI_PKT_IN_BP \
++	 CVMX_ADD_IO_SEG(0x00011F00000086B0ull)
++#define CVMX_PEXP_NPEI_PKT_IN_DONEX_CNTS(offset) \
++	 CVMX_ADD_IO_SEG(0x00011F000000A000ull + (((offset) & 31) * 16))
++#define CVMX_PEXP_NPEI_PKT_IN_INSTR_COUNTS \
++	 CVMX_ADD_IO_SEG(0x00011F00000086A0ull)
++#define CVMX_PEXP_NPEI_PKT_IN_PCIE_PORT \
++	 CVMX_ADD_IO_SEG(0x00011F00000091A0ull)
++#define CVMX_PEXP_NPEI_PKT_IPTR \
++	 CVMX_ADD_IO_SEG(0x00011F0000009070ull)
++#define CVMX_PEXP_NPEI_PKT_OUTPUT_WMARK \
++	 CVMX_ADD_IO_SEG(0x00011F0000009160ull)
++#define CVMX_PEXP_NPEI_PKT_OUT_BMODE \
++	 CVMX_ADD_IO_SEG(0x00011F00000090D0ull)
++#define CVMX_PEXP_NPEI_PKT_OUT_ENB \
++	 CVMX_ADD_IO_SEG(0x00011F0000009010ull)
++#define CVMX_PEXP_NPEI_PKT_PCIE_PORT \
++	 CVMX_ADD_IO_SEG(0x00011F00000090E0ull)
++#define CVMX_PEXP_NPEI_PKT_PORT_IN_RST \
++	 CVMX_ADD_IO_SEG(0x00011F0000008690ull)
++#define CVMX_PEXP_NPEI_PKT_SLIST_ES \
++	 CVMX_ADD_IO_SEG(0x00011F0000009050ull)
++#define CVMX_PEXP_NPEI_PKT_SLIST_ID_SIZE \
++	 CVMX_ADD_IO_SEG(0x00011F0000009180ull)
++#define CVMX_PEXP_NPEI_PKT_SLIST_NS \
++	 CVMX_ADD_IO_SEG(0x00011F0000009040ull)
++#define CVMX_PEXP_NPEI_PKT_SLIST_ROR \
++	 CVMX_ADD_IO_SEG(0x00011F0000009030ull)
++#define CVMX_PEXP_NPEI_PKT_TIME_INT \
++	 CVMX_ADD_IO_SEG(0x00011F0000009120ull)
++#define CVMX_PEXP_NPEI_PKT_TIME_INT_ENB \
++	 CVMX_ADD_IO_SEG(0x00011F0000009140ull)
++#define CVMX_PEXP_NPEI_RSL_INT_BLOCKS \
++	 CVMX_ADD_IO_SEG(0x00011F0000008520ull)
++#define CVMX_PEXP_NPEI_SCRATCH_1 \
++	 CVMX_ADD_IO_SEG(0x00011F0000008270ull)
++#define CVMX_PEXP_NPEI_STATE1 \
++	 CVMX_ADD_IO_SEG(0x00011F0000008620ull)
++#define CVMX_PEXP_NPEI_STATE2 \
++	 CVMX_ADD_IO_SEG(0x00011F0000008630ull)
++#define CVMX_PEXP_NPEI_STATE3 \
++	 CVMX_ADD_IO_SEG(0x00011F0000008640ull)
++#define CVMX_PEXP_NPEI_WINDOW_CTL \
++	 CVMX_ADD_IO_SEG(0x00011F0000008380ull)
 +
-+/**
-  * Reads a chip global cycle counter.  This counts CPU cycles since
-  * chip reset.  The counter is 64 bit.
-  * This register does not exist on CN38XX pass 1 silicion
-diff --git a/arch/mips/include/asm/octeon/octeon.h b/arch/mips/include/asm/octeon/octeon.h
-index edc6760..cac9b1a 100644
---- a/arch/mips/include/asm/octeon/octeon.h
-+++ b/arch/mips/include/asm/octeon/octeon.h
-@@ -245,4 +245,6 @@ static inline uint32_t octeon_npi_read32(uint64_t address)
- 	return cvmx_read64_uint32(address ^ 4);
- }
- 
-+extern struct cvmx_bootinfo *octeon_bootinfo;
-+
- #endif /* __ASM_OCTEON_OCTEON_H */
++#endif
 -- 
 1.6.0.6

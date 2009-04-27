@@ -1,123 +1,155 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2009 08:20:11 +0100 (BST)
-Received: from mail-ew0-f174.google.com ([209.85.219.174]:59508 "EHLO
-	mail-ew0-f174.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20021767AbZD0HUG convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 27 Apr 2009 08:20:06 +0100
-Received: by ewy22 with SMTP id 22so1969558ewy.0
-        for <linux-mips@linux-mips.org>; Mon, 27 Apr 2009 00:19:59 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:reply-to:to
-         :subject:date:user-agent:cc:references:in-reply-to:mime-version
-         :content-type:content-transfer-encoding:content-disposition
-         :message-id;
-        bh=bUEt2hoeZibzPa+g196oZ0b3blL7JgU0WW4oHHGgmL4=;
-        b=TJ1YfXokMi8XmALtjxwcgUXY7Hh+0aB3R0fkV8szjHbMEhbBS95x+XCIV3yeRtmZju
-         3PhbDolw9HUtyuWaY62c4RMVfg9bXlkLoaH4RkCe4F2u79basxQc/TBm7Cabxu/N0Yv1
-         Fi6C0b7thv9Ds5bCCac2g3RuDZNoEbS8L7Iag=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:reply-to:to:subject:date:user-agent:cc:references
-         :in-reply-to:mime-version:content-type:content-transfer-encoding
-         :content-disposition:message-id;
-        b=oyTK2B0dS90kldcN3ICvv/MF9/Bgu1yjiuEhVswidXB14egAaSzomu4VPa1YpX5agx
-         HpRDoBCsj9s1s9UFmzpDiH4Si/gyKdcomtjlv0dp0T/a97+fzamGkplYz91XGKGCIAXR
-         ZE+HacC6puuh8c4I0eQYYS0iUCwq+SN49EVrc=
-Received: by 10.210.61.2 with SMTP id j2mr565270eba.65.1240816799464;
-        Mon, 27 Apr 2009 00:19:59 -0700 (PDT)
-Received: from innova-card.com (LRouen-152-82-23-47.w80-13.abo.wanadoo.fr [80.13.118.47])
-        by mx.google.com with ESMTPS id 7sm5597315ewy.58.2009.04.27.00.19.58
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 27 Apr 2009 00:19:58 -0700 (PDT)
-From:	Brian Foster <brian.foster@innova-card.com>
-Reply-To: Brian Foster <brian.foster@innova-card.com>
-To:	David Daney <ddaney@caviumnetworks.com>
-Subject: Re: [PATCH 1/2] MIPS: Preliminary vdso.
-Date:	Mon, 27 Apr 2009 09:19:00 +0200
-User-Agent: KMail/1.10.4 (Linux/2.6.27-11-generic; KDE/4.1.4; x86_64; ; )
-Cc:	"Kevin D. Kissell" <kevink@paralogos.com>,
-	linux-mips@linux-mips.org
-References: <49EE3B0F.3040506@caviumnetworks.com> <49F16F38.8060009@paralogos.com> <49F1DB1B.2060209@caviumnetworks.com>
-In-Reply-To: <49F1DB1B.2060209@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2009 11:25:29 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:56732 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S20022455AbZD0KZ1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 27 Apr 2009 11:25:27 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n3RAPP6M002869;
+	Mon, 27 Apr 2009 12:25:25 +0200
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n3RAPOOr002867;
+	Mon, 27 Apr 2009 12:25:24 +0200
+Date:	Mon, 27 Apr 2009 12:25:24 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Kumba <kumba@gentoo.org>
+Cc:	Linux MIPS List <linux-mips@linux-mips.org>
+Subject: Re: [PATCH]: IP32: Enable L3 Cache on RM7000 Processor
+Message-ID: <20090427102524.GA19143@linux-mips.org>
+References: <49EAA3AF.3030409@gentoo.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200904270919.00761.brian.foster@innova-card.com>
-Return-Path: <blf.ireland@gmail.com>
+In-Reply-To: <49EAA3AF.3030409@gentoo.org>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22484
+X-archive-position: 22485
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: brian.foster@innova-card.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Friday 24 April 2009 17:30:35 David Daney wrote:
-> Kevin D. Kissell wrote:
-> > Brian Foster wrote:
-> >> On Wednesday 22 April 2009 20:01:44 David Daney wrote:
-> >>> Kevin D. Kissell wrote:
-> >>>> David Daney wrote:
-> >>>>> This is a preliminary patch to add a vdso to all user processes.
-> >>>>>[ ... ]
-> >>>> Note that for FPU-less CPUs, the kernel FP emulator also uses a user
-> >>>> stack trampoline to execute instructions in the delay slots of emulated
-> >>>> FP branches.  [ ... ]
-> >>
-> >>    As David says, this is a Very Ugly Problem.  Each FP trampoline
-> >>   is effectively per-(runtime-)instance per-thread [ ... ]
-> > 
-> > I haven't reviewed David's code in detail, but from his description, I 
-> > thought that there was a vdso page per task/thread.  If there's only one 
-> > per processor, then, yes, that poses a challenge to porting the FPU 
-> > emulation code to use it, since, as you observe, the instruction 
-> > sequence to be executed may differ for each delay slot emulation.  It 
-> > should still be possible, though.  [ ... ]
-> 
-> Kevin is right, this is ugly.
-> 
-> My current plan is to map an anonymous page with execute permission for 
-> each vma (process) and place all FP trampolines there.  Each thread that 
-> needs a trampoline will allocate a piece of this page and write the 
-> trampoline.  We can arrange it so that the only way a thread can exit 
-> the trampoline is by taking some sort of fault (currently this is true 
-> for the normal case), or exiting.
+On Sun, Apr 19, 2009 at 12:08:15AM -0400, Kumba wrote:
 
-David,
+> diff -Naurp a/arch/mips/mm/sc-rm7k.c b/arch/mips/mm/sc-rm7k.c
+> --- a/arch/mips/mm/sc-rm7k.c	2009-04-18 23:23:49.000000000 -0400
+> +++ b/arch/mips/mm/sc-rm7k.c	2009-04-18 23:52:09.690656791 -0400
+> @@ -25,11 +25,23 @@
+>  /* Secondary cache parameters. */
+>  #define scache_size	(256*1024)	/* Fixed to 256KiB on RM7000 */
+>
+> +/* Tertiary cache parameters */
+> +#define tc_lsize      32
+> +#ifdef CONFIG_SGI_IP32
+> +#define tcache_size   (1024*1024)	/* IP32's RM7000 has 1MB L3 */
+> +#else
+> +#define tcache_size   (8*1024*1024)	/* 8MB (max) for all others */
+> +#endif
 
-   The above is the bit which has always stumped me.
-  Having a per-process(or similar) page for the FP
-  trampoline(s) is the “obvious” approach, but what
-  has had me going around in circles is how to know
-  when an allocated slot/trampoline can be freed.
-  As you imply, in the normal case, it seems trivial.
-  It's the not-normal cases which aren't clear (or at
-  least aren't clear to me!).
+No platform-specific #ifdefs into generic code.  More on that see below.
 
-   You say (EMPHASIS added) “We can arrange it so
-  that the ONLY way a thread can exit the trampoline
-  is by taking some sort of fault ... or exiting”,
-  which if true, could solve the issue.  Could you
-  elucidate on this point, please?
+> +
+>  extern unsigned long icache_way_size, dcache_way_size;
+>
+>  #include <asm/r4kcache.h>
+>
+> -static int rm7k_tcache_enabled;
+> +static int rm7k_tcache_enabled = 0;
+> +
+> +static char *way_string[] __initdata = { NULL, "direct mapped", "2-way",
+> +	"3-way", "4-way", "5-way", "6-way", "7-way", "8-way"
+> +};
+>
+>  /*
+>   * Writeback and invalidate the primary cache dcache before DMA.
+> @@ -105,6 +117,26 @@ static __cpuinit void __rm7k_sc_enable(v
+>  		      :
+>  		      : "r" (CKSEG0ADDR(i)), "i" (Index_Store_Tag_SD));
+>  	}
+> +
+> +
+> +	/* tertiary cache */
+> +	set_c0_config(RM7K_CONF_TE);
+> +
+> +	write_c0_taglo(0);
+> +	write_c0_taghi(0);
+> +
+> +	for (i = 0; i < tcache_size; i += tc_lsize) {
+> +		__asm__ __volatile__ (
+> +		      ".set noreorder\n\t"
+> +		      ".set mips3\n\t"
+> +		      "cache %1, (%0)\n\t"
+> +		      ".set mips0\n\t"
+> +		      ".set reorder"
+> +		      :
+> +		      : "r" (CKSEG0ADDR(i)), "i" (Page_Invalidate_T));
 
-  Thanks for your time, effort, and patience.
-cheers!
-	-blf-
+Use cache_op() from <asm/r4kcache.h> instead of more inline assembler.
 
->                                    Then we free the trampoline for other 
-> threads to use.  If all the slots in the trampoline page are in use, a 
-> thread would block until there is a free one, rarely, if ever would this 
-> happen.
->[ ... ]
+> +	}
+> +
+> +	rm7k_tcache_enabled = 1;
+>  }
+>
+>  static __cpuinit void rm7k_sc_enable(void)
+> @@ -119,6 +151,12 @@ static __cpuinit void rm7k_sc_enable(voi
+>  static void rm7k_sc_disable(void)
+>  {
+>  	clear_c0_config(RM7K_CONF_SE);
+> +
+> +	/* tertiary cache */
+> +	if (!rm7k_tcache_enabled)
+> +		return;
+> +
+> +	clear_c0_config(RM7K_CONF_TE);
+>  }
 
--- 
-“How many surrealists does it take to   | Brian Foster
- change a lightbulb? Three. One calms   | somewhere in south of France
- the warthog, and two fill the bathtub  |   Stop E$$o (ExxonMobil)!
- with brightly-coloured machine tools.” |      http://www.stopesso.com
+I wonder if it is safe to just disable the cache without flushing it before or
+after.
+
+>  static struct bcache_ops rm7k_sc_ops = {
+> @@ -153,20 +191,20 @@ void __cpuinit rm7k_sc_init(void)
+>  	if (!(config & RM7K_CONF_TC)) {
+>
+>  		/*
+> -		 * We can't enable the L3 cache yet. There may be board-specific
+> -		 * magic necessary to turn it on, and blindly asking the CPU to
+> -		 * start using it would may give cache errors.
+> -		 *
+> -		 * Also, board-specific knowledge may allow us to use the
+> +		 * Board-specific knowledge may allow us to use the
+>  		 * CACHE Flash_Invalidate_T instruction if the tag RAM supports
+>  		 * it, and may specify the size of the L3 cache so we don't have
+> -		 * to probe it.
+> +		 * to probe it.  For now, we set the size to 8MB, except on IP32
+> +		 * where we know the size is fixed at 1MB.
+>  		 */
+> -		printk(KERN_INFO "Tertiary cache present, %s enabled\n",
+> -		       (config & RM7K_CONF_TE) ? "already" : "not (yet)");
+> +		c->tcache.linesz = tc_lsize;
+> +		c->tcache.ways = 1;
+> +		c->tcache.waybit= __ffs(tcache_size / c->tcache.ways);
+> +		c->tcache.waysize = tcache_size / c->tcache.ways;
+> +		c->tcache.sets = tcache_size / (c->tcache.linesz * c->tcache.ways);
+> +		printk(KERN_INFO "Tertiary cache size %dK, %s, linesize %d bytes.\n",
+> +		       (tcache_size >> 10), way_string[c->tcache.ways], tc_lsize);
+
+Initializing c->tcache here is nice but it all depends on the tcache_size which
+depends on the platform and isn't (I call it a design flaw) easily accessible.  The
+solution is a R4000SC-style probe for the cache size.  See c-r4.c probe_scache()
+for how this works and emjoy the scary comments.  It should easier to do this with
+just banging the cache tags on the RM7000 while the T-cache is disabled.
+
+> -		if ((config & RM7K_CONF_TE))
+> -			rm7k_tcache_enabled = 1;
+>  	}
+>
+>  	bcops = &rm7k_sc_ops;
+>
+>
+
+  Ralf

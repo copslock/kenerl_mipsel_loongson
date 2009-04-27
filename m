@@ -1,109 +1,123 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2009 04:43:58 +0100 (BST)
-Received: from yw-out-1718.google.com ([74.125.46.154]:30442 "EHLO
-	yw-out-1718.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20024966AbZD0Dnv (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 27 Apr 2009 04:43:51 +0100
-Received: by yw-out-1718.google.com with SMTP id 9so1303774ywk.24
-        for <linux-mips@linux-mips.org>; Sun, 26 Apr 2009 20:43:49 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2009 08:20:11 +0100 (BST)
+Received: from mail-ew0-f174.google.com ([209.85.219.174]:59508 "EHLO
+	mail-ew0-f174.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20021767AbZD0HUG convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 27 Apr 2009 08:20:06 +0100
+Received: by ewy22 with SMTP id 22so1969558ewy.0
+        for <linux-mips@linux-mips.org>; Mon, 27 Apr 2009 00:19:59 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=aG+abH2vJEVDIEv3I02KMQ7GR3AVeR6YgmC9Qn++tYw=;
-        b=kgrd1AjcEx1qMpZyZxmNFbm6ZZpedrQa+8303Si74dGKljjoz21PCkQKAHtkRqi/xk
-         We5B+t2JD1GgcMsn2onkAd3A3eoM3+lTnJtuk1IlGAFEX0Wz8jcSZ15VE9G/lyZ/NMN/
-         m4vhazRU/mdeLqCFKa5PYmL1UbmjpF50GtI7E=
+        h=domainkey-signature:received:received:sender:from:reply-to:to
+         :subject:date:user-agent:cc:references:in-reply-to:mime-version
+         :content-type:content-transfer-encoding:content-disposition
+         :message-id;
+        bh=bUEt2hoeZibzPa+g196oZ0b3blL7JgU0WW4oHHGgmL4=;
+        b=TJ1YfXokMi8XmALtjxwcgUXY7Hh+0aB3R0fkV8szjHbMEhbBS95x+XCIV3yeRtmZju
+         3PhbDolw9HUtyuWaY62c4RMVfg9bXlkLoaH4RkCe4F2u79basxQc/TBm7Cabxu/N0Yv1
+         Fi6C0b7thv9Ds5bCCac2g3RuDZNoEbS8L7Iag=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=G/1f2wB9haH1wukPOkMc0MKyIfl4Zm+TehaQxh+c2X8bz4fJNGjSWL26JGja1AooDh
-         4P4O295y9KbasX9i81oMx+n3AoKmovJYcV9omY30QQ2+oyQH/ICugeC7t4IQen31qY8F
-         fHYr0o/2d6FVJHi4rqh0canHjBwHA+v1YTVpI=
+        h=sender:from:reply-to:to:subject:date:user-agent:cc:references
+         :in-reply-to:mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id;
+        b=oyTK2B0dS90kldcN3ICvv/MF9/Bgu1yjiuEhVswidXB14egAaSzomu4VPa1YpX5agx
+         HpRDoBCsj9s1s9UFmzpDiH4Si/gyKdcomtjlv0dp0T/a97+fzamGkplYz91XGKGCIAXR
+         ZE+HacC6puuh8c4I0eQYYS0iUCwq+SN49EVrc=
+Received: by 10.210.61.2 with SMTP id j2mr565270eba.65.1240816799464;
+        Mon, 27 Apr 2009 00:19:59 -0700 (PDT)
+Received: from innova-card.com (LRouen-152-82-23-47.w80-13.abo.wanadoo.fr [80.13.118.47])
+        by mx.google.com with ESMTPS id 7sm5597315ewy.58.2009.04.27.00.19.58
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Mon, 27 Apr 2009 00:19:58 -0700 (PDT)
+From:	Brian Foster <brian.foster@innova-card.com>
+Reply-To: Brian Foster <brian.foster@innova-card.com>
+To:	David Daney <ddaney@caviumnetworks.com>
+Subject: Re: [PATCH 1/2] MIPS: Preliminary vdso.
+Date:	Mon, 27 Apr 2009 09:19:00 +0200
+User-Agent: KMail/1.10.4 (Linux/2.6.27-11-generic; KDE/4.1.4; x86_64; ; )
+Cc:	"Kevin D. Kissell" <kevink@paralogos.com>,
+	linux-mips@linux-mips.org
+References: <49EE3B0F.3040506@caviumnetworks.com> <49F16F38.8060009@paralogos.com> <49F1DB1B.2060209@caviumnetworks.com>
+In-Reply-To: <49F1DB1B.2060209@caviumnetworks.com>
 MIME-Version: 1.0
-Received: by 10.151.129.5 with SMTP id g5mr8032351ybn.235.1240803829685; Sun, 
-	26 Apr 2009 20:43:49 -0700 (PDT)
-In-Reply-To: <777f39b10904262033o124be1f1o22297da7c67f9dbd@mail.gmail.com>
-References: <777f39b10904262033o124be1f1o22297da7c67f9dbd@mail.gmail.com>
-Date:	Mon, 27 Apr 2009 11:43:49 +0800
-Message-ID: <777f39b10904262043l29558defu61c7caa0d454730d@mail.gmail.com>
-Subject: =?GB2312?Q?Re=3A_how_to_debug_mips_AdEL_error=A3=BF_Cause_register=27s?=
-	=?GB2312?Q?_ExcCode_field_equal_to_=274=27_=28AdEL=29?=
-From:	Bob Zhang <2004.zhang@gmail.com>
-To:	linux-mips@linux-mips.org
-Cc:	"bob.zhang2004" <bob.zhang2004@gmail.com>,
-	"Christophe.Carvounas" <christophe.carvounas@gmail.com>,
-	Bob Zhang <2004.zhang@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <2004.zhang@gmail.com>
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Message-Id: <200904270919.00761.brian.foster@innova-card.com>
+Return-Path: <blf.ireland@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22483
+X-archive-position: 22484
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: 2004.zhang@gmail.com
+X-original-sender: brian.foster@innova-card.com
 Precedence: bulk
 X-list: linux-mips
 
-through the kernel panic info:
-CPU Regs : ===========================================================
-$0 : 00000000 80290000 00000100 fffdffff 00000007 00000006 8023427c 820e83d4
-$8 : 00000000 00000000 00000000 820e83dc 820e83f4 820e8000 80278010 00000000
-$16: 8028f7b8 0000d32b 0000132b 802a53a0 0000d34d 7fff7d48 00000004 00000014
-$24: 8200000c 2abe4090                   820e8000 820e9e70 00000000 0000000a
+On Friday 24 April 2009 17:30:35 David Daney wrote:
+> Kevin D. Kissell wrote:
+> > Brian Foster wrote:
+> >> On Wednesday 22 April 2009 20:01:44 David Daney wrote:
+> >>> Kevin D. Kissell wrote:
+> >>>> David Daney wrote:
+> >>>>> This is a preliminary patch to add a vdso to all user processes.
+> >>>>>[ ... ]
+> >>>> Note that for FPU-less CPUs, the kernel FP emulator also uses a user
+> >>>> stack trampoline to execute instructions in the delay slots of emulated
+> >>>> FP branches.  [ ... ]
+> >>
+> >>    As David says, this is a Very Ugly Problem.  Each FP trampoline
+> >>   is effectively per-(runtime-)instance per-thread [ ... ]
+> > 
+> > I haven't reviewed David's code in detail, but from his description, I 
+> > thought that there was a vdso page per task/thread.  If there's only one 
+> > per processor, then, yes, that poses a challenge to porting the FPU 
+> > emulation code to use it, since, as you observe, the instruction 
+> > sequence to be executed may differ for each delay slot emulation.  It 
+> > should still be possible, though.  [ ... ]
+> 
+> Kevin is right, this is ugly.
+> 
+> My current plan is to map an anonymous page with execute permission for 
+> each vma (process) and place all FP trampolines there.  Each thread that 
+> needs a trampoline will allocate a piece of this page and write the 
+> trampoline.  We can arrange it so that the only way a thread can exit 
+> the trampoline is by taking some sort of fault (currently this is true 
+> for the normal case), or exiting.
 
-we can know , the ra register is 0x0000000a
-after sub-function executed completely , it will return $ra.
+David,
 
-through code trace , I know the last function is "__call_console_drivers" .
+   The above is the bit which has always stumped me.
+  Having a per-process(or similar) page for the FP
+  trampoline(s) is the “obvious” approach, but what
+  has had me going around in circles is how to know
+  when an allocated slot/trampoline can be freed.
+  As you imply, in the normal case, it seems trivial.
+  It's the not-normal cases which aren't clear (or at
+  least aren't clear to me!).
 
-I dissable the vmlinux code,
+   You say (EMPHASIS added) “We can arrange it so
+  that the ONLY way a thread can exit the trampoline
+  is by taking some sort of fault ... or exiting”,
+  which if true, could solve the issue.  Could you
+  elucidate on this point, please?
 
-and grab section:
+  Thanks for your time, effort, and patience.
+cheers!
+	-blf-
 
-00000000800b9364 <__call_console_drivers>:
-    800b9364:	27bdffd8 	addiu	$sp,$sp,-40
-    800b9368:	afb00010 	sw	$s0,16($sp)
-    800b936c:	3c108028 	lui	$s0,0x8028
-    800b9370:	8e107d1c 	lw	$s0,32028($s0)
-    800b9374:	afb10014 	sw	$s1,20($sp)
-    800b9378:	00808821 	move	$s1,$a0
-    800b937c:	afb40020 	sw	$s4,32($sp)
-    800b9380:	00a0a021 	move	$s4,$a1
-    800b9384:	afbf0024 	sw	$ra,36($sp)    #save ra into SP
-    800b9388:	afb3001c 	sw	$s3,28($sp)
-    800b938c:	12000012 	beqz	$s0,800b93d8 <__call_console_drivers+74>
-    800b9390:	afb20018 	sw	$s2,24($sp)
-    800b9394:	32323fff 	andi	$s2,$s1,0x3fff
-    800b9398:	3c13802a 	lui	$s3,0x802a
-    800b939c:	267353a0 	addiu	$s3,$s3,21408
-    800b93a0:	9602001c 	lhu	$v0,28($s0)
-    800b93a4:	30420004 	andi	$v0,$v0,0x4
-    800b93a8:	50400009 	beqzl	$v0,800b93d0 <__call_console_drivers+6c>
-    800b93ac:	8e100024 	lw	$s0,36($s0)
-    800b93b0:	8e020008 	lw	$v0,8($s0)
-    800b93b4:	50400006 	beqzl	$v0,800b93d0 <__call_console_drivers+6c>
-    800b93b8:	8e100024 	lw	$s0,36($s0)
-    800b93bc:	02002021 	move	$a0,$s0
-    800b93c0:	02532821 	addu	$a1,$s2,$s3
-    800b93c4:	0040f809 	jalr	$v0
-    800b93c8:	02913023 	subu	$a2,$s4,$s1
-    800b93cc:	8e100024 	lw	$s0,36($s0)
-    800b93d0:	5600fff4 	bnezl	$s0,800b93a4 <__call_console_drivers+40>
-    800b93d4:	9602001c 	lhu	$v0,28($s0)
-    800b93d8:	8fbf0024 	lw	$ra,36($sp)
-    800b93dc:	8fb40020 	lw	$s4,32($sp)
-    800b93e0:	8fb3001c 	lw	$s3,28($sp)
-    800b93e4:	8fb20018 	lw	$s2,24($sp)
-    800b93e8:	8fb10014 	lw	$s1,20($sp)
-    800b93ec:	8fb00010 	lw	$s0,16($sp)
-    800b93f0:	03e00008 	jr	$ra                      # error should be here.
-    800b93f4:	27bd0028 	addiu	$sp,$sp,40
+>                                    Then we free the trampoline for other 
+> threads to use.  If all the slots in the trampoline page are in use, a 
+> thread would block until there is a free one, rarely, if ever would this 
+> happen.
+>[ ... ]
 
-
-
-Any comment? thanks.
+-- 
+“How many surrealists does it take to   | Brian Foster
+ change a lightbulb? Three. One calms   | somewhere in south of France
+ the warthog, and two fill the bathtub  |   Stop E$$o (ExxonMobil)!
+ with brightly-coloured machine tools.” |      http://www.stopesso.com

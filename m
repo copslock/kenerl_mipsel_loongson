@@ -1,287 +1,123 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2009 13:52:03 +0100 (BST)
-Received: from gateway08.websitewelcome.com ([69.93.106.23]:35188 "HELO
-	gateway08.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with SMTP id S20023018AbZD0Mv6 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 27 Apr 2009 13:51:58 +0100
-Received: (qmail 22064 invoked from network); 27 Apr 2009 12:54:40 -0000
-Received: from gator750.hostgator.com (174.132.194.2)
-  by gateway08.websitewelcome.com with SMTP; 27 Apr 2009 12:54:40 -0000
-Received: from [217.109.65.213] (port=1864 helo=[127.0.0.1])
-	by gator750.hostgator.com with esmtpa (Exim 4.69)
-	(envelope-from <kevink@paralogos.com>)
-	id 1LyQJM-0002qf-No; Mon, 27 Apr 2009 07:51:53 -0500
-Message-ID: <49F5AA6A.7010402@paralogos.com>
-Date:	Mon, 27 Apr 2009 14:51:54 +0200
-From:	"Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Thunderbird 2.0.0.21 (Windows/20090302)
-MIME-Version: 1.0
-To:	Brian Foster <brian.foster@innova-card.com>
-CC:	David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/2] MIPS: Preliminary vdso.
-References: <49EE3B0F.3040506@caviumnetworks.com> <49F16F38.8060009@paralogos.com> <49F1DB1B.2060209@caviumnetworks.com> <200904270919.00761.brian.foster@innova-card.com>
-In-Reply-To: <200904270919.00761.brian.foster@innova-card.com>
-Content-Type: multipart/alternative;
- boundary="------------000705080409090902090504"
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator750.hostgator.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - paralogos.com
-Return-Path: <kevink@paralogos.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2009 13:59:31 +0100 (BST)
+Received: from yw-out-1718.google.com ([74.125.46.157]:15299 "EHLO
+	yw-out-1718.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20023083AbZD0M7Z (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 27 Apr 2009 13:59:25 +0100
+Received: by yw-out-1718.google.com with SMTP id 9so1399702ywk.24
+        for <multiple recipients>; Mon, 27 Apr 2009 05:59:23 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:received:to:subject:cc
+         :message-id:from:date;
+        bh=1x30Ff+2tTp/y4B+2Q4Qfv23GyK5fnvMoimGQl83JUg=;
+        b=e+/GeY7606K7LzWh6y0kDo96JwxO59NRkYy00FGt2iMfqpcTeLZdsG4o+CAMrpxCqt
+         cvJXx7Rv+nRUYVHrnnWaVIg++O54ofVlMLGJGXeLbqlz/X24q5lr2WP8hT4ZT7k9za1H
+         8EWn52ftlxKWnNpRwsryNkDSwsrTVMp6Vp3wk=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=to:subject:cc:message-id:from:date;
+        b=VClJZ7w4rANpvPQysDHPnvHScGfRujYQbP137V0N/fgzahkZbgEaaFEIXd55QFNFS2
+         X4ZqFK56DtgB1nCR3kg6GDmJvv1BZPBcqwVHTOiTJrofdLN7AfI+Q1T/ueWHG9hXjfY+
+         ArXj9MxFGuEk9Nowr/epEDDx49NbSieL3egqQ=
+Received: by 10.100.105.15 with SMTP id d15mr8322624anc.154.1240837163652;
+        Mon, 27 Apr 2009 05:59:23 -0700 (PDT)
+Received: from localhost (207-47-250-185.sktn.hsdb.sasknet.sk.ca [207.47.250.185])
+        by mx.google.com with ESMTPS id d22sm10110046and.25.2009.04.27.05.59.18
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Mon, 27 Apr 2009 05:59:19 -0700 (PDT)
+Received: from shane by localhost with local (Exim 4.63)
+	(envelope-from <shane@localhost>)
+	id 1LyQQX-00047N-6E; Mon, 27 Apr 2009 06:59:17 -0600
+To:	linux-mips@linux-mips.org
+Subject: [MIPS] Resolve compile issues with msp71xx configuration
+Cc:	ralf@linux-mips.org
+Message-Id: <E1LyQQX-00047N-6E@localhost>
+From:	Shane McDonald <mcdonald.shane@gmail.com>
+Date:	Mon, 27 Apr 2009 06:59:17 -0600
+Return-Path: <mcdonald.shane@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22486
+X-archive-position: 22487
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
+X-original-sender: mcdonald.shane@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------000705080409090902090504
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+There have been a number of compile problems with the msp71xx
+configuration ever since it was included in the linux-mips.org
+repository.  This patch resolves these problems:
+ - proper files are included when using a squashfs rootfs
+ - resetting the board no longer uses non-existent GPIO routines
+ - create the required plat_timer_setup function
 
-Brian Foster wrote:
-> On Friday 24 April 2009 17:30:35 David Daney wrote:
->   
->> Kevin D. Kissell wrote:
->>     
->>> Brian Foster wrote:
->>>       
->>>> On Wednesday 22 April 2009 20:01:44 David Daney wrote:
->>>>         
->>>>> Kevin D. Kissell wrote:
->>>>>           
->>>>>> David Daney wrote:
->>>>>>             
->>>>>>> This is a preliminary patch to add a vdso to all user processes.
->>>>>>> [ ... ]
->>>>>>>               
->>>>>> Note that for FPU-less CPUs, the kernel FP emulator also uses a user
->>>>>> stack trampoline to execute instructions in the delay slots of emulated
->>>>>> FP branches.  [ ... ]
->>>>>>             
->>>>    As David says, this is a Very Ugly Problem.  Each FP trampoline
->>>>   is effectively per-(runtime-)instance per-thread [ ... ]
->>>>         
->>> I haven't reviewed David's code in detail, but from his description, I 
->>> thought that there was a vdso page per task/thread.  If there's only one 
->>> per processor, then, yes, that poses a challenge to porting the FPU 
->>> emulation code to use it, since, as you observe, the instruction 
->>> sequence to be executed may differ for each delay slot emulation.  It 
->>> should still be possible, though.  [ ... ]
->>>       
->> Kevin is right, this is ugly.
->>
->> My current plan is to map an anonymous page with execute permission for 
->> each vma (process) and place all FP trampolines there.  Each thread that 
->> needs a trampoline will allocate a piece of this page and write the 
->> trampoline.  We can arrange it so that the only way a thread can exit 
->> the trampoline is by taking some sort of fault (currently this is true 
->> for the normal case), or exiting.
->>     
->
-> David,
->
->    The above is the bit which has always stumped me.
->   Having a per-process(or similar) page for the FP
->   trampoline(s) is the “obvious” approach, but what
->   has had me going around in circles is how to know
->   when an allocated slot/trampoline can be freed.
->   As you imply, in the normal case, it seems trivial.
->   It's the not-normal cases which aren't clear (or at
->   least aren't clear to me!).
->
->    You say (EMPHASIS added) “We can arrange it so
->   that the ONLY way a thread can exit the trampoline
->   is by taking some sort of fault ... or exiting”,
->   which if true, could solve the issue.  Could you
->   elucidate on this point, please?
->
->   
-Well, he's *almost* right about that. The delay slot emulation function
-executes a single instruction off the user stack/vdso slot, which is
-followed in memory by an instruction that provokes an address
-exception.  The address exception handler detects the special case (and
-it should be noted that detecting the special case could be made simpler
-and more reliable if a vdso-type region were used), cleans up, and
-restores normal stack behavior.  That "clean up" could, of course,
-include any necessary vdso slot management.  But what about cases that
-won't get to the magic alignment trap?
+This patch has been compile-tested against the current HEAD.
 
-As the instruction being executed is extracted from a branch delay slot,
-we know it's not legal for it to be any sort of branch or jump
-instruction.  But it *could* be a trap or system call instruction, or a
-load/store that would provoke a TLB exception.  In the usual cases,
-however, as I believe David was alluding, either the exception will
-ultimately unwind to return to execute the magic alignment trap, or the
-thread will exit, and could free the emulation slot as part of general
-cleanup.
+Signed-off-by: Shane McDonald <mcdonald.shane@gmail.com>
+---
+ arch/mips/pmc-sierra/msp71xx/msp_prom.c  |    3 ++-
+ arch/mips/pmc-sierra/msp71xx/msp_setup.c |    8 ++------
+ arch/mips/pmc-sierra/msp71xx/msp_time.c  |    7 ++-----
+ 3 files changed, 6 insertions(+), 12 deletions(-)
 
-But there's a case that isn't handled in this model, and that's the case
-of an exception (or interrupt that falls in the 2-instruction window)
-resulting in a signal that is caught and dispatched, and where either
-the signal handler does a longjmp and restarts FP computation, or where
-the signal handler itself contains a FP branch with yet another delay
-slot to be emulated. One *could* get alarm signal before the original
-delay slot instruction is executed, so recycling the same vdso cache
-line would be premature.  It's hard to get away from something
-distinctly stack-like if one wants to cover these cases.
-
-My short-term suggestion would be to leave FP emulator delay slot
-handling on the (executable) user stack, even if signal trampolines use
-the vdso.  Longer term, we might consider what sorts of crockery would
-be necessary to deal with delay slot abandonment and recursion.  That
-might mean adding cruft to the signal dispatch logic to detect that
-we're in mid-delay-slot-emulation and defer the signal until after the
-alignment trap cleanup is done (adds annoying run-time overhead, but is
-probably the smallest increase in footprint and complexity), or it might
-mean changing the delay slot emulation paradigm completely and bolting a
-full instruction set emulator into the FP emulator, so that the delay
-slot instruction is simulated in kernel mode, rather than requiring
-execution in user mode.  I rejected that idea out-of-hand when I first
-did the FP emulator integration with the kernel, years ago, but maybe
-the constraints have changed...
-
-          Regards,
-
-          Kevin K.
-
---------------000705080409090902090504
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-  <meta content="text/html;charset=UTF-8" http-equiv="Content-Type">
-  <title></title>
-</head>
-<body bgcolor="#ffffff" text="#000000">
-Brian Foster wrote:
-<blockquote cite="mid:200904270919.00761.brian.foster@innova-card.com"
- type="cite">
-  <pre wrap="">On Friday 24 April 2009 17:30:35 David Daney wrote:
-  </pre>
-  <blockquote type="cite">
-    <pre wrap="">Kevin D. Kissell wrote:
-    </pre>
-    <blockquote type="cite">
-      <pre wrap="">Brian Foster wrote:
-      </pre>
-      <blockquote type="cite">
-        <pre wrap="">On Wednesday 22 April 2009 20:01:44 David Daney wrote:
-        </pre>
-        <blockquote type="cite">
-          <pre wrap="">Kevin D. Kissell wrote:
-          </pre>
-          <blockquote type="cite">
-            <pre wrap="">David Daney wrote:
-            </pre>
-            <blockquote type="cite">
-              <pre wrap="">This is a preliminary patch to add a vdso to all user processes.
-[ ... ]
-              </pre>
-            </blockquote>
-            <pre wrap="">Note that for FPU-less CPUs, the kernel FP emulator also uses a user
-stack trampoline to execute instructions in the delay slots of emulated
-FP branches.  [ ... ]
-            </pre>
-          </blockquote>
-        </blockquote>
-        <pre wrap="">   As David says, this is a Very Ugly Problem.  Each FP trampoline
-  is effectively per-(runtime-)instance per-thread [ ... ]
-        </pre>
-      </blockquote>
-      <pre wrap="">I haven't reviewed David's code in detail, but from his description, I 
-thought that there was a vdso page per task/thread.  If there's only one 
-per processor, then, yes, that poses a challenge to porting the FPU 
-emulation code to use it, since, as you observe, the instruction 
-sequence to be executed may differ for each delay slot emulation.  It 
-should still be possible, though.  [ ... ]
-      </pre>
-    </blockquote>
-    <pre wrap="">Kevin is right, this is ugly.
-
-My current plan is to map an anonymous page with execute permission for 
-each vma (process) and place all FP trampolines there.  Each thread that 
-needs a trampoline will allocate a piece of this page and write the 
-trampoline.  We can arrange it so that the only way a thread can exit 
-the trampoline is by taking some sort of fault (currently this is true 
-for the normal case), or exiting.
-    </pre>
-  </blockquote>
-  <pre wrap=""><!---->
-David,
-
-   The above is the bit which has always stumped me.
-  Having a per-process(or similar) page for the FP
-  trampoline(s) is the “obvious” approach, but what
-  has had me going around in circles is how to know
-  when an allocated slot/trampoline can be freed.
-  As you imply, in the normal case, it seems trivial.
-  It's the not-normal cases which aren't clear (or at
-  least aren't clear to me!).
-
-   You say (EMPHASIS added) “We can arrange it so
-  that the ONLY way a thread can exit the trampoline
-  is by taking some sort of fault ... or exiting”,
-  which if true, could solve the issue.  Could you
-  elucidate on this point, please?
-
-  </pre>
-</blockquote>
-Well, he's *almost* right about that. The delay slot emulation function
-executes a single instruction off the user stack/vdso slot, which is
-followed in memory by an instruction that provokes an address
-exception.  The address exception handler detects the special case (and
-it should be noted that detecting the special case could be made
-simpler and more reliable if a vdso-type region were used), cleans up,
-and restores normal stack behavior.  That "clean up" could, of course,
-include any necessary vdso slot management.  But what about cases that
-won't get to the magic alignment trap?<br>
-<br>
-As the instruction being executed is extracted from a branch delay
-slot, we know it's not legal for it to be any sort of branch or jump
-instruction.  But it *could* be a trap or system call instruction, or a
-load/store that would provoke a TLB exception.  In the usual cases,
-however, as I believe David was alluding, either the exception will
-ultimately unwind to return to execute the magic alignment trap, or the
-thread will exit, and could free the emulation slot as part of general
-cleanup.<br>
-<br>
-But there's a case that isn't handled in this model, and that's the
-case of an exception (or interrupt that falls in the 2-instruction
-window) resulting in a signal that is caught and dispatched, and where
-either the signal handler does a longjmp and restarts FP computation,
-or where the signal handler itself contains a FP branch with yet
-another delay slot to be emulated. One *could* get alarm signal before
-the original delay slot instruction is executed, so recycling the same
-vdso cache line would be premature.  It's hard to get away from
-something distinctly stack-like if one wants to cover these cases.<br>
-<br>
-My short-term suggestion would be to leave FP emulator delay slot
-handling on the (executable) user stack, even if signal trampolines use
-the vdso.  Longer term, we might consider what sorts of crockery would
-be necessary to deal with delay slot abandonment and recursion.  That
-might mean adding cruft to the signal dispatch logic to detect that
-we're in mid-delay-slot-emulation and defer the signal until after the
-alignment trap cleanup is done (adds annoying run-time overhead, but is
-probably the smallest increase in footprint and complexity), or it
-might mean changing the delay slot emulation paradigm completely and
-bolting a full instruction set emulator into the FP emulator, so that
-the delay slot instruction is simulated in kernel mode, rather than
-requiring execution in user mode.  I rejected that idea out-of-hand
-when I first did the FP emulator integration with the kernel, years
-ago, but maybe the constraints have changed...<br>
-<br>
-          Regards,<br>
-<br>
-          Kevin K.<br>
-</body>
-</html>
-
---------------000705080409090902090504--
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_prom.c b/arch/mips/pmc-sierra/msp71xx/msp_prom.c
+index e5bd548..1e2d984 100644
+--- a/arch/mips/pmc-sierra/msp71xx/msp_prom.c
++++ b/arch/mips/pmc-sierra/msp71xx/msp_prom.c
+@@ -44,7 +44,8 @@
+ #include <linux/cramfs_fs.h>
+ #endif
+ #ifdef CONFIG_SQUASHFS
+-#include <linux/squashfs_fs.h>
++#include <linux/magic.h>
++#include "../../../../fs/squashfs/squashfs_fs.h"
+ #endif
+ 
+ #include <asm/addrspace.h>
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_setup.c b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
+index c936756..a54e85b 100644
+--- a/arch/mips/pmc-sierra/msp71xx/msp_setup.c
++++ b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
+@@ -21,7 +21,6 @@
+ 
+ #if defined(CONFIG_PMC_MSP7120_GW)
+ #include <msp_regops.h>
+-#include <msp_gpio.h>
+ #define MSP_BOARD_RESET_GPIO	9
+ #endif
+ 
+@@ -88,11 +87,8 @@ void msp7120_reset(void)
+ 	 * as GPIO char driver may not be enabled and it would look up
+ 	 * data inRAM!
+ 	 */
+-	set_value_reg32(GPIO_CFG3_REG,
+-			basic_mode_mask(MSP_BOARD_RESET_GPIO),
+-			basic_mode(MSP_GPIO_OUTPUT, MSP_BOARD_RESET_GPIO));
+-	set_reg32(GPIO_DATA3_REG,
+-			basic_data_mask(MSP_BOARD_RESET_GPIO));
++	set_value_reg32(GPIO_CFG3_REG, 0xf000, 0x8000);
++	set_reg32(GPIO_DATA3_REG, 8);
+ 
+ 	/*
+ 	 * In case GPIO9 doesn't reset the board (jumper configurable!)
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_time.c b/arch/mips/pmc-sierra/msp71xx/msp_time.c
+index 7cfeda5..cca64e1 100644
+--- a/arch/mips/pmc-sierra/msp71xx/msp_time.c
++++ b/arch/mips/pmc-sierra/msp71xx/msp_time.c
+@@ -81,10 +81,7 @@ void __init plat_time_init(void)
+ 	mips_hpt_frequency = cpu_rate/2;
+ }
+ 
+-void __init plat_timer_setup(struct irqaction *irq)
++unsigned int __init get_c0_compare_int(void)
+ {
+-#ifdef CONFIG_IRQ_MSP_CIC
+-	/* we are using the vpe0 counter for timer interrupts */
+-	setup_irq(MSP_INT_VPE0_TIMER, irq);
+-#endif
++	return MSP_INT_VPE0_TIMER;
+ }
+-- 
+1.5.6.5

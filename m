@@ -1,155 +1,287 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2009 11:25:29 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:56732 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
-	id S20022455AbZD0KZ1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 27 Apr 2009 11:25:27 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n3RAPP6M002869;
-	Mon, 27 Apr 2009 12:25:25 +0200
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n3RAPOOr002867;
-	Mon, 27 Apr 2009 12:25:24 +0200
-Date:	Mon, 27 Apr 2009 12:25:24 +0200
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Kumba <kumba@gentoo.org>
-Cc:	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: [PATCH]: IP32: Enable L3 Cache on RM7000 Processor
-Message-ID: <20090427102524.GA19143@linux-mips.org>
-References: <49EAA3AF.3030409@gentoo.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2009 13:52:03 +0100 (BST)
+Received: from gateway08.websitewelcome.com ([69.93.106.23]:35188 "HELO
+	gateway08.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with SMTP id S20023018AbZD0Mv6 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 27 Apr 2009 13:51:58 +0100
+Received: (qmail 22064 invoked from network); 27 Apr 2009 12:54:40 -0000
+Received: from gator750.hostgator.com (174.132.194.2)
+  by gateway08.websitewelcome.com with SMTP; 27 Apr 2009 12:54:40 -0000
+Received: from [217.109.65.213] (port=1864 helo=[127.0.0.1])
+	by gator750.hostgator.com with esmtpa (Exim 4.69)
+	(envelope-from <kevink@paralogos.com>)
+	id 1LyQJM-0002qf-No; Mon, 27 Apr 2009 07:51:53 -0500
+Message-ID: <49F5AA6A.7010402@paralogos.com>
+Date:	Mon, 27 Apr 2009 14:51:54 +0200
+From:	"Kevin D. Kissell" <kevink@paralogos.com>
+User-Agent: Thunderbird 2.0.0.21 (Windows/20090302)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <49EAA3AF.3030409@gentoo.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@h5.dl5rb.org.uk>
+To:	Brian Foster <brian.foster@innova-card.com>
+CC:	David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/2] MIPS: Preliminary vdso.
+References: <49EE3B0F.3040506@caviumnetworks.com> <49F16F38.8060009@paralogos.com> <49F1DB1B.2060209@caviumnetworks.com> <200904270919.00761.brian.foster@innova-card.com>
+In-Reply-To: <200904270919.00761.brian.foster@innova-card.com>
+Content-Type: multipart/alternative;
+ boundary="------------000705080409090902090504"
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator750.hostgator.com
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - paralogos.com
+Return-Path: <kevink@paralogos.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22485
+X-archive-position: 22486
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: kevink@paralogos.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, Apr 19, 2009 at 12:08:15AM -0400, Kumba wrote:
+This is a multi-part message in MIME format.
+--------------000705080409090902090504
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-> diff -Naurp a/arch/mips/mm/sc-rm7k.c b/arch/mips/mm/sc-rm7k.c
-> --- a/arch/mips/mm/sc-rm7k.c	2009-04-18 23:23:49.000000000 -0400
-> +++ b/arch/mips/mm/sc-rm7k.c	2009-04-18 23:52:09.690656791 -0400
-> @@ -25,11 +25,23 @@
->  /* Secondary cache parameters. */
->  #define scache_size	(256*1024)	/* Fixed to 256KiB on RM7000 */
+Brian Foster wrote:
+> On Friday 24 April 2009 17:30:35 David Daney wrote:
+>   
+>> Kevin D. Kissell wrote:
+>>     
+>>> Brian Foster wrote:
+>>>       
+>>>> On Wednesday 22 April 2009 20:01:44 David Daney wrote:
+>>>>         
+>>>>> Kevin D. Kissell wrote:
+>>>>>           
+>>>>>> David Daney wrote:
+>>>>>>             
+>>>>>>> This is a preliminary patch to add a vdso to all user processes.
+>>>>>>> [ ... ]
+>>>>>>>               
+>>>>>> Note that for FPU-less CPUs, the kernel FP emulator also uses a user
+>>>>>> stack trampoline to execute instructions in the delay slots of emulated
+>>>>>> FP branches.  [ ... ]
+>>>>>>             
+>>>>    As David says, this is a Very Ugly Problem.  Each FP trampoline
+>>>>   is effectively per-(runtime-)instance per-thread [ ... ]
+>>>>         
+>>> I haven't reviewed David's code in detail, but from his description, I 
+>>> thought that there was a vdso page per task/thread.  If there's only one 
+>>> per processor, then, yes, that poses a challenge to porting the FPU 
+>>> emulation code to use it, since, as you observe, the instruction 
+>>> sequence to be executed may differ for each delay slot emulation.  It 
+>>> should still be possible, though.  [ ... ]
+>>>       
+>> Kevin is right, this is ugly.
+>>
+>> My current plan is to map an anonymous page with execute permission for 
+>> each vma (process) and place all FP trampolines there.  Each thread that 
+>> needs a trampoline will allocate a piece of this page and write the 
+>> trampoline.  We can arrange it so that the only way a thread can exit 
+>> the trampoline is by taking some sort of fault (currently this is true 
+>> for the normal case), or exiting.
+>>     
 >
-> +/* Tertiary cache parameters */
-> +#define tc_lsize      32
-> +#ifdef CONFIG_SGI_IP32
-> +#define tcache_size   (1024*1024)	/* IP32's RM7000 has 1MB L3 */
-> +#else
-> +#define tcache_size   (8*1024*1024)	/* 8MB (max) for all others */
-> +#endif
-
-No platform-specific #ifdefs into generic code.  More on that see below.
-
-> +
->  extern unsigned long icache_way_size, dcache_way_size;
+> David,
 >
->  #include <asm/r4kcache.h>
+>    The above is the bit which has always stumped me.
+>   Having a per-process(or similar) page for the FP
+>   trampoline(s) is the “obvious” approach, but what
+>   has had me going around in circles is how to know
+>   when an allocated slot/trampoline can be freed.
+>   As you imply, in the normal case, it seems trivial.
+>   It's the not-normal cases which aren't clear (or at
+>   least aren't clear to me!).
 >
-> -static int rm7k_tcache_enabled;
-> +static int rm7k_tcache_enabled = 0;
-> +
-> +static char *way_string[] __initdata = { NULL, "direct mapped", "2-way",
-> +	"3-way", "4-way", "5-way", "6-way", "7-way", "8-way"
-> +};
+>    You say (EMPHASIS added) “We can arrange it so
+>   that the ONLY way a thread can exit the trampoline
+>   is by taking some sort of fault ... or exiting”,
+>   which if true, could solve the issue.  Could you
+>   elucidate on this point, please?
 >
->  /*
->   * Writeback and invalidate the primary cache dcache before DMA.
-> @@ -105,6 +117,26 @@ static __cpuinit void __rm7k_sc_enable(v
->  		      :
->  		      : "r" (CKSEG0ADDR(i)), "i" (Index_Store_Tag_SD));
->  	}
-> +
-> +
-> +	/* tertiary cache */
-> +	set_c0_config(RM7K_CONF_TE);
-> +
-> +	write_c0_taglo(0);
-> +	write_c0_taghi(0);
-> +
-> +	for (i = 0; i < tcache_size; i += tc_lsize) {
-> +		__asm__ __volatile__ (
-> +		      ".set noreorder\n\t"
-> +		      ".set mips3\n\t"
-> +		      "cache %1, (%0)\n\t"
-> +		      ".set mips0\n\t"
-> +		      ".set reorder"
-> +		      :
-> +		      : "r" (CKSEG0ADDR(i)), "i" (Page_Invalidate_T));
+>   
+Well, he's *almost* right about that. The delay slot emulation function
+executes a single instruction off the user stack/vdso slot, which is
+followed in memory by an instruction that provokes an address
+exception.  The address exception handler detects the special case (and
+it should be noted that detecting the special case could be made simpler
+and more reliable if a vdso-type region were used), cleans up, and
+restores normal stack behavior.  That "clean up" could, of course,
+include any necessary vdso slot management.  But what about cases that
+won't get to the magic alignment trap?
 
-Use cache_op() from <asm/r4kcache.h> instead of more inline assembler.
+As the instruction being executed is extracted from a branch delay slot,
+we know it's not legal for it to be any sort of branch or jump
+instruction.  But it *could* be a trap or system call instruction, or a
+load/store that would provoke a TLB exception.  In the usual cases,
+however, as I believe David was alluding, either the exception will
+ultimately unwind to return to execute the magic alignment trap, or the
+thread will exit, and could free the emulation slot as part of general
+cleanup.
 
-> +	}
-> +
-> +	rm7k_tcache_enabled = 1;
->  }
->
->  static __cpuinit void rm7k_sc_enable(void)
-> @@ -119,6 +151,12 @@ static __cpuinit void rm7k_sc_enable(voi
->  static void rm7k_sc_disable(void)
->  {
->  	clear_c0_config(RM7K_CONF_SE);
-> +
-> +	/* tertiary cache */
-> +	if (!rm7k_tcache_enabled)
-> +		return;
-> +
-> +	clear_c0_config(RM7K_CONF_TE);
->  }
+But there's a case that isn't handled in this model, and that's the case
+of an exception (or interrupt that falls in the 2-instruction window)
+resulting in a signal that is caught and dispatched, and where either
+the signal handler does a longjmp and restarts FP computation, or where
+the signal handler itself contains a FP branch with yet another delay
+slot to be emulated. One *could* get alarm signal before the original
+delay slot instruction is executed, so recycling the same vdso cache
+line would be premature.  It's hard to get away from something
+distinctly stack-like if one wants to cover these cases.
 
-I wonder if it is safe to just disable the cache without flushing it before or
-after.
+My short-term suggestion would be to leave FP emulator delay slot
+handling on the (executable) user stack, even if signal trampolines use
+the vdso.  Longer term, we might consider what sorts of crockery would
+be necessary to deal with delay slot abandonment and recursion.  That
+might mean adding cruft to the signal dispatch logic to detect that
+we're in mid-delay-slot-emulation and defer the signal until after the
+alignment trap cleanup is done (adds annoying run-time overhead, but is
+probably the smallest increase in footprint and complexity), or it might
+mean changing the delay slot emulation paradigm completely and bolting a
+full instruction set emulator into the FP emulator, so that the delay
+slot instruction is simulated in kernel mode, rather than requiring
+execution in user mode.  I rejected that idea out-of-hand when I first
+did the FP emulator integration with the kernel, years ago, but maybe
+the constraints have changed...
 
->  static struct bcache_ops rm7k_sc_ops = {
-> @@ -153,20 +191,20 @@ void __cpuinit rm7k_sc_init(void)
->  	if (!(config & RM7K_CONF_TC)) {
->
->  		/*
-> -		 * We can't enable the L3 cache yet. There may be board-specific
-> -		 * magic necessary to turn it on, and blindly asking the CPU to
-> -		 * start using it would may give cache errors.
-> -		 *
-> -		 * Also, board-specific knowledge may allow us to use the
-> +		 * Board-specific knowledge may allow us to use the
->  		 * CACHE Flash_Invalidate_T instruction if the tag RAM supports
->  		 * it, and may specify the size of the L3 cache so we don't have
-> -		 * to probe it.
-> +		 * to probe it.  For now, we set the size to 8MB, except on IP32
-> +		 * where we know the size is fixed at 1MB.
->  		 */
-> -		printk(KERN_INFO "Tertiary cache present, %s enabled\n",
-> -		       (config & RM7K_CONF_TE) ? "already" : "not (yet)");
-> +		c->tcache.linesz = tc_lsize;
-> +		c->tcache.ways = 1;
-> +		c->tcache.waybit= __ffs(tcache_size / c->tcache.ways);
-> +		c->tcache.waysize = tcache_size / c->tcache.ways;
-> +		c->tcache.sets = tcache_size / (c->tcache.linesz * c->tcache.ways);
-> +		printk(KERN_INFO "Tertiary cache size %dK, %s, linesize %d bytes.\n",
-> +		       (tcache_size >> 10), way_string[c->tcache.ways], tc_lsize);
+          Regards,
 
-Initializing c->tcache here is nice but it all depends on the tcache_size which
-depends on the platform and isn't (I call it a design flaw) easily accessible.  The
-solution is a R4000SC-style probe for the cache size.  See c-r4.c probe_scache()
-for how this works and emjoy the scary comments.  It should easier to do this with
-just banging the cache tags on the RM7000 while the T-cache is disabled.
+          Kevin K.
 
-> -		if ((config & RM7K_CONF_TE))
-> -			rm7k_tcache_enabled = 1;
->  	}
->
->  	bcops = &rm7k_sc_ops;
->
->
+--------------000705080409090902090504
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-  Ralf
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html;charset=UTF-8" http-equiv="Content-Type">
+  <title></title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+Brian Foster wrote:
+<blockquote cite="mid:200904270919.00761.brian.foster@innova-card.com"
+ type="cite">
+  <pre wrap="">On Friday 24 April 2009 17:30:35 David Daney wrote:
+  </pre>
+  <blockquote type="cite">
+    <pre wrap="">Kevin D. Kissell wrote:
+    </pre>
+    <blockquote type="cite">
+      <pre wrap="">Brian Foster wrote:
+      </pre>
+      <blockquote type="cite">
+        <pre wrap="">On Wednesday 22 April 2009 20:01:44 David Daney wrote:
+        </pre>
+        <blockquote type="cite">
+          <pre wrap="">Kevin D. Kissell wrote:
+          </pre>
+          <blockquote type="cite">
+            <pre wrap="">David Daney wrote:
+            </pre>
+            <blockquote type="cite">
+              <pre wrap="">This is a preliminary patch to add a vdso to all user processes.
+[ ... ]
+              </pre>
+            </blockquote>
+            <pre wrap="">Note that for FPU-less CPUs, the kernel FP emulator also uses a user
+stack trampoline to execute instructions in the delay slots of emulated
+FP branches.  [ ... ]
+            </pre>
+          </blockquote>
+        </blockquote>
+        <pre wrap="">   As David says, this is a Very Ugly Problem.  Each FP trampoline
+  is effectively per-(runtime-)instance per-thread [ ... ]
+        </pre>
+      </blockquote>
+      <pre wrap="">I haven't reviewed David's code in detail, but from his description, I 
+thought that there was a vdso page per task/thread.  If there's only one 
+per processor, then, yes, that poses a challenge to porting the FPU 
+emulation code to use it, since, as you observe, the instruction 
+sequence to be executed may differ for each delay slot emulation.  It 
+should still be possible, though.  [ ... ]
+      </pre>
+    </blockquote>
+    <pre wrap="">Kevin is right, this is ugly.
+
+My current plan is to map an anonymous page with execute permission for 
+each vma (process) and place all FP trampolines there.  Each thread that 
+needs a trampoline will allocate a piece of this page and write the 
+trampoline.  We can arrange it so that the only way a thread can exit 
+the trampoline is by taking some sort of fault (currently this is true 
+for the normal case), or exiting.
+    </pre>
+  </blockquote>
+  <pre wrap=""><!---->
+David,
+
+   The above is the bit which has always stumped me.
+  Having a per-process(or similar) page for the FP
+  trampoline(s) is the “obvious” approach, but what
+  has had me going around in circles is how to know
+  when an allocated slot/trampoline can be freed.
+  As you imply, in the normal case, it seems trivial.
+  It's the not-normal cases which aren't clear (or at
+  least aren't clear to me!).
+
+   You say (EMPHASIS added) “We can arrange it so
+  that the ONLY way a thread can exit the trampoline
+  is by taking some sort of fault ... or exiting”,
+  which if true, could solve the issue.  Could you
+  elucidate on this point, please?
+
+  </pre>
+</blockquote>
+Well, he's *almost* right about that. The delay slot emulation function
+executes a single instruction off the user stack/vdso slot, which is
+followed in memory by an instruction that provokes an address
+exception.  The address exception handler detects the special case (and
+it should be noted that detecting the special case could be made
+simpler and more reliable if a vdso-type region were used), cleans up,
+and restores normal stack behavior.  That "clean up" could, of course,
+include any necessary vdso slot management.  But what about cases that
+won't get to the magic alignment trap?<br>
+<br>
+As the instruction being executed is extracted from a branch delay
+slot, we know it's not legal for it to be any sort of branch or jump
+instruction.  But it *could* be a trap or system call instruction, or a
+load/store that would provoke a TLB exception.  In the usual cases,
+however, as I believe David was alluding, either the exception will
+ultimately unwind to return to execute the magic alignment trap, or the
+thread will exit, and could free the emulation slot as part of general
+cleanup.<br>
+<br>
+But there's a case that isn't handled in this model, and that's the
+case of an exception (or interrupt that falls in the 2-instruction
+window) resulting in a signal that is caught and dispatched, and where
+either the signal handler does a longjmp and restarts FP computation,
+or where the signal handler itself contains a FP branch with yet
+another delay slot to be emulated. One *could* get alarm signal before
+the original delay slot instruction is executed, so recycling the same
+vdso cache line would be premature.  It's hard to get away from
+something distinctly stack-like if one wants to cover these cases.<br>
+<br>
+My short-term suggestion would be to leave FP emulator delay slot
+handling on the (executable) user stack, even if signal trampolines use
+the vdso.  Longer term, we might consider what sorts of crockery would
+be necessary to deal with delay slot abandonment and recursion.  That
+might mean adding cruft to the signal dispatch logic to detect that
+we're in mid-delay-slot-emulation and defer the signal until after the
+alignment trap cleanup is done (adds annoying run-time overhead, but is
+probably the smallest increase in footprint and complexity), or it
+might mean changing the delay slot emulation paradigm completely and
+bolting a full instruction set emulator into the FP emulator, so that
+the delay slot instruction is simulated in kernel mode, rather than
+requiring execution in user mode.  I rejected that idea out-of-hand
+when I first did the FP emulator integration with the kernel, years
+ago, but maybe the constraints have changed...<br>
+<br>
+          Regards,<br>
+<br>
+          Kevin K.<br>
+</body>
+</html>
+
+--------------000705080409090902090504--

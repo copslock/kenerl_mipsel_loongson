@@ -1,292 +1,156 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 26 Apr 2009 18:21:26 +0100 (BST)
-Received: from mail.rennes.fr.clara.net ([62.240.254.62]:56293 "EHLO
-	rennes.fr.clara.net" rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org
-	with ESMTP id S20024643AbZDZRVS (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 26 Apr 2009 18:21:18 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by rennes.fr.clara.net (Postfix) with ESMTP id 69F843A452;
-	Sun, 26 Apr 2009 19:21:11 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at 
-Received: from rennes.fr.clara.net ([127.0.0.1])
-	by localhost (rennes.fr.clara.net [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id He4cRSnM64Jx; Sun, 26 Apr 2009 19:20:42 +0200 (CEST)
-Received: from [192.168.0.7] (chl35-1-88-163-125-22.fbx.proxad.net [88.163.125.22])
-	by rennes.fr.clara.net (Postfix) with ESMTP id 9303139B20;
-	Sun, 26 Apr 2009 19:20:41 +0200 (CEST)
-Message-ID: <49F497E9.7080803@thiscow.com>
-Date:	Sun, 26 Apr 2009 19:20:41 +0200
-From:	Erwan Lerale <erwan@thiscow.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090409)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2009 04:33:48 +0100 (BST)
+Received: from yw-out-1718.google.com ([74.125.46.152]:27794 "EHLO
+	yw-out-1718.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20024842AbZD0Ddl convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 27 Apr 2009 04:33:41 +0100
+Received: by yw-out-1718.google.com with SMTP id 9so1302073ywk.24
+        for <linux-mips@linux-mips.org>; Sun, 26 Apr 2009 20:33:39 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:date:message-id:subject
+         :from:to:cc:content-type:content-transfer-encoding;
+        bh=YFiwCF5THj2ve+WDp3/G89q8tyz2bSl1oyJDYI52piw=;
+        b=DNM1PdZ3HkwOZoG0/rgfovcemSUiuZ+4SK/jPrUjvntVsWTBogO24KX+FUst5plH5X
+         FXo2WxQHWeW3w++AVU3tGkzSyzZOWNySnXBTWex8b7mD3fE9spTOvtVT9ZBJUYE2Ahb3
+         SEfsCdSjMi4NrSotg4w7iH3w2L0dP1ykBqITY=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        b=T2w1CCerIMLsqTufp/3Rc/vt4VyUXhwOWNPBJR+O8tLtvGsFpaRYgLtNEzUX/xVEtc
+         wwD9uJvPAh/cDd90VB8sxi9JT/RHf9BiF0vbmv+cghJJ6oD4I7zLq/v+YWKs82nNVvAa
+         gJmPXb9IVfSHzasRIehCABYFHHOO8Fjer0P5s=
 MIME-Version: 1.0
-To:	wuzhangjin@gmail.com
-CC:	loongson-dev@googlegroups.com, yanh@lemote.com, zhangfx@lemote.com,
-	penglj@lemote.com, huhb@lemote.com, taohl@lemote.com,
-	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [loongson-dev] Re: a pre-release of merging loongson patchs to
- linux-2.6.29.1
-References: <1240501332.28136.24.camel@falcon>	 <49F0AFA3.6080408@thiscow.com> <1240535343.25824.14.camel@falcon>	 <49F16061.9010207@thiscow.com> <1240556617.23345.10.camel@falcon>	 <49F217E1.8080808@thiscow.fr> <1240640248.25540.27.camel@falcon>
-In-Reply-To: <1240640248.25540.27.camel@falcon>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <erwan@thiscow.com>
+Received: by 10.151.121.11 with SMTP id y11mr7957527ybm.106.1240803219468; 
+	Sun, 26 Apr 2009 20:33:39 -0700 (PDT)
+Date:	Mon, 27 Apr 2009 11:33:39 +0800
+Message-ID: <777f39b10904262033o124be1f1o22297da7c67f9dbd@mail.gmail.com>
+Subject: =?GB2312?Q?how_to_debug_mips_AdEL_error=A3=BF_Cause_register=27s_Exc?=
+	=?GB2312?Q?Code_field_equal_to_=274=27_=28AdEL=29?=
+From:	Bob Zhang <2004.zhang@gmail.com>
+To:	linux-mips@linux-mips.org
+Cc:	"bob.zhang2004" <bob.zhang2004@gmail.com>,
+	"Christophe.Carvounas" <christophe.carvounas@gmail.com>,
+	Bob Zhang <2004.zhang@gmail.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8BIT
+Return-Path: <2004.zhang@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22481
+X-archive-position: 22482
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: erwan@thiscow.com
+X-original-sender: 2004.zhang@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Wu Zhangjin a écrit :
->> I don't understand why some stuff are not included in
->> arch/mips/configs/yeeloong2f_defconfig,
->> for example the sound chip or the v4l stuff for the webcam.
->>
->>     
->
-> I just updated the default kernel configuration file for loongson2f
-> based machines, hope it can help you :-)
->   
+I am porting suspend2 to mips archtecture,
+suspend is OK, but resume has kernel panic.
 
-Yeap you have include many things now, it takes more time to compile
-but at least some basic stuff are not missing anymore :)
+my mips is mips4KE
+I only want to know how to debug this issue from kernel panic info
+,thanks very much! any comments will be welcome.
 
+this kernel panic:
+About to restore original console.
+swsusp_default_console_level = 1
+console_loglevel=7
+default_message_loglevel = 4
+orig_default_message_loglevel=0
+at end of do_software_suspend
+Kernel unaligned instruction access in unaligned.c::do_ade, line 446:
 
->> - compile external wifi modules from
->>  
->> http://www.lemote.com/upfiles/wifi/rtl8187B_linux_26.1049.1215.2008_release2.tar.gz
->>
->>   to get proper Wifi performances (or I had to sit on the access point)
->>     
+CPU Regs : ===========================================================
+$0 : 00000000 80290000 00000100 fffdffff 00000007 00000006 8023427c 820e83d4
+$8 : 00000000 00000000 00000000 820e83dc 820e83f4 820e8000 80278010 00000000
+$16: 8028f7b8 0000d32b 0000132b 802a53a0 0000d34d 7fff7d48 00000004 00000014
+$24: 8200000c 2abe4090                   820e8000 820e9e70 00000000 0000000a
+Hi : 0000007a
+Lo : 000000b7
+epc   : 0000000a    Tainted: G Z             # obvisouly 0x0000000a is
+error , 1:too small 2:not 4 byte boundary.
+BadVaddr:0000000a                              #equal to epc value.
+Status: 10008403
+Cause : 10800010                                 #ExcCode is AdEL
+PrId  : 0001906c
+Process init (pid: 1, stackpage=820e8000)
+show_stack ============================================================
+Stack:    80287ce0 0000003e 0000003c 800b93cc 00000000 00000400 80111b40
+ 00000000 0000134d ffffffff 0000d34d 10008400 00000001 800b9460 0000000b
+ 00000185 00000004 00000001 10008400 802a4fc4 80287cf0 10008400 00000001
+ 0000000a 80287ce0 0000003c 800b9ac0 800b99bc 802391b0 10008400 8023916c
+ 802391b0 802a4fc2 802a4fc4 800b9868 820b6d94 00000185 820b72e0 80238ac2
+ 7fff7ba8 00000022 00000000 8028a23c 80287cdc 802391b0 8023916c 8023916c
+ 802391b0 80287cdc 00000014 00000005 800da974 80238aa0 99669967 83feb000
+ 8028a9d4 00000202 00000000 0000000b 7fff7ba8 00000000 00000001 00008400
+ 820b1ea0 00000000 00000002 8028a9d4 00000003 820e9ef8 00000002 00000000
+ 7fff7ba8 0000000b 00000000 7fff7a28 7fff7d48 00000004 00000014 00000000
+ 2ab61a30 00000000 00000000 2abe7bf0 7fff79b8 00000005 0040709c 00000000
+ 00000000 2ab61a94 00000008 00008413 10800020 fbbffffe fb7fffff ffffdffb
+ bfefefef fdf67ffe b6edefff f7f7fff6 efedffff
+show_trace =============================================================
+Call Trace:   [<800b93cc>] [<80111b40>] [<800b9460>] [<800b9ac0>] [<800b99bc>]
+ [<802391b0>] [<8023916c>] [<802391b0>] [<800b9868>] [<80238ac2>] [<802391b0>]
+ [<8023916c>] [<8023916c>] [<802391b0>] [<800da974>] [<80238aa0>]
+show_code ==============================================================
 
-Does everybody has the same issue, I mean bad performances when using the
-rtl8187 module that is included in the kernel ?
+Code:<7>init: Forwarding exception at [<800acfe0>] (802569d8)
+ (Bad address in epc)
 
-
->> - get and compile the ec_module stuff from git
->>     
-
-Cool, i could even break my box from the CLI now :
-
-Flash flash device: 80000 at 1fc00000
-flash device: Found 1 x8 devices at 0x0 in 8-bit bank
- Amd/Fujitsu Extended Query Table at 0x0040
-number of CFI chips: 1
-cfi_cmdset_0002: Disabling erase-suspend-program due to code brokenness.
-Creating 1 MTD partitions on "flash device":
-0x000000000000-0x000000080000 : "Bootloader"
-pmon flash device initialized
-
-:)
-
-
->> The box is also complaining when it boots and try to set time :
->>
->> xiwen ~ (n32) # hwclock  --debug
->> hwclock from util-linux-ng 2.14.2
->> hwclock: Open of /dev/rtc failed, errno=2: No such file or directory.
->> No usable clock interface found.
->> Cannot access the Hardware Clock via any known method.
->>
->>     
->
-> the previous kernel configuration file not include the "Real Time
-> Clock", so, no /dev/rtc there, so sorry :-)   
->   
-
-Yeah i'm stupid i should have config that...
+Kernel panic: Attempted to kill init!
+ UART_MSR_ANY_DELTA
 
 
->> What has to be included in the config tree to get suspend/hibernate and 
->> cpu_freq working  ?
->>     
->
-> * try the following configuration options:
->
-> Machine selection  --->
->              [*] Using cs5536's MFGPT as system clock
->
-> Power management options  --->
->              [*] Power Management support 
->              [*] Suspend to RAM and standby
->              [*] Hibernation (aka 'suspend to disk')              
->              (/dev/hda3) Default resume partition               
->
-> CPU Frequency scaling  --->
->              [*] CPU Frequency scaling
->              [*]   Loongson-2F CPU Frequency driver            
->              
->
-> * basic user manual(from www.lemote.com):
->
-> 1. install a shell script 
->
-> # apt-get install hibernate
->
-> 2. modify the configuration file /etc/hibernate/common.conf
->
-> * find the "UnloadModules" section, modify it like this
->
-> UnloadModules r8187 usbhid ohci_hcd ehci_hcd
->
-> remove the # before "LoadModules auto"
->
-> * modify the "network" section
->
-> DownInterfaces eth0
-> UpInterfaces auto
->
-> * modify the "hardware_tweaks" section
->
-> remove the # before "FullSpeedCPU yes"
->
-> 3. prepare a swap partition, by default, it is configured in kernel
-> as /dev/hda3
->
-> change it to yours swap partition in kernel or configure it
-> via /sys/power/resume, for example:
->
-> # fdisk -l | grep swap | cut -d' ' -f1
-> /dev/sda5
-> # ls -l /dev/sda5
-> brw-rw---- 1 root disk 8, 5 2009-04-10 10:26 /dev/sda5
-> # echo 8:5 > /sys/power/resume
->
-> 4. resume
->
-> pass an argument "resume=/dev/hdaX" to kernel, /dev/hdaX is your swap
-> partition.
->
-> 5. try STD
->
-> # hibernate-disk
->   
-emerge hibernate-script and configure the system like you have said. The 
-box is reacting now.
 
-There's no hibernate-disk on gentoo, just hibernate or hibernate-ram.
+about error exception :mips mannual :
+4.8.9 Address Error Exception — Instruction Fetch/Data Access
+An address error exception occurs on an instruction or data access
+when an attempt is made to execute one of the following:
+       • Fetch an instruction, load a word, or store a word that is
+not aligned on a word boundary
+       • Load or store a halfword that is not aligned on a halfword boundary
+       • Reference the kernel address space from user mode
 
-Starting suspend at Sun Apr 26 17:56:52 CEST 2009
-hibernate: [01] Executing CheckLastResume ...
-hibernate: [01] Executing CheckRunlevel ...
-hibernate: [01] Executing LockFileGet ...
-hibernate: [01] Executing NewKernelFileCheck ...
-hibernate: [10] Executing EnsureSysfsPowerStateCapable ...
-hibernate: [11] Executing XHacksSuspendHook1 ...
-hibernate: [59] Executing RemountXFSBootRO ...
-hibernate: [60] Executing NetworkStop ...
-Bringing down interface eth0
-* Bringing down interface eth0
-*   Stopping ifplugd on eth0... [ ok ]
-*   Removing addresses
-Bringing down interface wlan0
-* Bringing down interface wlan0
-*   Stopping dhcpcd on wlan0... [ ok ]
-*   Removing addresses
-hibernate: [89] Executing SaveKernelModprobe ...
-Saved /proc/sys/kernel/modprobe is /sbin/modprobe
-hibernate: [90] Executing ModulesUnload ...
-Unloading module r8187...Removing modules with rmmod.
-
-Unloading module usbhid...not loaded.
-Unloading module ohci_hcd...
-Unloading module ehci_hcd...not loaded.
-Unloading module r8187...not loaded.
-Unloading module usbhid...not loaded.
-Unloading module ohci_hcd...not loaded.
-Unloading module ehci_hcd...not loaded.
-hibernate: [91] Executing ModulesUnloadBlacklist ...
-Unloading blacklisted modules listed /etc/hibernate/blacklisted-modules
-Module version for ipw2100 is
-Module version for ipw2200 is
-Module version for snd_bt_sco is
-Module version for ndiswrapper is
-Unloading blacklisted module uvcvideo (and dependencies)
-Unloading uvcvideo ...
-hibernate: [91] Executing ModulesUnloadBlacklist ...
-Unloading blacklisted modules listed /etc/hibernate/blacklisted-modules
-Module version for ipw2100 is
-Module version for ipw2200 is
-Module version for snd_bt_sco is
-Module version for ndiswrapper is
-hibernate: [95] Executing XHacksSuspendHook2 ...
-xhacks: changing console from 2 to 15
-hibernate: [98] Executing CheckRunlevel ...
-hibernate: [98] Executing FullSpeedCPUSuspend ...
-Switched to performance, with min freq at 797000
-hibernate: [99] Executing DoSysfsPowerStateSuspend ...
-hibernate: Activating sysfs power state disk ...
+Note that in the case of an instruction fetch that is not aligned on a
+word boundary, PC is updated before the condition
+is detected. Therefore, both EPC and BadVAddr point to the unaligned
+instruction address. In the case of a data
+access the exception is taken if either an unaligned address or an
+address that was inaccessible in the current processor
+mode was referenced by a load or store instruction.
+Cause Register ExcCode Value:
+    ADEL: Reference was a load or an instruction fetch
+    ADES: Reference was a store
 
 
-But when the machine is rebooting, I can see :
+Please note : kernel has printed EPC and Cause ,Status registers value:
+epc   : 0000000a    Tainted: G Z
+BadVaddr:0000000a
+Status: 10008403
+Cause : 10800010
 
-hibernate: Activating sysfs power state disk...
-+ '[' -n '' ']'
-+ /bin/echo -n disk
+I judge this Cause's ExcCode register (bit6:2) is 2#000100    , 10#4
 
-and even switch from one vt to another but I cannot type anything.
+Table 5.23 Cause Register ExcCode Field
+    4 16#04 AdEL Address error exception (load or instruction fetch)
 
-The only solution is too reboot... Maybe I got to read more man 5 
-hibernate.conf :)
+so this error is AdEL exception.
 
-If I try the hibernate-ram script, no more chance :
-
-xiwen ~ (n32) # hibernate-ram
-hibernate-ram: Trying method in sysfs-ram.conf...
-hibernate-ram: Including configuration from common.conf
-hibernate-ram: No suitable suspend methods were found on your machine.
-hibernate-ram: You need to install a kernel with support for suspending to
-hibernate-ram: disk or RAM and reboot, then try again.
-
-or
-
-xiwen ~ (n32) # echo -n mem > /sys/power/state
-bash: echo: write error: No such device
+from this info:
+     "Note that in the case of an instruction fetch that is not
+aligned on a word boundary, PC is updated before the condition
+      is detected. Therefore, both EPC and BadVAddr point to the
+unaligned instruction address"
+we know, this AdEL is of "instruction fetch" error.
 
 
-Now, let's talk about the cpufreq stuff :)
-
-cpufrequtils 005: cpufreq-info (C) Dominik Brodowski 2004-2006
-Report errors and bugs to cpufreq@vger.kernel.org, please.
-analyzing CPU 0:
-  driver: loongson2f
-  CPUs which need to switch frequency at the same time: 0
-  hardware limits: 199 MHz - 797 MHz
-  available frequency steps: 199 MHz, 299 MHz, 398 MHz, 498 MHz, 598 
-MHz, 697 MHz, 797 MHz
-  available cpufreq governors: conservative, ondemand, userspace, 
-powersave, performance
-  current policy: frequency should be within 199 MHz and 797 MHz.
-                  The governor "ondemand" may decide which speed to use
-                  within this range.
-  current CPU frequency is 797 MHz (asserted by call to hardware).
-  cpufreq stats: 199 MHz:0.00%, 299 MHz:0.00%, 398 MHz:0.00%, 498 
-MHz:0.00%, 598 MHz:0.00%, 697 MHz:0.00%, 797 MHz:100.00%
-
-It seems to be working but it's weird. When I start X and gnome (cpufreq 
-applet). I can see
-that's the system is using the ondemand performance but is stuck at 797 
-Mhz if I don't do anything.
-If i start working (yeah it's happening sometimes), the frequency is 
-moving from 199Mhz to 797Mhz.
-
-The other thing which is weird is that I don't have this problem with 
-the Loonux stock kernel.
-
-Btw, I have heard of an overcloking module ? is that working ? where's 
-the source code ? I want
-to reach the speed of 900 Mhz :)
-
-What about the power button ? Even on Loonux, the box is not asking for 
-shutdown when I press it.
-
-Do you know where I can find the source code of the binary for the osd 
-stuff to work (/usr/bin/fnkey) ?
-
-Sorry for this big mail, all this question (more or less stupid) :)
-
-Cheers
-r1
+5.2.9 BadVAddr Register (CP0 Register 8, Select 0)
+The BadVAddr register is a read-only register that captures the most
+recent virtual address that caused one of the following
+exceptions:
+• Address error (AdEL or AdES)
+• TLB Refill (4KEc core)
+• TLB Invalid (4KEc core)
+• TLB Modified (4KEc core)

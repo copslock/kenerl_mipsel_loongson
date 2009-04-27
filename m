@@ -1,117 +1,121 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2009 16:00:03 +0100 (BST)
-Received: from mail-bw0-f225.google.com ([209.85.218.225]:64624 "EHLO
-	mail-bw0-f225.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20023685AbZD0O75 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 27 Apr 2009 15:59:57 +0100
-Received: by bwz25 with SMTP id 25so2451873bwz.0
-        for <multiple recipients>; Mon, 27 Apr 2009 07:59:51 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:date:subject
-         :mime-version:x-uid:x-length:to:content-type:message-id;
-        bh=DotBlUOrJ+mXmlz1k2nO53m2YfWtW2t0fHrHX5BLDFY=;
-        b=h178MFyFXo47yU7coNFMK/05OjIqUyFdzNGcFHiPGbgd0h7OGAlJ1YrG+MSwap+m6G
-         uIpTv+d4iI4yMdabuGlGwdoTuv+zZ9EJkD2U23E90dGhincwqa+RrHOEhW5LVxhp0UXr
-         L9+VCveRcufjQ8/l0nFvPl2aNj9S9ycWxcUiw=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:date:subject:mime-version:x-uid:x-length:to
-         :content-type:message-id;
-        b=RrX6TonnA6qFOK550U9T4Nkzo5yyjrUIFfkMxEVQKqmLDbls9J4DxKn5vPBwVBxy+j
-         kn+divrzRz0cplsSno6D5fjcsYyYo0WAbCwx0Bn+IcQ4Bh7/UWe4tCN1uETUPuNcGxyJ
-         1JdWiJ5diEr4ctG1dMDymDQG/+kBWJ/Pto5JY=
-Received: by 10.103.224.2 with SMTP id b2mr3296105mur.2.1240844390902;
-        Mon, 27 Apr 2009 07:59:50 -0700 (PDT)
-Received: from florian.lab.openpattern.org (lab.openpattern.org [82.240.16.241])
-        by mx.google.com with ESMTPS id j10sm8411923muh.15.2009.04.27.07.59.50
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 27 Apr 2009 07:59:50 -0700 (PDT)
-From:	Florian Fainelli <florian@openwrt.org>
-Date:	Mon, 27 Apr 2009 16:59:48 +0200
-Subject: [PATCH] fix build failures on msp_irq_slp.c
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2009 16:55:27 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:13379 "EHLO
+	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20023798AbZD0PzV (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 27 Apr 2009 16:55:21 +0100
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B49f5d54a0000>; Mon, 27 Apr 2009 11:54:50 -0400
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 27 Apr 2009 08:54:47 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 27 Apr 2009 08:54:46 -0700
+Message-ID: <49F5D546.2000806@caviumnetworks.com>
+Date:	Mon, 27 Apr 2009 08:54:46 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
 MIME-Version: 1.0
-X-UID:	109
-X-Length: 1896
-To:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Content-Type: Multipart/Mixed;
-  boundary="Boundary-00=_khc9JywEXo4Mi05"
-Message-Id: <200904271659.48357.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+To:	"Kevin D. Kissell" <kevink@paralogos.com>
+CC:	Brian Foster <brian.foster@innova-card.com>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/2] MIPS: Preliminary vdso.
+References: <49EE3B0F.3040506@caviumnetworks.com> <49F16F38.8060009@paralogos.com> <49F1DB1B.2060209@caviumnetworks.com> <200904270919.00761.brian.foster@innova-card.com> <49F5AA6A.7010402@paralogos.com>
+In-Reply-To: <49F5AA6A.7010402@paralogos.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 27 Apr 2009 15:54:46.0772 (UTC) FILETIME=[7D25F340:01C9C750]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22493
+X-archive-position: 22494
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---Boundary-00=_khc9JywEXo4Mi05
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+Kevin D. Kissell wrote:
 
-Trying to build MSP4200 VoIP defconfig also fails on msp_irq_slp.c
-with a non-existing reference to mask_slp_irq, which is in turn
-mask_msp_slp_irq. Passed that, we will also miss a comma when
-calling set_irq_chip_and_handler. This patch fixes both issues.
+> Well, he's *almost* right about that. The delay slot emulation function 
+> executes a single instruction off the user stack/vdso slot, which is 
+> followed in memory by an instruction that provokes an address 
+> exception.  The address exception handler detects the special case (and 
+> it should be noted that detecting the special case could be made simpler 
+> and more reliable if a vdso-type region were used),
 
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
----
-diff --git a/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c b/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c
-index f5f1b8d..66f6f85 100644
---- a/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c
-+++ b/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c
-@@ -45,7 +45,7 @@ static inline void mask_msp_slp_irq(unsigned int irq)
-  */
- static inline void ack_msp_slp_irq(unsigned int irq)
- {
--	mask_slp_irq(irq);
-+	mask_msp_slp_irq(irq);
- 
- 	/*
- 	 * only really necessary for 18, 16-14 and sometimes 3:0 (since
-@@ -79,7 +79,7 @@ void __init msp_slp_irq_init(void)
- 
- 	/* initialize all the IRQ descriptors */
- 	for (i = MSP_SLP_INTBASE; i < MSP_PER_INTBASE + 32; i++)
--		set_irq_chip_and_handler(i, &msp_slp_irq_controller
-+		set_irq_chip_and_handler(i, &msp_slp_irq_controller,
- 					 handle_level_irq);
- }
- 
+Ralf recently changed this to a 'break' instruction, but the logic 
+remains the same.
 
---Boundary-00=_khc9JywEXo4Mi05
-Content-Type: text/x-patch;
-  name="0049-fix-build-failures-on-msp_irq_slp.c.patch"
-Content-Transfer-Encoding: 8bit
-Content-Disposition: inline; filename="0049-fix-build-failures-on-msp_irq_slp.c.patch"
+> cleans up, and 
+> restores normal stack behavior.  That "clean up" could, of course, 
+> include any necessary vdso slot management.  But what about cases that 
+> won't get to the magic alignment trap?
+> 
+> As the instruction being executed is extracted from a branch delay slot, 
+> we know it's not legal for it to be any sort of branch or jump 
+> instruction.
 
-diff --git a/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c b/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c
-index f5f1b8d..66f6f85 100644
---- a/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c
-+++ b/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c
-@@ -45,7 +45,7 @@ static inline void mask_msp_slp_irq(unsigned int irq)
-  */
- static inline void ack_msp_slp_irq(unsigned int irq)
- {
--	mask_slp_irq(irq);
-+	mask_msp_slp_irq(irq);
- 
- 	/*
- 	 * only really necessary for 18, 16-14 and sometimes 3:0 (since
-@@ -79,7 +79,7 @@ void __init msp_slp_irq_init(void)
- 
- 	/* initialize all the IRQ descriptors */
- 	for (i = MSP_SLP_INTBASE; i < MSP_PER_INTBASE + 32; i++)
--		set_irq_chip_and_handler(i, &msp_slp_irq_controller
-+		set_irq_chip_and_handler(i, &msp_slp_irq_controller,
- 					 handle_level_irq);
- }
- 
+These we would detect and since the behavior is 'UNPREDICTABLE' we can 
+treat them as a nop and remain within the specified behavior.
 
---Boundary-00=_khc9JywEXo4Mi05--
+>  But it *could* be a trap or system call instruction, or a 
+> load/store that would provoke a TLB exception.  In the usual cases, 
+> however, as I believe David was alluding, either the exception will 
+> ultimately unwind to return to execute the magic alignment trap, or the 
+> thread will exit, and could free the emulation slot as part of general 
+> cleanup.
+> 
+> But there's a case that isn't handled in this model, and that's the case 
+> of an exception (or interrupt that falls in the 2-instruction window) 
+> resulting in a signal that is caught and dispatched, and where either 
+> the signal handler does a longjmp and restarts FP computation, or where 
+> the signal handler itself contains a FP branch with yet another delay 
+> slot to be emulated. One *could* get alarm signal before the original 
+> delay slot instruction is executed, so recycling the same vdso cache 
+> line would be premature.  It's hard to get away from something 
+> distinctly stack-like if one wants to cover these cases.
+> 
+
+System calls we don't have to handle, they will eventually return to the 
+break instruction following the delay slot instruction and be handled by 
+the normal processing.
+
+I am thinking that all other exceptions will result in one of three cases:
+
+1) They will work like system calls and return to the 'break'.
+
+2) The thread will exit.
+
+3) They result in a signal being sent to the thread.  We can handle it 
+in force_signal().  In this case we would adjust the eip to point at the 
+  original location of the instruction and clean things up.  If the 
+signal handler tries to restart the instruction, the FP emulator will 
+re-run the emulation.
+
+
+> My short-term suggestion would be to leave FP emulator delay slot 
+> handling on the (executable) user stack, even if signal trampolines use 
+> the vdso.
+
+They are really two seperate (but related) problems.  If we want 
+eXecute-Inhibit for the stack we need to solve it.
+
+> Longer term, we might consider what sorts of crockery would 
+> be necessary to deal with delay slot abandonment and recursion.  That 
+> might mean adding cruft to the signal dispatch logic to detect that 
+> we're in mid-delay-slot-emulation and defer the signal until after the 
+> alignment trap cleanup is done (adds annoying run-time overhead, but is 
+> probably the smallest increase in footprint and complexity), or it might 
+> mean changing the delay slot emulation paradigm completely and bolting a 
+> full instruction set emulator into the FP emulator, so that the delay 
+> slot instruction is simulated in kernel mode, rather than requiring 
+> execution in user mode.  I rejected that idea out-of-hand when I first 
+> did the FP emulator integration with the kernel, years ago, but maybe 
+> the constraints have changed...
+> 
+
+I think full instruction set emulation is not so easy.  How would you 
+emulate COP2 instructions?
+
+David Daney

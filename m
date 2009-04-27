@@ -1,104 +1,104 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2009 14:17:07 +0100 (BST)
-Received: from h155.mvista.com ([63.81.120.155]:34524 "EHLO imap.sh.mvista.com"
-	rhost-flags-OK-FAIL-OK-FAIL) by ftp.linux-mips.org with ESMTP
-	id S20023160AbZD0NRB (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 27 Apr 2009 14:17:01 +0100
-Received: from [192.168.11.226] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id EAF043ECA; Mon, 27 Apr 2009 06:16:56 -0700 (PDT)
-Message-ID: <49F5B090.4030801@ru.mvista.com>
-Date:	Mon, 27 Apr 2009 17:18:08 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2009 14:22:40 +0100 (BST)
+Received: from ey-out-1920.google.com ([74.125.78.147]:58435 "EHLO
+	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20023221AbZD0NWe convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 27 Apr 2009 14:22:34 +0100
+Received: by ey-out-1920.google.com with SMTP id 13so456145eye.54
+        for <multiple recipients>; Mon, 27 Apr 2009 06:22:33 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:sender:received:in-reply-to
+         :references:date:x-google-sender-auth:message-id:subject:from:to:cc
+         :content-type:content-transfer-encoding;
+        bh=grdNPYwjksEKsFujTna0sKnuHpL9rAOvQEmoGkc7X7w=;
+        b=kpufrjX0mP6bzEqyMtz+pPzOcKEmpNDjQ1xPTTLhwBAppn2QShHzKhM9dMK/6+Qc38
+         ev1OM2YBwAU32dijyUTzGD3HGKj2WuZiH5lsJChOVysCE0krERNJygSDYV2c1ziVps34
+         C3KR7rvE5lSQmsampSg1IYztB5MEGRnJ7Z0mY=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        b=SgCQzqLMk2plU962K3GYa6FKYbVlIlnAgJnbvsW70jrawNmAY0+4XtNIiMwqzhF2Hc
+         m6KmcNX+3rJUynTXfyrEsLYm0Bpm61V+or/ZM0r2EEfpkKBHTm2tIQxxRALPg2Ei5Y5b
+         hsB4f7lrJ7yHgqQp59dQ08tVL1xvzx0T+TbjA=
 MIME-Version: 1.0
-To:	Shane McDonald <mcdonald.shane@gmail.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [MIPS] Resolve compile issues with msp71xx configuration
-References: <E1LyQQX-00047N-6E@localhost> <20090427130952.GA30817@linux-mips.org>
+Received: by 10.210.68.17 with SMTP id q17mr2604685eba.55.1240838553290; Mon, 
+	27 Apr 2009 06:22:33 -0700 (PDT)
 In-Reply-To: <20090427130952.GA30817@linux-mips.org>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+References: <E1LyQQX-00047N-6E@localhost>
+	 <20090427130952.GA30817@linux-mips.org>
+Date:	Mon, 27 Apr 2009 15:22:33 +0200
+X-Google-Sender-Auth: b6da3c5aebbabfe1
+Message-ID: <10f740e80904270622u730ba067g660257847dc526de@mail.gmail.com>
+Subject: Re: [MIPS] Resolve compile issues with msp71xx configuration
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Shane McDonald <mcdonald.shane@gmail.com>,
+	linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22489
+X-archive-position: 22490
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+On Mon, Apr 27, 2009 at 15:09, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Mon, Apr 27, 2009 at 06:59:17AM -0600, Shane McDonald wrote:
+>
+>> There have been a number of compile problems with the msp71xx
+>> configuration ever since it was included in the linux-mips.org
+>> repository.  This patch resolves these problems:
+>>  - proper files are included when using a squashfs rootfs
+>>  - resetting the board no longer uses non-existent GPIO routines
+>>  - create the required plat_timer_setup function
+>>
+>> This patch has been compile-tested against the current HEAD.
+>>
+>> Signed-off-by: Shane McDonald <mcdonald.shane@gmail.com>
+>> ---
+>>  arch/mips/pmc-sierra/msp71xx/msp_prom.c  |    3 ++-
+>>  arch/mips/pmc-sierra/msp71xx/msp_setup.c |    8 ++------
+>>  arch/mips/pmc-sierra/msp71xx/msp_time.c  |    7 ++-----
+>>  3 files changed, 6 insertions(+), 12 deletions(-)
+>>
+>> diff --git a/arch/mips/pmc-sierra/msp71xx/msp_prom.c b/arch/mips/pmc-sierra/msp71xx/msp_prom.c
+>> index e5bd548..1e2d984 100644
+>> --- a/arch/mips/pmc-sierra/msp71xx/msp_prom.c
+>> +++ b/arch/mips/pmc-sierra/msp71xx/msp_prom.c
+>> @@ -44,7 +44,8 @@
+>>  #include <linux/cramfs_fs.h>
+>>  #endif
+>>  #ifdef CONFIG_SQUASHFS
+>> -#include <linux/squashfs_fs.h>
+>> +#include <linux/magic.h>
+>> +#include "../../../../fs/squashfs/squashfs_fs.h"
+>
+> No way.  You're reaching deep into the internals of squashfs for no good
+> reason.  The only use of anything from squashfs_fs.h is a cast and casting
+> to void * would work just as well.
 
-Ralf Baechle wrote:
+He needs the definition of struct squashfs_super_block to access the .bytes_used
+field. Alternatively, the offset of that field must be hardcoded.
 
->>There have been a number of compile problems with the msp71xx
->>configuration ever since it was included in the linux-mips.org
->>repository.  This patch resolves these problems:
->> - proper files are included when using a squashfs rootfs
->> - resetting the board no longer uses non-existent GPIO routines
->> - create the required plat_timer_setup function
+BTW, the magic is __le32, and bytes_used is __le64, so there are some
+le{32,64}_to_cpu()
+missing.
 
-    get_c0_compare_int(), you mean?
+Gr{oetje,eeting}s,
 
->>This patch has been compile-tested against the current HEAD.
+						Geert
 
->>Signed-off-by: Shane McDonald <mcdonald.shane@gmail.com>
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
->>diff --git a/arch/mips/pmc-sierra/msp71xx/msp_setup.c b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
->>index c936756..a54e85b 100644
->>--- a/arch/mips/pmc-sierra/msp71xx/msp_setup.c
->>+++ b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
->>@@ -21,7 +21,6 @@
->> 
->> #if defined(CONFIG_PMC_MSP7120_GW)
->> #include <msp_regops.h>
->>-#include <msp_gpio.h>
->> #define MSP_BOARD_RESET_GPIO	9
->> #endif
->> 
->>@@ -88,11 +87,8 @@ void msp7120_reset(void)
->> 	 * as GPIO char driver may not be enabled and it would look up
->> 	 * data inRAM!
->> 	 */
->>-	set_value_reg32(GPIO_CFG3_REG,
->>-			basic_mode_mask(MSP_BOARD_RESET_GPIO),
->>-			basic_mode(MSP_GPIO_OUTPUT, MSP_BOARD_RESET_GPIO));
->>-	set_reg32(GPIO_DATA3_REG,
->>-			basic_data_mask(MSP_BOARD_RESET_GPIO));
->>+	set_value_reg32(GPIO_CFG3_REG, 0xf000, 0x8000);
->>+	set_reg32(GPIO_DATA3_REG, 8);
->> 
->> 	/*
->> 	 * In case GPIO9 doesn't reset the board (jumper configurable!)
->>diff --git a/arch/mips/pmc-sierra/msp71xx/msp_time.c b/arch/mips/pmc-sierra/msp71xx/msp_time.c
->>index 7cfeda5..cca64e1 100644
->>--- a/arch/mips/pmc-sierra/msp71xx/msp_time.c
->>+++ b/arch/mips/pmc-sierra/msp71xx/msp_time.c
->>@@ -81,10 +81,7 @@ void __init plat_time_init(void)
->> 	mips_hpt_frequency = cpu_rate/2;
->> }
->> 
->>-void __init plat_timer_setup(struct irqaction *irq)
->>+unsigned int __init get_c0_compare_int(void)
->> {
->>-#ifdef CONFIG_IRQ_MSP_CIC
->>-	/* we are using the vpe0 counter for timer interrupts */
->>-	setup_irq(MSP_INT_VPE0_TIMER, irq);
->>-#endif
->>+	return MSP_INT_VPE0_TIMER;
->> }
-
-> The rest seems ok.  Can you fix the issue above and send a new patch?
-
-    Better yet 3 patches as the 3 issues seem totally unrelated.
-
-> Thanks!
-
->   Ralf
-
-WBR, Sergei
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

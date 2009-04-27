@@ -1,44 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2009 04:33:48 +0100 (BST)
-Received: from yw-out-1718.google.com ([74.125.46.152]:27794 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2009 04:43:58 +0100 (BST)
+Received: from yw-out-1718.google.com ([74.125.46.154]:30442 "EHLO
 	yw-out-1718.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20024842AbZD0Ddl convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 27 Apr 2009 04:33:41 +0100
-Received: by yw-out-1718.google.com with SMTP id 9so1302073ywk.24
-        for <linux-mips@linux-mips.org>; Sun, 26 Apr 2009 20:33:39 -0700 (PDT)
+	with ESMTP id S20024966AbZD0Dnv (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 27 Apr 2009 04:43:51 +0100
+Received: by yw-out-1718.google.com with SMTP id 9so1303774ywk.24
+        for <linux-mips@linux-mips.org>; Sun, 26 Apr 2009 20:43:49 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:date:message-id:subject
-         :from:to:cc:content-type:content-transfer-encoding;
-        bh=YFiwCF5THj2ve+WDp3/G89q8tyz2bSl1oyJDYI52piw=;
-        b=DNM1PdZ3HkwOZoG0/rgfovcemSUiuZ+4SK/jPrUjvntVsWTBogO24KX+FUst5plH5X
-         FXo2WxQHWeW3w++AVU3tGkzSyzZOWNySnXBTWex8b7mD3fE9spTOvtVT9ZBJUYE2Ahb3
-         SEfsCdSjMi4NrSotg4w7iH3w2L0dP1ykBqITY=
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=aG+abH2vJEVDIEv3I02KMQ7GR3AVeR6YgmC9Qn++tYw=;
+        b=kgrd1AjcEx1qMpZyZxmNFbm6ZZpedrQa+8303Si74dGKljjoz21PCkQKAHtkRqi/xk
+         We5B+t2JD1GgcMsn2onkAd3A3eoM3+lTnJtuk1IlGAFEX0Wz8jcSZ15VE9G/lyZ/NMN/
+         m4vhazRU/mdeLqCFKa5PYmL1UbmjpF50GtI7E=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        b=T2w1CCerIMLsqTufp/3Rc/vt4VyUXhwOWNPBJR+O8tLtvGsFpaRYgLtNEzUX/xVEtc
-         wwD9uJvPAh/cDd90VB8sxi9JT/RHf9BiF0vbmv+cghJJ6oD4I7zLq/v+YWKs82nNVvAa
-         gJmPXb9IVfSHzasRIehCABYFHHOO8Fjer0P5s=
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=G/1f2wB9haH1wukPOkMc0MKyIfl4Zm+TehaQxh+c2X8bz4fJNGjSWL26JGja1AooDh
+         4P4O295y9KbasX9i81oMx+n3AoKmovJYcV9omY30QQ2+oyQH/ICugeC7t4IQen31qY8F
+         fHYr0o/2d6FVJHi4rqh0canHjBwHA+v1YTVpI=
 MIME-Version: 1.0
-Received: by 10.151.121.11 with SMTP id y11mr7957527ybm.106.1240803219468; 
-	Sun, 26 Apr 2009 20:33:39 -0700 (PDT)
-Date:	Mon, 27 Apr 2009 11:33:39 +0800
-Message-ID: <777f39b10904262033o124be1f1o22297da7c67f9dbd@mail.gmail.com>
-Subject: =?GB2312?Q?how_to_debug_mips_AdEL_error=A3=BF_Cause_register=27s_Exc?=
-	=?GB2312?Q?Code_field_equal_to_=274=27_=28AdEL=29?=
+Received: by 10.151.129.5 with SMTP id g5mr8032351ybn.235.1240803829685; Sun, 
+	26 Apr 2009 20:43:49 -0700 (PDT)
+In-Reply-To: <777f39b10904262033o124be1f1o22297da7c67f9dbd@mail.gmail.com>
+References: <777f39b10904262033o124be1f1o22297da7c67f9dbd@mail.gmail.com>
+Date:	Mon, 27 Apr 2009 11:43:49 +0800
+Message-ID: <777f39b10904262043l29558defu61c7caa0d454730d@mail.gmail.com>
+Subject: =?GB2312?Q?Re=3A_how_to_debug_mips_AdEL_error=A3=BF_Cause_register=27s?=
+	=?GB2312?Q?_ExcCode_field_equal_to_=274=27_=28AdEL=29?=
 From:	Bob Zhang <2004.zhang@gmail.com>
 To:	linux-mips@linux-mips.org
 Cc:	"bob.zhang2004" <bob.zhang2004@gmail.com>,
 	"Christophe.Carvounas" <christophe.carvounas@gmail.com>,
 	Bob Zhang <2004.zhang@gmail.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 Return-Path: <2004.zhang@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22482
+X-archive-position: 22483
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,111 +49,61 @@ X-original-sender: 2004.zhang@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-I am porting suspend2 to mips archtecture,
-suspend is OK, but resume has kernel panic.
-
-my mips is mips4KE
-I only want to know how to debug this issue from kernel panic info
-,thanks very much! any comments will be welcome.
-
-this kernel panic:
-About to restore original console.
-swsusp_default_console_level = 1
-console_loglevel=7
-default_message_loglevel = 4
-orig_default_message_loglevel=0
-at end of do_software_suspend
-Kernel unaligned instruction access in unaligned.c::do_ade, line 446:
-
+through the kernel panic info:
 CPU Regs : ===========================================================
 $0 : 00000000 80290000 00000100 fffdffff 00000007 00000006 8023427c 820e83d4
 $8 : 00000000 00000000 00000000 820e83dc 820e83f4 820e8000 80278010 00000000
 $16: 8028f7b8 0000d32b 0000132b 802a53a0 0000d34d 7fff7d48 00000004 00000014
 $24: 8200000c 2abe4090                   820e8000 820e9e70 00000000 0000000a
-Hi : 0000007a
-Lo : 000000b7
-epc   : 0000000a    Tainted: G Z             # obvisouly 0x0000000a is
-error , 1:too small 2:not 4 byte boundary.
-BadVaddr:0000000a                              #equal to epc value.
-Status: 10008403
-Cause : 10800010                                 #ExcCode is AdEL
-PrId  : 0001906c
-Process init (pid: 1, stackpage=820e8000)
-show_stack ============================================================
-Stack:    80287ce0 0000003e 0000003c 800b93cc 00000000 00000400 80111b40
- 00000000 0000134d ffffffff 0000d34d 10008400 00000001 800b9460 0000000b
- 00000185 00000004 00000001 10008400 802a4fc4 80287cf0 10008400 00000001
- 0000000a 80287ce0 0000003c 800b9ac0 800b99bc 802391b0 10008400 8023916c
- 802391b0 802a4fc2 802a4fc4 800b9868 820b6d94 00000185 820b72e0 80238ac2
- 7fff7ba8 00000022 00000000 8028a23c 80287cdc 802391b0 8023916c 8023916c
- 802391b0 80287cdc 00000014 00000005 800da974 80238aa0 99669967 83feb000
- 8028a9d4 00000202 00000000 0000000b 7fff7ba8 00000000 00000001 00008400
- 820b1ea0 00000000 00000002 8028a9d4 00000003 820e9ef8 00000002 00000000
- 7fff7ba8 0000000b 00000000 7fff7a28 7fff7d48 00000004 00000014 00000000
- 2ab61a30 00000000 00000000 2abe7bf0 7fff79b8 00000005 0040709c 00000000
- 00000000 2ab61a94 00000008 00008413 10800020 fbbffffe fb7fffff ffffdffb
- bfefefef fdf67ffe b6edefff f7f7fff6 efedffff
-show_trace =============================================================
-Call Trace:   [<800b93cc>] [<80111b40>] [<800b9460>] [<800b9ac0>] [<800b99bc>]
- [<802391b0>] [<8023916c>] [<802391b0>] [<800b9868>] [<80238ac2>] [<802391b0>]
- [<8023916c>] [<8023916c>] [<802391b0>] [<800da974>] [<80238aa0>]
-show_code ==============================================================
 
-Code:<7>init: Forwarding exception at [<800acfe0>] (802569d8)
- (Bad address in epc)
+we can know , the ra register is 0x0000000a
+after sub-function executed completely , it will return $ra.
 
-Kernel panic: Attempted to kill init!
- UART_MSR_ANY_DELTA
+through code trace , I know the last function is "__call_console_drivers" .
 
+I dissable the vmlinux code,
 
+and grab section:
 
-about error exception :mips mannual :
-4.8.9 Address Error Exception — Instruction Fetch/Data Access
-An address error exception occurs on an instruction or data access
-when an attempt is made to execute one of the following:
-       • Fetch an instruction, load a word, or store a word that is
-not aligned on a word boundary
-       • Load or store a halfword that is not aligned on a halfword boundary
-       • Reference the kernel address space from user mode
-
-Note that in the case of an instruction fetch that is not aligned on a
-word boundary, PC is updated before the condition
-is detected. Therefore, both EPC and BadVAddr point to the unaligned
-instruction address. In the case of a data
-access the exception is taken if either an unaligned address or an
-address that was inaccessible in the current processor
-mode was referenced by a load or store instruction.
-Cause Register ExcCode Value:
-    ADEL: Reference was a load or an instruction fetch
-    ADES: Reference was a store
+00000000800b9364 <__call_console_drivers>:
+    800b9364:	27bdffd8 	addiu	$sp,$sp,-40
+    800b9368:	afb00010 	sw	$s0,16($sp)
+    800b936c:	3c108028 	lui	$s0,0x8028
+    800b9370:	8e107d1c 	lw	$s0,32028($s0)
+    800b9374:	afb10014 	sw	$s1,20($sp)
+    800b9378:	00808821 	move	$s1,$a0
+    800b937c:	afb40020 	sw	$s4,32($sp)
+    800b9380:	00a0a021 	move	$s4,$a1
+    800b9384:	afbf0024 	sw	$ra,36($sp)    #save ra into SP
+    800b9388:	afb3001c 	sw	$s3,28($sp)
+    800b938c:	12000012 	beqz	$s0,800b93d8 <__call_console_drivers+74>
+    800b9390:	afb20018 	sw	$s2,24($sp)
+    800b9394:	32323fff 	andi	$s2,$s1,0x3fff
+    800b9398:	3c13802a 	lui	$s3,0x802a
+    800b939c:	267353a0 	addiu	$s3,$s3,21408
+    800b93a0:	9602001c 	lhu	$v0,28($s0)
+    800b93a4:	30420004 	andi	$v0,$v0,0x4
+    800b93a8:	50400009 	beqzl	$v0,800b93d0 <__call_console_drivers+6c>
+    800b93ac:	8e100024 	lw	$s0,36($s0)
+    800b93b0:	8e020008 	lw	$v0,8($s0)
+    800b93b4:	50400006 	beqzl	$v0,800b93d0 <__call_console_drivers+6c>
+    800b93b8:	8e100024 	lw	$s0,36($s0)
+    800b93bc:	02002021 	move	$a0,$s0
+    800b93c0:	02532821 	addu	$a1,$s2,$s3
+    800b93c4:	0040f809 	jalr	$v0
+    800b93c8:	02913023 	subu	$a2,$s4,$s1
+    800b93cc:	8e100024 	lw	$s0,36($s0)
+    800b93d0:	5600fff4 	bnezl	$s0,800b93a4 <__call_console_drivers+40>
+    800b93d4:	9602001c 	lhu	$v0,28($s0)
+    800b93d8:	8fbf0024 	lw	$ra,36($sp)
+    800b93dc:	8fb40020 	lw	$s4,32($sp)
+    800b93e0:	8fb3001c 	lw	$s3,28($sp)
+    800b93e4:	8fb20018 	lw	$s2,24($sp)
+    800b93e8:	8fb10014 	lw	$s1,20($sp)
+    800b93ec:	8fb00010 	lw	$s0,16($sp)
+    800b93f0:	03e00008 	jr	$ra                      # error should be here.
+    800b93f4:	27bd0028 	addiu	$sp,$sp,40
 
 
-Please note : kernel has printed EPC and Cause ,Status registers value:
-epc   : 0000000a    Tainted: G Z
-BadVaddr:0000000a
-Status: 10008403
-Cause : 10800010
 
-I judge this Cause's ExcCode register (bit6:2) is 2#000100    , 10#4
-
-Table 5.23 Cause Register ExcCode Field
-    4 16#04 AdEL Address error exception (load or instruction fetch)
-
-so this error is AdEL exception.
-
-from this info:
-     "Note that in the case of an instruction fetch that is not
-aligned on a word boundary, PC is updated before the condition
-      is detected. Therefore, both EPC and BadVAddr point to the
-unaligned instruction address"
-we know, this AdEL is of "instruction fetch" error.
-
-
-5.2.9 BadVAddr Register (CP0 Register 8, Select 0)
-The BadVAddr register is a read-only register that captures the most
-recent virtual address that caused one of the following
-exceptions:
-• Address error (AdEL or AdES)
-• TLB Refill (4KEc core)
-• TLB Invalid (4KEc core)
-• TLB Modified (4KEc core)
+Any comment? thanks.

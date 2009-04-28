@@ -1,130 +1,282 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 27 Apr 2009 19:26:36 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:46172 "EHLO
-	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20024487AbZD0S0a (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 27 Apr 2009 19:26:30 +0100
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B49f5f8c30000>; Mon, 27 Apr 2009 14:26:11 -0400
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 27 Apr 2009 11:26:08 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 27 Apr 2009 11:26:08 -0700
-Message-ID: <49F5F8BF.3020501@caviumnetworks.com>
-Date:	Mon, 27 Apr 2009 11:26:07 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 28 Apr 2009 06:36:18 +0100 (BST)
+Received: from qw-out-1920.google.com ([74.125.92.145]:19361 "EHLO
+	qw-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20025181AbZD1FgM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 28 Apr 2009 06:36:12 +0100
+Received: by qw-out-1920.google.com with SMTP id 9so318771qwj.54
+        for <multiple recipients>; Mon, 27 Apr 2009 22:36:10 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:cc:content-type;
+        bh=SulP5hUtkymxf2Phjd4DtazkoEoPYHXsL8CUDlDO6HE=;
+        b=J5f6hZ9cFc3XHyWXRt3qklsWLvehSo0EhSTzE5Q23I/zM4ZnrBBR3xaUw22SBEeIcu
+         /GvTmySvqP6tDRsYiFvyU643JiEb//MCAMdALkRF6aa5eJMjvQ8fvppF886k/qlbpK3p
+         Ym3d7yEOyNnOwwuBbIM6KyJwi/rszVTnotD4Y=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=mlxGEYaWIeFYmVXZj/8LD4iLe5Jq+OUXae9jzjyIpvqnXMhbUvZJy3THSLhrRLZs8H
+         qZo07SWHHyfFSF702+q3hd70Oza/tw7LTvSVsLI4hr4AR4CKeGeRKkrktNX5jITjB1F2
+         wmdQEYbjnJ8utgw1QsBNiSDkmB5a5/yQ1a4UQ=
 MIME-Version: 1.0
-To:	"Kevin D. Kissell" <kevink@paralogos.com>
-CC:	Brian Foster <brian.foster@innova-card.com>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/2] MIPS: Preliminary vdso.
-References: <49EE3B0F.3040506@caviumnetworks.com> <49F16F38.8060009@paralogos.com> <49F1DB1B.2060209@caviumnetworks.com> <200904270919.00761.brian.foster@innova-card.com> <49F5AA6A.7010402@paralogos.com> <49F5D546.2000806@caviumnetworks.com> <49F5EB1A.5010407@paralogos.com>
-In-Reply-To: <49F5EB1A.5010407@paralogos.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 27 Apr 2009 18:26:08.0245 (UTC) FILETIME=[A220C250:01C9C765]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: by 10.220.76.144 with SMTP id c16mr12527454vck.17.1240896969631; 
+	Mon, 27 Apr 2009 22:36:09 -0700 (PDT)
+In-Reply-To: <49F5B090.4030801@ru.mvista.com>
+References: <E1LyQQX-00047N-6E@localhost>
+	 <20090427130952.GA30817@linux-mips.org>
+	 <49F5B090.4030801@ru.mvista.com>
+Date:	Mon, 27 Apr 2009 23:36:09 -0600
+Message-ID: <b2b2f2320904272236l3a925e9at87fc23f1a75c1dac@mail.gmail.com>
+Subject: Re: [MIPS] Resolve compile issues with msp71xx configuration
+From:	Shane McDonald <mcdonald.shane@gmail.com>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Content-Type: multipart/alternative; boundary=0016e6470e0c140532046896d7d8
+Return-Path: <mcdonald.shane@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22496
+X-archive-position: 22497
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: mcdonald.shane@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Kevin D. Kissell wrote:
-> David Daney wrote:
->> Kevin D. Kissell wrote:
->>
->>
->>>  But it *could* be a trap or system call instruction, or a load/store
->>> that would provoke a TLB exception.  In the usual cases, however, as
->>> I believe David was alluding, either the exception will ultimately
->>> unwind to return to execute the magic alignment trap, or the thread
->>> will exit, and could free the emulation slot as part of general cleanup.
+--0016e6470e0c140532046896d7d8
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+Hi:
+
+On Mon, Apr 27, 2009 at 7:18 AM, Sergei Shtylyov <sshtylyov@ru.mvista.com>wrote:
+
+> Hello.
+>
+> Ralf Baechle wrote:
+>
+>  There have been a number of compile problems with the msp71xx
+>>> configuration ever since it was included in the linux-mips.org
+>>> repository.  This patch resolves these problems:
+>>> - proper files are included when using a squashfs rootfs
+>>> - resetting the board no longer uses non-existent GPIO routines
+>>> - create the required plat_timer_setup function
 >>>
->>> But there's a case that isn't handled in this model, and that's the
->>> case of an exception (or interrupt that falls in the 2-instruction
->>> window) resulting in a signal that is caught and dispatched, and
->>> where either the signal handler does a longjmp and restarts FP
->>> computation, or where the signal handler itself contains a FP branch
->>> with yet another delay slot to be emulated. One *could* get alarm
->>> signal before the original delay slot instruction is executed, so
->>> recycling the same vdso cache line would be premature.  It's hard to
->>> get away from something distinctly stack-like if one wants to cover
->>> these cases.
+>>
+>   get_c0_compare_int(), you mean?
+>
+
+Yes, I should have said, remove the duplicate definition of plat_timer_setup
+and add the required definition of get_c0_compare_int.
+
+
+> This patch has been compile-tested against the current HEAD.
+>>
+>
+ Signed-off-by: Shane McDonald <mcdonald.shane@gmail.com>
+>>
+>
+ diff --git a/arch/mips/pmc-sierra/msp71xx/msp_setup.c
+>>> b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
+>>> index c936756..a54e85b 100644
+>>> --- a/arch/mips/pmc-sierra/msp71xx/msp_setup.c
+>>> +++ b/arch/mips/pmc-sierra/msp71xx/msp_setup.c
+>>> @@ -21,7 +21,6 @@
 >>>
->> System calls we don't have to handle, they will eventually return to
->> the break instruction following the delay slot instruction and be
->> handled by the normal processing.
+>>> #if defined(CONFIG_PMC_MSP7120_GW)
+>>> #include <msp_regops.h>
+>>> -#include <msp_gpio.h>
+>>> #define MSP_BOARD_RESET_GPIO    9
+>>> #endif
+>>>
+>>> @@ -88,11 +87,8 @@ void msp7120_reset(void)
+>>>         * as GPIO char driver may not be enabled and it would look up
+>>>         * data inRAM!
+>>>         */
+>>> -       set_value_reg32(GPIO_CFG3_REG,
+>>> -                       basic_mode_mask(MSP_BOARD_RESET_GPIO),
+>>> -                       basic_mode(MSP_GPIO_OUTPUT,
+>>> MSP_BOARD_RESET_GPIO));
+>>> -       set_reg32(GPIO_DATA3_REG,
+>>> -                       basic_data_mask(MSP_BOARD_RESET_GPIO));
+>>> +       set_value_reg32(GPIO_CFG3_REG, 0xf000, 0x8000);
+>>> +       set_reg32(GPIO_DATA3_REG, 8);
+>>>
+>>>        /*
+>>>         * In case GPIO9 doesn't reset the board (jumper configurable!)
+>>> diff --git a/arch/mips/pmc-sierra/msp71xx/msp_time.c
+>>> b/arch/mips/pmc-sierra/msp71xx/msp_time.c
+>>> index 7cfeda5..cca64e1 100644
+>>> --- a/arch/mips/pmc-sierra/msp71xx/msp_time.c
+>>> +++ b/arch/mips/pmc-sierra/msp71xx/msp_time.c
+>>> @@ -81,10 +81,7 @@ void __init plat_time_init(void)
+>>>        mips_hpt_frequency = cpu_rate/2;
+>>> }
+>>>
+>>> -void __init plat_timer_setup(struct irqaction *irq)
+>>> +unsigned int __init get_c0_compare_int(void)
+>>> {
+>>> -#ifdef CONFIG_IRQ_MSP_CIC
+>>> -       /* we are using the vpe0 counter for timer interrupts */
+>>> -       setup_irq(MSP_INT_VPE0_TIMER, irq);
+>>> -#endif
+>>> +       return MSP_INT_VPE0_TIMER;
+>>> }
+>>>
 >>
->> I am thinking that all other exceptions will result in one of three
->> cases:
+>  The rest seems ok.  Can you fix the issue above and send a new patch?
 >>
->> 1) They will work like system calls and return to the 'break'.
+>
+>   Better yet 3 patches as the 3 issues seem totally unrelated.
+
+
+I will respin as three patches.  It looks like the squashfs part is
+controversial, but the other two shouldn't be affected.
+
+ Thanks!
 >>
->> 2) The thread will exit.
+>
+>   Ralf
 >>
->> 3) They result in a signal being sent to the thread.  We can handle it
->> in force_signal().  In this case we would adjust the eip to point at
->> the  original location of the instruction and clean things up.  If the
->> signal handler tries to restart the instruction, the FP emulator will
->> re-run the emulation.
-> That's presumably OK if we *know* that the delay slot instruction has
-> *not* executed prior to the signal being taken.  But if it has, it may
-> have had side-effects, i.e. imagine if it's an "ADD.S f4, f4, f6". We
-> can't re-run the emulation without generating erroneous processor
-> state.  What do we do if, between the ADD.S and the
-
-FP instructions are always emulated, so they don't do this delay slot 
-processing thing.
-
-> BREAK-that-replaces-my-old-alignment-trap, a timer interrupt comes in,
-> causing a SIGALRM which is caught and which executes another FP branch? 
-> When I first wrote the delay slot handling code, I dreamed of disabling
-> interrupts during the delay slot instruction emulation - I think I even
-> coded it that way at one point - but it's fundamentally uncool to go off
-> into user mode with interrupts off.
-
-Asynchronous signals could be a problem.  I would have to think about 
-that more.
+>
+> WBR, Sergei
 
 
-> 
-> I really think that once the delay slot emulation machinery has been put
-> into motion, that fact needs to become a part of the thread state. 
-> Currently, it's encoded, in a sense, in the stack pointer and the stack
-> contents.  If we no longer stack it, and use a more static instruction
-> buffer as a trampoline, then I think it needs to be tagged as part of
-> the kernel's thread state.
-> 
+Shane
 
-Exactly.  I had planned on augmenting the thread state to handle all of 
-this.
+--0016e6470e0c140532046896d7d8
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
+Hi:<br><br><div class=3D"gmail_quote">On Mon, Apr 27, 2009 at 7:18 AM, Serg=
+ei Shtylyov <span dir=3D"ltr">&lt;<a href=3D"mailto:sshtylyov@ru.mvista.com=
+">sshtylyov@ru.mvista.com</a>&gt;</span> wrote:<br><blockquote class=3D"gma=
+il_quote" style=3D"border-left: 1px solid rgb(204, 204, 204); margin: 0pt 0=
+pt 0pt 0.8ex; padding-left: 1ex;">
+Hello.<div class=3D"im"><br>
+<br>
+Ralf Baechle wrote:<br>
+<br>
+<blockquote class=3D"gmail_quote" style=3D"border-left: 1px solid rgb(204, =
+204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;"><blockquote class=
+=3D"gmail_quote" style=3D"border-left: 1px solid rgb(204, 204, 204); margin=
+: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;">
 
+There have been a number of compile problems with the msp71xx<br>
+configuration ever since it was included in the <a href=3D"http://linux-mip=
+s.org" target=3D"_blank">linux-mips.org</a><br>
+repository. =A0This patch resolves these problems:<br>
+- proper files are included when using a squashfs rootfs<br>
+- resetting the board no longer uses non-existent GPIO routines<br>
+- create the required plat_timer_setup function<br>
+</blockquote></blockquote>
+<br></div>
+ =A0 get_c0_compare_int(), you mean?<div class=3D"im"></div></blockquote><d=
+iv class=3D"im"><br>Yes, I should have said, remove the duplicate definitio=
+n of plat_timer_setup and add the required definition of get_c0_compare_int=
+.<br>
+=A0<br>
+<blockquote class=3D"gmail_quote" style=3D"border-left: 1px solid rgb(204, =
+204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;"><blockquote class=
+=3D"gmail_quote" style=3D"border-left: 1px solid rgb(204, 204, 204); margin=
+: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;">
 
-> That knowledge might be used in various ways.  I still think it would
-> work to check that state and cause any signals to that thread need to be
-> deferred until it has processed the BREAK instruction to restore the
-> pre-emulation instruction flow.  Once the state has been restored from
-> the dsemul record, the signal can be dispatched rather than returning
-> directly to the branch target.  I don't like putting another check into
-> the context restore code, though. 
-> 
-> A cruftier, but less inefficient-in-the-expected-case approach would be
-> a variant on what you suggest above.  Signal dispatch could check the
-> EPC, and *if* EPC shows that the delay slot exception hasn't yet
-> executed, it could roll back the EPC to re-execute the FP branch after
-> the signal.  If the delay slot instruction *has* executed, but not the
-> following BREAK, the signal dispatch code could preemptively do the
-> dsemulret cleanup and restore the pre-emulation stack and post-emulation
-> EPC before doing the signal dispatch.
-> 
->           Regards,
-> 
->           Kevin K.
-> 
+This patch has been compile-tested against the current HEAD.<br>
+</blockquote></blockquote>
+<br>
+<blockquote class=3D"gmail_quote" style=3D"border-left: 1px solid rgb(204, =
+204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;"><blockquote class=
+=3D"gmail_quote" style=3D"border-left: 1px solid rgb(204, 204, 204); margin=
+: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;">
+
+Signed-off-by: Shane McDonald &lt;<a href=3D"mailto:mcdonald.shane@gmail.co=
+m" target=3D"_blank">mcdonald.shane@gmail.com</a>&gt;<br>
+</blockquote></blockquote>
+<br>
+</div><blockquote class=3D"gmail_quote" style=3D"border-left: 1px solid rgb=
+(204, 204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;"><div><div><=
+/div><div class=3D"h5"><blockquote class=3D"gmail_quote" style=3D"border-le=
+ft: 1px solid rgb(204, 204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-left: =
+1ex;">
+<blockquote class=3D"gmail_quote" style=3D"border-left: 1px solid rgb(204, =
+204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;">
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_setup.c b/arch/mips/pmc-sierr=
+a/msp71xx/msp_setup.c<br>
+index c936756..a54e85b 100644<br>
+--- a/arch/mips/pmc-sierra/msp71xx/msp_setup.c<br>
++++ b/arch/mips/pmc-sierra/msp71xx/msp_setup.c<br>
+@@ -21,7 +21,6 @@<br>
+<br>
+#if defined(CONFIG_PMC_MSP7120_GW)<br>
+#include &lt;msp_regops.h&gt;<br>
+-#include &lt;msp_gpio.h&gt;<br>
+#define MSP_BOARD_RESET_GPIO =A0 =A09<br>
+#endif<br>
+<br>
+@@ -88,11 +87,8 @@ void msp7120_reset(void)<br>
+ =A0 =A0 =A0 =A0 * as GPIO char driver may not be enabled and it would look=
+ up<br>
+ =A0 =A0 =A0 =A0 * data inRAM!<br>
+ =A0 =A0 =A0 =A0 */<br>
+- =A0 =A0 =A0 set_value_reg32(GPIO_CFG3_REG,<br>
+- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 basic_mode_mask(MSP_BOARD_RES=
+ET_GPIO),<br>
+- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 basic_mode(MSP_GPIO_OUTPUT, M=
+SP_BOARD_RESET_GPIO));<br>
+- =A0 =A0 =A0 set_reg32(GPIO_DATA3_REG,<br>
+- =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 =A0 basic_data_mask(MSP_BOARD_RES=
+ET_GPIO));<br>
++ =A0 =A0 =A0 set_value_reg32(GPIO_CFG3_REG, 0xf000, 0x8000);<br>
++ =A0 =A0 =A0 set_reg32(GPIO_DATA3_REG, 8);<br>
+<br>
+ =A0 =A0 =A0 =A0/*<br>
+ =A0 =A0 =A0 =A0 * In case GPIO9 doesn&#39;t reset the board (jumper config=
+urable!)<br>
+diff --git a/arch/mips/pmc-sierra/msp71xx/msp_time.c b/arch/mips/pmc-sierra=
+/msp71xx/msp_time.c<br>
+index 7cfeda5..cca64e1 100644<br>
+--- a/arch/mips/pmc-sierra/msp71xx/msp_time.c<br>
++++ b/arch/mips/pmc-sierra/msp71xx/msp_time.c<br>
+@@ -81,10 +81,7 @@ void __init plat_time_init(void)<br>
+ =A0 =A0 =A0 =A0mips_hpt_frequency =3D cpu_rate/2;<br>
+}<br>
+<br>
+-void __init plat_timer_setup(struct irqaction *irq)<br>
++unsigned int __init get_c0_compare_int(void)<br>
+{<br>
+-#ifdef CONFIG_IRQ_MSP_CIC<br>
+- =A0 =A0 =A0 /* we are using the vpe0 counter for timer interrupts */<br>
+- =A0 =A0 =A0 setup_irq(MSP_INT_VPE0_TIMER, irq);<br>
+-#endif<br>
++ =A0 =A0 =A0 return MSP_INT_VPE0_TIMER;<br>
+}<br>
+</blockquote></blockquote>
+<br>
+<blockquote class=3D"gmail_quote" style=3D"border-left: 1px solid rgb(204, =
+204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;">
+The rest seems ok. =A0Can you fix the issue above and send a new patch?<br>
+</blockquote>
+<br></div></div>
+ =A0 Better yet 3 patches as the 3 issues seem totally unrelated.</blockquo=
+te><div><br>I will respin as three patches.=A0 It looks like the squashfs p=
+art is controversial, but the other two shouldn&#39;t be affected. <br><br>
+
+</div><blockquote class=3D"gmail_quote" style=3D"border-left: 1px solid rgb=
+(204, 204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;"><blockquote=
+ class=3D"gmail_quote" style=3D"border-left: 1px solid rgb(204, 204, 204); =
+margin: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;">
+
+Thanks!<br>
+</blockquote>
+<br>
+<blockquote class=3D"gmail_quote" style=3D"border-left: 1px solid rgb(204, =
+204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;">
+ =A0Ralf<br>
+</blockquote>
+<br>
+WBR, Sergei</blockquote><div><br>Shane <br></div></div><br>
+
+--0016e6470e0c140532046896d7d8--

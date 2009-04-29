@@ -1,96 +1,118 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Apr 2009 02:09:43 +0100 (BST)
-Received: from mail-qy0-f171.google.com ([209.85.221.171]:54393 "EHLO
-	mail-qy0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20021326AbZD2BJg (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 29 Apr 2009 02:09:36 +0100
-Received: by qyk1 with SMTP id 1so1864605qyk.22
-        for <linux-mips@linux-mips.org>; Tue, 28 Apr 2009 18:09:29 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:content-type;
-        bh=dBmKB7/Nn8rvDf2qURvxpfEhqhlU9J+pcFW2Ch2ICR8=;
-        b=csxr+BZPjkpAk/5BYQqPRRx3qXkZsK5YTSKrX04YsvWLdDleGnvFCnjKpN8DBjfbQH
-         C3MZectph+6XAnJGeB3I6xLfj1VDcpfq+d/qYlFBVubwILmLGTZnHDeUjuHbxfyr7zpR
-         vAerVxzIZ7gj5lU6+FNWeBwcTJoENNUjoSBHI=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :content-type;
-        b=J0sTiaqQmfXWcDb8SGg/HwBjHiaZ32pMbUnq9rDCNZBgTtm6vo8kfWDTpfbePlKFnc
-         xpK5IJWtVW4Ds5KAYbtnek1pVlNMd+M05AQMOys4NyFmhDdh81Q8b+FeyFRRf/KC53Fe
-         08RUSJR8ytprhnKmxkQdTmJ8EibVId1xHWu18=
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Apr 2009 07:03:24 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:43949 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S20022352AbZD2GDV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 29 Apr 2009 07:03:21 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n3T63JCD028173;
+	Wed, 29 Apr 2009 08:03:19 +0200
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n3T63HYm028171;
+	Wed, 29 Apr 2009 08:03:17 +0200
+Date:	Wed, 29 Apr 2009 08:03:17 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Manuel Lauss <mano@roarinelk.homelinux.net>
+Cc:	Linux-MIPS <linux-mips@linux-mips.org>
+Subject: Re: oops in futex_init()
+Message-ID: <20090429060317.GB15627@linux-mips.org>
+References: <20090428124645.GA14347@roarinelk.homelinux.net>
 MIME-Version: 1.0
-Received: by 10.220.44.197 with SMTP id b5mr14175772vcf.114.1240967369277; 
-	Tue, 28 Apr 2009 18:09:29 -0700 (PDT)
-In-Reply-To: <ecbbfeda0904281805l21118b94uf7889df3171b4ba7@mail.gmail.com>
-References: <ecbbfeda0904280458s4bb2de2q6c629ed79a472adc@mail.gmail.com>
-	 <200904281501.37811.florian@openwrt.org>
-	 <ecbbfeda0904281012h33f3a572nbd11547d5964c19d@mail.gmail.com>
-	 <49F749FE.8050808@wp.pl> <49F74BE9.30004@wp.pl>
-	 <ecbbfeda0904281805l21118b94uf7889df3171b4ba7@mail.gmail.com>
-Date:	Tue, 28 Apr 2009 20:09:29 -0500
-Message-ID: <ecbbfeda0904281809v777cda0er38836129ff14a803@mail.gmail.com>
-Subject: Re: Linux on Linksys PSUS4?
-From:	Andrew Wiley <debio264@gmail.com>
-To:	linux-mips@linux-mips.org
-Content-Type: multipart/alternative; boundary=0016e6464f723942e10468a73b6a
-Return-Path: <debio264@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20090428124645.GA14347@roarinelk.homelinux.net>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22530
+X-archive-position: 22531
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: debio264@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
---0016e6464f723942e10468a73b6a
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+On Tue, Apr 28, 2009 at 02:46:45PM +0200, Manuel Lauss wrote:
 
-> Forgot: squidge has approx 800kB footprint (kernel+drivers, rootfs on
-> USB stick). You may try to load it on your device. (but don't know if
-> 2.6 kernel will work on 4M RAM).
+> >From time to time, my test systems don't boot correctly and spew the
+> following oops in futex_init():
+> 
+> calling  init_timer_list_procfs+0x0/0x40 @ 1
+> initcall init_timer_list_procfs+0x0/0x40 returned 0 after 29 usecs
+> calling  futex_init+0x0/0xac @ 1
+> Reserved instruction in kernel code[#1]:
+> Cpu 0
+> $ 0   : 00000000 10003c00 00000000 00000001
+> $ 4   : fffffff2 00000000 32e02014 00000000
+> $ 8   : 00000000 00000000 c4653600 000000cd
+> $12   : 3b9aca00 000186a0 870ce3f0 0000000d
+> $16   : 32e02014 00000000 00000000 8042f0dc
+> $20   : 00000000 00000000 00000000 00000000
+> $24   : 00000005 80243a3c
+> $28   : 87020000 87021f30 00000000 80100460
+> Hi    : 00000000
+> Lo    : 00000000
+> epc   : 8042f0f8 futex_init+0x1c/0xac
+>     Not tainted
+> ra    : 80100460 _stext+0x60/0x1c8
+> Status: 10003c03    KERNEL EXL IE
+> Cause : 00808028
+> PrId  : 04030202 (Au1250)
+> Modules linked in:
+> Process swapper (pid: 1, threadinfo=87020000, task=87018000, tls=00000000)
+> Stack : 00000000 8042f0dc 00000001 00002543 0000001d 00000000 87021f00 8014f014
+>         0000000e 00000000 8702a900 87002000 00003137 00000000 00000000 801ba18c
+>         8041e7a0 000000e0 80410000 00000000 00000000 8014f09c 32e02014 00000000
+>         80448360 804484f4 00000000 00000000 00000000 80428304 00000000 00000000
+>         00000000 00000000 87020000 00000000 00000000 80106ea4 10003c03 00000000
+>         ...
+> Call Trace:
+> [<8042f0f8>] futex_init+0x1c/0xac
+> [<80100460>] _stext+0x60/0x1c8
+> [<80428304>] kernel_init+0x98/0x104
+> [<80106ea4>] kernel_thread_helper+0x10/0x18
+> 
+> 
+> Code: 30420004  14400008  2404fff2 <c0440000> 14800005  00000000  00000821  e0410000  1020fffa
+> Disabling lock debugging due to kernel taint
+> note: swapper[1] exited with preempt_count 1
+> Kernel panic - not syncing: Attempted to kill init!
+> 
+> 
+> Disassembly of futex_init():
+> 
+> (gdb) disass 0x8042f0f8
+> Dump of assembler code for function futex_init:
+> 0x8042f0dc <futex_init+0>:      lw      v1,20(gp)
+> 0x8042f0e0 <futex_init+4>:      addiu   v1,v1,1
+> 0x8042f0e4 <futex_init+8>:      sw      v1,20(gp)
+> 0x8042f0e8 <futex_init+12>:     lw      v0,24(gp)
+> 0x8042f0ec <futex_init+16>:     andi    v0,v0,0x4
+> 0x8042f0f0 <futex_init+20>:     bnez    v0,0x8042f114 <futex_init+56>
+> 0x8042f0f4 <futex_init+24>:     li      a0,-14
+> 0x8042f0f8 <futex_init+28>:     ll      a0,0(v0)
 
+So this is in futex_atomic_cmpxchg_inatomic which has been inlined into
+futex_init.  The epc is pointing to this LL instruction which is a
+legitimate MIPS32 instruction, so a reserved instruction exception does
+not make sense.  However, a NULL pointer has intensionally been passed
+as the argument heres so this LL instruction will take a TLB exception,
+do_page_fault() will change the EPC to return to to point to the fixup
+handler which in the sources are these lines:
 
-I'm not sure how much of a difference there is between hardware that has
-this processor. Can I just use the latest version of Squidge, or do I need
-to look through kernel settings and recompile it?
-Can I just use linksys-tftp to load the Squidge firmware in?
+                "       .section .fixup,\"ax\"                          \n"
+                "4:     li      %0, %5                                  \n"
+                "       j       3b                                      \n"
+                "       .previous                                       \n"
+                "       .section __ex_table,\"a\"                       \n"
+                "       "__UA_ADDR "\t1b, 4b                            \n"
+                "       "__UA_ADDR "\t2b, 4b                            \n"
+                "       .previous                                       \n"
 
->
->
-> W.P.
->
->
+That's how it normally should function.  If however in the exception
+handler something goes wrong while c0_status.exl is still set the c0_epc
+regiser won't be updated for the 2nd exception which is that reserved
+instruction exception.  This sort of bug can be ugly to chase, I'm afraid.
 
---0016e6464f723942e10468a73b6a
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<div class=3D"gmail_quote"><div class=3D"gmail_quote"><div class=3D"im"><br=
-><blockquote class=3D"gmail_quote" style=3D"border-left: 1px solid rgb(204,=
- 204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;">Forgot: squidge =
-has approx 800kB footprint (kernel+drivers, rootfs on<br>
-
-
-USB stick). You may try to load it on your device. (but don&#39;t know if<b=
-r>
-2.6 kernel will work on 4M RAM).</blockquote></div><div><br>I&#39;m not sur=
-e how much of a difference there is between hardware that has this processo=
-r. Can I just use the latest version of Squidge, or do I need to look throu=
-gh kernel settings and recompile it?<br>
-
-Can I just use linksys-tftp to load the Squidge firmware in? <br></div><blo=
-ckquote class=3D"gmail_quote" style=3D"border-left: 1px solid rgb(204, 204,=
- 204); margin: 0pt 0pt 0pt 0.8ex; padding-left: 1ex;"><br>
-<font color=3D"#888888"><br>
-W.P.<br>
-<br>
-</font></blockquote></div>
-</div><br>
-
---0016e6464f723942e10468a73b6a--
+  Ralf

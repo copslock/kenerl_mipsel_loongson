@@ -1,92 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Apr 2009 12:40:50 +0100 (BST)
-Received: from fnoeppeil48.netpark.at ([217.175.205.176]:38854 "EHLO
-	roarinelk.homelinux.net" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20025135AbZD2Lkn (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 29 Apr 2009 12:40:43 +0100
-Received: (qmail 24655 invoked by uid 1000); 29 Apr 2009 13:40:42 +0200
-Date:	Wed, 29 Apr 2009 13:40:42 +0200
-From:	Manuel Lauss <mano@roarinelk.homelinux.net>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: oops in futex_init()
-Message-ID: <20090429114042.GA24576@roarinelk.homelinux.net>
-References: <20090428124645.GA14347@roarinelk.homelinux.net> <20090429060317.GB15627@linux-mips.org> <20090429082556.GA22844@roarinelk.homelinux.net> <20090429083349.GB26289@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Apr 2009 12:59:06 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:37984 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S20023672AbZD2L7E (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 29 Apr 2009 12:59:04 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n3TBx1IM010239;
+	Wed, 29 Apr 2009 13:59:02 +0200
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n3TBwxmj010237;
+	Wed, 29 Apr 2009 13:58:59 +0200
+Date:	Wed, 29 Apr 2009 13:58:59 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Florian Fainelli <florian@openwrt.org>,
+	Shane McDonald <mcdonald.shane@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] fix build failures on msp_irq_slp.c
+Message-ID: <20090429115859.GA1487@linux-mips.org>
+References: <200904271659.48357.florian@openwrt.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20090429083349.GB26289@linux-mips.org>
-User-Agent: Mutt/1.5.16 (2007-06-09)
-Return-Path: <mano@roarinelk.homelinux.net>
+In-Reply-To: <200904271659.48357.florian@openwrt.org>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22535
+X-archive-position: 22536
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mano@roarinelk.homelinux.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Apr 29, 2009 at 10:33:49AM +0200, Ralf Baechle wrote:
-> On Wed, Apr 29, 2009 at 10:25:56AM +0200, Manuel Lauss wrote:
-> 
-> > > > (gdb) disass 0x8042f0f8
-> > > > Dump of assembler code for function futex_init:
-> > > > 0x8042f0dc <futex_init+0>:      lw      v1,20(gp)
-> > > > 0x8042f0e0 <futex_init+4>:      addiu   v1,v1,1
-> > > > 0x8042f0e4 <futex_init+8>:      sw      v1,20(gp)
-> > > > 0x8042f0e8 <futex_init+12>:     lw      v0,24(gp)
-> > > > 0x8042f0ec <futex_init+16>:     andi    v0,v0,0x4
-> > > > 0x8042f0f0 <futex_init+20>:     bnez    v0,0x8042f114 <futex_init+56>
-> > > > 0x8042f0f4 <futex_init+24>:     li      a0,-14
-> > > > 0x8042f0f8 <futex_init+28>:     ll      a0,0(v0)
-> > > 
-> > > So this is in futex_atomic_cmpxchg_inatomic which has been inlined into
-> > > futex_init.  The epc is pointing to this LL instruction which is a
-> > > legitimate MIPS32 instruction, so a reserved instruction exception does
-> > > not make sense.  However, a NULL pointer has intensionally been passed
-> > > as the argument heres so this LL instruction will take a TLB exception,
-> > > do_page_fault() will change the EPC to return to to point to the fixup
-> > > handler which in the sources are these lines:
-> > > 
-> > >                 "       .section .fixup,\"ax\"                          \n"
-> > >                 "4:     li      %0, %5                                  \n"
-> > >                 "       j       3b                                      \n"
-> > >                 "       .previous                                       \n"
-> > >                 "       .section __ex_table,\"a\"                       \n"
-> > >                 "       "__UA_ADDR "\t1b, 4b                            \n"
-> > >                 "       "__UA_ADDR "\t2b, 4b                            \n"
-> > >                 "       .previous                                       \n"
-> > > 
-> > > That's how it normally should function.  If however in the exception
-> > > handler something goes wrong while c0_status.exl is still set the c0_epc
-> > > regiser won't be updated for the 2nd exception which is that reserved
-> > > instruction exception.  This sort of bug can be ugly to chase, I'm afraid.
-> > 
-> > Thanks for this info! In other words, this oops is actually the result of
-> > another earlier problem, which trashes something used by the tlb fault
-> > handler? (I've also seen this oops as a "kernel unaligned access" with epc
-> > at the 'll'.  Also, isn't it a problem that a0 is -14 instead of zero?).
-> 
-> No - it will be overwritten either after the load succeeded or in the
-> fixup handler.  The load of the -14 value is from __access_() happens to
-> be in a branch delay slot of a branch which will never be executed - but
-> that's as far as gcc knows how to optimize the access_ok() invokation
-> away.
-> 
-> When did this issue start?  I wonder if it was when you removed the Alchemy
-> hazard barriers?
+On Mon, Apr 27, 2009 at 04:59:48PM +0200, Florian Fainelli wrote:
 
-No; it started shortly after 2.6.30 was opened and I added TSC2007 support
-to my board.  I don't see it on the Db1200, only on systems at work.
-I suspect it's parts of the board code which trigger it; I just can't figure
-out which (i.e. its just as any other board code with lots of platform
-device and resource structs spread over a few files).
+> Trying to build MSP4200 VoIP defconfig also fails on msp_irq_slp.c
+> with a non-existing reference to mask_slp_irq, which is in turn
+> mask_msp_slp_irq. Passed that, we will also miss a comma when
+> calling set_irq_chip_and_handler. This patch fixes both issues.
+> 
+> Signed-off-by: Florian Fainelli <florian@openwrt.org>
+> ---
+> diff --git a/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c b/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c
+> index f5f1b8d..66f6f85 100644
+> --- a/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c
+> +++ b/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c
+> @@ -45,7 +45,7 @@ static inline void mask_msp_slp_irq(unsigned int irq)
+>   */
+>  static inline void ack_msp_slp_irq(unsigned int irq)
+>  {
+> -	mask_slp_irq(irq);
+> +	mask_msp_slp_irq(irq);
+>  
+>  	/*
+>  	 * only really necessary for 18, 16-14 and sometimes 3:0 (since
 
-I've been running kernels before 2.6.28 came out with the removed hazard
-barriers and never before ran into problems.  I don't think they're
-responsible. But I'll revert them and keep looking for the real reason ;-)
+The whole irq chip thing in this file is looking suspect as it treats
+acknowledging and mask an interrupt as the same thing.  Sure that is the
+right thing?
 
-Thanks!
-	Manuel Lauss
+> @@ -79,7 +79,7 @@ void __init msp_slp_irq_init(void)
+>  
+>  	/* initialize all the IRQ descriptors */
+>  	for (i = MSP_SLP_INTBASE; i < MSP_PER_INTBASE + 32; i++)
+> -		set_irq_chip_and_handler(i, &msp_slp_irq_controller
+> +		set_irq_chip_and_handler(i, &msp_slp_irq_controller,
+>  					 handle_level_irq);
+>  }
+>  
+
+> diff --git a/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c b/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c
+> index f5f1b8d..66f6f85 100644
+
+Please don't send the patch twice in one email ...
+
+  Ralf

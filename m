@@ -1,77 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Apr 2009 23:30:50 +0100 (BST)
-Received: from ugmailsa.ugent.be ([157.193.49.116]:53755 "EHLO
-	ugmailsa.ugent.be" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20026805AbZD3Wao (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Apr 2009 23:30:44 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by ugmailsa.ugent.be (Postfix) with ESMTP id 501AC306D6E
-	for <linux-mips@linux-mips.org>; Fri,  1 May 2009 00:30:43 +0200 (CEST)
-X-Virus-Scanned: by UGent DICT
-Received: from ugmailsa.ugent.be ([127.0.0.1])
-	by localhost (ugmailsa.ugent.be [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id X58YcosGktVo for <linux-mips@linux-mips.org>;
-	Fri,  1 May 2009 00:30:43 +0200 (CEST)
-Received: from cedar.ugent.be (cedar.ugent.be [157.193.49.14])
-	by ugmailsa.ugent.be (Postfix) with ESMTP id EDEA8306985
-	for <linux-mips@linux-mips.org>; Fri,  1 May 2009 00:30:42 +0200 (CEST)
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: AkMCAL/D+UlXkpPu/2dsb2JhbAAI0FCDfwU
-Received: from p579293ee.dip.t-dialin.net (HELO [192.168.1.168]) ([87.146.147.238])
-  by smtps9.UGent.be with ESMTP/TLS/DHE-RSA-AES256-SHA; 01 May 2009 00:30:30 +0200
-Message-ID: <49FA27FA.3070408@debian.org>
-Date:	Fri, 01 May 2009 00:36:42 +0200
-From:	Luk Claes <luk@debian.org>
-Reply-To: luk@debian.org, linux-mips@linux-mips.org
-User-Agent: Mozilla-Thunderbird 2.0.0.19 (X11/20090103)
-MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-Subject: Re: kernel for a Broadcom Swarm board
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <luk@debian.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 May 2009 00:54:06 +0100 (BST)
+Received: from BISCAYNE-ONE-STATION.MIT.EDU ([18.7.7.80]:60448 "EHLO
+	biscayne-one-station.mit.edu" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20026838AbZD3XyA (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 1 May 2009 00:54:00 +0100
+Received: from outgoing.mit.edu (OUTGOING-AUTH.MIT.EDU [18.7.22.103])
+	by biscayne-one-station.mit.edu (8.13.6/8.9.2) with ESMTP id n3UNrWHT016874;
+	Thu, 30 Apr 2009 19:53:33 -0400 (EDT)
+Received: from localhost (c-67-186-133-195.hsd1.ma.comcast.net [67.186.133.195])
+	(authenticated bits=0)
+        (User authenticated as tabbott@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.13.6/8.12.4) with ESMTP id n3UNrVn7011398;
+	Thu, 30 Apr 2009 19:53:32 -0400 (EDT)
+From:	Tim Abbott <tabbott@MIT.EDU>
+To:	Sam Ravnborg <sam@ravnborg.org>
+Cc:	Linux kernel mailing list <linux-kernel@vger.kernel.org>,
+	Anders Kaseorg <andersk@mit.edu>,
+	Waseem Daher <wdaher@mit.edu>,
+	Denys Vlasenko <vda.linux@googlemail.com>,
+	Jeff Arnold <jbarnold@mit.edu>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	Tim Abbott <tabbott@mit.edu>
+Subject: [PATCH 1/4] mips: use NOSAVE_DATA macro for .data.nosave section.
+Date:	Thu, 30 Apr 2009 19:53:27 -0400
+Message-Id: <1241135610-9012-2-git-send-email-tabbott@mit.edu>
+X-Mailer: git-send-email 1.6.2.1
+In-Reply-To: <1241135610-9012-1-git-send-email-tabbott@mit.edu>
+References: <1241135610-9012-1-git-send-email-tabbott@mit.edu>
+X-Scanned-By: MIMEDefang 2.42
+Return-Path: <tabbott@MIT.EDU>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22576
+X-archive-position: 22577
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: luk@debian.org
+X-original-sender: tabbott@MIT.EDU
 Precedence: bulk
 X-list: linux-mips
 
-Hi
+This has the consequence of replacing the alignment of _PAGE_SIZE with
+an alignment of PAGE_SIZE.  I believe these have the same value.
 
- > | [    0.000000] Broadcom SiByte BCM1250 B2 @ 800 MHz (SB1 rev 2)
- > | [    0.000000] Board type: SiByte BCM91250A (SWARM)
- > | [    0.000000] This kernel optimized for board runs with CFE
- > | [    0.000000] Determined physical RAM map:
- > | [    0.000000]  memory: 000000000fe47e00 @ 0000000000000000 (usable)
- > | [    0.000000] Initrd not found or empty - disabling initrd
- > | [    0.000000] Zone PFN ranges:
- > | [    0.000000]   DMA32    0x00000000 -> 0x00100000
- > | [    0.000000]   Normal   0x00100000 -> 0x00100000
- > | [    0.000000] Movable zone start PFN for each node
- > | [    0.000000] early_node_map[1] active PFN ranges
- > | [    0.000000]     0: 0x00000000 -> 0x0000fe47
- > | [    0.000000] Detected 1 available secondary CPU(s)
- > | [    0.000000] Built 1 zonelists in Zone order, mobility grouping 
-on.  Total
- > pages: 64205
- > | [    0.000000] Kernel command line: root=/dev/hdc1 console=duart0
- > | [    0.000000] Primary instruction cache 32kB, VIVT, 4-way, 
-linesize 32 bytes.
- > | [    0.000000] Primary data cache 32kB, 4-way, PIPT, no aliases, 
-linesize 32
- > bytes
- > | [    0.000000] PID hash table entries: 1024 (order: 10, 8192 bytes)
- >
- > And then it hangs...
+.data.nosave should not need a separate output section; this change
+moves it into the .data section.
 
-The zeros look like there are no timing interrupts happening. It's a 
-pity we don't have hardware to test which kernel version introduced the 
-bug (for instance with git-bisect and reboots).
+Signed-off-by: Tim Abbott <tabbott@mit.edu>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
+---
+ arch/mips/kernel/vmlinux.lds.S |   10 +---------
+ 1 files changed, 1 insertions(+), 9 deletions(-)
 
-Cheers
-
-Luk
+diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
+index 58738c8..2a6a995 100644
+--- a/arch/mips/kernel/vmlinux.lds.S
++++ b/arch/mips/kernel/vmlinux.lds.S
+@@ -78,7 +78,7 @@ SECTIONS
+ 		 */
+ 		. = ALIGN(_PAGE_SIZE);
+ 		*(.data.init_task)
+-
++		NOSAVE_DATA
+ 		DATA_DATA
+ 		CONSTRUCTORS
+ 	}
+@@ -96,14 +96,6 @@ SECTIONS
+ 		*(.sdata)
+ 	}
+ 
+-	. = ALIGN(_PAGE_SIZE);
+-	.data_nosave : {
+-		__nosave_begin = .;
+-		*(.data.nosave)
+-	}
+-	. = ALIGN(_PAGE_SIZE);
+-	__nosave_end = .;
+-
+ 	. = ALIGN(1 << CONFIG_MIPS_L1_CACHE_SHIFT);
+ 	.data.cacheline_aligned : {
+ 		*(.data.cacheline_aligned)
+-- 
+1.6.2.1

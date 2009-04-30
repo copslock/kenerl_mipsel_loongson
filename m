@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Apr 2009 20:36:31 +0100 (BST)
-Received: from BISCAYNE-ONE-STATION.MIT.EDU ([18.7.7.80]:56900 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Apr 2009 20:37:30 +0100 (BST)
+Received: from BISCAYNE-ONE-STATION.MIT.EDU ([18.7.7.80]:57401 "EHLO
 	biscayne-one-station.mit.edu" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20023326AbZD3TgV (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Apr 2009 20:36:21 +0100
+	by ftp.linux-mips.org with ESMTP id S20023930AbZD3ThY (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Apr 2009 20:37:24 +0100
 Received: from outgoing.mit.edu (OUTGOING-AUTH.MIT.EDU [18.7.22.103])
-	by biscayne-one-station.mit.edu (8.13.6/8.9.2) with ESMTP id n3UJX6rO029830;
-	Thu, 30 Apr 2009 15:33:06 -0400 (EDT)
+	by biscayne-one-station.mit.edu (8.13.6/8.9.2) with ESMTP id n3UJX0AV029756;
+	Thu, 30 Apr 2009 15:33:01 -0400 (EDT)
 Received: from localhost (c-67-186-133-195.hsd1.ma.comcast.net [67.186.133.195])
 	(authenticated bits=0)
         (User authenticated as tabbott@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.13.6/8.12.4) with ESMTP id n3UJX3cW002480;
-	Thu, 30 Apr 2009 15:33:04 -0400 (EDT)
+	by outgoing.mit.edu (8.13.6/8.12.4) with ESMTP id n3UJWwFJ002428;
+	Thu, 30 Apr 2009 15:32:58 -0400 (EDT)
 From:	Tim Abbott <tabbott@MIT.EDU>
 To:	Sam Ravnborg <sam@ravnborg.org>
 Cc:	Anders Kaseorg <andersk@mit.edu>, Waseem Daher <wdaher@mit.edu>,
@@ -55,22 +55,20 @@ Cc:	Anders Kaseorg <andersk@mit.edu>, Waseem Daher <wdaher@mit.edu>,
 	user-mode-linux-devel@lists.sourceforge.net,
 	Yoshinori Sato <ysato@users.sourceforge.jp>,
 	Tim Abbott <tabbott@mit.edu>, Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH 5/6] Add new READ_MOSTLY_DATA(align) linker script macro.
-Date:	Thu, 30 Apr 2009 15:32:35 -0400
-Message-Id: <1241119956-31453-6-git-send-email-tabbott@mit.edu>
+Subject: [PATCH 3/6] Add new CACHELINE_ALIGNED_DATA linker script macro.
+Date:	Thu, 30 Apr 2009 15:32:33 -0400
+Message-Id: <1241119956-31453-4-git-send-email-tabbott@mit.edu>
 X-Mailer: git-send-email 1.6.2.1
-In-Reply-To: <1241119956-31453-5-git-send-email-tabbott@mit.edu>
+In-Reply-To: <1241119956-31453-3-git-send-email-tabbott@mit.edu>
 References: <1241119956-31453-1-git-send-email-tabbott@mit.edu>
  <1241119956-31453-2-git-send-email-tabbott@mit.edu>
  <1241119956-31453-3-git-send-email-tabbott@mit.edu>
- <1241119956-31453-4-git-send-email-tabbott@mit.edu>
- <1241119956-31453-5-git-send-email-tabbott@mit.edu>
 X-Scanned-By: MIMEDefang 2.42
 Return-Path: <tabbott@MIT.EDU>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22558
+X-archive-position: 22559
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -78,9 +76,9 @@ X-original-sender: tabbott@MIT.EDU
 Precedence: bulk
 X-list: linux-mips
 
-This patch is preparation for replacing most ".data.read_mostly" in
-the kernel with macros, so that the section name can later be changed
-without having to touch a lot of the kernel.
+This patch is preparation for replacing most ".data.cacheline_aligned"
+in the kernel with macros, so that the section name can later be
+changed without having to touch a lot of the kernel.
 
 The long-term goal here is to be able to change the kernel's magic
 section names to those that are compatible with -ffunction-sections
@@ -94,16 +92,16 @@ Cc: Sam Ravnborg <sam@ravnborg.org>
  1 files changed, 4 insertions(+), 0 deletions(-)
 
 diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index 4b020e8..a4b4f4a 100644
+index f5ebd2b..fa7801b 100644
 --- a/include/asm-generic/vmlinux.lds.h
 +++ b/include/asm-generic/vmlinux.lds.h
-@@ -139,6 +139,10 @@
- 	. = ALIGN(alignment);						\
- 	*(.data.init_task)
+@@ -131,6 +131,10 @@
+ 	. = ALIGN(PAGE_SIZE);						\
+ 	__nosave_end = .;
  
-+#define READ_MOSTLY_DATA(alignment)					\
++#define CACHELINE_ALIGNED_DATA(alignment)				\
 +	. = ALIGN(alignment);						\
-+	*(.data.read_mostly)
++	*(.data.cacheline_aligned)
 +
  #define RO_DATA(align)							\
  	. = ALIGN((align));						\

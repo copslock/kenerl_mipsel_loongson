@@ -1,125 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Apr 2009 20:53:25 +0100 (BST)
-Received: from BISCAYNE-ONE-STATION.MIT.EDU ([18.7.7.80]:64047 "EHLO
-	biscayne-one-station.mit.edu" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20026714AbZD3TxC (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Apr 2009 20:53:02 +0100
-Received: from outgoing.mit.edu (OUTGOING-AUTH.MIT.EDU [18.7.22.103])
-	by biscayne-one-station.mit.edu (8.13.6/8.9.2) with ESMTP id n3UJX3Av029791;
-	Thu, 30 Apr 2009 15:33:03 -0400 (EDT)
-Received: from localhost (c-67-186-133-195.hsd1.ma.comcast.net [67.186.133.195])
-	(authenticated bits=0)
-        (User authenticated as tabbott@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.13.6/8.12.4) with ESMTP id n3UJX09W002454;
-	Thu, 30 Apr 2009 15:33:01 -0400 (EDT)
-From:	Tim Abbott <tabbott@MIT.EDU>
-To:	Sam Ravnborg <sam@ravnborg.org>
-Cc:	Anders Kaseorg <andersk@mit.edu>, Waseem Daher <wdaher@mit.edu>,
-	Denys Vlasenko <vda.linux@googlemail.com>,
-	Jeff Arnold <jbarnold@mit.edu>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Bryan Wu <cooloney@kernel.org>,
-	Chris Zankel <chris@zankel.net>,
-	Cyrill Gorcunov <gorcunov@openvz.org>,
-	David Howells <dhowells@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>, dev-etrax@axis.com,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Greg Ungerer <gerg@uclinux.org>,
-	Haavard Skinnemoen <hskinnemoen@atmel.com>,
-	Heiko Carstens <heiko.carstens@de.ibm.com>,
-	Helge Deller <deller@gmx.de>,
-	Hirokazu Takata <takata@linux-m32r.org>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-	Jeff Dike <jdike@addtoit.com>,
-	Jesper Nilsson <jesper.nilsson@axis.com>,
-	Kyle McMartin <kyle@mcmartin.ca>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-alpha@vger.kernel.org, linux-am33-list@redhat.com,
-	linux-arm-kernel@lists.arm.linux.org.uk,
-	linux-ia64@vger.kernel.org, linux-m32r@ml.linux-m32r.org,
-	linux-m68k@vger.kernel.org, linux-mips@linux-mips.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@ozlabs.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	Martin Schwidefsky <schwidefsky@de.ibm.com>,
-	Michal Simek <monstr@monstr.eu>,
-	microblaze-uclinux@itee.uq.edu.au,
-	Mikael Starvik <starvik@axis.com>,
-	Paul Mackerras <paulus@samba.org>,
-	Paul Mundt <lethal@linux-sh.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Richard Henderson <rth@twiddle.net>,
-	Roman Zippel <zippel@linux-m68k.org>,
-	Russell King <rmk+kernel@arm.linux.org.uk>,
-	sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Tony Luck <tony.luck@intel.com>,
-	uclinux-dist-devel@blackfin.uclinux.org,
-	user-mode-linux-devel@lists.sourceforge.net,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Tim Abbott <tabbott@mit.edu>, Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH 4/6] Add new INIT_TASK_DATA() linker script macro.
-Date:	Thu, 30 Apr 2009 15:32:34 -0400
-Message-Id: <1241119956-31453-5-git-send-email-tabbott@mit.edu>
-X-Mailer: git-send-email 1.6.2.1
-In-Reply-To: <1241119956-31453-4-git-send-email-tabbott@mit.edu>
-References: <1241119956-31453-1-git-send-email-tabbott@mit.edu>
- <1241119956-31453-2-git-send-email-tabbott@mit.edu>
- <1241119956-31453-3-git-send-email-tabbott@mit.edu>
- <1241119956-31453-4-git-send-email-tabbott@mit.edu>
-X-Scanned-By: MIMEDefang 2.42
-Return-Path: <tabbott@MIT.EDU>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Apr 2009 20:55:34 +0100 (BST)
+Received: from n1b.bullet.mail.ac4.yahoo.com ([76.13.13.71]:20929 "HELO
+	n1b.bullet.mail.ac4.yahoo.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with SMTP id S20023425AbZD3Tz2 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Apr 2009 20:55:28 +0100
+Received: from [76.13.13.26] by n1.bullet.mail.ac4.yahoo.com with NNFMP; 30 Apr 2009 19:55:21 -0000
+Received: from [76.13.10.179] by t3.bullet.mail.ac4.yahoo.com with NNFMP; 30 Apr 2009 19:55:21 -0000
+Received: from [127.0.0.1] by omp120.mail.ac4.yahoo.com with NNFMP; 30 Apr 2009 19:55:21 -0000
+X-Yahoo-Newman-Property: ymail-3
+X-Yahoo-Newman-Id: 954915.57676.bm@omp120.mail.ac4.yahoo.com
+Received: (qmail 52851 invoked by uid 60001); 30 Apr 2009 19:55:21 -0000
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s1024; t=1241121321; bh=2Bt7nDxwhyubyqS/GFJwEREwzJ6M3fSjvMUOxBlBwec=; h=Message-ID:X-YMail-OSG:Received:X-Mailer:Date:From:Reply-To:Subject:To:MIME-Version:Content-Type; b=L94yUyQTmUWkqyjHjcvGBylADVjDlk1tqXXjg2hQbSx+UOZXjlzW1QBSNXP72Nf2X0bfANOeqFnqSuO0yXVmO6GeQE1frvK8xf1Mye/pJhobaU41H9Z3Qkhez1ivk+KWbiLe6TcWqHiRvO/6Gqty1c0uQ+z+xQNd8q0pvbZReJ8=
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.com;
+  h=Message-ID:X-YMail-OSG:Received:X-Mailer:Date:From:Reply-To:Subject:To:MIME-Version:Content-Type;
+  b=l5PMaO5Dp4L2YFF6HW0iecUN7c9I+51Uf3OvD1lbEUPC7VMcdy7JT5WuA1w+WWO91bqPd3eH4wDnwP5Hrmvei+D/t4r/Lhyz/wkFQCjy8YueWFq4/3vfc0WDX/wfvVlKKFKVK8MjNKju1OsuE5TaPRhcyRacJcyeGoTiD/AHJsM=;
+Message-ID: <309181.52579.qm@web59814.mail.ac4.yahoo.com>
+X-YMail-OSG: 9lwl8I0VM1muYkCIXwr_MfL.XWorgEdHKDt6yot7jtN102ZQI8QMeaF6VH7WC8TmM7.4WvDlV_X.fW_2oXCIa5jng3NHgI1YgcoSeCP2lxtfuxjf5ULtzDPI0rJWUTq7xvGT6PfolvQzLATneEeq_ms.jgdT.wens6RtmYNCCQ1TQz8Z6A291kej4pDLdZpQQPpQcNRfwTJiQHzJMCq7KN_LX8pEnJucB5K2uJVgjwxvFKC6YYWDCyx3_wmGf5RssPE9r3OQoteOXfQcP4jx1tipZovzfFrQCW1OjpT4JAkhR.7zHq0QggNzbk4cphmW.gc9C.VTGherddo-
+Received: from [91.196.252.17] by web59814.mail.ac4.yahoo.com via HTTP; Thu, 30 Apr 2009 12:55:20 PDT
+X-Mailer: YahooMailWebService/0.7.289.1
+Date:	Thu, 30 Apr 2009 12:55:20 -0700 (PDT)
+From:	Andrew Randrianasulu <randrik_a@yahoo.com>
+Reply-To: randrik_a@yahoo.com
+Subject: [PATCH] 0002-sgi-o2-gbe-mte-init.diff
+To:	linux-mips@linux-mips.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <randrik_a@yahoo.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22564
+X-archive-position: 22565
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tabbott@MIT.EDU
+X-original-sender: randrik_a@yahoo.com
 Precedence: bulk
 X-list: linux-mips
 
-This patch is preparation for replacing most ".data.init_task" in the
-kernel with macros, so that the section name can later be changed
-without having to touch a lot of the kernel.
 
-The long-term goal here is to be able to change the kernel's magic
-section names to those that are compatible with -ffunction-sections
--fdata-sections.  This requires renaming all magic sections with names
-of the form ".data.foo".
+Very simple test patch, broke nothing for me.
 
-Signed-off-by: Tim Abbott <tabbott@mit.edu>
-Cc: Sam Ravnborg <sam@ravnborg.org>
----
- include/asm-generic/vmlinux.lds.h |    4 ++++
- include/linux/init_task.h         |    3 +++
- 2 files changed, 7 insertions(+), 0 deletions(-)
+diff --git a/drivers/video/gbefb.c b/drivers/video/gbefb.c
+index ed732a8..1d3b599 100644
+--- a/drivers/video/gbefb.c
++++ b/drivers/video/gbefb.c
+@@ -31,6 +31,7 @@
+ #include <asm/tlbflush.h>
+ 
+ #include <video/gbe.h>
++#include <video/crmfbreg.h>
+ 
+ static struct sgi_gbe *gbe;
+ 
+@@ -651,6 +652,7 @@ static void gbe_set_timing_info(struct gbe_timing_info *timing)
+ static int gbefb_set_par(struct fb_info *info)
+ {
+ 	int i;
++	unsigned int mte_current_mode; /* temporary  */
+ 	unsigned int val;
+ 	int wholeTilesX, partTilesX, maxPixelsPerTileX;
+ 	int height_pix;
+@@ -695,6 +697,16 @@ static int gbefb_set_par(struct fb_info *info)
+ 	/* Initialize interrupts */
+ 	gbe->sgi_gbe_vt.vt_intr01 = 0xffffffff;
+ 	gbe->sgi_gbe_vt.vt_intr23 = 0xffffffff;
++	
++	/* Initialize MTE */
++	mte_current_mode = MTE_MODE_DST_ECC | 
++			    (MTE_TLB_A << MTE_DST_TLB_SHIFT) |
++			    (MTE_TLB_A << MTE_SRC_TLB_SHIFT) |
++			    (MTE_DEPTH_8 << MTE_DEPTH_SHIFT) |
++			    MTE_MODE_COPY; 
++	gbe->sgi_crm_mte.crm_mte_mode =  mte_current_mode;
++	gbe->sgi_crm_mte.crm_mte_dst_y_step = 1;
++	gbe->sgi_crm_mte.crm_mte_src_y_step = 1;
+ 
+ 	/* HACK:
+ 	   The GBE hardware uses a tiled memory to screen mapping. Tiles are
 
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index fa7801b..4b020e8 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -135,6 +135,10 @@
- 	. = ALIGN(alignment);						\
- 	*(.data.cacheline_aligned)
- 
-+#define INIT_TASK_DATA(alignment)					\
-+	. = ALIGN(alignment);						\
-+	*(.data.init_task)
-+
- #define RO_DATA(align)							\
- 	. = ALIGN((align));						\
- 	.rodata           : AT(ADDR(.rodata) - LOAD_OFFSET) {		\
-diff --git a/include/linux/init_task.h b/include/linux/init_task.h
-index d87247d..e555baa 100644
---- a/include/linux/init_task.h
-+++ b/include/linux/init_task.h
-@@ -184,5 +184,8 @@ extern struct cred init_cred;
- 	LIST_HEAD_INIT(cpu_timers[2]),					\
- }
- 
-+/* Attach to the init_task data structure for proper alignment */
-+#define __init_task_data __attribute__((__section__(".data.init_task")))
-+
- 
- #endif
--- 
-1.6.2.1
+
+
+      

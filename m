@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Apr 2009 20:56:15 +0100 (BST)
-Received: from BISCAYNE-ONE-STATION.MIT.EDU ([18.7.7.80]:65406 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Apr 2009 20:56:40 +0100 (BST)
+Received: from BISCAYNE-ONE-STATION.MIT.EDU ([18.7.7.80]:65503 "EHLO
 	biscayne-one-station.mit.edu" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20026718AbZD3T4J (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Apr 2009 20:56:09 +0100
+	by ftp.linux-mips.org with ESMTP id S20026720AbZD3T41 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Apr 2009 20:56:27 +0100
 Received: from outgoing.mit.edu (OUTGOING-AUTH.MIT.EDU [18.7.22.103])
-	by biscayne-one-station.mit.edu (8.13.6/8.9.2) with ESMTP id n3UJsVT9017585;
-	Thu, 30 Apr 2009 15:54:31 -0400 (EDT)
+	by biscayne-one-station.mit.edu (8.13.6/8.9.2) with ESMTP id n3UJsSB1017551;
+	Thu, 30 Apr 2009 15:54:28 -0400 (EDT)
 Received: from localhost (c-67-186-133-195.hsd1.ma.comcast.net [67.186.133.195])
 	(authenticated bits=0)
         (User authenticated as tabbott@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.13.6/8.12.4) with ESMTP id n3UJsSEq011237;
-	Thu, 30 Apr 2009 15:54:29 -0400 (EDT)
+	by outgoing.mit.edu (8.13.6/8.12.4) with ESMTP id n3UJsPmO011211;
+	Thu, 30 Apr 2009 15:54:25 -0400 (EDT)
 From:	Tim Abbott <tabbott@MIT.EDU>
 To:	Sam Ravnborg <sam@ravnborg.org>
 Cc:	Linux kernel mailing list <linux-kernel@vger.kernel.org>,
@@ -55,21 +55,20 @@ Cc:	Linux kernel mailing list <linux-kernel@vger.kernel.org>,
 	user-mode-linux-devel@lists.sourceforge.net,
 	Yoshinori Sato <ysato@users.sourceforge.jp>,
 	Tim Abbott <tabbott@mit.edu>, Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH v2 4/6] Add new INIT_TASK_DATA() linker script macro.
-Date:	Thu, 30 Apr 2009 15:54:11 -0400
-Message-Id: <1241121253-32341-5-git-send-email-tabbott@mit.edu>
+Subject: [PATCH v2 3/6] Add new CACHELINE_ALIGNED_DATA linker script macro.
+Date:	Thu, 30 Apr 2009 15:54:10 -0400
+Message-Id: <1241121253-32341-4-git-send-email-tabbott@mit.edu>
 X-Mailer: git-send-email 1.6.2.1
-In-Reply-To: <1241121253-32341-4-git-send-email-tabbott@mit.edu>
+In-Reply-To: <1241121253-32341-3-git-send-email-tabbott@mit.edu>
 References: <1241121253-32341-1-git-send-email-tabbott@mit.edu>
  <1241121253-32341-2-git-send-email-tabbott@mit.edu>
  <1241121253-32341-3-git-send-email-tabbott@mit.edu>
- <1241121253-32341-4-git-send-email-tabbott@mit.edu>
 X-Scanned-By: MIMEDefang 2.42
 Return-Path: <tabbott@MIT.EDU>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22566
+X-archive-position: 22567
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -77,9 +76,9 @@ X-original-sender: tabbott@MIT.EDU
 Precedence: bulk
 X-list: linux-mips
 
-This patch is preparation for replacing most ".data.init_task" in the
-kernel with macros, so that the section name can later be changed
-without having to touch a lot of the kernel.
+This patch is preparation for replacing most ".data.cacheline_aligned"
+in the kernel with macros, so that the section name can later be
+changed without having to touch a lot of the kernel.
 
 The long-term goal here is to be able to change the kernel's magic
 section names to those that are compatible with -ffunction-sections
@@ -90,36 +89,22 @@ Signed-off-by: Tim Abbott <tabbott@mit.edu>
 Cc: Sam Ravnborg <sam@ravnborg.org>
 ---
  include/asm-generic/vmlinux.lds.h |    4 ++++
- include/linux/init_task.h         |    3 +++
- 2 files changed, 7 insertions(+), 0 deletions(-)
+ 1 files changed, 4 insertions(+), 0 deletions(-)
 
 diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index fa7801b..4b020e8 100644
+index f5ebd2b..fa7801b 100644
 --- a/include/asm-generic/vmlinux.lds.h
 +++ b/include/asm-generic/vmlinux.lds.h
-@@ -135,6 +135,10 @@
- 	. = ALIGN(alignment);						\
- 	*(.data.cacheline_aligned)
+@@ -131,6 +131,10 @@
+ 	. = ALIGN(PAGE_SIZE);						\
+ 	__nosave_end = .;
  
-+#define INIT_TASK_DATA(alignment)					\
++#define CACHELINE_ALIGNED_DATA(alignment)				\
 +	. = ALIGN(alignment);						\
-+	*(.data.init_task)
++	*(.data.cacheline_aligned)
 +
  #define RO_DATA(align)							\
  	. = ALIGN((align));						\
  	.rodata           : AT(ADDR(.rodata) - LOAD_OFFSET) {		\
-diff --git a/include/linux/init_task.h b/include/linux/init_task.h
-index d87247d..e555baa 100644
---- a/include/linux/init_task.h
-+++ b/include/linux/init_task.h
-@@ -184,5 +184,8 @@ extern struct cred init_cred;
- 	LIST_HEAD_INIT(cpu_timers[2]),					\
- }
- 
-+/* Attach to the init_task data structure for proper alignment */
-+#define __init_task_data __attribute__((__section__(".data.init_task")))
-+
- 
- #endif
 -- 
 1.6.2.1

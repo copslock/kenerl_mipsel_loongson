@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Apr 2009 20:57:03 +0100 (BST)
-Received: from BISCAYNE-ONE-STATION.MIT.EDU ([18.7.7.80]:32783 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Apr 2009 20:58:06 +0100 (BST)
+Received: from BISCAYNE-ONE-STATION.MIT.EDU ([18.7.7.80]:33322 "EHLO
 	biscayne-one-station.mit.edu" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20026718AbZD3T4f (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Apr 2009 20:56:35 +0100
+	by ftp.linux-mips.org with ESMTP id S20023414AbZD3T56 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Apr 2009 20:57:58 +0100
 Received: from outgoing.mit.edu (OUTGOING-AUTH.MIT.EDU [18.7.22.103])
-	by biscayne-one-station.mit.edu (8.13.6/8.9.2) with ESMTP id n3UJsYRW017637;
-	Thu, 30 Apr 2009 15:54:35 -0400 (EDT)
+	by biscayne-one-station.mit.edu (8.13.6/8.9.2) with ESMTP id n3UJscZq017705;
+	Thu, 30 Apr 2009 15:54:38 -0400 (EDT)
 Received: from localhost (c-67-186-133-195.hsd1.ma.comcast.net [67.186.133.195])
 	(authenticated bits=0)
         (User authenticated as tabbott@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.13.6/8.12.4) with ESMTP id n3UJsVCi011257;
-	Thu, 30 Apr 2009 15:54:32 -0400 (EDT)
+	by outgoing.mit.edu (8.13.6/8.12.4) with ESMTP id n3UJsZaS011295;
+	Thu, 30 Apr 2009 15:54:35 -0400 (EDT)
 From:	Tim Abbott <tabbott@MIT.EDU>
 To:	Sam Ravnborg <sam@ravnborg.org>
 Cc:	Linux kernel mailing list <linux-kernel@vger.kernel.org>,
@@ -54,23 +54,24 @@ Cc:	Linux kernel mailing list <linux-kernel@vger.kernel.org>,
 	uclinux-dist-devel@blackfin.uclinux.org,
 	user-mode-linux-devel@lists.sourceforge.net,
 	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Tim Abbott <tabbott@mit.edu>, Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH v2 5/6] Add new READ_MOSTLY_DATA(align) linker script macro.
-Date:	Thu, 30 Apr 2009 15:54:12 -0400
-Message-Id: <1241121253-32341-6-git-send-email-tabbott@mit.edu>
+	Tim Abbott <tabbott@mit.edu>
+Subject: [PATCH v2 6/6] Add support for __read_mostly to linux/cache.h
+Date:	Thu, 30 Apr 2009 15:54:13 -0400
+Message-Id: <1241121253-32341-7-git-send-email-tabbott@mit.edu>
 X-Mailer: git-send-email 1.6.2.1
-In-Reply-To: <1241121253-32341-5-git-send-email-tabbott@mit.edu>
+In-Reply-To: <1241121253-32341-6-git-send-email-tabbott@mit.edu>
 References: <1241121253-32341-1-git-send-email-tabbott@mit.edu>
  <1241121253-32341-2-git-send-email-tabbott@mit.edu>
  <1241121253-32341-3-git-send-email-tabbott@mit.edu>
  <1241121253-32341-4-git-send-email-tabbott@mit.edu>
  <1241121253-32341-5-git-send-email-tabbott@mit.edu>
+ <1241121253-32341-6-git-send-email-tabbott@mit.edu>
 X-Scanned-By: MIMEDefang 2.42
 Return-Path: <tabbott@MIT.EDU>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22568
+X-archive-position: 22569
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -78,35 +79,28 @@ X-original-sender: tabbott@MIT.EDU
 Precedence: bulk
 X-list: linux-mips
 
-This patch is preparation for replacing most ".data.read_mostly" in
-the kernel with macros, so that the section name can later be changed
-without having to touch a lot of the kernel.
-
-The long-term goal here is to be able to change the kernel's magic
-section names to those that are compatible with -ffunction-sections
--fdata-sections.  This requires renaming all magic sections with names
-of the form ".data.foo".
-
 Signed-off-by: Tim Abbott <tabbott@mit.edu>
-Cc: Sam Ravnborg <sam@ravnborg.org>
 ---
- include/asm-generic/vmlinux.lds.h |    4 ++++
- 1 files changed, 4 insertions(+), 0 deletions(-)
+ include/linux/cache.h |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
 
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index 4b020e8..a4b4f4a 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -139,6 +139,10 @@
- 	. = ALIGN(alignment);						\
- 	*(.data.init_task)
+diff --git a/include/linux/cache.h b/include/linux/cache.h
+index 97e2488..99d8a6f 100644
+--- a/include/linux/cache.h
++++ b/include/linux/cache.h
+@@ -13,7 +13,13 @@
+ #endif
  
-+#define READ_MOSTLY_DATA(alignment)					\
-+	. = ALIGN(alignment);						\
-+	*(.data.read_mostly)
-+
- #define RO_DATA(align)							\
- 	. = ALIGN((align));						\
- 	.rodata           : AT(ADDR(.rodata) - LOAD_OFFSET) {		\
+ #ifndef __read_mostly
++#ifdef CONFIG_HAVE_READ_MOSTLY_DATA
++#define __read_mostly __attribute__((__section__(".data.read_mostly")))
++#define __READ_MOSTLY .section ".data.read_mostly", "aw"
++#else
+ #define __read_mostly
++#define __READ_MOSTLY
++#endif /* CONFIG_HAVE_READ_MOSTLY_DATA */
+ #endif
+ 
+ #ifndef ____cacheline_aligned
 -- 
 1.6.2.1

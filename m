@@ -1,16 +1,16 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Apr 2009 20:37:30 +0100 (BST)
-Received: from BISCAYNE-ONE-STATION.MIT.EDU ([18.7.7.80]:57401 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Apr 2009 20:38:07 +0100 (BST)
+Received: from BISCAYNE-ONE-STATION.MIT.EDU ([18.7.7.80]:57696 "EHLO
 	biscayne-one-station.mit.edu" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20023930AbZD3ThY (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Apr 2009 20:37:24 +0100
+	by ftp.linux-mips.org with ESMTP id S20023930AbZD3TiB (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Apr 2009 20:38:01 +0100
 Received: from outgoing.mit.edu (OUTGOING-AUTH.MIT.EDU [18.7.22.103])
-	by biscayne-one-station.mit.edu (8.13.6/8.9.2) with ESMTP id n3UJX0AV029756;
-	Thu, 30 Apr 2009 15:33:01 -0400 (EDT)
+	by biscayne-one-station.mit.edu (8.13.6/8.9.2) with ESMTP id n3UJWq51029598;
+	Thu, 30 Apr 2009 15:32:52 -0400 (EDT)
 Received: from localhost (c-67-186-133-195.hsd1.ma.comcast.net [67.186.133.195])
 	(authenticated bits=0)
         (User authenticated as tabbott@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.13.6/8.12.4) with ESMTP id n3UJWwFJ002428;
-	Thu, 30 Apr 2009 15:32:58 -0400 (EDT)
+	by outgoing.mit.edu (8.13.6/8.12.4) with ESMTP id n3UJWa9e002278;
+	Thu, 30 Apr 2009 15:32:37 -0400 (EDT)
 From:	Tim Abbott <tabbott@MIT.EDU>
 To:	Sam Ravnborg <sam@ravnborg.org>
 Cc:	Anders Kaseorg <andersk@mit.edu>, Waseem Daher <wdaher@mit.edu>,
@@ -54,21 +54,17 @@ Cc:	Anders Kaseorg <andersk@mit.edu>, Waseem Daher <wdaher@mit.edu>,
 	uclinux-dist-devel@blackfin.uclinux.org,
 	user-mode-linux-devel@lists.sourceforge.net,
 	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Tim Abbott <tabbott@mit.edu>, Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH 3/6] Add new CACHELINE_ALIGNED_DATA linker script macro.
-Date:	Thu, 30 Apr 2009 15:32:33 -0400
-Message-Id: <1241119956-31453-4-git-send-email-tabbott@mit.edu>
+	Tim Abbott <tabbott@mit.edu>
+Subject: [PATCH 0/6] macros for section name cleanup
+Date:	Thu, 30 Apr 2009 15:32:30 -0400
+Message-Id: <1241119956-31453-1-git-send-email-tabbott@mit.edu>
 X-Mailer: git-send-email 1.6.2.1
-In-Reply-To: <1241119956-31453-3-git-send-email-tabbott@mit.edu>
-References: <1241119956-31453-1-git-send-email-tabbott@mit.edu>
- <1241119956-31453-2-git-send-email-tabbott@mit.edu>
- <1241119956-31453-3-git-send-email-tabbott@mit.edu>
 X-Scanned-By: MIMEDefang 2.42
 Return-Path: <tabbott@MIT.EDU>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22559
+X-archive-position: 22560
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -76,35 +72,51 @@ X-original-sender: tabbott@MIT.EDU
 Precedence: bulk
 X-list: linux-mips
 
-This patch is preparation for replacing most ".data.cacheline_aligned"
-in the kernel with macros, so that the section name can later be
-changed without having to touch a lot of the kernel.
+Here are the architecture-independent macro definitions needed for
+to clean up the kernel's section names.  The overall diffstat from
+this section name cleanup project is:
 
-The long-term goal here is to be able to change the kernel's magic
-section names to those that are compatible with -ffunction-sections
--fdata-sections.  This requires renaming all magic sections with names
-of the form ".data.foo".
+ 96 files changed, 261 insertions(+), 503 deletions(-)
 
-Signed-off-by: Tim Abbott <tabbott@mit.edu>
-Cc: Sam Ravnborg <sam@ravnborg.org>
----
- include/asm-generic/vmlinux.lds.h |    4 ++++
- 1 files changed, 4 insertions(+), 0 deletions(-)
+The decrease results from removing a lot of redundancy in the linker
+scripts.
 
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index f5ebd2b..fa7801b 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -131,6 +131,10 @@
- 	. = ALIGN(PAGE_SIZE);						\
- 	__nosave_end = .;
- 
-+#define CACHELINE_ALIGNED_DATA(alignment)				\
-+	. = ALIGN(alignment);						\
-+	*(.data.cacheline_aligned)
-+
- #define RO_DATA(align)							\
- 	. = ALIGN((align));						\
- 	.rodata           : AT(ADDR(.rodata) - LOAD_OFFSET) {		\
--- 
-1.6.2.1
+The long-term goal here is to add support for building the kernel with
+-ffunction-sections -fdata-sections.  This requires renaming all the
+magic section names in the kernel of the form .text.foo, .data.foo,
+.bss.foo, and .rodata.foo to not have collisions with sections
+generated for code like:
+
+static int nosave = 0; /* -fdata-sections places in .data.nosave */
+static void head(); /* -ffunction-sections places in .text.head */
+
+Sam Ravnborg proposed that rather than just renaming all the sections
+outright, we should start by first getting more control over the
+section names used in the kernel so that we can later rename sections
+without touching too many files.  These patch series implement that
+cleanup.  Later, there will be another patch series to actually rename
+the sections.
+
+I'm hoping we can get just these macro definitions into 2.6.30 so that
+the arch maintainers don't have to grab the macro definitions for
+their trees while reviewing the patches for 2.6.31.
+
+Shortly, I'm going to send one patch series for each of the
+architectures updating those architectures to use these new macros
+(and otherwise cleaning up section names on those architectures).
+
+	-Tim Abbott
+
+Tim Abbott (6):
+  Add new macros for page-aligned data and bss sections.
+  Add new NOSAVE_DATA linker script macro.
+  Add new CACHELINE_ALIGNED_DATA linker script macro.
+  Add new INIT_TASK_DATA() linker script macro.
+  Add new READ_MOSTLY_DATA(align) linker script macro.
+  Add support for __read_mostly to linux/cache.h
+
+ include/asm-generic/vmlinux.lds.h |   27 +++++++++++++++++++++++++++
+ include/linux/cache.h             |    6 ++++++
+ include/linux/init_task.h         |    3 +++
+ include/linux/linkage.h           |    9 +++++++++
+ 4 files changed, 45 insertions(+), 0 deletions(-)

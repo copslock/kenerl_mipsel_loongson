@@ -1,66 +1,106 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Apr 2009 17:00:27 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:19372 "EHLO
-	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20026594AbZD3QAV (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Apr 2009 17:00:21 +0100
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B49f9caf60000>; Thu, 30 Apr 2009 11:59:50 -0400
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 30 Apr 2009 08:54:10 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 30 Apr 2009 08:54:10 -0700
-Message-ID: <49F9C9A2.2000602@caviumnetworks.com>
-Date:	Thu, 30 Apr 2009 08:54:10 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
-MIME-Version: 1.0
-To:	Florian Fainelli <florian@openwrt.org>,
-	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] flash_setup should only be built when CONFIG_MTD is enabled
-References: <200904301748.52718.florian@openwrt.org>
-In-Reply-To: <200904301748.52718.florian@openwrt.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 30 Apr 2009 15:54:10.0643 (UTC) FILETIME=[E6DA5A30:01C9C9AB]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Apr 2009 20:35:41 +0100 (BST)
+Received: from BISCAYNE-ONE-STATION.MIT.EDU ([18.7.7.80]:56451 "EHLO
+	biscayne-one-station.mit.edu" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20026686AbZD3Tfc (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Apr 2009 20:35:32 +0100
+Received: from outgoing.mit.edu (OUTGOING-AUTH.MIT.EDU [18.7.22.103])
+	by biscayne-one-station.mit.edu (8.13.6/8.9.2) with ESMTP id n3UJX98I029892;
+	Thu, 30 Apr 2009 15:33:09 -0400 (EDT)
+Received: from localhost (c-67-186-133-195.hsd1.ma.comcast.net [67.186.133.195])
+	(authenticated bits=0)
+        (User authenticated as tabbott@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.13.6/8.12.4) with ESMTP id n3UJX6wn002515;
+	Thu, 30 Apr 2009 15:33:06 -0400 (EDT)
+From:	Tim Abbott <tabbott@MIT.EDU>
+To:	Sam Ravnborg <sam@ravnborg.org>
+Cc:	Anders Kaseorg <andersk@mit.edu>, Waseem Daher <wdaher@mit.edu>,
+	Denys Vlasenko <vda.linux@googlemail.com>,
+	Jeff Arnold <jbarnold@mit.edu>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	Bryan Wu <cooloney@kernel.org>,
+	Chris Zankel <chris@zankel.net>,
+	Cyrill Gorcunov <gorcunov@openvz.org>,
+	David Howells <dhowells@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>, dev-etrax@axis.com,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Greg Ungerer <gerg@uclinux.org>,
+	Haavard Skinnemoen <hskinnemoen@atmel.com>,
+	Heiko Carstens <heiko.carstens@de.ibm.com>,
+	Helge Deller <deller@gmx.de>,
+	Hirokazu Takata <takata@linux-m32r.org>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+	Jeff Dike <jdike@addtoit.com>,
+	Jesper Nilsson <jesper.nilsson@axis.com>,
+	Kyle McMartin <kyle@mcmartin.ca>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	linux-alpha@vger.kernel.org, linux-am33-list@redhat.com,
+	linux-arm-kernel@lists.arm.linux.org.uk,
+	linux-ia64@vger.kernel.org, linux-m32r@ml.linux-m32r.org,
+	linux-m68k@vger.kernel.org, linux-mips@linux-mips.org,
+	linux-parisc@vger.kernel.org, linuxppc-dev@ozlabs.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	Martin Schwidefsky <schwidefsky@de.ibm.com>,
+	Michal Simek <monstr@monstr.eu>,
+	microblaze-uclinux@itee.uq.edu.au,
+	Mikael Starvik <starvik@axis.com>,
+	Paul Mackerras <paulus@samba.org>,
+	Paul Mundt <lethal@linux-sh.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Richard Henderson <rth@twiddle.net>,
+	Roman Zippel <zippel@linux-m68k.org>,
+	Russell King <rmk+kernel@arm.linux.org.uk>,
+	sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Tony Luck <tony.luck@intel.com>,
+	uclinux-dist-devel@blackfin.uclinux.org,
+	user-mode-linux-devel@lists.sourceforge.net,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Tim Abbott <tabbott@mit.edu>
+Subject: [PATCH 6/6] Add support for __read_mostly to linux/cache.h
+Date:	Thu, 30 Apr 2009 15:32:36 -0400
+Message-Id: <1241119956-31453-7-git-send-email-tabbott@mit.edu>
+X-Mailer: git-send-email 1.6.2.1
+In-Reply-To: <1241119956-31453-6-git-send-email-tabbott@mit.edu>
+References: <1241119956-31453-1-git-send-email-tabbott@mit.edu>
+ <1241119956-31453-2-git-send-email-tabbott@mit.edu>
+ <1241119956-31453-3-git-send-email-tabbott@mit.edu>
+ <1241119956-31453-4-git-send-email-tabbott@mit.edu>
+ <1241119956-31453-5-git-send-email-tabbott@mit.edu>
+ <1241119956-31453-6-git-send-email-tabbott@mit.edu>
+X-Scanned-By: MIMEDefang 2.42
+Return-Path: <tabbott@MIT.EDU>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22555
+X-archive-position: 22556
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: tabbott@MIT.EDU
 Precedence: bulk
 X-list: linux-mips
 
-Florian Fainelli wrote:
+Signed-off-by: Tim Abbott <tabbott@mit.edu>
+---
+ include/linux/cache.h |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
 
-> This patch makes flash_setup be compiled only when CONFIG_MTD
-> which solves issue, the MTD driver then fails to register but this is
-> less critical.
-> 
-> CC: David Daney <ddaney@caviumnetworks.com>
-> Signed-off-by: Florian Fainelli <florian@openwrt.org>
-
-Acked-by: David Daney <ddaney@caviumnetworks.com>
-
-> ---
-> diff --git a/arch/mips/cavium-octeon/Makefile b/arch/mips/cavium-octeon/Makefile
-> index d6903c3..32bdc81 100644
-> --- a/arch/mips/cavium-octeon/Makefile
-> +++ b/arch/mips/cavium-octeon/Makefile
-> @@ -10,9 +10,10 @@
->  #
->  
->  obj-y := setup.o serial.o octeon-irq.o csrc-octeon.o
-> -obj-y += dma-octeon.o flash_setup.o
-> +obj-y += dma-octeon.o
->  obj-y += octeon-memcpy.o
->  
->  obj-$(CONFIG_SMP)                     += smp.o
-> +obj-$(CONFIG_MTD)		+= flash_setup.o
->  
->  EXTRA_CFLAGS += -Werror
-> 
+diff --git a/include/linux/cache.h b/include/linux/cache.h
+index 97e2488..99d8a6f 100644
+--- a/include/linux/cache.h
++++ b/include/linux/cache.h
+@@ -13,7 +13,13 @@
+ #endif
+ 
+ #ifndef __read_mostly
++#ifdef CONFIG_HAVE_READ_MOSTLY_DATA
++#define __read_mostly __attribute__((__section__(".data.read_mostly")))
++#define __READ_MOSTLY .section ".data.read_mostly", "aw"
++#else
+ #define __read_mostly
++#define __READ_MOSTLY
++#endif /* CONFIG_HAVE_READ_MOSTLY_DATA */
+ #endif
+ 
+ #ifndef ____cacheline_aligned
+-- 
+1.6.2.1

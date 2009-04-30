@@ -1,135 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Apr 2009 20:40:29 +0100 (BST)
-Received: from BISCAYNE-ONE-STATION.MIT.EDU ([18.7.7.80]:58765 "EHLO
-	biscayne-one-station.mit.edu" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20023930AbZD3TkX (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Apr 2009 20:40:23 +0100
-Received: from outgoing.mit.edu (OUTGOING-AUTH.MIT.EDU [18.7.22.103])
-	by biscayne-one-station.mit.edu (8.13.6/8.9.2) with ESMTP id n3UJWtxc029674;
-	Thu, 30 Apr 2009 15:32:55 -0400 (EDT)
-Received: from localhost (c-67-186-133-195.hsd1.ma.comcast.net [67.186.133.195])
-	(authenticated bits=0)
-        (User authenticated as tabbott@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.13.6/8.12.4) with ESMTP id n3UJWqkJ002383;
-	Thu, 30 Apr 2009 15:32:52 -0400 (EDT)
-From:	Tim Abbott <tabbott@MIT.EDU>
-To:	Sam Ravnborg <sam@ravnborg.org>
-Cc:	Anders Kaseorg <andersk@mit.edu>, Waseem Daher <wdaher@mit.edu>,
-	Denys Vlasenko <vda.linux@googlemail.com>,
-	Jeff Arnold <jbarnold@mit.edu>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Bryan Wu <cooloney@kernel.org>,
-	Chris Zankel <chris@zankel.net>,
-	Cyrill Gorcunov <gorcunov@openvz.org>,
-	David Howells <dhowells@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>, dev-etrax@axis.com,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Greg Ungerer <gerg@uclinux.org>,
-	Haavard Skinnemoen <hskinnemoen@atmel.com>,
-	Heiko Carstens <heiko.carstens@de.ibm.com>,
-	Helge Deller <deller@gmx.de>,
-	Hirokazu Takata <takata@linux-m32r.org>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-	Jeff Dike <jdike@addtoit.com>,
-	Jesper Nilsson <jesper.nilsson@axis.com>,
-	Kyle McMartin <kyle@mcmartin.ca>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-alpha@vger.kernel.org, linux-am33-list@redhat.com,
-	linux-arm-kernel@lists.arm.linux.org.uk,
-	linux-ia64@vger.kernel.org, linux-m32r@ml.linux-m32r.org,
-	linux-m68k@vger.kernel.org, linux-mips@linux-mips.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@ozlabs.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	Martin Schwidefsky <schwidefsky@de.ibm.com>,
-	Michal Simek <monstr@monstr.eu>,
-	microblaze-uclinux@itee.uq.edu.au,
-	Mikael Starvik <starvik@axis.com>,
-	Paul Mackerras <paulus@samba.org>,
-	Paul Mundt <lethal@linux-sh.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Richard Henderson <rth@twiddle.net>,
-	Roman Zippel <zippel@linux-m68k.org>,
-	Russell King <rmk+kernel@arm.linux.org.uk>,
-	sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Tony Luck <tony.luck@intel.com>,
-	uclinux-dist-devel@blackfin.uclinux.org,
-	user-mode-linux-devel@lists.sourceforge.net,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Tim Abbott <tabbott@mit.edu>, Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH 1/6] Add new macros for page-aligned data and bss sections.
-Date:	Thu, 30 Apr 2009 15:32:31 -0400
-Message-Id: <1241119956-31453-2-git-send-email-tabbott@mit.edu>
-X-Mailer: git-send-email 1.6.2.1
-In-Reply-To: <1241119956-31453-1-git-send-email-tabbott@mit.edu>
-References: <1241119956-31453-1-git-send-email-tabbott@mit.edu>
-X-Scanned-By: MIMEDefang 2.42
-Return-Path: <tabbott@MIT.EDU>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Apr 2009 20:42:04 +0100 (BST)
+Received: from ey-out-1920.google.com ([74.125.78.148]:24809 "EHLO
+	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20026696AbZD3Tl6 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Apr 2009 20:41:58 +0100
+Received: by ey-out-1920.google.com with SMTP id 13so462546eye.54
+        for <linux-mips@linux-mips.org>; Thu, 30 Apr 2009 12:41:57 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:from:to:subject:date
+         :user-agent:mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id;
+        bh=iD6teZbyfUdUd+TpH9eaYhNaLy8cHK2PSWRLX4lh0cM=;
+        b=gsqbkAk1Mehr52hXgTAPbmEo1mxX9afdbxDrS+jqGuACvamuHGXsBa5gnFyZFZeAcx
+         UxOhv23HLNfB6l6+s8+LwsYpB57i3pFLH4lGQx7eSTR6yjZ3GnAwZ8mukQyGLoVP/9fw
+         n2s263XCrDF8Bkk0DgacZgt4uoYs7xq5etdNc=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:from:to:subject:date:user-agent:mime-version:content-type
+         :content-transfer-encoding:content-disposition:message-id;
+        b=ls5prXQvK+rg34Drqq71KgU259YYCoZvqoQMT+yx8S7QSeQpiPe3WvlWOr1QuZpT9o
+         AYXi1+shA1A9VeQatVODakx8ExeC+nGQvFhUfhXZi53DQHu5o2muP9k4/izfu/6/ls5X
+         KqOt4JB89kItQSMLVu6ocbKgKM/YLzd+mzF4c=
+Received: by 10.210.33.3 with SMTP id g3mr2356703ebg.33.1241120516000;
+        Thu, 30 Apr 2009 12:41:56 -0700 (PDT)
+Received: from florian (207.130.195-77.rev.gaoland.net [77.195.130.207])
+        by mx.google.com with ESMTPS id 28sm4626748eye.46.2009.04.30.12.41.55
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 30 Apr 2009 12:41:55 -0700 (PDT)
+From:	Florian Fainelli <florian@openwrt.org>
+To:	linux-mips@linux-mips.org
+Subject: initramfs breakage with 64-bits kernels?
+Date:	Thu, 30 Apr 2009 21:41:52 +0200
+User-Agent: KMail/1.9.9
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200904302141.53025.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22561
+X-archive-position: 22562
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tabbott@MIT.EDU
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch is preparation for replacing most uses of
-".bss.page_aligned" and ".data.page_aligned" in the kernel with
-macros, so that the section name can later be changed without having
-to touch a lot of the kernel.
+Hi all,
 
-The long-term goal here is to be able to change the kernel's magic
-section names to those that are compatible with -ffunction-sections
--fdata-sections.  This requires renaming all magic sections with names
-of the form ".data.foo".
+I have been trying to get a 2.6.29 64-bits kernel for Cavium Octeon to work 
+with a 32-bits userland in an initramfs. While booting, the kernel does not 
+find the initramfs due to the check against initrd_start in populate_rootfs 
+(init/initramfs.c) failing.
 
-Signed-off-by: Tim Abbott <tabbott@mit.edu>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Acked-by: David Howells <dhowells@redhat.com>
----
- include/asm-generic/vmlinux.lds.h |    8 ++++++++
- include/linux/linkage.h           |    9 +++++++++
- 2 files changed, 17 insertions(+), 0 deletions(-)
-
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index 89853bc..3d88c87 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -116,6 +116,14 @@
- 	FTRACE_EVENTS()							\
- 	TRACE_SYSCALLS()
- 
-+#define PAGE_ALIGNED_DATA						\
-+	. = ALIGN(PAGE_SIZE);						\
-+	*(.data.page_aligned)
-+
-+#define PAGE_ALIGNED_BSS						\
-+	. = ALIGN(PAGE_SIZE);						\
-+	*(.bss.page_aligned)
-+
- #define RO_DATA(align)							\
- 	. = ALIGN((align));						\
- 	.rodata           : AT(ADDR(.rodata) - LOAD_OFFSET) {		\
-diff --git a/include/linux/linkage.h b/include/linux/linkage.h
-index fee9e59..af051fc 100644
---- a/include/linux/linkage.h
-+++ b/include/linux/linkage.h
-@@ -22,6 +22,15 @@
- #define __page_aligned_bss	__section(.bss.page_aligned) __aligned(PAGE_SIZE)
- 
- /*
-+ * For assembly routines.
-+ *
-+ * Note when using these that you must specify the appropriate
-+ * alignment directives yourself
-+ */
-+#define __PAGE_ALIGNED_DATA	.section ".data.page_aligned", "aw", @progbits
-+#define __PAGE_ALIGNED_BSS	.section ".bss.page_aligned", "aw", @nobits
-+
-+/*
-  * This is used by architectures to keep arguments on the stack
-  * untouched by the compiler by keeping them live until the end.
-  * The argument stack may be owned by the assembly-language
+Do you have any idea about what could be wrong here ? Is this a regression ?
 -- 
-1.6.2.1
+Best regards, Florian Fainelli
+Email : florian@openwrt.org
+http://openwrt.org
+-------------------------------

@@ -1,72 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 May 2009 01:00:03 +0100 (BST)
-Received: from BISCAYNE-ONE-STATION.MIT.EDU ([18.7.7.80]:61118 "EHLO
-	biscayne-one-station.mit.edu" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S28573947AbZD3X7g (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 1 May 2009 00:59:36 +0100
-Received: from outgoing.mit.edu (OUTGOING-AUTH.MIT.EDU [18.7.22.103])
-	by biscayne-one-station.mit.edu (8.13.6/8.9.2) with ESMTP id n3UNrV8C016871;
-	Thu, 30 Apr 2009 19:53:32 -0400 (EDT)
-Received: from localhost (c-67-186-133-195.hsd1.ma.comcast.net [67.186.133.195])
-	(authenticated bits=0)
-        (User authenticated as tabbott@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.13.6/8.12.4) with ESMTP id n3UNrUUe011393;
-	Thu, 30 Apr 2009 19:53:30 -0400 (EDT)
-From:	Tim Abbott <tabbott@MIT.EDU>
-To:	Sam Ravnborg <sam@ravnborg.org>
-Cc:	Linux kernel mailing list <linux-kernel@vger.kernel.org>,
-	Anders Kaseorg <andersk@mit.edu>,
-	Waseem Daher <wdaher@mit.edu>,
-	Denys Vlasenko <vda.linux@googlemail.com>,
-	Jeff Arnold <jbarnold@mit.edu>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	Tim Abbott <tabbott@mit.edu>
-Subject: [PATCH 0/4] section name cleanup for mips
-Date:	Thu, 30 Apr 2009 19:53:26 -0400
-Message-Id: <1241135610-9012-1-git-send-email-tabbott@mit.edu>
-X-Mailer: git-send-email 1.6.2.1
-X-Scanned-By: MIMEDefang 2.42
-Return-Path: <tabbott@MIT.EDU>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 May 2009 08:57:42 +0100 (BST)
+Received: from hall.aurel32.net ([88.191.82.174]:47254 "EHLO hall.aurel32.net"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S20027027AbZEAH5g (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 1 May 2009 08:57:36 +0100
+Received: from aurel32 by hall.aurel32.net with local (Exim 4.69)
+	(envelope-from <aurelien@aurel32.net>)
+	id 1Lzncg-0005bC-M2; Fri, 01 May 2009 09:57:30 +0200
+Date:	Fri, 1 May 2009 09:57:30 +0200
+From:	Aurelien Jarno <aurelien@aurel32.net>
+To:	luk@debian.org, linux-mips@linux-mips.org
+Subject: Re: kernel for a Broadcom Swarm board
+Message-ID: <20090501075730.GC16244@hall.aurel32.net>
+References: <49FA27FA.3070408@debian.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+In-Reply-To: <49FA27FA.3070408@debian.org>
+X-Mailer: Mutt 1.5.18 (2008-05-17)
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22581
+X-archive-position: 22582
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tabbott@MIT.EDU
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 X-list: linux-mips
 
-This patch series cleans up the section names on the mips
-architecture.  It requires the architecture-independent macro
-definitions from this patch series:
+On Fri, May 01, 2009 at 12:36:42AM +0200, Luk Claes wrote:
+> Hi
+>
+> > | [    0.000000] Broadcom SiByte BCM1250 B2 @ 800 MHz (SB1 rev 2)
+> > | [    0.000000] Board type: SiByte BCM91250A (SWARM)
+> > | [    0.000000] This kernel optimized for board runs with CFE
+> > | [    0.000000] Determined physical RAM map:
+> > | [    0.000000]  memory: 000000000fe47e00 @ 0000000000000000 (usable)
+> > | [    0.000000] Initrd not found or empty - disabling initrd
+> > | [    0.000000] Zone PFN ranges:
+> > | [    0.000000]   DMA32    0x00000000 -> 0x00100000
+> > | [    0.000000]   Normal   0x00100000 -> 0x00100000
+> > | [    0.000000] Movable zone start PFN for each node
+> > | [    0.000000] early_node_map[1] active PFN ranges
+> > | [    0.000000]     0: 0x00000000 -> 0x0000fe47
+> > | [    0.000000] Detected 1 available secondary CPU(s)
+> > | [    0.000000] Built 1 zonelists in Zone order, mobility grouping  
+> on.  Total
+> > pages: 64205
+> > | [    0.000000] Kernel command line: root=/dev/hdc1 console=duart0
+> > | [    0.000000] Primary instruction cache 32kB, VIVT, 4-way, linesize 
+> 32 bytes.
+> > | [    0.000000] Primary data cache 32kB, 4-way, PIPT, no aliases,  
+> linesize 32
+> > bytes
+> > | [    0.000000] PID hash table entries: 1024 (order: 10, 8192 bytes)
+> >
+> > And then it hangs...
+>
+> The zeros look like there are no timing interrupts happening. It's a  
+> pity we don't have hardware to test which kernel version introduced the  
+> bug (for instance with git-bisect and reboots).
+>
 
-<http://www.spinics.net/lists/mips/msg33499.html>
+I think the zeros are normal here, on other machines, the values
+actually start to change just after this line.
 
-The long-term goal here is to add support for building the kernel with
--ffunction-sections -fdata-sections.  This requires renaming all the
-magic section names in the kernel of the form .text.foo, .data.foo,
-.bss.foo, and .rodata.foo to not have collisions with sections
-generated for code like:
-
-static int nosave = 0; /* -fdata-sections places in .data.nosave */
-static void head(); /* -ffunction-sections places in .text.head */
-
-Note that these patches have not been boot-tested (aside from testing
-the analogous changes on x86), since I don't have access to the
-appropriate hardware.
-
-	-Tim Abbott
-
-
-Tim Abbott (4):
-  mips: use NOSAVE_DATA macro for .data.nosave section.
-  mips: use new macro for .data.cacheline_aligned section.
-  mips: use new macros for .data.init_task.
-  mips: use .text, not .text.start, for lasat boot loader.
-
- arch/mips/kernel/init_task.c           |    5 ++---
- arch/mips/kernel/vmlinux.lds.S         |   19 +++----------------
- arch/mips/lasat/image/head.S           |    2 +-
- arch/mips/lasat/image/romscript.normal |    2 +-
- 4 files changed, 7 insertions(+), 21 deletions(-)
+-- 
+Aurelien Jarno	                        GPG: 1024D/F1BCDB73
+aurelien@aurel32.net                 http://www.aurel32.net

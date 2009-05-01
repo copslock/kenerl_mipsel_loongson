@@ -1,109 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 May 2009 10:42:10 +0100 (BST)
-Received: from pfepa.post.tele.dk ([195.41.46.235]:39850 "EHLO
-	pfepa.post.tele.dk" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20027118AbZEAJmE (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 1 May 2009 10:42:04 +0100
-Received: from ravnborg.org (x1-6-00-1e-2a-84-ae-3e.k225.webspeed.dk [80.163.61.94])
-	by pfepa.post.tele.dk (Postfix) with ESMTP id CF77FA50033;
-	Fri,  1 May 2009 11:41:56 +0200 (CEST)
-Received: by ravnborg.org (Postfix, from userid 500)
-	id 3993E580D0; Fri,  1 May 2009 11:44:07 +0200 (CEST)
-Date:	Fri, 1 May 2009 11:44:07 +0200
-From:	Sam Ravnborg <sam@ravnborg.org>
-To:	Tim Abbott <tabbott@MIT.EDU>,
-	Christoph Lameter <cl@linux-foundation.org>
-Cc:	Anders Kaseorg <andersk@mit.edu>, Waseem Daher <wdaher@mit.edu>,
-	Denys Vlasenko <vda.linux@googlemail.com>,
-	Jeff Arnold <jbarnold@mit.edu>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Bryan Wu <cooloney@kernel.org>,
-	Chris Zankel <chris@zankel.net>,
-	Cyrill Gorcunov <gorcunov@openvz.org>,
-	David Howells <dhowells@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>, dev-etrax@axis.com,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Greg Ungerer <gerg@uclinux.org>,
-	Haavard Skinnemoen <hskinnemoen@atmel.com>,
-	Heiko Carstens <heiko.carstens@de.ibm.com>,
-	Helge Deller <deller@gmx.de>,
-	Hirokazu Takata <takata@linux-m32r.org>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-	Jeff Dike <jdike@addtoit.com>,
-	Jesper Nilsson <jesper.nilsson@axis.com>,
-	Kyle McMartin <kyle@mcmartin.ca>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-alpha@vger.kernel.org, linux-am33-list@redhat.com,
-	linux-arm-kernel@lists.arm.linux.org.uk,
-	linux-ia64@vger.kernel.org, linux-m32r@ml.linux-m32r.org,
-	linux-m68k@vger.kernel.org, linux-mips@linux-mips.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@ozlabs.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	Martin Schwidefsky <schwidefsky@de.ibm.com>,
-	Michal Simek <monstr@monstr.eu>,
-	microblaze-uclinux@itee.uq.edu.au,
-	Mikael Starvik <starvik@axis.com>,
-	Paul Mackerras <paulus@samba.org>,
-	Paul Mundt <lethal@linux-sh.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Richard Henderson <rth@twiddle.net>,
-	Roman Zippel <zippel@linux-m68k.org>,
-	Russell King <rmk+kernel@arm.linux.org.uk>,
-	sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Tony Luck <tony.luck@intel.com>,
-	uclinux-dist-devel@blackfin.uclinux.org,
-	user-mode-linux-devel@lists.sourceforge.net,
-	Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: Re: [PATCH 6/6] Add support for __read_mostly to linux/cache.h
-Message-ID: <20090501094407.GD18326@uranus.ravnborg.org>
-References: <1241119956-31453-1-git-send-email-tabbott@mit.edu> <1241119956-31453-2-git-send-email-tabbott@mit.edu> <1241119956-31453-3-git-send-email-tabbott@mit.edu> <1241119956-31453-4-git-send-email-tabbott@mit.edu> <1241119956-31453-5-git-send-email-tabbott@mit.edu> <1241119956-31453-6-git-send-email-tabbott@mit.edu> <1241119956-31453-7-git-send-email-tabbott@mit.edu>
-Mime-Version: 1.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 May 2009 14:47:35 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:45688 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S20027498AbZEANrc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 1 May 2009 14:47:32 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n41DlRkI021663;
+	Fri, 1 May 2009 15:47:29 +0200
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n41DlLfa021660;
+	Fri, 1 May 2009 15:47:21 +0200
+Date:	Fri, 1 May 2009 15:47:21 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Florian Fainelli <florian@openwrt.org>
+Cc:	linux-mips@linux-mips.org, David Daney <ddaney@caviumnetworks.com>
+Subject: Re: [PATCH] flash_setup should only be built when CONFIG_MTD is
+	enabled
+Message-ID: <20090501134720.GA15672@linux-mips.org>
+References: <200904301748.52718.florian@openwrt.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1241119956-31453-7-git-send-email-tabbott@mit.edu>
-User-Agent: Mutt/1.4.2.1i
-Return-Path: <sam@ravnborg.org>
+In-Reply-To: <200904301748.52718.florian@openwrt.org>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22586
+X-archive-position: 22587
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sam@ravnborg.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Apr 30, 2009 at 03:32:36PM -0400, Tim Abbott wrote:
-> Signed-off-by: Tim Abbott <tabbott@mit.edu>
-> ---
->  include/linux/cache.h |    6 ++++++
->  1 files changed, 6 insertions(+), 0 deletions(-)
+On Thu, Apr 30, 2009 at 05:48:51PM +0200, Florian Fainelli wrote:
+
+> Building flash_setup while CONFIG_MTD is not enabled does work, but
+> results in the following oops while booting:
 > 
-> diff --git a/include/linux/cache.h b/include/linux/cache.h
-> index 97e2488..99d8a6f 100644
-> --- a/include/linux/cache.h
-> +++ b/include/linux/cache.h
-> @@ -13,7 +13,13 @@
->  #endif
->  
->  #ifndef __read_mostly
-> +#ifdef CONFIG_HAVE_READ_MOSTLY_DATA
-> +#define __read_mostly __attribute__((__section__(".data.read_mostly")))
-> +#define __READ_MOSTLY .section ".data.read_mostly", "aw"
-> +#else
->  #define __read_mostly
-> +#define __READ_MOSTLY
-> +#endif /* CONFIG_HAVE_READ_MOSTLY_DATA */
->  #endif
+> Bootbus flash: Setting flash for 32MB flash at 0x1dc00000
+> Kernel bug detected[#1]:
+> Cpu 0
+> $ 0   : 0000000000000000 0000000000000010 000000000000003d 0000000000000002
+> $ 4   : 0000000000000001 0000000000000000 ffffffffffffffff 0000000000000d52
+> $ 8   : 0000000000000d52 000000000000003e 000000000000000a 0000000000000d17
+> $12   : 0000000000000031 ffffffff81105e2c 00000000f34c39b5 0000000017da5c01
+> $16   : ffffffff813ab588 ffffffff8138b514 0000000000000001 ffffffff814d2390
+> $20   : 0000000000000010 0000000000000010 0000000000000000 0000000000000000
+> $24   : 000000000931a549 ffffffff8110e68c
+> $28   : a800000007828000 a80000000782bf00 0000000000000000 ffffffff8138b594
+> Hi    : 0000000000000191
+> Lo    : 36978d4fdf254137
+> epc   : ffffffff8138b594 0xffffffff8138b594
+>     Not tainted
+> ra    : ffffffff8138b594 0xffffffff8138b594
+> Status: 10008ce3    KX SX UX KERNEL EXL IE
+> Cause : 00800024
+> PrId  : 000d0601 (Cavium Octeon)
+> Modules linked in:
+> Process swapper (pid: 1, threadinfo=a800000007828000, task=a800000007825540, tls=0000000000000000)
+> Stack : ffffffff813ab580 ffffffff8110d918 0000000007885780 ffffffff81385080
+>         ffffffff81385080 ffffffff8116ca10 3135310000000000 0000000000000000
+>         0000000000000098 ffffffff81360000 ffffffff81350000 ffffffff813ab588
+>         ffffffff813ab5d0 ffffffff81350000 ffffffff814d2390 ffffffff813862e8
+>         000000000000ffff 0000000000000000 0000000000000000 0000000000000000
+>         0000000000000000 0000000000000000 0000000000000000 0000000000000000
+>         0000000000000000 ffffffff81114f38 0000000000000000 0000000000000000
+>         0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> Call Trace:[<ffffffff8110d918>] 0xffffffff8110d918
+> [<ffffffff8116ca10>] 0xffffffff8116ca10
+> [<ffffffff813862e8>] 0xffffffff813862e8
+> [<ffffffff81114f38>] 0xffffffff81114f38
+> 
+> This patch makes flash_setup be compiled only when CONFIG_MTD
+> which solves issue, the MTD driver then fails to register but this is
+> less critical.
 
-Are there any specific reason why we do not support read_mostly on all
-architectures?
+I think your code blows up if !CONFIG_MTD_COMPLEX_MAPPINGS and
+!CONFIG_MTD_MAP_BANK_WIDTH_1 in which case simple_map_init is defined as:
 
-read_mostly is about grouping rarely written data together
-so what is needed is to introduce this section in the remaining
-archtectures.
+#define simple_map_init(map) BUG_ON(!map_bankwidth_supported((map)->bankwidth))
 
-Christoph - git log says you did the inital implmentation.
-Do you agree?
+bankwidth is 1, so:
 
-	Sam
+static inline int map_bankwidth_supported(int w)
+{
+        switch (w) {
+#ifdef CONFIG_MTD_MAP_BANK_WIDTH_1
+        case 1:
+#endif
+                return 1;
+[...]
+        default:
+                return 0;
+        }
+}
+
+  Ralf

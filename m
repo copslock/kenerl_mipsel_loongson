@@ -1,14 +1,14 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 May 2009 10:16:52 +0100 (BST)
-Received: from pfepa.post.tele.dk ([195.41.46.235]:55489 "EHLO
-	pfepa.post.tele.dk" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20027071AbZEAJQp (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 1 May 2009 10:16:45 +0100
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 01 May 2009 10:19:17 +0100 (BST)
+Received: from pfepb.post.tele.dk ([195.41.46.236]:34575 "EHLO
+	pfepb.post.tele.dk" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20025248AbZEAJTK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 1 May 2009 10:19:10 +0100
 Received: from ravnborg.org (x1-6-00-1e-2a-84-ae-3e.k225.webspeed.dk [80.163.61.94])
-	by pfepa.post.tele.dk (Postfix) with ESMTP id 3888FA50039;
-	Fri,  1 May 2009 11:16:37 +0200 (CEST)
+	by pfepb.post.tele.dk (Postfix) with ESMTP id 12570F8404B;
+	Fri,  1 May 2009 11:19:03 +0200 (CEST)
 Received: by ravnborg.org (Postfix, from userid 500)
-	id 91906580D0; Fri,  1 May 2009 11:18:48 +0200 (CEST)
-Date:	Fri, 1 May 2009 11:18:48 +0200
+	id 804EA580D0; Fri,  1 May 2009 11:21:14 +0200 (CEST)
+Date:	Fri, 1 May 2009 11:21:14 +0200
 From:	Sam Ravnborg <sam@ravnborg.org>
 To:	Tim Abbott <tabbott@MIT.EDU>
 Cc:	Linux kernel mailing list <linux-kernel@vger.kernel.org>,
@@ -52,19 +52,19 @@ Cc:	Linux kernel mailing list <linux-kernel@vger.kernel.org>,
 	uclinux-dist-devel@blackfin.uclinux.org,
 	user-mode-linux-devel@lists.sourceforge.net,
 	Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: Re: [PATCH v2 1/6] Add new macros for page-aligned data and bss sections.
-Message-ID: <20090501091848.GB18326@uranus.ravnborg.org>
-References: <1241121253-32341-1-git-send-email-tabbott@mit.edu> <1241121253-32341-2-git-send-email-tabbott@mit.edu>
+Subject: Re: [PATCH v2 2/6] Add new NOSAVE_DATA linker script macro.
+Message-ID: <20090501092114.GC18326@uranus.ravnborg.org>
+References: <1241121253-32341-1-git-send-email-tabbott@mit.edu> <1241121253-32341-2-git-send-email-tabbott@mit.edu> <1241121253-32341-3-git-send-email-tabbott@mit.edu>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1241121253-32341-2-git-send-email-tabbott@mit.edu>
+In-Reply-To: <1241121253-32341-3-git-send-email-tabbott@mit.edu>
 User-Agent: Mutt/1.4.2.1i
 Return-Path: <sam@ravnborg.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22584
+X-archive-position: 22585
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,11 +72,10 @@ X-original-sender: sam@ravnborg.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Apr 30, 2009 at 03:54:08PM -0400, Tim Abbott wrote:
-> This patch is preparation for replacing most uses of
-> ".bss.page_aligned" and ".data.page_aligned" in the kernel with
-> macros, so that the section name can later be changed without having
-> to touch a lot of the kernel.
+On Thu, Apr 30, 2009 at 03:54:09PM -0400, Tim Abbott wrote:
+> This patch is preparation for replacing most ".data.nosave" in the
+> kernel with macros, so that the section name can later be changed
+> without having to touch a lot of the kernel.
 > 
 > The long-term goal here is to be able to change the kernel's magic
 > section names to those that are compatible with -ffunction-sections
@@ -85,55 +84,32 @@ On Thu, Apr 30, 2009 at 03:54:08PM -0400, Tim Abbott wrote:
 > 
 > Signed-off-by: Tim Abbott <tabbott@mit.edu>
 > Cc: Sam Ravnborg <sam@ravnborg.org>
-> Acked-by: David Howells <dhowells@redhat.com>
 > ---
->  include/asm-generic/vmlinux.lds.h |    8 ++++++++
->  include/linux/linkage.h           |    9 +++++++++
->  2 files changed, 17 insertions(+), 0 deletions(-)
+>  include/asm-generic/vmlinux.lds.h |    7 +++++++
+>  1 files changed, 7 insertions(+), 0 deletions(-)
 > 
 > diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-> index 89853bc..3d88c87 100644
+> index 3d88c87..f5ebd2b 100644
 > --- a/include/asm-generic/vmlinux.lds.h
 > +++ b/include/asm-generic/vmlinux.lds.h
-> @@ -116,6 +116,14 @@
->  	FTRACE_EVENTS()							\
->  	TRACE_SYSCALLS()
+> @@ -124,6 +124,13 @@
+>  	. = ALIGN(PAGE_SIZE);						\
+>  	*(.bss.page_aligned)
 >  
-> +#define PAGE_ALIGNED_DATA						\
+> +#define NOSAVE_DATA							\
 > +	. = ALIGN(PAGE_SIZE);						\
-> +	*(.data.page_aligned)
-> +
-> +#define PAGE_ALIGNED_BSS						\
+> +	__nosave_begin = .;						\
+> +	*(.data.nosave)							\
 > +	. = ALIGN(PAGE_SIZE);						\
-> +	*(.bss.page_aligned)
+> +	__nosave_end = .;
 > +
->  #define RO_DATA(align)							\
->  	. = ALIGN((align));						\
->  	.rodata           : AT(ADDR(.rodata) - LOAD_OFFSET) {		\
-> diff --git a/include/linux/linkage.h b/include/linux/linkage.h
-> index fee9e59..af051fc 100644
-> --- a/include/linux/linkage.h
-> +++ b/include/linux/linkage.h
-> @@ -22,6 +22,15 @@
->  #define __page_aligned_bss	__section(.bss.page_aligned) __aligned(PAGE_SIZE)
->  
->  /*
-> + * For assembly routines.
-> + *
-> + * Note when using these that you must specify the appropriate
-> + * alignment directives yourself
-> + */
-> +#define __PAGE_ALIGNED_DATA	.section ".data.page_aligned", "aw", @progbits
-> +#define __PAGE_ALIGNED_BSS	.section ".bss.page_aligned", "aw", @nobits
 
-The above will work on most architectures but fails (silently?) on arm.
-arm uses %{progbits,nobits} where all other uses @{nobits,progbits}.
+You need to use:
+	VMLINUX_SYMBOL(__nosave_begin) = .;
 
-I know we do not use page_aligned in arm assembler code for now,
-but if we do then it should work.
-It is my understanding that the linker will automatically
-assume nobits for section names starting with .bss and likewise
-progbits for section names starting with .data - so we can leave them out?
+Otherwise architectures such as m68k wil break as they
+add a leading underscore.
 
+See other symbols that is defined inside vmlinux.lds.h
 
 	Sam

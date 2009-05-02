@@ -1,121 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 May 2009 00:02:42 +0100 (BST)
-Received: from mail-out.m-online.net ([212.18.0.9]:35618 "EHLO
-	mail-out.m-online.net" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S28574086AbZEAXCf (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 2 May 2009 00:02:35 +0100
-Received: from mail01.m-online.net (mail.m-online.net [192.168.3.149])
-	by mail-out.m-online.net (Postfix) with ESMTP id 241241C15368;
-	Sat,  2 May 2009 01:02:15 +0200 (CEST)
-Received: from localhost (dynscan2.mnet-online.de [192.168.1.215])
-	by mail.m-online.net (Postfix) with ESMTP id 8B89E90197;
-	Sat,  2 May 2009 01:02:15 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.3.149])
-	by localhost (dynscan2.mnet-online.de [192.168.1.215]) (amavisd-new, port 10024)
-	with ESMTP id J5MY1fAE9fML; Sat,  2 May 2009 01:02:13 +0200 (CEST)
-Received: from igel.home (DSL01.83.171.176.91.ip-pool.NEFkom.net [83.171.176.91])
-	by mail.mnet-online.de (Postfix) with ESMTP;
-	Sat,  2 May 2009 01:02:13 +0200 (CEST)
-Received: by igel.home (Postfix, from userid 501)
-	id E9F0B10DA5D; Sat,  2 May 2009 01:02:12 +0200 (CEST)
-From:	Andreas Schwab <schwab@linux-m68k.org>
-To:	"H. Peter Anvin" <hpa@zytor.com>
-Cc:	Sam Ravnborg <sam@ravnborg.org>, linux-mips@linux-mips.org,
-	linux-m68k@vger.kernel.org, linux-ia64@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	Denys Vlasenko <vda.linux@googlemail.com>,
-	Tim Abbott <tabbott@MIT.EDU>,
-	Heiko Carstens <heiko.carstens@de.ibm.com>,
-	linuxppc-dev@ozlabs.org, Paul Mackerras <paulus@samba.org>,
-	Greg Ungerer <gerg@uclinux.org>, sparclinux@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	linux-s390@vger.kernel.org,
-	Jesper Nilsson <jesper.nilsson@axis.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Helge Deller <deller@gmx.de>, Ingo Molnar <mingo@redhat.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Russell King <rmk+kernel@arm.linux.org.uk>,
-	user-mode-linux-devel@lists.sourceforge.net,
-	microblaze-uclinux@itee.uq.edu.au, Jeff Dike <jdike@addtoit.com>,
-	Jeff Arnold <jbarnold@MIT.EDU>, dev-etrax@axis.com,
-	Mikael Starvik <starvik@axis.com>,
-	Cyrill Gorcunov <gorcunov@openvz.org>,
-	Michal Simek <monstr@monstr.eu>, Waseem Daher <wdaher@MIT.EDU>,
-	Richard Henderson <rth@twiddle.net>,
-	Chris Zankel <chris@zankel.net>,
-	Bryan Wu <cooloney@kernel.org>,
-	Tony Luck <tony.luck@intel.com>, linux-parisc@vger.kernel.org,
-	Haavard Skinnemoen <hskinnemoen@atmel.com>,
-	Hirokazu Takata <takata@linux-m32r.org>,
-	Linux kernel mailing list <linux-kernel@vger.kernel.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Anders Kaseorg <andersk@MIT.EDU>,
-	Kyle McMartin <kyle@mcmartin.ca>,
-	Paul Mundt <lethal@linux-sh.org>, linux-alpha@vger.kernel.org,
-	Martin Schwidefsky <schwidefsky@de.ibm.com>,
-	uclinux-dist-devel@blackfin.uclinux.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v2 1/6] Add new macros for page-aligned data and bss sections.
-References: <1241121253-32341-1-git-send-email-tabbott@mit.edu>
-	<1241121253-32341-2-git-send-email-tabbott@mit.edu>
-	<20090501091848.GB18326@uranus.ravnborg.org>
-	<alpine.DEB.1.10.0905010951100.3955@vinegar-pot.mit.edu>
-	<49FB2449.1010301@zytor.com>
-	<20090501171717.GA26401@uranus.ravnborg.org>
-	<49FB2EDC.9050300@zytor.com>
-	<20090501174457.GA26559@uranus.ravnborg.org>
-	<49FB35C4.6060107@zytor.com>
-X-Yow:	I'm MENTALLY here..  but PHYSICALLY I'm purchasing NAUGAHYDE furniture
- in the' SUBURBS of PHOENIX!!
-Date:	Sat, 02 May 2009 01:02:12 +0200
-In-Reply-To: <49FB35C4.6060107@zytor.com> (H. Peter Anvin's message of "Fri,
-	01 May 2009 10:47:48 -0700")
-Message-ID: <m2tz44o2a3.fsf@igel.home>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/23.0.93 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <whitebox@nefkom.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 02 May 2009 12:01:10 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:56050 "EHLO elvis.franken.de"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S20024943AbZEBLBC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 2 May 2009 12:01:02 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1M0Cxo-0004VQ-00; Sat, 02 May 2009 13:01:00 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 8B62AC2D1B; Sat,  2 May 2009 13:00:55 +0200 (CEST)
+From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH] MIPS: check for R5k XKPHYS bug
+To:	linux-mips@linux-mips.org
+cc:	ralf@linux-mips.org
+Message-Id: <20090502110055.8B62AC2D1B@solo.franken.de>
+Date:	Sat,  2 May 2009 13:00:55 +0200 (CEST)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22599
+X-archive-position: 22600
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: schwab@linux-m68k.org
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-"H. Peter Anvin" <hpa@zytor.com> writes:
+R5k CPUs have a bug, where ll access to XKPHYS addresses don't work.
+Check for this bug and enable workaround, if possible.
 
-> Sam Ravnborg wrote:
->>>
->>> What's wrong with @?
->> arm does not support it :-(
->> I recall it denote a comment in arm assembler.
->> 
->> I could do some magic to detect the ARM case but I'm reluctant to do so.
->> I could also ignore the arm issue for now as it is not used by arm,
->> but that strikes me as the wrong approach.
->> 
->
-> If we really have to use different tokens, I would say:
->
-> #ifdef __ARM__
-> # define _PROGBITS %progbits	/* or whatever */
-> # define _NOBITS   %nobits
-> #else
-> # define _PROGBITS @progbits
-> # define _NOBITS   @nobits
-> #endif
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+---
 
-GAS has always supported both '@' and '%', so '%' can be used
-everywhere.
+ arch/mips/kernel/cpu-bugs64.c |   36 ++++++++++++++++++++++++++++++++++++
+ 1 files changed, 36 insertions(+), 0 deletions(-)
 
-Andreas.
-
--- 
-Andreas Schwab, schwab@linux-m68k.org
-GPG Key fingerprint = 58CA 54C7 6D53 942B 1756  01D3 44D5 214B 8276 4ED5
-"And now for something completely different."
+diff --git a/arch/mips/kernel/cpu-bugs64.c b/arch/mips/kernel/cpu-bugs64.c
+index 02b7713..8e55649 100644
+--- a/arch/mips/kernel/cpu-bugs64.c
++++ b/arch/mips/kernel/cpu-bugs64.c
+@@ -26,6 +26,8 @@ static char r4kwar[] __initdata =
+ 	"Enable CPU_R4000_WORKAROUNDS to rectify.";
+ static char daddiwar[] __initdata =
+ 	"Enable CPU_DADDI_WORKAROUNDS to rectify.";
++static char xkphysllwar[] __initdata =
++	"CPU has ll xkphys bug.";
+ 
+ static inline void align_mod(const int align, const int mod)
+ {
+@@ -307,10 +309,44 @@ static inline void check_daddiu(void)
+ 	panic(bug64hit, !DADDI_WAR ? daddiwar : nowar);
+ }
+ 
++static u32 ll(u32 *p)
++{
++	u32 ret;
++
++	asm volatile(
++		"ll    %0, %1\n\t"
++		: "=&r" (ret)
++		: "m" (*p));
++
++	return ret;
++}
++
++void __init check_ll_xkphys(void)
++{
++	static u32 val;
++	u32 *p = (u32 *)PHYS_TO_XKPHYS(K_CALG_NONCOHERENT,
++				       CPHYSADDR((unsigned long)&val));
++
++	printk("Checking for the ll/lld xkphys bug... ");
++	memset(p, 0xff, sizeof(val));
++	if (ll(p) != 0xffffffff) {
++		printk("yes, enabling workaround... ");
++		cpu_data[0].options &= ~MIPS_CPU_LLSC;
++		if (cpu_has_llsc != (cpu_data[0].options & MIPS_CPU_LLSC)) {
++			printk("failed.\n");
++			panic(bug64hit, xkphysllwar);
++		}
++		printk("ok.\n");
++	} else
++		printk("no.\n");
++}
++
++
+ void __init check_bugs64_early(void)
+ {
+ 	check_mult_sh();
+ 	check_daddiu();
++	check_ll_xkphys();
+ }
+ 
+ void __init check_bugs64(void)

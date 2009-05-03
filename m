@@ -1,69 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 May 2009 09:20:04 +0100 (BST)
-Received: from ey-out-1920.google.com ([74.125.78.146]:19235 "EHLO
-	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20023941AbZECIT5 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 3 May 2009 09:19:57 +0100
-Received: by ey-out-1920.google.com with SMTP id 13so703524eye.54
-        for <linux-mips@linux-mips.org>; Sun, 03 May 2009 01:19:56 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:sender:received:in-reply-to
-         :references:date:x-google-sender-auth:message-id:subject:from:to:cc
-         :content-type:content-transfer-encoding;
-        bh=VEHYLE1/JNSkUoibEt/tDpFHXIP1sBdkJ6L/OYF1g4g=;
-        b=rBLtnxJvev6MuUuBM8VV8/2DLozlhruxPQWZ7c1qYYif+pnj9paIEUPlx3ElhDFDE9
-         6w2nK9qka4WzGAUAvOwBCI0I/yiQlNJjRIMkFJg+c8jxia759loH3uCpbt98olSwn6TX
-         +KBeVueXzk3/oy2G6C7Bm3aDou0fOhBd2UsG0=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        b=IU79kxy8AuXZpNbiCn15k5V3NtC+pgUcjkClaPGl6dXhg9A/2N6LJk9KGzA9wq6l0k
-         w/97Ba/zxjZsQmKdg+l9ezdMab6r3fnIrHAk9qBrqwRF24k1AnnQdrzss7/G9cHmaPLi
-         gQpciHBCriqJYOhv+fhKH6TynGUKJ+cv9VvhM=
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 03 May 2009 10:24:47 +0100 (BST)
+Received: from gateway05.websitewelcome.com ([67.18.15.4]:46469 "HELO
+	gateway05.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with SMTP id S20024084AbZECJYl (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 3 May 2009 10:24:41 +0100
+Received: (qmail 26216 invoked from network); 3 May 2009 09:26:28 -0000
+Received: from gator750.hostgator.com (174.132.194.2)
+  by gateway05.websitewelcome.com with SMTP; 3 May 2009 09:26:28 -0000
+Received: from [217.109.65.213] (port=2140 helo=[127.0.0.1])
+	by gator750.hostgator.com with esmtpa (Exim 4.69)
+	(envelope-from <kevink@paralogos.com>)
+	id 1M0Xw3-0002qS-V6; Sun, 03 May 2009 04:24:36 -0500
+Message-ID: <49FD62D5.5000803@paralogos.com>
+Date:	Sun, 03 May 2009 11:24:37 +0200
+From:	"Kevin D. Kissell" <kevink@paralogos.com>
+User-Agent: Thunderbird 2.0.0.21 (Windows/20090302)
 MIME-Version: 1.0
-Received: by 10.210.17.2 with SMTP id 2mr4719938ebq.85.1241338796043; Sun, 03 
-	May 2009 01:19:56 -0700 (PDT)
-In-Reply-To: <200904302141.53025.florian@openwrt.org>
-References: <200904302141.53025.florian@openwrt.org>
-Date:	Sun, 3 May 2009 10:19:56 +0200
-X-Google-Sender-Auth: 3d1e795dfca5b56d
-Message-ID: <10f740e80905030119u6f196b6bqe63003d502f9f731@mail.gmail.com>
+To:	Geert Uytterhoeven <geert@linux-m68k.org>
+CC:	Florian Fainelli <florian@openwrt.org>, linux-mips@linux-mips.org
 Subject: Re: initramfs breakage with 64-bits kernels?
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	Florian Fainelli <florian@openwrt.org>
-Cc:	linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Return-Path: <geert.uytterhoeven@gmail.com>
+References: <200904302141.53025.florian@openwrt.org> <10f740e80905030119u6f196b6bqe63003d502f9f731@mail.gmail.com>
+In-Reply-To: <10f740e80905030119u6f196b6bqe63003d502f9f731@mail.gmail.com>
+Content-Type: multipart/alternative;
+ boundary="------------080101070409010603030905"
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator750.hostgator.com
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - paralogos.com
+Return-Path: <kevink@paralogos.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22602
+X-archive-position: 22603
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: kevink@paralogos.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Apr 30, 2009 at 21:41, Florian Fainelli <florian@openwrt.org> wrote:
-> I have been trying to get a 2.6.29 64-bits kernel for Cavium Octeon to work
-> with a 32-bits userland in an initramfs. While booting, the kernel does not
-> find the initramfs due to the check against initrd_start in populate_rootfs
-> (init/initramfs.c) failing.
+This is a multi-part message in MIME format.
+--------------080101070409010603030905
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+Geert Uytterhoeven wrote:
+> On Thu, Apr 30, 2009 at 21:41, Florian Fainelli <florian@openwrt.org> wrote:
+>   
+>> I have been trying to get a 2.6.29 64-bits kernel for Cavium Octeon to work
+>> with a 32-bits userland in an initramfs. While booting, the kernel does not
+>> find the initramfs due to the check against initrd_start in populate_rootfs
+>> (init/initramfs.c) failing.
+>>     
+>
+> You mean the test for initrd_start being non-zero? Is your initramfs really at
+> address zero?
+I'm not set up to verify this, but I have a nagging suspicion that a
+big-endian 64-bit kernel build could store an initrd_start address with
+32 or fewer significant bits (i.e. it starts in the first 4GB) as a
+64-bit pointer, but that the code in initramfs.c is testing the value as
+a 32-bit scalar type.  I don't know about lmo but in kernel.org 2.6.29,
+it's declared in include/linux/initrd.h as an extern unsigned long, not
+a void *.  Little endian builds wouldn't see such a problem.
+
+          Regards,
+
+          Kevin K.
+
+--------------080101070409010603030905
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html;charset=UTF-8" http-equiv="Content-Type">
+  <title></title>
+</head>
+<body bgcolor="#ffffff" text="#000000">
+Geert Uytterhoeven wrote:
+<blockquote
+ cite="mid:10f740e80905030119u6f196b6bqe63003d502f9f731@mail.gmail.com"
+ type="cite">
+  <pre wrap="">On Thu, Apr 30, 2009 at 21:41, Florian Fainelli <a class="moz-txt-link-rfc2396E" href="mailto:florian@openwrt.org">&lt;florian@openwrt.org&gt;</a> wrote:
+  </pre>
+  <blockquote type="cite">
+    <pre wrap="">I have been trying to get a 2.6.29 64-bits kernel for Cavium Octeon to work
+with a 32-bits userland in an initramfs. While booting, the kernel does not
+find the initramfs due to the check against initrd_start in populate_rootfs
+(init/initramfs.c) failing.
+    </pre>
+  </blockquote>
+  <pre wrap=""><!---->
 You mean the test for initrd_start being non-zero? Is your initramfs really at
-address zero?
+address zero?</pre>
+</blockquote>
+I'm not set up to verify this, but I have a nagging suspicion that a
+big-endian 64-bit kernel build could store an initrd_start address with
+32 or fewer significant bits (i.e. it starts in the first 4GB) as a
+64-bit pointer, but that the code in initramfs.c is testing the value
+as a 32-bit scalar type.  I don't know about lmo but in kernel.org
+2.6.29, it's declared in include/linux/initrd.h as an extern unsigned
+long, not a void *.  Little endian builds wouldn't see such a problem.<br>
+<br>
+          Regards,<br>
+<br>
+          Kevin K.<br>
+</body>
+</html>
 
-Gr{oetje,eeting}s,
-
-						Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+--------------080101070409010603030905--

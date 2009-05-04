@@ -1,58 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 May 2009 21:05:18 +0100 (BST)
-Received: from kroah.org ([198.145.64.141]:37335 "EHLO coco.kroah.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 04 May 2009 22:54:40 +0100 (BST)
+Received: from elvis.franken.de ([193.175.24.41]:53597 "EHLO elvis.franken.de"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20023350AbZEDUFL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 4 May 2009 21:05:11 +0100
-Received: from localhost (c-76-105-230-205.hsd1.or.comcast.net [76.105.230.205])
-	(using TLSv1 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-	(No client certificate requested)
-	by coco.kroah.org (Postfix) with ESMTPSA id 1472448FB3;
-	Mon,  4 May 2009 13:05:08 -0700 (PDT)
-Date:	Mon, 4 May 2009 13:01:17 -0700
-From:	Greg Kroah-Hartman <gregkh@suse.de>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org, Greg KH <greg@kroah.com>
-Subject: [PATCH] mips: remove driver_data direct access of struct device
-Message-ID: <20090504200117.GA22829@kroah.com>
+	id S20023514AbZEDVyd (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 4 May 2009 22:54:33 +0100
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1M167M-0005fm-02; Mon, 04 May 2009 23:54:32 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 77D33C2C47; Mon,  4 May 2009 23:54:22 +0200 (CEST)
+Date:	Mon, 4 May 2009 23:54:22 +0200
+To:	Jon Fraser <jfraser@broadcom.com>
+Cc:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: linux-mips on big_sur (broadcom 1480)
+Message-ID: <20090504215422.GB16886@alpha.franken.de>
+References: <1239227598.14558.39.camel@chaos.ne.broadcom.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <greg@kroah.com>
+In-Reply-To: <1239227598.14558.39.camel@chaos.ne.broadcom.com>
+User-Agent: Mutt/1.5.13 (2006-08-11)
+From:	tsbogend@alpha.franken.de (Thomas Bogendoerfer)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22614
+X-archive-position: 22616
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@suse.de
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-From: Greg Kroah-Hartman <gregkh@suse.de>
+On Wed, Apr 08, 2009 at 05:53:18PM -0400, Jon Fraser wrote:
+> Can anybody confirm the running any of the sibyte processors on any of
+> the latest kernels?
 
-In the near future, the driver core is going to not allow direct access
-to the driver_data pointer in struct device.  Instead, the functions
-dev_get_drvdata() and dev_set_drvdata() should be used.  These functions
-have been around since the beginning, so are backwards compatible with
-all older kernel versions.
+I've sent a fix a couple of seconds ago, which fixes SMP for BCM1480
+and SB1250 systems. I could only test on a BigSur, but the breakage for
+SB1250 systems is the same.
 
-Cc: linux-mips@linux-mips.org
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@suse.de>
----
- arch/mips/sni/eisa.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thomas.
 
---- a/arch/mips/sni/eisa.c
-+++ b/arch/mips/sni/eisa.c
-@@ -38,7 +38,7 @@ int __init sni_eisa_root_init(void)
- 	if (!r)
- 		return r;
- 
--	eisa_root_dev.dev.driver_data = &eisa_bus_root;
-+	dev_set_drvdata(&eisa_root_dev.dev, &eisa_bus_root);
- 
- 	if (eisa_root_register(&eisa_bus_root)) {
- 		/* A real bridge may have been registered before
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

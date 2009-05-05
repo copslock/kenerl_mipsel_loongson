@@ -1,82 +1,244 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 May 2009 01:52:32 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:8221 "EHLO
-	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20023636AbZEEAw0 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 5 May 2009 01:52:26 +0100
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B49ff8db40000>; Mon, 04 May 2009 20:52:04 -0400
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 4 May 2009 17:51:56 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 4 May 2009 17:51:56 -0700
-Message-ID: <49FF8DAC.8090701@caviumnetworks.com>
-Date:	Mon, 04 May 2009 17:51:56 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 05 May 2009 03:11:55 +0100 (BST)
+Received: from rv-out-0708.google.com ([209.85.198.240]:5175 "EHLO
+	rv-out-0708.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20023692AbZEECLu (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 5 May 2009 03:11:50 +0100
+Received: by rv-out-0708.google.com with SMTP id b17so1662320rvf.0
+        for <linux-mips@linux-mips.org>; Mon, 04 May 2009 19:11:47 -0700 (PDT)
+Received: by 10.114.111.1 with SMTP id j1mr4789210wac.153.1241489506900;
+        Mon, 04 May 2009 19:11:46 -0700 (PDT)
+Received: from khushiraj ([121.245.178.110])
+        by mx.google.com with ESMTPS id m29sm29967284poh.11.2009.05.04.19.11.08
+        (version=SSLv3 cipher=RC4-MD5);
+        Mon, 04 May 2009 19:11:46 -0700 (PDT)
+Message-ID: <02e101c9cd26$d5de5960$9b01a8c0@khushiraj>
+From:	"Jokes of the Day - GHL" <info@goahelpline.com>
+To:	<Undisclosed-Recipient:;>
+Subject: Fw: Increase brain power, 27 Health Tips & Womens Health & Thyroid
+Date:	Tue, 5 May 2009 07:35:00 +0530
 MIME-Version: 1.0
-To:	David VomLehn <dvomlehn@cisco.com>
-CC:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 3/3] mips:powertv: Integrate Cisco Powertv platform into
- MIPS architecture (resend)
-References: <20090504225821.GA22833@cuplxvomd02.corp.sa.net>
-In-Reply-To: <20090504225821.GA22833@cuplxvomd02.corp.sa.net>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 05 May 2009 00:51:56.0780 (UTC) FILETIME=[B09F22C0:01C9CD1B]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0226_01C9CD53.FF0706C0"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2900.2180
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+Return-Path: <info@goahelpline.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22622
+X-archive-position: 22623
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: info@goahelpline.com
 Precedence: bulk
 X-list: linux-mips
 
-David VomLehn wrote:
-> Adds the Cisco PowerTV platform to the configuration and Make files so
-> that we can build a kernel for it.
-> 
-> Signed-off-by: David VomLehn <dvomlehn@cisco.com>
-> ---
->  arch/mips/Kconfig                   |   30 +
->  arch/mips/Makefile                  |    8 +
->  arch/mips/configs/powertv_defconfig | 1484 +++++++++++++++++++++++++++++++++++
->  3 files changed, 1522 insertions(+), 0 deletions(-)
-> 
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index 99f7b6d..b23ec4c 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-[...]
->  
-> +#
-> +# The flag for POWERTV clock source.
-> +#
-> +config CEVT_POWERTV
-> +	bool
-> +
->  config CEVT_SB1250
->  	bool
->  
-> @@ -742,6 +766,12 @@ config CSRC_R4K
->  	select CSRC_R4K_LIB
->  	bool
->  
-> +#
-> +# The flag for POWERTV clock event.
-> +#
-> +config CSRC_POWERTV
-> +	bool
-> +
->  config CSRC_SB1250
->  	bool
->  
+This is a multi-part message in MIME format.
 
-Could/should CEVT_POWERTV and CSRC_POWERTV be either eliminated or moved 
-to your processor specific directory?  That is where the corresponding 
-code lives.
+------=_NextPart_000_0226_01C9CD53.FF0706C0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-David Daney
+
+Increase your Brain Power
+
+Read More : http://dhristi.co.in/increase_brain_power.html
+
+=20
+
+=20
+
+Womens Health Guide
+
+Read More : http://dhristi.co.in/womenshealth.html
+
+=20
+
+=20
+
+Breast Care & Guide
+
+Read More : http://dhristi.co.in/breast_cancer.html
+
+=20
+
+27 Health Tips !!! Really useful
+
+Read More : http://dhristi.co.in/17_health_tips.html
+
+=20
+
+=20
+
+AIDS - Know How ?
+
+Read More : http://dhristi.co.in/all_about_aids.html
+
+ =20
+
+Top Rated Jokes (Adult, Female, etc)
+
+Read More : http://khushiwebworld.com=20
+
+=20
+
+Thyroid - Know How ?
+
+Read More : http://dhristi.co.in/thyroid.html
+
+=20
+
+------=_NextPart_000_0226_01C9CD53.FF0706C0
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML xmlns:o =3D "urn:schemas-microsoft-com:office:office"><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<META content=3D"MSHTML 6.00.5730.11" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><STRONG><SPAN=20
+style=3D"FONT-SIZE: 24pt; COLOR: red; FONT-FAMILY: =
+'Arial','sans-serif'">Increase=20
+your Brain Power</SPAN></STRONG></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><STRONG><SPAN=20
+style=3D"FONT-SIZE: 18pt; COLOR: red; FONT-FAMILY: =
+'Arial','sans-serif'">Read More=20
+: <A=20
+href=3D"http://dhristi.co.in/increase_brain_power.html">http://dhristi.co=
+.in/increase_brain_power.html</A></SPAN></STRONG></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: =
+'Arial','sans-serif'">&nbsp;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><FONT size=3D3><FONT=20
+face=3DCalibri>&nbsp;<SPAN=20
+style=3D"FONT-SIZE: 12pt; FONT-FAMILY: 'Times New =
+Roman','serif'"><o:p></o:p></SPAN></FONT></FONT></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><STRONG><SPAN=20
+style=3D"FONT-SIZE: 24pt; COLOR: red; FONT-FAMILY: =
+'Arial','sans-serif'">Womens=20
+Health Guide</SPAN></STRONG><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: =
+'Arial','sans-serif'"><o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><STRONG><SPAN=20
+style=3D"FONT-SIZE: 18pt; COLOR: red; FONT-FAMILY: =
+'Arial','sans-serif'">Read More=20
+: </SPAN></STRONG><STRONG><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: =
+'Arial','sans-serif'"><A=20
+href=3D"http://dhristi.co.in/womenshealth.html"><SPAN=20
+style=3D"FONT-SIZE: =
+18pt">http://dhristi.co.in/womenshealth.html</SPAN></A></SPAN></STRONG><S=
+PAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: =
+'Arial','sans-serif'"><o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: =
+'Arial','sans-serif'">&nbsp;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><FONT size=3D3><FONT=20
+face=3DCalibri>&nbsp;<SPAN=20
+style=3D"FONT-SIZE: 12pt; FONT-FAMILY: 'Times New =
+Roman','serif'"><o:p></o:p></SPAN></FONT></FONT></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><STRONG><SPAN=20
+style=3D"FONT-SIZE: 24pt; COLOR: red; FONT-FAMILY: =
+'Arial','sans-serif'">Breast=20
+Care &amp; Guide</SPAN></STRONG><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: =
+'Arial','sans-serif'"><o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><SPAN=20
+style=3D"FONT-SIZE: 18pt; COLOR: black; FONT-FAMILY: =
+'Arial','sans-serif'">Read=20
+More : <A=20
+href=3D"http://dhristi.co.in/breast_cancer.html">http://dhristi.co.in/bre=
+ast_cancer.html</A></SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: =
+'Arial','sans-serif'"><o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: =
+'Arial','sans-serif'">&nbsp;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><STRONG><SPAN=20
+style=3D"FONT-SIZE: 24pt; COLOR: red; FONT-FAMILY: =
+'Arial','sans-serif'">27 Health=20
+Tips !!! Really useful</SPAN></STRONG><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: =
+'Arial','sans-serif'"><o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><STRONG><SPAN=20
+style=3D"FONT-SIZE: 18pt; COLOR: red; FONT-FAMILY: =
+'Arial','sans-serif'">Read More=20
+: </SPAN></STRONG><STRONG><SPAN=20
+style=3D"FONT-SIZE: 10pt; COLOR: red; FONT-FAMILY: =
+'Arial','sans-serif'"><A=20
+href=3D"http://dhristi.co.in/17_health_tips.html"><SPAN=20
+style=3D"FONT-SIZE: =
+18pt">http://dhristi.co.in/17_health_tips.html</SPAN></A></SPAN></STRONG>=
+<SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: =
+'Arial','sans-serif'"><o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: =
+'Arial','sans-serif'">&nbsp;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: =
+'Arial','sans-serif'">&nbsp;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><STRONG><SPAN=20
+style=3D"FONT-SIZE: 24pt; COLOR: red; FONT-FAMILY: =
+'Arial','sans-serif'">AIDS -=20
+Know How ?</SPAN></STRONG><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: =
+'Arial','sans-serif'"><o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><SPAN=20
+style=3D"FONT-SIZE: 18pt; COLOR: black; FONT-FAMILY: =
+'Arial','sans-serif'">Read=20
+More : <A=20
+href=3D"http://dhristi.co.in/all_about_aids.html">http://dhristi.co.in/al=
+l_about_aids.html</A></SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: =
+'Arial','sans-serif'"><o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: 'Arial','sans-serif'">&nbsp;=20
+<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><STRONG><SPAN=20
+style=3D"FONT-SIZE: 24pt; COLOR: red; FONT-FAMILY: =
+'Arial','sans-serif'">Top Rated=20
+Jokes (Adult, Female, etc)</SPAN></STRONG><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: =
+'Arial','sans-serif'"><o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><SPAN=20
+style=3D"FONT-SIZE: 18pt; COLOR: black; FONT-FAMILY: =
+'Arial','sans-serif'">Read=20
+More : <A =
+href=3D"http://khushiwebworld.com/">http://khushiwebworld.com</A>=20
+</SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: =
+'Arial','sans-serif'"><o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: =
+'Arial','sans-serif'">&nbsp;<o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><STRONG><SPAN=20
+style=3D"FONT-SIZE: 24pt; COLOR: red; FONT-FAMILY: =
+'Arial','sans-serif'">Thyroid -=20
+Know How ?</SPAN></STRONG><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: =
+'Arial','sans-serif'"><o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><SPAN=20
+style=3D"FONT-SIZE: 18pt; COLOR: black; FONT-FAMILY: =
+'Arial','sans-serif'">Read=20
+More : <A=20
+href=3D"http://dhristi.co.in/thyroid.html">http://dhristi.co.in/thyroid.h=
+tml</A></SPAN><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: =
+'Arial','sans-serif'"><o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><o:p><FONT =
+face=3DCalibri=20
+size=3D3>&nbsp;</FONT></o:p></P></FONT></DIV></BODY></HTML>
+
+------=_NextPart_000_0226_01C9CD53.FF0706C0--

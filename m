@@ -1,76 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 May 2009 22:56:28 +0100 (BST)
-Received: from mx2.mail.elte.hu ([157.181.151.9]:43915 "EHLO mx2.mail.elte.hu"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20024638AbZEFV4W (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 6 May 2009 22:56:22 +0100
-Received: from elvis.elte.hu ([157.181.1.14])
-	by mx2.mail.elte.hu with esmtp (Exim)
-	id 1M1p4p-0003wl-Jl
-	from <mingo@elte.hu>; Wed, 06 May 2009 23:55:06 +0200
-Received: by elvis.elte.hu (Postfix, from userid 1004)
-	id D45DC3E213A; Wed,  6 May 2009 23:54:49 +0200 (CEST)
-Date:	Wed, 6 May 2009 23:54:50 +0200
-From:	Ingo Molnar <mingo@elte.hu>
-To:	Markus Gutschke =?utf-8?B?KOmhp+Wtn+WLpCk=?= <markus@google.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 06 May 2009 23:08:52 +0100 (BST)
+Received: from smtp-out.google.com ([216.239.33.17]:11454 "EHLO
+	smtp-out.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20024642AbZEFWIp (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 6 May 2009 23:08:45 +0100
+Received: from zps78.corp.google.com (zps78.corp.google.com [172.25.146.78])
+	by smtp-out.google.com with ESMTP id n46M8g3c005623
+	for <linux-mips@linux-mips.org>; Wed, 6 May 2009 23:08:43 +0100
+DKIM-Signature:	v=1; a=rsa-sha1; c=relaxed/relaxed; d=google.com; s=beta;
+	t=1241647723; bh=q3P0kMXFVVxLh7ZNuwYdy7EIE+k=;
+	h=DomainKey-Signature:MIME-Version:In-Reply-To:References:Date:
+	 Message-ID:Subject:From:To:Cc:Content-Type:
+	 Content-Transfer-Encoding:X-System-Of-Record; b=TlBgcpgBi95ZWXAhCM
+	IzZBbmngXlwoje0QNvesG4mLw8SaO3zsZwzTMwrpPbA/lQq7PIm0Y+uHEns31BN9wLc
+	g==
+DomainKey-Signature: a=rsa-sha1; s=beta; d=google.com; c=nofws; q=dns;
+	h=mime-version:in-reply-to:references:date:message-id:subject:from:to:
+	cc:content-type:content-transfer-encoding:x-system-of-record;
+	b=vlN1f6ehSs9cEwxJIcryrg1ZvM3s5THr1qvhnwCH9IuXHG8TjGtLY7bkTYDBI1BID
+	joWhjdHK2OntygxxjM+gw==
+Received: from yx-out-2324.google.com (yxl31.prod.google.com [10.190.3.223])
+	by zps78.corp.google.com with ESMTP id n46M8fg1009357
+	for <linux-mips@linux-mips.org>; Wed, 6 May 2009 15:08:41 -0700
+Received: by yx-out-2324.google.com with SMTP id 31so195680yxl.79
+        for <linux-mips@linux-mips.org>; Wed, 06 May 2009 15:08:41 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.151.128.11 with SMTP id f11mr3179422ybn.107.1241647721001; 
+	Wed, 06 May 2009 15:08:41 -0700 (PDT)
+In-Reply-To: <20090506215450.GA9537@elte.hu>
+References: <20090228030226.C0D34FC3DA@magilla.sf.frob.com>
+	 <20090228030413.5B915FC3DA@magilla.sf.frob.com>
+	 <alpine.LFD.2.00.0902271932520.3111@localhost.localdomain>
+	 <alpine.LFD.2.00.0902271948570.3111@localhost.localdomain>
+	 <20090228072554.CFEA6FC3DA@magilla.sf.frob.com>
+	 <alpine.LFD.2.00.0902280916470.3111@localhost.localdomain>
+	 <904b25810905061146ged374f2se0afd24e9e3c1f06@mail.gmail.com>
+	 <20090506212913.GC4861@elte.hu>
+	 <904b25810905061446m73c42040nfff47c9b8950bcfa@mail.gmail.com>
+	 <20090506215450.GA9537@elte.hu>
+Date:	Wed, 6 May 2009 15:08:40 -0700
+Message-ID: <904b25810905061508n6d9cb8dbg71de5b1e0332ede7@mail.gmail.com>
+Subject: Re: [PATCH 2/2] x86-64: seccomp: fix 32/64 syscall hole
+From:	=?UTF-8?B?TWFya3VzIEd1dHNjaGtlICjpoaflrZ/li6Qp?= 
+	<markus@google.com>
+To:	Ingo Molnar <mingo@elte.hu>
 Cc:	Linus Torvalds <torvalds@linux-foundation.org>,
 	Roland McGrath <roland@redhat.com>,
 	Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
 	linux-kernel@vger.kernel.org, stable@kernel.org,
 	linux-mips@linux-mips.org, sparclinux@vger.kernel.org,
 	linuxppc-dev@ozlabs.org
-Subject: Re: [PATCH 2/2] x86-64: seccomp: fix 32/64 syscall hole
-Message-ID: <20090506215450.GA9537@elte.hu>
-References: <20090228030226.C0D34FC3DA@magilla.sf.frob.com> <20090228030413.5B915FC3DA@magilla.sf.frob.com> <alpine.LFD.2.00.0902271932520.3111@localhost.localdomain> <alpine.LFD.2.00.0902271948570.3111@localhost.localdomain> <20090228072554.CFEA6FC3DA@magilla.sf.frob.com> <alpine.LFD.2.00.0902280916470.3111@localhost.localdomain> <904b25810905061146ged374f2se0afd24e9e3c1f06@mail.gmail.com> <20090506212913.GC4861@elte.hu> <904b25810905061446m73c42040nfff47c9b8950bcfa@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <904b25810905061446m73c42040nfff47c9b8950bcfa@mail.gmail.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Received-SPF: neutral (mx2: 157.181.1.14 is neither permitted nor denied by domain of elte.hu) client-ip=157.181.1.14; envelope-from=mingo@elte.hu; helo=elvis.elte.hu;
-X-ELTE-VirusStatus: clean
-X-ELTE-SpamScore: -1.5
-X-ELTE-SpamLevel: 
-X-ELTE-SpamCheck: no
-X-ELTE-SpamVersion: ELTE 2.0 
-X-ELTE-SpamCheck-Details: score=-1.5 required=5.9 tests=BAYES_00 autolearn=no SpamAssassin version=3.2.3
-	-1.5 BAYES_00               BODY: Bayesian spam probability is 0 to 1%
-	[score: 0.0000]
-Return-Path: <mingo@elte.hu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-System-Of-Record: true
+Return-Path: <markus@google.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22651
+X-archive-position: 22652
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mingo@elte.hu
+X-original-sender: markus@google.com
 Precedence: bulk
 X-list: linux-mips
 
+On Wed, May 6, 2009 at 14:54, Ingo Molnar <mingo@elte.hu> wrote:
+> Which other system calls would you like to use? Futexes might be
+> one, for fast synchronization primitives?
 
-* Markus Gutschke (顧孟勤) <markus@google.com> wrote:
+There are a large number of system calls that "normal" C/C++ code uses
+quite frequently, and that are not security sensitive. A typical
+example would be gettimeofday(). But there are other system calls,
+where the sandbox would not really need to inspect arguments as the
+call does not expose any exploitable interface.
 
-> On Wed, May 6, 2009 at 14:29, Ingo Molnar <mingo@elte.hu> wrote:
-> > That's a pretty interesting usage. What would be fallback mode you
-> > are using if the kernel doesnt have seccomp built in? Completely
-> > non-sandboxed? Or a ptrace/PTRACE_SYSCALL based sandbox?
-> 
-> Ptrace has performance and/or reliability problems when used to 
-> sandbox threaded applications due to potential race conditions 
-> when inspecting system call arguments. We hope that we can avoid 
-> this problem with seccomp. It is very attractive that kernel 
-> automatically terminates any application that violates the very 
-> well-defined constraints of the sandbox.
-> 
-> In general, we are currently exploring different options based on 
-> general availability, functionality, and complexity of 
-> implementation. Seccomp is a good middle ground that we expect to 
-> be able to use in the medium term to provide an acceptable 
-> solution for a large segment of Linux users. Although the 
-> restriction to just four unfiltered system calls is painful.
+It is currently awkward that in order to use seccomp we have to
+intercept all system calls and provide alternative implementations for
+them; whereas we really only care about a comparatively small number
+of security critical operations that we need to restrict.
 
-Which other system calls would you like to use? Futexes might be 
-one, for fast synchronization primitives?
+Also, any redirected system call ends up incurring at least two
+context switches, which is needlessly expensive for the large number
+of trivial system calls. We are quite happy that read() and write(),
+which are quite important to us, do not incur this penalty.
 
-	Ingo
+
+Markus

@@ -1,26 +1,24 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 May 2009 08:14:31 +0100 (BST)
-Received: from mx1.redhat.com ([66.187.233.31]:54512 "EHLO mx1.redhat.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 May 2009 08:40:12 +0100 (BST)
+Received: from mx1.redhat.com ([66.187.233.31]:47423 "EHLO mx1.redhat.com"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20024804AbZEGHOY (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 7 May 2009 08:14:24 +0100
+	id S20024828AbZEGHkG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 7 May 2009 08:40:06 +0100
 Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
-	by mx1.redhat.com (8.13.8/8.13.8) with ESMTP id n4773IcS017251;
-	Thu, 7 May 2009 03:03:18 -0400
+	by mx1.redhat.com (8.13.8/8.13.8) with ESMTP id n477UNxk030712;
+	Thu, 7 May 2009 03:30:23 -0400
 Received: from gateway.sf.frob.com (vpn-12-104.rdu.redhat.com [10.11.12.104])
-	by int-mx1.corp.redhat.com (8.13.1/8.13.1) with ESMTP id n4773Deq012280;
-	Thu, 7 May 2009 03:03:16 -0400
+	by int-mx1.corp.redhat.com (8.13.1/8.13.1) with ESMTP id n477UKRw026347;
+	Thu, 7 May 2009 03:30:20 -0400
 Received: from magilla.sf.frob.com (magilla.sf.frob.com [198.49.250.228])
 	by gateway.sf.frob.com (Postfix) with ESMTP
-	id 2405A357B; Thu,  7 May 2009 00:03:13 -0700 (PDT)
+	id 26EE0357B; Thu,  7 May 2009 00:30:20 -0700 (PDT)
 Received: by magilla.sf.frob.com (Postfix, from userid 5281)
-	id DCC5EFC39E; Thu,  7 May 2009 00:03:12 -0700 (PDT)
+	id 1517BFC39E; Thu,  7 May 2009 00:30:20 -0700 (PDT)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 From:	Roland McGrath <roland@redhat.com>
-To:	=?UTF-8?B?TWFya3VzIEd1dHNjaGtlICjpoaflrZ/li6Qp?= 
-	<markus@google.com>
-X-Fcc:	~/Mail/linus
+To:	<markus@google.com>
 Cc:	Ingo Molnar <mingo@elte.hu>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
 	Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
@@ -28,7 +26,7 @@ Cc:	Ingo Molnar <mingo@elte.hu>,
 	linux-mips@linux-mips.org, sparclinux@vger.kernel.org,
 	linuxppc-dev@ozlabs.org
 Subject: Re: [PATCH 2/2] x86-64: seccomp: fix 32/64 syscall hole
-In-Reply-To: Markus Gutschke ( =?ISO-8859-1?Q?=E9=A1=A7=E5=AD=E5=A4?=)'s message of  Wednesday, 6 May 2009 14:46:02 -0700 <904b25810905061446m73c42040nfff47c9b8950bcfa@mail.gmail.com>
+In-Reply-To: Markus Gutschke ( =?ISO-8859-1?Q?=C3=A9=C2=A1=C2=A7=C3=A5=C2=AD=C3=A5=C2=A4?=)'s message of  Wednesday, 6 May 2009 14:46:02 -0700 <904b25810905061446m73c42040nfff47c9b8950bcfa@mail.gmail.com>
 References: <20090228030226.C0D34FC3DA@magilla.sf.frob.com>
 	<20090228030413.5B915FC3DA@magilla.sf.frob.com>
 	<alpine.LFD.2.00.0902271932520.3111@localhost.localdomain>
@@ -38,15 +36,16 @@ References: <20090228030226.C0D34FC3DA@magilla.sf.frob.com>
 	<904b25810905061146ged374f2se0afd24e9e3c1f06@mail.gmail.com>
 	<20090506212913.GC4861@elte.hu>
 	<904b25810905061446m73c42040nfff47c9b8950bcfa@mail.gmail.com>
+X-Fcc:	~/Mail/linus
 X-Antipastobozoticataclysm: Bariumenemanilow
-Message-Id: <20090507070312.DCC5EFC39E@magilla.sf.frob.com>
-Date:	Thu,  7 May 2009 00:03:12 -0700 (PDT)
+Message-Id: <20090507073020.1517BFC39E@magilla.sf.frob.com>
+Date:	Thu,  7 May 2009 00:30:20 -0700 (PDT)
 X-Scanned-By: MIMEDefang 2.58 on 172.16.52.254
 Return-Path: <roland@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22656
+X-archive-position: 22657
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

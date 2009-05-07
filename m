@@ -1,76 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 May 2009 05:24:14 +0100 (BST)
-Received: from qmta04.emeryville.ca.mail.comcast.net ([76.96.30.40]:37211 "EHLO
-	QMTA04.emeryville.ca.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20024597AbZEGEYH (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 7 May 2009 05:24:07 +0100
-Received: from OMTA05.emeryville.ca.mail.comcast.net ([76.96.30.43])
-	by QMTA04.emeryville.ca.mail.comcast.net with comcast
-	id oQJq1b0020vp7WLA4UQ1tx; Thu, 07 May 2009 04:24:01 +0000
-Received: from [192.168.1.10] ([98.247.100.230])
-	by OMTA05.emeryville.ca.mail.comcast.net with comcast
-	id oUPy1b00Q4yFFjW8RUPz6c; Thu, 07 May 2009 04:24:00 +0000
-Subject: Re: [PATCH 2/2] x86-64: seccomp: fix 32/64 syscall hole
-From:	Nicholas Miell <nmiell@comcast.net>
-To:	Markus Gutschke =?UTF-8?Q?=28=E9=A1=A7=E5=AD=9F=E5=8B=A4=29?= 
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 07 May 2009 08:14:31 +0100 (BST)
+Received: from mx1.redhat.com ([66.187.233.31]:54512 "EHLO mx1.redhat.com"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S20024804AbZEGHOY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 7 May 2009 08:14:24 +0100
+Received: from int-mx1.corp.redhat.com (int-mx1.corp.redhat.com [172.16.52.254])
+	by mx1.redhat.com (8.13.8/8.13.8) with ESMTP id n4773IcS017251;
+	Thu, 7 May 2009 03:03:18 -0400
+Received: from gateway.sf.frob.com (vpn-12-104.rdu.redhat.com [10.11.12.104])
+	by int-mx1.corp.redhat.com (8.13.1/8.13.1) with ESMTP id n4773Deq012280;
+	Thu, 7 May 2009 03:03:16 -0400
+Received: from magilla.sf.frob.com (magilla.sf.frob.com [198.49.250.228])
+	by gateway.sf.frob.com (Postfix) with ESMTP
+	id 2405A357B; Thu,  7 May 2009 00:03:13 -0700 (PDT)
+Received: by magilla.sf.frob.com (Postfix, from userid 5281)
+	id DCC5EFC39E; Thu,  7 May 2009 00:03:12 -0700 (PDT)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+From:	Roland McGrath <roland@redhat.com>
+To:	=?UTF-8?B?TWFya3VzIEd1dHNjaGtlICjpoaflrZ/li6Qp?= 
 	<markus@google.com>
+X-Fcc:	~/Mail/linus
 Cc:	Ingo Molnar <mingo@elte.hu>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
-	Roland McGrath <roland@redhat.com>,
 	Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
 	linux-kernel@vger.kernel.org, stable@kernel.org,
 	linux-mips@linux-mips.org, sparclinux@vger.kernel.org,
 	linuxppc-dev@ozlabs.org
-In-Reply-To: <904b25810905061521v62b3ddd6l14deb614d203385a@mail.gmail.com>
-References: <20090228030413.5B915FC3DA@magilla.sf.frob.com>
-	 <alpine.LFD.2.00.0902271948570.3111@localhost.localdomain>
-	 <20090228072554.CFEA6FC3DA@magilla.sf.frob.com>
-	 <alpine.LFD.2.00.0902280916470.3111@localhost.localdomain>
-	 <904b25810905061146ged374f2se0afd24e9e3c1f06@mail.gmail.com>
-	 <20090506212913.GC4861@elte.hu>
-	 <904b25810905061446m73c42040nfff47c9b8950bcfa@mail.gmail.com>
-	 <20090506215450.GA9537@elte.hu>
-	 <904b25810905061508n6d9cb8dbg71de5b1e0332ede7@mail.gmail.com>
-	 <20090506221319.GA11493@elte.hu>
-	 <904b25810905061521v62b3ddd6l14deb614d203385a@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Date:	Wed, 06 May 2009 21:23:57 -0700
-Message-Id: <1241670237.11500.7.camel@entropy>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.24.5 (2.24.5-1.fc10) 
-Content-Transfer-Encoding: 8bit
-Return-Path: <nmiell@comcast.net>
+Subject: Re: [PATCH 2/2] x86-64: seccomp: fix 32/64 syscall hole
+In-Reply-To: Markus Gutschke ( =?ISO-8859-1?Q?=E9=A1=A7=E5=AD=E5=A4?=)'s message of  Wednesday, 6 May 2009 14:46:02 -0700 <904b25810905061446m73c42040nfff47c9b8950bcfa@mail.gmail.com>
+References: <20090228030226.C0D34FC3DA@magilla.sf.frob.com>
+	<20090228030413.5B915FC3DA@magilla.sf.frob.com>
+	<alpine.LFD.2.00.0902271932520.3111@localhost.localdomain>
+	<alpine.LFD.2.00.0902271948570.3111@localhost.localdomain>
+	<20090228072554.CFEA6FC3DA@magilla.sf.frob.com>
+	<alpine.LFD.2.00.0902280916470.3111@localhost.localdomain>
+	<904b25810905061146ged374f2se0afd24e9e3c1f06@mail.gmail.com>
+	<20090506212913.GC4861@elte.hu>
+	<904b25810905061446m73c42040nfff47c9b8950bcfa@mail.gmail.com>
+X-Antipastobozoticataclysm: Bariumenemanilow
+Message-Id: <20090507070312.DCC5EFC39E@magilla.sf.frob.com>
+Date:	Thu,  7 May 2009 00:03:12 -0700 (PDT)
+X-Scanned-By: MIMEDefang 2.58 on 172.16.52.254
+Return-Path: <roland@redhat.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22655
+X-archive-position: 22656
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nmiell@comcast.net
+X-original-sender: roland@redhat.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2009-05-06 at 15:21 -0700, Markus Gutschke (顧孟勤) wrote:
-> On Wed, May 6, 2009 at 15:13, Ingo Molnar <mingo@elte.hu> wrote:
-> > doing a (per arch) bitmap of harmless syscalls and replacing the
-> > mode1_syscalls[] check with that in kernel/seccomp.c would be a
-> > pretty reasonable extension. (.config controllable perhaps, for
-> > old-style-seccomp)
-> >
-> > It would probably be faster than the current loop over
-> > mode1_syscalls[] as well.
-> 
-> This would be a great option to improve performance of our sandbox. I
-> can detect the availability of the new kernel API dynamically, and
-> then not intercept the bulk of the system calls. This would allow the
-> sandbox to work both with existing and with newer kernels.
-> 
-> We'll post a kernel patch for discussion in the next few days,
-> 
+> Ptrace has performance and/or reliability problems when used to
+> sandbox threaded applications due to potential race conditions when
+> inspecting system call arguments. We hope that we can avoid this
+> problem with seccomp.
 
-I suspect the correct thing to do would be to leave seccomp mode 1 alone
-and introduce a mode 2 with a less restricted set of system calls -- the
-interface was designed to be extended in this way, after all.
+ptrace certainly has performance issues.  I take it the only "reliability
+problems" you are talking about are MT races with modifications to user
+memory that is relevant to a system call.  (Is there something else?)
+That is not a "ptrace problem" per se at all.  It's an intrinsic problem
+with any method based on "generic" syscall interception, if the filtering
+and enforcement decisions depend on examining user memory.  By the same
+token, no such method has a "reliability problem" if the filtering checks
+only examine the registers (or other thread-synchronous state).
 
--- 
-Nicholas Miell <nmiell@comcast.net>
+In the sense that I mean, seccomp is "generic syscall interception" too.
+(That is, the checks/enforcement are "around" the call, rather than inside
+it with direct atomicity controls binding the checks and uses together.)
+The only reason seccomp does not have this "reliability problem" is that
+its filtering is trivial and depends only on registers (in fact, only on
+one register, the syscall number).
+
+If you want to do checks that depend on shared or volatile state, then
+syscall interception is really not the proper mechanism for you.  (Likely
+examples include user memory, e.g. for file names in open calls, or ioctl
+struct contents, etc., fd tables or filesystem details, etc.)  For that
+you need mechanisms that look at stable kernel copies of user data that
+are what the syscall will actually use, such as is done by audit, LSM, etc.
+
+If you only have checks confined to thread-synchronous state such as the
+user registers, then you don't have any "reliability problem" regardless
+of the the particular syscall interception mechanism you use.  (ptrace has
+many problems for this or any other purpose, but this is not one of them.)
+That's unless you are referring to some other "reliability problem" that
+I'm not aware of.  (And I'll leave aside the "is it registers or is it
+user memory?" issue on ia64 as irrelevant, since, you know, it's ia64.)
+
+If syscall interception is indeed an appropriate mechanism for your needs
+and you want something tailored more specifically to your exact use in
+future kernels, a module doing this would be easy to implement using the
+utrace API.  (That might be a "compelling use" of utrace by virtue of the
+Midas brand name effect, if nothing else. ;-)
+
+
+Thanks,
+Roland

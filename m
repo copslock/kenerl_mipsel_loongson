@@ -1,64 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 May 2009 20:18:55 +0100 (BST)
-Received: from one.firstfloor.org ([213.235.205.2]:40786 "EHLO
-	one.firstfloor.org" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20025597AbZEHTSs (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 8 May 2009 20:18:48 +0100
-Received: from basil.firstfloor.org (p5B3CB324.dip0.t-ipconnect.de [91.60.179.36])
-	by one.firstfloor.org (Postfix) with ESMTP id B7E321AB0002;
-	Fri,  8 May 2009 21:23:43 +0200 (CEST)
-Received: by basil.firstfloor.org (Postfix, from userid 1000)
-	id 5A6F31D0286; Fri,  8 May 2009 21:18:44 +0200 (CEST)
-To:	=?iso-8859-1?Q?Markus_Gutschke_=28=DC=D2=D0=29?= 
-	<markus@google.com>
-Cc:	Ingo Molnar <mingo@elte.hu>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Roland McGrath <roland@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, stable@kernel.org,
-	linux-mips@linux-mips.org, sparclinux@vger.kernel.org,
-	linuxppc-dev@ozlabs.org
-Subject: Re: [PATCH 2/2] x86-64: seccomp: fix 32/64 syscall hole
-From:	Andi Kleen <andi@firstfloor.org>
-References: <20090228030226.C0D34FC3DA@magilla.sf.frob.com>
-	<20090228030413.5B915FC3DA@magilla.sf.frob.com>
-	<alpine.LFD.2.00.0902271932520.3111@localhost.localdomain>
-	<alpine.LFD.2.00.0902271948570.3111@localhost.localdomain>
-	<20090228072554.CFEA6FC3DA@magilla.sf.frob.com>
-	<alpine.LFD.2.00.0902280916470.3111@localhost.localdomain>
-	<904b25810905061146ged374f2se0afd24e9e3c1f06@mail.gmail.com>
-	<20090506212913.GC4861@elte.hu>
-	<904b25810905061446m73c42040nfff47c9b8950bcfa@mail.gmail.com>
-	<20090506215450.GA9537@elte.hu>
-	<904b25810905061508n6d9cb8dbg71de5b1e0332ede7@mail.gmail.com>
-Date:	Fri, 08 May 2009 21:18:44 +0200
-In-Reply-To: <904b25810905061508n6d9cb8dbg71de5b1e0332ede7@mail.gmail.com> (Markus Gutschke's message of "Wed, 6 May 2009 15:08:40 -0700")
-Message-ID: <878wl7o12j.fsf@basil.nowhere.org>
-User-Agent: Gnus/5.1008 (Gnus v5.10.8) Emacs/22.3 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8bit
-Return-Path: <andi@firstfloor.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 May 2009 20:53:40 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:34380 "EHLO
+	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S28573926AbZEHTxe (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 8 May 2009 20:53:34 +0100
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B4a048da70001>; Fri, 08 May 2009 15:53:12 -0400
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 8 May 2009 12:52:18 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 8 May 2009 12:52:18 -0700
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n48JqFFb021067;
+	Fri, 8 May 2009 12:52:15 -0700
+Received: (from ddaney@localhost)
+	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n48JqAHS021065;
+	Fri, 8 May 2009 12:52:10 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+To:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:	David Daney <ddaney@caviumnetworks.com>
+Subject: [PATCH] MIPS: Don't write ones to reserved entryhi bits.
+Date:	Fri,  8 May 2009 12:52:10 -0700
+Message-Id: <1241812330-21041-1-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.6.0.6
+X-OriginalArrivalTime: 08 May 2009 19:52:18.0578 (UTC) FILETIME=[7E6E3720:01C9D016]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22673
+X-archive-position: 22674
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andi@firstfloor.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-"Markus Gutschke (мва)" <markus@google.com> writes:
->
-> There are a large number of system calls that "normal" C/C++ code uses
-> quite frequently, and that are not security sensitive. A typical
-> example would be gettimeofday().
+According to the MIPS64 Privileged Resource Architecture manual, only
+values of zero may be written to bits 8..10 of CP0 entryhi.  We need
+to add masking by ASID_MASK.
 
-At least on x86-64 gettimeofday() (and time(2)) work inside seccomp because 
-they're vsyscalls that run in ring 3 only.
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+---
+ arch/mips/include/asm/mmu_context.h |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
--Andi
-
+diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
+index d7f3eb0..3899f99 100644
+--- a/arch/mips/include/asm/mmu_context.h
++++ b/arch/mips/include/asm/mmu_context.h
+@@ -169,7 +169,7 @@ static inline void switch_mm(struct mm_struct *prev, struct mm_struct *next,
+ 	ehb(); /* Make sure it propagates to TCStatus */
+ 	evpe(mtflags);
+ #else
+-	write_c0_entryhi(cpu_context(cpu, next));
++	write_c0_entryhi(cpu_context(cpu, next) & ASID_MASK);
+ #endif /* CONFIG_MIPS_MT_SMTC */
+ 	TLBMISS_HANDLER_SETUP_PGD(next->pgd);
+ 
+@@ -229,7 +229,7 @@ activate_mm(struct mm_struct *prev, struct mm_struct *next)
+ 	ehb(); /* Make sure it propagates to TCStatus */
+ 	evpe(mtflags);
+ #else
+-	write_c0_entryhi(cpu_context(cpu, next));
++	write_c0_entryhi(cpu_context(cpu, next) & ASID_MASK);
+ #endif /* CONFIG_MIPS_MT_SMTC */
+ 	TLBMISS_HANDLER_SETUP_PGD(next->pgd);
+ 
 -- 
-ak@linux.intel.com -- Speaking for myself only.
+1.6.0.6

@@ -1,127 +1,107 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 May 2009 11:19:30 +0100 (BST)
-Received: from sitar.i-cable.com ([203.83.115.100]:51323 "HELO
-	sitar.i-cable.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with SMTP id S20024086AbZEHKTZ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 8 May 2009 11:19:25 +0100
-Received: (qmail 19935 invoked by uid 508); 8 May 2009 10:19:17 -0000
-Received: from 203.83.114.121 by sitar (envelope-from <robert.zhangle@gmail.com>, uid 505) with qmail-scanner-1.25 
- (clamdscan: 0.93.3/8786.  
- Clear:RC:1(203.83.114.121):. 
- Processed in 0.087373 secs); 08 May 2009 10:19:17 -0000
-Received: from ip114121.hkicable.com (HELO silicon.i-cable.com) (203.83.114.121)
-  by 0 with SMTP; 8 May 2009 10:19:17 -0000
-Received: from localhost (cm222-167-208-75.hkcable.com.hk [222.167.208.75])
-	by silicon.i-cable.com (8.13.5/8.13.5) with ESMTP id n48AJGLA022996;
-	Fri, 8 May 2009 18:19:16 +0800 (HKT)
-Date:	Fri, 8 May 2009 18:18:48 +0800
-From:	Zhang Le <r0bertz@gentoo.org>
-To:	yanh <yanh@lemote.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH 3/3] MIPS: handle write_combine in pci_mmap_page_range
-Message-ID: <20090508101848.GD7434@adriano.hkcable.com.hk>
-Mail-Followup-To: yanh <yanh@lemote.com>, linux-mips@linux-mips.org
-References: <cover.1241764064.git.r0bertz@gentoo.org> <a1356a5b181a188435ff569b4f7abe57cf8fd7eb.1241764065.git.r0bertz@gentoo.org> <fb705e2eb405eea04853ae53639457a295a7dd90.1241764065.git.r0bertz@gentoo.org> <a892c7470d85f9563cc74c766fb4dd7f2fa0b801.1241764065.git.r0bertz@gentoo.org> <1241772887.9177.139.camel@localhost.localdomain>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 May 2009 16:25:50 +0100 (BST)
+Received: from mail-gx0-f157.google.com ([209.85.217.157]:59349 "EHLO
+	mail-gx0-f157.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20025089AbZEHPZm convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 8 May 2009 16:25:42 +0100
+Received: by gxk1 with SMTP id 1so2961057gxk.0
+        for <multiple recipients>; Fri, 08 May 2009 08:25:36 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:sender:received:in-reply-to
+         :references:date:x-google-sender-auth:message-id:subject:from:to:cc
+         :content-type:content-transfer-encoding;
+        bh=z6TKZXLUyq4/TiNJZ2FAR/LbDB6fBlnyY9zUj0CULFA=;
+        b=b2SdgFiWabKwMAHwMiJ5PHXZtE01n07drWNW6EoMcX/1AYOhFBgFOCV8X1N2IsIxf9
+         b1SE6k7dre0Ra26pdtZud1hehliEpK/vKIR6VC1HQpN0CnVDi9xErpxnKZTPGcQ7Mz8q
+         HmUmc4oAa0LPf+0177DNwchnRP4eIBqmMZghA=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        b=iCotSVbxQS1L9nDEFlFze6v0QTv4ALBwHZCjw3s0BN5yIINnasW9jzYcWQp9sqSDRr
+         oXX3lRMM6vwLvh1zOZSlh+zCOBqSLRu4L+6ZZfRYdWC6ziZPoCi8mpiMBcpqD0daqBL+
+         NDea65HgzZo7uJaWVswtMaibLUZQDhsLj8tYI=
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="T6xhMxlHU34Bk0ad"
-Content-Disposition: inline
-In-Reply-To: <1241772887.9177.139.camel@localhost.localdomain>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <robert.zhangle@gmail.com>
+Received: by 10.90.104.15 with SMTP id b15mr3184953agc.101.1241796335893; Fri, 
+	08 May 2009 08:25:35 -0700 (PDT)
+In-Reply-To: <20090504225719.GA22417@cuplxvomd02.corp.sa.net>
+References: <20090504225719.GA22417@cuplxvomd02.corp.sa.net>
+Date:	Fri, 8 May 2009 11:25:35 -0400
+X-Google-Sender-Auth: 7beae1d52377b4fc
+Message-ID: <7d1d9c250905080825n62f46b2bk254a736d3bce2ec6@mail.gmail.com>
+Subject: Re: [PATCH 2/3] mips:powertv: Make kernel command line size 
+	configurable (resend)
+From:	Paul Gortmaker <paul.gortmaker@windriver.com>
+To:	David VomLehn <dvomlehn@cisco.com>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <paul.gortmaker@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22668
+X-archive-position: 22669
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: r0bertz@gentoo.org
+X-original-sender: paul.gortmaker@windriver.com
 Precedence: bulk
 X-list: linux-mips
 
+On Mon, May 4, 2009 at 6:57 PM, David VomLehn <dvomlehn@cisco.com> wrote:
+> Most platforms can get by perfectly well with the default command line size,
+> but some platforms need more. This patch allows the command line size to
+> be configured for those platforms that need it. The default remains 256
+> characters.
 
---T6xhMxlHU34Bk0ad
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The one thing I see when I look at this patch, is that it lands in the
+arch/mips/Kconfig -- but is there really anything fundamentally
+architecture specific about the allowed length of the kernel command
+line?.  It probably belongs somewhere alongside the setting for
+LOG_BUF_LEN or similar (and then add the other respective changes
+to make all arch actually respect the setting.)
 
-On 16:54 Fri 08 May     , yanh wrote:
->=20
-> =E5=9C=A8 2009-05-08=E4=BA=94=E7=9A=84 14:30 +0800=EF=BC=8CZhang Le=E5=86=
-=99=E9=81=93=EF=BC=9A
-> > Signed-off-by: Zhang Le <r0bertz@gentoo.org>
-> > ---
-> >  arch/mips/pci/pci.c |    8 ++++++--
-> >  1 files changed, 6 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/arch/mips/pci/pci.c b/arch/mips/pci/pci.c
-> > index b0eb9e7..4ca53ef 100644
-> > --- a/arch/mips/pci/pci.c
-> > +++ b/arch/mips/pci/pci.c
-> > @@ -346,10 +346,14 @@ int pci_mmap_page_range(struct pci_dev *dev, stru=
-ct vm_area_struct *vma,
-> >  		return -EINVAL;
-> > =20
-> >  	/*
-> > -	 * Ignore write-combine; for now only return uncached mappings.
-> > +	 * For write-combine, return uncached accelerated mappings if CPU
-> > +	 * supports; otherwise, return uncached mappings.
-> >  	 */
-> >  	prot =3D pgprot_val(vma->vm_page_prot);
-> > -	prot =3D (prot & ~_CACHE_MASK) | _CACHE_UNCACHED;
-> > +	if (write_combine && cpu_has_uncached_accelerated)
-> > +		prot =3D (prot & ~_CACHE_MASK) | _CACHE_UNCACHED_ACCELERATED;
-> > +	else
-> > +		prot =3D (prot & ~_CACHE_MASK) | _CACHE_UNCACHED;
-> >  	vma->vm_page_prot =3D __pgprot(prot);
-> This should be definietely wrong for MMIOs.
-> uncache accelleration should only be enabled for addresses which have no
-> side effect when doing write combine such as video memory.
+Paul.
 
-Actually, currently write_combine is true only for prefetchable pci memory:
-http://lxr.linux.no/linux+v2.6.29/drivers/pci/pci-sysfs.c#L711
-
-And currently on fuloong 2f box, there is only one prefetchable pci memory
-region, which just belongs to video card:
-
-zhangle@2f /sys/devices/pci0000:00 (n32) $ find -name "*wc" -exec ls -l {} =
-\;
--rw------- 1 root root 256M 2009-05-08 03:25 ./0000:00:08.0/resource0_wc
-
-So, are we talking about the same thing?=20
-
-Also, I have observed that this region is larger than the actual video ram =
-size
-32M. However, libpciaccess only mapped 32M into X's address space:
-
-zhangle@2f ~ (n32) $ sudo cat /proc/$(pidof X)/maps | grep wc$
-2b354000-2d354000 rw-s 50000000 00:00 1882 /sys/devices/pci0000:00/0000:00:=
-08.0/resource0_wc
-
-So, I guess this should be just ok, right?
-
-Any other risks?
-
-> > =20
-> >  	return remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff,
->=20
-
---=20
-Zhang, Le
-Gentoo/Loongson Developer
-http://zhangle.is-a-geek.org
-0260 C902 B8F8 6506 6586 2B90 BC51 C808 1E4E 2973
-
---T6xhMxlHU34Bk0ad
-Content-Type: application/pgp-signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.11 (GNU/Linux)
-
-iEYEARECAAYFAkoEBwgACgkQvFHICB5OKXMkNgCffaddidHjvGGbTrggHCUKnxNv
-w9IAmQH0FCt3DOK8iN5sKttL+D9bhEio
-=U+rx
------END PGP SIGNATURE-----
-
---T6xhMxlHU34Bk0ad--
+>
+> Signed-off-by: David VomLehn <dvomlehn@cisco.com>
+> ---
+>  arch/mips/Kconfig             |    7 +++++++
+>  arch/mips/include/asm/setup.h |    2 +-
+>  2 files changed, 8 insertions(+), 1 deletions(-)
+>
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 998e5db..99f7b6d 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -780,6 +780,13 @@ config EARLY_PRINTK
+>  config SYS_HAS_EARLY_PRINTK
+>        bool
+>
+> +config COMMAND_LINE_SIZE
+> +       int "Maximum size of command line passed to kernel from bootloader"
+> +       default 256
+> +       help
+> +         Most systems work well with the default value, but some bootloaders pass more
+> +         information on the command line than others. A smaller value is good here.
+> +
+>  config HOTPLUG_CPU
+>        bool
+>        default n
+> diff --git a/arch/mips/include/asm/setup.h b/arch/mips/include/asm/setup.h
+> index e600ced..132e397 100644
+> --- a/arch/mips/include/asm/setup.h
+> +++ b/arch/mips/include/asm/setup.h
+> @@ -1,7 +1,7 @@
+>  #ifndef _MIPS_SETUP_H
+>  #define _MIPS_SETUP_H
+>
+> -#define COMMAND_LINE_SIZE      256
+> +#define COMMAND_LINE_SIZE      CONFIG_COMMAND_LINE_SIZE
+>
+>  #ifdef  __KERNEL__
+>  extern void setup_early_printk(void);
+>
+>

@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 May 2009 20:53:40 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:34380 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 08 May 2009 23:11:29 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:18527 "EHLO
 	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S28573926AbZEHTxe (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 8 May 2009 20:53:34 +0100
+	by ftp.linux-mips.org with ESMTP id S20025712AbZEHWLX (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 8 May 2009 23:11:23 +0100
 Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B4a048da70001>; Fri, 08 May 2009 15:53:12 -0400
+	id <B4a04adf00002>; Fri, 08 May 2009 18:10:57 -0400
 Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Fri, 8 May 2009 12:52:18 -0700
+	 Fri, 8 May 2009 15:10:54 -0700
 Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Fri, 8 May 2009 12:52:18 -0700
+	 Fri, 8 May 2009 15:10:54 -0700
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n48JqFFb021067;
-	Fri, 8 May 2009 12:52:15 -0700
+	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n48MApgk029256;
+	Fri, 8 May 2009 15:10:51 -0700
 Received: (from ddaney@localhost)
-	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n48JqAHS021065;
-	Fri, 8 May 2009 12:52:10 -0700
+	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n48MAoLD029254;
+	Fri, 8 May 2009 15:10:50 -0700
 From:	David Daney <ddaney@caviumnetworks.com>
 To:	linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:	David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH] MIPS: Don't write ones to reserved entryhi bits.
-Date:	Fri,  8 May 2009 12:52:10 -0700
-Message-Id: <1241812330-21041-1-git-send-email-ddaney@caviumnetworks.com>
+Subject: [PATCH] MIPS: Remove unused parameters from iPTE_LW.
+Date:	Fri,  8 May 2009 15:10:50 -0700
+Message-Id: <1241820650-29230-1-git-send-email-ddaney@caviumnetworks.com>
 X-Mailer: git-send-email 1.6.0.6
-X-OriginalArrivalTime: 08 May 2009 19:52:18.0578 (UTC) FILETIME=[7E6E3720:01C9D016]
+X-OriginalArrivalTime: 08 May 2009 22:10:54.0244 (UTC) FILETIME=[DAF42640:01C9D029]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22674
+X-archive-position: 22675
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,36 +35,136 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-According to the MIPS64 Privileged Resource Architecture manual, only
-values of zero may be written to bits 8..10 of CP0 entryhi.  We need
-to add masking by ASID_MASK.
+The l parameter to iPTE_LW() is unused. Remove it and from some of its
+callers as well.
 
 Signed-off-by: David Daney <ddaney@caviumnetworks.com>
 ---
- arch/mips/include/asm/mmu_context.h |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/mm/tlbex.c |   28 ++++++++++++++--------------
+ 1 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
-index d7f3eb0..3899f99 100644
---- a/arch/mips/include/asm/mmu_context.h
-+++ b/arch/mips/include/asm/mmu_context.h
-@@ -169,7 +169,7 @@ static inline void switch_mm(struct mm_struct *prev, struct mm_struct *next,
- 	ehb(); /* Make sure it propagates to TCStatus */
- 	evpe(mtflags);
- #else
--	write_c0_entryhi(cpu_context(cpu, next));
-+	write_c0_entryhi(cpu_context(cpu, next) & ASID_MASK);
- #endif /* CONFIG_MIPS_MT_SMTC */
- 	TLBMISS_HANDLER_SETUP_PGD(next->pgd);
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 0615b62..3548acf 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -782,7 +782,7 @@ u32 handle_tlbs[FASTPATH_SIZE] __cacheline_aligned;
+ u32 handle_tlbm[FASTPATH_SIZE] __cacheline_aligned;
  
-@@ -229,7 +229,7 @@ activate_mm(struct mm_struct *prev, struct mm_struct *next)
- 	ehb(); /* Make sure it propagates to TCStatus */
- 	evpe(mtflags);
- #else
--	write_c0_entryhi(cpu_context(cpu, next));
-+	write_c0_entryhi(cpu_context(cpu, next) & ASID_MASK);
- #endif /* CONFIG_MIPS_MT_SMTC */
- 	TLBMISS_HANDLER_SETUP_PGD(next->pgd);
+ static void __cpuinit
+-iPTE_LW(u32 **p, struct uasm_label **l, unsigned int pte, unsigned int ptr)
++iPTE_LW(u32 **p, unsigned int pte, unsigned int ptr)
+ {
+ #ifdef CONFIG_SMP
+ # ifdef CONFIG_64BIT_PHYS_ADDR
+@@ -862,13 +862,13 @@ iPTE_SW(u32 **p, struct uasm_reloc **r, unsigned int pte, unsigned int ptr,
+  * with it's original value.
+  */
+ static void __cpuinit
+-build_pte_present(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
++build_pte_present(u32 **p, struct uasm_reloc **r,
+ 		  unsigned int pte, unsigned int ptr, enum label_id lid)
+ {
+ 	uasm_i_andi(p, pte, pte, _PAGE_PRESENT | _PAGE_READ);
+ 	uasm_i_xori(p, pte, pte, _PAGE_PRESENT | _PAGE_READ);
+ 	uasm_il_bnez(p, r, pte, lid);
+-	iPTE_LW(p, l, pte, ptr);
++	iPTE_LW(p, pte, ptr);
+ }
  
+ /* Make PTE valid, store result in PTR. */
+@@ -886,13 +886,13 @@ build_make_valid(u32 **p, struct uasm_reloc **r, unsigned int pte,
+  * restore PTE with value from PTR when done.
+  */
+ static void __cpuinit
+-build_pte_writable(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
++build_pte_writable(u32 **p, struct uasm_reloc **r,
+ 		   unsigned int pte, unsigned int ptr, enum label_id lid)
+ {
+ 	uasm_i_andi(p, pte, pte, _PAGE_PRESENT | _PAGE_WRITE);
+ 	uasm_i_xori(p, pte, pte, _PAGE_PRESENT | _PAGE_WRITE);
+ 	uasm_il_bnez(p, r, pte, lid);
+-	iPTE_LW(p, l, pte, ptr);
++	iPTE_LW(p, pte, ptr);
+ }
+ 
+ /* Make PTE writable, update software status bits as well, then store
+@@ -913,12 +913,12 @@ build_make_write(u32 **p, struct uasm_reloc **r, unsigned int pte,
+  * restore PTE with value from PTR when done.
+  */
+ static void __cpuinit
+-build_pte_modifiable(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
++build_pte_modifiable(u32 **p, struct uasm_reloc **r,
+ 		     unsigned int pte, unsigned int ptr, enum label_id lid)
+ {
+ 	uasm_i_andi(p, pte, pte, _PAGE_WRITE);
+ 	uasm_il_beqz(p, r, pte, lid);
+-	iPTE_LW(p, l, pte, ptr);
++	iPTE_LW(p, pte, ptr);
+ }
+ 
+ /*
+@@ -994,7 +994,7 @@ static void __cpuinit build_r3000_tlb_load_handler(void)
+ 	memset(relocs, 0, sizeof(relocs));
+ 
+ 	build_r3000_tlbchange_handler_head(&p, K0, K1);
+-	build_pte_present(&p, &l, &r, K0, K1, label_nopage_tlbl);
++	build_pte_present(&p, &r, K0, K1, label_nopage_tlbl);
+ 	uasm_i_nop(&p); /* load delay */
+ 	build_make_valid(&p, &r, K0, K1);
+ 	build_r3000_tlb_reload_write(&p, &l, &r, K0, K1);
+@@ -1024,7 +1024,7 @@ static void __cpuinit build_r3000_tlb_store_handler(void)
+ 	memset(relocs, 0, sizeof(relocs));
+ 
+ 	build_r3000_tlbchange_handler_head(&p, K0, K1);
+-	build_pte_writable(&p, &l, &r, K0, K1, label_nopage_tlbs);
++	build_pte_writable(&p, &r, K0, K1, label_nopage_tlbs);
+ 	uasm_i_nop(&p); /* load delay */
+ 	build_make_write(&p, &r, K0, K1);
+ 	build_r3000_tlb_reload_write(&p, &l, &r, K0, K1);
+@@ -1054,7 +1054,7 @@ static void __cpuinit build_r3000_tlb_modify_handler(void)
+ 	memset(relocs, 0, sizeof(relocs));
+ 
+ 	build_r3000_tlbchange_handler_head(&p, K0, K1);
+-	build_pte_modifiable(&p, &l, &r, K0, K1, label_nopage_tlbm);
++	build_pte_modifiable(&p, &r, K0, K1, label_nopage_tlbm);
+ 	uasm_i_nop(&p); /* load delay */
+ 	build_make_write(&p, &r, K0, K1);
+ 	build_r3000_pte_reload_tlbwi(&p, K0, K1);
+@@ -1096,7 +1096,7 @@ build_r4000_tlbchange_handler_head(u32 **p, struct uasm_label **l,
+ #ifdef CONFIG_SMP
+ 	uasm_l_smp_pgtable_change(l, *p);
+ #endif
+-	iPTE_LW(p, l, pte, ptr); /* get even pte */
++	iPTE_LW(p, pte, ptr); /* get even pte */
+ 	if (!m4kc_tlbp_war())
+ 		build_tlb_probe_entry(p);
+ }
+@@ -1138,7 +1138,7 @@ static void __cpuinit build_r4000_tlb_load_handler(void)
+ 	}
+ 
+ 	build_r4000_tlbchange_handler_head(&p, &l, &r, K0, K1);
+-	build_pte_present(&p, &l, &r, K0, K1, label_nopage_tlbl);
++	build_pte_present(&p, &r, K0, K1, label_nopage_tlbl);
+ 	if (m4kc_tlbp_war())
+ 		build_tlb_probe_entry(&p);
+ 	build_make_valid(&p, &r, K0, K1);
+@@ -1169,7 +1169,7 @@ static void __cpuinit build_r4000_tlb_store_handler(void)
+ 	memset(relocs, 0, sizeof(relocs));
+ 
+ 	build_r4000_tlbchange_handler_head(&p, &l, &r, K0, K1);
+-	build_pte_writable(&p, &l, &r, K0, K1, label_nopage_tlbs);
++	build_pte_writable(&p, &r, K0, K1, label_nopage_tlbs);
+ 	if (m4kc_tlbp_war())
+ 		build_tlb_probe_entry(&p);
+ 	build_make_write(&p, &r, K0, K1);
+@@ -1200,7 +1200,7 @@ static void __cpuinit build_r4000_tlb_modify_handler(void)
+ 	memset(relocs, 0, sizeof(relocs));
+ 
+ 	build_r4000_tlbchange_handler_head(&p, &l, &r, K0, K1);
+-	build_pte_modifiable(&p, &l, &r, K0, K1, label_nopage_tlbm);
++	build_pte_modifiable(&p, &r, K0, K1, label_nopage_tlbm);
+ 	if (m4kc_tlbp_war())
+ 		build_tlb_probe_entry(&p);
+ 	/* Present and writable bits set, set accessed and dirty bits. */
 -- 
 1.6.0.6

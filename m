@@ -1,98 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 10 May 2009 19:58:28 +0100 (BST)
-Received: from qmta04.westchester.pa.mail.comcast.net ([76.96.62.40]:41059
-	"EHLO QMTA04.westchester.pa.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20023165AbZEJS6W (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 10 May 2009 19:58:22 +0100
-Received: from OMTA10.westchester.pa.mail.comcast.net ([76.96.62.28])
-	by QMTA04.westchester.pa.mail.comcast.net with comcast
-	id puXt1b0090cZkys54uyGD7; Sun, 10 May 2009 18:58:16 +0000
-Received: from [192.168.1.13] ([69.140.18.238])
-	by OMTA10.westchester.pa.mail.comcast.net with comcast
-	id puyG1b00858Be2l3WuyGnK; Sun, 10 May 2009 18:58:17 +0000
-Message-ID: <4A072383.3010109@gentoo.org>
-Date:	Sun, 10 May 2009 14:57:07 -0400
-From:	Kumba <kumba@gentoo.org>
-User-Agent: Thunderbird 2.0.0.21 (Windows/20090302)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 May 2009 13:15:35 +0100 (BST)
+Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:59306 "EHLO
+	atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20026197AbZEKMP2 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 11 May 2009 13:15:28 +0100
+Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
+	id 2F2F3F048F; Mon, 11 May 2009 14:15:26 +0200 (CEST)
+Date:	Sun, 10 May 2009 07:37:01 +0200
+From:	Pavel Machek <pavel@ucw.cz>
+To:	Ingo Molnar <mingo@elte.hu>
+Cc:	Nicholas Miell <nmiell@comcast.net>,
+	"Markus Gutschke (?????????)" <markus@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Roland McGrath <roland@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, stable@kernel.org,
+	linux-mips@linux-mips.org, sparclinux@vger.kernel.org,
+	linuxppc-dev@ozlabs.org
+Subject: Re: [PATCH 2/2] x86-64: seccomp: fix 32/64 syscall hole
+Message-ID: <20090510053700.GC1363@ucw.cz>
+References: <alpine.LFD.2.00.0902280916470.3111@localhost.localdomain> <904b25810905061146ged374f2se0afd24e9e3c1f06@mail.gmail.com> <20090506212913.GC4861@elte.hu> <904b25810905061446m73c42040nfff47c9b8950bcfa@mail.gmail.com> <20090506215450.GA9537@elte.hu> <904b25810905061508n6d9cb8dbg71de5b1e0332ede7@mail.gmail.com> <20090506221319.GA11493@elte.hu> <904b25810905061521v62b3ddd6l14deb614d203385a@mail.gmail.com> <1241670237.11500.7.camel@entropy> <20090507101129.GB5978@elte.hu>
 MIME-Version: 1.0
-To:	Johannes Dickgreber <tanzy@gmx.de>
-CC:	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: Help getting IP30/Octane fixed?
-References: <4A06100F.7020105@gentoo.org> <4A0717AA.8060603@gmx.de>
-In-Reply-To: <4A0717AA.8060603@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20090507101129.GB5978@elte.hu>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <pavel@ucw.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22679
+X-archive-position: 22680
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: pavel@ucw.cz
 Precedence: bulk
 X-list: linux-mips
 
-Johannes Dickgreber wrote:
-
-> This is whats wrong with SMP: from file include/asm/mach-ip30/heart.h
+On Thu 2009-05-07 12:11:29, Ingo Molnar wrote:
 > 
-> #define HEART_IMR(x)		((volatile ulong *)0x900000000ff10000 + (8 * (x)))
+> * Nicholas Miell <nmiell@comcast.net> wrote:
 > 
-> I schould be
+> > On Wed, 2009-05-06 at 15:21 -0700, Markus Gutschke (?????????) wrote:
+> > > On Wed, May 6, 2009 at 15:13, Ingo Molnar <mingo@elte.hu> wrote:
+> > > > doing a (per arch) bitmap of harmless syscalls and replacing the
+> > > > mode1_syscalls[] check with that in kernel/seccomp.c would be a
+> > > > pretty reasonable extension. (.config controllable perhaps, for
+> > > > old-style-seccomp)
+> > > >
+> > > > It would probably be faster than the current loop over
+> > > > mode1_syscalls[] as well.
+> > > 
+> > > This would be a great option to improve performance of our sandbox. I
+> > > can detect the availability of the new kernel API dynamically, and
+> > > then not intercept the bulk of the system calls. This would allow the
+> > > sandbox to work both with existing and with newer kernels.
+> > > 
+> > > We'll post a kernel patch for discussion in the next few days,
+> > > 
+> > 
+> > I suspect the correct thing to do would be to leave seccomp mode 1 
+> > alone and introduce a mode 2 with a less restricted set of system 
+> > calls -- the interface was designed to be extended in this way, 
+> > after all.
 > 
-> #define HEART_IMR(x)		((volatile ulong *)0x900000000ff10000 + (x))
+> Yes, that is what i alluded to above via the '.config controllable' 
+> aspect.
 > 
-> or it schould be
+> Mode 2 could be implemented like this: extend prctl_set_seccomp() 
+> with a bitmap pointer, and copy it to a per task seccomp context 
+> structure.
 > 
-> #define HEART_IMR(x)		((volatile ulong *) (0x900000000ff10000 + (8 * (x))))
+> a bitmap for 300 syscalls takes only about 40 bytes.
 > 
-> The IRQ MASK Register for the different CPUs are side by side.
-> In your version the factor 8 is used twice. First explicit inside the braces
-> and second, because of the pointer to ulong implicit done by the
-> compiler.
-> I checked it by dissambling the code and my smp-kernel is working if i start
-> only with one cpu. With 2 cpus the smp-kernel is booting, but the init process
-> hangs then.
+> Please take care to implement nesting properly: if a seccomp context 
+> does a seccomp call (which mode 2 could allow), then the resulting 
+> bitmap should be the logical-AND of the parent and child bitmaps. 
+> There's no reason why seccomp couldnt be used in hiearachy of 
+> sandboxes, in a gradually less permissive fashion.
 
-I'll have to test this when I get a new SMP module in.  Found a cheap R10K 
-(yuck) on eBay for real cheap that'll suffice.  My R12000-300MHz refused to post 
-at all (LED didn't even change to red, but the PROM would process NMI resets, 
-oddly enough).
+I don't think seccomp nesting (at kernel level) has any value.
 
-Ricardo (ricmm on IRC) explained it as this:
+First, syscalls are wrong level of abstraction for sandboxing. There
+are multiple ways to read from file, for example.
 
-<ricmm> the baseline problem is that the secondary CPU's ipi irq is not 
-triggering, the first one works
-<ricmm> and smp_call_function() is calling an init function on both CPUs with a 
-wait_for_completion flag set
-<ricmm> but the second CPU will never run the function as the irq is not 
-happening, therefore the flag will remain set
-<ricmm> and smp_call_function() will spin waiting for the completion
-
-
-> the revert is not needed anymore, because of code in arch/mips/pci/ops-bridge.c
-> look for the function emulate_ioc3_cfg
-
-Awesome, that's great to know!
-
-
-> i have done some more work on the older patches and have a working kernel.
-> if someone wants this patch, i can send it.
-
-I'll take a look at it and see if I can integrate it into what I already have. 
-Do you have it broken out into separate changes for the IOC3 metadriver and for 
-the core IP30 code?
-
-
-Thanks!
-
+If you wanted to do hierarchical sandboxes, asking your monitor to
+restrict your seccomp mask would seem like a way to go...
+								Pavel
 -- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
-
-"The past tempts us, the present confuses us, the future frightens us.  And our 
-lives slip away, moment by moment, lost in that vast, terrible in-between."
-
---Emperor Turhan, Centauri Republic
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blog.html

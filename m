@@ -1,91 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 May 2009 13:15:35 +0100 (BST)
-Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:59306 "EHLO
-	atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20026197AbZEKMP2 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 11 May 2009 13:15:28 +0100
-Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
-	id 2F2F3F048F; Mon, 11 May 2009 14:15:26 +0200 (CEST)
-Date:	Sun, 10 May 2009 07:37:01 +0200
-From:	Pavel Machek <pavel@ucw.cz>
-To:	Ingo Molnar <mingo@elte.hu>
-Cc:	Nicholas Miell <nmiell@comcast.net>,
-	"Markus Gutschke (?????????)" <markus@google.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Roland McGrath <roland@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, stable@kernel.org,
-	linux-mips@linux-mips.org, sparclinux@vger.kernel.org,
-	linuxppc-dev@ozlabs.org
-Subject: Re: [PATCH 2/2] x86-64: seccomp: fix 32/64 syscall hole
-Message-ID: <20090510053700.GC1363@ucw.cz>
-References: <alpine.LFD.2.00.0902280916470.3111@localhost.localdomain> <904b25810905061146ged374f2se0afd24e9e3c1f06@mail.gmail.com> <20090506212913.GC4861@elte.hu> <904b25810905061446m73c42040nfff47c9b8950bcfa@mail.gmail.com> <20090506215450.GA9537@elte.hu> <904b25810905061508n6d9cb8dbg71de5b1e0332ede7@mail.gmail.com> <20090506221319.GA11493@elte.hu> <904b25810905061521v62b3ddd6l14deb614d203385a@mail.gmail.com> <1241670237.11500.7.camel@entropy> <20090507101129.GB5978@elte.hu>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20090507101129.GB5978@elte.hu>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <pavel@ucw.cz>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 May 2009 20:13:02 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:51542 "EHLO
+	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20026246AbZEKTM4 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 11 May 2009 20:12:56 +0100
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B4a0878780000>; Mon, 11 May 2009 15:11:57 -0400
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 11 May 2009 12:11:06 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 11 May 2009 12:11:06 -0700
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n4BJB34a021017;
+	Mon, 11 May 2009 12:11:03 -0700
+Received: (from ddaney@localhost)
+	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n4BJB2ZA021015;
+	Mon, 11 May 2009 12:11:02 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+To:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:	David Daney <ddaney@caviumnetworks.com>
+Subject: [PATCH] MIPS: Remove execution hazard barriers for Octeon.
+Date:	Mon, 11 May 2009 12:11:02 -0700
+Message-Id: <1242069062-20991-1-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.6.0.6
+X-OriginalArrivalTime: 11 May 2009 19:11:06.0146 (UTC) FILETIME=[3BFC4820:01C9D26C]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22680
+X-archive-position: 22681
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pavel@ucw.cz
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu 2009-05-07 12:11:29, Ingo Molnar wrote:
-> 
-> * Nicholas Miell <nmiell@comcast.net> wrote:
-> 
-> > On Wed, 2009-05-06 at 15:21 -0700, Markus Gutschke (?????????) wrote:
-> > > On Wed, May 6, 2009 at 15:13, Ingo Molnar <mingo@elte.hu> wrote:
-> > > > doing a (per arch) bitmap of harmless syscalls and replacing the
-> > > > mode1_syscalls[] check with that in kernel/seccomp.c would be a
-> > > > pretty reasonable extension. (.config controllable perhaps, for
-> > > > old-style-seccomp)
-> > > >
-> > > > It would probably be faster than the current loop over
-> > > > mode1_syscalls[] as well.
-> > > 
-> > > This would be a great option to improve performance of our sandbox. I
-> > > can detect the availability of the new kernel API dynamically, and
-> > > then not intercept the bulk of the system calls. This would allow the
-> > > sandbox to work both with existing and with newer kernels.
-> > > 
-> > > We'll post a kernel patch for discussion in the next few days,
-> > > 
-> > 
-> > I suspect the correct thing to do would be to leave seccomp mode 1 
-> > alone and introduce a mode 2 with a less restricted set of system 
-> > calls -- the interface was designed to be extended in this way, 
-> > after all.
-> 
-> Yes, that is what i alluded to above via the '.config controllable' 
-> aspect.
-> 
-> Mode 2 could be implemented like this: extend prctl_set_seccomp() 
-> with a bitmap pointer, and copy it to a per task seccomp context 
-> structure.
-> 
-> a bitmap for 300 syscalls takes only about 40 bytes.
-> 
-> Please take care to implement nesting properly: if a seccomp context 
-> does a seccomp call (which mode 2 could allow), then the resulting 
-> bitmap should be the logical-AND of the parent and child bitmaps. 
-> There's no reason why seccomp couldnt be used in hiearachy of 
-> sandboxes, in a gradually less permissive fashion.
+The Octeon has no execution hazards, so we can remove them and save an
+instruction per TLB handler invocation.
 
-I don't think seccomp nesting (at kernel level) has any value.
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+---
+ arch/mips/mm/tlbex.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-First, syscalls are wrong level of abstraction for sandboxing. There
-are multiple ways to read from file, for example.
-
-If you wanted to do hierarchical sandboxes, asking your monitor to
-restrict your seccomp mask would seem like a way to go...
-								Pavel
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 3548acf..4b2ea1f 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -257,7 +257,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
+ 	case tlb_indexed: tlbw = uasm_i_tlbwi; break;
+ 	}
+ 
+-	if (cpu_has_mips_r2) {
++	if (cpu_has_mips_r2 && current_cpu_type() != CPU_CAVIUM_OCTEON) {
+ 		uasm_i_ehb(p);
+ 		tlbw(p);
+ 		return;
 -- 
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blog.html
+1.6.0.6

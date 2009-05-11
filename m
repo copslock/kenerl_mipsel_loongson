@@ -1,87 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 May 2009 22:59:18 +0100 (BST)
-Received: from yw-out-1718.google.com ([74.125.46.152]:18493 "EHLO
-	yw-out-1718.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20024627AbZEKV7L convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 11 May 2009 22:59:11 +0100
-Received: by yw-out-1718.google.com with SMTP id 9so1766429ywk.24
-        for <multiple recipients>; Mon, 11 May 2009 14:59:09 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:sender:received:in-reply-to
-         :references:date:x-google-sender-auth:message-id:subject:from:to:cc
-         :content-type:content-transfer-encoding;
-        bh=TFdVvfCQIs443syIbsu3rs9iVeegp89KrPnF7+B7XII=;
-        b=GHJsYY+oskiMKyXbwpFt+Vuw3iCi5fBd61xrzr7GTd0PcF/h3K/1NFhfSl0nlpaG7I
-         il95djANruj+ecUKCRfjz/EO1KE9eyMEG+askFnCZ7u3XGFPJYstndHLUtE2YG/3LwSl
-         KQpoq/DqJ/uKTw+Hs/M09aRv5VG4J4ty8TF1g=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        b=rP/CB66EMJP100H2O8gVnwrCuz43BSdI163ECpxEj8WWW9kvMha/DSahwf1MoHpyO7
-         sD30x6VDn1juQ5UByXajwwS2w+A3ehRJPFfILX2jCMn9MDicKoBB7FJwcqZI0sgMvCO/
-         6cF+eKTqo8+sOGA8vn9SyOuP38jJYpY8LO5JY=
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 May 2009 23:25:16 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:6994 "EHLO
+	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20024642AbZEKWZK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 11 May 2009 23:25:10 +0100
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B4a08a5b20000>; Mon, 11 May 2009 18:24:50 -0400
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 11 May 2009 15:24:18 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 11 May 2009 15:24:17 -0700
+Message-ID: <4A08A591.2040303@caviumnetworks.com>
+Date:	Mon, 11 May 2009 15:24:17 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
 MIME-Version: 1.0
-Received: by 10.100.32.6 with SMTP id f6mr18134058anf.143.1242079149235; Mon, 
-	11 May 2009 14:59:09 -0700 (PDT)
-In-Reply-To: <1242069062-20991-1-git-send-email-ddaney@caviumnetworks.com>
-References: <1242069062-20991-1-git-send-email-ddaney@caviumnetworks.com>
-Date:	Mon, 11 May 2009 17:59:07 -0400
-X-Google-Sender-Auth: 32eb67d8c4e4b2ab
-Message-ID: <7d1d9c250905111459p42ce2671n91625e6f62cb2d75@mail.gmail.com>
+To:	Paul Gortmaker <paul.gortmaker@windriver.com>
+CC:	linux-mips@linux-mips.org, ralf@linux-mips.org
 Subject: Re: [PATCH] MIPS: Remove execution hazard barriers for Octeon.
-From:	Paul Gortmaker <paul.gortmaker@windriver.com>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <paul.gortmaker@gmail.com>
+References: <1242069062-20991-1-git-send-email-ddaney@caviumnetworks.com> <7d1d9c250905111459p42ce2671n91625e6f62cb2d75@mail.gmail.com>
+In-Reply-To: <7d1d9c250905111459p42ce2671n91625e6f62cb2d75@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 11 May 2009 22:24:17.0939 (UTC) FILETIME=[393B8630:01C9D287]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22683
+X-archive-position: 22684
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: paul.gortmaker@windriver.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, May 11, 2009 at 3:11 PM, David Daney <ddaney@caviumnetworks.com> wrote:
-> The Octeon has no execution hazards, so we can remove them and save an
-> instruction per TLB handler invocation.
->
-> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-> ---
->  arch/mips/mm/tlbex.c |    2 +-
->  1 files changed, 1 insertions(+), 1 deletions(-)
->
-> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-> index 3548acf..4b2ea1f 100644
-> --- a/arch/mips/mm/tlbex.c
-> +++ b/arch/mips/mm/tlbex.c
-> @@ -257,7 +257,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
->        case tlb_indexed: tlbw = uasm_i_tlbwi; break;
->        }
->
-> -       if (cpu_has_mips_r2) {
-> +       if (cpu_has_mips_r2 && current_cpu_type() != CPU_CAVIUM_OCTEON) {
+Paul Gortmaker wrote:
+> On Mon, May 11, 2009 at 3:11 PM, David Daney <ddaney@caviumnetworks.com> wrote:
+>> The Octeon has no execution hazards, so we can remove them and save an
+>> instruction per TLB handler invocation.
+>>
+>> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+>> ---
+>>  arch/mips/mm/tlbex.c |    2 +-
+>>  1 files changed, 1 insertions(+), 1 deletions(-)
+>>
+>> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+>> index 3548acf..4b2ea1f 100644
+>> --- a/arch/mips/mm/tlbex.c
+>> +++ b/arch/mips/mm/tlbex.c
+>> @@ -257,7 +257,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
+>>        case tlb_indexed: tlbw = uasm_i_tlbwi; break;
+>>        }
+>>
+>> -       if (cpu_has_mips_r2) {
+>> +       if (cpu_has_mips_r2 && current_cpu_type() != CPU_CAVIUM_OCTEON) {
+> 
+> Assuming that it is feasible that some other future cores might also be
+> free of execution hazards, wouldn't it be better to do:
+> 
+>   if (cpu_has_mips_r2 && cpu_has_exec_hazard) {
 
-Assuming that it is feasible that some other future cores might also be
-free of execution hazards, wouldn't it be better to do:
 
-  if (cpu_has_mips_r2 && cpu_has_exec_hazard) {
+That would be a bit cleaner.  I will test a new patch.
 
-and then hide the CPU type listing (currently just one) in some header file?
+Thanks,
+David Daney
 
-Paul.
 
->                uasm_i_ehb(p);
->                tlbw(p);
->                return;
-> --
-> 1.6.0.6
->
->
->
+> 
+> and then hide the CPU type listing (currently just one) in some header file?
+> 
+> Paul.
+> 

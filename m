@@ -1,78 +1,129 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 May 2009 23:42:12 +0100 (BST)
-Received: from sj-iport-1.cisco.com ([171.71.176.70]:24911 "EHLO
-	sj-iport-1.cisco.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20025434AbZELWmG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 12 May 2009 23:42:06 +0100
-X-IronPort-AV: E=Sophos;i="4.41,184,1241395200"; 
-   d="scan'208";a="184558853"
-Received: from sj-dkim-3.cisco.com ([171.71.179.195])
-  by sj-iport-1.cisco.com with ESMTP; 12 May 2009 22:41:43 +0000
-Received: from sj-core-5.cisco.com (sj-core-5.cisco.com [171.71.177.238])
-	by sj-dkim-3.cisco.com (8.12.11/8.12.11) with ESMTP id n4CMfhiC022869;
-	Tue, 12 May 2009 15:41:43 -0700
-Received: from cuplxvomd02.corp.sa.net ([64.101.20.155])
-	by sj-core-5.cisco.com (8.13.8/8.13.8) with ESMTP id n4CMfhga006446;
-	Tue, 12 May 2009 22:41:43 GMT
-Date:	Tue, 12 May 2009 15:41:43 -0700
-From:	David VomLehn <dvomlehn@cisco.com>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 3/3] MIPS: Remove dead case label.
-Message-ID: <20090512224143.GB32507@cuplxvomd02.corp.sa.net>
-References: <4A09D0B1.2030305@caviumnetworks.com> <1242157315-20719-3-git-send-email-ddaney@caviumnetworks.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1242157315-20719-3-git-send-email-ddaney@caviumnetworks.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=867; t=1242168103; x=1243032103;
-	c=relaxed/simple; s=sjdkim3002;
-	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
-	d=cisco.com; i=dvomlehn@cisco.com;
-	z=From:=20David=20VomLehn=20<dvomlehn@cisco.com>
-	|Subject:=20Re=3A=20[PATCH=203/3]=20MIPS=3A=20Remove=20dead
-	=20case=20label.
-	|Sender:=20;
-	bh=RPiJupRzI2gIuT+r05ABMdM5D9pZozK8qmODqLoLYqQ=;
-	b=uLcTC/qZZUru/yJO28AYyFmKcG8Qudo6GU3IsmAhkw50F65kbVjFk7H3AQ
-	v94D5tQEOk8iX6m0YBgq2RWMOTAK3lNYS2/FpL6SPt66MC8FgHbRjKl2aStR
-	/JGxhqkQb5;
-Authentication-Results:	sj-dkim-3; header.From=dvomlehn@cisco.com; dkim=pass (
-	sig from cisco.com/sjdkim3002 verified; ); 
-Return-Path: <dvomlehn@cisco.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 May 2009 23:47:00 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:48258 "EHLO
+	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20026351AbZELWqw (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 12 May 2009 23:46:52 +0100
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B4a09fc2e0000>; Tue, 12 May 2009 18:46:09 -0400
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 12 May 2009 15:45:20 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 12 May 2009 15:45:20 -0700
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n4CMjH4n004035;
+	Tue, 12 May 2009 15:45:17 -0700
+Received: (from ddaney@localhost)
+	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n4CMjGOH004033;
+	Tue, 12 May 2009 15:45:16 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+To:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:	David Daney <ddaney@caviumnetworks.com>
+Subject: [PATCH] MIPS: Don't branch to eret in TLB refill.
+Date:	Tue, 12 May 2009 15:45:16 -0700
+Message-Id: <1242168316-4009-1-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.6.0.6
+X-OriginalArrivalTime: 12 May 2009 22:45:20.0395 (UTC) FILETIME=[5420C5B0:01C9D353]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22695
+X-archive-position: 22696
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvomlehn@cisco.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, May 12, 2009 at 12:41:55PM -0700, David Daney wrote:
-> CPU_CAVIUM_OCTEON is mips_r2 which is handled before the switch.  This
-> label in the switch statement is dead code, so we remove it.
-> 
-> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-> ---
->  arch/mips/mm/tlbex.c |    1 -
->  1 files changed, 0 insertions(+), 1 deletions(-)
-> 
-> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
-> index 4108674..4dc4f3e 100644
-> --- a/arch/mips/mm/tlbex.c
-> +++ b/arch/mips/mm/tlbex.c
-> @@ -311,7 +311,6 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
->  	case CPU_BCM3302:
->  	case CPU_BCM4710:
->  	case CPU_LOONGSON2:
-> -	case CPU_CAVIUM_OCTEON:
->  	case CPU_R5500:
->  		if (m4kc_tlbp_war())
->  			uasm_i_nop(p);
+If the TLB refill handler is too bit and needs to be split, there is
+no need to branch around the split if the branch target would be an
+eret.  Since the eret returns from the handler, control flow never
+passes it.  A branch to an eret is equivalent to the eret itself.
 
-Fewer lines of code is good...
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+---
+ arch/mips/mm/tlbex.c |   50 +++++++++++++++++++++++++++++++++-----------------
+ 1 files changed, 33 insertions(+), 17 deletions(-)
 
-Reviewed by: David VomLehn <dvomlehn@cisco.com>
+diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+index 4dc4f3e..ffa7104 100644
+--- a/arch/mips/mm/tlbex.c
++++ b/arch/mips/mm/tlbex.c
+@@ -656,6 +656,7 @@ static void __cpuinit build_r4000_tlb_refill_handler(void)
+ 	struct uasm_reloc *r = relocs;
+ 	u32 *f;
+ 	unsigned int final_len;
++	int split_on_eret;
+ 
+ 	memset(tlb_handler, 0, sizeof(tlb_handler));
+ 	memset(labels, 0, sizeof(labels));
+@@ -684,6 +685,13 @@ static void __cpuinit build_r4000_tlb_refill_handler(void)
+ 	build_update_entries(&p, K0, K1);
+ 	build_tlb_write_entry(&p, &l, &r, tlb_random);
+ 	uasm_l_leave(&l, p);
++
++	/*
++	 * Check to see if the eret will be the last instruction
++	 * before the split.  If it is, there is no need to branch
++	 * around the split, as we are returning.
++	 */
++	split_on_eret = (p - tlb_handler == 31);
+ 	uasm_i_eret(&p); /* return from trap */
+ 
+ #ifdef CONFIG_64BIT
+@@ -723,28 +731,36 @@ static void __cpuinit build_r4000_tlb_refill_handler(void)
+ 		uasm_copy_handler(relocs, labels, tlb_handler, p, f);
+ 		final_len = p - tlb_handler;
+ 	} else {
+-		u32 *split = tlb_handler + 30;
+-
+-		/*
+-		 * Find the split point.
+-		 */
+-		if (uasm_insn_has_bdelay(relocs, split - 1))
+-			split--;
++		u32 *split;
++		if (split_on_eret) {
++			split = tlb_handler + 32;
++		} else {
++			split = tlb_handler + 30;
++
++			/*
++			 * Find the split point.
++			 */
++			if (uasm_insn_has_bdelay(relocs, split - 1))
++				split--;
++		}
+ 
+ 		/* Copy first part of the handler. */
+ 		uasm_copy_handler(relocs, labels, tlb_handler, split, f);
+ 		f += split - tlb_handler;
+ 
+-		/* Insert branch. */
+-		uasm_l_split(&l, final_handler);
+-		uasm_il_b(&f, &r, label_split);
+-		if (uasm_insn_has_bdelay(relocs, split))
+-			uasm_i_nop(&f);
+-		else {
+-			uasm_copy_handler(relocs, labels, split, split + 1, f);
+-			uasm_move_labels(labels, f, f + 1, -1);
+-			f++;
+-			split++;
++		if (!split_on_eret) {
++			/* Insert branch. */
++			uasm_l_split(&l, final_handler);
++			uasm_il_b(&f, &r, label_split);
++			if (uasm_insn_has_bdelay(relocs, split))
++				uasm_i_nop(&f);
++			else {
++				uasm_copy_handler(relocs, labels,
++						  split, split + 1, f);
++				uasm_move_labels(labels, f, f + 1, -1);
++				f++;
++				split++;
++			}
+ 		}
+ 
+ 		/* Copy the rest of the handler. */
+-- 
+1.6.0.6

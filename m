@@ -1,74 +1,451 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 11 May 2009 23:25:16 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:6994 "EHLO
-	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20024642AbZEKWZK (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 11 May 2009 23:25:10 +0100
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B4a08a5b20000>; Mon, 11 May 2009 18:24:50 -0400
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 11 May 2009 15:24:18 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 11 May 2009 15:24:17 -0700
-Message-ID: <4A08A591.2040303@caviumnetworks.com>
-Date:	Mon, 11 May 2009 15:24:17 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
-MIME-Version: 1.0
-To:	Paul Gortmaker <paul.gortmaker@windriver.com>
-CC:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] MIPS: Remove execution hazard barriers for Octeon.
-References: <1242069062-20991-1-git-send-email-ddaney@caviumnetworks.com> <7d1d9c250905111459p42ce2671n91625e6f62cb2d75@mail.gmail.com>
-In-Reply-To: <7d1d9c250905111459p42ce2671n91625e6f62cb2d75@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 11 May 2009 22:24:17.0939 (UTC) FILETIME=[393B8630:01C9D287]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 12 May 2009 04:01:04 +0100 (BST)
+Received: from rv-out-0708.google.com ([209.85.198.242]:18557 "EHLO
+	rv-out-0708.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20026314AbZELDA5 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 12 May 2009 04:00:57 +0100
+Received: by rv-out-0708.google.com with SMTP id k29so2544845rvb.24
+        for <multiple recipients>; Mon, 11 May 2009 20:00:53 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :content-type:organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        bh=GuIvcFE8FfJihiVtBpoUmMUzy7dPyqEaa9VdPNJxOtQ=;
+        b=cG3FTz3lrqUpyypd5WZVa7SdHW8gXf+P5YbhTBe7b/E3y0i3EZAu7j0taIME6q0L7U
+         0G6FGWL42mEksjFwK2AlDz0qxjsxE0jBNbd2yGoC+l2SMtCeO2ahVvnxZqHyxwRVO3Df
+         z1p/ROz4J1Csf7AvFYc1zVgzftH8e8u5INKy0=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:content-type:organization:date
+         :message-id:mime-version:x-mailer:content-transfer-encoding;
+        b=UFCm1Q6PM4O/+kTbXZKaxhpqVEQuNCYiYbWmZXPxv4MswxWHa0CR0BLbQxLcPCW26l
+         wui21Sb06yJvvOo2Aa0IEdxwElSkyQZqaEmKzCf053CHR4tSwU41427uMRulHwgemUY4
+         Wiilt7+JblO0cF8+EKbzi1V9uaI9xesofSh3E=
+Received: by 10.142.82.13 with SMTP id f13mr3094152wfb.290.1242097253739;
+        Mon, 11 May 2009 20:00:53 -0700 (PDT)
+Received: from ?172.16.18.144? ([222.92.8.142])
+        by mx.google.com with ESMTPS id 27sm16210606wfa.2.2009.05.11.20.00.48
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Mon, 11 May 2009 20:00:52 -0700 (PDT)
+Subject: [PATCH] Fix warning: incompatible argument type of pci_fixup_irqs
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:	Linux MIPS List <linux-mips@linux-mips.org>
+Cc:	Ralf Baechle <ralf@linux-mips.org>, zhangfx@lemote.com,
+	yanh@lemote.com
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:	Tue, 12 May 2009 11:00:36 +0800
+Message-Id: <1242097236.4890.2.camel@falcon>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.24.3 
+Content-Transfer-Encoding: 8bit
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22684
+X-archive-position: 22685
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Paul Gortmaker wrote:
-> On Mon, May 11, 2009 at 3:11 PM, David Daney <ddaney@caviumnetworks.com> wrote:
->> The Octeon has no execution hazards, so we can remove them and save an
->> instruction per TLB handler invocation.
->>
->> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
->> ---
->>  arch/mips/mm/tlbex.c |    2 +-
->>  1 files changed, 1 insertions(+), 1 deletions(-)
->>
->> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
->> index 3548acf..4b2ea1f 100644
->> --- a/arch/mips/mm/tlbex.c
->> +++ b/arch/mips/mm/tlbex.c
->> @@ -257,7 +257,7 @@ static void __cpuinit build_tlb_write_entry(u32 **p, struct uasm_label **l,
->>        case tlb_indexed: tlbw = uasm_i_tlbwi; break;
->>        }
->>
->> -       if (cpu_has_mips_r2) {
->> +       if (cpu_has_mips_r2 && current_cpu_type() != CPU_CAVIUM_OCTEON) {
-> 
-> Assuming that it is feasible that some other future cores might also be
-> free of execution hazards, wouldn't it be better to do:
-> 
->   if (cpu_has_mips_r2 && cpu_has_exec_hazard) {
+>From 1e6360e89b239699ef1f5344e1d3a5c0b3c5bef1 Mon Sep 17 00:00:00 2001
+From: Wu Zhangjin <wuzhangjin@gmail.com>
+Date: Tue, 12 May 2009 10:33:37 +0800
+Subject: [PATCH 1/2] Fix warning: incompatible argument type of
+pci_fixup_irqs
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 
+arch/mips/pci/pci.c:160: warning: passing argument 2 of ‘pci_fixup_irqs’
+from incompatible pointer type
 
-That would be a bit cleaner.  I will test a new patch.
+include/linux/pci.h:
 
-Thanks,
-David Daney
+	void pci_fixup_irqs(u8 (*)(struct pci_dev *, u8 *),
+            int (*)(struct pci_dev *, u8, u8));
 
+arch/mips/pci/pci.c:160:
 
-> 
-> and then hide the CPU type listing (currently just one) in some header file?
-> 
-> Paul.
-> 
+	pci_fixup_irqs(pci_common_swizzle, pcibios_map_irq);
+
+arch/mips/include/asm/pci.h:
+
+	extern int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin);
+
+arch/mips/pci/fixup-malta.c
+
+	int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
+---
+ arch/mips/include/asm/pci.h    |    2 +-
+ arch/mips/pci/fixup-au1000.c   |    2 +-
+ arch/mips/pci/fixup-capcella.c |    2 +-
+ arch/mips/pci/fixup-cobalt.c   |    2 +-
+ arch/mips/pci/fixup-emma2rh.c  |    2 +-
+ arch/mips/pci/fixup-excite.c   |    2 +-
+ arch/mips/pci/fixup-ip32.c     |    2 +-
+ arch/mips/pci/fixup-lm2e.c     |    2 +-
+ arch/mips/pci/fixup-malta.c    |    2 +-
+ arch/mips/pci/fixup-mpc30x.c   |    2 +-
+ arch/mips/pci/fixup-pmcmsp.c   |    2 +-
+ arch/mips/pci/fixup-pnx8550.c  |    2 +-
+ arch/mips/pci/fixup-rc32434.c  |    2 +-
+ arch/mips/pci/fixup-sni.c      |    2 +-
+ arch/mips/pci/fixup-tb0219.c   |    2 +-
+ arch/mips/pci/fixup-tb0226.c   |    2 +-
+ arch/mips/pci/fixup-tb0287.c   |    2 +-
+ arch/mips/pci/fixup-wrppmc.c   |    2 +-
+ arch/mips/pci/fixup-yosemite.c |    2 +-
+ arch/mips/pci/pci-bcm1480.c    |    2 +-
+ arch/mips/pci/pci-bcm47xx.c    |    2 +-
+ arch/mips/pci/pci-ip27.c       |    2 +-
+ arch/mips/pci/pci-lasat.c      |    2 +-
+ arch/mips/pci/pci-sb1250.c     |    2 +-
+ arch/mips/txx9/generic/pci.c   |    2 +-
+ 25 files changed, 25 insertions(+), 25 deletions(-)
+
+diff --git a/arch/mips/include/asm/pci.h b/arch/mips/include/asm/pci.h
+index 053e463..42b895b 100644
+--- a/arch/mips/include/asm/pci.h
++++ b/arch/mips/include/asm/pci.h
+@@ -56,7 +56,7 @@ extern void register_pci_controller(struct
+pci_controller *hose);
+ /*
+  * board supplied pci irq fixup routine
+  */
+-extern int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin);
++extern int pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin);
+ 
+ 
+ /* Can be used to override the logic in pci_scan_bus for skipping
+diff --git a/arch/mips/pci/fixup-au1000.c b/arch/mips/pci/fixup-au1000.c
+index e2ddfc4..15b8ecc 100644
+--- a/arch/mips/pci/fixup-au1000.c
++++ b/arch/mips/pci/fixup-au1000.c
+@@ -31,7 +31,7 @@
+ 
+ extern char irq_tab_alchemy[][5];
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	return irq_tab_alchemy[slot][pin];
+ }
+diff --git a/arch/mips/pci/fixup-capcella.c
+b/arch/mips/pci/fixup-capcella.c
+index 1416bca..1e53075 100644
+--- a/arch/mips/pci/fixup-capcella.c
++++ b/arch/mips/pci/fixup-capcella.c
+@@ -38,7 +38,7 @@ static char irq_tab_capcella[][5] __initdata = {
+  [14] = { -1, INTA, INTB, INTC, INTD }
+ };
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	return irq_tab_capcella[slot][pin];
+ }
+diff --git a/arch/mips/pci/fixup-cobalt.c b/arch/mips/pci/fixup-cobalt.c
+index 9553b14..63d1af3 100644
+--- a/arch/mips/pci/fixup-cobalt.c
++++ b/arch/mips/pci/fixup-cobalt.c
+@@ -175,7 +175,7 @@ static char irq_tab_raq2[] __initdata = {
+   [COBALT_PCICONF_ETH1]    = ETH1_IRQ
+ };
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	if (cobalt_board_id <= COBALT_BRD_ID_QUBE1)
+ 		return irq_tab_qube1[slot];
+diff --git a/arch/mips/pci/fixup-emma2rh.c
+b/arch/mips/pci/fixup-emma2rh.c
+index fba5aad..04c28f3 100644
+--- a/arch/mips/pci/fixup-emma2rh.c
++++ b/arch/mips/pci/fixup-emma2rh.c
+@@ -88,7 +88,7 @@ static void __devinit emma2rh_pci_host_fixup(struct
+pci_dev *dev)
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_NEC, PCI_DEVICE_ID_NEC_EMMA2RH,
+ 			 emma2rh_pci_host_fixup);
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	return irq_map[slot][pin];
+ }
+diff --git a/arch/mips/pci/fixup-excite.c b/arch/mips/pci/fixup-excite.c
+index cd64d9f..1da696d 100644
+--- a/arch/mips/pci/fixup-excite.c
++++ b/arch/mips/pci/fixup-excite.c
+@@ -21,7 +21,7 @@
+ #include <linux/pci.h>
+ #include <excite.h>
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	if (pin == 0)
+ 		return -1;
+diff --git a/arch/mips/pci/fixup-ip32.c b/arch/mips/pci/fixup-ip32.c
+index 190fffd..3e66b0a 100644
+--- a/arch/mips/pci/fixup-ip32.c
++++ b/arch/mips/pci/fixup-ip32.c
+@@ -39,7 +39,7 @@ static char irq_tab_mace[][5] __initdata = {
+  * irqs.  I suppose a device without a pin A will thank us for doing it
+  * right if there exists such a broken piece of crap.
+  */
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	return irq_tab_mace[slot][pin];
+ }
+diff --git a/arch/mips/pci/fixup-lm2e.c b/arch/mips/pci/fixup-lm2e.c
+index e18ae4f..08de000 100644
+--- a/arch/mips/pci/fixup-lm2e.c
++++ b/arch/mips/pci/fixup-lm2e.c
+@@ -36,7 +36,7 @@
+ /* South bridge slot number is set by the pci probe process */
+ static u8 sb_slot = 5;
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	int irq = 0;
+ 
+diff --git a/arch/mips/pci/fixup-malta.c b/arch/mips/pci/fixup-malta.c
+index 0f48498..bf2c41d 100644
+--- a/arch/mips/pci/fixup-malta.c
++++ b/arch/mips/pci/fixup-malta.c
+@@ -36,7 +36,7 @@ static char irq_tab[][5] __initdata = {
+ 	{0,	PCID,	PCIA,	PCIB,	PCIC }	/* 21: PCI Slot 4 */
+ };
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	int virq;
+ 	virq = irq_tab[slot][pin];
+diff --git a/arch/mips/pci/fixup-mpc30x.c b/arch/mips/pci/fixup-mpc30x.c
+index 5911596..3c9ae41 100644
+--- a/arch/mips/pci/fixup-mpc30x.c
++++ b/arch/mips/pci/fixup-mpc30x.c
+@@ -34,7 +34,7 @@ static const int irq_tab_mpc30x[] __initdata = {
+  [29] = MQ200_IRQ,
+ };
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	if (slot == 30)
+ 		return internal_func_irqs[PCI_FUNC(dev->devfn)];
+diff --git a/arch/mips/pci/fixup-pmcmsp.c b/arch/mips/pci/fixup-pmcmsp.c
+index 65735b1..0026121 100644
+--- a/arch/mips/pci/fixup-pmcmsp.c
++++ b/arch/mips/pci/fixup-pmcmsp.c
+@@ -202,7 +202,7 @@ int pcibios_plat_dev_init(struct pci_dev *dev)
+  *  RETURNS:     IRQ number
+  *
+
+****************************************************************************/
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ #if !defined(CONFIG_PMC_MSP7120_GW) && !
+defined(CONFIG_PMC_MSP7120_EVAL)
+ 	printk(KERN_WARNING "PCI: unknown board, no PCI IRQs assigned.\n");
+diff --git a/arch/mips/pci/fixup-pnx8550.c
+b/arch/mips/pci/fixup-pnx8550.c
+index 96857ac..50546da 100644
+--- a/arch/mips/pci/fixup-pnx8550.c
++++ b/arch/mips/pci/fixup-pnx8550.c
+@@ -45,7 +45,7 @@ void __init pcibios_fixup(void)
+ 	/* nothing to do here */
+ }
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	return pnx8550_irq_tab[slot][pin];
+ }
+diff --git a/arch/mips/pci/fixup-rc32434.c
+b/arch/mips/pci/fixup-rc32434.c
+index 3d86823..68f8537 100644
+--- a/arch/mips/pci/fixup-rc32434.c
++++ b/arch/mips/pci/fixup-rc32434.c
+@@ -37,7 +37,7 @@ static int __devinitdata irq_map[2][12] = {
+ 	{0, 0, 1, 3, 0, 2, 1, 3, 0, 2, 1, 3}
+ };
+ 
+-int __devinit pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8
+pin)
++int __devinit pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	int irq = 0;
+ 
+diff --git a/arch/mips/pci/fixup-sni.c b/arch/mips/pci/fixup-sni.c
+index 5c8a79b..4ce73be 100644
+--- a/arch/mips/pci/fixup-sni.c
++++ b/arch/mips/pci/fixup-sni.c
+@@ -130,7 +130,7 @@ static inline int is_rm300_revd(void)
+ 	return (csmsr & 0xa0) == 0x20;
+ }
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	switch (sni_brd_type) {
+ 	case SNI_BRD_PCI_TOWER_CPLUS:
+diff --git a/arch/mips/pci/fixup-tb0219.c b/arch/mips/pci/fixup-tb0219.c
+index ed87733..0f8d31b 100644
+--- a/arch/mips/pci/fixup-tb0219.c
++++ b/arch/mips/pci/fixup-tb0219.c
+@@ -23,7 +23,7 @@
+ 
+ #include <asm/vr41xx/tb0219.h>
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	int irq = -1;
+ 
+diff --git a/arch/mips/pci/fixup-tb0226.c b/arch/mips/pci/fixup-tb0226.c
+index e3eedf4..c9e7cb4 100644
+--- a/arch/mips/pci/fixup-tb0226.c
++++ b/arch/mips/pci/fixup-tb0226.c
+@@ -23,7 +23,7 @@
+ #include <asm/vr41xx/giu.h>
+ #include <asm/vr41xx/tb0226.h>
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	int irq = -1;
+ 
+diff --git a/arch/mips/pci/fixup-tb0287.c b/arch/mips/pci/fixup-tb0287.c
+index 267ab3d..fbe6bcb 100644
+--- a/arch/mips/pci/fixup-tb0287.c
++++ b/arch/mips/pci/fixup-tb0287.c
+@@ -22,7 +22,7 @@
+ 
+ #include <asm/vr41xx/tb0287.h>
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	unsigned char bus;
+ 	int irq = -1;
+diff --git a/arch/mips/pci/fixup-wrppmc.c b/arch/mips/pci/fixup-wrppmc.c
+index 3d27754..3357c13 100644
+--- a/arch/mips/pci/fixup-wrppmc.c
++++ b/arch/mips/pci/fixup-wrppmc.c
+@@ -25,7 +25,7 @@ static char pci_irq_tab[PCI_SLOT_MAXNR][5] __initdata
+= {
+ 	[6] = {0, WRPPMC_PCI_INTA_IRQ, 0, 0, 0},
+ };
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	return pci_irq_tab[slot][pin];
+ }
+diff --git a/arch/mips/pci/fixup-yosemite.c
+b/arch/mips/pci/fixup-yosemite.c
+index fdafb13..81d77a5 100644
+--- a/arch/mips/pci/fixup-yosemite.c
++++ b/arch/mips/pci/fixup-yosemite.c
+@@ -26,7 +26,7 @@
+ #include <linux/init.h>
+ #include <linux/pci.h>
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	if (pin == 0)
+ 		return -1;
+diff --git a/arch/mips/pci/pci-bcm1480.c b/arch/mips/pci/pci-bcm1480.c
+index a9060c7..41e691a 100644
+--- a/arch/mips/pci/pci-bcm1480.c
++++ b/arch/mips/pci/pci-bcm1480.c
+@@ -74,7 +74,7 @@ static inline void WRITECFG32(u32 addr, u32 data)
+ 	*(u32 *)(cfg_space + (addr & ~3)) = data;
+ }
+ 
+-int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	if (pin == 0)
+ 		return -1;
+diff --git a/arch/mips/pci/pci-bcm47xx.c b/arch/mips/pci/pci-bcm47xx.c
+index bea9b6c..1f3721d 100644
+--- a/arch/mips/pci/pci-bcm47xx.c
++++ b/arch/mips/pci/pci-bcm47xx.c
+@@ -26,7 +26,7 @@
+ #include <linux/pci.h>
+ #include <linux/ssb/ssb.h>
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	return 0;
+ }
+diff --git a/arch/mips/pci/pci-ip27.c b/arch/mips/pci/pci-ip27.c
+index dda6f20..a2a5b5d 100644
+--- a/arch/mips/pci/pci-ip27.c
++++ b/arch/mips/pci/pci-ip27.c
+@@ -141,7 +141,7 @@ int __cpuinit bridge_probe(nasid_t nasid, int
+widget_id, int masterwid)
+  * A given PCI device, in general, should be able to intr any of the
+cpus
+  * on any one of the hubs connected to its xbow.
+  */
+-int __devinit pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8
+pin)
++int __devinit pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	return 0;
+ }
+diff --git a/arch/mips/pci/pci-lasat.c b/arch/mips/pci/pci-lasat.c
+index a98e543..149d503 100644
+--- a/arch/mips/pci/pci-lasat.c
++++ b/arch/mips/pci/pci-lasat.c
+@@ -61,7 +61,7 @@ arch_initcall(lasat_pci_setup);
+ #define LASAT_IRQ_PCIC   (LASAT_IRQ_BASE + 7)
+ #define LASAT_IRQ_PCID   (LASAT_IRQ_BASE + 8)
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	switch (slot) {
+ 	case 1:
+diff --git a/arch/mips/pci/pci-sb1250.c b/arch/mips/pci/pci-sb1250.c
+index bf63959..bd26d4a 100644
+--- a/arch/mips/pci/pci-sb1250.c
++++ b/arch/mips/pci/pci-sb1250.c
+@@ -84,7 +84,7 @@ static inline void WRITECFG32(u32 addr, u32 data)
+ 	*(u32 *) (cfg_space + (addr & ~3)) = data;
+ }
+ 
+-int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	return dev->irq;
+ }
+diff --git a/arch/mips/txx9/generic/pci.c b/arch/mips/txx9/generic/pci.c
+index 7b637a7..27104f7 100644
+--- a/arch/mips/txx9/generic/pci.c
++++ b/arch/mips/txx9/generic/pci.c
+@@ -382,7 +382,7 @@ int pcibios_plat_dev_init(struct pci_dev *dev)
+ 	return 0;
+ }
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	return txx9_board_vec->pci_map_irq(dev, slot, pin);
+ }
+-- 
+1.6.2.1

@@ -1,76 +1,121 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 May 2009 00:01:49 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:7634 "EHLO
-	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20026376AbZEMXAz (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 14 May 2009 00:00:55 +0100
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B4a0b51170003>; Wed, 13 May 2009 19:00:39 -0400
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 13 May 2009 16:00:07 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 13 May 2009 16:00:07 -0700
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n4DMxx8D014557;
-	Wed, 13 May 2009 15:59:59 -0700
-Received: (from ddaney@localhost)
-	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n4DMxulU014555;
-	Wed, 13 May 2009 15:59:56 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 May 2009 04:14:46 +0100 (BST)
+Received: from mail.windriver.com ([147.11.1.11]:53389 "EHLO mail.wrs.com"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S20021368AbZENDOk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 14 May 2009 04:14:40 +0100
+Received: from ALA-MAIL03.corp.ad.wrs.com (ala-mail03 [147.11.57.144])
+	by mail.wrs.com (8.13.6/8.13.6) with ESMTP id n4E3EUsx018316;
+	Wed, 13 May 2009 20:14:32 -0700 (PDT)
+Received: from ala-mail06.corp.ad.wrs.com ([147.11.57.147]) by ALA-MAIL03.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 13 May 2009 20:14:30 -0700
+Received: from localhost.localdomain ([128.224.158.160]) by ala-mail06.corp.ad.wrs.com with Microsoft SMTPSVC(6.0.3790.1830);
+	 Wed, 13 May 2009 20:14:30 -0700
+From:	Yong Zhang <yong.zhang@windriver.com>
 To:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:	David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH 1/2] MIPS: Allow CPU specific overriding of CP0 hwrena impl bits.
-Date:	Wed, 13 May 2009 15:59:55 -0700
-Message-Id: <1242255596-14531-1-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.6.0.6
-In-Reply-To: <4A0B5077.2010600@caviumnetworks.com>
-References: <4A0B5077.2010600@caviumnetworks.com>
-X-OriginalArrivalTime: 13 May 2009 23:00:07.0090 (UTC) FILETIME=[8F0D7120:01C9D41E]
-Return-Path: <David.Daney@caviumnetworks.com>
+Subject: [PATCH] MIPS: o32 application running on 64bit kernel core dump
+Date:	Thu, 14 May 2009 11:15:19 +0800
+Message-Id: <16bd35f2910f585740f4764fa1e80bf31c80d576.1242178813.git.yong.zhang@windriver.com>
+X-Mailer: git-send-email 1.5.6.5
+X-OriginalArrivalTime: 14 May 2009 03:14:30.0577 (UTC) FILETIME=[18CCBA10:01C9D442]
+Return-Path: <yong.zhang@windriver.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22713
+X-archive-position: 22714
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: yong.zhang@windriver.com
 Precedence: bulk
 X-list: linux-mips
 
-Some CPUs have implementation dependent rdhwr registers.  Allow them
-to be enabled on a per CPU basis.
+If an o32 application crashes and generates a core dump on
+a 64 bit kernel, the core file will not be correctly
+recognized. This is because ELF_CORE_COPY_REGS and
+ELF_CORE_COPY_TASK_REGS are not correctly defined for o32
+and will use the default register set which would
+be CONFIG_64BIT in asm/elf.h.
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+So we'll switch to use the right register defines in
+this situation by checking for WANT_COMPAT_REG_H and
+use the right defines of ELF_CORE_COPY_REGS and
+ELF_CORE_COPY_TASK_REGS.
+
+Signed-off-by: Yong Zhang <yong.zhang@windriver.com>
 ---
- arch/mips/include/asm/cpu-features.h |    4 ++++
- arch/mips/kernel/traps.c             |    2 +-
- 2 files changed, 5 insertions(+), 1 deletions(-)
+ arch/mips/include/asm/elf.h      |    4 ++++
+ arch/mips/include/asm/reg.h      |    2 +-
+ arch/mips/kernel/binfmt_elfo32.c |   20 +++++++++++++++++---
+ 3 files changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index 1cba4b2..8ab1d12 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -234,4 +234,8 @@
- #define cpu_scache_line_size()	cpu_data[0].scache.linesz
+diff --git a/arch/mips/include/asm/elf.h b/arch/mips/include/asm/elf.h
+index d58f128..7990694 100644
+--- a/arch/mips/include/asm/elf.h
++++ b/arch/mips/include/asm/elf.h
+@@ -316,9 +316,13 @@ extern void elf_dump_regs(elf_greg_t *, struct pt_regs *regs);
+ extern int dump_task_regs(struct task_struct *, elf_gregset_t *);
+ extern int dump_task_fpu(struct task_struct *, elf_fpregset_t *);
+ 
++#ifndef ELF_CORE_COPY_REGS
+ #define ELF_CORE_COPY_REGS(elf_regs, regs)			\
+ 	elf_dump_regs((elf_greg_t *)&(elf_regs), regs);
++#endif
++#ifndef ELF_CORE_COPY_TASK_REGS
+ #define ELF_CORE_COPY_TASK_REGS(tsk, elf_regs) dump_task_regs(tsk, elf_regs)
++#endif
+ #define ELF_CORE_COPY_FPREGS(tsk, elf_fpregs)			\
+ 	dump_task_fpu(tsk, elf_fpregs)
+ 
+diff --git a/arch/mips/include/asm/reg.h b/arch/mips/include/asm/reg.h
+index 634b55d..910e71a 100644
+--- a/arch/mips/include/asm/reg.h
++++ b/arch/mips/include/asm/reg.h
+@@ -69,7 +69,7 @@
+ 
  #endif
  
-+#ifndef cpu_hwrena_impl_bits
-+#define cpu_hwrena_impl_bits		0
-+#endif
+-#ifdef CONFIG_64BIT
++#if defined(CONFIG_64BIT) && !defined(WANT_COMPAT_REG_H)
+ 
+ #define EF_R0			 0
+ #define EF_R1			 1
+diff --git a/arch/mips/kernel/binfmt_elfo32.c b/arch/mips/kernel/binfmt_elfo32.c
+index e1333d7..53bc6b4 100644
+--- a/arch/mips/kernel/binfmt_elfo32.c
++++ b/arch/mips/kernel/binfmt_elfo32.c
+@@ -53,6 +53,23 @@ typedef elf_fpreg_t elf_fpregset_t[ELF_NFPREG];
+ #define ELF_ET_DYN_BASE         (TASK32_SIZE / 3 * 2)
+ 
+ #include <asm/processor.h>
 +
- #endif /* __ASM_CPU_FEATURES_H */
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index c3cc42e..efcb509 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -1541,7 +1541,7 @@ void __cpuinit per_cpu_trap_init(void)
- 			 status_set);
++/*
++ * When this file is selected, we are definitely running a 64bit kernel.
++ * So using the right regs define in asm/reg.h
++ */
++#define WANT_COMPAT_REG_H
++
++/* These MUST be defined before elf.h gets included */
++extern void elf32_core_copy_regs(elf_gregset_t grp, struct pt_regs *regs);
++#define ELF_CORE_COPY_REGS(_dest, _regs) elf32_core_copy_regs(_dest, _regs);
++#define ELF_CORE_COPY_TASK_REGS(_tsk, _dest)				\
++({									\
++	int __res = 1;							\
++	elf32_core_copy_regs((*_dest), (task_pt_regs(_tsk)));		\
++	__res;								\
++})
++
+ #include <linux/module.h>
+ #include <linux/elfcore.h>
+ #include <linux/compat.h>
+@@ -110,9 +127,6 @@ jiffies_to_compat_timeval(unsigned long jiffies, struct compat_timeval *value)
+ 	value->tv_usec = rem / NSEC_PER_USEC;
+ }
  
- 	if (cpu_has_mips_r2) {
--		unsigned int enable = 0x0000000f;
-+		unsigned int enable = 0x0000000f | cpu_hwrena_impl_bits;
- 
- 		if (!noulri && cpu_has_userlocal)
- 			enable |= (1 << 29);
+-#undef ELF_CORE_COPY_REGS
+-#define ELF_CORE_COPY_REGS(_dest, _regs) elf32_core_copy_regs(_dest, _regs);
+-
+ void elf32_core_copy_regs(elf_gregset_t grp, struct pt_regs *regs)
+ {
+ 	int i;
 -- 
-1.6.0.6
+1.5.6.5

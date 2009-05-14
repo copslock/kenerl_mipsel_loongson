@@ -1,66 +1,103 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 May 2009 19:29:39 +0100 (BST)
-Received: from web65307.mail.ac2.yahoo.com ([68.180.158.233]:21256 "HELO
-	web65307.mail.ac2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with SMTP id S20025917AbZENS3d (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 14 May 2009 19:29:33 +0100
-Received: (qmail 31056 invoked by uid 60001); 14 May 2009 18:29:27 -0000
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s1024; t=1242325767; bh=srhgTM3XJtyE3xpU+7sHUI4MinQ2RIGipxCpP4jOPP8=; h=Message-ID:X-YMail-OSG:Received:X-Mailer:Date:From:Subject:To:MIME-Version:Content-Type; b=Pt5FHKZ24FHF5dR2ymVCBYdgjChjkb6IIyxuaVKGtVWiOtjF8lrx/GvjiINuOLlUIYllTNI1EbjkEfLEL72+bMIl2ANJLyThbBUrCr8Spu8+HDuVvwS/nxm/5o838lx5iE5Q9D40dXKArAGePrQIlG4bzcqeQXNRCHZ+6/a0b2g=
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.com;
-  h=Message-ID:X-YMail-OSG:Received:X-Mailer:Date:From:Subject:To:MIME-Version:Content-Type;
-  b=l+csaBSUkcUejy1eePqfA4RjWpw304kv2WEjFRORUsp0txYc2XoifcV6rAToMXtKOCJ+uoPuUwZeNrxEKG6/wAGgcJPlbngm6UKr12BwG4eLmQ0+SfA8dlevUdnlG/afkRQfVRV97gdmrRNSWEQvqiaATKP9fDCFHYwAYEop1WA=;
-Message-ID: <273990.30979.qm@web65307.mail.ac2.yahoo.com>
-X-YMail-OSG: X3gkQYQVM1nCEhImPoAYivN4cab5lcs1tqsyUeW2MFcL6MkHxu6fVh889E6sEV1A4KMY9jc26NaRkSDBuSJaGH4wynoWl0wQSc7APsq4wq108.iaWVt.WHCqo98WKjc8DWJRiggRnM_S5uZJuEW5i.nWNs419VCQogNrm9ESGosN9XMuaWqYOExmM0VktzNm8i5RSWcTkV0ecnFoBIb4R4TXYvz9trp_rS79sdAU9734LNg_lxyIysDZRhQjcJIW__Ke_uLBRFTlGzB2tappCA--
-Received: from [91.196.252.17] by web65307.mail.ac2.yahoo.com via HTTP; Thu, 14 May 2009 11:29:27 PDT
-X-Mailer: YahooMailClassic/5.2.20 YahooMailWebService/0.7.289.1
-Date:	Thu, 14 May 2009 11:29:27 -0700 (PDT)
-From:	Andrew Randrianasulu <randrik_a@yahoo.com>
-Subject: [PATCH] IP32 power button fix for 2.6.30
-To:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 14 May 2009 19:59:55 +0100 (BST)
+Received: from cassiel.sirena.org.uk ([80.68.93.111]:44489 "EHLO
+	cassiel.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20026457AbZENS7s (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 14 May 2009 19:59:48 +0100
+Received: from broonie by cassiel.sirena.org.uk with local (Exim 4.69)
+	(envelope-from <broonie@sirena.org.uk>)
+	id 1M4g9i-0008Mj-12; Thu, 14 May 2009 19:59:46 +0100
+Date:	Thu, 14 May 2009 19:59:46 +0100
+From:	Mark Brown <broonie@opensource.wolfsonmicro.com>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, alsa-devel@alsa-project.org,
+	ralf@linux-mips.org
+Subject: Re: [alsa-devel] [PATCH] ASoC: Add TXx9 AC link controller driver
+Message-ID: <20090514185945.GO28291@sirena.org.uk>
+References: <1242312605-2160-1-git-send-email-anemo@mba.ocn.ne.jp>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
-Return-Path: <randrik_a@yahoo.com>
+Content-Disposition: inline
+In-Reply-To: <1242312605-2160-1-git-send-email-anemo@mba.ocn.ne.jp>
+X-Cookie: You too can wear a nose mitten.
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-SA-Exim-Connect-IP: <locally generated>
+X-SA-Exim-Mail-From: broonie@sirena.org.uk
+X-SA-Exim-Scanned: No (on cassiel.sirena.org.uk); SAEximRunCond expanded to false
+Return-Path: <broonie@sirena.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22719
+X-archive-position: 22720
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: randrik_a@yahoo.com
+X-original-sender: broonie@opensource.wolfsonmicro.com
 Precedence: bulk
 X-list: linux-mips
 
+On Thu, May 14, 2009 at 11:50:04PM +0900, Atsushi Nemoto wrote:
 
+This all looks basically fine - just a few comments below, the main one
+being the way you're registering things.
 
-I think i run into same sort of problem, as described here:
+> +#ifdef CONFIG_PM
+> +static int txx9aclc_ac97_suspend(struct snd_soc_dai *dai)
+> +{
+> +	return 0;
+> +}
+> +
+> +static int txx9aclc_ac97_resume(struct snd_soc_dai *dai)
+> +{
+> +	return 0;
+> +}
+> +#else
+> +#define txx9aclc_ac97_suspend	NULL
+> +#define txx9aclc_ac97_resume	NULL
+> +#endif
 
-http://lkml.org/lkml/2009/4/16/24
-http://lkml.org/lkml/2009/4/14/94
+Just remove all this if there's no implementation.
 
-(in my case it was hang after pressing O2's power button)
+> +static int __init txx9aclc_ac97_init(void)
+> +{
+> +	return snd_soc_register_dai(&txx9aclc_ac97_dai);
+> +}
+> +
+> +static void __exit txx9aclc_ac97_exit(void)
+> +{
+> +	snd_soc_unregister_dai(&txx9aclc_ac97_dai);
+> +}
 
-this patch fixes it:
+Ideally you'd be registering a platform device in your arch code and
+then the DAI would only be registered when the device is probed.  This
+(and similar stuff for the DMA) would mean that...
 
-----
+> +static int __init txx9aclc_generic_probe(struct platform_device *pdev)
+> +{
+> +	struct txx9aclc_soc_device *dev = &txx9aclc_generic_soc_device;
+> +	struct platform_device *soc_pdev;
+> +	struct resource *r;
+> +	int ret;
+> +	int i;
+> +	int irq;
+> +
+> +	irq = platform_get_irq(pdev, 0);
+> +	if (irq < 0)
+> +		return irq;
+> +	dev->irq = irq;
 
-diff --git a/arch/mips/sgi-ip32/ip32-reset.c b/arch/mips/sgi-ip32/ip32-reset.c
-index b6cab08..667da93 100644
---- a/arch/mips/sgi-ip32/ip32-reset.c
-+++ b/arch/mips/sgi-ip32/ip32-reset.c
-@@ -145,7 +145,7 @@ static irqreturn_t ip32_rtc_int(int irq, void *dev_id)
-                        "%s: RTC IRQ without RTC_IRQF\n", __func__);
-        }
-        /* Wait until interrupt goes away */
--       disable_irq(MACEISA_RTC_IRQ);
-+       disable_irq_nosync(MACEISA_RTC_IRQ);
-        init_timer(&debounce_timer);
-        debounce_timer.function = debounce;
-        debounce_timer.expires = jiffies + 50;
+...all this resource stuff wouldn't need to be done by the machine
+driver, it'd be done by your DAI and DMA drivers.  That means less
+duplication of code for multiple machines both in the machine driver and
+in registering the resources along with the platform device.
 
-----
+> +static int __init txx9aclc_soc_platform_init(void)
+> +{
+> +	return snd_soc_register_platform(&txx9aclc_soc_platform);
+> +}
+> +
+> +static void __exit txx9aclc_soc_platform_exit(void)
+> +{
+> +	snd_soc_unregister_platform(&txx9aclc_soc_platform);
+> +}
 
-tested with 2.6.30-rc5 mainline (linux-mips.org tree was also affected)
-
-
-      
+Same comment applies here.

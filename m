@@ -1,48 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2009 10:17:52 +0100 (BST)
-Received: from cassiel.sirena.org.uk ([80.68.93.111]:41089 "EHLO
-	cassiel.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20021905AbZEOJRp (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2009 10:17:45 +0100
-Received: from broonie by cassiel.sirena.org.uk with local (Exim 4.69)
-	(envelope-from <broonie@sirena.org.uk>)
-	id 1M4tXz-0002ZX-Bk; Fri, 15 May 2009 10:17:43 +0100
-Date:	Fri, 15 May 2009 10:17:43 +0100
-From:	Mark Brown <broonie@opensource.wolfsonmicro.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org,
-	alsa-devel@alsa-project.org
-Subject: Re: [alsa-devel] [PATCH] TXx9: Add ACLC support
-Message-ID: <20090515091741.GA4449@sirena.org.uk>
-References: <1242312605-2160-2-git-send-email-anemo@mba.ocn.ne.jp> <20090515090118.GA7706@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2009 10:21:08 +0100 (BST)
+Received: from smtp.movial.fi ([62.236.91.34]:58583 "EHLO smtp.movial.fi"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S20021911AbZEOJU7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 15 May 2009 10:20:59 +0100
+Received: from localhost (mailscanner.hel.movial.fi [172.17.81.9])
+	by smtp.movial.fi (Postfix) with ESMTP id 32F41C837C;
+	Fri, 15 May 2009 12:20:53 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at movial.fi
+Received: from smtp.movial.fi ([62.236.91.34])
+	by localhost (mailscanner.hel.movial.fi [172.17.81.9]) (amavisd-new, port 10026)
+	with ESMTP id 9oN+LmaZEeCd; Fri, 15 May 2009 12:20:53 +0300 (EEST)
+Received: from [172.17.49.48] (sd048.hel.movial.fi [172.17.49.48])
+	by smtp.movial.fi (Postfix) with ESMTP id 153B3C8229;
+	Fri, 15 May 2009 12:20:53 +0300 (EEST)
+Message-ID: <4A0D33F4.1060906@movial.com>
+Date:	Fri, 15 May 2009 12:20:52 +0300
+From:	Dmitri Vorobiev <dmitri.vorobiev@movial.com>
+Organization: Movial Creative Technologies
+User-Agent: Icedove 1.5.0.14eol (X11/20090105)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20090515090118.GA7706@linux-mips.org>
-X-Cookie: Could I have a drug overdose?
-User-Agent: Mutt/1.5.18 (2008-05-17)
-X-SA-Exim-Connect-IP: <locally generated>
-X-SA-Exim-Mail-From: broonie@sirena.org.uk
-X-SA-Exim-Scanned: No (on cassiel.sirena.org.uk); SAEximRunCond expanded to false
-Return-Path: <broonie@sirena.org.uk>
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	Andrew Randrianasulu <randrik_a@yahoo.com>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] IP32 power button fix for 2.6.30
+References: <273990.30979.qm@web65307.mail.ac2.yahoo.com> <20090515091319.GB7706@linux-mips.org>
+In-Reply-To: <20090515091319.GB7706@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <dmitri.vorobiev@movial.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22726
+X-archive-position: 22727
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: broonie@opensource.wolfsonmicro.com
+X-original-sender: dmitri.vorobiev@movial.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, May 15, 2009 at 10:01:19AM +0100, Ralf Baechle wrote:
-> On Thu, May 14, 2009 at 11:50:05PM +0900, Atsushi Nemoto wrote:
+Ralf Baechle wrote:
 
-> > Add platform support for ACLC of TXx9 SoCs.
+>  Use a proper mail client such as /bin/mail ;-)
 
-> Thanks, queued up for 2.6.31 / linux-next.
+Err... Maybe it's still too hard to not wrap /usr/bin/git-send-email around /bin/mail ;-)
 
-These will need revision after fixing my review comments for the audio
-drivers - the way the platform devices are set up needs to be changed so
-that the resources are associated with devices for the CPU rather than
-the machine driver that says how a given board is connected up.
+Dmitri

@@ -1,181 +1,210 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2009 11:38:51 +0100 (BST)
-Received: from mail-px0-f187.google.com ([209.85.216.187]:49153 "EHLO
-	mail-px0-f187.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20022126AbZEOKip (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2009 11:38:45 +0100
-Received: by pxi17 with SMTP id 17so1075188pxi.22
-        for <multiple recipients>; Fri, 15 May 2009 03:38:38 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=WlnwP3hG8oFmu8hXv+CNlXeTXVYEWnsottLBGDVaESc=;
-        b=L+h6N2x5woP+uhpgkDa2nyIlFoR7LFIZ2CS7Wsm7msr/utIMrjqlW/eBMLm/ECJaQJ
-         Mdfj0NbaLm5v266JoCx5HNpXEs004cQ1yYdjEl2X09h8ROUjrooL59nAb3pmQ92XVe2B
-         TI8ZJqHyWNB9oQNTinMrc/TIYjGzoiZPIdIAQ=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=yCMWn60dqN6ZakA0k3UihPRa208hbG5wis4Q9TjRzbIImLViO76Ti6ZFqQnfjTqSNS
-         jqEnnDnjo7g5Y7zDpOJLwuXiEF4n+eKmkQUV7y9bhfy0RoXs3uT7cBibZ9FHeZzAVFd5
-         d9RrGtqaIrF0dnKOkNeVcp8Rk+nhUWRs1nBiQ=
-Received: by 10.114.122.9 with SMTP id u9mr4466257wac.129.1242383916941;
-        Fri, 15 May 2009 03:38:36 -0700 (PDT)
-Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id t1sm3779537poh.23.2009.05.15.03.38.28
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 15 May 2009 03:38:36 -0700 (PDT)
-Subject: Re: [GIT repo] loongson: Merge and Clean up fuloong(2e),
- fuloong(2f) and yeeloong(2f) support
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:	Arnaud Patard <apatard@mandriva.com>
-Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-	loongson-dev@googlegroups.com, zhangfx@lemote.com, yanh@lemote.com,
-	Philippe Vachon <philippe@cowpig.ca>,
-	Erwan Lerale <erwan@thiscow.com>, Zhang Le <r0bertz@gentoo.org>
-In-Reply-To: <m3iqk2rcwd.fsf@anduin.mandriva.com>
-References: <1242357553.30339.66.camel@falcon>
-	 <m3iqk2rcwd.fsf@anduin.mandriva.com>
-Content-Type: text/plain
-Organization: DSLab, Lanzhou University, China
-Date:	Fri, 15 May 2009 18:38:23 +0800
-Message-Id: <1242383903.10164.118.camel@falcon>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2009 14:33:34 +0100 (BST)
+Received: from smtp.nokia.com ([192.100.122.230]:37860 "EHLO
+	mgw-mx03.nokia.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20022507AbZEONd0 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2009 14:33:26 +0100
+Received: from vaebh105.NOE.Nokia.com (vaebh105.europe.nokia.com [10.160.244.31])
+	by mgw-mx03.nokia.com (Switch-3.2.6/Switch-3.2.6) with ESMTP id n4FDWuPZ026000;
+	Fri, 15 May 2009 16:33:04 +0300
+Received: from esebh102.NOE.Nokia.com ([172.21.138.183]) by vaebh105.NOE.Nokia.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 15 May 2009 16:32:51 +0300
+Received: from mgw-int01.ntc.nokia.com ([172.21.143.96]) by esebh102.NOE.Nokia.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 15 May 2009 16:32:51 +0300
+Received: from [172.21.42.232] (esdhcp042232.research.nokia.com [172.21.42.232])
+	by mgw-int01.ntc.nokia.com (Switch-3.2.5/Switch-3.2.5) with ESMTP id n4FDWkli011781;
+	Fri, 15 May 2009 16:32:49 +0300
+Subject: Re: [PATCH] MTD: Remove pmcmsp-ramroot.c
+From:	Artem Bityutskiy <dedekind@infradead.org>
+Reply-To: dedekind@infradead.org
+To:	Marc St-Jean <stjeanma@pmc-sierra.com>
+Cc:	linux-mtd@lists.infradead.org, linux-mips@linux-mips.org,
+	dwmw2@infradead.org, hch@lst.de, ralf@linux-mips.org,
+	linux-kernel@vger.kernel.org,
+	Shane McDonald <mcdonald.shane@gmail.com>
+In-Reply-To: <E1M0HJu-0007HN-7j@localhost>
+References: <E1M0HJu-0007HN-7j@localhost>
+Content-Type: text/plain; charset="UTF-8"
+Date:	Fri, 15 May 2009 16:32:46 +0300
+Message-Id: <1242394366.27996.245.camel@localhost.localdomain>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.24.3 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+X-Mailer: Evolution 2.24.5 (2.24.5-1.fc10) 
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 15 May 2009 13:32:51.0303 (UTC) FILETIME=[A4F7FF70:01C9D561]
+X-Nokia-AV: Clean
+Return-Path: <dedekind@infradead.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22729
+X-archive-position: 22730
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: dedekind@infradead.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2009-05-15 at 10:25 +0200, Arnaud Patard wrote:
-> Wu Zhangjin <wuzhangjin@gmail.com> writes:
+I guess it is nice to CC the original author?
+
+On Sat, 2009-05-02 at 09:40 -0600, Shane McDonald wrote:
+> The RAMROOT function was a successful but non-portable attempt to append
+> the root filesystem to the end of the kernel image.  The preferred and
+> portable solution is to use an initramfs instead.
 > 
-> Hi,
+> The only user of this function was the msp71xx configuration
+> in the MIPS architecture; as the use of the RAMROOT has been removed
+> from that configuration, there are no more users, so this code
+> can be removed.
 > 
-> > Dear all,
-> >
-> > I have cleaned up the source code of loongson-based machines support and
-> > updated it to linux-2.6.29.3, the result is put to the following git
-> > repository:
-> >
-> >    git://dev.lemote.com/rt4ls.git linux-2.6.29-stable-loongson-to-ralf
-> >
-> > this job is based on the to-mips branch of Yanhua's
-> > git://dev.lemote.com/linux_loongson.git and the lm2e-fixes branch of
-> > Philippe's git://git.linux-cisco.org/linux-mips.git. thanks goes to
-> > them.
+> Signed-off-by: Shane McDonald <mcdonald.shane@gmail.com>
+> ---
+>  drivers/mtd/maps/Kconfig          |    9 ---
+>  drivers/mtd/maps/Makefile         |    1 -
+>  drivers/mtd/maps/pmcmsp-ramroot.c |  104 -------------------------------------
+>  3 files changed, 0 insertions(+), 114 deletions(-)
+>  delete mode 100644 drivers/mtd/maps/pmcmsp-ramroot.c
 > 
-> I'd like to look at your patches but getting a git url prevents me to do
-> this because replying/commenting is not possible. Can you please send
-> patches to the list instead ?
-> 
-
-Yes, I will tune some commits and then send the patches out.
-thanks very much for your reply :-)
-
-> >
-> > I have tested it with gcc 4.3 on fuloong(2e), fuloong(2f), yeeloong(2f),
-> > both 32bit and 64bit kernel works well, if you want to try it with gcc
-> > 4.4, please use the patch from attachment.
-> 
-> I have some questions/comments :
-> 
-> - Why this patch is not merged in your patchset ?
-
-this patch is not ready yet for several reasons:
-
-1. under gcc 4.4(I'm using the version 4.4.0 20090313, not update to the
-latest one yet), there are tons of problems when compiling
-linux-loongson in 32bit. basically, 64bit is okay, but also some
-problems there(i just found the reboot command of fuloong2f not work
-under gcc4.4, but works well under gcc 4.3).
-
-2. -march=loongson2* only goes into gcc >= 4.4, so, there is a need to
-consider gcc >= 4.4 and gcc <= 4.3 differently, beside this compile
-option, some extra source code should be treated differently too. for
-example, this fix for gcc 4.4 will not work under gcc 4.3.
-
-diff --git a/arch/mips/include/asm/delay.h
-b/arch/mips/include/asm/delay.h
-index b0bccd2..db054ec 100644
---- a/arch/mips/include/asm/delay.h
-+++ b/arch/mips/include/asm/delay.h
-@@ -82,12 +82,10 @@ static inline void __udelay(unsigned long usecs,
-unsigned long lpj)
-                : "=h" (usecs), "=l" (lo)
-                : "r" (usecs), "r" (lpj)
-                : GCC_REG_ACCUM);
--       else if (sizeof(long) == 8 && !R4000_WAR)
--               __asm__("dmultu\t%2, %3"
--               : "=h" (usecs), "=l" (lo)
--               : "r" (usecs), "r" (lpj)
--               : GCC_REG_ACCUM);
--       else if (sizeof(long) == 8 && R4000_WAR)
-+       else if (sizeof(long) == 8 && !R4000_WAR) {
-+               typedef unsigned int uint128_t
-__attribute__((mode(TI)));
-+               usecs = ((uint128_t) usecs * lpj) >> 64;
-+       } else if (sizeof(long) == 8 && R4000_WAR)
-                __asm__("dmultu\t%3, %4\n\tmfhi\t%0"
-                : "=r" (usecs), "=h" (hi), "=l" (lo)
-                : "r" (usecs), "r" (lpj
-
-> - even if it should not affect the kernel, compiling with
->   -march=loongson2f even for 2e (you're matching on loongson2 so 2e and
->   2f) looks weird.
-
-sorry, this is really a very obvious error, in 2e, -march=loongson2e
-should be used.
-
-to fix this problem, perhaps we can add two new kernel options:
-
-config CPU_LOONGSON2E
-	bool
-
-config CPU_LOONGSON2F
-	bool
-
-and then use this solution:
-
-config FULOONG2E
-	...
-	select CPU_LOONGSON2E
-	...
-
-config YEELOONG2F
-	...
-	select CPU_LOONGSON2F
-	...
-
-cflags-$(CONFIG_CPU_LOONGSON2E)  += -march=loongson2e -Wa,--trap
-cflags-$(CONFIG_CPU_LOONGSON2F)  += -march=loongson2f -Wa,--trap
-
-is this solution okay?
-
-> - you're using the -mfix-ls2f-kernel binutils flag but afaik upstream
->   binutils doesn't know it. I really don't know how such a thing should
->   be handled but it seems strange to use this flag before binutils has
->   been patched for it. (the previous comment about -march=loongson2f
->   applies here too)
-> 
-
-so, it is better not use -mfix-ls2f-kernel before this option goes to
-the upstream binutils, i will remove it later.
-
-but for the above reasons, i really do not want to focus on gcc 4.4
-support currently, is it okay?
-
-thanks!
-Wu Zhangjin
+> diff --git a/drivers/mtd/maps/Kconfig b/drivers/mtd/maps/Kconfig
+> index 82923bd..2807833 100644
+> --- a/drivers/mtd/maps/Kconfig
+> +++ b/drivers/mtd/maps/Kconfig
+> @@ -105,15 +105,6 @@ config MSP_FLASH_MAP_LIMIT
+>  	default "0x02000000"
+>  	depends on MSP_FLASH_MAP_LIMIT_32M
+>  
+> -config MTD_PMC_MSP_RAMROOT
+> -	tristate "Embedded RAM block device for root on PMC-Sierra MSP"
+> -	depends on PMC_MSP_EMBEDDED_ROOTFS && \
+> -			(MTD_BLOCK || MTD_BLOCK_RO) && \
+> -			MTD_RAM
+> -	help
+> -	  This provides support for the embedded root file system
+> -          on PMC MSP devices.  This memory is mapped as a MTD block device.
+> -
+>  config MTD_SUN_UFLASH
+>  	tristate "Sun Microsystems userflash support"
+>  	depends on SPARC && MTD_CFI && PCI
+> diff --git a/drivers/mtd/maps/Makefile b/drivers/mtd/maps/Makefile
+> index 2dbc1be..8bae7f9 100644
+> --- a/drivers/mtd/maps/Makefile
+> +++ b/drivers/mtd/maps/Makefile
+> @@ -25,7 +25,6 @@ obj-$(CONFIG_MTD_OCTAGON)	+= octagon-5066.o
+>  obj-$(CONFIG_MTD_PHYSMAP)	+= physmap.o
+>  obj-$(CONFIG_MTD_PHYSMAP_OF)	+= physmap_of.o
+>  obj-$(CONFIG_MTD_PMC_MSP_EVM)   += pmcmsp-flash.o
+> -obj-$(CONFIG_MTD_PMC_MSP_RAMROOT)+= pmcmsp-ramroot.o
+>  obj-$(CONFIG_MTD_PCMCIA)	+= pcmciamtd.o
+>  obj-$(CONFIG_MTD_RPXLITE)	+= rpxlite.o
+>  obj-$(CONFIG_MTD_TQM8XXL)	+= tqm8xxl.o
+> diff --git a/drivers/mtd/maps/pmcmsp-ramroot.c b/drivers/mtd/maps/pmcmsp-ramroot.c
+> deleted file mode 100644
+> index 30de5c0..0000000
+> --- a/drivers/mtd/maps/pmcmsp-ramroot.c
+> +++ /dev/null
+> @@ -1,104 +0,0 @@
+> -/*
+> - * Mapping of the rootfs in a physical region of memory
+> - *
+> - * Copyright (C) 2005-2007 PMC-Sierra Inc.
+> - * Author: Andrew Hughes, Andrew_Hughes@pmc-sierra.com
+> - *
+> - *  This program is free software; you can redistribute  it and/or modify it
+> - *  under  the terms of  the GNU General  Public License as published by the
+> - *  Free Software Foundation;  either version 2 of the  License, or (at your
+> - *  option) any later version.
+> - *
+> - *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+> - *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+> - *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+> - *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+> - *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+> - *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+> - *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+> - *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+> - *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+> - *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+> - *
+> - *  You should have received a copy of the  GNU General Public License along
+> - *  with this program; if not, write  to the Free Software Foundation, Inc.,
+> - *  675 Mass Ave, Cambridge, MA 02139, USA.
+> - */
+> -
+> -#include <linux/module.h>
+> -#include <linux/types.h>
+> -#include <linux/kernel.h>
+> -#include <linux/init.h>
+> -#include <linux/slab.h>
+> -#include <linux/fs.h>
+> -#include <linux/root_dev.h>
+> -#include <linux/mtd/mtd.h>
+> -#include <linux/mtd/map.h>
+> -
+> -#include <asm/io.h>
+> -
+> -#include <msp_prom.h>
+> -
+> -static struct mtd_info *rr_mtd;
+> -
+> -struct map_info rr_map = {
+> -	.name = "ramroot",
+> -	.bankwidth = 4,
+> -};
+> -
+> -static int __init init_rrmap(void)
+> -{
+> -	void *ramroot_start;
+> -	unsigned long ramroot_size;
+> -
+> -	/* Check for supported rootfs types */
+> -	if (get_ramroot(&ramroot_start, &ramroot_size)) {
+> -		rr_map.phys = CPHYSADDR(ramroot_start);
+> -		rr_map.size = ramroot_size;
+> -
+> -		printk(KERN_NOTICE
+> -			"PMC embedded root device: 0x%08lx @ 0x%08lx\n",
+> -			rr_map.size, (unsigned long)rr_map.phys);
+> -	} else {
+> -		printk(KERN_ERR
+> -			"init_rrmap: no supported embedded rootfs detected!\n");
+> -		return -ENXIO;
+> -	}
+> -
+> -	/* Map rootfs to I/O space for block device driver */
+> -	rr_map.virt = ioremap(rr_map.phys, rr_map.size);
+> -	if (!rr_map.virt) {
+> -		printk(KERN_ERR "Failed to ioremap\n");
+> -		return -EIO;
+> -	}
+> -
+> -	simple_map_init(&rr_map);
+> -
+> -	rr_mtd = do_map_probe("map_ram", &rr_map);
+> -	if (rr_mtd) {
+> -		rr_mtd->owner = THIS_MODULE;
+> -
+> -		add_mtd_device(rr_mtd);
+> -
+> -		return 0;
+> -	}
+> -
+> -	iounmap(rr_map.virt);
+> -	return -ENXIO;
+> -}
+> -
+> -static void __exit cleanup_rrmap(void)
+> -{
+> -	del_mtd_device(rr_mtd);
+> -	map_destroy(rr_mtd);
+> -
+> -	iounmap(rr_map.virt);
+> -	rr_map.virt = NULL;
+> -}
+> -
+> -MODULE_AUTHOR("PMC-Sierra, Inc");
+> -MODULE_DESCRIPTION("MTD map driver for embedded PMC-Sierra MSP filesystem");
+> -MODULE_LICENSE("GPL");
+> -
+> -module_init(init_rrmap);
+> -module_exit(cleanup_rrmap);
+-- 
+Best regards,
+Artem Bityutskiy (Битюцкий Артём)

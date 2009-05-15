@@ -1,33 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2009 23:09:36 +0100 (BST)
-Received: from rv-out-0708.google.com ([209.85.198.243]:10824 "EHLO
-	rv-out-0708.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20023334AbZEOWJ3 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2009 23:09:29 +0100
-Received: by rv-out-0708.google.com with SMTP id k29so1217105rvb.24
-        for <multiple recipients>; Fri, 15 May 2009 15:09:26 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2009 23:10:19 +0100 (BST)
+Received: from wf-out-1314.google.com ([209.85.200.172]:7454 "EHLO
+	wf-out-1314.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20023334AbZEOWKL (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2009 23:10:11 +0100
+Received: by wf-out-1314.google.com with SMTP id 28so1225568wfa.21
+        for <multiple recipients>; Fri, 15 May 2009 15:10:09 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:subject:from:reply-to:to:cc
          :content-type:organization:date:message-id:mime-version:x-mailer
          :content-transfer-encoding;
-        bh=zyce4OQNlC41TohYmquJprgRJ8IRUkOSywLT605FkWs=;
-        b=QPhRhJOyldWqE11jc2yy9042jL8mv6FsGLoJHUTLmUuWFeaC0f+Ec666WSE5ZLDVs9
-         y0gIijdKzTaV2Wd6sEx7UqskQu92CuFNHXIQ+cwEpztsnqSRMU6AVEAw/BMcQLVhuHRi
-         8Mbx7zchDhYI5dgDs/myHVW94NZfvH4Uyn5Os=
+        bh=+CoeFZNprsPy41pz/gAyPCzJQb9q4NYeFMbo3G3Qes8=;
+        b=L2w6YIOSZ1gvSc7gkYT6ouuvNVpSU2mpDhNlmuqGjL0hpFiOdQyS61HLktCJmEJFCy
+         LmqpJRPBZU9/457/jry2Tu+akqtKqh0EoBwhNdOyBTlOGlPwQkO6DovKmsIQWGSxg3b0
+         z/RRDy4lW1wwrGxAM3mx/15us1bcBUmuIlmi8=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=subject:from:reply-to:to:cc:content-type:organization:date
          :message-id:mime-version:x-mailer:content-transfer-encoding;
-        b=alBUQac0RpEOcLS1P4ZhrwIQeQres9CHr+D6g6AmW6fqs1vaVjrexLAIws4shNlVEL
-         tF5V939mGyAc1ZvFW+TiEfMLvzzGL2tZfbIB1WuMAoWwWqX2bUxBJrpi7YV2db9yQqpP
-         lCoxh52WgzMw/Q9v21LGLv5TMS6DSrn4FTy5w=
-Received: by 10.141.146.4 with SMTP id y4mr1359672rvn.9.1242425366840;
-        Fri, 15 May 2009 15:09:26 -0700 (PDT)
+        b=lSF+AER9c6xbhXigwqPePBsSwMdJdzEKQ42I169PMydwCRvkRlF4gIquvHA6x76tQL
+         IHvUufo6Ttfo7NOM9MM+cl6os3YOmIf/pv+tDN9onsWxMl2cA8nuXDxqI5JuhiQifXRz
+         DLftJbwkLGzvXaLOxr9cizuk9cKE/MNq2Lf2E=
+Received: by 10.142.57.19 with SMTP id f19mr1197117wfa.80.1242425409348;
+        Fri, 15 May 2009 15:10:09 -0700 (PDT)
 Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id b39sm293993rvf.11.2009.05.15.15.09.22
+        by mx.google.com with ESMTPS id b39sm314553rvf.1.2009.05.15.15.10.05
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 15 May 2009 15:09:26 -0700 (PDT)
-Subject: [PATCH 11/30] loongson: split the loongson-specific part out
+        Fri, 15 May 2009 15:10:08 -0700 (PDT)
+Subject: [PATCH 12/30] loongson: add basic loongson-2f support
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 Reply-To: wuzhangjin@gmail.com
 To:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
@@ -37,8 +37,8 @@ Cc:	Arnaud Patard <apatard@mandriva.com>,
 	Zhang Le <r0bertz@gentoo.org>, Erwan Lerale <erwan@thiscow.com>
 Content-Type: text/plain
 Organization: DSLab, Lanzhou University, China
-Date:	Sat, 16 May 2009 06:07:28 +0800
-Message-Id: <1242425248.10164.152.camel@falcon>
+Date:	Sat, 16 May 2009 06:10:02 +0800
+Message-Id: <1242425402.10164.153.camel@falcon>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.24.3 
 Content-Transfer-Encoding: 7bit
@@ -46,7 +46,7 @@ Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22748
+X-archive-position: 22749
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,2018 +54,382 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
->From 57644cf3cddd952fc5da4b99d868744e290ab018 Mon Sep 17 00:00:00 2001
+>From 90697a98d8a589cfa503ae816e5f530cb682c4c0 Mon Sep 17 00:00:00 2001
 From: Wu Zhangjin <wuzhangjin@gmail.com>
-Date: Sat, 16 May 2009 01:52:40 +0800
-Subject: [PATCH 11/30] loongson: split the loongson-specific part out
+Date: Sat, 16 May 2009 02:36:24 +0800
+Subject: [PATCH 12/30] loongson: add basic loongson-2f support
 
-for sharing lots of loongson-specific source code among loongson-based
-machines, there is a need to split the loongson-specific part out to a
-common directory.
+the main difference between loongson-2e and loongson-2f is that:
+
+loongson-2f have an extra address windows configuration module, which
+can be used to map CPU address space to DDR or PCI address space, or map
+the PCI-DMA address space to DDR or LIO address space.
 ---
- arch/mips/Kconfig                            |   54 +++++-------
- arch/mips/Makefile                           |    5 +-
- arch/mips/loongson/Kconfig                   |   30 +++++++
- arch/mips/loongson/Makefile                  |   11 +++
- arch/mips/loongson/common/Makefile           |   20 +++++
- arch/mips/loongson/common/bonito-irq.c       |   70 +++++++++++++++
- arch/mips/loongson/common/cmdline.c          |   79 +++++++++++++++++
- arch/mips/loongson/common/early_printk.c     |   28 ++++++
- arch/mips/loongson/common/init.c             |   42 +++++++++
- arch/mips/loongson/common/irq.c              |  117
-++++++++++++++++++++++++++
- arch/mips/loongson/common/mem.c              |   41 +++++++++
- arch/mips/loongson/common/misc.c             |   15 ++++
- arch/mips/loongson/common/pci.c              |  104
-+++++++++++++++++++++++
- arch/mips/loongson/common/reset.c            |   42 +++++++++
- arch/mips/loongson/common/rtc.c              |   54 ++++++++++++
- arch/mips/loongson/common/setup.c            |   75 ++++++++++++++++
- arch/mips/loongson/common/time.c             |   27 ++++++
- arch/mips/loongson/fuloong-2e/Makefile       |   19 +----
- arch/mips/loongson/fuloong-2e/bonito-irq.c   |   70 ---------------
- arch/mips/loongson/fuloong-2e/cmdline.c      |   79 -----------------
- arch/mips/loongson/fuloong-2e/early_printk.c |   28 ------
- arch/mips/loongson/fuloong-2e/init.c         |   42 ---------
- arch/mips/loongson/fuloong-2e/irq.c          |  114
-++-----------------------
- arch/mips/loongson/fuloong-2e/mem.c          |   41 ---------
- arch/mips/loongson/fuloong-2e/misc.c         |   15 ----
- arch/mips/loongson/fuloong-2e/pci.c          |  104
------------------------
- arch/mips/loongson/fuloong-2e/reset.c        |   30 ++-----
- arch/mips/loongson/fuloong-2e/rtc.c          |   54 ------------
- arch/mips/loongson/fuloong-2e/setup.c        |   75 ----------------
- arch/mips/loongson/fuloong-2e/time.c         |   27 ------
- 30 files changed, 800 insertions(+), 712 deletions(-)
- create mode 100644 arch/mips/loongson/Kconfig
- create mode 100644 arch/mips/loongson/Makefile
- create mode 100644 arch/mips/loongson/common/Makefile
- create mode 100644 arch/mips/loongson/common/bonito-irq.c
- create mode 100644 arch/mips/loongson/common/cmdline.c
- create mode 100644 arch/mips/loongson/common/early_printk.c
- create mode 100644 arch/mips/loongson/common/init.c
- create mode 100644 arch/mips/loongson/common/irq.c
- create mode 100644 arch/mips/loongson/common/mem.c
- create mode 100644 arch/mips/loongson/common/misc.c
- create mode 100644 arch/mips/loongson/common/pci.c
- create mode 100644 arch/mips/loongson/common/reset.c
- create mode 100644 arch/mips/loongson/common/rtc.c
- create mode 100644 arch/mips/loongson/common/setup.c
- create mode 100644 arch/mips/loongson/common/time.c
- delete mode 100644 arch/mips/loongson/fuloong-2e/bonito-irq.c
- delete mode 100644 arch/mips/loongson/fuloong-2e/cmdline.c
- delete mode 100644 arch/mips/loongson/fuloong-2e/early_printk.c
- delete mode 100644 arch/mips/loongson/fuloong-2e/init.c
- delete mode 100644 arch/mips/loongson/fuloong-2e/mem.c
- delete mode 100644 arch/mips/loongson/fuloong-2e/misc.c
- delete mode 100644 arch/mips/loongson/fuloong-2e/pci.c
- delete mode 100644 arch/mips/loongson/fuloong-2e/rtc.c
- delete mode 100644 arch/mips/loongson/fuloong-2e/setup.c
- delete mode 100644 arch/mips/loongson/fuloong-2e/time.c
+ arch/mips/Kconfig                                  |   18 +++++
+ .../mips/include/asm/mach-loongson/dma-coherence.h |    4 +
+ arch/mips/include/asm/mach-loongson/loongson.h     |   75
+++++++++++++++++++++
+ arch/mips/include/asm/mach-loongson/mem.h          |   23 ++++++
+ arch/mips/include/asm/mach-loongson/pci.h          |   29 +++++++-
+ arch/mips/loongson/common/init.c                   |   18 +++++
+ arch/mips/loongson/common/mem.c                    |   21 +++++-
+ arch/mips/loongson/common/pci.c                    |   14 +++-
+ 8 files changed, 193 insertions(+), 9 deletions(-)
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 974ce41..d4090bc 100644
+index d4090bc..71d57e8 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -6,7 +6,7 @@ config MIPS
- 	select HAVE_ARCH_KGDB
- 	# Horrible source of confusion.  Die, die, die ...
- 	select EMBEDDED
--	select RTC_LIB if !LEMOTE_FULOONG2E
-+	select RTC_LIB if !LOONGSON_SYSTEMS
- 
- mainmenu "Linux/MIPS Kernel Configuration"
- 
-@@ -156,31 +156,16 @@ config LASAT
- 	select SYS_SUPPORTS_LITTLE_ENDIAN
- 	select GENERIC_HARDIRQS_NO__DO_IRQ
- 
--config LEMOTE_FULOONG2E
--	bool "Lemote Fuloong(2e) mini-PC"
--	select ARCH_SPARSEMEM_ENABLE
--	select CEVT_R4K
--	select CSRC_R4K
--	select SYS_HAS_CPU_LOONGSON2
--	select DMA_NONCOHERENT
--	select BOOT_ELF32
--	select BOARD_SCACHE
--	select HAVE_STD_PC_SERIAL_PORT
--	select HW_HAS_PCI
--	select I8259
--	select ISA
--	select IRQ_CPU
--	select SYS_SUPPORTS_32BIT_KERNEL
--	select SYS_SUPPORTS_64BIT_KERNEL
--	select SYS_SUPPORTS_LITTLE_ENDIAN
--	select SYS_SUPPORTS_HIGHMEM
--	select SYS_HAS_EARLY_PRINTK
--	select GENERIC_HARDIRQS_NO__DO_IRQ
--	select GENERIC_ISA_DMA_SUPPORT_BROKEN
--	select CPU_HAS_WB
-+config LOONGSON_SYSTEMS
-+	bool "Loongson Based Machines"
- 	help
--	  Lemote Fulong mini-PC board based on the Chinese Loongson-2E CPU and
--	  an FPGA northbridge
-+	  This enables the support of Loongson based machines.
-+
-+	  Loongson is a family of general-purpose MIPS-compatible CPUs 
-+	  developed at Institute of Computing Technology (ICT), 
-+	  Chinese Academy of Sciences (CAS) in the People's Republic 
-+	  of China. The chief architect is Professor Weiwu Hu.
-+
- 
- config MIPS_MALTA
- 	bool "MIPS Malta board"
-@@ -649,6 +634,7 @@ source "arch/mips/sibyte/Kconfig"
- source "arch/mips/txx9/Kconfig"
- source "arch/mips/vr41xx/Kconfig"
- source "arch/mips/cavium-octeon/Kconfig"
-+source "arch/mips/loongson/Kconfig"
- 
- endmenu
- 
-@@ -1014,12 +1000,10 @@ choice
- 	prompt "CPU type"
- 	default CPU_R4X00
- 
--config CPU_LOONGSON2
--	bool "Loongson 2"
--	depends on SYS_HAS_CPU_LOONGSON2
--	select CPU_SUPPORTS_32BIT_KERNEL
--	select CPU_SUPPORTS_64BIT_KERNEL
--	select CPU_SUPPORTS_HIGHMEM
-+config CPU_LOONGSON2E
-+	bool "Loongson 2E"
-+	depends on SYS_HAS_CPU_LOONGSON2E
-+	select CPU_LOONGSON2
+@@ -1006,7 +1006,22 @@ config CPU_LOONGSON2E
+ 	select CPU_LOONGSON2
  	help
  	  The Loongson 2E processor implements the MIPS III instruction set
- 	  with many extensions.
-@@ -1262,7 +1246,13 @@ config CPU_CAVIUM_OCTEON
- 
- endchoice
- 
--config SYS_HAS_CPU_LOONGSON2
-+config CPU_LOONGSON2
-+	bool
-+	select CPU_SUPPORTS_32BIT_KERNEL
-+	select CPU_SUPPORTS_64BIT_KERNEL
-+	select CPU_SUPPORTS_HIGHMEM
++	  with many extensions. 
++	  
++	  It has an internal FPGA northbridge, which is compatiable to
++	  bonito64.
 +
-+config SYS_HAS_CPU_LOONGSON2E
++config CPU_LOONGSON2F
++	bool "Loongson 2F"
++	depends on SYS_HAS_CPU_LOONGSON2F
++	select CPU_LOONGSON2
++	help
++	  The Loongson 2F processor implements the MIPS III instruction set
+ 	  with many extensions.
++	  
++	  Loongson2F have built-in DDR2 and PCIX controller. The PCIX
+controller
++	  have a similar programming interface with FPGA northbridge used in
++	  Loongson2E.
+ 
+ config CPU_MIPS32_R1
+ 	bool "MIPS32 Release 1"
+@@ -1255,6 +1270,9 @@ config CPU_LOONGSON2
+ config SYS_HAS_CPU_LOONGSON2E
  	bool
  
++config SYS_HAS_CPU_LOONGSON2F
++	bool
++
  config SYS_HAS_CPU_MIPS32_R1
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 7afec0b..6cbfc22 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -306,9 +306,10 @@ load-$(CONFIG_WR_PPMC)		+= 0xffffffff80100000
- #
- # lemote fulong mini-PC board
- #
--core-$(CONFIG_LEMOTE_FULOONG2E) +=arch/mips/loongson/fuloong-2e/
-+core-$(CONFIG_LOONGSON_SYSTEMS) +=arch/mips/loongson/
-+cflags-$(CONFIG_LOONGSON_SYSTEMS) += -I
-$(srctree)/arch/mips/include/asm/mach-loongson \
-+					-mno-branch-likely
- load-$(CONFIG_LEMOTE_FULOONG2E) +=0xffffffff80100000
--cflags-$(CONFIG_LEMOTE_FULOONG2E) += -I
-$(srctree)/arch/mips/include/asm/mach-loongson
+ 	bool
  
- #
- # MIPS Malta board
-diff --git a/arch/mips/loongson/Kconfig b/arch/mips/loongson/Kconfig
-new file mode 100644
-index 0000000..9ae71a5
---- /dev/null
-+++ b/arch/mips/loongson/Kconfig
-@@ -0,0 +1,30 @@
-+choice
-+	prompt "Machine Type"
-+	depends on LOONGSON_SYSTEMS
+diff --git a/arch/mips/include/asm/mach-loongson/dma-coherence.h
+b/arch/mips/include/asm/mach-loongson/dma-coherence.h
+index f27d0f8..6ba8279 100644
+--- a/arch/mips/include/asm/mach-loongson/dma-coherence.h
++++ b/arch/mips/include/asm/mach-loongson/dma-coherence.h
+@@ -27,7 +27,11 @@ static inline dma_addr_t plat_map_dma_mem_page(struct
+device *dev,
+ 
+ static inline unsigned long plat_dma_addr_to_phys(dma_addr_t dma_addr)
+ {
++#if defined(CONFIG_CPU_LOONGSON2F) & defined(CONFIG_64BIT)
++	return (dma_addr > 0x8fffffff) ? dma_addr : (dma_addr & 0x0fffffff);
++#else
+ 	return dma_addr & 0x7fffffff;
++#endif
+ }
+ 
+ static inline void plat_unmap_dma_mem(struct device *dev, dma_addr_t
+dma_addr)
+diff --git a/arch/mips/include/asm/mach-loongson/loongson.h
+b/arch/mips/include/asm/mach-loongson/loongson.h
+index 8395ea8..3d8c768 100644
+--- a/arch/mips/include/asm/mach-loongson/loongson.h
++++ b/arch/mips/include/asm/mach-loongson/loongson.h
+@@ -230,5 +230,80 @@
+                                                   (((ADDR) &
+(~(LOONGSON_PCIMEMBASECFG_MASK))) &
+(~(LOONGSON_PCIMEMBASECFG_ADDRMASK(WIN, CFG)))) | \
+
+(LOONGSON_PCIMEMBASECFG_ADDRTRANS(WIN, CFG)) \
+                                                 )
++/* 
++ * address windows configuration module
++ *
++ * only loongson2f have this module
++ */
++#if defined(CONFIG_CPU_LOONGSON2F) && defined(CONFIG_64BIT)
 +
-+config LEMOTE_FULOONG2E
-+	bool "Lemote Fuloong(2e) mini-PC"
-+	select ARCH_SPARSEMEM_ENABLE
-+	select CEVT_R4K
-+	select CSRC_R4K
-+	select SYS_HAS_CPU_LOONGSON2E
-+	select DMA_NONCOHERENT
-+	select BOOT_ELF32
-+	select BOARD_SCACHE
-+	select HW_HAS_PCI
-+	select I8259
-+	select ISA
-+	select IRQ_CPU
-+	select SYS_SUPPORTS_32BIT_KERNEL
-+	select SYS_SUPPORTS_64BIT_KERNEL
-+	select SYS_SUPPORTS_LITTLE_ENDIAN
-+	select SYS_SUPPORTS_HIGHMEM
-+	select SYS_HAS_EARLY_PRINTK
-+	select GENERIC_HARDIRQS_NO__DO_IRQ
-+	select GENERIC_ISA_DMA_SUPPORT_BROKEN
-+	select CPU_HAS_WB
-+	help
-+	  Lemote Fulong mini-PC board based on the Chinese Loongson-2E CPU and
-+	  an FPGA northbridge
++/* address window config module base address */
++#define LOONGSON_ADDRWINCFG_BASE		0x3ff00000ul
++#define LOONGSON_ADDRWINCFG_SIZE		0x180
 +
-+endchoice
-diff --git a/arch/mips/loongson/Makefile b/arch/mips/loongson/Makefile
-new file mode 100644
-index 0000000..cc9f1c8
---- /dev/null
-+++ b/arch/mips/loongson/Makefile
-@@ -0,0 +1,11 @@
-+#
-+# Common code for all Loongson based systems
-+#
++extern unsigned long _loongson_addrwincfg_base;
++#define LOONGSON_ADDRWINCFG(offset)	*(volatile u64
+*)(_loongson_addrwincfg_base + (offset))
 +
-+obj-$(CONFIG_LOONGSON_SYSTEMS) += common/
++#define CPU_WIN0_BASE	LOONGSON_ADDRWINCFG(0x00)
++#define CPU_WIN1_BASE	LOONGSON_ADDRWINCFG(0x08)
++#define CPU_WIN2_BASE	LOONGSON_ADDRWINCFG(0x10)
++#define CPU_WIN3_BASE	LOONGSON_ADDRWINCFG(0x18)
 +
-+#
-+# Lemote Fuloong mini-PC (Loongson 2E-based)
-+#
++#define CPU_WIN0_MASK	LOONGSON_ADDRWINCFG(0x20)
++#define CPU_WIN1_MASK	LOONGSON_ADDRWINCFG(0x28)
++#define CPU_WIN2_MASK	LOONGSON_ADDRWINCFG(0x30)
++#define CPU_WIN3_MASK	LOONGSON_ADDRWINCFG(0x38)
 +
-+obj-$(CONFIG_LEMOTE_FULOONG2E)	+= fuloong-2e/
-diff --git a/arch/mips/loongson/common/Makefile
-b/arch/mips/loongson/common/Makefile
-new file mode 100644
-index 0000000..cda3d77
---- /dev/null
-+++ b/arch/mips/loongson/common/Makefile
-@@ -0,0 +1,20 @@
-+#
-+# Makefile for loongson based machines.
-+#
++#define CPU_WIN0_MMAP	LOONGSON_ADDRWINCFG(0x40)
++#define CPU_WIN1_MMAP	LOONGSON_ADDRWINCFG(0x48)
++#define CPU_WIN2_MMAP	LOONGSON_ADDRWINCFG(0x50)
++#define CPU_WIN3_MMAP	LOONGSON_ADDRWINCFG(0x58)
 +
-+obj-y += setup.o init.o cmdline.o time.o reset.o irq.o \
-+	pci.o bonito-irq.o mem.o misc.o
++#define PCIDMA_WIN0_BASE	LOONGSON_ADDRWINCFG(0x60)
++#define PCIDMA_WIN1_BASE	LOONGSON_ADDRWINCFG(0x68)
++#define PCIDMA_WIN2_BASE	LOONGSON_ADDRWINCFG(0x70)
++#define PCIDMA_WIN3_BASE	LOONGSON_ADDRWINCFG(0x78)
 +
-+#
-+# Early printk support 
-+#
-+obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
++#define PCIDMA_WIN0_MASK	LOONGSON_ADDRWINCFG(0x80)
++#define PCIDMA_WIN1_MASK	LOONGSON_ADDRWINCFG(0x88)
++#define PCIDMA_WIN2_MASK	LOONGSON_ADDRWINCFG(0x90)
++#define PCIDMA_WIN3_MASK	LOONGSON_ADDRWINCFG(0x98)
 +
-+#
-+# Enable RTC Class support
-+#
-+# please enable CONFIG_RTC_DRV_CMOS
-+#
-+obj-$(CONFIG_RTC_DRV_CMOS) += rtc.o
++#define PCIDMA_WIN0_MMAP	LOONGSON_ADDRWINCFG(0xa0)
++#define PCIDMA_WIN1_MMAP	LOONGSON_ADDRWINCFG(0xa8)
++#define PCIDMA_WIN2_MMAP	LOONGSON_ADDRWINCFG(0xb0)
++#define PCIDMA_WIN3_MMAP	LOONGSON_ADDRWINCFG(0xb8)
 +
-+EXTRA_CFLAGS += -Werror
-diff --git a/arch/mips/loongson/common/bonito-irq.c
-b/arch/mips/loongson/common/bonito-irq.c
-new file mode 100644
-index 0000000..61f473d
---- /dev/null
-+++ b/arch/mips/loongson/common/bonito-irq.c
-@@ -0,0 +1,70 @@
++#define ADDRWIN_WIN0	0
++#define ADDRWIN_WIN1	1
++#define ADDRWIN_WIN2	2
++#define ADDRWIN_WIN3	3
++
++#define ADDRWIN_MAP_DST_DDR	0
++#define ADDRWIN_MAP_DST_PCI	1
++#define ADDRWIN_MAP_DST_LIO	1
++
 +/*
-+ * Copyright 2001 MontaVista Software Inc.
-+ * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
-+ * Copyright (C) 2000, 2001 Ralf Baechle (ralf@gnu.org)
-+ *
-+ * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
-+ * Author: Fuxin Zhang, zhangfx@lemote.com
-+ *
-+ *  This program is free software; you can redistribute  it and/or
-modify it
-+ *  under  the terms of  the GNU General  Public License as published
-by the
-+ *  Free Software Foundation;  either version 2 of the  License, or (at
-your
-+ *  option) any later version.
-+ *
-+ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR
-IMPLIED
-+ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED
-WARRANTIES OF
-+ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED.  IN
-+ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT,
-INDIRECT,
-+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT
-+ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES;
-LOSS OF
-+ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED
-AND ON
-+ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR
-TORT
-+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-USE OF
-+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-+ *
-+ *  You should have received a copy of the  GNU General Public License
-along
-+ *  with this program; if not, write  to the Free Software Foundation,
-Inc.,
-+ *  675 Mass Ave, Cambridge, MA 02139, USA.
-+ *
++ * s: CPU, PCIDMA
++ * d: DDR, PCI, LIO
++ * win: 0, 1, 2, 3
++ * src: map source
++ * dst: map destination
++ * size: ~mask + 1
 + */
++#define LOONGSON_ADDRWIN_CFG(s, d, w, src, dst, size) do {\
++	s##_WIN##w##_BASE = (src); \
++	s##_WIN##w##_MMAP = (src) | ADDRWIN_MAP_DST_##d; \
++	s##_WIN##w##_MASK = ~(size-1); \
++	} while (0);
 +
-+#include <linux/interrupt.h>
++#define LOONGSON_ADDRWIN_CPUTOPCI(win, src, dst, size) \
++	LOONGSON_ADDRWIN_CFG(CPU, PCI, win, src, dst, size)
++#define LOONGSON_ADDRWIN_CPUTODDR(win, src, dst, size) \
++	LOONGSON_ADDRWIN_CFG(CPU, DDR, win, src, dst, size)
++#define LOONGSON_ADDRWIN_PCITODDR(win, src, dst, size) \
++	LOONGSON_ADDRWIN_CFG(PCIDMA, DDR, win, src, dst, size)
 +
-+#include <loongson.h>
-+#include <machine.h>
-+
-+static inline void bonito_irq_enable(unsigned int irq)
-+{
-+	LOONGSON_INTENSET = (1 << (irq - LOONGSON_IRQ_BASE));
-+	mmiowb();
-+}
-+
-+static inline void bonito_irq_disable(unsigned int irq)
-+{
-+	LOONGSON_INTENCLR = (1 << (irq - LOONGSON_IRQ_BASE));
-+	mmiowb();
-+}
-+
-+static struct irq_chip bonito_irq_type = {
-+	.name	= "bonito_irq",
-+	.ack	= bonito_irq_disable,
-+	.mask	= bonito_irq_disable,
-+	.mask_ack = bonito_irq_disable,
-+	.unmask	= bonito_irq_enable,
-+};
-+
-+static struct irqaction dma_timeout_irqaction = {
-+	.handler	= no_action,
-+	.name		= "dma_timeout",
-+};
-+
-+void bonito_irq_init(void)
-+{
-+	u32 i;
-+
-+	for (i = LOONGSON_IRQ_BASE; i < LOONGSON_IRQ_BASE + 32; i++) {
-+		set_irq_chip_and_handler(i, &bonito_irq_type, handle_level_irq);
-+	}
-+
-+	setup_irq(LOONGSON_DMATIMEOUT_IRQ, &dma_timeout_irqaction);
-+}
-diff --git a/arch/mips/loongson/common/cmdline.c
-b/arch/mips/loongson/common/cmdline.c
-new file mode 100644
-index 0000000..28bcf6f
---- /dev/null
-+++ b/arch/mips/loongson/common/cmdline.c
-@@ -0,0 +1,79 @@
++#endif				/* ! CONFIG_CPU_LOONGSON2F && CONFIG_64BIT */
+ 
+ #endif				/* __LOONGSON_H */
+diff --git a/arch/mips/include/asm/mach-loongson/mem.h
+b/arch/mips/include/asm/mach-loongson/mem.h
+index ad01dc2..fb53be0 100644
+--- a/arch/mips/include/asm/mach-loongson/mem.h
++++ b/arch/mips/include/asm/mach-loongson/mem.h
+@@ -1,8 +1,31 @@
+ #ifndef __MEM_H
+ #define __MEM_H
+ 
 +/*
-+ * Based on Ocelot Linux port, which is
-+ * Copyright 2001 MontaVista Software Inc.
-+ * Author: jsun@mvista.com or jsun@junsun.net
++ * high memory space
 + *
-+ * Copyright 2003 ICT CAS
-+ * Author: Michael Guo <guoyi@ict.ac.cn>
++ * in loongson2e, starts from 512M
++ * in loongson2f, starts from 2G + 256M
++ */
++#ifdef CONFIG_CPU_LOONGSON2E
+ #define LOONGSON_HIGHMEM_START	0x20000000
++#else
++#define LOONGSON_HIGHMEM_START	0x90000000
++#endif
++
++/*
++ * the peripheral registers(MMIO):
 + *
-+ * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
-+ * Author: Fuxin Zhang, zhangfx@lemote.com
-+ *
-+ * Copyright (C) 2009 Lemote Inc. & Insititute of Computing Technology
-+ * Author: Wu Zhangjin, wuzj@lemote.com
-+ *
-+ * This program is free software; you can redistribute  it and/or
-modify it
-+ * under  the terms of  the GNU General  Public License as published by
-the
-+ * Free Software Foundation;  either version 2 of the  License, or (at
-your
-+ * option) any later version.
++ * On the Lemote Loongson 2e system, reside between 0x1000:0000 and
+0x2000:0000.
++ * On the Lemote Loongson 2f system, reside between 0x1000:0000 and
+0x8000:0000.
 + */
 +
-+#include <linux/bootmem.h>
+ #define LOONGSON_MMIO_MEM_START 0x10000000
 +
-+#include <asm/bootinfo.h>
++#ifdef CONFIG_CPU_LOONGSON2E
+ #define LOONGSON_MMIO_MEM_END	0x20000000
++#else
++#define LOONGSON_MMIO_MEM_END	0x80000000
++#endif
+ 
+ #endif	/* !__MEM_H */
+diff --git a/arch/mips/include/asm/mach-loongson/pci.h
+b/arch/mips/include/asm/mach-loongson/pci.h
+index 4d3b647..fb17e0d 100644
+--- a/arch/mips/include/asm/mach-loongson/pci.h
++++ b/arch/mips/include/asm/mach-loongson/pci.h
+@@ -1,5 +1,6 @@
+ /*
+  * Copyright (c) 2008 Zhang Le <r0bertz@gentoo.org>
++ * Copyright (c) 2009 Wu Zhangjin <wuzj@lemote.com>
+  *
+  * This program is free software; you can redistribute it
+  * and/or modify it under the terms of the GNU General
+@@ -22,9 +23,33 @@
+ #ifndef _LOONGSON_PCI_H_
+ #define _LOONGSON_PCI_H_
+ 
++/* this is an offset from mips_io_port_base */
++#define LOONGSON_PCI_IO_START		0x00004000UL
 +
-+unsigned long bus_clock;
-+unsigned long cpu_clock_freq;
-+unsigned int memsize, highmemsize;
++#if defined(CONFIG_CPU_LOONGSON2F) && defined(CONFIG_64BIT)
 +
-+int prom_argc;
-+/* pmon passes arguments in 32bit pointers */
-+int *_prom_argv, *_prom_envp;
-+
-+#define parse_even_earlier(res, option, p)				\
-+do {									\
-+	if (strncmp(option, (char *)p, strlen(option)) == 0)		\
-+		res = simple_strtol((char *)p + strlen(option"="),	\
-+				    NULL, 10);				\
-+} while (0)
-+
-+void __init prom_init_cmdline(void)
-+{
-+	int i;
-+	long l;
-+	prom_argc = fw_arg0;
-+	_prom_argv = (int *)fw_arg1;
-+	_prom_envp = (int *)fw_arg2;
-+	
-+	/* arg[0] is "g", the rest is boot parameters */
-+	arcs_cmdline[0] = '\0';
-+	for (i = 1; i < prom_argc; i++) {
-+		l = (long)_prom_argv[i];
-+		if (strlen(arcs_cmdline) + strlen(((char *)l) + 1)
-+		    >= sizeof(arcs_cmdline))
-+			break;
-+		strcat(arcs_cmdline, ((char *)l));
-+		strcat(arcs_cmdline, " ");
-+	}
-+
-+	/* handle console, root, busclock, cpuclock, memsize, highmemsize
-arguments */
-+	if ((strstr(arcs_cmdline, "console=")) == NULL)
-+		strcat(arcs_cmdline, " console=ttyS0,115200");
-+	if ((strstr(arcs_cmdline, "root=")) == NULL)
-+		strcat(arcs_cmdline, " root=/dev/hda1");
-+
-+	l = (long)*_prom_envp;
-+	while (l != 0) {
-+		parse_even_earlier(bus_clock, "busclock", l);
-+		parse_even_earlier(cpu_clock_freq, "cpuclock", l);
-+		parse_even_earlier(memsize, "memsize", l);
-+		parse_even_earlier(highmemsize, "highmemsize", l);
-+		_prom_envp++;
-+		l = (long)*_prom_envp;
-+	}
-+	if (memsize == 0)
-+		memsize = 256;
-+
-+	pr_info("busclock=%ld, cpuclock=%ld, memsize=%d, highmemsize=%d\n",
-+		bus_clock, cpu_clock_freq, memsize, highmemsize);
-+}
-diff --git a/arch/mips/loongson/common/early_printk.c
-b/arch/mips/loongson/common/early_printk.c
-new file mode 100644
-index 0000000..3f6c1db
---- /dev/null
-+++ b/arch/mips/loongson/common/early_printk.c
-@@ -0,0 +1,28 @@
-+/*  early printk support 
-+ *
-+ *  Copyright (c) 2009 Philippe Vachon <philippe@cowpig.ca>
-+ *
-+ *  This program is free software; you can redistribute  it and/or
-modify it
-+ *  under  the terms of  the GNU General  Public License as published
-by the
-+ *  Free Software Foundation;  either version 2 of the  License, or (at
-your
-+ *  option) any later version.
++/*
++ * we use address window2 to map cpu address space to pci space
++ * window2: cpu [1G, 2G] -> pci [1G, 2G] 
++ * why not use window 0 & 1? because they are used by cpu when booting.
++ * window0: cpu [0, 256M] -> ddr [0, 256M]
++ * window1: cpu [256M, 512M] -> pci [256M, 512M]
 + */
 +
-+#include <linux/io.h>
-+#include <linux/types.h>
-+#include <linux/serial_reg.h>
++/* the smallest LOONGSON_CPU_MEM_SRC can be 512M */
++#define LOONGSON_CPU_MEM_SRC	0x40000000ul		/* 1G */
++#define LOONGSON_PCI_MEM_DST	LOONGSON_CPU_MEM_SRC
 +
-+#include <machine.h>
++#define LOONGSON_PCI_MEM_START	LOONGSON_PCI_MEM_DST
++#define LOONGSON_PCI_MEM_END	(0x80000000ul -1)	/* 2G */
 +
-+void prom_putchar(char c)
-+{
-+	int timeout;
-+	phys_addr_t uart_base =
-+	    (phys_addr_t) ioremap_nocache(LOONGSON_UART_BASE, 8);
-+	char reg = readb((u8 *) (uart_base + UART_LSR)) & UART_LSR_THRE;
++#define MMAP_CPUTOPCI_SIZE	(LOONGSON_PCI_MEM_END -
+LOONGSON_PCI_MEM_START + 1)
 +
-+	for (timeout = 1024; reg == 0 && timeout > 0; timeout--)
-+		reg = readb((u8 *) (uart_base + UART_LSR)) & UART_LSR_THRE;
++#else
 +
-+	writeb(c, (u8 *) (uart_base + UART_TX));
-+}
+ #define LOONGSON_PCI_MEM_START		0x14000000UL
+ #define LOONGSON_PCI_MEM_END		0x1fffffffUL
+-#define LOONGSON_PCI_IO_START		0x00004000UL
+-#define LOONGSON_IO_PORT_BASE		0x1fd00000UL
++
++#endif			/* !(defined(CONFIG_CPU_LOONGSON2F) &&
+defined(CONFIG_64BIT))*/
+ 
+ #endif /* !_LOONGSON_PCI_H_ */
 diff --git a/arch/mips/loongson/common/init.c
 b/arch/mips/loongson/common/init.c
-new file mode 100644
-index 0000000..2c8bd8a
---- /dev/null
+index 2c8bd8a..7bbe68b 100644
+--- a/arch/mips/loongson/common/init.c
 +++ b/arch/mips/loongson/common/init.c
-@@ -0,0 +1,42 @@
-+/*
-+ * Based on Ocelot Linux port, which is
-+ * Copyright 2001 MontaVista Software Inc.
-+ * Author: jsun@mvista.com or jsun@junsun.net
-+ *
-+ * Copyright 2003 ICT CAS
-+ * Author: Michael Guo <guoyi@ict.ac.cn>
-+ *
-+ * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
-+ * Author: Fuxin Zhang, zhangfx@lemote.com
-+ *
-+ * This program is free software; you can redistribute  it and/or
-modify it
-+ * under  the terms of  the GNU General  Public License as published by
-the
-+ * Free Software Foundation;  either version 2 of the  License, or (at
-your
-+ * option) any later version.
-+ */
+@@ -22,6 +22,17 @@
+ 
+ #include <loongson.h>
+ 
++#if defined(CONFIG_CPU_LOONGSON2F) && defined(CONFIG_64BIT)
++unsigned long _loongson_addrwincfg_base;
 +
-+#include <linux/bootmem.h>
-+
-+#include <asm/bootinfo.h>
-+#include <asm/cpu.h>
-+
-+#include <loongson.h>
-+
-+extern void __init prom_init_memory(void);
-+extern void __init prom_init_cmdline(void);
-+
-+void __init prom_init(void)
++/* Loongson CPU address windows config space base address */
++static inline void set_loongson_addrwincfg_base(unsigned long base)
 +{
-+	/* init mach type, does we need to init it?? */
-+	mips_machtype = PRID_IMP_LOONGSON2;
-+
-+	/* init several base address */
-+	set_io_port_base((unsigned long)
-+			 ioremap(LOONGSON_PCIIO_BASE, LOONGSON_PCIIO_SIZE));
-+	prom_init_cmdline();
-+	prom_init_memory();
-+}
-+
-+void __init prom_free_prom_memory(void)
-+{
-+}
-diff --git a/arch/mips/loongson/common/irq.c
-b/arch/mips/loongson/common/irq.c
-new file mode 100644
-index 0000000..6ff9499
---- /dev/null
-+++ b/arch/mips/loongson/common/irq.c
-@@ -0,0 +1,117 @@
-+/*
-+ * Copyright 2001 MontaVista Software Inc.
-+ * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
-+ * Copyright (C) 2000, 2001 Ralf Baechle (ralf@gnu.org)
-+ *
-+ * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
-+ * Author: Fuxin Zhang, zhangfx@lemote.com
-+ *
-+ *  This program is free software; you can redistribute  it and/or
-modify it
-+ *  under  the terms of  the GNU General  Public License as published
-by the
-+ *  Free Software Foundation;  either version 2 of the  License, or (at
-your
-+ *  option) any later version.
-+ */
-+
-+#include <linux/delay.h>
-+#include <linux/interrupt.h>
-+
-+#include <asm/irq_cpu.h>
-+#include <asm/i8259.h>
-+
-+#include <loongson.h>
-+#include <machine.h>
-+
-+/*
-+ * the first level int-handler will jump here if it is a loongson irq
-+ */
-+void bonito_irqdispatch(void)
-+{
-+	u32 int_status;
-+	int i;
-+
-+	/* workaround the IO dma problem: let cpu looping to allow DMA finish
-*/
-+	int_status = LOONGSON_INTISR;
-+	while (int_status & (1 << 10)) {
-+		udelay(1);
-+		int_status = LOONGSON_INTISR;
-+	}
-+
-+	/* Get pending sources, masked by current enables */
-+	int_status = LOONGSON_INTISR & LOONGSON_INTEN;
-+
-+	if (int_status != 0) {
-+		i = __ffs(int_status);
-+		int_status &= ~(1 << i);
-+		do_IRQ(LOONGSON_IRQ_BASE + i);
-+	}
-+}
-+
-+extern inline int mach_i8259_irq(void);
-+
-+void i8259_irqdispatch(void)
-+{
-+	int irq;
-+
-+	irq = mach_i8259_irq();
-+	if (irq < 0)
-+		spurious_interrupt();
-+	else
-+		do_IRQ(irq);
-+}
-+
-+extern inline void mach_irq_dispatch(unsigned int pending);
-+
-+asmlinkage void plat_irq_dispatch(void)
-+{
-+	unsigned int pending = read_c0_cause() & read_c0_status() & ST0_IM;
-+
-+	mach_irq_dispatch(pending);
-+}
-+
-+
-+static struct irqaction cascade_irqaction = {
-+	.handler = no_action,
-+	.mask = CPU_MASK_NONE,
-+	.name = "cascade",
-+};
-+
-+extern void __init bonito_irq_init(void);
-+extern void __init set_irq_trigger_mode(void);
-+
-+void __init arch_init_irq(void)
-+{
-+	/*
-+	 * Clear all of the interrupts while we change the able around a bit.
-+	 * int-handler is not on bootstrap
-+	 */
-+	clear_c0_status(ST0_IM | ST0_BEV);
-+	local_irq_disable();
-+
-+	/* setting irq trigger mode */
-+	set_irq_trigger_mode();
-+
-+	/* no steer */
-+	LOONGSON_INTSTEER = 0;
-+
-+	/*
-+	 * Mask out all interrupt by writing "1" to all bit position in
-+	 * the interrupt reset reg.
-+	 */
-+	LOONGSON_INTENCLR = ~0;
-+
-+	/* init all controller
-+	 *   0-15         ------> i8259 interrupt
-+	 *   16-23        ------> mips cpu interrupt
-+	 *   32-63        ------> bonito irq
-+	 */
-+
-+	/* Sets the first-level interrupt dispatcher. */
-+	mips_cpu_irq_init();
-+	init_i8259_irqs();
-+	bonito_irq_init();
-+
-+	/* setup north bridge irq (bonito) */
-+	setup_irq(LOONGSON_NORTH_BRIDGE_IRQ, &cascade_irqaction);
-+	/* setup source bridge irq (i8259) */
-+	setup_irq(LOONGSON_SOUTH_BRIDGE_IRQ, &cascade_irqaction);
-+}
-diff --git a/arch/mips/loongson/common/mem.c
-b/arch/mips/loongson/common/mem.c
-new file mode 100644
-index 0000000..52e5357
---- /dev/null
-+++ b/arch/mips/loongson/common/mem.c
-@@ -0,0 +1,41 @@
-+/*
-+ * This program is free software; you can redistribute  it and/or
-modify it
-+ * under  the terms of  the GNU General  Public License as published by
-the
-+ * Free Software Foundation;  either version 2 of the  License, or (at
-your
-+ * option) any later version.
-+ */
-+
-+#include <linux/fs.h>
-+#include <linux/mm.h>
-+#include <linux/init.h>
-+
-+#include <asm/bootinfo.h>
-+
-+#include <mem.h>
-+
-+extern unsigned int memsize, highmemsize;
-+
-+void __init prom_init_memory(void)
-+{
-+	add_memory_region(0x0, (memsize << 20), BOOT_MEM_RAM);
-+#ifdef CONFIG_64BIT
-+	if (highmemsize > 0) {
-+		add_memory_region(LOONGSON_HIGHMEM_START,
-+				  highmemsize << 20, BOOT_MEM_RAM);
-+	}
-+#endif				/* CONFIG_64BIT */
-+}
-+
-+/* override of arch/mips/mm/cache.c: __uncached_access */
-+int __uncached_access(struct file *file, unsigned long addr)
-+{
-+	if (file->f_flags & O_SYNC)
-+		return 1;
-+
-+	/*
-+	 * On the Lemote Loongson 2e system, the peripheral registers
-+	 * reside between 0x1000:0000 and 0x2000:0000.
-+	 */
-+	return addr >= __pa(high_memory) ||
-+		((addr >= LOONGSON_MMIO_MEM_START) && (addr <
-LOONGSON_MMIO_MEM_END));
-+}
-diff --git a/arch/mips/loongson/common/misc.c
-b/arch/mips/loongson/common/misc.c
-new file mode 100644
-index 0000000..1b8044c
---- /dev/null
-+++ b/arch/mips/loongson/common/misc.c
-@@ -0,0 +1,15 @@
-+/* Copyright (C) 2009 Lemote Inc. & Insititute of Computing Technology
-+ * Author: Wu Zhangjin, wuzj@lemote.com
-+ *
-+ * This program is free software; you can redistribute  it and/or
-modify it
-+ * under  the terms of  the GNU General  Public License as published by
-the
-+ * Free Software Foundation;  either version 2 of the  License, or (at
-your
-+ * option) any later version.
-+ */
-+
-+#include <machine.h>
-+
-+const char *get_system_type(void)
-+{
-+	return MACH_NAME;
-+}
-diff --git a/arch/mips/loongson/common/pci.c
-b/arch/mips/loongson/common/pci.c
-new file mode 100644
-index 0000000..9cd71bc
---- /dev/null
-+++ b/arch/mips/loongson/common/pci.c
-@@ -0,0 +1,104 @@
-+/*
-+ * pci.c
-+ *
-+ * Copyright (C) 2007 Lemote, Inc. & Institute of Computing Technology
-+ * Author: Fuxin Zhang, zhangfx@lemote.com
-+ *
-+ *  This program is free software; you can redistribute  it and/or
-modify it
-+ *  under  the terms of  the GNU General  Public License as published
-by the
-+ *  Free Software Foundation;  either version 2 of the  License, or (at
-your
-+ *  option) any later version.
-+ *
-+ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR
-IMPLIED
-+ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED
-WARRANTIES OF
-+ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED.  IN
-+ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT,
-INDIRECT,
-+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT
-+ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES;
-LOSS OF
-+ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED
-AND ON
-+ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR
-TORT
-+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-USE OF
-+ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-+ *
-+ *  You should have received a copy of the  GNU General Public License
-along
-+ *  with this program; if not, write  to the Free Software Foundation,
-Inc.,
-+ *  675 Mass Ave, Cambridge, MA 02139, USA.
-+ *
-+ */
-+
-+#include <linux/pci.h>
-+
-+#include <loongson.h>
-+#include <pci.h>
-+
-+extern struct pci_ops loongson_pci_ops;
-+
-+static struct resource loongson_pci_mem_resource = {
-+	.name   = "LOONGSON PCI MEM",
-+	.start  = LOONGSON_PCI_MEM_START,
-+	.end    = LOONGSON_PCI_MEM_END,
-+	.flags  = IORESOURCE_MEM,
-+};
-+
-+static struct resource loongson_pci_io_resource = {
-+	.name   = "LOONGSON PCI IO MEM",
-+	.start  = LOONGSON_PCI_IO_START,
-+	.end    = IO_SPACE_LIMIT,
-+	.flags  = IORESOURCE_IO,
-+};
-+
-+static struct pci_controller  loongson_pci_controller = {
-+	.pci_ops        = &loongson_pci_ops,
-+	.io_resource    = &loongson_pci_io_resource,
-+	.mem_resource   = &loongson_pci_mem_resource,
-+	.mem_offset     = 0x00000000UL,
-+	.io_offset      = 0x00000000UL,
-+};
-+
-+static void __init ict_pcimap(void)
-+{
-+	/*
-+	 * local to PCI mapping for CPU accessing PCI space
-+	 *
-+	 * CPU address space [256M,448M] is window for accessing pci space
-+	 * we set pcimap_lo[0,1,2] to map it to pci space[0M,64M], [320M,448M]
-+	 *
-+	 * pcimap: PCI_MAP2  PCI_Mem_Lo2 PCI_Mem_Lo1 PCI_Mem_Lo0
-+	 *           [<2G]   [384M,448M] [320M,384M] [0M,64M]
-+	 */
-+	LOONGSON_PCIMAP = LOONGSON_PCIMAP_PCIMAP_2 |
-+	    LOONGSON_PCIMAP_WIN(2, 0x18000000) |
-+	    LOONGSON_PCIMAP_WIN(1, 0x14000000) |
-+	    LOONGSON_PCIMAP_WIN(0, 0);
-+
-+	/*
-+	 * PCI-DMA to local mapping: [2G,2G+256M] -> [0M,256M]
-+	 */
-+	LOONGSON_PCIBASE0 = 0x80000000ul;	/* base: 2G -> mmap: 0M */
-+	LOONGSON_PCI_HIT0_SEL_L = 0xc000000cul;	/* size: 256M, burst
-transmission, pre-fetch enable, 64bit */
-+	LOONGSON_PCI_HIT0_SEL_H = 0xfffffffful;
-+	LOONGSON_PCI_HIT1_SEL_L = 0x00000006ul;	/* set this BAR as invalid */
-+	LOONGSON_PCI_HIT1_SEL_H = 0x00000000ul;
-+	LOONGSON_PCI_HIT2_SEL_L = 0x00000006ul;	/* set this BAR as invalid */
-+	LOONGSON_PCI_HIT2_SEL_H = 0x00000000ul;
-+
-+	/* avoid deadlock of PCI reading/writing lock operation */
-+	LOONGSON_PCI_ISR4C = 0xd2000001ul;
-+
-+	/* can not change gnt to break pci transfer when device's gnt not
-deassert
-+	   for some broken device */
-+	LOONGSON_PXARB_CFG = 0x00fe0105ul;
-+}
-+
-+static int __init pcibios_init(void)
-+{
-+	ict_pcimap();
-+
-+	loongson_pci_controller.io_map_base = mips_io_port_base;
-+
-+	register_pci_controller(&loongson_pci_controller);
-+
-+	return 0;
-+}
-+
-+arch_initcall(pcibios_init);
-diff --git a/arch/mips/loongson/common/reset.c
-b/arch/mips/loongson/common/reset.c
-new file mode 100644
-index 0000000..e6b3a7d
---- /dev/null
-+++ b/arch/mips/loongson/common/reset.c
-@@ -0,0 +1,42 @@
-+/*
-+ * This program is free software; you can redistribute  it and/or
-modify it
-+ * under  the terms of  the GNU General  Public License as published by
-the
-+ * Free Software Foundation;  either version 2 of the  License, or (at
-your
-+ * option) any later version.
-+ *
-+ * Copyright (C) 2007 Lemote, Inc. & Institute of Computing Technology
-+ * Author: Fuxin Zhang, zhangfx@lemote.com
-+ */
-+
-+#include <linux/io.h>
-+#include <linux/pm.h>
-+#include <linux/init.h>
-+
-+#include <asm/reboot.h>
-+
-+#include <loongson.h>
-+
-+extern void mach_prepare_reboot(void);
-+extern void mach_prepare_shutdown(void);
-+
-+static void loongson_restart(char *command)
-+{
-+	/* perform board-specific pre-reboot operations */
-+	mach_prepare_reboot();
-+
-+	/* reboot via jumping to 0xbfc00000 */
-+	((void (*)(void))ioremap_nocache(LOONGSON_BOOT_BASE, 4)) ();
-+}
-+
-+static void loongson_halt(void)
-+{
-+	mach_prepare_shutdown();
-+	while (1) ;
-+}
-+
-+void __init loongson_reboot_setup(void)
-+{
-+	_machine_restart = loongson_restart;
-+	_machine_halt = loongson_halt;
-+	pm_power_off = loongson_halt;
-+}
-diff --git a/arch/mips/loongson/common/rtc.c
-b/arch/mips/loongson/common/rtc.c
-new file mode 100644
-index 0000000..c2f413f
---- /dev/null
-+++ b/arch/mips/loongson/common/rtc.c
-@@ -0,0 +1,54 @@
-+/*
-+ *  Registration of Cobalt RTC platform device.
-+ *
-+ *  Copyright (C) 2007  Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-+ *  Copyright (C) 2009  Wu Zhangjin <wuzj@lemote.com>
-+ *
-+ *  This program is free software; you can redistribute it and/or
-modify
-+ *  it under the terms of the GNU General Public License as published
-by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, write to the Free Software
-+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-02110-1301  USA
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/ioport.h>
-+#include <linux/mc146818rtc.h>
-+#include <linux/platform_device.h>
-+
-+static struct resource rtc_cmos_resource[] = {
-+	{
-+		.start	= RTC_PORT(0),
-+		.end	= RTC_PORT(1),
-+		.flags	= IORESOURCE_IO,
-+	},
-+	{
-+		.start	= RTC_IRQ,
-+		.end	= RTC_IRQ,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+};
-+
-+static struct platform_device rtc_cmos_device = { 
-+        .name           = "rtc_cmos",
-+        .id             = -1,
-+        .num_resources  = ARRAY_SIZE(rtc_cmos_resource),
-+        .resource       = rtc_cmos_resource
-+};
-+
-+static __init int rtc_cmos_init(void)
-+{
-+	platform_device_register(&rtc_cmos_device);
-+
-+	return 0;
-+}
-+
-+device_initcall(rtc_cmos_init);
-diff --git a/arch/mips/loongson/common/setup.c
-b/arch/mips/loongson/common/setup.c
-new file mode 100644
-index 0000000..636cdbe
---- /dev/null
-+++ b/arch/mips/loongson/common/setup.c
-@@ -0,0 +1,75 @@
-+/*
-+ * board dependent setup routines
-+ *
-+ * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
-+ * Author: Fuxin Zhang, zhangfx@lemote.com
-+ *
-+ * Copyright (C) 2009 Lemote Inc. & Insititute of Computing Technology
-+ * Author: Wu Zhangjin, wuzj@lemote.com
-+ *
-+ *  This program is free software; you can redistribute  it and/or
-modify it
-+ *  under  the terms of  the GNU General  Public License as published
-by the
-+ *  Free Software Foundation;  either version 2 of the  License, or (at
-your
-+ *  option) any later version.
-+ */
-+
-+#include <linux/module.h>
-+
-+#include <asm/wbflush.h>
-+
-+void (*__wbflush) (void);
-+EXPORT_SYMBOL(__wbflush);
-+
-+static void loongson_wbflush(void)
-+{
-+	asm(".set\tpush\n\t"
-+	    ".set\tnoreorder\n\t"
-+	    ".set mips3\n\t"
-+	    "sync\n\t"
-+	    "nop\n\t"
-+	    ".set\tpop\n\t"
-+	    ".set mips0\n\t");
-+}
-+
-+void __init loongson_wbflush_setup(void)
-+{
-+	__wbflush = loongson_wbflush;
-+}
-+
-+#if defined(CONFIG_VT) && defined(CONFIG_VGA_CONSOLE)
-+#include <linux/screen_info.h>
-+
-+void __init loongson_screeninfo_setup(void)
-+{
-+	screen_info = (struct screen_info) {
-+		    0,		/* orig-x */
-+		    25,		/* orig-y */
-+		    0,		/* unused */
-+		    0,		/* orig-video-page */
-+		    0,		/* orig-video-mode */
-+		    80,		/* orig-video-cols */
-+		    0,		/* ega_ax */
-+		    0,		/* ega_bx */
-+		    0,		/* ega_cx */
-+		    25,		/* orig-video-lines */
-+		    VIDEO_TYPE_VGAC,	/* orig-video-isVGA */
-+		    16		/* orig-video-points */
-+	};
-+}
-+#else
-+void __init loongson_screeninfo_setup(void)
-+{
++	*(unsigned long *)&_loongson_addrwincfg_base = base;
++	barrier();
 +}
 +#endif
 +
-+/* board-specific reboot function */
-+extern void loongson_reboot_setup(void);
-+
-+void __init plat_mem_setup(void)
-+{
-+	loongson_reboot_setup();
-+
-+	loongson_wbflush_setup();
-+
-+	loongson_screeninfo_setup();
-+}
-diff --git a/arch/mips/loongson/common/time.c
-b/arch/mips/loongson/common/time.c
-new file mode 100644
-index 0000000..8c916ff
---- /dev/null
-+++ b/arch/mips/loongson/common/time.c
-@@ -0,0 +1,27 @@
-+/*
-+ * board dependent boot routines
-+ *
-+ * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
-+ * Author: Fuxin Zhang, zhangfx@lemote.com
-+ *
-+ *  This program is free software; you can redistribute  it and/or
-modify it
-+ *  under  the terms of  the GNU General  Public License as published
-by the
-+ *  Free Software Foundation;  either version 2 of the  License, or (at
-your
-+ *  option) any later version.
-+ */
-+
-+#include <asm/mc146818-time.h>
-+#include <asm/time.h>
-+
-+unsigned long read_persistent_clock(void)
-+{
-+	return mc146818_get_cmos_time();
-+}
-+
-+extern unsigned long cpu_clock_freq;
-+
-+void __init plat_time_init(void)
-+{
-+	/* setup mips r4k timer */
-+	mips_hpt_frequency = cpu_clock_freq / 2;
-+}
-diff --git a/arch/mips/loongson/fuloong-2e/Makefile
-b/arch/mips/loongson/fuloong-2e/Makefile
-index 2ab49cb..42960e1 100644
---- a/arch/mips/loongson/fuloong-2e/Makefile
-+++ b/arch/mips/loongson/fuloong-2e/Makefile
-@@ -1,20 +1,5 @@
- #
--# Makefile for Lemote Fulong mini-PC board.
-+# Makefile for fuloong-2e
- #
+ extern void __init prom_init_memory(void);
+ extern void __init prom_init_cmdline(void);
  
--obj-y += setup.o init.o cmdline.o time.o reset.o irq.o \
--	pci.o bonito-irq.o mem.o misc.o
--
--#
--# Early printk support 
--#
--obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
--
--#
--# Enable RTC Class support
--#
--# please enable CONFIG_RTC_DRV_CMOS
--#
--obj-$(CONFIG_RTC_DRV_CMOS) += rtc.o
--
--EXTRA_CFLAGS += -Werror
-+obj-y += irq.o reset.o
-diff --git a/arch/mips/loongson/fuloong-2e/bonito-irq.c
-b/arch/mips/loongson/fuloong-2e/bonito-irq.c
-deleted file mode 100644
-index 61f473d..0000000
---- a/arch/mips/loongson/fuloong-2e/bonito-irq.c
-+++ /dev/null
-@@ -1,70 +0,0 @@
--/*
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
-- * Copyright (C) 2000, 2001 Ralf Baechle (ralf@gnu.org)
-- *
-- * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
-- * Author: Fuxin Zhang, zhangfx@lemote.com
-- *
-- *  This program is free software; you can redistribute  it and/or
-modify it
-- *  under  the terms of  the GNU General  Public License as published
-by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at
-your
-- *  option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR
-IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED
-WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT,
-INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES;
-LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED
-AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR
-TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License
-along
-- *  with this program; if not, write  to the Free Software Foundation,
-Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- *
-- */
--
--#include <linux/interrupt.h>
--
--#include <loongson.h>
--#include <machine.h>
--
--static inline void bonito_irq_enable(unsigned int irq)
--{
--	LOONGSON_INTENSET = (1 << (irq - LOONGSON_IRQ_BASE));
--	mmiowb();
--}
--
--static inline void bonito_irq_disable(unsigned int irq)
--{
--	LOONGSON_INTENCLR = (1 << (irq - LOONGSON_IRQ_BASE));
--	mmiowb();
--}
--
--static struct irq_chip bonito_irq_type = {
--	.name	= "bonito_irq",
--	.ack	= bonito_irq_disable,
--	.mask	= bonito_irq_disable,
--	.mask_ack = bonito_irq_disable,
--	.unmask	= bonito_irq_enable,
--};
--
--static struct irqaction dma_timeout_irqaction = {
--	.handler	= no_action,
--	.name		= "dma_timeout",
--};
--
--void bonito_irq_init(void)
--{
--	u32 i;
--
--	for (i = LOONGSON_IRQ_BASE; i < LOONGSON_IRQ_BASE + 32; i++) {
--		set_irq_chip_and_handler(i, &bonito_irq_type, handle_level_irq);
--	}
--
--	setup_irq(LOONGSON_DMATIMEOUT_IRQ, &dma_timeout_irqaction);
--}
-diff --git a/arch/mips/loongson/fuloong-2e/cmdline.c
-b/arch/mips/loongson/fuloong-2e/cmdline.c
-deleted file mode 100644
-index 28bcf6f..0000000
---- a/arch/mips/loongson/fuloong-2e/cmdline.c
-+++ /dev/null
-@@ -1,79 +0,0 @@
--/*
-- * Based on Ocelot Linux port, which is
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: jsun@mvista.com or jsun@junsun.net
-- *
-- * Copyright 2003 ICT CAS
-- * Author: Michael Guo <guoyi@ict.ac.cn>
-- *
-- * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
-- * Author: Fuxin Zhang, zhangfx@lemote.com
-- *
-- * Copyright (C) 2009 Lemote Inc. & Insititute of Computing Technology
-- * Author: Wu Zhangjin, wuzj@lemote.com
-- *
-- * This program is free software; you can redistribute  it and/or
-modify it
-- * under  the terms of  the GNU General  Public License as published by
-the
-- * Free Software Foundation;  either version 2 of the  License, or (at
-your
-- * option) any later version.
-- */
--
--#include <linux/bootmem.h>
--
--#include <asm/bootinfo.h>
--
--unsigned long bus_clock;
--unsigned long cpu_clock_freq;
--unsigned int memsize, highmemsize;
--
--int prom_argc;
--/* pmon passes arguments in 32bit pointers */
--int *_prom_argv, *_prom_envp;
--
--#define parse_even_earlier(res, option, p)				\
--do {									\
--	if (strncmp(option, (char *)p, strlen(option)) == 0)		\
--		res = simple_strtol((char *)p + strlen(option"="),	\
--				    NULL, 10);				\
--} while (0)
--
--void __init prom_init_cmdline(void)
--{
--	int i;
--	long l;
--	prom_argc = fw_arg0;
--	_prom_argv = (int *)fw_arg1;
--	_prom_envp = (int *)fw_arg2;
--	
--	/* arg[0] is "g", the rest is boot parameters */
--	arcs_cmdline[0] = '\0';
--	for (i = 1; i < prom_argc; i++) {
--		l = (long)_prom_argv[i];
--		if (strlen(arcs_cmdline) + strlen(((char *)l) + 1)
--		    >= sizeof(arcs_cmdline))
--			break;
--		strcat(arcs_cmdline, ((char *)l));
--		strcat(arcs_cmdline, " ");
--	}
--
--	/* handle console, root, busclock, cpuclock, memsize, highmemsize
-arguments */
--	if ((strstr(arcs_cmdline, "console=")) == NULL)
--		strcat(arcs_cmdline, " console=ttyS0,115200");
--	if ((strstr(arcs_cmdline, "root=")) == NULL)
--		strcat(arcs_cmdline, " root=/dev/hda1");
--
--	l = (long)*_prom_envp;
--	while (l != 0) {
--		parse_even_earlier(bus_clock, "busclock", l);
--		parse_even_earlier(cpu_clock_freq, "cpuclock", l);
--		parse_even_earlier(memsize, "memsize", l);
--		parse_even_earlier(highmemsize, "highmemsize", l);
--		_prom_envp++;
--		l = (long)*_prom_envp;
--	}
--	if (memsize == 0)
--		memsize = 256;
--
--	pr_info("busclock=%ld, cpuclock=%ld, memsize=%d, highmemsize=%d\n",
--		bus_clock, cpu_clock_freq, memsize, highmemsize);
--}
-diff --git a/arch/mips/loongson/fuloong-2e/early_printk.c
-b/arch/mips/loongson/fuloong-2e/early_printk.c
-deleted file mode 100644
-index 3f6c1db..0000000
---- a/arch/mips/loongson/fuloong-2e/early_printk.c
-+++ /dev/null
-@@ -1,28 +0,0 @@
--/*  early printk support 
-- *
-- *  Copyright (c) 2009 Philippe Vachon <philippe@cowpig.ca>
-- *
-- *  This program is free software; you can redistribute  it and/or
-modify it
-- *  under  the terms of  the GNU General  Public License as published
-by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at
-your
-- *  option) any later version.
-- */
--
--#include <linux/io.h>
--#include <linux/types.h>
--#include <linux/serial_reg.h>
--
--#include <machine.h>
--
--void prom_putchar(char c)
--{
--	int timeout;
--	phys_addr_t uart_base =
--	    (phys_addr_t) ioremap_nocache(LOONGSON_UART_BASE, 8);
--	char reg = readb((u8 *) (uart_base + UART_LSR)) & UART_LSR_THRE;
--
--	for (timeout = 1024; reg == 0 && timeout > 0; timeout--)
--		reg = readb((u8 *) (uart_base + UART_LSR)) & UART_LSR_THRE;
--
--	writeb(c, (u8 *) (uart_base + UART_TX));
--}
-diff --git a/arch/mips/loongson/fuloong-2e/init.c
-b/arch/mips/loongson/fuloong-2e/init.c
-deleted file mode 100644
-index 2c8bd8a..0000000
---- a/arch/mips/loongson/fuloong-2e/init.c
-+++ /dev/null
-@@ -1,42 +0,0 @@
--/*
-- * Based on Ocelot Linux port, which is
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: jsun@mvista.com or jsun@junsun.net
-- *
-- * Copyright 2003 ICT CAS
-- * Author: Michael Guo <guoyi@ict.ac.cn>
-- *
-- * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
-- * Author: Fuxin Zhang, zhangfx@lemote.com
-- *
-- * This program is free software; you can redistribute  it and/or
-modify it
-- * under  the terms of  the GNU General  Public License as published by
-the
-- * Free Software Foundation;  either version 2 of the  License, or (at
-your
-- * option) any later version.
-- */
--
--#include <linux/bootmem.h>
--
--#include <asm/bootinfo.h>
--#include <asm/cpu.h>
--
--#include <loongson.h>
--
--extern void __init prom_init_memory(void);
--extern void __init prom_init_cmdline(void);
--
--void __init prom_init(void)
--{
--	/* init mach type, does we need to init it?? */
--	mips_machtype = PRID_IMP_LOONGSON2;
--
--	/* init several base address */
--	set_io_port_base((unsigned long)
--			 ioremap(LOONGSON_PCIIO_BASE, LOONGSON_PCIIO_SIZE));
--	prom_init_cmdline();
--	prom_init_memory();
--}
--
--void __init prom_free_prom_memory(void)
--{
--}
-diff --git a/arch/mips/loongson/fuloong-2e/irq.c
-b/arch/mips/loongson/fuloong-2e/irq.c
-index 1d5ddb6..3b5516a 100644
---- a/arch/mips/loongson/fuloong-2e/irq.c
-+++ b/arch/mips/loongson/fuloong-2e/irq.c
-@@ -6,79 +6,27 @@
-  *  under  the terms of  the GNU General  Public License as published
-by the
-  *  Free Software Foundation;  either version 2 of the  License, or (at
-your
-  *  option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR
-IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED
-WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT,
-INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES;
-LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED
-AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR
-TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License
-along
-- *  with this program; if not, write  to the Free Software Foundation,
-Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- *
-  */
- 
--#include <linux/delay.h>
- #include <linux/interrupt.h>
- 
--#include <asm/irq_cpu.h>
- #include <asm/i8259.h>
- 
- #include <loongson.h>
- #include <machine.h>
- 
--/*
-- * the first level int-handler will jump here if it is a bonito irq
-- */
--static void bonito_irqdispatch(void)
-+inline int mach_i8259_irq(void)
- {
--	u32 int_status;
--	int i;
--
--	/* workaround the IO dma problem: let cpu looping to allow DMA finish
-*/
--	int_status = LOONGSON_INTISR;
--	if (int_status & (1 << 10)) {
--		while (int_status & (1 << 10)) {
--			udelay(1);
--			int_status = LOONGSON_INTISR;
--		}
--	}
--
--	/* Get pending sources, masked by current enables */
--	int_status = LOONGSON_INTISR & LOONGSON_INTEN;
--
--	if (int_status != 0) {
--		i = __ffs(int_status);
--		int_status &= ~(1 << i);
--		do_IRQ(LOONGSON_IRQ_BASE + i);
--	}
-+	return i8259_irq();
+@@ -33,6 +44,13 @@ void __init prom_init(void)
+ 	/* init several base address */
+ 	set_io_port_base((unsigned long)
+ 			 ioremap(LOONGSON_PCIIO_BASE, LOONGSON_PCIIO_SIZE));
++
++#if defined(CONFIG_CPU_LOONGSON2F) && defined(CONFIG_64BIT)
++	set_loongson_addrwincfg_base((unsigned long)
++				     ioremap(LOONGSON_ADDRWINCFG_BASE,
++					     LOONGSON_ADDRWINCFG_SIZE));
++#endif
++
+ 	prom_init_cmdline();
+ 	prom_init_memory();
  }
- 
--static void i8259_irqdispatch(void)
--{
--	int irq;
-+extern void bonito_irqdispatch(void);
-+extern void i8259_irqdispatch(void);
- 
--	irq = i8259_irq();
--	if (irq >= 0) {
--		do_IRQ(irq);
--	} else {
--		spurious_interrupt();
--	}
--
--}
--
--asmlinkage void plat_irq_dispatch(void)
-+inline void mach_irq_dispatch(unsigned int pending)
+diff --git a/arch/mips/loongson/common/mem.c
+b/arch/mips/loongson/common/mem.c
+index 52e5357..85de2dc 100644
+--- a/arch/mips/loongson/common/mem.c
++++ b/arch/mips/loongson/common/mem.c
+@@ -19,6 +19,23 @@ void __init prom_init_memory(void)
  {
--	unsigned int pending = read_c0_cause() & read_c0_status() & ST0_IM;
--
- 	if (pending & CAUSEF_IP7) {
--		do_IRQ(LOONGSON_TIMER_IRQ);
-+		do_IRQ( LOONGSON_TIMER_IRQ );
- 	} else if (pending & CAUSEF_IP5) {
- 		i8259_irqdispatch();
- 	} else if (pending & CAUSEF_IP2) {
-@@ -88,55 +36,9 @@ asmlinkage void plat_irq_dispatch(void)
- 	}
- }
+ 	add_memory_region(0x0, (memsize << 20), BOOT_MEM_RAM);
+ #ifdef CONFIG_64BIT
++#ifdef CONFIG_CPU_LOONGSON2F
++	{
++		int bit;
++
++		bit = fls(memsize + highmemsize);
++		if (bit != ffs(memsize + highmemsize))
++			bit += 20;
++		else
++			bit = bit + 20 - 1;
++
++		/* set cpu window3 to map CPU to DDR: 2G -> 2G */
++		LOONGSON_ADDRWIN_CPUTODDR(ADDRWIN_WIN3, 0x80000000ul,
++					  0x80000000ul, (1 << bit));
++		mmiowb();
++	}
++#endif				/* CONFIG_CPU_LOONGSON2F */
++
+ 	if (highmemsize > 0) {
+ 		add_memory_region(LOONGSON_HIGHMEM_START,
+ 				  highmemsize << 20, BOOT_MEM_RAM);
+@@ -32,10 +49,6 @@ int __uncached_access(struct file *file, unsigned
+long addr)
+ 	if (file->f_flags & O_SYNC)
+ 		return 1;
  
--static struct irqaction cascade_irqaction = {
--	.handler = no_action,
--	.mask = CPU_MASK_NONE,
--	.name = "cascade",
--};
--
--void __init arch_init_irq(void)
-+void __init set_irq_trigger_mode(void)
- {
--	extern void bonito_irq_init(void);
--
--	/*
--	 * Clear all of the interrupts while we change the able around a bit.
--	 * int-handler is not on bootstrap
--	 */
--	clear_c0_status(ST0_IM | ST0_BEV);
--	local_irq_disable();
--
- 	/* most bonito irq should be level triggered */
- 	LOONGSON_INTEDGE = LOONGSON_ICU_SYSTEMERR | LOONGSON_ICU_MASTERERR |
--		LOONGSON_ICU_RETRYERR | LOONGSON_ICU_MBOXES;
--	LOONGSON_INTSTEER = 0;
--
--	/*
--	 * Mask out all interrupt by writing "1" to all bit position in
--	 * the interrupt reset reg.
--	 */
--	LOONGSON_INTENCLR = ~0;
--
--	/* init all controller
--	 *   0-15         ------> i8259 interrupt
--	 *   16-23        ------> mips cpu interrupt
--	 *   32-63        ------> bonito irq
--	 */
--
--	/* Sets the first-level interrupt dispatcher. */
--	mips_cpu_irq_init();
--	init_i8259_irqs();
--	bonito_irq_init();
--
--	/*
--	printk("GPIODATA=%x, GPIOIE=%x\n", LOONGSON_GPIODATA,
-LOONGSON_GPIOIE);
--	printk("INTEN=%x, INTSET=%x, INTCLR=%x, INTISR=%x\n",
--			LOONGSON_INTEN, LOONGSON_INTENSET,
--			LOONGSON_INTENCLR, LOONGSON_INTISR);
--	*/
--
--	/* bonito irq at IP2 */
--	setup_irq(LOONGSON_NORTH_BRIDGE_IRQ, &cascade_irqaction);
--	/* 8259 irq at IP5 */
--	setup_irq(LOONGSON_SOUTH_BRIDGE_IRQ, &cascade_irqaction);
--
-+	    LOONGSON_ICU_RETRYERR | LOONGSON_ICU_MBOXES;
- }
-diff --git a/arch/mips/loongson/fuloong-2e/mem.c
-b/arch/mips/loongson/fuloong-2e/mem.c
-deleted file mode 100644
-index 52e5357..0000000
---- a/arch/mips/loongson/fuloong-2e/mem.c
-+++ /dev/null
-@@ -1,41 +0,0 @@
--/*
-- * This program is free software; you can redistribute  it and/or
-modify it
-- * under  the terms of  the GNU General  Public License as published by
-the
-- * Free Software Foundation;  either version 2 of the  License, or (at
-your
-- * option) any later version.
-- */
--
--#include <linux/fs.h>
--#include <linux/mm.h>
--#include <linux/init.h>
--
--#include <asm/bootinfo.h>
--
--#include <mem.h>
--
--extern unsigned int memsize, highmemsize;
--
--void __init prom_init_memory(void)
--{
--	add_memory_region(0x0, (memsize << 20), BOOT_MEM_RAM);
--#ifdef CONFIG_64BIT
--	if (highmemsize > 0) {
--		add_memory_region(LOONGSON_HIGHMEM_START,
--				  highmemsize << 20, BOOT_MEM_RAM);
--	}
--#endif				/* CONFIG_64BIT */
--}
--
--/* override of arch/mips/mm/cache.c: __uncached_access */
--int __uncached_access(struct file *file, unsigned long addr)
--{
--	if (file->f_flags & O_SYNC)
--		return 1;
--
 -	/*
 -	 * On the Lemote Loongson 2e system, the peripheral registers
 -	 * reside between 0x1000:0000 and 0x2000:0000.
 -	 */
--	return addr >= __pa(high_memory) ||
--		((addr >= LOONGSON_MMIO_MEM_START) && (addr <
+ 	return addr >= __pa(high_memory) ||
+ 		((addr >= LOONGSON_MMIO_MEM_START) && (addr <
 LOONGSON_MMIO_MEM_END));
--}
-diff --git a/arch/mips/loongson/fuloong-2e/misc.c
-b/arch/mips/loongson/fuloong-2e/misc.c
-deleted file mode 100644
-index 1b8044c..0000000
---- a/arch/mips/loongson/fuloong-2e/misc.c
-+++ /dev/null
-@@ -1,15 +0,0 @@
--/* Copyright (C) 2009 Lemote Inc. & Insititute of Computing Technology
-- * Author: Wu Zhangjin, wuzj@lemote.com
-- *
-- * This program is free software; you can redistribute  it and/or
-modify it
-- * under  the terms of  the GNU General  Public License as published by
-the
-- * Free Software Foundation;  either version 2 of the  License, or (at
-your
-- * option) any later version.
-- */
--
--#include <machine.h>
--
--const char *get_system_type(void)
--{
--	return MACH_NAME;
--}
-diff --git a/arch/mips/loongson/fuloong-2e/pci.c
-b/arch/mips/loongson/fuloong-2e/pci.c
-deleted file mode 100644
-index 9cd71bc..0000000
---- a/arch/mips/loongson/fuloong-2e/pci.c
-+++ /dev/null
-@@ -1,104 +0,0 @@
--/*
-- * pci.c
-- *
-- * Copyright (C) 2007 Lemote, Inc. & Institute of Computing Technology
-- * Author: Fuxin Zhang, zhangfx@lemote.com
-- *
-- *  This program is free software; you can redistribute  it and/or
-modify it
-- *  under  the terms of  the GNU General  Public License as published
-by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at
-your
-- *  option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR
-IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED
-WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT,
-INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES;
-LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED
-AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR
-TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
-USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License
-along
-- *  with this program; if not, write  to the Free Software Foundation,
-Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- *
-- */
--
--#include <linux/pci.h>
--
--#include <loongson.h>
--#include <pci.h>
--
--extern struct pci_ops loongson_pci_ops;
--
--static struct resource loongson_pci_mem_resource = {
+ }
+diff --git a/arch/mips/loongson/common/pci.c
+b/arch/mips/loongson/common/pci.c
+index 9cd71bc..1192fab 100644
+--- a/arch/mips/loongson/common/pci.c
++++ b/arch/mips/loongson/common/pci.c
+@@ -34,15 +34,15 @@
+ extern struct pci_ops loongson_pci_ops;
+ 
+ static struct resource loongson_pci_mem_resource = {
 -	.name   = "LOONGSON PCI MEM",
--	.start  = LOONGSON_PCI_MEM_START,
--	.end    = LOONGSON_PCI_MEM_END,
--	.flags  = IORESOURCE_MEM,
--};
--
--static struct resource loongson_pci_io_resource = {
++	.name   = "pci memory space",
+ 	.start  = LOONGSON_PCI_MEM_START,
+ 	.end    = LOONGSON_PCI_MEM_END,
+ 	.flags  = IORESOURCE_MEM,
+ };
+ 
+ static struct resource loongson_pci_io_resource = {
 -	.name   = "LOONGSON PCI IO MEM",
 -	.start  = LOONGSON_PCI_IO_START,
--	.end    = IO_SPACE_LIMIT,
--	.flags  = IORESOURCE_IO,
--};
--
--static struct pci_controller  loongson_pci_controller = {
--	.pci_ops        = &loongson_pci_ops,
--	.io_resource    = &loongson_pci_io_resource,
--	.mem_resource   = &loongson_pci_mem_resource,
--	.mem_offset     = 0x00000000UL,
--	.io_offset      = 0x00000000UL,
--};
--
--static void __init ict_pcimap(void)
--{
--	/*
--	 * local to PCI mapping for CPU accessing PCI space
--	 *
--	 * CPU address space [256M,448M] is window for accessing pci space
--	 * we set pcimap_lo[0,1,2] to map it to pci space[0M,64M], [320M,448M]
--	 *
--	 * pcimap: PCI_MAP2  PCI_Mem_Lo2 PCI_Mem_Lo1 PCI_Mem_Lo0
--	 *           [<2G]   [384M,448M] [320M,384M] [0M,64M]
--	 */
--	LOONGSON_PCIMAP = LOONGSON_PCIMAP_PCIMAP_2 |
--	    LOONGSON_PCIMAP_WIN(2, 0x18000000) |
--	    LOONGSON_PCIMAP_WIN(1, 0x14000000) |
--	    LOONGSON_PCIMAP_WIN(0, 0);
--
--	/*
--	 * PCI-DMA to local mapping: [2G,2G+256M] -> [0M,256M]
--	 */
--	LOONGSON_PCIBASE0 = 0x80000000ul;	/* base: 2G -> mmap: 0M */
--	LOONGSON_PCI_HIT0_SEL_L = 0xc000000cul;	/* size: 256M, burst
-transmission, pre-fetch enable, 64bit */
--	LOONGSON_PCI_HIT0_SEL_H = 0xfffffffful;
--	LOONGSON_PCI_HIT1_SEL_L = 0x00000006ul;	/* set this BAR as invalid */
--	LOONGSON_PCI_HIT1_SEL_H = 0x00000000ul;
--	LOONGSON_PCI_HIT2_SEL_L = 0x00000006ul;	/* set this BAR as invalid */
--	LOONGSON_PCI_HIT2_SEL_H = 0x00000000ul;
--
--	/* avoid deadlock of PCI reading/writing lock operation */
--	LOONGSON_PCI_ISR4C = 0xd2000001ul;
--
--	/* can not change gnt to break pci transfer when device's gnt not
++	.name   = "pci io space",
++	.start  = LOONGSON_PCI_IO_START,	/* reserve regacy I/O space */
+ 	.end    = IO_SPACE_LIMIT,
+ 	.flags  = IORESOURCE_IO,
+ };
+@@ -88,6 +88,14 @@ static void __init ict_pcimap(void)
+ 	/* can not change gnt to break pci transfer when device's gnt not
 deassert
--	   for some broken device */
--	LOONGSON_PXARB_CFG = 0x00fe0105ul;
--}
--
--static int __init pcibios_init(void)
--{
--	ict_pcimap();
--
--	loongson_pci_controller.io_map_base = mips_io_port_base;
--
--	register_pci_controller(&loongson_pci_controller);
--
--	return 0;
--}
--
--arch_initcall(pcibios_init);
-diff --git a/arch/mips/loongson/fuloong-2e/reset.c
-b/arch/mips/loongson/fuloong-2e/reset.c
-index f2fff56..ae72ddf 100644
---- a/arch/mips/loongson/fuloong-2e/reset.c
-+++ b/arch/mips/loongson/fuloong-2e/reset.c
-@@ -1,37 +1,27 @@
--/*
-+/* Board-specific reboot/shutdown routines
-+ * Copyright (c) 2009 Philippe Vachon <philippe@cowpig.ca>
-+ *
-+ * Copyright (C) 2009 Lemote Inc. & Insititute of Computing Technology
-+ * Author: Wu Zhangjin, wuzj@lemote.com
-+ *
-  * This program is free software; you can redistribute  it and/or
-modify it
-  * under  the terms of  the GNU General  Public License as published by
-the
-  * Free Software Foundation;  either version 2 of the  License, or (at
-your
-  * option) any later version.
-- *
-- * Copyright (C) 2007 Lemote, Inc. & Institute of Computing Technology
-- * Author: Fuxin Zhang, zhangfx@lemote.com
-  */
- 
- #include <linux/io.h>
--#include <linux/pm.h>
--
--#include <asm/reboot.h>
-+#include <linux/delay.h>
-+#include <linux/types.h>
- 
- #include <loongson.h>
- 
--static void loongson_restart(char *command)
-+void mach_prepare_reboot(void)
- {
- 	LOONGSON_GENCFG &= ~LOONGSON_GENCFG_CPUSELFRESET;
- 	LOONGSON_GENCFG |= LOONGSON_GENCFG_CPUSELFRESET;
--
--	/* reboot via jumping to 0xbfc00000 */
--	((void (*)(void))ioremap_nocache(LOONGSON_BOOT_BASE, 4)) ();
--}
--
--static void loongson_halt(void)
--{
--	while (1) ;
+ 	   for some broken device */
+ 	LOONGSON_PXARB_CFG = 0x00fe0105ul;
++
++#if defined(CONFIG_CPU_LOONGSON2F) && defined(CONFIG_64BIT)
++	/* 
++	 * set cpu addr window2 to map CPU address space to PCI address space
++	 */
++	LOONGSON_ADDRWIN_CPUTOPCI(ADDRWIN_WIN2, LOONGSON_CPU_MEM_SRC,
++				  LOONGSON_PCI_MEM_DST, MMAP_CPUTOPCI_SIZE);
++#endif			
  }
  
--void loongson_reboot_setup(void)
-+void mach_prepare_shutdown(void)
- {
--	_machine_restart = loongson_restart;
--	_machine_halt = loongson_halt;
--	pm_power_off = loongson_halt;
- }
-diff --git a/arch/mips/loongson/fuloong-2e/rtc.c
-b/arch/mips/loongson/fuloong-2e/rtc.c
-deleted file mode 100644
-index c2f413f..0000000
---- a/arch/mips/loongson/fuloong-2e/rtc.c
-+++ /dev/null
-@@ -1,54 +0,0 @@
--/*
-- *  Registration of Cobalt RTC platform device.
-- *
-- *  Copyright (C) 2007  Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-- *  Copyright (C) 2009  Wu Zhangjin <wuzj@lemote.com>
-- *
-- *  This program is free software; you can redistribute it and/or
-modify
-- *  it under the terms of the GNU General Public License as published
-by
-- *  the Free Software Foundation; either version 2 of the License, or
-- *  (at your option) any later version.
-- *
-- *  This program is distributed in the hope that it will be useful,
-- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- *  GNU General Public License for more details.
-- *
-- *  You should have received a copy of the GNU General Public License
-- *  along with this program; if not, write to the Free Software
-- *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-02110-1301  USA
-- */
--
--#include <linux/init.h>
--#include <linux/ioport.h>
--#include <linux/mc146818rtc.h>
--#include <linux/platform_device.h>
--
--static struct resource rtc_cmos_resource[] = {
--	{
--		.start	= RTC_PORT(0),
--		.end	= RTC_PORT(1),
--		.flags	= IORESOURCE_IO,
--	},
--	{
--		.start	= RTC_IRQ,
--		.end	= RTC_IRQ,
--		.flags	= IORESOURCE_IRQ,
--	},
--};
--
--static struct platform_device rtc_cmos_device = { 
--        .name           = "rtc_cmos",
--        .id             = -1,
--        .num_resources  = ARRAY_SIZE(rtc_cmos_resource),
--        .resource       = rtc_cmos_resource
--};
--
--static __init int rtc_cmos_init(void)
--{
--	platform_device_register(&rtc_cmos_device);
--
--	return 0;
--}
--
--device_initcall(rtc_cmos_init);
-diff --git a/arch/mips/loongson/fuloong-2e/setup.c
-b/arch/mips/loongson/fuloong-2e/setup.c
-deleted file mode 100644
-index 636cdbe..0000000
---- a/arch/mips/loongson/fuloong-2e/setup.c
-+++ /dev/null
-@@ -1,75 +0,0 @@
--/*
-- * board dependent setup routines
-- *
-- * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
-- * Author: Fuxin Zhang, zhangfx@lemote.com
-- *
-- * Copyright (C) 2009 Lemote Inc. & Insititute of Computing Technology
-- * Author: Wu Zhangjin, wuzj@lemote.com
-- *
-- *  This program is free software; you can redistribute  it and/or
-modify it
-- *  under  the terms of  the GNU General  Public License as published
-by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at
-your
-- *  option) any later version.
-- */
--
--#include <linux/module.h>
--
--#include <asm/wbflush.h>
--
--void (*__wbflush) (void);
--EXPORT_SYMBOL(__wbflush);
--
--static void loongson_wbflush(void)
--{
--	asm(".set\tpush\n\t"
--	    ".set\tnoreorder\n\t"
--	    ".set mips3\n\t"
--	    "sync\n\t"
--	    "nop\n\t"
--	    ".set\tpop\n\t"
--	    ".set mips0\n\t");
--}
--
--void __init loongson_wbflush_setup(void)
--{
--	__wbflush = loongson_wbflush;
--}
--
--#if defined(CONFIG_VT) && defined(CONFIG_VGA_CONSOLE)
--#include <linux/screen_info.h>
--
--void __init loongson_screeninfo_setup(void)
--{
--	screen_info = (struct screen_info) {
--		    0,		/* orig-x */
--		    25,		/* orig-y */
--		    0,		/* unused */
--		    0,		/* orig-video-page */
--		    0,		/* orig-video-mode */
--		    80,		/* orig-video-cols */
--		    0,		/* ega_ax */
--		    0,		/* ega_bx */
--		    0,		/* ega_cx */
--		    25,		/* orig-video-lines */
--		    VIDEO_TYPE_VGAC,	/* orig-video-isVGA */
--		    16		/* orig-video-points */
--	};
--}
--#else
--void __init loongson_screeninfo_setup(void)
--{
--}
--#endif
--
--/* board-specific reboot function */
--extern void loongson_reboot_setup(void);
--
--void __init plat_mem_setup(void)
--{
--	loongson_reboot_setup();
--
--	loongson_wbflush_setup();
--
--	loongson_screeninfo_setup();
--}
-diff --git a/arch/mips/loongson/fuloong-2e/time.c
-b/arch/mips/loongson/fuloong-2e/time.c
-deleted file mode 100644
-index 8c916ff..0000000
---- a/arch/mips/loongson/fuloong-2e/time.c
-+++ /dev/null
-@@ -1,27 +0,0 @@
--/*
-- * board dependent boot routines
-- *
-- * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
-- * Author: Fuxin Zhang, zhangfx@lemote.com
-- *
-- *  This program is free software; you can redistribute  it and/or
-modify it
-- *  under  the terms of  the GNU General  Public License as published
-by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at
-your
-- *  option) any later version.
-- */
--
--#include <asm/mc146818-time.h>
--#include <asm/time.h>
--
--unsigned long read_persistent_clock(void)
--{
--	return mc146818_get_cmos_time();
--}
--
--extern unsigned long cpu_clock_freq;
--
--void __init plat_time_init(void)
--{
--	/* setup mips r4k timer */
--	mips_hpt_frequency = cpu_clock_freq / 2;
--}
+ static int __init pcibios_init(void)
 -- 
 1.6.2.1

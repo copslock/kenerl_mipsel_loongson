@@ -1,45 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2009 23:33:43 +0100 (BST)
-Received: from mail-px0-f119.google.com ([209.85.216.119]:54446 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2009 23:34:24 +0100 (BST)
+Received: from mail-px0-f119.google.com ([209.85.216.119]:35813 "EHLO
 	mail-px0-f119.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20023417AbZEOWdh (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2009 23:33:37 +0100
-Received: by pxi17 with SMTP id 17so1374096pxi.22
-        for <multiple recipients>; Fri, 15 May 2009 15:33:30 -0700 (PDT)
+	by ftp.linux-mips.org with ESMTP id S20023417AbZEOWeS (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2009 23:34:18 +0100
+Received: by pxi17 with SMTP id 17so1374288pxi.22
+        for <multiple recipients>; Fri, 15 May 2009 15:34:11 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:subject:from:reply-to:to:cc
          :content-type:organization:date:message-id:mime-version:x-mailer
          :content-transfer-encoding;
-        bh=C4zdZbho82sYoCptziGifYvbVmsDG/KggYAT85P5mus=;
-        b=uaF9u/uOd7mmxvnJ0sgKe1n5rIVBPsjkZSX0LLjQyeO9XpQ8BfjlnpcYW52+qSBJY1
-         0LLIrFTOuWMsa76rcBz13Ba9x6tb/33fum/WJ7dM9qlKuE8ZQpbEVMV9TrrHMLAeJo2q
-         EyEyD1rcIuXhXFj8M1quYroCK9bGLDh5nduv0=
+        bh=D2X+uNj/7bRa+s6WgFy55XcmkfdjUQr9xCC/jYIJHmg=;
+        b=GPkpVtMxVLwX/vZNDCY0FtFUYf7SqKiG+bEPfE1cp9W4ZTEmLbzuEVyy4bxuOhBEUj
+         h4yZHd/choeCqd/VXLZbM1V7mErEYEUoP1p931rKZnGDnoI66D+z5yK+Hz6l7EvXGa+R
+         f3qGzvix6g+00fy3G/0+defkAV94b9dKKWPfQ=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=subject:from:reply-to:to:cc:content-type:organization:date
          :message-id:mime-version:x-mailer:content-transfer-encoding;
-        b=Tsobob9sl4nMDEzp7Rpeq7C44pqR76M0oFMfva8ZyogO+ff4xkQmxSR1y+Fk9Dj+lN
-         7HcNJWuDfI1WjvBDn3XYZSiOqiSkurYTTWRFBNET5t42L5Ols7VwMkQd5Ba7bkHzjbiL
-         Hlqy16NVanYgJzox4YMAkUpotFwS7H7Mq2dj0=
-Received: by 10.114.152.7 with SMTP id z7mr5595391wad.198.1242426810617;
-        Fri, 15 May 2009 15:33:30 -0700 (PDT)
+        b=Fe9P6CqVIOm+meoqeoizbirw9kK31UqMvx64P94VYKqP4CWsem8YA3+KbNC6S1rQzB
+         j7nhATtDo1ZmaxbKkHSS5VpcCPUx5A6eK2zK19MsHSrtE/tReKnPFXDQJ5TQbTTEEX9L
+         F/P88vThdoPbrKrGlB7vXRUudj23KYTz8M7AQ=
+Received: by 10.114.145.17 with SMTP id s17mr5696277wad.120.1242426851491;
+        Fri, 15 May 2009 15:34:11 -0700 (PDT)
 Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id v32sm1990130wah.59.2009.05.15.15.33.27
+        by mx.google.com with ESMTPS id n33sm1998883wag.21.2009.05.15.15.34.08
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 15 May 2009 15:33:30 -0700 (PDT)
-Subject: [PATCH 28/30] loongson: fixup for FUJITSU disk
+        Fri, 15 May 2009 15:34:10 -0700 (PDT)
+Subject: [PATCH 29/30] loongson: fixup undefined CONFIG_UCA_SIZE
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 Reply-To: wuzhangjin@gmail.com
-To:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-	linux-ide@vger.kernel.org
+To:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Cc:	Arnaud Patard <apatard@mandriva.com>,
 	loongson-dev@googlegroups.com, zhangfx@lemote.com, yanh@lemote.com,
 	Philippe Vachon <philippe@cowpig.ca>,
 	Zhang Le <r0bertz@gentoo.org>, Erwan Lerale <erwan@thiscow.com>
 Content-Type: text/plain
 Organization: DSLab, Lanzhou University, China
-Date:	Sat, 16 May 2009 06:33:23 +0800
-Message-Id: <1242426803.10164.179.camel@falcon>
+Date:	Sat, 16 May 2009 06:34:04 +0800
+Message-Id: <1242426844.10164.180.camel@falcon>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.24.3 
 Content-Transfer-Encoding: 7bit
@@ -47,7 +46,7 @@ Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22765
+X-archive-position: 22766
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,60 +54,27 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
->From 2bf0cdb93b8b319fea11ee801a466d153667af83 Mon Sep 17 00:00:00 2001
+>From 3e72233003feab86575032851dd374111d0eeaef Mon Sep 17 00:00:00 2001
 From: Wu Zhangjin <wuzhangjin@gmail.com>
-Date: Sat, 16 May 2009 04:57:52 +0800
-Subject: [PATCH 28/30] loongson: fixup for FUJITSU disk
+Date: Sat, 16 May 2009 05:04:19 +0800
+Subject: [PATCH 29/30] loongson: fixup undefined CONFIG_UCA_SIZE
 
 ---
- drivers/ide/amd74xx.c |   19 +++++++++++++++++++
- 1 files changed, 19 insertions(+), 0 deletions(-)
+ arch/mips/loongson/Kconfig |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/drivers/ide/amd74xx.c b/drivers/ide/amd74xx.c
-index 77267c8..3e1a487 100644
---- a/drivers/ide/amd74xx.c
-+++ b/drivers/ide/amd74xx.c
-@@ -23,6 +23,11 @@
+diff --git a/arch/mips/loongson/Kconfig b/arch/mips/loongson/Kconfig
+index 572054c..cef68a0 100644
+--- a/arch/mips/loongson/Kconfig
++++ b/arch/mips/loongson/Kconfig
+@@ -109,7 +109,7 @@ config CS5536_MFGPT
  
- #define DRV_NAME "amd74xx"
- 
-+static const char *am74xx_quirk_drives[] = {
-+	"FUJITSU MHZ2160BH G2",
-+	NULL
-+};
-+
- enum {
- 	AMD_IDE_CONFIG		= 0x41,
- 	AMD_CABLE_DETECT	= 0x42,
-@@ -112,6 +117,19 @@ static void amd_set_pio_mode(ide_drive_t *drive,
-const u8 pio)
- 	amd_set_drive(drive, XFER_PIO_0 + pio);
- }
- 
-+static void amd_quirkproc(ide_drive_t *drive)
-+{	
-+	const char **list, *m = (char *)&drive->id[ATA_ID_PROD];
-+
-+	for (list = am74xx_quirk_drives; *list != NULL; list++)
-+			if (strstr(m, *list) != NULL) {
-+				drive->quirk_list = 2;
-+				return;
-+			}
-+
-+	drive->quirk_list = 0;
-+}
-+
- static void amd7409_cable_detect(struct pci_dev *dev)
- {
- 	/* no host side cable detection */
-@@ -194,6 +212,7 @@ static void __devinit init_hwif_amd74xx(ide_hwif_t
-*hwif)
- static const struct ide_port_ops amd_port_ops = {
- 	.set_pio_mode		= amd_set_pio_mode,
- 	.set_dma_mode		= amd_set_drive,
-+	.quirkproc		= amd_quirkproc,
- 	.cable_detect		= amd_cable_detect,
- };
- 
+ config UCA_SIZE
+  	hex "Uncache Accelerated Region size"
+- 	depends on LOONGSON2F 
++	depends on CPU_LOONGSON2F
+  	default 0x400000 if LEMOTE_YEELOONG2F
+  	default 0x2000000 if LEMOTE_FULOONG2F
+  	help
 -- 
 1.6.2.1

@@ -1,45 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2009 23:18:02 +0100 (BST)
-Received: from rv-out-0708.google.com ([209.85.198.247]:11719 "EHLO
-	rv-out-0708.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20023392AbZEOWRy (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2009 23:17:54 +0100
-Received: by rv-out-0708.google.com with SMTP id b17so345338rvf.0
-        for <multiple recipients>; Fri, 15 May 2009 15:17:51 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2009 23:19:05 +0100 (BST)
+Received: from mail-pz0-f202.google.com ([209.85.222.202]:58462 "EHLO
+	mail-pz0-f202.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20023149AbZEOWS7 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 15 May 2009 23:18:59 +0100
+Received: by pzk40 with SMTP id 40so1371464pzk.22
+        for <multiple recipients>; Fri, 15 May 2009 15:18:51 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:subject:from:reply-to:to:cc
          :content-type:organization:date:message-id:mime-version:x-mailer
          :content-transfer-encoding;
-        bh=FAMEc1IRcw+b8WLBt0KfRwxZtaAPsIEQoWpgoVS3geM=;
-        b=xsB6O77L09Cm4sSBB3Hli6ZjoQ/KWsc36U3PiQoNfCz3Fdbx+16/iHwh3owJO3HET/
-         mbqTQEwJiP6Z34BcqQx42mOyk940YiU3IeSUKXo97kUSOtSbtnNO9cD15QDFn6w14UHt
-         dvDq7gpt2ITxMK4XGzzA9ct7EnwJGLLf8btpg=
+        bh=w1rjxkniihAWB/+50s/CckB8YqO+xeujxVEFoO/+8BQ=;
+        b=kGzNM3Shzxg3rcvfW7w0zIokFpgkwJrSnpMQYfuyaNjIuA3uPYn0gqJXcAH/8QLUVW
+         /gCP0uZCnr8UtGbnu1HXowcuffo+8F/0LJCbrlrj7ZUB/+09HvYJtaPyyiU8q/xGToRq
+         pODFLJf0zU+UKz2eBKZ3skLLxSZULqiZcfRl0=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=subject:from:reply-to:to:cc:content-type:organization:date
          :message-id:mime-version:x-mailer:content-transfer-encoding;
-        b=ZIPyfBjhQzSv6wTOceGtq/rrY4LBSgJNBTcvKtYJIFAFKZIF1jgBDtXFtMH5S9Fdx1
-         FsbM9iYbOEm0+qRasRkY9TjqcvWpLVnPygzvjMNtzXFuToV5cXYVobUDnSgH2MdlW/uy
-         NVIqicL+DwLtmpXkQOSmNuTemwm0Mx55XZn8s=
-Received: by 10.142.177.13 with SMTP id z13mr1327309wfe.184.1242425871486;
-        Fri, 15 May 2009 15:17:51 -0700 (PDT)
+        b=NFM4zpubF50fxvP7+A/49jcU0Rhm1szzzn5MbE3pTC1vK4a41Ocs159rj7KcdXKasG
+         IbTjClOzS0MQGgThO61haIXrqS3D4zl+w1zP9v/iUHVGYVAPrgwv6S0XMMJVXexv80P1
+         wLsOVMsWxplMxwp9/q5cMhRlmOjGQhUCSF/ls=
+Received: by 10.114.53.1 with SMTP id b1mr5651270waa.24.1242425931202;
+        Fri, 15 May 2009 15:18:51 -0700 (PDT)
 Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 22sm3632616wfd.39.2009.05.15.15.17.46
+        by mx.google.com with ESMTPS id m28sm1987978waf.2.2009.05.15.15.18.35
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 15 May 2009 15:17:50 -0700 (PDT)
-Subject: [PATCH 18/30] loongson: Add Siliconmotion 712 framebuffer driver
+        Fri, 15 May 2009 15:18:38 -0700 (PDT)
+Subject: [PATCH 19/30] loongson: Add a default kernel config file for
+ yeeloong(2f)
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 Reply-To: wuzhangjin@gmail.com
-To:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-	linux-media@vger.kernel.org
+To:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Cc:	Arnaud Patard <apatard@mandriva.com>,
 	loongson-dev@googlegroups.com, zhangfx@lemote.com, yanh@lemote.com,
 	Philippe Vachon <philippe@cowpig.ca>,
 	Zhang Le <r0bertz@gentoo.org>, Erwan Lerale <erwan@thiscow.com>
 Content-Type: text/plain
 Organization: DSLab, Lanzhou University, China
-Date:	Sat, 16 May 2009 06:17:42 +0800
-Message-Id: <1242425862.10164.161.camel@falcon>
+Date:	Sat, 16 May 2009 06:18:31 +0800
+Message-Id: <1242425911.10164.162.camel@falcon>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.24.3 
 Content-Transfer-Encoding: 7bit
@@ -47,7 +47,7 @@ Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22755
+X-archive-position: 22756
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,6444 +55,2610 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
->From 1def5374c2d38a24524b30ed5c734c28987fceea Mon Sep 17 00:00:00 2001
+>From 700e044b28d310c3fa7686d0f59eb2ebe2a142e1 Mon Sep 17 00:00:00 2001
 From: Wu Zhangjin <wuzhangjin@gmail.com>
-Date: Sat, 16 May 2009 04:27:50 +0800
-Subject: [PATCH 18/30] loongson: Add Siliconmotion 712 framebuffer
-driver
+Date: Sat, 16 May 2009 04:30:13 +0800
+Subject: [PATCH 19/30] loongson: Add a default kernel config file for
+yeeloong(2f)
 
-yeeloong(2f) laptop have a SMI video card, need this driver.
-
-this source code is originally from
-http://dev.lemote.com/code/linux_loongson
-tons of warnings have been fixed, the main warning is:
-
-      warning: left shift count >= width of type
-
-have been fixed via the following modification:
-
-      drivers/video/smi/smtc2d.h:
-
-      #define _F_MASK(f) ((((1 << _F_SIZE(f)) - 1) << _F_START(f))
-      #define _F_MASK(f) ((((unsigned long)1 << _F_SIZE(f)) - 1) <<
-_F_START(f))
-
-and also, the coding style is changed to follow the kernel style.
 ---
- drivers/video/Kconfig       |   23 +
- drivers/video/Makefile      |    1 +
- drivers/video/smi/Makefile  |    6 +
- drivers/video/smi/sm501hw.h | 2135
-+++++++++++++++++++++++++++++++++++++++++++
- drivers/video/smi/sm7xxhw.h |  100 ++
- drivers/video/smi/smtc2d.c  | 1451 +++++++++++++++++++++++++++++
- drivers/video/smi/smtc2d.h  |  541 +++++++++++
- drivers/video/smi/smtcfb.c  | 1145 +++++++++++++++++++++++
- drivers/video/smi/smtcfb.h  |  786 ++++++++++++++++
- 9 files changed, 6188 insertions(+), 0 deletions(-)
- create mode 100644 drivers/video/smi/Makefile
- create mode 100644 drivers/video/smi/sm501hw.h
- create mode 100644 drivers/video/smi/sm7xxhw.h
- create mode 100644 drivers/video/smi/smtc2d.c
- create mode 100644 drivers/video/smi/smtc2d.h
- create mode 100644 drivers/video/smi/smtcfb.c
- create mode 100644 drivers/video/smi/smtcfb.h
+ arch/mips/configs/yeeloong2f_defconfig | 2586
+++++++++++++++++++++++++++++++++
+ 1 files changed, 2586 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/configs/yeeloong2f_defconfig
 
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index fb19803..ded6807 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -1943,6 +1943,29 @@ config FB_S3C2410_DEBUG
- 	  Turn on debugging messages. Note that you can set/unset at run time
- 	  through sysfs
- 
-+config FB_SILICONMOTION
-+	bool "Silicon Motion Display Support"
-+	depends on FB
-+	help
-+	  Frame Buffer driver for the Silicon Motion serial graphic card.
-+
-+config FB_SM7XX
-+	bool "Silicon Motion SM7XX Frame Buffer Support"
-+	depends on FB_SILICONMOTION
-+	depends on FB
-+	select FB_CFB_FILLRECT
-+	select FB_CFB_COPYAREA
-+	select FB_CFB_IMAGEBLIT
-+	help
-+	  Frame Buffer driver for the Silicon Motion SM7XX serial graphic
-card.
-+
-+config FB_SM7XX_ACCEL
-+	bool "Siliconmotion Acceleration functions (EXPERIMENTAL)"
-+	depends on FB_SM7XX && EXPERIMENTAL
-+	help
-+	This will compile the Trident frame buffer device with
-+	acceleration functions.
-+
- config FB_SM501
- 	tristate "Silicon Motion SM501 framebuffer support"
- 	depends on FB && MFD_SM501
-diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-index 2a998ca..452479f 100644
---- a/drivers/video/Makefile
-+++ b/drivers/video/Makefile
-@@ -71,6 +71,7 @@ obj-$(CONFIG_FB_P9100)            += p9100.o sbuslib.o
- obj-$(CONFIG_FB_TCX)              += tcx.o sbuslib.o
- obj-$(CONFIG_FB_LEO)              += leo.o sbuslib.o
- obj-$(CONFIG_FB_SGIVW)            += sgivwfb.o
-+obj-$(CONFIG_FB_SILICONMOTION)    += smi/
- obj-$(CONFIG_FB_ACORN)            += acornfb.o
- obj-$(CONFIG_FB_ATARI)            += atafb.o c2p_iplan2.o atafb_mfb.o \
-                                      atafb_iplan2p2.o atafb_iplan2p4.o
-atafb_iplan2p8.o
-diff --git a/drivers/video/smi/Makefile b/drivers/video/smi/Makefile
+diff --git a/arch/mips/configs/yeeloong2f_defconfig
+b/arch/mips/configs/yeeloong2f_defconfig
 new file mode 100644
-index 0000000..5aeba94
+index 0000000..01ab19f
 --- /dev/null
-+++ b/drivers/video/smi/Makefile
-@@ -0,0 +1,6 @@
-+obj-y +=  smi.o
-+
-+smi-y := $(DRIVER_OBJS)
-+
-+smi-y +=smtcfb.o
-+
-diff --git a/drivers/video/smi/sm501hw.h b/drivers/video/smi/sm501hw.h
-new file mode 100644
-index 0000000..d8da5a7
---- /dev/null
-+++ b/drivers/video/smi/sm501hw.h
-@@ -0,0 +1,2135 @@
-+/*
-+ *  linux/drivers/video/sm501hw.h -- Silicon Motion SM501 frame buffer
-device
-+ *
-+ *	 Copyright (C) 2006 Silicon Motion, Inc.
-+ *	 Ge Wang, gewang@siliconmotion.com
-+ *
-+ *  This file is subject to the terms and conditions of the GNU General
-Public
-+ *  License. See the file COPYING in the main directory of this archive
-for
-+ *  more details.
-+ */
-+
-+#define SM501_VIDEOMEMORYSIZE	  0x00800000	/*Assume SMTC graphics chip
-has 8MB VRAM */
-+#define SM502_REV_ID		  0xC0
-+
-+/*
-+ *
-+ * Definitions for the System Configuration registers.
-+ *
-+ */
-+
-+#define SYSTEM_CTRL					 0x000000
-+#define SYSTEM_CTRL_DPMS				 31:30
-+#define SYSTEM_CTRL_DPMS_VPHP				 0
-+#define SYSTEM_CTRL_DPMS_VPHN				 1
-+#define SYSTEM_CTRL_DPMS_VNHP				 2
-+#define SYSTEM_CTRL_DPMS_VNHN				 3
-+#define SYSTEM_CTRL_PCI_BURST				 29:29
-+#define SYSTEM_CTRL_PCI_BURST_DISABLE			 0
-+#define SYSTEM_CTRL_PCI_BURST_ENABLE			 1
-+#define SYSTEM_CTRL_CSC_STATUS 			 28:28
-+#define SYSTEM_CTRL_CSC_STATUS_IDLE			 0
-+#define SYSTEM_CTRL_CSC_STATUS_BUSY			 1
-+#define SYSTEM_CTRL_PCI_MASTER 			 25:25
-+#define SYSTEM_CTRL_PCI_MASTER_STOP			 0
-+#define SYSTEM_CTRL_PCI_MASTER_START			 1
-+#define SYSTEM_CTRL_LATENCY_TIMER			 24:24
-+#define SYSTEM_CTRL_LATENCY_TIMER_ENABLE		 0
-+#define SYSTEM_CTRL_LATENCY_TIMER_DISABLE		 1
-+#define SYSTEM_CTRL_PANEL_STATUS			 23:23
-+#define SYSTEM_CTRL_PANEL_STATUS_CURRENT		 0
-+#define SYSTEM_CTRL_PANEL_STATUS_PENDING		 1
-+#define SYSTEM_CTRL_VIDEO_STATUS			 22:22
-+#define SYSTEM_CTRL_VIDEO_STATUS_CURRENT		 0
-+#define SYSTEM_CTRL_VIDEO_STATUS_PENDING		 1
-+#define SYSTEM_CTRL_DE_FIFO				 20:20
-+#define SYSTEM_CTRL_DE_FIFO_NOT_EMPTY			 0
-+#define SYSTEM_CTRL_DE_FIFO_EMPTY			 1
-+#define SYSTEM_CTRL_DE_STATUS				 19:19
-+#define SYSTEM_CTRL_DE_STATUS_IDLE			 0
-+#define SYSTEM_CTRL_DE_STATUS_BUSY			 1
-+#define SYSTEM_CTRL_CRT_STATUS 			 17:17
-+#define SYSTEM_CTRL_CRT_STATUS_CURRENT 		 0
-+#define SYSTEM_CTRL_CRT_STATUS_PENDING 		 1
-+#define SYSTEM_CTRL_ZVPORT				 16:16
-+#define SYSTEM_CTRL_ZVPORT_0				 0
-+#define SYSTEM_CTRL_ZVPORT_1				 1
-+#define SYSTEM_CTRL_PCI_BURST_READ			 15:15
-+#define SYSTEM_CTRL_PCI_BURST_READ_DISABLE		 0
-+#define SYSTEM_CTRL_PCI_BURST_READ_ENABLE		 1
-+#define SYSTEM_CTRL_DE_ABORT				 13:12
-+#define SYSTEM_CTRL_DE_ABORT_NORMAL			 0
-+#define SYSTEM_CTRL_DE_ABORT_2D_ABORT			 3
-+#define SYSTEM_CTRL_PCI_SUBSYS_LOCK			 11:11
-+#define SYSTEM_CTRL_PCI_SUBSYS_LOCK_DISABLE		 0
-+#define SYSTEM_CTRL_PCI_SUBSYS_LOCK_ENABLE		 1
-+#define SYSTEM_CTRL_PCI_RETRY				 7:7
-+#define SYSTEM_CTRL_PCI_RETRY_ENABLE			 0
-+#define SYSTEM_CTRL_PCI_RETRY_DISABLE			 1
-+#define SYSTEM_CTRL_PCI_CLOCK_RUN			 6:6
-+#define SYSTEM_CTRL_PCI_CLOCK_RUN_DISABLE		 0
-+#define SYSTEM_CTRL_PCI_CLOCK_RUN_ENABLE		 1
-+#define SYSTEM_CTRL_PCI_SLAVE_BURST_READ_SIZE		 5:4
-+#define SYSTEM_CTRL_PCI_SLAVE_BURST_READ_SIZE_1	 0
-+#define SYSTEM_CTRL_PCI_SLAVE_BURST_READ_SIZE_2	 1
-+#define SYSTEM_CTRL_PCI_SLAVE_BURST_READ_SIZE_4	 2
-+#define SYSTEM_CTRL_PCI_SLAVE_BURST_READ_SIZE_8	 3
-+#define SYSTEM_CTRL_CRT_TRISTATE			 2:2
-+#define SYSTEM_CTRL_CRT_TRISTATE_DISABLE		 0
-+#define SYSTEM_CTRL_CRT_TRISTATE_ENABLE		 1
-+#define SYSTEM_CTRL_INTMEM_TRISTATE			 1:1
-+#define SYSTEM_CTRL_INTMEM_TRISTATE_DISABLE		 0
-+#define SYSTEM_CTRL_INTMEM_TRISTATE_ENABLE		 1
-+#define SYSTEM_CTRL_PANEL_TRISTATE			 0:0
-+#define SYSTEM_CTRL_PANEL_TRISTATE_DISABLE		 0
-+#define SYSTEM_CTRL_PANEL_TRISTATE_ENABLE		 1
-+
-+#define MISC_CTRL					 0x000004
-+#define MISC_CTRL_PCI_PAD				 31:30
-+#define MISC_CTRL_PCI_PAD_24MA 			 0
-+#define MISC_CTRL_PCI_PAD_12MA 			 1
-+#define MISC_CTRL_PCI_PAD_8MA				 2
-+#define MISC_CTRL_48_SELECT				 29:28
-+#define MISC_CTRL_48_SELECT_CRYSTAL			 0
-+#define MISC_CTRL_48_SELECT_CPU_96			 2
-+#define MISC_CTRL_48_SELECT_CPU_48			 3
-+#define MISC_CTRL_UART1_SELECT 			 27:27
-+#define MISC_CTRL_UART1_SELECT_UART			 0
-+#define MISC_CTRL_UART1_SELECT_SSP			 1
-+#define MISC_CTRL_8051_LATCH				 26:26
-+#define MISC_CTRL_8051_LATCH_DISABLE			 0
-+#define MISC_CTRL_8051_LATCH_ENABLE			 1
-+#define MISC_CTRL_FPDATA				 25:25
-+#define MISC_CTRL_FPDATA_18				 0
-+#define MISC_CTRL_FPDATA_24				 1
-+#define MISC_CTRL_CRYSTAL				 24:24
-+#define MISC_CTRL_CRYSTAL_24				 0
-+#define MISC_CTRL_CRYSTAL_12				 1
-+#define MISC_CTRL_DRAM_REFRESH 			 22:21
-+#define MISC_CTRL_DRAM_REFRESH_8			 0
-+#define MISC_CTRL_DRAM_REFRESH_16			 1
-+#define MISC_CTRL_DRAM_REFRESH_32			 2
-+#define MISC_CTRL_DRAM_REFRESH_64			 3
-+#define MISC_CTRL_BUS_HOLD				 20:18
-+#define MISC_CTRL_BUS_HOLD_FIFO_EMPTY			 0
-+#define MISC_CTRL_BUS_HOLD_8				 1
-+#define MISC_CTRL_BUS_HOLD_16				 2
-+#define MISC_CTRL_BUS_HOLD_24				 3
-+#define MISC_CTRL_BUS_HOLD_32				 4
-+#define MISC_CTRL_HITACHI_READY			 17:17
-+#define MISC_CTRL_HITACHI_READY_NEGATIVE		 0
-+#define MISC_CTRL_HITACHI_READY_POSITIVE		 1
-+#define MISC_CTRL_INTERRUPT				 16:16
-+#define MISC_CTRL_INTERRUPT_NORMAL			 0
-+#define MISC_CTRL_INTERRUPT_INVERT			 1
-+#define MISC_CTRL_PLL_CLOCK_COUNT			 15:15
-+#define MISC_CTRL_PLL_CLOCK_COUNT_DISABLE		 0
-+#define MISC_CTRL_PLL_CLOCK_COUNT_ENABLE		 1
-+#define MISC_CTRL_DAC_BAND_GAP 			 14:13
-+#define MISC_CTRL_DAC_POWER				 12:12
-+#define MISC_CTRL_DAC_POWER_ENABLE			 0
-+#define MISC_CTRL_DAC_POWER_DISABLE			 1
-+#define MISC_CTRL_USB_SLAVE_CONTROLLER 		 11:11
-+#define MISC_CTRL_USB_SLAVE_CONTROLLER_CPU		 0
-+#define MISC_CTRL_USB_SLAVE_CONTROLLER_8051		 1
-+#define MISC_CTRL_BURST_LENGTH 			 10:10
-+#define MISC_CTRL_BURST_LENGTH_8			 0
-+#define MISC_CTRL_BURST_LENGTH_1			 1
-+#define MISC_CTRL_USB_SELECT				 9:9
-+#define MISC_CTRL_USB_SELECT_MASTER			 0
-+#define MISC_CTRL_USB_SELECT_SLAVE			 1
-+#define MISC_CTRL_LOOPBACK				 8:8
-+#define MISC_CTRL_LOOPBACK_NORMAL			 0
-+#define MISC_CTRL_LOOPBACK_USB_HOST			 1
-+#define MISC_CTRL_CLOCK_DIVIDER_RESET			 7:7
-+#define MISC_CTRL_CLOCK_DIVIDER_RESET_ENABLE		 0
-+#define MISC_CTRL_CLOCK_DIVIDER_RESET_DISABLE		 1
-+#define MISC_CTRL_TEST_MODE				 6:5
-+#define MISC_CTRL_TEST_MODE_NORMAL			 0
-+#define MISC_CTRL_TEST_MODE_DEBUGGING			 1
-+#define MISC_CTRL_TEST_MODE_NAND			 2
-+#define MISC_CTRL_TEST_MODE_MEMORY			 3
-+#define MISC_CTRL_NEC_MMIO				 4:4
-+#define MISC_CTRL_NEC_MMIO_30				 0
-+#define MISC_CTRL_NEC_MMIO_62				 1
-+#define MISC_CTRL_CLOCK				 3:3
-+#define MISC_CTRL_CLOCK_PLL				 0
-+#define MISC_CTRL_CLOCK_TEST				 1
-+#define MISC_CTRL_HOST_BUS				 2:0
-+#define MISC_CTRL_HOST_BUS_HITACHI			 0
-+#define MISC_CTRL_HOST_BUS_PCI 			 1
-+#define MISC_CTRL_HOST_BUS_XSCALE			 2
-+#define MISC_CTRL_HOST_BUS_STRONGARM			 4
-+#define MISC_CTRL_HOST_BUS_NEC 			 6
-+
-+#define GPIO_MUX_LOW					 0x000008
-+#define GPIO_MUX_LOW_31				 31:31
-+#define GPIO_MUX_LOW_31_GPIO				 0
-+#define GPIO_MUX_LOW_31_PWM				 1
-+#define GPIO_MUX_LOW_30				 30:30
-+#define GPIO_MUX_LOW_30_GPIO				 0
-+#define GPIO_MUX_LOW_30_PWM				 1
-+#define GPIO_MUX_LOW_29				 29:29
-+#define GPIO_MUX_LOW_29_GPIO				 0
-+#define GPIO_MUX_LOW_29_PWM				 1
-+#define GPIO_MUX_LOW_28				 28:28
-+#define GPIO_MUX_LOW_28_GPIO				 0
-+#define GPIO_MUX_LOW_28_AC97_I2S			 1
-+#define GPIO_MUX_LOW_27				 27:27
-+#define GPIO_MUX_LOW_27_GPIO				 0
-+#define GPIO_MUX_LOW_27_AC97_I2S			 1
-+#define GPIO_MUX_LOW_26				 26:26
-+#define GPIO_MUX_LOW_26_GPIO				 0
-+#define GPIO_MUX_LOW_26_AC97_I2S			 1
-+#define GPIO_MUX_LOW_25				 25:25
-+#define GPIO_MUX_LOW_25_GPIO				 0
-+#define GPIO_MUX_LOW_25_AC97_I2S			 1
-+#define GPIO_MUX_LOW_24				 24:24
-+#define GPIO_MUX_LOW_24_GPIO				 0
-+#define GPIO_MUX_LOW_24_AC97				 1
-+#define GPIO_MUX_LOW_23				 23:23
-+#define GPIO_MUX_LOW_23_GPIO				 0
-+#define GPIO_MUX_LOW_23_ZVPORT 			 1
-+#define GPIO_MUX_LOW_22				 22:22
-+#define GPIO_MUX_LOW_22_GPIO				 0
-+#define GPIO_MUX_LOW_22_ZVPORT 			 1
-+#define GPIO_MUX_LOW_21				 21:21
-+#define GPIO_MUX_LOW_21_GPIO				 0
-+#define GPIO_MUX_LOW_21_ZVPORT 			 1
-+#define GPIO_MUX_LOW_20				 20:20
-+#define GPIO_MUX_LOW_20_GPIO				 0
-+#define GPIO_MUX_LOW_20_ZVPORT 			 1
-+#define GPIO_MUX_LOW_19				 19:19
-+#define GPIO_MUX_LOW_19_GPIO				 0
-+#define GPIO_MUX_LOW_19_ZVPORT 			 1
-+#define GPIO_MUX_LOW_18				 18:18
-+#define GPIO_MUX_LOW_18_GPIO				 0
-+#define GPIO_MUX_LOW_18_ZVPORT 			 1
-+#define GPIO_MUX_LOW_17				 17:17
-+#define GPIO_MUX_LOW_17_GPIO				 0
-+#define GPIO_MUX_LOW_17_ZVPORT 			 1
-+#define GPIO_MUX_LOW_16				 16:16
-+#define GPIO_MUX_LOW_16_GPIO				 0
-+#define GPIO_MUX_LOW_16_ZVPORT 			 1
-+#define GPIO_MUX_LOW_15				 15:15
-+#define GPIO_MUX_LOW_15_GPIO				 0
-+#define GPIO_MUX_LOW_15_8051				 1
-+#define GPIO_MUX_LOW_14				 14:14
-+#define GPIO_MUX_LOW_14_GPIO				 0
-+#define GPIO_MUX_LOW_14_8051				 1
-+#define GPIO_MUX_LOW_13				 13:13
-+#define GPIO_MUX_LOW_13_GPIO				 0
-+#define GPIO_MUX_LOW_13_8051				 1
-+#define GPIO_MUX_LOW_12				 12:12
-+#define GPIO_MUX_LOW_12_GPIO				 0
-+#define GPIO_MUX_LOW_12_8051				 1
-+#define GPIO_MUX_LOW_11				 11:11
-+#define GPIO_MUX_LOW_11_GPIO				 0
-+#define GPIO_MUX_LOW_11_8051				 1
-+#define GPIO_MUX_LOW_10				 10:10
-+#define GPIO_MUX_LOW_10_GPIO				 0
-+#define GPIO_MUX_LOW_10_8051				 1
-+#define GPIO_MUX_LOW_9 				 9:9
-+#define GPIO_MUX_LOW_9_GPIO				 0
-+#define GPIO_MUX_LOW_9_8051				 1
-+#define GPIO_MUX_LOW_8 				 8:8
-+#define GPIO_MUX_LOW_8_GPIO				 0
-+#define GPIO_MUX_LOW_8_8051				 1
-+#define GPIO_MUX_LOW_7 				 7:7
-+#define GPIO_MUX_LOW_7_GPIO				 0
-+#define GPIO_MUX_LOW_7_8051				 1
-+#define GPIO_MUX_LOW_6 				 6:6
-+#define GPIO_MUX_LOW_6_GPIO				 0
-+#define GPIO_MUX_LOW_6_8051				 1
-+#define GPIO_MUX_LOW_5 				 5:5
-+#define GPIO_MUX_LOW_5_GPIO				 0
-+#define GPIO_MUX_LOW_5_8051				 1
-+#define GPIO_MUX_LOW_4 				 4:4
-+#define GPIO_MUX_LOW_4_GPIO				 0
-+#define GPIO_MUX_LOW_4_8051				 1
-+#define GPIO_MUX_LOW_3 				 3:3
-+#define GPIO_MUX_LOW_3_GPIO				 0
-+#define GPIO_MUX_LOW_3_8051				 1
-+#define GPIO_MUX_LOW_2 				 2:2
-+#define GPIO_MUX_LOW_2_GPIO				 0
-+#define GPIO_MUX_LOW_2_8051				 1
-+#define GPIO_MUX_LOW_1 				 1:1
-+#define GPIO_MUX_LOW_1_GPIO				 0
-+#define GPIO_MUX_LOW_1_8051				 1
-+#define GPIO_MUX_LOW_0 				 0:0
-+#define GPIO_MUX_LOW_0_GPIO				 0
-+#define GPIO_MUX_LOW_0_8051				 1
-+
-+#define GPIO_MUX_HIGH					 0x00000C
-+#define GPIO_MUX_HIGH_63				 31:31
-+#define GPIO_MUX_HIGH_63_GPIO				 0
-+#define GPIO_MUX_HIGH_63_CRT_ZVPORT_FPDATA		 1
-+#define GPIO_MUX_HIGH_62				 30:30
-+#define GPIO_MUX_HIGH_62_GPIO				 0
-+#define GPIO_MUX_HIGH_62_CRT_ZVPORT_FPDATA		 1
-+#define GPIO_MUX_HIGH_61				 29:29
-+#define GPIO_MUX_HIGH_61_GPIO				 0
-+#define GPIO_MUX_HIGH_61_CRT_ZVPORT_FPDATA		 1
-+#define GPIO_MUX_HIGH_60				 28:28
-+#define GPIO_MUX_HIGH_60_GPIO				 0
-+#define GPIO_MUX_HIGH_60_CRT_ZVPORT_FPDATA		 1
-+#define GPIO_MUX_HIGH_59				 27:27
-+#define GPIO_MUX_HIGH_59_GPIO				 0
-+#define GPIO_MUX_HIGH_59_CRT_ZVPORT_FPDATA		 1
-+#define GPIO_MUX_HIGH_58				 26:26
-+#define GPIO_MUX_HIGH_58_GPIO				 0
-+#define GPIO_MUX_HIGH_58_CRT_ZVPORT_FPDATA		 1
-+#define GPIO_MUX_HIGH_57				 25:25
-+#define GPIO_MUX_HIGH_57_GPIO				 0
-+#define GPIO_MUX_HIGH_57_CRT_ZVPORT			 1
-+#define GPIO_MUX_HIGH_56				 24:24
-+#define GPIO_MUX_HIGH_56_GPIO				 0
-+#define GPIO_MUX_HIGH_56_CRT_ZVPORT			 1
-+#define GPIO_MUX_HIGH_55				 23:23
-+#define GPIO_MUX_HIGH_55_GPIO				 0
-+#define GPIO_MUX_HIGH_55_CRT				 1
-+#define GPIO_MUX_HIGH_47				 15:15
-+#define GPIO_MUX_HIGH_47_GPIO				 0
-+#define GPIO_MUX_HIGH_47_I2C				 1
-+#define GPIO_MUX_HIGH_46				 14:14
-+#define GPIO_MUX_HIGH_46_GPIO				 0
-+#define GPIO_MUX_HIGH_46_I2C				 1
-+#define GPIO_MUX_HIGH_45				 13:13
-+#define GPIO_MUX_HIGH_45_GPIO				 0
-+#define GPIO_MUX_HIGH_45_SSP1				 1
-+#define GPIO_MUX_HIGH_44				 12:12
-+#define GPIO_MUX_HIGH_44_GPIO				 0
-+#define GPIO_MUX_HIGH_44_UART1_SSP1			 1
-+#define GPIO_MUX_HIGH_43				 11:11
-+#define GPIO_MUX_HIGH_43_GPIO				 0
-+#define GPIO_MUX_HIGH_43_UART1_SSP1			 1
-+#define GPIO_MUX_HIGH_42				 10:10
-+#define GPIO_MUX_HIGH_42_GPIO				 0
-+#define GPIO_MUX_HIGH_42_UART1_SSP1			 1
-+#define GPIO_MUX_HIGH_41				 9:9
-+#define GPIO_MUX_HIGH_41_GPIO				 0
-+#define GPIO_MUX_HIGH_41_UART1_SSP1			 1
-+#define GPIO_MUX_HIGH_40				 8:8
-+#define GPIO_MUX_HIGH_40_GPIO				 0
-+#define GPIO_MUX_HIGH_40_UART0 			 1
-+#define GPIO_MUX_HIGH_39				 7:7
-+#define GPIO_MUX_HIGH_39_GPIO				 0
-+#define GPIO_MUX_HIGH_39_UART0 			 1
-+#define GPIO_MUX_HIGH_38				 6:6
-+#define GPIO_MUX_HIGH_38_GPIO				 0
-+#define GPIO_MUX_HIGH_38_UART0 			 1
-+#define GPIO_MUX_HIGH_37				 5:5
-+#define GPIO_MUX_HIGH_37_GPIO				 0
-+#define GPIO_MUX_HIGH_37_UART0 			 1
-+#define GPIO_MUX_HIGH_36				 4:4
-+#define GPIO_MUX_HIGH_36_GPIO				 0
-+#define GPIO_MUX_HIGH_36_SSP0				 1
-+#define GPIO_MUX_HIGH_35				 3:3
-+#define GPIO_MUX_HIGH_35_GPIO				 0
-+#define GPIO_MUX_HIGH_35_SSP0				 1
-+#define GPIO_MUX_HIGH_34				 2:2
-+#define GPIO_MUX_HIGH_34_GPIO				 0
-+#define GPIO_MUX_HIGH_34_SSP0				 1
-+#define GPIO_MUX_HIGH_33				 1:1
-+#define GPIO_MUX_HIGH_33_GPIO				 0
-+#define GPIO_MUX_HIGH_33_SSP0				 1
-+#define GPIO_MUX_HIGH_32				 0:0
-+#define GPIO_MUX_HIGH_32_GPIO				 0
-+#define GPIO_MUX_HIGH_32_SSP0				 1
-+
-+#define DRAM_CTRL					 0x000010
-+#define DRAM_CTRL_EMBEDDED				 31:31
-+#define DRAM_CTRL_EMBEDDED_ENABLE			 0
-+#define DRAM_CTRL_EMBEDDED_DISABLE			 1
-+#define DRAM_CTRL_CPU_BURST				 30:28
-+#define DRAM_CTRL_CPU_BURST_1				 0
-+#define DRAM_CTRL_CPU_BURST_2				 1
-+#define DRAM_CTRL_CPU_BURST_4				 2
-+#define DRAM_CTRL_CPU_BURST_8				 3
-+#define DRAM_CTRL_CPU_CAS_LATENCY			 27:27
-+#define DRAM_CTRL_CPU_CAS_LATENCY_2			 0
-+#define DRAM_CTRL_CPU_CAS_LATENCY_3			 1
-+#define DRAM_CTRL_CPU_SIZE				 26:24
-+#define DRAM_CTRL_CPU_SIZE_2				 0
-+#define DRAM_CTRL_CPU_SIZE_4				 1
-+#define DRAM_CTRL_CPU_SIZE_64				 4
-+#define DRAM_CTRL_CPU_SIZE_32				 5
-+#define DRAM_CTRL_CPU_SIZE_16				 6
-+#define DRAM_CTRL_CPU_SIZE_8				 7
-+#define DRAM_CTRL_CPU_COLUMN_SIZE			 23:22
-+#define DRAM_CTRL_CPU_COLUMN_SIZE_1024 		 0
-+#define DRAM_CTRL_CPU_COLUMN_SIZE_512			 2
-+#define DRAM_CTRL_CPU_COLUMN_SIZE_256			 3
-+#define DRAM_CTRL_CPU_ACTIVE_PRECHARGE 		 21:21
-+#define DRAM_CTRL_CPU_ACTIVE_PRECHARGE_6		 0
-+#define DRAM_CTRL_CPU_ACTIVE_PRECHARGE_7		 1
-+#define DRAM_CTRL_CPU_RESET				 20:20
-+#define DRAM_CTRL_CPU_RESET_ENABLE			 0
-+#define DRAM_CTRL_CPU_RESET_DISABLE			 1
-+#define DRAM_CTRL_CPU_BANKS				 19:19
-+#define DRAM_CTRL_CPU_BANKS_2				 0
-+#define DRAM_CTRL_CPU_BANKS_4				 1
-+#define DRAM_CTRL_CPU_WRITE_PRECHARGE			 18:18
-+#define DRAM_CTRL_CPU_WRITE_PRECHARGE_2		 0
-+#define DRAM_CTRL_CPU_WRITE_PRECHARGE_1		 1
-+#define DRAM_CTRL_BLOCK_WRITE				 17:17
-+#define DRAM_CTRL_BLOCK_WRITE_DISABLE			 0
-+#define DRAM_CTRL_BLOCK_WRITE_ENABLE			 1
-+#define DRAM_CTRL_REFRESH_COMMAND			 16:16
-+#define DRAM_CTRL_REFRESH_COMMAND_10			 0
-+#define DRAM_CTRL_REFRESH_COMMAND_12			 1
-+#define DRAM_CTRL_SIZE 				 15:13
-+#define DRAM_CTRL_SIZE_4				 0
-+#define DRAM_CTRL_SIZE_8				 1
-+#define DRAM_CTRL_SIZE_16				 2
-+#define DRAM_CTRL_SIZE_32				 3
-+#define DRAM_CTRL_SIZE_64				 4
-+#define DRAM_CTRL_SIZE_2				 5
-+#define DRAM_CTRL_COLUMN_SIZE				 12:11
-+#define DRAM_CTRL_COLUMN_SIZE_256			 0
-+#define DRAM_CTRL_COLUMN_SIZE_512			 2
-+#define DRAM_CTRL_COLUMN_SIZE_1024			 3
-+#define DRAM_CTRL_BLOCK_WRITE_TIME			 10:10
-+#define DRAM_CTRL_BLOCK_WRITE_TIME_1			 0
-+#define DRAM_CTRL_BLOCK_WRITE_TIME_2			 1
-+#define DRAM_CTRL_BLOCK_WRITE_PRECHARGE		 9:9
-+#define DRAM_CTRL_BLOCK_WRITE_PRECHARGE_4		 0
-+#define DRAM_CTRL_BLOCK_WRITE_PRECHARGE_1		 1
-+#define DRAM_CTRL_ACTIVE_PRECHARGE			 8:8
-+#define DRAM_CTRL_ACTIVE_PRECHARGE_6			 0
-+#define DRAM_CTRL_ACTIVE_PRECHARGE_7			 1
-+#define DRAM_CTRL_RESET				 7:7
-+#define DRAM_CTRL_RESET_ENABLE 			 0
-+#define DRAM_CTRL_RESET_DISABLE			 1
-+#define DRAM_CTRL_REMAIN_ACTIVE			 6:6
-+#define DRAM_CTRL_REMAIN_ACTIVE_ENABLE 		 0
-+#define DRAM_CTRL_REMAIN_ACTIVE_DISABLE		 1
-+#define DRAM_CTRL_BANKS				 1:1
-+#define DRAM_CTRL_BANKS_2				 0
-+#define DRAM_CTRL_BANKS_4				 1
-+#define DRAM_CTRL_WRITE_PRECHARGE			 0:0
-+#define DRAM_CTRL_WRITE_PRECHARGE_2			 0
-+#define DRAM_CTRL_WRITE_PRECHARGE_1			 1
-+
-+#define ARBITRATION_CTRL				 0x000014
-+#define ARBITRATION_CTRL_CPUMEM			 29:29
-+#define ARBITRATION_CTRL_CPUMEM_FIXED			 0
-+#define ARBITRATION_CTRL_CPUMEM_ROTATE 		 1
-+#define ARBITRATION_CTRL_INTMEM			 28:28
-+#define ARBITRATION_CTRL_INTMEM_FIXED			 0
-+#define ARBITRATION_CTRL_INTMEM_ROTATE 		 1
-+#define ARBITRATION_CTRL_USB				 27:24
-+#define ARBITRATION_CTRL_USB_OFF			 0
-+#define ARBITRATION_CTRL_USB_PRIORITY_1		 1
-+#define ARBITRATION_CTRL_USB_PRIORITY_2		 2
-+#define ARBITRATION_CTRL_USB_PRIORITY_3		 3
-+#define ARBITRATION_CTRL_USB_PRIORITY_4		 4
-+#define ARBITRATION_CTRL_USB_PRIORITY_5		 5
-+#define ARBITRATION_CTRL_USB_PRIORITY_6		 6
-+#define ARBITRATION_CTRL_USB_PRIORITY_7		 7
-+#define ARBITRATION_CTRL_PANEL 			 23:20
-+#define ARBITRATION_CTRL_PANEL_OFF			 0
-+#define ARBITRATION_CTRL_PANEL_PRIORITY_1		 1
-+#define ARBITRATION_CTRL_PANEL_PRIORITY_2		 2
-+#define ARBITRATION_CTRL_PANEL_PRIORITY_3		 3
-+#define ARBITRATION_CTRL_PANEL_PRIORITY_4		 4
-+#define ARBITRATION_CTRL_PANEL_PRIORITY_5		 5
-+#define ARBITRATION_CTRL_PANEL_PRIORITY_6		 6
-+#define ARBITRATION_CTRL_PANEL_PRIORITY_7		 7
-+#define ARBITRATION_CTRL_ZVPORT			 19:16
-+#define ARBITRATION_CTRL_ZVPORT_OFF			 0
-+#define ARBITRATION_CTRL_ZVPORT_PRIORITY_1		 1
-+#define ARBITRATION_CTRL_ZVPORT_PRIORITY_2		 2
-+#define ARBITRATION_CTRL_ZVPORT_PRIORITY_3		 3
-+#define ARBITRATION_CTRL_ZVPORT_PRIORITY_4		 4
-+#define ARBITRATION_CTRL_ZVPORT_PRIORITY_5		 5
-+#define ARBITRATION_CTRL_ZVPORT_PRIORITY_6		 6
-+#define ARBITRATION_CTRL_ZVPORT_PRIORITY_7		 7
-+#define ARBITRATION_CTRL_CMD_INTPR			 15:12
-+#define ARBITRATION_CTRL_CMD_INTPR_OFF 		 0
-+#define ARBITRATION_CTRL_CMD_INTPR_PRIORITY_1		 1
-+#define ARBITRATION_CTRL_CMD_INTPR_PRIORITY_2		 2
-+#define ARBITRATION_CTRL_CMD_INTPR_PRIORITY_3		 3
-+#define ARBITRATION_CTRL_CMD_INTPR_PRIORITY_4		 4
-+#define ARBITRATION_CTRL_CMD_INTPR_PRIORITY_5		 5
-+#define ARBITRATION_CTRL_CMD_INTPR_PRIORITY_6		 6
-+#define ARBITRATION_CTRL_CMD_INTPR_PRIORITY_7		 7
-+#define ARBITRATION_CTRL_DMA				 11:8
-+#define ARBITRATION_CTRL_DMA_OFF			 0
-+#define ARBITRATION_CTRL_DMA_PRIORITY_1		 1
-+#define ARBITRATION_CTRL_DMA_PRIORITY_2		 2
-+#define ARBITRATION_CTRL_DMA_PRIORITY_3		 3
-+#define ARBITRATION_CTRL_DMA_PRIORITY_4		 4
-+#define ARBITRATION_CTRL_DMA_PRIORITY_5		 5
-+#define ARBITRATION_CTRL_DMA_PRIORITY_6		 6
-+#define ARBITRATION_CTRL_DMA_PRIORITY_7		 7
-+#define ARBITRATION_CTRL_VIDEO 			 7:4
-+#define ARBITRATION_CTRL_VIDEO_OFF			 0
-+#define ARBITRATION_CTRL_VIDEO_PRIORITY_1		 1
-+#define ARBITRATION_CTRL_VIDEO_PRIORITY_2		 2
-+#define ARBITRATION_CTRL_VIDEO_PRIORITY_3		 3
-+#define ARBITRATION_CTRL_VIDEO_PRIORITY_4		 4
-+#define ARBITRATION_CTRL_VIDEO_PRIORITY_5		 5
-+#define ARBITRATION_CTRL_VIDEO_PRIORITY_6		 6
-+#define ARBITRATION_CTRL_VIDEO_PRIORITY_7		 7
-+#define ARBITRATION_CTRL_CRT				 3:0
-+#define ARBITRATION_CTRL_CRT_OFF			 0
-+#define ARBITRATION_CTRL_CRT_PRIORITY_1		 1
-+#define ARBITRATION_CTRL_CRT_PRIORITY_2		 2
-+#define ARBITRATION_CTRL_CRT_PRIORITY_3		 3
-+#define ARBITRATION_CTRL_CRT_PRIORITY_4		 4
-+#define ARBITRATION_CTRL_CRT_PRIORITY_5		 5
-+#define ARBITRATION_CTRL_CRT_PRIORITY_6		 6
-+#define ARBITRATION_CTRL_CRT_PRIORITY_7		 7
-+
-+#define CMD_INTPR_CTRL 				 0x000018
-+#define CMD_INTPR_CTRL_STATUS				 31:31
-+#define CMD_INTPR_CTRL_STATUS_STOPPED			 0
-+#define CMD_INTPR_CTRL_STATUS_RUNNING			 1
-+#define CMD_INTPR_CTRL_EXT				 27:27
-+#define CMD_INTPR_CTRL_EXT_LOCAL			 0
-+#define CMD_INTPR_CTRL_EXT_EXTERNAL			 1
-+#define CMD_INTPR_CTRL_CS				 26:26
-+#define CMD_INTPR_CTRL_CS_0				 0
-+#define CMD_INTPR_CTRL_CS_1				 1
-+#define CMD_INTPR_CTRL_ADDRESS 			 25:0
-+
-+#define CMD_INTPR_CONDITIONS				 0x00001C
-+
-+#define CMD_INTPR_RETURN				 0x000020
-+#define CMD_INTPR_RETURN_EXT				 27:27
-+#define CMD_INTPR_RETURN_EXT_LOCAL			 0
-+#define CMD_INTPR_RETURN_EXT_EXTERNAL			 1
-+#define CMD_INTPR_RETURN_CS				 26:26
-+#define CMD_INTPR_RETURN_CS_0				 0
-+#define CMD_INTPR_RETURN_CS_1				 1
-+#define CMD_INTPR_RETURN_ADDRESS			 25:0
-+
-+#define CMD_INTPR_STATUS				 0x000024
-+#define CMD_INTPR_STATUS_2D_MEMORY_FIFO		 20:20
-+#define CMD_INTPR_STATUS_2D_MEMORY_FIFO_NOT_EMPTY	 0
-+#define CMD_INTPR_STATUS_2D_MEMORY_FIFO_EMPTY		 1
-+#define CMD_INTPR_STATUS_COMMAND_FIFO			 19:19
-+#define CMD_INTPR_STATUS_COMMAND_FIFO_NOT_EMPTY	 0
-+#define CMD_INTPR_STATUS_COMMAND_FIFO_EMPTY		 1
-+#define CMD_INTPR_STATUS_CSC_STATUS			 18:18
-+#define CMD_INTPR_STATUS_CSC_STATUS_IDLE		 0
-+#define CMD_INTPR_STATUS_CSC_STATUS_BUSY		 1
-+#define CMD_INTPR_STATUS_MEMORY_DMA			 17:17
-+#define CMD_INTPR_STATUS_MEMORY_DMA_IDLE		 0
-+#define CMD_INTPR_STATUS_MEMORY_DMA_BUSY		 1
-+#define CMD_INTPR_STATUS_CRT_STATUS			 16:16
-+#define CMD_INTPR_STATUS_CRT_STATUS_CURRENT		 0
-+#define CMD_INTPR_STATUS_CRT_STATUS_PENDING		 1
-+#define CMD_INTPR_STATUS_CURRENT_FIELD 		 15:15
-+#define CMD_INTPR_STATUS_CURRENT_FIELD_ODD		 0
-+#define CMD_INTPR_STATUS_CURRENT_FIELD_EVEN		 1
-+#define CMD_INTPR_STATUS_VIDEO_STATUS			 14:14
-+#define CMD_INTPR_STATUS_VIDEO_STATUS_CURRENT		 0
-+#define CMD_INTPR_STATUS_VIDEO_STATUS_PENDING		 1
-+#define CMD_INTPR_STATUS_PANEL_STATUS			 13:13
-+#define CMD_INTPR_STATUS_PANEL_STATUS_CURRENT		 0
-+#define CMD_INTPR_STATUS_PANEL_STATUS_PENDING		 1
-+#define CMD_INTPR_STATUS_CRT_SYNC			 12:12
-+#define CMD_INTPR_STATUS_CRT_SYNC_INACTIVE		 0
-+#define CMD_INTPR_STATUS_CRT_SYNC_ACTIVE		 1
-+#define CMD_INTPR_STATUS_PANEL_SYNC			 11:11
-+#define CMD_INTPR_STATUS_PANEL_SYNC_INACTIVE		 0
-+#define CMD_INTPR_STATUS_PANEL_SYNC_ACTIVE		 1
-+#define CMD_INTPR_STATUS_2D_SETUP			 2:2
-+#define CMD_INTPR_STATUS_2D_SETUP_IDLE 		 0
-+#define CMD_INTPR_STATUS_2D_SETUP_BUSY 		 1
-+#define CMD_INTPR_STATUS_2D_FIFO			 1:1
-+#define CMD_INTPR_STATUS_2D_FIFO_NOT_EMPTY		 0
-+#define CMD_INTPR_STATUS_2D_FIFO_EMPTY 		 1
-+#define CMD_INTPR_STATUS_2D_ENGINE			 0:0
-+#define CMD_INTPR_STATUS_2D_ENGINE_IDLE		 0
-+#define CMD_INTPR_STATUS_2D_ENGINE_BUSY		 1
-+
-+#define RAW_INT_STATUS 				 0x000028
-+#define RAW_INT_STATUS_USB_SLAVE_PLUG_IN		 5:5
-+#define RAW_INT_STATUS_USB_SLAVE_PLUG_IN_INACTIVE	 0
-+#define RAW_INT_STATUS_USB_SLAVE_PLUG_IN_ACTIVE	 1
-+#define RAW_INT_STATUS_USB_SLAVE_PLUG_IN_CLEAR 	 1
-+#define RAW_INT_STATUS_ZVPORT				 4:4
-+#define RAW_INT_STATUS_ZVPORT_INACTIVE 		 0
-+#define RAW_INT_STATUS_ZVPORT_ACTIVE			 1
-+#define RAW_INT_STATUS_ZVPORT_CLEAR			 1
-+#define RAW_INT_STATUS_CRT_VSYNC			 3:3
-+#define RAW_INT_STATUS_CRT_VSYNC_INACTIVE		 0
-+#define RAW_INT_STATUS_CRT_VSYNC_ACTIVE		 1
-+#define RAW_INT_STATUS_CRT_VSYNC_CLEAR 		 1
-+#define RAW_INT_STATUS_USB_SLAVE			 2:2
-+#define RAW_INT_STATUS_USB_SLAVE_INACTIVE		 0
-+#define RAW_INT_STATUS_USB_SLAVE_ACTIVE		 1
-+#define RAW_INT_STATUS_USB_SLAVE_CLEAR 		 1
-+#define RAW_INT_STATUS_PANEL_VSYNC			 1:1
-+#define RAW_INT_STATUS_PANEL_VSYNC_INACTIVE		 0
-+#define RAW_INT_STATUS_PANEL_VSYNC_ACTIVE		 1
-+#define RAW_INT_STATUS_PANEL_VSYNC_CLEAR		 1
-+#define RAW_INT_STATUS_CMD_INTPR			 0:0
-+#define RAW_INT_STATUS_CMD_INTPR_INACTIVE		 0
-+#define RAW_INT_STATUS_CMD_INTPR_ACTIVE		 1
-+#define RAW_INT_STATUS_CMD_INTPR_CLEAR 		 1
-+
-+#define INT_STATUS					 0x00002C
-+#define INT_STATUS_USB_SLAVE_PLUG_IN			 31:31
-+#define INT_STATUS_USB_SLAVE_PLUG_IN_INACTIVE		 0
-+#define INT_STATUS_USB_SLAVE_PLUG_IN_ACTIVE		 1
-+#define INT_STATUS_GPIO54				 30:30
-+#define INT_STATUS_GPIO54_INACTIVE			 0
-+#define INT_STATUS_GPIO54_ACTIVE			 1
-+#define INT_STATUS_GPIO53				 29:29
-+#define INT_STATUS_GPIO53_INACTIVE			 0
-+#define INT_STATUS_GPIO53_ACTIVE			 1
-+#define INT_STATUS_GPIO52				 28:28
-+#define INT_STATUS_GPIO52_INACTIVE			 0
-+#define INT_STATUS_GPIO52_ACTIVE			 1
-+#define INT_STATUS_GPIO51				 27:27
-+#define INT_STATUS_GPIO51_INACTIVE			 0
-+#define INT_STATUS_GPIO51_ACTIVE			 1
-+#define INT_STATUS_GPIO50				 26:26
-+#define INT_STATUS_GPIO50_INACTIVE			 0
-+#define INT_STATUS_GPIO50_ACTIVE			 1
-+#define INT_STATUS_GPIO49				 25:25
-+#define INT_STATUS_GPIO49_INACTIVE			 0
-+#define INT_STATUS_GPIO49_ACTIVE			 1
-+#define INT_STATUS_GPIO48				 24:24
-+#define INT_STATUS_GPIO48_INACTIVE			 0
-+#define INT_STATUS_GPIO48_ACTIVE			 1
-+#define INT_STATUS_I2C 				 23:23
-+#define INT_STATUS_I2C_INACTIVE			 0
-+#define INT_STATUS_I2C_ACTIVE				 1
-+#define INT_STATUS_PWM 				 22:22
-+#define INT_STATUS_PWM_INACTIVE			 0
-+#define INT_STATUS_PWM_ACTIVE				 1
-+#define INT_STATUS_DMA 				 20:20
-+#define INT_STATUS_DMA_INACTIVE			 0
-+#define INT_STATUS_DMA_ACTIVE				 1
-+#define INT_STATUS_PCI 				 19:19
-+#define INT_STATUS_PCI_INACTIVE			 0
-+#define INT_STATUS_PCI_ACTIVE				 1
-+#define INT_STATUS_I2S 				 18:18
-+#define INT_STATUS_I2S_INACTIVE			 0
-+#define INT_STATUS_I2S_ACTIVE				 1
-+#define INT_STATUS_AC97				 17:17
-+#define INT_STATUS_AC97_INACTIVE			 0
-+#define INT_STATUS_AC97_ACTIVE 			 1
-+#define INT_STATUS_USB_SLAVE				 16:16
-+#define INT_STATUS_USB_SLAVE_INACTIVE			 0
-+#define INT_STATUS_USB_SLAVE_ACTIVE			 1
-+#define INT_STATUS_UART1				 13:13
-+#define INT_STATUS_UART1_INACTIVE			 0
-+#define INT_STATUS_UART1_ACTIVE			 1
-+#define INT_STATUS_UART0				 12:12
-+#define INT_STATUS_UART0_INACTIVE			 0
-+#define INT_STATUS_UART0_ACTIVE			 1
-+#define INT_STATUS_CRT_VSYNC				 11:11
-+#define INT_STATUS_CRT_VSYNC_INACTIVE			 0
-+#define INT_STATUS_CRT_VSYNC_ACTIVE			 1
-+#define INT_STATUS_8051				 10:10
-+#define INT_STATUS_8051_INACTIVE			 0
-+#define INT_STATUS_8051_ACTIVE 			 1
-+#define INT_STATUS_SSP1				 9:9
-+#define INT_STATUS_SSP1_INACTIVE			 0
-+#define INT_STATUS_SSP1_ACTIVE 			 1
-+#define INT_STATUS_SSP0				 8:8
-+#define INT_STATUS_SSP0_INACTIVE			 0
-+#define INT_STATUS_SSP0_ACTIVE 			 1
-+#define INT_STATUS_USB_HOST				 6:6
-+#define INT_STATUS_USB_HOST_INACTIVE			 0
-+#define INT_STATUS_USB_HOST_ACTIVE			 1
-+#define INT_STATUS_2D					 3:3
-+#define INT_STATUS_2D_INACTIVE 			 0
-+#define INT_STATUS_2D_ACTIVE				 1
-+#define INT_STATUS_ZVPORT				 2:2
-+#define INT_STATUS_ZVPORT_INACTIVE			 0
-+#define INT_STATUS_ZVPORT_ACTIVE			 1
-+#define INT_STATUS_PANEL_VSYNC 			 1:1
-+#define INT_STATUS_PANEL_VSYNC_INACTIVE		 0
-+#define INT_STATUS_PANEL_VSYNC_ACTIVE			 1
-+#define INT_STATUS_CMD_INTPR				 0:0
-+#define INT_STATUS_CMD_INTPR_INACTIVE			 0
-+#define INT_STATUS_CMD_INTPR_ACTIVE			 1
-+
-+#define INT_MASK					 0x000030
-+#define INT_MASK_USB_SLAVE_PLUG_IN			 31:31
-+#define INT_MASK_USB_SLAVE_PLUG_IN_DISABLE		 0
-+#define INT_MASK_USB_SLAVE_PLUG_IN_ENABLE		 1
-+#define INT_MASK_GPIO54				 30:30
-+#define INT_MASK_GPIO54_DISABLE			 0
-+#define INT_MASK_GPIO54_ENABLE 			 1
-+#define INT_MASK_GPIO53				 29:29
-+#define INT_MASK_GPIO53_DISABLE			 0
-+#define INT_MASK_GPIO53_ENABLE 			 1
-+#define INT_MASK_GPIO52				 28:28
-+#define INT_MASK_GPIO52_DISABLE			 0
-+#define INT_MASK_GPIO52_ENABLE 			 1
-+#define INT_MASK_GPIO51				 27:27
-+#define INT_MASK_GPIO51_DISABLE			 0
-+#define INT_MASK_GPIO51_ENABLE 			 1
-+#define INT_MASK_GPIO50				 26:26
-+#define INT_MASK_GPIO50_DISABLE			 0
-+#define INT_MASK_GPIO50_ENABLE 			 1
-+#define INT_MASK_GPIO49				 25:25
-+#define INT_MASK_GPIO49_DISABLE			 0
-+#define INT_MASK_GPIO49_ENABLE 			 1
-+#define INT_MASK_GPIO48				 24:24
-+#define INT_MASK_GPIO48_DISABLE			 0
-+#define INT_MASK_GPIO48_ENABLE 			 1
-+#define INT_MASK_I2C					 23:23
-+#define INT_MASK_I2C_DISABLE				 0
-+#define INT_MASK_I2C_ENABLE				 1
-+#define INT_MASK_PWM					 22:22
-+#define INT_MASK_PWM_DISABLE				 0
-+#define INT_MASK_PWM_ENABLE				 1
-+#define INT_MASK_DMA					 20:20
-+#define INT_MASK_DMA_DISABLE				 0
-+#define INT_MASK_DMA_ENABLE				 1
-+#define INT_MASK_PCI					 19:19
-+#define INT_MASK_PCI_DISABLE				 0
-+#define INT_MASK_PCI_ENABLE				 1
-+#define INT_MASK_I2S					 18:18
-+#define INT_MASK_I2S_DISABLE				 0
-+#define INT_MASK_I2S_ENABLE				 1
-+#define INT_MASK_AC97					 17:17
-+#define INT_MASK_AC97_DISABLE				 0
-+#define INT_MASK_AC97_ENABLE				 1
-+#define INT_MASK_USB_SLAVE				 16:16
-+#define INT_MASK_USB_SLAVE_DISABLE			 0
-+#define INT_MASK_USB_SLAVE_ENABLE			 1
-+#define INT_MASK_UART1 				 13:13
-+#define INT_MASK_UART1_DISABLE 			 0
-+#define INT_MASK_UART1_ENABLE				 1
-+#define INT_MASK_UART0 				 12:12
-+#define INT_MASK_UART0_DISABLE 			 0
-+#define INT_MASK_UART0_ENABLE				 1
-+#define INT_MASK_CRT_VSYNC				 11:11
-+#define INT_MASK_CRT_VSYNC_DISABLE			 0
-+#define INT_MASK_CRT_VSYNC_ENABLE			 1
-+#define INT_MASK_8051					 10:10
-+#define INT_MASK_8051_DISABLE				 0
-+#define INT_MASK_8051_ENABLE				 1
-+#define INT_MASK_SSP1					 9:9
-+#define INT_MASK_SSP1_DISABLE				 0
-+#define INT_MASK_SSP1_ENABLE				 1
-+#define INT_MASK_SSP0					 8:8
-+#define INT_MASK_SSP0_DISABLE				 0
-+#define INT_MASK_SSP0_ENABLE				 1
-+#define INT_MASK_USB_HOST				 6:6
-+#define INT_MASK_USB_HOST_DISABLE			 0
-+#define INT_MASK_USB_HOST_ENABLE			 1
-+#define INT_MASK_2D					 3:3
-+#define INT_MASK_2D_DISABLE				 0
-+#define INT_MASK_2D_ENABLE				 1
-+#define INT_MASK_ZVPORT				 2:2
-+#define INT_MASK_ZVPORT_DISABLE			 0
-+#define INT_MASK_ZVPORT_ENABLE 			 1
-+#define INT_MASK_PANEL_VSYNC				 1:1
-+#define INT_MASK_PANEL_VSYNC_DISABLE			 0
-+#define INT_MASK_PANEL_VSYNC_ENABLE			 1
-+#define INT_MASK_CMD_INTPR				 0:0
-+#define INT_MASK_CMD_INTPR_DISABLE			 0
-+#define INT_MASK_CMD_INTPR_ENABLE			 1
-+
-+#define DEBUG_CTRL					 0x000034
-+#define DEBUG_CTRL_MODULE				 7:5
-+#define DEBUG_CTRL_PARTITION				 4:0
-+#define DEBUG_CTRL_PARTITION_HIF			 0
-+#define DEBUG_CTRL_PARTITION_CPUMEM			 1
-+#define DEBUG_CTRL_PARTITION_PCI			 2
-+#define DEBUG_CTRL_PARTITION_CMD_INTPR 		 3
-+#define DEBUG_CTRL_PARTITION_DISPLAY			 4
-+#define DEBUG_CTRL_PARTITION_ZVPORT			 5
-+#define DEBUG_CTRL_PARTITION_2D			 6
-+#define DEBUG_CTRL_PARTITION_MIF			 8
-+#define DEBUG_CTRL_PARTITION_USB_HOST			 10
-+#define DEBUG_CTRL_PARTITION_SSP0			 12
-+#define DEBUG_CTRL_PARTITION_SSP1			 13
-+#define DEBUG_CTRL_PARTITION_UART0			 19
-+#define DEBUG_CTRL_PARTITION_UART1			 20
-+#define DEBUG_CTRL_PARTITION_I2C			 21
-+#define DEBUG_CTRL_PARTITION_8051			 23
-+#define DEBUG_CTRL_PARTITION_AC97			 24
-+#define DEBUG_CTRL_PARTITION_I2S			 25
-+#define DEBUG_CTRL_PARTITION_INTMEM			 26
-+#define DEBUG_CTRL_PARTITION_DMA			 27
-+#define DEBUG_CTRL_PARTITION_SIMULATION		 28
-+
-+#define CURRENT_POWER_GATE				 0x000038
-+#define CURRENT_POWER_GATE_AC97_I2S			 18:18
-+#define CURRENT_POWER_GATE_AC97_I2S_DISABLE		 0
-+#define CURRENT_POWER_GATE_AC97_I2S_ENABLE		 1
-+#define CURRENT_POWER_GATE_8051			 17:17
-+#define CURRENT_POWER_GATE_8051_DISABLE		 0
-+#define CURRENT_POWER_GATE_8051_ENABLE 		 1
-+#define CURRENT_POWER_GATE_PLL 			 16:16
-+#define CURRENT_POWER_GATE_PLL_DISABLE 		 0
-+#define CURRENT_POWER_GATE_PLL_ENABLE			 1
-+#define CURRENT_POWER_GATE_OSCILLATOR			 15:15
-+#define CURRENT_POWER_GATE_OSCILLATOR_DISABLE		 0
-+#define CURRENT_POWER_GATE_OSCILLATOR_ENABLE		 1
-+#define CURRENT_POWER_GATE_PLL_RECOVERY		 14:13
-+#define CURRENT_POWER_GATE_PLL_RECOVERY_32		 0
-+#define CURRENT_POWER_GATE_PLL_RECOVERY_64		 1
-+#define CURRENT_POWER_GATE_PLL_RECOVERY_96		 2
-+#define CURRENT_POWER_GATE_PLL_RECOVERY_128		 3
-+#define CURRENT_POWER_GATE_USB_SLAVE			 12:12
-+#define CURRENT_POWER_GATE_USB_SLAVE_DISABLE		 0
-+#define CURRENT_POWER_GATE_USB_SLAVE_ENABLE		 1
-+#define CURRENT_POWER_GATE_USB_HOST			 11:11
-+#define CURRENT_POWER_GATE_USB_HOST_DISABLE		 0
-+#define CURRENT_POWER_GATE_USB_HOST_ENABLE		 1
-+#define CURRENT_POWER_GATE_SSP0_SSP1			 10:10
-+#define CURRENT_POWER_GATE_SSP0_SSP1_DISABLE		 0
-+#define CURRENT_POWER_GATE_SSP0_SSP1_ENABLE		 1
-+#define CURRENT_POWER_GATE_UART1			 8:8
-+#define CURRENT_POWER_GATE_UART1_DISABLE		 0
-+#define CURRENT_POWER_GATE_UART1_ENABLE		 1
-+#define CURRENT_POWER_GATE_UART0			 7:7
-+#define CURRENT_POWER_GATE_UART0_DISABLE		 0
-+#define CURRENT_POWER_GATE_UART0_ENABLE		 1
-+#define CURRENT_POWER_GATE_GPIO_PWM_I2C		 6:6
-+#define CURRENT_POWER_GATE_GPIO_PWM_I2C_DISABLE	 0
-+#define CURRENT_POWER_GATE_GPIO_PWM_I2C_ENABLE 	 1
-+#define CURRENT_POWER_GATE_ZVPORT			 5:5
-+#define CURRENT_POWER_GATE_ZVPORT_DISABLE		 0
-+#define CURRENT_POWER_GATE_ZVPORT_ENABLE		 1
-+#define CURRENT_POWER_GATE_CSC 			 4:4
-+#define CURRENT_POWER_GATE_CSC_DISABLE 		 0
-+#define CURRENT_POWER_GATE_CSC_ENABLE			 1
-+#define CURRENT_POWER_GATE_2D				 3:3
-+#define CURRENT_POWER_GATE_2D_DISABLE			 0
-+#define CURRENT_POWER_GATE_2D_ENABLE			 1
-+#define CURRENT_POWER_GATE_DISPLAY			 2:2
-+#define CURRENT_POWER_GATE_DISPLAY_DISABLE		 0
-+#define CURRENT_POWER_GATE_DISPLAY_ENABLE		 1
-+#define CURRENT_POWER_GATE_INTMEM			 1:1
-+#define CURRENT_POWER_GATE_INTMEM_DISABLE		 0
-+#define CURRENT_POWER_GATE_INTMEM_ENABLE		 1
-+#define CURRENT_POWER_GATE_HOST			 0:0
-+#define CURRENT_POWER_GATE_HOST_DISABLE		 0
-+#define CURRENT_POWER_GATE_HOST_ENABLE 		 1
-+
-+#define CURRENT_POWER_CLOCK				 0x00003C
-+#define CURRENT_POWER_CLOCK_P1XCLK		  31:31
-+#define CURRENT_POWER_CLOCK_P1XCLK_ENABLE		 1
-+#define CURRENT_POWER_CLOCK_P1XCLK_DISABLE		 0
-+#define CURRENT_POWER_CLOCK_PLLCLK_SELECT		 30:30
-+#define CURRENT_POWER_CLOCK_PLLCLK_SELECT_ENABLE		1
-+#define CURRENT_POWER_CLOCK_PLLCLK_SELECT_DISABLE		0
-+#define CURRENT_POWER_CLOCK_P2XCLK_SELECT		 29:29
-+#define CURRENT_POWER_CLOCK_P2XCLK_SELECT_288		 0
-+#define CURRENT_POWER_CLOCK_P2XCLK_SELECT_336		 1
-+#define CURRENT_POWER_CLOCK_P2XCLK_DIVIDER		 28:27
-+#define CURRENT_POWER_CLOCK_P2XCLK_DIVIDER_1		 0
-+#define CURRENT_POWER_CLOCK_P2XCLK_DIVIDER_3		 1
-+#define CURRENT_POWER_CLOCK_P2XCLK_DIVIDER_5		 2
-+#define CURRENT_POWER_CLOCK_P2XCLK_SHIFT		 26:24
-+#define CURRENT_POWER_CLOCK_P2XCLK_SHIFT_0		 0
-+#define CURRENT_POWER_CLOCK_P2XCLK_SHIFT_1		 1
-+#define CURRENT_POWER_CLOCK_P2XCLK_SHIFT_2		 2
-+#define CURRENT_POWER_CLOCK_P2XCLK_SHIFT_3		 3
-+#define CURRENT_POWER_CLOCK_P2XCLK_SHIFT_4		 4
-+#define CURRENT_POWER_CLOCK_P2XCLK_SHIFT_5		 5
-+#define CURRENT_POWER_CLOCK_P2XCLK_SHIFT_6		 6
-+#define CURRENT_POWER_CLOCK_P2XCLK_SHIFT_7		 7
-+#define CURRENT_POWER_CLOCK_V2XCLK_SELECT		 20:20
-+#define CURRENT_POWER_CLOCK_V2XCLK_SELECT_288		 0
-+#define CURRENT_POWER_CLOCK_V2XCLK_SELECT_336		 1
-+#define CURRENT_POWER_CLOCK_V2XCLK_DIVIDER		 19:19
-+#define CURRENT_POWER_CLOCK_V2XCLK_DIVIDER_1		 0
-+#define CURRENT_POWER_CLOCK_V2XCLK_DIVIDER_3		 1
-+#define CURRENT_POWER_CLOCK_V2XCLK_SHIFT		 18:16
-+#define CURRENT_POWER_CLOCK_V2XCLK_SHIFT_0		 0
-+#define CURRENT_POWER_CLOCK_V2XCLK_SHIFT_1		 1
-+#define CURRENT_POWER_CLOCK_V2XCLK_SHIFT_2		 2
-+#define CURRENT_POWER_CLOCK_V2XCLK_SHIFT_3		 3
-+#define CURRENT_POWER_CLOCK_V2XCLK_SHIFT_4		 4
-+#define CURRENT_POWER_CLOCK_V2XCLK_SHIFT_5		 5
-+#define CURRENT_POWER_CLOCK_V2XCLK_SHIFT_6		 6
-+#define CURRENT_POWER_CLOCK_V2XCLK_SHIFT_7		 7
-+#define CURRENT_POWER_CLOCK_MCLK_SELECT		 12:12
-+#define CURRENT_POWER_CLOCK_MCLK_SELECT_288		 0
-+#define CURRENT_POWER_CLOCK_MCLK_SELECT_336		 1
-+#define CURRENT_POWER_CLOCK_MCLK_DIVIDER		 11:11
-+#define CURRENT_POWER_CLOCK_MCLK_DIVIDER_1		 0
-+#define CURRENT_POWER_CLOCK_MCLK_DIVIDER_3		 1
-+#define CURRENT_POWER_CLOCK_MCLK_SHIFT 		 10:8
-+#define CURRENT_POWER_CLOCK_MCLK_SHIFT_0		 0
-+#define CURRENT_POWER_CLOCK_MCLK_SHIFT_1		 1
-+#define CURRENT_POWER_CLOCK_MCLK_SHIFT_2		 2
-+#define CURRENT_POWER_CLOCK_MCLK_SHIFT_3		 3
-+#define CURRENT_POWER_CLOCK_MCLK_SHIFT_4		 4
-+#define CURRENT_POWER_CLOCK_MCLK_SHIFT_5		 5
-+#define CURRENT_POWER_CLOCK_MCLK_SHIFT_6		 6
-+#define CURRENT_POWER_CLOCK_MCLK_SHIFT_7		 7
-+#define CURRENT_POWER_CLOCK_M2XCLK_SELECT		 4:4
-+#define CURRENT_POWER_CLOCK_M2XCLK_SELECT_288		 0
-+#define CURRENT_POWER_CLOCK_M2XCLK_SELECT_336		 1
-+#define CURRENT_POWER_CLOCK_M2XCLK_DIVIDER		 3:3
-+#define CURRENT_POWER_CLOCK_M2XCLK_DIVIDER_1		 0
-+#define CURRENT_POWER_CLOCK_M2XCLK_DIVIDER_3		 1
-+#define CURRENT_POWER_CLOCK_M2XCLK_SHIFT		 2:0
-+#define CURRENT_POWER_CLOCK_M2XCLK_SHIFT_0		 0
-+#define CURRENT_POWER_CLOCK_M2XCLK_SHIFT_1		 1
-+#define CURRENT_POWER_CLOCK_M2XCLK_SHIFT_2		 2
-+#define CURRENT_POWER_CLOCK_M2XCLK_SHIFT_3		 3
-+#define CURRENT_POWER_CLOCK_M2XCLK_SHIFT_4		 4
-+#define CURRENT_POWER_CLOCK_M2XCLK_SHIFT_5		 5
-+#define CURRENT_POWER_CLOCK_M2XCLK_SHIFT_6		 6
-+#define CURRENT_POWER_CLOCK_M2XCLK_SHIFT_7		 7
-+
-+#define POWER_MODE0_GATE				 0x000040
-+#define POWER_MODE0_GATE_AC97_I2S			 18:18
-+#define POWER_MODE0_GATE_AC97_I2S_DISABLE		 0
-+#define POWER_MODE0_GATE_AC97_I2S_ENABLE		 1
-+#define POWER_MODE0_GATE_8051				 17:17
-+#define POWER_MODE0_GATE_8051_DISABLE			 0
-+#define POWER_MODE0_GATE_8051_ENABLE			 1
-+#define POWER_MODE0_GATE_USB_SLAVE			 12:12
-+#define POWER_MODE0_GATE_USB_SLAVE_DISABLE		 0
-+#define POWER_MODE0_GATE_USB_SLAVE_ENABLE		 1
-+#define POWER_MODE0_GATE_USB_HOST			 11:11
-+#define POWER_MODE0_GATE_USB_HOST_DISABLE		 0
-+#define POWER_MODE0_GATE_USB_HOST_ENABLE		 1
-+#define POWER_MODE0_GATE_SSP0_SSP1			 10:10
-+#define POWER_MODE0_GATE_SSP0_SSP1_DISABLE		 0
-+#define POWER_MODE0_GATE_SSP0_SSP1_ENABLE		 1
-+#define POWER_MODE0_GATE_UART1 			 8:8
-+#define POWER_MODE0_GATE_UART1_DISABLE 		 0
-+#define POWER_MODE0_GATE_UART1_ENABLE			 1
-+#define POWER_MODE0_GATE_UART0 			 7:7
-+#define POWER_MODE0_GATE_UART0_DISABLE 		 0
-+#define POWER_MODE0_GATE_UART0_ENABLE			 1
-+#define POWER_MODE0_GATE_GPIO_PWM_I2C			 6:6
-+#define POWER_MODE0_GATE_GPIO_PWM_I2C_DISABLE		 0
-+#define POWER_MODE0_GATE_GPIO_PWM_I2C_ENABLE		 1
-+#define POWER_MODE0_GATE_ZVPORT			 5:5
-+#define POWER_MODE0_GATE_ZVPORT_DISABLE		 0
-+#define POWER_MODE0_GATE_ZVPORT_ENABLE 		 1
-+#define POWER_MODE0_GATE_CSC				 4:4
-+#define POWER_MODE0_GATE_CSC_DISABLE			 0
-+#define POWER_MODE0_GATE_CSC_ENABLE			 1
-+#define POWER_MODE0_GATE_2D				 3:3
-+#define POWER_MODE0_GATE_2D_DISABLE			 0
-+#define POWER_MODE0_GATE_2D_ENABLE			 1
-+#define POWER_MODE0_GATE_DISPLAY			 2:2
-+#define POWER_MODE0_GATE_DISPLAY_DISABLE		 0
-+#define POWER_MODE0_GATE_DISPLAY_ENABLE		 1
-+#define POWER_MODE0_GATE_INTMEM			 1:1
-+#define POWER_MODE0_GATE_INTMEM_DISABLE		 0
-+#define POWER_MODE0_GATE_INTMEM_ENABLE 		 1
-+#define POWER_MODE0_GATE_HOST				 0:0
-+#define POWER_MODE0_GATE_HOST_DISABLE			 0
-+#define POWER_MODE0_GATE_HOST_ENABLE			 1
-+
-+#define POWER_MODE0_CLOCK				 0x000044
-+#define POWER_MODE0_CLOCK_PLL3_P1XCLK					31:31
-+#define POWER_MODE0_CLOCK_PLL3_P1XCLK_ENABLE			1
-+#define POWER_MODE0_CLOCK_PLL3_P1XCLK_DISABLE			0
-+#define POWER_MODE0_CLOCK_PLL3 						30:30
-+#define POWER_MODE0_CLOCK_PLL3_ENABLE					1
-+#define POWER_MODE0_CLOCK_PLL3_DISABLE 				0
-+#define POWER_MODE0_CLOCK_P2XCLK_SELECT		 29:29
-+#define POWER_MODE0_CLOCK_P2XCLK_SELECT_288		 0
-+#define POWER_MODE0_CLOCK_P2XCLK_SELECT_336		 1
-+#define POWER_MODE0_CLOCK_P2XCLK_DIVIDER		 28:27
-+#define POWER_MODE0_CLOCK_P2XCLK_DIVIDER_1		 0
-+#define POWER_MODE0_CLOCK_P2XCLK_DIVIDER_3		 1
-+#define POWER_MODE0_CLOCK_P2XCLK_DIVIDER_5		 2
-+#define POWER_MODE0_CLOCK_P2XCLK_SHIFT 		 26:24
-+#define POWER_MODE0_CLOCK_P2XCLK_SHIFT_0		 0
-+#define POWER_MODE0_CLOCK_P2XCLK_SHIFT_1		 1
-+#define POWER_MODE0_CLOCK_P2XCLK_SHIFT_2		 2
-+#define POWER_MODE0_CLOCK_P2XCLK_SHIFT_3		 3
-+#define POWER_MODE0_CLOCK_P2XCLK_SHIFT_4		 4
-+#define POWER_MODE0_CLOCK_P2XCLK_SHIFT_5		 5
-+#define POWER_MODE0_CLOCK_P2XCLK_SHIFT_6		 6
-+#define POWER_MODE0_CLOCK_P2XCLK_SHIFT_7		 7
-+#define POWER_MODE0_CLOCK_V2XCLK_SELECT		 20:20
-+#define POWER_MODE0_CLOCK_V2XCLK_SELECT_288		 0
-+#define POWER_MODE0_CLOCK_V2XCLK_SELECT_336		 1
-+#define POWER_MODE0_CLOCK_V2XCLK_DIVIDER		 19:19
-+#define POWER_MODE0_CLOCK_V2XCLK_DIVIDER_1		 0
-+#define POWER_MODE0_CLOCK_V2XCLK_DIVIDER_3		 1
-+#define POWER_MODE0_CLOCK_V2XCLK_SHIFT 		 18:16
-+#define POWER_MODE0_CLOCK_V2XCLK_SHIFT_0		 0
-+#define POWER_MODE0_CLOCK_V2XCLK_SHIFT_1		 1
-+#define POWER_MODE0_CLOCK_V2XCLK_SHIFT_2		 2
-+#define POWER_MODE0_CLOCK_V2XCLK_SHIFT_3		 3
-+#define POWER_MODE0_CLOCK_V2XCLK_SHIFT_4		 4
-+#define POWER_MODE0_CLOCK_V2XCLK_SHIFT_5		 5
-+#define POWER_MODE0_CLOCK_V2XCLK_SHIFT_6		 6
-+#define POWER_MODE0_CLOCK_V2XCLK_SHIFT_7		 7
-+#define POWER_MODE0_CLOCK_MCLK_SELECT			 12:12
-+#define POWER_MODE0_CLOCK_MCLK_SELECT_288		 0
-+#define POWER_MODE0_CLOCK_MCLK_SELECT_336		 1
-+#define POWER_MODE0_CLOCK_MCLK_DIVIDER 		 11:11
-+#define POWER_MODE0_CLOCK_MCLK_DIVIDER_1		 0
-+#define POWER_MODE0_CLOCK_MCLK_DIVIDER_3		 1
-+#define POWER_MODE0_CLOCK_MCLK_SHIFT			 10:8
-+#define POWER_MODE0_CLOCK_MCLK_SHIFT_0 		 0
-+#define POWER_MODE0_CLOCK_MCLK_SHIFT_1 		 1
-+#define POWER_MODE0_CLOCK_MCLK_SHIFT_2 		 2
-+#define POWER_MODE0_CLOCK_MCLK_SHIFT_3 		 3
-+#define POWER_MODE0_CLOCK_MCLK_SHIFT_4 		 4
-+#define POWER_MODE0_CLOCK_MCLK_SHIFT_5 		 5
-+#define POWER_MODE0_CLOCK_MCLK_SHIFT_6 		 6
-+#define POWER_MODE0_CLOCK_MCLK_SHIFT_7 		 7
-+#define POWER_MODE0_CLOCK_M2XCLK_SELECT		 4:4
-+#define POWER_MODE0_CLOCK_M2XCLK_SELECT_288		 0
-+#define POWER_MODE0_CLOCK_M2XCLK_SELECT_336		 1
-+#define POWER_MODE0_CLOCK_M2XCLK_DIVIDER		 3:3
-+#define POWER_MODE0_CLOCK_M2XCLK_DIVIDER_1		 0
-+#define POWER_MODE0_CLOCK_M2XCLK_DIVIDER_3		 1
-+#define POWER_MODE0_CLOCK_M2XCLK_SHIFT 		 2:0
-+#define POWER_MODE0_CLOCK_M2XCLK_SHIFT_0		 0
-+#define POWER_MODE0_CLOCK_M2XCLK_SHIFT_1		 1
-+#define POWER_MODE0_CLOCK_M2XCLK_SHIFT_2		 2
-+#define POWER_MODE0_CLOCK_M2XCLK_SHIFT_3		 3
-+#define POWER_MODE0_CLOCK_M2XCLK_SHIFT_4		 4
-+#define POWER_MODE0_CLOCK_M2XCLK_SHIFT_5		 5
-+#define POWER_MODE0_CLOCK_M2XCLK_SHIFT_6		 6
-+#define POWER_MODE0_CLOCK_M2XCLK_SHIFT_7		 7
-+
-+#define POWER_MODE1_GATE				 0x000048
-+#define POWER_MODE1_GATE_AC97_I2S			 18:18
-+#define POWER_MODE1_GATE_AC97_I2S_DISABLE		 0
-+#define POWER_MODE1_GATE_AC97_I2S_ENABLE		 1
-+#define POWER_MODE1_GATE_8051				 17:17
-+#define POWER_MODE1_GATE_8051_DISABLE			 0
-+#define POWER_MODE1_GATE_8051_ENABLE			 1
-+#define POWER_MODE1_GATE_USB_SLAVE			 12:12
-+#define POWER_MODE1_GATE_USB_SLAVE_DISABLE		 0
-+#define POWER_MODE1_GATE_USB_SLAVE_ENABLE		 1
-+#define POWER_MODE1_GATE_USB_HOST			 11:11
-+#define POWER_MODE1_GATE_USB_HOST_DISABLE		 0
-+#define POWER_MODE1_GATE_USB_HOST_ENABLE		 1
-+#define POWER_MODE1_GATE_SSP0_SSP1			 10:10
-+#define POWER_MODE1_GATE_SSP0_SSP1_DISABLE		 0
-+#define POWER_MODE1_GATE_SSP0_SSP1_ENABLE		 1
-+#define POWER_MODE1_GATE_UART1 			 8:8
-+#define POWER_MODE1_GATE_UART1_DISABLE 		 0
-+#define POWER_MODE1_GATE_UART1_ENABLE			 1
-+#define POWER_MODE1_GATE_UART0 			 7:7
-+#define POWER_MODE1_GATE_UART0_DISABLE 		 0
-+#define POWER_MODE1_GATE_UART0_ENABLE			 1
-+#define POWER_MODE1_GATE_GPIO_PWM_I2C			 6:6
-+#define POWER_MODE1_GATE_GPIO_PWM_I2C_DISABLE		 0
-+#define POWER_MODE1_GATE_GPIO_PWM_I2C_ENABLE		 1
-+#define POWER_MODE1_GATE_ZVPORT			 5:5
-+#define POWER_MODE1_GATE_ZVPORT_DISABLE		 0
-+#define POWER_MODE1_GATE_ZVPORT_ENABLE 		 1
-+#define POWER_MODE1_GATE_CSC				 4:4
-+#define POWER_MODE1_GATE_CSC_DISABLE			 0
-+#define POWER_MODE1_GATE_CSC_ENABLE			 1
-+#define POWER_MODE1_GATE_2D				 3:3
-+#define POWER_MODE1_GATE_2D_DISABLE			 0
-+#define POWER_MODE1_GATE_2D_ENABLE			 1
-+#define POWER_MODE1_GATE_DISPLAY			 2:2
-+#define POWER_MODE1_GATE_DISPLAY_DISABLE		 0
-+#define POWER_MODE1_GATE_DISPLAY_ENABLE		 1
-+#define POWER_MODE1_GATE_INTMEM			 1:1
-+#define POWER_MODE1_GATE_INTMEM_DISABLE		 0
-+#define POWER_MODE1_GATE_INTMEM_ENABLE 		 1
-+#define POWER_MODE1_GATE_HOST				 0:0
-+#define POWER_MODE1_GATE_HOST_DISABLE			 0
-+#define POWER_MODE1_GATE_HOST_ENABLE			 1
-+
-+#define POWER_MODE1_CLOCK				 0x00004C
-+#define POWER_MODE1_CLOCK_PLL3_P1XCLK					31:31
-+#define POWER_MODE1_CLOCK_PLL3_P1XCLK_ENABLE			1
-+#define POWER_MODE1_CLOCK_PLL3_P1XCLK_DISABLE			0
-+#define POWER_MODE1_CLOCK_PLL3 						30:30
-+#define POWER_MODE1_CLOCK_PLL3_ENABLE					1
-+#define POWER_MODE1_CLOCK_PLL3_DISABLE 				0
-+#define POWER_MODE1_CLOCK_P2XCLK_SELECT		 29:29
-+#define POWER_MODE1_CLOCK_P2XCLK_SELECT_288		 0
-+#define POWER_MODE1_CLOCK_P2XCLK_SELECT_336		 1
-+#define POWER_MODE1_CLOCK_P2XCLK_DIVIDER		 28:27
-+#define POWER_MODE1_CLOCK_P2XCLK_DIVIDER_1		 0
-+#define POWER_MODE1_CLOCK_P2XCLK_DIVIDER_3		 1
-+#define POWER_MODE1_CLOCK_P2XCLK_DIVIDER_5		 2
-+#define POWER_MODE1_CLOCK_P2XCLK_SHIFT 		 26:24
-+#define POWER_MODE1_CLOCK_P2XCLK_SHIFT_0		 0
-+#define POWER_MODE1_CLOCK_P2XCLK_SHIFT_1		 1
-+#define POWER_MODE1_CLOCK_P2XCLK_SHIFT_2		 2
-+#define POWER_MODE1_CLOCK_P2XCLK_SHIFT_3		 3
-+#define POWER_MODE1_CLOCK_P2XCLK_SHIFT_4		 4
-+#define POWER_MODE1_CLOCK_P2XCLK_SHIFT_5		 5
-+#define POWER_MODE1_CLOCK_P2XCLK_SHIFT_6		 6
-+#define POWER_MODE1_CLOCK_P2XCLK_SHIFT_7		 7
-+#define POWER_MODE1_CLOCK_V2XCLK_SELECT		 20:20
-+#define POWER_MODE1_CLOCK_V2XCLK_SELECT_288		 0
-+#define POWER_MODE1_CLOCK_V2XCLK_SELECT_336		 1
-+#define POWER_MODE1_CLOCK_V2XCLK_DIVIDER		 19:19
-+#define POWER_MODE1_CLOCK_V2XCLK_DIVIDER_1		 0
-+#define POWER_MODE1_CLOCK_V2XCLK_DIVIDER_3		 1
-+#define POWER_MODE1_CLOCK_V2XCLK_SHIFT 		 18:16
-+#define POWER_MODE1_CLOCK_V2XCLK_SHIFT_0		 0
-+#define POWER_MODE1_CLOCK_V2XCLK_SHIFT_1		 1
-+#define POWER_MODE1_CLOCK_V2XCLK_SHIFT_2		 2
-+#define POWER_MODE1_CLOCK_V2XCLK_SHIFT_3		 3
-+#define POWER_MODE1_CLOCK_V2XCLK_SHIFT_4		 4
-+#define POWER_MODE1_CLOCK_V2XCLK_SHIFT_5		 5
-+#define POWER_MODE1_CLOCK_V2XCLK_SHIFT_6		 6
-+#define POWER_MODE1_CLOCK_V2XCLK_SHIFT_7		 7
-+#define POWER_MODE1_CLOCK_MCLK_SELECT			 12:12
-+#define POWER_MODE1_CLOCK_MCLK_SELECT_288		 0
-+#define POWER_MODE1_CLOCK_MCLK_SELECT_336		 1
-+#define POWER_MODE1_CLOCK_MCLK_DIVIDER 		 11:11
-+#define POWER_MODE1_CLOCK_MCLK_DIVIDER_1		 0
-+#define POWER_MODE1_CLOCK_MCLK_DIVIDER_3		 1
-+#define POWER_MODE1_CLOCK_MCLK_SHIFT			 10:8
-+#define POWER_MODE1_CLOCK_MCLK_SHIFT_0 		 0
-+#define POWER_MODE1_CLOCK_MCLK_SHIFT_1 		 1
-+#define POWER_MODE1_CLOCK_MCLK_SHIFT_2 		 2
-+#define POWER_MODE1_CLOCK_MCLK_SHIFT_3 		 3
-+#define POWER_MODE1_CLOCK_MCLK_SHIFT_4 		 4
-+#define POWER_MODE1_CLOCK_MCLK_SHIFT_5 		 5
-+#define POWER_MODE1_CLOCK_MCLK_SHIFT_6 		 6
-+#define POWER_MODE1_CLOCK_MCLK_SHIFT_7 		 7
-+#define POWER_MODE1_CLOCK_M2XCLK_SELECT		 4:4
-+#define POWER_MODE1_CLOCK_M2XCLK_SELECT_288		 0
-+#define POWER_MODE1_CLOCK_M2XCLK_SELECT_336		 1
-+#define POWER_MODE1_CLOCK_M2XCLK_DIVIDER		 3:3
-+#define POWER_MODE1_CLOCK_M2XCLK_DIVIDER_1		 0
-+#define POWER_MODE1_CLOCK_M2XCLK_DIVIDER_3		 1
-+#define POWER_MODE1_CLOCK_M2XCLK_SHIFT 		 2:0
-+#define POWER_MODE1_CLOCK_M2XCLK_SHIFT_0		 0
-+#define POWER_MODE1_CLOCK_M2XCLK_SHIFT_1		 1
-+#define POWER_MODE1_CLOCK_M2XCLK_SHIFT_2		 2
-+#define POWER_MODE1_CLOCK_M2XCLK_SHIFT_3		 3
-+#define POWER_MODE1_CLOCK_M2XCLK_SHIFT_4		 4
-+#define POWER_MODE1_CLOCK_M2XCLK_SHIFT_5		 5
-+#define POWER_MODE1_CLOCK_M2XCLK_SHIFT_6		 6
-+#define POWER_MODE1_CLOCK_M2XCLK_SHIFT_7		 7
-+
-+#define POWER_SLEEP_GATE				 0x000050
-+#define POWER_SLEEP_GATE_PLL_RECOVERY_CLOCK		 22:19
-+#define POWER_SLEEP_GATE_PLL_RECOVERY_CLOCK_4096	 0
-+#define POWER_SLEEP_GATE_PLL_RECOVERY_CLOCK_2048	 1
-+#define POWER_SLEEP_GATE_PLL_RECOVERY_CLOCK_1024	 2
-+#define POWER_SLEEP_GATE_PLL_RECOVERY_CLOCK_512	 3
-+#define POWER_SLEEP_GATE_PLL_RECOVERY_CLOCK_256	 4
-+#define POWER_SLEEP_GATE_PLL_RECOVERY_CLOCK_128	 5
-+#define POWER_SLEEP_GATE_PLL_RECOVERY_CLOCK_64 	 6
-+#define POWER_SLEEP_GATE_PLL_RECOVERY_CLOCK_32 	 7
-+#define POWER_SLEEP_GATE_PLL_RECOVERY_CLOCK_16 	 8
-+#define POWER_SLEEP_GATE_PLL_RECOVERY_CLOCK_8		 9
-+#define POWER_SLEEP_GATE_PLL_RECOVERY_CLOCK_4		 10
-+#define POWER_SLEEP_GATE_PLL_RECOVERY_CLOCK_2		 11
-+#define POWER_SLEEP_GATE_PLL_RECOVERY			 14:13
-+#define POWER_SLEEP_GATE_PLL_RECOVERY_32		 0
-+#define POWER_SLEEP_GATE_PLL_RECOVERY_64		 1
-+#define POWER_SLEEP_GATE_PLL_RECOVERY_96		 2
-+#define POWER_SLEEP_GATE_PLL_RECOVERY_128		 3
-+
-+#define POWER_MODE_CTRL				 0x000054
-+#define POWER_MODE_CTRL_SLEEP_STATUS			 2:2
-+#define POWER_MODE_CTRL_SLEEP_STATUS_INACTIVE		 0
-+#define POWER_MODE_CTRL_SLEEP_STATUS_ACTIVE		 1
-+#define POWER_MODE_CTRL_MODE				 1:0
-+#define POWER_MODE_CTRL_MODE_MODE0			 0
-+#define POWER_MODE_CTRL_MODE_MODE1			 1
-+#define POWER_MODE_CTRL_MODE_SLEEP			 2
-+
-+#define PCI_MASTER_BASE				 0x000058
-+#define PCI_MASTER_BASE_ADDRESS			 31:20
-+
-+#define ENDIAN_CTRL					 0x00005C
-+#define ENDIAN_CTRL_ENDIAN				 0:0
-+#define ENDIAN_CTRL_ENDIAN_LITTLE			 0
-+#define ENDIAN_CTRL_ENDIAN_BIG 			 1
-+
-+#define DEVICE_ID					 0x000060
-+#define DEVICE_ID_DEVICE_ID				 31:16
-+#define DEVICE_ID_REVISION_ID				 7:0
-+
-+#define PLL_CLOCK_COUNT				 0x000064
-+#define PLL_CLOCK_COUNT_COUNTER			 15:0
-+
-+#define SYSTEM_DRAM_CTRL				 0x000068
-+#define SYSTEM_DRAM_CTRL_READ_DELAY			 2:0
-+#define SYSTEM_DRAM_CTRL_READ_DELAY_OFF		 0
-+#define SYSTEM_DRAM_CTRL_READ_DELAY_0_5NS		 1
-+#define SYSTEM_DRAM_CTRL_READ_DELAY_1NS		 2
-+#define SYSTEM_DRAM_CTRL_READ_DELAY_1_5NS		 3
-+#define SYSTEM_DRAM_CTRL_READ_DELAY_2NS		 4
-+#define SYSTEM_DRAM_CTRL_READ_DELAY_2_5NS		 5
-+
-+#define SYSTEM_PLL3_CLOCK								0x000074
-+#define SYSTEM_PLL3_CLOCK_M								7:0
-+#define SYSTEM_PLL3_CLOCK_N								14:8
-+#define SYSTEM_PLL3_CLOCK_DIVIDE						15:15
-+#define SYSTEM_PLL3_CLOCK_DIVIDE_1						0
-+#define SYSTEM_PLL3_CLOCK_DIVIDE_2						1
-+#define SYSTEM_PLL3_CLOCK_INPUT							16:16
-+#define SYSTEM_PLL3_CLOCK_INPUT_CRYSTAL					0
-+#define SYSTEM_PLL3_CLOCK_INPUT_TEST					1
-+#define SYSTEM_PLL3_CLOCK_POWER							17:17
-+#define SYSTEM_PLL3_CLOCK_POWER_OFF						0
-+#define SYSTEM_PLL3_CLOCK_POWER_ON						1
-+
-+#define CURRENT_POWER_PLLCLOCK 		   0x000074
-+#define CURRENT_POWER_PLLCLOCK_TEST_OUTPUT		20:20
-+#define CURRENT_POWER_PLLCLOCK_TEST_OUTPUT_ENABLE		1
-+#define CURRENT_POWER_PLLCLOCK_TEST_OUTPUT_DISABLE		0
-+#define CURRENT_POWER_PLLCLOCK_TESTMODE		19:18
-+#define CURRENT_POWER_PLLCLOCK_TESTMODE_ENABLE 		1
-+#define CURRENT_POWER_PLLCLOCK_TESTMODE_DISABLE		0
-+#define CURRENT_POWER_PLLCLOCK_POWER			17:17
-+#define CURRENT_POWER_PLLCLOCK_POWER_DOWN			0
-+#define CURRENT_POWER_PLLCLOCK_POWER_ON		1
-+#define CURRENT_POWER_PLLCLOCK_INPUT_SELECT		  16:16
-+#define CURRENT_POWER_PLLCLOCK_INPUT_SELECT_TEST	 1
-+#define CURRENT_POWER_PLLCLOCK_INPUT_SELECT_CRYSTAL	0
-+#define CURRENT_POWER_PLLCLOCK_DIVIDEBY2		     15:15
-+#define CURRENT_POWER_PLLCLOCK_DIVIDE_N		     14:8
-+#define CURRENT_POWER_PLLCLOCK_MULTIPLE_M		       7:0
-+
-+/* Panel Graphics Control */
-+
-+#define PANEL_DISPLAY_CTRL				 0x080000
-+#define PANEL_DISPLAY_CTRL_FPEN			 27:27
-+#define PANEL_DISPLAY_CTRL_FPEN_LOW			 0
-+#define PANEL_DISPLAY_CTRL_FPEN_HIGH			 1
-+#define PANEL_DISPLAY_CTRL_VBIASEN			 26:26
-+#define PANEL_DISPLAY_CTRL_VBIASEN_LOW 		 0
-+#define PANEL_DISPLAY_CTRL_VBIASEN_HIGH		 1
-+#define PANEL_DISPLAY_CTRL_DATA			 25:25
-+#define PANEL_DISPLAY_CTRL_DATA_DISABLE		 0
-+#define PANEL_DISPLAY_CTRL_DATA_ENABLE 		 1
-+#define PANEL_DISPLAY_CTRL_FPVDDEN			 24:24
-+#define PANEL_DISPLAY_CTRL_FPVDDEN_LOW 		 0
-+#define PANEL_DISPLAY_CTRL_FPVDDEN_HIGH		 1
-+#define PANEL_DISPLAY_CTRL_PATTERN			 23:23
-+#define PANEL_DISPLAY_CTRL_PATTERN_4			 0
-+#define PANEL_DISPLAY_CTRL_PATTERN_8			 1
-+#define PANEL_DISPLAY_CTRL_TFT 			 22:21
-+#define PANEL_DISPLAY_CTRL_TFT_24			 0
-+#define PANEL_DISPLAY_CTRL_TFT_9			 1
-+#define PANEL_DISPLAY_CTRL_TFT_12			 2
-+#define PANEL_DISPLAY_CTRL_DITHER			 20:20
-+#define PANEL_DISPLAY_CTRL_DITHER_DISABLE		 0
-+#define PANEL_DISPLAY_CTRL_DITHER_ENABLE		 1
-+#define PANEL_DISPLAY_CTRL_LCD 			 19:18
-+#define PANEL_DISPLAY_CTRL_LCD_TFT			 0
-+#define PANEL_DISPLAY_CTRL_LCD_STN_8			 2
-+#define PANEL_DISPLAY_CTRL_LCD_STN_12			 3
-+#define PANEL_DISPLAY_CTRL_FIFO			 17:16
-+#define PANEL_DISPLAY_CTRL_FIFO_1			 0
-+#define PANEL_DISPLAY_CTRL_FIFO_3			 1
-+#define PANEL_DISPLAY_CTRL_FIFO_7			 2
-+#define PANEL_DISPLAY_CTRL_FIFO_11			 3
-+#define PANEL_DISPLAY_CTRL_CLOCK_PHASE 		 14:14
-+#define PANEL_DISPLAY_CTRL_CLOCK_PHASE_ACTIVE_HIGH	 0
-+#define PANEL_DISPLAY_CTRL_CLOCK_PHASE_ACTIVE_LOW	 1
-+#define PANEL_DISPLAY_CTRL_VSYNC_PHASE 		 13:13
-+#define PANEL_DISPLAY_CTRL_VSYNC_PHASE_ACTIVE_HIGH	 0
-+#define PANEL_DISPLAY_CTRL_VSYNC_PHASE_ACTIVE_LOW	 1
-+#define PANEL_DISPLAY_CTRL_HSYNC_PHASE 		 12:12
-+#define PANEL_DISPLAY_CTRL_HSYNC_PHASE_ACTIVE_HIGH	 0
-+#define PANEL_DISPLAY_CTRL_HSYNC_PHASE_ACTIVE_LOW	 1
-+#define PANEL_DISPLAY_CTRL_COLOR_KEY			 9:9
-+#define PANEL_DISPLAY_CTRL_COLOR_KEY_DISABLE		 0
-+#define PANEL_DISPLAY_CTRL_COLOR_KEY_ENABLE		 1
-+#define PANEL_DISPLAY_CTRL_TIMING			 8:8
-+#define PANEL_DISPLAY_CTRL_TIMING_DISABLE		 0
-+#define PANEL_DISPLAY_CTRL_TIMING_ENABLE		 1
-+#define PANEL_DISPLAY_CTRL_VERTICAL_PAN_DIR		 7:7
-+#define PANEL_DISPLAY_CTRL_VERTICAL_PAN_DIR_DOWN	 0
-+#define PANEL_DISPLAY_CTRL_VERTICAL_PAN_DIR_UP 	 1
-+#define PANEL_DISPLAY_CTRL_VERTICAL_PAN		 6:6
-+#define PANEL_DISPLAY_CTRL_VERTICAL_PAN_DISABLE	 0
-+#define PANEL_DISPLAY_CTRL_VERTICAL_PAN_ENABLE 	 1
-+#define PANEL_DISPLAY_CTRL_HORIZONTAL_PAN_DIR		 5:5
-+#define PANEL_DISPLAY_CTRL_HORIZONTAL_PAN_DIR_RIGHT	 0
-+#define PANEL_DISPLAY_CTRL_HORIZONTAL_PAN_DIR_LEFT	 1
-+#define PANEL_DISPLAY_CTRL_HORIZONTAL_PAN		 4:4
-+#define PANEL_DISPLAY_CTRL_HORIZONTAL_PAN_DISABLE	 0
-+#define PANEL_DISPLAY_CTRL_HORIZONTAL_PAN_ENABLE	 1
-+#define PANEL_DISPLAY_CTRL_GAMMA			 3:3
-+#define PANEL_DISPLAY_CTRL_GAMMA_DISABLE		 0
-+#define PANEL_DISPLAY_CTRL_GAMMA_ENABLE		 1
-+#define PANEL_DISPLAY_CTRL_PLANE			 2:2
-+#define PANEL_DISPLAY_CTRL_PLANE_DISABLE		 0
-+#define PANEL_DISPLAY_CTRL_PLANE_ENABLE		 1
-+#define PANEL_DISPLAY_CTRL_FORMAT			 1:0
-+#define PANEL_DISPLAY_CTRL_FORMAT_8			 0
-+#define PANEL_DISPLAY_CTRL_FORMAT_16			 1
-+#define PANEL_DISPLAY_CTRL_FORMAT_32			 2
-+
-+#define PANEL_PAN_CTRL 				 0x080004
-+#define PANEL_PAN_CTRL_VERTICAL_PAN			 31:24
-+#define PANEL_PAN_CTRL_VERTICAL_VSYNC			 21:16
-+#define PANEL_PAN_CTRL_HORIZONTAL_PAN			 15:8
-+#define PANEL_PAN_CTRL_HORIZONTAL_VSYNC		 5:0
-+
-+#define PANEL_COLOR_KEY				 0x080008
-+#define PANEL_COLOR_KEY_MASK				 31:16
-+#define PANEL_COLOR_KEY_VALUE				 15:0
-+
-+#define PANEL_FB_ADDRESS				 0x08000C
-+#define PANEL_FB_ADDRESS_STATUS			 31:31
-+#define PANEL_FB_ADDRESS_STATUS_CURRENT		 0
-+#define PANEL_FB_ADDRESS_STATUS_PENDING		 1
-+#define PANEL_FB_ADDRESS_EXT				 27:27
-+#define PANEL_FB_ADDRESS_EXT_LOCAL			 0
-+#define PANEL_FB_ADDRESS_EXT_EXTERNAL			 1
-+#define PANEL_FB_ADDRESS_CS				 26:26
-+#define PANEL_FB_ADDRESS_CS_0				 0
-+#define PANEL_FB_ADDRESS_CS_1				 1
-+#define PANEL_FB_ADDRESS_ADDRESS			 25:0
-+
-+#define PANEL_FB_WIDTH 				 0x080010
-+#define PANEL_FB_WIDTH_WIDTH				 29:16
-+#define PANEL_FB_WIDTH_OFFSET				 13:0
-+
-+#define PANEL_WINDOW_WIDTH				 0x080014
-+#define PANEL_WINDOW_WIDTH_WIDTH			 27:16
-+#define PANEL_WINDOW_WIDTH_X				 11:0
-+
-+#define PANEL_WINDOW_HEIGHT				 0x080018
-+#define PANEL_WINDOW_HEIGHT_HEIGHT			 27:16
-+#define PANEL_WINDOW_HEIGHT_Y				 11:0
-+
-+#define PANEL_PLANE_TL 				 0x08001C
-+#define PANEL_PLANE_TL_TOP				 26:16
-+#define PANEL_PLANE_TL_LEFT				 10:0
-+
-+#define PANEL_PLANE_BR 				 0x080020
-+#define PANEL_PLANE_BR_BOTTOM				 26:16
-+#define PANEL_PLANE_BR_RIGHT				 10:0
-+
-+#define PANEL_HORIZONTAL_TOTAL 			 0x080024
-+#define PANEL_HORIZONTAL_TOTAL_TOTAL			 27:16
-+#define PANEL_HORIZONTAL_TOTAL_DISPLAY_END		 11:0
-+
-+#define PANEL_HORIZONTAL_SYNC				 0x080028
-+#define PANEL_HORIZONTAL_SYNC_WIDTH			 23:16
-+#define PANEL_HORIZONTAL_SYNC_START			 11:0
-+
-+#define PANEL_VERTICAL_TOTAL				 0x08002C
-+#define PANEL_VERTICAL_TOTAL_TOTAL			 26:16
-+#define PANEL_VERTICAL_TOTAL_DISPLAY_END		 10:0
-+
-+#define PANEL_VERTICAL_SYNC				 0x080030
-+#define PANEL_VERTICAL_SYNC_HEIGHT			 21:16
-+#define PANEL_VERTICAL_SYNC_START			 10:0
-+
-+#define PANEL_CURRENT_LINE				 0x080034
-+#define PANEL_CURRENT_LINE_LINE			 10:0
-+
-+/* Video Control */
-+
-+#define VIDEO_DISPLAY_CTRL				 0x080040
-+#define VIDEO_DISPLAY_CTRL_FIFO			 17:16
-+#define VIDEO_DISPLAY_CTRL_FIFO_1			 0
-+#define VIDEO_DISPLAY_CTRL_FIFO_3			 1
-+#define VIDEO_DISPLAY_CTRL_FIFO_7			 2
-+#define VIDEO_DISPLAY_CTRL_FIFO_11			 3
-+#define VIDEO_DISPLAY_CTRL_BUFFER			 15:15
-+#define VIDEO_DISPLAY_CTRL_BUFFER_0			 0
-+#define VIDEO_DISPLAY_CTRL_BUFFER_1			 1
-+#define VIDEO_DISPLAY_CTRL_CAPTURE			 14:14
-+#define VIDEO_DISPLAY_CTRL_CAPTURE_DISABLE		 0
-+#define VIDEO_DISPLAY_CTRL_CAPTURE_ENABLE		 1
-+#define VIDEO_DISPLAY_CTRL_DOUBLE_BUFFER		 13:13
-+#define VIDEO_DISPLAY_CTRL_DOUBLE_BUFFER_DISABLE	 0
-+#define VIDEO_DISPLAY_CTRL_DOUBLE_BUFFER_ENABLE	 1
-+#define VIDEO_DISPLAY_CTRL_BYTE_SWAP			 12:12
-+#define VIDEO_DISPLAY_CTRL_BYTE_SWAP_DISABLE		 0
-+#define VIDEO_DISPLAY_CTRL_BYTE_SWAP_ENABLE		 1
-+#define VIDEO_DISPLAY_CTRL_VERTICAL_SCALE		 11:11
-+#define VIDEO_DISPLAY_CTRL_VERTICAL_SCALE_NORMAL	 0
-+#define VIDEO_DISPLAY_CTRL_VERTICAL_SCALE_HALF 	 1
-+#define VIDEO_DISPLAY_CTRL_HORIZONTAL_SCALE		 10:10
-+#define VIDEO_DISPLAY_CTRL_HORIZONTAL_SCALE_NORMAL	 0
-+#define VIDEO_DISPLAY_CTRL_HORIZONTAL_SCALE_HALF	 1
-+#define VIDEO_DISPLAY_CTRL_VERTICAL_MODE		 9:9
-+#define VIDEO_DISPLAY_CTRL_VERTICAL_MODE_REPLICATE	 0
-+#define VIDEO_DISPLAY_CTRL_VERTICAL_MODE_INTERPOLATE	 1
-+#define VIDEO_DISPLAY_CTRL_HORIZONTAL_MODE		 8:8
-+#define VIDEO_DISPLAY_CTRL_HORIZONTAL_MODE_REPLICATE	 0
-+#define VIDEO_DISPLAY_CTRL_HORIZONTAL_MODE_INTERPOLATE  1
-+#define VIDEO_DISPLAY_CTRL_PIXEL			 7:4
-+#define VIDEO_DISPLAY_CTRL_GAMMA			 3:3
-+#define VIDEO_DISPLAY_CTRL_GAMMA_DISABLE		 0
-+#define VIDEO_DISPLAY_CTRL_GAMMA_ENABLE		 1
-+#define VIDEO_DISPLAY_CTRL_PLANE			 2:2
-+#define VIDEO_DISPLAY_CTRL_PLANE_DISABLE		 0
-+#define VIDEO_DISPLAY_CTRL_PLANE_ENABLE		 1
-+#define VIDEO_DISPLAY_CTRL_FORMAT			 1:0
-+#define VIDEO_DISPLAY_CTRL_FORMAT_8			 0
-+#define VIDEO_DISPLAY_CTRL_FORMAT_16			 1
-+#define VIDEO_DISPLAY_CTRL_FORMAT_32			 2
-+#define VIDEO_DISPLAY_CTRL_FORMAT_YUV			 3
-+
-+#define VIDEO_FB_0_ADDRESS				 0x080044
-+#define VIDEO_FB_0_ADDRESS_STATUS			 31:31
-+#define VIDEO_FB_0_ADDRESS_STATUS_CURRENT		 0
-+#define VIDEO_FB_0_ADDRESS_STATUS_PENDING		 1
-+#define VIDEO_FB_0_ADDRESS_EXT 			 27:27
-+#define VIDEO_FB_0_ADDRESS_EXT_LOCAL			 0
-+#define VIDEO_FB_0_ADDRESS_EXT_EXTERNAL		 1
-+#define VIDEO_FB_0_ADDRESS_CS				 26:26
-+#define VIDEO_FB_0_ADDRESS_CS_0			 0
-+#define VIDEO_FB_0_ADDRESS_CS_1			 1
-+#define VIDEO_FB_0_ADDRESS_ADDRESS			 25:0
-+
-+#define VIDEO_FB_WIDTH 				 0x080048
-+#define VIDEO_FB_WIDTH_WIDTH				 29:16
-+#define VIDEO_FB_WIDTH_OFFSET				 13:0
-+
-+#define VIDEO_FB_0_LAST_ADDRESS			 0x08004C
-+#define VIDEO_FB_0_LAST_ADDRESS_EXT			 27:27
-+#define VIDEO_FB_0_LAST_ADDRESS_EXT_LOCAL		 0
-+#define VIDEO_FB_0_LAST_ADDRESS_EXT_EXTERNAL		 1
-+#define VIDEO_FB_0_LAST_ADDRESS_CS			 26:26
-+#define VIDEO_FB_0_LAST_ADDRESS_CS_0			 0
-+#define VIDEO_FB_0_LAST_ADDRESS_CS_1			 1
-+#define VIDEO_FB_0_LAST_ADDRESS_ADDRESS		 25:0
-+
-+#define VIDEO_PLANE_TL 				 0x080050
-+#define VIDEO_PLANE_TL_TOP				 26:16
-+#define VIDEO_PLANE_TL_LEFT				 13:0
-+
-+#define VIDEO_PLANE_BR 				 0x080054
-+#define VIDEO_PLANE_BR_BOTTOM				 26:16
-+#define VIDEO_PLANE_BR_RIGHT				 13:0
-+
-+#define VIDEO_SCALE					 0x080058
-+#define VIDEO_SCALE_VERTICAL_MODE			 31:31
-+#define VIDEO_SCALE_VERTICAL_MODE_EXPAND		 0
-+#define VIDEO_SCALE_VERTICAL_MODE_SHRINK		 1
-+#define VIDEO_SCALE_VERTICAL_SCALE			 27:16
-+#define VIDEO_SCALE_HORIZONTAL_MODE			 15:15
-+#define VIDEO_SCALE_HORIZONTAL_MODE_EXPAND		 0
-+#define VIDEO_SCALE_HORIZONTAL_MODE_SHRINK		 1
-+#define VIDEO_SCALE_HORIZONTAL_SCALE			 11:0
-+
-+#define VIDEO_INITIAL_SCALE				 0x08005C
-+#define VIDEO_INITIAL_SCALE_FB_1			 27:16
-+#define VIDEO_INITIAL_SCALE_FB_0			 11:0
-+
-+#define VIDEO_YUV_CONSTANTS				 0x080060
-+#define VIDEO_YUV_CONSTANTS_Y				 31:24
-+#define VIDEO_YUV_CONSTANTS_R				 23:16
-+#define VIDEO_YUV_CONSTANTS_G				 15:8
-+#define VIDEO_YUV_CONSTANTS_B				 7:0
-+
-+#define VIDEO_FB_1_ADDRESS				 0x080064
-+#define VIDEO_FB_1_ADDRESS_STATUS			 31:31
-+#define VIDEO_FB_1_ADDRESS_STATUS_CURRENT		 0
-+#define VIDEO_FB_1_ADDRESS_STATUS_PENDING		 1
-+#define VIDEO_FB_1_ADDRESS_EXT 			 27:27
-+#define VIDEO_FB_1_ADDRESS_EXT_LOCAL			 0
-+#define VIDEO_FB_1_ADDRESS_EXT_EXTERNAL		 1
-+#define VIDEO_FB_1_ADDRESS_CS				 26:26
-+#define VIDEO_FB_1_ADDRESS_CS_0			 0
-+#define VIDEO_FB_1_ADDRESS_CS_1			 1
-+#define VIDEO_FB_1_ADDRESS_ADDRESS			 25:0
-+
-+#define VIDEO_FB_1_LAST_ADDRESS			 0x080068
-+#define VIDEO_FB_1_LAST_ADDRESS_EXT			 27:27
-+#define VIDEO_FB_1_LAST_ADDRESS_EXT_LOCAL		 0
-+#define VIDEO_FB_1_LAST_ADDRESS_EXT_EXTERNAL		 1
-+#define VIDEO_FB_1_LAST_ADDRESS_CS			 26:26
-+#define VIDEO_FB_1_LAST_ADDRESS_CS_0			 0
-+#define VIDEO_FB_1_LAST_ADDRESS_CS_1			 1
-+#define VIDEO_FB_1_LAST_ADDRESS_ADDRESS		 25:0
-+
-+/* Video Alpha Control */
-+
-+#define VIDEO_ALPHA_DISPLAY_CTRL			 0x080080
-+#define VIDEO_ALPHA_DISPLAY_CTRL_SELECT		 28:28
-+#define VIDEO_ALPHA_DISPLAY_CTRL_SELECT_PER_PIXEL	 0
-+#define VIDEO_ALPHA_DISPLAY_CTRL_SELECT_ALPHA		 1
-+#define VIDEO_ALPHA_DISPLAY_CTRL_ALPHA 		 27:24
-+#define VIDEO_ALPHA_DISPLAY_CTRL_FIFO			 17:16
-+#define VIDEO_ALPHA_DISPLAY_CTRL_FIFO_1		 0
-+#define VIDEO_ALPHA_DISPLAY_CTRL_FIFO_3		 1
-+#define VIDEO_ALPHA_DISPLAY_CTRL_FIFO_7		 2
-+#define VIDEO_ALPHA_DISPLAY_CTRL_FIFO_11		 3
-+#define VIDEO_ALPHA_DISPLAY_CTRL_VERT_SCALE		 11:11
-+#define VIDEO_ALPHA_DISPLAY_CTRL_VERT_SCALE_NORMAL	 0
-+#define VIDEO_ALPHA_DISPLAY_CTRL_VERT_SCALE_HALF	 1
-+#define VIDEO_ALPHA_DISPLAY_CTRL_HORZ_SCALE		 10:10
-+#define VIDEO_ALPHA_DISPLAY_CTRL_HORZ_SCALE_NORMAL	 0
-+#define VIDEO_ALPHA_DISPLAY_CTRL_HORZ_SCALE_HALF	 1
-+#define VIDEO_ALPHA_DISPLAY_CTRL_VERT_MODE		 9:9
-+#define VIDEO_ALPHA_DISPLAY_CTRL_VERT_MODE_REPLICATE	 0
-+#define VIDEO_ALPHA_DISPLAY_CTRL_VERT_MODE_INTERPOLATE  1
-+#define VIDEO_ALPHA_DISPLAY_CTRL_HORZ_MODE		 8:8
-+#define VIDEO_ALPHA_DISPLAY_CTRL_HORZ_MODE_REPLICATE	 0
-+#define VIDEO_ALPHA_DISPLAY_CTRL_HORZ_MODE_INTERPOLATE  1
-+#define VIDEO_ALPHA_DISPLAY_CTRL_PIXEL 		 7:4
-+#define VIDEO_ALPHA_DISPLAY_CTRL_CHROMA_KEY		 3:3
-+#define VIDEO_ALPHA_DISPLAY_CTRL_CHROMA_KEY_DISABLE	 0
-+#define VIDEO_ALPHA_DISPLAY_CTRL_CHROMA_KEY_ENABLE	 1
-+#define VIDEO_ALPHA_DISPLAY_CTRL_PLANE 		 2:2
-+#define VIDEO_ALPHA_DISPLAY_CTRL_PLANE_DISABLE 	 0
-+#define VIDEO_ALPHA_DISPLAY_CTRL_PLANE_ENABLE		 1
-+#define VIDEO_ALPHA_DISPLAY_CTRL_FORMAT		 1:0
-+#define VIDEO_ALPHA_DISPLAY_CTRL_FORMAT_8		 0
-+#define VIDEO_ALPHA_DISPLAY_CTRL_FORMAT_16		 1
-+#define VIDEO_ALPHA_DISPLAY_CTRL_FORMAT_ALPHA_4_4	 2
-+#define VIDEO_ALPHA_DISPLAY_CTRL_FORMAT_ALPHA_4_4_4_4	 3
-+
-+#define VIDEO_ALPHA_FB_ADDRESS 			 0x080084
-+#define VIDEO_ALPHA_FB_ADDRESS_STATUS			 31:31
-+#define VIDEO_ALPHA_FB_ADDRESS_STATUS_CURRENT		 0
-+#define VIDEO_ALPHA_FB_ADDRESS_STATUS_PENDING		 1
-+#define VIDEO_ALPHA_FB_ADDRESS_EXT			 27:27
-+#define VIDEO_ALPHA_FB_ADDRESS_EXT_LOCAL		 0
-+#define VIDEO_ALPHA_FB_ADDRESS_EXT_EXTERNAL		 1
-+#define VIDEO_ALPHA_FB_ADDRESS_CS			 26:26
-+#define VIDEO_ALPHA_FB_ADDRESS_CS_0			 0
-+#define VIDEO_ALPHA_FB_ADDRESS_CS_1			 1
-+#define VIDEO_ALPHA_FB_ADDRESS_ADDRESS 		 25:0
-+
-+#define VIDEO_ALPHA_FB_WIDTH				 0x080088
-+#define VIDEO_ALPHA_FB_WIDTH_WIDTH			 29:16
-+#define VIDEO_ALPHA_FB_WIDTH_OFFSET			 13:0
-+
-+#define VIDEO_ALPHA_FB_LAST_ADDRESS			 0x08008C
-+#define VIDEO_ALPHA_FB_LAST_ADDRESS_EXT		 27:27
-+#define VIDEO_ALPHA_FB_LAST_ADDRESS_EXT_LOCAL		 0
-+#define VIDEO_ALPHA_FB_LAST_ADDRESS_EXT_EXTERNAL	 1
-+#define VIDEO_ALPHA_FB_LAST_ADDRESS_CS 		 26:26
-+#define VIDEO_ALPHA_FB_LAST_ADDRESS_CS_0		 0
-+#define VIDEO_ALPHA_FB_LAST_ADDRESS_CS_1		 1
-+#define VIDEO_ALPHA_FB_LAST_ADDRESS_ADDRESS		 25:0
-+
-+#define VIDEO_ALPHA_PLANE_TL				 0x080090
-+#define VIDEO_ALPHA_PLANE_TL_TOP			 26:16
-+#define VIDEO_ALPHA_PLANE_TL_LEFT			 10:0
-+
-+#define VIDEO_ALPHA_PLANE_BR				 0x080094
-+#define VIDEO_ALPHA_PLANE_BR_BOTTOM			 26:16
-+#define VIDEO_ALPHA_PLANE_BR_RIGHT			 10:0
-+
-+#define VIDEO_ALPHA_SCALE				 0x080098
-+#define VIDEO_ALPHA_SCALE_VERTICAL_MODE		 31:31
-+#define VIDEO_ALPHA_SCALE_VERTICAL_MODE_EXPAND 	 0
-+#define VIDEO_ALPHA_SCALE_VERTICAL_MODE_SHRINK 	 1
-+#define VIDEO_ALPHA_SCALE_VERTICAL_SCALE		 27:16
-+#define VIDEO_ALPHA_SCALE_HORIZONTAL_MODE		 15:15
-+#define VIDEO_ALPHA_SCALE_HORIZONTAL_MODE_EXPAND	 0
-+#define VIDEO_ALPHA_SCALE_HORIZONTAL_MODE_SHRINK	 1
-+#define VIDEO_ALPHA_SCALE_HORIZONTAL_SCALE		 11:0
-+
-+#define VIDEO_ALPHA_INITIAL_SCALE			 0x08009C
-+#define VIDEO_ALPHA_INITIAL_SCALE_FB			 11:0
-+
-+#define VIDEO_ALPHA_CHROMA_KEY 			 0x0800A0
-+#define VIDEO_ALPHA_CHROMA_KEY_MASK			 31:16
-+#define VIDEO_ALPHA_CHROMA_KEY_VALUE			 15:0
-+
-+#define VIDEO_ALPHA_COLOR_LOOKUP_01			 0x0800A4
-+#define VIDEO_ALPHA_COLOR_LOOKUP_01_1_RED		 31:27
-+#define VIDEO_ALPHA_COLOR_LOOKUP_01_1_GREEN		 26:21
-+#define VIDEO_ALPHA_COLOR_LOOKUP_01_1_BLUE		 20:16
-+#define VIDEO_ALPHA_COLOR_LOOKUP_01_0_RED		 15:11
-+#define VIDEO_ALPHA_COLOR_LOOKUP_01_0_GREEN		 10:5
-+#define VIDEO_ALPHA_COLOR_LOOKUP_01_0_BLUE		 4:0
-+
-+#define VIDEO_ALPHA_COLOR_LOOKUP_23			 0x0800A8
-+#define VIDEO_ALPHA_COLOR_LOOKUP_23_3_RED		 31:27
-+#define VIDEO_ALPHA_COLOR_LOOKUP_23_3_GREEN		 26:21
-+#define VIDEO_ALPHA_COLOR_LOOKUP_23_3_BLUE		 20:16
-+#define VIDEO_ALPHA_COLOR_LOOKUP_23_2_RED		 15:11
-+#define VIDEO_ALPHA_COLOR_LOOKUP_23_2_GREEN		 10:5
-+#define VIDEO_ALPHA_COLOR_LOOKUP_23_2_BLUE		 4:0
-+
-+#define VIDEO_ALPHA_COLOR_LOOKUP_45			 0x0800AC
-+#define VIDEO_ALPHA_COLOR_LOOKUP_45_5_RED		 31:27
-+#define VIDEO_ALPHA_COLOR_LOOKUP_45_5_GREEN		 26:21
-+#define VIDEO_ALPHA_COLOR_LOOKUP_45_5_BLUE		 20:16
-+#define VIDEO_ALPHA_COLOR_LOOKUP_45_4_RED		 15:11
-+#define VIDEO_ALPHA_COLOR_LOOKUP_45_4_GREEN		 10:5
-+#define VIDEO_ALPHA_COLOR_LOOKUP_45_4_BLUE		 4:0
-+
-+#define VIDEO_ALPHA_COLOR_LOOKUP_67			 0x0800B0
-+#define VIDEO_ALPHA_COLOR_LOOKUP_67_7_RED		 31:27
-+#define VIDEO_ALPHA_COLOR_LOOKUP_67_7_GREEN		 26:21
-+#define VIDEO_ALPHA_COLOR_LOOKUP_67_7_BLUE		 20:16
-+#define VIDEO_ALPHA_COLOR_LOOKUP_67_6_RED		 15:11
-+#define VIDEO_ALPHA_COLOR_LOOKUP_67_6_GREEN		 10:5
-+#define VIDEO_ALPHA_COLOR_LOOKUP_67_6_BLUE		 4:0
-+
-+#define VIDEO_ALPHA_COLOR_LOOKUP_89			 0x0800B4
-+#define VIDEO_ALPHA_COLOR_LOOKUP_89_9_RED		 31:27
-+#define VIDEO_ALPHA_COLOR_LOOKUP_89_9_GREEN		 26:21
-+#define VIDEO_ALPHA_COLOR_LOOKUP_89_9_BLUE		 20:16
-+#define VIDEO_ALPHA_COLOR_LOOKUP_89_8_RED		 15:11
-+#define VIDEO_ALPHA_COLOR_LOOKUP_89_8_GREEN		 10:5
-+#define VIDEO_ALPHA_COLOR_LOOKUP_89_8_BLUE		 4:0
-+
-+#define VIDEO_ALPHA_COLOR_LOOKUP_AB			 0x0800B8
-+#define VIDEO_ALPHA_COLOR_LOOKUP_AB_B_RED		 31:27
-+#define VIDEO_ALPHA_COLOR_LOOKUP_AB_B_GREEN		 26:21
-+#define VIDEO_ALPHA_COLOR_LOOKUP_AB_B_BLUE		 20:16
-+#define VIDEO_ALPHA_COLOR_LOOKUP_AB_A_RED		 15:11
-+#define VIDEO_ALPHA_COLOR_LOOKUP_AB_A_GREEN		 10:5
-+#define VIDEO_ALPHA_COLOR_LOOKUP_AB_A_BLUE		 4:0
-+
-+#define VIDEO_ALPHA_COLOR_LOOKUP_CD			 0x0800BC
-+#define VIDEO_ALPHA_COLOR_LOOKUP_CD_D_RED		 31:27
-+#define VIDEO_ALPHA_COLOR_LOOKUP_CD_D_GREEN		 26:21
-+#define VIDEO_ALPHA_COLOR_LOOKUP_CD_D_BLUE		 20:16
-+#define VIDEO_ALPHA_COLOR_LOOKUP_CD_C_RED		 15:11
-+#define VIDEO_ALPHA_COLOR_LOOKUP_CD_C_GREEN		 10:5
-+#define VIDEO_ALPHA_COLOR_LOOKUP_CD_C_BLUE		 4:0
-+
-+#define VIDEO_ALPHA_COLOR_LOOKUP_EF			 0x0800C0
-+#define VIDEO_ALPHA_COLOR_LOOKUP_EF_F_RED		 31:27
-+#define VIDEO_ALPHA_COLOR_LOOKUP_EF_F_GREEN		 26:21
-+#define VIDEO_ALPHA_COLOR_LOOKUP_EF_F_BLUE		 20:16
-+#define VIDEO_ALPHA_COLOR_LOOKUP_EF_E_RED		 15:11
-+#define VIDEO_ALPHA_COLOR_LOOKUP_EF_E_GREEN		 10:5
-+#define VIDEO_ALPHA_COLOR_LOOKUP_EF_E_BLUE		 4:0
-+
-+/* Panel Cursor Control */
-+
-+#define PANEL_HWC_ADDRESS				 0x0800F0
-+#define PANEL_HWC_ADDRESS_ENABLE			 31:31
-+#define PANEL_HWC_ADDRESS_ENABLE_DISABLE		 0
-+#define PANEL_HWC_ADDRESS_ENABLE_ENABLE		 1
-+#define PANEL_HWC_ADDRESS_EXT				 27:27
-+#define PANEL_HWC_ADDRESS_EXT_LOCAL			 0
-+#define PANEL_HWC_ADDRESS_EXT_EXTERNAL 		 1
-+#define PANEL_HWC_ADDRESS_CS				 26:26
-+#define PANEL_HWC_ADDRESS_CS_0 			 0
-+#define PANEL_HWC_ADDRESS_CS_1 			 1
-+#define PANEL_HWC_ADDRESS_ADDRESS			 25:0
-+
-+#define PANEL_HWC_LOCATION				 0x0800F4
-+#define PANEL_HWC_LOCATION_TOP 			 27:27
-+#define PANEL_HWC_LOCATION_TOP_INSIDE			 0
-+#define PANEL_HWC_LOCATION_TOP_OUTSIDE 		 1
-+#define PANEL_HWC_LOCATION_Y				 26:16
-+#define PANEL_HWC_LOCATION_LEFT			 11:11
-+#define PANEL_HWC_LOCATION_LEFT_INSIDE 		 0
-+#define PANEL_HWC_LOCATION_LEFT_OUTSIDE		 1
-+#define PANEL_HWC_LOCATION_X				 10:0
-+
-+#define PANEL_HWC_COLOR_12				 0x0800F8
-+#define PANEL_HWC_COLOR_12_2_RGB565			 31:16
-+#define PANEL_HWC_COLOR_12_1_RGB565			 15:0
-+
-+#define PANEL_HWC_COLOR_3				 0x0800FC
-+#define PANEL_HWC_COLOR_3_RGB565			 15:0
-+
-+/* Old Definitions +++ */
-+#define PANEL_HWC_COLOR_01				 0x0800F8
-+#define PANEL_HWC_COLOR_01_1_RED			 31:27
-+#define PANEL_HWC_COLOR_01_1_GREEN			 26:21
-+#define PANEL_HWC_COLOR_01_1_BLUE			 20:16
-+#define PANEL_HWC_COLOR_01_0_RED			 15:11
-+#define PANEL_HWC_COLOR_01_0_GREEN			 10:5
-+#define PANEL_HWC_COLOR_01_0_BLUE			 4:0
-+
-+#define PANEL_HWC_COLOR_2				 0x0800FC
-+#define PANEL_HWC_COLOR_2_RED				 15:11
-+#define PANEL_HWC_COLOR_2_GREEN			 10:5
-+#define PANEL_HWC_COLOR_2_BLUE 			 4:0
-+/* Old Definitions --- */
-+
-+/* Alpha Control */
-+
-+#define ALPHA_DISPLAY_CTRL				 0x080100
-+#define ALPHA_DISPLAY_CTRL_SELECT			 28:28
-+#define ALPHA_DISPLAY_CTRL_SELECT_PER_PIXEL		 0
-+#define ALPHA_DISPLAY_CTRL_SELECT_ALPHA		 1
-+#define ALPHA_DISPLAY_CTRL_ALPHA			 27:24
-+#define ALPHA_DISPLAY_CTRL_FIFO			 17:16
-+#define ALPHA_DISPLAY_CTRL_FIFO_1			 0
-+#define ALPHA_DISPLAY_CTRL_FIFO_3			 1
-+#define ALPHA_DISPLAY_CTRL_FIFO_7			 2
-+#define ALPHA_DISPLAY_CTRL_FIFO_11			 3
-+#define ALPHA_DISPLAY_CTRL_PIXEL			 7:4
-+#define ALPHA_DISPLAY_CTRL_CHROMA_KEY			 3:3
-+#define ALPHA_DISPLAY_CTRL_CHROMA_KEY_DISABLE		 0
-+#define ALPHA_DISPLAY_CTRL_CHROMA_KEY_ENABLE		 1
-+#define ALPHA_DISPLAY_CTRL_PLANE			 2:2
-+#define ALPHA_DISPLAY_CTRL_PLANE_DISABLE		 0
-+#define ALPHA_DISPLAY_CTRL_PLANE_ENABLE		 1
-+#define ALPHA_DISPLAY_CTRL_FORMAT			 1:0
-+#define ALPHA_DISPLAY_CTRL_FORMAT_16			 1
-+#define ALPHA_DISPLAY_CTRL_FORMAT_ALPHA_4_4		 2
-+#define ALPHA_DISPLAY_CTRL_FORMAT_ALPHA_4_4_4_4	 3
-+
-+#define ALPHA_FB_ADDRESS				 0x080104
-+#define ALPHA_FB_ADDRESS_STATUS			 31:31
-+#define ALPHA_FB_ADDRESS_STATUS_CURRENT		 0
-+#define ALPHA_FB_ADDRESS_STATUS_PENDING		 1
-+#define ALPHA_FB_ADDRESS_EXT				 27:27
-+#define ALPHA_FB_ADDRESS_EXT_LOCAL			 0
-+#define ALPHA_FB_ADDRESS_EXT_EXTERNAL			 1
-+#define ALPHA_FB_ADDRESS_CS				 26:26
-+#define ALPHA_FB_ADDRESS_CS_0				 0
-+#define ALPHA_FB_ADDRESS_CS_1				 1
-+#define ALPHA_FB_ADDRESS_ADDRESS			 25:0
-+
-+#define ALPHA_FB_WIDTH 				 0x080108
-+#define ALPHA_FB_WIDTH_WIDTH				 29:16
-+#define ALPHA_FB_WIDTH_OFFSET				 13:0
-+
-+#define ALPHA_PLANE_TL 				 0x08010C
-+#define ALPHA_PLANE_TL_TOP				 26:16
-+#define ALPHA_PLANE_TL_LEFT				 10:0
-+
-+#define ALPHA_PLANE_BR 				 0x080110
-+#define ALPHA_PLANE_BR_BOTTOM				 26:16
-+#define ALPHA_PLANE_BR_RIGHT				 10:0
-+
-+#define ALPHA_CHROMA_KEY				 0x080114
-+#define ALPHA_CHROMA_KEY_MASK				 31:16
-+#define ALPHA_CHROMA_KEY_VALUE 			 15:0
-+
-+#define ALPHA_COLOR_LOOKUP_01				 0x080118
-+#define ALPHA_COLOR_LOOKUP_01_1_RED			 31:27
-+#define ALPHA_COLOR_LOOKUP_01_1_GREEN			 26:21
-+#define ALPHA_COLOR_LOOKUP_01_1_BLUE			 20:16
-+#define ALPHA_COLOR_LOOKUP_01_0_RED			 15:11
-+#define ALPHA_COLOR_LOOKUP_01_0_GREEN			 10:5
-+#define ALPHA_COLOR_LOOKUP_01_0_BLUE			 4:0
-+
-+#define ALPHA_COLOR_LOOKUP_23				 0x08011C
-+#define ALPHA_COLOR_LOOKUP_23_3_RED			 31:27
-+#define ALPHA_COLOR_LOOKUP_23_3_GREEN			 26:21
-+#define ALPHA_COLOR_LOOKUP_23_3_BLUE			 20:16
-+#define ALPHA_COLOR_LOOKUP_23_2_RED			 15:11
-+#define ALPHA_COLOR_LOOKUP_23_2_GREEN			 10:5
-+#define ALPHA_COLOR_LOOKUP_23_2_BLUE			 4:0
-+
-+#define ALPHA_COLOR_LOOKUP_45				 0x080120
-+#define ALPHA_COLOR_LOOKUP_45_5_RED			 31:27
-+#define ALPHA_COLOR_LOOKUP_45_5_GREEN			 26:21
-+#define ALPHA_COLOR_LOOKUP_45_5_BLUE			 20:16
-+#define ALPHA_COLOR_LOOKUP_45_4_RED			 15:11
-+#define ALPHA_COLOR_LOOKUP_45_4_GREEN			 10:5
-+#define ALPHA_COLOR_LOOKUP_45_4_BLUE			 4:0
-+
-+#define ALPHA_COLOR_LOOKUP_67				 0x080124
-+#define ALPHA_COLOR_LOOKUP_67_7_RED			 31:27
-+#define ALPHA_COLOR_LOOKUP_67_7_GREEN			 26:21
-+#define ALPHA_COLOR_LOOKUP_67_7_BLUE			 20:16
-+#define ALPHA_COLOR_LOOKUP_67_6_RED			 15:11
-+#define ALPHA_COLOR_LOOKUP_67_6_GREEN			 10:5
-+#define ALPHA_COLOR_LOOKUP_67_6_BLUE			 4:0
-+
-+#define ALPHA_COLOR_LOOKUP_89				 0x080128
-+#define ALPHA_COLOR_LOOKUP_89_9_RED			 31:27
-+#define ALPHA_COLOR_LOOKUP_89_9_GREEN			 26:21
-+#define ALPHA_COLOR_LOOKUP_89_9_BLUE			 20:16
-+#define ALPHA_COLOR_LOOKUP_89_8_RED			 15:11
-+#define ALPHA_COLOR_LOOKUP_89_8_GREEN			 10:5
-+#define ALPHA_COLOR_LOOKUP_89_8_BLUE			 4:0
-+
-+#define ALPHA_COLOR_LOOKUP_AB				 0x08012C
-+#define ALPHA_COLOR_LOOKUP_AB_B_RED			 31:27
-+#define ALPHA_COLOR_LOOKUP_AB_B_GREEN			 26:21
-+#define ALPHA_COLOR_LOOKUP_AB_B_BLUE			 20:16
-+#define ALPHA_COLOR_LOOKUP_AB_A_RED			 15:11
-+#define ALPHA_COLOR_LOOKUP_AB_A_GREEN			 10:5
-+#define ALPHA_COLOR_LOOKUP_AB_A_BLUE			 4:0
-+
-+#define ALPHA_COLOR_LOOKUP_CD				 0x080130
-+#define ALPHA_COLOR_LOOKUP_CD_D_RED			 31:27
-+#define ALPHA_COLOR_LOOKUP_CD_D_GREEN			 26:21
-+#define ALPHA_COLOR_LOOKUP_CD_D_BLUE			 20:16
-+#define ALPHA_COLOR_LOOKUP_CD_C_RED			 15:11
-+#define ALPHA_COLOR_LOOKUP_CD_C_GREEN			 10:5
-+#define ALPHA_COLOR_LOOKUP_CD_C_BLUE			 4:0
-+
-+#define ALPHA_COLOR_LOOKUP_EF				 0x080134
-+#define ALPHA_COLOR_LOOKUP_EF_F_RED			 31:27
-+#define ALPHA_COLOR_LOOKUP_EF_F_GREEN			 26:21
-+#define ALPHA_COLOR_LOOKUP_EF_F_BLUE			 20:16
-+#define ALPHA_COLOR_LOOKUP_EF_E_RED			 15:11
-+#define ALPHA_COLOR_LOOKUP_EF_E_GREEN			 10:5
-+#define ALPHA_COLOR_LOOKUP_EF_E_BLUE			 4:0
-+
-+/* CRT Graphics Control */
-+
-+#define CRT_DISPLAY_CTRL				 0x080200
-+#define CRT_DISPLAY_CTRL_FIFO				 17:16
-+#define CRT_DISPLAY_CTRL_FIFO_1			 0
-+#define CRT_DISPLAY_CTRL_FIFO_3			 1
-+#define CRT_DISPLAY_CTRL_FIFO_7			 2
-+#define CRT_DISPLAY_CTRL_FIFO_11			 3
-+#define CRT_DISPLAY_CTRL_TV_PHASE			 15:15
-+#define CRT_DISPLAY_CTRL_TV_PHASE_ACTIVE_HIGH		 0
-+#define CRT_DISPLAY_CTRL_TV_PHASE_ACTIVE_LOW		 1
-+#define CRT_DISPLAY_CTRL_CLOCK_PHASE			 14:14
-+#define CRT_DISPLAY_CTRL_CLOCK_PHASE_ACTIVE_HIGH	 0
-+#define CRT_DISPLAY_CTRL_CLOCK_PHASE_ACTIVE_LOW	 1
-+#define CRT_DISPLAY_CTRL_VSYNC_PHASE			 13:13
-+#define CRT_DISPLAY_CTRL_VSYNC_PHASE_ACTIVE_HIGH	 0
-+#define CRT_DISPLAY_CTRL_VSYNC_PHASE_ACTIVE_LOW	 1
-+#define CRT_DISPLAY_CTRL_HSYNC_PHASE			 12:12
-+#define CRT_DISPLAY_CTRL_HSYNC_PHASE_ACTIVE_HIGH	 0
-+#define CRT_DISPLAY_CTRL_HSYNC_PHASE_ACTIVE_LOW	 1
-+#define CRT_DISPLAY_CTRL_BLANK 			 10:10
-+#define CRT_DISPLAY_CTRL_BLANK_OFF			 0
-+#define CRT_DISPLAY_CTRL_BLANK_ON			 1
-+#define CRT_DISPLAY_CTRL_SELECT			 9:9
-+#define CRT_DISPLAY_CTRL_SELECT_PANEL			 0
-+#define CRT_DISPLAY_CTRL_SELECT_CRT			 1
-+#define CRT_DISPLAY_CTRL_TIMING			 8:8
-+#define CRT_DISPLAY_CTRL_TIMING_DISABLE		 0
-+#define CRT_DISPLAY_CTRL_TIMING_ENABLE 		 1
-+#define CRT_DISPLAY_CTRL_PIXEL 			 7:4
-+#define CRT_DISPLAY_CTRL_GAMMA 			 3:3
-+#define CRT_DISPLAY_CTRL_GAMMA_DISABLE 		 0
-+#define CRT_DISPLAY_CTRL_GAMMA_ENABLE			 1
-+#define CRT_DISPLAY_CTRL_PLANE 			 2:2
-+#define CRT_DISPLAY_CTRL_PLANE_DISABLE 		 0
-+#define CRT_DISPLAY_CTRL_PLANE_ENABLE			 1
-+#define CRT_DISPLAY_CTRL_FORMAT			 1:0
-+#define CRT_DISPLAY_CTRL_FORMAT_8			 0
-+#define CRT_DISPLAY_CTRL_FORMAT_16			 1
-+#define CRT_DISPLAY_CTRL_FORMAT_32			 2
-+
-+#define CRT_FB_ADDRESS 				 0x080204
-+#define CRT_FB_ADDRESS_STATUS				 31:31
-+#define CRT_FB_ADDRESS_STATUS_CURRENT			 0
-+#define CRT_FB_ADDRESS_STATUS_PENDING			 1
-+#define CRT_FB_ADDRESS_EXT				 27:27
-+#define CRT_FB_ADDRESS_EXT_LOCAL			 0
-+#define CRT_FB_ADDRESS_EXT_EXTERNAL			 1
-+#define CRT_FB_ADDRESS_CS				 26:26
-+#define CRT_FB_ADDRESS_CS_0				 0
-+#define CRT_FB_ADDRESS_CS_1				 1
-+#define CRT_FB_ADDRESS_ADDRESS 			 25:0
-+
-+#define CRT_FB_WIDTH					 0x080208
-+#define CRT_FB_WIDTH_WIDTH				 29:16
-+#define CRT_FB_WIDTH_OFFSET				 13:0
-+
-+#define CRT_HORIZONTAL_TOTAL				 0x08020C
-+#define CRT_HORIZONTAL_TOTAL_TOTAL			 27:16
-+#define CRT_HORIZONTAL_TOTAL_DISPLAY_END		 11:0
-+
-+#define CRT_HORIZONTAL_SYNC				 0x080210
-+#define CRT_HORIZONTAL_SYNC_WIDTH			 23:16
-+#define CRT_HORIZONTAL_SYNC_START			 11:0
-+
-+#define CRT_VERTICAL_TOTAL				 0x080214
-+#define CRT_VERTICAL_TOTAL_TOTAL			 26:16
-+#define CRT_VERTICAL_TOTAL_DISPLAY_END 		 10:0
-+
-+#define CRT_VERTICAL_SYNC				 0x080218
-+#define CRT_VERTICAL_SYNC_HEIGHT			 21:16
-+#define CRT_VERTICAL_SYNC_START			 10:0
-+
-+#define CRT_SIGNATURE_ANALYZER 			 0x08021C
-+#define CRT_SIGNATURE_ANALYZER_STATUS			 31:16
-+#define CRT_SIGNATURE_ANALYZER_ENABLE			 3:3
-+#define CRT_SIGNATURE_ANALYZER_ENABLE_DISABLE		 0
-+#define CRT_SIGNATURE_ANALYZER_ENABLE_ENABLE		 1
-+#define CRT_SIGNATURE_ANALYZER_RESET			 2:2
-+#define CRT_SIGNATURE_ANALYZER_RESET_NORMAL		 0
-+#define CRT_SIGNATURE_ANALYZER_RESET_RESET		 1
-+#define CRT_SIGNATURE_ANALYZER_SOURCE			 1:0
-+#define CRT_SIGNATURE_ANALYZER_SOURCE_RED		 0
-+#define CRT_SIGNATURE_ANALYZER_SOURCE_GREEN		 1
-+#define CRT_SIGNATURE_ANALYZER_SOURCE_BLUE		 2
-+
-+#define CRT_CURRENT_LINE				 0x080220
-+#define CRT_CURRENT_LINE_LINE				 10:0
-+
-+#define CRT_MONITOR_DETECT				 0x080224
-+#define CRT_MONITOR_DETECT_ENABLE			 24:24
-+#define CRT_MONITOR_DETECT_ENABLE_DISABLE		 0
-+#define CRT_MONITOR_DETECT_ENABLE_ENABLE		 1
-+#define CRT_MONITOR_DETECT_RED 			 23:16
-+#define CRT_MONITOR_DETECT_GREEN			 15:8
-+#define CRT_MONITOR_DETECT_BLUE			 7:0
-+
-+/* CRT Cursor Control */
-+
-+#define CRT_HWC_ADDRESS				 0x080230
-+#define CRT_HWC_ADDRESS_ENABLE 			 31:31
-+#define CRT_HWC_ADDRESS_ENABLE_DISABLE 		 0
-+#define CRT_HWC_ADDRESS_ENABLE_ENABLE			 1
-+#define CRT_HWC_ADDRESS_EXT				 27:27
-+#define CRT_HWC_ADDRESS_EXT_LOCAL			 0
-+#define CRT_HWC_ADDRESS_EXT_EXTERNAL			 1
-+#define CRT_HWC_ADDRESS_CS				 26:26
-+#define CRT_HWC_ADDRESS_CS_0				 0
-+#define CRT_HWC_ADDRESS_CS_1				 1
-+#define CRT_HWC_ADDRESS_ADDRESS			 25:0
-+
-+#define CRT_HWC_LOCATION				 0x080234
-+#define CRT_HWC_LOCATION_TOP				 27:27
-+#define CRT_HWC_LOCATION_TOP_INSIDE			 0
-+#define CRT_HWC_LOCATION_TOP_OUTSIDE			 1
-+#define CRT_HWC_LOCATION_Y				 26:16
-+#define CRT_HWC_LOCATION_LEFT				 11:11
-+#define CRT_HWC_LOCATION_LEFT_INSIDE			 0
-+#define CRT_HWC_LOCATION_LEFT_OUTSIDE			 1
-+#define CRT_HWC_LOCATION_X				 10:0
-+
-+#define CRT_HWC_COLOR_12				 0x080238
-+#define CRT_HWC_COLOR_12_2_RGB565			 31:16
-+#define CRT_HWC_COLOR_12_1_RGB565			 15:0
-+
-+#define CRT_HWC_COLOR_3				 0x08023C
-+#define CRT_HWC_COLOR_3_RGB565 			 15:0
-+
-+/* Old Definitions +++ */
-+#define CRT_HWC_COLOR_01				 0x080238
-+#define CRT_HWC_COLOR_01_1_RED 			 31:27
-+#define CRT_HWC_COLOR_01_1_GREEN			 26:21
-+#define CRT_HWC_COLOR_01_1_BLUE			 20:16
-+#define CRT_HWC_COLOR_01_0_RED 			 15:11
-+#define CRT_HWC_COLOR_01_0_GREEN			 10:5
-+#define CRT_HWC_COLOR_01_0_BLUE			 4:0
-+
-+#define CRT_HWC_COLOR_2				 0x08023C
-+#define CRT_HWC_COLOR_2_RED				 15:11
-+#define CRT_HWC_COLOR_2_GREEN				 10:5
-+#define CRT_HWC_COLOR_2_BLUE				 4:0
-+/* Old Definitions --- */
-+
-+/* Palette RAM */
-+
-+#define PANEL_PALETTE_RAM				 0x080400
-+#define VIDEO_PALETTE_RAM				 0x080800
-+#define CRT_PALETTE_RAM				 0x080C00
-+
-+/* Power constants to use with setDPMS function. */
-+typedef enum _DPMS_t {
-+	DPMS_ON,
-+	DPMS_STANDBY,
-+	DPMS_SUSPEND,
-+	DPMS_OFF
-+} DPMS_t;
-+
-+/* ////////////////////////////////////////////////////////////////////////////// */
-+/* // */
-+/* D I S P L A Y   C O N T R O L L E
-R                                 // */
-+/* // */
-+/* ////////////////////////////////////////////////////////////////////////////// */
-+
-+/* Display type constants to use with setMode function and others. */
-+typedef enum _display_t {
-+	PANEL = 0,
-+	CRT = 1,
-+} display_t;
-+
-+/* Type of LCD display */
-+typedef enum _lcd_display_t {
-+	LCD_TFT = 0,
-+	LCD_STN_8 = 2,
-+	LCD_STN_12 = 3
-+} lcd_display_t;
-+
-+/* Polarity constants. */
-+typedef enum _polarity_t {
-+	POSITIVE,
-+	NEGATIVE,
-+} polarity_t;
-+
-+/* Format of mode table record. */
-+typedef struct _mode_table_t {
-+	/* Horizontal timing. */
-+	int horizontal_total;
-+	int horizontal_display_end;
-+	int horizontal_sync_start;
-+	int horizontal_sync_width;
-+	polarity_t horizontal_sync_polarity;
-+
-+	/* Vertical timing. */
-+	int vertical_total;
-+	int vertical_display_end;
-+	int vertical_sync_start;
-+	int vertical_sync_height;
-+	polarity_t vertical_sync_polarity;
-+
-+	/* Refresh timing. */
-+	long pixel_clock;
-+	long horizontal_frequency;
-+	long vertical_frequency;
-+/*
-+    /* Programe PLL3 */
-+	int M;
-+	int N;
-+	int bit15;
-+	int bit31;
-+*/
-+} mode_table_t, *pmode_table_t;
-+
-+/* Clock value structure. */
-+typedef struct clock_select_t {
-+	long mclk;
-+	long test_clock;
-+	int divider;
-+	int shift;
-+
-+	long multipleM;
-+	int dividerN;
-+	short divby2;
-+} clock_select_t, *pclock_select_t;
-+
-+/* Registers necessary to set mode. */
-+typedef struct _reg_table_t {
-+	unsigned long clock;
-+	unsigned long control;
-+	unsigned long fb_width;
-+	unsigned long horizontal_total;
-+	unsigned long horizontal_sync;
-+	unsigned long vertical_total;
-+	unsigned long vertical_sync;
-+	unsigned long width;
-+	unsigned long height;
-+	display_t display;
-+} reg_table_t, *preg_table_t;
-+
-+/* Panel On/Off constants to use with panelPowerSequence. */
-+typedef enum _panel_state_t {
-+	PANEL_OFF,
-+	PANEL_ON,
-+} panel_state_t;
-+
-+/* Structure used to initialize Panel hardware module */
-+typedef struct {
-+	unsigned long mask;	/* Holds flags indicating which register bitfields
-to init */
-+	unsigned long dp;	/* TFT dithering pattern */
-+	unsigned long tft;	/* TFT panel interface */
-+	unsigned long de;	/* Enable/disable TFT dithering */
-+	unsigned long lcd;	/* LCD type */
-+	unsigned long fifo_level;	/* FIFO request level */
-+	unsigned long cp;	/* Clock phase select */
-+	unsigned long format;	/* Panel graphics plane format */
-+} init_panel, *pinit_panel;
-+
-+/* Structure used to initialize Panel cursor hardware module */
-+typedef struct {
-+	unsigned long mask;	/* Holds flags indicating which register bitfields
-to init */
-+} init_panel_hwc, *pinit_panel_hwc;
-+
-+/* Structure used to initialize Alpha hardware module */
-+typedef struct {
-+	unsigned long mask;	/* Holds flags indicating which register bitfields
-to init */
-+	unsigned long fifo_level;	/* FIFO request level */
-+	unsigned long format;	/* Alpha plane format */
-+} init_alpha, *pinit_alpha;
-+
-+/* Structure used to initialize CRT hardware module */
-+typedef struct {
-+	unsigned long mask;	/* Holds flags indicating which register bitfields
-to init */
-+	unsigned long fifo_level;	/* FIFO request level */
-+	unsigned long tvp;	/* TV clock phase select */
-+	unsigned long cp;	/* CRT clock phase select */
-+	unsigned long blank;	/* CRT data blanking */
-+	unsigned long format;	/* CRT graphics plane format */
-+} init_crt, *pinit_crt;
-+
-+/* Structure used to initialize CRT cursor hardware module */
-+typedef struct {
-+	unsigned long mask;	/* Holds flags indicating which register bitfields
-to init */
-+} init_crt_hwc, *pinit_crt_hwc;
-+
-+/* Init flags and values used in init_panel, init_alpha, and init_crt
-structures */
-+#define DISP_FIFO_LEVEL		    0x00000001	/* FIFO request level */
-+#define DISP_FIFO_LEVEL_1		    0x00000000
-+#define DISP_FIFO_LEVEL_3		    0x00010000
-+#define DISP_FIFO_LEVEL_7		    0x00020000
-+#define DISP_FIFO_LEVEL_11		    0x00030000
-+
-+/* Init flags and values used in init_panel structure */
-+#define DISP_PANEL_DP			    0x00000100	/* TFT dithering pattern */
-+#define DISP_PANEL_DP_4GRAY		    0x00000000
-+#define DISP_PANEL_DP_8GRAY		    0x00800000
-+
-+#define DISP_PANEL_TFT 		    0x00000200	/* TFT panel interface */
-+#define DISP_PANEL_TFT_24		    0x00000000
-+#define DISP_PANEL_TFT_9		    0x00200000
-+#define DISP_PANEL_TFT_12		    0x00400000
-+
-+#define DISP_PANEL_DE			    0x00000400	/* Enable/disable TFT dithering
-*/
-+#define DISP_PANEL_DE_DISABLE		    0x00000000
-+#define DISP_PANEL_DE_ENABLE		    0x00100000
-+
-+#define DISP_PANEL_LCD 		    0x00000800	/* LCD type */
-+#define DISP_PANEL_LCD_TFT		    0x00000000
-+#define DISP_PANEL_LCD_STN8		    0x00080000
-+#define DISP_PANEL_LCD_STN12		    0x000C0000
-+
-+#define DISP_PANEL_CP			    0x00001000	/* Clock phase select */
-+#define DISP_PANEL_CP_HIGH		    0x00000000
-+#define DISP_PANEL_CP_LOW		    0x00004000
-+
-+#define DISP_PANEL_FORMAT		    0x00002000	/* Panel graphics plane
-format */
-+#define DISP_PANEL_FORMAT_8		    0x00000000
-+#define DISP_PANEL_FORMAT_16		    0x00000001
-+#define DISP_PANEL_FORMAT_32		    0x00000002
-+
-+/* Init flags and values used in init_alpha structure */
-+#define DISP_ALPHA_FORMAT		    0x00000100	/* Alpha plane format */
-+#define DISP_ALPHA_FORMAT_RGB565	    0x00000001
-+#define DISP_ALPHA_FORMAT_ALPHA44	    0x00000002
-+#define DISP_ALPHA_FORMAT_ALPHA4444	    0x00000003
-+
-+/* Init flags and values used in init_crt structure */
-+#define DISP_CRT_TVP			    0x00000100	/* TV clock phase select */
-+#define DISP_CRT_TVP_HIGH		    0x00000000
-+#define DISP_CRT_TVP_LOW		    0x00008000
-+
-+#define DISP_CRT_CP			    0x00000200	/* CRT clock phase select */
-+#define DISP_CRT_CP_HIGH		    0x00000000
-+#define DISP_CRT_CP_LOW		    0x00004000
-+
-+#define DISP_CRT_BLANK 		    0x00000400	/* CRT data blanking */
-+#define DISP_CRT_BLANK_OFF		    0x00000000
-+#define DISP_CRT_BLANK_ON		    0x00000400
-+
-+#define DISP_CRT_FORMAT		    0x00000800	/* CRT graphics plane format */
-+#define DISP_CRT_FORMAT_8		    0x00000000
-+#define DISP_CRT_FORMAT_16		    0x00000001
-+#define DISP_CRT_FORMAT_32		    0x00000002
-+
-+#define DISP_MODE_8_BPP				   0	/* 8 bits per pixel i8RGB */
-+#define DISP_MODE_16_BPP			   1	/* 16 bits per pixel RGB565 */
-+#define DISP_MODE_32_BPP			   2	/* 32 bits per pixel RGB888 */
-+#define DISP_MODE_YUV				   3	/* 16 bits per pixel YUV422 */
-+#define DISP_MODE_ALPHA_8			   4	/* 8 bits per pixel a4i4RGB */
-+#define DISP_MODE_ALPHA_16			   5	/* 16 bits per pixel a4RGB444 */
-+
-+#define DISP_PAN_LEFT				   0	/* Pan left */
-+#define DISP_PAN_RIGHT				   1	/* Pan right */
-+#define DISP_PAN_UP				   2	/* Pan upwards */
-+#define DISP_PAN_DOWN			           3	/* Pan downwards */
-+
-+#define DISP_DPMS_QUERY				   -1	/* Query DPMS value */
-+#define DISP_DPMS_ON				   0	/* DPMS on */
-+#define DISP_DPMS_STANDBY		           1	/* DPMS standby */
-+#define DISP_DPMS_SUSPEND			   2	/* DPMS suspend */
-+#define DISP_DPMS_OFF				   3	/* DPMS off */
-+
-+#define DISP_DELAY_DEFAULT			   0	/* Default delay */
-+
-+#define DISP_HVTOTAL_UNKNOWN		    	   -1	/* Used in panelSetTiming,
-crtSetTiming if */
-+							  /* nHTotal, nVTotal not specified by user */
-+#define DISP_HVTOTAL_SCALEFACTOR	    	   1.25	/* Used in
-panelSetTiming, crtSetTiming if */
-+							  /* nHTotal, nVTotal not specified by user */
-+
-+#define VGX_SIGNAL_PANEL_VSYNC 	   	    100	/* Panel VSYNC */
-+#define VGX_SIGNAL_PANEL_PAN		    101	/* Panel auto panning complete */
-+#define VGX_SIGNAL_CRT_VSYNC		    102	/* CRT VSYNC */
-+
-+#define VSYNCTIMEOUT			    10000
-+
-+#define ALPHA_MODE_PER_PIXEL		    0	/* Use per-pixel alpha values */
-+#define ALPHA_MODE_ALPHA		    1	/* Use alpha value specified in Alpha
-bitfield */
-+#define ALPHA_COLOR_LUT_SIZE		    16	/* Number of colors in alpha/video
-alpha palette */
-+
-+#define HWC_ON_SCREEN			    0	/* Cursor is within screen top/left
-boundary */
-+#define HWC_OFF_SCREEN 		    1	/* Cursor is outside screen top/left
-boundary */
-+#define HWC_NUM_COLORS 		    3	/* Number of cursor colors */
-diff --git a/drivers/video/smi/sm7xxhw.h b/drivers/video/smi/sm7xxhw.h
-new file mode 100644
-index 0000000..8460847
---- /dev/null
-+++ b/drivers/video/smi/sm7xxhw.h
-@@ -0,0 +1,100 @@
-+/*
-+ *  linux/drivers/video/sm7xxhw.h -- Silicon Motion SM7xx frame buffer
-device
-+ *
-+ *	 Copyright (C) 2006 Silicon Motion, Inc.
-+ *	 Ge Wang, gewang@siliconmotion.com
-+ *
-+ *  This file is subject to the terms and conditions of the GNU General
-Public
-+ *  License. See the file COPYING in the main directory of this archive
-for
-+ *  more details.
-+ */
-+
-+#define SM712_VIDEOMEMORYSIZE	  0x00400000	/*Assume SM712 graphics chip
-has 4MB VRAM */
-+#define SM722_VIDEOMEMORYSIZE	  0x00800000	/*Assume SM722 graphics chip
-has 8MB VRAM */
-+
-+#define dac_reg	(0x3c8)
-+#define dac_val	(0x3c9)
-+
-+#define smtc_mmiowb(dat,reg)	writeb(dat, smtc_RegBaseAddress + reg)
-+#define smtc_mmioww(dat,reg)	writew(dat, smtc_RegBaseAddress + reg)
-+#define smtc_mmiowl(dat,reg)	writel(dat, smtc_RegBaseAddress + reg)
-+
-+#define smtc_mmiorb(reg)		readb(smtc_RegBaseAddress + reg)
-+#define smtc_mmiorw(reg)		readw(smtc_RegBaseAddress + reg)
-+#define smtc_mmiorl(reg)		readl(smtc_RegBaseAddress + reg)
-+
-+#define SIZE_SR00_SR04      (0x04 - 0x00 + 1)
-+#define SIZE_SR10_SR24      (0x24 - 0x10 + 1)
-+#define SIZE_SR30_SR75      (0x75 - 0x30 + 1)
-+#define SIZE_SR80_SR93      (0x93 - 0x80 + 1)
-+#define SIZE_SRA0_SRAF      (0xAF - 0xA0 + 1)
-+#define SIZE_GR00_GR08      (0x08 - 0x00 + 1)
-+#define SIZE_AR00_AR14      (0x14 - 0x00 + 1)
-+#define SIZE_CR00_CR18      (0x18 - 0x00 + 1)
-+#define SIZE_CR30_CR4D      (0x4D - 0x30 + 1)
-+#define SIZE_CR90_CRA7      (0xA7 - 0x90 + 1)
-+#define SIZE_VPR	     (0x6C + 1)
-+#define SIZE_DPR			(0x44 + 1)
-+
-+static inline void smtc_crtcw(int reg, int val)
-+{
-+	smtc_mmiowb(reg, 0x3d4);
-+	smtc_mmiowb(val, 0x3d5);
-+}
-+
-+static inline unsigned int smtc_crtcr(int reg)
-+{
-+	smtc_mmiowb(reg, 0x3d4);
-+	return smtc_mmiorb(0x3d5);
-+}
-+
-+static inline void smtc_grphw(int reg, int val)
-+{
-+	smtc_mmiowb(reg, 0x3ce);
-+	smtc_mmiowb(val, 0x3cf);
-+}
-+
-+static inline unsigned int smtc_grphr(int reg)
-+{
-+	smtc_mmiowb(reg, 0x3ce);
-+	return smtc_mmiorb(0x3cf);
-+}
-+
-+static inline void smtc_attrw(int reg, int val)
-+{
-+	smtc_mmiorb(0x3da);
-+	smtc_mmiowb(reg, 0x3c0);
-+	smtc_mmiorb(0x3c1);
-+	smtc_mmiowb(val, 0x3c0);
-+}
-+
-+static inline void smtc_seqw(int reg, int val)
-+{
-+	smtc_mmiowb(reg, 0x3c4);
-+	smtc_mmiowb(val, 0x3c5);
-+}
-+
-+static inline unsigned int smtc_seqr(int reg)
-+{
-+	smtc_mmiowb(reg, 0x3c4);
-+	return smtc_mmiorb(0x3c5);
-+}
-+
-+/* The next structure holds all information relevant for a specific
-video mode. */
-+struct ModeInit {
-+	int mmSizeX;
-+	int mmSizeY;
-+	int bpp;
-+	int hz;
-+	unsigned char Init_MISC;
-+	unsigned char Init_SR00_SR04[SIZE_SR00_SR04];
-+	unsigned char Init_SR10_SR24[SIZE_SR10_SR24];
-+	unsigned char Init_SR30_SR75[SIZE_SR30_SR75];
-+	unsigned char Init_SR80_SR93[SIZE_SR80_SR93];
-+	unsigned char Init_SRA0_SRAF[SIZE_SRA0_SRAF];
-+	unsigned char Init_GR00_GR08[SIZE_GR00_GR08];
-+	unsigned char Init_AR00_AR14[SIZE_AR00_AR14];
-+	unsigned char Init_CR00_CR18[SIZE_CR00_CR18];
-+	unsigned char Init_CR30_CR4D[SIZE_CR30_CR4D];
-+	unsigned char Init_CR90_CRA7[SIZE_CR90_CRA7];
-+};
-diff --git a/drivers/video/smi/smtc2d.c b/drivers/video/smi/smtc2d.c
-new file mode 100644
-index 0000000..b14909a
---- /dev/null
-+++ b/drivers/video/smi/smtc2d.c
-@@ -0,0 +1,1451 @@
-+/*
-+ *  linux/drivers/video/smtc2d.c -- Silicon Motion SM501 and SM7xx 2D
-drawing engine functions.
-+ *
-+ *	 Copyright (C) 2006 Silicon Motion Technology Corp.
-+ *	 Boyod boyod.yang@siliconmotion.com.cn
-+ *
-+ *  This file is subject to the terms and conditions of the GNU General
-Public
-+ *  License. See the file COPYING in the main directory of this archive
-for
-+ *  more details.
-+*
-+*
-+* Version 0.10.26192.21.01
-+    - Add PowerPC support
-+	- Add 2D support for Lynx
-+    - Verified on 2.6.19.2			     Boyod.yang
-<boyod.yang@siliconmotion.com.cn>
-+
-+*/
-+
-+unsigned char smtc_de_busy = 0;
-+void SMTC_write2Dreg(unsigned long nOffset, unsigned long nData)
-+{
-+	writel(nData, smtc_2DBaseAddress + nOffset);
-+}
-+
-+unsigned long SMTC_read2Dreg(unsigned long nOffset)
-+{
-+	return readl(smtc_2DBaseAddress + nOffset);
-+}
-+
-+void SMTC_write2Ddataport(unsigned long nOffset, unsigned long nData)
-+{
-+	writel(nData, smtc_2Ddataport + nOffset);
-+}
-+
-+/**********************************************************************
-+ *
-+ * deInit
-+ *
-+ * Purpose
-+ *    Drawing engine initialization.
-+ *
-+
-**********************************************************************/
-+void deInit(unsigned int nModeWidth, unsigned int nModeHeight, unsigned
-int bpp)
-+{
-+
-+	/* Get current power configuration. */
-+	unsigned char clock;
-+	clock = smtc_seqr(0x21);
-+	/* Enable 2D Drawing Engine */
-+	smtc_seqw(0x21, clock & 0xF8);
-+
-+	SMTC_write2Dreg(DE_CLIP_TL,
-+			FIELD_VALUE(0, DE_CLIP_TL, TOP, 0) |
-+			FIELD_SET(0, DE_CLIP_TL, STATUS, DISABLE) |
-+			FIELD_SET(0, DE_CLIP_TL, INHIBIT, OUTSIDE) |
-+			FIELD_VALUE(0, DE_CLIP_TL, LEFT, 0));
-+
-+	if (bpp >= 24) {
-+		SMTC_write2Dreg(DE_PITCH,
-+				FIELD_VALUE(0, DE_PITCH, DESTINATION,
-+					    nModeWidth * 3) | FIELD_VALUE(0,
-+									  DE_PITCH,
-+									  SOURCE,
-+									  nModeWidth
-+									  * 3));
-+	} else {
-+		SMTC_write2Dreg(DE_PITCH,
-+				FIELD_VALUE(0, DE_PITCH, DESTINATION,
-+					    nModeWidth) | FIELD_VALUE(0,
-+								      DE_PITCH,
-+								      SOURCE,
-+								      nModeWidth));
-+	}
-+
-+	SMTC_write2Dreg(DE_WINDOW_WIDTH,
-+			FIELD_VALUE(0, DE_WINDOW_WIDTH, DESTINATION,
-+				    nModeWidth) | FIELD_VALUE(0,
-+							      DE_WINDOW_WIDTH,
-+							      SOURCE,
-+							      nModeWidth));
-+
-+	switch (bpp) {
-+	case 8:
-+		SMTC_write2Dreg(DE_STRETCH_FORMAT,
-+				FIELD_SET(0, DE_STRETCH_FORMAT, PATTERN_XY,
-+					  NORMAL) | FIELD_VALUE(0,
-+								DE_STRETCH_FORMAT,
-+								PATTERN_Y,
-+								0) |
-+				FIELD_VALUE(0, DE_STRETCH_FORMAT, PATTERN_X,
-+					    0) | FIELD_SET(0, DE_STRETCH_FORMAT,
-+							   PIXEL_FORMAT,
-+							   8) | FIELD_SET(0,
-+									  DE_STRETCH_FORMAT,
-+									  ADDRESSING,
-+									  XY) |
-+				FIELD_VALUE(0, DE_STRETCH_FORMAT, SOURCE_HEIGHT,
-+					    3));
-+		break;
-+	case 24:
-+		SMTC_write2Dreg(DE_STRETCH_FORMAT,
-+				FIELD_SET(0, DE_STRETCH_FORMAT, PATTERN_XY,
-+					  NORMAL) | FIELD_VALUE(0,
-+								DE_STRETCH_FORMAT,
-+								PATTERN_Y,
-+								0) |
-+				FIELD_VALUE(0, DE_STRETCH_FORMAT, PATTERN_X,
-+					    0) | FIELD_SET(0, DE_STRETCH_FORMAT,
-+							   PIXEL_FORMAT,
-+							   24) | FIELD_SET(0,
-+									   DE_STRETCH_FORMAT,
-+									   ADDRESSING,
-+									   XY) |
-+				FIELD_VALUE(0, DE_STRETCH_FORMAT, SOURCE_HEIGHT,
-+					    3));
-+		break;
-+	case 16:
-+	default:
-+		SMTC_write2Dreg(DE_STRETCH_FORMAT,
-+				FIELD_SET(0, DE_STRETCH_FORMAT, PATTERN_XY,
-+					  NORMAL) | FIELD_VALUE(0,
-+								DE_STRETCH_FORMAT,
-+								PATTERN_Y,
-+								0) |
-+				FIELD_VALUE(0, DE_STRETCH_FORMAT, PATTERN_X,
-+					    0) | FIELD_SET(0, DE_STRETCH_FORMAT,
-+							   PIXEL_FORMAT,
-+							   16) | FIELD_SET(0,
-+									   DE_STRETCH_FORMAT,
-+									   ADDRESSING,
-+									   XY) |
-+				FIELD_VALUE(0, DE_STRETCH_FORMAT, SOURCE_HEIGHT,
-+					    3));
-+		break;
-+	}
-+
-+	SMTC_write2Dreg(DE_MASKS,
-+			FIELD_VALUE(0, DE_MASKS, BYTE_MASK, 0xFFFF) |
-+			FIELD_VALUE(0, DE_MASKS, BIT_MASK, 0xFFFF));
-+	SMTC_write2Dreg(DE_COLOR_COMPARE_MASK,
-+			FIELD_VALUE(0, DE_COLOR_COMPARE_MASK, MASKS, 0xFFFFFF));
-+	SMTC_write2Dreg(DE_COLOR_COMPARE,
-+			FIELD_VALUE(0, DE_COLOR_COMPARE, COLOR, 0xFFFFFF));
-+}
-+
-+/**********************************************************************
-+ *
-+ * deSetClipRectangle
-+ *
-+ * Purpose
-+ *    Set drawing engine clip rectangle.
-+ *
-+ * Remarks
-+ *	  Caller need to pass in valid rectangle parameter in device
-coordinate.
-+
-**********************************************************************/
-+void deSetClipRectangle(int left, int top, int right, int bottom)
-+{
-+	/* Top left of clipping rectangle cannot be negative */
-+	if (top < 0) {
-+		top = 0;
-+	}
-+
-+	if (left < 0) {
-+		left = 0;
-+	}
-+
-+	SMTC_write2Dreg(DE_CLIP_TL,
-+			FIELD_VALUE(0, DE_CLIP_TL, TOP, top) |
-+			FIELD_SET(0, DE_CLIP_TL, STATUS, ENABLE) |
-+			FIELD_SET(0, DE_CLIP_TL, INHIBIT, OUTSIDE) |
-+			FIELD_VALUE(0, DE_CLIP_TL, LEFT, left));
-+	SMTC_write2Dreg(DE_CLIP_BR,
-+			FIELD_VALUE(0, DE_CLIP_BR, BOTTOM, bottom) |
-+			FIELD_VALUE(0, DE_CLIP_BR, RIGHT, right));
-+}
-+
-+void deVerticalLine(unsigned long dst_base,
-+		    unsigned long dst_pitch,
-+		    unsigned long nX,
-+		    unsigned long nY,
-+		    unsigned long dst_height, unsigned long nColor)
-+{
-+	deWaitForNotBusy();
-+
-+	SMTC_write2Dreg(DE_WINDOW_DESTINATION_BASE,
-+			FIELD_VALUE(0, DE_WINDOW_DESTINATION_BASE, ADDRESS,
-+				    dst_base));
-+
-+	SMTC_write2Dreg(DE_PITCH,
-+			FIELD_VALUE(0, DE_PITCH, DESTINATION, dst_pitch) |
-+			FIELD_VALUE(0, DE_PITCH, SOURCE, dst_pitch));
-+
-+	SMTC_write2Dreg(DE_WINDOW_WIDTH,
-+			FIELD_VALUE(0, DE_WINDOW_WIDTH, DESTINATION,
-+				    dst_pitch) | FIELD_VALUE(0, DE_WINDOW_WIDTH,
-+							     SOURCE,
-+							     dst_pitch));
-+
-+	SMTC_write2Dreg(DE_FOREGROUND,
-+			FIELD_VALUE(0, DE_FOREGROUND, COLOR, nColor));
-+
-+	SMTC_write2Dreg(DE_DESTINATION,
-+			FIELD_SET(0, DE_DESTINATION, WRAP, DISABLE) |
-+			FIELD_VALUE(0, DE_DESTINATION, X, nX) |
-+			FIELD_VALUE(0, DE_DESTINATION, Y, nY));
-+
-+	SMTC_write2Dreg(DE_DIMENSION,
-+			FIELD_VALUE(0, DE_DIMENSION, X, 1) |
-+			FIELD_VALUE(0, DE_DIMENSION, Y_ET, dst_height));
-+
-+	SMTC_write2Dreg(DE_CONTROL,
-+			FIELD_SET(0, DE_CONTROL, STATUS, START) |
-+			FIELD_SET(0, DE_CONTROL, DIRECTION, LEFT_TO_RIGHT) |
-+			FIELD_SET(0, DE_CONTROL, MAJOR, Y) |
-+			FIELD_SET(0, DE_CONTROL, STEP_X, NEGATIVE) |
-+			FIELD_SET(0, DE_CONTROL, STEP_Y, POSITIVE) |
-+			FIELD_SET(0, DE_CONTROL, LAST_PIXEL, OFF) |
-+			FIELD_SET(0, DE_CONTROL, COMMAND, SHORT_STROKE) |
-+			FIELD_SET(0, DE_CONTROL, ROP_SELECT, ROP2) |
-+			FIELD_VALUE(0, DE_CONTROL, ROP, 0x0C));
-+
-+	smtc_de_busy = 1;
-+}
-+
-+void deHorizontalLine(unsigned long dst_base,
-+		      unsigned long dst_pitch,
-+		      unsigned long nX,
-+		      unsigned long nY,
-+		      unsigned long dst_width, unsigned long nColor)
-+{
-+	deWaitForNotBusy();
-+
-+	SMTC_write2Dreg(DE_WINDOW_DESTINATION_BASE,
-+			FIELD_VALUE(0, DE_WINDOW_DESTINATION_BASE, ADDRESS,
-+				    dst_base));
-+
-+	SMTC_write2Dreg(DE_PITCH,
-+			FIELD_VALUE(0, DE_PITCH, DESTINATION, dst_pitch) |
-+			FIELD_VALUE(0, DE_PITCH, SOURCE, dst_pitch));
-+
-+	SMTC_write2Dreg(DE_WINDOW_WIDTH,
-+			FIELD_VALUE(0, DE_WINDOW_WIDTH, DESTINATION,
-+				    dst_pitch) | FIELD_VALUE(0, DE_WINDOW_WIDTH,
-+							     SOURCE,
-+							     dst_pitch));
-+	SMTC_write2Dreg(DE_FOREGROUND,
-+			FIELD_VALUE(0, DE_FOREGROUND, COLOR, nColor));
-+	SMTC_write2Dreg(DE_DESTINATION,
-+			FIELD_SET(0, DE_DESTINATION, WRAP,
-+				  DISABLE) | FIELD_VALUE(0, DE_DESTINATION, X,
-+							 nX) | FIELD_VALUE(0,
-+									   DE_DESTINATION,
-+									   Y,
-+									   nY));
-+	SMTC_write2Dreg(DE_DIMENSION,
-+			FIELD_VALUE(0, DE_DIMENSION, X,
-+				    dst_width) | FIELD_VALUE(0, DE_DIMENSION,
-+							     Y_ET, 1));
-+	SMTC_write2Dreg(DE_CONTROL,
-+			FIELD_SET(0, DE_CONTROL, STATUS, START) | FIELD_SET(0,
-+									    DE_CONTROL,
-+									    DIRECTION,
-+									    RIGHT_TO_LEFT)
-+			| FIELD_SET(0, DE_CONTROL, MAJOR, X) | FIELD_SET(0,
-+									 DE_CONTROL,
-+									 STEP_X,
-+									 POSITIVE)
-+			| FIELD_SET(0, DE_CONTROL, STEP_Y,
-+				    NEGATIVE) | FIELD_SET(0, DE_CONTROL,
-+							  LAST_PIXEL,
-+							  OFF) | FIELD_SET(0,
-+									   DE_CONTROL,
-+									   COMMAND,
-+									   SHORT_STROKE)
-+			| FIELD_SET(0, DE_CONTROL, ROP_SELECT,
-+				    ROP2) | FIELD_VALUE(0, DE_CONTROL, ROP,
-+							0x0C));
-+
-+	smtc_de_busy = 1;
-+}
-+
-+void deLine(unsigned long dst_base,
-+	    unsigned long dst_pitch,
-+	    unsigned long nX1,
-+	    unsigned long nY1,
-+	    unsigned long nX2, unsigned long nY2, unsigned long nColor)
-+{
-+	unsigned long nCommand =
-+	    FIELD_SET(0, DE_CONTROL, STATUS, START) |
-+	    FIELD_SET(0, DE_CONTROL, DIRECTION, LEFT_TO_RIGHT) |
-+	    FIELD_SET(0, DE_CONTROL, MAJOR, X) |
-+	    FIELD_SET(0, DE_CONTROL, STEP_X, POSITIVE) |
-+	    FIELD_SET(0, DE_CONTROL, STEP_Y, POSITIVE) |
-+	    FIELD_SET(0, DE_CONTROL, LAST_PIXEL, OFF) |
-+	    FIELD_SET(0, DE_CONTROL, ROP_SELECT, ROP2) |
-+	    FIELD_VALUE(0, DE_CONTROL, ROP, 0x0C);
-+	unsigned long DeltaX;
-+	unsigned long DeltaY;
-+
-+	/* Calculate delta X */
-+	if (nX1 <= nX2) {
-+		DeltaX = nX2 - nX1;
-+	} else {
-+		DeltaX = nX1 - nX2;
-+		nCommand = FIELD_SET(nCommand, DE_CONTROL, STEP_X, NEGATIVE);
-+	}
-+
-+	/* Calculate delta Y */
-+	if (nY1 <= nY2) {
-+		DeltaY = nY2 - nY1;
-+	} else {
-+		DeltaY = nY1 - nY2;
-+		nCommand = FIELD_SET(nCommand, DE_CONTROL, STEP_Y, NEGATIVE);
-+	}
-+
-+	/* Determine the major axis */
-+	if (DeltaX < DeltaY) {
-+		nCommand = FIELD_SET(nCommand, DE_CONTROL, MAJOR, Y);
-+	}
-+
-+	/* Vertical line? */
-+	if (nX1 == nX2)
-+		deVerticalLine(dst_base, dst_pitch, nX1, nY1, DeltaY, nColor);
-+
-+	/* Horizontal line? */
-+	else if (nY1 == nY2)
-+		deHorizontalLine(dst_base, dst_pitch, nX1, nY1, DeltaX, nColor);
-+
-+	/* Diagonal line? */
-+	else if (DeltaX == DeltaY) {
-+		deWaitForNotBusy();
-+
-+		SMTC_write2Dreg(DE_WINDOW_DESTINATION_BASE,
-+				FIELD_VALUE(0, DE_WINDOW_DESTINATION_BASE,
-+					    ADDRESS, dst_base));
-+
-+		SMTC_write2Dreg(DE_PITCH,
-+				FIELD_VALUE(0, DE_PITCH, DESTINATION,
-+					    dst_pitch) | FIELD_VALUE(0,
-+								     DE_PITCH,
-+								     SOURCE,
-+								     dst_pitch));
-+
-+		SMTC_write2Dreg(DE_WINDOW_WIDTH,
-+				FIELD_VALUE(0, DE_WINDOW_WIDTH, DESTINATION,
-+					    dst_pitch) | FIELD_VALUE(0,
-+								     DE_WINDOW_WIDTH,
-+								     SOURCE,
-+								     dst_pitch));
-+
-+		SMTC_write2Dreg(DE_FOREGROUND,
-+				FIELD_VALUE(0, DE_FOREGROUND, COLOR, nColor));
-+
-+		SMTC_write2Dreg(DE_DESTINATION,
-+				FIELD_SET(0, DE_DESTINATION, WRAP, DISABLE) |
-+				FIELD_VALUE(0, DE_DESTINATION, X, 1) |
-+				FIELD_VALUE(0, DE_DESTINATION, Y, nY1));
-+
-+		SMTC_write2Dreg(DE_DIMENSION,
-+				FIELD_VALUE(0, DE_DIMENSION, X, 1) |
-+				FIELD_VALUE(0, DE_DIMENSION, Y_ET, DeltaX));
-+
-+		SMTC_write2Dreg(DE_CONTROL,
-+				FIELD_SET(nCommand, DE_CONTROL, COMMAND,
-+					  SHORT_STROKE));
-+	}
-+
-+	/* Generic line */
-+	else {
-+		unsigned int k1, k2, et, w;
-+		if (DeltaX < DeltaY) {
-+			k1 = 2 * DeltaX;
-+			et = k1 - DeltaY;
-+			k2 = et - DeltaY;
-+			w = DeltaY + 1;
-+		} else {
-+			k1 = 2 * DeltaY;
-+			et = k1 - DeltaX;
-+			k2 = et - DeltaX;
-+			w = DeltaX + 1;
-+		}
-+
-+		deWaitForNotBusy();
-+
-+		SMTC_write2Dreg(DE_WINDOW_DESTINATION_BASE,
-+				FIELD_VALUE(0, DE_WINDOW_DESTINATION_BASE,
-+					    ADDRESS, dst_base));
-+
-+		SMTC_write2Dreg(DE_PITCH,
-+				FIELD_VALUE(0, DE_PITCH, DESTINATION,
-+					    dst_pitch) | FIELD_VALUE(0,
-+								     DE_PITCH,
-+								     SOURCE,
-+								     dst_pitch));
-+
-+		SMTC_write2Dreg(DE_WINDOW_WIDTH,
-+				FIELD_VALUE(0, DE_WINDOW_WIDTH, DESTINATION,
-+					    dst_pitch) | FIELD_VALUE(0,
-+								     DE_WINDOW_WIDTH,
-+								     SOURCE,
-+								     dst_pitch));
-+
-+		SMTC_write2Dreg(DE_FOREGROUND,
-+				FIELD_VALUE(0, DE_FOREGROUND, COLOR, nColor));
-+
-+		SMTC_write2Dreg(DE_SOURCE,
-+				FIELD_SET(0, DE_SOURCE, WRAP, DISABLE) |
-+				FIELD_VALUE(0, DE_SOURCE, X_K1, k1) |
-+				FIELD_VALUE(0, DE_SOURCE, Y_K2, k2));
-+
-+		SMTC_write2Dreg(DE_DESTINATION,
-+				FIELD_SET(0, DE_DESTINATION, WRAP, DISABLE) |
-+				FIELD_VALUE(0, DE_DESTINATION, X, nX1) |
-+				FIELD_VALUE(0, DE_DESTINATION, Y, nY1));
-+
-+		SMTC_write2Dreg(DE_DIMENSION,
-+				FIELD_VALUE(0, DE_DIMENSION, X, w) |
-+				FIELD_VALUE(0, DE_DIMENSION, Y_ET, et));
-+
-+		SMTC_write2Dreg(DE_CONTROL,
-+				FIELD_SET(nCommand, DE_CONTROL, COMMAND,
-+					  LINE_DRAW));
-+	}
-+
-+	smtc_de_busy = 1;
-+}
-+
-+void deFillRect(unsigned long dst_base,
-+		unsigned long dst_pitch,
-+		unsigned long dst_X,
-+		unsigned long dst_Y,
-+		unsigned long dst_width,
-+		unsigned long dst_height, unsigned long nColor)
-+{
-+	deWaitForNotBusy();
-+
-+	SMTC_write2Dreg(DE_WINDOW_DESTINATION_BASE,
-+			FIELD_VALUE(0, DE_WINDOW_DESTINATION_BASE, ADDRESS,
-+				    dst_base));
-+
-+	if (dst_pitch) {
-+		SMTC_write2Dreg(DE_PITCH,
-+				FIELD_VALUE(0, DE_PITCH, DESTINATION,
-+					    dst_pitch) | FIELD_VALUE(0,
-+								     DE_PITCH,
-+								     SOURCE,
-+								     dst_pitch));
-+
-+		SMTC_write2Dreg(DE_WINDOW_WIDTH,
-+				FIELD_VALUE(0, DE_WINDOW_WIDTH, DESTINATION,
-+					    dst_pitch) | FIELD_VALUE(0,
-+								     DE_WINDOW_WIDTH,
-+								     SOURCE,
-+								     dst_pitch));
-+	}
-+
-+	SMTC_write2Dreg(DE_FOREGROUND,
-+			FIELD_VALUE(0, DE_FOREGROUND, COLOR, nColor));
-+
-+	SMTC_write2Dreg(DE_DESTINATION,
-+			FIELD_SET(0, DE_DESTINATION, WRAP, DISABLE) |
-+			FIELD_VALUE(0, DE_DESTINATION, X, dst_X) |
-+			FIELD_VALUE(0, DE_DESTINATION, Y, dst_Y));
-+
-+	SMTC_write2Dreg(DE_DIMENSION,
-+			FIELD_VALUE(0, DE_DIMENSION, X, dst_width) |
-+			FIELD_VALUE(0, DE_DIMENSION, Y_ET, dst_height));
-+
-+	SMTC_write2Dreg(DE_CONTROL,
-+			FIELD_SET(0, DE_CONTROL, STATUS, START) |
-+			FIELD_SET(0, DE_CONTROL, DIRECTION, LEFT_TO_RIGHT) |
-+			FIELD_SET(0, DE_CONTROL, LAST_PIXEL, OFF) |
-+			FIELD_SET(0, DE_CONTROL, COMMAND, RECTANGLE_FILL) |
-+			FIELD_SET(0, DE_CONTROL, ROP_SELECT, ROP2) |
-+			FIELD_VALUE(0, DE_CONTROL, ROP, 0x0C));
-+
-+	smtc_de_busy = 1;
-+}
-+
-+/**********************************************************************
-+ *
-+ * deRotatePattern
-+ *
-+ * Purpose
-+ *    Rotate the given pattern if necessary
-+ *
-+ * Parameters
-+ *    [in]
-+ *	   pPattern  - Pointer to DE_SURFACE structure containing
-+ *		       pattern attributes
-+ *	   patternX  - X position (0-7) of pattern origin
-+ *	   patternY  - Y position (0-7) of pattern origin
-+ *
-+ *    [out]
-+ *	   pattern_dstaddr - Pointer to pre-allocated buffer containing
-rotated pattern
-+ *
-+ *
-+
-**********************************************************************/
-+void deRotatePattern(unsigned char *pattern_dstaddr,
-+		     unsigned long pattern_src_addr,
-+		     unsigned long pattern_BPP,
-+		     unsigned long pattern_stride, int patternX, int patternY)
-+{
-+	unsigned int i;
-+	unsigned long pattern_read_addr;
-+	unsigned long pattern[PATTERN_WIDTH * PATTERN_HEIGHT];
-+	unsigned int x, y;
-+	unsigned char *pjPatByte;
-+
-+	if (pattern_dstaddr != NULL) {
-+		deWaitForNotBusy();
-+
-+		/* Load pattern from local video memory into pattern array */
-+		pattern_read_addr = pattern_src_addr;
-+
-+		for (i = 0; i < (pattern_BPP * 2); i++) {
-+/* pattern[i] = memRead32(pattern_read_addr);       removed by boyod */
-+			pattern_read_addr += 4;
-+		}
-+
-+		if (patternX || patternY) {
-+			/* Rotate pattern */
-+			pjPatByte = (unsigned char *)pattern;
-+
-+			switch (pattern_BPP) {
-+			case 8:
-+				{
-+					for (y = 0; y < 8; y++) {
-+						unsigned char *pjBuffer =
-+						    pattern_dstaddr +
-+						    ((patternY + y) & 7) * 8;
-+						for (x = 0; x < 8; x++) {
-+							pjBuffer[(patternX +
-+								  x) & 7] =
-+							    pjPatByte[x];
-+						}
-+						pjPatByte += pattern_stride;
-+					}
-+					break;
-+				}
-+
-+			case 16:
-+				{
-+					for (y = 0; y < 8; y++) {
-+						unsigned short *pjBuffer =
-+						    (unsigned short *)
-+						    pattern_dstaddr +
-+						    ((patternY + y) & 7) * 8;
-+						for (x = 0; x < 8; x++) {
-+							pjBuffer[(patternX +
-+								  x) & 7] =
-+							    ((unsigned short *)
-+							     pjPatByte)[x];
-+						}
-+						pjPatByte += pattern_stride;
-+					}
-+					break;
-+				}
-+
-+			case 32:
-+				{
-+					for (y = 0; y < 8; y++) {
-+						unsigned long *pjBuffer =
-+						    (unsigned long *)
-+						    pattern_dstaddr +
-+						    ((patternY + y) & 7) * 8;
-+						for (x = 0; x < 8; x++) {
-+							pjBuffer[(patternX +
-+								  x) & 7] =
-+							    ((unsigned long *)
-+							     pjPatByte)[x];
-+						}
-+						pjPatByte += pattern_stride;
-+					}
-+					break;
-+				}
-+			}
-+		} else {
-+			/* Don't rotate, just copy pattern into pattern_dstaddr */
-+			for (i = 0; i < (pattern_BPP * 2); i++) {
-+				((unsigned long *)pattern_dstaddr)[i] =
-+				    pattern[i];
-+			}
-+		}
-+
-+	}
-+}
-+
-+/**********************************************************************
-+ *
-+ * deMonoPatternFill
-+ *
-+ * Purpose
-+ *    Copy the specified monochrome pattern into the destination
-surface
-+ *
-+ * Remarks
-+ *	  Pattern size must be 8x8 pixel.
-+ *	  Pattern color depth must be same as destination bitmap or
-monochrome.
-+**********************************************************************/
-+void deMonoPatternFill(unsigned long dst_base,
-+		       unsigned long dst_pitch,
-+		       unsigned long dst_BPP,
-+		       unsigned long dstX,
-+		       unsigned long dstY,
-+		       unsigned long dst_width,
-+		       unsigned long dst_height,
-+		       unsigned long pattern_FGcolor,
-+		       unsigned long pattern_BGcolor,
-+		       unsigned long pattern_low, unsigned long pattern_high)
-+{
-+	deWaitForNotBusy();
-+
-+	SMTC_write2Dreg(DE_WINDOW_DESTINATION_BASE,
-+			FIELD_VALUE(0, DE_WINDOW_DESTINATION_BASE, ADDRESS,
-+				    dst_base));
-+
-+	SMTC_write2Dreg(DE_PITCH,
-+			FIELD_VALUE(0, DE_PITCH, DESTINATION,
-+				    dst_pitch) | FIELD_VALUE(0, DE_PITCH,
-+							     SOURCE,
-+							     dst_pitch));
-+
-+	SMTC_write2Dreg(DE_WINDOW_WIDTH,
-+			FIELD_VALUE(0, DE_WINDOW_WIDTH, DESTINATION,
-+				    dst_pitch) | FIELD_VALUE(0, DE_WINDOW_WIDTH,
-+							     SOURCE,
-+							     dst_pitch));
-+
-+	SMTC_write2Dreg(DE_FOREGROUND,
-+			FIELD_VALUE(0, DE_FOREGROUND, COLOR, pattern_FGcolor));
-+
-+	SMTC_write2Dreg(DE_BACKGROUND,
-+			FIELD_VALUE(0, DE_BACKGROUND, COLOR, pattern_BGcolor));
-+
-+	SMTC_write2Dreg(DE_MONO_PATTERN_LOW,
-+			FIELD_VALUE(0, DE_MONO_PATTERN_LOW, PATTERN,
-+				    pattern_low));
-+
-+	SMTC_write2Dreg(DE_MONO_PATTERN_HIGH,
-+			FIELD_VALUE(0, DE_MONO_PATTERN_HIGH, PATTERN,
-+				    pattern_high));
-+
-+	SMTC_write2Dreg(DE_DESTINATION,
-+			FIELD_SET(0, DE_DESTINATION, WRAP, DISABLE) |
-+			FIELD_VALUE(0, DE_DESTINATION, X, dstX) |
-+			FIELD_VALUE(0, DE_DESTINATION, Y, dstY));
-+
-+	SMTC_write2Dreg(DE_DIMENSION,
-+			FIELD_VALUE(0, DE_DIMENSION, X, dst_width) |
-+			FIELD_VALUE(0, DE_DIMENSION, Y_ET, dst_height));
-+
-+	SMTC_write2Dreg(DE_CONTROL,
-+			FIELD_VALUE(0, DE_CONTROL, ROP, 0xF0) |
-+			FIELD_SET(0, DE_CONTROL, COMMAND, BITBLT) |
-+			FIELD_SET(0, DE_CONTROL, PATTERN, MONO) |
-+			FIELD_SET(0, DE_CONTROL, STATUS, START));
-+
-+	smtc_de_busy = 1;
-+}				/* deMonoPatternFill() */
-+
-+/**********************************************************************
-+ *
-+ * deColorPatternFill
-+ *
-+ * Purpose
-+ *    Copy the specified pattern into the destination surface
-+ *
-+ * Parameters
-+ *    [in]
-+ *	   pDestSurface   - Pointer to DE_SURFACE structure containing
-+ *			    destination surface attributes
-+ *	   nX		  - X coordinate of destination surface to be filled
-+ *	   nY		  - Y coordinate of destination surface to be filled
-+ *	   dst_width	     - Width (in pixels) of area to be filled
-+ *	   dst_height	     - Height (in lines) of area to be filled
-+ *	   pPattern	  - Pointer to DE_SURFACE structure containing
-+ *			    pattern attributes
-+ *	   pPatternOrigin - Pointer to Point structure containing pattern
-origin
-+ *	   pMonoInfo	  - Pointer to mono_pattern_info structure
-+ *	   pClipRect	  - Pointer to Rect structure describing clipping
-+ *			    rectangle; NULL if no clipping required
-+ *
-+ *    [out]
-+ *	   None
-+ *
-+ * Remarks
-+ *	  Pattern size must be 8x8 pixel.
-+ *	  Pattern color depth must be same as destination bitmap.
-+**********************************************************************/
-+void deColorPatternFill(unsigned long dst_base,
-+			unsigned long dst_pitch,
-+			unsigned long dst_BPP,
-+			unsigned long dst_X,
-+			unsigned long dst_Y,
-+			unsigned long dst_width,
-+			unsigned long dst_height,
-+			unsigned long pattern_src_addr,
-+			unsigned long pattern_stride,
-+			int PatternOriginX, int PatternOriginY)
-+{
-+	unsigned int i;
-+	unsigned long de_data_port_write_addr;
-+	unsigned char ajPattern[PATTERN_WIDTH * PATTERN_HEIGHT * 4];
-+	unsigned long de_ctrl = 0;
-+
-+	deWaitForNotBusy();
-+
-+	de_ctrl = FIELD_SET(0, DE_CONTROL, PATTERN, COLOR);
-+
-+	SMTC_write2Dreg(DE_CONTROL, de_ctrl);
-+
-+	/* Rotate pattern if necessary */
-+	deRotatePattern(ajPattern, pattern_src_addr, dst_BPP, pattern_stride,
-+			PatternOriginX, PatternOriginY);
-+
-+	/* Load pattern to 2D Engine Data Port */
-+	de_data_port_write_addr = 0;
-+
-+	for (i = 0; i < (dst_BPP * 2); i++) {
-+		SMTC_write2Ddataport(de_data_port_write_addr,
-+				     ((unsigned long *)ajPattern)[i]);
-+		de_data_port_write_addr += 4;
-+	}
-+
-+	deWaitForNotBusy();
-+
-+	SMTC_write2Dreg(DE_WINDOW_DESTINATION_BASE,
-+			FIELD_VALUE(0, DE_WINDOW_DESTINATION_BASE, ADDRESS,
-+				    dst_base));
-+
-+	SMTC_write2Dreg(DE_PITCH,
-+			FIELD_VALUE(0, DE_PITCH, DESTINATION, dst_pitch) |
-+			FIELD_VALUE(0, DE_PITCH, SOURCE, dst_pitch));
-+
-+	SMTC_write2Dreg(DE_WINDOW_WIDTH,
-+			FIELD_VALUE(0, DE_WINDOW_WIDTH, DESTINATION,
-+				    dst_pitch) | FIELD_VALUE(0, DE_WINDOW_WIDTH,
-+							     SOURCE,
-+							     dst_pitch));
-+
-+	SMTC_write2Dreg(DE_DESTINATION,
-+			FIELD_SET(0, DE_DESTINATION, WRAP, DISABLE) |
-+			FIELD_VALUE(0, DE_DESTINATION, X, dst_X) |
-+			FIELD_VALUE(0, DE_DESTINATION, Y, dst_Y));
-+
-+	SMTC_write2Dreg(DE_DIMENSION,
-+			FIELD_VALUE(0, DE_DIMENSION, X, dst_width) |
-+			FIELD_VALUE(0, DE_DIMENSION, Y_ET, dst_height));
-+
-+	SMTC_write2Dreg(DE_CONTROL,
-+			FIELD_VALUE(0, DE_CONTROL, ROP, 0xF0) |
-+			FIELD_SET(0, DE_CONTROL, COMMAND, BITBLT) |
-+			FIELD_SET(0, DE_CONTROL, PATTERN, COLOR) |
-+			FIELD_SET(0, DE_CONTROL, STATUS, START));
-+
-+	smtc_de_busy = 1;
-+}				/* deColorPatternFill() */
-+
-+/**********************************************************************
-+ *
-+ * deCopy
-+ *
-+ * Purpose
-+ *    Copy a rectangular area of the source surface to a destination
-surface
-+ *
-+ * Remarks
-+ *	  Source bitmap must have the same color depth (BPP) as the
-destination bitmap.
-+ *
-+**********************************************************************/
-+void deCopy(unsigned long dst_base,
-+	    unsigned long dst_pitch,
-+	    unsigned long dst_BPP,
-+	    unsigned long dst_X,
-+	    unsigned long dst_Y,
-+	    unsigned long dst_width,
-+	    unsigned long dst_height,
-+	    unsigned long src_base,
-+	    unsigned long src_pitch,
-+	    unsigned long src_X,
-+	    unsigned long src_Y, pTransparent pTransp, unsigned char nROP2)
-+{
-+	unsigned long nDirection = 0;
-+	unsigned long nTransparent = 0;
-+	unsigned long opSign = 1;	/* Direction of ROP2 operation: 1 = Left to
-Right, (-1) = Right to Left */
-+	unsigned long xWidth = 192 / (dst_BPP / 8);	/* xWidth is in pixels */
-+	unsigned long de_ctrl = 0;
-+
-+	deWaitForNotBusy();
-+
-+	SMTC_write2Dreg(DE_WINDOW_DESTINATION_BASE,
-+			FIELD_VALUE(0, DE_WINDOW_DESTINATION_BASE, ADDRESS,
-+				    dst_base));
-+
-+	SMTC_write2Dreg(DE_WINDOW_SOURCE_BASE,
-+			FIELD_VALUE(0, DE_WINDOW_SOURCE_BASE, ADDRESS,
-+				    src_base));
-+
-+	if (dst_pitch && src_pitch) {
-+		SMTC_write2Dreg(DE_PITCH,
-+				FIELD_VALUE(0, DE_PITCH, DESTINATION,
-+					    dst_pitch) | FIELD_VALUE(0,
-+								     DE_PITCH,
-+								     SOURCE,
-+								     src_pitch));
-+
-+		SMTC_write2Dreg(DE_WINDOW_WIDTH,
-+				FIELD_VALUE(0, DE_WINDOW_WIDTH, DESTINATION,
-+					    dst_pitch) | FIELD_VALUE(0,
-+								     DE_WINDOW_WIDTH,
-+								     SOURCE,
-+								     src_pitch));
-+	}
-+
-+	/* Set transparent bits if necessary */
-+	if (pTransp != NULL) {
-+		nTransparent =
-+		    pTransp->match | pTransp->select | pTransp->control;
-+
-+		/* Set color compare register */
-+		SMTC_write2Dreg(DE_COLOR_COMPARE,
-+				FIELD_VALUE(0, DE_COLOR_COMPARE, COLOR,
-+					    pTransp->color));
-+	}
-+
-+	/* Determine direction of operation */
-+	if (src_Y < dst_Y) {
-+		/* +----------+
-+		   |S       |
-+		   |         +----------+
-+		   |         |      |   |
-+		   |         |      |   |
-+		   +---|------+   |
-+		   |               D|
-+		   +----------+ */
-+
-+		nDirection = BOTTOM_TO_TOP;
-+	} else if (src_Y > dst_Y) {
-+		/* +----------+
-+		   |D       |
-+		   |         +----------+
-+		   |         |      |   |
-+		   |         |      |   |
-+		   +---|------+   |
-+		   |               S|
-+		   +----------+ */
-+
-+		nDirection = TOP_TO_BOTTOM;
-+	} else {
-+		/* src_Y == dst_Y */
-+
-+		if (src_X <= dst_X) {
-+			/* +------+---+------+
-+			   |S  |   |     D|
-+			   |   |   |      |
-+			   |   |   |      |
-+			   |   |   |      |
-+			   +------+---+------+ */
-+
-+			nDirection = RIGHT_TO_LEFT;
-+		} else {
-+			/* src_X > dst_X */
-+
-+			/* +------+---+------+
-+			   |D     |        |     S|
-+			   |           |   |      |
-+			   |           |   |      |
-+			   |           |   |      |
-+			   +------+---+------+ */
-+
-+			nDirection = LEFT_TO_RIGHT;
-+		}
-+	}
-+
-+	if ((nDirection == BOTTOM_TO_TOP) || (nDirection == RIGHT_TO_LEFT)) {
-+		src_X += dst_width - 1;
-+		src_Y += dst_height - 1;
-+		dst_X += dst_width - 1;
-+		dst_Y += dst_height - 1;
-+		opSign = (-1);
-+	}
-+
-+	if (dst_BPP >= 24) {
-+		src_X *= 3;
-+		src_Y *= 3;
-+		dst_X *= 3;
-+		dst_Y *= 3;
-+		dst_width *= 3;
-+		if ((nDirection == BOTTOM_TO_TOP)
-+		    || (nDirection == RIGHT_TO_LEFT)) {
-+			src_X += 2;
-+			dst_X += 2;
-+		}
-+	}
-+
-+	/* Workaround for 192 byte hw bug */
-+	if ((nROP2 != 0x0C) && ((dst_width * (dst_BPP / 8)) >= 192)) {
-+		/* Perform the ROP2 operation in chunks of (xWidth * dst_height) */
-+		while (1) {
-+			deWaitForNotBusy();
-+			SMTC_write2Dreg(DE_SOURCE,
-+					FIELD_SET(0, DE_SOURCE, WRAP, DISABLE) |
-+					FIELD_VALUE(0, DE_SOURCE, X_K1, src_X) |
-+					FIELD_VALUE(0, DE_SOURCE, Y_K2, src_Y));
-+			SMTC_write2Dreg(DE_DESTINATION,
-+					FIELD_SET(0, DE_DESTINATION, WRAP,
-+						  DISABLE) | FIELD_VALUE(0,
-+									 DE_DESTINATION,
-+									 X,
-+									 dst_X)
-+					| FIELD_VALUE(0, DE_DESTINATION, Y,
-+						      dst_Y));
-+			SMTC_write2Dreg(DE_DIMENSION,
-+					FIELD_VALUE(0, DE_DIMENSION, X,
-+						    xWidth) | FIELD_VALUE(0,
-+									  DE_DIMENSION,
-+									  Y_ET,
-+									  dst_height));
-+			de_ctrl =
-+			    FIELD_VALUE(0, DE_CONTROL, ROP,
-+					nROP2) | nTransparent | FIELD_SET(0,
-+									  DE_CONTROL,
-+									  ROP_SELECT,
-+									  ROP2)
-+			    | FIELD_SET(0, DE_CONTROL, COMMAND,
-+					BITBLT) | ((nDirection ==
-+						    1) ? FIELD_SET(0,
-+								   DE_CONTROL,
-+								   DIRECTION,
-+								   RIGHT_TO_LEFT)
-+						   : FIELD_SET(0, DE_CONTROL,
-+							       DIRECTION,
-+							       LEFT_TO_RIGHT)) |
-+			    FIELD_SET(0, DE_CONTROL, STATUS, START);
-+			SMTC_write2Dreg(DE_CONTROL, de_ctrl);
-+
-+			src_X += (opSign * xWidth);
-+			dst_X += (opSign * xWidth);
-+			dst_width -= xWidth;
-+
-+			if (dst_width <= 0) {
-+				/* ROP2 operation is complete */
-+				break;
-+			}
-+
-+			if (xWidth > dst_width) {
-+				xWidth = dst_width;
-+			}
-+		}
-+	} else {
-+		deWaitForNotBusy();
-+		SMTC_write2Dreg(DE_SOURCE,
-+				FIELD_SET(0, DE_SOURCE, WRAP, DISABLE) |
-+				FIELD_VALUE(0, DE_SOURCE, X_K1, src_X) |
-+				FIELD_VALUE(0, DE_SOURCE, Y_K2, src_Y));
-+		SMTC_write2Dreg(DE_DESTINATION,
-+				FIELD_SET(0, DE_DESTINATION, WRAP, DISABLE) |
-+				FIELD_VALUE(0, DE_DESTINATION, X, dst_X) |
-+				FIELD_VALUE(0, DE_DESTINATION, Y, dst_Y));
-+		SMTC_write2Dreg(DE_DIMENSION,
-+				FIELD_VALUE(0, DE_DIMENSION, X, dst_width) |
-+				FIELD_VALUE(0, DE_DIMENSION, Y_ET, dst_height));
-+		de_ctrl = FIELD_VALUE(0, DE_CONTROL, ROP, nROP2) |
-+		    nTransparent |
-+		    FIELD_SET(0, DE_CONTROL, ROP_SELECT, ROP2) |
-+		    FIELD_SET(0, DE_CONTROL, COMMAND, BITBLT) |
-+		    ((nDirection == 1) ? FIELD_SET(0, DE_CONTROL, DIRECTION,
-+						   RIGHT_TO_LEFT)
-+		     : FIELD_SET(0, DE_CONTROL, DIRECTION,
-+				 LEFT_TO_RIGHT)) | FIELD_SET(0, DE_CONTROL,
-+							     STATUS, START);
-+		SMTC_write2Dreg(DE_CONTROL, de_ctrl);
-+	}
-+
-+	smtc_de_busy = 1;
-+}
-+
-+/**********************************************************************
-+ *
-+ * deSrcCopyHost
-+ *
-+ * Purpose
-+ *    Copy a rectangular area of the source surface in system memory to
-+ *    a destination surface in video memory
-+ *
-+ * Remarks
-+ *	  Source bitmap must have the same color depth (BPP) as the
-destination bitmap.
-+ *
-+**********************************************************************/
-+void deSrcCopyHost(unsigned long dst_base,
-+		   unsigned long dst_pitch,
-+		   unsigned long dst_BPP,
-+		   unsigned long dst_X,
-+		   unsigned long dst_Y,
-+		   unsigned long dst_width,
-+		   unsigned long dst_height,
-+		   unsigned long src_base,
-+		   unsigned long src_stride,
-+		   unsigned long src_X,
-+		   unsigned long src_Y,
-+		   pTransparent pTransp, unsigned char nROP2)
-+{
-+	int nBytes_per_scan;
-+	int nBytes8_per_scan;
-+	int nBytes_remain;
-+	int nLong;
-+	unsigned long nTransparent = 0;
-+	unsigned long de_ctrl = 0;
-+	unsigned long i;
-+	int j;
-+	unsigned long ulSrc;
-+	unsigned long de_data_port_write_addr;
-+	unsigned char abyRemain[8] = { 0, 0, 0, 0, 0, 0, 0, 0 };
-+	unsigned char *pSrcBuffer;
-+
-+	pSrcBuffer =
-+	    (unsigned char *)(src_base + src_Y * src_stride +
-+			      src_X * (dst_BPP / 8));
-+
-+	nBytes_per_scan = dst_width * (dst_BPP / 8);
-+	nBytes8_per_scan = (nBytes_per_scan + 7) & ~7;
-+	nBytes_remain = nBytes_per_scan & 7;
-+	nLong = nBytes_per_scan & ~7;
-+
-+	/* Program 2D Drawing Engine */
-+	deWaitForNotBusy();
-+
-+	/* Set transparent bits if necessary */
-+	if (pTransp != NULL) {
-+		nTransparent =
-+		    pTransp->match | pTransp->select | pTransp->control;
-+
-+		/* Set color compare register */
-+		SMTC_write2Dreg(DE_COLOR_COMPARE,
-+				FIELD_VALUE(0, DE_COLOR_COMPARE, COLOR,
-+					    pTransp->color));
-+	}
-+
-+	SMTC_write2Dreg(DE_WINDOW_DESTINATION_BASE,
-+			FIELD_VALUE(0, DE_WINDOW_DESTINATION_BASE, ADDRESS,
-+				    dst_base));
-+
-+	SMTC_write2Dreg(DE_WINDOW_SOURCE_BASE,
-+			FIELD_VALUE(0, DE_WINDOW_SOURCE_BASE, ADDRESS, 0));
-+
-+	SMTC_write2Dreg(DE_SOURCE,
-+			FIELD_SET(0, DE_SOURCE, WRAP, DISABLE) |
-+			FIELD_VALUE(0, DE_SOURCE, X_K1, 0) |
-+			FIELD_VALUE(0, DE_SOURCE, Y_K2, src_Y));
-+	SMTC_write2Dreg(DE_DESTINATION,
-+			FIELD_SET(0, DE_DESTINATION, WRAP, DISABLE) |
-+			FIELD_VALUE(0, DE_DESTINATION, X, dst_X) |
-+			FIELD_VALUE(0, DE_DESTINATION, Y, dst_Y));
-+	SMTC_write2Dreg(DE_DIMENSION,
-+			FIELD_VALUE(0, DE_DIMENSION, X, dst_width) |
-+			FIELD_VALUE(0, DE_DIMENSION, Y_ET, dst_height));
-+	SMTC_write2Dreg(DE_PITCH,
-+			FIELD_VALUE(0, DE_PITCH, DESTINATION, dst_width) |
-+			FIELD_VALUE(0, DE_PITCH, SOURCE, dst_width));
-+	SMTC_write2Dreg(DE_WINDOW_WIDTH,
-+			FIELD_VALUE(0, DE_WINDOW_WIDTH, DESTINATION,
-+				    dst_width) | FIELD_VALUE(0, DE_WINDOW_WIDTH,
-+							     SOURCE,
-+							     dst_width));
-+	de_ctrl =
-+	    FIELD_VALUE(0, DE_CONTROL, ROP, nROP2) | nTransparent |
-FIELD_SET(0,
-+									      DE_CONTROL,
-+									      ROP_SELECT,
-+									      ROP2)
-+	    | FIELD_SET(0, DE_CONTROL, COMMAND, HOST_WRITE) | FIELD_SET(0,
-+									DE_CONTROL,
-+									STATUS,
-+									START);
-+	SMTC_write2Dreg(DE_CONTROL, de_ctrl);
-+
-+	/* Write bitmap/image data (line by line) to 2D Engine data port */
-+	de_data_port_write_addr = 0;
-+
-+	for (i = 1; i < dst_height; i++) {
-+		for (j = 0; j < (nBytes8_per_scan / 4); j++) {
-+			memcpy(&ulSrc, (pSrcBuffer + (j * 4)), 4);
-+			SMTC_write2Ddataport(de_data_port_write_addr, ulSrc);
-+		}
-+
-+		pSrcBuffer += src_stride;
-+	}
-+
-+	/* Special handling for last line of bitmap */
-+	if (nLong) {
-+		for (j = 0; j < (nLong / 4); j++) {
-+			memcpy(&ulSrc, (pSrcBuffer + (j * 4)), 4);
-+			SMTC_write2Ddataport(de_data_port_write_addr, ulSrc);
-+		}
-+	}
-+
-+	if (nBytes_remain) {
-+		memcpy(abyRemain, (pSrcBuffer + nLong), nBytes_remain);
-+		SMTC_write2Ddataport(de_data_port_write_addr,
-+				     *(unsigned long *)abyRemain);
-+		SMTC_write2Ddataport(de_data_port_write_addr,
-+				     *(unsigned long *)(abyRemain + 4));
-+	}
-+
-+	smtc_de_busy = 1;
-+}
-+
-+/**********************************************************************
-+ *
-+ * deMonoSrcCopyHost
-+ *
-+ * Purpose
-+ *    Copy a rectangular area of the monochrome source surface in
-+ *    system memory to a destination surface in video memory
-+ *
-+ * Parameters
-+ *    [in]
-+ *	   pSrcSurface	- Pointer to DE_SURFACE structure containing
-+ *			  source surface attributes
-+ *	   pSrcBuffer	- Pointer to source buffer (system memory)
-+ *			  containing monochrome image
-+ *	   src_X	- X coordinate of source surface
-+ *	   src_Y	- Y coordinate of source surface
-+ *	   pDestSurface - Pointer to DE_SURFACE structure containing
-+ *			  destination surface attributes
-+ *	   dst_X       - X coordinate of destination surface
-+ *	   dst_Y       - Y coordinate of destination surface
-+ *	   dst_width	   - Width (in pixels) of the area to be copied
-+ *	   dst_height	   - Height (in lines) of the area to be copied
-+ *	   nFgColor	- Foreground color
-+ *	   nBgColor	- Background color
-+ *	   pClipRect	- Pointer to Rect structure describing clipping
-+ *			  rectangle; NULL if no clipping required
-+ *	   pTransp	- Pointer to Transparent structure containing
-+ *			  transparency settings; NULL if no transparency
-+ *			  required
-+ *
-+ *    [out]
-+ *	   None
-+ *
-+ * Returns
-+ *    DDK_OK			   - function is successful
-+ *    DDK_ERROR_NULL_PSRCSURFACE  - pSrcSurface is NULL
-+ *    DDK_ERROR_NULL_PDESTSURFACE - pDestSurface is NULL
-+ *
-+**********************************************************************/
-+void deMonoSrcCopyHost(unsigned long dst_base,
-+		       unsigned long dst_pitch,
-+		       unsigned long dst_BPP,
-+		       unsigned long dst_X,
-+		       unsigned long dst_Y,
-+		       unsigned long dst_width,
-+		       unsigned long dst_height,
-+		       unsigned long src_base,
-+		       unsigned long src_stride,
-+		       unsigned long src_X,
-+		       unsigned long src_Y,
-+		       unsigned long nFgColor,
-+		       unsigned long nBgColor, pTransparent pTransp)
-+{
-+	int nLeft_bits_off;
-+	int nBytes_per_scan;
-+	int nBytes4_per_scan;
-+	int nBytes_remain;
-+	int nLong;
-+	unsigned long nTransparent = 0;
-+	unsigned long de_ctrl = 0;
-+	unsigned long de_data_port_write_addr;
-+	unsigned long i;
-+	int j;
-+	unsigned long ulSrc;
-+	unsigned char *pSrcBuffer;
-+
-+	pSrcBuffer =
-+	    (unsigned char *)src_base + (src_Y * src_stride) + (src_X / 8);
-+	nLeft_bits_off = (src_X & 0x07);
-+	nBytes_per_scan = (dst_width + nLeft_bits_off + 7) / 8;
-+	nBytes4_per_scan = (nBytes_per_scan + 3) & ~3;
-+	nBytes_remain = nBytes_per_scan & 3;
-+	nLong = nBytes_per_scan & ~3;
-+
-+	deWaitForNotBusy();
-+
-+	/* Set transparent bits if necessary */
-+	if (pTransp != NULL) {
-+		nTransparent =
-+		    pTransp->match | pTransp->select | pTransp->control;
-+
-+		/* Set color compare register */
-+		SMTC_write2Dreg(DE_COLOR_COMPARE,
-+				FIELD_VALUE(0, DE_COLOR_COMPARE, COLOR,
-+					    pTransp->color));
-+	}
-+
-+	/* Program 2D Drawing Engine */
-+
-+	SMTC_write2Dreg(DE_WINDOW_DESTINATION_BASE,
-+			FIELD_VALUE(0, DE_WINDOW_DESTINATION_BASE, ADDRESS,
-+				    dst_base));
-+
-+	SMTC_write2Dreg(DE_WINDOW_SOURCE_BASE,
-+			FIELD_VALUE(0, DE_WINDOW_SOURCE_BASE, ADDRESS, 0));
-+
-+	SMTC_write2Dreg(DE_PITCH,
-+			FIELD_VALUE(0, DE_PITCH, DESTINATION, dst_pitch) |
-+			FIELD_VALUE(0, DE_PITCH, SOURCE, dst_pitch));
-+
-+	SMTC_write2Dreg(DE_WINDOW_WIDTH,
-+			FIELD_VALUE(0, DE_WINDOW_WIDTH, DESTINATION,
-+				    dst_pitch) | FIELD_VALUE(0, DE_WINDOW_WIDTH,
-+							     SOURCE,
-+							     dst_pitch));
-+
-+	SMTC_write2Dreg(DE_SOURCE,
-+			FIELD_SET(0, DE_SOURCE, WRAP, DISABLE) |
-+			FIELD_VALUE(0, DE_SOURCE, X_K1, nLeft_bits_off) |
-+			FIELD_VALUE(0, DE_SOURCE, Y_K2, src_Y));
-+
-+	SMTC_write2Dreg(DE_DESTINATION,
-+			FIELD_SET(0, DE_DESTINATION, WRAP, DISABLE) |
-+			FIELD_VALUE(0, DE_DESTINATION, X, dst_X) |
-+			FIELD_VALUE(0, DE_DESTINATION, Y, dst_Y));
-+
-+	SMTC_write2Dreg(DE_DIMENSION,
-+			FIELD_VALUE(0, DE_DIMENSION, X, dst_width) |
-+			FIELD_VALUE(0, DE_DIMENSION, Y_ET, dst_height));
-+
-+	SMTC_write2Dreg(DE_FOREGROUND,
-+			FIELD_VALUE(0, DE_FOREGROUND, COLOR, nFgColor));
-+
-+	SMTC_write2Dreg(DE_BACKGROUND,
-+			FIELD_VALUE(0, DE_BACKGROUND, COLOR, nBgColor));
-+
-+	de_ctrl = 0x0000000C |
-+	    FIELD_SET(0, DE_CONTROL, ROP_SELECT, ROP2) |
-+	    FIELD_SET(0, DE_CONTROL, COMMAND, HOST_WRITE) |
-+	    FIELD_SET(0, DE_CONTROL, HOST, MONO) |
-+	    nTransparent | FIELD_SET(0, DE_CONTROL, STATUS, START);
-+	SMTC_write2Dreg(DE_CONTROL, de_ctrl);
-+
-+	/* Write bitmap/image data (line by line) to 2D Engine data port */
-+	de_data_port_write_addr = 0;
-+
-+	for (i = 1; i < dst_height; i++) {
-+		for (j = 0; j < (nBytes4_per_scan / 4); j++) {
-+			memcpy(&ulSrc, (pSrcBuffer + (j * 4)), 4);
-+			SMTC_write2Ddataport(de_data_port_write_addr, ulSrc);
-+		}
-+
-+		pSrcBuffer += src_stride;
-+	}
-+
-+	/* Special handling for last line of bitmap */
-+	if (nLong) {
-+		for (j = 0; j < (nLong / 4); j++) {
-+			memcpy(&ulSrc, (pSrcBuffer + (j * 4)), 4);
-+			SMTC_write2Ddataport(de_data_port_write_addr, ulSrc);
-+		}
-+	}
-+
-+	if (nBytes_remain) {
-+		memcpy(&ulSrc, (pSrcBuffer + nLong), nBytes_remain);
-+		SMTC_write2Ddataport(de_data_port_write_addr, ulSrc);
-+	}
-+
-+	smtc_de_busy = 1;
-+}
-+
-+/*
-+ * This function sets the pixel format that will apply to the 2D
-Engine.
-+ */
-+void deSetPixelFormat(unsigned long bpp)
-+{
-+	unsigned long de_format;
-+
-+	de_format = SMTC_read2Dreg(DE_STRETCH_FORMAT);
-+
-+	switch (bpp) {
-+	case 8:
-+		de_format =
-+		    FIELD_SET(de_format, DE_STRETCH_FORMAT, PIXEL_FORMAT, 8);
-+		break;
-+	default:
-+	case 16:
-+		de_format =
-+		    FIELD_SET(de_format, DE_STRETCH_FORMAT, PIXEL_FORMAT, 16);
-+		break;
-+	case 32:
-+		de_format =
-+		    FIELD_SET(de_format, DE_STRETCH_FORMAT, PIXEL_FORMAT, 32);
-+		break;
-+	}
-+
-+	SMTC_write2Dreg(DE_STRETCH_FORMAT, de_format);
-+}
-+
-+/*
-+ * System memory to Video memory monochrome expansion.
-+ * Source is monochrome image in system memory.
-+ * This function expands the monochrome data to color image in video
-memory.
-+ */
-+long deSystemMem2VideoMemMonoBlt(unsigned char *pSrcbuf,	/* pointer to
-start of source buffer in system memory */
-+				 long srcDelta,	/* Pitch value (in bytes) of the source buffer,
-+ive means top down and -ive mean button up */
-+				 unsigned long startBit,	/* Mono data can start at any bit in a
-byte, this value should be 0 to 7 */
-+				 unsigned long dBase,	/* Address of destination: offset in frame
-buffer */
-+				 unsigned long dPitch,	/* Pitch value of destination surface in
-BYTE */
-+				 unsigned long bpp,	/* Color depth of destination surface */
-+				 unsigned long dx, unsigned long dy,	/* Starting coordinate of
-destination surface */
-+				 unsigned long width, unsigned long height,	/* width and height of
-rectange in pixel value */
-+				 unsigned long fColor,	/* Foreground color (corresponding to a 1 in
-the monochrome data */
-+				 unsigned long bColor,	/* Background color (corresponding to a 0 in
-the monochrome data */
-+				 unsigned long rop2) {	/* ROP value */
-+	unsigned long bytePerPixel;
-+	unsigned long ulBytesPerScan;
-+	unsigned long ul4BytesPerScan;
-+	unsigned long ulBytesRemain;
-+	unsigned long de_ctrl = 0;
-+	unsigned char ajRemain[4];
-+	long i, j;
-+
-+	bytePerPixel = bpp / 8;
-+
-+	startBit &= 7;		/* Just make sure the start bit is within legal range
-*/
-+	ulBytesPerScan = (width + startBit + 7) / 8;
-+	ul4BytesPerScan = ulBytesPerScan & ~3;
-+	ulBytesRemain = ulBytesPerScan & 3;
-+
-+	if (smtc_de_busy)
-+		deWaitForNotBusy();
-+
-+	/* 2D Source Base.
-+	   Use 0 for HOST Blt.
-+	 */
-+	SMTC_write2Dreg(DE_WINDOW_SOURCE_BASE, 0);
-+
-+	/* 2D Destination Base.
-+	   It is an address offset (128 bit aligned) from the beginning of
-frame buffer.
-+	 */
-+	SMTC_write2Dreg(DE_WINDOW_DESTINATION_BASE, dBase);
-+
-+	if (dPitch) {
-+		/* Program pitch (distance between the 1st points of two adjacent
-lines).
-+		   Note that input pitch is BYTE value, but the 2D Pitch register
-uses
-+		   pixel values. Need Byte to pixel convertion.
-+		 */
-+		SMTC_write2Dreg(DE_PITCH,
-+				FIELD_VALUE(0, DE_PITCH, DESTINATION,
-+					    dPitch /
-+					    bytePerPixel) | FIELD_VALUE(0,
-+									DE_PITCH,
-+									SOURCE,
-+									dPitch /
-+									bytePerPixel));
-+
-+		/* Screen Window width in Pixels.
-+		   2D engine uses this value to calculate the linear address in frame
-buffer for a given point.
-+		 */
-+		SMTC_write2Dreg(DE_WINDOW_WIDTH,
-+				FIELD_VALUE(0, DE_WINDOW_WIDTH, DESTINATION,
-+					    (dPitch /
-+					     bytePerPixel)) | FIELD_VALUE(0,
-+									  DE_WINDOW_WIDTH,
-+									  SOURCE,
-+									  (dPitch
-+									   /
-+									   bytePerPixel)));
-+	}
-+	/* Note: For 2D Source in Host Write, only X_K1 field is needed, and
-Y_K2 field is not used.
-+	   For mono bitmap, use startBit for X_K1. */
-+	SMTC_write2Dreg(DE_SOURCE,
-+			FIELD_SET(0, DE_SOURCE, WRAP, DISABLE) |
-+			FIELD_VALUE(0, DE_SOURCE, X_K1, startBit) |
-+			FIELD_VALUE(0, DE_SOURCE, Y_K2, 0));
-+
-+	SMTC_write2Dreg(DE_DESTINATION,
-+			FIELD_SET(0, DE_DESTINATION, WRAP, DISABLE) |
-+			FIELD_VALUE(0, DE_DESTINATION, X, dx) |
-+			FIELD_VALUE(0, DE_DESTINATION, Y, dy));
-+
-+	SMTC_write2Dreg(DE_DIMENSION,
-+			FIELD_VALUE(0, DE_DIMENSION, X, width) |
-+			FIELD_VALUE(0, DE_DIMENSION, Y_ET, height));
-+
-+	SMTC_write2Dreg(DE_FOREGROUND, fColor);
-+	SMTC_write2Dreg(DE_BACKGROUND, bColor);
-+
-+	if (bpp)
-+		deSetPixelFormat(bpp);
-+	/* Set the pixel format of the destination */
-+
-+	de_ctrl = FIELD_VALUE(0, DE_CONTROL, ROP, rop2) |
-+	    FIELD_SET(0, DE_CONTROL, ROP_SELECT, ROP2) |
-+	    FIELD_SET(0, DE_CONTROL, COMMAND, HOST_WRITE) |
-+	    FIELD_SET(0, DE_CONTROL, HOST, MONO) |
-+	    FIELD_SET(0, DE_CONTROL, STATUS, START);
-+
-+	SMTC_write2Dreg(DE_CONTROL, de_ctrl | deGetTransparency());
-+
-+	/* Write MONO data (line by line) to 2D Engine data port */
-+	for (i = 0; i < height; i++) {
-+		/* For each line, send the data in chunks of 4 bytes */
-+		for (j = 0; j < (ul4BytesPerScan / 4); j++) {
-+			SMTC_write2Ddataport(0,
-+					     *(unsigned long *)(pSrcbuf +
-+								(j * 4)));
-+		}
-+
-+		if (ulBytesRemain) {
-+			memcpy(ajRemain, pSrcbuf + ul4BytesPerScan,
-+			       ulBytesRemain);
-+			SMTC_write2Ddataport(0, *(unsigned long *)ajRemain);
-+		}
-+
-+		pSrcbuf += srcDelta;
-+	}
-+	smtc_de_busy = 1;
-+
-+	return 0;
-+}
-+
-+/*
-+ * This function gets the transparency status from DE_CONTROL register.
-+ * It returns a double word with the transparent fields properly set,
-+ * while other fields are 0.
-+ */
-+unsigned long deGetTransparency()
-+{
-+	unsigned long de_ctrl;
-+
-+	de_ctrl = SMTC_read2Dreg(DE_CONTROL);
-+
-+	de_ctrl &=
-+	    FIELD_MASK(DE_CONTROL_TRANSPARENCY_MATCH) |
-+	    FIELD_MASK(DE_CONTROL_TRANSPARENCY_SELECT) |
-+	    FIELD_MASK(DE_CONTROL_TRANSPARENCY);
-+
-+	return de_ctrl;
-+}
-+
-+/**********************************************************************
-+ *
-+ * Misc. functions
-+ *
-+
-**********************************************************************/
-+/* Load 8x8 pattern into local video memory */
-+void deLoadPattern(unsigned char *pattern, unsigned long write_addr)
-+{
-+	int i;
-+	for (i = 0; i < (8 * 8 * 2); i += 4) {
-+		/* memWrite32(write_addr, *(unsigned long*)(&pattern[i]));
-removed by boyod */
-+		write_addr += 4;
-+	}
-+}
-diff --git a/drivers/video/smi/smtc2d.h b/drivers/video/smi/smtc2d.h
-new file mode 100644
-index 0000000..c8b3bf4
---- /dev/null
-+++ b/drivers/video/smi/smtc2d.h
-@@ -0,0 +1,541 @@
-+/*
-+ *  linux/drivers/video/smtc2d.h -- Silicon Motion SM501 and SM7xx 2D
-drawing engine functions.
-+ *
-+ *	 Copyright (C) 2006 Silicon Motion Technology Corp.
-+ *	 Ge Wang, gewang@siliconmotion.com
-+ *
-+ *  This file is subject to the terms and conditions of the GNU General
-Public
-+ *  License. See the file COPYING in the main directory of this archive
-for
-+ *  more details.
-+ */
-+
-+#ifndef NULL
-+#define NULL	 0
-+#endif
-+
-+/* Internal macros */
-+
-+#define _F_START(f)		 (0 ? f)
-+#define _F_END(f)		 (1 ? f)
-+#define _F_SIZE(f)		 (1 + _F_END(f) - _F_START(f))
-+#define _F_MASK(f)		 ((((unsigned long)1 << _F_SIZE(f)) - 1) <<
-_F_START(f))
-+#define _F_NORMALIZE(v, f)	 (((v) & _F_MASK(f)) >> _F_START(f))
-+#define _F_DENORMALIZE(v, f)	 (((v) << _F_START(f)) & _F_MASK(f))
-+
-+/* Global macros */
-+
-+#define FIELD_GET(x, reg, field) \
-+( \
-+    _F_NORMALIZE((x), reg ## _ ## field) \
-+)
-+
-+#define FIELD_SET(x, reg, field, value) \
-+( \
-+    (x & ~_F_MASK(reg ## _ ## field)) \
-+    | _F_DENORMALIZE(reg ## _ ## field ## _ ## value, reg ## _ ##
-field) \
-+)
-+
-+#define FIELD_VALUE(x, reg, field, value) \
-+( \
-+    (x & ~_F_MASK(reg ## _ ## field)) \
-+    | _F_DENORMALIZE(value, reg ## _ ## field) \
-+)
-+
-+#define FIELD_CLEAR(reg, field) \
-+( \
-+    ~ _F_MASK(reg ## _ ## field) \
-+)
-+
-+/* Field Macros
-*/
-+
-+#define FIELD_START(field)		 (0 ? field)
-+#define FIELD_END(field)		 (1 ? field)
-+#define FIELD_SIZE(field)		 (1 + FIELD_END(field) - FIELD_START(field))
-+#define FIELD_MASK(field)		 (((1 << (FIELD_SIZE(field)-1)) | ((1 <<
-(FIELD_SIZE(field)-1)) - 1)) << FIELD_START(field))
-+#define FIELD_NORMALIZE(reg, field)	 (((reg) & FIELD_MASK(field)) >>
-FIELD_START(field))
-+#define FIELD_DENORMALIZE(field, value) (((value) <<
-FIELD_START(field)) & FIELD_MASK(field))
-+
-+#define FIELD_INIT(reg, field, value)	 FIELD_DENORMALIZE(reg ## _ ##
-field, \
-+							   reg ## _ ## field ## _ ## value)
-+#define FIELD_INIT_VAL(reg, field, value) \
-+					 (FIELD_DENORMALIZE(reg ## _ ## field, value))
-+#define FIELD_VAL_SET(x, r, f, v)	 x = x & ~FIELD_MASK(r ## _ ## f) \
-+					       | FIELD_DENORMALIZE(r ## _ ## f, r ## _ ## f ## _ ## v)
-+
-+#define RGB(r, g, b) ((unsigned long)(((r) << 16) | ((g) << 8) | (b)))
-+
-+/* Transparent info definition */
-+typedef struct {
-+	unsigned long match;	/* Matching pixel is OPAQUE/TRANSPARENT */
-+	unsigned long select;	/* Transparency controlled by SOURCE/DESTINATION
-*/
-+	unsigned long control;	/* ENABLE/DISABLE transparency */
-+	unsigned long color;	/* Transparent color */
-+} Transparent, *pTransparent;
-+
-+#define PIXEL_DEPTH_1_BP		0	/* 1 bit per pixel */
-+#define PIXEL_DEPTH_8_BPP		1	/* 8 bits per pixel */
-+#define PIXEL_DEPTH_16_BPP		2	/* 16 bits per pixel */
-+#define PIXEL_DEPTH_32_BPP		3	/* 32 bits per pixel */
-+#define PIXEL_DEPTH_YUV422		8	/* 16 bits per pixel YUV422 */
-+#define PIXEL_DEPTH_YUV420		9	/* 16 bits per pixel YUV420 */
-+
-+#define PATTERN_WIDTH		 8
-+#define PATTERN_HEIGHT 	 8
-+
-+#define	TOP_TO_BOTTOM			0
-+#define	BOTTOM_TO_TOP			1
-+#define RIGHT_TO_LEFT			BOTTOM_TO_TOP
-+#define LEFT_TO_RIGHT			TOP_TO_BOTTOM
-+
-+/* Constants used in Transparent structure */
-+#define MATCH_OPAQUE		 0x00000000
-+#define MATCH_TRANSPARENT	 0x00000400
-+#define SOURCE 		 0x00000000
-+#define DESTINATION		 0x00000200
-+
-+/* 2D registers. */
-+
-+#define DE_SOURCE					 0x000000
-+#define DE_SOURCE_WRAP 				 31:31
-+#define DE_SOURCE_WRAP_DISABLE 			 0
-+#define DE_SOURCE_WRAP_ENABLE				 1
-+#define DE_SOURCE_X_K1 				 29:16
-+#define DE_SOURCE_Y_K2 				 15:0
-+
-+#define DE_DESTINATION 				 0x000004
-+#define DE_DESTINATION_WRAP				 31:31
-+#define DE_DESTINATION_WRAP_DISABLE			 0
-+#define DE_DESTINATION_WRAP_ENABLE			 1
-+#define DE_DESTINATION_X				 28:16
-+#define DE_DESTINATION_Y				 15:0
-+
-+#define DE_DIMENSION					 0x000008
-+#define DE_DIMENSION_X 				 28:16
-+#define DE_DIMENSION_Y_ET				 15:0
-+
-+#define DE_CONTROL					 0x00000C
-+#define DE_CONTROL_STATUS				 31:31
-+#define DE_CONTROL_STATUS_STOP 			 0
-+#define DE_CONTROL_STATUS_START			 1
-+#define DE_CONTROL_PATTERN				 30:30
-+#define DE_CONTROL_PATTERN_MONO			 0
-+#define DE_CONTROL_PATTERN_COLOR			 1
-+#define DE_CONTROL_UPDATE_DESTINATION_X		 29:29
-+#define DE_CONTROL_UPDATE_DESTINATION_X_DISABLE	 0
-+#define DE_CONTROL_UPDATE_DESTINATION_X_ENABLE 	 1
-+#define DE_CONTROL_QUICK_START 			 28:28
-+#define DE_CONTROL_QUICK_START_DISABLE 		 0
-+#define DE_CONTROL_QUICK_START_ENABLE			 1
-+#define DE_CONTROL_DIRECTION				 27:27
-+#define DE_CONTROL_DIRECTION_LEFT_TO_RIGHT		 0
-+#define DE_CONTROL_DIRECTION_RIGHT_TO_LEFT		 1
-+#define DE_CONTROL_MAJOR				 26:26
-+#define DE_CONTROL_MAJOR_X				 0
-+#define DE_CONTROL_MAJOR_Y				 1
-+#define DE_CONTROL_STEP_X				 25:25
-+#define DE_CONTROL_STEP_X_POSITIVE			 1
-+#define DE_CONTROL_STEP_X_NEGATIVE			 0
-+#define DE_CONTROL_STEP_Y				 24:24
-+#define DE_CONTROL_STEP_Y_POSITIVE			 1
-+#define DE_CONTROL_STEP_Y_NEGATIVE			 0
-+#define DE_CONTROL_STRETCH				 23:23
-+#define DE_CONTROL_STRETCH_DISABLE			 0
-+#define DE_CONTROL_STRETCH_ENABLE			 1
-+#define DE_CONTROL_HOST				 22:22
-+#define DE_CONTROL_HOST_COLOR				 0
-+#define DE_CONTROL_HOST_MONO				 1
-+#define DE_CONTROL_LAST_PIXEL				 21:21
-+#define DE_CONTROL_LAST_PIXEL_OFF			 0
-+#define DE_CONTROL_LAST_PIXEL_ON			 1
-+#define DE_CONTROL_COMMAND				 20:16
-+#define DE_CONTROL_COMMAND_BITBLT			 0
-+#define DE_CONTROL_COMMAND_RECTANGLE_FILL		 1
-+#define DE_CONTROL_COMMAND_DE_TILE			 2
-+#define DE_CONTROL_COMMAND_TRAPEZOID_FILL		 3
-+#define DE_CONTROL_COMMAND_ALPHA_BLEND 		 4
-+#define DE_CONTROL_COMMAND_RLE_STRIP			 5
-+#define DE_CONTROL_COMMAND_SHORT_STROKE		 6
-+#define DE_CONTROL_COMMAND_LINE_DRAW			 7
-+#define DE_CONTROL_COMMAND_HOST_WRITE			 8
-+#define DE_CONTROL_COMMAND_HOST_READ			 9
-+#define DE_CONTROL_COMMAND_HOST_WRITE_BOTTOM_UP	 10
-+#define DE_CONTROL_COMMAND_ROTATE			 11
-+#define DE_CONTROL_COMMAND_FONT			 12
-+#define DE_CONTROL_COMMAND_TEXTURE_LOAD		 15
-+#define DE_CONTROL_ROP_SELECT				 15:15
-+#define DE_CONTROL_ROP_SELECT_ROP3			 0
-+#define DE_CONTROL_ROP_SELECT_ROP2			 1
-+#define DE_CONTROL_ROP2_SOURCE 			 14:14
-+#define DE_CONTROL_ROP2_SOURCE_BITMAP			 0
-+#define DE_CONTROL_ROP2_SOURCE_PATTERN 		 1
-+#define DE_CONTROL_MONO_DATA				 13:12
-+#define DE_CONTROL_MONO_DATA_NOT_PACKED		 0
-+#define DE_CONTROL_MONO_DATA_8_PACKED			 1
-+#define DE_CONTROL_MONO_DATA_16_PACKED 		 2
-+#define DE_CONTROL_MONO_DATA_32_PACKED 		 3
-+#define DE_CONTROL_REPEAT_ROTATE			 11:11
-+#define DE_CONTROL_REPEAT_ROTATE_DISABLE		 0
-+#define DE_CONTROL_REPEAT_ROTATE_ENABLE		 1
-+#define DE_CONTROL_TRANSPARENCY_MATCH			 10:10
-+#define DE_CONTROL_TRANSPARENCY_MATCH_OPAQUE		 0
-+#define DE_CONTROL_TRANSPARENCY_MATCH_TRANSPARENT	 1
-+#define DE_CONTROL_TRANSPARENCY_SELECT 		 9:9
-+#define DE_CONTROL_TRANSPARENCY_SELECT_SOURCE		 0
-+#define DE_CONTROL_TRANSPARENCY_SELECT_DESTINATION	 1
-+#define DE_CONTROL_TRANSPARENCY			 8:8
-+#define DE_CONTROL_TRANSPARENCY_DISABLE		 0
-+#define DE_CONTROL_TRANSPARENCY_ENABLE 		 1
-+#define DE_CONTROL_ROP 				 7:0
-+
-+/* Pseudo fields. */
-+
-+#define DE_CONTROL_SHORT_STROKE_DIR			 27:24
-+#define DE_CONTROL_SHORT_STROKE_DIR_225		 0
-+#define DE_CONTROL_SHORT_STROKE_DIR_135		 1
-+#define DE_CONTROL_SHORT_STROKE_DIR_315		 2
-+#define DE_CONTROL_SHORT_STROKE_DIR_45 		 3
-+#define DE_CONTROL_SHORT_STROKE_DIR_270		 4
-+#define DE_CONTROL_SHORT_STROKE_DIR_90 		 5
-+#define DE_CONTROL_SHORT_STROKE_DIR_180		 8
-+#define DE_CONTROL_SHORT_STROKE_DIR_0			 10
-+#define DE_CONTROL_ROTATION				 25:24
-+#define DE_CONTROL_ROTATION_0				 0
-+#define DE_CONTROL_ROTATION_270			 1
-+#define DE_CONTROL_ROTATION_90 			 2
-+#define DE_CONTROL_ROTATION_180			 3
-+
-+#define DE_PITCH					 0x000010
-+#define DE_PITCH_DESTINATION				 28:16
-+#define DE_PITCH_SOURCE				 12:0
-+
-+#define DE_FOREGROUND					 0x000014
-+#define DE_FOREGROUND_COLOR				 31:0
-+
-+#define DE_BACKGROUND					 0x000018
-+#define DE_BACKGROUND_COLOR				 31:0
-+
-+#define DE_STRETCH_FORMAT				 0x00001C
-+#define DE_STRETCH_FORMAT_PATTERN_XY			 30:30
-+#define DE_STRETCH_FORMAT_PATTERN_XY_NORMAL		 0
-+#define DE_STRETCH_FORMAT_PATTERN_XY_OVERWRITE 	 1
-+#define DE_STRETCH_FORMAT_PATTERN_Y			 29:27
-+#define DE_STRETCH_FORMAT_PATTERN_X			 25:23
-+#define DE_STRETCH_FORMAT_PIXEL_FORMAT 		 21:20
-+#define DE_STRETCH_FORMAT_PIXEL_FORMAT_8		 0
-+#define DE_STRETCH_FORMAT_PIXEL_FORMAT_16		 1
-+#define DE_STRETCH_FORMAT_PIXEL_FORMAT_24		 3
-+#define DE_STRETCH_FORMAT_PIXEL_FORMAT_32		 2
-+#define DE_STRETCH_FORMAT_ADDRESSING			 19:16
-+#define DE_STRETCH_FORMAT_ADDRESSING_XY		 0
-+#define DE_STRETCH_FORMAT_ADDRESSING_LINEAR		 15
-+#define DE_STRETCH_FORMAT_SOURCE_HEIGHT		 11:0
-+
-+#define DE_COLOR_COMPARE				 0x000020
-+#define DE_COLOR_COMPARE_COLOR 			 23:0
-+
-+#define DE_COLOR_COMPARE_MASK				 0x000024
-+#define DE_COLOR_COMPARE_MASK_MASKS			 23:0
-+
-+#define DE_MASKS					 0x000028
-+#define DE_MASKS_BYTE_MASK				 31:16
-+#define DE_MASKS_BIT_MASK				 15:0
-+
-+#define DE_CLIP_TL					 0x00002C
-+#define DE_CLIP_TL_TOP 				 31:16
-+#define DE_CLIP_TL_STATUS				 13:13
-+#define DE_CLIP_TL_STATUS_DISABLE			 0
-+#define DE_CLIP_TL_STATUS_ENABLE			 1
-+#define DE_CLIP_TL_INHIBIT				 12:12
-+#define DE_CLIP_TL_INHIBIT_OUTSIDE			 0
-+#define DE_CLIP_TL_INHIBIT_INSIDE			 1
-+#define DE_CLIP_TL_LEFT				 11:0
-+
-+#define DE_CLIP_BR					 0x000030
-+#define DE_CLIP_BR_BOTTOM				 31:16
-+#define DE_CLIP_BR_RIGHT				 12:0
-+
-+#define DE_MONO_PATTERN_LOW				 0x000034
-+#define DE_MONO_PATTERN_LOW_PATTERN			 31:0
-+
-+#define DE_MONO_PATTERN_HIGH				 0x000038
-+#define DE_MONO_PATTERN_HIGH_PATTERN			 31:0
-+
-+#define DE_WINDOW_WIDTH				 0x00003C
-+#define DE_WINDOW_WIDTH_DESTINATION			 28:16
-+#define DE_WINDOW_WIDTH_SOURCE 			 12:0
-+
-+#define DE_WINDOW_SOURCE_BASE				 0x000040
-+#define DE_WINDOW_SOURCE_BASE_EXT			 27:27
-+#define DE_WINDOW_SOURCE_BASE_EXT_LOCAL		 0
-+#define DE_WINDOW_SOURCE_BASE_EXT_EXTERNAL		 1
-+#define DE_WINDOW_SOURCE_BASE_CS			 26:26
-+#define DE_WINDOW_SOURCE_BASE_CS_0			 0
-+#define DE_WINDOW_SOURCE_BASE_CS_1			 1
-+#define DE_WINDOW_SOURCE_BASE_ADDRESS			 25:0
-+
-+#define DE_WINDOW_DESTINATION_BASE			 0x000044
-+#define DE_WINDOW_DESTINATION_BASE_EXT 		 27:27
-+#define DE_WINDOW_DESTINATION_BASE_EXT_LOCAL		 0
-+#define DE_WINDOW_DESTINATION_BASE_EXT_EXTERNAL	 1
-+#define DE_WINDOW_DESTINATION_BASE_CS			 26:26
-+#define DE_WINDOW_DESTINATION_BASE_CS_0		 0
-+#define DE_WINDOW_DESTINATION_BASE_CS_1		 1
-+#define DE_WINDOW_DESTINATION_BASE_ADDRESS		 25:0
-+
-+#define DE_ALPHA					 0x000048
-+#define DE_ALPHA_VALUE 				 7:0
-+
-+#define DE_WRAP					 0x00004C
-+#define DE_WRAP_X					 31:16
-+#define DE_WRAP_Y					 15:0
-+
-+#define DE_STATUS					 0x000050
-+#define DE_STATUS_CSC					 1:1
-+#define DE_STATUS_CSC_CLEAR				 0
-+#define DE_STATUS_CSC_NOT_ACTIVE			 0
-+#define DE_STATUS_CSC_ACTIVE				 1
-+#define DE_STATUS_2D					 0:0
-+#define DE_STATUS_2D_CLEAR				 0
-+#define DE_STATUS_2D_NOT_ACTIVE			 0
-+#define DE_STATUS_2D_ACTIVE				 1
-+
-+/* Color Space Conversion registers. */
-+
-+#define CSC_Y_SOURCE_BASE				 0x0000C8
-+#define CSC_Y_SOURCE_BASE_EXT				 27:27
-+#define CSC_Y_SOURCE_BASE_EXT_LOCAL			 0
-+#define CSC_Y_SOURCE_BASE_EXT_EXTERNAL 		 1
-+#define CSC_Y_SOURCE_BASE_CS				 26:26
-+#define CSC_Y_SOURCE_BASE_CS_0 			 0
-+#define CSC_Y_SOURCE_BASE_CS_1 			 1
-+#define CSC_Y_SOURCE_BASE_ADDRESS			 25:0
-+
-+#define CSC_CONSTANTS					 0x0000CC
-+#define CSC_CONSTANTS_Y				 31:24
-+#define CSC_CONSTANTS_R				 23:16
-+#define CSC_CONSTANTS_G				 15:8
-+#define CSC_CONSTANTS_B				 7:0
-+
-+#define CSC_Y_SOURCE_X 				 0x0000D0
-+#define CSC_Y_SOURCE_X_INTEGER 			 26:16
-+#define CSC_Y_SOURCE_X_FRACTION			 15:3
-+
-+#define CSC_Y_SOURCE_Y 				 0x0000D4
-+#define CSC_Y_SOURCE_Y_INTEGER 			 27:16
-+#define CSC_Y_SOURCE_Y_FRACTION			 15:3
-+
-+#define CSC_U_SOURCE_BASE				 0x0000D8
-+#define CSC_U_SOURCE_BASE_EXT				 27:27
-+#define CSC_U_SOURCE_BASE_EXT_LOCAL			 0
-+#define CSC_U_SOURCE_BASE_EXT_EXTERNAL 		 1
-+#define CSC_U_SOURCE_BASE_CS				 26:26
-+#define CSC_U_SOURCE_BASE_CS_0 			 0
-+#define CSC_U_SOURCE_BASE_CS_1 			 1
-+#define CSC_U_SOURCE_BASE_ADDRESS			 25:0
-+
-+#define CSC_V_SOURCE_BASE				 0x0000DC
-+#define CSC_V_SOURCE_BASE_EXT				 27:27
-+#define CSC_V_SOURCE_BASE_EXT_LOCAL			 0
-+#define CSC_V_SOURCE_BASE_EXT_EXTERNAL 		 1
-+#define CSC_V_SOURCE_BASE_CS				 26:26
-+#define CSC_V_SOURCE_BASE_CS_0 			 0
-+#define CSC_V_SOURCE_BASE_CS_1 			 1
-+#define CSC_V_SOURCE_BASE_ADDRESS			 25:0
-+
-+#define CSC_SOURCE_DIMENSION				 0x0000E0
-+#define CSC_SOURCE_DIMENSION_X 			 31:16
-+#define CSC_SOURCE_DIMENSION_Y 			 15:0
-+
-+#define CSC_SOURCE_PITCH				 0x0000E4
-+#define CSC_SOURCE_PITCH_Y				 31:16
-+#define CSC_SOURCE_PITCH_UV				 15:0
-+
-+#define CSC_DESTINATION				 0x0000E8
-+#define CSC_DESTINATION_WRAP				 31:31
-+#define CSC_DESTINATION_WRAP_DISABLE			 0
-+#define CSC_DESTINATION_WRAP_ENABLE			 1
-+#define CSC_DESTINATION_X				 27:16
-+#define CSC_DESTINATION_Y				 11:0
-+
-+#define CSC_DESTINATION_DIMENSION			 0x0000EC
-+#define CSC_DESTINATION_DIMENSION_X			 31:16
-+#define CSC_DESTINATION_DIMENSION_Y			 15:0
-+
-+#define CSC_DESTINATION_PITCH				 0x0000F0
-+#define CSC_DESTINATION_PITCH_X			 31:16
-+#define CSC_DESTINATION_PITCH_Y			 15:0
-+
-+#define CSC_SCALE_FACTOR				 0x0000F4
-+#define CSC_SCALE_FACTOR_HORIZONTAL			 31:16
-+#define CSC_SCALE_FACTOR_VERTICAL			 15:0
-+
-+#define CSC_DESTINATION_BASE				 0x0000F8
-+#define CSC_DESTINATION_BASE_EXT			 27:27
-+#define CSC_DESTINATION_BASE_EXT_LOCAL 		 0
-+#define CSC_DESTINATION_BASE_EXT_EXTERNAL		 1
-+#define CSC_DESTINATION_BASE_CS			 26:26
-+#define CSC_DESTINATION_BASE_CS_0			 0
-+#define CSC_DESTINATION_BASE_CS_1			 1
-+#define CSC_DESTINATION_BASE_ADDRESS			 25:0
-+
-+#define CSC_CONTROL					 0x0000FC
-+#define CSC_CONTROL_STATUS				 31:31
-+#define CSC_CONTROL_STATUS_STOP			 0
-+#define CSC_CONTROL_STATUS_START			 1
-+#define CSC_CONTROL_SOURCE_FORMAT			 30:28
-+#define CSC_CONTROL_SOURCE_FORMAT_YUV422		 0
-+#define CSC_CONTROL_SOURCE_FORMAT_YUV420I		 1
-+#define CSC_CONTROL_SOURCE_FORMAT_YUV420		 2
-+#define CSC_CONTROL_SOURCE_FORMAT_YVU9 		 3
-+#define CSC_CONTROL_SOURCE_FORMAT_IYU1 		 4
-+#define CSC_CONTROL_SOURCE_FORMAT_IYU2 		 5
-+#define CSC_CONTROL_SOURCE_FORMAT_RGB565		 6
-+#define CSC_CONTROL_SOURCE_FORMAT_RGB8888		 7
-+#define CSC_CONTROL_DESTINATION_FORMAT 		 27:26
-+#define CSC_CONTROL_DESTINATION_FORMAT_RGB565		 0
-+#define CSC_CONTROL_DESTINATION_FORMAT_RGB8888 	 1
-+#define CSC_CONTROL_HORIZONTAL_FILTER			 25:25
-+#define CSC_CONTROL_HORIZONTAL_FILTER_DISABLE		 0
-+#define CSC_CONTROL_HORIZONTAL_FILTER_ENABLE		 1
-+#define CSC_CONTROL_VERTICAL_FILTER			 24:24
-+#define CSC_CONTROL_VERTICAL_FILTER_DISABLE		 0
-+#define CSC_CONTROL_VERTICAL_FILTER_ENABLE		 1
-+#define CSC_CONTROL_BYTE_ORDER 			 23:23
-+#define CSC_CONTROL_BYTE_ORDER_YUYV			 0
-+#define CSC_CONTROL_BYTE_ORDER_UYVY			 1
-+
-+#define DE_DATA_PORT_501				 0x110000
-+#define DE_DATA_PORT_712				 0x400000
-+#define DE_DATA_PORT_722				 0x6000
-+
-+extern char *smtc_RegBaseAddress;	/* point to virtual Memory Map IO
-starting address */
-+extern char *smtc_VRAMBaseAddress;	/* point to virtual video memory
-starting address */
-+extern unsigned char smtc_de_busy;
-+
-+extern unsigned long memRead32(unsigned long nOffset);
-+extern void memWrite32(unsigned long nOffset, unsigned long nData);
-+unsigned long SMTC_read2Dreg(unsigned long nOffset);
-+
-+/* 2D functions */
-+extern void deInit(unsigned int nModeWidth, unsigned int nModeHeight,
-+		   unsigned int bpp);
-+
-+extern void deWaitForNotBusy(void);
-+
-+extern void deSetClipRectangle(int left, int top, int right, int
-bottom);
-+
-+extern void deVerticalLine(unsigned long dst_base,
-+			   unsigned long dst_pitch,
-+			   unsigned long nX,
-+			   unsigned long nY,
-+			   unsigned long dst_height, unsigned long nColor);
-+
-+extern void deHorizontalLine(unsigned long dst_base,
-+			     unsigned long dst_pitch,
-+			     unsigned long nX,
-+			     unsigned long nY,
-+			     unsigned long dst_width, unsigned long nColor);
-+
-+extern void deLine(unsigned long dst_base,
-+		   unsigned long dst_pitch,
-+		   unsigned long nX1,
-+		   unsigned long nY1,
-+		   unsigned long nX2, unsigned long nY2, unsigned long nColor);
-+
-+extern void deFillRect(unsigned long dst_base,
-+		       unsigned long dst_pitch,
-+		       unsigned long dst_X,
-+		       unsigned long dst_Y,
-+		       unsigned long dst_width,
-+		       unsigned long dst_height, unsigned long nColor);
-+
-+extern void deRotatePattern(unsigned char *pattern_dstaddr,
-+			    unsigned long pattern_src_addr,
-+			    unsigned long pattern_BPP,
-+			    unsigned long pattern_stride,
-+			    int patternX, int patternY);
-+
-+extern void deMonoPatternFill(unsigned long dst_base,
-+			      unsigned long dst_pitch,
-+			      unsigned long dst_BPP,
-+			      unsigned long dstX,
-+			      unsigned long dstY,
-+			      unsigned long dst_width,
-+			      unsigned long dst_height,
-+			      unsigned long pattern_FGcolor,
-+			      unsigned long pattern_BGcolor,
-+			      unsigned long pattern_low,
-+			      unsigned long pattern_high);
-+
-+extern void deColorPatternFill(unsigned long dst_base,
-+			       unsigned long dst_pitch,
-+			       unsigned long dst_BPP,
-+			       unsigned long dst_X,
-+			       unsigned long dst_Y,
-+			       unsigned long dst_width,
-+			       unsigned long dst_height,
-+			       unsigned long pattern_src_addr,
-+			       unsigned long pattern_stride,
-+			       int PatternOriginX, int PatternOriginY);
-+
-+extern void deCopy(unsigned long dst_base,
-+		   unsigned long dst_pitch,
-+		   unsigned long dst_BPP,
-+		   unsigned long dst_X,
-+		   unsigned long dst_Y,
-+		   unsigned long dst_width,
-+		   unsigned long dst_height,
-+		   unsigned long src_base,
-+		   unsigned long src_pitch,
-+		   unsigned long src_X,
-+		   unsigned long src_Y,
-+		   pTransparent pTransp, unsigned char nROP2);
-+
-+extern void deSrcCopyHost(unsigned long dst_base,
-+			  unsigned long dst_pitch,
-+			  unsigned long dst_BPP,
-+			  unsigned long dst_X,
-+			  unsigned long dst_Y,
-+			  unsigned long dst_width,
-+			  unsigned long dst_height,
-+			  unsigned long src_base,
-+			  unsigned long src_stride,
-+			  unsigned long src_X,
-+			  unsigned long src_Y,
-+			  pTransparent pTransp, unsigned char nROP2);
-+
-+extern void deMonoSrcCopyHost(unsigned long dst_base,
-+			      unsigned long dst_pitch,
-+			      unsigned long dst_BPP,
-+			      unsigned long dst_X,
-+			      unsigned long dst_Y,
-+			      unsigned long dst_width,
-+			      unsigned long dst_height,
-+			      unsigned long src_base,
-+			      unsigned long src_stride,
-+			      unsigned long src_X,
-+			      unsigned long src_Y,
-+			      unsigned long nFgColor,
-+			      unsigned long nBgColor, pTransparent pTransp);
-+
-+/*
-+ * System memory to Video memory monochrome expansion.
-+ * Source is monochrome image in system memory.
-+ * This function expands the monochrome data to color image in video
-memory.
-+ */
-+long deSystemMem2VideoMemMonoBlt(unsigned char *pSrcbuf,	/* pointer to
-start of source buffer in system memory */
-+				 long srcDelta,	/* Pitch value (in bytes) of the source buffer,
-+ive means top down and -ive mean button up */
-+				 unsigned long startBit,	/* Mono data can start at any bit in a
-byte, this value should be 0 to 7 */
-+				 unsigned long dBase,	/* Address of destination: offset in frame
-buffer */
-+				 unsigned long dPitch,	/* Pitch value of destination surface in
-BYTE */
-+				 unsigned long bpp,	/* Color depth of destination surface */
-+				 unsigned long dx, unsigned long dy,	/* Starting coordinate of
-destination surface */
-+				 unsigned long width, unsigned long height,	/* width and height of
-rectange in pixel value */
-+				 unsigned long fColor,	/* Foreground color (corresponding to a 1 in
-the monochrome data */
-+				 unsigned long bColor,	/* Background color (corresponding to a 0 in
-the monochrome data */
-+				 unsigned long rop2);	/* ROP value */
-+
-+unsigned long deGetTransparency(void);
-+void deSetPixelFormat(unsigned long bpp);
-+
-+extern void deLoadPattern(unsigned char *pattern, unsigned long
-write_addr);
-diff --git a/drivers/video/smi/smtcfb.c b/drivers/video/smi/smtcfb.c
-new file mode 100644
-index 0000000..33fe74b
---- /dev/null
-+++ b/drivers/video/smi/smtcfb.c
-@@ -0,0 +1,1145 @@
-+/*
-+ *  linux/drivers/video/smtcfb.c -- Silicon Motion SM501 and SM7xx
-frame buffer device
-+ *
-+ *	 Copyright (C) 2006 Silicon Motion Technology Corp.
-+ *	 Ge Wang, gewang@siliconmotion.com
-+ *	 Boyod boyod.yang@siliconmotion.com.cn
-+ *
-+ *  This file is subject to the terms and conditions of the GNU General
-Public
-+ *  License. See the file COPYING in the main directory of this archive
-for
-+ *  more details.
-+*
-+*
-+* Version 0.10.26192.21.01
-+    - Add PowerPC/Big endian support
-+	- Add 2D support for Lynx
-+    - Verified on 2.6.19.2			     Boyod.yang
-<boyod.yang@siliconmotion.com.cn>
-+
-+* Version 0.09.2621.00.01
-+    - Only support Linux Kernel's version 2.6.21.	Boyod.yang
-<boyod.yang@siliconmotion.com.cn>
-+
-+* Version 0.09
-+    - Only support Linux Kernel's version 2.6.12.	Boyod.yang
-<boyod.yang@siliconmotion.com.cn>
-+
-+*/
-+
-+#ifndef __KERNEL__
-+#define __KERNEL__
-+#endif
-+
-+#include <linux/module.h>
-+#include <linux/kernel.h>
-+#include <linux/errno.h>
-+#include <linux/string.h>
-+#include <linux/mm.h>
-+#include <linux/tty.h>
-+#include <linux/slab.h>
-+#include <linux/delay.h>
-+#include <linux/fb.h>
-+#include <linux/init.h>
-+#include <linux/vmalloc.h>
-+#include <linux/dma-mapping.h>
-+#include <linux/interrupt.h>
-+#include <linux/workqueue.h>
-+#include <linux/wait.h>
-+#include <linux/platform_device.h>
-+#include <linux/clk.h>
-+#include <linux/console.h>
-+
-+#include <asm/io.h>
-+#include <asm/uaccess.h>
-+#include <asm/div64.h>
-+
-+#ifdef CONFIG_PM
-+#include <linux/pm.h>
-+#endif
-+
-+#include <linux/screen_info.h>
-+#include <linux/pci.h>
-+#include <linux/init.h>
-+
-+#include "smtcfb.h"
-+#include "smtc2d.h"
-+
-+#ifdef DEBUG
-+#define smdbg(format, arg...)	printk(KERN_DEBUG format , ## arg)
-+#else
-+#define smdbg(format, arg...)
-+#endif
-+
-+#define DEFAULT_VIDEO_MODE "800x600-16@60"
-+#ifdef __BIG_ENDIAN
-+struct screen_info screen_info;
-+#endif
-+
-+/*
-+ * globals
-+ */
-+
-+#if 0
-+static char *mode_option __devinitdata = DEFAULT_VIDEO_MODE;
-+#endif
-+
-+/*
-+* Private structure
-+*/
-+struct smtcfb_info {
-+	/*
-+	 * The following is a pointer to be passed into the
-+	 * functions below.  The modules outside the main
-+	 * voyager.c driver have no knowledge as to what
-+	 * is within this structure.
-+	 */
-+	struct fb_info fb;
-+	struct display_switch *dispsw;
-+	struct pci_dev *dev;
-+	signed int currcon;
-+
-+	struct {
-+		u8 red, green, blue;
-+	} palette[NR_RGB];
-+
-+	u_int palette_size;
-+};
-+
-+struct par_info {
-+	/*
-+	 * Hardware
-+	 */
-+	u16 chipID;
-+	unsigned char __iomem *m_pMMIO;
-+	char __iomem *m_pLFB;
-+	char *m_pDPR;
-+	char *m_pVPR;
-+	char *m_pCPR;
-+
-+	u_int width;
-+	u_int height;
-+	u_int hz;
-+	u_long BaseAddressInVRAM;
-+	u8 chipRevID;
-+};
-+
-+struct vesa_mode_table {
-+	char mode_index[6];
-+	u16 lfb_width;
-+	u16 lfb_height;
-+	u16 lfb_depth;
-+};
-+
-+#if 0
-+static struct vesa_mode_table vesa_mode[] = {
-+	{"0x301", 640, 480, 8},
-+	{"0x303", 800, 600, 8},
-+	{"0x305", 1024, 768, 8},
-+	{"0x307", 1280, 1024, 8},
-+
-+	{"0x311", 640, 480, 16},
-+	{"0x314", 800, 600, 16},
-+	{"0x317", 1024, 768, 16},
-+	{"0x31A", 1280, 1024, 16},
-+
-+	{"0x312", 640, 480, 24},
-+	{"0x315", 800, 600, 24},
-+	{"0x318", 1024, 768, 24},
-+	{"0x31B", 1280, 1024, 24},
-+
-+};
-+#endif
-+char __iomem *smtc_RegBaseAddress;	/* Memory Map IO starting address */
-+char __iomem *smtc_VRAMBaseAddress;	/* video memory starting address */
-+
-+char *smtc_2DBaseAddress;	/* 2D engine starting address */
-+char *smtc_2Ddataport;		/* 2D data port offset */
-+short smtc_2Dacceleration = 0;	/* default no 2D acceleration */
-+
-+static u32 colreg[17];
-+static struct par_info hw;	/* hardware information */
-+
-+#if defined(CONFIG_FB_SM7XX_DUALHEAD)
-+
-+static u32 colreg2[17];
-+static struct par_info hw2;	/* hardware information for second display
-(CRT) */
-+struct smtcfb_info smtcfb_info2;	/* fb_info for second display (CRT) */
-+
-+#endif				/* CONFIG_FB_SM501_DUALHEAD */
-+
-+u16 smtc_ChipIDs[] = {
-+	0x710,
-+	0x712,
-+	0x720
-+};
-+
-+int sm712be_flag;
-+
-+int numSMTCchipIDs = sizeof(smtc_ChipIDs) / sizeof(u16);
-+
-+void deWaitForNotBusy(void)
-+{
-+	unsigned long i = 0x1000000;
-+	while (i--) {
-+		if ((smtc_seqr(0x16) & 0x18) == 0x10)
-+			break;
-+	}
-+	smtc_de_busy = 0;
-+}
-+
-+static void sm712_set_timing(struct smtcfb_info *sfb,
-+			     struct par_info *ppar_info)
-+{
-+	int i = 0, j = 0;
-+	u32 m_nScreenStride;
-+
-+	smdbg
-+	    ("\nppar_info->width = %d ppar_info->height = %d
-sfb->fb.var.bits_per_pixel = %d ppar_info->hz = %d\n",
-+	     ppar_info->width, ppar_info->height, sfb->fb.var.bits_per_pixel,
-+	     ppar_info->hz);
-+
-+	for (j = 0; j < numVGAModes; j++) {
-+		if (VGAMode[j].mmSizeX == ppar_info->width &&
-+		    VGAMode[j].mmSizeY == ppar_info->height &&
-+		    VGAMode[j].bpp == sfb->fb.var.bits_per_pixel &&
-+		    VGAMode[j].hz == ppar_info->hz) {
-+			smdbg
-+			    ("\nVGAMode[j].mmSizeX  = %d VGAMode[j].mmSizeY = %d
-VGAMode[j].bpp = %d VGAMode[j].hz=%d\n",
-+			     VGAMode[j].mmSizeX, VGAMode[j].mmSizeY,
-+			     VGAMode[j].bpp, VGAMode[j].hz);
-+			smdbg("VGAMode index=%d\n", j);
-+
-+			smtc_mmiowb(0x0, 0x3c6);
-+
-+			smtc_seqw(0, 0x1);
-+
-+			smtc_mmiowb(VGAMode[j].Init_MISC, 0x3c2);
-+
-+			for (i = 0; i < SIZE_SR00_SR04; i++) {	/* init SEQ register SR00 -
-SR04 */
-+				smtc_seqw(i, VGAMode[j].Init_SR00_SR04[i]);
-+			}
-+
-+			for (i = 0; i < SIZE_SR10_SR24; i++) {	/* init SEQ register SR10 -
-SR24 */
-+				smtc_seqw(i + 0x10,
-+					  VGAMode[j].Init_SR10_SR24[i]);
-+			}
-+
-+			for (i = 0; i < SIZE_SR30_SR75; i++) {	/* init SEQ register SR30 -
-SR75 */
-+				if (((i + 0x30) != 0x62) && ((i + 0x30) != 0x6a)
-+				    && ((i + 0x30) != 0x6b))
-+					smtc_seqw(i + 0x30,
-+						  VGAMode[j].Init_SR30_SR75[i]);
-+			}
-+			for (i = 0; i < SIZE_SR80_SR93; i++) {	/* init SEQ register SR80 -
-SR93 */
-+				smtc_seqw(i + 0x80,
-+					  VGAMode[j].Init_SR80_SR93[i]);
-+			}
-+			for (i = 0; i < SIZE_SRA0_SRAF; i++) {	/* init SEQ register SRA0 -
-SRAF */
-+				smtc_seqw(i + 0xa0,
-+					  VGAMode[j].Init_SRA0_SRAF[i]);
-+			}
-+
-+			for (i = 0; i < SIZE_GR00_GR08; i++) {	/* init Graphic register GR00
-- GR08 */
-+				smtc_grphw(i, VGAMode[j].Init_GR00_GR08[i]);
-+			}
-+
-+			for (i = 0; i < SIZE_AR00_AR14; i++) {	/* init Attribute register
-AR00 - AR14 */
-+
-+				smtc_attrw(i, VGAMode[j].Init_AR00_AR14[i]);
-+			}
-+
-+			for (i = 0; i < SIZE_CR00_CR18; i++) {	/* init CRTC register CR00 -
-CR18 */
-+				smtc_crtcw(i, VGAMode[j].Init_CR00_CR18[i]);
-+			}
-+
-+			for (i = 0; i < SIZE_CR30_CR4D; i++) {	/* init CRTC register CR30 -
-CR4D */
-+				smtc_crtcw(i + 0x30,
-+					   VGAMode[j].Init_CR30_CR4D[i]);
-+			}
-+
-+			for (i = 0; i < SIZE_CR90_CRA7; i++) {	/* init CRTC register CR90 -
-CRA7 */
-+				smtc_crtcw(i + 0x90,
-+					   VGAMode[j].Init_CR90_CRA7[i]);
-+			}
-+
-+		}
-+	}
-+	smtc_mmiowb(0x67, 0x3c2);
-+
-+	/* set VPR registers */
-+	writel(0x0, ppar_info->m_pVPR + 0x0C);
-+	writel(0x0, ppar_info->m_pVPR + 0x40);
-+
-+	/* set data width */
-+	m_nScreenStride = (ppar_info->width * sfb->fb.var.bits_per_pixel) /
-64;
-+	switch (sfb->fb.var.bits_per_pixel) {
-+	case 8:
-+		writel(0x0, ppar_info->m_pVPR + 0x0);
-+		break;
-+	case 16:
-+		writel(0x00020000, ppar_info->m_pVPR + 0x0);
-+		break;
-+	case 24:
-+		writel(0x00040000, ppar_info->m_pVPR + 0x0);
-+		break;
-+	case 32:
-+		writel(0x00030000, ppar_info->m_pVPR + 0x0);
-+		break;
-+	}
-+	writel((u32) (((m_nScreenStride + 2) << 16) | m_nScreenStride),
-+	       ppar_info->m_pVPR + 0x10);
-+
-+}
-+
-+static void sm712_setpalette(int regno, unsigned red, unsigned green,
-+			     unsigned blue, struct fb_info *info)
-+{
-+	struct par_info *cur_par = (struct par_info *)info->par;
-+
-+	if (cur_par->BaseAddressInVRAM)
-+		smtc_seqw(0x66, (smtc_seqr(0x66) & 0xC3) | 0x20);	/* second display
-palette for dual head. Enable CRT RAM, 6-bit RAM */
-+	else
-+		smtc_seqw(0x66, (smtc_seqr(0x66) & 0xC3) | 0x10);	/* primary display
-palette. Enable LCD RAM only, 6-bit RAM */
-+	smtc_mmiowb(regno, dac_reg);
-+	smtc_mmiowb(red >> 10, dac_val);
-+	smtc_mmiowb(green >> 10, dac_val);
-+	smtc_mmiowb(blue >> 10, dac_val);
-+}
-+
-+static void smtc_set_timing(struct smtcfb_info *sfb, struct par_info
-*ppar_info)
-+{
-+	switch (ppar_info->chipID) {
-+	case 0x710:
-+	case 0x712:
-+	case 0x720:
-+		sm712_set_timing(sfb, ppar_info);
-+		break;
-+	}
-+}
-+
-+static struct fb_var_screeninfo smtcfb_var = {
-+	.xres = 1024,
-+	.yres = 600,
-+	.xres_virtual = 1024,
-+	.yres_virtual = 600,
-+	.bits_per_pixel = 16,
-+	.red = {16, 8, 0},
-+	.green = {8, 8, 0},
-+	.blue = {0, 8, 0},
-+	.activate = FB_ACTIVATE_NOW,
-+	.height = -1,
-+	.width = -1,
-+	.vmode = FB_VMODE_NONINTERLACED,
-+};
-+
-+static struct fb_fix_screeninfo smtcfb_fix = {
-+	.id = "sm712fb",
-+	.type = FB_TYPE_PACKED_PIXELS,
-+	.visual = FB_VISUAL_TRUECOLOR,
-+	.line_length = 800 * 3,
-+	.accel = FB_ACCEL_SMI_LYNX,
-+};
-+
-+/* chan_to_field
-+ *
-+ * convert a colour value into a field position
-+ *
-+ * from pxafb.c
-+ */
-+
-+static inline unsigned int chan_to_field(unsigned int chan,
-+					 struct fb_bitfield *bf)
-+{
-+	chan &= 0xffff;
-+	chan >>= 16 - bf->length;
-+	return chan << bf->offset;
-+}
-+
-+static int smtc_setcolreg(unsigned regno, unsigned red, unsigned green,
-+			  unsigned blue, unsigned trans, struct fb_info *info)
-+{
-+	struct smtcfb_info *sfb = (struct smtcfb_info *)info;
-+	u32 val;
-+
-+	if (regno > 255)
-+		return 1;
-+
-+	switch (sfb->fb.fix.visual) {
-+	case FB_VISUAL_DIRECTCOLOR:
-+	case FB_VISUAL_TRUECOLOR:
-+		/* 16/32 bit true-colour, use pseuo-palette for 16 base color */
-+		if (regno < 16) {
-+			if (sfb->fb.var.bits_per_pixel == 16) {
-+				u32 *pal = sfb->fb.pseudo_palette;
-+				val = chan_to_field(red, &sfb->fb.var.red);
-+				val |= chan_to_field(green, &sfb->fb.var.green);
-+				val |= chan_to_field(blue, &sfb->fb.var.blue);
-+#ifdef __BIG_ENDIAN
-+				pal[regno] =
-+				    ((red & 0xf800) >> 8) | ((green & 0xe000) >>
-+							     13) | ((green &
-+								     0x1c00) <<
-+								    3) | ((blue
-+									   &
-+									   0xf800)
-+									  >> 3);
-+#else
-+				pal[regno] = val;
-+#endif
-+			} else {
-+				u32 *pal = sfb->fb.pseudo_palette;
-+				val = chan_to_field(red, &sfb->fb.var.red);
-+				val |= chan_to_field(green, &sfb->fb.var.green);
-+				val |= chan_to_field(blue, &sfb->fb.var.blue);
-+#ifdef __BIG_ENDIAN
-+				val =
-+				    (val & 0xff00ff00 >> 8) | (val & 0x00ff00ff
-+							       << 8);
-+#endif
-+				pal[regno] = val;
-+			}
-+		}
-+		break;
-+
-+	case FB_VISUAL_PSEUDOCOLOR:
-+		/* color depth 8 bit */
-+		sm712_setpalette(regno, red, green, blue, info);
-+		break;
-+
-+	default:
-+		return 1;	/* unknown type */
-+	}
-+
-+	return 0;
-+
-+}
-+
-+#if 0
-+static ssize_t
-+smtcfb_read(struct file *file, char __user * buf, size_t count, loff_t
-* ppos)
-+{
-+	unsigned long p = *ppos;
-+
-+	struct inode *inode = file->f_dentry->d_inode;
-+	int fbidx = iminor(inode);
-+	struct fb_info *info = registered_fb[fbidx];
-+
-+	u32 *buffer, *dst;
-+	u32 __iomem *src;
-+	int c, i, cnt = 0, err = 0;
-+	unsigned long total_size;
-+
-+	if (!info || !info->screen_base)
-+		return -ENODEV;
-+
-+	if (info->state != FBINFO_STATE_RUNNING)
-+		return -EPERM;
-+
-+	total_size = info->screen_size;
-+
-+	if (total_size == 0)
-+		total_size = info->fix.smem_len;
-+
-+	if (p >= total_size)
-+		return 0;
-+
-+	if (count >= total_size)
-+		count = total_size;
-+
-+	if (count + p > total_size)
-+		count = total_size - p;
-+
-+	buffer = kmalloc((count > PAGE_SIZE) ? PAGE_SIZE : count, GFP_KERNEL);
-+	if (!buffer)
-+		return -ENOMEM;
-+
-+	src = (u32 __iomem *) (info->screen_base + p);
-+
-+	if (info->fbops->fb_sync)
-+		info->fbops->fb_sync(info);
-+
-+	while (count) {
-+		c = (count > PAGE_SIZE) ? PAGE_SIZE : count;
-+		dst = buffer;
-+		for (i = c >> 2; i--;) {
-+			*dst = fb_readl(src++);
-+			*dst =
-+			    (*dst & 0xff00ff00 >> 8) | (*dst & 0x00ff00ff << 8);
-+			dst++;
-+		}
-+		if (c & 3) {
-+			u8 *dst8 = (u8 *) dst;
-+			u8 __iomem *src8 = (u8 __iomem *) src;
-+
-+			for (i = c & 3; i--;) {
-+				if (i & 1) {
-+					*dst8++ = fb_readb(++src8);
-+				} else {
-+					*dst8++ = fb_readb(--src8);
-+					src8 += 2;
-+				}
-+			}
-+			src = (u32 __iomem *) src8;
-+		}
-+
-+		if (copy_to_user(buf, buffer, c)) {
-+			err = -EFAULT;
-+			break;
-+		}
-+		*ppos += c;
-+		buf += c;
-+		cnt += c;
-+		count -= c;
-+	}
-+
-+	kfree(buffer);
-+
-+	return (err) ? err : cnt;
-+}
-+
-+static ssize_t
-+smtcfb_write(struct file *file, const char __user * buf, size_t count,
-+	     loff_t * ppos)
-+{
-+	unsigned long p = *ppos;
-+	struct inode *inode = file->f_dentry->d_inode;
-+	int fbidx = iminor(inode);
-+	struct fb_info *info = registered_fb[fbidx];
-+	u32 *buffer, *src;
-+	u32 __iomem *dst;
-+	int c, i, cnt = 0, err = 0;
-+	unsigned long total_size;
-+
-+	if (!info || !info->screen_base)
-+		return -ENODEV;
-+
-+	if (info->state != FBINFO_STATE_RUNNING)
-+		return -EPERM;
-+
-+	total_size = info->screen_size;
-+
-+	if (total_size == 0)
-+		total_size = info->fix.smem_len;
-+
-+	if (p > total_size)
-+		return -EFBIG;
-+
-+	if (count > total_size) {
-+		err = -EFBIG;
-+		count = total_size;
-+	}
-+
-+	if (count + p > total_size) {
-+		if (!err)
-+			err = -ENOSPC;
-+
-+		count = total_size - p;
-+	}
-+
-+	buffer = kmalloc((count > PAGE_SIZE) ? PAGE_SIZE : count, GFP_KERNEL);
-+	if (!buffer)
-+		return -ENOMEM;
-+
-+	dst = (u32 __iomem *) (info->screen_base + p);
-+
-+	if (info->fbops->fb_sync)
-+		info->fbops->fb_sync(info);
-+
-+	while (count) {
-+		c = (count > PAGE_SIZE) ? PAGE_SIZE : count;
-+		src = buffer;
-+
-+		if (copy_from_user(src, buf, c)) {
-+			err = -EFAULT;
-+			break;
-+		}
-+
-+		for (i = c >> 2; i--;) {
-+			fb_writel((*src & 0xff00ff00 >> 8) |
-+				  (*src & 0x00ff00ff << 8), dst++);
-+			src++;
-+		}
-+		if (c & 3) {
-+			u8 *src8 = (u8 *) src;
-+			u8 __iomem *dst8 = (u8 __iomem *) dst;
-+
-+			for (i = c & 3; i--;) {
-+				if (i & 1) {
-+					fb_writeb(*src8++, ++dst8);
-+				} else {
-+					fb_writeb(*src8++, --dst8);
-+					dst8 += 2;
-+				}
-+			}
-+			dst = (u32 __iomem *) dst8;
-+		}
-+
-+		*ppos += c;
-+		buf += c;
-+		cnt += c;
-+		count -= c;
-+	}
-+
-+	kfree(buffer);
-+
-+	return (cnt) ? cnt : err;
-+}
-+#endif
-+
-+#include "smtc2d.c"
-+
-+void smtcfb_copyarea(struct fb_info *info, const struct fb_copyarea
-*area)
-+{
-+	struct par_info *p = (struct par_info *)info->par;
-+
-+	if (smtc_2Dacceleration) {
-+		if (!area->width || !area->height)
-+			return;
-+
-+		deCopy(p->BaseAddressInVRAM, 0, info->var.bits_per_pixel,
-+		       area->dx, area->dy, area->width, area->height,
-+		       p->BaseAddressInVRAM, 0, area->sx, area->sy, 0, 0xC);
-+
-+	} else
-+
-+		cfb_copyarea(info, area);
-+}
-+
-+void smtcfb_fillrect(struct fb_info *info, const struct fb_fillrect
-*rect)
-+{
-+	struct par_info *p = (struct par_info *)info->par;
-+
-+	if (smtc_2Dacceleration) {
-+		if (!rect->width || !rect->height)
-+			return;
-+		if (info->var.bits_per_pixel >= 24)
-+			deFillRect(p->BaseAddressInVRAM, 0, rect->dx * 3,
-+				   rect->dy * 3, rect->width * 3, rect->height,
-+				   rect->color);
-+		else
-+			deFillRect(p->BaseAddressInVRAM, 0, rect->dx, rect->dy,
-+				   rect->width, rect->height, rect->color);
-+	} else
-+
-+		cfb_fillrect(info, rect);
-+}
-+
-+void smtcfb_imageblit(struct fb_info *info, const struct fb_image
-*image)
-+{
-+	struct par_info *p = (struct par_info *)info->par;
-+	u32 bg_col = 0, fg_col = 0;
-+	if (smtc_2Dacceleration) {
-+		if (image->depth == 1) {
-+			if (smtc_de_busy)
-+				deWaitForNotBusy();
-+
-+			switch (info->var.bits_per_pixel) {
-+			case 8:
-+				bg_col = image->bg_color;
-+				fg_col = image->fg_color;
-+				break;
-+			case 16:
-+				bg_col =
-+				    ((u32 *) (info->pseudo_palette))[image->
-+								     bg_color];
-+				fg_col =
-+				    ((u32 *) (info->pseudo_palette))[image->
-+								     fg_color];
-+				break;
-+			case 32:
-+				bg_col =
-+				    ((u32 *) (info->pseudo_palette))[image->
-+								     bg_color];
-+				fg_col =
-+				    ((u32 *) (info->pseudo_palette))[image->
-+								     fg_color];
-+				break;
-+			}
-+			deSystemMem2VideoMemMonoBlt((unsigned char *)image->data,	/* pointer
-to start of source buffer in system memory */
-+						    image->width / 8,	/* Pitch value (in bytes) of the source
-buffer, +ive means top down and -ive mean button up */
-+						    0,	/* Mono data can start at any bit in a byte, this value
-should be 0 to 7 */
-+						    p->BaseAddressInVRAM,	/* Address of destination: offset in
-frame buffer */
-+						    0,	/* Pitch value of destination surface in BYTE */
-+						    0,	/* Color depth of destination surface */
-+						    image->dx, image->dy,	/* Starting coordinate of destination
-surface */
-+						    image->width, image->height,	/* width and height of rectange
-in pixel value */
-+						    fg_col,	/* Foreground color (corresponding to a 1 in the
-monochrome data */
-+						    bg_col,	/* Background color (corresponding to a 0 in the
-monochrome data */
-+						    0x0C) /* ROP value */ ;
-+		} else
-+			cfb_imageblit(info, image);
-+	} else
-+		cfb_imageblit(info, image);
-+}
-+
-+static struct fb_ops smtcfb_ops = {
-+	.owner = THIS_MODULE,
-+	.fb_setcolreg = smtc_setcolreg,
-+	.fb_fillrect = smtcfb_fillrect,
-+	.fb_imageblit = smtcfb_imageblit,
-+	.fb_copyarea = smtcfb_copyarea,
-+#ifdef __BIG_ENDIAN
-+	.fb_read = smtcfb_read,
-+	.fb_write = smtcfb_write,
-+#endif
-+
-+};
-+
-+void smtcfb_setmode(struct smtcfb_info *sfb)
-+{
-+	switch (sfb->fb.var.bits_per_pixel) {
-+		/* kylin */
-+	case 32:
-+		sfb->fb.fix.visual = FB_VISUAL_TRUECOLOR;
-+		sfb->fb.fix.line_length = sfb->fb.var.xres * 4;
-+		sfb->fb.var.red.length = 8;
-+		sfb->fb.var.green.length = 8;
-+		sfb->fb.var.blue.length = 8;
-+		sfb->fb.var.red.offset = 16;
-+		sfb->fb.var.green.offset = 8;
-+		sfb->fb.var.blue.offset = 0;
-+
-+		break;
-+	case 8:
-+		sfb->fb.fix.visual = FB_VISUAL_PSEUDOCOLOR;
-+		sfb->fb.fix.line_length = sfb->fb.var.xres;
-+		sfb->fb.var.red.offset = 5;
-+		sfb->fb.var.red.length = 3;
-+		sfb->fb.var.green.offset = 2;
-+		sfb->fb.var.green.length = 3;
-+		sfb->fb.var.blue.offset = 0;
-+		sfb->fb.var.blue.length = 2;
-+		break;
-+	case 24:
-+		sfb->fb.fix.visual = FB_VISUAL_TRUECOLOR;
-+		sfb->fb.fix.line_length = sfb->fb.var.xres * 3;
-+		sfb->fb.var.red.length = 8;
-+		sfb->fb.var.green.length = 8;
-+		sfb->fb.var.blue.length = 8;
-+
-+		sfb->fb.var.red.offset = 16;
-+		sfb->fb.var.green.offset = 8;
-+		sfb->fb.var.blue.offset = 0;
-+
-+		break;
-+	case 16:
-+	default:
-+		sfb->fb.fix.visual = FB_VISUAL_TRUECOLOR;
-+		sfb->fb.fix.line_length = sfb->fb.var.xres * 2;
-+
-+		sfb->fb.var.red.length = 5;
-+		sfb->fb.var.green.length = 6;
-+		sfb->fb.var.blue.length = 5;
-+
-+		sfb->fb.var.red.offset = 11;
-+		sfb->fb.var.green.offset = 5;
-+		sfb->fb.var.blue.offset = 0;
-+
-+		break;
-+	}
-+
-+	hw.width = sfb->fb.var.xres;
-+	hw.height = sfb->fb.var.yres;
-+	hw.hz = 60;
-+	smtc_set_timing(sfb, &hw);
-+	if (smtc_2Dacceleration) {
-+		printk("2D acceleration enabled!\n");
-+		deInit(sfb->fb.var.xres, sfb->fb.var.yres,
-sfb->fb.var.bits_per_pixel);	/* Init smtc drawing engine */
-+	}
-+}
-+
-+#if defined(CONFIG_FB_SM7XX_DUALHEAD)
-+void smtc_head2_init(struct smtcfb_info *sfb)
-+{
-+	smtcfb_info2 = *sfb;
-+	smtcfb_info2.fb.pseudo_palette = &colreg2;
-+	smtcfb_info2.fb.par = &hw2;
-+	sprintf(smtcfb_info2.fb.fix.id, "sm%Xfb2", hw.chipID);
-+	hw2.chipID = hw.chipID;
-+	hw2.chipRevID = hw.chipRevID;
-+	hw2.width = smtcfb_info2.fb.var.xres;
-+	hw2.height = smtcfb_info2.fb.var.yres;
-+	hw2.hz = 60;
-+	hw2.m_pMMIO = smtc_RegBaseAddress;
-+	hw2.BaseAddressInVRAM = smtcfb_info2.fb.fix.smem_len / 2;	/*hard code
-2nd head starting from half VRAM size postion */
-+	smtcfb_info2.fb.screen_base = hw2.m_pLFB =
-+	    smtc_VRAMBaseAddress + hw2.BaseAddressInVRAM;
-+
-+	/*  sm712crtSetMode(hw2.width, hw2.height, 0, hw2.hz,
-smtcfb_info2.fb.var.bits_per_pixel); */
-+	writel(hw2.BaseAddressInVRAM >> 3, hw2.m_pVPR + 0x10);
-+}
-+#endif
-+
-+/*
-+ * Alloc struct smtcfb_info and assign the default value
-+ */
-+static struct smtcfb_info *__devinit smtc_alloc_fb_info(struct pci_dev
-*dev,
-+							char *name)
-+{
-+	struct smtcfb_info *sfb;
-+
-+	sfb = kmalloc(sizeof(struct smtcfb_info), GFP_KERNEL);
-+
-+	if (!sfb)
-+		return NULL;
-+
-+	memset(sfb, 0, sizeof(struct smtcfb_info));
-+
-+	sfb->currcon = -1;
-+	sfb->dev = dev;
-+
-+	/*** Init sfb->fb with default value ***/
-+	sfb->fb.flags = FBINFO_FLAG_DEFAULT;
-+	sfb->fb.fbops = &smtcfb_ops;
-+	sfb->fb.var = smtcfb_var;
-+	sfb->fb.fix = smtcfb_fix;
-+
-+	strcpy(sfb->fb.fix.id, name);
-+
-+	sfb->fb.fix.type = FB_TYPE_PACKED_PIXELS;
-+	sfb->fb.fix.type_aux = 0;
-+	sfb->fb.fix.xpanstep = 0;
-+	sfb->fb.fix.ypanstep = 0;
-+	sfb->fb.fix.ywrapstep = 0;
-+	sfb->fb.fix.accel = FB_ACCEL_SMI_LYNX;
-+
-+	sfb->fb.var.nonstd = 0;
-+	sfb->fb.var.activate = FB_ACTIVATE_NOW;
-+	sfb->fb.var.height = -1;
-+	sfb->fb.var.width = -1;
-+	sfb->fb.var.accel_flags = FB_ACCELF_TEXT;	/* text mode acceleration */
-+	sfb->fb.var.vmode = FB_VMODE_NONINTERLACED;
-+	sfb->fb.par = &hw;
-+	sfb->fb.pseudo_palette = colreg;
-+
-+	return sfb;
-+}
-+
-+/*
-+ * Unmap in the memory mapped IO registers
-+ *
-+ */
-+
-+static void __devinit smtc_unmap_mmio(struct smtcfb_info *sfb)
-+{
-+	if (sfb && smtc_RegBaseAddress) {
-+		smtc_RegBaseAddress = NULL;
-+	}
-+}
-+
-+/*
-+ * Map in the screen memory
-+ *
-+ */
-+static int __devinit smtc_map_smem(struct smtcfb_info *sfb, struct
-pci_dev *dev,
-+				   u_long smem_len)
-+{
-+	if (sfb->fb.var.bits_per_pixel == 32) {
-+#ifdef __BIG_ENDIAN
-+		sfb->fb.fix.smem_start = pci_resource_start(dev, 0) + 0x800000;
-+#else
-+		sfb->fb.fix.smem_start = pci_resource_start(dev, 0);
-+#endif
-+	} else {
-+		sfb->fb.fix.smem_start = pci_resource_start(dev, 0);
-+	}
-+
-+	sfb->fb.fix.smem_len = smem_len;
-+
-+	sfb->fb.screen_base = smtc_VRAMBaseAddress;
-+
-+	if (!sfb->fb.screen_base) {
-+		printk("%s: unable to map screen memory\n", sfb->fb.fix.id);
-+		return -ENOMEM;
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Unmap in the screen memory
-+ *
-+ */
-+static void __devinit smtc_unmap_smem(struct smtcfb_info *sfb)
-+{
-+	if (sfb && sfb->fb.screen_base) {
-+		iounmap(sfb->fb.screen_base);
-+		sfb->fb.screen_base = NULL;
-+	}
-+}
-+
-+/*
-+ * We need to wake up the LynxEM+, and make sure its in linear memory
-mode.
-+ */
-+static inline void __devinit sm7xx_init_hw(void)
-+{
-+	outb_p(0x18, 0x3c4);
-+	outb_p(0x11, 0x3c5);
-+}
-+
-+static void __devinit smtc_free_fb_info(struct smtcfb_info *sfb)
-+{
-+	if (sfb) {
-+		fb_alloc_cmap(&sfb->fb.cmap, 0, 0);
-+		kfree(sfb);
-+	}
-+}
-+
-+static int __init smtcfb_init(void)
-+{
-+	struct smtcfb_info *sfb;
-+	u_long smem_size = 0x00800000;	/* default 8MB */
-+	char name[16];
-+	int err, i = 0;
-+	unsigned long pFramebufferPhysical;
-+	struct pci_dev *pdev = NULL;
-+
-+	printk("Silicon Motion display driver " SMTC_LINUX_FB_VERSION "\n");
-+
-+	do {
-+		pdev = pci_get_device(0x126f, smtc_ChipIDs[i], pdev);
-+		if (pdev == NULL) {
-+			i++;
-+		} else {
-+			hw.chipID = smtc_ChipIDs[i];
-+			break;
-+		}
-+	} while (i < numSMTCchipIDs);
-+
-+	err = pci_enable_device(pdev);	/* enable SMTC chip */
-+
-+	if (err) {
-+		return err;
-+	}
-+	err = -ENOMEM;
-+
-+	sprintf(name, "sm%Xfb", hw.chipID);
-+
-+	sfb = smtc_alloc_fb_info(pdev, name);
-+
-+	if (!sfb) {
-+		goto failed;
-+	}
-+
-+	sm7xx_init_hw();
-+
-+	/*get mode parameter from screen_info */
-+	if (screen_info.lfb_width != 0) {
-+		sfb->fb.var.xres = screen_info.lfb_width;
-+		sfb->fb.var.yres = screen_info.lfb_height;
-+		sfb->fb.var.bits_per_pixel = screen_info.lfb_depth;
-+	} else {
-+		sfb->fb.var.xres = SCREEN_X_RES;	/* default resolution 1024x600 16bit
-mode */
-+		sfb->fb.var.yres = SCREEN_Y_RES;
-+		sfb->fb.var.bits_per_pixel = SCREEN_BPP;
-+	}
-+
-+	smdbg("\nsfb->fb.var.bits_per_pixel = %d sm712be_flag = %d\n",
-+	      sfb->fb.var.bits_per_pixel, sm712be_flag);
-+#ifdef __BIG_ENDIAN
-+	if (sm712be_flag == 1 && sfb->fb.var.bits_per_pixel == 24) {
-+		sfb->fb.var.bits_per_pixel = screen_info.lfb_depth = 32;
-+	}
-+#endif
-+	/* Map address and memory detection */
-+	pFramebufferPhysical = pci_resource_start(pdev, 0);
-+	pci_read_config_byte(pdev, PCI_REVISION_ID, &hw.chipRevID);
-+
-+	switch (hw.chipID) {
-+
-+	case 0x710:
-+	case 0x712:
-+		sfb->fb.fix.mmio_start = pFramebufferPhysical + 0x00400000;
-+		sfb->fb.fix.mmio_len = 0x00400000;
-+		smem_size = SM712_VIDEOMEMORYSIZE;
-+#ifdef __BIG_ENDIAN
-+		hw.m_pLFB = smtc_VRAMBaseAddress =
-+		    ioremap(pFramebufferPhysical, 0x00c00000);
-+#else
-+		hw.m_pLFB = smtc_VRAMBaseAddress =
-+		    ioremap(pFramebufferPhysical, 0x00800000);
-+#endif
-+		hw.m_pMMIO = smtc_RegBaseAddress =
-+		    smtc_VRAMBaseAddress + 0x00700000;
-+		smtc_2DBaseAddress = hw.m_pDPR =
-+		    smtc_VRAMBaseAddress + 0x00408000;
-+		smtc_2Ddataport = smtc_VRAMBaseAddress + DE_DATA_PORT_712;
-+		hw.m_pVPR = hw.m_pLFB + 0x0040c000;
-+		if (sfb->fb.var.bits_per_pixel == 32) {
-+#ifdef __BIG_ENDIAN
-+			smtc_VRAMBaseAddress += 0x800000;
-+			hw.m_pLFB += 0x800000;
-+			printk("\nsmtc_VRAMBaseAddress=0x%X hw.m_pLFB=0x%X\n",
-+			       smtc_VRAMBaseAddress, hw.m_pLFB);
-+#endif
-+		}
-+		if (!smtc_RegBaseAddress) {
-+			printk("%s: unable to map memory mapped IO\n",
-+			       sfb->fb.fix.id);
-+			return -ENOMEM;
-+		}
-+
-+		smtc_seqw(0x6a, 0x16);	/* set MCLK = 14.31818 *  (0x16 / 0x2) */
-+		smtc_seqw(0x6b, 0x02);
-+		smtc_seqw(0x62, 0x3e);
-+		smtc_seqw(0x17, 0x20);	/* enable PCI burst */
-+		/* enabel word swap */
-+		if (sfb->fb.var.bits_per_pixel == 32) {
-+#ifdef __BIG_ENDIAN
-+			smtc_seqw(0x17, 0x30);
-+#endif
-+		}
-+#ifdef CONFIG_FB_SM7XX_ACCEL
-+		smtc_2Dacceleration = 1;
-+#endif
-+
-+		break;
-+
-+	case 0x720:
-+		sfb->fb.fix.mmio_start = pFramebufferPhysical;
-+		sfb->fb.fix.mmio_len = 0x00200000;
-+		smem_size = SM722_VIDEOMEMORYSIZE;
-+		smtc_2DBaseAddress = hw.m_pDPR =
-+		    ioremap(pFramebufferPhysical, 0x00a00000);
-+		hw.m_pLFB = smtc_VRAMBaseAddress =
-+		    smtc_2DBaseAddress + 0x00200000;
-+		hw.m_pMMIO = smtc_RegBaseAddress =
-+		    smtc_2DBaseAddress + 0x000c0000;
-+		smtc_2Ddataport = smtc_2DBaseAddress + DE_DATA_PORT_722;
-+		hw.m_pVPR = smtc_2DBaseAddress + 0x800;
-+
-+		smtc_seqw(0x62, 0xff);
-+		smtc_seqw(0x6a, 0x0d);
-+		smtc_seqw(0x6b, 0x02);
-+		smtc_2Dacceleration = 0;
-+		break;
-+	default:
-+		printk("No valid Silicon Motion display chip was detected!\n");
-+		smtc_free_fb_info(sfb);
-+		return err;
-+	}
-+
-+	/* can support 32 bpp */
-+	if (15 == sfb->fb.var.bits_per_pixel)
-+		sfb->fb.var.bits_per_pixel = 16;
-+	/* else if (32==sfb->fb.var.bits_per_pixel) */
-+	/* sfb->fb.var.bits_per_pixel = 24; */
-+
-+	sfb->fb.var.xres_virtual = sfb->fb.var.xres;
-+
-+	sfb->fb.var.yres_virtual = sfb->fb.var.yres;
-+	err = smtc_map_smem(sfb, pdev, smem_size);
-+	if (err) {
-+		goto failed;
-+	}
-+
-+	smtcfb_setmode(sfb);
-+	hw.BaseAddressInVRAM = 0;	/* Primary display starting from 0 postion
-*/
-+	sfb->fb.par = &hw;
-+
-+	err = register_framebuffer(&sfb->fb);
-+	if (err < 0) {
-+		goto failed;
-+	}
-+
-+	printk
-+	    ("Silicon Motion SM%X Rev%X primary display mode %dx%d-%d Init
-Complete.\n",
-+	     hw.chipID, hw.chipRevID, sfb->fb.var.xres, sfb->fb.var.yres,
-+	     sfb->fb.var.bits_per_pixel);
-+
-+#if defined(CONFIG_FB_SM7XX_DUALHEAD)
-+	smtc_head2_init(sfb);
-+	err = register_framebuffer(&smtcfb_info2.fb);
-+
-+	if (err < 0) {
-+		printk("Silicon Motion, Inc.  second head init fail\n");
-+		goto failed;	/* if second head display fails, also fails the primary
-display */
-+	}
-+
-+	printk
-+	    ("Silicon Motion SM%X Rev%X secondary display mode %dx%d-%d Init
-Complete.\n",
-+	     hw.chipID, hw.chipRevID, hw2.width, hw2.height,
-+	     smtcfb_info2.fb.var.bits_per_pixel);
-+
-+#endif
-+
-+	return 0;
-+
-+ failed:
-+	printk("Silicon Motion, Inc.  primary display init fail\n");
-+	smtc_unmap_smem(sfb);
-+	smtc_unmap_mmio(sfb);
-+	smtc_free_fb_info(sfb);
-+
-+	return err;
-+}
-+
-+static void __exit smtcfb_exit(void)
-+{
-+}
-+
-+module_init(smtcfb_init);
-+module_exit(smtcfb_exit);
-+
-+/*
-+ *	sm712be_setup - process command line options
-+ *	@options: string of options
-+ *	Returns zero.
-+ *
-+ */
-+static int __init sm712be_setup(char *options)
-+{
-+	int retval = 0;
-+	sm712be_flag = 0;
-+	if (!options || !*options) {
-+		retval = 1;
-+		smdbg("\n No sm712be parameter\n", __LINE__);
-+	}
-+	if (!retval && strstr(options, "enable")) {
-+		sm712be_flag = 1;
-+	}
-+	smdbg("\nsm712be_setup = %s sm712be_flag = %d\n", options,
-+	      sm712be_flag);
-+	return 1;
-+}
-+
-+__setup("sm712be=", sm712be_setup);
-+
-+#ifdef __BIG_ENDIAN
-+/*
-+ *	sm712vga_setup - process command line options, get vga parameter
-+ *	@options: string of options
-+ *	Returns zero.
-+ *
-+ */
-+static int __init sm712vga_setup(char *options)
-+{
-+	int retval = 0;
-+	int index;
-+	sm712be_flag = 0;
-+
-+	if (!options || !*options) {
-+		retval = 1;
-+		smdbg("\n No vga parameter\n", __LINE__);
-+	}
-+
-+	screen_info.lfb_width = 0;
-+	screen_info.lfb_height = 0;
-+	screen_info.lfb_depth = 0;
-+
-+	for (index = 0;
-+	     index < (sizeof(vesa_mode) / sizeof(struct vesa_mode_table));
-+	     index++) {
-+		if (strstr(options, vesa_mode[index].mode_index)) {
-+			screen_info.lfb_width = vesa_mode[index].lfb_width;
-+			screen_info.lfb_height = vesa_mode[index].lfb_height;
-+			screen_info.lfb_depth = vesa_mode[index].lfb_depth;
-+		}
-+	}
-+	smdbg("\nsm712vga_setup = %s\n", options);
-+	return 1;
-+}
-+
-+__setup("vga=", sm712vga_setup);
-+#endif
-+
-+MODULE_AUTHOR("Siliconmotion ");
-+MODULE_DESCRIPTION("Framebuffer driver for SMI Graphic Cards");
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/video/smi/smtcfb.h b/drivers/video/smi/smtcfb.h
-new file mode 100644
-index 0000000..2cb0c77
---- /dev/null
-+++ b/drivers/video/smi/smtcfb.h
-@@ -0,0 +1,786 @@
-+/*
-+ *  linux/drivers/video/smtcfb.h -- Silicon Motion SM501 and SM7xx
-frame buffer device
-+ *
-+ *	 Copyright (C) 2006 Silicon Motion Technology Corp.
-+ *	 Ge Wang, gewang@siliconmotion.com
-+ *	 Boyod boyod.yang@siliconmotion.com.cn
-+ *
-+ *  This file is subject to the terms and conditions of the GNU General
-Public
-+ *  License. See the file COPYING in the main directory of this archive
-for
-+ *  more details.
-+ */
-+
-+#define SMTC_LINUX_FB_VERSION	"version 0.11.2619.21.01 July 27, 2008"
-+
-+#define NR_PALETTE	256
-+#define NR_RGB 	 2
-+
-+#define FB_ACCEL_SMI_LYNX  88
-+
-+#ifdef __BIG_ENDIAN
-+#define PC_VGA 0
-+#else
-+#define PC_VGA 1
-+#endif
-+
-+#define SCREEN_X_RES	1024
-+#define SCREEN_Y_RES	600
-+#define SCREEN_BPP	16
-+
-+#ifndef FIELD_OFFSET
-+#define FIELD_OFSFET(type, field)	((unsigned long) (PUCHAR) &(((type
-*)0)->field))
-+#endif
-+
-+#define SM712_VIDEOMEMORYSIZE	  0x00400000	/*Assume SM712 graphics chip
-has 4MB VRAM */
-+#define SM722_VIDEOMEMORYSIZE	  0x00800000	/*Assume SM722 graphics chip
-has 8MB VRAM */
-+
-+#define dac_reg	(0x3c8)
-+#define dac_val	(0x3c9)
-+
-+extern char *smtc_RegBaseAddress;
-+#define smtc_mmiowb(dat,reg)	writeb(dat, smtc_RegBaseAddress + reg)
-+#define smtc_mmioww(dat,reg)	writew(dat, smtc_RegBaseAddress + reg)
-+#define smtc_mmiowl(dat,reg)	writel(dat, smtc_RegBaseAddress + reg)
-+
-+#define smtc_mmiorb(reg)		readb(smtc_RegBaseAddress + reg)
-+#define smtc_mmiorw(reg)		readw(smtc_RegBaseAddress + reg)
-+#define smtc_mmiorl(reg)		readl(smtc_RegBaseAddress + reg)
-+
-+#define SIZE_SR00_SR04      (0x04 - 0x00 + 1)
-+#define SIZE_SR10_SR24      (0x24 - 0x10 + 1)
-+#define SIZE_SR30_SR75      (0x75 - 0x30 + 1)
-+#define SIZE_SR80_SR93      (0x93 - 0x80 + 1)
-+#define SIZE_SRA0_SRAF      (0xAF - 0xA0 + 1)
-+#define SIZE_GR00_GR08      (0x08 - 0x00 + 1)
-+#define SIZE_AR00_AR14      (0x14 - 0x00 + 1)
-+#define SIZE_CR00_CR18      (0x18 - 0x00 + 1)
-+#define SIZE_CR30_CR4D      (0x4D - 0x30 + 1)
-+#define SIZE_CR90_CRA7      (0xA7 - 0x90 + 1)
-+#define SIZE_VPR	     (0x6C + 1)
-+#define SIZE_DPR			(0x44 + 1)
-+
-+static inline void smtc_crtcw(int reg, int val)
-+{
-+	smtc_mmiowb(reg, 0x3d4);
-+	smtc_mmiowb(val, 0x3d5);
-+}
-+
-+static inline unsigned int smtc_crtcr(int reg)
-+{
-+	smtc_mmiowb(reg, 0x3d4);
-+	return smtc_mmiorb(0x3d5);
-+}
-+
-+static inline void smtc_grphw(int reg, int val)
-+{
-+	smtc_mmiowb(reg, 0x3ce);
-+	smtc_mmiowb(val, 0x3cf);
-+}
-+
-+static inline unsigned int smtc_grphr(int reg)
-+{
-+	smtc_mmiowb(reg, 0x3ce);
-+	return smtc_mmiorb(0x3cf);
-+}
-+
-+static inline void smtc_attrw(int reg, int val)
-+{
-+	smtc_mmiorb(0x3da);
-+	smtc_mmiowb(reg, 0x3c0);
-+	smtc_mmiorb(0x3c1);
-+	smtc_mmiowb(val, 0x3c0);
-+}
-+
-+static inline void smtc_seqw(int reg, int val)
-+{
-+	smtc_mmiowb(reg, 0x3c4);
-+	smtc_mmiowb(val, 0x3c5);
-+}
-+
-+static inline unsigned int smtc_seqr(int reg)
-+{
-+	smtc_mmiowb(reg, 0x3c4);
-+	return smtc_mmiorb(0x3c5);
-+}
-+
-+/* The next structure holds all information relevant for a specific
-video mode. */
-+
-+struct ModeInit {
-+	int mmSizeX;
-+	int mmSizeY;
-+	int bpp;
-+	int hz;
-+	unsigned char Init_MISC;
-+	unsigned char Init_SR00_SR04[SIZE_SR00_SR04];
-+	unsigned char Init_SR10_SR24[SIZE_SR10_SR24];
-+	unsigned char Init_SR30_SR75[SIZE_SR30_SR75];
-+	unsigned char Init_SR80_SR93[SIZE_SR80_SR93];
-+	unsigned char Init_SRA0_SRAF[SIZE_SRA0_SRAF];
-+	unsigned char Init_GR00_GR08[SIZE_GR00_GR08];
-+	unsigned char Init_AR00_AR14[SIZE_AR00_AR14];
-+	unsigned char Init_CR00_CR18[SIZE_CR00_CR18];
-+	unsigned char Init_CR30_CR4D[SIZE_CR30_CR4D];
-+	unsigned char Init_CR90_CRA7[SIZE_CR90_CRA7];
-+};
-+
-+/**********************************************************************
-+			 SM712 Mode table.
-+
-**********************************************************************/
-+struct ModeInit VGAMode[] = {
-+	{
-+	 /*  mode#0: 640 x 480  16Bpp  60Hz */
-+	 640, 480, 16, 60,
-+	 /*  Init_MISC */
-+	 0xE3,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x00, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xFF, 0xBE, 0xEF, 0xFF, 0x00, 0x0E, 0x17, 0x2C,
-+	  0x99, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x30, 0x02, 0x01, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x32, 0x03, 0xA0, 0x09, 0xC0, 0x32, 0x32, 0x32,
-+	  0x32, 0x32, 0x32, 0x32, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x32, 0x32, 0x32,
-+	  0x04, 0x24, 0x63, 0x4F, 0x52, 0x0B, 0xDF, 0xEA,
-+	  0x04, 0x50, 0x19, 0x32, 0x32, 0x00, 0x00, 0x32,
-+	  0x01, 0x80, 0x7E, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x74, 0x14, 0x07, 0x82, 0x07, 0x04,
-+	  0x00, 0x45, 0x30, 0x30, 0x40, 0x30,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0xFF, 0x07, 0x00, 0x6F, 0x7F, 0x7F, 0xFF, 0x32,
-+	  0xF7, 0x00, 0x00, 0x00, 0xEF, 0xFF, 0x32, 0x32,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFF, 0xBF, 0xFF, 0xFF, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFF, 0xFF, 0xFF, 0xBF, 0xEF, 0xFF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0x5F, 0x4F, 0x4F, 0x00, 0x53, 0x1F, 0x0B, 0x3E,
-+	  0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xEA, 0x0C, 0xDF, 0x50, 0x40, 0xDF, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x55, 0x03, 0x20,
-+	  0x00, 0x00, 0x00, 0x40, 0x00, 0xE7, 0xFF, 0xFD,
-+	  0x5F, 0x4F, 0x00, 0x54, 0x00, 0x0B, 0xDF, 0x00,
-+	  0xEA, 0x0C, 0x2E, 0x00, 0x4F, 0xDF,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x56, 0xDD, 0x5E, 0xEA, 0x87, 0x44, 0x8F, 0x55,
-+	  0x0A, 0x8F, 0x55, 0x0A, 0x00, 0x00, 0x18, 0x00,
-+	  0x11, 0x10, 0x0B, 0x0A, 0x0A, 0x0A, 0x0A, 0x00,
-+	  },
-+	 },
-+	{
-+	 /*  mode#1: 640 x 480  24Bpp  60Hz */
-+	 640, 480, 24, 60,
-+	 /*  Init_MISC */
-+	 0xE3,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x00, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xFF, 0xBE, 0xEF, 0xFF, 0x00, 0x0E, 0x17, 0x2C,
-+	  0x99, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x30, 0x02, 0x01, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x32, 0x03, 0xA0, 0x09, 0xC0, 0x32, 0x32, 0x32,
-+	  0x32, 0x32, 0x32, 0x32, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x32, 0x32, 0x32,
-+	  0x04, 0x24, 0x63, 0x4F, 0x52, 0x0B, 0xDF, 0xEA,
-+	  0x04, 0x50, 0x19, 0x32, 0x32, 0x00, 0x00, 0x32,
-+	  0x01, 0x80, 0x7E, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x74, 0x14, 0x07, 0x82, 0x07, 0x04,
-+	  0x00, 0x45, 0x30, 0x30, 0x40, 0x30,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0xFF, 0x07, 0x00, 0x6F, 0x7F, 0x7F, 0xFF, 0x32,
-+	  0xF7, 0x00, 0x00, 0x00, 0xEF, 0xFF, 0x32, 0x32,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFF, 0xBF, 0xFF, 0xFF, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFF, 0xFF, 0xFF, 0xBF, 0xEF, 0xFF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0x5F, 0x4F, 0x4F, 0x00, 0x53, 0x1F, 0x0B, 0x3E,
-+	  0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xEA, 0x0C, 0xDF, 0x50, 0x40, 0xDF, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x55, 0x03, 0x20,
-+	  0x00, 0x00, 0x00, 0x40, 0x00, 0xE7, 0xFF, 0xFD,
-+	  0x5F, 0x4F, 0x00, 0x54, 0x00, 0x0B, 0xDF, 0x00,
-+	  0xEA, 0x0C, 0x2E, 0x00, 0x4F, 0xDF,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x56, 0xDD, 0x5E, 0xEA, 0x87, 0x44, 0x8F, 0x55,
-+	  0x0A, 0x8F, 0x55, 0x0A, 0x00, 0x00, 0x18, 0x00,
-+	  0x11, 0x10, 0x0B, 0x0A, 0x0A, 0x0A, 0x0A, 0x00,
-+	  },
-+	 },
-+	{
-+	 /*  mode#0: 640 x 480  32Bpp  60Hz */
-+	 640, 480, 32, 60,
-+	 /*  Init_MISC */
-+	 0xE3,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x00, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xFF, 0xBE, 0xEF, 0xFF, 0x00, 0x0E, 0x17, 0x2C,
-+	  0x99, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x30, 0x02, 0x01, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x32, 0x03, 0xA0, 0x09, 0xC0, 0x32, 0x32, 0x32,
-+	  0x32, 0x32, 0x32, 0x32, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x32, 0x32, 0x32,
-+	  0x04, 0x24, 0x63, 0x4F, 0x52, 0x0B, 0xDF, 0xEA,
-+	  0x04, 0x50, 0x19, 0x32, 0x32, 0x00, 0x00, 0x32,
-+	  0x01, 0x80, 0x7E, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x74, 0x14, 0x07, 0x82, 0x07, 0x04,
-+	  0x00, 0x45, 0x30, 0x30, 0x40, 0x30,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0xFF, 0x07, 0x00, 0x6F, 0x7F, 0x7F, 0xFF, 0x32,
-+	  0xF7, 0x00, 0x00, 0x00, 0xEF, 0xFF, 0x32, 0x32,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFF, 0xBF, 0xFF, 0xFF, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFF, 0xFF, 0xFF, 0xBF, 0xEF, 0xFF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0x5F, 0x4F, 0x4F, 0x00, 0x53, 0x1F, 0x0B, 0x3E,
-+	  0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xEA, 0x0C, 0xDF, 0x50, 0x40, 0xDF, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x55, 0x03, 0x20,
-+	  0x00, 0x00, 0x00, 0x40, 0x00, 0xE7, 0xFF, 0xFD,
-+	  0x5F, 0x4F, 0x00, 0x54, 0x00, 0x0B, 0xDF, 0x00,
-+	  0xEA, 0x0C, 0x2E, 0x00, 0x4F, 0xDF,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x56, 0xDD, 0x5E, 0xEA, 0x87, 0x44, 0x8F, 0x55,
-+	  0x0A, 0x8F, 0x55, 0x0A, 0x00, 0x00, 0x18, 0x00,
-+	  0x11, 0x10, 0x0B, 0x0A, 0x0A, 0x0A, 0x0A, 0x00,
-+	  },
-+	 },
-+
-+	{			/*  mode#2: 800 x 600  16Bpp  60Hz */
-+	 800, 600, 16, 60,
-+	 /*  Init_MISC */
-+	 0x2B,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x03, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xFF, 0xBE, 0xEE, 0xFF, 0x00, 0x0E, 0x17, 0x2C,
-+	  0x99, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x30, 0x02, 0x01, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x34, 0x03, 0x20, 0x09, 0xC0, 0x24, 0x24, 0x24,
-+	  0x24, 0x24, 0x24, 0x24, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x38, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x24, 0x24, 0x24,
-+	  0x04, 0x48, 0x83, 0x63, 0x68, 0x72, 0x57, 0x58,
-+	  0x04, 0x55, 0x59, 0x24, 0x24, 0x00, 0x00, 0x24,
-+	  0x01, 0x80, 0x7A, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x74, 0x14, 0x1C, 0x85, 0x35, 0x13,
-+	  0x02, 0x45, 0x30, 0x35, 0x40, 0x20,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0x00, 0x00, 0x00, 0x6F, 0x7F, 0x7F, 0xFF, 0x24,
-+	  0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x24, 0x24,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFF, 0xBF, 0xFF, 0xFF, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFF, 0xFF, 0xFF, 0xBF, 0xEF, 0xBF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0x7F, 0x63, 0x63, 0x00, 0x68, 0x18, 0x72, 0xF0,
-+	  0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0x58, 0x0C, 0x57, 0x64, 0x40, 0x57, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x33, 0x03, 0x20,
-+	  0x00, 0x00, 0x00, 0x40, 0x00, 0xE7, 0xBF, 0xFD,
-+	  0x7F, 0x63, 0x00, 0x69, 0x18, 0x72, 0x57, 0x00,
-+	  0x58, 0x0C, 0xE0, 0x20, 0x63, 0x57,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x56, 0x4B, 0x5E, 0x55, 0x86, 0x9D, 0x8E, 0xAA,
-+	  0xDB, 0x2A, 0xDF, 0x33, 0x00, 0x00, 0x18, 0x00,
-+	  0x20, 0x1F, 0x1A, 0x19, 0x0F, 0x0F, 0x0F, 0x00,
-+	  },
-+	 },
-+	{			/*  mode#3: 800 x 600  24Bpp  60Hz */
-+	 800, 600, 24, 60,
-+	 0x2B,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x03, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xFF, 0xBE, 0xEE, 0xFF, 0x00, 0x0E, 0x17, 0x2C,
-+	  0x99, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x30, 0x02, 0x01, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x36, 0x03, 0x20, 0x09, 0xC0, 0x36, 0x36, 0x36,
-+	  0x36, 0x36, 0x36, 0x36, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x36, 0x36, 0x36,
-+	  0x04, 0x48, 0x83, 0x63, 0x68, 0x72, 0x57, 0x58,
-+	  0x04, 0x55, 0x59, 0x36, 0x36, 0x00, 0x00, 0x36,
-+	  0x01, 0x80, 0x7E, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x74, 0x14, 0x1C, 0x85, 0x35, 0x13,
-+	  0x02, 0x45, 0x30, 0x30, 0x40, 0x20,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0xFF, 0x07, 0x00, 0x6F, 0x7F, 0x7F, 0xFF, 0x36,
-+	  0xF7, 0x00, 0x00, 0x00, 0xEF, 0xFF, 0x36, 0x36,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFF, 0xBF, 0xFF, 0xFF, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFF, 0xFF, 0xFF, 0xBF, 0xEF, 0xBF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0x7F, 0x63, 0x63, 0x00, 0x68, 0x18, 0x72, 0xF0,
-+	  0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0x58, 0x0C, 0x57, 0x64, 0x40, 0x57, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x33, 0x03, 0x20,
-+	  0x00, 0x00, 0x00, 0x40, 0x00, 0xE7, 0xBF, 0xFD,
-+	  0x7F, 0x63, 0x00, 0x69, 0x18, 0x72, 0x57, 0x00,
-+	  0x58, 0x0C, 0xE0, 0x20, 0x63, 0x57,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x56, 0x4B, 0x5E, 0x55, 0x86, 0x9D, 0x8E, 0xAA,
-+	  0xDB, 0x2A, 0xDF, 0x33, 0x00, 0x00, 0x18, 0x00,
-+	  0x20, 0x1F, 0x1A, 0x19, 0x0F, 0x0F, 0x0F, 0x00,
-+	  },
-+	 },
-+	{			/*  mode#7: 800 x 600  32Bpp  60Hz */
-+	 800, 600, 32, 60,
-+	 /*  Init_MISC */
-+	 0x2B,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x03, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xFF, 0xBE, 0xEE, 0xFF, 0x00, 0x0E, 0x17, 0x2C,
-+	  0x99, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x30, 0x02, 0x01, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x34, 0x03, 0x20, 0x09, 0xC0, 0x24, 0x24, 0x24,
-+	  0x24, 0x24, 0x24, 0x24, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x38, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x24, 0x24, 0x24,
-+	  0x04, 0x48, 0x83, 0x63, 0x68, 0x72, 0x57, 0x58,
-+	  0x04, 0x55, 0x59, 0x24, 0x24, 0x00, 0x00, 0x24,
-+	  0x01, 0x80, 0x7A, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x74, 0x14, 0x1C, 0x85, 0x35, 0x13,
-+	  0x02, 0x45, 0x30, 0x35, 0x40, 0x20,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0x00, 0x00, 0x00, 0x6F, 0x7F, 0x7F, 0xFF, 0x24,
-+	  0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x24, 0x24,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFF, 0xBF, 0xFF, 0xFF, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFF, 0xFF, 0xFF, 0xBF, 0xEF, 0xBF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0x7F, 0x63, 0x63, 0x00, 0x68, 0x18, 0x72, 0xF0,
-+	  0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0x58, 0x0C, 0x57, 0x64, 0x40, 0x57, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x33, 0x03, 0x20,
-+	  0x00, 0x00, 0x00, 0x40, 0x00, 0xE7, 0xBF, 0xFD,
-+	  0x7F, 0x63, 0x00, 0x69, 0x18, 0x72, 0x57, 0x00,
-+	  0x58, 0x0C, 0xE0, 0x20, 0x63, 0x57,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x56, 0x4B, 0x5E, 0x55, 0x86, 0x9D, 0x8E, 0xAA,
-+	  0xDB, 0x2A, 0xDF, 0x33, 0x00, 0x00, 0x18, 0x00,
-+	  0x20, 0x1F, 0x1A, 0x19, 0x0F, 0x0F, 0x0F, 0x00,
-+	  },
-+	 },
-+
-+	{			/*  mode#4: 1024 x 600  16Bpp  60Hz  We use 1024x768 table to
-light 1024x600 panel for lemote */
-+	 1024, 600, 16, 60,
-+	 /*  Init_MISC */
-+	 0xEB,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x00, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xC8, 0x40, 0x14, 0x60, 0x00, 0x0A, 0x17, 0x20,
-+	  0x51, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x30, 0x02, 0x00, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x22, 0x03, 0x24, 0x09, 0xC0, 0x22, 0x22, 0x22,
-+	  0x22, 0x22, 0x22, 0x22, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x22, 0x22, 0x22,
-+	  0x06, 0x68, 0xA7, 0x7F, 0x83, 0x24, 0xFF, 0x03,
-+	  0x00, 0x60, 0x59, 0x22, 0x22, 0x00, 0x00, 0x22,
-+	  0x01, 0x80, 0x7A, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x16, 0x02, 0x0D, 0x82, 0x09, 0x02,
-+	  0x04, 0x45, 0x3F, 0x30, 0x40, 0x20,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0xFF, 0x07, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x3A,
-+	  0xF7, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x3A, 0x3A,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFB, 0x9F, 0x01, 0x00, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFB, 0xFF, 0xFF, 0x97, 0xEF, 0xBF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0xA3, 0x7F, 0x7F, 0x00, 0x85, 0x16, 0x24, 0xF5,
-+	  0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0x03, 0x09, 0xFF, 0x80, 0x40, 0xFF, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x02, 0x20,
-+	  0x00, 0x00, 0x00, 0x40, 0x00, 0xFF, 0xBF, 0xFF,
-+	  0xA3, 0x7F, 0x00, 0x82, 0x0b, 0x6f, 0x57, 0x00,
-+	  0x5c, 0x0f, 0xE0, 0xe0, 0x7F, 0x57,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x55, 0xD9, 0x5D, 0xE1, 0x86, 0x1B, 0x8E, 0x26,
-+	  0xDA, 0x8D, 0xDE, 0x94, 0x00, 0x00, 0x18, 0x00,
-+	  0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x15, 0x03,
-+	  },
-+	 },
-+	{			/*  mode#5: 1024 x 768  24Bpp  60Hz */
-+	 1024, 768, 24, 60,
-+	 /*  Init_MISC */
-+	 0xEB,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x03, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xF3, 0xB6, 0xC0, 0xDD, 0x00, 0x0E, 0x17, 0x2C,
-+	  0x99, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x30, 0x02, 0x01, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x38, 0x03, 0x20, 0x09, 0xC0, 0x3A, 0x3A, 0x3A,
-+	  0x3A, 0x3A, 0x3A, 0x3A, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x00, 0x00, 0x3A,
-+	  0x06, 0x68, 0xA7, 0x7F, 0x83, 0x24, 0xFF, 0x03,
-+	  0x00, 0x60, 0x59, 0x3A, 0x3A, 0x00, 0x00, 0x3A,
-+	  0x01, 0x80, 0x7E, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x74, 0x14, 0x3B, 0x0D, 0x09, 0x02,
-+	  0x04, 0x45, 0x30, 0x30, 0x40, 0x20,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0xFF, 0x07, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x3A,
-+	  0xF7, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x3A, 0x3A,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFB, 0x9F, 0x01, 0x00, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFB, 0xFF, 0xFF, 0x97, 0xEF, 0xBF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0xA3, 0x7F, 0x7F, 0x00, 0x85, 0x16, 0x24, 0xF5,
-+	  0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0x03, 0x09, 0xFF, 0x80, 0x40, 0xFF, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x02, 0x20,
-+	  0x00, 0x00, 0x00, 0x40, 0x00, 0xFF, 0xBF, 0xFF,
-+	  0xA3, 0x7F, 0x00, 0x86, 0x15, 0x24, 0xFF, 0x00,
-+	  0x01, 0x07, 0xE5, 0x20, 0x7F, 0xFF,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x55, 0xD9, 0x5D, 0xE1, 0x86, 0x1B, 0x8E, 0x26,
-+	  0xDA, 0x8D, 0xDE, 0x94, 0x00, 0x00, 0x18, 0x00,
-+	  0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x15, 0x03,
-+	  },
-+	 },
-+	{			/*  mode#4: 1024 x 768  32Bpp  60Hz */
-+	 1024, 768, 32, 60,
-+	 /*  Init_MISC */
-+	 0xEB,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x03, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xF3, 0xB6, 0xC0, 0xDD, 0x00, 0x0E, 0x17, 0x2C,
-+	  0x99, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x32, 0x02, 0x01, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x38, 0x03, 0x20, 0x09, 0xC0, 0x3A, 0x3A, 0x3A,
-+	  0x3A, 0x3A, 0x3A, 0x3A, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x00, 0x00, 0x3A,
-+	  0x06, 0x68, 0xA7, 0x7F, 0x83, 0x24, 0xFF, 0x03,
-+	  0x00, 0x60, 0x59, 0x3A, 0x3A, 0x00, 0x00, 0x3A,
-+	  0x01, 0x80, 0x7E, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x74, 0x14, 0x3B, 0x0D, 0x09, 0x02,
-+	  0x04, 0x45, 0x30, 0x30, 0x40, 0x20,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0xFF, 0x07, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x3A,
-+	  0xF7, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x3A, 0x3A,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFB, 0x9F, 0x01, 0x00, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFB, 0xFF, 0xFF, 0x97, 0xEF, 0xBF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0xA3, 0x7F, 0x7F, 0x00, 0x85, 0x16, 0x24, 0xF5,
-+	  0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0x03, 0x09, 0xFF, 0x80, 0x40, 0xFF, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x02, 0x20,
-+	  0x00, 0x00, 0x00, 0x40, 0x00, 0xFF, 0xBF, 0xFF,
-+	  0xA3, 0x7F, 0x00, 0x86, 0x15, 0x24, 0xFF, 0x00,
-+	  0x01, 0x07, 0xE5, 0x20, 0x7F, 0xFF,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x55, 0xD9, 0x5D, 0xE1, 0x86, 0x1B, 0x8E, 0x26,
-+	  0xDA, 0x8D, 0xDE, 0x94, 0x00, 0x00, 0x18, 0x00,
-+	  0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x15, 0x03,
-+	  },
-+	 },
-+	{			/*  mode#6: 320 x 240  16Bpp  60Hz */
-+	 320, 240, 16, 60,
-+	 /*  Init_MISC */
-+	 0xEB,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x03, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xF3, 0xB6, 0xC0, 0xDD, 0x00, 0x0E, 0x17, 0x2C,
-+	  0x99, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x32, 0x02, 0x01, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x38, 0x03, 0x20, 0x09, 0xC0, 0x3A, 0x3A, 0x3A,
-+	  0x3A, 0x3A, 0x3A, 0x3A, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x00, 0x00, 0x3A,
-+	  0x06, 0x68, 0xA7, 0x7F, 0x83, 0x24, 0xFF, 0x03,
-+	  0x00, 0x60, 0x59, 0x3A, 0x3A, 0x00, 0x00, 0x3A,
-+	  0x01, 0x80, 0x7E, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x74, 0x14, 0x08, 0x43, 0x08, 0x43,
-+	  0x04, 0x45, 0x30, 0x30, 0x40, 0x20,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0xFF, 0x07, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x3A,
-+	  0xF7, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x3A, 0x3A,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFB, 0x9F, 0x01, 0x00, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFB, 0xFF, 0xFF, 0x97, 0xEF, 0xBF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0xA3, 0x7F, 0x7F, 0x00, 0x85, 0x16, 0x24, 0xF5,
-+	  0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0x03, 0x09, 0xFF, 0x80, 0x40, 0xFF, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x02, 0x20,
-+	  0x00, 0x00, 0x30, 0x40, 0x00, 0xFF, 0xBF, 0xFF,
-+	  0x2E, 0x27, 0x00, 0x2b, 0x0c, 0x0F, 0xEF, 0x00,
-+	  0xFe, 0x0f, 0x01, 0xC0, 0x27, 0xEF,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x55, 0xD9, 0x5D, 0xE1, 0x86, 0x1B, 0x8E, 0x26,
-+	  0xDA, 0x8D, 0xDE, 0x94, 0x00, 0x00, 0x18, 0x00,
-+	  0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x15, 0x03,
-+	  },
-+	 },
-+
-+	{			/*  mode#8: 320 x 240  32Bpp  60Hz */
-+	 320, 240, 32, 60,
-+	 /*  Init_MISC */
-+	 0xEB,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x03, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xF3, 0xB6, 0xC0, 0xDD, 0x00, 0x0E, 0x17, 0x2C,
-+	  0x99, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x32, 0x02, 0x01, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x38, 0x03, 0x20, 0x09, 0xC0, 0x3A, 0x3A, 0x3A,
-+	  0x3A, 0x3A, 0x3A, 0x3A, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x00, 0x00, 0x3A,
-+	  0x06, 0x68, 0xA7, 0x7F, 0x83, 0x24, 0xFF, 0x03,
-+	  0x00, 0x60, 0x59, 0x3A, 0x3A, 0x00, 0x00, 0x3A,
-+	  0x01, 0x80, 0x7E, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x74, 0x14, 0x08, 0x43, 0x08, 0x43,
-+	  0x04, 0x45, 0x30, 0x30, 0x40, 0x20,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0xFF, 0x07, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x3A,
-+	  0xF7, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x3A, 0x3A,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFB, 0x9F, 0x01, 0x00, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFB, 0xFF, 0xFF, 0x97, 0xEF, 0xBF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0xA3, 0x7F, 0x7F, 0x00, 0x85, 0x16, 0x24, 0xF5,
-+	  0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0x03, 0x09, 0xFF, 0x80, 0x40, 0xFF, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x02, 0x20,
-+	  0x00, 0x00, 0x30, 0x40, 0x00, 0xFF, 0xBF, 0xFF,
-+	  0x2E, 0x27, 0x00, 0x2b, 0x0c, 0x0F, 0xEF, 0x00,
-+	  0xFe, 0x0f, 0x01, 0xC0, 0x27, 0xEF,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x55, 0xD9, 0x5D, 0xE1, 0x86, 0x1B, 0x8E, 0x26,
-+	  0xDA, 0x8D, 0xDE, 0x94, 0x00, 0x00, 0x18, 0x00,
-+	  0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x15, 0x03,
-+	  },
-+	 },
-+};
-+
-+#define numVGAModes			sizeof(VGAMode)/sizeof(struct ModeInit)
++++ b/arch/mips/configs/yeeloong2f_defconfig
+@@ -0,0 +1,2586 @@
++#
++# Automatically generated make config: don't edit
++# Linux kernel version: 2.6.29.3
++# Sat May 16 04:27:13 2009
++#
++CONFIG_MIPS=y
++
++#
++# Machine selection
++#
++# CONFIG_MACH_ALCHEMY is not set
++# CONFIG_BASLER_EXCITE is not set
++# CONFIG_BCM47XX is not set
++# CONFIG_MIPS_COBALT is not set
++# CONFIG_MACH_DECSTATION is not set
++# CONFIG_MACH_JAZZ is not set
++# CONFIG_LASAT is not set
++CONFIG_LOONGSON_SYSTEMS=y
++# CONFIG_MIPS_MALTA is not set
++# CONFIG_MIPS_SIM is not set
++# CONFIG_NEC_MARKEINS is not set
++# CONFIG_MACH_VR41XX is not set
++# CONFIG_NXP_STB220 is not set
++# CONFIG_NXP_STB225 is not set
++# CONFIG_PNX8550_JBS is not set
++# CONFIG_PNX8550_STB810 is not set
++# CONFIG_PMC_MSP is not set
++# CONFIG_PMC_YOSEMITE is not set
++# CONFIG_SGI_IP22 is not set
++# CONFIG_SGI_IP27 is not set
++# CONFIG_SGI_IP28 is not set
++# CONFIG_SGI_IP32 is not set
++# CONFIG_SIBYTE_CRHINE is not set
++# CONFIG_SIBYTE_CARMEL is not set
++# CONFIG_SIBYTE_CRHONE is not set
++# CONFIG_SIBYTE_RHONE is not set
++# CONFIG_SIBYTE_SWARM is not set
++# CONFIG_SIBYTE_LITTLESUR is not set
++# CONFIG_SIBYTE_SENTOSA is not set
++# CONFIG_SIBYTE_BIGSUR is not set
++# CONFIG_SNI_RM is not set
++# CONFIG_MACH_TX39XX is not set
++# CONFIG_MACH_TX49XX is not set
++# CONFIG_MIKROTIK_RB532 is not set
++# CONFIG_WR_PPMC is not set
++# CONFIG_CAVIUM_OCTEON_SIMULATOR is not set
++# CONFIG_CAVIUM_OCTEON_REFERENCE_BOARD is not set
++CONFIG_ARCH_SPARSEMEM_ENABLE=y
++# CONFIG_LEMOTE_FULOONG2E is not set
++# CONFIG_LEMOTE_FULOONG2F is not set
++CONFIG_LEMOTE_YEELOONG2F=y
++CONFIG_CS5536=y
++CONFIG_SYS_HAS_MACH_PROM_INIT_CMDLINE=y
++CONFIG_RWSEM_GENERIC_SPINLOCK=y
++# CONFIG_ARCH_HAS_ILOG2_U32 is not set
++# CONFIG_ARCH_HAS_ILOG2_U64 is not set
++CONFIG_ARCH_SUPPORTS_OPROFILE=y
++CONFIG_GENERIC_FIND_NEXT_BIT=y
++CONFIG_GENERIC_HWEIGHT=y
++CONFIG_GENERIC_CALIBRATE_DELAY=y
++CONFIG_GENERIC_CLOCKEVENTS=y
++CONFIG_GENERIC_TIME=y
++CONFIG_GENERIC_CMOS_UPDATE=y
++CONFIG_SCHED_OMIT_FRAME_POINTER=y
++CONFIG_GENERIC_HARDIRQS_NO__DO_IRQ=y
++CONFIG_CEVT_R4K_LIB=y
++CONFIG_CEVT_R4K=y
++CONFIG_CSRC_R4K_LIB=y
++CONFIG_CSRC_R4K=y
++CONFIG_DMA_NONCOHERENT=y
++CONFIG_DMA_NEED_PCI_MAP_STATE=y
++CONFIG_EARLY_PRINTK=y
++CONFIG_SYS_HAS_EARLY_PRINTK=y
++# CONFIG_HOTPLUG_CPU is not set
++CONFIG_I8259=y
++# CONFIG_NO_IOPORT is not set
++CONFIG_GENERIC_ISA_DMA=y
++CONFIG_GENERIC_ISA_DMA_SUPPORT_BROKEN=y
++# CONFIG_CPU_BIG_ENDIAN is not set
++CONFIG_CPU_LITTLE_ENDIAN=y
++CONFIG_SYS_SUPPORTS_LITTLE_ENDIAN=y
++CONFIG_IRQ_CPU=y
++CONFIG_BOOT_ELF32=y
++CONFIG_MIPS_L1_CACHE_SHIFT=5
++
++#
++# CPU selection
++#
++# CONFIG_CPU_LOONGSON2E is not set
++CONFIG_CPU_LOONGSON2F=y
++# CONFIG_CPU_MIPS32_R1 is not set
++# CONFIG_CPU_MIPS32_R2 is not set
++# CONFIG_CPU_MIPS64_R1 is not set
++# CONFIG_CPU_MIPS64_R2 is not set
++# CONFIG_CPU_R3000 is not set
++# CONFIG_CPU_TX39XX is not set
++# CONFIG_CPU_VR41XX is not set
++# CONFIG_CPU_R4300 is not set
++# CONFIG_CPU_R4X00 is not set
++# CONFIG_CPU_TX49XX is not set
++# CONFIG_CPU_R5000 is not set
++# CONFIG_CPU_R5432 is not set
++# CONFIG_CPU_R5500 is not set
++# CONFIG_CPU_R6000 is not set
++# CONFIG_CPU_NEVADA is not set
++# CONFIG_CPU_R8000 is not set
++# CONFIG_CPU_R10000 is not set
++# CONFIG_CPU_RM7000 is not set
++# CONFIG_CPU_RM9000 is not set
++# CONFIG_CPU_SB1 is not set
++# CONFIG_CPU_CAVIUM_OCTEON is not set
++CONFIG_CPU_LOONGSON2=y
++CONFIG_SYS_HAS_CPU_LOONGSON2F=y
++CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
++CONFIG_SYS_SUPPORTS_64BIT_KERNEL=y
++CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
++CONFIG_CPU_SUPPORTS_64BIT_KERNEL=y
++
++#
++# Kernel type
++#
++# CONFIG_32BIT is not set
++CONFIG_64BIT=y
++# CONFIG_PAGE_SIZE_4KB is not set
++# CONFIG_PAGE_SIZE_8KB is not set
++CONFIG_PAGE_SIZE_16KB=y
++# CONFIG_PAGE_SIZE_64KB is not set
++CONFIG_BOARD_SCACHE=y
++CONFIG_MIPS_MT_DISABLED=y
++# CONFIG_MIPS_MT_SMP is not set
++# CONFIG_MIPS_MT_SMTC is not set
++CONFIG_CPU_HAS_WB=y
++CONFIG_CPU_HAS_SYNC=y
++CONFIG_GENERIC_HARDIRQS=y
++CONFIG_GENERIC_IRQ_PROBE=y
++CONFIG_CPU_SUPPORTS_HIGHMEM=y
++CONFIG_SYS_SUPPORTS_HIGHMEM=y
++CONFIG_ARCH_FLATMEM_ENABLE=y
++CONFIG_ARCH_POPULATES_NODE_MAP=y
++CONFIG_SELECT_MEMORY_MODEL=y
++# CONFIG_FLATMEM_MANUAL is not set
++# CONFIG_DISCONTIGMEM_MANUAL is not set
++CONFIG_SPARSEMEM_MANUAL=y
++CONFIG_SPARSEMEM=y
++CONFIG_HAVE_MEMORY_PRESENT=y
++CONFIG_SPARSEMEM_STATIC=y
++CONFIG_PAGEFLAGS_EXTENDED=y
++CONFIG_SPLIT_PTLOCK_CPUS=4
++CONFIG_PHYS_ADDR_T_64BIT=y
++CONFIG_ZONE_DMA_FLAG=0
++CONFIG_VIRT_TO_BUS=y
++CONFIG_UNEVICTABLE_LRU=y
++CONFIG_TICK_ONESHOT=y
++CONFIG_NO_HZ=y
++CONFIG_HIGH_RES_TIMERS=y
++CONFIG_GENERIC_CLOCKEVENTS_BUILD=y
++# CONFIG_HZ_48 is not set
++# CONFIG_HZ_100 is not set
++# CONFIG_HZ_128 is not set
++CONFIG_HZ_250=y
++# CONFIG_HZ_256 is not set
++# CONFIG_HZ_1000 is not set
++# CONFIG_HZ_1024 is not set
++CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
++CONFIG_HZ=250
++# CONFIG_PREEMPT_NONE is not set
++CONFIG_PREEMPT_VOLUNTARY=y
++# CONFIG_PREEMPT is not set
++CONFIG_KEXEC=y
++# CONFIG_SECCOMP is not set
++CONFIG_LOCKDEP_SUPPORT=y
++CONFIG_STACKTRACE_SUPPORT=y
++CONFIG_DEFCONFIG_LIST="/lib/modules/$UNAME_RELEASE/.config"
++
++#
++# General setup
++#
++CONFIG_EXPERIMENTAL=y
++CONFIG_BROKEN_ON_SMP=y
++CONFIG_INIT_ENV_ARG_LIMIT=32
++CONFIG_LOCALVERSION=""
++# CONFIG_LOCALVERSION_AUTO is not set
++CONFIG_SWAP=y
++CONFIG_SYSVIPC=y
++CONFIG_SYSVIPC_SYSCTL=y
++CONFIG_POSIX_MQUEUE=y
++CONFIG_BSD_PROCESS_ACCT=y
++CONFIG_BSD_PROCESS_ACCT_V3=y
++# CONFIG_TASKSTATS is not set
++CONFIG_AUDIT=y
++
++#
++# RCU Subsystem
++#
++CONFIG_CLASSIC_RCU=y
++# CONFIG_TREE_RCU is not set
++# CONFIG_PREEMPT_RCU is not set
++# CONFIG_TREE_RCU_TRACE is not set
++# CONFIG_PREEMPT_RCU_TRACE is not set
++# CONFIG_IKCONFIG is not set
++CONFIG_LOG_BUF_SHIFT=15
++# CONFIG_GROUP_SCHED is not set
++# CONFIG_CGROUPS is not set
++CONFIG_SYSFS_DEPRECATED=y
++CONFIG_SYSFS_DEPRECATED_V2=y
++# CONFIG_RELAY is not set
++# CONFIG_NAMESPACES is not set
++CONFIG_BLK_DEV_INITRD=y
++CONFIG_INITRAMFS_SOURCE=""
++CONFIG_CC_OPTIMIZE_FOR_SIZE=y
++CONFIG_SYSCTL=y
++CONFIG_ANON_INODES=y
++CONFIG_EMBEDDED=y
++CONFIG_SYSCTL_SYSCALL=y
++CONFIG_KALLSYMS=y
++# CONFIG_KALLSYMS_EXTRA_PASS is not set
++CONFIG_HOTPLUG=y
++CONFIG_PRINTK=y
++CONFIG_BUG=y
++CONFIG_ELF_CORE=y
++CONFIG_PCSPKR_PLATFORM=y
++CONFIG_BASE_FULL=y
++CONFIG_FUTEX=y
++CONFIG_EPOLL=y
++CONFIG_SIGNALFD=y
++CONFIG_TIMERFD=y
++CONFIG_EVENTFD=y
++CONFIG_SHMEM=y
++CONFIG_AIO=y
++CONFIG_VM_EVENT_COUNTERS=y
++CONFIG_PCI_QUIRKS=y
++CONFIG_COMPAT_BRK=y
++CONFIG_SLAB=y
++# CONFIG_SLUB is not set
++# CONFIG_SLOB is not set
++CONFIG_PROFILING=y
++CONFIG_TRACEPOINTS=y
++# CONFIG_MARKERS is not set
++CONFIG_OPROFILE=m
++CONFIG_HAVE_OPROFILE=y
++CONFIG_HAVE_SYSCALL_WRAPPERS=y
++# CONFIG_HAVE_GENERIC_DMA_COHERENT is not set
++CONFIG_SLABINFO=y
++CONFIG_RT_MUTEXES=y
++CONFIG_BASE_SMALL=0
++CONFIG_MODULES=y
++# CONFIG_MODULE_FORCE_LOAD is not set
++CONFIG_MODULE_UNLOAD=y
++CONFIG_MODULE_FORCE_UNLOAD=y
++CONFIG_MODVERSIONS=y
++# CONFIG_MODULE_SRCVERSION_ALL is not set
++CONFIG_BLOCK=y
++# CONFIG_BLK_DEV_IO_TRACE is not set
++# CONFIG_BLK_DEV_BSG is not set
++# CONFIG_BLK_DEV_INTEGRITY is not set
++CONFIG_BLOCK_COMPAT=y
++
++#
++# IO Schedulers
++#
++CONFIG_IOSCHED_NOOP=y
++CONFIG_IOSCHED_AS=y
++CONFIG_IOSCHED_DEADLINE=y
++CONFIG_IOSCHED_CFQ=y
++# CONFIG_DEFAULT_AS is not set
++# CONFIG_DEFAULT_DEADLINE is not set
++CONFIG_DEFAULT_CFQ=y
++# CONFIG_DEFAULT_NOOP is not set
++CONFIG_DEFAULT_IOSCHED="cfq"
++# CONFIG_PROBE_INITRD_HEADER is not set
++# CONFIG_FREEZER is not set
++
++#
++# Bus options (PCI, PCMCIA, EISA, ISA, TC)
++#
++CONFIG_HW_HAS_PCI=y
++CONFIG_PCI=y
++CONFIG_PCI_DOMAINS=y
++# CONFIG_ARCH_SUPPORTS_MSI is not set
++CONFIG_PCI_LEGACY=y
++# CONFIG_PCI_STUB is not set
++CONFIG_ISA=y
++CONFIG_MMU=y
++# CONFIG_PCCARD is not set
++CONFIG_HOTPLUG_PCI=m
++CONFIG_HOTPLUG_PCI_FAKE=m
++CONFIG_HOTPLUG_PCI_CPCI=y
++CONFIG_HOTPLUG_PCI_SHPC=m
++
++#
++# Executable file formats
++#
++CONFIG_BINFMT_ELF=y
++# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
++# CONFIG_HAVE_AOUT is not set
++CONFIG_BINFMT_MISC=m
++CONFIG_MIPS32_COMPAT=y
++CONFIG_COMPAT=y
++CONFIG_SYSVIPC_COMPAT=y
++CONFIG_MIPS32_O32=y
++CONFIG_MIPS32_N32=y
++CONFIG_BINFMT_ELF32=y
++
++#
++# Power management options
++#
++CONFIG_ARCH_SUSPEND_POSSIBLE=y
++CONFIG_PM=y
++CONFIG_PM_DEBUG=y
++CONFIG_PM_VERBOSE=y
++# CONFIG_SUSPEND is not set
++CONFIG_NET=y
++
++#
++# Networking options
++#
++CONFIG_COMPAT_NET_DEV_OPS=y
++CONFIG_PACKET=y
++CONFIG_PACKET_MMAP=y
++CONFIG_UNIX=y
++CONFIG_XFRM=y
++CONFIG_XFRM_USER=m
++# CONFIG_XFRM_SUB_POLICY is not set
++# CONFIG_XFRM_MIGRATE is not set
++# CONFIG_XFRM_STATISTICS is not set
++CONFIG_XFRM_IPCOMP=m
++CONFIG_NET_KEY=m
++# CONFIG_NET_KEY_MIGRATE is not set
++CONFIG_INET=y
++CONFIG_IP_MULTICAST=y
++CONFIG_IP_ADVANCED_ROUTER=y
++CONFIG_ASK_IP_FIB_HASH=y
++# CONFIG_IP_FIB_TRIE is not set
++CONFIG_IP_FIB_HASH=y
++CONFIG_IP_MULTIPLE_TABLES=y
++CONFIG_IP_ROUTE_MULTIPATH=y
++CONFIG_IP_ROUTE_VERBOSE=y
++# CONFIG_IP_PNP is not set
++CONFIG_NET_IPIP=m
++CONFIG_NET_IPGRE=m
++CONFIG_NET_IPGRE_BROADCAST=y
++CONFIG_IP_MROUTE=y
++CONFIG_IP_PIMSM_V1=y
++CONFIG_IP_PIMSM_V2=y
++# CONFIG_ARPD is not set
++CONFIG_SYN_COOKIES=y
++CONFIG_INET_AH=m
++CONFIG_INET_ESP=m
++CONFIG_INET_IPCOMP=m
++CONFIG_INET_XFRM_TUNNEL=m
++CONFIG_INET_TUNNEL=m
++CONFIG_INET_XFRM_MODE_TRANSPORT=m
++CONFIG_INET_XFRM_MODE_TUNNEL=m
++CONFIG_INET_XFRM_MODE_BEET=y
++CONFIG_INET_LRO=m
++CONFIG_INET_DIAG=m
++CONFIG_INET_TCP_DIAG=m
++CONFIG_TCP_CONG_ADVANCED=y
++CONFIG_TCP_CONG_BIC=y
++CONFIG_TCP_CONG_CUBIC=m
++CONFIG_TCP_CONG_WESTWOOD=m
++CONFIG_TCP_CONG_HTCP=m
++CONFIG_TCP_CONG_HSTCP=m
++CONFIG_TCP_CONG_HYBLA=m
++CONFIG_TCP_CONG_VEGAS=m
++CONFIG_TCP_CONG_SCALABLE=m
++CONFIG_TCP_CONG_LP=m
++CONFIG_TCP_CONG_VENO=m
++# CONFIG_TCP_CONG_YEAH is not set
++# CONFIG_TCP_CONG_ILLINOIS is not set
++CONFIG_DEFAULT_BIC=y
++# CONFIG_DEFAULT_CUBIC is not set
++# CONFIG_DEFAULT_HTCP is not set
++# CONFIG_DEFAULT_VEGAS is not set
++# CONFIG_DEFAULT_WESTWOOD is not set
++# CONFIG_DEFAULT_RENO is not set
++CONFIG_DEFAULT_TCP_CONG="bic"
++# CONFIG_TCP_MD5SIG is not set
++CONFIG_IPV6=m
++CONFIG_IPV6_PRIVACY=y
++# CONFIG_IPV6_ROUTER_PREF is not set
++# CONFIG_IPV6_OPTIMISTIC_DAD is not set
++CONFIG_INET6_AH=m
++CONFIG_INET6_ESP=m
++CONFIG_INET6_IPCOMP=m
++# CONFIG_IPV6_MIP6 is not set
++CONFIG_INET6_XFRM_TUNNEL=m
++CONFIG_INET6_TUNNEL=m
++CONFIG_INET6_XFRM_MODE_TRANSPORT=m
++CONFIG_INET6_XFRM_MODE_TUNNEL=m
++CONFIG_INET6_XFRM_MODE_BEET=m
++# CONFIG_INET6_XFRM_MODE_ROUTEOPTIMIZATION is not set
++CONFIG_IPV6_SIT=m
++CONFIG_IPV6_NDISC_NODETYPE=y
++CONFIG_IPV6_TUNNEL=m
++# CONFIG_IPV6_MULTIPLE_TABLES is not set
++# CONFIG_IPV6_MROUTE is not set
++# CONFIG_NETLABEL is not set
++CONFIG_NETWORK_SECMARK=y
++CONFIG_NETFILTER=y
++# CONFIG_NETFILTER_DEBUG is not set
++CONFIG_NETFILTER_ADVANCED=y
++CONFIG_BRIDGE_NETFILTER=y
++
++#
++# Core Netfilter Configuration
++#
++CONFIG_NETFILTER_NETLINK=m
++CONFIG_NETFILTER_NETLINK_QUEUE=m
++CONFIG_NETFILTER_NETLINK_LOG=m
++# CONFIG_NF_CONNTRACK is not set
++CONFIG_NETFILTER_XTABLES=m
++CONFIG_NETFILTER_XT_TARGET_CLASSIFY=m
++# CONFIG_NETFILTER_XT_TARGET_DSCP is not set
++CONFIG_NETFILTER_XT_TARGET_MARK=m
++# CONFIG_NETFILTER_XT_TARGET_NFLOG is not set
++CONFIG_NETFILTER_XT_TARGET_NFQUEUE=m
++# CONFIG_NETFILTER_XT_TARGET_RATEEST is not set
++# CONFIG_NETFILTER_XT_TARGET_TRACE is not set
++CONFIG_NETFILTER_XT_TARGET_SECMARK=m
++# CONFIG_NETFILTER_XT_TARGET_TCPMSS is not set
++# CONFIG_NETFILTER_XT_TARGET_TCPOPTSTRIP is not set
++CONFIG_NETFILTER_XT_MATCH_COMMENT=m
++CONFIG_NETFILTER_XT_MATCH_DCCP=m
++# CONFIG_NETFILTER_XT_MATCH_DSCP is not set
++CONFIG_NETFILTER_XT_MATCH_ESP=m
++# CONFIG_NETFILTER_XT_MATCH_HASHLIMIT is not set
++# CONFIG_NETFILTER_XT_MATCH_IPRANGE is not set
++CONFIG_NETFILTER_XT_MATCH_LENGTH=m
++CONFIG_NETFILTER_XT_MATCH_LIMIT=m
++CONFIG_NETFILTER_XT_MATCH_MAC=m
++CONFIG_NETFILTER_XT_MATCH_MARK=m
++CONFIG_NETFILTER_XT_MATCH_MULTIPORT=m
++# CONFIG_NETFILTER_XT_MATCH_OWNER is not set
++CONFIG_NETFILTER_XT_MATCH_POLICY=m
++CONFIG_NETFILTER_XT_MATCH_PHYSDEV=m
++CONFIG_NETFILTER_XT_MATCH_PKTTYPE=m
++CONFIG_NETFILTER_XT_MATCH_QUOTA=m
++# CONFIG_NETFILTER_XT_MATCH_RATEEST is not set
++CONFIG_NETFILTER_XT_MATCH_REALM=m
++# CONFIG_NETFILTER_XT_MATCH_RECENT is not set
++CONFIG_NETFILTER_XT_MATCH_SCTP=m
++CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
++CONFIG_NETFILTER_XT_MATCH_STRING=m
++CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
++# CONFIG_NETFILTER_XT_MATCH_TIME is not set
++# CONFIG_NETFILTER_XT_MATCH_U32 is not set
++CONFIG_IP_VS=m
++# CONFIG_IP_VS_IPV6 is not set
++# CONFIG_IP_VS_DEBUG is not set
++CONFIG_IP_VS_TAB_BITS=12
++
++#
++# IPVS transport protocol load balancing support
++#
++CONFIG_IP_VS_PROTO_TCP=y
++CONFIG_IP_VS_PROTO_UDP=y
++CONFIG_IP_VS_PROTO_AH_ESP=y
++CONFIG_IP_VS_PROTO_ESP=y
++CONFIG_IP_VS_PROTO_AH=y
++
++#
++# IPVS scheduler
++#
++CONFIG_IP_VS_RR=m
++CONFIG_IP_VS_WRR=m
++CONFIG_IP_VS_LC=m
++CONFIG_IP_VS_WLC=m
++CONFIG_IP_VS_LBLC=m
++CONFIG_IP_VS_LBLCR=m
++CONFIG_IP_VS_DH=m
++CONFIG_IP_VS_SH=m
++CONFIG_IP_VS_SED=m
++CONFIG_IP_VS_NQ=m
++
++#
++# IPVS application helper
++#
++CONFIG_IP_VS_FTP=m
++
++#
++# IP: Netfilter Configuration
++#
++# CONFIG_NF_DEFRAG_IPV4 is not set
++CONFIG_IP_NF_QUEUE=m
++CONFIG_IP_NF_IPTABLES=m
++CONFIG_IP_NF_MATCH_ADDRTYPE=m
++CONFIG_IP_NF_MATCH_AH=m
++CONFIG_IP_NF_MATCH_ECN=m
++CONFIG_IP_NF_MATCH_TTL=m
++CONFIG_IP_NF_FILTER=m
++CONFIG_IP_NF_TARGET_REJECT=m
++CONFIG_IP_NF_TARGET_LOG=m
++CONFIG_IP_NF_TARGET_ULOG=m
++CONFIG_IP_NF_MANGLE=m
++CONFIG_IP_NF_TARGET_ECN=m
++CONFIG_IP_NF_TARGET_TTL=m
++CONFIG_IP_NF_RAW=m
++# CONFIG_IP_NF_SECURITY is not set
++CONFIG_IP_NF_ARPTABLES=m
++CONFIG_IP_NF_ARPFILTER=m
++CONFIG_IP_NF_ARP_MANGLE=m
++
++#
++# IPv6: Netfilter Configuration
++#
++CONFIG_IP6_NF_QUEUE=m
++CONFIG_IP6_NF_IPTABLES=m
++CONFIG_IP6_NF_MATCH_AH=m
++CONFIG_IP6_NF_MATCH_EUI64=m
++CONFIG_IP6_NF_MATCH_FRAG=m
++CONFIG_IP6_NF_MATCH_OPTS=m
++CONFIG_IP6_NF_MATCH_HL=m
++CONFIG_IP6_NF_MATCH_IPV6HEADER=m
++# CONFIG_IP6_NF_MATCH_MH is not set
++CONFIG_IP6_NF_MATCH_RT=m
++CONFIG_IP6_NF_TARGET_LOG=m
++CONFIG_IP6_NF_FILTER=m
++CONFIG_IP6_NF_TARGET_REJECT=m
++CONFIG_IP6_NF_MANGLE=m
++CONFIG_IP6_NF_TARGET_HL=m
++CONFIG_IP6_NF_RAW=m
++# CONFIG_IP6_NF_SECURITY is not set
++
++#
++# DECnet: Netfilter Configuration
++#
++CONFIG_DECNET_NF_GRABULATOR=m
++CONFIG_BRIDGE_NF_EBTABLES=m
++CONFIG_BRIDGE_EBT_BROUTE=m
++CONFIG_BRIDGE_EBT_T_FILTER=m
++CONFIG_BRIDGE_EBT_T_NAT=m
++CONFIG_BRIDGE_EBT_802_3=m
++CONFIG_BRIDGE_EBT_AMONG=m
++CONFIG_BRIDGE_EBT_ARP=m
++CONFIG_BRIDGE_EBT_IP=m
++# CONFIG_BRIDGE_EBT_IP6 is not set
++CONFIG_BRIDGE_EBT_LIMIT=m
++CONFIG_BRIDGE_EBT_MARK=m
++CONFIG_BRIDGE_EBT_PKTTYPE=m
++CONFIG_BRIDGE_EBT_STP=m
++CONFIG_BRIDGE_EBT_VLAN=m
++CONFIG_BRIDGE_EBT_ARPREPLY=m
++CONFIG_BRIDGE_EBT_DNAT=m
++CONFIG_BRIDGE_EBT_MARK_T=m
++CONFIG_BRIDGE_EBT_REDIRECT=m
++CONFIG_BRIDGE_EBT_SNAT=m
++CONFIG_BRIDGE_EBT_LOG=m
++CONFIG_BRIDGE_EBT_ULOG=m
++# CONFIG_BRIDGE_EBT_NFLOG is not set
++CONFIG_IP_DCCP=m
++CONFIG_INET_DCCP_DIAG=m
++
++#
++# DCCP CCIDs Configuration (EXPERIMENTAL)
++#
++# CONFIG_IP_DCCP_CCID2_DEBUG is not set
++CONFIG_IP_DCCP_CCID3=y
++# CONFIG_IP_DCCP_CCID3_DEBUG is not set
++CONFIG_IP_DCCP_CCID3_RTO=100
++CONFIG_IP_DCCP_TFRC_LIB=y
++CONFIG_IP_SCTP=m
++# CONFIG_SCTP_DBG_MSG is not set
++# CONFIG_SCTP_DBG_OBJCNT is not set
++# CONFIG_SCTP_HMAC_NONE is not set
++# CONFIG_SCTP_HMAC_SHA1 is not set
++CONFIG_SCTP_HMAC_MD5=y
++CONFIG_TIPC=m
++CONFIG_TIPC_ADVANCED=y
++CONFIG_TIPC_ZONES=3
++CONFIG_TIPC_CLUSTERS=1
++CONFIG_TIPC_NODES=255
++CONFIG_TIPC_SLAVE_NODES=0
++CONFIG_TIPC_PORTS=8191
++CONFIG_TIPC_LOG=0
++# CONFIG_TIPC_DEBUG is not set
++CONFIG_ATM=y
++CONFIG_ATM_CLIP=y
++# CONFIG_ATM_CLIP_NO_ICMP is not set
++CONFIG_ATM_LANE=m
++CONFIG_ATM_MPOA=m
++CONFIG_ATM_BR2684=m
++# CONFIG_ATM_BR2684_IPFILTER is not set
++CONFIG_STP=m
++CONFIG_BRIDGE=m
++# CONFIG_NET_DSA is not set
++CONFIG_VLAN_8021Q=m
++# CONFIG_VLAN_8021Q_GVRP is not set
++CONFIG_DECNET=m
++# CONFIG_DECNET_ROUTER is not set
++CONFIG_LLC=m
++CONFIG_LLC2=m
++CONFIG_IPX=m
++# CONFIG_IPX_INTERN is not set
++CONFIG_ATALK=m
++CONFIG_DEV_APPLETALK=m
++# CONFIG_COPS is not set
++CONFIG_IPDDP=m
++CONFIG_IPDDP_ENCAP=y
++CONFIG_IPDDP_DECAP=y
++CONFIG_X25=m
++CONFIG_LAPB=m
++CONFIG_ECONET=m
++CONFIG_ECONET_AUNUDP=y
++CONFIG_ECONET_NATIVE=y
++CONFIG_WAN_ROUTER=m
++CONFIG_NET_SCHED=y
++
++#
++# Queueing/Scheduling
++#
++CONFIG_NET_SCH_CBQ=m
++CONFIG_NET_SCH_HTB=m
++CONFIG_NET_SCH_HFSC=m
++CONFIG_NET_SCH_ATM=m
++CONFIG_NET_SCH_PRIO=m
++# CONFIG_NET_SCH_MULTIQ is not set
++CONFIG_NET_SCH_RED=m
++CONFIG_NET_SCH_SFQ=m
++CONFIG_NET_SCH_TEQL=m
++CONFIG_NET_SCH_TBF=m
++CONFIG_NET_SCH_GRED=m
++CONFIG_NET_SCH_DSMARK=m
++CONFIG_NET_SCH_NETEM=m
++# CONFIG_NET_SCH_DRR is not set
++CONFIG_NET_SCH_INGRESS=m
++
++#
++# Classification
++#
++CONFIG_NET_CLS=y
++CONFIG_NET_CLS_BASIC=m
++CONFIG_NET_CLS_TCINDEX=m
++CONFIG_NET_CLS_ROUTE4=m
++CONFIG_NET_CLS_ROUTE=y
++CONFIG_NET_CLS_FW=m
++CONFIG_NET_CLS_U32=m
++CONFIG_CLS_U32_PERF=y
++CONFIG_CLS_U32_MARK=y
++CONFIG_NET_CLS_RSVP=m
++CONFIG_NET_CLS_RSVP6=m
++# CONFIG_NET_CLS_FLOW is not set
++CONFIG_NET_EMATCH=y
++CONFIG_NET_EMATCH_STACK=32
++CONFIG_NET_EMATCH_CMP=m
++CONFIG_NET_EMATCH_NBYTE=m
++CONFIG_NET_EMATCH_U32=m
++CONFIG_NET_EMATCH_META=m
++CONFIG_NET_EMATCH_TEXT=m
++CONFIG_NET_CLS_ACT=y
++CONFIG_NET_ACT_POLICE=m
++CONFIG_NET_ACT_GACT=m
++CONFIG_GACT_PROB=y
++CONFIG_NET_ACT_MIRRED=m
++CONFIG_NET_ACT_IPT=m
++# CONFIG_NET_ACT_NAT is not set
++CONFIG_NET_ACT_PEDIT=m
++CONFIG_NET_ACT_SIMP=m
++# CONFIG_NET_ACT_SKBEDIT is not set
++CONFIG_NET_CLS_IND=y
++CONFIG_NET_SCH_FIFO=y
++# CONFIG_DCB is not set
++
++#
++# Network testing
++#
++CONFIG_NET_PKTGEN=m
++CONFIG_HAMRADIO=y
++
++#
++# Packet Radio protocols
++#
++CONFIG_AX25=m
++# CONFIG_AX25_DAMA_SLAVE is not set
++CONFIG_NETROM=m
++CONFIG_ROSE=m
++
++#
++# AX.25 network device drivers
++#
++CONFIG_MKISS=m
++CONFIG_6PACK=m
++CONFIG_BPQETHER=m
++CONFIG_BAYCOM_SER_FDX=m
++CONFIG_BAYCOM_SER_HDX=m
++CONFIG_YAM=m
++# CONFIG_CAN is not set
++CONFIG_IRDA=m
++
++#
++# IrDA protocols
++#
++CONFIG_IRLAN=m
++CONFIG_IRNET=m
++CONFIG_IRCOMM=m
++# CONFIG_IRDA_ULTRA is not set
++
++#
++# IrDA options
++#
++CONFIG_IRDA_CACHE_LAST_LSAP=y
++CONFIG_IRDA_FAST_RR=y
++CONFIG_IRDA_DEBUG=y
++
++#
++# Infrared-port device drivers
++#
++
++#
++# SIR device drivers
++#
++CONFIG_IRTTY_SIR=m
++
++#
++# Dongle support
++#
++CONFIG_DONGLE=y
++CONFIG_ESI_DONGLE=m
++CONFIG_ACTISYS_DONGLE=m
++CONFIG_TEKRAM_DONGLE=m
++CONFIG_TOIM3232_DONGLE=m
++CONFIG_LITELINK_DONGLE=m
++CONFIG_MA600_DONGLE=m
++CONFIG_GIRBIL_DONGLE=m
++CONFIG_MCP2120_DONGLE=m
++CONFIG_OLD_BELKIN_DONGLE=m
++CONFIG_ACT200L_DONGLE=m
++# CONFIG_KINGSUN_DONGLE is not set
++# CONFIG_KSDAZZLE_DONGLE is not set
++# CONFIG_KS959_DONGLE is not set
++
++#
++# FIR device drivers
++#
++CONFIG_USB_IRDA=m
++CONFIG_SIGMATEL_FIR=m
++CONFIG_VLSI_FIR=m
++CONFIG_MCS_FIR=m
++CONFIG_BT=m
++CONFIG_BT_L2CAP=m
++CONFIG_BT_SCO=m
++CONFIG_BT_RFCOMM=m
++CONFIG_BT_RFCOMM_TTY=y
++CONFIG_BT_BNEP=m
++CONFIG_BT_BNEP_MC_FILTER=y
++CONFIG_BT_BNEP_PROTO_FILTER=y
++CONFIG_BT_HIDP=m
++
++#
++# Bluetooth device drivers
++#
++# CONFIG_BT_HCIBTUSB is not set
++# CONFIG_BT_HCIBTSDIO is not set
++CONFIG_BT_HCIUART=m
++CONFIG_BT_HCIUART_H4=y
++CONFIG_BT_HCIUART_BCSP=y
++# CONFIG_BT_HCIUART_LL is not set
++CONFIG_BT_HCIBCM203X=m
++CONFIG_BT_HCIBPA10X=m
++CONFIG_BT_HCIBFUSB=m
++CONFIG_BT_HCIVHCI=m
++CONFIG_AF_RXRPC=m
++# CONFIG_AF_RXRPC_DEBUG is not set
++# CONFIG_RXKAD is not set
++# CONFIG_PHONET is not set
++CONFIG_FIB_RULES=y
++CONFIG_WIRELESS=y
++CONFIG_CFG80211=y
++# CONFIG_CFG80211_REG_DEBUG is not set
++CONFIG_NL80211=y
++CONFIG_WIRELESS_OLD_REGULATORY=y
++CONFIG_WIRELESS_EXT=y
++CONFIG_WIRELESS_EXT_SYSFS=y
++# CONFIG_LIB80211 is not set
++CONFIG_MAC80211=y
++
++#
++# Rate control algorithm selection
++#
++CONFIG_MAC80211_RC_PID=y
++CONFIG_MAC80211_RC_MINSTREL=y
++# CONFIG_MAC80211_RC_DEFAULT_PID is not set
++CONFIG_MAC80211_RC_DEFAULT_MINSTREL=y
++CONFIG_MAC80211_RC_DEFAULT="minstrel"
++# CONFIG_MAC80211_MESH is not set
++# CONFIG_MAC80211_LEDS is not set
++# CONFIG_MAC80211_DEBUGFS is not set
++# CONFIG_MAC80211_DEBUG_MENU is not set
++# CONFIG_WIMAX is not set
++# CONFIG_RFKILL is not set
++# CONFIG_NET_9P is not set
++
++#
++# Device Drivers
++#
++
++#
++# Generic Driver Options
++#
++CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
++CONFIG_STANDALONE=y
++CONFIG_PREVENT_FIRMWARE_BUILD=y
++CONFIG_FW_LOADER=m
++CONFIG_FIRMWARE_IN_KERNEL=y
++CONFIG_EXTRA_FIRMWARE=""
++# CONFIG_SYS_HYPERVISOR is not set
++CONFIG_CONNECTOR=m
++CONFIG_MTD=m
++# CONFIG_MTD_DEBUG is not set
++CONFIG_MTD_CONCAT=m
++CONFIG_MTD_PARTITIONS=y
++# CONFIG_MTD_TESTS is not set
++# CONFIG_MTD_REDBOOT_PARTS is not set
++# CONFIG_MTD_AR7_PARTS is not set
++
++#
++# User Modules And Translation Layers
++#
++CONFIG_MTD_CHAR=m
++CONFIG_MTD_BLKDEVS=m
++CONFIG_MTD_BLOCK=m
++# CONFIG_MTD_BLOCK_RO is not set
++# CONFIG_FTL is not set
++# CONFIG_NFTL is not set
++# CONFIG_INFTL is not set
++# CONFIG_RFD_FTL is not set
++# CONFIG_SSFDC is not set
++# CONFIG_MTD_OOPS is not set
++
++#
++# RAM/ROM/Flash chip drivers
++#
++CONFIG_MTD_CFI=m
++CONFIG_MTD_JEDECPROBE=m
++CONFIG_MTD_GEN_PROBE=m
++# CONFIG_MTD_CFI_ADV_OPTIONS is not set
++CONFIG_MTD_MAP_BANK_WIDTH_1=y
++CONFIG_MTD_MAP_BANK_WIDTH_2=y
++CONFIG_MTD_MAP_BANK_WIDTH_4=y
++# CONFIG_MTD_MAP_BANK_WIDTH_8 is not set
++# CONFIG_MTD_MAP_BANK_WIDTH_16 is not set
++# CONFIG_MTD_MAP_BANK_WIDTH_32 is not set
++CONFIG_MTD_CFI_I1=y
++CONFIG_MTD_CFI_I2=y
++# CONFIG_MTD_CFI_I4 is not set
++# CONFIG_MTD_CFI_I8 is not set
++CONFIG_MTD_CFI_INTELEXT=m
++CONFIG_MTD_CFI_AMDSTD=m
++CONFIG_MTD_CFI_STAA=m
++CONFIG_MTD_CFI_UTIL=m
++CONFIG_MTD_RAM=m
++CONFIG_MTD_ROM=m
++CONFIG_MTD_ABSENT=m
++
++#
++# Mapping drivers for chip access
++#
++CONFIG_MTD_COMPLEX_MAPPINGS=y
++CONFIG_MTD_PHYSMAP=m
++CONFIG_MTD_PHYSMAP_COMPAT=y
++CONFIG_MTD_PHYSMAP_START=0x8000000
++CONFIG_MTD_PHYSMAP_LEN=0
++CONFIG_MTD_PHYSMAP_BANKWIDTH=2
++CONFIG_MTD_PCI=m
++# CONFIG_MTD_INTEL_VR_NOR is not set
++CONFIG_MTD_PLATRAM=m
++
++#
++# Self-contained MTD device drivers
++#
++CONFIG_MTD_PMC551=m
++# CONFIG_MTD_PMC551_BUGFIX is not set
++# CONFIG_MTD_PMC551_DEBUG is not set
++CONFIG_MTD_DATAFLASH=m
++# CONFIG_MTD_DATAFLASH_WRITE_VERIFY is not set
++# CONFIG_MTD_DATAFLASH_OTP is not set
++CONFIG_MTD_M25P80=m
++CONFIG_M25PXX_USE_FAST_READ=y
++CONFIG_MTD_SLRAM=m
++CONFIG_MTD_PHRAM=m
++CONFIG_MTD_MTDRAM=m
++CONFIG_MTDRAM_TOTAL_SIZE=4096
++CONFIG_MTDRAM_ERASE_SIZE=128
++CONFIG_MTD_BLOCK2MTD=m
++
++#
++# Disk-On-Chip Device Drivers
++#
++CONFIG_MTD_DOC2000=m
++CONFIG_MTD_DOC2001=m
++CONFIG_MTD_DOC2001PLUS=m
++CONFIG_MTD_DOCPROBE=m
++CONFIG_MTD_DOCECC=m
++# CONFIG_MTD_DOCPROBE_ADVANCED is not set
++CONFIG_MTD_DOCPROBE_ADDRESS=0
++# CONFIG_MTD_NAND is not set
++CONFIG_MTD_NAND_IDS=m
++# CONFIG_MTD_ONENAND is not set
++
++#
++# LPDDR flash memory drivers
++#
++# CONFIG_MTD_LPDDR is not set
++
++#
++# UBI - Unsorted block images
++#
++# CONFIG_MTD_UBI is not set
++# CONFIG_PARPORT is not set
++CONFIG_PNP=y
++CONFIG_PNP_DEBUG_MESSAGES=y
++
++#
++# Protocols
++#
++CONFIG_ISAPNP=y
++# CONFIG_PNPACPI is not set
++CONFIG_BLK_DEV=y
++# CONFIG_BLK_CPQ_DA is not set
++# CONFIG_BLK_CPQ_CISS_DA is not set
++# CONFIG_BLK_DEV_DAC960 is not set
++# CONFIG_BLK_DEV_UMEM is not set
++# CONFIG_BLK_DEV_COW_COMMON is not set
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_BLK_DEV_CRYPTOLOOP=m
++CONFIG_BLK_DEV_NBD=m
++# CONFIG_BLK_DEV_SX8 is not set
++# CONFIG_BLK_DEV_UB is not set
++CONFIG_BLK_DEV_RAM=y
++CONFIG_BLK_DEV_RAM_COUNT=16
++CONFIG_BLK_DEV_RAM_SIZE=8192
++# CONFIG_BLK_DEV_XIP is not set
++CONFIG_CDROM_PKTCDVD=m
++CONFIG_CDROM_PKTCDVD_BUFFERS=8
++# CONFIG_CDROM_PKTCDVD_WCACHE is not set
++CONFIG_ATA_OVER_ETH=m
++# CONFIG_BLK_DEV_HD is not set
++CONFIG_MISC_DEVICES=y
++# CONFIG_PHANTOM is not set
++# CONFIG_SGI_IOC4 is not set
++# CONFIG_TIFM_CORE is not set
++# CONFIG_ICS932S401 is not set
++# CONFIG_ENCLOSURE_SERVICES is not set
++# CONFIG_HP_ILO is not set
++# CONFIG_C2PORT is not set
++
++#
++# EEPROM support
++#
++# CONFIG_EEPROM_AT24 is not set
++# CONFIG_EEPROM_AT25 is not set
++# CONFIG_EEPROM_LEGACY is not set
++CONFIG_EEPROM_93CX6=y
++CONFIG_HAVE_IDE=y
++CONFIG_IDE=y
++
++#
++# Please see Documentation/ide/ide.txt for help/info on IDE drives
++#
++CONFIG_IDE_TIMINGS=y
++CONFIG_IDE_ATAPI=y
++# CONFIG_BLK_DEV_IDE_SATA is not set
++CONFIG_IDE_GD=y
++CONFIG_IDE_GD_ATA=y
++# CONFIG_IDE_GD_ATAPI is not set
++CONFIG_BLK_DEV_IDECD=m
++CONFIG_BLK_DEV_IDECD_VERBOSE_ERRORS=y
++# CONFIG_BLK_DEV_IDETAPE is not set
++CONFIG_IDE_TASK_IOCTL=y
++CONFIG_IDE_PROC_FS=y
++
++#
++# IDE chipset support/bugfixes
++#
++# CONFIG_IDE_GENERIC is not set
++# CONFIG_BLK_DEV_PLATFORM is not set
++# CONFIG_BLK_DEV_IDEPNP is not set
++CONFIG_BLK_DEV_IDEDMA_SFF=y
++
++#
++# PCI IDE chipsets support
++#
++CONFIG_BLK_DEV_IDEPCI=y
++# CONFIG_IDEPCI_PCIBUS_ORDER is not set
++# CONFIG_BLK_DEV_OFFBOARD is not set
++CONFIG_BLK_DEV_GENERIC=y
++# CONFIG_BLK_DEV_OPTI621 is not set
++CONFIG_BLK_DEV_IDEDMA_PCI=y
++# CONFIG_BLK_DEV_AEC62XX is not set
++# CONFIG_BLK_DEV_ALI15X3 is not set
++CONFIG_BLK_DEV_AMD74XX=y
++# CONFIG_BLK_DEV_CMD64X is not set
++# CONFIG_BLK_DEV_TRIFLEX is not set
++# CONFIG_BLK_DEV_CS5520 is not set
++# CONFIG_BLK_DEV_CS5530 is not set
++# CONFIG_BLK_DEV_HPT366 is not set
++# CONFIG_BLK_DEV_JMICRON is not set
++# CONFIG_BLK_DEV_SC1200 is not set
++# CONFIG_BLK_DEV_PIIX is not set
++# CONFIG_BLK_DEV_IT8172 is not set
++# CONFIG_BLK_DEV_IT8213 is not set
++# CONFIG_BLK_DEV_IT821X is not set
++# CONFIG_BLK_DEV_NS87415 is not set
++# CONFIG_BLK_DEV_PDC202XX_OLD is not set
++# CONFIG_BLK_DEV_PDC202XX_NEW is not set
++# CONFIG_BLK_DEV_SVWKS is not set
++# CONFIG_BLK_DEV_SIIMAGE is not set
++# CONFIG_BLK_DEV_SLC90E66 is not set
++# CONFIG_BLK_DEV_TRM290 is not set
++# CONFIG_BLK_DEV_VIA82CXXX is not set
++# CONFIG_BLK_DEV_TC86C001 is not set
++
++#
++# Other IDE chipsets support
++#
++
++#
++# Note: most of these also require special kernel boot parameters
++#
++# CONFIG_BLK_DEV_4DRIVES is not set
++# CONFIG_BLK_DEV_ALI14XX is not set
++# CONFIG_BLK_DEV_DTC2278 is not set
++# CONFIG_BLK_DEV_HT6560B is not set
++# CONFIG_BLK_DEV_QD65XX is not set
++# CONFIG_BLK_DEV_UMC8672 is not set
++CONFIG_BLK_DEV_IDEDMA=y
++
++#
++# SCSI device support
++#
++CONFIG_RAID_ATTRS=m
++CONFIG_SCSI=y
++CONFIG_SCSI_DMA=y
++# CONFIG_SCSI_TGT is not set
++CONFIG_SCSI_NETLINK=y
++CONFIG_SCSI_PROC_FS=y
++
++#
++# SCSI support type (disk, tape, CD-ROM)
++#
++CONFIG_BLK_DEV_SD=y
++# CONFIG_CHR_DEV_ST is not set
++# CONFIG_CHR_DEV_OSST is not set
++CONFIG_BLK_DEV_SR=m
++CONFIG_BLK_DEV_SR_VENDOR=y
++CONFIG_CHR_DEV_SG=m
++# CONFIG_CHR_DEV_SCH is not set
++
++#
++# Some SCSI devices (e.g. CD jukebox) support multiple LUNs
++#
++CONFIG_SCSI_MULTI_LUN=y
++CONFIG_SCSI_CONSTANTS=y
++CONFIG_SCSI_LOGGING=y
++# CONFIG_SCSI_SCAN_ASYNC is not set
++CONFIG_SCSI_WAIT_SCAN=m
++
++#
++# SCSI Transports
++#
++CONFIG_SCSI_SPI_ATTRS=m
++CONFIG_SCSI_FC_ATTRS=m
++CONFIG_SCSI_ISCSI_ATTRS=m
++# CONFIG_SCSI_SAS_LIBSAS is not set
++CONFIG_SCSI_SRP_ATTRS=m
++# CONFIG_SCSI_LOWLEVEL is not set
++# CONFIG_SCSI_DH is not set
++# CONFIG_ATA is not set
++CONFIG_MD=y
++CONFIG_BLK_DEV_MD=m
++CONFIG_MD_LINEAR=m
++CONFIG_MD_RAID0=m
++CONFIG_MD_RAID1=m
++CONFIG_MD_RAID10=m
++CONFIG_MD_RAID456=m
++CONFIG_MD_RAID5_RESHAPE=y
++CONFIG_MD_MULTIPATH=m
++CONFIG_MD_FAULTY=m
++CONFIG_BLK_DEV_DM=m
++# CONFIG_DM_DEBUG is not set
++CONFIG_DM_CRYPT=m
++CONFIG_DM_SNAPSHOT=m
++CONFIG_DM_MIRROR=m
++CONFIG_DM_ZERO=m
++CONFIG_DM_MULTIPATH=m
++# CONFIG_DM_DELAY is not set
++# CONFIG_DM_UEVENT is not set
++# CONFIG_FUSION is not set
++
++#
++# IEEE 1394 (FireWire) support
++#
++
++#
++# Enable only one of the two stacks, unless you know what you are doing
++#
++# CONFIG_FIREWIRE is not set
++# CONFIG_IEEE1394 is not set
++# CONFIG_I2O is not set
++CONFIG_NETDEVICES=y
++CONFIG_IFB=m
++CONFIG_DUMMY=m
++# CONFIG_BONDING is not set
++CONFIG_MACVLAN=m
++# CONFIG_EQUALIZER is not set
++CONFIG_TUN=m
++CONFIG_VETH=m
++# CONFIG_NET_SB1000 is not set
++# CONFIG_ARCNET is not set
++CONFIG_PHYLIB=m
++
++#
++# MII PHY device drivers
++#
++CONFIG_MARVELL_PHY=m
++CONFIG_DAVICOM_PHY=m
++CONFIG_QSEMI_PHY=m
++CONFIG_LXT_PHY=m
++CONFIG_CICADA_PHY=m
++CONFIG_VITESSE_PHY=m
++CONFIG_SMSC_PHY=m
++# CONFIG_BROADCOM_PHY is not set
++# CONFIG_ICPLUS_PHY is not set
++CONFIG_REALTEK_PHY=m
++# CONFIG_NATIONAL_PHY is not set
++# CONFIG_STE10XP is not set
++# CONFIG_LSI_ET1011C_PHY is not set
++# CONFIG_MDIO_BITBANG is not set
++CONFIG_NET_ETHERNET=y
++CONFIG_MII=y
++# CONFIG_AX88796 is not set
++# CONFIG_HAPPYMEAL is not set
++# CONFIG_SUNGEM is not set
++# CONFIG_CASSINI is not set
++# CONFIG_NET_VENDOR_3COM is not set
++# CONFIG_NET_VENDOR_SMC is not set
++# CONFIG_SMC91X is not set
++# CONFIG_DM9000 is not set
++# CONFIG_ENC28J60 is not set
++# CONFIG_NET_VENDOR_RACAL is not set
++# CONFIG_DNET is not set
++# CONFIG_NET_TULIP is not set
++# CONFIG_AT1700 is not set
++# CONFIG_DEPCA is not set
++# CONFIG_HP100 is not set
++# CONFIG_NET_ISA is not set
++# CONFIG_IBM_NEW_EMAC_ZMII is not set
++# CONFIG_IBM_NEW_EMAC_RGMII is not set
++# CONFIG_IBM_NEW_EMAC_TAH is not set
++# CONFIG_IBM_NEW_EMAC_EMAC4 is not set
++# CONFIG_IBM_NEW_EMAC_NO_FLOW_CTRL is not set
++# CONFIG_IBM_NEW_EMAC_MAL_CLR_ICINTSTAT is not set
++# CONFIG_IBM_NEW_EMAC_MAL_COMMON_ERR is not set
++CONFIG_NET_PCI=y
++# CONFIG_PCNET32 is not set
++# CONFIG_AMD8111_ETH is not set
++# CONFIG_ADAPTEC_STARFIRE is not set
++# CONFIG_AC3200 is not set
++# CONFIG_APRICOT is not set
++# CONFIG_B44 is not set
++# CONFIG_FORCEDETH is not set
++# CONFIG_CS89x0 is not set
++# CONFIG_TC35815 is not set
++# CONFIG_E100 is not set
++# CONFIG_FEALNX is not set
++# CONFIG_NATSEMI is not set
++# CONFIG_NE2K_PCI is not set
++CONFIG_8139CP=m
++CONFIG_8139TOO=y
++# CONFIG_8139TOO_PIO is not set
++CONFIG_8139TOO_TUNE_TWISTER=y
++# CONFIG_8139TOO_8129 is not set
++# CONFIG_8139_OLD_RX_RESET is not set
++# CONFIG_R6040 is not set
++# CONFIG_SIS900 is not set
++# CONFIG_EPIC100 is not set
++# CONFIG_SMSC9420 is not set
++# CONFIG_SUNDANCE is not set
++# CONFIG_TLAN is not set
++# CONFIG_VIA_RHINE is not set
++# CONFIG_SC92031 is not set
++# CONFIG_ATL2 is not set
++# CONFIG_NETDEV_1000 is not set
++# CONFIG_NETDEV_10000 is not set
++# CONFIG_TR is not set
++
++#
++# Wireless LAN
++#
++# CONFIG_WLAN_PRE80211 is not set
++# CONFIG_WLAN_80211 is not set
++# CONFIG_IWLWIFI_LEDS is not set
++
++#
++# Enable WiMAX (Networking options) to see the WiMAX drivers
++#
++
++#
++# USB Network Adapters
++#
++CONFIG_USB_CATC=m
++CONFIG_USB_KAWETH=m
++CONFIG_USB_PEGASUS=m
++CONFIG_USB_RTL8150=m
++CONFIG_USB_USBNET=m
++CONFIG_USB_NET_AX8817X=m
++CONFIG_USB_NET_CDCETHER=m
++# CONFIG_USB_NET_DM9601 is not set
++# CONFIG_USB_NET_SMSC95XX is not set
++CONFIG_USB_NET_GL620A=m
++CONFIG_USB_NET_NET1080=m
++CONFIG_USB_NET_PLUSB=m
++# CONFIG_USB_NET_MCS7830 is not set
++CONFIG_USB_NET_RNDIS_HOST=m
++CONFIG_USB_NET_CDC_SUBSET=m
++CONFIG_USB_ALI_M5632=y
++CONFIG_USB_AN2720=y
++CONFIG_USB_BELKIN=y
++CONFIG_USB_ARMLINUX=y
++CONFIG_USB_EPSON2888=y
++# CONFIG_USB_KC2190 is not set
++CONFIG_USB_NET_ZAURUS=m
++# CONFIG_WAN is not set
++# CONFIG_ATM_DRIVERS is not set
++# CONFIG_FDDI is not set
++# CONFIG_HIPPI is not set
++CONFIG_PPP=m
++CONFIG_PPP_MULTILINK=y
++CONFIG_PPP_FILTER=y
++CONFIG_PPP_ASYNC=m
++CONFIG_PPP_SYNC_TTY=m
++CONFIG_PPP_DEFLATE=m
++CONFIG_PPP_BSDCOMP=m
++CONFIG_PPP_MPPE=m
++CONFIG_PPPOE=m
++CONFIG_PPPOATM=m
++# CONFIG_PPPOL2TP is not set
++# CONFIG_SLIP is not set
++CONFIG_SLHC=m
++# CONFIG_NET_FC is not set
++CONFIG_NETCONSOLE=y
++# CONFIG_NETCONSOLE_DYNAMIC is not set
++CONFIG_NETPOLL=y
++# CONFIG_NETPOLL_TRAP is not set
++CONFIG_NET_POLL_CONTROLLER=y
++# CONFIG_ISDN is not set
++# CONFIG_PHONE is not set
++
++#
++# Input device support
++#
++CONFIG_INPUT=y
++# CONFIG_INPUT_FF_MEMLESS is not set
++# CONFIG_INPUT_POLLDEV is not set
++
++#
++# Userland interfaces
++#
++CONFIG_INPUT_MOUSEDEV=y
++CONFIG_INPUT_MOUSEDEV_PSAUX=y
++CONFIG_INPUT_MOUSEDEV_SCREEN_X=1024
++CONFIG_INPUT_MOUSEDEV_SCREEN_Y=768
++CONFIG_INPUT_JOYDEV=m
++CONFIG_INPUT_EVDEV=m
++# CONFIG_INPUT_EVBUG is not set
++
++#
++# Input Device Drivers
++#
++CONFIG_INPUT_KEYBOARD=y
++CONFIG_KEYBOARD_ATKBD=y
++CONFIG_KEYBOARD_SUNKBD=m
++CONFIG_KEYBOARD_LKKBD=m
++CONFIG_KEYBOARD_XTKBD=m
++CONFIG_KEYBOARD_NEWTON=m
++# CONFIG_KEYBOARD_STOWAWAY is not set
++CONFIG_INPUT_MOUSE=y
++CONFIG_MOUSE_PS2=y
++CONFIG_MOUSE_PS2_ALPS=y
++CONFIG_MOUSE_PS2_LOGIPS2PP=y
++CONFIG_MOUSE_PS2_SYNAPTICS=y
++CONFIG_MOUSE_PS2_TRACKPOINT=y
++# CONFIG_MOUSE_PS2_ELANTECH is not set
++# CONFIG_MOUSE_PS2_TOUCHKIT is not set
++CONFIG_MOUSE_SERIAL=m
++# CONFIG_MOUSE_APPLETOUCH is not set
++# CONFIG_MOUSE_BCM5974 is not set
++CONFIG_MOUSE_INPORT=m
++# CONFIG_MOUSE_ATIXL is not set
++CONFIG_MOUSE_LOGIBM=m
++CONFIG_MOUSE_PC110PAD=m
++CONFIG_MOUSE_VSXXXAA=m
++# CONFIG_INPUT_JOYSTICK is not set
++# CONFIG_INPUT_TABLET is not set
++# CONFIG_INPUT_TOUCHSCREEN is not set
++CONFIG_INPUT_MISC=y
++CONFIG_INPUT_PCSPKR=m
++# CONFIG_INPUT_ATI_REMOTE is not set
++# CONFIG_INPUT_ATI_REMOTE2 is not set
++# CONFIG_INPUT_KEYSPAN_REMOTE is not set
++# CONFIG_INPUT_POWERMATE is not set
++# CONFIG_INPUT_YEALINK is not set
++# CONFIG_INPUT_CM109 is not set
++CONFIG_INPUT_UINPUT=m
++
++#
++# Hardware I/O ports
++#
++CONFIG_SERIO=y
++CONFIG_SERIO_I8042=y
++CONFIG_SERIO_SERPORT=m
++CONFIG_SERIO_PCIPS2=m
++CONFIG_SERIO_LIBPS2=y
++CONFIG_SERIO_RAW=m
++CONFIG_GAMEPORT=m
++CONFIG_GAMEPORT_NS558=m
++CONFIG_GAMEPORT_L4=m
++CONFIG_GAMEPORT_EMU10K1=m
++CONFIG_GAMEPORT_FM801=m
++
++#
++# Character devices
++#
++CONFIG_VT=y
++CONFIG_CONSOLE_TRANSLATIONS=y
++CONFIG_VT_CONSOLE=y
++CONFIG_HW_CONSOLE=y
++# CONFIG_VT_HW_CONSOLE_BINDING is not set
++CONFIG_DEVKMEM=y
++CONFIG_SERIAL_NONSTANDARD=y
++# CONFIG_COMPUTONE is not set
++# CONFIG_ROCKETPORT is not set
++# CONFIG_CYCLADES is not set
++# CONFIG_DIGIEPCA is not set
++# CONFIG_MOXA_INTELLIO is not set
++# CONFIG_MOXA_SMARTIO is not set
++# CONFIG_ISI is not set
++# CONFIG_SYNCLINKMP is not set
++# CONFIG_SYNCLINK_GT is not set
++# CONFIG_N_HDLC is not set
++# CONFIG_RISCOM8 is not set
++# CONFIG_SPECIALIX is not set
++# CONFIG_SX is not set
++# CONFIG_RIO is not set
++CONFIG_STALDRV=y
++# CONFIG_STALLION is not set
++# CONFIG_ISTALLION is not set
++# CONFIG_NOZOMI is not set
++
++#
++# Serial drivers
++#
++CONFIG_SERIAL_8250=y
++CONFIG_SERIAL_8250_CONSOLE=y
++# CONFIG_SERIAL_8250_PCI is not set
++# CONFIG_SERIAL_8250_PNP is not set
++CONFIG_SERIAL_8250_NR_UARTS=16
++CONFIG_SERIAL_8250_RUNTIME_UARTS=4
++CONFIG_SERIAL_8250_EXTENDED=y
++CONFIG_SERIAL_8250_MANY_PORTS=y
++CONFIG_SERIAL_8250_FOURPORT=y
++# CONFIG_SERIAL_8250_ACCENT is not set
++# CONFIG_SERIAL_8250_BOCA is not set
++# CONFIG_SERIAL_8250_EXAR_ST16C554 is not set
++CONFIG_SERIAL_8250_HUB6=m
++CONFIG_SERIAL_8250_SHARE_IRQ=y
++# CONFIG_SERIAL_8250_DETECT_IRQ is not set
++CONFIG_SERIAL_8250_RSA=y
++
++#
++# Non-8250 serial port support
++#
++CONFIG_SERIAL_CORE=y
++CONFIG_SERIAL_CORE_CONSOLE=y
++# CONFIG_SERIAL_JSM is not set
++CONFIG_UNIX98_PTYS=y
++# CONFIG_DEVPTS_MULTIPLE_INSTANCES is not set
++CONFIG_LEGACY_PTYS=y
++CONFIG_LEGACY_PTY_COUNT=16
++CONFIG_IPMI_HANDLER=m
++# CONFIG_IPMI_PANIC_EVENT is not set
++CONFIG_IPMI_DEVICE_INTERFACE=m
++CONFIG_IPMI_SI=m
++CONFIG_IPMI_WATCHDOG=m
++CONFIG_IPMI_POWEROFF=m
++CONFIG_HW_RANDOM=y
++# CONFIG_DTLK is not set
++# CONFIG_R3964 is not set
++# CONFIG_APPLICOM is not set
++CONFIG_RAW_DRIVER=m
++CONFIG_MAX_RAW_DEVS=256
++# CONFIG_TCG_TPM is not set
++CONFIG_DEVPORT=y
++CONFIG_I2C=m
++CONFIG_I2C_BOARDINFO=y
++CONFIG_I2C_CHARDEV=m
++CONFIG_I2C_HELPER_AUTO=y
++CONFIG_I2C_ALGOBIT=m
++CONFIG_I2C_ALGOPCA=m
++
++#
++# I2C Hardware Bus support
++#
++
++#
++# PC SMBus host controller drivers
++#
++CONFIG_I2C_ALI1535=m
++CONFIG_I2C_ALI1563=m
++CONFIG_I2C_ALI15X3=m
++CONFIG_I2C_AMD756=m
++CONFIG_I2C_AMD8111=m
++CONFIG_I2C_I801=m
++# CONFIG_I2C_ISCH is not set
++CONFIG_I2C_PIIX4=m
++CONFIG_I2C_NFORCE2=m
++CONFIG_I2C_SIS5595=m
++CONFIG_I2C_SIS630=m
++CONFIG_I2C_SIS96X=m
++CONFIG_I2C_VIA=m
++CONFIG_I2C_VIAPRO=m
++
++#
++# I2C system bus drivers (mostly embedded / system-on-chip)
++#
++CONFIG_I2C_OCORES=m
++# CONFIG_I2C_SIMTEC is not set
++
++#
++# External I2C/SMBus adapter drivers
++#
++CONFIG_I2C_PARPORT_LIGHT=m
++# CONFIG_I2C_TAOS_EVM is not set
++# CONFIG_I2C_TINY_USB is not set
++
++#
++# Graphics adapter I2C/DDC channel drivers
++#
++CONFIG_I2C_VOODOO3=m
++
++#
++# Other I2C/SMBus bus drivers
++#
++# CONFIG_I2C_ELEKTOR is not set
++CONFIG_I2C_PCA_ISA=m
++# CONFIG_I2C_PCA_PLATFORM is not set
++CONFIG_I2C_STUB=m
++
++#
++# Miscellaneous I2C Chip support
++#
++# CONFIG_DS1682 is not set
++CONFIG_SENSORS_PCF8574=m
++# CONFIG_PCF8575 is not set
++# CONFIG_SENSORS_PCA9539 is not set
++CONFIG_SENSORS_PCF8591=m
++CONFIG_SENSORS_MAX6875=m
++# CONFIG_SENSORS_TSL2550 is not set
++# CONFIG_I2C_DEBUG_CORE is not set
++# CONFIG_I2C_DEBUG_ALGO is not set
++# CONFIG_I2C_DEBUG_BUS is not set
++# CONFIG_I2C_DEBUG_CHIP is not set
++CONFIG_SPI=y
++CONFIG_SPI_MASTER=y
++
++#
++# SPI Master Controller Drivers
++#
++CONFIG_SPI_BITBANG=m
++
++#
++# SPI Protocol Masters
++#
++# CONFIG_SPI_SPIDEV is not set
++# CONFIG_SPI_TLE62X0 is not set
++# CONFIG_W1 is not set
++# CONFIG_POWER_SUPPLY is not set
++# CONFIG_HWMON is not set
++# CONFIG_THERMAL is not set
++# CONFIG_THERMAL_HWMON is not set
++CONFIG_WATCHDOG=y
++# CONFIG_WATCHDOG_NOWAYOUT is not set
++
++#
++# Watchdog Device Drivers
++#
++CONFIG_SOFT_WATCHDOG=m
++# CONFIG_ALIM7101_WDT is not set
++
++#
++# ISA-based Watchdog Cards
++#
++# CONFIG_PCWATCHDOG is not set
++# CONFIG_MIXCOMWD is not set
++# CONFIG_WDT is not set
++
++#
++# PCI-based Watchdog Cards
++#
++# CONFIG_PCIPCWATCHDOG is not set
++# CONFIG_WDTPCI is not set
++
++#
++# USB-based Watchdog Cards
++#
++# CONFIG_USBPCWATCHDOG is not set
++CONFIG_SSB_POSSIBLE=y
++
++#
++# Sonics Silicon Backplane
++#
++# CONFIG_SSB is not set
++
++#
++# Multifunction device drivers
++#
++# CONFIG_MFD_CORE is not set
++# CONFIG_MFD_SM501 is not set
++# CONFIG_HTC_PASIC3 is not set
++# CONFIG_MFD_TMIO is not set
++# CONFIG_MFD_WM8400 is not set
++# CONFIG_MFD_WM8350_I2C is not set
++# CONFIG_MFD_PCF50633 is not set
++# CONFIG_REGULATOR is not set
++
++#
++# Multimedia devices
++#
++
++#
++# Multimedia core support
++#
++CONFIG_VIDEO_DEV=m
++CONFIG_VIDEO_V4L2_COMMON=m
++CONFIG_VIDEO_ALLOW_V4L1=y
++CONFIG_VIDEO_V4L1_COMPAT=y
++# CONFIG_DVB_CORE is not set
++CONFIG_VIDEO_MEDIA=m
++
++#
++# Multimedia drivers
++#
++CONFIG_MEDIA_ATTACH=y
++CONFIG_MEDIA_TUNER=m
++# CONFIG_MEDIA_TUNER_CUSTOMIZE is not set
++CONFIG_MEDIA_TUNER_SIMPLE=m
++CONFIG_MEDIA_TUNER_TDA8290=m
++CONFIG_MEDIA_TUNER_TDA9887=m
++CONFIG_MEDIA_TUNER_TEA5761=m
++CONFIG_MEDIA_TUNER_TEA5767=m
++CONFIG_MEDIA_TUNER_MT20XX=m
++CONFIG_MEDIA_TUNER_XC2028=m
++CONFIG_MEDIA_TUNER_XC5000=m
++CONFIG_VIDEO_V4L2=m
++CONFIG_VIDEO_V4L1=m
++CONFIG_VIDEO_CAPTURE_DRIVERS=y
++# CONFIG_VIDEO_ADV_DEBUG is not set
++# CONFIG_VIDEO_FIXED_MINOR_RANGES is not set
++# CONFIG_VIDEO_HELPER_CHIPS_AUTO is not set
++
++#
++# Encoders/decoders and other helper chips
++#
++
++#
++# Audio decoders
++#
++# CONFIG_VIDEO_TVAUDIO is not set
++# CONFIG_VIDEO_TDA7432 is not set
++# CONFIG_VIDEO_TDA9840 is not set
++# CONFIG_VIDEO_TDA9875 is not set
++# CONFIG_VIDEO_TEA6415C is not set
++# CONFIG_VIDEO_TEA6420 is not set
++# CONFIG_VIDEO_MSP3400 is not set
++# CONFIG_VIDEO_CS5345 is not set
++# CONFIG_VIDEO_CS53L32A is not set
++# CONFIG_VIDEO_M52790 is not set
++# CONFIG_VIDEO_TLV320AIC23B is not set
++# CONFIG_VIDEO_WM8775 is not set
++# CONFIG_VIDEO_WM8739 is not set
++# CONFIG_VIDEO_VP27SMPX is not set
++
++#
++# Video decoders
++#
++# CONFIG_VIDEO_BT819 is not set
++# CONFIG_VIDEO_BT856 is not set
++# CONFIG_VIDEO_BT866 is not set
++# CONFIG_VIDEO_KS0127 is not set
++# CONFIG_VIDEO_OV7670 is not set
++# CONFIG_VIDEO_TCM825X is not set
++# CONFIG_VIDEO_SAA7110 is not set
++# CONFIG_VIDEO_SAA7111 is not set
++# CONFIG_VIDEO_SAA7114 is not set
++# CONFIG_VIDEO_SAA711X is not set
++# CONFIG_VIDEO_SAA717X is not set
++# CONFIG_VIDEO_SAA7191 is not set
++# CONFIG_VIDEO_TVP514X is not set
++# CONFIG_VIDEO_TVP5150 is not set
++# CONFIG_VIDEO_VPX3220 is not set
++
++#
++# Video and audio decoders
++#
++# CONFIG_VIDEO_CX25840 is not set
++
++#
++# MPEG video encoders
++#
++# CONFIG_VIDEO_CX2341X is not set
++
++#
++# Video encoders
++#
++# CONFIG_VIDEO_SAA7127 is not set
++# CONFIG_VIDEO_SAA7185 is not set
++# CONFIG_VIDEO_ADV7170 is not set
++# CONFIG_VIDEO_ADV7175 is not set
++
++#
++# Video improvement chips
++#
++# CONFIG_VIDEO_UPD64031A is not set
++# CONFIG_VIDEO_UPD64083 is not set
++# CONFIG_VIDEO_VIVI is not set
++# CONFIG_VIDEO_BT848 is not set
++# CONFIG_VIDEO_PMS is not set
++# CONFIG_VIDEO_CPIA is not set
++# CONFIG_VIDEO_CPIA2 is not set
++# CONFIG_VIDEO_SAA5246A is not set
++# CONFIG_VIDEO_SAA5249 is not set
++# CONFIG_VIDEO_STRADIS is not set
++# CONFIG_VIDEO_ZORAN is not set
++# CONFIG_VIDEO_SAA7134 is not set
++# CONFIG_VIDEO_MXB is not set
++# CONFIG_VIDEO_HEXIUM_ORION is not set
++# CONFIG_VIDEO_HEXIUM_GEMINI is not set
++# CONFIG_VIDEO_CX88 is not set
++# CONFIG_VIDEO_IVTV is not set
++# CONFIG_VIDEO_CAFE_CCIC is not set
++# CONFIG_SOC_CAMERA is not set
++CONFIG_V4L_USB_DRIVERS=y
++CONFIG_USB_VIDEO_CLASS=m
++CONFIG_USB_VIDEO_CLASS_INPUT_EVDEV=y
++# CONFIG_USB_GSPCA is not set
++# CONFIG_VIDEO_PVRUSB2 is not set
++# CONFIG_VIDEO_EM28XX is not set
++# CONFIG_VIDEO_USBVISION is not set
++# CONFIG_USB_VICAM is not set
++# CONFIG_USB_IBMCAM is not set
++# CONFIG_USB_KONICAWC is not set
++# CONFIG_USB_QUICKCAM_MESSENGER is not set
++# CONFIG_USB_ET61X251 is not set
++# CONFIG_VIDEO_OVCAMCHIP is not set
++# CONFIG_USB_OV511 is not set
++# CONFIG_USB_SE401 is not set
++# CONFIG_USB_SN9C102 is not set
++# CONFIG_USB_STV680 is not set
++# CONFIG_USB_ZC0301 is not set
++# CONFIG_USB_PWC is not set
++# CONFIG_USB_ZR364XX is not set
++# CONFIG_USB_STKWEBCAM is not set
++# CONFIG_USB_S2255 is not set
++CONFIG_RADIO_ADAPTERS=y
++CONFIG_RADIO_CADET=m
++CONFIG_RADIO_RTRACK=m
++CONFIG_RADIO_RTRACK2=m
++CONFIG_RADIO_AZTECH=m
++CONFIG_RADIO_GEMTEK=m
++CONFIG_RADIO_GEMTEK_PCI=m
++CONFIG_RADIO_MAXIRADIO=m
++CONFIG_RADIO_MAESTRO=m
++CONFIG_RADIO_SF16FMI=m
++CONFIG_RADIO_SF16FMR2=m
++CONFIG_RADIO_TERRATEC=m
++CONFIG_RADIO_TRUST=m
++CONFIG_RADIO_TYPHOON=m
++CONFIG_RADIO_TYPHOON_PROC_FS=y
++CONFIG_RADIO_ZOLTRIX=m
++CONFIG_USB_DSBR=m
++# CONFIG_USB_SI470X is not set
++# CONFIG_USB_MR800 is not set
++# CONFIG_RADIO_TEA5764 is not set
++# CONFIG_DAB is not set
++
++#
++# Graphics support
++#
++CONFIG_DRM=m
++CONFIG_DRM_TDFX=m
++CONFIG_DRM_R128=m
++CONFIG_DRM_RADEON=m
++CONFIG_DRM_MGA=m
++CONFIG_DRM_VIA=m
++CONFIG_DRM_SAVAGE=m
++# CONFIG_VGASTATE is not set
++# CONFIG_VIDEO_OUTPUT_CONTROL is not set
++CONFIG_FB=y
++CONFIG_FIRMWARE_EDID=y
++# CONFIG_FB_DDC is not set
++# CONFIG_FB_BOOT_VESA_SUPPORT is not set
++CONFIG_FB_CFB_FILLRECT=y
++CONFIG_FB_CFB_COPYAREA=y
++CONFIG_FB_CFB_IMAGEBLIT=y
++# CONFIG_FB_CFB_REV_PIXELS_IN_BYTE is not set
++CONFIG_FB_SYS_FILLRECT=m
++CONFIG_FB_SYS_COPYAREA=m
++CONFIG_FB_SYS_IMAGEBLIT=m
++# CONFIG_FB_FOREIGN_ENDIAN is not set
++CONFIG_FB_SYS_FOPS=m
++# CONFIG_FB_SVGALIB is not set
++# CONFIG_FB_MACMODES is not set
++# CONFIG_FB_BACKLIGHT is not set
++CONFIG_FB_MODE_HELPERS=y
++CONFIG_FB_TILEBLITTING=y
++
++#
++# Frame buffer hardware drivers
++#
++# CONFIG_FB_CIRRUS is not set
++# CONFIG_FB_PM2 is not set
++# CONFIG_FB_CYBER2000 is not set
++# CONFIG_FB_ASILIANT is not set
++# CONFIG_FB_IMSTT is not set
++# CONFIG_FB_UVESA is not set
++# CONFIG_FB_S1D13XXX is not set
++# CONFIG_FB_NVIDIA is not set
++# CONFIG_FB_RIVA is not set
++# CONFIG_FB_MATROX is not set
++# CONFIG_FB_RADEON is not set
++# CONFIG_FB_ATY128 is not set
++# CONFIG_FB_ATY is not set
++# CONFIG_FB_S3 is not set
++# CONFIG_FB_SAVAGE is not set
++# CONFIG_FB_SIS is not set
++# CONFIG_FB_VIA is not set
++# CONFIG_FB_NEOMAGIC is not set
++# CONFIG_FB_KYRO is not set
++# CONFIG_FB_3DFX is not set
++# CONFIG_FB_VOODOO1 is not set
++# CONFIG_FB_VT8623 is not set
++# CONFIG_FB_TRIDENT is not set
++# CONFIG_FB_ARK is not set
++# CONFIG_FB_PM3 is not set
++# CONFIG_FB_CARMINE is not set
++CONFIG_FB_SILICONMOTION=y
++CONFIG_FB_SM7XX=y
++CONFIG_FB_SM7XX_ACCEL=y
++CONFIG_FB_VIRTUAL=m
++# CONFIG_FB_METRONOME is not set
++# CONFIG_FB_MB862XX is not set
++CONFIG_BACKLIGHT_LCD_SUPPORT=y
++# CONFIG_LCD_CLASS_DEVICE is not set
++CONFIG_BACKLIGHT_CLASS_DEVICE=y
++CONFIG_BACKLIGHT_GENERIC=y
++
++#
++# Display device support
++#
++# CONFIG_DISPLAY_SUPPORT is not set
++
++#
++# Console display driver support
++#
++# CONFIG_VGA_CONSOLE is not set
++# CONFIG_MDA_CONSOLE is not set
++CONFIG_DUMMY_CONSOLE=y
++CONFIG_FRAMEBUFFER_CONSOLE=y
++# CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY is not set
++CONFIG_FRAMEBUFFER_CONSOLE_ROTATION=y
++# CONFIG_FONTS is not set
++CONFIG_FONT_8x8=y
++CONFIG_FONT_8x16=y
++# CONFIG_LOGO is not set
++CONFIG_SOUND=m
++CONFIG_SOUND_OSS_CORE=y
++CONFIG_SND=m
++CONFIG_SND_TIMER=m
++CONFIG_SND_PCM=m
++CONFIG_SND_RAWMIDI=m
++CONFIG_SND_SEQUENCER=m
++CONFIG_SND_SEQ_DUMMY=m
++CONFIG_SND_OSSEMUL=y
++CONFIG_SND_MIXER_OSS=m
++CONFIG_SND_PCM_OSS=m
++CONFIG_SND_PCM_OSS_PLUGINS=y
++CONFIG_SND_SEQUENCER_OSS=y
++# CONFIG_SND_HRTIMER is not set
++# CONFIG_SND_DYNAMIC_MINORS is not set
++CONFIG_SND_SUPPORT_OLD_API=y
++CONFIG_SND_VERBOSE_PROCFS=y
++# CONFIG_SND_VERBOSE_PRINTK is not set
++# CONFIG_SND_DEBUG is not set
++CONFIG_SND_DRIVERS=y
++CONFIG_SND_DUMMY=m
++# CONFIG_SND_VIRMIDI is not set
++CONFIG_SND_MTPAV=m
++# CONFIG_SND_SERIAL_U16550 is not set
++# CONFIG_SND_MPU401 is not set
++CONFIG_SND_PCI=y
++# CONFIG_SND_AD1889 is not set
++# CONFIG_SND_ALS300 is not set
++# CONFIG_SND_ALI5451 is not set
++# CONFIG_SND_ATIIXP is not set
++# CONFIG_SND_ATIIXP_MODEM is not set
++# CONFIG_SND_AU8810 is not set
++# CONFIG_SND_AU8820 is not set
++# CONFIG_SND_AU8830 is not set
++# CONFIG_SND_AW2 is not set
++# CONFIG_SND_AZT3328 is not set
++# CONFIG_SND_BT87X is not set
++# CONFIG_SND_CA0106 is not set
++# CONFIG_SND_CMIPCI is not set
++# CONFIG_SND_OXYGEN is not set
++# CONFIG_SND_CS4281 is not set
++# CONFIG_SND_CS46XX is not set
++# CONFIG_SND_DARLA20 is not set
++# CONFIG_SND_GINA20 is not set
++# CONFIG_SND_LAYLA20 is not set
++# CONFIG_SND_DARLA24 is not set
++# CONFIG_SND_GINA24 is not set
++# CONFIG_SND_LAYLA24 is not set
++# CONFIG_SND_MONA is not set
++# CONFIG_SND_MIA is not set
++# CONFIG_SND_ECHO3G is not set
++# CONFIG_SND_INDIGO is not set
++# CONFIG_SND_INDIGOIO is not set
++# CONFIG_SND_INDIGODJ is not set
++# CONFIG_SND_EMU10K1 is not set
++# CONFIG_SND_EMU10K1X is not set
++# CONFIG_SND_ENS1370 is not set
++# CONFIG_SND_ENS1371 is not set
++# CONFIG_SND_ES1938 is not set
++# CONFIG_SND_ES1968 is not set
++# CONFIG_SND_FM801 is not set
++# CONFIG_SND_HDA_INTEL is not set
++# CONFIG_SND_HDSP is not set
++# CONFIG_SND_HDSPM is not set
++# CONFIG_SND_HIFIER is not set
++# CONFIG_SND_ICE1712 is not set
++# CONFIG_SND_ICE1724 is not set
++# CONFIG_SND_INTEL8X0 is not set
++# CONFIG_SND_INTEL8X0M is not set
++# CONFIG_SND_KORG1212 is not set
++# CONFIG_SND_MAESTRO3 is not set
++# CONFIG_SND_MIXART is not set
++# CONFIG_SND_NM256 is not set
++# CONFIG_SND_PCXHR is not set
++# CONFIG_SND_RIPTIDE is not set
++# CONFIG_SND_RME32 is not set
++# CONFIG_SND_RME96 is not set
++# CONFIG_SND_RME9652 is not set
++# CONFIG_SND_SONICVIBES is not set
++# CONFIG_SND_TRIDENT is not set
++# CONFIG_SND_VIA82XX is not set
++# CONFIG_SND_VIA82XX_MODEM is not set
++# CONFIG_SND_VIRTUOSO is not set
++# CONFIG_SND_VX222 is not set
++# CONFIG_SND_YMFPCI is not set
++# CONFIG_SND_SPI is not set
++# CONFIG_SND_MIPS is not set
++# CONFIG_SND_USB is not set
++# CONFIG_SND_SOC is not set
++# CONFIG_SOUND_PRIME is not set
++CONFIG_HID_SUPPORT=y
++CONFIG_HID=y
++# CONFIG_HID_DEBUG is not set
++CONFIG_HIDRAW=y
++
++#
++# USB Input Devices
++#
++CONFIG_USB_HID=y
++# CONFIG_HID_PID is not set
++CONFIG_USB_HIDDEV=y
++
++#
++# Special HID drivers
++#
++CONFIG_HID_COMPAT=y
++# CONFIG_HID_A4TECH is not set
++# CONFIG_HID_APPLE is not set
++# CONFIG_HID_BELKIN is not set
++# CONFIG_HID_CHERRY is not set
++# CONFIG_HID_CHICONY is not set
++# CONFIG_HID_CYPRESS is not set
++# CONFIG_HID_EZKEY is not set
++# CONFIG_HID_GYRATION is not set
++# CONFIG_HID_LOGITECH is not set
++# CONFIG_HID_MICROSOFT is not set
++# CONFIG_HID_MONTEREY is not set
++# CONFIG_HID_NTRIG is not set
++# CONFIG_HID_PANTHERLORD is not set
++# CONFIG_HID_PETALYNX is not set
++# CONFIG_HID_SAMSUNG is not set
++# CONFIG_HID_SONY is not set
++# CONFIG_HID_SUNPLUS is not set
++# CONFIG_GREENASIA_FF is not set
++# CONFIG_HID_TOPSEED is not set
++# CONFIG_THRUSTMASTER_FF is not set
++# CONFIG_ZEROPLUS_FF is not set
++CONFIG_USB_SUPPORT=y
++CONFIG_USB_ARCH_HAS_HCD=y
++CONFIG_USB_ARCH_HAS_OHCI=y
++CONFIG_USB_ARCH_HAS_EHCI=y
++CONFIG_USB=y
++# CONFIG_USB_DEBUG is not set
++# CONFIG_USB_ANNOUNCE_NEW_DEVICES is not set
++
++#
++# Miscellaneous USB options
++#
++CONFIG_USB_DEVICEFS=y
++CONFIG_USB_DEVICE_CLASS=y
++CONFIG_USB_DYNAMIC_MINORS=y
++# CONFIG_USB_SUSPEND is not set
++# CONFIG_USB_OTG is not set
++# CONFIG_USB_OTG_WHITELIST is not set
++# CONFIG_USB_OTG_BLACKLIST_HUB is not set
++CONFIG_USB_MON=m
++# CONFIG_USB_WUSB is not set
++# CONFIG_USB_WUSB_CBAF is not set
++
++#
++# USB Host Controller Drivers
++#
++# CONFIG_USB_C67X00_HCD is not set
++CONFIG_USB_EHCI_HCD=y
++CONFIG_USB_EHCI_ROOT_HUB_TT=y
++# CONFIG_USB_EHCI_TT_NEWSCHED is not set
++# CONFIG_USB_OXU210HP_HCD is not set
++# CONFIG_USB_ISP116X_HCD is not set
++# CONFIG_USB_ISP1760_HCD is not set
++CONFIG_USB_OHCI_HCD=m
++# CONFIG_USB_OHCI_BIG_ENDIAN_DESC is not set
++# CONFIG_USB_OHCI_BIG_ENDIAN_MMIO is not set
++CONFIG_USB_OHCI_LITTLE_ENDIAN=y
++CONFIG_USB_UHCI_HCD=m
++# CONFIG_USB_SL811_HCD is not set
++CONFIG_USB_R8A66597_HCD=y
++# CONFIG_USB_WHCI_HCD is not set
++# CONFIG_USB_HWA_HCD is not set
++
++#
++# USB Device Class drivers
++#
++CONFIG_USB_ACM=m
++CONFIG_USB_PRINTER=m
++# CONFIG_USB_WDM is not set
++# CONFIG_USB_TMC is not set
++
++#
++# NOTE: USB_STORAGE depends on SCSI but BLK_DEV_SD may also be needed;
++#
++
++#
++# see USB_STORAGE Help for more information
++#
++CONFIG_USB_STORAGE=y
++# CONFIG_USB_STORAGE_DEBUG is not set
++CONFIG_USB_STORAGE_DATAFAB=y
++CONFIG_USB_STORAGE_FREECOM=y
++CONFIG_USB_STORAGE_ISD200=y
++CONFIG_USB_STORAGE_USBAT=y
++CONFIG_USB_STORAGE_SDDR09=y
++CONFIG_USB_STORAGE_SDDR55=y
++CONFIG_USB_STORAGE_JUMPSHOT=y
++CONFIG_USB_STORAGE_ALAUDA=y
++CONFIG_USB_STORAGE_ONETOUCH=y
++CONFIG_USB_STORAGE_KARMA=y
++CONFIG_USB_STORAGE_CYPRESS_ATACB=y
++# CONFIG_USB_LIBUSUAL is not set
++
++#
++# USB Imaging devices
++#
++CONFIG_USB_MDC800=m
++CONFIG_USB_MICROTEK=m
++
++#
++# USB port drivers
++#
++CONFIG_USB_SERIAL=m
++CONFIG_USB_EZUSB=y
++CONFIG_USB_SERIAL_GENERIC=y
++# CONFIG_USB_SERIAL_AIRCABLE is not set
++CONFIG_USB_SERIAL_ARK3116=m
++CONFIG_USB_SERIAL_BELKIN=m
++# CONFIG_USB_SERIAL_CH341 is not set
++# CONFIG_USB_SERIAL_WHITEHEAT is not set
++CONFIG_USB_SERIAL_DIGI_ACCELEPORT=m
++CONFIG_USB_SERIAL_CP2101=m
++CONFIG_USB_SERIAL_CYPRESS_M8=m
++CONFIG_USB_SERIAL_EMPEG=m
++CONFIG_USB_SERIAL_FTDI_SIO=m
++CONFIG_USB_SERIAL_FUNSOFT=m
++CONFIG_USB_SERIAL_VISOR=m
++CONFIG_USB_SERIAL_IPAQ=m
++CONFIG_USB_SERIAL_IR=m
++CONFIG_USB_SERIAL_EDGEPORT=m
++CONFIG_USB_SERIAL_EDGEPORT_TI=m
++CONFIG_USB_SERIAL_GARMIN=m
++CONFIG_USB_SERIAL_IPW=m
++# CONFIG_USB_SERIAL_IUU is not set
++CONFIG_USB_SERIAL_KEYSPAN_PDA=m
++# CONFIG_USB_SERIAL_KEYSPAN is not set
++CONFIG_USB_SERIAL_KLSI=m
++CONFIG_USB_SERIAL_KOBIL_SCT=m
++CONFIG_USB_SERIAL_MCT_U232=m
++# CONFIG_USB_SERIAL_MOS7720 is not set
++# CONFIG_USB_SERIAL_MOS7840 is not set
++# CONFIG_USB_SERIAL_MOTOROLA is not set
++CONFIG_USB_SERIAL_NAVMAN=m
++CONFIG_USB_SERIAL_PL2303=m
++# CONFIG_USB_SERIAL_OTI6858 is not set
++# CONFIG_USB_SERIAL_SPCP8X5 is not set
++CONFIG_USB_SERIAL_HP4X=m
++CONFIG_USB_SERIAL_SAFE=m
++# CONFIG_USB_SERIAL_SAFE_PADDED is not set
++# CONFIG_USB_SERIAL_SIEMENS_MPI is not set
++CONFIG_USB_SERIAL_SIERRAWIRELESS=m
++CONFIG_USB_SERIAL_TI=m
++CONFIG_USB_SERIAL_CYBERJACK=m
++CONFIG_USB_SERIAL_XIRCOM=m
++CONFIG_USB_SERIAL_OPTION=m
++CONFIG_USB_SERIAL_OMNINET=m
++# CONFIG_USB_SERIAL_OPTICON is not set
++# CONFIG_USB_SERIAL_DEBUG is not set
++
++#
++# USB Miscellaneous drivers
++#
++# CONFIG_USB_EMI62 is not set
++# CONFIG_USB_EMI26 is not set
++# CONFIG_USB_ADUTUX is not set
++# CONFIG_USB_SEVSEG is not set
++CONFIG_USB_RIO500=m
++# CONFIG_USB_LEGOTOWER is not set
++# CONFIG_USB_LCD is not set
++# CONFIG_USB_BERRY_CHARGE is not set
++# CONFIG_USB_LED is not set
++# CONFIG_USB_CYPRESS_CY7C63 is not set
++# CONFIG_USB_CYTHERM is not set
++# CONFIG_USB_PHIDGET is not set
++CONFIG_USB_IDMOUSE=m
++# CONFIG_USB_FTDI_ELAN is not set
++CONFIG_USB_APPLEDISPLAY=m
++CONFIG_USB_SISUSBVGA=m
++CONFIG_USB_SISUSBVGA_CON=y
++CONFIG_USB_LD=m
++# CONFIG_USB_TRANCEVIBRATOR is not set
++# CONFIG_USB_IOWARRIOR is not set
++CONFIG_USB_TEST=m
++# CONFIG_USB_ISIGHTFW is not set
++# CONFIG_USB_VST is not set
++CONFIG_USB_ATM=m
++CONFIG_USB_SPEEDTOUCH=m
++CONFIG_USB_CXACRU=m
++CONFIG_USB_UEAGLEATM=m
++CONFIG_USB_XUSBATM=m
++# CONFIG_USB_GADGET is not set
++
++#
++# OTG and related infrastructure
++#
++# CONFIG_UWB is not set
++CONFIG_MMC=m
++# CONFIG_MMC_DEBUG is not set
++# CONFIG_MMC_UNSAFE_RESUME is not set
++
++#
++# MMC/SD/SDIO Card Drivers
++#
++# CONFIG_MMC_BLOCK is not set
++# CONFIG_SDIO_UART is not set
++# CONFIG_MMC_TEST is not set
++
++#
++# MMC/SD/SDIO Host Controller Drivers
++#
++# CONFIG_MMC_SDHCI is not set
++# CONFIG_MMC_TIFM_SD is not set
++# CONFIG_MMC_SPI is not set
++# CONFIG_MEMSTICK is not set
++CONFIG_NEW_LEDS=y
++CONFIG_LEDS_CLASS=m
++
++#
++# LED drivers
++#
++# CONFIG_LEDS_PCA9532 is not set
++# CONFIG_LEDS_PCA955X is not set
++
++#
++# LED Triggers
++#
++CONFIG_LEDS_TRIGGERS=y
++CONFIG_LEDS_TRIGGER_TIMER=m
++# CONFIG_LEDS_TRIGGER_IDE_DISK is not set
++CONFIG_LEDS_TRIGGER_HEARTBEAT=m
++# CONFIG_LEDS_TRIGGER_BACKLIGHT is not set
++# CONFIG_LEDS_TRIGGER_DEFAULT_ON is not set
++# CONFIG_ACCESSIBILITY is not set
++# CONFIG_INFINIBAND is not set
++CONFIG_RTC_LIB=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_HCTOSYS=y
++CONFIG_RTC_HCTOSYS_DEVICE="rtc0"
++# CONFIG_RTC_DEBUG is not set
++
++#
++# RTC interfaces
++#
++CONFIG_RTC_INTF_SYSFS=y
++CONFIG_RTC_INTF_PROC=y
++CONFIG_RTC_INTF_DEV=y
++# CONFIG_RTC_INTF_DEV_UIE_EMUL is not set
++# CONFIG_RTC_DRV_TEST is not set
++
++#
++# I2C RTC drivers
++#
++# CONFIG_RTC_DRV_DS1307 is not set
++# CONFIG_RTC_DRV_DS1374 is not set
++# CONFIG_RTC_DRV_DS1672 is not set
++# CONFIG_RTC_DRV_MAX6900 is not set
++# CONFIG_RTC_DRV_RS5C372 is not set
++# CONFIG_RTC_DRV_ISL1208 is not set
++# CONFIG_RTC_DRV_X1205 is not set
++# CONFIG_RTC_DRV_PCF8563 is not set
++# CONFIG_RTC_DRV_PCF8583 is not set
++# CONFIG_RTC_DRV_M41T80 is not set
++# CONFIG_RTC_DRV_S35390A is not set
++# CONFIG_RTC_DRV_FM3130 is not set
++# CONFIG_RTC_DRV_RX8581 is not set
++
++#
++# SPI RTC drivers
++#
++# CONFIG_RTC_DRV_M41T94 is not set
++# CONFIG_RTC_DRV_DS1305 is not set
++# CONFIG_RTC_DRV_DS1390 is not set
++# CONFIG_RTC_DRV_MAX6902 is not set
++# CONFIG_RTC_DRV_R9701 is not set
++# CONFIG_RTC_DRV_RS5C348 is not set
++# CONFIG_RTC_DRV_DS3234 is not set
++
++#
++# Platform RTC drivers
++#
++CONFIG_RTC_DRV_CMOS=y
++# CONFIG_RTC_DRV_DS1286 is not set
++# CONFIG_RTC_DRV_DS1511 is not set
++# CONFIG_RTC_DRV_DS1553 is not set
++# CONFIG_RTC_DRV_DS1742 is not set
++# CONFIG_RTC_DRV_STK17TA8 is not set
++# CONFIG_RTC_DRV_M48T86 is not set
++# CONFIG_RTC_DRV_M48T35 is not set
++# CONFIG_RTC_DRV_M48T59 is not set
++# CONFIG_RTC_DRV_BQ4802 is not set
++# CONFIG_RTC_DRV_V3020 is not set
++
++#
++# on-CPU RTC drivers
++#
++# CONFIG_DMADEVICES is not set
++# CONFIG_UIO is not set
++# CONFIG_STAGING is not set
++
++#
++# File systems
++#
++CONFIG_EXT2_FS=y
++CONFIG_EXT2_FS_XATTR=y
++CONFIG_EXT2_FS_POSIX_ACL=y
++CONFIG_EXT2_FS_SECURITY=y
++# CONFIG_EXT2_FS_XIP is not set
++CONFIG_EXT3_FS=y
++CONFIG_EXT3_FS_XATTR=y
++CONFIG_EXT3_FS_POSIX_ACL=y
++CONFIG_EXT3_FS_SECURITY=y
++CONFIG_EXT4_FS=m
++CONFIG_EXT4DEV_COMPAT=y
++CONFIG_EXT4_FS_XATTR=y
++CONFIG_EXT4_FS_POSIX_ACL=y
++CONFIG_EXT4_FS_SECURITY=y
++CONFIG_JBD=y
++# CONFIG_JBD_DEBUG is not set
++CONFIG_JBD2=m
++# CONFIG_JBD2_DEBUG is not set
++CONFIG_FS_MBCACHE=y
++CONFIG_REISERFS_FS=m
++# CONFIG_REISERFS_CHECK is not set
++# CONFIG_REISERFS_PROC_INFO is not set
++CONFIG_REISERFS_FS_XATTR=y
++CONFIG_REISERFS_FS_POSIX_ACL=y
++CONFIG_REISERFS_FS_SECURITY=y
++CONFIG_JFS_FS=m
++CONFIG_JFS_POSIX_ACL=y
++CONFIG_JFS_SECURITY=y
++# CONFIG_JFS_DEBUG is not set
++# CONFIG_JFS_STATISTICS is not set
++CONFIG_FS_POSIX_ACL=y
++CONFIG_FILE_LOCKING=y
++CONFIG_XFS_FS=m
++CONFIG_XFS_QUOTA=y
++CONFIG_XFS_POSIX_ACL=y
++CONFIG_XFS_RT=y
++# CONFIG_XFS_DEBUG is not set
++# CONFIG_GFS2_FS is not set
++CONFIG_OCFS2_FS=m
++CONFIG_OCFS2_FS_O2CB=m
++CONFIG_OCFS2_FS_STATS=y
++CONFIG_OCFS2_DEBUG_MASKLOG=y
++# CONFIG_OCFS2_DEBUG_FS is not set
++# CONFIG_OCFS2_FS_POSIX_ACL is not set
++# CONFIG_BTRFS_FS is not set
++CONFIG_DNOTIFY=y
++CONFIG_INOTIFY=y
++CONFIG_INOTIFY_USER=y
++CONFIG_QUOTA=y
++# CONFIG_QUOTA_NETLINK_INTERFACE is not set
++CONFIG_PRINT_QUOTA_WARNING=y
++CONFIG_QUOTA_TREE=m
++CONFIG_QFMT_V1=m
++CONFIG_QFMT_V2=m
++CONFIG_QUOTACTL=y
++CONFIG_AUTOFS_FS=m
++CONFIG_AUTOFS4_FS=m
++CONFIG_FUSE_FS=m
++
++#
++# CD-ROM/DVD Filesystems
++#
++CONFIG_ISO9660_FS=m
++CONFIG_JOLIET=y
++CONFIG_ZISOFS=y
++CONFIG_UDF_FS=m
++CONFIG_UDF_NLS=y
++
++#
++# DOS/FAT/NT Filesystems
++#
++CONFIG_FAT_FS=m
++CONFIG_MSDOS_FS=m
++CONFIG_VFAT_FS=m
++CONFIG_FAT_DEFAULT_CODEPAGE=437
++CONFIG_FAT_DEFAULT_IOCHARSET="iso8859-1"
++CONFIG_NTFS_FS=m
++# CONFIG_NTFS_DEBUG is not set
++CONFIG_NTFS_RW=y
++
++#
++# Pseudo filesystems
++#
++CONFIG_PROC_FS=y
++CONFIG_PROC_KCORE=y
++CONFIG_PROC_SYSCTL=y
++CONFIG_PROC_PAGE_MONITOR=y
++CONFIG_SYSFS=y
++CONFIG_TMPFS=y
++# CONFIG_TMPFS_POSIX_ACL is not set
++# CONFIG_HUGETLB_PAGE is not set
++CONFIG_CONFIGFS_FS=m
++CONFIG_MISC_FILESYSTEMS=y
++CONFIG_ADFS_FS=m
++# CONFIG_ADFS_FS_RW is not set
++CONFIG_AFFS_FS=m
++# CONFIG_ECRYPT_FS is not set
++CONFIG_HFS_FS=m
++CONFIG_HFSPLUS_FS=m
++CONFIG_BEFS_FS=m
++# CONFIG_BEFS_DEBUG is not set
++CONFIG_BFS_FS=m
++CONFIG_EFS_FS=m
++CONFIG_JFFS2_FS=m
++CONFIG_JFFS2_FS_DEBUG=0
++CONFIG_JFFS2_FS_WRITEBUFFER=y
++# CONFIG_JFFS2_FS_WBUF_VERIFY is not set
++# CONFIG_JFFS2_SUMMARY is not set
++CONFIG_JFFS2_FS_XATTR=y
++CONFIG_JFFS2_FS_POSIX_ACL=y
++CONFIG_JFFS2_FS_SECURITY=y
++# CONFIG_JFFS2_COMPRESSION_OPTIONS is not set
++CONFIG_JFFS2_ZLIB=y
++# CONFIG_JFFS2_LZO is not set
++CONFIG_JFFS2_RTIME=y
++# CONFIG_JFFS2_RUBIN is not set
++CONFIG_CRAMFS=y
++# CONFIG_SQUASHFS is not set
++CONFIG_VXFS_FS=m
++CONFIG_MINIX_FS=m
++# CONFIG_OMFS_FS is not set
++CONFIG_HPFS_FS=m
++CONFIG_QNX4FS_FS=m
++CONFIG_ROMFS_FS=m
++CONFIG_SYSV_FS=m
++CONFIG_UFS_FS=m
++# CONFIG_UFS_FS_WRITE is not set
++# CONFIG_UFS_DEBUG is not set
++CONFIG_NETWORK_FILESYSTEMS=y
++CONFIG_NFS_FS=m
++CONFIG_NFS_V3=y
++CONFIG_NFS_V3_ACL=y
++CONFIG_NFS_V4=y
++CONFIG_NFSD=m
++CONFIG_NFSD_V2_ACL=y
++CONFIG_NFSD_V3=y
++CONFIG_NFSD_V3_ACL=y
++CONFIG_NFSD_V4=y
++CONFIG_LOCKD=m
++CONFIG_LOCKD_V4=y
++CONFIG_EXPORTFS=m
++CONFIG_NFS_ACL_SUPPORT=m
++CONFIG_NFS_COMMON=y
++CONFIG_SUNRPC=m
++CONFIG_SUNRPC_GSS=m
++# CONFIG_SUNRPC_REGISTER_V4 is not set
++CONFIG_RPCSEC_GSS_KRB5=m
++CONFIG_RPCSEC_GSS_SPKM3=m
++CONFIG_SMB_FS=m
++# CONFIG_SMB_NLS_DEFAULT is not set
++CONFIG_CIFS=m
++# CONFIG_CIFS_STATS is not set
++# CONFIG_CIFS_WEAK_PW_HASH is not set
++# CONFIG_CIFS_UPCALL is not set
++# CONFIG_CIFS_XATTR is not set
++# CONFIG_CIFS_DEBUG2 is not set
++# CONFIG_CIFS_EXPERIMENTAL is not set
++CONFIG_NCP_FS=m
++CONFIG_NCPFS_PACKET_SIGNING=y
++CONFIG_NCPFS_IOCTL_LOCKING=y
++CONFIG_NCPFS_STRONG=y
++CONFIG_NCPFS_NFS_NS=y
++CONFIG_NCPFS_OS2_NS=y
++# CONFIG_NCPFS_SMALLDOS is not set
++CONFIG_NCPFS_NLS=y
++CONFIG_NCPFS_EXTRAS=y
++CONFIG_CODA_FS=m
++CONFIG_AFS_FS=m
++# CONFIG_AFS_DEBUG is not set
++
++#
++# Partition Types
++#
++CONFIG_PARTITION_ADVANCED=y
++CONFIG_ACORN_PARTITION=y
++# CONFIG_ACORN_PARTITION_CUMANA is not set
++# CONFIG_ACORN_PARTITION_EESOX is not set
++CONFIG_ACORN_PARTITION_ICS=y
++# CONFIG_ACORN_PARTITION_ADFS is not set
++# CONFIG_ACORN_PARTITION_POWERTEC is not set
++CONFIG_ACORN_PARTITION_RISCIX=y
++CONFIG_OSF_PARTITION=y
++CONFIG_AMIGA_PARTITION=y
++CONFIG_ATARI_PARTITION=y
++CONFIG_MAC_PARTITION=y
++CONFIG_MSDOS_PARTITION=y
++CONFIG_BSD_DISKLABEL=y
++CONFIG_MINIX_SUBPARTITION=y
++CONFIG_SOLARIS_X86_PARTITION=y
++CONFIG_UNIXWARE_DISKLABEL=y
++CONFIG_LDM_PARTITION=y
++# CONFIG_LDM_DEBUG is not set
++CONFIG_SGI_PARTITION=y
++CONFIG_ULTRIX_PARTITION=y
++CONFIG_SUN_PARTITION=y
++CONFIG_KARMA_PARTITION=y
++CONFIG_EFI_PARTITION=y
++# CONFIG_SYSV68_PARTITION is not set
++CONFIG_NLS=y
++CONFIG_NLS_DEFAULT="utf-8"
++CONFIG_NLS_CODEPAGE_437=m
++# CONFIG_NLS_CODEPAGE_737 is not set
++# CONFIG_NLS_CODEPAGE_775 is not set
++CONFIG_NLS_CODEPAGE_850=m
++# CONFIG_NLS_CODEPAGE_852 is not set
++# CONFIG_NLS_CODEPAGE_855 is not set
++# CONFIG_NLS_CODEPAGE_857 is not set
++# CONFIG_NLS_CODEPAGE_860 is not set
++# CONFIG_NLS_CODEPAGE_861 is not set
++# CONFIG_NLS_CODEPAGE_862 is not set
++# CONFIG_NLS_CODEPAGE_863 is not set
++# CONFIG_NLS_CODEPAGE_864 is not set
++# CONFIG_NLS_CODEPAGE_865 is not set
++# CONFIG_NLS_CODEPAGE_866 is not set
++# CONFIG_NLS_CODEPAGE_869 is not set
++CONFIG_NLS_CODEPAGE_936=m
++CONFIG_NLS_CODEPAGE_950=m
++CONFIG_NLS_CODEPAGE_932=m
++CONFIG_NLS_CODEPAGE_949=m
++# CONFIG_NLS_CODEPAGE_874 is not set
++# CONFIG_NLS_ISO8859_8 is not set
++CONFIG_NLS_CODEPAGE_1250=m
++CONFIG_NLS_CODEPAGE_1251=m
++CONFIG_NLS_ASCII=m
++# CONFIG_NLS_ISO8859_1 is not set
++# CONFIG_NLS_ISO8859_2 is not set
++# CONFIG_NLS_ISO8859_3 is not set
++# CONFIG_NLS_ISO8859_4 is not set
++# CONFIG_NLS_ISO8859_5 is not set
++# CONFIG_NLS_ISO8859_6 is not set
++# CONFIG_NLS_ISO8859_7 is not set
++# CONFIG_NLS_ISO8859_9 is not set
++# CONFIG_NLS_ISO8859_13 is not set
++# CONFIG_NLS_ISO8859_14 is not set
++# CONFIG_NLS_ISO8859_15 is not set
++CONFIG_NLS_KOI8_R=m
++CONFIG_NLS_KOI8_U=m
++CONFIG_NLS_UTF8=m
++# CONFIG_DLM is not set
++
++#
++# Kernel hacking
++#
++CONFIG_TRACE_IRQFLAGS_SUPPORT=y
++# CONFIG_PRINTK_TIME is not set
++CONFIG_ENABLE_WARN_DEPRECATED=y
++CONFIG_ENABLE_MUST_CHECK=y
++CONFIG_FRAME_WARN=1024
++CONFIG_MAGIC_SYSRQ=y
++CONFIG_UNUSED_SYMBOLS=y
++CONFIG_DEBUG_FS=y
++# CONFIG_HEADERS_CHECK is not set
++# CONFIG_DEBUG_KERNEL is not set
++CONFIG_STACKTRACE=y
++# CONFIG_DEBUG_MEMORY_INIT is not set
++# CONFIG_RCU_CPU_STALL_DETECTOR is not set
++CONFIG_SYSCTL_SYSCALL_CHECK=y
++CONFIG_NOP_TRACER=y
++CONFIG_RING_BUFFER=y
++CONFIG_TRACING=y
++
++#
++# Tracers
++#
++# CONFIG_DYNAMIC_PRINTK_DEBUG is not set
++# CONFIG_SAMPLES is not set
++CONFIG_HAVE_ARCH_KGDB=y
++CONFIG_CMDLINE=""
++
++#
++# Security options
++#
++CONFIG_KEYS=y
++# CONFIG_KEYS_DEBUG_PROC_KEYS is not set
++CONFIG_SECURITY=y
++# CONFIG_SECURITYFS is not set
++CONFIG_SECURITY_NETWORK=y
++CONFIG_SECURITY_NETWORK_XFRM=y
++# CONFIG_SECURITY_PATH is not set
++# CONFIG_SECURITY_FILE_CAPABILITIES is not set
++# CONFIG_SECURITY_ROOTPLUG is not set
++CONFIG_SECURITY_DEFAULT_MMAP_MIN_ADDR=0
++CONFIG_SECURITY_SELINUX=y
++CONFIG_SECURITY_SELINUX_BOOTPARAM=y
++CONFIG_SECURITY_SELINUX_BOOTPARAM_VALUE=0
++CONFIG_SECURITY_SELINUX_DISABLE=y
++CONFIG_SECURITY_SELINUX_DEVELOP=y
++CONFIG_SECURITY_SELINUX_AVC_STATS=y
++CONFIG_SECURITY_SELINUX_CHECKREQPROT_VALUE=1
++# CONFIG_SECURITY_SELINUX_POLICYDB_VERSION_MAX is not set
++CONFIG_XOR_BLOCKS=m
++CONFIG_ASYNC_CORE=m
++CONFIG_ASYNC_MEMCPY=m
++CONFIG_ASYNC_XOR=m
++CONFIG_CRYPTO=y
++
++#
++# Crypto core or helper
++#
++# CONFIG_CRYPTO_FIPS is not set
++CONFIG_CRYPTO_ALGAPI=y
++CONFIG_CRYPTO_ALGAPI2=y
++CONFIG_CRYPTO_AEAD=m
++CONFIG_CRYPTO_AEAD2=y
++CONFIG_CRYPTO_BLKCIPHER=y
++CONFIG_CRYPTO_BLKCIPHER2=y
++CONFIG_CRYPTO_HASH=y
++CONFIG_CRYPTO_HASH2=y
++CONFIG_CRYPTO_RNG2=y
++CONFIG_CRYPTO_MANAGER=y
++CONFIG_CRYPTO_MANAGER2=y
++# CONFIG_CRYPTO_GF128MUL is not set
++CONFIG_CRYPTO_NULL=m
++# CONFIG_CRYPTO_CRYPTD is not set
++CONFIG_CRYPTO_AUTHENC=m
++CONFIG_CRYPTO_TEST=m
++
++#
++# Authenticated Encryption with Associated Data
++#
++# CONFIG_CRYPTO_CCM is not set
++# CONFIG_CRYPTO_GCM is not set
++# CONFIG_CRYPTO_SEQIV is not set
++
++#
++# Block modes
++#
++CONFIG_CRYPTO_CBC=m
++# CONFIG_CRYPTO_CTR is not set
++# CONFIG_CRYPTO_CTS is not set
++CONFIG_CRYPTO_ECB=y
++# CONFIG_CRYPTO_LRW is not set
++# CONFIG_CRYPTO_PCBC is not set
++# CONFIG_CRYPTO_XTS is not set
++
++#
++# Hash modes
++#
++CONFIG_CRYPTO_HMAC=y
++# CONFIG_CRYPTO_XCBC is not set
++
++#
++# Digest
++#
++CONFIG_CRYPTO_CRC32C=m
++CONFIG_CRYPTO_MD4=m
++CONFIG_CRYPTO_MD5=y
++CONFIG_CRYPTO_MICHAEL_MIC=m
++# CONFIG_CRYPTO_RMD128 is not set
++# CONFIG_CRYPTO_RMD160 is not set
++# CONFIG_CRYPTO_RMD256 is not set
++# CONFIG_CRYPTO_RMD320 is not set
++CONFIG_CRYPTO_SHA1=m
++CONFIG_CRYPTO_SHA256=m
++CONFIG_CRYPTO_SHA512=m
++CONFIG_CRYPTO_TGR192=m
++CONFIG_CRYPTO_WP512=m
++
++#
++# Ciphers
++#
++CONFIG_CRYPTO_AES=y
++CONFIG_CRYPTO_ANUBIS=m
++CONFIG_CRYPTO_ARC4=y
++CONFIG_CRYPTO_BLOWFISH=m
++# CONFIG_CRYPTO_CAMELLIA is not set
++CONFIG_CRYPTO_CAST5=m
++CONFIG_CRYPTO_CAST6=m
++CONFIG_CRYPTO_DES=m
++# CONFIG_CRYPTO_FCRYPT is not set
++CONFIG_CRYPTO_KHAZAD=m
++# CONFIG_CRYPTO_SALSA20 is not set
++# CONFIG_CRYPTO_SEED is not set
++CONFIG_CRYPTO_SERPENT=m
++CONFIG_CRYPTO_TEA=m
++CONFIG_CRYPTO_TWOFISH=m
++CONFIG_CRYPTO_TWOFISH_COMMON=m
++
++#
++# Compression
++#
++CONFIG_CRYPTO_DEFLATE=m
++# CONFIG_CRYPTO_LZO is not set
++
++#
++# Random Number Generation
++#
++# CONFIG_CRYPTO_ANSI_CPRNG is not set
++CONFIG_CRYPTO_HW=y
++# CONFIG_CRYPTO_DEV_HIFN_795X is not set
++
++#
++# Library routines
++#
++CONFIG_BITREVERSE=y
++CONFIG_GENERIC_FIND_LAST_BIT=y
++CONFIG_CRC_CCITT=m
++CONFIG_CRC16=m
++# CONFIG_CRC_T10DIF is not set
++CONFIG_CRC_ITU_T=m
++CONFIG_CRC32=y
++# CONFIG_CRC7 is not set
++CONFIG_LIBCRC32C=m
++CONFIG_AUDIT_GENERIC=y
++CONFIG_ZLIB_INFLATE=y
++CONFIG_ZLIB_DEFLATE=m
++CONFIG_TEXTSEARCH=y
++CONFIG_TEXTSEARCH_KMP=m
++CONFIG_TEXTSEARCH_BM=m
++CONFIG_TEXTSEARCH_FSM=m
++CONFIG_PLIST=y
++CONFIG_HAS_IOMEM=y
++CONFIG_HAS_IOPORT=y
++CONFIG_HAS_DMA=y
 -- 
 1.6.2.1

@@ -1,48 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2009 10:21:08 +0100 (BST)
-Received: from smtp.movial.fi ([62.236.91.34]:58583 "EHLO smtp.movial.fi"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 15 May 2009 11:10:27 +0100 (BST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:60928 "EHLO h5.dl5rb.org.uk"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20021911AbZEOJU7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 15 May 2009 10:20:59 +0100
-Received: from localhost (mailscanner.hel.movial.fi [172.17.81.9])
-	by smtp.movial.fi (Postfix) with ESMTP id 32F41C837C;
-	Fri, 15 May 2009 12:20:53 +0300 (EEST)
-X-Virus-Scanned: Debian amavisd-new at movial.fi
-Received: from smtp.movial.fi ([62.236.91.34])
-	by localhost (mailscanner.hel.movial.fi [172.17.81.9]) (amavisd-new, port 10026)
-	with ESMTP id 9oN+LmaZEeCd; Fri, 15 May 2009 12:20:53 +0300 (EEST)
-Received: from [172.17.49.48] (sd048.hel.movial.fi [172.17.49.48])
-	by smtp.movial.fi (Postfix) with ESMTP id 153B3C8229;
-	Fri, 15 May 2009 12:20:53 +0300 (EEST)
-Message-ID: <4A0D33F4.1060906@movial.com>
-Date:	Fri, 15 May 2009 12:20:52 +0300
-From:	Dmitri Vorobiev <dmitri.vorobiev@movial.com>
-Organization: Movial Creative Technologies
-User-Agent: Icedove 1.5.0.14eol (X11/20090105)
+	id S20021984AbZEOKKU (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 15 May 2009 11:10:20 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n4FA9xEK004791;
+	Fri, 15 May 2009 11:10:07 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n4FA9qR4004773;
+	Fri, 15 May 2009 11:09:52 +0100
+Date:	Fri, 15 May 2009 11:09:51 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Mark Brown <broonie@opensource.wolfsonmicro.com>
+Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org,
+	alsa-devel@alsa-project.org
+Subject: Re: [alsa-devel] [PATCH] TXx9: Add ACLC support
+Message-ID: <20090515100951.GB2821@linux-mips.org>
+References: <1242312605-2160-2-git-send-email-anemo@mba.ocn.ne.jp> <20090515090118.GA7706@linux-mips.org> <20090515091741.GA4449@sirena.org.uk>
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Andrew Randrianasulu <randrik_a@yahoo.com>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] IP32 power button fix for 2.6.30
-References: <273990.30979.qm@web65307.mail.ac2.yahoo.com> <20090515091319.GB7706@linux-mips.org>
-In-Reply-To: <20090515091319.GB7706@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <dmitri.vorobiev@movial.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20090515091741.GA4449@sirena.org.uk>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22727
+X-archive-position: 22728
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@movial.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
+On Fri, May 15, 2009 at 10:17:43AM +0100, Mark Brown wrote:
 
->  Use a proper mail client such as /bin/mail ;-)
+> On Fri, May 15, 2009 at 10:01:19AM +0100, Ralf Baechle wrote:
+> > On Thu, May 14, 2009 at 11:50:05PM +0900, Atsushi Nemoto wrote:
+> 
+> > > Add platform support for ACLC of TXx9 SoCs.
+> 
+> > Thanks, queued up for 2.6.31 / linux-next.
+> 
+> These will need revision after fixing my review comments for the audio
+> drivers - the way the platform devices are set up needs to be changed so
+> that the resources are associated with devices for the CPU rather than
+> the machine driver that says how a given board is connected up.
 
-Err... Maybe it's still too hard to not wrap /usr/bin/git-send-email around /bin/mail ;-)
+Ok; I re-queued the patch into my -mm tree until we declare it ripe.
 
-Dmitri
+  Ralf

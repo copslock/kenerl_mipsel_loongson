@@ -1,75 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 May 2009 02:23:41 +0100 (BST)
-Received: from e34.co.us.ibm.com ([32.97.110.152]:50237 "EHLO
-	e34.co.us.ibm.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20023550AbZEPBXf (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 16 May 2009 02:23:35 +0100
-Received: from d03relay02.boulder.ibm.com (d03relay02.boulder.ibm.com [9.17.195.227])
-	by e34.co.us.ibm.com (8.13.1/8.13.1) with ESMTP id n4G1Ki8Y016498;
-	Fri, 15 May 2009 19:20:44 -0600
-Received: from d03av02.boulder.ibm.com (d03av02.boulder.ibm.com [9.17.195.168])
-	by d03relay02.boulder.ibm.com (8.13.8/8.13.8/NCO v9.2) with ESMTP id n4G1NPQf214836;
-	Fri, 15 May 2009 19:23:25 -0600
-Received: from d03av02.boulder.ibm.com (loopback [127.0.0.1])
-	by d03av02.boulder.ibm.com (8.12.11.20060308/8.13.3) with ESMTP id n4G1NOp9006048;
-	Fri, 15 May 2009 19:23:25 -0600
-Received: from [9.76.205.89] (sig-9-76-205-89.mts.ibm.com [9.76.205.89])
-	by d03av02.boulder.ibm.com (8.12.11.20060308/8.12.11) with ESMTP id n4G1NNrh005999;
-	Fri, 15 May 2009 19:23:24 -0600
-Subject: Re: [PATCH 23/30] loongson: CS5536 MFGPT as system clock source
- support
-From:	John Stultz <johnstul@us.ibm.com>
-To:	wuzhangjin@gmail.com
-Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-	linux-kernel@vger.kernel.org, Arnaud Patard <apatard@mandriva.com>,
-	loongson-dev@googlegroups.com, zhangfx@lemote.com, yanh@lemote.com,
-	Philippe Vachon <philippe@cowpig.ca>,
-	Zhang Le <r0bertz@gentoo.org>, Erwan Lerale <erwan@thiscow.com>
-In-Reply-To: <1242436541.10164.194.camel@falcon>
-References: <1242426182.10164.168.camel@falcon>
-	 <1f1b08da0905151739v6bc2e5f6t57cb8e06cdda2673@mail.gmail.com>
-	 <1242436541.10164.194.camel@falcon>
-Content-Type: text/plain
-Date:	Fri, 15 May 2009 18:23:24 -0700
-Message-Id: <1242437004.29511.202.camel@jstultz-laptop>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <johnstul@us.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 May 2009 04:22:02 +0100 (BST)
+Received: from qw-out-1920.google.com ([74.125.92.144]:13244 "EHLO
+	qw-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20021378AbZEPDVz (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 16 May 2009 04:21:55 +0100
+Received: by qw-out-1920.google.com with SMTP id 9so1730225qwj.54
+        for <linux-mips@linux-mips.org>; Fri, 15 May 2009 20:21:54 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:date:message-id:subject
+         :from:to:content-type;
+        bh=4Rlf32V7j6G+v31hivGTJcN2cz+2W+OQIHHvHUgMWOc=;
+        b=dL33/GEuiiqlKccLV5FhFhJPiNhcv9JcvmkHuMVNc11pdL2aU//YNyGSCP5XjQLPh3
+         jwNoCgccazfWuKKr2nBZZ0raYret3JVv5AlufHKUfjVKuXMinhLshUWz4sWwYYl3NbxX
+         RSOGcLjTVOz5tpkOyvOKqptBv3G4zdcCjLWKQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=HZfZ+97UXQq+xaoDuGCotSOJyF1KSAckWnkhf7P8OoYtdJeYdr95ty95sH/SifWlYF
+         L0qg7ydPeK3ZcsNvpwGf578e8k5nvxhprB5RITOoS/XoDwxADcWvNfdPnTbpBVhovSFb
+         DEtTx38USd9qxwkP4HlLawu8V75SZZLKQjZ5g=
+MIME-Version: 1.0
+Received: by 10.220.45.84 with SMTP id d20mr5717268vcf.90.1242443689722; Fri, 
+	15 May 2009 20:14:49 -0700 (PDT)
+Date:	Fri, 15 May 2009 22:14:49 -0500
+Message-ID: <ecbbfeda0905152014t62281c79k2001e428da65a442@mail.gmail.com>
+Subject: Bigsur?
+From:	Andrew Wiley <debio264@gmail.com>
+To:	linux-mips@linux-mips.org
+Content-Type: multipart/alternative; boundary=0016e6470faac785ab0469fef611
+Return-Path: <debio264@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22772
+X-archive-position: 22773
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: johnstul@us.ibm.com
+X-original-sender: debio264@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 2009-05-16 at 09:15 +0800, Wu Zhangjin wrote:
-> On Fri, 2009-05-15 at 17:39 -0700, john stultz wrote:
-> > On Fri, May 15, 2009 at 3:23 PM, Wu Zhangjin <wuzhangjin@gmail.com> wrote:
-> > > +static struct clocksource clocksource_mfgpt = {
-> > > +    .name = "mfgpt",
-> > > +    .rating = 1200,
-> > 
-> > Minor nit. Please read the comment over the struct clocksource
-> > definition in include/linux/clocksource.h for a guide to setting the
-> > rating value for your clocksource.
-> > 
-> 
-> as the comment describes, just like the 8253 Timer, the precision of
-> cs5536 mfgpt Timer is not good, the rating of it should be in the range
-> of 100-199? Functional for real use, but not desired?
+--0016e6470faac785ab0469fef611
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 
-That would seem reasonable to me, as it insures that should better
-clocksources become available on the hardware, it will pick the better
-hardware.
+Is there any way for a mere mortal like me to get his hands on a BCM91480B,
+the evaulation board for Bigsur, and if so, how much would it cost? Right
+now, it's not even on the Broadcom website, but I keep seeing mentions of it
+on the internet as if many people are getting it somewhere.
 
-But I'll leave the final call to you.
+Andrew Wiley
 
-I just wanted to make sure we're all using the same scale, and 1200 was
-off the charts ;)
+--0016e6470faac785ab0469fef611
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-thanks
--john
+Is there any way for a mere mortal like me to get his hands on a BCM91480B,=
+ the evaulation board for Bigsur, and if so, how much would it cost? Right =
+now, it&#39;s not even on the Broadcom website, but I keep seeing mentions =
+of it on the internet as if many people are getting it somewhere.<br>
+<br>Andrew Wiley<br>
+
+--0016e6470faac785ab0469fef611--

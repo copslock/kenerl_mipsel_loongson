@@ -1,64 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 May 2009 04:22:02 +0100 (BST)
-Received: from qw-out-1920.google.com ([74.125.92.144]:13244 "EHLO
-	qw-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20021378AbZEPDVz (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 16 May 2009 04:21:55 +0100
-Received: by qw-out-1920.google.com with SMTP id 9so1730225qwj.54
-        for <linux-mips@linux-mips.org>; Fri, 15 May 2009 20:21:54 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:date:message-id:subject
-         :from:to:content-type;
-        bh=4Rlf32V7j6G+v31hivGTJcN2cz+2W+OQIHHvHUgMWOc=;
-        b=dL33/GEuiiqlKccLV5FhFhJPiNhcv9JcvmkHuMVNc11pdL2aU//YNyGSCP5XjQLPh3
-         jwNoCgccazfWuKKr2nBZZ0raYret3JVv5AlufHKUfjVKuXMinhLshUWz4sWwYYl3NbxX
-         RSOGcLjTVOz5tpkOyvOKqptBv3G4zdcCjLWKQ=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        b=HZfZ+97UXQq+xaoDuGCotSOJyF1KSAckWnkhf7P8OoYtdJeYdr95ty95sH/SifWlYF
-         L0qg7ydPeK3ZcsNvpwGf578e8k5nvxhprB5RITOoS/XoDwxADcWvNfdPnTbpBVhovSFb
-         DEtTx38USd9qxwkP4HlLawu8V75SZZLKQjZ5g=
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 May 2009 08:28:12 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:43846 "EHLO
+	localhost.localdomain" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20023147AbZEPH2J (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 16 May 2009 08:28:09 +0100
+Date:	Sat, 16 May 2009 08:28:09 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	David Daney <ddaney@caviumnetworks.com>
+cc:	David VomLehn <dvomlehn@cisco.com>, linux-mips@linux-mips.org,
+	ralf@linux-mips.org
+Subject: Re: [PATCH] MIPS: Don't branch to eret in TLB refill.
+In-Reply-To: <4A0A1E6B.6050908@caviumnetworks.com>
+Message-ID: <alpine.LFD.1.10.0905160706300.12158@ftp.linux-mips.org>
+References: <1242168316-4009-1-git-send-email-ddaney@caviumnetworks.com> <20090513002337.GA12536@cuplxvomd02.corp.sa.net> <4A0A1E6B.6050908@caviumnetworks.com>
+User-Agent: Alpine 1.10 (LFD 962 2008-03-14)
 MIME-Version: 1.0
-Received: by 10.220.45.84 with SMTP id d20mr5717268vcf.90.1242443689722; Fri, 
-	15 May 2009 20:14:49 -0700 (PDT)
-Date:	Fri, 15 May 2009 22:14:49 -0500
-Message-ID: <ecbbfeda0905152014t62281c79k2001e428da65a442@mail.gmail.com>
-Subject: Bigsur?
-From:	Andrew Wiley <debio264@gmail.com>
-To:	linux-mips@linux-mips.org
-Content-Type: multipart/alternative; boundary=0016e6470faac785ab0469fef611
-Return-Path: <debio264@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22773
+X-archive-position: 22774
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: debio264@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
---0016e6470faac785ab0469fef611
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+On Tue, 12 May 2009, David Daney wrote:
 
-Is there any way for a mere mortal like me to get his hands on a BCM91480B,
-the evaulation board for Bigsur, and if so, how much would it cost? Right
-now, it's not even on the Broadcom website, but I keep seeing mentions of it
-on the internet as if many people are getting it somewhere.
+> > > +			/*
+> > > +			 * Find the split point.
+> > > +			 */
+> > > +			if (uasm_insn_has_bdelay(relocs, split - 1))
+> > > +				split--;
+> > > +		}
+> > 
+> > The code itself makes sense. Does this case actually happen much, or was
+> > this just an itch?
+> > 
+> 
+> For my CPU it was happening 100% of the time when I add the soon to be
+> submitted hugeTLBfs support patch.  Although I have not measured it, this code
+> is so hot that keeping the normal case fitting on a single cache line should
+> be a big win.
 
-Andrew Wiley
+ Rather than this hack, I'd suggest microoptimising the code by shuffling 
+it such that unless the handler fits in 128 bytes entirely (I'm not sure 
+if that ever happens for XTLB refill) the part built by 
+build_get_pgd_vmalloc64() is placed in the TLB handler slot, saving an 
+unnecessary unconditional branch there.  This way the problem of an 
+unconditional branch to ERET will solve automagically as a side-effect.  
+Unless the vmalloc part does not fit in 128 bytes, that is, in which case 
+it would have to overflow back to the XTLB slot.  It should be pretty 
+straightforward to code. ;)
 
---0016e6470faac785ab0469fef611
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-Is there any way for a mere mortal like me to get his hands on a BCM91480B,=
- the evaulation board for Bigsur, and if so, how much would it cost? Right =
-now, it&#39;s not even on the Broadcom website, but I keep seeing mentions =
-of it on the internet as if many people are getting it somewhere.<br>
-<br>Andrew Wiley<br>
-
---0016e6470faac785ab0469fef611--
+  Maciej

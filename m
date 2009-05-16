@@ -1,65 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 May 2009 14:15:50 +0100 (BST)
-Received: from smtp6-g21.free.fr ([212.27.42.6]:55354 "EHLO smtp6-g21.free.fr"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20023645AbZEPNPn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 16 May 2009 14:15:43 +0100
-Received: from smtp6-g21.free.fr (localhost [127.0.0.1])
-	by smtp6-g21.free.fr (Postfix) with ESMTP id 49666E08026;
-	Sat, 16 May 2009 15:15:38 +0200 (CEST)
-Received: from [192.168.0.3] (cac94-1-81-57-151-96.fbx.proxad.net [81.57.151.96])
-	by smtp6-g21.free.fr (Postfix) with ESMTP id 4254DE0806A;
-	Sat, 16 May 2009 15:15:36 +0200 (CEST)
-Message-ID: <4A0EBC77.2010806@free.fr>
-Date:	Sat, 16 May 2009 15:15:35 +0200
-From:	matthieu castet <castet.matthieu@free.fr>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.19) Gecko/20081204 Iceape/1.1.14 (Debian-1.1.14-1)
-MIME-Version: 1.0
-To:	linux-mips@linux-mips.org
-CC:	Aurelien Jarno <aurelien@aurel32.net>
-Subject: [PATCH] fix gpio_direction_output for bcm47xx
-Content-Type: multipart/mixed;
- boundary="------------050304090509060200010001"
-Return-Path: <castet.matthieu@free.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 16 May 2009 14:45:57 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:51716 "HELO smtp.mba.ocn.ne.jp"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with SMTP
+	id S20023662AbZEPNpr (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 16 May 2009 14:45:47 +0100
+Received: from localhost (p1193-ipad311funabasi.chiba.ocn.ne.jp [123.217.211.193])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 10856A978; Sat, 16 May 2009 22:45:42 +0900 (JST)
+Date:	Sat, 16 May 2009 22:45:41 +0900 (JST)
+Message-Id: <20090516.224541.39155366.anemo@mba.ocn.ne.jp>
+To:	broonie@opensource.wolfsonmicro.com
+Cc:	linux-mips@linux-mips.org, alsa-devel@alsa-project.org,
+	ralf@linux-mips.org
+Subject: Re: [alsa-devel] [PATCH] ASoC: Add TXx9 AC link controller driver
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <20090515190558.GA13050@sirena.org.uk>
+	<1242312605-2160-2-git-send-email-anemo@mba.ocn.ne.jp>
+References: <20090514185945.GO28291@sirena.org.uk>
+	<20090516.001202.173372394.anemo@mba.ocn.ne.jp>
+	<20090515190558.GA13050@sirena.org.uk>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 22.2 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22777
+X-archive-position: 22778
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: castet.matthieu@free.fr
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------050304090509060200010001
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+On Fri, 15 May 2009 20:05:58 +0100, Mark Brown <broonie@opensource.wolfsonmicro.com> wrote:
+> > OTOH, I want to keep arch code as is.  There are some TXx9 SoC
+> > variations and they can have different baseaddr/irq/dma.  I want to
+> > leave these details in arch code and make ASoC drivers generic as
+> > possible.
+> 
+> This is the common situation for SoC CPUs - most silicon vendors reuse
+> the same IPs in diffierent combinations on different CPUs.  The normal
+> approach is to have the generic code for each SoC set up the resources
+> for the devices that are present on that particular SoC.  This avoids
+> the need for each board using the SoC to have to replicate the
+> information.
 
-gpio_direction_output should also set to a output value per gpio API.
+Yes, and I tried to do so in "TXx9: Add ACLC support" patch.
 
-Signed-off-by: Matthieu CASTET <castet.matthieu@free.fr>
+>  arch/mips/include/asm/txx9/generic.h  |    5 ++++
+>  arch/mips/include/asm/txx9/tx4927.h   |    2 +
+>  arch/mips/include/asm/txx9/tx4938.h   |    1 +
+>  arch/mips/include/asm/txx9/tx4939.h   |    1 +
+>  arch/mips/txx9/Kconfig                |    3 ++
+>  arch/mips/txx9/generic/setup.c        |   36 +++++++++++++++++++++++++++
+>  arch/mips/txx9/generic/setup_tx4927.c |   43 +++++++++++++++++++++++++++++++++
+>  arch/mips/txx9/generic/setup_tx4938.c |   11 ++++++++
+>  arch/mips/txx9/generic/setup_tx4939.c |    9 +++++++
 
---------------050304090509060200010001
-Content-Type: text/x-diff;
- name="fix_bcm47xx_gpio_out.diff"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="fix_bcm47xx_gpio_out.diff"
+These are "the generic code for each SoC set up the resources for
+the devices that are present on that particular SoC".
 
-diff --git a/arch/mips/include/asm/mach-bcm47xx/gpio.h b/arch/mips/include/asm/mach-bcm47xx/gpio.h
-index 1784fde..9850414 100644
---- a/arch/mips/include/asm/mach-bcm47xx/gpio.h
-+++ b/arch/mips/include/asm/mach-bcm47xx/gpio.h
-@@ -37,6 +37,9 @@ static inline int gpio_direction_input(unsigned gpio)
- 
- static inline int gpio_direction_output(unsigned gpio, int value)
- {
-+	/* first set the gpio out value */
-+	ssb_gpio_out(&ssb_bcm47xx, 1 << gpio, value ? 1 << gpio : 0);
-+	/* then set the gpio mode */
- 	ssb_gpio_outen(&ssb_bcm47xx, 1 << gpio, 1 << gpio);
- 	return 0;
- }
+>  arch/mips/txx9/rbtx4927/setup.c       |    7 ++++-
+>  arch/mips/txx9/rbtx4938/setup.c       |    1 +
+>  arch/mips/txx9/rbtx4939/setup.c       |    1 +
 
---------------050304090509060200010001--
+And these are setup codes for each boards.
+
+Is this acceptable?  I'm not sure whether you are saying Ack or Nack
+for this approach.
+
+---
+Atsushi Nemoto

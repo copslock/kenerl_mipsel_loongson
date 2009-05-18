@@ -1,50 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 May 2009 15:14:02 +0100 (BST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:36348 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20023422AbZERONy (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 18 May 2009 15:13:54 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n4IEDfNJ019048;
-	Mon, 18 May 2009 15:13:42 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n4IEDfo9019047;
-	Mon, 18 May 2009 15:13:41 +0100
-Date:	Mon, 18 May 2009 15:13:41 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Andrew Wiley <debio264@gmail.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: Bigsur?
-Message-ID: <20090518141341.GC16847@linux-mips.org>
-References: <ecbbfeda0905152014t62281c79k2001e428da65a442@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 May 2009 15:23:19 +0100 (BST)
+Received: from cassiel.sirena.org.uk ([80.68.93.111]:50022 "EHLO
+	cassiel.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20022071AbZEROXI (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 18 May 2009 15:23:08 +0100
+Received: from broonie by cassiel.sirena.org.uk with local (Exim 4.69)
+	(envelope-from <broonie@sirena.org.uk>)
+	id 1M63k9-0006JJ-TR; Mon, 18 May 2009 15:23:05 +0100
+Date:	Mon, 18 May 2009 15:23:05 +0100
+From:	Mark Brown <broonie@opensource.wolfsonmicro.com>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org, alsa-devel@alsa-project.org,
+	ralf@linux-mips.org
+Subject: Re: [alsa-devel] [PATCH] ASoC: Add TXx9 AC link controller driver
+	(v2)
+Message-ID: <20090518142305.GE1629@sirena.org.uk>
+References: <1242655812-11155-1-git-send-email-anemo@mba.ocn.ne.jp>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ecbbfeda0905152014t62281c79k2001e428da65a442@mail.gmail.com>
+In-Reply-To: <1242655812-11155-1-git-send-email-anemo@mba.ocn.ne.jp>
+X-Cookie: <Manoj> I *like* the chicken
 User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@h5.dl5rb.org.uk>
+X-SA-Exim-Connect-IP: <locally generated>
+X-SA-Exim-Mail-From: broonie@sirena.org.uk
+X-SA-Exim-Scanned: No (on cassiel.sirena.org.uk); SAEximRunCond expanded to false
+Return-Path: <broonie@sirena.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22787
+X-archive-position: 22788
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: broonie@opensource.wolfsonmicro.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, May 15, 2009 at 10:14:49PM -0500, Andrew Wiley wrote:
+On Mon, May 18, 2009 at 11:10:12PM +0900, Atsushi Nemoto wrote:
 
-> Is there any way for a mere mortal like me to get his hands on a BCM91480B,
-> the evaulation board for Bigsur, and if so, how much would it cost? Right
-> now, it's not even on the Broadcom website, but I keep seeing mentions of it
-> on the internet as if many people are getting it somewhere.
+> +static int txx9aclc_ac97_probe(struct platform_device *pdev,
+> +			       struct snd_soc_dai *dai)
+> +{
+> +	struct snd_soc_device *socdev = platform_get_drvdata(pdev);
+> +	struct txx9aclc_soc_device *dev =
+> +		container_of(socdev, struct txx9aclc_soc_device, soc_dev);
+> +	struct platform_device *aclc_pdev = dev->aclc_pdev;
+> +	struct resource *r;
+> +	int err;
+> +	int irq;
+> +
+> +	dev->irq = -1;
+> +	irq = platform_get_irq(aclc_pdev, 0);
 
-Occasionaly they're sold 2nd hand for example on ebay.  The board while
-a very nice and complete software development platform has a healthy
-4 digit dollar price if bought new.
+This isn't what I meant by moving the resources to the DAI and DMA
+drivers.  You have moved the calls to read the resources to these
+drivers (which is good) but the resources are still being obtained from
+the main ASoC device rather than by themselves from the device code.
 
-Broadcom never made it easy to order these things.  The strategy seems to
-be to contact their sales guys.
-
-  Ralf
+There aren't too many platforms using this approach yet but take a look
+at the way the pxa2xx-ac97 driver deals with registering the DAI (it
+doesn't do anything with resources ATM) - you want to be registering
+your DAI and grabbing the resources from a platform driver probe like it
+does.

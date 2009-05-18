@@ -1,56 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 May 2009 23:45:31 +0100 (BST)
-Received: from charlotte.tuxdriver.com ([70.61.120.58]:54954 "EHLO
-	smtp.tuxdriver.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20024444AbZERWpY (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 18 May 2009 23:45:24 +0100
-Received: from uucp by smtp.tuxdriver.com with local-rmail (Exim 4.63)
-	(envelope-from <linville@tuxdriver.com>)
-	id 1M6Ba6-0000gX-HF; Mon, 18 May 2009 18:45:14 -0400
-Received: from linville-t400.local (linville-t400.local [127.0.0.1])
-	by linville-t400.local (8.14.3/8.14.3) with ESMTP id n4IMfSMJ019999;
-	Mon, 18 May 2009 18:41:28 -0400
-Received: (from linville@localhost)
-	by linville-t400.local (8.14.3/8.14.3/Submit) id n4IMfSEt019997;
-	Mon, 18 May 2009 18:41:28 -0400
-Date:	Mon, 18 May 2009 18:41:28 -0400
-From:	"John W. Linville" <linville@tuxdriver.com>
-To:	matthieu castet <castet.matthieu@free.fr>
-Cc:	linux-mips@linux-mips.org, Michael Buesch <mb@bu3sch.de>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH] bc47xx : export ssb_watchdog_timer_set
-Message-ID: <20090518224128.GA11912@tuxdriver.com>
-References: <4A11DCBF.9000700@free.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 May 2009 23:47:53 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:58029 "EHLO
+	localhost.localdomain" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20024444AbZERWrt (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 18 May 2009 23:47:49 +0100
+Date:	Mon, 18 May 2009 23:47:49 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	Jon Fraser <jfraser@broadcom.com>,
+	Andrew Wiley <debio264@gmail.com>,
+	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Subject: Re: Bigsur?
+In-Reply-To: <20090518222334.GD16847@linux-mips.org>
+Message-ID: <alpine.LFD.1.10.0905182335510.20791@ftp.linux-mips.org>
+References: <ecbbfeda0905152014t62281c79k2001e428da65a442@mail.gmail.com> <1242663215.18301.26.camel@chaos.ne.broadcom.com> <20090518222334.GD16847@linux-mips.org>
+User-Agent: Alpine 1.10 (LFD 962 2008-03-14)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4A11DCBF.9000700@free.fr>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <linville@tuxdriver.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22805
+X-archive-position: 22806
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linville@tuxdriver.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, May 19, 2009 at 12:10:07AM +0200, matthieu castet wrote:
-> Hi,
->
-> this patch export ssb_watchdog_timer_set to allow to use it in a Linux  
-> watchdog driver.
->
->
-> Signed-off-by: Matthieu CASTET <castet.matthieu@free.fr>
+On Mon, 18 May 2009, Ralf Baechle wrote:
 
-What is the merge path for ssb nowadays?  I used to take these patches
-(and I'm still happy to do so), but maybe Ralf is (or should be)
-taking them now?
+> A clear yes.  In particular the Swarm and Big Sur boards which aside of
+> graphics are as close to an workstation or server board, are highly
+> sought after as indicated by usually high 2nd hand prices on ebay.
 
-John
--- 
-John W. Linville		Someday the world will need a hero, and you
-linville@tuxdriver.com			might be all we have.  Be ready.
+ Even *including* graphics AFAIK -- there is apparently support for VGA 
+console I/O for some chips in CFE.  Of course for that you have to get a 
+universal classic PCI card, but that's not undoable and then you can 
+attach a keyboard and a mouse to the onboard USB ports without taking a 
+PCI slot even.  So yes, a full-featured graphics workstation if you like.
+
+> Even though far from new these boards are the backbone of the native
+> compile farms of several Linux distributions including Debian and the
+> native testing by various commercial and non-commercial software
+> developers including myself.  Aside of mostly SGI surplus workstations
+> the Sibyte boards are clearly the most popular among those who somehow
+> managed to get hold of them.
+
+ Yes, invaluable for native builds and there is a considerable number of 
+software packages which is not capable of being cross-compiled, or 
+requires extreme contortions to be built this way, or if buildable with a 
+reasonable effort, the functionality is limited.  Besides a three-stage 
+GCC bootstrap is a good way of verifying the quality of the tool, never 
+mind standard DejaGNU-based regression testing which although possible 
+using cross-tools and a remote target, is awfully painful to be set up 
+this way.
+
+  Maciej

@@ -1,51 +1,998 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 May 2009 15:08:05 +0100 (BST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:51486 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20023422AbZEROH5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 18 May 2009 15:07:57 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n4IE7jxH018862;
-	Mon, 18 May 2009 15:07:45 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n4IE7jSJ018859;
-	Mon, 18 May 2009 15:07:45 +0100
-Date:	Mon, 18 May 2009 15:07:45 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	peter fuerst <post@pfrst.de>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] -mr10k-cache-barrier=store
-Message-ID: <20090518140745.GB16847@linux-mips.org>
-References: <Pine.LNX.4.58.0905172334550.1259@Indigo2.Peter>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.58.0905172334550.1259@Indigo2.Peter>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@h5.dl5rb.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 May 2009 15:10:26 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:60948 "HELO smtp.mba.ocn.ne.jp"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with SMTP
+	id S20023422AbZEROKT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 18 May 2009 15:10:19 +0100
+Received: from localhost.localdomain (p6039-ipad213funabasi.chiba.ocn.ne.jp [124.85.71.39])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id C7162A220; Mon, 18 May 2009 23:10:12 +0900 (JST)
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org, alsa-devel@alsa-project.org,
+	Mark Brown <broonie@opensource.wolfsonmicro.com>
+Subject: [PATCH] ASoC: Add TXx9 AC link controller driver (v2)
+Date:	Mon, 18 May 2009 23:10:12 +0900
+Message-Id: <1242655812-11155-1-git-send-email-anemo@mba.ocn.ne.jp>
+X-Mailer: git-send-email 1.5.6.5
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22785
+X-archive-position: 22786
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, May 17, 2009 at 11:49:45PM +0200, peter fuerst wrote:
+This patch adds support for the integrated ACLC of the TXx9 family.
 
-> Richard Sandiford's new code for inserting the cache-barriers, for GCC
-> 4.3 and above and already incorporated in the current GCC-release, uses
-> a slightly different option-syntax.
-> (Accordingly i extended the patches for older GCC-releases to accept
-> both styles)
-> 
-> 
-> Signed-off-by: peter fuerst <post@pfrst.de>
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+Changes since v1:
+* kill empty PM stuff
+* move irq/mem resource stuff to the DAI driver
+* move dma resource stuff to the DMA driver
 
-Thanks, applied.  I also applied this to the -stable branches that have
-IP28 support on them so I think support for the old syntax can fade
-away soon.
+ sound/soc/Kconfig                 |    1 +
+ sound/soc/Makefile                |    1 +
+ sound/soc/txx9/Kconfig            |   29 +++
+ sound/soc/txx9/Makefile           |   11 +
+ sound/soc/txx9/txx9aclc-ac97.c    |  243 +++++++++++++++++++++
+ sound/soc/txx9/txx9aclc-generic.c |   99 +++++++++
+ sound/soc/txx9/txx9aclc.c         |  428 +++++++++++++++++++++++++++++++++++++
+ sound/soc/txx9/txx9aclc.h         |   76 +++++++
+ 8 files changed, 888 insertions(+), 0 deletions(-)
+ create mode 100644 sound/soc/txx9/Kconfig
+ create mode 100644 sound/soc/txx9/Makefile
+ create mode 100644 sound/soc/txx9/txx9aclc-ac97.c
+ create mode 100644 sound/soc/txx9/txx9aclc-generic.c
+ create mode 100644 sound/soc/txx9/txx9aclc.c
+ create mode 100644 sound/soc/txx9/txx9aclc.h
 
-  Ralf
+diff --git a/sound/soc/Kconfig b/sound/soc/Kconfig
+index 3d2bb6f..85e985a 100644
+--- a/sound/soc/Kconfig
++++ b/sound/soc/Kconfig
+@@ -33,6 +33,7 @@ source "sound/soc/omap/Kconfig"
+ source "sound/soc/pxa/Kconfig"
+ source "sound/soc/s3c24xx/Kconfig"
+ source "sound/soc/sh/Kconfig"
++source "sound/soc/txx9/Kconfig"
+ 
+ # Supported codecs
+ source "sound/soc/codecs/Kconfig"
+diff --git a/sound/soc/Makefile b/sound/soc/Makefile
+index 0237879..6039b0d 100644
+--- a/sound/soc/Makefile
++++ b/sound/soc/Makefile
+@@ -11,3 +11,4 @@ obj-$(CONFIG_SND_SOC)	+= omap/
+ obj-$(CONFIG_SND_SOC)	+= pxa/
+ obj-$(CONFIG_SND_SOC)	+= s3c24xx/
+ obj-$(CONFIG_SND_SOC)	+= sh/
++obj-$(CONFIG_SND_SOC)	+= txx9/
+diff --git a/sound/soc/txx9/Kconfig b/sound/soc/txx9/Kconfig
+new file mode 100644
+index 0000000..ebc9327
+--- /dev/null
++++ b/sound/soc/txx9/Kconfig
+@@ -0,0 +1,29 @@
++##
++## TXx9 ACLC
++##
++config SND_SOC_TXX9ACLC
++	tristate "SoC Audio for TXx9"
++	depends on HAS_TXX9_ACLC && TXX9_DMAC
++	help
++	  This option enables support for the AC Link Controllers in TXx9 SoC.
++
++config HAS_TXX9_ACLC
++	bool
++
++config SND_SOC_TXX9ACLC_AC97
++	tristate
++	select AC97_BUS
++	select SND_AC97_CODEC
++	select SND_SOC_AC97_BUS
++
++
++##
++## Boards
++##
++config SND_SOC_TXX9ACLC_GENERIC
++	tristate "Generic TXx9 ACLC sound machine"
++	depends on SND_SOC_TXX9ACLC
++	select SND_SOC_TXX9ACLC_AC97
++	select SND_SOC_AC97_CODEC
++	help
++	  This is a generic AC97 sound machine for use in TXx9 based systems.
+diff --git a/sound/soc/txx9/Makefile b/sound/soc/txx9/Makefile
+new file mode 100644
+index 0000000..551f16c
+--- /dev/null
++++ b/sound/soc/txx9/Makefile
+@@ -0,0 +1,11 @@
++# Platform
++snd-soc-txx9aclc-objs := txx9aclc.o
++snd-soc-txx9aclc-ac97-objs := txx9aclc-ac97.o
++
++obj-$(CONFIG_SND_SOC_TXX9ACLC) += snd-soc-txx9aclc.o
++obj-$(CONFIG_SND_SOC_TXX9ACLC_AC97) += snd-soc-txx9aclc-ac97.o
++
++# Machine
++snd-soc-txx9aclc-generic-objs := txx9aclc-generic.o
++
++obj-$(CONFIG_SND_SOC_TXX9ACLC_GENERIC) += snd-soc-txx9aclc-generic.o
+diff --git a/sound/soc/txx9/txx9aclc-ac97.c b/sound/soc/txx9/txx9aclc-ac97.c
+new file mode 100644
+index 0000000..5e04409
+--- /dev/null
++++ b/sound/soc/txx9/txx9aclc-ac97.c
+@@ -0,0 +1,243 @@
++/*
++ * TXx9 ACLC AC97 driver
++ *
++ * Copyright (C) 2009 Atsushi Nemoto
++ *
++ * Based on RBTX49xx patch from CELF patch archive.
++ * (C) Copyright TOSHIBA CORPORATION 2004-2006
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++#include <linux/init.h>
++#include <linux/module.h>
++#include <linux/delay.h>
++#include <linux/interrupt.h>
++#include <sound/core.h>
++#include <sound/pcm.h>
++#include <sound/soc.h>
++#include "txx9aclc.h"
++
++#define AC97_DIR	\
++	(SND_SOC_DAIDIR_PLAYBACK | SND_SOC_DAIDIR_CAPTURE)
++
++#define AC97_RATES	\
++	SNDRV_PCM_RATE_8000_48000
++
++#ifdef __BIG_ENDIAN
++#define AC97_FMTS	SNDRV_PCM_FMTBIT_S16_BE
++#else
++#define AC97_FMTS	SNDRV_PCM_FMTBIT_S16_LE
++#endif
++
++static DECLARE_WAIT_QUEUE_HEAD(ac97_waitq);
++
++/* REVISIT: How to find txx9aclc_soc_device from snd_ac97? */
++static struct txx9aclc_soc_device *txx9aclc_soc_dev;
++
++static int txx9aclc_regready(struct txx9aclc_soc_device *dev)
++{
++	return __raw_readl(dev->base + ACINTSTS) & ACINT_REGACCRDY;
++}
++
++/* AC97 controller reads codec register */
++static unsigned short txx9aclc_ac97_read(struct snd_ac97 *ac97,
++					 unsigned short reg)
++{
++	struct txx9aclc_soc_device *dev = txx9aclc_soc_dev;
++	u32 dat;
++
++	if (!(__raw_readl(dev->base + ACINTSTS) & ACINT_CODECRDY(ac97->num)))
++		return 0xffff;
++	reg |= ac97->num << 7;
++	dat = (reg << ACREGACC_REG_SHIFT) | ACREGACC_READ;
++	__raw_writel(dat, dev->base + ACREGACC);
++	__raw_writel(ACINT_REGACCRDY, dev->base + ACINTEN);
++	if (!wait_event_timeout(ac97_waitq, txx9aclc_regready(dev), HZ)) {
++		__raw_writel(ACINT_REGACCRDY, dev->base + ACINTDIS);
++		dev_err(dev->soc_dev.dev, "ac97 read timeout (reg %#x)\n", reg);
++		dat = 0xffff;
++		goto done;
++	}
++	dat = __raw_readl(dev->base + ACREGACC);
++	if (((dat >> ACREGACC_REG_SHIFT) & 0xff) != reg) {
++		dev_err(dev->soc_dev.dev, "reg mismatch %x with %x\n",
++			dat, reg);
++		dat = 0xffff;
++		goto done;
++	}
++	dat = (dat >> ACREGACC_DAT_SHIFT) & 0xffff;
++done:
++	__raw_writel(ACINT_REGACCRDY, dev->base + ACINTDIS);
++	return dat;
++}
++
++/* AC97 controller writes to codec register */
++static void txx9aclc_ac97_write(struct snd_ac97 *ac97, unsigned short reg,
++				unsigned short val)
++{
++	struct txx9aclc_soc_device *dev = txx9aclc_soc_dev;
++
++	__raw_writel(((reg | (ac97->num << 7)) << ACREGACC_REG_SHIFT) |
++		     (val << ACREGACC_DAT_SHIFT),
++		     dev->base + ACREGACC);
++	__raw_writel(ACINT_REGACCRDY, dev->base + ACINTEN);
++	if (!wait_event_timeout(ac97_waitq, txx9aclc_regready(dev), HZ)) {
++		dev_err(dev->soc_dev.dev,
++			"ac97 write timeout (reg %#x)\n", reg);
++	}
++	__raw_writel(ACINT_REGACCRDY, dev->base + ACINTDIS);
++}
++
++static void txx9aclc_ac97_cold_reset(struct snd_ac97 *ac97)
++{
++	struct txx9aclc_soc_device *dev = txx9aclc_soc_dev;
++	u32 ready = ACINT_CODECRDY(ac97->num) | ACINT_REGACCRDY;
++
++	__raw_writel(ACCTL_ENLINK, dev->base + ACCTLDIS);
++	mmiowb();
++	udelay(1);
++	__raw_writel(ACCTL_ENLINK, dev->base + ACCTLEN);
++	/* wait for primary codec ready status */
++	__raw_writel(ready, dev->base + ACINTEN);
++	if (!wait_event_timeout(ac97_waitq,
++				(__raw_readl(dev->base + ACINTSTS) & ready)
++				== ready, HZ)) {
++		dev_err(&ac97->dev, "primary codec is not ready "
++			"(status %#x)\n",
++			__raw_readl(dev->base + ACINTSTS));
++	}
++	__raw_writel(ACINT_REGACCRDY, dev->base + ACINTSTS);
++	__raw_writel(ready, dev->base + ACINTDIS);
++}
++
++/* AC97 controller operations */
++struct snd_ac97_bus_ops soc_ac97_ops = {
++	.read		= txx9aclc_ac97_read,
++	.write		= txx9aclc_ac97_write,
++	.reset		= txx9aclc_ac97_cold_reset,
++};
++EXPORT_SYMBOL_GPL(soc_ac97_ops);
++
++static irqreturn_t txx9aclc_ac97_irq(int irq, void *dev_id)
++{
++	struct txx9aclc_soc_device *dev = dev_id;
++
++	__raw_writel(__raw_readl(dev->base + ACINTMSTS), dev->base + ACINTDIS);
++	wake_up(&ac97_waitq);
++	return IRQ_HANDLED;
++}
++
++static void txx9aclc_ac97_cleanup(struct txx9aclc_soc_device *dev)
++{
++	struct resource *r;
++
++	if (dev->irq >= 0) {
++		free_irq(dev->irq, dev);
++		dev->irq = -1;
++	}
++	r = dev->mem_res;
++	if (r) {
++		if (dev->base) {
++			iounmap(dev->base);
++			dev->base = NULL;
++		}
++		release_mem_region(r->start, resource_size(r));
++		dev->mem_res = NULL;
++	}
++}
++
++static int txx9aclc_ac97_probe(struct platform_device *pdev,
++			       struct snd_soc_dai *dai)
++{
++	struct snd_soc_device *socdev = platform_get_drvdata(pdev);
++	struct txx9aclc_soc_device *dev =
++		container_of(socdev, struct txx9aclc_soc_device, soc_dev);
++	struct platform_device *aclc_pdev = dev->aclc_pdev;
++	struct resource *r;
++	int err;
++	int irq;
++
++	dev->irq = -1;
++	irq = platform_get_irq(aclc_pdev, 0);
++	if (irq < 0)
++		return irq;
++	r = platform_get_resource(aclc_pdev, IORESOURCE_MEM, 0);
++	if (!r)
++		return -EBUSY;
++
++	if (!request_mem_region(r->start, resource_size(r),
++				dev_name(&aclc_pdev->dev))) {
++		err = -EBUSY;
++		goto err;
++	}
++	dev->mem_res = r;
++	dev->base = ioremap(r->start, resource_size(r));
++	if (!dev->base) {
++		err = -EBUSY;
++		goto err;
++	}
++	err = request_irq(irq, txx9aclc_ac97_irq,
++			  IRQF_DISABLED, dev_name(&aclc_pdev->dev), dev);
++	if (err < 0)
++		goto err;
++	dev->irq = irq;
++	txx9aclc_soc_dev = dev;
++	return 0;
++err:
++	txx9aclc_ac97_cleanup(dev);
++	return err;
++}
++
++static void txx9aclc_ac97_remove(struct platform_device *pdev,
++				 struct snd_soc_dai *dai)
++{
++	struct snd_soc_device *socdev = platform_get_drvdata(pdev);
++	struct txx9aclc_soc_device *dev =
++		container_of(socdev, struct txx9aclc_soc_device, soc_dev);
++
++	if (dev->base)
++		/* disable AC-link */
++		__raw_writel(ACCTL_ENLINK, dev->base + ACCTLDIS);
++	txx9aclc_ac97_cleanup(dev);
++	txx9aclc_soc_dev = NULL;
++}
++
++struct snd_soc_dai txx9aclc_ac97_dai = {
++	.name			= "txx9aclc_ac97",
++	.ac97_control		= 1,
++	.probe			= txx9aclc_ac97_probe,
++	.remove			= txx9aclc_ac97_remove,
++	.playback = {
++		.rates		= AC97_RATES,
++		.formats	= AC97_FMTS,
++		.channels_min	= 2,
++		.channels_max	= 2,
++	},
++	.capture = {
++		.rates		= AC97_RATES,
++		.formats	= AC97_FMTS,
++		.channels_min	= 2,
++		.channels_max	= 2,
++	},
++};
++EXPORT_SYMBOL_GPL(txx9aclc_ac97_dai);
++
++static int __init txx9aclc_ac97_init(void)
++{
++	return snd_soc_register_dai(&txx9aclc_ac97_dai);
++}
++
++static void __exit txx9aclc_ac97_exit(void)
++{
++	snd_soc_unregister_dai(&txx9aclc_ac97_dai);
++}
++
++module_init(txx9aclc_ac97_init);
++module_exit(txx9aclc_ac97_exit);
++
++MODULE_AUTHOR("Atsushi Nemoto <anemo@mba.ocn.ne.jp>");
++MODULE_DESCRIPTION("TXx9 ACLC AC97 driver");
++MODULE_LICENSE("GPL");
+diff --git a/sound/soc/txx9/txx9aclc-generic.c b/sound/soc/txx9/txx9aclc-generic.c
+new file mode 100644
+index 0000000..d27aba6
+--- /dev/null
++++ b/sound/soc/txx9/txx9aclc-generic.c
+@@ -0,0 +1,99 @@
++/*
++ * Generic TXx9 ACLC machine driver
++ *
++ * Copyright (C) 2009 Atsushi Nemoto
++ *
++ * Based on RBTX49xx patch from CELF patch archive.
++ * (C) Copyright TOSHIBA CORPORATION 2004-2006
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ *
++ * This is a very generic AC97 sound machine driver for boards which
++ * have (AC97) audio at ACLC (e.g. RBTX49XX boards).
++ */
++
++#include <linux/module.h>
++#include <linux/platform_device.h>
++#include <sound/core.h>
++#include <sound/pcm.h>
++#include <sound/soc.h>
++#include "../codecs/ac97.h"
++#include "txx9aclc.h"
++
++static struct snd_soc_dai_link txx9aclc_generic_dai = {
++	.name = "AC97",
++	.stream_name = "AC97 HiFi",
++	.cpu_dai = &txx9aclc_ac97_dai,
++	.codec_dai = &ac97_dai,
++};
++
++static struct snd_soc_card txx9aclc_generic_card = {
++	.name		= "Generic TXx9 ACLC Audio",
++	.platform	= &txx9aclc_soc_platform,
++	.dai_link	= &txx9aclc_generic_dai,
++	.num_links	= 1,
++};
++
++static struct txx9aclc_soc_device txx9aclc_generic_soc_device = {
++	.soc_dev = {
++		.card		= &txx9aclc_generic_card,
++		.codec_dev	= &soc_codec_dev_ac97,
++	},
++};
++
++static int __init txx9aclc_generic_probe(struct platform_device *pdev)
++{
++	struct txx9aclc_soc_device *dev = &txx9aclc_generic_soc_device;
++	struct platform_device *soc_pdev;
++	int ret;
++
++	soc_pdev = platform_device_alloc("soc-audio", -1);
++	if (!soc_pdev)
++		return -ENOMEM;
++	platform_set_drvdata(soc_pdev, &dev->soc_dev);
++	dev->soc_dev.dev = &soc_pdev->dev;
++	dev->aclc_pdev = pdev;
++	ret = platform_device_add(soc_pdev);
++	if (ret) {
++		platform_device_put(soc_pdev);
++		return ret;
++	}
++	platform_set_drvdata(pdev, soc_pdev);
++	return 0;
++}
++
++static int __exit txx9aclc_generic_remove(struct platform_device *pdev)
++{
++	struct platform_device *soc_pdev = platform_get_drvdata(pdev);
++
++	platform_device_unregister(soc_pdev);
++	return 0;
++}
++
++static struct platform_driver txx9aclc_generic_driver = {
++	.remove = txx9aclc_generic_remove,
++	.driver = {
++		.name = "txx9aclc-generic",
++		.owner = THIS_MODULE,
++	},
++};
++
++static int __init txx9aclc_generic_init(void)
++{
++	return platform_driver_probe(&txx9aclc_generic_driver,
++				     txx9aclc_generic_probe);
++}
++
++static void __exit txx9aclc_generic_exit(void)
++{
++	platform_driver_unregister(&txx9aclc_generic_driver);
++}
++
++module_init(txx9aclc_generic_init);
++module_exit(txx9aclc_generic_exit);
++
++MODULE_AUTHOR("Atsushi Nemoto <anemo@mba.ocn.ne.jp>");
++MODULE_DESCRIPTION("Generic TXx9 ACLC ALSA SoC audio driver");
++MODULE_LICENSE("GPL");
+diff --git a/sound/soc/txx9/txx9aclc.c b/sound/soc/txx9/txx9aclc.c
+new file mode 100644
+index 0000000..9e7d26e
+--- /dev/null
++++ b/sound/soc/txx9/txx9aclc.c
+@@ -0,0 +1,428 @@
++/*
++ * Generic TXx9 ACLC platform driver
++ *
++ * Copyright (C) 2009 Atsushi Nemoto
++ *
++ * Based on RBTX49xx patch from CELF patch archive.
++ * (C) Copyright TOSHIBA CORPORATION 2004-2006
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++#include <linux/module.h>
++#include <linux/init.h>
++#include <linux/platform_device.h>
++#include <linux/scatterlist.h>
++#include <sound/core.h>
++#include <sound/pcm.h>
++#include <sound/pcm_params.h>
++#include <sound/soc.h>
++#include "txx9aclc.h"
++
++static const struct snd_pcm_hardware txx9aclc_pcm_hardware = {
++	/*
++	 * REVISIT: SNDRV_PCM_INFO_MMAP | SNDRV_PCM_INFO_MMAP_VALID
++	 * needs more works for noncoherent MIPS.
++	 */
++	.info		  = SNDRV_PCM_INFO_INTERLEAVED |
++			    SNDRV_PCM_INFO_BATCH |
++			    SNDRV_PCM_INFO_PAUSE,
++#ifdef __BIG_ENDIAN
++	.formats	  = SNDRV_PCM_FMTBIT_S16_BE,
++#else
++	.formats	  = SNDRV_PCM_FMTBIT_S16_LE,
++#endif
++	.period_bytes_min = 1024,
++	.period_bytes_max = 8 * 1024,
++	.periods_min	  = 2,
++	.periods_max	  = 4096,
++	.buffer_bytes_max = 32 * 1024,
++};
++
++static int txx9aclc_pcm_hw_params(struct snd_pcm_substream *substream,
++				  struct snd_pcm_hw_params *params)
++{
++	struct snd_soc_pcm_runtime *rtd = snd_pcm_substream_chip(substream);
++	struct snd_soc_device *socdev = rtd->socdev;
++	struct snd_pcm_runtime *runtime = substream->runtime;
++	struct txx9aclc_dmadata *dmadata = runtime->private_data;
++	int ret;
++
++	ret = snd_pcm_lib_malloc_pages(substream, params_buffer_bytes(params));
++	if (ret < 0)
++		return ret;
++
++	dev_dbg(socdev->dev,
++		"runtime->dma_area = %#lx dma_addr = %#lx dma_bytes = %zd "
++		"runtime->min_align %ld\n",
++		(unsigned long)runtime->dma_area,
++		(unsigned long)runtime->dma_addr, runtime->dma_bytes,
++		runtime->min_align);
++	dev_dbg(socdev->dev,
++		"periods %d period_bytes %d stream %d\n",
++		params_periods(params), params_period_bytes(params),
++		substream->stream);
++
++	dmadata->substream = substream;
++	dmadata->pos = 0;
++	return 0;
++}
++
++static int txx9aclc_pcm_hw_free(struct snd_pcm_substream *substream)
++{
++	return snd_pcm_lib_free_pages(substream);
++}
++
++static int txx9aclc_pcm_prepare(struct snd_pcm_substream *substream)
++{
++	struct snd_pcm_runtime *runtime = substream->runtime;
++	struct txx9aclc_dmadata *dmadata = runtime->private_data;
++
++	dmadata->dma_addr = runtime->dma_addr;
++	dmadata->buffer_bytes = snd_pcm_lib_buffer_bytes(substream);
++	dmadata->period_bytes = snd_pcm_lib_period_bytes(substream);
++
++	if (dmadata->buffer_bytes == dmadata->period_bytes) {
++		dmadata->frag_bytes = dmadata->period_bytes >> 1;
++		dmadata->frags = 2;
++	} else {
++		dmadata->frag_bytes = dmadata->period_bytes;
++		dmadata->frags = dmadata->buffer_bytes / dmadata->period_bytes;
++	}
++	dmadata->frag_count = 0;
++	dmadata->pos = 0;
++	return 0;
++}
++
++static void txx9aclc_dma_complete(void *arg)
++{
++	struct txx9aclc_dmadata *dmadata = arg;
++	unsigned long flags;
++
++	/* dma completion handler cannot submit new operations */
++	spin_lock_irqsave(&dmadata->dma_lock, flags);
++	if (dmadata->frag_count >= 0) {
++		dmadata->dmacount--;
++		BUG_ON(dmadata->dmacount < 0);
++		tasklet_schedule(&dmadata->tasklet);
++	}
++	spin_unlock_irqrestore(&dmadata->dma_lock, flags);
++}
++
++static struct dma_async_tx_descriptor *
++txx9aclc_dma_submit(struct txx9aclc_dmadata *dmadata, dma_addr_t buf_dma_addr)
++{
++	struct dma_chan *chan = dmadata->dma_chan;
++	struct dma_async_tx_descriptor *desc;
++	struct scatterlist sg;
++
++	sg_init_table(&sg, 1);
++	sg_set_page(&sg, pfn_to_page(PFN_DOWN(buf_dma_addr)),
++		    dmadata->frag_bytes, buf_dma_addr & (PAGE_SIZE - 1));
++	sg_dma_address(&sg) = buf_dma_addr;
++	desc = chan->device->device_prep_slave_sg(chan, &sg, 1,
++		dmadata->substream->stream == SNDRV_PCM_STREAM_PLAYBACK ?
++		DMA_TO_DEVICE : DMA_FROM_DEVICE,
++		DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
++	if (!desc) {
++		dev_err(&chan->dev->device, "cannot prepare slave dma\n");
++		return NULL;
++	}
++	desc->callback = txx9aclc_dma_complete;
++	desc->callback_param = dmadata;
++	desc->tx_submit(desc);
++	return desc;
++}
++
++#define NR_DMA_CHAIN		2
++
++static void txx9aclc_dma_tasklet(unsigned long data)
++{
++	struct txx9aclc_dmadata *dmadata = (struct txx9aclc_dmadata *)data;
++	struct dma_chan *chan = dmadata->dma_chan;
++	struct dma_async_tx_descriptor *desc;
++	struct snd_pcm_substream *substream = dmadata->substream;
++	u32 ctlbit = substream->stream == SNDRV_PCM_STREAM_PLAYBACK ?
++		ACCTL_AUDODMA : ACCTL_AUDIDMA;
++	int i;
++	unsigned long flags;
++
++	spin_lock_irqsave(&dmadata->dma_lock, flags);
++	if (dmadata->frag_count < 0) {
++		struct txx9aclc_soc_device *dev =
++			container_of(dmadata, struct txx9aclc_soc_device,
++				     dmadata[substream->stream]);
++		spin_unlock_irqrestore(&dmadata->dma_lock, flags);
++		chan->device->device_terminate_all(chan);
++		/* first time */
++		for (i = 0; i < NR_DMA_CHAIN; i++) {
++			desc = txx9aclc_dma_submit(dmadata,
++				dmadata->dma_addr + i * dmadata->frag_bytes);
++			if (!desc)
++				return;
++		}
++		dmadata->dmacount = NR_DMA_CHAIN;
++		chan->device->device_issue_pending(chan);
++		spin_lock_irqsave(&dmadata->dma_lock, flags);
++		__raw_writel(ctlbit, dev->base + ACCTLEN);
++		dmadata->frag_count = NR_DMA_CHAIN % dmadata->frags;
++		spin_unlock_irqrestore(&dmadata->dma_lock, flags);
++		return;
++	}
++	BUG_ON(dmadata->dmacount >= NR_DMA_CHAIN);
++	while (dmadata->dmacount < NR_DMA_CHAIN) {
++		dmadata->dmacount++;
++		spin_unlock_irqrestore(&dmadata->dma_lock, flags);
++		desc = txx9aclc_dma_submit(dmadata,
++			dmadata->dma_addr +
++			dmadata->frag_count * dmadata->frag_bytes);
++		if (!desc)
++			return;
++		chan->device->device_issue_pending(chan);
++
++		spin_lock_irqsave(&dmadata->dma_lock, flags);
++		dmadata->frag_count++;
++		dmadata->frag_count %= dmadata->frags;
++		dmadata->pos += dmadata->frag_bytes;
++		dmadata->pos %= dmadata->buffer_bytes;
++		if ((dmadata->frag_count * dmadata->frag_bytes) %
++		    dmadata->period_bytes == 0)
++			snd_pcm_period_elapsed(substream);
++	}
++	spin_unlock_irqrestore(&dmadata->dma_lock, flags);
++}
++
++static int txx9aclc_pcm_trigger(struct snd_pcm_substream *substream, int cmd)
++{
++	struct txx9aclc_dmadata *dmadata = substream->runtime->private_data;
++	struct snd_soc_pcm_runtime *rtd = substream->private_data;
++	struct txx9aclc_soc_device *dev =
++		container_of(rtd->socdev, struct txx9aclc_soc_device, soc_dev);
++	unsigned long flags;
++	int ret = 0;
++	u32 ctlbit = substream->stream == SNDRV_PCM_STREAM_PLAYBACK ?
++		ACCTL_AUDODMA : ACCTL_AUDIDMA;
++
++	spin_lock_irqsave(&dmadata->dma_lock, flags);
++	switch (cmd) {
++	case SNDRV_PCM_TRIGGER_START:
++		dmadata->frag_count = -1;
++		tasklet_schedule(&dmadata->tasklet);
++		break;
++	case SNDRV_PCM_TRIGGER_STOP:
++	case SNDRV_PCM_TRIGGER_PAUSE_PUSH:
++	case SNDRV_PCM_TRIGGER_SUSPEND:
++		__raw_writel(ctlbit, dev->base + ACCTLDIS);
++		break;
++	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
++	case SNDRV_PCM_TRIGGER_RESUME:
++		__raw_writel(ctlbit, dev->base + ACCTLEN);
++		break;
++	default:
++		ret = -EINVAL;
++	}
++	spin_unlock_irqrestore(&dmadata->dma_lock, flags);
++	return ret;
++}
++
++static snd_pcm_uframes_t
++txx9aclc_pcm_pointer(struct snd_pcm_substream *substream)
++{
++	struct txx9aclc_dmadata *dmadata = substream->runtime->private_data;
++
++	return bytes_to_frames(substream->runtime, dmadata->pos);
++}
++
++static int txx9aclc_pcm_open(struct snd_pcm_substream *substream)
++{
++	struct snd_soc_pcm_runtime *rtd = substream->private_data;
++	struct txx9aclc_soc_device *dev =
++		container_of(rtd->socdev, struct txx9aclc_soc_device, soc_dev);
++	struct txx9aclc_dmadata *dmadata = &dev->dmadata[substream->stream];
++	int ret;
++
++	ret = snd_soc_set_runtime_hwparams(substream, &txx9aclc_pcm_hardware);
++	if (ret)
++		return ret;
++	/* ensure that buffer size is a multiple of period size */
++	ret = snd_pcm_hw_constraint_integer(substream->runtime,
++					    SNDRV_PCM_HW_PARAM_PERIODS);
++	if (ret < 0)
++		return ret;
++	substream->runtime->private_data = dmadata;
++	return 0;
++}
++
++static int txx9aclc_pcm_close(struct snd_pcm_substream *substream)
++{
++	struct txx9aclc_dmadata *dmadata = substream->runtime->private_data;
++	struct dma_chan *chan = dmadata->dma_chan;
++
++	dmadata->frag_count = -1;
++	chan->device->device_terminate_all(chan);
++	return 0;
++}
++
++static struct snd_pcm_ops txx9aclc_pcm_ops = {
++	.open		= txx9aclc_pcm_open,
++	.close		= txx9aclc_pcm_close,
++	.ioctl		= snd_pcm_lib_ioctl,
++	.hw_params	= txx9aclc_pcm_hw_params,
++	.hw_free	= txx9aclc_pcm_hw_free,
++	.prepare	= txx9aclc_pcm_prepare,
++	.trigger	= txx9aclc_pcm_trigger,
++	.pointer	= txx9aclc_pcm_pointer,
++};
++
++static void txx9aclc_pcm_free_dma_buffers(struct snd_pcm *pcm)
++{
++	snd_pcm_lib_preallocate_free_for_all(pcm);
++}
++
++static int txx9aclc_pcm_new(struct snd_card *card, struct snd_soc_dai *dai,
++			    struct snd_pcm *pcm)
++{
++	return snd_pcm_lib_preallocate_pages_for_all(pcm, SNDRV_DMA_TYPE_DEV,
++		card->dev, 64 * 1024, 4 * 1024 * 1024);
++}
++
++static bool filter(struct dma_chan *chan, void *param)
++{
++	struct txx9aclc_dmadata *dmadata = param;
++	char devname[BUS_ID_SIZE + 2];
++
++	sprintf(devname, "%s.%d", dmadata->dma_res->name,
++		(int)dmadata->dma_res->start);
++	if (strcmp(dev_name(chan->device->dev), devname) == 0) {
++		chan->private = &dmadata->dma_slave;
++		return true;
++	}
++	return false;
++}
++
++static int txx9aclc_dma_init(struct txx9aclc_soc_device *dev,
++			     struct txx9aclc_dmadata *dmadata)
++{
++	struct txx9dmac_slave *ds = &dmadata->dma_slave;
++	dma_cap_mask_t mask;
++
++	spin_lock_init(&dmadata->dma_lock);
++
++	ds->reg_width = sizeof(u32);
++	if (dmadata->stream == SNDRV_PCM_STREAM_PLAYBACK) {
++		ds->tx_reg = dev->physbase + ACAUDODAT;
++		ds->rx_reg = 0;
++	} else {
++		ds->tx_reg = 0;
++		ds->rx_reg = dev->physbase + ACAUDIDAT;
++	}
++
++	/* Try to grab a DMA channel */
++	dma_cap_zero(mask);
++	dma_cap_set(DMA_SLAVE, mask);
++	dmadata->dma_chan = dma_request_channel(mask, filter, dmadata);
++	if (!dmadata->dma_chan) {
++		dev_err(dev->soc_dev.dev,
++			"DMA channel for %s is not available\n",
++			dmadata->stream == SNDRV_PCM_STREAM_PLAYBACK ?
++			"playback" : "capture");
++		return -EBUSY;
++	}
++	tasklet_init(&dmadata->tasklet, txx9aclc_dma_tasklet,
++		     (unsigned long)dmadata);
++	return 0;
++}
++
++static int txx9aclc_pcm_probe(struct platform_device *pdev)
++{
++	struct snd_soc_device *socdev = platform_get_drvdata(pdev);
++	struct txx9aclc_soc_device *dev =
++		container_of(socdev, struct txx9aclc_soc_device, soc_dev);
++	struct resource *r;
++	int i;
++	int ret;
++
++	r = dev->mem_res;
++	dev->physbase = r->start;
++	if (sizeof(dev->physbase) > sizeof(r->start) &&
++	    r->start >= TXX9_DIRECTMAP_BASE &&
++	    r->start < TXX9_DIRECTMAP_BASE + 0x400000)
++		dev->physbase |= 0xf00000000ull;
++	dev->dmadata[0].stream = SNDRV_PCM_STREAM_PLAYBACK;
++	dev->dmadata[1].stream = SNDRV_PCM_STREAM_CAPTURE;
++	for (i = 0; i < 2; i++) {
++		r = platform_get_resource(dev->aclc_pdev, IORESOURCE_DMA, i);
++		if (!r) {
++			ret = -EBUSY;
++			goto exit;
++		}
++		dev->dmadata[i].dma_res = r;
++		ret = txx9aclc_dma_init(dev, &dev->dmadata[i]);
++		if (ret)
++			goto exit;
++	}
++	return 0;
++
++exit:
++	for (i = 0; i < 2; i++) {
++		if (dev->dmadata[i].dma_chan)
++			dma_release_channel(dev->dmadata[i].dma_chan);
++		dev->dmadata[i].dma_chan = NULL;
++	}
++	return ret;
++}
++
++static int txx9aclc_pcm_remove(struct platform_device *pdev)
++{
++	struct snd_soc_device *socdev = platform_get_drvdata(pdev);
++	struct txx9aclc_soc_device *dev =
++		container_of(socdev, struct txx9aclc_soc_device, soc_dev);
++	int i;
++
++	/* disable all FIFO DMAs */
++	__raw_writel(ACCTL_AUDODMA | ACCTL_AUDIDMA, dev->base + ACCTLDIS);
++	/* dummy R/W to clear pending DMAREQ if any */
++	__raw_writel(__raw_readl(dev->base + ACAUDIDAT),
++		     dev->base + ACAUDODAT);
++
++	for (i = 0; i < 2; i++) {
++		struct txx9aclc_dmadata *dmadata = &dev->dmadata[i];
++		struct dma_chan *chan = dmadata->dma_chan;
++		if (chan) {
++			dmadata->frag_count = -1;
++			chan->device->device_terminate_all(chan);
++			dma_release_channel(chan);
++		}
++		dev->dmadata[i].dma_chan = NULL;
++	}
++	return 0;
++}
++
++struct snd_soc_platform txx9aclc_soc_platform = {
++	.name		= "txx9aclc-audio",
++	.probe		= txx9aclc_pcm_probe,
++	.remove		= txx9aclc_pcm_remove,
++	.pcm_ops 	= &txx9aclc_pcm_ops,
++	.pcm_new	= txx9aclc_pcm_new,
++	.pcm_free	= txx9aclc_pcm_free_dma_buffers,
++};
++EXPORT_SYMBOL_GPL(txx9aclc_soc_platform);
++
++static int __init txx9aclc_soc_platform_init(void)
++{
++	return snd_soc_register_platform(&txx9aclc_soc_platform);
++}
++
++static void __exit txx9aclc_soc_platform_exit(void)
++{
++	snd_soc_unregister_platform(&txx9aclc_soc_platform);
++}
++
++module_init(txx9aclc_soc_platform_init);
++module_exit(txx9aclc_soc_platform_exit);
++
++MODULE_AUTHOR("Atsushi Nemoto <anemo@mba.ocn.ne.jp>");
++MODULE_DESCRIPTION("TXx9 ACLC Audio DMA driver");
++MODULE_LICENSE("GPL");
+diff --git a/sound/soc/txx9/txx9aclc.h b/sound/soc/txx9/txx9aclc.h
+new file mode 100644
+index 0000000..2396fe5
+--- /dev/null
++++ b/sound/soc/txx9/txx9aclc.h
+@@ -0,0 +1,76 @@
++/*
++ * TXx9 SoC AC Link Controller
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++
++#ifndef __TXX9ACLC_H
++#define __TXX9ACLC_H
++
++#include <linux/interrupt.h>
++#include <asm/txx9/dmac.h>
++
++#define ACCTLEN			0x00	/* control enable */
++#define ACCTLDIS		0x04	/* control disable */
++#define   ACCTL_ENLINK		0x00000001	/* enable/disable AC-link */
++#define   ACCTL_AUDODMA		0x00000100	/* AUDODMA enable/disable */
++#define   ACCTL_AUDIDMA		0x00001000	/* AUDIDMA enable/disable */
++#define   ACCTL_AUDOEHLT	0x00010000	/* AUDO error halt
++						   enable/disable */
++#define   ACCTL_AUDIEHLT	0x00100000	/* AUDI error halt
++						   enable/disable */
++#define ACREGACC		0x08	/* codec register access */
++#define   ACREGACC_DAT_SHIFT	0	/* data field */
++#define   ACREGACC_REG_SHIFT	16	/* address field */
++#define   ACREGACC_CODECID_SHIFT	24	/* CODEC ID field */
++#define   ACREGACC_READ		0x80000000	/* CODEC read */
++#define   ACREGACC_WRITE	0x00000000	/* CODEC write */
++#define ACINTSTS		0x10	/* interrupt status */
++#define ACINTMSTS		0x14	/* interrupt masked status */
++#define ACINTEN			0x18	/* interrupt enable */
++#define ACINTDIS		0x1c	/* interrupt disable */
++#define   ACINT_CODECRDY(n)	(0x00000001 << (n))	/* CODECn ready */
++#define   ACINT_REGACCRDY	0x00000010	/* ACREGACC ready */
++#define   ACINT_AUDOERR		0x00000100	/* AUDO underrun error */
++#define   ACINT_AUDIERR		0x00001000	/* AUDI overrun error */
++#define ACDMASTS		0x80	/* DMA request status */
++#define   ACDMA_AUDO		0x00000001	/* AUDODMA pending */
++#define   ACDMA_AUDI		0x00000010	/* AUDIDMA pending */
++#define ACAUDODAT		0xa0	/* audio out data */
++#define ACAUDIDAT		0xb0	/* audio in data */
++#define ACREVID			0xfc	/* revision ID */
++
++struct txx9aclc_dmadata {
++	struct resource *dma_res;
++	struct txx9dmac_slave dma_slave;
++	struct dma_chan *dma_chan;
++	struct tasklet_struct tasklet;
++	spinlock_t dma_lock;
++	int stream; /* SNDRV_PCM_STREAM_PLAYBACK or SNDRV_PCM_STREAM_CAPTURE */
++	struct snd_pcm_substream *substream;
++	unsigned long pos;
++	dma_addr_t dma_addr;
++	unsigned long buffer_bytes;
++	unsigned long period_bytes;
++	unsigned long frag_bytes;
++	int frags;
++	int frag_count;
++	int dmacount;
++};
++
++struct txx9aclc_soc_device {
++	struct snd_soc_device soc_dev;
++	struct platform_device *aclc_pdev;	/* for ioresources */
++	struct resource *mem_res;
++	void __iomem *base;
++	u64 physbase;
++	int irq;
++	struct txx9aclc_dmadata dmadata[2];
++};
++
++extern struct snd_soc_platform txx9aclc_soc_platform;
++extern struct snd_soc_dai txx9aclc_ac97_dai;
++
++#endif /* __TXX9ACLC_H */
+-- 
+1.5.6.5

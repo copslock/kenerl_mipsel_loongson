@@ -1,55 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 May 2009 18:48:54 +0100 (BST)
-Received: from localhost.localdomain ([127.0.0.1]:52509 "EHLO
-	localhost.localdomain" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20024297AbZERRsv (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 18 May 2009 18:48:51 +0100
-Date:	Mon, 18 May 2009 18:48:50 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	David Daney <ddaney@caviumnetworks.com>
-cc:	ralf@linux-mips.org, David VomLehn <dvomlehn@cisco.com>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Don't branch to eret in TLB refill.
-In-Reply-To: <4A118BE8.50201@caviumnetworks.com>
-Message-ID: <alpine.LFD.1.10.0905181829270.20791@ftp.linux-mips.org>
-References: <1242168316-4009-1-git-send-email-ddaney@caviumnetworks.com> <20090513002337.GA12536@cuplxvomd02.corp.sa.net> <4A0A1E6B.6050908@caviumnetworks.com> <alpine.LFD.1.10.0905160706300.12158@ftp.linux-mips.org> <4A118BE8.50201@caviumnetworks.com>
-User-Agent: Alpine 1.10 (LFD 962 2008-03-14)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 May 2009 20:03:14 +0100 (BST)
+Received: from arrakis.dune.hu ([195.56.146.235]:38530 "EHLO arrakis.dune.hu"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S20024355AbZERTDJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 18 May 2009 20:03:09 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by arrakis.dune.hu (Postfix) with ESMTP id 3E97223C0130;
+	Mon, 18 May 2009 21:03:08 +0200 (CEST)
+X-Virus-Scanned: at arrakis.dune.hu
+Received: from arrakis.dune.hu ([127.0.0.1])
+	by localhost (arrakis.dune.hu [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id mBMxGaOjpLaI; Mon, 18 May 2009 21:03:05 +0200 (CEST)
+Received: from richese (catv-89-134-214-203.catv.broadband.hu [89.134.214.203])
+	by arrakis.dune.hu (Postfix) with ESMTPSA id 14E9723C0105;
+	Mon, 18 May 2009 21:03:05 +0200 (CEST)
+Date:	Mon, 18 May 2009 21:02:54 +0200
+To:	"Jon Fraser" <jfraser@broadcom.com>
+Subject: Re: Bigsur?
+From:	"Imre Kaloz" <kaloz@openwrt.org>
+Organization: OpenWrt - Wireless Freedom
+Cc:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+References: <ecbbfeda0905152014t62281c79k2001e428da65a442@mail.gmail.com>
+ <1242663215.18301.26.camel@chaos.ne.broadcom.com>
+Content-Transfer-Encoding: 7bit
+Message-ID: <op.ut4264pc2s3iss@richese>
+In-Reply-To: <1242663215.18301.26.camel@chaos.ne.broadcom.com>
+Return-Path: <kaloz@openwrt.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22798
+X-archive-position: 22799
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: kaloz@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 18 May 2009, David Daney wrote:
+On 2009.05.18. 18:13:35 Jon Fraser <jfraser@broadcom.com> wrote:
 
-> I don't really know what to say about that comment.
-> 
-> * We are synthesizing optimized TLB refill handlers, even small improvements
-> yield big gains in system performance.
-> 
-> * The optimization you suggest below, although a good one, is somewhat
-> different and would make a good follow on patch.
-> 
-> * I am trying to make forward progress and not have The perfect be the enemy
-> of the good.
+> I think people that have them, have had them for a while.
+>
+> You can still get, I believe, the bcm91125 and bcm91250.
+> http://www.broadcom.com/products/Data-Telecom-Networks/Communications-Processors/BCM91125E
+> How you actually order one, I don't know.  I assume you have to go to a
+> distributor.
+>
+> When I got a 1480 a year ago, it had to be built and took about 3
+> months. The internal transfer cost was very high.  So I really don't
+> think they are available anymore.  BUT, I don't work for that group.
+>
+> Are people just looking for eval type boards with MIPS cpus?
+>
+> Jon Fraser
+> (Not offical statments for Broadcom)
 
- What I suggested obsoletes your patch and requires it to be reverted 
-because the folding point search algorithm would change.  It yields 
-optimisation you (and everybody else, even if they do not realise it) are 
-after not only for your corner case of ERET being exactly at offset of 
-0x7c from the beginning of the XTLB handler slot, but for any systems for 
-which the size of the XTLB slot is not enough to hold the whole handler, 
-which, according to my knowledge, currently means all.  So why to go 
-through the two-stage process at all and fix a corner case rather than the 
-whole problem in the first place?
+<personal rant>
 
- This is my point of view; others may disagree of course.
+Some people like me are Linux distro developers -- quite frequently the only way to get our
+hands on boards to be able to support a platform is eBay.
 
-  Maciej
+This creates a funny "disturbance in the force".  At one end we are the ones willing to spend
+not only our free time but personal incomes on supporting some platforms, yet we are the ones
+who have the hardest times making this happen.
+
+Sticking to your company for example, I was willing to spend the money on a Swarm a few years
+ago. Broadcom ignored my mails, simply as I was an individual who wouldn't order thousands of
+CPUs, "just" that board. So it took me quite some time and luck to hunt down a BCM91125F with
+all it's limits..
+
+On the other end there are companies who did order Xk CPUs and people who have access to the
+eval boards. Most of these people don't give a damn about anything we do or care for, and are
+happy to finish work and ignore the boards outside work hours -- not that I blame them for
+doing so.
+
+This is all again the old tale of money and possibilities vs time and willingness.
+
+</personal rant>
+
+
+Imre

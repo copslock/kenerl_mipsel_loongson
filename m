@@ -1,78 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 May 2009 17:38:38 +0100 (BST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:47349 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20023466AbZERQib (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 18 May 2009 17:38:31 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n4IGa6Nd022881;
-	Mon, 18 May 2009 17:36:07 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n4IGa3ia022879;
-	Mon, 18 May 2009 17:36:03 +0100
-Date:	Mon, 18 May 2009 17:36:03 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Wu Zhangjin <wuzhangjin@gmail.com>
-Cc:	linux-mips@linux-mips.org, Arnaud Patard <apatard@mandriva.com>,
-	loongson-dev@googlegroups.com, zhangfx@lemote.com, yanh@lemote.com,
-	Philippe Vachon <philippe@cowpig.ca>,
-	Zhang Le <r0bertz@gentoo.org>, Erwan Lerale <erwan@thiscow.com>
-Subject: Re: [PATCH 26/30] loongson: flush irq write operation
-Message-ID: <20090518163603.GA22779@linux-mips.org>
-References: <1242426527.10164.174.camel@falcon>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 May 2009 17:39:19 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:50530 "EHLO
+	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20023466AbZERQjM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 18 May 2009 17:39:12 +0100
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B4a118dc10001>; Mon, 18 May 2009 12:33:10 -0400
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 18 May 2009 09:25:12 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 18 May 2009 09:25:12 -0700
+Message-ID: <4A118BE8.50201@caviumnetworks.com>
+Date:	Mon, 18 May 2009 09:25:12 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1242426527.10164.174.camel@falcon>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@h5.dl5rb.org.uk>
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>, ralf@linux-mips.org
+CC:	David VomLehn <dvomlehn@cisco.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Don't branch to eret in TLB refill.
+References: <1242168316-4009-1-git-send-email-ddaney@caviumnetworks.com> <20090513002337.GA12536@cuplxvomd02.corp.sa.net> <4A0A1E6B.6050908@caviumnetworks.com> <alpine.LFD.1.10.0905160706300.12158@ftp.linux-mips.org>
+In-Reply-To: <alpine.LFD.1.10.0905160706300.12158@ftp.linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 18 May 2009 16:25:12.0638 (UTC) FILETIME=[381FBDE0:01C9D7D5]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22793
+X-archive-position: 22794
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, May 16, 2009 at 06:28:47AM +0800, Wu Zhangjin wrote:
-
-> read back after write, otherwise, there will be many spurious irqs from
-> it
-> ---
->  arch/mips/kernel/i8259.c               |    5 +++++
->  arch/mips/loongson/common/bonito-irq.c |    4 ++++
->  2 files changed, 9 insertions(+), 0 deletions(-)
+Maciej W. Rozycki wrote:
+> On Tue, 12 May 2009, David Daney wrote:
 > 
-> diff --git a/arch/mips/kernel/i8259.c b/arch/mips/kernel/i8259.c
-> index 413bd1d..f7c3a2b 100644
-> --- a/arch/mips/kernel/i8259.c
-> +++ b/arch/mips/kernel/i8259.c
-> @@ -175,12 +175,17 @@ handle_real_irq:
->  	if (irq & 8) {
->  		inb(PIC_SLAVE_IMR);	/* DUMMY - (do we need this?) */
->  		outb(cached_slave_mask, PIC_SLAVE_IMR);
-> +		inb(PIC_SLAVE_IMR);
->  		outb(0x60+(irq&7), PIC_SLAVE_CMD);/* 'Specific EOI' to slave */
-> +		inb(PIC_SLAVE_CMD);
->  		outb(0x60+PIC_CASCADE_IR, PIC_MASTER_CMD); /* 'Specific EOI' to
-> master-IRQ2 */
-> +		inb(PIC_MASTER_CMD);
->  	} else {
->  		inb(PIC_MASTER_IMR);	/* DUMMY - (do we need this?) */
->  		outb(cached_master_mask, PIC_MASTER_IMR);
-> +		inb(PIC_SLAVE_IMR);
->  		outb(0x60+irq, PIC_MASTER_CMD);	/* 'Specific EOI to master */
-> +		inb(PIC_MASTER_CMD);
->  	}
->  	smtc_im_ack_irq(irq);
->  	spin_unlock_irqrestore(&i8259A_lock, flags);
+>>>> +			/*
+>>>> +			 * Find the split point.
+>>>> +			 */
+>>>> +			if (uasm_insn_has_bdelay(relocs, split - 1))
+>>>> +				split--;
+>>>> +		}
+>>> The code itself makes sense. Does this case actually happen much, or was
+>>> this just an itch?
+>>>
+>> For my CPU it was happening 100% of the time when I add the soon to be
+>> submitted hugeTLBfs support patch.  Although I have not measured it, this code
+>> is so hot that keeping the normal case fitting on a single cache line should
+>> be a big win.
+> 
+>  Rather than this hack,
 
-The semantic of inX() / outX() is defined by the x86 architecture which
-forbids posting I/O port writes.  In short I think this one is papering
-over a bug in the outX() implementation.
+I don't really know what to say about that comment.
 
-I'm ok with the bonito part of this patch.
+* We are synthesizing optimized TLB refill handlers, even small 
+improvements yield big gains in system performance.
 
-  Ralf
+* The optimization you suggest below, although a good one, is somewhat 
+different and would make a good follow on patch.
+
+* I am trying to make forward progress and not have The perfect be the 
+enemy of the good.
+
+> I'd suggest microoptimising the code by shuffling 
+> it such that unless the handler fits in 128 bytes entirely (I'm not sure 
+> if that ever happens for XTLB refill) the part built by 
+> build_get_pgd_vmalloc64() is placed in the TLB handler slot, saving an 
+> unnecessary unconditional branch there.  This way the problem of an 
+> unconditional branch to ERET will solve automagically as a side-effect.  
+> Unless the vmalloc part does not fit in 128 bytes, that is, in which case 
+> it would have to overflow back to the XTLB slot.  It should be pretty 
+> straightforward to code. ;)
+> 
+>   Maciej
+> 

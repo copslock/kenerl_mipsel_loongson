@@ -1,101 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 May 2009 18:28:16 +0100 (BST)
-Received: from mail.lysator.liu.se ([130.236.254.3]:56089 "EHLO
-	mail.lysator.liu.se" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20024297AbZERR2K (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 18 May 2009 18:28:10 +0100
-Received: from mail.lysator.liu.se (localhost [127.0.0.1])
-	by mail.lysator.liu.se (Postfix) with ESMTP id DE37140093;
-	Mon, 18 May 2009 19:27:42 +0200 (CEST)
-Received: from [192.168.10.105] (c-f7bfe555.035-105-73746f38.cust.bredbandsbolaget.se [85.229.191.247])
-	(using TLSv1 with cipher AES128-SHA (128/128 bits))
-	(No client certificate requested)
-	by mail.lysator.liu.se (Postfix) with ESMTP id BB8B440077;
-	Mon, 18 May 2009 19:27:42 +0200 (CEST)
-Cc:	jfraser@broadcom.com, Andrew Wiley <debio264@gmail.com>,
-	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Message-Id: <84BD5D9F-4154-4DAC-802C-5E49FC22AEEE@lysator.liu.se>
-From:	Markus Gothe <nietzsche@lysator.liu.se>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 18 May 2009 18:48:54 +0100 (BST)
+Received: from localhost.localdomain ([127.0.0.1]:52509 "EHLO
+	localhost.localdomain" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20024297AbZERRsv (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 18 May 2009 18:48:51 +0100
+Date:	Mon, 18 May 2009 18:48:50 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
 To:	David Daney <ddaney@caviumnetworks.com>
-In-Reply-To: <4A118D72.8050202@caviumnetworks.com>
-Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha1; boundary="Apple-Mail-16-219996190"
-Content-Transfer-Encoding: 7bit
-Mime-Version: 1.0 (Apple Message framework v935.3)
-Subject: Re: Bigsur?
-Date:	Mon, 18 May 2009 19:28:04 +0200
-References: <ecbbfeda0905152014t62281c79k2001e428da65a442@mail.gmail.com> <1242663215.18301.26.camel@chaos.ne.broadcom.com> <4A118D72.8050202@caviumnetworks.com>
-X-Pgp-Agent: GPGMail 1.2.0 (v56)
-X-Mailer: Apple Mail (2.935.3)
-X-Virus-Scanned: ClamAV using ClamSMTP
-Return-Path: <nietzsche@lysator.liu.se>
+cc:	ralf@linux-mips.org, David VomLehn <dvomlehn@cisco.com>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Don't branch to eret in TLB refill.
+In-Reply-To: <4A118BE8.50201@caviumnetworks.com>
+Message-ID: <alpine.LFD.1.10.0905181829270.20791@ftp.linux-mips.org>
+References: <1242168316-4009-1-git-send-email-ddaney@caviumnetworks.com> <20090513002337.GA12536@cuplxvomd02.corp.sa.net> <4A0A1E6B.6050908@caviumnetworks.com> <alpine.LFD.1.10.0905160706300.12158@ftp.linux-mips.org> <4A118BE8.50201@caviumnetworks.com>
+User-Agent: Alpine 1.10 (LFD 962 2008-03-14)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22797
+X-archive-position: 22798
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: nietzsche@lysator.liu.se
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
---Apple-Mail-16-219996190
-Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
-Content-Transfer-Encoding: 7bit
+On Mon, 18 May 2009, David Daney wrote:
 
-The SGI Quad Tezro and SGI Fuel and their MIPS-based server-line is  
-still in use by institutions. However the fact is that the big  
-business is in embedded devices nowadays with MIPS32/MIPS64. Albeit  
-there does exist netbooks based on MIPS.
+> I don't really know what to say about that comment.
+> 
+> * We are synthesizing optimized TLB refill handlers, even small improvements
+> yield big gains in system performance.
+> 
+> * The optimization you suggest below, although a good one, is somewhat
+> different and would make a good follow on patch.
+> 
+> * I am trying to make forward progress and not have The perfect be the enemy
+> of the good.
 
-//Markus
+ What I suggested obsoletes your patch and requires it to be reverted 
+because the folding point search algorithm would change.  It yields 
+optimisation you (and everybody else, even if they do not realise it) are 
+after not only for your corner case of ERET being exactly at offset of 
+0x7c from the beginning of the XTLB handler slot, but for any systems for 
+which the size of the XTLB slot is not enough to hold the whole handler, 
+which, according to my knowledge, currently means all.  So why to go 
+through the two-stage process at all and fix a corner case rather than the 
+whole problem in the first place?
 
-On 18 May 2009, at 18:31, David Daney wrote:
+ This is my point of view; others may disagree of course.
 
-> Jon Fraser wrote:
-> [...]
->> Are people just looking for eval type boards with MIPS cpus?
->
-> I think the answer to that is: Yes.
->
-> There are not really any commercially available MIPS based devices  
-> that can be used as a general purpose server/workstation.  Some  
-> people are working on old SGI Octanes, but there is really nothing  
-> available for currently produced processors.
->
-> David Daney
->
->
->> Jon Fraser
->> (Not offical statments for Broadcom)
->> On Fri, 2009-05-15 at 20:14 -0700, Andrew Wiley wrote:
->>> Is there any way for a mere mortal like me to get his hands on a
->>> BCM91480B, the evaulation board for Bigsur, and if so, how much  
->>> would
->>> it cost? Right now, it's not even on the Broadcom website, but I  
->>> keep
->>> seeing mentions of it on the internet as if many people are  
->>> getting it
->>> somewhere.
->>>
->>> Andrew Wiley
->
->
-
-
---Apple-Mail-16-219996190
-content-type: application/pgp-signature; x-mac-type=70674453;
-	name=PGP.sig
-content-description: This is a digitally signed message part
-content-disposition: inline; filename=PGP.sig
-content-transfer-encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.8 (Darwin)
-
-iEYEARECAAYFAkoRmqQACgkQ6I0XmJx2NrynfgCdEvhOIukYNUASQRC4VpqZvyV4
-qPIAoNmRPLq1RWhr7+VjJ05BW84BCrns
-=P5UE
------END PGP SIGNATURE-----
-
---Apple-Mail-16-219996190--
+  Maciej

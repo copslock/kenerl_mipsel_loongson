@@ -1,63 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 May 2009 08:13:22 +0100 (BST)
-Received: from qmta06.emeryville.ca.mail.comcast.net ([76.96.30.56]:56311 "EHLO
-	QMTA06.emeryville.ca.mail.comcast.net" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20021968AbZESHNQ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 19 May 2009 08:13:16 +0100
-Received: from OMTA12.emeryville.ca.mail.comcast.net ([76.96.30.44])
-	by QMTA06.emeryville.ca.mail.comcast.net with comcast
-	id tK7l1b0040x6nqcA6KDAAM; Tue, 19 May 2009 07:13:10 +0000
-Received: from [192.168.1.13] ([24.126.111.8])
-	by OMTA12.emeryville.ca.mail.comcast.net with comcast
-	id tKD71b00B0AvCMk8YKD97k; Tue, 19 May 2009 07:13:10 +0000
-Message-ID: <4A125BD4.7050904@gentoo.org>
-Date:	Tue, 19 May 2009 03:12:20 -0400
-From:	Kumba <kumba@gentoo.org>
-User-Agent: Thunderbird 2.0.0.21 (Windows/20090302)
-MIME-Version: 1.0
-To:	Johannes Dickgreber <tanzy@gmx.de>
-CC:	Linux MIPS List <linux-mips@linux-mips.org>
-Subject: Re: Help getting IP30/Octane fixed?
-References: <4A06100F.7020105@gentoo.org> <4A0717AA.8060603@gmx.de> <4A072383.3010109@gentoo.org> <4A0F0E7B.1010602@gmx.de>
-In-Reply-To: <4A0F0E7B.1010602@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 May 2009 10:14:01 +0100 (BST)
+Received: from rv-out-0708.google.com ([209.85.198.243]:61850 "EHLO
+	rv-out-0708.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20023561AbZESJNy (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 19 May 2009 10:13:54 +0100
+Received: by rv-out-0708.google.com with SMTP id k29so1863500rvb.24
+        for <multiple recipients>; Tue, 19 May 2009 02:13:51 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=pPFrrClb3w/Y958uIU8G6f5BwGtbbMyPV4oX+hQUv9Y=;
+        b=dwqF/kwxwF6la5dam56w6qt4OdW4XDWiXukGwQWpl7F7b3XA60JONQOLVWbsx6j0U4
+         +mgjKZP74qrXLz7czS56fk4ZGTenkLweG00jzt8BdKJn7A0+XcolALxlFTPA3GlKP38y
+         6Y07zP84houE20BQNSDR3JpmwDwt1/+s+c2NQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=Zi1SqGenq0Z7EMCZDx7gPod4PfAdZzQ/Uk2Am0rfLCP/x1Kni9HtAoiYTN/q2GKGOf
+         HYkgI2RZRe2aHOv+TSS29+zKQfh1Xe/BYNj+kcxYVjjlFTJDPMR9wmTivn+lAPWnNpMc
+         I30fQ3JBkP+/lmf9Ianhe6MnQDUs7F9vgvcYY=
+Received: by 10.141.176.4 with SMTP id d4mr2807964rvp.109.1242724431799;
+        Tue, 19 May 2009 02:13:51 -0700 (PDT)
+Received: from ?172.16.2.101? ([222.92.8.142])
+        by mx.google.com with ESMTPS id k41sm16133296rvb.37.2009.05.19.02.13.46
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Tue, 19 May 2009 02:13:50 -0700 (PDT)
+Subject: Re: [PATCH 01/30] Fix warning: incompatible argument type of
+ pci_fixup_irqs
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:	Zhang Le <r0bertz@gentoo.org>
+Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+	Arnaud Patard <apatard@mandriva.com>,
+	loongson-dev@googlegroups.com, zhangfx@lemote.com, yanh@lemote.com,
+	Philippe Vachon <philippe@cowpig.ca>,
+	Erwan Lerale <erwan@thiscow.com>
+In-Reply-To: <20090518063510.GA8917@adriano.hkcable.com.hk>
+References: <1242424728.10164.140.camel@falcon>
+	 <20090518063510.GA8917@adriano.hkcable.com.hk>
+Content-Type: text/plain
+Organization: DSLab, Lanzhou University, China
+Date:	Tue, 19 May 2009 17:13:31 +0800
+Message-Id: <1242724411.18816.16.camel@falcon>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.24.3 
 Content-Transfer-Encoding: 7bit
-Return-Path: <kumba@gentoo.org>
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22812
+X-archive-position: 22813
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kumba@gentoo.org
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Johannes Dickgreber wrote:
->
-> i think i found the problem
+On Mon, 2009-05-18 at 14:35 +0800, Zhang Le wrote:
+> On 05:58 Sat 16 May     , Wu Zhangjin wrote:
+> > >From 1e6360e89b239699ef1f5344e1d3a5c0b3c5bef1 Mon Sep 17 00:00:00 2001
+> > From: Wu Zhangjin <wuzhangjin@gmail.com>
+> > Date: Tue, 12 May 2009 10:33:37 +0800
+> > Subject: [PATCH 01/30] Fix warning: incompatible argument type of
+> > pci_fixup_irqs
+> > MIME-Version: 1.0
+> > Content-Type: text/plain; charset=utf-8
+> > Content-Transfer-Encoding: 8bit
 > 
-> try booting with a command line       cca=5
+> I don't know how you mailed these patches.
+> But it seems to me that you copy'n'pasted the format-patch'ed patch into the
+> text editor of your mailer.
 > 
-> the system is setting _page_cachable_default with what is found in the
-> processor register at booting time which is 3 ( _CACHE_CACHABLE_NONCOHERENT )
-> i think this can not work on a SMP System.
-> 
-> with the above overriding i have a working SMP Octane system.
-> 
-> 	cca = 5  means _CACHE_CACHABLE_COHERENT
-> 
-> if time permits i send patches 
+> If this is the case, please don't do this. Please use 'git send-email'.
 
-Tried this and the change to HEART_IMR on my end using a dual R10000 195MHz 
-module.  It didn't boot in any of the cases.
+thanks very much for your reply :-)
 
--- 
-Joshua Kinard
-Gentoo/MIPS
-kumba@gentoo.org
+-----------------
 
-"The past tempts us, the present confuses us, the future frightens us.  And our 
-lives slip away, moment by moment, lost in that vast, terrible in-between."
+hi, all
 
---Emperor Turhan, Centauri Republic
+I am checking the posted patchset with the support of
+scripts/checkpatch.pl, and have cleaned up the cs55536 support of
+fuloong2f/yeeloong2f a lot.
+
+the new patchset will come one day or two later(will be sent out via
+'git send-email'), so, please ignore the posted patchset, I am very
+sorry for sending the awful patchset to you.
+
+thanks,
+Wu Zhangjin

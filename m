@@ -1,120 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 May 2009 16:16:36 +0100 (BST)
-Received: from [222.92.8.141] ([222.92.8.141]:46243 "EHLO lemote.com"
-	rhost-flags-FAIL-FAIL-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20024587AbZESPQa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 19 May 2009 16:16:30 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by lemote.com (Postfix) with ESMTP id 7C28C340B4;
-	Tue, 19 May 2009 22:35:42 +0800 (CST)
-X-Virus-Scanned: Debian amavisd-new at lemote.com
-Received: from lemote.com ([127.0.0.1])
-	by localhost (www.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id OKpgHnpZqZYX; Tue, 19 May 2009 22:35:21 +0800 (CST)
-Received: from localhost.localdomain (unknown [172.16.2.66])
-	by lemote.com (Postfix) with ESMTP id E854B340AD;
-	Tue, 19 May 2009 22:35:20 +0800 (CST)
-Message-ID: <4A12C3FB.4010704@lemote.com>
-Date:	Tue, 19 May 2009 22:36:43 +0800
-From:	=?UTF-8?B?6IOh5rSq5YW1?= <huhb@lemote.com>
-User-Agent: Mozilla-Thunderbird 2.0.0.9 (X11/20080110)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 May 2009 17:02:08 +0100 (BST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:52565 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S20024603AbZESQCB (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 19 May 2009 17:02:01 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n4JG1Jo8022498;
+	Tue, 19 May 2009 17:01:20 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n4JG1H5g022497;
+	Tue, 19 May 2009 17:01:17 +0100
+Date:	Tue, 19 May 2009 17:01:17 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	yanh <yanh@lemote.com>
+Cc:	Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
+	Arnaud Patard <apatard@mandriva.com>,
+	loongson-dev@googlegroups.com, zhangfx@lemote.com,
+	Philippe Vachon <philippe@cowpig.ca>,
+	Zhang Le <r0bertz@gentoo.org>, Erwan Lerale <erwan@thiscow.com>
+Subject: Re: [PATCH 26/30] loongson: flush irq write operation
+Message-ID: <20090519160117.GA19672@linux-mips.org>
+References: <1242426527.10164.174.camel@falcon> <20090518163603.GA22779@linux-mips.org> <1242700637.4382.21.camel@localhost.localdomain>
 MIME-Version: 1.0
-To:	Erwan Lerale <erwan@thiscow.com>
-CC:	wuzhangjin@gmail.com, loongson-dev@googlegroups.com,
-	yanh@lemote.com, zhangfx@lemote.com, penglj@lemote.com,
-	taohl@lemote.com, linux-mips@linux-mips.org,
-	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [loongson-dev] Re: a pre-release of merging loongson patchs to
- linux-2.6.29.1
-References: <1240501332.28136.24.camel@falcon>	 <49F0AFA3.6080408@thiscow.com> <1240535343.25824.14.camel@falcon>	 <49F16061.9010207@thiscow.com> <1240556617.23345.10.camel@falcon>	 <49F217E1.8080808@thiscow.fr> <1240640248.25540.27.camel@falcon> <49F497E9.7080803@thiscow.com> <4A12A289.4070102@thiscow.com>
-In-Reply-To: <4A12A289.4070102@thiscow.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <huhb@lemote.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1242700637.4382.21.camel@localhost.localdomain>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22822
+X-archive-position: 22823
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: huhb@lemote.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Erwan Lerale 写道:
-> Erwan Lerale a écrit :
->
->> Now, let's talk about the cpufreq stuff :)
->>
->> cpufrequtils 005: cpufreq-info (C) Dominik Brodowski 2004-2006
->> Report errors and bugs to cpufreq@vger.kernel.org, please.
->> analyzing CPU 0:
->>  driver: loongson2f
->>  CPUs which need to switch frequency at the same time: 0
->>  hardware limits: 199 MHz - 797 MHz
->>  available frequency steps: 199 MHz, 299 MHz, 398 MHz, 498 MHz, 598 
->> MHz, 697 MHz, 797 MHz
->>  available cpufreq governors: conservative, ondemand, userspace, 
->> powersave, performance
->>  current policy: frequency should be within 199 MHz and 797 MHz.
->>                  The governor "ondemand" may decide which speed to use
->>                  within this range.
->>  current CPU frequency is 797 MHz (asserted by call to hardware).
->>  cpufreq stats: 199 MHz:0.00%, 299 MHz:0.00%, 398 MHz:0.00%, 498 
->> MHz:0.00%, 598 MHz:0.00%, 697 MHz:0.00%, 797 MHz:100.00%
->>
->> It seems to be working but it's weird. When I start X and gnome 
->> (cpufreq applet). I can see
->> that's the system is using the ondemand performance but is stuck at 
->> 797 Mhz if I don't do anything.
->> If i start working (yeah it's happening sometimes), the frequency is 
->> moving from 199Mhz to 797Mhz.
->>
->> The other thing which is weird is that I don't have this problem with 
->> the Loonux stock kernel.
->
-> Hello,
->
-> I've switched from the ondemand governor to the conservative one and 
-> it seems
-> to be working properly.
->
-Yes, the conservative governor  is better than the ondemand.
-> I have also noticed that the fans seems to be running at full speed 
-> all the time.
-> Any comment, on this issue ?
->
-we test that it only  save  power  about  1~2w   when the cpufreq  is  min.
-So the temperature will be reduced a little.
-when the temp is the some section,
-eg. the  60°C and 65°C  are the same section when the section is 60°C~70°C，
-the speed of  fans will be the same.
+On Tue, May 19, 2009 at 10:37:17AM +0800, yanh wrote:
 
-> Is there a way to query the sensors ?
-Please insmod  ec_ftd which is one of the ec modules.
-And then type  "cat  /proc/ft" ,  the output: "1.31 0x01 4705 0x00 56"
+> > The semantic of inX() / outX() is defined by the x86 architecture which
+> > forbids posting I/O port writes.  In short I think this one is papering
+> > over a bug in the outX() implementation.
+> Yes, the outX should do a delayed write, however it does not. 
+> So our solution is making a read to flush the write.
 
-the 4705 means  the speed of fans,   56 stands for  the  temperature
+Do you actually need all the inb() you added to get things to work or is
 
-the ec_modules  source  URL:
-http://dev.lemote.com/code/ec_module
+diff --git a/arch/mips/kernel/i8259.c b/arch/mips/kernel/i8259.c
+index 01c0885..42d75d7 100644
+--- a/arch/mips/kernel/i8259.c
++++ b/arch/mips/kernel/i8259.c
+@@ -177,10 +177,12 @@ handle_real_irq:
+ 		outb(cached_slave_mask, PIC_SLAVE_IMR);
+ 		outb(0x60+(irq&7), PIC_SLAVE_CMD);/* 'Specific EOI' to slave */
+ 		outb(0x60+PIC_CASCADE_IR, PIC_MASTER_CMD); /* 'Specific EOI' to master-IRQ2 */
++		inb(PIC_MASTER_CMD);
+ 	} else {
+ 		inb(PIC_MASTER_IMR);	/* DUMMY - (do we need this?) */
+ 		outb(cached_master_mask, PIC_MASTER_IMR);
+ 		outb(0x60+irq, PIC_MASTER_CMD);	/* 'Specific EOI to master */
++		inb(PIC_MASTER_CMD);
+ 	}
+ 	smtc_im_ack_irq(irq);
+ 	spin_unlock_irqrestore(&i8259A_lock, flags);
 
-git URL:
-git://dev.lemote.com/ec_module.git
-> Cheers
-> r1
->
->
->
->
+sufficient to solve the problem?
 
-
--- 
----------------------------------------------------------
-Hongbing,Hu (Software Department)
-Tel:    0512-52308631
-E-mail:	huhb@lemote.com
-MSN:	[huhb04@gmail.com]
-JiangSu Lemote Corp. Ltd.
-MengLan, Yushan, Changshu, JiangSu Province, China
----------------------------------------------------------
+  Ralf

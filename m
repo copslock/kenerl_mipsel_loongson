@@ -1,95 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 May 2009 10:14:01 +0100 (BST)
-Received: from rv-out-0708.google.com ([209.85.198.243]:61850 "EHLO
-	rv-out-0708.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20023561AbZESJNy (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 19 May 2009 10:13:54 +0100
-Received: by rv-out-0708.google.com with SMTP id k29so1863500rvb.24
-        for <multiple recipients>; Tue, 19 May 2009 02:13:51 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=pPFrrClb3w/Y958uIU8G6f5BwGtbbMyPV4oX+hQUv9Y=;
-        b=dwqF/kwxwF6la5dam56w6qt4OdW4XDWiXukGwQWpl7F7b3XA60JONQOLVWbsx6j0U4
-         +mgjKZP74qrXLz7czS56fk4ZGTenkLweG00jzt8BdKJn7A0+XcolALxlFTPA3GlKP38y
-         6Y07zP84houE20BQNSDR3JpmwDwt1/+s+c2NQ=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=Zi1SqGenq0Z7EMCZDx7gPod4PfAdZzQ/Uk2Am0rfLCP/x1Kni9HtAoiYTN/q2GKGOf
-         HYkgI2RZRe2aHOv+TSS29+zKQfh1Xe/BYNj+kcxYVjjlFTJDPMR9wmTivn+lAPWnNpMc
-         I30fQ3JBkP+/lmf9Ianhe6MnQDUs7F9vgvcYY=
-Received: by 10.141.176.4 with SMTP id d4mr2807964rvp.109.1242724431799;
-        Tue, 19 May 2009 02:13:51 -0700 (PDT)
-Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id k41sm16133296rvb.37.2009.05.19.02.13.46
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 19 May 2009 02:13:50 -0700 (PDT)
-Subject: Re: [PATCH 01/30] Fix warning: incompatible argument type of
- pci_fixup_irqs
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:	Zhang Le <r0bertz@gentoo.org>
-Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-	Arnaud Patard <apatard@mandriva.com>,
-	loongson-dev@googlegroups.com, zhangfx@lemote.com, yanh@lemote.com,
-	Philippe Vachon <philippe@cowpig.ca>,
-	Erwan Lerale <erwan@thiscow.com>
-In-Reply-To: <20090518063510.GA8917@adriano.hkcable.com.hk>
-References: <1242424728.10164.140.camel@falcon>
-	 <20090518063510.GA8917@adriano.hkcable.com.hk>
-Content-Type: text/plain
-Organization: DSLab, Lanzhou University, China
-Date:	Tue, 19 May 2009 17:13:31 +0800
-Message-Id: <1242724411.18816.16.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.24.3 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 19 May 2009 13:14:04 +0100 (BST)
+Received: from mail.rennes.fr.clara.net ([62.240.254.62]:51071 "EHLO
+	rennes.fr.clara.net" rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org
+	with ESMTP id S20024549AbZESMNz (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 19 May 2009 13:13:55 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by rennes.fr.clara.net (Postfix) with ESMTP id 2A7FA3A519;
+	Tue, 19 May 2009 14:13:49 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at 
+Received: from rennes.fr.clara.net ([127.0.0.1])
+	by localhost (rennes.fr.clara.net [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id Ewyq7HeOlFOJ; Tue, 19 May 2009 14:13:48 +0200 (CEST)
+Received: from [10.0.1.235] (unknown [10.0.1.235])
+	by rennes.fr.clara.net (Postfix) with ESMTP id 2A13E38FEB;
+	Tue, 19 May 2009 14:13:48 +0200 (CEST)
+Message-ID: <4A12A289.4070102@thiscow.com>
+Date:	Tue, 19 May 2009 14:14:01 +0200
+From:	Erwan Lerale <erwan@thiscow.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090409)
+MIME-Version: 1.0
+To:	wuzhangjin@gmail.com
+CC:	loongson-dev@googlegroups.com, yanh@lemote.com, zhangfx@lemote.com,
+	penglj@lemote.com, huhb@lemote.com, taohl@lemote.com,
+	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [loongson-dev] Re: a pre-release of merging loongson patchs to
+ linux-2.6.29.1
+References: <1240501332.28136.24.camel@falcon>	 <49F0AFA3.6080408@thiscow.com> <1240535343.25824.14.camel@falcon>	 <49F16061.9010207@thiscow.com> <1240556617.23345.10.camel@falcon>	 <49F217E1.8080808@thiscow.fr> <1240640248.25540.27.camel@falcon> <49F497E9.7080803@thiscow.com>
+In-Reply-To: <49F497E9.7080803@thiscow.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 8bit
+Return-Path: <erwan@thiscow.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22813
+X-archive-position: 22814
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: erwan@thiscow.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 2009-05-18 at 14:35 +0800, Zhang Le wrote:
-> On 05:58 Sat 16 May     , Wu Zhangjin wrote:
-> > >From 1e6360e89b239699ef1f5344e1d3a5c0b3c5bef1 Mon Sep 17 00:00:00 2001
-> > From: Wu Zhangjin <wuzhangjin@gmail.com>
-> > Date: Tue, 12 May 2009 10:33:37 +0800
-> > Subject: [PATCH 01/30] Fix warning: incompatible argument type of
-> > pci_fixup_irqs
-> > MIME-Version: 1.0
-> > Content-Type: text/plain; charset=utf-8
-> > Content-Transfer-Encoding: 8bit
-> 
-> I don't know how you mailed these patches.
-> But it seems to me that you copy'n'pasted the format-patch'ed patch into the
-> text editor of your mailer.
-> 
-> If this is the case, please don't do this. Please use 'git send-email'.
+Erwan Lerale a écrit :
 
-thanks very much for your reply :-)
+> Now, let's talk about the cpufreq stuff :)
+>
+> cpufrequtils 005: cpufreq-info (C) Dominik Brodowski 2004-2006
+> Report errors and bugs to cpufreq@vger.kernel.org, please.
+> analyzing CPU 0:
+>  driver: loongson2f
+>  CPUs which need to switch frequency at the same time: 0
+>  hardware limits: 199 MHz - 797 MHz
+>  available frequency steps: 199 MHz, 299 MHz, 398 MHz, 498 MHz, 598 
+> MHz, 697 MHz, 797 MHz
+>  available cpufreq governors: conservative, ondemand, userspace, 
+> powersave, performance
+>  current policy: frequency should be within 199 MHz and 797 MHz.
+>                  The governor "ondemand" may decide which speed to use
+>                  within this range.
+>  current CPU frequency is 797 MHz (asserted by call to hardware).
+>  cpufreq stats: 199 MHz:0.00%, 299 MHz:0.00%, 398 MHz:0.00%, 498 
+> MHz:0.00%, 598 MHz:0.00%, 697 MHz:0.00%, 797 MHz:100.00%
+>
+> It seems to be working but it's weird. When I start X and gnome 
+> (cpufreq applet). I can see
+> that's the system is using the ondemand performance but is stuck at 
+> 797 Mhz if I don't do anything.
+> If i start working (yeah it's happening sometimes), the frequency is 
+> moving from 199Mhz to 797Mhz.
+>
+> The other thing which is weird is that I don't have this problem with 
+> the Loonux stock kernel.
 
------------------
+Hello,
 
-hi, all
+I've switched from the ondemand governor to the conservative one and it 
+seems
+to be working properly.
 
-I am checking the posted patchset with the support of
-scripts/checkpatch.pl, and have cleaned up the cs55536 support of
-fuloong2f/yeeloong2f a lot.
+I have also noticed that the fans seems to be running at full speed all 
+the time.
+Any comment, on this issue ?
 
-the new patchset will come one day or two later(will be sent out via
-'git send-email'), so, please ignore the posted patchset, I am very
-sorry for sending the awful patchset to you.
+Is there a way to query the sensors ?
 
-thanks,
-Wu Zhangjin
+Cheers
+r1

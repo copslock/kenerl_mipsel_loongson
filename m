@@ -1,89 +1,120 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 May 2009 04:08:18 +0100 (BST)
-Received: from [222.92.8.141] ([222.92.8.141]:43060 "EHLO lemote.com"
-	rhost-flags-FAIL-FAIL-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20021559AbZETDIL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 20 May 2009 04:08:11 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by lemote.com (Postfix) with ESMTP id 25CFE31CA2E;
-	Wed, 20 May 2009 11:03:17 +0800 (CST)
-X-Virus-Scanned: Debian amavisd-new at lemote.com
-Received: from lemote.com ([127.0.0.1])
-	by localhost (www.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id rZkQdnlpO7ea; Wed, 20 May 2009 11:03:12 +0800 (CST)
-Received: from [172.16.2.16] (unknown [222.92.8.142])
-	by lemote.com (Postfix) with ESMTP id 6FCB131CA2D;
-	Wed, 20 May 2009 11:03:11 +0800 (CST)
-Subject: Re: [PATCH 26/30] loongson: flush irq write operation
-From:	yanh <yanh@lemote.com>
-Reply-To: yanh@lemote.com
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
-	Arnaud Patard <apatard@mandriva.com>,
-	loongson-dev@googlegroups.com, zhangfx@lemote.com,
-	Philippe Vachon <philippe@cowpig.ca>,
-	Zhang Le <r0bertz@gentoo.org>, Erwan Lerale <erwan@thiscow.com>
-In-Reply-To: <1242786494.4382.58.camel@localhost.localdomain>
-References: <1242426527.10164.174.camel@falcon>
-	 <20090518163603.GA22779@linux-mips.org>
-	 <1242700637.4382.21.camel@localhost.localdomain>
-	 <20090519160117.GA19672@linux-mips.org>
-	 <1242786494.4382.58.camel@localhost.localdomain>
-Content-Type: text/plain; charset="UTF-8"
-Date:	Wed, 20 May 2009 11:07:35 +0800
-Message-Id: <1242788855.4382.64.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.24.1 (2.24.1-2.fc10) 
-Content-Transfer-Encoding: 8bit
-Return-Path: <yanh@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 May 2009 07:12:48 +0100 (BST)
+Received: from rex.securecomputing.com ([203.24.151.4]:37074 "EHLO
+	cyberguard.com.au" rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org
+	with ESMTP id S20024522AbZETGMm (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 20 May 2009 07:12:42 +0100
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by bne.snapgear.com (Postfix) with ESMTP id 00F65EBBAF
+	for <linux-mips@linux-mips.org>; Wed, 20 May 2009 16:12:33 +1000 (EST)
+X-Virus-Scanned: amavisd-new at snapgear.com
+Received: from bne.snapgear.com ([127.0.0.1])
+	by localhost (bne.snapgear.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id KAFJVWiC5k4O for <linux-mips@linux-mips.org>;
+	Wed, 20 May 2009 16:12:33 +1000 (EST)
+Received: from [10.46.12.2] (unknown [10.46.12.2])
+	by bne.snapgear.com (Postfix) with ESMTP
+	for <linux-mips@linux-mips.org>; Wed, 20 May 2009 16:12:33 +1000 (EST)
+Message-ID: <4A139F50.7050409@snapgear.com>
+Date:	Wed, 20 May 2009 16:12:32 +1000
+From:	Greg Ungerer <gerg@snapgear.com>
+User-Agent: Thunderbird 2.0.0.19 (X11/20090105)
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: system lockup with 2.6.29 on Cavium/Octeon
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <gerg@snapgear.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22834
+X-archive-position: 22835
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yanh@lemote.com
+X-original-sender: gerg@snapgear.com
 Precedence: bulk
 X-list: linux-mips
 
-在 2009-05-20三的 10:28 +0800，yanh写道：
-> 在 2009-05-19二的 17:01 +0100，Ralf Baechle写道：
-> > On Tue, May 19, 2009 at 10:37:17AM +0800, yanh wrote:
-> > 
-> > > > The semantic of inX() / outX() is defined by the x86 architecture which
-> > > > forbids posting I/O port writes.  In short I think this one is papering
-> > > > over a bug in the outX() implementation.
-> > > Yes, the outX should do a delayed write, however it does not. 
-> > > So our solution is making a read to flush the write.
-> > 
-> > Do you actually need all the inb() you added to get things to work or is
-> 
-> Thanks for your reply.
-> As my test, if there is no the read, there will be many spurious irqs. 
-> > 
-> > diff --git a/arch/mips/kernel/i8259.c b/arch/mips/kernel/i8259.c
-> > index 01c0885..42d75d7 100644
-> > --- a/arch/mips/kernel/i8259.c
-> > +++ b/arch/mips/kernel/i8259.c
-> > @@ -177,10 +177,12 @@ handle_real_irq:
-> >  		outb(cached_slave_mask, PIC_SLAVE_IMR);
-> >  		outb(0x60+(irq&7), PIC_SLAVE_CMD);/* 'Specific EOI' to slave */
-> >  		outb(0x60+PIC_CASCADE_IR, PIC_MASTER_CMD); /* 'Specific EOI' to master-IRQ2 */
-> > +		inb(PIC_MASTER_CMD);
-> >  	} else {
-> >  		inb(PIC_MASTER_IMR);	/* DUMMY - (do we need this?) */
-> >  		outb(cached_master_mask, PIC_MASTER_IMR);
-> >  		outb(0x60+irq, PIC_MASTER_CMD);	/* 'Specific EOI to master */
-> > +		inb(PIC_MASTER_CMD);
-> >  	}
-> >  	smtc_im_ack_irq(irq);
-> >  	spin_unlock_irqrestore(&i8259A_lock, flags);
-> > 
-> > sufficient to solve the problem?
-> I have test this patch just now. It works well on yeeloong. 
-> I have one question what's the difference between the two patch? 
-My original patch only flush imr write. Really only one read is suffient. So no question about it now.
-> > 
-> >   Ralf
-> 
-> 
+
+Hi All,
+
+I have a system lockup problem that I have been looking at on a custom
+Cavium/Octeon 5010 based design. I am running on linux-2.6.29 with
+David Daney's latest round of PCI and ethernet patches (posted here
+on this list).
+
+I have tracked the problem back to local_flush_tlb_kernel_range() in
+arch/mips/mm/tlb-r4k.c. At the top of this function is:
+
+     void local_flush_tlb_kernel_range(unsigned long start, unsigned 
+long end)
+     {
+         unsigned long flags;
+         int size;
+
+         ENTER_CRITICAL(flags);
+         size = (end - start + (PAGE_SIZE - 1)) >> PAGE_SHIFT;
+         size = (size + 1) >> 1;
+         if (size <= current_cpu_data.tlbsize / 2) {
+
+The problem is that typical example values I see passed in for start
+and end are:
+
+     start = c000000000006000
+     end   = ffffffffc01d8000
+
+Now the vmalloc area starts at 0xc000000000000000 and the kernel code
+and data is all at 0xffffffff80000000 and above. I don't know if the
+start and end are reasonable values, but I can see some logic as to
+where they come from. The code path that leads to this is via
+__vunmap() and __purge_vmap_area_lazy(). So it is not too difficult
+to see how we end up with values like this.
+
+But the size calculation above with these types of values will result
+in still a large number. Larger than the 32bit "int" that is "size".
+I see large negative values fall out as size, and so the following
+tlbsize check becomes true, and the code spins inside the loop inside
+that if statement for a _very_ long time trying to flush tlb entries.
+
+This is of course easily fixed, by making that size "unsigned long".
+The patch below trivially does this.
+
+But is this analysis correct?
+
+Regards
+Greg
+
+
+
+
+The address range size calculation inside local_flush_tlb_kernel_range()
+is being truncated by a too small size variable holder on 64bit systems.
+The truncated size can result in an erroneous tlbsize check that means
+we sit spinning inside a loop trying to flush a hige number of TLB
+entries. This is for all intents and purposes a system hang. Fix by
+using an appropriately sized valiable to hold the size.
+
+Signed-off-by: Greg Ungerer <gerg@snapgear.com>
+
+---
+
+--- ORG.linux-2.6.29/arch/mips/mm/tlb-r4k.c.org	2009-05-20 
+15:30:28.000000000 +1000
++++ ORG.linux-2.6.29/arch/mips/mm/tlb-r4k.c	2009-05-20 
+15:30:56.000000000 +1000
+@@ -161,7 +161,7 @@ void local_flush_tlb_range(struct vm_are
+  void local_flush_tlb_kernel_range(unsigned long start, unsigned long end)
+  {
+  	unsigned long flags;
+-	int size;
++	unsigned long size;
+
+  	ENTER_CRITICAL(flags);
+  	size = (end - start + (PAGE_SIZE - 1)) >> PAGE_SHIFT;
+
+
+------------------------------------------------------------------------
+Greg Ungerer  --  Principal Engineer        EMAIL:     gerg@snapgear.com
+SnapGear Group, McAfee                      PHONE:       +61 7 3435 2888
+825 Stanley St,                             FAX:         +61 7 3891 3630
+Woolloongabba, QLD, 4102, Australia         WEB: http://www.SnapGear.com

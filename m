@@ -1,21 +1,36 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 May 2009 23:12:39 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:9788 "EHLO
-	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20025222AbZETWMd (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 20 May 2009 23:12:33 +0100
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B4a147ff80000>; Wed, 20 May 2009 18:11:04 -0400
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 20 May 2009 15:11:08 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 20 May 2009 15:11:08 -0700
-Message-ID: <4A147FFC.5070608@caviumnetworks.com>
-Date:	Wed, 20 May 2009 15:11:08 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
-MIME-Version: 1.0
-To:	wuzhangjin@gmail.com, Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips@linux-mips.org, Yan hua <yanh@lemote.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 May 2009 23:13:11 +0100 (BST)
+Received: from mail-pz0-f202.google.com ([209.85.222.202]:49322 "EHLO
+	mail-pz0-f202.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20025222AbZETWNF (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 20 May 2009 23:13:05 +0100
+Received: by pzk40 with SMTP id 40so632598pzk.22
+        for <multiple recipients>; Wed, 20 May 2009 15:12:58 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer:in-reply-to:references;
+        bh=suolxxIbJGZy8CZ81FRUczttMzg+MsqbjDEdP0joBqc=;
+        b=N2/5FM0j04msqx0zA5tHEJS8hTFKWjkgmgEDbRZkrtA6nUgz3S5eRWst/xkZUq4Gry
+         T5E+OBmzy4LPfcPl/UfmK2juSMHcVR7J5H0lqX5bR7x/aO7wpPCgbvB7Dfv2lX6w1Dpk
+         cE/I0S+Fn5vnRhv0F/75r03iGLADxj1oo8su8=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        b=RRUzPgzCox6uu4qhqAXV/3Jy+AssFvTu6ghLWATPM6iHHRNhZDIAXrUiDx1HG8Wlde
+         XZGL9qL4t9W7zjoZxlUM65Pem7rj4x7kQoIiX6XIKiLo/FFjJ4/G8P4Glb88Wz+E0u++
+         amDIX1okb02r55W5wgyNbzAYWVHn/EpkyFt4Q=
+Received: by 10.142.214.12 with SMTP id m12mr691259wfg.22.1242857578651;
+        Wed, 20 May 2009 15:12:58 -0700 (PDT)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPS id 20sm752253wfi.20.2009.05.20.15.12.52
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 20 May 2009 15:12:57 -0700 (PDT)
+From:	wuzhangjin@gmail.com
+To:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Cc:	IDE/ATA development list <linux-ide@vger.kernel.org>,
+	Linux Kernel <linux-kernel@vger.kernel.org>,
+	linux-scsi <linux-scsi@vger.kernel.org>,
+	Wu Zhangjin <wuzhangjin@gmail.com>, Yan hua <yanh@lemote.com>,
 	Philippe Vachon <philippe@cowpig.ca>,
 	Zhang Le <r0bertz@gentoo.org>,
 	Zhang Fuxin <zhangfx@lemote.com>,
@@ -24,407 +39,77 @@ CC:	linux-mips@linux-mips.org, Yan hua <yanh@lemote.com>,
 	Nicholas Mc Guire <hofrat@hofr.at>,
 	Liu Junliang <liujl@lemote.com>,
 	Erwan Lerale <erwan@thiscow.com>
-Subject: Re: [loongson-PATCH-v1 01/27] fix-warning: incompatible argument
- type of pci_fixup_irqs
-References: <cover.1242855716.git.wuzhangjin@gmail.com> <f3a0b5ce4e2e228576f4481f4dfff8d75d33db7a.1242855716.git.wuzhangjin@gmail.com>
-In-Reply-To: <f3a0b5ce4e2e228576f4481f4dfff8d75d33db7a.1242855716.git.wuzhangjin@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 20 May 2009 22:11:08.0399 (UTC) FILETIME=[E05907F0:01C9D997]
-Return-Path: <David.Daney@caviumnetworks.com>
+Subject: [loongson-PATCH-v1 24/27] fixup for FUJITSU disk
+Date:	Thu, 21 May 2009 06:12:46 +0800
+Message-Id: <a998340033c8f89ec028b354ebe2956239144049.1242855716.git.wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.6.2.1
+In-Reply-To: <cover.1242855716.git.wuzhangjin@gmail.com>
+References: <cover.1242855716.git.wuzhangjin@gmail.com>
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22888
+X-archive-position: 22889
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-wuzhangjin@gmail.com wrote:
-> From: Wu Zhangjin <wuzhangjin@gmail.com>
-> 
-> arch/mips/pci/pci.c:160: warning: passing argument 2 of ‘pci_fixup_irqs’
-> from incompatible pointer type
-> 
-> include/linux/pci.h:
-> 
-> 	void pci_fixup_irqs(u8 (*)(struct pci_dev *, u8 *),
->             int (*)(struct pci_dev *, u8, u8));
-> 
-> arch/mips/pci/pci.c:160:
-> 
-> 	pci_fixup_irqs(pci_common_swizzle, pcibios_map_irq);
-> 
-> arch/mips/include/asm/pci.h:
-> 
-> 	extern int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin);
-> 
-> arch/mips/pci/fixup-malta.c
-> 
-> 	int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> 
-> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-This is the correct fix, however there are now Cavium Octeon PCI drivers 
-on Ralf's queue.
+This is originally from the to-mips branch from
+http://dev.lemote.com/code/linux_loongson
 
-If you rebase against the queue (or even if you don't), you can add:
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ drivers/ide/amd74xx.c |   19 +++++++++++++++++++
+ 1 files changed, 19 insertions(+), 0 deletions(-)
 
-Reviewed-by: David Daney <ddaney@caviumnetworks.com>
-
-> ---
->  arch/mips/include/asm/pci.h    |    2 +-
->  arch/mips/pci/fixup-au1000.c   |    2 +-
->  arch/mips/pci/fixup-capcella.c |    2 +-
->  arch/mips/pci/fixup-cobalt.c   |    2 +-
->  arch/mips/pci/fixup-emma2rh.c  |    2 +-
->  arch/mips/pci/fixup-excite.c   |    2 +-
->  arch/mips/pci/fixup-ip32.c     |    2 +-
->  arch/mips/pci/fixup-lm2e.c     |    2 +-
->  arch/mips/pci/fixup-malta.c    |    2 +-
->  arch/mips/pci/fixup-mpc30x.c   |    2 +-
->  arch/mips/pci/fixup-pmcmsp.c   |    2 +-
->  arch/mips/pci/fixup-pnx8550.c  |    2 +-
->  arch/mips/pci/fixup-rc32434.c  |    2 +-
->  arch/mips/pci/fixup-sni.c      |    2 +-
->  arch/mips/pci/fixup-tb0219.c   |    2 +-
->  arch/mips/pci/fixup-tb0226.c   |    2 +-
->  arch/mips/pci/fixup-tb0287.c   |    2 +-
->  arch/mips/pci/fixup-wrppmc.c   |    2 +-
->  arch/mips/pci/fixup-yosemite.c |    2 +-
->  arch/mips/pci/pci-bcm1480.c    |    2 +-
->  arch/mips/pci/pci-bcm47xx.c    |    2 +-
->  arch/mips/pci/pci-ip27.c       |    2 +-
->  arch/mips/pci/pci-lasat.c      |    2 +-
->  arch/mips/pci/pci-sb1250.c     |    2 +-
->  arch/mips/txx9/generic/pci.c   |    2 +-
->  25 files changed, 25 insertions(+), 25 deletions(-)
-> 
-> diff --git a/arch/mips/include/asm/pci.h b/arch/mips/include/asm/pci.h
-> index 053e463..42b895b 100644
-> --- a/arch/mips/include/asm/pci.h
-> +++ b/arch/mips/include/asm/pci.h
-> @@ -56,7 +56,7 @@ extern void register_pci_controller(struct pci_controller *hose);
->  /*
->   * board supplied pci irq fixup routine
->   */
-> -extern int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin);
-> +extern int pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin);
->  
->  
->  /* Can be used to override the logic in pci_scan_bus for skipping
-> diff --git a/arch/mips/pci/fixup-au1000.c b/arch/mips/pci/fixup-au1000.c
-> index e2ddfc4..15b8ecc 100644
-> --- a/arch/mips/pci/fixup-au1000.c
-> +++ b/arch/mips/pci/fixup-au1000.c
-> @@ -31,7 +31,7 @@
->  
->  extern char irq_tab_alchemy[][5];
->  
-> -int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	return irq_tab_alchemy[slot][pin];
->  }
-> diff --git a/arch/mips/pci/fixup-capcella.c b/arch/mips/pci/fixup-capcella.c
-> index 1416bca..1e53075 100644
-> --- a/arch/mips/pci/fixup-capcella.c
-> +++ b/arch/mips/pci/fixup-capcella.c
-> @@ -38,7 +38,7 @@ static char irq_tab_capcella[][5] __initdata = {
->   [14] = { -1, INTA, INTB, INTC, INTD }
->  };
->  
-> -int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	return irq_tab_capcella[slot][pin];
->  }
-> diff --git a/arch/mips/pci/fixup-cobalt.c b/arch/mips/pci/fixup-cobalt.c
-> index 9553b14..63d1af3 100644
-> --- a/arch/mips/pci/fixup-cobalt.c
-> +++ b/arch/mips/pci/fixup-cobalt.c
-> @@ -175,7 +175,7 @@ static char irq_tab_raq2[] __initdata = {
->    [COBALT_PCICONF_ETH1]    = ETH1_IRQ
->  };
->  
-> -int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	if (cobalt_board_id <= COBALT_BRD_ID_QUBE1)
->  		return irq_tab_qube1[slot];
-> diff --git a/arch/mips/pci/fixup-emma2rh.c b/arch/mips/pci/fixup-emma2rh.c
-> index fba5aad..04c28f3 100644
-> --- a/arch/mips/pci/fixup-emma2rh.c
-> +++ b/arch/mips/pci/fixup-emma2rh.c
-> @@ -88,7 +88,7 @@ static void __devinit emma2rh_pci_host_fixup(struct pci_dev *dev)
->  DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_NEC, PCI_DEVICE_ID_NEC_EMMA2RH,
->  			 emma2rh_pci_host_fixup);
->  
-> -int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	return irq_map[slot][pin];
->  }
-> diff --git a/arch/mips/pci/fixup-excite.c b/arch/mips/pci/fixup-excite.c
-> index cd64d9f..1da696d 100644
-> --- a/arch/mips/pci/fixup-excite.c
-> +++ b/arch/mips/pci/fixup-excite.c
-> @@ -21,7 +21,7 @@
->  #include <linux/pci.h>
->  #include <excite.h>
->  
-> -int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	if (pin == 0)
->  		return -1;
-> diff --git a/arch/mips/pci/fixup-ip32.c b/arch/mips/pci/fixup-ip32.c
-> index 190fffd..3e66b0a 100644
-> --- a/arch/mips/pci/fixup-ip32.c
-> +++ b/arch/mips/pci/fixup-ip32.c
-> @@ -39,7 +39,7 @@ static char irq_tab_mace[][5] __initdata = {
->   * irqs.  I suppose a device without a pin A will thank us for doing it
->   * right if there exists such a broken piece of crap.
->   */
-> -int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	return irq_tab_mace[slot][pin];
->  }
-> diff --git a/arch/mips/pci/fixup-lm2e.c b/arch/mips/pci/fixup-lm2e.c
-> index e18ae4f..08de000 100644
-> --- a/arch/mips/pci/fixup-lm2e.c
-> +++ b/arch/mips/pci/fixup-lm2e.c
-> @@ -36,7 +36,7 @@
->  /* South bridge slot number is set by the pci probe process */
->  static u8 sb_slot = 5;
->  
-> -int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	int irq = 0;
->  
-> diff --git a/arch/mips/pci/fixup-malta.c b/arch/mips/pci/fixup-malta.c
-> index 0f48498..bf2c41d 100644
-> --- a/arch/mips/pci/fixup-malta.c
-> +++ b/arch/mips/pci/fixup-malta.c
-> @@ -36,7 +36,7 @@ static char irq_tab[][5] __initdata = {
->  	{0,	PCID,	PCIA,	PCIB,	PCIC }	/* 21: PCI Slot 4 */
->  };
->  
-> -int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	int virq;
->  	virq = irq_tab[slot][pin];
-> diff --git a/arch/mips/pci/fixup-mpc30x.c b/arch/mips/pci/fixup-mpc30x.c
-> index 5911596..3c9ae41 100644
-> --- a/arch/mips/pci/fixup-mpc30x.c
-> +++ b/arch/mips/pci/fixup-mpc30x.c
-> @@ -34,7 +34,7 @@ static const int irq_tab_mpc30x[] __initdata = {
->   [29] = MQ200_IRQ,
->  };
->  
-> -int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	if (slot == 30)
->  		return internal_func_irqs[PCI_FUNC(dev->devfn)];
-> diff --git a/arch/mips/pci/fixup-pmcmsp.c b/arch/mips/pci/fixup-pmcmsp.c
-> index 65735b1..0026121 100644
-> --- a/arch/mips/pci/fixup-pmcmsp.c
-> +++ b/arch/mips/pci/fixup-pmcmsp.c
-> @@ -202,7 +202,7 @@ int pcibios_plat_dev_init(struct pci_dev *dev)
->   *  RETURNS:     IRQ number
->   *
->   ****************************************************************************/
-> -int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  #if !defined(CONFIG_PMC_MSP7120_GW) && !defined(CONFIG_PMC_MSP7120_EVAL)
->  	printk(KERN_WARNING "PCI: unknown board, no PCI IRQs assigned.\n");
-> diff --git a/arch/mips/pci/fixup-pnx8550.c b/arch/mips/pci/fixup-pnx8550.c
-> index 96857ac..50546da 100644
-> --- a/arch/mips/pci/fixup-pnx8550.c
-> +++ b/arch/mips/pci/fixup-pnx8550.c
-> @@ -45,7 +45,7 @@ void __init pcibios_fixup(void)
->  	/* nothing to do here */
->  }
->  
-> -int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	return pnx8550_irq_tab[slot][pin];
->  }
-> diff --git a/arch/mips/pci/fixup-rc32434.c b/arch/mips/pci/fixup-rc32434.c
-> index 3d86823..68f8537 100644
-> --- a/arch/mips/pci/fixup-rc32434.c
-> +++ b/arch/mips/pci/fixup-rc32434.c
-> @@ -37,7 +37,7 @@ static int __devinitdata irq_map[2][12] = {
->  	{0, 0, 1, 3, 0, 2, 1, 3, 0, 2, 1, 3}
->  };
->  
-> -int __devinit pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __devinit pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	int irq = 0;
->  
-> diff --git a/arch/mips/pci/fixup-sni.c b/arch/mips/pci/fixup-sni.c
-> index 5c8a79b..4ce73be 100644
-> --- a/arch/mips/pci/fixup-sni.c
-> +++ b/arch/mips/pci/fixup-sni.c
-> @@ -130,7 +130,7 @@ static inline int is_rm300_revd(void)
->  	return (csmsr & 0xa0) == 0x20;
->  }
->  
-> -int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	switch (sni_brd_type) {
->  	case SNI_BRD_PCI_TOWER_CPLUS:
-> diff --git a/arch/mips/pci/fixup-tb0219.c b/arch/mips/pci/fixup-tb0219.c
-> index ed87733..0f8d31b 100644
-> --- a/arch/mips/pci/fixup-tb0219.c
-> +++ b/arch/mips/pci/fixup-tb0219.c
-> @@ -23,7 +23,7 @@
->  
->  #include <asm/vr41xx/tb0219.h>
->  
-> -int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	int irq = -1;
->  
-> diff --git a/arch/mips/pci/fixup-tb0226.c b/arch/mips/pci/fixup-tb0226.c
-> index e3eedf4..c9e7cb4 100644
-> --- a/arch/mips/pci/fixup-tb0226.c
-> +++ b/arch/mips/pci/fixup-tb0226.c
-> @@ -23,7 +23,7 @@
->  #include <asm/vr41xx/giu.h>
->  #include <asm/vr41xx/tb0226.h>
->  
-> -int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	int irq = -1;
->  
-> diff --git a/arch/mips/pci/fixup-tb0287.c b/arch/mips/pci/fixup-tb0287.c
-> index 267ab3d..fbe6bcb 100644
-> --- a/arch/mips/pci/fixup-tb0287.c
-> +++ b/arch/mips/pci/fixup-tb0287.c
-> @@ -22,7 +22,7 @@
->  
->  #include <asm/vr41xx/tb0287.h>
->  
-> -int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	unsigned char bus;
->  	int irq = -1;
-> diff --git a/arch/mips/pci/fixup-wrppmc.c b/arch/mips/pci/fixup-wrppmc.c
-> index 3d27754..3357c13 100644
-> --- a/arch/mips/pci/fixup-wrppmc.c
-> +++ b/arch/mips/pci/fixup-wrppmc.c
-> @@ -25,7 +25,7 @@ static char pci_irq_tab[PCI_SLOT_MAXNR][5] __initdata = {
->  	[6] = {0, WRPPMC_PCI_INTA_IRQ, 0, 0, 0},
->  };
->  
-> -int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	return pci_irq_tab[slot][pin];
->  }
-> diff --git a/arch/mips/pci/fixup-yosemite.c b/arch/mips/pci/fixup-yosemite.c
-> index fdafb13..81d77a5 100644
-> --- a/arch/mips/pci/fixup-yosemite.c
-> +++ b/arch/mips/pci/fixup-yosemite.c
-> @@ -26,7 +26,7 @@
->  #include <linux/init.h>
->  #include <linux/pci.h>
->  
-> -int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	if (pin == 0)
->  		return -1;
-> diff --git a/arch/mips/pci/pci-bcm1480.c b/arch/mips/pci/pci-bcm1480.c
-> index a9060c7..41e691a 100644
-> --- a/arch/mips/pci/pci-bcm1480.c
-> +++ b/arch/mips/pci/pci-bcm1480.c
-> @@ -74,7 +74,7 @@ static inline void WRITECFG32(u32 addr, u32 data)
->  	*(u32 *)(cfg_space + (addr & ~3)) = data;
->  }
->  
-> -int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	if (pin == 0)
->  		return -1;
-> diff --git a/arch/mips/pci/pci-bcm47xx.c b/arch/mips/pci/pci-bcm47xx.c
-> index bea9b6c..1f3721d 100644
-> --- a/arch/mips/pci/pci-bcm47xx.c
-> +++ b/arch/mips/pci/pci-bcm47xx.c
-> @@ -26,7 +26,7 @@
->  #include <linux/pci.h>
->  #include <linux/ssb/ssb.h>
->  
-> -int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	return 0;
->  }
-> diff --git a/arch/mips/pci/pci-ip27.c b/arch/mips/pci/pci-ip27.c
-> index dda6f20..a2a5b5d 100644
-> --- a/arch/mips/pci/pci-ip27.c
-> +++ b/arch/mips/pci/pci-ip27.c
-> @@ -141,7 +141,7 @@ int __cpuinit bridge_probe(nasid_t nasid, int widget_id, int masterwid)
->   * A given PCI device, in general, should be able to intr any of the cpus
->   * on any one of the hubs connected to its xbow.
->   */
-> -int __devinit pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __devinit pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	return 0;
->  }
-> diff --git a/arch/mips/pci/pci-lasat.c b/arch/mips/pci/pci-lasat.c
-> index a98e543..149d503 100644
-> --- a/arch/mips/pci/pci-lasat.c
-> +++ b/arch/mips/pci/pci-lasat.c
-> @@ -61,7 +61,7 @@ arch_initcall(lasat_pci_setup);
->  #define LASAT_IRQ_PCIC   (LASAT_IRQ_BASE + 7)
->  #define LASAT_IRQ_PCID   (LASAT_IRQ_BASE + 8)
->  
-> -int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	switch (slot) {
->  	case 1:
-> diff --git a/arch/mips/pci/pci-sb1250.c b/arch/mips/pci/pci-sb1250.c
-> index bf63959..bd26d4a 100644
-> --- a/arch/mips/pci/pci-sb1250.c
-> +++ b/arch/mips/pci/pci-sb1250.c
-> @@ -84,7 +84,7 @@ static inline void WRITECFG32(u32 addr, u32 data)
->  	*(u32 *) (cfg_space + (addr & ~3)) = data;
->  }
->  
-> -int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	return dev->irq;
->  }
-> diff --git a/arch/mips/txx9/generic/pci.c b/arch/mips/txx9/generic/pci.c
-> index 7b637a7..27104f7 100644
-> --- a/arch/mips/txx9/generic/pci.c
-> +++ b/arch/mips/txx9/generic/pci.c
-> @@ -382,7 +382,7 @@ int pcibios_plat_dev_init(struct pci_dev *dev)
->  	return 0;
->  }
->  
-> -int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-> +int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
->  {
->  	return txx9_board_vec->pci_map_irq(dev, slot, pin);
->  }
+diff --git a/drivers/ide/amd74xx.c b/drivers/ide/amd74xx.c
+index 77267c8..8f488b8 100644
+--- a/drivers/ide/amd74xx.c
++++ b/drivers/ide/amd74xx.c
+@@ -23,6 +23,11 @@
+ 
+ #define DRV_NAME "amd74xx"
+ 
++static const char *am74xx_quirk_drives[] = {
++	"FUJITSU MHZ2160BH G2",
++	NULL
++};
++
+ enum {
+ 	AMD_IDE_CONFIG		= 0x41,
+ 	AMD_CABLE_DETECT	= 0x42,
+@@ -112,6 +117,19 @@ static void amd_set_pio_mode(ide_drive_t *drive, const u8 pio)
+ 	amd_set_drive(drive, XFER_PIO_0 + pio);
+ }
+ 
++static void amd_quirkproc(ide_drive_t *drive)
++{
++	const char **list, *m = (char *)&drive->id[ATA_ID_PROD];
++
++	for (list = am74xx_quirk_drives; *list != NULL; list++)
++			if (strstr(m, *list) != NULL) {
++				drive->quirk_list = 2;
++				return;
++			}
++
++	drive->quirk_list = 0;
++}
++
+ static void amd7409_cable_detect(struct pci_dev *dev)
+ {
+ 	/* no host side cable detection */
+@@ -194,6 +212,7 @@ static void __devinit init_hwif_amd74xx(ide_hwif_t *hwif)
+ static const struct ide_port_ops amd_port_ops = {
+ 	.set_pio_mode		= amd_set_pio_mode,
+ 	.set_dma_mode		= amd_set_drive,
++	.quirkproc		= amd_quirkproc,
+ 	.cable_detect		= amd_cable_detect,
+ };
+ 
+-- 
+1.6.2.1

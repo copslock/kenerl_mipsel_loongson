@@ -1,34 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 May 2009 23:14:50 +0100 (BST)
-Received: from mail-pz0-f202.google.com ([209.85.222.202]:35807 "EHLO
-	mail-pz0-f202.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20025229AbZETWOo (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 20 May 2009 23:14:44 +0100
-Received: by pzk40 with SMTP id 40so633256pzk.22
-        for <multiple recipients>; Wed, 20 May 2009 15:14:36 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer:in-reply-to:references;
-        bh=4Wgjj9SCKeWdpdGXSG0UF4hsogRWDTql2Qzvwn6ZImU=;
-        b=tpAImVEQ8+l8mM3K0jf+p/qm2t8SGKx44r5sNUVvLQiSqU/K/eduMz4OQkZkMUlOH9
-         Bm9hXaWHQPQHc/mCi6OTmM/XQDhGYDfhG3kgKUXGjhKl7xWc5z3CCRJ59v+ANcCDgUxv
-         wr3DGbQouIYfYsU5q7J8s9jiu1cibom/+3eRc=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=hLNBhqbWZLp1dFjp4EctPDr4eSruQnDgLOyGlm5Z6PDzr5GDPtpFlHm06vJGB7amef
-         r0e6L85Ttp2fBhE24sKwJrKjNs3DRP/MWqQcQTOQnZrzxqexsTWgsog47nkJs7XkX2zm
-         ykwIyGpAqwm2GgHxn0yxyo4yUm7PThZmlCJoE=
-Received: by 10.142.103.11 with SMTP id a11mr708642wfc.303.1242857675933;
-        Wed, 20 May 2009 15:14:35 -0700 (PDT)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id 31sm2430633wff.24.2009.05.20.15.14.30
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 20 May 2009 15:14:35 -0700 (PDT)
-From:	wuzhangjin@gmail.com
-To:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Cc:	Linux Kernel <linux-kernel@vger.kernel.org>,
-	Wu Zhangjin <wuzhangjin@gmail.com>, Yan hua <yanh@lemote.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 May 2009 23:18:34 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:11674 "EHLO
+	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20025229AbZETWS2 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 20 May 2009 23:18:28 +0100
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B4a1481a10000>; Wed, 20 May 2009 18:18:09 -0400
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 20 May 2009 15:18:13 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 20 May 2009 15:18:13 -0700
+Message-ID: <4A1481A4.9060708@caviumnetworks.com>
+Date:	Wed, 20 May 2009 15:18:12 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+MIME-Version: 1.0
+To:	wuzhangjin@gmail.com, Ralf Baechle <ralf@linux-mips.org>
+CC:	linux-mips@linux-mips.org, Yan hua <yanh@lemote.com>,
 	Philippe Vachon <philippe@cowpig.ca>,
 	Zhang Le <r0bertz@gentoo.org>,
 	Zhang Fuxin <zhangfx@lemote.com>,
@@ -37,231 +24,99 @@ Cc:	Linux Kernel <linux-kernel@vger.kernel.org>,
 	Nicholas Mc Guire <hofrat@hofr.at>,
 	Liu Junliang <liujl@lemote.com>,
 	Erwan Lerale <erwan@thiscow.com>
-Subject: [loongson-PATCH-v1 27/27] add gcc 4.4 support for MIPS and loongson
-Date:	Thu, 21 May 2009 06:14:24 +0800
-Message-Id: <1f9acd8e0b22859752d73ceb9a283d090b04db9c.1242855716.git.wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.6.2.1
-In-Reply-To: <cover.1242855716.git.wuzhangjin@gmail.com>
-References: <cover.1242855716.git.wuzhangjin@gmail.com>
-Return-Path: <wuzhangjin@gmail.com>
+Subject: Re: [loongson-PATCH-v1 23/27] Alsa memory maps fixup on mips systems
+References: <cover.1242855716.git.wuzhangjin@gmail.com> <323881882e108383c0360bd6a1138801d9d47679.1242855716.git.wuzhangjin@gmail.com>
+In-Reply-To: <323881882e108383c0360bd6a1138801d9d47679.1242855716.git.wuzhangjin@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 20 May 2009 22:18:13.0285 (UTC) FILETIME=[DD997D50:01C9D998]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22892
+X-archive-position: 22893
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Wu Zhangjin <wuzhangjin@gmail.com>
+wuzhangjin@gmail.com wrote:
+[...]
+> @@ -3099,7 +3099,11 @@ static int snd_pcm_mmap_data_fault(struct vm_area_struct *area,
+>  			return VM_FAULT_SIGBUS;
+>  	} else {
+>  		vaddr = runtime->dma_area + offset;
+> +#if defined(__mips__) && defined(CONFIG_DMA_NONCOHERENT)
+> +		page = virt_to_page(CAC_ADDR(vaddr));
+> +#else
+>  		page = virt_to_page(vaddr);
+> +#endif
 
-the gcc 4.4 support for MIPS mostly refer to this PATCH:
-http://www.nabble.com/-PATCH--MIPS:-Handle-removal-of-%27h%27-constraint-in-GCC-4.4-td22192768.html
-but have been tuned a little.
+That is a bit ugly.  It would be better to either  wrap the fix up in 
+mips specific code so there don't have to be #ifdef __mips__ through out 
+the generic driver code, or fix the driver in some other way if it is 
+making x86 specific assumptions that don't hold in the general case.
 
-because only gcc 4.4 have loongson-specific support, so, we need to
-choose the suitable -march argument for gcc <= 4.3 and gcc >= 4.4, and
-we also need to consider use -march=loongson2e and -march=loongson2f for
-loongson2e and loongson2f respectively. this is handled by adding two
-new kernel options: CPU_LOONGSON2E and CPU_LOONGSON2F(thanks for the
-solutin provided by ZhangLe).
+The same applies for the remaining #ifdef __mips__ in the patch.
 
-I have tested it on FuLoong(2f) in 32bit and 64bit with gcc-4.4 and
-gcc-4.3. so, basically, it works.
 
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- arch/mips/Makefile               |    9 +++++-
- arch/mips/include/asm/compiler.h |   10 ++++++
- arch/mips/include/asm/delay.h    |   58 +++++++++++++++++++++++++------------
- arch/mips/include/asm/div64.h    |   24 +++++++++++++--
- 4 files changed, 77 insertions(+), 24 deletions(-)
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 8bde363..f679731 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -119,7 +119,14 @@ cflags-$(CONFIG_CPU_R4300)	+= -march=r4300 -Wa,--trap
- cflags-$(CONFIG_CPU_VR41XX)	+= -march=r4100 -Wa,--trap
- cflags-$(CONFIG_CPU_R4X00)	+= -march=r4600 -Wa,--trap
- cflags-$(CONFIG_CPU_TX49XX)	+= -march=r4600 -Wa,--trap
--cflags-$(CONFIG_CPU_LOONGSON2)	+= -march=r4600 -Wa,--trap
-+
-+# only gcc >= 4.4 have the loongson-specific support
-+cflags-$(CONFIG_CPU_LOONGSON2)	+= -Wa,--trap
-+cflags-$(CONFIG_CPU_LOONGSON2E)	+= $(shell if [ $(call cc-version) -lt 0440 ] ; then \
-+	echo $(call cc-option,-march=r4600); else echo $(call cc-option,-march=loongson2e); fi ;)
-+cflags-$(CONFIG_CPU_LOONGSON2F)	+= $(shell if [ $(call cc-version) -lt 0440 ] ; then \
-+	echo $(call cc-option,-march=r4600); else echo $(call cc-option,-march=loongson2f); fi ;)
-+
- cflags-$(CONFIG_CPU_MIPS32_R1)	+= $(call cc-option,-march=mips32,-mips32 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) \
- 			-Wa,-mips32 -Wa,--trap
- cflags-$(CONFIG_CPU_MIPS32_R2)	+= $(call cc-option,-march=mips32r2,-mips32r2 -U_MIPS_ISA -D_MIPS_ISA=_MIPS_ISA_MIPS32) \
-diff --git a/arch/mips/include/asm/compiler.h b/arch/mips/include/asm/compiler.h
-index 71f5c5c..95256a8 100644
---- a/arch/mips/include/asm/compiler.h
-+++ b/arch/mips/include/asm/compiler.h
-@@ -1,5 +1,6 @@
- /*
-  * Copyright (C) 2004, 2007  Maciej W. Rozycki
-+ * Copyright (C) 2009  Wu Zhangjin, wuzj@lemote.com
-  *
-  * This file is subject to the terms and conditions of the GNU General Public
-  * License.  See the file "COPYING" in the main directory of this archive
-@@ -16,4 +17,13 @@
- #define GCC_REG_ACCUM "accum"
- #endif
- 
-+#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4)
-+#define GCC_NO_H_CONSTRAINT
-+#ifdef CONFIG_64BIT
-+typedef unsigned int uintx_t __attribute__((mode(TI)));
-+#else
-+typedef u64 uintx_t;
-+#endif
-+#endif
-+
- #endif /* _ASM_COMPILER_H */
-diff --git a/arch/mips/include/asm/delay.h b/arch/mips/include/asm/delay.h
-index b0bccd2..00d7969 100644
---- a/arch/mips/include/asm/delay.h
-+++ b/arch/mips/include/asm/delay.h
-@@ -7,6 +7,7 @@
-  * Copyright (C) 1995 - 2000, 01, 03 by Ralf Baechle
-  * Copyright (C) 1999, 2000 Silicon Graphics, Inc.
-  * Copyright (C) 2007  Maciej W. Rozycki
-+ * Copyright (C) 2009  Wu Zhangjin, wuzj@lemote.com
-  */
- #ifndef _ASM_DELAY_H
- #define _ASM_DELAY_H
-@@ -48,6 +49,43 @@ static inline void __delay(unsigned long loops)
- 		: "0" (loops), "r" (1));
- }
- 
-+/*
-+ * convert usecs to loops
-+ *
-+ * handle removal of 'h' constraint in GCC 4.4
-+ */
-+
-+#ifndef GCC_NO_H_CONSTRAINT	/* gcc <= 4.3 */
-+static inline unsigned long __usecs_to_loops(unsigned long usecs,
-+		unsigned long lpj)
-+{
-+	unsigned long hi, lo;
-+
-+	if (sizeof(long) == 4)
-+		__asm__("multu\t%2, %3"
-+		: "=h" (usecs), "=l" (lo)
-+		: "r" (usecs), "r" (lpj)
-+		: GCC_REG_ACCUM);
-+	else if (sizeof(long) == 8 && !R4000_WAR)
-+		__asm__("dmultu\t%2, %3"
-+		: "=h" (usecs), "=l" (lo)
-+		: "r" (usecs), "r" (lpj)
-+		: GCC_REG_ACCUM);
-+	else if (sizeof(long) == 8 && R4000_WAR)
-+		__asm__("dmultu\t%3, %4\n\tmfhi\t%0"
-+		: "=r" (usecs), "=h" (hi), "=l" (lo)
-+		: "r" (usecs), "r" (lpj)
-+		: GCC_REG_ACCUM);
-+
-+	return usecs;
-+}
-+#else	/* GCC_NO_H_CONSTRAINT, gcc >= 4.4 */
-+static inline unsigned long __usecs_to_loops(unsigned long usecs,
-+		unsigned long lpj)
-+{
-+	return ((uintx_t)usecs * lpj) >> BITS_PER_LONG;
-+}
-+#endif
- 
- /*
-  * Division by multiplication: you don't have to worry about
-@@ -62,8 +100,6 @@ static inline void __delay(unsigned long loops)
- 
- static inline void __udelay(unsigned long usecs, unsigned long lpj)
- {
--	unsigned long hi, lo;
--
- 	/*
- 	 * The rates of 128 is rounded wrongly by the catchall case
- 	 * for 64-bit.  Excessive precission?  Probably ...
-@@ -77,23 +113,7 @@ static inline void __udelay(unsigned long usecs, unsigned long lpj)
- 	                           0x80000000ULL) >> 32);
- #endif
- 
--	if (sizeof(long) == 4)
--		__asm__("multu\t%2, %3"
--		: "=h" (usecs), "=l" (lo)
--		: "r" (usecs), "r" (lpj)
--		: GCC_REG_ACCUM);
--	else if (sizeof(long) == 8 && !R4000_WAR)
--		__asm__("dmultu\t%2, %3"
--		: "=h" (usecs), "=l" (lo)
--		: "r" (usecs), "r" (lpj)
--		: GCC_REG_ACCUM);
--	else if (sizeof(long) == 8 && R4000_WAR)
--		__asm__("dmultu\t%3, %4\n\tmfhi\t%0"
--		: "=r" (usecs), "=h" (hi), "=l" (lo)
--		: "r" (usecs), "r" (lpj)
--		: GCC_REG_ACCUM);
--
--	__delay(usecs);
-+	__delay(__usecs_to_loops(usecs, lpj));
- }
- 
- #define __udelay_val cpu_data[raw_smp_processor_id()].udelay_val
-diff --git a/arch/mips/include/asm/div64.h b/arch/mips/include/asm/div64.h
-index d1d6991..6efc268 100644
---- a/arch/mips/include/asm/div64.h
-+++ b/arch/mips/include/asm/div64.h
-@@ -1,6 +1,7 @@
- /*
-  * Copyright (C) 2000, 2004  Maciej W. Rozycki
-  * Copyright (C) 2003, 07 Ralf Baechle (ralf@linux-mips.org)
-+ * Copyright (C) 2009 Wu Zhangjin (wuzj@lemote.com)
-  *
-  * This file is subject to the terms and conditions of the GNU General Public
-  * License.  See the file "COPYING" in the main directory of this archive
-@@ -56,6 +57,24 @@
- 	(res) = __quot32; \
- 	__mod32; })
- 
-+/*
-+ * __do_divu -- unsigned interger dividing
-+ *
-+ * handle removal of 'h' constraint in GCC 4.4
-+ */
-+#ifndef GCC_NO_H_CONSTRAINT	/* gcc <= 4.3*/
-+#define __do_divu() ({ \
-+	__asm__("divu	$0, %z2, %z3" \
-+		: "=h" (__upper), "=l" (__high) \
-+		: "Jr" (__high), "Jr" (__base) \
-+		: GCC_REG_ACCUM); })
-+
-+#else		/* gcc >= 4.4 */
-+#define __do_divu() ({ \
-+	__upper = (uintx_t)__high % __base; \
-+	__high = (uintx_t)__high / __base; })
-+#endif
-+
- #define do_div(n, base) ({ \
- 	unsigned long long __quot; \
- 	unsigned long __mod; \
-@@ -70,10 +89,7 @@
- 	__upper = __high; \
- 	\
- 	if (__high) \
--		__asm__("divu	$0, %z2, %z3" \
--			: "=h" (__upper), "=l" (__high) \
--			: "Jr" (__high), "Jr" (__base) \
--			: GCC_REG_ACCUM); \
-+		__do_divu();\
- 	\
- 	__mod = do_div64_32(__low, __upper, __low, __base); \
- 	\
--- 
-1.6.2.1
+
+>  	}
+>  	get_page(page);
+>  	vmf->page = page;
+> @@ -3214,6 +3218,11 @@ static int snd_pcm_mmap(struct file *file, struct vm_area_struct *area)
+>  	if (PCM_RUNTIME_CHECK(substream))
+>  		return -ENXIO;
+>  
+> +#if defined(__mips__) && defined(CONFIG_DMA_NONCOHERENT)
+> +	/* all mmap using uncached mode */
+> +	area->vm_page_prot = pgprot_noncached(area->vm_page_prot);
+> +	area->vm_flags |= (VM_RESERVED | VM_IO);
+> +#endif
+>  	offset = area->vm_pgoff << PAGE_SHIFT;
+>  	switch (offset) {
+>  	case SNDRV_PCM_MMAP_OFFSET_STATUS:
+> diff --git a/sound/core/sgbuf.c b/sound/core/sgbuf.c
+> index 4e7ec2b..c0fcf0d 100644
+> --- a/sound/core/sgbuf.c
+> +++ b/sound/core/sgbuf.c
+> @@ -114,7 +114,11 @@ void *snd_malloc_sgbuf_pages(struct device *device,
+>  			if (!i)
+>  				table->addr |= chunk; /* mark head */
+>  			table++;
+> +#if defined(__mips__) && defined(CONFIG_DMA_NONCOHERENT)
+> +			*pgtable++ = virt_to_page(CAC_ADDR(tmpb.area));
+> +#else
+>  			*pgtable++ = virt_to_page(tmpb.area);
+> +#endif
+>  			tmpb.area += PAGE_SIZE;
+>  			tmpb.addr += PAGE_SIZE;
+>  		}
+> @@ -125,7 +129,12 @@ void *snd_malloc_sgbuf_pages(struct device *device,
+>  	}
+>  
+>  	sgbuf->size = size;
+> +#if defined(__mips__) && defined(CONFIG_DMA_NONCOHERENT)
+> +	dmab->area = vmap(sgbuf->page_table, sgbuf->pages, \
+> +			VM_MAP | VM_IO, pgprot_noncached(PAGE_KERNEL));
+> +#else
+>  	dmab->area = vmap(sgbuf->page_table, sgbuf->pages, VM_MAP, PAGE_KERNEL);
+> +#endif
+>  	if (! dmab->area)
+>  		goto _failed;
+>  	if (res_size)
+> diff --git a/sound/pci/Kconfig b/sound/pci/Kconfig
+> index 82b9bdd..4ccfae0 100644
+> --- a/sound/pci/Kconfig
+> +++ b/sound/pci/Kconfig
+> @@ -259,7 +259,6 @@ config SND_CS5530
+>  
+>  config SND_CS5535AUDIO
+>  	tristate "CS5535/CS5536 Audio"
+> -	depends on X86 && !X86_64
+>  	select SND_PCM
+>  	select SND_AC97_CODEC
+>  	help

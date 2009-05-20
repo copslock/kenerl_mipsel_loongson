@@ -1,87 +1,162 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 May 2009 14:50:03 +0100 (BST)
-Received: from bu3sch.de ([62.75.166.246]:57774 "EHLO vs166246.vserver.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 May 2009 15:26:38 +0100 (BST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:44405 "EHLO h5.dl5rb.org.uk"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20022522AbZETNt5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 20 May 2009 14:49:57 +0100
-Received: by vs166246.vserver.de with esmtpa (Exim 4.69)
-	id 1M6mB8-0008G4-Q7; Wed, 20 May 2009 13:49:54 +0000
-From:	Michael Buesch <mb@bu3sch.de>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] bc47xx : export ssb_watchdog_timer_set
-Date:	Wed, 20 May 2009 15:49:15 +0200
-User-Agent: KMail/1.9.9
-Cc:	"John W. Linville" <linville@tuxdriver.com>,
-	matthieu castet <castet.matthieu@free.fr>,
-	linux-mips@linux-mips.org, netdev@vger.kernel.org
-References: <4A11DCBF.9000700@free.fr> <20090519173503.GD2691@tuxdriver.com> <20090520071513.GB24231@linux-mips.org>
-In-Reply-To: <20090520071513.GB24231@linux-mips.org>
-X-Move-Along: Nothing to see here. No, really... Nothing.
+	id S20022587AbZETO0T (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 20 May 2009 15:26:19 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n4KEQ5UV022211;
+	Wed, 20 May 2009 15:26:06 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n4KEQ5Ce022210;
+	Wed, 20 May 2009 15:26:05 +0100
+Date:	Wed, 20 May 2009 15:26:04 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Greg Ungerer <gerg@snapgear.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: system lockup with 2.6.29 on Cavium/Octeon
+Message-ID: <20090520142604.GA29677@linux-mips.org>
+References: <4A139F50.7050409@snapgear.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200905201549.16154.mb@bu3sch.de>
-Return-Path: <mb@bu3sch.de>
+In-Reply-To: <4A139F50.7050409@snapgear.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22840
+X-archive-position: 22841
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mb@bu3sch.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wednesday 20 May 2009 09:15:13 Ralf Baechle wrote:
-> On Tue, May 19, 2009 at 01:35:03PM -0400, John W. Linville wrote:
-> > From: "John W. Linville" <linville@tuxdriver.com>
-> > Date: Tue, 19 May 2009 13:35:03 -0400
-> > To: Michael Buesch <mb@bu3sch.de>
-> > Cc: Ralf Baechle <ralf@linux-mips.org>,
-> > 	matthieu castet <castet.matthieu@free.fr>,
-> > 	linux-mips@linux-mips.org, netdev@vger.kernel.org
-> > Subject: Re: [PATCH] bc47xx : export ssb_watchdog_timer_set
-> > Content-Type: text/plain; charset=us-ascii
-> > 
-> > On Tue, May 19, 2009 at 07:29:20PM +0200, Michael Buesch wrote:
-> > > On Tuesday 19 May 2009 19:09:57 Ralf Baechle wrote:
-> > > > Maybe because I felt drivers/ssb/ was outside my jurisdiction - and unlike
-> > > > what alot of people may seem to think I'm not a full time MIPS kernel
-> > > > hacker.
-> > > 
-> > > Ok nice.
-> > > 
-> > > > I can deal with SSB patch if you so desire - but I have no experience with
-> > > > SSB, so I'd have somebody to rubberstamp non-trivial SSB patches before I
-> > > > queue them up.
-> > > 
-> > >  **Fwoo..
-> > > [stamp here]
-> > >       ..mppp**
-> > > 
-> > > 
-> > > Done. :)
-> > > 
-> > > > I can keep them either in the usual MIPS trees on 
-> > > > linux-mips.org or I could create a separate linux-ssb tree, depending on
-> > > > what seems to be sensible.  Also, reading the entry in the maintainers
-> > > > file I wonder if netdev is really the list of a choice?
-> > > 
-> > > Yes it is, because the bus is only used on networking devices.
-> > > (Ethernet cards, wireless cards, and network routers)
-> > > I don't think you need to create a separate tree. ssb is pretty mature. There
-> > > won't be that many patches.
-> > 
-> > OK, now I'm confused again -- should I take SSB patches, or is Ralf
-> > going to do it? :-)
-> 
-> My decoder ring says, I'll do it from now on :)
+On Wed, May 20, 2009 at 04:12:32PM +1000, Greg Ungerer wrote:
+
+> I have a system lockup problem that I have been looking at on a custom
+> Cavium/Octeon 5010 based design. I am running on linux-2.6.29 with
+> David Daney's latest round of PCI and ethernet patches (posted here
+> on this list).
+>
+> I have tracked the problem back to local_flush_tlb_kernel_range() in
+> arch/mips/mm/tlb-r4k.c. At the top of this function is:
+>
+>     void local_flush_tlb_kernel_range(unsigned long start, unsigned long 
+> end)
+>     {
+>         unsigned long flags;
+>         int size;
+>
+>         ENTER_CRITICAL(flags);
+>         size = (end - start + (PAGE_SIZE - 1)) >> PAGE_SHIFT;
+>         size = (size + 1) >> 1;
+>         if (size <= current_cpu_data.tlbsize / 2) {
+>
+> The problem is that typical example values I see passed in for start
+> and end are:
+>
+>     start = c000000000006000
+>     end   = ffffffffc01d8000
+>
+> Now the vmalloc area starts at 0xc000000000000000 and the kernel code
+> and data is all at 0xffffffff80000000 and above. I don't know if the
+> start and end are reasonable values, but I can see some logic as to
+> where they come from. The code path that leads to this is via
+> __vunmap() and __purge_vmap_area_lazy(). So it is not too difficult
+> to see how we end up with values like this.
+
+Either start or end address is sensible but not the combination - both
+addresses should be in the same segment.  Start is in XKSEG, end in CKSEG2
+and in between there are vast wastelands of unused address space exabytes
+in size.
+
+> But the size calculation above with these types of values will result
+> in still a large number. Larger than the 32bit "int" that is "size".
+> I see large negative values fall out as size, and so the following
+> tlbsize check becomes true, and the code spins inside the loop inside
+> that if statement for a _very_ long time trying to flush tlb entries.
+>
+> This is of course easily fixed, by making that size "unsigned long".
+> The patch below trivially does this.
+>
+> But is this analysis correct?
+
+Yes - but I think we have two issues here.  The one is the calculation
+overflowing int for the arguments you're seeing.  The other being that
+the arguments simply are looking wrong.
+
+There are a few more instances of the same overflow issue which the patch
+below is fixing.
+
+  Ralf
 
 
-Ok, nice. :)
-Matthieu, can you resend them to Ralf? He doesn't have them, yet.
+ arch/mips/mm/tlb-r3k.c |    6 ++----
+ arch/mips/mm/tlb-r4k.c |    6 ++----
+ arch/mips/mm/tlb-r8k.c |    3 +--
+ 3 files changed, 5 insertions(+), 10 deletions(-)
 
--- 
-Greetings, Michael.
+diff --git a/arch/mips/mm/tlb-r3k.c b/arch/mips/mm/tlb-r3k.c
+index f0cf46a..1c0048a 100644
+--- a/arch/mips/mm/tlb-r3k.c
++++ b/arch/mips/mm/tlb-r3k.c
+@@ -82,8 +82,7 @@ void local_flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
+ 	int cpu = smp_processor_id();
+ 
+ 	if (cpu_context(cpu, mm) != 0) {
+-		unsigned long flags;
+-		int size;
++		unsigned long size, flags;
+ 
+ #ifdef DEBUG_TLB
+ 		printk("[tlbrange<%lu,0x%08lx,0x%08lx>]",
+@@ -121,8 +120,7 @@ void local_flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
+ 
+ void local_flush_tlb_kernel_range(unsigned long start, unsigned long end)
+ {
+-	unsigned long flags;
+-	int size;
++	unsigned long size, flags;
+ 
+ #ifdef DEBUG_TLB
+ 	printk("[tlbrange<%lu,0x%08lx,0x%08lx>]", start, end);
+diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
+index 9619f66..892be42 100644
+--- a/arch/mips/mm/tlb-r4k.c
++++ b/arch/mips/mm/tlb-r4k.c
+@@ -117,8 +117,7 @@ void local_flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
+ 	int cpu = smp_processor_id();
+ 
+ 	if (cpu_context(cpu, mm) != 0) {
+-		unsigned long flags;
+-		int size;
++		unsigned long size, flags;
+ 
+ 		ENTER_CRITICAL(flags);
+ 		size = (end - start + (PAGE_SIZE - 1)) >> PAGE_SHIFT;
+@@ -160,8 +159,7 @@ void local_flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
+ 
+ void local_flush_tlb_kernel_range(unsigned long start, unsigned long end)
+ {
+-	unsigned long flags;
+-	int size;
++	unsigned long size, flags;
+ 
+ 	ENTER_CRITICAL(flags);
+ 	size = (end - start + (PAGE_SIZE - 1)) >> PAGE_SHIFT;
+diff --git a/arch/mips/mm/tlb-r8k.c b/arch/mips/mm/tlb-r8k.c
+index 4f01a3b..4ec95cc 100644
+--- a/arch/mips/mm/tlb-r8k.c
++++ b/arch/mips/mm/tlb-r8k.c
+@@ -111,8 +111,7 @@ out_restore:
+ /* Usable for KV1 addresses only! */
+ void local_flush_tlb_kernel_range(unsigned long start, unsigned long end)
+ {
+-	unsigned long flags;
+-	int size;
++	unsigned long size, flags;
+ 
+ 	size = (end - start + (PAGE_SIZE - 1)) >> PAGE_SHIFT;
+ 	size = (size + 1) >> 1;

@@ -1,33 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 May 2009 22:53:06 +0100 (BST)
-Received: from mail-pz0-f202.google.com ([209.85.222.202]:50693 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 May 2009 22:54:36 +0100 (BST)
+Received: from mail-pz0-f202.google.com ([209.85.222.202]:55973 "EHLO
 	mail-pz0-f202.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20025173AbZETVxA (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 20 May 2009 22:53:00 +0100
-Received: by pzk40 with SMTP id 40so625001pzk.22
-        for <multiple recipients>; Wed, 20 May 2009 14:52:53 -0700 (PDT)
+	by ftp.linux-mips.org with ESMTP id S20025177AbZETVya (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 20 May 2009 22:54:30 +0100
+Received: by pzk40 with SMTP id 40so625613pzk.22
+        for <multiple recipients>; Wed, 20 May 2009 14:54:23 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer:in-reply-to:references;
-        bh=DEBRdaL0wPcLwCuexPQ3i37tPY2Ljg5qz8DcVgYBqT4=;
-        b=OYZFP25r6DI7hIQ49LTJ7VJv9Y3hrw7qYE15hvJMGk/wvpmIP4EPMRBesy/ShwOchJ
-         1yCuuvyyJ80IZM31oCRSyT3buKXgurpjhYaU2QX9bDlYSGApi1CF8SxPaSy3cy1y6gmY
-         o3Jp+eAutlca6XRhuRT1vZD2vz4XDpBX/SWaI=
+        bh=BEISxEl1y49tMiSfKp49K81IsrDqp3V6fZEOPby01ko=;
+        b=xgFj4KD1JOs9+hswsm+1n+yv8CVKBYV2GgMKwi/3ASHu9zT4+uFwvtT687jFi0BOEh
+         jCkpi6sdEGjt8nlaLk4g0dYFUk/dsfcsKiGpyqS55k1iZhlyE4QfZt+MuXFaCFSZRSu6
+         j+dI0tdP4Tr+Sntv0OaBUxABD4/Xqu3uPp31A=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=dzylfglyFtsQnPbTyY/5J9rXl7sTYUPIqvlLJ4Iekpi4OPG0xZSmZ9/bRg9QBscoST
-         ZMMLPBCqinnRbnx9pJdSfxRTvmLAYpcmGGT8QSnozmCV3a3dv15IjVyaWDgYld09gu+a
-         ye/XjS7VnhvXvPiBPTdzADOcVhtgdC5/zA6Vk=
-Received: by 10.114.208.20 with SMTP id f20mr3604099wag.46.1242856373108;
-        Wed, 20 May 2009 14:52:53 -0700 (PDT)
+        b=PUF6OL4AlGHrkiRetY6PY8cX+2kL4x1XZiJY9ubrYsGM8cGr//pGokzV6naClmrYd9
+         A1tZbnD5g+7HgsVqa1WO5i3gNDMZXurKxBsRkU9HE8fkd/E7X14m1RC4lQCE0Y7Q2Yfl
+         HsVh2ljz29SYhfdEF9l3pqfhfYPmpOnF1JdCM=
+Received: by 10.114.147.1 with SMTP id u1mr3558949wad.115.1242856463596;
+        Wed, 20 May 2009 14:54:23 -0700 (PDT)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id d20sm3341671waa.47.2009.05.20.14.52.46
+        by mx.google.com with ESMTPS id b39sm759665rvf.1.2009.05.20.14.54.18
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 20 May 2009 14:52:52 -0700 (PDT)
+        Wed, 20 May 2009 14:54:23 -0700 (PDT)
 From:	wuzhangjin@gmail.com
-To:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-	rtc-linux@googlegroups.com
+To:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Cc:	Wu Zhangjin <wuzhangjin@gmail.com>, Yan hua <yanh@lemote.com>,
 	Philippe Vachon <philippe@cowpig.ca>,
 	Zhang Le <r0bertz@gentoo.org>,
@@ -37,9 +36,9 @@ Cc:	Wu Zhangjin <wuzhangjin@gmail.com>, Yan hua <yanh@lemote.com>,
 	Nicholas Mc Guire <hofrat@hofr.at>,
 	Liu Junliang <liujl@lemote.com>,
 	Erwan Lerale <erwan@thiscow.com>
-Subject: [loongson-PATCH-v1 09/27] enable Real Time Clock Support for fuloong(2e)
-Date:	Thu, 21 May 2009 05:52:39 +0800
-Message-Id: <3d13efa122929c5de37175a6da07b3bd856ab226.1242855716.git.wuzhangjin@gmail.com>
+Subject: [loongson-PATCH-v1 10/27] add loongson-specific cpu-feature-overrides.h
+Date:	Thu, 21 May 2009 05:54:12 +0800
+Message-Id: <13b257a1608147ad3089a054e888ab240e19a75d.1242855716.git.wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.6.2.1
 In-Reply-To: <cover.1242855716.git.wuzhangjin@gmail.com>
 References: <cover.1242855716.git.wuzhangjin@gmail.com>
@@ -47,7 +46,7 @@ Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22873
+X-archive-position: 22874
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,166 +56,87 @@ X-list: linux-mips
 
 From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-by default, RTC_LIB is selected by MIPS, but if RTC_LIB is enabled,
-Enhanced Real Time Clock Support(RTC) will be disabled, so, to enable
-it, not select RTC_LIB in LEMOTE_FULOONG2E will fix this problem.
+This file will obviously reduce the size of kernel image file, reduce
+tons of branches and enhance the performance.
 
-RTC support is needed by some tools like hwclock, if you want hwclock
-work well, these two jobs need to do:
-
-kernel configuration:
-
-Device Drivers --->
-Character devices --->
-<*> Enhanced Real Time Clock Support (legacy PC RTC driver)
-
-user-space configuration:
-
-$ mknod /dev/rtc c 10 135
-
-and there is another RTC support in linux, whose kernel option is
-RTC_CLASS, it should be fixed for fuloong(2e) via enabling the binary
-mode in driver/rtc/rtc-cmos.c and register the RTC device resource in a
-machine specific rtc.c
-
-to make hwclock work with it normally, please do:
-
-kernel configuration:
-
-Device Drivers --->
-<*> Real Time Clock --->
-	<*>   PC-style 'CMOS'
-
-user-space configuration:
-
-$ mknod /dev/rtc0 c 254 0
-
-/dev/rtc0 is the default RTC device file.
+$ wc -c vmlinux		// before
+8054849 vmlinux
+$ wc -c vmlinux		// after
+7626936 vmlinux
+$ echo $(((8054849-7626936)/1024))	// kb
+417
+$ echo "(8054849-7626936)/8054849" | bc -l
+.05312489408553779220
 
 Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
 ---
- arch/mips/Kconfig                      |    2 +-
- arch/mips/loongson/fuloong-2e/Makefile |    7 ++++
- arch/mips/loongson/fuloong-2e/rtc.c    |   55 ++++++++++++++++++++++++++++++++
- drivers/rtc/rtc-cmos.c                 |    8 ++--
- 4 files changed, 67 insertions(+), 5 deletions(-)
- create mode 100644 arch/mips/loongson/fuloong-2e/rtc.c
+ .../asm/mach-loongson/cpu-feature-overrides.h      |   58 ++++++++++++++++++++
+ 1 files changed, 58 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index d9ecb44..974ce41 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -6,7 +6,7 @@ config MIPS
- 	select HAVE_ARCH_KGDB
- 	# Horrible source of confusion.  Die, die, die ...
- 	select EMBEDDED
--	select RTC_LIB
-+	select RTC_LIB if !LEMOTE_FULOONG2E
- 
- mainmenu "Linux/MIPS Kernel Configuration"
- 
-diff --git a/arch/mips/loongson/fuloong-2e/Makefile b/arch/mips/loongson/fuloong-2e/Makefile
-index 035e04c..76904da 100644
---- a/arch/mips/loongson/fuloong-2e/Makefile
-+++ b/arch/mips/loongson/fuloong-2e/Makefile
-@@ -10,4 +10,11 @@ obj-y += setup.o init.o cmdline.o time.o reset.o irq.o \
- #
- obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
- 
-+#
-+# Enable RTC Class support
-+#
-+# please enable CONFIG_RTC_DRV_CMOS
-+#
-+obj-$(CONFIG_RTC_DRV_CMOS) += rtc.o
-+
- EXTRA_CFLAGS += -Werror
-diff --git a/arch/mips/loongson/fuloong-2e/rtc.c b/arch/mips/loongson/fuloong-2e/rtc.c
+diff --git a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
 new file mode 100644
-index 0000000..469ada8
+index 0000000..daa2ee9
 --- /dev/null
-+++ b/arch/mips/loongson/fuloong-2e/rtc.c
-@@ -0,0 +1,55 @@
++++ b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+@@ -0,0 +1,58 @@
 +/*
-+ *  Registration of Cobalt RTC platform device.
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
 + *
-+ *  Copyright (C) 2007  Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-+ *  Copyright (C) 2009  Wu Zhangjin <wuzj@lemote.com>
++ * Copyright (C) 2009 Wu Zhangjin <wuzj@lemote.com>
++ * Copyright (C) 2009 Philippe Vachon <philippe@cowpig.ca>
++ * Copyright (C) 2009 Zhang Le <r0bertz@gentoo.org>
 + *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, write to the Free Software
-+ *  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-+ *  MA 02110-1301 USA
++ * reference: /proc/cpuinfo,
++ * 	arch/mips/kernel/cpu-probe.c(cpu_probe_legacy),
++ * 	arch/mips/kernel/proc.c(show_cpuinfo),
++ *      loongson2f user manual.
 + */
 +
-+#include <linux/init.h>
-+#include <linux/ioport.h>
-+#include <linux/mc146818rtc.h>
-+#include <linux/platform_device.h>
++#ifndef __ASM_LOONGSON_CPU_FEATURE_OVERRIDES_H
++#define __ASM_LOONGSON_CPU_FEATURE_OVERRIDES_H
 +
-+static struct resource rtc_cmos_resource[] = {
-+	{
-+		.start	= RTC_PORT(0),
-+		.end	= RTC_PORT(1),
-+		.flags	= IORESOURCE_IO,
-+	},
-+	{
-+		.start	= RTC_IRQ,
-+		.end	= RTC_IRQ,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+};
++#define cpu_dcache_line_size()	32
++#define cpu_icache_line_size()	32
++#define cpu_scache_line_size()	32
 +
-+static struct platform_device rtc_cmos_device = {
-+	.name		= "rtc_cmos",
-+	.id		= -1,
-+	.num_resources	= ARRAY_SIZE(rtc_cmos_resource),
-+	.resource	= rtc_cmos_resource
-+};
++#define cpu_has_32fpr		1
++#define cpu_has_3k_cache	0
++#define cpu_has_4k_cache	1
++#define cpu_has_4kex		1
++#define cpu_has_64bits		1
++#define cpu_has_cache_cdex_p	0
++#define cpu_has_cache_cdex_s	0
++#define cpu_has_counter		1
++#define cpu_has_dc_aliases	1
++#define cpu_has_divec		0
++#define cpu_has_dsp		0
++#define cpu_has_ejtag		0
++#define cpu_has_fpu		1
++#define cpu_has_ic_fills_f_dc	0
++#define cpu_has_inclusive_pcaches	1
++#define cpu_has_llsc 		1
++#define cpu_has_mcheck		0
++#define cpu_has_mdmx		0
++#define cpu_has_mips16		0
++#define cpu_has_mips32r1	0
++#define cpu_has_mips32r2	0
++#define cpu_has_mips3d		0
++#define cpu_has_mips64r1	0
++#define cpu_has_mips64r2	0
++#define cpu_has_mipsmt		0
++#define cpu_has_prefetch	0
++#define cpu_has_smartmips	0
++#define cpu_has_tlb		1
++#define cpu_has_tx39_cache	0
++#define cpu_has_userlocal	0
++#define cpu_has_vce		0
++#define cpu_has_vtag_icache	0
++#define cpu_has_watch		1
++#define cpu_icache_snoops_remote_store	1
 +
-+static __init int rtc_cmos_init(void)
-+{
-+	platform_device_register(&rtc_cmos_device);
-+
-+	return 0;
-+}
-+
-+device_initcall(rtc_cmos_init);
-diff --git a/drivers/rtc/rtc-cmos.c b/drivers/rtc/rtc-cmos.c
-index b6d35f5..b24181e 100644
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -691,7 +691,8 @@ cmos_do_probe(struct device *dev, struct resource *ports, int rtc_irq)
- 	 */
- #if	defined(CONFIG_ATARI)
- 	address_space = 64;
--#elif defined(__i386__) || defined(__x86_64__) || defined(__arm__) || defined(__sparc__)
-+#elif defined(__i386__) || defined(__x86_64__) || defined(__arm__) \
-+			|| defined(__sparc__) || defined(__mips__)
- 	address_space = 128;
- #else
- #warning Assuming 128 bytes of RTC+NVRAM address space, not 64 bytes.
-@@ -756,9 +757,8 @@ cmos_do_probe(struct device *dev, struct resource *ports, int rtc_irq)
- 	/* FIXME teach the alarm code how to handle binary mode;
- 	 * <asm-generic/rtc.h> doesn't know 12-hour mode either.
- 	 */
--	if (is_valid_irq(rtc_irq) &&
--	    (!(rtc_control & RTC_24H) || (rtc_control & (RTC_DM_BINARY)))) {
--		dev_dbg(dev, "only 24-hr BCD mode supported\n");
-+	if (is_valid_irq(rtc_irq) && !(rtc_control & RTC_24H)) {
-+		dev_dbg(dev, "only 24-hr supported\n");
- 		retval = -ENXIO;
- 		goto cleanup1;
- 	}
++#endif				/* __ASM_LOONGSON_CPU_FEATURE_OVERRIDES_H */
 -- 
 1.6.2.1

@@ -1,154 +1,162 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 May 2009 00:36:58 +0100 (BST)
-Received: from mail-pz0-f202.google.com ([209.85.222.202]:43774 "EHLO
-	mail-pz0-f202.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20024656AbZETXgv (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 21 May 2009 00:36:51 +0100
-Received: by pzk40 with SMTP id 40so661765pzk.22
-        for <multiple recipients>; Wed, 20 May 2009 16:36:43 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=sc3YjqsU8VqHgyoVyTaC5fXXIcOqaR9odw2NhLp50yg=;
-        b=ViVkQRjFgI0Tpz8tx5h5KLkTMmGWJri0cBSq73bkA6h+Hxv6jrNTH1xukBVNfhbHMz
-         IkhhV1ScBwd9BCyFg5vQKwSIXWGTzVXVfh/HjIH4HDmAm5P7avfVr22uf1Hy69MTloWp
-         bpbB7gb7RKZ9x/WCSK5T9yr19a1yGiEKRyIIY=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=nd0xG9Nbfq21XpkKYqRDvosiO/jIxkQLKmRub8rMNP/HypoBOfjEjKlLrwhhzuUQuL
-         VbtihXmm56NmoYHyEAWf75p8QgjOVWtAAtOo8/SY9DC1fH370XLxVmoYf8N0a5GIANZv
-         c+NbGTHJAEzT9qnPH5uDCLzIvpp+hT/RbmWyc=
-Received: by 10.114.177.1 with SMTP id z1mr3750847wae.68.1242862603935;
-        Wed, 20 May 2009 16:36:43 -0700 (PDT)
-Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id c26sm4066189waa.15.2009.05.20.16.36.38
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 20 May 2009 16:36:43 -0700 (PDT)
-Subject: Re: [loongson-PATCH-v1 23/27] Alsa memory maps fixup on mips
- systems
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	Yan hua <yanh@lemote.com>,
-	Philippe Vachon <philippe@cowpig.ca>,
-	Zhang Le <r0bertz@gentoo.org>,
-	Zhang Fuxin <zhangfx@lemote.com>,
-	Arnaud Patard <apatard@mandriva.com>,
-	loongson-dev@googlegroups.com, gnewsense-dev@nongnu.org,
-	Nicholas Mc Guire <hofrat@hofr.at>,
-	Liu Junliang <liujl@lemote.com>,
-	Erwan Lerale <erwan@thiscow.com>
-In-Reply-To: <4A1481A4.9060708@caviumnetworks.com>
-References: <cover.1242855716.git.wuzhangjin@gmail.com>
-	 <323881882e108383c0360bd6a1138801d9d47679.1242855716.git.wuzhangjin@gmail.com>
-	 <4A1481A4.9060708@caviumnetworks.com>
-Content-Type: text/plain
-Organization: DSLab, Lanzhou University, China
-Date:	Thu, 21 May 2009 07:36:28 +0800
-Message-Id: <1242862588.21692.583.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.24.3 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 May 2009 00:45:15 +0100 (BST)
+Received: from main.gmane.org ([80.91.229.2]:37028 "EHLO ciao.gmane.org"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S20023430AbZETXpH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 21 May 2009 00:45:07 +0100
+Received: from root by ciao.gmane.org with local (Exim 4.43)
+	id 1M6vT5-0000h9-7y
+	for linux-mips@linux-mips.org; Wed, 20 May 2009 23:45:03 +0000
+Received: from hefty-smurf.mit.edu ([18.214.0.239])
+        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+        id 1AlnuQ-0007hv-00
+        for <linux-mips@linux-mips.org>; Wed, 20 May 2009 23:45:03 +0000
+Received: from dclark by hefty-smurf.mit.edu with local (Gmexim 0.1 (Debian))
+        id 1AlnuQ-0007hv-00
+        for <linux-mips@linux-mips.org>; Wed, 20 May 2009 23:45:03 +0000
+X-Injected-Via-Gmane: http://gmane.org/
+To:	linux-mips@linux-mips.org
+From:	Daniel Clark <dclark@pobox.com>
+Subject:  Re: [loongson-support 00/27] linux PATCHes of loongson-based machines
+Date:	Wed, 20 May 2009 18:30:02 -0400
+Message-ID: <4A14846A.3080006@pobox.com>
+References:  <cover.1242851584.git.wuzhangjin@gmail.com>
+Mime-Version:  1.0
+Content-Type:  multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enig84828C992A86731BBE725447"
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: hefty-smurf.mit.edu
+User-Agent: Thunderbird 2.0.0.21 (X11/20090318)
+In-Reply-To: <cover.1242851584.git.wuzhangjin@gmail.com>
+X-Enigmail-Version: 0.95.0
+OpenPGP: id=AA95C349;
+	url=https://www.fsf.org/about/staff/fsf-sysadmin-keyring.asc/download
+Cc:	gnewsense-dev@nongnu.org
+Return-Path: <sgi-linux-mips@m.gmane.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22898
+X-archive-position: 22899
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: dclark@pobox.com
 Precedence: bulk
 X-list: linux-mips
+Message-ID: <20090520223002.eKwYtqLMQEXekUS1iPYx1mzyTBI9_BG2BYjHY3DrLTM@z>
 
-On Wed, 2009-05-20 at 15:18 -0700, David Daney wrote:
-> wuzhangjin@gmail.com wrote:
-> [...]
-> > @@ -3099,7 +3099,11 @@ static int snd_pcm_mmap_data_fault(struct vm_area_struct *area,
-> >  			return VM_FAULT_SIGBUS;
-> >  	} else {
-> >  		vaddr = runtime->dma_area + offset;
-> > +#if defined(__mips__) && defined(CONFIG_DMA_NONCOHERENT)
-> > +		page = virt_to_page(CAC_ADDR(vaddr));
-> > +#else
-> >  		page = virt_to_page(vaddr);
-> > +#endif
-> 
-> That is a bit ugly.  It would be better to either  wrap the fix up in 
-> mips specific code so there don't have to be #ifdef __mips__ through out 
-> the generic driver code, or fix the driver in some other way if it is 
-> making x86 specific assumptions that don't hold in the general case.
-> 
-> The same applies for the remaining #ifdef __mips__ in the patch.
-> 
-> 
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enig84828C992A86731BBE725447
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-nod, will be tuned later. 
+wuzhangjin@gmail.com wrote:
+> From: Wu Zhangjin <wuzhangjin@gmail.com>
+>=20
+> Dear all,
+>=20
+> I have cleaned up the source code of loongson-based machines support an=
+d
+> updated it to linux-2.6.29.3, the latest result is put to the following=
+ git
+> repository:
+>=20
+>    git://dev.lemote.com/rt4ls.git  to-ralf
+> 	or
+>    http://dev.lemote.com/cgit/rt4ls.git/log/?h=3Dto-ralf
+>=20
+> this job is based on the to-mips branch of Yanhua's
+> git://dev.lemote.com/linux_loongson.git and the lm2e-fixes branch of Ph=
+ilippe's
+> git://git.linux-cisco.org/linux-mips.git. thanks goes to them.
+>=20
+> and also, thanks goes to Erwen and heihaier for testing the latest bran=
+ch, and
+> thanks ralf, zhangLe, john and the other guyes for reviewing the old br=
+anch and
+> giving good suggestions.
+>=20
+> the most differences between this branch and the old branch include:
+>=20
+>    * all of these patches are checked by script/checkpatch.pl, only a f=
+ew
+>    warnings left.
+>=20
+>    * the cs5536 part have been cleaned up deeply. the old pcireg.h is r=
+emoved
+>    via using the include/linux/pci_regs.h instead. and the old cs5536_v=
+sm.c is
+>    divided to several modules, one file one module.
+>=20
+>    * the source code in driver/video/smi in cleaned up a lot, two trash=
+y header
+>    files are removed, and several trashy functions are removed, lots of=
+ coding
+>    style errors and warnings are cleaned up.
+>=20
+>    * gcc 4.4 support, including 32bit and 64bit, and also it is gcc 4.3=
 
-thanks,
-Wu Zhangjin
+>    compatiable
+>=20
+> I have tested it in 32bit and 64bit with gcc 4.3 on fuloong(2e), fuloon=
+g(2f),
+> yeeloong(2f), all of them work well, and also test it in 32bit and 64bi=
+t with
+> gcc 4.4 on fuloong(2f), works normally. Erwen and heihaier have tested =
+it in
+> 64bit with gcc 4.4 on a yeeloong laptop.
 
-> 
-> 
-> >  	}
-> >  	get_page(page);
-> >  	vmf->page = page;
-> > @@ -3214,6 +3218,11 @@ static int snd_pcm_mmap(struct file *file, struct vm_area_struct *area)
-> >  	if (PCM_RUNTIME_CHECK(substream))
-> >  		return -ENXIO;
-> >  
-> > +#if defined(__mips__) && defined(CONFIG_DMA_NONCOHERENT)
-> > +	/* all mmap using uncached mode */
-> > +	area->vm_page_prot = pgprot_noncached(area->vm_page_prot);
-> > +	area->vm_flags |= (VM_RESERVED | VM_IO);
-> > +#endif
-> >  	offset = area->vm_pgoff << PAGE_SHIFT;
-> >  	switch (offset) {
-> >  	case SNDRV_PCM_MMAP_OFFSET_STATUS:
-> > diff --git a/sound/core/sgbuf.c b/sound/core/sgbuf.c
-> > index 4e7ec2b..c0fcf0d 100644
-> > --- a/sound/core/sgbuf.c
-> > +++ b/sound/core/sgbuf.c
-> > @@ -114,7 +114,11 @@ void *snd_malloc_sgbuf_pages(struct device *device,
-> >  			if (!i)
-> >  				table->addr |= chunk; /* mark head */
-> >  			table++;
-> > +#if defined(__mips__) && defined(CONFIG_DMA_NONCOHERENT)
-> > +			*pgtable++ = virt_to_page(CAC_ADDR(tmpb.area));
-> > +#else
-> >  			*pgtable++ = virt_to_page(tmpb.area);
-> > +#endif
-> >  			tmpb.area += PAGE_SIZE;
-> >  			tmpb.addr += PAGE_SIZE;
-> >  		}
-> > @@ -125,7 +129,12 @@ void *snd_malloc_sgbuf_pages(struct device *device,
-> >  	}
-> >  
-> >  	sgbuf->size = size;
-> > +#if defined(__mips__) && defined(CONFIG_DMA_NONCOHERENT)
-> > +	dmab->area = vmap(sgbuf->page_table, sgbuf->pages, \
-> > +			VM_MAP | VM_IO, pgprot_noncached(PAGE_KERNEL));
-> > +#else
-> >  	dmab->area = vmap(sgbuf->page_table, sgbuf->pages, VM_MAP, PAGE_KERNEL);
-> > +#endif
-> >  	if (! dmab->area)
-> >  		goto _failed;
-> >  	if (res_size)
-> > diff --git a/sound/pci/Kconfig b/sound/pci/Kconfig
-> > index 82b9bdd..4ccfae0 100644
-> > --- a/sound/pci/Kconfig
-> > +++ b/sound/pci/Kconfig
-> > @@ -259,7 +259,6 @@ config SND_CS5530
-> >  
-> >  config SND_CS5535AUDIO
-> >  	tristate "CS5535/CS5536 Audio"
-> > -	depends on X86 && !X86_64
-> >  	select SND_PCM
-> >  	select SND_AC97_CODEC
-> >  	help
-> 
+Wow this is great. Does this branch also include the suspend-to-disk /
+resume-from-disk code from the lemote 2.6.27 STD branch?
+
+=46rom a user's perspective, what are the loongson-oriented improvements
+of this branch over the existing 2.6.27 branch?
+
+I'd also like to know if:
+
+(a) the ec-modules and
+
+(b) the rtl8187b code
+
+that is currently separate from the main lemote linux 2.6.27 git (the
+former in a git repository, the later only in a .tar.gz file as far as I
+know) is included in the 2.6.29.3 branch now.
+
+I can of course check this via git when I have internet access next, but
+I'm guessing you would be able to provide context beyond just the code
+changes to the answers of these questions  :-)
+
+Oh, and one last thing - is compilation with the lemote-patched binutils
+/ "-mfix-gs2f-kernel" "-mfix-ls2f-kernel" (I'm told these did the same
+things, the name just changed for some reason - currently I'm using a
+binutils / as that understands the "-mfix-ls2f-kernel" option) still
+needed? Without this in the 2.6.27 branch, and esp. with the ec-modules,
+there were very frequent hard linux crashes (sysrq keys not working).
+
+BTW for me, this is interesting in the context of
+http://config.fsf.org/trac/public/wiki/RmsLinuxForYou , which I have
+several people helping me test at the moment - currently the biggest
+issue is hard crashes every day or other day, or more frequently if
+there is a lot of disk or usb I/O.
+
+Thanks,
+--=20
+Daniel JB Clark   | Sys Admin, Free Software Foundation
+pobox.com/~dclark | http://www.fsf.org/about/staff#danny
+
+
+--------------enig84828C992A86731BBE725447
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+
+iD8DBQFKFIRqJNMr+aqVw0kRAor3AJ4xZJVbbu8kzQrqTEGWEJ7tmBo+3QCfdf4g
+jdKNGNqeMd/Iu1FbioDu/14=
+=k29p
+-----END PGP SIGNATURE-----
+
+--------------enig84828C992A86731BBE725447--

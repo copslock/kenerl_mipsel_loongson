@@ -1,162 +1,90 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 May 2009 15:26:38 +0100 (BST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:44405 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 20 May 2009 19:01:19 +0100 (BST)
+Received: from exch1.onstor.com ([66.201.51.80]:12518 "EHLO exch1.onstor.com"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20022587AbZETO0T (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 20 May 2009 15:26:19 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n4KEQ5UV022211;
-	Wed, 20 May 2009 15:26:06 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n4KEQ5Ce022210;
-	Wed, 20 May 2009 15:26:05 +0100
-Date:	Wed, 20 May 2009 15:26:04 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Greg Ungerer <gerg@snapgear.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: system lockup with 2.6.29 on Cavium/Octeon
-Message-ID: <20090520142604.GA29677@linux-mips.org>
-References: <4A139F50.7050409@snapgear.com>
+	id S20025096AbZETSBN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 20 May 2009 19:01:13 +0100
+Received: from ripper.onstor.net (10.0.0.42) by exch1.onstor.com (10.0.0.224)
+ with Microsoft SMTP Server id 8.1.311.2; Wed, 20 May 2009 11:01:06 -0700
+Date:	Wed, 20 May 2009 11:01:05 -0700
+From:	Andrew Sharp <andy.sharp@onstor.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	Laurent GUERBY <laurent@guerby.net>,
+	Jon Fraser <jfraser@broadcom.com>,
+	Andrew Wiley <debio264@gmail.com>,
+	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+	"Maciej W. Rozycki" <macro@linux-mips.org>
+Subject: Re: Bigsur?
+Message-ID: <20090520110105.6fb81573@ripper.onstor.net>
+In-Reply-To: <20090519125310.GA17733@linux-mips.org>
+References: <ecbbfeda0905152014t62281c79k2001e428da65a442@mail.gmail.com>
+	<1242663215.18301.26.camel@chaos.ne.broadcom.com>
+	<20090518222334.GD16847@linux-mips.org>
+	<alpine.LFD.1.10.0905182335510.20791@ftp.linux-mips.org>
+	<1242735440.6098.101.camel@localhost>
+	<20090519125310.GA17733@linux-mips.org>
+Organization: Onstor
+X-Mailer: Sylpheed-Claws 2.6.0 (GTK+ 2.8.20; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4A139F50.7050409@snapgear.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@h5.dl5rb.org.uk>
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-EMS-Proccessed: 2K3Xl1OQTInXD6xxuA8z3Q==
+X-EMS-STAMP: F1vJUhij/Kk+rd5L/cfEGQ==
+Return-Path: <andy.sharp@onstor.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22841
+X-archive-position: 22843
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: andy.sharp@onstor.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, May 20, 2009 at 04:12:32PM +1000, Greg Ungerer wrote:
+On Tue, 19 May 2009 05:53:10 -0700 Ralf Baechle <ralf@linux-mips.org>
+wrote:
 
-> I have a system lockup problem that I have been looking at on a custom
-> Cavium/Octeon 5010 based design. I am running on linux-2.6.29 with
-> David Daney's latest round of PCI and ethernet patches (posted here
-> on this list).
->
-> I have tracked the problem back to local_flush_tlb_kernel_range() in
-> arch/mips/mm/tlb-r4k.c. At the top of this function is:
->
->     void local_flush_tlb_kernel_range(unsigned long start, unsigned long 
-> end)
->     {
->         unsigned long flags;
->         int size;
->
->         ENTER_CRITICAL(flags);
->         size = (end - start + (PAGE_SIZE - 1)) >> PAGE_SHIFT;
->         size = (size + 1) >> 1;
->         if (size <= current_cpu_data.tlbsize / 2) {
->
-> The problem is that typical example values I see passed in for start
-> and end are:
->
->     start = c000000000006000
->     end   = ffffffffc01d8000
->
-> Now the vmalloc area starts at 0xc000000000000000 and the kernel code
-> and data is all at 0xffffffff80000000 and above. I don't know if the
-> start and end are reasonable values, but I can see some logic as to
-> where they come from. The code path that leads to this is via
-> __vunmap() and __purge_vmap_area_lazy(). So it is not too difficult
-> to see how we end up with values like this.
+> On Tue, May 19, 2009 at 02:17:20PM +0200, Laurent GUERBY wrote:
+> 
+> > On Mon, 2009-05-18 at 23:47 +0100, Maciej W. Rozycki wrote:
+> > >  Yes, invaluable for native builds and there is a considerable
+> > > number of software packages which is not capable of being
+> > > cross-compiled, or requires extreme contortions to be built this
+> > > way, or if buildable with a reasonable effort, the functionality
+> > > is limited.  Besides a three-stage GCC bootstrap is a good way of
+> > > verifying the quality of the tool, never mind standard
+> > > DejaGNU-based regression testing which although possible using
+> > > cross-tools and a remote target, is awfully painful to be set up
+> > > this way.
+> > 
+> > For MIPS in the GCC Compile Farm http://gcc.gnu.org/wiki/CompileFarm
+> > (which is open to all free software, not limited to GCC) we
+> > have two loongson-2f based netbooks on which a GCC bootstrap
+> > and check is manageable.
+> > 
+> > Right now this farm is more oriented towards upstream userland
+> > developpers debug/test cycles - they get access to 12 architectures
+> > when they sign in. It's not really oriented towards porting
+> > kernel/distributions or building distribution packages which is
+> > already well covered by existing distribution farms and individual
+> > developpers and those developpers should get priority on new
+> > hardware :).
+> > 
+> > This farm project is part of the Free Software Fundation France (a
+> > french not-for-profit organization) effort to help free software
+> > development and we accept hardware and hosting donations, and also
+> > discounts to purchase commercial hardware when donations are not
+> > possible and there is significant interest in one platform.
+> 
+> That I think is a great solution for people who need short term access
+> but doesn't really solve the fundamental problem that hardware with
+> sufficient punch for efficient native development isn't easily
+> available.
 
-Either start or end address is sensible but not the combination - both
-addresses should be in the same segment.  Start is in XKSEG, end in CKSEG2
-and in between there are vast wastelands of unused address space exabytes
-in size.
+Question: are machines that must be NFS-root and tftp booted acceptable
+or not acceptable for such work?  The machines in question would 750MHz
+Sibyte 1250s, so 3 Gigabit ports natively, and 2 serial consoles.
 
-> But the size calculation above with these types of values will result
-> in still a large number. Larger than the 32bit "int" that is "size".
-> I see large negative values fall out as size, and so the following
-> tlbsize check becomes true, and the code spins inside the loop inside
-> that if statement for a _very_ long time trying to flush tlb entries.
->
-> This is of course easily fixed, by making that size "unsigned long".
-> The patch below trivially does this.
->
-> But is this analysis correct?
+Cheers,
 
-Yes - but I think we have two issues here.  The one is the calculation
-overflowing int for the arguments you're seeing.  The other being that
-the arguments simply are looking wrong.
-
-There are a few more instances of the same overflow issue which the patch
-below is fixing.
-
-  Ralf
-
-
- arch/mips/mm/tlb-r3k.c |    6 ++----
- arch/mips/mm/tlb-r4k.c |    6 ++----
- arch/mips/mm/tlb-r8k.c |    3 +--
- 3 files changed, 5 insertions(+), 10 deletions(-)
-
-diff --git a/arch/mips/mm/tlb-r3k.c b/arch/mips/mm/tlb-r3k.c
-index f0cf46a..1c0048a 100644
---- a/arch/mips/mm/tlb-r3k.c
-+++ b/arch/mips/mm/tlb-r3k.c
-@@ -82,8 +82,7 @@ void local_flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
- 	int cpu = smp_processor_id();
- 
- 	if (cpu_context(cpu, mm) != 0) {
--		unsigned long flags;
--		int size;
-+		unsigned long size, flags;
- 
- #ifdef DEBUG_TLB
- 		printk("[tlbrange<%lu,0x%08lx,0x%08lx>]",
-@@ -121,8 +120,7 @@ void local_flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
- 
- void local_flush_tlb_kernel_range(unsigned long start, unsigned long end)
- {
--	unsigned long flags;
--	int size;
-+	unsigned long size, flags;
- 
- #ifdef DEBUG_TLB
- 	printk("[tlbrange<%lu,0x%08lx,0x%08lx>]", start, end);
-diff --git a/arch/mips/mm/tlb-r4k.c b/arch/mips/mm/tlb-r4k.c
-index 9619f66..892be42 100644
---- a/arch/mips/mm/tlb-r4k.c
-+++ b/arch/mips/mm/tlb-r4k.c
-@@ -117,8 +117,7 @@ void local_flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
- 	int cpu = smp_processor_id();
- 
- 	if (cpu_context(cpu, mm) != 0) {
--		unsigned long flags;
--		int size;
-+		unsigned long size, flags;
- 
- 		ENTER_CRITICAL(flags);
- 		size = (end - start + (PAGE_SIZE - 1)) >> PAGE_SHIFT;
-@@ -160,8 +159,7 @@ void local_flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
- 
- void local_flush_tlb_kernel_range(unsigned long start, unsigned long end)
- {
--	unsigned long flags;
--	int size;
-+	unsigned long size, flags;
- 
- 	ENTER_CRITICAL(flags);
- 	size = (end - start + (PAGE_SIZE - 1)) >> PAGE_SHIFT;
-diff --git a/arch/mips/mm/tlb-r8k.c b/arch/mips/mm/tlb-r8k.c
-index 4f01a3b..4ec95cc 100644
---- a/arch/mips/mm/tlb-r8k.c
-+++ b/arch/mips/mm/tlb-r8k.c
-@@ -111,8 +111,7 @@ out_restore:
- /* Usable for KV1 addresses only! */
- void local_flush_tlb_kernel_range(unsigned long start, unsigned long end)
- {
--	unsigned long flags;
--	int size;
-+	unsigned long size, flags;
- 
- 	size = (end - start + (PAGE_SIZE - 1)) >> PAGE_SHIFT;
- 	size = (size + 1) >> 1;
+a

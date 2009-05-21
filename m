@@ -1,48 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 May 2009 17:34:50 +0100 (BST)
-Received: from main.gmane.org ([80.91.229.2]:43685 "EHLO ciao.gmane.org"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20025322AbZEUQen (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 21 May 2009 17:34:43 +0100
-Received: from list by ciao.gmane.org with local (Exim 4.43)
-	id 1M7BE7-0008PL-03
-	for linux-mips@linux-mips.org; Thu, 21 May 2009 16:34:39 +0000
-Received: from terminus-est.gnu.org ([66.92.78.210])
-        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Thu, 21 May 2009 16:34:38 +0000
-Received: from dclark by terminus-est.gnu.org with local (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Thu, 21 May 2009 16:34:38 +0000
-X-Injected-Via-Gmane: http://gmane.org/
-To:	linux-mips@linux-mips.org
-From:	Daniel Clark <dclark@pobox.com>
-Subject:  Re: [loongson-support 00/27] linux PATCHes of loongson-based machines
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 May 2009 17:35:13 +0100 (BST)
+Received: from a-sasl-fastnet.sasl.smtp.pobox.com ([207.106.133.19]:64417 "EHLO
+	sasl.smtp.pobox.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20025323AbZEUQet (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 21 May 2009 17:34:49 +0100
+Received: from localhost.localdomain (unknown [127.0.0.1])
+	by a-sasl-fastnet.sasl.smtp.pobox.com (Postfix) with ESMTP id 4ED69B44FF;
+	Thu, 21 May 2009 12:34:41 -0400 (EDT)
+Received: from [102.117.138.10] (unknown [66.92.78.210]) (using TLSv1 with
+ cipher DHE-RSA-AES256-SHA (256/256 bits)) (No client certificate requested)
+ by a-sasl-fastnet.sasl.smtp.pobox.com (Postfix) with ESMTPSA id 40AD7B44FA;
+ Thu, 21 May 2009 12:34:25 -0400 (EDT)
+Message-ID: <4A158284.5020602@pobox.com>
 Date:	Thu, 21 May 2009 12:34:12 -0400
-Message-ID:  <4A158284.5020602@pobox.com>
-References:  <cover.1242851584.git.wuzhangjin@gmail.com>
-Mime-Version:  1.0
-Content-Type:  multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enigB677E61ADD3371684193FDCE"
-X-Complaints-To: usenet@ger.gmane.org
-X-Gmane-NNTP-Posting-Host: terminus-est.gnu.org
+From:	Daniel Clark <dclark@pobox.com>
 User-Agent: Thunderbird 2.0.0.21 (X11/20090318)
+MIME-Version: 1.0
+Newsgroups: gmane.linux.ports.mips.general,gmane.linux.distributions.gnewsense.devel
+To:	wuzhangjin@gmail.com
+CC:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+	Yan hua <yanh@lemote.com>,
+	Philippe Vachon <philippe@cowpig.ca>,
+	Zhang Le <r0bertz@gentoo.org>,
+	Zhang Fuxin <zhangfx@lemote.com>,
+	Arnaud Patard <apatard@mandriva.com>,
+	loongson-dev@googlegroups.com, gnewsense-dev@nongnu.org,
+	Nicholas Mc Guire <hofrat@hofr.at>,
+	Liu Junliang <liujl@lemote.com>,
+	Erwan Lerale <erwan@thiscow.com>
+Subject: Re: [loongson-support 00/27] linux PATCHes of loongson-based
+ machines
+References: <cover.1242851584.git.wuzhangjin@gmail.com>
 In-Reply-To: <cover.1242851584.git.wuzhangjin@gmail.com>
 X-Enigmail-Version: 0.95.0
 OpenPGP: id=AA95C349;
-	url=https://www.fsf.org/about/staff/fsf-sysadmin-keyring.asc/download
-Cc:	gnewsense-dev@nongnu.org
-Return-Path: <sgi-linux-mips@m.gmane.org>
+ url=https://www.fsf.org/about/staff/fsf-sysadmin-keyring.asc/download
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="------------enigB677E61ADD3371684193FDCE"
+X-Pobox-Relay-ID: 48911354-4625-11DE-A0AC-E80804BA4B0C-17709350!a-sasl-fastnet.pobox.com
+Return-Path: <dclark@pobox.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22914
+X-archive-position: 22915
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
 X-original-sender: dclark@pobox.com
 Precedence: bulk
 X-list: linux-mips
+Message-ID: <20090521163412.EH_EicdA2Ea0-Y7KsqI_ioZCp56f_G6j1RPv61Si-hM@z>
 
 This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
 --------------enigB677E61ADD3371684193FDCE

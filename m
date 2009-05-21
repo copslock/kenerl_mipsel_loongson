@@ -1,48 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 May 2009 15:37:48 +0100 (BST)
-Received: from main.gmane.org ([80.91.229.2]:38050 "EHLO ciao.gmane.org"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20023696AbZEUOhl (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 21 May 2009 15:37:41 +0100
-Received: from list by ciao.gmane.org with local (Exim 4.43)
-	id 1M79Os-0003TH-Ti
-	for linux-mips@linux-mips.org; Thu, 21 May 2009 14:37:39 +0000
-Received: from terminus-est.gnu.org ([66.92.78.210])
-        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Thu, 21 May 2009 14:37:38 +0000
-Received: from dclark by terminus-est.gnu.org with local (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Thu, 21 May 2009 14:37:38 +0000
-X-Injected-Via-Gmane: http://gmane.org/
-To:	linux-mips@linux-mips.org
-From:	Daniel Clark <dclark@pobox.com>
-Subject:  Re: [loongson-support 00/27] linux PATCHes of loongson-based   machines
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 May 2009 15:38:13 +0100 (BST)
+Received: from a-sasl-quonix.sasl.smtp.pobox.com ([208.72.237.25]:49710 "EHLO
+	sasl.smtp.pobox.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20025279AbZEUOho (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 21 May 2009 15:37:44 +0100
+Received: from localhost.localdomain (unknown [127.0.0.1])
+	by a-sasl-quonix.sasl.smtp.pobox.com (Postfix) with ESMTP id 5F3A819F2A;
+	Thu, 21 May 2009 10:37:42 -0400 (EDT)
+Received: from [102.117.138.10] (unknown [66.92.78.210]) (using TLSv1 with
+ cipher DHE-RSA-AES256-SHA (256/256 bits)) (No client certificate requested)
+ by a-sasl-quonix.sasl.smtp.pobox.com (Postfix) with ESMTPSA id 55C3019F20;
+ Thu, 21 May 2009 10:37:26 -0400 (EDT)
+Message-ID: <4A15671A.10209@pobox.com>
 Date:	Thu, 21 May 2009 10:37:14 -0400
-Message-ID:  <4A15671A.10209@pobox.com>
-References:  <cover.1242851584.git.wuzhangjin@gmail.com>	 <4A14846A.3080006@pobox.com> <1242865038.21692.624.camel@falcon>
-Mime-Version:  1.0
-Content-Type:  multipart/signed; micalg=pgp-sha1;
- protocol="application/pgp-signature";
- boundary="------------enig0FFC3BAECCB51DF6ACBFA215"
-X-Complaints-To: usenet@ger.gmane.org
-X-Gmane-NNTP-Posting-Host: terminus-est.gnu.org
+From:	Daniel Clark <dclark@pobox.com>
 User-Agent: Thunderbird 2.0.0.21 (X11/20090318)
+MIME-Version: 1.0
+Newsgroups: gmane.linux.ports.mips.general,gmane.linux.distributions.gnewsense.devel
+To:	wuzhangjin@gmail.com
+CC:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+	Yan hua <yanh@lemote.com>,
+	Philippe Vachon <philippe@cowpig.ca>,
+	Zhang Le <r0bertz@gentoo.org>,
+	Zhang Fuxin <zhangfx@lemote.com>,
+	Arnaud Patard <apatard@mandriva.com>,
+	loongson-dev@googlegroups.com, gnewsense-dev@nongnu.org,
+	Nicholas Mc Guire <hofrat@hofr.at>,
+	Liu Junliang <liujl@lemote.com>,
+	Erwan Lerale <erwan@thiscow.com>, rms@gnu.org
+Subject: Re: [loongson-support 00/27] linux PATCHes of loongson-based  
+ machines
+References: <cover.1242851584.git.wuzhangjin@gmail.com>	
+ <4A14846A.3080006@pobox.com> <1242865038.21692.624.camel@falcon>
 In-Reply-To: <1242865038.21692.624.camel@falcon>
 X-Enigmail-Version: 0.95.0
 OpenPGP: id=AA95C349;
-	url=https://www.fsf.org/about/staff/fsf-sysadmin-keyring.asc/download
-Cc:	gnewsense-dev@nongnu.org
-Return-Path: <sgi-linux-mips@m.gmane.org>
+ url=https://www.fsf.org/about/staff/fsf-sysadmin-keyring.asc/download
+Content-Type: multipart/signed; micalg=pgp-sha1; protocol="application/pgp-signature"; boundary="------------enig0FFC3BAECCB51DF6ACBFA215"
+X-Pobox-Relay-ID: F0F884A2-4614-11DE-B419-D766E3C8547C-17709350!a-sasl-quonix.pobox.com
+Return-Path: <dclark@pobox.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22910
+X-archive-position: 22911
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
 X-original-sender: dclark@pobox.com
 Precedence: bulk
 X-list: linux-mips
+Message-ID: <20090521143714.q2Zvc0IRzoh_n_Ep2GV-Co6iOS6ZwNRNoMxXO9jTCKs@z>
 
 This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
 --------------enig0FFC3BAECCB51DF6ACBFA215

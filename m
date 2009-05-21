@@ -1,71 +1,109 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 May 2009 15:50:34 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:63355 "HELO smtp.mba.ocn.ne.jp"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with SMTP
-	id S20025235AbZEUOu1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 21 May 2009 15:50:27 +0100
-Received: from localhost (p3181-ipad208funabasi.chiba.ocn.ne.jp [60.43.104.181])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id EE15EAD48; Thu, 21 May 2009 23:50:19 +0900 (JST)
-Date:	Thu, 21 May 2009 23:50:20 +0900 (JST)
-Message-Id: <20090521.235020.173372074.anemo@mba.ocn.ne.jp>
-To:	ralf@linux-mips.org
-Cc:	gerg@snapgear.com, linux-mips@linux-mips.org
-Subject: Re: system lockup with 2.6.29 on Cavium/Octeon
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20090520142604.GA29677@linux-mips.org>
-References: <4A139F50.7050409@snapgear.com>
-	<20090520142604.GA29677@linux-mips.org>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 22.2 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 May 2009 17:34:50 +0100 (BST)
+Received: from main.gmane.org ([80.91.229.2]:43685 "EHLO ciao.gmane.org"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S20025322AbZEUQen (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 21 May 2009 17:34:43 +0100
+Received: from list by ciao.gmane.org with local (Exim 4.43)
+	id 1M7BE7-0008PL-03
+	for linux-mips@linux-mips.org; Thu, 21 May 2009 16:34:39 +0000
+Received: from terminus-est.gnu.org ([66.92.78.210])
+        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+        id 1AlnuQ-0007hv-00
+        for <linux-mips@linux-mips.org>; Thu, 21 May 2009 16:34:38 +0000
+Received: from dclark by terminus-est.gnu.org with local (Gmexim 0.1 (Debian))
+        id 1AlnuQ-0007hv-00
+        for <linux-mips@linux-mips.org>; Thu, 21 May 2009 16:34:38 +0000
+X-Injected-Via-Gmane: http://gmane.org/
+To:	linux-mips@linux-mips.org
+From:	Daniel Clark <dclark@pobox.com>
+Subject:  Re: [loongson-support 00/27] linux PATCHes of loongson-based machines
+Date:	Thu, 21 May 2009 12:34:12 -0400
+Message-ID:  <4A158284.5020602@pobox.com>
+References:  <cover.1242851584.git.wuzhangjin@gmail.com>
+Mime-Version:  1.0
+Content-Type:  multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enigB677E61ADD3371684193FDCE"
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: terminus-est.gnu.org
+User-Agent: Thunderbird 2.0.0.21 (X11/20090318)
+In-Reply-To: <cover.1242851584.git.wuzhangjin@gmail.com>
+X-Enigmail-Version: 0.95.0
+OpenPGP: id=AA95C349;
+	url=https://www.fsf.org/about/staff/fsf-sysadmin-keyring.asc/download
+Cc:	gnewsense-dev@nongnu.org
+Return-Path: <sgi-linux-mips@m.gmane.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22912
+X-archive-position: 22914
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: dclark@pobox.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 20 May 2009 15:26:04 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
-> > Now the vmalloc area starts at 0xc000000000000000 and the kernel code
-> > and data is all at 0xffffffff80000000 and above. I don't know if the
-> > start and end are reasonable values, but I can see some logic as to
-> > where they come from. The code path that leads to this is via
-> > __vunmap() and __purge_vmap_area_lazy(). So it is not too difficult
-> > to see how we end up with values like this.
-> 
-> Either start or end address is sensible but not the combination - both
-> addresses should be in the same segment.  Start is in XKSEG, end in CKSEG2
-> and in between there are vast wastelands of unused address space exabytes
-> in size.
-> 
-> > But the size calculation above with these types of values will result
-> > in still a large number. Larger than the 32bit "int" that is "size".
-> > I see large negative values fall out as size, and so the following
-> > tlbsize check becomes true, and the code spins inside the loop inside
-> > that if statement for a _very_ long time trying to flush tlb entries.
-> >
-> > This is of course easily fixed, by making that size "unsigned long".
-> > The patch below trivially does this.
-> >
-> > But is this analysis correct?
-> 
-> Yes - but I think we have two issues here.  The one is the calculation
-> overflowing int for the arguments you're seeing.  The other being that
-> the arguments simply are looking wrong.
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enigB677E61ADD3371684193FDCE
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-The wrong combination comes from lazy vunmapping which was introduced
-in 2.6.28 cycle.  Maybe we can add new API (non-lazy version of
-vfree()) to vmalloc.c to implement module_free(), but I suppose
-fallbacking to local_flush_tlb_all() in local_flush_tlb_kernel_range()
-is enough().
+wuzhangjin@gmail.com wrote:
+> From: Wu Zhangjin <wuzhangjin@gmail.com>
+>    git://dev.lemote.com/rt4ls.git  to-ralf
+> 	or
+>    http://dev.lemote.com/cgit/rt4ls.git/log/?h=3Dto-ralf
 
----
-Atsushi Nemoto
+BTW git to dev.lemote.com at least from some networks in the US is
+really, really slow (like a few kb per second) - I have a mirror of some
+other lemote stuff at:
+
+http://not.freedsoftware.org/
+
+and am putting a tarball of the most recent tag as of this moment up at:
+
+http://not.freedsoftware.org/lemote-misc/suspend-linux/git-snapshot/rt4ls=
+-02fd45578db2c88fcd03643e904cc0bffd8ef952.tar.bz2
+
+I'd also be happy to mirror more git repositories, but so far no one has
+been able to give me the right set of commands to do so. What I am doing
+currently is in this file:
+
+http://not.freedsoftware.org/CONTROL/gitmirror
+
+The contents of which are:
+
+#!/bin/sh
+
+# I have no idea if this actually does the right thing. Google and
+# friend who knows a lot about git were both unable to help.
+# If you are a git-fu master, please contact sysadmin@gnu.org
+# http://opensysadmin.com/images/i-love-git-so-much.jpg
+
+cd /srv/mirror/DIST/lemote-misc/git-mirror/linux_loongson
+git checkout -f
+git fetch origin
+git reset --hard origin
+git pull
+
+--=20
+Daniel JB Clark   | Sys Admin, Free Software Foundation
+pobox.com/~dclark | http://www.fsf.org/about/staff#danny
+
+
+--------------enigB677E61ADD3371684193FDCE
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+
+iD8DBQFKFYKEJNMr+aqVw0kRApbqAJ0eJMHVm+ixwO/tKPpQ66wtW4guXwCgjorn
+jWv5t7qA0KmLKcKQoF32dPg=
+=wtYU
+-----END PGP SIGNATURE-----
+
+--------------enigB677E61ADD3371684193FDCE--

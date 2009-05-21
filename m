@@ -1,57 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 May 2009 11:45:33 +0100 (BST)
-Received: from smtp6-g21.free.fr ([212.27.42.6]:42626 "EHLO smtp6-g21.free.fr"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 21 May 2009 13:44:08 +0100 (BST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:47448 "EHLO h5.dl5rb.org.uk"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20022031AbZEUKp0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 21 May 2009 11:45:26 +0100
-Received: from smtp6-g21.free.fr (localhost [127.0.0.1])
-	by smtp6-g21.free.fr (Postfix) with ESMTP id EBAE5E080E6;
-	Thu, 21 May 2009 12:45:19 +0200 (CEST)
-Received: from [192.168.1.189] (cac94-1-81-57-151-96.fbx.proxad.net [81.57.151.96])
-	by smtp6-g21.free.fr (Postfix) with ESMTP id 8323EE0807C;
-	Thu, 21 May 2009 12:45:16 +0200 (CEST)
-Message-ID: <4A1530BC.6010009@free.fr>
-Date:	Thu, 21 May 2009 12:45:16 +0200
-From:	matthieu castet <castet.matthieu@free.fr>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.19) Gecko/20081204 Iceape/1.1.14 (Debian-1.1.14-1)
+	id S20021318AbZEUMoC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 21 May 2009 13:44:02 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n4LChJdi025182;
+	Thu, 21 May 2009 13:43:19 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n4LChI8w025180;
+	Thu, 21 May 2009 13:43:18 +0100
+Date:	Thu, 21 May 2009 13:43:18 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	wuzhangjin@gmail.com
+Cc:	linux-mips@linux-mips.org, Yan hua <yanh@lemote.com>,
+	Philippe Vachon <philippe@cowpig.ca>,
+	Zhang Le <r0bertz@gentoo.org>,
+	Zhang Fuxin <zhangfx@lemote.com>,
+	Arnaud Patard <apatard@mandriva.com>,
+	loongson-dev@googlegroups.com, gnewsense-dev@nongnu.org,
+	Nicholas Mc Guire <hofrat@hofr.at>,
+	Liu Junliang <liujl@lemote.com>,
+	Erwan Lerale <erwan@thiscow.com>
+Subject: Re: [loongson-PATCH-v1 22/27] Hibernation Support in mips system
+Message-ID: <20090521124318.GC19476@linux-mips.org>
+References: <cover.1242855716.git.wuzhangjin@gmail.com> <817be0da759e19d781e98237cc70efeb33f10a40.1242855716.git.wuzhangjin@gmail.com>
 MIME-Version: 1.0
-To:	Michael Buesch <mb@bu3sch.de>
-CC:	Ralf Baechle <ralf@linux-mips.org>,
-	"John W. Linville" <linville@tuxdriver.com>,
-	linux-mips@linux-mips.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] bc47xx : export ssb_watchdog_timer_set
-References: <4A11DCBF.9000700@free.fr> <20090519173503.GD2691@tuxdriver.com> <20090520071513.GB24231@linux-mips.org> <200905201549.16154.mb@bu3sch.de>
-In-Reply-To: <200905201549.16154.mb@bu3sch.de>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <castet.matthieu@free.fr>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <817be0da759e19d781e98237cc70efeb33f10a40.1242855716.git.wuzhangjin@gmail.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22908
+X-archive-position: 22909
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: castet.matthieu@free.fr
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Thu, May 21, 2009 at 06:11:11AM +0800, wuzhangjin@gmail.com wrote:
 
-Michael Buesch wrote:
-> On Wednesday 20 May 2009 09:15:13 Ralf Baechle wrote:
-> 
-> 
-> Ok, nice. :)
-> Matthieu, can you resend them to Ralf? He doesn't have them, yet.
-> 
-Off course.
+This patch does no longer apply.  When submitting new code please always
+base it on the latest development kernel.  Any -stable kernel will probably
+be too old.
 
-BTW what's the procedure for submitting patch on mips ?
-I already CC linux-mips, on the first patch submission.
-Now that it is acked by maintainer, I should resend it to linux-mips + 
-Ralf ?
+Can you rebase this patch to the master branch of linux-mips.org and
+re-submit?  Thanks!
 
-
-Thanks
-
-Matthieu
+  Ralf

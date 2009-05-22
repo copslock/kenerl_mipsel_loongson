@@ -1,88 +1,114 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2009 02:19:17 +0100 (BST)
-Received: from rex.securecomputing.com ([203.24.151.4]:39114 "EHLO
-	cyberguard.com.au" rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org
-	with ESMTP id S20023917AbZEVBTK (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 22 May 2009 02:19:10 +0100
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by bne.snapgear.com (Postfix) with ESMTP id 4B699EBBA8;
-	Fri, 22 May 2009 11:19:02 +1000 (EST)
-X-Virus-Scanned: amavisd-new at snapgear.com
-Received: from bne.snapgear.com ([127.0.0.1])
-	by localhost (bne.snapgear.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id nVvdTGjyhIH7; Fri, 22 May 2009 11:19:01 +1000 (EST)
-Received: from [10.46.12.2] (unknown [10.46.12.2])
-	by bne.snapgear.com (Postfix) with ESMTP;
-	Fri, 22 May 2009 11:19:01 +1000 (EST)
-Message-ID: <4A15FD84.8050505@snapgear.com>
-Date:	Fri, 22 May 2009 11:19:00 +1000
-From:	Greg Ungerer <gerg@snapgear.com>
-User-Agent: Thunderbird 2.0.0.19 (X11/20090105)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2009 06:03:44 +0100 (BST)
+Received: from mail-ew0-f171.google.com ([209.85.219.171]:58903 "EHLO
+	mail-ew0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20021528AbZEVFDi convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 22 May 2009 06:03:38 +0100
+Received: by ewy19 with SMTP id 19so1780753ewy.0
+        for <multiple recipients>; Thu, 21 May 2009 22:03:32 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:from:to:subject:date
+         :user-agent:cc:references:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:content-disposition:message-id;
+        bh=PBtKn+6SQNqYhd4zIPogk/mNNvcT2dxTOJyd8Dg1zaE=;
+        b=Xl3daGEiLblMmQ0lJW8eev6ZSXQ/Laeg2q0EoLy5SvQ4yDRXnmMJRaOk3noqwVb4O9
+         y4iHdZSP+gE/J4b2IU5Xobfv4x1HdciFeXJwYXnUDGyOiEWnoL9FUBiAg9IBYZykUaEu
+         6Q+MjEgvpDldi0WyEG8nBMHiudR9wEyicEZh0=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
+         :mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id;
+        b=oP0xe+QLPbWasGzcMRtF8WLLdEJwbv3vbf+mQEWnf4cx12yvGryBCUp8cAqGSFzqlY
+         CAUK42/vBoKLpa+uvvQJQxMERhDvyk9L3Fm0lBe+OmNTiXVmKF/QP58h77dg9ZSKO+/D
+         h2isH9h0lqaGLcoXY7SRYA1Z6Saz7g+rsWTPg=
+Received: by 10.210.20.6 with SMTP id 6mr303474ebt.72.1242968612916;
+        Thu, 21 May 2009 22:03:32 -0700 (PDT)
+Received: from ?192.168.1.22? (207.130.195-77.rev.gaoland.net [77.195.130.207])
+        by mx.google.com with ESMTPS id 7sm1100484eyg.57.2009.05.21.22.03.30
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 21 May 2009 22:03:32 -0700 (PDT)
+From:	Florian Fainelli <florian@openwrt.org>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Subject: Re: [PATCH 2/2] rb532: check irq number when handling GPIO interrupts
+Date:	Fri, 22 May 2009 07:03:28 +0200
+User-Agent: KMail/1.9.9
+Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+References: <200905211949.47486.florian@openwrt.org> <4A15A2DD.2000203@ru.mvista.com>
+In-Reply-To: <4A15A2DD.2000203@ru.mvista.com>
 MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-CC:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: system lockup with 2.6.29 on Cavium/Octeon
-References: <4A139F50.7050409@snapgear.com>	<20090520142604.GA29677@linux-mips.org> <20090521.235020.173372074.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20090521.235020.173372074.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <gerg@snapgear.com>
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Message-Id: <200905220703.28939.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22920
+X-archive-position: 22921
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gerg@snapgear.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Atsushi,
+Le Thursday 21 May 2009 20:52:13 Sergei Shtylyov, vous avez écrit :
+> Hello.
+>
+> Florian Fainelli wrote:
+> > This patch makes sure that we are not going to clear
+> > or change the interrupt status of a GPIO interrupt
+> > superior to 13 as this is the maximum number of GPIO
+> > interrupt source (p.232 of the RC32434 reference manual).
+> >
+> > Signed-off-by: Florian Fainelli <florian@openwrt.org>
+> > ---
+> > diff --git a/arch/mips/rb532/irq.c b/arch/mips/rb532/irq.c
+> > index 53eeb5e..afdcafc 100644
+> > --- a/arch/mips/rb532/irq.c
+> > +++ b/arch/mips/rb532/irq.c
+> > @@ -151,7 +151,8 @@ static void rb532_disable_irq(unsigned int irq_nr)
+> >  		mask |= intr_bit;
+> >  		WRITE_MASK(addr, mask);
+> >
+> > -		if (group == GPIO_MAPPED_IRQ_GROUP)
+> > +		/* There is a maximum of 13 GPIO interrupts */
+> > +		if (group == GPIO_MAPPED_IRQ_GROUP && irq_nr <= (GROUP4_IRQ_BASE +
+> > 13))
+>
+>     So, 13 or 14? The code seem to allow 14. Probably it should be <, not
+> <= here...
 
-Atsushi Nemoto wrote:
-> On Wed, 20 May 2009 15:26:04 +0100, Ralf Baechle <ralf@linux-mips.org> wrote:
->>> Now the vmalloc area starts at 0xc000000000000000 and the kernel code
->>> and data is all at 0xffffffff80000000 and above. I don't know if the
->>> start and end are reasonable values, but I can see some logic as to
->>> where they come from. The code path that leads to this is via
->>> __vunmap() and __purge_vmap_area_lazy(). So it is not too difficult
->>> to see how we end up with values like this.
->> Either start or end address is sensible but not the combination - both
->> addresses should be in the same segment.  Start is in XKSEG, end in CKSEG2
->> and in between there are vast wastelands of unused address space exabytes
->> in size.
->>
->>> But the size calculation above with these types of values will result
->>> in still a large number. Larger than the 32bit "int" that is "size".
->>> I see large negative values fall out as size, and so the following
->>> tlbsize check becomes true, and the code spins inside the loop inside
->>> that if statement for a _very_ long time trying to flush tlb entries.
->>>
->>> This is of course easily fixed, by making that size "unsigned long".
->>> The patch below trivially does this.
->>>
->>> But is this analysis correct?
->> Yes - but I think we have two issues here.  The one is the calculation
->> overflowing int for the arguments you're seeing.  The other being that
->> the arguments simply are looking wrong.
-> 
-> The wrong combination comes from lazy vunmapping which was introduced
-> in 2.6.28 cycle.  Maybe we can add new API (non-lazy version of
-> vfree()) to vmalloc.c to implement module_free(), but I suppose
-> fallbacking to local_flush_tlb_all() in local_flush_tlb_kernel_range()
-> is enough().
+That's actually 14, numbering starting from 0, I should learn how to count. 
+Ralf, do you want me to resubmit that one with the proper message / 
+descriptions ?
 
-Is there any performance impact on falling back to that?
-
-The flushing due to lazy vunmapping didn't seem to happen
-often in the tests I was running.
-
-Regards
-Greg
+>
+> >  			rb532_gpio_set_istat(0, irq_nr - GPIO_MAPPED_IRQ_BASE);
+> >
+> >  		/*
+> > @@ -174,7 +175,7 @@ static int rb532_set_type(unsigned int irq_nr,
+> > unsigned type) int gpio = irq_nr - GPIO_MAPPED_IRQ_BASE;
+> >  	int group = irq_to_group(irq_nr);
+> >
+> > -	if (group != GPIO_MAPPED_IRQ_GROUP)
+> > +	if (group != GPIO_MAPPED_IRQ_GROUP || irq_nr > (GROUP4_IRQ_BASE + 13))
+>
+>     ... and >= here.
+>
+> >  		return (type == IRQ_TYPE_LEVEL_HIGH) ? 0 : -EINVAL;
+> >
+> >  	switch (type) {
+>
+> WBR, Sergei
 
 
-------------------------------------------------------------------------
-Greg Ungerer  --  Principal Engineer        EMAIL:     gerg@snapgear.com
-SnapGear Group, McAfee                      PHONE:       +61 7 3435 2888
-825 Stanley St,                             FAX:         +61 7 3891 3630
-Woolloongabba, QLD, 4102, Australia         WEB: http://www.SnapGear.com
+
+-- 
+Best regards, Florian Fainelli
+Email : florian@openwrt.org
+http://openwrt.org
+-------------------------------

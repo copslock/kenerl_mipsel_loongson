@@ -1,42 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2009 21:24:48 +0100 (BST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2009 21:25:13 +0100 (BST)
 Received: from fg-out-1718.google.com ([72.14.220.152]:32772 "EHLO
 	fg-out-1718.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20022517AbZEVUYj (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 22 May 2009 21:24:39 +0100
+	with ESMTP id S20022550AbZEVUZE (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 22 May 2009 21:25:04 +0100
 Received: by fg-out-1718.google.com with SMTP id 22so767795fge.9
-        for <linux-mips@linux-mips.org>; Fri, 22 May 2009 13:24:38 -0700 (PDT)
+        for <linux-mips@linux-mips.org>; Fri, 22 May 2009 13:25:03 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
         h=domainkey-signature:received:received:sender:from:to:cc:subject
-         :date:message-id:x-mailer;
-        bh=AblUFA2zqk3ke9hoTLAS28H94kKcPmVEw/4lPvq/caU=;
-        b=gxeI8PIHuJ80xl3mGyu7oE7lGGfvmJ8JiCD4muWdvWtCYk+/4EBVinwVzXr6nPQfOW
-         bf5cdSZSuA1ZE2oGwoZOGy2kkusIYtcoP9YIfH8frm4jwndBKtrzm1qdHHx2HmFQ3uS9
-         MMTmPoy1Vj6DYT+aON9zegsA80jXDUNQbRqq4=
+         :date:message-id:x-mailer:in-reply-to:references;
+        bh=I53Yasc6m+107I7PApBJqspW0vxYrkmnU2YmveuXNv4=;
+        b=QVzHiYCLN9TMJAeBHc2+VbIjWfOQFr7KGRwP+yHQPAXPXUYSF7OzYsHMlv20w1Dcqj
+         59jWHW3rjGVQPTi6R7GNjetKSCOe9EcGDsOTkuTpNveREjb8q1WfUCuUz+Fb/l70pQOq
+         U/1MhIRVTC8b/uJkTR8L6+LhW0wxgJQHGhk1g=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=googlemail.com; s=gamma;
-        h=sender:from:to:cc:subject:date:message-id:x-mailer;
-        b=RXPv0uN5cOYj09D78lEboCq15ohLwJOSyicGXCvE0sYUWJgU99b8warUMntADgyok5
-         L7JY9nOrtpbShEx1WqknE2Hdehl8YW4doUixTiKqLzgcS4AbAcYJ6Dyxl8CFLY8r+bM5
-         uWk/Y7W7bA8lRg1DEM2yEiD9UXD+ae92G3g/Q=
-Received: by 10.86.82.17 with SMTP id f17mr3451394fgb.65.1243023878848;
-        Fri, 22 May 2009 13:24:38 -0700 (PDT)
+        h=sender:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
+         :references;
+        b=TIBACaphIxqms0CIq0l2VBjHpcaR4rUBRMIQmKvqXHMbD+RWT7iL2KDHXxW9c6Fbj4
+         qhB7HorE8pgAqnLncWA09YOMrcEMGttQ8Puq6OKYPjJJ9iDuCnSoFDhuCgyT9+5WWTV/
+         eOBZDk9YYZMtL0zGZVTH2OtubLunqbcFqX0Pg=
+Received: by 10.86.59.18 with SMTP id h18mr3410019fga.44.1243023903612;
+        Fri, 22 May 2009 13:25:03 -0700 (PDT)
 Received: from localhost.localdomain (fnoeppeil48.netpark.at [217.175.205.176])
-        by mx.google.com with ESMTPS id 4sm1527278fge.13.2009.05.22.13.24.37
+        by mx.google.com with ESMTPS id e11sm1529337fga.11.2009.05.22.13.25.02
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 22 May 2009 13:24:37 -0700 (PDT)
+        Fri, 22 May 2009 13:25:02 -0700 (PDT)
 From:	Manuel Lauss <mano@roarinelk.homelinux.net>
 To:	Linux-MIPS <linux-mips@linux-mips.org>
 Cc:	Manuel Lauss <mano@roarinelk.homelinux.net>
-Subject: [PATCH] Alchemy: get rid of allow_au1k_wait
-Date:	Fri, 22 May 2009 22:24:18 +0200
-Message-Id: <1243023858-10286-1-git-send-email-mano@roarinelk.homelinux.net>
+Subject: [PATCH 2/4] Alchemy: remove unused au1000_gpio.h header
+Date:	Fri, 22 May 2009 22:24:57 +0200
+Message-Id: <1243023899-10343-2-git-send-email-mano@roarinelk.homelinux.net>
 X-Mailer: git-send-email 1.6.3.1
+In-Reply-To: <1243023899-10343-1-git-send-email-mano@roarinelk.homelinux.net>
+References: <1243023899-10343-1-git-send-email-mano@roarinelk.homelinux.net>
 Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22928
+X-archive-position: 22929
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,84 +47,73 @@ X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-Eliminate the 'allow_au1k_wait' variable.  MIPS kernel installs the
-Alchemy-specific wait code before timer initialization;  if the C0
-timer must be used for timekeeping the wait function is set to NULL
-which means no wait implementation is available.
-
-This also corrects the 'wait instruction available' output in cpuinfo.
-
-Run-tested on DB1200.
-
 Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
 ---
- arch/mips/alchemy/common/time.c |   14 ++++++++------
- arch/mips/kernel/cpu-probe.c    |   10 +++-------
- 2 files changed, 11 insertions(+), 13 deletions(-)
+ arch/mips/include/asm/mach-au1x00/au1000_gpio.h |   56 -----------------------
+ 1 files changed, 0 insertions(+), 56 deletions(-)
+ delete mode 100644 arch/mips/include/asm/mach-au1x00/au1000_gpio.h
 
-diff --git a/arch/mips/alchemy/common/time.c b/arch/mips/alchemy/common/time.c
-index 33fbae7..9fc0d44 100644
---- a/arch/mips/alchemy/common/time.c
-+++ b/arch/mips/alchemy/common/time.c
-@@ -36,14 +36,13 @@
- #include <linux/interrupt.h>
- #include <linux/spinlock.h>
- 
-+#include <asm/processor.h>
- #include <asm/time.h>
- #include <asm/mach-au1x00/au1000.h>
- 
- /* 32kHz clock enabled and detected */
- #define CNTR_OK (SYS_CNTRL_E0 | SYS_CNTRL_32S)
- 
--extern int allow_au1k_wait; /* default off for CP0 Counter */
+diff --git a/arch/mips/include/asm/mach-au1x00/au1000_gpio.h b/arch/mips/include/asm/mach-au1x00/au1000_gpio.h
+deleted file mode 100644
+index d8c96fd..0000000
+--- a/arch/mips/include/asm/mach-au1x00/au1000_gpio.h
++++ /dev/null
+@@ -1,56 +0,0 @@
+-/*
+- * FILE NAME au1000_gpio.h
+- *
+- * BRIEF MODULE DESCRIPTION
+- *	API to Alchemy Au1xx0 GPIO device.
+- *
+- *  Author: MontaVista Software, Inc.  <source@mvista.com>
+- *          Steve Longerbeam
+- *
+- * Copyright 2001, 2008 MontaVista Software Inc.
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
 -
- static cycle_t au1x_counter1_read(struct clocksource *cs)
- {
- 	return au_readl(SYS_RTCREAD);
-@@ -153,13 +152,16 @@ void __init plat_time_init(void)
- 
- 	printk(KERN_INFO "Alchemy clocksource installed\n");
- 
--	/* can now use 'wait' */
--	allow_au1k_wait = 1;
- 	return;
- 
- cntr_err:
--	/* counters unusable, use C0 counter */
-+	/* MIPS kernel assigns 'au1k_wait' to 'cpu_wait' before this
-+	 * function is called.  Because the Alchemy counters are unusable
-+	 * the C0 timekeeping code is installed and use of the 'wait'
-+	 * instruction must be prohibited, which is done most easily by
-+	 * assigning NULL to cpu_wait.
-+	 */
-+	cpu_wait = NULL;
- 	r4k_clockevent_init();
- 	init_r4k_clocksource();
--	allow_au1k_wait = 0;
- }
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index b13b8eb..262ea9c 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -91,15 +91,11 @@ static void rm7k_wait_irqoff(void)
- }
- 
- /* The Au1xxx wait is available only if using 32khz counter or
-- * external timer source, but specifically not CP0 Counter. */
--int allow_au1k_wait;
+-#ifndef __AU1000_GPIO_H
+-#define __AU1000_GPIO_H
 -
-+ * external timer source, but specifically not CP0 Counter.
-+ * alchemy/common/time.c may override cpu_wait!
-+ */
- static void au1k_wait(void)
- {
--	if (!allow_au1k_wait)
--		return;
+-#include <linux/ioctl.h>
 -
--	/* using the wait instruction makes CP0 counter unusable */
- 	__asm__("	.set	mips3			\n"
- 		"	cache	0x14, 0(%0)		\n"
- 		"	cache	0x14, 32(%0)		\n"
+-#define AU1000GPIO_IOC_MAGIC 'A'
+-
+-#define AU1000GPIO_IN		_IOR(AU1000GPIO_IOC_MAGIC, 0, int)
+-#define AU1000GPIO_SET		_IOW(AU1000GPIO_IOC_MAGIC, 1, int)
+-#define AU1000GPIO_CLEAR	_IOW(AU1000GPIO_IOC_MAGIC, 2, int)
+-#define AU1000GPIO_OUT		_IOW(AU1000GPIO_IOC_MAGIC, 3, int)
+-#define AU1000GPIO_TRISTATE	_IOW(AU1000GPIO_IOC_MAGIC, 4, int)
+-#define AU1000GPIO_AVAIL_MASK	_IOR(AU1000GPIO_IOC_MAGIC, 5, int)
+-
+-#ifdef __KERNEL__
+-extern u32 get_au1000_avail_gpio_mask(void);
+-extern int au1000gpio_tristate(u32 data);
+-extern int au1000gpio_in(u32 *data);
+-extern int au1000gpio_set(u32 data);
+-extern int au1000gpio_clear(u32 data);
+-extern int au1000gpio_out(u32 data);
+-#endif
+-
+-#endif
 -- 
 1.6.3.1

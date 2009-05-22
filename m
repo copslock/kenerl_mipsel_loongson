@@ -1,131 +1,127 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2009 19:55:58 +0100 (BST)
-Received: from mail-fx0-f175.google.com ([209.85.220.175]:38160 "EHLO
-	mail-fx0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20022352AbZEVSzu (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 22 May 2009 19:55:50 +0100
-Received: by fxm23 with SMTP id 23so1941923fxm.0
-        for <multiple recipients>; Fri, 22 May 2009 11:55:44 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2009 21:24:48 +0100 (BST)
+Received: from fg-out-1718.google.com ([72.14.220.152]:32772 "EHLO
+	fg-out-1718.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20022517AbZEVUYj (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 22 May 2009 21:24:39 +0100
+Received: by fg-out-1718.google.com with SMTP id 22so767795fge.9
+        for <linux-mips@linux-mips.org>; Fri, 22 May 2009 13:24:38 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:subject:date
-         :user-agent:cc:references:in-reply-to:mime-version
-         :content-disposition:message-id:content-type
-         :content-transfer-encoding;
-        bh=nSx3uVvRBQCjFzyuGLS2BeUo5yKEoN7Xl3LVJYyJndk=;
-        b=rSt/4oPRWHRmwCYwpbtFEt8ACV+cqa4ZtsXXFlF5uOD+pbzdE7rkUMLTnyXpgLznSf
-         Il5Sj0QhTijq9/xA6DMqllNdQa4W0p13Xl9N4rk2OYCL1CsfzwKbhWZi+vPXy4CwCFh1
-         Tu5FY6N4U5n9WwPMjQFnUNYV79G9GVOrqCuqs=
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:from:to:cc:subject
+         :date:message-id:x-mailer;
+        bh=AblUFA2zqk3ke9hoTLAS28H94kKcPmVEw/4lPvq/caU=;
+        b=gxeI8PIHuJ80xl3mGyu7oE7lGGfvmJ8JiCD4muWdvWtCYk+/4EBVinwVzXr6nPQfOW
+         bf5cdSZSuA1ZE2oGwoZOGy2kkusIYtcoP9YIfH8frm4jwndBKtrzm1qdHHx2HmFQ3uS9
+         MMTmPoy1Vj6DYT+aON9zegsA80jXDUNQbRqq4=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:subject:date:user-agent:cc:references:in-reply-to
-         :mime-version:content-disposition:message-id:content-type
-         :content-transfer-encoding;
-        b=s9nkAtPSXKBtPKPlwRhyOdnVm24AKjodtGmUc9QZjQhdqaV+GKR4dHeDuks5Oo5/iE
-         qFX3mN68LfkCnOObmGaxDDswMeIj28Ha5TlpBAkCdgbqMJehL5zJX0TB9YvRC3DhTUSk
-         oqrkr9AQkOKT1/1LmY8R33IEBvivU0EzHQ7T4=
-Received: by 10.103.161.16 with SMTP id n16mr2159193muo.79.1243018544704;
-        Fri, 22 May 2009 11:55:44 -0700 (PDT)
-Received: from localhost.localdomain (chello089077051219.chello.pl [89.77.51.219])
-        by mx.google.com with ESMTPS id 25sm1343408mul.29.2009.05.22.11.55.39
+        d=googlemail.com; s=gamma;
+        h=sender:from:to:cc:subject:date:message-id:x-mailer;
+        b=RXPv0uN5cOYj09D78lEboCq15ohLwJOSyicGXCvE0sYUWJgU99b8warUMntADgyok5
+         L7JY9nOrtpbShEx1WqknE2Hdehl8YW4doUixTiKqLzgcS4AbAcYJ6Dyxl8CFLY8r+bM5
+         uWk/Y7W7bA8lRg1DEM2yEiD9UXD+ae92G3g/Q=
+Received: by 10.86.82.17 with SMTP id f17mr3451394fgb.65.1243023878848;
+        Fri, 22 May 2009 13:24:38 -0700 (PDT)
+Received: from localhost.localdomain (fnoeppeil48.netpark.at [217.175.205.176])
+        by mx.google.com with ESMTPS id 4sm1527278fge.13.2009.05.22.13.24.37
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 22 May 2009 11:55:42 -0700 (PDT)
-From:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
-To:	wuzhangjin@gmail.com
-Subject: Re: [loongson-PATCH-v1 24/27] fixup for FUJITSU disk
-Date:	Fri, 22 May 2009 20:32:54 +0200
-User-Agent: KMail/1.11.3 (Linux/2.6.30-rc6-next-20090518-05332-g0707b5a; KDE/4.2.3; i686; ; )
-Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-	"IDE/ATA development list" <linux-ide@vger.kernel.org>,
-	Linux Kernel <linux-kernel@vger.kernel.org>,
-	"linux-scsi" <linux-scsi@vger.kernel.org>,
-	Yan hua <yanh@lemote.com>,
-	Philippe Vachon <philippe@cowpig.ca>,
-	Zhang Le <r0bertz@gentoo.org>,
-	Zhang Fuxin <zhangfx@lemote.com>,
-	Arnaud Patard <apatard@mandriva.com>,
-	loongson-dev@googlegroups.com, gnewsense-dev@nongnu.org,
-	Nicholas Mc Guire <hofrat@hofr.at>,
-	Liu Junliang <liujl@lemote.com>,
-	Erwan Lerale <erwan@thiscow.com>
-References: <cover.1242855716.git.wuzhangjin@gmail.com> <a998340033c8f89ec028b354ebe2956239144049.1242855716.git.wuzhangjin@gmail.com>
-In-Reply-To: <a998340033c8f89ec028b354ebe2956239144049.1242855716.git.wuzhangjin@gmail.com>
-MIME-Version: 1.0
-Content-Disposition: inline
-Message-Id: <200905222032.55869.bzolnier@gmail.com>
-Content-Type: Text/Plain;
-  charset="iso-8859-15"
-Content-Transfer-Encoding: 7bit
-Return-Path: <bzolnier@gmail.com>
+        Fri, 22 May 2009 13:24:37 -0700 (PDT)
+From:	Manuel Lauss <mano@roarinelk.homelinux.net>
+To:	Linux-MIPS <linux-mips@linux-mips.org>
+Cc:	Manuel Lauss <mano@roarinelk.homelinux.net>
+Subject: [PATCH] Alchemy: get rid of allow_au1k_wait
+Date:	Fri, 22 May 2009 22:24:18 +0200
+Message-Id: <1243023858-10286-1-git-send-email-mano@roarinelk.homelinux.net>
+X-Mailer: git-send-email 1.6.3.1
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22927
+X-archive-position: 22928
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: bzolnier@gmail.com
+X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
-On Thursday 21 May 2009 00:12:46 wuzhangjin@gmail.com wrote:
-> From: Wu Zhangjin <wuzhangjin@gmail.com>
-> 
-> This is originally from the to-mips branch from
-> http://dev.lemote.com/code/linux_loongson
+Eliminate the 'allow_au1k_wait' variable.  MIPS kernel installs the
+Alchemy-specific wait code before timer initialization;  if the C0
+timer must be used for timekeeping the wait function is set to NULL
+which means no wait implementation is available.
 
-Sadly, the patch description lacks all the important information.
+This also corrects the 'wait instruction available' output in cpuinfo.
 
-What is the original problem that this fixup tries to address?
+Run-tested on DB1200.
 
-Is it limited to amd74xx controllers?
+Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
+---
+ arch/mips/alchemy/common/time.c |   14 ++++++++------
+ arch/mips/kernel/cpu-probe.c    |   10 +++-------
+ 2 files changed, 11 insertions(+), 13 deletions(-)
 
-[ We are generalizing quirk_drives handling currently... ]
-
-> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
-> ---
->  drivers/ide/amd74xx.c |   19 +++++++++++++++++++
->  1 files changed, 19 insertions(+), 0 deletions(-)
-> 
-> diff --git a/drivers/ide/amd74xx.c b/drivers/ide/amd74xx.c
-> index 77267c8..8f488b8 100644
-> --- a/drivers/ide/amd74xx.c
-> +++ b/drivers/ide/amd74xx.c
-> @@ -23,6 +23,11 @@
->  
->  #define DRV_NAME "amd74xx"
->  
-> +static const char *am74xx_quirk_drives[] = {
-> +	"FUJITSU MHZ2160BH G2",
-> +	NULL
-> +};
-> +
->  enum {
->  	AMD_IDE_CONFIG		= 0x41,
->  	AMD_CABLE_DETECT	= 0x42,
-> @@ -112,6 +117,19 @@ static void amd_set_pio_mode(ide_drive_t *drive, const u8 pio)
->  	amd_set_drive(drive, XFER_PIO_0 + pio);
->  }
->  
-> +static void amd_quirkproc(ide_drive_t *drive)
-> +{
-> +	const char **list, *m = (char *)&drive->id[ATA_ID_PROD];
-> +
-> +	for (list = am74xx_quirk_drives; *list != NULL; list++)
-> +			if (strstr(m, *list) != NULL) {
-> +				drive->quirk_list = 2;
-> +				return;
-> +			}
-> +
-> +	drive->quirk_list = 0;
-> +}
-> +
->  static void amd7409_cable_detect(struct pci_dev *dev)
->  {
->  	/* no host side cable detection */
-> @@ -194,6 +212,7 @@ static void __devinit init_hwif_amd74xx(ide_hwif_t *hwif)
->  static const struct ide_port_ops amd_port_ops = {
->  	.set_pio_mode		= amd_set_pio_mode,
->  	.set_dma_mode		= amd_set_drive,
-> +	.quirkproc		= amd_quirkproc,
->  	.cable_detect		= amd_cable_detect,
->  };
+diff --git a/arch/mips/alchemy/common/time.c b/arch/mips/alchemy/common/time.c
+index 33fbae7..9fc0d44 100644
+--- a/arch/mips/alchemy/common/time.c
++++ b/arch/mips/alchemy/common/time.c
+@@ -36,14 +36,13 @@
+ #include <linux/interrupt.h>
+ #include <linux/spinlock.h>
+ 
++#include <asm/processor.h>
+ #include <asm/time.h>
+ #include <asm/mach-au1x00/au1000.h>
+ 
+ /* 32kHz clock enabled and detected */
+ #define CNTR_OK (SYS_CNTRL_E0 | SYS_CNTRL_32S)
+ 
+-extern int allow_au1k_wait; /* default off for CP0 Counter */
+-
+ static cycle_t au1x_counter1_read(struct clocksource *cs)
+ {
+ 	return au_readl(SYS_RTCREAD);
+@@ -153,13 +152,16 @@ void __init plat_time_init(void)
+ 
+ 	printk(KERN_INFO "Alchemy clocksource installed\n");
+ 
+-	/* can now use 'wait' */
+-	allow_au1k_wait = 1;
+ 	return;
+ 
+ cntr_err:
+-	/* counters unusable, use C0 counter */
++	/* MIPS kernel assigns 'au1k_wait' to 'cpu_wait' before this
++	 * function is called.  Because the Alchemy counters are unusable
++	 * the C0 timekeeping code is installed and use of the 'wait'
++	 * instruction must be prohibited, which is done most easily by
++	 * assigning NULL to cpu_wait.
++	 */
++	cpu_wait = NULL;
+ 	r4k_clockevent_init();
+ 	init_r4k_clocksource();
+-	allow_au1k_wait = 0;
+ }
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index b13b8eb..262ea9c 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -91,15 +91,11 @@ static void rm7k_wait_irqoff(void)
+ }
+ 
+ /* The Au1xxx wait is available only if using 32khz counter or
+- * external timer source, but specifically not CP0 Counter. */
+-int allow_au1k_wait;
+-
++ * external timer source, but specifically not CP0 Counter.
++ * alchemy/common/time.c may override cpu_wait!
++ */
+ static void au1k_wait(void)
+ {
+-	if (!allow_au1k_wait)
+-		return;
+-
+-	/* using the wait instruction makes CP0 counter unusable */
+ 	__asm__("	.set	mips3			\n"
+ 		"	cache	0x14, 0(%0)		\n"
+ 		"	cache	0x14, 32(%0)		\n"
+-- 
+1.6.3.1

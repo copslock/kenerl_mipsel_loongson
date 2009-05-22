@@ -1,45 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2009 21:25:13 +0100 (BST)
-Received: from fg-out-1718.google.com ([72.14.220.152]:32772 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 22 May 2009 21:25:37 +0100 (BST)
+Received: from fg-out-1718.google.com ([72.14.220.157]:5818 "EHLO
 	fg-out-1718.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20022550AbZEVUZE (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 22 May 2009 21:25:04 +0100
-Received: by fg-out-1718.google.com with SMTP id 22so767795fge.9
-        for <linux-mips@linux-mips.org>; Fri, 22 May 2009 13:25:03 -0700 (PDT)
+	with ESMTP id S20022552AbZEVUZG (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 22 May 2009 21:25:06 +0100
+Received: by fg-out-1718.google.com with SMTP id d23so216707fga.9
+        for <linux-mips@linux-mips.org>; Fri, 22 May 2009 13:25:04 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
         h=domainkey-signature:received:received:sender:from:to:cc:subject
          :date:message-id:x-mailer:in-reply-to:references;
-        bh=I53Yasc6m+107I7PApBJqspW0vxYrkmnU2YmveuXNv4=;
-        b=QVzHiYCLN9TMJAeBHc2+VbIjWfOQFr7KGRwP+yHQPAXPXUYSF7OzYsHMlv20w1Dcqj
-         59jWHW3rjGVQPTi6R7GNjetKSCOe9EcGDsOTkuTpNveREjb8q1WfUCuUz+Fb/l70pQOq
-         U/1MhIRVTC8b/uJkTR8L6+LhW0wxgJQHGhk1g=
+        bh=jXB/X4zRKo9BHCsZ7SGogQMrtKaOwh4FBYkPycgmR38=;
+        b=AHbIREZL4mw5Ec10Iyar8aBunWeYlehMJ9wjJIVpaL9ULwoagPAe4574NeZ78xW8Yt
+         vDR4XXaJEtparqmtG2zqXhlAx2mbs7htD+an2M5WbiIMu9GYPLVUuXQuJ9kvu2ZkurMr
+         HzQrm4oJzldHZZCmbrtPr/GrY1O5fD8KXPen4=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=googlemail.com; s=gamma;
         h=sender:from:to:cc:subject:date:message-id:x-mailer:in-reply-to
          :references;
-        b=TIBACaphIxqms0CIq0l2VBjHpcaR4rUBRMIQmKvqXHMbD+RWT7iL2KDHXxW9c6Fbj4
-         qhB7HorE8pgAqnLncWA09YOMrcEMGttQ8Puq6OKYPjJJ9iDuCnSoFDhuCgyT9+5WWTV/
-         eOBZDk9YYZMtL0zGZVTH2OtubLunqbcFqX0Pg=
-Received: by 10.86.59.18 with SMTP id h18mr3410019fga.44.1243023903612;
-        Fri, 22 May 2009 13:25:03 -0700 (PDT)
+        b=KbWiMd8pCjdvjrCE+wEVbRuXM5CJsLEBw5+Up3xCqQm5uuOC+ZKGdzt+pYQrSaChxX
+         fiCPGOtcGNDmlujgjCVdmg4PM2ff1En6jbtBOMKV8oCSHfCBxMIvmQco/lCBYqwLwdio
+         q+Fd5i/gJqQh1OUc9yZ2xmv6pBYZ79GocYBWQ=
+Received: by 10.86.51.10 with SMTP id y10mr3425514fgy.51.1243023904284;
+        Fri, 22 May 2009 13:25:04 -0700 (PDT)
 Received: from localhost.localdomain (fnoeppeil48.netpark.at [217.175.205.176])
-        by mx.google.com with ESMTPS id e11sm1529337fga.11.2009.05.22.13.25.02
+        by mx.google.com with ESMTPS id e11sm1529337fga.11.2009.05.22.13.25.03
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 22 May 2009 13:25:02 -0700 (PDT)
+        Fri, 22 May 2009 13:25:03 -0700 (PDT)
 From:	Manuel Lauss <mano@roarinelk.homelinux.net>
 To:	Linux-MIPS <linux-mips@linux-mips.org>
 Cc:	Manuel Lauss <mano@roarinelk.homelinux.net>
-Subject: [PATCH 2/4] Alchemy: remove unused au1000_gpio.h header
-Date:	Fri, 22 May 2009 22:24:57 +0200
-Message-Id: <1243023899-10343-2-git-send-email-mano@roarinelk.homelinux.net>
+Subject: [PATCH 3/4] Alchemy: mtx-1: use linux gpio api.
+Date:	Fri, 22 May 2009 22:24:58 +0200
+Message-Id: <1243023899-10343-3-git-send-email-mano@roarinelk.homelinux.net>
 X-Mailer: git-send-email 1.6.3.1
-In-Reply-To: <1243023899-10343-1-git-send-email-mano@roarinelk.homelinux.net>
+In-Reply-To: <1243023899-10343-2-git-send-email-mano@roarinelk.homelinux.net>
 References: <1243023899-10343-1-git-send-email-mano@roarinelk.homelinux.net>
+ <1243023899-10343-2-git-send-email-mano@roarinelk.homelinux.net>
 Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22929
+X-archive-position: 22930
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,73 +48,74 @@ X-original-sender: mano@roarinelk.homelinux.net
 Precedence: bulk
 X-list: linux-mips
 
+Remove a few GPIO register accesses in the board init code with calls
+to the gpio api.
+
 Signed-off-by: Manuel Lauss <mano@roarinelk.homelinux.net>
 ---
- arch/mips/include/asm/mach-au1x00/au1000_gpio.h |   56 -----------------------
- 1 files changed, 0 insertions(+), 56 deletions(-)
- delete mode 100644 arch/mips/include/asm/mach-au1x00/au1000_gpio.h
+ arch/mips/alchemy/mtx-1/board_setup.c |   24 +++++++++++++-----------
+ 1 files changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-au1x00/au1000_gpio.h b/arch/mips/include/asm/mach-au1x00/au1000_gpio.h
-deleted file mode 100644
-index d8c96fd..0000000
---- a/arch/mips/include/asm/mach-au1x00/au1000_gpio.h
-+++ /dev/null
-@@ -1,56 +0,0 @@
--/*
-- * FILE NAME au1000_gpio.h
-- *
-- * BRIEF MODULE DESCRIPTION
-- *	API to Alchemy Au1xx0 GPIO device.
-- *
-- *  Author: MontaVista Software, Inc.  <source@mvista.com>
-- *          Steve Longerbeam
-- *
-- * Copyright 2001, 2008 MontaVista Software Inc.
-- *
-- *  This program is free software; you can redistribute  it and/or modify it
-- *  under  the terms of  the GNU General  Public License as published by the
-- *  Free Software Foundation;  either version 2 of the  License, or (at your
-- *  option) any later version.
-- *
-- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
-- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
-- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
-- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
-- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
-- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
-- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-- *
-- *  You should have received a copy of the  GNU General Public License along
-- *  with this program; if not, write  to the Free Software Foundation, Inc.,
-- *  675 Mass Ave, Cambridge, MA 02139, USA.
-- */
+diff --git a/arch/mips/alchemy/mtx-1/board_setup.c b/arch/mips/alchemy/mtx-1/board_setup.c
+index 8ed1ae1..3356a0d 100644
+--- a/arch/mips/alchemy/mtx-1/board_setup.c
++++ b/arch/mips/alchemy/mtx-1/board_setup.c
+@@ -28,6 +28,7 @@
+  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  */
+ 
++#include <linux/gpio.h>
+ #include <linux/init.h>
+ 
+ #include <asm/mach-au1x00/au1000.h>
+@@ -55,10 +56,11 @@ void __init board_setup(void)
+ 	}
+ #endif
+ 
++	alchemy_gpio2_enable();
++
+ #if defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE)
+ 	/* Enable USB power switch */
+-	au_writel(au_readl(GPIO2_DIR) | 0x10, GPIO2_DIR);
+-	au_writel(0x100000, GPIO2_OUTPUT);
++	alchemy_gpio_direction_output(4, 0);
+ #endif /* defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE) */
+ 
+ #ifdef CONFIG_PCI
+@@ -74,14 +76,14 @@ void __init board_setup(void)
+ 
+ 	/* Initialize GPIO */
+ 	au_writel(0xFFFFFFFF, SYS_TRIOUTCLR);
+-	au_writel(0x00000001, SYS_OUTPUTCLR); /* set M66EN (PCI 66MHz) to OFF */
+-	au_writel(0x00000008, SYS_OUTPUTSET); /* set PCI CLKRUN# to OFF */
+-	au_writel(0x00000002, SYS_OUTPUTSET); /* set EXT_IO3 ON */
+-	au_writel(0x00000020, SYS_OUTPUTCLR); /* set eth PHY TX_ER to OFF */
++	alchemy_gpio_direction_output(0, 0);	/* set M66EN (PCI 66MHz) to OFF */
++	alchemy_gpio_direction_output(3, 1);	/* set PCI CLKRUN# to OFF */
++	alchemy_gpio_direction_output(1, 1);	/* set EXT_IO3 ON */
++	alchemy_gpio_direction_output(5, 0);	/* set eth PHY TX_ER to OFF */
+ 
+ 	/* Enable LED and set it to green */
+-	au_writel(au_readl(GPIO2_DIR) | 0x1800, GPIO2_DIR);
+-	au_writel(0x18000800, GPIO2_OUTPUT);
++	alchemy_gpio_direction_output(211, 1);	/* green on */
++	alchemy_gpio_direction_output(212, 0);	/* red off */
+ 
+ 	board_pci_idsel = mtx1_pci_idsel;
+ 
+@@ -101,10 +103,10 @@ mtx1_pci_idsel(unsigned int devsel, int assert)
+ 
+ 	if (assert && devsel != 0)
+ 		/* Suppress signal to Cardbus */
+-		au_writel(0x00000002, SYS_OUTPUTCLR); /* set EXT_IO3 OFF */
++		gpio_set_value(1, 0);	/* set EXT_IO3 OFF */
+ 	else
+-		au_writel(0x00000002, SYS_OUTPUTSET); /* set EXT_IO3 ON */
++		gpio_set_value(1, 1);	/* set EXT_IO3 ON */
++
+ 	au_sync_udelay(1);
+ 	return 1;
+ }
 -
--#ifndef __AU1000_GPIO_H
--#define __AU1000_GPIO_H
--
--#include <linux/ioctl.h>
--
--#define AU1000GPIO_IOC_MAGIC 'A'
--
--#define AU1000GPIO_IN		_IOR(AU1000GPIO_IOC_MAGIC, 0, int)
--#define AU1000GPIO_SET		_IOW(AU1000GPIO_IOC_MAGIC, 1, int)
--#define AU1000GPIO_CLEAR	_IOW(AU1000GPIO_IOC_MAGIC, 2, int)
--#define AU1000GPIO_OUT		_IOW(AU1000GPIO_IOC_MAGIC, 3, int)
--#define AU1000GPIO_TRISTATE	_IOW(AU1000GPIO_IOC_MAGIC, 4, int)
--#define AU1000GPIO_AVAIL_MASK	_IOR(AU1000GPIO_IOC_MAGIC, 5, int)
--
--#ifdef __KERNEL__
--extern u32 get_au1000_avail_gpio_mask(void);
--extern int au1000gpio_tristate(u32 data);
--extern int au1000gpio_in(u32 *data);
--extern int au1000gpio_set(u32 data);
--extern int au1000gpio_clear(u32 data);
--extern int au1000gpio_out(u32 data);
--#endif
--
--#endif
 -- 
 1.6.3.1

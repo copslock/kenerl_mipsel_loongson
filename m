@@ -1,42 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 May 2009 08:12:38 +0100 (BST)
-Received: from [222.92.8.141] ([222.92.8.141]:42267 "EHLO lemote.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 23 May 2009 09:07:15 +0100 (BST)
+Received: from [222.92.8.141] ([222.92.8.141]:40742 "EHLO lemote.com"
 	rhost-flags-FAIL-FAIL-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20021740AbZEWHMT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 23 May 2009 08:12:19 +0100
+	id S20021991AbZEWIHI (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 23 May 2009 09:07:08 +0100
 Received: from localhost (localhost [127.0.0.1])
-	by lemote.com (Postfix) with ESMTP id 7677C340BC;
-	Sat, 23 May 2009 15:07:15 +0800 (CST)
+	by lemote.com (Postfix) with ESMTP id 597BE340BD;
+	Sat, 23 May 2009 16:02:06 +0800 (CST)
 X-Virus-Scanned: Debian amavisd-new at lemote.com
 Received: from lemote.com ([127.0.0.1])
 	by localhost (www.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id zrFCSND66orc; Sat, 23 May 2009 15:06:55 +0800 (CST)
+	with ESMTP id ah5YhwIcl85E; Sat, 23 May 2009 16:01:51 +0800 (CST)
 Received: from [172.16.2.17] (unknown [222.92.8.142])
-	by lemote.com (Postfix) with ESMTP id 70B89340BB;
-	Sat, 23 May 2009 15:06:54 +0800 (CST)
-Subject: Re: [loongson-PATCH-v1 24/27] fixup for FUJITSU disk
+	by lemote.com (Postfix) with ESMTP id 51C88340BC;
+	Sat, 23 May 2009 16:01:51 +0800 (CST)
+Subject: Re: [loongson-PATCH-v1 22/27] Hibernation Support in mips system
 From:	yanh <yanh@lemote.com>
 Reply-To: yanh@lemote.com
-To:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 Cc:	wuzhangjin@gmail.com, linux-mips@linux-mips.org,
-	Ralf Baechle <ralf@linux-mips.org>,
-	IDE/ATA development list <linux-ide@vger.kernel.org>,
-	Linux Kernel <linux-kernel@vger.kernel.org>,
-	linux-scsi <linux-scsi@vger.kernel.org>,
-	Philippe Vachon <philippe@cowpig.ca>,
-	Zhang Le <r0bertz@gentoo.org>,
-	Zhang Fuxin <zhangfx@lemote.com>,
-	Arnaud Patard <apatard@mandriva.com>,
+	ralf@linux-mips.org, philippe@cowpig.ca, r0bertz@gentoo.org,
+	zhangfx@lemote.com, apatard@mandriva.com,
 	loongson-dev@googlegroups.com, gnewsense-dev@nongnu.org,
-	Nicholas Mc Guire <hofrat@hofr.at>,
-	Liu Junliang <liujl@lemote.com>,
-	Erwan Lerale <erwan@thiscow.com>
-In-Reply-To: <200905222032.55869.bzolnier@gmail.com>
+	hofrat@hofr.at, liujl@lemote.com, erwan@thiscow.com
+In-Reply-To: <20090522.220123.59650403.anemo@mba.ocn.ne.jp>
 References: <cover.1242855716.git.wuzhangjin@gmail.com>
-	 <a998340033c8f89ec028b354ebe2956239144049.1242855716.git.wuzhangjin@gmail.com>
-	 <200905222032.55869.bzolnier@gmail.com>
+	 <817be0da759e19d781e98237cc70efeb33f10a40.1242855716.git.wuzhangjin@gmail.com>
+	 <20090522.220123.59650403.anemo@mba.ocn.ne.jp>
 Content-Type: text/plain; charset="UTF-8"
-Date:	Sat, 23 May 2009 15:11:42 +0800
-Message-Id: <1243062702.8509.7.camel@localhost.localdomain>
+Date:	Sat, 23 May 2009 16:06:43 +0800
+Message-Id: <1243066003.8509.60.camel@localhost.localdomain>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.24.1 (2.24.1-2.fc10) 
 Content-Transfer-Encoding: 8bit
@@ -44,7 +36,7 @@ Return-Path: <yanh@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22939
+X-archive-position: 22940
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,77 +44,92 @@ X-original-sender: yanh@lemote.com
 Precedence: bulk
 X-list: linux-mips
 
-在 2009-05-22五的 20:32 +0200，Bartlomiej Zolnierkiewicz写道：
-> On Thursday 21 May 2009 00:12:46 wuzhangjin@gmail.com wrote:
-> > From: Wu Zhangjin <wuzhangjin@gmail.com>
-> > 
-> > This is originally from the to-mips branch from
-> > http://dev.lemote.com/code/linux_loongson
-> 
-> Sadly, the patch description lacks all the important information.
-> 
-> What is the original problem that this fixup tries to address?
-> 
-> Is it limited to amd74xx controllers?
-
-In loongson2f yeeloong machines, the ide controller is AMD cs5536, or
-say  amd74xx, and the hard drives is Fujistu. 
-While debuging the hard disk suspned and resume, the ide irq can not be
-cleared. I guess this is a fake interrupt, hence the clear irq action
-can not be finished. 
-This patch is to fix this issue. Maybe other controller and drives also
-have this issue, but I am not sure.
-
-Thanks for your reply.  
-> 
-> [ We are generalizing quirk_drives handling currently... ]
-> 
-> > Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
-> > ---
-> >  drivers/ide/amd74xx.c |   19 +++++++++++++++++++
-> >  1 files changed, 19 insertions(+), 0 deletions(-)
-> > 
-> > diff --git a/drivers/ide/amd74xx.c b/drivers/ide/amd74xx.c
-> > index 77267c8..8f488b8 100644
-> > --- a/drivers/ide/amd74xx.c
-> > +++ b/drivers/ide/amd74xx.c
-> > @@ -23,6 +23,11 @@
-> >  
-> >  #define DRV_NAME "amd74xx"
-> >  
-> > +static const char *am74xx_quirk_drives[] = {
-> > +	"FUJITSU MHZ2160BH G2",
-> > +	NULL
-> > +};
+在 2009-05-22五的 22:01 +0900，Atsushi Nemoto写道：
+> On Thu, 21 May 2009 06:11:11 +0800, wuzhangjin@gmail.com wrote:
+> > --- /dev/null
+> > +++ b/arch/mips/power/cpu.c
+> > @@ -0,0 +1,51 @@
+> > +/*
+> > + * Suspend support specific for mips.
+> > + *
+> > + */
+> > +#include <linux/mm.h>
+> > +#include <asm/mipsregs.h>
+> > +#include <asm/page.h>
+> > +#include <linux/suspend.h>
 > > +
-> >  enum {
-> >  	AMD_IDE_CONFIG		= 0x41,
-> >  	AMD_CABLE_DETECT	= 0x42,
-> > @@ -112,6 +117,19 @@ static void amd_set_pio_mode(ide_drive_t *drive, const u8 pio)
-> >  	amd_set_drive(drive, XFER_PIO_0 + pio);
-> >  }
-> >  
-> > +static void amd_quirkproc(ide_drive_t *drive)
+> > +/* References to section boundaries */
+> > +extern const void __nosave_begin, __nosave_end;
+> > +
+> > +static uint32_t saved_status;
+> > +unsigned long
+> > +	saved_ra,
+> > +	saved_sp,
+> > +	saved_fp,
+> > +	saved_gp,
+> > +	saved_s0,
+> > +	saved_s1,
+> > +	saved_s2,
+> > +	saved_s3,
+> > +	saved_s4,
+> > +	saved_s5,
+> > +	saved_s6,
+> > +	saved_s7,
+> > +	saved_a0,
+> > +	saved_a1,
+> > +	saved_a2,
+> > +	saved_a3,
+> > +	saved_v0,
+> > +	saved_v1;
+> 
+> Instead of enumerating them, I would prefer something like "struct
+> pt_regs saved_regs" or "unsigned long saved_regs[32]".
+This implementation is referencing the x86 platform. 
+Not all the 32 reigsters are needed to save. 
+Maybe the whole registers needed to save can still be reduced.
+> 
+> > +void save_processor_state(void)
 > > +{
-> > +	const char **list, *m = (char *)&drive->id[ATA_ID_PROD];
-> > +
-> > +	for (list = am74xx_quirk_drives; *list != NULL; list++)
-> > +			if (strstr(m, *list) != NULL) {
-> > +				drive->quirk_list = 2;
-> > +				return;
-> > +			}
-> > +
-> > +	drive->quirk_list = 0;
+> > +	saved_status = read_c0_status();
 > > +}
-> > +
-> >  static void amd7409_cable_detect(struct pci_dev *dev)
-> >  {
-> >  	/* no host side cable detection */
-> > @@ -194,6 +212,7 @@ static void __devinit init_hwif_amd74xx(ide_hwif_t *hwif)
-> >  static const struct ide_port_ops amd_port_ops = {
-> >  	.set_pio_mode		= amd_set_pio_mode,
-> >  	.set_dma_mode		= amd_set_drive,
-> > +	.quirkproc		= amd_quirkproc,
-> >  	.cable_detect		= amd_cable_detect,
-> >  };
+> 
+> No need to save/restore floating point registers?
+the floating point registers are not used by kernel, for user part, they
+are already saved while entering into kernel mode.
+> 
+> > +int pfn_is_nosave(unsigned long pfn)
+> > +{
+> > +	unsigned long nosave_begin_pfn = __pa(&__nosave_begin) >> PAGE_SHIFT;
+> > +	unsigned long nosave_end_pfn = \
+> > +		PAGE_ALIGN(__pa(&__nosave_end)) >> PAGE_SHIFT;
+> 
+> Unneeded backslash concatenation.
+> PFN_UP(), PFN_DOWN() can be used.
+> 
+> > +LEAF(swsusp_arch_suspend)
+> > +	PTR_LA t0, saved_ra
+> > +	PTR_S ra, (t0)
+> > +	PTR_LA t0, saved_sp
+> > +	PTR_S sp, (t0)
+> 
+> The MIPS assembly language accepts symbol for PTR_S, i.e.:
+> 
+> 	PTR_S ra, saved_ra
+> 
+> Or, if you converted saved_xxx into struct or array, you can do
+> something like this:
+> 
+> 	PTR_LA t0, saved_regs
+> 	PTR_S ra, PT_R31(t0)
+> 	PTR_S sp, PT_R29(t0)
+
+> 	...
+> 
+> > +	j swsusp_save
+> > +	nop
+> 
+> This nop is required?
+> 
+> ---
+> Atsushi Nemoto
 > 

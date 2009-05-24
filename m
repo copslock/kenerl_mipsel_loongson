@@ -1,70 +1,158 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 May 2009 18:49:06 +0100 (BST)
-Received: from smtp4-g21.free.fr ([212.27.42.4]:40271 "EHLO smtp4-g21.free.fr"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20022610AbZEXRs7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 24 May 2009 18:48:59 +0100
-Received: from smtp4-g21.free.fr (localhost [127.0.0.1])
-	by smtp4-g21.free.fr (Postfix) with ESMTP id EC9DD4C80E7;
-	Sun, 24 May 2009 19:48:54 +0200 (CEST)
-Received: from [192.168.1.189] (cac94-1-81-57-151-96.fbx.proxad.net [81.57.151.96])
-	by smtp4-g21.free.fr (Postfix) with ESMTP id D81824C8099;
-	Sun, 24 May 2009 19:48:51 +0200 (CEST)
-Message-ID: <4A198883.3070801@free.fr>
-Date:	Sun, 24 May 2009 19:48:51 +0200
-From:	matthieu castet <castet.matthieu@free.fr>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1.19) Gecko/20081204 Iceape/1.1.14 (Debian-1.1.14-1)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 24 May 2009 20:41:44 +0100 (BST)
+Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:37385 "EHLO
+	atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20022552AbZEXTle (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 24 May 2009 20:41:34 +0100
+Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
+	id 1F4C1F0631; Sun, 24 May 2009 21:41:33 +0200 (CEST)
+Date:	Sun, 24 May 2009 21:41:25 +0200
+From:	Pavel Machek <pavel@ucw.cz>
+To:	Wu Zhangjin <wuzhangjin@gmail.com>
+Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+	linux-kernel@vger.kernel.org, Arnaud Patard <apatard@mandriva.com>,
+	loongson-dev@googlegroups.com, zhangfx@lemote.com, yanh@lemote.com,
+	Philippe Vachon <philippe@cowpig.ca>,
+	Zhang Le <r0bertz@gentoo.org>, Erwan Lerale <erwan@thiscow.com>
+Subject: Re: [PATCH 25/30] loongson: Hibernation Support in mips system
+Message-ID: <20090524194124.GA1337@ucw.cz>
+References: <1242426488.10164.173.camel@falcon>
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	Aurelien Jarno <aurelien@aurel32.net>, linux-mips@linux-mips.org
-Subject: [PATCH] bcm47xx : fix gpio_direction_output
-References: <4A0EBC77.2010806@free.fr> <20090521094054.GB22500@hall.aurel32.net>
-In-Reply-To: <20090521094054.GB22500@hall.aurel32.net>
-Content-Type: multipart/mixed;
- boundary="------------010008010802030501070906"
-Return-Path: <castet.matthieu@free.fr>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1242426488.10164.173.camel@falcon>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <pavel@ucw.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22952
+X-archive-position: 22953
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: castet.matthieu@free.fr
+X-original-sender: pavel@ucw.cz
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------010008010802030501070906
-Content-Type: text/plain; charset=ISO-8859-15; format=flowed
-Content-Transfer-Encoding: 7bit
+Hi!
+
+> >From d4776f4891b9be96d357910f62d9ebaf898a3015 Mon Sep 17 00:00:00 2001
+> From: Wu Zhangjin <wuzhangjin@gmail.com>
+> Date: Sat, 16 May 2009 04:51:26 +0800
+> Subject: [PATCH 25/30] loongson: Hibernation Support in mips system
+
+> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+> index d73f084..8bde363 100644
+> --- a/arch/mips/Makefile
+> +++ b/arch/mips/Makefile
+> @@ -677,6 +677,9 @@ core-y			+= arch/mips/kernel/ arch/mips/mm/
+> arch/mips/math-emu/
+>  
+>  drivers-$(CONFIG_OPROFILE)	+= arch/mips/oprofile/
+>  
+> +# suspend and hibernation support
+> +drivers-$(CONFIG_PM)	+= arch/mips/power/
+> +
+
+Do all config combinations compile?
+
+> @@ -3,4 +3,6 @@
+>  
+>  /* Somewhen...  Maybe :-)  */
+>  
+> +static inline int arch_prepare_suspend(void) { return 0; }
+> +
+
+And kill the somewhen comment?
+
+> @@ -326,3 +327,15 @@ void output_octeon_cop2_state_defines(void)
+>  	BLANK();
+>  }
+>  #endif
+> +
+> +#ifdef CONFIG_HIBERNATION
+> +void output_pbe_defines(void)
+> +{
+> + 	COMMENT(" Linux struct pbe offsets. ");
+> + 	OFFSET(PBE_ADDRESS , pbe, address);
+> + 	OFFSET(PBE_ORIG_ADDRESS  , pbe, orig_address);
+> + 	OFFSET(PBE_NEXT  , pbe, next);
+> + 	DEFINE(PBE_SIZE  , sizeof(struct pbe));
+> + 	BLANK();
+> +}
+> +#endif
+
+What is this? please delete spaces before ,.
 
 
 
 
---------------010008010802030501070906
-Content-Type: text/x-diff;
- name="fix_bcm47xx_gpio_out.diff"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline;
- filename="fix_bcm47xx_gpio_out.diff"
+> diff --git a/arch/mips/power/hibernate.S b/arch/mips/power/hibernate.S
+> new file mode 100644
+> index 0000000..e45ec45
+> --- /dev/null
+> +++ b/arch/mips/power/hibernate.S
+> @@ -0,0 +1,78 @@
+> +#incldue <linux/linkage.h>
+> +#include <asm/asm-offsets.h>
+> +#include <asm/regdef.h>
+> +#include <asm/asm.h>
+> +
+> +.text 
+> +LEAF(swsusp_arch_suspend)
+> +	 PTR_LA t0, saved_ra
+> +	 PTR_S ra, (t0)
+> +	 PTR_LA t0, saved_sp
+> +	 PTR_S sp, (t0)
+> +	 PTR_LA t0, saved_fp
+> +	 PTR_S fp, (t0)
+> +	 PTR_LA t0, saved_gp
+> +	 PTR_S gp, (t0)
+> +	 PTR_LA t0, saved_s0
+> +	 PTR_S s0, (t0) 
+> +	 PTR_LA t0, saved_s1
+> +	 PTR_S s1, (t0)
+> +	 PTR_LA t0, saved_s2
+> +	 PTR_S s2, (t0)
+> +	 PTR_LA t0, saved_s3
+> +	 PTR_S s3, (t0)
+> +	 PTR_LA t0, saved_s4
+> +	 PTR_S s4, (t0)
+> +	 PTR_LA t0, saved_s5
+> +	 PTR_S s5, (t0)
+> +	 PTR_LA t0, saved_s6
+> +	 PTR_S s6, (t0)
+> +	 PTR_LA t0, saved_s7
+> +	 PTR_S s7, (t0)
+> +	 PTR_LA t0, saved_a0
+> +	 PTR_S a0, (t0)
+> +	 PTR_LA t0, saved_a1
+> +	 PTR_S a1, (t0)
+> +	 PTR_LA t0, saved_a2
+> +	 PTR_S a2, (t0)
+> +	 PTR_LA t0, saved_v1
+> +	 PTR_S v1, (t0)
+> +	 j swsusp_save
+> +	 nop
+> +END(swsusp_arch_suspend)
+> +
+> +LEAF(swsusp_arch_resume)
+> +	PTR_L t0, restore_pblist
+> +0: 
+> +	PTR_L t1, PBE_ADDRESS(t0)   /* source */
+> + 	PTR_L t2, PBE_ORIG_ADDRESS(t0) /* destination */
+> + 	PTR_ADDIU t3, t1, _PAGE_SIZE
+> +1: 
+> +	REG_L t8, (t1)
+> + 	REG_S t8, (t2)
+> + 	PTR_ADDIU t1, t1, SZREG
+> + 	PTR_ADDIU t2, t2, SZREG
+> + 	bne t1, t3, 1b
+> + 	PTR_L t0, PBE_NEXT(t0)
+> + 	bnez t0, 0b
+> +	//flush cache and tlb. no need?I am not sure.
 
-gpio_direction_output should also set an output value according to the API.
+Avoid c++ comments... and yes, I guess you should flush cache/tlb.
 
-Signed-off-by: Matthieu CASTET <castet.matthieu@free.fr> 
-Acked-by: Aurelien Jarno <aurelien@aurel32.net>
-Index: linux-2.6/arch/mips/include/asm/mach-bcm47xx/gpio.h
-===================================================================
---- linux-2.6.orig/arch/mips/include/asm/mach-bcm47xx/gpio.h	2009-05-24 19:43:55.000000000 +0200
-+++ linux-2.6/arch/mips/include/asm/mach-bcm47xx/gpio.h	2009-05-24 19:44:56.000000000 +0200
-@@ -37,6 +37,9 @@
- 
- static inline int gpio_direction_output(unsigned gpio, int value)
- {
-+	/* first set the gpio out value */
-+	ssb_gpio_out(&ssb_bcm47xx, 1 << gpio, value ? 1 << gpio : 0);
-+	/* then set the gpio mode */
- 	ssb_gpio_outen(&ssb_bcm47xx, 1 << gpio, 1 << gpio);
- 	return 0;
- }
-
---------------010008010802030501070906--
+-- 
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blog.html

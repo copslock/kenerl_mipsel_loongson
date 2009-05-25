@@ -1,149 +1,233 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 May 2009 08:39:24 +0100 (BST)
-Received: from [222.92.8.141] ([222.92.8.141]:43018 "EHLO lemote.com"
-	rhost-flags-FAIL-FAIL-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20023286AbZEYHjS (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 25 May 2009 08:39:18 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by lemote.com (Postfix) with ESMTP id E67AD6C010;
-	Mon, 25 May 2009 15:34:08 +0800 (CST)
-X-Virus-Scanned: Debian amavisd-new at lemote.com
-Received: from lemote.com ([127.0.0.1])
-	by localhost (www.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id YABVfl755dFG; Mon, 25 May 2009 15:33:52 +0800 (CST)
-Received: from localhost.localdomain (unknown [172.16.2.66])
-	by lemote.com (Postfix) with ESMTP id C4F256C011;
-	Mon, 25 May 2009 15:33:50 +0800 (CST)
-Message-ID: <4A1A4A54.6090401@lemote.com>
-Date:	Mon, 25 May 2009 15:35:48 +0800
-From:	=?UTF-8?B?6IOh5rSq5YW1?= <huhb@lemote.com>
-User-Agent: Mozilla-Thunderbird 2.0.0.9 (X11/20080110)
-MIME-Version: 1.0
-To:	yanh@lemote.com
-CC:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-	wuzhangjin@gmail.com, linux-mips@linux-mips.org,
-	Ralf Baechle <ralf@linux-mips.org>,
-	IDE/ATA development list <linux-ide@vger.kernel.org>,
-	Linux Kernel <linux-kernel@vger.kernel.org>,
-	linux-scsi <linux-scsi@vger.kernel.org>,
-	Philippe Vachon <philippe@cowpig.ca>,
-	Zhang Le <r0bertz@gentoo.org>,
-	Zhang Fuxin <zhangfx@lemote.com>,
-	Arnaud Patard <apatard@mandriva.com>,
-	loongson-dev@googlegroups.com, gnewsense-dev@nongnu.org,
-	Nicholas Mc Guire <hofrat@hofr.at>,
-	Liu Junliang <liujl@lemote.com>,
-	Erwan Lerale <erwan@thiscow.com>
-Subject: Re: [loongson-PATCH-v1 24/27] fixup for FUJITSU disk
-References: <cover.1242855716.git.wuzhangjin@gmail.com>	 <200905222032.55869.bzolnier@gmail.com>	 <1243062702.8509.7.camel@localhost.localdomain>	 <200905231347.34717.bzolnier@gmail.com> <1243230339.9819.18.camel@localhost.localdomain>
-In-Reply-To: <1243230339.9819.18.camel@localhost.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Return-Path: <huhb@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 May 2009 14:04:15 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:52260 "HELO smtp.mba.ocn.ne.jp"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with SMTP
+	id S20023596AbZEYNEJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 25 May 2009 14:04:09 +0100
+Received: from localhost.localdomain (p4108-ipad204funabasi.chiba.ocn.ne.jp [222.146.91.108])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 3D441AA89; Mon, 25 May 2009 22:04:02 +0900 (JST)
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH] TXx9: Add SRAMC support
+Date:	Mon, 25 May 2009 22:04:02 +0900
+Message-Id: <1243256642-4880-1-git-send-email-anemo@mba.ocn.ne.jp>
+X-Mailer: git-send-email 1.5.6.5
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22956
+X-archive-position: 22957
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: huhb@lemote.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-yanh 写道:
-> 在 2009-05-23六的 13:47 +0200，Bartlomiej Zolnierkiewicz写道：
->   
->> On Saturday 23 May 2009 09:11:42 yanh wrote:
->>     
->>> 在 2009-05-22五的 20:32 +0200，Bartlomiej Zolnierkiewicz写道：
->>>       
->>>> On Thursday 21 May 2009 00:12:46 wuzhangjin@gmail.com wrote:
->>>>         
->>>>> From: Wu Zhangjin <wuzhangjin@gmail.com>
->>>>>
->>>>> This is originally from the to-mips branch from
->>>>> http://dev.lemote.com/code/linux_loongson
->>>>>           
->>>> Sadly, the patch description lacks all the important information.
->>>>
->>>> What is the original problem that this fixup tries to address?
->>>>
->>>> Is it limited to amd74xx controllers?
->>>>         
->>> In loongson2f yeeloong machines, the ide controller is AMD cs5536, or
->>> say  amd74xx, and the hard drives is Fujistu. 
->>>       
->> Then it should use the new & shiny :) native cs5536 IDE host driver
->> instead of legacy support in amd74xx...
->>
->>     
->>> While debuging the hard disk suspned and resume, the ide irq can not be
->>> cleared. I guess this is a fake interrupt, hence the clear irq action
->>> can not be finished. 
->>>       
->> AFAICS the only change that the fixup would cause for suspend/resume paths
->> is the one in ide_config_drive_speed() which is called during resume to set
->> transfer mode on the drive:
->>
->>        tp_ops->write_devctl(hwif, ATA_NIEN | ATA_DEVCTL_OBS);
->>
->>         memset(&tf, 0, sizeof(tf));
->>         tf.feature = SETFEATURES_XFER;
->>         tf.nsect   = speed;
->>
->>         tp_ops->tf_load(drive, &tf, IDE_VALID_FEATURE | IDE_VALID_NSECT);
->>
->>         tp_ops->exec_command(hwif, ATA_CMD_SET_FEATURES);
->> --->
->>         if (drive->quirk_list == 2)
->>                 tp_ops->write_devctl(hwif, ATA_DEVCTL_OBS);
->>     
->
->   
->> --->
->>         error = __ide_wait_stat(drive, drive->ready_stat,
->>                                 ATA_BUSY | ATA_DRQ | ATA_ERR,
->>                                 WAIT_CMD, &stat);
->>
->> Please tell me I if understand the issue correctly: if the above quirk is
->> not executed we end up with spurious IRQs, right?
->>     
-> right.
->   
->>> This patch is to fix this issue. Maybe other controller and drives also
->>> have this issue, but I am not sure.
->>>       
->> Probably moving it to a generic quirk_drives list later will be useful...
->>
->> Anyway this fixup needs to be ported to / verified with cs5536 first.
->>     
-> the cs5536 pata driver have some geode platform dependent codes. We can
-> just ignore it, but the performance is poor(using hdparm to test it),
-> which only get 22+ MB/s. we find it only use udma2. However if using
-> amd74xx driver, it can set udma5, and the speed can reach to 50+ MB/s. 
->
-> we will test whether this driver is working well without this patch.
->
-> Anyway, thanks your advice.
->   
-Use the driver drivers/ata/pata_cs5536.c, unfortunately it also have the 
-same issue.
->> Thanks.
->> Bart
->>
->>     
->
->
->
->   
+Add a sysdev to access SRAM in TXx9 SoCs via sysfs.
 
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+ arch/mips/include/asm/txx9/generic.h  |    1 +
+ arch/mips/include/asm/txx9/tx4938.h   |    1 +
+ arch/mips/include/asm/txx9/tx4939.h   |    1 +
+ arch/mips/txx9/generic/setup.c        |   84 +++++++++++++++++++++++++++++++++
+ arch/mips/txx9/generic/setup_tx4938.c |    6 ++
+ arch/mips/txx9/generic/setup_tx4939.c |    6 ++
+ arch/mips/txx9/rbtx4938/setup.c       |    1 +
+ arch/mips/txx9/rbtx4939/setup.c       |    1 +
+ 8 files changed, 101 insertions(+), 0 deletions(-)
 
+diff --git a/arch/mips/include/asm/txx9/generic.h b/arch/mips/include/asm/txx9/generic.h
+index 8169477..827dc22 100644
+--- a/arch/mips/include/asm/txx9/generic.h
++++ b/arch/mips/include/asm/txx9/generic.h
+@@ -95,5 +95,6 @@ void __init txx9_aclc_init(unsigned long baseaddr, int irq,
+ 			   unsigned int dmac_id,
+ 			   unsigned int dma_chan_out,
+ 			   unsigned int dma_chan_in);
++void __init txx9_sramc_init(struct resource *r);
+ 
+ #endif /* __ASM_TXX9_GENERIC_H */
+diff --git a/arch/mips/include/asm/txx9/tx4938.h b/arch/mips/include/asm/txx9/tx4938.h
+index 54e4674..8a178f1 100644
+--- a/arch/mips/include/asm/txx9/tx4938.h
++++ b/arch/mips/include/asm/txx9/tx4938.h
+@@ -307,5 +307,6 @@ struct tx4938ide_platform_info {
+ void tx4938_ata_init(unsigned int irq, unsigned int shift, int tune);
+ void tx4938_dmac_init(int memcpy_chan0, int memcpy_chan1);
+ void tx4938_aclc_init(void);
++void tx4938_sramc_init(void);
+ 
+ #endif
+diff --git a/arch/mips/include/asm/txx9/tx4939.h b/arch/mips/include/asm/txx9/tx4939.h
+index f13b708..050364d 100644
+--- a/arch/mips/include/asm/txx9/tx4939.h
++++ b/arch/mips/include/asm/txx9/tx4939.h
+@@ -546,5 +546,6 @@ void tx4939_ndfmc_init(unsigned int hold, unsigned int spw,
+ 		       unsigned char ch_mask, unsigned char wide_mask);
+ void tx4939_dmac_init(int memcpy_chan0, int memcpy_chan1);
+ void tx4939_aclc_init(void);
++void tx4939_sramc_init(void);
+ 
+ #endif /* __ASM_TXX9_TX4939_H */
+diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
+index 7f91012..3b7d77d 100644
+--- a/arch/mips/txx9/generic/setup.c
++++ b/arch/mips/txx9/generic/setup.c
+@@ -24,6 +24,7 @@
+ #include <linux/serial_core.h>
+ #include <linux/mtd/physmap.h>
+ #include <linux/leds.h>
++#include <linux/sysdev.h>
+ #include <asm/bootinfo.h>
+ #include <asm/time.h>
+ #include <asm/reboot.h>
+@@ -912,3 +913,86 @@ void __init txx9_aclc_init(unsigned long baseaddr, int irq,
+ 		platform_device_put(pdev);
+ #endif
+ }
++
++static struct sysdev_class txx9_sramc_sysdev_class;
++
++struct txx9_sramc_sysdev {
++	struct sys_device dev;
++	struct bin_attribute bindata_attr;
++	void __iomem *base;
++};
++
++static ssize_t txx9_sram_read(struct kobject *kobj,
++			      struct bin_attribute *bin_attr,
++			      char *buf, loff_t pos, size_t size)
++{
++	struct txx9_sramc_sysdev *dev = bin_attr->private;
++	size_t ramsize = bin_attr->size;
++
++	if (pos >= ramsize)
++		return 0;
++	if (pos + size > ramsize)
++		size = ramsize - pos;
++	memcpy_fromio(buf, dev->base + pos, size);
++	return size;
++}
++
++static ssize_t txx9_sram_write(struct kobject *kobj,
++			       struct bin_attribute *bin_attr,
++			       char *buf, loff_t pos, size_t size)
++{
++	struct txx9_sramc_sysdev *dev = bin_attr->private;
++	size_t ramsize = bin_attr->size;
++
++	if (pos >= ramsize)
++		return 0;
++	if (pos + size > ramsize)
++		size = ramsize - pos;
++	memcpy_toio(dev->base + pos, buf, size);
++	return size;
++}
++
++void __init txx9_sramc_init(struct resource *r)
++{
++	struct txx9_sramc_sysdev *dev;
++	size_t size;
++	int err;
++
++	if (!txx9_sramc_sysdev_class.name) {
++		txx9_sramc_sysdev_class.name = "txx9_sram";
++		err = sysdev_class_register(&txx9_sramc_sysdev_class);
++		if (err) {
++			txx9_sramc_sysdev_class.name = NULL;
++			return;
++		}
++	}
++	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
++	if (!dev)
++		return;
++	size = resource_size(r);
++	dev->base = ioremap(r->start, size);
++	if (!dev->base)
++		goto exit;
++	dev->dev.cls = &txx9_sramc_sysdev_class;
++	dev->bindata_attr.attr.name = "bindata";
++	dev->bindata_attr.attr.mode = S_IRUSR | S_IWUSR;
++	dev->bindata_attr.read = txx9_sram_read;
++	dev->bindata_attr.write = txx9_sram_write;
++	dev->bindata_attr.size = size;
++	dev->bindata_attr.private = dev;
++	err = sysdev_register(&dev->dev);
++	if (err)
++		goto exit;
++	err = sysfs_create_bin_file(&dev->dev.kobj, &dev->bindata_attr);
++	if (err) {
++		sysdev_unregister(&dev->dev);
++		goto exit;
++	}
++	return;
++exit:
++	if (dev) {
++		if (dev->base)
++			iounmap(dev->base);
++		kfree(dev);
++	}
++}
+diff --git a/arch/mips/txx9/generic/setup_tx4938.c b/arch/mips/txx9/generic/setup_tx4938.c
+index 4dfdb52..eb20801 100644
+--- a/arch/mips/txx9/generic/setup_tx4938.c
++++ b/arch/mips/txx9/generic/setup_tx4938.c
+@@ -425,6 +425,12 @@ void __init tx4938_aclc_init(void)
+ 			       1, 0, 1);
+ }
+ 
++void __init tx4938_sramc_init(void)
++{
++	if (tx4938_sram_resource.start)
++		txx9_sramc_init(&tx4938_sram_resource);
++}
++
+ static void __init tx4938_stop_unused_modules(void)
+ {
+ 	__u64 pcfg, rst = 0, ckd = 0;
+diff --git a/arch/mips/txx9/generic/setup_tx4939.c b/arch/mips/txx9/generic/setup_tx4939.c
+index 7139686..df13a89 100644
+--- a/arch/mips/txx9/generic/setup_tx4939.c
++++ b/arch/mips/txx9/generic/setup_tx4939.c
+@@ -494,6 +494,12 @@ void __init tx4939_aclc_init(void)
+ 			       TXX9_IRQ_BASE + TX4939_IR_ACLC, 1, 0, 1);
+ }
+ 
++void __init tx4939_sramc_init(void)
++{
++	if (tx4939_sram_resource.start)
++		txx9_sramc_init(&tx4939_sram_resource);
++}
++
+ static void __init tx4939_stop_unused_modules(void)
+ {
+ 	__u64 pcfg, rst = 0, ckd = 0;
+diff --git a/arch/mips/txx9/rbtx4938/setup.c b/arch/mips/txx9/rbtx4938/setup.c
+index 8da66e9..d66509b 100644
+--- a/arch/mips/txx9/rbtx4938/setup.c
++++ b/arch/mips/txx9/rbtx4938/setup.c
+@@ -358,6 +358,7 @@ static void __init rbtx4938_device_init(void)
+ 	tx4938_dmac_init(0, 2);
+ 	tx4938_aclc_init();
+ 	platform_device_register_simple("txx9aclc-generic", -1, NULL, 0);
++	tx4938_sramc_init();
+ 	txx9_iocled_init(RBTX4938_LED_ADDR - IO_BASE, -1, 8, 1, "green", NULL);
+ }
+ 
+diff --git a/arch/mips/txx9/rbtx4939/setup.c b/arch/mips/txx9/rbtx4939/setup.c
+index d5ad5ab..b919696 100644
+--- a/arch/mips/txx9/rbtx4939/setup.c
++++ b/arch/mips/txx9/rbtx4939/setup.c
+@@ -501,6 +501,7 @@ static void __init rbtx4939_device_init(void)
+ 	tx4939_dmac_init(0, 2);
+ 	tx4939_aclc_init();
+ 	platform_device_register_simple("txx9aclc-generic", -1, NULL, 0);
++	tx4939_sramc_init();
+ }
+ 
+ static void __init rbtx4939_setup(void)
 -- 
----------------------------------------------------------
-Hongbing,Hu (Software Department)
-Tel:    0512-52308631
-E-mail:	huhb@lemote.com
-MSN:	[huhb04@gmail.com]
-JiangSu Lemote Corp. Ltd.
-MengLan, Yushan, Changshu, JiangSu Province, China
----------------------------------------------------------
+1.5.6.5

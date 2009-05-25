@@ -1,197 +1,124 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 May 2009 02:13:18 +0100 (BST)
-Received: from mail-pz0-f134.google.com ([209.85.222.134]:47742 "EHLO
-	mail-pz0-f134.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20021959AbZEYBNJ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 25 May 2009 02:13:09 +0100
-Received: by pzk40 with SMTP id 40so2710415pzk.22
-        for <multiple recipients>; Sun, 24 May 2009 18:13:02 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=HNUdyDy5TmVlOMVqEBjkVsWC8HZwP17i3gy8Ga2nUeA=;
-        b=O0ZJPL7A4aBr7b4wym0KcjjsOjnvCkB8IV+7pxM1nPpG6zADjb7nQY/iQ2sQT3L2HG
-         GnK+Sq6Fg3cA3+uoafYpRHVB2YALG5kN5cH5QxKD3F7eUHj/LqCUtdIMGwlt6qKhKnqW
-         ODeOY2OdF5S4vwysrF/rs9alf2JFqQeARDwkM=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=GYSmR6ilfVqBbOJUCtnithUiWiwzsdMjVMwwYaV79ST15DP5S0EmcSqiUkqulvB3gW
-         igXxwczuQRcfK/La9JBeqqKcXKqYOTbG68bge9oBVpRi7Cw0DVhlrW4MvbePmgithrXw
-         Sw4WPVmax8RaGXooyNfeXwhq3Vfsuhv4HcOr8=
-Received: by 10.115.47.1 with SMTP id z1mr13701441waj.133.1243213982384;
-        Sun, 24 May 2009 18:13:02 -0700 (PDT)
-Received: from ?192.168.2.242? ([202.201.14.140])
-        by mx.google.com with ESMTPS id k35sm13494962waf.22.2009.05.24.18.12.57
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 24 May 2009 18:13:01 -0700 (PDT)
-Subject: Re: [PATCH 25/30] loongson: Hibernation Support in mips system
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:	Pavel Machek <pavel@ucw.cz>
-Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-	linux-kernel@vger.kernel.org, Arnaud Patard <apatard@mandriva.com>,
-	loongson-dev@googlegroups.com, zhangfx@lemote.com, yanh@lemote.com,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 25 May 2009 06:46:19 +0100 (BST)
+Received: from [222.92.8.141] ([222.92.8.141]:42200 "EHLO lemote.com"
+	rhost-flags-FAIL-FAIL-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S20022447AbZEYFqN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 25 May 2009 06:46:13 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by lemote.com (Postfix) with ESMTP id 3C2C6341DF;
+	Mon, 25 May 2009 13:41:05 +0800 (CST)
+X-Virus-Scanned: Debian amavisd-new at lemote.com
+Received: from lemote.com ([127.0.0.1])
+	by localhost (www.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id DrDn4NNskm4M; Mon, 25 May 2009 13:40:48 +0800 (CST)
+Received: from [172.16.2.17] (unknown [222.92.8.142])
+	by lemote.com (Postfix) with ESMTP id B7888341E5;
+	Mon, 25 May 2009 13:40:47 +0800 (CST)
+Subject: Re: [loongson-PATCH-v1 24/27] fixup for FUJITSU disk
+From:	yanh <yanh@lemote.com>
+Reply-To: yanh@lemote.com
+To:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
+Cc:	wuzhangjin@gmail.com, linux-mips@linux-mips.org,
+	Ralf Baechle <ralf@linux-mips.org>,
+	IDE/ATA development list <linux-ide@vger.kernel.org>,
+	Linux Kernel <linux-kernel@vger.kernel.org>,
+	linux-scsi <linux-scsi@vger.kernel.org>,
 	Philippe Vachon <philippe@cowpig.ca>,
 	Zhang Le <r0bertz@gentoo.org>,
-	Erwan Lerale <erwan@thiscow.com>, huhb@lemote.com
-In-Reply-To: <20090524194124.GA1337@ucw.cz>
-References: <1242426488.10164.173.camel@falcon>
-	 <20090524194124.GA1337@ucw.cz>
-Content-Type: text/plain
-Organization: DSLab, Lanzhou University, China
-Date:	Mon, 25 May 2009 09:12:45 +0800
-Message-Id: <1243213965.8872.9.camel@falcon>
+	Zhang Fuxin <zhangfx@lemote.com>,
+	Arnaud Patard <apatard@mandriva.com>,
+	loongson-dev@googlegroups.com, gnewsense-dev@nongnu.org,
+	Nicholas Mc Guire <hofrat@hofr.at>,
+	Liu Junliang <liujl@lemote.com>,
+	Erwan Lerale <erwan@thiscow.com>
+In-Reply-To: <200905231347.34717.bzolnier@gmail.com>
+References: <cover.1242855716.git.wuzhangjin@gmail.com>
+	 <200905222032.55869.bzolnier@gmail.com>
+	 <1243062702.8509.7.camel@localhost.localdomain>
+	 <200905231347.34717.bzolnier@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Date:	Mon, 25 May 2009 13:45:39 +0800
+Message-Id: <1243230339.9819.18.camel@localhost.localdomain>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.24.3 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+X-Mailer: Evolution 2.24.1 (2.24.1-2.fc10) 
+Content-Transfer-Encoding: 8bit
+Return-Path: <yanh@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22954
+X-archive-position: 22955
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: yanh@lemote.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 2009-05-24 at 21:41 +0200, Pavel Machek wrote:
-> Hi!
+在 2009-05-23六的 13:47 +0200，Bartlomiej Zolnierkiewicz写道：
+> On Saturday 23 May 2009 09:11:42 yanh wrote:
+> > 在 2009-05-22五的 20:32 +0200，Bartlomiej Zolnierkiewicz写道：
+> > > On Thursday 21 May 2009 00:12:46 wuzhangjin@gmail.com wrote:
+> > > > From: Wu Zhangjin <wuzhangjin@gmail.com>
+> > > > 
+> > > > This is originally from the to-mips branch from
+> > > > http://dev.lemote.com/code/linux_loongson
+> > > 
+> > > Sadly, the patch description lacks all the important information.
+> > > 
+> > > What is the original problem that this fixup tries to address?
+> > > 
+> > > Is it limited to amd74xx controllers?
+> > 
+> > In loongson2f yeeloong machines, the ide controller is AMD cs5536, or
+> > say  amd74xx, and the hard drives is Fujistu. 
 > 
+> Then it should use the new & shiny :) native cs5536 IDE host driver
+> instead of legacy support in amd74xx...
+> 
+> > While debuging the hard disk suspned and resume, the ide irq can not be
+> > cleared. I guess this is a fake interrupt, hence the clear irq action
+> > can not be finished. 
+> 
+> AFAICS the only change that the fixup would cause for suspend/resume paths
+> is the one in ide_config_drive_speed() which is called during resume to set
+> transfer mode on the drive:
+> 
+>        tp_ops->write_devctl(hwif, ATA_NIEN | ATA_DEVCTL_OBS);
+> 
+>         memset(&tf, 0, sizeof(tf));
+>         tf.feature = SETFEATURES_XFER;
+>         tf.nsect   = speed;
+> 
+>         tp_ops->tf_load(drive, &tf, IDE_VALID_FEATURE | IDE_VALID_NSECT);
+> 
+>         tp_ops->exec_command(hwif, ATA_CMD_SET_FEATURES);
+> --->
+>         if (drive->quirk_list == 2)
+>                 tp_ops->write_devctl(hwif, ATA_DEVCTL_OBS);
 
-sorry, this is an old version without check via scripts/checkpatch.pl,
-please ignore it, the latest version goes here:
+> --->
+>         error = __ide_wait_stat(drive, drive->ready_stat,
+>                                 ATA_BUSY | ATA_DRQ | ATA_ERR,
+>                                 WAIT_CMD, &stat);
+> 
+> Please tell me I if understand the issue correctly: if the above quirk is
+> not executed we end up with spurious IRQs, right?
+right.
+> 
+> > This patch is to fix this issue. Maybe other controller and drives also
+> > have this issue, but I am not sure.
+> 
+> Probably moving it to a generic quirk_drives list later will be useful...
+> 
+> Anyway this fixup needs to be ported to / verified with cs5536 first.
+the cs5536 pata driver have some geode platform dependent codes. We can
+just ignore it, but the performance is poor(using hdparm to test it),
+which only get 22+ MB/s. we find it only use udma2. However if using
+amd74xx driver, it can set udma5, and the speed can reach to 50+ MB/s. 
 
-[loongson-PATCH-v1 22/27] Hibernation Support in mips system
+we will test whether this driver is working well without this patch.
 
-and the above one is also out of date, can not apply to the latest
-linux-mip development git repo(-rc7).  so, please also ignore it, i am
-working on a new version of it in the latest linux-mips git tree. and
-will apply the existing feedbacks from the mailing list.
-
-thanks!
-Wu Zhangjin
-
-> > >From d4776f4891b9be96d357910f62d9ebaf898a3015 Mon Sep 17 00:00:00 2001
-> > From: Wu Zhangjin <wuzhangjin@gmail.com>
-> > Date: Sat, 16 May 2009 04:51:26 +0800
-> > Subject: [PATCH 25/30] loongson: Hibernation Support in mips system
+Anyway, thanks your advice.
 > 
-> > diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> > index d73f084..8bde363 100644
-> > --- a/arch/mips/Makefile
-> > +++ b/arch/mips/Makefile
-> > @@ -677,6 +677,9 @@ core-y			+= arch/mips/kernel/ arch/mips/mm/
-> > arch/mips/math-emu/
-> >  
-> >  drivers-$(CONFIG_OPROFILE)	+= arch/mips/oprofile/
-> >  
-> > +# suspend and hibernation support
-> > +drivers-$(CONFIG_PM)	+= arch/mips/power/
-> > +
-> 
-> Do all config combinations compile?
-> 
-> > @@ -3,4 +3,6 @@
-> >  
-> >  /* Somewhen...  Maybe :-)  */
-> >  
-> > +static inline int arch_prepare_suspend(void) { return 0; }
-> > +
-> 
-> And kill the somewhen comment?
-> 
-> > @@ -326,3 +327,15 @@ void output_octeon_cop2_state_defines(void)
-> >  	BLANK();
-> >  }
-> >  #endif
-> > +
-> > +#ifdef CONFIG_HIBERNATION
-> > +void output_pbe_defines(void)
-> > +{
-> > + 	COMMENT(" Linux struct pbe offsets. ");
-> > + 	OFFSET(PBE_ADDRESS , pbe, address);
-> > + 	OFFSET(PBE_ORIG_ADDRESS  , pbe, orig_address);
-> > + 	OFFSET(PBE_NEXT  , pbe, next);
-> > + 	DEFINE(PBE_SIZE  , sizeof(struct pbe));
-> > + 	BLANK();
-> > +}
-> > +#endif
-> 
-> What is this? please delete spaces before ,.
-> 
-> 
-> 
-> 
-> > diff --git a/arch/mips/power/hibernate.S b/arch/mips/power/hibernate.S
-> > new file mode 100644
-> > index 0000000..e45ec45
-> > --- /dev/null
-> > +++ b/arch/mips/power/hibernate.S
-> > @@ -0,0 +1,78 @@
-> > +#incldue <linux/linkage.h>
-> > +#include <asm/asm-offsets.h>
-> > +#include <asm/regdef.h>
-> > +#include <asm/asm.h>
-> > +
-> > +.text 
-> > +LEAF(swsusp_arch_suspend)
-> > +	 PTR_LA t0, saved_ra
-> > +	 PTR_S ra, (t0)
-> > +	 PTR_LA t0, saved_sp
-> > +	 PTR_S sp, (t0)
-> > +	 PTR_LA t0, saved_fp
-> > +	 PTR_S fp, (t0)
-> > +	 PTR_LA t0, saved_gp
-> > +	 PTR_S gp, (t0)
-> > +	 PTR_LA t0, saved_s0
-> > +	 PTR_S s0, (t0) 
-> > +	 PTR_LA t0, saved_s1
-> > +	 PTR_S s1, (t0)
-> > +	 PTR_LA t0, saved_s2
-> > +	 PTR_S s2, (t0)
-> > +	 PTR_LA t0, saved_s3
-> > +	 PTR_S s3, (t0)
-> > +	 PTR_LA t0, saved_s4
-> > +	 PTR_S s4, (t0)
-> > +	 PTR_LA t0, saved_s5
-> > +	 PTR_S s5, (t0)
-> > +	 PTR_LA t0, saved_s6
-> > +	 PTR_S s6, (t0)
-> > +	 PTR_LA t0, saved_s7
-> > +	 PTR_S s7, (t0)
-> > +	 PTR_LA t0, saved_a0
-> > +	 PTR_S a0, (t0)
-> > +	 PTR_LA t0, saved_a1
-> > +	 PTR_S a1, (t0)
-> > +	 PTR_LA t0, saved_a2
-> > +	 PTR_S a2, (t0)
-> > +	 PTR_LA t0, saved_v1
-> > +	 PTR_S v1, (t0)
-> > +	 j swsusp_save
-> > +	 nop
-> > +END(swsusp_arch_suspend)
-> > +
-> > +LEAF(swsusp_arch_resume)
-> > +	PTR_L t0, restore_pblist
-> > +0: 
-> > +	PTR_L t1, PBE_ADDRESS(t0)   /* source */
-> > + 	PTR_L t2, PBE_ORIG_ADDRESS(t0) /* destination */
-> > + 	PTR_ADDIU t3, t1, _PAGE_SIZE
-> > +1: 
-> > +	REG_L t8, (t1)
-> > + 	REG_S t8, (t2)
-> > + 	PTR_ADDIU t1, t1, SZREG
-> > + 	PTR_ADDIU t2, t2, SZREG
-> > + 	bne t1, t3, 1b
-> > + 	PTR_L t0, PBE_NEXT(t0)
-> > + 	bnez t0, 0b
-> > +	//flush cache and tlb. no need?I am not sure.
-> 
-> Avoid c++ comments... and yes, I guess you should flush cache/tlb.
+> Thanks.
+> Bart
 > 

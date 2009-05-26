@@ -1,30 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 May 2009 20:00:15 +0100 (BST)
-Received: from mail-px0-f119.google.com ([209.85.216.119]:59083 "EHLO
-	mail-px0-f119.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20024627AbZEZTAK (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 26 May 2009 20:00:10 +0100
-Received: by pxi17 with SMTP id 17so3785849pxi.22
-        for <multiple recipients>; Tue, 26 May 2009 12:00:01 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 May 2009 20:02:14 +0100 (BST)
+Received: from wa-out-1112.google.com ([209.85.146.178]:6814 "EHLO
+	wa-out-1112.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20024627AbZEZTCI (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 26 May 2009 20:02:08 +0100
+Received: by wa-out-1112.google.com with SMTP id n4so683832wag.0
+        for <multiple recipients>; Tue, 26 May 2009 12:02:05 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=4piWnmiEsT/Kf0AR+YqGVJCQkF352e9w0zJVPwCKl0g=;
-        b=XdEBYNCgW9OhS5ej8yomNJJsHZxT3p5/LbLkV0CfzlOh+FEgxsfqrNQtfGm2d/x+Gr
-         px/5YxklF1WVlx6FYxH2cngIpbCHs2nM9+iDOThDLzU4rLbNS52IF+O4HuqdXZ/rROBq
-         WInQkN++Lxjta/VUSJsveQ4pi4Mffm0ttsT8w=
+         :message-id:x-mailer:in-reply-to:references:mime-version
+         :content-type:content-transfer-encoding;
+        bh=ZJwrRb8S/y+Zc02i8yW6T8PKOr2idXTX/2vGMdzfG0k=;
+        b=mFLTttepus1L5Pb5T803/ZPQpDUj/9kuGo4CtGjej/h1hAcoOyb7uqBYXew3KEPTly
+         u7730ig4O+6ekWbIMEtr9scsZ0ooQ2FTyAA9sd475BxrINJlZBUaJQauvjDI1cIiL2AO
+         a+Omz6KnmSAy9WrTsel2jm9iKt7sl2ei58tjg=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=xdlONHTkyrmSuLPCi9BvhYPWNPS9wo+tDhGyRuhFj//oanZRzuldQ2M2rf3/DlU433
-         TezXwrgio8YWgqyT7xJy3ArgrmODGKA4vjhquuSIbvD9qHW3KHaExOoygfRUdbigpD0n
-         L7da54/F/EE4IbetwEexPOwfVspVDKe/8Tje4=
-Received: by 10.114.167.3 with SMTP id p3mr16663263wae.92.1243364401729;
-        Tue, 26 May 2009 12:00:01 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references
+         :mime-version:content-type:content-transfer-encoding;
+        b=d3EkJtl7lky8DjmWbWsNk63PPT2mgvYmtXpUGe9b2API7NZdSID0PJWOXKhdBjLiTG
+         Tc3MYpH8+c1NpL3tLZu+Mdm3TCNnhKsuyOpJ3iCXaOcXYNeCkj3Rd35aYAy8dXiGLiRn
+         jIcpRkL1Ynlh/fZmUZ9TPh2Y95MWoYatXjlQQ=
+Received: by 10.114.180.1 with SMTP id c1mr18136390waf.206.1243364525155;
+        Tue, 26 May 2009 12:02:05 -0700 (PDT)
 Received: from localhost.localdomain ([219.246.59.144])
-        by mx.google.com with ESMTPS id m31sm11762121wag.31.2009.05.26.11.59.57
+        by mx.google.com with ESMTPS id v39sm17285985wah.62.2009.05.26.12.02.00
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 26 May 2009 12:00:00 -0700 (PDT)
+        Tue, 26 May 2009 12:02:04 -0700 (PDT)
 From:	wuzhangjin@gmail.com
 To:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Cc:	Wu Zhangjin <wuzj@lemote.com>, Yan Hua <yanh@lemote.com>,
@@ -34,16 +36,22 @@ Cc:	Wu Zhangjin <wuzj@lemote.com>, Yan Hua <yanh@lemote.com>,
 	loongson-dev <loongson-dev@googlegroups.com>,
 	Nicholas Mc Guire <der.herr@hofr.at>,
 	Liu Junliang <liujl@lemote.com>,
-	Erwan Lerale <erwan@thiscow.com>
-Subject: [loongson-PATCH-v2 00/23] loongson-based machines support
-Date:	Wed, 27 May 2009 02:59:28 +0800
-Message-Id: <cover.1243362545.git.wuzj@lemote.com>
+	Erwan Lerale <erwan@thiscow.com>,
+	Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [loongson-PATCH-v2 01/23] fix-warning: incompatible argument type of pci_fixup_irqs
+Date:	Wed, 27 May 2009 03:01:52 +0800
+Message-Id: <6262a13ed845b2540271f5c119f31fd929885379.1243362545.git.wuzj@lemote.com>
 X-Mailer: git-send-email 1.6.3.1
+In-Reply-To: <cover.1243362545.git.wuzj@lemote.com>
+References: <cover.1243362545.git.wuzj@lemote.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22974
+X-archive-position: 22975
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,328 +61,542 @@ X-list: linux-mips
 
 From: Wu Zhangjin <wuzj@lemote.com>
 
-This patch series introduces support for loongson-based machines, including
-source code tuning for old fuloong-2e support, and the whole new support for
-fuloong-2f and yeeloong-2f. these three different machines are all made by
-Lemote (http://www.lemote.com).
+arch/mips/pci/pci.c:160: warning: passing argument 2 of ‘pci_fixup_irqs’
+from incompatible pointer type
 
-fuloong-2e is a mini PC, use a loongson-2e cpu, an cpu-inbuilt FPGA-based north
-bridge(bonito64 compatiable) and a VIA686B sourth bridge.
+include/linux/pci.h:
 
-fuloong-2f is also a mini PC, but it use a loongson-2f cpu, which has an
-built-in DDR2 and PCIX controller, The PCIX controller has a similar
-programming interface with FPGA-based northbridge of loongson-2e. and
-fuloong-2f use AMD CS5536 as its south bridge.
+	void pci_fixup_irqs(u8 (*)(struct pci_dev *, u8 *),
+            int (*)(struct pci_dev *, u8, u8));
 
-yeeloong-2f is a mini laptop(netbook), has the basic architecture with
-fuloong-2f, but it has an extra EC(embedded controller) which are used to do
-power management, keyboard controlling and something else.
+arch/mips/pci/pci.c:160:
 
-and gdium is also a mini laptop, but made by dexxon. it uses a loongson-2f cpu,
-but has no south bridge. currently, there is no support for gdium in this set,
-but this set is scalable enough to add gdium and even the other new
-loongson-based machines support:
+	pci_fixup_irqs(pci_common_swizzle, pcibios_map_irq);
 
-1. new cpu revisions support
+arch/mips/include/asm/pci.h:
 
-arch/mips/Kconfig
-	config CPU_LOONGSONX
-		bool           ^ 2,3...
-		select CPU_SUPPORTS_32BIT_KERNEL
-		select CPU_SUPPORTS_64BIT_KERNEL
-		select CPU_SUPPORTS_HIGHMEM
-		...
-	config SYS_HAS_CPU_LOONGSON2X
-		bool                   ^^ 2E,2F,2G...3A...
-	config CPU_LOONGSON2X
-		bool "Loongson 2X"
-		depends on SYS_HAS_CPU_LOONGSON2X
-		select CPU_LOONGSONX           ^^ 2E,2F,2G...3A...
-		...                ^ 2,3...
+	extern int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin);
 
-arch/mips/include/asm/mach-loongson/loongson.h
-arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
-	...
+arch/mips/pci/fixup-malta.c
 
-2. new machines support
+	int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
 
-arch/mips/Makefile
-	load-$(CONFIG_[MACH_NAME]) += [kernel_load_address]
+Reviewed-by: David Daney <ddaney@caviumnetworks.com>
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/mips/include/asm/pci.h           |    2 +-
+ arch/mips/include/asm/txx9/generic.h  |    2 +-
+ arch/mips/include/asm/txx9/jmr3927.h  |    2 +-
+ arch/mips/include/asm/txx9/rbtx4927.h |    2 +-
+ arch/mips/include/asm/txx9/rbtx4938.h |    2 +-
+ arch/mips/include/asm/txx9/tx4938.h   |    2 +-
+ arch/mips/include/asm/txx9/tx4939.h   |    4 ++--
+ arch/mips/pci/fixup-au1000.c          |    2 +-
+ arch/mips/pci/fixup-capcella.c        |    2 +-
+ arch/mips/pci/fixup-cobalt.c          |    2 +-
+ arch/mips/pci/fixup-emma2rh.c         |    2 +-
+ arch/mips/pci/fixup-excite.c          |    2 +-
+ arch/mips/pci/fixup-ip32.c            |    2 +-
+ arch/mips/pci/fixup-jmr3927.c         |    2 +-
+ arch/mips/pci/fixup-lm2e.c            |    2 +-
+ arch/mips/pci/fixup-malta.c           |    2 +-
+ arch/mips/pci/fixup-mpc30x.c          |    2 +-
+ arch/mips/pci/fixup-pmcmsp.c          |    2 +-
+ arch/mips/pci/fixup-pnx8550.c         |    2 +-
+ arch/mips/pci/fixup-rbtx4927.c        |    2 +-
+ arch/mips/pci/fixup-rbtx4938.c        |    2 +-
+ arch/mips/pci/fixup-rc32434.c         |    2 +-
+ arch/mips/pci/fixup-sni.c             |    2 +-
+ arch/mips/pci/fixup-tb0219.c          |    2 +-
+ arch/mips/pci/fixup-tb0226.c          |    2 +-
+ arch/mips/pci/fixup-tb0287.c          |    2 +-
+ arch/mips/pci/fixup-wrppmc.c          |    2 +-
+ arch/mips/pci/fixup-yosemite.c        |    2 +-
+ arch/mips/pci/pci-bcm1480.c           |    2 +-
+ arch/mips/pci/pci-bcm47xx.c           |    2 +-
+ arch/mips/pci/pci-ip27.c              |    2 +-
+ arch/mips/pci/pci-lasat.c             |    2 +-
+ arch/mips/pci/pci-sb1250.c            |    2 +-
+ arch/mips/pci/pci-tx4938.c            |    2 +-
+ arch/mips/pci/pci-tx4939.c            |    4 ++--
+ arch/mips/txx9/generic/pci.c          |    2 +-
+ 36 files changed, 38 insertions(+), 38 deletions(-)
 
-arch/mips/loongson/Kconfig
-	config [MACH_NAME]
-		bool "introduction of [MACH_NAME]"
-		select ...
-		select SYS_HAS_CPU_LOONGSON2X
-		select ...                 ^^2E,2F,2G...3A...
-
-arch/mips/loongson/[mach_name]
-	reset.c
-	irq.c
-	...
-
-arch/mips/include/asm/mach-loongson/machine.h
-
-This -v2 patch series incorporates feedback I received on -v1 of these series,
-the changes include:
-
-   * updated to the latest master branch of git://git.linux-mips.org/pub/scm.
-   the current git branch for this set is:
-
-       git://dev.lemote.com/rt4ls.git linux-loongson-dev-to-ralf
-
-   * two patches are discussed and tuned in progress, including FUJTU disk
-   fixup and Alsa memory map fixup. so, I hope these patches can be added later
-   after the basic support are accepted.
-
-   * updating of STD support
-
-Wu Zhangjin (23):
-  fix-warning: incompatible argument type of pci_fixup_irqs
-  fix-warning: incompatible argument type of virt_to_phys
-  change the naming methods
-  remove reference to bonito64.h
-  divide the files to the smallest logic unit
-  replace tons of magic numbers by understandable symbols
-  clean up the early printk support for fuloong(2e)
-  enable Real Time Clock Support for fuloong(2e)
-  split the loongson-specific part out
-  add basic loongson-2f support
-  add basic fuloong(2f) support
-  enable serial port support of loongson-based machines
-  add basic yeeloong(2f) laptop support
-  Add Siliconmotion 712 framebuffer driver
-  define Loongson2F arch specific phys prot access
-  Loongson2 specific OProfile driver
-  flush posted write to irq
-  CS5536 MFGPT as system clock source support
-  Loongson2F cpufreq support
-  add gcc 4.4 support for MIPS and loongson
-  add default kernel config file for loongson-based machines
-  add a default kernel configration for yeeloong-7inch laptop
-  Hibernation Support in mips system
-
- arch/mips/Kconfig                                  |   90 +-
- arch/mips/Makefile                                 |   21 +-
- arch/mips/configs/fulong_defconfig                 | 1912 --------------
- arch/mips/configs/fuloong2e_defconfig              | 1977 +++++++++++++++
- arch/mips/configs/fuloong2f_defconfig              | 2630 +++++++++++++++++++
- arch/mips/configs/yeeloong2f-7inch_defconfig       | 1720 +++++++++++++
- arch/mips/configs/yeeloong2f_defconfig             | 2641 ++++++++++++++++++++
- arch/mips/include/asm/clock.h                      |   64 +
- arch/mips/include/asm/compiler.h                   |   10 +
- arch/mips/include/asm/delay.h                      |   58 +-
- .../asm/mach-lemote/cpu-feature-overrides.h        |   59 -
- arch/mips/include/asm/mach-lemote/dma-coherence.h  |   66 -
- arch/mips/include/asm/mach-lemote/mc146818rtc.h    |   36 -
- arch/mips/include/asm/mach-lemote/pci.h            |   30 -
- arch/mips/include/asm/mach-lemote/war.h            |   25 -
- arch/mips/include/asm/mach-loongson/cmdline.h      |    9 +
- .../asm/mach-loongson/cpu-feature-overrides.h      |   59 +
- .../mips/include/asm/mach-loongson/cs5536/cs5536.h |  382 +++
- .../asm/mach-loongson/cs5536/cs5536_mfgpt.h        |   26 +
- .../include/asm/mach-loongson/cs5536/cs5536_pci.h  |  174 ++
- .../include/asm/mach-loongson/cs5536/cs5536_vsm.h  |   59 +
- .../mips/include/asm/mach-loongson/dma-coherence.h |   70 +
- arch/mips/include/asm/mach-loongson/loongson.h     |  311 +++
- arch/mips/include/asm/mach-loongson/machine.h      |   87 +
- arch/mips/include/asm/mach-loongson/mc146818rtc.h  |   36 +
- arch/mips/include/asm/mach-loongson/mem.h          |   31 +
- arch/mips/include/asm/mach-loongson/pci.h          |   59 +
- arch/mips/include/asm/mach-loongson/war.h          |   25 +
- arch/mips/include/asm/mips-boards/bonito64.h       |    5 -
- arch/mips/include/asm/page.h                       |    5 +-
- arch/mips/include/asm/pci.h                        |    2 +-
- arch/mips/include/asm/pgtable.h                    |   13 +
- arch/mips/include/asm/suspend.h                    |    2 +-
- arch/mips/include/asm/txx9/generic.h               |    2 +-
- arch/mips/include/asm/txx9/jmr3927.h               |    2 +-
- arch/mips/include/asm/txx9/rbtx4927.h              |    2 +-
- arch/mips/include/asm/txx9/rbtx4938.h              |    2 +-
- arch/mips/include/asm/txx9/tx4938.h                |    2 +-
- arch/mips/include/asm/txx9/tx4939.h                |    4 +-
- arch/mips/kernel/Makefile                          |    1 +
- arch/mips/kernel/asm-offsets.c                     |   13 +
- arch/mips/kernel/i8259.c                           |    2 +
- arch/mips/kernel/loongson2f_freq.c                 |  223 ++
- arch/mips/lemote/lm2e/Makefile                     |    7 -
- arch/mips/lemote/lm2e/bonito-irq.c                 |   74 -
- arch/mips/lemote/lm2e/dbg_io.c                     |  146 --
- arch/mips/lemote/lm2e/irq.c                        |  143 --
- arch/mips/lemote/lm2e/mem.c                        |   23 -
- arch/mips/lemote/lm2e/pci.c                        |   97 -
- arch/mips/lemote/lm2e/prom.c                       |   97 -
- arch/mips/lemote/lm2e/reset.c                      |   41 -
- arch/mips/lemote/lm2e/setup.c                      |  111 -
- arch/mips/loongson/Kconfig                         |  135 +
- arch/mips/loongson/Makefile                        |   23 +
- arch/mips/loongson/common/Makefile                 |   37 +
- arch/mips/loongson/common/bonito-irq.c             |   78 +
- arch/mips/loongson/common/clock.c                  |  166 ++
- arch/mips/loongson/common/cmdline.c                |   85 +
- arch/mips/loongson/common/cs5536/Makefile          |   25 +
- arch/mips/loongson/common/cs5536/cs5536_acc.c      |  156 ++
- arch/mips/loongson/common/cs5536/cs5536_ehci.c     |  166 ++
- arch/mips/loongson/common/cs5536/cs5536_flash.c    |  452 ++++
- arch/mips/loongson/common/cs5536/cs5536_ide.c      |  194 ++
- arch/mips/loongson/common/cs5536/cs5536_isa.c      |  376 +++
- arch/mips/loongson/common/cs5536/cs5536_mfgpt.c    |  257 ++
- arch/mips/loongson/common/cs5536/cs5536_ohci.c     |  168 ++
- arch/mips/loongson/common/cs5536/cs5536_otg.c      |  138 +
- arch/mips/loongson/common/cs5536/cs5536_pci.c      |  126 +
- arch/mips/loongson/common/cs5536/cs5536_udc.c      |  143 ++
- arch/mips/loongson/common/early_printk.c           |   28 +
- arch/mips/loongson/common/init.c                   |   57 +
- arch/mips/loongson/common/irq.c                    |  132 +
- arch/mips/loongson/common/mem.c                    |  116 +
- arch/mips/loongson/common/misc.c                   |   15 +
- arch/mips/loongson/common/pci.c                    |  109 +
- arch/mips/loongson/common/reset.c                  |   38 +
- arch/mips/loongson/common/rtc.c                    |   54 +
- arch/mips/loongson/common/serial.c                 |   64 +
- arch/mips/loongson/common/setup.c                  |   74 +
- arch/mips/loongson/common/time.c                   |   34 +
- arch/mips/loongson/fuloong-2e/Makefile             |    7 +
- arch/mips/loongson/fuloong-2e/irq.c                |   58 +
- arch/mips/loongson/fuloong-2e/reset.c              |   26 +
- arch/mips/loongson/fuloong-2f/Makefile             |    5 +
- arch/mips/loongson/fuloong-2f/irq.c                |   53 +
- arch/mips/loongson/fuloong-2f/reset.c              |   65 +
- arch/mips/loongson/yeeloong-2f/Makefile            |    5 +
- arch/mips/loongson/yeeloong-2f/init.c              |   71 +
- arch/mips/loongson/yeeloong-2f/irq.c               |   53 +
- arch/mips/loongson/yeeloong-2f/reset.c             |   40 +
- arch/mips/oprofile/Makefile                        |    1 +
- arch/mips/oprofile/common.c                        |    5 +
- arch/mips/oprofile/op_model_loongson2.c            |  186 ++
- arch/mips/pci/Makefile                             |    4 +-
- arch/mips/pci/fixup-au1000.c                       |    2 +-
- arch/mips/pci/fixup-capcella.c                     |    2 +-
- arch/mips/pci/fixup-cobalt.c                       |    2 +-
- arch/mips/pci/fixup-emma2rh.c                      |    2 +-
- arch/mips/pci/fixup-excite.c                       |    2 +-
- arch/mips/pci/fixup-fuloong2e.c                    |  243 ++
- arch/mips/pci/fixup-ip32.c                         |    2 +-
- arch/mips/pci/fixup-jmr3927.c                      |    2 +-
- arch/mips/pci/fixup-lemote2f.c                     |  171 ++
- arch/mips/pci/fixup-lm2e.c                         |  242 --
- arch/mips/pci/fixup-malta.c                        |    2 +-
- arch/mips/pci/fixup-mpc30x.c                       |    2 +-
- arch/mips/pci/fixup-pmcmsp.c                       |    2 +-
- arch/mips/pci/fixup-pnx8550.c                      |    2 +-
- arch/mips/pci/fixup-rbtx4927.c                     |    2 +-
- arch/mips/pci/fixup-rbtx4938.c                     |    2 +-
- arch/mips/pci/fixup-rc32434.c                      |    2 +-
- arch/mips/pci/fixup-sni.c                          |    2 +-
- arch/mips/pci/fixup-tb0219.c                       |    2 +-
- arch/mips/pci/fixup-tb0226.c                       |    2 +-
- arch/mips/pci/fixup-tb0287.c                       |    2 +-
- arch/mips/pci/fixup-wrppmc.c                       |    2 +-
- arch/mips/pci/fixup-yosemite.c                     |    2 +-
- arch/mips/pci/ops-bonito64.c                       |   19 +-
- arch/mips/pci/ops-loongson2.c                      |  213 ++
- arch/mips/pci/pci-bcm1480.c                        |    2 +-
- arch/mips/pci/pci-bcm47xx.c                        |    2 +-
- arch/mips/pci/pci-ip27.c                           |    2 +-
- arch/mips/pci/pci-lasat.c                          |    2 +-
- arch/mips/pci/pci-sb1250.c                         |    2 +-
- arch/mips/pci/pci-tx4938.c                         |    2 +-
- arch/mips/pci/pci-tx4939.c                         |    4 +-
- arch/mips/power/Makefile                           |    1 +
- arch/mips/power/cpu.c                              |   34 +
- arch/mips/power/hibernate.S                        |   61 +
- arch/mips/txx9/generic/pci.c                       |    2 +-
- drivers/rtc/rtc-cmos.c                             |    8 +-
- drivers/video/Kconfig                              |   23 +
- drivers/video/Makefile                             |    1 +
- drivers/video/smi/Makefile                         |    8 +
- drivers/video/smi/smtc2d.c                         |  979 ++++++++
- drivers/video/smi/smtc2d.h                         |  530 ++++
- drivers/video/smi/smtcfb.c                         | 1141 +++++++++
- drivers/video/smi/smtcfb.h                         |  793 ++++++
- 138 files changed, 19011 insertions(+), 3225 deletions(-)
- delete mode 100644 arch/mips/configs/fulong_defconfig
- create mode 100644 arch/mips/configs/fuloong2e_defconfig
- create mode 100644 arch/mips/configs/fuloong2f_defconfig
- create mode 100644 arch/mips/configs/yeeloong2f-7inch_defconfig
- create mode 100644 arch/mips/configs/yeeloong2f_defconfig
- create mode 100644 arch/mips/include/asm/clock.h
- delete mode 100644 arch/mips/include/asm/mach-lemote/cpu-feature-overrides.h
- delete mode 100644 arch/mips/include/asm/mach-lemote/dma-coherence.h
- delete mode 100644 arch/mips/include/asm/mach-lemote/mc146818rtc.h
- delete mode 100644 arch/mips/include/asm/mach-lemote/pci.h
- delete mode 100644 arch/mips/include/asm/mach-lemote/war.h
- create mode 100644 arch/mips/include/asm/mach-loongson/cmdline.h
- create mode 100644 arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
- create mode 100644 arch/mips/include/asm/mach-loongson/cs5536/cs5536.h
- create mode 100644 arch/mips/include/asm/mach-loongson/cs5536/cs5536_mfgpt.h
- create mode 100644 arch/mips/include/asm/mach-loongson/cs5536/cs5536_pci.h
- create mode 100644 arch/mips/include/asm/mach-loongson/cs5536/cs5536_vsm.h
- create mode 100644 arch/mips/include/asm/mach-loongson/dma-coherence.h
- create mode 100644 arch/mips/include/asm/mach-loongson/loongson.h
- create mode 100644 arch/mips/include/asm/mach-loongson/machine.h
- create mode 100644 arch/mips/include/asm/mach-loongson/mc146818rtc.h
- create mode 100644 arch/mips/include/asm/mach-loongson/mem.h
- create mode 100644 arch/mips/include/asm/mach-loongson/pci.h
- create mode 100644 arch/mips/include/asm/mach-loongson/war.h
- create mode 100644 arch/mips/kernel/loongson2f_freq.c
- delete mode 100644 arch/mips/lemote/lm2e/Makefile
- delete mode 100644 arch/mips/lemote/lm2e/bonito-irq.c
- delete mode 100644 arch/mips/lemote/lm2e/dbg_io.c
- delete mode 100644 arch/mips/lemote/lm2e/irq.c
- delete mode 100644 arch/mips/lemote/lm2e/mem.c
- delete mode 100644 arch/mips/lemote/lm2e/pci.c
- delete mode 100644 arch/mips/lemote/lm2e/prom.c
- delete mode 100644 arch/mips/lemote/lm2e/reset.c
- delete mode 100644 arch/mips/lemote/lm2e/setup.c
- create mode 100644 arch/mips/loongson/Kconfig
- create mode 100644 arch/mips/loongson/Makefile
- create mode 100644 arch/mips/loongson/common/Makefile
- create mode 100644 arch/mips/loongson/common/bonito-irq.c
- create mode 100644 arch/mips/loongson/common/clock.c
- create mode 100644 arch/mips/loongson/common/cmdline.c
- create mode 100644 arch/mips/loongson/common/cs5536/Makefile
- create mode 100644 arch/mips/loongson/common/cs5536/cs5536_acc.c
- create mode 100644 arch/mips/loongson/common/cs5536/cs5536_ehci.c
- create mode 100644 arch/mips/loongson/common/cs5536/cs5536_flash.c
- create mode 100644 arch/mips/loongson/common/cs5536/cs5536_ide.c
- create mode 100644 arch/mips/loongson/common/cs5536/cs5536_isa.c
- create mode 100644 arch/mips/loongson/common/cs5536/cs5536_mfgpt.c
- create mode 100644 arch/mips/loongson/common/cs5536/cs5536_ohci.c
- create mode 100644 arch/mips/loongson/common/cs5536/cs5536_otg.c
- create mode 100644 arch/mips/loongson/common/cs5536/cs5536_pci.c
- create mode 100644 arch/mips/loongson/common/cs5536/cs5536_udc.c
- create mode 100644 arch/mips/loongson/common/early_printk.c
- create mode 100644 arch/mips/loongson/common/init.c
- create mode 100644 arch/mips/loongson/common/irq.c
- create mode 100644 arch/mips/loongson/common/mem.c
- create mode 100644 arch/mips/loongson/common/misc.c
- create mode 100644 arch/mips/loongson/common/pci.c
- create mode 100644 arch/mips/loongson/common/reset.c
- create mode 100644 arch/mips/loongson/common/rtc.c
- create mode 100644 arch/mips/loongson/common/serial.c
- create mode 100644 arch/mips/loongson/common/setup.c
- create mode 100644 arch/mips/loongson/common/time.c
- create mode 100644 arch/mips/loongson/fuloong-2e/Makefile
- create mode 100644 arch/mips/loongson/fuloong-2e/irq.c
- create mode 100644 arch/mips/loongson/fuloong-2e/reset.c
- create mode 100644 arch/mips/loongson/fuloong-2f/Makefile
- create mode 100644 arch/mips/loongson/fuloong-2f/irq.c
- create mode 100644 arch/mips/loongson/fuloong-2f/reset.c
- create mode 100644 arch/mips/loongson/yeeloong-2f/Makefile
- create mode 100644 arch/mips/loongson/yeeloong-2f/init.c
- create mode 100644 arch/mips/loongson/yeeloong-2f/irq.c
- create mode 100644 arch/mips/loongson/yeeloong-2f/reset.c
- create mode 100644 arch/mips/oprofile/op_model_loongson2.c
- create mode 100644 arch/mips/pci/fixup-fuloong2e.c
- create mode 100644 arch/mips/pci/fixup-lemote2f.c
- delete mode 100644 arch/mips/pci/fixup-lm2e.c
- create mode 100644 arch/mips/pci/ops-loongson2.c
- create mode 100644 arch/mips/power/Makefile
- create mode 100644 arch/mips/power/cpu.c
- create mode 100644 arch/mips/power/hibernate.S
- create mode 100644 drivers/video/smi/Makefile
- create mode 100644 drivers/video/smi/smtc2d.c
- create mode 100644 drivers/video/smi/smtc2d.h
- create mode 100644 drivers/video/smi/smtcfb.c
- create mode 100644 drivers/video/smi/smtcfb.h
+diff --git a/arch/mips/include/asm/pci.h b/arch/mips/include/asm/pci.h
+index 053e463..42b895b 100644
+--- a/arch/mips/include/asm/pci.h
++++ b/arch/mips/include/asm/pci.h
+@@ -56,7 +56,7 @@ extern void register_pci_controller(struct pci_controller *hose);
+ /*
+  * board supplied pci irq fixup routine
+  */
+-extern int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin);
++extern int pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin);
+ 
+ 
+ /* Can be used to override the logic in pci_scan_bus for skipping
+diff --git a/arch/mips/include/asm/txx9/generic.h b/arch/mips/include/asm/txx9/generic.h
+index 9cde009..166da5a 100644
+--- a/arch/mips/include/asm/txx9/generic.h
++++ b/arch/mips/include/asm/txx9/generic.h
+@@ -37,7 +37,7 @@ struct txx9_board_vec {
+ 	void (*arch_init)(void);
+ 	void (*device_init)(void);
+ #ifdef CONFIG_PCI
+-	int (*pci_map_irq)(const struct pci_dev *dev, u8 slot, u8 pin);
++	int (*pci_map_irq)(struct pci_dev *dev, u8 slot, u8 pin);
+ #endif
+ };
+ extern struct txx9_board_vec *txx9_board_vec;
+diff --git a/arch/mips/include/asm/txx9/jmr3927.h b/arch/mips/include/asm/txx9/jmr3927.h
+index a409c44..8f37def 100644
+--- a/arch/mips/include/asm/txx9/jmr3927.h
++++ b/arch/mips/include/asm/txx9/jmr3927.h
+@@ -175,6 +175,6 @@
+ void jmr3927_prom_init(void);
+ void jmr3927_irq_setup(void);
+ struct pci_dev;
+-int jmr3927_pci_map_irq(const struct pci_dev *dev, u8 slot, u8 pin);
++int jmr3927_pci_map_irq(struct pci_dev *dev, u8 slot, u8 pin);
+ 
+ #endif /* __ASM_TXX9_JMR3927_H */
+diff --git a/arch/mips/include/asm/txx9/rbtx4927.h b/arch/mips/include/asm/txx9/rbtx4927.h
+index b2adab3..0168a87 100644
+--- a/arch/mips/include/asm/txx9/rbtx4927.h
++++ b/arch/mips/include/asm/txx9/rbtx4927.h
+@@ -87,6 +87,6 @@
+ void rbtx4927_prom_init(void);
+ void rbtx4927_irq_setup(void);
+ struct pci_dev;
+-int rbtx4927_pci_map_irq(const struct pci_dev *dev, u8 slot, u8 pin);
++int rbtx4927_pci_map_irq(struct pci_dev *dev, u8 slot, u8 pin);
+ 
+ #endif /* __ASM_TXX9_RBTX4927_H */
+diff --git a/arch/mips/include/asm/txx9/rbtx4938.h b/arch/mips/include/asm/txx9/rbtx4938.h
+index 9f0441a..705435b 100644
+--- a/arch/mips/include/asm/txx9/rbtx4938.h
++++ b/arch/mips/include/asm/txx9/rbtx4938.h
+@@ -140,6 +140,6 @@
+ void rbtx4938_prom_init(void);
+ void rbtx4938_irq_setup(void);
+ struct pci_dev;
+-int rbtx4938_pci_map_irq(const struct pci_dev *dev, u8 slot, u8 pin);
++int rbtx4938_pci_map_irq(struct pci_dev *dev, u8 slot, u8 pin);
+ 
+ #endif /* __ASM_TXX9_RBTX4938_H */
+diff --git a/arch/mips/include/asm/txx9/tx4938.h b/arch/mips/include/asm/txx9/tx4938.h
+index cd8bc20..e104c95 100644
+--- a/arch/mips/include/asm/txx9/tx4938.h
++++ b/arch/mips/include/asm/txx9/tx4938.h
+@@ -287,7 +287,7 @@ int tx4938_report_pciclk(void);
+ void tx4938_report_pci1clk(void);
+ int tx4938_pciclk66_setup(void);
+ struct pci_dev;
+-int tx4938_pcic1_map_irq(const struct pci_dev *dev, u8 slot);
++int tx4938_pcic1_map_irq(struct pci_dev *dev, u8 slot);
+ void tx4938_setup_pcierr_irq(void);
+ void tx4938_irq_init(void);
+ void tx4938_mtd_init(int ch);
+diff --git a/arch/mips/include/asm/txx9/tx4939.h b/arch/mips/include/asm/txx9/tx4939.h
+index f02c50b..b7af10e 100644
+--- a/arch/mips/include/asm/txx9/tx4939.h
++++ b/arch/mips/include/asm/txx9/tx4939.h
+@@ -534,8 +534,8 @@ void tx4939_ethaddr_init(unsigned char *addr0, unsigned char *addr1);
+ int tx4939_report_pciclk(void);
+ void tx4939_report_pci1clk(void);
+ struct pci_dev;
+-int tx4939_pcic1_map_irq(const struct pci_dev *dev, u8 slot);
+-int tx4939_pci_map_irq(const struct pci_dev *dev, u8 slot, u8 pin);
++int tx4939_pcic1_map_irq(struct pci_dev *dev, u8 slot);
++int tx4939_pci_map_irq(struct pci_dev *dev, u8 slot, u8 pin);
+ void tx4939_setup_pcierr_irq(void);
+ void tx4939_irq_init(void);
+ int tx4939_irq(void);
+diff --git a/arch/mips/pci/fixup-au1000.c b/arch/mips/pci/fixup-au1000.c
+index e2ddfc4..15b8ecc 100644
+--- a/arch/mips/pci/fixup-au1000.c
++++ b/arch/mips/pci/fixup-au1000.c
+@@ -31,7 +31,7 @@
+ 
+ extern char irq_tab_alchemy[][5];
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	return irq_tab_alchemy[slot][pin];
+ }
+diff --git a/arch/mips/pci/fixup-capcella.c b/arch/mips/pci/fixup-capcella.c
+index 1416bca..1e53075 100644
+--- a/arch/mips/pci/fixup-capcella.c
++++ b/arch/mips/pci/fixup-capcella.c
+@@ -38,7 +38,7 @@ static char irq_tab_capcella[][5] __initdata = {
+  [14] = { -1, INTA, INTB, INTC, INTD }
+ };
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	return irq_tab_capcella[slot][pin];
+ }
+diff --git a/arch/mips/pci/fixup-cobalt.c b/arch/mips/pci/fixup-cobalt.c
+index 9553b14..63d1af3 100644
+--- a/arch/mips/pci/fixup-cobalt.c
++++ b/arch/mips/pci/fixup-cobalt.c
+@@ -175,7 +175,7 @@ static char irq_tab_raq2[] __initdata = {
+   [COBALT_PCICONF_ETH1]    = ETH1_IRQ
+ };
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	if (cobalt_board_id <= COBALT_BRD_ID_QUBE1)
+ 		return irq_tab_qube1[slot];
+diff --git a/arch/mips/pci/fixup-emma2rh.c b/arch/mips/pci/fixup-emma2rh.c
+index fba5aad..04c28f3 100644
+--- a/arch/mips/pci/fixup-emma2rh.c
++++ b/arch/mips/pci/fixup-emma2rh.c
+@@ -88,7 +88,7 @@ static void __devinit emma2rh_pci_host_fixup(struct pci_dev *dev)
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_NEC, PCI_DEVICE_ID_NEC_EMMA2RH,
+ 			 emma2rh_pci_host_fixup);
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	return irq_map[slot][pin];
+ }
+diff --git a/arch/mips/pci/fixup-excite.c b/arch/mips/pci/fixup-excite.c
+index cd64d9f..1da696d 100644
+--- a/arch/mips/pci/fixup-excite.c
++++ b/arch/mips/pci/fixup-excite.c
+@@ -21,7 +21,7 @@
+ #include <linux/pci.h>
+ #include <excite.h>
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	if (pin == 0)
+ 		return -1;
+diff --git a/arch/mips/pci/fixup-ip32.c b/arch/mips/pci/fixup-ip32.c
+index 190fffd..3e66b0a 100644
+--- a/arch/mips/pci/fixup-ip32.c
++++ b/arch/mips/pci/fixup-ip32.c
+@@ -39,7 +39,7 @@ static char irq_tab_mace[][5] __initdata = {
+  * irqs.  I suppose a device without a pin A will thank us for doing it
+  * right if there exists such a broken piece of crap.
+  */
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	return irq_tab_mace[slot][pin];
+ }
+diff --git a/arch/mips/pci/fixup-jmr3927.c b/arch/mips/pci/fixup-jmr3927.c
+index 0f10695..e6ff40e 100644
+--- a/arch/mips/pci/fixup-jmr3927.c
++++ b/arch/mips/pci/fixup-jmr3927.c
+@@ -31,7 +31,7 @@
+ #include <asm/txx9/pci.h>
+ #include <asm/txx9/jmr3927.h>
+ 
+-int __init jmr3927_pci_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init jmr3927_pci_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	unsigned char irq = pin;
+ 
+diff --git a/arch/mips/pci/fixup-lm2e.c b/arch/mips/pci/fixup-lm2e.c
+index e18ae4f..08de000 100644
+--- a/arch/mips/pci/fixup-lm2e.c
++++ b/arch/mips/pci/fixup-lm2e.c
+@@ -36,7 +36,7 @@
+ /* South bridge slot number is set by the pci probe process */
+ static u8 sb_slot = 5;
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	int irq = 0;
+ 
+diff --git a/arch/mips/pci/fixup-malta.c b/arch/mips/pci/fixup-malta.c
+index 0f48498..bf2c41d 100644
+--- a/arch/mips/pci/fixup-malta.c
++++ b/arch/mips/pci/fixup-malta.c
+@@ -36,7 +36,7 @@ static char irq_tab[][5] __initdata = {
+ 	{0,	PCID,	PCIA,	PCIB,	PCIC }	/* 21: PCI Slot 4 */
+ };
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	int virq;
+ 	virq = irq_tab[slot][pin];
+diff --git a/arch/mips/pci/fixup-mpc30x.c b/arch/mips/pci/fixup-mpc30x.c
+index 5911596..3c9ae41 100644
+--- a/arch/mips/pci/fixup-mpc30x.c
++++ b/arch/mips/pci/fixup-mpc30x.c
+@@ -34,7 +34,7 @@ static const int irq_tab_mpc30x[] __initdata = {
+  [29] = MQ200_IRQ,
+ };
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	if (slot == 30)
+ 		return internal_func_irqs[PCI_FUNC(dev->devfn)];
+diff --git a/arch/mips/pci/fixup-pmcmsp.c b/arch/mips/pci/fixup-pmcmsp.c
+index 65735b1..0026121 100644
+--- a/arch/mips/pci/fixup-pmcmsp.c
++++ b/arch/mips/pci/fixup-pmcmsp.c
+@@ -202,7 +202,7 @@ int pcibios_plat_dev_init(struct pci_dev *dev)
+  *  RETURNS:     IRQ number
+  *
+  ****************************************************************************/
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ #if !defined(CONFIG_PMC_MSP7120_GW) && !defined(CONFIG_PMC_MSP7120_EVAL)
+ 	printk(KERN_WARNING "PCI: unknown board, no PCI IRQs assigned.\n");
+diff --git a/arch/mips/pci/fixup-pnx8550.c b/arch/mips/pci/fixup-pnx8550.c
+index 96857ac..50546da 100644
+--- a/arch/mips/pci/fixup-pnx8550.c
++++ b/arch/mips/pci/fixup-pnx8550.c
+@@ -45,7 +45,7 @@ void __init pcibios_fixup(void)
+ 	/* nothing to do here */
+ }
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	return pnx8550_irq_tab[slot][pin];
+ }
+diff --git a/arch/mips/pci/fixup-rbtx4927.c b/arch/mips/pci/fixup-rbtx4927.c
+index 321db26..3f1df0e 100644
+--- a/arch/mips/pci/fixup-rbtx4927.c
++++ b/arch/mips/pci/fixup-rbtx4927.c
+@@ -36,7 +36,7 @@
+ #include <asm/txx9/pci.h>
+ #include <asm/txx9/rbtx4927.h>
+ 
+-int __init rbtx4927_pci_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init rbtx4927_pci_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	unsigned char irq = pin;
+ 
+diff --git a/arch/mips/pci/fixup-rbtx4938.c b/arch/mips/pci/fixup-rbtx4938.c
+index a80579a..a5e0a41 100644
+--- a/arch/mips/pci/fixup-rbtx4938.c
++++ b/arch/mips/pci/fixup-rbtx4938.c
+@@ -13,7 +13,7 @@
+ #include <asm/txx9/pci.h>
+ #include <asm/txx9/rbtx4938.h>
+ 
+-int __init rbtx4938_pci_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init rbtx4938_pci_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	int irq = tx4938_pcic1_map_irq(dev, slot);
+ 
+diff --git a/arch/mips/pci/fixup-rc32434.c b/arch/mips/pci/fixup-rc32434.c
+index 3d86823..68f8537 100644
+--- a/arch/mips/pci/fixup-rc32434.c
++++ b/arch/mips/pci/fixup-rc32434.c
+@@ -37,7 +37,7 @@ static int __devinitdata irq_map[2][12] = {
+ 	{0, 0, 1, 3, 0, 2, 1, 3, 0, 2, 1, 3}
+ };
+ 
+-int __devinit pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __devinit pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	int irq = 0;
+ 
+diff --git a/arch/mips/pci/fixup-sni.c b/arch/mips/pci/fixup-sni.c
+index 5c8a79b..4ce73be 100644
+--- a/arch/mips/pci/fixup-sni.c
++++ b/arch/mips/pci/fixup-sni.c
+@@ -130,7 +130,7 @@ static inline int is_rm300_revd(void)
+ 	return (csmsr & 0xa0) == 0x20;
+ }
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	switch (sni_brd_type) {
+ 	case SNI_BRD_PCI_TOWER_CPLUS:
+diff --git a/arch/mips/pci/fixup-tb0219.c b/arch/mips/pci/fixup-tb0219.c
+index ed87733..0f8d31b 100644
+--- a/arch/mips/pci/fixup-tb0219.c
++++ b/arch/mips/pci/fixup-tb0219.c
+@@ -23,7 +23,7 @@
+ 
+ #include <asm/vr41xx/tb0219.h>
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	int irq = -1;
+ 
+diff --git a/arch/mips/pci/fixup-tb0226.c b/arch/mips/pci/fixup-tb0226.c
+index e3eedf4..c9e7cb4 100644
+--- a/arch/mips/pci/fixup-tb0226.c
++++ b/arch/mips/pci/fixup-tb0226.c
+@@ -23,7 +23,7 @@
+ #include <asm/vr41xx/giu.h>
+ #include <asm/vr41xx/tb0226.h>
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	int irq = -1;
+ 
+diff --git a/arch/mips/pci/fixup-tb0287.c b/arch/mips/pci/fixup-tb0287.c
+index 267ab3d..fbe6bcb 100644
+--- a/arch/mips/pci/fixup-tb0287.c
++++ b/arch/mips/pci/fixup-tb0287.c
+@@ -22,7 +22,7 @@
+ 
+ #include <asm/vr41xx/tb0287.h>
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	unsigned char bus;
+ 	int irq = -1;
+diff --git a/arch/mips/pci/fixup-wrppmc.c b/arch/mips/pci/fixup-wrppmc.c
+index 3d27754..3357c13 100644
+--- a/arch/mips/pci/fixup-wrppmc.c
++++ b/arch/mips/pci/fixup-wrppmc.c
+@@ -25,7 +25,7 @@ static char pci_irq_tab[PCI_SLOT_MAXNR][5] __initdata = {
+ 	[6] = {0, WRPPMC_PCI_INTA_IRQ, 0, 0, 0},
+ };
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	return pci_irq_tab[slot][pin];
+ }
+diff --git a/arch/mips/pci/fixup-yosemite.c b/arch/mips/pci/fixup-yosemite.c
+index fdafb13..81d77a5 100644
+--- a/arch/mips/pci/fixup-yosemite.c
++++ b/arch/mips/pci/fixup-yosemite.c
+@@ -26,7 +26,7 @@
+ #include <linux/init.h>
+ #include <linux/pci.h>
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	if (pin == 0)
+ 		return -1;
+diff --git a/arch/mips/pci/pci-bcm1480.c b/arch/mips/pci/pci-bcm1480.c
+index a9060c7..41e691a 100644
+--- a/arch/mips/pci/pci-bcm1480.c
++++ b/arch/mips/pci/pci-bcm1480.c
+@@ -74,7 +74,7 @@ static inline void WRITECFG32(u32 addr, u32 data)
+ 	*(u32 *)(cfg_space + (addr & ~3)) = data;
+ }
+ 
+-int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	if (pin == 0)
+ 		return -1;
+diff --git a/arch/mips/pci/pci-bcm47xx.c b/arch/mips/pci/pci-bcm47xx.c
+index bea9b6c..1f3721d 100644
+--- a/arch/mips/pci/pci-bcm47xx.c
++++ b/arch/mips/pci/pci-bcm47xx.c
+@@ -26,7 +26,7 @@
+ #include <linux/pci.h>
+ #include <linux/ssb/ssb.h>
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	return 0;
+ }
+diff --git a/arch/mips/pci/pci-ip27.c b/arch/mips/pci/pci-ip27.c
+index dda6f20..a2a5b5d 100644
+--- a/arch/mips/pci/pci-ip27.c
++++ b/arch/mips/pci/pci-ip27.c
+@@ -141,7 +141,7 @@ int __cpuinit bridge_probe(nasid_t nasid, int widget_id, int masterwid)
+  * A given PCI device, in general, should be able to intr any of the cpus
+  * on any one of the hubs connected to its xbow.
+  */
+-int __devinit pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __devinit pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	return 0;
+ }
+diff --git a/arch/mips/pci/pci-lasat.c b/arch/mips/pci/pci-lasat.c
+index a98e543..149d503 100644
+--- a/arch/mips/pci/pci-lasat.c
++++ b/arch/mips/pci/pci-lasat.c
+@@ -61,7 +61,7 @@ arch_initcall(lasat_pci_setup);
+ #define LASAT_IRQ_PCIC   (LASAT_IRQ_BASE + 7)
+ #define LASAT_IRQ_PCID   (LASAT_IRQ_BASE + 8)
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	switch (slot) {
+ 	case 1:
+diff --git a/arch/mips/pci/pci-sb1250.c b/arch/mips/pci/pci-sb1250.c
+index bf63959..bd26d4a 100644
+--- a/arch/mips/pci/pci-sb1250.c
++++ b/arch/mips/pci/pci-sb1250.c
+@@ -84,7 +84,7 @@ static inline void WRITECFG32(u32 addr, u32 data)
+ 	*(u32 *) (cfg_space + (addr & ~3)) = data;
+ }
+ 
+-int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	return dev->irq;
+ }
+diff --git a/arch/mips/pci/pci-tx4938.c b/arch/mips/pci/pci-tx4938.c
+index 1ea257b..0a2467d 100644
+--- a/arch/mips/pci/pci-tx4938.c
++++ b/arch/mips/pci/pci-tx4938.c
+@@ -114,7 +114,7 @@ int __init tx4938_pciclk66_setup(void)
+ 	return pciclk;
+ }
+ 
+-int __init tx4938_pcic1_map_irq(const struct pci_dev *dev, u8 slot)
++int __init tx4938_pcic1_map_irq(struct pci_dev *dev, u8 slot)
+ {
+ 	if (get_tx4927_pcicptr(dev->bus->sysdata) == tx4938_pcic1ptr) {
+ 		switch (slot) {
+diff --git a/arch/mips/pci/pci-tx4939.c b/arch/mips/pci/pci-tx4939.c
+index 5fecf1c..b39f9a5 100644
+--- a/arch/mips/pci/pci-tx4939.c
++++ b/arch/mips/pci/pci-tx4939.c
+@@ -50,7 +50,7 @@ void __init tx4939_report_pci1clk(void)
+ 		((pciclk + 50000) / 100000) % 10);
+ }
+ 
+-int __init tx4939_pcic1_map_irq(const struct pci_dev *dev, u8 slot)
++int __init tx4939_pcic1_map_irq(struct pci_dev *dev, u8 slot)
+ {
+ 	if (get_tx4927_pcicptr(dev->bus->sysdata) == tx4939_pcic1ptr) {
+ 		switch (slot) {
+@@ -70,7 +70,7 @@ int __init tx4939_pcic1_map_irq(const struct pci_dev *dev, u8 slot)
+ 	return -1;
+ }
+ 
+-int __init tx4939_pci_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init tx4939_pci_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	int irq = tx4939_pcic1_map_irq(dev, slot);
+ 
+diff --git a/arch/mips/txx9/generic/pci.c b/arch/mips/txx9/generic/pci.c
+index 7b637a7..27104f7 100644
+--- a/arch/mips/txx9/generic/pci.c
++++ b/arch/mips/txx9/generic/pci.c
+@@ -382,7 +382,7 @@ int pcibios_plat_dev_init(struct pci_dev *dev)
+ 	return 0;
+ }
+ 
+-int __init pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+ {
+ 	return txx9_board_vec->pci_map_irq(dev, slot, pin);
+ }
+-- 
+1.6.0.4

@@ -1,23 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 May 2009 02:47:15 +0100 (BST)
-Received: from [65.98.92.6] ([65.98.92.6]:2188 "EHLO b32.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 May 2009 02:48:38 +0100 (BST)
+Received: from [65.98.92.6] ([65.98.92.6]:2193 "EHLO b32.net"
 	rhost-flags-FAIL-FAIL-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20023944AbZE0BrI (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 27 May 2009 02:47:08 +0100
-Received: (qmail 28798 invoked from network); 27 May 2009 01:47:04 -0000
+	id S20023949AbZE0Bsb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 27 May 2009 02:48:31 +0100
+Received: (qmail 28805 invoked from network); 27 May 2009 01:48:29 -0000
 Received: from softdnserror (HELO two) (127.0.0.1)
-  by softdnserror with SMTP; 27 May 2009 01:47:04 -0000
-Received: by two (sSMTP sendmail emulation); Tue, 26 May 2009 18:46:24 -0700
-Message-Id: <26a78e954b7e1570179fba0c56aa129af1a247e0@localhost>
+  by softdnserror with SMTP; 27 May 2009 01:48:29 -0000
+Received: by two (sSMTP sendmail emulation); Tue, 26 May 2009 18:47:49 -0700
+Message-Id: <1add207f621f4d12c0f93b1aa64e77c1db70a2a5@localhost>
+In-Reply-To: <26a78e954b7e1570179fba0c56aa129af1a247e0@localhost>
+References: <26a78e954b7e1570179fba0c56aa129af1a247e0@localhost>
 From:	Kevin Cernekee <cernekee@gmail.com>
 To:	ralf@linux-mips.org
 Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Date:	Tue, 26 May 2009 16:57:34 -0700
-Subject: [PATCH 0/1] MIPS: Disable address swizzling on __raw MMIO operations
+Date:	Tue, 26 May 2009 16:59:56 -0700
+Subject: [PATCH 1/1] MIPS: Disable address swizzling on __raw MMIO operations
 Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22999
+X-archive-position: 23000
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -25,50 +27,75 @@ X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-I have a big-endian MIPS32-based ASIC configured as follows:
+Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+---
+ arch/mips/include/asm/io.h |   22 +++++++++++++---------
+ 1 files changed, 13 insertions(+), 9 deletions(-)
 
-CONFIG_SWAP_IO_SPACE is not set
-
-mangle-port.h says:
-
-#define __swizzle_addr_b(port)	((port) ^ 3)
-#define __swizzle_addr_w(port)	((port) ^ 2)
-#define __swizzle_addr_l(port)	(port)
-#define __swizzle_addr_q(port)	(port)
-
-(copied from mach-ip32/mangle-port.h)
-
-The PCI drivers use {read,write}[bwl].  PCI byte and word (16-bit)
-accesses are address-swizzled but not endian-swapped.  Since 32-bit
-accesses are the common case, this generates the most efficient code.
-
-The MTD drivers (in my case, physmap) use __raw_{read,write}[bwl].
-This is a problem because on MIPS, the __raw functions still enable
-address swizzling.
-
-I am submitting a patch to disable address swizzling for the __raw
-operations.
-
-There are currently three other MIPS platforms using address
-swizzling:
-
-txx9/jmr3927 only uses the swizzle facility to make the rtc-ds1742
-driver work.  This driver uses standard (non-__raw) readb()
-operations, which will continue to function normally with my patch in
-place.
-
-sgi-ip27 swizzles 16-bit PCI word addresses but not byte addresses.
-It only registers a single platform_device (rtc-m48t35) which has no
-__raw operations.
-
-sgi-ip32 swizzles both 16-bit and 8-bit PCI addresses.  It registers
-the following platform_device's:
-
-8250 - uses standard read/write operations
-meth - uses volatile struct accesses only
-sgio2audio - uses readq/writeq
-sgi_btns - uses readq/writeq
-rtc_cmos - uses inb_p/outb_p
-
-Based on this information, I do not believe that my change will have
-an adverse impact on any other systems.
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index 436878e..ea0647c 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -301,7 +301,7 @@ static inline void iounmap(const volatile void __iomem *addr)
+ #define war_octeon_io_reorder_wmb()		do { } while (0)
+ #endif
+ 
+-#define __BUILD_MEMORY_SINGLE(pfx, bwlq, type, irq)			\
++#define __BUILD_MEMORY_SINGLE(pfx, bwlq, type, irq, swiz)		\
+ 									\
+ static inline void pfx##write##bwlq(type val,				\
+ 				    volatile void __iomem *mem)		\
+@@ -311,7 +311,9 @@ static inline void pfx##write##bwlq(type val,				\
+ 									\
+ 	war_octeon_io_reorder_wmb();					\
+ 									\
+-	__mem = (void *)__swizzle_addr_##bwlq((unsigned long)(mem));	\
++	__mem = swiz ?							\
++		(void *)__swizzle_addr_##bwlq((unsigned long)(mem)) :	\
++		(void *)mem;						\
+ 									\
+ 	__val = pfx##ioswab##bwlq(__mem, val);				\
+ 									\
+@@ -344,7 +346,9 @@ static inline type pfx##read##bwlq(const volatile void __iomem *mem)	\
+ 	volatile type *__mem;						\
+ 	type __val;							\
+ 									\
+-	__mem = (void *)__swizzle_addr_##bwlq((unsigned long)(mem));	\
++	__mem = swiz ?							\
++		(void *)__swizzle_addr_##bwlq((unsigned long)(mem)) :	\
++		(void *)mem;						\
+ 									\
+ 	if (sizeof(type) != sizeof(u64) || sizeof(u64) == sizeof(long))	\
+ 		__val = *__mem;						\
+@@ -406,15 +410,15 @@ static inline type pfx##in##bwlq##p(unsigned long port)			\
+ 	return pfx##ioswab##bwlq(__addr, __val);			\
+ }
+ 
+-#define __BUILD_MEMORY_PFX(bus, bwlq, type)				\
++#define __BUILD_MEMORY_PFX(bus, bwlq, type, swiz)			\
+ 									\
+-__BUILD_MEMORY_SINGLE(bus, bwlq, type, 1)
++__BUILD_MEMORY_SINGLE(bus, bwlq, type, 1, swiz)
+ 
+ #define BUILDIO_MEM(bwlq, type)						\
+ 									\
+-__BUILD_MEMORY_PFX(__raw_, bwlq, type)					\
+-__BUILD_MEMORY_PFX(, bwlq, type)					\
+-__BUILD_MEMORY_PFX(__mem_, bwlq, type)					\
++__BUILD_MEMORY_PFX(__raw_, bwlq, type, 0)				\
++__BUILD_MEMORY_PFX(, bwlq, type, 1)					\
++__BUILD_MEMORY_PFX(__mem_, bwlq, type, 1)				\
+ 
+ BUILDIO_MEM(b, u8)
+ BUILDIO_MEM(w, u16)
+@@ -438,7 +442,7 @@ BUILDIO_IOPORT(q, u64)
+ 
+ #define __BUILDIO(bwlq, type)						\
+ 									\
+-__BUILD_MEMORY_SINGLE(____raw_, bwlq, type, 0)
++__BUILD_MEMORY_SINGLE(____raw_, bwlq, type, 0, 0)
+ 
+ __BUILDIO(q, u64)
+ 
+-- 
+1.5.3.6

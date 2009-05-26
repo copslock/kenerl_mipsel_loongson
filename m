@@ -1,36 +1,23 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 May 2009 15:49:12 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:65080 "HELO smtp.mba.ocn.ne.jp"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 May 2009 16:02:32 +0100 (BST)
+Received: from mba.ocn.ne.jp ([122.1.235.107]:65375 "HELO smtp.mba.ocn.ne.jp"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with SMTP
-	id S20024039AbZEZOs6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 26 May 2009 15:48:58 +0100
-Received: from localhost (p1252-ipad203funabasi.chiba.ocn.ne.jp [222.146.80.252])
+	id S20024052AbZEZPC0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 26 May 2009 16:02:26 +0100
+Received: from localhost.localdomain (p1252-ipad203funabasi.chiba.ocn.ne.jp [222.146.80.252])
 	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 81A87AC41; Tue, 26 May 2009 23:48:51 +0900 (JST)
-Date:	Tue, 26 May 2009 23:48:51 +0900 (JST)
-Message-Id: <20090526.234851.240501411.anemo@mba.ocn.ne.jp>
-To:	huhb@lemote.com
-Cc:	yanh@lemote.com, wuzhangjin@gmail.com, linux-mips@linux-mips.org,
-	ralf@linux-mips.org, philippe@cowpig.ca, r0bertz@gentoo.org,
-	zhangfx@lemote.com, apatard@mandriva.com,
-	loongson-dev@googlegroups.com, gnewsense-dev@nongnu.org,
-	hofrat@hofr.at, liujl@lemote.com, erwan@thiscow.com
-Subject: Re: [loongson-PATCH-v1 22/27] Hibernation Support in mips system
+	id 6DEB2ADD2; Wed, 27 May 2009 00:02:21 +0900 (JST)
 From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <4A1B53A3.6060503@lemote.com>
-References: <20090523.213045.39168996.anemo@mba.ocn.ne.jp>
-	<1243302188.9819.58.camel@localhost.localdomain>
-	<4A1B53A3.6060503@lemote.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 22.2 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] TXx9: Add TX4939 RNG support
+Date:	Wed, 27 May 2009 00:02:21 +0900
+Message-Id: <1243350141-883-2-git-send-email-anemo@mba.ocn.ne.jp>
+X-Mailer: git-send-email 1.5.6.5
 Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22971
+X-archive-position: 22972
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,37 +25,66 @@ X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 26 May 2009 10:27:47 +0800, Hongbing Hu <huhb@lemote.com> wrote:
-> > Yes, the struct array method is more efficient, we will change to it.
-> >   
-> The length of registers  is different between  32bit kernel  and  64bit 
-> kernel.
-> That means the file hibernate.S wiil be divided into  hibernate_32.S  
-> and hibernate_64.S ?
+Add platform support for RNG of TX4939 SoC.
 
-No, you can use macros in include/asm/asm.h to write common code for
-32-bit/64-bit kernel.
-
-> >> No, floating point registers are not saved on entering into kernel.
-> >> They are saved on context switch.  
-> >>     
-> Yes, suspend to disk  will freeze processes at first,and i think the 
-> process wiil save the float point regs.
-> So there is no need to save them.
-
-Hmm, but the floating point registers in _current_ task are not saved
-(I think, but it this wrong?).
-
-Maybe nobody might notice if ioctl() of the s2disk process clobbers
-floating point registers, but I think something like this is needed:
-
-	if (is_fpu_owner())
-		save_fp(current);
-	if (cpu_has_dsp)
-		save_dsp(p);
-
-I'm not sure DSP part, and I also wonder other cp0 registers should be
-saved or not ...
-
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 ---
-Atsushi Nemoto
+ arch/mips/include/asm/txx9/tx4939.h   |    1 +
+ arch/mips/txx9/generic/setup_tx4939.c |   18 ++++++++++++++++++
+ arch/mips/txx9/rbtx4939/setup.c       |    1 +
+ 3 files changed, 20 insertions(+), 0 deletions(-)
+
+diff --git a/arch/mips/include/asm/txx9/tx4939.h b/arch/mips/include/asm/txx9/tx4939.h
+index 050364d..3451499 100644
+--- a/arch/mips/include/asm/txx9/tx4939.h
++++ b/arch/mips/include/asm/txx9/tx4939.h
+@@ -547,5 +547,6 @@ void tx4939_ndfmc_init(unsigned int hold, unsigned int spw,
+ void tx4939_dmac_init(int memcpy_chan0, int memcpy_chan1);
+ void tx4939_aclc_init(void);
+ void tx4939_sramc_init(void);
++void tx4939_rng_init(void);
+ 
+ #endif /* __ASM_TXX9_TX4939_H */
+diff --git a/arch/mips/txx9/generic/setup_tx4939.c b/arch/mips/txx9/generic/setup_tx4939.c
+index df13a89..4b7293c 100644
+--- a/arch/mips/txx9/generic/setup_tx4939.c
++++ b/arch/mips/txx9/generic/setup_tx4939.c
+@@ -500,6 +500,24 @@ void __init tx4939_sramc_init(void)
+ 		txx9_sramc_init(&tx4939_sram_resource);
+ }
+ 
++#define TX4939_RNG_REG	((TX4939_CRYPTO_REG & 0xfffffffffULL) + 0xb0)
++void __init tx4939_rng_init(void)
++{
++	static struct resource res = {
++		.start = TX4939_RNG_REG,
++		.end = TX4939_RNG_REG + 0x30 - 1,
++		.flags = IORESOURCE_MEM,
++	};
++	static struct platform_device pdev = {
++		.name = "tx4939-rng",
++		.id = -1,
++		.num_resources = 1,
++		.resource = &res,
++	};
++
++	platform_device_register(&pdev);
++}
++
+ static void __init tx4939_stop_unused_modules(void)
+ {
+ 	__u64 pcfg, rst = 0, ckd = 0;
+diff --git a/arch/mips/txx9/rbtx4939/setup.c b/arch/mips/txx9/rbtx4939/setup.c
+index b919696..c033ffe 100644
+--- a/arch/mips/txx9/rbtx4939/setup.c
++++ b/arch/mips/txx9/rbtx4939/setup.c
+@@ -502,6 +502,7 @@ static void __init rbtx4939_device_init(void)
+ 	tx4939_aclc_init();
+ 	platform_device_register_simple("txx9aclc-generic", -1, NULL, 0);
+ 	tx4939_sramc_init();
++	tx4939_rng_init();
+ }
+ 
+ static void __init rbtx4939_setup(void)
+-- 
+1.5.6.5

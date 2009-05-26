@@ -1,65 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 May 2009 08:55:59 +0100 (BST)
-Received: from earthlight.etchedpixels.co.uk ([81.2.110.250]:46109 "EHLO
-	www.etchedpixels.co.uk" rhost-flags-OK-OK-OK-FAIL)
-	by ftp.linux-mips.org with ESMTP id S20023502AbZEZHzu (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 26 May 2009 08:55:50 +0100
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by www.etchedpixels.co.uk (8.14.3/8.14.3) with ESMTP id n4Q7u5bu030488;
-	Tue, 26 May 2009 08:56:16 +0100
-Date:	Tue, 26 May 2009 08:56:05 +0100
-From:	Alan Cox <alan@lxorguk.ukuu.org.uk>
-To:	yanh@lemote.com
-Cc:	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
-	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-	=?UTF-8?B?6IOh5rSq5YW1?= <huhb@lemote.com>, wuzhangjin@gmail.com,
-	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-	IDE/ATA development list <linux-ide@vger.kernel.org>,
-	Linux Kernel <linux-kernel@vger.kernel.org>,
-	linux-scsi <linux-scsi@vger.kernel.org>,
-	Philippe Vachon <philippe@cowpig.ca>,
-	Zhang Le <r0bertz@gentoo.org>,
-	Zhang Fuxin <zhangfx@lemote.com>,
-	Arnaud Patard <apatard@mandriva.com>,
-	loongson-dev@googlegroups.com, gnewsense-dev@nongnu.org,
-	Nicholas Mc Guire <hofrat@hofr.at>,
-	Liu Junliang <liujl@lemote.com>,
-	Erwan Lerale <erwan@thiscow.com>
-Subject: Re: [loongson-PATCH-v1 24/27] fixup for FUJITSU disk
-Message-ID: <20090526085605.014d0087@lxorguk.ukuu.org.uk>
-In-Reply-To: <1243300890.9819.40.camel@localhost.localdomain>
-References: <cover.1242855716.git.wuzhangjin@gmail.com>
-	<1243230339.9819.18.camel@localhost.localdomain>
-	<4A1A4A54.6090401@lemote.com>
-	<200905251656.25357.bzolnier@gmail.com>
-	<4A1AEBF7.7040402@ru.mvista.com>
-	<yq1tz39dmmn.fsf@sermon.lab.mkp.net>
-	<1243300890.9819.40.camel@localhost.localdomain>
-X-Mailer: Claws Mail 3.7.0 (GTK+ 2.14.7; x86_64-redhat-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <alan@lxorguk.ukuu.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 May 2009 14:04:27 +0100 (BST)
+Received: from main.gmane.org ([80.91.229.2]:42272 "EHLO ciao.gmane.org"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S20022482AbZEZNEV (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 26 May 2009 14:04:21 +0100
+Received: from list by ciao.gmane.org with local (Exim 4.43)
+	id 1M8wKH-0001kE-5V
+	for linux-mips@linux-mips.org; Tue, 26 May 2009 13:04:17 +0000
+Received: from terminus-est.gnu.org ([66.92.78.210])
+        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
+        id 1AlnuQ-0007hv-00
+        for <linux-mips@linux-mips.org>; Tue, 26 May 2009 13:04:17 +0000
+Received: from dclark by terminus-est.gnu.org with local (Gmexim 0.1 (Debian))
+        id 1AlnuQ-0007hv-00
+        for <linux-mips@linux-mips.org>; Tue, 26 May 2009 13:04:17 +0000
+X-Injected-Via-Gmane: http://gmane.org/
+To:	linux-mips@linux-mips.org
+From:	Daniel Clark <dclark@pobox.com>
+Subject:  Re: [loongson-support 00/27] linux PATCHes of loongson-based   machines
+Date:	Tue, 26 May 2009 09:03:38 -0400
+Message-ID:  <4A1BE8AA.4060502@pobox.com>
+References:  <cover.1242851584.git.wuzhangjin@gmail.com>	 <4A14846A.3080006@pobox.com> <1243303900.9819.68.camel@localhost.localdomain>
+Mime-Version:  1.0
+Content-Type:  multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature";
+ boundary="------------enig219612DA0B17A976B4AA8E0B"
+X-Complaints-To: usenet@ger.gmane.org
+X-Gmane-NNTP-Posting-Host: terminus-est.gnu.org
+User-Agent: Thunderbird 2.0.0.21 (X11/20090318)
+In-Reply-To: <1243303900.9819.68.camel@localhost.localdomain>
+X-Enigmail-Version: 0.95.0
+OpenPGP: id=AA95C349;
+	url=https://www.fsf.org/about/staff/fsf-sysadmin-keyring.asc/download
+Cc:	gnewsense-dev@nongnu.org
+Return-Path: <sgi-linux-mips@m.gmane.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22967
+X-archive-position: 22968
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alan@lxorguk.ukuu.org.uk
+X-original-sender: dclark@pobox.com
 Precedence: bulk
 X-list: linux-mips
 
-> > In any case I have yet to see a CS5536 system whose BIOS sets the cable
-> > detection bit.  If that's the problem I guess we could add a quirk flag
-> > to override the (lack of) BIOS setting.
-> > 
-> This may be the cause that udma5 cannot be set.
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--------------enig219612DA0B17A976B4AA8E0B
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+yanh wrote:
+
+> The rtl8187b is included in 2.6.27 kernel, however, there are many
+> issues in it(even in the 2.6.29 or 2.6.30). Some known isuses are below=
+:
+> 1. very hard to connect, and very poor performance.
+> 2. may cause system crash(now this can be fixed)
+>  issue 1 is the main reason that we stick to use the realtek providing
+> driver.
+
+Is the code at:
+
+http://www.lemote.com/upfiles/wifi/rtl8187B_linux_26.1049.1215.2008_relea=
+se2.tar.gz
+
+The latest driver provided by realtek?
+
+If not, where is the latest driver kept?
+
+Thanks,
+--=20
+Daniel JB Clark   | Sys Admin, Free Software Foundation
+pobox.com/~dclark | http://www.fsf.org/about/staff#danny
 
 
-If the system doesn't have working BIOS cable detect as per the
-documentation for the chip then just return the "unknown" cable type and
-libata will do device side cable detect.
+--------------enig219612DA0B17A976B4AA8E0B
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
-Alan
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.6 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org
+
+iD8DBQFKG+itJNMr+aqVw0kRAkSiAKC2Y7G+TzfPDyzSbY/GwoOafxfyVACfSnNP
+y2bAGqBtIaOcIcMQot7ziyU=
+=/CSY
+-----END PGP SIGNATURE-----
+
+--------------enig219612DA0B17A976B4AA8E0B--

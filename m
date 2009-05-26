@@ -1,145 +1,137 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 May 2009 03:12:35 +0100 (BST)
-Received: from [222.92.8.141] ([222.92.8.141]:50396 "EHLO lemote.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 26 May 2009 03:31:25 +0100 (BST)
+Received: from [222.92.8.141] ([222.92.8.141]:57884 "EHLO lemote.com"
 	rhost-flags-FAIL-FAIL-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20023811AbZEZCMa (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 26 May 2009 03:12:30 +0100
+	id S20023822AbZEZCbR (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 26 May 2009 03:31:17 +0100
 Received: from localhost (localhost [127.0.0.1])
-	by lemote.com (Postfix) with ESMTP id E3C87340AE;
-	Tue, 26 May 2009 10:07:04 +0800 (CST)
+	by lemote.com (Postfix) with ESMTP id D58D9340A3;
+	Tue, 26 May 2009 10:26:05 +0800 (CST)
 X-Virus-Scanned: Debian amavisd-new at lemote.com
 Received: from lemote.com ([127.0.0.1])
 	by localhost (www.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id alA50NUjt1Vn; Tue, 26 May 2009 10:06:48 +0800 (CST)
-Received: from [172.16.2.17] (unknown [222.92.8.142])
-	by lemote.com (Postfix) with ESMTP id 2E82F340AD;
-	Tue, 26 May 2009 10:06:48 +0800 (CST)
-Subject: Re: [loongson-support 00/27] linux PATCHes of loongson-based
- machines
-From:	yanh <yanh@lemote.com>
-Reply-To: yanh@lemote.com
-To:	Daniel Clark <dclark@pobox.com>
-Cc:	wuzhangjin@gmail.com, linux-mips@linux-mips.org,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Philippe Vachon <philippe@cowpig.ca>,
-	Zhang Le <r0bertz@gentoo.org>,
-	Zhang Fuxin <zhangfx@lemote.com>,
-	Arnaud Patard <apatard@mandriva.com>,
+	with ESMTP id Bcxa1bXROc6i; Tue, 26 May 2009 10:25:51 +0800 (CST)
+Received: from localhost.localdomain (unknown [172.16.2.66])
+	by lemote.com (Postfix) with ESMTP id 9BBAA340AD;
+	Tue, 26 May 2009 10:25:50 +0800 (CST)
+Message-ID: <4A1B53A3.6060503@lemote.com>
+Date:	Tue, 26 May 2009 10:27:47 +0800
+From:	Hongbing Hu <huhb@lemote.com>
+User-Agent: Mozilla-Thunderbird 2.0.0.9 (X11/20080110)
+MIME-Version: 1.0
+To:	yanh@lemote.com
+CC:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, wuzhangjin@gmail.com,
+	linux-mips@linux-mips.org, ralf@linux-mips.org, philippe@cowpig.ca,
+	r0bertz@gentoo.org, zhangfx@lemote.com, apatard@mandriva.com,
 	loongson-dev@googlegroups.com, gnewsense-dev@nongnu.org,
-	Nicholas Mc Guire <hofrat@hofr.at>,
-	Liu Junliang <liujl@lemote.com>,
-	Erwan Lerale <erwan@thiscow.com>, rms@gnu.org
-In-Reply-To: <4A14846A.3080006@pobox.com>
-References: <cover.1242851584.git.wuzhangjin@gmail.com>
-	 <4A14846A.3080006@pobox.com>
-Content-Type: text/plain; charset="UTF-8"
-Date:	Tue, 26 May 2009 10:11:40 +0800
-Message-Id: <1243303900.9819.68.camel@localhost.localdomain>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.24.1 (2.24.1-2.fc10) 
+	hofrat@hofr.at, liujl@lemote.com, erwan@thiscow.com
+Subject: Re: [loongson-PATCH-v1 22/27] Hibernation Support in mips system
+References: <817be0da759e19d781e98237cc70efeb33f10a40.1242855716.git.wuzhangjin@gmail.com>	 <20090522.220123.59650403.anemo@mba.ocn.ne.jp>	 <1243066003.8509.60.camel@localhost.localdomain>	 <20090523.213045.39168996.anemo@mba.ocn.ne.jp> <1243302188.9819.58.camel@localhost.localdomain>
+In-Reply-To: <1243302188.9819.58.camel@localhost.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Return-Path: <yanh@lemote.com>
+Return-Path: <huhb@lemote.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 22965
+X-archive-position: 22966
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yanh@lemote.com
+X-original-sender: huhb@lemote.com
 Precedence: bulk
 X-list: linux-mips
 
-在 2009-05-20三的 18:30 -0400，Daniel Clark写道：
-> wuzhangjin@gmail.com wrote:
-> > From: Wu Zhangjin <wuzhangjin@gmail.com>
-> > 
-> > Dear all,
-> > 
-> > I have cleaned up the source code of loongson-based machines support and
-> > updated it to linux-2.6.29.3, the latest result is put to the following git
-> > repository:
-> > 
-> >    git://dev.lemote.com/rt4ls.git  to-ralf
-> > 	or
-> >    http://dev.lemote.com/cgit/rt4ls.git/log/?h=to-ralf
-> > 
-> > this job is based on the to-mips branch of Yanhua's
-> > git://dev.lemote.com/linux_loongson.git and the lm2e-fixes branch of Philippe's
-> > git://git.linux-cisco.org/linux-mips.git. thanks goes to them.
-> > 
-> > and also, thanks goes to Erwen and heihaier for testing the latest branch, and
-> > thanks ralf, zhangLe, john and the other guyes for reviewing the old branch and
-> > giving good suggestions.
-> > 
-> > the most differences between this branch and the old branch include:
-> > 
-> >    * all of these patches are checked by script/checkpatch.pl, only a few
-> >    warnings left.
-> > 
-> >    * the cs5536 part have been cleaned up deeply. the old pcireg.h is removed
-> >    via using the include/linux/pci_regs.h instead. and the old cs5536_vsm.c is
-> >    divided to several modules, one file one module.
-> > 
-> >    * the source code in driver/video/smi in cleaned up a lot, two trashy header
-> >    files are removed, and several trashy functions are removed, lots of coding
-> >    style errors and warnings are cleaned up.
-> > 
-> >    * gcc 4.4 support, including 32bit and 64bit, and also it is gcc 4.3
-> >    compatiable
-> > 
-> > I have tested it in 32bit and 64bit with gcc 4.3 on fuloong(2e), fuloong(2f),
-> > yeeloong(2f), all of them work well, and also test it in 32bit and 64bit with
-> > gcc 4.4 on fuloong(2f), works normally. Erwen and heihaier have tested it in
-> > 64bit with gcc 4.4 on a yeeloong laptop.
-> 
-> Wow this is great. Does this branch also include the suspend-to-disk /
-> resume-from-disk code from the lemote 2.6.27 STD branch?
-> 
-> From a user's perspective, what are the loongson-oriented improvements
-> of this branch over the existing 2.6.27 branch?
-> 
-> I'd also like to know if:
-> 
-> (a) the ec-modules and
-> 
-> (b) the rtl8187b code
-> 
-> that is currently separate from the main lemote linux 2.6.27 git (the
-> former in a git repository, the later only in a .tar.gz file as far as I
-> know) is included in the 2.6.29.3 branch now.
-The ec-modules is firmware related. We think it would be more difficult
-to enter into mainline.
-The rtl8187b is included in 2.6.27 kernel, however, there are many
-issues in it(even in the 2.6.29 or 2.6.30). Some known isuses are below:
-1. very hard to connect, and very poor performance.
-2. may cause system crash(now this can be fixed)
- issue 1 is the main reason that we stick to use the realtek providing
-driver.
-> 
-> I can of course check this via git when I have internet access next, but
-> I'm guessing you would be able to provide context beyond just the code
-> changes to the answers of these questions  :-)
-> 
-> Oh, and one last thing - is compilation with the lemote-patched binutils
-> / "-mfix-gs2f-kernel" "-mfix-ls2f-kernel" (I'm told these did the same
-> things, the name just changed for some reason - currently I'm using a
-> binutils / as that understands the "-mfix-ls2f-kernel" option) still
-> needed? Without this in the 2.6.27 branch, and esp. with the ec-modules,
-> there were very frequent hard linux crashes (sysrq keys not working).
-this patch add a option into 'as'. Previously, it's named
--mfix-gs2f-kernel, later it is named as -mfix-ls2f-kernel
+yanh 写道:
+> 在 2009-05-23六的 21:30 +0900，Atsushi Nemoto写道：
+>   
+>> On Sat, 23 May 2009 16:06:43 +0800, yanh <yanh@lemote.com> wrote:
+>>     
+>>>>> +unsigned long
+>>>>> +	saved_ra,
+>>>>> +	saved_sp,
+>>>>>           
+>> ...
+>>     
+>>>>> +	saved_v0,
+>>>>> +	saved_v1;
+>>>>>           
+>>>> Instead of enumerating them, I would prefer something like "struct
+>>>> pt_regs saved_regs" or "unsigned long saved_regs[32]".
+>>>>         
+>>> This implementation is referencing the x86 platform. 
+>>> Not all the 32 reigsters are needed to save. 
+>>> Maybe the whole registers needed to save can still be reduced.
+>>>       
+>> I did not mean save/restore all registers.  I just mean using only one
+>> symbol (struct or array).  Though the struct or array contains some
+>> unused members, it saves many instructions in
+>> swsusp_arch_{suspend,resume}.
+>>
+>> For saving N registers, (N * 2) instructions are required to save to
+>> individual variables, but (N + 2) instructions are required to save to
+>> array or struct.
+>>     
+>
+> Yes, the struct array method is more efficient, we will change to it.
+>   
+The length of registers  is different between  32bit kernel  and  64bit 
+kernel.
+That means the file hibernate.S wiil be divided into  hibernate_32.S  
+and hibernate_64.S ?
 
-Any way this patch is not formal, and I prefer it not enter into
-mainline kernel.
-> 
-> BTW for me, this is interesting in the context of
-> http://config.fsf.org/trac/public/wiki/RmsLinuxForYou , which I have
-> several people helping me test at the moment - currently the biggest
-> issue is hard crashes every day or other day, or more frequently if
-> there is a lot of disk or usb I/O.
+>>>>> +void save_processor_state(void)
+>>>>> +{
+>>>>> +	saved_status = read_c0_status();
+>>>>> +}
+>>>>>           
+>>>> No need to save/restore floating point registers?
+>>>>         
+>>> the floating point registers are not used by kernel, for user part, they
+>>> are already saved while entering into kernel mode.
+>>>       
+>> No, floating point registers are not saved on entering into kernel.
+>> They are saved on context switch.  
+>>     
+Yes, suspend to disk  will freeze processes at first,and i think the 
+process wiil save the float point regs.
+So there is no need to save them.
+> It's my mistake. But I think, if there is need to save floating point
+> registers, the kernel have already done for it. 
+> What's need to save should be for the resuming parts. Those registers which are used while 
+> in suspending path are needed to save.
+>
+> create_image()
+>
+>    in_suspend = 1;
+>     save_processor_state();
+>     error = swsusp_arch_suspend();
+>     if (error)
+>         printk(KERN_ERR "PM: Error %d creating hibernation image\n",
+>             error);
+>    
+>   when resuming this functions is executed for righ after the  swsusp_arch_suspend().
+>   This is not a normal function return.
+>   So the registers need to save are those damaged by swsusp_arch_suspend and what it calls.
+>   
+>   because this is not a normal function call, the callee saved registers can not be restored, so we need to save
+> it explicitly. For caller saved temporary registers, they are already saved in create_image.  Are this right?
+>       
+>   
+---
+>> Atsushi Nemoto
+>>     
+>
+>
+>
+>   
 
-This issue is caused by the CPU host bridge and CS5536 co-work.
-currently, we need this patch to work around this issue. Later CPUs
-design will handle it properly. 
-> 
-> Thanks,
+
+-- 
+---------------------------------------------------------
+Hongbing,Hu (Software Department)
+Tel:    0512-52308631
+E-mail:	huhb@lemote.com
+MSN:	[huhb04@gmail.com]
+JiangSu Lemote Corp. Ltd.
+MengLan, Yushan, Changshu, JiangSu Province, China
+---------------------------------------------------------

@@ -1,106 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 May 2009 16:26:46 +0100 (BST)
-Received: from wa-out-1112.google.com ([209.85.146.181]:8625 "EHLO
-	wa-out-1112.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20024197AbZE0P0d (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 27 May 2009 16:26:33 +0100
-Received: by wa-out-1112.google.com with SMTP id n4so782242wag.0
-        for <multiple recipients>; Wed, 27 May 2009 08:26:31 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=NPnAld2woOwg+3BA80hwfEgh30bx5IFxkZsb8k9dNrc=;
-        b=JoAjQiu09VJUfGJj3SIZKK7v9dsA4A5gGTML4zKmlXW3Rdw6oiR4XV9MSkrA8uKUDE
-         f1kyZAzpaW6DTI2udzyjgbTl5uDFPhoAQzzaxJT7cn9C/7NUbt+diOGeATPCKtPss4BB
-         9iTwM17843joeYxIp/4BV5yQKi+BLlenNhOKI=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=vYRnTzFnccH/2TyE7XiITS8fwi0zQQAJSwC81nXiTVsNcBXWO29AI2HVz+QDhrt0cA
-         uj44ag8S4opobvihP8ViFqB+4qz2A9eVbOKkppho5bGiq979Sp0mAVtz7sreEYnC5PMM
-         m6eTtLFD2vzUi/o7Ju+7AWN+4BaCHFL04BrSA=
-Received: by 10.114.124.1 with SMTP id w1mr178639wac.135.1243437991195;
-        Wed, 27 May 2009 08:26:31 -0700 (PDT)
-Received: from ?192.168.2.239? ([202.201.14.140])
-        by mx.google.com with ESMTPS id v9sm2586845wah.1.2009.05.27.08.26.22
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 27 May 2009 08:26:26 -0700 (PDT)
-Subject: Re: [loongson-PATCH-v2 06/23] replace tons of magic numbers by
- understandable symbols
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:	Arnaud Patard <apatard@mandriva.com>
-Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-	Yan Hua <yanh@lemote.com>,
-	Philippe Vachon <philippe@cowpig.ca>,
-	Zhang Le <r0bertz@gentoo.org>,
-	Zhang Fuxin <zhangfx@lemote.com>,
-	loongson-dev <loongson-dev@googlegroups.com>,
-	Nicholas Mc Guire <der.herr@hofr.at>,
-	Liu Junliang <liujl@lemote.com>,
-	Erwan Lerale <erwan@thiscow.com>
-In-Reply-To: <m3y6siopy9.fsf@anduin.mandriva.com>
-References: <cover.1243362545.git.wuzj@lemote.com>
-	 <943d884878d1e8ccec9c11732669c5ec35913314.1243362545.git.wuzj@lemote.com>
-	 <m3y6siopy9.fsf@anduin.mandriva.com>
-Content-Type: text/plain
-Organization: DSLab, Lanzhou University, China
-Date:	Wed, 27 May 2009 23:26:17 +0800
-Message-Id: <1243437977.11263.7.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 May 2009 17:30:13 +0100 (BST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:54402 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S20024226AbZE0QaF (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 27 May 2009 17:30:05 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n4RGTfLc011115;
+	Wed, 27 May 2009 17:29:43 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n4RGTc4x011105;
+	Wed, 27 May 2009 17:29:38 +0100
+Date:	Wed, 27 May 2009 17:29:37 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	David Daney <ddaney@caviumnetworks.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Don't write ones to reserved entryhi bits.
+Message-ID: <20090527162937.GA9831@linux-mips.org>
+References: <1241812330-21041-1-git-send-email-ddaney@caviumnetworks.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1241812330-21041-1-git-send-email-ddaney@caviumnetworks.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23009
+X-archive-position: 23010
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2009-05-27 at 11:27 +0200, Arnaud Patard wrote:
-> wuzhangjin@gmail.com writes:
-> Hi,
-> 
-> [...]
-> 
-> > diff --git a/arch/mips/include/asm/mach-loongson/machine.h b/arch/mips/include/asm/mach-loongson/machine.h
-> > new file mode 100644
-> > index 0000000..5f2cd3a
-> > --- /dev/null
-> > +++ b/arch/mips/include/asm/mach-loongson/machine.h
-> > @@ -0,0 +1,27 @@
-> > +/*
-> > + * board-specific header file
-> > + *
-> > + * Copyright (c) 2009 Wu Zhangjin <wuzj@lemote.com>
-> > + *
-> > + * This program is free software; you can redistribute it
-> > + * and/or modify it under the terms of the GNU General
-> > + * Public License as published by the Free Software
-> > + * Foundation; either version 2 of the License, or (at your
-> > + * option) any later version.
-> > + */
-> > +
-> > +#ifndef __MACHINE_H
-> > +#define __MACHINE_H
-> > +
-> > +#define MACH_NAME			"lemote-fuloong(2e)"
-> > +
-> > +#define LOONGSON_UART_BASE		0x1fd003f8
-> 
-> Why not using LOONGSON_PCIIO_BASE+0x3f8 ?
-> 
+On Fri, May 08, 2009 at 12:52:10PM -0700, David Daney wrote:
 
-yes, i just tuned arch/mips/include/asm/mach-loongson/machine.h and the
-relative file arch/mips/loongson/common/serial.c as above.
+> According to the MIPS64 Privileged Resource Architecture manual, only
+> values of zero may be written to bits 8..10 of CP0 entryhi.  We need
+> to add masking by ASID_MASK.
 
-thx!
-Wu Zhangjin
+Yes, I've silently been relying on the hardware chopping off the excess
+bits for no better reason that it saving an instruction.  One of the
+functions you've touched is switch_mm() which is being used in context
+switches and any changes to it will show up in context switching
+benchmarks.
+
+The patch you did (and along with that some older SMTC changes by Kevin)
+can be done slightly more elegant because we already have:
+
+#define cpu_asid(cpu, mm)       (cpu_context((cpu), (mm)) & ASID_MASK)
+
+in <asm/mmu_context.h>.
+
+We used to optimize the ASID managment code by code patching even, see
+mmu_context.h in 78c388aed2b7184182c08428db1de6c872d815f5.
+
+  Ralf
+
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+ arch/mips/include/asm/mmu_context.h |   10 +++++-----
+ 1 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
+index d7f3eb0..25a50fa 100644
+--- a/arch/mips/include/asm/mmu_context.h
++++ b/arch/mips/include/asm/mmu_context.h
+@@ -164,12 +164,12 @@ static inline void switch_mm(struct mm_struct *prev, struct mm_struct *next,
+ 	 * having ASID_MASK smaller than the hardware maximum,
+ 	 * make sure no "soft" bits become "hard"...
+ 	 */
+-	write_c0_entryhi((read_c0_entryhi() & ~HW_ASID_MASK)
+-			| (cpu_context(cpu, next) & ASID_MASK));
++	write_c0_entryhi((read_c0_entryhi() & ~HW_ASID_MASK) |
++			 cpu_asid(cpu, next));
+ 	ehb(); /* Make sure it propagates to TCStatus */
+ 	evpe(mtflags);
+ #else
+-	write_c0_entryhi(cpu_context(cpu, next));
++	write_c0_entryhi(cpu_asid(cpu, next));
+ #endif /* CONFIG_MIPS_MT_SMTC */
+ 	TLBMISS_HANDLER_SETUP_PGD(next->pgd);
+ 
+@@ -225,11 +225,11 @@ activate_mm(struct mm_struct *prev, struct mm_struct *next)
+ 	}
+ 	/* See comments for similar code above */
+ 	write_c0_entryhi((read_c0_entryhi() & ~HW_ASID_MASK) |
+-	                 (cpu_context(cpu, next) & ASID_MASK));
++	                 cpu_asid(cpu, next));
+ 	ehb(); /* Make sure it propagates to TCStatus */
+ 	evpe(mtflags);
+ #else
+-	write_c0_entryhi(cpu_context(cpu, next));
++	write_c0_entryhi(cpu_asid(cpu, next));
+ #endif /* CONFIG_MIPS_MT_SMTC */
+ 	TLBMISS_HANDLER_SETUP_PGD(next->pgd);
+ 

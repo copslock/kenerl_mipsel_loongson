@@ -1,101 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 May 2009 02:48:38 +0100 (BST)
-Received: from [65.98.92.6] ([65.98.92.6]:2193 "EHLO b32.net"
-	rhost-flags-FAIL-FAIL-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20023949AbZE0Bsb (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 27 May 2009 02:48:31 +0100
-Received: (qmail 28805 invoked from network); 27 May 2009 01:48:29 -0000
-Received: from softdnserror (HELO two) (127.0.0.1)
-  by softdnserror with SMTP; 27 May 2009 01:48:29 -0000
-Received: by two (sSMTP sendmail emulation); Tue, 26 May 2009 18:47:49 -0700
-Message-Id: <1add207f621f4d12c0f93b1aa64e77c1db70a2a5@localhost>
-In-Reply-To: <26a78e954b7e1570179fba0c56aa129af1a247e0@localhost>
-References: <26a78e954b7e1570179fba0c56aa129af1a247e0@localhost>
-From:	Kevin Cernekee <cernekee@gmail.com>
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Date:	Tue, 26 May 2009 16:59:56 -0700
-Subject: [PATCH 1/1] MIPS: Disable address swizzling on __raw MMIO operations
-Return-Path: <cernekee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 27 May 2009 10:19:47 +0100 (BST)
+Received: from mx1.moondrake.net ([212.85.150.166]:48844 "EHLO
+	mx1.mandriva.com" rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org
+	with ESMTP id S20023634AbZE0JTk (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 27 May 2009 10:19:40 +0100
+Received: by mx1.mandriva.com (Postfix, from userid 501)
+	id 8DDE9274002; Wed, 27 May 2009 11:19:39 +0200 (CEST)
+Received: from office-abk.mandriva.com (office-abk.mandriva.com [84.55.162.90])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mx1.mandriva.com (Postfix) with ESMTP id AB87F274001;
+	Wed, 27 May 2009 11:19:37 +0200 (CEST)
+Received: from anduin.mandriva.com (fw2.mandriva.com [192.168.2.3])
+	by office-abk.mandriva.com (Postfix) with ESMTP id 597208281C;
+	Wed, 27 May 2009 11:24:51 +0200 (CEST)
+Received: from anduin.mandriva.com (localhost [127.0.0.1])
+	by anduin.mandriva.com (Postfix) with ESMTP id 7F6A8FF855;
+	Wed, 27 May 2009 11:22:35 +0200 (CEST)
+From:	Arnaud Patard <apatard@mandriva.com>
+To:	wuzhangjin@gmail.com
+Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+	Wu Zhangjin <wuzj@lemote.com>, Yan Hua <yanh@lemote.com>,
+	Philippe Vachon <philippe@cowpig.ca>,
+	Zhang Le <r0bertz@gentoo.org>,
+	Zhang Fuxin <zhangfx@lemote.com>,
+	loongson-dev <loongson-dev@googlegroups.com>,
+	Nicholas Mc Guire <der.herr@hofr.at>,
+	Liu Junliang <liujl@lemote.com>,
+	Erwan Lerale <erwan@thiscow.com>
+Subject: Re: [loongson-PATCH-v2 20/23] add gcc 4.4 support for MIPS and loongson
+References: <cover.1243362545.git.wuzj@lemote.com>
+	<afda033feccfe0946c308eddc86b2049f4919be2.1243362545.git.wuzj@lemote.com>
+Organization: Mandriva
+Date:	Wed, 27 May 2009 11:22:35 +0200
+In-Reply-To: <afda033feccfe0946c308eddc86b2049f4919be2.1243362545.git.wuzj@lemote.com> (wuzhangjin@gmail.com's message of "Wed, 27 May 2009 03:09:13 +0800")
+Message-ID: <m33aaqq4ro.fsf@anduin.mandriva.com>
+User-Agent: Gnus/5.1008 (Gnus v5.10.8) Emacs/22.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <arnaud.patard@mandriva.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23000
+X-archive-position: 23001
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: apatard@mandriva.com
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
----
- arch/mips/include/asm/io.h |   22 +++++++++++++---------
- 1 files changed, 13 insertions(+), 9 deletions(-)
+wuzhangjin@gmail.com writes:
+Hi,
 
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index 436878e..ea0647c 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -301,7 +301,7 @@ static inline void iounmap(const volatile void __iomem *addr)
- #define war_octeon_io_reorder_wmb()		do { } while (0)
- #endif
- 
--#define __BUILD_MEMORY_SINGLE(pfx, bwlq, type, irq)			\
-+#define __BUILD_MEMORY_SINGLE(pfx, bwlq, type, irq, swiz)		\
- 									\
- static inline void pfx##write##bwlq(type val,				\
- 				    volatile void __iomem *mem)		\
-@@ -311,7 +311,9 @@ static inline void pfx##write##bwlq(type val,				\
- 									\
- 	war_octeon_io_reorder_wmb();					\
- 									\
--	__mem = (void *)__swizzle_addr_##bwlq((unsigned long)(mem));	\
-+	__mem = swiz ?							\
-+		(void *)__swizzle_addr_##bwlq((unsigned long)(mem)) :	\
-+		(void *)mem;						\
- 									\
- 	__val = pfx##ioswab##bwlq(__mem, val);				\
- 									\
-@@ -344,7 +346,9 @@ static inline type pfx##read##bwlq(const volatile void __iomem *mem)	\
- 	volatile type *__mem;						\
- 	type __val;							\
- 									\
--	__mem = (void *)__swizzle_addr_##bwlq((unsigned long)(mem));	\
-+	__mem = swiz ?							\
-+		(void *)__swizzle_addr_##bwlq((unsigned long)(mem)) :	\
-+		(void *)mem;						\
- 									\
- 	if (sizeof(type) != sizeof(u64) || sizeof(u64) == sizeof(long))	\
- 		__val = *__mem;						\
-@@ -406,15 +410,15 @@ static inline type pfx##in##bwlq##p(unsigned long port)			\
- 	return pfx##ioswab##bwlq(__addr, __val);			\
- }
- 
--#define __BUILD_MEMORY_PFX(bus, bwlq, type)				\
-+#define __BUILD_MEMORY_PFX(bus, bwlq, type, swiz)			\
- 									\
--__BUILD_MEMORY_SINGLE(bus, bwlq, type, 1)
-+__BUILD_MEMORY_SINGLE(bus, bwlq, type, 1, swiz)
- 
- #define BUILDIO_MEM(bwlq, type)						\
- 									\
--__BUILD_MEMORY_PFX(__raw_, bwlq, type)					\
--__BUILD_MEMORY_PFX(, bwlq, type)					\
--__BUILD_MEMORY_PFX(__mem_, bwlq, type)					\
-+__BUILD_MEMORY_PFX(__raw_, bwlq, type, 0)				\
-+__BUILD_MEMORY_PFX(, bwlq, type, 1)					\
-+__BUILD_MEMORY_PFX(__mem_, bwlq, type, 1)				\
- 
- BUILDIO_MEM(b, u8)
- BUILDIO_MEM(w, u16)
-@@ -438,7 +442,7 @@ BUILDIO_IOPORT(q, u64)
- 
- #define __BUILDIO(bwlq, type)						\
- 									\
--__BUILD_MEMORY_SINGLE(____raw_, bwlq, type, 0)
-+__BUILD_MEMORY_SINGLE(____raw_, bwlq, type, 0, 0)
- 
- __BUILDIO(q, u64)
- 
--- 
-1.5.3.6
+> From: Wu Zhangjin <wuzj@lemote.com>
+>
+> the gcc 4.4 support for MIPS mostly refer to this PATCH:
+> http://www.nabble.com/-PATCH--MIPS:-Handle-removal-of-%27h%27-constraint-in-GCC-4.4-td22192768.html
+> but have been tuned a little.
+>
+> because only gcc 4.4 have loongson-specific support, so, we need to
+> choose the suitable -march argument for gcc <= 4.3 and gcc >= 4.4, and
+> we also need to consider use -march=loongson2e and -march=loongson2f for
+> loongson2e and loongson2f respectively. this is handled by adding two
+> new kernel options: CPU_LOONGSON2E and CPU_LOONGSON2F(thanks for the
+> solutin provided by ZhangLe).
+>
+> I have tested it on FuLoong(2f) in 32bit and 64bit with gcc-4.4 and
+> gcc-4.3. so, basically, it works.
+>
+> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+> ---
+>  arch/mips/Makefile               |    9 +++++-
+>  arch/mips/include/asm/compiler.h |   10 ++++++
+>  arch/mips/include/asm/delay.h    |   58 +++++++++++++++++++++++++------------
+>  3 files changed, 57 insertions(+), 20 deletions(-)
+>
+> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+> index a25c2e5..1ee5504 100644
+> --- a/arch/mips/Makefile
+> +++ b/arch/mips/Makefile
+> @@ -120,7 +120,14 @@ cflags-$(CONFIG_CPU_R4300)	+= -march=r4300 -Wa,--trap
+>  cflags-$(CONFIG_CPU_VR41XX)	+= -march=r4100 -Wa,--trap
+>  cflags-$(CONFIG_CPU_R4X00)	+= -march=r4600 -Wa,--trap
+>  cflags-$(CONFIG_CPU_TX49XX)	+= -march=r4600 -Wa,--trap
+> -cflags-$(CONFIG_CPU_LOONGSON2)	+= -march=r4600 -Wa,--trap
+> +
+> +# only gcc >= 4.4 have the loongson-specific support
+> +cflags-$(CONFIG_CPU_LOONGSON2)	+= -Wa,--trap
+> +cflags-$(CONFIG_CPU_LOONGSON2E)	+= $(shell if [ $(call cc-version) -lt 0440 ] ; then \
+> +	echo $(call cc-option,-march=r4600); else echo $(call cc-option,-march=loongson2e); fi ;)
+> +cflags-$(CONFIG_CPU_LOONGSON2F)	+= $(shell if [ $(call cc-version) -lt 0440 ] ; then \
+> +	echo $(call cc-option,-march=r4600); else echo $(call cc-option,-march=loongson2f); fi ;)
+> +
+
+why not using something like that ? :
+        cflags-$(CONFIG_LOONGSON2E) += \
+                $(call cc-option,-march=loongson2e,$(call cc-option,-march=r4600))
+        cflags-$(CONFIG_LOONGSON2F) += \
+                $(call cc-option,-march=loongson2f,$(call cc-option,-march=r4600))
+
+Arnaud

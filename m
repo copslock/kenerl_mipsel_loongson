@@ -1,54 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2009 16:33:02 +0100 (BST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:51767 "HELO smtp.mba.ocn.ne.jp"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with SMTP
-	id S20023223AbZE1Pcz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 28 May 2009 16:32:55 +0100
-Received: from localhost (p7181-ipad208funabasi.chiba.ocn.ne.jp [60.43.108.181])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 652039829; Fri, 29 May 2009 00:32:48 +0900 (JST)
-Date:	Fri, 29 May 2009 00:32:49 +0900 (JST)
-Message-Id: <20090529.003249.186064432.anemo@mba.ocn.ne.jp>
-To:	apatard@mandriva.com
-Cc:	wuzhangjin@gmail.com, linux-mips@linux-mips.org,
-	ralf@linux-mips.org, wuzj@lemote.com, yanh@lemote.com,
-	philippe@cowpig.ca, r0bertz@gentoo.org, zhangfx@lemote.com,
-	loongson-dev@googlegroups.com, der.herr@hofr.at, liujl@lemote.com,
-	erwan@thiscow.com
-Subject: Re: [loongson-PATCH-v2 23/23] Hibernation Support in mips system
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <m3my8yoovk.fsf@anduin.mandriva.com>
-References: <cover.1243362545.git.wuzj@lemote.com>
-	<1483a7cb0f587bd329ea3ca8d3af2881afadaf5e.1243362545.git.wuzj@lemote.com>
-	<m3my8yoovk.fsf@anduin.mandriva.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 22.2 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2009 16:44:28 +0100 (BST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:23788 "EHLO
+	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20024507AbZE1PoU (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 28 May 2009 16:44:20 +0100
+Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B4a1eb10d0000>; Thu, 28 May 2009 11:43:11 -0400
+Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 28 May 2009 08:43:19 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 28 May 2009 08:43:18 -0700
+Message-ID: <4A1EB116.6080404@caviumnetworks.com>
+Date:	Thu, 28 May 2009 08:43:18 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+MIME-Version: 1.0
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	wuzhangjin@gmail.com, Florian Fainelli <florian@openwrt.org>,
+	Richard Sandiford <rdsandiford@googlemail.com>,
+	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Handle removal of 'h' constraint in GCC 4.4
+References: <1229567048-19219-1-git-send-email-ddaney@caviumnetworks.com>	 <alpine.LFD.1.10.0812190041080.6463@ftp.linux-mips.org>	 <87wsdl63xv.fsf@firetop.home>  <200905281331.41440.florian@openwrt.org> <1243521105.5183.5.camel@falcon>
+In-Reply-To: <1243521105.5183.5.camel@falcon>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 28 May 2009 15:43:18.0901 (UTC) FILETIME=[05F36A50:01C9DFAB]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23030
+X-archive-position: 23031
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 27 May 2009 11:51:11 +0200, Arnaud Patard <apatard@mandriva.com> wrote:
-> > +LEAF(swsusp_arch_resume)
-...
+Wu Zhangjin wrote:
+> Hi, 
 > 
-> you really need to flush cache/tlb here. If you don't do that you'll get
-> some weird bugs.
+> On Thu, 2009-05-28 at 13:31 +0200, Florian Fainelli wrote:
+>> Le Saturday 27 December 2008 16:19:40 Richard Sandiford, vous avez écrit :
+>>> "Maciej W. Rozycki" <macro@linux-mips.org> writes:
+>>>> On Wed, 17 Dec 2008, David Daney wrote:
+>>>>> This is an incomplete proof of concept that I applied to be able to
+>>>>> build a 64 bit kernel with GCC-4.4.  It doesn't handle the 32 bit case
+>>>>> or the R4000_WAR case.
+>>>>  The R4000_WAR case can use the same C code -- GCC will adjust code
+>>>> generated as necessary according to the -mfix-r4000 flag.  For the 32-bit
+>>>> case I think the conclusion was the only way to get it working is to use
+>>>> MFHI explicitly in the asm.
+>>> No, the same sort of cast, multiply and shift should work for 32-bit
+>>> code too.  I.e.:
+>>>
+>>> 		usecs = ((uint64_t)usecs * lpj) >> 32;
+>>>
+>>> It should work for both -mfix-r4000 and -mno-fix-r4000.
+>> Any updates on this ?
+> 
+> I have updated it to this PATCH, could you help to review it?
+> 
+> 
+> 
 
-I also wonder if we need to flush cache on swsusp_arch_suspend.  Maybe
-kernel pages does not need to be flushed on here, but how about user
-pages with dcache aliasing?  It seems swsusp_save() reads from source
-page via kernel mapping without any care for coherency...
+FWIW, Ralf also has a patch, that I have tested, that takes a slightly 
+different approach.
 
----
-Atsushi Nemoto
+In any event, it would be nice if one of the patches were merged to 
+2.6.30 before it is released.  GCC-4.4 has been available for quite a 
+while now.  Not being able to build the kernel with it will become a 
+larger issue as time goes by.
+
+David Daney

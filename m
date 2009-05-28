@@ -1,84 +1,1042 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2009 12:32:02 +0100 (BST)
-Received: from mail-bw0-f177.google.com ([209.85.218.177]:37591 "EHLO
-	mail-bw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20024381AbZE1Lbz convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 28 May 2009 12:31:55 +0100
-Received: by bwz25 with SMTP id 25so5526678bwz.0
-        for <multiple recipients>; Thu, 28 May 2009 04:31:49 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:to:subject:date
-         :user-agent:cc:references:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:content-disposition:message-id;
-        bh=3hrufnDb8ODh/hfc9DHmEJ+4zGfZqAv09hEFnF0oJh4=;
-        b=xfbBVaD60Y53QIY4uVm2n++kGgi88nqk1JcXUMit0zjmWgxaC+rqKPT2eCQjKkOobF
-         CMQO8kXBs2PxDmkQweeaW1b6csTTaaGhbJ8xLagrWmY/luDdKyVV/CbxQ1w3TuY1jknh
-         gxvX5FS3Wj+fXmcxJMbsVwq7GJm/Dz6Zj32bI=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
-         :mime-version:content-type:content-transfer-encoding
-         :content-disposition:message-id;
-        b=kLsmi9jlDyPIiZvmUXVTyVlTjc1Uc61H9jAwsKra6C3LdzlfVF+eRt0WqNchS75ybM
-         hUJxyUAjR44Hc9W5XTbr99acBJWsRE094nNK0Gp7yd/5BGM1UaoQCKTm4yPLsVj95f5E
-         ia3xV5Wfdj0dN3IQ66E6mzlwItiyR1GdKT1rM=
-Received: by 10.204.64.136 with SMTP id e8mr1107764bki.46.1243510309629;
-        Thu, 28 May 2009 04:31:49 -0700 (PDT)
-Received: from florian.lab.openpattern.org (lab.openpattern.org [82.240.16.241])
-        by mx.google.com with ESMTPS id 35sm5800895fkt.20.2009.05.28.04.31.43
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 28 May 2009 04:31:46 -0700 (PDT)
-From:	Florian Fainelli <florian@openwrt.org>
-To:	Richard Sandiford <rdsandiford@googlemail.com>
-Subject: Re: [PATCH] MIPS: Handle removal of 'h' constraint in GCC 4.4
-Date:	Thu, 28 May 2009 13:31:40 +0200
-User-Agent: KMail/1.9.9
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	David Daney <ddaney@caviumnetworks.com>,
-	linux-mips@linux-mips.org
-References: <1229567048-19219-1-git-send-email-ddaney@caviumnetworks.com> <alpine.LFD.1.10.0812190041080.6463@ftp.linux-mips.org> <87wsdl63xv.fsf@firetop.home>
-In-Reply-To: <87wsdl63xv.fsf@firetop.home>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2009 15:21:48 +0100 (BST)
+Received: from hrndva-omtalb.mail.rr.com ([71.74.56.124]:33655 "EHLO
+	hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20024465AbZE1OVk (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 28 May 2009 15:21:40 +0100
+Received: from gandalf ([74.67.89.75]) by hrndva-omta03.mail.rr.com
+          with ESMTP
+          id <20090528142131313.JOXR11340@hrndva-omta03.mail.rr.com>;
+          Thu, 28 May 2009 14:21:31 +0000
+Date:	Thu, 28 May 2009 10:21:30 -0400 (EDT)
+From:	Steven Rostedt <rostedt@goodmis.org>
+X-X-Sender: rostedt@gandalf.stny.rr.com
+To:	wuzhangjin@gmail.com
+cc:	linux-mips@linux-mips.org, LKML <linux-kernel@vger.kernel.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Ingo Molnar <mingo@elte.hu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Nicholas Mc Guire <der.herr@hofr.at>, wuzj@lemote.com
+Subject: Re: [PATCH] mips-specific ftrace support
+In-Reply-To: <73465d64a9a6773936f5eab3735a69f651c13187.1243458732.git.wuzj@lemote.com>
+Message-ID: <alpine.DEB.2.00.0905280948410.27708@gandalf.stny.rr.com>
+References: <73465d64a9a6773936f5eab3735a69f651c13187.1243458732.git.wuzj@lemote.com>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Message-Id: <200905281331.41440.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <rostedt@goodmis.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23024
+X-archive-position: 23025
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 X-list: linux-mips
 
-Le Saturday 27 December 2008 16:19:40 Richard Sandiford, vous avez écrit :
-> "Maciej W. Rozycki" <macro@linux-mips.org> writes:
-> > On Wed, 17 Dec 2008, David Daney wrote:
-> >> This is an incomplete proof of concept that I applied to be able to
-> >> build a 64 bit kernel with GCC-4.4.  It doesn't handle the 32 bit case
-> >> or the R4000_WAR case.
-> >
-> >  The R4000_WAR case can use the same C code -- GCC will adjust code
-> > generated as necessary according to the -mfix-r4000 flag.  For the 32-bit
-> > case I think the conclusion was the only way to get it working is to use
-> > MFHI explicitly in the asm.
->
-> No, the same sort of cast, multiply and shift should work for 32-bit
-> code too.  I.e.:
->
-> 		usecs = ((uint64_t)usecs * lpj) >> 32;
->
-> It should work for both -mfix-r4000 and -mno-fix-r4000.
 
-Any updates on this ?
--- 
-Best regards, Florian Fainelli
-Email : florian@openwrt.org
-http://openwrt.org
--------------------------------
+
+On Thu, 28 May 2009, wuzhangjin@gmail.com wrote:
+
+> From: Wu Zhangjin <wuzj@lemote.com>
+> 
+> ftrace is a mcount based kernel tracing tool/framework, which is
+> originally from RT_PREEMPT(http://rt.wiki.kernel.org).
+> 
+> ftrace is short for function tracer, this is its original name, but now,
+> it becomes a kernel tracing framework, lots of kernel tracers are built
+> on it, such as irqoff tracer, wakeup tracer and so forth.  these tracers
+> are arch-independent(?), but some of them are arch-dependent, such as
+> the original ftrace: function tracer, and dynamic function tracer,
+> function graph tracer, and also, system call tracer.
+> 
+> here is the mips porting of the front three arch-dependent tracers,
+> currently, the porting of system call tracer is not stable, so, not
+> included in this patch.
+> 
+> here is the new available kernel config options added by this patch.
+> 
+> kernel hacking --->
+>            Tracers -->
+>                 [*] Kernel Function Tracer
+>                 [*]   Kernel Function Graph Tracer
+>                 ...
+>                 [*] enable/disable ftrace tracepoints dynamically
+> 
+> in reality, because the high-precision time information getting function
+> are arch-dependent, lots of the tracers are arch-dependent. the
+> arch-dependent part is that: sched_clock, or we say
+> ring_buffer_time_stamp or trace_clock_local function. to get
+> high-precision time, we can read the MIPS clock counter, but for it only
+> have 32bit, so, overflow should be handled carefully.
+> 
+> read the following document, and play with it:
+> 	Documentation/trace/ftrace.txt
+
+Very nice!
+
+Could you possibly break this patch up into porting the tracers one by 
+one. That is:
+
+First patch: make function tracing work.
+Second patch: make dynamic tracing work.
+Third patch: add Function graph tracing.
+Forth patch: the time stamp updates
+
+This would make things a lot easier to review, and if one of the changes 
+breaks something, it will be easier to bisect.
+
+Thanks,
+
+-- Steve
+
+> 
+> Signed-off-by: Wu Zhangjin <wuzj@lemote.com>
+> ---
+>  arch/mips/Kconfig              |    6 +
+>  arch/mips/Makefile             |    2 +
+>  arch/mips/include/asm/ftrace.h |   37 ++++-
+>  arch/mips/kernel/Makefile      |   11 ++
+>  arch/mips/kernel/csrc-r4k.c    |    2 +-
+>  arch/mips/kernel/ftrace.c      |  366 ++++++++++++++++++++++++++++++++++++++++
+>  arch/mips/kernel/mcount.S      |  239 ++++++++++++++++++++++++++
+>  arch/mips/kernel/mips_ksyms.c  |    5 +
+>  arch/mips/kernel/vmlinux.lds.S |    1 +
+>  include/linux/clocksource.h    |    4 +-
+>  kernel/sched_clock.c           |    2 +-
+>  kernel/trace/ring_buffer.c     |    3 +-
+>  kernel/trace/trace_clock.c     |    2 +-
+>  scripts/Makefile.build         |    1 +
+>  scripts/recordmcount.pl        |   31 +++-
+>  15 files changed, 699 insertions(+), 13 deletions(-)
+>  create mode 100644 arch/mips/kernel/ftrace.c
+>  create mode 100644 arch/mips/kernel/mcount.S
+> 
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 09b1287..b588f74 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -3,6 +3,12 @@ config MIPS
+>  	default y
+>  	select HAVE_IDE
+>  	select HAVE_OPROFILE
+> +	select HAVE_FTRACE_MCOUNT_RECORD
+> +	select HAVE_DYNAMIC_FTRACE
+> +	select HAVE_FUNCTION_GRAPH_TRACER
+> +	select HAVE_FTRACE_NMI_ENTER if DYNAMIC_FTRACE
+> +	select HAVE_FUNCTION_TRACER
+> +	select HAVE_FUNCTION_TRACE_MCOUNT_TEST
+>  	select HAVE_ARCH_KGDB
+>  	# Horrible source of confusion.  Die, die, die ...
+>  	select EMBEDDED
+> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+> index c4cae9e..f86fb15 100644
+> --- a/arch/mips/Makefile
+> +++ b/arch/mips/Makefile
+> @@ -48,7 +48,9 @@ ifneq ($(SUBARCH),$(ARCH))
+>    endif
+>  endif
+>  
+> +ifndef CONFIG_FUNCTION_TRACER
+>  cflags-y := -ffunction-sections
+> +endif
+>  cflags-y += $(call cc-option, -mno-check-zero-division)
+>  
+>  ifdef CONFIG_32BIT
+> diff --git a/arch/mips/include/asm/ftrace.h b/arch/mips/include/asm/ftrace.h
+> index 40a8c17..1501f2c 100644
+> --- a/arch/mips/include/asm/ftrace.h
+> +++ b/arch/mips/include/asm/ftrace.h
+> @@ -1 +1,36 @@
+> -/* empty */
+> +/*
+> + * This file is subject to the terms and conditions of the GNU General Public
+> + * License.  See the file "COPYING" in the main directory of this archive
+> + * for more details.
+> + *
+> + * Copyright (C) 2009 DSLab, Lanzhou University, China
+> + * Author: Wu Zhangjin <wuzj@lemote.com>
+> + */
+> +
+> +
+> +#ifndef _ASM_MIPS_FTRACE_H
+> +#define _ASM_MIPS_FTRACE_H
+> +
+> +#ifdef CONFIG_FUNCTION_TRACER
+> +
+> +#define MCOUNT_ADDR ((unsigned long)(_mcount))
+> +#define MCOUNT_INSN_SIZE 4	/* sizeof mcount call */
+> +
+> +#ifndef __ASSEMBLY__
+> +extern void _mcount(void);
+> +#define mcount _mcount
+> +
+> +#ifdef CONFIG_DYNAMIC_FTRACE
+> +
+> +static inline unsigned long ftrace_call_adjust(unsigned long addr)
+> +{
+> +    /* reloction of mcount call site is the same as the address */
+> +    return addr;
+> +}
+> +
+> +struct dyn_arch_ftrace {
+> +};
+> +#endif				/* CONFIG_DYNAMIC_FTRACE */
+> +#endif				/* __ASSEMBLY__ */
+> +#endif				/* CONFIG_FUNCTION_TRACER */
+> +#endif				/* _ASM_MIPS_FTRACE_H */
+> diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+> index e961221..3a3621b 100644
+> --- a/arch/mips/kernel/Makefile
+> +++ b/arch/mips/kernel/Makefile
+> @@ -8,6 +8,13 @@ obj-y		+= cpu-probe.o branch.o entry.o genex.o irq.o process.o \
+>  		   ptrace.o reset.o setup.o signal.o syscall.o \
+>  		   time.o topology.o traps.o unaligned.o watch.o
+>  
+> +ifdef CONFIG_FUNCTION_TRACER
+> +# Do not profile debug and lowlevel utilities
+> +CFLAGS_REMOVE_mcount.o = -pg
+> +CFLAGS_REMOVE_ftrace.o = -pg
+> +CFLAGS_REMOVE_early_printk.o = -pg
+> +endif
+> +
+>  obj-$(CONFIG_CEVT_BCM1480)	+= cevt-bcm1480.o
+>  obj-$(CONFIG_CEVT_R4K_LIB)	+= cevt-r4k.o
+>  obj-$(CONFIG_MIPS_MT_SMTC)	+= cevt-smtc.o
+> @@ -20,6 +27,8 @@ obj-$(CONFIG_CSRC_IOASIC)	+= csrc-ioasic.o
+>  obj-$(CONFIG_CSRC_R4K_LIB)	+= csrc-r4k.o
+>  obj-$(CONFIG_CSRC_SB1250)	+= csrc-sb1250.o
+>  obj-$(CONFIG_SYNC_R4K)		+= sync-r4k.o
+> +obj-$(CONFIG_FUNCTION_TRACER)		+= mcount.o
+> +obj-$(CONFIG_FUNCTION_GRAPH_TRACER)	+= mcount.o
+>  
+>  obj-$(CONFIG_STACKTRACE)	+= stacktrace.o
+>  obj-$(CONFIG_MODULES)		+= mips_ksyms.o module.o
+> @@ -83,6 +92,8 @@ obj-$(CONFIG_I8253)		+= i8253.o
+>  
+>  obj-$(CONFIG_GPIO_TXX9)		+= gpio_txx9.o
+>  
+> +obj-$(CONFIG_NOP_TRACER)	+= ftrace.o
+> +
+>  obj-$(CONFIG_KEXEC)		+= machine_kexec.o relocate_kernel.o
+>  obj-$(CONFIG_EARLY_PRINTK)	+= early_printk.o
+>  
+> diff --git a/arch/mips/kernel/csrc-r4k.c b/arch/mips/kernel/csrc-r4k.c
+> index e95a3cd..3da1c7a 100644
+> --- a/arch/mips/kernel/csrc-r4k.c
+> +++ b/arch/mips/kernel/csrc-r4k.c
+> @@ -10,7 +10,7 @@
+>  
+>  #include <asm/time.h>
+>  
+> -static cycle_t c0_hpt_read(struct clocksource *cs)
+> +static cycle_t notrace c0_hpt_read(struct clocksource *cs)
+>  {
+>  	return read_c0_count();
+>  }
+> diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
+> new file mode 100644
+> index 0000000..d421ce0
+> --- /dev/null
+> +++ b/arch/mips/kernel/ftrace.c
+> @@ -0,0 +1,366 @@
+> +/*
+> + * Code for replacing ftrace calls with jumps.
+> + *
+> + * Copyright (C) 2007-2008 Steven Rostedt <srostedt@redhat.com>
+> + * Copyright (C) 2009 DSLab, Lanzhou University, China
+> + * Author: Wu Zhangjin <wuzj@lemote.com>
+> + *
+> + * Thanks goes to Steven Rostedt for writing the original x86 version.
+> + */
+> +
+> +#include <linux/clocksource.h>
+> +#include <linux/ring_buffer.h>
+> +#include <linux/spinlock.h>
+> +#include <linux/jiffies.h>
+> +#include <linux/hardirq.h>
+> +#include <linux/uaccess.h>
+> +#include <linux/ftrace.h>
+> +#include <linux/percpu.h>
+> +#include <linux/sched.h>
+> +#include <linux/init.h>
+> +#include <linux/list.h>
+> +#include <linux/ftrace.h>
+> +
+> +#include <asm/cacheflush.h>
+> +#include <asm/ftrace.h>
+> +#include <asm/asm.h>
+> +
+> +#ifndef DEBUG_SHIFT
+> +#define DEBUG_SHIFT 0
+> +#endif
+> +
+> +u64 native_ring_buffer_time_stamp(struct ring_buffer *buffer, int cpu)
+> +{
+> +	u64 current_cycles;
+> +	static unsigned long old_jiffies;
+> +	static u64 time, old_cycles;
+> +
+> +	preempt_disable_notrace();
+> +	/* update timestamp to avoid missing the timer interrupt */
+> +	if (time_before(jiffies, old_jiffies)) {
+> +		old_jiffies = jiffies;
+> +		time = sched_clock();
+> +		old_cycles = clock->cycle_last;
+> +	}
+> +	current_cycles = clock->read(clock);
+> +
+> +	time = (time + cyc2ns(clock, (current_cycles - old_cycles) \
+> +				& clock->mask)) << DEBUG_SHIFT;
+> +
+> +	old_cycles = current_cycles;
+> +	preempt_enable_no_resched_notrace();
+> +
+> +	return time;
+> +}
+> +
+> +u64 ring_buffer_time_stamp(struct ring_buffer *buffer, int cpu)
+> +		__attribute__((alias("native_ring_buffer_time_stamp")));
+> +
+> +#ifdef CONFIG_DYNAMIC_FTRACE
+> +
+> +#define JMP	0x08000000	/* jump to target directly */
+> +#define JAL 0x0c000000		/* jump & link: ip --> ra, jump to target */
+> +#define ADDR_MASK 0x03ffffff	/*  op_code|addr : 31...26|25 ....0 */
+> +
+> +static unsigned int ftrace_nop = 0x00000000;
+> +
+> +static unsigned char *ftrace_call_replace(unsigned long op_code,
+> +					  unsigned long addr)
+> +{
+> +    static unsigned int op;
+> +
+> +    op = op_code | ((addr >> 2) & ADDR_MASK);
+> +
+> +    return (unsigned char *) &op;
+> +}
+> +
+> +static atomic_t in_nmi = ATOMIC_INIT(0);
+> +static int mod_code_status;	/* holds return value of text write */
+> +static int mod_code_write;	/* set when NMI should do the write */
+> +static void *mod_code_ip;	/* holds the IP to write to */
+> +static void *mod_code_newcode;	/* holds the text to write to the IP */
+> +
+> +static unsigned nmi_wait_count;
+> +static atomic_t nmi_update_count = ATOMIC_INIT(0);
+> +
+> +int ftrace_arch_read_dyn_info(char *buf, int size)
+> +{
+> +    int r;
+> +
+> +    r = snprintf(buf, size, "%u %u",
+> +		 nmi_wait_count, atomic_read(&nmi_update_count));
+> +    return r;
+> +}
+> +
+> +static void ftrace_mod_code(void)
+> +{
+> +    /*
+> +     * Yes, more than one CPU process can be writing to mod_code_status.
+> +     *    (and the code itself)
+> +     * But if one were to fail, then they all should, and if one were
+> +     * to succeed, then they all should.
+> +     */
+> +    mod_code_status = probe_kernel_write(mod_code_ip, mod_code_newcode,
+> +					 MCOUNT_INSN_SIZE);
+> +
+> +    /* if we fail, then kill any new writers */
+> +    if (mod_code_status)
+> +		mod_code_write = 0;
+> +}
+> +
+> +void ftrace_nmi_enter(void)
+> +{
+> +    atomic_inc(&in_nmi);
+> +    /* Must have in_nmi seen before reading write flag */
+> +    smp_mb();
+> +    if (mod_code_write) {
+> +		ftrace_mod_code();
+> +		atomic_inc(&nmi_update_count);
+> +    }
+> +}
+> +
+> +void ftrace_nmi_exit(void)
+> +{
+> +    /* Finish all executions before clearing in_nmi */
+> +    smp_wmb();
+> +    atomic_dec(&in_nmi);
+> +}
+> +
+> +static void wait_for_nmi(void)
+> +{
+> +    int waited = 0;
+> +
+> +    while (atomic_read(&in_nmi)) {
+> +		waited = 1;
+> +		cpu_relax();
+> +    }
+> +
+> +    if (waited)
+> +		nmi_wait_count++;
+> +}
+> +
+> +static int do_ftrace_mod_code(unsigned long ip, void *new_code)
+> +{
+> +    mod_code_ip = (void *) ip;
+> +    mod_code_newcode = new_code;
+> +
+> +    /* The buffers need to be visible before we let NMIs write them */
+> +    smp_wmb();
+> +
+> +    mod_code_write = 1;
+> +
+> +    /* Make sure write bit is visible before we wait on NMIs */
+> +    smp_mb();
+> +
+> +    wait_for_nmi();
+> +
+> +    /* Make sure all running NMIs have finished before we write the code */
+> +    smp_mb();
+> +
+> +    ftrace_mod_code();
+> +
+> +    /* Make sure the write happens before clearing the bit */
+> +    smp_wmb();
+> +
+> +    mod_code_write = 0;
+> +
+> +    /* make sure NMIs see the cleared bit */
+> +    smp_mb();
+> +
+> +    wait_for_nmi();
+> +
+> +    return mod_code_status;
+> +}
+> +
+> +static unsigned char *ftrace_nop_replace(void)
+> +{
+> +    return (unsigned char *) &ftrace_nop;
+> +}
+> +
+> +static int
+> +ftrace_modify_code(unsigned long ip, unsigned char *old_code,
+> +		   unsigned char *new_code)
+> +{
+> +    unsigned char replaced[MCOUNT_INSN_SIZE];
+> +
+> +    /*
+> +     * Note: Due to modules and __init, code can
+> +     *  disappear and change, we need to protect against faulting
+> +     *  as well as code changing. We do this by using the
+> +     *  probe_kernel_* functions.
+> +     *
+> +     * No real locking needed, this code is run through
+> +     * kstop_machine, or before SMP starts.
+> +     */
+> +
+> +    /* read the text we want to modify */
+> +    if (probe_kernel_read(replaced, (void *) ip, MCOUNT_INSN_SIZE))
+> +		return -EFAULT;
+> +
+> +    /* Make sure it is what we expect it to be */
+> +    if (memcmp(replaced, old_code, MCOUNT_INSN_SIZE) != 0)
+> +		return -EINVAL;
+> +
+> +    /* replace the text with the new text */
+> +    if (do_ftrace_mod_code(ip, new_code))
+> +		return -EPERM;
+> +
+> +    return 0;
+> +}
+> +
+> +int ftrace_make_nop(struct module *mod,
+> +		    struct dyn_ftrace *rec, unsigned long addr)
+> +{
+> +    unsigned char *new, *old;
+> +
+> +    old = ftrace_call_replace(JAL, addr);
+> +    new = ftrace_nop_replace();
+> +
+> +    return ftrace_modify_code(rec->ip, old, new);
+> +}
+> +
+> +int ftrace_make_call(struct dyn_ftrace *rec, unsigned long addr)
+> +{
+> +    unsigned char *new, *old;
+> +
+> +    old = ftrace_nop_replace();
+> +    new = ftrace_call_replace(JAL, addr);
+> +
+> +    return ftrace_modify_code(rec->ip, old, new);
+> +}
+> +
+> +int ftrace_update_ftrace_func(ftrace_func_t func)
+> +{
+> +    unsigned long ip = (unsigned long) (&ftrace_call);
+> +    unsigned char old[MCOUNT_INSN_SIZE], *new;
+> +    int ret;
+> +
+> +    memcpy(old, &ftrace_call, MCOUNT_INSN_SIZE);
+> +    new = ftrace_call_replace(JAL, (unsigned long) func);
+> +    ret = ftrace_modify_code(ip, old, new);
+> +
+> +    return ret;
+> +}
+> +
+> +int __init ftrace_dyn_arch_init(void *data)
+> +{
+> +    /* The return code is retured via data */
+> +    *(unsigned long *) data = 0;
+> +
+> +    return 0;
+> +}
+> +#endif				/* CONFIG_DYNAMIC_FTRACE */
+> +
+> +#ifdef CONFIG_FUNCTION_GRAPH_TRACER
+> +
+> +/*
+> + * trace_clock_local(): the simplest and least coherent tracing clock.
+> + *
+> + * Useful for tracing that does not cross to other CPUs nor
+> + * does it go through idle events.
+> + */
+> +u64 notrace native_trace_clock_local(void)
+> +{
+> +	unsigned long flags;
+> +	u64 clock;
+> +
+> +	/*
+> +	 * sched_clock() is an architecture implemented, fast, scalable,
+> +	 * lockless clock. It is not guaranteed to be coherent across
+> +	 * CPUs, nor across CPU idle events.
+> +	 */
+> +	raw_local_irq_save(flags);
+> +	clock = ring_buffer_time_stamp(NULL, raw_smp_processor_id());
+> +	raw_local_irq_restore(flags);
+> +
+> +	return clock;
+> +}
+> +
+> +u64 trace_clock_local(void)
+> +		__attribute__((alias("native_trace_clock_local")));
+> +
+> +#ifdef CONFIG_DYNAMIC_FTRACE
+> +extern void ftrace_graph_call(void);
+> +
+> +int ftrace_enable_ftrace_graph_caller(void)
+> +{
+> +    unsigned long ip = (unsigned long) (&ftrace_graph_call);
+> +    unsigned char old[MCOUNT_INSN_SIZE], *new;
+> +    int ret;
+> +
+> +	/* j ftrace_stub */
+> +    memcpy(old, (unsigned long *) ip, MCOUNT_INSN_SIZE);
+> +    new = ftrace_call_replace(JMP, (unsigned long) ftrace_graph_caller);
+> +
+> +    ret = ftrace_modify_code(ip, old, new);
+> +
+> +    return ret;
+> +}
+> +
+> +int ftrace_disable_ftrace_graph_caller(void)
+> +{
+> +    unsigned long ip = (unsigned long) (&ftrace_graph_call);
+> +    unsigned char old[MCOUNT_INSN_SIZE], *new;
+> +    int ret;
+> +
+> +	/* j ftrace_graph_caller */
+> +    memcpy(old, (unsigned long *) ip, MCOUNT_INSN_SIZE);
+> +    new = ftrace_call_replace(JMP, (unsigned long) ftrace_stub);
+> +
+> +    ret = ftrace_modify_code(ip, old, new);
+> +
+> +    return ret;
+> +}
+> +
+> +#else				/* CONFIG_DYNAMIC_FTRACE */
+> +
+> +/*
+> + * These functions are picked from those used on
+> + * this page for dynamic ftrace. They have been
+> + * simplified to ignore all traces in NMI context.
+> + */
+> +static atomic_t in_nmi;
+> +
+> +void ftrace_nmi_enter(void)
+> +{
+> +    atomic_inc(&in_nmi);
+> +    /* Must have in_nmi seen before reading write flag */
+> +    smp_mb();
+> +}
+> +
+> +void ftrace_nmi_exit(void)
+> +{
+> +    /* Finish all executions before clearing in_nmi */
+> +    smp_wmb();
+> +    atomic_dec(&in_nmi);
+> +}
+> +
+> +#endif				/* !CONFIG_DYNAMIC_FTRACE */
+> +
+> +unsigned long prepare_ftrace_return(unsigned long ip,
+> +				    unsigned long parent_ip)
+> +{
+> +    struct ftrace_graph_ent trace;
+> +
+> +    /* Nmi's are currently unsupported */
+> +    if (unlikely(atomic_read(&in_nmi)))
+> +		goto out;
+> +
+> +    if (unlikely(atomic_read(&current->tracing_graph_pause)))
+> +		goto out;
+> +
+> +    if (ftrace_push_return_trace(parent_ip, ip, &trace.depth) == -EBUSY)
+> +		goto out;
+> +
+> +    trace.func = ip;
+> +
+> +    /* Only trace if the calling function expects to */
+> +    if (!ftrace_graph_entry(&trace)) {
+> +		current->curr_ret_stack--;
+> +		goto out;
+> +    }
+> +    return (unsigned long) &return_to_handler;
+> +out:
+> +    return parent_ip;
+> +}
+> +#endif				/* CONFIG_FUNCTION_GRAPH_TRACER */
+> diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
+> new file mode 100644
+> index 0000000..0c73105
+> --- /dev/null
+> +++ b/arch/mips/kernel/mcount.S
+> @@ -0,0 +1,239 @@
+> +/*
+> + * the mips-specific _mcount implementation of ftrace
+> + *
+> + * This file is subject to the terms and conditions of the GNU General Public
+> + * License.  See the file "COPYING" in the main directory of this archive
+> + * for more details.
+> + *
+> + * Copyright (C) 2009 DSLab, Lanzhou University, China
+> + * Author: Wu Zhangjin <wuzj@lemote.com>
+> + */
+> +
+> +#include <asm/regdef.h>
+> +#include <asm/stackframe.h>
+> +#include <asm/ftrace.h>
+> +
+> +#ifdef CONFIG_32BIT
+> +
+> +		#define FTRACE_FRMSZ	32
+> +		#define RA_REG	4
+> +
+> +		/* there is a "addiu sp,sp,-8" before "jal _mcount" in 32bit */
+> +		.macro RESTORE_SP_FOR_32BIT
+> +		addiu sp, sp, 8
+> +		.endm
+> +
+> +		.macro MCOUNT_SAVE_REGS
+> +		addiu	sp, sp, -FTRACE_FRMSZ
+> +#ifdef	CONFIG_FUNCTION_GRAPH_TRACER
+> +		sw	v0,	28(sp)
+> +		sw	v1,	24(sp)
+> +#endif
+> +		sw	a0, 20(sp)
+> +		sw	a1, 16(sp)
+> +		sw	a2, 12(sp)
+> +		sw	a3, 8(sp)
+> +		sw	ra, RA_REG(sp)
+> +		.set	noat
+> +		sw	$1, 0(sp)
+> +		.set	at
+> +		.endm
+> +
+> +		.macro MCOUNT_RESTORE_REGS
+> +#ifdef	CONFIG_FUNCTION_GRAPH_TRACER
+> +		lw	v0,	28(sp)
+> +		lw	v1,	24(sp)
+> +#endif
+> +		lw	a0, 20(sp)
+> +		lw	a1, 16(sp)
+> +		lw	a2, 12(sp)
+> +		lw	a3, 8(sp)
+> +		lw	ra, RA_REG(sp)
+> +		.set	noat
+> +		lw	$1, 0(sp)
+> +		.set	at
+> +		addiu	sp, sp, FTRACE_FRMSZ
+> +		.endm
+> +
+> +#else	/* CONFIG_64BIT */
+> +
+> +		#define FTRACE_FRMSZ	96
+> +		#define RA_REG 8
+> +
+> +		.macro RESTORE_SP_FOR_32BIT
+> +		/* no need for 64bit */
+> +		.endm
+> +
+> +		.macro MCOUNT_SAVE_REGS
+> +		daddiu	sp, sp, -FTRACE_FRMSZ
+> +#ifdef	CONFIG_FUNCTION_GRAPH_TRACER
+> +		sd	v0, 88(sp)
+> +		sd	v1,	80(sp)
+> +#endif
+> +		sd	a0, 72(sp)
+> +		sd	a1, 64(sp)
+> +		sd	a2, 56(sp)
+> +		sd	a3, 48(sp)
+> +		sd	a4, 40(sp)
+> +		sd	a5, 32(sp)
+> +		sd	a6, 24(sp)
+> +		sd	a7, 16(sp)
+> +		sd	ra, RA_REG(sp)
+> +		.set	noat
+> +		sd	$1, 0(sp)
+> +		.set	at
+> +		.endm
+> +
+> +		.macro MCOUNT_RESTORE_REGS
+> +#ifdef	CONFIG_FUNCTION_GRAPH_TRACER
+> +		ld	v0, 88(sp)
+> +		ld	v1,	80(sp)
+> +#endif
+> +		ld	a0, 72(sp)
+> +		ld	a1, 64(sp)
+> +		ld	a2, 56(sp)
+> +		ld	a3, 48(sp)
+> +		ld	a4, 40(sp)
+> +		ld	a5, 32(sp)
+> +		ld	a6, 24(sp)
+> +		ld	a7, 16(sp)
+> +		ld	ra, RA_REG(sp)
+> +		.set	noat
+> +		ld	$1, 0(sp)
+> +		.set	at
+> +		daddiu	sp, sp, FTRACE_FRMSZ
+> +		.endm
+> +#endif
+> +
+> +		.macro MCOUNT_SET_ARGS
+> +		move	a0, ra	/* arg1: next ip, selfaddr */
+> +		.set	noat
+> +		move	a1, $1	/* arg2: the caller's next ip, parent */
+> +		.set	at
+> +		LONG_SUB	a0, a0, MCOUNT_INSN_SIZE
+> +		.endm
+> +
+> +		.macro RETURN_BACK
+> +		/* fix for loongson2f */
+> +#ifdef	CONFIG_LOONGSON2F
+> +		.set	noat
+> +		move	t0,	$1
+> +		.set	at
+> +		jr	ra
+> +		move	ra,	t0
+> +#else
+> +		jr	ra
+> +		.set	noat
+> +		move	ra, $1
+> +		.set	at
+> +#endif
+> +		.endm
+> +
+> +.set noreorder
+> +
+> +#ifdef CONFIG_DYNAMIC_FTRACE
+> +
+> +LEAF(_mcount)
+> +	RESTORE_SP_FOR_32BIT
+> +	RETURN_BACK
+> +	END(_mcount)
+> +
+> +NESTED(ftrace_caller, FTRACE_FRMSZ, ra)
+> +	RESTORE_SP_FOR_32BIT
+> +	lw	t0, function_trace_stop
+> +	bnez	t0, ftrace_stub
+> +	nop
+> +
+> +	MCOUNT_SAVE_REGS
+> +
+> +	MCOUNT_SET_ARGS
+> +	.globl ftrace_call
+> +ftrace_call:
+> +	jal	ftrace_stub
+> +	nop
+> +
+> +	MCOUNT_RESTORE_REGS
+> +
+> +#ifdef CONFIG_FUNCTION_GRAPH_TRACER
+> +	.globl ftrace_graph_call
+> +ftrace_graph_call:
+> +	j	ftrace_stub
+> +	nop
+> +#endif
+> +	.globl ftrace_stub
+> +ftrace_stub:
+> +	RETURN_BACK
+> +	END(ftrace_caller)
+> +
+> +#else	/* ! CONFIG_DYNAMIC_FTRACE */
+> +
+> +NESTED(_mcount, FTRACE_FRMSZ, ra)
+> +	RESTORE_SP_FOR_32BIT
+> +	lw	t0, function_trace_stop
+> +	bnez	t0, ftrace_stub
+> +	nop
+> +
+> +	PTR_LA	t0, ftrace_stub
+> +	/* *ftrace_trace_function -> t1, please don't use t1 later, safe? */
+> +	LONG_L	t1, ftrace_trace_function
+> +	bne	t0, t1, static_trace
+> +	nop
+> +
+> +#ifdef	CONFIG_FUNCTION_GRAPH_TRACER
+> +	LONG_L	t2, ftrace_graph_return
+> +	bne	t0,	t2, ftrace_graph_caller
+> +	nop
+> +	PTR_LA	t0, ftrace_graph_entry_stub
+> +	LONG_L	t2, ftrace_graph_entry
+> +	bne	t0,	t2, ftrace_graph_caller
+> +	nop
+> +#endif
+> +	j	ftrace_stub
+> +	nop
+> +
+> +static_trace:
+> +	MCOUNT_SAVE_REGS
+> +	MCOUNT_SET_ARGS
+> +
+> +	/* t1 hold *ftrace_trace_function */
+> +	jalr	t1
+> +	nop
+> +
+> +	MCOUNT_RESTORE_REGS
+> +#	.globl ftrace_stub
+> +FEXPORT(ftrace_stub)
+> +	RETURN_BACK
+> +	END(_mcount)
+> +
+> +#endif 		/* !CONFIG_FUNCTION_TRACER */
+> +
+> +#ifdef CONFIG_FUNCTION_GRAPH_TRACER
+> +
+> +NESTED(ftrace_graph_caller, FTRACE_FRMSZ, ra)
+> +	MCOUNT_SAVE_REGS
+> +	MCOUNT_SET_ARGS
+> +
+> +	jal	prepare_ftrace_return
+> +	nop
+> +	/* overwrite the parent as &return_to_handler, safe or not?? */
+> +	LONG_S	v0, 0(sp)
+> +
+> +	MCOUNT_RESTORE_REGS
+> +	RETURN_BACK
+> +	END(ftrace_graph_caller)
+> +
+> +	.align	2
+> +	.globl	return_to_handler
+> +return_to_handler:
+> +	MCOUNT_SAVE_REGS
+> +
+> +	/* restore the real parent address */
+> +	jal	ftrace_return_to_handler
+> +	nop
+> +	LONG_S	v0, RA_REG(sp)
+> +
+> +	MCOUNT_RESTORE_REGS
+> +	RETURN_BACK
+> +
+> +#endif /* CONFIG_FUNCTION_GRAPH_TRACER */
+> +.set reorder
+> diff --git a/arch/mips/kernel/mips_ksyms.c b/arch/mips/kernel/mips_ksyms.c
+> index 225755d..30833fe 100644
+> --- a/arch/mips/kernel/mips_ksyms.c
+> +++ b/arch/mips/kernel/mips_ksyms.c
+> @@ -13,6 +13,7 @@
+>  #include <asm/checksum.h>
+>  #include <asm/pgtable.h>
+>  #include <asm/uaccess.h>
+> +#include <asm/ftrace.h>
+>  
+>  extern void *__bzero(void *__s, size_t __count);
+>  extern long __strncpy_from_user_nocheck_asm(char *__to,
+> @@ -51,3 +52,7 @@ EXPORT_SYMBOL(csum_partial_copy_nocheck);
+>  EXPORT_SYMBOL(__csum_partial_copy_user);
+>  
+>  EXPORT_SYMBOL(invalid_pte_table);
+> +#ifdef CONFIG_FUNCTION_TRACER
+> +/* mcount is defined in assembly */
+> +EXPORT_SYMBOL(_mcount);
+> +#endif
+> diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
+> index 58738c8..67435e5 100644
+> --- a/arch/mips/kernel/vmlinux.lds.S
+> +++ b/arch/mips/kernel/vmlinux.lds.S
+> @@ -36,6 +36,7 @@ SECTIONS
+>  		SCHED_TEXT
+>  		LOCK_TEXT
+>  		KPROBES_TEXT
+> +		IRQENTRY_TEXT
+>  		*(.text.*)
+>  		*(.fixup)
+>  		*(.gnu.warning)
+> diff --git a/include/linux/clocksource.h b/include/linux/clocksource.h
+> index 5a40d14..93066c8 100644
+> --- a/include/linux/clocksource.h
+> +++ b/include/linux/clocksource.h
+> @@ -273,7 +273,7 @@ static inline u32 clocksource_hz2mult(u32 hz, u32 shift_constant)
+>   *
+>   * Uses the clocksource to return the current cycle_t value
+>   */
+> -static inline cycle_t clocksource_read(struct clocksource *cs)
+> +static inline notrace cycle_t clocksource_read(struct clocksource *cs)
+>  {
+>  	return cs->read(cs);
+>  }
+> @@ -314,7 +314,7 @@ static inline void clocksource_disable(struct clocksource *cs)
+>   *
+>   * XXX - This could use some mult_lxl_ll() asm optimization
+>   */
+> -static inline s64 cyc2ns(struct clocksource *cs, cycle_t cycles)
+> +static inline notrace s64 cyc2ns(struct clocksource *cs, cycle_t cycles)
+>  {
+>  	u64 ret = (u64)cycles;
+>  	ret = (ret * cs->mult) >> cs->shift;
+> diff --git a/kernel/sched_clock.c b/kernel/sched_clock.c
+> index e1d16c9..c809677 100644
+> --- a/kernel/sched_clock.c
+> +++ b/kernel/sched_clock.c
+> @@ -36,7 +36,7 @@
+>   * This is default implementation.
+>   * Architectures and sub-architectures can override this.
+>   */
+> -unsigned long long __attribute__((weak)) sched_clock(void)
+> +unsigned long long notrace __attribute__((weak)) sched_clock(void)
+>  {
+>  	return (unsigned long long)(jiffies - INITIAL_JIFFIES)
+>  					* (NSEC_PER_SEC / HZ);
+> diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+> index 960cbf4..717bd8e 100644
+> --- a/kernel/trace/ring_buffer.c
+> +++ b/kernel/trace/ring_buffer.c
+> @@ -420,7 +420,8 @@ struct ring_buffer_iter {
+>  /* Up this if you want to test the TIME_EXTENTS and normalization */
+>  #define DEBUG_SHIFT 0
+>  
+> -u64 ring_buffer_time_stamp(struct ring_buffer *buffer, int cpu)
+> +u64 __attribute__((weak)) ring_buffer_time_stamp(struct ring_buffer *buffer,
+> +				int cpu)
+>  {
+>  	u64 time;
+>  
+> diff --git a/kernel/trace/trace_clock.c b/kernel/trace/trace_clock.c
+> index b588fd8..78c98c8 100644
+> --- a/kernel/trace/trace_clock.c
+> +++ b/kernel/trace/trace_clock.c
+> @@ -26,7 +26,7 @@
+>   * Useful for tracing that does not cross to other CPUs nor
+>   * does it go through idle events.
+>   */
+> -u64 notrace trace_clock_local(void)
+> +u64 __attribute__((weak)) notrace trace_clock_local(void)
+>  {
+>  	unsigned long flags;
+>  	u64 clock;
+> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> index 5c4b7a4..548d575 100644
+> --- a/scripts/Makefile.build
+> +++ b/scripts/Makefile.build
+> @@ -207,6 +207,7 @@ endif
+>  
+>  ifdef CONFIG_FTRACE_MCOUNT_RECORD
+>  cmd_record_mcount = perl $(srctree)/scripts/recordmcount.pl "$(ARCH)" \
+> +	"$(if $(CONFIG_CPU_BIG_ENDIAN),big,little)" \
+>  	"$(if $(CONFIG_64BIT),64,32)" \
+>  	"$(OBJDUMP)" "$(OBJCOPY)" "$(CC)" "$(LD)" "$(NM)" "$(RM)" "$(MV)" \
+>  	"$(if $(part-of-module),1,0)" "$(@)";
+> diff --git a/scripts/recordmcount.pl b/scripts/recordmcount.pl
+> index 409596e..8c1b218 100755
+> --- a/scripts/recordmcount.pl
+> +++ b/scripts/recordmcount.pl
+> @@ -1,5 +1,6 @@
+>  #!/usr/bin/perl -w
+>  # (c) 2008, Steven Rostedt <srostedt@redhat.com>
+> +# (c) 2009, Wu Zhangjin <wuzj@lemote.com>, DSLab,Lanzhou University,China
+>  # Licensed under the terms of the GNU GPL License version 2
+>  #
+>  # recordmcount.pl - makes a section called __mcount_loc that holds
+> @@ -100,13 +101,13 @@ $P =~ s@.*/@@g;
+>  
+>  my $V = '0.1';
+>  
+> -if ($#ARGV < 7) {
+> -	print "usage: $P arch bits objdump objcopy cc ld nm rm mv is_module inputfile\n";
+> +if ($#ARGV < 8) {
+> +	print "usage: $P arch endian bits objdump objcopy cc ld nm rm mv is_module inputfile\n";
+>  	print "version: $V\n";
+>  	exit(1);
+>  }
+>  
+> -my ($arch, $bits, $objdump, $objcopy, $cc,
+> +my ($arch, $endian, $bits, $objdump, $objcopy, $cc,
+>      $ld, $nm, $rm, $mv, $is_module, $inputfile) = @ARGV;
+>  
+>  # This file refers to mcount and shouldn't be ftraced, so lets' ignore it
+> @@ -213,6 +214,24 @@ if ($arch eq "x86_64") {
+>      if ($is_module eq "0") {
+>          $cc .= " -mconstant-gp";
+>      }
+> +
+> +} elsif ($arch eq "mips") {
+> +	$mcount_regex = "^\\s*([0-9a-fA-F]+):.*\\s_mcount\$";
+> +	$objdump .= " -Melf-trad".$endian."mips ";
+> +	if ($endian eq "big") {
+> +		$endian = " -EB ";
+> +		$ld .= " -melf".$bits."btsmip";
+> +	} else {
+> +		$endian = " -EL ";
+> +		$ld .= " -melf".$bits."ltsmip";
+> +	}
+> +	$cc .= " -mno-abicalls -mabi=" . $bits . $endian;
+> +	$ld .= $endian;
+> +
+> +	if ($bits == 64) {
+> +		$type = ".dword";
+> +	}
+> +
+>  } else {
+>      die "Arch $arch is not supported with CONFIG_FTRACE_MCOUNT_RECORD";
+>  }
+> @@ -441,12 +460,12 @@ if ($#converts >= 0) {
+>      #
+>      # Step 5: set up each local function as a global
+>      #
+> -    `$objcopy $globallist $inputfile $globalobj`;
+> +    `$objcopy $globallist $inputfile $globalobj 2>&1 >/dev/null`;
+>  
+>      #
+>      # Step 6: Link the global version to our list.
+>      #
+> -    `$ld -r $globalobj $mcount_o -o $globalmix`;
+> +    `$ld -r $globalobj $mcount_o -o $globalmix 2>&1 >/dev/null`;
+>  
+>      #
+>      # Step 7: Convert the local functions back into local symbols
+> @@ -454,7 +473,7 @@ if ($#converts >= 0) {
+>      `$objcopy $locallist $globalmix $inputfile`;
+>  
+>      # Remove the temp files
+> -    `$rm $globalobj $globalmix`;
+> +    `$rm $globalobj $globalmix 2>&1 >/dev/null`;
+>  
+>  } else {
+>  
+> -- 
+> 1.6.0.4
+> 
+> 

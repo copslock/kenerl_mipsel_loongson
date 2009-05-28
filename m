@@ -1,80 +1,128 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2009 11:38:13 +0100 (BST)
-Received: from mail-fx0-f175.google.com ([209.85.220.175]:60101 "EHLO
-	mail-fx0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20023983AbZE1KiG convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 28 May 2009 11:38:06 +0100
-Received: by fxm23 with SMTP id 23so5552345fxm.0
-        for <multiple recipients>; Thu, 28 May 2009 03:37:59 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2009 11:53:47 +0100 (BST)
+Received: from mail-qy0-f126.google.com ([209.85.221.126]:51062 "EHLO
+	mail-qy0-f126.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20021938AbZE1Kxl (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 28 May 2009 11:53:41 +0100
+Received: by qyk32 with SMTP id 32so675347qyk.22
+        for <linux-mips@linux-mips.org>; Thu, 28 May 2009 03:53:31 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:to:subject:date
-         :user-agent:cc:references:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:content-disposition:message-id;
-        bh=0IOrSEpUtrzOHrmn2Jzo4crGgpKsnh5bEfQC/xEX+kI=;
-        b=Q1kZw1e5O485AQ/39Qam9IZPniLz/V5QPARH9Sk4WdMJiD9y+rRUuFhJ0MjO+nHnxb
-         tifEiVIb9uCEz9NF9CxLc058R4XAgvhw0Dzy3SsQhWT9n9mtE0sb1ekGJ/arndFw0xQ1
-         YvO4At74osFgWFkxN96o3DtsCe4V+p+DAaDEI=
+        h=domainkey-signature:mime-version:received:date:message-id:subject
+         :from:content-type;
+        bh=eeuz6kPhBIfhax6kqRTgSfkwODClGk6aoPzOYZzV1m8=;
+        b=ARvjnvi94gUklbN4iKYDnCjF+WDZMDpOpDdCaoPAeFBJxGSEr/1yU2mNemBTBQDLO+
+         wgvS9thpA7L6sA7PbuObkE5M/DXTNXGLhDZvMSZ/0UofeokeGzFr3ak3kg+wcGXYEr3C
+         Aw+gnkjwD0syBnoo8fcs+B9QpaGIz1dEvi5y0=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
-         :mime-version:content-type:content-transfer-encoding
-         :content-disposition:message-id;
-        b=Nxy9jEr5Z4XIb/FuEFLILFE5lF3uY01AAPOLOlqQJIE1qNbVRPSd8BatiGpIJFmuOK
-         O7QTnTWu+3P3SJD9uIFOQ2c5pco2EzNMtQVPJQZYnjJfKf7qLm45tGjpnW+DgUM6HHPM
-         NkVlXj3crjHM2NzMNCPsCQPh39w4igMaSC4mI=
-Received: by 10.103.244.19 with SMTP id w19mr715579mur.106.1243507079837;
-        Thu, 28 May 2009 03:37:59 -0700 (PDT)
-Received: from florian.lab.openpattern.org (lab.openpattern.org [82.240.16.241])
-        by mx.google.com with ESMTPS id i7sm2428857mue.18.2009.05.28.03.37.58
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 28 May 2009 03:37:58 -0700 (PDT)
-From:	Florian Fainelli <florian@openwrt.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] rb532: fix irq number check in rb532_set_type
-Date:	Thu, 28 May 2009 12:37:54 +0200
-User-Agent: KMail/1.9.9
-Cc:	linux-mips@linux-mips.org
-References: <200905271414.07074.florian@openwrt.org> <20090527131535.GC7755@linux-mips.org>
-In-Reply-To: <20090527131535.GC7755@linux-mips.org>
+        h=mime-version:date:message-id:subject:from:content-type;
+        b=bGCQpiS20lCRxE5QsvyZdSi6oa5W55ACit9dsp5t85i623+tZx6iyG7/W4RkKOoxIF
+         Kcj7IKCrUC6K/rw2yzxXvCc1Enafbnvs6zs/URMyFxAAPxAkLjnozSyC2vbhtVEkQUi3
+         q6sNXSsJd8j+1XtUCVvIZvQ+jJ46kNturClHw=
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Message-Id: <200905281237.55899.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+Received: by 10.220.93.65 with SMTP id u1mt1741445vcm.59.1243507969411; Thu, 
+	28 May 2009 03:52:49 -0700 (PDT)
+Date:	Thu, 28 May 2009 16:22:49 +0530
+Message-ID: <277176450905280352g1d361b11p2e9e629447eabca2@mail.gmail.com>
+Subject: Sindhi Bandhan
+From:	priya shrivastava <priyashri186@gmail.com>
+Content-Type: multipart/alternative; boundary=0016364ed386515568046af6c573
+To:	unlisted-recipients:; (no To-header on input)
+Return-Path: <priyashri186@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23022
+X-archive-position: 23023
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: priyashri186@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Le Wednesday 27 May 2009 15:15:35 Ralf Baechle, vous avez écrit :
-> On Wed, May 27, 2009 at 02:14:06PM +0200, Florian Fainelli wrote:
-> > We only have 14 GPIO interrupt sources numbered
-> > from 0 to 13. Therefore the check against irq_nr
-> > in rb532_set_type is off-by-one. This fixes a mistake
-> > introduced by commit 1b4f571632ffb0caa4170d886694f2555c0d9a4b.
->
-> Thanks; I've folded this patch into your old patch.
+--0016364ed386515568046af6c573
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
 
-Thank you !
+Sindhi Bandhan
 
->
-> A note on commit IDs on the -queue tree.  The -queue tree is really
-> maintained in quilt and respun every time I change any of the commits
-> on it.  This means the commit IDs will also change, so they should be
-> considered volatile.
+*Here Is A Website Dedicated to Sindhi Community from
+*<http://sindhibandhan.com/>
 
-I will take that into account next time, thanks for fixing this.
--- 
-Best regards, Florian Fainelli
-Email : florian@openwrt.org
-http://openwrt.org
--------------------------------
+*A* <http://sindhibandhan.com/>*ll over the World
+
+This Website Provides Information About Various Sindhi
+*<http://sindhibandhan.com/>
+*People* <http://sindhibandhan.com/>
+
+**********
+
+*Sindhi: ( Bhaibhand, Bhanusali, Bhatia, * <http://sindhibandhan.com/>*Sahiti,
+Sakkhar,  Shikarpuri, etc.)*
+<http://sindhibandhan.com/>
+
+**********
+
+*
+If You Or Your Relative Is One Of Those, Then It Is Worth Looking At The
+Website for A Match
+
+The Website Is http://sindhibandhan.com
+* <http://sindhibandhan.com/>
+
+**********************
+You have receive this mail because either you bought a product from one of
+our affiliates or  enquired about the services or have been referred by a
+friend. If you don't wish to receive any mails regarding this, you can
+remove your e-mail by clicking the link below
+
+*http://sindhibandhan.com/block.html* <http://sindhibandhan.com/block.html>
+
+--0016364ed386515568046af6c573
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<font color=3D"#ffffff" size=3D"1">Sindhi Bandhan<br></font>
+<table width=3D"450" bgcolor=3D"#ffccff" border=3D"1">
+<tbody>
+<tr>
+<td>
+<p align=3D"center"><font size=3D"2"><a href=3D"http://sindhibandhan.com/" =
+target=3D"_blank"><u><font color=3D"#0000ff">Here Is A Website Dedicated to=
+ </font><font color=3D"#ff0000">Sindhi</font><font color=3D"#0000ff"> Commu=
+nity from=A0</font></u></a></font></p>
+
+<p align=3D"center"><font size=3D"2"><font color=3D"#0000ff"><a href=3D"htt=
+p://sindhibandhan.com/" target=3D"_blank"><u>A</u></a></font><a href=3D"htt=
+p://sindhibandhan.com/" target=3D"_blank"><u><font color=3D"#0000ff">ll ove=
+r the World<br>
+<br>This Website Provides Information About Various=A0</font><font color=3D=
+"#ff0000">Sindhi</font><font color=3D"#0000ff"> </font></u></a></font><font=
+ color=3D"#0000ff" size=3D"2"><a href=3D"http://sindhibandhan.com/" target=
+=3D"_blank"><u>People</u></a></font></p>
+
+<p align=3D"center"><font size=3D"2"><u>********</u></font></p>
+<p align=3D"center"><font size=3D"2"><a href=3D"http://sindhibandhan.com/" =
+target=3D"_blank"><font color=3D"#ff0000"><b><u>Sindhi: ( Bhaibhand, Bhanus=
+ali, Bhatia, </u></b></font></a></font><font size=3D"2"><a href=3D"http://s=
+indhibandhan.com/" target=3D"_blank"><font color=3D"#ff0000"><b><u>Sahiti, =
+Sakkhar,=A0 Shikarpuri, etc.)</u></b><br>
+</font></a></font></p>
+<p align=3D"center"><font size=3D"2"><u>********</u></font></p>
+<p align=3D"center"><font color=3D"#0000ff" size=3D"2"><a href=3D"http://si=
+ndhibandhan.com/" target=3D"_blank"><u><br>If You Or Your Relative Is One O=
+f Those, Then It Is Worth Looking At The Website for A Match<br><br>The Web=
+site Is <b>http://sindhibandhan.com</b><br>
+</u></a></font></p></td></tr>
+<tr>
+<td>
+<p align=3D"center">**********************<br><font size=3D"2">You have rec=
+eive this mail because either you bought a product from one of our affiliat=
+es or=A0 enquired about the services or have been referred by a friend. If =
+you don&#39;t wish to receive any mails regarding this, you can remove your=
+ e-mail by clicking the link below<br>
+</font><br><a href=3D"http://sindhibandhan.com/block.html" target=3D"_blank=
+"><b><font color=3D"#0000ff" size=3D"3"><u>http://sindhibandhan.com/block.h=
+tml</u></font></b></a></p></td></tr></tbody></table>
+
+--0016364ed386515568046af6c573--

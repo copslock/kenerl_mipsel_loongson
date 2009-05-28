@@ -1,107 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2009 01:54:05 +0100 (BST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:14651 "EHLO
-	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20024406AbZE1Ax7 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 28 May 2009 01:53:59 +0100
-Received: from exch4.caveonetworks.com (Not Verified[192.168.16.23]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B4a1de0810000>; Wed, 27 May 2009 20:53:21 -0400
-Received: from exch4.caveonetworks.com ([192.168.16.23]) by exch4.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 27 May 2009 17:53:31 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by exch4.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 27 May 2009 17:53:31 -0700
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n4S0qsb3027996;
-	Wed, 27 May 2009 17:52:54 -0700
-Received: (from ddaney@localhost)
-	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n4S0qLVM027994;
-	Wed, 27 May 2009 17:52:21 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-To:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:	wli@holomorphy.com, David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH 5/5] MIPS: Add SYS_SUPPORTS_HUGETLBFS Kconfig variable and enable it for some systems.
-Date:	Wed, 27 May 2009 17:47:46 -0700
-Message-Id: <1243471666-27915-5-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.6.0.6
-In-Reply-To: <4A1DDED7.3020306@caviumnetworks.com>
-References: <4A1DDED7.3020306@caviumnetworks.com>
-X-OriginalArrivalTime: 28 May 2009 00:53:31.0031 (UTC) FILETIME=[B84CF270:01C9DF2E]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2009 11:38:13 +0100 (BST)
+Received: from mail-fx0-f175.google.com ([209.85.220.175]:60101 "EHLO
+	mail-fx0-f175.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20023983AbZE1KiG convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 28 May 2009 11:38:06 +0100
+Received: by fxm23 with SMTP id 23so5552345fxm.0
+        for <multiple recipients>; Thu, 28 May 2009 03:37:59 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:from:to:subject:date
+         :user-agent:cc:references:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:content-disposition:message-id;
+        bh=0IOrSEpUtrzOHrmn2Jzo4crGgpKsnh5bEfQC/xEX+kI=;
+        b=Q1kZw1e5O485AQ/39Qam9IZPniLz/V5QPARH9Sk4WdMJiD9y+rRUuFhJ0MjO+nHnxb
+         tifEiVIb9uCEz9NF9CxLc058R4XAgvhw0Dzy3SsQhWT9n9mtE0sb1ekGJ/arndFw0xQ1
+         YvO4At74osFgWFkxN96o3DtsCe4V+p+DAaDEI=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
+         :mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id;
+        b=Nxy9jEr5Z4XIb/FuEFLILFE5lF3uY01AAPOLOlqQJIE1qNbVRPSd8BatiGpIJFmuOK
+         O7QTnTWu+3P3SJD9uIFOQ2c5pco2EzNMtQVPJQZYnjJfKf7qLm45tGjpnW+DgUM6HHPM
+         NkVlXj3crjHM2NzMNCPsCQPh39w4igMaSC4mI=
+Received: by 10.103.244.19 with SMTP id w19mr715579mur.106.1243507079837;
+        Thu, 28 May 2009 03:37:59 -0700 (PDT)
+Received: from florian.lab.openpattern.org (lab.openpattern.org [82.240.16.241])
+        by mx.google.com with ESMTPS id i7sm2428857mue.18.2009.05.28.03.37.58
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 28 May 2009 03:37:58 -0700 (PDT)
+From:	Florian Fainelli <florian@openwrt.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH] rb532: fix irq number check in rb532_set_type
+Date:	Thu, 28 May 2009 12:37:54 +0200
+User-Agent: KMail/1.9.9
+Cc:	linux-mips@linux-mips.org
+References: <200905271414.07074.florian@openwrt.org> <20090527131535.GC7755@linux-mips.org>
+In-Reply-To: <20090527131535.GC7755@linux-mips.org>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Message-Id: <200905281237.55899.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23021
+X-archive-position: 23022
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Add new kconfig variables SYS_SUPPORTS_HUGETLBFS and
-CPU_SUPPORTS_HUGEPAGES.  They are enabled for systems that are known
-to support huge pages.
+Le Wednesday 27 May 2009 15:15:35 Ralf Baechle, vous avez écrit :
+> On Wed, May 27, 2009 at 02:14:06PM +0200, Florian Fainelli wrote:
+> > We only have 14 GPIO interrupt sources numbered
+> > from 0 to 13. Therefore the check against irq_nr
+> > in rb532_set_type is off-by-one. This fixes a mistake
+> > introduced by commit 1b4f571632ffb0caa4170d886694f2555c0d9a4b.
+>
+> Thanks; I've folded this patch into your old patch.
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
----
- arch/mips/Kconfig |   11 +++++++++++
- 1 files changed, 11 insertions(+), 0 deletions(-)
+Thank you !
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index c4a84a6..592949a 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -852,6 +852,11 @@ config SYS_SUPPORTS_BIG_ENDIAN
- config SYS_SUPPORTS_LITTLE_ENDIAN
- 	bool
- 
-+config SYS_SUPPORTS_HUGETLBFS
-+	bool
-+	depends on  CPU_SUPPORTS_HUGEPAGES && 64BIT
-+	default y
-+
- config IRQ_CPU
- 	bool
- 
-@@ -1056,6 +1061,7 @@ config CPU_MIPS64_R1
- 	select CPU_SUPPORTS_32BIT_KERNEL
- 	select CPU_SUPPORTS_64BIT_KERNEL
- 	select CPU_SUPPORTS_HIGHMEM
-+	select CPU_SUPPORTS_HUGEPAGES
- 	help
- 	  Choose this option to build a kernel for release 1 or later of the
- 	  MIPS64 architecture.  Many modern embedded systems with a 64-bit
-@@ -1075,6 +1081,7 @@ config CPU_MIPS64_R2
- 	select CPU_SUPPORTS_32BIT_KERNEL
- 	select CPU_SUPPORTS_64BIT_KERNEL
- 	select CPU_SUPPORTS_HIGHMEM
-+	select CPU_SUPPORTS_HUGEPAGES
- 	help
- 	  Choose this option to build a kernel for release 2 or later of the
- 	  MIPS64 architecture.  Many modern embedded systems with a 64-bit
-@@ -1161,6 +1168,7 @@ config CPU_R5500
- 	select CPU_HAS_LLSC
- 	select CPU_SUPPORTS_32BIT_KERNEL
- 	select CPU_SUPPORTS_64BIT_KERNEL
-+	select CPU_SUPPORTS_HUGEPAGES
- 	help
- 	  NEC VR5500 and VR5500A series processors implement 64-bit MIPS IV
- 	  instruction set.
-@@ -1246,6 +1254,7 @@ config CPU_CAVIUM_OCTEON
- 	select WEAK_ORDERING
- 	select WEAK_REORDERING_BEYOND_LLSC
- 	select CPU_SUPPORTS_HIGHMEM
-+	select CPU_SUPPORTS_HUGEPAGES
- 	help
- 	  The Cavium Octeon processor is a highly integrated chip containing
- 	  many ethernet hardware widgets for networking tasks. The processor
-@@ -1365,6 +1374,8 @@ config CPU_SUPPORTS_32BIT_KERNEL
- 	bool
- config CPU_SUPPORTS_64BIT_KERNEL
- 	bool
-+config CPU_SUPPORTS_HUGEPAGES
-+	bool
- 
- #
- # Set to y for ptrace access to watch registers.
+>
+> A note on commit IDs on the -queue tree.  The -queue tree is really
+> maintained in quilt and respun every time I change any of the commits
+> on it.  This means the commit IDs will also change, so they should be
+> considered volatile.
+
+I will take that into account next time, thanks for fixing this.
 -- 
-1.6.0.6
+Best regards, Florian Fainelli
+Email : florian@openwrt.org
+http://openwrt.org
+-------------------------------

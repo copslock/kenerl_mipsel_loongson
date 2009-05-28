@@ -1,128 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2009 11:53:47 +0100 (BST)
-Received: from mail-qy0-f126.google.com ([209.85.221.126]:51062 "EHLO
-	mail-qy0-f126.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20021938AbZE1Kxl (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 28 May 2009 11:53:41 +0100
-Received: by qyk32 with SMTP id 32so675347qyk.22
-        for <linux-mips@linux-mips.org>; Thu, 28 May 2009 03:53:31 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2009 12:32:02 +0100 (BST)
+Received: from mail-bw0-f177.google.com ([209.85.218.177]:37591 "EHLO
+	mail-bw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20024381AbZE1Lbz convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 28 May 2009 12:31:55 +0100
+Received: by bwz25 with SMTP id 25so5526678bwz.0
+        for <multiple recipients>; Thu, 28 May 2009 04:31:49 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:date:message-id:subject
-         :from:content-type;
-        bh=eeuz6kPhBIfhax6kqRTgSfkwODClGk6aoPzOYZzV1m8=;
-        b=ARvjnvi94gUklbN4iKYDnCjF+WDZMDpOpDdCaoPAeFBJxGSEr/1yU2mNemBTBQDLO+
-         wgvS9thpA7L6sA7PbuObkE5M/DXTNXGLhDZvMSZ/0UofeokeGzFr3ak3kg+wcGXYEr3C
-         Aw+gnkjwD0syBnoo8fcs+B9QpaGIz1dEvi5y0=
+        h=domainkey-signature:received:received:sender:from:to:subject:date
+         :user-agent:cc:references:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:content-disposition:message-id;
+        bh=3hrufnDb8ODh/hfc9DHmEJ+4zGfZqAv09hEFnF0oJh4=;
+        b=xfbBVaD60Y53QIY4uVm2n++kGgi88nqk1JcXUMit0zjmWgxaC+rqKPT2eCQjKkOobF
+         CMQO8kXBs2PxDmkQweeaW1b6csTTaaGhbJ8xLagrWmY/luDdKyVV/CbxQ1w3TuY1jknh
+         gxvX5FS3Wj+fXmcxJMbsVwq7GJm/Dz6Zj32bI=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:content-type;
-        b=bGCQpiS20lCRxE5QsvyZdSi6oa5W55ACit9dsp5t85i623+tZx6iyG7/W4RkKOoxIF
-         Kcj7IKCrUC6K/rw2yzxXvCc1Enafbnvs6zs/URMyFxAAPxAkLjnozSyC2vbhtVEkQUi3
-         q6sNXSsJd8j+1XtUCVvIZvQ+jJ46kNturClHw=
+        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
+         :mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id;
+        b=kLsmi9jlDyPIiZvmUXVTyVlTjc1Uc61H9jAwsKra6C3LdzlfVF+eRt0WqNchS75ybM
+         hUJxyUAjR44Hc9W5XTbr99acBJWsRE094nNK0Gp7yd/5BGM1UaoQCKTm4yPLsVj95f5E
+         ia3xV5Wfdj0dN3IQ66E6mzlwItiyR1GdKT1rM=
+Received: by 10.204.64.136 with SMTP id e8mr1107764bki.46.1243510309629;
+        Thu, 28 May 2009 04:31:49 -0700 (PDT)
+Received: from florian.lab.openpattern.org (lab.openpattern.org [82.240.16.241])
+        by mx.google.com with ESMTPS id 35sm5800895fkt.20.2009.05.28.04.31.43
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 28 May 2009 04:31:46 -0700 (PDT)
+From:	Florian Fainelli <florian@openwrt.org>
+To:	Richard Sandiford <rdsandiford@googlemail.com>
+Subject: Re: [PATCH] MIPS: Handle removal of 'h' constraint in GCC 4.4
+Date:	Thu, 28 May 2009 13:31:40 +0200
+User-Agent: KMail/1.9.9
+Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	David Daney <ddaney@caviumnetworks.com>,
+	linux-mips@linux-mips.org
+References: <1229567048-19219-1-git-send-email-ddaney@caviumnetworks.com> <alpine.LFD.1.10.0812190041080.6463@ftp.linux-mips.org> <87wsdl63xv.fsf@firetop.home>
+In-Reply-To: <87wsdl63xv.fsf@firetop.home>
 MIME-Version: 1.0
-Received: by 10.220.93.65 with SMTP id u1mt1741445vcm.59.1243507969411; Thu, 
-	28 May 2009 03:52:49 -0700 (PDT)
-Date:	Thu, 28 May 2009 16:22:49 +0530
-Message-ID: <277176450905280352g1d361b11p2e9e629447eabca2@mail.gmail.com>
-Subject: Sindhi Bandhan
-From:	priya shrivastava <priyashri186@gmail.com>
-Content-Type: multipart/alternative; boundary=0016364ed386515568046af6c573
-To:	unlisted-recipients:; (no To-header on input)
-Return-Path: <priyashri186@gmail.com>
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Message-Id: <200905281331.41440.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23023
+X-archive-position: 23024
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: priyashri186@gmail.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
---0016364ed386515568046af6c573
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+Le Saturday 27 December 2008 16:19:40 Richard Sandiford, vous avez écrit :
+> "Maciej W. Rozycki" <macro@linux-mips.org> writes:
+> > On Wed, 17 Dec 2008, David Daney wrote:
+> >> This is an incomplete proof of concept that I applied to be able to
+> >> build a 64 bit kernel with GCC-4.4.  It doesn't handle the 32 bit case
+> >> or the R4000_WAR case.
+> >
+> >  The R4000_WAR case can use the same C code -- GCC will adjust code
+> > generated as necessary according to the -mfix-r4000 flag.  For the 32-bit
+> > case I think the conclusion was the only way to get it working is to use
+> > MFHI explicitly in the asm.
+>
+> No, the same sort of cast, multiply and shift should work for 32-bit
+> code too.  I.e.:
+>
+> 		usecs = ((uint64_t)usecs * lpj) >> 32;
+>
+> It should work for both -mfix-r4000 and -mno-fix-r4000.
 
-Sindhi Bandhan
-
-*Here Is A Website Dedicated to Sindhi Community from
-*<http://sindhibandhan.com/>
-
-*A* <http://sindhibandhan.com/>*ll over the World
-
-This Website Provides Information About Various Sindhi
-*<http://sindhibandhan.com/>
-*People* <http://sindhibandhan.com/>
-
-**********
-
-*Sindhi: ( Bhaibhand, Bhanusali, Bhatia, * <http://sindhibandhan.com/>*Sahiti,
-Sakkhar,  Shikarpuri, etc.)*
-<http://sindhibandhan.com/>
-
-**********
-
-*
-If You Or Your Relative Is One Of Those, Then It Is Worth Looking At The
-Website for A Match
-
-The Website Is http://sindhibandhan.com
-* <http://sindhibandhan.com/>
-
-**********************
-You have receive this mail because either you bought a product from one of
-our affiliates or  enquired about the services or have been referred by a
-friend. If you don't wish to receive any mails regarding this, you can
-remove your e-mail by clicking the link below
-
-*http://sindhibandhan.com/block.html* <http://sindhibandhan.com/block.html>
-
---0016364ed386515568046af6c573
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<font color=3D"#ffffff" size=3D"1">Sindhi Bandhan<br></font>
-<table width=3D"450" bgcolor=3D"#ffccff" border=3D"1">
-<tbody>
-<tr>
-<td>
-<p align=3D"center"><font size=3D"2"><a href=3D"http://sindhibandhan.com/" =
-target=3D"_blank"><u><font color=3D"#0000ff">Here Is A Website Dedicated to=
- </font><font color=3D"#ff0000">Sindhi</font><font color=3D"#0000ff"> Commu=
-nity from=A0</font></u></a></font></p>
-
-<p align=3D"center"><font size=3D"2"><font color=3D"#0000ff"><a href=3D"htt=
-p://sindhibandhan.com/" target=3D"_blank"><u>A</u></a></font><a href=3D"htt=
-p://sindhibandhan.com/" target=3D"_blank"><u><font color=3D"#0000ff">ll ove=
-r the World<br>
-<br>This Website Provides Information About Various=A0</font><font color=3D=
-"#ff0000">Sindhi</font><font color=3D"#0000ff"> </font></u></a></font><font=
- color=3D"#0000ff" size=3D"2"><a href=3D"http://sindhibandhan.com/" target=
-=3D"_blank"><u>People</u></a></font></p>
-
-<p align=3D"center"><font size=3D"2"><u>********</u></font></p>
-<p align=3D"center"><font size=3D"2"><a href=3D"http://sindhibandhan.com/" =
-target=3D"_blank"><font color=3D"#ff0000"><b><u>Sindhi: ( Bhaibhand, Bhanus=
-ali, Bhatia, </u></b></font></a></font><font size=3D"2"><a href=3D"http://s=
-indhibandhan.com/" target=3D"_blank"><font color=3D"#ff0000"><b><u>Sahiti, =
-Sakkhar,=A0 Shikarpuri, etc.)</u></b><br>
-</font></a></font></p>
-<p align=3D"center"><font size=3D"2"><u>********</u></font></p>
-<p align=3D"center"><font color=3D"#0000ff" size=3D"2"><a href=3D"http://si=
-ndhibandhan.com/" target=3D"_blank"><u><br>If You Or Your Relative Is One O=
-f Those, Then It Is Worth Looking At The Website for A Match<br><br>The Web=
-site Is <b>http://sindhibandhan.com</b><br>
-</u></a></font></p></td></tr>
-<tr>
-<td>
-<p align=3D"center">**********************<br><font size=3D"2">You have rec=
-eive this mail because either you bought a product from one of our affiliat=
-es or=A0 enquired about the services or have been referred by a friend. If =
-you don&#39;t wish to receive any mails regarding this, you can remove your=
- e-mail by clicking the link below<br>
-</font><br><a href=3D"http://sindhibandhan.com/block.html" target=3D"_blank=
-"><b><font color=3D"#0000ff" size=3D"3"><u>http://sindhibandhan.com/block.h=
-tml</u></font></b></a></p></td></tr></tbody></table>
-
---0016364ed386515568046af6c573--
+Any updates on this ?
+-- 
+Best regards, Florian Fainelli
+Email : florian@openwrt.org
+http://openwrt.org
+-------------------------------

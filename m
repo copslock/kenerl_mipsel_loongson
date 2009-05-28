@@ -1,78 +1,118 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2009 18:11:41 +0100 (BST)
-Received: from [222.92.8.141] ([222.92.8.141]:37456 "EHLO lemote.com"
-	rhost-flags-FAIL-FAIL-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20024544AbZE1RLe (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 28 May 2009 18:11:34 +0100
-Received: from localhost (localhost [127.0.0.1])
-	by lemote.com (Postfix) with ESMTP id 4297E34201;
-	Fri, 29 May 2009 01:06:17 +0800 (CST)
-X-Virus-Scanned: Debian amavisd-new at lemote.com
-Received: from lemote.com ([127.0.0.1])
-	by localhost (www.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id dDHPoDCGxsk7; Fri, 29 May 2009 01:06:01 +0800 (CST)
-Received: from [192.168.1.100] (unknown [219.246.59.144])
-	by lemote.com (Postfix) with ESMTP id 07869340E0;
-	Fri, 29 May 2009 01:05:59 +0800 (CST)
-Subject: Re: [loongson-PATCH-v2 23/23] Hibernation Support in mips system
-From:	Wu Zhangjin <wuzj@lemote.com>
-Reply-To: wuzj@lemote.com
-To:	linux-mips@linux-mips.org
-Cc:	Ralf Baechle <ralf@linux-mips.org>, Yan Hua <yanh@lemote.com>,
-	Philippe Vachon <philippe@cowpig.ca>,
-	Zhang Le <r0bertz@gentoo.org>,
-	Zhang Fuxin <zhangfx@lemote.com>,
-	loongson-dev <loongson-dev@googlegroups.com>,
-	Nicholas Mc Guire <der.herr@hofr.at>,
-	Liu Junliang <liujl@lemote.com>,
-	Erwan Lerale <erwan@thiscow.com>
-In-Reply-To: <1483a7cb0f587bd329ea3ca8d3af2881afadaf5e.1243362545.git.wuzj@lemote.com>
-References: <cover.1243362545.git.wuzj@lemote.com>
-	 <1483a7cb0f587bd329ea3ca8d3af2881afadaf5e.1243362545.git.wuzj@lemote.com>
-Content-Type: text/plain
-Organization: www.lemote.com, Changshu City, JiangSu Province, China
-Date:	Fri, 29 May 2009 01:10:58 +0800
-Message-Id: <1243530658.19464.5.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzj@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2009 21:46:57 +0100 (BST)
+Received: from mail-px0-f187.google.com ([209.85.216.187]:48959 "EHLO
+	mail-px0-f187.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20021896AbZE1Uqt (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 28 May 2009 21:46:49 +0100
+Received: by pxi17 with SMTP id 17so5083266pxi.22
+        for <multiple recipients>; Thu, 28 May 2009 13:46:42 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=HXggP3iGuR1N2L7sbLg4HmwIvzsed1RoRu6+xV/B9bM=;
+        b=i44p8owqKLTxo30JobzPaovaW6Q8bpS0yyJAaFjep1CnZzWeZO6UsjmLHoNslje93n
+         CyRTdmIoGlzpOH2Mk1gnF1Bked+ScXLtlA+NIGkfT/+bVnYk2jZI0rx6SB1DyKryhWgx
+         hsHekFOdIdEIL2Clsy3EqZzs2TlzUOFxOwCuw=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=W1JJ5nILP81Ny+A5OP9Wg//NHDn4Pqz0hrjOADAsQzq9vWlJdtrmXXgiCIMmtajWd/
+         dojqZBY7yiSNcaiqA4U0epHwm4ue1oZPU4W2klBChPYzIl3UfWXs1nmUpvYgssbIbJJD
+         lLBeWB1TVqepQikaMrUmrFBWy96IvntEXWW04=
+Received: by 10.115.32.8 with SMTP id k8mr3239988waj.15.1243543602552;
+        Thu, 28 May 2009 13:46:42 -0700 (PDT)
+Received: from localhost.localdomain ([219.246.59.144])
+        by mx.google.com with ESMTPS id m28sm698774waf.37.2009.05.28.13.46.39
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 28 May 2009 13:46:42 -0700 (PDT)
+From:	wuzhangjin@gmail.com
+To:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Cc:	Wu Zhangjin <wuzj@lemote.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Ingo Molnar <mingo@elte.hu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Nicholas Mc Guire <der.herr@hofr.at>
+Subject: [PATCH v1 0/5] mips-specific ftrace support
+Date:	Fri, 29 May 2009 04:46:08 +0800
+Message-Id: <cover.1243542927.git.wuzj@lemote.com>
+X-Mailer: git-send-email 1.6.3.1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23035
+X-archive-position: 23036
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzj@lemote.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+From: Wu Zhangjin <wuzj@lemote.com>
 
-> +.text
-> +LEAF(swsusp_arch_suspend)
-[...]
-> +	PTR_S a0, PT_R4(t0)
-> +	PTR_S a1, PT_R5(t0)
-> +	PTR_S a2, PT_R6(t0)
+ftrace is a mcount based kernel tracing tool/framework, which is originally
+from RT_PREEMPT(http://rt.wiki.kernel.org).
 
-ooh, seems miss:
+ftrace is short for function tracer, this is its original name, but now, it
+becomes a kernel tracing framework, lots of kernel tracers are built on it,
+such as irqoff tracer, wakeup tracer and so forth.  these tracers are
+arch-independent(?), but some of them are arch-dependent, such as the original
+ftrace: function tracer, and dynamic function tracer, function graph tracer,
+and also, system call tracer.
 
-	PTR_S a3, PT_R7(t0)
+here is the mips porting of these four arch-dependent tracers, it will enable
+the following new kernel config options in linux-mips system.
 
-and is there a need to save/restore a4,a5,a6,a7 in 64bit kernel? 
+kernel hacking --->
+           Tracers -->
+                [*] Kernel Function Tracer
+                [*]   Kernel Function Graph Tracer
+                ...
+                [*] Trace syscalls
+				...
+                [*] enable/disable ftrace tracepoints dynamically
 
-> +	PTR_S v1, PT_R3(t0)
-> +	j swsusp_save
-> +END(swsusp_arch_suspend)
-> +
-> +LEAF(swsusp_arch_resume)
-[...]
-> +	PTR_L a0, PT_R4(t0)
-> +	PTR_L a1, PT_R5(t0)
-> +	PTR_L a2, PT_R6(t0)
-> +	PTR_L a3, PT_R7(t0)
-> +	PTR_LI v0, 0x0
-> +	PTR_L v1, PT_R3(t0)
-> +	jr ra
-> +END(swsusp_arch_resume)
+in reality, because the high-precise timestamp getting function are
+arch-dependent, lots of the tracers are arch-dependent. the arch-dependent part
+is that: sched_clock, or we say ring_buffer_time_stamp or trace_clock_local
+function. to get high-precise timestamp, we can read the MIPS clock counter,
+but since it is only 32bit long, so, overflow should be handled carefully.
+
+read the following document, and play with it:
+        Documentation/trace/ftrace.txt
+
+Wu Zhangjin (5):
+  mips static function tracer support
+  mips dynamic function tracer support
+  mips function graph tracer support
+  mips specific clock function to get precise timestamp
+  mips specific system call tracer
+
+ arch/mips/Kconfig                   |    7 +
+ arch/mips/Makefile                  |    2 +
+ arch/mips/include/asm/ftrace.h      |   35 ++++-
+ arch/mips/include/asm/ptrace.h      |    2 +
+ arch/mips/include/asm/reg.h         |    5 +
+ arch/mips/include/asm/syscall.h     |   84 ++++++++
+ arch/mips/include/asm/thread_info.h |    5 +-
+ arch/mips/kernel/Makefile           |   13 ++
+ arch/mips/kernel/csrc-r4k.c         |    2 +-
+ arch/mips/kernel/entry.S            |    2 +-
+ arch/mips/kernel/ftrace.c           |  360 +++++++++++++++++++++++++++++++++++
+ arch/mips/kernel/ftrace_clock.c     |   77 ++++++++
+ arch/mips/kernel/mcount.S           |  185 ++++++++++++++++++
+ arch/mips/kernel/mips_ksyms.c       |    5 +
+ arch/mips/kernel/ptrace.c           |   14 ++-
+ arch/mips/kernel/scall64-o32.S      |    2 +-
+ arch/mips/kernel/vmlinux.lds.S      |    1 +
+ kernel/trace/ring_buffer.c          |    3 +-
+ kernel/trace/trace_clock.c          |    2 +-
+ scripts/Makefile.build              |    1 +
+ scripts/recordmcount.pl             |   32 +++-
+ 21 files changed, 824 insertions(+), 15 deletions(-)
+ create mode 100644 arch/mips/include/asm/syscall.h
+ create mode 100644 arch/mips/kernel/ftrace.c
+ create mode 100644 arch/mips/kernel/ftrace_clock.c
+ create mode 100644 arch/mips/kernel/mcount.S

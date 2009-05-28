@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2009 21:49:46 +0100 (BST)
-Received: from wa-out-1112.google.com ([209.85.146.181]:45001 "EHLO
-	wa-out-1112.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20021938AbZE1UtU (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 28 May 2009 21:49:20 +0100
-Received: by wa-out-1112.google.com with SMTP id n4so931493wag.0
-        for <multiple recipients>; Thu, 28 May 2009 13:49:17 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2009 21:50:17 +0100 (BST)
+Received: from mail-px0-f187.google.com ([209.85.216.187]:54510 "EHLO
+	mail-px0-f187.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20021991AbZE1Utq (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 28 May 2009 21:49:46 +0100
+Received: by pxi17 with SMTP id 17so5084433pxi.22
+        for <multiple recipients>; Thu, 28 May 2009 13:49:38 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer:in-reply-to:references;
-        bh=VHYjiWagLOrkG6Sytl92mNNx9CHhxunJYSFbOeG/TOA=;
-        b=HMuKokv2JuTkCSxBoWjSfQqLAnuiaxoo5/fjdeBN8aqSXdELxQdXmeXwUa1sULG0mp
-         M+M8rDRgRCcgASpVs4Nr9+HVQBhrxsORoNQNe5AVvvh0SIJFbJMB0SFzW5l4s57RTX6p
-         9o7U1XhJ9KerZDBWcJILPdfnfILEbPL5C1ifo=
+        bh=mc/OOzUbAmx7lp1KrdGrr9EVYbR49ZDNKALaZEDOqIg=;
+        b=MDuznDNjtiAJlSvzJnZuEWTQQ2+Zo6INyg3m9CPmXZTMaGNuAX1UGzBDHe59bbQpBD
+         uEzHJPuJkP/LKCPOW/VCNTU16je2NLW9RnjnVt+soTHNL+/+xqhptx3df2kZ6Nyi4x6g
+         DDZoMe2CfjiXzGEoOMoyBqcdsBL8KRB2vyxhs=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=kOGGdTHXTiyJXVgNNfJFrhEQtF43avsUrQAWUzjSoxkeoQBZQQyHmHiOFWX+550tYR
-         xIw/O2nXzRlxpaJj61uuBdP5kSQYSmVTkiitRkvVlfsSq02GxJjHWgDg0xOzBTpenXz+
-         LDCqbdmnjULYPorQBuRmMZLc0c0FbQN5dNkJk=
-Received: by 10.114.72.17 with SMTP id u17mr3422841waa.41.1243543757487;
-        Thu, 28 May 2009 13:49:17 -0700 (PDT)
+        b=lGlYRrfdTLQ+VxSmLT2QFyr+2GZtKllbwwIQ/fi89157nSPiEtrSkuikHrLbRc8Qhb
+         i2tQE9tmWrAmJQBeDH7cvS5JXTqAVsuEpPtUXY37jdhhv/VoelDuiahoXsHvX+PxjfRU
+         Rgo3DIfFcmXtkji0R206MszoJaSWhzWT6SBnA=
+Received: by 10.114.74.18 with SMTP id w18mr2563717waa.205.1243543772827;
+        Thu, 28 May 2009 13:49:32 -0700 (PDT)
 Received: from localhost.localdomain ([219.246.59.144])
-        by mx.google.com with ESMTPS id n6sm711408wag.39.2009.05.28.13.49.14
+        by mx.google.com with ESMTPS id n9sm711081wag.32.2009.05.28.13.49.29
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 28 May 2009 13:49:17 -0700 (PDT)
+        Thu, 28 May 2009 13:49:32 -0700 (PDT)
 From:	wuzhangjin@gmail.com
 To:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
 Cc:	Wu Zhangjin <wuzj@lemote.com>,
@@ -34,9 +34,9 @@ Cc:	Wu Zhangjin <wuzj@lemote.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Nicholas Mc Guire <der.herr@hofr.at>
-Subject: [PATCH v1 3/5] mips function graph tracer support
-Date:	Fri, 29 May 2009 04:49:07 +0800
-Message-Id: <99ab6b652c259579a34b3592af06f59e28d5f570.1243543471.git.wuzj@lemote.com>
+Subject: [PATCH v1 4/5] mips specific clock function to get precise timestamp
+Date:	Fri, 29 May 2009 04:49:22 +0800
+Message-Id: <d44adaf39284074c93a8dba0209da5b31d0d3c49.1243543471.git.wuzj@lemote.com>
 X-Mailer: git-send-email 1.6.3.1
 In-Reply-To: <cover.1243543471.git.wuzj@lemote.com>
 References: <cover.1243543471.git.wuzj@lemote.com>
@@ -44,7 +44,7 @@ Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23039
+X-archive-position: 23040
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,231 +54,187 @@ X-list: linux-mips
 
 From: Wu Zhangjin <wuzj@lemote.com>
 
-this works something like -finstrument-functions does, instead of using
+by default, ring_buffer_time_stamp calling sched_clock(jiffies-based)
+function to get timestamp, in x86, there is a tsc(64bit) based
+sched_clock, but in mips, the 'tsc'(clock counter) is only 32bit long,
+which will easily rollover, and there is no precise sched_clock in mips,
+we need to get one ourselves.
 
-                void __cyg_profile_func_enter (void *this_fn,
-                                                  void *call_site);
-                   void __cyg_profile_func_exit  (void *this_fn,
-                                                  void *call_site);
+to avoid invading the whole linux-mips, i do not want to implement a
+tsc-based native_sched_clock like x86 does. because, there is a need to
+handling rollover of the only 32-bit long 'tsc' of mips, which will need
+extra overhead. in reality, i have tried to implement one(just like the
+ring_buffer_time_stamp here does), but make the kernel hangs when
+booting, i am not sure why it not work.
 
--pg use _mcount, so some tricks are adoptive by the author of orignal function
-graph tracer:
+herein, i just implement a mips-specific ring_buffer_time_stamp in
+arch/mips/kernel/ftrace.c via adding  __attribute__((weak)) before
+ring_buffer_time_stamp(...) {} in kernel/trace/ring_buffer.c and do
+something in arch/mips/kernel/ftrace.c like this:
 
-	the _mcount function will call prepare_function_return to save the
-	parent_ip, ip and calltime in a tracing array, if success, the
-	address of a hooker function named return_to_handler will be
-	substitued to the parent_ip, so, after return from _mcount it will
-	call the return_to_handler, not back to the parent_ip, but calling
-	ftrace_return_to_handler to remember the rettime, and return the
-	parent_ip to let return_to_handler go back to the real parent.
+u64  ring_buffer_time_stamp \
+       __attribute__((alias("native_ring_buffer_time_stamp")));
+
+and, as the same, there is also a need to implement a mips-specific
+trace_clock_local based on the above ring_buffer_timep_stamp, this clock
+function is called in function graph tracer to get calltime & rettime of
+a function.
+
+and what about the trace_clock and trace_clock_global function, should
+we also implement a mips-secific one? i am not sure.
 
 Signed-off-by: Wu Zhangjin <wuzj@lemote.com>
 ---
- arch/mips/Kconfig              |    1 +
- arch/mips/kernel/ftrace.c      |   72 ++++++++++++++++++++++++++++++++++++++++
- arch/mips/kernel/mcount.S      |   58 +++++++++++++++++++++++++++++++-
- arch/mips/kernel/vmlinux.lds.S |    1 +
- 4 files changed, 131 insertions(+), 1 deletions(-)
+ arch/mips/kernel/Makefile       |    2 +
+ arch/mips/kernel/csrc-r4k.c     |    2 +-
+ arch/mips/kernel/ftrace_clock.c |   77 +++++++++++++++++++++++++++++++++++++++
+ kernel/trace/ring_buffer.c      |    3 +-
+ kernel/trace/trace_clock.c      |    2 +-
+ 5 files changed, 83 insertions(+), 3 deletions(-)
+ create mode 100644 arch/mips/kernel/ftrace_clock.c
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 0c00536..ac1437e 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -9,6 +9,7 @@ config MIPS
- 	select HAVE_DYNAMIC_FTRACE
- 	select HAVE_FTRACE_MCOUNT_RECORD
- 	select HAVE_FTRACE_NMI_ENTER if DYNAMIC_FTRACE
-+	select HAVE_FUNCTION_GRAPH_TRACER
- 	# Horrible source of confusion.  Die, die, die ...
- 	select EMBEDDED
- 	select RTC_LIB
-diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
-index 827c128..e7f15f7 100644
---- a/arch/mips/kernel/ftrace.c
-+++ b/arch/mips/kernel/ftrace.c
-@@ -215,3 +215,75 @@ int __init ftrace_dyn_arch_init(void *data)
-     return 0;
+diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+index 6b1a8a5..5dec76f 100644
+--- a/arch/mips/kernel/Makefile
++++ b/arch/mips/kernel/Makefile
+@@ -12,6 +12,7 @@ ifdef CONFIG_FUNCTION_TRACER
+ # Do not profile debug and lowlevel utilities
+ CFLAGS_REMOVE_mcount.o = -pg
+ CFLAGS_REMOVE_ftrace.o = -pg
++CFLAGS_REMOVE_ftrace_clock.o = -pg
+ CFLAGS_REMOVE_early_printk.o = -pg
+ endif
+ 
+@@ -33,6 +34,7 @@ obj-$(CONFIG_MODULES)		+= mips_ksyms.o module.o
+ 
+ obj-$(CONFIG_FUNCTION_TRACER)	+= mcount.o
+ obj-$(CONFIG_FUNCTION_TRACER)	+= ftrace.o
++obj-$(CONFIG_NOP_TRACER)	+= ftrace_clock.o
+ 
+ obj-$(CONFIG_CPU_LOONGSON2)	+= r4k_fpu.o r4k_switch.o
+ obj-$(CONFIG_CPU_MIPS32)	+= r4k_fpu.o r4k_switch.o
+diff --git a/arch/mips/kernel/csrc-r4k.c b/arch/mips/kernel/csrc-r4k.c
+index e95a3cd..3da1c7a 100644
+--- a/arch/mips/kernel/csrc-r4k.c
++++ b/arch/mips/kernel/csrc-r4k.c
+@@ -10,7 +10,7 @@
+ 
+ #include <asm/time.h>
+ 
+-static cycle_t c0_hpt_read(struct clocksource *cs)
++static cycle_t notrace c0_hpt_read(struct clocksource *cs)
+ {
+ 	return read_c0_count();
  }
- #endif				/* CONFIG_DYNAMIC_FTRACE */
-+
-+#ifdef CONFIG_FUNCTION_GRAPH_TRACER
-+
-+#ifdef CONFIG_DYNAMIC_FTRACE
-+
-+#define JMP	0x08000000			/* jump to target directly */
-+extern void ftrace_graph_call(void);
-+
-+int ftrace_enable_ftrace_graph_caller(void)
-+{
-+    unsigned long ip = (unsigned long) (&ftrace_graph_call);
-+    unsigned char old[MCOUNT_INSN_SIZE], *new;
-+    int ret;
-+
-+	/* j ftrace_stub */
-+    memcpy(old, (unsigned long *) ip, MCOUNT_INSN_SIZE);
-+    new = ftrace_call_replace(JMP, (unsigned long) ftrace_graph_caller);
-+
-+    ret = ftrace_modify_code(ip, old, new);
-+
-+    return ret;
-+}
-+
-+int ftrace_disable_ftrace_graph_caller(void)
-+{
-+    unsigned long ip = (unsigned long) (&ftrace_graph_call);
-+    unsigned char old[MCOUNT_INSN_SIZE], *new;
-+    int ret;
-+
-+	/* j ftrace_graph_caller */
-+    memcpy(old, (unsigned long *) ip, MCOUNT_INSN_SIZE);
-+    new = ftrace_call_replace(JMP, (unsigned long) ftrace_stub);
-+
-+    ret = ftrace_modify_code(ip, old, new);
-+
-+    return ret;
-+}
-+
-+#endif				/* !CONFIG_DYNAMIC_FTRACE */
-+
+diff --git a/arch/mips/kernel/ftrace_clock.c b/arch/mips/kernel/ftrace_clock.c
+new file mode 100644
+index 0000000..2f3b05a
+--- /dev/null
++++ b/arch/mips/kernel/ftrace_clock.c
+@@ -0,0 +1,77 @@
 +/*
-+ * Hook the return address and push it in the stack of return addrs
-+ * in current thread info.
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive for
++ * more details.
++ *
++ * Copyright (C) 2009 DSLab, Lanzhou University, China
++ * Author: Wu Zhangjin <wuzj@lemote.com>
 + */
 +
-+unsigned long prepare_ftrace_return(unsigned long ip,
-+				    unsigned long parent_ip)
++#include <linux/types.h>
++#include <linux/sched.h>
++#include <linux/jiffies.h>
++#include <linux/clocksource.h>
++#include <linux/ring_buffer.h>
++
++/* Up this if you want to test the TIME_EXTENTS and normalization */
++#ifndef DEBUG_SHIFT
++#define DEBUG_SHIFT 0
++#endif
++
++/* mips-specific ring_buffer_time_stamp implementation,
++ * the original one is defined in kernel/trace/ring_buffer.c
++ */
++
++u64 native_ring_buffer_time_stamp(struct ring_buffer *buffer, int cpu)
 +{
-+    struct ftrace_graph_ent trace;
++	u64 current_cycles;
++	static unsigned long old_jiffies;
++	static u64 time, old_cycles;
 +
-+    /* Nmi's are currently unsupported */
-+    if (unlikely(in_nmi()))
-+		goto out;
++	preempt_disable_notrace();
++    /* update timestamp to avoid missing the timer interrupt */
++	if (time_before(jiffies, old_jiffies)) {
++		old_jiffies = jiffies;
++		time = sched_clock();
++		old_cycles = clock->cycle_last;
++	}
++	current_cycles = clock->read(clock);
 +
-+    if (unlikely(atomic_read(&current->tracing_graph_pause)))
-+		goto out;
++	time = (time + cyc2ns(clock, (current_cycles - old_cycles)
++				& clock->mask)) << DEBUG_SHIFT;
 +
-+    if (ftrace_push_return_trace(parent_ip, ip, &trace.depth) == -EBUSY)
-+		goto out;
++	old_cycles = current_cycles;
++	preempt_enable_no_resched_notrace();
 +
-+    trace.func = ip;
-+
-+    /* Only trace if the calling function expects to */
-+    if (!ftrace_graph_entry(&trace)) {
-+		current->curr_ret_stack--;
-+		goto out;
-+    }
-+    return (unsigned long) &return_to_handler;
-+out:
-+    return parent_ip;
++	return time;
 +}
-+#endif				/* CONFIG_FUNCTION_GRAPH_TRACER */
-diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
-index ce8a0ba..bd58f16 100644
---- a/arch/mips/kernel/mcount.S
-+++ b/arch/mips/kernel/mcount.S
-@@ -28,6 +28,10 @@
- 	PTR_SUBU	sp, PT_SIZE
- 	PTR_S	ra, PT_R31(sp)
- 	PTR_S	$1, PT_R1(sp)
-+#ifdef CONFIG_FUNCTION_GRAPH_TRACER
-+	PTR_S	v0, PT_R2(sp)
-+	PTR_S	v1, PT_R3(sp)
-+#endif
- 	PTR_S	a0, PT_R4(sp)
- 	PTR_S	a1, PT_R5(sp)
- 	PTR_S	a2, PT_R6(sp)
-@@ -43,6 +47,10 @@
- 	.macro MCOUNT_RESTORE_REGS
- 	PTR_L	ra, PT_R31(sp)
- 	PTR_L	$1, PT_R1(sp)
-+#ifdef CONFIG_FUNCTION_GRAPH_TRACER
-+	PTR_L	v0, PT_R2(sp)
-+	PTR_L	v1, PT_R3(sp)
-+#endif
- 	PTR_L	a0, PT_R4(sp)
- 	PTR_L	a1, PT_R5(sp)
- 	PTR_L	a2, PT_R6(sp)
-@@ -89,6 +97,14 @@ ftrace_call:
- 	nop
++
++u64 ring_buffer_time_stamp(struct ring_buffer *buffer, int cpu)
++		__attribute__((alias("native_ring_buffer_time_stamp")));
++
++/*
++ * native_trace_clock_local(): the simplest and least coherent tracing clock.
++ *
++ * Useful for tracing that does not cross to other CPUs nor
++ * does it go through idle events.
++ */
++u64 native_trace_clock_local(void)
++{
++	unsigned long flags;
++	u64 clock;
++
++	/*
++	 * sched_clock() is an architecture implemented, fast, scalable,
++	 * lockless clock. It is not guaranteed to be coherent across
++	 * CPUs, nor across CPU idle events.
++	 */
++	raw_local_irq_save(flags);
++	clock = ring_buffer_time_stamp(NULL, raw_smp_processor_id());
++	raw_local_irq_restore(flags);
++
++	return clock;
++}
++
++u64 trace_clock_local(void)
++		__attribute__((alias("native_trace_clock_local")));
++
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 960cbf4..717bd8e 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -420,7 +420,8 @@ struct ring_buffer_iter {
+ /* Up this if you want to test the TIME_EXTENTS and normalization */
+ #define DEBUG_SHIFT 0
  
- 	MCOUNT_RESTORE_REGS
-+
-+#ifdef CONFIG_FUNCTION_GRAPH_TRACER
-+	.globl ftrace_graph_call
-+ftrace_graph_call:
-+	j	ftrace_stub
-+	nop
-+#endif
-+
- 	.globl ftrace_stub
- ftrace_stub:
- 	RETURN_BACK
-@@ -106,7 +122,15 @@ NESTED(_mcount, PT_SIZE, ra)
- 	PTR_L	t1, ftrace_trace_function /* please don't use t1 later, safe? */
- 	bne	t0, t1, static_trace
- 	nop
--
-+#ifdef	CONFIG_FUNCTION_GRAPH_TRACER
-+	PTR_L	t2, ftrace_graph_return
-+	bne	t0,	t2, ftrace_graph_caller
-+	nop
-+	PTR_LA	t0, ftrace_graph_entry_stub
-+	PTR_L	t2, ftrace_graph_entry
-+	bne	t0,	t2, ftrace_graph_caller
-+	nop
-+#endif
- 	j	ftrace_stub
- 	nop
+-u64 ring_buffer_time_stamp(struct ring_buffer *buffer, int cpu)
++u64 __attribute__((weak)) ring_buffer_time_stamp(struct ring_buffer *buffer,
++				int cpu)
+ {
+ 	u64 time;
  
-@@ -125,5 +149,37 @@ ftrace_stub:
- 
- #endif	/* ! CONFIG_DYNAMIC_FTRACE */
- 
-+#ifdef CONFIG_FUNCTION_GRAPH_TRACER
-+
-+NESTED(ftrace_graph_caller, PT_SIZE, ra)
-+	MCOUNT_SAVE_REGS
-+
-+	MCOUNT_SET_ARGS
-+	jal	prepare_ftrace_return
-+	nop
-+
-+	/* overwrite the parent as &return_to_handler: v0 -> $1(at) */
-+	PTR_S	v0, PT_R1(sp)
-+
-+	MCOUNT_RESTORE_REGS
-+	RETURN_BACK
-+	END(ftrace_graph_caller)
-+
-+	.align	2
-+	.globl	return_to_handler
-+return_to_handler:
-+	MCOUNT_SAVE_REGS
-+
-+	jal	ftrace_return_to_handler
-+	nop
-+
-+	/* restore the real parent address: v0 -> ra */
-+	PTR_S	v0, PT_R31(sp)
-+
-+	MCOUNT_RESTORE_REGS
-+	RETURN_BACK
-+
-+#endif /* CONFIG_FUNCTION_GRAPH_TRACER */
-+
- 	.set at
- 	.set reorder
-diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
-index 58738c8..67435e5 100644
---- a/arch/mips/kernel/vmlinux.lds.S
-+++ b/arch/mips/kernel/vmlinux.lds.S
-@@ -36,6 +36,7 @@ SECTIONS
- 		SCHED_TEXT
- 		LOCK_TEXT
- 		KPROBES_TEXT
-+		IRQENTRY_TEXT
- 		*(.text.*)
- 		*(.fixup)
- 		*(.gnu.warning)
+diff --git a/kernel/trace/trace_clock.c b/kernel/trace/trace_clock.c
+index b588fd8..78c98c8 100644
+--- a/kernel/trace/trace_clock.c
++++ b/kernel/trace/trace_clock.c
+@@ -26,7 +26,7 @@
+  * Useful for tracing that does not cross to other CPUs nor
+  * does it go through idle events.
+  */
+-u64 notrace trace_clock_local(void)
++u64 __attribute__((weak)) notrace trace_clock_local(void)
+ {
+ 	unsigned long flags;
+ 	u64 clock;
 -- 
 1.6.0.4

@@ -1,172 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 May 2009 18:44:52 +0100 (BST)
-Received: from mail-pz0-f202.google.com ([209.85.222.202]:37798 "EHLO
-	mail-pz0-f202.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20022517AbZE2Roq (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 29 May 2009 18:44:46 +0100
-Received: by pzk40 with SMTP id 40so5521152pzk.22
-        for <multiple recipients>; Fri, 29 May 2009 10:44:39 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=0Jbwj0qcPiE6wUT8UVe35I0NGOmenv6MZLQKShb18pM=;
-        b=RmpFk8zlJTJN7784WPmghA8PR7mOdwgu3laQRSUqecKpf07v56HBNMx35GrBQbZ8uF
-         CMZRT/xL/BLYqQj55z3uHzpA5P8SSr/f9m16F46JdQ8tmmCgE8QCrxJ3lJC7NjJ7iyD7
-         lFLyRLwaWCXi5RcU+DKG1NTKxS6F14fXXTN4s=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=Ms51esXs3hPL6Be9yXAPh2CDk4CX7j2P5Dx/DuvWNDupJBtPC5o6xIljeEHnP8/ohi
-         2WyZ61WQ+TiKzSokgYc3HRH2RNr3PsoGPbny9Hmdnv2SExRQWGjDSUeoPN6+etCvW/Pa
-         PiOd+JWzXPbpV6OG6l9uuu+585bYvEPxXXdA8=
-Received: by 10.114.134.20 with SMTP id h20mr4518176wad.116.1243619079041;
-        Fri, 29 May 2009 10:44:39 -0700 (PDT)
-Received: from ?192.168.1.100? ([219.246.59.144])
-        by mx.google.com with ESMTPS id m31sm2510155wag.66.2009.05.29.10.44.34
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 29 May 2009 10:44:37 -0700 (PDT)
-Subject: Re: [PATCH v2 2/6] mips dynamic function tracer support
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:	Steven Rostedt <rostedt@goodmis.org>
-Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Ingo Molnar <mingo@elte.hu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Frederic Weisbecker <fweisbec@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Nicholas Mc Guire <der.herr@hofr.at>
-In-Reply-To: <alpine.DEB.2.00.0905291122260.31247@gandalf.stny.rr.com>
-References: <cover.1243604390.git.wuzj@lemote.com>
-	 <a00a91f6fc79b7d20b5b2193086e879dcafded46.1243604390.git.wuzj@lemote.com>
-	 <alpine.DEB.2.00.0905291122260.31247@gandalf.stny.rr.com>
-Content-Type: text/plain
-Organization: DSLab, Lanzhou University, China
-Date:	Sat, 30 May 2009 01:22:03 +0800
-Message-Id: <1243617723.18071.18.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 May 2009 19:30:51 +0100 (BST)
+Received: from sj-iport-6.cisco.com ([171.71.176.117]:40160 "EHLO
+	sj-iport-6.cisco.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20024742AbZE2Sao (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 29 May 2009 19:30:44 +0100
+X-IronPort-AV: E=Sophos;i="4.41,272,1241395200"; 
+   d="scan'208";a="313151576"
+Received: from sj-dkim-3.cisco.com ([171.71.179.195])
+  by sj-iport-6.cisco.com with ESMTP; 29 May 2009 18:30:35 +0000
+Received: from sj-core-2.cisco.com (sj-core-2.cisco.com [171.71.177.254])
+	by sj-dkim-3.cisco.com (8.12.11/8.12.11) with ESMTP id n4TIUZwp001273;
+	Fri, 29 May 2009 11:30:35 -0700
+Received: from cuplxvomd02.corp.sa.net ([64.101.20.155])
+	by sj-core-2.cisco.com (8.13.8/8.13.8) with ESMTP id n4TIUZxX008012;
+	Fri, 29 May 2009 18:30:35 GMT
+Date:	Fri, 29 May 2009 11:30:35 -0700
+From:	David VomLehn <dvomlehn@cisco.com>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org
+Subject: [PATCH 0/3] mips:powertv: Introduction to new Cisco Powertv
+	platform, v2
+Message-ID: <20090529183035.GA12446@cuplxvomd02.corp.sa.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.18 (2008-05-17)
+DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=821; t=1243621835; x=1244485835;
+	c=relaxed/simple; s=sjdkim3002;
+	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
+	d=cisco.com; i=dvomlehn@cisco.com;
+	z=From:=20David=20VomLehn=20<dvomlehn@cisco.com>
+	|Subject:=20[PATCH=200/3]=20mips=3Apowertv=3A=20Introductio
+	n=20to=20new=20Cisco=20Powertv=0A=09platform,=20v2
+	|Sender:=20;
+	bh=efU4IbRwGKdcEs1fLuqdJnM/+sBaMVvlPKPiU81GNqA=;
+	b=B2rGvvlqg2M68q03640Q8aMl4YcbNYHC5FqWtrhC7LQSl/XAScf8hSpPWn
+	+/a4DhMzS52WVutM8FoEcrLq1+9lYmXGXmFaBNM49jfdDEGR8OvOpM+s5uY6
+	yYM/RnTA1I;
+Authentication-Results:	sj-dkim-3; header.From=dvomlehn@cisco.com; dkim=pass (
+	sig from cisco.com/sjdkim3002 verified; ); 
+Return-Path: <dvomlehn@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23065
+X-archive-position: 23066
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: dvomlehn@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 2009-05-29 at 11:24 -0400, Steven Rostedt wrote:
-> On Fri, 29 May 2009, wuzhangjin@gmail.com wrote:
-> > diff --git a/scripts/recordmcount.pl b/scripts/recordmcount.pl
-> > index 409596e..a5d2ace 100755
-> > --- a/scripts/recordmcount.pl
-> > +++ b/scripts/recordmcount.pl
-> > @@ -213,6 +213,17 @@ if ($arch eq "x86_64") {
-> >      if ($is_module eq "0") {
-> >          $cc .= " -mconstant-gp";
-> >      }
-> > +
-> > +} elsif ($arch eq "mips") {
-> > +	$mcount_regex = "^\\s*([0-9a-fA-F]+):.*\\s_mcount\$";
-> > +	$ld .= " -melf".$bits."btsmip";
-> > +
-> > +	$cc .= " -mno-abicalls -fno-pic ";
-> > +
-> > +    if ($bits == 64) {
-> > +		$type = ".dword";
-> > +    }
-> > +
-> >  } else {
-> >      die "Arch $arch is not supported with CONFIG_FTRACE_MCOUNT_RECORD";
-> >  }
-> > @@ -441,12 +452,12 @@ if ($#converts >= 0) {
-> >      #
-> >      # Step 5: set up each local function as a global
-> >      #
-> > -    `$objcopy $globallist $inputfile $globalobj`;
-> > +    `$objcopy $globallist $inputfile $globalobj 2>&1 >/dev/null`;
-> >  
-> >      #
-> >      # Step 6: Link the global version to our list.
-> >      #
-> > -    `$ld -r $globalobj $mcount_o -o $globalmix`;
-> > +    `$ld -r $globalobj $mcount_o -o $globalmix 2>&1 >/dev/null`;
-> 
-> We still need to find out why these are giving errors. I don't like the 
-> idea of hiding errors that might be useful. The better way is to change 
-> the code to avoid having any warnings or errors.
-> 
+The following series of patches adds the Cisco Powertv cable settop box to
+the MIPS tree. The following patches are included:
 
-ooh, there is really a bug in scripts/recordmcount.pl, just fixed it.
+powertv-intro.patch
+	This file
+powertv-base.patch
+	Base kernel files
+powertv-config-cmdline-size.patch
+	Allow configurable command line buffer size
+powertv-integrate.patch
+	Integrate the Powertv platform with other MIPS-based platforms
 
-warnings like this(only in mips/64bit):
+This code has been out of the tree *way* too long and, though it has no
+checkpatch errors, it a few checkpatch warnings and other non-standard things
+in it. Still, you have to start sometime, so this is where things are today.
 
- CC      fs/proc/devices.o
-mipsel-linux-gnu-objcopy: 'fs/proc/.tmp_gl_devices.o': No such file
-mipsel-linux-gnu-ld: fs/proc/.tmp_gl_devices.o: No such file: No such
-file or directory
-rm: cannot remove `fs/proc/.tmp_gl_devices.o': No such file or directory
-rm: cannot remove `fs/proc/.tmp_mx_devices.o': No such file or directory
+History
+v2	Dropped DMA fixes and PowerTV-specific USB code. They are required
+	for the PowerTV platform, but will be posted separately.
+v1	Original version
 
-so i checked the source code and let it print something:
-
-     #
-     # Step 5: set up each local function as a global
-     #
-+    print "$objcopy $globallist $inputfile $globalobj\n";
-     `$objcopy $globallist $inputfile $globalobj`;
-
-something like this is printed:
-
-mipsel-linux-gnu-objcopy  --globalize-symbol $L12
-arch/mips/kernel/irq_cpu.o arch/mips/kernel/.tmp_gl_irq_cpu.o
-mipsel-linux-gnu-objcopy: 'arch/mips/kernel/.tmp_gl_irq_cpu.o': No such
-file
-mipsel-linux-gnu-ld: arch/mips/kernel/.tmp_gl_irq_cpu.o: No such file:
-No such file or directory
-rm: cannot remove `arch/mips/kernel/.tmp_gl_irq_cpu.o': No such file or
-directory
-rm: cannot remove `arch/mips/kernel/.tmp_mx_irq_cpu.o': No such file or
-directory
-
-
-did you see the symbol: $L12, which should be quoted, otherwise, it will
-be interpreted as the value of a variable L12(the whole $L12 should be a
-string), this $L12 will be an empty string. so, the whole command
-becomes:
-
-mipsel-linux-gnu-objcopy --globalize-symbol arch/mips/kernel/irq_cpu.o
-arch/mips/kernel/.tmp_gl_irq_cpu.o
-
-the last string .../.tmp_gl_irq_cpu.o becomes the input file, but it's
-not there, that is the warning.
-
-fix it like this:
-
-diff --git a/scripts/recordmcount.pl b/scripts/recordmcount.pl
-index 59ea43a..907110e 100755
---- a/scripts/recordmcount.pl
-+++ b/scripts/recordmcount.pl
-@@ -451,8 +451,8 @@ if ($#converts >= 0) {
-     my $locallist = "";
- 
-     foreach my $con (@converts) {
--       $globallist .= " --globalize-symbol $con";
--       $locallist .= " --localize-symbol $con";
-+       $globallist .= " --globalize-symbol \"$con\"";
-+       $locallist .= " --localize-symbol \"$con\"";
-     }
- 
-     my $globalobj = $dirname . "/.tmp_gl_" . $filename;
-
-I will add this as the third patch, is it okay?
-
-Best Wishes,
---- Wu Zhangjin
+Signed-off-by: David VomLehn <dvomlehn@cisco.com>
+---

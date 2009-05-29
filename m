@@ -1,100 +1,159 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 28 May 2009 22:36:25 +0100 (BST)
-Received: from sj-iport-1.cisco.com ([171.71.176.70]:50759 "EHLO
-	sj-iport-1.cisco.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20023944AbZE1VgT (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 28 May 2009 22:36:19 +0100
-X-IronPort-AV: E=Sophos;i="4.41,267,1241395200"; 
-   d="scan'208";a="191622093"
-Received: from sj-dkim-4.cisco.com ([171.71.179.196])
-  by sj-iport-1.cisco.com with ESMTP; 28 May 2009 21:35:54 +0000
-Received: from sj-core-1.cisco.com (sj-core-1.cisco.com [171.71.177.237])
-	by sj-dkim-4.cisco.com (8.12.11/8.12.11) with ESMTP id n4SLZsCK013928;
-	Thu, 28 May 2009 14:35:54 -0700
-Received: from cuplxvomd02.corp.sa.net ([64.101.20.155])
-	by sj-core-1.cisco.com (8.13.8/8.13.8) with ESMTP id n4SLZs4D015923;
-	Thu, 28 May 2009 21:35:54 GMT
-Date:	Thu, 28 May 2009 14:35:54 -0700
-From:	David VomLehn <dvomlehn@cisco.com>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 3/3] mips:powertv: Integrate Cisco Powertv platform
-	into MIPS architecture (resend)
-Message-ID: <20090528213553.GA24783@cuplxvomd02.corp.sa.net>
-References: <20090504225821.GA22833@cuplxvomd02.corp.sa.net> <49FF8DAC.8090701@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 May 2009 02:14:05 +0100 (BST)
+Received: from hrndva-omtalb.mail.rr.com ([71.74.56.124]:33956 "EHLO
+	hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20024486AbZE2BN6 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 29 May 2009 02:13:58 +0100
+Received: from gandalf ([74.67.89.75]) by hrndva-omta01.mail.rr.com
+          with ESMTP
+          id <20090529011351358.KRVG15535@hrndva-omta01.mail.rr.com>;
+          Fri, 29 May 2009 01:13:51 +0000
+Date:	Thu, 28 May 2009 21:13:50 -0400 (EDT)
+From:	Steven Rostedt <rostedt@goodmis.org>
+X-X-Sender: rostedt@gandalf.stny.rr.com
+To:	wuzhangjin@gmail.com
+cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+	Wu Zhangjin <wuzj@lemote.com>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Ingo Molnar <mingo@elte.hu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Nicholas Mc Guire <der.herr@hofr.at>
+Subject: Re: [PATCH v1 1/5] mips static function tracer support
+In-Reply-To: <4c501e9dec76ac317021c9d7dd62a8a5ed13812c.1243543471.git.wuzj@lemote.com>
+Message-ID: <alpine.DEB.2.00.0905281713260.11238@gandalf.stny.rr.com>
+References: <cover.1243543471.git.wuzj@lemote.com> <4c501e9dec76ac317021c9d7dd62a8a5ed13812c.1243543471.git.wuzj@lemote.com>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <49FF8DAC.8090701@caviumnetworks.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=1287; t=1243546554; x=1244410554;
-	c=relaxed/simple; s=sjdkim4002;
-	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
-	d=cisco.com; i=dvomlehn@cisco.com;
-	z=From:=20David=20VomLehn=20<dvomlehn@cisco.com>
-	|Subject:=20Re=3A=20[PATCH=203/3]=20mips=3Apowertv=3A=20Int
-	egrate=20Cisco=20Powertv=20platform=0A=09into=20MIPS=20archi
-	tecture=20(resend)
-	|Sender:=20;
-	bh=gM3MAYeodaV9c9JJu63442IIMzEQvo9ExFS5wi/ItQE=;
-	b=Xadhc5k+ip72gt6RPjLjverxGWRcrP5JvLnJqa70QYl2LzceVaTlZUKRpf
-	J2tReGchcLHHRGlqYihuY4t28LErzlPgxBH+KIvpjMh2aWBGSqWp9Mkkw4bM
-	ZI+j5Kd500;
-Authentication-Results:	sj-dkim-4; header.From=dvomlehn@cisco.com; dkim=pass (
-	sig from cisco.com/sjdkim4002 verified; ); 
-Return-Path: <dvomlehn@cisco.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <rostedt@goodmis.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23042
+X-archive-position: 23043
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvomlehn@cisco.com
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, May 04, 2009 at 05:51:56PM -0700, David Daney wrote:
-> David VomLehn wrote:
->> Adds the Cisco PowerTV platform to the configuration and Make files so
->> that we can build a kernel for it.
->>
->> Signed-off-by: David VomLehn <dvomlehn@cisco.com>
->> ---
->>  arch/mips/Kconfig                   |   30 +
->>  arch/mips/Makefile                  |    8 +
->>  arch/mips/configs/powertv_defconfig | 1484 +++++++++++++++++++++++++++++++++++
->>  3 files changed, 1522 insertions(+), 0 deletions(-)
->>
->> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
->> index 99f7b6d..b23ec4c 100644
->> --- a/arch/mips/Kconfig
->> +++ b/arch/mips/Kconfig
-> [...]
->>  +#
->> +# The flag for POWERTV clock source.
->> +#
->> +config CEVT_POWERTV
->> +	bool
->> +
->>  config CEVT_SB1250
->>  	bool
->>  @@ -742,6 +766,12 @@ config CSRC_R4K
->>  	select CSRC_R4K_LIB
->>  	bool
->>  +#
->> +# The flag for POWERTV clock event.
->> +#
->> +config CSRC_POWERTV
->> +	bool
->> +
->>  config CSRC_SB1250
->>  	bool
->>  
->
-> Could/should CEVT_POWERTV and CSRC_POWERTV be either eliminated or moved  
-> to your processor specific directory?  That is where the corresponding  
-> code lives.
 
-Yes, these can be moved. I've got to dig a bit to see about eliminating them.
 
-> David Daney
+On Fri, 29 May 2009, wuzhangjin@gmail.com wrote:
+
+> From: Wu Zhangjin <wuzj@lemote.com>
+> 
+> if -pg of gcc is enabled. a calling to _mcount will be inserted to each
+> kernel function. so, there is a possibility to trace the functions in
+> _mcount.
+> 
+> here is the implementation of mips specific _mcount for static function
+> tracer.
+> 
+> -ffunction-sections option not works with -pg, so disable it if enables
+> FUNCTION_TRACER.
+> 
+> Signed-off-by: Wu Zhangjin <wuzj@lemote.com>
+> ---
+>  arch/mips/Kconfig              |    2 +
+>  arch/mips/Makefile             |    2 +
+>  arch/mips/include/asm/ftrace.h |   25 ++++++++++-
+>  arch/mips/kernel/Makefile      |    8 +++
+>  arch/mips/kernel/mcount.S      |   98 ++++++++++++++++++++++++++++++++++++++++
+>  arch/mips/kernel/mips_ksyms.c  |    5 ++
+>  6 files changed, 139 insertions(+), 1 deletions(-)
+>  create mode 100644 arch/mips/kernel/mcount.S
+> 
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 09b1287..d5c01ca 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -4,6 +4,8 @@ config MIPS
+>  	select HAVE_IDE
+>  	select HAVE_OPROFILE
+>  	select HAVE_ARCH_KGDB
+> +	select HAVE_FUNCTION_TRACER
+> +	select HAVE_FUNCTION_TRACE_MCOUNT_TEST
+>  	# Horrible source of confusion.  Die, die, die ...
+>  	select EMBEDDED
+>  	select RTC_LIB
+> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+> index c4cae9e..f86fb15 100644
+> --- a/arch/mips/Makefile
+> +++ b/arch/mips/Makefile
+> @@ -48,7 +48,9 @@ ifneq ($(SUBARCH),$(ARCH))
+>    endif
+>  endif
+>  
+> +ifndef CONFIG_FUNCTION_TRACER
+>  cflags-y := -ffunction-sections
+> +endif
+>  cflags-y += $(call cc-option, -mno-check-zero-division)
+>  
+>  ifdef CONFIG_32BIT
+> diff --git a/arch/mips/include/asm/ftrace.h b/arch/mips/include/asm/ftrace.h
+> index 40a8c17..5f8ebcf 100644
+> --- a/arch/mips/include/asm/ftrace.h
+> +++ b/arch/mips/include/asm/ftrace.h
+> @@ -1 +1,24 @@
+> -/* empty */
+> +/*
+> + * This file is subject to the terms and conditions of the GNU General Public
+> + * License.  See the file "COPYING" in the main directory of this archive for
+> + * more details.
+> + *
+> + * Copyright (C) 2009 DSLab, Lanzhou University, China
+> + * Author: Wu Zhangjin <wuzj@lemote.com>
+> + */
+> +
+> +#ifndef _ASM_MIPS_FTRACE_H
+> +#define _ASM_MIPS_FTRACE_H
+> +
+> +#ifdef CONFIG_FUNCTION_TRACER
+> +
+> +#define MCOUNT_ADDR ((unsigned long)(_mcount))
+> +#define MCOUNT_INSN_SIZE 4		/* sizeof mcount call */
+> +
+> +#ifndef __ASSEMBLY__
+> +extern void _mcount(void);
+> +#define mcount _mcount
+> +
+> +#endif /* __ASSEMBLY__ */
+> +#endif /* CONFIG_FUNCTION_TRACER */
+> +#endif /* _ASM_MIPS_FTRACE_H */
+> diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+> index e961221..d167dde 100644
+> --- a/arch/mips/kernel/Makefile
+> +++ b/arch/mips/kernel/Makefile
+> @@ -8,6 +8,12 @@ obj-y		+= cpu-probe.o branch.o entry.o genex.o irq.o process.o \
+>  		   ptrace.o reset.o setup.o signal.o syscall.o \
+>  		   time.o topology.o traps.o unaligned.o watch.o
+>  
+> +ifdef CONFIG_FUNCTION_TRACER
+> +# Do not profile debug and lowlevel utilities
+> +CFLAGS_REMOVE_mcount.o = -pg
+
+mcount.S is an assembly file, the above is for C files. So it is not 
+needed.
+
+-- Steve
+
+> +CFLAGS_REMOVE_early_printk.o = -pg
+> +endif
+> +
+>  obj-$(CONFIG_CEVT_BCM1480)	+= cevt-bcm1480.o
+>  obj-$(CONFIG_CEVT_R4K_LIB)	+= cevt-r4k.o
+>  obj-$(CONFIG_MIPS_MT_SMTC)	+= cevt-smtc.o
+> @@ -24,6 +30,8 @@ obj-$(CONFIG_SYNC_R4K)		+= sync-r4k.o
+>  obj-$(CONFIG_STACKTRACE)	+= stacktrace.o
+>  obj-$(CONFIG_MODULES)		+= mips_ksyms.o module.o
+>  
+> +obj-$(CONFIG_FUNCTION_TRACER)	+= mcount.o
+> +
+>  obj-$(CONFIG_CPU_LOONGSON2)	+= r4k_fpu.o r4k_switch.o
+>  obj-$(CONFIG_CPU_MIPS32)	+= r4k_fpu.o r4k_switch.o
+>  obj-$(CONFIG_CPU_MIPS64)	+= r4k_fpu.o r4k_switch.o
+> diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
+> new file mode 100644
+> index 0000000..268724e
+> --- /dev/null

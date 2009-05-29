@@ -1,116 +1,123 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 May 2009 14:29:46 +0100 (BST)
-Received: from mx1.emlix.com ([193.175.82.87]:50634 "EHLO mx1.emlix.com"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20024660AbZE2N3i (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 29 May 2009 14:29:38 +0100
-Received: from gate.emlix.com ([193.175.27.217]:52814 helo=mailer.emlix.com)
-	by mx1.emlix.com with esmtp (Exim 4.63)
-	(envelope-from <sb@emlix.com>)
-	id 1MA29R-0005fY-4p; Fri, 29 May 2009 15:29:37 +0200
-Received: by mailer.emlix.com
-	id 1MA29R-0004Gd-Mr; Fri, 29 May 2009 15:29:37 +0200
-Message-ID: <4A1FE338.5010802@emlix.com>
-Date:	Fri, 29 May 2009 15:29:28 +0200
-From:	Simon Braunschmidt <sb@emlix.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090409)
-MIME-Version: 1.0
-To:	wuzhangjin@gmail.com
-CC:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [loongson-PATCH-v1 16/27] Add Siliconmotion 712 framebuffer driver
-References: <cover.1242855716.git.wuzhangjin@gmail.com> <ad533255eec0400e4fed72671c0865472dd68d02.1242855716.git.wuzhangjin@gmail.com>
-In-Reply-To: <ad533255eec0400e4fed72671c0865472dd68d02.1242855716.git.wuzhangjin@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Organization: emlix gmbh, Goettingen, Germany
-Return-Path: <sb@emlix.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 29 May 2009 15:58:59 +0100 (BST)
+Received: from mail-pz0-f202.google.com ([209.85.222.202]:42734 "EHLO
+	mail-pz0-f202.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20024472AbZE2O6x (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 29 May 2009 15:58:53 +0100
+Received: by pzk40 with SMTP id 40so5435643pzk.22
+        for <multiple recipients>; Fri, 29 May 2009 07:58:42 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=A2AlSCX9uV1ebpxCkFoXzMPGWgz2pDvwmMqgn/Z48HI=;
+        b=OVlGAV3JGJD0jT+++jQ7Gs+kN81Z7cSP0OADkgNtz2WQFUnrZ8LXQ6WFotYM56Qdtz
+         pg05ngC+sSD62Ngzu0ATZ6mTHg6wRc9r6L1E1/aqIZKRBZc4kUJNi718ASPpUtjnm5o7
+         XRMUWlCruA5fU5W2w81SoK7Noq/vJBbTcgONo=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=PTaSt5FpqGy0PdpyK4kBfmMxV0ps2LGj+xrkx90wD4rmKD7z7VOUuLlNSWgdt3Xa6t
+         CdPf2iPVwA5MDbN2sV/r83WCUlLexDGCh7bb4ppTlBzjKaJ6qOg/ckphB/fDNk8BBCo0
+         7oniY/mq36VptrG62Z6F6EiAKoyXoJnSZ1USo=
+Received: by 10.115.95.20 with SMTP id x20mr2581860wal.40.1243609122333;
+        Fri, 29 May 2009 07:58:42 -0700 (PDT)
+Received: from localhost.localdomain ([202.201.14.140])
+        by mx.google.com with ESMTPS id l38sm2201787waf.38.2009.05.29.07.58.34
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Fri, 29 May 2009 07:58:40 -0700 (PDT)
+From:	wuzhangjin@gmail.com
+To:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Cc:	Wu Zhangjin <wuzj@lemote.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Ingo Molnar <mingo@elte.hu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Frederic Weisbecker <fweisbec@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Nicholas Mc Guire <der.herr@hofr.at>
+Subject: [PATCH v2 0/6] mips-specific ftrace support
+Date:	Fri, 29 May 2009 22:58:08 +0800
+Message-Id: <cover.1243604390.git.wuzj@lemote.com>
+X-Mailer: git-send-email 1.6.3.1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23051
+X-archive-position: 23052
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sb@emlix.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Wu Zhangjin
+From: Wu Zhangjin <wuzj@lemote.com>
 
-I applied your patch cleanly and run it on a i486SX (little endian) 
-embedded computing board.
+ftrace is a mcount based kernel tracing tool/framework, which is originally
+from RT_PREEMPT(http://rt.wiki.kernel.org).
 
-This provides a huge performance benefit compared to vesa framebuffer, 
-so thanks a lot for the contribution.
+ftrace is short for function tracer, this is its original name, but now, it
+becomes a kernel tracing framework, lots of kernel tracers are built on it,
+such as irqoff tracer, wakeup tracer and so forth.  these tracers are
+arch-independent(?), but some of them are arch-dependent, such as the original
+ftrace: function tracer, and dynamic function tracer, function graph tracer,
+and also, system call tracer.
 
-I tested it in both the library-accelerated (cfb...) and hardware 
-accelerated codepaths, with no problems. Tested with qt-embedded 4.5.1.
+here is the mips porting of these four arch-dependent tracers, it will enable
+the following new kernel config options in linux-mips system.
 
-As i have seen lots of functionality are guarded by
-#ifdef __BIG_ENDIAN
+kernel hacking --->
+           Tracers -->
+                [*] Kernel Function Tracer
+                [*]   Kernel Function Graph Tracer
+                ...
+                [*] Trace syscalls
+                                ...
+                [*] enable/disable ftrace tracepoints dynamically
 
-Is there a way to setup a different mode than 1024x600 on 
-kernel-commandline or from userspace, e.g. with fbset?
+in reality, because the timestamp getting function are arch-dependent, lots of
+the tracers are arch-dependent. the arch-dependent part is that: sched_clock.
+the original sched_clock in mips is jiffes based, only give 10ms precision in
+1000HZ, which is not enough for ftrace. to get high-precise timestamp, we must
+implement a new native_sched_clock via reading the MIPS clock counter, but
+since it is only 32bit long, so, overflow should be handled carefully.
 
-What I currently do is
-picking appropriate values form the table VGAMode in smtcfb.h and 
-hardcoding them.
+this -v2 patch series is based on the -v1 patch series and incorporates the
+feedback from Steven Rostedt and Thomas Gleixner.
 
-I tried 800x600x16bit@60hz, which worked also, but 1024x768x24bit@60hz 
-left me with a corrupted display output (distored colors, missing 
-regions), i did not check further wheter it also crashed.
+read the following document, and play with it:
+        Documentation/trace/ftrace.txt
 
-I dont know wheter i am subscribed and this will make it through to lkml 
-and linux-mips, feel free to cite me if you want.
+Wu Zhangjin (6):
+  mips static function tracer support
+  mips dynamic function tracer support
+  add an endian argument to scripts/recordmcount.pl
+  mips function graph tracer support
+  mips specific clock function to get precise timestamp
+  mips specific system call tracer
 
-Also if you want you may add my
-
-Tested-by: Simon Braunschmidt <sbraun@emlix.com>
-
-
-see also attached a patch for the debug messages
-
-
-
- From addec9a5a27512621c538a2f799e31e07720cb9c Mon Sep 17 00:00:00 2001
-From: Simon Braunschmidt <sbraun@emlix.com>
-Date: Fri, 29 May 2009 15:03:51 +0200
-Subject: [PATCH] [video] fix debug messages in smtcfb
-
-when defining #DEBUG
----
-  drivers/video/smi/smtcfb.c |    6 ++++--
-  1 files changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/video/smi/smtcfb.c b/drivers/video/smi/smtcfb.c
-index 33ce878..ebc6371 100644
---- a/drivers/video/smi/smtcfb.c
-+++ b/drivers/video/smi/smtcfb.c
-@@ -44,6 +44,8 @@
-  #include "smtcfb.h"
-  #include "smtc2d.h"
-
-+#define DEBUG
-+
-  #ifdef DEBUG
-  #define smdbg(format, arg...)  printk(KERN_DEBUG format , ## arg)
-  #else
-@@ -1087,7 +1089,7 @@ static int __init sm712be_setup(char *options)
-         sm712be_flag = 0;
-         if (!options || !*options) {
-                 retval = 1;
--               smdbg("\n No sm712be parameter\n", __LINE__);
-+               smdbg("\n No sm712be parameter\n");
-         }
-         if (!retval && strstr(options, "enable"))
-                 sm712be_flag = 1;
-@@ -1113,7 +1115,7 @@ static int __init sm712vga_setup(char *options)
-
-         if (!options || !*options) {
-                 retval = 1;
--               smdbg("\n No vga parameter\n", __LINE__);
-+               smdbg("\n No vga parameter\n");
-         }
-
-         screen_info.lfb_width = 0;
---
-1.6.3.rc0.1.gf800
+ arch/mips/Kconfig                   |    7 +
+ arch/mips/Makefile                  |    2 +
+ arch/mips/include/asm/ftrace.h      |   35 ++++-
+ arch/mips/include/asm/ptrace.h      |    2 +
+ arch/mips/include/asm/reg.h         |    5 +
+ arch/mips/include/asm/syscall.h     |   84 +++++++++
+ arch/mips/include/asm/thread_info.h |    5 +-
+ arch/mips/kernel/Makefile           |   12 ++
+ arch/mips/kernel/csrc-r4k.c         |    2 +-
+ arch/mips/kernel/entry.S            |    2 +-
+ arch/mips/kernel/ftrace.c           |  350 +++++++++++++++++++++++++++++++++++
+ arch/mips/kernel/ftrace_clock.c     |   71 +++++++
+ arch/mips/kernel/mcount.S           |  185 ++++++++++++++++++
+ arch/mips/kernel/mips_ksyms.c       |    5 +
+ arch/mips/kernel/ptrace.c           |   14 ++-
+ arch/mips/kernel/scall64-o32.S      |    2 +-
+ arch/mips/kernel/vmlinux.lds.S      |    1 +
+ kernel/trace/trace_clock.c          |    2 +-
+ scripts/Makefile.build              |    1 +
+ scripts/recordmcount.pl             |   32 +++-
+ 20 files changed, 805 insertions(+), 14 deletions(-)
+ create mode 100644 arch/mips/include/asm/syscall.h
+ create mode 100644 arch/mips/kernel/ftrace.c
+ create mode 100644 arch/mips/kernel/ftrace_clock.c
+ create mode 100644 arch/mips/kernel/mcount.S

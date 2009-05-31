@@ -1,60 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 May 2009 18:33:23 +0100 (BST)
-Received: from waste.org ([66.93.16.53]:60879 "EHLO waste.org"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20023836AbZEaRdQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 31 May 2009 18:33:16 +0100
-Received: from [192.168.1.100] ([10.0.0.101])
-	(authenticated bits=0)
-	by waste.org (8.13.8/8.13.8/Debian-3) with ESMTP id n4VHWt9M027238
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Sun, 31 May 2009 12:32:55 -0500
-Subject: Re: [PATCH] TXx9: Add TX4939 RNG support
-From:	Matt Mackall <mpm@selenic.com>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	linux-kernel@vger.kernel.org, herbert@gondor.apana.org.au
-In-Reply-To: <20090601.022335.200392387.anemo@mba.ocn.ne.jp>
-References: <1243350141-883-2-git-send-email-anemo@mba.ocn.ne.jp>
-	 <20090601.015755.21367568.anemo@mba.ocn.ne.jp>
-	 <1243789289.22069.25.camel@calx>
-	 <20090601.022335.200392387.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain
-Date:	Sun, 31 May 2009 12:32:50 -0500
-Message-Id: <1243791170.22069.28.camel@calx>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1.1 
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 31 May 2009 19:25:52 +0100 (BST)
+Received: from ey-out-1920.google.com ([74.125.78.144]:12800 "EHLO
+	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20024164AbZEaSZp (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 31 May 2009 19:25:45 +0100
+Received: by ey-out-1920.google.com with SMTP id 4so302959eyg.54
+        for <multiple recipients>; Sun, 31 May 2009 11:25:43 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:from:to:subject:date
+         :user-agent:mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id;
+        bh=3xhzEM29PbDbG5EDVFnkEBullzmnYYN6jwDGy1TZS88=;
+        b=aWS3w4PloOFkQWCPLS3Jk8IPk4n7Z0QYTeho8GGlMvNutVaZhOBYYaF1DcTLuZktUp
+         rUU89eb1FTi3gGfydB4xTZ4x5z285c5tERB/Bvo36Gx+e94tc2GkirQLFZkg1Ih1Bor0
+         IVKMSSxFTOzxGtYJ30mnnz9xEH2eK/IgjHtUs=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:from:to:subject:date:user-agent:mime-version:content-type
+         :content-transfer-encoding:content-disposition:message-id;
+        b=dnmUHMpfGceewbaPk53MFhf2XnvtYNaCzQSvVBwMXGrOZvJ2DbFVqyLIeNxJYy3oSA
+         5DtX8Gw8mC+3eI+73zFhhkixVTAKmEGp1QsCtkprSm37UY2rQDDf94pr8v2+O03cCC06
+         eRXpO3R1f057/S5W0QWSLNmseDH6XzlgePVyQ=
+Received: by 10.210.141.19 with SMTP id o19mr5047482ebd.54.1243794343771;
+        Sun, 31 May 2009 11:25:43 -0700 (PDT)
+Received: from ?192.168.1.20? (207.130.195-77.rev.gaoland.net [77.195.130.207])
+        by mx.google.com with ESMTPS id 5sm6217776eyf.28.2009.05.31.11.25.43
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sun, 31 May 2009 11:25:43 -0700 (PDT)
+From:	Florian Fainelli <florian@openwrt.org>
+To:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+	Maxime Bizon <mbizon@freebox.fr>
+Subject: [PATCH 0/10] Updated bcm63xx support
+Date:	Sun, 31 May 2009 20:25:38 +0200
+User-Agent: KMail/1.9.9
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="us-ascii"
 Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: by amavisd-new
-Return-Path: <mpm@selenic.com>
+Content-Disposition: inline
+Message-Id: <200905312025.39799.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23088
+X-archive-position: 23089
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mpm@selenic.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 2009-06-01 at 02:23 +0900, Atsushi Nemoto wrote:
-> On Sun, 31 May 2009 12:01:29 -0500, Matt Mackall <mpm@selenic.com> wrote:
-> > > > Not clear to me how this works when this is a module?
-> > > 
-> > > This patch add a registration of a platform device for RNG to vmlinux.
-> > > And the other patch add a driver module for the RNG.  This strategy is
-> > > fairly common for SoCs or embedded platforms.
-> > 
-> > If your driver is built as a module (which your patch allows), the above
-> > won't work, right?
-> 
-> No, the rng driver can be used regardless of module or built-in, as
-> like as other platform drivers.  Any special issue for hw_rng?
+Hi Ralf, Maxime,
 
-I found the source of my confusion: you've given the init function in
-both files exactly the same name. So when I saw .._init at the bottom of
-the second patch, I assumed it was referring to the possibly not loaded
-driver's init code.
+The following patch series updates the linux-bcm63xx tree with
+the following changes :
 
+1: use gpiolib instead of the old GENERIC_GPIO API
+2 and 3: add new board definitions that OpenWrt users have been able to run a 
+kernel on
+4: register a fallback SPROM for b43 to work
+5 and 6: fix two variables that were not correctly zero initialized (from 
+Maxime)
+7 : fix typo in the CPU frequency print
+8 : update defconfig with gpiolib support
+9 : enable SSB support in the defconfig
+10: fix compilation failure of the Ethernet MAC driver
+
+Thanks.
 -- 
-http://selenic.com : development and support for Mercurial and Linux
+Best regards, Florian Fainelli
+Email : florian@openwrt.org
+http://openwrt.org
+-------------------------------

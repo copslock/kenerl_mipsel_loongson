@@ -1,22 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2009 18:23:53 +0100 (WEST)
-Received: from sakura.staff.proxad.net ([213.228.1.107]:35386 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2009 18:24:18 +0100 (WEST)
+Received: from sakura.staff.proxad.net ([213.228.1.107]:35412 "EHLO
 	sakura.staff.proxad.net" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20025666AbZFARWD (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 1 Jun 2009 18:22:03 +0100
+	by ftp.linux-mips.org with ESMTP id S20025670AbZFARWJ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 1 Jun 2009 18:22:09 +0100
 Received: by sakura.staff.proxad.net (Postfix, from userid 1000)
-	id 61094112408A; Mon,  1 Jun 2009 19:21:58 +0200 (CEST)
+	id 82DA1112408E; Mon,  1 Jun 2009 19:21:58 +0200 (CEST)
 From:	Maxime Bizon <mbizon@freebox.fr>
 To:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Cc:	Florian Fainelli <florian@openwrt.org>
-Subject: More updates to bcm63xx support (resend)
-Date:	Mon,  1 Jun 2009 19:21:48 +0200
-Message-Id: <1243876918-9905-1-git-send-email-mbizon@freebox.fr>
+Cc:	Florian Fainelli <florian@openwrt.org>,
+	Maxime Bizon <mbizon@freebox.fr>
+Subject: [PATCH 07/10] bcm63xx: clarify meaning of the magical value in ohci-bcm63xx.c
+Date:	Mon,  1 Jun 2009 19:21:55 +0200
+Message-Id: <1243876918-9905-8-git-send-email-mbizon@freebox.fr>
 X-Mailer: git-send-email 1.6.0.4
+In-Reply-To: <1243876918-9905-1-git-send-email-mbizon@freebox.fr>
+References: <1243876918-9905-1-git-send-email-mbizon@freebox.fr>
 Return-Path: <max@sakura.staff.proxad.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23134
+X-archive-position: 23135
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -24,29 +27,28 @@ X-original-sender: mbizon@freebox.fr
 Precedence: bulk
 X-list: linux-mips
 
+USB maintainer asked for clarification  of the magic value used during
+USB init. Be clear about the source of it.
 
-[Resend, I forgot to generate an actual patch series and missed one
-patch doing so, sorry for the noise]
+Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
+---
+ drivers/usb/host/ohci-bcm63xx.c |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
 
-Hi Ralf,
-
-The following patch series (on top of Florian's latest post) are
-mostly trivial fixes & cleanup requested by subsystem maintainers.
-
-Patch 2 and 4 are actual bugfixes.
-
-Florian has some more patches to send to you, I will wait for them to
-be folded in the bcm63xx tree and then repost the whole serie.
-
-I only got feedback from USB maintainer, and addressed most of them.
-Davem has accidentally dropped the patch from its patchwork, so I
-think just resubmitting will do. Nothing from serial & pcmcia.
-
-The ethernet PHY support patch should be dropped, the only feature we
-get is IRQ support which after field testing seems to be buggy. Maybe
-later.
-
-Is it ok for you if I ask for the patches to go through your tree once
-they get acked ?
-
-Thanks !
+diff --git a/drivers/usb/host/ohci-bcm63xx.c b/drivers/usb/host/ohci-bcm63xx.c
+index d48c8ac..bd66d5a 100644
+--- a/drivers/usb/host/ohci-bcm63xx.c
++++ b/drivers/usb/host/ohci-bcm63xx.c
+@@ -85,7 +85,9 @@ static int __devinit ohci_hcd_bcm63xx_drv_probe(struct platform_device *pdev)
+ 		reg &= ~USBH_PRIV_SWAP_OHCI_ENDN_MASK;
+ 		reg |= USBH_PRIV_SWAP_OHCI_DATA_MASK;
+ 		bcm_rset_writel(RSET_USBH_PRIV, reg, USBH_PRIV_SWAP_REG);
+-		/* don't ask... */
++		/* the magic value comes for the original vendor BSP
++		 * and is needed for USB to work. Datasheet does not
++		 * help, so the magic value is used as-is. */
+ 		bcm_rset_writel(RSET_USBH_PRIV, 0x1c0020, USBH_PRIV_TEST_REG);
+ 	} else
+ 		return 0;
+-- 
+1.6.0.4

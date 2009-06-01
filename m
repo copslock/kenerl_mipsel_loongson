@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2009 18:24:18 +0100 (WEST)
-Received: from sakura.staff.proxad.net ([213.228.1.107]:35412 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2009 18:24:43 +0100 (WEST)
+Received: from sakura.staff.proxad.net ([213.228.1.107]:35409 "EHLO
 	sakura.staff.proxad.net" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20025670AbZFARWJ (ORCPT
+	by ftp.linux-mips.org with ESMTP id S20025672AbZFARWJ (ORCPT
 	<rfc822;linux-mips@linux-mips.org>); Mon, 1 Jun 2009 18:22:09 +0100
 Received: by sakura.staff.proxad.net (Postfix, from userid 1000)
-	id 82DA1112408E; Mon,  1 Jun 2009 19:21:58 +0200 (CEST)
+	id 8123C1124090; Mon,  1 Jun 2009 19:21:58 +0200 (CEST)
 From:	Maxime Bizon <mbizon@freebox.fr>
 To:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Cc:	Florian Fainelli <florian@openwrt.org>,
 	Maxime Bizon <mbizon@freebox.fr>
-Subject: [PATCH 07/10] bcm63xx: clarify meaning of the magical value in ohci-bcm63xx.c
-Date:	Mon,  1 Jun 2009 19:21:55 +0200
-Message-Id: <1243876918-9905-8-git-send-email-mbizon@freebox.fr>
+Subject: [PATCH 06/10] bcm63xx: don't set bus type in ohci-bcm63xx.c
+Date:	Mon,  1 Jun 2009 19:21:54 +0200
+Message-Id: <1243876918-9905-7-git-send-email-mbizon@freebox.fr>
 X-Mailer: git-send-email 1.6.0.4
 In-Reply-To: <1243876918-9905-1-git-send-email-mbizon@freebox.fr>
 References: <1243876918-9905-1-git-send-email-mbizon@freebox.fr>
@@ -19,7 +19,7 @@ Return-Path: <max@sakura.staff.proxad.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23135
+X-archive-position: 23136
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,28 +27,24 @@ X-original-sender: mbizon@freebox.fr
 Precedence: bulk
 X-list: linux-mips
 
-USB maintainer asked for clarification  of the magic value used during
-USB init. Be clear about the source of it.
+The platform code already sets the bus type, so don't do it.
 
 Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
 ---
- drivers/usb/host/ohci-bcm63xx.c |    4 +++-
- 1 files changed, 3 insertions(+), 1 deletions(-)
+ drivers/usb/host/ohci-bcm63xx.c |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
 
 diff --git a/drivers/usb/host/ohci-bcm63xx.c b/drivers/usb/host/ohci-bcm63xx.c
-index d48c8ac..bd66d5a 100644
+index f0e4639..d48c8ac 100644
 --- a/drivers/usb/host/ohci-bcm63xx.c
 +++ b/drivers/usb/host/ohci-bcm63xx.c
-@@ -85,7 +85,9 @@ static int __devinit ohci_hcd_bcm63xx_drv_probe(struct platform_device *pdev)
- 		reg &= ~USBH_PRIV_SWAP_OHCI_ENDN_MASK;
- 		reg |= USBH_PRIV_SWAP_OHCI_DATA_MASK;
- 		bcm_rset_writel(RSET_USBH_PRIV, reg, USBH_PRIV_SWAP_REG);
--		/* don't ask... */
-+		/* the magic value comes for the original vendor BSP
-+		 * and is needed for USB to work. Datasheet does not
-+		 * help, so the magic value is used as-is. */
- 		bcm_rset_writel(RSET_USBH_PRIV, 0x1c0020, USBH_PRIV_TEST_REG);
- 	} else
- 		return 0;
+@@ -154,7 +154,6 @@ static struct platform_driver ohci_hcd_bcm63xx_driver = {
+ 	.driver		= {
+ 		.name	= "bcm63xx_ohci",
+ 		.owner	= THIS_MODULE,
+-		.bus	= &platform_bus_type
+ 	},
+ };
+ 
 -- 
 1.6.0.4

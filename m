@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2009 18:23:04 +0100 (WEST)
-Received: from sakura.staff.proxad.net ([213.228.1.107]:35385 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2009 18:23:28 +0100 (WEST)
+Received: from sakura.staff.proxad.net ([213.228.1.107]:35389 "EHLO
 	sakura.staff.proxad.net" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20025664AbZFARWD (ORCPT
+	by ftp.linux-mips.org with ESMTP id S20025660AbZFARWD (ORCPT
 	<rfc822;linux-mips@linux-mips.org>); Mon, 1 Jun 2009 18:22:03 +0100
 Received: by sakura.staff.proxad.net (Postfix, from userid 1000)
-	id 644E1112406C; Mon,  1 Jun 2009 19:21:58 +0200 (CEST)
+	id 690A5112408C; Mon,  1 Jun 2009 19:21:58 +0200 (CEST)
 From:	Maxime Bizon <mbizon@freebox.fr>
 To:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Cc:	Florian Fainelli <florian@openwrt.org>,
 	Maxime Bizon <mbizon@freebox.fr>
-Subject: [PATCH 01/10] bcm63xx: remove duplicate init fields.
-Date:	Mon,  1 Jun 2009 19:21:49 +0200
-Message-Id: <1243876918-9905-2-git-send-email-mbizon@freebox.fr>
+Subject: [PATCH 02/10] bcm63xx: use napi_complete instead of __napi_complete
+Date:	Mon,  1 Jun 2009 19:21:50 +0200
+Message-Id: <1243876918-9905-3-git-send-email-mbizon@freebox.fr>
 X-Mailer: git-send-email 1.6.0.4
 In-Reply-To: <1243876918-9905-1-git-send-email-mbizon@freebox.fr>
 References: <1243876918-9905-1-git-send-email-mbizon@freebox.fr>
@@ -19,7 +19,7 @@ Return-Path: <max@sakura.staff.proxad.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23132
+X-archive-position: 23133
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,29 +27,26 @@ X-original-sender: mbizon@freebox.fr
 Precedence: bulk
 X-list: linux-mips
 
-This patch removes duplicate init fields in resource.
+We're not disabling IRQ, so we must call the irq safe flavour of
+napi_complete.
 
 Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
 ---
- arch/mips/bcm63xx/dev-enet.c |    2 --
- 1 files changed, 0 insertions(+), 2 deletions(-)
+ drivers/net/bcm63xx_enet.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/arch/mips/bcm63xx/dev-enet.c b/arch/mips/bcm63xx/dev-enet.c
-index 51c2e5a..188fa66 100644
---- a/arch/mips/bcm63xx/dev-enet.c
-+++ b/arch/mips/bcm63xx/dev-enet.c
-@@ -42,12 +42,10 @@ static struct resource enet0_res[] = {
- 	},
- 	{
- 		.start		= -1, /* filled at runtime */
--		.start		= IRQ_ENET0_RXDMA,
- 		.flags		= IORESOURCE_IRQ,
- 	},
- 	{
- 		.start		= -1, /* filled at runtime */
--		.start		= IRQ_ENET0_TXDMA,
- 		.flags		= IORESOURCE_IRQ,
- 	},
- };
+diff --git a/drivers/net/bcm63xx_enet.c b/drivers/net/bcm63xx_enet.c
+index a91f909..20e08ef 100644
+--- a/drivers/net/bcm63xx_enet.c
++++ b/drivers/net/bcm63xx_enet.c
+@@ -450,7 +450,7 @@ static int bcm_enet_poll(struct napi_struct *napi, int budget)
+ 
+ 	/* no more packet in rx/tx queue, remove device from poll
+ 	 * queue */
+-	__napi_complete(napi);
++	napi_complete(napi);
+ 
+ 	/* restore rx/tx interrupt */
+ 	enet_dma_writel(priv, ENETDMA_IR_PKTDONE_MASK,
 -- 
 1.6.0.4

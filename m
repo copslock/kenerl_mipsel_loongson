@@ -1,51 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2009 19:22:36 +0100 (WEST)
-Received: from mail-ew0-f219.google.com ([209.85.219.219]:49475 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2009 19:23:50 +0100 (WEST)
+Received: from mail-ew0-f219.google.com ([209.85.219.219]:33395 "EHLO
 	mail-ew0-f219.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20023557AbZFASW3 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 1 Jun 2009 19:22:29 +0100
-Received: by ewy19 with SMTP id 19so8332065ewy.0
-        for <multiple recipients>; Mon, 01 Jun 2009 11:22:23 -0700 (PDT)
+	by ftp.linux-mips.org with ESMTP id S20023379AbZFASXo convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 1 Jun 2009 19:23:44 +0100
+Received: by ewy19 with SMTP id 19so8333057ewy.0
+        for <multiple recipients>; Mon, 01 Jun 2009 11:23:38 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:date:subject
-         :mime-version:x-uid:x-length:to:content-type
+        h=domainkey-signature:received:received:sender:from:to:subject:date
+         :user-agent:cc:references:in-reply-to:mime-version:content-type
          :content-transfer-encoding:content-disposition:message-id;
-        bh=ygdtgisMu2Uhymmguzq4woplwKIJcrdb3dOJHTkJ/uc=;
-        b=m0kFGW1ffAwxGzjIv80z8g5MjVnfC9k6ud8fc5NFcDlyACuqe6Ri2HcBx9vuLnmAaP
-         x3i69TtiwNvrxOuBe81iBDp1gzYtPzmsRhPShgCAI8n1sH7MV4D71j3jIj2zhQkvtGQe
-         UA57SlxJ8UEpAmBYFPA7qNwTCd4JBbR3B9j9k=
+        bh=SX0fM4FPl5tEMx6lKsOhOmzPDHAJ6r1ZnG7RExRA1QM=;
+        b=XFmtLHCPRqUIQbe9+IwMZz5RwEJqOQHARZQJtoh1cbxxVJaYyTFUMq0hoh3n2Z48m2
+         oFb1ug58Lt/WJ2HB8qPwdpy8+mWeITdK6yofwE0P0XfJd2b2SgIt9Pvpgmjp3e8VtvBJ
+         EDeKLJUHBLdNfz9tHngcmsyZXO5r8xSuJqJIQ=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=sender:from:date:subject:mime-version:x-uid:x-length:to
-         :content-type:content-transfer-encoding:content-disposition
-         :message-id;
-        b=Xx6s4su/8QXoWM696npMxQI/LnSQpPUtVXSl/uDru5ZO9lrGwMaYXZaxKS1Ekyrc7m
-         XnsOYHn5BYaOgimp8I+Tu8sFG3+1oNzohbKd33bWqf0COv6F0i8B3MoUBB3UohI2iH0I
-         n2UwIzihM5zQTkaD1qOiF9hbUeazLEeaI3S2o=
-Received: by 10.210.29.9 with SMTP id c9mr4372192ebc.48.1243880543484;
-        Mon, 01 Jun 2009 11:22:23 -0700 (PDT)
+        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
+         :mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id;
+        b=VA4nnGxOl9Bnelh9KP89LGR3g9d9YMyuZ4uPnFrHmcndxaiSY0maQVX9LjBK88Pm1k
+         8y4b/+DMIyrHlg21alpw0CU0YnmtSQexdxqMJVPlq78iaGw8RYp44ZtBc+XBx5nTkU5A
+         CfRxHZ3rPbOmcbh+aMh/Tm9yTe7uKwCeLyKx0=
+Received: by 10.210.91.17 with SMTP id o17mr6697619ebb.71.1243880618162;
+        Mon, 01 Jun 2009 11:23:38 -0700 (PDT)
 Received: from florian (207.130.195-77.rev.gaoland.net [77.195.130.207])
-        by mx.google.com with ESMTPS id 7sm36386eyg.47.2009.06.01.11.22.22
+        by mx.google.com with ESMTPS id 23sm391782eya.29.2009.06.01.11.23.37
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 01 Jun 2009 11:22:22 -0700 (PDT)
+        Mon, 01 Jun 2009 11:23:37 -0700 (PDT)
 From:	Florian Fainelli <florian@openwrt.org>
-Date:	Mon, 1 Jun 2009 20:22:20 +0200
-Subject: [PATCH 2/3 v2] bcm63xx: select SSB since we are using ssb_arch_set_fallback_sprom
+To:	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 2/3] bcm63xx: select SSB since we are using ssb_arch_set_fallback_sprom
+Date:	Mon, 1 Jun 2009 20:23:35 +0200
+User-Agent: KMail/1.9.9
+Cc:	linux-mips@linux-mips.org, Maxime Bizon <mbizon@freebox.fr>
+References: <200906012017.48965.florian@openwrt.org>
+In-Reply-To: <200906012017.48965.florian@openwrt.org>
 MIME-Version: 1.0
-X-UID:	211
-X-Length: 1386
-To:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	Maxime Bizon <mbizon@freebox.fr>
 Content-Type: text/plain;
   charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-Message-Id: <200906012022.20804.florian@openwrt.org>
+Message-Id: <200906012023.36068.florian@openwrt.org>
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23155
+X-archive-position: 23156
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,24 +55,31 @@ X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch makes the BCM963xx boards select SSB since we
-unconditionnaly use ssb_arch_set_fallback_sprom. Without
-this linking would fail with an undefined reference.
+Le Monday 01 June 2009 20:17:48 Florian Fainelli, vous avez écrit :
+> This patch makes BCM63XX select SSB since we unconditionnaly
+> use ssb_arch_set_fallback_sprom. Without this linking would
+> fail with an undefined reference.
+>
+> Signed-off-by: Florian Fainelli <florian@openwrt.org>
+> ---
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 05ee268..e1f0917 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -72,6 +72,7 @@ config BCM63XX
+>  	select SYS_HAS_EARLY_PRINTK
+>  	select SWAP_IO_SPACE
+>  	select ARCH_REQUIRE_GPIOLIB
+> +	select SSB
+>  	help
+>  	 Support for BCM63XX based boards
 
-Changes from v1:
-- this only applies to BCM963xx boards and not 63xx as a whole
+Ralf,
 
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
----
-diff --git a/arch/mips/bcm63xx/boards/Kconfig b/arch/mips/bcm63xx/boards/Kconfig
-index da5eeaa..c6aed33 100644
---- a/arch/mips/bcm63xx/boards/Kconfig
-+++ b/arch/mips/bcm63xx/boards/Kconfig
-@@ -5,6 +5,7 @@ choice
- 
- config BOARD_BCM963XX
-        bool "Generic Broadcom 963xx boards"
-+	select SSB
-        help
- 
- endchoice
+Please find an updated version below. As Maxime pointed me out, this only 
+applies to BCM963xx boards, not BCM63xx as a whole. Thanks !
+-- 
+Best regards, Florian Fainelli
+Email : florian@openwrt.org
+http://openwrt.org
+-------------------------------

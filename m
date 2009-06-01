@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2009 18:22:12 +0100 (WEST)
-Received: from sakura.staff.proxad.net ([213.228.1.107]:35395 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2009 18:22:37 +0100 (WEST)
+Received: from sakura.staff.proxad.net ([213.228.1.107]:35392 "EHLO
 	sakura.staff.proxad.net" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20025668AbZFARWD (ORCPT
+	by ftp.linux-mips.org with ESMTP id S20025662AbZFARWD (ORCPT
 	<rfc822;linux-mips@linux-mips.org>); Mon, 1 Jun 2009 18:22:03 +0100
 Received: by sakura.staff.proxad.net (Postfix, from userid 1000)
-	id 6FEDC112408D; Mon,  1 Jun 2009 19:21:58 +0200 (CEST)
+	id 6CCA5112408B; Mon,  1 Jun 2009 19:21:58 +0200 (CEST)
 From:	Maxime Bizon <mbizon@freebox.fr>
 To:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Cc:	Florian Fainelli <florian@openwrt.org>,
 	Maxime Bizon <mbizon@freebox.fr>
-Subject: [PATCH 04/10] bcm63xx: limit number of usb port to 1.
-Date:	Mon,  1 Jun 2009 19:21:52 +0200
-Message-Id: <1243876918-9905-5-git-send-email-mbizon@freebox.fr>
+Subject: [PATCH 03/10] bcm63xx: convert bcm63xx_enet to netdev ops.
+Date:	Mon,  1 Jun 2009 19:21:51 +0200
+Message-Id: <1243876918-9905-4-git-send-email-mbizon@freebox.fr>
 X-Mailer: git-send-email 1.6.0.4
 In-Reply-To: <1243876918-9905-1-git-send-email-mbizon@freebox.fr>
 References: <1243876918-9905-1-git-send-email-mbizon@freebox.fr>
@@ -19,7 +19,7 @@ Return-Path: <max@sakura.staff.proxad.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23130
+X-archive-position: 23131
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,29 +27,55 @@ X-original-sender: mbizon@freebox.fr
 Precedence: bulk
 X-list: linux-mips
 
-This patch disables the use of more than one USB port. Hardware has
-two ports, but one may be shared with USB slave port.
-
-Until we have this information in the platform data, don't use the
-second port.
+This patch makes bcm63xx_enet driver use netdevice ops.
 
 Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
 ---
- drivers/usb/host/ohci-bcm63xx.c |    2 ++
- 1 files changed, 2 insertions(+), 0 deletions(-)
+ drivers/net/bcm63xx_enet.c |   24 ++++++++++++++----------
+ 1 files changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/usb/host/ohci-bcm63xx.c b/drivers/usb/host/ohci-bcm63xx.c
-index 08807d9..74f432f 100644
---- a/drivers/usb/host/ohci-bcm63xx.c
-+++ b/drivers/usb/host/ohci-bcm63xx.c
-@@ -20,6 +20,8 @@ static int __devinit ohci_bcm63xx_start(struct usb_hcd *hcd)
- 	struct ohci_hcd *ohci = hcd_to_ohci(hcd);
- 	int ret;
+diff --git a/drivers/net/bcm63xx_enet.c b/drivers/net/bcm63xx_enet.c
+index 20e08ef..36324b3 100644
+--- a/drivers/net/bcm63xx_enet.c
++++ b/drivers/net/bcm63xx_enet.c
+@@ -1551,6 +1551,19 @@ static void bcm_enet_hw_preinit(struct bcm_enet_priv *priv)
+ 	enet_writel(priv, val, ENET_MIBCTL_REG);
+ }
  
-+	ohci->num_ports = 1;
++static const struct net_device_ops bcm_enet_ops = {
++	.ndo_open		= bcm_enet_open,
++	.ndo_stop		= bcm_enet_stop,
++	.ndo_start_xmit		= bcm_enet_start_xmit,
++	.ndo_get_stats		= bcm_enet_get_stats,
++	.ndo_set_mac_address	= bcm_enet_set_mac_address,
++	.ndo_set_multicast_list = bcm_enet_set_multicast_list,
++	.ndo_do_ioctl		= bcm_enet_ioctl,
++#ifdef CONFIG_NET_POLL_CONTROLLER
++	.ndo_poll_controller = bcm_enet_netpoll,
++#endif
++};
 +
- 	ret = ohci_init(ohci);
- 	if (ret < 0)
- 		return ret;
+ /*
+  * allocate netdevice, request register memory and register device.
+  */
+@@ -1716,17 +1729,8 @@ static int __devinit bcm_enet_probe(struct platform_device *pdev)
+ 		enet_writel(priv, 0, ENET_MIB_REG(i));
+ 
+ 	/* register netdevice */
+-	dev->open = bcm_enet_open;
+-	dev->stop = bcm_enet_stop;
+-	dev->hard_start_xmit = bcm_enet_start_xmit;
+-	dev->get_stats = bcm_enet_get_stats;
+-	dev->set_mac_address = bcm_enet_set_mac_address;
+-	dev->set_multicast_list = bcm_enet_set_multicast_list;
++	dev->netdev_ops = &bcm_enet_ops;
+ 	netif_napi_add(dev, &priv->napi, bcm_enet_poll, 16);
+-	dev->do_ioctl = bcm_enet_ioctl;
+-#ifdef CONFIG_NET_POLL_CONTROLLER
+-	dev->poll_controller = bcm_enet_netpoll;
+-#endif
+ 
+ 	SET_ETHTOOL_OPS(dev, &bcm_enet_ethtool_ops);
+ 
 -- 
 1.6.0.4

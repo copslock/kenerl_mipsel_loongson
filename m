@@ -1,17 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2009 18:25:07 +0100 (WEST)
-Received: from sakura.staff.proxad.net ([213.228.1.107]:35411 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2009 18:25:32 +0100 (WEST)
+Received: from sakura.staff.proxad.net ([213.228.1.107]:35413 "EHLO
 	sakura.staff.proxad.net" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20025675AbZFARWJ (ORCPT
+	by ftp.linux-mips.org with ESMTP id S20025674AbZFARWJ (ORCPT
 	<rfc822;linux-mips@linux-mips.org>); Mon, 1 Jun 2009 18:22:09 +0100
 Received: by sakura.staff.proxad.net (Postfix, from userid 1000)
-	id 874981124091; Mon,  1 Jun 2009 19:21:58 +0200 (CEST)
+	id 8D41C1124095; Mon,  1 Jun 2009 19:21:58 +0200 (CEST)
 From:	Maxime Bizon <mbizon@freebox.fr>
 To:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
 Cc:	Florian Fainelli <florian@openwrt.org>,
 	Maxime Bizon <mbizon@freebox.fr>
-Subject: [PATCH 08/10] bcm63xx: use platform_get_irq in ehci-bcm63xx.c
-Date:	Mon,  1 Jun 2009 19:21:56 +0200
-Message-Id: <1243876918-9905-9-git-send-email-mbizon@freebox.fr>
+Subject: [PATCH 09/10] bcm63xx: don't set bus type in ehci-bcm63xx.c
+Date:	Mon,  1 Jun 2009 19:21:57 +0200
+Message-Id: <1243876918-9905-10-git-send-email-mbizon@freebox.fr>
 X-Mailer: git-send-email 1.6.0.4
 In-Reply-To: <1243876918-9905-1-git-send-email-mbizon@freebox.fr>
 References: <1243876918-9905-1-git-send-email-mbizon@freebox.fr>
@@ -19,7 +19,7 @@ Return-Path: <max@sakura.staff.proxad.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23137
+X-archive-position: 23138
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -27,46 +27,24 @@ X-original-sender: mbizon@freebox.fr
 Precedence: bulk
 X-list: linux-mips
 
-As requested by USB maintainer, use platform_get_irq instead of
-platform_get_resource.
+The platform code already sets the bus type, so don't do it.
 
 Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
 ---
- drivers/usb/host/ehci-bcm63xx.c |   10 +++++-----
- 1 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/usb/host/ehci-bcm63xx.c |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
 
 diff --git a/drivers/usb/host/ehci-bcm63xx.c b/drivers/usb/host/ehci-bcm63xx.c
-index 2fef571..0aba0f9 100644
+index 0aba0f9..8a62c0a 100644
 --- a/drivers/usb/host/ehci-bcm63xx.c
 +++ b/drivers/usb/host/ehci-bcm63xx.c
-@@ -62,15 +62,15 @@ static const struct hc_driver ehci_bcm63xx_hc_driver = {
- 
- static int __devinit ehci_hcd_bcm63xx_drv_probe(struct platform_device *pdev)
- {
--	struct resource *res_mem, *res_irq;
-+	struct resource *res_mem;
- 	struct usb_hcd *hcd;
- 	struct ehci_hcd *ehci;
- 	u32 reg;
--	int ret;
-+	int ret, irq;
- 
- 	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	res_irq = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
--	if (!res_mem || !res_irq)
-+	irq = platform_get_irq(pdev, 0);;
-+	if (!res_mem || irq < 0)
- 		return -ENODEV;
- 
- 	reg = bcm_rset_readl(RSET_USBH_PRIV, USBH_PRIV_SWAP_REG);
-@@ -109,7 +109,7 @@ static int __devinit ehci_hcd_bcm63xx_drv_probe(struct platform_device *pdev)
- 	ehci->hcs_params = ehci_readl(ehci, &ehci->caps->hcs_params);
- 	ehci->sbrn = 0x20;
- 
--	ret = usb_add_hcd(hcd, res_irq->start, IRQF_DISABLED);
-+	ret = usb_add_hcd(hcd, irq, IRQF_DISABLED);
- 	if (ret)
- 		goto out2;
+@@ -145,7 +145,6 @@ static struct platform_driver ehci_hcd_bcm63xx_driver = {
+ 	.driver		= {
+ 		.name	= "bcm63xx_ehci",
+ 		.owner	= THIS_MODULE,
+-		.bus	= &platform_bus_type
+ 	},
+ };
  
 -- 
 1.6.0.4

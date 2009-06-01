@@ -1,67 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2009 19:38:28 +0100 (WEST)
-Received: from smtp6-g21.free.fr ([212.27.42.6]:43854 "EHLO smtp6-g21.free.fr"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20023398AbZFASiV (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 1 Jun 2009 19:38:21 +0100
-Received: from smtp6-g21.free.fr (localhost [127.0.0.1])
-	by smtp6-g21.free.fr (Postfix) with ESMTP id CA3F9E0807A;
-	Mon,  1 Jun 2009 20:38:16 +0200 (CEST)
-Received: from [213.228.1.107] (sakura.staff.proxad.net [213.228.1.107])
-	by smtp6-g21.free.fr (Postfix) with ESMTP id F243DE080FB;
-	Mon,  1 Jun 2009 20:38:13 +0200 (CEST)
-Subject: [PATCH 07/10 (v2)] bcm63xx: clarify meaning of the magical value
- in ohci-bcm63xx.c
-From:	Maxime Bizon <mbizon@freebox.fr>
-Reply-To: mbizon@freebox.fr
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2009 19:54:40 +0100 (WEST)
+Received: from mail.upwardaccess.com ([70.89.180.121]:1252 "EHLO
+	upwardaccess.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20022875AbZFASya convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 1 Jun 2009 19:54:30 +0100
+Received: from [192.168.1.18] (unverified [10.61.7.126]) 
+	by upwardaccess.com (SurgeMail 3.9e) with ESMTP id 96342-1847469 
+	for <linux-mips@linux-mips.org>; Mon, 01 Jun 2009 11:54:14 -0700
+Subject: Re: FW: Bigsur?
+From:	Mark Mason <mmason@upwardaccess.com>
 To:	linux-mips@linux-mips.org
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Florian Fainelli <florian@openwrt.org>
-In-Reply-To: <1243876918-9905-8-git-send-email-mbizon@freebox.fr>
-References: <1243876918-9905-1-git-send-email-mbizon@freebox.fr>
-	 <1243876918-9905-8-git-send-email-mbizon@freebox.fr>
-Content-Type: text/plain
-Organization: Freebox
-Date:	Mon, 01 Jun 2009 20:38:13 +0200
-Message-Id: <1243881493.7410.109.camel@sakura.staff.proxad.net>
+In-Reply-To: <BD3F7F1EFBA6D54DB056C4FFA4514008035D800690@SJEXCHCCR01.corp.ad.broadcom.com>
+References: <BD3F7F1EFBA6D54DB056C4FFA4514008035D800690@SJEXCHCCR01.corp.ad.broadcom.com>
+Content-Type: text/plain; charset=UTF-8
+Date:	Mon, 01 Jun 2009 12:03:03 -0700
+Message-Id: <1243882983.3841.5.camel@hawaii.site>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <mbizon@freebox.fr>
+X-Mailer: Evolution 2.22.1.1 
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: 10.61.7.126
+X-Authenticated-User: mmason@upwardaccess.com 
+Return-Path: <mmason@upwardaccess.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23159
+X-archive-position: 23160
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mbizon@freebox.fr
+X-original-sender: mmason@upwardaccess.com
 Precedence: bulk
 X-list: linux-mips
 
-USB maintainer asked for clarification  of the magic value used during
-USB init. Be clear about the source of it.
+On ﻿Wednesday, May 20, 2009 12:16 PM, ﻿Ralf Baechle wrote:
+> 
+> For many uses that will be decent but there are still a few things out
+> there that don't quite work the same way on NFS that they do on other
+> filesystems and that tends to break some software and autoconf-like
+> things.  I'd probably give such a config a 90% score - good for most stuff.
+> 
 
-Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
----
- drivers/usb/host/ohci-bcm63xx.c |    6 +++++-
- 1 files changed, 5 insertions(+), 1 deletions(-)
+Unfortunately, we didn't get as many of the bigsur machines out there as
+I would have liked before the Sibyte product was deprecated. Perhaps
+over time, as space is made in the labs for new projects, more of the
+1250 and 1480 boards will become available.
 
-diff --git a/drivers/usb/host/ohci-bcm63xx.c b/drivers/usb/host/ohci-bcm63xx.c
-index d48c8ac..668808e 100644
---- a/drivers/usb/host/ohci-bcm63xx.c
-+++ b/drivers/usb/host/ohci-bcm63xx.c
-@@ -85,7 +85,11 @@ static int __devinit ohci_hcd_bcm63xx_drv_probe(struct platform_device *pdev)
- 		reg &= ~USBH_PRIV_SWAP_OHCI_ENDN_MASK;
- 		reg |= USBH_PRIV_SWAP_OHCI_DATA_MASK;
- 		bcm_rset_writel(RSET_USBH_PRIV, reg, USBH_PRIV_SWAP_REG);
--		/* don't ask... */
-+		/*
-+		 * The magic value comes for the original vendor BSP
-+		 * and is needed for USB to work. Datasheet does not
-+		 * help, so the magic value is used as-is.
-+		 */
- 		bcm_rset_writel(RSET_USBH_PRIV, 0x1c0020, USBH_PRIV_TEST_REG);
- 	} else
- 		return 0;
--- 
-1.6.0.4
+Mark

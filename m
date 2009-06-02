@@ -1,47 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 01 Jun 2009 19:54:40 +0100 (WEST)
-Received: from mail.upwardaccess.com ([70.89.180.121]:1252 "EHLO
-	upwardaccess.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20022875AbZFASya convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 1 Jun 2009 19:54:30 +0100
-Received: from [192.168.1.18] (unverified [10.61.7.126]) 
-	by upwardaccess.com (SurgeMail 3.9e) with ESMTP id 96342-1847469 
-	for <linux-mips@linux-mips.org>; Mon, 01 Jun 2009 11:54:14 -0700
-Subject: Re: FW: Bigsur?
-From:	Mark Mason <mmason@upwardaccess.com>
-To:	linux-mips@linux-mips.org
-In-Reply-To: <BD3F7F1EFBA6D54DB056C4FFA4514008035D800690@SJEXCHCCR01.corp.ad.broadcom.com>
-References: <BD3F7F1EFBA6D54DB056C4FFA4514008035D800690@SJEXCHCCR01.corp.ad.broadcom.com>
-Content-Type: text/plain; charset=UTF-8
-Date:	Mon, 01 Jun 2009 12:03:03 -0700
-Message-Id: <1243882983.3841.5.camel@hawaii.site>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.22.1.1 
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: 10.61.7.126
-X-Authenticated-User: mmason@upwardaccess.com 
-Return-Path: <mmason@upwardaccess.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jun 2009 04:53:24 +0100 (WEST)
+Received: from rhun.apana.org.au ([64.62.148.172]:54673 "EHLO
+	arnor.apana.org.au" rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org
+	with ESMTP id S20021356AbZFBDxT (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 2 Jun 2009 04:53:19 +0100
+Received: from gondolin.me.apana.org.au ([192.168.0.6])
+	by arnor.apana.org.au with esmtp (Exim 4.63 #1 (Debian))
+	id 1MBL3m-0001dN-2L; Tue, 02 Jun 2009 13:53:10 +1000
+Received: from herbert by gondolin.me.apana.org.au with local (Exim 4.69)
+	(envelope-from <herbert@gondor.apana.org.au>)
+	id 1MBL3f-000605-Du; Tue, 02 Jun 2009 13:53:03 +1000
+Date:	Tue, 2 Jun 2009 13:53:03 +1000
+From:	Herbert Xu <herbert@gondor.apana.org.au>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	akpm@linux-foundation.org, linux-mips@linux-mips.org,
+	ralf@linux-mips.org, linux-kernel@vger.kernel.org, mpm@selenic.com
+Subject: Re: [PATCH] hwrng: Add TX4939 RNG driver
+Message-ID: <20090602035303.GC22831@gondor.apana.org.au>
+References: <1243350141-883-1-git-send-email-anemo@mba.ocn.ne.jp> <20090529162907.9cb1bba2.akpm@linux-foundation.org> <20090601.014517.169682203.anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20090601.014517.169682203.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <herbert@gondor.apana.org.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23160
+X-archive-position: 23161
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mmason@upwardaccess.com
+X-original-sender: herbert@gondor.apana.org.au
 Precedence: bulk
 X-list: linux-mips
 
-On ﻿Wednesday, May 20, 2009 12:16 PM, ﻿Ralf Baechle wrote:
+On Mon, Jun 01, 2009 at 01:45:17AM +0900, Atsushi Nemoto wrote:
+>
+> >From the datasheet:
 > 
-> For many uses that will be decent but there are still a few things out
-> there that don't quite work the same way on NFS that they do on other
-> filesystems and that tends to break some software and autoconf-like
-> things.  I'd probably give such a config a 90% score - good for most stuff.
+> 	The quality of the random numbers generated immediately after
+> 	reset can be insufficient.  Therefore, do not use random
+> 	numbers obtained from the first and second generations; use
+> 	the ones from the third or subsequent generation.
 > 
+> I will put this comment in the driver.
 
-Unfortunately, we didn't get as many of the bigsur machines out there as
-I would have liked before the Sibyte product was deprecated. Perhaps
-over time, as space is made in the labs for new projects, more of the
-1250 and 1480 boards will become available.
+OK, I think you've resolved all my concerns.  Please cc me when
+you resubmit.
 
-Mark
+Thanks!
+-- 
+Visit Openswan at http://www.openswan.org/
+Email: Herbert Xu ~{PmV>HI~} <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

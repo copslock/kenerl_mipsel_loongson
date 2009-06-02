@@ -1,45 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 02 Jun 2009 21:14:06 +0100 (WEST)
-Received: from waste.org ([66.93.16.53]:46555 "EHLO waste.org"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20022117AbZFBUN4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 2 Jun 2009 21:13:56 +0100
-Received: from [192.168.1.100] ([10.0.0.101])
-	(authenticated bits=0)
-	by waste.org (8.13.8/8.13.8/Debian-3) with ESMTP id n52KDAnN001074
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Tue, 2 Jun 2009 15:13:11 -0500
-Subject: Re: [PATCH] hwrng: Add TX4939 RNG driver (v2)
-From:	Matt Mackall <mpm@selenic.com>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	herbert@gondor.apana.org.au, linux-kernel@vger.kernel.org
-In-Reply-To: <1243954462-18149-1-git-send-email-anemo@mba.ocn.ne.jp>
-References: <1243954462-18149-1-git-send-email-anemo@mba.ocn.ne.jp>
-Content-Type: text/plain
-Date:	Tue, 02 Jun 2009 15:13:04 -0500
-Message-Id: <1243973584.22069.182.camel@calx>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1.1 
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: by amavisd-new
-Return-Path: <mpm@selenic.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jun 2009 00:47:50 +0100 (WEST)
+Received: from sakura.staff.proxad.net ([213.228.1.107]:54287 "EHLO
+	sakura.staff.proxad.net" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20021937AbZFBXrm (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 3 Jun 2009 00:47:42 +0100
+Received: by sakura.staff.proxad.net (Postfix, from userid 1000)
+	id 28A7A112406C; Wed,  3 Jun 2009 01:47:37 +0200 (CEST)
+From:	Maxime Bizon <mbizon@freebox.fr>
+To:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Cc:	Florian Fainelli <florian@openwrt.org>,
+	Maxime Bizon <mbizon@freebox.fr>
+Subject: [PATCH 1/3] bcm63xx: don't use BUS_ID_SIZE in bcm63xx_enet.
+Date:	Wed,  3 Jun 2009 01:47:35 +0200
+Message-Id: <1243986457-27088-2-git-send-email-mbizon@freebox.fr>
+X-Mailer: git-send-email 1.6.0.4
+In-Reply-To: <1243986457-27088-1-git-send-email-mbizon@freebox.fr>
+References: <1243986457-27088-1-git-send-email-mbizon@freebox.fr>
+Return-Path: <max@sakura.staff.proxad.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23187
+X-archive-position: 23188
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mpm@selenic.com
+X-original-sender: mbizon@freebox.fr
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2009-06-02 at 23:54 +0900, Atsushi Nemoto wrote:
-> This patch adds support for the integrated RNG of the TX4939 SoC.
-> 
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Networking recently got rid of BUS_ID_SIZE. Use MII_BUS_ID_SIZE
+instead in bcm63xx_enet.
 
-Acked-by: Matt Mackall <mpm@selenic.com>
+Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
+---
+ drivers/net/bcm63xx_enet.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/bcm63xx_enet.c b/drivers/net/bcm63xx_enet.c
+index 36324b3..af0114a 100644
+--- a/drivers/net/bcm63xx_enet.c
++++ b/drivers/net/bcm63xx_enet.c
+@@ -793,7 +793,7 @@ static int bcm_enet_open(struct net_device *dev)
+ 	struct phy_device *phydev;
+ 	int i, ret;
+ 	unsigned int size;
+-	char phy_id[BUS_ID_SIZE];
++	char phy_id[MII_BUS_ID_SIZE + 3];
+ 	void *p;
+ 	u32 val;
+ 
+@@ -802,7 +802,7 @@ static int bcm_enet_open(struct net_device *dev)
+ 
+ 	if (priv->has_phy) {
+ 		/* connect to PHY */
+-		snprintf(phy_id, BUS_ID_SIZE, PHY_ID_FMT,
++		snprintf(phy_id, sizeof(phy_id), PHY_ID_FMT,
+ 			 priv->mac_id ? "1" : "0", priv->phy_id);
+ 
+ 		phydev = phy_connect(dev, phy_id, &bcm_enet_adjust_phy_link, 0,
 -- 
-http://selenic.com : development and support for Mercurial and Linux
+1.6.0.4

@@ -1,73 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jun 2009 12:24:29 +0100 (WEST)
-Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:52012 "EHLO
-	atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20022560AbZFCLYX (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 3 Jun 2009 12:24:23 +0100
-Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
-	id 43BA5F0131; Wed,  3 Jun 2009 13:24:21 +0200 (CEST)
-Date:	Wed, 3 Jun 2009 13:24:15 +0200
-From:	Pavel Machek <pavel@ucw.cz>
-To:	wuzhangjin@gmail.com
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	Arnaud Patard <apatard@mandriva.com>,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-	yan hua <yanh@lemote.com>, Zhang Fuxin <zhangfx@lemote.com>,
-	Wu Zhangjin <wuzj@lemote.com>, Hongbing Hu <huhb@lemote.com>
-Subject: Re: [PATCH] Hibernation Support in mips system
-Message-ID: <20090603112414.GF5084@elf.ucw.cz>
-References: <1243956702-16276-1-git-send-email-wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jun 2009 14:13:52 +0100 (WEST)
+Received: from hrndva-omtalb.mail.rr.com ([71.74.56.125]:48394 "EHLO
+	hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20022726AbZFCNNn (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 3 Jun 2009 14:13:43 +0100
+Received: from gandalf ([74.67.89.75]) by hrndva-omta02.mail.rr.com
+          with ESMTP
+          id <20090603124708504.NBIH11757@hrndva-omta02.mail.rr.com>;
+          Wed, 3 Jun 2009 12:47:08 +0000
+Date:	Wed, 3 Jun 2009 08:47:07 -0400 (EDT)
+From:	Steven Rostedt <rostedt@goodmis.org>
+X-X-Sender: rostedt@gandalf.stny.rr.com
+To:	Wang Liming <liming.wang@windriver.com>
+cc:	wu zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org, Wu Zhangjin <wuzj@lemote.com>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Ingo Molnar <mingo@elte.hu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Frederic Weisbecker <fweisbec@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Nicholas Mc Guire <der.herr@hofr.at>
+Subject: Re: [PATCH v2 2/6] mips dynamic function tracer support
+In-Reply-To: <4A26129E.1080008@windriver.com>
+Message-ID: <alpine.DEB.2.00.0906030841040.14994@gandalf.stny.rr.com>
+References: <cover.1243604390.git.wuzj@lemote.com>  <a00a91f6fc79b7d20b5b2193086e879dcafded46.1243604390.git.wuzj@lemote.com>  <4A22281B.7020908@windriver.com> <b00321320906020915n7ba241eqb3cb0de877af514d@mail.gmail.com> <4A26129E.1080008@windriver.com>
+User-Agent: Alpine 2.00 (DEB 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1243956702-16276-1-git-send-email-wuzhangjin@gmail.com>
-X-Warning: Reading this can be dangerous to your mental health.
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <pavel@ucw.cz>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <rostedt@goodmis.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23207
+X-archive-position: 23208
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: pavel@ucw.cz
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue 2009-06-02 23:31:42, wuzhangjin@gmail.com wrote:
-> From: Wu Zhangjin <wuzj@lemote.com>
-> 
-> This is originally pulled from the to-mips branch of
-> http://dev.lemote.com/code/linux_loongson, only a few coding style
-> tuning under the support of script/checkpatch.pl
-> 
-> as the feedback from Atsushi Nemoto,Yanhua and Pavel Machek, some changes
-> have been done by Hu Hongbing(the original author of mips-specific STD)
-> from Lemote.com. this patch apply the changes, which include:
-> 
-> Reviewed-by: Pavel Machek <pavel@ucw.cz>
 
-The patch looks ok, but I don't think I offered that tag before. You
-can add it now.
+On Wed, 3 Jun 2009, Wang Liming wrote:
 
-> @@ -0,0 +1,31 @@
-> +/*
-> + * Suspend support specific for mips.
+> wu zhangjin wrote:
+> > hi,
+> > 
+> > sorry, I'm so late to reply your E-mail, a little busy these days.
+> > > 
+> > > }
+> > > 
+> > > ----------arch/mips/kernel/module.c:apply_r_mips_26_rel()-------------------
+> > > 
+> > > v is kernel _mcount's address, location is the address of the instrution
+> > > that should be relocated;
+> > > 
+> > > To resolve this problem, we may need to do more work, either on gcc or on
+> > > the kernel. So I want to hear your test result and if you have solution,
+> > > please let me know.
+> > > 
+> > 
+> > yes, current version of mips-specific dynamic ftrace not support modules
+> > yet.
+> > 
+> > there is similar solution implemented in PowerPC(something named
+> > trampoline),
+> > although I did not look into it, but I'm sure we can implement the
+> > mips-specific one
+> > via imitating it.
+> Good hit. I may have a look on Powerpc implementation.
 
-"Hibernation support"? Copyright, GPL, author info?
+Note, PowerPC uses a trampoline from modules to kernel core. I think MIPS 
+just calls mcount differently. That is, it does a full 32bit address call
+(64 bit for 64 bit archs?). Something like:
 
-> +#include <linux/mm.h>
-> +#include <linux/suspend.h>
-> +#include <asm/mipsregs.h>
-> +#include <asm/page.h>
-> +#include <asm/suspend.h>
-> +#include <asm/ptrace.h>
-> +
-> +static uint32_t saved_status;
+	lui	v1, _mcount
+	addiu	v1, v1, _mcount
+	jalr	v1
+	addiu	sp, sp, -8
 
-"u32" please.
+Then a nop would not do. Due to preemption, we can not modify more than 
+one line. But you could modify it to:
 
-									Pavel
--- 
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blog.html
+	b	1f
+	addiu	v1, v1, _mcount
+	jalr	v1
+	addiu	sp, sp, -8
+1:
+
+Clobbering v1 should not be an issue since it is already used to store 
+_mcount. That is, we still do the addiu v1,v1,_mcount with that branch. 
+But v1 should be ignored.
+
+-- Steve

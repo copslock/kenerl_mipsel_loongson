@@ -1,70 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jun 2009 19:50:36 +0100 (WEST)
-Received: from waste.org ([66.93.16.53]:48051 "EHLO waste.org"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20021952AbZFCSu2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 3 Jun 2009 19:50:28 +0100
-Received: from [192.168.1.100] ([10.0.0.101])
-	(authenticated bits=0)
-	by waste.org (8.13.8/8.13.8/Debian-3) with ESMTP id n53Inq36016400
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NOT);
-	Wed, 3 Jun 2009 13:49:54 -0500
-Subject: Re: [PATCH] hwrng: Add TX4939 RNG driver (v2)
-From:	Matt Mackall <mpm@selenic.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Herbert Xu <herbert@gondor.apana.org.au>,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20090603100215.GA13250@linux-mips.org>
-References: <1243954462-18149-1-git-send-email-anemo@mba.ocn.ne.jp>
-	 <1243973584.22069.182.camel@calx> <20090603090238.GH23561@linux-mips.org>
-	 <20090603092610.GA11258@gondor.apana.org.au>
-	 <20090603092927.GA11369@gondor.apana.org.au>
-	 <20090603100215.GA13250@linux-mips.org>
-Content-Type: text/plain
-Date:	Wed, 03 Jun 2009 13:49:46 -0500
-Message-Id: <1244054986.22069.200.camel@calx>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1.1 
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: by amavisd-new
-Return-Path: <mpm@selenic.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2009 01:01:42 +0100 (WEST)
+Received: from kroah.org ([198.145.64.141]:46785 "EHLO coco.kroah.org"
+	rhost-flags-OK-FAIL-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S20021561AbZFDABg (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 4 Jun 2009 01:01:36 +0100
+Received: from localhost (c-76-105-230-205.hsd1.or.comcast.net [76.105.230.205])
+	(using TLSv1 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+	(No client certificate requested)
+	by coco.kroah.org (Postfix) with ESMTPSA id D2D8448FA4;
+	Wed,  3 Jun 2009 17:01:13 -0700 (PDT)
+Date:	Wed, 3 Jun 2009 16:54:28 -0700
+From:	Greg KH <greg@kroah.com>
+To:	David Daney <ddaney@caviumnetworks.com>
+Cc:	gregkh@suse.de, Ralf Baechle <ralf@linux-mips.org>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: [PATCH 0/7] Staging: Octeon-ethernet driver.
+Message-ID: <20090603235428.GB19375@kroah.com>
+References: <4A00DA84.5040101@caviumnetworks.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4A00DA84.5040101@caviumnetworks.com>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <greg@kroah.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23233
+X-archive-position: 23234
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mpm@selenic.com
+X-original-sender: greg@kroah.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2009-06-03 at 11:02 +0100, Ralf Baechle wrote:
-> On Wed, Jun 03, 2009 at 07:29:27PM +1000, Herbert Xu wrote:
+On Tue, May 05, 2009 at 05:32:04PM -0700, David Daney wrote:
+> This patch set introduces the octeon-ethernet driver into the
+> drivers/staging tree.  The Octeon is a mips64r2 base multi-core SOC
+> family.
 > 
-> > On Wed, Jun 03, 2009 at 07:26:10PM +1000, Herbert Xu wrote:
-> > > On Wed, Jun 03, 2009 at 10:02:38AM +0100, Ralf Baechle wrote:
-> > >
-> > > > Ok, I'll send this to Linus for 2.6.31 then.
-> > > 
-> > > Actually I've already added it to my tree since I'm looking after
-> > > the hwrng drivers.
-> >
-> > But if this causes any conflicts for you, then please let me know
-> > and I'll back it out.
+> The first five patches are small tweaks to the existing octeon support
+> that are required by the ethernet driver.  I would expect them to be
+> merged via Ralf's linux-mips.org tree.
 > 
-> Ah, I was looking at MAINTAINERS which said Mack who had acked it was
-> handling it.
+> The last two are the driver, and would probably be merged via the
+> drivers/staging tree.  However since they depend on the first five,
+> they probably shouldn't be merged until those five are merged.
 
-I'm the maintainer of record for random.c, which is different. Not long
-ago, I sent in a patch to add myself to the HWRNG piece because people
-were regularly sending me things to review and it was marked as orphan. 
+Ok, as Ralf doesn't seem to have responded to my previous query, I'll
+just merge the last driver, and mark it CONFIG_BROKEN which you can turn
+off when the infrastructure portions go in.
 
-So, Herbert: we should probably resolve this confusion in MAINTAINERS.
-We should add one or both of our names to HWRNG and, if necessary, add a
-comment to RANDOM pointing to HWRNG. I have an eventual goal to make
-random.c sample the hwrngs without a trip through userspace, so this may
-get even more confusing.
+Sound reasonable?
 
--- 
-http://selenic.com : development and support for Mercurial and Linux
+thanks,
+
+greg k-h

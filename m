@@ -1,49 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jun 2009 17:18:55 +0100 (WEST)
-Received: from mail-fx0-f223.google.com ([209.85.220.223]:49400 "EHLO
-	mail-fx0-f223.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20022239AbZFCQSX (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 3 Jun 2009 17:18:23 +0100
-Received: by mail-fx0-f223.google.com with SMTP id 23so114368fxm.0
-        for <multiple recipients>; Wed, 03 Jun 2009 09:18:23 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 03 Jun 2009 17:19:18 +0100 (WEST)
+Received: from mail-bw0-f225.google.com ([209.85.218.225]:44539 "EHLO
+	mail-bw0-f225.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20022326AbZFCQSZ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 3 Jun 2009 17:18:25 +0100
+Received: by bwz25 with SMTP id 25so113469bwz.0
+        for <multiple recipients>; Wed, 03 Jun 2009 09:18:18 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer:in-reply-to:references;
-        bh=uWLEY5CJ1YSC0WXaEwNXqeiM403RaaJ762vg8OHYyOk=;
-        b=ij5xiGurOw6tb7+C6+4XUNjM1jWlCZo8gfdEYdXFNPzdFJtHBAI1D0wquEPhc8Ju0c
-         w+w1LtDn3GLNTmUuN7PWLRK1eE/rLRK6Y3Al219f7M4hynacpDFgmyoOMiJzUK+t3EYe
-         n/U5n2EorLn/Cu0xvo75C/JOtJ1JX/wleRJo8=
+        bh=hzId0WFjoSSdphtG/19V9nMKCT9iiJpdG1reZzPJ094=;
+        b=CXMUQLlt1HkiQfqMiW3rdkJm0CpI0POFFD31zhGk6XAn+/bA1jAd6AN+4NJbSIdLnl
+         fgjEIhscVZh4R7lcXsjXGdB7uBIDUPomQZxBwAir420VNMFMcTH5CZSObHaU7By+1c93
+         +qVgm6Yp8Un6bIrxCmuTcrCf/ntYnmcke8PMs=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=googlemail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=b31nAKK4Pk55kPqP8NYz0yl9tFjzQH356ta9fC4u6D+uNWIwR30A2xkjogyU2AphcX
-         MGO5jmyx/1y52OpFUraMvxxKQFS5IGZdaHbrxyJ5drz17hk24hWyDZGybo7ReLXS9jKn
-         EiMAiV+B5Ur2yIWn3iLBKy4uRKlg4ERaA0TZk=
-Received: by 10.103.160.9 with SMTP id m9mr656170muo.96.1244045902929;
-        Wed, 03 Jun 2009 09:18:22 -0700 (PDT)
+        b=MGociG5sdwWHU973ismJ8yyKCluyJS384st/kBI9OtdLt0mLzXtBntVqKMqtmR5RsI
+         MtvQdgdSgS/WpvBK53Wz/t5UiKdpCnjuIU2Ryj2v9DTu9w/SQO9V8ZT2sUWt1yZdFlIB
+         wfwKJEhtJUbU6eVTBvYNyDkmXxD2SnDQz26Js=
+Received: by 10.103.131.13 with SMTP id i13mr755133mun.13.1244045898166;
+        Wed, 03 Jun 2009 09:18:18 -0700 (PDT)
 Received: from localhost.localdomain (p5496DB58.dip.t-dialin.net [84.150.219.88])
-        by mx.google.com with ESMTPS id u26sm37723mug.22.2009.06.03.09.18.22
+        by mx.google.com with ESMTPS id u26sm37723mug.22.2009.06.03.09.18.17
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 03 Jun 2009 09:18:22 -0700 (PDT)
+        Wed, 03 Jun 2009 09:18:17 -0700 (PDT)
 From:	Manuel Lauss <manuel.lauss@googlemail.com>
 To:	Linux-MIPS <linux-mips@linux-mips.org>,
 	Ralf Baechle <ralf@linux-mips.org>
 Cc:	Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH 5/5] Alchemy: devboards: convert to gpio calls.
-Date:	Wed,  3 Jun 2009 18:18:08 +0200
-Message-Id: <1244045888-16259-6-git-send-email-manuel.lauss@gmail.com>
+Subject: [PATCH 1/5] Alchemy: remove unused au1000_gpio.h header
+Date:	Wed,  3 Jun 2009 18:18:04 +0200
+Message-Id: <1244045888-16259-2-git-send-email-manuel.lauss@gmail.com>
 X-Mailer: git-send-email 1.6.3.1
-In-Reply-To: <1244045888-16259-5-git-send-email-manuel.lauss@gmail.com>
+In-Reply-To: <1244045888-16259-1-git-send-email-manuel.lauss@gmail.com>
 References: <1244045888-16259-1-git-send-email-manuel.lauss@gmail.com>
- <1244045888-16259-2-git-send-email-manuel.lauss@gmail.com>
- <1244045888-16259-3-git-send-email-manuel.lauss@gmail.com>
- <1244045888-16259-4-git-send-email-manuel.lauss@gmail.com>
- <1244045888-16259-5-git-send-email-manuel.lauss@gmail.com>
 Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23222
+X-archive-position: 23223
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -51,163 +47,73 @@ X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-Replace a few open-coded GPIO register accesses with gpiolib calls.
-
 Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
 ---
- arch/mips/alchemy/common/reset.c                 |    5 +++--
- arch/mips/alchemy/devboards/db1x00/board_setup.c |    8 ++------
- arch/mips/alchemy/devboards/pb1000/board_setup.c |   10 +++++++---
- arch/mips/alchemy/devboards/pb1100/board_setup.c |    3 ++-
- arch/mips/alchemy/devboards/pb1500/board_setup.c |   10 ++++++----
- arch/mips/alchemy/devboards/pm.c                 |    2 +-
- 6 files changed, 21 insertions(+), 17 deletions(-)
+ arch/mips/include/asm/mach-au1x00/au1000_gpio.h |   56 -----------------------
+ 1 files changed, 0 insertions(+), 56 deletions(-)
+ delete mode 100644 arch/mips/include/asm/mach-au1x00/au1000_gpio.h
 
-diff --git a/arch/mips/alchemy/common/reset.c b/arch/mips/alchemy/common/reset.c
-index 0191c93..0ec33dc 100644
---- a/arch/mips/alchemy/common/reset.c
-+++ b/arch/mips/alchemy/common/reset.c
-@@ -27,8 +27,9 @@
-  *  675 Mass Ave, Cambridge, MA 02139, USA.
-  */
- 
--#include <asm/cacheflush.h>
-+#include <linux/gpio.h>
- 
-+#include <asm/cacheflush.h>
- #include <asm/mach-au1x00/au1000.h>
- 
- void au1000_restart(char *command)
-@@ -161,7 +162,7 @@ void au1000_halt(void)
- #else
- 	printk(KERN_NOTICE "\n** You can safely turn off the power\n");
- #ifdef CONFIG_MIPS_MIRAGE
--	au_writel((1 << 26) | (1 << 10), GPIO2_OUTPUT);
-+	gpio_direction_output(10, 1);
- #endif
- #ifdef CONFIG_MIPS_DB1200
- 	au_writew(au_readw(0xB980001C) | (1 << 14), 0xB980001C);
-diff --git a/arch/mips/alchemy/devboards/db1x00/board_setup.c b/arch/mips/alchemy/devboards/db1x00/board_setup.c
-index a75ffbf..5fba562 100644
---- a/arch/mips/alchemy/devboards/db1x00/board_setup.c
-+++ b/arch/mips/alchemy/devboards/db1x00/board_setup.c
-@@ -95,11 +95,8 @@ void __init board_setup(void)
- 	bcsr->pcmcia = 0x0000; /* turn off PCMCIA power */
- 
- #ifdef CONFIG_MIPS_MIRAGE
--	/* Enable GPIO[31:0] inputs */
--	au_writel(0, SYS_PININPUTEN);
+diff --git a/arch/mips/include/asm/mach-au1x00/au1000_gpio.h b/arch/mips/include/asm/mach-au1x00/au1000_gpio.h
+deleted file mode 100644
+index d8c96fd..0000000
+--- a/arch/mips/include/asm/mach-au1x00/au1000_gpio.h
++++ /dev/null
+@@ -1,56 +0,0 @@
+-/*
+- * FILE NAME au1000_gpio.h
+- *
+- * BRIEF MODULE DESCRIPTION
+- *	API to Alchemy Au1xx0 GPIO device.
+- *
+- *  Author: MontaVista Software, Inc.  <source@mvista.com>
+- *          Steve Longerbeam
+- *
+- * Copyright 2001, 2008 MontaVista Software Inc.
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
 -
- 	/* GPIO[20] is output, tristate the other input primary GPIOs */
--	au_writel(~(1 << 20), SYS_TRIOUTCLR);
-+	alchemy_gpio_direction_output(20, 0);
- 
- 	/* Set GPIO[210:208] instead of SSI_0 */
- 	pin_func = au_readl(SYS_PINFUNC) | SYS_PF_S0;
-@@ -118,8 +115,7 @@ void __init board_setup(void)
- 	 * Enable speaker amplifier.  This should
- 	 * be part of the audio driver.
- 	 */
--	au_writel(au_readl(GPIO2_DIR) | 0x200, GPIO2_DIR);
--	au_writel(0x02000200, GPIO2_OUTPUT);
-+	alchemy_gpio_direction_output(9, 1);
- #endif
- 
- 	au_sync();
-diff --git a/arch/mips/alchemy/devboards/pb1000/board_setup.c b/arch/mips/alchemy/devboards/pb1000/board_setup.c
-index aed2fde..cd27354 100644
---- a/arch/mips/alchemy/devboards/pb1000/board_setup.c
-+++ b/arch/mips/alchemy/devboards/pb1000/board_setup.c
-@@ -24,6 +24,7 @@
-  */
- 
- #include <linux/delay.h>
-+#include <linux/gpio.h>
- #include <linux/init.h>
- #include <linux/interrupt.h>
- #include <asm/mach-au1x00/au1000.h>
-@@ -130,8 +131,11 @@ void __init board_setup(void)
- 	pin_func |= SYS_PF_USB;
- 
- 	au_writel(pin_func, SYS_PINFUNC);
--	au_writel(0x2800, SYS_TRIOUTCLR);
--	au_writel(0x0030, SYS_OUTPUTCLR);
-+
-+	alchemy_gpio_direction_input(11);
-+	alchemy_gpio_direction_input(13);
-+	alchemy_gpio_direction_output(4, 0);
-+	alchemy_gpio_direction_output(5, 0);
- #endif /* defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE) */
- 
- 	/* Make GPIO 15 an input (for interrupt line) */
-@@ -140,7 +144,7 @@ void __init board_setup(void)
- 	pin_func |= SYS_PF_I2S;
- 	au_writel(pin_func, SYS_PINFUNC);
- 
--	au_writel(0x8000, SYS_TRIOUTCLR);
-+	alchemy_gpio_direction_input(15);
- 
- 	static_cfg0 = au_readl(MEM_STCFG0) & ~0xc00;
- 	au_writel(static_cfg0, MEM_STCFG0);
-diff --git a/arch/mips/alchemy/devboards/pb1100/board_setup.c b/arch/mips/alchemy/devboards/pb1100/board_setup.c
-index 4df57fa..f872842 100644
---- a/arch/mips/alchemy/devboards/pb1100/board_setup.c
-+++ b/arch/mips/alchemy/devboards/pb1100/board_setup.c
-@@ -86,9 +86,10 @@ void __init board_setup(void)
- 	argptr = prom_getcmdline();
- #endif
- 
-+
- 	/* Set AUX clock to 12 MHz * 8 = 96 MHz */
- 	au_writel(8, SYS_AUXPLL);
--	au_writel(0, SYS_PININPUTEN);
-+	alchemy_gpio1_input_enable();
- 	udelay(100);
- 
- #if defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE)
-diff --git a/arch/mips/alchemy/devboards/pb1500/board_setup.c b/arch/mips/alchemy/devboards/pb1500/board_setup.c
-index fed3b09..d7a5656 100644
---- a/arch/mips/alchemy/devboards/pb1500/board_setup.c
-+++ b/arch/mips/alchemy/devboards/pb1500/board_setup.c
-@@ -23,8 +23,9 @@
-  *  675 Mass Ave, Cambridge, MA 02139, USA.
-  */
- 
--#include <linux/init.h>
- #include <linux/delay.h>
-+#include <linux/gpio.h>
-+#include <linux/init.h>
- #include <linux/interrupt.h>
- 
- #include <asm/mach-au1x00/au1000.h>
-@@ -90,11 +91,12 @@ void __init board_setup(void)
- 	au_writel(0, SYS_PINSTATERD);
- 	udelay(100);
- 
--#if defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE)
+-#ifndef __AU1000_GPIO_H
+-#define __AU1000_GPIO_H
 -
- 	/* GPIO201 is input for PCMCIA card detect */
- 	/* GPIO203 is input for PCMCIA interrupt request */
--	au_writel(au_readl(GPIO2_DIR) & ~((1 << 1) | (1 << 3)), GPIO2_DIR);
-+	alchemy_gpio_direction_input(201);
-+	alchemy_gpio_direction_input(203);
-+
-+#if defined(CONFIG_USB_OHCI_HCD) || defined(CONFIG_USB_OHCI_HCD_MODULE)
- 
- 	/* Zero and disable FREQ2 */
- 	sys_freqctrl = au_readl(SYS_FREQCTRL0);
-diff --git a/arch/mips/alchemy/devboards/pm.c b/arch/mips/alchemy/devboards/pm.c
-index d5eb9c3..5db8512 100644
---- a/arch/mips/alchemy/devboards/pm.c
-+++ b/arch/mips/alchemy/devboards/pm.c
-@@ -26,7 +26,7 @@ static unsigned long db1x_pm_last_wakesrc;
- static int db1x_pm_enter(suspend_state_t state)
- {
- 	/* enable GPIO based wakeup */
--	au_writel(1, SYS_PININPUTEN);
-+	alchemy_gpio1_input_enable();
- 
- 	/* clear and setup wake cause and source */
- 	au_writel(0, SYS_WAKEMSK);
+-#include <linux/ioctl.h>
+-
+-#define AU1000GPIO_IOC_MAGIC 'A'
+-
+-#define AU1000GPIO_IN		_IOR(AU1000GPIO_IOC_MAGIC, 0, int)
+-#define AU1000GPIO_SET		_IOW(AU1000GPIO_IOC_MAGIC, 1, int)
+-#define AU1000GPIO_CLEAR	_IOW(AU1000GPIO_IOC_MAGIC, 2, int)
+-#define AU1000GPIO_OUT		_IOW(AU1000GPIO_IOC_MAGIC, 3, int)
+-#define AU1000GPIO_TRISTATE	_IOW(AU1000GPIO_IOC_MAGIC, 4, int)
+-#define AU1000GPIO_AVAIL_MASK	_IOR(AU1000GPIO_IOC_MAGIC, 5, int)
+-
+-#ifdef __KERNEL__
+-extern u32 get_au1000_avail_gpio_mask(void);
+-extern int au1000gpio_tristate(u32 data);
+-extern int au1000gpio_in(u32 *data);
+-extern int au1000gpio_set(u32 data);
+-extern int au1000gpio_clear(u32 data);
+-extern int au1000gpio_out(u32 data);
+-#endif
+-
+-#endif
 -- 
 1.6.3.1

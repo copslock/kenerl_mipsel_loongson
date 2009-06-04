@@ -1,33 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2009 14:10:03 +0100 (WEST)
-Received: from mail-px0-f186.google.com ([209.85.216.186]:49141 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2009 14:10:28 +0100 (WEST)
+Received: from mail-px0-f186.google.com ([209.85.216.186]:39864 "EHLO
 	mail-px0-f186.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20022624AbZFDNJX (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 4 Jun 2009 14:09:23 +0100
-Received: by pxi16 with SMTP id 16so751019pxi.22
-        for <multiple recipients>; Thu, 04 Jun 2009 06:09:15 -0700 (PDT)
+	by ftp.linux-mips.org with ESMTP id S20022619AbZFDNJ2 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 4 Jun 2009 14:09:28 +0100
+Received: by pxi16 with SMTP id 16so751054pxi.22
+        for <multiple recipients>; Thu, 04 Jun 2009 06:09:21 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer:in-reply-to:references;
-        bh=v6L8p9O8xpxtqfA11XvS5Ds6bcEHRH9+5aLxErCi5Rw=;
-        b=RWEmatMFaixKrueeR0yMHk/hTjL6Mol68gQPExEHH5cOnfdiUv0TfeJiEeZzBWKvnt
-         s+wRu+wkDJ2nh3O4RosW3vWSNcOehkP3eXcW8RcnxCDxulIpn4KhNKBSHSpdW1I/Kc03
-         7CY03ymTRAVxanQN+tMZ0nWglxcvubClhGDD0=
+        bh=iX/YWmoTD6lRJUXvxlDnUIkiclqPwbmgmPBJUNtqGqs=;
+        b=ue2W0jpcgkhrqDgLD9E7uzcuWUKuNOflZA/YFgy6ROLD0cQHVYDCWmsSUHDolTtjoO
+         cGfKd2vlzJJPUHXlmYrbClatHaCZR74ISl8tuMdxrU8MJRr0cXFBpc3m8uDAYTMZT0su
+         B8sQF67e991cRVSUmDXsW3dESuUJXpo0qgua0=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=EMjNfl6N7JdTwtxXHBTrm/VZ++0euqawRXJvQjpE8bI5uUkfj1AtOuFAOjkvvMC8aO
-         tvumWkZkvqoJSjHc/ckgbTZw/IDzsdbU/3Sm59sS/TJ2k581YkDYqgFsE27qsYOwCpQ3
-         oq6baXilk6ADtlO+7rOQeaz21c+2cm7JO8n9k=
-Received: by 10.114.60.11 with SMTP id i11mr3391552waa.199.1244120954742;
-        Thu, 04 Jun 2009 06:09:14 -0700 (PDT)
+        b=VC9NmYikckOG6uhmNA3WaDJuHBMQ5D7gpC1nhpRQM9dXeSorymiPpRSoTo2ncfHSk/
+         +9NtohwBxzqiJmgsnLroREsHrKD6QBC80vUUaCsuGE2wGzcri4tkzFV2CrsjfHCji97G
+         D4yW2yYwrdYtK6oT2I+YK1KKkWsgi16KLcVyk=
+Received: by 10.115.19.18 with SMTP id w18mr3411905wai.96.1244120646460;
+        Thu, 04 Jun 2009 06:04:06 -0700 (PDT)
 Received: from localhost.localdomain ([202.201.14.140])
-        by mx.google.com with ESMTPS id m25sm11139629waf.9.2009.06.04.06.09.06
+        by mx.google.com with ESMTPS id v39sm11168345wah.27.2009.06.04.06.03.59
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 04 Jun 2009 06:09:12 -0700 (PDT)
+        Thu, 04 Jun 2009 06:04:04 -0700 (PDT)
 From:	wuzhangjin@gmail.com
-To:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	Simon Braunschmidt <sbraun@emlix.com>
+To:	linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:	Wu Zhangjin <wuzj@lemote.com>, Yan Hua <yanh@lemote.com>,
 	Philippe Vachon <philippe@cowpig.ca>,
 	Zhang Le <r0bertz@gentoo.org>,
@@ -37,9 +36,9 @@ Cc:	Wu Zhangjin <wuzj@lemote.com>, Yan Hua <yanh@lemote.com>,
 	Erwan Lerale <erwan@thiscow.com>,
 	Arnaud Patard <apatard@mandriva.com>,
 	Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [loongson-PATCH-v3 18/25] Add Siliconmotion 712 framebuffer driver
-Date:	Thu,  4 Jun 2009 21:08:58 +0800
-Message-Id: <ddb3e7e90c07600bb8ee578c47d84470eb27d4c2.1244120575.git.wuzj@lemote.com>
+Subject: [loongson-PATCH-v3 04/25] change the naming methods
+Date:	Thu,  4 Jun 2009 21:03:49 +0800
+Message-Id: <9e0bce7b00de7b7a63e527e9c83cbc93c27a6b0f.1244120575.git.wuzj@lemote.com>
 X-Mailer: git-send-email 1.6.3.1
 In-Reply-To: <cover.1244120575.git.wuzj@lemote.com>
 References: <cover.1244120575.git.wuzj@lemote.com>
@@ -47,7 +46,7 @@ Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23261
+X-archive-position: 23262
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,3578 +56,2784 @@ X-list: linux-mips
 
 From: Wu Zhangjin <wuzj@lemote.com>
 
-yeeloong(2f) laptop has a SMI video card, need this driver.
+to support loongson-based machines made by non-lemote companies, some
+lemote* names should be changed to loongson* names, and to support the
+future loongson2f-based fulong machines, the current fulong's name
+should be fuloong-2e or fuloong2e, and also, FULONG to FULOONG2E, lm2e
+to fuloong2e, LEMOTE to LOONGSON.
 
-this source code is originally from
-http://dev.lemote.com/code/linux_loongson
+at the same time, tons of lines have been cleaned up with the help of
+scripts/checkpatch.pl
 
-tons of warnings have been fixed, the main warning is:
-
-      warning: left shift count >= width of type
-
-have been fixed via the following modification:
-
-      drivers/video/smi/smtc2d.h:
-
-      #define _F_MASK(f) ((((1 << _F_SIZE(f)) - 1) << _F_START(f))
-      #define _F_MASK(f) (((1ULL << _F_SIZE(f)) - 1) << _F_START(f))
-
-besides, the coding style is changed to follow the kernel style, and two
-non-used header files are removed: sm501hw.h, sm7xxhw.h.
-
-and there is no need to define a screen_info again so remove it, because
-it is defined in arch/mips/kernel/setup.c and not relative to big endian
-or little endian, and here I think its better use something like
-1024x600x24 than 0x318, so replace all of the magic numbers to an
-understandable one.
-
-with the support of this patch, we can use the same kernel for 7inch and
-8.9inch yeeloong laptop, but need pass a commandline argument for 7inch
-baord:
-
-vga=800x480x24
-
-Tested-by: Simon Braunschmidt <sbraun@emlix.com>
 Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
-Signed-off-by: Yan Hua <yanh@lemote.com>
 ---
- drivers/video/Kconfig      |   23 +
- drivers/video/Makefile     |    1 +
- drivers/video/smi/Makefile |    8 +
- drivers/video/smi/smtc2d.c |  979 +++++++++++++++++++++++++++++++++++++
- drivers/video/smi/smtc2d.h |  530 +++++++++++++++++++++
- drivers/video/smi/smtcfb.c | 1138 ++++++++++++++++++++++++++++++++++++++++++++
- drivers/video/smi/smtcfb.h |  793 ++++++++++++++++++++++++++++++
- 7 files changed, 3472 insertions(+), 0 deletions(-)
- create mode 100644 drivers/video/smi/Makefile
- create mode 100644 drivers/video/smi/smtc2d.c
- create mode 100644 drivers/video/smi/smtc2d.h
- create mode 100644 drivers/video/smi/smtcfb.c
- create mode 100644 drivers/video/smi/smtcfb.h
+ arch/mips/Kconfig                                  |    4 +-
+ arch/mips/Makefile                                 |    6 +-
+ .../asm/mach-lemote/cpu-feature-overrides.h        |   59 -----
+ arch/mips/include/asm/mach-lemote/dma-coherence.h  |   66 ------
+ arch/mips/include/asm/mach-lemote/mc146818rtc.h    |   36 ---
+ arch/mips/include/asm/mach-lemote/pci.h            |   30 ---
+ arch/mips/include/asm/mach-lemote/war.h            |   25 --
+ .../asm/mach-loongson/cpu-feature-overrides.h      |   59 +++++
+ .../mips/include/asm/mach-loongson/dma-coherence.h |   66 ++++++
+ arch/mips/include/asm/mach-loongson/loongson.h     |   14 ++
+ arch/mips/include/asm/mach-loongson/mc146818rtc.h  |   36 +++
+ arch/mips/include/asm/mach-loongson/pci.h          |   32 +++
+ arch/mips/include/asm/mach-loongson/war.h          |   25 ++
+ arch/mips/include/asm/mips-boards/bonito64.h       |    2 +-
+ arch/mips/lemote/lm2e/Makefile                     |    7 -
+ arch/mips/lemote/lm2e/bonito-irq.c                 |   74 ------
+ arch/mips/lemote/lm2e/dbg_io.c                     |  146 ------------
+ arch/mips/lemote/lm2e/irq.c                        |  143 ------------
+ arch/mips/lemote/lm2e/mem.c                        |   23 --
+ arch/mips/lemote/lm2e/pci.c                        |   97 --------
+ arch/mips/lemote/lm2e/prom.c                       |   97 --------
+ arch/mips/lemote/lm2e/reset.c                      |   41 ----
+ arch/mips/lemote/lm2e/setup.c                      |  111 ---------
+ arch/mips/loongson/fuloong-2e/Makefile             |    7 +
+ arch/mips/loongson/fuloong-2e/bonito-irq.c         |   73 ++++++
+ arch/mips/loongson/fuloong-2e/dbg_io.c             |  153 ++++++++++++
+ arch/mips/loongson/fuloong-2e/irq.c                |  139 +++++++++++
+ arch/mips/loongson/fuloong-2e/mem.c                |   23 ++
+ arch/mips/loongson/fuloong-2e/pci.c                |   95 ++++++++
+ arch/mips/loongson/fuloong-2e/prom.c               |   90 ++++++++
+ arch/mips/loongson/fuloong-2e/reset.c              |   37 +++
+ arch/mips/loongson/fuloong-2e/setup.c              |  108 +++++++++
+ arch/mips/pci/Makefile                             |    2 +-
+ arch/mips/pci/fixup-fuloong2e.c                    |  242 ++++++++++++++++++++
+ arch/mips/pci/fixup-lm2e.c                         |  242 --------------------
+ arch/mips/pci/ops-bonito64.c                       |   16 +-
+ 36 files changed, 1215 insertions(+), 1211 deletions(-)
+ delete mode 100644 arch/mips/include/asm/mach-lemote/cpu-feature-overrides.h
+ delete mode 100644 arch/mips/include/asm/mach-lemote/dma-coherence.h
+ delete mode 100644 arch/mips/include/asm/mach-lemote/mc146818rtc.h
+ delete mode 100644 arch/mips/include/asm/mach-lemote/pci.h
+ delete mode 100644 arch/mips/include/asm/mach-lemote/war.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/dma-coherence.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/loongson.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/mc146818rtc.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/pci.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/war.h
+ delete mode 100644 arch/mips/lemote/lm2e/Makefile
+ delete mode 100644 arch/mips/lemote/lm2e/bonito-irq.c
+ delete mode 100644 arch/mips/lemote/lm2e/dbg_io.c
+ delete mode 100644 arch/mips/lemote/lm2e/irq.c
+ delete mode 100644 arch/mips/lemote/lm2e/mem.c
+ delete mode 100644 arch/mips/lemote/lm2e/pci.c
+ delete mode 100644 arch/mips/lemote/lm2e/prom.c
+ delete mode 100644 arch/mips/lemote/lm2e/reset.c
+ delete mode 100644 arch/mips/lemote/lm2e/setup.c
+ create mode 100644 arch/mips/loongson/fuloong-2e/Makefile
+ create mode 100644 arch/mips/loongson/fuloong-2e/bonito-irq.c
+ create mode 100644 arch/mips/loongson/fuloong-2e/dbg_io.c
+ create mode 100644 arch/mips/loongson/fuloong-2e/irq.c
+ create mode 100644 arch/mips/loongson/fuloong-2e/mem.c
+ create mode 100644 arch/mips/loongson/fuloong-2e/pci.c
+ create mode 100644 arch/mips/loongson/fuloong-2e/prom.c
+ create mode 100644 arch/mips/loongson/fuloong-2e/reset.c
+ create mode 100644 arch/mips/loongson/fuloong-2e/setup.c
+ create mode 100644 arch/mips/pci/fixup-fuloong2e.c
+ delete mode 100644 arch/mips/pci/fixup-lm2e.c
 
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index 0048f11..b6ba27f 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -1930,6 +1930,29 @@ config FB_S3C2410_DEBUG
- 	  Turn on debugging messages. Note that you can set/unset at run time
- 	  through sysfs
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 09b1287..7897861 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -153,8 +153,8 @@ config LASAT
+ 	select SYS_SUPPORTS_64BIT_KERNEL if BROKEN
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
  
-+config FB_SILICONMOTION
-+	bool "Silicon Motion Display Support"
-+	depends on FB
-+	help
-+	  Frame Buffer driver for the Silicon Motion serial graphic card.
-+
-+config FB_SM7XX
-+	bool "Silicon Motion SM7XX Frame Buffer Support"
-+	depends on FB_SILICONMOTION
-+	depends on FB
-+	select FB_CFB_FILLRECT
-+	select FB_CFB_COPYAREA
-+	select FB_CFB_IMAGEBLIT
-+	help
-+	  Frame Buffer driver for the Silicon Motion SM7XX serial graphic card.
-+
-+config FB_SM7XX_ACCEL
-+	bool "Siliconmotion Acceleration functions (EXPERIMENTAL)"
-+	depends on FB_SM7XX && EXPERIMENTAL
-+	help
-+	This will compile the Trident frame buffer device with
-+	acceleration functions.
-+
- config FB_SM501
- 	tristate "Silicon Motion SM501 framebuffer support"
- 	depends on FB && MFD_SM501
-diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-index d8d0be5..caf6d8c 100644
---- a/drivers/video/Makefile
-+++ b/drivers/video/Makefile
-@@ -70,6 +70,7 @@ obj-$(CONFIG_FB_P9100)            += p9100.o sbuslib.o
- obj-$(CONFIG_FB_TCX)              += tcx.o sbuslib.o
- obj-$(CONFIG_FB_LEO)              += leo.o sbuslib.o
- obj-$(CONFIG_FB_SGIVW)            += sgivwfb.o
-+obj-$(CONFIG_FB_SILICONMOTION)    += smi/
- obj-$(CONFIG_FB_ACORN)            += acornfb.o
- obj-$(CONFIG_FB_ATARI)            += atafb.o c2p_iplan2.o atafb_mfb.o \
-                                      atafb_iplan2p2.o atafb_iplan2p4.o atafb_iplan2p8.o
-diff --git a/drivers/video/smi/Makefile b/drivers/video/smi/Makefile
+-config LEMOTE_FULONG
+-	bool "Lemote Fulong mini-PC"
++config LEMOTE_FULOONG2E
++	bool "Lemote Fuloong(2e) mini-PC"
+ 	select ARCH_SPARSEMEM_ENABLE
+ 	select CEVT_R4K
+ 	select CSRC_R4K
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index c4cae9e..55181a4 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -307,9 +307,9 @@ load-$(CONFIG_WR_PPMC)		+= 0xffffffff80100000
+ #
+ # lemote fulong mini-PC board
+ #
+-core-$(CONFIG_LEMOTE_FULONG) +=arch/mips/lemote/lm2e/
+-load-$(CONFIG_LEMOTE_FULONG) +=0xffffffff80100000
+-cflags-$(CONFIG_LEMOTE_FULONG) += -I$(srctree)/arch/mips/include/asm/mach-lemote
++core-$(CONFIG_LEMOTE_FULOONG2E) +=arch/mips/loongson/fuloong-2e/
++load-$(CONFIG_LEMOTE_FULOONG2E) +=0xffffffff80100000
++cflags-$(CONFIG_LEMOTE_FULOONG2E) += -I$(srctree)/arch/mips/include/asm/mach-loongson
+ 
+ #
+ # MIPS Malta board
+diff --git a/arch/mips/include/asm/mach-lemote/cpu-feature-overrides.h b/arch/mips/include/asm/mach-lemote/cpu-feature-overrides.h
+deleted file mode 100644
+index 550a10d..0000000
+--- a/arch/mips/include/asm/mach-lemote/cpu-feature-overrides.h
++++ /dev/null
+@@ -1,59 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 2009 Wu Zhangjin <wuzj@lemote.com>
+- * Copyright (C) 2009 Philippe Vachon <philippe@cowpig.ca>
+- * Copyright (C) 2009 Zhang Le <r0bertz@gentoo.org>
+- *
+- * reference: /proc/cpuinfo,
+- * 	arch/mips/kernel/cpu-probe.c(cpu_probe_legacy),
+- * 	arch/mips/kernel/proc.c(show_cpuinfo),
+- *      loongson2f user manual.
+- */
+-
+-#ifndef __ASM_MACH_LEMOTE_CPU_FEATURE_OVERRIDES_H
+-#define __ASM_MACH_LEMOTE_CPU_FEATURE_OVERRIDES_H
+-
+-#define cpu_dcache_line_size()	32
+-#define cpu_icache_line_size()	32
+-#define cpu_scache_line_size()	32
+-
+-
+-#define cpu_has_32fpr		1
+-#define cpu_has_3k_cache	0
+-#define cpu_has_4k_cache	1
+-#define cpu_has_4kex		1
+-#define cpu_has_64bits		1
+-#define cpu_has_cache_cdex_p	0
+-#define cpu_has_cache_cdex_s	0
+-#define cpu_has_counter		1
+-#define cpu_has_dc_aliases	1
+-#define cpu_has_divec		0
+-#define cpu_has_dsp		0
+-#define cpu_has_ejtag		0
+-#define cpu_has_fpu		1
+-#define cpu_has_ic_fills_f_dc	0
+-#define cpu_has_inclusive_pcaches	1
+-#define cpu_has_llsc 		1
+-#define cpu_has_mcheck		0
+-#define cpu_has_mdmx		0
+-#define cpu_has_mips16		0
+-#define cpu_has_mips32r1	0
+-#define cpu_has_mips32r2	0
+-#define cpu_has_mips3d		0
+-#define cpu_has_mips64r1	0
+-#define cpu_has_mips64r2	0
+-#define cpu_has_mipsmt		0
+-#define cpu_has_prefetch	0
+-#define cpu_has_smartmips	0
+-#define cpu_has_tlb		1
+-#define cpu_has_tx39_cache	0
+-#define cpu_has_userlocal	0
+-#define cpu_has_vce		0
+-#define cpu_has_vtag_icache	0
+-#define cpu_has_watch		1
+-#define cpu_icache_snoops_remote_store	1
+-
+-#endif /* __ASM_MACH_LEMOTE_CPU_FEATURE_OVERRIDES_H */
+diff --git a/arch/mips/include/asm/mach-lemote/dma-coherence.h b/arch/mips/include/asm/mach-lemote/dma-coherence.h
+deleted file mode 100644
+index 38fad7d..0000000
+--- a/arch/mips/include/asm/mach-lemote/dma-coherence.h
++++ /dev/null
+@@ -1,66 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 2006, 07  Ralf Baechle <ralf@linux-mips.org>
+- * Copyright (C) 2007 Lemote, Inc. & Institute of Computing Technology
+- * Author: Fuxin Zhang, zhangfx@lemote.com
+- *
+- */
+-#ifndef __ASM_MACH_LEMOTE_DMA_COHERENCE_H
+-#define __ASM_MACH_LEMOTE_DMA_COHERENCE_H
+-
+-struct device;
+-
+-static inline dma_addr_t plat_map_dma_mem(struct device *dev, void *addr,
+-					  size_t size)
+-{
+-	return virt_to_phys(addr) | 0x80000000;
+-}
+-
+-static inline dma_addr_t plat_map_dma_mem_page(struct device *dev,
+-					       struct page *page)
+-{
+-	return page_to_phys(page) | 0x80000000;
+-}
+-
+-static inline unsigned long plat_dma_addr_to_phys(dma_addr_t dma_addr)
+-{
+-	return dma_addr & 0x7fffffff;
+-}
+-
+-static inline void plat_unmap_dma_mem(struct device *dev, dma_addr_t dma_addr)
+-{
+-}
+-
+-static inline int plat_dma_supported(struct device *dev, u64 mask)
+-{
+-	/*
+-	 * we fall back to GFP_DMA when the mask isn't all 1s,
+-	 * so we can't guarantee allocations that must be
+-	 * within a tighter range than GFP_DMA..
+-	 */
+-	if (mask < DMA_BIT_MASK(24))
+-		return 0;
+-
+-	return 1;
+-}
+-
+-static inline void plat_extra_sync_for_device(struct device *dev)
+-{
+-	return;
+-}
+-
+-static inline int plat_dma_mapping_error(struct device *dev,
+-					 dma_addr_t dma_addr)
+-{
+-	return 0;
+-}
+-
+-static inline int plat_device_is_coherent(struct device *dev)
+-{
+-	return 0;
+-}
+-
+-#endif /* __ASM_MACH_LEMOTE_DMA_COHERENCE_H */
+diff --git a/arch/mips/include/asm/mach-lemote/mc146818rtc.h b/arch/mips/include/asm/mach-lemote/mc146818rtc.h
+deleted file mode 100644
+index ed5147e..0000000
+--- a/arch/mips/include/asm/mach-lemote/mc146818rtc.h
++++ /dev/null
+@@ -1,36 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 1998, 2001, 03, 07 by Ralf Baechle (ralf@linux-mips.org)
+- *
+- * RTC routines for PC style attached Dallas chip.
+- */
+-#ifndef __ASM_MACH_LEMOTE_MC146818RTC_H
+-#define __ASM_MACH_LEMOTE_MC146818RTC_H
+-
+-#include <linux/io.h>
+-
+-#define RTC_PORT(x)	(0x70 + (x))
+-#define RTC_IRQ		8
+-
+-static inline unsigned char CMOS_READ(unsigned long addr)
+-{
+-	outb_p(addr, RTC_PORT(0));
+-	return inb_p(RTC_PORT(1));
+-}
+-
+-static inline void CMOS_WRITE(unsigned char data, unsigned long addr)
+-{
+-	outb_p(addr, RTC_PORT(0));
+-	outb_p(data, RTC_PORT(1));
+-}
+-
+-#define RTC_ALWAYS_BCD	0
+-
+-#ifndef mc146818_decode_year
+-#define mc146818_decode_year(year) ((year) < 70 ? (year) + 2000 : (year) + 1970)
+-#endif
+-
+-#endif /* __ASM_MACH_LEMOTE_MC146818RTC_H */
+diff --git a/arch/mips/include/asm/mach-lemote/pci.h b/arch/mips/include/asm/mach-lemote/pci.h
+deleted file mode 100644
+index ea6aa14..0000000
+--- a/arch/mips/include/asm/mach-lemote/pci.h
++++ /dev/null
+@@ -1,30 +0,0 @@
+-/*
+- * Copyright (c) 2008 Zhang Le <r0bertz@gentoo.org>
+- *
+- * This program is free software; you can redistribute it
+- * and/or modify it under the terms of the GNU General
+- * Public License as published by the Free Software
+- * Foundation; either version 2 of the License, or (at your
+- * option) any later version.
+- *
+- * This program is distributed in the hope that it will be
+- * useful, but WITHOUT ANY WARRANTY; without even the implied
+- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+- * PURPOSE.  See the GNU General Public License for more
+- * details.
+- *
+- * You should have received a copy of the GNU General Public
+- * License along with this program; if not, write to the Free
+- * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA
+- * 02139, USA.
+- */
+-
+-#ifndef _LEMOTE_PCI_H_
+-#define _LEMOTE_PCI_H_
+-
+-#define LOONGSON2E_PCI_MEM_START	0x14000000UL
+-#define LOONGSON2E_PCI_MEM_END		0x1fffffffUL
+-#define LOONGSON2E_PCI_IO_START		0x00004000UL
+-#define LOONGSON2E_IO_PORT_BASE		0x1fd00000UL
+-
+-#endif /* !_LEMOTE_PCI_H_ */
+diff --git a/arch/mips/include/asm/mach-lemote/war.h b/arch/mips/include/asm/mach-lemote/war.h
+deleted file mode 100644
+index 05f89e0..0000000
+--- a/arch/mips/include/asm/mach-lemote/war.h
++++ /dev/null
+@@ -1,25 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 2002, 2004, 2007 by Ralf Baechle <ralf@linux-mips.org>
+- */
+-#ifndef __ASM_MIPS_MACH_LEMOTE_WAR_H
+-#define __ASM_MIPS_MACH_LEMOTE_WAR_H
+-
+-#define R4600_V1_INDEX_ICACHEOP_WAR	0
+-#define R4600_V1_HIT_CACHEOP_WAR	0
+-#define R4600_V2_HIT_CACHEOP_WAR	0
+-#define R5432_CP0_INTERRUPT_WAR		0
+-#define BCM1250_M3_WAR			0
+-#define SIBYTE_1956_WAR			0
+-#define MIPS4K_ICACHE_REFILL_WAR	0
+-#define MIPS_CACHE_SYNC_WAR		0
+-#define TX49XX_ICACHE_INDEX_INV_WAR	0
+-#define RM9000_CDEX_SMP_WAR		0
+-#define ICACHE_REFILLS_WORKAROUND_WAR	0
+-#define R10000_LLSC_WAR			0
+-#define MIPS34K_MISSED_ITLB_WAR		0
+-
+-#endif /* __ASM_MIPS_MACH_LEMOTE_WAR_H */
+diff --git a/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
 new file mode 100644
-index 0000000..0058148
+index 0000000..550a10d
 --- /dev/null
-+++ b/drivers/video/smi/Makefile
-@@ -0,0 +1,8 @@
-+obj-y += smi.o
++++ b/arch/mips/include/asm/mach-loongson/cpu-feature-overrides.h
+@@ -0,0 +1,59 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2009 Wu Zhangjin <wuzj@lemote.com>
++ * Copyright (C) 2009 Philippe Vachon <philippe@cowpig.ca>
++ * Copyright (C) 2009 Zhang Le <r0bertz@gentoo.org>
++ *
++ * reference: /proc/cpuinfo,
++ * 	arch/mips/kernel/cpu-probe.c(cpu_probe_legacy),
++ * 	arch/mips/kernel/proc.c(show_cpuinfo),
++ *      loongson2f user manual.
++ */
 +
-+smi-y := $(DRIVER_OBJS)
++#ifndef __ASM_MACH_LEMOTE_CPU_FEATURE_OVERRIDES_H
++#define __ASM_MACH_LEMOTE_CPU_FEATURE_OVERRIDES_H
 +
-+smi-y += smtcfb.o
++#define cpu_dcache_line_size()	32
++#define cpu_icache_line_size()	32
++#define cpu_scache_line_size()	32
 +
-+EXTRA_CFLAGS += -Werror
 +
-diff --git a/drivers/video/smi/smtc2d.c b/drivers/video/smi/smtc2d.c
++#define cpu_has_32fpr		1
++#define cpu_has_3k_cache	0
++#define cpu_has_4k_cache	1
++#define cpu_has_4kex		1
++#define cpu_has_64bits		1
++#define cpu_has_cache_cdex_p	0
++#define cpu_has_cache_cdex_s	0
++#define cpu_has_counter		1
++#define cpu_has_dc_aliases	1
++#define cpu_has_divec		0
++#define cpu_has_dsp		0
++#define cpu_has_ejtag		0
++#define cpu_has_fpu		1
++#define cpu_has_ic_fills_f_dc	0
++#define cpu_has_inclusive_pcaches	1
++#define cpu_has_llsc 		1
++#define cpu_has_mcheck		0
++#define cpu_has_mdmx		0
++#define cpu_has_mips16		0
++#define cpu_has_mips32r1	0
++#define cpu_has_mips32r2	0
++#define cpu_has_mips3d		0
++#define cpu_has_mips64r1	0
++#define cpu_has_mips64r2	0
++#define cpu_has_mipsmt		0
++#define cpu_has_prefetch	0
++#define cpu_has_smartmips	0
++#define cpu_has_tlb		1
++#define cpu_has_tx39_cache	0
++#define cpu_has_userlocal	0
++#define cpu_has_vce		0
++#define cpu_has_vtag_icache	0
++#define cpu_has_watch		1
++#define cpu_icache_snoops_remote_store	1
++
++#endif /* __ASM_MACH_LEMOTE_CPU_FEATURE_OVERRIDES_H */
+diff --git a/arch/mips/include/asm/mach-loongson/dma-coherence.h b/arch/mips/include/asm/mach-loongson/dma-coherence.h
 new file mode 100644
-index 0000000..2a9c3bd
+index 0000000..f27d0f8
 --- /dev/null
-+++ b/drivers/video/smi/smtc2d.c
-@@ -0,0 +1,979 @@
++++ b/arch/mips/include/asm/mach-loongson/dma-coherence.h
+@@ -0,0 +1,66 @@
 +/*
-+ * smtc2d.c -- Silicon Motion SM501 and SM7xx 2D drawing engine functions.
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
 + *
-+ * Copyright (C) 2006 Silicon Motion Technology Corp.
-+ * Author: Boyod boyod.yang@siliconmotion.com.cn
++ * Copyright (C) 2006, 07  Ralf Baechle <ralf@linux-mips.org>
++ * Copyright (C) 2007 Lemote, Inc. & Institute of Computing Technology
++ * Author: Fuxin Zhang, zhangfx@lemote.com
 + *
-+ * Copyright (C) 2009 Lemote, Inc. & Institute of Computing Technology
-+ * Author: Wu Zhangjin, wuzj@lemote.com
-+ *
-+ *  This file is subject to the terms and conditions of the GNU General Public
-+ *  License. See the file COPYING in the main directory of this archive for
-+ *  more details.
-+ *
-+ * Version 0.10.26192.21.01
-+ * 	- Add PowerPC support
-+ * 	- Add 2D support for Lynx -
-+ * Verified on 2.6.19.2
-+ * 	Boyod.yang  <boyod.yang@siliconmotion.com.cn>
 + */
++#ifndef __ASM_MACH_LOONGSON_DMA_COHERENCE_H
++#define __ASM_MACH_LOONGSON_DMA_COHERENCE_H
 +
-+unsigned char smtc_de_busy;
++struct device;
 +
-+void SMTC_write2Dreg(unsigned long nOffset, unsigned long nData)
++static inline dma_addr_t plat_map_dma_mem(struct device *dev, void *addr,
++					  size_t size)
 +{
-+	writel(nData, smtc_2DBaseAddress + nOffset);
++	return virt_to_phys(addr) | 0x80000000;
 +}
 +
-+unsigned long SMTC_read2Dreg(unsigned long nOffset)
++static inline dma_addr_t plat_map_dma_mem_page(struct device *dev,
++					       struct page *page)
 +{
-+	return readl(smtc_2DBaseAddress + nOffset);
++	return page_to_phys(page) | 0x80000000;
 +}
 +
-+void SMTC_write2Ddataport(unsigned long nOffset, unsigned long nData)
++static inline unsigned long plat_dma_addr_to_phys(dma_addr_t dma_addr)
 +{
-+	writel(nData, smtc_2Ddataport + nOffset);
++	return dma_addr & 0x7fffffff;
 +}
 +
-+/**********************************************************************
-+ *
-+ * deInit
-+ *
-+ * Purpose
-+ *    Drawing engine initialization.
-+ *
-+ **********************************************************************/
-+
-+void deInit(unsigned int nModeWidth, unsigned int nModeHeight,
-+		unsigned int bpp)
++static inline void plat_unmap_dma_mem(struct device *dev, dma_addr_t dma_addr)
 +{
-+	/* Get current power configuration. */
-+	unsigned char clock;
-+	clock = smtc_seqr(0x21);
-+
-+	/* initialize global 'mutex lock' variable */
-+	smtc_de_busy = 0;
-+
-+	/* Enable 2D Drawing Engine */
-+	smtc_seqw(0x21, clock & 0xF8);
-+
-+	SMTC_write2Dreg(DE_CLIP_TL,
-+			FIELD_VALUE(0, DE_CLIP_TL, TOP, 0) |
-+			FIELD_SET(0, DE_CLIP_TL, STATUS, DISABLE) |
-+			FIELD_SET(0, DE_CLIP_TL, INHIBIT, OUTSIDE) |
-+			FIELD_VALUE(0, DE_CLIP_TL, LEFT, 0));
-+
-+	if (bpp >= 24) {
-+		SMTC_write2Dreg(DE_PITCH,
-+				FIELD_VALUE(0, DE_PITCH, DESTINATION,
-+					    nModeWidth * 3) | FIELD_VALUE(0,
-+								  DE_PITCH,
-+								  SOURCE,
-+								  nModeWidth
-+								  * 3));
-+	} else {
-+		SMTC_write2Dreg(DE_PITCH,
-+				FIELD_VALUE(0, DE_PITCH, DESTINATION,
-+					    nModeWidth) | FIELD_VALUE(0,
-+							      DE_PITCH,
-+							      SOURCE,
-+							      nModeWidth));
-+	}
-+
-+	SMTC_write2Dreg(DE_WINDOW_WIDTH,
-+			FIELD_VALUE(0, DE_WINDOW_WIDTH, DESTINATION,
-+				    nModeWidth) | FIELD_VALUE(0,
-+							      DE_WINDOW_WIDTH,
-+							      SOURCE,
-+							      nModeWidth));
-+
-+	switch (bpp) {
-+	case 8:
-+		SMTC_write2Dreg(DE_STRETCH_FORMAT,
-+				FIELD_SET(0, DE_STRETCH_FORMAT, PATTERN_XY,
-+					  NORMAL) | FIELD_VALUE(0,
-+							DE_STRETCH_FORMAT,
-+							PATTERN_Y,
-+							0) |
-+				FIELD_VALUE(0, DE_STRETCH_FORMAT, PATTERN_X,
-+				    0) | FIELD_SET(0, DE_STRETCH_FORMAT,
-+						   PIXEL_FORMAT,
-+						   8) | FIELD_SET(0,
-+							  DE_STRETCH_FORMAT,
-+							  ADDRESSING,
-+							  XY) |
-+				FIELD_VALUE(0, DE_STRETCH_FORMAT,
-+					SOURCE_HEIGHT, 3));
-+		break;
-+	case 24:
-+		SMTC_write2Dreg(DE_STRETCH_FORMAT,
-+				FIELD_SET(0, DE_STRETCH_FORMAT, PATTERN_XY,
-+					  NORMAL) | FIELD_VALUE(0,
-+							DE_STRETCH_FORMAT,
-+							PATTERN_Y,
-+							0) |
-+				FIELD_VALUE(0, DE_STRETCH_FORMAT, PATTERN_X,
-+				    0) | FIELD_SET(0, DE_STRETCH_FORMAT,
-+							   PIXEL_FORMAT,
-+							   24) | FIELD_SET(0,
-+							   DE_STRETCH_FORMAT,
-+							   ADDRESSING,
-+							   XY) |
-+				FIELD_VALUE(0, DE_STRETCH_FORMAT,
-+					SOURCE_HEIGHT, 3));
-+		break;
-+	case 16:
-+	default:
-+		SMTC_write2Dreg(DE_STRETCH_FORMAT,
-+				FIELD_SET(0, DE_STRETCH_FORMAT, PATTERN_XY,
-+					  NORMAL) | FIELD_VALUE(0,
-+							DE_STRETCH_FORMAT,
-+							PATTERN_Y,
-+							0) |
-+				FIELD_VALUE(0, DE_STRETCH_FORMAT, PATTERN_X,
-+				    0) | FIELD_SET(0, DE_STRETCH_FORMAT,
-+							   PIXEL_FORMAT,
-+							   16) | FIELD_SET(0,
-+							   DE_STRETCH_FORMAT,
-+							   ADDRESSING,
-+							   XY) |
-+				FIELD_VALUE(0, DE_STRETCH_FORMAT,
-+					SOURCE_HEIGHT, 3));
-+		break;
-+	}
-+
-+	SMTC_write2Dreg(DE_MASKS,
-+			FIELD_VALUE(0, DE_MASKS, BYTE_MASK, 0xFFFF) |
-+			FIELD_VALUE(0, DE_MASKS, BIT_MASK, 0xFFFF));
-+	SMTC_write2Dreg(DE_COLOR_COMPARE_MASK,
-+			FIELD_VALUE(0, DE_COLOR_COMPARE_MASK, MASKS, \
-+				0xFFFFFF));
-+	SMTC_write2Dreg(DE_COLOR_COMPARE,
-+			FIELD_VALUE(0, DE_COLOR_COMPARE, COLOR, 0xFFFFFF));
 +}
 +
-+void deVerticalLine(unsigned long dst_base,
-+		    unsigned long dst_pitch,
-+		    unsigned long nX,
-+		    unsigned long nY,
-+		    unsigned long dst_height, unsigned long nColor)
++static inline int plat_dma_supported(struct device *dev, u64 mask)
 +{
-+	deWaitForNotBusy();
-+
-+	SMTC_write2Dreg(DE_WINDOW_DESTINATION_BASE,
-+			FIELD_VALUE(0, DE_WINDOW_DESTINATION_BASE, ADDRESS,
-+				    dst_base));
-+
-+	SMTC_write2Dreg(DE_PITCH,
-+			FIELD_VALUE(0, DE_PITCH, DESTINATION, dst_pitch) |
-+			FIELD_VALUE(0, DE_PITCH, SOURCE, dst_pitch));
-+
-+	SMTC_write2Dreg(DE_WINDOW_WIDTH,
-+			FIELD_VALUE(0, DE_WINDOW_WIDTH, DESTINATION,
-+			    dst_pitch) | FIELD_VALUE(0, DE_WINDOW_WIDTH,
-+						     SOURCE,
-+						     dst_pitch));
-+
-+	SMTC_write2Dreg(DE_FOREGROUND,
-+			FIELD_VALUE(0, DE_FOREGROUND, COLOR, nColor));
-+
-+	SMTC_write2Dreg(DE_DESTINATION,
-+			FIELD_SET(0, DE_DESTINATION, WRAP, DISABLE) |
-+			FIELD_VALUE(0, DE_DESTINATION, X, nX) |
-+			FIELD_VALUE(0, DE_DESTINATION, Y, nY));
-+
-+	SMTC_write2Dreg(DE_DIMENSION,
-+			FIELD_VALUE(0, DE_DIMENSION, X, 1) |
-+			FIELD_VALUE(0, DE_DIMENSION, Y_ET, dst_height));
-+
-+	SMTC_write2Dreg(DE_CONTROL,
-+			FIELD_SET(0, DE_CONTROL, STATUS, START) |
-+			FIELD_SET(0, DE_CONTROL, DIRECTION, LEFT_TO_RIGHT) |
-+			FIELD_SET(0, DE_CONTROL, MAJOR, Y) |
-+			FIELD_SET(0, DE_CONTROL, STEP_X, NEGATIVE) |
-+			FIELD_SET(0, DE_CONTROL, STEP_Y, POSITIVE) |
-+			FIELD_SET(0, DE_CONTROL, LAST_PIXEL, OFF) |
-+			FIELD_SET(0, DE_CONTROL, COMMAND, SHORT_STROKE) |
-+			FIELD_SET(0, DE_CONTROL, ROP_SELECT, ROP2) |
-+			FIELD_VALUE(0, DE_CONTROL, ROP, 0x0C));
-+
-+	smtc_de_busy = 1;
-+}
-+
-+void deHorizontalLine(unsigned long dst_base,
-+		      unsigned long dst_pitch,
-+		      unsigned long nX,
-+		      unsigned long nY,
-+		      unsigned long dst_width, unsigned long nColor)
-+{
-+	deWaitForNotBusy();
-+
-+	SMTC_write2Dreg(DE_WINDOW_DESTINATION_BASE,
-+			FIELD_VALUE(0, DE_WINDOW_DESTINATION_BASE, ADDRESS,
-+				    dst_base));
-+
-+	SMTC_write2Dreg(DE_PITCH,
-+			FIELD_VALUE(0, DE_PITCH, DESTINATION, dst_pitch) |
-+			FIELD_VALUE(0, DE_PITCH, SOURCE, dst_pitch));
-+
-+	SMTC_write2Dreg(DE_WINDOW_WIDTH,
-+			FIELD_VALUE(0, DE_WINDOW_WIDTH, DESTINATION,
-+			    dst_pitch) | FIELD_VALUE(0, DE_WINDOW_WIDTH,
-+						     SOURCE,
-+						     dst_pitch));
-+	SMTC_write2Dreg(DE_FOREGROUND,
-+			FIELD_VALUE(0, DE_FOREGROUND, COLOR, nColor));
-+	SMTC_write2Dreg(DE_DESTINATION,
-+			FIELD_SET(0, DE_DESTINATION, WRAP,
-+			  DISABLE) | FIELD_VALUE(0, DE_DESTINATION, X,
-+						 nX) | FIELD_VALUE(0,
-+							   DE_DESTINATION,
-+							   Y,
-+							   nY));
-+	SMTC_write2Dreg(DE_DIMENSION,
-+			FIELD_VALUE(0, DE_DIMENSION, X,
-+			    dst_width) | FIELD_VALUE(0, DE_DIMENSION,
-+						     Y_ET, 1));
-+	SMTC_write2Dreg(DE_CONTROL,
-+		FIELD_SET(0, DE_CONTROL, STATUS, START) | FIELD_SET(0,
-+							    DE_CONTROL,
-+							    DIRECTION,
-+							    RIGHT_TO_LEFT)
-+		| FIELD_SET(0, DE_CONTROL, MAJOR, X) | FIELD_SET(0,
-+							 DE_CONTROL,
-+							 STEP_X,
-+							 POSITIVE)
-+		| FIELD_SET(0, DE_CONTROL, STEP_Y,
-+			    NEGATIVE) | FIELD_SET(0, DE_CONTROL,
-+						  LAST_PIXEL,
-+						  OFF) | FIELD_SET(0,
-+							   DE_CONTROL,
-+							   COMMAND,
-+							   SHORT_STROKE)
-+		| FIELD_SET(0, DE_CONTROL, ROP_SELECT,
-+			    ROP2) | FIELD_VALUE(0, DE_CONTROL, ROP,
-+						0x0C));
-+
-+	smtc_de_busy = 1;
-+}
-+
-+void deLine(unsigned long dst_base,
-+	    unsigned long dst_pitch,
-+	    unsigned long nX1,
-+	    unsigned long nY1,
-+	    unsigned long nX2, unsigned long nY2, unsigned long nColor)
-+{
-+	unsigned long nCommand =
-+	    FIELD_SET(0, DE_CONTROL, STATUS, START) |
-+	    FIELD_SET(0, DE_CONTROL, DIRECTION, LEFT_TO_RIGHT) |
-+	    FIELD_SET(0, DE_CONTROL, MAJOR, X) |
-+	    FIELD_SET(0, DE_CONTROL, STEP_X, POSITIVE) |
-+	    FIELD_SET(0, DE_CONTROL, STEP_Y, POSITIVE) |
-+	    FIELD_SET(0, DE_CONTROL, LAST_PIXEL, OFF) |
-+	    FIELD_SET(0, DE_CONTROL, ROP_SELECT, ROP2) |
-+	    FIELD_VALUE(0, DE_CONTROL, ROP, 0x0C);
-+	unsigned long DeltaX;
-+	unsigned long DeltaY;
-+
-+	/* Calculate delta X */
-+	if (nX1 <= nX2)
-+		DeltaX = nX2 - nX1;
-+	else {
-+		DeltaX = nX1 - nX2;
-+		nCommand = FIELD_SET(nCommand, DE_CONTROL, STEP_X, NEGATIVE);
-+	}
-+
-+	/* Calculate delta Y */
-+	if (nY1 <= nY2)
-+		DeltaY = nY2 - nY1;
-+	else {
-+		DeltaY = nY1 - nY2;
-+		nCommand = FIELD_SET(nCommand, DE_CONTROL, STEP_Y, NEGATIVE);
-+	}
-+
-+	/* Determine the major axis */
-+	if (DeltaX < DeltaY)
-+		nCommand = FIELD_SET(nCommand, DE_CONTROL, MAJOR, Y);
-+
-+	/* Vertical line? */
-+	if (nX1 == nX2)
-+		deVerticalLine(dst_base, dst_pitch, nX1, nY1, DeltaY, nColor);
-+
-+	/* Horizontal line? */
-+	else if (nY1 == nY2)
-+		deHorizontalLine(dst_base, dst_pitch, nX1, nY1, \
-+				DeltaX, nColor);
-+
-+	/* Diagonal line? */
-+	else if (DeltaX == DeltaY) {
-+		deWaitForNotBusy();
-+
-+		SMTC_write2Dreg(DE_WINDOW_DESTINATION_BASE,
-+				FIELD_VALUE(0, DE_WINDOW_DESTINATION_BASE,
-+					    ADDRESS, dst_base));
-+
-+		SMTC_write2Dreg(DE_PITCH,
-+				FIELD_VALUE(0, DE_PITCH, DESTINATION,
-+					    dst_pitch) | FIELD_VALUE(0,
-+							     DE_PITCH,
-+							     SOURCE,
-+							     dst_pitch));
-+
-+		SMTC_write2Dreg(DE_WINDOW_WIDTH,
-+				FIELD_VALUE(0, DE_WINDOW_WIDTH, DESTINATION,
-+					    dst_pitch) | FIELD_VALUE(0,
-+							     DE_WINDOW_WIDTH,
-+							     SOURCE,
-+							     dst_pitch));
-+
-+		SMTC_write2Dreg(DE_FOREGROUND,
-+				FIELD_VALUE(0, DE_FOREGROUND, COLOR, nColor));
-+
-+		SMTC_write2Dreg(DE_DESTINATION,
-+				FIELD_SET(0, DE_DESTINATION, WRAP, DISABLE) |
-+				FIELD_VALUE(0, DE_DESTINATION, X, 1) |
-+				FIELD_VALUE(0, DE_DESTINATION, Y, nY1));
-+
-+		SMTC_write2Dreg(DE_DIMENSION,
-+				FIELD_VALUE(0, DE_DIMENSION, X, 1) |
-+				FIELD_VALUE(0, DE_DIMENSION, Y_ET, DeltaX));
-+
-+		SMTC_write2Dreg(DE_CONTROL,
-+				FIELD_SET(nCommand, DE_CONTROL, COMMAND,
-+					  SHORT_STROKE));
-+	}
-+
-+	/* Generic line */
-+	else {
-+		unsigned int k1, k2, et, w;
-+		if (DeltaX < DeltaY) {
-+			k1 = 2 * DeltaX;
-+			et = k1 - DeltaY;
-+			k2 = et - DeltaY;
-+			w = DeltaY + 1;
-+		} else {
-+			k1 = 2 * DeltaY;
-+			et = k1 - DeltaX;
-+			k2 = et - DeltaX;
-+			w = DeltaX + 1;
-+		}
-+
-+		deWaitForNotBusy();
-+
-+		SMTC_write2Dreg(DE_WINDOW_DESTINATION_BASE,
-+				FIELD_VALUE(0, DE_WINDOW_DESTINATION_BASE,
-+					    ADDRESS, dst_base));
-+
-+		SMTC_write2Dreg(DE_PITCH,
-+				FIELD_VALUE(0, DE_PITCH, DESTINATION,
-+					    dst_pitch) | FIELD_VALUE(0,
-+							     DE_PITCH,
-+							     SOURCE,
-+							     dst_pitch));
-+
-+		SMTC_write2Dreg(DE_WINDOW_WIDTH,
-+				FIELD_VALUE(0, DE_WINDOW_WIDTH, DESTINATION,
-+					    dst_pitch) | FIELD_VALUE(0,
-+							     DE_WINDOW_WIDTH,
-+							     SOURCE,
-+							     dst_pitch));
-+
-+		SMTC_write2Dreg(DE_FOREGROUND,
-+				FIELD_VALUE(0, DE_FOREGROUND, COLOR, nColor));
-+
-+		SMTC_write2Dreg(DE_SOURCE,
-+				FIELD_SET(0, DE_SOURCE, WRAP, DISABLE) |
-+				FIELD_VALUE(0, DE_SOURCE, X_K1, k1) |
-+				FIELD_VALUE(0, DE_SOURCE, Y_K2, k2));
-+
-+		SMTC_write2Dreg(DE_DESTINATION,
-+				FIELD_SET(0, DE_DESTINATION, WRAP, DISABLE) |
-+				FIELD_VALUE(0, DE_DESTINATION, X, nX1) |
-+				FIELD_VALUE(0, DE_DESTINATION, Y, nY1));
-+
-+		SMTC_write2Dreg(DE_DIMENSION,
-+				FIELD_VALUE(0, DE_DIMENSION, X, w) |
-+				FIELD_VALUE(0, DE_DIMENSION, Y_ET, et));
-+
-+		SMTC_write2Dreg(DE_CONTROL,
-+				FIELD_SET(nCommand, DE_CONTROL, COMMAND,
-+					  LINE_DRAW));
-+	}
-+
-+	smtc_de_busy = 1;
-+}
-+
-+void deFillRect(unsigned long dst_base,
-+		unsigned long dst_pitch,
-+		unsigned long dst_X,
-+		unsigned long dst_Y,
-+		unsigned long dst_width,
-+		unsigned long dst_height, unsigned long nColor)
-+{
-+	deWaitForNotBusy();
-+
-+	SMTC_write2Dreg(DE_WINDOW_DESTINATION_BASE,
-+			FIELD_VALUE(0, DE_WINDOW_DESTINATION_BASE, ADDRESS,
-+				    dst_base));
-+
-+	if (dst_pitch) {
-+		SMTC_write2Dreg(DE_PITCH,
-+				FIELD_VALUE(0, DE_PITCH, DESTINATION,
-+					    dst_pitch) | FIELD_VALUE(0,
-+							     DE_PITCH,
-+							     SOURCE,
-+							     dst_pitch));
-+
-+		SMTC_write2Dreg(DE_WINDOW_WIDTH,
-+				FIELD_VALUE(0, DE_WINDOW_WIDTH, DESTINATION,
-+					    dst_pitch) | FIELD_VALUE(0,
-+							     DE_WINDOW_WIDTH,
-+							     SOURCE,
-+							     dst_pitch));
-+	}
-+
-+	SMTC_write2Dreg(DE_FOREGROUND,
-+			FIELD_VALUE(0, DE_FOREGROUND, COLOR, nColor));
-+
-+	SMTC_write2Dreg(DE_DESTINATION,
-+			FIELD_SET(0, DE_DESTINATION, WRAP, DISABLE) |
-+			FIELD_VALUE(0, DE_DESTINATION, X, dst_X) |
-+			FIELD_VALUE(0, DE_DESTINATION, Y, dst_Y));
-+
-+	SMTC_write2Dreg(DE_DIMENSION,
-+			FIELD_VALUE(0, DE_DIMENSION, X, dst_width) |
-+			FIELD_VALUE(0, DE_DIMENSION, Y_ET, dst_height));
-+
-+	SMTC_write2Dreg(DE_CONTROL,
-+			FIELD_SET(0, DE_CONTROL, STATUS, START) |
-+			FIELD_SET(0, DE_CONTROL, DIRECTION, LEFT_TO_RIGHT) |
-+			FIELD_SET(0, DE_CONTROL, LAST_PIXEL, OFF) |
-+			FIELD_SET(0, DE_CONTROL, COMMAND, RECTANGLE_FILL) |
-+			FIELD_SET(0, DE_CONTROL, ROP_SELECT, ROP2) |
-+			FIELD_VALUE(0, DE_CONTROL, ROP, 0x0C));
-+
-+	smtc_de_busy = 1;
-+}
-+
-+/**********************************************************************
-+ *
-+ * deRotatePattern
-+ *
-+ * Purpose
-+ *    Rotate the given pattern if necessary
-+ *
-+ * Parameters
-+ *    [in]
-+ *	   pPattern  - Pointer to DE_SURFACE structure containing
-+ *		       pattern attributes
-+ *	   patternX  - X position (0-7) of pattern origin
-+ *	   patternY  - Y position (0-7) of pattern origin
-+ *
-+ *    [out]
-+ *	   pattern_dstaddr - Pointer to pre-allocated buffer containing
-+ *	   rotated pattern
-+ *
-+ **********************************************************************/
-+void deRotatePattern(unsigned char *pattern_dstaddr,
-+		     unsigned long pattern_src_addr,
-+		     unsigned long pattern_BPP,
-+		     unsigned long pattern_stride, int patternX, int patternY)
-+{
-+	unsigned int i;
-+	unsigned long pattern[PATTERN_WIDTH * PATTERN_HEIGHT];
-+	unsigned int x, y;
-+	unsigned char *pjPatByte;
-+
-+	if (pattern_dstaddr != NULL) {
-+		deWaitForNotBusy();
-+
-+		if (patternX || patternY) {
-+			/* Rotate pattern */
-+			pjPatByte = (unsigned char *)pattern;
-+
-+			switch (pattern_BPP) {
-+			case 8:
-+				{
-+					for (y = 0; y < 8; y++) {
-+						unsigned char *pjBuffer =
-+						    pattern_dstaddr +
-+						    ((patternY + y) & 7) * 8;
-+						for (x = 0; x < 8; x++) {
-+							pjBuffer[(patternX +
-+								  x) & 7] =
-+							    pjPatByte[x];
-+						}
-+						pjPatByte += pattern_stride;
-+					}
-+					break;
-+				}
-+
-+			case 16:
-+				{
-+					for (y = 0; y < 8; y++) {
-+						unsigned short *pjBuffer =
-+						    (unsigned short *)
-+						    pattern_dstaddr +
-+						    ((patternY + y) & 7) * 8;
-+						for (x = 0; x < 8; x++) {
-+							pjBuffer[(patternX +
-+								  x) & 7] =
-+							    ((unsigned short *)
-+							     pjPatByte)[x];
-+						}
-+						pjPatByte += pattern_stride;
-+					}
-+					break;
-+				}
-+
-+			case 32:
-+				{
-+					for (y = 0; y < 8; y++) {
-+						unsigned long *pjBuffer =
-+						    (unsigned long *)
-+						    pattern_dstaddr +
-+						    ((patternY + y) & 7) * 8;
-+						for (x = 0; x < 8; x++) {
-+							pjBuffer[(patternX +
-+								  x) & 7] =
-+							    ((unsigned long *)
-+							     pjPatByte)[x];
-+						}
-+						pjPatByte += pattern_stride;
-+					}
-+					break;
-+				}
-+			}
-+		} else {
-+			/*Don't rotate,just copy pattern into pattern_dstaddr*/
-+			for (i = 0; i < (pattern_BPP * 2); i++) {
-+				((unsigned long *)pattern_dstaddr)[i] =
-+				    pattern[i];
-+			}
-+		}
-+
-+	}
-+}
-+
-+/**********************************************************************
-+ *
-+ * deCopy
-+ *
-+ * Purpose
-+ *    Copy a rectangular area of the source surface to a destination surface
-+ *
-+ * Remarks
-+ *    Source bitmap must have the same color depth (BPP) as the destination
-+ *    bitmap.
-+ *
-+**********************************************************************/
-+void deCopy(unsigned long dst_base,
-+	    unsigned long dst_pitch,
-+	    unsigned long dst_BPP,
-+	    unsigned long dst_X,
-+	    unsigned long dst_Y,
-+	    unsigned long dst_width,
-+	    unsigned long dst_height,
-+	    unsigned long src_base,
-+	    unsigned long src_pitch,
-+	    unsigned long src_X,
-+	    unsigned long src_Y, pTransparent pTransp, unsigned char nROP2)
-+{
-+	unsigned long nDirection = 0;
-+	unsigned long nTransparent = 0;
-+	/* Direction of ROP2 operation:
-+	 * 1 = Left to Right,
-+	 * (-1) = Right to Left
-+	 */
-+	unsigned long opSign = 1;
-+	/* xWidth is in pixels */
-+	unsigned long xWidth = 192 / (dst_BPP / 8);
-+	unsigned long de_ctrl = 0;
-+
-+	deWaitForNotBusy();
-+
-+	SMTC_write2Dreg(DE_WINDOW_DESTINATION_BASE,
-+			FIELD_VALUE(0, DE_WINDOW_DESTINATION_BASE, ADDRESS,
-+				    dst_base));
-+
-+	SMTC_write2Dreg(DE_WINDOW_SOURCE_BASE,
-+			FIELD_VALUE(0, DE_WINDOW_SOURCE_BASE, ADDRESS,
-+				    src_base));
-+
-+	if (dst_pitch && src_pitch) {
-+		SMTC_write2Dreg(DE_PITCH,
-+			FIELD_VALUE(0, DE_PITCH, DESTINATION,
-+				    dst_pitch) | FIELD_VALUE(0,
-+						     DE_PITCH,
-+						     SOURCE,
-+						     src_pitch));
-+
-+		SMTC_write2Dreg(DE_WINDOW_WIDTH,
-+			FIELD_VALUE(0, DE_WINDOW_WIDTH, DESTINATION,
-+				    dst_pitch) | FIELD_VALUE(0,
-+						     DE_WINDOW_WIDTH,
-+						     SOURCE,
-+						     src_pitch));
-+	}
-+
-+	/* Set transparent bits if necessary */
-+	if (pTransp != NULL) {
-+		nTransparent =
-+		    pTransp->match | pTransp->select | pTransp->control;
-+
-+		/* Set color compare register */
-+		SMTC_write2Dreg(DE_COLOR_COMPARE,
-+				FIELD_VALUE(0, DE_COLOR_COMPARE, COLOR,
-+					    pTransp->color));
-+	}
-+
-+	/* Determine direction of operation */
-+	if (src_Y < dst_Y) {
-+		/* +----------+
-+		   |S         |
-+		   |          +----------+
-+		   |          |      |   |
-+		   |          |      |   |
-+		   +---|------+      |
-+		   |               D |
-+		   +----------+ */
-+
-+		nDirection = BOTTOM_TO_TOP;
-+	} else if (src_Y > dst_Y) {
-+		/* +----------+
-+		   |D         |
-+		   |          +----------+
-+		   |          |      |   |
-+		   |          |      |   |
-+		   +---|------+      |
-+		   |               S |
-+		   +----------+ */
-+
-+		nDirection = TOP_TO_BOTTOM;
-+	} else {
-+		/* src_Y == dst_Y */
-+
-+		if (src_X <= dst_X) {
-+			/* +------+---+------+
-+			   |S     |   |     D|
-+			   |      |   |      |
-+			   |      |   |      |
-+			   |      |   |      |
-+			   +------+---+------+ */
-+
-+			nDirection = RIGHT_TO_LEFT;
-+		} else {
-+			/* src_X > dst_X */
-+
-+			/* +------+---+------+
-+			   |D     |   |     S|
-+			   |      |   |      |
-+			   |      |   |      |
-+			   |      |   |      |
-+			   +------+---+------+ */
-+
-+			nDirection = LEFT_TO_RIGHT;
-+		}
-+	}
-+
-+	if ((nDirection == BOTTOM_TO_TOP) || (nDirection == RIGHT_TO_LEFT)) {
-+		src_X += dst_width - 1;
-+		src_Y += dst_height - 1;
-+		dst_X += dst_width - 1;
-+		dst_Y += dst_height - 1;
-+		opSign = (-1);
-+	}
-+
-+	if (dst_BPP >= 24) {
-+		src_X *= 3;
-+		src_Y *= 3;
-+		dst_X *= 3;
-+		dst_Y *= 3;
-+		dst_width *= 3;
-+		if ((nDirection == BOTTOM_TO_TOP)
-+		    || (nDirection == RIGHT_TO_LEFT)) {
-+			src_X += 2;
-+			dst_X += 2;
-+		}
-+	}
-+
-+	/* Workaround for 192 byte hw bug */
-+	if ((nROP2 != 0x0C) && ((dst_width * (dst_BPP / 8)) >= 192)) {
-+		/*
-+		 * Perform the ROP2 operation in chunks of (xWidth *
-+		 * dst_height)
-+		 */
-+		while (1) {
-+			deWaitForNotBusy();
-+
-+			SMTC_write2Dreg(DE_SOURCE,
-+				FIELD_SET(0, DE_SOURCE, WRAP, DISABLE) |
-+				FIELD_VALUE(0, DE_SOURCE, X_K1, src_X) |
-+				FIELD_VALUE(0, DE_SOURCE, Y_K2, src_Y));
-+
-+			SMTC_write2Dreg(DE_DESTINATION,
-+				FIELD_SET(0, DE_DESTINATION, WRAP,
-+				  DISABLE) | FIELD_VALUE(0,
-+							 DE_DESTINATION,
-+							 X,
-+							 dst_X)
-+			| FIELD_VALUE(0, DE_DESTINATION, Y,
-+						      dst_Y));
-+
-+			SMTC_write2Dreg(DE_DIMENSION,
-+				FIELD_VALUE(0, DE_DIMENSION, X,
-+				    xWidth) | FIELD_VALUE(0,
-+							  DE_DIMENSION,
-+							  Y_ET,
-+							  dst_height));
-+
-+			de_ctrl =
-+			    FIELD_VALUE(0, DE_CONTROL, ROP,
-+				nROP2) | nTransparent | FIELD_SET(0,
-+							  DE_CONTROL,
-+							  ROP_SELECT,
-+							  ROP2)
-+			    | FIELD_SET(0, DE_CONTROL, COMMAND,
-+				BITBLT) | ((nDirection ==
-+					    1) ? FIELD_SET(0,
-+						   DE_CONTROL,
-+						   DIRECTION,
-+						   RIGHT_TO_LEFT)
-+					   : FIELD_SET(0, DE_CONTROL,
-+					       DIRECTION,
-+					       LEFT_TO_RIGHT)) |
-+			    FIELD_SET(0, DE_CONTROL, STATUS, START);
-+
-+			SMTC_write2Dreg(DE_CONTROL, de_ctrl);
-+
-+			src_X += (opSign * xWidth);
-+			dst_X += (opSign * xWidth);
-+			dst_width -= xWidth;
-+
-+			if (dst_width <= 0) {
-+				/* ROP2 operation is complete */
-+				break;
-+			}
-+
-+			if (xWidth > dst_width)
-+				xWidth = dst_width;
-+		}
-+	} else {
-+		deWaitForNotBusy();
-+		SMTC_write2Dreg(DE_SOURCE,
-+			FIELD_SET(0, DE_SOURCE, WRAP, DISABLE) |
-+			FIELD_VALUE(0, DE_SOURCE, X_K1, src_X) |
-+			FIELD_VALUE(0, DE_SOURCE, Y_K2, src_Y));
-+
-+		SMTC_write2Dreg(DE_DESTINATION,
-+			FIELD_SET(0, DE_DESTINATION, WRAP, DISABLE) |
-+			FIELD_VALUE(0, DE_DESTINATION, X, dst_X) |
-+			FIELD_VALUE(0, DE_DESTINATION, Y, dst_Y));
-+
-+		SMTC_write2Dreg(DE_DIMENSION,
-+			FIELD_VALUE(0, DE_DIMENSION, X, dst_width) |
-+			FIELD_VALUE(0, DE_DIMENSION, Y_ET, dst_height));
-+
-+		de_ctrl = FIELD_VALUE(0, DE_CONTROL, ROP, nROP2) |
-+		    nTransparent |
-+		    FIELD_SET(0, DE_CONTROL, ROP_SELECT, ROP2) |
-+		    FIELD_SET(0, DE_CONTROL, COMMAND, BITBLT) |
-+		    ((nDirection == 1) ? FIELD_SET(0, DE_CONTROL, DIRECTION,
-+						   RIGHT_TO_LEFT)
-+		     : FIELD_SET(0, DE_CONTROL, DIRECTION,
-+				 LEFT_TO_RIGHT)) | FIELD_SET(0, DE_CONTROL,
-+							     STATUS, START);
-+		SMTC_write2Dreg(DE_CONTROL, de_ctrl);
-+	}
-+
-+	smtc_de_busy = 1;
-+}
-+
-+/*
-+ * This function sets the pixel format that will apply to the 2D Engine.
-+ */
-+void deSetPixelFormat(unsigned long bpp)
-+{
-+	unsigned long de_format;
-+
-+	de_format = SMTC_read2Dreg(DE_STRETCH_FORMAT);
-+
-+	switch (bpp) {
-+	case 8:
-+		de_format =
-+		    FIELD_SET(de_format, DE_STRETCH_FORMAT, PIXEL_FORMAT, 8);
-+		break;
-+	default:
-+	case 16:
-+		de_format =
-+		    FIELD_SET(de_format, DE_STRETCH_FORMAT, PIXEL_FORMAT, 16);
-+		break;
-+	case 32:
-+		de_format =
-+		    FIELD_SET(de_format, DE_STRETCH_FORMAT, PIXEL_FORMAT, 32);
-+		break;
-+	}
-+
-+	SMTC_write2Dreg(DE_STRETCH_FORMAT, de_format);
-+}
-+
-+/*
-+ * System memory to Video memory monochrome expansion.
-+ *
-+ * Source is monochrome image in system memory.  This function expands the
-+ * monochrome data to color image in video memory.
-+ */
-+
-+long deSystemMem2VideoMemMonoBlt(const char *pSrcbuf,
-+				 long srcDelta,
-+				 unsigned long startBit,
-+				 unsigned long dBase,
-+				 unsigned long dPitch,
-+				 unsigned long bpp,
-+				 unsigned long dx, unsigned long dy,
-+				 unsigned long width, unsigned long height,
-+				 unsigned long fColor,
-+				 unsigned long bColor,
-+				 unsigned long rop2) {
-+	unsigned long bytePerPixel;
-+	unsigned long ulBytesPerScan;
-+	unsigned long ul4BytesPerScan;
-+	unsigned long ulBytesRemain;
-+	unsigned long de_ctrl = 0;
-+	unsigned char ajRemain[4];
-+	long i, j;
-+
-+	bytePerPixel = bpp / 8;
-+
-+	/* Just make sure the start bit is within legal range */
-+	startBit &= 7;
-+
-+	ulBytesPerScan = (width + startBit + 7) / 8;
-+	ul4BytesPerScan = ulBytesPerScan & ~3;
-+	ulBytesRemain = ulBytesPerScan & 3;
-+
-+	if (smtc_de_busy)
-+		deWaitForNotBusy();
-+
 +	/*
-+	 * 2D Source Base.  Use 0 for HOST Blt.
++	 * we fall back to GFP_DMA when the mask isn't all 1s,
++	 * so we can't guarantee allocations that must be
++	 * within a tighter range than GFP_DMA..
 +	 */
-+
-+	SMTC_write2Dreg(DE_WINDOW_SOURCE_BASE, 0);
-+
-+	/*
-+	 * 2D Destination Base.
-+	 *
-+	 * It is an address offset (128 bit aligned) from the beginning of
-+	 * frame buffer.
-+	 */
-+
-+	SMTC_write2Dreg(DE_WINDOW_DESTINATION_BASE, dBase);
-+
-+	if (dPitch) {
-+
-+		/*
-+		 * Program pitch (distance between the 1st points of two
-+		 * adjacent lines).
-+		 *
-+		 * Note that input pitch is BYTE value, but the 2D Pitch
-+		 * register uses pixel values. Need Byte to pixel convertion.
-+		 */
-+
-+		SMTC_write2Dreg(DE_PITCH,
-+			FIELD_VALUE(0, DE_PITCH, DESTINATION,
-+			    dPitch /
-+			    bytePerPixel) | FIELD_VALUE(0,
-+							DE_PITCH,
-+							SOURCE,
-+							dPitch /
-+							bytePerPixel));
-+
-+		/* Screen Window width in Pixels.
-+		 *
-+		 * 2D engine uses this value to calculate the linear address in
-+		 * frame buffer for a given point.
-+		 */
-+
-+		SMTC_write2Dreg(DE_WINDOW_WIDTH,
-+			FIELD_VALUE(0, DE_WINDOW_WIDTH, DESTINATION,
-+			    (dPitch /
-+			     bytePerPixel)) | FIELD_VALUE(0,
-+							  DE_WINDOW_WIDTH,
-+							  SOURCE,
-+							  (dPitch
-+							   /
-+							   bytePerPixel)));
-+	}
-+	/* Note: For 2D Source in Host Write, only X_K1 field is needed, and
-+	 * Y_K2 field is not used. For mono bitmap, use startBit for X_K1.
-+	 */
-+
-+	SMTC_write2Dreg(DE_SOURCE,
-+			FIELD_SET(0, DE_SOURCE, WRAP, DISABLE) |
-+			FIELD_VALUE(0, DE_SOURCE, X_K1, startBit) |
-+			FIELD_VALUE(0, DE_SOURCE, Y_K2, 0));
-+
-+	SMTC_write2Dreg(DE_DESTINATION,
-+			FIELD_SET(0, DE_DESTINATION, WRAP, DISABLE) |
-+			FIELD_VALUE(0, DE_DESTINATION, X, dx) |
-+			FIELD_VALUE(0, DE_DESTINATION, Y, dy));
-+
-+	SMTC_write2Dreg(DE_DIMENSION,
-+			FIELD_VALUE(0, DE_DIMENSION, X, width) |
-+			FIELD_VALUE(0, DE_DIMENSION, Y_ET, height));
-+
-+	SMTC_write2Dreg(DE_FOREGROUND, fColor);
-+	SMTC_write2Dreg(DE_BACKGROUND, bColor);
-+
-+	if (bpp)
-+		deSetPixelFormat(bpp);
-+	/* Set the pixel format of the destination */
-+
-+	de_ctrl = FIELD_VALUE(0, DE_CONTROL, ROP, rop2) |
-+	    FIELD_SET(0, DE_CONTROL, ROP_SELECT, ROP2) |
-+	    FIELD_SET(0, DE_CONTROL, COMMAND, HOST_WRITE) |
-+	    FIELD_SET(0, DE_CONTROL, HOST, MONO) |
-+	    FIELD_SET(0, DE_CONTROL, STATUS, START);
-+
-+	SMTC_write2Dreg(DE_CONTROL, de_ctrl | deGetTransparency());
-+
-+	/* Write MONO data (line by line) to 2D Engine data port */
-+	for (i = 0; i < height; i++) {
-+		/* For each line, send the data in chunks of 4 bytes */
-+		for (j = 0; j < (ul4BytesPerScan / 4); j++)
-+			SMTC_write2Ddataport(0,
-+					     *(unsigned long *)(pSrcbuf +
-+								(j * 4)));
-+
-+		if (ulBytesRemain) {
-+			memcpy(ajRemain, pSrcbuf + ul4BytesPerScan,
-+			       ulBytesRemain);
-+			SMTC_write2Ddataport(0, *(unsigned long *)ajRemain);
-+		}
-+
-+		pSrcbuf += srcDelta;
-+	}
-+	smtc_de_busy = 1;
-+
-+	return 0;
-+}
-+
-+/*
-+ * This function gets the transparency status from DE_CONTROL register.
-+ * It returns a double word with the transparent fields properly set,
-+ * while other fields are 0.
-+ */
-+unsigned long deGetTransparency(void)
-+{
-+	unsigned long de_ctrl;
-+
-+	de_ctrl = SMTC_read2Dreg(DE_CONTROL);
-+
-+	de_ctrl &=
-+	    FIELD_MASK(DE_CONTROL_TRANSPARENCY_MATCH) |
-+	    FIELD_MASK(DE_CONTROL_TRANSPARENCY_SELECT) |
-+	    FIELD_MASK(DE_CONTROL_TRANSPARENCY);
-+
-+	return de_ctrl;
-+}
-diff --git a/drivers/video/smi/smtc2d.h b/drivers/video/smi/smtc2d.h
-new file mode 100644
-index 0000000..3cd640c
---- /dev/null
-+++ b/drivers/video/smi/smtc2d.h
-@@ -0,0 +1,530 @@
-+/*
-+ * smtc2d.h -- Silicon Motion SM501 and SM7xx 2D drawing engine functions.
-+ *
-+ * Copyright (C) 2006 Silicon Motion Technology Corp.
-+ * Author: Ge Wang, gewang@siliconmotion.com
-+ *
-+ * Copyright (C) 2009 Lemote, Inc. & Institute of Computing Technology
-+ * Author: Wu Zhangjin, wuzj@lemote.com
-+ *
-+ *  This file is subject to the terms and conditions of the GNU General Public
-+ *  License. See the file COPYING in the main directory of this archive for
-+ *  more details.
-+ */
-+
-+#ifndef NULL
-+#define NULL	 0
-+#endif
-+
-+/* Internal macros */
-+
-+#define _F_START(f)		(0 ? f)
-+#define _F_END(f)		(1 ? f)
-+#define _F_SIZE(f)		(1 + _F_END(f) - _F_START(f))
-+#define _F_MASK(f)		(((1ULL << _F_SIZE(f)) - 1) << _F_START(f))
-+#define _F_NORMALIZE(v, f)	(((v) & _F_MASK(f)) >> _F_START(f))
-+#define _F_DENORMALIZE(v, f)	(((v) << _F_START(f)) & _F_MASK(f))
-+
-+/* Global macros */
-+
-+#define FIELD_GET(x, reg, field) \
-+( \
-+    _F_NORMALIZE((x), reg ## _ ## field) \
-+)
-+
-+#define FIELD_SET(x, reg, field, value) \
-+( \
-+    (x & ~_F_MASK(reg ## _ ## field)) \
-+    | _F_DENORMALIZE(reg ## _ ## field ## _ ## value, reg ## _ ## field) \
-+)
-+
-+#define FIELD_VALUE(x, reg, field, value) \
-+( \
-+    (x & ~_F_MASK(reg ## _ ## field)) \
-+    | _F_DENORMALIZE(value, reg ## _ ## field) \
-+)
-+
-+#define FIELD_CLEAR(reg, field) \
-+( \
-+    ~_F_MASK(reg ## _ ## field) \
-+)
-+
-+/* Field Macros                        */
-+
-+#define FIELD_START(field)	(0 ? field)
-+#define FIELD_END(field)	(1 ? field)
-+#define FIELD_SIZE(field) \
-+	(1 + FIELD_END(field) - FIELD_START(field))
-+
-+#define FIELD_MASK(field) \
-+	(((1 << (FIELD_SIZE(field)-1)) \
-+	| ((1 << (FIELD_SIZE(field)-1)) - 1)) \
-+	<< FIELD_START(field))
-+
-+#define FIELD_NORMALIZE(reg, field) \
-+	(((reg) & FIELD_MASK(field)) >> FIELD_START(field))
-+
-+#define FIELD_DENORMALIZE(field, value) \
-+	(((value) << FIELD_START(field)) & FIELD_MASK(field))
-+
-+#define FIELD_INIT(reg, field, value) \
-+	FIELD_DENORMALIZE(reg ## _ ## field, \
-+		reg ## _ ## field ## _ ## value)
-+
-+#define FIELD_INIT_VAL(reg, field, value) \
-+	(FIELD_DENORMALIZE(reg ## _ ## field, value))
-+
-+#define FIELD_VAL_SET(x, r, f, v) ({ \
-+	x = (x & ~FIELD_MASK(r ## _ ## f)) \
-+	| FIELD_DENORMALIZE(r ## _ ## f, r ## _ ## f ## _ ## v) \
-+})
-+
-+#define RGB(r, g, b)	((unsigned long)(((r) << 16) | ((g) << 8) | (b)))
-+
-+/* Transparent info definition */
-+typedef struct {
-+	unsigned long match;	/* Matching pixel is OPAQUE/TRANSPARENT */
-+	unsigned long select;	/* Transparency controlled by SRC/DST */
-+	unsigned long control;	/* ENABLE/DISABLE transparency */
-+	unsigned long color;	/* Transparent color */
-+} Transparent, *pTransparent;
-+
-+#define PIXEL_DEPTH_1_BP	0	/* 1 bit per pixel */
-+#define PIXEL_DEPTH_8_BPP	1	/* 8 bits per pixel */
-+#define PIXEL_DEPTH_16_BPP	2	/* 16 bits per pixel */
-+#define PIXEL_DEPTH_32_BPP	3	/* 32 bits per pixel */
-+#define PIXEL_DEPTH_YUV422	8	/* 16 bits per pixel YUV422 */
-+#define PIXEL_DEPTH_YUV420	9	/* 16 bits per pixel YUV420 */
-+
-+#define PATTERN_WIDTH		8
-+#define PATTERN_HEIGHT		8
-+
-+#define	TOP_TO_BOTTOM		0
-+#define	BOTTOM_TO_TOP		1
-+#define RIGHT_TO_LEFT		BOTTOM_TO_TOP
-+#define LEFT_TO_RIGHT		TOP_TO_BOTTOM
-+
-+/* Constants used in Transparent structure */
-+#define MATCH_OPAQUE		0x00000000
-+#define MATCH_TRANSPARENT	0x00000400
-+#define SOURCE			0x00000000
-+#define DESTINATION		0x00000200
-+
-+/* 2D registers. */
-+
-+#define	DE_SOURCE			0x000000
-+#define	DE_SOURCE_WRAP			31 : 31
-+#define	DE_SOURCE_WRAP_DISABLE		0
-+#define	DE_SOURCE_WRAP_ENABLE		1
-+#define	DE_SOURCE_X_K1			29 : 16
-+#define	DE_SOURCE_Y_K2			15 : 0
-+
-+#define	DE_DESTINATION			0x000004
-+#define	DE_DESTINATION_WRAP		31 : 31
-+#define	DE_DESTINATION_WRAP_DISABLE	0
-+#define	DE_DESTINATION_WRAP_ENABLE	1
-+#define	DE_DESTINATION_X		28 : 16
-+#define	DE_DESTINATION_Y		15 : 0
-+
-+#define	DE_DIMENSION			0x000008
-+#define	DE_DIMENSION_X			28 : 16
-+#define	DE_DIMENSION_Y_ET		15 : 0
-+
-+#define	DE_CONTROL			0x00000C
-+#define	DE_CONTROL_STATUS		31 : 31
-+#define	DE_CONTROL_STATUS_STOP		0
-+#define	DE_CONTROL_STATUS_START		1
-+#define	DE_CONTROL_PATTERN		30 : 30
-+#define	DE_CONTROL_PATTERN_MONO		0
-+#define	DE_CONTROL_PATTERN_COLOR	1
-+#define	DE_CONTROL_UPDATE_DESTINATION_X		29 : 29
-+#define	DE_CONTROL_UPDATE_DESTINATION_X_DISABLE	0
-+#define	DE_CONTROL_UPDATE_DESTINATION_X_ENABLE	1
-+#define	DE_CONTROL_QUICK_START			28 : 28
-+#define	DE_CONTROL_QUICK_START_DISABLE		0
-+#define	DE_CONTROL_QUICK_START_ENABLE		1
-+#define	DE_CONTROL_DIRECTION			27 : 27
-+#define	DE_CONTROL_DIRECTION_LEFT_TO_RIGHT	0
-+#define	DE_CONTROL_DIRECTION_RIGHT_TO_LEFT	1
-+#define	DE_CONTROL_MAJOR			26 : 26
-+#define	DE_CONTROL_MAJOR_X			0
-+#define	DE_CONTROL_MAJOR_Y			1
-+#define	DE_CONTROL_STEP_X			25 : 25
-+#define	DE_CONTROL_STEP_X_POSITIVE		1
-+#define	DE_CONTROL_STEP_X_NEGATIVE		0
-+#define	DE_CONTROL_STEP_Y			24 : 24
-+#define	DE_CONTROL_STEP_Y_POSITIVE		1
-+#define	DE_CONTROL_STEP_Y_NEGATIVE		0
-+#define	DE_CONTROL_STRETCH			23 : 23
-+#define	DE_CONTROL_STRETCH_DISABLE		0
-+#define	DE_CONTROL_STRETCH_ENABLE		1
-+#define	DE_CONTROL_HOST				22 : 22
-+#define	DE_CONTROL_HOST_COLOR			0
-+#define	DE_CONTROL_HOST_MONO			1
-+#define	DE_CONTROL_LAST_PIXEL			21 : 21
-+#define	DE_CONTROL_LAST_PIXEL_OFF		0
-+#define	DE_CONTROL_LAST_PIXEL_ON		1
-+#define	DE_CONTROL_COMMAND			20 : 16
-+#define	DE_CONTROL_COMMAND_BITBLT		0
-+#define	DE_CONTROL_COMMAND_RECTANGLE_FILL	1
-+#define	DE_CONTROL_COMMAND_DE_TILE		2
-+#define	DE_CONTROL_COMMAND_TRAPEZOID_FILL	3
-+#define	DE_CONTROL_COMMAND_ALPHA_BLEND		4
-+#define	DE_CONTROL_COMMAND_RLE_STRIP		5
-+#define	DE_CONTROL_COMMAND_SHORT_STROKE		6
-+#define	DE_CONTROL_COMMAND_LINE_DRAW		7
-+#define	DE_CONTROL_COMMAND_HOST_WRITE		8
-+#define	DE_CONTROL_COMMAND_HOST_READ		9
-+#define	DE_CONTROL_COMMAND_HOST_WRITE_BOTTOM_UP	10
-+#define	DE_CONTROL_COMMAND_ROTATE		11
-+#define	DE_CONTROL_COMMAND_FONT			12
-+#define	DE_CONTROL_COMMAND_TEXTURE_LOAD		15
-+#define	DE_CONTROL_ROP_SELECT			15 : 15
-+#define	DE_CONTROL_ROP_SELECT_ROP3		0
-+#define	DE_CONTROL_ROP_SELECT_ROP2		1
-+#define	DE_CONTROL_ROP2_SOURCE			14 : 14
-+#define	DE_CONTROL_ROP2_SOURCE_BITMAP		0
-+#define	DE_CONTROL_ROP2_SOURCE_PATTERN		1
-+#define	DE_CONTROL_MONO_DATA			13 : 12
-+#define	DE_CONTROL_MONO_DATA_NOT_PACKED		0
-+#define	DE_CONTROL_MONO_DATA_8_PACKED		1
-+#define	DE_CONTROL_MONO_DATA_16_PACKED		2
-+#define	DE_CONTROL_MONO_DATA_32_PACKED		3
-+#define	DE_CONTROL_REPEAT_ROTATE		11 : 11
-+#define	DE_CONTROL_REPEAT_ROTATE_DISABLE	0
-+#define	DE_CONTROL_REPEAT_ROTATE_ENABLE		1
-+#define	DE_CONTROL_TRANSPARENCY_MATCH		10 : 10
-+#define	DE_CONTROL_TRANSPARENCY_MATCH_OPAQUE		0
-+#define	DE_CONTROL_TRANSPARENCY_MATCH_TRANSPARENT	1
-+#define	DE_CONTROL_TRANSPARENCY_SELECT			9 : 9
-+#define	DE_CONTROL_TRANSPARENCY_SELECT_SOURCE		0
-+#define	DE_CONTROL_TRANSPARENCY_SELECT_DESTINATION	1
-+#define	DE_CONTROL_TRANSPARENCY				8 : 8
-+#define	DE_CONTROL_TRANSPARENCY_DISABLE			0
-+#define	DE_CONTROL_TRANSPARENCY_ENABLE			1
-+#define	DE_CONTROL_ROP					7 : 0
-+
-+/* Pseudo fields. */
-+
-+#define	DE_CONTROL_SHORT_STROKE_DIR			27 : 24
-+#define	DE_CONTROL_SHORT_STROKE_DIR_225			0
-+#define	DE_CONTROL_SHORT_STROKE_DIR_135			1
-+#define	DE_CONTROL_SHORT_STROKE_DIR_315			2
-+#define	DE_CONTROL_SHORT_STROKE_DIR_45			3
-+#define	DE_CONTROL_SHORT_STROKE_DIR_270			4
-+#define	DE_CONTROL_SHORT_STROKE_DIR_90			5
-+#define	DE_CONTROL_SHORT_STROKE_DIR_180			8
-+#define	DE_CONTROL_SHORT_STROKE_DIR_0			10
-+#define	DE_CONTROL_ROTATION				25 : 24
-+#define	DE_CONTROL_ROTATION_0				0
-+#define	DE_CONTROL_ROTATION_270				1
-+#define	DE_CONTROL_ROTATION_90				2
-+#define	DE_CONTROL_ROTATION_180				3
-+
-+#define	DE_PITCH					0x000010
-+#define	DE_PITCH_DESTINATION				28 : 16
-+#define	DE_PITCH_SOURCE					12 : 0
-+
-+#define	DE_FOREGROUND					0x000014
-+#define	DE_FOREGROUND_COLOR				31 : 0
-+
-+#define	DE_BACKGROUND					0x000018
-+#define	DE_BACKGROUND_COLOR				31 : 0
-+
-+#define	DE_STRETCH_FORMAT				0x00001C
-+#define	DE_STRETCH_FORMAT_PATTERN_XY			30 : 30
-+#define	DE_STRETCH_FORMAT_PATTERN_XY_NORMAL		0
-+#define	DE_STRETCH_FORMAT_PATTERN_XY_OVERWRITE		1
-+#define	DE_STRETCH_FORMAT_PATTERN_Y			29 : 27
-+#define	DE_STRETCH_FORMAT_PATTERN_X			25 : 23
-+#define	DE_STRETCH_FORMAT_PIXEL_FORMAT			21 : 20
-+#define	DE_STRETCH_FORMAT_PIXEL_FORMAT_8		0
-+#define	DE_STRETCH_FORMAT_PIXEL_FORMAT_16		1
-+#define	DE_STRETCH_FORMAT_PIXEL_FORMAT_24		3
-+#define	DE_STRETCH_FORMAT_PIXEL_FORMAT_32		2
-+#define	DE_STRETCH_FORMAT_ADDRESSING			19 : 16
-+#define	DE_STRETCH_FORMAT_ADDRESSING_XY			0
-+#define	DE_STRETCH_FORMAT_ADDRESSING_LINEAR		15
-+#define	DE_STRETCH_FORMAT_SOURCE_HEIGHT			11 : 0
-+
-+#define	DE_COLOR_COMPARE				0x000020
-+#define	DE_COLOR_COMPARE_COLOR				23 : 0
-+
-+#define	DE_COLOR_COMPARE_MASK				0x000024
-+#define	DE_COLOR_COMPARE_MASK_MASKS			23 : 0
-+
-+#define	DE_MASKS					0x000028
-+#define	DE_MASKS_BYTE_MASK				31 : 16
-+#define	DE_MASKS_BIT_MASK				15 : 0
-+
-+#define	DE_CLIP_TL					0x00002C
-+#define	DE_CLIP_TL_TOP					31 : 16
-+#define	DE_CLIP_TL_STATUS				13 : 13
-+#define	DE_CLIP_TL_STATUS_DISABLE			0
-+#define	DE_CLIP_TL_STATUS_ENABLE			1
-+#define	DE_CLIP_TL_INHIBIT				12 : 12
-+#define	DE_CLIP_TL_INHIBIT_OUTSIDE			0
-+#define	DE_CLIP_TL_INHIBIT_INSIDE			1
-+#define	DE_CLIP_TL_LEFT					11 : 0
-+
-+#define	DE_CLIP_BR					0x000030
-+#define	DE_CLIP_BR_BOTTOM				31 : 16
-+#define	DE_CLIP_BR_RIGHT				12 : 0
-+
-+#define	DE_MONO_PATTERN_LOW				0x000034
-+#define	DE_MONO_PATTERN_LOW_PATTERN			31 : 0
-+
-+#define	DE_MONO_PATTERN_HIGH				0x000038
-+#define	DE_MONO_PATTERN_HIGH_PATTERN			31 : 0
-+
-+#define	DE_WINDOW_WIDTH					0x00003C
-+#define	DE_WINDOW_WIDTH_DESTINATION			28 : 16
-+#define	DE_WINDOW_WIDTH_SOURCE				12 : 0
-+
-+#define	DE_WINDOW_SOURCE_BASE				0x000040
-+#define	DE_WINDOW_SOURCE_BASE_EXT			27 : 27
-+#define	DE_WINDOW_SOURCE_BASE_EXT_LOCAL			0
-+#define	DE_WINDOW_SOURCE_BASE_EXT_EXTERNAL		1
-+#define	DE_WINDOW_SOURCE_BASE_CS			26 : 26
-+#define	DE_WINDOW_SOURCE_BASE_CS_0			0
-+#define	DE_WINDOW_SOURCE_BASE_CS_1			1
-+#define	DE_WINDOW_SOURCE_BASE_ADDRESS			25 : 0
-+
-+#define	DE_WINDOW_DESTINATION_BASE			0x000044
-+#define	DE_WINDOW_DESTINATION_BASE_EXT			27 : 27
-+#define	DE_WINDOW_DESTINATION_BASE_EXT_LOCAL		0
-+#define	DE_WINDOW_DESTINATION_BASE_EXT_EXTERNAL		1
-+#define	DE_WINDOW_DESTINATION_BASE_CS			26 : 26
-+#define	DE_WINDOW_DESTINATION_BASE_CS_0			0
-+#define	DE_WINDOW_DESTINATION_BASE_CS_1			1
-+#define	DE_WINDOW_DESTINATION_BASE_ADDRESS		25 : 0
-+
-+#define	DE_ALPHA					0x000048
-+#define	DE_ALPHA_VALUE					7 : 0
-+
-+#define	DE_WRAP						0x00004C
-+#define	DE_WRAP_X					31 : 16
-+#define	DE_WRAP_Y					15 : 0
-+
-+#define	DE_STATUS					0x000050
-+#define	DE_STATUS_CSC					1 : 1
-+#define	DE_STATUS_CSC_CLEAR				0
-+#define	DE_STATUS_CSC_NOT_ACTIVE			0
-+#define	DE_STATUS_CSC_ACTIVE				1
-+#define	DE_STATUS_2D					0 : 0
-+#define	DE_STATUS_2D_CLEAR				0
-+#define	DE_STATUS_2D_NOT_ACTIVE				0
-+#define	DE_STATUS_2D_ACTIVE				1
-+
-+/* Color Space Conversion registers. */
-+
-+#define	CSC_Y_SOURCE_BASE				0x0000C8
-+#define	CSC_Y_SOURCE_BASE_EXT				27 : 27
-+#define	CSC_Y_SOURCE_BASE_EXT_LOCAL			0
-+#define	CSC_Y_SOURCE_BASE_EXT_EXTERNAL			1
-+#define	CSC_Y_SOURCE_BASE_CS				26 : 26
-+#define	CSC_Y_SOURCE_BASE_CS_0				0
-+#define	CSC_Y_SOURCE_BASE_CS_1				1
-+#define	CSC_Y_SOURCE_BASE_ADDRESS			25 : 0
-+
-+#define	CSC_CONSTANTS					0x0000CC
-+#define	CSC_CONSTANTS_Y					31 : 24
-+#define	CSC_CONSTANTS_R					23 : 16
-+#define	CSC_CONSTANTS_G					15 : 8
-+#define	CSC_CONSTANTS_B					7 : 0
-+
-+#define	CSC_Y_SOURCE_X					0x0000D0
-+#define	CSC_Y_SOURCE_X_INTEGER				26 : 16
-+#define	CSC_Y_SOURCE_X_FRACTION				15 : 3
-+
-+#define	CSC_Y_SOURCE_Y					0x0000D4
-+#define	CSC_Y_SOURCE_Y_INTEGER				27 : 16
-+#define	CSC_Y_SOURCE_Y_FRACTION				15 : 3
-+
-+#define	CSC_U_SOURCE_BASE				0x0000D8
-+#define	CSC_U_SOURCE_BASE_EXT				27 : 27
-+#define	CSC_U_SOURCE_BASE_EXT_LOCAL			0
-+#define	CSC_U_SOURCE_BASE_EXT_EXTERNAL			1
-+#define	CSC_U_SOURCE_BASE_CS				26 : 26
-+#define	CSC_U_SOURCE_BASE_CS_0				0
-+#define	CSC_U_SOURCE_BASE_CS_1				1
-+#define	CSC_U_SOURCE_BASE_ADDRESS			25 : 0
-+
-+#define	CSC_V_SOURCE_BASE				0x0000DC
-+#define	CSC_V_SOURCE_BASE_EXT				27 : 27
-+#define	CSC_V_SOURCE_BASE_EXT_LOCAL			0
-+#define	CSC_V_SOURCE_BASE_EXT_EXTERNAL			1
-+#define	CSC_V_SOURCE_BASE_CS				26 : 26
-+#define	CSC_V_SOURCE_BASE_CS_0				0
-+#define	CSC_V_SOURCE_BASE_CS_1				1
-+#define	CSC_V_SOURCE_BASE_ADDRESS			25 : 0
-+
-+#define	CSC_SOURCE_DIMENSION				0x0000E0
-+#define	CSC_SOURCE_DIMENSION_X				31 : 16
-+#define	CSC_SOURCE_DIMENSION_Y				15 : 0
-+
-+#define	CSC_SOURCE_PITCH				0x0000E4
-+#define	CSC_SOURCE_PITCH_Y				31 : 16
-+#define	CSC_SOURCE_PITCH_UV				15 : 0
-+
-+#define	CSC_DESTINATION					0x0000E8
-+#define	CSC_DESTINATION_WRAP				31 : 31
-+#define	CSC_DESTINATION_WRAP_DISABLE			0
-+#define	CSC_DESTINATION_WRAP_ENABLE			1
-+#define	CSC_DESTINATION_X				27 : 16
-+#define	CSC_DESTINATION_Y				11 : 0
-+
-+#define	CSC_DESTINATION_DIMENSION			0x0000EC
-+#define	CSC_DESTINATION_DIMENSION_X			31 : 16
-+#define	CSC_DESTINATION_DIMENSION_Y			15 : 0
-+
-+#define	CSC_DESTINATION_PITCH				0x0000F0
-+#define	CSC_DESTINATION_PITCH_X				31 : 16
-+#define	CSC_DESTINATION_PITCH_Y				15 : 0
-+
-+#define	CSC_SCALE_FACTOR				0x0000F4
-+#define	CSC_SCALE_FACTOR_HORIZONTAL			31 : 16
-+#define	CSC_SCALE_FACTOR_VERTICAL			15 : 0
-+
-+#define	CSC_DESTINATION_BASE				0x0000F8
-+#define	CSC_DESTINATION_BASE_EXT			27 : 27
-+#define	CSC_DESTINATION_BASE_EXT_LOCAL			0
-+#define	CSC_DESTINATION_BASE_EXT_EXTERNAL		1
-+#define	CSC_DESTINATION_BASE_CS				26 : 26
-+#define	CSC_DESTINATION_BASE_CS_0			0
-+#define	CSC_DESTINATION_BASE_CS_1			1
-+#define	CSC_DESTINATION_BASE_ADDRESS			25 : 0
-+
-+#define	CSC_CONTROL					0x0000FC
-+#define	CSC_CONTROL_STATUS				31 : 31
-+#define	CSC_CONTROL_STATUS_STOP				0
-+#define	CSC_CONTROL_STATUS_START			1
-+#define	CSC_CONTROL_SOURCE_FORMAT			30 : 28
-+#define	CSC_CONTROL_SOURCE_FORMAT_YUV422		0
-+#define	CSC_CONTROL_SOURCE_FORMAT_YUV420I		1
-+#define	CSC_CONTROL_SOURCE_FORMAT_YUV420		2
-+#define	CSC_CONTROL_SOURCE_FORMAT_YVU9			3
-+#define	CSC_CONTROL_SOURCE_FORMAT_IYU1			4
-+#define	CSC_CONTROL_SOURCE_FORMAT_IYU2			5
-+#define	CSC_CONTROL_SOURCE_FORMAT_RGB565		6
-+#define	CSC_CONTROL_SOURCE_FORMAT_RGB8888		7
-+#define	CSC_CONTROL_DESTINATION_FORMAT			27 : 26
-+#define	CSC_CONTROL_DESTINATION_FORMAT_RGB565		0
-+#define	CSC_CONTROL_DESTINATION_FORMAT_RGB8888		1
-+#define	CSC_CONTROL_HORIZONTAL_FILTER			25 : 25
-+#define	CSC_CONTROL_HORIZONTAL_FILTER_DISABLE		0
-+#define	CSC_CONTROL_HORIZONTAL_FILTER_ENABLE		1
-+#define	CSC_CONTROL_VERTICAL_FILTER			24 : 24
-+#define	CSC_CONTROL_VERTICAL_FILTER_DISABLE		0
-+#define	CSC_CONTROL_VERTICAL_FILTER_ENABLE		1
-+#define	CSC_CONTROL_BYTE_ORDER				23 : 23
-+#define	CSC_CONTROL_BYTE_ORDER_YUYV			0
-+#define	CSC_CONTROL_BYTE_ORDER_UYVY			1
-+
-+#define	DE_DATA_PORT_501				0x110000
-+#define	DE_DATA_PORT_712				0x400000
-+#define	DE_DATA_PORT_722				0x6000
-+
-+/* point to virtual Memory Map IO starting address */
-+extern char *smtc_RegBaseAddress;
-+/* point to virtual video memory starting address */
-+extern char *smtc_VRAMBaseAddress;
-+extern unsigned char smtc_de_busy;
-+
-+extern unsigned long memRead32(unsigned long nOffset);
-+extern void memWrite32(unsigned long nOffset, unsigned long nData);
-+extern unsigned long SMTC_read2Dreg(unsigned long nOffset);
-+
-+/* 2D functions */
-+extern void deInit(unsigned int nModeWidth, unsigned int nModeHeight,
-+		   unsigned int bpp);
-+
-+extern void deWaitForNotBusy(void);
-+
-+extern void deVerticalLine(unsigned long dst_base,
-+	unsigned long dst_pitch,
-+	unsigned long nX,
-+	unsigned long nY,
-+	unsigned long dst_height,
-+	unsigned long nColor);
-+
-+extern void deHorizontalLine(unsigned long dst_base,
-+	unsigned long dst_pitch,
-+	unsigned long nX,
-+	unsigned long nY,
-+	unsigned long dst_width,
-+	unsigned long nColor);
-+
-+extern void deLine(unsigned long dst_base,
-+	unsigned long dst_pitch,
-+	unsigned long nX1,
-+	unsigned long nY1,
-+	unsigned long nX2,
-+	unsigned long nY2,
-+	unsigned long nColor);
-+
-+extern void deFillRect(unsigned long dst_base,
-+	unsigned long dst_pitch,
-+	unsigned long dst_X,
-+	unsigned long dst_Y,
-+	unsigned long dst_width,
-+	unsigned long dst_height,
-+	unsigned long nColor);
-+
-+extern void deRotatePattern(unsigned char *pattern_dstaddr,
-+	unsigned long pattern_src_addr,
-+	unsigned long pattern_BPP,
-+	unsigned long pattern_stride,
-+	int	patternX,
-+	int	patternY);
-+
-+extern void deCopy(unsigned long dst_base,
-+	unsigned long dst_pitch,
-+	unsigned long dst_BPP,
-+	unsigned long dst_X,
-+	unsigned long dst_Y,
-+	unsigned long dst_width,
-+	unsigned long dst_height,
-+	unsigned long src_base,
-+	unsigned long src_pitch,
-+	unsigned long src_X,
-+	unsigned long src_Y,
-+	pTransparent	pTransp,
-+	unsigned char nROP2);
-+
-+/*
-+ * System memory to Video memory monochrome expansion.
-+ *
-+ * Source is monochrome image in system memory.  This function expands the
-+ * monochrome data to color image in video memory.
-+ *
-+ * @pSrcbuf: pointer to start of source buffer in system memory
-+ * @srcDelta: Pitch value (in bytes) of the source buffer, +ive means top
-+ * 		down and -ive mean button up
-+ * @startBit: Mono data can start at any bit in a byte, this value should
-+ * 		be 0 to 7
-+ * @dBase: Address of destination :  offset in frame buffer
-+ * @dPitch: Pitch value of destination surface in BYTE
-+ * @bpp: Color depth of destination surface
-+ * @dx, dy: Starting coordinate of destination surface
-+ * @width, height: width and height of rectange in pixel value
-+ * @fColor,bColor: Foreground, Background color (corresponding to a 1, 0 in
-+ * 	the monochrome data)
-+ * @rop2: ROP value
-+ */
-+
-+extern long deSystemMem2VideoMemMonoBlt(
-+	const char *pSrcbuf,
-+	long srcDelta,
-+	unsigned long startBit,
-+	unsigned long dBase,
-+	unsigned long dPitch,
-+	unsigned long bpp,
-+	unsigned long dx, unsigned long dy,
-+	unsigned long width, unsigned long height,
-+	unsigned long fColor,
-+	unsigned long bColor,
-+	unsigned long rop2);
-+
-+extern unsigned long deGetTransparency(void);
-+extern void deSetPixelFormat(unsigned long bpp);
-diff --git a/drivers/video/smi/smtcfb.c b/drivers/video/smi/smtcfb.c
-new file mode 100644
-index 0000000..cfc44bb
---- /dev/null
-+++ b/drivers/video/smi/smtcfb.c
-@@ -0,0 +1,1138 @@
-+/*
-+ * smtcfb.c -- Silicon Motion SM501 and SM7xx frame buffer device
-+ *
-+ * Copyright (C) 2006 Silicon Motion Technology Corp.
-+ * Authors: Ge Wang, gewang@siliconmotion.com
-+ * 	    Boyod boyod.yang@siliconmotion.com.cn
-+ *
-+ * Copyright (C) 2009 Lemote, Inc. & Institute of Computing Technology
-+ * Author: Wu Zhangjin, wuzj@lemote.com
-+ *
-+ *  This file is subject to the terms and conditions of the GNU General Public
-+ *  License. See the file COPYING in the main directory of this archive for
-+ *  more details.
-+ *
-+ * Version 0.10.26192.21.01
-+ * 	- Add PowerPC/Big endian support
-+ * 	- Add 2D support for Lynx
-+ * 	- Verified on2.6.19.2  Boyod.yang <boyod.yang@siliconmotion.com.cn>
-+ *
-+ * Version 0.09.2621.00.01
-+ * 	- Only support Linux Kernel's version 2.6.21.
-+ *	Boyod.yang  <boyod.yang@siliconmotion.com.cn>
-+ *
-+ * Version 0.09
-+ * 	- Only support Linux Kernel's version 2.6.12.
-+ * 	Boyod.yang <boyod.yang@siliconmotion.com.cn>
-+ */
-+
-+#ifndef __KERNEL__
-+#define __KERNEL__
-+#endif
-+
-+#include <linux/io.h>
-+#include <linux/fb.h>
-+#include <linux/pci.h>
-+#include <linux/init.h>
-+#include <linux/uaccess.h>
-+#include <linux/screen_info.h>
-+
-+#ifdef CONFIG_PM
-+#include <linux/pm.h>
-+#endif
-+
-+#include "smtcfb.h"
-+#include "smtc2d.h"
-+
-+#ifdef DEBUG
-+#define smdbg(format, arg...)	printk(KERN_DEBUG format , ## arg)
-+#else
-+#define smdbg(format, arg...)
-+#endif
-+
-+/*
-+* Private structure
-+*/
-+struct smtcfb_info {
-+	/*
-+	 * The following is a pointer to be passed into the
-+	 * functions below.  The modules outside the main
-+	 * voyager.c driver have no knowledge as to what
-+	 * is within this structure.
-+	 */
-+	struct fb_info fb;
-+	struct display_switch *dispsw;
-+	struct pci_dev *dev;
-+	signed int currcon;
-+
-+	struct {
-+		u8 red, green, blue;
-+	} palette[NR_RGB];
-+
-+	u_int palette_size;
-+};
-+
-+struct par_info {
-+	/*
-+	 * Hardware
-+	 */
-+	u16 chipID;
-+	unsigned char __iomem *m_pMMIO;
-+	char __iomem *m_pLFB;
-+	char *m_pDPR;
-+	char *m_pVPR;
-+	char *m_pCPR;
-+
-+	u_int width;
-+	u_int height;
-+	u_int hz;
-+	u_long BaseAddressInVRAM;
-+	u8 chipRevID;
-+};
-+
-+struct vesa_mode_table {
-+	char mode_index[15];
-+	u16 lfb_width;
-+	u16 lfb_height;
-+	u16 lfb_depth;
-+};
-+
-+static struct vesa_mode_table vesa_mode[] = {
-+	{"640x480x8", 640, 480, 8},
-+	{"800x480x8", 800, 480, 8},
-+	{"800x600x8", 800, 600, 8},
-+	{"1024x768x8", 1024, 768, 8},
-+	{"1280x1024x8", 1280, 1024, 8},
-+
-+	{"640x480x16", 640, 480, 16},
-+	{"800x480x16", 800, 480, 16},
-+	{"800x600x16", 800, 600, 16},
-+	{"1024x768x16", 1024, 768, 16},
-+	{"1280x1024x16", 1280, 1024, 16},
-+
-+	{"640x480x24", 640, 480, 24},
-+	{"800x480x24", 800, 480, 24},
-+	{"800x600x24", 800, 600, 24},
-+	{"1024x768x24", 1024, 768, 24},
-+	{"1280x1024x24", 1280, 1024, 24},
-+};
-+
-+char __iomem *smtc_RegBaseAddress;	/* Memory Map IO starting address */
-+char __iomem *smtc_VRAMBaseAddress;	/* video memory starting address */
-+
-+char *smtc_2DBaseAddress;	/* 2D engine starting address */
-+char *smtc_2Ddataport;		/* 2D data port offset */
-+short smtc_2Dacceleration;
-+
-+static u32 colreg[17];
-+static struct par_info hw;	/* hardware information */
-+
-+#if defined(CONFIG_FB_SM7XX_DUALHEAD)
-+
-+static u32 colreg2[17];
-+/* hardware information for second display (CRT) */
-+static struct par_info hw2;
-+/* fb_info for second display (CRT) */
-+struct smtcfb_info smtcfb_info2;
-+
-+#endif	/* CONFIG_FB_SM501_DUALHEAD */
-+
-+u16 smtc_ChipIDs[] = {
-+	0x710,
-+	0x712,
-+	0x720
-+};
-+
-+int sm712be_flag;
-+
-+#define numSMTCchipIDs (sizeof(smtc_ChipIDs) / sizeof(u16))
-+
-+void deWaitForNotBusy(void)
-+{
-+	unsigned long i = 0x1000000;
-+	while (i--) {
-+		if ((smtc_seqr(0x16) & 0x18) == 0x10)
-+			break;
-+	}
-+	smtc_de_busy = 0;
-+}
-+
-+static void sm712_set_timing(struct smtcfb_info *sfb,
-+			     struct par_info *ppar_info)
-+{
-+	int i = 0, j = 0;
-+	u32 m_nScreenStride;
-+
-+	smdbg("\nppar_info->width = %d ppar_info->height = %d"
-+			"sfb->fb.var.bits_per_pixel = %d ppar_info->hz = %d\n",
-+			ppar_info->width, ppar_info->height,
-+			sfb->fb.var.bits_per_pixel, ppar_info->hz);
-+
-+	for (j = 0; j < numVGAModes; j++) {
-+		if (VGAMode[j].mmSizeX == ppar_info->width &&
-+		    VGAMode[j].mmSizeY == ppar_info->height &&
-+		    VGAMode[j].bpp == sfb->fb.var.bits_per_pixel &&
-+		    VGAMode[j].hz == ppar_info->hz) {
-+
-+			smdbg("\nVGAMode[j].mmSizeX  = %d VGAMode[j].mmSizeY ="
-+					"%d VGAMode[j].bpp = %d"
-+					"VGAMode[j].hz=%d\n",
-+					VGAMode[j].mmSizeX, VGAMode[j].mmSizeY,
-+					VGAMode[j].bpp, VGAMode[j].hz);
-+
-+			smdbg("VGAMode index=%d\n", j);
-+
-+			smtc_mmiowb(0x0, 0x3c6);
-+
-+			smtc_seqw(0, 0x1);
-+
-+			smtc_mmiowb(VGAMode[j].Init_MISC, 0x3c2);
-+
-+			/* init SEQ register SR00 - SR04 */
-+			for (i = 0; i < SIZE_SR00_SR04; i++)
-+				smtc_seqw(i, VGAMode[j].Init_SR00_SR04[i]);
-+
-+			/* init SEQ register SR10 - SR24 */
-+			for (i = 0; i < SIZE_SR10_SR24; i++)
-+				smtc_seqw(i + 0x10,
-+					  VGAMode[j].Init_SR10_SR24[i]);
-+
-+			/* init SEQ register SR30 - SR75 */
-+			for (i = 0; i < SIZE_SR30_SR75; i++)
-+				if (((i + 0x30) != 0x62) \
-+					&& ((i + 0x30) != 0x6a) \
-+					&& ((i + 0x30) != 0x6b))
-+					smtc_seqw(i + 0x30,
-+						VGAMode[j].Init_SR30_SR75[i]);
-+
-+			/* init SEQ register SR80 - SR93 */
-+			for (i = 0; i < SIZE_SR80_SR93; i++)
-+				smtc_seqw(i + 0x80,
-+					  VGAMode[j].Init_SR80_SR93[i]);
-+
-+			/* init SEQ register SRA0 - SRAF */
-+			for (i = 0; i < SIZE_SRA0_SRAF; i++)
-+				smtc_seqw(i + 0xa0,
-+					  VGAMode[j].Init_SRA0_SRAF[i]);
-+
-+			/* init Graphic register GR00 - GR08 */
-+			for (i = 0; i < SIZE_GR00_GR08; i++)
-+				smtc_grphw(i, VGAMode[j].Init_GR00_GR08[i]);
-+
-+			/* init Attribute register AR00 - AR14 */
-+			for (i = 0; i < SIZE_AR00_AR14; i++)
-+				smtc_attrw(i, VGAMode[j].Init_AR00_AR14[i]);
-+
-+			/* init CRTC register CR00 - CR18 */
-+			for (i = 0; i < SIZE_CR00_CR18; i++)
-+				smtc_crtcw(i, VGAMode[j].Init_CR00_CR18[i]);
-+
-+			/* init CRTC register CR30 - CR4D */
-+			for (i = 0; i < SIZE_CR30_CR4D; i++)
-+				smtc_crtcw(i + 0x30,
-+					   VGAMode[j].Init_CR30_CR4D[i]);
-+
-+			/* init CRTC register CR90 - CRA7 */
-+			for (i = 0; i < SIZE_CR90_CRA7; i++)
-+				smtc_crtcw(i + 0x90,
-+					   VGAMode[j].Init_CR90_CRA7[i]);
-+		}
-+	}
-+	smtc_mmiowb(0x67, 0x3c2);
-+
-+	/* set VPR registers */
-+	writel(0x0, ppar_info->m_pVPR + 0x0C);
-+	writel(0x0, ppar_info->m_pVPR + 0x40);
-+
-+	/* set data width */
-+	m_nScreenStride =
-+		(ppar_info->width * sfb->fb.var.bits_per_pixel) / 64;
-+	switch (sfb->fb.var.bits_per_pixel) {
-+	case 8:
-+		writel(0x0, ppar_info->m_pVPR + 0x0);
-+		break;
-+	case 16:
-+		writel(0x00020000, ppar_info->m_pVPR + 0x0);
-+		break;
-+	case 24:
-+		writel(0x00040000, ppar_info->m_pVPR + 0x0);
-+		break;
-+	case 32:
-+		writel(0x00030000, ppar_info->m_pVPR + 0x0);
-+		break;
-+	}
-+	writel((u32) (((m_nScreenStride + 2) << 16) | m_nScreenStride),
-+	       ppar_info->m_pVPR + 0x10);
-+
-+}
-+
-+static void sm712_setpalette(int regno, unsigned red, unsigned green,
-+			     unsigned blue, struct fb_info *info)
-+{
-+	struct par_info *cur_par = (struct par_info *)info->par;
-+
-+	if (cur_par->BaseAddressInVRAM)
-+		/*
-+		 * second display palette for dual head. Enable CRT RAM, 6-bit
-+		 * RAM
-+		 */
-+		smtc_seqw(0x66, (smtc_seqr(0x66) & 0xC3) | 0x20);
-+	else
-+		/* primary display palette. Enable LCD RAM only, 6-bit RAM */
-+		smtc_seqw(0x66, (smtc_seqr(0x66) & 0xC3) | 0x10);
-+	smtc_mmiowb(regno, dac_reg);
-+	smtc_mmiowb(red >> 10, dac_val);
-+	smtc_mmiowb(green >> 10, dac_val);
-+	smtc_mmiowb(blue >> 10, dac_val);
-+}
-+
-+static void smtc_set_timing(struct smtcfb_info *sfb, struct par_info
-+		*ppar_info)
-+{
-+	switch (ppar_info->chipID) {
-+	case 0x710:
-+	case 0x712:
-+	case 0x720:
-+		sm712_set_timing(sfb, ppar_info);
-+		break;
-+	}
-+}
-+
-+static struct fb_var_screeninfo smtcfb_var = {
-+	.xres = 1024,
-+	.yres = 600,
-+	.xres_virtual = 1024,
-+	.yres_virtual = 600,
-+	.bits_per_pixel = 16,
-+	.red = {16, 8, 0},
-+	.green = {8, 8, 0},
-+	.blue = {0, 8, 0},
-+	.activate = FB_ACTIVATE_NOW,
-+	.height = -1,
-+	.width = -1,
-+	.vmode = FB_VMODE_NONINTERLACED,
-+};
-+
-+static struct fb_fix_screeninfo smtcfb_fix = {
-+	.id = "sm712fb",
-+	.type = FB_TYPE_PACKED_PIXELS,
-+	.visual = FB_VISUAL_TRUECOLOR,
-+	.line_length = 800 * 3,
-+	.accel = FB_ACCEL_SMI_LYNX,
-+};
-+
-+/* chan_to_field
-+ *
-+ * convert a colour value into a field position
-+ *
-+ * from pxafb.c
-+ */
-+
-+static inline unsigned int chan_to_field(unsigned int chan,
-+					 struct fb_bitfield *bf)
-+{
-+	chan &= 0xffff;
-+	chan >>= 16 - bf->length;
-+	return chan << bf->offset;
-+}
-+
-+static int smtc_setcolreg(unsigned regno, unsigned red, unsigned green,
-+			  unsigned blue, unsigned trans, struct fb_info *info)
-+{
-+	struct smtcfb_info *sfb = (struct smtcfb_info *)info;
-+	u32 val;
-+
-+	if (regno > 255)
-+		return 1;
-+
-+	switch (sfb->fb.fix.visual) {
-+	case FB_VISUAL_DIRECTCOLOR:
-+	case FB_VISUAL_TRUECOLOR:
-+		/*
-+		 * 16/32 bit true-colour, use pseuo-palette for 16 base color
-+		 */
-+		if (regno < 16) {
-+			if (sfb->fb.var.bits_per_pixel == 16) {
-+				u32 *pal = sfb->fb.pseudo_palette;
-+				val = chan_to_field(red, &sfb->fb.var.red);
-+				val |= chan_to_field(green, \
-+						&sfb->fb.var.green);
-+				val |= chan_to_field(blue, &sfb->fb.var.blue);
-+#ifdef __BIG_ENDIAN
-+				pal[regno] =
-+				    ((red & 0xf800) >> 8) |
-+				    ((green & 0xe000) >> 13) |
-+				    ((green & 0x1c00) << 3) |
-+				    ((blue & 0xf800) >> 3);
-+#else
-+				pal[regno] = val;
-+#endif
-+			} else {
-+				u32 *pal = sfb->fb.pseudo_palette;
-+				val = chan_to_field(red, &sfb->fb.var.red);
-+				val |= chan_to_field(green, \
-+						&sfb->fb.var.green);
-+				val |= chan_to_field(blue, &sfb->fb.var.blue);
-+#ifdef __BIG_ENDIAN
-+				val =
-+				    (val & 0xff00ff00 >> 8) |
-+				    (val & 0x00ff00ff << 8);
-+#endif
-+				pal[regno] = val;
-+			}
-+		}
-+		break;
-+
-+	case FB_VISUAL_PSEUDOCOLOR:
-+		/* color depth 8 bit */
-+		sm712_setpalette(regno, red, green, blue, info);
-+		break;
-+
-+	default:
-+		return 1;	/* unknown type */
-+	}
-+
-+	return 0;
-+
-+}
-+
-+#ifdef __BIG_ENDIAN
-+static ssize_t
-+smtcfb_read(struct file *file, char __user * buf, size_t count, loff_t * ppos)
-+{
-+	unsigned long p = *ppos;
-+
-+	struct inode *inode = file->f_dentry->d_inode;
-+	int fbidx = iminor(inode);
-+	struct fb_info *info = registered_fb[fbidx];
-+
-+	u32 *buffer, *dst;
-+	u32 __iomem *src;
-+	int c, i, cnt = 0, err = 0;
-+	unsigned long total_size;
-+
-+	if (!info || !info->screen_base)
-+		return -ENODEV;
-+
-+	if (info->state != FBINFO_STATE_RUNNING)
-+		return -EPERM;
-+
-+	total_size = info->screen_size;
-+
-+	if (total_size == 0)
-+		total_size = info->fix.smem_len;
-+
-+	if (p >= total_size)
++	if (mask < DMA_BIT_MASK(24))
 +		return 0;
 +
-+	if (count >= total_size)
-+		count = total_size;
-+
-+	if (count + p > total_size)
-+		count = total_size - p;
-+
-+	buffer = kmalloc((count > PAGE_SIZE) ? PAGE_SIZE : count, GFP_KERNEL);
-+	if (!buffer)
-+		return -ENOMEM;
-+
-+	src = (u32 __iomem *) (info->screen_base + p);
-+
-+	if (info->fbops->fb_sync)
-+		info->fbops->fb_sync(info);
-+
-+	while (count) {
-+		c = (count > PAGE_SIZE) ? PAGE_SIZE : count;
-+		dst = buffer;
-+		for (i = c >> 2; i--;) {
-+			*dst = fb_readl(src++);
-+			*dst =
-+			    (*dst & 0xff00ff00 >> 8) |
-+			    (*dst & 0x00ff00ff << 8);
-+			dst++;
-+		}
-+		if (c & 3) {
-+			u8 *dst8 = (u8 *) dst;
-+			u8 __iomem *src8 = (u8 __iomem *) src;
-+
-+			for (i = c & 3; i--;) {
-+				if (i & 1) {
-+					*dst8++ = fb_readb(++src8);
-+				} else {
-+					*dst8++ = fb_readb(--src8);
-+					src8 += 2;
-+				}
-+			}
-+			src = (u32 __iomem *) src8;
-+		}
-+
-+		if (copy_to_user(buf, buffer, c)) {
-+			err = -EFAULT;
-+			break;
-+		}
-+		*ppos += c;
-+		buf += c;
-+		cnt += c;
-+		count -= c;
-+	}
-+
-+	kfree(buffer);
-+
-+	return (err) ? err : cnt;
++	return 1;
 +}
 +
-+static ssize_t
-+smtcfb_write(struct file *file, const char __user *buf, size_t count,
-+	     loff_t *ppos)
++static inline void plat_extra_sync_for_device(struct device *dev)
 +{
-+	unsigned long p = *ppos;
-+	struct inode *inode = file->f_dentry->d_inode;
-+	int fbidx = iminor(inode);
-+	struct fb_info *info = registered_fb[fbidx];
-+	u32 *buffer, *src;
-+	u32 __iomem *dst;
-+	int c, i, cnt = 0, err = 0;
-+	unsigned long total_size;
-+
-+	if (!info || !info->screen_base)
-+		return -ENODEV;
-+
-+	if (info->state != FBINFO_STATE_RUNNING)
-+		return -EPERM;
-+
-+	total_size = info->screen_size;
-+
-+	if (total_size == 0)
-+		total_size = info->fix.smem_len;
-+
-+	if (p > total_size)
-+		return -EFBIG;
-+
-+	if (count > total_size) {
-+		err = -EFBIG;
-+		count = total_size;
-+	}
-+
-+	if (count + p > total_size) {
-+		if (!err)
-+			err = -ENOSPC;
-+
-+		count = total_size - p;
-+	}
-+
-+	buffer = kmalloc((count > PAGE_SIZE) ? PAGE_SIZE : count, GFP_KERNEL);
-+	if (!buffer)
-+		return -ENOMEM;
-+
-+	dst = (u32 __iomem *) (info->screen_base + p);
-+
-+	if (info->fbops->fb_sync)
-+		info->fbops->fb_sync(info);
-+
-+	while (count) {
-+		c = (count > PAGE_SIZE) ? PAGE_SIZE : count;
-+		src = buffer;
-+
-+		if (copy_from_user(src, buf, c)) {
-+			err = -EFAULT;
-+			break;
-+		}
-+
-+		for (i = c >> 2; i--;) {
-+			fb_writel((*src & 0xff00ff00 >> 8) |
-+				  (*src & 0x00ff00ff << 8), dst++);
-+			src++;
-+		}
-+		if (c & 3) {
-+			u8 *src8 = (u8 *) src;
-+			u8 __iomem *dst8 = (u8 __iomem *) dst;
-+
-+			for (i = c & 3; i--;) {
-+				if (i & 1) {
-+					fb_writeb(*src8++, ++dst8);
-+				} else {
-+					fb_writeb(*src8++, --dst8);
-+					dst8 += 2;
-+				}
-+			}
-+			dst = (u32 __iomem *) dst8;
-+		}
-+
-+		*ppos += c;
-+		buf += c;
-+		cnt += c;
-+		count -= c;
-+	}
-+
-+	kfree(buffer);
-+
-+	return (cnt) ? cnt : err;
-+}
-+#endif	/* ! __BIG_ENDIAN */
-+
-+#include "smtc2d.c"
-+
-+void smtcfb_copyarea(struct fb_info *info, const struct fb_copyarea *area)
-+{
-+	struct par_info *p = (struct par_info *)info->par;
-+
-+	if (smtc_2Dacceleration) {
-+		if (!area->width || !area->height)
-+			return;
-+
-+		deCopy(p->BaseAddressInVRAM, 0, info->var.bits_per_pixel,
-+		       area->dx, area->dy, area->width, area->height,
-+		       p->BaseAddressInVRAM, 0, area->sx, area->sy, 0, 0xC);
-+
-+	} else
-+		cfb_copyarea(info, area);
++	return;
 +}
 +
-+void smtcfb_fillrect(struct fb_info *info, const struct fb_fillrect *rect)
++static inline int plat_dma_mapping_error(struct device *dev,
++					 dma_addr_t dma_addr)
 +{
-+	struct par_info *p = (struct par_info *)info->par;
-+
-+	if (smtc_2Dacceleration) {
-+		if (!rect->width || !rect->height)
-+			return;
-+		if (info->var.bits_per_pixel >= 24)
-+			deFillRect(p->BaseAddressInVRAM, 0, rect->dx * 3,
-+				   rect->dy * 3, rect->width * 3, rect->height,
-+				   rect->color);
-+		else
-+			deFillRect(p->BaseAddressInVRAM, 0, rect->dx, rect->dy,
-+				   rect->width, rect->height, rect->color);
-+	} else
-+		cfb_fillrect(info, rect);
-+}
-+
-+void smtcfb_imageblit(struct fb_info *info, const struct fb_image *image)
-+{
-+	struct par_info *p = (struct par_info *)info->par;
-+	u32 bg_col = 0, fg_col = 0;
-+
-+	if ((smtc_2Dacceleration) && (image->depth == 1)) {
-+		if (smtc_de_busy)
-+			deWaitForNotBusy();
-+
-+		switch (info->var.bits_per_pixel) {
-+		case 8:
-+			bg_col = image->bg_color;
-+			fg_col = image->fg_color;
-+			break;
-+		case 16:
-+			bg_col =
-+			    ((u32 *) (info->pseudo_palette))[image->bg_color];
-+			fg_col =
-+			    ((u32 *) (info->pseudo_palette))[image->fg_color];
-+			break;
-+		case 32:
-+			bg_col =
-+			    ((u32 *) (info->pseudo_palette))[image->bg_color];
-+			fg_col =
-+			    ((u32 *) (info->pseudo_palette))[image->fg_color];
-+			break;
-+		}
-+
-+		deSystemMem2VideoMemMonoBlt(
-+			image->data,
-+			image->width / 8,
-+			0,
-+			p->BaseAddressInVRAM,
-+			0,
-+			0,
-+			image->dx, image->dy,
-+			image->width, image->height,
-+			fg_col, bg_col,
-+			0x0C);
-+
-+	} else
-+		cfb_imageblit(info, image);
-+}
-+
-+static struct fb_ops smtcfb_ops = {
-+	.owner = THIS_MODULE,
-+	.fb_setcolreg = smtc_setcolreg,
-+	.fb_fillrect = smtcfb_fillrect,
-+	.fb_imageblit = smtcfb_imageblit,
-+	.fb_copyarea = smtcfb_copyarea,
-+#ifdef __BIG_ENDIAN
-+	.fb_read = smtcfb_read,
-+	.fb_write = smtcfb_write,
-+#endif
-+
-+};
-+
-+void smtcfb_setmode(struct smtcfb_info *sfb)
-+{
-+	switch (sfb->fb.var.bits_per_pixel) {
-+	case 32:
-+		sfb->fb.fix.visual = FB_VISUAL_TRUECOLOR;
-+		sfb->fb.fix.line_length = sfb->fb.var.xres * 4;
-+		sfb->fb.var.red.length = 8;
-+		sfb->fb.var.green.length = 8;
-+		sfb->fb.var.blue.length = 8;
-+		sfb->fb.var.red.offset = 16;
-+		sfb->fb.var.green.offset = 8;
-+		sfb->fb.var.blue.offset = 0;
-+
-+		break;
-+	case 8:
-+		sfb->fb.fix.visual = FB_VISUAL_PSEUDOCOLOR;
-+		sfb->fb.fix.line_length = sfb->fb.var.xres;
-+		sfb->fb.var.red.offset = 5;
-+		sfb->fb.var.red.length = 3;
-+		sfb->fb.var.green.offset = 2;
-+		sfb->fb.var.green.length = 3;
-+		sfb->fb.var.blue.offset = 0;
-+		sfb->fb.var.blue.length = 2;
-+		break;
-+	case 24:
-+		sfb->fb.fix.visual = FB_VISUAL_TRUECOLOR;
-+		sfb->fb.fix.line_length = sfb->fb.var.xres * 3;
-+		sfb->fb.var.red.length = 8;
-+		sfb->fb.var.green.length = 8;
-+		sfb->fb.var.blue.length = 8;
-+
-+		sfb->fb.var.red.offset = 16;
-+		sfb->fb.var.green.offset = 8;
-+		sfb->fb.var.blue.offset = 0;
-+
-+		break;
-+	case 16:
-+	default:
-+		sfb->fb.fix.visual = FB_VISUAL_TRUECOLOR;
-+		sfb->fb.fix.line_length = sfb->fb.var.xres * 2;
-+
-+		sfb->fb.var.red.length = 5;
-+		sfb->fb.var.green.length = 6;
-+		sfb->fb.var.blue.length = 5;
-+
-+		sfb->fb.var.red.offset = 11;
-+		sfb->fb.var.green.offset = 5;
-+		sfb->fb.var.blue.offset = 0;
-+
-+		break;
-+	}
-+
-+	hw.width = sfb->fb.var.xres;
-+	hw.height = sfb->fb.var.yres;
-+	hw.hz = 60;
-+	smtc_set_timing(sfb, &hw);
-+	if (smtc_2Dacceleration) {
-+		printk("2D acceleration enabled!\n");
-+		/* Init smtc drawing engine */
-+		deInit(sfb->fb.var.xres, sfb->fb.var.yres,
-+				sfb->fb.var.bits_per_pixel);
-+	}
-+}
-+
-+#if defined(CONFIG_FB_SM7XX_DUALHEAD)
-+void smtc_head2_init(struct smtcfb_info *sfb)
-+{
-+	smtcfb_info2 = *sfb;
-+	smtcfb_info2.fb.pseudo_palette = &colreg2;
-+	smtcfb_info2.fb.par = &hw2;
-+	sprintf(smtcfb_info2.fb.fix.id, "sm%Xfb2", hw.chipID);
-+	hw2.chipID = hw.chipID;
-+	hw2.chipRevID = hw.chipRevID;
-+	hw2.width = smtcfb_info2.fb.var.xres;
-+	hw2.height = smtcfb_info2.fb.var.yres;
-+	hw2.hz = 60;
-+	hw2.m_pMMIO = smtc_RegBaseAddress;
-+
-+	/*hard code 2nd head starting from half VRAM size postion */
-+	hw2.BaseAddressInVRAM = smtcfb_info2.fb.fix.smem_len / 2;
-+
-+	hw2.m_pLFB = smtc_VRAMBaseAddress + hw2.BaseAddressInVRAM;
-+	smtcfb_info2.fb.screen_base = hw2.m_pLFB;
-+
-+	writel(hw2.BaseAddressInVRAM >> 3, hw2.m_pVPR + 0x10);
-+}
-+#endif
-+
-+/*
-+ * Alloc struct smtcfb_info and assign the default value
-+ */
-+static struct smtcfb_info *__devinit smtc_alloc_fb_info(struct pci_dev *dev,
-+							char *name)
-+{
-+	struct smtcfb_info *sfb;
-+
-+	sfb = kmalloc(sizeof(struct smtcfb_info), GFP_KERNEL);
-+
-+	if (!sfb)
-+		return NULL;
-+
-+	memset(sfb, 0, sizeof(struct smtcfb_info));
-+
-+	sfb->currcon = -1;
-+	sfb->dev = dev;
-+
-+	/*** Init sfb->fb with default value ***/
-+	sfb->fb.flags = FBINFO_FLAG_DEFAULT;
-+	sfb->fb.fbops = &smtcfb_ops;
-+	sfb->fb.var = smtcfb_var;
-+	sfb->fb.fix = smtcfb_fix;
-+
-+	strcpy(sfb->fb.fix.id, name);
-+
-+	sfb->fb.fix.type = FB_TYPE_PACKED_PIXELS;
-+	sfb->fb.fix.type_aux = 0;
-+	sfb->fb.fix.xpanstep = 0;
-+	sfb->fb.fix.ypanstep = 0;
-+	sfb->fb.fix.ywrapstep = 0;
-+	sfb->fb.fix.accel = FB_ACCEL_SMI_LYNX;
-+
-+	sfb->fb.var.nonstd = 0;
-+	sfb->fb.var.activate = FB_ACTIVATE_NOW;
-+	sfb->fb.var.height = -1;
-+	sfb->fb.var.width = -1;
-+	/* text mode acceleration */
-+	sfb->fb.var.accel_flags = FB_ACCELF_TEXT;
-+	sfb->fb.var.vmode = FB_VMODE_NONINTERLACED;
-+	sfb->fb.par = &hw;
-+	sfb->fb.pseudo_palette = colreg;
-+
-+	return sfb;
-+}
-+
-+/*
-+ * Unmap in the memory mapped IO registers
-+ */
-+
-+static void __devinit smtc_unmap_mmio(struct smtcfb_info *sfb)
-+{
-+	if (sfb && smtc_RegBaseAddress)
-+		smtc_RegBaseAddress = NULL;
-+}
-+
-+/*
-+ * Map in the screen memory
-+ */
-+
-+static int __devinit smtc_map_smem(struct smtcfb_info *sfb,
-+		struct pci_dev *dev, u_long smem_len)
-+{
-+	if (sfb->fb.var.bits_per_pixel == 32) {
-+#ifdef __BIG_ENDIAN
-+		sfb->fb.fix.smem_start = pci_resource_start(dev, 0)
-+			+ 0x800000;
-+#else
-+		sfb->fb.fix.smem_start = pci_resource_start(dev, 0);
-+#endif
-+	} else {
-+		sfb->fb.fix.smem_start = pci_resource_start(dev, 0);
-+	}
-+
-+	sfb->fb.fix.smem_len = smem_len;
-+
-+	sfb->fb.screen_base = smtc_VRAMBaseAddress;
-+
-+	if (!sfb->fb.screen_base) {
-+		printk(KERN_INFO "%s: unable to map screen memory\n",
-+				sfb->fb.fix.id);
-+		return -ENOMEM;
-+	}
-+
 +	return 0;
 +}
 +
-+/*
-+ * Unmap in the screen memory
-+ *
-+ */
-+static void __devinit smtc_unmap_smem(struct smtcfb_info *sfb)
++static inline int plat_device_is_coherent(struct device *dev)
 +{
-+	if (sfb && sfb->fb.screen_base) {
-+		iounmap(sfb->fb.screen_base);
-+		sfb->fb.screen_base = NULL;
-+	}
-+}
-+
-+/*
-+ * We need to wake up the LynxEM+, and make sure its in linear memory mode.
-+ */
-+static inline void __devinit sm7xx_init_hw(void)
-+{
-+	outb_p(0x18, 0x3c4);
-+	outb_p(0x11, 0x3c5);
-+}
-+
-+static void __devinit smtc_free_fb_info(struct smtcfb_info *sfb)
-+{
-+	if (sfb) {
-+		fb_alloc_cmap(&sfb->fb.cmap, 0, 0);
-+		kfree(sfb);
-+	}
-+}
-+
-+static int __init smtcfb_init(void)
-+{
-+	struct smtcfb_info *sfb;
-+	u_long smem_size = 0x00800000;	/* default 8MB */
-+	char name[16];
-+	int err, i = 0;
-+	unsigned long pFramebufferPhysical;
-+	struct pci_dev *pdev = NULL;
-+
-+	printk(KERN_INFO
-+		"Silicon Motion display driver " SMTC_LINUX_FB_VERSION "\n");
-+
-+	/* init the global variable */
-+	smtc_2Dacceleration = 0;	/* default no 2D acceleration */
-+
-+	do {
-+		pdev = pci_get_device(0x126f, smtc_ChipIDs[i], pdev);
-+		if (pdev == NULL) {
-+			i++;
-+		} else {
-+			hw.chipID = smtc_ChipIDs[i];
-+			break;
-+		}
-+	} while (i < numSMTCchipIDs);
-+
-+	err = pci_enable_device(pdev);	/* enable SMTC chip */
-+
-+	if (err)
-+		return err;
-+
-+	err = -ENOMEM;
-+
-+	sprintf(name, "sm%Xfb", hw.chipID);
-+
-+	sfb = smtc_alloc_fb_info(pdev, name);
-+
-+	if (!sfb)
-+		goto failed;
-+
-+	sm7xx_init_hw();
-+
-+	/*get mode parameter from screen_info */
-+	if (screen_info.lfb_width != 0) {
-+		sfb->fb.var.xres = screen_info.lfb_width;
-+		sfb->fb.var.yres = screen_info.lfb_height;
-+		sfb->fb.var.bits_per_pixel = screen_info.lfb_depth;
-+	} else {
-+		/* default resolution 1024x600 16bit mode */
-+		sfb->fb.var.xres = SCREEN_X_RES;
-+		sfb->fb.var.yres = SCREEN_Y_RES;
-+		sfb->fb.var.bits_per_pixel = SCREEN_BPP;
-+	}
-+
-+	smdbg("\nsfb->fb.var.bits_per_pixel = %d sm712be_flag = %d\n",
-+	      sfb->fb.var.bits_per_pixel, sm712be_flag);
-+#ifdef __BIG_ENDIAN
-+	if (sm712be_flag == 1 && sfb->fb.var.bits_per_pixel == 24)
-+		sfb->fb.var.bits_per_pixel = (screen_info.lfb_depth = 32);
-+#endif
-+	/* Map address and memory detection */
-+	pFramebufferPhysical = pci_resource_start(pdev, 0);
-+	pci_read_config_byte(pdev, PCI_REVISION_ID, &hw.chipRevID);
-+
-+	switch (hw.chipID) {
-+	case 0x710:
-+	case 0x712:
-+		sfb->fb.fix.mmio_start = pFramebufferPhysical + 0x00400000;
-+		sfb->fb.fix.mmio_len = 0x00400000;
-+		smem_size = SM712_VIDEOMEMORYSIZE;
-+#ifdef __BIG_ENDIAN
-+		hw.m_pLFB = (smtc_VRAMBaseAddress =
-+		    ioremap(pFramebufferPhysical, 0x00c00000));
-+#else
-+		hw.m_pLFB = (smtc_VRAMBaseAddress =
-+		    ioremap(pFramebufferPhysical, 0x00800000));
-+#endif
-+		hw.m_pMMIO = (smtc_RegBaseAddress =
-+		    smtc_VRAMBaseAddress + 0x00700000);
-+		smtc_2DBaseAddress = (hw.m_pDPR =
-+		    smtc_VRAMBaseAddress + 0x00408000);
-+		smtc_2Ddataport = smtc_VRAMBaseAddress + DE_DATA_PORT_712;
-+		hw.m_pVPR = hw.m_pLFB + 0x0040c000;
-+		if (sfb->fb.var.bits_per_pixel == 32) {
-+#ifdef __BIG_ENDIAN
-+			smtc_VRAMBaseAddress += 0x800000;
-+			hw.m_pLFB += 0x800000;
-+			printk(KERN_INFO
-+				"\nsmtc_VRAMBaseAddress=0x%X hw.m_pLFB=0x%X\n",
-+					smtc_VRAMBaseAddress, hw.m_pLFB);
-+#endif
-+		}
-+		if (!smtc_RegBaseAddress) {
-+
-+			printk(KERN_INFO
-+				"%s: unable to map memory mapped IO\n",
-+				sfb->fb.fix.id);
-+
-+			return -ENOMEM;
-+		}
-+
-+		/* set MCLK = 14.31818 * (0x16 / 0x2) */
-+		smtc_seqw(0x6a, 0x16);
-+		smtc_seqw(0x6b, 0x02);
-+		smtc_seqw(0x62, 0x3e);
-+		/* enable PCI burst */
-+		smtc_seqw(0x17, 0x20);
-+		/* enabel word swap */
-+		if (sfb->fb.var.bits_per_pixel == 32) {
-+#ifdef __BIG_ENDIAN
-+			smtc_seqw(0x17, 0x30);
-+#endif
-+		}
-+#ifdef CONFIG_FB_SM7XX_ACCEL
-+		smtc_2Dacceleration = 1;
-+#endif
-+
-+		break;
-+
-+	case 0x720:
-+		sfb->fb.fix.mmio_start = pFramebufferPhysical;
-+		sfb->fb.fix.mmio_len = 0x00200000;
-+		smem_size = SM722_VIDEOMEMORYSIZE;
-+		smtc_2DBaseAddress = (hw.m_pDPR =
-+		    ioremap(pFramebufferPhysical, 0x00a00000));
-+		hw.m_pLFB = (smtc_VRAMBaseAddress =
-+		    smtc_2DBaseAddress + 0x00200000);
-+		hw.m_pMMIO = (smtc_RegBaseAddress =
-+		    smtc_2DBaseAddress + 0x000c0000);
-+		smtc_2Ddataport = smtc_2DBaseAddress + DE_DATA_PORT_722;
-+		hw.m_pVPR = smtc_2DBaseAddress + 0x800;
-+
-+		smtc_seqw(0x62, 0xff);
-+		smtc_seqw(0x6a, 0x0d);
-+		smtc_seqw(0x6b, 0x02);
-+		smtc_2Dacceleration = 0;
-+		break;
-+	default:
-+		printk(KERN_INFO
-+		"No valid Silicon Motion display chip was detected!\n");
-+
-+		smtc_free_fb_info(sfb);
-+		return err;
-+	}
-+
-+	/* can support 32 bpp */
-+	if (15 == sfb->fb.var.bits_per_pixel)
-+		sfb->fb.var.bits_per_pixel = 16;
-+
-+	sfb->fb.var.xres_virtual = sfb->fb.var.xres;
-+
-+	sfb->fb.var.yres_virtual = sfb->fb.var.yres;
-+	err = smtc_map_smem(sfb, pdev, smem_size);
-+	if (err)
-+		goto failed;
-+
-+	smtcfb_setmode(sfb);
-+	/* Primary display starting from 0 postion */
-+	hw.BaseAddressInVRAM = 0;
-+	sfb->fb.par = &hw;
-+
-+	err = register_framebuffer(&sfb->fb);
-+	if (err < 0)
-+		goto failed;
-+
-+	printk(KERN_INFO "Silicon Motion SM%X Rev%X primary display mode"
-+			"%dx%d-%d Init Complete.\n", hw.chipID, hw.chipRevID,
-+			sfb->fb.var.xres, sfb->fb.var.yres,
-+			sfb->fb.var.bits_per_pixel);
-+
-+#if defined(CONFIG_FB_SM7XX_DUALHEAD)
-+	smtc_head2_init(sfb);
-+	err = register_framebuffer(&smtcfb_info2.fb);
-+
-+	/* if second head display fails, also fails the primary display */
-+	if (err < 0) {
-+		printk(KERN_INFO
-+			"Silicon Motion, Inc.  second head init fail\n");
-+		goto failed;
-+	}
-+
-+	printk(KERN_INFO "Silicon Motion SM%X Rev%X secondary display mode"
-+			"%dx%d-%d Init Complete.\n", hw.chipID, hw.chipRevID,
-+			hw2.width, hw2.height,
-+			smtcfb_info2.fb.var.bits_per_pixel);
-+#endif
-+
-+	return 0;
-+
-+ failed:
-+	printk(KERN_INFO "Silicon Motion, Inc.  primary display init fail\n");
-+
-+	smtc_unmap_smem(sfb);
-+	smtc_unmap_mmio(sfb);
-+	smtc_free_fb_info(sfb);
-+
-+	return err;
-+}
-+
-+static void __exit smtcfb_exit(void)
-+{
-+}
-+
-+module_init(smtcfb_init);
-+module_exit(smtcfb_exit);
-+
-+/*
-+ *	sm712be_setup - process command line options
-+ *	@options: string of options
-+ *	Returns zero.
-+ *
-+ */
-+static int __init sm712be_setup(char *options)
-+{
-+	sm712be_flag = 0;
-+	if (!options || !*options) {
-+		smdbg("\n No sm712be parameter\n");
-+		return -EINVAL;
-+	}
-+	if (strstr(options, "enable") != NULL)
-+		sm712be_flag = 1;
-+
-+	smdbg("\nsm712be_setup = %s sm712be_flag = %d\n", options,
-+	      sm712be_flag);
-+
 +	return 0;
 +}
 +
-+__setup("sm712be=", sm712be_setup);
-+
-+/*
-+ *	sm712vga_setup - process command line options, get vga parameter
-+ *	@options: string of options
-+ *	Returns zero.
-+ *
-+ */
-+static int __init sm712vga_setup(char *options)
-+{
-+	int index;
-+	sm712be_flag = 0;
-+
-+	if (!options || !*options) {
-+		smdbg("\n No vga parameter\n");
-+		return -EINVAL;
-+	}
-+
-+	screen_info.lfb_width = 0;
-+	screen_info.lfb_height = 0;
-+	screen_info.lfb_depth = 0;
-+
-+	smdbg("\nsm712vga_setup = %s\n", options);
-+
-+	for (index = 0;
-+	     index < (sizeof(vesa_mode) / sizeof(struct vesa_mode_table));
-+	     index++) {
-+		if (strstr(options, vesa_mode[index].mode_index)) {
-+			screen_info.lfb_width = vesa_mode[index].lfb_width;
-+			screen_info.lfb_height = vesa_mode[index].lfb_height;
-+			screen_info.lfb_depth = vesa_mode[index].lfb_depth;
-+			return 0;
-+		}
-+	}
-+
-+	return -1;
-+}
-+
-+__setup("vga=", sm712vga_setup);
-+
-+MODULE_AUTHOR("Siliconmotion ");
-+MODULE_DESCRIPTION("Framebuffer driver for SMI Graphic Cards");
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/video/smi/smtcfb.h b/drivers/video/smi/smtcfb.h
++#endif /* __ASM_MACH_LOONGSON_DMA_COHERENCE_H */
+diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
 new file mode 100644
-index 0000000..6b8ed8a
+index 0000000..18ebef1
 --- /dev/null
-+++ b/drivers/video/smi/smtcfb.h
-@@ -0,0 +1,793 @@
++++ b/arch/mips/include/asm/mach-loongson/loongson.h
+@@ -0,0 +1,14 @@
 +/*
-+ * smtcfb.h -- Silicon Motion SM501 and SM7xx frame buffer device
-+ *
-+ * Copyright (C) 2006 Silicon Motion Technology Corp.
-+ * Authors:	Ge Wang, gewang@siliconmotion.com
-+ *	 	Boyod boyod.yang@siliconmotion.com.cn
-+ *
-+ * Copyright (C) 2009 Lemote, Inc. & Institute of Computing Technology
-+ * Author: Wu Zhangjin, wuzj@lemote.com
-+ *
-+ *  This file is subject to the terms and conditions of the GNU General Public
-+ *  License. See the file COPYING in the main directory of this archive for
-+ *  more details.
++ * loongson-specific header file
 + */
 +
-+#define SMTC_LINUX_FB_VERSION	"version 0.11.2619.21.01 July 27, 2008"
++/* loongson internal northbridge initialization */
++extern void bonito_irq_init(void);
 +
-+#define NR_PALETTE        256
-+#define NR_RGB            2
++/* command line */
++extern unsigned long bus_clock, cpu_clock_freq;
++extern unsigned long memsize, highmemsize;
 +
-+#define FB_ACCEL_SMI_LYNX 88
++/* loongson-based machines specific reboot setup */
++extern void loongson_reboot_setup(void);
 +
-+#ifdef __BIG_ENDIAN
-+#define PC_VGA            0
+diff --git a/arch/mips/include/asm/mach-loongson/mc146818rtc.h b/arch/mips/include/asm/mach-loongson/mc146818rtc.h
+new file mode 100644
+index 0000000..ed7fe97
+--- /dev/null
++++ b/arch/mips/include/asm/mach-loongson/mc146818rtc.h
+@@ -0,0 +1,36 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 1998, 2001, 03, 07 by Ralf Baechle (ralf@linux-mips.org)
++ *
++ * RTC routines for PC style attached Dallas chip.
++ */
++#ifndef __ASM_MACH_LOONGSON_MC146818RTC_H
++#define __ASM_MACH_LOONGSON_MC146818RTC_H
++
++#include <linux/io.h>
++
++#define RTC_PORT(x)	(0x70 + (x))
++#define RTC_IRQ		8
++
++static inline unsigned char CMOS_READ(unsigned long addr)
++{
++	outb_p(addr, RTC_PORT(0));
++	return inb_p(RTC_PORT(1));
++}
++
++static inline void CMOS_WRITE(unsigned char data, unsigned long addr)
++{
++	outb_p(addr, RTC_PORT(0));
++	outb_p(data, RTC_PORT(1));
++}
++
++#define RTC_ALWAYS_BCD	0
++
++#ifndef mc146818_decode_year
++#define mc146818_decode_year(year) ((year) < 70 ? (year) + 2000 : (year) + 1970)
++#endif
++
++#endif /* __ASM_MACH_LOONGSON_MC146818RTC_H */
+diff --git a/arch/mips/include/asm/mach-loongson/pci.h b/arch/mips/include/asm/mach-loongson/pci.h
+new file mode 100644
+index 0000000..e685096
+--- /dev/null
++++ b/arch/mips/include/asm/mach-loongson/pci.h
+@@ -0,0 +1,32 @@
++/*
++ * Copyright (c) 2008 Zhang Le <r0bertz@gentoo.org>
++ *
++ * This program is free software; you can redistribute it
++ * and/or modify it under the terms of the GNU General
++ * Public License as published by the Free Software
++ * Foundation; either version 2 of the License, or (at your
++ * option) any later version.
++ *
++ * This program is distributed in the hope that it will be
++ * useful, but WITHOUT ANY WARRANTY; without even the implied
++ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
++ * PURPOSE.  See the GNU General Public License for more
++ * details.
++ *
++ * You should have received a copy of the GNU General Public
++ * License along with this program; if not, write to the Free
++ * Software Foundation, Inc., 675 Mass Ave, Cambridge, MA
++ * 02139, USA.
++ */
++
++#ifndef _LOONGSON_PCI_H_
++#define _LOONGSON_PCI_H_
++
++extern struct pci_ops bonito64_pci_ops;
++
++#define LOONGSON2E_PCI_MEM_START	0x14000000UL
++#define LOONGSON2E_PCI_MEM_END		0x1fffffffUL
++#define LOONGSON2E_PCI_IO_START		0x00004000UL
++#define LOONGSON2E_IO_PORT_BASE		0x1fd00000UL
++
++#endif /* !_LOONGSON_PCI_H_ */
+diff --git a/arch/mips/include/asm/mach-loongson/war.h b/arch/mips/include/asm/mach-loongson/war.h
+new file mode 100644
+index 0000000..e42cace
+--- /dev/null
++++ b/arch/mips/include/asm/mach-loongson/war.h
+@@ -0,0 +1,25 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2002, 2004, 2007 by Ralf Baechle <ralf@linux-mips.org>
++ */
++#ifndef __ASM_MIPS_MACH_LOONGSON_WAR_H
++#define __ASM_MIPS_MACH_LOONGSON_WAR_H
++
++#define R4600_V1_INDEX_ICACHEOP_WAR	0
++#define R4600_V1_HIT_CACHEOP_WAR	0
++#define R4600_V2_HIT_CACHEOP_WAR	0
++#define R5432_CP0_INTERRUPT_WAR		0
++#define BCM1250_M3_WAR			0
++#define SIBYTE_1956_WAR			0
++#define MIPS4K_ICACHE_REFILL_WAR	0
++#define MIPS_CACHE_SYNC_WAR		0
++#define TX49XX_ICACHE_INDEX_INV_WAR	0
++#define RM9000_CDEX_SMP_WAR		0
++#define ICACHE_REFILLS_WORKAROUND_WAR	0
++#define R10000_LLSC_WAR			0
++#define MIPS34K_MISSED_ITLB_WAR		0
++
++#endif /* __ASM_MIPS_MACH_LOONGSON_WAR_H */
+diff --git a/arch/mips/include/asm/mips-boards/bonito64.h b/arch/mips/include/asm/mips-boards/bonito64.h
+index a0f04bb..a576ce0 100644
+--- a/arch/mips/include/asm/mips-boards/bonito64.h
++++ b/arch/mips/include/asm/mips-boards/bonito64.h
+@@ -26,7 +26,7 @@
+ /* offsets from base register */
+ #define BONITO(x)	(x)
+ 
+-#elif defined(CONFIG_LEMOTE_FULONG)
++#elif defined(CONFIG_LEMOTE_FULOONG2E)
+ 
+ #define BONITO(x) (*(volatile u32 *)((char *)CKSEG1ADDR(BONITO_REG_BASE) + (x)))
+ #define BONITO_IRQ_BASE   32
+diff --git a/arch/mips/lemote/lm2e/Makefile b/arch/mips/lemote/lm2e/Makefile
+deleted file mode 100644
+index d34671d..0000000
+--- a/arch/mips/lemote/lm2e/Makefile
++++ /dev/null
+@@ -1,7 +0,0 @@
+-#
+-# Makefile for Lemote Fulong mini-PC board.
+-#
+-
+-obj-y += setup.o prom.o reset.o irq.o pci.o bonito-irq.o dbg_io.o mem.o
+-
+-EXTRA_CFLAGS += -Werror
+diff --git a/arch/mips/lemote/lm2e/bonito-irq.c b/arch/mips/lemote/lm2e/bonito-irq.c
+deleted file mode 100644
+index 8fc3bce..0000000
+--- a/arch/mips/lemote/lm2e/bonito-irq.c
++++ /dev/null
+@@ -1,74 +0,0 @@
+-/*
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
+- * Copyright (C) 2000, 2001 Ralf Baechle (ralf@gnu.org)
+- *
+- * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
+- * Author: Fuxin Zhang, zhangfx@lemote.com
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- *
+- */
+-#include <linux/errno.h>
+-#include <linux/init.h>
+-#include <linux/io.h>
+-#include <linux/types.h>
+-#include <linux/interrupt.h>
+-#include <linux/irq.h>
+-
+-#include <asm/mips-boards/bonito64.h>
+-
+-
+-static inline void bonito_irq_enable(unsigned int irq)
+-{
+-	BONITO_INTENSET = (1 << (irq - BONITO_IRQ_BASE));
+-	mmiowb();
+-}
+-
+-static inline void bonito_irq_disable(unsigned int irq)
+-{
+-	BONITO_INTENCLR = (1 << (irq - BONITO_IRQ_BASE));
+-	mmiowb();
+-}
+-
+-static struct irq_chip bonito_irq_type = {
+-	.name	= "bonito_irq",
+-	.ack	= bonito_irq_disable,
+-	.mask	= bonito_irq_disable,
+-	.mask_ack = bonito_irq_disable,
+-	.unmask	= bonito_irq_enable,
+-};
+-
+-static struct irqaction dma_timeout_irqaction = {
+-	.handler	= no_action,
+-	.name		= "dma_timeout",
+-};
+-
+-void bonito_irq_init(void)
+-{
+-	u32 i;
+-
+-	for (i = BONITO_IRQ_BASE; i < BONITO_IRQ_BASE + 32; i++) {
+-		set_irq_chip_and_handler(i, &bonito_irq_type, handle_level_irq);
+-	}
+-
+-	setup_irq(BONITO_IRQ_BASE + 10, &dma_timeout_irqaction);
+-}
+diff --git a/arch/mips/lemote/lm2e/dbg_io.c b/arch/mips/lemote/lm2e/dbg_io.c
+deleted file mode 100644
+index 6c95da3..0000000
+--- a/arch/mips/lemote/lm2e/dbg_io.c
++++ /dev/null
+@@ -1,146 +0,0 @@
+-/*
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
+- * Copyright (C) 2000, 2001 Ralf Baechle (ralf@gnu.org)
+- *
+- * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
+- * Author: Fuxin Zhang, zhangfx@lemote.com
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- *
+- */
+-
+-#include <linux/io.h>
+-#include <linux/init.h>
+-#include <linux/types.h>
+-
+-#include <asm/serial.h>
+-
+-#define         UART16550_BAUD_2400             2400
+-#define         UART16550_BAUD_4800             4800
+-#define         UART16550_BAUD_9600             9600
+-#define         UART16550_BAUD_19200            19200
+-#define         UART16550_BAUD_38400            38400
+-#define         UART16550_BAUD_57600            57600
+-#define         UART16550_BAUD_115200           115200
+-
+-#define         UART16550_PARITY_NONE           0
+-#define         UART16550_PARITY_ODD            0x08
+-#define         UART16550_PARITY_EVEN           0x18
+-#define         UART16550_PARITY_MARK           0x28
+-#define         UART16550_PARITY_SPACE          0x38
+-
+-#define         UART16550_DATA_5BIT             0x0
+-#define         UART16550_DATA_6BIT             0x1
+-#define         UART16550_DATA_7BIT             0x2
+-#define         UART16550_DATA_8BIT             0x3
+-
+-#define         UART16550_STOP_1BIT             0x0
+-#define         UART16550_STOP_2BIT             0x4
+-
+-/* ----------------------------------------------------- */
+-
+-/* === CONFIG === */
+-#ifdef CONFIG_64BIT
+-#define         BASE                    (0xffffffffbfd003f8)
+-#else
+-#define         BASE                    (0xbfd003f8)
+-#endif
+-
+-#define         MAX_BAUD                BASE_BAUD
+-/* === END OF CONFIG === */
+-
+-#define         REG_OFFSET              1
+-
+-/* register offset */
+-#define         OFS_RCV_BUFFER          0
+-#define         OFS_TRANS_HOLD          0
+-#define         OFS_SEND_BUFFER         0
+-#define         OFS_INTR_ENABLE         (1*REG_OFFSET)
+-#define         OFS_INTR_ID             (2*REG_OFFSET)
+-#define         OFS_DATA_FORMAT         (3*REG_OFFSET)
+-#define         OFS_LINE_CONTROL        (3*REG_OFFSET)
+-#define         OFS_MODEM_CONTROL       (4*REG_OFFSET)
+-#define         OFS_RS232_OUTPUT        (4*REG_OFFSET)
+-#define         OFS_LINE_STATUS         (5*REG_OFFSET)
+-#define         OFS_MODEM_STATUS        (6*REG_OFFSET)
+-#define         OFS_RS232_INPUT         (6*REG_OFFSET)
+-#define         OFS_SCRATCH_PAD         (7*REG_OFFSET)
+-
+-#define         OFS_DIVISOR_LSB         (0*REG_OFFSET)
+-#define         OFS_DIVISOR_MSB         (1*REG_OFFSET)
+-
+-/* memory-mapped read/write of the port */
+-#define         UART16550_READ(y)	readb((char *)BASE + (y))
+-#define         UART16550_WRITE(y, z)	writeb(z, (char *)BASE + (y))
+-
+-void debugInit(u32 baud, u8 data, u8 parity, u8 stop)
+-{
+-	u32 divisor;
+-
+-	/* disable interrupts */
+-	UART16550_WRITE(OFS_INTR_ENABLE, 0);
+-
+-	/* set up buad rate */
+-	/* set DIAB bit */
+-	UART16550_WRITE(OFS_LINE_CONTROL, 0x80);
+-
+-	/* set divisor */
+-	divisor = MAX_BAUD / baud;
+-	UART16550_WRITE(OFS_DIVISOR_LSB, divisor & 0xff);
+-	UART16550_WRITE(OFS_DIVISOR_MSB, (divisor & 0xff00) >> 8);
+-
+-	/* clear DIAB bit */
+-	UART16550_WRITE(OFS_LINE_CONTROL, 0x0);
+-
+-	/* set data format */
+-	UART16550_WRITE(OFS_DATA_FORMAT, data | parity | stop);
+-}
+-
+-static int remoteDebugInitialized;
+-
+-u8 getDebugChar(void)
+-{
+-	if (!remoteDebugInitialized) {
+-		remoteDebugInitialized = 1;
+-		debugInit(UART16550_BAUD_115200,
+-			  UART16550_DATA_8BIT,
+-			  UART16550_PARITY_NONE, UART16550_STOP_1BIT);
+-	}
+-
+-	while ((UART16550_READ(OFS_LINE_STATUS) & 0x1) == 0) ;
+-	return UART16550_READ(OFS_RCV_BUFFER);
+-}
+-
+-int putDebugChar(u8 byte)
+-{
+-	if (!remoteDebugInitialized) {
+-		remoteDebugInitialized = 1;
+-		/*
+-		   debugInit(UART16550_BAUD_115200,
+-		   UART16550_DATA_8BIT,
+-		   UART16550_PARITY_NONE, UART16550_STOP_1BIT); */
+-	}
+-
+-	while ((UART16550_READ(OFS_LINE_STATUS) & 0x20) == 0) ;
+-	UART16550_WRITE(OFS_SEND_BUFFER, byte);
+-	return 1;
+-}
+diff --git a/arch/mips/lemote/lm2e/irq.c b/arch/mips/lemote/lm2e/irq.c
+deleted file mode 100644
+index 1d0a09f..0000000
+--- a/arch/mips/lemote/lm2e/irq.c
++++ /dev/null
+@@ -1,143 +0,0 @@
+-/*
+- * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
+- * Author: Fuxin Zhang, zhangfx@lemote.com
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- *
+- */
+-#include <linux/delay.h>
+-#include <linux/io.h>
+-#include <linux/init.h>
+-#include <linux/interrupt.h>
+-#include <linux/irq.h>
+-
+-#include <asm/irq_cpu.h>
+-#include <asm/i8259.h>
+-#include <asm/mipsregs.h>
+-#include <asm/mips-boards/bonito64.h>
+-
+-
+-/*
+- * the first level int-handler will jump here if it is a bonito irq
+- */
+-static void bonito_irqdispatch(void)
+-{
+-	u32 int_status;
+-	int i;
+-
+-	/* workaround the IO dma problem: let cpu looping to allow DMA finish */
+-	int_status = BONITO_INTISR;
+-	if (int_status & (1 << 10)) {
+-		while (int_status & (1 << 10)) {
+-			udelay(1);
+-			int_status = BONITO_INTISR;
+-		}
+-	}
+-
+-	/* Get pending sources, masked by current enables */
+-	int_status = BONITO_INTISR & BONITO_INTEN;
+-
+-	if (int_status != 0) {
+-		i = __ffs(int_status);
+-		int_status &= ~(1 << i);
+-		do_IRQ(BONITO_IRQ_BASE + i);
+-	}
+-}
+-
+-static void i8259_irqdispatch(void)
+-{
+-	int irq;
+-
+-	irq = i8259_irq();
+-	if (irq >= 0) {
+-		do_IRQ(irq);
+-	} else {
+-		spurious_interrupt();
+-	}
+-
+-}
+-
+-asmlinkage void plat_irq_dispatch(void)
+-{
+-	unsigned int pending = read_c0_cause() & read_c0_status() & ST0_IM;
+-
+-	if (pending & CAUSEF_IP7) {
+-		do_IRQ(MIPS_CPU_IRQ_BASE + 7);
+-	} else if (pending & CAUSEF_IP5) {
+-		i8259_irqdispatch();
+-	} else if (pending & CAUSEF_IP2) {
+-		bonito_irqdispatch();
+-	} else {
+-		spurious_interrupt();
+-	}
+-}
+-
+-static struct irqaction cascade_irqaction = {
+-	.handler = no_action,
+-	.name = "cascade",
+-};
+-
+-void __init arch_init_irq(void)
+-{
+-	extern void bonito_irq_init(void);
+-
+-	/*
+-	 * Clear all of the interrupts while we change the able around a bit.
+-	 * int-handler is not on bootstrap
+-	 */
+-	clear_c0_status(ST0_IM | ST0_BEV);
+-	local_irq_disable();
+-
+-	/* most bonito irq should be level triggered */
+-	BONITO_INTEDGE = BONITO_ICU_SYSTEMERR | BONITO_ICU_MASTERERR |
+-		BONITO_ICU_RETRYERR | BONITO_ICU_MBOXES;
+-	BONITO_INTSTEER = 0;
+-
+-	/*
+-	 * Mask out all interrupt by writing "1" to all bit position in
+-	 * the interrupt reset reg.
+-	 */
+-	BONITO_INTENCLR = ~0;
+-
+-	/* init all controller
+-	 *   0-15         ------> i8259 interrupt
+-	 *   16-23        ------> mips cpu interrupt
+-	 *   32-63        ------> bonito irq
+-	 */
+-
+-	/* Sets the first-level interrupt dispatcher. */
+-	mips_cpu_irq_init();
+-	init_i8259_irqs();
+-	bonito_irq_init();
+-
+-	/*
+-	printk("GPIODATA=%x, GPIOIE=%x\n", BONITO_GPIODATA, BONITO_GPIOIE);
+-	printk("INTEN=%x, INTSET=%x, INTCLR=%x, INTISR=%x\n",
+-			BONITO_INTEN, BONITO_INTENSET,
+-			BONITO_INTENCLR, BONITO_INTISR);
+-	*/
+-
+-	/* bonito irq at IP2 */
+-	setup_irq(MIPS_CPU_IRQ_BASE + 2, &cascade_irqaction);
+-	/* 8259 irq at IP5 */
+-	setup_irq(MIPS_CPU_IRQ_BASE + 5, &cascade_irqaction);
+-
+-}
+diff --git a/arch/mips/lemote/lm2e/mem.c b/arch/mips/lemote/lm2e/mem.c
+deleted file mode 100644
+index 16cd215..0000000
+--- a/arch/mips/lemote/lm2e/mem.c
++++ /dev/null
+@@ -1,23 +0,0 @@
+-/*
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- */
+-#include <linux/fs.h>
+-#include <linux/fcntl.h>
+-#include <linux/mm.h>
+-
+-/* override of arch/mips/mm/cache.c: __uncached_access */
+-int __uncached_access(struct file *file, unsigned long addr)
+-{
+-	if (file->f_flags & O_SYNC)
+-		return 1;
+-
+-	/*
+-	 * On the Lemote Loongson 2e system, the peripheral registers
+-	 * reside between 0x1000:0000 and 0x2000:0000.
+-	 */
+-	return addr >= __pa(high_memory) ||
+-		((addr >= 0x10000000) && (addr < 0x20000000));
+-}
+diff --git a/arch/mips/lemote/lm2e/pci.c b/arch/mips/lemote/lm2e/pci.c
+deleted file mode 100644
+index 8be03a8..0000000
+--- a/arch/mips/lemote/lm2e/pci.c
++++ /dev/null
+@@ -1,97 +0,0 @@
+-/*
+- * pci.c
+- *
+- * Copyright (C) 2007 Lemote, Inc. & Institute of Computing Technology
+- * Author: Fuxin Zhang, zhangfx@lemote.com
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- *
+- */
+-#include <linux/types.h>
+-#include <linux/pci.h>
+-#include <linux/kernel.h>
+-#include <linux/init.h>
+-#include <asm/mips-boards/bonito64.h>
+-#include <asm/mach-lemote/pci.h>
+-
+-extern struct pci_ops bonito64_pci_ops;
+-
+-static struct resource loongson2e_pci_mem_resource = {
+-	.name   = "LOONGSON2E PCI MEM",
+-	.start  = LOONGSON2E_PCI_MEM_START,
+-	.end    = LOONGSON2E_PCI_MEM_END,
+-	.flags  = IORESOURCE_MEM,
+-};
+-
+-static struct resource loongson2e_pci_io_resource = {
+-	.name   = "LOONGSON2E PCI IO MEM",
+-	.start  = LOONGSON2E_PCI_IO_START,
+-	.end    = IO_SPACE_LIMIT,
+-	.flags  = IORESOURCE_IO,
+-};
+-
+-static struct pci_controller  loongson2e_pci_controller = {
+-	.pci_ops        = &bonito64_pci_ops,
+-	.io_resource    = &loongson2e_pci_io_resource,
+-	.mem_resource   = &loongson2e_pci_mem_resource,
+-	.mem_offset     = 0x00000000UL,
+-	.io_offset      = 0x00000000UL,
+-};
+-
+-static void __init ict_pcimap(void)
+-{
+-	/*
+-	 * local to PCI mapping: [256M,512M] -> [256M,512M]; differ from PMON
+-	 *
+-	 * CPU address space [256M,448M] is window for accessing pci space
+-	 * we set pcimap_lo[0,1,2] to map it to pci space [256M,448M]
+-	 * pcimap: bit18,pcimap_2; bit[17-12],lo2;bit[11-6],lo1;bit[5-0],lo0
+-	 */
+-	/* 1,00 0110 ,0001 01,00 0000 */
+-	BONITO_PCIMAP = 0x46140;
+-
+-	/* 1, 00 0010, 0000,01, 00 0000 */
+-	/* BONITO_PCIMAP = 0x42040; */
+-
+-	/*
+-	 * PCI to local mapping: [2G,2G+256M] -> [0,256M]
+-	 */
+-	BONITO_PCIBASE0 = 0x80000000;
+-	BONITO_PCIBASE1 = 0x00800000;
+-	BONITO_PCIBASE2 = 0x90000000;
+-
+-}
+-
+-static int __init pcibios_init(void)
+-{
+-	ict_pcimap();
+-
+-	loongson2e_pci_controller.io_map_base =
+-	    (unsigned long) ioremap(LOONGSON2E_IO_PORT_BASE,
+-				    loongson2e_pci_io_resource.end -
+-				    loongson2e_pci_io_resource.start + 1);
+-
+-	register_pci_controller(&loongson2e_pci_controller);
+-
+-	return 0;
+-}
+-
+-arch_initcall(pcibios_init);
+diff --git a/arch/mips/lemote/lm2e/prom.c b/arch/mips/lemote/lm2e/prom.c
+deleted file mode 100644
+index 7edc15d..0000000
+--- a/arch/mips/lemote/lm2e/prom.c
++++ /dev/null
+@@ -1,97 +0,0 @@
+-/*
+- * Based on Ocelot Linux port, which is
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: jsun@mvista.com or jsun@junsun.net
+- *
+- * Copyright 2003 ICT CAS
+- * Author: Michael Guo <guoyi@ict.ac.cn>
+- *
+- * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
+- * Author: Fuxin Zhang, zhangfx@lemote.com
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- */
+-#include <linux/init.h>
+-#include <linux/bootmem.h>
+-#include <asm/bootinfo.h>
+-
+-extern unsigned long bus_clock;
+-extern unsigned long cpu_clock_freq;
+-extern unsigned int memsize, highmemsize;
+-extern int putDebugChar(unsigned char byte);
+-
+-static int argc;
+-/* pmon passes arguments in 32bit pointers */
+-static int *arg;
+-static int *env;
+-
+-const char *get_system_type(void)
+-{
+-	return "lemote-fulong";
+-}
+-
+-void __init prom_init_cmdline(void)
+-{
+-	int i;
+-	long l;
+-
+-	/* arg[0] is "g", the rest is boot parameters */
+-	arcs_cmdline[0] = '\0';
+-	for (i = 1; i < argc; i++) {
+-		l = (long)arg[i];
+-		if (strlen(arcs_cmdline) + strlen(((char *)l) + 1)
+-		    >= sizeof(arcs_cmdline))
+-			break;
+-		strcat(arcs_cmdline, ((char *)l));
+-		strcat(arcs_cmdline, " ");
+-	}
+-}
+-
+-void __init prom_init(void)
+-{
+-	long l;
+-	argc = fw_arg0;
+-	arg = (int *)fw_arg1;
+-	env = (int *)fw_arg2;
+-
+-	prom_init_cmdline();
+-
+-	if ((strstr(arcs_cmdline, "console=")) == NULL)
+-		strcat(arcs_cmdline, " console=ttyS0,115200");
+-	if ((strstr(arcs_cmdline, "root=")) == NULL)
+-		strcat(arcs_cmdline, " root=/dev/hda1");
+-
+-#define parse_even_earlier(res, option, p)				\
+-do {									\
+-	if (strncmp(option, (char *)p, strlen(option)) == 0)		\
+-		res = simple_strtol((char *)p + strlen(option"="),	\
+-				    NULL, 10);				\
+-} while (0)
+-
+-	l = (long)*env;
+-	while (l != 0) {
+-		parse_even_earlier(bus_clock, "busclock", l);
+-		parse_even_earlier(cpu_clock_freq, "cpuclock", l);
+-		parse_even_earlier(memsize, "memsize", l);
+-		parse_even_earlier(highmemsize, "highmemsize", l);
+-		env++;
+-		l = (long)*env;
+-	}
+-	if (memsize == 0)
+-		memsize = 256;
+-
+-	pr_info("busclock=%ld, cpuclock=%ld,memsize=%d,highmemsize=%d\n",
+-	       bus_clock, cpu_clock_freq, memsize, highmemsize);
+-}
+-
+-void __init prom_free_prom_memory(void)
+-{
+-}
+-
+-void prom_putchar(char c)
+-{
+-	putDebugChar(c);
+-}
+diff --git a/arch/mips/lemote/lm2e/reset.c b/arch/mips/lemote/lm2e/reset.c
+deleted file mode 100644
+index 099387a..0000000
+--- a/arch/mips/lemote/lm2e/reset.c
++++ /dev/null
+@@ -1,41 +0,0 @@
+-/*
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- *
+- * Copyright (C) 2007 Lemote, Inc. & Institute of Computing Technology
+- * Author: Fuxin Zhang, zhangfx@lemote.com
+- */
+-#include <linux/pm.h>
+-
+-#include <asm/reboot.h>
+-
+-static void loongson2e_restart(char *command)
+-{
+-#ifdef CONFIG_32BIT
+-	*(unsigned long *)0xbfe00104 &= ~(1 << 2);
+-	*(unsigned long *)0xbfe00104 |= (1 << 2);
+-#else
+-	*(unsigned long *)0xffffffffbfe00104 &= ~(1 << 2);
+-	*(unsigned long *)0xffffffffbfe00104 |= (1 << 2);
+-#endif
+-	__asm__ __volatile__("jr\t%0"::"r"(0xbfc00000));
+-}
+-
+-static void loongson2e_halt(void)
+-{
+-	while (1) ;
+-}
+-
+-static void loongson2e_power_off(void)
+-{
+-	loongson2e_halt();
+-}
+-
+-void mips_reboot_setup(void)
+-{
+-	_machine_restart = loongson2e_restart;
+-	_machine_halt = loongson2e_halt;
+-	pm_power_off = loongson2e_power_off;
+-}
+diff --git a/arch/mips/lemote/lm2e/setup.c b/arch/mips/lemote/lm2e/setup.c
+deleted file mode 100644
+index ebd6cea..0000000
+--- a/arch/mips/lemote/lm2e/setup.c
++++ /dev/null
+@@ -1,111 +0,0 @@
+-/*
+- * BRIEF MODULE DESCRIPTION
+- * setup.c - board dependent boot routines
+- *
+- * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
+- * Author: Fuxin Zhang, zhangfx@lemote.com
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- *
+- */
+-#include <linux/bootmem.h>
+-#include <linux/init.h>
+-#include <linux/irq.h>
+-
+-#include <asm/bootinfo.h>
+-#include <asm/mc146818-time.h>
+-#include <asm/time.h>
+-#include <asm/wbflush.h>
+-#include <asm/mach-lemote/pci.h>
+-
+-#ifdef CONFIG_VT
+-#include <linux/console.h>
+-#include <linux/screen_info.h>
+-#endif
+-
+-extern void mips_reboot_setup(void);
+-
+-unsigned long cpu_clock_freq;
+-unsigned long bus_clock;
+-unsigned int memsize;
+-unsigned int highmemsize = 0;
+-
+-void __init plat_time_init(void)
+-{
+-	/* setup mips r4k timer */
+-	mips_hpt_frequency = cpu_clock_freq / 2;
+-}
+-
+-unsigned long read_persistent_clock(void)
+-{
+-	return mc146818_get_cmos_time();
+-}
+-
+-void (*__wbflush)(void);
+-EXPORT_SYMBOL(__wbflush);
+-
+-static void wbflush_loongson2e(void)
+-{
+-	asm(".set\tpush\n\t"
+-	    ".set\tnoreorder\n\t"
+-	    ".set mips3\n\t"
+-	    "sync\n\t"
+-	    "nop\n\t"
+-	    ".set\tpop\n\t"
+-	    ".set mips0\n\t");
+-}
+-
+-void __init plat_mem_setup(void)
+-{
+-	set_io_port_base((unsigned long)ioremap(LOONGSON2E_IO_PORT_BASE,
+-				IO_SPACE_LIMIT - LOONGSON2E_PCI_IO_START + 1));
+-	mips_reboot_setup();
+-
+-	__wbflush = wbflush_loongson2e;
+-
+-	add_memory_region(0x0, (memsize << 20), BOOT_MEM_RAM);
+-#ifdef CONFIG_64BIT
+-	if (highmemsize > 0) {
+-		add_memory_region(0x20000000, highmemsize << 20, BOOT_MEM_RAM);
+-	}
+-#endif
+-
+-#ifdef CONFIG_VT
+-#if defined(CONFIG_VGA_CONSOLE)
+-	conswitchp = &vga_con;
+-
+-	screen_info = (struct screen_info) {
+-		0, 25,		/* orig-x, orig-y */
+-		    0,		/* unused */
+-		    0,		/* orig-video-page */
+-		    0,		/* orig-video-mode */
+-		    80,		/* orig-video-cols */
+-		    0, 0, 0,	/* ega_ax, ega_bx, ega_cx */
+-		    25,		/* orig-video-lines */
+-		    VIDEO_TYPE_VGAC,	/* orig-video-isVGA */
+-		    16		/* orig-video-points */
+-	};
+-#elif defined(CONFIG_DUMMY_CONSOLE)
+-	conswitchp = &dummy_con;
+-#endif
+-#endif
+-
+-}
+diff --git a/arch/mips/loongson/fuloong-2e/Makefile b/arch/mips/loongson/fuloong-2e/Makefile
+new file mode 100644
+index 0000000..d34671d
+--- /dev/null
++++ b/arch/mips/loongson/fuloong-2e/Makefile
+@@ -0,0 +1,7 @@
++#
++# Makefile for Lemote Fulong mini-PC board.
++#
++
++obj-y += setup.o prom.o reset.o irq.o pci.o bonito-irq.o dbg_io.o mem.o
++
++EXTRA_CFLAGS += -Werror
+diff --git a/arch/mips/loongson/fuloong-2e/bonito-irq.c b/arch/mips/loongson/fuloong-2e/bonito-irq.c
+new file mode 100644
+index 0000000..5adf373
+--- /dev/null
++++ b/arch/mips/loongson/fuloong-2e/bonito-irq.c
+@@ -0,0 +1,73 @@
++/*
++ * Copyright 2001 MontaVista Software Inc.
++ * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
++ * Copyright (C) 2000, 2001 Ralf Baechle (ralf@gnu.org)
++ *
++ * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
++ * Author: Fuxin Zhang, zhangfx@lemote.com
++ *
++ *  This program is free software; you can redistribute  it and/or modify it
++ *  under  the terms of  the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the  License, or (at your
++ *  option) any later version.
++ *
++ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
++ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
++ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
++ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
++ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ *
++ */
++#include <linux/errno.h>
++#include <linux/init.h>
++#include <linux/io.h>
++#include <linux/types.h>
++#include <linux/interrupt.h>
++#include <linux/irq.h>
++
++#include <asm/mips-boards/bonito64.h>
++
++
++static inline void bonito_irq_enable(unsigned int irq)
++{
++	BONITO_INTENSET = (1 << (irq - BONITO_IRQ_BASE));
++	mmiowb();
++}
++
++static inline void bonito_irq_disable(unsigned int irq)
++{
++	BONITO_INTENCLR = (1 << (irq - BONITO_IRQ_BASE));
++	mmiowb();
++}
++
++static struct irq_chip bonito_irq_type = {
++	.name	= "bonito_irq",
++	.ack	= bonito_irq_disable,
++	.mask	= bonito_irq_disable,
++	.mask_ack = bonito_irq_disable,
++	.unmask	= bonito_irq_enable,
++};
++
++static struct irqaction dma_timeout_irqaction = {
++	.handler	= no_action,
++	.name		= "dma_timeout",
++};
++
++void bonito_irq_init(void)
++{
++	u32 i;
++
++	for (i = BONITO_IRQ_BASE; i < BONITO_IRQ_BASE + 32; i++)
++		set_irq_chip_and_handler(i, &bonito_irq_type, handle_level_irq);
++
++	setup_irq(BONITO_IRQ_BASE + 10, &dma_timeout_irqaction);
++}
+diff --git a/arch/mips/loongson/fuloong-2e/dbg_io.c b/arch/mips/loongson/fuloong-2e/dbg_io.c
+new file mode 100644
+index 0000000..84f8320
+--- /dev/null
++++ b/arch/mips/loongson/fuloong-2e/dbg_io.c
+@@ -0,0 +1,153 @@
++/*
++ * Copyright 2001 MontaVista Software Inc.
++ * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
++ * Copyright (C) 2000, 2001 Ralf Baechle (ralf@gnu.org)
++ *
++ * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
++ * Author: Fuxin Zhang, zhangfx@lemote.com
++ *
++ *  This program is free software; you can redistribute  it and/or modify it
++ *  under  the terms of  the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the  License, or (at your
++ *  option) any later version.
++ *
++ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
++ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
++ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
++ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
++ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ *
++ */
++
++#include <linux/io.h>
++#include <linux/init.h>
++#include <linux/types.h>
++
++#include <asm/serial.h>
++
++#define         UART16550_BAUD_2400             2400
++#define         UART16550_BAUD_4800             4800
++#define         UART16550_BAUD_9600             9600
++#define         UART16550_BAUD_19200            19200
++#define         UART16550_BAUD_38400            38400
++#define         UART16550_BAUD_57600            57600
++#define         UART16550_BAUD_115200           115200
++
++#define         UART16550_PARITY_NONE           0
++#define         UART16550_PARITY_ODD            0x08
++#define         UART16550_PARITY_EVEN           0x18
++#define         UART16550_PARITY_MARK           0x28
++#define         UART16550_PARITY_SPACE          0x38
++
++#define         UART16550_DATA_5BIT             0x0
++#define         UART16550_DATA_6BIT             0x1
++#define         UART16550_DATA_7BIT             0x2
++#define         UART16550_DATA_8BIT             0x3
++
++#define         UART16550_STOP_1BIT             0x0
++#define         UART16550_STOP_2BIT             0x4
++
++/* ----------------------------------------------------- */
++
++/* === CONFIG === */
++#ifdef CONFIG_64BIT
++#define         BASE                    (0xffffffffbfd003f8)
 +#else
-+#define PC_VGA            1
++#define         BASE                    (0xbfd003f8)
 +#endif
 +
-+#define SCREEN_X_RES      1024
-+#define SCREEN_Y_RES      600
-+#define SCREEN_BPP        16
++#define         MAX_BAUD                BASE_BAUD
++/* === END OF CONFIG === */
 +
-+#ifndef FIELD_OFFSET
-+#define FIELD_OFSFET(type, field) \
-+	((unsigned long) (PUCHAR) & (((type *)0)->field))
-+#endif
++#define         REG_OFFSET              1
 +
-+/*Assume SM712 graphics chip has 4MB VRAM */
-+#define SM712_VIDEOMEMORYSIZE	  0x00400000
-+/*Assume SM722 graphics chip has 8MB VRAM */
-+#define SM722_VIDEOMEMORYSIZE	  0x00800000
++/* register offset */
++#define         OFS_RCV_BUFFER          0
++#define         OFS_TRANS_HOLD          0
++#define         OFS_SEND_BUFFER         0
++#define         OFS_INTR_ENABLE         (1*REG_OFFSET)
++#define         OFS_INTR_ID             (2*REG_OFFSET)
++#define         OFS_DATA_FORMAT         (3*REG_OFFSET)
++#define         OFS_LINE_CONTROL        (3*REG_OFFSET)
++#define         OFS_MODEM_CONTROL       (4*REG_OFFSET)
++#define         OFS_RS232_OUTPUT        (4*REG_OFFSET)
++#define         OFS_LINE_STATUS         (5*REG_OFFSET)
++#define         OFS_MODEM_STATUS        (6*REG_OFFSET)
++#define         OFS_RS232_INPUT         (6*REG_OFFSET)
++#define         OFS_SCRATCH_PAD         (7*REG_OFFSET)
 +
-+#define dac_reg	(0x3c8)
-+#define dac_val	(0x3c9)
++#define         OFS_DIVISOR_LSB         (0*REG_OFFSET)
++#define         OFS_DIVISOR_MSB         (1*REG_OFFSET)
 +
-+extern char *smtc_RegBaseAddress;
-+#define smtc_mmiowb(dat, reg)	writeb(dat, smtc_RegBaseAddress + reg)
-+#define smtc_mmioww(dat, reg)	writew(dat, smtc_RegBaseAddress + reg)
-+#define smtc_mmiowl(dat, reg)	writel(dat, smtc_RegBaseAddress + reg)
++/* memory-mapped read/write of the port */
++#define         UART16550_READ(y)	readb((char *)BASE + (y))
++#define         UART16550_WRITE(y, z)	writeb(z, (char *)BASE + (y))
 +
-+#define smtc_mmiorb(reg)	readb(smtc_RegBaseAddress + reg)
-+#define smtc_mmiorw(reg)	readw(smtc_RegBaseAddress + reg)
-+#define smtc_mmiorl(reg)	readl(smtc_RegBaseAddress + reg)
-+
-+#define SIZE_SR00_SR04      (0x04 - 0x00 + 1)
-+#define SIZE_SR10_SR24      (0x24 - 0x10 + 1)
-+#define SIZE_SR30_SR75      (0x75 - 0x30 + 1)
-+#define SIZE_SR80_SR93      (0x93 - 0x80 + 1)
-+#define SIZE_SRA0_SRAF      (0xAF - 0xA0 + 1)
-+#define SIZE_GR00_GR08      (0x08 - 0x00 + 1)
-+#define SIZE_AR00_AR14      (0x14 - 0x00 + 1)
-+#define SIZE_CR00_CR18      (0x18 - 0x00 + 1)
-+#define SIZE_CR30_CR4D      (0x4D - 0x30 + 1)
-+#define SIZE_CR90_CRA7      (0xA7 - 0x90 + 1)
-+#define SIZE_VPR		(0x6C + 1)
-+#define SIZE_DPR		(0x44 + 1)
-+
-+static inline void smtc_crtcw(int reg, int val)
++void debugInit(u32 baud, u8 data, u8 parity, u8 stop)
 +{
-+	smtc_mmiowb(reg, 0x3d4);
-+	smtc_mmiowb(val, 0x3d5);
++	u32 divisor;
++
++	/* disable interrupts */
++	UART16550_WRITE(OFS_INTR_ENABLE, 0);
++
++	/* set up buad rate */
++	/* set DIAB bit */
++	UART16550_WRITE(OFS_LINE_CONTROL, 0x80);
++
++	/* set divisor */
++	divisor = MAX_BAUD / baud;
++	UART16550_WRITE(OFS_DIVISOR_LSB, divisor & 0xff);
++	UART16550_WRITE(OFS_DIVISOR_MSB, (divisor & 0xff00) >> 8);
++
++	/* clear DIAB bit */
++	UART16550_WRITE(OFS_LINE_CONTROL, 0x0);
++
++	/* set data format */
++	UART16550_WRITE(OFS_DATA_FORMAT, data | parity | stop);
 +}
 +
-+static inline unsigned int smtc_crtcr(int reg)
++static int remoteDebugInitialized;
++
++u8 getDebugChar(void)
 +{
-+	smtc_mmiowb(reg, 0x3d4);
-+	return smtc_mmiorb(0x3d5);
++	if (!remoteDebugInitialized) {
++		remoteDebugInitialized = 1;
++		debugInit(UART16550_BAUD_115200,
++			  UART16550_DATA_8BIT,
++			  UART16550_PARITY_NONE, UART16550_STOP_1BIT);
++	}
++
++	while ((UART16550_READ(OFS_LINE_STATUS) & 0x1) == 0)
++		;
++	return UART16550_READ(OFS_RCV_BUFFER);
 +}
 +
-+static inline void smtc_grphw(int reg, int val)
++int putDebugChar(u8 byte)
 +{
-+	smtc_mmiowb(reg, 0x3ce);
-+	smtc_mmiowb(val, 0x3cf);
++	if (!remoteDebugInitialized) {
++		remoteDebugInitialized = 1;
++		/*
++		   debugInit(UART16550_BAUD_115200,
++		   UART16550_DATA_8BIT,
++		   UART16550_PARITY_NONE, UART16550_STOP_1BIT); */
++	}
++
++	while ((UART16550_READ(OFS_LINE_STATUS) & 0x20) == 0)
++		;
++	UART16550_WRITE(OFS_SEND_BUFFER, byte);
++	return 1;
 +}
 +
-+static inline unsigned int smtc_grphr(int reg)
++void prom_putchar(char c)
 +{
-+	smtc_mmiowb(reg, 0x3ce);
-+	return smtc_mmiorb(0x3cf);
++	putDebugChar(c);
 +}
-+
-+static inline void smtc_attrw(int reg, int val)
-+{
-+	smtc_mmiorb(0x3da);
-+	smtc_mmiowb(reg, 0x3c0);
-+	smtc_mmiorb(0x3c1);
-+	smtc_mmiowb(val, 0x3c0);
-+}
-+
-+static inline void smtc_seqw(int reg, int val)
-+{
-+	smtc_mmiowb(reg, 0x3c4);
-+	smtc_mmiowb(val, 0x3c5);
-+}
-+
-+static inline unsigned int smtc_seqr(int reg)
-+{
-+	smtc_mmiowb(reg, 0x3c4);
-+	return smtc_mmiorb(0x3c5);
-+}
-+
-+/* The next structure holds all information relevant for a specific video mode.
+diff --git a/arch/mips/loongson/fuloong-2e/irq.c b/arch/mips/loongson/fuloong-2e/irq.c
+new file mode 100644
+index 0000000..1b0d491
+--- /dev/null
++++ b/arch/mips/loongson/fuloong-2e/irq.c
+@@ -0,0 +1,139 @@
++/*
++ * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
++ * Author: Fuxin Zhang, zhangfx@lemote.com
++ *
++ *  This program is free software; you can redistribute  it and/or modify it
++ *  under  the terms of  the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the  License, or (at your
++ *  option) any later version.
++ *
++ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
++ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
++ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
++ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
++ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ *
 + */
++#include <linux/delay.h>
++#include <linux/io.h>
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/irq.h>
 +
-+struct ModeInit {
-+	int mmSizeX;
-+	int mmSizeY;
-+	int bpp;
-+	int hz;
-+	unsigned char Init_MISC;
-+	unsigned char Init_SR00_SR04[SIZE_SR00_SR04];
-+	unsigned char Init_SR10_SR24[SIZE_SR10_SR24];
-+	unsigned char Init_SR30_SR75[SIZE_SR30_SR75];
-+	unsigned char Init_SR80_SR93[SIZE_SR80_SR93];
-+	unsigned char Init_SRA0_SRAF[SIZE_SRA0_SRAF];
-+	unsigned char Init_GR00_GR08[SIZE_GR00_GR08];
-+	unsigned char Init_AR00_AR14[SIZE_AR00_AR14];
-+	unsigned char Init_CR00_CR18[SIZE_CR00_CR18];
-+	unsigned char Init_CR30_CR4D[SIZE_CR30_CR4D];
-+	unsigned char Init_CR90_CRA7[SIZE_CR90_CRA7];
++#include <asm/irq_cpu.h>
++#include <asm/i8259.h>
++#include <asm/mipsregs.h>
++#include <asm/mips-boards/bonito64.h>
++
++#include <loongson.h>
++
++/*
++ * the first level int-handler will jump here if it is a bonito irq
++ */
++static void bonito_irqdispatch(void)
++{
++	u32 int_status;
++	int i;
++
++	/* workaround the IO dma problem: let cpu looping to allow DMA finish */
++	int_status = BONITO_INTISR;
++	if (int_status & (1 << 10)) {
++		while (int_status & (1 << 10)) {
++			udelay(1);
++			int_status = BONITO_INTISR;
++		}
++	}
++
++	/* Get pending sources, masked by current enables */
++	int_status = BONITO_INTISR & BONITO_INTEN;
++
++	if (int_status != 0) {
++		i = __ffs(int_status);
++		int_status &= ~(1 << i);
++		do_IRQ(BONITO_IRQ_BASE + i);
++	}
++}
++
++static void i8259_irqdispatch(void)
++{
++	int irq;
++
++	irq = i8259_irq();
++	if (irq >= 0)
++		do_IRQ(irq);
++	else
++		spurious_interrupt();
++}
++
++asmlinkage void plat_irq_dispatch(void)
++{
++	unsigned int pending = read_c0_cause() & read_c0_status() & ST0_IM;
++
++	if (pending & CAUSEF_IP7)
++		do_IRQ(MIPS_CPU_IRQ_BASE + 7);
++	else if (pending & CAUSEF_IP5)
++		i8259_irqdispatch();
++	else if (pending & CAUSEF_IP2)
++		bonito_irqdispatch();
++	else
++		spurious_interrupt();
++}
++
++static struct irqaction cascade_irqaction = {
++	.handler = no_action,
++	.name = "cascade",
 +};
 +
-+/**********************************************************************
-+			 SM712 Mode table.
-+ **********************************************************************/
-+struct ModeInit VGAMode[] = {
-+	{
-+	 /*  mode#0: 640 x 480  16Bpp  60Hz */
-+	 640, 480, 16, 60,
-+	 /*  Init_MISC */
-+	 0xE3,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x00, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xFF, 0xBE, 0xEF, 0xFF, 0x00, 0x0E, 0x17, 0x2C,
-+	  0x99, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x30, 0x02, 0x01, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x32, 0x03, 0xA0, 0x09, 0xC0, 0x32, 0x32, 0x32,
-+	  0x32, 0x32, 0x32, 0x32, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x32, 0x32, 0x32,
-+	  0x04, 0x24, 0x63, 0x4F, 0x52, 0x0B, 0xDF, 0xEA,
-+	  0x04, 0x50, 0x19, 0x32, 0x32, 0x00, 0x00, 0x32,
-+	  0x01, 0x80, 0x7E, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x74, 0x14, 0x07, 0x82, 0x07, 0x04,
-+	  0x00, 0x45, 0x30, 0x30, 0x40, 0x30,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0xFF, 0x07, 0x00, 0x6F, 0x7F, 0x7F, 0xFF, 0x32,
-+	  0xF7, 0x00, 0x00, 0x00, 0xEF, 0xFF, 0x32, 0x32,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFF, 0xBF, 0xFF, 0xFF, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFF, 0xFF, 0xFF, 0xBF, 0xEF, 0xFF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0x5F, 0x4F, 0x4F, 0x00, 0x53, 0x1F, 0x0B, 0x3E,
-+	  0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xEA, 0x0C, 0xDF, 0x50, 0x40, 0xDF, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x55, 0x03, 0x20,
-+	  0x00, 0x00, 0x00, 0x40, 0x00, 0xE7, 0xFF, 0xFD,
-+	  0x5F, 0x4F, 0x00, 0x54, 0x00, 0x0B, 0xDF, 0x00,
-+	  0xEA, 0x0C, 0x2E, 0x00, 0x4F, 0xDF,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x56, 0xDD, 0x5E, 0xEA, 0x87, 0x44, 0x8F, 0x55,
-+	  0x0A, 0x8F, 0x55, 0x0A, 0x00, 0x00, 0x18, 0x00,
-+	  0x11, 0x10, 0x0B, 0x0A, 0x0A, 0x0A, 0x0A, 0x00,
-+	  },
-+	 },
-+	{
-+	 /*  mode#1: 640 x 480  24Bpp  60Hz */
-+	 640, 480, 24, 60,
-+	 /*  Init_MISC */
-+	 0xE3,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x00, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xFF, 0xBE, 0xEF, 0xFF, 0x00, 0x0E, 0x17, 0x2C,
-+	  0x99, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x30, 0x02, 0x01, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x32, 0x03, 0xA0, 0x09, 0xC0, 0x32, 0x32, 0x32,
-+	  0x32, 0x32, 0x32, 0x32, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x32, 0x32, 0x32,
-+	  0x04, 0x24, 0x63, 0x4F, 0x52, 0x0B, 0xDF, 0xEA,
-+	  0x04, 0x50, 0x19, 0x32, 0x32, 0x00, 0x00, 0x32,
-+	  0x01, 0x80, 0x7E, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x74, 0x14, 0x07, 0x82, 0x07, 0x04,
-+	  0x00, 0x45, 0x30, 0x30, 0x40, 0x30,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0xFF, 0x07, 0x00, 0x6F, 0x7F, 0x7F, 0xFF, 0x32,
-+	  0xF7, 0x00, 0x00, 0x00, 0xEF, 0xFF, 0x32, 0x32,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFF, 0xBF, 0xFF, 0xFF, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFF, 0xFF, 0xFF, 0xBF, 0xEF, 0xFF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0x5F, 0x4F, 0x4F, 0x00, 0x53, 0x1F, 0x0B, 0x3E,
-+	  0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xEA, 0x0C, 0xDF, 0x50, 0x40, 0xDF, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x55, 0x03, 0x20,
-+	  0x00, 0x00, 0x00, 0x40, 0x00, 0xE7, 0xFF, 0xFD,
-+	  0x5F, 0x4F, 0x00, 0x54, 0x00, 0x0B, 0xDF, 0x00,
-+	  0xEA, 0x0C, 0x2E, 0x00, 0x4F, 0xDF,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x56, 0xDD, 0x5E, 0xEA, 0x87, 0x44, 0x8F, 0x55,
-+	  0x0A, 0x8F, 0x55, 0x0A, 0x00, 0x00, 0x18, 0x00,
-+	  0x11, 0x10, 0x0B, 0x0A, 0x0A, 0x0A, 0x0A, 0x00,
-+	  },
-+	 },
-+	{
-+	 /*  mode#0: 640 x 480  32Bpp  60Hz */
-+	 640, 480, 32, 60,
-+	 /*  Init_MISC */
-+	 0xE3,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x00, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xFF, 0xBE, 0xEF, 0xFF, 0x00, 0x0E, 0x17, 0x2C,
-+	  0x99, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x30, 0x02, 0x01, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x32, 0x03, 0xA0, 0x09, 0xC0, 0x32, 0x32, 0x32,
-+	  0x32, 0x32, 0x32, 0x32, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x32, 0x32, 0x32,
-+	  0x04, 0x24, 0x63, 0x4F, 0x52, 0x0B, 0xDF, 0xEA,
-+	  0x04, 0x50, 0x19, 0x32, 0x32, 0x00, 0x00, 0x32,
-+	  0x01, 0x80, 0x7E, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x74, 0x14, 0x07, 0x82, 0x07, 0x04,
-+	  0x00, 0x45, 0x30, 0x30, 0x40, 0x30,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0xFF, 0x07, 0x00, 0x6F, 0x7F, 0x7F, 0xFF, 0x32,
-+	  0xF7, 0x00, 0x00, 0x00, 0xEF, 0xFF, 0x32, 0x32,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFF, 0xBF, 0xFF, 0xFF, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFF, 0xFF, 0xFF, 0xBF, 0xEF, 0xFF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0x5F, 0x4F, 0x4F, 0x00, 0x53, 0x1F, 0x0B, 0x3E,
-+	  0x00, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xEA, 0x0C, 0xDF, 0x50, 0x40, 0xDF, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x55, 0x03, 0x20,
-+	  0x00, 0x00, 0x00, 0x40, 0x00, 0xE7, 0xFF, 0xFD,
-+	  0x5F, 0x4F, 0x00, 0x54, 0x00, 0x0B, 0xDF, 0x00,
-+	  0xEA, 0x0C, 0x2E, 0x00, 0x4F, 0xDF,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x56, 0xDD, 0x5E, 0xEA, 0x87, 0x44, 0x8F, 0x55,
-+	  0x0A, 0x8F, 0x55, 0x0A, 0x00, 0x00, 0x18, 0x00,
-+	  0x11, 0x10, 0x0B, 0x0A, 0x0A, 0x0A, 0x0A, 0x00,
-+	  },
-+	 },
++void __init arch_init_irq(void)
++{
++	/*
++	 * Clear all of the interrupts while we change the able around a bit.
++	 * int-handler is not on bootstrap
++	 */
++	clear_c0_status(ST0_IM | ST0_BEV);
++	local_irq_disable();
 +
-+	{			/*  mode#2: 800 x 600  16Bpp  60Hz */
-+	 800, 600, 16, 60,
-+	 /*  Init_MISC */
-+	 0x2B,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x03, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xFF, 0xBE, 0xEE, 0xFF, 0x00, 0x0E, 0x17, 0x2C,
-+	  0x99, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x30, 0x02, 0x01, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x34, 0x03, 0x20, 0x09, 0xC0, 0x24, 0x24, 0x24,
-+	  0x24, 0x24, 0x24, 0x24, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x38, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x24, 0x24, 0x24,
-+	  0x04, 0x48, 0x83, 0x63, 0x68, 0x72, 0x57, 0x58,
-+	  0x04, 0x55, 0x59, 0x24, 0x24, 0x00, 0x00, 0x24,
-+	  0x01, 0x80, 0x7A, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x74, 0x14, 0x1C, 0x85, 0x35, 0x13,
-+	  0x02, 0x45, 0x30, 0x35, 0x40, 0x20,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0x00, 0x00, 0x00, 0x6F, 0x7F, 0x7F, 0xFF, 0x24,
-+	  0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x24, 0x24,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFF, 0xBF, 0xFF, 0xFF, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFF, 0xFF, 0xFF, 0xBF, 0xEF, 0xBF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0x7F, 0x63, 0x63, 0x00, 0x68, 0x18, 0x72, 0xF0,
-+	  0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0x58, 0x0C, 0x57, 0x64, 0x40, 0x57, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x33, 0x03, 0x20,
-+	  0x00, 0x00, 0x00, 0x40, 0x00, 0xE7, 0xBF, 0xFD,
-+	  0x7F, 0x63, 0x00, 0x69, 0x18, 0x72, 0x57, 0x00,
-+	  0x58, 0x0C, 0xE0, 0x20, 0x63, 0x57,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x56, 0x4B, 0x5E, 0x55, 0x86, 0x9D, 0x8E, 0xAA,
-+	  0xDB, 0x2A, 0xDF, 0x33, 0x00, 0x00, 0x18, 0x00,
-+	  0x20, 0x1F, 0x1A, 0x19, 0x0F, 0x0F, 0x0F, 0x00,
-+	  },
-+	 },
-+	{			/*  mode#3: 800 x 600  24Bpp  60Hz */
-+	 800, 600, 24, 60,
-+	 0x2B,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x03, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xFF, 0xBE, 0xEE, 0xFF, 0x00, 0x0E, 0x17, 0x2C,
-+	  0x99, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x30, 0x02, 0x01, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x36, 0x03, 0x20, 0x09, 0xC0, 0x36, 0x36, 0x36,
-+	  0x36, 0x36, 0x36, 0x36, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x36, 0x36, 0x36,
-+	  0x04, 0x48, 0x83, 0x63, 0x68, 0x72, 0x57, 0x58,
-+	  0x04, 0x55, 0x59, 0x36, 0x36, 0x00, 0x00, 0x36,
-+	  0x01, 0x80, 0x7E, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x74, 0x14, 0x1C, 0x85, 0x35, 0x13,
-+	  0x02, 0x45, 0x30, 0x30, 0x40, 0x20,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0xFF, 0x07, 0x00, 0x6F, 0x7F, 0x7F, 0xFF, 0x36,
-+	  0xF7, 0x00, 0x00, 0x00, 0xEF, 0xFF, 0x36, 0x36,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFF, 0xBF, 0xFF, 0xFF, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFF, 0xFF, 0xFF, 0xBF, 0xEF, 0xBF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0x7F, 0x63, 0x63, 0x00, 0x68, 0x18, 0x72, 0xF0,
-+	  0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0x58, 0x0C, 0x57, 0x64, 0x40, 0x57, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x33, 0x03, 0x20,
-+	  0x00, 0x00, 0x00, 0x40, 0x00, 0xE7, 0xBF, 0xFD,
-+	  0x7F, 0x63, 0x00, 0x69, 0x18, 0x72, 0x57, 0x00,
-+	  0x58, 0x0C, 0xE0, 0x20, 0x63, 0x57,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x56, 0x4B, 0x5E, 0x55, 0x86, 0x9D, 0x8E, 0xAA,
-+	  0xDB, 0x2A, 0xDF, 0x33, 0x00, 0x00, 0x18, 0x00,
-+	  0x20, 0x1F, 0x1A, 0x19, 0x0F, 0x0F, 0x0F, 0x00,
-+	  },
-+	 },
-+	{			/*  mode#7: 800 x 600  32Bpp  60Hz */
-+	 800, 600, 32, 60,
-+	 /*  Init_MISC */
-+	 0x2B,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x03, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xFF, 0xBE, 0xEE, 0xFF, 0x00, 0x0E, 0x17, 0x2C,
-+	  0x99, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x30, 0x02, 0x01, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x34, 0x03, 0x20, 0x09, 0xC0, 0x24, 0x24, 0x24,
-+	  0x24, 0x24, 0x24, 0x24, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x38, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x24, 0x24, 0x24,
-+	  0x04, 0x48, 0x83, 0x63, 0x68, 0x72, 0x57, 0x58,
-+	  0x04, 0x55, 0x59, 0x24, 0x24, 0x00, 0x00, 0x24,
-+	  0x01, 0x80, 0x7A, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x74, 0x14, 0x1C, 0x85, 0x35, 0x13,
-+	  0x02, 0x45, 0x30, 0x35, 0x40, 0x20,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0x00, 0x00, 0x00, 0x6F, 0x7F, 0x7F, 0xFF, 0x24,
-+	  0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x24, 0x24,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFF, 0xBF, 0xFF, 0xFF, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFF, 0xFF, 0xFF, 0xBF, 0xEF, 0xBF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0x7F, 0x63, 0x63, 0x00, 0x68, 0x18, 0x72, 0xF0,
-+	  0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0x58, 0x0C, 0x57, 0x64, 0x40, 0x57, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x33, 0x03, 0x20,
-+	  0x00, 0x00, 0x00, 0x40, 0x00, 0xE7, 0xBF, 0xFD,
-+	  0x7F, 0x63, 0x00, 0x69, 0x18, 0x72, 0x57, 0x00,
-+	  0x58, 0x0C, 0xE0, 0x20, 0x63, 0x57,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x56, 0x4B, 0x5E, 0x55, 0x86, 0x9D, 0x8E, 0xAA,
-+	  0xDB, 0x2A, 0xDF, 0x33, 0x00, 0x00, 0x18, 0x00,
-+	  0x20, 0x1F, 0x1A, 0x19, 0x0F, 0x0F, 0x0F, 0x00,
-+	  },
-+	 },
-+	/* We use 1024x768 table to light 1024x600 panel for lemote */
-+	{			/*  mode#4: 1024 x 600  16Bpp  60Hz  */
-+	 1024, 600, 16, 60,
-+	 /*  Init_MISC */
-+	 0xEB,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x00, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xC8, 0x40, 0x14, 0x60, 0x00, 0x0A, 0x17, 0x20,
-+	  0x51, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x30, 0x02, 0x00, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x22, 0x03, 0x24, 0x09, 0xC0, 0x22, 0x22, 0x22,
-+	  0x22, 0x22, 0x22, 0x22, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x22, 0x22, 0x22,
-+	  0x06, 0x68, 0xA7, 0x7F, 0x83, 0x24, 0xFF, 0x03,
-+	  0x00, 0x60, 0x59, 0x22, 0x22, 0x00, 0x00, 0x22,
-+	  0x01, 0x80, 0x7A, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x16, 0x02, 0x0D, 0x82, 0x09, 0x02,
-+	  0x04, 0x45, 0x3F, 0x30, 0x40, 0x20,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0xFF, 0x07, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x3A,
-+	  0xF7, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x3A, 0x3A,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFB, 0x9F, 0x01, 0x00, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFB, 0xFF, 0xFF, 0x97, 0xEF, 0xBF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0xA3, 0x7F, 0x7F, 0x00, 0x85, 0x16, 0x24, 0xF5,
-+	  0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0x03, 0x09, 0xFF, 0x80, 0x40, 0xFF, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x02, 0x20,
-+	  0x00, 0x00, 0x00, 0x40, 0x00, 0xFF, 0xBF, 0xFF,
-+	  0xA3, 0x7F, 0x00, 0x82, 0x0b, 0x6f, 0x57, 0x00,
-+	  0x5c, 0x0f, 0xE0, 0xe0, 0x7F, 0x57,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x55, 0xD9, 0x5D, 0xE1, 0x86, 0x1B, 0x8E, 0x26,
-+	  0xDA, 0x8D, 0xDE, 0x94, 0x00, 0x00, 0x18, 0x00,
-+	  0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x15, 0x03,
-+	  },
-+	 },
-+	{			/*  mode#5: 1024 x 768  24Bpp  60Hz */
-+	 1024, 768, 24, 60,
-+	 /*  Init_MISC */
-+	 0xEB,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x03, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xF3, 0xB6, 0xC0, 0xDD, 0x00, 0x0E, 0x17, 0x2C,
-+	  0x99, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x30, 0x02, 0x01, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x38, 0x03, 0x20, 0x09, 0xC0, 0x3A, 0x3A, 0x3A,
-+	  0x3A, 0x3A, 0x3A, 0x3A, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x00, 0x00, 0x3A,
-+	  0x06, 0x68, 0xA7, 0x7F, 0x83, 0x24, 0xFF, 0x03,
-+	  0x00, 0x60, 0x59, 0x3A, 0x3A, 0x00, 0x00, 0x3A,
-+	  0x01, 0x80, 0x7E, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x74, 0x14, 0x3B, 0x0D, 0x09, 0x02,
-+	  0x04, 0x45, 0x30, 0x30, 0x40, 0x20,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0xFF, 0x07, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x3A,
-+	  0xF7, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x3A, 0x3A,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFB, 0x9F, 0x01, 0x00, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFB, 0xFF, 0xFF, 0x97, 0xEF, 0xBF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0xA3, 0x7F, 0x7F, 0x00, 0x85, 0x16, 0x24, 0xF5,
-+	  0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0x03, 0x09, 0xFF, 0x80, 0x40, 0xFF, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x02, 0x20,
-+	  0x00, 0x00, 0x00, 0x40, 0x00, 0xFF, 0xBF, 0xFF,
-+	  0xA3, 0x7F, 0x00, 0x86, 0x15, 0x24, 0xFF, 0x00,
-+	  0x01, 0x07, 0xE5, 0x20, 0x7F, 0xFF,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x55, 0xD9, 0x5D, 0xE1, 0x86, 0x1B, 0x8E, 0x26,
-+	  0xDA, 0x8D, 0xDE, 0x94, 0x00, 0x00, 0x18, 0x00,
-+	  0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x15, 0x03,
-+	  },
-+	 },
-+	{			/*  mode#4: 1024 x 768  32Bpp  60Hz */
-+	 1024, 768, 32, 60,
-+	 /*  Init_MISC */
-+	 0xEB,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x03, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xF3, 0xB6, 0xC0, 0xDD, 0x00, 0x0E, 0x17, 0x2C,
-+	  0x99, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x32, 0x02, 0x01, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x38, 0x03, 0x20, 0x09, 0xC0, 0x3A, 0x3A, 0x3A,
-+	  0x3A, 0x3A, 0x3A, 0x3A, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x00, 0x00, 0x3A,
-+	  0x06, 0x68, 0xA7, 0x7F, 0x83, 0x24, 0xFF, 0x03,
-+	  0x00, 0x60, 0x59, 0x3A, 0x3A, 0x00, 0x00, 0x3A,
-+	  0x01, 0x80, 0x7E, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x74, 0x14, 0x3B, 0x0D, 0x09, 0x02,
-+	  0x04, 0x45, 0x30, 0x30, 0x40, 0x20,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0xFF, 0x07, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x3A,
-+	  0xF7, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x3A, 0x3A,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFB, 0x9F, 0x01, 0x00, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFB, 0xFF, 0xFF, 0x97, 0xEF, 0xBF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0xA3, 0x7F, 0x7F, 0x00, 0x85, 0x16, 0x24, 0xF5,
-+	  0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0x03, 0x09, 0xFF, 0x80, 0x40, 0xFF, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x02, 0x20,
-+	  0x00, 0x00, 0x00, 0x40, 0x00, 0xFF, 0xBF, 0xFF,
-+	  0xA3, 0x7F, 0x00, 0x86, 0x15, 0x24, 0xFF, 0x00,
-+	  0x01, 0x07, 0xE5, 0x20, 0x7F, 0xFF,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x55, 0xD9, 0x5D, 0xE1, 0x86, 0x1B, 0x8E, 0x26,
-+	  0xDA, 0x8D, 0xDE, 0x94, 0x00, 0x00, 0x18, 0x00,
-+	  0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x15, 0x03,
-+	  },
-+	 },
-+	{			/*  mode#6: 320 x 240  16Bpp  60Hz */
-+	 320, 240, 16, 60,
-+	 /*  Init_MISC */
-+	 0xEB,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x03, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xF3, 0xB6, 0xC0, 0xDD, 0x00, 0x0E, 0x17, 0x2C,
-+	  0x99, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x32, 0x02, 0x01, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x38, 0x03, 0x20, 0x09, 0xC0, 0x3A, 0x3A, 0x3A,
-+	  0x3A, 0x3A, 0x3A, 0x3A, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x00, 0x00, 0x3A,
-+	  0x06, 0x68, 0xA7, 0x7F, 0x83, 0x24, 0xFF, 0x03,
-+	  0x00, 0x60, 0x59, 0x3A, 0x3A, 0x00, 0x00, 0x3A,
-+	  0x01, 0x80, 0x7E, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x74, 0x14, 0x08, 0x43, 0x08, 0x43,
-+	  0x04, 0x45, 0x30, 0x30, 0x40, 0x20,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0xFF, 0x07, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x3A,
-+	  0xF7, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x3A, 0x3A,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFB, 0x9F, 0x01, 0x00, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFB, 0xFF, 0xFF, 0x97, 0xEF, 0xBF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0xA3, 0x7F, 0x7F, 0x00, 0x85, 0x16, 0x24, 0xF5,
-+	  0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0x03, 0x09, 0xFF, 0x80, 0x40, 0xFF, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x02, 0x20,
-+	  0x00, 0x00, 0x30, 0x40, 0x00, 0xFF, 0xBF, 0xFF,
-+	  0x2E, 0x27, 0x00, 0x2b, 0x0c, 0x0F, 0xEF, 0x00,
-+	  0xFe, 0x0f, 0x01, 0xC0, 0x27, 0xEF,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x55, 0xD9, 0x5D, 0xE1, 0x86, 0x1B, 0x8E, 0x26,
-+	  0xDA, 0x8D, 0xDE, 0x94, 0x00, 0x00, 0x18, 0x00,
-+	  0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x15, 0x03,
-+	  },
-+	 },
++	/* most bonito irq should be level triggered */
++	BONITO_INTEDGE = BONITO_ICU_SYSTEMERR | BONITO_ICU_MASTERERR |
++		BONITO_ICU_RETRYERR | BONITO_ICU_MBOXES;
++	BONITO_INTSTEER = 0;
 +
-+	{			/*  mode#8: 320 x 240  32Bpp  60Hz */
-+	 320, 240, 32, 60,
-+	 /*  Init_MISC */
-+	 0xEB,
-+	 {			/*  Init_SR0_SR4 */
-+	  0x03, 0x01, 0x0F, 0x03, 0x0E,
-+	  },
-+	 {			/*  Init_SR10_SR24 */
-+	  0xF3, 0xB6, 0xC0, 0xDD, 0x00, 0x0E, 0x17, 0x2C,
-+	  0x99, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0xC4, 0x32, 0x02, 0x01, 0x01,
-+	  },
-+	 {			/*  Init_SR30_SR75 */
-+	  0x38, 0x03, 0x20, 0x09, 0xC0, 0x3A, 0x3A, 0x3A,
-+	  0x3A, 0x3A, 0x3A, 0x3A, 0x00, 0x00, 0x03, 0xFF,
-+	  0x00, 0xFC, 0x00, 0x00, 0x20, 0x18, 0x00, 0xFC,
-+	  0x20, 0x0C, 0x44, 0x20, 0x00, 0x00, 0x00, 0x3A,
-+	  0x06, 0x68, 0xA7, 0x7F, 0x83, 0x24, 0xFF, 0x03,
-+	  0x00, 0x60, 0x59, 0x3A, 0x3A, 0x00, 0x00, 0x3A,
-+	  0x01, 0x80, 0x7E, 0x1A, 0x1A, 0x00, 0x00, 0x00,
-+	  0x50, 0x03, 0x74, 0x14, 0x08, 0x43, 0x08, 0x43,
-+	  0x04, 0x45, 0x30, 0x30, 0x40, 0x20,
-+	  },
-+	 {			/*  Init_SR80_SR93 */
-+	  0xFF, 0x07, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0x3A,
-+	  0xF7, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x3A, 0x3A,
-+	  0x00, 0x00, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_SRA0_SRAF */
-+	  0x00, 0xFB, 0x9F, 0x01, 0x00, 0xED, 0xED, 0xED,
-+	  0x7B, 0xFB, 0xFF, 0xFF, 0x97, 0xEF, 0xBF, 0xDF,
-+	  },
-+	 {			/*  Init_GR00_GR08 */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x05, 0x0F,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_AR00_AR14 */
-+	  0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-+	  0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
-+	  0x41, 0x00, 0x0F, 0x00, 0x00,
-+	  },
-+	 {			/*  Init_CR00_CR18 */
-+	  0xA3, 0x7F, 0x7F, 0x00, 0x85, 0x16, 0x24, 0xF5,
-+	  0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-+	  0x03, 0x09, 0xFF, 0x80, 0x40, 0xFF, 0x00, 0xE3,
-+	  0xFF,
-+	  },
-+	 {			/*  Init_CR30_CR4D */
-+	  0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x02, 0x20,
-+	  0x00, 0x00, 0x30, 0x40, 0x00, 0xFF, 0xBF, 0xFF,
-+	  0x2E, 0x27, 0x00, 0x2b, 0x0c, 0x0F, 0xEF, 0x00,
-+	  0xFe, 0x0f, 0x01, 0xC0, 0x27, 0xEF,
-+	  },
-+	 {			/*  Init_CR90_CRA7 */
-+	  0x55, 0xD9, 0x5D, 0xE1, 0x86, 0x1B, 0x8E, 0x26,
-+	  0xDA, 0x8D, 0xDE, 0x94, 0x00, 0x00, 0x18, 0x00,
-+	  0x03, 0x03, 0x03, 0x03, 0x03, 0x03, 0x15, 0x03,
-+	  },
-+	 },
++	/*
++	 * Mask out all interrupt by writing "1" to all bit position in
++	 * the interrupt reset reg.
++	 */
++	BONITO_INTENCLR = ~0;
++
++	/* init all controller
++	 *   0-15         ------> i8259 interrupt
++	 *   16-23        ------> mips cpu interrupt
++	 *   32-63        ------> bonito irq
++	 */
++
++	/* Sets the first-level interrupt dispatcher. */
++	mips_cpu_irq_init();
++	init_i8259_irqs();
++	bonito_irq_init();
++
++	/*
++	printk("GPIODATA=%x, GPIOIE=%x\n", BONITO_GPIODATA, BONITO_GPIOIE);
++	printk("INTEN=%x, INTSET=%x, INTCLR=%x, INTISR=%x\n",
++			BONITO_INTEN, BONITO_INTENSET,
++			BONITO_INTENCLR, BONITO_INTISR);
++	*/
++
++	/* bonito irq at IP2 */
++	setup_irq(MIPS_CPU_IRQ_BASE + 2, &cascade_irqaction);
++	/* 8259 irq at IP5 */
++	setup_irq(MIPS_CPU_IRQ_BASE + 5, &cascade_irqaction);
++
++}
+diff --git a/arch/mips/loongson/fuloong-2e/mem.c b/arch/mips/loongson/fuloong-2e/mem.c
+new file mode 100644
+index 0000000..16cd215
+--- /dev/null
++++ b/arch/mips/loongson/fuloong-2e/mem.c
+@@ -0,0 +1,23 @@
++/*
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++#include <linux/fs.h>
++#include <linux/fcntl.h>
++#include <linux/mm.h>
++
++/* override of arch/mips/mm/cache.c: __uncached_access */
++int __uncached_access(struct file *file, unsigned long addr)
++{
++	if (file->f_flags & O_SYNC)
++		return 1;
++
++	/*
++	 * On the Lemote Loongson 2e system, the peripheral registers
++	 * reside between 0x1000:0000 and 0x2000:0000.
++	 */
++	return addr >= __pa(high_memory) ||
++		((addr >= 0x10000000) && (addr < 0x20000000));
++}
+diff --git a/arch/mips/loongson/fuloong-2e/pci.c b/arch/mips/loongson/fuloong-2e/pci.c
+new file mode 100644
+index 0000000..4c4bc07
+--- /dev/null
++++ b/arch/mips/loongson/fuloong-2e/pci.c
+@@ -0,0 +1,95 @@
++/*
++ * pci.c
++ *
++ * Copyright (C) 2007 Lemote, Inc. & Institute of Computing Technology
++ * Author: Fuxin Zhang, zhangfx@lemote.com
++ *
++ *  This program is free software; you can redistribute  it and/or modify it
++ *  under  the terms of  the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the  License, or (at your
++ *  option) any later version.
++ *
++ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
++ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
++ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
++ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
++ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ *
++ */
++#include <linux/types.h>
++#include <linux/pci.h>
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <asm/mips-boards/bonito64.h>
++#include <pci.h>
++
++static struct resource loongson2e_pci_mem_resource = {
++	.name   = "LOONGSON2E PCI MEM",
++	.start  = LOONGSON2E_PCI_MEM_START,
++	.end    = LOONGSON2E_PCI_MEM_END,
++	.flags  = IORESOURCE_MEM,
 +};
 +
-+#define numVGAModes		(sizeof(VGAMode) / sizeof(struct ModeInit))
++static struct resource loongson2e_pci_io_resource = {
++	.name   = "LOONGSON2E PCI IO MEM",
++	.start  = LOONGSON2E_PCI_IO_START,
++	.end    = IO_SPACE_LIMIT,
++	.flags  = IORESOURCE_IO,
++};
++
++static struct pci_controller  loongson2e_pci_controller = {
++	.pci_ops        = &bonito64_pci_ops,
++	.io_resource    = &loongson2e_pci_io_resource,
++	.mem_resource   = &loongson2e_pci_mem_resource,
++	.mem_offset     = 0x00000000UL,
++	.io_offset      = 0x00000000UL,
++};
++
++static void __init ict_pcimap(void)
++{
++	/*
++	 * local to PCI mapping: [256M,512M] -> [256M,512M]; differ from PMON
++	 *
++	 * CPU address space [256M,448M] is window for accessing pci space
++	 * we set pcimap_lo[0,1,2] to map it to pci space [256M,448M]
++	 * pcimap: bit18,pcimap_2; bit[17-12],lo2;bit[11-6],lo1;bit[5-0],lo0
++	 */
++	/* 1,00 0110 ,0001 01,00 0000 */
++	BONITO_PCIMAP = 0x46140;
++
++	/* 1, 00 0010, 0000,01, 00 0000 */
++	/* BONITO_PCIMAP = 0x42040; */
++
++	/*
++	 * PCI to local mapping: [2G,2G+256M] -> [0,256M]
++	 */
++	BONITO_PCIBASE0 = 0x80000000;
++	BONITO_PCIBASE1 = 0x00800000;
++	BONITO_PCIBASE2 = 0x90000000;
++
++}
++
++static int __init pcibios_init(void)
++{
++	ict_pcimap();
++
++	loongson2e_pci_controller.io_map_base =
++	    (unsigned long) ioremap(LOONGSON2E_IO_PORT_BASE,
++				    loongson2e_pci_io_resource.end -
++				    loongson2e_pci_io_resource.start + 1);
++
++	register_pci_controller(&loongson2e_pci_controller);
++
++	return 0;
++}
++
++arch_initcall(pcibios_init);
+diff --git a/arch/mips/loongson/fuloong-2e/prom.c b/arch/mips/loongson/fuloong-2e/prom.c
+new file mode 100644
+index 0000000..95081f4
+--- /dev/null
++++ b/arch/mips/loongson/fuloong-2e/prom.c
+@@ -0,0 +1,90 @@
++/*
++ * Based on Ocelot Linux port, which is
++ * Copyright 2001 MontaVista Software Inc.
++ * Author: jsun@mvista.com or jsun@junsun.net
++ *
++ * Copyright 2003 ICT CAS
++ * Author: Michael Guo <guoyi@ict.ac.cn>
++ *
++ * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
++ * Author: Fuxin Zhang, zhangfx@lemote.com
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ */
++#include <linux/init.h>
++#include <linux/bootmem.h>
++#include <asm/bootinfo.h>
++
++#include <loongson.h>
++
++static int argc;
++/* pmon passes arguments in 32bit pointers */
++static int *arg;
++static int *env;
++
++const char *get_system_type(void)
++{
++	return "lemote-fulong";
++}
++
++void __init prom_init_cmdline(void)
++{
++	int i;
++	long l;
++
++	/* arg[0] is "g", the rest is boot parameters */
++	arcs_cmdline[0] = '\0';
++	for (i = 1; i < argc; i++) {
++		l = (long)arg[i];
++		if (strlen(arcs_cmdline) + strlen(((char *)l) + 1)
++		    >= sizeof(arcs_cmdline))
++			break;
++		strcat(arcs_cmdline, ((char *)l));
++		strcat(arcs_cmdline, " ");
++	}
++}
++
++#define parse_even_earlier(res, option, p)				\
++do {									\
++	if (strncmp(option, (char *)p, strlen(option)) == 0)		\
++			strict_strtol((char *)p + strlen(option"="),	\
++				    10, &res);				\
++} while (0)
++
++
++void __init prom_init(void)
++{
++	long l;
++	argc = fw_arg0;
++	arg = (int *)fw_arg1;
++	env = (int *)fw_arg2;
++
++	prom_init_cmdline();
++
++	if ((strstr(arcs_cmdline, "console=")) == NULL)
++		strcat(arcs_cmdline, " console=ttyS0,115200");
++	if ((strstr(arcs_cmdline, "root=")) == NULL)
++		strcat(arcs_cmdline, " root=/dev/hda1");
++
++	l = (long)*env;
++	while (l != 0) {
++		parse_even_earlier(bus_clock, "busclock", l);
++		parse_even_earlier(cpu_clock_freq, "cpuclock", l);
++		parse_even_earlier(memsize, "memsize", l);
++		parse_even_earlier(highmemsize, "highmemsize", l);
++		env++;
++		l = (long)*env;
++	}
++	if (memsize == 0)
++		memsize = 256;
++
++	pr_info("busclock=%ld, cpuclock=%ld, memsize=%ld, highmemsize=%ld\n",
++	       bus_clock, cpu_clock_freq, memsize, highmemsize);
++}
++
++void __init prom_free_prom_memory(void)
++{
++}
+diff --git a/arch/mips/loongson/fuloong-2e/reset.c b/arch/mips/loongson/fuloong-2e/reset.c
+new file mode 100644
+index 0000000..769a2ce
+--- /dev/null
++++ b/arch/mips/loongson/fuloong-2e/reset.c
+@@ -0,0 +1,37 @@
++/*
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ *
++ * Copyright (C) 2007 Lemote, Inc. & Institute of Computing Technology
++ * Author: Fuxin Zhang, zhangfx@lemote.com
++ */
++#include <linux/pm.h>
++
++#include <asm/reboot.h>
++
++static void loongson_restart(char *command)
++{
++#ifdef CONFIG_32BIT
++	*(unsigned long *)0xbfe00104 &= ~(1 << 2);
++	*(unsigned long *)0xbfe00104 |= (1 << 2);
++#else
++	*(unsigned long *)0xffffffffbfe00104 &= ~(1 << 2);
++	*(unsigned long *)0xffffffffbfe00104 |= (1 << 2);
++#endif
++	__asm__ __volatile__("jr\t%0" : : "r"(0xbfc00000));
++}
++
++static void loongson_halt(void)
++{
++	while (1)
++		;
++}
++
++void loongson_reboot_setup(void)
++{
++	_machine_restart = loongson_restart;
++	_machine_halt = loongson_halt;
++	pm_power_off = loongson_halt;
++}
+diff --git a/arch/mips/loongson/fuloong-2e/setup.c b/arch/mips/loongson/fuloong-2e/setup.c
+new file mode 100644
+index 0000000..ae226a4
+--- /dev/null
++++ b/arch/mips/loongson/fuloong-2e/setup.c
+@@ -0,0 +1,108 @@
++/*
++ * BRIEF MODULE DESCRIPTION
++ * setup.c - board dependent boot routines
++ *
++ * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
++ * Author: Fuxin Zhang, zhangfx@lemote.com
++ *
++ *  This program is free software; you can redistribute  it and/or modify it
++ *  under  the terms of  the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the  License, or (at your
++ *  option) any later version.
++ *
++ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
++ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
++ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
++ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
++ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ *
++ */
++#include <linux/bootmem.h>
++#include <linux/init.h>
++#include <linux/irq.h>
++
++#include <asm/bootinfo.h>
++#include <asm/mc146818-time.h>
++#include <asm/wbflush.h>
++#include <asm/time.h>
++
++#include <loongson.h>
++#include <pci.h>
++
++#ifdef CONFIG_VT
++#include <linux/console.h>
++#include <linux/screen_info.h>
++#endif
++
++unsigned long cpu_clock_freq, bus_clock;
++unsigned long memsize, highmemsize;
++
++void __init plat_time_init(void)
++{
++	/* setup mips r4k timer */
++	mips_hpt_frequency = cpu_clock_freq / 2;
++}
++
++unsigned long read_persistent_clock(void)
++{
++	return mc146818_get_cmos_time();
++}
++
++void (*__wbflush)(void);
++EXPORT_SYMBOL(__wbflush);
++
++static void wbflush_loongson2e(void)
++{
++	asm(".set\tpush\n\t"
++	    ".set\tnoreorder\n\t"
++	    ".set mips3\n\t"
++	    "sync\n\t"
++	    "nop\n\t"
++	    ".set\tpop\n\t"
++	    ".set mips0\n\t");
++}
++
++void __init plat_mem_setup(void)
++{
++	set_io_port_base((unsigned long)ioremap(LOONGSON2E_IO_PORT_BASE,
++				IO_SPACE_LIMIT - LOONGSON2E_PCI_IO_START + 1));
++	loongson_reboot_setup();
++
++	__wbflush = wbflush_loongson2e;
++
++	add_memory_region(0x0, (memsize << 20), BOOT_MEM_RAM);
++#ifdef CONFIG_64BIT
++	if (highmemsize > 0)
++		add_memory_region(0x20000000, highmemsize << 20, BOOT_MEM_RAM);
++#endif
++
++#ifdef CONFIG_VT
++#if defined(CONFIG_VGA_CONSOLE)
++	conswitchp = &vga_con;
++
++	screen_info = (struct screen_info) {
++		0, 25,		/* orig-x, orig-y */
++		    0,		/* unused */
++		    0,		/* orig-video-page */
++		    0,		/* orig-video-mode */
++		    80,		/* orig-video-cols */
++		    0, 0, 0,	/* ega_ax, ega_bx, ega_cx */
++		    25,		/* orig-video-lines */
++		    VIDEO_TYPE_VGAC,	/* orig-video-isVGA */
++		    16		/* orig-video-points */
++	};
++#elif defined(CONFIG_DUMMY_CONSOLE)
++	conswitchp = &dummy_con;
++#endif
++#endif
++
++}
+diff --git a/arch/mips/pci/Makefile b/arch/mips/pci/Makefile
+index e8a97f5..1c66fc0 100644
+--- a/arch/mips/pci/Makefile
++++ b/arch/mips/pci/Makefile
+@@ -26,7 +26,7 @@ obj-$(CONFIG_MIPS_COBALT)	+= fixup-cobalt.o
+ obj-$(CONFIG_SOC_AU1500)	+= fixup-au1000.o ops-au1000.o
+ obj-$(CONFIG_SOC_AU1550)	+= fixup-au1000.o ops-au1000.o
+ obj-$(CONFIG_SOC_PNX8550)	+= fixup-pnx8550.o ops-pnx8550.o
+-obj-$(CONFIG_LEMOTE_FULONG)	+= fixup-lm2e.o ops-bonito64.o
++obj-$(CONFIG_LEMOTE_FULOONG2E)	+= fixup-fuloong2e.o ops-bonito64.o
+ obj-$(CONFIG_MIPS_MALTA)	+= fixup-malta.o
+ obj-$(CONFIG_PMC_MSP7120_GW)	+= fixup-pmcmsp.o ops-pmcmsp.o
+ obj-$(CONFIG_PMC_MSP7120_EVAL)	+= fixup-pmcmsp.o ops-pmcmsp.o
+diff --git a/arch/mips/pci/fixup-fuloong2e.c b/arch/mips/pci/fixup-fuloong2e.c
+new file mode 100644
+index 0000000..bd26008
+--- /dev/null
++++ b/arch/mips/pci/fixup-fuloong2e.c
+@@ -0,0 +1,242 @@
++/*
++ * fixup-fuloong2e.c
++ *
++ * Copyright (C) 2004 ICT CAS
++ * Author: Li xiaoyu, ICT CAS
++ *   lixy@ict.ac.cn
++ *
++ * Copyright (C) 2007 Lemote, Inc. & Institute of Computing Technology
++ * Author: Fuxin Zhang, zhangfx@lemote.com
++ *
++ *  This program is free software; you can redistribute  it and/or modify it
++ *  under  the terms of  the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the  License, or (at your
++ *  option) any later version.
++ *
++ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
++ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
++ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
++ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
++ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ *
++ */
++#include <linux/init.h>
++#include <linux/pci.h>
++#include <asm/mips-boards/bonito64.h>
++
++/* South bridge slot number is set by the pci probe process */
++static u8 sb_slot = 5;
++
++int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
++{
++	int irq = 0;
++
++	if (slot == sb_slot) {
++		switch (PCI_FUNC(dev->devfn)) {
++		case 2:
++			irq = 10;
++			break;
++		case 3:
++			irq = 11;
++			break;
++		case 5:
++			irq = 9;
++			break;
++		}
++	} else {
++		irq = BONITO_IRQ_BASE + 25 + pin;
++	}
++	return irq;
++
++}
++
++/* Do platform specific device initialization at pci_enable_device() time */
++int pcibios_plat_dev_init(struct pci_dev *dev)
++{
++	return 0;
++}
++
++static void __init fuloong2e_nec_fixup(struct pci_dev *pdev)
++{
++	unsigned int val;
++
++	/* Configues port 1, 2, 3, 4 to be validate*/
++	pci_read_config_dword(pdev, 0xe0, &val);
++	pci_write_config_dword(pdev, 0xe0, (val & ~7) | 0x4);
++
++	/* System clock is 48-MHz Oscillator. */
++	pci_write_config_dword(pdev, 0xe4, 1 << 5);
++}
++
++static void __init fuloong2e_686b_func0_fixup(struct pci_dev *pdev)
++{
++	unsigned char c;
++
++	sb_slot = PCI_SLOT(pdev->devfn);
++
++	printk(KERN_INFO "via686b fix: ISA bridge\n");
++
++	/*  Enable I/O Recovery time */
++	pci_write_config_byte(pdev, 0x40, 0x08);
++
++	/*  Enable ISA refresh */
++	pci_write_config_byte(pdev, 0x41, 0x01);
++
++	/*  disable ISA line buffer */
++	pci_write_config_byte(pdev, 0x45, 0x00);
++
++	/*  Gate INTR, and flush line buffer */
++	pci_write_config_byte(pdev, 0x46, 0xe0);
++
++	/*  Disable PCI Delay Transaction, Enable EISA ports 4D0/4D1. */
++	/* pci_write_config_byte(pdev, 0x47, 0x20); */
++
++	/*
++	 *  enable PCI Delay Transaction, Enable EISA ports 4D0/4D1.
++	 *  enable time-out timer
++	 */
++	pci_write_config_byte(pdev, 0x47, 0xe6);
++
++	/*
++	 * enable level trigger on pci irqs: 9,10,11,13
++	 * important! without this PCI interrupts won't work
++	 */
++	outb(0x2e, 0x4d1);
++
++	/*  512 K PCI Decode */
++	pci_write_config_byte(pdev, 0x48, 0x01);
++
++	/*  Wait for PGNT before grant to ISA Master/DMA */
++	pci_write_config_byte(pdev, 0x4a, 0x84);
++
++	/*
++	 * Plug'n'Play
++	 *
++	 *  Parallel DRQ 3, Floppy DRQ 2 (default)
++	 */
++	pci_write_config_byte(pdev, 0x50, 0x0e);
++
++	/*
++	 * IRQ Routing for Floppy and Parallel port
++	 *
++	 *  IRQ 6 for floppy, IRQ 7 for parallel port
++	 */
++	pci_write_config_byte(pdev, 0x51, 0x76);
++
++	/* IRQ Routing for serial ports (take IRQ 3 and 4) */
++	pci_write_config_byte(pdev, 0x52, 0x34);
++
++	/*  All IRQ's level triggered. */
++	pci_write_config_byte(pdev, 0x54, 0x00);
++
++	/* route PIRQA-D irq */
++	pci_write_config_byte(pdev, 0x55, 0x90);	/* bit 7-4, PIRQA */
++	pci_write_config_byte(pdev, 0x56, 0xba);	/* bit 7-4, PIRQC; */
++							/* 3-0, PIRQB */
++	pci_write_config_byte(pdev, 0x57, 0xd0);	/* bit 7-4, PIRQD */
++
++	/* enable function 5/6, audio/modem */
++	pci_read_config_byte(pdev, 0x85, &c);
++	c &= ~(0x3 << 2);
++	pci_write_config_byte(pdev, 0x85, c);
++
++	printk(KERN_INFO"via686b fix: ISA bridge done\n");
++}
++
++static void __init fuloong2e_686b_func1_fixup(struct pci_dev *pdev)
++{
++	printk(KERN_INFO"via686b fix: IDE\n");
++
++	/* Modify IDE controller setup */
++	pci_write_config_byte(pdev, PCI_LATENCY_TIMER, 48);
++	pci_write_config_byte(pdev, PCI_COMMAND,
++			      PCI_COMMAND_IO | PCI_COMMAND_MEMORY |
++			      PCI_COMMAND_MASTER);
++	pci_write_config_byte(pdev, 0x40, 0x0b);
++	/* legacy mode */
++	pci_write_config_byte(pdev, 0x42, 0x09);
++
++#if 1/* play safe, otherwise we may see notebook's usb keyboard lockup */
++	/* disable read prefetch/write post buffers */
++	pci_write_config_byte(pdev, 0x41, 0x02);
++
++	/* use 3/4 as fifo thresh hold  */
++	pci_write_config_byte(pdev, 0x43, 0x0a);
++	pci_write_config_byte(pdev, 0x44, 0x00);
++
++	pci_write_config_byte(pdev, 0x45, 0x00);
++#else
++	pci_write_config_byte(pdev, 0x41, 0xc2);
++	pci_write_config_byte(pdev, 0x43, 0x35);
++	pci_write_config_byte(pdev, 0x44, 0x1c);
++
++	pci_write_config_byte(pdev, 0x45, 0x10);
++#endif
++
++	printk(KERN_INFO"via686b fix: IDE done\n");
++}
++
++static void __init fuloong2e_686b_func2_fixup(struct pci_dev *pdev)
++{
++	/* irq routing */
++	pci_write_config_byte(pdev, PCI_INTERRUPT_LINE, 10);
++}
++
++static void __init fuloong2e_686b_func3_fixup(struct pci_dev *pdev)
++{
++	/* irq routing */
++	pci_write_config_byte(pdev, PCI_INTERRUPT_LINE, 11);
++}
++
++static void __init fuloong2e_686b_func5_fixup(struct pci_dev *pdev)
++{
++	unsigned int val;
++	unsigned char c;
++
++	/* enable IO */
++	pci_write_config_byte(pdev, PCI_COMMAND,
++			      PCI_COMMAND_IO | PCI_COMMAND_MEMORY |
++			      PCI_COMMAND_MASTER);
++	pci_read_config_dword(pdev, 0x4, &val);
++	pci_write_config_dword(pdev, 0x4, val | 1);
++
++	/* route ac97 IRQ */
++	pci_write_config_byte(pdev, 0x3c, 9);
++
++	pci_read_config_byte(pdev, 0x8, &c);
++
++	/* link control: enable link & SGD PCM output */
++	pci_write_config_byte(pdev, 0x41, 0xcc);
++
++	/* disable game port, FM, midi, sb, enable write to reg2c-2f */
++	pci_write_config_byte(pdev, 0x42, 0x20);
++
++	/* we are using Avance logic codec */
++	pci_write_config_word(pdev, 0x2c, 0x1005);
++	pci_write_config_word(pdev, 0x2e, 0x4710);
++	pci_read_config_dword(pdev, 0x2c, &val);
++
++	pci_write_config_byte(pdev, 0x42, 0x0);
++}
++
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_VIA, PCI_DEVICE_ID_VIA_82C686,
++			 fuloong2e_686b_func0_fixup);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_VIA, PCI_DEVICE_ID_VIA_82C586_1,
++			 fuloong2e_686b_func1_fixup);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_VIA, PCI_DEVICE_ID_VIA_82C586_2,
++			 fuloong2e_686b_func2_fixup);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_VIA, PCI_DEVICE_ID_VIA_82C586_3,
++			 fuloong2e_686b_func3_fixup);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_VIA, PCI_DEVICE_ID_VIA_82C686_5,
++			 fuloong2e_686b_func5_fixup);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_NEC, PCI_DEVICE_ID_NEC_USB,
++			 fuloong2e_nec_fixup);
+diff --git a/arch/mips/pci/fixup-lm2e.c b/arch/mips/pci/fixup-lm2e.c
+deleted file mode 100644
+index 08de000..0000000
+--- a/arch/mips/pci/fixup-lm2e.c
++++ /dev/null
+@@ -1,242 +0,0 @@
+-/*
+- * fixup-lm2e.c
+- *
+- * Copyright (C) 2004 ICT CAS
+- * Author: Li xiaoyu, ICT CAS
+- *   lixy@ict.ac.cn
+- *
+- * Copyright (C) 2007 Lemote, Inc. & Institute of Computing Technology
+- * Author: Fuxin Zhang, zhangfx@lemote.com
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- *
+- */
+-#include <linux/init.h>
+-#include <linux/pci.h>
+-#include <asm/mips-boards/bonito64.h>
+-
+-/* South bridge slot number is set by the pci probe process */
+-static u8 sb_slot = 5;
+-
+-int __init pcibios_map_irq(struct pci_dev *dev, u8 slot, u8 pin)
+-{
+-	int irq = 0;
+-
+-	if (slot == sb_slot) {
+-		switch (PCI_FUNC(dev->devfn)) {
+-		case 2:
+-			irq = 10;
+-			break;
+-		case 3:
+-			irq = 11;
+-			break;
+-		case 5:
+-			irq = 9;
+-			break;
+-		}
+-	} else {
+-		irq = BONITO_IRQ_BASE + 25 + pin;
+-	}
+-	return irq;
+-
+-}
+-
+-/* Do platform specific device initialization at pci_enable_device() time */
+-int pcibios_plat_dev_init(struct pci_dev *dev)
+-{
+-	return 0;
+-}
+-
+-static void __init loongson2e_nec_fixup(struct pci_dev *pdev)
+-{
+-	unsigned int val;
+-
+-	/* Configues port 1, 2, 3, 4 to be validate*/
+-	pci_read_config_dword(pdev, 0xe0, &val);
+-	pci_write_config_dword(pdev, 0xe0, (val & ~7) | 0x4);
+-
+-	/* System clock is 48-MHz Oscillator. */
+-	pci_write_config_dword(pdev, 0xe4, 1 << 5);
+-}
+-
+-static void __init loongson2e_686b_func0_fixup(struct pci_dev *pdev)
+-{
+-	unsigned char c;
+-
+-	sb_slot = PCI_SLOT(pdev->devfn);
+-
+-	printk(KERN_INFO "via686b fix: ISA bridge\n");
+-
+-	/*  Enable I/O Recovery time */
+-	pci_write_config_byte(pdev, 0x40, 0x08);
+-
+-	/*  Enable ISA refresh */
+-	pci_write_config_byte(pdev, 0x41, 0x01);
+-
+-	/*  disable ISA line buffer */
+-	pci_write_config_byte(pdev, 0x45, 0x00);
+-
+-	/*  Gate INTR, and flush line buffer */
+-	pci_write_config_byte(pdev, 0x46, 0xe0);
+-
+-	/*  Disable PCI Delay Transaction, Enable EISA ports 4D0/4D1. */
+-	/* pci_write_config_byte(pdev, 0x47, 0x20); */
+-
+-	/*
+-	 *  enable PCI Delay Transaction, Enable EISA ports 4D0/4D1.
+-	 *  enable time-out timer
+-	 */
+-	pci_write_config_byte(pdev, 0x47, 0xe6);
+-
+-	/*
+-	 * enable level trigger on pci irqs: 9,10,11,13
+-	 * important! without this PCI interrupts won't work
+-	 */
+-	outb(0x2e, 0x4d1);
+-
+-	/*  512 K PCI Decode */
+-	pci_write_config_byte(pdev, 0x48, 0x01);
+-
+-	/*  Wait for PGNT before grant to ISA Master/DMA */
+-	pci_write_config_byte(pdev, 0x4a, 0x84);
+-
+-	/*
+-	 * Plug'n'Play
+-	 *
+-	 *  Parallel DRQ 3, Floppy DRQ 2 (default)
+-	 */
+-	pci_write_config_byte(pdev, 0x50, 0x0e);
+-
+-	/*
+-	 * IRQ Routing for Floppy and Parallel port
+-	 *
+-	 *  IRQ 6 for floppy, IRQ 7 for parallel port
+-	 */
+-	pci_write_config_byte(pdev, 0x51, 0x76);
+-
+-	/* IRQ Routing for serial ports (take IRQ 3 and 4) */
+-	pci_write_config_byte(pdev, 0x52, 0x34);
+-
+-	/*  All IRQ's level triggered. */
+-	pci_write_config_byte(pdev, 0x54, 0x00);
+-
+-	/* route PIRQA-D irq */
+-	pci_write_config_byte(pdev, 0x55, 0x90);	/* bit 7-4, PIRQA */
+-	pci_write_config_byte(pdev, 0x56, 0xba);	/* bit 7-4, PIRQC; */
+-							/* 3-0, PIRQB */
+-	pci_write_config_byte(pdev, 0x57, 0xd0);	/* bit 7-4, PIRQD */
+-
+-	/* enable function 5/6, audio/modem */
+-	pci_read_config_byte(pdev, 0x85, &c);
+-	c &= ~(0x3 << 2);
+-	pci_write_config_byte(pdev, 0x85, c);
+-
+-	printk(KERN_INFO"via686b fix: ISA bridge done\n");
+-}
+-
+-static void __init loongson2e_686b_func1_fixup(struct pci_dev *pdev)
+-{
+-	printk(KERN_INFO"via686b fix: IDE\n");
+-
+-	/* Modify IDE controller setup */
+-	pci_write_config_byte(pdev, PCI_LATENCY_TIMER, 48);
+-	pci_write_config_byte(pdev, PCI_COMMAND,
+-			      PCI_COMMAND_IO | PCI_COMMAND_MEMORY |
+-			      PCI_COMMAND_MASTER);
+-	pci_write_config_byte(pdev, 0x40, 0x0b);
+-	/* legacy mode */
+-	pci_write_config_byte(pdev, 0x42, 0x09);
+-
+-#if 1/* play safe, otherwise we may see notebook's usb keyboard lockup */
+-	/* disable read prefetch/write post buffers */
+-	pci_write_config_byte(pdev, 0x41, 0x02);
+-
+-	/* use 3/4 as fifo thresh hold  */
+-	pci_write_config_byte(pdev, 0x43, 0x0a);
+-	pci_write_config_byte(pdev, 0x44, 0x00);
+-
+-	pci_write_config_byte(pdev, 0x45, 0x00);
+-#else
+-	pci_write_config_byte(pdev, 0x41, 0xc2);
+-	pci_write_config_byte(pdev, 0x43, 0x35);
+-	pci_write_config_byte(pdev, 0x44, 0x1c);
+-
+-	pci_write_config_byte(pdev, 0x45, 0x10);
+-#endif
+-
+-	printk(KERN_INFO"via686b fix: IDE done\n");
+-}
+-
+-static void __init loongson2e_686b_func2_fixup(struct pci_dev *pdev)
+-{
+-	/* irq routing */
+-	pci_write_config_byte(pdev, PCI_INTERRUPT_LINE, 10);
+-}
+-
+-static void __init loongson2e_686b_func3_fixup(struct pci_dev *pdev)
+-{
+-	/* irq routing */
+-	pci_write_config_byte(pdev, PCI_INTERRUPT_LINE, 11);
+-}
+-
+-static void __init loongson2e_686b_func5_fixup(struct pci_dev *pdev)
+-{
+-	unsigned int val;
+-	unsigned char c;
+-
+-	/* enable IO */
+-	pci_write_config_byte(pdev, PCI_COMMAND,
+-			      PCI_COMMAND_IO | PCI_COMMAND_MEMORY |
+-			      PCI_COMMAND_MASTER);
+-	pci_read_config_dword(pdev, 0x4, &val);
+-	pci_write_config_dword(pdev, 0x4, val | 1);
+-
+-	/* route ac97 IRQ */
+-	pci_write_config_byte(pdev, 0x3c, 9);
+-
+-	pci_read_config_byte(pdev, 0x8, &c);
+-
+-	/* link control: enable link & SGD PCM output */
+-	pci_write_config_byte(pdev, 0x41, 0xcc);
+-
+-	/* disable game port, FM, midi, sb, enable write to reg2c-2f */
+-	pci_write_config_byte(pdev, 0x42, 0x20);
+-
+-	/* we are using Avance logic codec */
+-	pci_write_config_word(pdev, 0x2c, 0x1005);
+-	pci_write_config_word(pdev, 0x2e, 0x4710);
+-	pci_read_config_dword(pdev, 0x2c, &val);
+-
+-	pci_write_config_byte(pdev, 0x42, 0x0);
+-}
+-
+-DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_VIA, PCI_DEVICE_ID_VIA_82C686,
+-			 loongson2e_686b_func0_fixup);
+-DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_VIA, PCI_DEVICE_ID_VIA_82C586_1,
+-			 loongson2e_686b_func1_fixup);
+-DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_VIA, PCI_DEVICE_ID_VIA_82C586_2,
+-			 loongson2e_686b_func2_fixup);
+-DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_VIA, PCI_DEVICE_ID_VIA_82C586_3,
+-			 loongson2e_686b_func3_fixup);
+-DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_VIA, PCI_DEVICE_ID_VIA_82C686_5,
+-			 loongson2e_686b_func5_fixup);
+-DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_NEC, PCI_DEVICE_ID_NEC_USB,
+-			 loongson2e_nec_fixup);
+diff --git a/arch/mips/pci/ops-bonito64.c b/arch/mips/pci/ops-bonito64.c
+index f742c51..e3b091d 100644
+--- a/arch/mips/pci/ops-bonito64.c
++++ b/arch/mips/pci/ops-bonito64.c
+@@ -29,11 +29,12 @@
+ #define PCI_ACCESS_READ  0
+ #define PCI_ACCESS_WRITE 1
+ 
+-#ifdef CONFIG_LEMOTE_FULONG
++#ifdef CONFIG_LEMOTE_FULOONG2E
+ #define CFG_SPACE_REG(offset) (void *)CKSEG1ADDR(BONITO_PCICFG_BASE | (offset))
+ #define ID_SEL_BEGIN 11
+ #else
+-#define CFG_SPACE_REG(offset) (void *)CKSEG1ADDR(_pcictrl_bonito_pcicfg + (offset))
++#define CFG_SPACE_REG(offset) \
++	(void *)CKSEG1ADDR(_pcictrl_bonito_pcicfg + (offset))
+ #define ID_SEL_BEGIN 10
+ #endif
+ #define MAX_DEV_NUM (31 - ID_SEL_BEGIN)
+@@ -42,7 +43,7 @@
+ static int bonito64_pcibios_config_access(unsigned char access_type,
+ 				      struct pci_bus *bus,
+ 				      unsigned int devfn, int where,
+-				      u32 * data)
++				      u32 *data)
+ {
+ 	u32 busnum = bus->number;
+ 	u32 addr, type;
+@@ -77,9 +78,10 @@ static int bonito64_pcibios_config_access(unsigned char access_type,
+ 	addrp = CFG_SPACE_REG(addr & 0xffff);
+ 	if (access_type == PCI_ACCESS_WRITE) {
+ 		writel(cpu_to_le32(*data), addrp);
+-#ifndef CONFIG_LEMOTE_FULONG
++#ifndef CONFIG_LEMOTE_FULOONG2E
+ 		/* Wait till done */
+-		while (BONITO_PCIMSTAT & 0xF);
++		while (BONITO_PCIMSTAT & 0xF)
++			;
+ #endif
+ 	} else {
+ 		*data = le32_to_cpu(readl(addrp));
+@@ -107,7 +109,7 @@ static int bonito64_pcibios_config_access(unsigned char access_type,
+  * read/write a 32bit word and mask/modify the data we actually want.
+  */
+ static int bonito64_pcibios_read(struct pci_bus *bus, unsigned int devfn,
+-			     int where, int size, u32 * val)
++			     int where, int size, u32 *val)
+ {
+ 	u32 data = 0;
+ 
+@@ -144,7 +146,7 @@ static int bonito64_pcibios_write(struct pci_bus *bus, unsigned int devfn,
+ 		data = val;
+ 	else {
+ 		if (bonito64_pcibios_config_access(PCI_ACCESS_READ, bus, devfn,
+-		                               where, &data))
++					where, &data))
+ 			return -1;
+ 
+ 		if (size == 1)
 -- 
 1.6.0.4

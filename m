@@ -1,76 +1,129 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2009 14:47:25 +0100 (WEST)
-Received: from mx1.moondrake.net ([212.85.150.166]:56677 "EHLO
-	mx1.mandriva.com" rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org
-	with ESMTP id S20022648AbZFDNrR (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 4 Jun 2009 14:47:17 +0100
-Received: by mx1.mandriva.com (Postfix, from userid 501)
-	id D6F52274001; Thu,  4 Jun 2009 15:47:15 +0200 (CEST)
-Received: from office-abk.mandriva.com (office-abk.mandriva.com [84.55.162.90])
-	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mx1.mandriva.com (Postfix) with ESMTP id 9FEED274006;
-	Thu,  4 Jun 2009 15:47:14 +0200 (CEST)
-Received: from anduin.mandriva.com (fw2.mandriva.com [192.168.2.3])
-	by office-abk.mandriva.com (Postfix) with ESMTP id 31BFB82820;
-	Thu,  4 Jun 2009 15:52:52 +0200 (CEST)
-Received: from anduin.mandriva.com (localhost [127.0.0.1])
-	by anduin.mandriva.com (Postfix) with ESMTP id D479FFF855;
-	Thu,  4 Jun 2009 15:51:18 +0200 (CEST)
-From:	Arnaud Patard <apatard@mandriva.com>
-To:	wuzhangjin@gmail.com
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	Wu Zhangjin <wuzj@lemote.com>, Yan Hua <yanh@lemote.com>,
-	Philippe Vachon <philippe@cowpig.ca>,
-	Zhang Le <r0bertz@gentoo.org>,
-	Zhang Fuxin <zhangfx@lemote.com>,
-	loongson-dev <loongson-dev@googlegroups.com>,
-	Liu Junliang <liujl@lemote.com>,
-	Erwan Lerale <erwan@thiscow.com>
-Subject: Re: [loongson-PATCH-v3 17/25] add a machtype kernel command line argument
-References: <cover.1244120575.git.wuzj@lemote.com>
-	<d1f4caa360114f843459dc71827b1175232a24be.1244120575.git.wuzj@lemote.com>
-Organization: Mandriva
-Date:	Thu, 04 Jun 2009 15:51:18 +0200
-In-Reply-To: <d1f4caa360114f843459dc71827b1175232a24be.1244120575.git.wuzj@lemote.com> (wuzhangjin@gmail.com's message of "Thu,  4 Jun 2009 21:08:03 +0800")
-Message-ID: <m3iqjcm7jd.fsf@anduin.mandriva.com>
-User-Agent: Gnus/5.1008 (Gnus v5.10.8) Emacs/22.1 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2009 15:15:27 +0100 (WEST)
+Received: from mail-fx0-f223.google.com ([209.85.220.223]:63799 "EHLO
+	mail-fx0-f223.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20021665AbZFDOPU (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 4 Jun 2009 15:15:20 +0100
+Received: by fxm23 with SMTP id 23so815046fxm.0
+        for <multiple recipients>; Thu, 04 Jun 2009 07:15:14 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:from:date:subject
+         :mime-version:x-uid:x-length:to:content-type
+         :content-transfer-encoding:content-disposition:message-id;
+        bh=oKhb6ics4ju2dgd+fsQ18ae/nPxAcTXucsGxNTN1eWw=;
+        b=juSggt+fgn22923w+HdGUbC3nCcZp/qh3uNQX/6J3+8ziMB6n3X/LzfAhrRdd4jl1N
+         cHUvaT4k9z6vNTbMhz8CHujqwg7H54Ph7bIVoXWjIGNVm43pBN+2CkqeYkihrYIdVSPY
+         QkkSgVtAM7+J17A0+5TG1u0oxdojaI4uqbXl0=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:from:date:subject:mime-version:x-uid:x-length:to
+         :content-type:content-transfer-encoding:content-disposition
+         :message-id;
+        b=CZEY3Fqj8NnX3XG+PmZqd14DqTBOkeyWNu8oITn/DC3PVNs5oRyt9XxrgOPTDIw4YL
+         OMNvGxN62W/vBrVMkStSpVxbdoyw6mptQQa7Lfkr8/jW/9v46hOtcTceBpc//VRUQH2j
+         XnLRQ1RSbZN7y+d2Q7dDcwlAc4rIswx94/xik=
+Received: by 10.204.65.17 with SMTP id g17mr2019609bki.193.1244124914273;
+        Thu, 04 Jun 2009 07:15:14 -0700 (PDT)
+Received: from florian.lab.openpattern.org (lab.openpattern.org [82.240.16.241])
+        by mx.google.com with ESMTPS id 21sm11758580fkx.44.2009.06.04.07.15.13
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 04 Jun 2009 07:15:13 -0700 (PDT)
+From:	Florian Fainelli <florian@openwrt.org>
+Date:	Thu, 4 Jun 2009 16:15:07 +0200
+Subject: [PATCH 1/8] add lib/gcd.c
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <arnaud.patard@mandriva.com>
+X-UID:	232
+X-Length: 2489
+To:	"Linux-MIPS" <linux-mips@linux-mips.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, Takashi Iwai <tiwai@suse.de>,
+	Ralf Baechle <ralf@linux-mips.org>
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200906041615.10467.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23270
+X-archive-position: 23271
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: apatard@mandriva.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-wuzhangjin@gmail.com writes:
+This patch adds lib/gcd.c which contains a greatest
+common divider implementation taken from
+sound/core/pcm_timer.c
 
-Hi,
-
-> From: Wu Zhangjin <wuzj@lemote.com>
->
-> the difference between yeeloong-7inch and yeeloong-8.9inch is very
-> small, only including the screen size and shutdown logic. so, it's very
-> important to share the same kernel image file between them instead of
-> adding some new kernel config options. benefit from this, the
-> distribution developers only have a need to compile the kernel one time.
->
-> to share the same kernel image file between yeelooong-7inch and
-> yeeloong-8.9inch, there is a need to add a kernel command line, here I
-> name is machtype, it works like this:
->
-> 	machtype=lemote-yeeloong-2f-7inch
-> 	      company - product - cpu revision - size
-
-I'm curious. Why can't you use the boot monitor to pass the right
-machine type instead ? iirc, you're using pmon and pmon has a variable
-called "systype". If the systype variable is not designed for that, I'll
-be happy to know its use :)
-
-
-Arnaud
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
+---
+diff --git a/include/linux/gcd.h b/include/linux/gcd.h
+new file mode 100644
+index 0000000..69f5e8a
+--- /dev/null
++++ b/include/linux/gcd.h
+@@ -0,0 +1,8 @@
++#ifndef _GCD_H
++#define _GCD_H
++
++#include <linux/compiler.h>
++
++unsigned long gcd(unsigned long a, unsigned long b) __attribute_const__;
++
++#endif /* _GCD_H */
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 8ade0a7..70a9906 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -10,6 +10,9 @@ menu "Library routines"
+ config BITREVERSE
+ 	tristate
+ 
++config GCD
++	bool
++
+ config GENERIC_FIND_FIRST_BIT
+ 	bool
+ 
+diff --git a/lib/Makefile b/lib/Makefile
+index 33a40e4..389bdd2 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -57,6 +57,7 @@ obj-$(CONFIG_CRC_ITU_T)	+= crc-itu-t.o
+ obj-$(CONFIG_CRC32)	+= crc32.o
+ obj-$(CONFIG_CRC7)	+= crc7.o
+ obj-$(CONFIG_LIBCRC32C)	+= libcrc32c.o
++obj-$(CONFIG_GCD)	+= gcd.o
+ obj-$(CONFIG_GENERIC_ALLOCATOR) += genalloc.o
+ 
+ obj-$(CONFIG_ZLIB_INFLATE) += zlib_inflate/
+diff --git a/lib/gcd.c b/lib/gcd.c
+new file mode 100644
+index 0000000..fbf81a8
+--- /dev/null
++++ b/lib/gcd.c
+@@ -0,0 +1,20 @@
++#include <linux/gcd.h>
++#include <linux/module.h>
++
++/* Greatest common divisor */
++unsigned long gcd(unsigned long a, unsigned long b)
++{
++	unsigned long r;
++
++	if (a < b) {
++		r = a;
++		a = b;
++	b = r;
++	}
++	while ((r = a % b) != 0) {
++		a = b;
++		b = r;
++	}
++	return b;
++}
++EXPORT_SYMBOL(gcd);

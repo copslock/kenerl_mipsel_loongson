@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2009 14:05:27 +0100 (WEST)
-Received: from mail-pz0-f202.google.com ([209.85.222.202]:51894 "EHLO
-	mail-pz0-f202.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20022601AbZFDNFL (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 4 Jun 2009 14:05:11 +0100
-Received: by pzk40 with SMTP id 40so738268pzk.22
-        for <multiple recipients>; Thu, 04 Jun 2009 06:05:04 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2009 14:05:51 +0100 (WEST)
+Received: from mail-px0-f186.google.com ([209.85.216.186]:63048 "EHLO
+	mail-px0-f186.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20022605AbZFDNFa (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 4 Jun 2009 14:05:30 +0100
+Received: by pxi16 with SMTP id 16so748978pxi.22
+        for <multiple recipients>; Thu, 04 Jun 2009 06:05:23 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer:in-reply-to:references;
-        bh=quMDu3344c2fhPaDGTCIknHILRYldZzHovkdr/zRW0c=;
-        b=s5pCUWs/m5yQHEXz9Nvnfkbn334VCqILy/FPEtmihT7+37OhlRrJvF2508JUBVgQ9n
-         nR9TPTQB/nFOLxjHBWxn56p7dx5j8Zzxp5nHn+45N/VXg6TrwMY0dAeD0J0GYCmvti9P
-         hCS40DaEy9Rfa2HbGPl3jzQViE2AaincSvn4Q=
+        bh=HVDzJfTZ0I1EvoOSLEO/q2yqMsri0zxkisWu82bAa6M=;
+        b=bbr8fChd+rHwiVsCLUUdzBHLOoOShYDnl1haS2ofkMKI98aGPuOf+r6QTS/HFACwZS
+         EaRw/2tb9GlJcj5aUNI1+pjkLGA0MLulOSQnvqZI+3fIqOtRQ18NwulQCduKlDbXtgms
+         BJl96XILanhk7qaZg8hcu9kg5u8ygRwYCWKIc=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=S+4/PTA8VWtnF69fasfh7ywoO2banWdobdIPVV5waAMZeai7p00sv8dLoxpaFqoDc/
-         F0AuCsXRXp0kut5U1mqZE/F0iW/Jcie+rI7uGpkE7794UK6gaRVK8UQFWaOMJuaOq4Al
-         ty464Jcl+qXyBL9sKMTTyjSYOQyIvi60oDfJ4=
-Received: by 10.114.59.9 with SMTP id h9mr2624299waa.211.1244120703949;
-        Thu, 04 Jun 2009 06:05:03 -0700 (PDT)
+        b=nNsG4t0Zz8PD03k/gzfwDBwB/gZTxJIKMUZasg8IBO1iJgk/s2wLn1jnkCV+SI3DFb
+         Wd0VdH3c/VYSFJvpU0OUXuK7Lv85pdIlN3NFtA2AB2tKcRTOHJjl/iwQr5LInMRk0lPz
+         2+7Wy508m+kX3AVf/5N6eh/uqFr+gLL1GnOvA=
+Received: by 10.114.136.16 with SMTP id j16mr3426184wad.209.1244120723338;
+        Thu, 04 Jun 2009 06:05:23 -0700 (PDT)
 Received: from localhost.localdomain ([202.201.14.140])
-        by mx.google.com with ESMTPS id n40sm11153191wag.30.2009.06.04.06.04.57
+        by mx.google.com with ESMTPS id m6sm11115389wag.14.2009.06.04.06.05.17
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 04 Jun 2009 06:05:02 -0700 (PDT)
+        Thu, 04 Jun 2009 06:05:22 -0700 (PDT)
 From:	wuzhangjin@gmail.com
 To:	linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:	Wu Zhangjin <wuzj@lemote.com>, Yan Hua <yanh@lemote.com>,
@@ -36,9 +36,9 @@ Cc:	Wu Zhangjin <wuzj@lemote.com>, Yan Hua <yanh@lemote.com>,
 	Erwan Lerale <erwan@thiscow.com>,
 	Arnaud Patard <apatard@mandriva.com>,
 	Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [loongson-PATCH-v3 07/25] replace tons of magic numbers by understandable symbols
-Date:	Thu,  4 Jun 2009 21:04:49 +0800
-Message-Id: <5d793c4a2e351954a09522b12c3d2d36b7120cf2.1244120575.git.wuzj@lemote.com>
+Subject: [loongson-PATCH-v3 08/25] clean up the early printk support for fuloong(2e)
+Date:	Thu,  4 Jun 2009 21:05:09 +0800
+Message-Id: <09d017e0bb7ba768fb21efbbc577a37f272e6506.1244120575.git.wuzj@lemote.com>
 X-Mailer: git-send-email 1.6.3.1
 In-Reply-To: <cover.1244120575.git.wuzj@lemote.com>
 References: <cover.1244120575.git.wuzj@lemote.com>
@@ -46,7 +46,7 @@ Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23250
+X-archive-position: 23251
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,329 +56,225 @@ X-list: linux-mips
 
 From: Wu Zhangjin <wuzj@lemote.com>
 
-tons of magic numbers are replaced by understandable symbols, and two
-new header files are added to support this substitution.
+this is originally from the lm2e-fixes branch of Philippe's
+git://git.linux-cisco.org/linux-mips.git
 
-Reviewd-by: Arnaud Patard <apatard@mandriva.com>
 Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
 ---
- arch/mips/include/asm/mach-loongson/loongson.h |    3 ++
- arch/mips/include/asm/mach-loongson/machine.h  |   27 ++++++++++++++++++
- arch/mips/include/asm/mach-loongson/mem.h      |    8 +++++
- arch/mips/loongson/fuloong-2e/bonito-irq.c     |    3 +-
- arch/mips/loongson/fuloong-2e/dbg_io.c         |   12 +++----
- arch/mips/loongson/fuloong-2e/irq.c            |    7 ++--
- arch/mips/loongson/fuloong-2e/mem.c            |    9 +++--
- arch/mips/loongson/fuloong-2e/misc.c           |    4 ++-
- arch/mips/loongson/fuloong-2e/pci.c            |   36 ++++++++++++++++--------
- arch/mips/loongson/fuloong-2e/reset.c          |   19 +++++++-----
- arch/mips/loongson/fuloong-2e/setup.c          |    5 ++-
- 11 files changed, 96 insertions(+), 37 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-loongson/machine.h
- create mode 100644 arch/mips/include/asm/mach-loongson/mem.h
+ arch/mips/loongson/fuloong-2e/Makefile       |    7 +-
+ arch/mips/loongson/fuloong-2e/dbg_io.c       |  151 --------------------------
+ arch/mips/loongson/fuloong-2e/early_printk.c |   28 +++++
+ 3 files changed, 34 insertions(+), 152 deletions(-)
+ delete mode 100644 arch/mips/loongson/fuloong-2e/dbg_io.c
+ create mode 100644 arch/mips/loongson/fuloong-2e/early_printk.c
 
-diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
-index bce85a8..5ad629e 100644
---- a/arch/mips/include/asm/mach-loongson/loongson.h
-+++ b/arch/mips/include/asm/mach-loongson/loongson.h
-@@ -14,6 +14,9 @@
- #ifndef __LOONGSON_H
- #define __LOONGSON_H
+diff --git a/arch/mips/loongson/fuloong-2e/Makefile b/arch/mips/loongson/fuloong-2e/Makefile
+index 796e729..035e04c 100644
+--- a/arch/mips/loongson/fuloong-2e/Makefile
++++ b/arch/mips/loongson/fuloong-2e/Makefile
+@@ -3,6 +3,11 @@
+ #
  
-+#include <linux/io.h>
-+#include <linux/init.h>
+ obj-y += setup.o init.o cmdline.o time.o reset.o irq.o \
+-	pci.o bonito-irq.o dbg_io.o mem.o misc.o
++	pci.o bonito-irq.o mem.o misc.o
 +
- /* loongson internal northbridge initialization */
- extern void bonito_irq_init(void);
++#
++# Early printk support
++#
++obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
  
-diff --git a/arch/mips/include/asm/mach-loongson/machine.h b/arch/mips/include/asm/mach-loongson/machine.h
+ EXTRA_CFLAGS += -Werror
+diff --git a/arch/mips/loongson/fuloong-2e/dbg_io.c b/arch/mips/loongson/fuloong-2e/dbg_io.c
+deleted file mode 100644
+index 1ace08f..0000000
+--- a/arch/mips/loongson/fuloong-2e/dbg_io.c
++++ /dev/null
+@@ -1,151 +0,0 @@
+-/*
+- * Copyright 2001 MontaVista Software Inc.
+- * Author: Jun Sun, jsun@mvista.com or jsun@junsun.net
+- * Copyright (C) 2000, 2001 Ralf Baechle (ralf@gnu.org)
+- *
+- * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
+- * Author: Fuxin Zhang, zhangfx@lemote.com
+- *
+- *  This program is free software; you can redistribute  it and/or modify it
+- *  under  the terms of  the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the  License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- *
+- */
+-
+-#include <linux/types.h>
+-
+-#include <asm/serial.h>
+-
+-#include <loongson.h>
+-#include <machine.h>
+-
+-#define         UART16550_BAUD_2400             2400
+-#define         UART16550_BAUD_4800             4800
+-#define         UART16550_BAUD_9600             9600
+-#define         UART16550_BAUD_19200            19200
+-#define         UART16550_BAUD_38400            38400
+-#define         UART16550_BAUD_57600            57600
+-#define         UART16550_BAUD_115200           115200
+-
+-#define         UART16550_PARITY_NONE           0
+-#define         UART16550_PARITY_ODD            0x08
+-#define         UART16550_PARITY_EVEN           0x18
+-#define         UART16550_PARITY_MARK           0x28
+-#define         UART16550_PARITY_SPACE          0x38
+-
+-#define         UART16550_DATA_5BIT             0x0
+-#define         UART16550_DATA_6BIT             0x1
+-#define         UART16550_DATA_7BIT             0x2
+-#define         UART16550_DATA_8BIT             0x3
+-
+-#define         UART16550_STOP_1BIT             0x0
+-#define         UART16550_STOP_2BIT             0x4
+-
+-/* ----------------------------------------------------- */
+-
+-/* === CONFIG === */
+-
+-#define		BASE			ioremap_nocache(LOONGSON_UART_BASE, 8)
+-
+-#define         MAX_BAUD                BASE_BAUD
+-/* === END OF CONFIG === */
+-
+-#define         REG_OFFSET              1
+-
+-/* register offset */
+-#define         OFS_RCV_BUFFER          0
+-#define         OFS_TRANS_HOLD          0
+-#define         OFS_SEND_BUFFER         0
+-#define         OFS_INTR_ENABLE         (1*REG_OFFSET)
+-#define         OFS_INTR_ID             (2*REG_OFFSET)
+-#define         OFS_DATA_FORMAT         (3*REG_OFFSET)
+-#define         OFS_LINE_CONTROL        (3*REG_OFFSET)
+-#define         OFS_MODEM_CONTROL       (4*REG_OFFSET)
+-#define         OFS_RS232_OUTPUT        (4*REG_OFFSET)
+-#define         OFS_LINE_STATUS         (5*REG_OFFSET)
+-#define         OFS_MODEM_STATUS        (6*REG_OFFSET)
+-#define         OFS_RS232_INPUT         (6*REG_OFFSET)
+-#define         OFS_SCRATCH_PAD         (7*REG_OFFSET)
+-
+-#define         OFS_DIVISOR_LSB         (0*REG_OFFSET)
+-#define         OFS_DIVISOR_MSB         (1*REG_OFFSET)
+-
+-/* memory-mapped read/write of the port */
+-#define         UART16550_READ(y)	readb((char *)BASE + (y))
+-#define         UART16550_WRITE(y, z)	writeb(z, (char *)BASE + (y))
+-
+-void debugInit(u32 baud, u8 data, u8 parity, u8 stop)
+-{
+-	u32 divisor;
+-
+-	/* disable interrupts */
+-	UART16550_WRITE(OFS_INTR_ENABLE, 0);
+-
+-	/* set up buad rate */
+-	/* set DIAB bit */
+-	UART16550_WRITE(OFS_LINE_CONTROL, 0x80);
+-
+-	/* set divisor */
+-	divisor = MAX_BAUD / baud;
+-	UART16550_WRITE(OFS_DIVISOR_LSB, divisor & 0xff);
+-	UART16550_WRITE(OFS_DIVISOR_MSB, (divisor & 0xff00) >> 8);
+-
+-	/* clear DIAB bit */
+-	UART16550_WRITE(OFS_LINE_CONTROL, 0x0);
+-
+-	/* set data format */
+-	UART16550_WRITE(OFS_DATA_FORMAT, data | parity | stop);
+-}
+-
+-static int remoteDebugInitialized;
+-
+-u8 getDebugChar(void)
+-{
+-	if (!remoteDebugInitialized) {
+-		remoteDebugInitialized = 1;
+-		debugInit(UART16550_BAUD_115200,
+-			  UART16550_DATA_8BIT,
+-			  UART16550_PARITY_NONE, UART16550_STOP_1BIT);
+-	}
+-
+-	while ((UART16550_READ(OFS_LINE_STATUS) & 0x1) == 0)
+-		;
+-	return UART16550_READ(OFS_RCV_BUFFER);
+-}
+-
+-int putDebugChar(u8 byte)
+-{
+-	if (!remoteDebugInitialized) {
+-		remoteDebugInitialized = 1;
+-		/*
+-		   debugInit(UART16550_BAUD_115200,
+-		   UART16550_DATA_8BIT,
+-		   UART16550_PARITY_NONE, UART16550_STOP_1BIT); */
+-	}
+-
+-	while ((UART16550_READ(OFS_LINE_STATUS) & 0x20) == 0)
+-		;
+-	UART16550_WRITE(OFS_SEND_BUFFER, byte);
+-	return 1;
+-}
+-
+-void prom_putchar(char c)
+-{
+-	putDebugChar(c);
+-}
+diff --git a/arch/mips/loongson/fuloong-2e/early_printk.c b/arch/mips/loongson/fuloong-2e/early_printk.c
 new file mode 100644
-index 0000000..651a35d
+index 0000000..9f4b881
 --- /dev/null
-+++ b/arch/mips/include/asm/mach-loongson/machine.h
-@@ -0,0 +1,27 @@
-+/*
-+ * board-specific header file
++++ b/arch/mips/loongson/fuloong-2e/early_printk.c
+@@ -0,0 +1,28 @@
++/*  early printk support
 + *
-+ * Copyright (c) 2009 Wu Zhangjin <wuzj@lemote.com>
++ *  Copyright (c) 2009 Philippe Vachon <philippe@cowpig.ca>
 + *
-+ * This program is free software; you can redistribute it
-+ * and/or modify it under the terms of the GNU General
-+ * Public License as published by the Free Software
-+ * Foundation; either version 2 of the License, or (at your
-+ * option) any later version.
++ *  This program is free software; you can redistribute  it and/or modify it
++ *  under  the terms of  the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the  License, or (at your
++ *  option) any later version.
 + */
 +
-+#ifndef __MACHINE_H
-+#define __MACHINE_H
++#include <linux/types.h>
++#include <linux/serial_reg.h>
 +
-+#define MACH_NAME			"lemote-fuloong(2e)"
-+
-+#define LOONGSON_UART_BASE		(LOONGSON_PCIIO_BASE + 0x3f8)
-+
-+#define LOONGSON_NORTH_BRIDGE_IRQ	(MIPS_CPU_IRQ_BASE + 2)
-+#define LOONGSON_UART_IRQ		(MIPS_CPU_IRQ_BASE + 4)
-+#define LOONGSON_SOUTH_BRIDGE_IRQ 	(MIPS_CPU_IRQ_BASE + 5)
-+#define LOONGSON_TIMER_IRQ        	(MIPS_CPU_IRQ_BASE + 7)
-+#define LOONGSON_DMATIMEOUT_IRQ		(LOONGSON_IRQ_BASE + 10)
-+
-+
-+#endif				/* ! __MACHINE_H */
-diff --git a/arch/mips/include/asm/mach-loongson/mem.h b/arch/mips/include/asm/mach-loongson/mem.h
-new file mode 100644
-index 0000000..ad01dc2
---- /dev/null
-+++ b/arch/mips/include/asm/mach-loongson/mem.h
-@@ -0,0 +1,8 @@
-+#ifndef __MEM_H
-+#define __MEM_H
-+
-+#define LOONGSON_HIGHMEM_START	0x20000000
-+#define LOONGSON_MMIO_MEM_START 0x10000000
-+#define LOONGSON_MMIO_MEM_END	0x20000000
-+
-+#endif	/* !__MEM_H */
-diff --git a/arch/mips/loongson/fuloong-2e/bonito-irq.c b/arch/mips/loongson/fuloong-2e/bonito-irq.c
-index 8a32651..1f43447 100644
---- a/arch/mips/loongson/fuloong-2e/bonito-irq.c
-+++ b/arch/mips/loongson/fuloong-2e/bonito-irq.c
-@@ -31,6 +31,7 @@
- #include <linux/interrupt.h>
- 
- #include <loongson.h>
-+#include <machine.h>
- 
- static inline void bonito_irq_enable(unsigned int irq)
- {
-@@ -64,5 +65,5 @@ void bonito_irq_init(void)
- 	for (i = LOONGSON_IRQ_BASE; i < LOONGSON_IRQ_BASE + 32; i++)
- 		set_irq_chip_and_handler(i, &bonito_irq_type, handle_level_irq);
- 
--	setup_irq(LOONGSON_IRQ_BASE + 10, &dma_timeout_irqaction);
-+	setup_irq(LOONGSON_DMATIMEOUT_IRQ, &dma_timeout_irqaction);
- }
-diff --git a/arch/mips/loongson/fuloong-2e/dbg_io.c b/arch/mips/loongson/fuloong-2e/dbg_io.c
-index 84f8320..1ace08f 100644
---- a/arch/mips/loongson/fuloong-2e/dbg_io.c
-+++ b/arch/mips/loongson/fuloong-2e/dbg_io.c
-@@ -28,12 +28,13 @@
-  *
-  */
- 
--#include <linux/io.h>
--#include <linux/init.h>
- #include <linux/types.h>
- 
- #include <asm/serial.h>
- 
 +#include <loongson.h>
 +#include <machine.h>
 +
- #define         UART16550_BAUD_2400             2400
- #define         UART16550_BAUD_4800             4800
- #define         UART16550_BAUD_9600             9600
-@@ -59,11 +60,8 @@
- /* ----------------------------------------------------- */
- 
- /* === CONFIG === */
--#ifdef CONFIG_64BIT
--#define         BASE                    (0xffffffffbfd003f8)
--#else
--#define         BASE                    (0xbfd003f8)
--#endif
++void prom_putchar(char c)
++{
++	int timeout;
++	phys_addr_t uart_base =
++	    (phys_addr_t) ioremap_nocache(LOONGSON_UART_BASE, 8);
++	char reg = readb((u8 *) (uart_base + UART_LSR)) & UART_LSR_THRE;
 +
-+#define		BASE			ioremap_nocache(LOONGSON_UART_BASE, 8)
- 
- #define         MAX_BAUD                BASE_BAUD
- /* === END OF CONFIG === */
-diff --git a/arch/mips/loongson/fuloong-2e/irq.c b/arch/mips/loongson/fuloong-2e/irq.c
-index d4db5e1..7bf9e18 100644
---- a/arch/mips/loongson/fuloong-2e/irq.c
-+++ b/arch/mips/loongson/fuloong-2e/irq.c
-@@ -31,6 +31,7 @@
- #include <asm/i8259.h>
- 
- #include <loongson.h>
-+#include <machine.h>
- 
- /*
-  * the first level int-handler will jump here if it is a bonito irq
-@@ -75,7 +76,7 @@ asmlinkage void plat_irq_dispatch(void)
- 	unsigned int pending = read_c0_cause() & read_c0_status() & ST0_IM;
- 
- 	if (pending & CAUSEF_IP7)
--		do_IRQ(MIPS_CPU_IRQ_BASE + 7);
-+		do_IRQ(LOONGSON_TIMER_IRQ);
- 	else if (pending & CAUSEF_IP5)
- 		i8259_irqdispatch();
- 	else if (pending & CAUSEF_IP2)
-@@ -128,8 +129,8 @@ void __init arch_init_irq(void)
- 	*/
- 
- 	/* bonito irq at IP2 */
--	setup_irq(MIPS_CPU_IRQ_BASE + 2, &cascade_irqaction);
-+	setup_irq(LOONGSON_NORTH_BRIDGE_IRQ, &cascade_irqaction);
- 	/* 8259 irq at IP5 */
--	setup_irq(MIPS_CPU_IRQ_BASE + 5, &cascade_irqaction);
-+	setup_irq(LOONGSON_SOUTH_BRIDGE_IRQ, &cascade_irqaction);
- 
- }
-diff --git a/arch/mips/loongson/fuloong-2e/mem.c b/arch/mips/loongson/fuloong-2e/mem.c
-index 2a0f4e6..7f6ee37 100644
---- a/arch/mips/loongson/fuloong-2e/mem.c
-+++ b/arch/mips/loongson/fuloong-2e/mem.c
-@@ -7,18 +7,18 @@
- 
- #include <linux/fs.h>
- #include <linux/mm.h>
--#include <linux/init.h>
- 
- #include <asm/bootinfo.h>
- 
- #include <loongson.h>
-+#include <mem.h>
- 
- void __init prom_init_memory(void)
- {
- 	add_memory_region(0x0, (memsize << 20), BOOT_MEM_RAM);
- #ifdef CONFIG_64BIT
- 	if (highmemsize > 0) {
--		add_memory_region(0x20000000,
-+		add_memory_region(LOONGSON_HIGHMEM_START,
- 				  highmemsize << 20, BOOT_MEM_RAM);
- 	}
- #endif				/* CONFIG_64BIT */
-@@ -34,6 +34,7 @@ int __uncached_access(struct file *file, unsigned long addr)
- 	 * On the Lemote Loongson 2e system, the peripheral registers
- 	 * reside between 0x1000:0000 and 0x2000:0000.
- 	 */
--	return addr >= __pa(high_memory) ||
--		((addr >= 0x10000000) && (addr < 0x20000000));
-+	return addr >= __pa(high_memory) || \
-+		((addr >= LOONGSON_MMIO_MEM_START) && \
-+			(addr < LOONGSON_MMIO_MEM_END));
- }
-diff --git a/arch/mips/loongson/fuloong-2e/misc.c b/arch/mips/loongson/fuloong-2e/misc.c
-index d9532ca..1b8044c 100644
---- a/arch/mips/loongson/fuloong-2e/misc.c
-+++ b/arch/mips/loongson/fuloong-2e/misc.c
-@@ -7,7 +7,9 @@
-  * option) any later version.
-  */
- 
-+#include <machine.h>
++	for (timeout = 1024; reg == 0 && timeout > 0; timeout--)
++		reg = readb((u8 *) (uart_base + UART_LSR)) & UART_LSR_THRE;
 +
- const char *get_system_type(void)
- {
--	return "fuloong-2e";
-+	return MACH_NAME;
- }
-diff --git a/arch/mips/loongson/fuloong-2e/pci.c b/arch/mips/loongson/fuloong-2e/pci.c
-index cfc09a1..89bc1af 100644
---- a/arch/mips/loongson/fuloong-2e/pci.c
-+++ b/arch/mips/loongson/fuloong-2e/pci.c
-@@ -55,25 +55,37 @@ static struct pci_controller  loongson_pci_controller = {
- static void __init ict_pcimap(void)
- {
- 	/*
--	 * local to PCI mapping: [256M,512M] -> [256M,512M]; differ from PMON
-+	 * local to PCI mapping for CPU accessing PCI space
- 	 *
- 	 * CPU address space [256M,448M] is window for accessing pci space
--	 * we set pcimap_lo[0,1,2] to map it to pci space [256M,448M]
--	 * pcimap: bit18,pcimap_2; bit[17-12],lo2;bit[11-6],lo1;bit[5-0],lo0
-+	 * we set pcimap_lo[0,1,2] to map it to pci space[0M, 64M], [320M,448M]
-+	 *
-+	 * pcimap:  PCI_MAP2  PCI_Mem_Lo2 PCI_Mem_Lo1 PCI_Mem_Lo0
-+	 *            [<2G]   [384M,448M] [320M,384M] [0M,64M]
- 	 */
--	/* 1,00 0110 ,0001 01,00 0000 */
--	LOONGSON_PCIMAP = 0x46140;
--
--	/* 1, 00 0010, 0000,01, 00 0000 */
--	/* LOONGSON_PCIMAP = 0x42040; */
-+	LOONGSON_PCIMAP = LOONGSON_PCIMAP_PCIMAP_2 |
-+	    LOONGSON_PCIMAP_WIN(2, 0x18000000) |
-+	    LOONGSON_PCIMAP_WIN(1, 0x14000000) |
-+	    LOONGSON_PCIMAP_WIN(0, 0);
- 
- 	/*
--	 * PCI to local mapping: [2G,2G+256M] -> [0,256M]
-+	 * PCI-DMA to local mapping: [2G,2G+256M] -> [0M,256M]
- 	 */
--	LOONGSON_PCIBASE0 = 0x80000000;
--	LOONGSON_PCIBASE1 = 0x00800000;
--	LOONGSON_PCIBASE2 = 0x90000000;
-+	LOONGSON_PCIBASE0 = 0x80000000ul;	/* base: 2G -> mmap: 0M */
-+	/* size: 256M, burst transmission, pre-fetch enable, 64bit */
-+	LOONGSON_PCI_HIT0_SEL_L = 0xc000000cul;
-+	LOONGSON_PCI_HIT0_SEL_H = 0xfffffffful;
-+	LOONGSON_PCI_HIT1_SEL_L = 0x00000006ul;	/* set this BAR as invalid */
-+	LOONGSON_PCI_HIT1_SEL_H = 0x00000000ul;
-+	LOONGSON_PCI_HIT2_SEL_L = 0x00000006ul;	/* set this BAR as invalid */
-+	LOONGSON_PCI_HIT2_SEL_H = 0x00000000ul;
-+
-+	/* avoid deadlock of PCI reading/writing lock operation */
-+	LOONGSON_PCI_ISR4C = 0xd2000001ul;
- 
-+	/* can not change gnt to break pci transfer when device's gnt not
-+	deassert for some broken device */
-+	LOONGSON_PXARB_CFG = 0x00fe0105ul;
- }
- 
- static int __init pcibios_init(void)
-diff --git a/arch/mips/loongson/fuloong-2e/reset.c b/arch/mips/loongson/fuloong-2e/reset.c
-index 769a2ce..87244a1 100644
---- a/arch/mips/loongson/fuloong-2e/reset.c
-+++ b/arch/mips/loongson/fuloong-2e/reset.c
-@@ -6,21 +6,24 @@
-  *
-  * Copyright (C) 2007 Lemote, Inc. & Institute of Computing Technology
-  * Author: Fuxin Zhang, zhangfx@lemote.com
-+ *
-+ * Copyright (c) 2009 Philippe Vachon <philippe@cowpig.ca>
-+ *
-+ * Copyright (c) 2009 Lemote, Inc. & Institute of Computing Technology
-+ * Author: Wu Zhangjin, wuzj@lemote.com
-  */
- #include <linux/pm.h>
- 
- #include <asm/reboot.h>
-+#include <loongson.h>
- 
- static void loongson_restart(char *command)
- {
--#ifdef CONFIG_32BIT
--	*(unsigned long *)0xbfe00104 &= ~(1 << 2);
--	*(unsigned long *)0xbfe00104 |= (1 << 2);
--#else
--	*(unsigned long *)0xffffffffbfe00104 &= ~(1 << 2);
--	*(unsigned long *)0xffffffffbfe00104 |= (1 << 2);
--#endif
--	__asm__ __volatile__("jr\t%0" : : "r"(0xbfc00000));
-+	LOONGSON_GENCFG &= ~LOONGSON_GENCFG_CPUSELFRESET;
-+	LOONGSON_GENCFG |= LOONGSON_GENCFG_CPUSELFRESET;
-+
-+	/* reboot via jumping to 0xbfc00000 */
-+	((void (*)(void))ioremap_nocache(LOONGSON_BOOT_BASE, 4)) ();
- }
- 
- static void loongson_halt(void)
-diff --git a/arch/mips/loongson/fuloong-2e/setup.c b/arch/mips/loongson/fuloong-2e/setup.c
-index 770d7b5..4fcbe48 100644
---- a/arch/mips/loongson/fuloong-2e/setup.c
-+++ b/arch/mips/loongson/fuloong-2e/setup.c
-@@ -27,7 +27,10 @@ static void loongson_wbflush(void)
- 	asm(".set\tpush\n\t"
- 	    ".set\tnoreorder\n\t"
- 	    ".set mips3\n\t"
--	    "sync\n\t" "nop\n\t" ".set\tpop\n\t" ".set mips0\n\t");
-+	    "sync\n\t"
-+	    "nop\n\t"
-+	    ".set\tpop\n\t"
-+	    ".set mips0\n\t");
- }
- 
- void __init loongson_wbflush_setup(void)
++	writeb(c, (u8 *) (uart_base + UART_TX));
++}
 -- 
 1.6.0.4

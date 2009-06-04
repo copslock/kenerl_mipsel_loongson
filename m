@@ -1,54 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2009 08:50:04 +0100 (WEST)
-Received: from fg-out-1718.google.com ([72.14.220.153]:2221 "EHLO
-	fg-out-1718.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20022351AbZFDHt6 convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 4 Jun 2009 08:49:58 +0100
-Received: by fg-out-1718.google.com with SMTP id 22so212551fge.9
-        for <multiple recipients>; Thu, 04 Jun 2009 00:49:57 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2009 10:22:29 +0100 (WEST)
+Received: from mail-fx0-f223.google.com ([209.85.220.223]:50658 "EHLO
+	mail-fx0-f223.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20022409AbZFDJWX convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 4 Jun 2009 10:22:23 +0100
+Received: by fxm23 with SMTP id 23so601995fxm.0
+        for <multiple recipients>; Thu, 04 Jun 2009 02:22:17 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:sender:from:to:subject:date
          :user-agent:cc:references:in-reply-to:mime-version:content-type
          :content-transfer-encoding:content-disposition:message-id;
-        bh=T9GRYk3HS1OUnG+AhAAbyoK3MZ/MAuRVxUmXWlg2b78=;
-        b=eaODcN+QvbX/TXfWvki9x4Daj3yVHEEbDcrKh3xpE+9YtytD5K7+K5kGpsB2f08PQs
-         ajDo+lCmtmK88bMNE22g+T3ixe/I5B2+K6ScSvEeFoEk4kWQ1g7OQYx24hqBAFRe3Kla
-         Vm/z7qTaqmM6g0MwB5GqazsYJB+/y2NxNvLzs=
+        bh=3H04p7mDv0jeDPAGi1Pr5xsMitOHVPUuLZcAI4ldC3M=;
+        b=K9Eh5gYNfIag+ZmQS8DGqyICTHT5M9/Q+tyBrj/P15P2tRS1C/ABjp8Lwt2sXdRk9O
+         uAPuznzgql0xE74eyOs7Q7XCTk4K1zB4RuOuKSyRdHMQy3fJm6zR6rl2dltKykiDSWJ1
+         Ht/OiJL8uoYA7XD69SuaqZdbUkXKYhuwaci5I=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
          :mime-version:content-type:content-transfer-encoding
          :content-disposition:message-id;
-        b=fnoy2JTzYfn0xuJyqO1dDgWj2ACqxRYQBfDd70rmhhHuUHWG5e6v6xiGBEvN3R/l+n
-         xAjdT3XUY5qkInId6FfaD9hfpuB3vPfQOpNuS5RMssm+coURMg/BnJRd2t9Hd8m5Du9U
-         oKRtNidgi9m/HH0mO44ymuiAdjMbq6MxkkVZY=
-Received: by 10.86.96.1 with SMTP id t1mr2097121fgb.68.1244101797557;
-        Thu, 04 Jun 2009 00:49:57 -0700 (PDT)
+        b=fAPaGCsDBJNf0lpdMkB2KKOz+1e/wkyy7cp+efIiKa8H5ct0JwF1jGlEGKW+K54A3j
+         1m7ItD/vLgFHo6wAn8JwXnT/1aaBHfolyzTtOvVZueKiYkdL8HXUfUcaB+SQPJC6N7Xo
+         fM4ayt/76WDddLGzprMjhTgIGA38YqQ/sG5+8=
+Received: by 10.103.52.13 with SMTP id e13mr1198706muk.52.1244107336823;
+        Thu, 04 Jun 2009 02:22:16 -0700 (PDT)
 Received: from florian.lab.openpattern.org (lab.openpattern.org [82.240.16.241])
-        by mx.google.com with ESMTPS id e11sm1136653fga.16.2009.06.04.00.49.54
+        by mx.google.com with ESMTPS id n7sm3973377mue.58.2009.06.04.02.22.15
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 04 Jun 2009 00:49:54 -0700 (PDT)
+        Thu, 04 Jun 2009 02:22:16 -0700 (PDT)
 From:	Florian Fainelli <florian@openwrt.org>
-To:	Greg KH <greg@kroah.com>, David Miller <davem@davemloft.net>
-Subject: Re: [PATCH 0/7] Staging: Octeon-ethernet driver.
-Date:	Thu, 4 Jun 2009 09:49:52 +0200
+To:	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 08/10] add TI AR7 support
+Date:	Thu, 4 Jun 2009 11:22:13 +0200
 User-Agent: KMail/1.9.9
-Cc:	David Daney <ddaney@caviumnetworks.com>, gregkh@suse.de,
-	Ralf Baechle <ralf@linux-mips.org>,
-	linux-mips <linux-mips@linux-mips.org>
-References: <4A00DA84.5040101@caviumnetworks.com> <20090603235428.GB19375@kroah.com>
-In-Reply-To: <20090603235428.GB19375@kroah.com>
+Cc:	linux-mips@linux-mips.org, openwrt-devel@lists.openwrt.org
+References: <200906011402.05768.florian@openwrt.org> <20090602125159.GC11488@linux-mips.org>
+In-Reply-To: <20090602125159.GC11488@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain;
   charset="iso-8859-1"
 Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-Message-Id: <200906040949.53167.florian@openwrt.org>
+Message-Id: <200906041122.14063.florian@openwrt.org>
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23235
+X-archive-position: 23236
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,28 +55,82 @@ X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Le Thursday 04 June 2009 01:54:28 Greg KH, vous avez écrit :
-> On Tue, May 05, 2009 at 05:32:04PM -0700, David Daney wrote:
-> > This patch set introduces the octeon-ethernet driver into the
-> > drivers/staging tree.  The Octeon is a mips64r2 base multi-core SOC
-> > family.
-> >
-> > The first five patches are small tweaks to the existing octeon support
-> > that are required by the ethernet driver.  I would expect them to be
-> > merged via Ralf's linux-mips.org tree.
-> >
-> > The last two are the driver, and would probably be merged via the
-> > drivers/staging tree.  However since they depend on the first five,
-> > they probably shouldn't be merged until those five are merged.
->
-> Ok, as Ralf doesn't seem to have responded to my previous query, I'll
-> just merge the last driver, and mark it CONFIG_BROKEN which you can turn
-> off when the infrastructure portions go in.
->
-> Sound reasonable?
+Hallo Ralf,
 
-Cannot we get this driver merged via David Miller's tree instead ? It has been 
-rock solid here and does not seem too ugly for a net-next-2.6 inclusion imho.
+Le Tuesday 02 June 2009 14:51:59 Ralf Baechle, vous avez écrit :
+[snip]
+> > +
+> > +	writel(((prediv - 1) << PREDIV_SHIFT) | (postdiv - 1), &clock->ctrl);
+> > +	mdelay(1);
+> > +	writel(4, &clock->pll);
+> > +	while (readl(&clock->pll) & PLL_STATUS)
+> > +		;
+> > +	writel(((mul - 1) << MUL_SHIFT) | (0xff << 3) | 0x0e, &clock->pll);
+> > +	mdelay(75);
+>
+> These calls to mdelay seem to be done very early before BogoMIPS has been
+> calibrated?
+
+Yes, is there a prefered way than using mdelay here ?
+
+>
+>
+> Can you elaborate?
+
+I do not think there has been AR7 devices having non-8250 compatible UARTs out 
+there thus this code is simply useful. What is meant by the comment is that 
+the UART will be reported by Linux as  ttyS0 .... is a Xscale. But this 
+should not happen since there are only 8250 UARTs.
+
+> If you don't have a MAC address, either use random_ether_addr() or don't
+> bring up the network interface at all.  Multiple interfaces with the same
+> MAC can cause chaos on a network to better avoid that.
+
+Thanks for spotting this.
+
+>
+> > +struct psp_env_chunk {
+> > +	u8 num;
+> > +	u8 ctrl;
+> > +	u16 csum;
+> > +	u8 len;
+> > +	char data[11];
+> > +} __attribute__ ((packed));
+>
+> Afair historic versions of this code were totally polluted with
+> __attribute__((packed)).  Thanks for cleaning that.
+>
+> Btw - Linux coding style: No space between __attribute__ and ((packed)).
+>
+> > +#include <asm/reboot.h>
+>
+> You get a false warning from checkpatch.pl here.  Which probably means
+> either we should teach checkpatch.pl to check if <linux/reboot.h> is
+> actually including <asm/reboot.h> or rename <asm/reboot.h> to something
+> which would also help to avoid confusion.
+
+<linux/reboot.h> is not including <asm/reboot.h> so renaming <asm/reboot.h> 
+sounds like a good solution.
+
+>
+> > +++ b/arch/mips/include/asm/mach-ar7/spaces.h
+>
+> You can cut down this header file to something like:
+>
+> /* Copyright blurb */
+> #ifndef _ASM_AR7_SPACES_H
+> #define _ASM_AR7_SPACES_H
+>
+> /*
+>  * This handles the memory map.
+>  * We handle pages at KSEG0 for kernels with 32 bit address space.
+>  */
+> #define PAGE_OFFSET		0x94000000UL
+> #define PHYS_OFFSET		0x14000000UL
+>
+> #include <asm/mach-generic/spaces.h>
+
+Fixed, thanks !
 -- 
 Best regards, Florian Fainelli
 Email : florian@openwrt.org

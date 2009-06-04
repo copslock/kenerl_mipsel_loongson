@@ -1,53 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2009 10:22:29 +0100 (WEST)
-Received: from mail-fx0-f223.google.com ([209.85.220.223]:50658 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2009 10:26:18 +0100 (WEST)
+Received: from mail-fx0-f223.google.com ([209.85.220.223]:51911 "EHLO
 	mail-fx0-f223.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20022409AbZFDJWX convert rfc822-to-8bit
+	by ftp.linux-mips.org with ESMTP id S20022399AbZFDJ0L convert rfc822-to-8bit
 	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 4 Jun 2009 10:22:23 +0100
-Received: by fxm23 with SMTP id 23so601995fxm.0
-        for <multiple recipients>; Thu, 04 Jun 2009 02:22:17 -0700 (PDT)
+	Thu, 4 Jun 2009 10:26:11 +0100
+Received: by fxm23 with SMTP id 23so604503fxm.0
+        for <multiple recipients>; Thu, 04 Jun 2009 02:26:05 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:sender:from:to:subject:date
          :user-agent:cc:references:in-reply-to:mime-version:content-type
          :content-transfer-encoding:content-disposition:message-id;
-        bh=3H04p7mDv0jeDPAGi1Pr5xsMitOHVPUuLZcAI4ldC3M=;
-        b=K9Eh5gYNfIag+ZmQS8DGqyICTHT5M9/Q+tyBrj/P15P2tRS1C/ABjp8Lwt2sXdRk9O
-         uAPuznzgql0xE74eyOs7Q7XCTk4K1zB4RuOuKSyRdHMQy3fJm6zR6rl2dltKykiDSWJ1
-         Ht/OiJL8uoYA7XD69SuaqZdbUkXKYhuwaci5I=
+        bh=MFfUKYm5edvcUJ/yiH3WWV3tLwZPRvl6ENvsQiGvf6Y=;
+        b=QmhmjmUmUy6eMvkN2717ugPb45jPq0Jf9ozNNuYzteVlHoiGxfJQcAmN8YEEK3Cg3f
+         zQQ+5YsVniT4PpzB6dSPZijPacEhDWGkthSXhA3bkTzqq6Pkn4lw6nycNjqTFqxM7RAS
+         W6QuY6ViXKLi5nT/1oVCJ0dnxwrB3QkrG7+xE=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
          :mime-version:content-type:content-transfer-encoding
          :content-disposition:message-id;
-        b=fAPaGCsDBJNf0lpdMkB2KKOz+1e/wkyy7cp+efIiKa8H5ct0JwF1jGlEGKW+K54A3j
-         1m7ItD/vLgFHo6wAn8JwXnT/1aaBHfolyzTtOvVZueKiYkdL8HXUfUcaB+SQPJC6N7Xo
-         fM4ayt/76WDddLGzprMjhTgIGA38YqQ/sG5+8=
-Received: by 10.103.52.13 with SMTP id e13mr1198706muk.52.1244107336823;
-        Thu, 04 Jun 2009 02:22:16 -0700 (PDT)
+        b=r8RwTxLz1dgljiKWMesEXW8d/mUJ5XsNFKc8BJshk4HhXx/oXwjPSsLya4MPlKsN8x
+         Xd2JV20IxoyAi/LTNqOzxhLlm1YqrLmzbNiKm+4WEkhAI/otyfYk+FAANK/9USP4DJRs
+         yC3sTVwlSaZQZ0z+ES2d2CocdvX/Z0wwGWTBo=
+Received: by 10.103.172.9 with SMTP id z9mr1191723muo.58.1244107565779;
+        Thu, 04 Jun 2009 02:26:05 -0700 (PDT)
 Received: from florian.lab.openpattern.org (lab.openpattern.org [82.240.16.241])
-        by mx.google.com with ESMTPS id n7sm3973377mue.58.2009.06.04.02.22.15
+        by mx.google.com with ESMTPS id 12sm3151521muq.53.2009.06.04.02.26.04
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 04 Jun 2009 02:22:16 -0700 (PDT)
+        Thu, 04 Jun 2009 02:26:04 -0700 (PDT)
 From:	Florian Fainelli <florian@openwrt.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 08/10] add TI AR7 support
-Date:	Thu, 4 Jun 2009 11:22:13 +0200
+To:	Manuel Lauss <manuel.lauss@googlemail.com>
+Subject: Re: [PATCH 0/5] Alchemy GPIO rewrite v6
+Date:	Thu, 4 Jun 2009 11:26:02 +0200
 User-Agent: KMail/1.9.9
-Cc:	linux-mips@linux-mips.org, openwrt-devel@lists.openwrt.org
-References: <200906011402.05768.florian@openwrt.org> <20090602125159.GC11488@linux-mips.org>
-In-Reply-To: <20090602125159.GC11488@linux-mips.org>
+Cc:	Linux-MIPS <linux-mips@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Manuel Lauss <manuel.lauss@gmail.com>
+References: <1244045888-16259-1-git-send-email-manuel.lauss@gmail.com>
+In-Reply-To: <1244045888-16259-1-git-send-email-manuel.lauss@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
-  charset="iso-8859-1"
+  charset="utf-8"
 Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-Message-Id: <200906041122.14063.florian@openwrt.org>
+Message-Id: <200906041126.02982.florian@openwrt.org>
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23236
+X-archive-position: 23237
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,82 +57,61 @@ X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Hallo Ralf,
+Hi Manuel,
 
-Le Tuesday 02 June 2009 14:51:59 Ralf Baechle, vous avez écrit :
-[snip]
-> > +
-> > +	writel(((prediv - 1) << PREDIV_SHIFT) | (postdiv - 1), &clock->ctrl);
-> > +	mdelay(1);
-> > +	writel(4, &clock->pll);
-> > +	while (readl(&clock->pll) & PLL_STATUS)
-> > +		;
-> > +	writel(((mul - 1) << MUL_SHIFT) | (0xff << 3) | 0x0e, &clock->pll);
-> > +	mdelay(75);
+Le Wednesday 03 June 2009 18:18:03 Manuel Lauss, vous avez Ã©critÂ :
+> Rewrite Alchemy GPIO support to be compatible with the Linux
+> GPIO framework, both with and without gpiolib.  For a list of
+> justifications, see blurb in patch #2.
+> Patches #3-#5 replace a few open-coded GPIO accesses in the board
+> files with calls to the new gpio functions.
 >
-> These calls to mdelay seem to be done very early before BogoMIPS has been
-> calibrated?
-
-Yes, is there a prefered way than using mdelay here ?
-
+> Tested on DB1200 and a custom Au1200 platform.
 >
->
-> Can you elaborate?
+> v6 - renamed gpio.[ch] to gpio-au1000.[ch], since this code only affects
+>      pre-Au1300 chips.  Should make integration of Au1300 GPIO a bit
+>      easier.
+> v5 - fix gpio1 bug in inlined gpio_get_value()
+> v4 - GPIO2 shared interrupt management, styling.
+> v3 - fixed thinko in alchemy_gpio2_set_value (16->32 bit)
+> v2 - added gpio_to_irq and irq_to_gpio, some renaming.
 
-I do not think there has been AR7 devices having non-8250 compatible UARTs out 
-there thus this code is simply useful. What is meant by the comment is that 
-the UART will be reported by Linux as  ttyS0 .... is a Xscale. But this 
-should not happen since there are only 8250 UARTs.
-
-> If you don't have a MAC address, either use random_ether_addr() or don't
-> bring up the network interface at all.  Multiple interfaces with the same
-> MAC can cause chaos on a network to better avoid that.
-
-Thanks for spotting this.
+Thanks for this work ! For the whole serie you got my Acked-by: Florian 
+Fainelli <florian@openwrt.org>. Thanks !
 
 >
-> > +struct psp_env_chunk {
-> > +	u8 num;
-> > +	u8 ctrl;
-> > +	u16 csum;
-> > +	u8 len;
-> > +	char data[11];
-> > +} __attribute__ ((packed));
+> Manuel Lauss (5):
+>   Alchemy: remove unused au1000_gpio.h header
+>   Alchemy: rewrite GPIO support.
+>   Alchemy: mtx-1: use linux gpio api.
+>   Alchemy: xxs1500: use linux gpio api.
+>   Alchemy: devboards: convert to gpio calls.
 >
-> Afair historic versions of this code were totally polluted with
-> __attribute__((packed)).  Thanks for cleaning that.
->
-> Btw - Linux coding style: No space between __attribute__ and ((packed)).
->
-> > +#include <asm/reboot.h>
->
-> You get a false warning from checkpatch.pl here.  Which probably means
-> either we should teach checkpatch.pl to check if <linux/reboot.h> is
-> actually including <asm/reboot.h> or rename <asm/reboot.h> to something
-> which would also help to avoid confusion.
+>  arch/mips/Makefile                               |    5 +-
+>  arch/mips/alchemy/Kconfig                        |   19 +-
+>  arch/mips/alchemy/common/Makefile                |   11 +-
+>  arch/mips/alchemy/common/gpio-au1000.c           |  130 +++++
+>  arch/mips/alchemy/common/gpio.c                  |  201 -------
+>  arch/mips/alchemy/common/reset.c                 |    5 +-
+>  arch/mips/alchemy/devboards/db1x00/board_setup.c |    8 +-
+>  arch/mips/alchemy/devboards/pb1000/board_setup.c |   10 +-
+>  arch/mips/alchemy/devboards/pb1100/board_setup.c |    3 +-
+>  arch/mips/alchemy/devboards/pb1500/board_setup.c |   10 +-
+>  arch/mips/alchemy/devboards/pm.c                 |    2 +-
+>  arch/mips/alchemy/mtx-1/board_setup.c            |   24 +-
+>  arch/mips/alchemy/xxs1500/board_setup.c          |   21 +-
+>  arch/mips/include/asm/mach-au1x00/au1000_gpio.h  |   56 --
+>  arch/mips/include/asm/mach-au1x00/gpio-au1000.h  |  604
+> ++++++++++++++++++++++ arch/mips/include/asm/mach-au1x00/gpio.h         |  
+> 35 +-
+>  16 files changed, 818 insertions(+), 326 deletions(-)
+>  create mode 100644 arch/mips/alchemy/common/gpio-au1000.c
+>  delete mode 100644 arch/mips/alchemy/common/gpio.c
+>  delete mode 100644 arch/mips/include/asm/mach-au1x00/au1000_gpio.h
+>  create mode 100644 arch/mips/include/asm/mach-au1x00/gpio-au1000.h
 
-<linux/reboot.h> is not including <asm/reboot.h> so renaming <asm/reboot.h> 
-sounds like a good solution.
 
->
-> > +++ b/arch/mips/include/asm/mach-ar7/spaces.h
->
-> You can cut down this header file to something like:
->
-> /* Copyright blurb */
-> #ifndef _ASM_AR7_SPACES_H
-> #define _ASM_AR7_SPACES_H
->
-> /*
->  * This handles the memory map.
->  * We handle pages at KSEG0 for kernels with 32 bit address space.
->  */
-> #define PAGE_OFFSET		0x94000000UL
-> #define PHYS_OFFSET		0x14000000UL
->
-> #include <asm/mach-generic/spaces.h>
 
-Fixed, thanks !
 -- 
 Best regards, Florian Fainelli
 Email : florian@openwrt.org

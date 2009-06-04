@@ -1,53 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2009 15:18:08 +0100 (WEST)
-Received: from mail-bw0-f225.google.com ([209.85.218.225]:42597 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 04 Jun 2009 15:19:41 +0100 (WEST)
+Received: from mail-bw0-f225.google.com ([209.85.218.225]:56886 "EHLO
 	mail-bw0-f225.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20021924AbZFDOSB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 4 Jun 2009 15:18:01 +0100
-Received: by bwz25 with SMTP id 25so804746bwz.0
-        for <multiple recipients>; Thu, 04 Jun 2009 07:17:54 -0700 (PDT)
+	by ftp.linux-mips.org with ESMTP id S20021924AbZFDOTf (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 4 Jun 2009 15:19:35 +0100
+Received: by bwz25 with SMTP id 25so806029bwz.0
+        for <multiple recipients>; Thu, 04 Jun 2009 07:19:29 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:sender:from:date:subject
          :mime-version:x-uid:x-length:to:content-type
          :content-transfer-encoding:content-disposition:message-id;
-        bh=nDkEXiuNoDsDqoV0b/UE9K+MZ8PzkxxgNDZkiXzaZh0=;
-        b=PWl/nLIuo+RfSkcnGg9h9KQEPxj67nF/27xsENgvNpnyQ60pvrk0C/HK3u2Qc3B3RO
-         mFlWZvCMty91ECe/5EpTj3y/OH8fGP1aRotCJ0Ek+K2KCOVve7AYs3zp77E4RuPSJ4FL
-         3AJeWnE5p4H6FzB+j831Epx5cJYm4v35Sp3iI=
+        bh=CckUJWkfhvJv2d9RxV4y6bPDv31ynAHohdahC9xOiYk=;
+        b=LgeKq1NtJpr1W+LS2G44pBVuj8aZRb1sJ57zFO/SIRmSBkZIJfO2J/qPpxs5iEH3xW
+         X19oB7IOdv/vtfCjDPDM5Y2F5ODf55dLt0mPIgRL/gyqWfpCZo+3Inz2zycNb1tgLOj3
+         fG5XjxcqtMRM/x/zrATu4oUwzR525uXSXmGaw=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=sender:from:date:subject:mime-version:x-uid:x-length:to
          :content-type:content-transfer-encoding:content-disposition
          :message-id;
-        b=C/Yx0k2KcI0BVBS4sjDfQZYLhms+LTikDw2tbRpls6sYSoKSVyuwPpgpIX/lYBBaGx
-         EAmUlBjSI8dLcavut4Sd1dRXfywme5o/KLBVQQnKW3NMCb+T5c22lgOaUACW38C3Iu9r
-         GOD120BZa1n1GBT7e9foeaGT/QgfTrF8yncv8=
-Received: by 10.204.52.2 with SMTP id f2mr2069646bkg.90.1244125074648;
-        Thu, 04 Jun 2009 07:17:54 -0700 (PDT)
+        b=S9hwXmIzzzyEWCUX5NOokoUs2IE8C3WXWyvjifSuqf5yZBvLAIDQrfrSAuOMx2aC4N
+         5SJkjrdeyCOoceFivfaD+mg27eavQBTh7n63xq3eWSZw1+iWk1thvHp5keEPrKvsMDz9
+         kptOdMm6V3I7kxeXK/qVRh6u5DqW/LBqqUNxk=
+Received: by 10.102.215.1 with SMTP id n1mr1439147mug.109.1244125169040;
+        Thu, 04 Jun 2009 07:19:29 -0700 (PDT)
 Received: from florian.lab.openpattern.org (lab.openpattern.org [82.240.16.241])
-        by mx.google.com with ESMTPS id e17sm11656812fke.18.2009.06.04.07.17.53
+        by mx.google.com with ESMTPS id t10sm9862161muh.0.2009.06.04.07.19.27
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 04 Jun 2009 07:17:54 -0700 (PDT)
+        Thu, 04 Jun 2009 07:19:28 -0700 (PDT)
 From:	Florian Fainelli <florian@openwrt.org>
-Date:	Thu, 4 Jun 2009 16:17:51 +0200
-Subject: [PATCH 4/8] add support for the TI VLYNQ  bus
+Date:	Thu, 4 Jun 2009 16:19:24 +0200
+Subject: [PATCH 5/8] add Texas Instruments AR7 support
 MIME-Version: 1.0
-X-UID:	235
-X-Length: 29593
-To:	Andrew Morton <akpm@linux-foundation.org>,
-	"Linux-MIPS" <linux-mips@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	linux-kernel@vger.kernel.org
+X-UID:	236
+X-Length: 62756
+To:	Ralf Baechle <ralf@linux-mips.org>,
+	"Linux-MIPS" <linux-mips@linux-mips.org>
 Content-Type: text/plain;
   charset="utf-8"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200906041617.52110.florian@openwrt.org>
+Message-Id: <200906041619.25359.florian@openwrt.org>
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23274
+X-archive-position: 23275
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,111 +53,94 @@ X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch adds support for the TI VLYNQ high-speed,
-serial and packetized bus. This bus allows external
-devices to be connected to the System-on-Chip and
-appear in the main system memory just like any memory
-mapped peripheral. It is widely used in TI's networking
-and mutlimedia SoC, including the AR7 SoC.
+This patch adds support for the Texas Instruments
+AR7 System-on-Chip.
 
 Changes from v1:
-- added link to TI's datasheet
-- remove vlynq_read/write_reg accessors to use readl/writel
-- fixed get_device/put_device usage
-- added documentation
-- fixed needlessly global symbols
+- simplified mach-ar7/spaces.h
+- removed superfluous parenthesis
+- use lib/gcd.c
+- select VLYNQ
+- removed non-8250 UART code, there are only 8250 UARTs in use
 
+Signed-off-by: Matteo Croce <matteo@openwrt.org>
+Signed-off-by: Felix Fietkau <nbd@openwrt.org>
 Signed-off-by: Eugene Konev <ejka@imfi.kspu.ru>
+Signed-off-by: Nicolas Thill <nico@openwrt.org>
 Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
-diff --git a/MAINTAINERS b/MAINTAINERS
-index cf4abdd..91928d6 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -6155,6 +6155,14 @@ F:	drivers/net/macvlan.c
- F:	include/linux/if_*vlan.h
- F:	net/8021q/
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index c4a84a6..faf0bb9 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -22,6 +22,24 @@ choice
+ config MACH_ALCHEMY
+ 	bool "Alchemy processor based machines"
  
-+VLYNQ BUS
-+P:	Florian Fainelli
-+M:	florian@openwrt.org
-+L:	openwrt-devel@lists.openwrt.org
-+S:	Maintained
-+F:	drivers/vlynq/vlynq.c
-+F:	include/linux/vlynq.h
++config AR7
++	bool "Texas Instruments AR7"
++	select BOOT_ELF32
++	select DMA_NONCOHERENT
++	select CEVT_R4K
++	select CSRC_R4K
++	select IRQ_CPU
++	select NO_EXCEPT_FILL
++	select SWAP_IO_SPACE
++	select SYS_HAS_CPU_MIPS32_R1
++	select SYS_HAS_EARLY_PRINTK
++	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_KGDB
++	select SYS_SUPPORTS_LITTLE_ENDIAN
++	select GENERIC_GPIO
++	select GCD
++	select VLYNQ
 +
- VOLTAGE AND CURRENT REGULATOR FRAMEWORK
- P:	Liam Girdwood
- M:	lrg@slimlogic.co.uk
-diff --git a/drivers/Kconfig b/drivers/Kconfig
-index 00cf955..a442c8f 100644
---- a/drivers/Kconfig
-+++ b/drivers/Kconfig
-@@ -104,6 +104,8 @@ source "drivers/auxdisplay/Kconfig"
+ config BASLER_EXCITE
+ 	bool "Basler eXcite smart camera"
+ 	select CEVT_R4K
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 52a3509..e22f595 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -173,6 +173,13 @@ libs-y				+= arch/mips/fw/lib/
+ #
  
- source "drivers/uio/Kconfig"
- 
-+source "drivers/vlynq/Kconfig"
-+
- source "drivers/xen/Kconfig"
- 
- source "drivers/staging/Kconfig"
-diff --git a/drivers/Makefile b/drivers/Makefile
-index 1266ead..0d39303 100644
---- a/drivers/Makefile
-+++ b/drivers/Makefile
-@@ -105,5 +105,6 @@ obj-$(CONFIG_PPC_PS3)		+= ps3/
- obj-$(CONFIG_OF)		+= of/
- obj-$(CONFIG_SSB)		+= ssb/
- obj-$(CONFIG_VIRTIO)		+= virtio/
-+obj-$(CONFIG_VLYNQ)		+= vlynq/
- obj-$(CONFIG_STAGING)		+= staging/
- obj-y				+= platform/
-diff --git a/drivers/vlynq/Kconfig b/drivers/vlynq/Kconfig
-new file mode 100644
-index 0000000..f654221
---- /dev/null
-+++ b/drivers/vlynq/Kconfig
-@@ -0,0 +1,20 @@
-+menu "TI VLYNQ"
-+
-+config VLYNQ
-+	bool "TI VLYNQ bus support"
-+	depends on AR7 && EXPERIMENTAL
-+	help
-+	  Support for Texas Instruments(R) VLYNQ bus.
-+	  The VLYNQ bus is a high-speed, serial and packetized
-+	  data bus which allows external peripherals of a SoC
-+	  to appear into the system's main memory.
-+
-+	  If unsure, say N
-+
-+config VLYNQ_DEBUG
-+	bool "VLYNQ bus debug"
-+	depends on VLYNQ && KERNEL_DEBUG
-+	help
-+	  Turn on VLYNQ bus debugging.
-+
-+endmenu
-diff --git a/drivers/vlynq/Makefile b/drivers/vlynq/Makefile
-new file mode 100644
-index 0000000..b3f6114
---- /dev/null
-+++ b/drivers/vlynq/Makefile
-@@ -0,0 +1,5 @@
+ #
++# Texas Instruments AR7
 +#
-+# Makefile for kernel vlynq drivers
-+#
++core-$(CONFIG_AR7)		+= arch/mips/ar7/
++cflags-$(CONFIG_AR7)		+= -I$(srctree)/arch/mips/include/asm/mach-ar7
++load-$(CONFIG_AR7)		+= 0xffffffff94100000
 +
-+obj-$(CONFIG_VLYNQ) += vlynq.o
-diff --git a/drivers/vlynq/vlynq.c b/drivers/vlynq/vlynq.c
++#
+ # Acer PICA 61, Mips Magnum 4000 and Olivetti M700.
+ #
+ core-$(CONFIG_MACH_JAZZ)	+= arch/mips/jazz/
+diff --git a/arch/mips/ar7/Makefile b/arch/mips/ar7/Makefile
 new file mode 100644
-index 0000000..3b304dc
+index 0000000..7435e44
 --- /dev/null
-+++ b/drivers/vlynq/vlynq.c
-@@ -0,0 +1,814 @@
++++ b/arch/mips/ar7/Makefile
+@@ -0,0 +1,10 @@
++
++obj-y := \
++	prom.o \
++	setup.o \
++	memory.o \
++	irq.o \
++	time.o \
++	platform.o \
++	gpio.o \
++	clock.o
+diff --git a/arch/mips/ar7/clock.c b/arch/mips/ar7/clock.c
+new file mode 100644
+index 0000000..ead7df8
+--- /dev/null
++++ b/arch/mips/ar7/clock.c
+@@ -0,0 +1,446 @@
 +/*
-+ * Copyright (C) 2006, 2007 Eugene Konev <ejka@openwrt.org>
++ * Copyright (C) 2007 Felix Fietkau <nbd@openwrt.org>
++ * Copyright (C) 2007 Eugene Konev <ejka@openwrt.org>
 + *
 + * This program is free software; you can redistribute it and/or modify
 + * it under the terms of the GNU General Public License as published by
@@ -174,812 +155,1747 @@ index 0000000..3b304dc
 + * You should have received a copy of the GNU General Public License
 + * along with this program; if not, write to the Free Software
 + * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++#include <linux/kernel.h>
++#include <linux/init.h>
++#include <linux/types.h>
++#include <linux/module.h>
++#include <linux/delay.h>
++#include <linux/gcd.h>
++#include <asm/addrspace.h>
++#include <asm/io.h>
++#include <asm/mach-ar7/ar7.h>
++
++#define BOOT_PLL_SOURCE_MASK	0x3
++#define CPU_PLL_SOURCE_SHIFT	16
++#define BUS_PLL_SOURCE_SHIFT	14
++#define USB_PLL_SOURCE_SHIFT	18
++#define DSP_PLL_SOURCE_SHIFT	22
++#define BOOT_PLL_SOURCE_AFE	0
++#define BOOT_PLL_SOURCE_BUS	0
++#define BOOT_PLL_SOURCE_REF	1
++#define BOOT_PLL_SOURCE_XTAL	2
++#define BOOT_PLL_SOURCE_CPU	3
++#define BOOT_PLL_BYPASS		0x00000020
++#define BOOT_PLL_ASYNC_MODE	0x02000000
++#define BOOT_PLL_2TO1_MODE	0x00008000
++
++#define TNETD7200_CLOCK_ID_CPU	0
++#define TNETD7200_CLOCK_ID_DSP	1
++#define TNETD7200_CLOCK_ID_USB	2
++
++#define TNETD7200_DEF_CPU_CLK	211000000
++#define TNETD7200_DEF_DSP_CLK	125000000
++#define TNETD7200_DEF_USB_CLK	48000000
++
++struct tnetd7300_clock {
++	u32 ctrl;
++#define PREDIV_MASK	0x001f0000
++#define PREDIV_SHIFT	16
++#define POSTDIV_MASK	0x0000001f
++	u32 unused1[3];
++	u32 pll;
++#define MUL_MASK	0x0000f000
++#define MUL_SHIFT	12
++#define PLL_MODE_MASK	0x00000001
++#define PLL_NDIV	0x00000800
++#define PLL_DIV		0x00000002
++#define PLL_STATUS	0x00000001
++	u32 unused2[3];
++};
++
++struct tnetd7300_clocks {
++	struct tnetd7300_clock bus;
++	struct tnetd7300_clock cpu;
++	struct tnetd7300_clock usb;
++	struct tnetd7300_clock dsp;
++};
++
++struct tnetd7200_clock {
++	u32 ctrl;
++	u32 unused1[3];
++#define DIVISOR_ENABLE_MASK 0x00008000
++	u32 mul;
++	u32 prediv;
++	u32 postdiv;
++	u32 postdiv2;
++	u32 unused2[6];
++	u32 cmd;
++	u32 status;
++	u32 cmden;
++	u32 padding[15];
++};
++
++struct tnetd7200_clocks {
++	struct tnetd7200_clock cpu;
++	struct tnetd7200_clock dsp;
++	struct tnetd7200_clock usb;
++};
++
++int ar7_cpu_clock = 150000000;
++EXPORT_SYMBOL(ar7_cpu_clock);
++int ar7_bus_clock = 125000000;
++EXPORT_SYMBOL(ar7_bus_clock);
++int ar7_dsp_clock;
++EXPORT_SYMBOL(ar7_dsp_clock);
++
++static void approximate(int base, int target, int *prediv,
++			int *postdiv, int *mul)
++{
++	int i, j, k, freq, res = target;
++	for (i = 1; i <= 16; i++)
++		for (j = 1; j <= 32; j++)
++			for (k = 1; k <= 32; k++) {
++				freq = abs(base / j * i / k - target);
++				if (freq < res) {
++					res = freq;
++					*mul = i;
++					*prediv = j;
++					*postdiv = k;
++				}
++			}
++}
++
++static void calculate(int base, int target, int *prediv, int *postdiv,
++	int *mul)
++{
++	int tmp_gcd, tmp_base, tmp_freq;
++
++	for (*prediv = 1; *prediv <= 32; (*prediv)++) {
++		tmp_base = base / *prediv;
++		tmp_gcd = gcd(target, tmp_base);
++		*mul = target / tmp_gcd;
++		*postdiv = tmp_base / tmp_gcd;
++		if ((*mul < 1) || (*mul >= 16))
++			continue;
++		if ((*postdiv > 0) & (*postdiv <= 32))
++			break;
++	}
++
++	if (base / *prediv * *mul / *postdiv != target) {
++		approximate(base, target, prediv, postdiv, mul);
++		tmp_freq = base / *prediv * *mul / *postdiv;
++		printk(KERN_WARNING
++		       "Adjusted requested frequency %d to %d\n",
++		       target, tmp_freq);
++	}
++
++	printk(KERN_DEBUG "Clocks: prediv: %d, postdiv: %d, mul: %d\n",
++	       *prediv, *postdiv, *mul);
++}
++
++static int tnetd7300_dsp_clock(void)
++{
++	u32 didr1, didr2;
++	u8 rev = ar7_chip_rev();
++	didr1 = readl((void *)KSEG1ADDR(AR7_REGS_GPIO + 0x18));
++	didr2 = readl((void *)KSEG1ADDR(AR7_REGS_GPIO + 0x1c));
++	if (didr2 & (1 << 23))
++		return 0;
++	if ((rev >= 0x23) && (rev != 0x57))
++		return 250000000;
++	if ((((didr2 & 0x1fff) << 10) | ((didr1 & 0xffc00000) >> 22))
++	    > 4208000)
++		return 250000000;
++	return 0;
++}
++
++static int tnetd7300_get_clock(u32 shift, struct tnetd7300_clock *clock,
++	u32 *bootcr, u32 bus_clock)
++{
++	int product;
++	int base_clock = AR7_REF_CLOCK;
++	u32 ctrl = readl(&clock->ctrl);
++	u32 pll = readl(&clock->pll);
++	int prediv = ((ctrl & PREDIV_MASK) >> PREDIV_SHIFT) + 1;
++	int postdiv = (ctrl & POSTDIV_MASK) + 1;
++	int divisor = prediv * postdiv;
++	int mul = ((pll & MUL_MASK) >> MUL_SHIFT) + 1;
++
++	switch ((*bootcr & (BOOT_PLL_SOURCE_MASK << shift)) >> shift) {
++	case BOOT_PLL_SOURCE_BUS:
++		base_clock = bus_clock;
++		break;
++	case BOOT_PLL_SOURCE_REF:
++		base_clock = AR7_REF_CLOCK;
++		break;
++	case BOOT_PLL_SOURCE_XTAL:
++		base_clock = AR7_XTAL_CLOCK;
++		break;
++	case BOOT_PLL_SOURCE_CPU:
++		base_clock = ar7_cpu_clock;
++		break;
++	}
++
++	if (*bootcr & BOOT_PLL_BYPASS)
++		return base_clock / divisor;
++
++	if ((pll & PLL_MODE_MASK) == 0)
++		return (base_clock >> (mul / 16 + 1)) / divisor;
++
++	if ((pll & (PLL_NDIV | PLL_DIV)) == (PLL_NDIV | PLL_DIV)) {
++		product = (mul & 1) ?
++			(base_clock * mul) >> 1 :
++			(base_clock * (mul - 1)) >> 2;
++		return product / divisor;
++	}
++
++	if (mul == 16)
++		return base_clock / divisor;
++
++	return base_clock * mul / divisor;
++}
++
++static void tnetd7300_set_clock(u32 shift, struct tnetd7300_clock *clock,
++	u32 *bootcr, u32 frequency)
++{
++	int prediv, postdiv, mul;
++	int base_clock = ar7_bus_clock;
++
++	switch ((*bootcr & (BOOT_PLL_SOURCE_MASK << shift)) >> shift) {
++	case BOOT_PLL_SOURCE_BUS:
++		base_clock = ar7_bus_clock;
++		break;
++	case BOOT_PLL_SOURCE_REF:
++		base_clock = AR7_REF_CLOCK;
++		break;
++	case BOOT_PLL_SOURCE_XTAL:
++		base_clock = AR7_XTAL_CLOCK;
++		break;
++	case BOOT_PLL_SOURCE_CPU:
++		base_clock = ar7_cpu_clock;
++		break;
++	}
++
++	calculate(base_clock, frequency, &prediv, &postdiv, &mul);
++
++	writel(((prediv - 1) << PREDIV_SHIFT) | (postdiv - 1), &clock->ctrl);
++	mdelay(1);
++	writel(4, &clock->pll);
++	while (readl(&clock->pll) & PLL_STATUS)
++		;
++	writel(((mul - 1) << MUL_SHIFT) | (0xff << 3) | 0x0e, &clock->pll);
++	mdelay(75);
++}
++
++static void __init tnetd7300_init_clocks(void)
++{
++	u32 *bootcr = (u32 *)ioremap_nocache(AR7_REGS_DCL, 4);
++	struct tnetd7300_clocks *clocks =
++					(struct tnetd7300_clocks *)
++					ioremap_nocache(AR7_REGS_POWER + 0x20,
++					sizeof(struct tnetd7300_clocks));
++
++	ar7_bus_clock = tnetd7300_get_clock(BUS_PLL_SOURCE_SHIFT,
++		&clocks->bus, bootcr, AR7_AFE_CLOCK);
++
++	if (*bootcr & BOOT_PLL_ASYNC_MODE)
++		ar7_cpu_clock = tnetd7300_get_clock(CPU_PLL_SOURCE_SHIFT,
++			&clocks->cpu, bootcr, AR7_AFE_CLOCK);
++	else
++		ar7_cpu_clock = ar7_bus_clock;
++/*
++	tnetd7300_set_clock(USB_PLL_SOURCE_SHIFT, &clocks->usb,
++		bootcr, 48000000);
++*/
++	if (ar7_dsp_clock == 250000000)
++		tnetd7300_set_clock(DSP_PLL_SOURCE_SHIFT, &clocks->dsp,
++			bootcr, ar7_dsp_clock);
++
++	iounmap(clocks);
++	iounmap(bootcr);
++}
++
++static int tnetd7200_get_clock(int base, struct tnetd7200_clock *clock,
++	u32 *bootcr, u32 bus_clock)
++{
++	int divisor = ((readl(&clock->prediv) & 0x1f) + 1) *
++		((readl(&clock->postdiv) & 0x1f) + 1);
++
++	if (*bootcr & BOOT_PLL_BYPASS)
++		return base / divisor;
++
++	return base * ((readl(&clock->mul) & 0xf) + 1) / divisor;
++}
++
++
++static void tnetd7200_set_clock(int base, struct tnetd7200_clock *clock,
++	int prediv, int postdiv, int postdiv2, int mul, u32 frequency)
++{
++	printk(KERN_INFO
++		"Clocks: base = %d, frequency = %u, prediv = %d, "
++		"postdiv = %d, postdiv2 = %d, mul = %d\n",
++		base, frequency, prediv, postdiv, postdiv2, mul);
++
++	writel(0, &clock->ctrl);
++	writel(DIVISOR_ENABLE_MASK | ((prediv - 1) & 0x1F), &clock->prediv);
++	writel((mul - 1) & 0xF, &clock->mul);
++
++	for (mul = 0; mul < 2000; mul++)
++		; /* nop */
++
++	while (readl(&clock->status) & 0x1)
++		; /* nop */
++
++	writel(DIVISOR_ENABLE_MASK | ((postdiv - 1) & 0x1F), &clock->postdiv);
++
++	writel(readl(&clock->cmden) | 1, &clock->cmden);
++	writel(readl(&clock->cmd) | 1, &clock->cmd);
++
++	while (readl(&clock->status) & 0x1)
++		; /* nop */
++
++	writel(DIVISOR_ENABLE_MASK | ((postdiv2 - 1) & 0x1F), &clock->postdiv2);
++
++	writel(readl(&clock->cmden) | 1, &clock->cmden);
++	writel(readl(&clock->cmd) | 1, &clock->cmd);
++
++	while (readl(&clock->status) & 0x1)
++		; /* nop */
++
++	writel(readl(&clock->ctrl) | 1, &clock->ctrl);
++}
++
++static int tnetd7200_get_clock_base(int clock_id, u32 *bootcr)
++{
++	if (*bootcr & BOOT_PLL_ASYNC_MODE)
++		/* Async */
++		switch (clock_id) {
++		case TNETD7200_CLOCK_ID_DSP:
++			return AR7_REF_CLOCK;
++		default:
++			return AR7_AFE_CLOCK;
++		}
++	else
++		/* Sync */
++		if (*bootcr & BOOT_PLL_2TO1_MODE)
++			/* 2:1 */
++			switch (clock_id) {
++			case TNETD7200_CLOCK_ID_DSP:
++				return AR7_REF_CLOCK;
++			default:
++				return AR7_AFE_CLOCK;
++			}
++		else
++			/* 1:1 */
++			return AR7_REF_CLOCK;
++}
++
++
++static void __init tnetd7200_init_clocks(void)
++{
++	u32 *bootcr = (u32 *)ioremap_nocache(AR7_REGS_DCL, 4);
++	struct tnetd7200_clocks *clocks =
++					(struct tnetd7200_clocks *)
++					ioremap_nocache(AR7_REGS_POWER + 0x80,
++					sizeof(struct tnetd7200_clocks));
++	int cpu_base, cpu_mul, cpu_prediv, cpu_postdiv;
++	int dsp_base, dsp_mul, dsp_prediv, dsp_postdiv;
++	int usb_base, usb_mul, usb_prediv, usb_postdiv;
++
++	cpu_base = tnetd7200_get_clock_base(TNETD7200_CLOCK_ID_CPU, bootcr);
++	dsp_base = tnetd7200_get_clock_base(TNETD7200_CLOCK_ID_DSP, bootcr);
++
++	if (*bootcr & BOOT_PLL_ASYNC_MODE) {
++		printk(KERN_INFO "Clocks: Async mode\n");
++
++		printk(KERN_INFO "Clocks: Setting DSP clock\n");
++		calculate(dsp_base, TNETD7200_DEF_DSP_CLK,
++			&dsp_prediv, &dsp_postdiv, &dsp_mul);
++		ar7_bus_clock =
++			((dsp_base / dsp_prediv) * dsp_mul) / dsp_postdiv;
++		tnetd7200_set_clock(dsp_base, &clocks->dsp,
++			dsp_prediv, dsp_postdiv * 2, dsp_postdiv, dsp_mul * 2,
++			ar7_bus_clock);
++
++		printk(KERN_INFO "Clocks: Setting CPU clock\n");
++		calculate(cpu_base, TNETD7200_DEF_CPU_CLK, &cpu_prediv,
++			&cpu_postdiv, &cpu_mul);
++		ar7_cpu_clock =
++			((cpu_base / cpu_prediv) * cpu_mul) / cpu_postdiv;
++		tnetd7200_set_clock(cpu_base, &clocks->cpu,
++			cpu_prediv, cpu_postdiv, -1, cpu_mul,
++			ar7_cpu_clock);
++
++	} else
++		if (*bootcr & BOOT_PLL_2TO1_MODE) {
++			printk(KERN_INFO "Clocks: Sync 2:1 mode\n");
++
++			printk(KERN_INFO "Clocks: Setting CPU clock\n");
++			calculate(cpu_base, TNETD7200_DEF_CPU_CLK, &cpu_prediv,
++				&cpu_postdiv, &cpu_mul);
++			ar7_cpu_clock = ((cpu_base / cpu_prediv) * cpu_mul)
++								/ cpu_postdiv;
++			tnetd7200_set_clock(cpu_base, &clocks->cpu,
++				cpu_prediv, cpu_postdiv, -1, cpu_mul,
++				ar7_cpu_clock);
++
++			printk(KERN_INFO "Clocks: Setting DSP clock\n");
++			calculate(dsp_base, TNETD7200_DEF_DSP_CLK, &dsp_prediv,
++				&dsp_postdiv, &dsp_mul);
++			ar7_bus_clock = ar7_cpu_clock / 2;
++			tnetd7200_set_clock(dsp_base, &clocks->dsp,
++				dsp_prediv, dsp_postdiv * 2, dsp_postdiv,
++				dsp_mul * 2, ar7_bus_clock);
++		} else {
++			printk(KERN_INFO "Clocks: Sync 1:1 mode\n");
++
++			printk(KERN_INFO "Clocks: Setting DSP clock\n");
++			calculate(dsp_base, TNETD7200_DEF_DSP_CLK, &dsp_prediv,
++				&dsp_postdiv, &dsp_mul);
++			ar7_bus_clock = ((dsp_base / dsp_prediv) * dsp_mul)
++								/ dsp_postdiv;
++			tnetd7200_set_clock(dsp_base, &clocks->dsp,
++				dsp_prediv, dsp_postdiv * 2, dsp_postdiv,
++				dsp_mul * 2, ar7_bus_clock);
++
++			ar7_cpu_clock = ar7_bus_clock;
++		}
++
++	printk(KERN_INFO "Clocks: Setting USB clock\n");
++	usb_base = ar7_bus_clock;
++	calculate(usb_base, TNETD7200_DEF_USB_CLK, &usb_prediv,
++		&usb_postdiv, &usb_mul);
++	tnetd7200_set_clock(usb_base, &clocks->usb,
++		usb_prediv, usb_postdiv, -1, usb_mul,
++		TNETD7200_DEF_USB_CLK);
++
++	ar7_dsp_clock = ar7_cpu_clock;
++
++	iounmap(clocks);
++	iounmap(bootcr);
++}
++
++void __init ar7_init_clocks(void)
++{
++	switch (ar7_chip_id()) {
++	case AR7_CHIP_7100:
++		tnetd7200_init_clocks();
++		break;
++	case AR7_CHIP_7200:
++		tnetd7200_init_clocks();
++		break;
++	case AR7_CHIP_7300:
++		ar7_dsp_clock = tnetd7300_dsp_clock();
++		tnetd7300_init_clocks();
++		break;
++	default:
++		break;
++	}
++}
+diff --git a/arch/mips/ar7/gpio.c b/arch/mips/ar7/gpio.c
+new file mode 100644
+index 0000000..74e14a3
+--- /dev/null
++++ b/arch/mips/ar7/gpio.c
+@@ -0,0 +1,48 @@
++/*
++ * Copyright (C) 2007 Felix Fietkau <nbd@openwrt.org>
++ * Copyright (C) 2007 Eugene Konev <ejka@openwrt.org>
 + *
-+ * Parts of the VLYNQ specification can be found here:
-+ * http://www.ti.com/litv/pdf/sprue36a 
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++#include <linux/module.h>
++
++#include <asm/mach-ar7/gpio.h>
++
++static const char *ar7_gpio_list[AR7_GPIO_MAX];
++
++int gpio_request(unsigned gpio, const char *label)
++{
++	if (gpio >= AR7_GPIO_MAX)
++		return -EINVAL;
++
++	if (ar7_gpio_list[gpio])
++		return -EBUSY;
++
++	if (label)
++		ar7_gpio_list[gpio] = label;
++	else
++		ar7_gpio_list[gpio] = "busy";
++
++	return 0;
++}
++EXPORT_SYMBOL(gpio_request);
++
++void gpio_free(unsigned gpio)
++{
++	BUG_ON(!ar7_gpio_list[gpio]);
++	ar7_gpio_list[gpio] = NULL;
++}
++EXPORT_SYMBOL(gpio_free);
+diff --git a/arch/mips/ar7/irq.c b/arch/mips/ar7/irq.c
+new file mode 100644
+index 0000000..fb3756f
+--- /dev/null
++++ b/arch/mips/ar7/irq.c
+@@ -0,0 +1,184 @@
++/*
++ * Copyright (C) 2006,2007 Felix Fietkau <nbd@openwrt.org>
++ * Copyright (C) 2006,2007 Eugene Konev <ejka@openwrt.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++#include <linux/interrupt.h>
++#include <linux/io.h>
++
++#include <asm/irq_cpu.h>
++#include <asm/mipsregs.h>
++#include <asm/mach-ar7/ar7.h>
++
++#define EXCEPT_OFFSET	0x80
++#define PACE_OFFSET	0xA0
++#define CHNLS_OFFSET	0x200
++
++#define REG_OFFSET(irq, reg)	((irq) / 32 * 0x4 + reg * 0x10)
++#define SEC_REG_OFFSET(reg)	(EXCEPT_OFFSET + reg * 0x8)
++#define SEC_SR_OFFSET		(SEC_REG_OFFSET(0))	/* 0x80 */
++#define CR_OFFSET(irq)		(REG_OFFSET(irq, 1))	/* 0x10 */
++#define SEC_CR_OFFSET		(SEC_REG_OFFSET(1))	/* 0x88 */
++#define ESR_OFFSET(irq)		(REG_OFFSET(irq, 2))	/* 0x20 */
++#define SEC_ESR_OFFSET		(SEC_REG_OFFSET(2))	/* 0x90 */
++#define ECR_OFFSET(irq)		(REG_OFFSET(irq, 3))	/* 0x30 */
++#define SEC_ECR_OFFSET		(SEC_REG_OFFSET(3))	/* 0x98 */
++#define PIR_OFFSET		(0x40)
++#define MSR_OFFSET		(0x44)
++#define PM_OFFSET(irq)		(REG_OFFSET(irq, 5))	/* 0x50 */
++#define TM_OFFSET(irq)		(REG_OFFSET(irq, 6))	/* 0x60 */
++
++#define REG(addr) ((u32 *)(KSEG1ADDR(AR7_REGS_IRQ) + addr))
++
++#define CHNL_OFFSET(chnl) (CHNLS_OFFSET + (chnl * 4))
++
++static void ar7_unmask_irq(unsigned int irq_nr);
++static void ar7_mask_irq(unsigned int irq_nr);
++static void ar7_ack_irq(unsigned int irq_nr);
++static void ar7_unmask_sec_irq(unsigned int irq_nr);
++static void ar7_mask_sec_irq(unsigned int irq_nr);
++static void ar7_ack_sec_irq(unsigned int irq_nr);
++static void ar7_cascade(void);
++static void ar7_irq_init(int base);
++static int ar7_irq_base;
++
++static struct irq_chip ar7_irq_type = {
++	.name = "AR7",
++	.unmask = ar7_unmask_irq,
++	.mask = ar7_mask_irq,
++	.ack = ar7_ack_irq
++};
++
++static struct irq_chip ar7_sec_irq_type = {
++	.name = "AR7",
++	.unmask = ar7_unmask_sec_irq,
++	.mask = ar7_mask_sec_irq,
++	.ack = ar7_ack_sec_irq,
++};
++
++static struct irqaction ar7_cascade_action = {
++	.handler = no_action,
++	.name = "AR7 cascade interrupt"
++};
++
++static void ar7_unmask_irq(unsigned int irq)
++{
++	writel(1 << ((irq - ar7_irq_base) % 32),
++	       REG(ESR_OFFSET(irq - ar7_irq_base)));
++}
++
++static void ar7_mask_irq(unsigned int irq)
++{
++	writel(1 << ((irq - ar7_irq_base) % 32),
++	       REG(ECR_OFFSET(irq - ar7_irq_base)));
++}
++
++static void ar7_ack_irq(unsigned int irq)
++{
++	writel(1 << ((irq - ar7_irq_base) % 32),
++	       REG(CR_OFFSET(irq - ar7_irq_base)));
++}
++
++static void ar7_unmask_sec_irq(unsigned int irq)
++{
++	writel(1 << (irq - ar7_irq_base - 40), REG(SEC_ESR_OFFSET));
++}
++
++static void ar7_mask_sec_irq(unsigned int irq)
++{
++	writel(1 << (irq - ar7_irq_base - 40), REG(SEC_ECR_OFFSET));
++}
++
++static void ar7_ack_sec_irq(unsigned int irq)
++{
++	writel(1 << (irq - ar7_irq_base - 40), REG(SEC_CR_OFFSET));
++}
++
++void __init arch_init_irq(void)
++{
++	mips_cpu_irq_init();
++	ar7_irq_init(8);
++}
++
++static void __init ar7_irq_init(int base)
++{
++	int i;
++	/*
++	 * Disable interrupts and clear pending
++	 */
++	writel(0xffffffff, REG(ECR_OFFSET(0)));
++	writel(0xff, REG(ECR_OFFSET(32)));
++	writel(0xffffffff, REG(SEC_ECR_OFFSET));
++	writel(0xffffffff, REG(CR_OFFSET(0)));
++	writel(0xff, REG(CR_OFFSET(32)));
++	writel(0xffffffff, REG(SEC_CR_OFFSET));
++
++	ar7_irq_base = base;
++
++	for (i = 0; i < 40; i++) {
++		writel(i, REG(CHNL_OFFSET(i)));
++		/* Primary IRQ's */
++		set_irq_chip_and_handler(base + i, &ar7_irq_type,
++					 handle_level_irq);
++		/* Secondary IRQ's */
++		if (i < 32)
++			set_irq_chip_and_handler(base + i + 40,
++						 &ar7_sec_irq_type,
++						 handle_level_irq);
++	}
++
++	setup_irq(2, &ar7_cascade_action);
++	setup_irq(ar7_irq_base, &ar7_cascade_action);
++	set_c0_status(IE_IRQ0);
++}
++
++static void ar7_cascade(void)
++{
++	u32 status;
++	int i, irq;
++
++	/* Primary IRQ's */
++	irq = readl(REG(PIR_OFFSET)) & 0x3f;
++	if (irq) {
++		do_IRQ(ar7_irq_base + irq);
++		return;
++	}
++
++	/* Secondary IRQ's are cascaded through primary '0' */
++	writel(1, REG(CR_OFFSET(irq)));
++	status = readl(REG(SEC_SR_OFFSET));
++	for (i = 0; i < 32; i++) {
++		if (status & 1) {
++			do_IRQ(ar7_irq_base + i + 40);
++			return;
++		}
++		status >>= 1;
++	}
++
++	spurious_interrupt();
++}
++
++asmlinkage void plat_irq_dispatch(void)
++{
++	unsigned int pending = read_c0_status() & read_c0_cause() & ST0_IM;
++	if (pending & STATUSF_IP7)		/* cpu timer */
++		do_IRQ(7);
++	else if (pending & STATUSF_IP2)		/* int0 hardware line */
++		ar7_cascade();
++	else
++		spurious_interrupt();
++}
+diff --git a/arch/mips/ar7/memory.c b/arch/mips/ar7/memory.c
+new file mode 100644
+index 0000000..2e7910d
+--- /dev/null
++++ b/arch/mips/ar7/memory.c
+@@ -0,0 +1,71 @@
++/*
++ * Copyright (C) 2007 Felix Fietkau <nbd@openwrt.org>
++ * Copyright (C) 2007 Eugene Konev <ejka@openwrt.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++#include <linux/bootmem.h>
++#include <linux/init.h>
++#include <linux/mm.h>
++#include <linux/module.h>
++#include <linux/pfn.h>
++#include <linux/proc_fs.h>
++#include <linux/string.h>
++#include <linux/swap.h>
++
++#include <asm/bootinfo.h>
++#include <asm/page.h>
++#include <asm/sections.h>
++
++#include <asm/mips-boards/prom.h>
++
++static int __init memsize(void)
++{
++	u32 size = (64 << 20);
++	u32 *addr = (u32 *)KSEG1ADDR(0x14000000 + size - 4);
++	u32 *kernel_end = (u32 *)KSEG1ADDR(CPHYSADDR((u32)&_end));
++	u32 *tmpaddr = addr;
++
++	while (tmpaddr > kernel_end) {
++		*tmpaddr = (u32)tmpaddr;
++		size >>= 1;
++		tmpaddr -= size >> 2;
++	}
++
++	do {
++		tmpaddr += size >> 2;
++		if (*tmpaddr != (u32)tmpaddr)
++			break;
++		size <<= 1;
++	} while (size < (64 << 20));
++
++	writel(tmpaddr, &addr);
++
++	return size;
++}
++
++void __init prom_meminit(void)
++{
++	unsigned long pages;
++
++	pages = memsize() >> PAGE_SHIFT;
++	add_memory_region(PHYS_OFFSET, pages << PAGE_SHIFT,
++			  BOOT_MEM_RAM);
++}
++
++void __init prom_free_prom_memory(void)
++{
++	return;
++}
+diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
+new file mode 100644
+index 0000000..f8fcfb2
+--- /dev/null
++++ b/arch/mips/ar7/platform.c
+@@ -0,0 +1,493 @@
++/*
++ * Copyright (C) 2006,2007 Felix Fietkau <nbd@openwrt.org>
++ * Copyright (C) 2006,2007 Eugene Konev <ejka@openwrt.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 + */
 +
 +#include <linux/init.h>
 +#include <linux/types.h>
-+#include <linux/kernel.h>
-+#include <linux/string.h>
-+#include <linux/device.h>
 +#include <linux/module.h>
-+#include <linux/errno.h>
-+#include <linux/platform_device.h>
-+#include <linux/interrupt.h>
-+#include <linux/device.h>
 +#include <linux/delay.h>
++#include <linux/dma-mapping.h>
++#include <linux/platform_device.h>
++#include <linux/mtd/physmap.h>
++#include <linux/serial.h>
++#include <linux/serial_8250.h>
++#include <linux/ioport.h>
 +#include <linux/io.h>
-+
++#include <linux/version.h>
 +#include <linux/vlynq.h>
++#include <linux/leds.h>
++#include <linux/string.h>
++#include <linux/etherdevice.h>
 +
-+#define VLYNQ_CTRL_PM_ENABLE		0x80000000
-+#define VLYNQ_CTRL_CLOCK_INT		0x00008000
-+#define VLYNQ_CTRL_CLOCK_DIV(x)		(((x) & 7) << 16)
-+#define VLYNQ_CTRL_INT_LOCAL		0x00004000
-+#define VLYNQ_CTRL_INT_ENABLE		0x00002000
-+#define VLYNQ_CTRL_INT_VECTOR(x)	(((x) & 0x1f) << 8)
-+#define VLYNQ_CTRL_INT2CFG		0x00000080
-+#define VLYNQ_CTRL_RESET		0x00000001
++#include <asm/addrspace.h>
++#include <asm/mach-ar7/ar7.h>
++#include <asm/mach-ar7/gpio.h>
++#include <asm/mach-ar7/prom.h>
 +
-+#define VLYNQ_CTRL_CLOCK_MASK          (0x7 << 16)
-+
-+#define VLYNQ_INT_OFFSET		0x00000014
-+#define VLYNQ_REMOTE_OFFSET		0x00000080
-+
-+#define VLYNQ_STATUS_LINK		0x00000001
-+#define VLYNQ_STATUS_LERROR		0x00000080
-+#define VLYNQ_STATUS_RERROR		0x00000100
-+
-+#define VINT_ENABLE			0x00000100
-+#define VINT_TYPE_EDGE			0x00000080
-+#define VINT_LEVEL_LOW			0x00000040
-+#define VINT_VECTOR(x)			((x) & 0x1f)
-+#define VINT_OFFSET(irq)		(8 * ((irq) % 4))
-+
-+#define VLYNQ_AUTONEGO_V2		0x00010000
-+
-+struct vlynq_regs {
-+	u32 revision;
-+	u32 control;
-+	u32 status;
-+	u32 int_prio;
-+	u32 int_status;
-+	u32 int_pending;
-+	u32 int_ptr;
-+	u32 tx_offset;
-+	struct vlynq_mapping rx_mapping[4];
-+	u32 chip;
-+	u32 autonego;
-+	u32 unused[6];
-+	u32 int_device[8];
++struct plat_vlynq_data {
++	struct plat_vlynq_ops ops;
++	int gpio_bit;
++	int reset_bit;
 +};
 +
-+#ifdef VLYNQ_DEBUG
-+static void vlynq_dump_regs(struct vlynq_device *dev)
-+{
-+	int i;
 +
-+	printk(KERN_DEBUG "VLYNQ local=%p remote=%p\n",
-+			dev->local, dev->remote);
-+	for (i = 0; i < 32; i++) {
-+		printk(KERN_DEBUG "VLYNQ: local %d: %08x\n",
-+			i + 1, ((u32 *)dev->local)[i]);
-+		printk(KERN_DEBUG "VLYNQ: remote %d: %08x\n",
-+			i + 1, ((u32 *)dev->remote)[i]);
-+	}
-+}
-+
-+static void vlynq_dump_mem(u32 *base, int count)
-+{
-+	int i;
-+
-+	for (i = 0; i < (count + 3) / 4; i++) {
-+		if (i % 4 == 0)
-+			printk(KERN_DEBUG "\nMEM[0x%04x]:", i * 4);
-+		printk(KERN_DEBUG " 0x%08x", *(base + i));
-+	}
-+	printk(KERN_DEBUG "\n");
-+}
-+#endif
-+
-+/* Check the VLYNQ link status with a given device */
-+static int vlynq_linked(struct vlynq_device *dev)
-+{
-+	int i;
-+
-+	for (i = 0; i < 100; i++)
-+		if (readl(&dev->local->status) & VLYNQ_STATUS_LINK)
-+			return 1;
-+		else
-+			cpu_relax();
-+
-+	return 0;
-+}
-+
-+static void vlynq_reset(struct vlynq_device *dev)
-+{
-+	writel(readl(&dev->local->control) | VLYNQ_CTRL_RESET,
-+			&dev->local->control);
-+
-+	/* Wait for the devices to finish resetting */
-+	msleep(5);
-+
-+	/* Remove reset bit */
-+	writel(readl(&dev->local->control) & ~VLYNQ_CTRL_RESET,
-+			&dev->local->control);
-+
-+	/* Give some time for the devices to settle */
-+	msleep(5);
-+}
-+
-+static void vlynq_irq_unmask(unsigned int irq)
-+{
-+	u32 val;
-+	struct vlynq_device *dev = get_irq_chip_data(irq);
-+	int virq;
-+
-+	BUG_ON(!dev);
-+	virq = irq - dev->irq_start;
-+	val = readl(&dev->remote->int_device[virq >> 2]);
-+	val |= (VINT_ENABLE | virq) << VINT_OFFSET(virq);
-+	writel(val, &dev->remote->int_device[virq >> 2]);
-+}
-+
-+static void vlynq_irq_mask(unsigned int irq)
-+{
-+	u32 val;
-+	struct vlynq_device *dev = get_irq_chip_data(irq);
-+	int virq;
-+
-+	BUG_ON(!dev);
-+	virq = irq - dev->irq_start;
-+	val = readl(&dev->remote->int_device[virq >> 2]);
-+	val &= ~(VINT_ENABLE << VINT_OFFSET(virq));
-+	writel(val, &dev->remote->int_device[virq >> 2]);
-+}
-+
-+static int vlynq_irq_type(unsigned int irq, unsigned int flow_type)
-+{
-+	u32 val;
-+	struct vlynq_device *dev = get_irq_chip_data(irq);
-+	int virq;
-+
-+	BUG_ON(!dev);
-+	virq = irq - dev->irq_start;
-+	val = readl(&dev->remote->int_device[virq >> 2]);
-+	switch (flow_type & IRQ_TYPE_SENSE_MASK) {
-+	case IRQ_TYPE_EDGE_RISING:
-+	case IRQ_TYPE_EDGE_FALLING:
-+	case IRQ_TYPE_EDGE_BOTH:
-+		val |= VINT_TYPE_EDGE << VINT_OFFSET(virq);
-+		val &= ~(VINT_LEVEL_LOW << VINT_OFFSET(virq));
-+		break;
-+	case IRQ_TYPE_LEVEL_HIGH:
-+		val &= ~(VINT_TYPE_EDGE << VINT_OFFSET(virq));
-+		val &= ~(VINT_LEVEL_LOW << VINT_OFFSET(virq));
-+		break;
-+	case IRQ_TYPE_LEVEL_LOW:
-+		val &= ~(VINT_TYPE_EDGE << VINT_OFFSET(virq));
-+		val |= VINT_LEVEL_LOW << VINT_OFFSET(virq);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+	writel(val, &dev->remote->int_device[virq >> 2]);
-+	return 0;
-+}
-+
-+static void vlynq_local_ack(unsigned int irq)
-+{
-+	struct vlynq_device *dev = get_irq_chip_data(irq);
-+
-+	u32 status = readl(&dev->local->status);
-+
-+	pr_debug("%s: local status: 0x%08x\n",
-+		       dev_name(&dev->dev), status);
-+	writel(status, &dev->local->status);
-+}
-+
-+static void vlynq_remote_ack(unsigned int irq)
-+{
-+	struct vlynq_device *dev = get_irq_chip_data(irq);
-+
-+	u32 status = readl(&dev->remote->status);
-+
-+	pr_debug("%s: remote status: 0x%08x\n",
-+		       dev_name(&dev->dev), status);
-+	writel(status, &dev->remote->status);
-+}
-+
-+static irqreturn_t vlynq_irq(int irq, void *dev_id)
-+{
-+	struct vlynq_device *dev = dev_id;
-+	u32 status;
-+	int virq = 0;
-+
-+	status = readl(&dev->local->int_status);
-+	writel(status, &dev->local->int_status);
-+
-+	if (unlikely(!status))
-+		spurious_interrupt();
-+
-+	while (status) {
-+		if (status & 1)
-+			do_IRQ(dev->irq_start + virq);
-+		status >>= 1;
-+		virq++;
-+	}
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static struct irq_chip vlynq_irq_chip = {
-+	.name = "vlynq",
-+	.unmask = vlynq_irq_unmask,
-+	.mask = vlynq_irq_mask,
-+	.set_type = vlynq_irq_type,
-+};
-+
-+static struct irq_chip vlynq_local_chip = {
-+	.name = "vlynq local error",
-+	.unmask = vlynq_irq_unmask,
-+	.mask = vlynq_irq_mask,
-+	.ack = vlynq_local_ack,
-+};
-+
-+static struct irq_chip vlynq_remote_chip = {
-+	.name = "vlynq local error",
-+	.unmask = vlynq_irq_unmask,
-+	.mask = vlynq_irq_mask,
-+	.ack = vlynq_remote_ack,
-+};
-+
-+static int vlynq_setup_irq(struct vlynq_device *dev)
-+{
-+	u32 val;
-+	int i, virq;
-+
-+	if (dev->local_irq == dev->remote_irq) {
-+		printk(KERN_ERR
-+		       "%s: local vlynq irq should be different from remote\n",
-+		       dev_name(&dev->dev));
-+		return -EINVAL;
-+	}
-+
-+	/* Clear local and remote error bits */
-+	writel(readl(&dev->local->status), &dev->local->status);
-+	writel(readl(&dev->remote->status), &dev->remote->status);
-+
-+	/* Now setup interrupts */
-+	val = VLYNQ_CTRL_INT_VECTOR(dev->local_irq);
-+	val |= VLYNQ_CTRL_INT_ENABLE | VLYNQ_CTRL_INT_LOCAL |
-+		VLYNQ_CTRL_INT2CFG;
-+	val |= readl(&dev->local->control);
-+	writel(VLYNQ_INT_OFFSET, &dev->local->int_ptr);
-+	writel(val, &dev->local->control);
-+
-+	val = VLYNQ_CTRL_INT_VECTOR(dev->remote_irq);
-+	val |= VLYNQ_CTRL_INT_ENABLE;
-+	val |= readl(&dev->remote->control);
-+	writel(VLYNQ_INT_OFFSET, &dev->remote->int_ptr);
-+	writel(val, &dev->remote->int_ptr);
-+	writel(val, &dev->remote->control);
-+
-+	for (i = dev->irq_start; i <= dev->irq_end; i++) {
-+		virq = i - dev->irq_start;
-+		if (virq == dev->local_irq) {
-+			set_irq_chip_and_handler(i, &vlynq_local_chip,
-+						 handle_level_irq);
-+			set_irq_chip_data(i, dev);
-+		} else if (virq == dev->remote_irq) {
-+			set_irq_chip_and_handler(i, &vlynq_remote_chip,
-+						 handle_level_irq);
-+			set_irq_chip_data(i, dev);
-+		} else {
-+			set_irq_chip_and_handler(i, &vlynq_irq_chip,
-+						 handle_simple_irq);
-+			set_irq_chip_data(i, dev);
-+			writel(0, &dev->remote->int_device[virq >> 2]);
-+		}
-+	}
-+
-+	if (request_irq(dev->irq, vlynq_irq, IRQF_SHARED, "vlynq", dev)) {
-+		printk(KERN_ERR "%s: request_irq failed\n",
-+					dev_name(&dev->dev));
-+		return -EAGAIN;
-+	}
-+
-+	return 0;
-+}
-+
-+static void vlynq_device_release(struct device *dev)
-+{
-+	struct vlynq_device *vdev = to_vlynq_device(dev);
-+	kfree(vdev);
-+}
-+
-+static int vlynq_device_match(struct device *dev,
-+			      struct device_driver *drv)
-+{
-+	struct vlynq_device *vdev = to_vlynq_device(dev);
-+	struct vlynq_driver *vdrv = to_vlynq_driver(drv);
-+	struct vlynq_device_id *ids = vdrv->id_table;
-+
-+	while (ids->id) {
-+		if (ids->id == vdev->dev_id) {
-+			vdev->divisor = ids->divisor;
-+			vlynq_set_drvdata(vdev, ids);
-+			printk(KERN_INFO "Driver found for VLYNQ "
-+				"device: %08x\n", vdev->dev_id);
-+			return 1;
-+		}
-+		printk(KERN_DEBUG "Not using the %08x VLYNQ device's driver"
-+			" for VLYNQ device: %08x\n", ids->id, vdev->dev_id);
-+		ids++;
-+	}
-+	return 0;
-+}
-+
-+static int vlynq_device_probe(struct device *dev)
-+{
-+	struct vlynq_device *vdev = to_vlynq_device(dev);
-+	struct vlynq_driver *drv = to_vlynq_driver(dev->driver);
-+	struct vlynq_device_id *id = vlynq_get_drvdata(vdev);
-+	int result = -ENODEV;
-+
-+	if (drv->probe)
-+		result = drv->probe(vdev, id);
-+	if (result)
-+		put_device(dev);
-+	return result;
-+}
-+
-+static int vlynq_device_remove(struct device *dev)
-+{
-+	struct vlynq_driver *drv = to_vlynq_driver(dev->driver);
-+
-+	if (drv->remove)
-+		drv->remove(to_vlynq_device(dev));
-+	
-+	return 0;
-+}
-+
-+int __vlynq_register_driver(struct vlynq_driver *driver, struct module *owner)
-+{
-+	driver->driver.name = driver->name;
-+	driver->driver.bus = &vlynq_bus_type;
-+	return driver_register(&driver->driver);
-+}
-+EXPORT_SYMBOL(__vlynq_register_driver);
-+
-+void vlynq_unregister_driver(struct vlynq_driver *driver)
-+{
-+	driver_unregister(&driver->driver);
-+}
-+EXPORT_SYMBOL(vlynq_unregister_driver);
-+
-+/* 
-+ * A VLYNQ remote device can clock the VLYNQ bus master
-+ * using a dedicated clock line. In that case, both the
-+ * remove device and the bus master should have the same
-+ * serial clock dividers configured. Iterate through the
-+ * 8 possible dividers until we actually link with the
-+ * device.
-+ */
-+static int __vlynq_try_remote(struct vlynq_device *dev)
-+{
-+	int i;
-+
-+	vlynq_reset(dev);
-+	for (i = dev->dev_id ? vlynq_rdiv2 : vlynq_rdiv8; dev->dev_id ?
-+			i <= vlynq_rdiv8 : i >= vlynq_rdiv2;
-+		dev->dev_id ? i++ : i--) {
-+
-+		if (!vlynq_linked(dev))
-+			break;
-+		
-+		writel((readl(&dev->remote->control) &
-+				~VLYNQ_CTRL_CLOCK_MASK) |
-+				VLYNQ_CTRL_CLOCK_INT |
-+				VLYNQ_CTRL_CLOCK_DIV(i - vlynq_rdiv1),
-+				&dev->remote->control);
-+		writel((readl(&dev->local->control)
-+				& ~(VLYNQ_CTRL_CLOCK_INT |
-+				VLYNQ_CTRL_CLOCK_MASK)) |
-+				VLYNQ_CTRL_CLOCK_DIV(i - vlynq_rdiv1),
-+				&dev->local->control);
-+
-+		if (vlynq_linked(dev)) {
-+			printk(KERN_DEBUG
-+				"%s: using remote clock divisor %d\n",
-+				dev_name(&dev->dev), i - vlynq_rdiv1 + 1);
-+			dev->divisor = i;
-+			return 0;
-+		} else {
-+			vlynq_reset(dev);
-+		}
-+	}
-+
-+	return -ENODEV;
-+}
-+
-+/* 
-+ * A VLYNQ remote device can be clocked by the VLYNQ bus
-+ * master using a dedicated clock line. In that case, only
-+ * the bus master configures the serial clock divider.
-+ * Iterate through the 8 possible dividers until we
-+ * actually get a link with the device.
-+ */
-+static int __vlynq_try_local(struct vlynq_device *dev)
-+{
-+	int i;
-+
-+	vlynq_reset(dev);
-+
-+	for (i = dev->dev_id ? vlynq_ldiv2 : vlynq_ldiv8; dev->dev_id ?
-+			i <= vlynq_ldiv8 : i >= vlynq_ldiv2;
-+		dev->dev_id ? i++ : i--) {
-+
-+		writel((readl(&dev->local->control) &
-+				~VLYNQ_CTRL_CLOCK_MASK) |
-+				VLYNQ_CTRL_CLOCK_INT |
-+				VLYNQ_CTRL_CLOCK_DIV(i - vlynq_ldiv1),
-+				&dev->local->control);
-+
-+		if (vlynq_linked(dev)) {
-+			printk(KERN_DEBUG
-+				"%s: using local clock divisor %d\n",
-+				dev_name(&dev->dev), i - vlynq_ldiv1 + 1);
-+			dev->divisor = i;
-+			return 0;
-+		} else {
-+			vlynq_reset(dev);
-+		}
-+	}
-+
-+	return -ENODEV;
-+}
-+
-+/*
-+ * When using external clocking method, serial clock
-+ * is supplied by an external oscillator, therefore we
-+ * should mask the local clock bit in the clock control
-+ * register for both the bus master and the remote device.
-+ */
-+static int __vlynq_try_external(struct vlynq_device *dev)
-+{
-+	vlynq_reset(dev);
-+	if (!vlynq_linked(dev))
-+		return -ENODEV;
-+
-+	writel((readl(&dev->remote->control) & 
-+			~VLYNQ_CTRL_CLOCK_INT),
-+			&dev->remote->control);
-+
-+	writel((readl(&dev->local->control) &
-+			~VLYNQ_CTRL_CLOCK_INT),
-+			&dev->local->control);
-+
-+	if (vlynq_linked(dev)) {
-+		printk(KERN_DEBUG "%s: using external clock\n",
-+			dev_name(&dev->dev));
-+			dev->divisor = vlynq_div_external;
-+		return 0;
-+	}
-+
-+	return -ENODEV;
-+}
-+
-+static int __vlynq_enable_device(struct vlynq_device *dev)
++static int vlynq_on(struct vlynq_device *dev)
 +{
 +	int result;
-+	struct plat_vlynq_ops *ops = dev->dev.platform_data;
++	struct plat_vlynq_data *pdata = dev->dev.platform_data;
 +
-+	result = ops->on(dev);
++	result = gpio_request(pdata->gpio_bit, "vlynq");
 +	if (result)
-+		return result;
++		goto out;
 +
-+	switch (dev->divisor) {
-+	case vlynq_div_external:
-+	case vlynq_div_auto:
-+		/* When the device is brought from reset it should have clock
-+		 * generation negotiated by hardware.
-+		 * Check which device is generating clocks and perform setup
-+		 * accordingly */
-+		if (vlynq_linked(dev) && readl(&dev->remote->control) &
-+		   VLYNQ_CTRL_CLOCK_INT) {
-+			if (!__vlynq_try_remote(dev) ||
-+				!__vlynq_try_local(dev)  ||
-+				!__vlynq_try_external(dev))
-+				return 0;
-+		} else {
-+			if (!__vlynq_try_external(dev) ||
-+				!__vlynq_try_local(dev)    ||
-+				!__vlynq_try_remote(dev))
-+				return 0;
-+		}
-+		break;
-+	case vlynq_ldiv1:
-+	case vlynq_ldiv2:
-+	case vlynq_ldiv3:
-+	case vlynq_ldiv4:
-+	case vlynq_ldiv5:
-+	case vlynq_ldiv6:
-+	case vlynq_ldiv7:
-+	case vlynq_ldiv8:
-+		writel(VLYNQ_CTRL_CLOCK_INT |
-+			VLYNQ_CTRL_CLOCK_DIV(dev->divisor -
-+			vlynq_ldiv1), &dev->local->control);
-+		writel(0, &dev->remote->control);
-+		if (vlynq_linked(dev)) {
-+			printk(KERN_DEBUG
-+				"%s: using local clock divisor %d\n",
-+				dev_name(&dev->dev),
-+				dev->divisor - vlynq_ldiv1 + 1);
-+			return 0;
-+		}
-+		break;
-+	case vlynq_rdiv1:
-+	case vlynq_rdiv2:
-+	case vlynq_rdiv3:
-+	case vlynq_rdiv4:
-+	case vlynq_rdiv5:
-+	case vlynq_rdiv6:
-+	case vlynq_rdiv7:
-+	case vlynq_rdiv8:
-+		writel(0, &dev->local->control);
-+		writel(VLYNQ_CTRL_CLOCK_INT |
-+			VLYNQ_CTRL_CLOCK_DIV(dev->divisor -
-+			vlynq_rdiv1), &dev->remote->control);
-+		if (vlynq_linked(dev)) {
-+			printk(KERN_DEBUG
-+				"%s: using remote clock divisor %d\n",
-+				dev_name(&dev->dev),
-+				dev->divisor - vlynq_rdiv1 + 1);
-+			return 0;
-+		}
-+		break;
-+	}
++	ar7_device_reset(pdata->reset_bit);
 +
-+	ops->off(dev);
-+	return -ENODEV;
-+}
-+
-+int vlynq_enable_device(struct vlynq_device *dev)
-+{
-+	struct plat_vlynq_ops *ops = dev->dev.platform_data;
-+	int result = -ENODEV;
-+
-+	result = __vlynq_enable_device(dev);
++	result = ar7_gpio_disable(pdata->gpio_bit);
 +	if (result)
-+		return result;
++		goto out_enabled;
 +
-+	result = vlynq_setup_irq(dev);
++	result = ar7_gpio_enable(pdata->gpio_bit);
 +	if (result)
-+		ops->off(dev);
++		goto out_enabled;
 +
-+	dev->enabled = !result;
-+	return result;
-+}
-+EXPORT_SYMBOL(vlynq_enable_device);
++	result = gpio_direction_output(pdata->gpio_bit, 0);
++	if (result)
++		goto out_gpio_enabled;
 +
++	mdelay(50);
 +
-+void vlynq_disable_device(struct vlynq_device *dev)
-+{
-+	struct plat_vlynq_ops *ops = dev->dev.platform_data;
-+
-+	dev->enabled = 0;
-+	free_irq(dev->irq, dev);
-+	ops->off(dev);
-+}
-+EXPORT_SYMBOL(vlynq_disable_device);
-+
-+int vlynq_set_local_mapping(struct vlynq_device *dev, u32 tx_offset,
-+			    struct vlynq_mapping *mapping)
-+{
-+	int i;
-+
-+	if (!dev->enabled)
-+		return -ENXIO;
-+
-+	writel(tx_offset, &dev->local->tx_offset);
-+	for (i = 0; i < 4; i++) {
-+		writel(mapping[i].offset, &dev->local->rx_mapping[i].offset);
-+		writel(mapping[i].size, &dev->local->rx_mapping[i].size);
-+	}
-+	return 0;
-+}
-+EXPORT_SYMBOL(vlynq_set_local_mapping);
-+
-+int vlynq_set_remote_mapping(struct vlynq_device *dev, u32 tx_offset,
-+			     struct vlynq_mapping *mapping)
-+{
-+	int i;
-+
-+	if (!dev->enabled)
-+		return -ENXIO;
-+
-+	writel(tx_offset, &dev->remote->tx_offset);
-+	for (i = 0; i < 4; i++) {
-+		writel(mapping[i].offset, &dev->remote->rx_mapping[i].offset);
-+		writel(mapping[i].size, &dev->remote->rx_mapping[i].size);
-+	}
-+	return 0;
-+}
-+EXPORT_SYMBOL(vlynq_set_remote_mapping);
-+
-+int vlynq_set_local_irq(struct vlynq_device *dev, int virq)
-+{
-+	int irq = dev->irq_start + virq;
-+	if (dev->enabled)
-+		return -EBUSY;
-+
-+	if ((irq < dev->irq_start) || (irq > dev->irq_end))
-+		return -EINVAL;
-+
-+	if (virq == dev->remote_irq)
-+		return -EINVAL;
-+
-+	dev->local_irq = virq;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(vlynq_set_local_irq);
-+
-+int vlynq_set_remote_irq(struct vlynq_device *dev, int virq)
-+{
-+	int irq = dev->irq_start + virq;
-+	if (dev->enabled)
-+		return -EBUSY;
-+
-+	if ((irq < dev->irq_start) || (irq > dev->irq_end))
-+		return -EINVAL;
-+
-+	if (virq == dev->local_irq)
-+		return -EINVAL;
-+
-+	dev->remote_irq = virq;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(vlynq_set_remote_irq);
-+
-+static int vlynq_probe(struct platform_device *pdev)
-+{
-+	struct vlynq_device *dev;
-+	struct resource *regs_res, *mem_res, *irq_res;
-+	int len, result;
-+
-+	regs_res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "regs");
-+	if (!regs_res)
-+		return -ENODEV;
-+
-+	mem_res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "mem");
-+	if (!mem_res)
-+		return -ENODEV;
-+
-+	irq_res = platform_get_resource_byname(pdev, IORESOURCE_IRQ, "devirq");
-+	if (!irq_res)
-+		return -ENODEV;
-+
-+	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
-+	if (!dev) {
-+		printk(KERN_ERR
-+		       "vlynq: failed to allocate device structure\n");
-+		return -ENOMEM;
-+	}
-+
-+	dev->id = pdev->id;
-+	dev->dev.bus = &vlynq_bus_type;
-+	dev->dev.parent = &pdev->dev;
-+	dev_set_name(&dev->dev, "vlynq%d", dev->id);
-+	dev->dev.platform_data = pdev->dev.platform_data;
-+	dev->dev.release = vlynq_device_release;
-+
-+	dev->regs_start = regs_res->start;
-+	dev->regs_end = regs_res->end;
-+	dev->mem_start = mem_res->start;
-+	dev->mem_end = mem_res->end;
-+
-+	len = regs_res->end - regs_res->start;
-+	if (!request_mem_region(regs_res->start, len, dev_name(&dev->dev))) {
-+		printk(KERN_ERR "%s: Can't request vlynq registers\n",
-+		       dev_name(&dev->dev));
-+		result = -ENXIO;
-+		goto fail_request;
-+	}
-+
-+	dev->local = ioremap(regs_res->start, len);
-+	if (!dev->local) {
-+		printk(KERN_ERR "%s: Can't remap vlynq registers\n",
-+		       dev_name(&dev->dev));
-+		result = -ENXIO;
-+		goto fail_remap;
-+	}
-+
-+	dev->remote = (struct vlynq_regs *)((void *)dev->local +
-+					    VLYNQ_REMOTE_OFFSET);
-+
-+	dev->irq = platform_get_irq_byname(pdev, "irq");
-+	dev->irq_start = irq_res->start;
-+	dev->irq_end = irq_res->end;
-+	dev->local_irq = dev->irq_end - dev->irq_start;
-+	dev->remote_irq = dev->local_irq - 1;
-+
-+	if (device_register(&dev->dev))
-+		goto fail_register;
-+	platform_set_drvdata(pdev, dev);
-+
-+	printk(KERN_INFO "%s: regs 0x%p, irq %d, mem 0x%p\n",
-+	       dev_name(&dev->dev), (void *)dev->regs_start, dev->irq,
-+	       (void *)dev->mem_start);
-+
-+	dev->dev_id = 0;
-+	dev->divisor = vlynq_div_auto;
-+	result = __vlynq_enable_device(dev);
-+	if (result == 0) {
-+		dev->dev_id = readl(&dev->remote->chip);
-+		((struct plat_vlynq_ops *)(dev->dev.platform_data))->off(dev);
-+	}
-+	if (dev->dev_id)
-+		printk(KERN_INFO "Found a VLYNQ device: %08x\n", dev->dev_id);
++	gpio_set_value(pdata->gpio_bit, 1);
++	mdelay(50);
 +
 +	return 0;
 +
-+fail_register:
-+	iounmap(dev->local);
-+fail_remap:
-+fail_request:
-+	release_mem_region(regs_res->start, len);
-+	kfree(dev);
++out_gpio_enabled:
++	ar7_gpio_disable(pdata->gpio_bit);
++out_enabled:
++	ar7_device_disable(pdata->reset_bit);
++	gpio_free(pdata->gpio_bit);
++out:
 +	return result;
 +}
 +
-+static int vlynq_remove(struct platform_device *pdev)
++static void vlynq_off(struct vlynq_device *dev)
 +{
-+	struct vlynq_device *dev = platform_get_drvdata(pdev);
-+
-+	device_unregister(&dev->dev);
-+	iounmap(dev->local);
-+	release_mem_region(dev->regs_start, dev->regs_end - dev->regs_start);
-+
-+	kfree(dev);
-+
-+	return 0;
++	struct plat_vlynq_data *pdata = dev->dev.platform_data;
++	ar7_gpio_disable(pdata->gpio_bit);
++	gpio_free(pdata->gpio_bit);
++	ar7_device_disable(pdata->reset_bit);
 +}
 +
-+static struct platform_driver vlynq_platform_driver = {
-+	.driver.name = "vlynq",
-+	.probe = vlynq_probe,
-+	.remove = __devexit_p(vlynq_remove),
++static struct resource physmap_flash_resource = {
++	.name = "mem",
++	.flags = IORESOURCE_MEM,
++	.start = 0x10000000,
++	.end = 0x107fffff,
 +};
 +
-+struct bus_type vlynq_bus_type = {
++static struct resource cpmac_low_res[] = {
++	{
++		.name = "regs",
++		.flags = IORESOURCE_MEM,
++		.start = AR7_REGS_MAC0,
++		.end = AR7_REGS_MAC0 + 0x7ff,
++	},
++	{
++		.name = "irq",
++		.flags = IORESOURCE_IRQ,
++		.start = 27,
++		.end = 27,
++	},
++};
++
++static struct resource cpmac_high_res[] = {
++	{
++		.name = "regs",
++		.flags = IORESOURCE_MEM,
++		.start = AR7_REGS_MAC1,
++		.end = AR7_REGS_MAC1 + 0x7ff,
++	},
++	{
++		.name = "irq",
++		.flags = IORESOURCE_IRQ,
++		.start = 41,
++		.end = 41,
++	},
++};
++
++static struct resource vlynq_low_res[] = {
++	{
++		.name = "regs",
++		.flags = IORESOURCE_MEM,
++		.start = AR7_REGS_VLYNQ0,
++		.end = AR7_REGS_VLYNQ0 + 0xff,
++	},
++	{
++		.name = "irq",
++		.flags = IORESOURCE_IRQ,
++		.start = 29,
++		.end = 29,
++	},
++	{
++		.name = "mem",
++		.flags = IORESOURCE_MEM,
++		.start = 0x04000000,
++		.end = 0x04ffffff,
++	},
++	{
++		.name = "devirq",
++		.flags = IORESOURCE_IRQ,
++		.start = 80,
++		.end = 111,
++	},
++};
++
++static struct resource vlynq_high_res[] = {
++	{
++		.name = "regs",
++		.flags = IORESOURCE_MEM,
++		.start = AR7_REGS_VLYNQ1,
++		.end = AR7_REGS_VLYNQ1 + 0xff,
++	},
++	{
++		.name = "irq",
++		.flags = IORESOURCE_IRQ,
++		.start = 33,
++		.end = 33,
++	},
++	{
++		.name = "mem",
++		.flags = IORESOURCE_MEM,
++		.start = 0x0c000000,
++		.end = 0x0cffffff,
++	},
++	{
++		.name = "devirq",
++		.flags = IORESOURCE_IRQ,
++		.start = 112,
++		.end = 143,
++	},
++};
++
++static struct resource usb_res[] = {
++	{
++		.name = "regs",
++		.flags = IORESOURCE_MEM,
++		.start = AR7_REGS_USB,
++		.end = AR7_REGS_USB + 0xff,
++	},
++	{
++		.name = "irq",
++		.flags = IORESOURCE_IRQ,
++		.start = 32,
++		.end = 32,
++	},
++	{
++		.name = "mem",
++		.flags = IORESOURCE_MEM,
++		.start = 0x03400000,
++		.end = 0x034001fff,
++	},
++};
++
++static struct physmap_flash_data physmap_flash_data = {
++	.width = 2,
++};
++
++static struct plat_cpmac_data cpmac_low_data = {
++	.reset_bit = 17,
++	.power_bit = 20,
++	.phy_mask = 0x80000000,
++};
++
++static struct plat_cpmac_data cpmac_high_data = {
++	.reset_bit = 21,
++	.power_bit = 22,
++	.phy_mask = 0x7fffffff,
++};
++
++static struct plat_vlynq_data vlynq_low_data = {
++	.ops.on = vlynq_on,
++	.ops.off = vlynq_off,
++	.reset_bit = 20,
++	.gpio_bit = 18,
++};
++
++static struct plat_vlynq_data vlynq_high_data = {
++	.ops.on = vlynq_on,
++	.ops.off = vlynq_off,
++	.reset_bit = 16,
++	.gpio_bit = 19,
++};
++
++static struct platform_device physmap_flash = {
++	.id = 0,
++	.name = "physmap-flash",
++	.dev.platform_data = &physmap_flash_data,
++	.resource = &physmap_flash_resource,
++	.num_resources = 1,
++};
++
++static u64 cpmac_dma_mask = DMA_32BIT_MASK;
++static struct platform_device cpmac_low = {
++	.id = 0,
++	.name = "cpmac",
++	.dev = {
++		.dma_mask = &cpmac_dma_mask,
++		.coherent_dma_mask = DMA_32BIT_MASK,
++		.platform_data = &cpmac_low_data,
++	},
++	.resource = cpmac_low_res,
++	.num_resources = ARRAY_SIZE(cpmac_low_res),
++};
++
++static struct platform_device cpmac_high = {
++	.id = 1,
++	.name = "cpmac",
++	.dev = {
++		.dma_mask = &cpmac_dma_mask,
++		.coherent_dma_mask = DMA_32BIT_MASK,
++		.platform_data = &cpmac_high_data,
++	},
++	.resource = cpmac_high_res,
++	.num_resources = ARRAY_SIZE(cpmac_high_res),
++};
++
++static struct platform_device vlynq_low = {
++	.id = 0,
 +	.name = "vlynq",
-+	.match = vlynq_device_match,
-+	.probe = vlynq_device_probe,
-+	.remove = vlynq_device_remove,
++	.dev.platform_data = &vlynq_low_data,
++	.resource = vlynq_low_res,
++	.num_resources = ARRAY_SIZE(vlynq_low_res),
 +};
-+EXPORT_SYMBOL(vlynq_bus_type);
 +
-+static int __devinit vlynq_init(void)
++static struct platform_device vlynq_high = {
++	.id = 1,
++	.name = "vlynq",
++	.dev.platform_data = &vlynq_high_data,
++	.resource = vlynq_high_res,
++	.num_resources = ARRAY_SIZE(vlynq_high_res),
++};
++
++
++static struct gpio_led default_leds[] = {
++	{ .name = "status", .gpio = 8, .active_low = 1, },
++};
++
++static struct gpio_led dsl502t_leds[] = {
++	{ .name = "status", .gpio = 9, .active_low = 1, },
++	{ .name = "ethernet", .gpio = 7, .active_low = 1, },
++	{ .name = "usb", .gpio = 12, .active_low = 1, },
++};
++
++static struct gpio_led dg834g_leds[] = {
++	{ .name = "ppp", .gpio = 6, .active_low = 1, },
++	{ .name = "status", .gpio = 7, .active_low = 1, },
++	{ .name = "adsl", .gpio = 8, .active_low = 1, },
++	{ .name = "wifi", .gpio = 12, .active_low = 1, },
++	{
++		.name = "power",
++		.gpio = 14,
++		.active_low = 1,
++		.default_trigger = "default-on",
++	},
++};
++
++static struct gpio_led fb_sl_leds[] = {
++	{ .name = "1", .gpio = 7, },
++	{ .name = "2", .gpio = 13, .active_low = 1, },
++	{ .name = "3", .gpio = 10, .active_low = 1, },
++	{ .name = "4", .gpio = 12, .active_low = 1, },
++	{ .name = "5", .gpio = 9, .active_low = 1, },
++};
++
++static struct gpio_led fb_fon_leds[] = {
++	{ .name = "1", .gpio = 8, },
++	{ .name = "2", .gpio = 3, .active_low = 1, },
++	{ .name = "3", .gpio = 5, },
++	{ .name = "4", .gpio = 4, .active_low = 1, },
++	{ .name = "5", .gpio = 11, .active_low = 1, },
++};
++
++static struct gpio_led_platform_data ar7_led_data;
++
++static struct platform_device ar7_gpio_leds = {
++	.name = "leds-gpio",
++	.id = -1,
++	.dev = {
++		.platform_data = &ar7_led_data,
++	}
++};
++
++static struct platform_device ar7_udc = {
++	.id = -1,
++	.name = "ar7_udc",
++	.resource = usb_res,
++	.num_resources = ARRAY_SIZE(usb_res),
++};
++
++static inline unsigned char char2hex(char h)
 +{
-+	int res = 0;
++	switch (h) {
++	case '0': case '1': case '2': case '3': case '4':
++	case '5': case '6': case '7': case '8': case '9':
++		return h - '0';
++	case 'A': case 'B': case 'C': case 'D': case 'E': case 'F':
++		return h - 'A' + 10;
++	case 'a': case 'b': case 'c': case 'd': case 'e': case 'f':
++		return h - 'a' + 10;
++	default:
++		return 0;
++	}
++}
 +
-+	res = bus_register(&vlynq_bus_type);
++static void cpmac_get_mac(int instance, unsigned char *dev_addr)
++{
++	int i;
++	char name[5], default_mac[ETH_ALEN], *mac;
++
++	mac = NULL;
++	sprintf(name, "mac%c", 'a' + instance);
++	mac = prom_getenv(name);
++	if (!mac) {
++		sprintf(name, "mac%c", 'a');
++		mac = prom_getenv(name);
++	}
++	if (!mac) {
++		random_ether_addr(default_mac);
++		mac = default_mac;
++	}
++	for (i = 0; i < 6; i++)
++		dev_addr[i] = (char2hex(mac[i * 3]) << 4) +
++			char2hex(mac[i * 3 + 1]);
++}
++
++static void __init detect_leds(void)
++{
++	char *prId, *usb_prod;
++
++	/* Default LEDs	*/
++	ar7_led_data.num_leds = ARRAY_SIZE(default_leds);
++	ar7_led_data.leds = default_leds;
++
++	/* FIXME: the whole thing is unreliable */
++	prId = prom_getenv("ProductID");
++	usb_prod = prom_getenv("usb_prod");
++
++	/* If we can't get the product id from PROM, use the default LEDs */
++	if (!prId)
++		return;
++
++	if (strstr(prId, "Fritz_Box_FON")) {
++		ar7_led_data.num_leds = ARRAY_SIZE(fb_fon_leds);
++		ar7_led_data.leds = fb_fon_leds;
++	} else if (strstr(prId, "Fritz_Box_")) {
++		ar7_led_data.num_leds = ARRAY_SIZE(fb_sl_leds);
++		ar7_led_data.leds = fb_sl_leds;
++	} else if ((!strcmp(prId, "AR7RD") || !strcmp(prId, "AR7DB"))
++		&& usb_prod != NULL && strstr(usb_prod, "DSL-502T")) {
++		ar7_led_data.num_leds = ARRAY_SIZE(dsl502t_leds);
++		ar7_led_data.leds = dsl502t_leds;
++	} else if (strstr(prId, "DG834")) {
++		ar7_led_data.num_leds = ARRAY_SIZE(dg834g_leds);
++		ar7_led_data.leds = dg834g_leds;
++	}
++}
++
++static int __init ar7_register_devices(void)
++{
++	int res;
++
++#ifdef CONFIG_SERIAL_8250
++
++	static struct uart_port uart_port[2];
++
++	memset(uart_port, 0, sizeof(struct uart_port) * 2);
++
++	uart_port[0].type = PORT_AR7;
++	uart_port[0].line = 0;
++	uart_port[0].irq = AR7_IRQ_UART0;
++	uart_port[0].uartclk = ar7_bus_freq() / 2;
++	uart_port[0].iotype = UPIO_MEM;
++	uart_port[0].mapbase = AR7_REGS_UART0;
++	uart_port[0].membase = ioremap(uart_port[0].mapbase, 256);
++	uart_port[0].regshift = 2;
++	res = early_serial_setup(&uart_port[0]);
 +	if (res)
-+		goto fail_bus;
++		return res;
 +
-+	res = platform_driver_register(&vlynq_platform_driver);
++
++	/* Only TNETD73xx have a second serial port */
++	if (ar7_has_second_uart()) {
++		uart_port[1].type = PORT_AR7;
++		uart_port[1].line = 1;
++		uart_port[1].irq = AR7_IRQ_UART1;
++		uart_port[1].uartclk = ar7_bus_freq() / 2;
++		uart_port[1].iotype = UPIO_MEM;
++		uart_port[1].mapbase = UR8_REGS_UART1;
++		uart_port[1].membase = ioremap(uart_port[1].mapbase, 256);
++		uart_port[1].regshift = 2;
++		res = early_serial_setup(&uart_port[1]);
++		if (res)
++			return res;
++	}
++
++#endif /* CONFIG_SERIAL_8250 */
++
++	res = platform_device_register(&physmap_flash);
 +	if (res)
-+		goto fail_platform;
++		return res;
 +
-+	return 0;
++	ar7_device_disable(vlynq_low_data.reset_bit);
++	res = platform_device_register(&vlynq_low);
++	if (res)
++		return res;
 +
-+fail_platform:
-+	bus_unregister(&vlynq_bus_type);
-+fail_bus:
++	if (ar7_has_high_vlynq()) {
++		ar7_device_disable(vlynq_high_data.reset_bit);
++		res = platform_device_register(&vlynq_high);
++		if (res)
++			return res;
++	}
++
++	if (ar7_has_high_cpmac()) {
++		cpmac_get_mac(1, cpmac_high_data.dev_addr);
++		res = platform_device_register(&cpmac_high);
++		if (res)
++			return res;
++	} else {
++		cpmac_low_data.phy_mask = 0xffffffff;
++	}
++
++	cpmac_get_mac(0, cpmac_low_data.dev_addr);
++	res = platform_device_register(&cpmac_low);
++	if (res)
++		return res;
++
++	detect_leds();
++	res = platform_device_register(&ar7_gpio_leds);
++	if (res)
++		return res;
++
++	res = platform_device_register(&ar7_udc);
++
 +	return res;
 +}
 +
-+static void __devexit vlynq_exit(void)
++
++arch_initcall(ar7_register_devices);
+diff --git a/arch/mips/ar7/prom.c b/arch/mips/ar7/prom.c
+new file mode 100644
+index 0000000..ce16385
+--- /dev/null
++++ b/arch/mips/ar7/prom.c
+@@ -0,0 +1,330 @@
++/*
++ * Carsten Langgaard, carstenl@mips.com
++ * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
++ *
++ *  This program is free software; you can distribute it and/or modify it
++ *  under the terms of the GNU General Public License (Version 2) as
++ *  published by the Free Software Foundation.
++ *
++ *  This program is distributed in the hope it will be useful, but WITHOUT
++ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++ *  for more details.
++ *
++ *  You should have received a copy of the GNU General Public License along
++ *  with this program; if not, write to the Free Software Foundation, Inc.,
++ *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
++ *
++ * Putting things on the screen/serial line using YAMONs facilities.
++ */
++#include <linux/init.h>
++#include <linux/kernel.h>
++#include <linux/serial_reg.h>
++#include <linux/spinlock.h>
++#include <linux/module.h>
++#include <linux/string.h>
++#include <linux/io.h>
++#include <asm/bootinfo.h>
++
++#include <asm/mach-ar7/ar7.h>
++#include <asm/mach-ar7/prom.h>
++
++#define MAX_ENTRY 80
++
++struct env_var {
++	char *name;
++	char *value;
++};
++
++static struct env_var adam2_env[MAX_ENTRY] = { { 0, }, };
++
++char *prom_getenv(const char *name)
 +{
-+	platform_driver_unregister(&vlynq_platform_driver);
-+	bus_unregister(&vlynq_bus_type);
++	int i;
++	for (i = 0; (i < MAX_ENTRY) && adam2_env[i].name; i++)
++		if (!strcmp(name, adam2_env[i].name))
++			return adam2_env[i].value;
++
++	return NULL;
++}
++EXPORT_SYMBOL(prom_getenv);
++
++char * __init prom_getcmdline(void)
++{
++	return &(arcs_cmdline[0]);
 +}
 +
-+module_init(vlynq_init);
-+module_exit(vlynq_exit);
-diff --git a/include/linux/vlynq.h b/include/linux/vlynq.h
-new file mode 100644
-index 0000000..8f6a958
---- /dev/null
-+++ b/include/linux/vlynq.h
-@@ -0,0 +1,161 @@
++static void  __init ar7_init_cmdline(int argc, char *argv[])
++{
++	char *cp;
++	int actr;
++
++	actr = 1; /* Always ignore argv[0] */
++
++	cp = &(arcs_cmdline[0]);
++	while (actr < argc) {
++		strcpy(cp, argv[actr]);
++		cp += strlen(argv[actr]);
++		*cp++ = ' ';
++		actr++;
++	}
++	if (cp != &(arcs_cmdline[0])) {
++		/* get rid of trailing space */
++		--cp;
++		*cp = '\0';
++	}
++}
++
++struct psbl_rec {
++	u32 psbl_size;
++	u32 env_base;
++	u32 env_size;
++	u32 ffs_base;
++	u32 ffs_size;
++};
++
++static __initdata char psp_env_version[] = "TIENV0.8";
++
++struct psp_env_chunk {
++	u8 num;
++	u8 ctrl;
++	u16 csum;
++	u8 len;
++	char data[11];
++} __attribute__ ((packed));
++
++struct psp_var_map_entry {
++	u8 num;
++	char *value;
++};
++
++static struct psp_var_map_entry psp_var_map[] = {
++	{ 1, "cpufrequency" },
++	{ 2, "memsize" },
++	{ 3, "flashsize" },
++	{ 4, "modetty0" },
++	{ 5, "modetty1" },
++	{ 8, "maca" },
++	{ 9, "macb" },
++	{ 28, "sysfrequency" },
++	{ 38, "mipsfrequency" },
++};
++
 +/*
-+ * Copyright (C) 2006, 2007 Eugene Konev <ejka@openwrt.org>
++
++Well-known variable (num is looked up in table above for matching variable name)
++Example: cpufrequency=211968000
+++----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+---
++| 01 |CTRL|CHECKSUM | 01 | _2 | _1 | _1 | _9 | _6 | _8 | _0 | _0 | _0 | \0 | FF
+++----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+---
++
++Name=Value pair in a single chunk
++Example: NAME=VALUE
+++----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+---
++| 00 |CTRL|CHECKSUM | 01 | _N | _A | _M | _E | _0 | _V | _A | _L | _U | _E | \0
+++----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+---
++
++Name=Value pair in 2 chunks (len is the number of chunks)
++Example: bootloaderVersion=1.3.7.15
+++----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+---
++| 00 |CTRL|CHECKSUM | 02 | _b | _o | _o | _t | _l | _o | _a | _d | _e | _r | _V
+++----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+---
++| _e | _r | _s | _i | _o | _n | \0 | _1 | _. | _3 | _. | _7 | _. | _1 | _5 | \0
+++----+----+----+----+----+----+----+----+----+----+----+----+----+----+----+---
++
++Data is padded with 0xFF
++
++*/
++
++#define PSP_ENV_SIZE  4096
++
++static char psp_env_data[PSP_ENV_SIZE] = { 0, };
++
++static char * __init lookup_psp_var_map(u8 num)
++{
++	int i;
++
++	for (i = 0; i < sizeof(psp_var_map); i++)
++		if (psp_var_map[i].num == num)
++			return psp_var_map[i].value;
++
++	return NULL;
++}
++
++static void __init add_adam2_var(char *name, char *value)
++{
++	int i;
++	for (i = 0; i < MAX_ENTRY; i++) {
++		if (!adam2_env[i].name) {
++			adam2_env[i].name = name;
++			adam2_env[i].value = value;
++			return;
++		} else if (!strcmp(adam2_env[i].name, name)) {
++			adam2_env[i].value = value;
++			return;
++		}
++	}
++}
++
++static int __init parse_psp_env(void *psp_env_base)
++{
++	int i, n;
++	char *name, *value;
++	struct psp_env_chunk *chunks = (struct psp_env_chunk *)psp_env_data;
++
++	memcpy_fromio(chunks, psp_env_base, PSP_ENV_SIZE);
++
++	i = 1;
++	n = PSP_ENV_SIZE / sizeof(struct psp_env_chunk);
++	while (i < n) {
++		if ((chunks[i].num == 0xff) || ((i + chunks[i].len) > n))
++			break;
++		value = chunks[i].data;
++		if (chunks[i].num) {
++			name = lookup_psp_var_map(chunks[i].num);
++		} else {
++			name = value;
++			value += strlen(name) + 1;
++		}
++		if (name)
++			add_adam2_var(name, value);
++		i += chunks[i].len;
++	}
++	return 0;
++}
++
++static void __init ar7_init_env(struct env_var *env)
++{
++	int i;
++	struct psbl_rec *psbl = (struct psbl_rec *)(KSEG1ADDR(0x14000300));
++	void *psp_env = (void *)KSEG1ADDR(psbl->env_base);
++
++	if (strcmp(psp_env, psp_env_version) == 0) {
++		parse_psp_env(psp_env);
++	} else {
++		for (i = 0; i < MAX_ENTRY; i++, env++)
++			if (env->name)
++				add_adam2_var(env->name, env->value);
++	}
++}
++
++static void __init console_config(void)
++{
++#ifdef CONFIG_SERIAL_8250_CONSOLE
++	char console_string[40];
++	int baud = 0;
++	char parity = '\0', bits = '\0', flow = '\0';
++	char *s, *p;
++
++	if (strstr(prom_getcmdline(), "console="))
++		return;
++
++#ifdef CONFIG_KGDB
++	if (!strstr(prom_getcmdline(), "nokgdb")) {
++		strcat(prom_getcmdline(), " console=kgdb");
++		kgdb_enabled = 1;
++		return;
++	}
++#endif
++
++	s = prom_getenv("modetty0");
++	if (s) {
++		baud = simple_strtoul(s, &p, 10);
++		s = p;
++		if (*s == ',')
++			s++;
++		if (*s)
++			parity = *s++;
++		if (*s == ',')
++			s++;
++		if (*s)
++			bits = *s++;
++		if (*s == ',')
++			s++;
++		if (*s == 'h')
++			flow = 'r';
++	}
++
++	if (baud == 0)
++		baud = 38400;
++	if (parity != 'n' && parity != 'o' && parity != 'e')
++		parity = 'n';
++	if (bits != '7' && bits != '8')
++		bits = '8';
++
++	if (flow == 'r')
++		sprintf(console_string, " console=ttyS0,%d%c%c%c", baud,
++			parity, bits, flow);
++	else
++		sprintf(console_string, " console=ttyS0,%d%c%c", baud, parity,
++			bits);
++	strcat(prom_getcmdline(), console_string);
++#endif
++}
++
++void __init prom_init(void)
++{
++	ar7_init_cmdline(fw_arg0, (char **)fw_arg1);
++	ar7_init_env((struct env_var *)fw_arg2);
++	console_config();
++}
++
++#define PORT(offset) (KSEG1ADDR(AR7_REGS_UART0 + (offset * 4)))
++static inline unsigned int serial_in(int offset)
++{
++	return readb((void *)PORT(offset));
++}
++
++static inline void serial_out(int offset, int value)
++{
++	writeb(value, (void *)PORT(offset));
++}
++
++char prom_getchar(void)
++{
++	while (!(serial_in(UART_LSR) & UART_LSR_DR))
++		;
++	return serial_in(UART_RX);
++}
++
++int prom_putchar(char c)
++{
++	while ((serial_in(UART_LSR) & UART_LSR_TEMT) == 0)
++		;
++	serial_out(UART_TX, c);
++	return 1;
++}
++
++/* from adm5120/prom.c */
++void prom_printf(const char *fmt, ...)
++{
++	va_list args;
++	int l;
++	char *p, *buf_end;
++	char buf[1024];
++
++	va_start(args, fmt);
++	l = vsprintf(buf, fmt, args); /* hopefully i < sizeof(buf) */
++	va_end(args);
++
++	buf_end = buf + l;
++
++	for (p = buf; p < buf_end; p++) {
++		/* Crude cr/nl handling is better than none */
++		if (*p == '\n')
++			prom_putchar('\r');
++		prom_putchar(*p);
++	}
++}
++
++#ifdef CONFIG_KGDB
++int putDebugChar(char c)
++{
++	return prom_putchar(c);
++}
++
++char getDebugChar(void)
++{
++       return prom_getchar();
++}
++#endif
+diff --git a/arch/mips/ar7/setup.c b/arch/mips/ar7/setup.c
+new file mode 100644
+index 0000000..a5bd7e6
+--- /dev/null
++++ b/arch/mips/ar7/setup.c
+@@ -0,0 +1,107 @@
++/*
++ * Carsten Langgaard, carstenl@mips.com
++ * Copyright (C) 2000 MIPS Technologies, Inc.  All rights reserved.
++ *
++ *  This program is free software; you can distribute it and/or modify it
++ *  under the terms of the GNU General Public License (Version 2) as
++ *  published by the Free Software Foundation.
++ *
++ *  This program is distributed in the hope it will be useful, but WITHOUT
++ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++ *  for more details.
++ *
++ *  You should have received a copy of the GNU General Public License along
++ *  with this program; if not, write to the Free Software Foundation, Inc.,
++ *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
++ */
++#include <linux/version.h>
++#include <linux/init.h>
++#include <linux/ioport.h>
++#include <linux/pm.h>
++
++#include <asm/reboot.h>
++#include <asm/time.h>
++#include <asm/mach-ar7/ar7.h>
++#include <asm/mach-ar7/prom.h>
++
++static void ar7_machine_restart(char *command);
++static void ar7_machine_halt(void);
++static void ar7_machine_power_off(void);
++
++static void ar7_machine_restart(char *command)
++{
++	u32 *softres_reg = (u32 *)ioremap(AR7_REGS_RESET +
++					  AR7_RESET_SOFTWARE, 1);
++	writel(1, softres_reg);
++}
++
++static void ar7_machine_halt(void)
++{
++	while (1)
++		;
++}
++
++static void ar7_machine_power_off(void)
++{
++	u32 *power_reg = (u32 *)ioremap(AR7_REGS_POWER, 1);
++	u32 power_state = readl(power_reg) | (3 << 30);
++	writel(power_state, power_reg);
++	ar7_machine_halt();
++}
++
++const char *get_system_type(void)
++{
++	u16 chip_id = ar7_chip_id();
++	switch (chip_id) {
++	case AR7_CHIP_7300:
++		return "TI AR7 (TNETD7300)";
++	case AR7_CHIP_7100:
++		return "TI AR7 (TNETD7100)";
++	case AR7_CHIP_7200:
++		return "TI AR7 (TNETD7200)";
++	default:
++		return "TI AR7 (Unknown)";
++	}
++}
++
++static int __init ar7_init_console(void)
++{
++	return 0;
++}
++
++/*
++ * Initializes basic routines and structures pointers, memory size (as
++ * given by the bios and saves the command line.
++ */
++
++extern void ar7_init_clocks(void);
++
++void __init plat_mem_setup(void)
++{
++	unsigned long io_base;
++
++	_machine_restart = ar7_machine_restart;
++	_machine_halt = ar7_machine_halt;
++	pm_power_off = ar7_machine_power_off;
++	panic_timeout = 3;
++
++	io_base = (unsigned long)ioremap(AR7_REGS_BASE, 0x10000);
++	if (!io_base)
++		panic("Can't remap IO base!\n");
++	set_io_port_base(io_base);
++
++	prom_meminit();
++	ar7_init_clocks();
++
++	ioport_resource.start = 0;
++	ioport_resource.end   = ~0;
++	iomem_resource.start  = 0;
++	iomem_resource.end    = ~0;
++
++	printk(KERN_INFO "%s, ID: 0x%04x, Revision: 0x%02x\n",
++					get_system_type(),
++		ar7_chip_id(), ar7_chip_rev());
++}
++
++console_initcall(ar7_init_console);
+diff --git a/arch/mips/ar7/time.c b/arch/mips/ar7/time.c
+new file mode 100644
+index 0000000..5f17489
+--- /dev/null
++++ b/arch/mips/ar7/time.c
+@@ -0,0 +1,28 @@
++/*
++ * Carsten Langgaard, carstenl@mips.com
++ * Copyright (C) 1999,2000 MIPS Technologies, Inc.  All rights reserved.
++ *
++ *  This program is free software; you can distribute it and/or modify it
++ *  under the terms of the GNU General Public License (Version 2) as
++ *  published by the Free Software Foundation.
++ *
++ *  This program is distributed in the hope it will be useful, but WITHOUT
++ *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
++ *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
++ *  for more details.
++ *
++ *  You should have received a copy of the GNU General Public License along
++ *  with this program; if not, write to the Free Software Foundation, Inc.,
++ *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
++ *
++ * Setting up the clock on the MIPS boards.
++ */
++
++#include <linux/version.h>
++#include <asm/time.h>
++#include <asm/mach-ar7/ar7.h>
++
++void __init plat_time_init(void)
++{
++	mips_hpt_frequency = ar7_cpu_freq() / 2;
++}
+diff --git a/arch/mips/include/asm/mach-ar7/ar7.h b/arch/mips/include/asm/mach-ar7/ar7.h
+new file mode 100644
+index 0000000..d972e09
+--- /dev/null
++++ b/arch/mips/include/asm/mach-ar7/ar7.h
+@@ -0,0 +1,170 @@
++/*
++ * Copyright (C) 2006,2007 Felix Fietkau <nbd@openwrt.org>
++ * Copyright (C) 2006,2007 Eugene Konev <ejka@openwrt.org>
 + *
 + * This program is free software; you can redistribute it and/or modify
 + * it under the terms of the GNU General Public License as published by
@@ -996,146 +1912,383 @@ index 0000000..8f6a958
 + * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 + */
 +
-+#ifndef __VLYNQ_H__
-+#define __VLYNQ_H__
++#ifndef __AR7_H__
++#define __AR7_H__
 +
-+#include <linux/device.h>
-+#include <linux/module.h>
-+#include <linux/types.h>
++#include <linux/delay.h>
++#include <asm/addrspace.h>
++#include <linux/io.h>
 +
-+#define VLYNQ_NUM_IRQS 32
++#define AR7_REGS_BASE	0x08610000
 +
-+struct vlynq_mapping {
-+	u32 size;
-+	u32 offset;
++#define AR7_REGS_MAC0	(AR7_REGS_BASE + 0x0000)
++#define AR7_REGS_GPIO	(AR7_REGS_BASE + 0x0900)
++/* 0x08610A00 - 0x08610BFF (512 bytes, 128 bytes / clock) */
++#define AR7_REGS_POWER	(AR7_REGS_BASE + 0x0a00)
++#define AR7_REGS_UART0	(AR7_REGS_BASE + 0x0e00)
++#define AR7_REGS_USB	(AR7_REGS_BASE + 0x1200)
++#define AR7_REGS_RESET	(AR7_REGS_BASE + 0x1600)
++#define AR7_REGS_VLYNQ0	(AR7_REGS_BASE + 0x1800)
++#define AR7_REGS_DCL	(AR7_REGS_BASE + 0x1a00)
++#define AR7_REGS_VLYNQ1	(AR7_REGS_BASE + 0x1c00)
++#define AR7_REGS_MDIO	(AR7_REGS_BASE + 0x1e00)
++#define AR7_REGS_IRQ	(AR7_REGS_BASE + 0x2400)
++#define AR7_REGS_MAC1	(AR7_REGS_BASE + 0x2800)
++
++#define AR7_REGS_WDT	(AR7_REGS_BASE + 0x1f00)
++#define UR8_REGS_WDT	(AR7_REGS_BASE + 0x0b00)
++#define UR8_REGS_UART1	(AR7_REGS_BASE + 0x0f00)
++
++#define AR7_RESET_PEREPHERIAL	0x0
++#define AR7_RESET_SOFTWARE	0x4
++#define AR7_RESET_STATUS	0x8
++
++#define AR7_RESET_BIT_CPMAC_LO	17
++#define AR7_RESET_BIT_CPMAC_HI	21
++#define AR7_RESET_BIT_MDIO	22
++#define AR7_RESET_BIT_EPHY	26
++
++/* GPIO control registers */
++#define AR7_GPIO_INPUT	0x0
++#define AR7_GPIO_OUTPUT	0x4
++#define AR7_GPIO_DIR	0x8
++#define AR7_GPIO_ENABLE	0xc
++
++#define AR7_CHIP_7100	0x18
++#define AR7_CHIP_7200	0x2b
++#define AR7_CHIP_7300	0x05
++
++/* Interrupts */
++#define AR7_IRQ_UART0	15
++#define AR7_IRQ_UART1	16
++
++/* Clocks */
++#define AR7_AFE_CLOCK	35328000
++#define AR7_REF_CLOCK	25000000
++#define AR7_XTAL_CLOCK	24000000
++
++struct plat_cpmac_data {
++	int reset_bit;
++	int power_bit;
++	u32 phy_mask;
++	char dev_addr[6];
 +};
 +
-+enum vlynq_divisor {
-+	vlynq_div_auto = 0,
-+	vlynq_ldiv1,
-+	vlynq_ldiv2,
-+	vlynq_ldiv3,
-+	vlynq_ldiv4,
-+	vlynq_ldiv5,
-+	vlynq_ldiv6,
-+	vlynq_ldiv7,
-+	vlynq_ldiv8,
-+	vlynq_rdiv1,
-+	vlynq_rdiv2,
-+	vlynq_rdiv3,
-+	vlynq_rdiv4,
-+	vlynq_rdiv5,
-+	vlynq_rdiv6,
-+	vlynq_rdiv7,
-+	vlynq_rdiv8,
-+	vlynq_div_external
++struct plat_dsl_data {
++	int reset_bit_dsl;
++	int reset_bit_sar;
 +};
 +
-+struct vlynq_device_id {
-+	u32 id;
-+	enum vlynq_divisor divisor;
-+	unsigned long driver_data;
-+};
++extern int ar7_cpu_clock, ar7_bus_clock, ar7_dsp_clock;
 +
-+struct vlynq_regs;
-+struct vlynq_device {
-+	u32 id, dev_id;
-+	int local_irq;
-+	int remote_irq;
-+	enum vlynq_divisor divisor;
-+	u32 regs_start, regs_end;
-+	u32 mem_start, mem_end;
-+	u32 irq_start, irq_end;
-+	int irq;
-+	int enabled;
-+	struct vlynq_regs *local;
-+	struct vlynq_regs *remote;
-+	struct device dev;
-+};
-+
-+struct vlynq_driver {
-+	char *name;
-+	struct vlynq_device_id *id_table;
-+	int (*probe)(struct vlynq_device *dev, struct vlynq_device_id *id);
-+	void (*remove)(struct vlynq_device *dev);
-+	struct device_driver driver;
-+};
-+
-+struct plat_vlynq_ops {
-+	int (*on)(struct vlynq_device *dev);
-+	void (*off)(struct vlynq_device *dev);
-+};
-+
-+static inline struct vlynq_driver *to_vlynq_driver(struct device_driver *drv)
++static inline u16 ar7_chip_id(void)
 +{
-+	return container_of(drv, struct vlynq_driver, driver);
++	return readl((void *)KSEG1ADDR(AR7_REGS_GPIO + 0x14)) & 0xffff;
 +}
 +
-+static inline struct vlynq_device *to_vlynq_device(struct device *device)
++static inline u8 ar7_chip_rev(void)
 +{
-+	return container_of(device, struct vlynq_device, dev);
++	return (readl((void *)KSEG1ADDR(AR7_REGS_GPIO + 0x14)) >> 16) & 0xff;
 +}
 +
-+extern struct bus_type vlynq_bus_type;
-+
-+extern int __vlynq_register_driver(struct vlynq_driver *driver,
-+				   struct module *owner);
-+
-+static inline int vlynq_register_driver(struct vlynq_driver *driver)
++static inline int ar7_cpu_freq(void)
 +{
-+	return __vlynq_register_driver(driver, THIS_MODULE);
++	return ar7_cpu_clock;
 +}
 +
-+static inline void *vlynq_get_drvdata(struct vlynq_device *dev)
++static inline int ar7_bus_freq(void)
 +{
-+	return dev_get_drvdata(&dev->dev);
++	return ar7_bus_clock;
 +}
 +
-+static inline void vlynq_set_drvdata(struct vlynq_device *dev, void *data)
++static inline int ar7_vbus_freq(void)
 +{
-+	dev_set_drvdata(&dev->dev, data);
++	return ar7_bus_clock / 2;
++}
++#define ar7_cpmac_freq ar7_vbus_freq
++
++static inline int ar7_dsp_freq(void)
++{
++	return ar7_dsp_clock;
 +}
 +
-+static inline u32 vlynq_mem_start(struct vlynq_device *dev)
++static inline int ar7_has_high_cpmac(void)
 +{
-+	return dev->mem_start;
++	u16 chip_id = ar7_chip_id();
++	switch (chip_id) {
++	case AR7_CHIP_7100:
++	case AR7_CHIP_7200:
++		return 0;
++	default:
++		return 1;
++	}
++}
++#define ar7_has_high_vlynq ar7_has_high_cpmac
++#define ar7_has_second_uart ar7_has_high_cpmac
++
++static inline void ar7_device_enable(u32 bit)
++{
++	void *reset_reg =
++		(void *)KSEG1ADDR(AR7_REGS_RESET + AR7_RESET_PEREPHERIAL);
++	writel(readl(reset_reg) | (1 << bit), reset_reg);
++	mdelay(20);
 +}
 +
-+static inline u32 vlynq_mem_end(struct vlynq_device *dev)
++static inline void ar7_device_disable(u32 bit)
 +{
-+	return dev->mem_end;
++	void *reset_reg =
++		(void *)KSEG1ADDR(AR7_REGS_RESET + AR7_RESET_PEREPHERIAL);
++	writel(readl(reset_reg) & ~(1 << bit), reset_reg);
++	mdelay(20);
 +}
 +
-+static inline u32 vlynq_mem_len(struct vlynq_device *dev)
++static inline void ar7_device_reset(u32 bit)
 +{
-+	return dev->mem_end - dev->mem_start + 1;
++	ar7_device_disable(bit);
++	ar7_device_enable(bit);
 +}
 +
-+static inline int vlynq_virq_to_irq(struct vlynq_device *dev, int virq)
++static inline void ar7_device_on(u32 bit)
 +{
-+	int irq = dev->irq_start + virq;
-+	if ((irq < dev->irq_start) || (irq > dev->irq_end))
++	void *power_reg = (void *)KSEG1ADDR(AR7_REGS_POWER);
++	writel(readl(power_reg) | (1 << bit), power_reg);
++	mdelay(20);
++}
++
++static inline void ar7_device_off(u32 bit)
++{
++	void *power_reg = (void *)KSEG1ADDR(AR7_REGS_POWER);
++	writel(readl(power_reg) & ~(1 << bit), power_reg);
++	mdelay(20);
++}
++
++#endif /* __AR7_H__ */
+diff --git a/arch/mips/include/asm/mach-ar7/gpio.h b/arch/mips/include/asm/mach-ar7/gpio.h
+new file mode 100644
+index 0000000..cbe9c4f
+--- /dev/null
++++ b/arch/mips/include/asm/mach-ar7/gpio.h
+@@ -0,0 +1,110 @@
++/*
++ * Copyright (C) 2007 Florian Fainelli <florian@openwrt.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++#ifndef __AR7_GPIO_H__
++#define __AR7_GPIO_H__
++
++#include <asm/mach-ar7/ar7.h>
++
++#define AR7_GPIO_MAX 32
++
++extern int gpio_request(unsigned gpio, const char *label);
++extern void gpio_free(unsigned gpio);
++
++/* Common GPIO layer */
++static inline int gpio_get_value(unsigned gpio)
++{
++	void __iomem *gpio_in =
++		(void __iomem *)KSEG1ADDR(AR7_REGS_GPIO + AR7_GPIO_INPUT);
++
++	return readl(gpio_in) & (1 << gpio);
++}
++
++static inline void gpio_set_value(unsigned gpio, int value)
++{
++	void __iomem *gpio_out =
++		(void __iomem *)KSEG1ADDR(AR7_REGS_GPIO + AR7_GPIO_OUTPUT);
++	unsigned tmp;
++
++	tmp = readl(gpio_out) & ~(1 << gpio);
++	if (value)
++		tmp |= 1 << gpio;
++	writel(tmp, gpio_out);
++}
++
++static inline int gpio_direction_input(unsigned gpio)
++{
++	void __iomem *gpio_dir =
++		(void __iomem *)KSEG1ADDR(AR7_REGS_GPIO + AR7_GPIO_DIR);
++
++	if (gpio >= AR7_GPIO_MAX)
 +		return -EINVAL;
 +
-+	return irq;
++	writel(readl(gpio_dir) | (1 << gpio), gpio_dir);
++
++	return 0;
 +}
 +
-+static inline int vlynq_irq_to_virq(struct vlynq_device *dev, int irq)
++static inline int gpio_direction_output(unsigned gpio, int value)
 +{
-+	if ((irq < dev->irq_start) || (irq > dev->irq_end))
++	void __iomem *gpio_dir =
++		(void __iomem *)KSEG1ADDR(AR7_REGS_GPIO + AR7_GPIO_DIR);
++
++	if (gpio >= AR7_GPIO_MAX)
 +		return -EINVAL;
 +
-+	return irq - dev->irq_start;
++	gpio_set_value(gpio, value);
++	writel(readl(gpio_dir) & ~(1 << gpio), gpio_dir);
++
++	return 0;
 +}
 +
-+extern void vlynq_unregister_driver(struct vlynq_driver *driver);
-+extern int vlynq_enable_device(struct vlynq_device *dev);
-+extern void vlynq_disable_device(struct vlynq_device *dev);
-+extern int vlynq_set_local_mapping(struct vlynq_device *dev, u32 tx_offset,
-+				   struct vlynq_mapping *mapping);
-+extern int vlynq_set_remote_mapping(struct vlynq_device *dev, u32 tx_offset,
-+				    struct vlynq_mapping *mapping);
-+extern int vlynq_set_local_irq(struct vlynq_device *dev, int virq);
-+extern int vlynq_set_remote_irq(struct vlynq_device *dev, int virq);
++static inline int gpio_to_irq(unsigned gpio)
++{
++	return -EINVAL;
++}
 +
-+#endif /* __VLYNQ_H__ */
++static inline int irq_to_gpio(unsigned irq)
++{
++	return -EINVAL;
++}
++
++/* Board specific GPIO functions */
++static inline int ar7_gpio_enable(unsigned gpio)
++{
++	void __iomem *gpio_en =
++		(void __iomem *)KSEG1ADDR(AR7_REGS_GPIO + AR7_GPIO_ENABLE);
++
++	writel(readl(gpio_en) | (1 << gpio), gpio_en);
++
++	return 0;
++}
++
++static inline int ar7_gpio_disable(unsigned gpio)
++{
++	void __iomem *gpio_en =
++		(void __iomem *)KSEG1ADDR(AR7_REGS_GPIO + AR7_GPIO_ENABLE);
++
++	writel(readl(gpio_en) & ~(1 << gpio), gpio_en);
++
++	return 0;
++}
++
++#include <asm-generic/gpio.h>
++
++#endif
+diff --git a/arch/mips/include/asm/mach-ar7/irq.h b/arch/mips/include/asm/mach-ar7/irq.h
+new file mode 100644
+index 0000000..39e9757
+--- /dev/null
++++ b/arch/mips/include/asm/mach-ar7/irq.h
+@@ -0,0 +1,16 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Shamelessly copied from asm-mips/mach-emma2rh/
++ * Copyright (C) 2003 by Ralf Baechle
++ */
++#ifndef __ASM_AR7_IRQ_H
++#define __ASM_AR7_IRQ_H
++
++#define NR_IRQS	256
++
++#include_next <irq.h>
++
++#endif /* __ASM_AR7_IRQ_H */
+diff --git a/arch/mips/include/asm/mach-ar7/prom.h b/arch/mips/include/asm/mach-ar7/prom.h
+new file mode 100644
+index 0000000..55f5939
+--- /dev/null
++++ b/arch/mips/include/asm/mach-ar7/prom.h
+@@ -0,0 +1,26 @@
++/*
++ * Copyright (C) 2006, 2007 Florian Fainelli <florian@openwrt.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++#ifndef __PROM_H__
++#define __PROM_H__
++
++extern char *prom_getenv(const char *name);
++extern void prom_printf(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
++extern void prom_meminit(void);
++
++#endif /* __PROM_H__ */
+diff --git a/arch/mips/include/asm/mach-ar7/spaces.h b/arch/mips/include/asm/mach-ar7/spaces.h
+new file mode 100644
+index 0000000..ac28f27
+--- /dev/null
++++ b/arch/mips/include/asm/mach-ar7/spaces.h
+@@ -0,0 +1,22 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 1994 - 1999, 2000, 03, 04 Ralf Baechle
++ * Copyright (C) 2000, 2002  Maciej W. Rozycki
++ * Copyright (C) 1990, 1999, 2000 Silicon Graphics, Inc.
++ */
++#ifndef _ASM_AR7_SPACES_H
++#define _ASM_AR7_SPACES_H
++
++/*
++ * This handles the memory map.
++ * We handle pages at KSEG0 for kernels with 32 bit address space.
++ */
++#define PAGE_OFFSET		0x94000000UL
++#define PHYS_OFFSET		0x14000000UL
++
++#include <asm/mach-generic/spaces.h>
++
++#endif /* __ASM_AR7_SPACES_H */
+diff --git a/arch/mips/include/asm/mach-ar7/war.h b/arch/mips/include/asm/mach-ar7/war.h
+new file mode 100644
+index 0000000..f4862b5
+--- /dev/null
++++ b/arch/mips/include/asm/mach-ar7/war.h
+@@ -0,0 +1,25 @@
++/*
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2002, 2004, 2007 by Ralf Baechle <ralf@linux-mips.org>
++ */
++#ifndef __ASM_MIPS_MACH_AR7_WAR_H
++#define __ASM_MIPS_MACH_AR7_WAR_H
++
++#define R4600_V1_INDEX_ICACHEOP_WAR	0
++#define R4600_V1_HIT_CACHEOP_WAR	0
++#define R4600_V2_HIT_CACHEOP_WAR	0
++#define R5432_CP0_INTERRUPT_WAR		0
++#define BCM1250_M3_WAR			0
++#define SIBYTE_1956_WAR			0
++#define MIPS4K_ICACHE_REFILL_WAR	0
++#define MIPS_CACHE_SYNC_WAR		0
++#define TX49XX_ICACHE_INDEX_INV_WAR	0
++#define RM9000_CDEX_SMP_WAR		0
++#define ICACHE_REFILLS_WORKAROUND_WAR	0
++#define R10000_LLSC_WAR			0
++#define MIPS34K_MISSED_ITLB_WAR		0
++
++#endif /* __ASM_MIPS_MACH_AR7_WAR_H */

@@ -1,83 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jun 2009 13:06:05 +0100 (WEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:34204 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S20022309AbZFEMF6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 5 Jun 2009 13:05:58 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n55C4Kh4020392;
-	Fri, 5 Jun 2009 13:04:24 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n55C4HI8020382;
-	Fri, 5 Jun 2009 13:04:17 +0100
-Date:	Fri, 5 Jun 2009 13:04:15 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Arnd Bergmann <arnd@arndb.de>
-Cc:	Sam Ravnborg <sam@ravnborg.org>,
-	Jaswinder Singh Rajput <jaswinder@kernel.org>,
-	Ingo Molnar <mingo@elte.hu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	linux-mips <linux-mips@linux-mips.org>,
-	Michael Abbott <michael@araneidae.co.uk>
-Subject: Re: [PATCH 4/6] headers_check fix: mips, ioctl.h
-Message-ID: <20090605120414.GB23433@linux-mips.org>
-References: <1244118232.5172.26.camel@ht.satnam> <20090604124631.GB19459@linux-mips.org> <20090604200953.GA13892@uranus.ravnborg.org> <200906051034.01817.arnd@arndb.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 05 Jun 2009 14:52:41 +0100 (WEST)
+Received: from mail-bw0-f225.google.com ([209.85.218.225]:56190 "EHLO
+	mail-bw0-f225.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20023038AbZFENwe convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 5 Jun 2009 14:52:34 +0100
+Received: by bwz25 with SMTP id 25so1568499bwz.0
+        for <multiple recipients>; Fri, 05 Jun 2009 06:52:28 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:from:to:subject:date
+         :user-agent:cc:references:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:content-disposition:message-id;
+        bh=LyKFzGUU+0rsOA6bIBM5ao4YxE3vP1JYN3mvNSEaEQ4=;
+        b=JcnblBzhRxripwX4RS0T9FKdDYPTi23qFAiE7cT322Vc5IR16rfga4BfEmZDcdgZ3N
+         IqiVuSqacDJ+tt8HAPo1VhTS+WBQxmee8x+6E43QPBZjr0kTxcxGD904BoQ1QQ8NsXUS
+         4lumglpynqZba4BrbrqNvfV6nF+N7ReQDSf5I=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
+         :mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id;
+        b=lmI8B442PHd4EMnKfDCNz7n3ULnJqwhv7k7EMsdZLXoJXyrYzzRk85Cc0jGLmgIDxI
+         XlOmFHgYXo8Ta/n+WcYuc7MrvMCU+JBis9KOxuNe6LrbFfs9mqEzzHN2yVKyl9z6T1mL
+         diFF/1HJ0gKKlUae11kPB/GTnXTmrFUrvN4Tg=
+Received: by 10.204.100.10 with SMTP id w10mr3187011bkn.211.1244209948087;
+        Fri, 05 Jun 2009 06:52:28 -0700 (PDT)
+Received: from florian (207.130.195-77.rev.gaoland.net [77.195.130.207])
+        by mx.google.com with ESMTPS id 28sm12909446fkx.54.2009.06.05.06.52.27
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Fri, 05 Jun 2009 06:52:27 -0700 (PDT)
+From:	Florian Fainelli <florian@openwrt.org>
+To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: Re: [PATCH 8/8] 8250: add Texas Instruments AR7 internal UART
+Date:	Fri, 5 Jun 2009 15:52:24 +0200
+User-Agent: KMail/1.9.9
+Cc:	Linux-MIPS <linux-mips@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	linux-kernel@vger.kernel.org, Alan Cox <alan@lxorguk.ukuu.org.uk>,
+	linux-serial@vger.kernel.org
+References: <200906041622.47591.florian@openwrt.org> <20090604222020.GA14843@alpha.franken.de>
+In-Reply-To: <20090604222020.GA14843@alpha.franken.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-In-Reply-To: <200906051034.01817.arnd@arndb.de>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@h5.dl5rb.org.uk>
+Message-Id: <200906051552.25529.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23295
+X-archive-position: 23296
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Jun 05, 2009 at 10:34:00AM +0100, Arnd Bergmann wrote:
+Hallo Thomas,
 
-> On Thursday 04 June 2009, Sam Ravnborg wrote:
-> > Any specific reason why mips does not use include/asm-generic/ioctl.h?
-> > Had mips done so this would not have been an issue.
-> 
-> The original include/asm-generic/ioctl.h did not allow overriding
-> the values of _IOC_{SIZEBITS,DIRBITS,NONE,READ,WRITE}, so it
-> was initially not possible to use it.
-> 
-> Nowadays, you can simply use the same approach as powerpc:
-> 
-> #ifndef _ASM_MIPS_IOCTL_H
-> #define _ASM_MIPS_IOCTL_H
-> 
-> #define _IOC_SIZEBITS	13
-> #define _IOC_DIRBITS	3
-> 
-> #define _IOC_NONE	1U
-> #define _IOC_READ	2U
-> #define _IOC_WRITE	4U
-> 
-> /*
->  * The following are included for compatibility
->  */
-> #define _IOC_VOID	0x20000000
-> #define _IOC_OUT	0x40000000
-> #define _IOC_IN		0x80000000
-> #define _IOC_INOUT	(IOC_IN|IOC_OUT)
-> 
-> #include <asm-generic/ioctl.h>
-> 
-> #endif	/* _ASM_MIPS_IOCTL_H */
-> 
-> This would indeed be a cleaner fix.
+Le Friday 05 June 2009 00:20:20 Thomas Bogendoerfer, vous avez écrit :
+> On Thu, Jun 04, 2009 at 04:22:46PM +0200, Florian Fainelli wrote:
+> > We discussed that in private, there are a couple of things
+> > to fix in order to get 8250 working properly with TI AR7 HW.
+> > If you can still merge that bit, this would ease future work, thanks !
+>
+> I still have a tree here, which works without any changes to the 8250
+> serial driver on a TNETD7300 device.
 
-In fact that's almost identical to what I already have.  But I don't even
-recall what _IOC_VOID, _IOC_OUT, _IOC_IN and _IOC_INOUT were meant to be
-compatible with.  They were added in 2.1.14 so presumably they've become
-irrlevant, so I've dropped them.  I bet nobody will notice.
-
-  Ralf
+That specific patch just adds an AR7 port to the 8250 uart driver. My 
+TNETD7300 really needs patching in the 8250 driver to work properly, Alan 
+already suggested to perform some testing. I still think there is a HW bug 
+with different silicon revisions.
+-- 
+Best regards, Florian Fainelli
+Email : florian@openwrt.org
+http://openwrt.org
+-------------------------------

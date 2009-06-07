@@ -1,76 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 06 Jun 2009 18:26:10 +0100 (WEST)
-Received: from mail-fx0-f223.google.com ([209.85.220.223]:55335 "EHLO
-	mail-fx0-f223.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20022453AbZFFR0C convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 6 Jun 2009 18:26:02 +0100
-Received: by fxm23 with SMTP id 23so2239203fxm.0
-        for <multiple recipients>; Sat, 06 Jun 2009 10:25:57 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:to:subject:date
-         :user-agent:cc:references:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:content-disposition:message-id;
-        bh=fvW1GAu//GGtmEzPQzt+2QsvAagDsc2UuIfbv/uFrJg=;
-        b=ozf7r4eUWEf9rZr9EXtxdWLgniRR9BRdPjq+LlSLKlga1cNJGwXwsiw5eETMHBUBFe
-         vfLx+/P411hs6ltKC/Lxu5ugqqAS8s1kZGaaEm2qT5HXoun/LE0V70ugmKJoYrofM0DA
-         O1d1SLG/SBBjMsKM6bA+NOiNgRNF112tlM4oQ=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
-         :mime-version:content-type:content-transfer-encoding
-         :content-disposition:message-id;
-        b=ZRKCZgdjaDlS2VwTc37uRR15iOgD9BhEQr7AX0vOWgGRjoxHr0vIVx+yasX0cuFQX4
-         OBhK0CDIvy1TGoreuhL1rhUgOhIEjTx8T23Y+1Il/mu8+YTs4HhI0CtTR4AXb4Tml5Es
-         5eBbHE1aCp2FmJX7SR2EzdwICZFjtDk+5hj6Q=
-Received: by 10.86.86.10 with SMTP id j10mr5188637fgb.37.1244309156986;
-        Sat, 06 Jun 2009 10:25:56 -0700 (PDT)
-Received: from florian (207.130.195-77.rev.gaoland.net [77.195.130.207])
-        by mx.google.com with ESMTPS id 4sm2821157fgg.13.2009.06.06.10.25.56
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sat, 06 Jun 2009 10:25:56 -0700 (PDT)
-From:	Florian Fainelli <florian@openwrt.org>
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: Re: [PATCH 8/8] 8250: add Texas Instruments AR7 internal UART
-Date:	Sat, 6 Jun 2009 19:25:52 +0200
-User-Agent: KMail/1.9.9
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Jun 2009 09:41:53 +0100 (WEST)
+Received: from kirsty.vergenet.net ([202.4.237.240]:38654 "EHLO
+	kirsty.vergenet.net" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S20021838AbZFGIlq (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 7 Jun 2009 09:41:46 +0100
+Received: from harry.kent.sydney.vergenet.net (124-170-70-82.dyn.iinet.net.au [124.170.70.82])
+	by kirsty.vergenet.net (Postfix) with ESMTP id DB4C72404F;
+	Sun,  7 Jun 2009 18:41:41 +1000 (EST)
+Received: by harry.kent.sydney.vergenet.net (Postfix, from userid 7100)
+	id 4B3394740E7; Sun,  7 Jun 2009 18:41:39 +1000 (EST)
+Date:	Sun, 7 Jun 2009 18:41:38 +1000
+From:	Simon Horman <horms@verge.net.au>
+To:	Florian Fainelli <florian@openwrt.org>
 Cc:	Linux-MIPS <linux-mips@linux-mips.org>,
 	Ralf Baechle <ralf@linux-mips.org>,
-	linux-kernel@vger.kernel.org, Alan Cox <alan@lxorguk.ukuu.org.uk>,
-	linux-serial@vger.kernel.org
-References: <200906041622.47591.florian@openwrt.org> <20090604222020.GA14843@alpha.franken.de>
-In-Reply-To: <20090604222020.GA14843@alpha.franken.de>
+	Andrew Morton <akpm@linux-foundation.org>,
+	netdev@vger.kernel.org, David Miller <davem@davemloft.net>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/8] net/netfilter/ipvs/ip_vs_wrr.c: use lib/gcd.c
+Message-ID: <20090607084137.GB8007@verge.net.au>
+References: <200906041616.22786.florian@openwrt.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200906061925.53839.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+In-Reply-To: <200906041616.22786.florian@openwrt.org>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <horms@verge.net.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23315
+X-archive-position: 23316
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: horms@verge.net.au
 Precedence: bulk
 X-list: linux-mips
 
-Le Friday 05 June 2009 00:20:20 Thomas Bogendoerfer, vous avez écrit :
-> On Thu, Jun 04, 2009 at 04:22:46PM +0200, Florian Fainelli wrote:
-> > We discussed that in private, there are a couple of things
-> > to fix in order to get 8250 working properly with TI AR7 HW.
-> > If you can still merge that bit, this would ease future work, thanks !
->
-> I still have a tree here, which works without any changes to the 8250
-> serial driver on a TNETD7300 device.
+On Thu, Jun 04, 2009 at 04:16:21PM +0200, Florian Fainelli wrote:
+> This patch removes the open-coded version of the
+> greatest common divider to use lib/gcd.c, the latter
+> also implementing the a < b case.
+> 
+> Signed-off-by: Florian Fainelli <florian@openwrt.org>
 
-Got to test with defining the UART type as a PORT_16550 and use UPIO_MEM32 
-instead of UPIO_MEM.
--- 
-Best regards, Florian Fainelli
-Email : florian@openwrt.org
-http://openwrt.org
--------------------------------
+Acked-by: Simon Horman <horms@verge.net.au>

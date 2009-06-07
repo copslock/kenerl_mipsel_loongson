@@ -1,46 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Jun 2009 19:39:45 +0100 (WEST)
-Received: from fg-out-1718.google.com ([72.14.220.157]:20925 "EHLO
-	fg-out-1718.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S20022992AbZFGSjP (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 7 Jun 2009 19:39:15 +0100
-Received: by fg-out-1718.google.com with SMTP id 22so936918fge.9
-        for <multiple recipients>; Sun, 07 Jun 2009 11:39:15 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 07 Jun 2009 19:40:09 +0100 (WEST)
+Received: from mail-fx0-f223.google.com ([209.85.220.223]:42819 "EHLO
+	mail-fx0-f223.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20023013AbZFGSjS (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 7 Jun 2009 19:39:18 +0100
+Received: by fxm23 with SMTP id 23so2654437fxm.0
+        for <multiple recipients>; Sun, 07 Jun 2009 11:39:12 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer:in-reply-to:references;
-        bh=jEwyiyWr733dMBcCUvFqr99XZNSj02w2fbxgn6jSYPM=;
-        b=ooMOL64vW/Y5yxldw3E/6623pXfyMh3biLKllqiCjN7IpkHmFtfB2sLtotFuOrkV6X
-         M2vqENEF7V25OKltiAvi9HutW0YWpquEOXt3UnYN3P7PDwvJ1gmEW1ii5oMeEGYj2WJn
-         A6wz0SVd09/VNgnA7DTWqFl+6xQYdN9EKIl64=
+        bh=rVB54Vpk6XCjLnHWe0JKDCydeMIjJH6/SBYEax/TLwU=;
+        b=VwXhSQfpWH3S2VzZ3jZYgM8WPsCawXAkWrkIfDOqELi3yIpaGCzPkKVJv0NtjQzUr7
+         1AT9rpZb6tqua9zv3WjRyqoLM8BmQbpFxOoFbrIo5l6mrEphVldU9jeR5vcXdqM1q9JH
+         fNNXyswxx7xGm724P1tvHS4ywb3cDG+IIs4oY=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=googlemail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=uAO5YxQX/HYVW3iGEDx4nPoUhPD60XndwLfdN90fAbp41BWvikZo2kjmqazpUlDFXP
-         D1oIJP0gUImGlJVhru7BYqmtbY0WV20vt4FWoyQui9rhxXFhqtENLD49QAETyG+oTrCY
-         Gx8BMQ3gbmVEoL8ZGtXLoXzpnFjQq14gzb2bY=
-Received: by 10.86.93.19 with SMTP id q19mr6246902fgb.55.1244399955026;
-        Sun, 07 Jun 2009 11:39:15 -0700 (PDT)
+        b=tsofx4j8douvvC72yW7edSSOJ7F0xCjPvmJX2fVe6iTWxPCboeTtOG/51Npd3QOcww
+         lAY481aq2exGGyn6w9MDlyfqByGnIQ1lcPphmfgiMaVorUzKE2ZOQJ+61Q8TBS+PM9Qk
+         QJc6U7NGyFByaBGV7YHWRsvLZDwHmfOpITgHw=
+Received: by 10.86.1.1 with SMTP id 1mr6300818fga.0.1244399952587;
+        Sun, 07 Jun 2009 11:39:12 -0700 (PDT)
 Received: from localhost.localdomain (fnoeppeil48.netpark.at [217.175.205.176])
-        by mx.google.com with ESMTPS id 12sm421510fgg.0.2009.06.07.11.39.12
+        by mx.google.com with ESMTPS id 12sm421510fgg.0.2009.06.07.11.39.11
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 07 Jun 2009 11:39:13 -0700 (PDT)
+        Sun, 07 Jun 2009 11:39:11 -0700 (PDT)
 From:	Manuel Lauss <manuel.lauss@googlemail.com>
 To:	Linux-MIPS <linux-mips@linux-mips.org>,
 	Ralf Baechle <ralf@linux-mips.org>
 Cc:	Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH 2/7] Alchemy: get rid of allow_au1k_wait
-Date:	Sun,  7 Jun 2009 20:38:59 +0200
-Message-Id: <1244399944-29043-3-git-send-email-manuel.lauss@gmail.com>
+Subject: [PATCH 1/7] Alchemy: prioritize timer and usb irqs
+Date:	Sun,  7 Jun 2009 20:38:58 +0200
+Message-Id: <1244399944-29043-2-git-send-email-manuel.lauss@gmail.com>
 X-Mailer: git-send-email 1.6.3.1
-In-Reply-To: <1244399944-29043-2-git-send-email-manuel.lauss@gmail.com>
+In-Reply-To: <1244399944-29043-1-git-send-email-manuel.lauss@gmail.com>
 References: <1244399944-29043-1-git-send-email-manuel.lauss@gmail.com>
- <1244399944-29043-2-git-send-email-manuel.lauss@gmail.com>
 Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23318
+X-archive-position: 23319
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,84 +47,353 @@ X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-Eliminate the 'allow_au1k_wait' variable.  MIPS kernel installs the
-Alchemy-specific wait code before timer initialization;  if the C0
-timer must be used for timekeeping the wait function is set to NULL
-which means no wait implementation is available.
+MIPS IRQ0-3 are already processed in order;  to assure that the system
+timer and usb device request (if it exists) are processed with
+highest priority, assign the RTCMATCH2 and USB device irq to request0
+of IC0 (=IRQ0) and all other IC0 sources to request1 (=IRQ1).
 
-This also corrects the 'wait instruction available' output in cpuinfo.
-
-Run-tested on DB1200.
+This makes (in theory at least) the USB device irq hack unnecessary.
 
 Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
 ---
- arch/mips/alchemy/common/time.c |   14 ++++++++------
- arch/mips/kernel/cpu-probe.c    |   10 +++-------
- 2 files changed, 11 insertions(+), 13 deletions(-)
+ arch/mips/alchemy/common/irq.c |  275 +++++++++++++++++++---------------------
+ 1 files changed, 133 insertions(+), 142 deletions(-)
 
-diff --git a/arch/mips/alchemy/common/time.c b/arch/mips/alchemy/common/time.c
-index 33fbae7..9fc0d44 100644
---- a/arch/mips/alchemy/common/time.c
-+++ b/arch/mips/alchemy/common/time.c
-@@ -36,14 +36,13 @@
- #include <linux/interrupt.h>
- #include <linux/spinlock.h>
+diff --git a/arch/mips/alchemy/common/irq.c b/arch/mips/alchemy/common/irq.c
+index c88c821..6882de3 100644
+--- a/arch/mips/alchemy/common/irq.c
++++ b/arch/mips/alchemy/common/irq.c
+@@ -39,164 +39,168 @@
  
-+#include <asm/processor.h>
- #include <asm/time.h>
- #include <asm/mach-au1x00/au1000.h>
+ static int au1x_ic_settype(unsigned int irq, unsigned int flow_type);
  
- /* 32kHz clock enabled and detected */
- #define CNTR_OK (SYS_CNTRL_E0 | SYS_CNTRL_32S)
- 
--extern int allow_au1k_wait; /* default off for CP0 Counter */
--
- static cycle_t au1x_counter1_read(struct clocksource *cs)
- {
- 	return au_readl(SYS_RTCREAD);
-@@ -153,13 +152,16 @@ void __init plat_time_init(void)
- 
- 	printk(KERN_INFO "Alchemy clocksource installed\n");
- 
--	/* can now use 'wait' */
--	allow_au1k_wait = 1;
- 	return;
- 
- cntr_err:
--	/* counters unusable, use C0 counter */
-+	/* MIPS kernel assigns 'au1k_wait' to 'cpu_wait' before this
-+	 * function is called.  Because the Alchemy counters are unusable
-+	 * the C0 timekeeping code is installed and use of the 'wait'
-+	 * instruction must be prohibited, which is done most easily by
-+	 * assigning NULL to cpu_wait.
-+	 */
-+	cpu_wait = NULL;
- 	r4k_clockevent_init();
- 	init_r4k_clocksource();
--	allow_au1k_wait = 0;
- }
-diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
-index b13b8eb..262ea9c 100644
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -91,15 +91,11 @@ static void rm7k_wait_irqoff(void)
- }
- 
- /* The Au1xxx wait is available only if using 32khz counter or
-- * external timer source, but specifically not CP0 Counter. */
--int allow_au1k_wait;
--
-+ * external timer source, but specifically not CP0 Counter.
-+ * alchemy/common/time.c may override cpu_wait!
+-/* per-processor fixed function irqs */
++/* per-processor fixed function irqs.
++ * Note on request assignments:  to ensure timer (rtcmatch2) and usb
++ * device interrupts are processed with highest priority, they are
++ * exclusively assigned to request 0 and all others to request 1.
 + */
- static void au1k_wait(void)
+ struct au1xxx_irqmap au1xxx_ic0_map[] __initdata = {
+ 
+ #if defined(CONFIG_SOC_AU1000)
+-	{ AU1000_UART0_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_UART1_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_UART2_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_UART3_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_SSI0_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_SSI1_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+1, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+2, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+3, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+4, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+5, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+6, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+7, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_TOY_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_TOY_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_TOY_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 0 },
++	{ AU1000_UART0_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_UART1_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_UART2_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_UART3_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_SSI0_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_SSI1_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+1, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+2, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+3, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+4, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+5, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+6, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+7, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_TOY_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_TOY_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_TOY_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 1 },
+ 	{ AU1000_TOY_MATCH2_INT, IRQ_TYPE_EDGE_RISING, 1 },
+-	{ AU1000_RTC_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_RTC_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_RTC_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 0 },
++	{ AU1000_RTC_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_RTC_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_RTC_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 1 },
+ 	{ AU1000_RTC_MATCH2_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_IRDA_TX_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_IRDA_RX_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
++	{ AU1000_IRDA_TX_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_IRDA_RX_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
+ 	{ AU1000_USB_DEV_REQ_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_USB_DEV_SUS_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_USB_HOST_INT, IRQ_TYPE_LEVEL_LOW, 0 },
+-	{ AU1000_ACSYNC_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_MAC0_DMA_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_MAC1_DMA_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_AC97C_INT, IRQ_TYPE_EDGE_RISING, 0 },
++	{ AU1000_USB_DEV_SUS_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_USB_HOST_INT, IRQ_TYPE_LEVEL_LOW, 1 },
++	{ AU1000_ACSYNC_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_MAC0_DMA_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_MAC1_DMA_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_AC97C_INT, IRQ_TYPE_EDGE_RISING, 1 },
+ 
+ #elif defined(CONFIG_SOC_AU1500)
+ 
+-	{ AU1500_UART0_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_PCI_INTA, IRQ_TYPE_LEVEL_LOW, 0 },
+-	{ AU1000_PCI_INTB, IRQ_TYPE_LEVEL_LOW, 0 },
+-	{ AU1500_UART3_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_PCI_INTC, IRQ_TYPE_LEVEL_LOW, 0 },
+-	{ AU1000_PCI_INTD, IRQ_TYPE_LEVEL_LOW, 0 },
+-	{ AU1000_DMA_INT_BASE, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+1, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+2, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+3, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+4, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+5, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+6, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+7, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_TOY_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_TOY_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_TOY_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 0 },
++	{ AU1500_UART0_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_PCI_INTA, IRQ_TYPE_LEVEL_LOW, 1 },
++	{ AU1000_PCI_INTB, IRQ_TYPE_LEVEL_LOW, 1 },
++	{ AU1500_UART3_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_PCI_INTC, IRQ_TYPE_LEVEL_LOW, 1 },
++	{ AU1000_PCI_INTD, IRQ_TYPE_LEVEL_LOW, 1 },
++	{ AU1000_DMA_INT_BASE, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+1, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+2, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+3, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+4, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+5, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+6, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+7, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_TOY_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_TOY_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_TOY_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 1 },
+ 	{ AU1000_TOY_MATCH2_INT, IRQ_TYPE_EDGE_RISING, 1 },
+-	{ AU1000_RTC_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_RTC_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_RTC_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 0 },
++	{ AU1000_RTC_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_RTC_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_RTC_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 1 },
+ 	{ AU1000_RTC_MATCH2_INT, IRQ_TYPE_EDGE_RISING, 0 },
+ 	{ AU1000_USB_DEV_REQ_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_USB_DEV_SUS_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_USB_HOST_INT, IRQ_TYPE_LEVEL_LOW, 0 },
+-	{ AU1000_ACSYNC_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1500_MAC0_DMA_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1500_MAC1_DMA_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_AC97C_INT, IRQ_TYPE_EDGE_RISING, 0 },
++	{ AU1000_USB_DEV_SUS_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_USB_HOST_INT, IRQ_TYPE_LEVEL_LOW, 1 },
++	{ AU1000_ACSYNC_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1500_MAC0_DMA_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1500_MAC1_DMA_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_AC97C_INT, IRQ_TYPE_EDGE_RISING, 1 },
+ 
+ #elif defined(CONFIG_SOC_AU1100)
+ 
+-	{ AU1100_UART0_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1100_UART1_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1100_SD_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1100_UART3_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_SSI0_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_SSI1_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+1, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+2, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+3, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+4, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+5, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+6, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_DMA_INT_BASE+7, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_TOY_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_TOY_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_TOY_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 0 },
++	{ AU1100_UART0_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1100_UART1_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1100_SD_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1100_UART3_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_SSI0_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_SSI1_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+1, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+2, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+3, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+4, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+5, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+6, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_DMA_INT_BASE+7, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_TOY_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_TOY_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_TOY_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 1 },
+ 	{ AU1000_TOY_MATCH2_INT, IRQ_TYPE_EDGE_RISING, 1 },
+-	{ AU1000_RTC_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_RTC_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_RTC_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 0 },
++	{ AU1000_RTC_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_RTC_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_RTC_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 1 },
+ 	{ AU1000_RTC_MATCH2_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_IRDA_TX_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_IRDA_RX_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
++	{ AU1000_IRDA_TX_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_IRDA_RX_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
+ 	{ AU1000_USB_DEV_REQ_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_USB_DEV_SUS_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_USB_HOST_INT, IRQ_TYPE_LEVEL_LOW, 0 },
+-	{ AU1000_ACSYNC_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1100_MAC0_DMA_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1100_LCD_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_AC97C_INT, IRQ_TYPE_EDGE_RISING, 0 },
++	{ AU1000_USB_DEV_SUS_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_USB_HOST_INT, IRQ_TYPE_LEVEL_LOW, 1 },
++	{ AU1000_ACSYNC_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1100_MAC0_DMA_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1100_LCD_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_AC97C_INT, IRQ_TYPE_EDGE_RISING, 1 },
+ 
+ #elif defined(CONFIG_SOC_AU1550)
+ 
+-	{ AU1550_UART0_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1550_PCI_INTA, IRQ_TYPE_LEVEL_LOW, 0 },
+-	{ AU1550_PCI_INTB, IRQ_TYPE_LEVEL_LOW, 0 },
+-	{ AU1550_DDMA_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1550_CRYPTO_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1550_PCI_INTC, IRQ_TYPE_LEVEL_LOW, 0 },
+-	{ AU1550_PCI_INTD, IRQ_TYPE_LEVEL_LOW, 0 },
+-	{ AU1550_PCI_RST_INT, IRQ_TYPE_LEVEL_LOW, 0 },
+-	{ AU1550_UART1_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1550_UART3_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1550_PSC0_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1550_PSC1_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1550_PSC2_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1550_PSC3_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_TOY_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_TOY_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_TOY_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 0 },
++	{ AU1550_UART0_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1550_PCI_INTA, IRQ_TYPE_LEVEL_LOW, 1 },
++	{ AU1550_PCI_INTB, IRQ_TYPE_LEVEL_LOW, 1 },
++	{ AU1550_DDMA_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1550_CRYPTO_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1550_PCI_INTC, IRQ_TYPE_LEVEL_LOW, 1 },
++	{ AU1550_PCI_INTD, IRQ_TYPE_LEVEL_LOW, 1 },
++	{ AU1550_PCI_RST_INT, IRQ_TYPE_LEVEL_LOW, 1 },
++	{ AU1550_UART1_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1550_UART3_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1550_PSC0_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1550_PSC1_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1550_PSC2_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1550_PSC3_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_TOY_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_TOY_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_TOY_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 1 },
+ 	{ AU1000_TOY_MATCH2_INT, IRQ_TYPE_EDGE_RISING, 1 },
+-	{ AU1000_RTC_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_RTC_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_RTC_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 0 },
++	{ AU1000_RTC_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_RTC_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_RTC_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 1 },
+ 	{ AU1000_RTC_MATCH2_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1550_NAND_INT, IRQ_TYPE_EDGE_RISING, 0 },
++	{ AU1550_NAND_INT, IRQ_TYPE_EDGE_RISING, 1 },
+ 	{ AU1550_USB_DEV_REQ_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1550_USB_DEV_SUS_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1550_USB_HOST_INT, IRQ_TYPE_LEVEL_LOW, 0 },
+-	{ AU1550_MAC0_DMA_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1550_MAC1_DMA_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
++	{ AU1550_USB_DEV_SUS_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1550_USB_HOST_INT, IRQ_TYPE_LEVEL_LOW, 1 },
++	{ AU1550_MAC0_DMA_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1550_MAC1_DMA_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
+ 
+ #elif defined(CONFIG_SOC_AU1200)
+ 
+-	{ AU1200_UART0_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1200_SWT_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1200_SD_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1200_DDMA_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1200_MAE_BE_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1200_UART1_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1200_MAE_FE_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1200_PSC0_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1200_PSC1_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1200_AES_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1200_CAMERA_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1000_TOY_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_TOY_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_TOY_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 0 },
++	{ AU1200_UART0_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1200_SWT_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1200_SD_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1200_DDMA_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1200_MAE_BE_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1200_UART1_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1200_MAE_FE_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1200_PSC0_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1200_PSC1_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1200_AES_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1200_CAMERA_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1000_TOY_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_TOY_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_TOY_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 1 },
+ 	{ AU1000_TOY_MATCH2_INT, IRQ_TYPE_EDGE_RISING, 1 },
+-	{ AU1000_RTC_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_RTC_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_RTC_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 0 },
++	{ AU1000_RTC_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_RTC_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 1 },
++	{ AU1000_RTC_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 1 },
+ 	{ AU1000_RTC_MATCH2_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1200_NAND_INT, IRQ_TYPE_EDGE_RISING, 0 },
++	{ AU1200_NAND_INT, IRQ_TYPE_EDGE_RISING, 1 },
+ 	{ AU1200_USB_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1200_LCD_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-	{ AU1200_MAE_BOTH_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
++	{ AU1200_LCD_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
++	{ AU1200_MAE_BOTH_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
+ 
+ #else
+ #error "Error: Unknown Alchemy SOC"
+@@ -486,7 +490,7 @@ static int au1x_ic_settype(unsigned int irq, unsigned int flow_type)
+ asmlinkage void plat_irq_dispatch(void)
  {
--	if (!allow_au1k_wait)
+ 	unsigned int pending = read_c0_status() & read_c0_cause();
+-	unsigned long s, off, bit;
++	unsigned long s, off;
+ 
+ 	if (pending & CAUSEF_IP7) {
+ 		do_IRQ(MIPS_CPU_IRQ_BASE + 7);
+@@ -506,25 +510,12 @@ asmlinkage void plat_irq_dispatch(void)
+ 	} else
+ 		goto spurious;
+ 
+-	bit = 0;
+ 	s = au_readl(s);
+ 	if (unlikely(!s)) {
+ spurious:
+ 		spurious_interrupt();
+ 		return;
+ 	}
+-#ifdef AU1000_USB_DEV_REQ_INT
+-	/*
+-	 * Because of the tight timing of SETUP token to reply
+-	 * transactions, the USB devices-side packet complete
+-	 * interrupt needs the highest priority.
+-	 */
+-	bit = 1 << (AU1000_USB_DEV_REQ_INT - AU1000_INTC0_INT_BASE);
+-	if ((pending & CAUSEF_IP2) && (s & bit)) {
+-		do_IRQ(AU1000_USB_DEV_REQ_INT);
 -		return;
--
--	/* using the wait instruction makes CP0 counter unusable */
- 	__asm__("	.set	mips3			\n"
- 		"	cache	0x14, 0(%0)		\n"
- 		"	cache	0x14, 32(%0)		\n"
+-	}
+-#endif
+ 	do_IRQ(__ffs(s) + off);
+ }
+ 
 -- 
 1.6.3.1

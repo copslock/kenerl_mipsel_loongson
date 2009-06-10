@@ -1,81 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jun 2009 13:56:55 +0100 (WEST)
-Received: from mail-bw0-f225.google.com ([209.85.218.225]:57031 "EHLO
-	mail-bw0-f225.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20023019AbZFJM4s convert rfc822-to-8bit
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jun 2009 15:04:16 +0100 (WEST)
+Received: from web23605.mail.ird.yahoo.com ([87.248.115.48]:35571 "HELO
+	web23605.mail.ird.yahoo.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with SMTP id S20022918AbZFJOEK convert rfc822-to-8bit
 	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 10 Jun 2009 13:56:48 +0100
-Received: by bwz25 with SMTP id 25so808951bwz.0
-        for <multiple recipients>; Wed, 10 Jun 2009 05:56:41 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:sender:received:in-reply-to
-         :references:date:x-google-sender-auth:message-id:subject:from:to:cc
-         :content-type:content-transfer-encoding;
-        bh=T6BmEUWRE8ID4y2TO9A3JXKw0mM84VlG5zgpF6OEU0w=;
-        b=RIefNxtbNLPN41GTTlibZ65kzxMFrbP9vpHn9GQynj+yyoXJDrw0QeqD7Vwi94gpe6
-         BkuNpV+i1STnbuPhryVryd7z7sh8g694a02Scq1N0n336GxvsADygjy/ejkWdKXqX9sL
-         1ZDmwkuYxtDUo2rPRXWNIVS3FqbaHtkLuRSCw=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        b=eHByj8bVz9UhMpBbiNsYpGHOlJrFJeuZalsJtmD4a7827TCM3f95mnh0U6R88vYsSh
-         8sSyzgJJMVAkw7N0gtXhZVFyQhkaSHlHi+sWGWCzKz9VDfZaud7CUYT0FGybr2aSPFTk
-         UKh/0cSbEcgUYI27kTb8i5EubmFGnSwKYZ4lY=
+	Wed, 10 Jun 2009 15:04:10 +0100
+Received: (qmail 70174 invoked by uid 60001); 10 Jun 2009 14:04:03 -0000
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.co.uk; s=s1024; t=1244642643; bh=CHyneAIaRrsLcyop2kIpTnMxX+HIGrENFrLM6nTI55g=; h=Message-ID:X-YMail-OSG:Received:X-Mailer:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding; b=X+5wE9iAXogeUYF5d2SgcU0m5x78hNgjYMnEsGVnXWW2cTjWgJOMHICQMDBHwzEPOBl4BzzlCZj8I/D2+xrP4wqDNFgS+ly5Ny1JO3yr+gq8bEUrszXRQhFu90qSzro9JMX36I2VcoGkK5a9tznEoZW22h72/zYtDC5w/TGtBlQ=
+DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
+  s=s1024; d=yahoo.co.uk;
+  h=Message-ID:X-YMail-OSG:Received:X-Mailer:Date:From:Subject:To:MIME-Version:Content-Type:Content-Transfer-Encoding;
+  b=E+PHTiFd9SQSc5+w+VoRF8qvM8iS/L2KgGqeSd9DINJw0EegKT+fgWdOmYWMq1whBsH7hvWoOFSAKwF55EY7bDR8/a//DjPFNEz6VuoqX3MXWZkMpBRd86x0HgUWWw/GhNEGLfhO2rtYO4STe0wev2Jhp+rbZVU2jmP8EqjAoOQ=;
+Message-ID: <137040.69938.qm@web23605.mail.ird.yahoo.com>
+X-YMail-OSG: gpHfBWwVM1kJvrXVyt7WN9zWU3xMj.se5fPg2QhdvMvLearrZ3ZgN3aXfA6xDZeoq5a99Z0CFAenzkH5Op1yA7UadqfjOH7NSGKsla39iyyIrlfxyUObs0vruTIGdoDURKuYxoQ5BrBG91lSeo.zkMbToNYJ17fes_9oAPRaMRlDjt1F1mHCnnj8Hi0lwH1rGt22PZ2DcS8VfMQ.ssBKoSLr_B0jXCig29r.Ky4RtmLPXODu_2uOlj002fKmfbGpExxpf0MDYJmHKrEhbWviAHrb1fyXjkTlbYeQ2PB00KVEKu4b44XwrsoWpCQbJON0LTXguDI-
+Received: from [83.166.184.142] by web23605.mail.ird.yahoo.com via HTTP; Wed, 10 Jun 2009 14:04:03 GMT
+X-Mailer: YahooMailClassic/5.4.12 YahooMailWebService/0.7.289.15
+Date:	Wed, 10 Jun 2009 14:04:03 +0000 (GMT)
+From:	Glyn Astill <glynastill@yahoo.co.uk>
+Subject: Qube2 slowly dies
+To:	linux-mips@linux-mips.org
 MIME-Version: 1.0
-Received: by 10.204.113.12 with SMTP id y12mr1257243bkp.214.1244638600779; 
-	Wed, 10 Jun 2009 05:56:40 -0700 (PDT)
-In-Reply-To: <20090609122017.GA14202@linux-mips.org>
-References: <S20022929AbZFHPuy/20090608155054Z+9196@ftp.linux-mips.org>
-	 <20090609.111248.161838296.nemoto@toshiba-tops.co.jp>
-	 <20090609122017.GA14202@linux-mips.org>
-Date:	Wed, 10 Jun 2009 14:56:39 +0200
-X-Google-Sender-Auth: 401cc6443377df9b
-Message-ID: <10f740e80906100556m1f8a2272y7844bb1a3cc728dc@mail.gmail.com>
-Subject: Re: MIPS: Outline udelay and fix a few issues.
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8BIT
-Return-Path: <geert.uytterhoeven@gmail.com>
+Return-Path: <glynastill@yahoo.co.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23352
+X-archive-position: 23353
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: glynastill@yahoo.co.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jun 9, 2009 at 14:20, Ralf Baechle<ralf@linux-mips.org> wrote:
-> On Tue, Jun 09, 2009 at 11:12:48AM +0900, Atsushi Nemoto wrote:
->> > Relying on pure C for computation of the delay value removes the need for
->> > explicit.  The price we pay is a slight slowdown of the computation - to
->> > be fixed on another day.
->>
->> Please fix this commit.
->
-> Sigh.  I wonder how this wrong version made it into my tree.  Oh well,
-> applied.  No time to fuzz around before 2.6.30 even though I'd like to
-> avoid the 64-bit arithmetic.
->
-> Applied.  Thanks!
 
-I can confirm that after this patch, 2.6.30 builds and boots fine on RBTX4927.
+Hi people,
 
-Please submit it for 2.6.30-rc1 and 2.6.30.1 ;-)
+I've been directed here from the Debian lists by Martin Michlmayr. I'm running lenny on a qube2 128mb ram / 40gb disk.
 
-Gr{oetje,eeting}s,
+I've tried kernels 2.6.26 and 2.6.30~rc8 and the issue I'm about to describe is present in both, I haven't tried any other kernels - but I will try 2.6.22 when I can.
 
-						Geert
+Essentially the machine gets more and more sluggish until it finally dies. I've had a quick look in meminfo and I can't see that it's running out of memory, and I'm not sure what else to check?
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+I find it hard to describe what's going off, but here's a scenario I hope illustrates the problem. The configure script is just an example of doing something - I could easily have extracted an archive with tar or something for the same results;
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+- I start 2 ssh sessions and in one start configure for the postgres source, in the other I just started top.
+
+- And for a while all seems fine; configure ticks away and top refreshes every second.
+
+- Then top stops ticking over - but it'll refresh with a keypress. Anyway I exit top and try to run it again... nothing. I hit ctrl-c which brings me back to the prompt and I try again... nothing.
+
+- The configure script is still ticking over slowly.
+
+- I try "ps ax" - it works; so I try it again... nothing.
+
+- I try "ipcs" and "lsof" they both work and seem to keep working.
+
+- I try "ps ax" again... nothing. I hit ctrl-c and now it doesn't come back to the command prompt for a while.. say 5 minutes and eventually it's back.
+
+- It's still going. Some commands still work, some just do nothing. proc/meminfo shows it's not eaten all the memory.
+
+- If I try to start another ssh session I can log in, I get the motd, but I don't get to the shell.
+
+- Eventually the configure script ends, and all shells come back to the prompt. But it now seems totally braindamaged, I can run "ps ax" but "top" and other commands still do nothing. Heres strace attached to the top process:
+
+deb:~# strace -p 7228
+Process 7228 attached - interrupt to quit
+_newselect(0, NULL, NULL, NULL, {0, 500013}
+
+- Then after a little while the whole thing becomes unresponsive.
+
+
+Can anyone confirm they've seen the same behaviour or direct me what to look into?
+
+Thanks
+Glyn
+
+
+      

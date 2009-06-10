@@ -1,91 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jun 2009 13:40:00 +0100 (WEST)
-Received: from mail-px0-f173.google.com ([209.85.216.173]:40605 "EHLO
-	mail-px0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S20023016AbZFJMjy (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 10 Jun 2009 13:39:54 +0100
-Received: by pxi3 with SMTP id 3so166040pxi.22
-        for <multiple recipients>; Wed, 10 Jun 2009 05:39:46 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jun 2009 13:56:55 +0100 (WEST)
+Received: from mail-bw0-f225.google.com ([209.85.218.225]:57031 "EHLO
+	mail-bw0-f225.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S20023019AbZFJM4s convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 10 Jun 2009 13:56:48 +0100
+Received: by bwz25 with SMTP id 25so808951bwz.0
+        for <multiple recipients>; Wed, 10 Jun 2009 05:56:41 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=/SJ5kNil9IQG7sI9MPdKBtt+Rh+lYb6xcypvztUr7v0=;
-        b=CdFFk43aoqZWWej2rVGgIqG/bSHEwlZTTTNgUbtC8AUPDp4pjx5GXHzokmELB+vR3E
-         BwMeQq4kfrK8JXW/T9B112J649eK79yUsUhG8dgCbw37LXp7VQuQmXbMMPOZ2AlJd9n3
-         2XUfRZFpmtxnKd2kFzpE2szRpWxkF58k45u7M=
+        h=domainkey-signature:mime-version:sender:received:in-reply-to
+         :references:date:x-google-sender-auth:message-id:subject:from:to:cc
+         :content-type:content-transfer-encoding;
+        bh=T6BmEUWRE8ID4y2TO9A3JXKw0mM84VlG5zgpF6OEU0w=;
+        b=RIefNxtbNLPN41GTTlibZ65kzxMFrbP9vpHn9GQynj+yyoXJDrw0QeqD7Vwi94gpe6
+         BkuNpV+i1STnbuPhryVryd7z7sh8g694a02Scq1N0n336GxvsADygjy/ejkWdKXqX9sL
+         1ZDmwkuYxtDUo2rPRXWNIVS3FqbaHtkLuRSCw=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
          :content-transfer-encoding;
-        b=vQFGn+AvRtO5sWZzU0NGmVfQOm7NkE0DZsURn/7MTPecZeoxjBNKq/3bHLCEMyjdmV
-         Le11sLV0EXea1uLIMHgYUC9vtOSeF+7aWaTRwb393iLZT0kCsZaf7ZYEn9gL9mtqIkJS
-         Gjuqn3fx2LnN2WLDiAcX8uQvx6OSNmV+TknZo=
-Received: by 10.114.185.12 with SMTP id i12mr2043868waf.16.1244637585962;
-        Wed, 10 Jun 2009 05:39:45 -0700 (PDT)
-Received: from ?192.168.1.101? ([219.246.59.144])
-        by mx.google.com with ESMTPS id m28sm8898020waf.37.2009.06.10.05.39.34
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 10 Jun 2009 05:39:43 -0700 (PDT)
-Subject: Re: [loongson-PATCH-v3 10/25] split the loongson-specific part out
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:	Zhang Le <r0bertz@gentoo.org>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
-	Yan Hua <yanh@lemote.com>,
-	Philippe Vachon <philippe@cowpig.ca>,
-	Zhang Fuxin <zhangfx@lemote.com>,
-	loongson-dev <loongson-dev@googlegroups.com>,
-	Liu Junliang <liujl@lemote.com>,
-	Erwan Lerale <erwan@thiscow.com>,
-	Arnaud Patard <apatard@mandriva.com>
-In-Reply-To: <20090609175130.GC1287@adriano.hkcable.com.hk>
-References: <cover.1244120575.git.wuzj@lemote.com>
-	 <cc26466a1817a94314d8e118dfcbe38d55190d62.1244120575.git.wuzj@lemote.com>
-	 <20090609175130.GC1287@adriano.hkcable.com.hk>
-Content-Type: text/plain
-Organization: DSLab, Lanzhou University, China
-Date:	Wed, 10 Jun 2009 20:39:30 +0800
-Message-Id: <1244637570.28989.2.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+        b=eHByj8bVz9UhMpBbiNsYpGHOlJrFJeuZalsJtmD4a7827TCM3f95mnh0U6R88vYsSh
+         8sSyzgJJMVAkw7N0gtXhZVFyQhkaSHlHi+sWGWCzKz9VDfZaud7CUYT0FGybr2aSPFTk
+         UKh/0cSbEcgUYI27kTb8i5EubmFGnSwKYZ4lY=
+MIME-Version: 1.0
+Received: by 10.204.113.12 with SMTP id y12mr1257243bkp.214.1244638600779; 
+	Wed, 10 Jun 2009 05:56:40 -0700 (PDT)
+In-Reply-To: <20090609122017.GA14202@linux-mips.org>
+References: <S20022929AbZFHPuy/20090608155054Z+9196@ftp.linux-mips.org>
+	 <20090609.111248.161838296.nemoto@toshiba-tops.co.jp>
+	 <20090609122017.GA14202@linux-mips.org>
+Date:	Wed, 10 Jun 2009 14:56:39 +0200
+X-Google-Sender-Auth: 401cc6443377df9b
+Message-ID: <10f740e80906100556m1f8a2272y7844bb1a3cc728dc@mail.gmail.com>
+Subject: Re: MIPS: Outline udelay and fix a few issues.
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23351
+X-archive-position: 23352
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2009-06-10 at 01:51 +0800, Zhang Le wrote:
-> On 21:05 Thu 04 Jun     , wuzhangjin@gmail.com wrote:
-> 
-> [...]
-> 
-> > diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> 
-> [...]
-> 
-> Two cosmetic change suggestions:
-> 
-> > +config LOONGSON_SYSTEMS
-> 
-> To keep it in line with other CPU's, I suggest change LOONGSON_SYSTEMS to
-> MACH_LOONGSON. This is really a matter of taste. So take it at your own
-> discretion. And don't forget change all occurrences of CONFIG_LOONGSON_SYSTEMS
-> to CONFIG_MACH_LOONGSON, too.
-> 
-> > +	bool "Loongson Based Machines"
-> 
-> There is no need to use capital letter in based and machines here.
+On Tue, Jun 9, 2009 at 14:20, Ralf Baechle<ralf@linux-mips.org> wrote:
+> On Tue, Jun 09, 2009 at 11:12:48AM +0900, Atsushi Nemoto wrote:
+>> > Relying on pure C for computation of the delay value removes the need for
+>> > explicit.  The price we pay is a slight slowdown of the computation - to
+>> > be fixed on another day.
+>>
+>> Please fix this commit.
+>
+> Sigh.  I wonder how this wrong version made it into my tree.  Oh well,
+> applied.  No time to fuzz around before 2.6.30 even though I'd like to
+> avoid the 64-bit arithmetic.
+>
+> Applied.  Thanks!
 
-seems better, will applied later :-)
+I can confirm that after this patch, 2.6.30 builds and boots fine on RBTX4927.
 
-best wishes,
-Wu Zhangjin
+Please submit it for 2.6.30-rc1 and 2.6.30.1 ;-)
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

@@ -1,80 +1,119 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jun 2009 15:25:11 +0100 (WEST)
-Received: from web23601.mail.ird.yahoo.com ([87.248.115.44]:27816 "HELO
-	web23601.mail.ird.yahoo.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with SMTP id S20023044AbZFJOZF convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 10 Jun 2009 15:25:05 +0100
-Received: (qmail 38130 invoked by uid 60001); 10 Jun 2009 14:24:58 -0000
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.co.uk; s=s1024; t=1244643898; bh=ZLFCAuampoqwApXx+6X9l/axrRqvDZLp+MxGHRau19k=; h=Message-ID:X-YMail-OSG:Received:X-Mailer:Date:From:Subject:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding; b=GgcprVT+JCEXyjq7YiExZKsbjkohkXdQVoCgO0HoZOe4m9OrsgsJD4L1+VcodGwK+wLrRec1ztbzjaio2g0STVypf/ttJkKnR1NsCCCJZblbLCKP+ZLTmD1LO65Ys1zPgua++Qpq6JwFNsEESwjNdQqY0m2sIf0gyO5R8l01T58=
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.co.uk;
-  h=Message-ID:X-YMail-OSG:Received:X-Mailer:Date:From:Subject:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=y4NjvzkS8VYNyN6WCtTR1yFldwbRSK13Rwb5lLvNkNRPUNwTl5y7sP9aEywYao4el7f+eMAXhqSmmN1W0l8YyEg3abpzZnVbOdbMDpWpF37mPJFmapVTDJeZKYoY+sOulFRHPuwcsBuzHrjWUebX1pZexgkFQ8vXY5cxEKIuIas=;
-Message-ID: <149516.38062.qm@web23601.mail.ird.yahoo.com>
-X-YMail-OSG: RbFuR6sVM1lDqi8xeiIVwr4WBjeXBvV6oYoZe3lVNZ7sYhrDRVDni_sW23nQsmmWQDdm5YHqocXo0ixst36myaIY1iUqa9HS3e18I6KNHV_wqKvLW3qHVcwuyHCg1dAlrSGcmdWRuBhqyfVXG_YgH88tLgHrlLqow0gYwgSZWp5YPsRikcbrFN2xyqkKLn2RqKbo8INJ45fCp_5.JCnGV42xLwi6hsmQ_0kRza0Vl76GI.v3Hnql6y04JQrTl11fGRSqLy_2wNkYWTpoMgNQh9q7Nd75GaNjxQxCbSR.JUYmkohZmkUbMRxoCwsbTLNiSrs1LAYwFduIFfcT2L.vMqpPD9s07c_1pQHLuY0fNw--
-Received: from [83.166.184.142] by web23601.mail.ird.yahoo.com via HTTP; Wed, 10 Jun 2009 14:24:57 GMT
-X-Mailer: YahooMailClassic/5.4.12 YahooMailWebService/0.7.289.15
-Date:	Wed, 10 Jun 2009 14:24:57 +0000 (GMT)
-From:	Glyn Astill <glynastill@yahoo.co.uk>
-Subject: Re: Qube2 slowly dies
-To:	Florian Fainelli <florian@openwrt.org>
-Cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 10 Jun 2009 16:41:36 +0100 (WEST)
+Received: from xylophone.i-cable.com ([203.83.115.99]:33059 "HELO
+	xylophone.i-cable.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with SMTP id S20023074AbZFJPla (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 10 Jun 2009 16:41:30 +0100
+Received: (qmail 4340 invoked by uid 508); 10 Jun 2009 15:41:01 -0000
+Received: from 203.83.114.121 by xylophone (envelope-from <robert.zhangle@gmail.com>, uid 505) with qmail-scanner-1.25 
+ (clamdscan: 0.93.3/7737.  
+ Clear:RC:1(203.83.114.121):. 
+ Processed in 0.219974 secs); 10 Jun 2009 15:41:01 -0000
+Received: from ip114121.hkicable.com (HELO silicon.i-cable.com) (203.83.114.121)
+  by 0 with SMTP; 10 Jun 2009 15:41:00 -0000
+Received: from localhost (cm222-167-208-75.hkcable.com.hk [222.167.208.75])
+	by silicon.i-cable.com (8.13.5/8.13.5) with ESMTP id n5AFehHJ003799;
+	Wed, 10 Jun 2009 23:40:43 +0800 (HKT)
+Date:	Wed, 10 Jun 2009 23:40:33 +0800
+From:	Zhang Le <r0bertz@gentoo.org>
+To:	wuzhangjin@gmail.com
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
+	Wu Zhangjin <wuzj@lemote.com>, Yan Hua <yanh@lemote.com>,
+	Philippe Vachon <philippe@cowpig.ca>,
+	Zhang Fuxin <zhangfx@lemote.com>,
+	loongson-dev <loongson-dev@googlegroups.com>,
+	Liu Junliang <liujl@lemote.com>,
+	Erwan Lerale <erwan@thiscow.com>,
+	Arnaud Patard <apatard@mandriva.com>
+Subject: Re: [loongson-PATCH-v3 17/25] add a machtype kernel command line
+	argument
+Message-ID: <20090610154032.GB21877@adriano.hkcable.com.hk>
+Mail-Followup-To: wuzhangjin@gmail.com, linux-mips@linux-mips.org,
+	ralf@linux-mips.org, Wu Zhangjin <wuzj@lemote.com>,
+	Yan Hua <yanh@lemote.com>, Philippe Vachon <philippe@cowpig.ca>,
+	Zhang Fuxin <zhangfx@lemote.com>,
+	loongson-dev <loongson-dev@googlegroups.com>,
+	Liu Junliang <liujl@lemote.com>, Erwan Lerale <erwan@thiscow.com>,
+	Arnaud Patard <apatard@mandriva.com>
+References: <cover.1244120575.git.wuzj@lemote.com> <d1f4caa360114f843459dc71827b1175232a24be.1244120575.git.wuzj@lemote.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <glynastill@yahoo.co.uk>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="gatW/ieO32f1wygP"
+Content-Disposition: inline
+In-Reply-To: <d1f4caa360114f843459dc71827b1175232a24be.1244120575.git.wuzj@lemote.com>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <robert.zhangle@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23357
+X-archive-position: 23358
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: glynastill@yahoo.co.uk
+X-original-sender: r0bertz@gentoo.org
 Precedence: bulk
 X-list: linux-mips
 
 
-Hi Florian,
+--gatW/ieO32f1wygP
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> From: Florian Fainelli <florian@openwrt.org>
+On 21:08 Thu 04 Jun     , wuzhangjin@gmail.com wrote:
+> From: Wu Zhangjin <wuzj@lemote.com>
+>=20
+> the difference between yeeloong-7inch and yeeloong-8.9inch is very
+> small, only including the screen size and shutdown logic. so, it's very
+> important to share the same kernel image file between them instead of
+> adding some new kernel config options. benefit from this, the
+> distribution developers only have a need to compile the kernel one time.
+>=20
+> to share the same kernel image file between yeelooong-7inch and
+> yeeloong-8.9inch, there is a need to add a kernel command line, here I
+> name is machtype, it works like this:
+>=20
+> 	machtype=3Dlemote-yeeloong-2f-7inch
+> 	      company - product - cpu revision - size
+>=20
+> so, we can choose a suitable vga mode for the screen of different size
+> by default via this kernel command line in prom_init, here exactly is
+> mach_prom_init_cmdline in arch/mips/loongson/yeeloong-2f/init.c.
+>=20
+> the vga command line will be used later in the SMI video driver to
+> choose a suitable screen resolution ratio.
+>=20
+> and also, we can get the true machine name via this kenrel command line
+> argument.
 
-> Determine which process consumes all that memory. Can you
-> describe which 
-> programs you are running on your Qube2 ?
-> 
+I have tested this patchset on both fuloong 2f and 2e boxes.
+It works well except for that duplicated #include's problem.
 
-That's exactly it - I couldn't see anything using excessive memory.
+However, there is an annoying problem. The system type on these two boxes
+has an "-unknowninch" ending, which does not make any sense at all.=20
 
-> 
-> I have been running linux-mips git builds for about a year
-> and half now on my 
-> Qube2 without any troubles, the box serves as NFS/FTP
-> server and works pretty 
-> well and sustains bandwidth.
-> 
+So I made a patch on top of your patchset which makes kernel param
+machtype=3Dlemote-yeeloong-2f-7inch work as before, while on fuloongs return
+system types like "lemote-fuloong-2e-box" and is less intrusive againt
+linux-mips tree.
 
-Thats good to hear anyway.
+I will post this patch after I test the patchset on yeeloong 8.9 notebook.
 
-> My guess is that you are having a hardware problem or the
-> box might not be 
-> cooled as it should be.
+--=20
+Zhang, Le
+Gentoo/Loongson Developer
+http://zhangle.is-a-geek.org
+0260 C902 B8F8 6506 6586 2B90 BC51 C808 1E4E 2973
 
-I have 2 qubes, both cooled properly and both have run netbsd as solid as a rock for the past 3 years. My usual yearly upgrade routine is prepare a fresh qube and switch them, when I do this I normally have 1 year+ uptime.
+--gatW/ieO32f1wygP
+Content-Type: application/pgp-signature
+Content-Disposition: inline
 
-I should mention that I've been using this qube with netbsd without issue for years.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.11 (GNU/Linux)
 
-> If you want, you can test the
-> following kernel which 
-> I have been running on this qube2 for some months: 
-> http://alphacore.org/~florian/linux-mips/qube/
-> 
+iEYEARECAAYFAkov0/AACgkQvFHICB5OKXMuZQCgic65jefb0qmv097esUqsR73c
+iuIAn1lRBhQBZc6bCkXSrAudZbmQ7mJH
+=74vR
+-----END PGP SIGNATURE-----
 
-Thanks, I will have a go with one of those - I'll have to lookup my notes on preparing a kernel for debian though.
-
-If it is not the kernel though (I suspect it is not) Any Ideas what I should be looking at to catch whatever is causing this? I've checked memory usage, turned off dma, and there isn't much IO load.  As it's a qube there's plenty of CPU load.
-
-?
-
-
-      
+--gatW/ieO32f1wygP--

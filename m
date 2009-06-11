@@ -1,162 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Jun 2009 18:01:32 +0200 (CEST)
-Received: from web23606.mail.ird.yahoo.com ([87.248.115.49]:26458 "HELO
-	web23606.mail.ird.yahoo.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with SMTP id S1491945AbZFKQBV convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 11 Jun 2009 18:01:21 +0200
-Received: (qmail 10286 invoked by uid 60001); 11 Jun 2009 08:54:44 -0000
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.co.uk; s=s1024; t=1244710484; bh=JAUfE4sUnmhot6DegniPz5I0oKLBluGxoLUhqmb+1Ck=; h=Message-ID:X-YMail-OSG:Received:X-Mailer:Date:From:Subject:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding; b=li22FDONuF7Nx/uh6uTpFR9fGRD4Rfn8+ou0xNjENqPqvUcbkmz95Pzsu+8S73EkD5ffHq8KfZCT/Zkq2WfcmvfCVx/R1cdZV9dOoPI+7nuKHes9uA4TzG/xtu5kwJZGK2gi/f5AMoSRmqhU/Ba/8jqjNtvtLvd9ciaFeyti/wg=
-DomainKey-Signature: a=rsa-sha1; q=dns; c=nofws;
-  s=s1024; d=yahoo.co.uk;
-  h=Message-ID:X-YMail-OSG:Received:X-Mailer:Date:From:Subject:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding;
-  b=bea3ruRM+zngDV9GMY0Z9HdM/mQCi8VqL+AX1hluO+9NP8MHZYXQCBohFRG8ynaAzJzG+SBtaJR0wpIE4tzRnR923cNiX32r+YwjVJMHnf6sQPfWGg+A+tl0w1ocaolw/RHv8T4X4l6Gubi45d1wSlSIDYJBQRF60G/kdH+6bIc=;
-Message-ID: <1099.9578.qm@web23606.mail.ird.yahoo.com>
-X-YMail-OSG: 3uJTitEVM1k9MmndMEE8PJiRlBatC8Wii4y7xmYyQfMF.S12oirt57zall71gyB02B.051_YWK.gRxmivJHsPbVvCWpHxEtTraFecZw1f4KIXiXoeVOX6d7itlu86eKY7TC17jcfrxE2avCo_uRl5L5VfyT8InC.QxxJPhG6SVvyJZjzMW359OswANXkugs4knqHIfBfOuj6904MHmVF3iFl2MFCLkk9iqmkQfiYA_NMnDHZXMKQRqMDf5B9ionPZvEjJnkg2Y.25ARxolQ3ZMc_R.vCtmHrYIkCpEoog2a4iJ6zxcMAlKKvY4IRXJQ2w9wfVwS_3_fBW.2zf5K3pzwf5LauDUyQNrNZY6KkFthSyw8v_1kYP3baKibjHEA-
-Received: from [83.166.184.142] by web23606.mail.ird.yahoo.com via HTTP; Thu, 11 Jun 2009 08:54:43 GMT
-X-Mailer: YahooMailClassic/5.4.12 YahooMailWebService/0.7.289.15
-Date:	Thu, 11 Jun 2009 08:54:43 +0000 (GMT)
-From:	Glyn Astill <glynastill@yahoo.co.uk>
-Subject: Re: Qube2 slowly dies
-To:	"Kevin D. Kissell" <kevink@paralogos.com>
-Cc:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Jun 2009 18:03:07 +0200 (CEST)
+Received: from elvis.franken.de ([193.175.24.41]:59034 "EHLO elvis.franken.de"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1491952AbZFKQC7 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 11 Jun 2009 18:02:59 +0200
+Received: from uucp (helo=solo.franken.de)
+	by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+	id 1MEgcA-00012f-00; Thu, 11 Jun 2009 11:30:30 +0200
+Received: by solo.franken.de (Postfix, from userid 1000)
+	id 7FFCEC35BC; Thu, 11 Jun 2009 11:30:22 +0200 (CEST)
+Date:	Thu, 11 Jun 2009 11:30:22 +0200
+From:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To:	Florian Fainelli <florian@openwrt.org>
+Cc:	Linux-MIPS <linux-mips@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	linux-kernel@vger.kernel.org, Alan Cox <alan@lxorguk.ukuu.org.uk>,
+	linux-serial@vger.kernel.org
+Subject: Re: [PATCH 8/8] 8250: add Texas Instruments AR7 internal UART
+Message-ID: <20090611093022.GA14510@alpha.franken.de>
+References: <200906041622.47591.florian@openwrt.org> <20090604222020.GA14843@alpha.franken.de> <200906111028.41222.florian@openwrt.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <glynastill@yahoo.co.uk>
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <200906111028.41222.florian@openwrt.org>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23370
+X-archive-position: 23371
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: glynastill@yahoo.co.uk
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-
-Hi Kevin,
-
-It's nice to see a scientific suggestion to the nature of the problem
-
-> From: Kevin D. Kissell <kevink@paralogos.com>
-
-> Your description sounds an awful lot
-> like failures I've seen when 
-> interrupts get lost or blocked for some reason (could be
-> hardware, the 
-> kernel, or some interaction between them).  Have you
-> looked at 
->  to see if "Spurious" interrupts are
-> occurring, or if 
-> the rate of serviced timer and I/O interrupts decreases or
-> increases as 
-> the system degrades?
-
-No I haven't checked - but I will. What would I be looking for that would stick out as "spurious"? The type of interrupt, qty or random interrupts appearing and dissapearing?
-  
-> When the system becomes unresponsive, by any 
-> chance does it "wake up" after 10-20 minutes (the time for
-> the Count 
-> register to wrap)?
+On Thu, Jun 11, 2009 at 10:28:39AM +0200, Florian Fainelli wrote:
+> Le Friday 05 June 2009 00:20:20 Thomas Bogendoerfer, vous avez écrit :
+> > On Thu, Jun 04, 2009 at 04:22:46PM +0200, Florian Fainelli wrote:
+> > > We discussed that in private, there are a couple of things
+> > > to fix in order to get 8250 working properly with TI AR7 HW.
+> > > If you can still merge that bit, this would ease future work, thanks !
+> >
+> > I still have a tree here, which works without any changes to the 8250
+> > serial driver on a TNETD7300 device.
 > 
+> Could you show me how you register the 8250 driver ? Without the 8250-specific 
 
-Not that I've noticed, I just see it degrade further and further untill it dies over the course of an hour or so.
+static struct plat_serial8250_port uart0_data = {
+        .mapbase = AR7_REGS_UART0,
+        .irq = AR7_IRQ_UART0,
+        .regshift = 2,
+        .iotype = UPIO_MEM,
+        .flags = UPF_BOOT_AUTOCONF | UPF_IOREMAP,
+};
 
-> If other Qube2s don't exhibit this behavior with a given
-> Linux kernel, 
-> but yours does, and yet yours runs NetBSD OK, it suggests
-> that there's a 
-> difference in interrupt setup/handling between the two
-> systems that just 
-> happens to work around a hardware problem on your board.
-
-I'm sure that's a valid possibility, however I do have two of these machines and I have tried both with the same results.
-
-I also had a problem back when I tried etch with the 2.6.18 kernel, however in this case I saw no degraded performance at all, however after a some of hours of activity (anywhere between 2 and 24+) it'd just fall on it's ass.
-
-> 
->           Regards,
-> 
->           Kevin K.
-> 
-> Glyn Astill wrote:
-> > Hi people,
-> >
-> > I've been directed here from the Debian lists by
-> Martin Michlmayr. I'm running lenny on a qube2 128mb ram /
-> 40gb disk.
-> >
-> > I've tried kernels 2.6.26 and 2.6.30~rc8 and the issue
-> I'm about to describe is present in both, I haven't tried
-> any other kernels - but I will try 2.6.22 when I can.
-> >
-> > Essentially the machine gets more and more sluggish
-> until it finally dies. I've had a quick look in meminfo and
-> I can't see that it's running out of memory, and I'm not
-> sure what else to check?
-> >
-> > I find it hard to describe what's going off, but
-> here's a scenario I hope illustrates the problem. The
-> configure script is just an example of doing something - I
-> could easily have extracted an archive with tar or something
-> for the same results;
-> >
-> > - I start 2 ssh sessions and in one start configure
-> for the postgres source, in the other I just started top.
-> >
-> > - And for a while all seems fine; configure ticks away
-> and top refreshes every second.
-> >
-> > - Then top stops ticking over - but it'll refresh with
-> a keypress. Anyway I exit top and try to run it again...
-> nothing. I hit ctrl-c which brings me back to the prompt and
-> I try again... nothing.
-> >
-> > - The configure script is still ticking over slowly.
-> >
-> > - I try "ps ax" - it works; so I try it again...
-> nothing.
-> >
-> > - I try "ipcs" and "lsof" they both work and seem to
-> keep working.
-> >
-> > - I try "ps ax" again... nothing. I hit ctrl-c and now
-> it doesn't come back to the command prompt for a while.. say
-> 5 minutes and eventually it's back.
-> >
-> > - It's still going. Some commands still work, some
-> just do nothing. proc/meminfo shows it's not eaten all the
-> memory.
-> >
-> > - If I try to start another ssh session I can log in,
-> I get the motd, but I don't get to the shell.
-> >
-> > - Eventually the configure script ends, and all shells
-> come back to the prompt. But it now seems totally
-> braindamaged, I can run "ps ax" but "top" and other commands
-> still do nothing. Heres strace attached to the top process:
-> >
-> > deb:~# strace -p 7228
-> > Process 7228 attached - interrupt to quit
-> > _newselect(0, NULL, NULL, NULL, {0, 500013}
-> >
-> > - Then after a little while the whole thing becomes
-> unresponsive.
-> >
-> >
-> > Can anyone confirm they've seen the same behaviour or
-> direct me what to look into?
-> >
-> > Thanks
-> > Glyn
-> >
-> >
-> >       
-> >
-> >   
-> 
-> 
+        uart_port[0].type = PORT_16550A;
+        uart_port[0].line = 0;
+        uart_port[0].irq = AR7_IRQ_UART0;
+        uart_port[0].uartclk = ar7_bus_freq() / 2;
+        uart_port[0].iotype = UPIO_MEM;
+        uart_port[0].mapbase = AR7_REGS_UART0 + 3;
+        uart_port[0].membase = ioremap(uart_port[0].mapbase, 256);
+        uart_port[0].regshift = 2;
+        res = early_serial_setup(&uart_port[0]);
+        if (res)
+                return res;
 
 
-      
+the +3 comes from the fact, that this machine is configured to run big
+endian.
+
+Here is the boot log:
+
+Serial: 8250/16550 driver $Revision: 1.90 $ 2 ports, IRQ sharing disabled
+serial8250: ttyS0 at MMIO 0x8610e03 (irq = 15) is a 16550A
+console handover: boot [early0] -> real [ttyS0]
+serial8250: ttyS1 at MMIO 0x8610f00 (irq = 19) is a 16550A
+loop: module loaded
+Fixed MDIO Bus: probed
+
+
+ttyS1 uses the wrong address, but there is nothing connected to
+that port on the box.
+
+Do you see the problem on TNETD7200 devices as well ?
+
+Thomas.
+
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

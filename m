@@ -1,81 +1,122 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Jun 2009 17:23:37 +0200 (CEST)
-Received: from smtpfb1-g21.free.fr ([212.27.42.9]:41378 "EHLO
-	smtpfb1-g21.free.fr" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1492180AbZFKPXb (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 11 Jun 2009 17:23:31 +0200
-Received: from wmproxy1-g27.free.fr (wmproxy1-g27.free.fr [212.27.42.91])
-	by smtpfb1-g21.free.fr (Postfix) with ESMTP id 62FD92CD4D
-	for <linux-mips@linux-mips.org>; Thu, 11 Jun 2009 11:23:51 +0200 (CEST)
-Received: from wmproxy1-g27.free.fr (localhost [127.0.0.1])
-	by wmproxy1-g27.free.fr (Postfix) with ESMTP id 4B9546351E;
-	Thu, 11 Jun 2009 11:23:46 +0200 (CEST)
-Received: from UNKNOWN (imp6-g19.priv.proxad.net [172.20.243.136])
-	by wmproxy1-g27.free.fr (Postfix) with ESMTP id 5FF1663273;
-	Thu, 11 Jun 2009 11:23:45 +0200 (CEST)
-Received: by UNKNOWN (Postfix, from userid 0)
-	id 5E3D37F2CF641; Thu, 11 Jun 2009 11:23:45 +0200 (CEST)
-Received: from  ([62.210.107.40]) 
-	by imp.free.fr (IMP) with HTTP 
-	for <castet.matthieu@172.20.243.55>; Thu, 11 Jun 2009 11:23:45 +0200
-Message-ID: <1244712225.4a30cd2154cdf@imp.free.fr>
-Date:	Thu, 11 Jun 2009 11:23:45 +0200
-From:	castet.matthieu@free.fr
-To:	Florian Fainelli <florian@openwrt.org>
-Cc:	matthieu castet <castet.matthieu@free.fr>, linville@tuxdriver.com,
-	Michael Buesch <mb@bu3sch.de>, linux-mips@linux-mips.org,
-	netdev@vger.kernel.org, Daniel Mueller <daniel@danm.de>
-Subject: Re: [PATCH] bc47xx : fix ssb irq setup
-References: <4A11DBD4.7070706@free.fr> <4A1ADBAE.6070101@free.fr> <200906110959.38132.florian@openwrt.org> <200906111009.15080.florian@openwrt.org>
-In-Reply-To: <200906111009.15080.florian@openwrt.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
-User-Agent: Internet Messaging Program (IMP) 3.2.8
-X-Originating-IP: 62.210.107.40
-Return-Path: <castet.matthieu@free.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Jun 2009 17:24:17 +0200 (CEST)
+Received: from mail-pz0-f197.google.com ([209.85.222.197]:45187 "EHLO
+	mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492286AbZFKPYL (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 11 Jun 2009 17:24:11 +0200
+Received: by pzk35 with SMTP id 35so80657pzk.22
+        for <multiple recipients>; Thu, 11 Jun 2009 08:24:12 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=6srUrnNQRV7a7nCW6yCN41Agu6I9jZYaYsLoc81Gtjw=;
+        b=HptKQ4+EhFS14co1VYtUNxaQaXwo/KTt8pg5HaOFfGyqAHLWhLQj1S0pWD7QBw8DXl
+         w63w/gjrOWsWBXwZoBq2Xpai4q72nLkc00yShpiYZz8hYEBmFaRTljv4YfIAxB0J/S16
+         54awlJAZukXaZsI9uIicOpm7pGzRHbV+xuTEA=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=pqkMp4cscCcQAhKbk2k8R2vfKsvHu2uQfd1eYt0qXvCRFJ6rApdFDP4sgjrCAuEErR
+         nWxGRcLXzJVLn0xHyyAJ4pPMuJ+qqzQi7BJj7AVcRCpflH0PCfWgvYxtOVpPMvZJ1FZh
+         Zl1UflBo7huCZPP72SrgZ2nfVx+Hb57u4crD8=
+Received: by 10.114.106.13 with SMTP id e13mr4193736wac.87.1244733422373;
+        Thu, 11 Jun 2009 08:17:02 -0700 (PDT)
+Received: from ?192.168.1.103? ([219.246.59.144])
+        by mx.google.com with ESMTPS id j15sm122239waf.16.2009.06.11.08.16.58
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 11 Jun 2009 08:17:01 -0700 (PDT)
+Subject: Re: [loongson-dev] Re: [loongson-PATCH-v3 17/25] add a machtype
+ kernel command line argument
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:	Zhang Le <r0bertz@gentoo.org>
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org,
+	Yan Hua <yanh@lemote.com>,
+	Philippe Vachon <philippe@cowpig.ca>,
+	Zhang Fuxin <zhangfx@lemote.com>,
+	loongson-dev <loongson-dev@googlegroups.com>,
+	Liu Junliang <liujl@lemote.com>,
+	Erwan Lerale <erwan@thiscow.com>,
+	Arnaud Patard <apatard@mandriva.com>
+In-Reply-To: <20090611110914.GB20906@adriano.hkcable.com.hk>
+References: <cover.1244120575.git.wuzj@lemote.com>
+	 <d1f4caa360114f843459dc71827b1175232a24be.1244120575.git.wuzj@lemote.com>
+	 <20090610154032.GB21877@adriano.hkcable.com.hk>
+	 <20090610203123.GA20906@adriano.hkcable.com.hk>
+	 <20090611110914.GB20906@adriano.hkcable.com.hk>
+Content-Type: text/plain
+Organization: DSLab, Lanzhou University, China
+Date:	Thu, 11 Jun 2009 23:16:55 +0800
+Message-Id: <1244733415.10475.67.camel@falcon>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.26.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23365
+X-archive-position: 23366
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: castet.matthieu@free.fr
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Quoting Florian Fainelli <florian@openwrt.org>:
-> Le Thursday 11 June 2009 09:59:36 Florian Fainelli, vous avez écrit :
-> > Hi Matthieu, Michael,
-> >
-> > Le Monday 25 May 2009 19:55:58 matthieu castet, vous avez écrit :
-> > > Michael Buesch wrote:
-> > > > On Tuesday 19 May 2009 00:06:12 matthieu castet wrote:
-> > > >> Hi,
-> > > >>
-> > > >>
-> > > >> [1] http://www.danm.de/files/src/bcm5365p/REPORTED_DEVICES
-> > > >>
-> > > >> Signed-off-by: Matthieu CASTET <castet.matthieu@free.fr>
-> > > >
-> > > > If this works on all devices, I'm OK with this. Please submit to
-> > > > linville@tuxdriver.com You can add my ack.
-> > >
-> > > Well I have only a wl500gd.
-> > > I have submit it on openwrt project in order to test in more devices.
-> >
-> > It makes the IPsec core work on my Netgear WGT634U and I did not see any
-> > regression on a Linksys WRT54GS.
-> >
-> > Tested-by: Florian Fainelli <florian@openwrt.org>
->
-> One minor thing, please remove the dump_irqs call, it is convenient for
-> debugging to print the IRQ routing, but I find it a little too verbose for
-> production. This can be a follow-up patch if you prefer not to respin it.
+On Thu, 2009-06-11 at 19:09 +0800, Zhang Le wrote:
+> On 04:31 Thu 11 Jun     , Zhang Le wrote:
+> 
+> [...]
+> 
+> > 
+> > diff --git a/arch/mips/loongson/common/machtype.c b/arch/mips/loongson/common/machtype.c
+> > index d469dc7..34417cf 100644
+> > --- a/arch/mips/loongson/common/machtype.c
+> > +++ b/arch/mips/loongson/common/machtype.c
+> 
+> [...]
+> 
+> > -static __init int machname_setup(char *str)
+> > +static __init int machtype_setup(char *str)
+> 
+> [...]
+> 
+> > -	for (index = 0;
+> > -	     index < MACHTYPE_TOTAL;
+> > -	     index++) {
+> > -		if (strstr(str, machname[index]) != NULL) {
+> > -			mips_machtype = index;
+> > -			return 0;
+> > +	for (; system_types[machtype]; machtype++)
+> > +		if (strstr(str, system_types[machtype])) {
+> 
+> There is a problem here.
+> 
+> Because I have used "inches" instead of "inch" in system_types, if you insist
+> on using "inch" when passing value to the machtype kernel parameter, this
+> strstr() call's two parameters should be swapped:
+> 
+>              if (strstr(system_types[machtype], str)) {
+> 
 
-Well all x86 does something similar, with acpi dumping the pci interrupt Routing
-Table even in production kernel.
-But it can removed if people don't want it.
+Acked.
 
+thanks!
+Wu Zhangjin
 
-Matthieu
+> 
+> > +			mips_machtype = machtype;
+> > +			break;
+> >  		}
+> > -	}
+> > -	return -1;
+> > +	return 0;
+> >  }
+> >  
+> > -__setup("machtype=", machname_setup);
+> > +__setup("machtype=", machtype_setup);
+> 
+> 

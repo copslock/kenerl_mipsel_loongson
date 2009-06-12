@@ -1,81 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 11 Jun 2009 21:26:55 +0200 (CEST)
-Received: from mail-ew0-f224.google.com ([209.85.219.224]:42625 "EHLO
-	mail-ew0-f224.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1491765AbZFKT0t convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 11 Jun 2009 21:26:49 +0200
-Received: by ewy24 with SMTP id 24so1907728ewy.0
-        for <linux-mips@linux-mips.org>; Thu, 11 Jun 2009 12:27:01 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:to:subject:date
-         :user-agent:cc:references:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:content-disposition:message-id;
-        bh=9YUIt6ilo+aGU0tl2AmSLnHTwFRkYm+QqjHdGfo4IR0=;
-        b=jc0C0qFQZK7ZTWh9QMP6kyrb5mDOh4bJvqTxyWgFRD//uDmD0f+rXPohfH9FCZW60E
-         fG3vBjZoDwxw7z6uZCfGJg6f1thuZYECX52Osv/SDPjH06Tc38/mhEefn0yoeheXAa64
-         UHuM4q+ZTcZpsf2qEmIVK+rLMkACeA0csePjw=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
-         :mime-version:content-type:content-transfer-encoding
-         :content-disposition:message-id;
-        b=ov12jssi6d2pzeFune7coN7LaSod79I/xjlHQjdd6WfZRX31b23KPu5AE/6+kN6UqU
-         Ti4zcKfgP0Y0zvRQ+fGdEOi+yxxOeps/NzBfUQyMDskP60epKe47wARUdr8VffK+ZAjs
-         WavaiA/5DK3wyPrhWyzTHAych9+lgt44RC68s=
-Received: by 10.210.42.20 with SMTP id p20mr2766708ebp.92.1244707181296;
-        Thu, 11 Jun 2009 00:59:41 -0700 (PDT)
-Received: from florian.lab.openpattern.org (lab.openpattern.org [82.240.16.241])
-        by mx.google.com with ESMTPS id 10sm859537eyz.11.2009.06.11.00.59.40
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 11 Jun 2009 00:59:40 -0700 (PDT)
-From:	Florian Fainelli <florian@openwrt.org>
-To:	matthieu castet <castet.matthieu@free.fr>, linville@tuxdriver.com
-Subject: Re: [PATCH] bc47xx : fix ssb irq setup
-Date:	Thu, 11 Jun 2009 09:59:36 +0200
-User-Agent: KMail/1.9.9
-Cc:	Michael Buesch <mb@bu3sch.de>, linux-mips@linux-mips.org,
-	netdev@vger.kernel.org, Daniel Mueller <daniel@danm.de>
-References: <4A11DBD4.7070706@free.fr> <200905191519.59193.mb@bu3sch.de> <4A1ADBAE.6070101@free.fr>
-In-Reply-To: <4A1ADBAE.6070101@free.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 12 Jun 2009 14:41:30 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:56828 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1492012AbZFLMlX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 12 Jun 2009 14:41:23 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n5CCXirt030579;
+	Fri, 12 Jun 2009 13:33:44 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n5CCXfi5030565;
+	Fri, 12 Jun 2009 13:33:41 +0100
+Date:	Fri, 12 Jun 2009 13:33:41 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Alexey Zaytsev <zaytsev@altell.ru>
+Cc:	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Make it compile.
+Message-ID: <20090612123341.GA21878@linux-mips.org>
+References: <20090610140002.17913.33485.stgit@bzz.altell.local> <4A2FBFE5.2090205@ru.mvista.com> <4A30EE9B.30206@altell.ru>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200906110959.38132.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+In-Reply-To: <4A30EE9B.30206@altell.ru>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23379
+X-archive-position: 23381
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Matthieu, Michael,
+On Thu, Jun 11, 2009 at 03:46:35PM +0400, Alexey Zaytsev wrote:
 
-Le Monday 25 May 2009 19:55:58 matthieu castet, vous avez écrit :
-> Michael Buesch wrote:
-> > On Tuesday 19 May 2009 00:06:12 matthieu castet wrote:
-> >> Hi,
-> >>
-> >>
-> >> [1] http://www.danm.de/files/src/bcm5365p/REPORTED_DEVICES
-> >>
-> >> Signed-off-by: Matthieu CASTET <castet.matthieu@free.fr>
-> >
-> > If this works on all devices, I'm OK with this. Please submit to
-> > linville@tuxdriver.com You can add my ack.
+>>> diff --git a/arch/mips/lib/delay.c b/arch/mips/lib/delay.c
+>>> index f69c6b5..222bed0 100644
+>>> --- a/arch/mips/lib/delay.c
+>>> +++ b/arch/mips/lib/delay.c
+>>> @@ -51,6 +51,6 @@ void __ndelay(unsigned long ns)
+>>>  {
+>>>      unsigned int lpj = current_cpu_data.udelay_val;
+>>>  -    __delay((us * 0x00000005 * HZ * lpj) >> 32);
+>>> +    __delay((ns * 0x00000005 * HZ * lpj) >> 32);
+>>
+>>    This (and more) is already fixed by the patch posted by Atsushi  
+>> Nemoto.
+> Thanks for noticing. I should really start reading the ml before
+> sending any more patches. ;)
 >
-> Well I have only a wl500gd.
-> I have submit it on openwrt project in order to test in more devices.
+>
+> -- 
+> This message has been scanned for viruses and
+> dangerous content by MailScanner, and is
+> believed to be clean.
 
-It makes the IPsec core work on my Netgear WGT634U and I did not see any 
-regression on a Linksys WRT54GS.
+Obviously it doesn't scan for old patches ;-)
 
-Tested-by: Florian Fainelli <florian@openwrt.org>
--- 
+(and why would we believe such a statement sent over an insecure medium
+anyway)
+
+There is one open nit in the udelay rewrite which I'm about to fix now.
+
+Cheers,
+
+  Ralf

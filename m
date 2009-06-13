@@ -1,129 +1,96 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Jun 2009 09:59:11 +0200 (CEST)
-Received: from mail-pz0-f179.google.com ([209.85.222.179]:61269 "EHLO
-	mail-pz0-f179.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492291AbZFMH7F (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 13 Jun 2009 09:59:05 +0200
-Received: by pzk9 with SMTP id 9so857719pzk.22
-        for <multiple recipients>; Sat, 13 Jun 2009 00:58:49 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :content-type:organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        bh=+wUAP1qxsmjRHfrd1WXERFpAaPrmAf55e1r+0ahu+mc=;
-        b=XON6xm3s5B9KjykT/fTbt4nRP19jaxxkbDaSdzJ6J5M6Yefrw8quxtDho8/NhQ7Ujq
-         8J/1JSE+5cSP59kkk6/Wr/SBF+spr/xqJNZrtjLH5PvCJUxe2DC+0eAhysMDM89BYGfv
-         4JpvJpi42bO7LkvETAl3R5z4kBuJABtz7lZTA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:content-type:organization:date
-         :message-id:mime-version:x-mailer:content-transfer-encoding;
-        b=w3sGQUNo4pt0IvYwRSi2+DHkkyLmKP1LD9sixjxz3sfa/kerdavs/3LPRwsehGUC6K
-         vmJQkCYvEueBzKWABv4Qz3PzebhS1HMhs0LP9FNqBL2M3vyarVc1N13XFxEic1QjPTin
-         AKQLId9+3peZzttyLJztJRlEaEcorGlhoy6dc=
-Received: by 10.114.170.1 with SMTP id s1mr7342380wae.185.1244879929450;
-        Sat, 13 Jun 2009 00:58:49 -0700 (PDT)
-Received: from ?192.168.2.239? ([202.201.14.140])
-        by mx.google.com with ESMTPS id n9sm2190029wag.26.2009.06.13.00.58.46
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sat, 13 Jun 2009 00:58:48 -0700 (PDT)
-Subject: Error: symbol `__pastwait' is already defined
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:	linux-mips@linux-mips.org
-Cc:	Ralf Baechle <ralf@linux-mips.org>
-Content-Type: text/plain
-Organization: DSLab, Lanzhou University, China
-Date:	Sat, 13 Jun 2009 15:58:42 +0800
-Message-Id: <1244879922.24479.30.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Jun 2009 14:17:03 +0200 (CEST)
+Received: from eagle.jhcloos.com ([207.210.242.212]:4283 "EHLO
+	eagle.jhcloos.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1492318AbZFMMQ5 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 13 Jun 2009 14:16:57 +0200
+Received: by eagle.jhcloos.com (Postfix, from userid 10)
+	id 8F33A401A2; Sat, 13 Jun 2009 12:16:16 +0000 (UTC)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed; d=jhcloos.com;
+	s=eagle; t=1244895400;
+	bh=NLT4aXezABQjRdsXnE4xz2bLu48geACnFL8WfrLXVxs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type;
+	b=JWF42XA4kdsatabc7haOY8lNTAY/LO/NrraYKGdu4BPYu1DuBRjY4g+OC2iTEwxaR
+	 2Ogrln5Zv7OjX3NPqIg+srQhhpr/+LBiaEYv+obbdtj/mNk8nZYyUL/I9b4+Eyc//O
+	 5tcxmaWPC4yHtJqai7ppHzTuqsdIbrUWrqIxdCto=
+Received: by lugabout.jhcloos.org (Postfix, from userid 500)
+	id 41C7764A9E; Sat, 13 Jun 2009 12:16:29 +0000 (UTC)
+From:	James Cloos <cloos@jhcloos.com>
+To:	linux-kernel@vger.kernel.org
+Cc:	"Linux-MIPS" <linux-mips@linux-mips.org>,
+	Florian Fainelli <florian@openwrt.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 1/8] add lib/gcd.c
+In-Reply-To: <200906041615.10467.florian@openwrt.org> (Florian Fainelli's
+	message of "Thu, 4 Jun 2009 16:15:07 +0200")
+References: <200906041615.10467.florian@openwrt.org>
+User-Agent: Gnus/5.110011 (No Gnus v0.11) Emacs/23.0.92 (gnu/linux)
+Face:	iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAI1J
+ REFUOE+lU9ESgCAIg64P1y+ngUdxhl5H8wFbbM0OmUiEhKkCYaZThXCo6KE5sCbA1DDX3genvO4d
+ eBQgEMaM5qy6uWk4SfBYfdu9jvBN9nSVDOKRtwb+I3epboOsOX5pZbJNsBJFvmQQ05YMfieIBnYX
+ FK2N6dOawd97r/e8RjkTLzmMsiVgrAoEugtviCM3v2WzjgAAAABJRU5ErkJggg==
+Copyright: Copyright 2009 James Cloos
+OpenPGP: ED7DAEA6; url=http://jhcloos.com/public_key/0xED7DAEA6.asc
+OpenPGP-Fingerprint: E9E9 F828 61A4 6EA9 0F2B  63E7 997A 9F17 ED7D AEA6
+Date:	Sat, 13 Jun 2009 08:16:04 -0400
+Message-ID: <m38wjwz5ur.fsf@lugabout.jhcloos.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <cloos@jhcloos.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23390
+X-archive-position: 23391
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: cloos@jhcloos.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi, 
+>>>>> "Florian" == Florian Fainelli <florian@openwrt.org> writes:
 
-there is a guy reported a compiling problem in linux-2.6.29:
+Florian> This patch adds lib/gcd.c which contains a greatest
+Florian> common divider implementation taken from
+Florian> sound/core/pcm_timer.c
 
-[...]
-  CC      arch/mips/kernel/cpu-probe.o
-{standard input}: Assembler messages:
-{standard input}:3939: Error: symbol `__pastwait' is already defined
-make[1]: *** [arch/mips/kernel/cpu-probe.o] Error 1
-make: *** [arch/mips/kernel] Error 2
+Would the binary gcd algorithm not be a better fit for the kernel?
 
-Seems I met this problem before, perhaps here is the reason:
+It avoids division, using only shifts and subtraction:
 
-arch/mips/kernel/cpu-probe.c:
-
-void r4k_wait_irqoff(void)
-{
-    local_irq_disable();
-    if (!need_resched())
-        __asm__("   .set    push        \n"
-            "   .set    mips3       \n"
-            "   wait            \n"
-            "   .set    pop     \n");
-    local_irq_enable();
-    __asm__("   .globl __pastwait   \n"
-        "__pastwait:            \n");
-    return;
+unsigned long gcd (unsigned long a, unsigned long b) {
+	unsigned int shift;
+	unsigned long d;
+    
+	if (a == 0 || b == 0)
+		return a | b;
+    
+	for (shift = 0; ((a | b) & 1) == 0; ++shift) {
+		a >>= 1;
+		b >>= 1;
+	}
+    
+	while ((a & 1) == 0)
+		a >>= 1;
+    
+	do {
+		while ((b & 1) == 0)
+			b >>= 1;
+	
+		if (a < b) {
+			b -= a;
+		} else {
+			d = a - b;
+			a = b; b = d;
+		}
+		b >>= 1;
+	} while (b != 0);
+    
+	return a << shift;
 }
 
-there is a global symbol __pastwait defined at the end of
-r4k_wait_irqoff, if r4k_wait_irqoff is called more than one time, the
-__pastwait will be multi-defined. so, need to be fixed. does this fix
-it?
-
-arch/mips/kernel/cpu-probe.c:
-
-void r4k_wait_irqoff(void)
-{
-    local_irq_disable();
-    if (!need_resched())
-        __asm__("   .set    push        \n"
-            "   .set    mips3       \n"
-            "   wait            \n"
-            "   .set    pop     \n");
-    local_irq_enable();
-    return;
-}
-/* a dumy funciton for marking the end of r4k_wait_irqoff */
-void __pastwait(void)
-{
-	;
-}
-
-but I am not sure the gcc compiler will tune the position of the
-r4k_wait_irqoff and __pastwait or not, so seems not safe. perhaps we
-should change something else instead.
-
-perhaps we should tune the __pastwait solution directly, just spark it,
-not look into it yet, seems __pastwait is only used here:
-
-arch/mips/kernel/smtc.c:
-smtc_send_ipi:
-
-            if (cpu_wait == r4k_wait_irqoff) {
-                tcrestart = read_tc_c0_tcrestart();
-                if (tcrestart >= (unsigned long)r4k_wait_irqoff
-                    && tcrestart < (unsigned long)__pastwait) {
-                    write_tc_c0_tcrestart(__pastwait);
-                    tcstatus &= ~TCSTATUS_IXMT;
-                    write_tc_c0_tcstatus(tcstatus);
-                    goto postdirect;
-                }    
-            } 
-
-best wishes,
-Wu Zhangjin 
+-JimC
+-- 
+James Cloos <cloos@jhcloos.com>         OpenPGP: 1024D/ED7DAEA6

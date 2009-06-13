@@ -1,143 +1,113 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Jun 2009 18:26:35 +0200 (CEST)
-Received: from gateway03.websitewelcome.com ([69.93.52.26]:59285 "HELO
-	gateway03.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with SMTP id S1492373AbZFMQ03 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 13 Jun 2009 18:26:29 +0200
-Received: (qmail 2057 invoked from network); 13 Jun 2009 16:30:46 -0000
-Received: from gator750.hostgator.com (174.132.194.2)
-  by gateway03.websitewelcome.com with SMTP; 13 Jun 2009 16:30:46 -0000
-Received: from [12.233.205.2] (port=26792 helo=odysseus.paralogos.com)
-	by gator750.hostgator.com with esmtpsa (TLSv1:AES256-SHA:256)
-	(Exim 4.69)
-	(envelope-from <kevink@paralogos.com>)
-	id 1MFW3T-00036S-7g; Sat, 13 Jun 2009 11:26:07 -0500
-Message-ID: <4A33D2EA.801@paralogos.com>
-Date:	Sat, 13 Jun 2009 18:25:14 +0200
-From:	"Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Jun 2009 21:55:45 +0200 (CEST)
+Received: from eagle.jhcloos.com ([207.210.242.212]:3769 "EHLO
+	eagle.jhcloos.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1492421AbZFMTzj (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 13 Jun 2009 21:55:39 +0200
+Received: by eagle.jhcloos.com (Postfix, from userid 10)
+	id 991C940086; Sat, 13 Jun 2009 19:54:53 +0000 (UTC)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed; d=jhcloos.com;
+	s=eagle; t=1244922917;
+	bh=kWA6FhUvXkiNBOy0eJ1vtkoExJjvHUCvkv41MaCmVWo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type;
+	b=kTloQ8j6uipX0qTiuiK8inJGSOYHtM63aI5rX+BO4nv8v6+SkwhemdM1974LufNee
+	 zRHZOsLpJC3A6OI8F1LUtxSITHQkfY/l9WAZG3kFTDRwVDxEirQ35fCIdR56+Fri3m
+	 Z7u4PCGwQ3/Bos9nCyy+jFCwi8v4P0Z6IIcsyW6g=
+Received: by lugabout.jhcloos.org (Postfix, from userid 500)
+	id 92B016539E; Sat, 13 Jun 2009 19:55:03 +0000 (UTC)
+From:	James Cloos <cloos@jhcloos.com>
+To:	Alan Cox <alan@lxorguk.ukuu.org.uk>
+Cc:	linux-kernel@vger.kernel.org,
+	"Linux-MIPS" <linux-mips@linux-mips.org>,
+	Florian Fainelli <florian@openwrt.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH 1/8] add lib/gcd.c
+In-Reply-To: <m3ocssw2sw.fsf@lugabout.jhcloos.org> (James Cloos's message of
+	"Sat, 13 Jun 2009 11:50:15 -0400")
+References: <200906041615.10467.florian@openwrt.org>
+	<m38wjwz5ur.fsf@lugabout.jhcloos.org>
+	<20090613162802.6c212505@lxorguk.ukuu.org.uk>
+	<m3ocssw2sw.fsf@lugabout.jhcloos.org>
+User-Agent: Gnus/5.110011 (No Gnus v0.11) Emacs/23.0.92 (gnu/linux)
+Face:	iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAI1J
+ REFUOE+lU9ESgCAIg64P1y+ngUdxhl5H8wFbbM0OmUiEhKkCYaZThXCo6KE5sCbA1DDX3genvO4d
+ eBQgEMaM5qy6uWk4SfBYfdu9jvBN9nSVDOKRtwb+I3epboOsOX5pZbJNsBJFvmQQ05YMfieIBnYX
+ FK2N6dOawd97r/e8RjkTLzmMsiVgrAoEugtviCM3v2WzjgAAAABJRU5ErkJggg==
+Copyright: Copyright 2009 James Cloos
+OpenPGP: ED7DAEA6; url=http://jhcloos.com/public_key/0xED7DAEA6.asc
+OpenPGP-Fingerprint: E9E9 F828 61A4 6EA9 0F2B  63E7 997A 9F17 ED7D AEA6
+Date:	Sat, 13 Jun 2009 15:54:38 -0400
+Message-ID: <m3my8bvrhl.fsf@lugabout.jhcloos.org>
 MIME-Version: 1.0
-To:	wuzhangjin@gmail.com
-CC:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: Error: symbol `__pastwait' is already defined
-References: <1244879922.24479.30.camel@falcon>
-In-Reply-To: <1244879922.24479.30.camel@falcon>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator750.hostgator.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - paralogos.com
-Return-Path: <kevink@paralogos.com>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <cloos@jhcloos.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23396
+X-archive-position: 23397
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
+X-original-sender: cloos@jhcloos.com
 Precedence: bulk
 X-list: linux-mips
 
-Calling a function does not cause replication of its symbols.  That 
-would happen if it were a macro, or an inline function, but not a simple 
-global function, which r4k_wait_irqoff is supposed to be, since (at 
-least the last time I worked with it), it is only called indirectly by 
-having its address stored in the cpu_wait function pointer.  Either your 
-compiler is doing something insane and replicating the function each 
-time its address is taken (!), or someone has added another __pastwait 
-symbol somewhere.
+>>>>> "|" == James Cloos <cloos@jhcloos.com> writes:
+>>>>> "Alan" == Alan Cox <alan@lxorguk.ukuu.org.uk> writes:
 
-And you are correct that moving the symbol to another function risks 
-breaking the functionality. Even if the compiler didn't reorder things - 
-which you are correct to note that it might do - you would create a 
-window during which the kernel would mistakenly believe that the CPU was 
-in the interrupt-disabled wait state when in fact it had just fallen out 
-of the loop and serviced an interrupt.  I don't think that would 
-necessarily be fatal, but it would at least be inefficient.
+|> Would the binary gcd algorithm not be a better fit for the kernel?
 
-          Regards,
+Alan> Could well be the shift based one is better for some processors only.
 
-          Kevin K.
+|> Very likely, I suspect.
 
-Wu Zhangjin wrote:
-> Hi, 
->
-> there is a guy reported a compiling problem in linux-2.6.29:
->
-> [...]
->   CC      arch/mips/kernel/cpu-probe.o
-> {standard input}: Assembler messages:
-> {standard input}:3939: Error: symbol `__pastwait' is already defined
-> make[1]: *** [arch/mips/kernel/cpu-probe.o] Error 1
-> make: *** [arch/mips/kernel] Error 2
->
-> Seems I met this problem before, perhaps here is the reason:
->
-> arch/mips/kernel/cpu-probe.c:
->
-> void r4k_wait_irqoff(void)
-> {
->     local_irq_disable();
->     if (!need_resched())
->         __asm__("   .set    push        \n"
->             "   .set    mips3       \n"
->             "   wait            \n"
->             "   .set    pop     \n");
->     local_irq_enable();
->     __asm__("   .globl __pastwait   \n"
->         "__pastwait:            \n");
->     return;
-> }
->
-> there is a global symbol __pastwait defined at the end of
-> r4k_wait_irqoff, if r4k_wait_irqoff is called more than one time, the
-> __pastwait will be multi-defined. so, need to be fixed. does this fix
-> it?
->
-> arch/mips/kernel/cpu-probe.c:
->
-> void r4k_wait_irqoff(void)
-> {
->     local_irq_disable();
->     if (!need_resched())
->         __asm__("   .set    push        \n"
->             "   .set    mips3       \n"
->             "   wait            \n"
->             "   .set    pop     \n");
->     local_irq_enable();
->     return;
-> }
-> /* a dumy funciton for marking the end of r4k_wait_irqoff */
-> void __pastwait(void)
-> {
-> 	;
-> }
->
-> but I am not sure the gcc compiler will tune the position of the
-> r4k_wait_irqoff and __pastwait or not, so seems not safe. perhaps we
-> should change something else instead.
->
-> perhaps we should tune the __pastwait solution directly, just spark it,
-> not look into it yet, seems __pastwait is only used here:
->
-> arch/mips/kernel/smtc.c:
-> smtc_send_ipi:
->
->             if (cpu_wait == r4k_wait_irqoff) {
->                 tcrestart = read_tc_c0_tcrestart();
->                 if (tcrestart >= (unsigned long)r4k_wait_irqoff
->                     && tcrestart < (unsigned long)__pastwait) {
->                     write_tc_c0_tcrestart(__pastwait);
->                     tcstatus &= ~TCSTATUS_IXMT;
->                     write_tc_c0_tcstatus(tcstatus);
->                     goto postdirect;
->                 }    
->             } 
->
-> best wishes,
-> Wu Zhangjin 
->
->
->   
+|> In any case, I do not have the hardware to do any statistically
+|> significant testing;
+
+I take that back.  Just in case speed is a relevant issue, I ran a test
+on my MX, which is a small xen domU running on a:
+,----
+| EFamily: 0 EModel: 0 Family: 6 Model: 15 Stepping: 11
+| CPU Model: Core 2 Quad 
+| Processor name string: Intel(R) Core(TM)2 Quad CPU    Q6600  @ 2.40GHz
+`----
+I got, compiling with gcc-4.4 -march=native -O3:
+
+binary
+408.39user 0.05system 6:52.75elapsed 98%CPU
+
+quick (the code in the kernel)
+600.96user 0.16system 10:19.06elapsed 97%CPU
+
+contfrac (the typical euclid algo)
+569.19user 0.12system 9:35.50elapsed 98%CPU
+
+extended euclid (calculates g=ia+jb=gcd(a,b))
+684.53user 0.13system 11:32.77elapsed 98%CPU
+
+I also tried on an old Alpha at freeshell; it had gcc-3.3; gcc's -S
+output looks like it uses hardware div there, just like it does on
+x86 and amd64.  The bgcd, though, was 10-16 times faster than either
+version of euclid's algo.
+
+On my laptop's P3M, binary gcd was about twice as fast as euclid.
+
+So, although modern processors are *much* better at int div, the
+binary gcd algo is still faster.
+
+The timings on the alpha and the laptop were of:
+
+    for (a=0xFFF; a > 0; a--)
+        for (b=a; b > 0; b--)
+            g=gcd(a,b);
+
+For the core2 times quoted above, I started with a=0xFFFF.
+
+And I forgot to mention:  the bgcd code I posted was based on
+some old notes of mine which most likely trace to TAoCP.
+
+-JimC
+-- 
+James Cloos <cloos@jhcloos.com>         OpenPGP: 1024D/ED7DAEA6

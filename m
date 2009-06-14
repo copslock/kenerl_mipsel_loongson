@@ -1,101 +1,113 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Jun 2009 17:58:52 +0200 (CEST)
-Received: from wa-out-1112.google.com ([209.85.146.178]:1889 "EHLO
-	wa-out-1112.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1492192AbZFNP6q (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 14 Jun 2009 17:58:46 +0200
-Received: by wa-out-1112.google.com with SMTP id n4so628146wag.0
-        for <multiple recipients>; Sun, 14 Jun 2009 08:58:12 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer:in-reply-to:references;
-        bh=pueyoD/A9IYpdD5073UD3a2qyFHvcNnQrpwOjNKYMKc=;
-        b=vs3bv9In1iM7D7l/OEj711tV93rRI9nH7/XcVvSXf60vj/cGKxYW/ItMtgLaus5HR2
-         yiZiOZKVuOR9DVeMQa8+siMV18oleLiVND6hnDlxTLb7yA4sgPs/rHDHmeqJcuTGxk1v
-         HgV7J3W+lZQ7+ey9kwAl1sVto0zhrPdxJBhR8=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=BUcFjYxPhtKqANYiBol25wti6IvREcSPzpPkSXOguQ6S7CVBssyxW9KG2O8/o05Wpr
-         ppceG8qfS7YoE1R8dUbf5r5TJ0AryS1+Y08AeOcUYkTpC2l6SO8xHScKT4aRIZgzZ//n
-         ZUuYGt2unzY5Pw204et/2V6MLBo1ZqvU7++d0=
-Received: by 10.114.211.1 with SMTP id j1mr9934628wag.176.1244994743393;
-        Sun, 14 Jun 2009 08:52:23 -0700 (PDT)
-Received: from localhost.localdomain ([219.246.59.144])
-        by mx.google.com with ESMTPS id v32sm4691023wah.13.2009.06.14.08.52.19
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 14 Jun 2009 08:52:22 -0700 (PDT)
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-To:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Cc:	Wang Liming <liming.wang@windriver.com>,
-	Wu Zhangjin <wuzj@lemote.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Nicholas Mc Guire <der.herr@hofr.at>,
-	Ingo Molnar <mingo@elte.hu>
-Subject: [PATCH v3] add an endian argument to scripts/recordmcount.pl
-Date:	Sun, 14 Jun 2009 23:52:13 +0800
-Message-Id: <0ed3bc52c8259e429283d2bc26ddaa36dbfdd0eb.1244994151.git.wuzj@lemote.com>
-X-Mailer: git-send-email 1.6.3.1
-In-Reply-To: <cover.1244994151.git.wuzj@lemote.com>
-References: <cover.1244994151.git.wuzj@lemote.com>
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Jun 2009 18:27:28 +0200 (CEST)
+Received: from [65.98.92.6] ([65.98.92.6]:4537 "EHLO b32.net"
+	rhost-flags-FAIL-FAIL-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1492235AbZFNQ1V (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 14 Jun 2009 18:27:21 +0200
+Received: (qmail 25445 invoked from network); 14 Jun 2009 16:26:42 -0000
+Received: from softdnserror (HELO two) (127.0.0.1)
+  by softdnserror with SMTP; 14 Jun 2009 16:26:42 -0000
+Received: by two (sSMTP sendmail emulation); Sun, 14 Jun 2009 09:26:02 -0700
+Message-Id: <4600b10a05ad646981412c9aaedc51da@localhost>
+From:	Kevin Cernekee <cernekee@gmail.com>
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Date:	Sun, 14 Jun 2009 09:12:18 -0700
+Subject: [PATCH] MIPS: Disable address swizzling on __raw MMIO operations (resend)
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23413
+X-archive-position: 23414
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Wu Zhangjin <wuzj@lemote.com>
+{read,write}[bwlq] are used for PCI and may therefore need to implement
+address or data swizzling on big-endian systems.  Those operations are
+unaffected by this patch.
 
-mips architecture need this argument to handle big/little endian
-differently.
+__raw_{read,write}[bwlq] should always implement unswizzled accesses.
+Currently on MIPS, the __raw operations do not swizzle data (good) but
+do swizzle addresses (bad).  This causes problems with code that
+assumes the __raw operations use the system's native endianness, such
+as the MTD physmap/CFI drivers.
 
-Reviewed-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Wu Zhangjin <wuzj@lemote.com>
+It also means that the __raw behavior is not consistent between
+BE systems that use address swizzling (IP32) and BE systems that
+use CONFIG_SWAP_IO_SPACE for data swizzling (IP22).
+
+Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 ---
- scripts/Makefile.build  |    1 +
- scripts/recordmcount.pl |    6 +++---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/io.h |   22 +++++++++++++---------
+ 1 files changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 5c4b7a4..548d575 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -207,6 +207,7 @@ endif
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index 436878e..ea0647c 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -301,7 +301,7 @@ static inline void iounmap(const volatile void __iomem *addr)
+ #define war_octeon_io_reorder_wmb()		do { } while (0)
+ #endif
  
- ifdef CONFIG_FTRACE_MCOUNT_RECORD
- cmd_record_mcount = perl $(srctree)/scripts/recordmcount.pl "$(ARCH)" \
-+	"$(if $(CONFIG_CPU_BIG_ENDIAN),big,little)" \
- 	"$(if $(CONFIG_64BIT),64,32)" \
- 	"$(OBJDUMP)" "$(OBJCOPY)" "$(CC)" "$(LD)" "$(NM)" "$(RM)" "$(MV)" \
- 	"$(if $(part-of-module),1,0)" "$(@)";
-diff --git a/scripts/recordmcount.pl b/scripts/recordmcount.pl
-index 0fae7da..f1e3e9c 100755
---- a/scripts/recordmcount.pl
-+++ b/scripts/recordmcount.pl
-@@ -100,13 +100,13 @@ $P =~ s@.*/@@g;
- 
- my $V = '0.1';
- 
--if ($#ARGV < 7) {
--	print "usage: $P arch bits objdump objcopy cc ld nm rm mv is_module inputfile\n";
-+if ($#ARGV < 8) {
-+	print "usage: $P arch endian bits objdump objcopy cc ld nm rm mv is_module inputfile\n";
- 	print "version: $V\n";
- 	exit(1);
+-#define __BUILD_MEMORY_SINGLE(pfx, bwlq, type, irq)			\
++#define __BUILD_MEMORY_SINGLE(pfx, bwlq, type, irq, swiz)		\
+ 									\
+ static inline void pfx##write##bwlq(type val,				\
+ 				    volatile void __iomem *mem)		\
+@@ -311,7 +311,9 @@ static inline void pfx##write##bwlq(type val,				\
+ 									\
+ 	war_octeon_io_reorder_wmb();					\
+ 									\
+-	__mem = (void *)__swizzle_addr_##bwlq((unsigned long)(mem));	\
++	__mem = swiz ?							\
++		(void *)__swizzle_addr_##bwlq((unsigned long)(mem)) :	\
++		(void *)mem;						\
+ 									\
+ 	__val = pfx##ioswab##bwlq(__mem, val);				\
+ 									\
+@@ -344,7 +346,9 @@ static inline type pfx##read##bwlq(const volatile void __iomem *mem)	\
+ 	volatile type *__mem;						\
+ 	type __val;							\
+ 									\
+-	__mem = (void *)__swizzle_addr_##bwlq((unsigned long)(mem));	\
++	__mem = swiz ?							\
++		(void *)__swizzle_addr_##bwlq((unsigned long)(mem)) :	\
++		(void *)mem;						\
+ 									\
+ 	if (sizeof(type) != sizeof(u64) || sizeof(u64) == sizeof(long))	\
+ 		__val = *__mem;						\
+@@ -406,15 +410,15 @@ static inline type pfx##in##bwlq##p(unsigned long port)			\
+ 	return pfx##ioswab##bwlq(__addr, __val);			\
  }
  
--my ($arch, $bits, $objdump, $objcopy, $cc,
-+my ($arch, $endian, $bits, $objdump, $objcopy, $cc,
-     $ld, $nm, $rm, $mv, $is_module, $inputfile) = @ARGV;
+-#define __BUILD_MEMORY_PFX(bus, bwlq, type)				\
++#define __BUILD_MEMORY_PFX(bus, bwlq, type, swiz)			\
+ 									\
+-__BUILD_MEMORY_SINGLE(bus, bwlq, type, 1)
++__BUILD_MEMORY_SINGLE(bus, bwlq, type, 1, swiz)
  
- # This file refers to mcount and shouldn't be ftraced, so lets' ignore it
+ #define BUILDIO_MEM(bwlq, type)						\
+ 									\
+-__BUILD_MEMORY_PFX(__raw_, bwlq, type)					\
+-__BUILD_MEMORY_PFX(, bwlq, type)					\
+-__BUILD_MEMORY_PFX(__mem_, bwlq, type)					\
++__BUILD_MEMORY_PFX(__raw_, bwlq, type, 0)				\
++__BUILD_MEMORY_PFX(, bwlq, type, 1)					\
++__BUILD_MEMORY_PFX(__mem_, bwlq, type, 1)				\
+ 
+ BUILDIO_MEM(b, u8)
+ BUILDIO_MEM(w, u16)
+@@ -438,7 +442,7 @@ BUILDIO_IOPORT(q, u64)
+ 
+ #define __BUILDIO(bwlq, type)						\
+ 									\
+-__BUILD_MEMORY_SINGLE(____raw_, bwlq, type, 0)
++__BUILD_MEMORY_SINGLE(____raw_, bwlq, type, 0, 0)
+ 
+ __BUILDIO(q, u64)
+ 
 -- 
-1.6.0.4
+1.5.3.6

@@ -1,113 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 13 Jun 2009 21:55:45 +0200 (CEST)
-Received: from eagle.jhcloos.com ([207.210.242.212]:3769 "EHLO
-	eagle.jhcloos.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1492421AbZFMTzj (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 13 Jun 2009 21:55:39 +0200
-Received: by eagle.jhcloos.com (Postfix, from userid 10)
-	id 991C940086; Sat, 13 Jun 2009 19:54:53 +0000 (UTC)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed; d=jhcloos.com;
-	s=eagle; t=1244922917;
-	bh=kWA6FhUvXkiNBOy0eJ1vtkoExJjvHUCvkv41MaCmVWo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type;
-	b=kTloQ8j6uipX0qTiuiK8inJGSOYHtM63aI5rX+BO4nv8v6+SkwhemdM1974LufNee
-	 zRHZOsLpJC3A6OI8F1LUtxSITHQkfY/l9WAZG3kFTDRwVDxEirQ35fCIdR56+Fri3m
-	 Z7u4PCGwQ3/Bos9nCyy+jFCwi8v4P0Z6IIcsyW6g=
-Received: by lugabout.jhcloos.org (Postfix, from userid 500)
-	id 92B016539E; Sat, 13 Jun 2009 19:55:03 +0000 (UTC)
-From:	James Cloos <cloos@jhcloos.com>
-To:	Alan Cox <alan@lxorguk.ukuu.org.uk>
-Cc:	linux-kernel@vger.kernel.org,
-	"Linux-MIPS" <linux-mips@linux-mips.org>,
-	Florian Fainelli <florian@openwrt.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Takashi Iwai <tiwai@suse.de>,
-	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 1/8] add lib/gcd.c
-In-Reply-To: <m3ocssw2sw.fsf@lugabout.jhcloos.org> (James Cloos's message of
-	"Sat, 13 Jun 2009 11:50:15 -0400")
-References: <200906041615.10467.florian@openwrt.org>
-	<m38wjwz5ur.fsf@lugabout.jhcloos.org>
-	<20090613162802.6c212505@lxorguk.ukuu.org.uk>
-	<m3ocssw2sw.fsf@lugabout.jhcloos.org>
-User-Agent: Gnus/5.110011 (No Gnus v0.11) Emacs/23.0.92 (gnu/linux)
-Face:	iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAI1J
- REFUOE+lU9ESgCAIg64P1y+ngUdxhl5H8wFbbM0OmUiEhKkCYaZThXCo6KE5sCbA1DDX3genvO4d
- eBQgEMaM5qy6uWk4SfBYfdu9jvBN9nSVDOKRtwb+I3epboOsOX5pZbJNsBJFvmQQ05YMfieIBnYX
- FK2N6dOawd97r/e8RjkTLzmMsiVgrAoEugtviCM3v2WzjgAAAABJRU5ErkJggg==
-Copyright: Copyright 2009 James Cloos
-OpenPGP: ED7DAEA6; url=http://jhcloos.com/public_key/0xED7DAEA6.asc
-OpenPGP-Fingerprint: E9E9 F828 61A4 6EA9 0F2B  63E7 997A 9F17 ED7D AEA6
-Date:	Sat, 13 Jun 2009 15:54:38 -0400
-Message-ID: <m3my8bvrhl.fsf@lugabout.jhcloos.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <cloos@jhcloos.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Jun 2009 07:55:22 +0200 (CEST)
+Received: from mail-px0-f191.google.com ([209.85.216.191]:53874 "EHLO
+	mail-px0-f191.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1491771AbZFNFzN (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 14 Jun 2009 07:55:13 +0200
+Received: by pxi29 with SMTP id 29so222835pxi.22
+        for <multiple recipients>; Sat, 13 Jun 2009 22:54:35 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=DwckijutvMWAZPCA30bwtzBqvcQ5HhZsOOk/qfZHw1s=;
+        b=B7kV3npHR87YtyhKpGjCnQTwqihSRPBt9ZmbKYQAZhhVkICM0rNSJhBYvqsR1oDnUg
+         ryH8QwpXRaQyrjUKCabf4IZu6nRAjvDejy9uH27V89L+eoq2UlNPP1c0f2V2QSp4IvWa
+         sNs96rS8Ix7srG83k1HWIZfSFj9MFizsx6mAc=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=JjZ8p3bxpQ265e+5potAfpbi/LiYFm2z80tUDzPwtnW1JKJRoE7K0tDzg7RPIozVZU
+         FiySQ/IM/bS/wm7pmFSwUSyDB5izMqugJj8GM2i7iuCl4tvOy3nL+Xxa4GScW4tmJN2h
+         dst1WoO+EO+iqQ9nUjqT0PhR2CJCZETabtQMk=
+Received: by 10.114.80.18 with SMTP id d18mr9564968wab.122.1244958875703;
+        Sat, 13 Jun 2009 22:54:35 -0700 (PDT)
+Received: from localhost.localdomain ([219.246.59.144])
+        by mx.google.com with ESMTPS id j31sm3806586waf.33.2009.06.13.22.54.32
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sat, 13 Jun 2009 22:54:35 -0700 (PDT)
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+To:	Frederic Weisbecker <fweisbec@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	Linux-MIPS <linux-mips@linux-mips.org>
+Cc:	Steven Rostedt <rostedt@goodmis.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Wu Zhangjin <wuzj@lemote.com>
+Subject: [PATCH] kmemtrace:fix undeclared 'PAGE_SIZE' via asm/page.h
+Date:	Sun, 14 Jun 2009 13:54:23 +0800
+Message-Id: <1244958863-28899-1-git-send-email-wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.6.3.1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23397
+X-archive-position: 23399
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cloos@jhcloos.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
->>>>> "|" == James Cloos <cloos@jhcloos.com> writes:
->>>>> "Alan" == Alan Cox <alan@lxorguk.ukuu.org.uk> writes:
+From: Wu Zhangjin <wuzj@lemote.com>
 
-|> Would the binary gcd algorithm not be a better fit for the kernel?
+when compiling linux-mips with kmemtrace enabled, this error will be
+there:
 
-Alan> Could well be the shift based one is better for some processors only.
+include/linux/trace_seq.h:12: error: 'PAGE_SIZE' undeclared here (not in
+				a function)
 
-|> Very likely, I suspect.
+I checked the source code and found trace_seq.h used PAGE_SIZE but not
+include the relative header file, so, fix it via adding the header file
+<asm/page.h>
 
-|> In any case, I do not have the hardware to do any statistically
-|> significant testing;
+this error will not be triggered in linux-x86 for there is a
+<asm/page.h> header file included in a certain header file. but which
+not means <asm/page.h> is not needed in trace_seq.h
 
-I take that back.  Just in case speed is a relevant issue, I ran a test
-on my MX, which is a small xen domU running on a:
-,----
-| EFamily: 0 EModel: 0 Family: 6 Model: 15 Stepping: 11
-| CPU Model: Core 2 Quad 
-| Processor name string: Intel(R) Core(TM)2 Quad CPU    Q6600  @ 2.40GHz
-`----
-I got, compiling with gcc-4.4 -march=native -O3:
+Signed-off-by: Wu Zhangjin <wuzj@lemote.com>
+---
+ include/linux/trace_seq.h |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
 
-binary
-408.39user 0.05system 6:52.75elapsed 98%CPU
-
-quick (the code in the kernel)
-600.96user 0.16system 10:19.06elapsed 97%CPU
-
-contfrac (the typical euclid algo)
-569.19user 0.12system 9:35.50elapsed 98%CPU
-
-extended euclid (calculates g=ia+jb=gcd(a,b))
-684.53user 0.13system 11:32.77elapsed 98%CPU
-
-I also tried on an old Alpha at freeshell; it had gcc-3.3; gcc's -S
-output looks like it uses hardware div there, just like it does on
-x86 and amd64.  The bgcd, though, was 10-16 times faster than either
-version of euclid's algo.
-
-On my laptop's P3M, binary gcd was about twice as fast as euclid.
-
-So, although modern processors are *much* better at int div, the
-binary gcd algo is still faster.
-
-The timings on the alpha and the laptop were of:
-
-    for (a=0xFFF; a > 0; a--)
-        for (b=a; b > 0; b--)
-            g=gcd(a,b);
-
-For the core2 times quoted above, I started with a=0xFFFF.
-
-And I forgot to mention:  the bgcd code I posted was based on
-some old notes of mine which most likely trace to TAoCP.
-
--JimC
+diff --git a/include/linux/trace_seq.h b/include/linux/trace_seq.h
+index c68bccb..c134dd1 100644
+--- a/include/linux/trace_seq.h
++++ b/include/linux/trace_seq.h
+@@ -3,6 +3,8 @@
+ 
+ #include <linux/fs.h>
+ 
++#include <asm/page.h>
++
+ /*
+  * Trace sequences are used to allow a function to call several other functions
+  * to create a string of data to use (up to a max of PAGE_SIZE.
 -- 
-James Cloos <cloos@jhcloos.com>         OpenPGP: 1024D/ED7DAEA6
+1.6.0.4

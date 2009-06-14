@@ -1,113 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 14 Jun 2009 18:27:28 +0200 (CEST)
-Received: from [65.98.92.6] ([65.98.92.6]:4537 "EHLO b32.net"
-	rhost-flags-FAIL-FAIL-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1492235AbZFNQ1V (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 14 Jun 2009 18:27:21 +0200
-Received: (qmail 25445 invoked from network); 14 Jun 2009 16:26:42 -0000
-Received: from softdnserror (HELO two) (127.0.0.1)
-  by softdnserror with SMTP; 14 Jun 2009 16:26:42 -0000
-Received: by two (sSMTP sendmail emulation); Sun, 14 Jun 2009 09:26:02 -0700
-Message-Id: <4600b10a05ad646981412c9aaedc51da@localhost>
-From:	Kevin Cernekee <cernekee@gmail.com>
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Date:	Sun, 14 Jun 2009 09:12:18 -0700
-Subject: [PATCH] MIPS: Disable address swizzling on __raw MMIO operations (resend)
-Return-Path: <cernekee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jun 2009 15:41:07 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:43690 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1492609AbZFONlA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 15 Jun 2009 15:41:00 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n5E9CkdU027907;
+	Sun, 14 Jun 2009 10:15:26 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n5E9Cjho027905;
+	Sun, 14 Jun 2009 10:12:45 +0100
+Date:	Sun, 14 Jun 2009 10:12:45 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Kevin D. Kissell" <kevink@paralogos.com>
+Cc:	wuzhangjin@gmail.com, linux-mips@linux-mips.org
+Subject: Re: Error: symbol `__pastwait' is already defined
+Message-ID: <20090614091245.GA27667@linux-mips.org>
+References: <1244879922.24479.30.camel@falcon> <4A33D2EA.801@paralogos.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4A33D2EA.801@paralogos.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23414
+X-archive-position: 23422
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: cernekee@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-{read,write}[bwlq] are used for PCI and may therefore need to implement
-address or data swizzling on big-endian systems.  Those operations are
-unaffected by this patch.
+On Sat, Jun 13, 2009 at 06:25:14PM +0200, Kevin D. Kissell wrote:
 
-__raw_{read,write}[bwlq] should always implement unswizzled accesses.
-Currently on MIPS, the __raw operations do not swizzle data (good) but
-do swizzle addresses (bad).  This causes problems with code that
-assumes the __raw operations use the system's native endianness, such
-as the MTD physmap/CFI drivers.
+> Calling a function does not cause replication of its symbols.  That  
+> would happen if it were a macro, or an inline function, but not a simple  
+> global function, which r4k_wait_irqoff is supposed to be, since (at  
+> least the last time I worked with it), it is only called indirectly by  
+> having its address stored in the cpu_wait function pointer.  Either your  
+> compiler is doing something insane and replicating the function each  
+> time its address is taken (!), or someone has added another __pastwait  
+> symbol somewhere.
+>
+> And you are correct that moving the symbol to another function risks  
+> breaking the functionality. Even if the compiler didn't reorder things -  
+> which you are correct to note that it might do - you would create a  
+> window during which the kernel would mistakenly believe that the CPU was  
+> in the interrupt-disabled wait state when in fact it had just fallen out  
+> of the loop and serviced an interrupt.  I don't think that would  
+> necessarily be fatal, but it would at least be inefficient.
 
-It also means that the __raw behavior is not consistent between
-BE systems that use address swizzling (IP32) and BE systems that
-use CONFIG_SWAP_IO_SPACE for data swizzling (IP22).
+It depends on how gcc optimized the if statement.  Gcc might compile the
+function as if it was written like this:
 
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
----
- arch/mips/include/asm/io.h |   22 +++++++++++++---------
- 1 files changed, 13 insertions(+), 9 deletions(-)
+void r4k_wait_irqoff(void)
+{
+	local_irq_disable();
+	if (need_resched())
+		goto nowait;
 
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index 436878e..ea0647c 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -301,7 +301,7 @@ static inline void iounmap(const volatile void __iomem *addr)
- #define war_octeon_io_reorder_wmb()		do { } while (0)
- #endif
- 
--#define __BUILD_MEMORY_SINGLE(pfx, bwlq, type, irq)			\
-+#define __BUILD_MEMORY_SINGLE(pfx, bwlq, type, irq, swiz)		\
- 									\
- static inline void pfx##write##bwlq(type val,				\
- 				    volatile void __iomem *mem)		\
-@@ -311,7 +311,9 @@ static inline void pfx##write##bwlq(type val,				\
- 									\
- 	war_octeon_io_reorder_wmb();					\
- 									\
--	__mem = (void *)__swizzle_addr_##bwlq((unsigned long)(mem));	\
-+	__mem = swiz ?							\
-+		(void *)__swizzle_addr_##bwlq((unsigned long)(mem)) :	\
-+		(void *)mem;						\
- 									\
- 	__val = pfx##ioswab##bwlq(__mem, val);				\
- 									\
-@@ -344,7 +346,9 @@ static inline type pfx##read##bwlq(const volatile void __iomem *mem)	\
- 	volatile type *__mem;						\
- 	type __val;							\
- 									\
--	__mem = (void *)__swizzle_addr_##bwlq((unsigned long)(mem));	\
-+	__mem = swiz ?							\
-+		(void *)__swizzle_addr_##bwlq((unsigned long)(mem)) :	\
-+		(void *)mem;						\
- 									\
- 	if (sizeof(type) != sizeof(u64) || sizeof(u64) == sizeof(long))	\
- 		__val = *__mem;						\
-@@ -406,15 +410,15 @@ static inline type pfx##in##bwlq##p(unsigned long port)			\
- 	return pfx##ioswab##bwlq(__addr, __val);			\
- }
- 
--#define __BUILD_MEMORY_PFX(bus, bwlq, type)				\
-+#define __BUILD_MEMORY_PFX(bus, bwlq, type, swiz)			\
- 									\
--__BUILD_MEMORY_SINGLE(bus, bwlq, type, 1)
-+__BUILD_MEMORY_SINGLE(bus, bwlq, type, 1, swiz)
- 
- #define BUILDIO_MEM(bwlq, type)						\
- 									\
--__BUILD_MEMORY_PFX(__raw_, bwlq, type)					\
--__BUILD_MEMORY_PFX(, bwlq, type)					\
--__BUILD_MEMORY_PFX(__mem_, bwlq, type)					\
-+__BUILD_MEMORY_PFX(__raw_, bwlq, type, 0)				\
-+__BUILD_MEMORY_PFX(, bwlq, type, 1)					\
-+__BUILD_MEMORY_PFX(__mem_, bwlq, type, 1)				\
- 
- BUILDIO_MEM(b, u8)
- BUILDIO_MEM(w, u16)
-@@ -438,7 +442,7 @@ BUILDIO_IOPORT(q, u64)
- 
- #define __BUILDIO(bwlq, type)						\
- 									\
--__BUILD_MEMORY_SINGLE(____raw_, bwlq, type, 0)
-+__BUILD_MEMORY_SINGLE(____raw_, bwlq, type, 0, 0)
- 
- __BUILDIO(q, u64)
- 
--- 
-1.5.3.6
+	__asm__(
+	"	.set	push		\n"
+	"	.set	mips3		\n"
+	"	wait			\n"
+	"	.set	pop		\n");
+	local_irq_enable();
+	__asm__(
+	"	.globl	__pastwait	\n"
+	"__pastwait:			\n");
+	return;
+
+nowait
+	local_irq_enable();
+	__asm__(
+	"	.globl	__pastwait	\n"
+	"__pastwait:			\n");
+}
+
+Which isn't quite the brightest thing to do but perfectly legal.  As for
+gcc follow the old motto trust is futile, suspicion breeds confidence.
+
+  Ralf

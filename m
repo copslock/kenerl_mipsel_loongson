@@ -1,85 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jun 2009 15:41:07 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:43690 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1492609AbZFONlA (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 15 Jun 2009 15:41:00 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n5E9CkdU027907;
-	Sun, 14 Jun 2009 10:15:26 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n5E9Cjho027905;
-	Sun, 14 Jun 2009 10:12:45 +0100
-Date:	Sun, 14 Jun 2009 10:12:45 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Kevin D. Kissell" <kevink@paralogos.com>
-Cc:	wuzhangjin@gmail.com, linux-mips@linux-mips.org
-Subject: Re: Error: symbol `__pastwait' is already defined
-Message-ID: <20090614091245.GA27667@linux-mips.org>
-References: <1244879922.24479.30.camel@falcon> <4A33D2EA.801@paralogos.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 15 Jun 2009 18:01:40 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:1530 "EHLO
+	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492630AbZFOQBf (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 15 Jun 2009 18:01:35 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B4a366ff80000>; Mon, 15 Jun 2009 11:59:52 -0400
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 15 Jun 2009 08:59:51 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 15 Jun 2009 08:59:51 -0700
+Message-ID: <4A366FF7.2010206@caviumnetworks.com>
+Date:	Mon, 15 Jun 2009 08:59:51 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4A33D2EA.801@paralogos.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@h5.dl5rb.org.uk>
+To:	Wu Zhangjin <wuzhangjin@gmail.com>
+CC:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+	Wang Liming <liming.wang@windriver.com>,
+	Wu Zhangjin <wuzj@lemote.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Nicholas Mc Guire <der.herr@hofr.at>,
+	Ingo Molnar <mingo@elte.hu>
+Subject: Re: [PATCH v3] filter local function prefixed by $L
+References: <cover.1244994151.git.wuzj@lemote.com> <d0983eb71d7517d0e536352f3288e995abbb0e07.1244994151.git.wuzj@lemote.com>
+In-Reply-To: <d0983eb71d7517d0e536352f3288e995abbb0e07.1244994151.git.wuzj@lemote.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 15 Jun 2009 15:59:51.0485 (UTC) FILETIME=[510336D0:01C9EDD2]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23422
+X-archive-position: 23423
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Jun 13, 2009 at 06:25:14PM +0200, Kevin D. Kissell wrote:
+Wu Zhangjin wrote:
+> From: Wu Zhangjin <wuzj@lemote.com>
+> 
+> this patch fixed the warning as following:
+> 
+> mipsel-linux-gnu-objcopy: 'fs/proc/.tmp_gl_devices.o': No such file
+> mipsel-linux-gnu-ld: fs/proc/.tmp_gl_devices.o: No such file: No such
+> file or directory
+> rm: cannot remove `fs/proc/.tmp_gl_devices.o': No such file or directory
+> rm: cannot remove `fs/proc/.tmp_mx_devices.o': No such file or directory
+> 
+> the real reason of above warning is that the $Lxx local functions will
+> be treated as global symbols, so, should be filtered.
+> 
+> Signed-off-by: Wu Zhangjin <wuzj@lemote.com>
+> ---
+>  scripts/recordmcount.pl |    4 ++++
+>  1 files changed, 4 insertions(+), 0 deletions(-)
+> 
+> diff --git a/scripts/recordmcount.pl b/scripts/recordmcount.pl
+> index 533d3bf..542cb04 100755
+> --- a/scripts/recordmcount.pl
+> +++ b/scripts/recordmcount.pl
+> @@ -343,6 +343,10 @@ sub update_funcs
+>  	if (!$use_locals) {
+>  	    return;
+>  	}
+> +	# filter $LXXX tags
+> +	if ("$ref_func" =~ m/\$L/) {
+> +		return;
+> +	}
 
-> Calling a function does not cause replication of its symbols.  That  
-> would happen if it were a macro, or an inline function, but not a simple  
-> global function, which r4k_wait_irqoff is supposed to be, since (at  
-> least the last time I worked with it), it is only called indirectly by  
-> having its address stored in the cpu_wait function pointer.  Either your  
-> compiler is doing something insane and replicating the function each  
-> time its address is taken (!), or someone has added another __pastwait  
-> symbol somewhere.
->
-> And you are correct that moving the symbol to another function risks  
-> breaking the functionality. Even if the compiler didn't reorder things -  
-> which you are correct to note that it might do - you would create a  
-> window during which the kernel would mistakenly believe that the CPU was  
-> in the interrupt-disabled wait state when in fact it had just fallen out  
-> of the loop and serviced an interrupt.  I don't think that would  
-> necessarily be fatal, but it would at least be inefficient.
+Certainly this is true for mips.  I doubt it is for all architectures 
+targed by Linux.
 
-It depends on how gcc optimized the if statement.  Gcc might compile the
-function as if it was written like this:
-
-void r4k_wait_irqoff(void)
-{
-	local_irq_disable();
-	if (need_resched())
-		goto nowait;
-
-	__asm__(
-	"	.set	push		\n"
-	"	.set	mips3		\n"
-	"	wait			\n"
-	"	.set	pop		\n");
-	local_irq_enable();
-	__asm__(
-	"	.globl	__pastwait	\n"
-	"__pastwait:			\n");
-	return;
-
-nowait
-	local_irq_enable();
-	__asm__(
-	"	.globl	__pastwait	\n"
-	"__pastwait:			\n");
-}
-
-Which isn't quite the brightest thing to do but perfectly legal.  As for
-gcc follow the old motto trust is futile, suspicion breeds confidence.
-
-  Ralf
+David Daney

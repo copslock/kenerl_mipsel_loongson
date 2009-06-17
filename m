@@ -1,85 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jun 2009 15:37:06 +0200 (CEST)
-Received: from mail-ew0-f221.google.com ([209.85.219.221]:54524 "EHLO
-	mail-ew0-f221.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492874AbZFQNg4 convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 17 Jun 2009 15:36:56 +0200
-Received: by ewy21 with SMTP id 21so440922ewy.0
-        for <linux-mips@linux-mips.org>; Wed, 17 Jun 2009 06:35:28 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:to:subject:date
-         :user-agent:cc:references:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:content-disposition:message-id;
-        bh=eyBEAxnP38BDJ/QfIFmiplmX+gNdaApvK9d751e/WYA=;
-        b=ZSbnyUjVCD4/ueidW1l+ONr4vtAgVk1S3PH3hcm5YBMGbkT5zIrEt6Jj5tkLQ3G/Ip
-         ocGjDkZ2me7t7XJbAh5x0KH0UAtE7O37fxkHdm+r6HAg2+tH1S8ZlOG5WrAg9cvLMPbL
-         rObVVeR3WcgoRKbsQVMVukSzfqrGw1JckOEkU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
-         :mime-version:content-type:content-transfer-encoding
-         :content-disposition:message-id;
-        b=YNn69S9ggtDcOTbA9JK0AMAMsl+wmdO7MQvGq6RJgnzrAvD5ia6fiQ01XLzk1K8I6s
-         X8i/giEUc5hrPYbeFW+khtREjF+uGg0jii10u8CRIWLV+sobLBAOkAw/NarVrJhz8/48
-         iRsFxWYiGrSLUlt/RA4Wuy7Hh7ScNfRh5g5BU=
-Received: by 10.216.39.85 with SMTP id c63mr85805web.103.1245245728847;
-        Wed, 17 Jun 2009 06:35:28 -0700 (PDT)
-Received: from florian.lab.openpattern.org (lab.openpattern.org [82.240.16.241])
-        by mx.google.com with ESMTPS id 5sm65138eyf.8.2009.06.17.06.35.27
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 17 Jun 2009 06:35:27 -0700 (PDT)
-From:	Florian Fainelli <florian@openwrt.org>
-To:	Manuel Lauss <manuel.lauss@googlemail.com>
-Subject: Re: [PATCH] -git compile fixes for MIPS
-Date:	Wed, 17 Jun 2009 15:35:23 +0200
-User-Agent: KMail/1.9.9
-Cc:	Linux-MIPS <linux-mips@linux-mips.org>
-References: <4A38A173.9010508@gmail.com>
-In-Reply-To: <4A38A173.9010508@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jun 2009 17:39:44 +0200 (CEST)
+Received: from gateway-1237.mvista.com ([63.81.120.158]:56249 "EHLO
+	gateway-1237.mvista.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492880AbZFQPjg (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 17 Jun 2009 17:39:36 +0200
+Received: from tanderson2xp (nexus.az.mvista.com [10.50.1.161])
+	by hermes.mvista.com (Postfix) with ESMTP
+	id 43E8B1ACBB; Wed, 17 Jun 2009 08:37:51 -0700 (PDT)
+From:	"Tim Anderson" <tanderson@mvista.com>
+To:	"'Ralf Baechle'" <ralf@linux-mips.org>
+Cc:	<linux-mips@linux-mips.org>
+Subject: RE: [PATCH 2/5] Extend IPI handling to CPU number
+Date:	Wed, 17 Jun 2009 08:36:08 -0700
+Message-ID: <6968DC16EA224848A8E9F0DBC4EEE98E@mvista.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
-Message-Id: <200906171535.24453.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Office Outlook 11
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5579
+In-Reply-To: <20090617081412.GB13467@linux-mips.org>
+Thread-Index: AcnvI7gybdWEttWyQ3e4/AZP9ua9BAAPX74w
+Return-Path: <tanderson@mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23447
+X-archive-position: 23448
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: tanderson@mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Manuel,
+Ralf,
 
-Le Wednesday 17 June 2009 09:55:31 Manuel Lauss, vous avez écrit :
-> Quick fixes for some compile failures which have cropped up
-> in linus-git in the last 24 hours:
->
->    CC      arch/mips/kernel/time.o
-> In file included from linux-2.6.git/include/linux/bug.h:4,
->                   from linux-2.6.git/arch/mips/kernel/time.c:13:
-> linux-2.6.git/arch/mips/include/asm/bug.h:10: error: expected '=', ',',
-> ';', 'asm' or '__attribute__' before 'BUG'
-> linux-2.6.git/arch/mips/include/asm/bug.h: In function '__BUG_ON':
-> linux-2.6.git/arch/mips/include/asm/bug.h:26: error: implicit declaration
-> of function 'BUG'
->
->    CC      arch/mips/mm/uasm.o
-> In file included from linux-2.6.git/arch/mips/mm/uasm.c:21:
-> linux-2.6.git/arch/mips/include/asm/bugs.h: In function 'check_bugs':
-> linux-2.6.git/arch/mips/include/asm/bugs.h:34: error: implicit declaration
-> of function 'smp_processor_id' linux-2.6.git/arch/mips/mm/uasm.c: In
-> function 'uasm_copy_handler': linux-2.6.git/arch/mips/mm/uasm.c:514: error:
-> implicit declaration of function 'memcpy'
->
-> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+> -----Original Message-----
+> From: Ralf Baechle [mailto:ralf@linux-mips.org] 
+> Sent: Wednesday, June 17, 2009 1:14 AM
+> To: Tim Anderson
+> Cc: linux-mips@linux-mips.org
+> Subject: Re: [PATCH 2/5] Extend IPI handling to CPU number
+> 
+> On Tue, Jun 16, 2009 at 04:58:28PM -0700, Tim Anderson wrote:
+> 
+> > diff --git a/arch/mips/kernel/irq-gic.c b/arch/mips/kernel/irq-gic.c
+> > index 1d6ac92..5cf003d 100644
+> > --- a/arch/mips/kernel/irq-gic.c
+> > +++ b/arch/mips/kernel/irq-gic.c
+> > @@ -245,6 +245,10 @@ static void __init gic_basic_init(void)
+> >  		if (cpu == X)
+> >  			continue;
+> >  
+> > +		if (cpu == 0 && i != 0 && _intrmap[i].intrnum == 0 &&
+> > +			 _intrmap[i].ipiflag == 0)
+>                         ^
+>                         wrong indentation
 
-Thanks for fixing this !
+Good Point I will correct this and resubmit.
 
-Tested-by: Florian Fainelli <florian@openwrt.org>
+> 
+> > +			continue;
+> > +
+> 
+>   Ralf
+> 

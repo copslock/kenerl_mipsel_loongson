@@ -1,86 +1,128 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jun 2009 21:37:16 +0200 (CEST)
-Received: from sitar.i-cable.com ([203.83.115.100]:60536 "HELO
-	sitar.i-cable.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with SMTP id S1492005AbZFQThK (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 17 Jun 2009 21:37:10 +0200
-Received: (qmail 28392 invoked by uid 508); 17 Jun 2009 19:35:35 -0000
-Received: from 203.83.114.121 by sitar (envelope-from <robert.zhangle@gmail.com>, uid 505) with qmail-scanner-1.25 
- (clamdscan: 0.93.3/8786.  
- Clear:RC:1(203.83.114.121):. 
- Processed in 0.086237 secs); 17 Jun 2009 19:35:35 -0000
-Received: from ip114121.hkicable.com (HELO silicon.i-cable.com) (203.83.114.121)
-  by 0 with SMTP; 17 Jun 2009 19:35:35 -0000
-Received: from localhost (cm222-167-208-75.hkcable.com.hk [222.167.208.75])
-	by silicon.i-cable.com (8.13.5/8.13.5) with ESMTP id n5HJZZLl018395;
-	Thu, 18 Jun 2009 03:35:35 +0800 (HKT)
-Date:	Thu, 18 Jun 2009 03:35:15 +0800
-From:	Zhang Le <r0bertz@gentoo.org>
-To:	Manuel Lauss <manuel.lauss@googlemail.com>
-Cc:	linux-mips@linux-mips.org, manuel.lauss@gmail.com
-Subject: Re: [PATCH v2] -git compile fixes for MIPS
-Message-ID: <20090617193515.GT9611@adriano.hkcable.com.hk>
-Mail-Followup-To: Manuel Lauss <manuel.lauss@googlemail.com>,
-	linux-mips@linux-mips.org, manuel.lauss@gmail.com
-References: <1245266590-31999-1-git-send-email-r0bertz@gentoo.org> <f861ec6f0906171231o1e5e4b1ei5525dcf5180127ac@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 17 Jun 2009 21:38:57 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:25292 "EHLO
+	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492005AbZFQTiu (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 17 Jun 2009 21:38:50 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B4a3945490000>; Wed, 17 Jun 2009 15:34:38 -0400
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 17 Jun 2009 12:33:37 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 17 Jun 2009 12:33:37 -0700
+Message-ID: <4A394511.6000705@caviumnetworks.com>
+Date:	Wed, 17 Jun 2009 12:33:37 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="pd495SECmvzXpBRb"
-Content-Disposition: inline
-In-Reply-To: <f861ec6f0906171231o1e5e4b1ei5525dcf5180127ac@mail.gmail.com>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <robert.zhangle@gmail.com>
+To:	Zhang Le <r0bertz@gentoo.org>, Ralf Baechle <ralf@linux-mips.org>
+CC:	linux-mips@linux-mips.org, manuel.lauss@gmail.com
+Subject: Re: [PATCH v2] -git compile fixes for MIPS
+References: <1245266590-31999-1-git-send-email-r0bertz@gentoo.org>
+In-Reply-To: <1245266590-31999-1-git-send-email-r0bertz@gentoo.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 17 Jun 2009 19:33:37.0422 (UTC) FILETIME=[82B162E0:01C9EF82]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23454
+X-archive-position: 23455
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: r0bertz@gentoo.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
+Zhang Le wrote:
+> Quick fixes for some compile failures which have cropped up
+> in linus-git in the last 24 hours:
+> 
+>    CC      arch/mips/kernel/time.o
+> In file included from linux-2.6.git/include/linux/bug.h:4,
+>                   from linux-2.6.git/arch/mips/kernel/time.c:13:
+> linux-2.6.git/arch/mips/include/asm/bug.h:10: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'BUG'
+> linux-2.6.git/arch/mips/include/asm/bug.h: In function '__BUG_ON':
+> linux-2.6.git/arch/mips/include/asm/bug.h:26: error: implicit declaration of function 'BUG'
+> 
+>   CC      arch/mips/kernel/traps.o
+> cc1: warnings being treated as errors
+> /home/zhangle/linux/arch/mips/kernel/traps.c: In function ‘set_uncached_handler’:
+> /home/zhangle/linux/arch/mips/kernel/traps.c:1604: error: format not a string literal and no format arguments
+> 
+>    CC      arch/mips/mm/uasm.o
+> In file included from linux-2.6.git/arch/mips/mm/uasm.c:21:
+> linux-2.6.git/arch/mips/include/asm/bugs.h: In function 'check_bugs':
+> linux-2.6.git/arch/mips/include/asm/bugs.h:34: error: implicit declaration of function 'smp_processor_id'
+> linux-2.6.git/arch/mips/mm/uasm.c: In function 'uasm_copy_handler':
+> linux-2.6.git/arch/mips/mm/uasm.c:514: error: implicit declaration of function 'memcpy'
+> 
+> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+> Signed-off-by: Zhang Le <r0bertz@gentoo.org>
 
---pd495SECmvzXpBRb
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This one looks better.  However...
 
-On 21:31 Wed 17 Jun     , Manuel Lauss wrote:
-> On Wed, Jun 17, 2009 at 9:23 PM, Zhang Le<r0bertz@gentoo.org> wrote:
->=20
-> > =C2=A0CC =C2=A0 =C2=A0 =C2=A0arch/mips/kernel/traps.o
-> > cc1: warnings being treated as errors
-> > /home/zhangle/linux/arch/mips/kernel/traps.c: In function =E2=80=98set_=
-uncached_handler=E2=80=99:
-> > /home/zhangle/linux/arch/mips/kernel/traps.c:1604: error: format not a =
-string literal and no format arguments
->=20
-> This one is caused by one of the Gentoo patches to GCC
-> (10-format-string-security patch),
-> I usually remove this patch when building GCC to avoid these stupid
-> compile failures ;-)
+> ---
+>  arch/mips/include/asm/bug.h  |    1 +
+>  arch/mips/include/asm/bugs.h |    1 +
+>  arch/mips/kernel/traps.c     |    2 +-
+>  arch/mips/mm/uasm.c          |    1 +
+>  4 files changed, 4 insertions(+), 1 deletions(-)
+> 
+> diff --git a/arch/mips/include/asm/bug.h b/arch/mips/include/asm/bug.h
+> index 08ea468..974b161 100644
+> --- a/arch/mips/include/asm/bug.h
+> +++ b/arch/mips/include/asm/bug.h
+> @@ -6,6 +6,7 @@
+>  #ifdef CONFIG_BUG
+>  
+>  #include <asm/break.h>
+> +#include <linux/compiler.h>
 
-Ah, thanks for telling me this.
-Maybe I should enable "vanilla" USE flag.
-:)
+... usually you put linux/ before asm/
 
---=20
-Zhang, Le
-Gentoo/Loongson Developer
-http://zhangle.is-a-geek.org
-0260 C902 B8F8 6506 6586 2B90 BC51 C808 1E4E 2973
+You could add: Reviewed-by: David Daney <ddaney@caviumnetworks.com>
 
---pd495SECmvzXpBRb
-Content-Type: application/pgp-signature
-Content-Disposition: inline
+with that change.
 
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v2.0.11 (GNU/Linux)
 
-iEYEARECAAYFAko5RXMACgkQvFHICB5OKXO1uACfbNPG362gWIwdllq+ETNwaghT
-CQcAn2AtJdd1oBg+X6diMUVgH+Uas61R
-=qhn8
------END PGP SIGNATURE-----
-
---pd495SECmvzXpBRb--
+>  
+>  static inline void __noreturn BUG(void)
+>  {
+> diff --git a/arch/mips/include/asm/bugs.h b/arch/mips/include/asm/bugs.h
+> index 9dc10df..b160a70 100644
+> --- a/arch/mips/include/asm/bugs.h
+> +++ b/arch/mips/include/asm/bugs.h
+> @@ -11,6 +11,7 @@
+>  
+>  #include <linux/bug.h>
+>  #include <linux/delay.h>
+> +#include <linux/smp.h>
+>  
+>  #include <asm/cpu.h>
+>  #include <asm/cpu-info.h>
+> diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+> index 08f1edf..0e9922b 100644
+> --- a/arch/mips/kernel/traps.c
+> +++ b/arch/mips/kernel/traps.c
+> @@ -1601,7 +1601,7 @@ void __cpuinit set_uncached_handler(unsigned long offset, void *addr,
+>  #endif
+>  
+>  	if (!addr)
+> -		panic(panic_null_cerr);
+> +		panic("%s", panic_null_cerr);
+>  
+>  	memcpy((void *)(uncached_ebase + offset), addr, size);
+>  }
+> diff --git a/arch/mips/mm/uasm.c b/arch/mips/mm/uasm.c
+> index f467199..ba538f7 100644
+> --- a/arch/mips/mm/uasm.c
+> +++ b/arch/mips/mm/uasm.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/kernel.h>
+>  #include <linux/types.h>
+>  #include <linux/init.h>
+> +#include <linux/string.h>
+>  
+>  #include <asm/inst.h>
+>  #include <asm/elf.h>

@@ -1,19 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jun 2009 01:27:31 +0200 (CEST)
-Received: from fw1-az.mvista.com ([65.200.49.156]:5007 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jun 2009 01:42:13 +0200 (CEST)
+Received: from fw1-az.mvista.com ([65.200.49.156]:5795 "EHLO
 	shomer.az.mvista.com" rhost-flags-OK-FAIL-OK-FAIL)
-	by ftp.linux-mips.org with ESMTP id S1492210AbZFQX1Y (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 18 Jun 2009 01:27:24 +0200
+	by ftp.linux-mips.org with ESMTP id S1492159AbZFQXmG (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 18 Jun 2009 01:42:06 +0200
 Received: from shomer.az.mvista.com (localhost.localdomain [127.0.0.1])
-	by shomer.az.mvista.com (8.14.2/8.14.2) with ESMTP id n5HNPrZ8010771
-	for <linux-mips@linux-mips.org>; Wed, 17 Jun 2009 16:25:53 -0700
+	by shomer.az.mvista.com (8.14.2/8.14.2) with ESMTP id n5HNeYSQ010815
+	for <linux-mips@linux-mips.org>; Wed, 17 Jun 2009 16:40:34 -0700
 Received: (from tsa@localhost)
-	by shomer.az.mvista.com (8.14.2/8.14.2/Submit) id n5HNPrTJ010770
-	for linux-mips@linux-mips.org; Wed, 17 Jun 2009 16:25:53 -0700
-Date:	Wed, 17 Jun 2009 16:25:53 -0700
+	by shomer.az.mvista.com (8.14.2/8.14.2/Submit) id n5HNeYPU010814
+	for linux-mips@linux-mips.org; Wed, 17 Jun 2009 16:40:34 -0700
+Date:	Wed, 17 Jun 2009 16:40:34 -0700
 From:	Tim Anderson <tanderson@mvista.com>
 To:	linux-mips@linux-mips.org
 Subject: [PATCH 5/5] Update sync-r4k for current kernel
-Message-ID: <20090617232553.GF10714@shomer.az.mvista.com>
+Message-ID: <20090617234034.GA10803@shomer.az.mvista.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -22,7 +22,7 @@ Return-Path: <tsa@shomer.az.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23462
+X-archive-position: 23463
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -32,12 +32,13 @@ X-list: linux-mips
 
 This revises the sync-4k so it will boot and operate
 since the removal of expirelo from the timer code.
+Includes corrected for compile errors.
 
 Signed-off-by: Tim Anderson <tanderson@mvista.com>
 ---
  arch/mips/Kconfig           |    2 +-
- arch/mips/kernel/sync-r4k.c |   26 ++++++++++++++------------
- 2 files changed, 15 insertions(+), 13 deletions(-)
+ arch/mips/kernel/sync-r4k.c |   31 ++++++++++++++++---------------
+ 2 files changed, 17 insertions(+), 16 deletions(-)
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
 index 7e8ecf6..de0d152 100644
@@ -53,7 +54,7 @@ index 7e8ecf6..de0d152 100644
  	select SYS_SUPPORTS_SCHED_SMT if SMP
  	select WEAK_ORDERING
 diff --git a/arch/mips/kernel/sync-r4k.c b/arch/mips/kernel/sync-r4k.c
-index 9021108..3c60a34 100644
+index 9021108..05dd170 100644
 --- a/arch/mips/kernel/sync-r4k.c
 +++ b/arch/mips/kernel/sync-r4k.c
 @@ -1,7 +1,7 @@
@@ -65,8 +66,17 @@ index 9021108..3c60a34 100644
   * value. This can cause a small timewarp for CPU0. All other CPU's should
   * not have done anything significant (but they may have had interrupts
   * enabled briefly - prom_smp_finish() should not be responsible for enabling
-@@ -20,14 +20,15 @@
- #include <asm/cpumask.h>
+@@ -13,21 +13,22 @@
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/irqflags.h>
+-#include <linux/r4k-timer.h>
++#include <linux/cpumask.h>
+ 
++#include <asm/r4k-timer.h>
+ #include <asm/atomic.h>
+ #include <asm/barrier.h>
+-#include <asm/cpumask.h>
  #include <asm/mipsregs.h>
  
 -static atomic_t __initdata count_start_flag = ATOMIC_INIT(0);
@@ -130,5 +140,10 @@ index 9021108..3c60a34 100644
  
  	ncpus = num_online_cpus();
  	for (i = 0; i < NR_LOOPS; i++) {
+@@ -156,4 +158,3 @@ void __init synchronise_count_slave(void)
+ 	local_irq_restore(flags);
+ }
+ #undef NR_LOOPS
+-#endif
 -- 
 1.6.2.5.175.g7c84

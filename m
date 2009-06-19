@@ -1,149 +1,107 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 18 Jun 2009 01:42:13 +0200 (CEST)
-Received: from fw1-az.mvista.com ([65.200.49.156]:5795 "EHLO
-	shomer.az.mvista.com" rhost-flags-OK-FAIL-OK-FAIL)
-	by ftp.linux-mips.org with ESMTP id S1492159AbZFQXmG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 18 Jun 2009 01:42:06 +0200
-Received: from shomer.az.mvista.com (localhost.localdomain [127.0.0.1])
-	by shomer.az.mvista.com (8.14.2/8.14.2) with ESMTP id n5HNeYSQ010815
-	for <linux-mips@linux-mips.org>; Wed, 17 Jun 2009 16:40:34 -0700
-Received: (from tsa@localhost)
-	by shomer.az.mvista.com (8.14.2/8.14.2/Submit) id n5HNeYPU010814
-	for linux-mips@linux-mips.org; Wed, 17 Jun 2009 16:40:34 -0700
-Date:	Wed, 17 Jun 2009 16:40:34 -0700
-From:	Tim Anderson <tanderson@mvista.com>
-To:	linux-mips@linux-mips.org
-Subject: [PATCH 5/5] Update sync-r4k for current kernel
-Message-ID: <20090617234034.GA10803@shomer.az.mvista.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 19 Jun 2009 03:00:24 +0200 (CEST)
+Received: from smtp.zeugmasystems.com ([70.79.96.174]:27869 "EHLO
+	zeugmasystems.com" rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org
+	with ESMTP id S1492462AbZFSBAR convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 19 Jun 2009 03:00:17 +0200
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <tsa@shomer.az.mvista.com>
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: Kconfig oversight for BCM1480: no CPU_HAS_PREFETCH.
+Date:	Thu, 18 Jun 2009 17:58:18 -0700
+Message-ID: <DDFD17CC94A9BD49A82147DDF7D545C501C34B35@exchange.ZeugmaSystems.local>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Kconfig oversight for BCM1480: no CPU_HAS_PREFETCH.
+Thread-Index: AcnweQjmaZapUOePQOuxtDIdAiOGsQ==
+From:	"Kaz Kylheku" <KKylheku@zeugmasystems.com>
+To:	<linux-mips@linux-mips.org>
+Return-Path: <KKylheku@zeugmasystems.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23463
+X-archive-position: 23464
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tanderson@mvista.com
+X-original-sender: KKylheku@zeugmasystems.com
 Precedence: bulk
 X-list: linux-mips
 
-This revises the sync-4k so it will boot and operate
-since the removal of expirelo from the timer code.
-Includes corrected for compile errors.
+Hi All,
 
-Signed-off-by: Tim Anderson <tanderson@mvista.com>
+Ther is no ``select CPU_HAS_PREFETCH'' for the BCM1480 based boards,
+and no prompt to enable it.  I don't think that this is intentional;
+prefetch is not known to be buggy on these chips. The only chips
+with known buggy prefetch are the 1250's with a Pass 2 SB-1.
+
+I think I know how this situation came about.
+
+Back in August 2005, Ralf made a commit which accidentally disabled
+prefetch for
+a bunch of CPU's like the R10000.
+
+Subject: Get rid of the nonsense in the CONFIG_CPU_HAS_PREFETCH block.
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 ---
- arch/mips/Kconfig           |    2 +-
- arch/mips/kernel/sync-r4k.c |   31 ++++++++++++++++---------------
- 2 files changed, 17 insertions(+), 16 deletions(-)
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 7e8ecf6..de0d152 100644
+index 1f53fe8..6ab95e3 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -1624,7 +1624,7 @@ config MIPS_APSP_KSPD
- config MIPS_CMP
- 	bool "MIPS CMP framework support"
- 	depends on SYS_SUPPORTS_MIPS_CMP
--	select SYNC_R4K if BROKEN
-+	select SYNC_R4K
- 	select SYS_SUPPORTS_SMP
- 	select SYS_SUPPORTS_SCHED_SMT if SMP
- 	select WEAK_ORDERING
-diff --git a/arch/mips/kernel/sync-r4k.c b/arch/mips/kernel/sync-r4k.c
-index 9021108..05dd170 100644
---- a/arch/mips/kernel/sync-r4k.c
-+++ b/arch/mips/kernel/sync-r4k.c
-@@ -1,7 +1,7 @@
- /*
-  * Count register synchronisation.
-  *
-- * All CPUs will have their count registers synchronised to the CPU0 expirelo
-+ * All CPUs will have their count registers synchronised to the CPU0 next time
-  * value. This can cause a small timewarp for CPU0. All other CPU's should
-  * not have done anything significant (but they may have had interrupts
-  * enabled briefly - prom_smp_finish() should not be responsible for enabling
-@@ -13,21 +13,22 @@
- #include <linux/kernel.h>
- #include <linux/init.h>
- #include <linux/irqflags.h>
--#include <linux/r4k-timer.h>
-+#include <linux/cpumask.h>
+@@ -1327,8 +1327,7 @@ config SIBYTE_DMA_PAGEOPS
+ 	  SiByte Linux port.  Seems to give a small performance benefit.
  
-+#include <asm/r4k-timer.h>
- #include <asm/atomic.h>
- #include <asm/barrier.h>
--#include <asm/cpumask.h>
- #include <asm/mipsregs.h>
+ config CPU_HAS_PREFETCH
+-	bool "Enable prefetches" if CPU_SB1 && !CPU_SB1_PASS_2
+-	default y if CPU_MIPS32 || CPU_MIPS64 || CPU_RM7000 ||
+CPU_RM9000 || CPU_R10000
++	bool
  
--static atomic_t __initdata count_start_flag = ATOMIC_INIT(0);
--static atomic_t __initdata count_count_start = ATOMIC_INIT(0);
--static atomic_t __initdata count_count_stop = ATOMIC_INIT(0);
-+static atomic_t __cpuinitdata count_start_flag = ATOMIC_INIT(0);
-+static atomic_t __cpuinitdata count_count_start = ATOMIC_INIT(0);
-+static atomic_t __cpuinitdata count_count_stop = ATOMIC_INIT(0);
-+static atomic_t __cpuinitdata count_reference = ATOMIC_INIT(0);
- 
- #define COUNTON	100
- #define NR_LOOPS 5
- 
--void __init synchronise_count_master(void)
-+void __cpuinit synchronise_count_master(void)
- {
- 	int i;
- 	unsigned long flags;
-@@ -42,19 +43,20 @@ void __init synchronise_count_master(void)
- 	return;
- #endif
- 
--	pr_info("Checking COUNT synchronization across %u CPUs: ",
--		num_online_cpus());
-+	printk(KERN_INFO "Synchronize counters across %u CPUs: ",
-+	       num_online_cpus());
- 
- 	local_irq_save(flags);
- 
- 	/*
- 	 * Notify the slaves that it's time to start
- 	 */
-+	atomic_set(&count_reference, read_c0_count());
- 	atomic_set(&count_start_flag, 1);
- 	smp_wmb();
- 
--	/* Count will be initialised to expirelo for all CPU's */
--	initcount = expirelo;
-+	/* Count will be initialised to current timer for all CPU's */
-+	initcount = read_c0_count();
- 
- 	/*
- 	 * We loop a few times to get a primed instruction cache,
-@@ -106,7 +108,7 @@ void __init synchronise_count_master(void)
- 	printk("done.\n");
- }
- 
--void __init synchronise_count_slave(void)
-+void __cpuinit synchronise_count_slave(void)
- {
- 	int i;
- 	unsigned long flags;
-@@ -131,8 +133,8 @@ void __init synchronise_count_slave(void)
- 	while (!atomic_read(&count_start_flag))
- 		mb();
- 
--	/* Count will be initialised to expirelo for all CPU's */
--	initcount = expirelo;
-+	/* Count will be initialised to next expire for all CPU's */
-+	initcount = atomic_read(&count_reference);
- 
- 	ncpus = num_online_cpus();
- 	for (i = 0; i < NR_LOOPS; i++) {
-@@ -156,4 +158,3 @@ void __init synchronise_count_slave(void)
- 	local_irq_restore(flags);
- }
- #undef NR_LOOPS
--#endif
--- 
-1.6.2.5.175.g7c84
+ config MIPS_MT
+ 	bool "Enable MIPS MT"
+
+
+
+Note how the previous version provides a prompt for "Enable prefetches"
+if the CPU is SB1, and the board support has selected neither
+CPU_SB1_PASS_2,
+nor CPU_HAS_PREFETCH.
+
+Prior to the above patch, if you added a new kind of Sibyte chip to
+arch/mips/sibyte/Kconfig, but neglected to declare CPU_HAS_PREFETCH
+or CPU_SB1_PASS_2, you would have been given a prompt at configuration
+time.
+
+Now you no longer have a prompt for the SB1.
+
+After the patch, CPU_HAS_PREFETCH is still correctly set up for the
+SiByte systems, because they take care of this in the SiByte Kconfig.
+
+The use of prefech is now missing from systems based on the R10000 and
+others.
+
+In the meanwhile, Andrew Isaacson (I surmise) was working on the BCM1480
+support. 
+
+In an October 29, 2005 commit, Ralf realizes the mistake. In a big
+patch that splits up and cleans up the Kconfig, he adds the
+``select CPU_HAS_PREFETCH'' to the R10000 and other CPU configs.
+But of course, he does not add this to the SB1 CPU config.
+Ralf is working with a kernel tree in which the Sibyte-based boards
+all set up the prefetch option on a case by case basis. 
+So why would he resurrect a prompt for this? If anyone adds a new
+Sibyte board, they will just set this up, right?
+
+Now Isaacson's BCM1480 patch comes right on the heels of Ralf's cleanup.
+The patch neglects to set up CPU_HAS_PREFETCH. For the 1250 and 112x
+boards, there are additional prompts to select the steppings,
+and it's these steppings configurations that publish either
+CPU_HAS_PREFETCH or CPU_SB1_PASS_2.
+
+Isaacson would have been working against a kernel in which he didn't get
+the ``Enable prefetch'' prompt any more for his new board definition
+(he was probably up to the August patch), and so he wasn't alerted
+to the issue.

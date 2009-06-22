@@ -1,79 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Jun 2009 11:19:21 +0200 (CEST)
-Received: from mail-ew0-f221.google.com ([209.85.219.221]:35512 "EHLO
-	mail-ew0-f221.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1491959AbZFVJTP (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 22 Jun 2009 11:19:15 +0200
-Received: by ewy21 with SMTP id 21so4021615ewy.0
-        for <multiple recipients>; Mon, 22 Jun 2009 02:16:23 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:date:subject
-         :mime-version:x-uid:x-length:to:cc:content-type
-         :content-transfer-encoding:content-disposition:message-id;
-        bh=bq7AQtDvAhbqkisXgjKzgZ4CxfzhnI2OgQA8wK3luEI=;
-        b=WK50QNRViZKS7KZxUmw6SytnSL3NcN72gqolU/MgtEnnmMNfvxHLi7isq8uZejsHvb
-         FvvQvWD+u4xfPhgTA0mIFSt3A75D/LYoAevamaYN1qt/WUFW6p742civhLQ7tcW2soLJ
-         ag8uetiELoMu8SZTT1aq9u9rr0Yr9Zlw+hidM=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:date:subject:mime-version:x-uid:x-length:to:cc
-         :content-type:content-transfer-encoding:content-disposition
-         :message-id;
-        b=Ba3L9S8CIg3GsA4lW0oiPnsCDNL0QeBCmeU1GRFW4Cdmq622funoI71kpkhp07g/fZ
-         oyXFmmd8U9NSiVUgBxLzOT5ansRA+VV04+XGCx0bWEG7IQgYpOxpM8o6MB5+QJhom8lt
-         gxZbzi+MBCoinAYM5zUAg3SBxa1UvwNgB/qig=
-Received: by 10.210.78.16 with SMTP id a16mr4608757ebb.6.1245662183117;
-        Mon, 22 Jun 2009 02:16:23 -0700 (PDT)
-Received: from florian.lab.openpattern.org (lab.openpattern.org [82.240.16.241])
-        by mx.google.com with ESMTPS id 10sm135365eyd.17.2009.06.22.02.16.22
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 22 Jun 2009 02:16:22 -0700 (PDT)
-From:	Florian Fainelli <florian@openwrt.org>
-Date:	Mon, 22 Jun 2009 11:16:21 +0200
-Subject: [PATCH 2/2] octeon: only build flash_setup code when CONFIG_MTD is set
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 22 Jun 2009 16:34:40 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:60325 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1492818AbZFVOec (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 22 Jun 2009 16:34:32 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n5MEVKUG025689;
+	Mon, 22 Jun 2009 15:31:20 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n5MEVJhe025686;
+	Mon, 22 Jun 2009 15:31:19 +0100
+Date:	Mon, 22 Jun 2009 15:31:19 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Florian Fainelli <florian@openwrt.org>
+Cc:	linux-mips@linux-mips.org, David Daney <ddaney@caviumnetworks.com>
+Subject: Re: [PATCH 1/2] octeon: flash_setup blows on !MTD_COMPLEX_MAPPINGS
+	and !MTD_MAP_BANK_WIDTH_1
+Message-ID: <20090622143119.GB25289@linux-mips.org>
+References: <200906221115.23628.florian@openwrt.org>
 MIME-Version: 1.0
-X-UID:	344
-X-Length: 1623
-To:	linux-mips@linux-mips.org
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	David Daney <ddaney@caviumnetworks.com>
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200906221116.21621.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+In-Reply-To: <200906221115.23628.florian@openwrt.org>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23467
+X-archive-position: 23468
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch makes the flash_setup code be compiled only when
-CONFIG_MTD is set, it does make sense to register a physmap
-platform driver without the MTD subsystem being enabled.
+On Mon, Jun 22, 2009 at 11:15:23AM +0200, Florian Fainelli wrote:
 
-CC: David Daney <ddaney@caviumnetworks.com>
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
----
-diff --git a/arch/mips/cavium-octeon/Makefile b/arch/mips/cavium-octeon/Makefile
-index 7c0528b..f1b401b 100644
---- a/arch/mips/cavium-octeon/Makefile
-+++ b/arch/mips/cavium-octeon/Makefile
-@@ -10,9 +10,10 @@
- #
- 
- obj-y := setup.o serial.o octeon-irq.o csrc-octeon.o
--obj-y += dma-octeon.o flash_setup.o
-+obj-y += dma-octeon.o
- obj-y += octeon-memcpy.o
- 
-+obj-$(CONFIG_MTD)		      += flash_setup.o
- obj-$(CONFIG_SMP)                     += smp.o
- obj-$(CONFIG_PCI)                     += pci-common.o
- obj-$(CONFIG_PCI)                     += pci.o
+> diff --git a/arch/mips/cavium-octeon/flash_setup.c b/arch/mips/cavium-octeon/flash_setup.c
+> index 008f657..894edbb 100644
+> --- a/arch/mips/cavium-octeon/flash_setup.c
+> +++ b/arch/mips/cavium-octeon/flash_setup.c
+> @@ -41,6 +41,7 @@ static int __init flash_init(void)
+>  	 */
+>  	union cvmx_mio_boot_reg_cfgx region_cfg;
+>  	region_cfg.u64 = cvmx_read_csr(CVMX_MIO_BOOT_REG_CFGX(0));
+> +#if defined (CONFIG_MTD_COMPLEX_MAPPINGS) && (CONFIG_MTD_MAP_BANK_WIDTH_1)
+              ^
+              no space
+                                                ^^^
+                                  This should be defined(CONFIG_MTD_...)
+
+Or bad things may happen.
+
+The parenthesis in this expression are unnecessary.
+
+>  	if (region_cfg.s.en) {
+>  		/*
+>  		 * The bootloader always takes the flash and sets its
+> @@ -78,6 +79,7 @@ static int __init flash_init(void)
+>  			pr_err("Failed to register MTD device for flash\n");
+>  		}
+>  	}
+> +#endif /* (CONFIG_MTD_COMPLEX_MAPPINGS) && (CONFIG_MTD_MAP_BANK_WIDTH_1) */
+>  	return 0;
+>  }
+
+  Ralf

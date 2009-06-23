@@ -1,70 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jun 2009 00:08:32 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:47496 "EHLO
-	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492943AbZFWWI0 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 24 Jun 2009 00:08:26 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B4a41512d0000>; Tue, 23 Jun 2009 18:03:30 -0400
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 23 Jun 2009 15:03:15 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 23 Jun 2009 15:03:15 -0700
-Message-ID: <4A415121.1040602@caviumnetworks.com>
-Date:	Tue, 23 Jun 2009 15:03:13 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 24 Jun 2009 00:21:30 +0200 (CEST)
+Received: from cantor2.suse.de ([195.135.220.15]:48957 "EHLO mx2.suse.de"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1492943AbZFWWVY (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 24 Jun 2009 00:21:24 +0200
+Received: from relay1.suse.de (mail2.suse.de [195.135.221.8])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mx2.suse.de (Postfix) with ESMTP id 2B3375FC9F;
+	Wed, 24 Jun 2009 00:18:09 +0200 (CEST)
+Date:	Tue, 23 Jun 2009 14:32:57 -0700
+From:	Greg KH <gregkh@suse.de>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] Staging: octeon-ethernet: Convert to use
+	net_device_ops.
+Message-ID: <20090623213257.GA6691@suse.de>
+References: <1245782048-24058-1-git-send-email-ddaney@caviumnetworks.com> <20090623212559.GA9358@linux-mips.org>
 MIME-Version: 1.0
-To:	Kaz Kylheku <KKylheku@zeugmasystems.com>
-CC:	linux-mips@linux-mips.org
-Subject: Re: Silly 100% CPU behavior on a SIG_IGN-ored SIGBUS.
-References: <DDFD17CC94A9BD49A82147DDF7D545C501C35128@exchange.ZeugmaSystems.local>
-In-Reply-To: <DDFD17CC94A9BD49A82147DDF7D545C501C35128@exchange.ZeugmaSystems.local>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 23 Jun 2009 22:03:15.0531 (UTC) FILETIME=[688A99B0:01C9F44E]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20090623212559.GA9358@linux-mips.org>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <gregkh@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23479
+X-archive-position: 23480
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: gregkh@suse.de
 Precedence: bulk
 X-list: linux-mips
 
-Kaz Kylheku wrote:
-> Hi all,
+On Tue, Jun 23, 2009 at 10:25:59PM +0100, Ralf Baechle wrote:
+> On Tue, Jun 23, 2009 at 11:34:08AM -0700, David Daney wrote:
 > 
-> On kernel 2.6.26, glibc 2.5 (n32), SiByte SB-1 core, the following
-> program goes into 100% CPU, chewing up about 80% kernel time and
-> 20% user.
+> > Convert the driver to use net_device_ops as it is now mandatory.
+> > 
+> > Also compensate for the removal of struct sk_buff's dst field.
+> > 
+> > The changes are mostly mechanical, the content of ethernet-common.c
+> > was moved to ethernet.c and ethernet-common.{c,h} are removed.
+> > 
+> > Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+> > ---
+> > 
+> > Although it is a staging driver, we may want to merge it via Ralf's
+> > tree as Octeon is a MIPS SOC.
 > 
-> #include <stdio.h>
-> #include <signal.h>
+> Yes, this way it'll receive most testing.
 > 
-> int main(void)
-> {
->   int *deadbeef = (int *) 0xdeadbeef;
->   signal(SIGBUS, SIG_IGN);
->   printf("*deadbeef == %d\n", *deadbeef);
->   return 0;
-> }
-> 
-> If any fatal exception is ignored, the program should be killed
-> if that exception happens. 100% CPU is not a useful response.
-> 
-> (If there is a handler, and that handler returns without doing anything
-> to
-> prevent a recurrence of the exception when the instruction is re-tried,
-> that's different).
-> 
-> 
+> Greg, I assume you're ok with me merging this patch to Linus so I've
+> commited it into the linux-mips.org repository.
 
+No objection from me at all.
 
-I wonder if it is another instance of:
+thanks,
 
-http://www.linux-mips.org/git?p=linux.git;a=commitdiff;h=49cf0e2d68dd98dbb28eaca0284e8460ab6ad86d
-
-David Daney
+greg k-h

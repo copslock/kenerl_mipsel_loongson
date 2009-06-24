@@ -1,89 +1,136 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Jun 2009 00:12:00 +0200 (CEST)
-Received: from main.gmane.org ([80.91.229.2]:45538 "EHLO ciao.gmane.org"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1493217AbZFXWLx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 25 Jun 2009 00:11:53 +0200
-Received: from list by ciao.gmane.org with local (Exim 4.43)
-	id 1MJadf-0002Ir-7p
-	for linux-mips@linux-mips.org; Wed, 24 Jun 2009 22:08:19 +0000
-Received: from woodchuck.wormnet.eu ([77.75.105.223])
-        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Wed, 24 Jun 2009 22:08:19 +0000
-Received: from alex by woodchuck.wormnet.eu with local (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Wed, 24 Jun 2009 22:08:19 +0000
-X-Injected-Via-Gmane: http://gmane.org/
-To:	linux-mips@linux-mips.org
-From:	Alexander Clouter <alex@digriz.org.uk>
-Subject:  Re: [PATCH 5/8] add Texas Instruments AR7 support
-Date:	Wed, 24 Jun 2009 22:16:23 +0100
-Message-ID:  <7mhah6-pmn.ln1@woodchuck.wormnet.eu>
-References:  <200906041619.25359.florian@openwrt.org> <200906241112.58301.florian@openwrt.org> <o8f9h6-v4l.ln1@woodchuck.wormnet.eu> <200906241932.09909.florian@openwrt.org>
-Mime-Version:  1.0
-Content-Type:  text/plain; charset=ISO-8859-15
-Content-Transfer-Encoding:  8bit
-X-Complaints-To: usenet@ger.gmane.org
-X-Gmane-NNTP-Posting-Host: woodchuck.wormnet.eu
-User-Agent: tin/1.9.3-20080506 ("Dalintober") (UNIX) (Linux/2.6.26-1-sparc64 (sparc64))
-Return-Path: <sgi-linux-mips@m.gmane.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Jun 2009 00:22:10 +0200 (CEST)
+Received: from smtp.zeugmasystems.com ([70.79.96.174]:26353 "EHLO
+	zeugmasystems.com" rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org
+	with ESMTP id S1493227AbZFXWWD convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 25 Jun 2009 00:22:03 +0200
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+Subject: RE: Broadcom Swarm support
+Date:	Wed, 24 Jun 2009 15:18:24 -0700
+Message-ID: <DDFD17CC94A9BD49A82147DDF7D545C501C3539B@exchange.ZeugmaSystems.local>
+In-Reply-To: <20090624063453.GA16846@volta.aurel32.net>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Broadcom Swarm support
+Thread-Index: Acn0lhh9LwS3qtpPRkGfCc/Y9v371wAW+1vg
+From:	"Kaz Kylheku" <KKylheku@zeugmasystems.com>
+To:	"Aurelien Jarno" <aurelien@aurel32.net>,
+	<linux-mips@linux-mips.org>
+Return-Path: <KKylheku@zeugmasystems.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23492
+X-archive-position: 23493
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@digriz.org.uk
+X-original-sender: KKylheku@zeugmasystems.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-
-Florian Fainelli <florian@openwrt.org> wrote:
+Aurelien Jarno wrote:
+> Hi all,
 > 
-> Le Wednesday 24 June 2009 13:28:56 Alexander Clouter, vous avez écrit :
->>
->> Florian Fainelli <florian@openwrt.org> wrote:
->>
->> > +/*
->> > + * Initializes basic routines and structures pointers, memory size (as
->> > + * given by the bios and saves the command line.
->> > + */
->> > +
->> > +void __init plat_mem_setup(void)
->> > +{
->> > +       unsigned long io_base;
->> > +
->> > +       _machine_restart = ar7_machine_restart;
->> > +       _machine_halt = ar7_machine_halt;
->> > +       pm_power_off = ar7_machine_power_off;
->> > +       panic_timeout = 3;
->> > +
->> > +       io_base = (unsigned long)ioremap(AR7_REGS_BASE, 0x10000);
->> > +       if (!io_base)
->> > +               panic("Can't remap IO base!\n");
->> > +       set_io_port_base(io_base);
->> > +
->>
->> Casting a pointer to a unsigned long...hmmmm.
->>
-arch/mips/sgi-ip32/crime.c:crime_init() has the much nicer feeling:
-
-set_io_port_base((unsigned long) ioremap(AR7_REGS_BASE, 0x100000));
-
-At least this approach hides the pointer to int cast'ing.
-
->> I have been slightly tracking the ar7 code for a while and I have to say
->> it is really looking much nicer now-a-days.  Well done!  If you ever are
->> in London, I'll buy you a beer.
+> I am still trying to get a Broadcom Swarm boot on a recent kernel. I
+> have made some progress, but I am now stuck on another problem.
 > 
-> I am in Paris at the moment, but you can also come here ;)
-> 
-Noted :)
+> I am using a lmo 2.6.30 kernel, using the defconfig 
 
-Cheers
+[ snip ]
 
--- 
-Alexander Clouter
-.sigmonster says: I'm not proud.
+> | Kernel panic - not syncing: Attempted to kill init!
+> | Rebooting in 5 seconds..Passing control back to CFE...
+
+What kernel were you running prior to trying 30?
+
+When I migrated from 2.6.17 to 2.6.26, on a Broadcom
+1480 based board, I discovered that there is some kind
+of instruction cache problem, which causes userland to
+fetch garbage instead of code from its mmap-ped executables.
+I could not get init to execute successfully.
+
+Sorry, I can no longer remember whether this problem was
+SMP specific or not (like what you're experiencing);
+it might have been.
+
+At some point in the kernel history, Ralfie decided that
+the flush_icache_page function is unnecessary and
+turned it into a MIPS-wide noop. But the SB1 core, which has
+a VIVT instruction cache, it appears that there
+is some kind of issue whereby when it
+is handling a fault for a not-present virtual page,
+it somehow ends up with bad data in the instruction
+cache---perhaps an inconsistent state due to not having
+been able to complete the fetch, but having initiated
+a cache update on the expectation that the fetch
+will complete. It seems that the the fault handler
+is expected to do a flush.
+
+Anyway, see if you can work this patch (based on 2.6.26)
+into your kernel, and report whether it makes any difference.
+
+Index: include/asm-mips/cacheflush.h
+===================================================================
+--- include/asm-mips/cacheflush.h	(revision 2677)
++++ include/asm-mips/cacheflush.h	(revision 2678)
+@@ -37,6 +37,7 @@
+ 	unsigned long start, unsigned long end);
+ extern void (*flush_cache_page)(struct vm_area_struct *vma, unsigned
+long page, unsigned long pfn);
+ extern void __flush_dcache_page(struct page *page);
++extern void __flush_icache_page(struct vm_area_struct *vma, struct page
+*page);
+ 
+ static inline void flush_dcache_page(struct page *page)
+ {
+@@ -57,11 +58,6 @@
+ 		__flush_anon_page(page, vmaddr);
+ }
+ 
+-static inline void flush_icache_page(struct vm_area_struct *vma,
+-	struct page *page)
+-{
+-}
+-
+ extern void (*flush_icache_range)(unsigned long start, unsigned long
+end);
+ 
+ extern void (*__flush_cache_vmap)(void);
+@@ -93,6 +89,13 @@
+ extern void (*local_flush_data_cache_page)(void * addr);
+ extern void (*flush_data_cache_page)(unsigned long addr);
+ 
++static inline void flush_icache_page(struct vm_area_struct *vma,
++	struct page *page)
++{
++        __flush_icache_page(vma, page);
++}
++
++
+ /*
+  * This flag is used to indicate that the page pointed to by a pte
+  * is dirty and requires cleaning before returning it to the user.
+Index: arch/mips/mm/cache.c
+===================================================================
+--- arch/mips/mm/cache.c	(revision 2677)
++++ arch/mips/mm/cache.c	(revision 2678)
+@@ -93,6 +93,14 @@
+ 
+ EXPORT_SYMBOL(__flush_dcache_page);
+ 
++void __flush_icache_page(struct vm_area_struct *vma, struct page *page)
++{
++	if (vma->vm_flags & VM_EXEC)
++		flush_icache_range((unsigned long) page_address(page),
+PAGE_SIZE); 
++}
++
++EXPORT_SYMBOL(__flush_icache_page);
++
+ void __flush_anon_page(struct page *page, unsigned long vmaddr)
+ {
+ 	unsigned long addr = (unsigned long) page_address(page);

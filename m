@@ -1,136 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Jun 2009 00:22:10 +0200 (CEST)
-Received: from smtp.zeugmasystems.com ([70.79.96.174]:26353 "EHLO
-	zeugmasystems.com" rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org
-	with ESMTP id S1493227AbZFXWWD convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 25 Jun 2009 00:22:03 +0200
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
-MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: Broadcom Swarm support
-Date:	Wed, 24 Jun 2009 15:18:24 -0700
-Message-ID: <DDFD17CC94A9BD49A82147DDF7D545C501C3539B@exchange.ZeugmaSystems.local>
-In-Reply-To: <20090624063453.GA16846@volta.aurel32.net>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Broadcom Swarm support
-Thread-Index: Acn0lhh9LwS3qtpPRkGfCc/Y9v371wAW+1vg
-From:	"Kaz Kylheku" <KKylheku@zeugmasystems.com>
-To:	"Aurelien Jarno" <aurelien@aurel32.net>,
-	<linux-mips@linux-mips.org>
-Return-Path: <KKylheku@zeugmasystems.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 25 Jun 2009 03:52:15 +0200 (CEST)
+Received: from fwgate.192.149.94.202.in-addr.arpa ([202.94.149.254]:39570 "EHLO
+	topsms.toshiba-tops.co.jp" rhost-flags-OK-FAIL-OK-FAIL)
+	by ftp.linux-mips.org with ESMTP id S1493034AbZFYBwI (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 25 Jun 2009 03:52:08 +0200
+Received: from topsms.toshiba-tops.co.jp (localhost.localdomain [127.0.0.1])
+	by localhost.toshiba-tops.co.jp (Postfix) with ESMTP id E30A04D7D9;
+	Thu, 25 Jun 2009 10:38:07 +0900 (JST)
+Received: from srd2sd.toshiba-tops.co.jp (srd2sd.toshiba-tops.co.jp [172.17.28.2])
+	by topsms.toshiba-tops.co.jp (Postfix) with ESMTP id CF5874C055;
+	Thu, 25 Jun 2009 10:38:07 +0900 (JST)
+Received: from localhost (fragile [172.17.28.65])
+	by srd2sd.toshiba-tops.co.jp (8.12.10/8.12.10) with ESMTP id n5P1mOoI090243;
+	Thu, 25 Jun 2009 10:48:25 +0900 (JST)
+	(envelope-from anemo@mba.ocn.ne.jp)
+Date:	Thu, 25 Jun 2009 10:48:24 +0900 (JST)
+Message-Id: <20090625.104824.00670470.nemoto@toshiba-tops.co.jp>
+To:	linux-mips@linux-mips.org
+Cc:	KKylheku@zeugmasystems.com, aurelien@aurel32.net,
+	ralf@linux-mips.org
+Subject: icache flushing (Re: Broadcom Swarm support)
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <DDFD17CC94A9BD49A82147DDF7D545C501C3539B@exchange.ZeugmaSystems.local>
+References: <20090624063453.GA16846@volta.aurel32.net>
+	<DDFD17CC94A9BD49A82147DDF7D545C501C3539B@exchange.ZeugmaSystems.local>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 6.2.50 on Emacs 22.2 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23493
+X-archive-position: 23494
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: KKylheku@zeugmasystems.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Aurelien Jarno wrote:
-> Hi all,
-> 
-> I am still trying to get a Broadcom Swarm boot on a recent kernel. I
-> have made some progress, but I am now stuck on another problem.
-> 
-> I am using a lmo 2.6.30 kernel, using the defconfig 
+On Wed, 24 Jun 2009 15:18:24 -0700, "Kaz Kylheku" <KKylheku@zeugmasystems.com> wrote:
+> At some point in the kernel history, Ralfie decided that
+> the flush_icache_page function is unnecessary and
+> turned it into a MIPS-wide noop. But the SB1 core, which has
+> a VIVT instruction cache, it appears that there
+> is some kind of issue whereby when it
+> is handling a fault for a not-present virtual page,
+> it somehow ends up with bad data in the instruction
+> cache---perhaps an inconsistent state due to not having
+> been able to complete the fetch, but having initiated
+> a cache update on the expectation that the fetch
+> will complete. It seems that the the fault handler
+> is expected to do a flush.
 
-[ snip ]
+Looking at current code, I also have some questions aboud icache
+flushing.
 
-> | Kernel panic - not syncing: Attempted to kill init!
-> | Rebooting in 5 seconds..Passing control back to CFE...
+* flush_cache_mm does not flush icache.  Is it OK?
 
-What kernel were you running prior to trying 30?
+* flush_cache_{vmap,vunmap} does not flush icache.  When icache used
+  by modules flushed after unloading?
 
-When I migrated from 2.6.17 to 2.6.26, on a Broadcom
-1480 based board, I discovered that there is some kind
-of instruction cache problem, which causes userland to
-fetch garbage instead of code from its mmap-ped executables.
-I could not get init to execute successfully.
+* __update_cache, copy_user_highpage does not flush icache even if
+  !cpu_has_ic_fills_f_dc.  Is it OK?
 
-Sorry, I can no longer remember whether this problem was
-SMP specific or not (like what you're experiencing);
-it might have been.
+* free_initmem does not flush icache.  When these init pages are
+  reused, how corresponding icache will be flushed?
 
-At some point in the kernel history, Ralfie decided that
-the flush_icache_page function is unnecessary and
-turned it into a MIPS-wide noop. But the SB1 core, which has
-a VIVT instruction cache, it appears that there
-is some kind of issue whereby when it
-is handling a fault for a not-present virtual page,
-it somehow ends up with bad data in the instruction
-cache---perhaps an inconsistent state due to not having
-been able to complete the fetch, but having initiated
-a cache update on the expectation that the fetch
-will complete. It seems that the the fault handler
-is expected to do a flush.
+I suppose flushing icache in flush_icache_page() will hide real bugs
+somewhere else...
 
-Anyway, see if you can work this patch (based on 2.6.26)
-into your kernel, and report whether it makes any difference.
-
-Index: include/asm-mips/cacheflush.h
-===================================================================
---- include/asm-mips/cacheflush.h	(revision 2677)
-+++ include/asm-mips/cacheflush.h	(revision 2678)
-@@ -37,6 +37,7 @@
- 	unsigned long start, unsigned long end);
- extern void (*flush_cache_page)(struct vm_area_struct *vma, unsigned
-long page, unsigned long pfn);
- extern void __flush_dcache_page(struct page *page);
-+extern void __flush_icache_page(struct vm_area_struct *vma, struct page
-*page);
- 
- static inline void flush_dcache_page(struct page *page)
- {
-@@ -57,11 +58,6 @@
- 		__flush_anon_page(page, vmaddr);
- }
- 
--static inline void flush_icache_page(struct vm_area_struct *vma,
--	struct page *page)
--{
--}
--
- extern void (*flush_icache_range)(unsigned long start, unsigned long
-end);
- 
- extern void (*__flush_cache_vmap)(void);
-@@ -93,6 +89,13 @@
- extern void (*local_flush_data_cache_page)(void * addr);
- extern void (*flush_data_cache_page)(unsigned long addr);
- 
-+static inline void flush_icache_page(struct vm_area_struct *vma,
-+	struct page *page)
-+{
-+        __flush_icache_page(vma, page);
-+}
-+
-+
- /*
-  * This flag is used to indicate that the page pointed to by a pte
-  * is dirty and requires cleaning before returning it to the user.
-Index: arch/mips/mm/cache.c
-===================================================================
---- arch/mips/mm/cache.c	(revision 2677)
-+++ arch/mips/mm/cache.c	(revision 2678)
-@@ -93,6 +93,14 @@
- 
- EXPORT_SYMBOL(__flush_dcache_page);
- 
-+void __flush_icache_page(struct vm_area_struct *vma, struct page *page)
-+{
-+	if (vma->vm_flags & VM_EXEC)
-+		flush_icache_range((unsigned long) page_address(page),
-PAGE_SIZE); 
-+}
-+
-+EXPORT_SYMBOL(__flush_icache_page);
-+
- void __flush_anon_page(struct page *page, unsigned long vmaddr)
- {
- 	unsigned long addr = (unsigned long) page_address(page);
+---
+Atsushi Nemoto

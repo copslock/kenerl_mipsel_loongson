@@ -1,37 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 26 Jun 2009 23:23:44 +0200 (CEST)
-Received: from hall.aurel32.net ([88.191.82.174]:42402 "EHLO hall.aurel32.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 27 Jun 2009 01:29:09 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:55995 "EHLO h5.dl5rb.org.uk"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1491858AbZFZVXi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 26 Jun 2009 23:23:38 +0200
-Received: from aurel32 by hall.aurel32.net with local (Exim 4.69)
-	(envelope-from <aurelien@aurel32.net>)
-	id 1MKIpU-0001Gm-RN; Fri, 26 Jun 2009 23:19:28 +0200
-Date:	Fri, 26 Jun 2009 23:19:28 +0200
-From:	Aurelien Jarno <aurelien@aurel32.net>
+	id S1492777AbZFZX3B (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 27 Jun 2009 01:29:01 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n5QNOXFh028590;
+	Sat, 27 Jun 2009 00:24:33 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n5QNOWps028584;
+	Sat, 27 Jun 2009 00:24:32 +0100
+Date:	Sat, 27 Jun 2009 00:24:32 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
 To:	Kaz Kylheku <KKylheku@zeugmasystems.com>
-Cc:	linux-mips@linux-mips.org
+Cc:	Aurelien Jarno <aurelien@aurel32.net>, linux-mips@linux-mips.org
 Subject: Re: Broadcom Swarm support
-Message-ID: <20090626211928.GM18476@hall.aurel32.net>
+Message-ID: <20090626232432.GB3235@linux-mips.org>
 References: <20090624063453.GA16846@volta.aurel32.net> <DDFD17CC94A9BD49A82147DDF7D545C501C3539B@exchange.ZeugmaSystems.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <DDFD17CC94A9BD49A82147DDF7D545C501C3539B@exchange.ZeugmaSystems.local>
-X-Mailer: Mutt 1.5.18 (2008-05-17)
 User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <aurelien@aurel32.net>
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23511
+X-archive-position: 23512
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
 On Wed, Jun 24, 2009 at 03:18:24PM -0700, Kaz Kylheku wrote:
+> From: Kaz Kylheku <KKylheku@zeugmasystems.com>
+> Date: Wed, 24 Jun 2009 15:18:24 -0700
+> To: Aurelien Jarno <aurelien@aurel32.net>, linux-mips@linux-mips.org
+> Subject: RE: Broadcom Swarm support
+> Content-Type: text/plain;
+> 	charset="us-ascii"
+> 
 > Aurelien Jarno wrote:
 > > Hi all,
 > > 
@@ -46,12 +55,7 @@ On Wed, Jun 24, 2009 at 03:18:24PM -0700, Kaz Kylheku wrote:
 > > | Rebooting in 5 seconds..Passing control back to CFE...
 > 
 > What kernel were you running prior to trying 30?
-
-I am currently stuck with 2.6.18. I have tested a lot of kernels between
-2.6.18 and 2.6.30, but they all have a different problem. Kernels 2.6.26
-to 2.6.30 suffer from a similar problem, though from some versions it
-hangs instead of panicking.
-
+> 
 > When I migrated from 2.6.17 to 2.6.26, on a Broadcom
 > 1480 based board, I discovered that there is some kind
 > of instruction cache problem, which causes userland to
@@ -78,74 +82,14 @@ hangs instead of panicking.
 > Anyway, see if you can work this patch (based on 2.6.26)
 > into your kernel, and report whether it makes any difference.
 
-I have applied the patch on 2.6.30 after a few changes, and it works!!!
+The functionality of flush_icache_page() is being handled update_mmu_cache.
 
-Thanks a lot!
+The SB1 isn't the only MIPS CPU featuring VIVT caches - there are also
+the MIPS 20K and 25K CPUs and the virtually identical SB1A core.  I've
+tested Linux on 20K and 25K just days ago and I get months of uptime on my
+BCM1480 box.
 
-> Index: include/asm-mips/cacheflush.h
-> ===================================================================
-> --- include/asm-mips/cacheflush.h	(revision 2677)
-> +++ include/asm-mips/cacheflush.h	(revision 2678)
-> @@ -37,6 +37,7 @@
->  	unsigned long start, unsigned long end);
->  extern void (*flush_cache_page)(struct vm_area_struct *vma, unsigned
-> long page, unsigned long pfn);
->  extern void __flush_dcache_page(struct page *page);
-> +extern void __flush_icache_page(struct vm_area_struct *vma, struct page
-> *page);
->  
->  static inline void flush_dcache_page(struct page *page)
->  {
-> @@ -57,11 +58,6 @@
->  		__flush_anon_page(page, vmaddr);
->  }
->  
-> -static inline void flush_icache_page(struct vm_area_struct *vma,
-> -	struct page *page)
-> -{
-> -}
-> -
->  extern void (*flush_icache_range)(unsigned long start, unsigned long
-> end);
->  
->  extern void (*__flush_cache_vmap)(void);
-> @@ -93,6 +89,13 @@
->  extern void (*local_flush_data_cache_page)(void * addr);
->  extern void (*flush_data_cache_page)(unsigned long addr);
->  
-> +static inline void flush_icache_page(struct vm_area_struct *vma,
-> +	struct page *page)
-> +{
-> +        __flush_icache_page(vma, page);
-> +}
-> +
-> +
->  /*
->   * This flag is used to indicate that the page pointed to by a pte
->   * is dirty and requires cleaning before returning it to the user.
-> Index: arch/mips/mm/cache.c
-> ===================================================================
-> --- arch/mips/mm/cache.c	(revision 2677)
-> +++ arch/mips/mm/cache.c	(revision 2678)
-> @@ -93,6 +93,14 @@
->  
->  EXPORT_SYMBOL(__flush_dcache_page);
->  
-> +void __flush_icache_page(struct vm_area_struct *vma, struct page *page)
-> +{
-> +	if (vma->vm_flags & VM_EXEC)
-> +		flush_icache_range((unsigned long) page_address(page),
-> PAGE_SIZE); 
-> +}
-> +
-> +EXPORT_SYMBOL(__flush_icache_page);
-> +
->  void __flush_anon_page(struct page *page, unsigned long vmaddr)
->  {
->  	unsigned long addr = (unsigned long) page_address(page);
-> 
-> 
+What type of boot devices are you using, is it the onboard IDE controller
+by any chance?
 
--- 
-Aurelien Jarno	                        GPG: 1024D/F1BCDB73
-aurelien@aurel32.net                 http://www.aurel32.net
+  Ralf

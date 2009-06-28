@@ -1,50 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Jun 2009 18:33:21 +0200 (CEST)
-Received: from 136-022.dsl.LABridge.com ([206.117.136.22]:1190 "EHLO
-	mail.perches.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1492473AbZF1QdN (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 28 Jun 2009 18:33:13 +0200
-Received: from localhost.localdomain ([192.168.1.158])
-	by mail.perches.com (8.9.3/8.9.3) with ESMTP id KAA00818;
-	Sat, 27 Jun 2009 10:34:34 -0700
-From:	Joe Perches <joe@perches.com>
-To:	linux-kernel@vger.kernel.org
-Cc:	trivial@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 04/62] arch/mips/kernel/vpe.c: Remove unnecessary semicolons
-Date:	Sun, 28 Jun 2009 09:26:09 -0700
-Message-Id: <012172308c2e751761b89ec3c38fbc64b8137495.1246173680.git.joe@perches.com>
-X-Mailer: git-send-email 1.6.3.1.10.g659a0.dirty
-In-Reply-To: <cover.1246173664.git.joe@perches.com>
-References: <cover.1246173664.git.joe@perches.com>
-Return-Path: <joe@perches.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 28 Jun 2009 20:04:27 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:53463 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1492500AbZF1SET (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 28 Jun 2009 20:04:19 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n5SHrX9i022029;
+	Sun, 28 Jun 2009 18:53:36 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n5SHrJXg022019;
+	Sun, 28 Jun 2009 18:53:19 +0100
+Date:	Sun, 28 Jun 2009 18:53:17 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Joe Perches <joe@perches.com>
+Cc:	linux-kernel@vger.kernel.org, trivial@kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH 04/62] arch/mips/kernel/vpe.c: Remove unnecessary
+	semicolons
+Message-ID: <20090628175317.GA20084@linux-mips.org>
+References: <cover.1246173664.git.joe@perches.com> <012172308c2e751761b89ec3c38fbc64b8137495.1246173680.git.joe@perches.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <012172308c2e751761b89ec3c38fbc64b8137495.1246173680.git.joe@perches.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23522
+X-archive-position: 23523
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: joe@perches.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Signed-off-by: Joe Perches <joe@perches.com>
----
- arch/mips/kernel/vpe.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
+On Sun, Jun 28, 2009 at 09:26:09AM -0700, Joe Perches wrote:
 
-diff --git a/arch/mips/kernel/vpe.c b/arch/mips/kernel/vpe.c
-index 3ca5f42..07b9ec2 100644
---- a/arch/mips/kernel/vpe.c
-+++ b/arch/mips/kernel/vpe.c
-@@ -1387,7 +1387,7 @@ static ssize_t store_ntcs(struct device *dev, struct device_attribute *attr,
- 	return len;
- 
- out_einval:
--	return -EINVAL;;
-+	return -EINVAL;
- }
- 
- static struct device_attribute vpe_class_attributes[] = {
--- 
-1.6.3.1.10.g659a0.dirty
+Thanks, applied.
+
+  Ralf

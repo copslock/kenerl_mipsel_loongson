@@ -1,20 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jun 2009 17:45:52 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:54906 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jun 2009 17:48:39 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:51261 "EHLO h5.dl5rb.org.uk"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1492979AbZF2Ppo (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 29 Jun 2009 17:45:44 +0200
+	id S1493027AbZF2Psc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 29 Jun 2009 17:48:32 +0200
 Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n5TFecmW018825;
-	Mon, 29 Jun 2009 16:40:39 +0100
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n5TFhRYN018885;
+	Mon, 29 Jun 2009 16:43:27 +0100
 Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n5TFebhf018823;
-	Mon, 29 Jun 2009 16:40:37 +0100
-Date:	Mon, 29 Jun 2009 16:40:37 +0100
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n5TFhRr3018883;
+	Mon, 29 Jun 2009 16:43:27 +0100
+Date:	Mon, 29 Jun 2009 16:43:27 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
 To:	Willy Tarreau <w@1wt.eu>
-Cc:	Frank Seidel <Frank.Seidel@sphairon.com>, linux-mips@linux-mips.org
-Subject: [PATCH] linux-2.4: usb: Add support for Teac HD-35PU
-Message-ID: <20090629154037.GA18570@linux-mips.org>
+Cc:	Frank Seidel <Frank.Seidel@sphairon.com>,
+	linux-mips@linux-mips.org, netdev@vger.kernel.org
+Subject: [PATCH] linux-2.4: vlan: Slab memleak fix
+Message-ID: <20090629154325.GB18570@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -23,7 +24,7 @@ Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23532
+X-archive-position: 23533
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,29 +32,52 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-From: Rudolf Svanda <svandar@sphairon.com>
+From: Arne Redlich <readlicha@sphairon.com>
 
-Support for Teac HD-35PU added
+Fix slab memleak on wan service restart
 
-Signed-off-by: Rudolf Svanda <svandar@sphairon.com>
+Signed-off-by: Arne Redlich <redlicha@sphairon.com>
 Signed-off-by: Frank Seidel <Frank.Seidel@sphairon.com>
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 ---
- drivers/usb/storage/unusual_devs.h |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/8021q/vlan_dev.c |   22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/storage/unusual_devs.h
-+++ b/drivers/usb/storage/unusual_devs.h
-@@ -1012,3 +1012,13 @@ UNUSUAL_DEV(  0x0482, 0x0105, 0x0100, 0x
- 		"Finecam L3",
- 		US_SC_SCSI, US_PR_BULK, NULL,
- 		US_FL_FIX_INQUIRY),
+--- a/net/8021q/vlan_dev.c
++++ b/net/8021q/vlan_dev.c
+@@ -548,6 +548,22 @@ int vlan_dev_set_ingress_priority(char *
+ 	return -EINVAL;
+ }
+ 
++/* Remove all egress_priority_map hash table entries. --redlicha */
++static void vlan_dev_destroy_egress_priority_map(struct net_device *dev)
++{
++	struct vlan_dev_info *info = VLAN_DEV_INFO(dev);
++	struct vlan_priority_tci_mapping *m;
++	int i;
 +
-+/* Reported by Thomas Baechler <thomas@archlinux.org>
-+ * Fixes I/O errors with Teac HD-35PU devices
-+ * svr: last param was US_FL_IGNORE_RESIDUE, but unknown in 2.4
-+ */
-+UNUSUAL_DEV(  0x1652, 0x6600, 0x0201, 0x0201,
-+		"Super Top",
-+		"USB 2.0  IDE DEVICE",
-+		US_SC_DEVICE, US_PR_DEVICE, NULL,
-+		0),
++	for (i = 0; i < ARRAY_SIZE(info->egress_priority_map); i++) {
++		while ((m = info->egress_priority_map[i])) {
++			info->egress_priority_map[i] =
++				info->egress_priority_map[i]->next;
++			kfree(m);
++		}
++	}
++}
++
+ int vlan_dev_set_egress_priority(char *dev_name, __u32 skb_prio, short vlan_prio)
+ {
+ 	struct net_device *dev = dev_get_by_name(dev_name);
+@@ -826,7 +842,11 @@ void vlan_dev_destruct(struct net_device
+ 		if (dev->priv) {
+ 			if (VLAN_DEV_INFO(dev)->dent)
+ 				BUG();
+-
++			/*
++			 * Don't leak the hash table entries in
++			 * VLAN_DEV_INFO(dev)->egress_priority_map! --redlicha
++			 */
++			vlan_dev_destroy_egress_priority_map(dev);
+ 			kfree(dev->priv);
+ 			dev->priv = NULL;
+ 		}

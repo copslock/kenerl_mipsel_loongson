@@ -1,86 +1,59 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jun 2009 14:30:55 +0200 (CEST)
-Received: from mailout02.rmx.de ([217.111.120.10]:52470 "EHLO mailout02.rmx.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jun 2009 17:45:52 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:54906 "EHLO h5.dl5rb.org.uk"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1492662AbZF2Mas (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 29 Jun 2009 14:30:48 +0200
-Received: from [172.19.17.48] (HELO kdin01.retarus.de)
-  by mailout02.rmx.de (CommuniGate Pro SMTP 5.2.13 _community_)
-  with ESMTP id 40919574 for linux-mips@linux-mips.org; Mon, 29 Jun 2009 14:25:52 +0200
-Received: from bzvsmg91.dmzext.sys.sphairon.com (mail01.pmns.de [195.243.125.132])
-	by kdin01.retarus.de (8.14.2/8.14.2/retarus.custom) with SMTP id n5TCPpPu013407
-	for <linux-mips@linux-mips.org>; Mon, 29 Jun 2009 14:25:51 +0200
-Received: from BZSVEX02.sas.sys.sphairon.com (bzsvex02.sas.sys.sphairon.com [10.158.5.105])
-	by bzvsmg91.dmzext.sys.sphairon.com (Postfix) with ESMTP id CDB1460609
-	for <linux-mips@linux-mips.org>; Mon, 29 Jun 2009 14:24:36 +0200 (CEST)
-Received: from [10.158.7.50] (10.158.7.50) by bzsvex02.sas.sys.sphairon.com
- (10.158.5.105) with Microsoft SMTP Server (TLS) id 8.1.358.0; Mon, 29 Jun
- 2009 14:25:50 +0200
-Message-ID: <4A48B2CC.6060508@sphairon.com>
-Date:	Mon, 29 Jun 2009 14:25:48 +0200
-From:	Frank Seidel <Frank.Seidel@sphairon.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090318)
+	id S1492979AbZF2Ppo (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 29 Jun 2009 17:45:44 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n5TFecmW018825;
+	Mon, 29 Jun 2009 16:40:39 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n5TFebhf018823;
+	Mon, 29 Jun 2009 16:40:37 +0100
+Date:	Mon, 29 Jun 2009 16:40:37 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Willy Tarreau <w@1wt.eu>
+Cc:	Frank Seidel <Frank.Seidel@sphairon.com>, linux-mips@linux-mips.org
+Subject: [PATCH] linux-2.4: usb: Add support for Teac HD-35PU
+Message-ID: <20090629154037.GA18570@linux-mips.org>
 MIME-Version: 1.0
-To:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-CC:	"Seidel, Frank" <Frank.Seidel@sphairon.com>
-Subject: [PATCH] linux-2.4: br2684: allocation out of atomic context
-X-Enigmail-Version: 0.95.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: 7bit
-X-RMX-ID: 20090629-142551-n5TCPpPu013407-0@kdin01
-X-RMX-TRACE: 2009-06-29 14:25:52 RmxMSO@kdin01/mailcc10 [0.1s] 20090629-142551-n5TCPpPu013407-0@kdin01 0:00:01
-X-RMX-TRACE: 2009-06-29 14:25:52 KdIn@kdin01/mailcc04 [0.5s] 20090629-142551-n5TCPpPu013407-0@kdin01 0:00:00
-Return-Path: <Frank.Seidel@sphairon.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23531
+X-archive-position: 23532
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: Frank.Seidel@sphairon.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Author: Arne Redlich <redlicha@sphairon.com>
+From: Rudolf Svanda <svandar@sphairon.com>
 
-Moved GFP_Kernel allocation out of atomic context
+Support for Teac HD-35PU added
 
-Signed-off-by: Arne Redlich <redlicha@sphairon.com>
+Signed-off-by: Rudolf Svanda <svandar@sphairon.com>
 Signed-off-by: Frank Seidel <Frank.Seidel@sphairon.com>
 ---
- net/atm/br2684.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/usb/storage/unusual_devs.h |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/net/atm/br2684.c
-+++ b/net/atm/br2684.c
-@@ -509,6 +509,10 @@ Note: we do not have explicit unassign,
- 		MOD_DEC_USE_COUNT;
- 		return -EFAULT;
- 	}
-+	brvcc = kmalloc(sizeof(struct br2684_vcc), GFP_KERNEL);
-+	if (!brvcc)
-+		return -ENOMEM;
-+	memset(brvcc, 0, sizeof(struct br2684_vcc));
- 	write_lock_irq(&devs_lock);
- 	brdev = br2684_find_dev(&be.ifspec);
- 	if (brdev == NULL) {
-@@ -532,11 +536,6 @@ Note: we do not have explicit unassign,
- 		err = -EINVAL;
- 		goto error;
- 	}
--	brvcc = kmalloc(sizeof(struct br2684_vcc), GFP_KERNEL);
--	if (!brvcc) {
--		err = -ENOMEM;
--		goto error;
--	}
- 	memset(brvcc, 0, sizeof(struct br2684_vcc));
- 	DPRINTK("br2684_regvcc vcc=%p, encaps=%d, brvcc=%p\n", atmvcc, be.encaps,
- 		brvcc);
-@@ -567,6 +566,7 @@ Note: we do not have explicit unassign,
- 	return 0;
-     error:
- 	write_unlock_irq(&devs_lock);
-+	kfree(brvcc);
- 	MOD_DEC_USE_COUNT;
- 	return err;
- }
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -1012,3 +1012,13 @@ UNUSUAL_DEV(  0x0482, 0x0105, 0x0100, 0x
+ 		"Finecam L3",
+ 		US_SC_SCSI, US_PR_BULK, NULL,
+ 		US_FL_FIX_INQUIRY),
++
++/* Reported by Thomas Baechler <thomas@archlinux.org>
++ * Fixes I/O errors with Teac HD-35PU devices
++ * svr: last param was US_FL_IGNORE_RESIDUE, but unknown in 2.4
++ */
++UNUSUAL_DEV(  0x1652, 0x6600, 0x0201, 0x0201,
++		"Super Top",
++		"USB 2.0  IDE DEVICE",
++		US_SC_DEVICE, US_PR_DEVICE, NULL,
++		0),

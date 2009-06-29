@@ -1,78 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jun 2009 19:00:06 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:4537 "EHLO
-	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493064AbZF2Q77 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 29 Jun 2009 18:59:59 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B4a48f1d80000>; Mon, 29 Jun 2009 12:54:53 -0400
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 29 Jun 2009 09:54:20 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 29 Jun 2009 09:54:20 -0700
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n5TGsF4R026892;
-	Mon, 29 Jun 2009 09:54:15 -0700
-Received: (from ddaney@localhost)
-	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n5TGsFtp026890;
-	Mon, 29 Jun 2009 09:54:15 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-To:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:	David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH] MIPS: Define  __arch_swab64 for all mips r2 cpus (v2).
-Date:	Mon, 29 Jun 2009 09:54:15 -0700
-Message-Id: <1246294455-26866-1-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.6.0.6
-X-OriginalArrivalTime: 29 Jun 2009 16:54:20.0281 (UTC) FILETIME=[3F266690:01C9F8DA]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 29 Jun 2009 21:13:35 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:46680 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1493357AbZF2TNZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 29 Jun 2009 21:13:25 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n5TJ8Cuf023738;
+	Mon, 29 Jun 2009 20:08:12 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n5TJ8Ahk023736;
+	Mon, 29 Jun 2009 20:08:10 +0100
+Date:	Mon, 29 Jun 2009 20:08:10 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	KKylheku@zeugmasystems.com, aurelien@aurel32.net,
+	linux-mips@linux-mips.org
+Subject: Re: Broadcom Swarm support
+Message-ID: <20090629190809.GC22264@linux-mips.org>
+References: <20090626232432.GB3235@linux-mips.org> <20090627.225933.208964286.anemo@mba.ocn.ne.jp> <20090627154811.GA22264@linux-mips.org> <20090628.010906.115909054.anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20090628.010906.115909054.anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23535
+X-archive-position: 23536
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Some CPUs implement mipsr2, but because they are a super-set of
-mips64r2 do not define CONFIG_CPU_MIPS64_R2.  Cavium OCTEON falls into
-this category.  We would still like to use the optimized
-implementation, so since we have already checked for
-CONFIG_CPU_MIPSR2, checking for CONFIG_64BIT instead of
-CONFIG_CPU_MIPS64_R2 is sufficient.
+On Sun, Jun 28, 2009 at 01:09:06AM +0900, Atsushi Nemoto wrote:
 
-Change from v1: Add comments about why the change is safe.
+> > The I-cache for page just being loaded is clean so no flushing needed.  It
+> > is clean because when the page has been unmapped it was flushed or because
+> > the CPU switched to a fresh ASID.
+> 
+> Then, flush_cache_range or flush_cache_page should be called then the
+> page was unmmapped, right?  How about flush_cache_mm?  It does not
+> flush icache currently.
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
----
- arch/mips/include/asm/swab.h |    8 ++++++--
- 1 files changed, 6 insertions(+), 2 deletions(-)
+If that is being called then we're either about to terminate a process or
+to exec a new process.  In either case flush_tlb_cache (on VIVT I-cache)
+will drop the tlb context which effectively is a full I-cache flush.
 
-diff --git a/arch/mips/include/asm/swab.h b/arch/mips/include/asm/swab.h
-index 99993c0..97c2f81 100644
---- a/arch/mips/include/asm/swab.h
-+++ b/arch/mips/include/asm/swab.h
-@@ -38,7 +38,11 @@ static inline __attribute_const__ __u32 __arch_swab32(__u32 x)
- }
- #define __arch_swab32 __arch_swab32
- 
--#ifdef CONFIG_CPU_MIPS64_R2
-+/*
-+ * Having already checked for CONFIG_CPU_MIPSR2, enable the
-+ * optimized version for 64-bit kernel on r2 CPUs.
-+ */
-+#ifdef CONFIG_64BIT
- static inline __attribute_const__ __u64 __arch_swab64(__u64 x)
- {
- 	__asm__(
-@@ -50,6 +54,6 @@ static inline __attribute_const__ __u64 __arch_swab64(__u64 x)
- 	return x;
- }
- #define __arch_swab64 __arch_swab64
--#endif /* CONFIG_CPU_MIPS64_R2 */
-+#endif /* CONFIG_64BIT */
- #endif /* CONFIG_CPU_MIPSR2 */
- #endif /* _ASM_SWAB_H */
--- 
-1.6.0.6
+> And how about kernel __init code pages?  These pages are just freed on
+> free_initmem.  Also how about code pages used by a module which is to
+> be unloaded from kernel?
+
+Init code pages won't be used to store code that will be executed at
+KSEG0 or XKPHYS addresses so I-cache coherency is not of interest.
+
+For modules the I-cache is being flushed on loading of the module, see
+calls to flush_icache_range() in kernel/module.c so I-cache coherency is
+not of concern on module unload.
+
+> > The reason for this bug is that when data is being shoveled around by the
+> > processor (as opposed to DMA) as on PIO block devices it'll end up sitting
+> > in the D-cache so I-cache refills will grab stale data from S-cache or
+> > memory.
+> 
+> Yes, I suppose so on this swarm case, but I'm just thinking of other
+> case breaking icache coherency...
+
+Be careful with that - you might succeed ;-)
+
+  Ralf

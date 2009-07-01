@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jul 2009 19:08:23 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jul 2009 19:08:45 +0200 (CEST)
 Received: (from localhost user: 'ralf' uid#500 fake: STDIN
-	(ralf@eddie.linux-mips.org)) by ftp.linux-mips.org id S1491867AbZGARHK
+	(ralf@eddie.linux-mips.org)) by ftp.linux-mips.org id S1491869AbZGARHK
 	for <"|/home/ecartis/ecartis -s linux-mips">;
 	Wed, 1 Jul 2009 19:07:10 +0200
-Message-Id: <20090701120939.608878291@linux-mips.org>
+Message-Id: <20090701120939.686495768@linux-mips.org>
 User-Agent: quilt/0.47-1
-Date:	Wed, 01 Jul 2009 12:29:30 +0100
+Date:	Wed, 01 Jul 2009 12:29:31 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
 To:	linux-mips@linux-mips.org
 Cc:	Maxime Bizon <mbizon@freebox.fr>,
 	Florian Fainelli <florian@openwrt.org>
-Subject: [patch 04/12] MIPS: BCM63XX: Add PCI support.
+Subject: [patch 05/12] MIPS: BCM63XX: Change PCI code to emulate a fake cardbus bridge.
 References: <20090701112926.825088732@linux-mips.org>
-Content-Disposition: inline; filename=0004.patch
+Content-Disposition: inline; filename=0005.patch
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-archive-position: 23570
+X-archive-position: 23571
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -28,478 +28,378 @@ From:	Maxime Bizon <mbizon@freebox.fr>
 Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
- arch/mips/bcm63xx/Kconfig                            |    2 
- arch/mips/bcm63xx/setup.c                            |    2 
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_pci.h |    6 
- arch/mips/pci/Makefile                               |    2 
- arch/mips/pci/fixup-bcm63xx.c                        |   21 ++
- arch/mips/pci/ops-bcm63xx.c                          |  179 ++++++++++++++++++
- arch/mips/pci/pci-bcm63xx.c                          |  180 +++++++++++++++++++
- arch/mips/pci/pci-bcm63xx.h                          |   27 ++
- 8 files changed, 419 insertions(+)
- create mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_pci.h
- create mode 100644 arch/mips/pci/fixup-bcm63xx.c
- create mode 100644 arch/mips/pci/ops-bcm63xx.c
- create mode 100644 arch/mips/pci/pci-bcm63xx.c
- create mode 100644 arch/mips/pci/pci-bcm63xx.h
+ arch/mips/pci/ops-bcm63xx.c |  288 ++++++++++++++++++++++++++++++++++++++++++++
+ arch/mips/pci/pci-bcm63xx.c |   44 ++++++
+ 2 files changed, 332 insertions(+)
 
---- a/arch/mips/bcm63xx/Kconfig
-+++ b/arch/mips/bcm63xx/Kconfig
-@@ -3,7 +3,9 @@ menu "CPU support"
- 
- config BCM63XX_CPU_6348
- 	bool "support 6348 CPU"
-+	select HW_HAS_PCI
- 
- config BCM63XX_CPU_6358
- 	bool "support 6358 CPU"
-+	select HW_HAS_PCI
- endmenu
---- a/arch/mips/bcm63xx/setup.c
-+++ b/arch/mips/bcm63xx/setup.c
-@@ -108,4 +108,6 @@ void __init plat_mem_setup(void)
- 	pm_power_off = bcm63xx_machine_halt;
- 
- 	set_io_port_base(0);
-+	ioport_resource.start = 0;
-+	ioport_resource.end = ~0;
- }
---- /dev/null
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_pci.h
-@@ -0,0 +1,6 @@
-+#ifndef BCM63XX_DEV_PCI_H_
-+#define BCM63XX_DEV_PCI_H_
-+
-+extern int bcm63xx_pci_enabled;
-+
-+#endif /* BCM63XX_DEV_PCI_H_ */
---- a/arch/mips/pci/Makefile
-+++ b/arch/mips/pci/Makefile
-@@ -16,6 +16,8 @@ obj-$(CONFIG_PCI_VR41XX)	+= ops-vr41xx.o
- obj-$(CONFIG_NEC_MARKEINS)	+= ops-emma2rh.o pci-emma2rh.o fixup-emma2rh.o
- obj-$(CONFIG_PCI_TX4927)	+= ops-tx4927.o
- obj-$(CONFIG_BCM47XX)		+= pci-bcm47xx.o
-+obj-$(CONFIG_BCM63XX)		+= pci-bcm63xx.o fixup-bcm63xx.o \
-+					ops-bcm63xx.o
- 
- #
- # These are still pretty much in the old state, watch, go blind.
---- /dev/null
-+++ b/arch/mips/pci/fixup-bcm63xx.c
-@@ -0,0 +1,21 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2008 Maxime Bizon <mbizon@freebox.fr>
-+ */
-+
-+#include <linux/types.h>
-+#include <linux/pci.h>
-+#include <bcm63xx_cpu.h>
-+
-+int pcibios_map_irq(const struct pci_dev *dev, u8 slot, u8 pin)
-+{
-+	return bcm63xx_get_irq_number(IRQ_PCI);
-+}
-+
-+int pcibios_plat_dev_init(struct pci_dev *dev)
-+{
-+	return 0;
-+}
---- /dev/null
+--- a/arch/mips/pci/ops-bcm63xx.c
 +++ b/arch/mips/pci/ops-bcm63xx.c
-@@ -0,0 +1,179 @@
+@@ -177,3 +177,291 @@ struct pci_ops bcm63xx_pci_ops = {
+ 	.read   = bcm63xx_pci_read,
+ 	.write  = bcm63xx_pci_write
+ };
++
++#ifdef CONFIG_CARDBUS
 +/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2008 Maxime Bizon <mbizon@freebox.fr>
++ * emulate configuration read access on a cardbus bridge
 + */
++#define FAKE_CB_BRIDGE_SLOT	0x1e
 +
-+#include <linux/types.h>
-+#include <linux/pci.h>
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/delay.h>
-+#include <linux/io.h>
++static int fake_cb_bridge_bus_number = -1;
 +
-+#include "pci-bcm63xx.h"
++static struct {
++	u16 pci_command;
++	u8 cb_latency;
++	u8 subordinate_busn;
++	u8 cardbus_busn;
++	u8 pci_busn;
++	int bus_assigned;
++	u16 bridge_control;
 +
-+/*
-+ * swizzle 32bits data to return only the needed part
-+ */
-+static int postprocess_read(u32 data, int where, unsigned int size)
++	u32 mem_base0;
++	u32 mem_limit0;
++	u32 mem_base1;
++	u32 mem_limit1;
++
++	u32 io_base0;
++	u32 io_limit0;
++	u32 io_base1;
++	u32 io_limit1;
++} fake_cb_bridge_regs;
++
++static int fake_cb_bridge_read(int where, int size, u32 *val)
 +{
-+	u32 ret;
-+
-+	ret = 0;
-+	switch (size) {
-+	case 1:
-+		ret = (data >> ((where & 3) << 3)) & 0xff;
-+		break;
-+	case 2:
-+		ret = (data >> ((where & 3) << 3)) & 0xffff;
-+		break;
-+	case 4:
-+		ret = data;
-+		break;
-+	}
-+	return ret;
-+}
-+
-+static int preprocess_write(u32 orig_data, u32 val, int where,
-+			    unsigned int size)
-+{
-+	u32 ret;
-+
-+	ret = 0;
-+	switch (size) {
-+	case 1:
-+		ret = (orig_data & ~(0xff << ((where & 3) << 3))) |
-+			(val << ((where & 3) << 3));
-+		break;
-+	case 2:
-+		ret = (orig_data & ~(0xffff << ((where & 3) << 3))) |
-+			(val << ((where & 3) << 3));
-+		break;
-+	case 4:
-+		ret = val;
-+		break;
-+	}
-+	return ret;
-+}
-+
-+/*
-+ * setup hardware for a configuration cycle with given parameters
-+ */
-+static int bcm63xx_setup_cfg_access(int type, unsigned int busn,
-+				    unsigned int devfn, int where)
-+{
-+	unsigned int slot, func, reg;
-+	u32 val;
-+
-+	slot = PCI_SLOT(devfn);
-+	func = PCI_FUNC(devfn);
-+	reg = where >> 2;
-+
-+	/* sanity check */
-+	if (slot > (MPI_L2PCFG_DEVNUM_MASK >> MPI_L2PCFG_DEVNUM_SHIFT))
-+		return 1;
-+
-+	if (func > (MPI_L2PCFG_FUNC_MASK >> MPI_L2PCFG_FUNC_SHIFT))
-+		return 1;
-+
-+	if (reg > (MPI_L2PCFG_REG_MASK >> MPI_L2PCFG_REG_SHIFT))
-+		return 1;
-+
-+	/* ok, setup config access */
-+	val = (reg << MPI_L2PCFG_REG_SHIFT);
-+	val |= (func << MPI_L2PCFG_FUNC_SHIFT);
-+	val |= (slot << MPI_L2PCFG_DEVNUM_SHIFT);
-+	val |= MPI_L2PCFG_CFG_USEREG_MASK;
-+	val |= MPI_L2PCFG_CFG_SEL_MASK;
-+	/* type 0 cycle for local bus, type 1 cycle for anything else */
-+	if (type != 0) {
-+		/* FIXME: how to specify bus ??? */
-+		val |= (1 << MPI_L2PCFG_CFG_TYPE_SHIFT);
-+	}
-+	bcm_mpi_writel(val, MPI_L2PCFG_REG);
-+
-+	return 0;
-+}
-+
-+static int bcm63xx_do_cfg_read(int type, unsigned int busn,
-+				unsigned int devfn, int where, int size,
-+				u32 *val)
-+{
++	unsigned int reg;
 +	u32 data;
 +
-+	/* two phase cycle, first we write address, then read data at
-+	 * another location, caller already has a spinlock so no need
-+	 * to add one here  */
-+	if (bcm63xx_setup_cfg_access(type, busn, devfn, where))
-+		return PCIBIOS_DEVICE_NOT_FOUND;
-+	iob();
-+	data = le32_to_cpu(__raw_readl(pci_iospace_start));
-+	/* restore IO space normal behaviour */
-+	bcm_mpi_writel(0, MPI_L2PCFG_REG);
++	data = 0;
++	reg = where >> 2;
++	switch (reg) {
++	case (PCI_VENDOR_ID >> 2):
++	case (PCI_CB_SUBSYSTEM_VENDOR_ID >> 2):
++		/* create dummy vendor/device id from our cpu id */
++		data = (bcm63xx_get_cpu_id() << 16) | PCI_VENDOR_ID_BROADCOM;
++		break;
++
++	case (PCI_COMMAND >> 2):
++		data = (PCI_STATUS_DEVSEL_SLOW << 16);
++		data |= fake_cb_bridge_regs.pci_command;
++		break;
++
++	case (PCI_CLASS_REVISION >> 2):
++		data = (PCI_CLASS_BRIDGE_CARDBUS << 16);
++		break;
++
++	case (PCI_CACHE_LINE_SIZE >> 2):
++		data = (PCI_HEADER_TYPE_CARDBUS << 16);
++		break;
++
++	case (PCI_INTERRUPT_LINE >> 2):
++		/* bridge control */
++		data = (fake_cb_bridge_regs.bridge_control << 16);
++		/* pin:intA line:0xff */
++		data |= (0x1 << 8) | 0xff;
++		break;
++
++	case (PCI_CB_PRIMARY_BUS >> 2):
++		data = (fake_cb_bridge_regs.cb_latency << 24);
++		data |= (fake_cb_bridge_regs.subordinate_busn << 16);
++		data |= (fake_cb_bridge_regs.cardbus_busn << 8);
++		data |= fake_cb_bridge_regs.pci_busn;
++		break;
++
++	case (PCI_CB_MEMORY_BASE_0 >> 2):
++		data = fake_cb_bridge_regs.mem_base0;
++		break;
++
++	case (PCI_CB_MEMORY_LIMIT_0 >> 2):
++		data = fake_cb_bridge_regs.mem_limit0;
++		break;
++
++	case (PCI_CB_MEMORY_BASE_1 >> 2):
++		data = fake_cb_bridge_regs.mem_base1;
++		break;
++
++	case (PCI_CB_MEMORY_LIMIT_1 >> 2):
++		data = fake_cb_bridge_regs.mem_limit1;
++		break;
++
++	case (PCI_CB_IO_BASE_0 >> 2):
++		/* | 1 for 32bits io support */
++		data = fake_cb_bridge_regs.io_base0 | 0x1;
++		break;
++
++	case (PCI_CB_IO_LIMIT_0 >> 2):
++		data = fake_cb_bridge_regs.io_limit0;
++		break;
++
++	case (PCI_CB_IO_BASE_1 >> 2):
++		/* | 1 for 32bits io support */
++		data = fake_cb_bridge_regs.io_base1 | 0x1;
++		break;
++
++	case (PCI_CB_IO_LIMIT_1 >> 2):
++		data = fake_cb_bridge_regs.io_limit1;
++		break;
++	}
 +
 +	*val = postprocess_read(data, where, size);
-+
 +	return PCIBIOS_SUCCESSFUL;
 +}
 +
-+static int bcm63xx_do_cfg_write(int type, unsigned int busn,
-+				 unsigned int devfn, int where, int size,
-+				 u32 val)
++/*
++ * emulate configuration write access on a cardbus bridge
++ */
++static int fake_cb_bridge_write(int where, int size, u32 val)
 +{
-+	u32 data;
++	unsigned int reg;
++	u32 data, tmp;
++	int ret;
 +
-+	/* two phase cycle, first we write address, then write data to
-+	 * another location, caller already has a spinlock so no need
-+	 * to add one here  */
-+	if (bcm63xx_setup_cfg_access(type, busn, devfn, where))
-+		return PCIBIOS_DEVICE_NOT_FOUND;
-+	iob();
++	ret = fake_cb_bridge_read((where & ~0x3), 4, &data);
++	if (ret != PCIBIOS_SUCCESSFUL)
++		return ret;
 +
-+	data = le32_to_cpu(__raw_readl(pci_iospace_start));
 +	data = preprocess_write(data, val, where, size);
 +
-+	__raw_writel(cpu_to_le32(data), pci_iospace_start);
-+	wmb();
-+	/* no way to know the access is done, we have to wait */
-+	udelay(500);
-+	/* restore IO space normal behaviour */
-+	bcm_mpi_writel(0, MPI_L2PCFG_REG);
++	reg = where >> 2;
++	switch (reg) {
++	case (PCI_COMMAND >> 2):
++		fake_cb_bridge_regs.pci_command = (data & 0xffff);
++		break;
++
++	case (PCI_CB_PRIMARY_BUS >> 2):
++		fake_cb_bridge_regs.cb_latency = (data >> 24) & 0xff;
++		fake_cb_bridge_regs.subordinate_busn = (data >> 16) & 0xff;
++		fake_cb_bridge_regs.cardbus_busn = (data >> 8) & 0xff;
++		fake_cb_bridge_regs.pci_busn = data & 0xff;
++		if (fake_cb_bridge_regs.cardbus_busn)
++			fake_cb_bridge_regs.bus_assigned = 1;
++		break;
++
++	case (PCI_INTERRUPT_LINE >> 2):
++		tmp = (data >> 16) & 0xffff;
++		/* disable memory prefetch support */
++		tmp &= ~PCI_CB_BRIDGE_CTL_PREFETCH_MEM0;
++		tmp &= ~PCI_CB_BRIDGE_CTL_PREFETCH_MEM1;
++		fake_cb_bridge_regs.bridge_control = tmp;
++		break;
++
++	case (PCI_CB_MEMORY_BASE_0 >> 2):
++		fake_cb_bridge_regs.mem_base0 = data;
++		break;
++
++	case (PCI_CB_MEMORY_LIMIT_0 >> 2):
++		fake_cb_bridge_regs.mem_limit0 = data;
++		break;
++
++	case (PCI_CB_MEMORY_BASE_1 >> 2):
++		fake_cb_bridge_regs.mem_base1 = data;
++		break;
++
++	case (PCI_CB_MEMORY_LIMIT_1 >> 2):
++		fake_cb_bridge_regs.mem_limit1 = data;
++		break;
++
++	case (PCI_CB_IO_BASE_0 >> 2):
++		fake_cb_bridge_regs.io_base0 = data;
++		break;
++
++	case (PCI_CB_IO_LIMIT_0 >> 2):
++		fake_cb_bridge_regs.io_limit0 = data;
++		break;
++
++	case (PCI_CB_IO_BASE_1 >> 2):
++		fake_cb_bridge_regs.io_base1 = data;
++		break;
++
++	case (PCI_CB_IO_LIMIT_1 >> 2):
++		fake_cb_bridge_regs.io_limit1 = data;
++		break;
++	}
 +
 +	return PCIBIOS_SUCCESSFUL;
 +}
 +
-+static int bcm63xx_pci_read(struct pci_bus *bus, unsigned int devfn,
-+			     int where, int size, u32 *val)
++static int bcm63xx_cb_read(struct pci_bus *bus, unsigned int devfn,
++			   int where, int size, u32 *val)
 +{
-+	int type;
++	/* snoop access to slot 0x1e on root bus, we fake a cardbus
++	 * bridge at this location */
++	if (!bus->parent && PCI_SLOT(devfn) == FAKE_CB_BRIDGE_SLOT) {
++		fake_cb_bridge_bus_number = bus->number;
++		return fake_cb_bridge_read(where, size, val);
++	}
 +
-+	type = bus->parent ? 1 : 0;
++	/* a  configuration  cycle for  the  device  behind the  cardbus
++	 * bridge is  actually done as a  type 0 cycle  on the primary
++	 * bus. This means that only  one device can be on the cardbus
++	 * bus */
++	if (fake_cb_bridge_regs.bus_assigned &&
++	    bus->number == fake_cb_bridge_regs.cardbus_busn &&
++	    PCI_SLOT(devfn) == 0)
++		return bcm63xx_do_cfg_read(0, 0,
++					   PCI_DEVFN(CARDBUS_PCI_IDSEL, 0),
++					   where, size, val);
 +
-+	if (type == 0 && PCI_SLOT(devfn) == CARDBUS_PCI_IDSEL)
-+		return PCIBIOS_DEVICE_NOT_FOUND;
-+
-+	return bcm63xx_do_cfg_read(type, bus->number, devfn,
-+				    where, size, val);
++	return PCIBIOS_DEVICE_NOT_FOUND;
 +}
 +
-+static int bcm63xx_pci_write(struct pci_bus *bus, unsigned int devfn,
-+			      int where, int size, u32 val)
++static int bcm63xx_cb_write(struct pci_bus *bus, unsigned int devfn,
++			    int where, int size, u32 val)
 +{
-+	int type;
++	if (!bus->parent && PCI_SLOT(devfn) == FAKE_CB_BRIDGE_SLOT) {
++		fake_cb_bridge_bus_number = bus->number;
++		return fake_cb_bridge_write(where, size, val);
++	}
 +
-+	type = bus->parent ? 1 : 0;
++	if (fake_cb_bridge_regs.bus_assigned &&
++	    bus->number == fake_cb_bridge_regs.cardbus_busn &&
++	    PCI_SLOT(devfn) == 0)
++		return bcm63xx_do_cfg_write(0, 0,
++					    PCI_DEVFN(CARDBUS_PCI_IDSEL, 0),
++					    where, size, val);
 +
-+	if (type == 0 && PCI_SLOT(devfn) == CARDBUS_PCI_IDSEL)
-+		return PCIBIOS_DEVICE_NOT_FOUND;
-+
-+	return bcm63xx_do_cfg_write(type, bus->number, devfn,
-+				     where, size, val);
++	return PCIBIOS_DEVICE_NOT_FOUND;
 +}
 +
-+struct pci_ops bcm63xx_pci_ops = {
-+	.read   = bcm63xx_pci_read,
-+	.write  = bcm63xx_pci_write
++struct pci_ops bcm63xx_cb_ops = {
++	.read   = bcm63xx_cb_read,
++	.write   = bcm63xx_cb_write,
 +};
---- /dev/null
++
++/*
++ * only one IO window, so it  cannot be shared by PCI and cardbus, use
++ * fixup to choose and detect unhandled configuration
++ */
++static void bcm63xx_fixup(struct pci_dev *dev)
++{
++	static int io_window = -1;
++	int i, found, new_io_window;
++	u32 val;
++
++	/* look for any io resource */
++	found = 0;
++	for (i = 0; i < DEVICE_COUNT_RESOURCE; i++) {
++		if (pci_resource_flags(dev, i) & IORESOURCE_IO) {
++			found = 1;
++			break;
++		}
++	}
++
++	if (!found)
++		return;
++
++	/* skip our fake bus with only cardbus bridge on it */
++	if (dev->bus->number == fake_cb_bridge_bus_number)
++		return;
++
++	/* find on which bus the device is */
++	if (fake_cb_bridge_regs.bus_assigned &&
++	    dev->bus->number == fake_cb_bridge_regs.cardbus_busn &&
++	    PCI_SLOT(dev->devfn) == 0)
++		new_io_window = 1;
++	else
++		new_io_window = 0;
++
++	if (new_io_window == io_window)
++		return;
++
++	if (io_window != -1) {
++		printk(KERN_ERR "bcm63xx: both PCI and cardbus devices "
++		       "need IO, which hardware cannot do\n");
++		return;
++	}
++
++	printk(KERN_INFO "bcm63xx: PCI IO window assigned to %s\n",
++	       (new_io_window == 0) ? "PCI" : "cardbus");
++
++	val = bcm_mpi_readl(MPI_L2PIOREMAP_REG);
++	if (io_window)
++		val |= MPI_L2PREMAP_IS_CARDBUS_MASK;
++	else
++		val &= ~MPI_L2PREMAP_IS_CARDBUS_MASK;
++	bcm_mpi_writel(val, MPI_L2PIOREMAP_REG);
++
++	io_window = new_io_window;
++}
++
++DECLARE_PCI_FIXUP_ENABLE(PCI_ANY_ID, PCI_ANY_ID, bcm63xx_fixup);
++#endif
+--- a/arch/mips/pci/pci-bcm63xx.c
 +++ b/arch/mips/pci/pci-bcm63xx.c
-@@ -0,0 +1,180 @@
+@@ -30,7 +30,11 @@ static struct resource bcm_pci_mem_resou
+ static struct resource bcm_pci_io_resource = {
+ 	.name   = "bcm63xx PCI IO space",
+ 	.start  = BCM_PCI_IO_BASE_PA,
++#ifdef CONFIG_CARDBUS
++	.end    = BCM_PCI_IO_HALF_PA,
++#else
+ 	.end    = BCM_PCI_IO_END_PA,
++#endif
+ 	.flags  = IORESOURCE_IO
+ };
+ 
+@@ -40,6 +44,33 @@ struct pci_controller bcm63xx_controller
+ 	.mem_resource	= &bcm_pci_mem_resource,
+ };
+ 
 +/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2008 Maxime Bizon <mbizon@freebox.fr>
++ * We handle cardbus  via a fake Cardbus bridge,  memory and io spaces
++ * have to be  clearly separated from PCI one  since we have different
++ * memory decoder.
 + */
-+
-+#include <linux/types.h>
-+#include <linux/pci.h>
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <asm/bootinfo.h>
-+
-+#include "pci-bcm63xx.h"
-+
-+/*
-+ * Allow PCI to be disabled at runtime depending on board nvram
-+ * configuration
-+ */
-+int bcm63xx_pci_enabled;
-+
-+static struct resource bcm_pci_mem_resource = {
-+	.name   = "bcm63xx PCI memory space",
-+	.start  = BCM_PCI_MEM_BASE_PA,
-+	.end    = BCM_PCI_MEM_END_PA,
++#ifdef CONFIG_CARDBUS
++static struct resource bcm_cb_mem_resource = {
++	.name   = "bcm63xx Cardbus memory space",
++	.start  = BCM_CB_MEM_BASE_PA,
++	.end    = BCM_CB_MEM_END_PA,
 +	.flags  = IORESOURCE_MEM
 +};
 +
-+static struct resource bcm_pci_io_resource = {
-+	.name   = "bcm63xx PCI IO space",
-+	.start  = BCM_PCI_IO_BASE_PA,
++static struct resource bcm_cb_io_resource = {
++	.name   = "bcm63xx Cardbus IO space",
++	.start  = BCM_PCI_IO_HALF_PA + 1,
 +	.end    = BCM_PCI_IO_END_PA,
 +	.flags  = IORESOURCE_IO
 +};
 +
-+struct pci_controller bcm63xx_controller = {
-+	.pci_ops	= &bcm63xx_pci_ops,
-+	.io_resource	= &bcm_pci_io_resource,
-+	.mem_resource	= &bcm_pci_mem_resource,
++struct pci_controller bcm63xx_cb_controller = {
++	.pci_ops	= &bcm63xx_cb_ops,
++	.io_resource	= &bcm_cb_io_resource,
++	.mem_resource	= &bcm_cb_mem_resource,
 +};
++#endif
 +
-+static u32 bcm63xx_int_cfg_readl(u32 reg)
-+{
-+	u32 tmp;
+ static u32 bcm63xx_int_cfg_readl(u32 reg)
+ {
+ 	u32 tmp;
+@@ -100,8 +131,17 @@ static int __init bcm63xx_pci_init(void)
+ 	val |= (CARDBUS_PCI_IDSEL << PCMCIA_C1_CBIDSEL_SHIFT);
+ 	bcm_pcmcia_writel(val, PCMCIA_C1_REG);
+ 
++#ifdef CONFIG_CARDBUS
++	/* setup local bus to PCI access (Cardbus memory) */
++	val = BCM_CB_MEM_BASE_PA & MPI_L2P_BASE_MASK;
++	bcm_mpi_writel(val, MPI_L2PMEMBASE2_REG);
++	bcm_mpi_writel(~(BCM_CB_MEM_SIZE - 1), MPI_L2PMEMRANGE2_REG);
++	val |= MPI_L2PREMAP_ENABLED_MASK | MPI_L2PREMAP_IS_CARDBUS_MASK;
++	bcm_mpi_writel(val, MPI_L2PMEMREMAP2_REG);
++#else
+ 	/* disable second access windows */
+ 	bcm_mpi_writel(0, MPI_L2PMEMREMAP2_REG);
++#endif
+ 
+ 	/* setup local bus  to PCI access (IO memory),  we have only 1
+ 	 * IO window  for both PCI  and cardbus, but it  cannot handle
+@@ -171,6 +211,10 @@ static int __init bcm63xx_pci_init(void)
+ 
+ 	register_pci_controller(&bcm63xx_controller);
+ 
++#ifdef CONFIG_CARDBUS
++	register_pci_controller(&bcm63xx_cb_controller);
++#endif
 +
-+	tmp = reg & MPI_PCICFGCTL_CFGADDR_MASK;
-+	tmp |= MPI_PCICFGCTL_WRITEEN_MASK;
-+	bcm_mpi_writel(tmp, MPI_PCICFGCTL_REG);
-+	iob();
-+	return bcm_mpi_readl(MPI_PCICFGDATA_REG);
-+}
-+
-+static void bcm63xx_int_cfg_writel(u32 val, u32 reg)
-+{
-+	u32 tmp;
-+
-+	tmp = reg & MPI_PCICFGCTL_CFGADDR_MASK;
-+	tmp |=  MPI_PCICFGCTL_WRITEEN_MASK;
-+	bcm_mpi_writel(tmp, MPI_PCICFGCTL_REG);
-+	bcm_mpi_writel(val, MPI_PCICFGDATA_REG);
-+}
-+
-+void __iomem *pci_iospace_start;
-+
-+static int __init bcm63xx_pci_init(void)
-+{
-+	unsigned int mem_size;
-+	u32 val;
-+
-+	if (!BCMCPU_IS_6348() && !BCMCPU_IS_6358())
-+		return -ENODEV;
-+
-+	if (!bcm63xx_pci_enabled)
-+		return -ENODEV;
-+
-+	/*
-+	 * configuration  access are  done through  IO space,  remap 4
-+	 * first bytes to access it from CPU.
-+	 *
-+	 * this means that  no io access from CPU  should happen while
-+	 * we do a configuration cycle,  but there's no way we can add
-+	 * a spinlock for each io access, so this is currently kind of
-+	 * broken on SMP.
-+	 */
-+	pci_iospace_start = ioremap_nocache(BCM_PCI_IO_BASE_PA, 4);
-+	if (!pci_iospace_start)
-+		return -ENOMEM;
-+
-+	/* setup local bus to PCI access (PCI memory) */
-+	val = BCM_PCI_MEM_BASE_PA & MPI_L2P_BASE_MASK;
-+	bcm_mpi_writel(val, MPI_L2PMEMBASE1_REG);
-+	bcm_mpi_writel(~(BCM_PCI_MEM_SIZE - 1), MPI_L2PMEMRANGE1_REG);
-+	bcm_mpi_writel(val | MPI_L2PREMAP_ENABLED_MASK, MPI_L2PMEMREMAP1_REG);
-+
-+	/* set Cardbus IDSEL (type 0 cfg access on primary bus for
-+	 * this IDSEL will be done on Cardbus instead) */
-+	val = bcm_pcmcia_readl(PCMCIA_C1_REG);
-+	val &= ~PCMCIA_C1_CBIDSEL_MASK;
-+	val |= (CARDBUS_PCI_IDSEL << PCMCIA_C1_CBIDSEL_SHIFT);
-+	bcm_pcmcia_writel(val, PCMCIA_C1_REG);
-+
-+	/* disable second access windows */
-+	bcm_mpi_writel(0, MPI_L2PMEMREMAP2_REG);
-+
-+	/* setup local bus  to PCI access (IO memory),  we have only 1
-+	 * IO window  for both PCI  and cardbus, but it  cannot handle
-+	 * both  at the  same time,  assume standard  PCI for  now, if
-+	 * cardbus card has  IO zone, PCI fixup will  change window to
-+	 * cardbus */
-+	val = BCM_PCI_IO_BASE_PA & MPI_L2P_BASE_MASK;
-+	bcm_mpi_writel(val, MPI_L2PIOBASE_REG);
-+	bcm_mpi_writel(~(BCM_PCI_IO_SIZE - 1), MPI_L2PIORANGE_REG);
-+	bcm_mpi_writel(val | MPI_L2PREMAP_ENABLED_MASK, MPI_L2PIOREMAP_REG);
-+
-+	/* enable PCI related GPIO pins */
-+	bcm_mpi_writel(MPI_LOCBUSCTL_EN_PCI_GPIO_MASK, MPI_LOCBUSCTL_REG);
-+
-+	/* setup PCI to local bus access, used by PCI device to target
-+	 * local RAM while bus mastering */
-+	bcm63xx_int_cfg_writel(0, PCI_BASE_ADDRESS_3);
-+	if (BCMCPU_IS_6358())
-+		val = MPI_SP0_REMAP_ENABLE_MASK;
-+	else
-+		val = 0;
-+	bcm_mpi_writel(val, MPI_SP0_REMAP_REG);
-+
-+	bcm63xx_int_cfg_writel(0x0, PCI_BASE_ADDRESS_4);
-+	bcm_mpi_writel(0, MPI_SP1_REMAP_REG);
-+
-+	mem_size = bcm63xx_get_memory_size();
-+
-+	/* 6348 before rev b0 exposes only 16 MB of RAM memory through
-+	 * PCI, throw a warning if we have more memory */
-+	if (BCMCPU_IS_6348() && (bcm63xx_get_cpu_rev() & 0xf0) == 0xa0) {
-+		if (mem_size > (16 * 1024 * 1024))
-+			printk(KERN_WARNING "bcm63xx: this CPU "
-+			       "revision cannot handle more than 16MB "
-+			       "of RAM for PCI bus mastering\n");
-+	} else {
-+		/* setup sp0 range to local RAM size */
-+		bcm_mpi_writel(~(mem_size - 1), MPI_SP0_RANGE_REG);
-+		bcm_mpi_writel(0, MPI_SP1_RANGE_REG);
-+	}
-+
-+	/* change  host bridge  retry  counter to  infinite number  of
-+	 * retry,  needed for  some broadcom  wifi cards  with Silicon
-+	 * Backplane bus where access to srom seems very slow  */
-+	val = bcm63xx_int_cfg_readl(BCMPCI_REG_TIMERS);
-+	val &= ~REG_TIMER_RETRY_MASK;
-+	bcm63xx_int_cfg_writel(val, BCMPCI_REG_TIMERS);
-+
-+	/* enable memory decoder and bus mastering */
-+	val = bcm63xx_int_cfg_readl(PCI_COMMAND);
-+	val |= (PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER);
-+	bcm63xx_int_cfg_writel(val, PCI_COMMAND);
-+
-+	/* enable read prefetching & disable byte swapping for bus
-+	 * mastering transfers */
-+	val = bcm_mpi_readl(MPI_PCIMODESEL_REG);
-+	val &= ~MPI_PCIMODESEL_BAR1_NOSWAP_MASK;
-+	val &= ~MPI_PCIMODESEL_BAR2_NOSWAP_MASK;
-+	val &= ~MPI_PCIMODESEL_PREFETCH_MASK;
-+	val |= (8 << MPI_PCIMODESEL_PREFETCH_SHIFT);
-+	bcm_mpi_writel(val, MPI_PCIMODESEL_REG);
-+
-+	/* enable pci interrupt */
-+	val = bcm_mpi_readl(MPI_LOCINT_REG);
-+	val |= MPI_LOCINT_MASK(MPI_LOCINT_EXT_PCI_INT);
-+	bcm_mpi_writel(val, MPI_LOCINT_REG);
-+
-+	register_pci_controller(&bcm63xx_controller);
-+
-+	/* mark memory space used for IO mapping as reserved */
-+	request_mem_region(BCM_PCI_IO_BASE_PA, BCM_PCI_IO_SIZE,
-+			   "bcm63xx PCI IO space");
-+	return 0;
-+}
-+
-+arch_initcall(bcm63xx_pci_init);
---- /dev/null
-+++ b/arch/mips/pci/pci-bcm63xx.h
-@@ -0,0 +1,27 @@
-+#ifndef PCI_BCM63XX_H_
-+#define PCI_BCM63XX_H_
-+
-+#include <bcm63xx_cpu.h>
-+#include <bcm63xx_io.h>
-+#include <bcm63xx_regs.h>
-+#include <bcm63xx_dev_pci.h>
-+
-+/*
-+ * Cardbus shares  the PCI bus, but has  no IDSEL, so a  special id is
-+ * reserved for it.  If you have a standard PCI device at this id, you
-+ * need to change the following definition.
-+ */
-+#define CARDBUS_PCI_IDSEL	0x8
-+
-+/*
-+ * defined in ops-bcm63xx.c
-+ */
-+extern struct pci_ops bcm63xx_pci_ops;
-+extern struct pci_ops bcm63xx_cb_ops;
-+
-+/*
-+ * defined in pci-bcm63xx.c
-+ */
-+extern void __iomem *pci_iospace_start;
-+
-+#endif /* ! PCI_BCM63XX_H_ */
+ 	/* mark memory space used for IO mapping as reserved */
+ 	request_mem_region(BCM_PCI_IO_BASE_PA, BCM_PCI_IO_SIZE,
+ 			   "bcm63xx PCI IO space");

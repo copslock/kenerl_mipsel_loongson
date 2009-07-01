@@ -1,33 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jul 2009 20:13:02 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:47976 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jul 2009 20:26:40 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:56522 "EHLO h5.dl5rb.org.uk"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1491834AbZGASMz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 1 Jul 2009 20:12:55 +0200
+	id S1491784AbZGAS0c (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 1 Jul 2009 20:26:32 +0200
 Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n61I7GUw023310;
-	Wed, 1 Jul 2009 19:07:16 +0100
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n61IKqah023611;
+	Wed, 1 Jul 2009 19:20:52 +0100
 Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n61I7Fba023308;
-	Wed, 1 Jul 2009 19:07:15 +0100
-Date:	Wed, 1 Jul 2009 19:07:15 +0100
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n61IKpnQ023609;
+	Wed, 1 Jul 2009 19:20:51 +0100
+Date:	Wed, 1 Jul 2009 19:20:51 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Wu Zhangjin <wuzhangjin@gmail.com>
-Cc:	LKML <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org,
-	Pavel Machek <pavel@ucw.cz>
-Subject: Re: [BUG] MIPS: Hibernation in the latest linux-mips:master branch
-	not work
-Message-ID: <20090701180715.GA23121@linux-mips.org>
-References: <1246372868.19049.17.camel@falcon> <20090630144540.GA18212@linux-mips.org> <1246374687.20482.10.camel@falcon>
+To:	David Daney <ddaney@caviumnetworks.com>
+Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Define  __arch_swab64 for all mips r2 cpus (v2).
+Message-ID: <20090701182051.GB23121@linux-mips.org>
+References: <1246294455-26866-1-git-send-email-ddaney@caviumnetworks.com> <20090629193454.GA23430@linux-mips.org> <alpine.LFD.2.00.0907010132500.23134@eddie.linux-mips.org> <4A4AB845.1030906@caviumnetworks.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1246374687.20482.10.camel@falcon>
+In-Reply-To: <4A4AB845.1030906@caviumnetworks.com>
 User-Agent: Mutt/1.5.18 (2008-05-17)
 Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23581
+X-archive-position: 23582
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,54 +34,23 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jun 30, 2009 at 11:11:27PM +0800, Wu Zhangjin wrote:
+On Tue, Jun 30, 2009 at 06:13:41PM -0700, David Daney wrote:
 
-> hi, ralf, in the latest master branch of linux-mips git repo, seems
-> there is a need to select the SYS_SUPPORTS_HOTPLUG_CPU option in every
-> uni-processor board, otherwise, the suspend/hibernation can not be used,
-> because you have set:
-> 
-> config ARCH_HIBERNATION_POSSIBLE
->     def_bool y
->     depends on SYS_SUPPORTS_HOTPLUG_CPU
-> 
-> config ARCH_SUSPEND_POSSIBLE
->     def_bool y
->     depends on SYS_SUPPORTS_HOTPLUG_CPU
-> 
-> so, the board-specific patch must be pushed by the maintainers of
-> boards. and if the board support SMP, they must implement the
-> mips-specific hotplug support, is this right? I have selected
-> SYS_SUPPORTS_HOTPLUG_CPU in LEMOTE_FULONG and will push a relative patch
-> later.
+> The problem with CPU_MIPS64_R2 in the kernel is that it means two  
+> unrelated things:
+>
+> 1) The cpu can execute all mips64r2 ISA instructions.
+>
+> 2) The cpu requires that all worse case cache and execution hazards are  
+> handled.
+>
+> In the case of the Octeon processors, #1 is true, but we can get better  
+> performance by omitting many of the hazard barriers because they are  
+> unneeded.
 
-I think below patch should take care of this problem.  It simply assumes
-that all uniprocessor systems support suspend and hibernate.  That's an
-assumption that I'm not to unhappy with though it may force us to fix a
-few systems.
+The most performance sensitive hazard barriers are the ones in the TLB
+exception handlers and they're now being handled in C code in tlbex.c
+which mostly does runtime decissions.  I suspect the remaining hazard
+barriers are not a big performance thing anymore.
 
   Ralf
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
- arch/mips/Kconfig |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index df1a92a..3ca0fe1 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2168,11 +2168,11 @@ menu "Power management options"
- 
- config ARCH_HIBERNATION_POSSIBLE
- 	def_bool y
--	depends on SYS_SUPPORTS_HOTPLUG_CPU
-+	depends on SYS_SUPPORTS_HOTPLUG_CPU || !SMP
- 
- config ARCH_SUSPEND_POSSIBLE
- 	def_bool y
--	depends on SYS_SUPPORTS_HOTPLUG_CPU
-+	depends on SYS_SUPPORTS_HOTPLUG_CPU || !SMP
- 
- source "kernel/power/Kconfig"
- 

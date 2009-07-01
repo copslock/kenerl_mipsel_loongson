@@ -1,21 +1,21 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jul 2009 19:10:53 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jul 2009 19:11:15 +0200 (CEST)
 Received: (from localhost user: 'ralf' uid#500 fake: STDIN
-	(ralf@eddie.linux-mips.org)) by ftp.linux-mips.org id S1491878AbZGARHL
+	(ralf@eddie.linux-mips.org)) by ftp.linux-mips.org id S1491879AbZGARHL
 	for <"|/home/ecartis/ecartis -s linux-mips">;
 	Wed, 1 Jul 2009 19:07:11 +0200
-Message-Id: <20090701120940.183856745@linux-mips.org>
+Message-Id: <20090701120940.303430182@linux-mips.org>
 User-Agent: quilt/0.47-1
-Date:	Wed, 01 Jul 2009 12:29:37 +0100
+Date:	Wed, 01 Jul 2009 12:29:38 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
 To:	linux-mips@linux-mips.org
 Cc:	Maxime Bizon <mbizon@freebox.fr>,
 	Florian Fainelli <florian@openwrt.org>
-Subject: [patch 11/12] MIPS: BCM63XX: Add board support code.
+Subject: [patch 12/12] MIPS: BCM63XX: Add defconfig.
 References: <20090701112926.825088732@linux-mips.org>
-Content-Disposition: inline; filename=0011.patch
+Content-Disposition: inline; filename=0012.patch
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
-X-archive-position: 23577
+X-archive-position: 23578
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -23,743 +23,988 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-From:	Maxime Bizon <mbizon@freebox.fr>
-
-BCM6348-based:
- - 96348R
- - 96348gw
- - 96348GW-10
- - 96348GW-11
- - 96348GW-A
- - Sagem F@2404
- - Davolink DV201AMR
-
-BCM6358-based:
- - 96358vw
- - 96358vw2
- - Pirelli/Alice AGPFS0
+From: Maxime Bizon <mbizon@freebox.fr>
 
 Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
 Signed-off-by: Florian Fainelli <florian@openwrt.org>
 Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
- arch/mips/bcm63xx/Kconfig                           |    2 
- arch/mips/bcm63xx/Makefile                          |    2 
- arch/mips/bcm63xx/boards/Kconfig                    |   11 
- arch/mips/bcm63xx/boards/Makefile                   |    3 
- arch/mips/bcm63xx/boards/board_bcm963xx.c           |  532 ++++++++++++++++++++
- arch/mips/bcm63xx/prom.c                            |    4 
- arch/mips/bcm63xx/setup.c                           |   16 
- arch/mips/include/asm/mach-bcm63xx/bcm63xx_board.h  |   12 
- arch/mips/include/asm/mach-bcm63xx/board_bcm963xx.h |   50 +
- 9 files changed, 630 insertions(+), 2 deletions(-)
- create mode 100644 arch/mips/bcm63xx/boards/Kconfig
- create mode 100644 arch/mips/bcm63xx/boards/Makefile
- create mode 100644 arch/mips/bcm63xx/boards/board_bcm963xx.c
- create mode 100644 arch/mips/include/asm/mach-bcm63xx/bcm63xx_board.h
- create mode 100644 arch/mips/include/asm/mach-bcm63xx/board_bcm963xx.h
+ arch/mips/configs/bcm63xx_defconfig |  972 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 972 insertions(+)
+ create mode 100644 arch/mips/configs/bcm63xx_defconfig
 
---- a/arch/mips/bcm63xx/Kconfig
-+++ b/arch/mips/bcm63xx/Kconfig
-@@ -17,3 +17,5 @@ config BCM63XX_CPU_6358
- 	select USB_ARCH_HAS_EHCI
- 	select USB_EHCI_BIG_ENDIAN_MMIO
- endmenu
-+
-+source "arch/mips/bcm63xx/boards/Kconfig"
---- a/arch/mips/bcm63xx/Makefile
-+++ b/arch/mips/bcm63xx/Makefile
-@@ -6,4 +6,6 @@ obj-y		+= dev-usb-ehci.o
- obj-y		+= dev-enet.o
- obj-$(CONFIG_EARLY_PRINTK)	+= early_printk.o
- 
-+obj-y		+= boards/
-+
- EXTRA_CFLAGS += -Werror
 --- /dev/null
-+++ b/arch/mips/bcm63xx/boards/Kconfig
-@@ -0,0 +1,11 @@
-+choice
-+	prompt "Board support"
-+	depends on BCM63XX
-+	default BOARD_BCM963XX
-+
-+config BOARD_BCM963XX
-+       bool "Generic Broadcom 963xx boards"
-+	select SSB
-+       help
-+
-+endchoice
---- /dev/null
-+++ b/arch/mips/bcm63xx/boards/Makefile
-@@ -0,0 +1,3 @@
-+obj-$(CONFIG_BOARD_BCM963XX)		+= board_bcm963xx.o
-+
-+EXTRA_CFLAGS += -Werror
---- /dev/null
-+++ b/arch/mips/bcm63xx/boards/board_bcm963xx.c
-@@ -0,0 +1,532 @@
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2008 Maxime Bizon <mbizon@freebox.fr>
-+ * Copyright (C) 2008 Florian Fainelli <florian@openwrt.org>
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/kernel.h>
-+#include <linux/string.h>
-+#include <linux/platform_device.h>
-+#include <linux/mtd/mtd.h>
-+#include <linux/mtd/partitions.h>
-+#include <linux/mtd/physmap.h>
-+#include <linux/ssb/ssb.h>
-+#include <asm/addrspace.h>
-+#include <bcm63xx_board.h>
-+#include <bcm63xx_cpu.h>
-+#include <bcm63xx_regs.h>
-+#include <bcm63xx_io.h>
-+#include <bcm63xx_board.h>
-+#include <bcm63xx_dev_pci.h>
-+#include <bcm63xx_dev_uart.h>
-+#include <bcm63xx_dev_enet.h>
-+#include <bcm63xx_dev_pcmcia.h>
-+#include <bcm63xx_dev_usb_ohci.h>
-+#include <bcm63xx_dev_usb_ehci.h>
-+#include <board_bcm963xx.h>
-+
-+#define PFX	"board_bcm963xx: "
-+
-+static struct bcm963xx_nvram nvram;
-+static unsigned int mac_addr_used;
-+static struct board_info board;
-+
-+/*
-+ * known 6348 boards
-+ */
-+#ifdef CONFIG_BCM63XX_CPU_6348
-+static struct board_info __initdata board_96348r = {
-+	.name				= "96348R",
-+	.expected_cpu_id		= 0x6348,
-+
-+	.has_enet0			= 1,
-+	.has_pci			= 1,
-+
-+	.enet0 = {
-+		.has_phy		= 1,
-+		.use_internal_phy	= 1,
-+	},
-+};
-+
-+static struct board_info __initdata board_96348gw_10 = {
-+	.name				= "96348GW-10",
-+	.expected_cpu_id		= 0x6348,
-+
-+	.has_enet0			= 1,
-+	.has_enet1			= 1,
-+	.has_pci			= 1,
-+
-+	.enet0 = {
-+		.has_phy		= 1,
-+		.use_internal_phy	= 1,
-+	},
-+	.enet1 = {
-+		.force_speed_100	= 1,
-+		.force_duplex_full	= 1,
-+	},
-+
-+	.has_ohci0			= 1,
-+	.has_pccard			= 1,
-+	.has_ehci0			= 1,
-+};
-+
-+static struct board_info __initdata board_96348gw_11 = {
-+	.name				= "96348GW-11",
-+	.expected_cpu_id		= 0x6348,
-+
-+	.has_enet0			= 1,
-+	.has_enet1			= 1,
-+	.has_pci			= 1,
-+
-+	.enet0 = {
-+		.has_phy		= 1,
-+		.use_internal_phy	= 1,
-+	},
-+
-+	.enet1 = {
-+		.force_speed_100	= 1,
-+		.force_duplex_full	= 1,
-+	},
-+
-+
-+	.has_ohci0 = 1,
-+	.has_pccard = 1,
-+	.has_ehci0 = 1,
-+};
-+
-+static struct board_info __initdata board_96348gw = {
-+	.name				= "96348GW",
-+	.expected_cpu_id		= 0x6348,
-+
-+	.has_enet0			= 1,
-+	.has_enet1			= 1,
-+	.has_pci			= 1,
-+
-+	.enet0 = {
-+		.has_phy		= 1,
-+		.use_internal_phy	= 1,
-+	},
-+	.enet1 = {
-+		.force_speed_100	= 1,
-+		.force_duplex_full	= 1,
-+	},
-+
-+	.has_ohci0 = 1,
-+};
-+
-+static struct board_info __initdata board_FAST2404 = {
-+        .name                           = "F@ST2404",
-+        .expected_cpu_id                = 0x6348,
-+
-+        .has_enet0                      = 1,
-+        .has_enet1                      = 1,
-+        .has_pci                        = 1,
-+
-+        .enet0 = {
-+                .has_phy                = 1,
-+                .use_internal_phy       = 1,
-+        },
-+
-+        .enet1 = {
-+                .force_speed_100        = 1,
-+                .force_duplex_full      = 1,
-+        },
-+
-+
-+        .has_ohci0 = 1,
-+        .has_pccard = 1,
-+        .has_ehci0 = 1,
-+};
-+
-+static struct board_info __initdata board_DV201AMR = {
-+	.name				= "DV201AMR",
-+	.expected_cpu_id		= 0x6348,
-+
-+	.has_pci			= 1,
-+	.has_ohci0			= 1,
-+
-+	.has_enet0			= 1,
-+	.has_enet1			= 1,
-+	.enet0 = {
-+		.has_phy		= 1,
-+		.use_internal_phy	= 1,
-+	},
-+	.enet1 = {
-+		.force_speed_100	= 1,
-+		.force_duplex_full	= 1,
-+	},
-+};
-+
-+static struct board_info __initdata board_96348gw_a = {
-+	.name				= "96348GW-A",
-+	.expected_cpu_id		= 0x6348,
-+
-+	.has_enet0			= 1,
-+	.has_enet1			= 1,
-+	.has_pci			= 1,
-+
-+	.enet0 = {
-+		.has_phy		= 1,
-+		.use_internal_phy	= 1,
-+	},
-+	.enet1 = {
-+		.force_speed_100	= 1,
-+		.force_duplex_full	= 1,
-+	},
-+
-+	.has_ohci0 = 1,
-+};
-+#endif
-+
-+/*
-+ * known 6358 boards
-+ */
-+#ifdef CONFIG_BCM63XX_CPU_6358
-+static struct board_info __initdata board_96358vw = {
-+	.name				= "96358VW",
-+	.expected_cpu_id		= 0x6358,
-+
-+	.has_enet0			= 1,
-+	.has_enet1			= 1,
-+	.has_pci			= 1,
-+
-+	.enet0 = {
-+		.has_phy		= 1,
-+		.use_internal_phy	= 1,
-+	},
-+
-+	.enet1 = {
-+		.force_speed_100	= 1,
-+		.force_duplex_full	= 1,
-+	},
-+
-+
-+	.has_ohci0 = 1,
-+	.has_pccard = 1,
-+	.has_ehci0 = 1,
-+};
-+
-+static struct board_info __initdata board_96358vw2 = {
-+	.name				= "96358VW2",
-+	.expected_cpu_id		= 0x6358,
-+
-+	.has_enet0			= 1,
-+	.has_enet1			= 1,
-+	.has_pci			= 1,
-+
-+	.enet0 = {
-+		.has_phy		= 1,
-+		.use_internal_phy	= 1,
-+	},
-+
-+	.enet1 = {
-+		.force_speed_100	= 1,
-+		.force_duplex_full	= 1,
-+	},
-+
-+
-+	.has_ohci0 = 1,
-+	.has_pccard = 1,
-+	.has_ehci0 = 1,
-+};
-+
-+static struct board_info __initdata board_AGPFS0 = {
-+	.name                           = "AGPF-S0",
-+	.expected_cpu_id                = 0x6358,
-+
-+	.has_enet0                      = 1,
-+	.has_enet1                      = 1,
-+	.has_pci                        = 1,
-+
-+	.enet0 = {
-+		.has_phy                = 1,
-+		.use_internal_phy       = 1,
-+	},
-+
-+	.enet1 = {
-+		.force_speed_100        = 1,
-+		.force_duplex_full      = 1,
-+	},
-+
-+	.has_ohci0 = 1,
-+	.has_ehci0 = 1,
-+};
-+#endif
-+
-+/*
-+ * all boards
-+ */
-+static const struct board_info __initdata *bcm963xx_boards[] = {
-+#ifdef CONFIG_BCM63XX_CPU_6348
-+	&board_96348r,
-+	&board_96348gw,
-+	&board_96348gw_10,
-+	&board_96348gw_11,
-+	&board_FAST2404,
-+	&board_DV201AMR,
-+	&board_96348gw_a,
-+#endif
-+
-+#ifdef CONFIG_BCM63XX_CPU_6358
-+	&board_96358vw,
-+	&board_96358vw2,
-+	&board_AGPFS0,
-+#endif
-+};
-+
-+/*
-+ * early init callback, read nvram data from flash and checksum it
-+ */
-+void __init board_prom_init(void)
-+{
-+	unsigned int check_len, i;
-+	u8 *boot_addr, *cfe, *p;
-+	char cfe_version[32];
-+	u32 val;
-+
-+	/* read base address of boot chip select (0) */
-+	val = bcm_mpi_readl(MPI_CSBASE_REG(0));
-+	val &= MPI_CSBASE_BASE_MASK;
-+	boot_addr = (u8 *)KSEG1ADDR(val);
-+
-+	/* dump cfe version */
-+	cfe = boot_addr + BCM963XX_CFE_VERSION_OFFSET;
-+	if (!memcmp(cfe, "cfe-v", 5))
-+		snprintf(cfe_version, sizeof(cfe_version), "%u.%u.%u-%u.%u",
-+			 cfe[5], cfe[6], cfe[7], cfe[8], cfe[9]);
-+	else
-+		strcpy(cfe_version, "unknown");
-+	printk(KERN_INFO PFX "CFE version: %s\n", cfe_version);
-+
-+	/* extract nvram data */
-+	memcpy(&nvram, boot_addr + BCM963XX_NVRAM_OFFSET, sizeof(nvram));
-+
-+	/* check checksum before using data */
-+	if (nvram.version <= 4)
-+		check_len = offsetof(struct bcm963xx_nvram, checksum_old);
-+	else
-+		check_len = sizeof(nvram);
-+	val = 0;
-+	p = (u8 *)&nvram;
-+	while (check_len--)
-+		val += *p;
-+	if (val) {
-+		printk(KERN_ERR PFX "invalid nvram checksum\n");
-+		return;
-+	}
-+
-+	/* find board by name */
-+	for (i = 0; i < ARRAY_SIZE(bcm963xx_boards); i++) {
-+		if (strncmp(nvram.name, bcm963xx_boards[i]->name,
-+			    sizeof(nvram.name)))
-+			continue;
-+		/* copy, board desc array is marked initdata */
-+		memcpy(&board, bcm963xx_boards[i], sizeof(board));
-+		break;
-+	}
-+
-+	/* bail out if board is not found, will complain later */
-+	if (!board.name[0]) {
-+		char name[17];
-+		memcpy(name, nvram.name, 16);
-+		name[16] = 0;
-+		printk(KERN_ERR PFX "unknown bcm963xx board: %s\n",
-+		       name);
-+		return;
-+	}
-+
-+	/* setup pin multiplexing depending on board enabled device,
-+	 * this has to be done this early since PCI init is done
-+	 * inside arch_initcall */
-+	val = 0;
-+
-+	if (board.has_pci) {
-+		bcm63xx_pci_enabled = 1;
-+		if (BCMCPU_IS_6348())
-+			val |= GPIO_MODE_6348_G2_PCI;
-+	}
-+
-+	if (board.has_pccard) {
-+		if (BCMCPU_IS_6348())
-+			val |= GPIO_MODE_6348_G1_MII_PCCARD;
-+	}
-+
-+	if (board.has_enet0 && !board.enet0.use_internal_phy) {
-+		if (BCMCPU_IS_6348())
-+			val |= GPIO_MODE_6348_G3_EXT_MII |
-+				GPIO_MODE_6348_G0_EXT_MII;
-+	}
-+
-+	if (board.has_enet1 && !board.enet1.use_internal_phy) {
-+		if (BCMCPU_IS_6348())
-+			val |= GPIO_MODE_6348_G3_EXT_MII |
-+				GPIO_MODE_6348_G0_EXT_MII;
-+	}
-+
-+	bcm_gpio_writel(val, GPIO_MODE_REG);
-+}
-+
-+/*
-+ * second stage init callback, good time to panic if we couldn't
-+ * identify on which board we're running since early printk is working
-+ */
-+void __init board_setup(void)
-+{
-+	if (!board.name[0])
-+		panic("unable to detect bcm963xx board");
-+	printk(KERN_INFO PFX "board name: %s\n", board.name);
-+
-+	/* make sure we're running on expected cpu */
-+	if (bcm63xx_get_cpu_id() != board.expected_cpu_id)
-+		panic("unexpected CPU for bcm963xx board");
-+}
-+
-+/*
-+ * return board name for /proc/cpuinfo
-+ */
-+const char *board_get_name(void)
-+{
-+	return board.name;
-+}
-+
-+/*
-+ * register & return a new board mac address
-+ */
-+static int board_get_mac_address(u8 *mac)
-+{
-+	u8 *p;
-+	int count;
-+
-+	if (mac_addr_used >= nvram.mac_addr_count) {
-+		printk(KERN_ERR PFX "not enough mac address\n");
-+		return -ENODEV;
-+	}
-+
-+	memcpy(mac, nvram.mac_addr_base, ETH_ALEN);
-+	p = mac + ETH_ALEN - 1;
-+	count = mac_addr_used;
-+
-+	while (count--) {
-+		do {
-+			(*p)++;
-+			if (*p != 0)
-+				break;
-+			p--;
-+		} while (p != mac);
-+	}
-+
-+	if (p == mac) {
-+		printk(KERN_ERR PFX "unable to fetch mac address\n");
-+		return -ENODEV;
-+	}
-+
-+	mac_addr_used++;
-+	return 0;
-+}
-+
-+static struct mtd_partition mtd_partitions[] = {
-+	{
-+		.name		= "cfe",
-+		.offset		= 0x0,
-+		.size		= 0x40000,
-+	}
-+};
-+
-+static struct physmap_flash_data flash_data = {
-+	.width			= 2,
-+	.nr_parts		= ARRAY_SIZE(mtd_partitions),
-+	.parts			= mtd_partitions,
-+};
-+
-+static struct resource mtd_resources[] = {
-+	{
-+		.start		= 0,	/* filled at runtime */
-+		.end		= 0,	/* filled at runtime */
-+		.flags		= IORESOURCE_MEM,
-+	}
-+};
-+
-+static struct platform_device mtd_dev = {
-+	.name			= "physmap-flash",
-+	.resource		= mtd_resources,
-+	.num_resources		= ARRAY_SIZE(mtd_resources),
-+	.dev			= {
-+		.platform_data	= &flash_data,
-+	},
-+};
-+
-+/*
-+ * Register a sane SPROMv2 to make the on-board
-+ * bcm4318 WLAN work
-+ */
-+static struct ssb_sprom bcm63xx_sprom = {
-+	.revision		= 0x02,
-+	.board_rev		= 0x17,
-+	.country_code		= 0x0,
-+	.ant_available_bg 	= 0x3,
-+	.pa0b0			= 0x15ae,
-+	.pa0b1			= 0xfa85,
-+	.pa0b2			= 0xfe8d,
-+	.pa1b0			= 0xffff,
-+	.pa1b1			= 0xffff,
-+	.pa1b2			= 0xffff,
-+	.gpio0			= 0xff,
-+	.gpio1			= 0xff,
-+	.gpio2			= 0xff,
-+	.gpio3			= 0xff,
-+	.maxpwr_bg		= 0x004c,
-+	.itssi_bg		= 0x00,
-+	.boardflags_lo		= 0x2848,
-+	.boardflags_hi		= 0x0000,
-+};
-+
-+/*
-+ * third stage init callback, register all board devices.
-+ */
-+int __init board_register_devices(void)
-+{
-+	u32 val;
-+
-+	bcm63xx_uart_register();
-+
-+	if (board.has_pccard)
-+		bcm63xx_pcmcia_register();
-+
-+	if (board.has_enet0 &&
-+	    !board_get_mac_address(board.enet0.mac_addr))
-+		bcm63xx_enet_register(0, &board.enet0);
-+
-+	if (board.has_enet1 &&
-+	    !board_get_mac_address(board.enet1.mac_addr))
-+		bcm63xx_enet_register(1, &board.enet1);
-+
-+	if (board.has_ohci0)
-+		bcm63xx_ohci_register();
-+
-+	if (board.has_ehci0)
-+		bcm63xx_ehci_register();
-+
-+	/* Generate MAC address for WLAN and
-+	 * register our SPROM */
-+	if (!board_get_mac_address(bcm63xx_sprom.il0mac)) {
-+		memcpy(bcm63xx_sprom.et0mac, bcm63xx_sprom.il0mac, ETH_ALEN);
-+		memcpy(bcm63xx_sprom.et1mac, bcm63xx_sprom.il0mac, ETH_ALEN);
-+		if (ssb_arch_set_fallback_sprom(&bcm63xx_sprom) < 0)
-+			printk(KERN_ERR "failed to register fallback SPROM\n");
-+	}
-+
-+	/* read base address of boot chip select (0) */
-+	val = bcm_mpi_readl(MPI_CSBASE_REG(0));
-+	val &= MPI_CSBASE_BASE_MASK;
-+	mtd_resources[0].start = val;
-+	mtd_resources[0].end = 0x1FFFFFFF;
-+
-+	platform_device_register(&mtd_dev);
-+
-+	return 0;
-+}
-+
---- a/arch/mips/bcm63xx/prom.c
-+++ b/arch/mips/bcm63xx/prom.c
-@@ -9,6 +9,7 @@
- #include <linux/init.h>
- #include <linux/bootmem.h>
- #include <asm/bootinfo.h>
-+#include <bcm63xx_board.h>
- #include <bcm63xx_cpu.h>
- #include <bcm63xx_io.h>
- #include <bcm63xx_regs.h>
-@@ -36,6 +37,9 @@ void __init prom_init(void)
- 
- 	/* assign command line from kernel config */
- 	strcpy(arcs_cmdline, CONFIG_CMDLINE);
-+
-+	/* do low level board init */
-+	board_prom_init();
- }
- 
- void __init prom_free_prom_memory(void)
---- a/arch/mips/bcm63xx/setup.c
-+++ b/arch/mips/bcm63xx/setup.c
-@@ -16,6 +16,7 @@
- #include <asm/time.h>
- #include <asm/reboot.h>
- #include <asm/cacheflush.h>
-+#include <bcm63xx_board.h>
- #include <bcm63xx_cpu.h>
- #include <bcm63xx_regs.h>
- #include <bcm63xx_io.h>
-@@ -90,8 +91,9 @@ static void __bcm63xx_machine_reboot(cha
- const char *get_system_type(void)
- {
- 	static char buf[128];
--	sprintf(buf, "bcm963xx (0x%04x/0x%04X)",
--		bcm63xx_get_cpu_id(), bcm63xx_get_cpu_rev());
-+	snprintf(buf, sizeof(buf), "bcm63xx/%s (0x%04x/0x%04X)",
-+		 board_get_name(),
-+		 bcm63xx_get_cpu_id(), bcm63xx_get_cpu_rev());
- 	return buf;
- }
- 
-@@ -99,6 +101,7 @@ void __init plat_time_init(void)
- {
- 	mips_hpt_frequency = bcm63xx_get_cpu_freq() / 2;
- }
-+
- void __init plat_mem_setup(void)
- {
- 	add_memory_region(0, bcm63xx_get_memory_size(), BOOT_MEM_RAM);
-@@ -110,4 +113,13 @@ void __init plat_mem_setup(void)
- 	set_io_port_base(0);
- 	ioport_resource.start = 0;
- 	ioport_resource.end = ~0;
-+
-+	board_setup();
-+}
-+
-+int __init bcm63xx_register_devices(void)
-+{
-+	return board_register_devices();
- }
-+
-+arch_initcall(bcm63xx_register_devices);
---- /dev/null
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_board.h
-@@ -0,0 +1,12 @@
-+#ifndef BCM63XX_BOARD_H_
-+#define BCM63XX_BOARD_H_
-+
-+const char *board_get_name(void);
-+
-+void board_prom_init(void);
-+
-+void board_setup(void);
-+
-+int board_register_devices(void);
-+
-+#endif /* ! BCM63XX_BOARD_H_ */
---- /dev/null
-+++ b/arch/mips/include/asm/mach-bcm63xx/board_bcm963xx.h
-@@ -0,0 +1,50 @@
-+#ifndef BOARD_BCM963XX_H_
-+#define BOARD_BCM963XX_H_
-+
-+#include <linux/types.h>
-+#include <bcm63xx_dev_enet.h>
-+
-+/*
-+ * flash mapping
-+ */
-+#define BCM963XX_CFE_VERSION_OFFSET	0x570
-+#define BCM963XX_NVRAM_OFFSET		0x580
-+
-+/*
-+ * nvram structure
-+ */
-+struct bcm963xx_nvram {
-+	u32	version;
-+	u8	reserved1[256];
-+	u8	name[16];
-+	u32	main_tp_number;
-+	u32	psi_size;
-+	u32	mac_addr_count;
-+	u8	mac_addr_base[6];
-+	u8	reserved2[2];
-+	u32	checksum_old;
-+	u8	reserved3[720];
-+	u32	checksum_high;
-+};
-+
-+/*
-+ * board definition
-+ */
-+struct board_info {
-+	u8		name[16];
-+	unsigned int	expected_cpu_id;
-+
-+	/* enabled feature/device */
-+	unsigned int	has_enet0:1;
-+	unsigned int	has_enet1:1;
-+	unsigned int	has_pci:1;
-+	unsigned int	has_pccard:1;
-+	unsigned int	has_ohci0:1;
-+	unsigned int	has_ehci0:1;
-+
-+	/* ethernet config */
-+	struct bcm63xx_enet_platform_data enet0;
-+	struct bcm63xx_enet_platform_data enet1;
-+};
-+
-+#endif /* ! BOARD_BCM963XX_H_ */
++++ b/arch/mips/configs/bcm63xx_defconfig
+@@ -0,0 +1,972 @@
++#
++# Automatically generated make config: don't edit
++# Linux kernel version: 2.6.30-rc6
++# Sun May 31 20:17:18 2009
++#
++CONFIG_MIPS=y
++
++#
++# Machine selection
++#
++# CONFIG_MACH_ALCHEMY is not set
++# CONFIG_BASLER_EXCITE is not set
++# CONFIG_BCM47XX is not set
++CONFIG_BCM63XX=y
++# CONFIG_MIPS_COBALT is not set
++# CONFIG_MACH_DECSTATION is not set
++# CONFIG_MACH_JAZZ is not set
++# CONFIG_LASAT is not set
++# CONFIG_LEMOTE_FULONG is not set
++# CONFIG_MIPS_MALTA is not set
++# CONFIG_MIPS_SIM is not set
++# CONFIG_NEC_MARKEINS is not set
++# CONFIG_MACH_VR41XX is not set
++# CONFIG_NXP_STB220 is not set
++# CONFIG_NXP_STB225 is not set
++# CONFIG_PNX8550_JBS is not set
++# CONFIG_PNX8550_STB810 is not set
++# CONFIG_PMC_MSP is not set
++# CONFIG_PMC_YOSEMITE is not set
++# CONFIG_SGI_IP22 is not set
++# CONFIG_SGI_IP27 is not set
++# CONFIG_SGI_IP28 is not set
++# CONFIG_SGI_IP32 is not set
++# CONFIG_SIBYTE_CRHINE is not set
++# CONFIG_SIBYTE_CARMEL is not set
++# CONFIG_SIBYTE_CRHONE is not set
++# CONFIG_SIBYTE_RHONE is not set
++# CONFIG_SIBYTE_SWARM is not set
++# CONFIG_SIBYTE_LITTLESUR is not set
++# CONFIG_SIBYTE_SENTOSA is not set
++# CONFIG_SIBYTE_BIGSUR is not set
++# CONFIG_SNI_RM is not set
++# CONFIG_MACH_TX39XX is not set
++# CONFIG_MACH_TX49XX is not set
++# CONFIG_MIKROTIK_RB532 is not set
++# CONFIG_WR_PPMC is not set
++# CONFIG_CAVIUM_OCTEON_SIMULATOR is not set
++# CONFIG_CAVIUM_OCTEON_REFERENCE_BOARD is not set
++
++#
++# CPU support
++#
++CONFIG_BCM63XX_CPU_6348=y
++CONFIG_BCM63XX_CPU_6358=y
++CONFIG_BOARD_BCM963XX=y
++CONFIG_RWSEM_GENERIC_SPINLOCK=y
++# CONFIG_ARCH_HAS_ILOG2_U32 is not set
++# CONFIG_ARCH_HAS_ILOG2_U64 is not set
++CONFIG_ARCH_SUPPORTS_OPROFILE=y
++CONFIG_GENERIC_FIND_NEXT_BIT=y
++CONFIG_GENERIC_HWEIGHT=y
++CONFIG_GENERIC_CALIBRATE_DELAY=y
++CONFIG_GENERIC_CLOCKEVENTS=y
++CONFIG_GENERIC_TIME=y
++CONFIG_GENERIC_CMOS_UPDATE=y
++CONFIG_SCHED_OMIT_FRAME_POINTER=y
++CONFIG_GENERIC_HARDIRQS_NO__DO_IRQ=y
++CONFIG_CEVT_R4K_LIB=y
++CONFIG_CEVT_R4K=y
++CONFIG_CSRC_R4K_LIB=y
++CONFIG_CSRC_R4K=y
++CONFIG_DMA_NONCOHERENT=y
++CONFIG_DMA_NEED_PCI_MAP_STATE=y
++CONFIG_EARLY_PRINTK=y
++CONFIG_SYS_HAS_EARLY_PRINTK=y
++# CONFIG_HOTPLUG_CPU is not set
++# CONFIG_NO_IOPORT is not set
++CONFIG_GENERIC_GPIO=y
++CONFIG_CPU_BIG_ENDIAN=y
++# CONFIG_CPU_LITTLE_ENDIAN is not set
++CONFIG_SYS_SUPPORTS_BIG_ENDIAN=y
++CONFIG_IRQ_CPU=y
++CONFIG_SWAP_IO_SPACE=y
++CONFIG_MIPS_L1_CACHE_SHIFT=5
++
++#
++# CPU selection
++#
++# CONFIG_CPU_LOONGSON2 is not set
++CONFIG_CPU_MIPS32_R1=y
++# CONFIG_CPU_MIPS32_R2 is not set
++# CONFIG_CPU_MIPS64_R1 is not set
++# CONFIG_CPU_MIPS64_R2 is not set
++# CONFIG_CPU_R3000 is not set
++# CONFIG_CPU_TX39XX is not set
++# CONFIG_CPU_VR41XX is not set
++# CONFIG_CPU_R4300 is not set
++# CONFIG_CPU_R4X00 is not set
++# CONFIG_CPU_TX49XX is not set
++# CONFIG_CPU_R5000 is not set
++# CONFIG_CPU_R5432 is not set
++# CONFIG_CPU_R5500 is not set
++# CONFIG_CPU_R6000 is not set
++# CONFIG_CPU_NEVADA is not set
++# CONFIG_CPU_R8000 is not set
++# CONFIG_CPU_R10000 is not set
++# CONFIG_CPU_RM7000 is not set
++# CONFIG_CPU_RM9000 is not set
++# CONFIG_CPU_SB1 is not set
++# CONFIG_CPU_CAVIUM_OCTEON is not set
++CONFIG_SYS_HAS_CPU_MIPS32_R1=y
++CONFIG_CPU_MIPS32=y
++CONFIG_CPU_MIPSR1=y
++CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
++CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
++CONFIG_HARDWARE_WATCHPOINTS=y
++
++#
++# Kernel type
++#
++CONFIG_32BIT=y
++# CONFIG_64BIT is not set
++CONFIG_PAGE_SIZE_4KB=y
++# CONFIG_PAGE_SIZE_8KB is not set
++# CONFIG_PAGE_SIZE_16KB is not set
++# CONFIG_PAGE_SIZE_32KB is not set
++# CONFIG_PAGE_SIZE_64KB is not set
++CONFIG_CPU_HAS_PREFETCH=y
++CONFIG_MIPS_MT_DISABLED=y
++# CONFIG_MIPS_MT_SMP is not set
++# CONFIG_MIPS_MT_SMTC is not set
++CONFIG_CPU_HAS_LLSC=y
++CONFIG_CPU_HAS_SYNC=y
++CONFIG_GENERIC_HARDIRQS=y
++CONFIG_GENERIC_IRQ_PROBE=y
++CONFIG_CPU_SUPPORTS_HIGHMEM=y
++CONFIG_ARCH_FLATMEM_ENABLE=y
++CONFIG_ARCH_POPULATES_NODE_MAP=y
++CONFIG_SELECT_MEMORY_MODEL=y
++CONFIG_FLATMEM_MANUAL=y
++# CONFIG_DISCONTIGMEM_MANUAL is not set
++# CONFIG_SPARSEMEM_MANUAL is not set
++CONFIG_FLATMEM=y
++CONFIG_FLAT_NODE_MEM_MAP=y
++CONFIG_PAGEFLAGS_EXTENDED=y
++CONFIG_SPLIT_PTLOCK_CPUS=4
++# CONFIG_PHYS_ADDR_T_64BIT is not set
++CONFIG_ZONE_DMA_FLAG=0
++CONFIG_VIRT_TO_BUS=y
++CONFIG_UNEVICTABLE_LRU=y
++CONFIG_HAVE_MLOCK=y
++CONFIG_HAVE_MLOCKED_PAGE_BIT=y
++CONFIG_TICK_ONESHOT=y
++CONFIG_NO_HZ=y
++# CONFIG_HIGH_RES_TIMERS is not set
++CONFIG_GENERIC_CLOCKEVENTS_BUILD=y
++# CONFIG_HZ_48 is not set
++# CONFIG_HZ_100 is not set
++# CONFIG_HZ_128 is not set
++CONFIG_HZ_250=y
++# CONFIG_HZ_256 is not set
++# CONFIG_HZ_1000 is not set
++# CONFIG_HZ_1024 is not set
++CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
++CONFIG_HZ=250
++CONFIG_PREEMPT_NONE=y
++# CONFIG_PREEMPT_VOLUNTARY is not set
++# CONFIG_PREEMPT is not set
++# CONFIG_KEXEC is not set
++# CONFIG_SECCOMP is not set
++CONFIG_LOCKDEP_SUPPORT=y
++CONFIG_STACKTRACE_SUPPORT=y
++CONFIG_DEFCONFIG_LIST="/lib/modules/$UNAME_RELEASE/.config"
++
++#
++# General setup
++#
++CONFIG_EXPERIMENTAL=y
++CONFIG_BROKEN_ON_SMP=y
++CONFIG_INIT_ENV_ARG_LIMIT=32
++CONFIG_LOCALVERSION=""
++# CONFIG_LOCALVERSION_AUTO is not set
++# CONFIG_SWAP is not set
++# CONFIG_SYSVIPC is not set
++# CONFIG_POSIX_MQUEUE is not set
++# CONFIG_BSD_PROCESS_ACCT is not set
++# CONFIG_TASKSTATS is not set
++# CONFIG_AUDIT is not set
++
++#
++# RCU Subsystem
++#
++CONFIG_CLASSIC_RCU=y
++# CONFIG_TREE_RCU is not set
++# CONFIG_PREEMPT_RCU is not set
++# CONFIG_TREE_RCU_TRACE is not set
++# CONFIG_PREEMPT_RCU_TRACE is not set
++# CONFIG_IKCONFIG is not set
++CONFIG_LOG_BUF_SHIFT=17
++# CONFIG_GROUP_SCHED is not set
++# CONFIG_CGROUPS is not set
++CONFIG_SYSFS_DEPRECATED=y
++CONFIG_SYSFS_DEPRECATED_V2=y
++# CONFIG_RELAY is not set
++# CONFIG_NAMESPACES is not set
++# CONFIG_BLK_DEV_INITRD is not set
++CONFIG_CC_OPTIMIZE_FOR_SIZE=y
++CONFIG_SYSCTL=y
++CONFIG_EMBEDDED=y
++CONFIG_SYSCTL_SYSCALL=y
++CONFIG_KALLSYMS=y
++# CONFIG_KALLSYMS_EXTRA_PASS is not set
++# CONFIG_STRIP_ASM_SYMS is not set
++CONFIG_HOTPLUG=y
++CONFIG_PRINTK=y
++CONFIG_BUG=y
++CONFIG_ELF_CORE=y
++# CONFIG_PCSPKR_PLATFORM is not set
++CONFIG_BASE_FULL=y
++# CONFIG_FUTEX is not set
++# CONFIG_EPOLL is not set
++# CONFIG_SIGNALFD is not set
++# CONFIG_TIMERFD is not set
++# CONFIG_EVENTFD is not set
++# CONFIG_SHMEM is not set
++# CONFIG_AIO is not set
++# CONFIG_VM_EVENT_COUNTERS is not set
++CONFIG_PCI_QUIRKS=y
++# CONFIG_SLUB_DEBUG is not set
++CONFIG_COMPAT_BRK=y
++# CONFIG_SLAB is not set
++CONFIG_SLUB=y
++# CONFIG_SLOB is not set
++# CONFIG_PROFILING is not set
++# CONFIG_MARKERS is not set
++CONFIG_HAVE_OPROFILE=y
++# CONFIG_SLOW_WORK is not set
++# CONFIG_HAVE_GENERIC_DMA_COHERENT is not set
++CONFIG_BASE_SMALL=0
++# CONFIG_MODULES is not set
++CONFIG_BLOCK=y
++# CONFIG_LBD is not set
++# CONFIG_BLK_DEV_BSG is not set
++# CONFIG_BLK_DEV_INTEGRITY is not set
++
++#
++# IO Schedulers
++#
++CONFIG_IOSCHED_NOOP=y
++# CONFIG_IOSCHED_AS is not set
++# CONFIG_IOSCHED_DEADLINE is not set
++# CONFIG_IOSCHED_CFQ is not set
++# CONFIG_DEFAULT_AS is not set
++# CONFIG_DEFAULT_DEADLINE is not set
++# CONFIG_DEFAULT_CFQ is not set
++CONFIG_DEFAULT_NOOP=y
++CONFIG_DEFAULT_IOSCHED="noop"
++# CONFIG_FREEZER is not set
++
++#
++# Bus options (PCI, PCMCIA, EISA, ISA, TC)
++#
++CONFIG_HW_HAS_PCI=y
++CONFIG_PCI=y
++CONFIG_PCI_DOMAINS=y
++# CONFIG_ARCH_SUPPORTS_MSI is not set
++# CONFIG_PCI_LEGACY is not set
++# CONFIG_PCI_STUB is not set
++# CONFIG_PCI_IOV is not set
++CONFIG_MMU=y
++CONFIG_PCCARD=y
++# CONFIG_PCMCIA_DEBUG is not set
++CONFIG_PCMCIA=y
++CONFIG_PCMCIA_LOAD_CIS=y
++CONFIG_PCMCIA_IOCTL=y
++CONFIG_CARDBUS=y
++
++#
++# PC-card bridges
++#
++# CONFIG_YENTA is not set
++# CONFIG_PD6729 is not set
++# CONFIG_I82092 is not set
++CONFIG_PCMCIA_BCM63XX=y
++# CONFIG_HOTPLUG_PCI is not set
++
++#
++# Executable file formats
++#
++CONFIG_BINFMT_ELF=y
++# CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS is not set
++# CONFIG_HAVE_AOUT is not set
++# CONFIG_BINFMT_MISC is not set
++CONFIG_TRAD_SIGNALS=y
++
++#
++# Power management options
++#
++CONFIG_ARCH_SUSPEND_POSSIBLE=y
++# CONFIG_PM is not set
++CONFIG_NET=y
++
++#
++# Networking options
++#
++# CONFIG_PACKET is not set
++CONFIG_UNIX=y
++# CONFIG_NET_KEY is not set
++CONFIG_INET=y
++# CONFIG_IP_MULTICAST is not set
++# CONFIG_IP_ADVANCED_ROUTER is not set
++CONFIG_IP_FIB_HASH=y
++# CONFIG_IP_PNP is not set
++# CONFIG_NET_IPIP is not set
++# CONFIG_NET_IPGRE is not set
++# CONFIG_ARPD is not set
++# CONFIG_SYN_COOKIES is not set
++# CONFIG_INET_AH is not set
++# CONFIG_INET_ESP is not set
++# CONFIG_INET_IPCOMP is not set
++# CONFIG_INET_XFRM_TUNNEL is not set
++# CONFIG_INET_TUNNEL is not set
++# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
++# CONFIG_INET_XFRM_MODE_TUNNEL is not set
++# CONFIG_INET_XFRM_MODE_BEET is not set
++# CONFIG_INET_LRO is not set
++# CONFIG_INET_DIAG is not set
++# CONFIG_TCP_CONG_ADVANCED is not set
++CONFIG_TCP_CONG_CUBIC=y
++CONFIG_DEFAULT_TCP_CONG="cubic"
++# CONFIG_TCP_MD5SIG is not set
++# CONFIG_IPV6 is not set
++# CONFIG_NETWORK_SECMARK is not set
++# CONFIG_NETFILTER is not set
++# CONFIG_IP_DCCP is not set
++# CONFIG_IP_SCTP is not set
++# CONFIG_TIPC is not set
++# CONFIG_ATM is not set
++# CONFIG_BRIDGE is not set
++# CONFIG_NET_DSA is not set
++# CONFIG_VLAN_8021Q is not set
++# CONFIG_DECNET is not set
++# CONFIG_LLC2 is not set
++# CONFIG_IPX is not set
++# CONFIG_ATALK is not set
++# CONFIG_X25 is not set
++# CONFIG_LAPB is not set
++# CONFIG_ECONET is not set
++# CONFIG_WAN_ROUTER is not set
++# CONFIG_PHONET is not set
++# CONFIG_NET_SCHED is not set
++# CONFIG_DCB is not set
++
++#
++# Network testing
++#
++# CONFIG_NET_PKTGEN is not set
++# CONFIG_HAMRADIO is not set
++# CONFIG_CAN is not set
++# CONFIG_IRDA is not set
++# CONFIG_BT is not set
++# CONFIG_AF_RXRPC is not set
++# CONFIG_WIRELESS is not set
++# CONFIG_WIMAX is not set
++# CONFIG_RFKILL is not set
++# CONFIG_NET_9P is not set
++
++#
++# Device Drivers
++#
++
++#
++# Generic Driver Options
++#
++CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
++# CONFIG_STANDALONE is not set
++# CONFIG_PREVENT_FIRMWARE_BUILD is not set
++CONFIG_FW_LOADER=y
++CONFIG_FIRMWARE_IN_KERNEL=y
++CONFIG_EXTRA_FIRMWARE=""
++# CONFIG_SYS_HYPERVISOR is not set
++# CONFIG_CONNECTOR is not set
++CONFIG_MTD=y
++# CONFIG_MTD_DEBUG is not set
++# CONFIG_MTD_CONCAT is not set
++CONFIG_MTD_PARTITIONS=y
++# CONFIG_MTD_REDBOOT_PARTS is not set
++# CONFIG_MTD_CMDLINE_PARTS is not set
++# CONFIG_MTD_AR7_PARTS is not set
++
++#
++# User Modules And Translation Layers
++#
++# CONFIG_MTD_CHAR is not set
++# CONFIG_MTD_BLKDEVS is not set
++# CONFIG_MTD_BLOCK is not set
++# CONFIG_MTD_BLOCK_RO is not set
++# CONFIG_FTL is not set
++# CONFIG_NFTL is not set
++# CONFIG_INFTL is not set
++# CONFIG_RFD_FTL is not set
++# CONFIG_SSFDC is not set
++# CONFIG_MTD_OOPS is not set
++
++#
++# RAM/ROM/Flash chip drivers
++#
++CONFIG_MTD_CFI=y
++# CONFIG_MTD_JEDECPROBE is not set
++CONFIG_MTD_GEN_PROBE=y
++# CONFIG_MTD_CFI_ADV_OPTIONS is not set
++CONFIG_MTD_MAP_BANK_WIDTH_1=y
++CONFIG_MTD_MAP_BANK_WIDTH_2=y
++CONFIG_MTD_MAP_BANK_WIDTH_4=y
++# CONFIG_MTD_MAP_BANK_WIDTH_8 is not set
++# CONFIG_MTD_MAP_BANK_WIDTH_16 is not set
++# CONFIG_MTD_MAP_BANK_WIDTH_32 is not set
++CONFIG_MTD_CFI_I1=y
++CONFIG_MTD_CFI_I2=y
++# CONFIG_MTD_CFI_I4 is not set
++# CONFIG_MTD_CFI_I8 is not set
++CONFIG_MTD_CFI_INTELEXT=y
++CONFIG_MTD_CFI_AMDSTD=y
++# CONFIG_MTD_CFI_STAA is not set
++CONFIG_MTD_CFI_UTIL=y
++# CONFIG_MTD_RAM is not set
++# CONFIG_MTD_ROM is not set
++# CONFIG_MTD_ABSENT is not set
++
++#
++# Mapping drivers for chip access
++#
++# CONFIG_MTD_COMPLEX_MAPPINGS is not set
++CONFIG_MTD_PHYSMAP=y
++# CONFIG_MTD_PHYSMAP_COMPAT is not set
++# CONFIG_MTD_INTEL_VR_NOR is not set
++# CONFIG_MTD_PLATRAM is not set
++
++#
++# Self-contained MTD device drivers
++#
++# CONFIG_MTD_PMC551 is not set
++# CONFIG_MTD_SLRAM is not set
++# CONFIG_MTD_PHRAM is not set
++# CONFIG_MTD_MTDRAM is not set
++# CONFIG_MTD_BLOCK2MTD is not set
++
++#
++# Disk-On-Chip Device Drivers
++#
++# CONFIG_MTD_DOC2000 is not set
++# CONFIG_MTD_DOC2001 is not set
++# CONFIG_MTD_DOC2001PLUS is not set
++# CONFIG_MTD_NAND is not set
++# CONFIG_MTD_ONENAND is not set
++
++#
++# LPDDR flash memory drivers
++#
++# CONFIG_MTD_LPDDR is not set
++
++#
++# UBI - Unsorted block images
++#
++# CONFIG_MTD_UBI is not set
++# CONFIG_PARPORT is not set
++# CONFIG_BLK_DEV is not set
++# CONFIG_MISC_DEVICES is not set
++CONFIG_HAVE_IDE=y
++# CONFIG_IDE is not set
++
++#
++# SCSI device support
++#
++# CONFIG_RAID_ATTRS is not set
++# CONFIG_SCSI is not set
++# CONFIG_SCSI_DMA is not set
++# CONFIG_SCSI_NETLINK is not set
++# CONFIG_ATA is not set
++# CONFIG_MD is not set
++# CONFIG_FUSION is not set
++
++#
++# IEEE 1394 (FireWire) support
++#
++
++#
++# Enable only one of the two stacks, unless you know what you are doing
++#
++# CONFIG_FIREWIRE is not set
++# CONFIG_IEEE1394 is not set
++# CONFIG_I2O is not set
++CONFIG_NETDEVICES=y
++CONFIG_COMPAT_NET_DEV_OPS=y
++# CONFIG_DUMMY is not set
++# CONFIG_BONDING is not set
++# CONFIG_MACVLAN is not set
++# CONFIG_EQUALIZER is not set
++# CONFIG_TUN is not set
++# CONFIG_VETH is not set
++# CONFIG_ARCNET is not set
++CONFIG_PHYLIB=y
++
++#
++# MII PHY device drivers
++#
++# CONFIG_MARVELL_PHY is not set
++# CONFIG_DAVICOM_PHY is not set
++# CONFIG_QSEMI_PHY is not set
++# CONFIG_LXT_PHY is not set
++# CONFIG_CICADA_PHY is not set
++# CONFIG_VITESSE_PHY is not set
++# CONFIG_SMSC_PHY is not set
++# CONFIG_BROADCOM_PHY is not set
++CONFIG_BCM63XX_PHY=y
++# CONFIG_ICPLUS_PHY is not set
++# CONFIG_REALTEK_PHY is not set
++# CONFIG_NATIONAL_PHY is not set
++# CONFIG_STE10XP is not set
++# CONFIG_LSI_ET1011C_PHY is not set
++# CONFIG_FIXED_PHY is not set
++# CONFIG_MDIO_BITBANG is not set
++CONFIG_NET_ETHERNET=y
++CONFIG_MII=y
++# CONFIG_AX88796 is not set
++# CONFIG_HAPPYMEAL is not set
++# CONFIG_SUNGEM is not set
++# CONFIG_CASSINI is not set
++# CONFIG_NET_VENDOR_3COM is not set
++# CONFIG_SMC91X is not set
++# CONFIG_DM9000 is not set
++# CONFIG_ETHOC is not set
++# CONFIG_DNET is not set
++# CONFIG_NET_TULIP is not set
++# CONFIG_HP100 is not set
++# CONFIG_IBM_NEW_EMAC_ZMII is not set
++# CONFIG_IBM_NEW_EMAC_RGMII is not set
++# CONFIG_IBM_NEW_EMAC_TAH is not set
++# CONFIG_IBM_NEW_EMAC_EMAC4 is not set
++# CONFIG_IBM_NEW_EMAC_NO_FLOW_CTRL is not set
++# CONFIG_IBM_NEW_EMAC_MAL_CLR_ICINTSTAT is not set
++# CONFIG_IBM_NEW_EMAC_MAL_COMMON_ERR is not set
++# CONFIG_NET_PCI is not set
++# CONFIG_B44 is not set
++# CONFIG_ATL2 is not set
++CONFIG_BCM63XX_ENET=y
++# CONFIG_NETDEV_1000 is not set
++# CONFIG_NETDEV_10000 is not set
++# CONFIG_TR is not set
++
++#
++# Wireless LAN
++#
++# CONFIG_WLAN_PRE80211 is not set
++# CONFIG_WLAN_80211 is not set
++
++#
++# Enable WiMAX (Networking options) to see the WiMAX drivers
++#
++
++#
++# USB Network Adapters
++#
++# CONFIG_USB_CATC is not set
++# CONFIG_USB_KAWETH is not set
++# CONFIG_USB_PEGASUS is not set
++# CONFIG_USB_RTL8150 is not set
++# CONFIG_USB_USBNET is not set
++# CONFIG_NET_PCMCIA is not set
++# CONFIG_WAN is not set
++# CONFIG_FDDI is not set
++# CONFIG_HIPPI is not set
++# CONFIG_PPP is not set
++# CONFIG_SLIP is not set
++# CONFIG_NETCONSOLE is not set
++# CONFIG_NETPOLL is not set
++# CONFIG_NET_POLL_CONTROLLER is not set
++# CONFIG_ISDN is not set
++# CONFIG_PHONE is not set
++
++#
++# Input device support
++#
++# CONFIG_INPUT is not set
++
++#
++# Hardware I/O ports
++#
++# CONFIG_SERIO is not set
++# CONFIG_GAMEPORT is not set
++
++#
++# Character devices
++#
++# CONFIG_VT is not set
++# CONFIG_DEVKMEM is not set
++# CONFIG_SERIAL_NONSTANDARD is not set
++# CONFIG_NOZOMI is not set
++
++#
++# Serial drivers
++#
++# CONFIG_SERIAL_8250 is not set
++
++#
++# Non-8250 serial port support
++#
++CONFIG_SERIAL_CORE=y
++CONFIG_SERIAL_CORE_CONSOLE=y
++# CONFIG_SERIAL_JSM is not set
++CONFIG_SERIAL_BCM63XX=y
++CONFIG_SERIAL_BCM63XX_CONSOLE=y
++# CONFIG_UNIX98_PTYS is not set
++CONFIG_LEGACY_PTYS=y
++CONFIG_LEGACY_PTY_COUNT=256
++# CONFIG_IPMI_HANDLER is not set
++# CONFIG_HW_RANDOM is not set
++# CONFIG_R3964 is not set
++# CONFIG_APPLICOM is not set
++
++#
++# PCMCIA character devices
++#
++# CONFIG_SYNCLINK_CS is not set
++# CONFIG_CARDMAN_4000 is not set
++# CONFIG_CARDMAN_4040 is not set
++# CONFIG_IPWIRELESS is not set
++# CONFIG_RAW_DRIVER is not set
++# CONFIG_TCG_TPM is not set
++CONFIG_DEVPORT=y
++# CONFIG_I2C is not set
++# CONFIG_SPI is not set
++CONFIG_ARCH_REQUIRE_GPIOLIB=y
++CONFIG_GPIOLIB=y
++# CONFIG_GPIO_SYSFS is not set
++
++#
++# Memory mapped GPIO expanders:
++#
++
++#
++# I2C GPIO expanders:
++#
++
++#
++# PCI GPIO expanders:
++#
++# CONFIG_GPIO_BT8XX is not set
++
++#
++# SPI GPIO expanders:
++#
++# CONFIG_W1 is not set
++# CONFIG_POWER_SUPPLY is not set
++# CONFIG_HWMON is not set
++# CONFIG_THERMAL is not set
++# CONFIG_THERMAL_HWMON is not set
++# CONFIG_WATCHDOG is not set
++CONFIG_SSB_POSSIBLE=y
++
++#
++# Sonics Silicon Backplane
++#
++CONFIG_SSB=y
++CONFIG_SSB_SPROM=y
++CONFIG_SSB_PCIHOST_POSSIBLE=y
++CONFIG_SSB_PCIHOST=y
++# CONFIG_SSB_B43_PCI_BRIDGE is not set
++CONFIG_SSB_PCMCIAHOST_POSSIBLE=y
++# CONFIG_SSB_PCMCIAHOST is not set
++# CONFIG_SSB_SILENT is not set
++# CONFIG_SSB_DEBUG is not set
++CONFIG_SSB_DRIVER_PCICORE_POSSIBLE=y
++# CONFIG_SSB_DRIVER_PCICORE is not set
++# CONFIG_SSB_DRIVER_MIPS is not set
++
++#
++# Multifunction device drivers
++#
++# CONFIG_MFD_CORE is not set
++# CONFIG_MFD_SM501 is not set
++# CONFIG_HTC_PASIC3 is not set
++# CONFIG_MFD_TMIO is not set
++# CONFIG_REGULATOR is not set
++
++#
++# Multimedia devices
++#
++
++#
++# Multimedia core support
++#
++# CONFIG_VIDEO_DEV is not set
++# CONFIG_DVB_CORE is not set
++# CONFIG_VIDEO_MEDIA is not set
++
++#
++# Multimedia drivers
++#
++# CONFIG_DAB is not set
++
++#
++# Graphics support
++#
++# CONFIG_DRM is not set
++# CONFIG_VGASTATE is not set
++# CONFIG_VIDEO_OUTPUT_CONTROL is not set
++# CONFIG_FB is not set
++# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
++
++#
++# Display device support
++#
++CONFIG_DISPLAY_SUPPORT=y
++
++#
++# Display hardware drivers
++#
++# CONFIG_SOUND is not set
++CONFIG_USB_SUPPORT=y
++CONFIG_USB_ARCH_HAS_HCD=y
++CONFIG_USB_ARCH_HAS_OHCI=y
++CONFIG_USB_ARCH_HAS_EHCI=y
++CONFIG_USB=y
++# CONFIG_USB_DEBUG is not set
++# CONFIG_USB_ANNOUNCE_NEW_DEVICES is not set
++
++#
++# Miscellaneous USB options
++#
++# CONFIG_USB_DEVICEFS is not set
++# CONFIG_USB_DEVICE_CLASS is not set
++# CONFIG_USB_DYNAMIC_MINORS is not set
++# CONFIG_USB_OTG is not set
++# CONFIG_USB_OTG_WHITELIST is not set
++# CONFIG_USB_OTG_BLACKLIST_HUB is not set
++# CONFIG_USB_MON is not set
++# CONFIG_USB_WUSB is not set
++# CONFIG_USB_WUSB_CBAF is not set
++
++#
++# USB Host Controller Drivers
++#
++# CONFIG_USB_C67X00_HCD is not set
++CONFIG_USB_EHCI_HCD=y
++# CONFIG_USB_EHCI_ROOT_HUB_TT is not set
++# CONFIG_USB_EHCI_TT_NEWSCHED is not set
++CONFIG_USB_EHCI_BIG_ENDIAN_MMIO=y
++# CONFIG_USB_OXU210HP_HCD is not set
++# CONFIG_USB_ISP116X_HCD is not set
++# CONFIG_USB_ISP1760_HCD is not set
++CONFIG_USB_OHCI_HCD=y
++# CONFIG_USB_OHCI_HCD_SSB is not set
++CONFIG_USB_OHCI_BIG_ENDIAN_DESC=y
++CONFIG_USB_OHCI_BIG_ENDIAN_MMIO=y
++CONFIG_USB_OHCI_LITTLE_ENDIAN=y
++# CONFIG_USB_UHCI_HCD is not set
++# CONFIG_USB_SL811_HCD is not set
++# CONFIG_USB_R8A66597_HCD is not set
++# CONFIG_USB_WHCI_HCD is not set
++# CONFIG_USB_HWA_HCD is not set
++
++#
++# USB Device Class drivers
++#
++# CONFIG_USB_ACM is not set
++# CONFIG_USB_PRINTER is not set
++# CONFIG_USB_WDM is not set
++# CONFIG_USB_TMC is not set
++
++#
++# NOTE: USB_STORAGE depends on SCSI but BLK_DEV_SD may
++#
++
++#
++# also be needed; see USB_STORAGE Help for more info
++#
++# CONFIG_USB_LIBUSUAL is not set
++
++#
++# USB Imaging devices
++#
++# CONFIG_USB_MDC800 is not set
++
++#
++# USB port drivers
++#
++# CONFIG_USB_SERIAL is not set
++
++#
++# USB Miscellaneous drivers
++#
++# CONFIG_USB_EMI62 is not set
++# CONFIG_USB_EMI26 is not set
++# CONFIG_USB_ADUTUX is not set
++# CONFIG_USB_SEVSEG is not set
++# CONFIG_USB_RIO500 is not set
++# CONFIG_USB_LEGOTOWER is not set
++# CONFIG_USB_LCD is not set
++# CONFIG_USB_BERRY_CHARGE is not set
++# CONFIG_USB_LED is not set
++# CONFIG_USB_CYPRESS_CY7C63 is not set
++# CONFIG_USB_CYTHERM is not set
++# CONFIG_USB_IDMOUSE is not set
++# CONFIG_USB_FTDI_ELAN is not set
++# CONFIG_USB_APPLEDISPLAY is not set
++# CONFIG_USB_SISUSBVGA is not set
++# CONFIG_USB_LD is not set
++# CONFIG_USB_TRANCEVIBRATOR is not set
++# CONFIG_USB_IOWARRIOR is not set
++# CONFIG_USB_ISIGHTFW is not set
++# CONFIG_USB_VST is not set
++# CONFIG_USB_GADGET is not set
++
++#
++# OTG and related infrastructure
++#
++# CONFIG_USB_GPIO_VBUS is not set
++# CONFIG_NOP_USB_XCEIV is not set
++# CONFIG_UWB is not set
++# CONFIG_MMC is not set
++# CONFIG_MEMSTICK is not set
++# CONFIG_NEW_LEDS is not set
++# CONFIG_ACCESSIBILITY is not set
++# CONFIG_INFINIBAND is not set
++CONFIG_RTC_LIB=y
++# CONFIG_RTC_CLASS is not set
++# CONFIG_DMADEVICES is not set
++# CONFIG_AUXDISPLAY is not set
++# CONFIG_UIO is not set
++# CONFIG_STAGING is not set
++
++#
++# File systems
++#
++# CONFIG_EXT2_FS is not set
++# CONFIG_EXT3_FS is not set
++# CONFIG_EXT4_FS is not set
++# CONFIG_REISERFS_FS is not set
++# CONFIG_JFS_FS is not set
++# CONFIG_FS_POSIX_ACL is not set
++# CONFIG_FILE_LOCKING is not set
++# CONFIG_XFS_FS is not set
++# CONFIG_OCFS2_FS is not set
++# CONFIG_BTRFS_FS is not set
++# CONFIG_DNOTIFY is not set
++# CONFIG_INOTIFY is not set
++# CONFIG_QUOTA is not set
++# CONFIG_AUTOFS_FS is not set
++# CONFIG_AUTOFS4_FS is not set
++# CONFIG_FUSE_FS is not set
++
++#
++# Caches
++#
++# CONFIG_FSCACHE is not set
++
++#
++# CD-ROM/DVD Filesystems
++#
++# CONFIG_ISO9660_FS is not set
++# CONFIG_UDF_FS is not set
++
++#
++# DOS/FAT/NT Filesystems
++#
++# CONFIG_MSDOS_FS is not set
++# CONFIG_VFAT_FS is not set
++# CONFIG_NTFS_FS is not set
++
++#
++# Pseudo filesystems
++#
++CONFIG_PROC_FS=y
++CONFIG_PROC_KCORE=y
++CONFIG_PROC_SYSCTL=y
++CONFIG_PROC_PAGE_MONITOR=y
++CONFIG_SYSFS=y
++CONFIG_TMPFS=y
++# CONFIG_TMPFS_POSIX_ACL is not set
++# CONFIG_HUGETLB_PAGE is not set
++# CONFIG_CONFIGFS_FS is not set
++CONFIG_MISC_FILESYSTEMS=y
++# CONFIG_ADFS_FS is not set
++# CONFIG_AFFS_FS is not set
++# CONFIG_HFS_FS is not set
++# CONFIG_HFSPLUS_FS is not set
++# CONFIG_BEFS_FS is not set
++# CONFIG_BFS_FS is not set
++# CONFIG_EFS_FS is not set
++# CONFIG_JFFS2_FS is not set
++# CONFIG_CRAMFS is not set
++# CONFIG_SQUASHFS is not set
++# CONFIG_VXFS_FS is not set
++# CONFIG_MINIX_FS is not set
++# CONFIG_OMFS_FS is not set
++# CONFIG_HPFS_FS is not set
++# CONFIG_QNX4FS_FS is not set
++# CONFIG_ROMFS_FS is not set
++# CONFIG_SYSV_FS is not set
++# CONFIG_UFS_FS is not set
++# CONFIG_NILFS2_FS is not set
++# CONFIG_NETWORK_FILESYSTEMS is not set
++
++#
++# Partition Types
++#
++# CONFIG_PARTITION_ADVANCED is not set
++CONFIG_MSDOS_PARTITION=y
++# CONFIG_NLS is not set
++# CONFIG_DLM is not set
++
++#
++# Kernel hacking
++#
++CONFIG_TRACE_IRQFLAGS_SUPPORT=y
++# CONFIG_PRINTK_TIME is not set
++CONFIG_ENABLE_WARN_DEPRECATED=y
++CONFIG_ENABLE_MUST_CHECK=y
++CONFIG_FRAME_WARN=1024
++CONFIG_MAGIC_SYSRQ=y
++# CONFIG_UNUSED_SYMBOLS is not set
++# CONFIG_DEBUG_FS is not set
++# CONFIG_HEADERS_CHECK is not set
++# CONFIG_DEBUG_KERNEL is not set
++# CONFIG_DEBUG_MEMORY_INIT is not set
++# CONFIG_RCU_CPU_STALL_DETECTOR is not set
++CONFIG_SYSCTL_SYSCALL_CHECK=y
++CONFIG_TRACING_SUPPORT=y
++
++#
++# Tracers
++#
++# CONFIG_IRQSOFF_TRACER is not set
++# CONFIG_SCHED_TRACER is not set
++# CONFIG_CONTEXT_SWITCH_TRACER is not set
++# CONFIG_EVENT_TRACER is not set
++# CONFIG_BOOT_TRACER is not set
++# CONFIG_TRACE_BRANCH_PROFILING is not set
++# CONFIG_KMEMTRACE is not set
++# CONFIG_WORKQUEUE_TRACER is not set
++# CONFIG_BLK_DEV_IO_TRACE is not set
++# CONFIG_SAMPLES is not set
++CONFIG_HAVE_ARCH_KGDB=y
++CONFIG_CMDLINE="console=ttyS0,115200"
++
++#
++# Security options
++#
++# CONFIG_KEYS is not set
++# CONFIG_SECURITY is not set
++# CONFIG_SECURITYFS is not set
++# CONFIG_SECURITY_FILE_CAPABILITIES is not set
++# CONFIG_CRYPTO is not set
++# CONFIG_BINARY_PRINTF is not set
++
++#
++# Library routines
++#
++CONFIG_BITREVERSE=y
++CONFIG_GENERIC_FIND_LAST_BIT=y
++# CONFIG_CRC_CCITT is not set
++# CONFIG_CRC16 is not set
++# CONFIG_CRC_T10DIF is not set
++# CONFIG_CRC_ITU_T is not set
++CONFIG_CRC32=y
++# CONFIG_CRC7 is not set
++# CONFIG_LIBCRC32C is not set
++CONFIG_HAS_IOMEM=y
++CONFIG_HAS_IOPORT=y
++CONFIG_HAS_DMA=y
++CONFIG_NLATTR=y

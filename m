@@ -1,87 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jul 2009 02:43:03 +0200 (CEST)
-Received: from mail-pz0-f173.google.com ([209.85.222.173]:65520 "EHLO
-	mail-pz0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493467AbZGAAm4 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Jul 2009 02:42:56 +0200
-Received: by pzk3 with SMTP id 3so455697pzk.22
-        for <multiple recipients>; Tue, 30 Jun 2009 17:37:31 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=FV8MVlJrrX0IUOmNDUGpuv82Q+7eozF0fA+58wE5AM4=;
-        b=psa4rNY0atdtXqC0kMOHC2+FQC+ZqLtp3CKNrfqd4Fpc+gCNdRM4h5kWYaQdPlp5vu
-         pQrNWGFi8G8MQNkTQ5PbwhIeceN4bE7Mo02BKpu/7VCpCC9Xl198HDHhNzjPcWRGXh0n
-         5HYkysFx3MM2PhMkWMPHoOVhqoheHSBnWgdVI=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=CjRgMme691O7m7C7I7ncXb60QMhzWDs7QxpdZ+zJjsWTVmw0tDrnP56Uq0Rzywcv0X
-         Vbduri8cz1Q1ANiX8qze+owHZ/IYn9S2hbiKmxUinsGwOslDAZ7bQ4QZ4W3T8a27ORhM
-         FyQskDiP6kbvOtyEenVr1A3jNv6UDqftJxE7w=
-Received: by 10.142.240.19 with SMTP id n19mr861863wfh.198.1246408651115;
-        Tue, 30 Jun 2009 17:37:31 -0700 (PDT)
-Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 29sm1988246wfg.1.2009.06.30.17.37.27
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 30 Jun 2009 17:37:30 -0700 (PDT)
-Subject: Re: [BUG] MIPS: Hibernation in the latest linux-mips:master branch
- not work
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:	yanhua <yanh@lemote.com>
-Cc:	LKML <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org,
-	Pavel Machek <pavel@ucw.cz>, Ralf Baechle <ralf@linux-mips.org>
-In-Reply-To: <4A4AAB93.6040306@lemote.com>
-References: <1246372868.19049.17.camel@falcon> <4A4AAB93.6040306@lemote.com>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:	Wed, 01 Jul 2009 08:37:16 +0800
-Message-Id: <1246408636.12459.3.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1 
-Content-Transfer-Encoding: 8bit
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jul 2009 03:19:45 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:62995 "EHLO
+	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493470AbZGABTi (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Jul 2009 03:19:38 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B4a4ab85d0000>; Tue, 30 Jun 2009 21:14:05 -0400
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 30 Jun 2009 18:13:41 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Tue, 30 Jun 2009 18:13:41 -0700
+Message-ID: <4A4AB845.1030906@caviumnetworks.com>
+Date:	Tue, 30 Jun 2009 18:13:41 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+MIME-Version: 1.0
+To:	"Maciej W. Rozycki" <macro@linux-mips.org>
+CC:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Define  __arch_swab64 for all mips r2 cpus (v2).
+References: <1246294455-26866-1-git-send-email-ddaney@caviumnetworks.com> <20090629193454.GA23430@linux-mips.org> <alpine.LFD.2.00.0907010132500.23134@eddie.linux-mips.org>
+In-Reply-To: <alpine.LFD.2.00.0907010132500.23134@eddie.linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 01 Jul 2009 01:13:41.0640 (UTC) FILETIME=[2BECB880:01C9F9E9]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23554
+X-archive-position: 23555
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2009-07-01 at 08:19 +0800, yanhua wrote:
-> Wu Zhangjin 写道:
-> > Hi,
-> >
-> > I just updated my git repository to the master branch of the latest
-> > linux-mips git repository, and tested the STD/Hibernation support on
-> > fuloong2e and yeeloong2f, it failed:
-> >
-> > when using the no_console_suspend kernel command line to debug, it
-> > stopped on:
-> >
-> > PM: Shringking memory... done (1000 pages freed)
-> > PM: Freed 160000 kbytes in 1.68 seconds (95.23 MB/s)
-> > PM: Creating hibernation image:
-> > PM: Need to copy 5053 pages
-> > PM: Hibernation image created (4195 pages copied)
-> >
-> > and then, the number indicator light of keyboard works well, but can not
-> > type anything. 
-> >
-> >   
-> Are there any other information about it? such as: it just freezes
-> there, or IDE irq lost messages after some time?
->
-> Is it duplicable every time?
+Maciej W. Rozycki wrote:
+> On Mon, 29 Jun 2009, Ralf Baechle wrote:
+> 
+>>> Some CPUs implement mipsr2, but because they are a super-set of
+>>> mips64r2 do not define CONFIG_CPU_MIPS64_R2.  Cavium OCTEON falls into
+>>> this category.  We would still like to use the optimized
+>>> implementation, so since we have already checked for
+>>> CONFIG_CPU_MIPSR2, checking for CONFIG_64BIT instead of
+>>> CONFIG_CPU_MIPS64_R2 is sufficient.
+>>>
+>>> Change from v1: Add comments about why the change is safe.
+>> Thanks, applied.  Though this sort of patch make me thing that maybe we
+>> rather should have treated the cnMIPS cores differently.
+> 
+>  This is a pure code generation option and it asks for "select 
+> CPU_MIPS64_R2" under CPU_OCTEON (or whatever option is used for that 
+> chip).  Or something like "select ISA_MIPS64_R2" actually, as we want to 
+> keep CPU_foo as the -march=, etc. designator.  IOW it looks like we lack 
+> ISA supersetting along the lines of how tools handle it.
+> 
 
-Yes, it is reproductive, I'm tracing it!
+The problem with CPU_MIPS64_R2 in the kernel is that it means two 
+unrelated things:
 
-Thanks!
+1) The cpu can execute all mips64r2 ISA instructions.
+
+2) The cpu requires that all worse case cache and execution hazards are 
+handled.
+
+In the case of the Octeon processors, #1 is true, but we can get better 
+performance by omitting many of the hazard barriers because they are 
+unneeded.
+
+David Daney

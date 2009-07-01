@@ -1,47 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jul 2009 09:22:12 +0200 (CEST)
-Received: from wf-out-1314.google.com ([209.85.200.169]:60296 "EHLO
-	wf-out-1314.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1492012AbZGAHWG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Jul 2009 09:22:06 +0200
-Received: by wf-out-1314.google.com with SMTP id 28so254891wfa.21
-        for <multiple recipients>; Wed, 01 Jul 2009 00:16:40 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jul 2009 16:53:31 +0200 (CEST)
+Received: from ey-out-1920.google.com ([74.125.78.144]:65160 "EHLO
+	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1491901AbZGAOxZ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Jul 2009 16:53:25 +0200
+Received: by ey-out-1920.google.com with SMTP id 13so288631eye.60
+        for <multiple recipients>; Wed, 01 Jul 2009 07:47:57 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:subject:from:reply-to:to:cc
          :in-reply-to:references:content-type:organization:date:message-id
          :mime-version:x-mailer:content-transfer-encoding;
-        bh=qSqIM2hwuk5fLj9hd+QBdr7RkwXiBkKCVx9g1CYIBvw=;
-        b=Fe71wJQ4uGbw9Qf9/cfpYajParx03KoDVPkXKoFAgpP1ucq0S6apPKsv1bjMKJGZx6
-         iHoIo2iGslRcVYYMRAkbpXO+qUGtaumXEU0Isye0bptYHd755Ih2i771TkOEd9I4pwh9
-         81RpzsLKCB/hS06wTwyhi+ojsOnNF+V506wGs=
+        bh=9SNE3RoA5diwRl22W/M4Q9oL5HQMHLjqivqM6ZGXK1U=;
+        b=xpT9245YIPL5bAlFazlvdfo1IDGQtddE+Qr8auZ+6Je6fkYHItYk/1jKQQaFMYKPzR
+         2K8PyoCjNuTzTVeWcJ+cZLAALROgwpuXU87ThrOAa++DAaKM1ybG7kdOpdU1c3JDA3D+
+         bkB6LmQ5QWK6M632zFywO/xF6lUD2HO1lCfl4=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
          :organization:date:message-id:mime-version:x-mailer
          :content-transfer-encoding;
-        b=q07QBAgJISnamOT8oyqk8lzBKNC6TnHfybjHEsWcfAWTgTRl3CqKN18rcVyiEJi9iY
-         tToM/N1Jam0EpPLD7/TpLtk03sF2lVk9IUAgs4ohBq2tnD6uUhX51jplDDF8/wxGSVK6
-         a+WOLr8K2rbcFdw60O7gCQuFjrEOfo0+mcbfU=
-Received: by 10.142.226.1 with SMTP id y1mr470718wfg.294.1246432600263;
-        Wed, 01 Jul 2009 00:16:40 -0700 (PDT)
+        b=o3+PSpFA+j+eYw1yTE5Kpuxxy/rYYIziPjmwBJpmvkVUPmoesqGv5WwL3Z+DEjh8sG
+         6Q6ye8360b/te59wO42BHjN8/N3oh673EpIR6w/UDLVHSm0xGwpnQWcSTUp/yJ6EIjsN
+         kE7me3OtPrpiiSZ1HaiF9EFpeG7xTKDAxQ5ZY=
+Received: by 10.211.180.19 with SMTP id h19mr5126504ebp.22.1246459677250;
+        Wed, 01 Jul 2009 07:47:57 -0700 (PDT)
 Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 30sm3145928wfd.23.2009.07.01.00.16.36
+        by mx.google.com with ESMTPS id 10sm2235394eyz.1.2009.07.01.07.47.50
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 01 Jul 2009 00:16:39 -0700 (PDT)
-Subject: Re: [BUG] MIPS: Hibernation in the latest linux-mips:master branch
- not work
+        Wed, 01 Jul 2009 07:47:56 -0700 (PDT)
+Subject: Re: [Bug #13663] suspend to ram regression (IDE related)
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 Reply-To: wuzhangjin@gmail.com
-To:	Ralf Baechle <ralf@linux-mips.org>, linux-ide@vger.kernel.org
-Cc:	LKML <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org,
-	Pavel Machek <pavel@ucw.cz>
-In-Reply-To: <20090630144540.GA18212@linux-mips.org>
-References: <1246372868.19049.17.camel@falcon>
-	 <20090630144540.GA18212@linux-mips.org>
+To:	Jeff Chua <jeff.chua.linux@gmail.com>
+Cc:	Etienne Basset <etienne.basset@numericable.fr>,
+	David Miller <davem@davemloft.net>, rjw@sisk.pl,
+	linux-kernel@vger.kernel.org, kernel-testers@vger.kernel.org,
+	bzolnier@gmail.com, Ralf Baechle <ralf@linux-mips.org>,
+	linux-mips@linux-mips.org, linux-ide@vger.kernel.org
+In-Reply-To: <b6a2187b0907010731k510150b5u1c7fce8cbed7c33b@mail.gmail.com>
+References: <etTXaRqGgAC.A.SaE.6iASKB@chimera>
+	 <5Hhc7UkUKEO.A.RvE.BjASKB@chimera> <4A489775.6020102@numericable.fr>
+	 <20090629.033730.193709457.davem@davemloft.net>
+	 <4A48E307.2010208@numericable.fr>
+	 <b6a2187b0906290921w15afd443qccb943ccfd48688b@mail.gmail.com>
+	 <b6a2187b0907010731k510150b5u1c7fce8cbed7c33b@mail.gmail.com>
 Content-Type: text/plain
 Organization: DSLab, Lanzhou University, China
-Date:	Wed, 01 Jul 2009 15:16:10 +0800
-Message-Id: <1246432570.9660.22.camel@falcon>
+Date:	Wed, 01 Jul 2009 22:47:41 +0800
+Message-Id: <1246459661.9660.40.camel@falcon>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.26.1 
 Content-Transfer-Encoding: 7bit
@@ -49,7 +55,7 @@ Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23560
+X-archive-position: 23561
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,50 +63,60 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2009-06-30 at 15:45 +0100, Ralf Baechle wrote:
-> On Tue, Jun 30, 2009 at 10:41:08PM +0800, Wu Zhangjin wrote:
+On Wed, 2009-07-01 at 22:31 +0800, Jeff Chua wrote:
+> On Tue, Jun 30, 2009 at 12:21 AM, Jeff Chua<jeff.chua.linux@gmail.com> wrote:
 > 
-> > I just updated my git repository to the master branch of the latest
-> > linux-mips git repository, and tested the STD/Hibernation support on
-> > fuloong2e and yeeloong2f, it failed:
-> > 
-> > when using the no_console_suspend kernel command line to debug, it
-> > stopped on:
-> > 
-> > PM: Shringking memory... done (1000 pages freed)
-> > PM: Freed 160000 kbytes in 1.68 seconds (95.23 MB/s)
-> > PM: Creating hibernation image:
-> > PM: Need to copy 5053 pages
-> > PM: Hibernation image created (4195 pages copied)
-> > 
-> > and then, the number indicator light of keyboard works well, but can not
-> > type anything. 
-> > 
-> > anybody have tested it on another platform? does it work?
+> > I just tried, and it "seems" to work. Will try a few more cycles.
 > 
-> At the time of the merge I tested it on Malta and found it to be working.
+> STD/STR survived quite a few cycles now. Patch seems to be doing the
+> right thing.
+> 
+> On Mon, Jun 29, 2009 at 11:51 PM, Etienne
+> Basset<etienne.basset@numericable.fr> wrote:
+> 
+> > To have STR/resume work with current git, I have to :
+> 
+> > 1) apply Bart's patch
+> 
+> This is not yet in Linus's tree. And much needed to really fix the problem.
+> 
+> > 2) revert this commit : a1317f714af7aed60ddc182d0122477cbe36ee9b
 > 
 
-Just traced it, the executing path is something like this:
+Yes, This commit must be reverted, otherwise, STD/Hibernation will not
+work either. I have tested it on two different loongson-based machines:
+fuloong2e box and yeeloong2f netbook.(loongson is mips compatiable)
 
-	hibernate(kernel/power/hibernate.c)
-	--> hibernation_snapshot
-	--> dpm_resume_end
-	--> dpm_resume
+Here is what i have traced:
+
+        hibernate(kernel/power/hibernate.c)
+        --> hibernation_snapshot
+        --> dpm_resume_end
+        --> dpm_resume
         --> device_resume
-	--> dev->bus->resume(generic_ide_resume), dev_name(dev) = 0.0
-	--> blk_execute_rq
+        --> dev->bus->resume(generic_ide_resume), dev_name(dev) = 0.0
+        --> blk_execute_rq
         {
-		DECLARE_COMPLETION_ONSTACK(wait);
-		...
-		wait_for_completion(&wait);	// stop here
-		...
-	}
+                DECLARE_COMPLETION_ONSTACK(wait);
+                ...
+                wait_for_completion(&wait);     // stop here
+                ...
+        }
 
-I guess there is a possible bug in the latest ide patches, I'm trying to
-find which one is 'bad'.
+and I have tried to revert this part of the above patch:
 
-the ide driver i used is VIA82CXXX chipset support.
+-
+-               WARN_ON_ONCE(hwif->rq);
+ repeat:
+                prev_port = hwif->host->cur_port;
++
++               if (drive->dev_flags & IDE_DFLAG_BLOCKED)
++                       rq = hwif->rq;
++               else
++                       WARN_ON_ONCE(hwif->rq);
++
 
-Regards,
+it works! need more time to test!
+
+thanks!
 Wu Zhangjin

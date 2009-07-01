@@ -1,45 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 30 Jun 2009 23:33:04 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:45279 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1493289AbZF3Vc4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 30 Jun 2009 23:32:56 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n5ULRVJw027747;
-	Tue, 30 Jun 2009 22:27:31 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n5ULRS6R027745;
-	Tue, 30 Jun 2009 22:27:28 +0100
-Date:	Tue, 30 Jun 2009 22:27:28 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	matthieu castet <castet.matthieu@free.fr>
-Cc:	linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>,
-	Michael Buesch <mb@bu3sch.de>
-Subject: Re: [PATCH] bc47xx : fix ssb irq setup
-Message-ID: <20090630212728.GB24977@linux-mips.org>
-References: <4A4A7DF7.2010209@free.fr> <4A4A7F60.5030604@free.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jul 2009 02:17:30 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:47961 "EHLO
+	localhost.localdomain" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1493467AbZGAARW (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Jul 2009 02:17:22 +0200
+Date:	Wed, 1 Jul 2009 01:17:22 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	Dmitri Vorobiev <dmitri.vorobiev@movial.com>,
+	linux-mips@linux-mips.org
+Subject: Re: [PATCH] [MIPS] Malta: Remove unneeded function protos from
+ malta-reset.c
+In-Reply-To: <20090628181702.GB20084@linux-mips.org>
+Message-ID: <alpine.LFD.2.00.0907010108380.23134@eddie.linux-mips.org>
+References: <1246035565-24015-1-git-send-email-dmitri.vorobiev@movial.com> <20090628181702.GB20084@linux-mips.org>
+User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4A4A7F60.5030604@free.fr>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@h5.dl5rb.org.uk>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23550
+X-archive-position: 23551
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jun 30, 2009 at 11:10:56PM +0200, matthieu castet wrote:
+On Sun, 28 Jun 2009, Ralf Baechle wrote:
 
-> Update : the previous patch was broken by my mailler
+> There should be a tax on useless prototypes and also excessive parentheses ;-)
 
-I can confirm that :-)
+ And insufficient parentheses causing the average reader to refer to the 
+language spec for the operator priority list. ;)
 
-Applied.  Thanks,
-
-  Ralf
+  Maciej

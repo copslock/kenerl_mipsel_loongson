@@ -1,62 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jul 2009 21:25:21 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:53287 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1491864AbZGATZN (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 1 Jul 2009 21:25:13 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n61JJZtT026862;
-	Wed, 1 Jul 2009 20:19:35 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n61JJY8J026861;
-	Wed, 1 Jul 2009 20:19:34 +0100
-Date:	Wed, 1 Jul 2009 20:19:34 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Yong Zhang <yong.zhang@windriver.com>
-Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: o32 application running on 64bit kernel core dump
-Message-ID: <20090701191934.GE23121@linux-mips.org>
-References: <16bd35f2910f585740f4764fa1e80bf31c80d576.1242178813.git.yong.zhang@windriver.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jul 2009 23:36:15 +0200 (CEST)
+Received: from smtp1.tech.numericable.fr ([82.216.111.37]:57770 "EHLO
+	smtp1.tech.numericable.fr" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1491918AbZGAVgI (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Jul 2009 23:36:08 +0200
+Received: from [192.168.0.10] (abo-105-52-68.mts.modulonet.fr [85.68.52.105])
+	by smtp1.tech.numericable.fr (Postfix) with ESMTP id 1AC85E0811;
+	Wed,  1 Jul 2009 23:30:32 +0200 (CEST)
+Message-ID: <4A4BD577.2080609@numericable.fr>
+Date:	Wed, 01 Jul 2009 23:30:31 +0200
+From:	Etienne Basset <etienne.basset@numericable.fr>
+User-Agent: Thunderbird 2.0.0.22 (X11/20090608)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <16bd35f2910f585740f4764fa1e80bf31c80d576.1242178813.git.yong.zhang@windriver.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@h5.dl5rb.org.uk>
+To:	Jeff Chua <jeff.chua.linux@gmail.com>
+CC:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
+	wuzhangjin@gmail.com, David Miller <davem@davemloft.net>,
+	rjw@sisk.pl, linux-kernel@vger.kernel.org,
+	kernel-testers@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+	linux-mips@linux-mips.org, linux-ide@vger.kernel.org
+Subject: Re: [Bug #13663] suspend to ram regression (IDE related)
+References: <etTXaRqGgAC.A.SaE.6iASKB@chimera>	 <1246459661.9660.40.camel@falcon>	 <200907011821.26091.bzolnier@gmail.com>	 <200907011829.16850.bzolnier@gmail.com> <b6a2187b0907011028r27d35be4xc62c7ed4496dfb2f@mail.gmail.com>
+In-Reply-To: <b6a2187b0907011028r27d35be4xc62c7ed4496dfb2f@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <etienne.basset@numericable.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23585
+X-archive-position: 23586
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: etienne.basset@numericable.fr
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jul 01, 2009 at 09:35:39AM +0800, Yong Zhang wrote:
+Jeff Chua wrote:
+> On Thu, Jul 2, 2009 at 12:29 AM, Bartlomiej
+> Zolnierkiewicz<bzolnier@gmail.com> wrote:
+>> Here is the more complete version, also taking into the account changes
+>> in ide_intr() and ide_timer_expiry():
+> 
+> This works great for. Survived STR, STD. I just applied on top vanilla
+> latest Linus's git pull. Nothing else to revert.
+> 
+> Thanks,
+> Jeff.
+> 
+> 
+i confirm, this  works for me too :)
+thanks,
+Etienne
 
-> +/* These MUST be defined before elf.h gets included */
 
-This sort of ordering bug seems to become a tradition.  I think it may be
-a good idea to insert a check like this:
-
-#ifdef ELF_CORE_COPY_REGS
-#error ELF_CORE_COPY_REGS should not be defined yet!
-#endif
-
-> +extern void elf32_core_copy_regs(elf_gregset_t grp, struct pt_regs *regs);
-> +#define ELF_CORE_COPY_REGS(_dest, _regs) elf32_core_copy_regs(_dest, _regs);
-> +#define ELF_CORE_COPY_TASK_REGS(_tsk, _dest)				\
-> +({									\
-> +	int __res = 1;							\
-> +	elf32_core_copy_regs((*_dest), (task_pt_regs(_tsk)));		\
-
-Be very careful with parentheses in macros.  This line should probably
-become:
-
-	elf32_core_copy_regs(*(_dest), task_pt_regs(_tsk));		\
-
-The changes to the first argument to bullet prof the macro and the change
-to the second one for cosmetic reasons.
-
-  Ralf
+>> ---
+>>  drivers/ide/ide-io.c |   15 ++++++++++-----
+>>  1 file changed, 10 insertions(+), 5 deletions(-)
+>>
+>> Index: b/drivers/ide/ide-io.c
+>> ===================================================================
+>> --- a/drivers/ide/ide-io.c
+>> +++ b/drivers/ide/ide-io.c
+>> @@ -532,7 +532,8 @@ repeat:
+>>
+>>                if (startstop == ide_stopped) {
+>>                        rq = hwif->rq;
+>> -                       hwif->rq = NULL;
+>> +                       if ((drive->dev_flags & IDE_DFLAG_BLOCKED) == 0)
+>> +                               hwif->rq = NULL;
+>>                        goto repeat;
+>>                }
+>>        } else
+>> @@ -679,8 +680,10 @@ void ide_timer_expiry (unsigned long dat
+>>                spin_lock_irq(&hwif->lock);
+>>                enable_irq(hwif->irq);
+>>                if (startstop == ide_stopped && hwif->polling == 0) {
+>> -                       rq_in_flight = hwif->rq;
+>> -                       hwif->rq = NULL;
+>> +                       if ((drive->dev_flags & IDE_DFLAG_BLOCKED) == 0) {
+>> +                               rq_in_flight = hwif->rq;
+>> +                               hwif->rq = NULL;
+>> +                       }
+>>                        ide_unlock_port(hwif);
+>>                        plug_device = 1;
+>>                }
+>> @@ -856,8 +859,10 @@ irqreturn_t ide_intr (int irq, void *dev
+>>         */
+>>        if (startstop == ide_stopped && hwif->polling == 0) {
+>>                BUG_ON(hwif->handler);
+>> -               rq_in_flight = hwif->rq;
+>> -               hwif->rq = NULL;
+>> +               if ((drive->dev_flags & IDE_DFLAG_BLOCKED) == 0) {
+>> +                       rq_in_flight = hwif->rq;
+>> +                       hwif->rq = NULL;
+>> +               }
+>>                ide_unlock_port(hwif);
+>>                plug_device = 1;
+>>        }
+>>

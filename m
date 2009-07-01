@@ -1,73 +1,49 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jul 2009 02:25:26 +0200 (CEST)
-Received: from [222.92.8.141] ([222.92.8.141]:43249 "EHLO lemote.com"
-	rhost-flags-FAIL-FAIL-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1493066AbZGAAZT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 1 Jul 2009 02:25:19 +0200
-Received: from localhost (localhost [127.0.0.1])
-	by lemote.com (Postfix) with ESMTP id 7FDE73435B;
-	Wed,  1 Jul 2009 08:13:14 +0800 (CST)
-X-Virus-Scanned: Debian amavisd-new at lemote.com
-Received: from lemote.com ([127.0.0.1])
-	by localhost (www.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 3qzwqOTFo7IA; Wed,  1 Jul 2009 08:12:59 +0800 (CST)
-Received: from [172.16.2.17] (unknown [222.92.8.142])
-	by lemote.com (Postfix) with ESMTP id DE30C34A07;
-	Wed,  1 Jul 2009 08:12:59 +0800 (CST)
-Message-ID: <4A4AAB93.6040306@lemote.com>
-Date:	Wed, 01 Jul 2009 08:19:31 +0800
-From:	yanhua <yanh@lemote.com>
-User-Agent: Mozilla-Thunderbird 2.0.0.19 (X11/20090103)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 01 Jul 2009 02:37:07 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:41221 "EHLO
+	localhost.localdomain" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1492756AbZGAAhE (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 1 Jul 2009 02:37:04 +0200
+Date:	Wed, 1 Jul 2009 01:37:04 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+cc:	David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Define  __arch_swab64 for all mips r2 cpus (v2).
+In-Reply-To: <20090629193454.GA23430@linux-mips.org>
+Message-ID: <alpine.LFD.2.00.0907010132500.23134@eddie.linux-mips.org>
+References: <1246294455-26866-1-git-send-email-ddaney@caviumnetworks.com> <20090629193454.GA23430@linux-mips.org>
+User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
 MIME-Version: 1.0
-To:	wuzhangjin@gmail.com
-CC:	LKML <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org,
-	Pavel Machek <pavel@ucw.cz>, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [BUG] MIPS: Hibernation in the latest linux-mips:master branch
- not work
-References: <1246372868.19049.17.camel@falcon>
-In-Reply-To: <1246372868.19049.17.camel@falcon>
-Content-Type: text/plain; charset=GB2312
-Content-Transfer-Encoding: 8bit
-Return-Path: <yanh@lemote.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23552
+X-archive-position: 23553
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: yanh@lemote.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Wu Zhangjin Ð´µÀ:
-> Hi,
->
-> I just updated my git repository to the master branch of the latest
-> linux-mips git repository, and tested the STD/Hibernation support on
-> fuloong2e and yeeloong2f, it failed:
->
-> when using the no_console_suspend kernel command line to debug, it
-> stopped on:
->
-> PM: Shringking memory... done (1000 pages freed)
-> PM: Freed 160000 kbytes in 1.68 seconds (95.23 MB/s)
-> PM: Creating hibernation image:
-> PM: Need to copy 5053 pages
-> PM: Hibernation image created (4195 pages copied)
->
-> and then, the number indicator light of keyboard works well, but can not
-> type anything. 
->
->   
-Are there any other information about it? such as: it just freezes
-there, or IDE irq lost messages after some time?
+On Mon, 29 Jun 2009, Ralf Baechle wrote:
 
-Is it duplicable every time?
-> anybody have tested it on another platform? does it work?
->
-> Regards,
-> Wu Zhangjin
->
->
->
->   
+> > Some CPUs implement mipsr2, but because they are a super-set of
+> > mips64r2 do not define CONFIG_CPU_MIPS64_R2.  Cavium OCTEON falls into
+> > this category.  We would still like to use the optimized
+> > implementation, so since we have already checked for
+> > CONFIG_CPU_MIPSR2, checking for CONFIG_64BIT instead of
+> > CONFIG_CPU_MIPS64_R2 is sufficient.
+> > 
+> > Change from v1: Add comments about why the change is safe.
+> 
+> Thanks, applied.  Though this sort of patch make me thing that maybe we
+> rather should have treated the cnMIPS cores differently.
+
+ This is a pure code generation option and it asks for "select 
+CPU_MIPS64_R2" under CPU_OCTEON (or whatever option is used for that 
+chip).  Or something like "select ISA_MIPS64_R2" actually, as we want to 
+keep CPU_foo as the -march=, etc. designator.  IOW it looks like we lack 
+ISA supersetting along the lines of how tools handle it.
+
+  Maciej

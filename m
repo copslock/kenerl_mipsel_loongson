@@ -1,41 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jul 2009 01:28:20 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:53072 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jul 2009 01:28:46 +0200 (CEST)
+Received: from ogre.sisk.pl ([217.79.144.158]:39960 "EHLO ogre.sisk.pl"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1492302AbZGBX2N (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 3 Jul 2009 01:28:13 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n62NM7PN017769;
-	Fri, 3 Jul 2009 00:22:07 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n62NM5qJ017767;
-	Fri, 3 Jul 2009 00:22:05 +0100
-Date:	Fri, 3 Jul 2009 00:22:05 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
+	id S1492308AbZGBX2U (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 3 Jul 2009 01:28:20 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by ogre.sisk.pl (Postfix) with ESMTP id 8259B1481A5;
+	Fri,  3 Jul 2009 01:16:48 +0200 (CEST)
+Received: from ogre.sisk.pl ([127.0.0.1])
+ by localhost (ogre.sisk.pl [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 17198-05; Fri,  3 Jul 2009 01:16:41 +0200 (CEST)
+Received: from tosh.localnet (220-bem-13.acn.waw.pl [82.210.184.220])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by ogre.sisk.pl (Postfix) with ESMTP id 906851480B1;
+	Fri,  3 Jul 2009 01:16:41 +0200 (CEST)
+From:	"Rafael J. Wysocki" <rjw@sisk.pl>
 To:	Wu Zhangjin <wuzhangjin@gmail.com>
-Cc:	LKML <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org,
-	Pavel Machek <pavel@ucw.cz>, Wu Zhangjin <wuzj@lemote.com>
 Subject: Re: [PATCH] [MIPS] Hibernation: only save pages in system ram
-Message-ID: <20090702232205.GE14804@linux-mips.org>
+Date:	Fri, 3 Jul 2009 01:22:40 +0200
+User-Agent: KMail/1.11.2 (Linux/2.6.31-rc1-rjw; KDE/4.2.4; x86_64; ; )
+Cc:	LKML <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org,
+	Pavel Machek <pavel@ucw.cz>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Wu Zhangjin <wuzj@lemote.com>
 References: <1246373570-21090-1-git-send-email-wuzhangjin@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 In-Reply-To: <1246373570-21090-1-git-send-email-wuzhangjin@gmail.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@h5.dl5rb.org.uk>
+MIME-Version: 1.0
+Content-Type: Text/Plain;
+  charset="iso-8859-2"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Message-Id: <200907030122.41176.rjw@sisk.pl>
+X-Virus-Scanned: amavisd-new at ogre.sisk.pl using MkS_Vir for Linux
+Return-Path: <rjw@sisk.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23635
+X-archive-position: 23636
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: rjw@sisk.pl
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jun 30, 2009 at 10:52:50PM +0800, Wu Zhangjin wrote:
-
+On Tuesday 30 June 2009, Wu Zhangjin wrote:
 > From: Wu Zhangjin <wuzj@lemote.com>
 > 
 > when using hibernation(STD) with CONFIG_FLATMEM in linux-mips-64bit, it
@@ -82,41 +91,57 @@ On Tue, Jun 30, 2009 at 10:52:50PM +0800, Wu Zhangjin wrote:
 > and pfn_is_nosave is implemented in arch/mips/power/cpu.c, so, hacking
 > this one is better.
 
-No - pfn_valid() is broken, so it should be fixed.  Commit
-752fbeb2e3555c0d236e992f1195fd7ce30e728d introduced the breakage.  It
-seemed to assume that the valid range for PFNs doesn't start at 0 but
-some higher number but got that entirely wrong..
+Not really.
 
-#define ARCH_PFN_OFFSET         PFN_UP(PHYS_OFFSET)
-#define pfn_valid(pfn)         ((pfn) >= ARCH_PFN_OFFSET && (pfn) < max_mapnr)
+Could that be handled with the help of register_nosave_region() or
+register_nosave_region_late() instead?
 
-works nicely when PHYS_OFFSET is 0 - as for most MIPS systems and goes
-horribly wrong otherwise.  So I suggest below patch.
+Best,
+Rafael
 
-  Ralf
 
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
- arch/mips/include/asm/page.h |    9 ++++++++-
- 1 files changed, 8 insertions(+), 1 deletions(-)
-
-diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
-index dc0eaa7..96a14a4 100644
---- a/arch/mips/include/asm/page.h
-+++ b/arch/mips/include/asm/page.h
-@@ -165,7 +165,14 @@ typedef struct { unsigned long pgprot; } pgprot_t;
- 
- #ifdef CONFIG_FLATMEM
- 
--#define pfn_valid(pfn)		((pfn) >= ARCH_PFN_OFFSET && (pfn) < max_mapnr)
-+#define pfn_valid(pfn)							\
-+({									\
-+	unsigned long __pfn = (pfn);					\
-+	/* avoid <linux/bootmem.h> include hell */			\
-+	extern unsigned long min_low_pfn;				\
-+									\
-+	__pfn >= min_low_pfn && __pfn < max_mapnr;			\
-+})
- 
- #elif defined(CONFIG_SPARSEMEM)
- 
+> Signed-off-by: Wu Zhangjin <wuzj@lemote.com>
+> ---
+>  arch/mips/power/cpu.c |   19 ++++++++++++++++++-
+>  1 files changed, 18 insertions(+), 1 deletions(-)
+> 
+> diff --git a/arch/mips/power/cpu.c b/arch/mips/power/cpu.c
+> index 7995df4..ef472e3 100644
+> --- a/arch/mips/power/cpu.c
+> +++ b/arch/mips/power/cpu.c
+> @@ -10,6 +10,7 @@
+>  #include <asm/suspend.h>
+>  #include <asm/fpu.h>
+>  #include <asm/dsp.h>
+> +#include <asm/bootinfo.h>
+>  
+>  static u32 saved_status;
+>  struct pt_regs saved_regs;
+> @@ -34,10 +35,26 @@ void restore_processor_state(void)
+>  		restore_dsp(current);
+>  }
+>  
+> +int pfn_in_system_ram(unsigned long pfn)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < boot_mem_map.nr_map; i++) {
+> +		if (boot_mem_map.map[i].type == BOOT_MEM_RAM) {
+> +			if ((pfn >= (boot_mem_map.map[i].addr >> PAGE_SHIFT)) &&
+> +				((pfn) < ((boot_mem_map.map[i].addr +
+> +					boot_mem_map.map[i].size) >> PAGE_SHIFT)))
+> +				return 1;
+> +		}
+> +	}
+> +	return 0;
+> +}
+> +
+>  int pfn_is_nosave(unsigned long pfn)
+>  {
+>  	unsigned long nosave_begin_pfn = PFN_DOWN(__pa(&__nosave_begin));
+>  	unsigned long nosave_end_pfn = PFN_UP(__pa(&__nosave_end));
+>  
+> -	return	(pfn >= nosave_begin_pfn) && (pfn < nosave_end_pfn);
+> +	return ((pfn >= nosave_begin_pfn) && (pfn < nosave_end_pfn))
+> +			|| !pfn_in_system_ram(pfn);
+>  }

@@ -1,80 +1,87 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jul 2009 04:15:43 +0200 (CEST)
-Received: from mail-yx0-f183.google.com ([209.85.210.183]:64032 "EHLO
-	mail-yx0-f183.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1491983AbZGBCPf (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Jul 2009 04:15:35 +0200
-Received: by yxe13 with SMTP id 13so2056394yxe.22
-        for <multiple recipients>; Wed, 01 Jul 2009 19:09:54 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=KREtBvwPX95nV0FGVeLJLXCxgj2OAq7XBEd8/pj+y5M=;
-        b=CmsQMfgeGIIrl8wxXZHiRMGsS/0NtJoD4/3S0c3IH/jJ2WGLzbL8Bu4osJOd3OrYOJ
-         Q2SmozQIXkvg/7TiiDwGN/5cDb5vt2MTNRox1V4eHy6vAM15wfPjLKC8BVy8qQK38J1h
-         i80Eyn2yv+JlnrPS0xKmpCbQC5KCUl6Tdf1qU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=vB0YX826xDiUjFU2tjN7+kAo+4fsDePfooX77XAcyPQBgmlE3l3++E3o4fEX/AMelV
-         lrEBgDWwBup5FyMrV4esEUfHjDE3PdLIw7jrYBYzHzLCfMY7Z7tbin2NZ8nH9Ru6bbta
-         CC/ymDOiLrl1j5TTpb1fv5FwWzrYaxJNAGBp4=
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jul 2009 04:45:57 +0200 (CEST)
+Received: from dns1.mips.com ([63.167.95.197]:35883 "EHLO dns1.mips.com"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1491990AbZGBCpu (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 2 Jul 2009 04:45:50 +0200
+Received: from MTVEXCHANGE.mips.com ([192.168.36.60])
+	by dns1.mips.com (8.13.8/8.13.8) with ESMTP id n622e4Ca016271
+	for <linux-mips@linux-mips.org>; Wed, 1 Jul 2009 19:40:04 -0700
+Received: from mercury.mips.com ([192.168.64.101]) by MTVEXCHANGE.mips.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 1 Jul 2009 19:40:04 -0700
+Received: from [192.168.65.97] (linux-raghu [192.168.65.97])
+	by mercury.mips.com (8.13.5/8.13.5) with ESMTP id n622e4lO005974;
+	Wed, 1 Jul 2009 19:40:04 -0700 (PDT)
+From:	Raghu Gandham <raghu@mips.com>
+Subject: [PATCH 00/15] Port changes from linux-mti
+To:	linux-mips@linux-mips.org
+Cc:	chris@mips.com
+Date:	Wed, 01 Jul 2009 19:39:38 -0700
+Message-ID: <20090702023938.23268.65453.stgit@linux-raghu>
+User-Agent: StGIT/0.14.3
 MIME-Version: 1.0
-Received: by 10.90.80.4 with SMTP id d4mr2063840agb.4.1246500594117; Wed, 01 
-	Jul 2009 19:09:54 -0700 (PDT)
-In-Reply-To: <1246499203.9660.52.camel@falcon>
-References: <etTXaRqGgAC.A.SaE.6iASKB@chimera>
-	 <1246459661.9660.40.camel@falcon>
-	 <200907011821.26091.bzolnier@gmail.com>
-	 <200907011829.16850.bzolnier@gmail.com>
-	 <1246499203.9660.52.camel@falcon>
-Date:	Thu, 2 Jul 2009 10:09:53 +0800
-Message-ID: <b6a2187b0907011909l41b513fen3252ce00f7e4c9c9@mail.gmail.com>
-Subject: Re: [Bug #13663] suspend to ram regression (IDE related)
-From:	Jeff Chua <jeff.chua.linux@gmail.com>
-To:	wuzhangjin@gmail.com
-Cc:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>,
-	Etienne Basset <etienne.basset@numericable.fr>,
-	David Miller <davem@davemloft.net>, rjw@sisk.pl,
-	linux-kernel@vger.kernel.org, kernel-testers@vger.kernel.org,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	linux-ide@vger.kernel.org
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Return-Path: <jeff.chua.linux@gmail.com>
+X-OriginalArrivalTime: 02 Jul 2009 02:40:04.0444 (UTC) FILETIME=[678799C0:01C9FABE]
+Return-Path: <raghu@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23591
+X-archive-position: 23592
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jeff.chua.linux@gmail.com
+X-original-sender: raghu@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jul 2, 2009 at 9:46 AM, Wu Zhangjin<wuzhangjin@gmail.com> wrote:
-> it this too old? should i merge another git repository?
-> I have tried to apply it manually, but unfortunately, also not work. any
-> other patch needed?
+The following series of patches port the changes in linux-mti.git repository to the head of tree. 
+---
 
-You need to be undo those two patches below ...
+Chris Dearman (9):
+      Added coherentio command line option for DMA_NONCOHERENT kernel
+      Add missing memory barriers for correct operation of amon_cpu_start
+      Port of GIC related changes from MTI branch.
+      Add debug prints during CPU intialization.
+      APRP Patch04: Propagate final value of max_low_pfn to max_pfn
+      [MTI] Enable PIIX4 PCI2.1 compliancy on Malta
+      [MTI] MIPS secondary cache supports 64 byte line size.
+      Fix accesses to device registers on MIPS boards
+      [MTI] Clean up SPRAM support a little
 
-> On Mon, Jun 29, 2009 at 11:51 PM, Etienne Basset<etienne.basset@numericable.fr>
-> To have STR/resume work with current git, I have to :
-> 1) apply Bart's patch
-> 2) revert this commit : a1317f714af7aed60ddc182d0122477cbe36ee9b
+Jaidev Patwardhan (2):
+      Avoid queing multiple reschedule IPI's in SMTC
+      Avoid accessing GCMP registers when they are not present
 
-or try to pull from Linus's tree and try again. Latest is now ...
+Kurt Martin (1):
+      Do not rely on the initial state of TC/VPE bindings when doing cross VPE writes
 
-commit d960eea974f5e500c0dcb95a934239cc1f481cfd
-Author: Randy Dunlap <randy.dunlap@oracle.com>
-Date:   Mon Jun 29 14:54:11 2009 -0700
+Raghu Gandham (1):
+      Fix compiler warning in vpe.c
 
-    kernel-doc: move ignoring kmemcheck
+Robin Randhawa (2):
+      Fix absd emulation
+      Due to some broken bitfiles, we can't trust IntCtl
 
 
-
-Jeff.
+ arch/mips/Kconfig                 |    1 
+ arch/mips/include/asm/gcmpregs.h  |   18 ++--
+ arch/mips/include/asm/gic.h       |  188 ++++---------------------------------
+ arch/mips/include/asm/irq.h       |    1 
+ arch/mips/include/asm/smtc_ipi.h  |    5 +
+ arch/mips/include/asm/spram.h     |   10 ++
+ arch/mips/kernel/cpu-probe.c      |    8 --
+ arch/mips/kernel/irq-gic.c        |  116 +++++++++--------------
+ arch/mips/kernel/setup.c          |    3 -
+ arch/mips/kernel/smp-mt.c         |   10 ++
+ arch/mips/kernel/smtc.c           |   45 ++++++++-
+ arch/mips/kernel/spram.c          |    5 -
+ arch/mips/kernel/traps.c          |    4 +
+ arch/mips/kernel/vpe.c            |    3 -
+ arch/mips/math-emu/dp_simple.c    |   11 +-
+ arch/mips/math-emu/sp_simple.c    |    3 -
+ arch/mips/mti-malta/malta-amon.c  |    7 +
+ arch/mips/mti-malta/malta-int.c   |  115 ++++++++++++++---------
+ arch/mips/mti-malta/malta-pci.c   |   14 ++-
+ arch/mips/mti-malta/malta-setup.c |  111 ++++++++++++++++++++++
+ 20 files changed, 351 insertions(+), 327 deletions(-)
+ create mode 100644 arch/mips/include/asm/spram.h

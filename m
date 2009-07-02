@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jul 2009 17:28:46 +0200 (CEST)
-Received: from mail-ew0-f214.google.com ([209.85.219.214]:55387 "EHLO
-	mail-ew0-f214.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492208AbZGBP2f (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Jul 2009 17:28:35 +0200
-Received: by mail-ew0-f214.google.com with SMTP id 10so2096866ewy.0
-        for <multiple recipients>; Thu, 02 Jul 2009 08:22:50 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jul 2009 17:29:11 +0200 (CEST)
+Received: from ey-out-1920.google.com ([74.125.78.145]:56148 "EHLO
+	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1492206AbZGBP3E (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Jul 2009 17:29:04 +0200
+Received: by ey-out-1920.google.com with SMTP id 13so514356eye.60
+        for <multiple recipients>; Thu, 02 Jul 2009 08:23:18 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer:in-reply-to:references;
-        bh=Nbz9g4wZQ2ZuUKlx1zcFFdQ1grcQ1FwAgO+2hyR2xGY=;
-        b=HUVV2xESFtB4oIKjZ2oDIyURMrtqZZ/FxBaJqkZkmLLrB2tNMJIlpRPLK+GNc2Qphg
-         QcykCqyv4Gtx73+JWN+wyfIVKGTPpcY0rCe7cuYu/cioYNeJLpeuxfhICaYHAEX76Kmf
-         MvQEpFTpebPl0fdt35UDbznNp/eA7pcQITZA4=
+        bh=DC4cfAdptFUKOnUest0ZIVBWY1k8jRYl0+1uT1REjhA=;
+        b=v1dD1yfjvQYnFNZFoVHXAeSwD3jJ80nvxOiamQVNTBmGXRp29RUgXajarxdWrcJwhJ
+         Xct/pY84U3PtIaDw3Ij+uAzhZs+hF95UpgmPTGCsA7cwN0Gfz+f0DNoCibx7QpWMZRD7
+         d1pWSO4IPbQxb3HJUMNC5jbazIlJKh0cCSe8Y=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=o156H0MWR8PR57JVkNS3XpA8ud2r+wx13W9Kuoc+384Db3t71i1pqjMOy2pA4kKKyE
-         W24+7FzaZUZNKNUUEDfgqlQ71Is3+xEDrVD8HkoPk0BvOvkrC4EEqFMQoR4zuw2cYDer
-         8MnbrLPlIQVTQIZm7wInAzVCNSgekym85JTcA=
-Received: by 10.210.13.12 with SMTP id 12mr1088121ebm.63.1246548170229;
-        Thu, 02 Jul 2009 08:22:50 -0700 (PDT)
+        b=eQ5nLBxap/KarrXnMupb6TIHgJkiDvAV4lVjdAcxGHIwX2DXMhnT3vrZ26aN2FUnzV
+         egDcXLQ+jRAu7k24WJYULLiMckJm2pQVjWbG7rZtJnX/h/Pcs+wP3Ys/DDVEp7Eo2YVM
+         fnlpkE6TMBan2ddFToYMZXYVW69DFwtMtgH9g=
+Received: by 10.210.20.6 with SMTP id 6mr200225ebt.59.1246548198502;
+        Thu, 02 Jul 2009 08:23:18 -0700 (PDT)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id 7sm2377163eyg.27.2009.07.02.08.22.43
+        by mx.google.com with ESMTPS id 23sm13481eya.29.2009.07.02.08.23.10
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 02 Jul 2009 08:22:49 -0700 (PDT)
+        Thu, 02 Jul 2009 08:23:17 -0700 (PDT)
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 To:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
 	ralf@linux-mips.org
@@ -36,9 +36,9 @@ Cc:	Wu Zhangjin <wuzj@lemote.com>, Yan Hua <yanh@lemote.com>,
 	Liu Junliang <liujl@lemote.com>,
 	Erwan Lerale <erwan@thiscow.com>,
 	Arnaud Patard <apatard@mandriva.com>
-Subject: [PATCH v4 07/16] [loongson] split the implementation of prom,setup parts
-Date:	Thu,  2 Jul 2009 23:22:36 +0800
-Message-Id: <f458e31055182d8bea4b46d55c14922949e865f5.1246546684.git.wuzhangjin@gmail.com>
+Subject: [PATCH v4 08/16] [loongson] clean up the coding style
+Date:	Thu,  2 Jul 2009 23:23:03 +0800
+Message-Id: <47838a3035e4123de6b19c7de44ec2fc974270cd.1246546684.git.wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.6.2.1
 In-Reply-To: <cover.1246546684.git.wuzhangjin@gmail.com>
 References: <cover.1246546684.git.wuzhangjin@gmail.com>
@@ -46,7 +46,7 @@ Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23619
+X-archive-position: 23620
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,475 +56,513 @@ X-list: linux-mips
 
 From: Wu Zhangjin <wuzj@lemote.com>
 
-This patch split the old initilization and setup implementation to
-several file, one file one logic function.
+with the help of script/checkpatch.pl, i have cleaned up the coding
+style.
 
-the other main changes include:
+1. remove un-needed header files and tune some comments.
+2. remove some un-needed { }
 
-	1. as the script/checkpatch.pl suggests, use strict_strtol instead
-	of simple_strtol in arch/mips/lemote/lm2e/cmdline.c
+add a new header file loongson.h:
 
-	2. use the existed macros in asm/mips-boards/bonito64.h as the
-	arguments of set_io_port_base() and remove the un-needed ones in
-	asm/mach-lemote/pci.h
+3. move some common header files to loongson.h
+4. move some common extern declartions to loongson.h
+
+and this new header file is needed for future loongson2f support.
 
 Signed-off-by: Wu Zhangjin <wuzj@lemote.com>
 ---
- arch/mips/include/asm/mach-lemote/pci.h |    1 -
- arch/mips/lemote/lm2e/Makefile          |    3 +-
- arch/mips/lemote/lm2e/cmdline.c         |   53 ++++++++++++++++++
- arch/mips/lemote/lm2e/env.c             |   60 ++++++++++++++++++++
- arch/mips/lemote/lm2e/init.c            |   34 ++++++++++++
- arch/mips/lemote/lm2e/machtype.c        |   15 +++++
- arch/mips/lemote/lm2e/mem.c             |   13 +++++
- arch/mips/lemote/lm2e/prom.c            |   91 -------------------------------
- arch/mips/lemote/lm2e/setup.c           |   33 +-----------
- arch/mips/lemote/lm2e/time.c            |   30 ++++++++++
- 10 files changed, 208 insertions(+), 125 deletions(-)
- create mode 100644 arch/mips/lemote/lm2e/cmdline.c
- create mode 100644 arch/mips/lemote/lm2e/env.c
- create mode 100644 arch/mips/lemote/lm2e/init.c
- create mode 100644 arch/mips/lemote/lm2e/machtype.c
- delete mode 100644 arch/mips/lemote/lm2e/prom.c
- create mode 100644 arch/mips/lemote/lm2e/time.c
+ arch/mips/include/asm/mach-lemote/loongson.h |   36 +++++++++++++++++++
+ arch/mips/include/asm/mach-lemote/pci.h      |    8 +++--
+ arch/mips/lemote/lm2e/bonito-irq.c           |   27 +-------------
+ arch/mips/lemote/lm2e/cmdline.c              |    5 +--
+ arch/mips/lemote/lm2e/early_printk.c         |    4 +--
+ arch/mips/lemote/lm2e/env.c                  |    6 +--
+ arch/mips/lemote/lm2e/init.c                 |    6 +---
+ arch/mips/lemote/lm2e/irq.c                  |   48 ++++----------------------
+ arch/mips/lemote/lm2e/mem.c                  |    2 +-
+ arch/mips/lemote/lm2e/pci.c                  |   26 +-------------
+ arch/mips/lemote/lm2e/reset.c                |    7 ++--
+ arch/mips/lemote/lm2e/setup.c                |   24 +------------
+ arch/mips/lemote/lm2e/time.c                 |    5 +--
+ arch/mips/pci/fixup-lm2e.c                   |   18 ----------
+ 14 files changed, 66 insertions(+), 156 deletions(-)
+ create mode 100644 arch/mips/include/asm/mach-lemote/loongson.h
 
+diff --git a/arch/mips/include/asm/mach-lemote/loongson.h b/arch/mips/include/asm/mach-lemote/loongson.h
+new file mode 100644
+index 0000000..76cc2bd
+--- /dev/null
++++ b/arch/mips/include/asm/mach-lemote/loongson.h
+@@ -0,0 +1,36 @@
++/*
++ * Copyright (C) 2009 Lemote, Inc. & Institute of Computing Technology
++ * Author: Wu Zhangjin <wuzj@lemote.com>
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
++ *
++ */
++
++#ifndef __ASM_MACH_LOONGSON_LOONGSON_H
++#define __ASM_MACH_LOONGSON_LOONGSON_H
++
++#include <linux/io.h>
++#include <linux/init.h>
++
++/* there is an internal bonito64-compatiable northbridge in loongson2e/2f */
++#include <asm/mips-boards/bonito64.h>
++
++/* loongson internal northbridge initialization */
++extern void bonito_irq_init(void);
++
++/* loongson-based machines specific reboot setup */
++extern void mips_reboot_setup(void);
++
++/* environment arguments from bootloader */
++extern unsigned long bus_clock, cpu_clock_freq;
++extern unsigned long memsize, highmemsize;
++
++/* loongson-specific command line, env and memory initialization */
++extern void __init prom_init_memory(void);
++extern void __init prom_init_cmdline(void);
++extern void __init prom_init_env(void);
++
++#endif /* __ASM_MACH_LOONGSON_LOONGSON_H */
 diff --git a/arch/mips/include/asm/mach-lemote/pci.h b/arch/mips/include/asm/mach-lemote/pci.h
-index ea6aa14..0307e49 100644
+index 0307e49..92b2f59 100644
 --- a/arch/mips/include/asm/mach-lemote/pci.h
 +++ b/arch/mips/include/asm/mach-lemote/pci.h
-@@ -25,6 +25,5 @@
+@@ -19,11 +19,13 @@
+  * 02139, USA.
+  */
+ 
+-#ifndef _LEMOTE_PCI_H_
+-#define _LEMOTE_PCI_H_
++#ifndef __ASM_MACH_LEMOTE_PCI_H_
++#define __ASM_MACH_LEMOTE_PCI_H_
++
++extern struct pci_ops bonito64_pci_ops;
+ 
  #define LOONGSON2E_PCI_MEM_START	0x14000000UL
  #define LOONGSON2E_PCI_MEM_END		0x1fffffffUL
  #define LOONGSON2E_PCI_IO_START		0x00004000UL
--#define LOONGSON2E_IO_PORT_BASE		0x1fd00000UL
  
- #endif /* !_LEMOTE_PCI_H_ */
-diff --git a/arch/mips/lemote/lm2e/Makefile b/arch/mips/lemote/lm2e/Makefile
-index f191732..a5bc1ef 100644
---- a/arch/mips/lemote/lm2e/Makefile
-+++ b/arch/mips/lemote/lm2e/Makefile
-@@ -2,7 +2,8 @@
- # Makefile for Lemote Fulong mini-PC board.
- #
+-#endif /* !_LEMOTE_PCI_H_ */
++#endif /* !__ASM_MACH_LEMOTE_PCI_H_ */
+diff --git a/arch/mips/lemote/lm2e/bonito-irq.c b/arch/mips/lemote/lm2e/bonito-irq.c
+index 8fc3bce..3e31e7a 100644
+--- a/arch/mips/lemote/lm2e/bonito-irq.c
++++ b/arch/mips/lemote/lm2e/bonito-irq.c
+@@ -10,32 +10,10 @@
+  *  under  the terms of  the GNU General  Public License as published by the
+  *  Free Software Foundation;  either version 2 of the  License, or (at your
+  *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- *
+  */
+-#include <linux/errno.h>
+-#include <linux/init.h>
+-#include <linux/io.h>
+-#include <linux/types.h>
+ #include <linux/interrupt.h>
+-#include <linux/irq.h>
+-
+-#include <asm/mips-boards/bonito64.h>
  
--obj-y += setup.o prom.o reset.o irq.o pci.o bonito-irq.o mem.o
-+obj-y += setup.o init.o reset.o irq.o pci.o bonito-irq.o mem.o \
-+		env.o cmdline.o time.o machtype.o
++#include <loongson.h>
  
- #
- # Early printk support
+ static inline void bonito_irq_enable(unsigned int irq)
+ {
+@@ -66,9 +44,8 @@ void bonito_irq_init(void)
+ {
+ 	u32 i;
+ 
+-	for (i = BONITO_IRQ_BASE; i < BONITO_IRQ_BASE + 32; i++) {
++	for (i = BONITO_IRQ_BASE; i < BONITO_IRQ_BASE + 32; i++)
+ 		set_irq_chip_and_handler(i, &bonito_irq_type, handle_level_irq);
+-	}
+ 
+ 	setup_irq(BONITO_IRQ_BASE + 10, &dma_timeout_irqaction);
+ }
 diff --git a/arch/mips/lemote/lm2e/cmdline.c b/arch/mips/lemote/lm2e/cmdline.c
-new file mode 100644
-index 0000000..442b935
---- /dev/null
+index 442b935..75f1b24 100644
+--- a/arch/mips/lemote/lm2e/cmdline.c
 +++ b/arch/mips/lemote/lm2e/cmdline.c
-@@ -0,0 +1,53 @@
-+/*
-+ * Based on Ocelot Linux port, which is
-+ * Copyright 2001 MontaVista Software Inc.
-+ * Author: jsun@mvista.com or jsun@junsun.net
-+ *
-+ * Copyright 2003 ICT CAS
-+ * Author: Michael Guo <guoyi@ict.ac.cn>
-+ *
-+ * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
-+ * Author: Fuxin Zhang, zhangfx@lemote.com
-+ *
-+ * Copyright (C) 2009 Lemote Inc. & Insititute of Computing Technology
-+ * Author: Wu Zhangjin, wuzj@lemote.com
-+ *
-+ * This program is free software; you can redistribute  it and/or modify it
-+ * under  the terms of  the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+#include <linux/io.h>
-+#include <linux/init.h>
+@@ -17,11 +17,10 @@
+  * Free Software Foundation;  either version 2 of the  License, or (at your
+  * option) any later version.
+  */
+-#include <linux/io.h>
+-#include <linux/init.h>
+-
+ #include <asm/bootinfo.h>
+ 
++#include <loongson.h>
 +
-+#include <asm/bootinfo.h>
-+
-+int prom_argc;
-+/* pmon passes arguments in 32bit pointers */
-+int *_prom_argv;
-+
-+void __init prom_init_cmdline(void)
-+{
-+	int i;
-+	long l;
-+
-+	/* firmware arguments are initialized in head.S */
-+	prom_argc = fw_arg0;
-+	_prom_argv = (int *)fw_arg1;
-+
-+	/* arg[0] is "g", the rest is boot parameters */
-+	arcs_cmdline[0] = '\0';
-+	for (i = 1; i < prom_argc; i++) {
-+		l = (long)_prom_argv[i];
-+		if (strlen(arcs_cmdline) + strlen(((char *)l) + 1)
-+		    >= sizeof(arcs_cmdline))
-+			break;
-+		strcat(arcs_cmdline, ((char *)l));
-+		strcat(arcs_cmdline, " ");
-+	}
-+
-+	if ((strstr(arcs_cmdline, "console=")) == NULL)
-+		strcat(arcs_cmdline, " console=ttyS0,115200");
-+	if ((strstr(arcs_cmdline, "root=")) == NULL)
-+		strcat(arcs_cmdline, " root=/dev/hda1");
-+}
+ int prom_argc;
+ /* pmon passes arguments in 32bit pointers */
+ int *_prom_argv;
+diff --git a/arch/mips/lemote/lm2e/early_printk.c b/arch/mips/lemote/lm2e/early_printk.c
+index 811c7de..3e0a6ea 100644
+--- a/arch/mips/lemote/lm2e/early_printk.c
++++ b/arch/mips/lemote/lm2e/early_printk.c
+@@ -9,11 +9,9 @@
+  *  Free Software Foundation;  either version 2 of the  License, or (at your
+  *  option) any later version.
+  */
+-#include <linux/io.h>
+-#include <linux/init.h>
+ #include <linux/serial_reg.h>
+ 
+-#include <asm/mips-boards/bonito64.h>
++#include <loongson.h>
+ 
+ #define UART_BASE (BONITO_PCIIO_BASE + 0x3f8)
+ 
 diff --git a/arch/mips/lemote/lm2e/env.c b/arch/mips/lemote/lm2e/env.c
-new file mode 100644
-index 0000000..9e88409
---- /dev/null
+index 9e88409..b9ef503 100644
+--- a/arch/mips/lemote/lm2e/env.c
 +++ b/arch/mips/lemote/lm2e/env.c
-@@ -0,0 +1,60 @@
-+/*
-+ * Based on Ocelot Linux port, which is
-+ * Copyright 2001 MontaVista Software Inc.
-+ * Author: jsun@mvista.com or jsun@junsun.net
-+ *
-+ * Copyright 2003 ICT CAS
-+ * Author: Michael Guo <guoyi@ict.ac.cn>
-+ *
-+ * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
-+ * Author: Fuxin Zhang, zhangfx@lemote.com
-+ *
-+ * Copyright (C) 2009 Lemote Inc. & Insititute of Computing Technology
-+ * Author: Wu Zhangjin, wuzj@lemote.com
-+ *
-+ * This program is free software; you can redistribute  it and/or modify it
-+ * under  the terms of  the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
+@@ -17,12 +17,10 @@
+  * Free Software Foundation;  either version 2 of the  License, or (at your
+  * option) any later version.
+  */
+-
+-#include <linux/io.h>
+-#include <linux/init.h>
+-
+ #include <asm/bootinfo.h>
+ 
++#include <loongson.h>
 +
-+#include <linux/io.h>
-+#include <linux/init.h>
-+
-+#include <asm/bootinfo.h>
-+
-+unsigned long bus_clock, cpu_clock_freq;
-+unsigned long memsize, highmemsize;
-+
-+/* pmon passes arguments in 32bit pointers */
-+int *_prom_envp;
-+
-+#define parse_even_earlier(res, option, p)				\
-+do {									\
-+	if (strncmp(option, (char *)p, strlen(option)) == 0)		\
-+			strict_strtol((char *)p + strlen(option"="),	\
-+					10, &res);			\
-+} while (0)
-+
-+void __init prom_init_env(void)
-+{
-+	long l;
-+
-+	/* firmware arguments are initialized in head.S */
-+	_prom_envp = (int *)fw_arg2;
-+
-+	l = (long)*_prom_envp;
-+	while (l != 0) {
-+		parse_even_earlier(bus_clock, "busclock", l);
-+		parse_even_earlier(cpu_clock_freq, "cpuclock", l);
-+		parse_even_earlier(memsize, "memsize", l);
-+		parse_even_earlier(highmemsize, "highmemsize", l);
-+		_prom_envp++;
-+		l = (long)*_prom_envp;
-+	}
-+	if (memsize == 0)
-+		memsize = 256;
-+
-+	pr_info("busclock=%ld, cpuclock=%ld, memsize=%ld, highmemsize=%ld\n",
-+		bus_clock, cpu_clock_freq, memsize, highmemsize);
-+}
+ unsigned long bus_clock, cpu_clock_freq;
+ unsigned long memsize, highmemsize;
+ 
 diff --git a/arch/mips/lemote/lm2e/init.c b/arch/mips/lemote/lm2e/init.c
-new file mode 100644
-index 0000000..6fe624d
---- /dev/null
+index 6fe624d..3abe927 100644
+--- a/arch/mips/lemote/lm2e/init.c
 +++ b/arch/mips/lemote/lm2e/init.c
-@@ -0,0 +1,34 @@
-+/*
-+ * Copyright (C) 2009 Lemote Inc. & Insititute of Computing Technology
-+ * Author: Wu Zhangjin, wuzj@lemote.com
-+ *
-+ * This program is free software; you can redistribute  it and/or modify it
-+ * under  the terms of  the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/bootmem.h>
-+
-+#include <asm/bootinfo.h>
-+#include <asm/mips-boards/bonito64.h>
-+
-+extern void __init prom_init_cmdline(void);
-+extern void __init prom_init_env(void);
-+extern void __init prom_init_memory(void);
-+
-+void __init prom_init(void)
-+{
-+    /* init base address of io space */
-+	set_io_port_base((unsigned long)
-+		ioremap(BONITO_PCIIO_BASE, BONITO_PCIIO_SIZE));
-+
-+	prom_init_cmdline();
-+	prom_init_env();
-+	prom_init_memory();
-+}
-+
-+void __init prom_free_prom_memory(void)
-+{
-+}
-diff --git a/arch/mips/lemote/lm2e/machtype.c b/arch/mips/lemote/lm2e/machtype.c
-new file mode 100644
-index 0000000..8d803ee
---- /dev/null
-+++ b/arch/mips/lemote/lm2e/machtype.c
-@@ -0,0 +1,15 @@
-+/*
-+ * Copyright (C) 2009 Lemote Inc. & Insititute of Computing Technology
-+ * Author: Wu Zhangjin, wuzj@lemote.com
-+ *
-+ * This program is free software; you can redistribute  it and/or modify it
-+ * under  the terms of  the GNU General  Public License as published by the
-+ * Free Software Foundation;  either version 2 of the  License, or (at your
-+ * option) any later version.
-+ */
-+
-+const char *get_system_type(void)
-+{
-+	return "lemote-fulong";
-+}
-+
+@@ -8,15 +8,11 @@
+  * option) any later version.
+  */
+ 
+-#include <linux/init.h>
+ #include <linux/bootmem.h>
+ 
+ #include <asm/bootinfo.h>
+-#include <asm/mips-boards/bonito64.h>
+ 
+-extern void __init prom_init_cmdline(void);
+-extern void __init prom_init_env(void);
+-extern void __init prom_init_memory(void);
++#include <loongson.h>
+ 
+ void __init prom_init(void)
+ {
+diff --git a/arch/mips/lemote/lm2e/irq.c b/arch/mips/lemote/lm2e/irq.c
+index 1d0a09f..fb7643a 100644
+--- a/arch/mips/lemote/lm2e/irq.c
++++ b/arch/mips/lemote/lm2e/irq.c
+@@ -6,35 +6,14 @@
+  *  under  the terms of  the GNU General  Public License as published by the
+  *  Free Software Foundation;  either version 2 of the  License, or (at your
+  *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- *
+  */
+ #include <linux/delay.h>
+-#include <linux/io.h>
+-#include <linux/init.h>
+ #include <linux/interrupt.h>
+-#include <linux/irq.h>
+ 
+ #include <asm/irq_cpu.h>
+ #include <asm/i8259.h>
+-#include <asm/mipsregs.h>
+-#include <asm/mips-boards/bonito64.h>
+-
+ 
++#include <loongson.h>
+ /*
+  * the first level int-handler will jump here if it is a bonito irq
+  */
+@@ -67,27 +46,24 @@ static void i8259_irqdispatch(void)
+ 	int irq;
+ 
+ 	irq = i8259_irq();
+-	if (irq >= 0) {
++	if (irq >= 0)
+ 		do_IRQ(irq);
+-	} else {
++	else
+ 		spurious_interrupt();
+-	}
+-
+ }
+ 
+ asmlinkage void plat_irq_dispatch(void)
+ {
+ 	unsigned int pending = read_c0_cause() & read_c0_status() & ST0_IM;
+ 
+-	if (pending & CAUSEF_IP7) {
++	if (pending & CAUSEF_IP7)
+ 		do_IRQ(MIPS_CPU_IRQ_BASE + 7);
+-	} else if (pending & CAUSEF_IP5) {
++	else if (pending & CAUSEF_IP5)
+ 		i8259_irqdispatch();
+-	} else if (pending & CAUSEF_IP2) {
++	else if (pending & CAUSEF_IP2)
+ 		bonito_irqdispatch();
+-	} else {
++	else
+ 		spurious_interrupt();
+-	}
+ }
+ 
+ static struct irqaction cascade_irqaction = {
+@@ -97,8 +73,6 @@ static struct irqaction cascade_irqaction = {
+ 
+ void __init arch_init_irq(void)
+ {
+-	extern void bonito_irq_init(void);
+-
+ 	/*
+ 	 * Clear all of the interrupts while we change the able around a bit.
+ 	 * int-handler is not on bootstrap
+@@ -128,16 +102,8 @@ void __init arch_init_irq(void)
+ 	init_i8259_irqs();
+ 	bonito_irq_init();
+ 
+-	/*
+-	printk("GPIODATA=%x, GPIOIE=%x\n", BONITO_GPIODATA, BONITO_GPIOIE);
+-	printk("INTEN=%x, INTSET=%x, INTCLR=%x, INTISR=%x\n",
+-			BONITO_INTEN, BONITO_INTENSET,
+-			BONITO_INTENCLR, BONITO_INTISR);
+-	*/
+-
+ 	/* bonito irq at IP2 */
+ 	setup_irq(MIPS_CPU_IRQ_BASE + 2, &cascade_irqaction);
+ 	/* 8259 irq at IP5 */
+ 	setup_irq(MIPS_CPU_IRQ_BASE + 5, &cascade_irqaction);
+-
+ }
 diff --git a/arch/mips/lemote/lm2e/mem.c b/arch/mips/lemote/lm2e/mem.c
-index 16cd215..f24af70 100644
+index f24af70..6a7feb1 100644
 --- a/arch/mips/lemote/lm2e/mem.c
 +++ b/arch/mips/lemote/lm2e/mem.c
-@@ -8,6 +8,19 @@
- #include <linux/fcntl.h>
- #include <linux/mm.h>
+@@ -10,7 +10,7 @@
  
-+#include <asm/bootinfo.h>
-+
-+extern unsigned long memsize, highmemsize;
-+
-+void __init prom_init_memory(void)
-+{
-+    add_memory_region(0x0, (memsize << 20), BOOT_MEM_RAM);
-+#ifdef CONFIG_64BIT
-+    if (highmemsize > 0)
-+		add_memory_region(0x20000000, highmemsize << 20, BOOT_MEM_RAM);
-+#endif /* CONFIG_64BIT */
-+}
-+
- /* override of arch/mips/mm/cache.c: __uncached_access */
- int __uncached_access(struct file *file, unsigned long addr)
+ #include <asm/bootinfo.h>
+ 
+-extern unsigned long memsize, highmemsize;
++#include <loongson.h>
+ 
+ void __init prom_init_memory(void)
  {
-diff --git a/arch/mips/lemote/lm2e/prom.c b/arch/mips/lemote/lm2e/prom.c
-deleted file mode 100644
-index d78cedf..0000000
---- a/arch/mips/lemote/lm2e/prom.c
-+++ /dev/null
-@@ -1,91 +0,0 @@
--/*
-- * Based on Ocelot Linux port, which is
-- * Copyright 2001 MontaVista Software Inc.
-- * Author: jsun@mvista.com or jsun@junsun.net
+diff --git a/arch/mips/lemote/lm2e/pci.c b/arch/mips/lemote/lm2e/pci.c
+index 152efb6..bee846e 100644
+--- a/arch/mips/lemote/lm2e/pci.c
++++ b/arch/mips/lemote/lm2e/pci.c
+@@ -1,6 +1,4 @@
+ /*
+- * pci.c
 - *
-- * Copyright 2003 ICT CAS
-- * Author: Michael Guo <guoyi@ict.ac.cn>
-- *
-- * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
-- * Author: Fuxin Zhang, zhangfx@lemote.com
-- *
-- * This program is free software; you can redistribute  it and/or modify it
-- * under  the terms of  the GNU General  Public License as published by the
-- * Free Software Foundation;  either version 2 of the  License, or (at your
-- * option) any later version.
-- */
--#include <linux/init.h>
--#include <linux/bootmem.h>
--#include <asm/bootinfo.h>
--
--extern unsigned long bus_clock;
--extern unsigned long cpu_clock_freq;
--extern unsigned int memsize, highmemsize;
--
--static int argc;
--/* pmon passes arguments in 32bit pointers */
--static int *arg;
--static int *env;
--
--const char *get_system_type(void)
--{
--	return "lemote-fulong";
--}
--
--void __init prom_init_cmdline(void)
--{
--	int i;
--	long l;
--
--	/* arg[0] is "g", the rest is boot parameters */
--	arcs_cmdline[0] = '\0';
--	for (i = 1; i < argc; i++) {
--		l = (long)arg[i];
--		if (strlen(arcs_cmdline) + strlen(((char *)l) + 1)
--		    >= sizeof(arcs_cmdline))
--			break;
--		strcat(arcs_cmdline, ((char *)l));
--		strcat(arcs_cmdline, " ");
--	}
--}
--
--void __init prom_init(void)
--{
--	long l;
--	argc = fw_arg0;
--	arg = (int *)fw_arg1;
--	env = (int *)fw_arg2;
--
--	prom_init_cmdline();
--
--	if ((strstr(arcs_cmdline, "console=")) == NULL)
--		strcat(arcs_cmdline, " console=ttyS0,115200");
--	if ((strstr(arcs_cmdline, "root=")) == NULL)
--		strcat(arcs_cmdline, " root=/dev/hda1");
--
--#define parse_even_earlier(res, option, p)				\
--do {									\
--	if (strncmp(option, (char *)p, strlen(option)) == 0)		\
--		res = simple_strtol((char *)p + strlen(option"="),	\
--				    NULL, 10);				\
--} while (0)
--
--	l = (long)*env;
--	while (l != 0) {
--		parse_even_earlier(bus_clock, "busclock", l);
--		parse_even_earlier(cpu_clock_freq, "cpuclock", l);
--		parse_even_earlier(memsize, "memsize", l);
--		parse_even_earlier(highmemsize, "highmemsize", l);
--		env++;
--		l = (long)*env;
--	}
--	if (memsize == 0)
--		memsize = 256;
--
--	pr_info("busclock=%ld, cpuclock=%ld,memsize=%d,highmemsize=%d\n",
--	       bus_clock, cpu_clock_freq, memsize, highmemsize);
--}
--
--void __init prom_free_prom_memory(void)
--{
--}
-diff --git a/arch/mips/lemote/lm2e/setup.c b/arch/mips/lemote/lm2e/setup.c
-index ebd6cea..1c4968f 100644
---- a/arch/mips/lemote/lm2e/setup.c
-+++ b/arch/mips/lemote/lm2e/setup.c
-@@ -26,15 +26,10 @@
-  *  675 Mass Ave, Cambridge, MA 02139, USA.
+  * Copyright (C) 2007 Lemote, Inc. & Institute of Computing Technology
+  * Author: Fuxin Zhang, zhangfx@lemote.com
   *
+@@ -8,31 +6,11 @@
+  *  under  the terms of  the GNU General  Public License as published by the
+  *  Free Software Foundation;  either version 2 of the  License, or (at your
+  *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- *
   */
--#include <linux/bootmem.h>
- #include <linux/init.h>
--#include <linux/irq.h>
-+#include <linux/module.h>
- 
--#include <asm/bootinfo.h>
--#include <asm/mc146818-time.h>
--#include <asm/time.h>
- #include <asm/wbflush.h>
+-#include <linux/types.h>
+ #include <linux/pci.h>
+-#include <linux/kernel.h>
+-#include <linux/init.h>
+-#include <asm/mips-boards/bonito64.h>
 -#include <asm/mach-lemote/pci.h>
  
+-extern struct pci_ops bonito64_pci_ops;
++#include <pci.h>
++#include <loongson.h>
+ 
+ static struct resource loongson2e_pci_mem_resource = {
+ 	.name   = "LOONGSON2E PCI MEM",
+diff --git a/arch/mips/lemote/lm2e/reset.c b/arch/mips/lemote/lm2e/reset.c
+index 7758093..d89c9e4 100644
+--- a/arch/mips/lemote/lm2e/reset.c
++++ b/arch/mips/lemote/lm2e/reset.c
+@@ -10,10 +10,10 @@
+  * Author: Zhangjin Wu, wuzj@lemote.com
+  */
+ #include <linux/pm.h>
+-#include <linux/io.h>
+ 
+ #include <asm/reboot.h>
+-#include <asm/mips-boards/bonito64.h>
++
++#include <loongson.h>
+ 
+ static void loongson2e_restart(char *command)
+ {
+@@ -27,7 +27,8 @@ static void loongson2e_restart(char *command)
+ 
+ static void loongson2e_halt(void)
+ {
+-	while (1) ;
++	while (1)
++		;
+ }
+ 
+ void mips_reboot_setup(void)
+diff --git a/arch/mips/lemote/lm2e/setup.c b/arch/mips/lemote/lm2e/setup.c
+index 1c4968f..655695c 100644
+--- a/arch/mips/lemote/lm2e/setup.c
++++ b/arch/mips/lemote/lm2e/setup.c
+@@ -1,7 +1,4 @@
+ /*
+- * BRIEF MODULE DESCRIPTION
+- * setup.c - board dependent boot routines
+- *
+  * Copyright (C) 2007 Lemote Inc. & Insititute of Computing Technology
+  * Author: Fuxin Zhang, zhangfx@lemote.com
+  *
+@@ -9,35 +6,18 @@
+  *  under  the terms of  the GNU General  Public License as published by the
+  *  Free Software Foundation;  either version 2 of the  License, or (at your
+  *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- *
+  */
+-#include <linux/init.h>
+ #include <linux/module.h>
+ 
+ #include <asm/wbflush.h>
+ 
++#include <loongson.h>
++
  #ifdef CONFIG_VT
  #include <linux/console.h>
-@@ -43,22 +38,6 @@
+ #include <linux/screen_info.h>
+ #endif
  
- extern void mips_reboot_setup(void);
- 
--unsigned long cpu_clock_freq;
--unsigned long bus_clock;
--unsigned int memsize;
--unsigned int highmemsize = 0;
--
--void __init plat_time_init(void)
--{
--	/* setup mips r4k timer */
--	mips_hpt_frequency = cpu_clock_freq / 2;
--}
--
--unsigned long read_persistent_clock(void)
--{
--	return mc146818_get_cmos_time();
--}
+-extern void mips_reboot_setup(void);
 -
  void (*__wbflush)(void);
  EXPORT_SYMBOL(__wbflush);
  
-@@ -75,19 +54,10 @@ static void wbflush_loongson2e(void)
- 
- void __init plat_mem_setup(void)
- {
--	set_io_port_base((unsigned long)ioremap(LOONGSON2E_IO_PORT_BASE,
--				IO_SPACE_LIMIT - LOONGSON2E_PCI_IO_START + 1));
- 	mips_reboot_setup();
- 
- 	__wbflush = wbflush_loongson2e;
- 
--	add_memory_region(0x0, (memsize << 20), BOOT_MEM_RAM);
--#ifdef CONFIG_64BIT
--	if (highmemsize > 0) {
--		add_memory_region(0x20000000, highmemsize << 20, BOOT_MEM_RAM);
--	}
--#endif
--
- #ifdef CONFIG_VT
- #if defined(CONFIG_VGA_CONSOLE)
- 	conswitchp = &vga_con;
-@@ -107,5 +77,4 @@ void __init plat_mem_setup(void)
- 	conswitchp = &dummy_con;
- #endif
- #endif
--
- }
 diff --git a/arch/mips/lemote/lm2e/time.c b/arch/mips/lemote/lm2e/time.c
-new file mode 100644
-index 0000000..b9d3f11
---- /dev/null
+index b9d3f11..b13d171 100644
+--- a/arch/mips/lemote/lm2e/time.c
 +++ b/arch/mips/lemote/lm2e/time.c
-@@ -0,0 +1,30 @@
-+/*
-+ * Copyright (C) 2007 Lemote, Inc. & Institute of Computing Technology
-+ * Author: Fuxin Zhang, zhangfx@lemote.com
-+ *
-+ * Copyright (C) 2009 Lemote Inc. & Insititute of Computing Technology
-+ * Author: Wu Zhangjin, wuzj@lemote.com
-+ *
-+ *  This program is free software; you can redistribute  it and/or modify it
-+ *  under  the terms of  the GNU General  Public License as published by the
-+ *  Free Software Foundation;  either version 2 of the  License, or (at your
-+ *  option) any later version.
-+ */
-+
-+#include <linux/init.h>
-+
-+#include <asm/mc146818-time.h>
-+#include <asm/time.h>
-+
-+extern unsigned long cpu_clock_freq;
-+
-+void __init plat_time_init(void)
-+{
-+	/* setup mips r4k timer */
-+	mips_hpt_frequency = cpu_clock_freq / 2;
-+}
-+
-+unsigned long read_persistent_clock(void)
-+{
-+	return mc146818_get_cmos_time();
-+}
+@@ -10,13 +10,10 @@
+  *  Free Software Foundation;  either version 2 of the  License, or (at your
+  *  option) any later version.
+  */
+-
+-#include <linux/init.h>
+-
+ #include <asm/mc146818-time.h>
+ #include <asm/time.h>
+ 
+-extern unsigned long cpu_clock_freq;
++#include <loongson.h>
+ 
+ void __init plat_time_init(void)
+ {
+diff --git a/arch/mips/pci/fixup-lm2e.c b/arch/mips/pci/fixup-lm2e.c
+index e18ae4f..0c4c7a8 100644
+--- a/arch/mips/pci/fixup-lm2e.c
++++ b/arch/mips/pci/fixup-lm2e.c
+@@ -1,6 +1,4 @@
+ /*
+- * fixup-lm2e.c
+- *
+  * Copyright (C) 2004 ICT CAS
+  * Author: Li xiaoyu, ICT CAS
+  *   lixy@ict.ac.cn
+@@ -12,22 +10,6 @@
+  *  under  the terms of  the GNU General  Public License as published by the
+  *  Free Software Foundation;  either version 2 of the  License, or (at your
+  *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
+- *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
+- *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- *
+  */
+ #include <linux/init.h>
+ #include <linux/pci.h>
 -- 
 1.6.2.1

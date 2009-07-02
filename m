@@ -1,135 +1,205 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jul 2009 23:52:40 +0200 (CEST)
-Received: from dns1.mips.com ([63.167.95.197]:35404 "EHLO dns1.mips.com"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1492259AbZGBVwd convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Jul 2009 23:52:33 +0200
-Received: from MTVEXCHANGE.mips.com ([192.168.36.200])
-	by dns1.mips.com (8.13.8/8.13.8) with ESMTP id n62LkYMS002498;
-	Thu, 2 Jul 2009 14:46:34 -0700
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jul 2009 00:14:55 +0200 (CEST)
+Received: from gateway10.websitewelcome.com ([69.93.243.28]:38334 "HELO
+	gateway10.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with SMTP id S1492291AbZGBWOt (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 3 Jul 2009 00:14:49 +0200
+Received: (qmail 22428 invoked from network); 2 Jul 2009 22:14:37 -0000
+Received: from gator750.hostgator.com (174.132.194.2)
+  by gateway10.websitewelcome.com with SMTP; 2 Jul 2009 22:14:37 -0000
+Received: from 216-239-45-4.google.com ([216.239.45.4]:31919 helo=epiktistes.mtv.corp.google.com)
+	by gator750.hostgator.com with esmtpa (Exim 4.69)
+	(envelope-from <kevink@paralogos.com>)
+	id 1MMUSY-0003U7-AQ; Thu, 02 Jul 2009 17:08:50 -0500
+Message-ID: <4A4D2FF2.8080408@paralogos.com>
+Date:	Thu, 02 Jul 2009 15:08:50 -0700
+From:	"Kevin D. Kissell" <kevink@paralogos.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090318)
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: [PATCH 15/15] Do not rely on the initial state of TC/VPE bindings when doing cross VPE writes
-Date:	Thu, 2 Jul 2009 14:46:33 -0700
-Message-ID: <94BD67F8AF3ED34FA362C662BA1F12C503BED88E@MTVEXCHANGE.mips.com>
-In-Reply-To: <4A4C314B.2070907@paralogos.com>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: [PATCH 15/15] Do not rely on the initial state of TC/VPE bindings when doing cross VPE writes
-Thread-Index: Acn6yebEd3mdyMljTYGXo08swKSRNAAlE9eA
-References: <20090702023938.23268.65453.stgit@linux-raghu> <20090702024331.23268.98671.stgit@linux-raghu> <4A4C314B.2070907@paralogos.com>
-From:	"Gandham, Raghu" <raghu@mips.com>
-To:	"Kevin D. Kissell" <kevink@paralogos.com>
-Cc:	<linux-mips@linux-mips.org>, "Dearman, Chris" <chris@mips.com>
-Return-Path: <raghu@mips.com>
+To:	"Gandham, Raghu" <raghu@mips.com>
+CC:	linux-mips@linux-mips.org, "Dearman, Chris" <chris@mips.com>
+Subject: Re: [PATCH 15/15] Do not rely on the initial state of TC/VPE bindings
+ when doing cross VPE writes
+References: <20090702023938.23268.65453.stgit@linux-raghu> <20090702024331.23268.98671.stgit@linux-raghu> <4A4C314B.2070907@paralogos.com> <94BD67F8AF3ED34FA362C662BA1F12C503BED88E@MTVEXCHANGE.mips.com>
+In-Reply-To: <94BD67F8AF3ED34FA362C662BA1F12C503BED88E@MTVEXCHANGE.mips.com>
+Content-Type: multipart/alternative;
+ boundary="------------040608050003040609020009"
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator750.hostgator.com
+X-AntiAbuse: Original Domain - linux-mips.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - paralogos.com
+Return-Path: <kevink@paralogos.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23633
+X-archive-position: 23634
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: raghu@mips.com
+X-original-sender: kevink@paralogos.com
 Precedence: bulk
 X-list: linux-mips
 
+This is a multi-part message in MIME format.
+--------------040608050003040609020009
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
 
+Gandham, Raghu wrote:
+>   
+>> -----Original Message-----
+>> From: Kevin D. Kissell [mailto:kevink@paralogos.com]
+>> Sent: Wednesday, July 01, 2009 9:02 PM
+>> To: Gandham, Raghu
+>> Cc: linux-mips@linux-mips.org; Dearman, Chris
+>> Subject: Re: [PATCH 15/15] Do not rely on the initial state of TC/VPE
+>> bindings when doing cross VPE writes
+>>
+>> Note that, regardless of the reset state, smtc_configure_tlb() should
+>> have at least temporarily bound TC 1 to VPE1, which may be why this
+>> never seemed to be a problem on the 34K.  If one wants to support
+>> designs with more than 2 VPEs, then this is probably one of the things
+>> that needs to be fixed.  That having been said, rather than adding a
+>> usually-redundant write_vpe_c0_vpeconf0() in that clause, wouldn't it
+>>     
+> be
+>   
+>> cleaner to just move the MVP setting from the top of the loop to the
+>> point in the loop just after the TCs have been bound to the VPE in
+>> question, i.e.,
+>>
+>>  454                 if (slop) {
+>>  455                         if (tc != 0) {
+>>  456                                 smtc_tc_setup(vpe,tc, cpu);
+>>  457                                 cpu++;
+>>  458                         }
+>>  459                         printk(" %d", tc);
+>>  460                         tc++;
+>>  461                         slop--;
+>>  462                 }
+>>
+>>                         write_vpe_c0_vpeconf0(read_vpe_c0_vpeconf0() |
+>> VPECONF0_MVP);
+>>
+>>  463                 if (vpe != 0) {
+>>  464                         /*
+>>  465                          * Clear any stale software interrupts
+>>     
+> from
+>   
+>> VPE's Cause
+>>  466                          */
+>>
+>> This should definitely be OK for a 34K, because it's being executed by
+>> TC0 in VPE0 and the reset state of VPE0 has MVP set.  If it weren't,
+>> smtc_configure_tlb() would have failed.
+>>
+>>           Regards,
+>>
+>>           Kevin K.
+>>     
+>
+>
+> I will resend this patch with your suggestion.
+>
+> Thanks,
+> Raghu
+>   
+Just make sure it works, first!  ;o)  I'm thousands of miles away from 
+my build/test systems.
 
-> -----Original Message-----
-> From: Kevin D. Kissell [mailto:kevink@paralogos.com]
-> Sent: Wednesday, July 01, 2009 9:02 PM
-> To: Gandham, Raghu
-> Cc: linux-mips@linux-mips.org; Dearman, Chris
-> Subject: Re: [PATCH 15/15] Do not rely on the initial state of TC/VPE
-> bindings when doing cross VPE writes
-> 
-> Note that, regardless of the reset state, smtc_configure_tlb() should
-> have at least temporarily bound TC 1 to VPE1, which may be why this
-> never seemed to be a problem on the 34K.  If one wants to support
-> designs with more than 2 VPEs, then this is probably one of the things
-> that needs to be fixed.  That having been said, rather than adding a
-> usually-redundant write_vpe_c0_vpeconf0() in that clause, wouldn't it
-be
-> cleaner to just move the MVP setting from the top of the loop to the
-> point in the loop just after the TCs have been bound to the VPE in
-> question, i.e.,
-> 
->  454                 if (slop) {
->  455                         if (tc != 0) {
->  456                                 smtc_tc_setup(vpe,tc, cpu);
->  457                                 cpu++;
->  458                         }
->  459                         printk(" %d", tc);
->  460                         tc++;
->  461                         slop--;
->  462                 }
-> 
->                         write_vpe_c0_vpeconf0(read_vpe_c0_vpeconf0() |
-> VPECONF0_MVP);
-> 
->  463                 if (vpe != 0) {
->  464                         /*
->  465                          * Clear any stale software interrupts
-from
-> VPE's Cause
->  466                          */
-> 
-> This should definitely be OK for a 34K, because it's being executed by
-> TC0 in VPE0 and the reset state of VPE0 has MVP set.  If it weren't,
-> smtc_configure_tlb() would have failed.
-> 
->           Regards,
-> 
->           Kevin K.
+          Regards,
 
+          Kevn K.
+
+--------------040608050003040609020009
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html;charset=ISO-8859-1" http-equiv="Content-Type">
+</head>
+<body bgcolor="#ffffff" text="#000000">
+Gandham, Raghu wrote:
+<blockquote
+ cite="mid:94BD67F8AF3ED34FA362C662BA1F12C503BED88E@MTVEXCHANGE.mips.com"
+ type="cite">
+  <pre wrap="">
+  </pre>
+  <blockquote type="cite">
+    <pre wrap="">-----Original Message-----
+From: Kevin D. Kissell [<a class="moz-txt-link-freetext" href="mailto:kevink@paralogos.com">mailto:kevink@paralogos.com</a>]
+Sent: Wednesday, July 01, 2009 9:02 PM
+To: Gandham, Raghu
+Cc: <a class="moz-txt-link-abbreviated" href="mailto:linux-mips@linux-mips.org">linux-mips@linux-mips.org</a>; Dearman, Chris
+Subject: Re: [PATCH 15/15] Do not rely on the initial state of TC/VPE
+bindings when doing cross VPE writes
+
+Note that, regardless of the reset state, smtc_configure_tlb() should
+have at least temporarily bound TC 1 to VPE1, which may be why this
+never seemed to be a problem on the 34K.  If one wants to support
+designs with more than 2 VPEs, then this is probably one of the things
+that needs to be fixed.  That having been said, rather than adding a
+usually-redundant write_vpe_c0_vpeconf0() in that clause, wouldn't it
+    </pre>
+  </blockquote>
+  <pre wrap=""><!---->be
+  </pre>
+  <blockquote type="cite">
+    <pre wrap="">cleaner to just move the MVP setting from the top of the loop to the
+point in the loop just after the TCs have been bound to the VPE in
+question, i.e.,
+
+ 454                 if (slop) {
+ 455                         if (tc != 0) {
+ 456                                 smtc_tc_setup(vpe,tc, cpu);
+ 457                                 cpu++;
+ 458                         }
+ 459                         printk(" %d", tc);
+ 460                         tc++;
+ 461                         slop--;
+ 462                 }
+
+                        write_vpe_c0_vpeconf0(read_vpe_c0_vpeconf0() |
+VPECONF0_MVP);
+
+ 463                 if (vpe != 0) {
+ 464                         /*
+ 465                          * Clear any stale software interrupts
+    </pre>
+  </blockquote>
+  <pre wrap=""><!---->from
+  </pre>
+  <blockquote type="cite">
+    <pre wrap="">VPE's Cause
+ 466                          */
+
+This should definitely be OK for a 34K, because it's being executed by
+TC0 in VPE0 and the reset state of VPE0 has MVP set.  If it weren't,
+smtc_configure_tlb() would have failed.
+
+          Regards,
+
+          Kevin K.
+    </pre>
+  </blockquote>
+  <pre wrap=""><!---->
 
 I will resend this patch with your suggestion.
 
 Thanks,
 Raghu
+  </pre>
+</blockquote>
+Just make sure it works, first!&nbsp; ;o)&nbsp; I'm thousands of miles away from
+my build/test systems.<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; Regards,<br>
+<br>
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; Kevn K.<br>
+</body>
+</html>
 
-> 
-> Raghu Gandham wrote:
-> > From: Kurt Martin <kurt@mips.com>
-> >
-> > Signed-off-by: Jaidev Patwardhan <jaidev@mips.com>
-> > 	Signed-off-by: Chris Dearman <chris@mips.com>
-> > ---
-> >
-> >  arch/mips/kernel/smtc.c |   12 ++++++++++++
-> >  1 files changed, 12 insertions(+), 0 deletions(-)
-> >
-> > diff --git a/arch/mips/kernel/smtc.c b/arch/mips/kernel/smtc.c
-> > index 69240c4..3498b82 100644
-> > --- a/arch/mips/kernel/smtc.c
-> > +++ b/arch/mips/kernel/smtc.c
-> > @@ -481,6 +481,18 @@ void smtc_prepare_cpus(int cpus)
-> >  			 */
-> >  			if (tc != 0) {
-> >  				smtc_tc_setup(vpe, tc, cpu);
-> > +				if (vpe != 0) {
-> > +					/*
-> > +					 * Set MVP bit (possibly again).
-Do it
-> > +					 * here to catch CPUs that have
-no TCs
-> > +					 * bound to the VPE at reset.
-In that
-> > +					 * case, a TC must be bound to
-the VPE
-> > +					 * before we can set
-VPEControl[MVP]
-> > +					 */
-> > +					write_vpe_c0_vpeconf0(
-> > +						read_vpe_c0_vpeconf0() |
-> > +						VPECONF0_MVP);
-> > +				}
-> >  				cpu++;
-> >  			}
-> >  			printk(" %d", tc);
-> >
-> >
-> >
+--------------040608050003040609020009--

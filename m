@@ -1,205 +1,122 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jul 2009 00:14:55 +0200 (CEST)
-Received: from gateway10.websitewelcome.com ([69.93.243.28]:38334 "HELO
-	gateway10.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with SMTP id S1492291AbZGBWOt (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 3 Jul 2009 00:14:49 +0200
-Received: (qmail 22428 invoked from network); 2 Jul 2009 22:14:37 -0000
-Received: from gator750.hostgator.com (174.132.194.2)
-  by gateway10.websitewelcome.com with SMTP; 2 Jul 2009 22:14:37 -0000
-Received: from 216-239-45-4.google.com ([216.239.45.4]:31919 helo=epiktistes.mtv.corp.google.com)
-	by gator750.hostgator.com with esmtpa (Exim 4.69)
-	(envelope-from <kevink@paralogos.com>)
-	id 1MMUSY-0003U7-AQ; Thu, 02 Jul 2009 17:08:50 -0500
-Message-ID: <4A4D2FF2.8080408@paralogos.com>
-Date:	Thu, 02 Jul 2009 15:08:50 -0700
-From:	"Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090318)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 03 Jul 2009 01:28:20 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:53072 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1492302AbZGBX2N (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 3 Jul 2009 01:28:13 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n62NM7PN017769;
+	Fri, 3 Jul 2009 00:22:07 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n62NM5qJ017767;
+	Fri, 3 Jul 2009 00:22:05 +0100
+Date:	Fri, 3 Jul 2009 00:22:05 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Wu Zhangjin <wuzhangjin@gmail.com>
+Cc:	LKML <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org,
+	Pavel Machek <pavel@ucw.cz>, Wu Zhangjin <wuzj@lemote.com>
+Subject: Re: [PATCH] [MIPS] Hibernation: only save pages in system ram
+Message-ID: <20090702232205.GE14804@linux-mips.org>
+References: <1246373570-21090-1-git-send-email-wuzhangjin@gmail.com>
 MIME-Version: 1.0
-To:	"Gandham, Raghu" <raghu@mips.com>
-CC:	linux-mips@linux-mips.org, "Dearman, Chris" <chris@mips.com>
-Subject: Re: [PATCH 15/15] Do not rely on the initial state of TC/VPE bindings
- when doing cross VPE writes
-References: <20090702023938.23268.65453.stgit@linux-raghu> <20090702024331.23268.98671.stgit@linux-raghu> <4A4C314B.2070907@paralogos.com> <94BD67F8AF3ED34FA362C662BA1F12C503BED88E@MTVEXCHANGE.mips.com>
-In-Reply-To: <94BD67F8AF3ED34FA362C662BA1F12C503BED88E@MTVEXCHANGE.mips.com>
-Content-Type: multipart/alternative;
- boundary="------------040608050003040609020009"
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator750.hostgator.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - paralogos.com
-Return-Path: <kevink@paralogos.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1246373570-21090-1-git-send-email-wuzhangjin@gmail.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23634
+X-archive-position: 23635
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-This is a multi-part message in MIME format.
---------------040608050003040609020009
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
+On Tue, Jun 30, 2009 at 10:52:50PM +0800, Wu Zhangjin wrote:
 
-Gandham, Raghu wrote:
->   
->> -----Original Message-----
->> From: Kevin D. Kissell [mailto:kevink@paralogos.com]
->> Sent: Wednesday, July 01, 2009 9:02 PM
->> To: Gandham, Raghu
->> Cc: linux-mips@linux-mips.org; Dearman, Chris
->> Subject: Re: [PATCH 15/15] Do not rely on the initial state of TC/VPE
->> bindings when doing cross VPE writes
->>
->> Note that, regardless of the reset state, smtc_configure_tlb() should
->> have at least temporarily bound TC 1 to VPE1, which may be why this
->> never seemed to be a problem on the 34K.  If one wants to support
->> designs with more than 2 VPEs, then this is probably one of the things
->> that needs to be fixed.  That having been said, rather than adding a
->> usually-redundant write_vpe_c0_vpeconf0() in that clause, wouldn't it
->>     
-> be
->   
->> cleaner to just move the MVP setting from the top of the loop to the
->> point in the loop just after the TCs have been bound to the VPE in
->> question, i.e.,
->>
->>  454                 if (slop) {
->>  455                         if (tc != 0) {
->>  456                                 smtc_tc_setup(vpe,tc, cpu);
->>  457                                 cpu++;
->>  458                         }
->>  459                         printk(" %d", tc);
->>  460                         tc++;
->>  461                         slop--;
->>  462                 }
->>
->>                         write_vpe_c0_vpeconf0(read_vpe_c0_vpeconf0() |
->> VPECONF0_MVP);
->>
->>  463                 if (vpe != 0) {
->>  464                         /*
->>  465                          * Clear any stale software interrupts
->>     
-> from
->   
->> VPE's Cause
->>  466                          */
->>
->> This should definitely be OK for a 34K, because it's being executed by
->> TC0 in VPE0 and the reset state of VPE0 has MVP set.  If it weren't,
->> smtc_configure_tlb() would have failed.
->>
->>           Regards,
->>
->>           Kevin K.
->>     
->
->
-> I will resend this patch with your suggestion.
->
-> Thanks,
-> Raghu
->   
-Just make sure it works, first!  ;o)  I'm thousands of miles away from 
-my build/test systems.
+> From: Wu Zhangjin <wuzj@lemote.com>
+> 
+> when using hibernation(STD) with CONFIG_FLATMEM in linux-mips-64bit, it
+> fails for the current mips-specific hibernation implementation save the
+> pages in all of the memory space(except the nosave section) and make
+> there will be not enough memory left to the STD task itself, and then
+> fail. in reality, we only need to save the pages in system rams.
+> 
+> here is the reason why it fail:
+> 
+> kernel/power/snapshot.c:
+> 
+> static void mark_nosave_pages(struct memory_bitmap *bm)
+> {
+> 		...
+> 		if (pfn_valid(pfn)) {
+> 			...
+> 		}
+> }
+> 
+> arch/mips/include/asm/page.h:
+> 
+> 	...
+> 	#ifdef CONFIG_FLATMEM
+> 
+> 	#define pfn_valid(pfn)		((pfn) >= ARCH_PFN_OFFSET && (pfn) < max_mapnr)
+> 
+> 	#elif defined(CONFIG_SPARSEMEM)
+> 
+> 	/* pfn_valid is defined in linux/mmzone.h */
+> 	...
+> 
+> we can rewrite pfn_valid(pfn) to fix this problem, but I really do not
+> want to touch such a widely-used macro, so, I used another solution:
+> 
+> static struct page *saveable_page(struct zone *zone, unsigned long pfn)
+> {
+> 	...
+> 	if ( .... pfn_is_nosave(pfn)
+> 		return NULL;
+> 	...
+> }
+> 
+> and pfn_is_nosave is implemented in arch/mips/power/cpu.c, so, hacking
+> this one is better.
 
-          Regards,
+No - pfn_valid() is broken, so it should be fixed.  Commit
+752fbeb2e3555c0d236e992f1195fd7ce30e728d introduced the breakage.  It
+seemed to assume that the valid range for PFNs doesn't start at 0 but
+some higher number but got that entirely wrong..
 
-          Kevn K.
+#define ARCH_PFN_OFFSET         PFN_UP(PHYS_OFFSET)
+#define pfn_valid(pfn)         ((pfn) >= ARCH_PFN_OFFSET && (pfn) < max_mapnr)
 
---------------040608050003040609020009
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+works nicely when PHYS_OFFSET is 0 - as for most MIPS systems and goes
+horribly wrong otherwise.  So I suggest below patch.
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-  <meta content="text/html;charset=ISO-8859-1" http-equiv="Content-Type">
-</head>
-<body bgcolor="#ffffff" text="#000000">
-Gandham, Raghu wrote:
-<blockquote
- cite="mid:94BD67F8AF3ED34FA362C662BA1F12C503BED88E@MTVEXCHANGE.mips.com"
- type="cite">
-  <pre wrap="">
-  </pre>
-  <blockquote type="cite">
-    <pre wrap="">-----Original Message-----
-From: Kevin D. Kissell [<a class="moz-txt-link-freetext" href="mailto:kevink@paralogos.com">mailto:kevink@paralogos.com</a>]
-Sent: Wednesday, July 01, 2009 9:02 PM
-To: Gandham, Raghu
-Cc: <a class="moz-txt-link-abbreviated" href="mailto:linux-mips@linux-mips.org">linux-mips@linux-mips.org</a>; Dearman, Chris
-Subject: Re: [PATCH 15/15] Do not rely on the initial state of TC/VPE
-bindings when doing cross VPE writes
+  Ralf
 
-Note that, regardless of the reset state, smtc_configure_tlb() should
-have at least temporarily bound TC 1 to VPE1, which may be why this
-never seemed to be a problem on the 34K.  If one wants to support
-designs with more than 2 VPEs, then this is probably one of the things
-that needs to be fixed.  That having been said, rather than adding a
-usually-redundant write_vpe_c0_vpeconf0() in that clause, wouldn't it
-    </pre>
-  </blockquote>
-  <pre wrap=""><!---->be
-  </pre>
-  <blockquote type="cite">
-    <pre wrap="">cleaner to just move the MVP setting from the top of the loop to the
-point in the loop just after the TCs have been bound to the VPE in
-question, i.e.,
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
- 454                 if (slop) {
- 455                         if (tc != 0) {
- 456                                 smtc_tc_setup(vpe,tc, cpu);
- 457                                 cpu++;
- 458                         }
- 459                         printk(" %d", tc);
- 460                         tc++;
- 461                         slop--;
- 462                 }
+ arch/mips/include/asm/page.h |    9 ++++++++-
+ 1 files changed, 8 insertions(+), 1 deletions(-)
 
-                        write_vpe_c0_vpeconf0(read_vpe_c0_vpeconf0() |
-VPECONF0_MVP);
-
- 463                 if (vpe != 0) {
- 464                         /*
- 465                          * Clear any stale software interrupts
-    </pre>
-  </blockquote>
-  <pre wrap=""><!---->from
-  </pre>
-  <blockquote type="cite">
-    <pre wrap="">VPE's Cause
- 466                          */
-
-This should definitely be OK for a 34K, because it's being executed by
-TC0 in VPE0 and the reset state of VPE0 has MVP set.  If it weren't,
-smtc_configure_tlb() would have failed.
-
-          Regards,
-
-          Kevin K.
-    </pre>
-  </blockquote>
-  <pre wrap=""><!---->
-
-I will resend this patch with your suggestion.
-
-Thanks,
-Raghu
-  </pre>
-</blockquote>
-Just make sure it works, first!&nbsp; ;o)&nbsp; I'm thousands of miles away from
-my build/test systems.<br>
-<br>
-&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; Regards,<br>
-<br>
-&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; Kevn K.<br>
-</body>
-</html>
-
---------------040608050003040609020009--
+diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
+index dc0eaa7..96a14a4 100644
+--- a/arch/mips/include/asm/page.h
++++ b/arch/mips/include/asm/page.h
+@@ -165,7 +165,14 @@ typedef struct { unsigned long pgprot; } pgprot_t;
+ 
+ #ifdef CONFIG_FLATMEM
+ 
+-#define pfn_valid(pfn)		((pfn) >= ARCH_PFN_OFFSET && (pfn) < max_mapnr)
++#define pfn_valid(pfn)							\
++({									\
++	unsigned long __pfn = (pfn);					\
++	/* avoid <linux/bootmem.h> include hell */			\
++	extern unsigned long min_low_pfn;				\
++									\
++	__pfn >= min_low_pfn && __pfn < max_mapnr;			\
++})
+ 
+ #elif defined(CONFIG_SPARSEMEM)
+ 

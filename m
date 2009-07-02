@@ -1,115 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jul 2009 06:08:18 +0200 (CEST)
-Received: from gateway10.websitewelcome.com ([69.56.148.20]:57917 "HELO
-	gateway10.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with SMTP id S1492039AbZGBEIM (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Jul 2009 06:08:12 +0200
-Received: (qmail 14955 invoked from network); 2 Jul 2009 04:08:03 -0000
-Received: from gator750.hostgator.com (174.132.194.2)
-  by gateway10.websitewelcome.com with SMTP; 2 Jul 2009 04:08:03 -0000
-Received: from 216-239-45-4.google.com ([216.239.45.4]:30429 helo=epiktistes.mtv.corp.google.com)
-	by gator750.hostgator.com with esmtpa (Exim 4.69)
-	(envelope-from <kevink@paralogos.com>)
-	id 1MMDV4-000109-DM; Wed, 01 Jul 2009 23:02:18 -0500
-Message-ID: <4A4C314B.2070907@paralogos.com>
-Date:	Wed, 01 Jul 2009 21:02:19 -0700
-From:	"Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090318)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 02 Jul 2009 08:52:05 +0200 (CEST)
+Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:57227 "EHLO
+	atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492064AbZGBGv7 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 2 Jul 2009 08:51:59 +0200
+Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
+	id C3BB0F02D8; Thu,  2 Jul 2009 08:46:19 +0200 (CEST)
+Date:	Thu, 2 Jul 2009 08:46:12 +0200
+From:	Pavel Machek <pavel@ucw.cz>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Wu Zhangjin <wuzhangjin@gmail.com>,
+	LKML <linux-kernel@vger.kernel.org>, linux-mips@linux-mips.org
+Subject: Re: [BUG] MIPS: Hibernation in the latest linux-mips:master branch
+	not work
+Message-ID: <20090702064612.GB18157@elf.ucw.cz>
+References: <1246372868.19049.17.camel@falcon> <20090630144540.GA18212@linux-mips.org> <1246374687.20482.10.camel@falcon> <20090701180715.GA23121@linux-mips.org>
 MIME-Version: 1.0
-To:	Raghu Gandham <raghu@mips.com>
-CC:	linux-mips@linux-mips.org, chris@mips.com
-Subject: Re: [PATCH 15/15] Do not rely on the initial state of TC/VPE bindings
- when doing cross VPE writes
-References: <20090702023938.23268.65453.stgit@linux-raghu> <20090702024331.23268.98671.stgit@linux-raghu>
-In-Reply-To: <20090702024331.23268.98671.stgit@linux-raghu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator750.hostgator.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - paralogos.com
-Return-Path: <kevink@paralogos.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20090701180715.GA23121@linux-mips.org>
+X-Warning: Reading this can be dangerous to your mental health.
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <pavel@ucw.cz>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23608
+X-archive-position: 23609
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
+X-original-sender: pavel@ucw.cz
 Precedence: bulk
 X-list: linux-mips
 
-Note that, regardless of the reset state, smtc_configure_tlb() should 
-have at least temporarily bound TC 1 to VPE1, which may be why this 
-never seemed to be a problem on the 34K.  If one wants to support 
-designs with more than 2 VPEs, then this is probably one of the things 
-that needs to be fixed.  That having been said, rather than adding a 
-usually-redundant write_vpe_c0_vpeconf0() in that clause, wouldn't it be 
-cleaner to just move the MVP setting from the top of the loop to the 
-point in the loop just after the TCs have been bound to the VPE in 
-question, i.e.,
+On Wed 2009-07-01 19:07:15, Ralf Baechle wrote:
+> On Tue, Jun 30, 2009 at 11:11:27PM +0800, Wu Zhangjin wrote:
+> 
+> > hi, ralf, in the latest master branch of linux-mips git repo, seems
+> > there is a need to select the SYS_SUPPORTS_HOTPLUG_CPU option in every
+> > uni-processor board, otherwise, the suspend/hibernation can not be used,
+> > because you have set:
+> > 
+> > config ARCH_HIBERNATION_POSSIBLE
+> >     def_bool y
+> >     depends on SYS_SUPPORTS_HOTPLUG_CPU
+> > 
+> > config ARCH_SUSPEND_POSSIBLE
+> >     def_bool y
+> >     depends on SYS_SUPPORTS_HOTPLUG_CPU
+> > 
+> > so, the board-specific patch must be pushed by the maintainers of
+> > boards. and if the board support SMP, they must implement the
+> > mips-specific hotplug support, is this right? I have selected
+> > SYS_SUPPORTS_HOTPLUG_CPU in LEMOTE_FULONG and will push a relative patch
+> > later.
+> 
+> I think below patch should take care of this problem.  It simply assumes
+> that all uniprocessor systems support suspend and hibernate.  That's an
+> assumption that I'm not to unhappy with though it may force us to fix a
+> few systems.
+> 
+>   Ralf
+> 
+> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
- 454                 if (slop) {
- 455                         if (tc != 0) {
- 456                                 smtc_tc_setup(vpe,tc, cpu);
- 457                                 cpu++;
- 458                         }
- 459                         printk(" %d", tc);
- 460                         tc++;
- 461                         slop--;
- 462                 }
+Acked-by: Pavel Machek <pavel@ucw.cz>
 
-                        write_vpe_c0_vpeconf0(read_vpe_c0_vpeconf0() | 
-VPECONF0_MVP);
-
- 463                 if (vpe != 0) {
- 464                         /*
- 465                          * Clear any stale software interrupts from 
-VPE's Cause
- 466                          */
-
-This should definitely be OK for a 34K, because it's being executed by 
-TC0 in VPE0 and the reset state of VPE0 has MVP set.  If it weren't, 
-smtc_configure_tlb() would have failed.
-
-          Regards,
-
-          Kevin K.
-
-Raghu Gandham wrote:
-> From: Kurt Martin <kurt@mips.com>
->
-> Signed-off-by: Jaidev Patwardhan <jaidev@mips.com>
-> 	Signed-off-by: Chris Dearman <chris@mips.com>
-> ---
->
->  arch/mips/kernel/smtc.c |   12 ++++++++++++
->  1 files changed, 12 insertions(+), 0 deletions(-)
->
-> diff --git a/arch/mips/kernel/smtc.c b/arch/mips/kernel/smtc.c
-> index 69240c4..3498b82 100644
-> --- a/arch/mips/kernel/smtc.c
-> +++ b/arch/mips/kernel/smtc.c
-> @@ -481,6 +481,18 @@ void smtc_prepare_cpus(int cpus)
->  			 */
->  			if (tc != 0) {
->  				smtc_tc_setup(vpe, tc, cpu);
-> +				if (vpe != 0) {
-> +					/*
-> +					 * Set MVP bit (possibly again).  Do it
-> +					 * here to catch CPUs that have no TCs
-> +					 * bound to the VPE at reset.  In that
-> +					 * case, a TC must be bound to the VPE
-> +					 * before we can set VPEControl[MVP]
-> +					 */
-> +					write_vpe_c0_vpeconf0(
-> +						read_vpe_c0_vpeconf0() |
-> +						VPECONF0_MVP);
-> +				}
->  				cpu++;
->  			}
->  			printk(" %d", tc);
->
->
->   
+-- 
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blog.html

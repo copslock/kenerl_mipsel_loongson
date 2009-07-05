@@ -1,78 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jul 2009 17:03:08 +0200 (CEST)
-Received: from smtp239.poczta.interia.pl ([217.74.64.239]:33350 "EHLO
-	smtp239.poczta.interia.pl" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492015AbZGEPDB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 5 Jul 2009 17:03:01 +0200
-Received: by smtp239.poczta.interia.pl (INTERIA.PL, from userid 502)
-	id 5D52842FEEC; Sun,  5 Jul 2009 16:56:24 +0200 (CEST)
-Received: from poczta.interia.pl (mi02.poczta.interia.pl [10.217.12.2])
-	by smtp239.poczta.interia.pl (INTERIA.PL) with ESMTP id 80B8442FF22;
-	Sun,  5 Jul 2009 16:56:21 +0200 (CEST)
-Received: by poczta.interia.pl (INTERIA.PL, from userid 502)
-	id E936B2BC510; Sun,  5 Jul 2009 16:56:20 +0200 (CEST)
-Received: from krzysio.net (93-181-133-4.as.kn.pl [93.181.133.4])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by www.poczta.fm (INTERIA.PL) with ESMTP id 60E082BC3CB;
-	Sun,  5 Jul 2009 16:56:08 +0200 (CEST)
-Date:	Sun, 5 Jul 2009 17:05:47 +0200
-From:	Krzysztof Helt <krzysztof.h1@poczta.fm>
-To:	Linus Torvalds <torvalds@linux-foundation.org>
-Cc:	Wu Zhangjin <wuzhangjin@gmail.com>, linux-media@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 05 Jul 2009 17:03:58 +0200 (CEST)
+Received: from smtp1.linux-foundation.org ([140.211.169.13]:55773 "EHLO
+	smtp1.linux-foundation.org" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492015AbZGEPDw (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 5 Jul 2009 17:03:52 +0200
+Received: from imap1.linux-foundation.org (imap1.linux-foundation.org [140.211.169.55])
+	by smtp1.linux-foundation.org (8.14.2/8.13.5/Debian-3ubuntu1.1) with ESMTP id n65EuvXm029066
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Sun, 5 Jul 2009 07:56:58 -0700
+Received: from localhost (localhost [127.0.0.1])
+	by imap1.linux-foundation.org (8.13.5.20060308/8.13.5/Debian-3ubuntu1.1) with ESMTP id n65EuuON013723;
+	Sun, 5 Jul 2009 07:56:56 -0700
+Date:	Sun, 5 Jul 2009 07:56:56 -0700 (PDT)
+From:	Linus Torvalds <torvalds@linux-foundation.org>
+X-X-Sender: torvalds@localhost.localdomain
+To:	Paul Mundt <lethal@linux-sh.org>
+cc:	Wu Zhangjin <wuzhangjin@gmail.com>, linux-media@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
 	Krzysztof Helt <krzysztof.h1@wp.pl>,
 	Peter Zijlstra <a.p.zijlstra@chello.nl>,
 	"Rafael J. Wysocki" <rjw@sisk.pl>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	=?UTF-8?Q?=E6=99=8F=E5=8D=8E?= <yanh@lemote.com>,
+	Ralf Baechle <ralf@linux-mips.org>, ???? <yanh@lemote.com>,
 	zhangfx <zhangfx@lemote.com>
-Subject: Re: [BUG] drivers/video/sis: deadlock introduced by
- "fbdev: add mutex for fb_mmap locking"
-Message-Id: <20090705170547.c83f1cb9.krzysztof.h1@poczta.fm>
-In-Reply-To: <alpine.LFD.2.01.0907050715490.3210@localhost.localdomain>
-References: <1246785112.14240.34.camel@falcon>
-	<alpine.LFD.2.01.0907050715490.3210@localhost.localdomain>
-X-Mailer: Sylpheed 2.4.3 (GTK+ 2.11.0; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-EMID:	e6e2b138
-Return-Path: <krzysztof.h1@poczta.fm>
+Subject: Re: [BUG] drivers/video/sis: deadlock introduced by "fbdev: add
+ mutex for fb_mmap locking"
+In-Reply-To: <20090705145203.GA8326@linux-sh.org>
+Message-ID: <alpine.LFD.2.01.0907050756280.3210@localhost.localdomain>
+References: <1246785112.14240.34.camel@falcon> <alpine.LFD.2.01.0907050715490.3210@localhost.localdomain> <20090705145203.GA8326@linux-sh.org>
+User-Agent: Alpine 2.01 (LFD 1184 2008-12-16)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-MIMEDefang-Filter: lf$Revision: 1.188 $
+X-Scanned-By: MIMEDefang 2.63 on 140.211.169.13
+Return-Path: <torvalds@linux-foundation.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23650
+X-archive-position: 23651
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: krzysztof.h1@poczta.fm
+X-original-sender: torvalds@linux-foundation.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 5 Jul 2009 07:19:33 -0700 (PDT)
-Linus Torvalds <torvalds@linux-foundation.org> wrote:
 
-> 
-> 
-> On Sun, 5 Jul 2009, Wu Zhangjin wrote:
-> > 
-> > then it works! so, I guess there is a deadlock introduced by the above
-> > commit.
-> 
-> Hmm. Perhaps more likely, the 'mm_lock' mutex hasn't even been initialized 
-> yet.  We appear to have had that problem with matroxfb and sm501fb, and it 
-> may be more common than that. See commit f50bf2b2.
-> 
-> That said, I do agree that the mm_lock seems to be causing more problems 
-> than it actually fixes, and maybe we should revert it. Krzysztof?
-> 
 
-I vote for fixing these drivers after my change. I will send a patch for the sis driver soon. I am building new kernel now.
+On Sun, 5 Jul 2009, Paul Mundt wrote:
+>  			break;
+>  	fb_info->node = i;
+>  	mutex_init(&fb_info->lock);
+> -	mutex_init(&fb_info->mm_lock);
 
-Regards,
-Krzysztof
+Why not "lock" as well?
 
-----------------------------------------------------------------------
-Rozwiaz krzyzowke i  wygraj nagrody! 
-Sprawdz >>  http://link.interia.pl/f2232 
+		Linus

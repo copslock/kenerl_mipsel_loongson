@@ -1,105 +1,109 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jul 2009 16:03:17 +0200 (CEST)
-Received: from mba.ocn.ne.jp ([122.1.235.107]:61090 "HELO smtp.mba.ocn.ne.jp"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with SMTP
-	id S1492890AbZGFODK (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 6 Jul 2009 16:03:10 +0200
-Received: from localhost (p3132-ipad308funabasi.chiba.ocn.ne.jp [123.217.189.132])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 76BB3B30E; Mon,  6 Jul 2009 22:56:09 +0900 (JST)
-Date:	Mon, 06 Jul 2009 22:56:10 +0900 (JST)
-Message-Id: <20090706.225610.260797799.anemo@mba.ocn.ne.jp>
-To:	ralf@linux-mips.org
-Cc:	KKylheku@zeugmasystems.com, aurelien@aurel32.net,
-	linux-mips@linux-mips.org
-Subject: Re: Broadcom Swarm support
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <20090630.230040.173375181.anemo@mba.ocn.ne.jp>
-References: <20090628.010906.115909054.anemo@mba.ocn.ne.jp>
-	<20090629190809.GC22264@linux-mips.org>
-	<20090630.230040.173375181.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 22.2 / Mule 5.0 (SAKAKI)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jul 2009 16:08:04 +0200 (CEST)
+Received: from wa-out-1112.google.com ([209.85.146.181]:61353 "EHLO
+	wa-out-1112.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1492890AbZGFOH5 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 6 Jul 2009 16:07:57 +0200
+Received: by wa-out-1112.google.com with SMTP id n4so693360wag.0
+        for <multiple recipients>; Mon, 06 Jul 2009 07:01:01 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=G4QhuzLGOMoBWVdmwi9W7/zL6DqEQbdExH3tLSlE9+U=;
+        b=nxrrfh/avw5tn25Ah39o4bqWDdOuwksz1mbrvBtUtpmUMx+nDX0V2Fqsk1ZZ1wCCTu
+         6pHGKmfgElT/+/XOpDdEC7+LN5zqZlwgHIfUcprStotOrnR8ugWJdDnLu0mr5p93gFEV
+         Sp+qfS3t1urVHEmnXegUzNLqOr6F2ydznga3w=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=B7+z1D4F30EALKFdNK/zXv6kcZqv5Su3bSy36+b5rsCv7cizqRSApLKF5cFtJ/hD/K
+         q/eH8q9fwfBkNXK7779VuojIPy5wcNEIEZTY6aMT7EZuEtyFQRCUesBnUF4PHCsQnrjC
+         fUYi7i+PtDnXQYsk4uXI3zU6f0ASrFPM6W7mc=
+Received: by 10.114.53.18 with SMTP id b18mr7517084waa.204.1246888861530;
+        Mon, 06 Jul 2009 07:01:01 -0700 (PDT)
+Received: from ?172.16.2.101? ([222.92.8.142])
+        by mx.google.com with ESMTPS id m28sm11171093waf.37.2009.07.06.07.00.54
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Mon, 06 Jul 2009 07:01:00 -0700 (PDT)
+Subject: Re: [PATCH v4 03/16] [loongson] early_printk: add new implmentation
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	Jason Wessel <jason.wessel@windriver.com>,
+	Yan Hua <yanh@lemote.com>,
+	Philippe Vachon <philippe@cowpig.ca>,
+	Zhang Le <r0bertz@gentoo.org>,
+	Zhang Fuxin <zhangfx@lemote.com>,
+	loongson-dev <loongson-dev@googlegroups.com>,
+	Liu Junliang <liujl@lemote.com>,
+	Erwan Lerale <erwan@thiscow.com>,
+	Arnaud Patard <apatard@mandriva.com>
+In-Reply-To: <20090706104321.GC11727@linux-mips.org>
+References: <cover.1246546684.git.wuzhangjin@gmail.com>
+	 <9e23b4150f183c0817f2abbb95525279c2006a83.1246546684.git.wuzhangjin@gmail.com>
+	 <20090706104321.GC11727@linux-mips.org>
+Content-Type: text/plain
+Organization: DSLab, Lanzhou University, China
+Date:	Mon, 06 Jul 2009 21:57:13 +0800
+Message-Id: <1246888633.30387.9.camel@falcon>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+X-Mailer: Evolution 2.26.1 
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23662
+X-archive-position: 23663
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 30 Jun 2009 23:00:40 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
-> > > And how about kernel __init code pages?  These pages are just freed on
-> > > free_initmem.  Also how about code pages used by a module which is to
-> > > be unloaded from kernel?
-> > 
-> > Init code pages won't be used to store code that will be executed at
-> > KSEG0 or XKPHYS addresses so I-cache coherency is not of interest.
-> > 
-> > For modules the I-cache is being flushed on loading of the module, see
-> > calls to flush_icache_range() in kernel/module.c so I-cache coherency is
-> > not of concern on module unload.
+On Mon, 2009-07-06 at 11:43 +0100, Ralf Baechle wrote:
+> On Thu, Jul 02, 2009 at 11:20:20PM +0800, Wu Zhangjin wrote:
 > 
-> Same here.  A physical page used to __init code might be reused for
-> user code page, so explicit flush (invalide) is required for VIPT
-> case, no?
+> > +#include <asm/mips-boards/bonito64.h>
+> > +
+> > +#define UART_BASE (BONITO_PCIIO_BASE + 0x3f8)
+> > +
+> > +#define PORT(base, offset) (u8 *)(base + offset)
+> > +
+> > +static inline unsigned int serial_in(phys_addr_t base, int offset)
+> > +{
+> > +	return readb(PORT(base, offset));
+> > +}
+> > +
+> > +static inline void serial_out(phys_addr_t base, int offset, int value)
+> > +{
+> > +	writeb(value, PORT(base, offset));
+> 
+> Why not inb(0x3f8, + offset) rsp. outb()?
+> 
 
-I tracked some icache flushes after free_initmem() on a VIPT CPU.
+because yeeloong laptop use the serial port of cpu, which have different
+base address: 0x1ff000000 + 0x3f8, to share the same source code between
+yeeloong, fuloong2f(0x1fd00000 + 0x2f8) and fuloong2e(0x1fd00000 +
+0x3f8), I use PORT(base, offset) here and use readb/writeb instead of
+inb/outb. so, here is only a preparation for future yeeloong2f support.
 
-* free_initmem()
-* r4k_flush_cache_range(start=0x7fff7000, end=0x7fff8000)
-	backtraces:
-	#0  0x801263c0 in r4k_flush_cache_range ()
-	#1  0x801bc640 in move_page_tables ()
-	#2  0x801d317c in setup_arg_pages ()
-	#3  0x80210af8 in load_elf_binary ()
-	#4  0x801d2200 in search_binary_handler ()
-	#5  0x801d3640 in do_execve ()
-	#6  0x80119d58 in sys_execve ()
-	#7  0x801022d0 in handle_sys ()
-	#8  0x80111018 in init_post ()
-* r4k_flush_cache_range(start=0x2aac9000, end=0x2aada000)
-	backtraces:
-	#0  0x801263c0 in r4k_flush_cache_range ()
-	#1  0x801b4abc in unmap_vmas ()
-	#2  0x801b9798 in unmap_region ()
-	#3  0x801bac44 in do_munmap ()
-	#4  0x80210538 in elf_map ()
-	#5  0x80211054 in load_elf_binary ()
-	#6  0x801d2200 in search_binary_handler ()
-	#7  0x801d3640 in do_execve ()
-	#8  0x80119d58 in sys_execve ()
-	#9  0x801022d0 in handle_sys ()
-	#10 0x80111018 in init_post ()
-* some page faults from outside [0x2aac9000, 0x2aada000] range
-* r4k_flush_cache_range(start=0x2ab19000, end=0x2ab29000)
-	backtraces:
-	#0  0x801263c0 in r4k_flush_cache_range ()
-	#1  0x801bc178 in mprotect_fixup ()
-	#2  0x801bc560 in sys_mprotect ()
-	#3  0x801022d0 in handle_sys ()
+> > +}
+> > +
+> > +void prom_putchar(char c)
+> > +{
+> > +	phys_addr_t uart_base =
+> > +		(phys_addr_t) ioremap_nocache(UART_BASE, 8);
+> 
+> ioremap_nocache returns a virtual address, not a physical address, so
+> this type should probably be unsigned char *.
+> 
 
-The first icache flush is for stack (arg pages).  The second one is
-for unmap holes in ELF image (I do not understand details...).  Anyway
-both flushes did not intend to flush text pages for the first
-userspace program.
+okay, I will change it.
 
-Since current implementation of r4k_flush_cache_range flushes all
-icache regardless of its range arguments, all icaches used for __init
-pages are flushed effectively, but it seems just a sort of luck for
-me.
-
-Also flusing icache in flush_cache_range is relatively young code ---
-the commit 2eaa7e ("Handle I-cache coherency in flush_cache_range()")
-on Feb 2008.  I'm wondering how icache were flushed before that
-commit...
-
----
-Atsushi Nemoto
+Thanks!
+Wu Zhangjin

@@ -1,110 +1,83 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jul 2009 16:48:06 +0200 (CEST)
-Received: from smtp239.poczta.interia.pl ([217.74.64.239]:43089 "EHLO
-	smtp239.poczta.interia.pl" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1491826AbZGFOsA (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 6 Jul 2009 16:48:00 +0200
-Received: by smtp239.poczta.interia.pl (INTERIA.PL, from userid 502)
-	id EAB18370A62; Mon,  6 Jul 2009 16:41:04 +0200 (CEST)
-Received: from poczta.interia.pl (mi03.poczta.interia.pl [10.217.12.3])
-	by smtp239.poczta.interia.pl (INTERIA.PL) with ESMTP id EBD90370B14;
-	Mon,  6 Jul 2009 16:41:03 +0200 (CEST)
-Received: by poczta.interia.pl (INTERIA.PL, from userid 502)
-	id 0A88A3C3A6; Mon,  6 Jul 2009 16:41:03 +0200 (CEST)
-Received: from krzysio.net (93-181-133-4.as.kn.pl [93.181.133.4])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by www.poczta.fm (INTERIA.PL) with ESMTP id 88CA63C396;
-	Mon,  6 Jul 2009 16:40:48 +0200 (CEST)
-Date:	Mon, 6 Jul 2009 16:50:36 +0200
-From:	Krzysztof Helt <krzysztof.h1@poczta.fm>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jul 2009 16:58:57 +0200 (CEST)
+Received: from mail-fx0-f212.google.com ([209.85.220.212]:51861 "EHLO
+	mail-fx0-f212.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1491847AbZGFO6u (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 6 Jul 2009 16:58:50 +0200
+Received: by fxm8 with SMTP id 8so3763346fxm.0
+        for <multiple recipients>; Mon, 06 Jul 2009 07:51:50 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:subject:date
+         :user-agent:cc:references:in-reply-to:mime-version
+         :content-disposition:message-id:content-type
+         :content-transfer-encoding;
+        bh=wTxBWYAVB2Kt+SfcbT6+WJePMbrTgqKkeh6eXLPGB6Y=;
+        b=NdQQXGHrLvjBoA9TOK7CNdIiFIRt/izrrFtEfaPj/fnX/Ma+yFtnaYaSB+PxUAo/4G
+         qy0qB/TLp8hi6yoRPzskTkNQ+CgCnOO07gaLjjZdPDAJlPcuuBnICmjv7iju8Ooq6+EY
+         vR1UTqHNHvGI3Lo0LcpzFZ5vBdOHgiZPBmFI0=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:subject:date:user-agent:cc:references:in-reply-to
+         :mime-version:content-disposition:message-id:content-type
+         :content-transfer-encoding;
+        b=VqMLzffD5/sESGi9ca3d27KDlLPwbqU2hUT1ojLpNXUXnj2iACkAG2IYM+NJG69Pq/
+         YWlhOA5KLhhzJsW6gbpn0jXvyK670vclK6Kc6jUssZBQtlsnQg514F+U2oalrlS8NGj2
+         6CX9z0hg9bA2ovKm6Sl6AZGupoJ5+WVecIb/Q=
+Received: by 10.103.198.20 with SMTP id a20mr2675679muq.29.1246891910876;
+        Mon, 06 Jul 2009 07:51:50 -0700 (PDT)
+Received: from localhost.localdomain (chello089077034197.chello.pl [89.77.34.197])
+        by mx.google.com with ESMTPS id 25sm24970mul.20.2009.07.06.07.51.48
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Mon, 06 Jul 2009 07:51:49 -0700 (PDT)
+From:	Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
 To:	wuzhangjin@gmail.com
-Cc:	Paul Mundt <lethal@linux-sh.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mips@linux-mips.org, Krzysztof Helt <krzysztof.h1@wp.pl>,
-	Peter Zijlstra <a.p.zijlstra@chello.nl>,
-	"Rafael J. Wysocki" <rjw@sisk.pl>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ralf Baechle <ralf@linux-mips.org>, ???? <yanh@lemote.com>,
-	zhangfx <zhangfx@lemote.com>
-Subject: Re: [BUG] drivers/video/sis: deadlock introduced by
- "fbdev: add mutex for fb_mmap locking"
-Message-Id: <20090706165036.d21bfaaa.krzysztof.h1@poczta.fm>
-In-Reply-To: <1246842791.29532.2.camel@falcon>
-References: <1246785112.14240.34.camel@falcon>
-	<alpine.LFD.2.01.0907050715490.3210@localhost.localdomain>
-	<20090705145203.GA8326@linux-sh.org>
-	<alpine.LFD.2.01.0907050756280.3210@localhost.localdomain>
-	<20090705150134.GB8326@linux-sh.org>
-	<alpine.LFD.2.01.0907050816110.3210@localhost.localdomain>
-	<20090705152557.GA10588@linux-sh.org>
-	<20090705181808.93be24a9.krzysztof.h1@poczta.fm>
-	<1246842791.29532.2.camel@falcon>
-X-Mailer: Sylpheed 2.4.3 (GTK+ 2.11.0; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Subject: Re: [Bug #13663] suspend to ram regression (IDE related)
+Date:	Mon, 6 Jul 2009 16:57:59 +0200
+User-Agent: KMail/1.11.4 (Linux/2.6.31-rc2-next-20090706-03300-ga0c36f0; KDE/4.2.4; i686; ; )
+Cc:	Jeff Chua <jeff.chua.linux@gmail.com>,
+	Etienne Basset <etienne.basset@numericable.fr>,
+	David Miller <davem@davemloft.net>, rjw@sisk.pl,
+	linux-kernel@vger.kernel.org, kernel-testers@vger.kernel.org,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	linux-ide@vger.kernel.org
+References: <etTXaRqGgAC.A.SaE.6iASKB@chimera> <200907031508.47891.bzolnier@gmail.com> <1246635096.16890.6.camel@falcon>
+In-Reply-To: <1246635096.16890.6.camel@falcon>
+MIME-Version: 1.0
+Content-Disposition: inline
+Message-Id: <200907061658.00936.bzolnier@gmail.com>
+Content-Type: Text/Plain;
+  charset="iso-8859-15"
 Content-Transfer-Encoding: 7bit
-X-EMID:	3ae2b138
-Return-Path: <krzysztof.h1@poczta.fm>
+Return-Path: <bzolnier@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23664
+X-archive-position: 23665
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: krzysztof.h1@poczta.fm
+X-original-sender: bzolnier@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 06 Jul 2009 09:13:11 +0800
-Wu Zhangjin <wuzhangjin@gmail.com> wrote:
-
+On Friday 03 July 2009 17:31:36 Wu Zhangjin wrote:
 > Hi,
 > 
-> 
-> This patch also works for me, thanks!
-> 
-> Regards,
-> Wu Zhangjin
-> 
-
-Who should I send this patch to be included as a 2.6.31 regression fix?
-
-Regards,
-Krzysztof
-
-> > 
-> > From: Krzysztof Helt <krzysztof.h1@wp.pl>
-> > 
-> > Remove redundant call to the sisfb_get_fix() before sis frambuffer is registered.
-> > 
-> > This fixes a problem with uninitialized the fb_info->mm_lock mutex.
-> > 
-> > Signed-off-by: Krzysztof Helt <krzysztof.h1@wp.pl>
-> > ---
-> > 
-> > diff -urp linux-ref/drivers/video/sis/sis_main.c linux-next/drivers/video/sis/sis_main.c
-> > --- linux-ref/drivers/video/sis/sis_main.c	2009-07-01 18:07:05.000000000 +0200
-> > +++ linux-next/drivers/video/sis/sis_main.c	2009-07-05 17:20:33.000000000 +0200
-> > @@ -6367,7 +6367,6 @@ error_3:	vfree(ivideo->bios_abase);
-> >  		sis_fb_info->fix = ivideo->sisfb_fix;
-> >  		sis_fb_info->screen_base = ivideo->video_vbase + ivideo->video_offset;
-> >  		sis_fb_info->fbops = &sisfb_ops;
-> > -		sisfb_get_fix(&sis_fb_info->fix, -1, sis_fb_info);
-> >  		sis_fb_info->pseudo_palette = ivideo->pseudo_palette;
-> >  
-> >  		fb_alloc_cmap(&sis_fb_info->cmap, 256 , 0);
-> > 
-> > 
-> > 
-> > ----------------------------------------------------------------------
-> > Najlepsze OC i AC tylko w Ergo Hestia
-> > http://link.interia.pl/f222
+> > OK, I see another gotcha added by recent changes, we need to explicitly
+> > initialize rq_in_flight variables now.  Revised patch below..
 > > 
 > 
+> Sorry, STD also not work. if apply this patch, the same problem as not
+> apply it, it stopped at:
 > 
-
-----------------------------------------------------------------------
-Najlepsze OC i AC tylko w Ergo Hestia
-http://link.interia.pl/f222
+> ...
+> PM: Crete hibernation image:
+> PM: Need to copy ... pages
+> PM: Hibernation image created ...
+> 
+> I think it's better to revert this commit:
+>  a1317f714af7aed60ddc182d0122477cbe36ee9b ("ide: improve handling of
+> Power Management requests")
+ 
+I completely agree and I've already requested this a week ago
+(this commit was not meant for going straight to -rc tree anyway).

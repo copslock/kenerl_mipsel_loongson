@@ -1,33 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jul 2009 20:42:40 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:17202 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 06 Jul 2009 21:07:55 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:31580 "EHLO
 	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492902AbZGFSmd (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 6 Jul 2009 20:42:33 +0200
+	by ftp.linux-mips.org with ESMTP id S1491861AbZGFTHh (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 6 Jul 2009 21:07:37 +0200
 Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B4a5243f20000>; Mon, 06 Jul 2009 14:35:30 -0400
+	id <B4a5249d10000>; Mon, 06 Jul 2009 15:00:33 -0400
 Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 6 Jul 2009 11:34:41 -0700
+	 Mon, 6 Jul 2009 12:00:01 -0700
 Received: from dd1.caveonetworks.com ([64.169.86.201]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 6 Jul 2009 11:34:41 -0700
+	 Mon, 6 Jul 2009 12:00:01 -0700
 Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n66IYbHH008569;
-	Mon, 6 Jul 2009 11:34:37 -0700
+	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n66Ixvwv019919;
+	Mon, 6 Jul 2009 11:59:57 -0700
 Received: (from ddaney@localhost)
-	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n66IYabW008567;
-	Mon, 6 Jul 2009 11:34:36 -0700
+	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n66Ixudq019917;
+	Mon, 6 Jul 2009 11:59:56 -0700
 From:	David Daney <ddaney@caviumnetworks.com>
 To:	linux-mips@linux-mips.org, ralf@linux-mips.org
 Cc:	David Daney <ddaney@caviumnetworks.com>
 Subject: [PATCH] MIPS: Fix support for Cavium Octeon debugger stub.
-Date:	Mon,  6 Jul 2009 11:34:36 -0700
-Message-Id: <1246905276-8543-1-git-send-email-ddaney@caviumnetworks.com>
+Date:	Mon,  6 Jul 2009 11:59:56 -0700
+Message-Id: <1246906796-19893-1-git-send-email-ddaney@caviumnetworks.com>
 X-Mailer: git-send-email 1.6.0.6
-X-OriginalArrivalTime: 06 Jul 2009 18:34:41.0598 (UTC) FILETIME=[6D06B5E0:01C9FE68]
+In-Reply-To: <1246905276-8543-1-git-send-email-ddaney@caviumnetworks.com>
+References: <1246905276-8543-1-git-send-email-ddaney@caviumnetworks.com>
+X-OriginalArrivalTime: 06 Jul 2009 19:00:01.0514 (UTC) FILETIME=[F6F77CA0:01C9FE6B]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23669
+X-archive-position: 23670
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -45,9 +47,9 @@ Signed-off-by: David Daney <ddaney@caviumnetworks.com>
 ---
  arch/mips/Kconfig.debug               |   10 ++++++
  arch/mips/cavium-octeon/serial.c      |   53 ++++++++++++++++++++++++++++++++-
- arch/mips/cavium-octeon/setup.c       |   10 ++++++
+ arch/mips/cavium-octeon/setup.c       |    2 +-
  arch/mips/include/asm/octeon/octeon.h |    1 -
- 4 files changed, 72 insertions(+), 2 deletions(-)
+ 4 files changed, 63 insertions(+), 3 deletions(-)
 
 diff --git a/arch/mips/Kconfig.debug b/arch/mips/Kconfig.debug
 index 364ca89..f6a0e68 100644
@@ -147,26 +149,18 @@ index 8240728..2110e68 100644
  	enable_uart2 = OCTEON_IS_MODEL(OCTEON_CN52XX);
  
 diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
-index e195ea8..dc9f461 100644
+index e195ea8..bc0c869 100644
 --- a/arch/mips/cavium-octeon/setup.c
 +++ b/arch/mips/cavium-octeon/setup.c
-@@ -295,6 +295,16 @@ static void octeon_halt(void)
- 	octeon_kill_core(NULL);
- }
- 
-+/**
-+ * Return the debug flag passed by the bootloader
-+ *
-+ * Return debug flag (0 or 1)
-+ */
-+static int octeon_get_boot_debug_flag(void)
-+{
-+	return (octeon_boot_desc_ptr->flags & OCTEON_BL_FLAG_DEBUG) != 0;
-+}
-+
- #if 0
- /**
-  * Platform time init specifics.
+@@ -608,7 +608,7 @@ void __init prom_init(void)
+ 	 * When debugging the linux kernel, force the cores to enter
+ 	 * the debug exception handler to break in.
+ 	 */
+-	if (octeon_get_boot_debug_flag()) {
++	if (octeon_boot_desc_ptr->flags & OCTEON_BL_FLAG_DEBUG) {
+ 		cvmx_write_csr(CVMX_CIU_DINT, 1 << cvmx_get_core_num());
+ 		cvmx_read_csr(CVMX_CIU_DINT);
+ 	}
 diff --git a/arch/mips/include/asm/octeon/octeon.h b/arch/mips/include/asm/octeon/octeon.h
 index cac9b1a..f3c2b15 100644
 --- a/arch/mips/include/asm/octeon/octeon.h

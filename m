@@ -1,62 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 08 Jul 2009 21:11:08 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:49482 "EHLO
-	localhost.localdomain" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1493039AbZGHTLF (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 8 Jul 2009 21:11:05 +0200
-Date:	Wed, 8 Jul 2009 20:11:05 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	David VomLehn <dvomlehn@cisco.com>
-cc:	Ralf Baechle <ralf@linux-mips.org>, joe seb <joe.seb8@gmail.com>,
-	linux-mips@linux-mips.org
-Subject: Re: Linux port failing on MIPS32 24Kc
-In-Reply-To: <20090708182500.GA31285@cuplxvomd02.corp.sa.net>
-Message-ID: <alpine.LFD.2.00.0907081946240.13862@eddie.linux-mips.org>
-References: <4f9abdc70907080107t28fdac03h86b834a60806fb10@mail.gmail.com> <20090708103756.GB22308@linux-mips.org> <20090708182500.GA31285@cuplxvomd02.corp.sa.net>
-User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 09 Jul 2009 00:15:00 +0200 (CEST)
+Received: from mail-px0-f178.google.com ([209.85.216.178]:36788 "EHLO
+	mail-px0-f178.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492555AbZGHWOy (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 9 Jul 2009 00:14:54 +0200
+Received: by pxi8 with SMTP id 8so1441816pxi.22
+        for <multiple recipients>; Wed, 08 Jul 2009 15:14:45 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=R9HM4avZCStq1PST7mLZCYSCOjsxiBShf3nhQv299FU=;
+        b=G44woeA/xdem2yNGAqETlnK0OeLxQURwNqxTrugu22pb4q0COkYHgq3l3xaBep+OeI
+         h4XZviHpbjOdnR3cZGiqGRXp43pGKpV8hWORjnhyBh5Q5+yGl51Him66O0xr9tH7zISX
+         7zDLXO22W+qhDbFISzGhBVNKCLlps1UQKp3cA=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=Jx/YwKdqLVoLPS9m8UttPE5aTKwWgnCKKiAOINRxepLl7/M6vhzxEJsA4EYGPYAq3Y
+         69XPXAr5UEKFsot46Cn3a1n8VfDpi8vkmZYTX8vg1jtppW9p1v463uzB1TjLqbqY8Gbp
+         dPBbvPNn8vA9cfXkvxSSehDSH5wS1Eqx32h+k=
+Received: by 10.115.58.20 with SMTP id l20mr76358wak.2.1247091285309;
+        Wed, 08 Jul 2009 15:14:45 -0700 (PDT)
+Received: from localhost.localdomain ([222.95.172.206])
+        by mx.google.com with ESMTPS id j15sm5306782waf.51.2009.07.08.15.14.43
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 08 Jul 2009 15:14:44 -0700 (PDT)
+From:	Huang Weiyi <weiyi.huang@gmail.com>
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org, Huang Weiyi <weiyi.huang@gmail.com>
+Subject: [PATCH] MIPS: remove unused #include <linux/version.h>'s
+Date:	Thu,  9 Jul 2009 06:14:37 +0800
+Message-Id: <1247091277-3612-1-git-send-email-weiyi.huang@gmail.com>
+X-Mailer: git-send-email 1.6.1.2
+Return-Path: <weiyi.huang@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23684
+X-archive-position: 23685
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: weiyi.huang@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 8 Jul 2009, David VomLehn wrote:
+Remove unused #include <linux/version.h>('s) in
+  arch/mips/ar7/platform.c
+  arch/mips/ar7/setup.c
 
-> > (Why do people use non-zero starting addresses for memory?  Handling of
-> > cache error exceptions is hard enough as it is but with no memory in the
-> > low 32k the design idea of the cache architecture that stores relative to
-> > $zero can be used goes down the drain and (not considering platform-specific
-> > solutions here) only be handled by burning the scarce resource of a TLB
-> > entry for an extremly rare event ...)
-> 
-> (Because hardware people are, uh, insufficiently acquainted with the MIPS
-> architecture and don't know what the conventions are. Or why they are that
-> way. Then, you're stuck with that architecture forever. Sigh.)
+Signed-off-by: Huang Weiyi <weiyi.huang@gmail.com>
+---
+ arch/mips/ar7/platform.c |    1 -
+ arch/mips/ar7/setup.c    |    1 -
+ 2 files changed, 0 insertions(+), 2 deletions(-)
 
- Many processor architectures have assumptions (i.e. power-up/reset 
-defaults) about or even force the existence of RAM at physical address 0.  
-With the MIPS architecture actually it has been pretty a recent addition 
-in its long history that you are able to get away without.  Given these 
-circumstances I am afraid your suspicion sounds like an understatement.
-
- With the MIPS64r2 architecture though and if you want more than 400+some 
-MB of memory, placing RAM from the top of the physical address space seems 
-more reasonable to me as you can avoid ROM popping up in the middle then.  
-
- For the sake of flexibility, including but not limited to ERL operation, 
-the virtual-to-physical address translation for the CKSEG0 and CKSEG1 
-space could be made configurable via an additional CP0 register.  I'm a 
-little bit surprised nobody had thought about it at the time CP0.EBase was 
-introduced.  The remapping has to be done anyway and it does not look to 
-me as it would take a lot of power and/or silicon space to make it use a 
-configurable set of latches rather than a predefined set of hardwired 
-logical levels.
-
-  Maciej
+diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
+index 5422449..c4d71fb 100644
+--- a/arch/mips/ar7/platform.c
++++ b/arch/mips/ar7/platform.c
+@@ -28,7 +28,6 @@
+ #include <linux/serial_8250.h>
+ #include <linux/ioport.h>
+ #include <linux/io.h>
+-#include <linux/version.h>
+ #include <linux/vlynq.h>
+ #include <linux/leds.h>
+ #include <linux/string.h>
+diff --git a/arch/mips/ar7/setup.c b/arch/mips/ar7/setup.c
+index 6ebb5f1..39f6b5b 100644
+--- a/arch/mips/ar7/setup.c
++++ b/arch/mips/ar7/setup.c
+@@ -15,7 +15,6 @@
+  *  with this program; if not, write to the Free Software Foundation, Inc.,
+  *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+  */
+-#include <linux/version.h>
+ #include <linux/init.h>
+ #include <linux/ioport.h>
+ #include <linux/pm.h>
+-- 
+1.6.1.2

@@ -1,32 +1,32 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jul 2009 05:07:30 +0200 (CEST)
-Received: from dns1.mips.com ([63.167.95.197]:52187 "EHLO dns1.mips.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jul 2009 05:10:20 +0200 (CEST)
+Received: from dns1.mips.com ([63.167.95.197]:43638 "EHLO dns1.mips.com"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1491807AbZGJDHX (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 10 Jul 2009 05:07:23 +0200
+	id S1491824AbZGJDKN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 10 Jul 2009 05:10:13 +0200
 Received: from MTVEXCHANGE.mips.com ([192.168.36.200])
-	by dns1.mips.com (8.13.8/8.13.8) with ESMTP id n6A37DvS019853;
-	Thu, 9 Jul 2009 20:07:13 -0700
-Received: from [192.168.65.41] ([192.168.65.41]) by MTVEXCHANGE.mips.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 9 Jul 2009 20:07:12 -0700
-Message-ID: <4A56B060.7090106@mips.com>
-Date:	Thu, 09 Jul 2009 20:07:12 -0700
+	by dns1.mips.com (8.13.8/8.13.8) with ESMTP id n6A3A6BE019880
+	for <linux-mips@linux-mips.org>; Thu, 9 Jul 2009 20:10:06 -0700
+Received: from linux-chris2 ([192.168.65.41]) by MTVEXCHANGE.mips.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 9 Jul 2009 20:10:06 -0700
+Received: from localhost ([127.0.0.1] helo=localhost.localdomain)
+	by linux-chris2 with esmtp (Exim 4.69)
+	(envelope-from <chris@mips.com>)
+	id 1MP6Uw-0003a6-Ie; Thu, 09 Jul 2009 20:10:06 -0700
 From:	Chris Dearman <chris@mips.com>
-Organization: MIPS Technologies
-User-Agent: Thunderbird 2.0.0.21 (X11/20090409)
+Subject: [PATCH] Delete fossil file
+To:	linux-mips@linux-mips.org
+Date:	Thu, 09 Jul 2009 20:10:06 -0700
+Message-ID: <20090710030858.13604.11849.stgit@localhost.localdomain>
+User-Agent: StGIT/0.14.2
 MIME-Version: 1.0
-To:	Shinya Kuribayashi <shinya.kuribayashi@necel.com>
-CC:	yuasa@linux-mips.org, linux-mips@linux-mips.org
-Subject: Re: What's happening with vr41xx_giu.c?
-References: <4A5680B5.2090405@necel.com>
-In-Reply-To: <4A5680B5.2090405@necel.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 10 Jul 2009 03:07:12.0626 (UTC) FILETIME=[854E7520:01CA010B]
+X-OriginalArrivalTime: 10 Jul 2009 03:10:06.0241 (UTC) FILETIME=[ECCA0110:01CA010B]
 Return-Path: <chris@mips.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23695
+X-archive-position: 23696
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,36 +34,15 @@ X-original-sender: chris@mips.com
 Precedence: bulk
 X-list: linux-mips
 
-Shinya Kuribayashi wrote:
+Empty file created by commit 27fdd325dace4a1ebfa10e93ba6f3d25f25df674
 
-> skuribay@ubuntu:linux.git$ make distclean
-> skuribay@ubuntu:linux.git$
-> skuribay@ubuntu:linux.git$
-> skuribay@ubuntu:linux.git$ git status
-> # On branch master
-> # Changed but not updated:
-> #   (use "git add/rm <file>..." to update what will be committed)
-> #   (use "git checkout -- <file>..." to discard changes in working 
-> directory)
-> #
-> #       deleted:    drivers/char/vr41xx_giu.c
-> #
-> no changes added to commit (use "git add" and/or "git commit -a")
-> skuribay@ubuntu:linux.git$
-> 
+Signed-off-by: Chris Dearman <chris@mips.com>
+---
 
-Commit 27fdd325dace4a1ebfa10e93ba6f3d25f25df674 turned 
-drivers/char/vr41xx_giu.c into an empty file instead of deleting it when 
-the file was moved to drivers/gpio
+ drivers/char/vr41xx_giu.c |    0 
+ 1 files changed, 0 insertions(+), 0 deletions(-)
+ delete mode 100644 drivers/char/vr41xx_giu.c
 
-"make distclean" deletes any 0 length .c files that it finds.
-
-Leaving drivers/char/vr41xx_giu.c as a zero length file may have been a 
-git bug but was probably just an oversight. I'll send a patch to clean 
-it up as a followup.
-
-Chris
-
--- 
-Chris Dearman
-MIPS Technologies Inc            955 East Arques Ave, Sunnyvale CA 94085
+diff --git a/drivers/char/vr41xx_giu.c b/drivers/char/vr41xx_giu.c
+deleted file mode 100644
+index e69de29..0000000

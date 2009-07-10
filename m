@@ -1,65 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jul 2009 11:07:06 +0200 (CEST)
-Received: from dns1.mips.com ([63.167.95.197]:35236 "EHLO dns1.mips.com"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 10 Jul 2009 12:00:16 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:54236 "EHLO h5.dl5rb.org.uk"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1491987AbZGJJGv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 10 Jul 2009 11:06:51 +0200
-Received: from MTVEXCHANGE.mips.com ([192.168.36.60])
-	by dns1.mips.com (8.13.8/8.13.8) with ESMTP id n6A96js3024475
-	for <linux-mips@linux-mips.org>; Fri, 10 Jul 2009 02:06:45 -0700
-Received: from mercury.mips.com ([192.168.64.101]) by MTVEXCHANGE.mips.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Fri, 10 Jul 2009 02:06:44 -0700
-Received: from [192.168.65.97] (linux-raghu [192.168.65.97])
-	by mercury.mips.com (8.13.5/8.13.5) with ESMTP id n6A96ier021861;
-	Fri, 10 Jul 2009 02:06:44 -0700 (PDT)
-From:	Raghu Gandham <raghu@mips.com>
-Subject: [PATCH] Add missing memory barriers for correct operation of
-	amon_cpu_start
-To:	linux-mips@linux-mips.org
-Cc:	raghu@mips.com, chris@mips.com
-Date:	Fri, 10 Jul 2009 02:06:38 -0700
-Message-ID: <20090710090637.26302.42976.stgit@linux-raghu>
-User-Agent: StGIT/0.14.3
+	id S1491934AbZGJKAJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 10 Jul 2009 12:00:09 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n6AA0BM0001772;
+	Fri, 10 Jul 2009 11:00:12 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n6AA0Abm001770;
+	Fri, 10 Jul 2009 11:00:10 +0100
+Date:	Fri, 10 Jul 2009 11:00:10 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Chris Dearman <chris@mips.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Delete fossil file
+Message-ID: <20090710100010.GA1288@linux-mips.org>
+References: <20090710030858.13604.11849.stgit@localhost.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 10 Jul 2009 09:06:44.0802 (UTC) FILETIME=[BF534A20:01CA013D]
-Return-Path: <raghu@mips.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20090710030858.13604.11849.stgit@localhost.localdomain>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23715
+X-archive-position: 23716
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: raghu@mips.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-From: Chris Dearman <chris@mips.com>
+On Thu, Jul 09, 2009 at 08:10:06PM -0700, Chris Dearman wrote:
 
-Signed-off-by: Chris Dearman (chris@mips.com)
----
+> Empty file created by commit 27fdd325dace4a1ebfa10e93ba6f3d25f25df674
+> 
+> Signed-off-by: Chris Dearman <chris@mips.com>
 
- arch/mips/mti-malta/malta-amon.c |    7 ++++---
- 1 files changed, 4 insertions(+), 3 deletions(-)
+Thanks, applied.
 
-diff --git a/arch/mips/mti-malta/malta-amon.c b/arch/mips/mti-malta/malta-amon.c
-index df9e526..469d9b0 100644
---- a/arch/mips/mti-malta/malta-amon.c
-+++ b/arch/mips/mti-malta/malta-amon.c
-@@ -70,11 +70,12 @@ void amon_cpu_start(int cpu,
- 	launch->sp = sp;
- 	launch->a0 = a0;
- 
--	/* Make sure target sees parameters before the go bit */
--	smp_mb();
--
-+	smp_wmb();              /* Target must see parameters before go */
- 	launch->flags |= LAUNCH_FGO;
-+	smp_wmb();              /* Target must see go before we poll  */
-+
- 	while ((launch->flags & LAUNCH_FGONE) == 0)
- 		;
-+	smp_rmb();      /* Target will be updating flags soon */
- 	pr_debug("launch: cpu%d gone!\n", cpu);
- }
+  Ralf

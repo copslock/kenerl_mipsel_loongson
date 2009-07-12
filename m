@@ -1,92 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Jul 2009 18:42:20 +0200 (CEST)
-Received: from rv-out-0708.google.com ([209.85.198.241]:57267 "EHLO
-	rv-out-0708.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1492214AbZGLQmN (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 12 Jul 2009 18:42:13 +0200
-Received: by rv-out-0708.google.com with SMTP id l33so456475rvb.24
-        for <multiple recipients>; Sun, 12 Jul 2009 09:42:09 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 12 Jul 2009 18:42:44 +0200 (CEST)
+Received: from mail-ew0-f215.google.com ([209.85.219.215]:52071 "EHLO
+	mail-ew0-f215.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492410AbZGLQmU convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 12 Jul 2009 18:42:20 +0200
+Received: by ewy11 with SMTP id 11so1913637ewy.0
+        for <multiple recipients>; Sun, 12 Jul 2009 09:42:14 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:received:to:subject
-         :message-id:from:date;
-        bh=TYTDlvPb2zRz165SCSpKYO4kYLv3G8GacH8fm2vrl+0=;
-        b=lMaVvmF4uvt8IRJYgkD407rEuBB2eqS8Sd7L2bjpg7ectfMhRAdWZbip71I5owl6lN
-         ZDahX1nMuvS13xBJsyul02lFnIwNboqZ0gOwZWaIUt9fBqFejt7sonnpbIq7imGfz+EI
-         +dvUZ9xK/qEECHcW3YORDjitUN4EbYMKESIPs=
+        h=domainkey-signature:received:received:sender:from:to:subject:date
+         :user-agent:cc:references:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:content-disposition:message-id;
+        bh=vpRAvszHVTc6YoJpnxLEXkAFsX7QxBXElebFzcFTBsU=;
+        b=wcAwhBJb2XrTf5fGx+BbmKZBKZOlwbuoH5o4P3euGoTODXh4zvFGgD66qEBVGL6Jyd
+         pcVjYPLt/h5RT5GAwVNwsqaHtzEbdUMy/xhLie4O1blidvJ3CvZxktU15IP5BkdXGnYI
+         mQKvWUWN9emrftjOQ4sOiB9ZA88MfTg/T6p2Q=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=to:subject:message-id:from:date;
-        b=hxeKKrC28DMg7HSkQoZbFi7e4wqBTnP6ULDzX2bCEPoSKR2dDHazAjOPD2eKaa7zkT
-         +uDe4J9Xi482d7uWse2JgVOJMKhkQH2ZBnUQkZN5Rh4uKxOBznEjOR3UGo/w5jAq8B7r
-         HDV8zTthTeFhmrpAvmmhYAPn0AWm0/5l0o5IE=
-Received: by 10.140.165.21 with SMTP id n21mr2264325rve.268.1247416929755;
-        Sun, 12 Jul 2009 09:42:09 -0700 (PDT)
-Received: from localhost (71-17-214-13.sktn.hsdb.sasknet.sk.ca [71.17.214.13])
-        by mx.google.com with ESMTPS id g22sm12744918rvb.5.2009.07.12.09.42.08
+        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
+         :mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id;
+        b=l/pxNJMux2tn0BYGkvJA9+lCszmngo49qmWUIXqxZHbc75IEVhfshhdmqUg2yNHAyl
+         jUGy10QJKHVrDTpR3MbQHm5fklth1tcacgmK7ckjb+h9w/xdgUvVYVp+e+S0lneaNSet
+         LWlvhIhral1sF/8Qfr/GtGDV60GJd/6ECFEQM=
+Received: by 10.210.140.9 with SMTP id n9mr3924438ebd.26.1247416933485;
+        Sun, 12 Jul 2009 09:42:13 -0700 (PDT)
+Received: from lenovo.mimichou.home (home.mimichou.net [82.67.132.19])
+        by mx.google.com with ESMTPS id 28sm7720440eyg.32.2009.07.12.09.42.12
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 12 Jul 2009 09:42:09 -0700 (PDT)
-Received: from shane by localhost with local (Exim 4.63)
-	(envelope-from <shane@localhost>)
-	id 1MQ27q-00068L-IA; Sun, 12 Jul 2009 10:42:06 -0600
-To:	Andrew_Hughes@pmc-sierra.com, florian@openwrt.org,
-	linux-mips@linux-mips.org, Marc_St-Jean@pmc-sierra.com,
-	ralf@linux-mips.org
-Subject: [PATCH] Simplify and correct interrupt handling for MSP4200
-Message-Id: <E1MQ27q-00068L-IA@localhost>
-From:	Shane McDonald <mcdonald.shane@gmail.com>
-Date:	Sun, 12 Jul 2009 10:42:06 -0600
-Return-Path: <mcdonald.shane@gmail.com>
+        Sun, 12 Jul 2009 09:42:12 -0700 (PDT)
+From:	Florian Fainelli <florian@openwrt.org>
+To:	Shane McDonald <mcdonald.shane@gmail.com>
+Subject: Re: [PATCH] fix build failures on msp_irq_slp.c
+Date:	Sun, 12 Jul 2009 18:42:07 +0200
+User-Agent: KMail/1.9.9
+Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+References: <200904271659.48357.florian@openwrt.org> <b2b2f2320907110351o1473fc79xa3926b8af4ffc35@mail.gmail.com> <b2b2f2320907120934x6d6e4059ma318fe6236e45b19@mail.gmail.com>
+In-Reply-To: <b2b2f2320907120934x6d6e4059ma318fe6236e45b19@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Message-Id: <200907121842.08739.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23725
+X-archive-position: 23726
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mcdonald.shane@gmail.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-The current interrupt handling code for the MSP4200 always
-masks an interrupt before acknowledging it.  This is not required,
-as that will be handled by the level interrupt handler.  This
-change simplifies the MSP4200 code to remove the masking in the
-ack routine, and makes sure that the minimum required operation
-is performed for masking and acking, rather than always both
-masking and acking the interrupt.
+Le Sunday 12 July 2009 18:34:45 Shane McDonald, vous avez écrit :
+> On Sat, Jul 11, 2009 at 4:51 AM, Shane McDonald 
+<mcdonald.shane@gmail.com>wrote:
+> > Hi Florian:
+> >
+> >   My apologies for the delay in replying to your latest prompt -- I've
+> > been on vacation with little internet access.
+> >
+> >   Your patch looks correct to me, but as Ralf says, the existing code is
+> > a little suspect.  In my poking around, I've come across three different
+> > versions of this file: the in-tree version, the latest out-of-tree patch
+> > from PMC-Sierra, and an unreleased version from a colleague.  None appear
+> > to be quite correct.  I think I've got enough info, though, to come up
+> > with a good version.
+> >
+> >   I'll cook something up this weekend and get it posted.
+>
+> OK, I've done my cooking, and the cleanup patch will follow in a separate
+> email.  It expects Florian's patch to have been applied.
 
-Signed-off-by: Shane McDonald <mcdonald.shane@gmail.com>
----
- arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c |   10 +---------
- 1 files changed, 1 insertions(+), 9 deletions(-)
+Thank you very much !
 
-diff --git a/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c b/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c
-index 66f6f85..61f3902 100644
---- a/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c
-+++ b/arch/mips/pmc-sierra/msp71xx/msp_irq_slp.c
-@@ -45,13 +45,6 @@ static inline void mask_msp_slp_irq(unsigned int irq)
-  */
- static inline void ack_msp_slp_irq(unsigned int irq)
- {
--	mask_msp_slp_irq(irq);
--
--	/*
--	 * only really necessary for 18, 16-14 and sometimes 3:0 (since
--	 * these can be edge sensitive) but it doesn't hurt  for the others.
--	 */
--
- 	/* check for PER interrupt range */
- 	if (irq < MSP_PER_INTBASE)
- 		*SLP_INT_STS_REG = (1 << (irq - MSP_SLP_INTBASE));
-@@ -62,8 +55,7 @@ static inline void ack_msp_slp_irq(unsigned int irq)
- static struct irq_chip msp_slp_irq_controller = {
- 	.name = "MSP_SLP",
- 	.ack = ack_msp_slp_irq,
--	.mask = ack_msp_slp_irq,
--	.mask_ack = ack_msp_slp_irq,
-+	.mask = mask_msp_slp_irq,
- 	.unmask = unmask_msp_slp_irq,
- };
- 
+>
+> Florian's patch is correct, so I'll add my:
+>
+> Acked-by: Shane McDonald <mcdonald.shane@gmail.com>
+>
+> Shane
+
+
+
 -- 
-1.6.2.4
+Best regards, Florian Fainelli
+Email : florian@openwrt.org
+http://openwrt.org
+-------------------------------

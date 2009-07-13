@@ -1,32 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jul 2009 12:57:37 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:43896 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 13 Jul 2009 13:54:43 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:58280 "EHLO h5.dl5rb.org.uk"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1492581AbZGMK5a (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 13 Jul 2009 12:57:30 +0200
+	id S1492249AbZGMLyf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 13 Jul 2009 13:54:35 +0200
 Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n6DAvZcM023657;
-	Mon, 13 Jul 2009 11:57:36 +0100
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n6DBr9DK025708;
+	Mon, 13 Jul 2009 12:53:10 +0100
 Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n6DAvY5i023655;
-	Mon, 13 Jul 2009 11:57:34 +0100
-Date:	Mon, 13 Jul 2009 11:57:34 +0100
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n6DBr7aA025706;
+	Mon, 13 Jul 2009 12:53:07 +0100
+Date:	Mon, 13 Jul 2009 12:53:06 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Gabor Juhos <juhosg@openwrt.org>
-Cc:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: fix loading of modules with unresolved weak
-	symbols
-Message-ID: <20090713105734.GB24046@linux-mips.org>
-References: <1247476464-8961-1-git-send-email-juhosg@openwrt.org>
+To:	Shane McDonald <mcdonald.shane@gmail.com>
+Cc:	Florian Fainelli <florian@openwrt.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH] fix build failures on msp_irq_slp.c
+Message-ID: <20090713115306.GA25606@linux-mips.org>
+References: <200904271659.48357.florian@openwrt.org> <200904291512.19297.florian@openwrt.org> <b2b2f2320904290718pe9a28efy9a8af432887778cb@mail.gmail.com> <200906280701.32649.florian@openwrt.org> <b2b2f2320907110351o1473fc79xa3926b8af4ffc35@mail.gmail.com> <b2b2f2320907120934x6d6e4059ma318fe6236e45b19@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1247476464-8961-1-git-send-email-juhosg@openwrt.org>
+In-Reply-To: <b2b2f2320907120934x6d6e4059ma318fe6236e45b19@mail.gmail.com>
 User-Agent: Mutt/1.5.18 (2008-05-17)
 Return-Path: <ralf@h5.dl5rb.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23729
+X-archive-position: 23730
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,20 +33,28 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jul 13, 2009 at 11:14:24AM +0200, Gabor Juhos wrote:
+On Sun, Jul 12, 2009 at 10:34:45AM -0600, Shane McDonald wrote:
 
-> Loading of modules with unresolved weak symbols fails on MIPS
-> since '88173507e4fc1e7ecd111b0565e8cba0cb7dae6d'.
+> >   My apologies for the delay in replying to your latest prompt -- I've been
+> > on vacation with little internet access.
+> >
+> >   Your patch looks correct to me, but as Ralf says, the existing code is a
+> > little suspect.  In my poking around, I've come across three different
+> > versions of this file: the in-tree version, the latest out-of-tree patch
+> > from PMC-Sierra, and an unreleased version from a colleague.  None appear to
+> > be quite correct.  I think I've got enough info, though, to come up with a
+> > good version.
+> >
+> >   I'll cook something up this weekend and get it posted.
 > 
-> Modules: handle symbols that have a zero value
 > 
-> The module subsystem cannot handle symbols that are zero.  If symbols
-> are present that have a zero value then the module resolver prints out a
-> message that these symbols are unresolved.
+> OK, I've done my cooking, and the cleanup patch will follow in a separate
+> email.  It expects Florian's patch to have been applied.
 > 
-> We have to use IS_ERR_VALUE() to check that a symbol has been resolved
-> or not.
+> Florian's patch is correct, so I'll add my:
+> 
+> Acked-by: Shane McDonald <mcdonald.shane@gmail.com>
 
-Applied.  Thanks Gabor!
+Okay, applied.  Thanks!
 
   Ralf

@@ -1,73 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 14 Jul 2009 17:47:08 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:43841 "EHLO
-	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492552AbZGNPrC (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 14 Jul 2009 17:47:02 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B4a5ca8680001>; Tue, 14 Jul 2009 11:46:48 -0400
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 14 Jul 2009 08:46:44 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 14 Jul 2009 08:46:44 -0700
-Message-ID: <4A5CA864.90206@caviumnetworks.com>
-Date:	Tue, 14 Jul 2009 08:46:44 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jul 2009 00:10:49 +0200 (CEST)
+Received: from epo-int2.asu.edu ([129.219.187.21]:19580 "EHLO epo-int2.asu.edu"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1492687AbZGNWKo convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 15 Jul 2009 00:10:44 +0200
+Received: from exhub2.asurite.ad.asu.edu (exhub2.asurite.ad.asu.edu [129.219.103.60])
+	by epo-int2.asu.edu (Switch-3.1.8/Switch-3.1.7/asu-postoffice-prod) with ESMTP id n6EM6ZIQ012648
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=FAIL);
+	Tue, 14 Jul 2009 15:09:27 -0700
+Received: from EX01.asurite.ad.asu.edu (129.219.12.200) by
+ exhub2.asurite.ad.asu.edu (129.219.103.60) with Microsoft SMTP Server id
+ 8.1.375.2; Tue, 14 Jul 2009 15:08:39 -0700
+Received: from EX02.asurite.ad.asu.edu ([129.219.12.202]) by
+ EX01.asurite.ad.asu.edu with Microsoft SMTPSVC(6.0.3790.3959);	 Tue, 14 Jul
+ 2009 15:07:42 -0700
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-Class: urn:content-classes:message
 MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, ralf@linux-mips.org
-CC:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Fix HPAGE_SIZE redifinition
-References: <1247578629-23079-1-git-send-email-anemo@mba.ocn.ne.jp>
-In-Reply-To: <1247578629-23079-1-git-send-email-anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 14 Jul 2009 15:46:44.0377 (UTC) FILETIME=[49D6D090:01CA049A]
-Return-Path: <David.Daney@caviumnetworks.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: Batch: R3/A312-59? Contact Your Claims Agent Via Email (charleslambert.uk@w.cn)?
+Date:	Tue, 14 Jul 2009 15:06:56 -0700
+Message-ID: <538501A6356466468F591791864669BC058137F8@EX02.asurite.ad.asu.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Batch: R3/A312-59? Contact Your Claims Agent Via Email (charleslambert.uk@w.cn)?
+Thread-Index: AcoEz2abuW+c7vY2Qc2xno9DtwAP3Q==
+From:	Brookelyn Loeffler <bloeffle@mainex1.asu.edu>
+X-OriginalArrivalTime: 14 Jul 2009 22:07:43.0062 (UTC) FILETIME=[82AD5760:01CA04CF]
+X-Virus-Scanned: by amavisd-new
+To:	unlisted-recipients:; (no To-header on input)
+Return-Path: <bloeffle@mainex1.asu.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23738
+X-archive-position: 23739
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: bloeffle@mainex1.asu.edu
 Precedence: bulk
 X-list: linux-mips
 
-Atsushi Nemoto wrote:
-> This patch fixes warnings like this:
->   CC      fs/proc/meminfo.o
-> In file included from /work/linux/include/linux/mmzone.h:20,
->                  from /work/linux/include/linux/gfp.h:4,
->                  from /work/linux/include/linux/mm.h:8,
->                  from /work/linux/fs/proc/meminfo.c:5:
-> /work/linux/arch/mips/include/asm/page.h:36:1: warning: "HPAGE_SIZE" redefined
-> In file included from /work/linux/fs/proc/meminfo.c:2:
-> /work/linux/include/linux/hugetlb.h:107:1: warning: this is the location of the previous definition
-> 
-> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-
-Acked-by: David Daney <ddaney@caviumnetworks.com>
-
-
-> ---
->  arch/mips/include/asm/page.h |    2 ++
->  1 files changed, 2 insertions(+), 0 deletions(-)
-> 
-> diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
-> index 96a14a4..4320239 100644
-> --- a/arch/mips/include/asm/page.h
-> +++ b/arch/mips/include/asm/page.h
-> @@ -32,10 +32,12 @@
->  #define PAGE_SIZE	(1UL << PAGE_SHIFT)
->  #define PAGE_MASK       (~((1 << PAGE_SHIFT) - 1))
->  
-> +#ifdef CONFIG_HUGETLB_PAGE
->  #define HPAGE_SHIFT	(PAGE_SHIFT + PAGE_SHIFT - 3)
->  #define HPAGE_SIZE	((1UL) << HPAGE_SHIFT)
->  #define HPAGE_MASK	(~(HPAGE_SIZE - 1))
->  #define HUGETLB_PAGE_ORDER	(HPAGE_SHIFT - PAGE_SHIFT)
-> +#endif /* CONFIG_HUGETLB_PAGE */
->  
->  #ifndef __ASSEMBLY__
->  
+Ref: LSUK/2031/8161/05
+Batch: R3/A312-59
+Dear Email Owner
+This is to inform you that your email address have just
+won a cash price of £850,000 .00 Pounds in the
+UK National e-Lottery Online Sweepstakes
+you are to contact the online claims agent.
+Name: Barrister Charles Lambert
+Email: charleslambert.uk@w.cn
+Provide the Following Information:
+Name, Address, Age, Sex, Tel, Occupation
+Online Coordinator
+Katie Anne Longacre
+Brookelyn Loeffler
+For claims proceedures Send your details to ( charleslambert.uk@w.cn )Only.

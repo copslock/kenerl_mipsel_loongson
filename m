@@ -1,81 +1,119 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jul 2009 07:05:20 +0200 (CEST)
-Received: from mail-bw0-f208.google.com ([209.85.218.208]:48246 "EHLO
-	mail-bw0-f208.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492055AbZGOFFO (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 15 Jul 2009 07:05:14 +0200
-Received: by bwz4 with SMTP id 4so1847399bwz.0
-        for <linux-mips@linux-mips.org>; Tue, 14 Jul 2009 22:05:04 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jul 2009 12:09:48 +0200 (CEST)
+Received: from ey-out-1920.google.com ([74.125.78.150]:26744 "EHLO
+	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1492857AbZGOKJk (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 15 Jul 2009 12:09:40 +0200
+Received: by ey-out-1920.google.com with SMTP id 13so712016eye.54
+        for <multiple recipients>; Wed, 15 Jul 2009 03:09:40 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:date:message-id:subject
-         :from:to:content-type:content-transfer-encoding;
-        bh=Nzwp6hSPaDTEei2jkfpJuEtMHPxZeDj0a5Jr9lhtkoY=;
-        b=UM3Wsnm95i1hiD4uP+KeMEFrIoASEMLPxTqgi3XL0jSwAZMmxgSCFp/+ezJGxXDCoK
-         rf0uOw/VOAjSuDx0dDT75VynwFGxP6WouFrZIjwBFJ6oTTjYfb5gYnhmnf/bJcIQdXLX
-         aFQeiFTf4i0P5qlvxEu7TQW+tOfKNLB5iI1CI=
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:from:date:subject
+         :mime-version:x-uid:x-length:to:cc:content-type
+         :content-transfer-encoding:content-disposition:message-id;
+        bh=1JTQ7VZ4Zf19SH/A/VR5mf8T7vMGfhJ8AxcOMZ36cek=;
+        b=iI2YUueP79yDibpphbY55qrdUBn/Lxqzdu8AEJOgMtAJRcjnp6FGaPpwk69qRzg/2x
+         Wl8ORhsMtlvtmaWtTMLy9t1OgVSzlzkoqoKQzSaJDITyqPjkGKgRW9pCYZepd5UFpigB
+         /k7DPRo+Uc0EJthCp2k0QRAnlmQ2oDg8ZiOJY=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:content-type
-         :content-transfer-encoding;
-        b=vyFrL+hHP9yDeCYpd9MSBIwrpGU1ir/zD3aloQhEKwcBQoOVRr/ciFd1C0dOzeEesw
-         pLBZUKEilapW1001gXdpn8SMnYxDBlssLUPkYODzvjivhiXhpdWV24zMZRpJKkVG+DNn
-         2c8XXSTdULFLYeB7Ov2rDw/mcZW8eEUH3Va2g=
+        d=gmail.com; s=gamma;
+        h=sender:from:date:subject:mime-version:x-uid:x-length:to:cc
+         :content-type:content-transfer-encoding:content-disposition
+         :message-id;
+        b=An47pX1ynXC0zWc2VzobwYfauCxQFb1IfByUqRIAuoAUJf0KlPEvRTTMX3wYOJbKFi
+         SMygdGy9oFw2nQ9G1HrGQ6gmq3sE7fd4OqEj9mnkjrHu8/Q0aSGRZd2eW4pT6YcVEqaX
+         gH7XhzKvj0ktlQVYdtyEkHQxckWbsaee/TsOU=
+Received: by 10.210.61.8 with SMTP id j8mr9064963eba.16.1247652580166;
+        Wed, 15 Jul 2009 03:09:40 -0700 (PDT)
+Received: from florian.lab.openpattern.org (lab.openpattern.org [82.240.16.241])
+        by mx.google.com with ESMTPS id 5sm1916624eyh.40.2009.07.15.03.09.37
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 15 Jul 2009 03:09:38 -0700 (PDT)
+From:	Florian Fainelli <florian@openwrt.org>
+Date:	Wed, 15 Jul 2009 12:09:34 +0200
+Subject: [PATCH 1/2] ar7: make board code register ar7_wdt as a platform device
 MIME-Version: 1.0
-Received: by 10.102.215.19 with SMTP id n19mr3806129mug.79.1247634304591; Tue, 
-	14 Jul 2009 22:05:04 -0700 (PDT)
-Date:	Wed, 15 Jul 2009 07:05:04 +0200
-Message-ID: <f861ec6f0907142205l3362af6cxfa23e536e0ce5583@mail.gmail.com>
-Subject: spuriuos interrupts in 2.6.31-rc
-From:	Manuel Lauss <manuel.lauss@googlemail.com>
-To:	Linux-MIPS <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
+X-UID:	626
+X-Length: 2489
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, Wim Van Sebroeck <wim@iguana.be>
+Content-Type: text/plain;
+  charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Return-Path: <manuel.lauss@googlemail.com>
+Content-Disposition: inline
+Message-Id: <200907151209.35566.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23741
+X-archive-position: 23742
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Hello!
+This patch makes the board code register the ar7_wdt
+driver as a platform device. We move the dynamic
+resource calculation here since the driver should not be
+aware of the AR7 SoC version it is running on.
 
-In current -git kernels, when I modprobe a module which pulls in
-additional modules, I get a few spurious interrupts, like so:
-
-# modprobe snd-soc-exm32cexx
-No device for DAI au1xpsc_i2s
-No device for DAI au1xpsc_ac97
-spurious, 10003c00 0080801c 802340cc 00000000 0
-spurious, 10003c00 0080801c 80234100 00000000 0
-spurious, 10003c00 0080801c 802340b0 00000000 0
-spurious, 10003c00 0080801c 80234100 00000000 0
-spurious, 10003c00 0080801c 802340b0 00000000 0
-spurious, 10003c00 0080801c 802340b0 00000000 0
-spurious, 10003c00 0080801c 80234100 00000000 0
-spurious, 10003c00 0080801c 802340b0 00000000 0
-spurious, 10003c00 0080801c 80234100 00000000 0
-No device for DAI CS4251x
-EXM32_CE05 Audio: using AC97
-AC97 SoC Audio Codec 0.6
-asoc: AC97 HiFi <-> au1xpsc_ac97 mapping ok
-
-The hexvalues are c0_status, c0_cause, c0_epc, alchemy ic base and irq base.
-
-ExcCode in c0_cause is 7 which according to the documents I read means
-"Bus Error Exception (data reference)". The EPC points to various places
-inside memcpy.S.
-
-Curiously, if I remove "#define cpu_has_llsc 1" from
-mach-au1000/cpu-feature-overrides.h
-they disappear.  The same board-code on 2.6.30 also is unaffected.
-
-Before I start to bisect this I wanted to ask if someone in here might
-have an idea as to what could be responsible?
-
-Thanks!
-       Manuel Lauss
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
+---
+diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
+index 5422449..06e3147 100644
+--- a/arch/mips/ar7/platform.c
++++ b/arch/mips/ar7/platform.c
+@@ -410,6 +410,20 @@ static struct platform_device ar7_udc = {
+ 	.num_resources = ARRAY_SIZE(usb_res),
+ };
+ 
++static struct resource ar7_wdt_res = {
++	.name = "regs",
++	.start = -1, /* Filled at runtime */
++	.end = -1, /* Filled at runtime */
++	.flags = IORESOURCE_MEM,
++};
++
++static struct platform_device ar7_wdt = {
++	.id = -1,
++	.name  = "ar7_wdt",
++	.resource = &ar7_wdt_res,
++	.num_resources = 1,
++};
++
+ static inline unsigned char char2hex(char h)
+ {
+ 	switch (h) {
+@@ -482,6 +496,7 @@ static int __init ar7_register_devices(void)
+ {
+ 	int res;
+ 	static struct uart_port uart_port[2];
++	u16 chip_id;
+ 
+ 	memset(uart_port, 0, sizeof(struct uart_port) * 2);
+ 
+@@ -550,6 +565,23 @@ static int __init ar7_register_devices(void)
+ 
+ 	res = platform_device_register(&ar7_udc);
+ 
++	chip_id = ar7_chip_id();
++	switch (chip_id) {
++	case AR7_CHIP_7100:
++	case AR7_CHIP_7200:
++		ar7_wdt_res.start = AR7_REGS_WDT;
++		break;
++	case AR7_CHIP_7300:
++		ar7_wdt_res.start = UR8_REGS_WDT;
++		break;
++	default:
++		break;
++	}
++
++	ar7_wdt_res.end = ar7_wdt_res.start + 0x20;
++
++	res = platform_device_register(&ar7_wdt);
++
+ 	return res;
+ }
+ arch_initcall(ar7_register_devices);

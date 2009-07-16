@@ -1,53 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 15 Jul 2009 15:04:10 +0200 (CEST)
-Received: from mba.ocn.ne.jp ([122.28.14.163]:57792 "HELO smtp.mba.ocn.ne.jp"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with SMTP
-	id S1492124AbZGONED (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 15 Jul 2009 15:04:03 +0200
-Received: from localhost.localdomain (p3002-ipad306funabasi.chiba.ocn.ne.jp [123.217.173.2])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 3E5CA5F85; Wed, 15 Jul 2009 22:03:55 +0900 (JST)
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org
-Subject: [PATCH] rbtx4939: Fix IOC pin-enable register updating
-Date:	Wed, 15 Jul 2009 22:03:56 +0900
-Message-Id: <1247663036-4713-1-git-send-email-anemo@mba.ocn.ne.jp>
-X-Mailer: git-send-email 1.5.6.5
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 16 Jul 2009 03:32:27 +0200 (CEST)
+Received: from epo-int2.asu.edu ([129.219.187.21]:40348 "EHLO epo-int2.asu.edu"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1492808AbZGPBcU convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 16 Jul 2009 03:32:20 +0200
+Received: from exhub1.asurite.ad.asu.edu (exhub1.asurite.ad.asu.edu [129.219.103.59])
+	by epo-int2.asu.edu (Switch-3.1.8/Switch-3.1.7/asu-postoffice-prod) with ESMTP id n6G1ULgX003798
+	(version=TLSv1/SSLv3 cipher=RC4-MD5 bits=128 verify=FAIL);
+	Wed, 15 Jul 2009 18:30:24 -0700
+Received: from EX03.asurite.ad.asu.edu (129.219.12.203) by
+ exhub1.asurite.ad.asu.edu (129.219.103.59) with Microsoft SMTP Server id
+ 8.1.375.2; Wed, 15 Jul 2009 18:30:24 -0700
+Received: from EX04.asurite.ad.asu.edu ([129.219.12.201]) by
+ EX03.asurite.ad.asu.edu with Microsoft SMTPSVC(6.0.3790.3959);	 Wed, 15 Jul
+ 2009 18:30:15 -0700
+X-MimeOLE: Produced By Microsoft Exchange V6.5
+Content-Class: urn:content-classes:message
+MIME-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Subject: Batch: R3/A312-59 Contact Your Claims Agent Via Email (uknlfoundation1@att.net )?
+Date:	Wed, 15 Jul 2009 18:29:24 -0700
+Message-ID: <152C4A8911E1E14E8550D6C193705D4A06E8CCB9@EX04.asurite.ad.asu.edu>
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Thread-Topic: Batch: R3/A312-59 Contact Your Claims Agent Via Email (uknlfoundation1@att.net )?
+Thread-Index: AcoFtNm8MzMOKtUVTcGL08dQd1qZ3A==
+From:	Kelsey Groetken <kgroetke@mainex1.asu.edu>
+X-OriginalArrivalTime: 16 Jul 2009 01:30:16.0116 (UTC) FILETIME=[F8DFF740:01CA05B4]
+X-Virus-Scanned: by amavisd-new
+To:	unlisted-recipients:; (no To-header on input)
+Return-Path: <kgroetke@mainex1.asu.edu>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23744
+X-archive-position: 23745
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: kgroetke@mainex1.asu.edu
 Precedence: bulk
 X-list: linux-mips
 
-The rbtx4939_update_ioc_pen() expects txx9_ce_res[] already
-initialized.  Call it after tx4939_setup().
-
-Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
----
- arch/mips/txx9/rbtx4939/setup.c |    2 +-
- 1 files changed, 1 insertions(+), 1 deletions(-)
-
-diff --git a/arch/mips/txx9/rbtx4939/setup.c b/arch/mips/txx9/rbtx4939/setup.c
-index c033ffe..b0c241e 100644
---- a/arch/mips/txx9/rbtx4939/setup.c
-+++ b/arch/mips/txx9/rbtx4939/setup.c
-@@ -512,10 +512,10 @@ static void __init rbtx4939_setup(void)
- 	rbtx4939_ebusc_setup();
- 	/* always enable ATA0 */
- 	txx9_set64(&tx4939_ccfgptr->pcfg, TX4939_PCFG_ATA0MODE);
--	rbtx4939_update_ioc_pen();
- 	if (txx9_master_clock == 0)
- 		txx9_master_clock = 20000000;
- 	tx4939_setup();
-+	rbtx4939_update_ioc_pen();
- #ifdef HAVE_RBTX4939_IOSWAB
- 	ioswabw = rbtx4939_ioswabw;
- 	__mem_ioswabw = rbtx4939_mem_ioswabw;
--- 
-1.5.6.5
+Ref: LSUK/2031/8161/05
+Batch: R3/A312-59
+Dear Email Owner
+This is to inform you that your email address have just
+won a cash price of £850,000 .00 Pounds in the
+UK National e-Lottery Online Sweepstakes
+you are to contact the online claims agent.
+Name: Barrister Charles Lambert
+Email: uknlfoundation1@att.net <mailto:uknlfoundation1@att.net> 
+Provide the Following Information:
+Name, Address, Age, Sex, Tel, Occupation
+Online Coordinator
+Katie Anne Longacre
+Kelsey Groetken
+For claims proceedures Send your details to ( uknlfoundation1@att.net <mailto:uknlfoundation1@att.net>  )Only. 

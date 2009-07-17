@@ -1,46 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jul 2009 15:46:36 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:42233 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1492125AbZGQNq2 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 17 Jul 2009 15:46:28 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n6HDkcnT014639;
-	Fri, 17 Jul 2009 14:46:38 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n6HDkbcc014637;
-	Fri, 17 Jul 2009 14:46:37 +0100
-Date:	Fri, 17 Jul 2009 14:46:37 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Octeon PCIe: Make hardware and software bus
-	numbers match.
-Message-ID: <20090717134637.GC7396@linux-mips.org>
-References: <1247620610-18399-1-git-send-email-ddaney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 17 Jul 2009 16:43:33 +0200 (CEST)
+Received: from mailrelay004.isp.belgacom.be ([195.238.6.170]:65290 "EHLO
+	mailrelay004.isp.belgacom.be" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492377AbZGQOn0 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 17 Jul 2009 16:43:26 +0200
+X-Belgacom-Dynamic: yes
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: ApoEAOMpYEpR92xv/2dsb2JhbADRAgmEBAU
+Received: from 111.108-247-81.adsl-dyn.isp.belgacom.be (HELO infomag) ([81.247.108.111])
+  by relay.skynet.be with ESMTP; 17 Jul 2009 16:43:20 +0200
+Received: from wim by infomag with local (Exim 4.69)
+	(envelope-from <wim@infomag.iguana.be>)
+	id 1MRoee-0003JC-Mg; Fri, 17 Jul 2009 16:43:20 +0200
+Date:	Fri, 17 Jul 2009 16:43:20 +0200
+From:	Wim Van Sebroeck <wim@iguana.be>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Florian Fainelli <florian@openwrt.org>, linux-mips@linux-mips.org,
+	Wim Van Sebroeck <wim@iguana.be>
+Subject: Re: [PATCH 1/2] ar7: make board code register ar7_wdt as a
+	platform device
+Message-ID: <20090717144320.GA23797@infomag.iguana.be>
+References: <200907151209.35566.florian@openwrt.org> <20090717133009.GA7396@linux-mips.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1247620610-18399-1-git-send-email-ddaney@caviumnetworks.com>
+In-Reply-To: <20090717133009.GA7396@linux-mips.org>
 User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@h5.dl5rb.org.uk>
+Return-Path: <wim@iguana.be>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23749
+X-archive-position: 23750
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: wim@iguana.be
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Jul 14, 2009 at 06:16:50PM -0700, David Daney wrote:
+Hi All,
 
-> Some SiliconImage PCIe SATA controlers are not detected when the bus
-> numbers differ.
+> > This patch makes the board code register the ar7_wdt
+> > driver as a platform device. We move the dynamic
+> > resource calculation here since the driver should not be
+> > aware of the AR7 SoC version it is running on.
+> > 
+> > Signed-off-by: Florian Fainelli <florian@openwrt.org>
 > 
-> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+> Thanks, queued for 2.6.32.  Haven't heared from Wim yet ...
 
-Applied to master.  Thanks,
+Review planned this weekend.
 
-  Ralf
+Kind regards,
+Wim.

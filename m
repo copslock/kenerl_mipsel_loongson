@@ -1,189 +1,112 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 18 Jul 2009 23:50:12 +0200 (CEST)
-Received: from mailrelay010.isp.belgacom.be ([195.238.6.177]:64476 "EHLO
-	mailrelay010.isp.belgacom.be" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492848AbZGRVuE (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 18 Jul 2009 23:50:04 +0200
-X-Belgacom-Dynamic: yes
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: ApoEAOvgYUpR93io/2dsb2JhbADLegmEAwU
-Received: from 168.120-247-81.adsl-dyn.isp.belgacom.be (HELO infomag) ([81.247.120.168])
-  by relay.skynet.be with ESMTP; 18 Jul 2009 23:49:58 +0200
-Received: from wim by infomag with local (Exim 4.69)
-	(envelope-from <wim@infomag.iguana.be>)
-	id 1MSHn4-0006TN-98; Sat, 18 Jul 2009 23:49:58 +0200
-Date:	Sat, 18 Jul 2009 23:49:58 +0200
-From:	Wim Van Sebroeck <wim@iguana.be>
-To:	Florian Fainelli <florian@openwrt.org>
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/2] ar7_wdt: convert to become a platform driver
-Message-ID: <20090718214958.GA24850@infomag.iguana.be>
-References: <200907151210.20294.florian@openwrt.org> <20090718190930.GC23797@infomag.iguana.be>
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="TB36FDmn/VVEgNH/"
-Content-Disposition: inline
-In-Reply-To: <20090718190930.GC23797@infomag.iguana.be>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <wim@iguana.be>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 20 Jul 2009 20:51:40 +0200 (CEST)
+Received: from mail-bw0-f208.google.com ([209.85.218.208]:54072 "EHLO
+	mail-bw0-f208.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492946AbZGTSvd (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 20 Jul 2009 20:51:33 +0200
+Received: by bwz4 with SMTP id 4so2465670bwz.0
+        for <linux-mips@linux-mips.org>; Mon, 20 Jul 2009 11:51:28 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=dOx8O3I+zoeL1p309uVbv6SsyvLrdmj/L+gH6Lqq6Sk=;
+        b=DZ6PhVjLFckFmkT7QY82Mj9PHYByHqsmcPYEH2V0+JkUBrfebte6D+h9tTXufKDRvG
+         wTQZnTM8GdxqnmpYSgz5rMhV1wLw5lnG4IUezjKeQ+1yRU6RVlonkXE5p5JqrZHO9/ml
+         7Fk+yY67l7hE45zSjfi0S458Yz7abtNmIk1OM=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=bqIgRbD44a8ShCLdtlePjq+WCUXsqxezzE3v+qn0VLDvvFpiegf14B77r4tHaOUadm
+         paDU16Heodfrktc/4BmBYHU1dBqEBHXAMfHd5SO4WQmTVbiOzAA7IxBwcZUmWyrkAfZI
+         P5NuIUrwBRgVsfKnnHnyfkx3Cvuv8Gw4FucaY=
+Received: by 10.103.248.17 with SMTP id a17mr2319619mus.97.1248115887945;
+        Mon, 20 Jul 2009 11:51:27 -0700 (PDT)
+Received: from localhost.localdomain (p5496D3B0.dip.t-dialin.net [84.150.211.176])
+        by mx.google.com with ESMTPS id j9sm23733035mue.51.2009.07.20.11.51.26
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Mon, 20 Jul 2009 11:51:27 -0700 (PDT)
+From:	Manuel Lauss <manuel.lauss@googlemail.com>
+To:	linux-kernel@vger.kernel.org
+Cc:	linux-mips@linux-mips.org, Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [PATCH] au1xmmc: dev_pm_ops conversion
+Date:	Mon, 20 Jul 2009 20:51:21 +0200
+Message-Id: <1248115882-20221-1-git-send-email-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 1.6.3.3
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23752
+X-archive-position: 23753
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wim@iguana.be
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
+Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+---
+Run-tested on Au1200.
 
---TB36FDmn/VVEgNH/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+ drivers/mmc/host/au1xmmc.c |   23 +++++++++++------------
+ 1 files changed, 11 insertions(+), 12 deletions(-)
 
-Hi Florian,
-
-Forgot the attachment...
-
-Kind regards,
-Wim.
-
-> Hi Florian,
-> 
-> > This patch converts the ar7_wdt driver to become a platform
-> > driver. The AR7 SoC specific identification and base register
-> > calculation is performed by the board code, therefore we no
-> > longer need to have access to ar7_chip_id.
-> 
-> > @@ -298,22 +285,33 @@ static struct miscdevice ar7_wdt_miscdev = {
-> >  	.fops		= &ar7_wdt_fops,
-> >  };
-> >  
-> > -static int __init ar7_wdt_init(void)
-> > +static int __init ar7_wdt_probe(struct platform_device *pdev)
-> 
-> Should be __devinit .
-> 
-> > +static struct platform_driver ar7_wdt_driver = {
-> > +	.driver.name = "ar7_wdt",
-> > +	.probe = ar7_wdt_probe,
-> > +	.remove = __devexit_p(ar7_wdt_remove),
-> > +};
-> 
-> I prefer to have it as follows (so that the driver.owner field is also set):
-> static struct platform_driver ar7_wdt_driver = {
-> 	.probe = ar7_wdt_probe,
-> 	.remove = __devexit_p(ar7_wdt_remove),
-> 	.driver = {
-> 		.owner = THIS_MODULE,
-> 		.name = "ar7_wdt",
-> 	},
-> };
-> 
-> I suggest to also change the reboot notifier code into a platform shutdown method.
-> You then get something like the attached patch (untested, uncompiled and I included above 2 remarks).
-> For the rest: code is OK for me. After the __init to __devinit fix you can add my signed-off-by.
-> 
-> Kind regards,
-> Wim.
-> 
-
---TB36FDmn/VVEgNH/
-Content-Type: text/x-diff; charset=us-ascii
-Content-Disposition: attachment; filename="ar7_wdt.diff"
-
---- ar7_wdt.c.orig	2009-07-18 20:54:33.000000000 +0200
-+++ ar7_wdt.c	2009-07-18 21:06:00.000000000 +0200
-@@ -30,8 +30,6 @@
- #include <linux/miscdevice.h>
- #include <linux/platform_device.h>
- #include <linux/watchdog.h>
--#include <linux/notifier.h>
--#include <linux/reboot.h>
- #include <linux/fs.h>
- #include <linux/ioport.h>
- #include <linux/io.h>
-@@ -189,20 +187,6 @@
+diff --git a/drivers/mmc/host/au1xmmc.c b/drivers/mmc/host/au1xmmc.c
+index d3f5561..70509c9 100644
+--- a/drivers/mmc/host/au1xmmc.c
++++ b/drivers/mmc/host/au1xmmc.c
+@@ -1131,13 +1131,12 @@ static int __devexit au1xmmc_remove(struct platform_device *pdev)
  	return 0;
  }
  
--static int ar7_wdt_notify_sys(struct notifier_block *this,
--			      unsigned long code, void *unused)
--{
--	if (code == SYS_HALT || code == SYS_POWER_OFF)
--		if (!nowayout)
--			ar7_wdt_disable_wdt();
--
--	return NOTIFY_DONE;
--}
--
--static struct notifier_block ar7_wdt_notifier = {
--	.notifier_call = ar7_wdt_notify_sys,
--};
--
- static ssize_t ar7_wdt_write(struct file *file, const char *data,
- 			     size_t len, loff_t *ppos)
+-#ifdef CONFIG_PM
+-static int au1xmmc_suspend(struct platform_device *pdev, pm_message_t state)
++static int au1xmmc_suspend(struct device *dev)
  {
-@@ -286,7 +270,7 @@
- 	.fops		= &ar7_wdt_fops,
- };
+-	struct au1xmmc_host *host = platform_get_drvdata(pdev);
++	struct au1xmmc_host *host = dev_get_drvdata(dev);
+ 	int ret;
  
--static int __init ar7_wdt_probe(struct platform_device *pdev)
-+static int __devinit ar7_wdt_probe(struct platform_device *pdev)
- {
- 	int rc;
+-	ret = mmc_suspend_host(host->mmc, state);
++	ret = mmc_suspend_host(host->mmc, PMSG_SUSPEND);
+ 	if (ret)
+ 		return ret;
  
-@@ -318,22 +302,13 @@
- 	ar7_wdt_prescale(prescale_value);
- 	ar7_wdt_update_margin(margin);
- 
--	rc = register_reboot_notifier(&ar7_wdt_notifier);
--	if (rc) {
--		printk(KERN_ERR DRVNAME
--			": unable to register reboot notifier\n");
--		goto out_alloc;
--	}
--
- 	rc = misc_register(&ar7_wdt_miscdev);
- 	if (rc) {
- 		printk(KERN_ERR DRVNAME ": unable to register misc device\n");
--		goto out_register;
-+		goto out_alloc;
- 	}
- 	goto out;
- 
--out_register:
--	unregister_reboot_notifier(&ar7_wdt_notifier);
- out_alloc:
- 	iounmap(ar7_wdt);
- 	release_mem_region(ar7_regs_wdt->start, resource_size(ar7_regs_wdt));
-@@ -344,17 +319,26 @@
- static int __devexit ar7_wdt_remove(struct platform_device *pdev)
- {
- 	misc_deregister(&ar7_wdt_miscdev);
--	unregister_reboot_notifier(&ar7_wdt_notifier);
- 	iounmap(ar7_wdt);
- 	release_mem_region(ar7_regs_wdt->start, resource_size(ar7_regs_wdt));
- 
+@@ -1150,27 +1149,27 @@ static int au1xmmc_suspend(struct platform_device *pdev, pm_message_t state)
  	return 0;
  }
  
-+static void ar7_wdt_shutdown(struct platform_device *pdev)
-+{
-+	if (!nowayout)
-+		ar7_wdt_disable_wdt();
-+}
+-static int au1xmmc_resume(struct platform_device *pdev)
++static int au1xmmc_resume(struct device *dev)
+ {
+-	struct au1xmmc_host *host = platform_get_drvdata(pdev);
++	struct au1xmmc_host *host = dev_get_drvdata(dev);
+ 
+ 	au1xmmc_reset_controller(host);
+ 
+ 	return mmc_resume_host(host->mmc);
+ }
+-#else
+-#define au1xmmc_suspend NULL
+-#define au1xmmc_resume NULL
+-#endif
 +
- static struct platform_driver ar7_wdt_driver = {
--	.driver.name = "ar7_wdt",
- 	.probe = ar7_wdt_probe,
- 	.remove = __devexit_p(ar7_wdt_remove),
-+	.shutdown = ar7_wdt_shutdown,
-+	.driver = {
-+		.owner = THIS_MODULE,
-+		.name = "ar7_wdt",
-+	},
++static struct dev_pm_ops au1xmmc_pmops = {
++	.resume		= au1xmmc_resume,
++	.suspend	= au1xmmc_suspend,
++};
+ 
+ static struct platform_driver au1xmmc_driver = {
+ 	.probe         = au1xmmc_probe,
+ 	.remove        = au1xmmc_remove,
+-	.suspend       = au1xmmc_suspend,
+-	.resume        = au1xmmc_resume,
+ 	.driver        = {
+ 		.name  = DRIVER_NAME,
+ 		.owner = THIS_MODULE,
++		.pm    = &au1xmmc_pmops,
+ 	},
  };
  
- static int __init ar7_wdt_init(void)
-
---TB36FDmn/VVEgNH/--
+-- 
+1.6.3.3

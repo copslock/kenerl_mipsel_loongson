@@ -1,106 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jul 2009 16:17:31 +0200 (CEST)
-Received: from ey-out-1920.google.com ([74.125.78.148]:27224 "EHLO
-	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1493279AbZGUORY (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 21 Jul 2009 16:17:24 +0200
-Received: by ey-out-1920.google.com with SMTP id 13so601881eye.54
-        for <multiple recipients>; Tue, 21 Jul 2009 07:17:23 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from
-         :user-agent:mime-version:to:subject:content-type
-         :content-transfer-encoding;
-        bh=xQOJVWkfi5Gfn07ikLvXvDmEzkARIuT5TDrgoVGwtm4=;
-        b=smS7z/8jJjlOKuOjYySqMw4BjjAx2/inVVSKf06X2EHARxXIMyO6uym1Jcn03d0ekg
-         owfp+KXAeuQ9l0O+/nvCdQQd17PnVH1W+Jfm+EHp1tWX2ha87zWmyS70GSzhH4DS3LvF
-         UeyjQN/hNrko7c+GGtIcrgdi1eBAXmMepK82c=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:user-agent:mime-version:to:subject
-         :content-type:content-transfer-encoding;
-        b=lKFrfmXqDMyVvfPgC4Re42kNiJ9x0hqxoL8ma10JUp08tPs9xoKF9Zlp+Iw4mC6IKk
-         02di5bIUshz9Ey7RWv1nn9aMVcPI16xRahbUki1PWpLnSbofNM7UnwFdO1C0ibSpElOA
-         wk8pRkMU/X9C8CZLPJg1k/y9LreSzmnMJxa3k=
-Received: by 10.210.92.8 with SMTP id p8mr246129ebb.6.1248185843627;
-        Tue, 21 Jul 2009 07:17:23 -0700 (PDT)
-Received: from zoinx.mars (d133062.upc-d.chello.nl [213.46.133.62])
-        by mx.google.com with ESMTPS id 5sm88067eyh.36.2009.07.21.07.16.54
-        (version=SSLv3 cipher=RC4-MD5);
-        Tue, 21 Jul 2009 07:17:19 -0700 (PDT)
-Message-ID: <4A65CE5C.4090607@gmail.com>
-Date:	Tue, 21 Jul 2009 16:19:08 +0200
-From:	Roel Kluin <roel.kluin@gmail.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1b3pre) Gecko/20090513 Fedora/3.0-2.3.beta2.fc11 Thunderbird/3.0b2
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jul 2009 16:48:59 +0200 (CEST)
+Received: from cpsmtpm-eml101.kpnxchange.com ([195.121.3.5]:52286 "EHLO
+	CPSMTPM-EML101.kpnxchange.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493285AbZGUOss (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 21 Jul 2009 16:48:48 +0200
+Received: from aragorn.fjphome.nl ([84.85.147.182]) by CPSMTPM-EML101.kpnxchange.com with Microsoft SMTPSVC(7.0.6001.18000);
+	 Tue, 21 Jul 2009 16:48:45 +0200
+From:	Frans Pop <elendil@planet.nl>
+To:	Manuel Lauss <manuel.lauss@googlemail.com>
+Subject: Re: [PATCH] au1xmmc: dev_pm_ops conversion
+Date:	Tue, 21 Jul 2009 16:48:43 +0200
+User-Agent: KMail/1.9.9
+Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	manuel.lauss@gmail.com
+References: <1248115882-20221-1-git-send-email-manuel.lauss@gmail.com> <200907202200.39288.elendil@planet.nl> <f861ec6f0907202212h4b28982fjcb9787a3915d7ee7@mail.gmail.com>
+In-Reply-To: <f861ec6f0907202212h4b28982fjcb9787a3915d7ee7@mail.gmail.com>
 MIME-Version: 1.0
-To:	rjw@sisk.pl, Manuel Lauss <manuel.lauss@googlemail.com>,
-	ralf@linux-mips.org, linux-pm@lists.linux-foundation.org,
-	linux-mips@linux-mips.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH] mips: decrease size of au1xxx_dbdma_pm_regs[][]
-Content-Type: text/plain; charset=ISO-8859-1
+Content-Type: text/plain;
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 7bit
-Return-Path: <roel.kluin@gmail.com>
+Content-Disposition: inline
+Message-Id: <200907211648.44433.elendil@planet.nl>
+X-OriginalArrivalTime: 21 Jul 2009 14:48:45.0243 (UTC) FILETIME=[590158B0:01CA0A12]
+Return-Path: <elendil@planet.nl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23763
+X-archive-position: 23764
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: roel.kluin@gmail.com
+X-original-sender: elendil@planet.nl
 Precedence: bulk
 X-list: linux-mips
 
-There are 16 individual channels (NUM_DBDMA_CHANS) to save/restore
-plus the global ddma block config (the +1). The last register in a
-channel can be skipped since it's read-only (at offset 0x18).
+On Tuesday 21 July 2009, Manuel Lauss wrote:
+> >> -#ifdef CONFIG_PM
+> >
+> > Won't the removal of this test cause a build failure if CONFIG_PM is
+> > not set? If the removal of the test is safe, this should IMHO at
+> > least be explained in the commit message.
+>
+> No, it builds just fine without CONFIG_PM; it was there to shave off a
+> few bytes from the kernel image.  But not everyone tests this driver
+> with CONFIG_PM=y, because apparently noone really needed PM on
+> this platform (Alchemy), and a full build of most of the boards using
+> this driver fails with PM enabled.
 
-Signed-off-by: Roel Kluin <roel.kluin@gmail.com>
----
-Thanks for your review and explanation, Manuel!
+OK.
 
-diff --git a/arch/mips/alchemy/common/dbdma.c b/arch/mips/alchemy/common/dbdma.c
-index 3ab6d80..19c1c82 100644
---- a/arch/mips/alchemy/common/dbdma.c
-+++ b/arch/mips/alchemy/common/dbdma.c
-@@ -175,7 +175,7 @@ static dbdev_tab_t dbdev_tab[] = {
- #define DBDEV_TAB_SIZE	ARRAY_SIZE(dbdev_tab)
- 
- #ifdef CONFIG_PM
--static u32 au1xxx_dbdma_pm_regs[NUM_DBDMA_CHANS + 1][8];
-+static u32 au1xxx_dbdma_pm_regs[NUM_DBDMA_CHANS + 1][6];
- #endif
- 
- 
-@@ -993,14 +993,13 @@ void au1xxx_dbdma_suspend(void)
- 	au1xxx_dbdma_pm_regs[0][3] = au_readl(addr + 0x0c);
- 
- 	/* save channel configurations */
--	for (i = 1, addr = DDMA_CHANNEL_BASE; i < NUM_DBDMA_CHANS; i++) {
-+	for (i = 1, addr = DDMA_CHANNEL_BASE; i <= NUM_DBDMA_CHANS; i++) {
- 		au1xxx_dbdma_pm_regs[i][0] = au_readl(addr + 0x00);
- 		au1xxx_dbdma_pm_regs[i][1] = au_readl(addr + 0x04);
- 		au1xxx_dbdma_pm_regs[i][2] = au_readl(addr + 0x08);
- 		au1xxx_dbdma_pm_regs[i][3] = au_readl(addr + 0x0c);
- 		au1xxx_dbdma_pm_regs[i][4] = au_readl(addr + 0x10);
- 		au1xxx_dbdma_pm_regs[i][5] = au_readl(addr + 0x14);
--		au1xxx_dbdma_pm_regs[i][6] = au_readl(addr + 0x18);
- 
- 		/* halt channel */
- 		au_writel(au1xxx_dbdma_pm_regs[i][0] & ~1, addr + 0x00);
-@@ -1027,14 +1026,13 @@ void au1xxx_dbdma_resume(void)
- 	au_writel(au1xxx_dbdma_pm_regs[0][3], addr + 0x0c);
- 
- 	/* restore channel configurations */
--	for (i = 1, addr = DDMA_CHANNEL_BASE; i < NUM_DBDMA_CHANS; i++) {
-+	for (i = 1, addr = DDMA_CHANNEL_BASE; i <= NUM_DBDMA_CHANS; i++) {
- 		au_writel(au1xxx_dbdma_pm_regs[i][0], addr + 0x00);
- 		au_writel(au1xxx_dbdma_pm_regs[i][1], addr + 0x04);
- 		au_writel(au1xxx_dbdma_pm_regs[i][2], addr + 0x08);
- 		au_writel(au1xxx_dbdma_pm_regs[i][3], addr + 0x0c);
- 		au_writel(au1xxx_dbdma_pm_regs[i][4], addr + 0x10);
- 		au_writel(au1xxx_dbdma_pm_regs[i][5], addr + 0x14);
--		au_writel(au1xxx_dbdma_pm_regs[i][6], addr + 0x18);
- 		au_sync();
- 		addr += 0x100;	/* next channel base */
- 	}
+> This way the PM methods at least get a compile-test in the non-pm case.
+
+Not sure that is a sufficiently valid argument. In any case it *is* a 
+separate change to "dev_pm_ops conversion" so it really should at least 
+be documented and justified in the commit log.
+
+> I like what Magnus Damm did for some of the SuperH drivers:
+>
+> #ifdef CONFIG_PM
+> [...]
+> #define DRIVER_PM_OPS (&driver_pm_ops)
+> #else
+> #define DRIVER_PM_OPS NULL
+> #endif
+
+Yes, that's quite elegant.
+
+> I'd like to keep the pm stuff enabled at all times since it doesn't
+> hurt in the non-pm case and if kernel size becomes a problem I can add
+> the #defines back.
+
+I guess that's up to the maintainers of the mips port.
+
+Cheers,
+FJP

@@ -1,52 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jul 2009 12:11:49 +0200 (CEST)
-Received: from ey-out-1920.google.com ([74.125.78.150]:65285 "EHLO
-	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1493246AbZGUKLm convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 21 Jul 2009 12:11:42 +0200
-Received: by ey-out-1920.google.com with SMTP id 13so570839eye.54
-        for <multiple recipients>; Tue, 21 Jul 2009 03:11:41 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 21 Jul 2009 12:37:57 +0200 (CEST)
+Received: from mail-ew0-f215.google.com ([209.85.219.215]:36561 "EHLO
+	mail-ew0-f215.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493044AbZGUKht (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 21 Jul 2009 12:37:49 +0200
+Received: by ewy11 with SMTP id 11so3068222ewy.0
+        for <multiple recipients>; Tue, 21 Jul 2009 03:37:44 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:to:subject:date
-         :user-agent:cc:references:in-reply-to:mime-version:content-type
+        h=domainkey-signature:received:received:sender:from:date:subject
+         :mime-version:x-uid:x-length:to:cc:content-type
          :content-transfer-encoding:content-disposition:message-id;
-        bh=By6qcOFIUSE23mJgFkr8zaV3GJSXDH5vCTAgMUj1Zbo=;
-        b=bC4NriBx8QHfDekNjLETCbwT5vRcpomHKGRqy5Avs73tmuWi1S6dQV8Kp5PkxryTyd
-         S18H/9VHWMXs3yd08EO8gtjw9kCDYACqyLhL7t/YEhPdKhAlELt+8veqUXI+7SLkkd56
-         0REraZ5f3ZuLrFW58jPgYji7GjDOrP/9mutio=
+        bh=O6m2XvcpZhTTR/eJosKRF7I6KITfUB/O7WgDGGbfX68=;
+        b=ND1vwzybV6IMYAh83gxC3ilHI9+w2ApsIk3tdMG8fEksyXR5dbqX4RlqEbbCzezEV+
+         KmfS/uNYYM5ParueVytaKcbOnYlZfzuo4vLM09nVyBcNzVfkZ+of7JvMVYF71X1Ew0Np
+         ZhH2M/n1/4WTeu5Ov0ZoHAhyqv3168nmc4K4s=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
-         :mime-version:content-type:content-transfer-encoding
-         :content-disposition:message-id;
-        b=aGBWVS/eroK0V1PuYsExWtTNOeV2I1yNp7wbbjsMewD1ltUagwIUBc5eHeOkZ79qBP
-         oyiEXuu4H4kCj2YloNOnRcu3qPeE45D5MRUPhMrly7xw7Wu4mWXoaRz8Vp+3emqHpP2K
-         gbgFoTvbILDaJN6W0ZVHXjUVHkL1fj2kzwtDY=
-Received: by 10.210.128.17 with SMTP id a17mr2708996ebd.19.1248171101737;
-        Tue, 21 Jul 2009 03:11:41 -0700 (PDT)
+        h=sender:from:date:subject:mime-version:x-uid:x-length:to:cc
+         :content-type:content-transfer-encoding:content-disposition
+         :message-id;
+        b=L2dzYJjyPIjw0Jlz306Pvpm8aJG54FfeOjRLudO14KQSACr0pqLXVxNAGIWnmGHgQ0
+         T9W2cVGWn+eE89BrvthWijID2eM3B5mgeqYVZOFBQGxWTzKBsOZDPvV+u3qHStUqPgpc
+         1AP9/OvfD9l5Ee81JG3sgqyKxA8yZUoKy0SiQ=
+Received: by 10.211.196.3 with SMTP id y3mr6588655ebp.15.1248172663944;
+        Tue, 21 Jul 2009 03:37:43 -0700 (PDT)
 Received: from florian.lab.openpattern.org (lab.openpattern.org [82.240.16.241])
-        by mx.google.com with ESMTPS id 10sm13058808eyz.1.2009.07.21.03.11.40
+        by mx.google.com with ESMTPS id 5sm1895380eyf.17.2009.07.21.03.37.43
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 21 Jul 2009 03:11:41 -0700 (PDT)
+        Tue, 21 Jul 2009 03:37:43 -0700 (PDT)
 From:	Florian Fainelli <florian@openwrt.org>
-To:	Wim Van Sebroeck <wim@iguana.be>
-Subject: Re: [PATCH 2/2] ar7_wdt: convert to become a platform driver
-Date:	Tue, 21 Jul 2009 12:11:32 +0200
-User-Agent: KMail/1.9.9
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-References: <200907151210.20294.florian@openwrt.org> <20090718190930.GC23797@infomag.iguana.be> <20090718214958.GA24850@infomag.iguana.be>
-In-Reply-To: <20090718214958.GA24850@infomag.iguana.be>
+Date:	Tue, 21 Jul 2009 12:37:37 +0200
+Subject: [PATCH 1/2] ar7: fix build failures when CONFIG_SERIAL_8250 is not enabled
 MIME-Version: 1.0
+X-UID:	720
+X-Length: 2094
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
 Content-Type: text/plain;
   charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200907211211.35085.florian@openwrt.org>
+Message-Id: <200907211237.39264.florian@openwrt.org>
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23757
+X-archive-position: 23758
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,240 +53,37 @@ X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Wim,
-
-Le Saturday 18 July 2009 23:49:58 Wim Van Sebroeck, vous avez écrit :
-> Hi Florian,
->
-> Forgot the attachment...
->
-> Kind regards,
-> Wim.
->
-> > Hi Florian,
-> >
-> > > This patch converts the ar7_wdt driver to become a platform
-> > > driver. The AR7 SoC specific identification and base register
-> > > calculation is performed by the board code, therefore we no
-> > > longer need to have access to ar7_chip_id.
-> > >
-> > > @@ -298,22 +285,33 @@ static struct miscdevice ar7_wdt_miscdev = {
-> > >  	.fops		= &ar7_wdt_fops,
-> > >  };
-> > >
-> > > -static int __init ar7_wdt_init(void)
-> > > +static int __init ar7_wdt_probe(struct platform_device *pdev)
-> >
-> > Should be __devinit .
-> >
-> > > +static struct platform_driver ar7_wdt_driver = {
-> > > +	.driver.name = "ar7_wdt",
-> > > +	.probe = ar7_wdt_probe,
-> > > +	.remove = __devexit_p(ar7_wdt_remove),
-> > > +};
-> >
-> > I prefer to have it as follows (so that the driver.owner field is also
-> > set): static struct platform_driver ar7_wdt_driver = {
-> > 	.probe = ar7_wdt_probe,
-> > 	.remove = __devexit_p(ar7_wdt_remove),
-> > 	.driver = {
-> > 		.owner = THIS_MODULE,
-> > 		.name = "ar7_wdt",
-> > 	},
-> > };
-> >
-> > I suggest to also change the reboot notifier code into a platform
-> > shutdown method. You then get something like the attached patch
-> > (untested, uncompiled and I included above 2 remarks). For the rest: code
-> > is OK for me. After the __init to __devinit fix you can add my
-> > signed-off-by.
-
-Thanks, patch updated and attached.
-
-> >
-> > Kind regards,
-> > Wim.
---
-From: Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH 2/2 v2] ar7_wdt: convert to become a platform driver
-
-This patch converts the ar7_wdt driver to become
-a platform driver. The AR7 SoC specific identification
-and base register calculation is performed by the board
-code, therefore we no longer need to have access to
-ar7_chip_id. We also remove the reboot notifier code to
-use the platform shutdown method as Wim suggested.
+This patch fixes the following build failure when CONFIG_SERIAL_8250
+is not enabled in the kernel configuration:
+arch/mips/ar7/built-in.o: In function `ar7_register_devices':
+platform.c:(.init.text+0x61c): undefined reference to `early_serial_setup'
+platform.c:(.init.text+0x61c): relocation truncated to fit: R_MIPS_26 against `early_serial_setup'
+platform.c:(.init.text+0x68c): undefined reference to `early_serial_setup'
+platform.c:(.init.text+0x68c): relocation truncated to fit: R_MIPS_26 against `early_serial_setup'
 
 Signed-off-by: Florian Fainelli <florian@openwrt.org>
-Signed-off-by: Wim Van Sebroeck <wim@iguana.be>
---
-diff --git a/drivers/watchdog/ar7_wdt.c b/drivers/watchdog/ar7_wdt.c
-index 2f8643e..82855b0 100644
---- a/drivers/watchdog/ar7_wdt.c
-+++ b/drivers/watchdog/ar7_wdt.c
-@@ -28,9 +28,8 @@
- #include <linux/errno.h>
- #include <linux/init.h>
- #include <linux/miscdevice.h>
-+#include <linux/platform_device.h>
- #include <linux/watchdog.h>
--#include <linux/notifier.h>
--#include <linux/reboot.h>
- #include <linux/fs.h>
- #include <linux/ioport.h>
- #include <linux/io.h>
-@@ -76,24 +75,10 @@ static unsigned expect_close;
- /* XXX currently fixed, allows max margin ~68.72 secs */
- #define prescale_value 0xffff
- 
--/* Offset of the WDT registers */
--static unsigned long ar7_regs_wdt;
-+/* Resource of the WDT registers */
-+static struct resource *ar7_regs_wdt;
- /* Pointer to the remapped WDT IO space */
- static struct ar7_wdt *ar7_wdt;
--static void ar7_wdt_get_regs(void)
--{
--	u16 chip_id = ar7_chip_id();
--	switch (chip_id) {
--	case AR7_CHIP_7100:
--	case AR7_CHIP_7200:
--		ar7_regs_wdt = AR7_REGS_WDT;
--		break;
--	default:
--		ar7_regs_wdt = UR8_REGS_WDT;
--		break;
--	}
--}
--
- 
- static void ar7_wdt_kick(u32 value)
+---
+diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
+index cbe4fa4..d0624d8 100644
+--- a/arch/mips/ar7/platform.c
++++ b/arch/mips/ar7/platform.c
+@@ -494,8 +494,9 @@ static void __init detect_leds(void)
+ static int __init ar7_register_devices(void)
  {
-@@ -202,20 +187,6 @@ static int ar7_wdt_release(struct inode *inode, struct file *file)
- 	return 0;
- }
+ 	int res;
+-	static struct uart_port uart_port[2];
+ 	u16 chip_id;
++#ifdef CONFIG_SERIAL_8250
++	static struct uart_port uart_port[2];
  
--static int ar7_wdt_notify_sys(struct notifier_block *this,
--			      unsigned long code, void *unused)
--{
--	if (code == SYS_HALT || code == SYS_POWER_OFF)
--		if (!nowayout)
--			ar7_wdt_disable_wdt();
--
--	return NOTIFY_DONE;
--}
--
--static struct notifier_block ar7_wdt_notifier = {
--	.notifier_call = ar7_wdt_notify_sys,
--};
--
- static ssize_t ar7_wdt_write(struct file *file, const char *data,
- 			     size_t len, loff_t *ppos)
- {
-@@ -299,56 +270,85 @@ static struct miscdevice ar7_wdt_miscdev = {
- 	.fops		= &ar7_wdt_fops,
- };
+ 	memset(uart_port, 0, sizeof(struct uart_port) * 2);
  
--static int __init ar7_wdt_init(void)
-+static int __devinit ar7_wdt_probe(struct platform_device *pdev)
- {
- 	int rc;
- 
- 	spin_lock_init(&wdt_lock);
- 
--	ar7_wdt_get_regs();
-+	ar7_regs_wdt =
-+		platform_get_resource_byname(pdev, IORESOURCE_MEM, "regs");
-+	if (!ar7_regs_wdt) {
-+		printk(KERN_ERR DRVNAME ": could not get registers resource\n");
-+		rc = -ENODEV;
-+		goto out;
-+	}
- 
--	if (!request_mem_region(ar7_regs_wdt, sizeof(struct ar7_wdt),
--							LONGNAME)) {
-+	if (!request_mem_region(ar7_regs_wdt->start,
-+				resource_size(ar7_regs_wdt), LONGNAME)) {
- 		printk(KERN_WARNING DRVNAME ": watchdog I/O region busy\n");
--		return -EBUSY;
-+		rc = -EBUSY;
-+		goto out;
+@@ -526,7 +527,7 @@ static int __init ar7_register_devices(void)
+ 		if (res)
+ 			return res;
  	}
- 
--	ar7_wdt = (struct ar7_wdt *)
--			ioremap(ar7_regs_wdt, sizeof(struct ar7_wdt));
-+	ar7_wdt = ioremap(ar7_regs_wdt->start, resource_size(ar7_regs_wdt));
-+	if (!ar7_wdt) {
-+		printk(KERN_ERR DRVNAME ": could not ioremap registers\n");
-+		rc = -ENXIO;
-+		goto out;
-+	}
- 
- 	ar7_wdt_disable_wdt();
- 	ar7_wdt_prescale(prescale_value);
- 	ar7_wdt_update_margin(margin);
- 
--	rc = register_reboot_notifier(&ar7_wdt_notifier);
--	if (rc) {
--		printk(KERN_ERR DRVNAME
--			": unable to register reboot notifier\n");
--		goto out_alloc;
--	}
 -
- 	rc = misc_register(&ar7_wdt_miscdev);
- 	if (rc) {
- 		printk(KERN_ERR DRVNAME ": unable to register misc device\n");
--		goto out_register;
-+		goto out_alloc;
- 	}
- 	goto out;
- 
--out_register:
--	unregister_reboot_notifier(&ar7_wdt_notifier);
- out_alloc:
- 	iounmap(ar7_wdt);
--	release_mem_region(ar7_regs_wdt, sizeof(struct ar7_wdt));
-+	release_mem_region(ar7_regs_wdt->start, resource_size(ar7_regs_wdt));
- out:
- 	return rc;
- }
- 
--static void __exit ar7_wdt_cleanup(void)
-+static int __devexit ar7_wdt_remove(struct platform_device *pdev)
- {
- 	misc_deregister(&ar7_wdt_miscdev);
--	unregister_reboot_notifier(&ar7_wdt_notifier);
- 	iounmap(ar7_wdt);
--	release_mem_region(ar7_regs_wdt, sizeof(struct ar7_wdt));
-+	release_mem_region(ar7_regs_wdt->start, resource_size(ar7_regs_wdt));
-+
-+	return 0;
-+}
-+
-+static void ar7_wdt_shutdown(struct platform_device *pdev)
-+{
-+	if (!nowayout)
-+		ar7_wdt_disable_wdt();
-+}
-+
-+static struct platform_driver ar7_wdt_driver = {
-+	.probe = ar7_wdt_probe,
-+	.remove = __devexit_p(ar7_wdt_remove),
-+	.shutdown = ar7_wdt_shutdown,
-+	.driver = {
-+		.owner = THIS_MODULE,
-+		.name = "ar7_wdt",
-+	},
-+};
-+
-+static int __init ar7_wdt_init(void)
-+{
-+	return platform_driver_register(&ar7_wdt_driver);
-+}
-+
-+static void __exit ar7_wdt_cleanup(void)
-+{
-+	platform_driver_unregister(&ar7_wdt_driver);
- }
- 
- module_init(ar7_wdt_init);
++#endif /* CONFIG_SERIAL_8250 */
+ 	res = platform_device_register(&physmap_flash);
+ 	if (res)
+ 		return res;

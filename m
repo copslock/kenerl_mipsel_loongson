@@ -1,51 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Jul 2009 13:19:06 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Jul 2009 13:19:30 +0200 (CEST)
 Received: from mail-ew0-f207.google.com ([209.85.219.207]:41171 "EHLO
 	mail-ew0-f207.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492212AbZGXLSu (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 24 Jul 2009 13:18:50 +0200
-Received: by ewy3 with SMTP id 3so1144208ewy.0
-        for <multiple recipients>; Fri, 24 Jul 2009 04:18:44 -0700 (PDT)
+	by ftp.linux-mips.org with ESMTP id S1492207AbZGXLTM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 24 Jul 2009 13:19:12 +0200
+Received: by mail-ew0-f207.google.com with SMTP id 3so1144208ewy.0
+        for <multiple recipients>; Fri, 24 Jul 2009 04:19:12 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:sender:from:date:subject
          :mime-version:x-uid:x-length:to:cc:content-type
          :content-transfer-encoding:content-disposition:message-id;
-        bh=BXuuLo5xG6SZf1FdoKS3TY7MhzDT1UnnFNRXarPEGl0=;
-        b=xc//dXnvJtNHyQYKnmCj0QGUwWehuWdp2yvNboeSh2putblVGpS7MbGZVb+6Rj36I0
-         w7Wc0BidWQQBHBFP0dI79UFwEkzRbuHP4Z4GhDDGcE+KsVt7++deR4RAVYF+pZYToYx3
-         NaufJu9SUJ0LjQdNhgN0QiQl92rhiQxjtql4g=
+        bh=GcCS5NigdtBX69dXXLshrB3XrEtRSo4eASWJUCDY1hA=;
+        b=SLESlwpylC+G7y6KBhJjrCYKnfHrja+/agCHSHY8bmkeQDgwO7E0RfPIbvPvCXXwJR
+         rAHy8SDxXpXUObKpJbpX8q2zZ1vsksl3zfZqEpUsLrRYGmZOi94vnsGSMH5jBAPMkyYA
+         ihJUqTf/ksje0aoTcorzV9hU2TJjCEo59nFEk=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=sender:from:date:subject:mime-version:x-uid:x-length:to:cc
          :content-type:content-transfer-encoding:content-disposition
          :message-id;
-        b=QQDNGhYe1pzaTIpWow+AOflbVCK3lKK9xmuLk/OAPDpBAgLNEuIcmCZygU/RqsD0AU
-         rh6RA+eNlugXy4a5foossjW5s0+3QGvHsVmUkkKKtd4mMVoXd1L3xPz7Bl52RaJsIoNl
-         Kd0R8ctOtYH+yM9LVJgmKgYuKCGhfOwk5irDw=
-Received: by 10.211.179.6 with SMTP id g6mr4077968ebp.65.1248434324741;
-        Fri, 24 Jul 2009 04:18:44 -0700 (PDT)
+        b=cUdsqs3WQ9dQrHd98o/QHKwKMzWkxAK1B0AFxLcYH8ESVhe+o6u5pIUxfk7SsBA3IE
+         rkWOQyQN/fihoUGI46JuBXP5SB4VNy9Pitb6b0B+H+51c9Fo8MrC9oFlUD5d9ybCEGIt
+         uCbC8LgpzGyq7x3ySfUC8T3Sclrtsarw3h1/k=
+Received: by 10.210.62.12 with SMTP id k12mr4107517eba.19.1248434352644;
+        Fri, 24 Jul 2009 04:19:12 -0700 (PDT)
 Received: from florian.lab.openpattern.org (lab.openpattern.org [82.240.16.241])
-        by mx.google.com with ESMTPS id 10sm2050564eyd.47.2009.07.24.04.18.44
+        by mx.google.com with ESMTPS id 7sm667060eyg.6.2009.07.24.04.19.12
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 24 Jul 2009 04:18:44 -0700 (PDT)
+        Fri, 24 Jul 2009 04:19:12 -0700 (PDT)
 From:	Florian Fainelli <florian@openwrt.org>
-Date:	Fri, 24 Jul 2009 13:18:42 +0200
-Subject: [PATCH 2/3] ar7: remove unused tnetd7200_get_clock function
+Date:	Fri, 24 Jul 2009 13:19:10 +0200
+Subject: [PATCH 3/3] ar7: override CFLAGS with -Werror
 MIME-Version: 1.0
-X-UID:	772
-X-Length: 1654
+X-UID:	773
+X-Length: 1155
 To:	linux-mips@linux-mips.org
 Cc:	Ralf Baechle <ralf@linux-mips.org>
 Content-Type: text/plain;
   charset="utf-8"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200907241318.42458.florian@openwrt.org>
+Message-Id: <200907241319.10902.florian@openwrt.org>
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23769
+X-archive-position: 23770
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,31 +53,17 @@ X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch removes the unused tnetd7200_get_clock function.
+Now that we have removed all warnings from the ar7 board
+code we can use -Werror like on other MIPS boards.
 
 Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
-diff --git a/arch/mips/ar7/clock.c b/arch/mips/ar7/clock.c
-index b8c7c84..3a124f1 100644
---- a/arch/mips/ar7/clock.c
-+++ b/arch/mips/ar7/clock.c
-@@ -264,19 +264,6 @@ static void __init tnetd7300_init_clocks(void)
- 	iounmap(bootcr);
- }
- 
--static int tnetd7200_get_clock(int base, struct tnetd7200_clock *clock,
--	u32 *bootcr, u32 bus_clock)
--{
--	int divisor = ((readl(&clock->prediv) & 0x1f) + 1) *
--		((readl(&clock->postdiv) & 0x1f) + 1);
--
--	if (*bootcr & BOOT_PLL_BYPASS)
--		return base / divisor;
--
--	return base * ((readl(&clock->mul) & 0xf) + 1) / divisor;
--}
--
--
- static void tnetd7200_set_clock(int base, struct tnetd7200_clock *clock,
- 	int prediv, int postdiv, int postdiv2, int mul, u32 frequency)
- {
+diff --git a/arch/mips/ar7/Makefile b/arch/mips/ar7/Makefile
+index 7435e44..26bc5da 100644
+--- a/arch/mips/ar7/Makefile
++++ b/arch/mips/ar7/Makefile
+@@ -8,3 +8,4 @@ obj-y := \
+ 	platform.o \
+ 	gpio.o \
+ 	clock.o
++EXTRA_CFLAGS += -Werror

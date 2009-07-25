@@ -1,107 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 24 Jul 2009 13:24:30 +0200 (CEST)
-Received: from mail-ew0-f207.google.com ([209.85.219.207]:55265 "EHLO
-	mail-ew0-f207.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492776AbZGXLYX convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 24 Jul 2009 13:24:23 +0200
-Received: by ewy3 with SMTP id 3so1147054ewy.0
-        for <multiple recipients>; Fri, 24 Jul 2009 04:24:18 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Jul 2009 19:45:04 +0200 (CEST)
+Received: from wf-out-1314.google.com ([209.85.200.170]:28641 "EHLO
+	wf-out-1314.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1493422AbZGYRo6 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 25 Jul 2009 19:44:58 +0200
+Received: by wf-out-1314.google.com with SMTP id 28so159972wfa.21
+        for <linux-mips@linux-mips.org>; Sat, 25 Jul 2009 10:44:54 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:to:subject:date
-         :user-agent:cc:references:in-reply-to:mime-version:content-type
-         :content-transfer-encoding:content-disposition:message-id;
-        bh=z3EtnKpG7gyPdclqulLOHkWB9uFHOdfoXf+H1mOx4hc=;
-        b=B/X7CQ3DsIuUmcvOOseW1T6LDpD8IpXxF5VDyyu1aSW+69vZB6MDxTGLxy1Q5+z9Xc
-         XKXYhOP+Kw4wbuftnb3gPlp1c2WrDNtX3qg/thJ5lQQJy+RbKv4zXK0cuu3lW7H2BFNr
-         /mQuvMcPGui3Kbmm8DGQGuzcsxy2PKqwcn0Vc=
+        h=domainkey-signature:received:received:date:from:to:cc:subject
+         :message-id:references:mime-version:content-type:content-disposition
+         :in-reply-to:user-agent;
+        bh=s1/Cc067N9VXYITtDUnSVil/Z5Rgw4LGzDyqdHrYlaE=;
+        b=vWtTqEp6C15pFbH7QK4mP3euwGiYAZfn0r6by/eFjKBlLlgijFeJRqspqGXyqHTcca
+         i/jpxPIxgLrPcJrw/YXkacVlcEjsWFgUbDynJhc7alorecxuprwlmMxzZpV78dI9OR4R
+         dOdh4lzeIdVJa3zNoekw2QH+mGpDSMzzWGGmQ=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
-         :mime-version:content-type:content-transfer-encoding
-         :content-disposition:message-id;
-        b=Qx6L9gpuuC8VmWBwE3pt/rmT0vBAet0fTQDDU90/32yAB2SUOxtwEGvn3hAh6sESti
-         rWLDlXLDI3o68k8MG2LeOVf8qU6YkNLEl1M63jVxtInuq7VbEDVZ4pRTqlqV/oZmeTpX
-         vbYMjv/40dRCCr62WtbSZvtFuk6fUh4EV2bUQ=
-Received: by 10.210.18.8 with SMTP id 8mr3133042ebr.48.1248434658102;
-        Fri, 24 Jul 2009 04:24:18 -0700 (PDT)
-Received: from florian.lab.openpattern.org (lab.openpattern.org [82.240.16.241])
-        by mx.google.com with ESMTPS id 5sm714102eyf.24.2009.07.24.04.24.17
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        b=JQLLWNwHStUeEJM6f9kvKYeLiuGFGRlGrJHAEfyTx7WfdXHnYf5a/qt5ErI/EmVn76
+         sDYY/L37Q+4ITEi49jQcsmy233lXDaOsU6IUuUpN2CRrrqArWS6/PfOQ4Vx/R1hurtF4
+         gfVO4GMc2eNNoCFgpMFT2gtJ3v6jzxWDqxMv4=
+Received: by 10.142.173.6 with SMTP id v6mr718698wfe.233.1248543894170;
+        Sat, 25 Jul 2009 10:44:54 -0700 (PDT)
+Received: from mailhub.coreip.homeip.net (c-24-6-153-137.hsd1.ca.comcast.net [24.6.153.137])
+        by mx.google.com with ESMTPS id f21sm12000837rvb.6.2009.07.25.10.44.52
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 24 Jul 2009 04:24:17 -0700 (PDT)
-From:	Florian Fainelli <florian@openwrt.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH 1/2] ar7: fix build failures when CONFIG_SERIAL_8250 is not enabled
-Date:	Fri, 24 Jul 2009 13:24:15 +0200
-User-Agent: KMail/1.9.9
-Cc:	linux-mips@linux-mips.org
-References: <200907211237.39264.florian@openwrt.org> <20090721150811.GA18826@linux-mips.org>
-In-Reply-To: <20090721150811.GA18826@linux-mips.org>
+        Sat, 25 Jul 2009 10:44:53 -0700 (PDT)
+Date:	Sat, 25 Jul 2009 10:44:50 -0700
+From:	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:	Manuel Lauss <manuel.lauss@googlemail.com>
+Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	Manuel Lauss <manuel.lauss@gmail.com>,
+	Frans Pop <elendil@planet.nl>
+Subject: Re: [PATCH V2] au1xmmc: dev_pm_ops conversion
+Message-ID: <20090725174449.GC14062@dtor-d630.eng.vmware.com>
+References: <1248275919-3296-1-git-send-email-manuel.lauss@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-  charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Message-Id: <200907241324.15613.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+In-Reply-To: <1248275919-3296-1-git-send-email-manuel.lauss@gmail.com>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <dmitry.torokhov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23771
+X-archive-position: 23772
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: dmitry.torokhov@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Le Tuesday 21 July 2009 17:08:12 Ralf Baechle, vous avez écrit :
-> On Tue, Jul 21, 2009 at 12:37:37PM +0200, Florian Fainelli wrote:
-> > This patch fixes the following build failure when CONFIG_SERIAL_8250
-> > is not enabled in the kernel configuration:
-> > arch/mips/ar7/built-in.o: In function `ar7_register_devices':
-> > platform.c:(.init.text+0x61c): undefined reference to
-> > `early_serial_setup' platform.c:(.init.text+0x61c): relocation truncated
-> > to fit: R_MIPS_26 against `early_serial_setup'
-> > platform.c:(.init.text+0x68c): undefined reference to
-> > `early_serial_setup' platform.c:(.init.text+0x68c): relocation truncated
-> > to fit: R_MIPS_26 against `early_serial_setup'
+Hi Manuel,
+
+On Wed, Jul 22, 2009 at 05:18:39PM +0200, Manuel Lauss wrote:
+> Cc: Frans Pop <elendil@planet.nl>
+> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
 >
-> This patch rejects.
+> +
+> +static struct dev_pm_ops au1xmmc_pmops = {
+> +	.resume		= au1xmmc_resume,
+> +	.suspend	= au1xmmc_suspend,
+> +};
+> +
 
-The one I sent previously applies to -queue, the one below applies to -master. Thanks !
---
-From: Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH] ar7: fix build failures when CONFIG_SERIAL_8250 is not enabled
+Was suspend to disk tested? It requires freeze()/thaw().
 
-This patch fixes the following build failure when CONFIG_SERIAL_8250
-is not enabled in the kernel configuration:
-arch/mips/ar7/built-in.o: In function `ar7_register_devices':
-platform.c:(.init.text+0x61c): undefined reference to `early_serial_setup'
-platform.c:(.init.text+0x61c): relocation truncated to fit: R_MIPS_26 against `early_serial_setup'
-platform.c:(.init.text+0x68c): undefined reference to `early_serial_setup'
-platform.c:(.init.text+0x68c): relocation truncated to fit: R_MIPS_26 against `early_serial_setup'
-
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
----
-diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
-index c4d71fb..8ef8266 100644
---- a/arch/mips/ar7/platform.c
-+++ b/arch/mips/ar7/platform.c
-@@ -480,6 +480,7 @@ static void __init detect_leds(void)
- static int __init ar7_register_devices(void)
- {
- 	int res;
-+#ifdef CONFIG_SERIAL_8250
- 	static struct uart_port uart_port[2];
- 
- 	memset(uart_port, 0, sizeof(struct uart_port) * 2);
-@@ -511,7 +512,7 @@ static int __init ar7_register_devices(void)
- 		if (res)
- 			return res;
- 	}
--
-+#endif /* CONFIG_SERIAL_8250 */
- 	res = platform_device_register(&physmap_flash);
- 	if (res)
- 		return res;
+-- 
+Dmitry

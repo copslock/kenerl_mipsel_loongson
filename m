@@ -1,72 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Jul 2009 19:45:04 +0200 (CEST)
-Received: from wf-out-1314.google.com ([209.85.200.170]:28641 "EHLO
-	wf-out-1314.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1493422AbZGYRo6 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 25 Jul 2009 19:44:58 +0200
-Received: by wf-out-1314.google.com with SMTP id 28so159972wfa.21
-        for <linux-mips@linux-mips.org>; Sat, 25 Jul 2009 10:44:54 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Jul 2009 20:16:01 +0200 (CEST)
+Received: from mail-fx0-f208.google.com ([209.85.220.208]:43530 "EHLO
+	mail-fx0-f208.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493424AbZGYSPz convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 25 Jul 2009 20:15:55 +0200
+Received: by fxm4 with SMTP id 4so1867461fxm.20
+        for <linux-mips@linux-mips.org>; Sat, 25 Jul 2009 11:15:50 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:date:from:to:cc:subject
-         :message-id:references:mime-version:content-type:content-disposition
-         :in-reply-to:user-agent;
-        bh=s1/Cc067N9VXYITtDUnSVil/Z5Rgw4LGzDyqdHrYlaE=;
-        b=vWtTqEp6C15pFbH7QK4mP3euwGiYAZfn0r6by/eFjKBlLlgijFeJRqspqGXyqHTcca
-         i/jpxPIxgLrPcJrw/YXkacVlcEjsWFgUbDynJhc7alorecxuprwlmMxzZpV78dI9OR4R
-         dOdh4lzeIdVJa3zNoekw2QH+mGpDSMzzWGGmQ=
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=lC+ebnB19S4yYt87I43CGUr28tkGgPuTpVb8rIUGfPs=;
+        b=mcpXVNAiv8LIdDqyjEBoxYiEuHJod+GkPUb2xotOU4FLbLA/fZh8cgg1JOQKPO3opd
+         P7yvr3yZhIKc1LWzthO57KzuoLcVVj1AkXRfu/DCZk21NTsZ4s1JVlO6Wu3MFnEJyCr9
+         6vcSp0aytH8CoPIVwmWlbpAov4baEPdyP+Ucs=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        b=JQLLWNwHStUeEJM6f9kvKYeLiuGFGRlGrJHAEfyTx7WfdXHnYf5a/qt5ErI/EmVn76
-         sDYY/L37Q+4ITEi49jQcsmy233lXDaOsU6IUuUpN2CRrrqArWS6/PfOQ4Vx/R1hurtF4
-         gfVO4GMc2eNNoCFgpMFT2gtJ3v6jzxWDqxMv4=
-Received: by 10.142.173.6 with SMTP id v6mr718698wfe.233.1248543894170;
-        Sat, 25 Jul 2009 10:44:54 -0700 (PDT)
-Received: from mailhub.coreip.homeip.net (c-24-6-153-137.hsd1.ca.comcast.net [24.6.153.137])
-        by mx.google.com with ESMTPS id f21sm12000837rvb.6.2009.07.25.10.44.52
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sat, 25 Jul 2009 10:44:53 -0700 (PDT)
-Date:	Sat, 25 Jul 2009 10:44:50 -0700
-From:	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:	Manuel Lauss <manuel.lauss@googlemail.com>
+        d=googlemail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=ncmG6XDL/0KRNixvUAatoFBXZl3l6XphPpML+lbxOfmH5+5k7si2Xw0nNg3wpPW6bE
+         O6C5wPrpJq9APsKwcznRXv9IPSIFD9/D+69EK+P6xIJuDWimno3t+63mRLUCGWRzbSno
+         si8G3SGhgj8oykD093RWTKERYWpTa0EgWPcR4=
+MIME-Version: 1.0
+Received: by 10.223.114.135 with SMTP id e7mr2032875faq.89.1248545750446; Sat, 
+	25 Jul 2009 11:15:50 -0700 (PDT)
+In-Reply-To: <20090725174449.GC14062@dtor-d630.eng.vmware.com>
+References: <1248275919-3296-1-git-send-email-manuel.lauss@gmail.com>
+	 <20090725174449.GC14062@dtor-d630.eng.vmware.com>
+Date:	Sat, 25 Jul 2009 20:15:50 +0200
+Message-ID: <f861ec6f0907251115n3e1ad622uaf94c21dc4de0393@mail.gmail.com>
+Subject: Re: [PATCH V2] au1xmmc: dev_pm_ops conversion
+From:	Manuel Lauss <manuel.lauss@googlemail.com>
+To:	Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
 	Manuel Lauss <manuel.lauss@gmail.com>,
 	Frans Pop <elendil@planet.nl>
-Subject: Re: [PATCH V2] au1xmmc: dev_pm_ops conversion
-Message-ID: <20090725174449.GC14062@dtor-d630.eng.vmware.com>
-References: <1248275919-3296-1-git-send-email-manuel.lauss@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1248275919-3296-1-git-send-email-manuel.lauss@gmail.com>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <dmitry.torokhov@gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23772
+X-archive-position: 23773
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitry.torokhov@gmail.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Manuel,
-
-On Wed, Jul 22, 2009 at 05:18:39PM +0200, Manuel Lauss wrote:
-> Cc: Frans Pop <elendil@planet.nl>
-> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+On Sat, Jul 25, 2009 at 7:44 PM, Dmitry
+Torokhov<dmitry.torokhov@gmail.com> wrote:
+> Hi Manuel,
 >
-> +
-> +static struct dev_pm_ops au1xmmc_pmops = {
-> +	.resume		= au1xmmc_resume,
-> +	.suspend	= au1xmmc_suspend,
-> +};
-> +
+> On Wed, Jul 22, 2009 at 05:18:39PM +0200, Manuel Lauss wrote:
+>> Cc: Frans Pop <elendil@planet.nl>
+>> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+>>
+>> +
+>> +static struct dev_pm_ops au1xmmc_pmops = {
+>> +     .resume         = au1xmmc_resume,
+>> +     .suspend        = au1xmmc_suspend,
+>> +};
+>> +
+>
+> Was suspend to disk tested? It requires freeze()/thaw().
 
-Was suspend to disk tested? It requires freeze()/thaw().
+No, only suspend-to-ram, but that's good to know.
+Currently for me only STR is important (and testable),
+I'll have to check wheter STD works on MIPS with my test
+hardware.
 
--- 
-Dmitry
+Thank you!
+     Manuel Lauss

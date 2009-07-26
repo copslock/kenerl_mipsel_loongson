@@ -1,113 +1,129 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 25 Jul 2009 23:41:21 +0200 (CEST)
-Received: from rv-out-0708.google.com ([209.85.198.242]:53201 "EHLO
-	rv-out-0708.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1493451AbZGYVlP (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 25 Jul 2009 23:41:15 +0200
-Received: by rv-out-0708.google.com with SMTP id l33so617726rvb.24
-        for <linux-mips@linux-mips.org>; Sat, 25 Jul 2009 14:41:13 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 26 Jul 2009 15:53:57 +0200 (CEST)
+Received: from mail-qy0-f177.google.com ([209.85.221.177]:54095 "EHLO
+	mail-qy0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492931AbZGZNxo (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 26 Jul 2009 15:53:44 +0200
+Received: by qyk7 with SMTP id 7so1129880qyk.22
+        for <linux-mips@linux-mips.org>; Sun, 26 Jul 2009 06:53:36 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:references:message-id:from:to
-         :in-reply-to:content-type:content-transfer-encoding:x-mailer
-         :mime-version:subject:date:cc;
-        bh=cz+LCdHkWc/NhKDdbVfBVXytJ6RpDJk2q8on5ej7Ebg=;
-        b=g1HVcFY1kw12u3euAmi11R5Q0IwMO5H7dxYVB3iac+zXVEk3QvhEiaqEnvWExXgaRD
-         HIpIHfOm7gDraaOiKtHkxGM4S0Cyg1IZBF/nScu8kzp6NqaLaCwa5MHZIRsUykkiN1uk
-         9sLsYq/sxuDKu0O4T3fgAPhflCLJci+Rz05k4=
+        h=domainkey-signature:received:received:subject:from:to:cc
+         :in-reply-to:references:content-type:date:message-id:mime-version
+         :x-mailer:content-transfer-encoding;
+        bh=tt/+qbeytB3dsO/FxvvqT1ft/fHLi0KWhadSXXwyAcs=;
+        b=cG/u6U1043Eb2FQIxPIkQuWum711OduFPORsaK6G9xS4LV9KHgM7gnEE2S8bVFd2nD
+         ZZssrV0jaA9B4T5jHzbIKC9j9hyv5m2eUXFW6zZmPbCwQhG1PUqXUjWYp0P0Gt8m9YQs
+         AsG+eu/EaMVZ9nUqUwwXq7MnU0CCyqoUCzsow=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=references:message-id:from:to:in-reply-to:content-type
-         :content-transfer-encoding:x-mailer:mime-version:subject:date:cc;
-        b=i9gUr1XAjDF49UeY7+1EAbdYmaz4LYq+GYJ/7xPxelg4gG31GYMp2f8vB7HZUOnOXs
-         F2UkBy5pzSKKSqgU5/Gz2huqfXpeqtnIL+8zNQyNQ/O+8Cuucxanu5fwJxig1ecL8/M1
-         kf3OtvZc3dftBo1c5gWLMNpcD6TmTywkuwLKk=
-Received: by 10.141.37.8 with SMTP id p8mr3139140rvj.239.1248558073395;
-        Sat, 25 Jul 2009 14:41:13 -0700 (PDT)
-Received: from mailhub.coreip.homeip.net (c-24-6-153-137.hsd1.ca.comcast.net [24.6.153.137])
-        by mx.google.com with ESMTPS id k2sm11799351rvb.32.2009.07.25.14.41.11
+        h=subject:from:to:cc:in-reply-to:references:content-type:date
+         :message-id:mime-version:x-mailer:content-transfer-encoding;
+        b=QznguFHZ34upXOAiAa0iF18umLrdE2dB+msoU19wDuHCVQ3EmB8U8K9MoySS5puhwb
+         8wYNiTMwV2D4xxuixr8B0b3jC2qhGOM4U1VOQoeuNHvT8W+e0OWMy3yLm2Stm5eSYuz/
+         3HBFHlYZUzxmMJjuWpI+XhRS2EbCwLGjQRwSk=
+Received: by 10.224.45.144 with SMTP id e16mr5146426qaf.89.1248616416455;
+        Sun, 26 Jul 2009 06:53:36 -0700 (PDT)
+Received: from ?192.168.2.201? (bas7-quebec14-1096764162.dsl.bell.ca [65.95.75.2])
+        by mx.google.com with ESMTPS id 2sm8639620qwi.43.2009.07.26.06.53.34
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sat, 25 Jul 2009 14:41:12 -0700 (PDT)
-References: <1248275919-3296-1-git-send-email-manuel.lauss@gmail.com> <20090725191037.GE14062@dtor-d630.eng.vmware.com> <200907252139.30674.rjw@sisk.pl> <200907252221.45407.elendil@planet.nl>
-Message-Id: <6090EAB2-5A74-4324-9B0C-1A70A871D293@gmail.com>
-From:	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:	Frans Pop <elendil@planet.nl>
-In-Reply-To: <200907252221.45407.elendil@planet.nl>
-Content-Type: text/plain;
-	charset=us-ascii;
-	format=flowed;
-	delsp=yes
-Content-Transfer-Encoding: 7bit
-X-Mailer: iPhone Mail (7A341)
-Mime-Version: 1.0 (iPhone Mail 7A341)
-Subject: Re: [PATCH V2] au1xmmc: dev_pm_ops conversion
-Date:	Sat, 25 Jul 2009 14:41:03 -0700
-Cc:	"Rafael J. Wysocki" <rjw@sisk.pl>,
-	Manuel Lauss <manuel.lauss@googlemail.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Sun, 26 Jul 2009 06:53:35 -0700 (PDT)
+Subject: Re: [PATCH 1/1] acer-wmi: switch driver to dev_pm_ops
+From:	Arnaud Faucher <arnaud.faucher@gmail.com>
+To:	linux-kernel@vger.kernel.org
+Cc:	Carlos Corbacho <carlos@strangeworlds.co.uk>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	"Rafael J. Wysocki" <rjw@sisk.pl>, Frans Pop <elendil@planet.nl>,
 	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
 	Manuel Lauss <manuel.lauss@gmail.com>,
-	Arnaud Faucher <arnaud.faucher@gmail.com>,
 	Erik Ekman <erik@kryo.se>,
 	Mark Brown <broonie@opensource.wolfsonmicro.com>
-Return-Path: <dmitry.torokhov@gmail.com>
+In-Reply-To: <200907252204.44875.rjw@sisk.pl>
+References: <1248527091-18246-1-git-send-email-arnaud.faucher@gmail.com>
+	 <20090725174311.GB14062@dtor-d630.eng.vmware.com>
+	 <200907252204.44875.rjw@sisk.pl>
+Content-Type: text/plain
+Date:	Sun, 26 Jul 2009 09:53:33 -0400
+Message-Id: <1248616413.3922.7.camel@green>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.27.4.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <arnaud.faucher@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23781
+X-archive-position: 23782
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitry.torokhov@gmail.com
+X-original-sender: arnaud.faucher@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Jul 25, 2009, at 1:21 PM, Frans Pop <elendil@planet.nl> wrote:
+Gets rid of the following warning:
+Platform driver 'acer-wmi' needs updating - please use dev_pm_ops
 
-> On Saturday 25 July 2009, Rafael J. Wysocki wrote:
->>>>> Was suspend to disk tested? It requires freeze()/thaw().
->>>>
->>>> Is that a regression introduced by this patch then? If so, many
->>>> more of the recent dev_pm_ops conversion patches would need to be
->>>> revisited.
->>
->> Yes, they would.  In general, you'd probably want to do something  
->> like
->> this:
->>
->> static struct dev_pm_ops au1xmmc_pmops = {
->>         .resume         = au1xmmc_resume,
->>         .suspend                = au1xmmc_suspend,
->>         .freeze         = au1xmmc_resume,
->>         .thaw           = au1xmmc_suspend,
->>         .restore                = au1xmmc_resume,
->>         .poweroff       = au1xmmc_suspend,
->> };
->>
->> but in this particular case it's probably better to define separate
->> callbacks for .freeze() and .thaw() at least.
->>
->> During hibernation we call .freeze() and .thaw() before and after
->> creating the image, respectively, and then .poweroff() is called  
->> right
->> after the image has been saved.  During resume .freeze() is called
->> after the image has been loaded and before the control goes to the
->> image kernel, which then calls .restore().
->
-> Yes, I see that in drivers/base/platform.c (legacy) .suspend  
-> resp. .resume
-> also got called for those cases?
-> Ouch :-(
->
-> I've added others who've submitted dev_pm_ops patches in CC.
->
->> I'll fix up the floppy and hp-wmi patches.
->
-> Note that those are already in mainline, as is pcspkr.
->
+Take 2, thanks to Dmitry, Rafael and Frans for pointing out PM issue on
+hibernation when using dev_pm_ops blindly.
 
+This patch was tested against suspendand hibernation (Acer mail led
+status).
 
-Pcspkr should be fine as is since we just want to shut it off and with  
-s2d it will happen automatically when we power down.
+Signed-off-by: Arnaud Faucher <arnaud.faucher@gmail.com>
+---
+ drivers/platform/x86/acer-wmi.c |   17 ++++++++++++-----
+ 1 files changed, 12 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/platform/x86/acer-wmi.c
+b/drivers/platform/x86/acer-wmi.c
+index be2fd6f..29374bc 100644
+--- a/drivers/platform/x86/acer-wmi.c
++++ b/drivers/platform/x86/acer-wmi.c
+@@ -1152,8 +1152,7 @@ static int acer_platform_remove(struct
+platform_device *device)
+ 	return 0;
+ }
+ 
+-static int acer_platform_suspend(struct platform_device *dev,
+-pm_message_t state)
++static int acer_platform_suspend(struct device *dev)
+ {
+ 	u32 value;
+ 	struct acer_data *data = &interface->data;
+@@ -1174,7 +1173,7 @@ pm_message_t state)
+ 	return 0;
+ }
+ 
+-static int acer_platform_resume(struct platform_device *device)
++static int acer_platform_resume(struct device *dev)
+ {
+ 	struct acer_data *data = &interface->data;
+ 
+@@ -1190,15 +1189,23 @@ static int acer_platform_resume(struct
+platform_device *device)
+ 	return 0;
+ }
+ 
++static struct dev_pm_ops acer_platform_pm_ops = {
++	.suspend = acer_platform_suspend,
++	.resume = acer_platform_resume,
++	.freeze = acer_platform_suspend,
++	.thaw = acer_platform_resume,
++	.poweroff = acer_platform_suspend,
++	.restore = acer_platform_resume,
++};
++
+ static struct platform_driver acer_platform_driver = {
+ 	.driver = {
+ 		.name = "acer-wmi",
+ 		.owner = THIS_MODULE,
++		.pm = &acer_platform_pm_ops,
+ 	},
+ 	.probe = acer_platform_probe,
+ 	.remove = acer_platform_remove,
+-	.suspend = acer_platform_suspend,
+-	.resume = acer_platform_resume,
+ };
+ 
+ static struct platform_device *acer_platform_device;
 -- 
-Dmitry
+1.6.3.3

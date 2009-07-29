@@ -1,71 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jul 2009 22:00:11 +0200 (CEST)
-Received: from mail-ew0-f216.google.com ([209.85.219.216]:54130 "EHLO
-	mail-ew0-f216.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493763AbZG2UAE (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 29 Jul 2009 22:00:04 +0200
-Received: by ewy12 with SMTP id 12so914757ewy.0
-        for <multiple recipients>; Wed, 29 Jul 2009 12:59:59 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from
-         :user-agent:mime-version:to:subject:content-type
-         :content-transfer-encoding;
-        bh=/IifyQbe9OEbhMW+mWY/+y90dCf5VRvTppbc0dlE8OU=;
-        b=N1EDxOW8an450ppSKZ4jRhyqh2GTrdGHenYNv8hTUiXyskp6AgDqNXvrFLjYK96hts
-         CQHrAAS0uYxyCqeDrs118PWPJBgcP8PoEDmyX1mtwh6C1Qk2WW41AwckvCDCZBpRuzt2
-         IJnMVkc9XcePBMaw/m5+rEUofamPxk+8j31I8=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:user-agent:mime-version:to:subject
-         :content-type:content-transfer-encoding;
-        b=d7Rj30yA82WJ1ygEs9YYx4gNjvr4kgpb8MqZWOGg5KR5ymeha8lYDqfEATnVmYYTGu
-         22aOPZLz7HzUZ/B6la347WbSdLSMBXWbFgZe+rOAmpcvtSYi8rxR7Asmnad8eXVxyPPl
-         5yIGzAbe3zIpkk2H2Up56gkCGA0lpcxPK7qW8=
-Received: by 10.210.78.16 with SMTP id a16mr240617ebb.66.1248897599192;
-        Wed, 29 Jul 2009 12:59:59 -0700 (PDT)
-Received: from zoinx.mars (d133062.upc-d.chello.nl [213.46.133.62])
-        by mx.google.com with ESMTPS id 24sm930265eyx.53.2009.07.29.12.59.58
-        (version=SSLv3 cipher=RC4-MD5);
-        Wed, 29 Jul 2009 12:59:58 -0700 (PDT)
-Message-ID: <4A70AAED.3040404@gmail.com>
-Date:	Wed, 29 Jul 2009 22:02:53 +0200
-From:	Roel Kluin <roel.kluin@gmail.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1b3pre) Gecko/20090513 Fedora/3.0-2.3.beta2.fc11 Thunderbird/3.0b2
-MIME-Version: 1.0
-To:	ralf@linux-mips.org, linux-mips@linux-mips.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 29 Jul 2009 23:25:08 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:52992 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1493735AbZG2VZA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 29 Jul 2009 23:25:00 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n6TLP7cA007879;
+	Wed, 29 Jul 2009 22:25:07 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n6TLP6QY007876;
+	Wed, 29 Jul 2009 22:25:06 +0100
+Date:	Wed, 29 Jul 2009 22:25:06 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Roel Kluin <roel.kluin@gmail.com>
+Cc:	linux-mips@linux-mips.org,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH] MIPS: Read buffer overflow
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <roel.kluin@gmail.com>
+Subject: Re: [PATCH] MIPS: Read buffer overflow
+Message-ID: <20090729212506.GB3489@linux-mips.org>
+References: <4A70AAED.3040404@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4A70AAED.3040404@gmail.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23792
+X-archive-position: 23793
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: roel.kluin@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-it should tests against ARRAY_SIZE(psp_var_map) instead of sizeof(psp_var_map)
+On Wed, Jul 29, 2009 at 10:02:53PM +0200, Roel Kluin wrote:
 
-Signed-off-by: Roel Kluin <roel.kluin@gmail.com>
----
-ARRAY_SIZE(psp_var_map) is 9.
-sizeof(psp_var_map) is 144.
+> it should tests against ARRAY_SIZE(psp_var_map) instead of sizeof(psp_var_map)
 
-diff --git a/arch/mips/ar7/prom.c b/arch/mips/ar7/prom.c
-index a320bce..5ad6f1d 100644
---- a/arch/mips/ar7/prom.c
-+++ b/arch/mips/ar7/prom.c
-@@ -144,7 +144,7 @@ static char * __init lookup_psp_var_map(u8 num)
- {
- 	int i;
- 
--	for (i = 0; i < sizeof(psp_var_map); i++)
-+	for (i = 0; i < ARRAY_SIZE(psp_var_map); i++)
- 		if (psp_var_map[i].num == num)
- 			return psp_var_map[i].value;
- 
+Thanks, applied.
+
+  Ralf

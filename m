@@ -1,83 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jul 2009 20:49:43 +0200 (CEST)
-Received: from sj-iport-1.cisco.com ([171.71.176.70]:64785 "EHLO
-	sj-iport-1.cisco.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1493697AbZG3Sth (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Jul 2009 20:49:37 +0200
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: ApoEAPuHcUqrR7PE/2dsb2JhbAC8A4gnkC8FhBc
-X-IronPort-AV: E=Sophos;i="4.43,296,1246838400"; 
-   d="scan'208";a="221484038"
-Received: from sj-dkim-4.cisco.com ([171.71.179.196])
-  by sj-iport-1.cisco.com with ESMTP; 30 Jul 2009 18:49:23 +0000
-Received: from sj-core-2.cisco.com (sj-core-2.cisco.com [171.71.177.254])
-	by sj-dkim-4.cisco.com (8.12.11/8.12.11) with ESMTP id n6UInNaf001655;
-	Thu, 30 Jul 2009 11:49:23 -0700
-Received: from cuplxvomd02.corp.sa.net ([64.101.20.155])
-	by sj-core-2.cisco.com (8.13.8/8.14.3) with ESMTP id n6UInNv1013303;
-	Thu, 30 Jul 2009 18:49:23 GMT
-Date:	Thu, 30 Jul 2009 11:49:23 -0700
-From:	David VomLehn <dvomlehn@cisco.com>
-To:	GCC Help Mailing List <gcc-help@gcc.gnu.org>,
-	Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Relocation problem with MIPS kernel modules
-Message-ID: <20090730184923.GA27030@cuplxvomd02.corp.sa.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jul 2009 21:17:23 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:17152 "EHLO
+	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492961AbZG3TRQ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Jul 2009 21:17:16 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B4a71f1970000>; Thu, 30 Jul 2009 15:16:39 -0400
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 30 Jul 2009 12:15:44 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Thu, 30 Jul 2009 12:15:44 -0700
+Message-ID: <4A71F15E.8040507@caviumnetworks.com>
+Date:	Thu, 30 Jul 2009 12:15:42 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.18 (2008-05-17)
-DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=1428; t=1248979763; x=1249843763;
-	c=relaxed/simple; s=sjdkim4002;
-	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
-	d=cisco.com; i=dvomlehn@cisco.com;
-	z=From:=20David=20VomLehn=20<dvomlehn@cisco.com>
-	|Subject:=20Relocation=20problem=20with=20MIPS=20kernel=20m
-	odules
-	|Sender:=20;
-	bh=9f9x8kTKD4KD64RXA6AOtYHCBinkvCl44V99sMUwwhk=;
-	b=IYxd54zu/pgLHeI5wP1XBokW/omvbhpWoAFYVYzx5xx8emV95M2GSeIGqE
-	IckQS4haJvNOTXpEwSUQtMJrTfmSbwm8Fis3Nmpnc920o1tBjpuaaVp0/34M
-	dvd+a85xRo;
-Authentication-Results:	sj-dkim-4; header.From=dvomlehn@cisco.com; dkim=pass (
-	sig from cisco.com/sjdkim4002 verified; ); 
-Return-Path: <dvomlehn@cisco.com>
+To:	David VomLehn <dvomlehn@cisco.com>
+CC:	GCC Help Mailing List <gcc-help@gcc.gnu.org>,
+	Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Subject: Re: Relocation problem with MIPS kernel modules
+References: <20090730184923.GA27030@cuplxvomd02.corp.sa.net>
+In-Reply-To: <20090730184923.GA27030@cuplxvomd02.corp.sa.net>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 30 Jul 2009 19:15:44.0555 (UTC) FILETIME=[22FA1FB0:01CA114A]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23798
+X-archive-position: 23799
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvomlehn@cisco.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-I have a MIPS loadable kernel module that, when I try to insmod it, causes the
-kernel to emit the message:
+David VomLehn wrote:
+> I have a MIPS loadable kernel module that, when I try to insmod it, causes the
+> kernel to emit the message:
+> 
+> 	module xyz: dangerous relocation
+> 
+> This message appears in three different places in arch/mips/kernel/module.c,
+> but this one is coming from apply_r_mips_lo16_rel(). The module code at
+> the location at which the error message is generated appears to be pretty
+> bland:
+> 	lw v0,28564(s1)
+> with the expected relocation type of R_MIPS_LO16. The relocation before it
+> is R_MIPS_HI16, as expected, but for a different symbol. Before *that*
+> is another R_MIPS_HI16 relocation entry for yet a third symbol.
+> 
+> According to the MIPS ABI, for what it's worth, "Each relocation type of
+> R_MIPS_HI16 must have an associated R_MIPS_LO16 entry immediately following
+> it in the list of relocations." So, what's actually getting generated by
+> gcc and linker differs from the closest thing we have to an ABI of record for
+> MIPS processors.
+> 
+> What the kernel actually does differs from my interpretation of the MIPS ABI
+> in several particulars, which it has to do to relocate what it is actually
+> getting, but since I get the "dangerous relocation" error for a module that
+> appears to me to be valid, it may need to be fixed/enhanced.
+> 
+> So, who the heck knows what gcc and the linker are really generating and can
+> anyone suggest an algorithm for handling R_MIPS_HI16/R_MIPS_LO16 relocation
+> entries correctly?
 
-	module xyz: dangerous relocation
+Without seeing your object module I am guessing.
 
-This message appears in three different places in arch/mips/kernel/module.c,
-but this one is coming from apply_r_mips_lo16_rel(). The module code at
-the location at which the error message is generated appears to be pretty
-bland:
-	lw v0,28564(s1)
-with the expected relocation type of R_MIPS_LO16. The relocation before it
-is R_MIPS_HI16, as expected, but for a different symbol. Before *that*
-is another R_MIPS_HI16 relocation entry for yet a third symbol.
+Q: What version of binutils and GCC are you using?
 
-According to the MIPS ABI, for what it's worth, "Each relocation type of
-R_MIPS_HI16 must have an associated R_MIPS_LO16 entry immediately following
-it in the list of relocations." So, what's actually getting generated by
-gcc and linker differs from the closest thing we have to an ABI of record for
-MIPS processors.
+It is the assembler's responsibility to properly sort the relocations. 
+Some versions of binutils have bugs in this area.  If you are not using 
+2.19.1, I suggest that you upgrade.
 
-What the kernel actually does differs from my interpretation of the MIPS ABI
-in several particulars, which it has to do to relocate what it is actually
-getting, but since I get the "dangerous relocation" error for a module that
-appears to me to be valid, it may need to be fixed/enhanced.
+Unless you are compiling with -fsection-anchors there should be pairs of 
+R_MIPS_HI16/R_MIPS_LO16 relocations.
 
-So, who the heck knows what gcc and the linker are really generating and can
-anyone suggest an algorithm for handling R_MIPS_HI16/R_MIPS_LO16 relocation
-entries correctly?
---
-David VomLehn
+David Daney

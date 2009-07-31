@@ -1,68 +1,154 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jul 2009 14:50:01 +0200 (CEST)
-Received: from mail-ew0-f216.google.com ([209.85.219.216]:39050 "EHLO
-	mail-ew0-f216.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493809AbZGaMty (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 31 Jul 2009 14:49:54 +0200
-Received: by ewy12 with SMTP id 12so2197901ewy.0
-        for <multiple recipients>; Fri, 31 Jul 2009 05:49:48 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from
-         :user-agent:mime-version:to:subject:content-type
-         :content-transfer-encoding;
-        bh=xLcWIxpHGP4mlurS44zV+ESBzOv9wlZR73KeCRjlGSo=;
-        b=wh7qm5ulB1FjfP4zSYn3GAOAz4+kmbDGcxjtDm/vNBpmhy5zbqZExCMeW5U3rvcp6F
-         ToMc7G5TaGuO5fK4mOsm+ZelgqgqWBEFOqGgWVvXzR7FeYA9LvMtIR0C3WcjMF4pvYEN
-         nij5kH0YR2T5x4K26tJOXX0H2/Yb08z5o5p1k=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:user-agent:mime-version:to:subject
-         :content-type:content-transfer-encoding;
-        b=bNlP+VbPKL7lxauMrRJ8D0CfX1au1F8NAZMKthNPa//w1vnpQrJuSMecCm6ZgTYzs4
-         RpgSwHk7bsUCWyAuLyV3sLI8jqNzjm5C7nzxOpwNcLK3zADpj10e4BQaweEqvEhzYrUG
-         Ps4EuXSOR2op5lkA+zxJq2WrrqZFPjAZPx0Uc=
-Received: by 10.210.125.13 with SMTP id x13mr816414ebc.87.1249044588797;
-        Fri, 31 Jul 2009 05:49:48 -0700 (PDT)
-Received: from zoinx.mars (d133062.upc-d.chello.nl [213.46.133.62])
-        by mx.google.com with ESMTPS id 5sm4315567eyh.6.2009.07.31.05.49.48
-        (version=SSLv3 cipher=RC4-MD5);
-        Fri, 31 Jul 2009 05:49:48 -0700 (PDT)
-Message-ID: <4A72E923.8070105@gmail.com>
-Date:	Fri, 31 Jul 2009 14:52:51 +0200
-From:	Roel Kluin <roel.kluin@gmail.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1b3pre) Gecko/20090513 Fedora/3.0-2.3.beta2.fc11 Thunderbird/3.0b2
-MIME-Version: 1.0
-To:	ralf@linux-mips.org, linux-mips@linux-mips.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH] MIPS: Read buffer overflow
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <roel.kluin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jul 2009 22:59:32 +0200 (CEST)
+Received: from BISCAYNE-ONE-STATION.MIT.EDU ([18.7.7.80]:54013 "EHLO
+	biscayne-one-station.mit.edu" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493873AbZGaU7Z (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 31 Jul 2009 22:59:25 +0200
+Received: from outgoing.mit.edu (OUTGOING-AUTH.MIT.EDU [18.7.22.103])
+	by biscayne-one-station.mit.edu (8.13.6/8.9.2) with ESMTP id n6VKwRAA010917;
+	Fri, 31 Jul 2009 16:58:28 -0400 (EDT)
+Received: from localhost (c-71-192-160-118.hsd1.nh.comcast.net [71.192.160.118])
+	(authenticated bits=0)
+        (User authenticated as tabbott@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.13.6/8.12.4) with ESMTP id n6VKwR1U019241;
+	Fri, 31 Jul 2009 16:58:27 -0400 (EDT)
+From:	Tim Abbott <tabbott@ksplice.com>
+To:	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:	Sam Ravnborg <sam@ravnborg.org>,
+	Anders Kaseorg <andersk@ksplice.com>,
+	Nelson Elhage <nelhage@ksplice.com>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: [PATCH 2/3] mips: use PAGE_SIZE in assembly instead of _PAGE_SIZE.
+Date:	Fri, 31 Jul 2009 16:58:18 -0400
+Message-Id: <1249073899-30145-2-git-send-email-tabbott@ksplice.com>
+X-Mailer: git-send-email 1.6.3.3
+In-Reply-To: <1249073899-30145-1-git-send-email-tabbott@ksplice.com>
+References: <1249073899-30145-1-git-send-email-tabbott@ksplice.com>
+X-Scanned-By: MIMEDefang 2.42
+Return-Path: <tabbott@MIT.EDU>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23807
+X-archive-position: 23808
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: roel.kluin@gmail.com
+X-original-sender: tabbott@ksplice.com
 Precedence: bulk
 X-list: linux-mips
 
-Check whether index is within bounds before testing the element.
+From: Nelson Elhage <nelhage@ksplice.com>
 
-Signed-off-by: Roel Kluin <roel.kluin@gmail.com>
+Now that PAGE_SIZE is available to assembly directly, there is no need
+to separately expose it as _PAGE_SIZE through asm-offsets.
+
+In addition, remove _PAGE_SHIFT from asm-offsets, since it was never
+needed, and is not used anywhere.
+
+Signed-off-by: Nelson Elhage <nelhage@ksplice.com>
+Cc: Ralf Baechle <ralf@linux-mips.org>
+Cc: linux-mips@linux-mips.org
 ---
-diff --git a/arch/mips/jazz/jazzdma.c b/arch/mips/jazz/jazzdma.c
-index f0fd636..0d64d0f 100644
---- a/arch/mips/jazz/jazzdma.c
-+++ b/arch/mips/jazz/jazzdma.c
-@@ -190,7 +190,7 @@ int vdma_free(unsigned long laddr)
- 		return -1;
+ arch/mips/kernel/asm-offsets.c |    3 ---
+ arch/mips/kernel/vmlinux.lds.S |   15 ++++++++-------
+ arch/mips/power/hibernate.S    |    3 ++-
+ 3 files changed, 10 insertions(+), 11 deletions(-)
+
+diff --git a/arch/mips/kernel/asm-offsets.c b/arch/mips/kernel/asm-offsets.c
+index 8d006ec..2c1e1d0 100644
+--- a/arch/mips/kernel/asm-offsets.c
++++ b/arch/mips/kernel/asm-offsets.c
+@@ -183,9 +183,6 @@ void output_mm_defines(void)
+ 	OFFSET(MM_PGD, mm_struct, pgd);
+ 	OFFSET(MM_CONTEXT, mm_struct, context);
+ 	BLANK();
+-	DEFINE(_PAGE_SIZE, PAGE_SIZE);
+-	DEFINE(_PAGE_SHIFT, PAGE_SHIFT);
+-	BLANK();
+ 	DEFINE(_PGD_T_SIZE, sizeof(pgd_t));
+ 	DEFINE(_PMD_T_SIZE, sizeof(pmd_t));
+ 	DEFINE(_PTE_T_SIZE, sizeof(pte_t));
+diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
+index 58738c8..6bfdb2e 100644
+--- a/arch/mips/kernel/vmlinux.lds.S
++++ b/arch/mips/kernel/vmlinux.lds.S
+@@ -1,4 +1,5 @@
+ #include <asm/asm-offsets.h>
++#include <asm/page.h>
+ #include <asm-generic/vmlinux.lds.h>
+ 
+ #undef mips
+@@ -76,7 +77,7 @@ SECTIONS
+ 		 * of ‘init_thread_union’ is greater than maximum
+ 		 * object file alignment.  Using 32768
+ 		 */
+-		. = ALIGN(_PAGE_SIZE);
++		. = ALIGN(PAGE_SIZE);
+ 		*(.data.init_task)
+ 
+ 		DATA_DATA
+@@ -96,12 +97,12 @@ SECTIONS
+ 		*(.sdata)
  	}
  
--	while (pgtbl[i].owner == laddr && i < VDMA_PGTBL_ENTRIES) {
-+	while (i < VDMA_PGTBL_ENTRIES && pgtbl[i].owner == laddr) {
- 		pgtbl[i].owner = VDMA_PAGE_EMPTY;
- 		i++;
+-	. = ALIGN(_PAGE_SIZE);
++	. = ALIGN(PAGE_SIZE);
+ 	.data_nosave : {
+ 		__nosave_begin = .;
+ 		*(.data.nosave)
  	}
+-	. = ALIGN(_PAGE_SIZE);
++	. = ALIGN(PAGE_SIZE);
+ 	__nosave_end = .;
+ 
+ 	. = ALIGN(1 << CONFIG_MIPS_L1_CACHE_SHIFT);
+@@ -111,7 +112,7 @@ SECTIONS
+ 	_edata =  .;			/* End of data section */
+ 
+ 	/* will be freed after init */
+-	. = ALIGN(_PAGE_SIZE);		/* Init code and data */
++	. = ALIGN(PAGE_SIZE);		/* Init code and data */
+ 	__init_begin = .;
+ 	.init.text : {
+ 		_sinittext = .;
+@@ -151,15 +152,15 @@ SECTIONS
+ 		EXIT_DATA
+ 	}
+ #if defined(CONFIG_BLK_DEV_INITRD)
+-	. = ALIGN(_PAGE_SIZE);
++	. = ALIGN(PAGE_SIZE);
+ 	.init.ramfs : {
+ 		__initramfs_start = .;
+ 		*(.init.ramfs)
+ 		__initramfs_end = .;
+ 	}
+ #endif
+-	PERCPU(_PAGE_SIZE)
+-	. = ALIGN(_PAGE_SIZE);
++	PERCPU(PAGE_SIZE)
++	. = ALIGN(PAGE_SIZE);
+ 	__init_end = .;
+ 	/* freed after init ends here */
+ 
+diff --git a/arch/mips/power/hibernate.S b/arch/mips/power/hibernate.S
+index 4b8174b..0cf86fb 100644
+--- a/arch/mips/power/hibernate.S
++++ b/arch/mips/power/hibernate.S
+@@ -8,6 +8,7 @@
+  *         Wu Zhangjin <wuzj@lemote.com>
+  */
+ #include <asm/asm-offsets.h>
++#include <asm/page.h>
+ #include <asm/regdef.h>
+ #include <asm/asm.h>
+ 
+@@ -34,7 +35,7 @@ LEAF(swsusp_arch_resume)
+ 0:
+ 	PTR_L t1, PBE_ADDRESS(t0)   /* source */
+ 	PTR_L t2, PBE_ORIG_ADDRESS(t0) /* destination */
+-	PTR_ADDIU t3, t1, _PAGE_SIZE
++	PTR_ADDIU t3, t1, PAGE_SIZE
+ 1:
+ 	REG_L t8, (t1)
+ 	REG_S t8, (t2)
+-- 
+1.6.3.3

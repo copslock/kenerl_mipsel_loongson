@@ -1,83 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 30 Jul 2009 23:26:54 +0200 (CEST)
-Received: from sj-iport-2.cisco.com ([171.71.176.71]:42109 "EHLO
-	sj-iport-2.cisco.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1493746AbZG3V0s (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 30 Jul 2009 23:26:48 +0200
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: ApoEAIuscUqrR7O6/2dsb2JhbAC6bYgnkDYFhBc
-X-IronPort-AV: E=Sophos;i="4.43,297,1246838400"; 
-   d="scan'208";a="191353315"
-Received: from sj-dkim-2.cisco.com ([171.71.179.186])
-  by sj-iport-2.cisco.com with ESMTP; 30 Jul 2009 21:26:39 +0000
-Received: from sj-core-1.cisco.com (sj-core-1.cisco.com [171.71.177.237])
-	by sj-dkim-2.cisco.com (8.12.11/8.12.11) with ESMTP id n6ULQcpg021771;
-	Thu, 30 Jul 2009 14:26:38 -0700
-Received: from cuplxvomd02.corp.sa.net ([64.101.20.155])
-	by sj-core-1.cisco.com (8.13.8/8.14.3) with ESMTP id n6ULQccg014311;
-	Thu, 30 Jul 2009 21:26:38 GMT
-Date:	Thu, 30 Jul 2009 14:26:38 -0700
-From:	David VomLehn <dvomlehn@cisco.com>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	GCC Help Mailing List <gcc-help@gcc.gnu.org>,
-	Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: Relocation problem with MIPS kernel modules
-Message-ID: <20090730212638.GA16548@cuplxvomd02.corp.sa.net>
-References: <20090730184923.GA27030@cuplxvomd02.corp.sa.net> <4A71F15E.8040507@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jul 2009 14:50:01 +0200 (CEST)
+Received: from mail-ew0-f216.google.com ([209.85.219.216]:39050 "EHLO
+	mail-ew0-f216.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493809AbZGaMty (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 31 Jul 2009 14:49:54 +0200
+Received: by ewy12 with SMTP id 12so2197901ewy.0
+        for <multiple recipients>; Fri, 31 Jul 2009 05:49:48 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:message-id:date:from
+         :user-agent:mime-version:to:subject:content-type
+         :content-transfer-encoding;
+        bh=xLcWIxpHGP4mlurS44zV+ESBzOv9wlZR73KeCRjlGSo=;
+        b=wh7qm5ulB1FjfP4zSYn3GAOAz4+kmbDGcxjtDm/vNBpmhy5zbqZExCMeW5U3rvcp6F
+         ToMc7G5TaGuO5fK4mOsm+ZelgqgqWBEFOqGgWVvXzR7FeYA9LvMtIR0C3WcjMF4pvYEN
+         nij5kH0YR2T5x4K26tJOXX0H2/Yb08z5o5p1k=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=message-id:date:from:user-agent:mime-version:to:subject
+         :content-type:content-transfer-encoding;
+        b=bNlP+VbPKL7lxauMrRJ8D0CfX1au1F8NAZMKthNPa//w1vnpQrJuSMecCm6ZgTYzs4
+         RpgSwHk7bsUCWyAuLyV3sLI8jqNzjm5C7nzxOpwNcLK3zADpj10e4BQaweEqvEhzYrUG
+         Ps4EuXSOR2op5lkA+zxJq2WrrqZFPjAZPx0Uc=
+Received: by 10.210.125.13 with SMTP id x13mr816414ebc.87.1249044588797;
+        Fri, 31 Jul 2009 05:49:48 -0700 (PDT)
+Received: from zoinx.mars (d133062.upc-d.chello.nl [213.46.133.62])
+        by mx.google.com with ESMTPS id 5sm4315567eyh.6.2009.07.31.05.49.48
+        (version=SSLv3 cipher=RC4-MD5);
+        Fri, 31 Jul 2009 05:49:48 -0700 (PDT)
+Message-ID: <4A72E923.8070105@gmail.com>
+Date:	Fri, 31 Jul 2009 14:52:51 +0200
+From:	Roel Kluin <roel.kluin@gmail.com>
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1b3pre) Gecko/20090513 Fedora/3.0-2.3.beta2.fc11 Thunderbird/3.0b2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4A71F15E.8040507@caviumnetworks.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=963; t=1248989199; x=1249853199;
-	c=relaxed/simple; s=sjdkim2002;
-	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
-	d=cisco.com; i=dvomlehn@cisco.com;
-	z=From:=20David=20VomLehn=20<dvomlehn@cisco.com>
-	|Subject:=20Re=3A=20Relocation=20problem=20with=20MIPS=20ke
-	rnel=20modules
-	|Sender:=20;
-	bh=li3nbzur8X+gznwzoV5byj8jDjS35fLU0F85fxEvXnA=;
-	b=pTVeetsz4n2ajMdihBTsZ9lBch1I1t5lfQXUDtYT/Qk4Msn4T4H9YCvwEt
-	cLz39EXsA1j9fijRpD0ZWrQTRaq2Vqj7GE8h/fBkTAWGxzK3QfLYV7f8PhZ4
-	rACvB+7s0Z;
-Authentication-Results:	sj-dkim-2; header.From=dvomlehn@cisco.com; dkim=pass (
-	sig from cisco.com/sjdkim2002 verified; ); 
-Return-Path: <dvomlehn@cisco.com>
+To:	ralf@linux-mips.org, linux-mips@linux-mips.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH] MIPS: Read buffer overflow
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+Return-Path: <roel.kluin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23806
+X-archive-position: 23807
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvomlehn@cisco.com
+X-original-sender: roel.kluin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jul 30, 2009 at 12:15:42PM -0700, David Daney wrote:
-> David VomLehn wrote:
->> I have a MIPS loadable kernel module that, when I try to insmod it, causes the
->> kernel to emit the message:
->>
->> 	module xyz: dangerous relocation
-...
->> So, who the heck knows what gcc and the linker are really generating and can
->> anyone suggest an algorithm for handling R_MIPS_HI16/R_MIPS_LO16 relocation
->> entries correctly?
->
-> Without seeing your object module I am guessing.
->
-> Q: What version of binutils and GCC are you using?
->
-> It is the assembler's responsibility to properly sort the relocations.  
-> Some versions of binutils have bugs in this area.  If you are not using  
-> 2.19.1, I suggest that you upgrade.
->
-> Unless you are compiling with -fsection-anchors there should be pairs of  
-> R_MIPS_HI16/R_MIPS_LO16 relocations.
+Check whether index is within bounds before testing the element.
 
-We are downrev in our tool set; I'll try a newer version. Thanks!
-
-> David Daney
-
-David VomLehn
+Signed-off-by: Roel Kluin <roel.kluin@gmail.com>
+---
+diff --git a/arch/mips/jazz/jazzdma.c b/arch/mips/jazz/jazzdma.c
+index f0fd636..0d64d0f 100644
+--- a/arch/mips/jazz/jazzdma.c
++++ b/arch/mips/jazz/jazzdma.c
+@@ -190,7 +190,7 @@ int vdma_free(unsigned long laddr)
+ 		return -1;
+ 	}
+ 
+-	while (pgtbl[i].owner == laddr && i < VDMA_PGTBL_ENTRIES) {
++	while (i < VDMA_PGTBL_ENTRIES && pgtbl[i].owner == laddr) {
+ 		pgtbl[i].owner = VDMA_PAGE_EMPTY;
+ 		i++;
+ 	}

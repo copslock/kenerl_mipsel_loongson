@@ -1,32 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jul 2009 23:02:08 +0200 (CEST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 31 Jul 2009 23:02:33 +0200 (CEST)
 Received: from BISCAYNE-ONE-STATION.MIT.EDU ([18.7.7.80]:54578 "EHLO
 	biscayne-one-station.mit.edu" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493872AbZGaVCB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 31 Jul 2009 23:02:01 +0200
+	by ftp.linux-mips.org with ESMTP id S1493873AbZGaVCD (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 31 Jul 2009 23:02:03 +0200
 Received: from outgoing.mit.edu (OUTGOING-AUTH.MIT.EDU [18.7.22.103])
-	by biscayne-one-station.mit.edu (8.13.6/8.9.2) with ESMTP id n6VKwRfY010906;
-	Fri, 31 Jul 2009 16:58:27 -0400 (EDT)
+	by biscayne-one-station.mit.edu (8.13.6/8.9.2) with ESMTP id n6VKwSsv010919;
+	Fri, 31 Jul 2009 16:58:29 -0400 (EDT)
 Received: from localhost (c-71-192-160-118.hsd1.nh.comcast.net [71.192.160.118])
 	(authenticated bits=0)
         (User authenticated as tabbott@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.13.6/8.12.4) with ESMTP id n6VKwQTY019234;
-	Fri, 31 Jul 2009 16:58:26 -0400 (EDT)
+	by outgoing.mit.edu (8.13.6/8.12.4) with ESMTP id n6VKwSTo019250;
+	Fri, 31 Jul 2009 16:58:28 -0400 (EDT)
 From:	Tim Abbott <tabbott@ksplice.com>
 To:	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Cc:	Sam Ravnborg <sam@ravnborg.org>,
 	Anders Kaseorg <andersk@ksplice.com>,
 	Nelson Elhage <nelhage@ksplice.com>,
 	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 1/3] mips: make page.h constants available to assembly.
-Date:	Fri, 31 Jul 2009 16:58:17 -0400
-Message-Id: <1249073899-30145-1-git-send-email-tabbott@ksplice.com>
+Subject: [PATCH 3/3] mips: clean up linker script using new linker script macros.
+Date:	Fri, 31 Jul 2009 16:58:19 -0400
+Message-Id: <1249073899-30145-3-git-send-email-tabbott@ksplice.com>
 X-Mailer: git-send-email 1.6.3.3
+In-Reply-To: <1249073899-30145-1-git-send-email-tabbott@ksplice.com>
+References: <1249073899-30145-1-git-send-email-tabbott@ksplice.com>
 X-Scanned-By: MIMEDefang 2.42
 Return-Path: <tabbott@MIT.EDU>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23809
+X-archive-position: 23810
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,43 +38,144 @@ X-list: linux-mips
 
 From: Nelson Elhage <nelhage@ksplice.com>
 
-page.h includes ifndef __ASSEMBLY__ guards, but PAGE_SIZE and some other
-constants are defined using "1UL", which the assembler does not
-support. Use the _AC macro from const.h to make them available to
-assembly (and linker scripts).
+This patch results in fewer output sections and in some data being
+reordered, but should have no functional impact.
 
 Signed-off-by: Nelson Elhage <nelhage@ksplice.com>
 Cc: Ralf Baechle <ralf@linux-mips.org>
 Cc: linux-mips@linux-mips.org
 ---
- arch/mips/include/asm/page.h |    5 +++--
- 1 files changed, 3 insertions(+), 2 deletions(-)
+ arch/mips/kernel/vmlinux.lds.S |   86 ++++------------------------------------
+ 1 files changed, 8 insertions(+), 78 deletions(-)
 
-diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
-index 96a14a4..939ed8b 100644
---- a/arch/mips/include/asm/page.h
-+++ b/arch/mips/include/asm/page.h
-@@ -10,6 +10,7 @@
- #define _ASM_PAGE_H
+diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
+index 6bfdb2e..a6d2c7a 100644
+--- a/arch/mips/kernel/vmlinux.lds.S
++++ b/arch/mips/kernel/vmlinux.lds.S
+@@ -43,13 +43,7 @@ SECTIONS
+ 	} :text = 0
+ 	_etext = .;	/* End of text section */
  
- #include <spaces.h>
-+#include <linux/const.h>
+-	/* Exception table */
+-	. = ALIGN(16);
+-	__ex_table : {
+-		__start___ex_table = .;
+-		*(__ex_table)
+-		__stop___ex_table = .;
+-	}
++	EXCEPTION_TABLE(16)
  
- /*
-  * PAGE_SHIFT determines the page size
-@@ -29,11 +30,11 @@
- #ifdef CONFIG_PAGE_SIZE_64KB
- #define PAGE_SHIFT	16
- #endif
--#define PAGE_SIZE	(1UL << PAGE_SHIFT)
-+#define PAGE_SIZE	(_AC(1,UL) << PAGE_SHIFT)
- #define PAGE_MASK       (~((1 << PAGE_SHIFT) - 1))
+ 	/* Exception table for data bus errors */
+ 	__dbe_table : {
+@@ -66,20 +60,10 @@ SECTIONS
+ 	/* writeable */
+ 	.data : {	/* Data */
+ 		. = . + DATAOFFSET;		/* for CONFIG_MAPPED_KERNEL */
+-		/*
+-		 * This ALIGN is needed as a workaround for a bug a
+-		 * gcc bug upto 4.1 which limits the maximum alignment
+-		 * to at most 32kB and results in the following
+-		 * warning:
+-		 *
+-		 *  CC      arch/mips/kernel/init_task.o
+-		 * arch/mips/kernel/init_task.c:30: warning: alignment
+-		 * of ‘init_thread_union’ is greater than maximum
+-		 * object file alignment.  Using 32768
+-		 */
+-		. = ALIGN(PAGE_SIZE);
+-		*(.data.init_task)
  
- #define HPAGE_SHIFT	(PAGE_SHIFT + PAGE_SHIFT - 3)
--#define HPAGE_SIZE	((1UL) << HPAGE_SHIFT)
-+#define HPAGE_SIZE	(_AC(1,UL) << HPAGE_SHIFT)
- #define HPAGE_MASK	(~(HPAGE_SIZE - 1))
- #define HUGETLB_PAGE_ORDER	(HPAGE_SHIFT - PAGE_SHIFT)
++		INIT_TASK_DATA(PAGE_SIZE)
++		NOSAVE_DATA
++		CACHELINE_ALIGNED_DATA(1 << CONFIG_MIPS_L1_CACHE_SHIFT)
+ 		DATA_DATA
+ 		CONSTRUCTORS
+ 	}
+@@ -96,51 +80,13 @@ SECTIONS
+ 	.sdata : {
+ 		*(.sdata)
+ 	}
+-
+-	. = ALIGN(PAGE_SIZE);
+-	.data_nosave : {
+-		__nosave_begin = .;
+-		*(.data.nosave)
+-	}
+-	. = ALIGN(PAGE_SIZE);
+-	__nosave_end = .;
+-
+-	. = ALIGN(1 << CONFIG_MIPS_L1_CACHE_SHIFT);
+-	.data.cacheline_aligned : {
+-		*(.data.cacheline_aligned)
+-	}
+ 	_edata =  .;			/* End of data section */
+ 
+ 	/* will be freed after init */
+ 	. = ALIGN(PAGE_SIZE);		/* Init code and data */
+ 	__init_begin = .;
+-	.init.text : {
+-		_sinittext = .;
+-		INIT_TEXT
+-		_einittext = .;
+-	}
+-	.init.data : {
+-		INIT_DATA
+-	}
+-	. = ALIGN(16);
+-	.init.setup : {
+-		__setup_start = .;
+-		*(.init.setup)
+-		__setup_end = .;
+-	}
+-
+-	.initcall.init : {
+-		__initcall_start = .;
+-		INITCALLS
+-		__initcall_end = .;
+-	}
+-
+-	.con_initcall.init : {
+-		__con_initcall_start = .;
+-		*(.con_initcall.init)
+-		__con_initcall_end = .;
+-	}
+-	SECURITY_INIT
++	INIT_TEXT_SECTION(PAGE_SIZE)
++	INIT_DATA_SECTION(16)
+ 
+ 	/* .exit.text is discarded at runtime, not link time, to deal with
+ 	 * references from .rodata
+@@ -151,29 +97,13 @@ SECTIONS
+ 	.exit.data : {
+ 		EXIT_DATA
+ 	}
+-#if defined(CONFIG_BLK_DEV_INITRD)
+-	. = ALIGN(PAGE_SIZE);
+-	.init.ramfs : {
+-		__initramfs_start = .;
+-		*(.init.ramfs)
+-		__initramfs_end = .;
+-	}
+-#endif
++
+ 	PERCPU(PAGE_SIZE)
+ 	. = ALIGN(PAGE_SIZE);
+ 	__init_end = .;
+ 	/* freed after init ends here */
+ 
+-	__bss_start = .;	/* BSS */
+-	.sbss  : {
+-		*(.sbss)
+-		*(.scommon)
+-	}
+-	.bss : {
+-		*(.bss)
+-		*(COMMON)
+-	}
+-	__bss_stop = .;
++	BSS_SECTION(0, 0, 0)
+ 
+ 	_end = . ;
  
 -- 
 1.6.3.3

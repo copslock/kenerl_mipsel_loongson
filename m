@@ -1,104 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 01 Aug 2009 23:51:33 +0200 (CEST)
-Received: from ey-out-1920.google.com ([74.125.78.146]:22463 "EHLO
-	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1493079AbZHAVv0 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 1 Aug 2009 23:51:26 +0200
-Received: by ey-out-1920.google.com with SMTP id 13so650314eye.54
-        for <multiple recipients>; Sat, 01 Aug 2009 14:51:26 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:date:subject
-         :mime-version:x-uid:x-length:to:cc:content-disposition:message-id
-         :content-type:content-transfer-encoding;
-        bh=z2UsN6GbeVUlW9gocuxZShCBF31gj8f96oapDZWDDe0=;
-        b=UMRJ4oGaXu2Momv3SJrbZyi+/JGS90uDutLwvYeuqLT2C/+eOHLyUN3MIJrhIrnufY
-         Rhdl5uqv5alAEPNKaV43G5zpddH2cfYwI8eF7Ld/UmnNYobGQS2Nw5y2QSdnqCA2dsMC
-         a8uHenahP8MbxvcXLGdIknvtgi/vq0vXSto8c=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:date:subject:mime-version:x-uid:x-length:to:cc
-         :content-disposition:message-id:content-type
-         :content-transfer-encoding;
-        b=mf4mE7SkN9VyLsmUMmwt6U8/+PRDLJ50GcRzVv3vyKYLV/BwIDwzjxaHwvZn25U2VD
-         BgI6qDloKgGARCbj7/+QCyebj0fxr39FERUvH73SecX+7VwBTuC3SkW4JwGFzkxEeoN6
-         CBgUK4ieCqnDmjOwY/6YIJVrmQ7x4LcEhbJx8=
-Received: by 10.210.129.3 with SMTP id b3mr2899251ebd.34.1249163486478;
-        Sat, 01 Aug 2009 14:51:26 -0700 (PDT)
-Received: from tunnel.evry (florian.mimichou.net [82.241.112.26])
-        by mx.google.com with ESMTPS id 28sm3891390eye.14.2009.08.01.14.51.25
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sat, 01 Aug 2009 14:51:25 -0700 (PDT)
-From:	Florian Fainelli <florian@openwrt.org>
-Date:	Sat, 1 Aug 2009 23:51:20 +0200
-Subject: [PATCH] mtx-1: request button GPIO before setting its direction
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 02 Aug 2009 10:50:00 +0200 (CEST)
+Received: from mgw2.diku.dk ([130.225.96.92]:46359 "EHLO mgw2.diku.dk"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1491975AbZHBIty (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 2 Aug 2009 10:49:54 +0200
+Received: from localhost (localhost [127.0.0.1])
+	by mgw2.diku.dk (Postfix) with ESMTP id 9B07419BB41;
+	Sun,  2 Aug 2009 10:49:51 +0200 (CEST)
+Received: from mgw2.diku.dk ([127.0.0.1])
+ by localhost (mgw2.diku.dk [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 15265-11; Sun,  2 Aug 2009 10:49:49 +0200 (CEST)
+Received: from nhugin.diku.dk (nhugin.diku.dk [130.225.96.140])
+	by mgw2.diku.dk (Postfix) with ESMTP id 0CA8719BB7E;
+	Sun,  2 Aug 2009 10:48:09 +0200 (CEST)
+Received: from ask.diku.dk (ask.diku.dk [130.225.96.225])
+	by nhugin.diku.dk (Postfix) with ESMTP
+	id A10896DFCFD; Sun,  2 Aug 2009 10:47:17 +0200 (CEST)
+Received: by ask.diku.dk (Postfix, from userid 3767)
+	id ED51B154E13; Sun,  2 Aug 2009 10:48:08 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by ask.diku.dk (Postfix) with ESMTP id EBCE01549A9;
+	Sun,  2 Aug 2009 10:48:08 +0200 (CEST)
+Date:	Sun, 2 Aug 2009 10:48:08 +0200 (CEST)
+From:	Julia Lawall <julia@diku.dk>
+To:	ralf@linux-mips.org, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH 10/15] arch/mips: Use DIV_ROUND_CLOSEST
+Message-ID: <Pine.LNX.4.64.0908021047480.15557@ask.diku.dk>
 MIME-Version: 1.0
-X-UID:	1099
-X-Length: 2416
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org,
-	Manuel Lauss <manuel.lauss@googlemail.com>
-Content-Disposition: inline
-Message-Id: <200908012351.21059.florian@openwrt.org>
-Content-Type: text/plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Return-Path: <f.fainelli@gmail.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: amavisd-new at diku.dk
+Return-Path: <julia@diku.dk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23812
+X-archive-position: 23813
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: julia@diku.dk
 Precedence: bulk
 X-list: linux-mips
 
-This patch fixes the following warning at boot time:
-WARNING: at drivers/gpio/gpiolib.c:83 0x8021d5e0()
-autorequest GPIO-207
-Modules linked in:
-Call Trace:[<8011e0ec>] 0x8011e0ec
-[<80110a28>] 0x80110a28
-[<80110a28>] 0x80110a28
-[..snip..]
+From: Julia Lawall <julia@diku.dk>
 
-The current code does not request the GPIO and attempts
-to set its direction, which is a violation of the GPIO API.
-This patch also unhardcode the GPIO we request and use
-the one we defined in the button driver.
+The kernel.h macro DIV_ROUND_CLOSEST performs the computation (x + d/2)/d
+but is perhaps more readable.
 
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
+The semantic patch that makes this change is as follows:
+(http://www.emn.fr/x-info/coccinelle/)
+
+// <smpl>
+@haskernel@
+@@
+
+#include <linux/kernel.h>
+
+@depends on haskernel@
+expression x,__divisor;
+@@
+
+- (((x) + ((__divisor) / 2)) / (__divisor))
++ DIV_ROUND_CLOSEST(x,__divisor)
+// </smpl>
+
+Signed-off-by: Julia Lawall <julia@diku.dk>
+
 ---
-diff --git a/arch/mips/alchemy/mtx-1/platform.c b/arch/mips/alchemy/mtx-1/platform.c
-index 8b5914d..e30e42a 100644
---- a/arch/mips/alchemy/mtx-1/platform.c
-+++ b/arch/mips/alchemy/mtx-1/platform.c
-@@ -1,7 +1,7 @@
- /*
-  * MTX-1 platform devices registration
-  *
-- * Copyright (C) 2007, Florian Fainelli <florian@openwrt.org>
-+ * Copyright (C) 2007-2009, Florian Fainelli <florian@openwrt.org>
-  *
-  * This program is free software; you can redistribute it and/or modify
-  * it under the terms of the GNU General Public License as published by
-@@ -142,7 +142,17 @@ static struct __initdata platform_device * mtx1_devs[] = {
- 
- static int __init mtx1_register_devices(void)
- {
--	gpio_direction_input(207);
-+	int rc;
-+
-+	rc = gpio_request(mtx1_gpio_button[0].gpio,
-+					mtx1_gpio_button[0].desc);
-+	if (rc < 0) {
-+		printk(KERN_INFO "mtx1: failed to request %d\n",
-+					mtx1_gpio_button[0].gpio);
-+		goto out;
-+	}
-+	gpio_direction_input(mtx1_gpio_button[0].gpio);
-+out:
- 	return platform_add_devices(mtx1_devs, ARRAY_SIZE(mtx1_devs));
- }
+ arch/mips/nxp/pnx8550/common/time.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/arch/mips/nxp/pnx8550/common/time.c b/arch/mips/nxp/pnx8550/common/time.c
+index 8df43e9..18b1927 100644
+--- a/arch/mips/nxp/pnx8550/common/time.c
++++ b/arch/mips/nxp/pnx8550/common/time.c
+@@ -138,7 +138,7 @@ __init void plat_time_init(void)
+ 	 * HZ timer interrupts per second.
+ 	 */
+ 	mips_hpt_frequency = 27UL * ((1000000UL * n)/(m * pow2p));
+-	cpj = (mips_hpt_frequency + HZ / 2) / HZ;
++	cpj = DIV_ROUND_CLOSEST(mips_hpt_frequency, HZ);
+ 	write_c0_count(0);
+ 	timer_ack();
  

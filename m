@@ -1,52 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Aug 2009 21:14:10 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:35917 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1493354AbZHCTOC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 3 Aug 2009 21:14:02 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n73JEFrQ023240;
-	Mon, 3 Aug 2009 20:14:16 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n73JEEEu023238;
-	Mon, 3 Aug 2009 20:14:14 +0100
-Date:	Mon, 3 Aug 2009 20:14:14 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	David VomLehn <dvomlehn@cisco.com>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Aug 2009 21:34:28 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:49809 "EHLO
+	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493354AbZHCTeV (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 3 Aug 2009 21:34:21 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B4a773b990000>; Mon, 03 Aug 2009 15:33:45 -0400
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 3 Aug 2009 12:33:25 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 3 Aug 2009 12:33:25 -0700
+Message-ID: <4A773B85.6010004@caviumnetworks.com>
+Date:	Mon, 03 Aug 2009 12:33:25 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+MIME-Version: 1.0
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	David VomLehn <dvomlehn@cisco.com>,
 	GCC Help Mailing List <gcc-help@gcc.gnu.org>,
 	Linux MIPS Mailing List <linux-mips@linux-mips.org>
 Subject: Re: Relocation problem with MIPS kernel modules
-Message-ID: <20090803191413.GA22543@linux-mips.org>
-References: <20090730184923.GA27030@cuplxvomd02.corp.sa.net> <20090803092030.GB30431@linux-mips.org> <20090803181958.GA7009@cuplxvomd02.corp.sa.net> <4A773026.3030002@caviumnetworks.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4A773026.3030002@caviumnetworks.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+References: <20090730184923.GA27030@cuplxvomd02.corp.sa.net> <20090803092030.GB30431@linux-mips.org>
+In-Reply-To: <20090803092030.GB30431@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 03 Aug 2009 19:33:25.0437 (UTC) FILETIME=[44F6DED0:01CA1471]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23821
+X-archive-position: 23822
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Aug 03, 2009 at 11:44:54AM -0700, David Daney wrote:
-
->>> R_MIPS_HI16 relocations to be followed by a R_MIPS_LO16 symbol.  All
->>> relocations of this sequence must use the same symbol, of course.  This is
->>> a very old extension; I think it predates the Linux/MIPS port.
+Ralf Baechle wrote:
+> On Thu, Jul 30, 2009 at 11:49:23AM -0700, David VomLehn wrote:
+> 
+>> To: GCC Help Mailing List <gcc-help@gcc.gnu.org>,
+>> 	Linux MIPS Mailing List <linux-mips@linux-mips.org>
+>> Subject: Relocation problem with MIPS kernel modules
+>> Content-Type: text/plain; charset=us-ascii
 >>
->> Perhaps a foolish question, but is this documented anywhere?
->
-> What more documentation do you need?  It's obvious if you read  
-> bfd/elf{32,64,xx}-mips.c :-).
+>> I have a MIPS loadable kernel module that, when I try to insmod it, causes the
+>> kernel to emit the message:
+>>
+>> 	module xyz: dangerous relocation
+>>
+>> This message appears in three different places in arch/mips/kernel/module.c,
+>> but this one is coming from apply_r_mips_lo16_rel(). The module code at
+> 
+> I'll change the messages to indicate the relocation type.
+> 
+>> the location at which the error message is generated appears to be pretty
+>> bland:
+>> 	lw v0,28564(s1)
+>> with the expected relocation type of R_MIPS_LO16. The relocation before it
+>> is R_MIPS_HI16, as expected, but for a different symbol. Before *that*
+>> is another R_MIPS_HI16 relocation entry for yet a third symbol.
+>>
+>> According to the MIPS ABI, for what it's worth, "Each relocation type of
+>> R_MIPS_HI16 must have an associated R_MIPS_LO16 entry immediately following
+>> it in the list of relocations." So, what's actually getting generated by
+>> gcc and linker differs from the closest thing we have to an ABI of record for
+>> MIPS processors.
+> 
+> The GNU tools as an extension over the MIPS ABI allows an arbitrary number of
+> R_MIPS_HI16 relocations to be followed by a R_MIPS_LO16 symbol.  All
+> relocations of this sequence must use the same symbol, of course.  This is
+> a very old extension; I think it predates the Linux/MIPS port.
+> 
 
-David ist (unforutunately ...) right.  I don't think this is documented
-anywhere.  I also only learned it from reading the binutils sources.
+Actually I think it is the opposite:
 
-  Ralf
+RELOCATION RECORDS FOR [.text]:
+OFFSET   TYPE              VALUE
+00000000 R_MIPS_HI16       .bss+0x00000004
+00000008 R_MIPS_LO16       .bss+0x00000004
+00000014 R_MIPS_LO16       .bss+0x00000004
+
+We load the hi16 value into a register and then use multiple lo16 
+offsets for the follow loads and stores to the same location.  On a 
+read-modify-write we only want to load the base address one time.
+
+David Daney

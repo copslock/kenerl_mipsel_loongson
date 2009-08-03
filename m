@@ -1,90 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Aug 2009 20:20:12 +0200 (CEST)
-Received: from sj-iport-5.cisco.com ([171.68.10.87]:52552 "EHLO
-	sj-iport-5.cisco.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1493342AbZHCSUG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 3 Aug 2009 20:20:06 +0200
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: ApoEAGvHdkqrR7MV/2dsb2JhbAC8LYgpjlwFhBiCNg
-X-IronPort-AV: E=Sophos;i="4.43,315,1246838400"; 
-   d="scan'208";a="88601563"
-Received: from sj-dkim-1.cisco.com ([171.71.179.21])
-  by sj-iport-5.cisco.com with ESMTP; 03 Aug 2009 18:19:58 +0000
-Received: from sj-core-1.cisco.com (sj-core-1.cisco.com [171.71.177.237])
-	by sj-dkim-1.cisco.com (8.12.11/8.12.11) with ESMTP id n73IJwSx019412;
-	Mon, 3 Aug 2009 11:19:58 -0700
-Received: from cuplxvomd02.corp.sa.net ([64.101.20.155])
-	by sj-core-1.cisco.com (8.13.8/8.14.3) with ESMTP id n73IJwEj029315;
-	Mon, 3 Aug 2009 18:19:58 GMT
-Date:	Mon, 3 Aug 2009 11:19:58 -0700
-From:	David VomLehn <dvomlehn@cisco.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	GCC Help Mailing List <gcc-help@gcc.gnu.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 03 Aug 2009 20:45:04 +0200 (CEST)
+Received: from smtp2.caviumnetworks.com ([209.113.159.134]:9248 "EHLO
+	smtp2.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493346AbZHCSo6 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 3 Aug 2009 20:44:58 +0200
+Received: from maexch1.caveonetworks.com (Not Verified[192.168.14.20]) by smtp2.caviumnetworks.com with MailMarshal (v6,5,4,7535)
+	id <B4a7730140000>; Mon, 03 Aug 2009 14:44:36 -0400
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by maexch1.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 3 Aug 2009 14:44:56 -0400
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Mon, 3 Aug 2009 11:44:55 -0700
+Message-ID: <4A773026.3030002@caviumnetworks.com>
+Date:	Mon, 03 Aug 2009 11:44:54 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+MIME-Version: 1.0
+To:	David VomLehn <dvomlehn@cisco.com>
+CC:	Ralf Baechle <ralf@linux-mips.org>,
+	GCC Help Mailing List <gcc-help@gcc.gnu.org>,
 	Linux MIPS Mailing List <linux-mips@linux-mips.org>
 Subject: Re: Relocation problem with MIPS kernel modules
-Message-ID: <20090803181958.GA7009@cuplxvomd02.corp.sa.net>
-References: <20090730184923.GA27030@cuplxvomd02.corp.sa.net> <20090803092030.GB30431@linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20090803092030.GB30431@linux-mips.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-DKIM-Signature:	v=1; a=rsa-sha256; q=dns/txt; l=1630; t=1249323598; x=1250187598;
-	c=relaxed/simple; s=sjdkim1004;
-	h=Content-Type:From:Subject:Content-Transfer-Encoding:MIME-Version;
-	d=cisco.com; i=dvomlehn@cisco.com;
-	z=From:=20David=20VomLehn=20<dvomlehn@cisco.com>
-	|Subject:=20Re=3A=20Relocation=20problem=20with=20MIPS=20ke
-	rnel=20modules
-	|Sender:=20;
-	bh=3C8FkEp8z1smxkIIQBRVbvhvmIWMqLZECLMFJs6HTUY=;
-	b=uEDgULWT0+aYvLDz7aM8fMO2xlN3HoCpUjfCH4kdYYqqa6dUMua/h5l+X1
-	AkqcVd7Ysg4KfRak7lSe3ndeTcScWA77jPC+8AeOHGz55eOJQzXoVfig1OmZ
-	9MPUmT4z9AM0cit6sji79CJ94HoYpVxkgIwyPo2sU4m5cifxanOfQ=;
-Authentication-Results:	sj-dkim-1; header.From=dvomlehn@cisco.com; dkim=pass (
-	sig from cisco.com/sjdkim1004 verified; ); 
-Return-Path: <dvomlehn@cisco.com>
+References: <20090730184923.GA27030@cuplxvomd02.corp.sa.net> <20090803092030.GB30431@linux-mips.org> <20090803181958.GA7009@cuplxvomd02.corp.sa.net>
+In-Reply-To: <20090803181958.GA7009@cuplxvomd02.corp.sa.net>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 03 Aug 2009 18:44:55.0028 (UTC) FILETIME=[7E39B340:01CA146A]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23819
+X-archive-position: 23820
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvomlehn@cisco.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Aug 03, 2009 at 10:20:30AM +0100, Ralf Baechle wrote:
-> On Thu, Jul 30, 2009 at 11:49:23AM -0700, David VomLehn wrote:
+David VomLehn wrote:
+> On Mon, Aug 03, 2009 at 10:20:30AM +0100, Ralf Baechle wrote:
+>> On Thu, Jul 30, 2009 at 11:49:23AM -0700, David VomLehn wrote:
+>>
+>>> To: GCC Help Mailing List <gcc-help@gcc.gnu.org>,
+>>> 	Linux MIPS Mailing List <linux-mips@linux-mips.org>
+>>> Subject: Relocation problem with MIPS kernel modules
+>>> Content-Type: text/plain; charset=us-ascii
+>>>
+>>> I have a MIPS loadable kernel module that, when I try to insmod it, causes the
+>>> kernel to emit the message:
+>>>
+>>> 	module xyz: dangerous relocation
+> ...
+>>> According to the MIPS ABI, for what it's worth, "Each relocation type of
+>>> R_MIPS_HI16 must have an associated R_MIPS_LO16 entry immediately following
+>>> it in the list of relocations." So, what's actually getting generated by
+>>> gcc and linker differs from the closest thing we have to an ABI of record for
+>>> MIPS processors.
+>> The GNU tools as an extension over the MIPS ABI allows an arbitrary number of
+>> R_MIPS_HI16 relocations to be followed by a R_MIPS_LO16 symbol.  All
+>> relocations of this sequence must use the same symbol, of course.  This is
+>> a very old extension; I think it predates the Linux/MIPS port.
 > 
-> > To: GCC Help Mailing List <gcc-help@gcc.gnu.org>,
-> > 	Linux MIPS Mailing List <linux-mips@linux-mips.org>
-> > Subject: Relocation problem with MIPS kernel modules
-> > Content-Type: text/plain; charset=us-ascii
-> > 
-> > I have a MIPS loadable kernel module that, when I try to insmod it, causes the
-> > kernel to emit the message:
-> > 
-> > 	module xyz: dangerous relocation
-...
-> > According to the MIPS ABI, for what it's worth, "Each relocation type of
-> > R_MIPS_HI16 must have an associated R_MIPS_LO16 entry immediately following
-> > it in the list of relocations." So, what's actually getting generated by
-> > gcc and linker differs from the closest thing we have to an ABI of record for
-> > MIPS processors.
-> 
-> The GNU tools as an extension over the MIPS ABI allows an arbitrary number of
-> R_MIPS_HI16 relocations to be followed by a R_MIPS_LO16 symbol.  All
-> relocations of this sequence must use the same symbol, of course.  This is
-> a very old extension; I think it predates the Linux/MIPS port.
+> Perhaps a foolish question, but is this documented anywhere?
 
-Perhaps a foolish question, but is this documented anywhere? I know there is a
-a document over at http://gcc.gnu.org/gcc-3.4/mips-abi.html addressing some
-other MIPS ABI changes, but I didn't see this one. Obviously, we could put
-documentation on the linux-mips Wiki, with pointers to other documents, but
-I'm not sure this is the right place. I'm also concerned there could be other
-ABI changes/extensions that need to be included.
+What more documentation do you need?  It's obvious if you read 
+bfd/elf{32,64,xx}-mips.c :-).
 
->   Ralf
-
-David
+David Daney

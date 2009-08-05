@@ -1,96 +1,65 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Aug 2009 01:08:32 +0200 (CEST)
-Received: from main.gmane.org ([80.91.229.2]:57608 "EHLO ciao.gmane.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Aug 2009 03:18:02 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:42963 "EHLO h5.dl5rb.org.uk"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S2097290AbZHDXIZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 5 Aug 2009 01:08:25 +0200
-Received: from list by ciao.gmane.org with local (Exim 4.43)
-	id 1MYT7E-00036s-1k
-	for linux-mips@linux-mips.org; Tue, 04 Aug 2009 23:08:20 +0000
-Received: from chipmunk.wormnet.eu ([195.195.131.226])
-        by main.gmane.org with esmtp (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Tue, 04 Aug 2009 23:08:20 +0000
-Received: from alex by chipmunk.wormnet.eu with local (Gmexim 0.1 (Debian))
-        id 1AlnuQ-0007hv-00
-        for <linux-mips@linux-mips.org>; Tue, 04 Aug 2009 23:08:20 +0000
-X-Injected-Via-Gmane: http://gmane.org/
-To:	linux-mips@linux-mips.org
-From:	Alexander Clouter <alex@digriz.org.uk>
-Subject:  Re: [PATCH] ar7: register watchdog driver only if enabled in hardware configuration
-Date:	Tue, 4 Aug 2009 23:41:42 +0100
-Message-ID:  <62qmk6-g11.ln1@chipmunk.wormnet.eu>
-References:  <200908042309.36721.florian@openwrt.org>
-X-Complaints-To: usenet@ger.gmane.org
-X-Gmane-NNTP-Posting-Host: chipmunk.wormnet.eu
-User-Agent: tin/1.9.3-20080506 ("Dalintober") (UNIX) (Linux/2.6.26-2-sparc64-smp (sparc64))
-Return-Path: <sgi-linux-mips@m.gmane.org>
+	id S1493301AbZHEBRz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 5 Aug 2009 03:17:55 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n751IMX0017154;
+	Wed, 5 Aug 2009 02:18:22 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n751IL51017153;
+	Wed, 5 Aug 2009 02:18:21 +0100
+Date:	Wed, 5 Aug 2009 02:18:21 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	David Daney <ddaney@caviumnetworks.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/2] MIPS: Allow kernel use of ll/sc to be separate
+	from the presence of ll/sc.
+Message-ID: <20090805011820.GA16950@linux-mips.org>
+References: <1247508920-29153-1-git-send-email-ddaney@caviumnetworks.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1247508920-29153-1-git-send-email-ddaney@caviumnetworks.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23836
+X-archive-position: 23837
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@digriz.org.uk
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Florian Fainelli <florian@openwrt.org> wrote:
->
-> This patch checks if the watchdog enable bit is set in the DCL
-> register meaning that the hardware watchdog actually works and
-> if so, register the ar7_wdt platform_device.
+On Mon, Jul 13, 2009 at 11:15:19AM -0700, David Daney wrote:
+
+> On some CPUs, it is more efficient to disable and enable interrupts in
+> the kernel rather than use ll/sc for atomic operations.  But if we
+> were to set cpu_has_llsc to false, we would break the userspace futex
+> interface (in asm/futex.h).
 > 
-> Signed-off-by: Florian Fainelli <florian@openwrt.org>
-> ---
-> diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
-> index e2278c0..835f3f0 100644
-> --- a/arch/mips/ar7/platform.c
-> +++ b/arch/mips/ar7/platform.c
-> @@ -503,6 +503,7 @@ static int __init ar7_register_devices(void)
-> {
->        u16 chip_id;
->        int res;
-> +       u32 *bootcr, val;
-> #ifdef CONFIG_SERIAL_8250
->        static struct uart_port uart_port[2];
+> We separate the two concepts, with a new predicate kernel_uses_llsc,
+> that lets us disable the kernel's use of ll/sc while still allowing
+> the futex code to use it.
 > 
-> @@ -595,7 +596,13 @@ static int __init ar7_register_devices(void)
-> 
->        ar7_wdt_res.end = ar7_wdt_res.start + 0x20;
-> 
-> -       res = platform_device_register(&ar7_wdt);
-> +       bootcr = (u32 *)ioremap_nocache(AR7_REGS_DCL, 4);
-> +       val = *bootcr;
-> +       iounmap(bootcr);
-> +
-> +       /* Register watchdog only if enabled in hardware */
-> +       if (val & AR7_WDT_HW_ENA)
-> +               res = platform_device_register(&ar7_wdt);
->
-I think the 'correct' way to do this is:
----
-void __iomem *bootcr;
-u32 val;
+> Also there were a couple of cases in bitops.h where we were using
+> ll/sc unconditionally even if cpu_has_llsc were false.  There are
+> several places in assembly code where the configure variable
+> CONFIG_CPU_HAS_LLSC is used instead of cpu_has_llsc, so we make
+> cpu_has_llsc true if CONFIG_CPU_HAS_LLSC is set, for consistency.
 
-...
+The uses in bitops.h you mentioned were not bugs; they were wrapped in
+#ifdef CONFIG_CPU_MIPSR2 and MIPS R2 implies having LL/SC.  So for sane
+setups there just is no point in bothering.
 
-bootcr = ioremap_nocache(AR7_REGS_DCL, 4);
-val = *bootcr;
-iounmap(bootcr);
----
+As discussed on IRC - this patch adds one more use of CONFIG_CPU_HAS_LLSC
+which really should die.  So I turned the remaining CONFIG_CPU_HAS_LLSC
+users further upside down, removed CONFIG_CPU_HAS_LLSC and applied your
+patch with the necessary adjustments on top.
 
-I'm betting this could be reduced to:
----
-if (ioread32(AR7_REGS_DCL) & AR7_WDT_HW_ENA)
-	res = platform_device_register(&ar7_wdt);
----
+Thanks!
 
-However without the hardware...I cannot test this.
-
-Cheers
-
--- 
-Alexander Clouter
-.sigmonster says: Accuracy, n.:
-                  	The vice of being right
+  Ralf

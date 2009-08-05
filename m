@@ -1,112 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Aug 2009 11:40:42 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:49094 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1492570AbZHEJke (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 5 Aug 2009 11:40:34 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n759f6Dv020847;
-	Wed, 5 Aug 2009 10:41:06 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n759f4Ag020843;
-	Wed, 5 Aug 2009 10:41:04 +0100
-Date:	Wed, 5 Aug 2009 10:41:04 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Fix support for Cavium Octeon debugger stub (v2).
-Message-ID: <20090805094104.GA14461@linux-mips.org>
-References: <1246905276-8543-1-git-send-email-ddaney@caviumnetworks.com> <1246906976-19979-1-git-send-email-ddaney@caviumnetworks.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1246906976-19979-1-git-send-email-ddaney@caviumnetworks.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Aug 2009 21:23:33 +0200 (CEST)
+Received: from 74-93-104-97-Washington.hfc.comcastbusiness.net ([74.93.104.97]:54099
+	"EHLO sunset.davemloft.net" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493429AbZHETXZ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 5 Aug 2009 21:23:25 +0200
+Received: from localhost (localhost [127.0.0.1])
+	by sunset.davemloft.net (Postfix) with ESMTP id BEBB6C8C4B1;
+	Wed,  5 Aug 2009 12:23:26 -0700 (PDT)
+Date:	Wed, 05 Aug 2009 12:23:26 -0700 (PDT)
+Message-Id: <20090805.122326.53960211.davem@davemloft.net>
+To:	florian@openwrt.org
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 1/5] cpmac: fix wrong MDIO bus identifier
+From:	David Miller <davem@davemloft.net>
+In-Reply-To: <200908042252.42254.florian@openwrt.org>
+References: <200908042252.42254.florian@openwrt.org>
+X-Mailer: Mew version 6.2.51 on Emacs 22.1 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <davem@davemloft.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23842
+X-archive-position: 23843
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Jul 06, 2009 at 12:02:56PM -0700, David Daney wrote:
+From: Florian Fainelli <florian@openwrt.org>
+Date: Tue, 4 Aug 2009 22:52:41 +0200
 
-> The Cavium Octeon bootloader has a debugger stub that requires a
-> little help from the target application to break in.
+> This patch fixes the wrong MDIO bus identifier which was
+> set to 0 unconditionaly, suitable for external switches while
+> it is actually 1 for PHYs different than external switches
+> which are autodetected.
 > 
-> If configured, when we get an interrupt on the debug uart we wake up
-> the debugger.
-> 
-> Changes from v1: Inline octeon_get_boot_debug_flag so it compiles
->                  without CONFIG_CAVIUM_GDB.
-> 
-> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
-> ---
->  arch/mips/Kconfig.debug               |   10 ++++++
->  arch/mips/cavium-octeon/serial.c      |   53 ++++++++++++++++++++++++++++++++-
->  arch/mips/cavium-octeon/setup.c       |    2 +-
->  arch/mips/include/asm/octeon/octeon.h |    1 -
->  4 files changed, 63 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/mips/Kconfig.debug b/arch/mips/Kconfig.debug
-> index 364ca89..f6a0e68 100644
-> --- a/arch/mips/Kconfig.debug
-> +++ b/arch/mips/Kconfig.debug
-> @@ -42,6 +42,16 @@ config SB1XXX_CORELIS
->  	  Select compile flags that produce code that can be processed by the
->  	  Corelis mksym utility and UDB Emulator.
->  
-> +config CAVIUM_GDB
-> +	bool "Remote GDB debugging using the Cavium Networks Multicore GDB"
-> +	depends on DEBUG_KERNEL
-> +	depends on CPU_CAVIUM_OCTEON
-> +	select DEBUG_INFO
-> +	help
-> +	  If you say Y here, it will be possible to remotely debug the MIPS
-> +	  kernel using the Cavium Networks GDB with extended SMP support.
-> +	  This is only useful for kernel hackers. If unsure, say N.
-> +
->  config RUNTIME_DEBUG
->  	bool "Enable run-time debugging"
->  	depends on DEBUG_KERNEL
-> diff --git a/arch/mips/cavium-octeon/serial.c b/arch/mips/cavium-octeon/serial.c
-> index 8240728..2110e68 100644
-> --- a/arch/mips/cavium-octeon/serial.c
-> +++ b/arch/mips/cavium-octeon/serial.c
-> @@ -18,11 +18,60 @@
->  
->  #include <asm/octeon/octeon.h>
->  
-> +#if defined(CONFIG_CAVIUM_GDB)
-> +
->  #ifdef CONFIG_GDB_CONSOLE
->  #define DEBUG_UART 0
->  #else
->  #define DEBUG_UART 1
->  #endif
-> +static irqreturn_t interrupt_debug_char(int cpl, void *dev_id)
-> +{
-> +	unsigned long lsrval;
-> +	unsigned long tmp;
-> +
-> +	lsrval = cvmx_read_csr(CVMX_MIO_UARTX_LSR(DEBUG_UART));
-> +	if (lsrval & 1) {
-> +#ifdef CONFIG_KGDB
-> +		/*
-> +		 * The Cavium EJTAG bootmonitor stub is not compatible
-> +		 * with KGDB.  We should never get here.
-> +		 */
-> +#error Illegal to use both CONFIG_KGDB and CONFIG_CAVIUM_GDB
-> +#endif
+> Signed-off-by: Florian Fainelli <florian@openwrt.org>
 
-#error is only acceptable to catch bugs in Kconfig or the code itself.  This
-#error however is triggering on .config settings including such generated by
-randconfig which is a PITA.  So rather please ensure forbidden .configs
-can't be generated.  Alternatively, implement things such that both
-config options can co-exist.
-
-  Ralf
+Applied to net-next-2.6

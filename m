@@ -1,41 +1,100 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 05 Aug 2009 21:25:37 +0200 (CEST)
-Received: from 74-93-104-97-Washington.hfc.comcastbusiness.net ([74.93.104.97]:54118
-	"EHLO sunset.davemloft.net" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493443AbZHETYD (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 5 Aug 2009 21:24:03 +0200
-Received: from localhost (localhost [127.0.0.1])
-	by sunset.davemloft.net (Postfix) with ESMTP id 77BEDC8C4B1;
-	Wed,  5 Aug 2009 12:24:10 -0700 (PDT)
-Date:	Wed, 05 Aug 2009 12:24:10 -0700 (PDT)
-Message-Id: <20090805.122410.124361028.davem@davemloft.net>
-To:	florian@openwrt.org
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 6/5] cpmac: unmark as broken
-From:	David Miller <davem@davemloft.net>
-In-Reply-To: <200908042317.49497.florian@openwrt.org>
-References: <200908042317.49497.florian@openwrt.org>
-X-Mailer: Mew version 6.2.51 on Emacs 22.1 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <davem@davemloft.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 07 Aug 2009 08:38:49 +0200 (CEST)
+Received: from ey-out-1920.google.com ([74.125.78.147]:48120 "EHLO
+	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1492003AbZHGGin convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 7 Aug 2009 08:38:43 +0200
+Received: by ey-out-1920.google.com with SMTP id 13so430221eye.54
+        for <linux-mips@linux-mips.org>; Thu, 06 Aug 2009 23:38:43 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:sender:received:in-reply-to
+         :references:date:x-google-sender-auth:message-id:subject:from:to
+         :content-type:content-transfer-encoding;
+        bh=+iz0+6dV1pHl+u3eXOVOHjFieUSk+k3JxXm9tzFelb8=;
+        b=aY6/KMkCfIrmjTiYZ2dHbGgho+WsxH9AmR+QFGN8YeZoPrkychsq5Y2gnJpo7oQfDZ
+         yNKuQ4KcUivqWIsRmoGY7b55X3e/oqOJCdOGPFSRssTQag/+mKBTxpZzSwBtDKrLJaMh
+         pPXK4A+pCon9NpVFZZwzPfPk6WcQqlpKRhows=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:content-type
+         :content-transfer-encoding;
+        b=PCZi29q8OF6PkLU/C0kX0/yhAaBYl8F9c+1NFHC4jtavMA7T189UBy21FUbNYybeKV
+         GW283UAoMh+2MOuJynCqPF1evsskNg6uXd/ie2jHhNgP3Khes8Ne8GZXuFgmnTlIAm9Q
+         7RSR/Hy3+iXoTfrTy5JXjZ7mV2uzg8AUsDslM=
+MIME-Version: 1.0
+Received: by 10.216.26.77 with SMTP id b55mr158067wea.101.1249627122496; Thu, 
+	06 Aug 2009 23:38:42 -0700 (PDT)
+In-Reply-To: <20090803181958.GA7009@cuplxvomd02.corp.sa.net>
+References: <20090730184923.GA27030@cuplxvomd02.corp.sa.net>
+	 <20090803092030.GB30431@linux-mips.org>
+	 <20090803181958.GA7009@cuplxvomd02.corp.sa.net>
+Date:	Fri, 7 Aug 2009 08:38:42 +0200
+X-Google-Sender-Auth: 296c629e3b3184fe
+Message-ID: <f9669fd00908062338p24700478p62765ec067b02003@mail.gmail.com>
+Subject: Re: Relocation problem with MIPS kernel modules
+From:	"Marshall B. Rogers" <mbr@64.vg>
+To:	David VomLehn <dvomlehn@cisco.com>,
+	GCC Help Mailing List <gcc-help@gcc.gnu.org>,
+	Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <zzt256@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23848
+X-archive-position: 23849
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: mbr@64.vg
 Precedence: bulk
 X-list: linux-mips
 
-From: Florian Fainelli <florian@openwrt.org>
-Date: Tue, 4 Aug 2009 23:17:49 +0200
+@David VomLehn:
 
-> Starting with version 0.5.1, cpmac is no longer broken.
-> 
-> Signed-off-by: Florian Fainelli <florian@openwrt.org>
+This is four days overdue, but here's a big document on the 32-bit MIPS ABI:
+http://math-atlas.sourceforge.net/devel/assembly/mipsabi32.pdf
 
-Applied to net-next-2.6
+I haven't read it all, but it seems to cover everything you would ever
+need, including the relocation types.
+
+Regards,
+Marshall
+
+On Mon, Aug 3, 2009 at 8:19 PM, David VomLehn <dvomlehn@cisco.com> wrote:
+>
+> On Mon, Aug 03, 2009 at 10:20:30AM +0100, Ralf Baechle wrote:
+> > On Thu, Jul 30, 2009 at 11:49:23AM -0700, David VomLehn wrote:
+> >
+> > > To: GCC Help Mailing List <gcc-help@gcc.gnu.org>,
+> > >     Linux MIPS Mailing List <linux-mips@linux-mips.org>
+> > > Subject: Relocation problem with MIPS kernel modules
+> > > Content-Type: text/plain; charset=us-ascii
+> > >
+> > > I have a MIPS loadable kernel module that, when I try to insmod it, causes the
+> > > kernel to emit the message:
+> > >
+> > >     module xyz: dangerous relocation
+> ...
+> > > According to the MIPS ABI, for what it's worth, "Each relocation type of
+> > > R_MIPS_HI16 must have an associated R_MIPS_LO16 entry immediately following
+> > > it in the list of relocations." So, what's actually getting generated by
+> > > gcc and linker differs from the closest thing we have to an ABI of record for
+> > > MIPS processors.
+> >
+> > The GNU tools as an extension over the MIPS ABI allows an arbitrary number of
+> > R_MIPS_HI16 relocations to be followed by a R_MIPS_LO16 symbol.  All
+> > relocations of this sequence must use the same symbol, of course.  This is
+> > a very old extension; I think it predates the Linux/MIPS port.
+>
+> Perhaps a foolish question, but is this documented anywhere? I know there is a
+> a document over at http://gcc.gnu.org/gcc-3.4/mips-abi.html addressing some
+> other MIPS ABI changes, but I didn't see this one. Obviously, we could put
+> documentation on the linux-mips Wiki, with pointers to other documents, but
+> I'm not sure this is the right place. I'm also concerned there could be other
+> ABI changes/extensions that need to be included.
+>
+> >   Ralf
+>
+> David

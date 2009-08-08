@@ -1,58 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Aug 2009 01:31:40 +0200 (CEST)
-Received: from smtp6-g21.free.fr ([212.27.42.6]:57122 "EHLO smtp6-g21.free.fr"
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 08 Aug 2009 13:10:00 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:35056 "EHLO h5.dl5rb.org.uk"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1493163AbZHGXbd (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 8 Aug 2009 01:31:33 +0200
-Received: from smtp6-g21.free.fr (localhost [127.0.0.1])
-	by smtp6-g21.free.fr (Postfix) with ESMTP id A0CFFE08089;
-	Sat,  8 Aug 2009 01:31:25 +0200 (CEST)
-Received: from [127.0.0.1] (sakura.staff.proxad.net [213.228.1.107])
-	by smtp6-g21.free.fr (Postfix) with ESMTP id 619B9E08017;
-	Sat,  8 Aug 2009 01:31:22 +0200 (CEST)
-Subject: Re: [PATCH 0/8] New BCM63xx SoC support and devices registration
-From:	Maxime Bizon <mbizon@freebox.fr>
-Reply-To: mbizon@freebox.fr
+	id S1492914AbZHHLJx (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 8 Aug 2009 13:09:53 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n78BAUKZ021563;
+	Sat, 8 Aug 2009 12:10:30 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n78BATIq021560;
+	Sat, 8 Aug 2009 12:10:29 +0100
+Date:	Sat, 8 Aug 2009 12:10:29 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
 To:	Florian Fainelli <florian@openwrt.org>
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-In-Reply-To: <200908072346.15278.florian@openwrt.org>
-References: <200908072346.15278.florian@openwrt.org>
-Content-Type: text/plain
-Date:	Sat, 08 Aug 2009 01:31:21 +0200
-Message-Id: <1249687881.29189.68.camel@kero>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <mbizon@freebox.fr>
+Cc:	linux-mips@linux-mips.org, Maxime Bizon <mbizon@freebox.fr>
+Subject: Re: [PATCH] bcm63xx: fix build failures when CONFIG_PCI is disabled
+Message-ID: <20090808111029.GA14596@linux-mips.org>
+References: <200908042214.39866.florian@openwrt.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <200908042214.39866.florian@openwrt.org>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23861
+X-archive-position: 23862
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mbizon@freebox.fr
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Tue, Aug 04, 2009 at 10:14:39PM +0200, Florian Fainelli wrote:
 
-On Fri, 2009-08-07 at 23:46 +0200, Florian Fainelli wrote:
+> This patch fixes multiple build failures when CONFIG_PCI
+> is disabled. Since bcm63xx_sprom depends on CONFIG_SSB_PCIHOST
+> to be set, which depends on CONFIG_PCI, bcm63xx_sprom
+> would be unused thus causing this direct warning treated
+> as an error:
+> 
+> cc1: warnings being treated as errors
+> arch/mips/bcm63xx/boards/board_bcm963xx.c:466: warning: 'bcm63xx_sprom' defined but not used
+> 
+> Then bcm63xx_pci_enabled would not be resolved since it
+> is declared in arch/mips/pci/pci-bcm63xx.c which is not
+> compiled due to CONFIG_PCI being disabled. Finally,
+> ssb_set_arch_fallback would not be resolved too, since
+> CONFIG_SSB_PCIHOST is disabled.
 
-Hi Florian,
+Thanks.  Folded into "MIPS: BCM63XX: Add board support code."
 
-> The following 8 patches apply on top of the patch entitled "bcm63xx:
-> fix build failures when CONFIG_PCI is disabled"
-
-Nice work, ack for the whole serie.
-
-I don't have any 6338 nor 6345 hardware, so I'll trust you for doing
-some testing if that's needed in the future. Please try to compile with
-and without cpu runtime detection because it's quite easy to forget to
-fill the registers set for each case.
-
-> Ralf, Maxime sent a patch series on June 3rd which would be great to
-> merge so that I can rebase my serie on that one
-
-Yup, that would be great :)
-
--- 
-Maxime
+  Ralf

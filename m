@@ -1,32 +1,37 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Aug 2009 20:24:57 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:2114 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 10 Aug 2009 20:38:26 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:11003 "EHLO
 	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493525AbZHJSYu (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 10 Aug 2009 20:24:50 +0200
+	by ftp.linux-mips.org with ESMTP id S1493380AbZHJSiT (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 10 Aug 2009 20:38:19 +0200
 Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B4a80655e0000>; Mon, 10 Aug 2009 14:22:24 -0400
+	id <B4a8068ea0000>; Mon, 10 Aug 2009 14:37:30 -0400
 Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 10 Aug 2009 11:21:30 -0700
+	 Mon, 10 Aug 2009 11:30:29 -0700
 Received: from dd1.caveonetworks.com ([64.169.86.201]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Mon, 10 Aug 2009 11:21:30 -0700
-Message-ID: <4A806529.3060609@caviumnetworks.com>
-Date:	Mon, 10 Aug 2009 11:21:29 -0700
+	 Mon, 10 Aug 2009 11:30:29 -0700
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n7AIUQhd029653;
+	Mon, 10 Aug 2009 11:30:26 -0700
+Received: (from ddaney@localhost)
+	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n7AIUQA8029652;
+	Mon, 10 Aug 2009 11:30:26 -0700
 From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
-MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>, akpm@linux-foundation.org,
-	Linus Torvalds <torvalds@linux-foundation.org>
-CC:	linux-mips <linux-mips@linux-mips.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: [PATCH 0/2] New hardware RNG for Octeon SOCs.
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 10 Aug 2009 18:21:30.0174 (UTC) FILETIME=[61C23DE0:01CA19E7]
+To:	ralf@linux-mips.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+	David Daney <ddaney@caviumnetworks.com>
+Subject: [PATCH 2/2] hw_random: Add hardware RNG for Octeon SOCs.
+Date:	Mon, 10 Aug 2009 11:30:25 -0700
+Message-Id: <1249929025-29625-2-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.6.0.6
+In-Reply-To: <4A806529.3060609@caviumnetworks.com>
+References: <4A806529.3060609@caviumnetworks.com>
+X-OriginalArrivalTime: 10 Aug 2009 18:30:29.0209 (UTC) FILETIME=[A30C7490:01CA19E8]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23881
+X-archive-position: 23882
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,28 +39,198 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Behold the Random Number Generator driver for Octeon!
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+---
+ drivers/char/hw_random/Kconfig      |   13 +++
+ drivers/char/hw_random/Makefile     |    1 +
+ drivers/char/hw_random/octeon-rng.c |  146 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 160 insertions(+), 0 deletions(-)
+ create mode 100644 drivers/char/hw_random/octeon-rng.c
 
-The first patch adds some port definitions and the octeon_rng platform
-device.  The second is the driver.
-
-I am copying AKPM and Linus as there seems to be no hw_random maintainer.
-
-Since Octeon is a mips port, we might want to merge both patches via
-Ralf's tree.
-
-Comments?
-
-David Daney (2):
-   MIPS: Octeon:  Add hardware RNG platform device.
-   hw_random: Add hardware RNG for Octeon SOCs.
-
-  arch/mips/cavium-octeon/setup.c              |   44 ++++++++
-  arch/mips/include/asm/octeon/cvmx-rnm-defs.h |   86 +++++++++++++++
-  drivers/char/hw_random/Kconfig               |   13 +++
-  drivers/char/hw_random/Makefile              |    1 +
-  drivers/char/hw_random/octeon-rng.c          |  146 
-++++++++++++++++++++++++++
-  5 files changed, 290 insertions(+), 0 deletions(-)
-  create mode 100644 arch/mips/include/asm/octeon/cvmx-rnm-defs.h
-  create mode 100644 drivers/char/hw_random/octeon-rng.c
+diff --git a/drivers/char/hw_random/Kconfig b/drivers/char/hw_random/Kconfig
+index ce66a70..121b782 100644
+--- a/drivers/char/hw_random/Kconfig
++++ b/drivers/char/hw_random/Kconfig
+@@ -126,6 +126,19 @@ config HW_RANDOM_OMAP
+ 
+  	  If unsure, say Y.
+ 
++config HW_RANDOM_OCTEON
++	tristate "Octeon Random Number Generator support"
++	depends on HW_RANDOM && CPU_CAVIUM_OCTEON
++	default HW_RANDOM
++ 	---help---
++ 	  This driver provides kernel-side support for the Random Number
++	  Generator hardware found on Octeon processors.
++
++	  To compile this driver as a module, choose M here: the
++	  module will be called octeon-rng.
++
++ 	  If unsure, say Y.
++
+ config HW_RANDOM_PASEMI
+ 	tristate "PA Semi HW Random Number Generator support"
+ 	depends on HW_RANDOM && PPC_PASEMI
+diff --git a/drivers/char/hw_random/Makefile b/drivers/char/hw_random/Makefile
+index 676828b..5eeb130 100644
+--- a/drivers/char/hw_random/Makefile
++++ b/drivers/char/hw_random/Makefile
+@@ -17,3 +17,4 @@ obj-$(CONFIG_HW_RANDOM_PASEMI) += pasemi-rng.o
+ obj-$(CONFIG_HW_RANDOM_VIRTIO) += virtio-rng.o
+ obj-$(CONFIG_HW_RANDOM_TX4939) += tx4939-rng.o
+ obj-$(CONFIG_HW_RANDOM_MXC_RNGA) += mxc-rnga.o
++obj-$(CONFIG_HW_RANDOM_OCTEON) += octeon-rng.o
+diff --git a/drivers/char/hw_random/octeon-rng.c b/drivers/char/hw_random/octeon-rng.c
+new file mode 100644
+index 0000000..84d33a7
+--- /dev/null
++++ b/drivers/char/hw_random/octeon-rng.c
+@@ -0,0 +1,146 @@
++/*
++ * Hardware Random Number Generator support for Cavium Networks
++ * Octeon processor family.
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ *
++ * Copyright (C) 2009 Cavium Networks
++ */
++
++#include <linux/module.h>
++#include <linux/init.h>
++#include <linux/platform_device.h>
++#include <linux/device.h>
++#include <linux/hw_random.h>
++#include <linux/io.h>
++
++#include <asm/octeon/octeon.h>
++#include <asm/octeon/cvmx-rnm-defs.h>
++
++struct octeon_rng {
++	u64 control_status;
++	u64 result;
++};
++
++static int octeon_rng_init(struct hwrng *rng)
++{
++	struct octeon_rng *p = (struct octeon_rng *)rng->priv;
++	union cvmx_rnm_ctl_status ctl;
++
++	ctl.u64 = 0;
++	ctl.s.ent_en = 1; /* Enable the entropy source.  */
++	ctl.s.rng_en = 1; /* Enable the RNG hardware.  */
++	cvmx_write_csr(p->control_status, ctl.u64);
++	return 0;
++}
++
++static void octeon_rng_cleanup(struct hwrng *rng)
++{
++	struct octeon_rng *p = (struct octeon_rng *)rng->priv;
++	union cvmx_rnm_ctl_status ctl;
++
++	ctl.u64 = 0;
++	/* Disable everything.  */
++	cvmx_write_csr(p->control_status, ctl.u64);
++}
++
++static int octeon_rng_data_read(struct hwrng *rng, u32 *data)
++{
++	struct octeon_rng *p = (struct octeon_rng *)rng->priv;
++
++	*data = cvmx_read64_uint32(p->result);
++	return sizeof(u32);
++}
++
++static struct hwrng octeon_rng_ops = {
++	.name		= "octeon",
++	.init		= octeon_rng_init,
++	.cleanup	= octeon_rng_cleanup,
++	.data_read	= octeon_rng_data_read
++};
++
++static int __devinit octeon_rng_probe(struct platform_device *pdev)
++{
++	struct resource *res_ports;
++	struct resource *res_result;
++	struct octeon_rng *p;
++	int ret;
++
++	p = devm_kzalloc(&pdev->dev, sizeof(*p), GFP_KERNEL);
++	if (!p)
++		return -ENOMEM;
++
++	res_ports = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!res_ports)
++		goto err_ports;
++
++	res_result = platform_get_resource(pdev, IORESOURCE_MEM, 1);
++	if (!res_result)
++		goto err_ports;
++
++
++	p->control_status = (u64)devm_ioremap_nocache(&pdev->dev,
++						      res_ports->start,
++						      sizeof(u64));
++	if (!p->control_status)
++		goto err_ports;
++
++	p->result = (u64)devm_ioremap_nocache(&pdev->dev,
++					      res_result->start,
++					      sizeof(u64));
++	if (!p->result)
++		goto err_r;
++	octeon_rng_ops.priv = (unsigned long)p;
++
++	dev_set_drvdata(&pdev->dev, &octeon_rng_ops);
++	ret = hwrng_register(&octeon_rng_ops);
++	if (ret)
++		goto err;
++
++	dev_info(&pdev->dev, "Octeon Random Number Generator\n");
++
++	return 0;
++err:
++	devm_iounmap(&pdev->dev, (void *)p->control_status);
++err_r:
++	devm_iounmap(&pdev->dev, (void *)p->result);
++err_ports:
++	devm_kfree(&pdev->dev, p);
++	return -ENOENT;
++}
++
++static int __exit octeon_rng_remove(struct platform_device *pdev)
++{
++	struct hwrng *rng = dev_get_drvdata(&pdev->dev);
++
++	hwrng_unregister(rng);
++
++	return 0;
++}
++
++static struct platform_driver octeon_rng_driver = {
++	.driver = {
++		.name		= "octeon_rng",
++		.owner		= THIS_MODULE,
++	},
++	.probe		= octeon_rng_probe,
++	.remove		= __exit_p(octeon_rng_remove),
++};
++
++static int __init octeon_rng_mod_init(void)
++{
++	return platform_driver_register(&octeon_rng_driver);
++}
++
++static void __exit octeon_rng_mod_exit(void)
++{
++	platform_driver_unregister(&octeon_rng_driver);
++}
++
++module_init(octeon_rng_mod_init);
++module_exit(octeon_rng_mod_exit);
++
++MODULE_AUTHOR("David Daney");
++MODULE_LICENSE("GPL");
+-- 
+1.6.0.6

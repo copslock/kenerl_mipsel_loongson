@@ -1,52 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Aug 2009 15:51:23 +0200 (CEST)
-Received: from ey-out-1920.google.com ([74.125.78.146]:17413 "EHLO
-	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1492635AbZHKNvQ convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 11 Aug 2009 15:51:16 +0200
-Received: by ey-out-1920.google.com with SMTP id 13so939611eye.54
-        for <multiple recipients>; Tue, 11 Aug 2009 06:51:14 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 11 Aug 2009 23:20:12 +0200 (CEST)
+Received: from mail-ew0-f216.google.com ([209.85.219.216]:54832 "EHLO
+	mail-ew0-f216.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492954AbZHKVUG convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 11 Aug 2009 23:20:06 +0200
+Received: by ewy12 with SMTP id 12so4864385ewy.0
+        for <linux-mips@linux-mips.org>; Tue, 11 Aug 2009 14:20:01 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:sender:from:to:subject:date
          :user-agent:cc:references:in-reply-to:mime-version:content-type
          :content-transfer-encoding:content-disposition:message-id;
-        bh=VWOqSgD02snaRDWAkA84wktKwWXwTAu+sO1qPT6fHvk=;
-        b=BhKvCtmETKnzDxAwgN0KZLDU7Exbah7kEKy7NFu/Ianw1/Nt0qlLMykmVAIopp6sEN
-         66GG13jcxI1BpRAKTnGanYR2BhjAfcO1qF7KldRliXB4yoj0rlHkgIvpfGbVCq5BpJm3
-         vRtvRsScJkAAhaFUesrx+Mo18efqztiqzSWCQ=
+        bh=LnQ/YSiC0XwTd4ZH/UqwjTqmaNoRbhTzk2abTlxZ+EI=;
+        b=otaT7dha4cfXt7OVLJzh7bEP2ddKP2EF5FnUOUtEcExQwWs0rauFwqGSDYXbEiFF20
+         sAcFtqmZabBXxhEKLJbJmVxkuSxJhc/Ek9FgXVQTUexoacR3OPePISx1vmsxVsw38f67
+         q+rmV9XdKmVtLkNZc+qUD36bcJxkAKycUt/WU=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
          :mime-version:content-type:content-transfer-encoding
          :content-disposition:message-id;
-        b=fHuYxZZlnIWkoQTb9aDvJofeNP7zsWDgOE6HBaHA7DpbMUvcW7US9ZYU06z/jFD1PQ
-         8NvEdgEYwNtUVnAhkK58T3Wjrbt8hIH4gy7wEf8E++W7jj1s84vfSrTCGRPuWfDS5Vtk
-         DTC4Tdn6WksP1e8hqJY8Yu6eZeoX2remsfwfY=
-Received: by 10.210.70.8 with SMTP id s8mr867343eba.69.1249995161058;
-        Tue, 11 Aug 2009 05:52:41 -0700 (PDT)
-Received: from florian.lab.openpattern.org (lab.openpattern.org [82.240.16.241])
-        by mx.google.com with ESMTPS id 7sm172871eyg.15.2009.08.11.05.52.29
+        b=J88UcqHYh50H2K+IayVyw7zbeXBwkNpvXRx7oEtmoXa0hrLS80BwjcRGj/wDNM15z+
+         qcfx3uRKyC7ErhAPGt/BjPK1KexIMSsz14KxzDOMc8jXSFSRP+9kg9OtL8EM9pD8oefj
+         blUMGRVe3TGfqSTY0uXkh/znNoSFbrOpZVGwY=
+Received: by 10.211.194.4 with SMTP id w4mr1487243ebp.41.1250025601264;
+        Tue, 11 Aug 2009 14:20:01 -0700 (PDT)
+Received: from lenovo.mimichou.home (florian.mimichou.net [82.241.112.26])
+        by mx.google.com with ESMTPS id 28sm943217eye.34.2009.08.11.14.20.00
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 11 Aug 2009 05:52:35 -0700 (PDT)
+        Tue, 11 Aug 2009 14:20:00 -0700 (PDT)
 From:	Florian Fainelli <florian@openwrt.org>
-To:	Wim Van Sebroeck <wim@iguana.be>
-Subject: Re: [PATCH 2/2] ar7_wdt: convert to become a platform driver
-Date:	Tue, 11 Aug 2009 14:52:26 +0200
+To:	Alexander Clouter <alex@digriz.org.uk>
+Subject: Re: AR7 runtime identification [was:- Re: [PATCH -v1] MIPS: add support for gzip/bzip2/lzma compressed kernel images]
+Date:	Tue, 11 Aug 2009 23:19:56 +0200
 User-Agent: KMail/1.9.9
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-References: <200907151210.20294.florian@openwrt.org> <20090718214958.GA24850@infomag.iguana.be> <200907211211.35085.florian@openwrt.org>
-In-Reply-To: <200907211211.35085.florian@openwrt.org>
+Cc:	Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org
+References: <1249894154-10982-1-git-send-email-wuzhangjin@gmail.com> <20090810101205.GW19816@chipmunk> <200908102342.30031.florian@openwrt.org>
+In-Reply-To: <200908102342.30031.florian@openwrt.org>
 MIME-Version: 1.0
 Content-Type: text/plain;
-  charset="utf-8"
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-Message-Id: <200908111452.28418.florian@openwrt.org>
+Message-Id: <200908112319.58367.florian@openwrt.org>
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23895
+X-archive-position: 23896
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,252 +55,60 @@ X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi Wim,
-
-Le Tuesday 21 July 2009 12:11:32 Florian Fainelli, vous avez Ã©critÂ :
-> Hi Wim,
+Le Monday 10 August 2009 23:42:27 Florian Fainelli, vous avez écrit :
+> Hi Alexander,
 >
-> Le Saturday 18 July 2009 23:49:58 Wim Van Sebroeck, vous avez Ã©critÂ :
-> > Hi Florian,
+> Le Monday 10 August 2009 12:12:05 Alexander Clouter, vous avez écrit :
+> > * Florian Fainelli <florian@openwrt.org> [2009-08-10 12:06:07+0200]:
+> > > Hi Alexander,
+> > >
+> > > Le Monday 10 August 2009 11:03:15 Alexander Clouter, vous avez écrit :
+> > > > I notice in arch/mips/ar7/prom.c the while loop hangs on
+> > > > "(serial_in(UART_LSR) & UART_LSR_TEMT)" instead, is this because of
+> > > > the buggy UART's seen in some revisions of the AR7?  As it stands
+> > > > Wu's putc() implementation works fine for me but I'm guessing it is
+> > > > because the UART has not much opportunity for over/underruns as not
+> > > > much is being sent.
+> > >
+> > > Even with the silicon bug, this should not be a problem as long as you
+> > > keep polling the LSR_TEMT bit in the LSR register. The problem appears
+> > > when running the UART with interrupts.
 > >
-> > Forgot the attachment...
+> > Ahhhh, that makes sense.  I'll leave Wu's code alone :)
 > >
-> > Kind regards,
-> > Wim.
+> > > > The UART on my board is buggy (missing/repeated characters like many
+> > > > others seem to get) to, but I remember seeing somewhere (in a chat
+> > > > you had years ago with Alan Cox if I remember correctly) the UART is
+> > > > not buggy on *all* AR7 based boards?  Is is possible to detect a
+> > > > buggy UART at runtime (maybe via a AR7 revision match test)?
+> > >
+> > > Alan Cox suggested to perform some tests which I did not carry out yet.
+> > > By using two different hardware revisions in two different routers I
+> > > noticed that the silicon bug is present in TNETD7300GDU revision 4,
+> > > while revision 5 does not have it.
+> > >
+> > > The revision id can certainly help differentiating between the silicon
+> > > version, later tonight when I have access to the hardware I will
+> > > compare between a WAG54G and a C54APRx. I remember being them different
+> > > for theTNETD7300GDU rev 4 and the rev 5.
 > >
-> > > Hi Florian,
-> > >
-> > > > This patch converts the ar7_wdt driver to become a platform
-> > > > driver. The AR7 SoC specific identification and base register
-> > > > calculation is performed by the board code, therefore we no
-> > > > longer need to have access to ar7_chip_id.
-> > > >
-> > > > @@ -298,22 +285,33 @@ static struct miscdevice ar7_wdt_miscdev = {
-> > > >  	.fops		= &ar7_wdt_fops,
-> > > >  };
-> > > >
-> > > > -static int __init ar7_wdt_init(void)
-> > > > +static int __init ar7_wdt_probe(struct platform_device *pdev)
-> > >
-> > > Should be __devinit .
-> > >
-> > > > +static struct platform_driver ar7_wdt_driver = {
-> > > > +	.driver.name = "ar7_wdt",
-> > > > +	.probe = ar7_wdt_probe,
-> > > > +	.remove = __devexit_p(ar7_wdt_remove),
-> > > > +};
-> > >
-> > > I prefer to have it as follows (so that the driver.owner field is also
-> > > set): static struct platform_driver ar7_wdt_driver = {
-> > > 	.probe = ar7_wdt_probe,
-> > > 	.remove = __devexit_p(ar7_wdt_remove),
-> > > 	.driver = {
-> > > 		.owner = THIS_MODULE,
-> > > 		.name = "ar7_wdt",
-> > > 	},
-> > > };
-> > >
-> > > I suggest to also change the reboot notifier code into a platform
-> > > shutdown method. You then get something like the attached patch
-> > > (untested, uncompiled and I included above 2 remarks). For the rest:
-> > > code is OK for me. After the __init to __devinit fix you can add my
-> > > signed-off-by.
+> > Well, I was offering that I could add an extra datapoint if need be.
+> > There must be a way to fix up the UART without adding a 'new' UART type,
+> > in a clean way.  I'll have a look into it tonight, but I imagine you
+> > have looked at this in far more detail than I could...but hey, it gives
+> > me something to do tonight[1]. :)
 >
-> Thanks, patch updated and attached.
+> For your information, the TNETD7300GDU is detected like this:
+> TI AR7 (TNETD7300), ID: 0x0005, Revision: 0x02
 >
-> > > Kind regards,
-> > > Wim.
+> and the TNETD7300EZDW (ADSL 2+) is detected like this:
+> TI AR7 (TNETD7200), ID: 0x002b, Revision: 0x10 which also has the UART bug
+> and is wrongly detected as a TNETD7200.
 >
-> --
-> From: Florian Fainelli <florian@openwrt.org>
-> Subject: [PATCH 2/2 v2] ar7_wdt: convert to become a platform driver
->
-> This patch converts the ar7_wdt driver to become
-> a platform driver. The AR7 SoC specific identification
-> and base register calculation is performed by the board
-> code, therefore we no longer need to have access to
-> ar7_chip_id. We also remove the reboot notifier code to
-> use the platform shutdown method as Wim suggested.
->
-> Signed-off-by: Florian Fainelli <florian@openwrt.org>
-> Signed-off-by: Wim Van Sebroeck <wim@iguana.be>
+> I have left the WAG54G at work and will get my hands back on it tomorow.
 
-Any news on this patch ?
-
-> --
-> diff --git a/drivers/watchdog/ar7_wdt.c b/drivers/watchdog/ar7_wdt.c
-> index 2f8643e..82855b0 100644
-> --- a/drivers/watchdog/ar7_wdt.c
-> +++ b/drivers/watchdog/ar7_wdt.c
-> @@ -28,9 +28,8 @@
->  #include <linux/errno.h>
->  #include <linux/init.h>
->  #include <linux/miscdevice.h>
-> +#include <linux/platform_device.h>
->  #include <linux/watchdog.h>
-> -#include <linux/notifier.h>
-> -#include <linux/reboot.h>
->  #include <linux/fs.h>
->  #include <linux/ioport.h>
->  #include <linux/io.h>
-> @@ -76,24 +75,10 @@ static unsigned expect_close;
->  /* XXX currently fixed, allows max margin ~68.72 secs */
->  #define prescale_value 0xffff
->
-> -/* Offset of the WDT registers */
-> -static unsigned long ar7_regs_wdt;
-> +/* Resource of the WDT registers */
-> +static struct resource *ar7_regs_wdt;
->  /* Pointer to the remapped WDT IO space */
->  static struct ar7_wdt *ar7_wdt;
-> -static void ar7_wdt_get_regs(void)
-> -{
-> -	u16 chip_id = ar7_chip_id();
-> -	switch (chip_id) {
-> -	case AR7_CHIP_7100:
-> -	case AR7_CHIP_7200:
-> -		ar7_regs_wdt = AR7_REGS_WDT;
-> -		break;
-> -	default:
-> -		ar7_regs_wdt = UR8_REGS_WDT;
-> -		break;
-> -	}
-> -}
-> -
->
->  static void ar7_wdt_kick(u32 value)
->  {
-> @@ -202,20 +187,6 @@ static int ar7_wdt_release(struct inode *inode, struct
-> file *file) return 0;
->  }
->
-> -static int ar7_wdt_notify_sys(struct notifier_block *this,
-> -			      unsigned long code, void *unused)
-> -{
-> -	if (code == SYS_HALT || code == SYS_POWER_OFF)
-> -		if (!nowayout)
-> -			ar7_wdt_disable_wdt();
-> -
-> -	return NOTIFY_DONE;
-> -}
-> -
-> -static struct notifier_block ar7_wdt_notifier = {
-> -	.notifier_call = ar7_wdt_notify_sys,
-> -};
-> -
->  static ssize_t ar7_wdt_write(struct file *file, const char *data,
->  			     size_t len, loff_t *ppos)
->  {
-> @@ -299,56 +270,85 @@ static struct miscdevice ar7_wdt_miscdev = {
->  	.fops		= &ar7_wdt_fops,
->  };
->
-> -static int __init ar7_wdt_init(void)
-> +static int __devinit ar7_wdt_probe(struct platform_device *pdev)
->  {
->  	int rc;
->
->  	spin_lock_init(&wdt_lock);
->
-> -	ar7_wdt_get_regs();
-> +	ar7_regs_wdt =
-> +		platform_get_resource_byname(pdev, IORESOURCE_MEM, "regs");
-> +	if (!ar7_regs_wdt) {
-> +		printk(KERN_ERR DRVNAME ": could not get registers resource\n");
-> +		rc = -ENODEV;
-> +		goto out;
-> +	}
->
-> -	if (!request_mem_region(ar7_regs_wdt, sizeof(struct ar7_wdt),
-> -							LONGNAME)) {
-> +	if (!request_mem_region(ar7_regs_wdt->start,
-> +				resource_size(ar7_regs_wdt), LONGNAME)) {
->  		printk(KERN_WARNING DRVNAME ": watchdog I/O region busy\n");
-> -		return -EBUSY;
-> +		rc = -EBUSY;
-> +		goto out;
->  	}
->
-> -	ar7_wdt = (struct ar7_wdt *)
-> -			ioremap(ar7_regs_wdt, sizeof(struct ar7_wdt));
-> +	ar7_wdt = ioremap(ar7_regs_wdt->start, resource_size(ar7_regs_wdt));
-> +	if (!ar7_wdt) {
-> +		printk(KERN_ERR DRVNAME ": could not ioremap registers\n");
-> +		rc = -ENXIO;
-> +		goto out;
-> +	}
->
->  	ar7_wdt_disable_wdt();
->  	ar7_wdt_prescale(prescale_value);
->  	ar7_wdt_update_margin(margin);
->
-> -	rc = register_reboot_notifier(&ar7_wdt_notifier);
-> -	if (rc) {
-> -		printk(KERN_ERR DRVNAME
-> -			": unable to register reboot notifier\n");
-> -		goto out_alloc;
-> -	}
-> -
->  	rc = misc_register(&ar7_wdt_miscdev);
->  	if (rc) {
->  		printk(KERN_ERR DRVNAME ": unable to register misc device\n");
-> -		goto out_register;
-> +		goto out_alloc;
->  	}
->  	goto out;
->
-> -out_register:
-> -	unregister_reboot_notifier(&ar7_wdt_notifier);
->  out_alloc:
->  	iounmap(ar7_wdt);
-> -	release_mem_region(ar7_regs_wdt, sizeof(struct ar7_wdt));
-> +	release_mem_region(ar7_regs_wdt->start, resource_size(ar7_regs_wdt));
->  out:
->  	return rc;
->  }
->
-> -static void __exit ar7_wdt_cleanup(void)
-> +static int __devexit ar7_wdt_remove(struct platform_device *pdev)
->  {
->  	misc_deregister(&ar7_wdt_miscdev);
-> -	unregister_reboot_notifier(&ar7_wdt_notifier);
->  	iounmap(ar7_wdt);
-> -	release_mem_region(ar7_regs_wdt, sizeof(struct ar7_wdt));
-> +	release_mem_region(ar7_regs_wdt->start, resource_size(ar7_regs_wdt));
-> +
-> +	return 0;
-> +}
-> +
-> +static void ar7_wdt_shutdown(struct platform_device *pdev)
-> +{
-> +	if (!nowayout)
-> +		ar7_wdt_disable_wdt();
-> +}
-> +
-> +static struct platform_driver ar7_wdt_driver = {
-> +	.probe = ar7_wdt_probe,
-> +	.remove = __devexit_p(ar7_wdt_remove),
-> +	.shutdown = ar7_wdt_shutdown,
-> +	.driver = {
-> +		.owner = THIS_MODULE,
-> +		.name = "ar7_wdt",
-> +	},
-> +};
-> +
-> +static int __init ar7_wdt_init(void)
-> +{
-> +	return platform_driver_register(&ar7_wdt_driver);
-> +}
-> +
-> +static void __exit ar7_wdt_cleanup(void)
-> +{
-> +	platform_driver_unregister(&ar7_wdt_driver);
->  }
->
->  module_init(ar7_wdt_init);
-
-
-
+The bad news is that my WAG54G v2 which is also a TNEDT7300GDU has this HW bug 
+too rendering the runtime detection of the bug more difficult.
 -- 
 Best regards, Florian Fainelli
 Email: florian@openwrt.org

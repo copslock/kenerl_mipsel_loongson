@@ -1,32 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 12 Aug 2009 23:24:43 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:37406 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 14 Aug 2009 20:25:38 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:19309 "EHLO
 	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493617AbZHLVYg (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 12 Aug 2009 23:24:36 +0200
+	by ftp.linux-mips.org with ESMTP id S1492856AbZHNSZc (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 14 Aug 2009 20:25:32 +0200
 Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B4a8332bc0000>; Wed, 12 Aug 2009 17:23:08 -0400
+	id <B4a85ac0a0000>; Fri, 14 Aug 2009 14:25:14 -0400
 Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 12 Aug 2009 14:22:52 -0700
+	 Fri, 14 Aug 2009 11:24:19 -0700
 Received: from dd1.caveonetworks.com ([64.169.86.201]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 12 Aug 2009 14:22:52 -0700
-Message-ID: <4A8332AB.20105@caviumnetworks.com>
-Date:	Wed, 12 Aug 2009 14:22:51 -0700
+	 Fri, 14 Aug 2009 11:24:19 -0700
+Message-ID: <4A85ABD3.5040801@caviumnetworks.com>
+Date:	Fri, 14 Aug 2009 11:24:19 -0700
 From:	David Daney <ddaney@caviumnetworks.com>
 User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
 MIME-Version: 1.0
-To:	=?ISO-8859-15?Q?Ralf_R=F6sch?= <ralf.roesch@rw-gmbh.de>
-CC:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: MIPS: Avoid clobbering struct pt_regs in kthreads
-References: <4A832E6E.8020300@rw-gmbh.de>
-In-Reply-To: <4A832E6E.8020300@rw-gmbh.de>
-Content-Type: text/plain; charset=ISO-8859-15; format=flowed
-Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 12 Aug 2009 21:22:52.0254 (UTC) FILETIME=[0CCF5FE0:01CA1B93]
+To:	linux-mips <linux-mips@linux-mips.org>
+CC:	Adam Nemet <anemet@caviumnetworks.com>
+Subject: .subsection madness
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 14 Aug 2009 18:24:19.0717 (UTC) FILETIME=[70777350:01CA1D0C]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23900
+X-archive-position: 23901
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,25 +32,28 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Rösch wrote:
-> Hi David,
-> 
-> Sorry to say, but your commit d406c9ae84d6ef12c55a41c97c34266b2eb7ed31 
-> makes my TX49xx (Toshiba RISC mipsel) based system unusable.
-> 
-> The kernel boots fine until the stage:
->    Freeing unused kernel memory: 140k freed
-> and then stops.
-> Some of our LEDS are updated as supposed, so a part of the kernel should 
-> be running.
-> 
-> Reverting your commit makes the latest 2.4.37.4 kernel usable again.
-> Do you have an idea what might go wrong?
-> 
 
-I'm sorry, I can't think of anything.
+In atomic.h for atomic_add we have this gem:
 
-I would look in copy_thread and the kthread spawning code.  Does TX49xx 
-have custom versions of these?
+	__asm__ __volatile__(
+	"	.set	mips3					\n"
+	"1:	ll	%0, %1		# atomic_add		\n"
+	"	addu	%0, %2					\n"
+	"	sc	%0, %1					\n"
+	"	beqz	%0, 2f					\n"
+	"	.subsection 2					\n"
+	"2:	b	1b					\n"
+	"	.previous					\n"
+	"	.set	mips0					\n"
+
+
+What is the purpose of the .subsection here?
+
+It will not affect branch prediction in the beqz as nothing happens in 
+.subsection 2.
+
+For spin locks it is clear that this technique can help, but for 
+atomic_add I don't think so.  To make matters worse for some code the 
+subsection is going out of branch range.
 
 David Daney

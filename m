@@ -1,52 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Aug 2009 00:29:10 +0200 (CEST)
-Received: from mail-ew0-f216.google.com ([209.85.219.216]:59861 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 17 Aug 2009 01:05:53 +0200 (CEST)
+Received: from mail-ew0-f216.google.com ([209.85.219.216]:39344 "EHLO
 	mail-ew0-f216.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493148AbZHPW2l (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 17 Aug 2009 00:28:41 +0200
-Received: by ewy12 with SMTP id 12so2258545ewy.0
-        for <multiple recipients>; Sun, 16 Aug 2009 15:28:36 -0700 (PDT)
+	by ftp.linux-mips.org with ESMTP id S1493197AbZHPXFq (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 17 Aug 2009 01:05:46 +0200
+Received: by ewy12 with SMTP id 12so2271668ewy.0
+        for <multiple recipients>; Sun, 16 Aug 2009 16:05:41 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:sender:from:date:subject
          :mime-version:x-uid:x-length:to:cc:content-type
          :content-transfer-encoding:content-disposition:message-id;
-        bh=9ymzJ8vMW8QIOT9DCBg5i4qS14k6TMsy8kXQnxXpP2M=;
-        b=JfXZTwR/AP5JRoMtS0v2xWF/j1atmSJeOAXWOKuQi7xgrTBTUyjbTX+pF/fSuooRdc
-         21RxSuruOKwmqTZACYerSzHjjNe3/qj52lvRrzgBM0dZyBYjfcO5Yzekpw3fh45ibo6S
-         8pi5l+RjbpkQQI7YakeUX4DeMR1ImGueDmIDw=
+        bh=EErtHiEoR2wwl0x5zdMI/pR+93J4d2P1SiEZF/bzH6A=;
+        b=QwHgAL4K2e8ImYs8oLUVaPQDDGaV6K+d7nqYMQgegdsJoxukhozsAwLzDH3w1jAo9L
+         y01Cbwlz2UTy2PprGOXUhDLedzJFz9qSZxjrn+BKMPb7HwGsGYPIwjF/o+nWJXbkb1tB
+         ah7LU+v8G36g5tReOfu6tMIq6plccnJESZCyk=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=sender:from:date:subject:mime-version:x-uid:x-length:to:cc
          :content-type:content-transfer-encoding:content-disposition
          :message-id;
-        b=PW7jfb3j1Dvw6Ce99QJ25+wOVQilW6hNfKLPQCpI7OI9YQtm8/2/PzEVVP2+0vB8ha
-         dzPWlfIG8J90eshx1NZGa877+Z/p0L1hCYxo2lFniDDh2Fzoc68ERvO9h11yYHtEB5dG
-         Pj/jZsviL4UrJj9zqe7wdajdYsDIuEzEjenMA=
-Received: by 10.210.136.15 with SMTP id j15mr2373260ebd.68.1250461715565;
-        Sun, 16 Aug 2009 15:28:35 -0700 (PDT)
+        b=PcXF8HQMQhCUlXn24z/EwANi9divKV9CoD7MXCZBv4qOkSNUo/CTAQ+dXAGrFqbeHO
+         57jDkYTiJ8lkKIupDUJqqC7wAMA+DFX+AxWqP9X66b+VrWc/L6UOMSUSI8PMfLMRoJJP
+         t+Sq/zxizkBdBJKaCOOwQFnINEL368Y5wHv8Y=
+Received: by 10.210.36.10 with SMTP id j10mr6235968ebj.30.1250463941283;
+        Sun, 16 Aug 2009 16:05:41 -0700 (PDT)
 Received: from lenovo.mimichou.home (florian.mimichou.net [82.241.112.26])
-        by mx.google.com with ESMTPS id 5sm8224107eyh.56.2009.08.16.15.28.33
+        by mx.google.com with ESMTPS id 10sm9289654eyd.25.2009.08.16.16.05.40
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 16 Aug 2009 15:28:34 -0700 (PDT)
+        Sun, 16 Aug 2009 16:05:41 -0700 (PDT)
 From:	Florian Fainelli <florian@openwrt.org>
-Date:	Mon, 17 Aug 2009 00:28:30 +0200
-Subject: [PATCH 2/2] mtx-1: fix build failures when PCI is disabled
+Date:	Mon, 17 Aug 2009 01:05:35 +0200
+Subject: [PATCH 1/2] alchemy: add au1000-eth platform device
 MIME-Version: 1.0
-X-UID:	1224
-X-Length: 1500
+X-UID:	1242
+X-Length: 20937
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	linux-mips@linux-mips.org,
-	Manuel Lauss <manuel.lauss@googlemail.com>
+	Manuel Lauss <manuel.lauss@googlemail.com>,
+	David Miller <davem@davemloft.net>, netdev@vger.kernel.org,
+	Sergei Shtylyov <sshtylyov@ru.mvista.com>
 Content-Type: text/plain;
   charset="utf-8"
 Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200908170028.32023.florian@openwrt.org>
+Message-Id: <200908170105.38154.florian@openwrt.org>
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23906
+X-archive-position: 23907
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -54,23 +56,566 @@ X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-When PCI is disabled the board_pci_idsel symbol cannot
-be resolved since it is declared in arch/mips/pci/pci-au1000.c
-which is not compiled.
+This patch adds the board code to register a per-board au1000-eth
+platform device to be used wit the au1000-eth platform driver in a
+subsequent patch. Note that the au1000-eth driver knows about the
+default driver settings such that we do not need to pass any
+platform_data informations in most cases except db1x00.
 
 Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
-diff --git a/arch/mips/alchemy/mtx-1/board_setup.c b/arch/mips/alchemy/mtx-1/board_setup.c
-index cc32c69..c803732 100644
---- a/arch/mips/alchemy/mtx-1/board_setup.c
-+++ b/arch/mips/alchemy/mtx-1/board_setup.c
-@@ -85,7 +85,9 @@ void __init board_setup(void)
- 	alchemy_gpio_direction_output(211, 1);	/* green on */
- 	alchemy_gpio_direction_output(212, 0);	/* red off */
+diff --git a/arch/mips/alchemy/devboards/db1x00/Makefile b/arch/mips/alchemy/devboards/db1x00/Makefile
+index 432241a..532a214 100644
+--- a/arch/mips/alchemy/devboards/db1x00/Makefile
++++ b/arch/mips/alchemy/devboards/db1x00/Makefile
+@@ -5,4 +5,4 @@
+ # Makefile for the Alchemy Semiconductor DBAu1xx0 boards.
+ #
  
-+#ifdef CONFIG_PCI
- 	board_pci_idsel = mtx1_pci_idsel;
+-obj-y := board_setup.o irqmap.o
++obj-y := board_setup.o irqmap.o platform.o
+diff --git a/arch/mips/alchemy/devboards/db1x00/platform.c b/arch/mips/alchemy/devboards/db1x00/platform.c
+new file mode 100644
+index 0000000..df0d68a
+--- /dev/null
++++ b/arch/mips/alchemy/devboards/db1x00/platform.c
+@@ -0,0 +1,101 @@
++/*
++ * Db1x00 platform devices registration
++ *
++ * Copyright (C) 2009, Florian Fainelli <florian@openwrt.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++#include <linux/init.h>
++#include <linux/platform_device.h>
++
++#include <asm/mach-au1x00/au1xxx.h>
++#include <asm/mach-au1x00/au1xxx_eth.h>
++
++static struct resource au1xxx_eth0_resources[] = {
++#if defined(CONFIG_SOC_AU1000)
++	MAC_RES(AU1000_ETH0_BASE, AU1000_MAC0_ENABLE, AU1000_MAC0_DMA_INT),
++#elif defined(CONFIG_SOC_AU1100)
++	MAC_RES(AU1100_ETH0_BASE, AU1100_MAC0_ENABLE, AU1100_MAC0_DMA_INT),
++#elif defined(CONFIG_SOC_AU1550)
++	MAC_RES(AU1550_ETH0_BASE, AU1550_MAC0_ENABLE, AU1550_MAC0_DMA_INT),
++#elif defined(CONFIG_SOC_AU1500)
++	MAC_RES(AU1500_ETH0_BASE, AU1500_MAC0_ENABLE, AU1500_MAC0_DMA_INT),
 +#endif
++};
++
++static struct resource au1xxx_eth1_resources[] = {
++#if defined(CONFIG_SOC_AU1000)
++	MAC_RES(AU1000_ETH1_BASE, AU1000_MAC1_ENABLE, AU1000_MAC1_DMA_INT),
++#elif defined(CONFIG_SOC_AU1550)
++	MAC_RES(AU1550_ETH1_BASE, AU1550_MAC1_ENABLE, AU1550_MAC1_DMA_INT),
++#elif defined(CONFIG_SOC_AU1500)
++	MAC_RES(AU1500_ETH1_BASE, AU1500_MAC1_ENABLE, AU1500_MAC1_DMA_INT),
++#endif
++};
++
++/* Except for Bosporus, default is to search for a PHY on MAC0 */
++static struct au1000_eth_platform_data au1xxx_eth0_platform_data = {
++	.phy1_search_mac0 = 1,
++};
++
++static struct platform_device db1x00_eth0 = {
++	.name		= "au1000-eth",
++	.id		= 0,
++	.num_resources	= ARRAY_SIZE(au1xxx_eth0_resources),
++	.resource	= au1xxx_eth0_resources,
++.	.dev.platform_data = &au1xxx_eth0_platform_data,
++};
++
++#ifndef CONFIG_SOC_AU1100
++static struct platform_device db1x00_eth1 = {
++	.name		= "au1000-eth",
++	.id		= 1,
++	.num_resources	= ARRAY_SIZE(au1xxx_eth1_resources),
++	.resource	= au1xxx_eth1_resources,
++};
++#endif
++
++static struct platform_device *db1x00_devs[] = {
++	&db1x00_eth0,
++};
++
++static int __init db1x00_register_devices(void)
++{
++#ifdef CONFIG_MIPS_BOSPORUS
++	/*
++	 * Micrel/Kendin 5 port switch attached to MAC0,
++	 * MAC0 is associated with PHY address 5 (== WAN port)
++	 * MAC1 is not associated with any PHY, since it's connected directly
++	 * to the switch.
++	 * no interrupts are used
++	 */
++	au1xxx_eth0_platform_data.phy1_search_mac0 = 0;
++	au1xxx_eth0_platform_data.phy_static_config = 1;
++	au1xxx_eth0_platform_data.phy_addr = 5;
++	au1xxx_eth0_platform_data.phy_busid = 0;
++#endif
++
++#ifndef CONFIG_SOC_AU1100
++	int ni;
++
++	ni = (int)((au_readl(SYS_PINFUNC) & (u32)(SYS_PF_NI2)) >> 4);
++	if (!(ni + 1))
++		platform_device_register(&db1x00_eth1);
++#endif
++
++	return platform_add_devices(db1x00_devs, ARRAY_SIZE(db1x00_devs));
++}
++arch_initcall(db1x00_register_devices);
+diff --git a/arch/mips/alchemy/devboards/pb1000/Makefile b/arch/mips/alchemy/devboards/pb1000/Makefile
+index 97c6615..38d11bb 100644
+--- a/arch/mips/alchemy/devboards/pb1000/Makefile
++++ b/arch/mips/alchemy/devboards/pb1000/Makefile
+@@ -5,4 +5,4 @@
+ # Makefile for the Alchemy Semiconductor Pb1000 board.
+ #
  
- 	printk(KERN_INFO "4G Systems MTX-1 Board\n");
- }
+-obj-y := board_setup.o
++obj-y := board_setup.o platform.o
+diff --git a/arch/mips/alchemy/devboards/pb1000/platform.c b/arch/mips/alchemy/devboards/pb1000/platform.c
+new file mode 100644
+index 0000000..621e71c
+--- /dev/null
++++ b/arch/mips/alchemy/devboards/pb1000/platform.c
+@@ -0,0 +1,58 @@
++/*
++ * PB1000 platform devices registration
++ *
++ * Copyright (C) 2009, Florian Fainelli <florian@openwrt.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++#include <linux/init.h>
++#include <linux/platform_device.h>
++
++#include <asm/mach-au1x00/au1xxx.h>
++#include <asm/mach-au1x00/au1xxx_eth.h>
++
++static struct resource au1xxx_eth0_resources[] = {
++	MAC_RES(AU1000_ETH0_BASE, AU1000_MAC0_ENABLE, AU1000_MAC0_DMA_INT),
++};
++
++static struct resource au1xxx_eth1_resources[] = {
++	MAC_RES(AU1000_ETH1_BASE, AU1000_MAC1_ENABLE, AU1000_MAC1_DMA_INT),
++};
++
++static struct platform_device pb1000_eth0 = {
++	.name		= "au1000-eth",
++	.id		= 0,
++	.num_resources	= ARRAY_SIZE(au1xxx_eth0_resources),
++	.resource	= au1xxx_eth1_resources,
++};
++
++static struct platform_device pb1000_eth1 = {
++	.name		= "au1000-eth",
++	.id		= 1,
++	.num_resources	= ARRAY_SIZE(au1xxx_eth1_resources),
++	.resource	= au1xxx_eth1_resources,
++};
++
++static struct platform_device *pb1000_devs[] = {
++	&pb1000_eth0,
++	&pb1000_eth1,
++};
++
++static int __init pb1000_register_devices(void)
++{
++	return platform_add_devices(pb1000_devs, ARRAY_SIZE(pb1000_devs));
++}
++arch_initcall(pb1000_register_devices);
+diff --git a/arch/mips/alchemy/devboards/pb1100/Makefile b/arch/mips/alchemy/devboards/pb1100/Makefile
+index c586dd7..7e3756c 100644
+--- a/arch/mips/alchemy/devboards/pb1100/Makefile
++++ b/arch/mips/alchemy/devboards/pb1100/Makefile
+@@ -5,4 +5,4 @@
+ # Makefile for the Alchemy Semiconductor Pb1100 board.
+ #
+ 
+-obj-y := board_setup.o
++obj-y := board_setup.o platform.o
+diff --git a/arch/mips/alchemy/devboards/pb1100/platform.c b/arch/mips/alchemy/devboards/pb1100/platform.c
+new file mode 100644
+index 0000000..9ff939c
+--- /dev/null
++++ b/arch/mips/alchemy/devboards/pb1100/platform.c
+@@ -0,0 +1,47 @@
++/*
++ * PB1100 platform devices registration
++ *
++ * Copyright (C) 2009, Florian Fainelli <florian@openwrt.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++#include <linux/init.h>
++#include <linux/platform_device.h>
++
++#include <asm/mach-au1x00/au1xxx.h>
++#include <asm/mach-au1x00/au1xxx_eth.h>
++
++static struct resource au1xxx_eth0_resources[] = {
++	MAC_RES(AU1100_ETH0_BASE, AU1100_MAC0_ENABLE, AU1100_MAC0_DMA_INT),
++};
++
++static struct platform_device pb1100_eth0 = {
++	.name		= "au1000-eth",
++	.id		= 0,
++	.num_resources	= ARRAY_SIZE(au1xxx_eth0_resources),
++	.resource	= au1xxx_eth0_resources,
++};
++
++static struct platform_device *pb1100_devs[] = {
++	&pb1100_eth0,
++};
++
++static int __init pb1100_register_devices(void)
++{
++	return platform_add_devices(pb1100_devs, ARRAY_SIZE(pb1100_devs));
++}
++
++arch_initcall(pb1100_register_devices);
+diff --git a/arch/mips/alchemy/devboards/pb1500/Makefile b/arch/mips/alchemy/devboards/pb1500/Makefile
+index 173b419..e83b151 100644
+--- a/arch/mips/alchemy/devboards/pb1500/Makefile
++++ b/arch/mips/alchemy/devboards/pb1500/Makefile
+@@ -5,4 +5,4 @@
+ # Makefile for the Alchemy Semiconductor Pb1500 board.
+ #
+ 
+-obj-y := board_setup.o
++obj-y := board_setup.o platform.o
+diff --git a/arch/mips/alchemy/devboards/pb1500/platform.c b/arch/mips/alchemy/devboards/pb1500/platform.c
+new file mode 100644
+index 0000000..98dbe8f
+--- /dev/null
++++ b/arch/mips/alchemy/devboards/pb1500/platform.c
+@@ -0,0 +1,59 @@
++/*
++ * PB1500 platform devices registration
++ *
++ * Copyright (C) 2009, Florian Fainelli <florian@openwrt.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++#include <linux/init.h>
++#include <linux/platform_device.h>
++
++#include <asm/mach-au1x00/au1xxx.h>
++#include <asm/mach-au1x00/au1xxx_eth.h>
++
++static struct resource au1xxx_eth0_resources[] = {
++	MAC_RES(AU1500_ETH0_BASE, AU1500_MAC0_ENABLE, AU1500_MAC0_DMA_INT),
++};
++
++static struct resource au1xxx_eth1_resources[] = {
++	MAC_RES(AU1500_ETH1_BASE, AU1500_MAC1_ENABLE, AU1500_MAC1_DMA_INT),
++};
++
++static struct platform_device pb1500_eth0 = {
++	.name		= "au1000-eth",
++	.id		= 0,
++	.num_resources	= ARRAY_SIZE(au1xxx_eth0_resources),
++	.resource	= au1xxx_eth0_resources,
++};
++
++static struct platform_device pb1500_eth1 = {
++	.name		= "au1000-eth",
++	.id		= 1,
++	.num_resources	= ARRAY_SIZE(au1xxx_eth1_resources),
++	.resource	= au1xxx_eth1_resources,
++};
++
++static struct platform_device *pb1500_devs[] = {
++	&pb1500_eth0,
++	&pb1500_eth1,
++};
++
++static int __init pb1500_register_devices(void)
++{
++	return platform_add_devices(pb1500_devs, ARRAY_SIZE(pb1500_devs));
++}
++
++arch_initcall(pb1500_register_devices);
+diff --git a/arch/mips/alchemy/devboards/pb1550/Makefile b/arch/mips/alchemy/devboards/pb1550/Makefile
+index cff95bc..9661b6e 100644
+--- a/arch/mips/alchemy/devboards/pb1550/Makefile
++++ b/arch/mips/alchemy/devboards/pb1550/Makefile
+@@ -5,4 +5,4 @@
+ # Makefile for the Alchemy Semiconductor Pb1550 board.
+ #
+ 
+-obj-y := board_setup.o
++obj-y := board_setup.o platform.o
+diff --git a/arch/mips/alchemy/devboards/pb1550/platform.c b/arch/mips/alchemy/devboards/pb1550/platform.c
+new file mode 100644
+index 0000000..c46f4ef
+--- /dev/null
++++ b/arch/mips/alchemy/devboards/pb1550/platform.c
+@@ -0,0 +1,59 @@
++/*
++ * PB1550 platform devices registration
++ *
++ * Copyright (C) 2009, Florian Fainelli <florian@openwrt.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++#include <linux/init.h>
++#include <linux/platform_device.h>
++
++#include <asm/mach-au1x00/au1xxx.h>
++#include <asm/mach-au1x00/au1xxx_eth.h>
++
++static struct resource au1xxx_eth0_resources[] = {
++	MAC_RES(AU1550_ETH0_BASE, AU1550_MAC0_ENABLE, AU1550_MAC0_DMA_INT),
++};
++
++static struct resource au1xxx_eth1_resources[] = {
++	MAC_RES(AU1550_ETH1_BASE, AU1550_MAC1_ENABLE, AU1550_MAC1_DMA_INT),
++};
++
++static struct platform_device pb1550_eth0 = {
++	.name		= "au1000-eth",
++	.id		= 0,
++	.num_resources	= ARRAY_SIZE(au1xxx_eth0_resources),
++	.resource	= au1xxx_eth0_resources,
++};
++
++static struct platform_device pb1550_eth1 = {
++	.name		= "au1000-eth",
++	.id		= 1,
++	.num_resources	= ARRAY_SIZE(au1xxx_eth1_resources),
++	.resource	= au1xxx_eth1_resources,
++};
++
++static struct platform_device *pb1550_devs[] = {
++	&pb1550_eth0,
++	&pb1550_eth1,
++};
++
++static int __init pb1550_register_devices(void)
++{
++	return platform_add_devices(pb1550_devs, ARRAY_SIZE(pb1550_devs));
++}
++
++arch_initcall(pb1550_register_devices);
+diff --git a/arch/mips/alchemy/mtx-1/platform.c b/arch/mips/alchemy/mtx-1/platform.c
+index e30e42a..30a7a56 100644
+--- a/arch/mips/alchemy/mtx-1/platform.c
++++ b/arch/mips/alchemy/mtx-1/platform.c
+@@ -28,6 +28,9 @@
+ #include <linux/mtd/physmap.h>
+ #include <mtd/mtd-abi.h>
+ 
++#include <asm/mach-au1x00/au1xxx.h>
++#include <asm/mach-au1x00/au1xxx_eth.h>
++
+ static struct gpio_keys_button mtx1_gpio_button[] = {
+ 	{
+ 		.gpio = 207,
+@@ -133,11 +136,23 @@ static struct platform_device mtx1_mtd = {
+ 	.resource	= &mtx1_mtd_resource,
+ };
+ 
++static struct resource au1xxx_eth0_resources[] = {
++	MAC_RES(AU1500_ETH0_BASE, AU1500_MAC0_ENABLE, AU1500_MAC0_DMA_INT),
++};
++
++static struct platform_device mtx1_eth = {
++	.name		= "au1000-eth",
++	.id		= 0,
++	.num_resources	= ARRAY_SIZE(au1xxx_eth0_resources),
++	.resource	= au1xxx_eth0_resources,
++};
++
+ static struct __initdata platform_device * mtx1_devs[] = {
+ 	&mtx1_gpio_leds,
+ 	&mtx1_wdt,
+ 	&mtx1_button,
+ 	&mtx1_mtd,
++	&mtx1_eth,
+ };
+ 
+ static int __init mtx1_register_devices(void)
+diff --git a/arch/mips/alchemy/xxs1500/Makefile b/arch/mips/alchemy/xxs1500/Makefile
+index db3c526..375748f 100644
+--- a/arch/mips/alchemy/xxs1500/Makefile
++++ b/arch/mips/alchemy/xxs1500/Makefile
+@@ -6,3 +6,4 @@
+ #
+ 
+ lib-y := init.o board_setup.o irqmap.o
++obj-y := platform.o
+diff --git a/arch/mips/alchemy/xxs1500/platform.c b/arch/mips/alchemy/xxs1500/platform.c
+new file mode 100644
+index 0000000..ef7f7b7
+--- /dev/null
++++ b/arch/mips/alchemy/xxs1500/platform.c
+@@ -0,0 +1,59 @@
++/*
++ * XXS1500 platform devices registration
++ *
++ * Copyright (C) 2009, Florian Fainelli <florian@openwrt.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++#include <linux/init.h>
++#include <linux/platform_device.h>
++
++#include <asm/mach-au1x00/au1xxx.h>
++#include <asm/mach-au1x00/au1xxx_eth.h>
++
++static struct resource au1xxx_eth0_resources[] = {
++	MAC_RES(AU1500_ETH0_BASE, AU1500_MAC0_ENABLE, AU1500_MAC0_DMA_INT),
++};
++
++static struct resource au1xxx_eth1_resources[] = {
++	MAC_RES(AU1500_ETH1_BASE, AU1500_MAC1_ENABLE, AU1500_MAC1_DMA_INT),
++};
++
++static struct platform_device xxs1500_eth0 = {
++	.name		= "au1000-eth",
++	.id		= 0,
++	.num_resources	= ARRAY_SIZE(au1xxx_eth0_resources),
++	.resource	= au1xxx_eth0_resources,
++};
++
++static struct platform_device xxs1500_eth1 = {
++	.name		= "au1000-eth",
++	.id		= 1,
++	.num_resources	= ARRAY_SIZE(au1xxx_eth1_resources),
++	.resource	= au1xxx_eth1_resources,
++};
++
++static struct platform_device *xxs1500_devs[] = {
++	&xxs1500_eth0,
++	&xxs1500_eth1,
++};
++
++static int __init xxs1500_register_devices(void)
++{
++	return platform_add_devices(xxs1500_devs, ARRAY_SIZE(xxs1500_devs));
++}
++
++arch_initcall(xxs1500_register_devices);
+diff --git a/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h b/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h
+new file mode 100644
+index 0000000..6d1543e
+--- /dev/null
++++ b/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h
+@@ -0,0 +1,33 @@
++#ifndef __AU1X00_ETH_DATA_H
++#define __AU1X00_ETH_DATA_H
++
++/* Macro to help defining the Ethernet MAC resources */
++#define MAC_RES(_base, _enable, _irq)			\
++	{						\
++		.start	= CPHYSADDR(_base),		\
++		.end	= CPHYSADDR(_base + 0xffff),	\
++		.flags	= IORESOURCE_MEM,		\
++	},						\
++	{						\
++		.start	= CPHYSADDR(_enable),		\
++		.end	= CPHYSADDR(_enable + 0x4),	\
++		.flags	= IORESOURCE_MEM,		\
++	},						\
++	{						\
++		.start	= _irq,				\
++		.end	= _irq,				\
++		.flags	= IORESOURCE_IRQ		\
++	}
++
++/* Platform specific PHY configuration passed to the MAC driver */
++struct au1000_eth_platform_data {
++	int phy_static_config;
++	int phy_search_highest_addr;
++	int phy1_search_mac0;
++	int phy_addr;
++	int phy_busid;
++	int phy_irq;
++};
++
++#endif /* __AU1X00_ETH_DATA_H */
++

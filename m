@@ -1,45 +1,55 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Aug 2009 14:23:46 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:46926 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 18 Aug 2009 16:31:43 +0200 (CEST)
+Received: from smtp6-g21.free.fr ([212.27.42.6]:35124 "EHLO smtp6-g21.free.fr"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1492689AbZHRMXi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 18 Aug 2009 14:23:38 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n7ICOSVt026465;
-	Tue, 18 Aug 2009 13:24:28 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n7ICORG9026463;
-	Tue, 18 Aug 2009 13:24:27 +0100
-Date:	Tue, 18 Aug 2009 13:24:27 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Maxime Bizon <mbizon@freebox.fr>
-Cc:	linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>
+	id S1493024AbZHRObh (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 18 Aug 2009 16:31:37 +0200
+Received: from smtp6-g21.free.fr (localhost [127.0.0.1])
+	by smtp6-g21.free.fr (Postfix) with ESMTP id BDC7AE080D4;
+	Tue, 18 Aug 2009 16:31:30 +0200 (CEST)
+Received: from [213.228.1.107] (sakura.staff.proxad.net [213.228.1.107])
+	by smtp6-g21.free.fr (Postfix) with ESMTP id D345CE080AB;
+	Tue, 18 Aug 2009 16:31:27 +0200 (CEST)
 Subject: Re: More updates to bcm63xx
-Message-ID: <20090818122427.GA21399@linux-mips.org>
+From:	Maxime Bizon <mbizon@freebox.fr>
+Reply-To: mbizon@freebox.fr
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>
+In-Reply-To: <20090818122427.GA21399@linux-mips.org>
 References: <1244037747-27144-1-git-send-email-mbizon@freebox.fr>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1244037747-27144-1-git-send-email-mbizon@freebox.fr>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <ralf@linux-mips.org>
+	 <20090818122427.GA21399@linux-mips.org>
+Content-Type: text/plain
+Organization: Freebox
+Date:	Tue, 18 Aug 2009 16:31:27 +0200
+Message-Id: <1250605887.23717.188.camel@sakura.staff.proxad.net>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.26.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <mbizon@freebox.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23910
+X-archive-position: 23911
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mbizon@freebox.fr
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Jun 03, 2009 at 04:02:19PM +0200, Maxime Bizon wrote:
 
-> Yet another list of cleanup and fixes for the bcm63xx tree, please
-> fold them into the existing patches.
+On Tue, 2009-08-18 at 13:24 +0100, Ralf Baechle wrote:
 
-I folded all 8 patches into the existing patches for the linux-bcm63xx tree.
+Hi Ralf,
 
-Thanks!
+> I folded all 8 patches into the existing patches for the linux-bcm63xx
+> tree
 
-  Ralf
+The bcm63xx tree seems wrong.
+
+The patch from Florian that adds support for 6338 & 6345 is merged with
+commit BCM63XX: Add integrated ethernet mac support.
+
+The final patch that adds the board code is gone.
+
+-- 
+Maxime

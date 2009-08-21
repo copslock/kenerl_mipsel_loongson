@@ -1,204 +1,281 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 20 Aug 2009 23:12:35 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:41122 "EHLO
-	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492897AbZHTVMI (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 20 Aug 2009 23:12:08 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B4a8dbbf20000>; Thu, 20 Aug 2009 17:11:14 -0400
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 20 Aug 2009 14:10:28 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 20 Aug 2009 14:10:28 -0700
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n7KLAOhr006553;
-	Thu, 20 Aug 2009 14:10:24 -0700
-Received: (from ddaney@localhost)
-	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n7KLANUr006552;
-	Thu, 20 Aug 2009 14:10:23 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-To:	ralf@linux-mips.org, mpm@selenic.com, herbert@gondor.apana.org.au
-Cc:	linux-mips@linux-mips.org, akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org,
-	David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH 1/2] MIPS: Octeon:  Add hardware RNG platform device.
-Date:	Thu, 20 Aug 2009 14:10:22 -0700
-Message-Id: <1250802623-6526-1-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.6.0.6
-In-Reply-To: <4A8DBB17.5020301@caviumnetworks.com>
-References: <4A8DBB17.5020301@caviumnetworks.com>
-X-OriginalArrivalTime: 20 Aug 2009 21:10:28.0850 (UTC) FILETIME=[A502ED20:01CA21DA]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Aug 2009 18:53:27 +0200 (CEST)
+Received: from mail-bw0-f208.google.com ([209.85.218.208]:39778 "EHLO
+	mail-bw0-f208.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492986AbZHUQxV convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 21 Aug 2009 18:53:21 +0200
+Received: by bwz4 with SMTP id 4so781470bwz.0
+        for <multiple recipients>; Fri, 21 Aug 2009 09:53:15 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:from:to:subject:date
+         :user-agent:cc:references:in-reply-to:mime-version:content-type
+         :content-transfer-encoding:content-disposition:message-id;
+        bh=MvflFqKE750wxTG2wYd7DcLpvFSYG4F/aKyYoB3+zZw=;
+        b=GCWjS+sds9pHNudzTpozUSgZXHGKFOXSZWMwHaI28azb+DHaY0MmozVAAku0UkTQ1c
+         BqzIeu2tzediGWw3khBCnl5NUyKGFLop/9vwAXHuGJXnMEJtcGfO9q+OvX/QgN2cJEF6
+         SfExLMxNcAQadIMdwKzzkKUzP1paQsfevHaLs=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
+         :mime-version:content-type:content-transfer-encoding
+         :content-disposition:message-id;
+        b=AB2e0VufKyofR779y0+ydgLzL5nGaYwX7s2Yiu3o/jPfo6zJtdEXCiBnWHMKwOT6WM
+         gE5ZLGe+N6gICNzXz6Nd4esqxq7kf3rMj3+Rt9nZS6TGP1+b8ARdRhX1j4QUSzYoi2rM
+         WvrdB1N5vSH/KLbmhV+CU5vRdj/ntFj1a1r50=
+Received: by 10.103.76.29 with SMTP id d29mr581358mul.50.1250873595421;
+        Fri, 21 Aug 2009 09:53:15 -0700 (PDT)
+Received: from ?192.168.250.6? ([85.233.201.131])
+        by mx.google.com with ESMTPS id 23sm10989494mum.35.2009.08.21.09.53.09
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Fri, 21 Aug 2009 09:53:13 -0700 (PDT)
+From:	Florian Fainelli <florian@openwrt.org>
+To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Subject: Re: [PATCH 1/2] alchemy: add au1000-eth platform device
+Date:	Fri, 21 Aug 2009 18:53:07 +0200
+User-Agent: KMail/1.9.9
+Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	Manuel Lauss <manuel.lauss@googlemail.com>,
+	David Miller <davem@davemloft.net>, netdev@vger.kernel.org
+References: <200908170105.38154.florian@openwrt.org> <4A8AC125.3020602@ru.mvista.com> <200908181801.41602.florian@openwrt.org>
+In-Reply-To: <200908181801.41602.florian@openwrt.org>
+MIME-Version: 1.0
+Content-Type: text/plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+Content-Disposition: inline
+Message-Id: <200908211853.07969.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23918
+X-archive-position: 23919
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Add a platform device for the Octeon Random Number Generator (RNG).
+Le Tuesday 18 August 2009 18:01:40 Florian Fainelli, vous avez écrit :
+> Le Tuesday 18 August 2009 16:56:37 Sergei Shtylyov, vous avez écrit :
+> > Hello.
+> >
+> > Florian Fainelli wrote:
+> > > This patch adds the board code to register a per-board au1000-eth
+> > > platform device to be used wit the au1000-eth platform driver in a
+> > > subsequent patch. Note that the au1000-eth driver knows about the
+> > > default driver settings such that we do not need to pass any
+> > > platform_data informations in most cases except db1x00.
+> >
+> >     Sigh, NAK...
+> >     Please don't register the SoC device per board, do it in
+> > alchemy/common/platfrom.c and find a way to pass the board specific
+> > platform data from the board file there instead -- something like
+> > arch/arm/mach-davinci/usb.c does.
+>
+> Ok, like I promised, this was the per-board device registration. Do you
+> prefer something like this: --
+> From fd75b7c7fa3c05c21122c43e43260d2785475a79 Mon Sep 17 00:00:00 2001
+> From: Florian Fainelli <florian@openwrt.org>
+> Date: Tue, 18 Aug 2009 17:53:21 +0200
+> Subject: [PATCH] alchemy: add au1000-eth platform device (v2)
+>
+> This patch makes the board code register the au1000-eth
+> platform device. The au1000-eth platform data can be
+> overriden with the au1xxx_override_eth0_cfg function
+> like it has to be done for the Bosporus board.
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
----
- arch/mips/cavium-octeon/setup.c              |   43 +++++++++++++
- arch/mips/include/asm/octeon/cvmx-rnm-defs.h |   88 ++++++++++++++++++++++++++
- 2 files changed, 131 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/include/asm/octeon/cvmx-rnm-defs.h
+Sergei, any comments on that version? What about you Manuel?
 
-diff --git a/arch/mips/cavium-octeon/setup.c b/arch/mips/cavium-octeon/setup.c
-index bc0c869..d8cf674 100644
---- a/arch/mips/cavium-octeon/setup.c
-+++ b/arch/mips/cavium-octeon/setup.c
-@@ -33,6 +33,7 @@
- #include <asm/time.h>
- 
- #include <asm/octeon/octeon.h>
-+#include <asm/octeon/cvmx-rnm-defs.h>
- 
- #ifdef CONFIG_CAVIUM_DECODE_RSL
- extern void cvmx_interrupt_rsl_decode(void);
-@@ -931,3 +932,45 @@ out:
- 	return ret;
- }
- device_initcall(octeon_cf_device_init);
-+
-+/* Octeon Random Number Generator.  */
-+static int __init octeon_rng_device_init(void)
-+{
-+	struct platform_device *pd;
-+	int ret = 0;
-+
-+	struct resource rng_resources[] = {
-+		{
-+			.flags	= IORESOURCE_MEM,
-+			.start	= XKPHYS_TO_PHYS(CVMX_RNM_CTL_STATUS),
-+			.end	= XKPHYS_TO_PHYS(CVMX_RNM_CTL_STATUS) + 0xf
-+		}, {
-+			.flags	= IORESOURCE_MEM,
-+			.start	= cvmx_build_io_address(8, 0),
-+			.end	= cvmx_build_io_address(8, 0) + 0x7
-+		}
-+	};
-+
-+	pd = platform_device_alloc("octeon_rng", -1);
-+	if (!pd) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	ret = platform_device_add_resources(pd, rng_resources,
-+					    ARRAY_SIZE(rng_resources));
-+	if (ret)
-+		goto fail;
-+
-+	ret = platform_device_add(pd);
-+	if (ret)
-+		goto fail;
-+
-+	return ret;
-+fail:
-+	platform_device_put(pd);
-+
-+out:
-+	return ret;
-+}
-+device_initcall(octeon_rng_device_init);
-diff --git a/arch/mips/include/asm/octeon/cvmx-rnm-defs.h b/arch/mips/include/asm/octeon/cvmx-rnm-defs.h
-new file mode 100644
-index 0000000..4586958
---- /dev/null
-+++ b/arch/mips/include/asm/octeon/cvmx-rnm-defs.h
-@@ -0,0 +1,88 @@
-+/***********************license start***************
-+ * Author: Cavium Networks
-+ *
-+ * Contact: support@caviumnetworks.com
-+ * This file is part of the OCTEON SDK
-+ *
-+ * Copyright (c) 2003-2008 Cavium Networks
-+ *
-+ * This file is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License, Version 2, as
-+ * published by the Free Software Foundation.
-+ *
-+ * This file is distributed in the hope that it will be useful, but
-+ * AS-IS and WITHOUT ANY WARRANTY; without even the implied warranty
-+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE, TITLE, or
-+ * NONINFRINGEMENT.  See the GNU General Public License for more
-+ * details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this file; if not, write to the Free Software
-+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
-+ * or visit http://www.gnu.org/licenses/.
-+ *
-+ * This file may also be available under a different license from Cavium.
-+ * Contact Cavium Networks for more information
-+ ***********************license end**************************************/
-+
-+#ifndef __CVMX_RNM_DEFS_H__
-+#define __CVMX_RNM_DEFS_H__
-+
-+#include <linux/types.h>
-+
-+#define CVMX_RNM_BIST_STATUS \
-+	 CVMX_ADD_IO_SEG(0x0001180040000008ull)
-+#define CVMX_RNM_CTL_STATUS \
-+	 CVMX_ADD_IO_SEG(0x0001180040000000ull)
-+
-+union cvmx_rnm_bist_status {
-+	uint64_t u64;
-+	struct cvmx_rnm_bist_status_s {
-+		uint64_t reserved_2_63:62;
-+		uint64_t rrc:1;
-+		uint64_t mem:1;
-+	} s;
-+	struct cvmx_rnm_bist_status_s cn30xx;
-+	struct cvmx_rnm_bist_status_s cn31xx;
-+	struct cvmx_rnm_bist_status_s cn38xx;
-+	struct cvmx_rnm_bist_status_s cn38xxp2;
-+	struct cvmx_rnm_bist_status_s cn50xx;
-+	struct cvmx_rnm_bist_status_s cn52xx;
-+	struct cvmx_rnm_bist_status_s cn52xxp1;
-+	struct cvmx_rnm_bist_status_s cn56xx;
-+	struct cvmx_rnm_bist_status_s cn56xxp1;
-+	struct cvmx_rnm_bist_status_s cn58xx;
-+	struct cvmx_rnm_bist_status_s cn58xxp1;
-+};
-+
-+union cvmx_rnm_ctl_status {
-+	uint64_t u64;
-+	struct cvmx_rnm_ctl_status_s {
-+		uint64_t reserved_9_63:55;
-+		uint64_t ent_sel:4;
-+		uint64_t exp_ent:1;
-+		uint64_t rng_rst:1;
-+		uint64_t rnm_rst:1;
-+		uint64_t rng_en:1;
-+		uint64_t ent_en:1;
-+	} s;
-+	struct cvmx_rnm_ctl_status_cn30xx {
-+		uint64_t reserved_4_63:60;
-+		uint64_t rng_rst:1;
-+		uint64_t rnm_rst:1;
-+		uint64_t rng_en:1;
-+		uint64_t ent_en:1;
-+	} cn30xx;
-+	struct cvmx_rnm_ctl_status_cn30xx cn31xx;
-+	struct cvmx_rnm_ctl_status_cn30xx cn38xx;
-+	struct cvmx_rnm_ctl_status_cn30xx cn38xxp2;
-+	struct cvmx_rnm_ctl_status_s cn50xx;
-+	struct cvmx_rnm_ctl_status_s cn52xx;
-+	struct cvmx_rnm_ctl_status_s cn52xxp1;
-+	struct cvmx_rnm_ctl_status_s cn56xx;
-+	struct cvmx_rnm_ctl_status_s cn56xxp1;
-+	struct cvmx_rnm_ctl_status_s cn58xx;
-+	struct cvmx_rnm_ctl_status_s cn58xxp1;
-+};
-+
-+#endif
+>
+> Changes from v1:
+> - remove per-board platform.c file
+> - add an override function to pass custom eth0 platform_data PHY settings
+>
+> Signed-off-by: Florian Fainelli <florian@openwrt.org>
+> ---
+> diff --git a/arch/mips/alchemy/common/platform.c
+> b/arch/mips/alchemy/common/platform.c index 117f99f..559294a 100644
+> --- a/arch/mips/alchemy/common/platform.c
+> +++ b/arch/mips/alchemy/common/platform.c
+> @@ -19,6 +19,7 @@
+>  #include <asm/mach-au1x00/au1xxx.h>
+>  #include <asm/mach-au1x00/au1xxx_dbdma.h>
+>  #include <asm/mach-au1x00/au1100_mmc.h>
+> +#include <asm/mach-au1x00/au1xxx_eth.h>
+>
+>  #define PORT(_base, _irq)				\
+>  	{						\
+> @@ -331,6 +332,76 @@ static struct platform_device pbdb_smbus_device = {
+>  };
+>  #endif
+>
+> +/* Macro to help defining the Ethernet MAC resources */
+> +#define MAC_RES(_base, _enable, _irq)			\
+> +	{						\
+> +		.start	= CPHYSADDR(_base),		\
+> +		.end	= CPHYSADDR(_base + 0xffff),	\
+> +		.flags	= IORESOURCE_MEM,		\
+> +	},						\
+> +	{						\
+> +		.start	= CPHYSADDR(_enable),		\
+> +		.end	= CPHYSADDR(_enable + 0x3),	\
+> +		.flags	= IORESOURCE_MEM,		\
+> +	},						\
+> +	{						\
+> +		.start	= _irq,				\
+> +		.end	= _irq,				\
+> +		.flags	= IORESOURCE_IRQ		\
+> +	}
+> +
+> +static struct resource au1xxx_eth0_resources[] = {
+> +#if defined(CONFIG_SOC_AU1000)
+> +	MAC_RES(AU1000_ETH0_BASE, AU1000_MAC0_ENABLE, AU1000_MAC0_DMA_INT),
+> +#elif defined(CONFIG_SOC_AU1100)
+> +	MAC_RES(AU1100_ETH0_BASE, AU1100_MAC0_ENABLE, AU1100_MAC0_DMA_INT),
+> +#elif defined(CONFIG_SOC_AU1550)
+> +	MAC_RES(AU1550_ETH0_BASE, AU1550_MAC0_ENABLE, AU1550_MAC0_DMA_INT),
+> +#elif defined(CONFIG_SOC_AU1500)
+> +	MAC_RES(AU1500_ETH0_BASE, AU1500_MAC0_ENABLE, AU1500_MAC0_DMA_INT),
+> +#endif
+> +};
+> +
+> +static struct resource au1xxx_eth1_resources[] = {
+> +#if defined(CONFIG_SOC_AU1000)
+> +	MAC_RES(AU1000_ETH1_BASE, AU1000_MAC1_ENABLE, AU1000_MAC1_DMA_INT),
+> +#elif defined(CONFIG_SOC_AU1550)
+> +	MAC_RES(AU1550_ETH1_BASE, AU1550_MAC1_ENABLE, AU1550_MAC1_DMA_INT),
+> +#elif defined(CONFIG_SOC_AU1500)
+> +	MAC_RES(AU1500_ETH1_BASE, AU1500_MAC1_ENABLE, AU1500_MAC1_DMA_INT),
+> +#endif
+> +};
+> +
+> +static struct au1000_eth_platform_data au1xxx_eth0_platform_data = {
+> +	.phy1_search_mac0 = 1,
+> +};
+> +
+> +static struct platform_device au1xxx_eth0_device = {
+> +	.name		= "au1000-eth",
+> +	.id		= 0,
+> +	.num_resources	= ARRAY_SIZE(au1xxx_eth0_resources),
+> +	.resource	= au1xxx_eth0_resources,
+> +	.dev.platform_data = &au1xxx_eth0_platform_data,
+> +};
+> +
+> +#ifndef CONFIG_SOC_AU1100
+> +static struct platform_device au1xxx_eth1_device = {
+> +	.name		= "au1000-eth",
+> +	.id		= 1,
+> +	.num_resources	= ARRAY_SIZE(au1xxx_eth1_resources),
+> +	.resource	= au1xxx_eth1_resources,
+> +};
+> +#endif
+> +
+> +void __init au1xxx_override_eth0_cfg(struct au1000_eth_platform_data
+> *eth_data) +{
+> +	if (!eth_data)
+> +		return;
+> +
+> +	memcpy(&au1xxx_eth0_platform_data, eth_data,
+> +		sizeof(struct au1000_eth_platform_data));
+> +}
+> +
+>  static struct platform_device *au1xxx_platform_devices[] __initdata = {
+>  	&au1xx0_uart_device,
+>  	&au1xxx_usb_ohci_device,
+> @@ -351,17 +422,25 @@ static struct platform_device
+> *au1xxx_platform_devices[] __initdata = { #ifdef SMBUS_PSC_BASE
+>  	&pbdb_smbus_device,
+>  #endif
+> +	&au1xxx_eth0_device,
+>  };
+>
+>  static int __init au1xxx_platform_init(void)
+>  {
+>  	unsigned int uartclk = get_au1x00_uart_baud_base() * 16;
+> -	int i;
+> +	int i, ni;
+>
+>  	/* Fill up uartclk. */
+>  	for (i = 0; au1x00_uart_data[i].flags; i++)
+>  		au1x00_uart_data[i].uartclk = uartclk;
+>
+> +	/* Register second MAC if enabled in pinfunc */
+> +#ifndef CONFIG_SOC_AU1100
+> +	ni = (int)((au_readl(SYS_PINFUNC) & (u32)(SYS_PF_NI2)) >> 4);
+> +	if (!(ni + 1))
+> +		platform_device_register(&au1xxx_eth1_device);
+> +#endif
+> +
+>  	return platform_add_devices(au1xxx_platform_devices,
+>  				    ARRAY_SIZE(au1xxx_platform_devices));
+>  }
+> diff --git a/arch/mips/alchemy/devboards/db1x00/board_setup.c
+> b/arch/mips/alchemy/devboards/db1x00/board_setup.c index de30d8e..4d2d32c
+> 100644
+> --- a/arch/mips/alchemy/devboards/db1x00/board_setup.c
+> +++ b/arch/mips/alchemy/devboards/db1x00/board_setup.c
+> @@ -32,6 +32,7 @@
+>
+>  #include <asm/mach-au1x00/au1000.h>
+>  #include <asm/mach-db1x00/db1x00.h>
+> +#include <asm/mach-au1x00/au1xxx_eth.h>
+>
+>  #include <prom.h>
+>
+> @@ -134,6 +135,22 @@ void __init board_setup(void)
+>  	printk(KERN_INFO "AMD Alchemy Au1100/Db1100 Board\n");
+>  #endif
+>  #ifdef CONFIG_MIPS_BOSPORUS
+> +	struct au1000_eth_platform_data eth0_pdata;
+> +
+> +	/*
+> +	 * Micrel/Kendin 5 port switch attached to MAC0,
+> +	 * MAC0 is associated with PHY address 5 (== WAN port)
+> +	 * MAC1 is not associated with any PHY, since it's connected directly
+> +	 * to the switch.
+> +	 * no interrupts are used
+> +	 */
+> +	eth0_pdata.phy1_search_mac0 = 0;
+> +	eth0_pdata.phy_static_config = 1;
+> +	eth0_pdata.phy_addr = 5;
+> +	eth0_pdata.phy_busid = 0;
+> +
+> +	au1xxx_override_eth0_cfg(&eth0_pdata);
+> +
+>  	printk(KERN_INFO "AMD Alchemy Bosporus Board\n");
+>  #endif
+>  #ifdef CONFIG_MIPS_MIRAGE
+> diff --git a/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h
+> b/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h new file mode 100644
+> index 0000000..876187e
+> --- /dev/null
+> +++ b/arch/mips/include/asm/mach-au1x00/au1xxx_eth.h
+> @@ -0,0 +1,17 @@
+> +#ifndef __AU1X00_ETH_DATA_H
+> +#define __AU1X00_ETH_DATA_H
+> +
+> +/* Platform specific PHY configuration passed to the MAC driver */
+> +struct au1000_eth_platform_data {
+> +	int phy_static_config;
+> +	int phy_search_highest_addr;
+> +	int phy1_search_mac0;
+> +	int phy_addr;
+> +	int phy_busid;
+> +	int phy_irq;
+> +};
+> +
+> +void __init au1xxx_override_eth0_cfg(struct au1000_eth_platform_data
+> *eth_data); +
+> +#endif /* __AU1X00_ETH_DATA_H */
+> +
+
+
+
 -- 
-1.6.0.6
+Best regards, Florian Fainelli
+Email: florian@openwrt.org
+Web: http://openwrt.org
+IRC: [florian] on irc.freenode.net
+-------------------------------

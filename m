@@ -1,50 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 21 Aug 2009 19:23:53 +0200 (CEST)
-Received: from mail-bw0-f208.google.com ([209.85.218.208]:59758 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 22 Aug 2009 18:09:32 +0200 (CEST)
+Received: from mail-bw0-f208.google.com ([209.85.218.208]:33132 "EHLO
 	mail-bw0-f208.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492209AbZHURXr convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 21 Aug 2009 19:23:47 +0200
-Received: by bwz4 with SMTP id 4so793988bwz.0
-        for <multiple recipients>; Fri, 21 Aug 2009 10:23:39 -0700 (PDT)
+	by ftp.linux-mips.org with ESMTP id S1492812AbZHVQJ0 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 22 Aug 2009 18:09:26 +0200
+Received: by bwz4 with SMTP id 4so1099359bwz.0
+        for <multiple recipients>; Sat, 22 Aug 2009 09:09:21 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=mhR+JyU1now7PawTaLc9AbtV6XjxvwugHLeo8n2Bj2Y=;
-        b=whsY2Bb0dOcY+zi7A4G71VWr5oTRwOuzeARngTcDqgHQL1soP8xpkTgI/hu/7N1LVN
-         SfrWErssDZAGWyETdf0kqewihYPzvcUrD2cy1t4Oei38/A24Q5EiTTcgxFD5tC8xvy7S
-         phpvP4FHH5rzVgNE6Voi0114mmVhsA8nWtpuc=
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=RsZHI9T3ZCqEGGdEig3/FJrY4tKQGvDviQTAT6LK3oo=;
+        b=Qmi2tiBcyPE7/rhVRtxf7VkdvhsH9srqlAsOXbSQH7yk1w6D+gxnJNSiAP0XDIoW/O
+         tcPJtlRgU3sfkZENC0Yom7o+hNVLOwnhk47SywqlILSpeeQm3pM611MdGctFLC8aPJcM
+         R612c9ldyWFjLHSi6mdOTYmbFm58VOU/aF0vA=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=RXz3JslB99FGiaThUxQCMCcIbZIeFniNhvX1ZP3Jjunz43CPHVZ+GjdMMv8eTldTbw
-         glHB9ipgz6V0h2WsuBVPm/P2uKYBkKmrUB0KfEdA8fSgBaMAprVUQP5QqwFCMhWWlWgd
-         cPngP00jIzxxeW9NPe4Uo0q7qE5pVrgCQuLjI=
-MIME-Version: 1.0
-Received: by 10.223.54.152 with SMTP id q24mr321990fag.19.1250875419201; Fri, 
-	21 Aug 2009 10:23:39 -0700 (PDT)
-In-Reply-To: <200908211853.07969.florian@openwrt.org>
-References: <200908170105.38154.florian@openwrt.org>
-	 <4A8AC125.3020602@ru.mvista.com>
-	 <200908181801.41602.florian@openwrt.org>
-	 <200908211853.07969.florian@openwrt.org>
-Date:	Fri, 21 Aug 2009 19:23:39 +0200
-Message-ID: <f861ec6f0908211023t3eb7ff1p12b6160feb94efb4@mail.gmail.com>
-Subject: Re: [PATCH 1/2] alchemy: add au1000-eth platform device
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=uRzoiVsvrrfJD1/p0qnD3khviRrBrUdUjJjvYJFCGO5DbYjzffjOdFE/7LceCxv646
+         bn32ldd5zE4805RXMqFnwRrpaBzkUsuR82zc3qNKTWEmctfz+IWKBhjO0/8dwdbXy1XJ
+         NnvTma1LI8e7A0HVXGrtFmxy3FV47Acij5edU=
+Received: by 10.223.143.79 with SMTP id t15mr1613850fau.6.1250957361280;
+        Sat, 22 Aug 2009 09:09:21 -0700 (PDT)
+Received: from localhost.localdomain (fnoeppeil48.netpark.at [217.175.205.176])
+        by mx.google.com with ESMTPS id c28sm4086308fka.19.2009.08.22.09.09.19
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sat, 22 Aug 2009 09:09:20 -0700 (PDT)
 From:	Manuel Lauss <manuel.lauss@googlemail.com>
-To:	Florian Fainelli <florian@openwrt.org>
-Cc:	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	David Miller <davem@davemloft.net>, netdev@vger.kernel.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+To:	Linux-MIPS <linux-mips@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [PATCH] Alchemy: override loops_per_jiffy detection
+Date:	Sat, 22 Aug 2009 18:09:12 +0200
+Message-Id: <1250957352-14359-1-git-send-email-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 1.6.4
 Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23920
+X-archive-position: 23921
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -52,46 +45,52 @@ X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Florian,
+The loops_per_jiffy detection in generic calibrate_delay is a bit off
+(by ~0.5% usually); calculate the correct value based on detected core
+clock.  BogoMIPS value will now reflect cpu core clock correctly.
 
-On Fri, Aug 21, 2009 at 6:53 PM, Florian Fainelli<florian@openwrt.org> wrote:
-> Le Tuesday 18 August 2009 18:01:40 Florian Fainelli, vous avez écrit :
->> Le Tuesday 18 August 2009 16:56:37 Sergei Shtylyov, vous avez écrit :
->> > Hello.
->> >
->> > Florian Fainelli wrote:
->> > > This patch adds the board code to register a per-board au1000-eth
->> > > platform device to be used wit the au1000-eth platform driver in a
->> > > subsequent patch. Note that the au1000-eth driver knows about the
->> > > default driver settings such that we do not need to pass any
->> > > platform_data informations in most cases except db1x00.
->> >
->> >     Sigh, NAK...
->> >     Please don't register the SoC device per board, do it in
->> > alchemy/common/platfrom.c and find a way to pass the board specific
->> > platform data from the board file there instead -- something like
->> > arch/arm/mach-davinci/usb.c does.
->>
->> Ok, like I promised, this was the per-board device registration. Do you
->> prefer something like this: --
->> From fd75b7c7fa3c05c21122c43e43260d2785475a79 Mon Sep 17 00:00:00 2001
->> From: Florian Fainelli <florian@openwrt.org>
->> Date: Tue, 18 Aug 2009 17:53:21 +0200
->> Subject: [PATCH] alchemy: add au1000-eth platform device (v2)
->>
->> This patch makes the board code register the au1000-eth
->> platform device. The au1000-eth platform data can be
->> overriden with the au1xxx_override_eth0_cfg function
->> like it has to be done for the Bosporus board.
->
-> Sergei, any comments on that version? What about you Manuel?
+(Blatantly stolen from the SH port).
 
-Obviously I *much* prefer your first version, but I'm okay with this
-second version too.
+Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+---
+ arch/mips/Kconfig                |    2 +-
+ arch/mips/alchemy/common/setup.c |   11 +++++++++++
+ 2 files changed, 12 insertions(+), 1 deletions(-)
 
-(I usually only comment if I don't like things, so take my silence as
-approval).
-
-Thanks for your work!
-
-Manuel Lauss
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 3ca0fe1..56c8139 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -700,7 +700,7 @@ config GENERIC_HWEIGHT
+ 
+ config GENERIC_CALIBRATE_DELAY
+ 	bool
+-	default y
++	default y if !MACH_ALCHEMY
+ 
+ config GENERIC_CLOCKEVENTS
+ 	bool
+diff --git a/arch/mips/alchemy/common/setup.c b/arch/mips/alchemy/common/setup.c
+index 3f036b3..5ea7e1a 100644
+--- a/arch/mips/alchemy/common/setup.c
++++ b/arch/mips/alchemy/common/setup.c
+@@ -74,6 +74,17 @@ void __init plat_mem_setup(void)
+ 	iomem_resource.end = IOMEM_RESOURCE_END;
+ }
+ 
++void __cpuinit calibrate_delay(void)
++{
++	loops_per_jiffy = (get_au1x00_speed() >> 1) / HZ;
++
++	printk(KERN_INFO "Calibrating delay loop (skipped)... "
++			 "%lu.%02lu BogoMIPS PRESET (lpj=%lu)\n",
++			 loops_per_jiffy/(500000/HZ),
++			 (loops_per_jiffy/(5000/HZ)) % 100,
++			 loops_per_jiffy);
++}
++
+ #if defined(CONFIG_64BIT_PHYS_ADDR)
+ /* This routine should be valid for all Au1x based boards */
+ phys_t __fixup_bigphys_addr(phys_t phys_addr, phys_t size)
+-- 
+1.6.3.3

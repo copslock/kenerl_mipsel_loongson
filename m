@@ -1,84 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Aug 2009 19:21:36 +0200 (CEST)
-Received: from mail-ew0-f225.google.com ([209.85.219.225]:49405 "EHLO
-	mail-ew0-f225.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493077AbZH0RV3 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 27 Aug 2009 19:21:29 +0200
-Received: by ewy25 with SMTP id 25so1397283ewy.33
-        for <multiple recipients>; Thu, 27 Aug 2009 10:21:23 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=CR1+DfucO1IHOj8yF1O5mSiGkZpeiJn7Dz5pz9ViUNc=;
-        b=UqVtNbj/HwnW8lHhyfNf4pizbvbUW5by1vA0/6f1SHO/JTUdIFmqKbJ8N6d0HGowdD
-         8pTopu3KnJEgLxSLuf/OCtGA3YzDSt1TXbAUZY3U58XAhV5e0sSuC9XnCmOSbtHXY3pw
-         88dNfRGhWrN0ZqMxSPpmIqYqIPpIzkdyMTAw0=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=nR8cYJWRXwJEtNx0ouuFzdFhQik8i7+GGV53M0fPXRmeVk0udEW7m6yCJOcQT8q5kX
-         HA2W/EeJ9sZmVimq5aHXlZC8zu2xLmgCvwL+YMRk13/h3i37uEfgUk61Ow+3Di76I+Rs
-         fVw4ZVH1/wHix4qcO92a2T8i6PiuoiQj2ZAzE=
-Received: by 10.216.6.198 with SMTP id 48mr1864567wen.200.1251393683295;
-        Thu, 27 Aug 2009 10:21:23 -0700 (PDT)
-Received: from localhost.localdomain (p5496E57B.dip.t-dialin.net [84.150.229.123])
-        by mx.google.com with ESMTPS id g9sm1537564gvc.13.2009.08.27.10.21.21
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 27 Aug 2009 10:21:22 -0700 (PDT)
-From:	Manuel Lauss <manuel.lauss@googlemail.com>
-To:	Linux-MIPS <linux-mips@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH v2] Alchemy: override loops_per_jiffy detection
-Date:	Thu, 27 Aug 2009 19:21:18 +0200
-Message-Id: <1251393678-28607-1-git-send-email-manuel.lauss@gmail.com>
-X-Mailer: git-send-email 1.6.4
-Return-Path: <manuel.lauss@googlemail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Aug 2009 22:47:34 +0200 (CEST)
+Received: from mailrelay004.isp.belgacom.be ([195.238.6.170]:54332 "EHLO
+	mailrelay004.isp.belgacom.be" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493289AbZH0Ur1 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 27 Aug 2009 22:47:27 +0200
+X-Belgacom-Dynamic: yes
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: ApoEALmMlkpR92Cn/2dsb2JhbADYcQmEEAU
+Received: from 167.96-247-81.adsl-dyn.isp.belgacom.be (HELO infomag) ([81.247.96.167])
+  by relay.skynet.be with ESMTP; 27 Aug 2009 22:47:20 +0200
+Received: from wim by infomag with local (Exim 4.69)
+	(envelope-from <wim@infomag.iguana.be>)
+	id 1MglsN-00021L-Vs; Thu, 27 Aug 2009 22:47:19 +0200
+Date:	Thu, 27 Aug 2009 22:47:19 +0200
+From:	Wim Van Sebroeck <wim@iguana.be>
+To:	Florian Fainelli <florian@openwrt.org>
+Cc:	ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/2] ar7_wdt: convert to become a platform driver
+Message-ID: <20090827204719.GM29382@infomag.iguana.be>
+References: <200907151210.20294.florian@openwrt.org> <200908111452.28418.florian@openwrt.org> <20090811130133.GH4302@infomag.iguana.be> <200908111517.09726.florian@openwrt.org>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="r7U+bLA8boMOj+mD"
+Content-Disposition: inline
+In-Reply-To: <200908111517.09726.florian@openwrt.org>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <wim@iguana.be>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23945
+X-archive-position: 23946
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: wim@iguana.be
 Precedence: bulk
 X-list: linux-mips
 
-loops_per_jiffy depends on coreclk speed;  preset it instead of
-letting the kernel waste precious microseconds trying to approximate it.
 
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
----
-V2: no need to exclude MACH_ALCHEMY from GENERIC_CALIBRATE_DELAY
-    setting preset_lpj early is enough.
+--r7U+bLA8boMOj+mD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-As always, run-tested on DB1200 and another Au1200 system.
+Hi Florian,
 
- arch/mips/alchemy/common/setup.c |    4 ++++
- 1 files changed, 4 insertions(+), 0 deletions(-)
+> > > > From: Florian Fainelli <florian@openwrt.org>
+> > > > Subject: [PATCH 2/2 v2] ar7_wdt: convert to become a platform driver
+> > > >
+> > > > This patch converts the ar7_wdt driver to become
+> > > > a platform driver. The AR7 SoC specific identification
+> > > > and base register calculation is performed by the board
+> > > > code, therefore we no longer need to have access to
+> > > > ar7_chip_id. We also remove the reboot notifier code to
+> > > > use the platform shutdown method as Wim suggested.
+> > > >
+> > > > Signed-off-by: Florian Fainelli <florian@openwrt.org>
+> > > > Signed-off-by: Wim Van Sebroeck <wim@iguana.be>
+> > >
+> > > Any news on this patch ?
+> >
+> > This one was ok for me. I think we agreed that Ralf would take it up in his
+> > tree. I can also take it up in my next tree still.
+> 
+> Oh, I did not understand that sorry, I thought Ralf would take the first one 
+> which is MIPS-specific.
 
-diff --git a/arch/mips/alchemy/common/setup.c b/arch/mips/alchemy/common/setup.c
-index 3f036b3..6184baa 100644
---- a/arch/mips/alchemy/common/setup.c
-+++ b/arch/mips/alchemy/common/setup.c
-@@ -27,6 +27,7 @@
+I added the second patch to my tree, but saw that the error handling on probe could be improved.
+Can you test attached patch?
+
+Thanks in advance,
+Wim.
+
+
+--r7U+bLA8boMOj+mD
+Content-Type: text/x-diff; charset=us-ascii
+Content-Disposition: attachment; filename="ar7_wdt-fix-probe-errors.diff"
+
+diff --git a/drivers/watchdog/ar7_wdt.c b/drivers/watchdog/ar7_wdt.c
+index 82855b0..2e94b71 100644
+--- a/drivers/watchdog/ar7_wdt.c
++++ b/drivers/watchdog/ar7_wdt.c
+@@ -295,7 +295,7 @@ static int __devinit ar7_wdt_probe(struct platform_device *pdev)
+ 	if (!ar7_wdt) {
+ 		printk(KERN_ERR DRVNAME ": could not ioremap registers\n");
+ 		rc = -ENXIO;
+-		goto out;
++		goto out_mem_region;
+ 	}
  
- #include <linux/init.h>
- #include <linux/ioport.h>
-+#include <linux/jiffies.h>
- #include <linux/module.h>
- #include <linux/pm.h>
+ 	ar7_wdt_disable_wdt();
+@@ -311,6 +311,7 @@ static int __devinit ar7_wdt_probe(struct platform_device *pdev)
  
-@@ -53,6 +54,9 @@ void __init plat_mem_setup(void)
- 	printk(KERN_INFO "(PRId %08x) @ %lu.%02lu MHz\n", read_c0_prid(),
- 	       est_freq / 1000000, ((est_freq % 1000000) * 100) / 1000000);
- 
-+	/* this is faster than wasting cycles trying to approximate it */
-+	preset_lpj = (est_freq >> 1) / HZ;
-+
- 	_machine_restart = au1000_restart;
- 	_machine_halt = au1000_halt;
- 	pm_power_off = au1000_power_off;
--- 
-1.6.4
+ out_alloc:
+ 	iounmap(ar7_wdt);
++out_mem_region:
+ 	release_mem_region(ar7_regs_wdt->start, resource_size(ar7_regs_wdt));
+ out:
+ 	return rc;
+
+--r7U+bLA8boMOj+mD--

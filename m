@@ -1,99 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 27 Aug 2009 22:47:34 +0200 (CEST)
-Received: from mailrelay004.isp.belgacom.be ([195.238.6.170]:54332 "EHLO
-	mailrelay004.isp.belgacom.be" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493289AbZH0Ur1 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 27 Aug 2009 22:47:27 +0200
-X-Belgacom-Dynamic: yes
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: ApoEALmMlkpR92Cn/2dsb2JhbADYcQmEEAU
-Received: from 167.96-247-81.adsl-dyn.isp.belgacom.be (HELO infomag) ([81.247.96.167])
-  by relay.skynet.be with ESMTP; 27 Aug 2009 22:47:20 +0200
-Received: from wim by infomag with local (Exim 4.69)
-	(envelope-from <wim@infomag.iguana.be>)
-	id 1MglsN-00021L-Vs; Thu, 27 Aug 2009 22:47:19 +0200
-Date:	Thu, 27 Aug 2009 22:47:19 +0200
-From:	Wim Van Sebroeck <wim@iguana.be>
-To:	Florian Fainelli <florian@openwrt.org>
-Cc:	ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/2] ar7_wdt: convert to become a platform driver
-Message-ID: <20090827204719.GM29382@infomag.iguana.be>
-References: <200907151210.20294.florian@openwrt.org> <200908111452.28418.florian@openwrt.org> <20090811130133.GH4302@infomag.iguana.be> <200908111517.09726.florian@openwrt.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Aug 2009 08:41:58 +0200 (CEST)
+Received: from mail-px0-f172.google.com ([209.85.216.172]:36654 "EHLO
+	mail-px0-f172.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492384AbZH1Glv (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 28 Aug 2009 08:41:51 +0200
+Received: by pxi2 with SMTP id 2so1676819pxi.0
+        for <linux-mips@linux-mips.org>; Thu, 27 Aug 2009 23:41:41 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:date:message-id:subject
+         :from:to:content-type;
+        bh=mrZAndV42GxvsASaBpCiRp75DrHOCIxYDKnBWTRTUKY=;
+        b=ImXWTXAwrV2C7Sz0lfOlJ1PopJuiL0x5ULCBwto1ruWcZMyUQGLe92AeNTUqQKfME0
+         yeCs1TBGtdPMVjkL44u2OYp6amtVLrwWikxPPEeE8kXSxe8keE4idicnjbkCBnSgnGjK
+         /3HfZghJv+ed2eKnYe0gbourYvBrXgsIh/2aI=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=axPLC1PtzQhf5JNHPWrhaVeQISiBElptwo8oiS1qqMXwFlay6a7NxZCMJB/kcoRtFw
+         4LrLp4FWbqATRgkpjHJyrWuudiH/2m5JdZ4pHVgsRET3l73ix7cxm1ExGdNhBxPWMRx5
+         OcP+I88EhB4OwwArd5HenQeq8JNEETLl+cZMQ=
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="r7U+bLA8boMOj+mD"
-Content-Disposition: inline
-In-Reply-To: <200908111517.09726.florian@openwrt.org>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <wim@iguana.be>
+Received: by 10.142.209.19 with SMTP id h19mr40444wfg.129.1251441701631; Thu, 
+	27 Aug 2009 23:41:41 -0700 (PDT)
+Date:	Fri, 28 Aug 2009 14:41:41 +0800
+Message-ID: <3a665c760908272341h1b3d21afmda7415282c40261b@mail.gmail.com>
+Subject: how to make /dev/random work?
+From:	loody <miloody@gmail.com>
+To:	Kernel Newbies <kernelnewbies@nl.linux.org>,
+	Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <miloody@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23946
+X-archive-position: 23947
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wim@iguana.be
+X-original-sender: miloody@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
+Dear all:
+I made linux running on Mips machine.
+Right now I found the /dev/random doesn't work properly, since I use
+"dd if=/dev/random of=/tmp/random.txt", it stops working.
+If I use "cat /dev/random", it will not pop out anything.
 
---r7U+bLA8boMOj+mD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-Hi Florian,
-
-> > > > From: Florian Fainelli <florian@openwrt.org>
-> > > > Subject: [PATCH 2/2 v2] ar7_wdt: convert to become a platform driver
-> > > >
-> > > > This patch converts the ar7_wdt driver to become
-> > > > a platform driver. The AR7 SoC specific identification
-> > > > and base register calculation is performed by the board
-> > > > code, therefore we no longer need to have access to
-> > > > ar7_chip_id. We also remove the reboot notifier code to
-> > > > use the platform shutdown method as Wim suggested.
-> > > >
-> > > > Signed-off-by: Florian Fainelli <florian@openwrt.org>
-> > > > Signed-off-by: Wim Van Sebroeck <wim@iguana.be>
-> > >
-> > > Any news on this patch ?
-> >
-> > This one was ok for me. I think we agreed that Ralf would take it up in his
-> > tree. I can also take it up in my next tree still.
-> 
-> Oh, I did not understand that sorry, I thought Ralf would take the first one 
-> which is MIPS-specific.
-
-I added the second patch to my tree, but saw that the error handling on probe could be improved.
-Can you test attached patch?
-
-Thanks in advance,
-Wim.
-
-
---r7U+bLA8boMOj+mD
-Content-Type: text/x-diff; charset=us-ascii
-Content-Disposition: attachment; filename="ar7_wdt-fix-probe-errors.diff"
-
-diff --git a/drivers/watchdog/ar7_wdt.c b/drivers/watchdog/ar7_wdt.c
-index 82855b0..2e94b71 100644
---- a/drivers/watchdog/ar7_wdt.c
-+++ b/drivers/watchdog/ar7_wdt.c
-@@ -295,7 +295,7 @@ static int __devinit ar7_wdt_probe(struct platform_device *pdev)
- 	if (!ar7_wdt) {
- 		printk(KERN_ERR DRVNAME ": could not ioremap registers\n");
- 		rc = -ENXIO;
--		goto out;
-+		goto out_mem_region;
- 	}
- 
- 	ar7_wdt_disable_wdt();
-@@ -311,6 +311,7 @@ static int __devinit ar7_wdt_probe(struct platform_device *pdev)
- 
- out_alloc:
- 	iounmap(ar7_wdt);
-+out_mem_region:
- 	release_mem_region(ar7_regs_wdt->start, resource_size(ar7_regs_wdt));
- out:
- 	return rc;
-
---r7U+bLA8boMOj+mD--
+Is there any setting I forget while make menuconfig or should i add
+another driver for /dev/random such that I can make /dev/random work?
+appreciate your help,
+miloody

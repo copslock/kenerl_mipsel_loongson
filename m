@@ -1,52 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Aug 2009 11:10:01 +0200 (CEST)
-Received: from ey-out-1920.google.com ([74.125.78.149]:17305 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 28 Aug 2009 11:12:15 +0200 (CEST)
+Received: from ey-out-1920.google.com ([74.125.78.145]:45579 "EHLO
 	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1492470AbZH1JJz convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 28 Aug 2009 11:09:55 +0200
-Received: by ey-out-1920.google.com with SMTP id 13so356562eye.52
-        for <linux-mips@linux-mips.org>; Fri, 28 Aug 2009 02:09:54 -0700 (PDT)
+	with ESMTP id S1492499AbZH1JMJ convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 28 Aug 2009 11:12:09 +0200
+Received: by ey-out-1920.google.com with SMTP id 13so356842eye.52
+        for <linux-mips@linux-mips.org>; Fri, 28 Aug 2009 02:12:08 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:sender:from:to:subject:date
          :user-agent:cc:references:in-reply-to:mime-version:content-type
          :content-transfer-encoding:content-disposition:message-id;
-        bh=KP4OEAgTQWvytMk40XIbQTV4VzrLCg+xhR3dTCrR+d8=;
-        b=iWs7Yu+h8OW0l0Klzbd/suWND315WmfknLUwiYsNtPjnqbCCU9OyjjM5sQc8x7MRH1
-         f2b/J/uOMgyO9BkK7KEcJVbX876SFFxtrlEq3iuWJCCvnzsi1YB+uD/gaPIl3A9xvWn+
-         FWEoAGxVODC7Kp+iASgz9ODk5KCwSO9b/SXq0=
+        bh=mde6ccVmM1eG7sKYtNL9zcgb/P6DStnRvyvSB2iJxMI=;
+        b=wzrWFmiRiW4VfFuJf3X9Q2xgnJTtT5VCDj8SHp9pq3AUAjwshpX9VNBq+yG6WJa5Oj
+         qglinSUSUTwsR7byNJXswaWDJ3D2pJLvrqGsfuqt1Fc9zp7cFHlh1tdFx67dIao0Imdr
+         SNRhY2i/QyCHjvRJEgeHQGMrrxhc0tsYUjdqI=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
          :mime-version:content-type:content-transfer-encoding
          :content-disposition:message-id;
-        b=t+LITZXEm59kY+5B+C494i4nVMpXeh0nZZ8QkIKl+5/q1u4FuPkSfipE9f6KBHdmrA
-         fjUrafpdsfjZFmsvg+ysiwZjONvzBs94SzSuc3lY9JQKpCL1SX/ZGjY3UFheUnPk1lzE
-         GgxXil80hchhIthjVEmePaet0H7YCGGWlc0NU=
-Received: by 10.211.200.7 with SMTP id c7mr10904621ebq.54.1251450594534;
-        Fri, 28 Aug 2009 02:09:54 -0700 (PDT)
+        b=Yejy7QKaqemxpTofXCtjZIhDJBSlC6RhBG3Gu8XN4ju071UimuHIvqeEUXxEJdCSRv
+         LwrmpEpMrkPYUQG72NgODrAp6ElUgxxuX01I7Rg2X5Nji4APf298FZLQDUMs6229Qo4r
+         gbgiHryt7YVzkMu93bNgFFvJn3TGT1xdKrbho=
+Received: by 10.210.206.12 with SMTP id d12mr947161ebg.32.1251450728702;
+        Fri, 28 Aug 2009 02:12:08 -0700 (PDT)
 Received: from florian.lab.openpattern.org (lab.openpattern.org [82.240.16.241])
-        by mx.google.com with ESMTPS id 10sm1373522eyd.37.2009.08.28.02.09.53
+        by mx.google.com with ESMTPS id 28sm1541755eye.20.2009.08.28.02.12.07
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 28 Aug 2009 02:09:53 -0700 (PDT)
+        Fri, 28 Aug 2009 02:12:08 -0700 (PDT)
 From:	Florian Fainelli <florian@openwrt.org>
-To:	"wilbur.chan" <wilbur512@gmail.com>
-Subject: Re: kexec on mips failed
-Date:	Fri, 28 Aug 2009 11:09:51 +0200
+To:	loody <miloody@gmail.com>
+Subject: Re: how to make /dev/random work?
+Date:	Fri, 28 Aug 2009 11:12:05 +0200
 User-Agent: KMail/1.9.9
-Cc:	nschichan@freebox.fr, linux-mips@linux-mips.org
-References: <e997b7420908160920y14d8ea95v5fb25eba67e7b6db@mail.gmail.com>
-In-Reply-To: <e997b7420908160920y14d8ea95v5fb25eba67e7b6db@mail.gmail.com>
+Cc:	Kernel Newbies <kernelnewbies@nl.linux.org>,
+	Linux MIPS Mailing List <linux-mips@linux-mips.org>
+References: <3a665c760908272341h1b3d21afmda7415282c40261b@mail.gmail.com>
+In-Reply-To: <3a665c760908272341h1b3d21afmda7415282c40261b@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
-  charset="utf-8"
+  charset="iso-8859-1"
 Content-Transfer-Encoding: 8BIT
 Content-Disposition: inline
-Message-Id: <200908281109.52499.florian@openwrt.org>
+Message-Id: <200908281112.06100.florian@openwrt.org>
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23953
+X-archive-position: 23954
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -56,62 +57,20 @@ X-list: linux-mips
 
 Hi,
 
-Le Sunday 16 August 2009 18:20:56 wilbur.chan, vous avez écrit :
-> Hi,Nicolas,
+Le Friday 28 August 2009 08:41:41 loody, vous avez �crit�:
+> Dear all:
+> I made linux running on Mips machine.
+> Right now I found the /dev/random doesn't work properly, since I use
+> "dd if=/dev/random of=/tmp/random.txt", it stops working.
+> If I use "cat /dev/random", it will not pop out anything.
 >
->
-> I've got some problem with kexec on mips32...
->
->
-> in your code for kexec on mips32, there is a relocate_new_kernel function .
->
->
-> In the end of this function , it jump to kexec_start_address by   'j  s1'
->
->
->
-> Because I  changed the kexec-tools code  ,in the hope that, it
-> simplely passed the new kernel segment  data  into the old kernel.(so
->
-> I didn't  pass  the command-line segment in, in my code, there is just
-> one segment , segment[0] = kernel_data).
->
->
-> So  I need to change register s1 to the new kernel entry address, and
-> jump to new kernel directly.
->
->
->
-> In my vmlinux,  the entry is 0x802b0000，so I let image->start =
-> 0x2b0000，and invoke relocate_new_kernel.
->
->
-> However, whether I changed kexec_start_address to 0x802b0000 or
-> 0x2b0000 , the  'j  s1'  seemed taking no effect?
+> Is there any setting I forget while make menuconfig or should i add
+> another driver for /dev/random such that I can make /dev/random work?
+> appreciate your help,
 
-Should not you add a nop right after the j s1 in order to fill in the branch 
-delay slot with an instruction which does nothing ?
-
->
->
-> (I wrote 88 to address0xa1230000  before 'j  s1' , it succedd .I also
-> wrote 78 to address 0xa1230000 in the beginning
->
-> of head.S of the new kernel , but failed. And I reset the board to
-> uboot mode, used 'md 0x802b0400' to display the new kernel
->
-> in ram, it is identical  to the objdump content of the vmlinux.  So I
-> guess, this problem lays in the failing of 'j  0x802b0000'
->
-> or 'j   0x2b0000'.    I don't know why 'j s1' failed , any suggestions
-> about this ?  Thank you very much.
->
-> regads,
->
-> Wilbur
-
-
-
+Could it be that your system does not generate enough entropy so you end up in 
+having nothing going out from /dev/random ? In case your system has very 
+little entropy, better use /dev/urandom.
 -- 
 Best regards, Florian Fainelli
 Email: florian@openwrt.org

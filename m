@@ -1,53 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Aug 2009 15:43:15 +0200 (CEST)
-Received: from mail-ew0-f225.google.com ([209.85.219.225]:40628 "EHLO
-	mail-ew0-f225.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492988AbZHaNnJ convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 31 Aug 2009 15:43:09 +0200
-Received: by ewy25 with SMTP id 25so3882985ewy.33
-        for <multiple recipients>; Mon, 31 Aug 2009 06:43:04 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 31 Aug 2009 20:27:54 +0200 (CEST)
+Received: from ey-out-1920.google.com ([74.125.78.149]:45996 "EHLO
+	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1493309AbZHaS1r (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 31 Aug 2009 20:27:47 +0200
+Received: by ey-out-1920.google.com with SMTP id 13so845013eye.52
+        for <multiple recipients>; Mon, 31 Aug 2009 11:27:45 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:to:subject:date
-         :user-agent:cc:references:in-reply-to:mime-version:content-type
+        h=domainkey-signature:received:received:sender:from:date:subject
+         :mime-version:x-uid:x-length:to:cc:content-type
          :content-transfer-encoding:content-disposition:message-id;
-        bh=E+j6hWZFobALOgswJJAoLWVqWyZfTa9MBGmmQ+8S+u0=;
-        b=VF4/WLWymE5gttr6MN7CBoh/15f0TkVF0uy5Or3SPTj+CEnZO7T9+UeDxV5kbegKc1
-         KAkhpVZus8/xJfpygFtXgbee7RtIDZiRAvSEb0IHUhDaE4Od7l8epb+SDfikjytf8X3f
-         2ymdtQ1eln/sX1I4icbs2sCdlYfxEvcS644Qc=
+        bh=uM6j4q1c8HKu6FD95twFax8wajIcG5CHBs1K+BFNVBw=;
+        b=DLogbVCkqQAcZDWHEI4ds8pxHawuY2HXosEo8YmSwe0s+1a7htrgKaefuLxGO8QEhe
+         s/JCdI1ZZUnA2aAzOSY9QCX0IUbO9nAvkZa8N7KGN4HM2DsDF6QJ3SDsh+UQVpGLENkm
+         j0e6yXMyPOrAS5ZQ7RWmG6bquBtNwOCjnGii0=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
-         :mime-version:content-type:content-transfer-encoding
-         :content-disposition:message-id;
-        b=EXeBCjvjfnDsLfljYIFR4V5JfBflEquvH6F0aNWYIPsoPuw8paDYZ57lkNuj5Xx9+R
-         TcKvXS+uVsYCUePYy2GR+esQh5XxPvGjXMOwH4vpuilNsdyTRdhU6fn4JRkB1+pt7KwC
-         TC48VEl5p7TWfuO7LBqCmr5I20fEr3ENxK4AQ=
-Received: by 10.211.195.14 with SMTP id x14mr1891086ebp.46.1251726184371;
-        Mon, 31 Aug 2009 06:43:04 -0700 (PDT)
-Received: from lenovo.localnet (lab.openpattern.org [82.240.16.241])
-        by mx.google.com with ESMTPS id 23sm308505eya.6.2009.08.31.06.43.01
+        h=sender:from:date:subject:mime-version:x-uid:x-length:to:cc
+         :content-type:content-transfer-encoding:content-disposition
+         :message-id;
+        b=gbqwQ5fO620LnmQSP131BT1KMiqQoWMgkSbLby1opBgE3m6CkVuLpArYGpLNsulFUx
+         BCLmGIrS1GBaFPfPPJ613d8DwuUSlspNgADoVbyBrBM7bwo2ez9E4J5vsfmfGcWZa/Je
+         CqNvdB24Pf6DDzWiIqiPemMeJHgZ7iX83SZzQ=
+Received: by 10.210.6.8 with SMTP id 8mr5829278ebf.47.1251743264888;
+        Mon, 31 Aug 2009 11:27:44 -0700 (PDT)
+Received: from lenovo.localnet (39.87.196-77.rev.gaoland.net [77.196.87.39])
+        by mx.google.com with ESMTPS id 5sm39539eyh.2.2009.08.31.11.27.44
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 31 Aug 2009 06:43:01 -0700 (PDT)
+        Mon, 31 Aug 2009 11:27:44 -0700 (PDT)
 From:	Florian Fainelli <florian@openwrt.org>
-To:	Wim Van Sebroeck <wim@iguana.be>
-Subject: Re: [PATCH 2/2] ar7_wdt: convert to become a platform driver
-Date:	Mon, 31 Aug 2009 15:42:58 +0200
-User-Agent: KMail/1.11.4 (Linux/2.6.29-2-686; KDE/4.2.4; i686; ; )
-Cc:	ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-References: <200907151210.20294.florian@openwrt.org> <200908111517.09726.florian@openwrt.org> <20090827204719.GM29382@infomag.iguana.be>
-In-Reply-To: <20090827204719.GM29382@infomag.iguana.be>
+Date:	Mon, 31 Aug 2009 20:27:39 +0200
+Subject: [PATCH 1/2] bcm63xx: fix soft-reset lockup on BCM6345
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="iso-8859-15"
-Content-Transfer-Encoding: 8BIT
+X-UID:	1318
+X-Length: 1573
+To:	ralf Baechle <ralf@linux-mips.org>,
+	Maxime Bizon <mbizon@freebox.fr>
+Cc:	linux-mips@linux-mips.org
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Content-Disposition: inline
-Message-Id: <200908311542.59375.florian@openwrt.org>
+Message-Id: <200908312027.41396.florian@openwrt.org>
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23968
+X-archive-position: 23969
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,38 +54,26 @@ X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-Le jeudi 27 août 2009 22:47:19, Wim Van Sebroeck a écrit :
-> Hi Florian,
->
-> > > > > From: Florian Fainelli <florian@openwrt.org>
-> > > > > Subject: [PATCH 2/2 v2] ar7_wdt: convert to become a platform
-> > > > > driver
-> > > > >
-> > > > > This patch converts the ar7_wdt driver to become
-> > > > > a platform driver. The AR7 SoC specific identification
-> > > > > and base register calculation is performed by the board
-> > > > > code, therefore we no longer need to have access to
-> > > > > ar7_chip_id. We also remove the reboot notifier code to
-> > > > > use the platform shutdown method as Wim suggested.
-> > > > >
-> > > > > Signed-off-by: Florian Fainelli <florian@openwrt.org>
-> > > > > Signed-off-by: Wim Van Sebroeck <wim@iguana.be>
-> > > >
-> > > > Any news on this patch ?
-> > >
-> > > This one was ok for me. I think we agreed that Ralf would take it up in
-> > > his tree. I can also take it up in my next tree still.
-> >
-> > Oh, I did not understand that sorry, I thought Ralf would take the first
-> > one which is MIPS-specific.
->
-> I added the second patch to my tree, but saw that the error handling on
-> probe could be improved. Can you test attached patch?
+This patch fixes a lockup on BCM6345 where setting the
+PLL soft reset bit will also lock the other blocks including UART.
+Instead of setting only the PLL soft reset bit in the
+software reset register, set this bit but do not touch
+the others.
 
-Works fine. Feel free to add my Tested-by: Florian Fainelli <florian@openwrt.org>. Thanks !
--- 
-Best regards, Florian Fainelli
-Email: florian@openwrt.org
-Web: http://openwrt.org
-IRC: [florian] on irc.freenode.net
--------------------------------
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
+---
+diff --git a/arch/mips/bcm63xx/setup.c b/arch/mips/bcm63xx/setup.c
+index b18a0ca..d005659 100644
+--- a/arch/mips/bcm63xx/setup.c
++++ b/arch/mips/bcm63xx/setup.c
+@@ -75,7 +75,9 @@ void bcm63xx_machine_reboot(void)
+ 		bcm6348_a1_reboot();
+ 
+ 	printk(KERN_INFO "triggering watchdog soft-reset...\n");
+-	bcm_perf_writel(SYS_PLL_SOFT_RESET, PERF_SYS_PLL_CTL_REG);
++	reg = bcm_perf_readl(PERF_SYS_PLL_CTL_REG);
++	reg |= SYS_PLL_SOFT_RESET;
++	bcm_perf_writel(reg, PERF_SYS_PLL_CTL_REG);
+ 	while (1)
+ 		;
+ }

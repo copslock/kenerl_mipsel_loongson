@@ -1,99 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Sep 2009 22:18:01 +0200 (CEST)
-Received: from mail-ew0-f225.google.com ([209.85.219.225]:54761 "EHLO
-	mail-ew0-f225.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1494355AbZIAURy (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 1 Sep 2009 22:17:54 +0200
-Received: by ewy25 with SMTP id 25so217506ewy.33
-        for <multiple recipients>; Tue, 01 Sep 2009 13:17:44 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from
-         :user-agent:mime-version:to:cc:subject:references:in-reply-to
-         :content-type:content-transfer-encoding;
-        bh=6gAZe4DCuHdeHhPTuE1u511ES02hQXs5ODPcmSauaFg=;
-        b=Uq56xg4N9y+6BTt5GMNhsIhH9khZ4bTw+iDh+sO+blfAQr3L5rS0KEWtaFAUv3a0Z2
-         +v210lMMo/jhxjQKIEVmm36lTKUYaLbrjTMW+pQFofHPoJcfuATGxDLKv5ryU9cC0waH
-         4jHRbvp4P/2YmlYCXfWXe0P35HSOEEsDxRGC8=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        b=cz7QEOa8E4GiMAAfWXetEO+KdAxeSIpLQSoSquM98TAJxuSmGvZ9zgWq6eCnj/miEB
-         fToB8rV4in5jBCumRGET7808+rmqJWvJHbVrOMC8YIGlGWQw4e1GHIIBEPej5p3IVYSg
-         czfh9ii2UcVTfXw7xu6RRWAs2R5yZJ1CD6dIw=
-Received: by 10.210.127.13 with SMTP id z13mr6694280ebc.85.1251836264908;
-        Tue, 01 Sep 2009 13:17:44 -0700 (PDT)
-Received: from zoinx.mars (d133062.upc-d.chello.nl [213.46.133.62])
-        by mx.google.com with ESMTPS id 28sm82019eye.0.2009.09.01.13.17.43
-        (version=SSLv3 cipher=RC4-MD5);
-        Tue, 01 Sep 2009 13:17:44 -0700 (PDT)
-Message-ID: <4A9D82C0.7070408@gmail.com>
-Date:	Tue, 01 Sep 2009 22:23:28 +0200
-From:	Roel Kluin <roel.kluin@gmail.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.1) Gecko/20090814 Fedora/3.0-2.6.b3.fc11 Thunderbird/3.0b3
-MIME-Version: 1.0
-To:	"Ithamar R. Adema" <ithamar.adema@team-embedded.nl>
-CC:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH] MSP71xx: request_irq() failure ignored in msp_pcibios_config_access()
-References: <4A9D68A7.9000902@gmail.com> <4A9D6E37.1030704@team-embedded.nl>
-In-Reply-To: <4A9D6E37.1030704@team-embedded.nl>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
-Return-Path: <roel.kluin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Sep 2009 00:48:18 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:13126 "EHLO
+	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492317AbZIBWsL (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 3 Sep 2009 00:48:11 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
+	id <B4a9ef60a0000>; Wed, 02 Sep 2009 18:47:40 -0400
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 2 Sep 2009 15:47:41 -0700
+Received: from dd1.caveonetworks.com ([64.169.86.201]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 2 Sep 2009 15:47:41 -0700
+Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
+	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n82MlaoI021293;
+	Wed, 2 Sep 2009 15:47:36 -0700
+Received: (from ddaney@localhost)
+	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n82MlZ0J021292;
+	Wed, 2 Sep 2009 15:47:35 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+To:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:	David Daney <ddaney@caviumnetworks.com>
+Subject: [PATCH] MIPS: Don't corrupt page tables on vmalloc fault.
+Date:	Wed,  2 Sep 2009 15:47:34 -0700
+Message-Id: <1251931654-21268-1-git-send-email-ddaney@caviumnetworks.com>
+X-Mailer: git-send-email 1.6.0.6
+X-OriginalArrivalTime: 02 Sep 2009 22:47:41.0243 (UTC) FILETIME=[60C238B0:01CA2C1F]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23974
+X-archive-position: 23975
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: roel.kluin@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Produce an error if request_irq() fails.
+The code after the vmalloc_fault: label in do_page_fault() modifies
+user page tables, this is not correct for 64-bit kernels.
 
-Signed-off-by: Roel Kluin <roel.kluin@gmail.com>
+For 64-bit kernels we should go straight to the no_context handler
+skipping vmalloc_fault.
+
+Signed-off-by: David Daney <ddaney@caviumnetworks.com>
 ---
+ arch/mips/mm/fault.c |   12 ++++++++++--
+ 1 files changed, 10 insertions(+), 2 deletions(-)
 
->> +            return -1;
-
-> I'd personally suggest to return the actual value returned by
-> request_irq, instead of returning -EPERM..... ;)
-> 
-> Ithamar.
-
-The comments at the header states that it returns -1 on failure,
-and so do the callers as well, but if preferred, below is as you
-suggest.
-
-Thanks,
-
-diff --git a/arch/mips/pci/ops-pmcmsp.c b/arch/mips/pci/ops-pmcmsp.c
-index 109c95c..32548b5 100644
---- a/arch/mips/pci/ops-pmcmsp.c
-+++ b/arch/mips/pci/ops-pmcmsp.c
-@@ -385,6 +385,7 @@ int msp_pcibios_config_access(unsigned char access_type,
- 	unsigned long intr;
- 	unsigned long value;
- 	static char pciirqflag;
-+	int ret;
- #if defined(CONFIG_PMC_MSP7120_GW) || defined(CONFIG_PMC_MSP7120_EVAL)
- 	unsigned int	vpe_status;
- #endif
-@@ -402,11 +403,13 @@ int msp_pcibios_config_access(unsigned char access_type,
- 	 * allocation assigns an interrupt handler to the interrupt.
+diff --git a/arch/mips/mm/fault.c b/arch/mips/mm/fault.c
+index f956ecb..e97a7a2 100644
+--- a/arch/mips/mm/fault.c
++++ b/arch/mips/mm/fault.c
+@@ -58,11 +58,17 @@ asmlinkage void do_page_fault(struct pt_regs *regs, unsigned long write,
+ 	 * only copy the information from the master page table,
+ 	 * nothing more.
  	 */
- 	if (pciirqflag == 0) {
--		request_irq(MSP_INT_PCI,/* Hardcoded internal MSP7120 wiring */
-+		ret = request_irq(MSP_INT_PCI,/* Hardcoded internal MSP7120 wiring */
- 				bpci_interrupt,
- 				IRQF_SHARED | IRQF_DISABLED,
- 				"PMC MSP PCI Host",
- 				preg);
-+		if (ret != 0)
-+			return ret;
- 		pciirqflag = ~0;
- 	}
++#ifdef CONFIG_64BIT
++# define VMALLOC_FAULT_TARGET no_context
++#else
++# define VMALLOC_FAULT_TARGET vmalloc_fault
++#endif
++
+ 	if (unlikely(address >= VMALLOC_START && address <= VMALLOC_END))
+-		goto vmalloc_fault;
++		goto VMALLOC_FAULT_TARGET;
+ #ifdef MODULE_START
+ 	if (unlikely(address >= MODULE_START && address < MODULE_END))
+-		goto vmalloc_fault;
++		goto VMALLOC_FAULT_TARGET;
+ #endif
  
+ 	/*
+@@ -203,6 +209,7 @@ do_sigbus:
+ 	force_sig_info(SIGBUS, &info, tsk);
+ 
+ 	return;
++#ifndef CONFIG_64BIT
+ vmalloc_fault:
+ 	{
+ 		/*
+@@ -241,4 +248,5 @@ vmalloc_fault:
+ 			goto no_context;
+ 		return;
+ 	}
++#endif
+ }
+-- 
+1.6.0.6

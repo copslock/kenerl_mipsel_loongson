@@ -1,81 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Sep 2009 05:49:14 +0200 (CEST)
-Received: from mail-px0-f180.google.com ([209.85.216.180]:41891 "EHLO
-	mail-px0-f180.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1491870AbZICDtG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 3 Sep 2009 05:49:06 +0200
-Received: by pxi10 with SMTP id 10so1259434pxi.24
-        for <linux-mips@linux-mips.org>; Wed, 02 Sep 2009 20:48:59 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:date:message-id:subject
-         :from:to:content-type;
-        bh=dDJFC9y6nTBskvboK2b2JNiC2P1h49rjgto6tohHado=;
-        b=A36yBJBshKqqQl+Q9zS9ZKzAmVFULn0nm6ewfYgZDiPvfV4DcTko0vmYqqTrxR5HSZ
-         7b1VlJ6n0LSa3L4lqnWGSzwRcilRjQ5nNrjD7e3jEZjcOyXcrUPYFau4JuerHP0smILj
-         u4gA7KUeMikO84bobqqXyKo+QCFdT4b6T8MII=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        b=cdSLC+MfnOb3pBBoDmDS3RTy3JKIhy+dQgz8D0Go4DT7w9Xt1VmT1hXSeMeGDqqo4J
-         ck9P/2nlqwPl4+Vorr9iTLoKbvzRhOTHYNNZDd/cCwyXyaNqA0CJeJqfRwSkuiERUPTZ
-         +EMMFATTeItTMa2kwy/XS4j35iIvEXYstV2h4=
-MIME-Version: 1.0
-Received: by 10.142.75.16 with SMTP id x16mr204125wfa.155.1251949739619; Wed, 
-	02 Sep 2009 20:48:59 -0700 (PDT)
-Date:	Thu, 3 Sep 2009 11:48:59 +0800
-Message-ID: <91b13c310909022048q467dff7cl90284b57132f4f14@mail.gmail.com>
-Subject: How to debug glibc-2.10.1 mips on linux multilib o32 ld or libc 
-	Segmentation fault?
-From:	Cheng Renquan <crquan@gmail.com>
-To:	libc-help@sourceware.org, linux-mips@linux-mips.org,
-	issues@eglibc.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <crquan@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Sep 2009 15:59:18 +0200 (CEST)
+Received: from mba.ocn.ne.jp ([122.28.14.163]:55869 "HELO smtp.mba.ocn.ne.jp"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with SMTP
+	id S1492715AbZICN7K (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 3 Sep 2009 15:59:10 +0200
+Received: from localhost.localdomain (p2046-ipad301funabasi.chiba.ocn.ne.jp [122.17.252.46])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id BA4AA6AE9; Thu,  3 Sep 2009 22:59:02 +0900 (JST)
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+To:	linux-mips@linux-mips.org
+Cc:	ralf@linux-mips.org, spi-devel-general@lists.sourceforge.net,
+	david-b@pacbell.net
+Subject: [PATCH 1/2] txx9: Fix spi-baseclk value
+Date:	Thu,  3 Sep 2009 22:59:00 +0900
+Message-Id: <1251986341-16938-1-git-send-email-anemo@mba.ocn.ne.jp>
+X-Mailer: git-send-email 1.5.6.5
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23976
+X-archive-position: 23977
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: crquan@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-Hello, all,
-  Recently I have cross compiled GCC-4.4.1 with eglibc-2.10.1,
-with a multilib configuration, o32/n32/n64, the result is that n32/n64
-can work well, while o32 libs always Segmentation fault,
+TXx9 SPI bit rate is calculated by:
+	fBR = fSPI / 2 / (n + 1)
+	(fSPI is SPI master clock freq, i.e. imbusclk freq.)
+So use imbus_clk / 2 as a spi-baseclk.
 
-I have read this but still have no good idea on how to debug,
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+---
+ arch/mips/txx9/generic/setup.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-http://sources.redhat.com/glibc/wiki/Debugging/Development_Debugging
-
-then I run it like this,
-
-$ LD_DEBUG=all eglibc-install-root-o32/lib/ld.so.1 --library-path
-$PWD/eglibc-install-root-o32/lib
-eglibc-install-root-o32/usr/bin/locale
-
-it ends with:
-
-     30257:	symbol=__stack_chk_guard;  lookup in
-file=eglibc-install-root-o32/usr/bin/locale [0]
-     30257:	symbol=__stack_chk_guard;  lookup in
-file=/mnt/nas/yutech/homes/user/eglibc-install-root-o32/lib/libc.so.6
-[0]
-     30257:	symbol=__stack_chk_guard;  lookup in
-file=eglibc-install-root-o32/lib/ld.so.1 [0]
-     30257:	binding file eglibc-install-root-o32/lib/ld.so.1 [0] to
-eglibc-install-root-o32/lib/ld.so.1 [0]: normal symbol
-`__stack_chk_guard' [GLIBC_2.4]
-     30257:	
-     30257:	calling init:
-/mnt/nas/yutech/homes/user/eglibc-install-root-o32/lib/libc.so.6
-     30257:	
-Segmentation fault
-
-So please give some inputs on how to resolve this? Thanks,
-
+diff --git a/arch/mips/txx9/generic/setup.c b/arch/mips/txx9/generic/setup.c
+index a205e2b..b2613c1 100644
+--- a/arch/mips/txx9/generic/setup.c
++++ b/arch/mips/txx9/generic/setup.c
+@@ -85,7 +85,7 @@ int txx9_ccfg_toeon __initdata = 1;
+ struct clk *clk_get(struct device *dev, const char *id)
+ {
+ 	if (!strcmp(id, "spi-baseclk"))
+-		return (struct clk *)((unsigned long)txx9_gbus_clock / 2 / 4);
++		return (struct clk *)((unsigned long)txx9_gbus_clock / 2 / 2);
+ 	if (!strcmp(id, "imbus_clk"))
+ 		return (struct clk *)((unsigned long)txx9_gbus_clock / 2);
+ 	return ERR_PTR(-ENOENT);
 -- 
-Cheng Renquan
+1.5.6.5

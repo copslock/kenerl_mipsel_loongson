@@ -1,88 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Sep 2009 00:48:18 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:13126 "EHLO
-	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492317AbZIBWsL (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 3 Sep 2009 00:48:11 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,2,2,3503)
-	id <B4a9ef60a0000>; Wed, 02 Sep 2009 18:47:40 -0400
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 2 Sep 2009 15:47:41 -0700
-Received: from dd1.caveonetworks.com ([64.169.86.201]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 2 Sep 2009 15:47:41 -0700
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n82MlaoI021293;
-	Wed, 2 Sep 2009 15:47:36 -0700
-Received: (from ddaney@localhost)
-	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n82MlZ0J021292;
-	Wed, 2 Sep 2009 15:47:35 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-To:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:	David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH] MIPS: Don't corrupt page tables on vmalloc fault.
-Date:	Wed,  2 Sep 2009 15:47:34 -0700
-Message-Id: <1251931654-21268-1-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.6.0.6
-X-OriginalArrivalTime: 02 Sep 2009 22:47:41.0243 (UTC) FILETIME=[60C238B0:01CA2C1F]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 03 Sep 2009 05:49:14 +0200 (CEST)
+Received: from mail-px0-f180.google.com ([209.85.216.180]:41891 "EHLO
+	mail-px0-f180.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1491870AbZICDtG (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 3 Sep 2009 05:49:06 +0200
+Received: by pxi10 with SMTP id 10so1259434pxi.24
+        for <linux-mips@linux-mips.org>; Wed, 02 Sep 2009 20:48:59 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:date:message-id:subject
+         :from:to:content-type;
+        bh=dDJFC9y6nTBskvboK2b2JNiC2P1h49rjgto6tohHado=;
+        b=A36yBJBshKqqQl+Q9zS9ZKzAmVFULn0nm6ewfYgZDiPvfV4DcTko0vmYqqTrxR5HSZ
+         7b1VlJ6n0LSa3L4lqnWGSzwRcilRjQ5nNrjD7e3jEZjcOyXcrUPYFau4JuerHP0smILj
+         u4gA7KUeMikO84bobqqXyKo+QCFdT4b6T8MII=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=cdSLC+MfnOb3pBBoDmDS3RTy3JKIhy+dQgz8D0Go4DT7w9Xt1VmT1hXSeMeGDqqo4J
+         ck9P/2nlqwPl4+Vorr9iTLoKbvzRhOTHYNNZDd/cCwyXyaNqA0CJeJqfRwSkuiERUPTZ
+         +EMMFATTeItTMa2kwy/XS4j35iIvEXYstV2h4=
+MIME-Version: 1.0
+Received: by 10.142.75.16 with SMTP id x16mr204125wfa.155.1251949739619; Wed, 
+	02 Sep 2009 20:48:59 -0700 (PDT)
+Date:	Thu, 3 Sep 2009 11:48:59 +0800
+Message-ID: <91b13c310909022048q467dff7cl90284b57132f4f14@mail.gmail.com>
+Subject: How to debug glibc-2.10.1 mips on linux multilib o32 ld or libc 
+	Segmentation fault?
+From:	Cheng Renquan <crquan@gmail.com>
+To:	libc-help@sourceware.org, linux-mips@linux-mips.org,
+	issues@eglibc.org
+Content-Type: text/plain; charset=UTF-8
+Return-Path: <crquan@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23975
+X-archive-position: 23976
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: crquan@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-The code after the vmalloc_fault: label in do_page_fault() modifies
-user page tables, this is not correct for 64-bit kernels.
+Hello, all,
+  Recently I have cross compiled GCC-4.4.1 with eglibc-2.10.1,
+with a multilib configuration, o32/n32/n64, the result is that n32/n64
+can work well, while o32 libs always Segmentation fault,
 
-For 64-bit kernels we should go straight to the no_context handler
-skipping vmalloc_fault.
+I have read this but still have no good idea on how to debug,
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
----
- arch/mips/mm/fault.c |   12 ++++++++++--
- 1 files changed, 10 insertions(+), 2 deletions(-)
+http://sources.redhat.com/glibc/wiki/Debugging/Development_Debugging
 
-diff --git a/arch/mips/mm/fault.c b/arch/mips/mm/fault.c
-index f956ecb..e97a7a2 100644
---- a/arch/mips/mm/fault.c
-+++ b/arch/mips/mm/fault.c
-@@ -58,11 +58,17 @@ asmlinkage void do_page_fault(struct pt_regs *regs, unsigned long write,
- 	 * only copy the information from the master page table,
- 	 * nothing more.
- 	 */
-+#ifdef CONFIG_64BIT
-+# define VMALLOC_FAULT_TARGET no_context
-+#else
-+# define VMALLOC_FAULT_TARGET vmalloc_fault
-+#endif
-+
- 	if (unlikely(address >= VMALLOC_START && address <= VMALLOC_END))
--		goto vmalloc_fault;
-+		goto VMALLOC_FAULT_TARGET;
- #ifdef MODULE_START
- 	if (unlikely(address >= MODULE_START && address < MODULE_END))
--		goto vmalloc_fault;
-+		goto VMALLOC_FAULT_TARGET;
- #endif
- 
- 	/*
-@@ -203,6 +209,7 @@ do_sigbus:
- 	force_sig_info(SIGBUS, &info, tsk);
- 
- 	return;
-+#ifndef CONFIG_64BIT
- vmalloc_fault:
- 	{
- 		/*
-@@ -241,4 +248,5 @@ vmalloc_fault:
- 			goto no_context;
- 		return;
- 	}
-+#endif
- }
+then I run it like this,
+
+$ LD_DEBUG=all eglibc-install-root-o32/lib/ld.so.1 --library-path
+$PWD/eglibc-install-root-o32/lib
+eglibc-install-root-o32/usr/bin/locale
+
+it ends with:
+
+     30257:	symbol=__stack_chk_guard;  lookup in
+file=eglibc-install-root-o32/usr/bin/locale [0]
+     30257:	symbol=__stack_chk_guard;  lookup in
+file=/mnt/nas/yutech/homes/user/eglibc-install-root-o32/lib/libc.so.6
+[0]
+     30257:	symbol=__stack_chk_guard;  lookup in
+file=eglibc-install-root-o32/lib/ld.so.1 [0]
+     30257:	binding file eglibc-install-root-o32/lib/ld.so.1 [0] to
+eglibc-install-root-o32/lib/ld.so.1 [0]: normal symbol
+`__stack_chk_guard' [GLIBC_2.4]
+     30257:	
+     30257:	calling init:
+/mnt/nas/yutech/homes/user/eglibc-install-root-o32/lib/libc.so.6
+     30257:	
+Segmentation fault
+
+So please give some inputs on how to resolve this? Thanks,
+
 -- 
-1.6.0.6
+Cheng Renquan

@@ -1,126 +1,190 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 05 Sep 2009 08:23:48 +0200 (CEST)
-Received: from mail-pz0-f175.google.com ([209.85.222.175]:58907 "EHLO
-	mail-pz0-f175.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1491990AbZIEGX3 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 5 Sep 2009 08:23:29 +0200
-Received: by pzk5 with SMTP id 5so1298489pzk.10
-        for <multiple recipients>; Fri, 04 Sep 2009 23:23:22 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=ZX8Rv22A/CSV0BPT4cs57LWDWRAdZmMNuoRjYsQVJ48=;
-        b=XkITSgdqO+NfP4JTQxz/Rm52izIJ7qj71qCXlMnNOQF5w8c2BbxyTvbnVbmm4O6se/
-         2ZGhXhuJJODFstbpjdSE7zxBiTGF7HzlMCYS1dooobKHq0vu2gJYYjD8tTlczXrvhx6D
-         A5C5dGmgf+69IkGA1E5bwt/iCEA8c5e0nVmt8=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=d4fpaoNtkwgBYlIbC2/CL+suRhwdB+k+3Z4pseLKDuBXKBIRzQUa3aAmoD0KF/ZnQY
-         wM/OLMkv8mrk3USBLEN8ddbHXkaiY7XXE1Xdc+YCjeWJ8bYfxvjxuPYq4S7PMhUMCd9o
-         8V3vdItfTrQvdXBJx7liND3SlsxSDGr81P/fM=
-Received: by 10.115.100.38 with SMTP id c38mr11289382wam.110.1252131800268;
-        Fri, 04 Sep 2009 23:23:20 -0700 (PDT)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id 22sm95112pxi.10.2009.09.04.23.23.13
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 04 Sep 2009 23:23:19 -0700 (PDT)
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-To:	linux-mips@linux-mips.org
-Cc:	ralf@linux-mips.org, Jason Wessel <jason.wessel@windriver.com>,
-	Zhang Le <r0bertz@gentoo.org>,
-	Arnaud Patard <apatard@mandriva.com>,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-	Wu Zhangjin <wuzj@lemote.com>
-Subject: [PATCH 3/3] [loongson] early_printk: add new implmentation
-Date:	Sat,  5 Sep 2009 14:23:05 +0800
-Message-Id: <1252131785-30112-1-git-send-email-wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.6.2.1
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 06 Sep 2009 22:56:33 +0200 (CEST)
+Received: from [65.98.92.6] ([65.98.92.6]:4024 "EHLO b32.net"
+	rhost-flags-FAIL-FAIL-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1492979AbZIEWLT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sun, 6 Sep 2009 00:11:19 +0200
+Received: (qmail 25897 invoked from network); 5 Sep 2009 22:11:13 -0000
+Received: from unknown (HELO two) (127.0.0.1)
+  by 127.0.0.1 with SMTP; 5 Sep 2009 22:11:13 -0000
+Received: by two (sSMTP sendmail emulation); Sat, 05 Sep 2009 15:11:13 -0700
+Message-Id: <197625223d8cb6ec3fc3e7da4501dd65@localhost>
+From:	Kevin Cernekee <cernekee@gmail.com>
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Date:	Sat, 5 Sep 2009 14:38:41 -0700
+Subject: [PATCH] MIPS: Machine check exception in kmap_coherent()
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23989
+X-archive-position: 23990
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Wu Zhangjin <wuzj@lemote.com>
+On an SMP MIPS32 2.6.30 system with cache aliases, I am seeing the
+following sequence of events:
 
-This patch is based on the implementation in the lm2e-fixes branch of
-Philippe's git://git.linux-cisco.org/linux-mips.git and the
-malta-specific early_printk implementation.
+1) copy_user_highpage() runs on CPU0, invoking kmap_coherent() to create
+a temporary mapping in the fixmap region
 
-Signed-off-by: Wu Zhangjin <wuzj@lemote.com>
+2) copy_page() starts on CPU0
+
+3) CPU1 sends CPU0 an IPI asking CPU0 to run
+local_r4k_flush_cache_page()
+
+4) CPU0 takes the interrupt, interrupting copy_page()
+
+5) local_r4k_flush_cache_page() on CPU0 calls kmap_coherent() again
+
+6) The second invocation of kmap_coherent() on CPU0 tries to use the
+same fixmap virtual address that was being used by copy_user_highpage()
+
+7) CPU0 throws a machine check exception for the TLB address conflict
+
+Here is my proposed fix:
+
+a) kmap_coherent() will maintain a flag for each CPU indicating whether
+there is an active mapping (kmap_coherent_inuse)
+
+b) kmap_coherent() will return a NULL address in the unlikely case that
+it was called while another mapping was already outstanding
+
+c) local_r4k_flush_cache_page() will check for a NULL return value from
+kmap_coherent(), and compensate by using indexed cacheops instead of hit
+cacheops
+
+Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
 ---
- arch/mips/lemote/lm2e/Makefile       |    5 ++++
- arch/mips/lemote/lm2e/early_printk.c |   41 ++++++++++++++++++++++++++++++++++
- 2 files changed, 46 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/lemote/lm2e/early_printk.c
+ arch/mips/mm/c-r4k.c |   25 +++++++++++++++++++------
+ arch/mips/mm/init.c  |   17 +++++++++++++++--
+ 2 files changed, 34 insertions(+), 8 deletions(-)
 
-diff --git a/arch/mips/lemote/lm2e/Makefile b/arch/mips/lemote/lm2e/Makefile
-index b0c0339..f191732 100644
---- a/arch/mips/lemote/lm2e/Makefile
-+++ b/arch/mips/lemote/lm2e/Makefile
-@@ -4,4 +4,9 @@
+diff --git a/arch/mips/mm/c-r4k.c b/arch/mips/mm/c-r4k.c
+index 6721ee2..572fe7e 100644
+--- a/arch/mips/mm/c-r4k.c
++++ b/arch/mips/mm/c-r4k.c
+@@ -459,7 +459,7 @@ static inline void local_r4k_flush_cache_page(void *args)
+ 	struct page *page = pfn_to_page(fcp_args->pfn);
+ 	int exec = vma->vm_flags & VM_EXEC;
+ 	struct mm_struct *mm = vma->vm_mm;
+-	int map_coherent = 0;
++	int map_coherent = 0, use_indexed = 0;
+ 	pgd_t *pgdp;
+ 	pud_t *pudp;
+ 	pmd_t *pmdp;
+@@ -499,13 +499,23 @@ static inline void local_r4k_flush_cache_page(void *args)
+ 			vaddr = kmap_coherent(page, addr);
+ 		else
+ 			vaddr = kmap_atomic(page, KM_USER0);
+-		addr = (unsigned long)vaddr;
++
++		if (unlikely(vaddr == NULL))
++			use_indexed = 1;
++		else
++			addr = (unsigned long)vaddr;
+ 	}
  
- obj-y += setup.o prom.o reset.o irq.o pci.o bonito-irq.o mem.o
+ 	if (cpu_has_dc_aliases || (exec && !cpu_has_ic_fills_f_dc)) {
+-		r4k_blast_dcache_page(addr);
+-		if (exec && !cpu_icache_snoops_remote_store)
+-			r4k_blast_scache_page(addr);
++		if (use_indexed) {
++			r4k_blast_dcache_page_indexed(addr);
++			if (exec && !cpu_icache_snoops_remote_store)
++				r4k_blast_scache_page_indexed(addr);
++		} else {
++			r4k_blast_dcache_page(addr);
++			if (exec && !cpu_icache_snoops_remote_store)
++				r4k_blast_scache_page(addr);
++		}
+ 	}
+ 	if (exec) {
+ 		if (vaddr && cpu_has_vtag_icache && mm == current->active_mm) {
+@@ -514,7 +524,10 @@ static inline void local_r4k_flush_cache_page(void *args)
+ 			if (cpu_context(cpu, mm) != 0)
+ 				drop_mmu_context(mm, cpu);
+ 		} else
+-			r4k_blast_icache_page(addr);
++			if (use_indexed)
++				r4k_blast_icache_page_indexed(addr);
++			else
++				r4k_blast_icache_page(addr);
+ 	}
  
-+#
-+# Early printk support
-+#
-+obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
+ 	if (vaddr) {
+diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+index 0e82050..87967cd 100644
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -31,6 +31,7 @@
+ #include <asm/asm-offsets.h>
+ #include <asm/bootinfo.h>
+ #include <asm/cachectl.h>
++#include <asm/cache.h>
+ #include <asm/cpu.h>
+ #include <asm/dma.h>
+ #include <asm/kmap_types.h>
+@@ -105,6 +106,8 @@ unsigned long setup_zero_pages(void)
+ 	return 1UL << order;
+ }
+ 
++static int kmap_coherent_inuse[NR_CPUS] ____cacheline_aligned_in_smp;
 +
- EXTRA_CFLAGS += -Werror
-diff --git a/arch/mips/lemote/lm2e/early_printk.c b/arch/mips/lemote/lm2e/early_printk.c
-new file mode 100644
-index 0000000..0644506
---- /dev/null
-+++ b/arch/mips/lemote/lm2e/early_printk.c
-@@ -0,0 +1,41 @@
-+/*  early printk support
-+ *
-+ *  Copyright (c) 2009 Philippe Vachon <philippe@cowpig.ca>
-+ *  Copyright (c) 2009 Lemote Inc. & Insititute of Computing Technology
-+ *  Author: Wu Zhangjin, wuzj@lemote.com
-+ *
-+ *  This program is free software; you can redistribute  it and/or modify it
-+ *  under  the terms of  the GNU General  Public License as published by the
-+ *  Free Software Foundation;  either version 2 of the  License, or (at your
-+ *  option) any later version.
-+ */
-+#include <linux/io.h>
-+#include <linux/init.h>
-+#include <linux/serial_reg.h>
+ #ifdef CONFIG_MIPS_MT_SMTC
+ static pte_t *kmap_coherent_pte;
+ static void __init kmap_coherent_init(void)
+@@ -125,14 +128,15 @@ void *kmap_coherent(struct page *page, unsigned long addr)
+ 	unsigned long vaddr, flags, entrylo;
+ 	unsigned long old_ctx;
+ 	pte_t pte;
+-	int tlbidx;
++	int tlbidx, cpu;
+ 
+ 	BUG_ON(Page_dcache_dirty(page));
+ 
+ 	inc_preempt_count();
++	cpu = smp_processor_id();
+ 	idx = (addr >> PAGE_SHIFT) & (FIX_N_COLOURS - 1);
+ #ifdef CONFIG_MIPS_MT_SMTC
+-	idx += FIX_N_COLOURS * smp_processor_id();
++	idx += FIX_N_COLOURS * cpu;
+ #endif
+ 	vaddr = __fix_to_virt(FIX_CMAP_END - idx);
+ 	pte = mk_pte(page, PAGE_KERNEL);
+@@ -143,6 +147,13 @@ void *kmap_coherent(struct page *page, unsigned long addr)
+ #endif
+ 
+ 	ENTER_CRITICAL(flags);
++	if (unlikely(kmap_coherent_inuse[cpu] != 0)) {
++		vaddr = 0;
++		dec_preempt_count();
++		goto out;
++	}
++	kmap_coherent_inuse[cpu] = 1;
 +
-+#include <asm/mips-boards/bonito64.h>
-+
-+#define UART_BASE (BONITO_PCIIO_BASE + 0x3f8)
-+
-+#define PORT(base, offset) (u8 *)(base + offset)
-+
-+static inline unsigned int serial_in(unsigned char *base, int offset)
-+{
-+	return readb(PORT(base, offset));
-+}
-+
-+static inline void serial_out(unsigned char *base, int offset, int value)
-+{
-+	writeb(value, PORT(base, offset));
-+}
-+
-+void prom_putchar(char c)
-+{
-+	unsigned char *uart_base =
-+		(unsigned char *) ioremap_nocache(UART_BASE, 8);
-+
-+	while ((serial_in(uart_base, UART_LSR) & UART_LSR_THRE) == 0)
-+		;
-+
-+	serial_out(uart_base, UART_TX, c);
-+}
+ 	old_ctx = read_c0_entryhi();
+ 	write_c0_entryhi(vaddr & (PAGE_MASK << 1));
+ 	write_c0_entrylo0(entrylo);
+@@ -168,6 +179,7 @@ void *kmap_coherent(struct page *page, unsigned long addr)
+ #endif
+ 	tlbw_use_hazard();
+ 	write_c0_entryhi(old_ctx);
++out:
+ 	EXIT_CRITICAL(flags);
+ 
+ 	return (void*) vaddr;
+@@ -195,6 +207,7 @@ void kunmap_coherent(void)
+ 	write_c0_entryhi(old_ctx);
+ 	EXIT_CRITICAL(flags);
+ #endif
++	kmap_coherent_inuse[smp_processor_id()] = 0;
+ 	dec_preempt_count();
+ 	preempt_check_resched();
+ }
 -- 
-1.6.2.1
+1.6.3.1

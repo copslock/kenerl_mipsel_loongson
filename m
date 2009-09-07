@@ -1,29 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Sep 2009 20:24:46 +0200 (CEST)
-Received: from [65.98.92.6] ([65.98.92.6]:4175 "EHLO b32.net"
-	rhost-flags-FAIL-FAIL-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1493455AbZIGSYi (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 7 Sep 2009 20:24:38 +0200
-Received: (qmail 30898 invoked from network); 7 Sep 2009 18:24:35 -0000
-Received: from unknown (HELO two) (127.0.0.1)
-  by 127.0.0.1 with SMTP; 7 Sep 2009 18:24:35 -0000
-Received: by two (sSMTP sendmail emulation); Mon, 07 Sep 2009 11:24:35 -0700
-From:	Kevin Cernekee <cernekee@gmail.com>
-To:	ralf@linux-mips.org
-Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Date:	Mon, 7 Sep 2009 11:11:31 -0700
-Subject: [PATCHv2] MIPS: Machine check exception in kmap_coherent()
-Message-Id: <2c228c5e48509b7c8296a6c50af3ad73@localhost>
-In-Reply-To: <20090907102613.GA25295@linux-mips.org>
-References: <20090907102613.GA25295@linux-mips.org>
-User-Agent: vim 7.1
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Sep 2009 20:28:24 +0200 (CEST)
+Received: from mail-yx0-f176.google.com ([209.85.210.176]:58680 "EHLO
+	mail-yx0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493451AbZIGS2Q convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 7 Sep 2009 20:28:16 +0200
+Received: by yxe6 with SMTP id 6so3284579yxe.22
+        for <multiple recipients>; Mon, 07 Sep 2009 11:28:09 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=sozatdNewOWwECRibP9qaU47jH3DVLRnapILv5bPyv4=;
+        b=JMMUxiduwuyIP/xXZWqjj36JXj5j9u4XcFTFxRlFeiqVibjDmOzL+j7vYl8t6Kxtvk
+         KQwvmiBYtoFLmWit32XBQemKd+Te78IIBxCnQaStZlJscZspk1vsKdoHffhptwV02RD3
+         zpAQBLrJSTAuif6z70p7A8idPcI/40NmRA++0=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=vjXXJMpY7DYcGb4oowmgSY6+bKBfMm2b8oXi8w/QWS+EK4a/8Re99/C5Xy/JC0214r
+         q1P3jjxPCvNn16PjDFROluRT0ETnqthRKEDsm0nObSDRhz0RiFZ6xT//lGyPxZr9fXMb
+         kO0W7kX+KZXCACC5dMq1zg6mi0iaM3ZCYTqo0=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Received: by 10.150.1.12 with SMTP id 12mr23205352yba.148.1252348088601; Mon, 
+	07 Sep 2009 11:28:08 -0700 (PDT)
+In-Reply-To: <20090907102613.GA25295@linux-mips.org>
+References: <197625223d8cb6ec3fc3e7da4501dd65@localhost>
+	 <20090907102613.GA25295@linux-mips.org>
+Date:	Mon, 7 Sep 2009 11:28:05 -0700
+Message-ID: <347733d50909071128v63b2d8a1hd6a87a361c14017e@mail.gmail.com>
+Subject: Re: [PATCH] MIPS: Machine check exception in kmap_coherent()
+From:	Kevin Cernekee <cernekee@gmail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23992
+X-archive-position: 23993
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -31,56 +48,25 @@ X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Create an extra set of fixmap entries for use in interrupt handlers.
-This prevents fixmap VA conflicts between copy_user_highpage() running
-in user context, and local_r4k_flush_cache_page() invoked from an SMP
-IPI.
+On Mon, Sep 7, 2009 at 3:26 AM, Ralf Baechle<ralf@linux-mips.org> wrote:
+> Too complicated.  The fault is happening because the non-SMTC code is trying
+> to be terribly clever and pre-loading the TLB with a new wired entry.  On
+> SMTC where multiple processors are sharing a single TLB are more careful
+> approach is needed so the code does a TLB probe and carefully and re-uses
+> an existing entry, if any.  Which happens to be just what we need.
+>
+> So how about below - only compile tested - patch?
 
-Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
----
- arch/mips/include/asm/fixmap.h |    4 ++--
- arch/mips/mm/init.c            |    6 +++++-
- 2 files changed, 7 insertions(+), 3 deletions(-)
+That is an interesting idea.  However, I am not sure we want the IPI
+ISR to overwrite copy_user_highpage()'s TLB entry.  That means that
+when the interrupt returns, our coherent mapping will likely point to
+a different page.  It will avoid the machine check exception, but it
+will potentially cause silent, intermittent data corruption instead.
 
-diff --git a/arch/mips/include/asm/fixmap.h b/arch/mips/include/asm/fixmap.h
-index 0f5caa1..dd924b9 100644
---- a/arch/mips/include/asm/fixmap.h
-+++ b/arch/mips/include/asm/fixmap.h
-@@ -48,9 +48,9 @@ enum fixed_addresses {
- #define FIX_N_COLOURS 8
- 	FIX_CMAP_BEGIN,
- #ifdef CONFIG_MIPS_MT_SMTC
--	FIX_CMAP_END = FIX_CMAP_BEGIN + (FIX_N_COLOURS * NR_CPUS),
-+	FIX_CMAP_END = FIX_CMAP_BEGIN + (FIX_N_COLOURS * NR_CPUS * 2),
- #else
--	FIX_CMAP_END = FIX_CMAP_BEGIN + FIX_N_COLOURS,
-+	FIX_CMAP_END = FIX_CMAP_BEGIN + (FIX_N_COLOURS * 2),
- #endif
- #ifdef CONFIG_HIGHMEM
- 	/* reserved pte's for temporary kernel mappings */
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 0e82050..43ebe65 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -27,6 +27,7 @@
- #include <linux/swap.h>
- #include <linux/proc_fs.h>
- #include <linux/pfn.h>
-+#include <linux/hardirq.h>
- 
- #include <asm/asm-offsets.h>
- #include <asm/bootinfo.h>
-@@ -132,7 +133,10 @@ void *kmap_coherent(struct page *page, unsigned long addr)
- 	inc_preempt_count();
- 	idx = (addr >> PAGE_SHIFT) & (FIX_N_COLOURS - 1);
- #ifdef CONFIG_MIPS_MT_SMTC
--	idx += FIX_N_COLOURS * smp_processor_id();
-+	idx += FIX_N_COLOURS * smp_processor_id() +
-+		(in_interrupt() ? (FIX_N_COLOURS * NR_CPUS) : 0);
-+#else
-+	idx += in_interrupt() ? FIX_N_COLOURS : 0;
- #endif
- 	vaddr = __fix_to_virt(FIX_CMAP_END - idx);
- 	pte = mk_pte(page, PAGE_KERNEL);
--- 
-1.6.3.1
+Taking another cue from the SMTC implementation, though - my v2 patch
+adds an extra set of fixmap addresses for the in_interrupt() case,
+avoiding the VA conflict entirely.  What do you think?
+
+I tested this scheme on non-SMTC.  I suspect that the same change is
+required for MT + MP cores like the 1004K, but probably not MT only
+cores like 34K which don't use cacheop IPIs.

@@ -1,181 +1,86 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Sep 2009 12:25:26 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:59865 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
-	id S1492648AbZIGKZW (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 7 Sep 2009 12:25:22 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n87AQERK005136;
-	Mon, 7 Sep 2009 12:26:15 +0200
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n87AQDBV005134;
-	Mon, 7 Sep 2009 12:26:13 +0200
-Date:	Mon, 7 Sep 2009 12:26:13 +0200
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Kevin Cernekee <cernekee@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 07 Sep 2009 20:24:46 +0200 (CEST)
+Received: from [65.98.92.6] ([65.98.92.6]:4175 "EHLO b32.net"
+	rhost-flags-FAIL-FAIL-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1493455AbZIGSYi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 7 Sep 2009 20:24:38 +0200
+Received: (qmail 30898 invoked from network); 7 Sep 2009 18:24:35 -0000
+Received: from unknown (HELO two) (127.0.0.1)
+  by 127.0.0.1 with SMTP; 7 Sep 2009 18:24:35 -0000
+Received: by two (sSMTP sendmail emulation); Mon, 07 Sep 2009 11:24:35 -0700
+From:	Kevin Cernekee <cernekee@gmail.com>
+To:	ralf@linux-mips.org
 Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] MIPS: Machine check exception in kmap_coherent()
-Message-ID: <20090907102613.GA25295@linux-mips.org>
-References: <197625223d8cb6ec3fc3e7da4501dd65@localhost>
+Date:	Mon, 7 Sep 2009 11:11:31 -0700
+Subject: [PATCHv2] MIPS: Machine check exception in kmap_coherent()
+Message-Id: <2c228c5e48509b7c8296a6c50af3ad73@localhost>
+In-Reply-To: <20090907102613.GA25295@linux-mips.org>
+References: <20090907102613.GA25295@linux-mips.org>
+User-Agent: vim 7.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <197625223d8cb6ec3fc3e7da4501dd65@localhost>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <ralf@linux-mips.org>
+Return-Path: <cernekee@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 23991
+X-archive-position: 23992
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: cernekee@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Sep 05, 2009 at 02:38:41PM -0700, Kevin Cernekee wrote:
+Create an extra set of fixmap entries for use in interrupt handlers.
+This prevents fixmap VA conflicts between copy_user_highpage() running
+in user context, and local_r4k_flush_cache_page() invoked from an SMP
+IPI.
 
-> On an SMP MIPS32 2.6.30 system with cache aliases, I am seeing the
-> following sequence of events:
-> 
-> 1) copy_user_highpage() runs on CPU0, invoking kmap_coherent() to create
-> a temporary mapping in the fixmap region
-> 
-> 2) copy_page() starts on CPU0
-> 
-> 3) CPU1 sends CPU0 an IPI asking CPU0 to run
-> local_r4k_flush_cache_page()
-> 
-> 4) CPU0 takes the interrupt, interrupting copy_page()
-> 
-> 5) local_r4k_flush_cache_page() on CPU0 calls kmap_coherent() again
-> 
-> 6) The second invocation of kmap_coherent() on CPU0 tries to use the
-> same fixmap virtual address that was being used by copy_user_highpage()
-> 
-> 7) CPU0 throws a machine check exception for the TLB address conflict
+Signed-off-by: Kevin Cernekee <cernekee@gmail.com>
+---
+ arch/mips/include/asm/fixmap.h |    4 ++--
+ arch/mips/mm/init.c            |    6 +++++-
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-Nice analysis!
-
-> Here is my proposed fix:
-> 
-> a) kmap_coherent() will maintain a flag for each CPU indicating whether
-> there is an active mapping (kmap_coherent_inuse)
-> 
-> b) kmap_coherent() will return a NULL address in the unlikely case that
-> it was called while another mapping was already outstanding
-> 
-> c) local_r4k_flush_cache_page() will check for a NULL return value from
-> kmap_coherent(), and compensate by using indexed cacheops instead of hit
-> cacheops
-
-Too complicated.  The fault is happening because the non-SMTC code is trying
-to be terribly clever and pre-loading the TLB with a new wired entry.  On
-SMTC where multiple processors are sharing a single TLB are more careful
-approach is needed so the code does a TLB probe and carefully and re-uses
-an existing entry, if any.  Which happens to be just what we need.
-
-So how about below - only compile tested - patch?
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
- arch/mips/mm/init.c |   35 +----------------------------------
- 1 files changed, 1 insertions(+), 34 deletions(-)
-
+diff --git a/arch/mips/include/asm/fixmap.h b/arch/mips/include/asm/fixmap.h
+index 0f5caa1..dd924b9 100644
+--- a/arch/mips/include/asm/fixmap.h
++++ b/arch/mips/include/asm/fixmap.h
+@@ -48,9 +48,9 @@ enum fixed_addresses {
+ #define FIX_N_COLOURS 8
+ 	FIX_CMAP_BEGIN,
+ #ifdef CONFIG_MIPS_MT_SMTC
+-	FIX_CMAP_END = FIX_CMAP_BEGIN + (FIX_N_COLOURS * NR_CPUS),
++	FIX_CMAP_END = FIX_CMAP_BEGIN + (FIX_N_COLOURS * NR_CPUS * 2),
+ #else
+-	FIX_CMAP_END = FIX_CMAP_BEGIN + FIX_N_COLOURS,
++	FIX_CMAP_END = FIX_CMAP_BEGIN + (FIX_N_COLOURS * 2),
+ #endif
+ #ifdef CONFIG_HIGHMEM
+ 	/* reserved pte's for temporary kernel mappings */
 diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 0e82050..ab11582 100644
+index 0e82050..43ebe65 100644
 --- a/arch/mips/mm/init.c
 +++ b/arch/mips/mm/init.c
-@@ -105,8 +105,8 @@ unsigned long setup_zero_pages(void)
- 	return 1UL << order;
- }
+@@ -27,6 +27,7 @@
+ #include <linux/swap.h>
+ #include <linux/proc_fs.h>
+ #include <linux/pfn.h>
++#include <linux/hardirq.h>
  
--#ifdef CONFIG_MIPS_MT_SMTC
- static pte_t *kmap_coherent_pte;
-+
- static void __init kmap_coherent_init(void)
- {
- 	unsigned long vaddr;
-@@ -115,9 +115,6 @@ static void __init kmap_coherent_init(void)
- 	vaddr = __fix_to_virt(FIX_CMAP_BEGIN);
- 	kmap_coherent_pte = kmap_get_fixmap_pte(vaddr);
- }
--#else
--static inline void kmap_coherent_init(void) {}
--#endif
- 
- void *kmap_coherent(struct page *page, unsigned long addr)
- {
-@@ -131,9 +128,7 @@ void *kmap_coherent(struct page *page, unsigned long addr)
- 
+ #include <asm/asm-offsets.h>
+ #include <asm/bootinfo.h>
+@@ -132,7 +133,10 @@ void *kmap_coherent(struct page *page, unsigned long addr)
  	inc_preempt_count();
  	idx = (addr >> PAGE_SHIFT) & (FIX_N_COLOURS - 1);
--#ifdef CONFIG_MIPS_MT_SMTC
- 	idx += FIX_N_COLOURS * smp_processor_id();
--#endif
+ #ifdef CONFIG_MIPS_MT_SMTC
+-	idx += FIX_N_COLOURS * smp_processor_id();
++	idx += FIX_N_COLOURS * smp_processor_id() +
++		(in_interrupt() ? (FIX_N_COLOURS * NR_CPUS) : 0);
++#else
++	idx += in_interrupt() ? FIX_N_COLOURS : 0;
+ #endif
  	vaddr = __fix_to_virt(FIX_CMAP_END - idx);
  	pte = mk_pte(page, PAGE_KERNEL);
- #if defined(CONFIG_64BIT_PHYS_ADDR) && defined(CONFIG_CPU_MIPS32)
-@@ -147,7 +142,6 @@ void *kmap_coherent(struct page *page, unsigned long addr)
- 	write_c0_entryhi(vaddr & (PAGE_MASK << 1));
- 	write_c0_entrylo0(entrylo);
- 	write_c0_entrylo1(entrylo);
--#ifdef CONFIG_MIPS_MT_SMTC
- 	set_pte(kmap_coherent_pte - (FIX_CMAP_END - idx), pte);
- 	/* preload TLB instead of local_flush_tlb_one() */
- 	mtc0_tlbw_hazard();
-@@ -159,13 +153,6 @@ void *kmap_coherent(struct page *page, unsigned long addr)
- 		tlb_write_random();
- 	else
- 		tlb_write_indexed();
--#else
--	tlbidx = read_c0_wired();
--	write_c0_wired(tlbidx + 1);
--	write_c0_index(tlbidx);
--	mtc0_tlbw_hazard();
--	tlb_write_indexed();
--#endif
- 	tlbw_use_hazard();
- 	write_c0_entryhi(old_ctx);
- 	EXIT_CRITICAL(flags);
-@@ -177,24 +164,6 @@ void *kmap_coherent(struct page *page, unsigned long addr)
- 
- void kunmap_coherent(void)
- {
--#ifndef CONFIG_MIPS_MT_SMTC
--	unsigned int wired;
--	unsigned long flags, old_ctx;
--
--	ENTER_CRITICAL(flags);
--	old_ctx = read_c0_entryhi();
--	wired = read_c0_wired() - 1;
--	write_c0_wired(wired);
--	write_c0_index(wired);
--	write_c0_entryhi(UNIQUE_ENTRYHI(wired));
--	write_c0_entrylo0(0);
--	write_c0_entrylo1(0);
--	mtc0_tlbw_hazard();
--	tlb_write_indexed();
--	tlbw_use_hazard();
--	write_c0_entryhi(old_ctx);
--	EXIT_CRITICAL(flags);
--#endif
- 	dec_preempt_count();
- 	preempt_check_resched();
- }
-@@ -260,7 +229,6 @@ void copy_from_user_page(struct vm_area_struct *vma,
- void __init fixrange_init(unsigned long start, unsigned long end,
- 	pgd_t *pgd_base)
- {
--#if defined(CONFIG_HIGHMEM) || defined(CONFIG_MIPS_MT_SMTC)
- 	pgd_t *pgd;
- 	pud_t *pud;
- 	pmd_t *pmd;
-@@ -290,7 +258,6 @@ void __init fixrange_init(unsigned long start, unsigned long end,
- 		}
- 		j = 0;
- 	}
--#endif
- }
- 
- #ifndef CONFIG_NEED_MULTIPLE_NODES
+-- 
+1.6.3.1

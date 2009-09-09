@@ -1,389 +1,194 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 09 Sep 2009 23:25:36 +0200 (CEST)
-Received: from metis.ext.pengutronix.de ([92.198.50.35]:41307 "EHLO
-	metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493472AbZIIVYO (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 9 Sep 2009 23:24:14 +0200
-Received: from themisto.ext.pengutronix.de ([92.198.50.58] helo=pengutronix.de)
-	by metis.ext.pengutronix.de with esmtp (Exim 4.63)
-	(envelope-from <w.sang@pengutronix.de>)
-	id 1MlUdz-00009p-RC; Wed, 09 Sep 2009 23:24:03 +0200
-From:	Wolfram Sang <w.sang@pengutronix.de>
-To:	linux-i2c@vger.kernel.org
-Cc:	linuxppc-dev@ozlabs.org, linux-arm-kernel@lists.infradead.org,
-	linux-mips@linux-mips.org, uclinux-dist-devel@blackfin.uclinux.org,
-	Wolfram Sang <w.sang@pengutronix.de>,
-	Aurelien Jarno <aurelien@aurel32.net>,
-	Jean Delvare <khali@linux-fr.org>
-Date:	Wed,  9 Sep 2009 23:22:51 +0200
-Message-Id: <1252531371-14866-5-git-send-email-w.sang@pengutronix.de>
-X-Mailer: git-send-email 1.6.3.3
-In-Reply-To: <1252531371-14866-1-git-send-email-w.sang@pengutronix.de>
-References: <1252531371-14866-1-git-send-email-w.sang@pengutronix.de>
-X-SA-Exim-Connect-IP: 92.198.50.58
-X-SA-Exim-Mail-From: w.sang@pengutronix.de
-Subject: [PATCH 4/4] i2c/chips: Remove deprecated pcf8574-driver
-X-SA-Exim-Version: 4.2.1 (built Tue, 09 Jan 2007 17:23:22 +0000)
-X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-Return-Path: <w.sang@pengutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Sep 2009 00:37:03 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:3016 "EHLO smtp3"
+	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S1493122AbZIIWg4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 10 Sep 2009 00:36:56 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by smtp3 with MailMarshal (v6,5,4,7535)
+	id <B4aa82df70000>; Wed, 09 Sep 2009 15:36:39 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 9 Sep 2009 15:36:35 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 9 Sep 2009 15:36:35 -0700
+Message-ID: <4AA82DF3.5070805@caviumnetworks.com>
+Date:	Wed, 09 Sep 2009 15:36:35 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+MIME-Version: 1.0
+To:	Wu Fei <at.wufei@gmail.com>, Ralf Baechle <ralf@linux-mips.org>
+CC:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] Shrink the size of tlb handler
+References: <20090903142753.GA6482@desktop> <20090903142953.GB6482@desktop>
+In-Reply-To: <20090903142953.GB6482@desktop>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 09 Sep 2009 22:36:35.0616 (UTC) FILETIME=[FCE7DA00:01CA319D]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24001
+X-archive-position: 24002
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: w.sang@pengutronix.de
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-The pcf8574-driver in drivers/i2c/chips which just exports its register to
-sysfs is superseeded by drivers/gpio/pcf857x.c which properly uses the gpiolib.
-As this driver has been deprecated for more than a year, finally remove it.
+Wu Fei wrote:
+> By combining swapper_pg_dir and module_pg_dir, several if conditions
+> can be eliminated from the tlb exception handler. The reason they
+> can be combined is that, the effective virtual address of vmalloc
+> returned is at the bottom, and of module_alloc returned is at the
+> top. It also fixes the bug in vmalloc(), which happens when its
+> return address is not covered by the first pgd.
+> 
+> Signed-off-by: Wu Fei <at.wufei@gmail.com>
 
-Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
-Cc: Aurelien Jarno <aurelien@aurel32.net>
-Cc: Jean Delvare <khali@linux-fr.org>
----
- Documentation/i2c/chips/pcf8574 |   65 ------------
- drivers/i2c/chips/Kconfig       |   17 ---
- drivers/i2c/chips/Makefile      |    1 -
- drivers/i2c/chips/pcf8574.c     |  215 ---------------------------------------
- 4 files changed, 0 insertions(+), 298 deletions(-)
- delete mode 100644 Documentation/i2c/chips/pcf8574
- delete mode 100644 drivers/i2c/chips/pcf8574.c
 
-diff --git a/Documentation/i2c/chips/pcf8574 b/Documentation/i2c/chips/pcf8574
-deleted file mode 100644
-index 235815c..0000000
---- a/Documentation/i2c/chips/pcf8574
-+++ /dev/null
-@@ -1,65 +0,0 @@
--Kernel driver pcf8574
--=====================
--
--Supported chips:
--  * Philips PCF8574
--    Prefix: 'pcf8574'
--    Addresses scanned: none
--    Datasheet: Publicly available at the Philips Semiconductors website
--               http://www.semiconductors.philips.com/pip/PCF8574P.html
--
-- * Philips PCF8574A
--    Prefix: 'pcf8574a'
--    Addresses scanned: none
--    Datasheet: Publicly available at the Philips Semiconductors website
--               http://www.semiconductors.philips.com/pip/PCF8574P.html
--
--Authors:
--        Frodo Looijaard <frodol@dds.nl>,
--        Philip Edelbrock <phil@netroedge.com>,
--        Dan Eaton <dan.eaton@rocketlogix.com>,
--        Aurelien Jarno <aurelien@aurel32.net>,
--        Jean Delvare <khali@linux-fr.org>,
--
--
--Description
-------------
--The PCF8574(A) is an 8-bit I/O expander for the I2C bus produced by Philips
--Semiconductors. It is designed to provide a byte I2C interface to up to 16
--separate devices (8 x PCF8574 and 8 x PCF8574A).
--
--This device consists of a quasi-bidirectional port. Each of the eight I/Os
--can be independently used as an input or output. To setup an I/O as an
--input, you have to write a 1 to the corresponding output.
--
--For more informations see the datasheet.
--
--
--Accessing PCF8574(A) via /sys interface
---------------------------------------
--
--The PCF8574(A) is plainly impossible to detect ! Stupid chip.
--So, you have to pass the I2C bus and address of the installed PCF857A
--and PCF8574A devices explicitly to the driver at load time via the
--force=... parameter.
--
--On detection (i.e. insmod, modprobe et al.), directories are being
--created for each detected PCF8574(A):
--
--/sys/bus/i2c/devices/<0>-<1>/
--where <0> is the bus the chip was detected on (e. g. i2c-0)
--and <1> the chip address ([20..27] or [38..3f]):
--
--(example: /sys/bus/i2c/devices/1-0020/)
--
--Inside these directories, there are two files each:
--read and write (and one file with chip name).
--
--The read file is read-only. Reading gives you the current I/O input
--if the corresponding output is set as 1, otherwise the current output
--value, that is to say 0.
--
--The write file is read/write. Writing a value outputs it on the I/O
--port. Reading returns the last written value. As it is not possible
--to read this value from the chip, you need to write at least once to
--this file before you can read back from it.
-diff --git a/drivers/i2c/chips/Kconfig b/drivers/i2c/chips/Kconfig
-index 8cd1a7f..f9618f4 100644
---- a/drivers/i2c/chips/Kconfig
-+++ b/drivers/i2c/chips/Kconfig
-@@ -16,23 +16,6 @@ config DS1682
- 	  This driver can also be built as a module.  If so, the module
- 	  will be called ds1682.
- 
--config SENSORS_PCF8574
--	tristate "Philips PCF8574 and PCF8574A (DEPRECATED)"
--	depends on EXPERIMENTAL && GPIO_PCF857X = "n"
--	default n
--	help
--	  If you say yes here you get support for Philips PCF8574 and 
--	  PCF8574A chips. These chips are 8-bit I/O expanders for the I2C bus.
--
--	  This driver can also be built as a module.  If so, the module
--	  will be called pcf8574.
--
--	  This driver is deprecated and will be dropped soon. Use
--	  drivers/gpio/pcf857x.c instead.
--
--	  These devices are hard to detect and rarely found on mainstream
--	  hardware.  If unsure, say N.
--
- config SENSORS_TSL2550
- 	tristate "Taos TSL2550 ambient light sensor"
- 	depends on EXPERIMENTAL
-diff --git a/drivers/i2c/chips/Makefile b/drivers/i2c/chips/Makefile
-index 8cd778d..749cf36 100644
---- a/drivers/i2c/chips/Makefile
-+++ b/drivers/i2c/chips/Makefile
-@@ -11,7 +11,6 @@
- #
- 
- obj-$(CONFIG_DS1682)		+= ds1682.o
--obj-$(CONFIG_SENSORS_PCF8574)	+= pcf8574.o
- obj-$(CONFIG_SENSORS_TSL2550)	+= tsl2550.o
- 
- ifeq ($(CONFIG_I2C_DEBUG_CHIP),y)
-diff --git a/drivers/i2c/chips/pcf8574.c b/drivers/i2c/chips/pcf8574.c
-deleted file mode 100644
-index 6ec3098..0000000
---- a/drivers/i2c/chips/pcf8574.c
-+++ /dev/null
-@@ -1,215 +0,0 @@
--/*
--    Copyright (c) 2000  Frodo Looijaard <frodol@dds.nl>, 
--                        Philip Edelbrock <phil@netroedge.com>,
--                        Dan Eaton <dan.eaton@rocketlogix.com>
--    Ported to Linux 2.6 by Aurelien Jarno <aurel32@debian.org> with 
--    the help of Jean Delvare <khali@linux-fr.org>
--
--    This program is free software; you can redistribute it and/or modify
--    it under the terms of the GNU General Public License as published by
--    the Free Software Foundation; either version 2 of the License, or
--    (at your option) any later version.
--    
--    This program is distributed in the hope that it will be useful,
--    but WITHOUT ANY WARRANTY; without even the implied warranty of
--    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
--    GNU General Public License for more details.
--
--    You should have received a copy of the GNU General Public License
--    along with this program; if not, write to the Free Software
--    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
--*/
--
--/* A few notes about the PCF8574:
--
--* The PCF8574 is an 8-bit I/O expander for the I2C bus produced by
--  Philips Semiconductors.  It is designed to provide a byte I2C
--  interface to up to 8 separate devices.
--  
--* The PCF8574 appears as a very simple SMBus device which can be
--  read from or written to with SMBUS byte read/write accesses.
--
--  --Dan
--
--*/
--
--#include <linux/module.h>
--#include <linux/init.h>
--#include <linux/slab.h>
--#include <linux/i2c.h>
--
--/* Addresses to scan: none, device can't be detected */
--static const unsigned short normal_i2c[] = { I2C_CLIENT_END };
--
--/* Insmod parameters */
--I2C_CLIENT_INSMOD_2(pcf8574, pcf8574a);
--
--/* Each client has this additional data */
--struct pcf8574_data {
--	int write;			/* Remember last written value */
--};
--
--static void pcf8574_init_client(struct i2c_client *client);
--
--/* following are the sysfs callback functions */
--static ssize_t show_read(struct device *dev, struct device_attribute *attr, char *buf)
--{
--	struct i2c_client *client = to_i2c_client(dev);
--	return sprintf(buf, "%u\n", i2c_smbus_read_byte(client));
--}
--
--static DEVICE_ATTR(read, S_IRUGO, show_read, NULL);
--
--static ssize_t show_write(struct device *dev, struct device_attribute *attr, char *buf)
--{
--	struct pcf8574_data *data = i2c_get_clientdata(to_i2c_client(dev));
--
--	if (data->write < 0)
--		return data->write;
--
--	return sprintf(buf, "%d\n", data->write);
--}
--
--static ssize_t set_write(struct device *dev, struct device_attribute *attr, const char *buf,
--			 size_t count)
--{
--	struct i2c_client *client = to_i2c_client(dev);
--	struct pcf8574_data *data = i2c_get_clientdata(client);
--	unsigned long val = simple_strtoul(buf, NULL, 10);
--
--	if (val > 0xff)
--		return -EINVAL;
--
--	data->write = val;
--	i2c_smbus_write_byte(client, data->write);
--	return count;
--}
--
--static DEVICE_ATTR(write, S_IWUSR | S_IRUGO, show_write, set_write);
--
--static struct attribute *pcf8574_attributes[] = {
--	&dev_attr_read.attr,
--	&dev_attr_write.attr,
--	NULL
--};
--
--static const struct attribute_group pcf8574_attr_group = {
--	.attrs = pcf8574_attributes,
--};
--
--/*
-- * Real code
-- */
--
--/* Return 0 if detection is successful, -ENODEV otherwise */
--static int pcf8574_detect(struct i2c_client *client, int kind,
--			  struct i2c_board_info *info)
--{
--	struct i2c_adapter *adapter = client->adapter;
--	const char *client_name;
--
--	if (!i2c_check_functionality(adapter, I2C_FUNC_SMBUS_BYTE))
--		return -ENODEV;
--
--	/* Now, we would do the remaining detection. But the PCF8574 is plainly
--	   impossible to detect! Stupid chip. */
--
--	/* Determine the chip type */
--	if (kind <= 0) {
--		if (client->addr >= 0x38 && client->addr <= 0x3f)
--			kind = pcf8574a;
--		else
--			kind = pcf8574;
--	}
--
--	if (kind == pcf8574a)
--		client_name = "pcf8574a";
--	else
--		client_name = "pcf8574";
--	strlcpy(info->type, client_name, I2C_NAME_SIZE);
--
--	return 0;
--}
--
--static int pcf8574_probe(struct i2c_client *client,
--			 const struct i2c_device_id *id)
--{
--	struct pcf8574_data *data;
--	int err;
--
--	data = kzalloc(sizeof(struct pcf8574_data), GFP_KERNEL);
--	if (!data) {
--		err = -ENOMEM;
--		goto exit;
--	}
--
--	i2c_set_clientdata(client, data);
--
--	/* Initialize the PCF8574 chip */
--	pcf8574_init_client(client);
--
--	/* Register sysfs hooks */
--	err = sysfs_create_group(&client->dev.kobj, &pcf8574_attr_group);
--	if (err)
--		goto exit_free;
--	return 0;
--
--      exit_free:
--	kfree(data);
--      exit:
--	return err;
--}
--
--static int pcf8574_remove(struct i2c_client *client)
--{
--	sysfs_remove_group(&client->dev.kobj, &pcf8574_attr_group);
--	kfree(i2c_get_clientdata(client));
--	return 0;
--}
--
--/* Called when we have found a new PCF8574. */
--static void pcf8574_init_client(struct i2c_client *client)
--{
--	struct pcf8574_data *data = i2c_get_clientdata(client);
--	data->write = -EAGAIN;
--}
--
--static const struct i2c_device_id pcf8574_id[] = {
--	{ "pcf8574", 0 },
--	{ "pcf8574a", 0 },
--	{ }
--};
--
--static struct i2c_driver pcf8574_driver = {
--	.driver = {
--		.name	= "pcf8574",
--	},
--	.probe		= pcf8574_probe,
--	.remove		= pcf8574_remove,
--	.id_table	= pcf8574_id,
--
--	.detect		= pcf8574_detect,
--	.address_data	= &addr_data,
--};
--
--static int __init pcf8574_init(void)
--{
--	return i2c_add_driver(&pcf8574_driver);
--}
--
--static void __exit pcf8574_exit(void)
--{
--	i2c_del_driver(&pcf8574_driver);
--}
--
--
--MODULE_AUTHOR
--    ("Frodo Looijaard <frodol@dds.nl>, "
--     "Philip Edelbrock <phil@netroedge.com>, "
--     "Dan Eaton <dan.eaton@rocketlogix.com> "
--     "and Aurelien Jarno <aurelien@aurel32.net>");
--MODULE_DESCRIPTION("PCF8574 driver");
--MODULE_LICENSE("GPL");
--
--module_init(pcf8574_init);
--module_exit(pcf8574_exit);
--- 
-1.6.3.3
+I like this patch.  I ported it to my 2.6.27 kernel and it seems to work 
+well.
+
+One thing you are missing is that that label_module_alloc should now no 
+longer be needed in tlbex.c  It should be removed.
+
+David Daney
+
+
+> ---
+>  arch/mips/include/asm/pgtable-64.h |   11 ++------
+>  arch/mips/mm/init.c                |    3 --
+>  arch/mips/mm/pgtable-64.c          |    3 --
+>  arch/mips/mm/tlbex.c               |   49 ------------------------------------
+>  4 files changed, 3 insertions(+), 63 deletions(-)
+> 
+> diff --git a/arch/mips/include/asm/pgtable-64.h b/arch/mips/include/asm/pgtable-64.h
+> index 4ed9d1b..9cd5089 100644
+> --- a/arch/mips/include/asm/pgtable-64.h
+> +++ b/arch/mips/include/asm/pgtable-64.h
+> @@ -109,13 +109,13 @@
+>  
+>  #define VMALLOC_START		MAP_BASE
+>  #define VMALLOC_END	\
+> -	(VMALLOC_START + PTRS_PER_PGD * PTRS_PER_PMD * PTRS_PER_PTE * PAGE_SIZE)
+> +	(VMALLOC_START + \
+> +	 PTRS_PER_PGD * PTRS_PER_PMD * PTRS_PER_PTE * PAGE_SIZE - (1UL << 32))
+>  #if defined(CONFIG_MODULES) && defined(KBUILD_64BIT_SYM32) && \
+>  	VMALLOC_START != CKSSEG
+>  /* Load modules into 32bit-compatible segment. */
+>  #define MODULE_START	CKSSEG
+>  #define MODULE_END	(FIXADDR_START-2*PAGE_SIZE)
+> -extern pgd_t module_pg_dir[PTRS_PER_PGD];
+>  #endif
+>  
+>  #define pte_ERROR(e) \
+> @@ -188,12 +188,7 @@ static inline void pud_clear(pud_t *pudp)
+>  #define __pmd_offset(address)	pmd_index(address)
+>  
+>  /* to find an entry in a kernel page-table-directory */
+> -#ifdef MODULE_START
+> -#define pgd_offset_k(address) \
+> -	((address) >= MODULE_START ? module_pg_dir : pgd_offset(&init_mm, 0UL))
+> -#else
+> -#define pgd_offset_k(address) pgd_offset(&init_mm, 0UL)
+> -#endif
+> +#define pgd_offset_k(address) pgd_offset(&init_mm, address)
+>  
+>  #define pgd_index(address)	(((address) >> PGDIR_SHIFT) & (PTRS_PER_PGD-1))
+>  #define pmd_index(address)	(((address) >> PMD_SHIFT) & (PTRS_PER_PMD-1))
+> diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+> index 0e82050..38c79c5 100644
+> --- a/arch/mips/mm/init.c
+> +++ b/arch/mips/mm/init.c
+> @@ -475,9 +475,6 @@ unsigned long pgd_current[NR_CPUS];
+>   */
+>  pgd_t swapper_pg_dir[_PTRS_PER_PGD] __page_aligned(_PGD_ORDER);
+>  #ifdef CONFIG_64BIT
+> -#ifdef MODULE_START
+> -pgd_t module_pg_dir[PTRS_PER_PGD] __page_aligned(PGD_ORDER);
+> -#endif
+>  pmd_t invalid_pmd_table[PTRS_PER_PMD] __page_aligned(PMD_ORDER);
+>  #endif
+>  pte_t invalid_pte_table[PTRS_PER_PTE] __page_aligned(PTE_ORDER);
+> diff --git a/arch/mips/mm/pgtable-64.c b/arch/mips/mm/pgtable-64.c
+> index e4b565a..1121019 100644
+> --- a/arch/mips/mm/pgtable-64.c
+> +++ b/arch/mips/mm/pgtable-64.c
+> @@ -59,9 +59,6 @@ void __init pagetable_init(void)
+>  
+>  	/* Initialize the entire pgd.  */
+>  	pgd_init((unsigned long)swapper_pg_dir);
+> -#ifdef MODULE_START
+> -	pgd_init((unsigned long)module_pg_dir);
+> -#endif
+>  	pmd_init((unsigned long)invalid_pmd_table, (unsigned long)invalid_pte_table);
+>  
+>  	pgd_base = swapper_pg_dir;
+> diff --git a/arch/mips/mm/tlbex.c b/arch/mips/mm/tlbex.c
+> index 9a17bf8..bc66f57 100644
+> --- a/arch/mips/mm/tlbex.c
+> +++ b/arch/mips/mm/tlbex.c
+> @@ -499,11 +499,7 @@ build_get_pmde64(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
+>  	 * The vmalloc handling is not in the hotpath.
+>  	 */
+>  	uasm_i_dmfc0(p, tmp, C0_BADVADDR);
+> -#ifdef MODULE_START
+> -	uasm_il_bltz(p, r, tmp, label_module_alloc);
+> -#else
+>  	uasm_il_bltz(p, r, tmp, label_vmalloc);
+> -#endif
+>  	/* No uasm_i_nop needed here, since the next insn doesn't touch TMP. */
+>  
+>  #ifdef CONFIG_SMP
+> @@ -556,52 +552,7 @@ build_get_pgd_vmalloc64(u32 **p, struct uasm_label **l, struct uasm_reloc **r,
+>  {
+>  	long swpd = (long)swapper_pg_dir;
+>  
+> -#ifdef MODULE_START
+> -	long modd = (long)module_pg_dir;
+> -
+> -	uasm_l_module_alloc(l, *p);
+> -	/*
+> -	 * Assumption:
+> -	 * VMALLOC_START >= 0xc000000000000000UL
+> -	 * MODULE_START >= 0xe000000000000000UL
+> -	 */
+> -	UASM_i_SLL(p, ptr, bvaddr, 2);
+> -	uasm_il_bgez(p, r, ptr, label_vmalloc);
+> -
+> -	if (uasm_in_compat_space_p(MODULE_START) &&
+> -	    !uasm_rel_lo(MODULE_START)) {
+> -		uasm_i_lui(p, ptr, uasm_rel_hi(MODULE_START)); /* delay slot */
+> -	} else {
+> -		/* unlikely configuration */
+> -		uasm_i_nop(p); /* delay slot */
+> -		UASM_i_LA(p, ptr, MODULE_START);
+> -	}
+> -	uasm_i_dsubu(p, bvaddr, bvaddr, ptr);
+> -
+> -	if (uasm_in_compat_space_p(modd) && !uasm_rel_lo(modd)) {
+> -		uasm_il_b(p, r, label_vmalloc_done);
+> -		uasm_i_lui(p, ptr, uasm_rel_hi(modd));
+> -	} else {
+> -		UASM_i_LA_mostly(p, ptr, modd);
+> -		uasm_il_b(p, r, label_vmalloc_done);
+> -		if (uasm_in_compat_space_p(modd))
+> -			uasm_i_addiu(p, ptr, ptr, uasm_rel_lo(modd));
+> -		else
+> -			uasm_i_daddiu(p, ptr, ptr, uasm_rel_lo(modd));
+> -	}
+> -
+>  	uasm_l_vmalloc(l, *p);
+> -	if (uasm_in_compat_space_p(MODULE_START) &&
+> -	    !uasm_rel_lo(MODULE_START) &&
+> -	    MODULE_START << 32 == VMALLOC_START)
+> -		uasm_i_dsll32(p, ptr, ptr, 0);	/* typical case */
+> -	else
+> -		UASM_i_LA(p, ptr, VMALLOC_START);
+> -#else
+> -	uasm_l_vmalloc(l, *p);
+> -	UASM_i_LA(p, ptr, VMALLOC_START);
+> -#endif
+> -	uasm_i_dsubu(p, bvaddr, bvaddr, ptr);
+>  
+>  	if (uasm_in_compat_space_p(swpd) && !uasm_rel_lo(swpd)) {
+>  		uasm_il_b(p, r, label_vmalloc_done);

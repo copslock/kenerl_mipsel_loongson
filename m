@@ -1,114 +1,169 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Sep 2009 13:42:59 +0200 (CEST)
-Received: from mail-yx0-f195.google.com ([209.85.210.195]:62072 "EHLO
-	mail-yx0-f195.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493506AbZIJLmw (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 10 Sep 2009 13:42:52 +0200
-Received: by yxe33 with SMTP id 33so26734yxe.0
-        for <multiple recipients>; Thu, 10 Sep 2009 04:42:46 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:date:from:to:cc:subject
-         :message-id:references:mime-version:content-type:content-disposition
-         :in-reply-to:user-agent;
-        bh=7R73+dcNZ/iprMyGpWrEPNSFWKJHTc5OpIXVRr/VIAw=;
-        b=jcC4iqr8fOv2Y59ZtviP0K/SyHXnTG9f+xd+dy8atcWCl+jAKsk95048HNFRSNHr2y
-         Q8uhdSxC02cyWwCGg0s8D/gNpO+BY7RlJT8lC2OFxe7If/ScmUTS3NTiE1qB+iBML3qW
-         H4pZqBeZe45UzBQPiMyp0G1kCBqElXUqYWNcM=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        b=O5RqNRfVzPblBVq+wWPERO89Nj+4ykCQ+Itjrym69Dk5YeEwKiPWGL9vmndC9Etn48
-         M1TxVfBA6pDxaS4rmF912ubS9UvQ6NViGm/qCYX/T4q3OigKKhha0HnmuJInypNnyZE6
-         PImtm/Scj1qKfdUxE0J689fvGW2fS5xniM3z8=
-Received: by 10.90.225.5 with SMTP id x5mr848773agg.87.1252582966072;
-        Thu, 10 Sep 2009 04:42:46 -0700 (PDT)
-Received: from desktop ([58.31.9.46])
-        by mx.google.com with ESMTPS id 39sm187805aga.71.2009.09.10.04.42.41
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 10 Sep 2009 04:42:45 -0700 (PDT)
-Date:	Thu, 10 Sep 2009 19:42:38 +0800
-From:	Wu Fei <at.wufei@gmail.com>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] cleanup vmalloc_fault for 64bit kernel
-Message-ID: <20090910114238.GA7014@desktop>
-References: <20090831132811.GA6924@desktop> <4AA7CB3E.1080807@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Sep 2009 16:14:38 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:36042 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S1493558AbZIJOOf (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 10 Sep 2009 16:14:35 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n8AEFO5q010661;
+	Thu, 10 Sep 2009 16:15:27 +0200
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n8AEFICU010659;
+	Thu, 10 Sep 2009 16:15:18 +0200
+Date:	Thu, 10 Sep 2009 16:15:18 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Maxim Uvarov <muvarov@ru.mvista.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [MIPS] TLB  handler fix for vmalloc'ed addresses
+Message-ID: <20090910141518.GA10547@linux-mips.org>
+References: <4AA656D8.9040608@ru.mvista.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4AA7CB3E.1080807@caviumnetworks.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <at.wufei@gmail.com>
+In-Reply-To: <4AA656D8.9040608@ru.mvista.com>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24011
+X-archive-position: 24012
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: at.wufei@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Sep 09, 2009 at 08:35:26AM -0700, David Daney wrote:
-> Wu Fei wrote:
->> 64bit kernel won't arrive vmalloc_fault, it's not necessary or possible
->> to copy the page table from init_mm.pgd. swapper_pg_dir, module_pg_dir
->> and the process's pgd represent the different virtual address area, and
->> the tlb exception handler accesses the suitable one directly.
->>
->> Signed-off-by: Wu Fei <at.wufei@gmail.com>
->> ---
->>  arch/mips/mm/fault.c |    6 +++---
->>  1 files changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/mips/mm/fault.c b/arch/mips/mm/fault.c
->> index f956ecb..e769789 100644
->> --- a/arch/mips/mm/fault.c
->> +++ b/arch/mips/mm/fault.c
->> @@ -58,11 +58,9 @@ asmlinkage void do_page_fault(struct pt_regs *regs, unsigned long write,
->>  	 * only copy the information from the master page table,
->>  	 * nothing more.
->>  	 */
->> +#ifdef CONFIG_32BIT
->>  	if (unlikely(address >= VMALLOC_START && address <= VMALLOC_END))
->>  		goto vmalloc_fault;
->> -#ifdef MODULE_START
->> -	if (unlikely(address >= MODULE_START && address < MODULE_END))
->> -		goto vmalloc_fault;
->>  #endif
->>  
->
-> That is not correct.  You can still arrive at do_page_fault() from  
-> faults in the vmalloc range.  We need to go directly to the panic code  
+On Tue, Sep 08, 2009 at 05:06:32PM +0400, Maxim Uvarov wrote:
 
-That's not a real problem, if do_page_fault() from faults in the vmalloc
-range, find_vma() returns NULL and eventually it will arrive no_context.
-But anyway, I think your patch is better and readable.
+> Patch is attached.
 
-Thanks,
-Wufei.
+Please send patches inline.
 
-> as I did in my patch: Message-Id:  
-> <1251931654-21268-1-git-send-email-ddaney@caviumnetworks.com>
->
-> AKA: [PATCH] MIPS: Don't corrupt page tables on vmalloc fault.
->
->
->
->>  	/*
->> @@ -203,6 +201,7 @@ do_sigbus:
->>  	force_sig_info(SIGBUS, &info, tsk);
->>   	return;
->> +#ifdef CONFIG_32BIT
->>  vmalloc_fault:
->>  	{
->>  		/*
->> @@ -241,4 +240,5 @@ vmalloc_fault:
->>  			goto no_context;
->>  		return;
->>  	}
->> +#endif
->>  }
->
+> TLB exception handler incorrecly handles situation
+> with wrong vmalloc'ed addresses.  This patch adds
+> verifications for vmalloc'ed addresses (similar to
+> x86_64 implementation). So the code now traps inside
+> do_page_fault() on access to the wrong area.
+> 
+> Signed-off-by: Maxim Uvarov <muvarov@ru.mvista.com>
+> 
+> Test case:
+> 
+> #include <linux/module.h>
+> #include <linux/init.h>
+> #include <linux/kernel.h>
+> #include <linux/kthread.h>
+> #include <linux/delay.h>
+> 
+> static struct task_struct *ts;
+> static int example_thread(void *dummy)
+> {
+> 	void *ptr;
+> 	ptr = vmalloc(16*1024*1024);
+> 	for(;;)
+> 	{
+> 		msleep(100);
+> 	}
+> }
+
+So your test case allocates vmalloc memory but never touches it.
+
+> 
+> static void run_vmalloc(void *unused)
+> {
+> 	ts=kthread_run(example_thread,NULL,"vtest");
+> }
+> int init_module (void)
+> {
+> 	run_vmalloc(NULL);
+> 	return 0;
+> }
+> 
+> void cleanup_module (void)
+> { /*Nothing*/}
+> 
+> 
+> Originally kernel trapped on BUG() inside exit_mmap() and it was impossible
+> to see what has happened. After this patch applied, nice back trace will be
+> generated:
+> 
+> CPU 0 Unable to handle kernel paging request at virtual address c00000000036a148
+> Oops[#1]:
+> Cpu 0
+> $ 0   : 0000000000000000 ffffffff81940000 0000000000000000 00000000ffff05a7
+> $ 4   : 0000000000000000 ffffffffffffffff ffffffff81a0b7d0 ffffffff811983e4
+> $ 8   : ffffffff817407b0 0000000000000000 0000000000000000 0000000000000000
+> $12   : a80000003374bfe0 0000000000008c00 ffffffff811e9df8 0000000000000000
+> $16   : ffffffff81164a68 a8000000352a3c50 c00000000036a0e8 0000000000000000
+> $20   : 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+> $24   : 0000000000000002 a8000000337bb1a0                                  
+> $28   : a800000033748000 a80000003374bf70 a80000003374bf70 c00000000036a148
+> Hi    : 0000000000000000
+> Lo    : 000000000000a311
+> epc   : c00000000036a148 0xc00000000036a148     Tainted: P      
+> ra    : c00000000036a148 0xc00000000036a148 <-- dead in kernel module vtest
+> Status: 10008ce3    KX SX UX KERNEL EXL IE 
+> Cause : 00000008
+> BadVA : c00000000036a148
+> PrId  : 000d0408
+> Modules linked in:
+> Process vtest (pid: 723, threadinfo=a800000033748000, task=a800000034530340)
+> 	Stack : 0000000000000000 a80000003374bf90 ffffffff81176530 ffffffff81176488
+> 	ffffffffffffffff ffffffffffffffff 0000000000000000 0000000000000000
+> 	0000000000000000 a80000003374bfd0 ffffffff81125024 0000000000000000
+> 	0000000000000000 0000000000000000 5a5a5a5a5a5a5a5a 5a5a5a5a5a5a5a5a
+> 	5a5a5a5a5a5a5a5a 5a5a5a5a5a5a5aa5
+> 	Call Trace:
+> 	[<ffffffff81176530>] kthread+0x198/0x1f0
+> 	[<ffffffff81176488>] kthread+0xf0/0x1f0
+> 	[<ffffffff81125024>] kernel_thread_helper+0x14/0x20
+> 
+> 
+> Code: (Bad address in epc)
+
+This is a 64-bit kernel crash ...
+
+> Index: linux-2.6.21/arch/mips/mm/fault.c
+> ===================================================================
+> --- linux-2.6.21.orig/arch/mips/mm/fault.c
+> +++ linux-2.6.21/arch/mips/mm/fault.c
+> @@ -282,22 +282,32 @@ vmalloc_fault:
+>  		pte_t *pte_k;
+>  
+>  		pgd = (pgd_t *) pgd_current[raw_smp_processor_id()] + offset;
+> -		pgd_k = init_mm.pgd + offset;
+> +		pgd_k = pgd_offset_k(address);
+>  
+>  		if (!pgd_present(*pgd_k))
+>  			goto no_context;
+> -		set_pgd(pgd, *pgd_k);
+> +		if (unlikely(!pgd_present(*pgd)))
+> +			set_pgd(pgd, *pgd_k);
+> +		else if (pgd_page_vaddr(*pgd) != pgd_page_vaddr(*pgd_k))
+> +				goto no_context;
+>  
+>  		pud = pud_offset(pgd, address);
+>  		pud_k = pud_offset(pgd_k, address);
+>  		if (!pud_present(*pud_k))
+>  			goto no_context;
+> +		if (pud_none(*pud) ||
+> +				pud_page_vaddr(*pud) != pud_page_vaddr(*pud_k))
+> +			goto no_context;
+>  
+>  		pmd = pmd_offset(pud, address);
+>  		pmd_k = pmd_offset(pud_k, address);
+>  		if (!pmd_present(*pmd_k))
+>  			goto no_context;
+> -		set_pmd(pmd, *pmd_k);
+> +		if (!pmd_present(*pmd))
+> +			set_pmd(pmd, *pmd_k);
+> +		else
+> +			if (pmd_page(*pmd) != pmd_page(*pmd_k))
+> +				goto no_context;
+>  
+>  		pte_k = pte_offset_kernel(pmd_k, address);
+>  		if (!pte_present(*pte_k))
+
+... but on 64-bit kernels vmalloc_fault: should not be reached ever.
+
+  Ralf

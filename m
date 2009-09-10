@@ -1,64 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Sep 2009 01:55:08 +0200 (CEST)
-Received: from mail-yw0-f177.google.com ([209.85.211.177]:50216 "EHLO
-	mail-yw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493229AbZIIXzB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 10 Sep 2009 01:55:01 +0200
-Received: by ywh7 with SMTP id 7so7092692ywh.21
-        for <linux-mips@linux-mips.org>; Wed, 09 Sep 2009 16:54:55 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :from:date:message-id:subject:to:cc:content-type;
-        bh=CV9xEng5q+g1urucTVU4sRWTnKldUp3SexzByDrVINA=;
-        b=cLBCk0DEj8ENdxVlD2M61MLE9zMwnU3/iGbeX4FdWteI/97L/fd1ELS6aJV2x3nUm4
-         qBmEOoxSPgilya6XSz9r/RBo678t6K7XTNZPWhyuImIrUpKGXtRCSxzW/oIKCZyPXf8X
-         gMMYq7dJRzFU6w+ElpY8CD0DP4WzywvldPrZs=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-type;
-        b=XHg++irwmOeAqGZBRYojCqCa+uyzIbHTW3OxX2WwZ1YPHeSH8aG06CY/ZaijPdi9y2
-         gLzkvUdS5Ed3vHGWoW3cLhAV3auF1Arbj5OrgZzPQlnoUl3KLIugDVHD6wNqBZmKkdZn
-         BywA6TFfw8Gh08l2WWswMl9DKMX/amYPZ1z3w=
-MIME-Version: 1.0
-Received: by 10.150.239.15 with SMTP id m15mr1548890ybh.109.1252540495121; 
-	Wed, 09 Sep 2009 16:54:55 -0700 (PDT)
-In-Reply-To: <1252531371-14866-1-git-send-email-w.sang@pengutronix.de>
-References: <1252531371-14866-1-git-send-email-w.sang@pengutronix.de>
-From:	Mike Frysinger <vapier.adi@gmail.com>
-Date:	Wed, 9 Sep 2009 19:54:34 -0400
-Message-ID: <8bd0f97a0909091654h290180e5ob79178583aca143f@mail.gmail.com>
-Subject: Re: [Uclinux-dist-devel] Removing deprecated drivers from 
-	drivers/i2c/chips
-To:	Wolfram Sang <w.sang@pengutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Sep 2009 08:26:38 +0200 (CEST)
+Received: from metis.ext.pengutronix.de ([92.198.50.35]:42449 "EHLO
+	metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492256AbZIJG0b (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 10 Sep 2009 08:26:31 +0200
+Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.63)
+	(envelope-from <wsa@pengutronix.de>)
+	id 1Mld6i-0007NT-MG; Thu, 10 Sep 2009 08:26:12 +0200
+Received: from wsa by octopus.hi.pengutronix.de with local (Exim 4.69)
+	(envelope-from <wsa@pengutronix.de>)
+	id 1Mld6f-0001aX-FW; Thu, 10 Sep 2009 08:26:09 +0200
+Date:	Thu, 10 Sep 2009 08:26:09 +0200
+From:	Wolfram Sang <w.sang@pengutronix.de>
+To:	Mike Frysinger <vapier.adi@gmail.com>
 Cc:	linux-i2c@vger.kernel.org, linuxppc-dev@ozlabs.org,
 	uclinux-dist-devel@blackfin.uclinux.org,
 	linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Return-Path: <vapier.adi@gmail.com>
+Subject: Re: [Uclinux-dist-devel] Removing deprecated drivers from
+	drivers/i2c/chips
+Message-ID: <20090910062609.GA26454@pengutronix.de>
+References: <1252531371-14866-1-git-send-email-w.sang@pengutronix.de> <8bd0f97a0909091654h290180e5ob79178583aca143f@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="n8g4imXOkfNTN/H1"
+Content-Disposition: inline
+In-Reply-To: <8bd0f97a0909091654h290180e5ob79178583aca143f@mail.gmail.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-SA-Exim-Connect-IP: 2001:6f8:1178:2:215:17ff:fe12:23b0
+X-SA-Exim-Mail-From: wsa@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-mips@linux-mips.org
+Return-Path: <wsa@pengutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24004
+X-archive-position: 24005
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: vapier.adi@gmail.com
+X-original-sender: w.sang@pengutronix.de
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Sep 9, 2009 at 17:22, Wolfram Sang wrote:
-> continuing the quest to clean up and ultimately remove the drivers/i2c/chips
-> directory, this patch series removes three drivers for GPIO-expanders which are
-> obsoleted and marked as deprecated for more than a year. The newer (and better)
-> drivers can be found in drivers/gpio.
->
-> As it is ensured that the newer drivers cover the same i2c_device_ids, all
-> platform_devices will still match. Some defconfig updates may be necessary
-> though, but according to [1] this is left to the arch|platform-maintainers
-> (also as most defconfigs are quite outdated). For that reason, I put the
-> relevant arch-mailing-lists to Cc. Comments are welcome.
 
-the Blackfin defconfigs refer to an input driver for the PCF8574, not
-the I2C client driver
--mike
+--n8g4imXOkfNTN/H1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+> the Blackfin defconfigs refer to an input driver for the PCF8574, not
+> the I2C client driver
+
+Yup, I am aware of that. With the exception of:
+
+blackfin/configs/PNAV-10_defconfig:773:CONFIG_SENSORS_PCF8574=3Dm
+
+Regards,
+
+   Wolfram
+
+--=20
+Pengutronix e.K.                           | Wolfram Sang                |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+
+--n8g4imXOkfNTN/H1
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.9 (GNU/Linux)
+
+iEYEARECAAYFAkqonAEACgkQD27XaX1/VRsuggCgvHIQBK0PDoMqr0mqllZhomK8
+ym8An2/4gTJoai3W+CzOM659DgzCeQuK
+=yoJc
+-----END PGP SIGNATURE-----
+
+--n8g4imXOkfNTN/H1--

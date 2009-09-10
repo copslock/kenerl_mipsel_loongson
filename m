@@ -1,63 +1,78 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Sep 2009 12:49:47 +0200 (CEST)
-Received: from bamako.nerim.net ([62.4.17.28]:58852 "EHLO bamako.nerim.net"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1492244AbZIJKtk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 10 Sep 2009 12:49:40 +0200
-Received: from localhost (localhost [127.0.0.1])
-	by bamako.nerim.net (Postfix) with ESMTP id E09B639DCB0;
-	Thu, 10 Sep 2009 12:49:37 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at nerim.net
-Received: from bamako.nerim.net ([127.0.0.1])
-	by localhost (bamako.nerim.net [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 04+egjYJ86w8; Thu, 10 Sep 2009 12:49:36 +0200 (CEST)
-Received: from hyperion.delvare (jdelvare.pck.nerim.net [62.212.121.182])
-	by bamako.nerim.net (Postfix) with ESMTP id 96A1839DCA1;
-	Thu, 10 Sep 2009 12:49:36 +0200 (CEST)
-Date:	Thu, 10 Sep 2009 12:49:37 +0200
-From:	Jean Delvare <khali@linux-fr.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 10 Sep 2009 12:52:31 +0200 (CEST)
+Received: from mail-ew0-f225.google.com ([209.85.219.225]:55162 "EHLO
+	mail-ew0-f225.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S2097287AbZIJKwY convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 10 Sep 2009 12:52:24 +0200
+Received: by ewy25 with SMTP id 25so4707068ewy.33
+        for <linux-mips@linux-mips.org>; Thu, 10 Sep 2009 03:52:17 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=emeznUvZiGdhx1GHKHvOoEXLykryPQxOUIw8NC9+YAs=;
+        b=S9GPxziooGQYM9NBnVnZDXm82BZ0+s5lTBStJTm8orD8O78I2GfkW4IOiEZlVyrkpj
+         2TDeiOjUkwZ8PFHzImavYKLW4RpKe2IgerTfFxQtdxzs6lZ3ZWxUqY3yulKElephYkrV
+         bx/Ly58qQLCjuoAqfPKqEKAA7gW/IE3kUxpuU=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=ugbaooNQrck06s5hbDluf7cYh6uwVSEg8tvKBgsXQibE0RygMT4XNFEHUOIPZLhr5c
+         F1tlQRS0roB2o/9hs7Z63h+HqGZnIfLwvDfkl1sT0JyyiVyHpKpGAjQIAbP8x83gCpKj
+         yst0xf8GjES+3ukJeFGl4LsL/iE/cbbHFt+hg=
+MIME-Version: 1.0
+Received: by 10.210.101.1 with SMTP id y1mr743830ebb.60.1252579937789; Thu, 10 
+	Sep 2009 03:52:17 -0700 (PDT)
+In-Reply-To: <1252531371-14866-3-git-send-email-w.sang@pengutronix.de>
+References: <1252531371-14866-1-git-send-email-w.sang@pengutronix.de>
+	 <1252531371-14866-3-git-send-email-w.sang@pengutronix.de>
+Date:	Thu, 10 Sep 2009 12:52:17 +0200
+Message-ID: <e2e108260909100352l2a30438fj9f0297c1974c0192@mail.gmail.com>
+Subject: Re: [PATCH 2/4] i2c/chips: Remove deprecated pcf8575-driver
+From:	Bart Van Assche <bart.vanassche@gmail.com>
 To:	Wolfram Sang <w.sang@pengutronix.de>
 Cc:	linux-i2c@vger.kernel.org, linuxppc-dev@ozlabs.org,
 	linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-	uclinux-dist-devel@blackfin.uclinux.org
-Subject: Re: Removing deprecated drivers from drivers/i2c/chips
-Message-ID: <20090910124937.7b3df062@hyperion.delvare>
-In-Reply-To: <1252531371-14866-1-git-send-email-w.sang@pengutronix.de>
-References: <1252531371-14866-1-git-send-email-w.sang@pengutronix.de>
-X-Mailer: Claws Mail 3.5.0 (GTK+ 2.14.4; i586-suse-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Return-Path: <khali@linux-fr.org>
+	uclinux-dist-devel@blackfin.uclinux.org,
+	Jean Delvare <khali@linux-fr.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <bart.vanassche@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24007
+X-archive-position: 24008
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: khali@linux-fr.org
+X-original-sender: bart.vanassche@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Wolfram,
+On Wed, Sep 9, 2009 at 11:22 PM, Wolfram Sang <w.sang@pengutronix.de> wrote:
+>
+> The pcf8575-driver in drivers/i2c/chips which just exports its register to
+> sysfs is superseeded by drivers/gpio/pcf857x.c which properly uses the gpiolib.
+> As this driver has been deprecated for more than a year, finally remove it.
+>
+> Signed-off-by: Wolfram Sang <w.sang@pengutronix.de>
+> Cc: Bart Van Assche <bart.vanassche@gmail.com>
+> Cc: Jean Delvare <khali@linux-fr.org>
+> ---
+>  Documentation/i2c/chips/pcf8575 |   69 --------------
+>  drivers/i2c/chips/Kconfig       |   18 ----
+>  drivers/i2c/chips/Makefile      |    1 -
+>  drivers/i2c/chips/pcf8575.c     |  198 ---------------------------------------
+>  4 files changed, 0 insertions(+), 286 deletions(-)
+>  delete mode 100644 Documentation/i2c/chips/pcf8575
+>  delete mode 100644 drivers/i2c/chips/pcf8575.c
 
-On Wed,  9 Sep 2009 23:22:47 +0200, Wolfram Sang wrote:
-> continuing the quest to clean up and ultimately remove the drivers/i2c/chips
-> directory, this patch series removes three drivers for GPIO-expanders which are
-> obsoleted and marked as deprecated for more than a year. The newer (and better)
-> drivers can be found in drivers/gpio.
-> 
-> As it is ensured that the newer drivers cover the same i2c_device_ids, all
-> platform_devices will still match. Some defconfig updates may be necessary
-> though, but according to [1] this is left to the arch|platform-maintainers
-> (also as most defconfigs are quite outdated). For that reason, I put the
-> relevant arch-mailing-lists to Cc. Comments are welcome.
+This patch removes the documentation file
+Documentation/i2c/chips/pcf8575 while there is no documentation under
+Documentation/ for the drivers/gpio/pcf857x.c driver. Shouldn't proper
+documentation for the pcf857x driver be added to the kernel tree
+before the pcf8575 driver is removed ?
 
-Looks very good, I'll apply the 3 patches removing the legacy drivers.
-
-Not sure about the patch to drivers/gpio/pcf857x.c, as there is no gpio
-tree and no maintainer either AFAIK, I guess I shall pick it too?
-
-Thanks,
--- 
-Jean Delvare
+Bart.

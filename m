@@ -1,118 +1,108 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Sep 2009 09:44:39 +0200 (CEST)
-Received: from mail-ew0-f225.google.com ([209.85.219.225]:47011 "EHLO
-	mail-ew0-f225.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492332AbZIPHoc (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 16 Sep 2009 09:44:32 +0200
-Received: by ewy25 with SMTP id 25so2661666ewy.33
-        for <multiple recipients>; Wed, 16 Sep 2009 00:44:26 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:date:subject
-         :mime-version:x-uid:x-length:to:cc:reply-to:content-type
-         :content-transfer-encoding:content-disposition:message-id;
-        bh=Cw+xT34KFmUivnBW/b8v75D8NsJRkAkyiNXMeKSkw+s=;
-        b=tHipxmEzgyRhQLPR/wnlGMV08z8CdzWQkcFfGIJAks/FXyLSE0INTxX3EC3nyffrND
-         45iqoNBLfkkAsT9sJRWhz3YvKCMnmY/DpWFB42Z6R4mc0bEGD+eiS1I2b3TrfMpGjeLR
-         sJmDg70Q0Emj4s4jYmCYBcyCdFJTyVfNt+9K8=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:date:subject:mime-version:x-uid:x-length:to:cc:reply-to
-         :content-type:content-transfer-encoding:content-disposition
-         :message-id;
-        b=CjbbFXH5KZim/ElLiwzwhsXtQXFI6syZlKbZWoC9kgTpj3dvIpYk4iDn09EUQT7jRm
-         2dSxaZUSHrOCkzffqWyhsD7IcWr6A4aV/8q3+3mW40GBVEFUYB88wmFyGTgOLenOY8vL
-         F5+exVBAr7SW59zelR/qXz18VN82FQHQeZDA8=
-Received: by 10.211.130.6 with SMTP id h6mr9446899ebn.97.1253087066595;
-        Wed, 16 Sep 2009 00:44:26 -0700 (PDT)
-Received: from lenovo.localnet (147.59.76-86.rev.gaoland.net [86.76.59.147])
-        by mx.google.com with ESMTPS id 10sm1320657eyd.24.2009.09.16.00.44.25
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 16 Sep 2009 00:44:25 -0700 (PDT)
-From:	Florian Fainelli <florian@openwrt.org>
-Date:	Wed, 16 Sep 2009 09:44:22 +0200
-Subject: [PATCH] cpmac: fix compilation errors against undeclared BUS_ID_SIZE
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 16 Sep 2009 20:10:20 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:10272 "EHLO
+	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S2097307AbZIPSKK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 16 Sep 2009 20:10:10 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,5,4,7535)
+	id <B4ab129f00000>; Wed, 16 Sep 2009 11:09:52 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 16 Sep 2009 11:09:36 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 16 Sep 2009 11:09:36 -0700
+Message-ID: <4AB129DF.8060200@caviumnetworks.com>
+Date:	Wed, 16 Sep 2009 11:09:35 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
 MIME-Version: 1.0
-X-UID:	1380
-X-Length: 3115
-To:	David Miller <davem@davemloft.net>
-Cc:	netdev@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-	linux-mips@linux-mips.org
-Reply-To: Florian Fainelli <florian@openwrt.org>
-Content-Type: text/plain;
-  charset="utf-8"
+To:	Ralf Baechle <ralf@linux-mips.org>
+CC:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Don't write ones to reserved entryhi bits.
+References: <1241812330-21041-1-git-send-email-ddaney@caviumnetworks.com> <20090527162937.GA9831@linux-mips.org>
+In-Reply-To: <20090527162937.GA9831@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200909160944.24265.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+X-OriginalArrivalTime: 16 Sep 2009 18:09:36.0381 (UTC) FILETIME=[D996D2D0:01CA36F8]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24039
+X-archive-position: 24040
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi David,
+Ralf Baechle wrote:
+> On Fri, May 08, 2009 at 12:52:10PM -0700, David Daney wrote:
+> 
+>> According to the MIPS64 Privileged Resource Architecture manual, only
+>> values of zero may be written to bits 8..10 of CP0 entryhi.  We need
+>> to add masking by ASID_MASK.
+> 
+> Yes, I've silently been relying on the hardware chopping off the excess
+> bits for no better reason that it saving an instruction.  One of the
+> functions you've touched is switch_mm() which is being used in context
+> switches and any changes to it will show up in context switching
+> benchmarks.
+> 
+> The patch you did (and along with that some older SMTC changes by Kevin)
+> can be done slightly more elegant because we already have:
+> 
+> #define cpu_asid(cpu, mm)       (cpu_context((cpu), (mm)) & ASID_MASK)
+> 
+> in <asm/mmu_context.h>.
+> 
+> We used to optimize the ASID managment code by code patching even, see
+> mmu_context.h in 78c388aed2b7184182c08428db1de6c872d815f5.
+> 
+>   Ralf
+> 
+> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+> 
 
-This is relevant for 2.6.32-rc0, thanks !
---
-From: Florian Fainelli <florian@openwrt.org>
-Subject: [PATCH] cpmac: fix compilation errors against undeclared BUS_ID_SIZE
+This is nice, but you never committed it.
 
-With the removal of BUS_ID_SIZE, cpmac was not fully
-converted to use MII_BUS_ID_SIZE as it ought to. This
-patch fixes the following cpmac build failure:
- CC      drivers/net/cpmac.o
-drivers/net/cpmac.c: In function 'cpmac_start_xmit':
-drivers/net/cpmac.c:563: warning: comparison of distinct pointer types lacks a cast
-drivers/net/cpmac.c: In function 'cpmac_probe':
-drivers/net/cpmac.c:1112: error: 'BUS_ID_SIZE' undeclared (first use in this function)
-drivers/net/cpmac.c:1112: error: (Each undeclared identifier is reported only once
-drivers/net/cpmac.c:1112: error: for each function it appears in.)
+David Daney.
 
-Reported-by: Ralf Baechle <ralf@linux-mips.org>
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
----
-diff --git a/drivers/net/cpmac.c b/drivers/net/cpmac.c
-index 3e3fab8..61f9da2 100644
---- a/drivers/net/cpmac.c
-+++ b/drivers/net/cpmac.c
-@@ -1109,7 +1109,7 @@ static int external_switch;
- static int __devinit cpmac_probe(struct platform_device *pdev)
- {
- 	int rc, phy_id;
--	char mdio_bus_id[BUS_ID_SIZE];
-+	char mdio_bus_id[MII_BUS_ID_SIZE];
- 	struct resource *mem;
- 	struct cpmac_priv *priv;
- 	struct net_device *dev;
-@@ -1118,7 +1118,7 @@ static int __devinit cpmac_probe(struct platform_device *pdev)
- 	pdata = pdev->dev.platform_data;
- 
- 	if (external_switch || dumb_switch) {
--		strncpy(mdio_bus_id, "0", BUS_ID_SIZE); /* fixed phys bus */
-+		strncpy(mdio_bus_id, "0", MII_BUS_ID_SIZE); /* fixed phys bus */
- 		phy_id = pdev->id;
- 	} else {
- 		for (phy_id = 0; phy_id < PHY_MAX_ADDR; phy_id++) {
-@@ -1126,7 +1126,7 @@ static int __devinit cpmac_probe(struct platform_device *pdev)
- 				continue;
- 			if (!cpmac_mii->phy_map[phy_id])
- 				continue;
--			strncpy(mdio_bus_id, cpmac_mii->id, BUS_ID_SIZE);
-+			strncpy(mdio_bus_id, cpmac_mii->id, MII_BUS_ID_SIZE);
- 			break;
- 		}
- 	}
-@@ -1167,7 +1167,7 @@ static int __devinit cpmac_probe(struct platform_device *pdev)
- 	priv->msg_enable = netif_msg_init(debug_level, 0xff);
- 	memcpy(dev->dev_addr, pdata->dev_addr, sizeof(dev->dev_addr));
- 
--	snprintf(priv->phy_name, BUS_ID_SIZE, PHY_ID_FMT, mdio_bus_id, phy_id);
-+	snprintf(priv->phy_name, MII_BUS_ID_SIZE, PHY_ID_FMT, mdio_bus_id, phy_id);
- 
- 	priv->phy = phy_connect(dev, priv->phy_name, &cpmac_adjust_link, 0,
- 						PHY_INTERFACE_MODE_MII);
+
+
+>  arch/mips/include/asm/mmu_context.h |   10 +++++-----
+>  1 files changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/mips/include/asm/mmu_context.h b/arch/mips/include/asm/mmu_context.h
+> index d7f3eb0..25a50fa 100644
+> --- a/arch/mips/include/asm/mmu_context.h
+> +++ b/arch/mips/include/asm/mmu_context.h
+> @@ -164,12 +164,12 @@ static inline void switch_mm(struct mm_struct *prev, struct mm_struct *next,
+>  	 * having ASID_MASK smaller than the hardware maximum,
+>  	 * make sure no "soft" bits become "hard"...
+>  	 */
+> -	write_c0_entryhi((read_c0_entryhi() & ~HW_ASID_MASK)
+> -			| (cpu_context(cpu, next) & ASID_MASK));
+> +	write_c0_entryhi((read_c0_entryhi() & ~HW_ASID_MASK) |
+> +			 cpu_asid(cpu, next));
+>  	ehb(); /* Make sure it propagates to TCStatus */
+>  	evpe(mtflags);
+>  #else
+> -	write_c0_entryhi(cpu_context(cpu, next));
+> +	write_c0_entryhi(cpu_asid(cpu, next));
+>  #endif /* CONFIG_MIPS_MT_SMTC */
+>  	TLBMISS_HANDLER_SETUP_PGD(next->pgd);
+>  
+> @@ -225,11 +225,11 @@ activate_mm(struct mm_struct *prev, struct mm_struct *next)
+>  	}
+>  	/* See comments for similar code above */
+>  	write_c0_entryhi((read_c0_entryhi() & ~HW_ASID_MASK) |
+> -	                 (cpu_context(cpu, next) & ASID_MASK));
+> +	                 cpu_asid(cpu, next));
+>  	ehb(); /* Make sure it propagates to TCStatus */
+>  	evpe(mtflags);
+>  #else
+> -	write_c0_entryhi(cpu_context(cpu, next));
+> +	write_c0_entryhi(cpu_asid(cpu, next));
+>  #endif /* CONFIG_MIPS_MT_SMTC */
+>  	TLBMISS_HANDLER_SETUP_PGD(next->pgd);
+>  
+> 

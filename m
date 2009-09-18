@@ -1,54 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Sep 2009 18:20:03 +0200 (CEST)
-Received: from h155.mvista.com ([63.81.120.155]:36406 "EHLO imap.sh.mvista.com"
-	rhost-flags-OK-FAIL-OK-FAIL) by ftp.linux-mips.org with ESMTP
-	id S2097367AbZIRQT4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 18 Sep 2009 18:19:56 +0200
-Received: from [192.168.11.189] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with ESMTP
-	id C773A3ECA; Fri, 18 Sep 2009 09:19:50 -0700 (PDT)
-Message-ID: <4AB3B3B9.1040804@ru.mvista.com>
-Date:	Fri, 18 Sep 2009 20:22:17 +0400
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Sep 2009 22:03:30 +0200 (CEST)
+Received: from mgw2.diku.dk ([130.225.96.92]:49470 "EHLO mgw2.diku.dk"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S2097378AbZIRUDX (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 18 Sep 2009 22:03:23 +0200
+Received: from localhost (localhost [127.0.0.1])
+	by mgw2.diku.dk (Postfix) with ESMTP id 6C20619BCCC;
+	Fri, 18 Sep 2009 22:03:18 +0200 (CEST)
+Received: from mgw2.diku.dk ([127.0.0.1])
+ by localhost (mgw2.diku.dk [127.0.0.1]) (amavisd-new, port 10024) with ESMTP
+ id 27430-11; Fri, 18 Sep 2009 22:03:17 +0200 (CEST)
+Received: from nhugin.diku.dk (nhugin.diku.dk [130.225.96.140])
+	by mgw2.diku.dk (Postfix) with ESMTP id 62C7D19BCC3;
+	Fri, 18 Sep 2009 22:03:17 +0200 (CEST)
+Received: from ask.diku.dk (ask.diku.dk [130.225.96.225])
+	by nhugin.diku.dk (Postfix) with ESMTP
+	id E57976DF835; Fri, 18 Sep 2009 22:01:20 +0200 (CEST)
+Received: by ask.diku.dk (Postfix, from userid 3767)
+	id 49EABF455; Fri, 18 Sep 2009 22:03:17 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by ask.diku.dk (Postfix) with ESMTP id 447E3F0AB;
+	Fri, 18 Sep 2009 22:03:17 +0200 (CEST)
+Date:	Fri, 18 Sep 2009 22:03:17 +0200 (CEST)
+From:	Julia Lawall <julia@diku.dk>
+To:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Subject: question about arch/mips/kernel/smtc.c
+Message-ID: <Pine.LNX.4.64.0909182202140.4238@ask.diku.dk>
 MIME-Version: 1.0
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	ralf.roesch@rw-gmbh.de, linux-mips@linux-mips.org,
-	Julia Lawall <julia@diku.dk>
-Subject: Re: [PATCH] MIPS: TXx9: Fix error handling / Fix for noenexisting
- gpio_remove.
-References: <1253080880-11123-1-git-send-email-ralf.roesch@rw-gmbh.de> <20090917.225259.173376281.anemo@mba.ocn.ne.jp>
-In-Reply-To: <20090917.225259.173376281.anemo@mba.ocn.ne.jp>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: amavisd-new at diku.dk
+Return-Path: <julia@diku.dk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24052
+X-archive-position: 24053
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: julia@diku.dk
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+The file arch/mips/kernel/smtc.c contains:
 
-Atsushi Nemoto wrote:
+static struct irqaction irq_ipi = {
+        .handler        = ipi_interrupt,
+        .flags          = IRQF_DISABLED,
+        .name           = "SMTC_IPI",
+        .flags          = IRQF_PERCPU
+};
 
->>error was introduced by commit 0385d1f3d394c6814be0b165c153fc3fc254469a
+Is it intentional that there are two definitions of the flags field?
 
-> Thanks, this patch should be holded into the original commit before
-> mainlining.  The result should be same as Julia's revised patch.
-
-> I don't mind ether way, I just hope keeping bisectability on mainline.
-> Is it too late, (yet another) Ralf ?
-
-    Well, Ralf B. has already committed Julia's broken patch at 9/14.
-
-> ---
-> Atsushi Nemoto
-
-WBR, Sergei
+julia

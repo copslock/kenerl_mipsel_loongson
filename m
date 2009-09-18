@@ -1,25 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Sep 2009 13:05:17 +0200 (CEST)
-Received: from smtp6-g21.free.fr ([212.27.42.6]:44595 "EHLO smtp6-g21.free.fr"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 18 Sep 2009 13:21:46 +0200 (CEST)
+Received: from smtp6-g21.free.fr ([212.27.42.6]:42393 "EHLO smtp6-g21.free.fr"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1492728AbZIRLFL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 18 Sep 2009 13:05:11 +0200
+	id S1492865AbZIRLVk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 18 Sep 2009 13:21:40 +0200
 Received: from smtp6-g21.free.fr (localhost [127.0.0.1])
-	by smtp6-g21.free.fr (Postfix) with ESMTP id 23325E08104;
-	Fri, 18 Sep 2009 13:05:01 +0200 (CEST)
+	by smtp6-g21.free.fr (Postfix) with ESMTP id 0E12EE08150;
+	Fri, 18 Sep 2009 13:21:34 +0200 (CEST)
 Received: from [213.228.1.107] (sakura.staff.proxad.net [213.228.1.107])
-	by smtp6-g21.free.fr (Postfix) with ESMTP id 35950E08048;
-	Fri, 18 Sep 2009 13:04:59 +0200 (CEST)
-Subject: [PATCH] MIPS: BCM63xx: Add serial driver for bcm63xx integrated
- UART.
+	by smtp6-g21.free.fr (Postfix) with ESMTP id 29F77E08089;
+	Fri, 18 Sep 2009 13:21:32 +0200 (CEST)
+Subject: [PATCH] MIPS: BCM63xx: Add PCMCIA & Cardbus support.
 From:	Maxime Bizon <mbizon@freebox.fr>
 Reply-To: mbizon@freebox.fr
-To:	Greg Kroah-Hartman <gregkh@suse.de>
-Cc:	linux-serial@vger.kernel.org, linux-mips@linux-mips.org,
+To:	Wolfram Sang <w.sang@pengutronix.de>,
+	Greg Kroah-Hartman <gregkh@suse.de>
+Cc:	linux-pcmcia@lists.infradead.org, linux-mips@linux-mips.org,
 	Ralf Baechle <ralf@linux-mips.org>
 Content-Type: text/plain
 Organization: Freebox
-Date:	Fri, 18 Sep 2009 13:04:58 +0200
-Message-Id: <1253271898.1627.272.camel@sakura.staff.proxad.net>
+Date:	Fri, 18 Sep 2009 13:21:31 +0200
+Message-Id: <1253272891.1627.284.camel@sakura.staff.proxad.net>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.26.1 
 Content-Transfer-Encoding: 7bit
@@ -27,7 +27,7 @@ Return-Path: <mbizon@freebox.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24046
+X-archive-position: 24047
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,25 +36,23 @@ Precedence: bulk
 X-list: linux-mips
 
 
-Hi Greg,
+Hi Wolfram & Greg,
 
-This is a serial driver for the bcm63xx mips SOCs, it was already posted
-twice:
-
-one year ago: http://marc.info/?l=linux-serial&m=122438266322439&w=2
-three months ago: http://lkml.org/lkml/2009/7/1/370
-
-but got no review or ack.
+It seems Dominik is busy, and you're the one acking pcmcia patch at the
+moment so I'm sending this to you.
 
 
-Linus merged the SOC support patch from Ralf tree yesterday, but without
-serial support.
+This is a pcmcia/cardbus driver for the bcm63xx mips SOCs, it was
+already posted twice:
 
-Could you please have a look at it ? Is it ok if it goes upstream
-through Ralf tree ?
+last year: http://lists.infradead.org/pipermail/linux-pcmcia/2008-October/005942.html
+three months ago: http://lists.infradead.org/pipermail/linux-pcmcia/2009-July/006196.html
+
+and got no review.
+
+Could you please have a look at it ?
 
 Thanks !
-
 
 
 Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
@@ -62,43 +60,44 @@ Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 ---
 
 diff --git a/arch/mips/bcm63xx/Makefile b/arch/mips/bcm63xx/Makefile
-index aaa585c..cff75de 100644
+index cff75de..c146d1e 100644
 --- a/arch/mips/bcm63xx/Makefile
 +++ b/arch/mips/bcm63xx/Makefile
 @@ -1,5 +1,5 @@
  obj-y		+= clk.o cpu.o cs.o gpio.o irq.o prom.o setup.o timer.o \
--		   dev-dsp.o dev-enet.o
-+		   dev-dsp.o dev-enet.o dev-uart.o
+-		   dev-dsp.o dev-enet.o dev-uart.o
++		   dev-dsp.o dev-enet.o dev-pcmcia.o dev-uart.o
  obj-$(CONFIG_EARLY_PRINTK)	+= early_printk.o
  
  obj-y		+= boards/
 diff --git a/arch/mips/bcm63xx/boards/board_bcm963xx.c b/arch/mips/bcm63xx/boards/board_bcm963xx.c
-index fd77f54..d3fdf27 100644
+index d3fdf27..e3e6205 100644
 --- a/arch/mips/bcm63xx/boards/board_bcm963xx.c
 +++ b/arch/mips/bcm63xx/boards/board_bcm963xx.c
 @@ -24,6 +24,7 @@
  #include <bcm63xx_dev_pci.h>
  #include <bcm63xx_dev_enet.h>
  #include <bcm63xx_dev_dsp.h>
-+#include <bcm63xx_dev_uart.h>
++#include <bcm63xx_dev_pcmcia.h>
+ #include <bcm63xx_dev_uart.h>
  #include <board_bcm963xx.h>
  
- #define PFX	"board_bcm963xx: "
-@@ -793,6 +794,8 @@ int __init board_register_devices(void)
- {
- 	u32 val;
+@@ -796,6 +797,9 @@ int __init board_register_devices(void)
  
-+	bcm63xx_uart_register();
+ 	bcm63xx_uart_register();
+ 
++	if (board.has_pccard)
++		bcm63xx_pcmcia_register();
 +
  	if (board.has_enet0 &&
  	    !board_get_mac_address(board.enet0.mac_addr))
  		bcm63xx_enet_register(0, &board.enet0);
-diff --git a/arch/mips/bcm63xx/dev-uart.c b/arch/mips/bcm63xx/dev-uart.c
+diff --git a/arch/mips/bcm63xx/dev-pcmcia.c b/arch/mips/bcm63xx/dev-pcmcia.c
 new file mode 100644
-index 0000000..5f3d89c
+index 0000000..40ec4bc
 --- /dev/null
-+++ b/arch/mips/bcm63xx/dev-uart.c
-@@ -0,0 +1,41 @@
++++ b/arch/mips/bcm63xx/dev-pcmcia.c
+@@ -0,0 +1,135 @@
 +/*
 + * This file is subject to the terms and conditions of the GNU General Public
 + * License.  See the file "COPYING" in the main directory of this archive
@@ -109,999 +108,791 @@ index 0000000..5f3d89c
 +
 +#include <linux/init.h>
 +#include <linux/kernel.h>
++#include <asm/bootinfo.h>
 +#include <linux/platform_device.h>
++#include <bcm63xx_cs.h>
 +#include <bcm63xx_cpu.h>
-+#include <bcm63xx_dev_uart.h>
++#include <bcm63xx_dev_pcmcia.h>
++#include <bcm63xx_io.h>
++#include <bcm63xx_regs.h>
 +
-+static struct resource uart_resources[] = {
++static struct resource pcmcia_resources[] = {
++	/* pcmcia registers */
 +	{
 +		.start		= -1, /* filled at runtime */
 +		.end		= -1, /* filled at runtime */
 +		.flags		= IORESOURCE_MEM,
 +	},
++
++	/* pcmcia memory zone resources */
++	{
++		.start		= BCM_PCMCIA_COMMON_BASE_PA,
++		.end		= BCM_PCMCIA_COMMON_END_PA,
++		.flags		= IORESOURCE_MEM,
++	},
++	{
++		.start		= BCM_PCMCIA_ATTR_BASE_PA,
++		.end		= BCM_PCMCIA_ATTR_END_PA,
++		.flags		= IORESOURCE_MEM,
++	},
++	{
++		.start		= BCM_PCMCIA_IO_BASE_PA,
++		.end		= BCM_PCMCIA_IO_END_PA,
++		.flags		= IORESOURCE_MEM,
++	},
++
++	/* PCMCIA irq */
 +	{
 +		.start		= -1, /* filled at runtime */
 +		.flags		= IORESOURCE_IRQ,
 +	},
++
++	/* declare PCMCIA IO resource also */
++	{
++		.start		= BCM_PCMCIA_IO_BASE_PA,
++		.end		= BCM_PCMCIA_IO_END_PA,
++		.flags		= IORESOURCE_IO,
++	},
 +};
 +
-+static struct platform_device bcm63xx_uart_device = {
-+	.name		= "bcm63xx_uart",
++static struct bcm63xx_pcmcia_platform_data pd;
++
++static struct platform_device bcm63xx_pcmcia_device = {
++	.name		= "bcm63xx_pcmcia",
 +	.id		= 0,
-+	.num_resources	= ARRAY_SIZE(uart_resources),
-+	.resource	= uart_resources,
++	.num_resources	= ARRAY_SIZE(pcmcia_resources),
++	.resource	= pcmcia_resources,
++	.dev		= {
++		.platform_data = &pd,
++	},
 +};
 +
-+int __init bcm63xx_uart_register(void)
++static int __init config_pcmcia_cs(unsigned int cs,
++				   u32 base, unsigned int size)
 +{
-+	uart_resources[0].start = bcm63xx_regset_address(RSET_UART0);
-+	uart_resources[0].end = uart_resources[0].start;
-+	uart_resources[0].end += RSET_UART_SIZE - 1;
-+	uart_resources[1].start = bcm63xx_get_irq_number(IRQ_UART0);
-+	return platform_device_register(&bcm63xx_uart_device);
++	int ret;
++
++	ret = bcm63xx_set_cs_status(cs, 0);
++	if (!ret)
++		ret = bcm63xx_set_cs_base(cs, base, size);
++	if (!ret)
++		ret = bcm63xx_set_cs_status(cs, 1);
++	return ret;
 +}
-diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_uart.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_uart.h
++
++static const __initdata unsigned int pcmcia_cs[3][3] = {
++	/* cs, base address, size */
++	{ MPI_CS_PCMCIA_COMMON, BCM_PCMCIA_COMMON_BASE_PA,
++	  BCM_PCMCIA_COMMON_SIZE },
++
++	{ MPI_CS_PCMCIA_ATTR, BCM_PCMCIA_ATTR_BASE_PA,
++	  BCM_PCMCIA_ATTR_SIZE },
++
++	{ MPI_CS_PCMCIA_IO, BCM_PCMCIA_IO_BASE_PA,
++	  BCM_PCMCIA_IO_SIZE },
++};
++
++int __init bcm63xx_pcmcia_register(void)
++{
++	int ret, i;
++
++	if (!BCMCPU_IS_6348() && !BCMCPU_IS_6358())
++		return 0;
++
++	/* use correct pcmcia ready gpio depending on processor */
++	switch (bcm63xx_get_cpu_id()) {
++	case BCM6348_CPU_ID:
++		pd.ready_gpio = 22;
++		break;
++
++	case BCM6358_CPU_ID:
++		pd.ready_gpio = 22;
++		break;
++
++	default:
++		return -ENODEV;
++	}
++
++	pcmcia_resources[0].start = bcm63xx_regset_address(RSET_PCMCIA);
++	pcmcia_resources[0].end = pcmcia_resources[0].start;
++	pcmcia_resources[0].end += RSET_PCMCIA_SIZE - 1;
++	pcmcia_resources[4].start = bcm63xx_get_irq_number(IRQ_PCMCIA);
++
++	/* configure pcmcia chip selects */
++	for (i = 0; i < 3; i++) {
++		ret = config_pcmcia_cs(pcmcia_cs[i][0],
++				       pcmcia_cs[i][1],
++				       pcmcia_cs[i][2]);
++		if (ret)
++			goto out_err;
++	}
++
++	return platform_device_register(&bcm63xx_pcmcia_device);
++
++out_err:
++	printk(KERN_ERR "unable to set pcmcia chip select");
++	return ret;
++}
+diff --git a/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_pcmcia.h b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_pcmcia.h
 new file mode 100644
-index 0000000..bf348f5
+index 0000000..2beb396
 --- /dev/null
-+++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_uart.h
-@@ -0,0 +1,6 @@
-+#ifndef BCM63XX_DEV_UART_H_
-+#define BCM63XX_DEV_UART_H_
++++ b/arch/mips/include/asm/mach-bcm63xx/bcm63xx_dev_pcmcia.h
+@@ -0,0 +1,13 @@
++#ifndef BCM63XX_DEV_PCMCIA_H_
++#define BCM63XX_DEV_PCMCIA_H_
 +
-+int bcm63xx_uart_register(void);
++/*
++ * PCMCIA driver platform data
++ */
++struct bcm63xx_pcmcia_platform_data {
++	unsigned int ready_gpio;
++};
 +
-+#endif /* BCM63XX_DEV_UART_H_ */
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index 03422ce..e707120 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -1458,4 +1458,23 @@ config SERIAL_TIMBERDALE
- 	---help---
- 	Add support for UART controller on timberdale.
++int bcm63xx_pcmcia_register(void);
++
++#endif /* BCM63XX_DEV_PCMCIA_H_ */
+diff --git a/drivers/pcmcia/Kconfig b/drivers/pcmcia/Kconfig
+index fbf965b..17f38a7 100644
+--- a/drivers/pcmcia/Kconfig
++++ b/drivers/pcmcia/Kconfig
+@@ -192,6 +192,10 @@ config PCMCIA_AU1X00
+ 	tristate "Au1x00 pcmcia support"
+ 	depends on SOC_AU1X00 && PCMCIA
  
-+config SERIAL_BCM63XX
-+	tristate "bcm63xx serial port support"
-+	select SERIAL_CORE
-+	depends on BCM63XX
-+	help
-+	  If you have a bcm63xx CPU, you can enable its onboard
-+	  serial port by enabling this options.
++config PCMCIA_BCM63XX
++	tristate "bcm63xx pcmcia support"
++	depends on BCM63XX && PCMCIA
 +
-+          To compile this driver as a module, choose M here: the
-+          module will be called bcm963xx_uart.
-+
-+config SERIAL_BCM63XX_CONSOLE
-+	bool "Console on bcm63xx serial port"
-+	depends on SERIAL_BCM63XX=y
-+	select SERIAL_CORE_CONSOLE
-+	help
-+	  If you have enabled the serial port on the bcm63xx CPU
-+	  you can make it the console by answering Y to this option.
-+
- endmenu
-diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-index 97f6fcc..d21d5dd 100644
---- a/drivers/serial/Makefile
-+++ b/drivers/serial/Makefile
-@@ -34,6 +34,7 @@ obj-$(CONFIG_SERIAL_CLPS711X) += clps711x.o
- obj-$(CONFIG_SERIAL_PXA) += pxa.o
- obj-$(CONFIG_SERIAL_PNX8XXX) += pnx8xxx_uart.o
- obj-$(CONFIG_SERIAL_SA1100) += sa1100.o
-+obj-$(CONFIG_SERIAL_BCM63XX) += bcm63xx_uart.o
- obj-$(CONFIG_SERIAL_BFIN) += bfin_5xx.o
- obj-$(CONFIG_SERIAL_BFIN_SPORT) += bfin_sport_uart.o
- obj-$(CONFIG_SERIAL_SAMSUNG) += samsung.o
-diff --git a/drivers/serial/bcm63xx_uart.c b/drivers/serial/bcm63xx_uart.c
+ config PCMCIA_SA1100
+ 	tristate "SA1100 support"
+ 	depends on ARM && ARCH_SA1100 && PCMCIA
+diff --git a/drivers/pcmcia/Makefile b/drivers/pcmcia/Makefile
+index 047394d..1ee57f0 100644
+--- a/drivers/pcmcia/Makefile
++++ b/drivers/pcmcia/Makefile
+@@ -27,6 +27,7 @@ obj-$(CONFIG_PCMCIA_SA1111)			+= sa11xx_core.o sa1111_cs.o
+ obj-$(CONFIG_M32R_PCC)				+= m32r_pcc.o
+ obj-$(CONFIG_M32R_CFC)				+= m32r_cfc.o
+ obj-$(CONFIG_PCMCIA_AU1X00)			+= au1x00_ss.o
++obj-$(CONFIG_PCMCIA_BCM63XX)			+= bcm63xx_pcmcia.o
+ obj-$(CONFIG_PCMCIA_VRC4171)			+= vrc4171_card.o
+ obj-$(CONFIG_PCMCIA_VRC4173)			+= vrc4173_cardu.o
+ obj-$(CONFIG_OMAP_CF)				+= omap_cf.o
+diff --git a/drivers/pcmcia/bcm63xx_pcmcia.c b/drivers/pcmcia/bcm63xx_pcmcia.c
 new file mode 100644
-index 0000000..beddaa6
+index 0000000..2981aff
 --- /dev/null
-+++ b/drivers/serial/bcm63xx_uart.c
-@@ -0,0 +1,890 @@
++++ b/drivers/pcmcia/bcm63xx_pcmcia.c
+@@ -0,0 +1,537 @@
 +/*
 + * This file is subject to the terms and conditions of the GNU General Public
 + * License.  See the file "COPYING" in the main directory of this archive
 + * for more details.
 + *
-+ * Derived from many drivers using generic_serial interface.
-+ *
 + * Copyright (C) 2008 Maxime Bizon <mbizon@freebox.fr>
-+ *
-+ *  Serial driver for BCM63xx integrated UART.
-+ *
-+ * Hardware flow control was _not_ tested since I only have RX/TX on
-+ * my board.
 + */
-+
-+#if defined(CONFIG_SERIAL_BCM63XX_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ)
-+#define SUPPORT_SYSRQ
-+#endif
 +
 +#include <linux/kernel.h>
-+#include <linux/platform_device.h>
-+#include <linux/init.h>
-+#include <linux/delay.h>
 +#include <linux/module.h>
-+#include <linux/console.h>
-+#include <linux/clk.h>
-+#include <linux/tty.h>
-+#include <linux/tty_flip.h>
-+#include <linux/sysrq.h>
-+#include <linux/serial.h>
-+#include <linux/serial_core.h>
++#include <linux/ioport.h>
++#include <linux/timer.h>
++#include <linux/platform_device.h>
++#include <linux/delay.h>
++#include <linux/pci.h>
++#include <linux/gpio.h>
 +
-+#include <bcm63xx_clk.h>
-+#include <bcm63xx_irq.h>
 +#include <bcm63xx_regs.h>
 +#include <bcm63xx_io.h>
++#include "bcm63xx_pcmcia.h"
 +
-+#define BCM63XX_NR_UARTS	1
++#define PFX	"bcm63xx_pcmcia: "
 +
-+static struct uart_port ports[BCM63XX_NR_UARTS];
-+
-+/*
-+ * rx interrupt mask / stat
-+ *
-+ * mask:
-+ *  - rx fifo full
-+ *  - rx fifo above threshold
-+ *  - rx fifo not empty for too long
-+ */
-+#define UART_RX_INT_MASK	(UART_IR_MASK(UART_IR_RXOVER) |		\
-+				UART_IR_MASK(UART_IR_RXTHRESH) |	\
-+				UART_IR_MASK(UART_IR_RXTIMEOUT))
-+
-+#define UART_RX_INT_STAT	(UART_IR_STAT(UART_IR_RXOVER) |		\
-+				UART_IR_STAT(UART_IR_RXTHRESH) |	\
-+				UART_IR_STAT(UART_IR_RXTIMEOUT))
++#ifdef CONFIG_CARDBUS
++/* if cardbus is used, platform device needs reference to actual pci
++ * device */
++static struct pci_dev *bcm63xx_cb_dev;
++#endif
 +
 +/*
-+ * tx interrupt mask / stat
-+ *
-+ * mask:
-+ * - tx fifo empty
-+ * - tx fifo below threshold
++ * read/write helper for pcmcia regs
 + */
-+#define UART_TX_INT_MASK	(UART_IR_MASK(UART_IR_TXEMPTY) |	\
-+				UART_IR_MASK(UART_IR_TXTRESH))
-+
-+#define UART_TX_INT_STAT	(UART_IR_STAT(UART_IR_TXEMPTY) |	\
-+				UART_IR_STAT(UART_IR_TXTRESH))
-+
-+/*
-+ * external input interrupt
-+ *
-+ * mask: any edge on CTS, DCD
-+ */
-+#define UART_EXTINP_INT_MASK	(UART_EXTINP_IRMASK(UART_EXTINP_IR_CTS) | \
-+				 UART_EXTINP_IRMASK(UART_EXTINP_IR_DCD))
-+
-+/*
-+ * handy uart register accessor
-+ */
-+static inline unsigned int bcm_uart_readl(struct uart_port *port,
-+					 unsigned int offset)
++static inline u32 pcmcia_readl(struct bcm63xx_pcmcia_socket *skt, u32 off)
 +{
-+	return bcm_readl(port->membase + offset);
++	return bcm_readl(skt->base + off);
 +}
 +
-+static inline void bcm_uart_writel(struct uart_port *port,
-+				  unsigned int value, unsigned int offset)
++static inline void pcmcia_writel(struct bcm63xx_pcmcia_socket *skt,
++				 u32 val, u32 off)
 +{
-+	bcm_writel(value, port->membase + offset);
++	bcm_writel(val, skt->base + off);
 +}
 +
 +/*
-+ * serial core request to check if uart tx fifo is empty
++ * (Re-)Initialise the socket, turning on status interrupts and PCMCIA
++ * bus.  This must wait for power to stabilise so that the card status
++ * signals report correctly.
 + */
-+static unsigned int bcm_uart_tx_empty(struct uart_port *port)
++static int bcm63xx_pcmcia_sock_init(struct pcmcia_socket *sock)
 +{
-+	unsigned int val;
-+
-+	val = bcm_uart_readl(port, UART_IR_REG);
-+	return (val & UART_IR_STAT(UART_IR_TXEMPTY)) ? 1 : 0;
++	struct bcm63xx_pcmcia_socket *skt;
++	skt = sock->driver_data;
++	return 0;
 +}
 +
 +/*
-+ * serial core request to set RTS and DTR pin state and loopback mode
++ * Remove power on the socket, disable IRQs from the card.
++ * Turn off status interrupts, and disable the PCMCIA bus.
 + */
-+static void bcm_uart_set_mctrl(struct uart_port *port, unsigned int mctrl)
++static int bcm63xx_pcmcia_suspend(struct pcmcia_socket *sock)
 +{
-+	unsigned int val;
-+
-+	val = bcm_uart_readl(port, UART_MCTL_REG);
-+	val &= ~(UART_MCTL_DTR_MASK | UART_MCTL_RTS_MASK);
-+	/* invert of written value is reflected on the pin */
-+	if (!(mctrl & TIOCM_DTR))
-+		val |= UART_MCTL_DTR_MASK;
-+	if (!(mctrl & TIOCM_RTS))
-+		val |= UART_MCTL_RTS_MASK;
-+	bcm_uart_writel(port, val, UART_MCTL_REG);
-+
-+	val = bcm_uart_readl(port, UART_CTL_REG);
-+	if (mctrl & TIOCM_LOOP)
-+		val |= UART_CTL_LOOPBACK_MASK;
-+	else
-+		val &= ~UART_CTL_LOOPBACK_MASK;
-+	bcm_uart_writel(port, val, UART_CTL_REG);
++	struct bcm63xx_pcmcia_socket *skt;
++	skt = sock->driver_data;
++	return 0;
 +}
 +
 +/*
-+ * serial core request to return RI, CTS, DCD and DSR pin state
++ * Implements the set_socket() operation for the in-kernel PCMCIA
++ * service (formerly SS_SetSocket in Card Services). We more or
++ * less punt all of this work and let the kernel handle the details
++ * of power configuration, reset, &c. We also record the value of
++ * `state' in order to regurgitate it to the PCMCIA core later.
 + */
-+static unsigned int bcm_uart_get_mctrl(struct uart_port *port)
++static int bcm63xx_pcmcia_set_socket(struct pcmcia_socket *sock,
++				     socket_state_t *state)
 +{
-+	unsigned int val, mctrl;
-+
-+	mctrl = 0;
-+	val = bcm_uart_readl(port, UART_EXTINP_REG);
-+	if (val & UART_EXTINP_RI_MASK)
-+		mctrl |= TIOCM_RI;
-+	if (val & UART_EXTINP_CTS_MASK)
-+		mctrl |= TIOCM_CTS;
-+	if (val & UART_EXTINP_DCD_MASK)
-+		mctrl |= TIOCM_CD;
-+	if (val & UART_EXTINP_DSR_MASK)
-+		mctrl |= TIOCM_DSR;
-+	return mctrl;
-+}
-+
-+/*
-+ * serial core request to disable tx ASAP (used for flow control)
-+ */
-+static void bcm_uart_stop_tx(struct uart_port *port)
-+{
-+	unsigned int val;
-+
-+	val = bcm_uart_readl(port, UART_CTL_REG);
-+	val &= ~(UART_CTL_TXEN_MASK);
-+	bcm_uart_writel(port, val, UART_CTL_REG);
-+
-+	val = bcm_uart_readl(port, UART_IR_REG);
-+	val &= ~UART_TX_INT_MASK;
-+	bcm_uart_writel(port, val, UART_IR_REG);
-+}
-+
-+/*
-+ * serial core request to (re)enable tx
-+ */
-+static void bcm_uart_start_tx(struct uart_port *port)
-+{
-+	unsigned int val;
-+
-+	val = bcm_uart_readl(port, UART_IR_REG);
-+	val |= UART_TX_INT_MASK;
-+	bcm_uart_writel(port, val, UART_IR_REG);
-+
-+	val = bcm_uart_readl(port, UART_CTL_REG);
-+	val |= UART_CTL_TXEN_MASK;
-+	bcm_uart_writel(port, val, UART_CTL_REG);
-+}
-+
-+/*
-+ * serial core request to stop rx, called before port shutdown
-+ */
-+static void bcm_uart_stop_rx(struct uart_port *port)
-+{
-+	unsigned int val;
-+
-+	val = bcm_uart_readl(port, UART_IR_REG);
-+	val &= ~UART_RX_INT_MASK;
-+	bcm_uart_writel(port, val, UART_IR_REG);
-+}
-+
-+/*
-+ * serial core request to enable modem status interrupt reporting
-+ */
-+static void bcm_uart_enable_ms(struct uart_port *port)
-+{
-+	unsigned int val;
-+
-+	val = bcm_uart_readl(port, UART_IR_REG);
-+	val |= UART_IR_MASK(UART_IR_EXTIP);
-+	bcm_uart_writel(port, val, UART_IR_REG);
-+}
-+
-+/*
-+ * serial core request to start/stop emitting break char
-+ */
-+static void bcm_uart_break_ctl(struct uart_port *port, int ctl)
-+{
++	struct bcm63xx_pcmcia_socket *skt;
 +	unsigned long flags;
-+	unsigned int val;
++	u32 val;
 +
-+	spin_lock_irqsave(&port->lock, flags);
++	skt = sock->driver_data;
 +
-+	val = bcm_uart_readl(port, UART_CTL_REG);
-+	if (ctl)
-+		val |= UART_CTL_XMITBRK_MASK;
++	spin_lock_irqsave(&skt->lock, flags);
++
++	/* apply requested socket power */
++	/* FIXME: hardware can't do this */
++
++	/* apply socket reset */
++	val = pcmcia_readl(skt, PCMCIA_C1_REG);
++	if (state->flags & SS_RESET)
++		val |= PCMCIA_C1_RESET_MASK;
 +	else
-+		val &= ~UART_CTL_XMITBRK_MASK;
-+	bcm_uart_writel(port, val, UART_CTL_REG);
++		val &= ~PCMCIA_C1_RESET_MASK;
 +
-+	spin_unlock_irqrestore(&port->lock, flags);
++	/* reverse reset logic for cardbus card */
++	if (skt->card_detected && (skt->card_type & CARD_CARDBUS))
++		val ^= PCMCIA_C1_RESET_MASK;
++
++	pcmcia_writel(skt, val, PCMCIA_C1_REG);
++
++	/* keep requested state for event reporting */
++	skt->requested_state = *state;
++
++	spin_unlock_irqrestore(&skt->lock, flags);
++
++	return 0;
 +}
 +
 +/*
-+ * return port type in string format
++ * identity cardtype from VS[12] input, CD[12] input while only VS2 is
++ * floating, and CD[12] input while only VS1 is floating
 + */
-+static const char *bcm_uart_type(struct uart_port *port)
-+{
-+	return (port->type == PORT_BCM63XX) ? "bcm63xx_uart" : NULL;
-+}
++enum {
++	IN_VS1 = (1 << 0),
++	IN_VS2 = (1 << 1),
++	IN_CD1_VS2H = (1 << 2),
++	IN_CD2_VS2H = (1 << 3),
++	IN_CD1_VS1H = (1 << 4),
++	IN_CD2_VS1H = (1 << 5),
++};
++
++static const u8 vscd_to_cardtype[] = {
++
++	/* VS1 float, VS2 float */
++	[IN_VS1 | IN_VS2] = (CARD_PCCARD | CARD_5V),
++
++	/* VS1 grounded, VS2 float */
++	[IN_VS2] = (CARD_PCCARD | CARD_5V | CARD_3V),
++
++	/* VS1 grounded, VS2 grounded */
++	[0] = (CARD_PCCARD | CARD_5V | CARD_3V | CARD_XV),
++
++	/* VS1 tied to CD1, VS2 float */
++	[IN_VS1 | IN_VS2 | IN_CD1_VS1H] = (CARD_CARDBUS | CARD_3V),
++
++	/* VS1 grounded, VS2 tied to CD2 */
++	[IN_VS2 | IN_CD2_VS2H] = (CARD_CARDBUS | CARD_3V | CARD_XV),
++
++	/* VS1 tied to CD2, VS2 grounded */
++	[IN_VS1 | IN_CD2_VS1H] = (CARD_CARDBUS | CARD_3V | CARD_XV | CARD_YV),
++
++	/* VS1 float, VS2 grounded */
++	[IN_VS1] = (CARD_PCCARD | CARD_XV),
++
++	/* VS1 float, VS2 tied to CD2 */
++	[IN_VS1 | IN_VS2 | IN_CD2_VS2H] = (CARD_CARDBUS | CARD_3V),
++
++	/* VS1 float, VS2 tied to CD1 */
++	[IN_VS1 | IN_VS2 | IN_CD1_VS2H] = (CARD_CARDBUS | CARD_XV | CARD_YV),
++
++	/* VS1 tied to CD2, VS2 float */
++	[IN_VS1 | IN_VS2 | IN_CD2_VS1H] = (CARD_CARDBUS | CARD_YV),
++
++	/* VS2 grounded, VS1 is tied to CD1, CD2 is grounded */
++	[IN_VS1 | IN_CD1_VS1H] = 0, /* ignore cardbay */
++};
 +
 +/*
-+ * read all chars in rx fifo and send them to core
++ * poll hardware to check card insertion status
 + */
-+static void bcm_uart_do_rx(struct uart_port *port)
++static unsigned int __get_socket_status(struct bcm63xx_pcmcia_socket *skt)
 +{
-+	struct tty_struct *tty;
-+	unsigned int max_count;
++	unsigned int stat;
++	u32 val;
 +
-+	/* limit number of char read in interrupt, should not be
-+	 * higher than fifo size anyway since we're much faster than
-+	 * serial port */
-+	max_count = 32;
-+	tty = port->info->port.tty;
-+	do {
-+		unsigned int iestat, c, cstat;
-+		char flag;
++	stat = 0;
 +
-+		/* get overrun/fifo empty information from ier
-+		 * register */
-+		iestat = bcm_uart_readl(port, UART_IR_REG);
-+		if (!(iestat & UART_IR_STAT(UART_IR_RXNOTEMPTY)))
-+			break;
++	/* check CD for card presence */
++	val = pcmcia_readl(skt, PCMCIA_C1_REG);
 +
-+		cstat = c = bcm_uart_readl(port, UART_FIFO_REG);
-+		port->icount.rx++;
-+		flag = TTY_NORMAL;
-+		c &= 0xff;
++	if (!(val & PCMCIA_C1_CD1_MASK) && !(val & PCMCIA_C1_CD2_MASK))
++		stat |= SS_DETECT;
 +
-+		if (unlikely((cstat & UART_FIFO_ANYERR_MASK))) {
-+			/* do stats first */
-+			if (cstat & UART_FIFO_BRKDET_MASK) {
-+				port->icount.brk++;
-+				if (uart_handle_break(port))
-+					continue;
-+			}
++	/* if new insertion, detect cardtype */
++	if ((stat & SS_DETECT) && !skt->card_detected) {
++		unsigned int stat = 0;
 +
-+			if (cstat & UART_FIFO_PARERR_MASK)
-+				port->icount.parity++;
-+			if (cstat & UART_FIFO_FRAMEERR_MASK)
-+				port->icount.frame++;
++		/* float VS1, float VS2 */
++		val |= PCMCIA_C1_VS1OE_MASK;
++		val |= PCMCIA_C1_VS2OE_MASK;
++		pcmcia_writel(skt, val, PCMCIA_C1_REG);
 +
-+			/* update flag wrt read_status_mask */
-+			cstat &= port->read_status_mask;
-+			if (cstat & UART_FIFO_BRKDET_MASK)
-+				flag = TTY_BREAK;
-+			if (cstat & UART_FIFO_FRAMEERR_MASK)
-+				flag = TTY_FRAME;
-+			if (cstat & UART_FIFO_PARERR_MASK)
-+				flag = TTY_PARITY;
-+		}
++		/* wait for output to stabilize and read VS[12] */
++		udelay(10);
++		val = pcmcia_readl(skt, PCMCIA_C1_REG);
++		stat |= (val & PCMCIA_C1_VS1_MASK) ? IN_VS1 : 0;
++		stat |= (val & PCMCIA_C1_VS2_MASK) ? IN_VS2 : 0;
 +
-+		if (uart_handle_sysrq_char(port, c))
-+			continue;
++		/* drive VS1 low, float VS2 */
++		val &= ~PCMCIA_C1_VS1OE_MASK;
++		val |= PCMCIA_C1_VS2OE_MASK;
++		pcmcia_writel(skt, val, PCMCIA_C1_REG);
 +
-+		if (unlikely(iestat & UART_IR_STAT(UART_IR_RXOVER))) {
-+			port->icount.overrun++;
-+			tty_insert_flip_char(tty, 0, TTY_OVERRUN);
-+		}
++		/* wait for output to stabilize and read CD[12] */
++		udelay(10);
++		val = pcmcia_readl(skt, PCMCIA_C1_REG);
++		stat |= (val & PCMCIA_C1_CD1_MASK) ? IN_CD1_VS2H : 0;
++		stat |= (val & PCMCIA_C1_CD2_MASK) ? IN_CD2_VS2H : 0;
 +
-+		if ((cstat & port->ignore_status_mask) == 0)
-+			tty_insert_flip_char(tty, c, flag);
++		/* float VS1, drive VS2 low */
++		val |= PCMCIA_C1_VS1OE_MASK;
++		val &= ~PCMCIA_C1_VS2OE_MASK;
++		pcmcia_writel(skt, val, PCMCIA_C1_REG);
 +
-+	} while (--max_count);
++		/* wait for output to stabilize and read CD[12] */
++		udelay(10);
++		val = pcmcia_readl(skt, PCMCIA_C1_REG);
++		stat |= (val & PCMCIA_C1_CD1_MASK) ? IN_CD1_VS1H : 0;
++		stat |= (val & PCMCIA_C1_CD2_MASK) ? IN_CD2_VS1H : 0;
 +
-+	tty_flip_buffer_push(tty);
-+}
++		/* guess cardtype from all this */
++		skt->card_type = vscd_to_cardtype[stat];
++		if (!skt->card_type)
++			printk(KERN_ERR PFX "unsupported card type\n");
 +
-+/*
-+ * fill tx fifo with chars to send, stop when fifo is about to be full
-+ * or when all chars have been sent.
-+ */
-+static void bcm_uart_do_tx(struct uart_port *port)
-+{
-+	struct circ_buf *xmit;
-+	unsigned int val, max_count;
++		/* drive both VS pin to 0 again */
++		val &= ~(PCMCIA_C1_VS1OE_MASK | PCMCIA_C1_VS2OE_MASK);
 +
-+	if (port->x_char) {
-+		bcm_uart_writel(port, port->x_char, UART_FIFO_REG);
-+		port->icount.tx++;
-+		port->x_char = 0;
-+		return;
++		/* enable correct logic */
++		val &= ~(PCMCIA_C1_EN_PCMCIA_MASK | PCMCIA_C1_EN_CARDBUS_MASK);
++		if (skt->card_type & CARD_PCCARD)
++			val |= PCMCIA_C1_EN_PCMCIA_MASK;
++		else
++			val |= PCMCIA_C1_EN_CARDBUS_MASK;
++
++		pcmcia_writel(skt, val, PCMCIA_C1_REG);
 +	}
++	skt->card_detected = (stat & SS_DETECT) ? 1 : 0;
 +
-+	if (uart_tx_stopped(port)) {
-+		bcm_uart_stop_tx(port);
-+		return;
-+	}
++	/* report card type/voltage */
++	if (skt->card_type & CARD_CARDBUS)
++		stat |= SS_CARDBUS;
++	if (skt->card_type & CARD_3V)
++		stat |= SS_3VCARD;
++	if (skt->card_type & CARD_XV)
++		stat |= SS_XVCARD;
++	stat |= SS_POWERON;
 +
-+	xmit = &port->info->xmit;
-+	if (uart_circ_empty(xmit))
-+		goto txq_empty;
++	if (gpio_get_value(skt->pd->ready_gpio))
++		stat |= SS_READY;
 +
-+	val = bcm_uart_readl(port, UART_MCTL_REG);
-+	val = (val & UART_MCTL_TXFIFOFILL_MASK) >> UART_MCTL_TXFIFOFILL_SHIFT;
-+	max_count = port->fifosize - val;
-+
-+	while (max_count--) {
-+		unsigned int c;
-+
-+		c = xmit->buf[xmit->tail];
-+		bcm_uart_writel(port, c, UART_FIFO_REG);
-+		xmit->tail = (xmit->tail + 1) & (UART_XMIT_SIZE - 1);
-+		port->icount.tx++;
-+		if (uart_circ_empty(xmit))
-+			break;
-+	}
-+
-+	if (uart_circ_chars_pending(xmit) < WAKEUP_CHARS)
-+		uart_write_wakeup(port);
-+
-+	if (uart_circ_empty(xmit))
-+		goto txq_empty;
-+	return;
-+
-+txq_empty:
-+	/* nothing to send, disable transmit interrupt */
-+	val = bcm_uart_readl(port, UART_IR_REG);
-+	val &= ~UART_TX_INT_MASK;
-+	bcm_uart_writel(port, val, UART_IR_REG);
-+	return;
++	return stat;
 +}
 +
 +/*
-+ * process uart interrupt
++ * core request to get current socket status
 + */
-+static irqreturn_t bcm_uart_interrupt(int irq, void *dev_id)
++static int bcm63xx_pcmcia_get_status(struct pcmcia_socket *sock,
++				     unsigned int *status)
 +{
-+	struct uart_port *port;
-+	unsigned int irqstat;
++	struct bcm63xx_pcmcia_socket *skt;
 +
-+	port = dev_id;
-+	spin_lock(&port->lock);
++	skt = sock->driver_data;
 +
-+	irqstat = bcm_uart_readl(port, UART_IR_REG);
-+	if (irqstat & UART_RX_INT_STAT)
-+		bcm_uart_do_rx(port);
++	spin_lock_bh(&skt->lock);
++	*status = __get_socket_status(skt);
++	spin_unlock_bh(&skt->lock);
 +
-+	if (irqstat & UART_TX_INT_STAT)
-+		bcm_uart_do_tx(port);
-+
-+	if (irqstat & UART_IR_MASK(UART_IR_EXTIP)) {
-+		unsigned int estat;
-+
-+		estat = bcm_uart_readl(port, UART_EXTINP_REG);
-+		if (estat & UART_EXTINP_IRSTAT(UART_EXTINP_IR_CTS))
-+			uart_handle_cts_change(port,
-+					       estat & UART_EXTINP_CTS_MASK);
-+		if (estat & UART_EXTINP_IRSTAT(UART_EXTINP_IR_DCD))
-+			uart_handle_dcd_change(port,
-+					       estat & UART_EXTINP_DCD_MASK);
-+	}
-+
-+	spin_unlock(&port->lock);
-+	return IRQ_HANDLED;
++	return 0;
 +}
 +
 +/*
-+ * enable rx & tx operation on uart
++ * socket polling timer callback
 + */
-+static void bcm_uart_enable(struct uart_port *port)
++static void bcm63xx_pcmcia_poll(unsigned long data)
 +{
-+	unsigned int val;
++	struct bcm63xx_pcmcia_socket *skt;
++	unsigned int stat, events;
 +
-+	val = bcm_uart_readl(port, UART_CTL_REG);
-+	val |= (UART_CTL_BRGEN_MASK | UART_CTL_TXEN_MASK | UART_CTL_RXEN_MASK);
-+	bcm_uart_writel(port, val, UART_CTL_REG);
++	skt = (struct bcm63xx_pcmcia_socket *)data;
++
++	spin_lock_bh(&skt->lock);
++
++	stat = __get_socket_status(skt);
++
++	/* keep only changed bits, and mask with required one from the
++	 * core */
++	events = (stat ^ skt->old_status) & skt->requested_state.csc_mask;
++	skt->old_status = stat;
++	spin_unlock_bh(&skt->lock);
++
++	if (events)
++		pcmcia_parse_events(&skt->socket, events);
++
++	mod_timer(&skt->timer,
++		  jiffies + msecs_to_jiffies(BCM63XX_PCMCIA_POLL_RATE));
 +}
 +
-+/*
-+ * disable rx & tx operation on uart
-+ */
-+static void bcm_uart_disable(struct uart_port *port)
++static int bcm63xx_pcmcia_set_io_map(struct pcmcia_socket *sock,
++				     struct pccard_io_map *map)
 +{
-+	unsigned int val;
-+
-+	val = bcm_uart_readl(port, UART_CTL_REG);
-+	val &= ~(UART_CTL_BRGEN_MASK | UART_CTL_TXEN_MASK |
-+		 UART_CTL_RXEN_MASK);
-+	bcm_uart_writel(port, val, UART_CTL_REG);
++	/* this doesn't seem to be called by pcmcia layer if static
++	 * mapping is used */
++	return 0;
 +}
 +
-+/*
-+ * clear all unread data in rx fifo and unsent data in tx fifo
-+ */
-+static void bcm_uart_flush(struct uart_port *port)
++static int bcm63xx_pcmcia_set_mem_map(struct pcmcia_socket *sock,
++				      struct pccard_mem_map *map)
 +{
-+	unsigned int val;
++	struct bcm63xx_pcmcia_socket *skt;
++	struct resource *res;
 +
-+	/* empty rx and tx fifo */
-+	val = bcm_uart_readl(port, UART_CTL_REG);
-+	val |= UART_CTL_RSTRXFIFO_MASK | UART_CTL_RSTTXFIFO_MASK;
-+	bcm_uart_writel(port, val, UART_CTL_REG);
++	skt = sock->driver_data;
++	if (map->flags & MAP_ATTRIB)
++		res = skt->attr_res;
++	else
++		res = skt->common_res;
 +
-+	/* read any pending char to make sure all irq status are
-+	 * cleared */
-+	(void)bcm_uart_readl(port, UART_FIFO_REG);
++	map->static_start = res->start + map->card_start;
++	return 0;
 +}
 +
++static struct pccard_operations bcm63xx_pcmcia_operations = {
++	.init			= bcm63xx_pcmcia_sock_init,
++	.suspend		= bcm63xx_pcmcia_suspend,
++	.get_status		= bcm63xx_pcmcia_get_status,
++	.set_socket		= bcm63xx_pcmcia_set_socket,
++	.set_io_map		= bcm63xx_pcmcia_set_io_map,
++	.set_mem_map		= bcm63xx_pcmcia_set_mem_map,
++};
++
 +/*
-+ * serial core request to initialize uart and start rx operation
++ * register pcmcia socket to core
 + */
-+static int bcm_uart_startup(struct uart_port *port)
++static int bcm63xx_drv_pcmcia_probe(struct platform_device *pdev)
 +{
-+	unsigned int val;
++	struct bcm63xx_pcmcia_socket *skt;
++	struct pcmcia_socket *sock;
++	struct resource *res, *irq_res;
++	unsigned int regmem_size = 0, iomem_size = 0;
++	u32 val;
 +	int ret;
 +
-+	/* mask all irq and flush port */
-+	bcm_uart_disable(port);
-+	bcm_uart_writel(port, 0, UART_IR_REG);
-+	bcm_uart_flush(port);
++	skt = kzalloc(sizeof(*skt), GFP_KERNEL);
++	if (!skt)
++		return -ENOMEM;
++	spin_lock_init(&skt->lock);
++	sock = &skt->socket;
++	sock->driver_data = skt;
 +
-+	/* clear any pending external input interrupt */
-+	(void)bcm_uart_readl(port, UART_EXTINP_REG);
++	/* make sure we have all resources we need */
++	skt->common_res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
++	skt->attr_res = platform_get_resource(pdev, IORESOURCE_MEM, 2);
++	irq_res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
++	skt->pd = pdev->dev.platform_data;
++	if (!skt->common_res || !skt->attr_res || !irq_res || !skt->pd) {
++		ret = -EINVAL;
++		goto err;
++	}
 +
-+	/* set rx/tx fifo thresh to fifo half size */
-+	val = bcm_uart_readl(port, UART_MCTL_REG);
-+	val &= ~(UART_MCTL_RXFIFOTHRESH_MASK | UART_MCTL_TXFIFOTHRESH_MASK);
-+	val |= (port->fifosize / 2) << UART_MCTL_RXFIFOTHRESH_SHIFT;
-+	val |= (port->fifosize / 2) << UART_MCTL_TXFIFOTHRESH_SHIFT;
-+	bcm_uart_writel(port, val, UART_MCTL_REG);
++	/* remap pcmcia registers */
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	regmem_size = res->end - res->start + 1;
++	if (!request_mem_region(res->start, regmem_size, "bcm63xx_pcmcia")) {
++		ret = -EINVAL;
++		goto err;
++	}
++	skt->reg_res = res;
 +
-+	/* set rx fifo timeout to 1 char time */
-+	val = bcm_uart_readl(port, UART_CTL_REG);
-+	val &= ~UART_CTL_RXTMOUTCNT_MASK;
-+	val |= 1 << UART_CTL_RXTMOUTCNT_SHIFT;
-+	bcm_uart_writel(port, val, UART_CTL_REG);
++	skt->base = ioremap(res->start, regmem_size);
++	if (!skt->base) {
++		ret = -ENOMEM;
++		goto err;
++	}
 +
-+	/* report any edge on dcd and cts */
-+	val = UART_EXTINP_INT_MASK;
-+	val |= UART_EXTINP_DCD_NOSENSE_MASK;
-+	val |= UART_EXTINP_CTS_NOSENSE_MASK;
-+	bcm_uart_writel(port, val, UART_EXTINP_REG);
++	/* remap io registers */
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 3);
++	iomem_size = res->end - res->start + 1;
++	skt->io_base = ioremap(res->start, iomem_size);
++	if (!skt->io_base) {
++		ret = -ENOMEM;
++		goto err;
++	}
 +
-+	/* register irq and enable rx interrupts */
-+	ret = request_irq(port->irq, bcm_uart_interrupt, 0,
-+			  bcm_uart_type(port), port);
++	/* resources are static */
++	sock->resource_ops = &pccard_static_ops;
++	sock->ops = &bcm63xx_pcmcia_operations;
++	sock->owner = THIS_MODULE;
++	sock->dev.parent = &pdev->dev;
++	sock->features = SS_CAP_STATIC_MAP | SS_CAP_PCCARD;
++	sock->io_offset = (unsigned long)skt->io_base;
++	sock->pci_irq = irq_res->start;
++
++#ifdef CONFIG_CARDBUS
++	sock->cb_dev = bcm63xx_cb_dev;
++	if (bcm63xx_cb_dev)
++		sock->features |= SS_CAP_CARDBUS;
++#endif
++
++	/* assume common & attribute memory have the same size */
++	sock->map_size = skt->common_res->end - skt->common_res->start + 1;
++
++	/* initialize polling timer */
++	setup_timer(&skt->timer, bcm63xx_pcmcia_poll, (unsigned long)skt);
++
++	/* initialize  pcmcia  control register,  drive  VS[12] to  0,
++	 * leave CB IDSEL to the old  value since it is set by the PCI
++	 * layer */
++	val = pcmcia_readl(skt, PCMCIA_C1_REG);
++	val &= PCMCIA_C1_CBIDSEL_MASK;
++	val |= PCMCIA_C1_EN_PCMCIA_GPIO_MASK;
++	pcmcia_writel(skt, val, PCMCIA_C1_REG);
++
++	/* FIXME set correct pcmcia timings */
++	val = PCMCIA_C2_DATA16_MASK;
++	val |= 10 << PCMCIA_C2_RWCOUNT_SHIFT;
++	val |= 6 << PCMCIA_C2_INACTIVE_SHIFT;
++	val |= 3 << PCMCIA_C2_SETUP_SHIFT;
++	val |= 3 << PCMCIA_C2_HOLD_SHIFT;
++	pcmcia_writel(skt, val, PCMCIA_C2_REG);
++
++	/* request and setup ready gpio */
++	ret = gpio_request(skt->pd->ready_gpio, "bcm63xx_pcmcia");
++	if (ret < 0)
++		goto err;
++
++	ret = gpio_direction_input(skt->pd->ready_gpio);
++	if (ret < 0)
++		goto err_gpio;
++
++	ret = pcmcia_register_socket(sock);
 +	if (ret)
-+		return ret;
-+	bcm_uart_writel(port, UART_RX_INT_MASK, UART_IR_REG);
-+	bcm_uart_enable(port);
++		goto err_gpio;
++
++	/* start polling socket */
++	mod_timer(&skt->timer,
++		  jiffies + msecs_to_jiffies(BCM63XX_PCMCIA_POLL_RATE));
++
++	platform_set_drvdata(pdev, skt);
 +	return 0;
-+}
 +
-+/*
-+ * serial core request to flush & disable uart
-+ */
-+static void bcm_uart_shutdown(struct uart_port *port)
-+{
-+	unsigned long flags;
++err_gpio:
++	gpio_free(skt->pd->ready_gpio);
 +
-+	spin_lock_irqsave(&port->lock, flags);
-+	bcm_uart_writel(port, 0, UART_IR_REG);
-+	spin_unlock_irqrestore(&port->lock, flags);
-+
-+	bcm_uart_disable(port);
-+	bcm_uart_flush(port);
-+	free_irq(port->irq, port);
-+}
-+
-+/*
-+ * serial core request to change current uart setting
-+ */
-+static void bcm_uart_set_termios(struct uart_port *port,
-+				 struct ktermios *new,
-+				 struct ktermios *old)
-+{
-+	unsigned int ctl, baud, quot, ier;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&port->lock, flags);
-+
-+	/* disable uart while changing speed */
-+	bcm_uart_disable(port);
-+	bcm_uart_flush(port);
-+
-+	/* update Control register */
-+	ctl = bcm_uart_readl(port, UART_CTL_REG);
-+	ctl &= ~UART_CTL_BITSPERSYM_MASK;
-+
-+	switch (new->c_cflag & CSIZE) {
-+	case CS5:
-+		ctl |= (0 << UART_CTL_BITSPERSYM_SHIFT);
-+		break;
-+	case CS6:
-+		ctl |= (1 << UART_CTL_BITSPERSYM_SHIFT);
-+		break;
-+	case CS7:
-+		ctl |= (2 << UART_CTL_BITSPERSYM_SHIFT);
-+		break;
-+	default:
-+		ctl |= (3 << UART_CTL_BITSPERSYM_SHIFT);
-+		break;
-+	}
-+
-+	ctl &= ~UART_CTL_STOPBITS_MASK;
-+	if (new->c_cflag & CSTOPB)
-+		ctl |= UART_CTL_STOPBITS_2;
-+	else
-+		ctl |= UART_CTL_STOPBITS_1;
-+
-+	ctl &= ~(UART_CTL_RXPAREN_MASK | UART_CTL_TXPAREN_MASK);
-+	if (new->c_cflag & PARENB)
-+		ctl |= (UART_CTL_RXPAREN_MASK | UART_CTL_TXPAREN_MASK);
-+	ctl &= ~(UART_CTL_RXPAREVEN_MASK | UART_CTL_TXPAREVEN_MASK);
-+	if (new->c_cflag & PARODD)
-+		ctl |= (UART_CTL_RXPAREVEN_MASK | UART_CTL_TXPAREVEN_MASK);
-+	bcm_uart_writel(port, ctl, UART_CTL_REG);
-+
-+	/* update Baudword register */
-+	baud = uart_get_baud_rate(port, new, old, 0, port->uartclk / 16);
-+	quot = uart_get_divisor(port, baud) - 1;
-+	bcm_uart_writel(port, quot, UART_BAUD_REG);
-+
-+	/* update Interrupt register */
-+	ier = bcm_uart_readl(port, UART_IR_REG);
-+
-+	ier &= ~UART_IR_MASK(UART_IR_EXTIP);
-+	if (UART_ENABLE_MS(port, new->c_cflag))
-+		ier |= UART_IR_MASK(UART_IR_EXTIP);
-+
-+	bcm_uart_writel(port, ier, UART_IR_REG);
-+
-+	/* update read/ignore mask */
-+	port->read_status_mask = UART_FIFO_VALID_MASK;
-+	if (new->c_iflag & INPCK) {
-+		port->read_status_mask |= UART_FIFO_FRAMEERR_MASK;
-+		port->read_status_mask |= UART_FIFO_PARERR_MASK;
-+	}
-+	if (new->c_iflag & (BRKINT))
-+		port->read_status_mask |= UART_FIFO_BRKDET_MASK;
-+
-+	port->ignore_status_mask = 0;
-+	if (new->c_iflag & IGNPAR)
-+		port->ignore_status_mask |= UART_FIFO_PARERR_MASK;
-+	if (new->c_iflag & IGNBRK)
-+		port->ignore_status_mask |= UART_FIFO_BRKDET_MASK;
-+	if (!(new->c_cflag & CREAD))
-+		port->ignore_status_mask |= UART_FIFO_VALID_MASK;
-+
-+	uart_update_timeout(port, new->c_cflag, baud);
-+	bcm_uart_enable(port);
-+	spin_unlock_irqrestore(&port->lock, flags);
-+}
-+
-+/*
-+ * serial core request to claim uart iomem
-+ */
-+static int bcm_uart_request_port(struct uart_port *port)
-+{
-+	unsigned int size;
-+
-+	size = RSET_UART_SIZE;
-+	if (!request_mem_region(port->mapbase, size, "bcm63xx")) {
-+		dev_err(port->dev, "Memory region busy\n");
-+		return -EBUSY;
-+	}
-+
-+	port->membase = ioremap(port->mapbase, size);
-+	if (!port->membase) {
-+		dev_err(port->dev, "Unable to map registers\n");
-+		release_mem_region(port->mapbase, size);
-+		return -EBUSY;
-+	}
-+	return 0;
-+}
-+
-+/*
-+ * serial core request to release uart iomem
-+ */
-+static void bcm_uart_release_port(struct uart_port *port)
-+{
-+	release_mem_region(port->mapbase, RSET_UART_SIZE);
-+	iounmap(port->membase);
-+}
-+
-+/*
-+ * serial core request to do any port required autoconfiguration
-+ */
-+static void bcm_uart_config_port(struct uart_port *port, int flags)
-+{
-+	if (flags & UART_CONFIG_TYPE) {
-+		if (bcm_uart_request_port(port))
-+			return;
-+		port->type = PORT_BCM63XX;
-+	}
-+}
-+
-+/*
-+ * serial core request to check that port information in serinfo are
-+ * suitable
-+ */
-+static int bcm_uart_verify_port(struct uart_port *port,
-+				struct serial_struct *serinfo)
-+{
-+	if (port->type != PORT_BCM63XX)
-+		return -EINVAL;
-+	if (port->irq != serinfo->irq)
-+		return -EINVAL;
-+	if (port->iotype != serinfo->io_type)
-+		return -EINVAL;
-+	if (port->mapbase != (unsigned long)serinfo->iomem_base)
-+		return -EINVAL;
-+	return 0;
-+}
-+
-+/* serial core callbacks */
-+static struct uart_ops bcm_uart_ops = {
-+	.tx_empty	= bcm_uart_tx_empty,
-+	.get_mctrl	= bcm_uart_get_mctrl,
-+	.set_mctrl	= bcm_uart_set_mctrl,
-+	.start_tx	= bcm_uart_start_tx,
-+	.stop_tx	= bcm_uart_stop_tx,
-+	.stop_rx	= bcm_uart_stop_rx,
-+	.enable_ms	= bcm_uart_enable_ms,
-+	.break_ctl	= bcm_uart_break_ctl,
-+	.startup	= bcm_uart_startup,
-+	.shutdown	= bcm_uart_shutdown,
-+	.set_termios	= bcm_uart_set_termios,
-+	.type		= bcm_uart_type,
-+	.release_port	= bcm_uart_release_port,
-+	.request_port	= bcm_uart_request_port,
-+	.config_port	= bcm_uart_config_port,
-+	.verify_port	= bcm_uart_verify_port,
-+};
-+
-+
-+
-+#ifdef CONFIG_SERIAL_BCM63XX_CONSOLE
-+static inline void wait_for_xmitr(struct uart_port *port)
-+{
-+	unsigned int tmout;
-+
-+	/* Wait up to 10ms for the character(s) to be sent. */
-+	tmout = 10000;
-+	while (--tmout) {
-+		unsigned int val;
-+
-+		val = bcm_uart_readl(port, UART_IR_REG);
-+		if (val & UART_IR_STAT(UART_IR_TXEMPTY))
-+			break;
-+		udelay(1);
-+	}
-+
-+	/* Wait up to 1s for flow control if necessary */
-+	if (port->flags & UPF_CONS_FLOW) {
-+		tmout = 1000000;
-+		while (--tmout) {
-+			unsigned int val;
-+
-+			val = bcm_uart_readl(port, UART_EXTINP_REG);
-+			if (val & UART_EXTINP_CTS_MASK)
-+				break;
-+			udelay(1);
-+		}
-+	}
-+}
-+
-+/*
-+ * output given char
-+ */
-+static void bcm_console_putchar(struct uart_port *port, int ch)
-+{
-+	wait_for_xmitr(port);
-+	bcm_uart_writel(port, ch, UART_FIFO_REG);
-+}
-+
-+/*
-+ * console core request to output given string
-+ */
-+static void bcm_console_write(struct console *co, const char *s,
-+			      unsigned int count)
-+{
-+	struct uart_port *port;
-+	unsigned long flags;
-+	int locked;
-+
-+	port = &ports[co->index];
-+
-+	local_irq_save(flags);
-+	if (port->sysrq) {
-+		/* bcm_uart_interrupt() already took the lock */
-+		locked = 0;
-+	} else if (oops_in_progress) {
-+		locked = spin_trylock(&port->lock);
-+	} else {
-+		spin_lock(&port->lock);
-+		locked = 1;
-+	}
-+
-+	/* call helper to deal with \r\n */
-+	uart_console_write(port, s, count, bcm_console_putchar);
-+
-+	/* and wait for char to be transmitted */
-+	wait_for_xmitr(port);
-+
-+	if (locked)
-+		spin_unlock(&port->lock);
-+	local_irq_restore(flags);
-+}
-+
-+/*
-+ * console core request to setup given console, find matching uart
-+ * port and setup it.
-+ */
-+static int bcm_console_setup(struct console *co, char *options)
-+{
-+	struct uart_port *port;
-+	int baud = 9600;
-+	int bits = 8;
-+	int parity = 'n';
-+	int flow = 'n';
-+
-+	if (co->index < 0 || co->index >= BCM63XX_NR_UARTS)
-+		return -EINVAL;
-+	port = &ports[co->index];
-+	if (!port->membase)
-+		return -ENODEV;
-+	if (options)
-+		uart_parse_options(options, &baud, &parity, &bits, &flow);
-+
-+	return uart_set_options(port, co, baud, parity, bits, flow);
-+}
-+
-+static struct uart_driver bcm_uart_driver;
-+
-+static struct console bcm63xx_console = {
-+	.name		= "ttyS",
-+	.write		= bcm_console_write,
-+	.device		= uart_console_device,
-+	.setup		= bcm_console_setup,
-+	.flags		= CON_PRINTBUFFER,
-+	.index		= -1,
-+	.data		= &bcm_uart_driver,
-+};
-+
-+static int __init bcm63xx_console_init(void)
-+{
-+	register_console(&bcm63xx_console);
-+	return 0;
-+}
-+
-+console_initcall(bcm63xx_console_init);
-+
-+#define BCM63XX_CONSOLE	(&bcm63xx_console)
-+#else
-+#define BCM63XX_CONSOLE	NULL
-+#endif /* CONFIG_SERIAL_BCM63XX_CONSOLE */
-+
-+static struct uart_driver bcm_uart_driver = {
-+	.owner		= THIS_MODULE,
-+	.driver_name	= "bcm63xx_uart",
-+	.dev_name	= "ttyS",
-+	.major		= TTY_MAJOR,
-+	.minor		= 64,
-+	.nr		= 1,
-+	.cons		= BCM63XX_CONSOLE,
-+};
-+
-+/*
-+ * platform driver probe/remove callback
-+ */
-+static int __devinit bcm_uart_probe(struct platform_device *pdev)
-+{
-+	struct resource *res_mem, *res_irq;
-+	struct uart_port *port;
-+	struct clk *clk;
-+	int ret;
-+
-+	if (pdev->id < 0 || pdev->id >= BCM63XX_NR_UARTS)
-+		return -EINVAL;
-+
-+	if (ports[pdev->id].membase)
-+		return -EBUSY;
-+
-+	res_mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-+	if (!res_mem)
-+		return -ENODEV;
-+
-+	res_irq = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
-+	if (!res_irq)
-+		return -ENODEV;
-+
-+	clk = clk_get(&pdev->dev, "periph");
-+	if (IS_ERR(clk))
-+		return -ENODEV;
-+
-+	port = &ports[pdev->id];
-+	memset(port, 0, sizeof(*port));
-+	port->iotype = UPIO_MEM;
-+	port->mapbase = res_mem->start;
-+	port->irq = res_irq->start;
-+	port->ops = &bcm_uart_ops;
-+	port->flags = UPF_BOOT_AUTOCONF;
-+	port->dev = &pdev->dev;
-+	port->fifosize = 16;
-+	port->uartclk = clk_get_rate(clk) / 2;
-+	clk_put(clk);
-+
-+	ret = uart_add_one_port(&bcm_uart_driver, port);
-+	if (ret) {
-+		kfree(port);
-+		return ret;
-+	}
-+	platform_set_drvdata(pdev, port);
-+	return 0;
-+}
-+
-+static int __devexit bcm_uart_remove(struct platform_device *pdev)
-+{
-+	struct uart_port *port;
-+
-+	port = platform_get_drvdata(pdev);
-+	uart_remove_one_port(&bcm_uart_driver, port);
-+	platform_set_drvdata(pdev, NULL);
-+	/* mark port as free */
-+	ports[pdev->id].membase = 0;
-+	return 0;
-+}
-+
-+/*
-+ * platform driver stuff
-+ */
-+static struct platform_driver bcm_uart_platform_driver = {
-+	.probe	= bcm_uart_probe,
-+	.remove	= __devexit_p(bcm_uart_remove),
-+	.driver	= {
-+		.owner = THIS_MODULE,
-+		.name  = "bcm63xx_uart",
-+	},
-+};
-+
-+static int __init bcm_uart_init(void)
-+{
-+	int ret;
-+
-+	ret = uart_register_driver(&bcm_uart_driver);
-+	if (ret)
-+		return ret;
-+
-+	ret = platform_driver_register(&bcm_uart_platform_driver);
-+	if (ret)
-+		uart_unregister_driver(&bcm_uart_driver);
-+
++err:
++	if (skt->io_base)
++		iounmap(skt->io_base);
++	if (skt->base)
++		iounmap(skt->base);
++	if (skt->reg_res)
++		release_mem_region(skt->reg_res->start, regmem_size);
++	kfree(skt);
 +	return ret;
 +}
 +
-+static void __exit bcm_uart_exit(void)
++static int bcm63xx_drv_pcmcia_remove(struct platform_device *pdev)
 +{
-+	platform_driver_unregister(&bcm_uart_platform_driver);
-+	uart_unregister_driver(&bcm_uart_driver);
++	struct bcm63xx_pcmcia_socket *skt;
++	struct resource *res;
++
++	skt = platform_get_drvdata(pdev);
++	del_timer_sync(&skt->timer);
++	iounmap(skt->base);
++	iounmap(skt->io_base);
++	res = skt->reg_res;
++	release_mem_region(res->start, res->end - res->start + 1);
++	gpio_free(skt->pd->ready_gpio);
++	platform_set_drvdata(pdev, NULL);
++	kfree(skt);
++	return 0;
 +}
 +
-+module_init(bcm_uart_init);
-+module_exit(bcm_uart_exit);
++struct platform_driver bcm63xx_pcmcia_driver = {
++	.probe	= bcm63xx_drv_pcmcia_probe,
++	.remove	= __devexit_p(bcm63xx_drv_pcmcia_remove),
++	.driver	= {
++		.name	= "bcm63xx_pcmcia",
++		.owner  = THIS_MODULE,
++	},
++};
 +
-+MODULE_AUTHOR("Maxime Bizon <mbizon@freebox.fr>");
-+MODULE_DESCRIPTION("Broadcom 63<xx integrated uart driver");
++#ifdef CONFIG_CARDBUS
++static int __devinit bcm63xx_cb_probe(struct pci_dev *dev,
++				      const struct pci_device_id *id)
++{
++	/* keep pci device */
++	bcm63xx_cb_dev = dev;
++	return platform_driver_register(&bcm63xx_pcmcia_driver);
++}
++
++static void __devexit bcm63xx_cb_exit(struct pci_dev *dev)
++{
++	platform_driver_unregister(&bcm63xx_pcmcia_driver);
++	bcm63xx_cb_dev = NULL;
++}
++
++static struct pci_device_id bcm63xx_cb_table[] = {
++	{
++		.vendor		= PCI_VENDOR_ID_BROADCOM,
++		.device		= PCI_ANY_ID,
++		.subvendor	= PCI_VENDOR_ID_BROADCOM,
++		.subdevice	= PCI_ANY_ID,
++		.class		= PCI_CLASS_BRIDGE_CARDBUS << 8,
++		.class_mask	= ~0,
++	},
++
++	{ },
++};
++
++MODULE_DEVICE_TABLE(pci, bcm63xx_cb_table);
++
++static struct pci_driver bcm63xx_cardbus_driver = {
++	.name		= "yenta_cardbus",
++	.id_table	= bcm63xx_cb_table,
++	.probe		= bcm63xx_cb_probe,
++	.remove		= __devexit_p(bcm63xx_cb_exit),
++};
++#endif
++
++/*
++ * if cardbus support is enabled, register our platform device after
++ * our fake cardbus bridge has been registered
++ */
++static int __init bcm63xx_pcmcia_init(void)
++{
++#ifdef CONFIG_CARDBUS
++	return pci_register_driver(&bcm63xx_cardbus_driver);
++#else
++	return platform_driver_register(&bcm63xx_pcmcia_driver);
++#endif
++}
++
++static void __exit bcm63xx_pcmcia_exit(void)
++{
++#ifdef CONFIG_CARDBUS
++	return pci_unregister_driver(&bcm63xx_cardbus_driver);
++#else
++	platform_driver_unregister(&bcm63xx_pcmcia_driver);
++#endif
++}
++
++module_init(bcm63xx_pcmcia_init);
++module_exit(bcm63xx_pcmcia_exit);
++
 +MODULE_LICENSE("GPL");
-diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
-index 23d2fb0..7abe73b 100644
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -174,6 +174,9 @@
- /* Qualcomm MSM SoCs */
- #define PORT_MSM	88
- 
-+/* BCM63xx family SoCs */
-+#define PORT_BCM63XX	89
++MODULE_AUTHOR("Maxime Bizon <mbizon@freebox.fr>");
++MODULE_DESCRIPTION("Linux PCMCIA Card Services: bcm63xx Socket Controller");
+diff --git a/drivers/pcmcia/bcm63xx_pcmcia.h b/drivers/pcmcia/bcm63xx_pcmcia.h
+new file mode 100644
+index 0000000..85de866
+--- /dev/null
++++ b/drivers/pcmcia/bcm63xx_pcmcia.h
+@@ -0,0 +1,65 @@
++#ifndef BCM63XX_PCMCIA_H_
++#define BCM63XX_PCMCIA_H_
 +
- #ifdef __KERNEL__
- 
- #include <linux/compiler.h>
++#include <linux/types.h>
++#include <linux/timer.h>
++#include <pcmcia/ss.h>
++#include <bcm63xx_dev_pcmcia.h>
++
++/* socket polling rate in ms */
++#define BCM63XX_PCMCIA_POLL_RATE	500
++
++enum {
++	CARD_CARDBUS = (1 << 0),
++
++	CARD_PCCARD = (1 << 1),
++
++	CARD_5V = (1 << 2),
++
++	CARD_3V = (1 << 3),
++
++	CARD_XV = (1 << 4),
++
++	CARD_YV = (1 << 5),
++};
++
++struct bcm63xx_pcmcia_socket {
++	struct pcmcia_socket socket;
++
++	/* platform specific data */
++	struct bcm63xx_pcmcia_platform_data *pd;
++
++	/* all regs access are protected by this spinlock */
++	spinlock_t lock;
++
++	/* pcmcia registers resource */
++	struct resource *reg_res;
++
++	/* base remapped address of registers */
++	void __iomem *base;
++
++	/* whether a card is detected at the moment */
++	int card_detected;
++
++	/* type of detected card (mask of above enum) */
++	u8 card_type;
++
++	/* keep last socket status to implement event reporting */
++	unsigned int old_status;
++
++	/* backup of requested socket state */
++	socket_state_t requested_state;
++
++	/* timer used for socket status polling */
++	struct timer_list timer;
++
++	/* attribute/common memory resources */
++	struct resource *attr_res;
++	struct resource *common_res;
++	struct resource *io_res;
++
++	/* base address of io memory */
++	void __iomem *io_base;
++};
++
++#endif /* BCM63XX_PCMCIA_H_ */
 
 
 -- 

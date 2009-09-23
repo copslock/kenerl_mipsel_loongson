@@ -1,65 +1,60 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Sep 2009 11:26:53 +0200 (CEST)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:59812 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Sep 2009 11:31:17 +0200 (CEST)
+Received: from smtp6-g21.free.fr ([212.27.42.6]:59196 "EHLO smtp6-g21.free.fr"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1493000AbZIWJ0r (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 23 Sep 2009 11:26:47 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n8N9S2Px006518;
-	Wed, 23 Sep 2009 10:28:02 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n8N9S00X006517;
-	Wed, 23 Sep 2009 10:28:00 +0100
-Date:	Wed, 23 Sep 2009 10:28:00 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Greg KH <gregkh@suse.de>
-Cc:	Maxime Bizon <mbizon@freebox.fr>, linux-serial@vger.kernel.org,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: BCM63xx: Add serial driver for bcm63xx
-	integrated UART.
-Message-ID: <20090923092800.GE5457@linux-mips.org>
-References: <1253271898.1627.272.camel@sakura.staff.proxad.net> <20090918145715.GB8884@suse.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20090918145715.GB8884@suse.de>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <ralf@linux-mips.org>
+	id S1493041AbZIWJbJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 23 Sep 2009 11:31:09 +0200
+Received: from smtp6-g21.free.fr (localhost [127.0.0.1])
+	by smtp6-g21.free.fr (Postfix) with ESMTP id 23CD2E0804F;
+	Wed, 23 Sep 2009 11:31:03 +0200 (CEST)
+Received: from [213.228.1.107] (sakura.staff.proxad.net [213.228.1.107])
+	by smtp6-g21.free.fr (Postfix) with ESMTP id 3329DE08016;
+	Wed, 23 Sep 2009 11:31:01 +0200 (CEST)
+Subject: Re: [PATCH] MIPS: BCM63xx: Add PCMCIA & Cardbus support.
+From:	Maxime Bizon <mbizon@freebox.fr>
+Reply-To: mbizon@freebox.fr
+To:	Wolfram Sang <w.sang@pengutronix.de>
+Cc:	Greg Kroah-Hartman <gregkh@suse.de>, linux-mips@linux-mips.org,
+	linux-pcmcia@lists.infradead.org,
+	Ralf Baechle <ralf@linux-mips.org>
+In-Reply-To: <20090919154755.GA27704@pengutronix.de>
+References: <1253272891.1627.284.camel@sakura.staff.proxad.net>
+	 <20090919154755.GA27704@pengutronix.de>
+Content-Type: text/plain
+Organization: Freebox
+Date:	Wed, 23 Sep 2009 11:31:00 +0200
+Message-Id: <1253698260.1627.391.camel@sakura.staff.proxad.net>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.26.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <mbizon@freebox.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24074
+X-archive-position: 24075
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: mbizon@freebox.fr
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Sep 18, 2009 at 07:57:15AM -0700, Greg KH wrote:
 
-> > This is a serial driver for the bcm63xx mips SOCs, it was already posted
-> > twice:
-> > 
-> > one year ago: http://marc.info/?l=linux-serial&m=122438266322439&w=2
-> > three months ago: http://lkml.org/lkml/2009/7/1/370
-> > 
-> > but got no review or ack.
-> > 
-> > 
-> > Linus merged the SOC support patch from Ralf tree yesterday, but without
-> > serial support.
-> > 
-> > Could you please have a look at it ? Is it ok if it goes upstream
-> > through Ralf tree ?
-> 
-> I have no objection for this to go through Ralf's tree.  Or if he needs
-> it to go through mine, just let me know.
-> 
-> > Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
-> > Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-> 
-> Acked-by: Greg Kroah-Hartman <gregkh@suse.de>
+On Sat, 2009-09-19 at 17:47 +0200, Wolfram Sang wrote:
 
-Thanks, merged.  Will go to Linus asap.
+> I can't make it for 2.6.32, but will try to get it queued for 2.6.33.
+> What about the second FIXME in the driver BTW?
 
-  Ralf
+It should go away.
+
+The timings are correct for slowest type of access (attribute memory if
+I remember well).
+
+At first I thought it would be possible to change the timings
+dynamically to speedup other memory regions, but a driver may do
+attribute memory access anytime without warning us, so we have to stick
+with the slowest value.
+
+I will resubmit the patch without the FIXME.
+
+-- 
+Maxime

@@ -1,116 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Sep 2009 09:39:12 +0200 (CEST)
-Received: from [222.92.8.141] ([222.92.8.141]:41794 "EHLO lemote.com"
-	rhost-flags-FAIL-FAIL-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1492097AbZIWHjF (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 23 Sep 2009 09:39:05 +0200
-Received: from localhost (localhost [127.0.0.1])
-	by lemote.com (Postfix) with ESMTP id 319FC31CC9A;
-	Wed, 23 Sep 2009 15:28:27 +0800 (CST)
-X-Virus-Scanned: Debian amavisd-new at lemote.com
-Received: from lemote.com ([127.0.0.1])
-	by localhost (www.lemote.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id qZdurydITM+4; Wed, 23 Sep 2009 15:28:11 +0800 (CST)
-Received: from [172.16.2.101] (unknown [222.92.8.142])
-	by lemote.com (Postfix) with ESMTP id D7ADC31CC89;
-	Wed, 23 Sep 2009 15:28:11 +0800 (CST)
-Subject: Re: [PATCH 3/3] Fix typo "enalbe" -> "enable"
-From:	Wu Zhangjin <wuzj@lemote.com>
-Reply-To: wuzj@lemote.com
-To:	Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
-	<u.kleine-koenig@pengutronix.de>
-Cc:	linux-mips@linux-mips.org, oprofile-list@lists.sf.net,
-	Yanhua <yanh@lemote.com>, Ralf Baechle <ralf@linux-mips.org>,
-	Robert Richter <robert.richter@amd.com>
-In-Reply-To: <1253522437-22919-1-git-send-email-u.kleine-koenig@pengutronix.de>
-References: <1253522437-22919-1-git-send-email-u.kleine-koenig@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Organization: www.lemote.com, Changshu City, JiangSu Province, China
-Date:	Wed, 23 Sep 2009 15:38:33 +0800
-Message-Id: <1253691513.17306.5.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1 
-Content-Transfer-Encoding: 8bit
-Return-Path: <wuzj@lemote.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Sep 2009 11:12:20 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:53195 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1492205AbZIWJMN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 23 Sep 2009 11:12:13 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n8N9DO1b005924;
+	Wed, 23 Sep 2009 10:13:24 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n8N9DO99005923;
+	Wed, 23 Sep 2009 10:13:24 +0100
+Date:	Wed, 23 Sep 2009 10:13:23 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	"Kevin D. Kissell" <kevink@paralogos.com>
+Cc:	Julia Lawall <julia@diku.dk>, dmitri.vorobiev@gmail.com,
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] arch/mips: remove duplicate structure field
+	initialization
+Message-ID: <20090923091323.GC5457@linux-mips.org>
+References: <Pine.LNX.4.64.0909211708200.8549@pc-004.diku.dk> <20090921192520.GB17310@linux-mips.org> <4AB7E0D1.10506@paralogos.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4AB7E0D1.10506@paralogos.com>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24069
+X-archive-position: 24070
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzj@lemote.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 2009-09-21 at 10:40 +0200, Uwe Kleine-König wrote:
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> Cc: Wu Zhangjin <wuzj@lemote.com>
-> Cc: Yanhua <yanh@lemote.com>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> Cc: Robert Richter <robert.richter@amd.com>
-> ---
->  arch/mips/oprofile/op_model_loongson2.c |   14 +++++++-------
->  1 files changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/arch/mips/oprofile/op_model_loongson2.c b/arch/mips/oprofile/op_model_loongson2.c
-> index 655cb8d..deed1d5 100644
-> --- a/arch/mips/oprofile/op_model_loongson2.c
-> +++ b/arch/mips/oprofile/op_model_loongson2.c
-> @@ -44,7 +44,7 @@ static struct loongson2_register_config {
->  	unsigned int ctrl;
->  	unsigned long long reset_counter1;
->  	unsigned long long reset_counter2;
-> -	int cnt1_enalbed, cnt2_enalbed;
-> +	int cnt1_enabled, cnt2_enabled;
->  } reg;
->  
->  DEFINE_SPINLOCK(sample_lock);
-> @@ -81,8 +81,8 @@ static void loongson2_reg_setup(struct op_counter_config *cfg)
->  
->  	reg.ctrl = ctrl;
->  
-> -	reg.cnt1_enalbed = cfg[0].enabled;
-> -	reg.cnt2_enalbed = cfg[1].enabled;
-> +	reg.cnt1_enabled = cfg[0].enabled;
-> +	reg.cnt2_enabled = cfg[1].enabled;
->  
->  }
->  
-> @@ -99,7 +99,7 @@ static void loongson2_cpu_setup(void *args)
->  static void loongson2_cpu_start(void *args)
->  {
->  	/* Start all counters on current CPU */
-> -	if (reg.cnt1_enalbed || reg.cnt2_enalbed)
-> +	if (reg.cnt1_enabled || reg.cnt2_enabled)
->  		write_c0_perfctrl(reg.ctrl);
->  }
->  
-> @@ -125,7 +125,7 @@ static irqreturn_t loongson2_perfcount_handler(int irq, void *dev_id)
->  	 */
->  
->  	/* Check whether the irq belongs to me */
-> -	enabled = reg.cnt1_enalbed | reg.cnt2_enalbed;
-> +	enabled = reg.cnt1_enabled | reg.cnt2_enabled;
->  	if (!enabled)
->  		return IRQ_NONE;
->  
-> @@ -136,12 +136,12 @@ static irqreturn_t loongson2_perfcount_handler(int irq, void *dev_id)
->  	spin_lock_irqsave(&sample_lock, flags);
->  
->  	if (counter1 & LOONGSON2_PERFCNT_OVERFLOW) {
-> -		if (reg.cnt1_enalbed)
-> +		if (reg.cnt1_enabled)
->  			oprofile_add_sample(regs, 0);
->  		counter1 = reg.reset_counter1;
->  	}
->  	if (counter2 & LOONGSON2_PERFCNT_OVERFLOW) {
-> -		if (reg.cnt2_enalbed)
-> +		if (reg.cnt2_enabled)
->  			oprofile_add_sample(regs, 1);
->  		counter2 = reg.reset_counter2;
->  	}
+On Mon, Sep 21, 2009 at 01:23:45PM -0700, Kevin D. Kissell wrote:
 
-Acked, thanks!
+> I'm still on the mailing list, and had seen this going by.  I'm not sure  
+> where that second .flags declaration got added.  Way, way back when I  
+> was pretty much the only maintainer of the file, irq_ipi.flags was  
+> explicitly  initialized to IRQF_DISABLED by an actual assignment  
+> statement in setp_cross_vpe_interrupts(), and the per-CPUness was  
+> handled by an "irq_desc[cpu_ipi_irq].status |= IRQ_PER_CPU".  My guess  
+> is that first someone (maybe me) migrated the IRQF_DISABLED assignment  
+> into the declaration of the struct, and that later someone found the  
+> IRQ_PER_CPU thing bogus or deprecated and converted it into a second  
+> .flags line in the struct declaration, missing the fact that there was  
+> already one there.
+>
+> In any case, I'm willing to sign off on Julia's patch.  It's certainly  
+> more important that the IRQ be PER_CPU than initially DISABLED, but  
+> during the time when SMTC was seeing its heaviest testing at MIPS, both  
+> attributes were true.
 
-Regards,
-	Wu Zhangjin
+I've reverted my patch and merged Julia's original patch with an extra
+comment added.
+
+Thanks Julia,
+
+   Ralf

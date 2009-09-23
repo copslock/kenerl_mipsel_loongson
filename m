@@ -1,60 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Sep 2009 11:31:17 +0200 (CEST)
-Received: from smtp6-g21.free.fr ([212.27.42.6]:59196 "EHLO smtp6-g21.free.fr"
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Sep 2009 11:34:23 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:35025 "EHLO h5.dl5rb.org.uk"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1493041AbZIWJbJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 23 Sep 2009 11:31:09 +0200
-Received: from smtp6-g21.free.fr (localhost [127.0.0.1])
-	by smtp6-g21.free.fr (Postfix) with ESMTP id 23CD2E0804F;
-	Wed, 23 Sep 2009 11:31:03 +0200 (CEST)
-Received: from [213.228.1.107] (sakura.staff.proxad.net [213.228.1.107])
-	by smtp6-g21.free.fr (Postfix) with ESMTP id 3329DE08016;
-	Wed, 23 Sep 2009 11:31:01 +0200 (CEST)
-Subject: Re: [PATCH] MIPS: BCM63xx: Add PCMCIA & Cardbus support.
-From:	Maxime Bizon <mbizon@freebox.fr>
-Reply-To: mbizon@freebox.fr
+	id S1493031AbZIWJeP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 23 Sep 2009 11:34:15 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n8N9ZT56006615;
+	Wed, 23 Sep 2009 10:35:29 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n8N9ZTnU006612;
+	Wed, 23 Sep 2009 10:35:29 +0100
+Date:	Wed, 23 Sep 2009 10:35:29 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
 To:	Wolfram Sang <w.sang@pengutronix.de>
-Cc:	Greg Kroah-Hartman <gregkh@suse.de>, linux-mips@linux-mips.org,
-	linux-pcmcia@lists.infradead.org,
-	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Maxime Bizon <mbizon@freebox.fr>,
+	Greg Kroah-Hartman <gregkh@suse.de>, linux-mips@linux-mips.org,
+	linux-pcmcia@lists.infradead.org
+Subject: Re: [PATCH] MIPS: BCM63xx: Add PCMCIA & Cardbus support.
+Message-ID: <20090923093529.GF5457@linux-mips.org>
+References: <1253272891.1627.284.camel@sakura.staff.proxad.net> <20090919154755.GA27704@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20090919154755.GA27704@pengutronix.de>
-References: <1253272891.1627.284.camel@sakura.staff.proxad.net>
-	 <20090919154755.GA27704@pengutronix.de>
-Content-Type: text/plain
-Organization: Freebox
-Date:	Wed, 23 Sep 2009 11:31:00 +0200
-Message-Id: <1253698260.1627.391.camel@sakura.staff.proxad.net>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <mbizon@freebox.fr>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24075
+X-archive-position: 24076
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mbizon@freebox.fr
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Sat, Sep 19, 2009 at 05:47:55PM +0200, Wolfram Sang wrote:
 
-On Sat, 2009-09-19 at 17:47 +0200, Wolfram Sang wrote:
+> On Fri, Sep 18, 2009 at 01:21:31PM +0200, Maxime Bizon wrote:
+> 
+> > It seems Dominik is busy, and you're the one acking pcmcia patch at the
+> > moment so I'm sending this to you.
+> 
+> I can't make it for 2.6.32, but will try to get it queued for 2.6.33. What
+> about the second FIXME in the driver BTW?
 
-> I can't make it for 2.6.32, but will try to get it queued for 2.6.33.
-> What about the second FIXME in the driver BTW?
+If you're otherwise ok with the patch can handle feeding things upstream to
+Linux.  Without PCMCIA / Cardbus support the value of the BCM63xx in
+the upstream kernel is limited for another few months and there is no
+point in being so cautious with this patch as it doesn't touch an other
+files.
 
-It should go away.
-
-The timings are correct for slowest type of access (attribute memory if
-I remember well).
-
-At first I thought it would be possible to change the timings
-dynamically to speedup other memory regions, but a driver may do
-attribute memory access anytime without warning us, so we have to stick
-with the slowest value.
-
-I will resubmit the patch without the FIXME.
-
--- 
-Maxime
+  Ralf

@@ -1,57 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Sep 2009 14:45:32 +0200 (CEST)
-Received: from smtp6-g21.free.fr ([212.27.42.6]:46061 "EHLO smtp6-g21.free.fr"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1492958AbZIWMp0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 23 Sep 2009 14:45:26 +0200
-Received: from smtp6-g21.free.fr (localhost [127.0.0.1])
-	by smtp6-g21.free.fr (Postfix) with ESMTP id C6E11E0808D;
-	Wed, 23 Sep 2009 14:45:18 +0200 (CEST)
-Received: from [213.228.1.107] (sakura.staff.proxad.net [213.228.1.107])
-	by smtp6-g21.free.fr (Postfix) with ESMTP id D49D4E080E2;
-	Wed, 23 Sep 2009 14:45:15 +0200 (CEST)
-Subject: Re: [PATCH] MIPS: BCM63xx: Add PCMCIA & Cardbus support.
-From:	Maxime Bizon <mbizon@freebox.fr>
-Reply-To: mbizon@freebox.fr
-To:	Wolfram Sang <w.sang@pengutronix.de>
-Cc:	Greg Kroah-Hartman <gregkh@suse.de>,
-	linux-pcmcia@lists.infradead.org, linux-mips@linux-mips.org,
-	Ralf Baechle <ralf@linux-mips.org>
-In-Reply-To: <20090923123143.GB3131@pengutronix.de>
-References: <1253272891.1627.284.camel@sakura.staff.proxad.net>
-	 <20090923123143.GB3131@pengutronix.de>
-Content-Type: text/plain
-Organization: Freebox
-Date:	Wed, 23 Sep 2009 14:45:15 +0200
-Message-Id: <1253709915.1627.397.camel@sakura.staff.proxad.net>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <mbizon@freebox.fr>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 23 Sep 2009 20:27:41 +0200 (CEST)
+Received: from mail-yx0-f185.google.com ([209.85.210.185]:49260 "EHLO
+	mail-yx0-f185.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493535AbZIWS1e (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 23 Sep 2009 20:27:34 +0200
+Received: by yxe15 with SMTP id 15so1203166yxe.22
+        for <linux-mips@linux-mips.org>; Wed, 23 Sep 2009 11:27:26 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:date:message-id:subject
+         :from:to:content-type;
+        bh=VWSkP4KCQxMT/NjDYaAjz9uPHgC7XesJCJjIV0jGt5A=;
+        b=tp1cG7ZhEE8zMOnC7OavkXfGlNa/YqGQgajLlM2JM62kOYkfoLcpLJsHZAo8ak+dqi
+         mqK8aYSnuaEPevqP+6PWibu+jpg1HHxbK+XRX1f57CVIVwWpiutAksZHtIzN0+XJgHkC
+         xIdYr519LlL5cjn1crDRXR5zZQUQqbFCGX6a8=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=OJ5Jc7/SFKAd6uzvTV64BizVEpYeAIzTiW8TNMo1eOVdijZluHBmYA3wc2s+sWk6G5
+         LamUoKhMm++RWgBehffqSpcMmS8wLdgF9jCmQI60yPexNWkU4Kx8lygL4mEaWxn67x5y
+         ZU4/3BQvcgC6KZDqudcVsQQwNo9gIXqvazsP8=
+MIME-Version: 1.0
+Received: by 10.90.22.29 with SMTP id 29mr1495910agv.25.1253730446199; Wed, 23 
+	Sep 2009 11:27:26 -0700 (PDT)
+Date:	Wed, 23 Sep 2009 14:27:26 -0400
+Message-ID: <21f828e90909231127h70f69047v91b9261226681d53@mail.gmail.com>
+Subject: MIPS: [raw_]smp_processor_id uses current_thread_info
+From:	Randy MacLeod <rwmacleod@gmail.com>
+To:	linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <rwmacleod@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24078
+X-archive-position: 24079
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mbizon@freebox.fr
+X-original-sender: rwmacleod@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
+Hi,
 
-On Wed, 2009-09-23 at 14:31 +0200, Wolfram Sang wrote:
+I'd like advice on changing the implementation of smp_processor_id on
+Cavium specifically and/or MIPS generally.
 
-> Okay, here is a fast review. If you fix the mentioned points (or give me good
-> reasons why not ;)), then you might add my
-> 
-> Reviewed-by: Wolfram Sang <w.sang@pengutronix.de>
-> 
-> I am fine with Ralf picking this up.
+Currently we have: arch/mips/include/asm/smp.h
+#define raw_smp_processor_id() (current_thread_info()->cpu)
 
-Agreed on all your points and will fix them. Thanks.
+A co-worker has an issue where the current thread pointer is corrupted
+on a Cavium MIPS system running 2.6.14 (but the same code exists in 2.6.31).
+During the resulting panic() the kernel calls smp_processor_id()
+which dereferences the corrupt task pointer again - ouch. I've notice that
+other arches have raw_smp_processor_id() defined to
+ - a platform specific register read, or
+ - a percpu variable or
+ - have a hard_smp_processor_id() defined
+This last one is presumably for times when you don't trust the kernel
+data structures to be
+sane.
 
-Ralf, please give me a couple of days to fix this and I will send you an
-updated patch.
+I can create a patch that calls cvmx_get_core_num(); for cavium.
+Is there a more generic way to get the cpu number on MIPS?
 
+Thanks,
 -- 
-Maxime
+../Randy/..

@@ -1,61 +1,49 @@
-From: Manuel Lauss <manuel.lauss@gmail.com>
-Date: Thu, 24 Sep 2009 21:44:24 +0200
-Subject: [PATCH] mips: fix build of vmlinux.lds
-Message-ID: <20090924194424.lDUAUi2evlCypWDi9B2gDVJpG_oLZPf36vtayj-ybNg@z>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 25 Sep 2009 00:27:37 +0200 (CEST)
+Received: from mail.upwardaccess.com ([70.89.180.121]:3273 "EHLO
+	upwardaccess.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S2097344AbZIXW1b (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 25 Sep 2009 00:27:31 +0200
+Received: from hawaii.upwardaccess.com (unverified [10.61.7.126]) 
+	by upwardaccess.com (SurgeMail 3.9e) with ESMTP id 926945-1847469 
+	for <linux-mips@linux-mips.org>; Thu, 24 Sep 2009 15:27:19 -0700
+Received: by hawaii.upwardaccess.com (Postfix, from userid 500)
+	id 6E11835425C; Thu, 24 Sep 2009 15:27:19 -0700 (PDT)
+Date:	Thu, 24 Sep 2009 15:27:19 -0700
+From:	Mark Mason <mmason@upwardaccess.com>
+To:	linux-mips@linux-mips.org
+Subject: linux-mips.git broken compiling for smp targets
+Message-ID: <20090924222719.GA18095@upwardaccess.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Originating-IP: 10.61.7.126
+X-Authenticated-User: mmason@upwardaccess.com 
+Return-Path: <mason@upwardaccess.com>
+X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
+X-Orcpt: rfc822;linux-mips@linux-mips.org
+Original-Recipient: rfc822;linux-mips@linux-mips.org
+X-archive-position: 24096
+X-ecartis-version: Ecartis v1.0.0
+Sender: linux-mips-bounce@linux-mips.org
+Errors-to: linux-mips-bounce@linux-mips.org
+X-original-sender: mmason@upwardaccess.com
+Precedence: bulk
+X-list: linux-mips
 
-Commit 51b563fc93c8cb5bff1d67a0a71c374e4a4ea049 ("arm, cris, mips,
-sparc, powerpc, um, xtensa: fix build with bash 4.0") removed a few
-CPPFLAGS with vital include paths necessary to build vmlinux.lds
-on MIPS, and moved the calculation of the 'jiffies' symbol
-directly to vmlinux.lds.S but forgot to change make ifdef/... to
-cpp macros.
+Hello all,
 
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
-[sam: moved assignment of CPPFLAGS arch/mips/kernel/Makefile]
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
----
- arch/mips/kernel/Makefile      |    2 ++
- arch/mips/kernel/vmlinux.lds.S |   12 ++++++------
- 2 files changed, 8 insertions(+), 6 deletions(-)
+I'm getting the following compiling for my bcm1480:
 
-diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-index e961221..eecd2a9 100644
---- a/arch/mips/kernel/Makefile
-+++ b/arch/mips/kernel/Makefile
-@@ -2,6 +2,8 @@
- # Makefile for the Linux/MIPS kernel.
- #
- 
-+CPPFLAGS_vmlinux.lds := $(KBUILD_CFLAGS)
-+
- extra-y		:= head.o init_task.o vmlinux.lds
- 
- obj-y		+= cpu-probe.o branch.o entry.o genex.o irq.o process.o \
-diff --git a/arch/mips/kernel/vmlinux.lds.S b/arch/mips/kernel/vmlinux.lds.S
-index 9bf0e3d..162b299 100644
---- a/arch/mips/kernel/vmlinux.lds.S
-+++ b/arch/mips/kernel/vmlinux.lds.S
-@@ -11,15 +11,15 @@ PHDRS {
- 	note PT_NOTE FLAGS(4);	/* R__ */
- }
- 
--ifdef CONFIG_32BIT
--	ifdef CONFIG_CPU_LITTLE_ENDIAN
-+#ifdef CONFIG_32BIT
-+	#ifdef CONFIG_CPU_LITTLE_ENDIAN
- 		jiffies  = jiffies_64;
--	else
-+	#else
- 		jiffies  = jiffies_64 + 4;
--	endif
--else
-+	#endif
-+#else
- 	jiffies  = jiffies_64;
--endif
-+#endif
- 
- SECTIONS
- {
--- 
-1.6.2.5
+  CALL    scripts/checksyscalls.sh
+  CHK     include/linux/compile.h
+  CC      arch/mips/kernel/smp.o
+arch/mips/kernel/smp.c: In function `arch_send_call_function_single_ipi':
+arch/mips/kernel/smp.c:140: error: incompatible type for argument 1 of indirect function call
+make[1]: *** [arch/mips/kernel/smp.o] Error 1
+make: *** [arch/mips/kernel] Error 2
+
+Anyone else running into this?
+
+Thanks,
+Mark

@@ -1,94 +1,73 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Sep 2009 14:24:05 +0200 (CEST)
-Received: from mail-fx0-f221.google.com ([209.85.220.221]:48453 "EHLO
-	mail-fx0-f221.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493089AbZIXMX5 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 24 Sep 2009 14:23:57 +0200
-Received: by fxm21 with SMTP id 21so1280351fxm.33
-        for <linux-mips@linux-mips.org>; Thu, 24 Sep 2009 05:23:51 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type;
-        bh=NDvmG7rzdIRqpIG1TcF1vAe/FliuFWvffKHVuHFhEvE=;
-        b=MpTEzrtRWCACywEK8ZX0ppwHMMqyPFNRLeg4vOFA6m1REVLWKaXzPyjVlKmGfj5iXR
-         sTcZM/rXWnyHj8gIp5KFNLEQ72RDPPEebaH2BG1sepv9G4PEd5FHNgRnKDdJhej87QmI
-         gUady4E1gKlP+6JwfAKgO5jqIV3ivuoTI5yNY=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=xsqvlQhW58/cZOS0WetFa6qJNJrbTfnJcn19szL4X4J2781ucIl92PsjC+ZIHRy+ge
-         YP+yUy8vIOEwq2faZ0D7ci6GKIb5eneoNeI4GvP4iTMd8wU0O3w0jb94HnAjakbI+9We
-         Sv+DxRZtNAMnrzhBuKUsDJkQ9olTsVnlvdSVs=
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 24 Sep 2009 17:50:22 +0200 (CEST)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:57672 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1492630AbZIXPuP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 24 Sep 2009 17:50:15 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n8OFpU2A013512;
+	Thu, 24 Sep 2009 16:51:30 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n8OFpTZX013510;
+	Thu, 24 Sep 2009 16:51:29 +0100
+Date:	Thu, 24 Sep 2009 16:51:29 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Randy MacLeod <rwmacleod@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: MIPS: [raw_]smp_processor_id uses current_thread_info
+Message-ID: <20090924155129.GA11576@linux-mips.org>
+References: <21f828e90909231127h70f69047v91b9261226681d53@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 10.223.161.205 with SMTP id s13mr1215254fax.27.1253795031455; 
-	Thu, 24 Sep 2009 05:23:51 -0700 (PDT)
-In-Reply-To: <4ABB6189.5010909@gmail.com>
-References: <f861ec6f0909232344s72af6bax5bd77f1a5be45b4f@mail.gmail.com>
-	 <20090924091539.GA929@merkur.ravnborg.org>
-	 <f861ec6f0909240224m4b5dcbd9hc835409e7a66102d@mail.gmail.com>
-	 <f861ec6f0909240241x5c5858d4g4d44b40107021bb6@mail.gmail.com>
-	 <4ABB6189.5010909@gmail.com>
-Date:	Thu, 24 Sep 2009 15:23:51 +0300
-Message-ID: <90edad820909240523m4f284d0ep1cf0abf0f4909d9c@mail.gmail.com>
-Subject: Re: MIPS: Alchemy build broken in latest linus-git [with patch]
-From:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
-To:	Manuel Lauss <manuel.lauss@googlemail.com>
-Cc:	Sam Ravnborg <sam@ravnborg.org>,
-	Linux-MIPS <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <dmitri.vorobiev@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <21f828e90909231127h70f69047v91b9261226681d53@mail.gmail.com>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24091
+X-archive-position: 24092
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Sep 24, 2009 at 3:09 PM, Manuel Lauss
-<manuel.lauss@googlemail.com> wrote:
-> Manuel Lauss wrote:
->> On Thu, Sep 24, 2009 at 11:24 AM, Manuel Lauss
->> <manuel.lauss@googlemail.com> wrote:
->>>> I'm away from my machine atm.
->>>> Could you try to add the following to arch/mips/kernel/makefile:
->>>>
->>>> CPPFFLAGS_vmlinux.lds += $(KBUILD_CFLAGS)
->>>>
->>>> This should fix it.
->>> Thank you, that did it.
->>
->> Spoke too soon:
->>
->> This leaves unprocessed directives in vmlinux.lds:
->>
->> [...]
->> OUTPUT_ARCH(mips)
->> ENTRY(kernel_entry)
->> PHDRS {
->>  text PT_LOAD FLAGS(7); /* RWX */
->>  note PT_NOTE FLAGS(4); /* R__ */
->> }
->> ifdef 1
->>  ifdef 1
->>   jiffies = jiffies_64;
->>  else
->>   jiffies = jiffies_64 + 4;
->>  endif
->> else
->>  jiffies = jiffies_6
->
-> ... which is of course easily fixed after consumption of
-> unhealthy amounts of coffee.
->
-> Patch below works for me.
+On Wed, Sep 23, 2009 at 02:27:26PM -0400, Randy MacLeod wrote:
 
-For me too, and I am using a custom IP22 config.
+> I'd like advice on changing the implementation of smp_processor_id on
+> Cavium specifically and/or MIPS generally.
+> 
+> Currently we have: arch/mips/include/asm/smp.h
+> #define raw_smp_processor_id() (current_thread_info()->cpu)
+> 
+> A co-worker has an issue where the current thread pointer is corrupted
+> on a Cavium MIPS system running 2.6.14 (but the same code exists in 2.6.31).
+> During the resulting panic() the kernel calls smp_processor_id()
+> which dereferences the corrupt task pointer again - ouch. I've notice that
+> other arches have raw_smp_processor_id() defined to
+>  - a platform specific register read, or
+>  - a percpu variable or
+>  - have a hard_smp_processor_id() defined
+> This last one is presumably for times when you don't trust the kernel
+> data structures to be
+> sane.
 
-Thanks!
+Dereferencing current_thread_info()->cpu is fairly likely to hit in the cache
+so probably a single cycle operation.  raw_smp_processor_id() is also a
+very common operation so you really don't want to change it to something
+slower except for a debugging kernel.
 
-Dmitri
+If you have a good kernel stack pointer you can compute the thread pointer
+from that:
+
+	ori     $28, sp, _THREAD_MASK
+	xori    $28, _THREAD_MASK
+
+> I can create a patch that calls cvmx_get_core_num(); for cavium.
+> Is there a more generic way to get the cpu number on MIPS?
+
+raw_smp_processor_id() returns the processor ID as counted by Linux.  That
+number does not necessarily match the firmware's numbering.
+
+  Ralf

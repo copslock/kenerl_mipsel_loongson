@@ -1,70 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Sep 2009 03:05:48 +0200 (CEST)
-Received: from smtp.zeugmasystems.com ([70.79.96.174]:32713 "EHLO
-	zeugmasystems.com" rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org
-	with ESMTP id S1493171AbZIZBFl convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 26 Sep 2009 03:05:41 +0200
-X-MimeOLE: Produced By Microsoft Exchange V6.5
-Content-class: urn:content-classes:message
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Sep 2009 14:33:29 +0200 (CEST)
+Received: from chipmunk.wormnet.eu ([195.195.131.226]:52288 "EHLO
+	chipmunk.wormnet.eu" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1492559AbZIZMdV (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 26 Sep 2009 14:33:21 +0200
+Received: by chipmunk.wormnet.eu (Postfix, from userid 1000)
+	id 356108063D; Sat, 26 Sep 2009 13:33:20 +0100 (BST)
+Date:	Sat, 26 Sep 2009 13:33:20 +0100
+From:	Alexander Clouter <alex@digriz.org.uk>
+To:	Wu Zhangjin <wuzhangjin@gmail.com>
+Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH -v1] MIPS: add support for gzip/bzip2/lzma compressed
+	kernel images
+Message-ID: <20090926123320.GJ6085@chipmunk>
+References: <1249894154-10982-1-git-send-email-wuzhangjin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-Subject: RE: Strange bad accesses in compat_exit_robust_list (2.6.26, n32 ABI).
-Date:	Fri, 25 Sep 2009 18:05:30 -0700
-Message-ID: <DDFD17CC94A9BD49A82147DDF7D545C501F7056C@exchange.ZeugmaSystems.local>
-In-Reply-To: <DDFD17CC94A9BD49A82147DDF7D545C501F7053F@exchange.ZeugmaSystems.local>
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Thread-Topic: Strange bad accesses in compat_exit_robust_list (2.6.26, n32 ABI).
-Thread-Index: Aco+NNVJ+M75nEnzTBCs6uWEZaSwkwAAFr7QAAPRybA=
-From:	"Kaz Kylheku" <KKylheku@zeugmasystems.com>
-To:	"Kaz Kylheku" <KKylheku@zeugmasystems.com>,
-	<linux-mips@linux-mips.org>
-Return-Path: <KKylheku@zeugmasystems.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1249894154-10982-1-git-send-email-wuzhangjin@gmail.com>
+Organization: diGriz
+X-URL:	http://www.digriz.org.uk/
+X-JabberID: alex@digriz.org.uk
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <alex@digriz.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24104
+X-archive-position: 24105
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: KKylheku@zeugmasystems.com
+X-original-sender: alex@digriz.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-linux-mips-bounce@linux-mips.org wrote:
-> Kaz Kylheku wrote:
->> Hi all,
->> 
->> We made a strange discovery some time ago. After adding some tracing
->> printk's to the compat_exit_robust_list function for all the cases
->> where fetching the robust entry fails, we discovered that, from time
->> to time, 
->> it's being reported
->> for processes that don't even use threads.
+Hi,
+
+* Wu Zhangjin <wuzhangjin@gmail.com> [2009-08-10 16:49:14+0800]:
+>
+> This patch will help to generate smaller kernel images for linux-MIPS,
 > 
-> Hmm. Maybe a syscall is being misrouted? Perhaps user space is calling
-> some function that ends up routed to the compat_set_robust_list
-> entry in the syscall table, causing a junk value to be installed
-> as the robust list. Hmm. But robust mutexes work on our platform;
-> so glibc does reach the right syscalls when they are intended.
+> Here is the effect when using lzma:
+> 
+> $ ls -sh vmlinux
+> 7.1M vmlinux
+> $ ls -sh arch/mips/boot/compressed/vmlinuz
+> 1.5M arch/mips/boot/compressed/vmlinuz
+> 
+> Have tested the 32bit kernel on Qemu/Malta and 64bit kernel on FuLoong
+> Mini PC. both of them work well.
+> 
+> and this revision incorporates the feedback from Alexander Clouter
+> <alex@digriz.org.uk>, he helped to test it on AR7[1] based Linksys
+> WAG54Gv2 and gave good suggestion on board-independence.
+> 
+> NOTE: this should work for the other MIPS-based machines, but I have
+> used the command bc in the Makefile to calculate the load address of the
+> compressed kernel. I'm not sure this is suitable.  perhaps I need to
+> rewrite this part in C program or somebody help to simplify the current
+> implementation.
+> 
+Finally Fleabay'ed a replacement WAG54Gv2 to replace the one I 
+bricked to try this new patch.
 
-I have another hypothesis.
+Works perfectly....I finally can cooked more or less vanilla kernels on 
+my board now :)
 
-The execve syscall does not appear to deal with the robust
-mutex list at all. A process can set up these robust pointers
-and then call execv. It gets a new memory map, but the
-flush_old_exec function does not clean up the robust list pointer,
-which refers to a virtual address in the old address space.
+> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+>
+Tested-by: Alexander Clouter <alex@digriz.org.uk>
 
-I just confirmed it in fact.
+Cheers
 
-I have a 100% repro for this problem when I do a 
-``tar xjf file.tar.bz2'' on my board.
-
-The tar process calls compat_sys_set_robust_list, and then
-the bzip2 process encounters the problem in the compat_exit_robust_list.
-
-But the PID is the same!  The tar process has exec-ed
-bzip2, and the bzip2 image inherited bad robust pointers from
-the time when it was tar.
+-- 
+Alexander Clouter
+.sigmonster says: My computer can beat up your computer.
+                  		-- Karl Lehenbauer

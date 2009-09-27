@@ -1,77 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 26 Sep 2009 14:33:29 +0200 (CEST)
-Received: from chipmunk.wormnet.eu ([195.195.131.226]:52288 "EHLO
-	chipmunk.wormnet.eu" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1492559AbZIZMdV (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 26 Sep 2009 14:33:21 +0200
-Received: by chipmunk.wormnet.eu (Postfix, from userid 1000)
-	id 356108063D; Sat, 26 Sep 2009 13:33:20 +0100 (BST)
-Date:	Sat, 26 Sep 2009 13:33:20 +0100
-From:	Alexander Clouter <alex@digriz.org.uk>
-To:	Wu Zhangjin <wuzhangjin@gmail.com>
-Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH -v1] MIPS: add support for gzip/bzip2/lzma compressed
-	kernel images
-Message-ID: <20090926123320.GJ6085@chipmunk>
-References: <1249894154-10982-1-git-send-email-wuzhangjin@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1249894154-10982-1-git-send-email-wuzhangjin@gmail.com>
-Organization: diGriz
-X-URL:	http://www.digriz.org.uk/
-X-JabberID: alex@digriz.org.uk
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <alex@digriz.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 27 Sep 2009 05:15:16 +0200 (CEST)
+Received: from mail-pz0-f177.google.com ([209.85.222.177]:54353 "EHLO
+	mail-pz0-f177.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1491886AbZI0DPI (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 27 Sep 2009 05:15:08 +0200
+Received: by pzk7 with SMTP id 7so1607109pzk.21
+        for <multiple recipients>; Sat, 26 Sep 2009 20:14:59 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=rOYpzImAnvLtpltCXCumCh0LuUcMSZO6DU8Myhj1R60=;
+        b=n46unOCi6vrsuAJKM8Oe7h7vUfOFWYpWW9S/E15vF5LAKj+eptu4DkSnfewwJWfGkZ
+         MR9IJ72A7Ch65jE+/moXOp1EE0/9oXIYbiadNTdjF3904SPLZKunKB5wT5s7LNjRjv/I
+         mQN0z4wOXh1cro/Y6hUBFpC7uzJsjpKdvCc2Y=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=rPgLtLIVXFn8ObZW4bMmK+gWIuLeZ5JpreE1+7skua9VxnOpJrrCJXVPGThawcYd5j
+         UgNO8BkSUg3MG076wUDhDVS5F5WSijp8dfpZ+lzhHtMmOVPR9Ks3QxaABRbqGB2kTmM3
+         sOxrzLjPnY2/h7ziELsrG3KLiRbogb6cHWwXM=
+Received: by 10.115.103.23 with SMTP id f23mr2879321wam.226.1254021299331;
+        Sat, 26 Sep 2009 20:14:59 -0700 (PDT)
+Received: from localhost.localdomain ([58.212.85.233])
+        by mx.google.com with ESMTPS id 23sm1455830pzk.12.2009.09.26.20.14.55
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sat, 26 Sep 2009 20:14:57 -0700 (PDT)
+From:	Huang Weiyi <weiyi.huang@gmail.com>
+To:	ralf@linux-mips.org
+Cc:	linux-mips@linux-mips.org, Huang Weiyi <weiyi.huang@gmail.com>
+Subject: [PATCH 1/5] MIPS: remove duplicated #include
+Date:	Sun, 27 Sep 2009 11:14:54 +0800
+Message-Id: <1254021294-3832-1-git-send-email-weiyi.huang@gmail.com>
+X-Mailer: git-send-email 1.6.1.2
+Return-Path: <weiyi.huang@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24105
+X-archive-position: 24106
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: alex@digriz.org.uk
+X-original-sender: weiyi.huang@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+Remove duplicated #include('s) in
+  arch/mips/kernel/smp.c
 
-* Wu Zhangjin <wuzhangjin@gmail.com> [2009-08-10 16:49:14+0800]:
->
-> This patch will help to generate smaller kernel images for linux-MIPS,
-> 
-> Here is the effect when using lzma:
-> 
-> $ ls -sh vmlinux
-> 7.1M vmlinux
-> $ ls -sh arch/mips/boot/compressed/vmlinuz
-> 1.5M arch/mips/boot/compressed/vmlinuz
-> 
-> Have tested the 32bit kernel on Qemu/Malta and 64bit kernel on FuLoong
-> Mini PC. both of them work well.
-> 
-> and this revision incorporates the feedback from Alexander Clouter
-> <alex@digriz.org.uk>, he helped to test it on AR7[1] based Linksys
-> WAG54Gv2 and gave good suggestion on board-independence.
-> 
-> NOTE: this should work for the other MIPS-based machines, but I have
-> used the command bc in the Makefile to calculate the load address of the
-> compressed kernel. I'm not sure this is suitable.  perhaps I need to
-> rewrite this part in C program or somebody help to simplify the current
-> implementation.
-> 
-Finally Fleabay'ed a replacement WAG54Gv2 to replace the one I 
-bricked to try this new patch.
+Signed-off-by: Huang Weiyi <weiyi.huang@gmail.com>
+---
+ arch/mips/kernel/smp.c |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
 
-Works perfectly....I finally can cooked more or less vanilla kernels on 
-my board now :)
-
-> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
->
-Tested-by: Alexander Clouter <alex@digriz.org.uk>
-
-Cheers
-
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index 4eb106c..09e8dcf 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -32,7 +32,6 @@
+ #include <linux/cpumask.h>
+ #include <linux/cpu.h>
+ #include <linux/err.h>
+-#include <linux/smp.h>
+ 
+ #include <asm/atomic.h>
+ #include <asm/cpu.h>
 -- 
-Alexander Clouter
-.sigmonster says: My computer can beat up your computer.
-                  		-- Karl Lehenbauer
+1.6.1.3

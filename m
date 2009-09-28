@@ -1,58 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Sep 2009 17:08:25 +0200 (CEST)
-Received: from smtp6-g21.free.fr ([212.27.42.6]:46192 "EHLO smtp6-g21.free.fr"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1493415AbZI1PIT (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 28 Sep 2009 17:08:19 +0200
-Received: from smtp6-g21.free.fr (localhost [127.0.0.1])
-	by smtp6-g21.free.fr (Postfix) with ESMTP id 5350CE081A6;
-	Mon, 28 Sep 2009 17:08:12 +0200 (CEST)
-Received: from [213.228.1.107] (sakura.staff.proxad.net [213.228.1.107])
-	by smtp6-g21.free.fr (Postfix) with ESMTP id 6A608E080A1;
-	Mon, 28 Sep 2009 17:08:09 +0200 (CEST)
-Subject: Re: [PATCH v3] MIPS: BCM63xx: Add PCMCIA & Cardbus support.
-From:	Maxime Bizon <mbizon@freebox.fr>
-Reply-To: mbizon@freebox.fr
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Sep 2009 20:46:29 +0200 (CEST)
+Received: from mail-pz0-f196.google.com ([209.85.222.196]:54847 "EHLO
+	mail-pz0-f196.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493548AbZI1SqV convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 28 Sep 2009 20:46:21 +0200
+Received: by pzk34 with SMTP id 34so2603518pzk.22
+        for <multiple recipients>; Mon, 28 Sep 2009 11:46:11 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:sender:received:in-reply-to
+         :references:date:x-google-sender-auth:message-id:subject:from:to:cc
+         :content-type:content-transfer-encoding;
+        bh=5HDgAIl5a660DqR9WckDWO+37SnMKsk16R6Qh3k0GCw=;
+        b=qCvPqDgY393E/LBXp20ey+1+VX5wvgl7cfUhRyHLcITvBfIFAHp1KK1by3u8KXGndv
+         5JzcLmhulJZo72jJdLiwiWZxzDhwCNk4c8sDbTl4wnEniizwHzJmst5UqDOH7FF/lMXh
+         56Qp412zwQEqsgzUDnl8i1s0XEaY0QoyZQGFw=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:sender:in-reply-to:references:date
+         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        b=GiMSeWOc/gcPQZlcD1Fbv1WkHnB+SSdzNzljGJL4Ze7mcMXtkj2rtaQ8CYySKXm8Hm
+         scWXPldoxN3p2XSdkPQ9KIApZLcwbodq/xrpH1I+PD/jZZ44sKxIqK7LnraKWAtWdeO0
+         i3tVBfvNxXh9UirW/T/FXiNmzIKacKIKQhfcg=
+MIME-Version: 1.0
+Received: by 10.143.24.40 with SMTP id b40mr22285wfj.0.1254163571554; Mon, 28 
+	Sep 2009 11:46:11 -0700 (PDT)
+In-Reply-To: <20090928104728.GA3571@linux-mips.org>
+References: <1254021294-3832-1-git-send-email-weiyi.huang@gmail.com>
+	 <20090928104728.GA3571@linux-mips.org>
+Date:	Mon, 28 Sep 2009 20:46:11 +0200
+X-Google-Sender-Auth: f0f0989e8b9fa693
+Message-ID: <10f740e80909281146y57b4aa67h5ec69b46fe77b4fd@mail.gmail.com>
+Subject: Re: [PATCH 1/5] MIPS: remove duplicated #include
+From:	Geert Uytterhoeven <geert@linux-m68k.org>
 To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Greg Kroah-Hartman <gregkh@suse.de>, linux-mips@linux-mips.org
-In-Reply-To: <20090928134423.GA29791@linux-mips.org>
-References: <1253272891.1627.284.camel@sakura.staff.proxad.net>
-	 <20090923123143.GB3131@pengutronix.de>
-	 <1253709915.1627.397.camel@sakura.staff.proxad.net>
-	 <1253890476.1627.468.camel@sakura.staff.proxad.net>
-	 <4ABCF1E7.4010304@ru.mvista.com>
-	 <1254142183.1627.488.camel@sakura.staff.proxad.net>
-	 <20090928134423.GA29791@linux-mips.org>
-Content-Type: text/plain
-Organization: Freebox
-Date:	Mon, 28 Sep 2009 17:08:09 +0200
-Message-Id: <1254150489.1627.503.camel@sakura.staff.proxad.net>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <mbizon@freebox.fr>
+Cc:	Huang Weiyi <weiyi.huang@gmail.com>, linux-mips@linux-mips.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+Return-Path: <geert.uytterhoeven@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24112
+X-archive-position: 24113
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mbizon@freebox.fr
+X-original-sender: geert@linux-m68k.org
 Precedence: bulk
 X-list: linux-mips
 
+On Mon, Sep 28, 2009 at 12:47, Ralf Baechle <ralf@linux-mips.org> wrote:
+> On Sun, Sep 27, 2009 at 11:14:54AM +0800, Huang Weiyi wrote:
+>
+>> Remove duplicated #include('s) in
+>>   arch/mips/kernel/smp.c
+>>
+>> Signed-off-by: Huang Weiyi <weiyi.huang@gmail.com>
+>
+> This is the 3rd identical patch I've received ...
 
-On Mon, 2009-09-28 at 14:44 +0100, Ralf Baechle wrote:
+I have the impression people discovered the good old `make includecheck', since
+it's been added to `make help' ;-)
 
-> so with PCMCIA sorted this leaves only the two USB UHCI / EHCI patches.
-> What is the status of these?
+Gr{oetje,eeting}s,
 
-I got this review at first post:
+						Geert
 
-http://www.spinics.net/lists/mips/msg32240.html
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-I addressed all comments, beside readl_be/writel_be, which I'm not sure
-how to integrate correctly in mips generic code.
-
--- 
-Maxime
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

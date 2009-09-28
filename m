@@ -1,75 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Sep 2009 20:46:29 +0200 (CEST)
-Received: from mail-pz0-f196.google.com ([209.85.222.196]:54847 "EHLO
-	mail-pz0-f196.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493548AbZI1SqV convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 28 Sep 2009 20:46:21 +0200
-Received: by pzk34 with SMTP id 34so2603518pzk.22
-        for <multiple recipients>; Mon, 28 Sep 2009 11:46:11 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:sender:received:in-reply-to
-         :references:date:x-google-sender-auth:message-id:subject:from:to:cc
-         :content-type:content-transfer-encoding;
-        bh=5HDgAIl5a660DqR9WckDWO+37SnMKsk16R6Qh3k0GCw=;
-        b=qCvPqDgY393E/LBXp20ey+1+VX5wvgl7cfUhRyHLcITvBfIFAHp1KK1by3u8KXGndv
-         5JzcLmhulJZo72jJdLiwiWZxzDhwCNk4c8sDbTl4wnEniizwHzJmst5UqDOH7FF/lMXh
-         56Qp412zwQEqsgzUDnl8i1s0XEaY0QoyZQGFw=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:sender:in-reply-to:references:date
-         :x-google-sender-auth:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        b=GiMSeWOc/gcPQZlcD1Fbv1WkHnB+SSdzNzljGJL4Ze7mcMXtkj2rtaQ8CYySKXm8Hm
-         scWXPldoxN3p2XSdkPQ9KIApZLcwbodq/xrpH1I+PD/jZZ44sKxIqK7LnraKWAtWdeO0
-         i3tVBfvNxXh9UirW/T/FXiNmzIKacKIKQhfcg=
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Sep 2009 22:17:13 +0200 (CEST)
+Received: from chipmunk.wormnet.eu ([195.195.131.226]:54011 "EHLO
+	chipmunk.wormnet.eu" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1493564AbZI1URF (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 28 Sep 2009 22:17:05 +0200
+Received: by chipmunk.wormnet.eu (Postfix, from userid 1000)
+	id D9A808314F; Mon, 28 Sep 2009 21:17:03 +0100 (BST)
+Date:	Mon, 28 Sep 2009 21:17:03 +0100
+From:	Alexander Clouter <alex@digriz.org.uk>
+To:	Wu Zhangjin <wuzhangjin@gmail.com>
+Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
+	manuel.lauss@googlemail.com
+Subject: Re: [PATCH -v1] MIPS: add support for gzip/bzip2/lzma compressed
+	kernel images
+Message-ID: <20090928201703.GX6085@chipmunk>
+References: <1249894154-10982-1-git-send-email-wuzhangjin@gmail.com>
 MIME-Version: 1.0
-Received: by 10.143.24.40 with SMTP id b40mr22285wfj.0.1254163571554; Mon, 28 
-	Sep 2009 11:46:11 -0700 (PDT)
-In-Reply-To: <20090928104728.GA3571@linux-mips.org>
-References: <1254021294-3832-1-git-send-email-weiyi.huang@gmail.com>
-	 <20090928104728.GA3571@linux-mips.org>
-Date:	Mon, 28 Sep 2009 20:46:11 +0200
-X-Google-Sender-Auth: f0f0989e8b9fa693
-Message-ID: <10f740e80909281146y57b4aa67h5ec69b46fe77b4fd@mail.gmail.com>
-Subject: Re: [PATCH 1/5] MIPS: remove duplicated #include
-From:	Geert Uytterhoeven <geert@linux-m68k.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Huang Weiyi <weiyi.huang@gmail.com>, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Return-Path: <geert.uytterhoeven@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1249894154-10982-1-git-send-email-wuzhangjin@gmail.com>
+Organization: diGriz
+X-URL:	http://www.digriz.org.uk/
+X-JabberID: alex@digriz.org.uk
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <alex@digriz.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24113
+X-archive-position: 24114
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: geert@linux-m68k.org
+X-original-sender: alex@digriz.org.uk
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Sep 28, 2009 at 12:47, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Sun, Sep 27, 2009 at 11:14:54AM +0800, Huang Weiyi wrote:
+Hi,
+
+* Wu Zhangjin <wuzhangjin@gmail.com> [2009-08-10 16:49:14+0800]:
 >
->> Remove duplicated #include('s) in
->>   arch/mips/kernel/smp.c
->>
->> Signed-off-by: Huang Weiyi <weiyi.huang@gmail.com>
+> This patch will help to generate smaller kernel images for linux-MIPS,
+> 
+> [snipped]
+> 
+> NOTE: this should work for the other MIPS-based machines, but I have
+> used the command bc in the Makefile to calculate the load address of the
+> compressed kernel. I'm not sure this is suitable.  perhaps I need to
+> rewrite this part in C program or somebody help to simplify the current
+> implementation.
+> 
+Remembered you wanted a nicer way to work out the load address so this 
+is my best attempt so far....I think it's fine to leave it as shell code 
+personally; but I'm not a maintainer :)
+
+> + [snipped]
 >
-> This is the 3rd identical patch I've received ...
+> +# The load address of the compressed kernel, VMLINUZ_LOAD_ADDRESS > VMLINUX_LOAD_ADDRESS + VMLINUX_SIZE
+> +VMLINUX_SIZE := $(shell wc -c $(objtree)/$(KBUILD_IMAGE) 2>/dev/null | cut -d' ' -f1)
+> +VMLINUX_SIZE := $(shell echo "obase=16;ibase=10;(($(VMLINUX_SIZE)/65536 + 1) * 65536)" | bc | cut -d'.' -f1)
+> +VMLINUX_LOAD_ADDRESS = $(shell echo $(LOADADDR) | sed -e "s/0xffffffff//g")
+> +VMLINUZ_LOAD_ADDRESS := $(shell echo "obase=16; ibase=16; ($(VMLINUX_LOAD_ADDRESS) + $(VMLINUX_SIZE))" | bc)
+> +VMLINUZ_LOAD_ADDRESS := 0x$(if $(CONFIG_64BIT),ffffffff,)$(VMLINUZ_LOAD_ADDRESS)
+> +LOADADDR := 0x$(if $(CONFIG_64BIT),ffffffff,)$(VMLINUX_LOAD_ADDRESS)
+> +
+Slightly prettier is to get rid of the 'bc' dependency, a divide and a 
+'cut' here and there.
 
-I have the impression people discovered the good old `make includecheck', since
-it's been added to `make help' ;-)
-
-Gr{oetje,eeting}s,
-
-						Geert
+Cheers
 
 --
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Alexander Clouter
+.sigmonster says: Nice guys finish last.
+                                -- Leo Durocher
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-							    -- Linus Torvalds
+diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+index f9ccd97..e531b28 100644
+--- a/arch/mips/boot/compressed/Makefile
++++ b/arch/mips/boot/compressed/Makefile
+@@ -12,11 +12,11 @@
+ # Author: Wu Zhangjin <wuzj@lemote.com>
+ #
+ 
+-# The load address of the compressed kernel, VMLINUZ_LOAD_ADDRESS > VMLINUX_LOAD_ADDRESS + VMLINUX_SIZE
+-VMLINUX_SIZE := $(shell wc -c $(objtree)/$(KBUILD_IMAGE) 2>/dev/null | cut -d' ' -f1)
+-VMLINUX_SIZE := $(shell echo "obase=16;ibase=10;(($(VMLINUX_SIZE)/65536 + 1) * 65536)" | bc | cut -d'.' -f1)
+-VMLINUX_LOAD_ADDRESS = $(shell echo $(LOADADDR) | sed -e "s/0xffffffff//g")
+-VMLINUZ_LOAD_ADDRESS := $(shell echo "obase=16; ibase=16; ($(VMLINUX_LOAD_ADDRESS) + $(VMLINUX_SIZE))" | bc)
++# compressed kernel load addr: VMLINUZ_LOAD_ADDRESS > VMLINUX_LOAD_ADDRESS + VMLINUX_SIZE
++VMLINUX_SIZE := $(shell wc -c $(objtree)/$(KBUILD_IMAGE) | cut -d' ' -f1)
++VMLINUX_SIZE := $(shell echo $$(($(VMLINUX_SIZE) + (65536 - $(VMLINUX_SIZE) % 65536))))
++VMLINUX_LOAD_ADDRESS = $(shell echo $(LOADADDR) | sed -e 's/0xffffffff//')
++VMLINUZ_LOAD_ADDRESS := $(shell printf %x $$((0x$(VMLINUX_LOAD_ADDRESS) + $(VMLINUX_SIZE))))
+ VMLINUZ_LOAD_ADDRESS := 0x$(if $(CONFIG_64BIT),ffffffff,)$(VMLINUZ_LOAD_ADDRESS)
+ LOADADDR := 0x$(if $(CONFIG_64BIT),ffffffff,)$(VMLINUX_LOAD_ADDRESS)

@@ -1,62 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Sep 2009 16:09:04 +0200 (CEST)
-Received: from mail-bw0-f208.google.com ([209.85.218.208]:55981 "EHLO
-	mail-bw0-f208.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492641AbZI1OI6 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 28 Sep 2009 16:08:58 +0200
-Received: by bwz4 with SMTP id 4so3535984bwz.0
-        for <multiple recipients>; Mon, 28 Sep 2009 07:08:52 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type;
-        bh=bto3pdl+OfOMAU0j2Xws7LA9ky2ID9dK6FvGxm4Ql70=;
-        b=JObWCGYSsEfpaNU+e+a+/XatXrdrsuRoywKU/soYp2e6UXTD5PoaqoLlFkm9SAyqKL
-         otSYenOHIk7tF54B/4ueoFEAf/j3+4sXAsiHlnw3sEmfaxGw3A8c6b27hWUmYc68EQHN
-         vgUDg3w1aO51DS+J60bQJct1vPvpJszQpxXq0=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=FPaC3pgUGi1uVtXaYP0lWN+tfLqqQomUe/RLGkgWCNuQ7eOBY4XInt8/lUpVIuFPPE
-         mB/70HM0wVnYWrEIAYrn7oN1JLnWR82GspYcmrIKq+D/BtG+MjUILtiVrhCiMrLB7iLl
-         bhbPj4hhbNEBCBoC6Y8u4amnvTRJVJ+L50LpY=
-MIME-Version: 1.0
-Received: by 10.103.50.28 with SMTP id c28mr1272297muk.17.1254146932571; Mon, 
-	28 Sep 2009 07:08:52 -0700 (PDT)
-In-Reply-To: <1249894154-10982-1-git-send-email-wuzhangjin@gmail.com>
-References: <1249894154-10982-1-git-send-email-wuzhangjin@gmail.com>
-Date:	Mon, 28 Sep 2009 16:08:52 +0200
-Message-ID: <f861ec6f0909280708o42ceb334u4d33e141b9c51efa@mail.gmail.com>
-Subject: Re: [PATCH -v1] MIPS: add support for gzip/bzip2/lzma compressed 
-	kernel images
-From:	Manuel Lauss <manuel.lauss@googlemail.com>
-To:	Wu Zhangjin <wuzhangjin@gmail.com>
-Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-	Alexander Clouter <alex@digriz.org.uk>
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <manuel.lauss@googlemail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 28 Sep 2009 17:08:25 +0200 (CEST)
+Received: from smtp6-g21.free.fr ([212.27.42.6]:46192 "EHLO smtp6-g21.free.fr"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1493415AbZI1PIT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 28 Sep 2009 17:08:19 +0200
+Received: from smtp6-g21.free.fr (localhost [127.0.0.1])
+	by smtp6-g21.free.fr (Postfix) with ESMTP id 5350CE081A6;
+	Mon, 28 Sep 2009 17:08:12 +0200 (CEST)
+Received: from [213.228.1.107] (sakura.staff.proxad.net [213.228.1.107])
+	by smtp6-g21.free.fr (Postfix) with ESMTP id 6A608E080A1;
+	Mon, 28 Sep 2009 17:08:09 +0200 (CEST)
+Subject: Re: [PATCH v3] MIPS: BCM63xx: Add PCMCIA & Cardbus support.
+From:	Maxime Bizon <mbizon@freebox.fr>
+Reply-To: mbizon@freebox.fr
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Greg Kroah-Hartman <gregkh@suse.de>, linux-mips@linux-mips.org
+In-Reply-To: <20090928134423.GA29791@linux-mips.org>
+References: <1253272891.1627.284.camel@sakura.staff.proxad.net>
+	 <20090923123143.GB3131@pengutronix.de>
+	 <1253709915.1627.397.camel@sakura.staff.proxad.net>
+	 <1253890476.1627.468.camel@sakura.staff.proxad.net>
+	 <4ABCF1E7.4010304@ru.mvista.com>
+	 <1254142183.1627.488.camel@sakura.staff.proxad.net>
+	 <20090928134423.GA29791@linux-mips.org>
+Content-Type: text/plain
+Organization: Freebox
+Date:	Mon, 28 Sep 2009 17:08:09 +0200
+Message-Id: <1254150489.1627.503.camel@sakura.staff.proxad.net>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.26.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <mbizon@freebox.fr>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24111
+X-archive-position: 24112
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: mbizon@freebox.fr
 Precedence: bulk
 X-list: linux-mips
 
-Hi Wu!
 
-On Mon, Aug 10, 2009 at 10:49 AM, Wu Zhangjin <wuzhangjin@gmail.com> wrote:
-> This patch will help to generate smaller kernel images for linux-MIPS,
+On Mon, 2009-09-28 at 14:44 +0100, Ralf Baechle wrote:
 
-I just gave it quick spin on my Alchemy boards, works quite well!
+> so with PCMCIA sorted this leaves only the two USB UHCI / EHCI patches.
+> What is the status of these?
 
-For the debug code (dbg.[ch]) I suggest you leave the actual uart-banging
-to board code (either in the form of cpp macros or inlined functions)
-because most chips either don't have a 16550 compatible uart or (in the
-alchemy case) have a 16550 with non-standard register layout.
+I got this review at first post:
 
-Thanks you for your work!
-        Manuel Lauss
+http://www.spinics.net/lists/mips/msg32240.html
+
+I addressed all comments, beside readl_be/writel_be, which I'm not sure
+how to integrate correctly in mips generic code.
+
+-- 
+Maxime

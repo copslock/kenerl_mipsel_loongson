@@ -1,44 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Sep 2009 20:16:48 +0200 (CEST)
-Received: from mail-fx0-f221.google.com ([209.85.220.221]:45654 "EHLO
-	mail-fx0-f221.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493660AbZI2SPb (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 29 Sep 2009 20:15:31 +0200
-Received: by fxm21 with SMTP id 21so1108511fxm.33
-        for <linux-mips@linux-mips.org>; Tue, 29 Sep 2009 11:15:25 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Sep 2009 20:50:50 +0200 (CEST)
+Received: from fg-out-1718.google.com ([72.14.220.158]:56487 "EHLO
+	fg-out-1718.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1493672AbZI2Suo (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 29 Sep 2009 20:50:44 +0200
+Received: by fg-out-1718.google.com with SMTP id e21so1032723fga.6
+        for <linux-mips@linux-mips.org>; Tue, 29 Sep 2009 11:50:40 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer:in-reply-to:references;
-        bh=yecj+9GRuvDEEvWy9g/jkIOI7zkHzIl28qyKxP0wk20=;
-        b=PeVAiltE27jwAVtQYUWZrrA7tD/o20MIb+nufCX0QzQQ/RSnLgS+D8n8iU99xaxzaJ
-         E190MliQQlJ4Su64izXjiG405PeqlZelebCEaGb2Wr1lZT6kzrVIM8L9cjS51yrnos5B
-         AzwdelF8HE65sgR8HSklTBXtllp8RUdq1LhXQ=
+         :message-id:x-mailer;
+        bh=chwiPF1GgyowEfe63jOZZiPCUJeiGmtOL3t86BcLUo4=;
+        b=caTfLMBggRuxcc1570fBT7hB6jMEHH5H6SFeVt+sHNgH1piZC9aXN/8irZqkQNrk32
+         VgQNv27lstck4jOSDACQ8fg6CNtwCV8OrS+xMLmYauGXypAb/GxTaIY5PETGldX6ju9h
+         SeoQLlVmUv1+vyma0PlRFDfZSA3vIK5TpjPHw=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=googlemail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=asnI6NxB5nIkOV219++kB2yGliEVPZfMRz5O1rTWXVTvJL4catajXec+UxFDKx/fJi
-         W10eZ159+iSSgfEyzYt9gfLzC3Tfzb4KcDUaJjTNaXgFsyHsSiCo3ChfW2gFZWI/OfXb
-         S0vudDkcTyKHOBO/4w9OxwOU9io6fXyvHiBvg=
-Received: by 10.86.22.12 with SMTP id 12mr4435419fgv.69.1254248124895;
-        Tue, 29 Sep 2009 11:15:24 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=gV2+h6jL7rBCx1ayyVkvfQpx5t0HWSsEu0+TtY8OsvUDeAfVdjGbEqPQky5Wgaz1f/
+         S8jyxDwiU5i1lq5BC4PjWCJOiVLH8hRxy6HbWiNgpyOQv5wmLFgdUU5ML8XDLbHICioV
+         FQE51dADBS69mayzftw+nFRh1mT7o6KwZPllU=
+Received: by 10.86.169.3 with SMTP id r3mr4604847fge.15.1254250240620;
+        Tue, 29 Sep 2009 11:50:40 -0700 (PDT)
 Received: from localhost.localdomain (p5496CA2C.dip.t-dialin.net [84.150.202.44])
-        by mx.google.com with ESMTPS id 3sm46061fge.23.2009.09.29.11.15.23
+        by mx.google.com with ESMTPS id e20sm277978fga.4.2009.09.29.11.50.38
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 29 Sep 2009 11:15:24 -0700 (PDT)
+        Tue, 29 Sep 2009 11:50:39 -0700 (PDT)
 From:	Manuel Lauss <manuel.lauss@googlemail.com>
-To:	Linux-MIPS <linux-mips@linux-mips.org>
-Cc:	Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH 1/3] Alchemy: devboard register abstraction
-Date:	Tue, 29 Sep 2009 20:15:12 +0200
-Message-Id: <1254248114-4158-2-git-send-email-manuel.lauss@gmail.com>
+To:	linux-pcmcia <linux-pcmcia@lists.infradead.org>
+Cc:	Linux-MIPS <linux-mips@linux-mips.org>,
+	Manuel Lauss <manuel.lauss@gmail.com>,
+	Florian Fainelli <florian@openwrt.org>
+Subject: [PATCH] Alchemy: XXS1500 PCMCIA driver rewrite
+Date:	Tue, 29 Sep 2009 20:50:36 +0200
+Message-Id: <1254250236-18130-1-git-send-email-manuel.lauss@gmail.com>
 X-Mailer: git-send-email 1.6.5.rc1
-In-Reply-To: <1254248114-4158-1-git-send-email-manuel.lauss@gmail.com>
-References: <1254248114-4158-1-git-send-email-manuel.lauss@gmail.com>
 Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24118
+X-archive-position: 24119
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,1653 +46,728 @@ X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-All Alchemy development boards (except the PB1000) have external CPLDs
-with a few registers in them.  They all share an identical register
-layout with only a few minor differences in bit functions and base
-addresses.  This is useful for drivers which can work across the whole
-range of boards (e.g. the PCMCIA socket driver).
+Rewritten XXS1500 PCMCIA socket driver, standalone (doesn't
+depend on au1000_generic.c) and added carddetect IRQ support.
 
-This patch adds a primitive facility to initialize and use these
-external registers and replaces all occurrences of bcsr->xxx accesses
-with calls to the new functions (except for the PB1200 IRQ cascade,
-which doesn't work with it).
-
-Run-tested on the DB1200, as far as possible.
-
+Cc: Florian Fainelli <florian@openwrt.org>
 Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
 ---
- arch/mips/alchemy/devboards/Makefile             |    2 +-
- arch/mips/alchemy/devboards/bcsr.c               |   76 +++++++
- arch/mips/alchemy/devboards/db1x00/board_setup.c |   62 ++++---
- arch/mips/alchemy/devboards/pb1100/board_setup.c |    7 +-
- arch/mips/alchemy/devboards/pb1200/board_setup.c |   49 +++---
- arch/mips/alchemy/devboards/pb1200/irqmap.c      |   42 +++--
- arch/mips/alchemy/devboards/pb1200/platform.c    |   25 ++--
- arch/mips/alchemy/devboards/pb1500/board_setup.c |    7 +-
- arch/mips/alchemy/devboards/pb1550/board_setup.c |   11 +-
- arch/mips/include/asm/mach-db1x00/bcsr.h         |  232 ++++++++++++++++++++++
- arch/mips/include/asm/mach-db1x00/db1200.h       |  109 +----------
- arch/mips/include/asm/mach-db1x00/db1x00.h       |   92 ---------
- arch/mips/include/asm/mach-pb1x00/pb1100.h       |   49 -----
- arch/mips/include/asm/mach-pb1x00/pb1200.h       |  109 +----------
- arch/mips/include/asm/mach-pb1x00/pb1500.h       |   13 --
- arch/mips/include/asm/mach-pb1x00/pb1550.h       |   89 ---------
- drivers/mtd/nand/au1550nd.c                      |    4 +-
- drivers/net/irda/au1k_ir.c                       |   14 +-
- drivers/pcmcia/au1000_db1x00.c                   |   76 ++++----
- 19 files changed, 472 insertions(+), 596 deletions(-)
- create mode 100644 arch/mips/alchemy/devboards/bcsr.c
- create mode 100644 arch/mips/include/asm/mach-db1x00/bcsr.h
+Against latest linus-git, compile-tested only.
+CC'ing Florian, he might still have a testsystem.
 
-diff --git a/arch/mips/alchemy/devboards/Makefile b/arch/mips/alchemy/devboards/Makefile
-index 730f9f2..adc6717 100644
---- a/arch/mips/alchemy/devboards/Makefile
-+++ b/arch/mips/alchemy/devboards/Makefile
-@@ -2,7 +2,7 @@
- # Alchemy Develboards
+ arch/mips/alchemy/xxs1500/Makefile      |    2 +-
+ arch/mips/alchemy/xxs1500/board_setup.c |   16 --
+ arch/mips/alchemy/xxs1500/platform.c    |   63 ++++++
+ drivers/pcmcia/Kconfig                  |   10 +
+ drivers/pcmcia/Makefile                 |    3 +-
+ drivers/pcmcia/au1000_xxs1500.c         |  188 ----------------
+ drivers/pcmcia/xxs1500_ss.c             |  357 +++++++++++++++++++++++++++++++
+ 7 files changed, 433 insertions(+), 206 deletions(-)
+ create mode 100644 arch/mips/alchemy/xxs1500/platform.c
+ delete mode 100644 drivers/pcmcia/au1000_xxs1500.c
+ create mode 100644 drivers/pcmcia/xxs1500_ss.c
+
+diff --git a/arch/mips/alchemy/xxs1500/Makefile b/arch/mips/alchemy/xxs1500/Makefile
+index db3c526..3a79a90 100644
+--- a/arch/mips/alchemy/xxs1500/Makefile
++++ b/arch/mips/alchemy/xxs1500/Makefile
+@@ -5,4 +5,4 @@
+ # Makefile for MyCable XXS1500 board.
  #
  
--obj-y += prom.o
-+obj-y += prom.o bcsr.o
- obj-$(CONFIG_PM)		+= pm.o
- obj-$(CONFIG_MIPS_PB1000)	+= pb1000/
- obj-$(CONFIG_MIPS_PB1100)	+= pb1100/
-diff --git a/arch/mips/alchemy/devboards/bcsr.c b/arch/mips/alchemy/devboards/bcsr.c
+-lib-y := init.o board_setup.o irqmap.o
++lib-y := init.o board_setup.o irqmap.o platform.o
+diff --git a/arch/mips/alchemy/xxs1500/board_setup.c b/arch/mips/alchemy/xxs1500/board_setup.c
+index 4de2d48..6d6de53 100644
+--- a/arch/mips/alchemy/xxs1500/board_setup.c
++++ b/arch/mips/alchemy/xxs1500/board_setup.c
+@@ -68,22 +68,6 @@ void __init board_setup(void)
+ 	/* Enable DTR = USB power up */
+ 	au_writel(0x01, UART3_ADDR + UART_MCR); /* UART_MCR_DTR is 0x01??? */
+ 
+-#ifdef CONFIG_PCMCIA_XXS1500
+-	/* GPIO 0, 1, and 4 are inputs */
+-	alchemy_gpio_direction_input(0);
+-	alchemy_gpio_direction_input(1);
+-	alchemy_gpio_direction_input(4);
+-
+-	/* GPIO2 208/9/10/11 are inputs */
+-	alchemy_gpio_direction_input(208);
+-	alchemy_gpio_direction_input(209);
+-	alchemy_gpio_direction_input(210);
+-	alchemy_gpio_direction_input(211);
+-
+-	/* Turn off power */
+-	alchemy_gpio_direction_output(214, 0);
+-#endif
+-
+ #ifdef CONFIG_PCI
+ #if defined(__MIPSEB__)
+ 	au_writel(0xf | (2 << 6) | (1 << 4), Au1500_PCI_CFG);
+diff --git a/arch/mips/alchemy/xxs1500/platform.c b/arch/mips/alchemy/xxs1500/platform.c
 new file mode 100644
-index 0000000..85b7715
+index 0000000..9edbdfd
 --- /dev/null
-+++ b/arch/mips/alchemy/devboards/bcsr.c
-@@ -0,0 +1,76 @@
++++ b/arch/mips/alchemy/xxs1500/platform.c
+@@ -0,0 +1,63 @@
 +/*
-+ * bcsr.h -- Db1xxx/Pb1xxx Devboard CPLD registers ("BCSR") abstraction.
++ * XXS1500 board platform device registration
 + *
-+ * All Alchemy development boards (except, of course, the weird PB1000)
-+ * have a few registers in a CPLD with standardised layout; they mostly
-+ * only differ in base address.
-+ * All registers are 16bits wide with 32bit spacing.
++ * Copyright (C) 2009 Manuel Lauss
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 + */
 +
-+#include <linux/module.h>
-+#include <linux/spinlock.h>
-+#include <asm/addrspace.h>
-+#include <asm/io.h>
-+#include <asm/mach-db1x00/bcsr.h>
++#include <linux/init.h>
++#include <linux/platform_device.h>
 +
-+static struct bcsr_reg {
-+	void __iomem *raddr;
-+	spinlock_t lock;
-+} bcsr_regs[BCSR_CNT];
++#include <asm/mach-au1x00/au1000.h>
 +
-+void __init bcsr_init(unsigned long bcsr1_phys, unsigned long bcsr2_phys)
++static struct resource xxs1500_pcmcia_res[] = {
++	{
++		.name	= "pseudo-io",
++		.flags	= IORESOURCE_MEM,
++		.start	= 0xF0000000,
++		.end	= 0xF0040000 - 1,
++	},
++	{
++		.name	= "pseudo-attr",
++		.flags	= IORESOURCE_MEM,
++		.start	= 0xF4000000,
++		.end	= 0xF4040000 - 1,
++	},
++	{
++		.name	= "pseudo-mem",
++		.flags	= IORESOURCE_MEM,
++		.start	= 0xF8000000,
++		.end	= 0xF8040000 - 1,
++	},
++};
++
++static struct platform_device xxs1500_pcmcia_dev = {
++	.name		= "xxs1500_pcmcia",
++	.id		= -1,
++	.num_resources	= ARRAY_SIZE(xxs1500_pcmcia_res),
++	.resource	= xxs1500_pcmcia_res,
++};
++
++static struct platform_device *xxs1500_devs[] __initdata = {
++	&xxs1500_pcmcia_dev,
++};
++
++static int __init xxs1500_dev_init(void)
 +{
++	return platform_add_devices(xxs1500_devs,
++				    ARRAY_SIZE(xxs1500_devs));
++}
++device_initcall(xxs1500_dev_init);
+diff --git a/drivers/pcmcia/Kconfig b/drivers/pcmcia/Kconfig
+index fbf965b..c094108 100644
+--- a/drivers/pcmcia/Kconfig
++++ b/drivers/pcmcia/Kconfig
+@@ -192,6 +192,16 @@ config PCMCIA_AU1X00
+ 	tristate "Au1x00 pcmcia support"
+ 	depends on SOC_AU1X00 && PCMCIA
+ 
++config PCMCIA_XXS1500
++	tristate "MyCable XXS1500 PCMCIA socket support"
++	depends on PCMCIA && MIPS_XXS1500
++	select 64BIT_PHYS_ADDR
++	help
++	  Support for the PCMCIA/CF socket interface on MyCable XXS1500
++	  systems.
++
++	  This driver is also available as a module called xxs1500_ss.ko
++
+ config PCMCIA_SA1100
+ 	tristate "SA1100 support"
+ 	depends on ARM && ARCH_SA1100 && PCMCIA
+diff --git a/drivers/pcmcia/Makefile b/drivers/pcmcia/Makefile
+index 3247828..95433f7 100644
+--- a/drivers/pcmcia/Makefile
++++ b/drivers/pcmcia/Makefile
+@@ -47,7 +47,6 @@ au1x00_ss-$(CONFIG_MIPS_DB1100)			+= au1000_db1x00.o
+ au1x00_ss-$(CONFIG_MIPS_DB1200)			+= au1000_db1x00.o
+ au1x00_ss-$(CONFIG_MIPS_DB1500)			+= au1000_db1x00.o
+ au1x00_ss-$(CONFIG_MIPS_DB1550)			+= au1000_db1x00.o
+-au1x00_ss-$(CONFIG_MIPS_XXS1500)		+= au1000_xxs1500.o
+ 
+ sa1111_cs-y					+= sa1111_generic.o
+ sa1111_cs-$(CONFIG_ASSABET_NEPONSET)		+= sa1100_neponset.o
+@@ -77,3 +76,5 @@ pxa2xx-obj-$(CONFIG_MACH_E740)			+= pxa2xx_e740.o
+ pxa2xx-obj-$(CONFIG_MACH_STARGATE2)		+= pxa2xx_stargate2.o
+ 
+ obj-$(CONFIG_PCMCIA_PXA2XX)			+= pxa2xx_core.o $(pxa2xx-obj-y)
++
++obj-$(CONFIG_PCMCIA_XXS1500)			+= xxs1500_ss.o
+diff --git a/drivers/pcmcia/au1000_xxs1500.c b/drivers/pcmcia/au1000_xxs1500.c
+deleted file mode 100644
+index b43d47b..0000000
+--- a/drivers/pcmcia/au1000_xxs1500.c
++++ /dev/null
+@@ -1,188 +0,0 @@
+-/*
+- *
+- * MyCable board specific pcmcia routines.
+- *
+- * Copyright 2003 MontaVista Software Inc.
+- * Author: Pete Popov, MontaVista Software, Inc.
+- *         	ppopov@mvista.com or source@mvista.com
+- *
+- * ########################################################################
+- *
+- *  This program is free software; you can distribute it and/or modify it
+- *  under the terms of the GNU General Public License (Version 2) as
+- *  published by the Free Software Foundation.
+- *
+- *  This program is distributed in the hope it will be useful, but WITHOUT
+- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+- *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+- *  for more details.
+- *
+- *  You should have received a copy of the GNU General Public License along
+- *  with this program; if not, write to the Free Software Foundation, Inc.,
+- *  59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+- *
+- * ########################################################################
+- *
+- *
+- */
+-#include <linux/module.h>
+-#include <linux/init.h>
+-#include <linux/delay.h>
+-#include <linux/ioport.h>
+-#include <linux/kernel.h>
+-#include <linux/timer.h>
+-#include <linux/mm.h>
+-#include <linux/proc_fs.h>
+-#include <linux/types.h>
+-
+-#include <pcmcia/cs_types.h>
+-#include <pcmcia/cs.h>
+-#include <pcmcia/ss.h>
+-#include <pcmcia/cistpl.h>
+-#include <pcmcia/bus_ops.h>
+-
+-#include <asm/io.h>
+-#include <asm/irq.h>
+-#include <asm/system.h>
+-
+-#include <asm/au1000.h>
+-#include <asm/au1000_pcmcia.h>
+-
+-#define PCMCIA_MAX_SOCK		0
+-#define PCMCIA_NUM_SOCKS	(PCMCIA_MAX_SOCK + 1)
+-#define PCMCIA_IRQ		AU1000_GPIO_4
+-
+-#if 0
+-#define DEBUG(x, args...)	printk(__func__ ": " x, ##args)
+-#else
+-#define DEBUG(x,args...)
+-#endif
+-
+-static int xxs1500_pcmcia_init(struct pcmcia_init *init)
+-{
+-	return PCMCIA_NUM_SOCKS;
+-}
+-
+-static int xxs1500_pcmcia_shutdown(void)
+-{
+-	/* turn off power */
+-	au_writel(au_readl(GPIO2_PINSTATE) | (1<<14)|(1<<30),
+-			GPIO2_OUTPUT);
+-	au_sync_delay(100);
+-
+-	/* assert reset */
+-	au_writel(au_readl(GPIO2_PINSTATE) | (1<<4)|(1<<20),
+-			GPIO2_OUTPUT);
+-	au_sync_delay(100);
+-	return 0;
+-}
+-
+-
+-static int
+-xxs1500_pcmcia_socket_state(unsigned sock, struct pcmcia_state *state)
+-{
+-	u32 inserted; u32 vs;
+-	unsigned long gpio, gpio2;
+-
+-	if(sock > PCMCIA_MAX_SOCK) return -1;
+-
+-	gpio = au_readl(SYS_PINSTATERD);
+-	gpio2 = au_readl(GPIO2_PINSTATE);
+-
+-	vs = gpio2 & ((1<<8) | (1<<9));
+-	inserted = (!(gpio & 0x1) && !(gpio & 0x2));
+-
+-	state->ready = 0;
+-	state->vs_Xv = 0;
+-	state->vs_3v = 0;
+-	state->detect = 0;
+-
+-	if (inserted) {
+-		switch (vs) {
+-			case 0:
+-			case 1:
+-			case 2:
+-				state->vs_3v=1;
+-				break;
+-			case 3: /* 5V */
+-			default:
+-				/* return without setting 'detect' */
+-				printk(KERN_ERR "au1x00_cs: unsupported VS\n",
+-						vs);
+-				return;
+-		}
+-		state->detect = 1;
+-	}
+-
+-	if (state->detect) {
+-		state->ready = 1;
+-	}
+-
+-	state->bvd1= gpio2 & (1<<10);
+-	state->bvd2 = gpio2 & (1<<11);
+-	state->wrprot=0;
+-	return 1;
+-}
+-
+-
+-static int xxs1500_pcmcia_get_irq_info(struct pcmcia_irq_info *info)
+-{
+-
+-	if(info->sock > PCMCIA_MAX_SOCK) return -1;
+-	info->irq = PCMCIA_IRQ;
+-	return 0;
+-}
+-
+-
+-static int
+-xxs1500_pcmcia_configure_socket(const struct pcmcia_configure *configure)
+-{
+-
+-	if(configure->sock > PCMCIA_MAX_SOCK) return -1;
+-
+-	DEBUG("Vcc %dV Vpp %dV, reset %d\n",
+-			configure->vcc, configure->vpp, configure->reset);
+-
+-	switch(configure->vcc){
+-		case 33: /* Vcc 3.3V */
+-			/* turn on power */
+-			DEBUG("turn on power\n");
+-			au_writel((au_readl(GPIO2_PINSTATE) & ~(1<<14))|(1<<30),
+-					GPIO2_OUTPUT);
+-			au_sync_delay(100);
+-			break;
+-		case 50: /* Vcc 5V */
+-		default: /* what's this ? */
+-			printk(KERN_ERR "au1x00_cs: unsupported VCC\n");
+-		case 0:  /* Vcc 0 */
+-			/* turn off power */
+-			au_sync_delay(100);
+-			au_writel(au_readl(GPIO2_PINSTATE) | (1<<14)|(1<<30),
+-					GPIO2_OUTPUT);
+-			break;
+-	}
+-
+-	if (!configure->reset) {
+-		DEBUG("deassert reset\n");
+-		au_writel((au_readl(GPIO2_PINSTATE) & ~(1<<4))|(1<<20),
+-				GPIO2_OUTPUT);
+-		au_sync_delay(100);
+-		au_writel((au_readl(GPIO2_PINSTATE) & ~(1<<5))|(1<<21),
+-				GPIO2_OUTPUT);
+-	}
+-	else {
+-		DEBUG("assert reset\n");
+-		au_writel(au_readl(GPIO2_PINSTATE) | (1<<4)|(1<<20),
+-				GPIO2_OUTPUT);
+-	}
+-	au_sync_delay(100);
+-	return 0;
+-}
+-
+-struct pcmcia_low_level xxs1500_pcmcia_ops = {
+-	xxs1500_pcmcia_init,
+-	xxs1500_pcmcia_shutdown,
+-	xxs1500_pcmcia_socket_state,
+-	xxs1500_pcmcia_get_irq_info,
+-	xxs1500_pcmcia_configure_socket
+-};
+diff --git a/drivers/pcmcia/xxs1500_ss.c b/drivers/pcmcia/xxs1500_ss.c
+new file mode 100644
+index 0000000..4e36930
+--- /dev/null
++++ b/drivers/pcmcia/xxs1500_ss.c
+@@ -0,0 +1,357 @@
++/*
++ * PCMCIA socket code for the MyCable XXS1500 system.
++ *
++ * Copyright (c) 2009 Manuel Lauss <manuel.lauss@gmail.com>
++ *
++ */
++
++#include <linux/delay.h>
++#include <linux/gpio.h>
++#include <linux/interrupt.h>
++#include <linux/io.h>
++#include <linux/ioport.h>
++#include <linux/mm.h>
++#include <linux/platform_device.h>
++#include <linux/pm.h>
++#include <linux/resource.h>
++#include <linux/spinlock.h>
++
++#include <pcmcia/cs_types.h>
++#include <pcmcia/cs.h>
++#include <pcmcia/ss.h>
++#include <pcmcia/cistpl.h>
++
++#include <asm/irq.h>
++#include <asm/system.h>
++#include <asm/mach-au1x00/au1000.h>
++
++#define MEM_MAP_SIZE	0x400000
++#define IO_MAP_SIZE	0x1000
++
++
++/*
++ * 3.3V cards only; all interfacing is done via gpios:
++ *
++ * 0/1:  carddetect (00 = card present, xx = huh)
++ * 4:	 card irq
++ * 204:  reset (high-act)
++ * 205:  buffer enable (low-act)
++ * 208/209: card voltage key (00,01,10,11)
++ * 210:  battwarn
++ * 211:  batdead
++ * 214:  power (low-act)
++ */
++#define GPIO_CDA	0
++#define GPIO_CDB	1
++#define GPIO_CARDIRQ	4
++#define GPIO_RESET	204
++#define GPIO_OUTEN	205
++#define GPIO_VSL	208
++#define GPIO_VSH	209
++#define GPIO_BATTDEAD	210
++#define GPIO_BATTWARN	211
++#define GPIO_POWER	214
++
++struct xxs1500_pcmcia_sock {
++	struct pcmcia_socket	socket;
++	void		*virt_io;
++
++	/* the "pseudo" addresses of the PCMCIA space. */
++	unsigned long	phys_io;
++	unsigned long	phys_attr;
++	unsigned long	phys_mem;
++
++	/* previous flags for set_socket() */
++	unsigned int old_flags;
++};
++
++#define to_xxs_socket(x) container_of(x, struct xxs1500_pcmcia_sock, socket)
++
++static irqreturn_t cdirq(int irq, void *data)
++{
++	struct xxs1500_pcmcia_sock *sock = data;
++
++	pcmcia_parse_events(&sock->socket, SS_DETECT);
++
++	return IRQ_HANDLED;
++}
++
++static int xxs1500_pcmcia_configure(struct pcmcia_socket *skt,
++				    struct socket_state_t *state)
++{
++	struct xxs1500_pcmcia_sock *sock = to_xxs_socket(skt);
++	unsigned int changed;
++
++	/* power control */
++	switch (state->Vcc) {
++	case 0:
++		gpio_set_value(GPIO_POWER, 1);	/* power off */
++		break;
++	case 33:
++		gpio_set_value(GPIO_POWER, 0);	/* power on */
++		break;
++	case 50:
++	default:
++		return -EINVAL;
++	}
++
++	changed = state->flags ^ sock->old_flags;
++
++	if (changed & SS_RESET) {
++		if (state->flags & SS_RESET) {
++			gpio_set_value(GPIO_RESET, 1);	/* assert reset */
++			gpio_set_value(GPIO_OUTEN, 1);	/* buffers off */
++		} else {
++			gpio_set_value(GPIO_RESET, 0);	/* deassert reset */
++			gpio_set_value(GPIO_OUTEN, 0);	/* buffers on */
++			msleep(500);
++		}
++	}
++
++	sock->old_flags = state->flags;
++
++	return 0;
++}
++
++static int xxs1500_pcmcia_get_status(struct pcmcia_socket *skt,
++				     unsigned int *value)
++{
++	unsigned int status;
 +	int i;
 +
-+	bcsr1_phys = KSEG1ADDR(CPHYSADDR(bcsr1_phys));
-+	bcsr2_phys = KSEG1ADDR(CPHYSADDR(bcsr2_phys));
++	status = 0;
 +
-+	for (i = 0; i < BCSR_CNT; i++) {
-+		if (i >= BCSR_HEXLEDS)
-+			bcsr_regs[i].raddr = (void __iomem *)bcsr2_phys +
-+					(0x04 * (i - BCSR_HEXLEDS));
-+		else
-+			bcsr_regs[i].raddr = (void __iomem *)bcsr1_phys +
-+					(0x04 * i);
++	/* check carddetects: GPIO[0:1] must both be low */
++	if (!gpio_get_value(GPIO_CDA) && !gpio_get_value(GPIO_CDB))
++		status |= SS_DETECT;
 +
-+		spin_lock_init(&bcsr_regs[i].lock);
++	/* determine card voltage: GPIO[208:209] binary value */
++	i = (!!gpio_get_value(GPIO_VSL)) | ((!!gpio_get_value(GPIO_VSH)) << 1);
++
++	switch (i) {
++	case 0:
++	case 1:
++	case 2:
++		status |= SS_3VCARD;	/* 3V card */
++		break;
++	case 3:				/* 5V card, unsupported */
++	default:
++		status |= SS_XVCARD;	/* treated as unsupported in core */
 +	}
++
++	/* GPIO214: low active power switch */
++	status |= gpio_get_value(GPIO_POWER) ? 0 : SS_POWERON;
++
++	/* GPIO204: high-active reset line */
++	status |= gpio_get_value(GPIO_RESET) ? SS_RESET : SS_READY;
++
++	/* other stuff */
++	status |= gpio_get_value(GPIO_BATTDEAD) ? 0 : SS_BATDEAD;
++	status |= gpio_get_value(GPIO_BATTWARN) ? 0 : SS_BATWARN;
++
++	*value = status;
++
++	return 0;
 +}
 +
-+unsigned short bcsr_read(enum bcsr_id reg)
++static int xxs1500_pcmcia_sock_init(struct pcmcia_socket *skt)
 +{
-+	unsigned short r;
-+	unsigned long flags;
++	gpio_direction_input(GPIO_CDA);
++	gpio_direction_input(GPIO_CDB);
++	gpio_direction_input(GPIO_VSL);
++	gpio_direction_input(GPIO_VSH);
++	gpio_direction_input(GPIO_BATTDEAD);
++	gpio_direction_input(GPIO_BATTWARN);
++	gpio_direction_output(GPIO_RESET, 1);	/* assert reset */
++	gpio_direction_output(GPIO_OUTEN, 1);	/* disable buffers */
++	gpio_direction_output(GPIO_POWER, 1);	/* power off */
 +
-+	spin_lock_irqsave(&bcsr_regs[reg].lock, flags);
-+	r = __raw_readw(bcsr_regs[reg].raddr);
-+	spin_unlock_irqrestore(&bcsr_regs[reg].lock, flags);
-+	return r;
++	return 0;
 +}
-+EXPORT_SYMBOL_GPL(bcsr_read);
 +
-+void bcsr_write(enum bcsr_id reg, unsigned short val)
++static int xxs1500_pcmcia_sock_suspend(struct pcmcia_socket *skt)
 +{
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&bcsr_regs[reg].lock, flags);
-+	__raw_writew(val, bcsr_regs[reg].raddr);
-+	wmb();
-+	spin_unlock_irqrestore(&bcsr_regs[reg].lock, flags);
++	return 0;
 +}
-+EXPORT_SYMBOL_GPL(bcsr_write);
 +
-+void bcsr_mod(enum bcsr_id reg, unsigned short clr, unsigned short set)
++static int au1x00_pcmcia_set_io_map(struct pcmcia_socket *skt,
++				    struct pccard_io_map *map)
 +{
-+	unsigned short r;
-+	unsigned long flags;
++	struct xxs1500_pcmcia_sock *sock = to_xxs_socket(skt);
 +
-+	spin_lock_irqsave(&bcsr_regs[reg].lock, flags);
-+	r = __raw_readw(bcsr_regs[reg].raddr);
-+	r &= ~clr;
-+	r |= set;
-+	__raw_writew(r, bcsr_regs[reg].raddr);
-+	wmb();
-+	spin_unlock_irqrestore(&bcsr_regs[reg].lock, flags);
++	map->start = (u32)sock->virt_io;
++	map->stop = map->start + IO_MAP_SIZE;
++
++	return 0;
 +}
-+EXPORT_SYMBOL_GPL(bcsr_mod);
-diff --git a/arch/mips/alchemy/devboards/db1x00/board_setup.c b/arch/mips/alchemy/devboards/db1x00/board_setup.c
-index de30d8e..e713390 100644
---- a/arch/mips/alchemy/devboards/db1x00/board_setup.c
-+++ b/arch/mips/alchemy/devboards/db1x00/board_setup.c
-@@ -32,12 +32,10 @@
- 
- #include <asm/mach-au1x00/au1000.h>
- #include <asm/mach-db1x00/db1x00.h>
-+#include <asm/mach-db1x00/bcsr.h>
- 
- #include <prom.h>
- 
--
--static BCSR * const bcsr = (BCSR *)BCSR_KSEG1_ADDR;
--
- const char *get_system_type(void)
- {
- #ifdef CONFIG_MIPS_BOSPORUS
-@@ -49,15 +47,43 @@ const char *get_system_type(void)
- 
- void board_reset(void)
- {
--	/* Hit BCSR.SW_RESET[RESET] */
--	bcsr->swreset = 0x0000;
-+	bcsr_write(BCSR_SYSTEM, 0);
- }
- 
- void __init board_setup(void)
- {
-+	unsigned long bcsr1, bcsr2;
- 	u32 pin_func = 0;
- 	char *argptr;
- 
-+	bcsr1 = DB1000_BCSR_PHYS_ADDR;
-+	bcsr2 = DB1000_BCSR_PHYS_ADDR + DB1000_BCSR_HEXLED_OFS;
 +
-+#ifdef CONFIG_MIPS_DB1000
-+	printk(KERN_INFO "AMD Alchemy Au1000/Db1000 Board\n");
-+#endif
-+#ifdef CONFIG_MIPS_DB1500
-+	printk(KERN_INFO "AMD Alchemy Au1500/Db1500 Board\n");
-+#endif
-+#ifdef CONFIG_MIPS_DB1100
-+	printk(KERN_INFO "AMD Alchemy Au1100/Db1100 Board\n");
-+#endif
-+#ifdef CONFIG_MIPS_BOSPORUS
-+	printk(KERN_INFO "AMD Alchemy Bosporus Board\n");
-+#endif
-+#ifdef CONFIG_MIPS_MIRAGE
-+	printk(KERN_INFO "AMD Alchemy Mirage Board\n");
-+#endif
-+#ifdef CONFIG_MIPS_DB1550
-+	printk(KERN_INFO "AMD Alchemy Au1550/Db1550 Board\n");
++static int au1x00_pcmcia_set_mem_map(struct pcmcia_socket *skt,
++				     struct pccard_mem_map *map)
++{
++	struct xxs1500_pcmcia_sock *sock = to_xxs_socket(skt);
 +
-+	bcsr1 = DB1550_BCSR_PHYS_ADDR;
-+	bcsr2 = DB1550_BCSR_PHYS_ADDR + DB1550_BCSR_HEXLED_OFS;
-+#endif
++	if (map->flags & MAP_ATTRIB)
++		map->static_start = sock->phys_attr + map->card_start;
++	else
++		map->static_start = sock->phys_mem + map->card_start;
 +
-+	/* initialize board register space */
-+	bcsr_init(bcsr1, bcsr2);
++	return 0;
++}
 +
- 	argptr = prom_getcmdline();
- #ifdef CONFIG_SERIAL_8250_CONSOLE
- 	argptr = strstr(argptr, "console=");
-@@ -89,11 +115,10 @@ void __init board_setup(void)
- 	pin_func = au_readl(SYS_PINFUNC) | SYS_PF_IRF;
- 	au_writel(pin_func, SYS_PINFUNC);
- 	/* Power off until the driver is in use */
--	bcsr->resets &= ~BCSR_RESETS_IRDA_MODE_MASK;
--	bcsr->resets |=  BCSR_RESETS_IRDA_MODE_OFF;
--	au_sync();
-+	bcsr_mod(BCSR_RESETS, BCSR_RESETS_IRDA_MODE_MASK,
-+				BCSR_RESETS_IRDA_MODE_OFF);
- #endif
--	bcsr->pcmcia = 0x0000; /* turn off PCMCIA power */
-+	bcsr_write(BCSR_PCMCIA, 0);	/* turn off PCMCIA power */
- 
- 	/* Enable GPIO[31:0] inputs */
- 	alchemy_gpio1_input_enable();
-@@ -123,23 +148,4 @@ void __init board_setup(void)
- #endif
- 
- 	au_sync();
--
--#ifdef CONFIG_MIPS_DB1000
--	printk(KERN_INFO "AMD Alchemy Au1000/Db1000 Board\n");
--#endif
--#ifdef CONFIG_MIPS_DB1500
--	printk(KERN_INFO "AMD Alchemy Au1500/Db1500 Board\n");
--#endif
--#ifdef CONFIG_MIPS_DB1100
--	printk(KERN_INFO "AMD Alchemy Au1100/Db1100 Board\n");
--#endif
--#ifdef CONFIG_MIPS_BOSPORUS
--	printk(KERN_INFO "AMD Alchemy Bosporus Board\n");
--#endif
--#ifdef CONFIG_MIPS_MIRAGE
--	printk(KERN_INFO "AMD Alchemy Mirage Board\n");
--#endif
--#ifdef CONFIG_MIPS_DB1550
--	printk(KERN_INFO "AMD Alchemy Au1550/Db1550 Board\n");
--#endif
- }
-diff --git a/arch/mips/alchemy/devboards/pb1100/board_setup.c b/arch/mips/alchemy/devboards/pb1100/board_setup.c
-index 6126308..eb749fb 100644
---- a/arch/mips/alchemy/devboards/pb1100/board_setup.c
-+++ b/arch/mips/alchemy/devboards/pb1100/board_setup.c
-@@ -30,6 +30,7 @@
- 
- #include <asm/mach-au1x00/au1000.h>
- #include <asm/mach-pb1x00/pb1100.h>
-+#include <asm/mach-db1x00/bcsr.h>
- 
- #include <prom.h>
- 
-@@ -49,8 +50,7 @@ const char *get_system_type(void)
- 
- void board_reset(void)
- {
--	/* Hit BCSR.RST_VDDI[SOFT_RESET] */
--	au_writel(0x00000000, PB1100_RST_VDDI);
-+	bcsr_write(BCSR_SYSTEM, 0);
- }
- 
- void __init board_init_irq(void)
-@@ -63,6 +63,9 @@ void __init board_setup(void)
- 	volatile void __iomem *base = (volatile void __iomem *)0xac000000UL;
- 	char *argptr;
- 
-+	bcsr_init(DB1000_BCSR_PHYS_ADDR,
-+		  DB1000_BCSR_PHYS_ADDR + DB1000_BCSR_HEXLED_OFS);
-+
- 	argptr = prom_getcmdline();
- #ifdef CONFIG_SERIAL_8250_CONSOLE
- 	argptr = strstr(argptr, "console=");
-diff --git a/arch/mips/alchemy/devboards/pb1200/board_setup.c b/arch/mips/alchemy/devboards/pb1200/board_setup.c
-index 94e6b7e..db56380 100644
---- a/arch/mips/alchemy/devboards/pb1200/board_setup.c
-+++ b/arch/mips/alchemy/devboards/pb1200/board_setup.c
-@@ -27,6 +27,8 @@
- #include <linux/init.h>
- #include <linux/sched.h>
- 
-+#include <asm/mach-db1x00/bcsr.h>
-+
- #include <prom.h>
- #include <au1xxx.h>
- 
-@@ -38,14 +40,25 @@ const char *get_system_type(void)
- 
- void board_reset(void)
- {
--	bcsr->resets = 0;
--	bcsr->system = 0;
-+	bcsr_write(BCSR_RESETS, 0);
-+	bcsr_write(BCSR_SYSTEM, 0);
- }
- 
- void __init board_setup(void)
- {
- 	char *argptr;
- 
-+#ifdef CONFIG_MIPS_PB1200
-+	printk(KERN_INFO "AMD Alchemy Pb1200 Board\n");
-+	bcsr_init(PB1200_BCSR_PHYS_ADDR,
-+		  PB1200_BCSR_PHYS_ADDR + PB1200_BCSR_HEXLED_OFS);
-+#endif
-+#ifdef CONFIG_MIPS_DB1200
-+	printk(KERN_INFO "AMD Alchemy Db1200 Board\n");
-+	bcsr_init(DB1200_BCSR_PHYS_ADDR,
-+		  DB1200_BCSR_PHYS_ADDR + DB1200_BCSR_HEXLED_OFS);
-+#endif
-+
- 	argptr = prom_getcmdline();
- #ifdef CONFIG_SERIAL_8250_CONSOLE
- 	argptr = strstr(argptr, "console=");
-@@ -82,7 +95,7 @@ void __init board_setup(void)
- 		u32 pin_func;
- 
- 		/* Select SMBus in CPLD */
--		bcsr->resets &= ~BCSR_RESETS_PCS0MUX;
-+		bcsr_mod(BCSR_RESETS, BCSR_RESETS_PSC0MUX, 0);
- 
- 		pin_func = au_readl(SYS_PINFUNC);
- 		au_sync();
-@@ -116,38 +129,24 @@ void __init board_setup(void)
- 
- 	/*
- 	 * The Pb1200 development board uses external MUX for PSC0 to
--	 * support SMB/SPI. bcsr->resets bit 12: 0=SMB 1=SPI
-+	 * support SMB/SPI. bcsr_resets bit 12: 0=SMB 1=SPI
- 	 */
- #ifdef CONFIG_I2C_AU1550
--	bcsr->resets &= ~BCSR_RESETS_PCS0MUX;
-+	bcsr_mod(BCSR_RESETS, BCSR_RESETS_PSC0MUX, 0);
- #endif
- 	au_sync();
--
--#ifdef CONFIG_MIPS_PB1200
--	printk(KERN_INFO "AMD Alchemy Pb1200 Board\n");
--#endif
--#ifdef CONFIG_MIPS_DB1200
--	printk(KERN_INFO "AMD Alchemy Db1200 Board\n");
--#endif
- }
- 
- int board_au1200fb_panel(void)
- {
--	BCSR *bcsr = (BCSR *)BCSR_KSEG1_ADDR;
--	int p;
--
--	p = bcsr->switches;
--	p >>= 8;
--	p &= 0x0F;
--	return p;
-+	return (bcsr_read(BCSR_SWITCHES) >> 8) & 0x0f;
- }
- 
- int board_au1200fb_panel_init(void)
- {
- 	/* Apply power */
--	BCSR *bcsr = (BCSR *)BCSR_KSEG1_ADDR;
--
--	bcsr->board |= BCSR_BOARD_LCDVEE | BCSR_BOARD_LCDVDD | BCSR_BOARD_LCDBL;
-+	bcsr_mod(BCSR_BOARD, 0, BCSR_BOARD_LCDVEE | BCSR_BOARD_LCDVDD |
-+				BCSR_BOARD_LCDBL);
- 	/* printk(KERN_DEBUG "board_au1200fb_panel_init()\n"); */
- 	return 0;
- }
-@@ -155,10 +154,8 @@ int board_au1200fb_panel_init(void)
- int board_au1200fb_panel_shutdown(void)
- {
- 	/* Remove power */
--	BCSR *bcsr = (BCSR *)BCSR_KSEG1_ADDR;
--
--	bcsr->board &= ~(BCSR_BOARD_LCDVEE | BCSR_BOARD_LCDVDD |
--			 BCSR_BOARD_LCDBL);
-+	bcsr_mod(BCSR_BOARD, BCSR_BOARD_LCDVEE | BCSR_BOARD_LCDVDD |
-+			     BCSR_BOARD_LCDBL, 0);
- 	/* printk(KERN_DEBUG "board_au1200fb_panel_shutdown()\n"); */
- 	return 0;
- }
-diff --git a/arch/mips/alchemy/devboards/pb1200/irqmap.c b/arch/mips/alchemy/devboards/pb1200/irqmap.c
-index fe47498..f379b02 100644
---- a/arch/mips/alchemy/devboards/pb1200/irqmap.c
-+++ b/arch/mips/alchemy/devboards/pb1200/irqmap.c
-@@ -38,11 +38,14 @@
- #define PB1200_INT_END DB1200_INT_END
- #endif
- 
-+#include <asm/mach-db1x00/bcsr.h>
-+
- struct au1xxx_irqmap __initdata au1xxx_irq_map[] = {
- 	/* This is external interrupt cascade */
- 	{ AU1000_GPIO_7, IRQF_TRIGGER_LOW, 0 },
- };
- 
-+static void __iomem *bcsr_virt;
- 
- /*
-  * Support for External interrupts on the Pb1200 Development platform.
-@@ -50,7 +53,7 @@ struct au1xxx_irqmap __initdata au1xxx_irq_map[] = {
- 
- static void pb1200_cascade_handler(unsigned int irq, struct irq_desc *d)
- {
--	unsigned short bisr = bcsr->int_status;
-+	unsigned short bisr = __raw_readw(bcsr_virt + BCSR_REG_INTSTAT);
- 
- 	for ( ; bisr; bisr &= bisr - 1)
- 		generic_handle_irq(PB1200_INT_BEGIN + __ffs(bisr));
-@@ -61,24 +64,27 @@ static void pb1200_cascade_handler(unsigned int irq, struct irq_desc *d)
-  */
- static void pb1200_mask_irq(unsigned int irq_nr)
- {
--	bcsr->intclr_mask = 1 << (irq_nr - PB1200_INT_BEGIN);
--	bcsr->intclr = 1 << (irq_nr - PB1200_INT_BEGIN);
--	au_sync();
-+	unsigned short v = 1 << (irq_nr - PB1200_INT_BEGIN);
-+	__raw_writew(v, bcsr_virt + BCSR_REG_INTCLR);
-+	__raw_writew(v, bcsr_virt + BCSR_REG_MASKCLR);
-+	wmb();
- }
- 
- static void pb1200_maskack_irq(unsigned int irq_nr)
- {
--	bcsr->intclr_mask = 1 << (irq_nr - PB1200_INT_BEGIN);
--	bcsr->intclr = 1 << (irq_nr - PB1200_INT_BEGIN);
--	bcsr->int_status = 1 << (irq_nr - PB1200_INT_BEGIN);	/* ack */
--	au_sync();
-+	unsigned short v = 1 << (irq_nr - PB1200_INT_BEGIN);
-+	__raw_writew(v, bcsr_virt + BCSR_REG_INTCLR);
-+	__raw_writew(v, bcsr_virt + BCSR_REG_MASKCLR);
-+	__raw_writew(v, bcsr_virt + BCSR_REG_INTSTAT);	/* ack */
-+	wmb();
- }
- 
- static void pb1200_unmask_irq(unsigned int irq_nr)
- {
--	bcsr->intset = 1 << (irq_nr - PB1200_INT_BEGIN);
--	bcsr->intset_mask = 1 << (irq_nr - PB1200_INT_BEGIN);
--	au_sync();
-+	unsigned short v = 1 << (irq_nr - PB1200_INT_BEGIN);
-+	__raw_writew(v, bcsr_virt + BCSR_REG_INTSET);
-+	__raw_writew(v, bcsr_virt + BCSR_REG_MASKSET);
-+	wmb();
- }
- 
- static struct irq_chip pb1200_cpld_irq_type = {
-@@ -100,8 +106,10 @@ void __init board_init_irq(void)
- 	au1xxx_setup_irqmap(au1xxx_irq_map, ARRAY_SIZE(au1xxx_irq_map));
- 
- #ifdef CONFIG_MIPS_PB1200
-+	bcsr_virt = (void __iomem *)KSEG1ADDR(PB1200_BCSR_PHYS_ADDR);
-+
- 	/* We have a problem with CPLD rev 3. */
--	if (((bcsr->whoami & BCSR_WHOAMI_CPLD) >> 4) <= 3) {
-+	if (BCSR_WHOAMI_CPLD(bcsr_read(BCSR_WHOAMI)) <= 3) {
- 		printk(KERN_ERR "WARNING!!!\n");
- 		printk(KERN_ERR "WARNING!!!\n");
- 		printk(KERN_ERR "WARNING!!!\n");
-@@ -119,12 +127,14 @@ void __init board_init_irq(void)
- 		printk(KERN_ERR "WARNING!!!\n");
- 		panic("Game over.  Your score is 0.");
- 	}
-+#else
-+	bcsr_virt = (void __iomem *)KSEG1ADDR(DB1200_BCSR_PHYS_ADDR);
- #endif
-+
- 	/* mask & disable & ack all */
--	bcsr->intclr_mask = 0xffff;
--	bcsr->intclr = 0xffff;
--	bcsr->int_status = 0xffff;
--	au_sync();
-+	bcsr_write(BCSR_INTCLR, 0xffff);
-+	bcsr_write(BCSR_MASKCLR, 0xffff);
-+	bcsr_write(BCSR_INTSTAT, 0xffff);
- 
- 	for (irq = PB1200_INT_BEGIN; irq <= PB1200_INT_END; irq++)
- 		set_irq_chip_and_handler_name(irq, &pb1200_cpld_irq_type,
-diff --git a/arch/mips/alchemy/devboards/pb1200/platform.c b/arch/mips/alchemy/devboards/pb1200/platform.c
-index b93dff4..dfdaabf 100644
---- a/arch/mips/alchemy/devboards/pb1200/platform.c
-+++ b/arch/mips/alchemy/devboards/pb1200/platform.c
-@@ -26,27 +26,28 @@
- 
- #include <asm/mach-au1x00/au1xxx.h>
- #include <asm/mach-au1x00/au1100_mmc.h>
-+#include <asm/mach-db1x00/bcsr.h>
- 
- static int mmc_activity;
- 
- static void pb1200mmc0_set_power(void *mmc_host, int state)
- {
- 	if (state)
--		bcsr->board |= BCSR_BOARD_SD0PWR;
-+		bcsr_mod(BCSR_BOARD, 0, BCSR_BOARD_SD0PWR);
- 	else
--		bcsr->board &= ~BCSR_BOARD_SD0PWR;
-+		bcsr_mod(BCSR_BOARD, BCSR_BOARD_SD0PWR, 0);
- 
--	au_sync_delay(1);
-+	msleep(1);
- }
- 
- static int pb1200mmc0_card_readonly(void *mmc_host)
- {
--	return (bcsr->status & BCSR_STATUS_SD0WP) ? 1 : 0;
-+	return (bcsr_read(BCSR_STATUS) & BCSR_STATUS_SD0WP) ? 1 : 0;
- }
- 
- static int pb1200mmc0_card_inserted(void *mmc_host)
- {
--	return (bcsr->sig_status & BCSR_INT_SD0INSERT) ? 1 : 0;
-+	return (bcsr_read(BCSR_SIGSTAT) & BCSR_INT_SD0INSERT) ? 1 : 0;
- }
- 
- static void pb1200_mmcled_set(struct led_classdev *led,
-@@ -54,10 +55,10 @@ static void pb1200_mmcled_set(struct led_classdev *led,
- {
- 	if (brightness != LED_OFF) {
- 		if (++mmc_activity == 1)
--			bcsr->disk_leds &= ~(1 << 8);
-+			bcsr_mod(BCSR_LEDS, BCSR_LEDS_LED0, 0);
- 	} else {
- 		if (--mmc_activity == 0)
--			bcsr->disk_leds |= (1 << 8);
-+			bcsr_mod(BCSR_LEDS, 0, BCSR_LEDS_LED0);
- 	}
- }
- 
-@@ -69,21 +70,21 @@ static struct led_classdev pb1200mmc_led = {
- static void pb1200mmc1_set_power(void *mmc_host, int state)
- {
- 	if (state)
--		bcsr->board |= BCSR_BOARD_SD1PWR;
-+		bcsr_mod(BCSR_BOARD, 0, BCSR_BOARD_SD1PWR);
- 	else
--		bcsr->board &= ~BCSR_BOARD_SD1PWR;
-+		bcsr_mod(BCSR_BOARD, BCSR_BOARD_SD1PWR, 0);
- 
--	au_sync_delay(1);
-+	msleep(1);
- }
- 
- static int pb1200mmc1_card_readonly(void *mmc_host)
- {
--	return (bcsr->status & BCSR_STATUS_SD1WP) ? 1 : 0;
-+	return (bcsr_read(BCSR_STATUS) & BCSR_STATUS_SD1WP) ? 1 : 0;
- }
- 
- static int pb1200mmc1_card_inserted(void *mmc_host)
- {
--	return (bcsr->sig_status & BCSR_INT_SD1INSERT) ? 1 : 0;
-+	return (bcsr_read(BCSR_SIGSTAT) & BCSR_INT_SD1INSERT) ? 1 : 0;
- }
- #endif
- 
-diff --git a/arch/mips/alchemy/devboards/pb1500/board_setup.c b/arch/mips/alchemy/devboards/pb1500/board_setup.c
-index d7a5656..c5389e5 100644
---- a/arch/mips/alchemy/devboards/pb1500/board_setup.c
-+++ b/arch/mips/alchemy/devboards/pb1500/board_setup.c
-@@ -30,6 +30,7 @@
- 
- #include <asm/mach-au1x00/au1000.h>
- #include <asm/mach-pb1x00/pb1500.h>
-+#include <asm/mach-db1x00/bcsr.h>
- 
- #include <prom.h>
- 
-@@ -55,8 +56,7 @@ const char *get_system_type(void)
- 
- void board_reset(void)
- {
--	/* Hit BCSR.RST_VDDI[SOFT_RESET] */
--	au_writel(0x00000000, PB1500_RST_VDDI);
-+	bcsr_write(BCSR_SYSTEM, 0);
- }
- 
- void __init board_init_irq(void)
-@@ -70,6 +70,9 @@ void __init board_setup(void)
- 	u32 sys_freqctrl, sys_clksrc;
- 	char *argptr;
- 
-+	bcsr_init(DB1000_BCSR_PHYS_ADDR,
-+		  DB1000_BCSR_PHYS_ADDR + DB1000_BCSR_HEXLED_OFS);
-+
- 	argptr = prom_getcmdline();
- #ifdef CONFIG_SERIAL_8250_CONSOLE
- 	argptr = strstr(argptr, "console=");
-diff --git a/arch/mips/alchemy/devboards/pb1550/board_setup.c b/arch/mips/alchemy/devboards/pb1550/board_setup.c
-index b6e9e7d..af7a1b5 100644
---- a/arch/mips/alchemy/devboards/pb1550/board_setup.c
-+++ b/arch/mips/alchemy/devboards/pb1550/board_setup.c
-@@ -32,6 +32,7 @@
- 
- #include <asm/mach-au1x00/au1000.h>
- #include <asm/mach-pb1x00/pb1550.h>
-+#include <asm/mach-db1x00/bcsr.h>
- 
- #include <prom.h>
- 
-@@ -53,8 +54,7 @@ const char *get_system_type(void)
- 
- void board_reset(void)
- {
--	/* Hit BCSR.SYSTEM[RESET] */
--	au_writew(au_readw(0xAF00001C) & ~BCSR_SYSTEM_RESET, 0xAF00001C);
-+	bcsr_write(BCSR_SYSTEM, 0);
- }
- 
- void __init board_init_irq(void)
-@@ -66,6 +66,10 @@ void __init board_setup(void)
- {
- 	u32 pin_func;
- 
-+	bcsr_init(PB1550_BCSR_PHYS_ADDR,
-+		  PB1550_BCSR_PHYS_ADDR + PB1550_BCSR_HEXLED_OFS);
-+
-+
- #ifdef CONFIG_SERIAL_8250_CONSOLE
- 	char *argptr;
- 	argptr = prom_getcmdline();
-@@ -85,8 +89,7 @@ void __init board_setup(void)
- 	pin_func |= SYS_PF_MUST_BE_SET | SYS_PF_PSC1_S1;
- 	au_writel(pin_func, SYS_PINFUNC);
- 
--	au_writel(0, (u32)bcsr | 0x10); /* turn off PCMCIA power */
--	au_sync();
-+	bcsr_write(BCSR_PCMCIA, 0);	/* turn off PCMCIA power */
- 
- 	printk(KERN_INFO "AMD Alchemy Pb1550 Board\n");
- }
-diff --git a/arch/mips/include/asm/mach-db1x00/bcsr.h b/arch/mips/include/asm/mach-db1x00/bcsr.h
-new file mode 100644
-index 0000000..3c80dae
---- /dev/null
-+++ b/arch/mips/include/asm/mach-db1x00/bcsr.h
-@@ -0,0 +1,232 @@
-+/*
-+ * bcsr.h -- Db1xxx/Pb1xxx Devboard CPLD registers ("BCSR") abstraction.
-+ *
-+ * All Alchemy development boards (except, of course, the weird PB1000)
-+ * have a few registers in a CPLD with standardised layout; they mostly
-+ * only differ in base address and bit meanings in the RESETS and BOARD
-+ * registers.
-+ *
-+ * All data taken from the official AMD board documentation sheets.
-+ */
-+
-+#ifndef _DB1XXX_BCSR_H_
-+#define _DB1XXX_BCSR_H_
-+
-+
-+/* BCSR base addresses on various boards */
-+
-+/* DB1000, DB1100, DB1500, PB1100, PB1500 */
-+#define DB1000_BCSR_PHYS_ADDR	0x0E000000
-+#define DB1000_BCSR_HEXLED_OFS	0x01000000
-+
-+#define DB1550_BCSR_PHYS_ADDR	0x0F000000
-+#define DB1550_BCSR_HEXLED_OFS	0x00400000
-+
-+#define PB1550_BCSR_PHYS_ADDR	0x0F000000
-+#define PB1550_BCSR_HEXLED_OFS	0x00800000
-+
-+#define DB1200_BCSR_PHYS_ADDR	0x19800000
-+#define DB1200_BCSR_HEXLED_OFS	0x00400000
-+
-+#define PB1200_BCSR_PHYS_ADDR	0x0D800000
-+#define PB1200_BCSR_HEXLED_OFS	0x00400000
-+
-+
-+enum bcsr_id {
-+	/* BCSR base 1 */
-+	BCSR_WHOAMI	= 0,
-+	BCSR_STATUS,
-+	BCSR_SWITCHES,
-+	BCSR_RESETS,
-+	BCSR_PCMCIA,
-+	BCSR_BOARD,
-+	BCSR_LEDS,
-+	BCSR_SYSTEM,
-+	/* Au1200/1300 based boards */
-+	BCSR_INTCLR,
-+	BCSR_INTSET,
-+	BCSR_MASKCLR,
-+	BCSR_MASKSET,
-+	BCSR_SIGSTAT,
-+	BCSR_INTSTAT,
-+
-+	/* BCSR base 2 */
-+	BCSR_HEXLEDS,
-+	BCSR_RSVD1,
-+	BCSR_HEXCLEAR,
-+
-+	BCSR_CNT,
++static struct pccard_operations xxs1500_pcmcia_operations = {
++	.init			= xxs1500_pcmcia_sock_init,
++	.suspend		= xxs1500_pcmcia_sock_suspend,
++	.get_status		= xxs1500_pcmcia_get_status,
++	.set_socket		= xxs1500_pcmcia_configure,
++	.set_io_map		= au1x00_pcmcia_set_io_map,
++	.set_mem_map		= au1x00_pcmcia_set_mem_map,
 +};
 +
-+/* register offsets, valid for all Db1xxx/Pb1xxx boards */
-+#define BCSR_REG_WHOAMI		0x00
-+#define BCSR_REG_STATUS		0x04
-+#define BCSR_REG_SWITCHES	0x08
-+#define BCSR_REG_RESETS		0x0c
-+#define BCSR_REG_PCMCIA		0x10
-+#define BCSR_REG_BOARD		0x14
-+#define BCSR_REG_LEDS		0x18
-+#define BCSR_REG_SYSTEM		0x1c
-+/* Au1200/Au1300 based boards: CPLD IRQ muxer */
-+#define BCSR_REG_INTCLR		0x20
-+#define BCSR_REG_INTSET		0x24
-+#define BCSR_REG_MASKCLR	0x28
-+#define BCSR_REG_MASKSET	0x2c
-+#define BCSR_REG_SIGSTAT	0x30
-+#define BCSR_REG_INTSTAT	0x34
++static int __devinit xxs1500_pcmcia_probe(struct platform_device *pdev)
++{
++	struct xxs1500_pcmcia_sock *sock;
++	struct resource *r;
++	phys_t physio;
++	int ret, irq;
 +
-+/* hexled control, offset from BCSR base 2 */
-+#define BCSR_REG_HEXLEDS	0x00
-+#define BCSR_REG_HEXCLEAR	0x08
++	sock = kzalloc(sizeof(struct xxs1500_pcmcia_sock), GFP_KERNEL);
++	if (!sock)
++		return -ENOMEM;
 +
-+/*
-+ * Register Bits and Pieces.
-+ */
-+#define BCSR_WHOAMI_DCID(x)		((x) & 0xf)
-+#define BCSR_WHOAMI_CPLD(x)		(((x) >> 4) & 0xf)
-+#define BCSR_WHOAMI_BOARD(x)		(((x) >> 8) & 0xf)
++	ret = -ENODEV;
 +
-+/* register "WHOAMI" bits 11:8 identify the board */
-+enum bcsr_whoami_boards {
-+	BCSR_WHOAMI_PB1500 = 1,
-+	BCSR_WHOAMI_PB1500R2,
-+	BCSR_WHOAMI_PB1100,
-+	BCSR_WHOAMI_DB1000,
-+	BCSR_WHOAMI_DB1100,
-+	BCSR_WHOAMI_DB1500,
-+	BCSR_WHOAMI_DB1550,
-+	BCSR_WHOAMI_PB1550_DDR,
-+	BCSR_WHOAMI_PB1550 = BCSR_WHOAMI_PB1550_DDR,
-+	BCSR_WHOAMI_PB1550_SDR,
-+	BCSR_WHOAMI_PB1200_DDR1,
-+	BCSR_WHOAMI_PB1200 = BCSR_WHOAMI_PB1200_DDR1,
-+	BCSR_WHOAMI_PB1200_DDR2,
-+	BCSR_WHOAMI_DB1200,
++	/*
++	 * pseudo-attr:  The 32bit address of the PCMCIA attribute space
++	 * for this socket (usually the 36bit address shifted 4 to the
++	 * right).
++	 */
++	r = platform_get_resource_byname(pdev, IORESOURCE_MEM, "pseudo-attr");
++	if (!r) {
++		dev_err(&pdev->dev, "missing 'pseudo-attr' resource!\n");
++		goto out0;
++	}
++	sock->phys_attr = r->start;
++
++	/*
++	 * pseudo-mem:  The 32bit address of the PCMCIA memory space for
++	 * this socket (usually the 36bit address shifted 4 to the right)
++	 */
++	r = platform_get_resource_byname(pdev, IORESOURCE_MEM, "pseudo-mem");
++	if (!r) {
++		dev_err(&pdev->dev, "missing 'pseudo-mem' resource!\n");
++		goto out0;
++	}
++	sock->phys_mem = r->start;
++
++	/*
++	 * pseudo-io:  The 32bit address of the PCMCIA IO space for this
++	 * socket (usually the 36bit address shifted 4 to the right).
++	 */
++	r = platform_get_resource_byname(pdev, IORESOURCE_MEM, "pseudo-io");
++	if (!r) {
++		dev_err(&pdev->dev, "missing 'pseudo-io' resource!\n");
++		goto out0;
++	}
++	sock->phys_io = r->start;
++
++
++	/* for io must remap the full 36bit address (for reference see
++	 * alchemy/common/setup.c::__fixup_bigphys_addr)
++	 */
++	physio = ((phys_t)sock->phys_io) << 4;
++
++	/*
++	 * PCMCIA client drivers use the inb/outb macros to access
++	 * the IO registers.  Since mips_io_port_base is added
++	 * to the access address of the mips implementation of
++	 * inb/outb, we need to subtract it here because we want
++	 * to access the I/O or MEM address directly, without
++	 * going through this "mips_io_port_base" mechanism.
++	 */
++	sock->virt_io = (void *)(ioremap(physio, IO_MAP_SIZE) -
++				 mips_io_port_base);
++
++	if (!sock->virt_io) {
++		dev_err(&pdev->dev, "cannot remap IO area\n");
++		ret = -ENOMEM;
++		goto out0;
++	}
++
++	sock->socket.ops	= &xxs1500_pcmcia_operations;
++	sock->socket.owner	= THIS_MODULE;
++	sock->socket.pci_irq	= gpio_to_irq(GPIO_CARDIRQ);
++	sock->socket.features	= SS_CAP_STATIC_MAP | SS_CAP_PCCARD;
++	sock->socket.map_size	= MEM_MAP_SIZE;
++	sock->socket.io_offset	= (unsigned long)sock->virt_io;
++	sock->socket.dev.parent	= &pdev->dev;
++	sock->socket.resource_ops = &pccard_static_ops;
++
++	platform_set_drvdata(pdev, sock);
++
++	/* setup carddetect irq: use one of the 2 GPIOs as an
++	 * edge detector.
++	 */
++	irq = gpio_to_irq(GPIO_CDA);
++	set_irq_type(irq, IRQ_TYPE_EDGE_BOTH);
++	ret = request_irq(irq, cdirq, 0, "pcmcia_carddetect", sock);
++	if (ret) {
++		dev_err(&pdev->dev, "cannot setup cd irq\n");
++		goto out1;
++	}
++
++	ret = pcmcia_register_socket(&sock->socket);
++	if (ret) {
++		dev_err(&pdev->dev, "failed to register\n");
++		goto out2;
++	}
++
++	printk(KERN_INFO "MyCable XXS1500 PCMCIA socket services\n");
++
++	return 0;
++
++out2:
++	free_irq(gpio_to_irq(GPIO_CDA), sock);
++out1:
++	iounmap((void *)(sock->virt_io + (u32)mips_io_port_base));
++out0:
++	kfree(sock);
++	return ret;
++}
++
++static int __devexit xxs1500_pcmcia_remove(struct platform_device *pdev)
++{
++	struct xxs1500_pcmcia_sock *sock = platform_get_drvdata(pdev);
++
++	pcmcia_unregister_socket(&sock->socket);
++	free_irq(gpio_to_irq(GPIO_CDA), sock);
++	iounmap((void *)(sock->virt_io + (u32)mips_io_port_base));
++	kfree(sock);
++
++	return 0;
++}
++
++static struct platform_driver xxs1500_pcmcia_socket_driver = {
++	.driver	= {
++		.name	= "xxs1500_pcmcia",
++		.owner	= THIS_MODULE,
++	},
++	.probe		= xxs1500_pcmcia_probe,
++	.remove		= __devexit_p(xxs1500_pcmcia_remove),
 +};
 +
-+/* STATUS reg.  Unless otherwise noted, theyre valid on all boards.
-+ * PB1200 = DB1200.
-+ */
-+#define BCSR_STATUS_PC0VS		0x0003
-+#define BCSR_STATUS_PC1VS		0x000C
-+#define BCSR_STATUS_PC0FI		0x0010
-+#define BCSR_STATUS_PC1FI		0x0020
-+#define BCSR_STATUS_PB1550_SWAPBOOT	0x0040
-+#define BCSR_STATUS_SRAMWIDTH		0x0080
-+#define BCSR_STATUS_FLASHBUSY		0x0100
-+#define BCSR_STATUS_ROMBUSY		0x0400
-+#define BCSR_STATUS_SD0WP		0x0400	/* DB1200 */
-+#define BCSR_STATUS_SD1WP		0x0800
-+#define BCSR_STATUS_USBOTGID		0x0800	/* PB/DB1550 */
-+#define BCSR_STATUS_DB1000_SWAPBOOT	0x2000
-+#define BCSR_STATUS_DB1200_SWAPBOOT	0x0040	/* DB1200 */
-+#define BCSR_STATUS_IDECBLID		0x0200	/* DB1200 */
-+#define BCSR_STATUS_DB1200_U0RXD	0x1000	/* DB1200 */
-+#define BCSR_STATUS_DB1299_U1RXD	0x2000	/* DB1200 */
-+#define BCSR_STATUS_FLASHDEN		0xC000
-+#define BCSR_STATUS_DB1550_U0RXD	0x1000	/* DB1550 */
-+#define BCSR_STATUS_DB1550_U3RXD	0x2000	/* DB1550 */
-+#define BCSR_STATUS_PB1550_U0RXD	0x1000	/* PB1550 */
-+#define BCSR_STATUS_PB1550_U1RXD	0x2000	/* PB1550 */
-+#define BCSR_STATUS_PB1550_U3RXD	0x8000	/* PB1550 */
++int __init xxs1500_pcmcia_socket_load(void)
++{
++	return platform_driver_register(&xxs1500_pcmcia_socket_driver);
++}
 +
++void  __exit xxs1500_pcmcia_socket_unload(void)
++{
++	platform_driver_unregister(&xxs1500_pcmcia_socket_driver);
++}
 +
-+/* DB/PB1000,1100,1500,1550 */
-+#define BCSR_RESETS_PHY0		0x0001
-+#define BCSR_RESETS_PHY1		0x0002
-+#define BCSR_RESETS_DC			0x0004
-+#define BCSR_RESETS_FIR_SEL		0x2000
-+#define BCSR_RESETS_IRDA_MODE_MASK	0xC000
-+#define BCSR_RESETS_IRDA_MODE_FULL	0x0000
-+#define BCSR_RESETS_PB1550_WSCFSM	0x2000
-+#define BCSR_RESETS_IRDA_MODE_OFF	0x4000
-+#define BCSR_RESETS_IRDA_MODE_2_3	0x8000
-+#define BCSR_RESETS_IRDA_MODE_1_3	0xC000
-+#define BCSR_RESETS_DMAREQ		0x8000	/* PB1550 */
++module_init(xxs1500_pcmcia_socket_load);
++module_exit(xxs1500_pcmcia_socket_unload);
 +
-+#define BCSR_BOARD_PCIM66EN		0x0001
-+#define BCSR_BOARD_SD0PWR		0x0040
-+#define BCSR_BOARD_SD1PWR		0x0080
-+#define BCSR_BOARD_PCIM33		0x0100
-+#define BCSR_BOARD_PCIEXTARB		0x0200
-+#define BCSR_BOARD_GPIO200RST		0x0400
-+#define BCSR_BOARD_PCICLKOUT		0x0800
-+#define BCSR_BOARD_PCICFG		0x1000
-+#define BCSR_BOARD_SPISEL		0x4000	/* PB/DB1550 */
-+#define BCSR_BOARD_SD0WP		0x4000
-+#define BCSR_BOARD_SD1WP		0x8000
-+
-+
-+/* DB/PB1200 */
-+#define BCSR_RESETS_ETH			0x0001
-+#define BCSR_RESETS_CAMERA		0x0002
-+#define BCSR_RESETS_DC			0x0004
-+#define BCSR_RESETS_IDE			0x0008
-+#define BCSR_RESETS_TV			0x0010	/* DB1200 */
-+/* Not resets but in the same register */
-+#define BCSR_RESETS_PWMR1MUX		0x0800	/* DB1200 */
-+#define BCSR_RESETS_PB1200_WSCFSM	0x0800	/* PB1200 */
-+#define BCSR_RESETS_PSC0MUX		0x1000
-+#define BCSR_RESETS_PSC1MUX		0x2000
-+#define BCSR_RESETS_SPISEL		0x4000
-+#define BCSR_RESETS_SD1MUX		0x8000	/* PB1200 */
-+
-+#define BCSR_BOARD_LCDVEE		0x0001
-+#define BCSR_BOARD_LCDVDD		0x0002
-+#define BCSR_BOARD_LCDBL		0x0004
-+#define BCSR_BOARD_CAMSNAP		0x0010
-+#define BCSR_BOARD_CAMPWR		0x0020
-+#define BCSR_BOARD_SD0PWR		0x0040
-+
-+
-+#define BCSR_SWITCHES_DIP		0x00FF
-+#define BCSR_SWITCHES_DIP_1		0x0080
-+#define BCSR_SWITCHES_DIP_2		0x0040
-+#define BCSR_SWITCHES_DIP_3		0x0020
-+#define BCSR_SWITCHES_DIP_4		0x0010
-+#define BCSR_SWITCHES_DIP_5		0x0008
-+#define BCSR_SWITCHES_DIP_6		0x0004
-+#define BCSR_SWITCHES_DIP_7		0x0002
-+#define BCSR_SWITCHES_DIP_8		0x0001
-+#define BCSR_SWITCHES_ROTARY		0x0F00
-+
-+
-+#define BCSR_PCMCIA_PC0VPP		0x0003
-+#define BCSR_PCMCIA_PC0VCC		0x000C
-+#define BCSR_PCMCIA_PC0DRVEN		0x0010
-+#define BCSR_PCMCIA_PC0RST		0x0080
-+#define BCSR_PCMCIA_PC1VPP		0x0300
-+#define BCSR_PCMCIA_PC1VCC		0x0C00
-+#define BCSR_PCMCIA_PC1DRVEN		0x1000
-+#define BCSR_PCMCIA_PC1RST		0x8000
-+
-+
-+#define BCSR_LEDS_DECIMALS		0x0003
-+#define BCSR_LEDS_LED0			0x0100
-+#define BCSR_LEDS_LED1			0x0200
-+#define BCSR_LEDS_LED2			0x0400
-+#define BCSR_LEDS_LED3			0x0800
-+
-+
-+#define BCSR_SYSTEM_RESET		0x8000	/* clear to reset */
-+#define BCSR_SYSTEM_PWROFF		0x4000	/* set to power off */
-+#define BCSR_SYSTEM_VDDI		0x001F	/* PB1xxx boards */
-+
-+
-+
-+
-+/* initialize BCSR for a board. Provide the PHYSICAL addresses of both
-+ * BCSR spaces.
-+ */
-+void __init bcsr_init(unsigned long bcsr1_phys, unsigned long bcsr2_phys);
-+
-+/* read a board register */
-+unsigned short bcsr_read(enum bcsr_id reg);
-+
-+/* write to a board register */
-+void bcsr_write(enum bcsr_id reg, unsigned short val);
-+
-+/* modify a register. clear bits set in 'clr', set bits set in 'set' */
-+void bcsr_mod(enum bcsr_id reg, unsigned short clr, unsigned short set);
-+
-+#endif
-diff --git a/arch/mips/include/asm/mach-db1x00/db1200.h b/arch/mips/include/asm/mach-db1x00/db1200.h
-index 27f2610..2909b83 100644
---- a/arch/mips/include/asm/mach-db1x00/db1200.h
-+++ b/arch/mips/include/asm/mach-db1x00/db1200.h
-@@ -45,113 +45,6 @@
- #define AC97_PSC_BASE		PSC1_BASE_ADDR
- #define I2S_PSC_BASE		PSC1_BASE_ADDR
- 
--#define BCSR_KSEG1_ADDR 	0xB9800000
--
--typedef volatile struct
--{
--	/*00*/	u16 whoami;
--		u16 reserved0;
--	/*04*/	u16 status;
--		u16 reserved1;
--	/*08*/	u16 switches;
--		u16 reserved2;
--	/*0C*/	u16 resets;
--		u16 reserved3;
--
--	/*10*/	u16 pcmcia;
--		u16 reserved4;
--	/*14*/	u16 board;
--		u16 reserved5;
--	/*18*/	u16 disk_leds;
--		u16 reserved6;
--	/*1C*/	u16 system;
--		u16 reserved7;
--
--	/*20*/	u16 intclr;
--		u16 reserved8;
--	/*24*/	u16 intset;
--		u16 reserved9;
--	/*28*/	u16 intclr_mask;
--		u16 reserved10;
--	/*2C*/	u16 intset_mask;
--		u16 reserved11;
--
--	/*30*/	u16 sig_status;
--		u16 reserved12;
--	/*34*/	u16 int_status;
--		u16 reserved13;
--	/*38*/	u16 reserved14;
--		u16 reserved15;
--	/*3C*/	u16 reserved16;
--		u16 reserved17;
--
--} BCSR;
--
--static BCSR * const bcsr = (BCSR *)BCSR_KSEG1_ADDR;
--
--/*
-- * Register bit definitions for the BCSRs
-- */
--#define BCSR_WHOAMI_DCID	0x000F
--#define BCSR_WHOAMI_CPLD	0x00F0
--#define BCSR_WHOAMI_BOARD	0x0F00
--
--#define BCSR_STATUS_PCMCIA0VS	0x0003
--#define BCSR_STATUS_PCMCIA1VS	0x000C
--#define BCSR_STATUS_SWAPBOOT	0x0040
--#define BCSR_STATUS_FLASHBUSY	0x0100
--#define BCSR_STATUS_IDECBLID	0x0200
--#define BCSR_STATUS_SD0WP	0x0400
--#define BCSR_STATUS_U0RXD	0x1000
--#define BCSR_STATUS_U1RXD	0x2000
--
--#define BCSR_SWITCHES_OCTAL	0x00FF
--#define BCSR_SWITCHES_DIP_1	0x0080
--#define BCSR_SWITCHES_DIP_2	0x0040
--#define BCSR_SWITCHES_DIP_3	0x0020
--#define BCSR_SWITCHES_DIP_4	0x0010
--#define BCSR_SWITCHES_DIP_5	0x0008
--#define BCSR_SWITCHES_DIP_6	0x0004
--#define BCSR_SWITCHES_DIP_7	0x0002
--#define BCSR_SWITCHES_DIP_8	0x0001
--#define BCSR_SWITCHES_ROTARY	0x0F00
--
--#define BCSR_RESETS_ETH		0x0001
--#define BCSR_RESETS_CAMERA	0x0002
--#define BCSR_RESETS_DC		0x0004
--#define BCSR_RESETS_IDE		0x0008
--#define BCSR_RESETS_TV		0x0010
--/* Not resets but in the same register */
--#define BCSR_RESETS_PWMR1MUX	0x0800
--#define BCSR_RESETS_PCS0MUX	0x1000
--#define BCSR_RESETS_PCS1MUX	0x2000
--#define BCSR_RESETS_SPISEL	0x4000
--
--#define BCSR_PCMCIA_PC0VPP	0x0003
--#define BCSR_PCMCIA_PC0VCC	0x000C
--#define BCSR_PCMCIA_PC0DRVEN	0x0010
--#define BCSR_PCMCIA_PC0RST	0x0080
--#define BCSR_PCMCIA_PC1VPP	0x0300
--#define BCSR_PCMCIA_PC1VCC	0x0C00
--#define BCSR_PCMCIA_PC1DRVEN	0x1000
--#define BCSR_PCMCIA_PC1RST	0x8000
--
--#define BCSR_BOARD_LCDVEE	0x0001
--#define BCSR_BOARD_LCDVDD	0x0002
--#define BCSR_BOARD_LCDBL	0x0004
--#define BCSR_BOARD_CAMSNAP	0x0010
--#define BCSR_BOARD_CAMPWR	0x0020
--#define BCSR_BOARD_SD0PWR	0x0040
--
--#define BCSR_LEDS_DECIMALS	0x0003
--#define BCSR_LEDS_LED0		0x0100
--#define BCSR_LEDS_LED1		0x0200
--#define BCSR_LEDS_LED2		0x0400
--#define BCSR_LEDS_LED3		0x0800
--
--#define BCSR_SYSTEM_POWEROFF	0x4000
--#define BCSR_SYSTEM_RESET	0x8000
--
- /* Bit positions for the different interrupt sources */
- #define BCSR_INT_IDE		0x0001
- #define BCSR_INT_ETH		0x0002
-@@ -222,7 +115,7 @@ enum external_pb1200_ints {
- 
- #define BOARD_PC0_INT	DB1200_PC0_INT
- #define BOARD_PC1_INT	DB1200_PC1_INT
--#define BOARD_CARD_INSERTED(SOCKET) bcsr->sig_status & (1 << (8 + (2 * SOCKET)))
-+#define BOARD_CARD_INSERTED(SOCKET) (bcsr_read(BCSR_SIGSTAT) & (1 << (8 + (2 * SOCKET))))
- 
- /* NAND chip select */
- #define NAND_CS 1
-diff --git a/arch/mips/include/asm/mach-db1x00/db1x00.h b/arch/mips/include/asm/mach-db1x00/db1x00.h
-index 1a515b8..cfa6429 100644
---- a/arch/mips/include/asm/mach-db1x00/db1x00.h
-+++ b/arch/mips/include/asm/mach-db1x00/db1x00.h
-@@ -41,102 +41,10 @@
- #define SMBUS_PSC_BASE		PSC2_BASE_ADDR
- #define I2S_PSC_BASE		PSC3_BASE_ADDR
- 
--#define BCSR_KSEG1_ADDR 	0xAF000000
- #define NAND_PHYS_ADDR		0x20000000
- 
--#else
--#define BCSR_KSEG1_ADDR 0xAE000000
- #endif
- 
--/*
-- * Overlay data structure of the DBAu1x00 board registers.
-- * Registers are located at physical 0E0000xx, KSEG1 0xAE0000xx.
-- */
--typedef volatile struct
--{
--	/*00*/	unsigned short whoami;
--	unsigned short reserved0;
--	/*04*/	unsigned short status;
--	unsigned short reserved1;
--	/*08*/	unsigned short switches;
--	unsigned short reserved2;
--	/*0C*/	unsigned short resets;
--	unsigned short reserved3;
--	/*10*/	unsigned short pcmcia;
--	unsigned short reserved4;
--	/*14*/	unsigned short specific;
--	unsigned short reserved5;
--	/*18*/	unsigned short leds;
--	unsigned short reserved6;
--	/*1C*/	unsigned short swreset;
--	unsigned short reserved7;
--
--} BCSR;
--
--
--/*
-- * Register/mask bit definitions for the BCSRs
-- */
--#define BCSR_WHOAMI_DCID		0x000F
--#define BCSR_WHOAMI_CPLD		0x00F0
--#define BCSR_WHOAMI_BOARD		0x0F00
--
--#define BCSR_STATUS_PC0VS		0x0003
--#define BCSR_STATUS_PC1VS		0x000C
--#define BCSR_STATUS_PC0FI		0x0010
--#define BCSR_STATUS_PC1FI		0x0020
--#define BCSR_STATUS_FLASHBUSY		0x0100
--#define BCSR_STATUS_ROMBUSY		0x0400
--#define BCSR_STATUS_SWAPBOOT		0x2000
--#define BCSR_STATUS_FLASHDEN		0xC000
--
--#define BCSR_SWITCHES_DIP		0x00FF
--#define BCSR_SWITCHES_DIP_1		0x0080
--#define BCSR_SWITCHES_DIP_2		0x0040
--#define BCSR_SWITCHES_DIP_3		0x0020
--#define BCSR_SWITCHES_DIP_4		0x0010
--#define BCSR_SWITCHES_DIP_5		0x0008
--#define BCSR_SWITCHES_DIP_6		0x0004
--#define BCSR_SWITCHES_DIP_7		0x0002
--#define BCSR_SWITCHES_DIP_8		0x0001
--#define BCSR_SWITCHES_ROTARY		0x0F00
--
--#define BCSR_RESETS_PHY0		0x0001
--#define BCSR_RESETS_PHY1		0x0002
--#define BCSR_RESETS_DC			0x0004
--#define BCSR_RESETS_FIR_SEL		0x2000
--#define BCSR_RESETS_IRDA_MODE_MASK	0xC000
--#define BCSR_RESETS_IRDA_MODE_FULL	0x0000
--#define BCSR_RESETS_IRDA_MODE_OFF	0x4000
--#define BCSR_RESETS_IRDA_MODE_2_3	0x8000
--#define BCSR_RESETS_IRDA_MODE_1_3	0xC000
--
--#define BCSR_PCMCIA_PC0VPP		0x0003
--#define BCSR_PCMCIA_PC0VCC		0x000C
--#define BCSR_PCMCIA_PC0DRVEN		0x0010
--#define BCSR_PCMCIA_PC0RST		0x0080
--#define BCSR_PCMCIA_PC1VPP		0x0300
--#define BCSR_PCMCIA_PC1VCC		0x0C00
--#define BCSR_PCMCIA_PC1DRVEN		0x1000
--#define BCSR_PCMCIA_PC1RST		0x8000
--
--#define BCSR_BOARD_PCIM66EN		0x0001
--#define BCSR_BOARD_SD0_PWR		0x0040
--#define BCSR_BOARD_SD1_PWR		0x0080
--#define BCSR_BOARD_PCIM33		0x0100
--#define BCSR_BOARD_GPIO200RST		0x0400
--#define BCSR_BOARD_PCICFG		0x1000
--#define BCSR_BOARD_SD0_WP		0x4000
--#define BCSR_BOARD_SD1_WP		0x8000
--
--#define BCSR_LEDS_DECIMALS		0x0003
--#define BCSR_LEDS_LED0			0x0100
--#define BCSR_LEDS_LED1			0x0200
--#define BCSR_LEDS_LED2			0x0400
--#define BCSR_LEDS_LED3			0x0800
--
--#define BCSR_SWRESET_RESET		0x0080
--
- /* PCMCIA DBAu1x00 specific defines */
- #define PCMCIA_MAX_SOCK  1
- #define PCMCIA_NUM_SOCKS (PCMCIA_MAX_SOCK + 1)
-diff --git a/arch/mips/include/asm/mach-pb1x00/pb1100.h b/arch/mips/include/asm/mach-pb1x00/pb1100.h
-index b1a60f1..f2bf73a 100644
---- a/arch/mips/include/asm/mach-pb1x00/pb1100.h
-+++ b/arch/mips/include/asm/mach-pb1x00/pb1100.h
-@@ -26,55 +26,6 @@
- #ifndef __ASM_PB1100_H
- #define __ASM_PB1100_H
- 
--#define PB1100_IDENT		0xAE000000
--#define BOARD_STATUS_REG	0xAE000004
--#  define PB1100_ROM_SEL	(1 << 15)
--#  define PB1100_ROM_SIZ	(1 << 14)
--#  define PB1100_SWAP_BOOT	(1 << 13)
--#  define PB1100_FLASH_WP	(1 << 12)
--#  define PB1100_ROM_H_STS	(1 << 11)
--#  define PB1100_ROM_L_STS	(1 << 10)
--#  define PB1100_FLASH_H_STS	(1 << 9)
--#  define PB1100_FLASH_L_STS	(1 << 8)
--#  define PB1100_SRAM_SIZ	(1 << 7)
--#  define PB1100_TSC_BUSY	(1 << 6)
--#  define PB1100_PCMCIA_VS_MASK (3 << 4)
--#  define PB1100_RS232_CD	(1 << 3)
--#  define PB1100_RS232_CTS	(1 << 2)
--#  define PB1100_RS232_DSR	(1 << 1)
--#  define PB1100_RS232_RI	(1 << 0)
--
--#define PB1100_IRDA_RS232	0xAE00000C
--#  define PB1100_IRDA_FULL	(0 << 14)	/* full power		*/
--#  define PB1100_IRDA_SHUTDOWN	(1 << 14)
--#  define PB1100_IRDA_TT	(2 << 14)	/* 2/3 power		*/
--#  define PB1100_IRDA_OT	(3 << 14)	/* 1/3 power		*/
--#  define PB1100_IRDA_FIR	(1 << 13)
--
--#define PCMCIA_BOARD_REG	0xAE000010
--#  define PB1100_SD_WP1_RO	(1 << 15)	/* read only		*/
--#  define PB1100_SD_WP0_RO	(1 << 14)	/* read only		*/
--#  define PB1100_SD_PWR1	(1 << 11)	/* applies power to SD1 */
--#  define PB1100_SD_PWR0	(1 << 10)	/* applies power to SD0 */
--#  define PB1100_SEL_SD_CONN1	(1 << 9)
--#  define PB1100_SEL_SD_CONN0	(1 << 8)
--#  define PC_DEASSERT_RST	(1 << 7)
--#  define PC_DRV_EN		(1 << 4)
--
--#define PB1100_G_CONTROL	0xAE000014	/* graphics control	*/
--
--#define PB1100_RST_VDDI 	0xAE00001C
--#  define PB1100_SOFT_RESET	(1 << 15)	/* clear to reset the board */
--#  define PB1100_VDDI_MASK	0x1F
--
--#define PB1100_LEDS		0xAE000018
--
--/*
-- * 11:8 is 4 discreet LEDs. Clearing a bit illuminates the LED.
-- * 7:0  is the LED Display's decimal points.
-- */
--#define PB1100_HEX_LED		0xAE000018
--
- /* PCMCIA Pb1100 specific defines */
- #define PCMCIA_MAX_SOCK  0
- #define PCMCIA_NUM_SOCKS (PCMCIA_MAX_SOCK + 1)
-diff --git a/arch/mips/include/asm/mach-pb1x00/pb1200.h b/arch/mips/include/asm/mach-pb1x00/pb1200.h
-index c8618df..a51512c 100644
---- a/arch/mips/include/asm/mach-pb1x00/pb1200.h
-+++ b/arch/mips/include/asm/mach-pb1x00/pb1200.h
-@@ -43,113 +43,8 @@
-  * Refer to board documentation.
-  */
- #define AC97_PSC_BASE       PSC1_BASE_ADDR
--#define I2S_PSC_BASE		PSC1_BASE_ADDR
-+#define I2S_PSC_BASE	PSC1_BASE_ADDR
- 
--#define BCSR_KSEG1_ADDR 0xAD800000
--
--typedef volatile struct
--{
--	/*00*/	u16 whoami;
--		u16 reserved0;
--	/*04*/	u16 status;
--		u16 reserved1;
--	/*08*/	u16 switches;
--		u16 reserved2;
--	/*0C*/	u16 resets;
--		u16 reserved3;
--
--	/*10*/	u16 pcmcia;
--		u16 reserved4;
--	/*14*/	u16 board;
--		u16 reserved5;
--	/*18*/	u16 disk_leds;
--		u16 reserved6;
--	/*1C*/	u16 system;
--		u16 reserved7;
--
--	/*20*/	u16 intclr;
--		u16 reserved8;
--	/*24*/	u16 intset;
--		u16 reserved9;
--	/*28*/	u16 intclr_mask;
--		u16 reserved10;
--	/*2C*/	u16 intset_mask;
--		u16 reserved11;
--
--	/*30*/	u16 sig_status;
--		u16 reserved12;
--	/*34*/	u16 int_status;
--		u16 reserved13;
--	/*38*/	u16 reserved14;
--		u16 reserved15;
--	/*3C*/	u16 reserved16;
--		u16 reserved17;
--
--} BCSR;
--
--static BCSR * const bcsr = (BCSR *)BCSR_KSEG1_ADDR;
--
--/*
-- * Register bit definitions for the BCSRs
-- */
--#define BCSR_WHOAMI_DCID	0x000F
--#define BCSR_WHOAMI_CPLD	0x00F0
--#define BCSR_WHOAMI_BOARD	0x0F00
--
--#define BCSR_STATUS_PCMCIA0VS	0x0003
--#define BCSR_STATUS_PCMCIA1VS	0x000C
--#define BCSR_STATUS_SWAPBOOT	0x0040
--#define BCSR_STATUS_FLASHBUSY	0x0100
--#define BCSR_STATUS_IDECBLID	0x0200
--#define BCSR_STATUS_SD0WP	0x0400
--#define BCSR_STATUS_SD1WP	0x0800
--#define BCSR_STATUS_U0RXD	0x1000
--#define BCSR_STATUS_U1RXD	0x2000
--
--#define BCSR_SWITCHES_OCTAL	0x00FF
--#define BCSR_SWITCHES_DIP_1	0x0080
--#define BCSR_SWITCHES_DIP_2	0x0040
--#define BCSR_SWITCHES_DIP_3	0x0020
--#define BCSR_SWITCHES_DIP_4	0x0010
--#define BCSR_SWITCHES_DIP_5	0x0008
--#define BCSR_SWITCHES_DIP_6	0x0004
--#define BCSR_SWITCHES_DIP_7	0x0002
--#define BCSR_SWITCHES_DIP_8	0x0001
--#define BCSR_SWITCHES_ROTARY	0x0F00
--
--#define BCSR_RESETS_ETH		0x0001
--#define BCSR_RESETS_CAMERA	0x0002
--#define BCSR_RESETS_DC		0x0004
--#define BCSR_RESETS_IDE		0x0008
--/* not resets but in the same register */
--#define BCSR_RESETS_WSCFSM	0x0800
--#define BCSR_RESETS_PCS0MUX	0x1000
--#define BCSR_RESETS_PCS1MUX	0x2000
--#define BCSR_RESETS_SPISEL	0x4000
--#define BCSR_RESETS_SD1MUX	0x8000
--
--#define BCSR_PCMCIA_PC0VPP	0x0003
--#define BCSR_PCMCIA_PC0VCC	0x000C
--#define BCSR_PCMCIA_PC0DRVEN	0x0010
--#define BCSR_PCMCIA_PC0RST	0x0080
--#define BCSR_PCMCIA_PC1VPP	0x0300
--#define BCSR_PCMCIA_PC1VCC	0x0C00
--#define BCSR_PCMCIA_PC1DRVEN	0x1000
--#define BCSR_PCMCIA_PC1RST	0x8000
--
--#define BCSR_BOARD_LCDVEE	0x0001
--#define BCSR_BOARD_LCDVDD	0x0002
--#define BCSR_BOARD_LCDBL	0x0004
--#define BCSR_BOARD_CAMSNAP	0x0010
--#define BCSR_BOARD_CAMPWR	0x0020
--#define BCSR_BOARD_SD0PWR	0x0040
--#define BCSR_BOARD_SD1PWR	0x0080
--
--#define BCSR_LEDS_DECIMALS	0x00FF
--#define BCSR_LEDS_LED0		0x0100
--#define BCSR_LEDS_LED1		0x0200
--#define BCSR_LEDS_LED2		0x0400
--#define BCSR_LEDS_LED3		0x0800
- 
- #define BCSR_SYSTEM_VDDI	0x001F
- #define BCSR_SYSTEM_POWEROFF	0x4000
-@@ -251,7 +146,7 @@ enum external_pb1200_ints {
- 
- #define BOARD_PC0_INT	PB1200_PC0_INT
- #define BOARD_PC1_INT	PB1200_PC1_INT
--#define BOARD_CARD_INSERTED(SOCKET) bcsr->sig_status & (1 << (8 + (2 * SOCKET)))
-+#define BOARD_CARD_INSERTED(SOCKET) (bcsr_read(BCSR_SIGSTAT & (1 << (8 + (2 * SOCKET))))
- 
- /* NAND chip select */
- #define NAND_CS 1
-diff --git a/arch/mips/include/asm/mach-pb1x00/pb1500.h b/arch/mips/include/asm/mach-pb1x00/pb1500.h
-index da51a2e..82431a7 100644
---- a/arch/mips/include/asm/mach-pb1x00/pb1500.h
-+++ b/arch/mips/include/asm/mach-pb1x00/pb1500.h
-@@ -26,19 +26,6 @@
- #ifndef __ASM_PB1500_H
- #define __ASM_PB1500_H
- 
--#define IDENT_BOARD_REG 	0xAE000000
--#define BOARD_STATUS_REG	0xAE000004
--#define PCI_BOARD_REG		0xAE000010
--#define PCMCIA_BOARD_REG	0xAE000010
--#  define PC_DEASSERT_RST	      0x80
--#  define PC_DRV_EN		      0x10
--#define PB1500_G_CONTROL	0xAE000014
--#define PB1500_RST_VDDI 	0xAE00001C
--#define PB1500_LEDS		0xAE000018
--
--#define PB1500_HEX_LED		0xAF000004
--#define PB1500_HEX_LED_BLANK	0xAF000008
--
- /* PCMCIA Pb1500 specific defines */
- #define PCMCIA_MAX_SOCK  0
- #define PCMCIA_NUM_SOCKS (PCMCIA_MAX_SOCK + 1)
-diff --git a/arch/mips/include/asm/mach-pb1x00/pb1550.h b/arch/mips/include/asm/mach-pb1x00/pb1550.h
-index 6704a11..306d584 100644
---- a/arch/mips/include/asm/mach-pb1x00/pb1550.h
-+++ b/arch/mips/include/asm/mach-pb1x00/pb1550.h
-@@ -40,95 +40,6 @@
- #define SMBUS_PSC_BASE		PSC2_BASE_ADDR
- #define I2S_PSC_BASE		PSC3_BASE_ADDR
- 
--#define BCSR_PHYS_ADDR 0xAF000000
--
--typedef volatile struct
--{
--	/*00*/	u16 whoami;
--		u16 reserved0;
--	/*04*/	u16 status;
--		u16 reserved1;
--	/*08*/	u16 switches;
--		u16 reserved2;
--	/*0C*/	u16 resets;
--		u16 reserved3;
--	/*10*/	u16 pcmcia;
--		u16 reserved4;
--	/*14*/	u16 pci;
--		u16 reserved5;
--	/*18*/	u16 leds;
--		u16 reserved6;
--	/*1C*/	u16 system;
--		u16 reserved7;
--
--} BCSR;
--
--static BCSR * const bcsr = (BCSR *)BCSR_PHYS_ADDR;
--
--/*
-- * Register bit definitions for the BCSRs
-- */
--#define BCSR_WHOAMI_DCID	0x000F
--#define BCSR_WHOAMI_CPLD	0x00F0
--#define BCSR_WHOAMI_BOARD	0x0F00
--
--#define BCSR_STATUS_PCMCIA0VS	0x0003
--#define BCSR_STATUS_PCMCIA1VS	0x000C
--#define BCSR_STATUS_PCMCIA0FI	0x0010
--#define BCSR_STATUS_PCMCIA1FI	0x0020
--#define BCSR_STATUS_SWAPBOOT	0x0040
--#define BCSR_STATUS_SRAMWIDTH	0x0080
--#define BCSR_STATUS_FLASHBUSY	0x0100
--#define BCSR_STATUS_ROMBUSY	0x0200
--#define BCSR_STATUS_USBOTGID	0x0800
--#define BCSR_STATUS_U0RXD	0x1000
--#define BCSR_STATUS_U1RXD	0x2000
--#define BCSR_STATUS_U3RXD	0x8000
--
--#define BCSR_SWITCHES_OCTAL	0x00FF
--#define BCSR_SWITCHES_DIP_1	0x0080
--#define BCSR_SWITCHES_DIP_2	0x0040
--#define BCSR_SWITCHES_DIP_3	0x0020
--#define BCSR_SWITCHES_DIP_4	0x0010
--#define BCSR_SWITCHES_DIP_5	0x0008
--#define BCSR_SWITCHES_DIP_6	0x0004
--#define BCSR_SWITCHES_DIP_7	0x0002
--#define BCSR_SWITCHES_DIP_8	0x0001
--#define BCSR_SWITCHES_ROTARY	0x0F00
--
--#define BCSR_RESETS_PHY0	0x0001
--#define BCSR_RESETS_PHY1	0x0002
--#define BCSR_RESETS_DC		0x0004
--#define BCSR_RESETS_WSC		0x2000
--#define BCSR_RESETS_SPISEL	0x4000
--#define BCSR_RESETS_DMAREQ	0x8000
--
--#define BCSR_PCMCIA_PC0VPP	0x0003
--#define BCSR_PCMCIA_PC0VCC	0x000C
--#define BCSR_PCMCIA_PC0DRVEN	0x0010
--#define BCSR_PCMCIA_PC0RST	0x0080
--#define BCSR_PCMCIA_PC1VPP	0x0300
--#define BCSR_PCMCIA_PC1VCC	0x0C00
--#define BCSR_PCMCIA_PC1DRVEN	0x1000
--#define BCSR_PCMCIA_PC1RST	0x8000
--
--#define BCSR_PCI_M66EN		0x0001
--#define BCSR_PCI_M33		0x0100
--#define BCSR_PCI_EXTERNARB	0x0200
--#define BCSR_PCI_GPIO200RST	0x0400
--#define BCSR_PCI_CLKOUT		0x0800
--#define BCSR_PCI_CFGHOST	0x1000
--
--#define BCSR_LEDS_DECIMALS	0x00FF
--#define BCSR_LEDS_LED0		0x0100
--#define BCSR_LEDS_LED1		0x0200
--#define BCSR_LEDS_LED2		0x0400
--#define BCSR_LEDS_LED3		0x0800
--
--#define BCSR_SYSTEM_VDDI	0x001F
--#define BCSR_SYSTEM_POWEROFF	0x4000
--#define BCSR_SYSTEM_RESET	0x8000
--
- #define PCMCIA_MAX_SOCK  1
- #define PCMCIA_NUM_SOCKS (PCMCIA_MAX_SOCK + 1)
- 
-diff --git a/drivers/mtd/nand/au1550nd.c b/drivers/mtd/nand/au1550nd.c
-index 92c334f..43d46e4 100644
---- a/drivers/mtd/nand/au1550nd.c
-+++ b/drivers/mtd/nand/au1550nd.c
-@@ -19,6 +19,7 @@
- #include <asm/io.h>
- 
- #include <asm/mach-au1x00/au1xxx.h>
-+#include <asm/mach-db1x00/bcsr.h>
- 
- /*
-  * MTD structure for NAND controller
-@@ -475,7 +476,8 @@ static int __init au1xxx_nand_init(void)
- 	/* set gpio206 high */
- 	au_writel(au_readl(GPIO2_DIR) & ~(1 << 6), GPIO2_DIR);
- 
--	boot_swapboot = (au_readl(MEM_STSTAT) & (0x7 << 1)) | ((bcsr->status >> 6) & 0x1);
-+	boot_swapboot = (au_readl(MEM_STSTAT) & (0x7 << 1)) | ((bcsr_read(BCSR_STATUS) >> 6) & 0x1);
-+
- 	switch (boot_swapboot) {
- 	case 0:
- 	case 2:
-diff --git a/drivers/net/irda/au1k_ir.c b/drivers/net/irda/au1k_ir.c
-index eb42468..955f04e 100644
---- a/drivers/net/irda/au1k_ir.c
-+++ b/drivers/net/irda/au1k_ir.c
-@@ -36,6 +36,7 @@
- #include <asm/pb1000.h>
- #elif defined(CONFIG_MIPS_DB1000) || defined(CONFIG_MIPS_DB1100)
- #include <asm/db1x00.h>
-+#include <asm/mach-db1x00/bcsr.h>
- #else 
- #error au1k_ir: unsupported board
- #endif
-@@ -66,10 +67,6 @@ static char version[] __devinitdata =
- 
- #define RUN_AT(x) (jiffies + (x))
- 
--#if defined(CONFIG_MIPS_DB1000) || defined(CONFIG_MIPS_DB1100)
--static BCSR * const bcsr = (BCSR *)0xAE000000;
--#endif
--
- static DEFINE_SPINLOCK(ir_lock);
- 
- /*
-@@ -282,9 +279,8 @@ static int au1k_irda_net_init(struct net_device *dev)
- 
- #if defined(CONFIG_MIPS_DB1000) || defined(CONFIG_MIPS_DB1100)
- 	/* power on */
--	bcsr->resets &= ~BCSR_RESETS_IRDA_MODE_MASK;
--	bcsr->resets |= BCSR_RESETS_IRDA_MODE_FULL;
--	au_sync();
-+	bcsr_mod(BCSR_RESETS, BCSR_RESETS_IRDA_MODE_MASK,
-+			      BCSR_RESETS_IRDA_MODE_FULL);
- #endif
- 
- 	return 0;
-@@ -720,14 +716,14 @@ au1k_irda_set_speed(struct net_device *dev, int speed)
- 
- 	if (speed == 4000000) {
- #if defined(CONFIG_MIPS_DB1000) || defined(CONFIG_MIPS_DB1100)
--		bcsr->resets |= BCSR_RESETS_FIR_SEL;
-+		bcsr_mod(BCSR_RESETS, 0, BCSR_RESETS_FIR_SEL);
- #else /* Pb1000 and Pb1100 */
- 		writel(1<<13, CPLD_AUX1);
- #endif
- 	}
- 	else {
- #if defined(CONFIG_MIPS_DB1000) || defined(CONFIG_MIPS_DB1100)
--		bcsr->resets &= ~BCSR_RESETS_FIR_SEL;
-+		bcsr_mod(BCSR_RESETS, BCSR_RESETS_FIR_SEL, 0);
- #else /* Pb1000 and Pb1100 */
- 		writel(readl(CPLD_AUX1) & ~(1<<13), CPLD_AUX1);
- #endif
-diff --git a/drivers/pcmcia/au1000_db1x00.c b/drivers/pcmcia/au1000_db1x00.c
-index c78d77f..6832254 100644
---- a/drivers/pcmcia/au1000_db1x00.c
-+++ b/drivers/pcmcia/au1000_db1x00.c
-@@ -47,9 +47,9 @@
- 	#include <pb1200.h>
- #else
- 	#include <asm/mach-db1x00/db1x00.h>
--	static BCSR * const bcsr = (BCSR *)BCSR_KSEG1_ADDR;
- #endif
- 
-+#include <asm/mach-db1x00/bcsr.h>
- #include "au1000_generic.h"
- 
- #if 0
-@@ -76,8 +76,8 @@ static int db1x00_pcmcia_hw_init(struct au1000_pcmcia_socket *skt)
- 
- static void db1x00_pcmcia_shutdown(struct au1000_pcmcia_socket *skt)
- {
--	bcsr->pcmcia = 0; /* turn off power */
--	au_sync_delay(2);
-+	bcsr_write(BCSR_PCMCIA, 0);	/* turn off power */
-+	msleep(2);
- }
- 
- static void
-@@ -93,19 +93,19 @@ db1x00_pcmcia_socket_state(struct au1000_pcmcia_socket *skt, struct pcmcia_state
- 
- 	switch (skt->nr) {
- 	case 0:
--		vs = bcsr->status & 0x3;
-+		vs = bcsr_read(BCSR_STATUS) & 0x3;
- #if defined(CONFIG_MIPS_DB1200) || defined(CONFIG_MIPS_PB1200)
- 		inserted = BOARD_CARD_INSERTED(0);
- #else
--		inserted = !(bcsr->status & (1<<4));
-+		inserted = !(bcsr_read(BCSR_STATUS) & (1 << 4));
- #endif
- 		break;
- 	case 1:
--		vs = (bcsr->status & 0xC)>>2;
-+		vs = (bcsr_read(BCSR_STATUS) & 0xC) >> 2;
- #if defined(CONFIG_MIPS_DB1200) || defined(CONFIG_MIPS_PB1200)
- 		inserted = BOARD_CARD_INSERTED(1);
- #else
--		inserted = !(bcsr->status & (1<<5));
-+		inserted = !(bcsr_read(BCSR_STATUS) & (1<<5));
- #endif
- 		break;
- 	default:/* should never happen */
-@@ -114,7 +114,7 @@ db1x00_pcmcia_socket_state(struct au1000_pcmcia_socket *skt, struct pcmcia_state
- 
- 	if (inserted)
- 		debug("db1x00 socket %d: inserted %d, vs %d pcmcia %x\n",
--				skt->nr, inserted, vs, bcsr->pcmcia);
-+				skt->nr, inserted, vs, bcsr_read(BCSR_PCMCIA));
- 
- 	if (inserted) {
- 		switch (vs) {
-@@ -136,19 +136,21 @@ db1x00_pcmcia_socket_state(struct au1000_pcmcia_socket *skt, struct pcmcia_state
- 		/* if the card was previously inserted and then ejected,
- 		 * we should turn off power to it
- 		 */
--		if ((skt->nr == 0) && (bcsr->pcmcia & BCSR_PCMCIA_PC0RST)) {
--			bcsr->pcmcia &= ~(BCSR_PCMCIA_PC0RST |
--					BCSR_PCMCIA_PC0DRVEN |
--					BCSR_PCMCIA_PC0VPP |
--					BCSR_PCMCIA_PC0VCC);
--			au_sync_delay(10);
-+		if ((skt->nr == 0) &&
-+		    (bcsr_read(BCSR_PCMCIA) & BCSR_PCMCIA_PC0RST)) {
-+			bcsr_mod(BCSR_PCMCIA, BCSR_PCMCIA_PC0RST   |
-+					      BCSR_PCMCIA_PC0DRVEN |
-+					      BCSR_PCMCIA_PC0VPP   |
-+					      BCSR_PCMCIA_PC0VCC, 0);
-+			msleep(10);
- 		}
--		else if ((skt->nr == 1) && bcsr->pcmcia & BCSR_PCMCIA_PC1RST) {
--			bcsr->pcmcia &= ~(BCSR_PCMCIA_PC1RST |
--					BCSR_PCMCIA_PC1DRVEN |
--					BCSR_PCMCIA_PC1VPP |
--					BCSR_PCMCIA_PC1VCC);
--			au_sync_delay(10);
-+		else if ((skt->nr == 1) &&
-+			 (bcsr_read(BCSR_PCMCIA) & BCSR_PCMCIA_PC1RST)) {
-+			bcsr_mod(BCSR_PCMCIA, BCSR_PCMCIA_PC1RST   |
-+					      BCSR_PCMCIA_PC1DRVEN |
-+					      BCSR_PCMCIA_PC1VPP   |
-+					      BCSR_PCMCIA_PC1VCC, 0);
-+			msleep(10);
- 		}
- 	}
- 
-@@ -171,7 +173,7 @@ db1x00_pcmcia_configure_socket(struct au1000_pcmcia_socket *skt, struct socket_s
- 	 * initializing a socket not to wipe out the settings of the
- 	 * other socket.
- 	 */
--	pwr = bcsr->pcmcia;
-+	pwr = bcsr_read(BCSR_PCMCIA);
- 	pwr &= ~(0xf << sock*8); /* clear voltage settings */
- 
- 	state->Vpp = 0;
-@@ -228,37 +230,37 @@ db1x00_pcmcia_configure_socket(struct au1000_pcmcia_socket *skt, struct socket_s
- 			break;
- 	}
- 
--	bcsr->pcmcia = pwr;
--	au_sync_delay(300);
-+	bcsr_write(BCSR_PCMCIA, pwr);
-+	msleep(3);
- 
- 	if (sock == 0) {
- 		if (!(state->flags & SS_RESET)) {
- 			pwr |= BCSR_PCMCIA_PC0DRVEN;
--			bcsr->pcmcia = pwr;
--			au_sync_delay(300);
-+			bcsr_write(BCSR_PCMCIA, pwr);
-+			msleep(300);
- 			pwr |= BCSR_PCMCIA_PC0RST;
--			bcsr->pcmcia = pwr;
--			au_sync_delay(100);
-+			bcsr_write(BCSR_PCMCIA, pwr);
-+			msleep(100);
- 		}
- 		else {
- 			pwr &= ~(BCSR_PCMCIA_PC0RST | BCSR_PCMCIA_PC0DRVEN);
--			bcsr->pcmcia = pwr;
--			au_sync_delay(100);
-+			bcsr_write(BCSR_PCMCIA, pwr);
-+			msleep(100);
- 		}
- 	}
- 	else {
- 		if (!(state->flags & SS_RESET)) {
- 			pwr |= BCSR_PCMCIA_PC1DRVEN;
--			bcsr->pcmcia = pwr;
--			au_sync_delay(300);
-+			bcsr_write(BCSR_PCMCIA, pwr);
-+			msleep(300);
- 			pwr |= BCSR_PCMCIA_PC1RST;
--			bcsr->pcmcia = pwr;
--			au_sync_delay(100);
-+			bcsr_write(BCSR_PCMCIA, pwr);
-+			msleep(100);
- 		}
- 		else {
- 			pwr &= ~(BCSR_PCMCIA_PC1RST | BCSR_PCMCIA_PC1DRVEN);
--			bcsr->pcmcia = pwr;
--			au_sync_delay(100);
-+			bcsr_write(BCSR_PCMCIA, pwr);
-+			msleep(100);
- 		}
- 	}
- 	return 0;
-@@ -298,8 +300,8 @@ struct pcmcia_low_level db1x00_pcmcia_ops = {
- int au1x_board_init(struct device *dev)
- {
- 	int ret = -ENODEV;
--	bcsr->pcmcia = 0; /* turn off power, if it's not already off */
--	au_sync_delay(2);
-+	bcsr_write(BCSR_PCMCIA, 0); /* turn off power, if it's not already off */
-+	msleep(2);
- 	ret = au1x00_pcmcia_socket_probe(dev, &db1x00_pcmcia_ops, 0, 2);
- 	return ret;
- }
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("PCMCIA Socket Services for MyCable XXS1500 systems");
++MODULE_AUTHOR("Manuel Lauss");
 -- 
 1.6.5.rc1

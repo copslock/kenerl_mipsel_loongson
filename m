@@ -1,800 +1,841 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 29 Sep 2009 21:46:54 +0200 (CEST)
-Received: from mail-ew0-f207.google.com ([209.85.219.207]:53566 "EHLO
-	mail-ew0-f207.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493651AbZI2Tqt convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 29 Sep 2009 21:46:49 +0200
-Received: by ewy3 with SMTP id 3so5471837ewy.33
-        for <linux-mips@linux-mips.org>; Tue, 29 Sep 2009 12:46:41 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 30 Sep 2009 19:12:39 +0200 (CEST)
+Received: from mail-bw0-f208.google.com ([209.85.218.208]:59025 "EHLO
+	mail-bw0-f208.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493725AbZI3RMd (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 30 Sep 2009 19:12:33 +0200
+Received: by bwz4 with SMTP id 4so5300931bwz.0
+        for <linux-mips@linux-mips.org>; Wed, 30 Sep 2009 10:12:28 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:reply-to:to
-         :subject:date:user-agent:cc:references:in-reply-to:mime-version
-         :content-type:content-transfer-encoding:message-id;
-        bh=fVPfCC3zOiAyYIUb+Tp8fjqU1A38fwFL3vjju3DVBlw=;
-        b=Fk6RsNNurhBk5u3unLONteu00RYAwyEQh2zvWEwkPTssSJZkZVQdprkKhuY9UHUbf7
-         jD7VZMn9mtnRI5i5xFC0Vttg2id+0RbNTdFHRMM5cFGiBeqFW/IgOEA/oBsskxVB39cZ
-         /zgS2EYDMtnAPZ4Y0Si3NoVT/J7wivJ6U+ejs=
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=uxlKQxj+5J+EUwai0fRBIbfD3xE4UlGVtwbSIVjIlQw=;
+        b=X/3Sf0DD7A12j9V6Om7m5f49/raJsrkSNdD4MFMIJ08qDiAYWtKyC5M8aNCcL8ffTw
+         AEILwXff3VQJ1uy484S+QRtUsnErYIEIYFCCJxNnu1K1nM1hNaLAdPWg0LRujFSXvhIt
+         XTbdqu6OtpTbCbEaHcEMSZ/kJvQLilzJyWIw0=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:reply-to:to:subject:date:user-agent:cc:references
-         :in-reply-to:mime-version:content-type:content-transfer-encoding
-         :message-id;
-        b=wMrTYCTVOlg8Or+JmhK+RRi4zVQjlfgM52Odml8HFcMqGL1SZIPgqxVhXyTU9wYYY7
-         zHpd8FQLd2/5Kx3m0w1DQiYxtHQ+fUTDNCalT8N5LyXebAK9nm1mrzyXt7VsI6+Y92pD
-         wrYakUI3HQUmYtEx2aZNasSte149yltnQFc78=
-Received: by 10.210.9.5 with SMTP id 5mr5012641ebi.78.1254253601138;
-        Tue, 29 Sep 2009 12:46:41 -0700 (PDT)
-Received: from lenovo.localnet (147.59.76-86.rev.gaoland.net [86.76.59.147])
-        by mx.google.com with ESMTPS id 7sm17709eyb.12.2009.09.29.12.46.39
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=HDHC82GHDcqHHJuO072Ww5dhAHD5YHKMqFg78Gh+88UOupF6FrmAxkCBot9yP57Z8B
+         dMO4/pzrnqM1uVS7g8y1X/Xf9OG47UJsUzKv0UNeHZm2AEFdc7teo/23HYJj8RKYEIPB
+         qn7wJCklyaUtRJgHsNs2WCcplIMLvfdPyAeIA=
+Received: by 10.204.10.130 with SMTP id p2mr53692bkp.56.1254330748008;
+        Wed, 30 Sep 2009 10:12:28 -0700 (PDT)
+Received: from localhost.localdomain (p5496F673.dip.t-dialin.net [84.150.246.115])
+        by mx.google.com with ESMTPS id 12sm7925455fks.8.2009.09.30.10.12.26
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 29 Sep 2009 12:46:40 -0700 (PDT)
-From:	Florian Fainelli <florian@openwrt.org>
-Reply-To: Florian Fainelli <florian@openwrt.org>
-To:	Manuel Lauss <manuel.lauss@googlemail.com>
-Subject: Re: [PATCH] Alchemy: XXS1500 PCMCIA driver rewrite
-Date:	Tue, 29 Sep 2009 21:46:37 +0200
-User-Agent: KMail/1.12.1 (Linux/2.6.29-2-686; KDE/4.3.1; i686; ; )
-Cc:	"linux-pcmcia" <linux-pcmcia@lists.infradead.org>,
-	"Linux-MIPS" <linux-mips@linux-mips.org>,
-	Manuel Lauss <manuel.lauss@gmail.com>
-References: <1254250236-18130-1-git-send-email-manuel.lauss@gmail.com>
-In-Reply-To: <1254250236-18130-1-git-send-email-manuel.lauss@gmail.com>
-MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-Message-Id: <200909292146.38542.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+        Wed, 30 Sep 2009 10:12:27 -0700 (PDT)
+From:	Manuel Lauss <manuel.lauss@googlemail.com>
+To:	Linux-MIPS <linux-mips@linux-mips.org>
+Cc:	Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [PATCH] Alchemy: IRQ updates
+Date:	Wed, 30 Sep 2009 19:12:25 +0200
+Message-Id: <1254330745-20836-1-git-send-email-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 1.6.5.rc1
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24120
+X-archive-position: 24121
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Manuel,
+remove board_init_irq():  On all in-kernel boards it is sufficient to
+initialize board interrupts in an arch_initcall.
 
-Le mardi 29 septembre 2009 20:50:36, Manuel Lauss a écrit :
-> Rewritten XXS1500 PCMCIA socket driver, standalone (doesn't
-> depend on au1000_generic.c) and added carddetect IRQ support.
+Hide the au1xxx_irqmap structure and associated calls from public
+view;  boards initialize irqs by calling the appropriate linux
+irq functions.
 
-Thanks for CC'ing me, will make my best to test this driver, soon.
+The small irqmap.c files have been folded into board_setup files.
 
-> 
-> Cc: Florian Fainelli <florian@openwrt.org>
-> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
-> ---
-> Against latest linus-git, compile-tested only.
-> CC'ing Florian, he might still have a testsystem.
-> 
->  arch/mips/alchemy/xxs1500/Makefile      |    2 +-
->  arch/mips/alchemy/xxs1500/board_setup.c |   16 --
->  arch/mips/alchemy/xxs1500/platform.c    |   63 ++++++
->  drivers/pcmcia/Kconfig                  |   10 +
->  drivers/pcmcia/Makefile                 |    3 +-
->  drivers/pcmcia/au1000_xxs1500.c         |  188 ----------------
->  drivers/pcmcia/xxs1500_ss.c             |  357
->  +++++++++++++++++++++++++++++++ 7 files changed, 433 insertions(+), 206
->  deletions(-)
->  create mode 100644 arch/mips/alchemy/xxs1500/platform.c
->  delete mode 100644 drivers/pcmcia/au1000_xxs1500.c
->  create mode 100644 drivers/pcmcia/xxs1500_ss.c
-> 
-> diff --git a/arch/mips/alchemy/xxs1500/Makefile
->  b/arch/mips/alchemy/xxs1500/Makefile index db3c526..3a79a90 100644
-> --- a/arch/mips/alchemy/xxs1500/Makefile
-> +++ b/arch/mips/alchemy/xxs1500/Makefile
-> @@ -5,4 +5,4 @@
->  # Makefile for MyCable XXS1500 board.
->  #
-> 
-> -lib-y := init.o board_setup.o irqmap.o
-> +lib-y := init.o board_setup.o irqmap.o platform.o
-> diff --git a/arch/mips/alchemy/xxs1500/board_setup.c
->  b/arch/mips/alchemy/xxs1500/board_setup.c index 4de2d48..6d6de53 100644
-> --- a/arch/mips/alchemy/xxs1500/board_setup.c
-> +++ b/arch/mips/alchemy/xxs1500/board_setup.c
-> @@ -68,22 +68,6 @@ void __init board_setup(void)
->  	/* Enable DTR = USB power up */
->  	au_writel(0x01, UART3_ADDR + UART_MCR); /* UART_MCR_DTR is 0x01??? */
-> 
-> -#ifdef CONFIG_PCMCIA_XXS1500
-> -	/* GPIO 0, 1, and 4 are inputs */
-> -	alchemy_gpio_direction_input(0);
-> -	alchemy_gpio_direction_input(1);
-> -	alchemy_gpio_direction_input(4);
-> -
-> -	/* GPIO2 208/9/10/11 are inputs */
-> -	alchemy_gpio_direction_input(208);
-> -	alchemy_gpio_direction_input(209);
-> -	alchemy_gpio_direction_input(210);
-> -	alchemy_gpio_direction_input(211);
-> -
-> -	/* Turn off power */
-> -	alchemy_gpio_direction_output(214, 0);
-> -#endif
-> -
->  #ifdef CONFIG_PCI
->  #if defined(__MIPSEB__)
->  	au_writel(0xf | (2 << 6) | (1 << 4), Au1500_PCI_CFG);
-> diff --git a/arch/mips/alchemy/xxs1500/platform.c
->  b/arch/mips/alchemy/xxs1500/platform.c new file mode 100644
-> index 0000000..9edbdfd
-> --- /dev/null
-> +++ b/arch/mips/alchemy/xxs1500/platform.c
-> @@ -0,0 +1,63 @@
-> +/*
-> + * XXS1500 board platform device registration
-> + *
-> + * Copyright (C) 2009 Manuel Lauss
-> + *
-> + * This program is free software; you can redistribute it and/or modify
-> + * it under the terms of the GNU General Public License as published by
-> + * the Free Software Foundation; either version 2 of the License, or
-> + * (at your option) any later version.
-> + *
-> + * This program is distributed in the hope that it will be useful,
-> + * but WITHOUT ANY WARRANTY; without even the implied warranty of
-> + * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-> + * GNU General Public License for more details.
-> + *
-> + * You should have received a copy of the GNU General Public License
-> + * along with this program; if not, write to the Free Software
-> + * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 
->  USA + */
-> +
-> +#include <linux/init.h>
-> +#include <linux/platform_device.h>
-> +
-> +#include <asm/mach-au1x00/au1000.h>
-> +
-> +static struct resource xxs1500_pcmcia_res[] = {
-> +	{
-> +		.name	= "pseudo-io",
-> +		.flags	= IORESOURCE_MEM,
-> +		.start	= 0xF0000000,
-> +		.end	= 0xF0040000 - 1,
-> +	},
-> +	{
-> +		.name	= "pseudo-attr",
-> +		.flags	= IORESOURCE_MEM,
-> +		.start	= 0xF4000000,
-> +		.end	= 0xF4040000 - 1,
-> +	},
-> +	{
-> +		.name	= "pseudo-mem",
-> +		.flags	= IORESOURCE_MEM,
-> +		.start	= 0xF8000000,
-> +		.end	= 0xF8040000 - 1,
-> +	},
-> +};
-> +
-> +static struct platform_device xxs1500_pcmcia_dev = {
-> +	.name		= "xxs1500_pcmcia",
-> +	.id		= -1,
-> +	.num_resources	= ARRAY_SIZE(xxs1500_pcmcia_res),
-> +	.resource	= xxs1500_pcmcia_res,
-> +};
-> +
-> +static struct platform_device *xxs1500_devs[] __initdata = {
-> +	&xxs1500_pcmcia_dev,
-> +};
-> +
-> +static int __init xxs1500_dev_init(void)
-> +{
-> +	return platform_add_devices(xxs1500_devs,
-> +				    ARRAY_SIZE(xxs1500_devs));
-> +}
-> +device_initcall(xxs1500_dev_init);
-> diff --git a/drivers/pcmcia/Kconfig b/drivers/pcmcia/Kconfig
-> index fbf965b..c094108 100644
-> --- a/drivers/pcmcia/Kconfig
-> +++ b/drivers/pcmcia/Kconfig
-> @@ -192,6 +192,16 @@ config PCMCIA_AU1X00
->  	tristate "Au1x00 pcmcia support"
->  	depends on SOC_AU1X00 && PCMCIA
-> 
-> +config PCMCIA_XXS1500
-> +	tristate "MyCable XXS1500 PCMCIA socket support"
-> +	depends on PCMCIA && MIPS_XXS1500
-> +	select 64BIT_PHYS_ADDR
-> +	help
-> +	  Support for the PCMCIA/CF socket interface on MyCable XXS1500
-> +	  systems.
-> +
-> +	  This driver is also available as a module called xxs1500_ss.ko
-> +
->  config PCMCIA_SA1100
->  	tristate "SA1100 support"
->  	depends on ARM && ARCH_SA1100 && PCMCIA
-> diff --git a/drivers/pcmcia/Makefile b/drivers/pcmcia/Makefile
-> index 3247828..95433f7 100644
-> --- a/drivers/pcmcia/Makefile
-> +++ b/drivers/pcmcia/Makefile
-> @@ -47,7 +47,6 @@ au1x00_ss-$(CONFIG_MIPS_DB1100)			+= au1000_db1x00.o
->  au1x00_ss-$(CONFIG_MIPS_DB1200)			+= au1000_db1x00.o
->  au1x00_ss-$(CONFIG_MIPS_DB1500)			+= au1000_db1x00.o
->  au1x00_ss-$(CONFIG_MIPS_DB1550)			+= au1000_db1x00.o
-> -au1x00_ss-$(CONFIG_MIPS_XXS1500)		+= au1000_xxs1500.o
-> 
->  sa1111_cs-y					+= sa1111_generic.o
->  sa1111_cs-$(CONFIG_ASSABET_NEPONSET)		+= sa1100_neponset.o
-> @@ -77,3 +76,5 @@ pxa2xx-obj-$(CONFIG_MACH_E740)			+= pxa2xx_e740.o
->  pxa2xx-obj-$(CONFIG_MACH_STARGATE2)		+= pxa2xx_stargate2.o
-> 
->  obj-$(CONFIG_PCMCIA_PXA2XX)			+= pxa2xx_core.o $(pxa2xx-obj-y)
-> +
-> +obj-$(CONFIG_PCMCIA_XXS1500)			+= xxs1500_ss.o
-> diff --git a/drivers/pcmcia/au1000_xxs1500.c
->  b/drivers/pcmcia/au1000_xxs1500.c deleted file mode 100644
-> index b43d47b..0000000
-> --- a/drivers/pcmcia/au1000_xxs1500.c
-> +++ /dev/null
-> @@ -1,188 +0,0 @@
-> -/*
-> - *
-> - * MyCable board specific pcmcia routines.
-> - *
-> - * Copyright 2003 MontaVista Software Inc.
-> - * Author: Pete Popov, MontaVista Software, Inc.
-> - *         	ppopov@mvista.com or source@mvista.com
-> - *
-> - *
->  ######################################################################## -
->  *
-> - *  This program is free software; you can distribute it and/or modify it
-> - *  under the terms of the GNU General Public License (Version 2) as
-> - *  published by the Free Software Foundation.
-> - *
-> - *  This program is distributed in the hope it will be useful, but WITHOUT
-> - *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-> - *  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
-> - *  for more details.
-> - *
-> - *  You should have received a copy of the GNU General Public License
->  along - *  with this program; if not, write to the Free Software
->  Foundation, Inc., - *  59 Temple Place - Suite 330, Boston MA 02111-1307,
->  USA.
-> - *
-> - *
->  ######################################################################## -
->  *
-> - *
-> - */
-> -#include <linux/module.h>
-> -#include <linux/init.h>
-> -#include <linux/delay.h>
-> -#include <linux/ioport.h>
-> -#include <linux/kernel.h>
-> -#include <linux/timer.h>
-> -#include <linux/mm.h>
-> -#include <linux/proc_fs.h>
-> -#include <linux/types.h>
-> -
-> -#include <pcmcia/cs_types.h>
-> -#include <pcmcia/cs.h>
-> -#include <pcmcia/ss.h>
-> -#include <pcmcia/cistpl.h>
-> -#include <pcmcia/bus_ops.h>
-> -
-> -#include <asm/io.h>
-> -#include <asm/irq.h>
-> -#include <asm/system.h>
-> -
-> -#include <asm/au1000.h>
-> -#include <asm/au1000_pcmcia.h>
-> -
-> -#define PCMCIA_MAX_SOCK		0
-> -#define PCMCIA_NUM_SOCKS	(PCMCIA_MAX_SOCK + 1)
-> -#define PCMCIA_IRQ		AU1000_GPIO_4
-> -
-> -#if 0
-> -#define DEBUG(x, args...)	printk(__func__ ": " x, ##args)
-> -#else
-> -#define DEBUG(x,args...)
-> -#endif
-> -
-> -static int xxs1500_pcmcia_init(struct pcmcia_init *init)
-> -{
-> -	return PCMCIA_NUM_SOCKS;
-> -}
-> -
-> -static int xxs1500_pcmcia_shutdown(void)
-> -{
-> -	/* turn off power */
-> -	au_writel(au_readl(GPIO2_PINSTATE) | (1<<14)|(1<<30),
-> -			GPIO2_OUTPUT);
-> -	au_sync_delay(100);
-> -
-> -	/* assert reset */
-> -	au_writel(au_readl(GPIO2_PINSTATE) | (1<<4)|(1<<20),
-> -			GPIO2_OUTPUT);
-> -	au_sync_delay(100);
-> -	return 0;
-> -}
-> -
-> -
-> -static int
-> -xxs1500_pcmcia_socket_state(unsigned sock, struct pcmcia_state *state)
-> -{
-> -	u32 inserted; u32 vs;
-> -	unsigned long gpio, gpio2;
-> -
-> -	if(sock > PCMCIA_MAX_SOCK) return -1;
-> -
-> -	gpio = au_readl(SYS_PINSTATERD);
-> -	gpio2 = au_readl(GPIO2_PINSTATE);
-> -
-> -	vs = gpio2 & ((1<<8) | (1<<9));
-> -	inserted = (!(gpio & 0x1) && !(gpio & 0x2));
-> -
-> -	state->ready = 0;
-> -	state->vs_Xv = 0;
-> -	state->vs_3v = 0;
-> -	state->detect = 0;
-> -
-> -	if (inserted) {
-> -		switch (vs) {
-> -			case 0:
-> -			case 1:
-> -			case 2:
-> -				state->vs_3v=1;
-> -				break;
-> -			case 3: /* 5V */
-> -			default:
-> -				/* return without setting 'detect' */
-> -				printk(KERN_ERR "au1x00_cs: unsupported VS\n",
-> -						vs);
-> -				return;
-> -		}
-> -		state->detect = 1;
-> -	}
-> -
-> -	if (state->detect) {
-> -		state->ready = 1;
-> -	}
-> -
-> -	state->bvd1= gpio2 & (1<<10);
-> -	state->bvd2 = gpio2 & (1<<11);
-> -	state->wrprot=0;
-> -	return 1;
-> -}
-> -
-> -
-> -static int xxs1500_pcmcia_get_irq_info(struct pcmcia_irq_info *info)
-> -{
-> -
-> -	if(info->sock > PCMCIA_MAX_SOCK) return -1;
-> -	info->irq = PCMCIA_IRQ;
-> -	return 0;
-> -}
-> -
-> -
-> -static int
-> -xxs1500_pcmcia_configure_socket(const struct pcmcia_configure *configure)
-> -{
-> -
-> -	if(configure->sock > PCMCIA_MAX_SOCK) return -1;
-> -
-> -	DEBUG("Vcc %dV Vpp %dV, reset %d\n",
-> -			configure->vcc, configure->vpp, configure->reset);
-> -
-> -	switch(configure->vcc){
-> -		case 33: /* Vcc 3.3V */
-> -			/* turn on power */
-> -			DEBUG("turn on power\n");
-> -			au_writel((au_readl(GPIO2_PINSTATE) & ~(1<<14))|(1<<30),
-> -					GPIO2_OUTPUT);
-> -			au_sync_delay(100);
-> -			break;
-> -		case 50: /* Vcc 5V */
-> -		default: /* what's this ? */
-> -			printk(KERN_ERR "au1x00_cs: unsupported VCC\n");
-> -		case 0:  /* Vcc 0 */
-> -			/* turn off power */
-> -			au_sync_delay(100);
-> -			au_writel(au_readl(GPIO2_PINSTATE) | (1<<14)|(1<<30),
-> -					GPIO2_OUTPUT);
-> -			break;
-> -	}
-> -
-> -	if (!configure->reset) {
-> -		DEBUG("deassert reset\n");
-> -		au_writel((au_readl(GPIO2_PINSTATE) & ~(1<<4))|(1<<20),
-> -				GPIO2_OUTPUT);
-> -		au_sync_delay(100);
-> -		au_writel((au_readl(GPIO2_PINSTATE) & ~(1<<5))|(1<<21),
-> -				GPIO2_OUTPUT);
-> -	}
-> -	else {
-> -		DEBUG("assert reset\n");
-> -		au_writel(au_readl(GPIO2_PINSTATE) | (1<<4)|(1<<20),
-> -				GPIO2_OUTPUT);
-> -	}
-> -	au_sync_delay(100);
-> -	return 0;
-> -}
-> -
-> -struct pcmcia_low_level xxs1500_pcmcia_ops = {
-> -	xxs1500_pcmcia_init,
-> -	xxs1500_pcmcia_shutdown,
-> -	xxs1500_pcmcia_socket_state,
-> -	xxs1500_pcmcia_get_irq_info,
-> -	xxs1500_pcmcia_configure_socket
-> -};
-> diff --git a/drivers/pcmcia/xxs1500_ss.c b/drivers/pcmcia/xxs1500_ss.c
-> new file mode 100644
-> index 0000000..4e36930
-> --- /dev/null
-> +++ b/drivers/pcmcia/xxs1500_ss.c
-> @@ -0,0 +1,357 @@
-> +/*
-> + * PCMCIA socket code for the MyCable XXS1500 system.
-> + *
-> + * Copyright (c) 2009 Manuel Lauss <manuel.lauss@gmail.com>
-> + *
-> + */
-> +
-> +#include <linux/delay.h>
-> +#include <linux/gpio.h>
-> +#include <linux/interrupt.h>
-> +#include <linux/io.h>
-> +#include <linux/ioport.h>
-> +#include <linux/mm.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/pm.h>
-> +#include <linux/resource.h>
-> +#include <linux/spinlock.h>
-> +
-> +#include <pcmcia/cs_types.h>
-> +#include <pcmcia/cs.h>
-> +#include <pcmcia/ss.h>
-> +#include <pcmcia/cistpl.h>
-> +
-> +#include <asm/irq.h>
-> +#include <asm/system.h>
-> +#include <asm/mach-au1x00/au1000.h>
-> +
-> +#define MEM_MAP_SIZE	0x400000
-> +#define IO_MAP_SIZE	0x1000
-> +
-> +
-> +/*
-> + * 3.3V cards only; all interfacing is done via gpios:
-> + *
-> + * 0/1:  carddetect (00 = card present, xx = huh)
-> + * 4:	 card irq
-> + * 204:  reset (high-act)
-> + * 205:  buffer enable (low-act)
-> + * 208/209: card voltage key (00,01,10,11)
-> + * 210:  battwarn
-> + * 211:  batdead
-> + * 214:  power (low-act)
-> + */
-> +#define GPIO_CDA	0
-> +#define GPIO_CDB	1
-> +#define GPIO_CARDIRQ	4
-> +#define GPIO_RESET	204
-> +#define GPIO_OUTEN	205
-> +#define GPIO_VSL	208
-> +#define GPIO_VSH	209
-> +#define GPIO_BATTDEAD	210
-> +#define GPIO_BATTWARN	211
-> +#define GPIO_POWER	214
-> +
-> +struct xxs1500_pcmcia_sock {
-> +	struct pcmcia_socket	socket;
-> +	void		*virt_io;
-> +
-> +	/* the "pseudo" addresses of the PCMCIA space. */
-> +	unsigned long	phys_io;
-> +	unsigned long	phys_attr;
-> +	unsigned long	phys_mem;
-> +
-> +	/* previous flags for set_socket() */
-> +	unsigned int old_flags;
-> +};
-> +
-> +#define to_xxs_socket(x) container_of(x, struct xxs1500_pcmcia_sock,
->  socket) +
-> +static irqreturn_t cdirq(int irq, void *data)
-> +{
-> +	struct xxs1500_pcmcia_sock *sock = data;
-> +
-> +	pcmcia_parse_events(&sock->socket, SS_DETECT);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static int xxs1500_pcmcia_configure(struct pcmcia_socket *skt,
-> +				    struct socket_state_t *state)
-> +{
-> +	struct xxs1500_pcmcia_sock *sock = to_xxs_socket(skt);
-> +	unsigned int changed;
-> +
-> +	/* power control */
-> +	switch (state->Vcc) {
-> +	case 0:
-> +		gpio_set_value(GPIO_POWER, 1);	/* power off */
-> +		break;
-> +	case 33:
-> +		gpio_set_value(GPIO_POWER, 0);	/* power on */
-> +		break;
-> +	case 50:
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	changed = state->flags ^ sock->old_flags;
-> +
-> +	if (changed & SS_RESET) {
-> +		if (state->flags & SS_RESET) {
-> +			gpio_set_value(GPIO_RESET, 1);	/* assert reset */
-> +			gpio_set_value(GPIO_OUTEN, 1);	/* buffers off */
-> +		} else {
-> +			gpio_set_value(GPIO_RESET, 0);	/* deassert reset */
-> +			gpio_set_value(GPIO_OUTEN, 0);	/* buffers on */
-> +			msleep(500);
-> +		}
-> +	}
-> +
-> +	sock->old_flags = state->flags;
-> +
-> +	return 0;
-> +}
-> +
-> +static int xxs1500_pcmcia_get_status(struct pcmcia_socket *skt,
-> +				     unsigned int *value)
-> +{
-> +	unsigned int status;
-> +	int i;
-> +
-> +	status = 0;
-> +
-> +	/* check carddetects: GPIO[0:1] must both be low */
-> +	if (!gpio_get_value(GPIO_CDA) && !gpio_get_value(GPIO_CDB))
-> +		status |= SS_DETECT;
-> +
-> +	/* determine card voltage: GPIO[208:209] binary value */
-> +	i = (!!gpio_get_value(GPIO_VSL)) | ((!!gpio_get_value(GPIO_VSH)) << 1);
-> +
-> +	switch (i) {
-> +	case 0:
-> +	case 1:
-> +	case 2:
-> +		status |= SS_3VCARD;	/* 3V card */
-> +		break;
-> +	case 3:				/* 5V card, unsupported */
-> +	default:
-> +		status |= SS_XVCARD;	/* treated as unsupported in core */
-> +	}
-> +
-> +	/* GPIO214: low active power switch */
-> +	status |= gpio_get_value(GPIO_POWER) ? 0 : SS_POWERON;
-> +
-> +	/* GPIO204: high-active reset line */
-> +	status |= gpio_get_value(GPIO_RESET) ? SS_RESET : SS_READY;
-> +
-> +	/* other stuff */
-> +	status |= gpio_get_value(GPIO_BATTDEAD) ? 0 : SS_BATDEAD;
-> +	status |= gpio_get_value(GPIO_BATTWARN) ? 0 : SS_BATWARN;
-> +
-> +	*value = status;
-> +
-> +	return 0;
-> +}
-> +
-> +static int xxs1500_pcmcia_sock_init(struct pcmcia_socket *skt)
-> +{
-> +	gpio_direction_input(GPIO_CDA);
-> +	gpio_direction_input(GPIO_CDB);
-> +	gpio_direction_input(GPIO_VSL);
-> +	gpio_direction_input(GPIO_VSH);
-> +	gpio_direction_input(GPIO_BATTDEAD);
-> +	gpio_direction_input(GPIO_BATTWARN);
-> +	gpio_direction_output(GPIO_RESET, 1);	/* assert reset */
-> +	gpio_direction_output(GPIO_OUTEN, 1);	/* disable buffers */
-> +	gpio_direction_output(GPIO_POWER, 1);	/* power off */
-> +
-> +	return 0;
-> +}
-> +
-> +static int xxs1500_pcmcia_sock_suspend(struct pcmcia_socket *skt)
-> +{
-> +	return 0;
-> +}
-> +
-> +static int au1x00_pcmcia_set_io_map(struct pcmcia_socket *skt,
-> +				    struct pccard_io_map *map)
-> +{
-> +	struct xxs1500_pcmcia_sock *sock = to_xxs_socket(skt);
-> +
-> +	map->start = (u32)sock->virt_io;
-> +	map->stop = map->start + IO_MAP_SIZE;
-> +
-> +	return 0;
-> +}
-> +
-> +static int au1x00_pcmcia_set_mem_map(struct pcmcia_socket *skt,
-> +				     struct pccard_mem_map *map)
-> +{
-> +	struct xxs1500_pcmcia_sock *sock = to_xxs_socket(skt);
-> +
-> +	if (map->flags & MAP_ATTRIB)
-> +		map->static_start = sock->phys_attr + map->card_start;
-> +	else
-> +		map->static_start = sock->phys_mem + map->card_start;
-> +
-> +	return 0;
-> +}
-> +
-> +static struct pccard_operations xxs1500_pcmcia_operations = {
-> +	.init			= xxs1500_pcmcia_sock_init,
-> +	.suspend		= xxs1500_pcmcia_sock_suspend,
-> +	.get_status		= xxs1500_pcmcia_get_status,
-> +	.set_socket		= xxs1500_pcmcia_configure,
-> +	.set_io_map		= au1x00_pcmcia_set_io_map,
-> +	.set_mem_map		= au1x00_pcmcia_set_mem_map,
-> +};
-> +
-> +static int __devinit xxs1500_pcmcia_probe(struct platform_device *pdev)
-> +{
-> +	struct xxs1500_pcmcia_sock *sock;
-> +	struct resource *r;
-> +	phys_t physio;
-> +	int ret, irq;
-> +
-> +	sock = kzalloc(sizeof(struct xxs1500_pcmcia_sock), GFP_KERNEL);
-> +	if (!sock)
-> +		return -ENOMEM;
-> +
-> +	ret = -ENODEV;
-> +
-> +	/*
-> +	 * pseudo-attr:  The 32bit address of the PCMCIA attribute space
-> +	 * for this socket (usually the 36bit address shifted 4 to the
-> +	 * right).
-> +	 */
-> +	r = platform_get_resource_byname(pdev, IORESOURCE_MEM, "pseudo-attr");
-> +	if (!r) {
-> +		dev_err(&pdev->dev, "missing 'pseudo-attr' resource!\n");
-> +		goto out0;
-> +	}
-> +	sock->phys_attr = r->start;
-> +
-> +	/*
-> +	 * pseudo-mem:  The 32bit address of the PCMCIA memory space for
-> +	 * this socket (usually the 36bit address shifted 4 to the right)
-> +	 */
-> +	r = platform_get_resource_byname(pdev, IORESOURCE_MEM, "pseudo-mem");
-> +	if (!r) {
-> +		dev_err(&pdev->dev, "missing 'pseudo-mem' resource!\n");
-> +		goto out0;
-> +	}
-> +	sock->phys_mem = r->start;
-> +
-> +	/*
-> +	 * pseudo-io:  The 32bit address of the PCMCIA IO space for this
-> +	 * socket (usually the 36bit address shifted 4 to the right).
-> +	 */
-> +	r = platform_get_resource_byname(pdev, IORESOURCE_MEM, "pseudo-io");
-> +	if (!r) {
-> +		dev_err(&pdev->dev, "missing 'pseudo-io' resource!\n");
-> +		goto out0;
-> +	}
-> +	sock->phys_io = r->start;
-> +
-> +
-> +	/* for io must remap the full 36bit address (for reference see
-> +	 * alchemy/common/setup.c::__fixup_bigphys_addr)
-> +	 */
-> +	physio = ((phys_t)sock->phys_io) << 4;
-> +
-> +	/*
-> +	 * PCMCIA client drivers use the inb/outb macros to access
-> +	 * the IO registers.  Since mips_io_port_base is added
-> +	 * to the access address of the mips implementation of
-> +	 * inb/outb, we need to subtract it here because we want
-> +	 * to access the I/O or MEM address directly, without
-> +	 * going through this "mips_io_port_base" mechanism.
-> +	 */
-> +	sock->virt_io = (void *)(ioremap(physio, IO_MAP_SIZE) -
-> +				 mips_io_port_base);
-> +
-> +	if (!sock->virt_io) {
-> +		dev_err(&pdev->dev, "cannot remap IO area\n");
-> +		ret = -ENOMEM;
-> +		goto out0;
-> +	}
-> +
-> +	sock->socket.ops	= &xxs1500_pcmcia_operations;
-> +	sock->socket.owner	= THIS_MODULE;
-> +	sock->socket.pci_irq	= gpio_to_irq(GPIO_CARDIRQ);
-> +	sock->socket.features	= SS_CAP_STATIC_MAP | SS_CAP_PCCARD;
-> +	sock->socket.map_size	= MEM_MAP_SIZE;
-> +	sock->socket.io_offset	= (unsigned long)sock->virt_io;
-> +	sock->socket.dev.parent	= &pdev->dev;
-> +	sock->socket.resource_ops = &pccard_static_ops;
-> +
-> +	platform_set_drvdata(pdev, sock);
-> +
-> +	/* setup carddetect irq: use one of the 2 GPIOs as an
-> +	 * edge detector.
-> +	 */
-> +	irq = gpio_to_irq(GPIO_CDA);
-> +	set_irq_type(irq, IRQ_TYPE_EDGE_BOTH);
-> +	ret = request_irq(irq, cdirq, 0, "pcmcia_carddetect", sock);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "cannot setup cd irq\n");
-> +		goto out1;
-> +	}
-> +
-> +	ret = pcmcia_register_socket(&sock->socket);
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "failed to register\n");
-> +		goto out2;
-> +	}
-> +
-> +	printk(KERN_INFO "MyCable XXS1500 PCMCIA socket services\n");
-> +
-> +	return 0;
-> +
-> +out2:
-> +	free_irq(gpio_to_irq(GPIO_CDA), sock);
-> +out1:
-> +	iounmap((void *)(sock->virt_io + (u32)mips_io_port_base));
-> +out0:
-> +	kfree(sock);
-> +	return ret;
-> +}
-> +
-> +static int __devexit xxs1500_pcmcia_remove(struct platform_device *pdev)
-> +{
-> +	struct xxs1500_pcmcia_sock *sock = platform_get_drvdata(pdev);
-> +
-> +	pcmcia_unregister_socket(&sock->socket);
-> +	free_irq(gpio_to_irq(GPIO_CDA), sock);
-> +	iounmap((void *)(sock->virt_io + (u32)mips_io_port_base));
-> +	kfree(sock);
-> +
-> +	return 0;
-> +}
-> +
-> +static struct platform_driver xxs1500_pcmcia_socket_driver = {
-> +	.driver	= {
-> +		.name	= "xxs1500_pcmcia",
-> +		.owner	= THIS_MODULE,
-> +	},
-> +	.probe		= xxs1500_pcmcia_probe,
-> +	.remove		= __devexit_p(xxs1500_pcmcia_remove),
-> +};
-> +
-> +int __init xxs1500_pcmcia_socket_load(void)
-> +{
-> +	return platform_driver_register(&xxs1500_pcmcia_socket_driver);
-> +}
-> +
-> +void  __exit xxs1500_pcmcia_socket_unload(void)
-> +{
-> +	platform_driver_unregister(&xxs1500_pcmcia_socket_driver);
-> +}
-> +
-> +module_init(xxs1500_pcmcia_socket_load);
-> +module_exit(xxs1500_pcmcia_socket_unload);
-> +
-> +MODULE_LICENSE("GPL");
-> +MODULE_DESCRIPTION("PCMCIA Socket Services for MyCable XXS1500 systems");
-> +MODULE_AUTHOR("Manuel Lauss");
-> 
+Run-tested on DB1200; compile-tested on all other affected boards.
 
+Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+---
+Applies on top of the "BCSR+PCMCIA" patches I sent a day ago;  may
+conflict in xxs1500/Makefile if xxs1500-pcmcia patch is applied.
+
+Please apply, I'd like to get this in before adding new devboards!
+
+ arch/mips/alchemy/common/irq.c                   |   15 ++--
+ arch/mips/alchemy/devboards/db1x00/Makefile      |    2 +-
+ arch/mips/alchemy/devboards/db1x00/board_setup.c |   55 ++++++++++++++++
+ arch/mips/alchemy/devboards/pb1000/board_setup.c |   17 ++---
+ arch/mips/alchemy/devboards/pb1100/board_setup.c |   24 +++----
+ arch/mips/alchemy/devboards/pb1200/Makefile      |    2 +-
+ arch/mips/alchemy/devboards/pb1200/board_setup.c |   48 +++++++++++++-
+ arch/mips/alchemy/devboards/pb1200/irqmap.c      |   75 ----------------------
+ arch/mips/alchemy/devboards/pb1500/board_setup.c |   32 +++++-----
+ arch/mips/alchemy/devboards/pb1550/board_setup.c |   25 ++++----
+ arch/mips/alchemy/mtx-1/Makefile                 |    2 +-
+ arch/mips/alchemy/mtx-1/board_setup.c            |   24 +++++++
+ arch/mips/alchemy/mtx-1/irqmap.c                 |   56 ----------------
+ arch/mips/alchemy/xxs1500/Makefile               |    2 +-
+ arch/mips/alchemy/xxs1500/board_setup.c          |   21 ++++++
+ arch/mips/alchemy/xxs1500/irqmap.c               |   52 ---------------
+ arch/mips/include/asm/mach-au1x00/au1000.h       |   15 ----
+ arch/mips/include/asm/mach-db1x00/db1200.h       |    1 +
+ arch/mips/include/asm/mach-pb1x00/pb1200.h       |    1 +
+ 19 files changed, 205 insertions(+), 264 deletions(-)
+ delete mode 100644 arch/mips/alchemy/devboards/pb1200/irqmap.c
+ delete mode 100644 arch/mips/alchemy/mtx-1/irqmap.c
+ delete mode 100644 arch/mips/alchemy/xxs1500/irqmap.c
+
+diff --git a/arch/mips/alchemy/common/irq.c b/arch/mips/alchemy/common/irq.c
+index c88c821..cd264b1 100644
+--- a/arch/mips/alchemy/common/irq.c
++++ b/arch/mips/alchemy/common/irq.c
+@@ -40,8 +40,11 @@
+ static int au1x_ic_settype(unsigned int irq, unsigned int flow_type);
+ 
+ /* per-processor fixed function irqs */
+-struct au1xxx_irqmap au1xxx_ic0_map[] __initdata = {
+-
++struct au1xxx_irqmap {
++	int im_irq;
++	int im_type;
++	int im_request;
++} au1xxx_ic0_map[] __initdata = {
+ #if defined(CONFIG_SOC_AU1000)
+ 	{ AU1000_UART0_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+ 	{ AU1000_UART1_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+@@ -529,7 +532,7 @@ spurious:
+ }
+ 
+ /* setup edge/level and assign request 0/1 */
+-void __init au1xxx_setup_irqmap(struct au1xxx_irqmap *map, int count)
++static void __init setup_irqmap(struct au1xxx_irqmap *map, int count)
+ {
+ 	unsigned int bit, irq_nr;
+ 
+@@ -601,11 +604,7 @@ void __init arch_init_irq(void)
+ 	/*
+ 	 * Initialize IC0, which is fixed per processor.
+ 	 */
+-	au1xxx_setup_irqmap(au1xxx_ic0_map, ARRAY_SIZE(au1xxx_ic0_map));
+-
+-	/* Boards can register additional (GPIO-based) IRQs.
+-	*/
+-	board_init_irq();
++	setup_irqmap(au1xxx_ic0_map, ARRAY_SIZE(au1xxx_ic0_map));
+ 
+ 	set_c0_status(IE_IRQ0 | IE_IRQ1 | IE_IRQ2 | IE_IRQ3);
+ }
+diff --git a/arch/mips/alchemy/devboards/db1x00/Makefile b/arch/mips/alchemy/devboards/db1x00/Makefile
+index 5024d16..4e30fc8 100644
+--- a/arch/mips/alchemy/devboards/db1x00/Makefile
++++ b/arch/mips/alchemy/devboards/db1x00/Makefile
+@@ -5,5 +5,5 @@
+ # Makefile for the Alchemy Semiconductor DBAu1xx0 boards.
+ #
+ 
+-obj-y := board_setup.o irqmap.o platform.o
++obj-y := board_setup.o platform.o
+ 
+diff --git a/arch/mips/alchemy/devboards/db1x00/board_setup.c b/arch/mips/alchemy/devboards/db1x00/board_setup.c
+index e713390..1fd246b 100644
+--- a/arch/mips/alchemy/devboards/db1x00/board_setup.c
++++ b/arch/mips/alchemy/devboards/db1x00/board_setup.c
+@@ -29,6 +29,7 @@
+ 
+ #include <linux/gpio.h>
+ #include <linux/init.h>
++#include <linux/interrupt.h>
+ 
+ #include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-db1x00/db1x00.h>
+@@ -36,6 +37,37 @@
+ 
+ #include <prom.h>
+ 
++#ifdef CONFIG_MIPS_DB1500
++char irq_tab_alchemy[][5] __initdata = {
++	[12] = { -1, INTA, INTX, INTX, INTX }, /* IDSEL 12 - HPT371   */
++	[13] = { -1, INTA, INTB, INTC, INTD }, /* IDSEL 13 - PCI slot */
++};
++#endif
++
++#ifdef CONFIG_MIPS_BOSPORUS
++char irq_tab_alchemy[][5] __initdata = {
++	[11] = { -1, INTA, INTB, INTX, INTX }, /* IDSEL 11 - miniPCI  */
++	[12] = { -1, INTA, INTX, INTX, INTX }, /* IDSEL 12 - SN1741   */
++	[13] = { -1, INTA, INTB, INTC, INTD }, /* IDSEL 13 - PCI slot */
++};
++#endif
++
++#ifdef CONFIG_MIPS_MIRAGE
++char irq_tab_alchemy[][5] __initdata = {
++	[11] = { -1, INTD, INTX, INTX, INTX }, /* IDSEL 11 - SMI VGX */
++	[12] = { -1, INTX, INTX, INTC, INTX }, /* IDSEL 12 - PNX1300 */
++	[13] = { -1, INTA, INTB, INTX, INTX }, /* IDSEL 13 - miniPCI */
++};
++#endif
++
++#ifdef CONFIG_MIPS_DB1550
++char irq_tab_alchemy[][5] __initdata = {
++	[11] = { -1, INTC, INTX, INTX, INTX }, /* IDSEL 11 - on-board HPT371 */
++	[12] = { -1, INTB, INTC, INTD, INTA }, /* IDSEL 12 - PCI slot 2 (left) */
++	[13] = { -1, INTA, INTB, INTC, INTD }, /* IDSEL 13 - PCI slot 1 (right) */
++};
++#endif
++
+ const char *get_system_type(void)
+ {
+ #ifdef CONFIG_MIPS_BOSPORUS
+@@ -149,3 +181,26 @@ void __init board_setup(void)
+ 
+ 	au_sync();
+ }
++
++static int __init db1x00_init_irq(void)
++{
++#if defined(CONFIG_MIPS_MIRAGE)
++	set_irq_type(AU1000_GPIO_7, IRQF_TRIGGER_RISING); /* TS pendown */
++#elif defined(CONFIG_MIPS_DB1550)
++	set_irq_type(AU1000_GPIO_0, IRQF_TRIGGER_LOW);	/* CD0# */
++	set_irq_type(AU1000_GPIO_1, IRQF_TRIGGER_LOW);	/* CD1# */
++	set_irq_type(AU1000_GPIO_3, IRQF_TRIGGER_LOW);	/* CARD0# */
++	set_irq_type(AU1000_GPIO_5, IRQF_TRIGGER_LOW);	/* CARD1# */
++	set_irq_type(AU1500_GPIO_21, IRQF_TRIGGER_LOW);	/* STSCHG0# */
++	set_irq_type(AU1500_GPIO_22, IRQF_TRIGGER_LOW);	/* STSCHG1# */
++#else
++	set_irq_type(AU1000_GPIO_0, IRQF_TRIGGER_LOW);	/* CD0# */
++	set_irq_type(AU1000_GPIO_3, IRQF_TRIGGER_LOW);	/* CD1# */
++	set_irq_type(AU1000_GPIO_2, IRQF_TRIGGER_LOW);	/* CARD0# */
++	set_irq_type(AU1000_GPIO_5, IRQF_TRIGGER_LOW);	/* CARD1# */
++	set_irq_type(AU1000_GPIO_1, IRQF_TRIGGER_LOW);	/* STSCHG0# */
++	set_irq_type(AU1000_GPIO_4, IRQF_TRIGGER_LOW);	/* STSCHG1# */
++#endif
++	return 0;
++}
++arch_initcall(db1x00_init_irq);
+diff --git a/arch/mips/alchemy/devboards/pb1000/board_setup.c b/arch/mips/alchemy/devboards/pb1000/board_setup.c
+index cd27354..f1cafea 100644
+--- a/arch/mips/alchemy/devboards/pb1000/board_setup.c
++++ b/arch/mips/alchemy/devboards/pb1000/board_setup.c
+@@ -32,11 +32,6 @@
+ #include <prom.h>
+ 
+ 
+-struct au1xxx_irqmap __initdata au1xxx_irq_map[] = {
+-	{ AU1000_GPIO_15, IRQF_TRIGGER_LOW, 0 },
+-};
+-
+-
+ const char *get_system_type(void)
+ {
+ 	return "Alchemy Pb1000";
+@@ -46,11 +41,6 @@ void board_reset(void)
+ {
+ }
+ 
+-void __init board_init_irq(void)
+-{
+-	au1xxx_setup_irqmap(au1xxx_irq_map, ARRAY_SIZE(au1xxx_irq_map));
+-}
+-
+ void __init board_setup(void)
+ {
+ 	u32 pin_func, static_cfg0;
+@@ -193,3 +183,10 @@ void __init board_setup(void)
+ 		break;
+ 	}
+ }
++
++static int __init pb1000_init_irq(void)
++{
++	set_irq_type(AU1000_GPIO_15, IRQF_TRIGGER_LOW);
++	return 0;
++}
++arch_initcall(pb1000_init_irq);
+diff --git a/arch/mips/alchemy/devboards/pb1100/board_setup.c b/arch/mips/alchemy/devboards/pb1100/board_setup.c
+index eb749fb..aad424a 100644
+--- a/arch/mips/alchemy/devboards/pb1100/board_setup.c
++++ b/arch/mips/alchemy/devboards/pb1100/board_setup.c
+@@ -35,14 +35,6 @@
+ #include <prom.h>
+ 
+ 
+-struct au1xxx_irqmap __initdata au1xxx_irq_map[] = {
+-	{ AU1000_GPIO_9,  IRQF_TRIGGER_LOW, 0 }, /* PCMCIA Card Fully_Inserted# */
+-	{ AU1000_GPIO_10, IRQF_TRIGGER_LOW, 0 }, /* PCMCIA Card STSCHG# */
+-	{ AU1000_GPIO_11, IRQF_TRIGGER_LOW, 0 }, /* PCMCIA Card IRQ# */
+-	{ AU1000_GPIO_13, IRQF_TRIGGER_LOW, 0 }, /* DC_IRQ# */
+-};
+-
+-
+ const char *get_system_type(void)
+ {
+ 	return "Alchemy Pb1100";
+@@ -53,11 +45,6 @@ void board_reset(void)
+ 	bcsr_write(BCSR_SYSTEM, 0);
+ }
+ 
+-void __init board_init_irq(void)
+-{
+-	au1xxx_setup_irqmap(au1xxx_irq_map, ARRAY_SIZE(au1xxx_irq_map));
+-}
+-
+ void __init board_setup(void)
+ {
+ 	volatile void __iomem *base = (volatile void __iomem *)0xac000000UL;
+@@ -158,3 +145,14 @@ void __init board_setup(void)
+ 		au_sync();
+ 	}
+ }
++
++static int __init pb1100_init_irq(void)
++{
++	set_irq_type(AU1000_GPIO_9,  IRQF_TRIGGER_LOW);	/* PCCD# */
++	set_irq_type(AU1000_GPIO_10, IRQF_TRIGGER_LOW); /* PCSTSCHG# */
++	set_irq_type(AU1000_GPIO_11, IRQF_TRIGGER_LOW); /* PCCard# */
++	set_irq_type(AU1000_GPIO_13, IRQF_TRIGGER_LOW); /* DC_IRQ# */
++
++	return 0;
++}
++arch_initcall(pb1100_init_irq);
+diff --git a/arch/mips/alchemy/devboards/pb1200/Makefile b/arch/mips/alchemy/devboards/pb1200/Makefile
+index c8c3a99..2ea9b02 100644
+--- a/arch/mips/alchemy/devboards/pb1200/Makefile
++++ b/arch/mips/alchemy/devboards/pb1200/Makefile
+@@ -2,6 +2,6 @@
+ # Makefile for the Alchemy Semiconductor Pb1200/DBAu1200 boards.
+ #
+ 
+-obj-y := board_setup.o irqmap.o platform.o
++obj-y := board_setup.o platform.o
+ 
+ EXTRA_CFLAGS += -Werror
+diff --git a/arch/mips/alchemy/devboards/pb1200/board_setup.c b/arch/mips/alchemy/devboards/pb1200/board_setup.c
+index db56380..76aa652 100644
+--- a/arch/mips/alchemy/devboards/pb1200/board_setup.c
++++ b/arch/mips/alchemy/devboards/pb1200/board_setup.c
+@@ -25,13 +25,25 @@
+  */
+ 
+ #include <linux/init.h>
++#include <linux/interrupt.h>
+ #include <linux/sched.h>
+ 
++#include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-db1x00/bcsr.h>
+ 
+-#include <prom.h>
+-#include <au1xxx.h>
++#ifdef CONFIG_MIPS_PB1200
++#include <asm/mach-pb1x00/pb1200.h>
++#endif
++
++#ifdef CONFIG_MIPS_DB1200
++#include <asm/mach-db1x00/db1200.h>
++#define PB1200_INT_BEGIN DB1200_INT_BEGIN
++#define PB1200_INT_END DB1200_INT_END
++#endif
+ 
++#include <asm/mach-db1x00/bcsr.h>
++
++#include <prom.h>
+ 
+ const char *get_system_type(void)
+ {
+@@ -137,6 +149,38 @@ void __init board_setup(void)
+ 	au_sync();
+ }
+ 
++static int __init pb1200_init_irq(void)
++{
++#ifdef CONFIG_MIPS_PB1200
++	/* We have a problem with CPLD rev 3. */
++	if (BCSR_WHOAMI_CPLD(bcsr_read(BCSR_WHOAMI)) <= 3) {
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "Pb1200 must be at CPLD rev 4. Please have Pb1200\n");
++		printk(KERN_ERR "updated to latest revision. This software will\n");
++		printk(KERN_ERR "not work on anything less than CPLD rev 4.\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		printk(KERN_ERR "WARNING!!!\n");
++		panic("Game over.  Your score is 0.");
++	}
++#endif
++
++	set_irq_type(AU1000_GPIO_7, IRQF_TRIGGER_LOW);
++	bcsr_init_irq(PB1200_INT_BEGIN, PB1200_INT_END, AU1000_GPIO_7);
++
++	return 0;
++}
++arch_initcall(pb1200_init_irq);
++
++
+ int board_au1200fb_panel(void)
+ {
+ 	return (bcsr_read(BCSR_SWITCHES) >> 8) & 0x0f;
+diff --git a/arch/mips/alchemy/devboards/pb1200/irqmap.c b/arch/mips/alchemy/devboards/pb1200/irqmap.c
+deleted file mode 100644
+index 3beb804..0000000
+--- a/arch/mips/alchemy/devboards/pb1200/irqmap.c
++++ /dev/null
+@@ -1,75 +0,0 @@
+-/*
+- * BRIEF MODULE DESCRIPTION
+- *	Au1xxx irq map table
+- *
+- *  This program is free software; you can redistribute	 it and/or modify it
+- *  under  the terms of	 the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the	License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED	  ``AS	IS'' AND   ANY	EXPRESS OR IMPLIED
+- *  WARRANTIES,	  INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO	EVENT  SHALL   THE AUTHOR  BE	 LIABLE FOR ANY	  DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED	  TO, PROCUREMENT OF  SUBSTITUTE GOODS	OR SERVICES; LOSS OF
+- *  USE, DATA,	OR PROFITS; OR	BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN	 CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-
+-#include <linux/init.h>
+-#include <linux/interrupt.h>
+-
+-#include <asm/mach-au1x00/au1000.h>
+-
+-#ifdef CONFIG_MIPS_PB1200
+-#include <asm/mach-pb1x00/pb1200.h>
+-#endif
+-
+-#ifdef CONFIG_MIPS_DB1200
+-#include <asm/mach-db1x00/db1200.h>
+-#define PB1200_INT_BEGIN DB1200_INT_BEGIN
+-#define PB1200_INT_END DB1200_INT_END
+-#endif
+-
+-#include <asm/mach-db1x00/bcsr.h>
+-
+-struct au1xxx_irqmap __initdata au1xxx_irq_map[] = {
+-	/* This is external interrupt cascade */
+-	{ AU1000_GPIO_7, IRQF_TRIGGER_LOW, 0 },
+-};
+-
+-void __init board_init_irq(void)
+-{
+-	au1xxx_setup_irqmap(au1xxx_irq_map, ARRAY_SIZE(au1xxx_irq_map));
+-
+-#ifdef CONFIG_MIPS_PB1200
+-	/* We have a problem with CPLD rev 3. */
+-	if (BCSR_WHOAMI_CPLD(bcsr_read(BCSR_WHOAMI)) <= 3) {
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "Pb1200 must be at CPLD rev 4. Please have Pb1200\n");
+-		printk(KERN_ERR "updated to latest revision. This software will\n");
+-		printk(KERN_ERR "not work on anything less than CPLD rev 4.\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		printk(KERN_ERR "WARNING!!!\n");
+-		panic("Game over.  Your score is 0.");
+-	}
+-#endif
+-
+-	bcsr_init_irq(PB1200_INT_BEGIN, PB1200_INT_END, AU1000_GPIO_7);
+-}
+diff --git a/arch/mips/alchemy/devboards/pb1500/board_setup.c b/arch/mips/alchemy/devboards/pb1500/board_setup.c
+index 7439303..543885d 100644
+--- a/arch/mips/alchemy/devboards/pb1500/board_setup.c
++++ b/arch/mips/alchemy/devboards/pb1500/board_setup.c
+@@ -40,17 +40,6 @@ char irq_tab_alchemy[][5] __initdata = {
+ 	[13] = { -1, INTA, INTB, INTC, INTD },   /* IDSEL 13 - PCI slot */
+ };
+ 
+-struct au1xxx_irqmap __initdata au1xxx_irq_map[] = {
+-	{ AU1000_GPIO_9,   IRQF_TRIGGER_LOW, 0 },
+-	{ AU1000_GPIO_10,  IRQF_TRIGGER_LOW, 0 },
+-	{ AU1000_GPIO_11,  IRQF_TRIGGER_LOW, 0 },
+-	{ AU1500_GPIO_204, IRQF_TRIGGER_HIGH, 0 },
+-	{ AU1500_GPIO_201, IRQF_TRIGGER_LOW, 0 },
+-	{ AU1500_GPIO_202, IRQF_TRIGGER_LOW, 0 },
+-	{ AU1500_GPIO_203, IRQF_TRIGGER_LOW, 0 },
+-	{ AU1500_GPIO_205, IRQF_TRIGGER_LOW, 0 },
+-};
+-
+ 
+ const char *get_system_type(void)
+ {
+@@ -62,11 +51,6 @@ void board_reset(void)
+ 	bcsr_write(BCSR_SYSTEM, 0);
+ }
+ 
+-void __init board_init_irq(void)
+-{
+-	au1xxx_setup_irqmap(au1xxx_irq_map, ARRAY_SIZE(au1xxx_irq_map));
+-}
+-
+ void __init board_setup(void)
+ {
+ 	u32 pin_func;
+@@ -169,3 +153,19 @@ void __init board_setup(void)
+ 		au_sync();
+ 	}
+ }
++
++static int __init pb1500_init_irq(void)
++{
++	set_irq_type(AU1000_GPIO_9,  IRQF_TRIGGER_LOW);	/* PCCD# */
++	set_irq_type(AU1000_GPIO_10, IRQF_TRIGGER_LOW);	/* PCSTSCHG# */
++	set_irq_type(AU1000_GPIO_11, IRQF_TRIGGER_LOW);	/* CARD# */
++
++	set_irq_type(AU1500_GPIO_204, IRQF_TRIGGER_HIGH);
++	set_irq_type(AU1500_GPIO_201, IRQF_TRIGGER_LOW);
++	set_irq_type(AU1500_GPIO_202, IRQF_TRIGGER_LOW);
++	set_irq_type(AU1500_GPIO_203, IRQF_TRIGGER_LOW);
++	set_irq_type(AU1500_GPIO_205, IRQF_TRIGGER_LOW);
++
++	return 0;
++}
++arch_initcall(pb1500_init_irq);
+diff --git a/arch/mips/alchemy/devboards/pb1550/board_setup.c b/arch/mips/alchemy/devboards/pb1550/board_setup.c
+index 957e3ae..34bc59e 100644
+--- a/arch/mips/alchemy/devboards/pb1550/board_setup.c
++++ b/arch/mips/alchemy/devboards/pb1550/board_setup.c
+@@ -43,12 +43,6 @@ char irq_tab_alchemy[][5] __initdata = {
+ 	[13] = { -1, INTA, INTB, INTC, INTD }, /* IDSEL 13 - PCI slot 1 (right) */
+ };
+ 
+-struct au1xxx_irqmap __initdata au1xxx_irq_map[] = {
+-	{ AU1000_GPIO_0, IRQF_TRIGGER_LOW, 0 },
+-	{ AU1000_GPIO_1, IRQF_TRIGGER_LOW, 0 },
+-	{ AU1500_GPIO_201_205, IRQF_TRIGGER_LOW, 0 },
+-};
+-
+ const char *get_system_type(void)
+ {
+ 	return "Alchemy Pb1550";
+@@ -59,13 +53,6 @@ void board_reset(void)
+ 	bcsr_write(BCSR_SYSTEM, 0);
+ }
+ 
+-void __init board_init_irq(void)
+-{
+-	alchemy_gpio2_enable_int(201);
+-	alchemy_gpio2_enable_int(202);
+-	au1xxx_setup_irqmap(au1xxx_irq_map, ARRAY_SIZE(au1xxx_irq_map));
+-}
+-
+ void __init board_setup(void)
+ {
+ 	u32 pin_func;
+@@ -99,3 +86,15 @@ void __init board_setup(void)
+ 
+ 	printk(KERN_INFO "AMD Alchemy Pb1550 Board\n");
+ }
++
++static int __init pb1550_init_irq(void)
++{
++	set_irq_type(AU1000_GPIO_0, IRQF_TRIGGER_LOW);
++	set_irq_type(AU1000_GPIO_1, IRQF_TRIGGER_LOW);
++	set_irq_type(AU1500_GPIO_201_205, IRQF_TRIGGER_LOW);
++	alchemy_gpio2_enable_int(201);
++	alchemy_gpio2_enable_int(202);
++
++	return 0;
++}
++arch_initcall(pb1550_init_irq);
+diff --git a/arch/mips/alchemy/mtx-1/Makefile b/arch/mips/alchemy/mtx-1/Makefile
+index 7c67b3d..4a53815 100644
+--- a/arch/mips/alchemy/mtx-1/Makefile
++++ b/arch/mips/alchemy/mtx-1/Makefile
+@@ -6,7 +6,7 @@
+ # Makefile for 4G Systems MTX-1 board.
+ #
+ 
+-lib-y := init.o board_setup.o irqmap.o
++lib-y := init.o board_setup.o
+ obj-y := platform.o
+ 
+ EXTRA_CFLAGS += -Werror
+diff --git a/arch/mips/alchemy/mtx-1/board_setup.c b/arch/mips/alchemy/mtx-1/board_setup.c
+index cc32c69..568492c 100644
+--- a/arch/mips/alchemy/mtx-1/board_setup.c
++++ b/arch/mips/alchemy/mtx-1/board_setup.c
+@@ -30,11 +30,23 @@
+ 
+ #include <linux/gpio.h>
+ #include <linux/init.h>
++#include <linux/interrupt.h>
+ 
+ #include <asm/mach-au1x00/au1000.h>
+ 
+ #include <prom.h>
+ 
++char irq_tab_alchemy[][5] __initdata = {
++	[0] = { -1, INTA, INTA, INTX, INTX }, /* IDSEL 00 - AdapterA-Slot0 (top) */
++	[1] = { -1, INTB, INTA, INTX, INTX }, /* IDSEL 01 - AdapterA-Slot1 (bottom) */
++	[2] = { -1, INTC, INTD, INTX, INTX }, /* IDSEL 02 - AdapterB-Slot0 (top) */
++	[3] = { -1, INTD, INTC, INTX, INTX }, /* IDSEL 03 - AdapterB-Slot1 (bottom) */
++	[4] = { -1, INTA, INTB, INTX, INTX }, /* IDSEL 04 - AdapterC-Slot0 (top) */
++	[5] = { -1, INTB, INTA, INTX, INTX }, /* IDSEL 05 - AdapterC-Slot1 (bottom) */
++	[6] = { -1, INTC, INTD, INTX, INTX }, /* IDSEL 06 - AdapterD-Slot0 (top) */
++	[7] = { -1, INTD, INTC, INTX, INTX }, /* IDSEL 07 - AdapterD-Slot1 (bottom) */
++};
++
+ extern int (*board_pci_idsel)(unsigned int devsel, int assert);
+ int mtx1_pci_idsel(unsigned int devsel, int assert);
+ 
+@@ -110,3 +122,15 @@ mtx1_pci_idsel(unsigned int devsel, int assert)
+ 	au_sync_udelay(1);
+ 	return 1;
+ }
++
++static int __init mtx1_init_irq(void)
++{
++	set_irq_type(AU1500_GPIO_204, IRQF_TRIGGER_HIGH);
++	set_irq_type(AU1500_GPIO_201, IRQF_TRIGGER_LOW);
++	set_irq_type(AU1500_GPIO_202, IRQF_TRIGGER_LOW);
++	set_irq_type(AU1500_GPIO_203, IRQF_TRIGGER_LOW);
++	set_irq_type(AU1500_GPIO_205, IRQF_TRIGGER_LOW);
++
++	return 0;
++}
++arch_initcall(mtx1_init_irq);
+diff --git a/arch/mips/alchemy/mtx-1/irqmap.c b/arch/mips/alchemy/mtx-1/irqmap.c
+deleted file mode 100644
+index f1ab12a..0000000
+--- a/arch/mips/alchemy/mtx-1/irqmap.c
++++ /dev/null
+@@ -1,56 +0,0 @@
+-/*
+- * BRIEF MODULE DESCRIPTION
+- *	Au1xxx irq map table
+- *
+- * Copyright 2003 Embedded Edge, LLC
+- *		dan@embeddededge.com
+- *
+- *  This program is free software; you can redistribute	 it and/or modify it
+- *  under  the terms of	 the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the	License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED	  ``AS	IS'' AND   ANY	EXPRESS OR IMPLIED
+- *  WARRANTIES,	  INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO	EVENT  SHALL   THE AUTHOR  BE	 LIABLE FOR ANY	  DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED	  TO, PROCUREMENT OF  SUBSTITUTE GOODS	OR SERVICES; LOSS OF
+- *  USE, DATA,	OR PROFITS; OR	BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN	 CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-
+-#include <linux/init.h>
+-#include <linux/interrupt.h>
+-#include <asm/mach-au1x00/au1000.h>
+-
+-char irq_tab_alchemy[][5] __initdata = {
+-	[0] = { -1, INTA, INTA, INTX, INTX }, /* IDSEL 00 - AdapterA-Slot0 (top) */
+-	[1] = { -1, INTB, INTA, INTX, INTX }, /* IDSEL 01 - AdapterA-Slot1 (bottom) */
+-	[2] = { -1, INTC, INTD, INTX, INTX }, /* IDSEL 02 - AdapterB-Slot0 (top) */
+-	[3] = { -1, INTD, INTC, INTX, INTX }, /* IDSEL 03 - AdapterB-Slot1 (bottom) */
+-	[4] = { -1, INTA, INTB, INTX, INTX }, /* IDSEL 04 - AdapterC-Slot0 (top) */
+-	[5] = { -1, INTB, INTA, INTX, INTX }, /* IDSEL 05 - AdapterC-Slot1 (bottom) */
+-	[6] = { -1, INTC, INTD, INTX, INTX }, /* IDSEL 06 - AdapterD-Slot0 (top) */
+-	[7] = { -1, INTD, INTC, INTX, INTX }, /* IDSEL 07 - AdapterD-Slot1 (bottom) */
+-};
+-
+-struct au1xxx_irqmap __initdata au1xxx_irq_map[] = {
+-       { AU1500_GPIO_204, IRQF_TRIGGER_HIGH, 0 },
+-       { AU1500_GPIO_201, IRQF_TRIGGER_LOW, 0 },
+-       { AU1500_GPIO_202, IRQF_TRIGGER_LOW, 0 },
+-       { AU1500_GPIO_203, IRQF_TRIGGER_LOW, 0 },
+-       { AU1500_GPIO_205, IRQF_TRIGGER_LOW, 0 },
+-};
+-
+-
+-void __init board_init_irq(void)
+-{
+-	au1xxx_setup_irqmap(au1xxx_irq_map, ARRAY_SIZE(au1xxx_irq_map));
+-}
+diff --git a/arch/mips/alchemy/xxs1500/Makefile b/arch/mips/alchemy/xxs1500/Makefile
+index db3c526..545d8f5 100644
+--- a/arch/mips/alchemy/xxs1500/Makefile
++++ b/arch/mips/alchemy/xxs1500/Makefile
+@@ -5,4 +5,4 @@
+ # Makefile for MyCable XXS1500 board.
+ #
+ 
+-lib-y := init.o board_setup.o irqmap.o
++lib-y := init.o board_setup.o
+diff --git a/arch/mips/alchemy/xxs1500/board_setup.c b/arch/mips/alchemy/xxs1500/board_setup.c
+index 4de2d48..cad14f8 100644
+--- a/arch/mips/alchemy/xxs1500/board_setup.c
++++ b/arch/mips/alchemy/xxs1500/board_setup.c
+@@ -25,6 +25,7 @@
+ 
+ #include <linux/gpio.h>
+ #include <linux/init.h>
++#include <linux/interrupt.h>
+ #include <linux/delay.h>
+ 
+ #include <asm/mach-au1x00/au1000.h>
+@@ -92,3 +93,23 @@ void __init board_setup(void)
+ #endif
+ #endif
+ }
++
++static int __init xxs1500_init_irq(void)
++{
++	set_irq_type(AU1500_GPIO_204, IRQF_TRIGGER_HIGH);
++	set_irq_type(AU1500_GPIO_201, IRQF_TRIGGER_LOW);
++	set_irq_type(AU1500_GPIO_202, IRQF_TRIGGER_LOW);
++	set_irq_type(AU1500_GPIO_203, IRQF_TRIGGER_LOW);
++	set_irq_type(AU1500_GPIO_205, IRQF_TRIGGER_LOW);
++	set_irq_type(AU1500_GPIO_207, IRQF_TRIGGER_LOW);
++
++	set_irq_type(AU1000_GPIO_0, IRQF_TRIGGER_LOW);
++	set_irq_type(AU1000_GPIO_1, IRQF_TRIGGER_LOW);
++	set_irq_type(AU1000_GPIO_2, IRQF_TRIGGER_LOW);
++	set_irq_type(AU1000_GPIO_3, IRQF_TRIGGER_LOW);
++	set_irq_type(AU1000_GPIO_4, IRQF_TRIGGER_LOW); /* CF interrupt */
++	set_irq_type(AU1000_GPIO_5, IRQF_TRIGGER_LOW);
++
++	return 0;
++}
++arch_initcall(xxs1500_init_irq);
+diff --git a/arch/mips/alchemy/xxs1500/irqmap.c b/arch/mips/alchemy/xxs1500/irqmap.c
+deleted file mode 100644
+index 0f0f301..0000000
+--- a/arch/mips/alchemy/xxs1500/irqmap.c
++++ /dev/null
+@@ -1,52 +0,0 @@
+-/*
+- * BRIEF MODULE DESCRIPTION
+- *	Au1xxx irq map table
+- *
+- * Copyright 2003 Embedded Edge, LLC
+- *		dan@embeddededge.com
+- *
+- *  This program is free software; you can redistribute	 it and/or modify it
+- *  under  the terms of	 the GNU General  Public License as published by the
+- *  Free Software Foundation;  either version 2 of the	License, or (at your
+- *  option) any later version.
+- *
+- *  THIS  SOFTWARE  IS PROVIDED	  ``AS	IS'' AND   ANY	EXPRESS OR IMPLIED
+- *  WARRANTIES,	  INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
+- *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
+- *  NO	EVENT  SHALL   THE AUTHOR  BE	 LIABLE FOR ANY	  DIRECT, INDIRECT,
+- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+- *  NOT LIMITED	  TO, PROCUREMENT OF  SUBSTITUTE GOODS	OR SERVICES; LOSS OF
+- *  USE, DATA,	OR PROFITS; OR	BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+- *  ANY THEORY OF LIABILITY, WHETHER IN	 CONTRACT, STRICT LIABILITY, OR TORT
+- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+- *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+- *
+- *  You should have received a copy of the  GNU General Public License along
+- *  with this program; if not, write  to the Free Software Foundation, Inc.,
+- *  675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-
+-#include <linux/init.h>
+-#include <linux/interrupt.h>
+-#include <asm/mach-au1x00/au1000.h>
+-
+-struct au1xxx_irqmap __initdata au1xxx_irq_map[] = {
+-	{ AU1500_GPIO_204, IRQF_TRIGGER_HIGH, 0 },
+-	{ AU1500_GPIO_201, IRQF_TRIGGER_LOW, 0 },
+-	{ AU1500_GPIO_202, IRQF_TRIGGER_LOW, 0 },
+-	{ AU1500_GPIO_203, IRQF_TRIGGER_LOW, 0 },
+-	{ AU1500_GPIO_205, IRQF_TRIGGER_LOW, 0 },
+-	{ AU1500_GPIO_207, IRQF_TRIGGER_LOW, 0 },
+-
+-	{ AU1000_GPIO_0, IRQF_TRIGGER_LOW, 0 },
+-	{ AU1000_GPIO_1, IRQF_TRIGGER_LOW, 0 },
+-	{ AU1000_GPIO_2, IRQF_TRIGGER_LOW, 0 },
+-	{ AU1000_GPIO_3, IRQF_TRIGGER_LOW, 0 },
+-	{ AU1000_GPIO_4, IRQF_TRIGGER_LOW, 0 }, /* CF interrupt */
+-	{ AU1000_GPIO_5, IRQF_TRIGGER_LOW, 0 },
+-};
+-
+-void __init board_init_irq(void)
+-{
+-	au1xxx_setup_irqmap(au1xxx_irq_map, ARRAY_SIZE(au1xxx_irq_map));
+-}
+diff --git a/arch/mips/include/asm/mach-au1x00/au1000.h b/arch/mips/include/asm/mach-au1x00/au1000.h
+index df04e91..fceeca8 100644
+--- a/arch/mips/include/asm/mach-au1x00/au1000.h
++++ b/arch/mips/include/asm/mach-au1x00/au1000.h
+@@ -143,21 +143,6 @@ void au_sleep(void);
+ void save_au1xxx_intctl(void);
+ void restore_au1xxx_intctl(void);
+ 
+-/*
+- * Every board describes its IRQ mapping with this table.
+- */
+-struct au1xxx_irqmap {
+-	int	im_irq;
+-	int	im_type;
+-	int	im_request;
+-};
+-
+-/* core calls this function to let boards initialize other IRQ sources */
+-void board_init_irq(void);
+-
+-/* boards call this to register additional (GPIO) interrupts */
+-void au1xxx_setup_irqmap(struct au1xxx_irqmap *map, int count);
+-
+ #endif /* !defined (_LANGUAGE_ASSEMBLY) */
+ 
+ /*
+diff --git a/arch/mips/include/asm/mach-db1x00/db1200.h b/arch/mips/include/asm/mach-db1x00/db1200.h
+index 1fbcca4..52b1d84 100644
+--- a/arch/mips/include/asm/mach-db1x00/db1200.h
++++ b/arch/mips/include/asm/mach-db1x00/db1200.h
+@@ -25,6 +25,7 @@
+ #define __ASM_DB1200_H
+ 
+ #include <linux/types.h>
++#include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-au1x00/au1xxx_psc.h>
+ 
+ #define DBDMA_AC97_TX_CHAN	DSCR_CMD0_PSC1_TX
+diff --git a/arch/mips/include/asm/mach-pb1x00/pb1200.h b/arch/mips/include/asm/mach-pb1x00/pb1200.h
+index 07ad170..962eb55 100644
+--- a/arch/mips/include/asm/mach-pb1x00/pb1200.h
++++ b/arch/mips/include/asm/mach-pb1x00/pb1200.h
+@@ -25,6 +25,7 @@
+ #define __ASM_PB1200_H
+ 
+ #include <linux/types.h>
++#include <asm/mach-au1x00/au1000.h>
+ #include <asm/mach-au1x00/au1xxx_psc.h>
+ 
+ #define DBDMA_AC97_TX_CHAN	DSCR_CMD0_PSC1_TX
 -- 
-Best regards, Florian Fainelli
-Email: florian@openwrt.org
-Web: http://openwrt.org
-IRC: [florian] on irc.freenode.net
--------------------------------
+1.6.5.rc1

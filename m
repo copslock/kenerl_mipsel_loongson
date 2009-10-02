@@ -1,86 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Oct 2009 16:32:24 +0200 (CEST)
-Received: from mail-bw0-f208.google.com ([209.85.218.208]:35247 "EHLO
-	mail-bw0-f208.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492713AbZJBOcS convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 2 Oct 2009 16:32:18 +0200
-Received: by bwz4 with SMTP id 4so1066938bwz.0
-        for <linux-mips@linux-mips.org>; Fri, 02 Oct 2009 07:32:11 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=jGcaZjK99XtaNrUPzqLCxKHSfVzbSKAwn0DaXatuYqs=;
-        b=Zk/NIQvMoZYSIEZ6y416eRxQfofvVo/eynCv/v44QkAkSxX/m/6TNtgIW9EjCMp0fM
-         3jNUFrzu0xbzxK5z44bae8Er56WtSV0Fb4WAACSch/gLfxc2eZZOydctJioPNHI5HYcR
-         lRNRgphAjEkRiAv4yJGED0ai7BDuJxZYtzQqQ=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=TDCWZhOmddN0QTlO+H63fErWZ3UsgGbqn2q6UaA13iebTq3g/v74Kbei/xKPtgt9EQ
-         A22fYr2ZdgcsjlMZ1lNXnMRcP0OMKnu7M4yR3k+w2ngbvMs/boa0IyaptHK4GZK0Zg0K
-         Fg74tV+J7VXmANIKu1aUx6DPOIG25adsO3hLo=
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 02 Oct 2009 22:33:59 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:32863 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S1493876AbZJBUdz (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 2 Oct 2009 22:33:55 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n92KYudu010272;
+	Fri, 2 Oct 2009 22:34:57 +0200
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n92KYsET010270;
+	Fri, 2 Oct 2009 22:34:54 +0200
+Date:	Fri, 2 Oct 2009 22:34:54 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	David Daney <ddaney@caviumnetworks.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Don't write ones to reserved entryhi bits.
+Message-ID: <20091002203454.GA9138@linux-mips.org>
+References: <1241812330-21041-1-git-send-email-ddaney@caviumnetworks.com> <20090527162937.GA9831@linux-mips.org> <4AB129DF.8060200@caviumnetworks.com>
 MIME-Version: 1.0
-Received: by 10.102.226.17 with SMTP id y17mr463581mug.67.1254493931746; Fri, 
-	02 Oct 2009 07:32:11 -0700 (PDT)
-In-Reply-To: <20091002125423.GD3179@pengutronix.de>
-References: <1254250236-18130-1-git-send-email-manuel.lauss@gmail.com>
-	 <20091002105903.GC3179@pengutronix.de>
-	 <f861ec6f0910020415j5125295fn6b5dff7db4bf170e@mail.gmail.com>
-	 <20091002125423.GD3179@pengutronix.de>
-Date:	Fri, 2 Oct 2009 16:32:11 +0200
-Message-ID: <f861ec6f0910020732p2ff76990q1e7a2bca16e52e64@mail.gmail.com>
-Subject: Re: [PATCH] Alchemy: XXS1500 PCMCIA driver rewrite
-From:	Manuel Lauss <manuel.lauss@googlemail.com>
-To:	Wolfram Sang <w.sang@pengutronix.de>
-Cc:	linux-pcmcia <linux-pcmcia@lists.infradead.org>,
-	Linux-MIPS <linux-mips@linux-mips.org>,
-	Florian Fainelli <florian@openwrt.org>,
-	Manuel Lauss <manuel.lauss@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <manuel.lauss@googlemail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4AB129DF.8060200@caviumnetworks.com>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24128
+X-archive-position: 24129
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Oct 2, 2009 at 2:54 PM, Wolfram Sang <w.sang@pengutronix.de> wrote:
->
->> >> Rewritten XXS1500 PCMCIA socket driver, standalone (doesn't
->> >> depend on au1000_generic.c) and added carddetect IRQ support.
->> >
->> > I am not familiar with the details here. Why did you choose to drop the generic
->> > au1000-part for this and the other driver?
+On Wed, Sep 16, 2009 at 11:09:35AM -0700, David Daney wrote:
+
+>>> According to the MIPS64 Privileged Resource Architecture manual, only
+>>> values of zero may be written to bits 8..10 of CP0 entryhi.  We need
+>>> to add masking by ASID_MASK.
 >>
->> I want to get rid of au1000_generic.[ch] eventually or at least all of its
->> contents except the static mapping and resource allocation functions, which
->> are board- independent.  On the other hand these are so short that I opted to
->> just duplicate them into the xxs1500_ss.c and db1xxx_ss.c (other patch)
->> files.  The db1xxx_ss (for the Alchemy demoboards) is supposed to be an
->> example on how to set up PCMCIA on Alchemy SoCs.
+>> Yes, I've silently been relying on the hardware chopping off the excess
+>> bits for no better reason that it saving an instruction.  One of the
+>> functions you've touched is switch_mm() which is being used in context
+>> switches and any changes to it will show up in context switching
+>> benchmarks.
+>>
+>> The patch you did (and along with that some older SMTC changes by Kevin)
+>> can be done slightly more elegant because we already have:
+>>
+>> #define cpu_asid(cpu, mm)       (cpu_context((cpu), (mm)) & ASID_MASK)
+>>
+>> in <asm/mmu_context.h>.
+>>
+>> We used to optimize the ASID managment code by code patching even, see
+>> mmu_context.h in 78c388aed2b7184182c08428db1de6c872d815f5.
+>>
+>>   Ralf
+>>
+>> Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+>>
 >
-> Yeah, I saw that you want to remove it, still I don't know why :) Is it feature
-> incomplete and updating is impossible? Is the concept outdated? Could you
-> enlighten me on that?
+> This is nice, but you never committed it.
 
-I started out with the intention to fix its styling issues, add carddetect irq
-support, etc.  In the end it was easier to write a quick-and-dirty standalone
-full-features socket driver for the DB1200 and extend it to support the
-other DB/PB boards. While I was at it I modified my driver for the xxs1500,
-that's all.
+Waiting for people to test it - thanks!  Committing it now.
 
-The only *technical* reason I have is a personal dislike for how the current
-one works: it forces every conceivable board to add dozens of cpp macros
-for mem/io ranges and gets registered by board-independent code.
-Hardly convincing, I know.
-
-        Manuel Lauss
+  Ralf

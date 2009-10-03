@@ -1,53 +1,39 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Oct 2009 16:36:28 +0200 (CEST)
-Received: from mail-bw0-f208.google.com ([209.85.218.208]:49172 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Oct 2009 16:48:25 +0200 (CEST)
+Received: from mail-bw0-f208.google.com ([209.85.218.208]:54327 "EHLO
 	mail-bw0-f208.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S2097287AbZJCOgW (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 3 Oct 2009 16:36:22 +0200
-Received: by bwz4 with SMTP id 4so1676734bwz.0
-        for <multiple recipients>; Sat, 03 Oct 2009 07:36:16 -0700 (PDT)
+	by ftp.linux-mips.org with ESMTP id S1492953AbZJCOsT (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 3 Oct 2009 16:48:19 +0200
+Received: by bwz4 with SMTP id 4so1680563bwz.0
+        for <multiple recipients>; Sat, 03 Oct 2009 07:48:12 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type;
-        bh=jQjrYN6MJleuIniaRMJ0hyOg2m1VGHvok9W5B3F6LtA=;
-        b=FtS7jAez6jn23rrBFMdlPMwxYtz7oppFZd0Rk5tPb1kHWSjCNfFAqn9WMbPPCCsPw8
-         spYesWLElNmiWv+QRGIt+bmEWPx4ecuv/SRTFzpM0vfFiorB2uIJOBC9aqmy3nTQu2r9
-         IHzZJ/BnbJSY7SKNohhXopFHb8bGUFT+tL3P0=
+        h=domainkey-signature:mime-version:received:date:message-id:subject
+         :from:to:content-type;
+        bh=FdRNNPhMP/PKLMtu5DWkknzvugHjsqs0w5ArCcHp/+w=;
+        b=u+0u1/tl3cHzlL33aRJ2Qc5bs+k8No81E2Tcn/A5DW/ORopYbY1K+kici3IORrYqF7
+         dAlF966b89q0+6CUOFZPsj63dSvfw9iZuIi09GnHYp7VbcWY3YP5eM0ArL3IK8lDTyFc
+         oEgzT2oCl+QC6dojgEzVxWLaG6otElFQBrqhM=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=x2uKyLn5T91ueS6fW2utTRHHJAwigB1OTv/rwLw/EXOw+VamvX5TX305q5oflVDKPU
-         8oH3BmEybEiTFA2cnrDHbyPJZiVwk8jSxn9bF1/CPmWPJqwFMzfxfISGXEa4M8Vd+RkJ
-         +r3DiAXSpL7VTSgpSthwhhkphBoQR1FbLg2p4=
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=g8wARAyEZ6THhMFSrm9QEOOcZB93QbVtaEXTiKiKF2P4qemClGbkFHaAjkIws49icp
+         PpRXxeFdvjfSSh38ynmsB/lf3E6R1LmdX9j6e+X9Hp/CW3ToyDbbzERVQXdovMcDh0PX
+         2fhqYuKrUs0Qc382b1gzl96g0QLOI0AIBcS/s=
 MIME-Version: 1.0
-Received: by 10.103.126.3 with SMTP id d3mr914588mun.101.1254580576804; Sat, 
-	03 Oct 2009 07:36:16 -0700 (PDT)
-In-Reply-To: <20091003140349.GA11381@linux-mips.org>
-References: <1254250236-18130-1-git-send-email-manuel.lauss@gmail.com>
-	 <20091002105903.GC3179@pengutronix.de>
-	 <f861ec6f0910020415j5125295fn6b5dff7db4bf170e@mail.gmail.com>
-	 <20091002125423.GD3179@pengutronix.de>
-	 <f861ec6f0910020732p2ff76990q1e7a2bca16e52e64@mail.gmail.com>
-	 <20091003102221.GB24206@pengutronix.de>
-	 <f861ec6f0910030449q635360ct12d6c47cfb24670d@mail.gmail.com>
-	 <20091003140349.GA11381@linux-mips.org>
-Date:	Sat, 3 Oct 2009 16:36:16 +0200
-Message-ID: <f861ec6f0910030736m25a230edq4fb8665844237813@mail.gmail.com>
-Subject: Re: [PATCH] Alchemy: XXS1500 PCMCIA driver rewrite
+Received: by 10.102.226.17 with SMTP id y17mr918559mug.67.1254581292384; Sat, 
+	03 Oct 2009 07:48:12 -0700 (PDT)
+Date:	Sat, 3 Oct 2009 16:48:12 +0200
+Message-ID: <f861ec6f0910030748l396b45bck858f15460354e58e@mail.gmail.com>
+Subject: Reason for PIO_MASK?
 From:	Manuel Lauss <manuel.lauss@googlemail.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Wolfram Sang <w.sang@pengutronix.de>,
-	linux-pcmcia <linux-pcmcia@lists.infradead.org>,
-	Linux-MIPS <linux-mips@linux-mips.org>,
-	Florian Fainelli <florian@openwrt.org>,
-	Manuel Lauss <manuel.lauss@gmail.com>
+To:	Linux-MIPS <linux-mips@linux-mips.org>,
+	Ralf Baechle <ralf@linux-mips.org>
 Content-Type: text/plain; charset=ISO-8859-1
 Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24134
+X-archive-position: 24135
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,14 +41,15 @@ X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+In arch/mips/lib/iomap.c  there's this "#define PIO_MASK 0x0ffff"
+which limits the ability to successfully call ioport_map() to the
+first 64kB.  This causes pata_pcmcia to error out on CF card
+probe because devm_ioport_map() is called with the remapped
+PCMCIA IO area, which is somewhere in MAP_BASE space.
 
-> Deending on the urgency you assign to these patches I can keep them in
-> my queue for 2.6.33 and push them upstream for linux-next.
+I've temporarily removed the PIO_MASK check and pata_pcmcia
+works as expected. Is there any way around this, other than
+creating an Alchemy-specific ioport_map() function?
 
-No hurry; 2.6.33 is fine. I've fixed a few typos and thinkos in them and will
-resend soon.  I'd just like to get these in your queue first, so I can base my
-DB1300 work on it.
-
-Thanks!
+Thanks,
         Manuel Lauss

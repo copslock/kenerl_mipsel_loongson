@@ -1,55 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 03 Oct 2009 16:48:25 +0200 (CEST)
-Received: from mail-bw0-f208.google.com ([209.85.218.208]:54327 "EHLO
-	mail-bw0-f208.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492953AbZJCOsT (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 3 Oct 2009 16:48:19 +0200
-Received: by bwz4 with SMTP id 4so1680563bwz.0
-        for <multiple recipients>; Sat, 03 Oct 2009 07:48:12 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 04 Oct 2009 08:13:59 +0200 (CEST)
+Received: from mail-px0-f187.google.com ([209.85.216.187]:52552 "EHLO
+	mail-px0-f187.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492199AbZJDGNw (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 4 Oct 2009 08:13:52 +0200
+Received: by pxi17 with SMTP id 17so2925703pxi.21
+        for <linux-mips@linux-mips.org>; Sat, 03 Oct 2009 23:13:44 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
+        d=gmail.com; s=gamma;
         h=domainkey-signature:mime-version:received:date:message-id:subject
          :from:to:content-type;
-        bh=FdRNNPhMP/PKLMtu5DWkknzvugHjsqs0w5ArCcHp/+w=;
-        b=u+0u1/tl3cHzlL33aRJ2Qc5bs+k8No81E2Tcn/A5DW/ORopYbY1K+kici3IORrYqF7
-         dAlF966b89q0+6CUOFZPsj63dSvfw9iZuIi09GnHYp7VbcWY3YP5eM0ArL3IK8lDTyFc
-         oEgzT2oCl+QC6dojgEzVxWLaG6otElFQBrqhM=
+        bh=btL9sAUhLNYNIfzuegBrCvwT1f/yQZPlm0GAxvnjFsw=;
+        b=g9t4HKNbM9CYhRYLJK+iNSddSiSnBcaai4O0s1u12LU7Drs0/JCaKwXPKGn9JfL+Tx
+         dyKRIuLtagx1uuDwJm559u4x93qF9f+P81nl0pQU3WVlw5uia34L+EDuuGb661KI3dvp
+         o6ovbnAVGlCLJnDeLam6UJ7Ms+p3DTvWdqlIs=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
+        d=gmail.com; s=gamma;
         h=mime-version:date:message-id:subject:from:to:content-type;
-        b=g8wARAyEZ6THhMFSrm9QEOOcZB93QbVtaEXTiKiKF2P4qemClGbkFHaAjkIws49icp
-         PpRXxeFdvjfSSh38ynmsB/lf3E6R1LmdX9j6e+X9Hp/CW3ToyDbbzERVQXdovMcDh0PX
-         2fhqYuKrUs0Qc382b1gzl96g0QLOI0AIBcS/s=
+        b=HlmGKRzbpLf+3bZd/Vhvi+oodlw2jCqkL7HQ+8PnKK2WOm/Bbrd1Tgw7hx/pgGA4m4
+         DkiAI6EPLFJ/Gz7m3oHhzl1GhQm3YrugJPvsz4REEdzZXsl3F4nMtmEAukEKIJdlpPGm
+         GjhK0RF2q4mnOUO9Ho+R9kXtb/nNndWomu0As=
 MIME-Version: 1.0
-Received: by 10.102.226.17 with SMTP id y17mr918559mug.67.1254581292384; Sat, 
-	03 Oct 2009 07:48:12 -0700 (PDT)
-Date:	Sat, 3 Oct 2009 16:48:12 +0200
-Message-ID: <f861ec6f0910030748l396b45bck858f15460354e58e@mail.gmail.com>
-Subject: Reason for PIO_MASK?
-From:	Manuel Lauss <manuel.lauss@googlemail.com>
-To:	Linux-MIPS <linux-mips@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <manuel.lauss@googlemail.com>
+Received: by 10.141.28.17 with SMTP id f17mr827049rvj.103.1254636824200; Sat, 
+	03 Oct 2009 23:13:44 -0700 (PDT)
+Date:	Sun, 4 Oct 2009 14:13:44 +0800
+Message-ID: <81f85c130910032313u532c5bdt815f0633269bf79e@mail.gmail.com>
+Subject: mipsel-sdelinux-v6.03.01-1.i386.rpm
+From:	Toy lover <toylover@gmail.com>
+To:	linux-mips@linux-mips.org
+Content-Type: multipart/alternative; boundary=000e0cd17a043a8870047515e654
+Return-Path: <toylover@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24135
+X-archive-position: 24136
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: toylover@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-In arch/mips/lib/iomap.c  there's this "#define PIO_MASK 0x0ffff"
-which limits the ability to successfully call ioport_map() to the
-first 64kB.  This causes pata_pcmcia to error out on CF card
-probe because devm_ioport_map() is called with the remapped
-PCMCIA IO area, which is somewhere in MAP_BASE space.
+--000e0cd17a043a8870047515e654
+Content-Type: text/plain; charset=ISO-8859-1
 
-I've temporarily removed the PIO_MASK check and pata_pcmcia
-works as expected. Is there any way around this, other than
-creating an Alchemy-specific ioport_map() function?
+I am trying to compile kernel modules for a kernel compiled with
+mipsel-sdelinux-v6.03.01-1
+but the ftp://ftp.mips.com/
+pub/tools/software/sde-for-linux/v6.03.01-1/mipsel-*sdelinux*
+-v6.03.01-1.i386.rpm
+is no longer available. I am wondering whether any of you can send me a copy
+of mipsel-*sdelinux*-v6.03.01-1.i386.rpm
+which you might still own.
 
-Thanks,
-        Manuel Lauss
+David
+
+--000e0cd17a043a8870047515e654
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+I am trying to compile kernel modules for a kernel compiled with mipsel-sde=
+linux-v6.03.01-1<br>but the <a href=3D"ftp://ftp.mips.com/">ftp://ftp.mips.=
+com/</a><span style=3D"visibility: visible;" id=3D"main"><span style=3D"vis=
+ibility: visible;" id=3D"search">pub/tools/software/sde-for-linux/v6.03.01-=
+1/mipsel-<em>sdelinux</em>-v6.03.01-1.i386.rpm</span></span><br>
+is no longer available. I am wondering whether any of you can send me a cop=
+y of <span style=3D"visibility: visible;" id=3D"main"><span style=3D"visibi=
+lity: visible;" id=3D"search">mipsel-<em>sdelinux</em>-v6.03.01-1.i386.rpm<=
+br>which you might still own.<br>
+<br>David<br></span></span>
+
+--000e0cd17a043a8870047515e654--

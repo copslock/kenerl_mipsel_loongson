@@ -1,112 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Oct 2009 11:41:27 +0200 (CEST)
-Received: from mail-fx0-f221.google.com ([209.85.220.221]:35494 "EHLO
-	mail-fx0-f221.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493142AbZJEJlU (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 5 Oct 2009 11:41:20 +0200
-Received: by fxm21 with SMTP id 21so2316720fxm.33
-        for <multiple recipients>; Mon, 05 Oct 2009 02:41:13 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 05 Oct 2009 11:44:16 +0200 (CEST)
+Received: from mail-bw0-f208.google.com ([209.85.218.208]:65193 "EHLO
+	mail-bw0-f208.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493142AbZJEJoK convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 5 Oct 2009 11:44:10 +0200
+Received: by bwz4 with SMTP id 4so2381910bwz.0
+        for <multiple recipients>; Mon, 05 Oct 2009 02:44:04 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:to:subject:date
-         :user-agent:cc:references:in-reply-to:organization:mime-version
-         :content-type:content-transfer-encoding:content-disposition
-         :message-id;
-        bh=ITcqckERKJb2FUuD8XBlfYImvg7NcCIKcg4+LY6bRnk=;
-        b=x6aRKLYC+83BR3CHxSisdes6dFfWWwKAGSWv8kdqD7UqYdfK0CtWmT63XT/LgBiwhJ
-         Cr+DYyAsSQI2YYyweo2BGfNRaiijUzWY72dS/jCECewIn7/q7Tz6O9Zs0IlSmR+Fesl9
-         9CIfI8WL7Q9dktjkhMHIs/vXJimEsk/MNFHAo=
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=d/6TZstbmcQRfxHEQTZNOtP9jmSaVJabB10uzNQH3mw=;
+        b=FPq+uM5zqvAsJDb0TBPmUmv0IbRClyCYJ+J7A3zOmB05O/ezUiPlgkVqpWFJSKeWBH
+         kx1wysFL/jsBWk/2QS1SWJ7H2endonnyzi0JHs+uOvle9hdWiQCvTGJCqqr1h+VeCf10
+         lRqmc5K1KlhjtXHWl7vWqhCu2yFUNatZYxTAA=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:to:subject:date:user-agent:cc:references:in-reply-to
-         :organization:mime-version:content-type:content-transfer-encoding
-         :content-disposition:message-id;
-        b=QC7rmbD7lpBIF78bsP13qRCyi3eO+fZmC4LcoeDKZGFeIVfx9T4j9UoSNq9B/CMMZt
-         lXZqiFwoff0D/1R79CkJOqtkls1a060h3sj8Yvxjs1iEVX7hLmVRiE5ALrSfYoOCnbRK
-         x7hXVhoe06cSEEgoVMCOO/XtY8njb4wdKQ5wE=
-Received: by 10.86.231.5 with SMTP id d5mr4930319fgh.53.1254735673340;
-        Mon, 05 Oct 2009 02:41:13 -0700 (PDT)
-Received: from noex.localnet (bobafett.staff.proxad.net [213.228.1.121])
-        by mx.google.com with ESMTPS id 4sm6704810fge.29.2009.10.05.02.41.10
-        (version=SSLv3 cipher=RC4-MD5);
-        Mon, 05 Oct 2009 02:41:10 -0700 (PDT)
-From:	Florian Fainelli <florian@openwrt.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] ar7: register watchdog driver only if enabled in hardware configuration
-Date:	Mon, 5 Oct 2009 11:40:50 +0200
-User-Agent: KMail/1.11.2 (Linux/2.6.28-15-server; KDE/4.2.2; x86_64; ; )
-Cc:	linux-mips@linux-mips.org
-References: <200908042309.36721.florian@openwrt.org>
-In-Reply-To: <200908042309.36721.florian@openwrt.org>
-Organization: OpenWrt
+        d=googlemail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=NVq4X0Vb8J4lz3tKOOni6/CyS/lIuDGQrZA+1u2Y+ca25fpu15PljWIYG1D4cZuECk
+         CS9b7mdETZU1GmN1JWW6BgeXlwdxSSaslvU1lt9EZ3BNT2j4Jq0PbLaMV4xQnC2EsImX
+         JC+eqriqAFkHwQA+EXLD+FMhwdp2Poe2vrC8E=
 MIME-Version: 1.0
-Content-Type: Text/Plain;
-  charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
-Message-Id: <200910051140.51030.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+Received: by 10.102.197.11 with SMTP id u11mr1619967muf.97.1254735844252; Mon, 
+	05 Oct 2009 02:44:04 -0700 (PDT)
+In-Reply-To: <f861ec6f0908302331p7f44a584pdae29cafce7ef950@mail.gmail.com>
+References: <200908170028.27210.florian@openwrt.org>
+	 <f861ec6f0908302331p7f44a584pdae29cafce7ef950@mail.gmail.com>
+Date:	Mon, 5 Oct 2009 11:44:04 +0200
+Message-ID: <f861ec6f0910050244l32173c9ar4662d467cc4f9ee8@mail.gmail.com>
+Subject: Re: [PATCH 1/2] au1000: fix build failure for db1x00 configured for 
+	Au1100 SoC
+From:	Manuel Lauss <manuel.lauss@googlemail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, Florian Fainelli <florian@openwrt.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24145
+X-archive-position: 24146
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-Ralf,
+Ping?
 
-Any comments on that patch ?
-
-Thanks !
-
-On Tuesday 04 August 2009 23:09:36 Florian Fainelli wrote:
-> This patch checks if the watchdog enable bit is set in the DCL
-> register meaning that the hardware watchdog actually works and
-> if so, register the ar7_wdt platform_device.
+On Mon, Aug 31, 2009 at 8:31 AM, Manuel Lauss
+<manuel.lauss@googlemail.com> wrote:
+> Hi Ralf,
 >
-> Signed-off-by: Florian Fainelli <florian@openwrt.org>
-> ---
-> diff --git a/arch/mips/ar7/platform.c b/arch/mips/ar7/platform.c
-> index e2278c0..835f3f0 100644
-> --- a/arch/mips/ar7/platform.c
-> +++ b/arch/mips/ar7/platform.c
-> @@ -503,6 +503,7 @@ static int __init ar7_register_devices(void)
->  {
->  	u16 chip_id;
->  	int res;
-> +	u32 *bootcr, val;
->  #ifdef CONFIG_SERIAL_8250
->  	static struct uart_port uart_port[2];
+> Please add Florian's patch below to your patchqueue!
 >
-> @@ -595,7 +596,13 @@ static int __init ar7_register_devices(void)
->
->  	ar7_wdt_res.end = ar7_wdt_res.start + 0x20;
->
-> -	res = platform_device_register(&ar7_wdt);
-> +	bootcr = (u32 *)ioremap_nocache(AR7_REGS_DCL, 4);
-> +	val = *bootcr;
-> +	iounmap(bootcr);
-> +
-> +	/* Register watchdog only if enabled in hardware */
-> +	if (val & AR7_WDT_HW_ENA)
-> +		res = platform_device_register(&ar7_wdt);
->
->  	return res;
->  }
-> diff --git a/arch/mips/include/asm/mach-ar7/ar7.h
-> b/arch/mips/include/asm/mach-ar7/ar7.h index de71694..21cbbc7 100644
-> --- a/arch/mips/include/asm/mach-ar7/ar7.h
-> +++ b/arch/mips/include/asm/mach-ar7/ar7.h
-> @@ -78,6 +78,9 @@
->  #define AR7_REF_CLOCK	25000000
->  #define AR7_XTAL_CLOCK	24000000
->
-> +/* DCL */
-> +#define AR7_WDT_HW_ENA	0x10
-> +
->  struct plat_cpmac_data {
->  	int reset_bit;
->  	int power_bit;
+> On Mon, Aug 17, 2009 at 12:28 AM, Florian Fainelli<florian@openwrt.org> wrote:
+>> Hi Ralf,
+>>
+>> This patch should apply to both -master and -queue. Thanks !
+>> --
+>> From: Florian Fainelli <florian@openwrt.org>
+>> Subject: [PATCH 1/2] au1000: fix build failure for db1x00 configured for Au1100 SoC
+>>
+>> This patch fixes the following warning, which becomes an error due to
+>> -Werror to be turned on:
+>>  CC      arch/mips/alchemy/common/gpiolib-au1000.o
+>> cc1: warnings being treated as errors
+>> arch/mips/alchemy/common/gpiolib-au1000.c: In function 'au1100_gpio2_to_irq':
+>> /home/florian/dev/kernel/linux-queue/arch/mips/include/asm/mach-au1x00/gpio-au1000.h:107: warning: control reaches end of non-void function
+>>
+>> Signed-off-by: Florian Fainelli <florian@openwrt.org>
+>> ---
+>> diff --git a/arch/mips/include/asm/mach-au1x00/gpio-au1000.h b/arch/mips/include/asm/mach-au1x00/gpio-au1000.h
+>> index 127d4ed..4d54d40 100644
+>> --- a/arch/mips/include/asm/mach-au1x00/gpio-au1000.h
+>> +++ b/arch/mips/include/asm/mach-au1x00/gpio-au1000.h
+>> @@ -104,6 +104,8 @@ static inline int au1100_gpio2_to_irq(int gpio)
+>>
+>>        if ((gpio >= 8) && (gpio <= 15))
+>>                return MAKE_IRQ(0, 29);         /* shared GPIO208_215 */
+>> +
+>> +       return -ENXIO;
+>>  }
+>>
+>>  #ifdef CONFIG_SOC_AU1100

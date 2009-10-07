@@ -1,51 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Oct 2009 18:08:05 +0200 (CEST)
-Received: from mail-bw0-f208.google.com ([209.85.218.208]:35083 "EHLO
-	mail-bw0-f208.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493146AbZJGQH7 convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 7 Oct 2009 18:07:59 +0200
-Received: by bwz4 with SMTP id 4so6739bwz.0
-        for <multiple recipients>; Wed, 07 Oct 2009 09:07:51 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Oct 2009 20:15:29 +0200 (CEST)
+Received: from ey-out-1920.google.com ([74.125.78.147]:61781 "EHLO
+	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1493516AbZJGSPW (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 7 Oct 2009 20:15:22 +0200
+Received: by ey-out-1920.google.com with SMTP id 13so957149eye.52
+        for <multiple recipients>; Wed, 07 Oct 2009 11:15:21 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=reikXpFjdxug/flZ+uss0F7/AuQUeBVdNKI3lgyj36s=;
-        b=RXPH5ZAI88N+FrgcD3bYLe7k1sGzu/to4Atp77D6VWLMFGgY4DI5fw1Bdp0KfZuRKh
-         /bYn2183F5B/bC8p32SXMQtvlnYPq1d8T5HLcL3GO1gT+GxusL3s++xzg+AkOu9QMPbm
-         YVfsqsDAoxFzDF8o6EJx8zefPtboTaYaZhTGw=
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer:in-reply-to:references;
+        bh=ii8zEsFHQhopgrOb0NNHn7rnAuFjaTg46YDIhYYrwrY=;
+        b=aMMtujAuN3+ferIbTZJbsa8s9FNKkqfXawKrw0t9UVWZtCSIxDEKMfWzAZ/iYrpNyn
+         0i0FBo6bqGpni08EnDdXthvbIknXfYKfAF1nuby2YDFKqTATWhNj7SyG/Es5GaZmWLaH
+         w8oUTm61YB4rgMEJNBw9Rfiq/txYPNfVS5X4E=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=oYJAeqSAfHOFQvjnfDyMbePsANiOm+ar46BXhbhG1g/a+dWDZTm0j6540VIE642cUR
-         fn26xPPdHLBHet1VTD5fXdIJJdnJ//XwkpIaGLd4frx1+2EVaKTXHVZGbW2tVwgibIaq
-         XMDFxwnk+qv0QKt4mBrn9bZmoP3xTJ5r8gfRw=
-MIME-Version: 1.0
-Received: by 10.103.125.17 with SMTP id c17mr40854mun.16.1254931671197; Wed, 
-	07 Oct 2009 09:07:51 -0700 (PDT)
-In-Reply-To: <4ACCB874.1080206@ru.mvista.com>
-References: <f861ec6f0910030748l396b45bck858f15460354e58e@mail.gmail.com>
-	 <20091006115220.GC25263@linux-mips.org>
-	 <f861ec6f0910060511t3e95a089h63dc33e628349c11@mail.gmail.com>
-	 <20091006142531.GA27430@linux-mips.org>
-	 <f861ec6f0910060759v21ac3fe1k7cb130f427834742@mail.gmail.com>
-	 <4ACCB874.1080206@ru.mvista.com>
-Date:	Wed, 7 Oct 2009 18:07:51 +0200
-Message-ID: <f861ec6f0910070907t469ad025xc8fdb9769d17f871@mail.gmail.com>
-Subject: Re: Reason for PIO_MASK?
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        b=dJqOx5O50fAXwsYeXkVY9DbBxRAeqJ0IR5ikCmvADHenE8t3hCMtYZEltzQe3u3WIs
+         EYgpzo7zx4rcQQrN0kF0xcoVbWr+lCbhplKh6o7qNCAv6UfJUM/FzgnTbk3dE+7MVS2k
+         eoSPDcVBxAqjb0DLoC54fmfyOMc1td9ygTkC8=
+Received: by 10.216.88.209 with SMTP id a59mr74945wef.50.1254939321310;
+        Wed, 07 Oct 2009 11:15:21 -0700 (PDT)
+Received: from localhost.localdomain (p5496B5E8.dip.t-dialin.net [84.150.181.232])
+        by mx.google.com with ESMTPS id f13sm94596gvd.21.2009.10.07.11.15.19
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 07 Oct 2009 11:15:20 -0700 (PDT)
 From:	Manuel Lauss <manuel.lauss@googlemail.com>
-To:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Linux-MIPS <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Linux-MIPS <linux-mips@linux-mips.org>,
+	Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [PATCH 2/4] Alchemy: higher priority for system timer.
+Date:	Wed,  7 Oct 2009 20:15:13 +0200
+Message-Id: <1254939315-8158-3-git-send-email-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 1.6.5.rc2
+In-Reply-To: <1254939315-8158-2-git-send-email-manuel.lauss@gmail.com>
+References: <1254939315-8158-1-git-send-email-manuel.lauss@gmail.com>
+ <1254939315-8158-2-git-send-email-manuel.lauss@gmail.com>
 Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24158
+X-archive-position: 24159
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,115 +48,62 @@ X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Sergei!
+Raise RTCMATCH2 interrupt priority in case it is used as the system
+timer tick.
 
-On Wed, Oct 7, 2009 at 5:49 PM, Sergei Shtylyov <sshtylyov@ru.mvista.com> wrote:
->>>> I meant the result of ioremap() of the 36bit address of PCMCIA IO space:
->>>> so the ioport base is somewhere at 0xc0000000, which pata_pcmcia
->>>> tries to devm_iomap(), and this is rejected by the above mentioned file.
->
->>>> The old ide-cs.c driver takes the given IO base as-is (without trying to
->>>> do funky things to it) and just works. (i.e. there are 2 entries in the
->>>> 0xc0000000-range per cf-card in /proc/ioports)
->
->>> Feeding a virtual address as input to devm_ioremap or ioremap does not
->>> make sense.  Ioremap is only to be used for memory resources anyway.
->
->> Somewhere in the pcmcia socket driver I need to ioremap the 36bit
->> base of pcmcia io area:
->> io_base = ioremap(0xF 0000 0000, 0x10000) (->0xc1086000)
->
->> This is passed as io base to all drivers attached to this particular
->> pcmcia socket:
->
->> pata_pcmcia::pcmcia_init_one:
->>   devm_ioport_map(0xc1086000)
->>      ioport_map(0xc1086000) => no way!
->
->   But this is incorrect. You can't pass the result of ioremap to
-> ioport_map() -- it's already a virtual *memory* address.
+Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+---
+ arch/mips/alchemy/common/irq.c |   10 +++++-----
+ 1 files changed, 5 insertions(+), 5 deletions(-)
 
-Oh I don't doubt that, but how else am I supposed to access the
-PCMCIA IO (which is outside the directly addressable address space!)
-area on a non-PC arch?  Since this isn't a PC I don't really see why
-the IO port space should be viewed as a sacred area between 0 and 0xffff
-rather than another memory area with slightly different electrical
-characteristics
-(and the fact that it pulls the IOW#/IOR#/ lines on the PCMCIA interface
-instead of the "standard" bus r/w signals).
-
-I understand that drivers written for PC-XT hardware won't work, but I can
-live with this burden..
-
-
->> With 2 sockets I have 2 isolated IO bases, and so far this works as
->> expected, except on drivers which use ioport_map().
->
->   There's something up with either your code or these drivers -- as what
-> you're trying to do is just mixing the memory vs I/O port and physical vs
-> virtual addresses.
-
-The Alchemy pcmcia socket drivers haven been doing this since before
-I knew Alchemy even existed (so > 3 years).
-
-
->>>>>> I've temporarily removed the PIO_MASK check and pata_pcmcia
->>>>>> works as expected. Is there any way around this, other than
->>>>>> creating an Alchemy-specific ioport_map() function?
->>>>>
->>>>> The provocative question - why would you want to have more than 64k I/O
->>>>> port
->>>>> space?
->>>>
->>>> *I* don't want more; I want a smarter pata_pcmcia driver ;-)  I'll go
->>>> bug other
->>>> people about this.  I brought this up here because one of my SH boards
->>>> has
->>>> similar needs (need to do an ioremap() with special TLB flags to get
->>>> access to
->>>> pcmcia IO space) but pata_pcmcia does work there (because SH kernel
->>>> either asks the board to translate an x86-IO port to memory address or
->>>> simply returns the port plus an offset).
->>>
->>> Well, Alchemy does this:
->>>
->>> ...
->>>      if (!virt_io_addr) {
->>>              printk(KERN_ERR "Unable to ioremap pci space\n");
->>>              return 1;
->>>      }
->>>      au1x_controller.io_map_base = virt_io_addr;
->>> ...
->>> set_io_port_base(virt_io_addr);
->>> ...
->>>
->>> Which sets up a mapping for the entire port space.  Normally the PCMCIA
->>> I/O port space should also be part of this range so inb, outb etc. for
->>> the low 64k or so of port address range should just work without further
->>> iomap calls of any sort.
->
->> With this scheme, if I put CF cards in both sockets, I think I'm screwed,
->> since both cards will use the same io ports.
->
->> /proc/ioports with 2 cf cards, independet pcmcia sockets:
->> c1086000-c1086007 : ide-cs
->> c108600e-c108600e : ide-cs
->> c108a000-c108a007 : ide-cs
->> c108a00e-c108a00e : ide-cs
->
->> Of all non-x86 archs which implement ioport_map(), MIPS is the only one
->> which excplicitly checks the argument; most simply return it unchanged,
->
->> some adjust the address space (and complain), add an offset,
->> or ioremap it (AVR32).  Why is MIPS special in this regard?
->
->   Look at the default implementation in lib/iomap.c please -- it gets used
-> when the arch doesn't implement ioport_map() and it makes use of PIO_MASK.
-
-That probably is the reason why every arch with pcmcia support does implement
-its own pass-through variant.   And I'm not nearly smart enough to
-figure out what
-*else* to do...
-
-In any case. thanks for the comment,
-      Manuel Lauss
+diff --git a/arch/mips/alchemy/common/irq.c b/arch/mips/alchemy/common/irq.c
+index 81acd2a..da53a3b 100644
+--- a/arch/mips/alchemy/common/irq.c
++++ b/arch/mips/alchemy/common/irq.c
+@@ -74,7 +74,7 @@ struct au1xxx_irqmap {
+ 	{ AU1000_RTC_INT, IRQ_TYPE_EDGE_RISING, 0 },
+ 	{ AU1000_RTC_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 0 },
+ 	{ AU1000_RTC_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_RTC_MATCH2_INT, IRQ_TYPE_EDGE_RISING, 0 },
++	{ AU1000_RTC_MATCH2_INT, IRQ_TYPE_EDGE_RISING, 1 },
+ 	{ AU1000_IRDA_TX_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+ 	{ AU1000_IRDA_RX_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+ 	{ AU1000_USB_DEV_REQ_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
+@@ -108,7 +108,7 @@ struct au1xxx_irqmap {
+ 	{ AU1000_RTC_INT, IRQ_TYPE_EDGE_RISING, 0 },
+ 	{ AU1000_RTC_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 0 },
+ 	{ AU1000_RTC_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_RTC_MATCH2_INT, IRQ_TYPE_EDGE_RISING, 0 },
++	{ AU1000_RTC_MATCH2_INT, IRQ_TYPE_EDGE_RISING, 1 },
+ 	{ AU1000_USB_DEV_REQ_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
+ 	{ AU1000_USB_DEV_SUS_INT, IRQ_TYPE_EDGE_RISING, 0 },
+ 	{ AU1000_USB_HOST_INT, IRQ_TYPE_LEVEL_LOW, 0 },
+@@ -140,7 +140,7 @@ struct au1xxx_irqmap {
+ 	{ AU1000_RTC_INT, IRQ_TYPE_EDGE_RISING, 0 },
+ 	{ AU1000_RTC_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 0 },
+ 	{ AU1000_RTC_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_RTC_MATCH2_INT, IRQ_TYPE_EDGE_RISING, 0 },
++	{ AU1000_RTC_MATCH2_INT, IRQ_TYPE_EDGE_RISING, 1 },
+ 	{ AU1000_IRDA_TX_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+ 	{ AU1000_IRDA_RX_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+ 	{ AU1000_USB_DEV_REQ_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
+@@ -174,7 +174,7 @@ struct au1xxx_irqmap {
+ 	{ AU1000_RTC_INT, IRQ_TYPE_EDGE_RISING, 0 },
+ 	{ AU1000_RTC_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 0 },
+ 	{ AU1000_RTC_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_RTC_MATCH2_INT, IRQ_TYPE_EDGE_RISING, 0 },
++	{ AU1000_RTC_MATCH2_INT, IRQ_TYPE_EDGE_RISING, 1 },
+ 	{ AU1550_NAND_INT, IRQ_TYPE_EDGE_RISING, 0 },
+ 	{ AU1550_USB_DEV_REQ_INT, IRQ_TYPE_LEVEL_HIGH, 1 },
+ 	{ AU1550_USB_DEV_SUS_INT, IRQ_TYPE_EDGE_RISING, 0 },
+@@ -202,7 +202,7 @@ struct au1xxx_irqmap {
+ 	{ AU1000_RTC_INT, IRQ_TYPE_EDGE_RISING, 0 },
+ 	{ AU1000_RTC_MATCH0_INT, IRQ_TYPE_EDGE_RISING, 0 },
+ 	{ AU1000_RTC_MATCH1_INT, IRQ_TYPE_EDGE_RISING, 0 },
+-	{ AU1000_RTC_MATCH2_INT, IRQ_TYPE_EDGE_RISING, 0 },
++	{ AU1000_RTC_MATCH2_INT, IRQ_TYPE_EDGE_RISING, 1 },
+ 	{ AU1200_NAND_INT, IRQ_TYPE_EDGE_RISING, 0 },
+ 	{ AU1200_USB_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+ 	{ AU1200_LCD_INT, IRQ_TYPE_LEVEL_HIGH, 0 },
+-- 
+1.6.5.rc2

@@ -1,145 +1,114 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Oct 2009 11:50:15 +0200 (CEST)
-Received: from mail.gmx.net ([213.165.64.20]:55355 "HELO mail.gmx.net"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with SMTP
-	id S1492419AbZJGJtv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 7 Oct 2009 11:49:51 +0200
-Received: (qmail invoked by alias); 07 Oct 2009 09:49:43 -0000
-Received: from unknown (EHLO localhost) [80.123.121.196]
-  by mail.gmx.net (mp012) with SMTP; 07 Oct 2009 11:49:43 +0200
-X-Authenticated: #20192376
-X-Provags-ID: V01U2FsdGVkX1/6IZsRwmb6Ef0vE0T5laZfKLfMfXuucFndByNMbp
-	Nag5h/r09w8ZVg
-From:	Andreas Fenkart <andreas.fenkart@streamunlimited.com>
-To:	linux-arm-kernel@lists.infradead.org, linux-mips@linux-mips.org,
-	linux-am33-list@redhat.com, liqin.chen@sunplusct.com,
-	x86@kernel.org, linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org
-Cc:	Andreas Fenkart <andreas.fenkart@streamunlimited.com>
-Subject: [PATCH 1/1] Make totalhigh_pages unsigned long.
-Date:	Wed,  7 Oct 2009 11:49:37 +0200
-Message-Id: <1254908977-12827-2-git-send-email-andreas.fenkart@streamunlimited.com>
-X-Mailer: git-send-email 1.6.4.3
-In-Reply-To: <1254908977-12827-1-git-send-email-andreas.fenkart@streamunlimited.com>
-References: <1254908977-12827-1-git-send-email-andreas.fenkart@streamunlimited.com>
-X-Y-GMX-Trusted: 0
-X-FuHaFi: 0.44
-Return-Path: <afenkart@gmx.ch>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 07 Oct 2009 17:31:31 +0200 (CEST)
+Received: from mail-ew0-f214.google.com ([209.85.219.214]:57601 "EHLO
+	mail-ew0-f214.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493437AbZJGPbZ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 7 Oct 2009 17:31:25 +0200
+Received: by ewy10 with SMTP id 10so5176065ewy.33
+        for <multiple recipients>; Wed, 07 Oct 2009 08:31:19 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=+SPv8ow2U0YLVo0qZYkHN6lkXoNBUlwvfUusiEBt6pw=;
+        b=BGXib3BtpsaqsxcS8Suuf0quF/e/injDrkv0MXYTKtoEuYIpfzNk/ROsKxKSCXS9jN
+         dM/ovzt+hcvWwAaVfFUtZVmzeIy9j7qlEAyQRnnQpDaYE8hvlb/mttPi4KvSMsGeqQdt
+         nQtIrbxvGsTgf80xkApetu0iRQdRa6HifHw7U=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=iBqFSMG7kYb9QGlAMUH7f9IX00Qr7AD7imro6exTotUE8YHHbH8cBVmcyRfQ1VKoV1
+         4KyNk6kONHVhf9GKj5Pal01lUw5po3RbUUrlx7LIwrSek1eF1XAKD3WNNbVDQXitQT0J
+         MOf/gyUDQtSCRFVETGQEGJ8hre2576QGVAGlY=
+Received: by 10.216.91.82 with SMTP id g60mr12943wef.98.1254929479616;
+        Wed, 07 Oct 2009 08:31:19 -0700 (PDT)
+Received: from localhost.localdomain (p5496B5E8.dip.t-dialin.net [84.150.181.232])
+        by mx.google.com with ESMTPS id t12sm161148gvd.7.2009.10.07.08.31.17
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 07 Oct 2009 08:31:18 -0700 (PDT)
+From:	Manuel Lauss <manuel.lauss@googlemail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Linux-MIPS <linux-mips@linux-mips.org>,
+	Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [PATCH -queue] Alchemy: fix pb1100/pb1500 compile failures
+Date:	Wed,  7 Oct 2009 17:31:17 +0200
+Message-Id: <1254929477-6697-1-git-send-email-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 1.6.5.rc2
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24154
+X-archive-position: 24155
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: andreas.fenkart@streamunlimited.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-Makes it consistent with the extern declaration, used when
-CONFIG_HIGHMEM is set
-Removes redundant casts in printout messages
+forgot to remove inclusion of removed headers and add required ones.
 
-Signed-off-by: Andreas Fenkart <andreas.fenkart@streamunlimited.com>
+Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
 ---
- arch/arm/mm/init.c               |    2 +-
- arch/mips/mm/init.c              |    2 +-
- arch/mips/sgi-ip27/ip27-memory.c |    2 +-
- arch/mn10300/mm/init.c           |    3 +--
- arch/score/mm/init.c             |    2 +-
- arch/x86/mm/init_32.c            |    3 +--
- include/linux/highmem.h          |    2 +-
- 7 files changed, 7 insertions(+), 9 deletions(-)
+Extends  "MIPS: Alchemy: devboards: wire up new PCMCIA driver" in
+Ralf's linux-queue tree.
 
-diff --git a/arch/arm/mm/init.c b/arch/arm/mm/init.c
-index 877c492..8d76b50 100644
---- a/arch/arm/mm/init.c
-+++ b/arch/arm/mm/init.c
-@@ -598,7 +598,7 @@ void __init mem_init(void)
- 		"%dK data, %dK init, %luK highmem)\n",
- 		nr_free_pages() << (PAGE_SHIFT-10), codesize >> 10,
- 		datasize >> 10, initsize >> 10,
--		(unsigned long) (totalhigh_pages << (PAGE_SHIFT-10)));
-+		totalhigh_pages << (PAGE_SHIFT-10));
+Please apply or fold into the above mentioned patch!
+Thanks!
+
+ arch/mips/alchemy/devboards/pb1100/board_setup.c |    1 -
+ arch/mips/alchemy/devboards/pb1100/platform.c    |    2 ++
+ arch/mips/alchemy/devboards/pb1500/board_setup.c |    1 -
+ arch/mips/alchemy/devboards/pb1500/platform.c    |    1 +
+ 4 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/alchemy/devboards/pb1100/board_setup.c b/arch/mips/alchemy/devboards/pb1100/board_setup.c
+index aad424a..b282d93 100644
+--- a/arch/mips/alchemy/devboards/pb1100/board_setup.c
++++ b/arch/mips/alchemy/devboards/pb1100/board_setup.c
+@@ -29,7 +29,6 @@
+ #include <linux/interrupt.h>
  
- 	if (PAGE_SIZE >= 16384 && num_physpages <= 128) {
- 		extern int sysctl_overcommit_memory;
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 15aa190..03ac816 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -420,7 +420,7 @@ void __init mem_init(void)
- 	       reservedpages << (PAGE_SHIFT-10),
- 	       datasize >> 10,
- 	       initsize >> 10,
--	       (unsigned long) (totalhigh_pages << (PAGE_SHIFT-10)));
-+	       totalhigh_pages << (PAGE_SHIFT-10));
- }
- #endif /* !CONFIG_NEED_MULTIPLE_NODES */
+ #include <asm/mach-au1x00/au1000.h>
+-#include <asm/mach-pb1x00/pb1100.h>
+ #include <asm/mach-db1x00/bcsr.h>
  
-diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
-index f61c164..bc12971 100644
---- a/arch/mips/sgi-ip27/ip27-memory.c
-+++ b/arch/mips/sgi-ip27/ip27-memory.c
-@@ -505,5 +505,5 @@ void __init mem_init(void)
- 	       (num_physpages - tmp) << (PAGE_SHIFT-10),
- 	       datasize >> 10,
- 	       initsize >> 10,
--	       (unsigned long) (totalhigh_pages << (PAGE_SHIFT-10)));
-+	       totalhigh_pages << (PAGE_SHIFT-10));
- }
-diff --git a/arch/mn10300/mm/init.c b/arch/mn10300/mm/init.c
-index ec14205..dd27a9a 100644
---- a/arch/mn10300/mm/init.c
-+++ b/arch/mn10300/mm/init.c
-@@ -118,8 +118,7 @@ void __init mem_init(void)
- 	       reservedpages << (PAGE_SHIFT - 10),
- 	       datasize >> 10,
- 	       initsize >> 10,
--	       (unsigned long) (totalhigh_pages << (PAGE_SHIFT - 10))
--	       );
-+	       totalhigh_pages << (PAGE_SHIFT - 10));
- }
+ #include <prom.h>
+diff --git a/arch/mips/alchemy/devboards/pb1100/platform.c b/arch/mips/alchemy/devboards/pb1100/platform.c
+index 8aefecd..8487da5 100644
+--- a/arch/mips/alchemy/devboards/pb1100/platform.c
++++ b/arch/mips/alchemy/devboards/pb1100/platform.c
+@@ -20,6 +20,8 @@
  
- /*
-diff --git a/arch/score/mm/init.c b/arch/score/mm/init.c
-index 4e3dcd0..3739a41 100644
---- a/arch/score/mm/init.c
-+++ b/arch/score/mm/init.c
-@@ -111,7 +111,7 @@ void __init mem_init(void)
- 			ram << (PAGE_SHIFT-10), codesize >> 10,
- 			reservedpages << (PAGE_SHIFT-10), datasize >> 10,
- 			initsize >> 10,
--			(unsigned long) (totalhigh_pages << (PAGE_SHIFT-10)));
-+			totalhigh_pages << (PAGE_SHIFT-10));
- }
- #endif /* !CONFIG_NEED_MULTIPLE_NODES */
+ #include <linux/init.h>
  
-diff --git a/arch/x86/mm/init_32.c b/arch/x86/mm/init_32.c
-index 30938c1..b1738d1 100644
---- a/arch/x86/mm/init_32.c
-+++ b/arch/x86/mm/init_32.c
-@@ -892,8 +892,7 @@ void __init mem_init(void)
- 		reservedpages << (PAGE_SHIFT-10),
- 		datasize >> 10,
- 		initsize >> 10,
--		(unsigned long) (totalhigh_pages << (PAGE_SHIFT-10))
--	       );
-+		totalhigh_pages << (PAGE_SHIFT-10));
++#include <asm/mach-au1x00/au1000.h>
++
+ #include "../platform.h"
  
- 	printk(KERN_INFO "virtual kernel memory layout:\n"
- 		"    fixmap  : 0x%08lx - 0x%08lx   (%4ld kB)\n"
-diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-index 211ff44..ab2cc20 100644
---- a/include/linux/highmem.h
-+++ b/include/linux/highmem.h
-@@ -46,7 +46,7 @@ void kmap_flush_unused(void);
+ static int __init pb1100_dev_init(void)
+diff --git a/arch/mips/alchemy/devboards/pb1500/board_setup.c b/arch/mips/alchemy/devboards/pb1500/board_setup.c
+index 4c4facb..a148802 100644
+--- a/arch/mips/alchemy/devboards/pb1500/board_setup.c
++++ b/arch/mips/alchemy/devboards/pb1500/board_setup.c
+@@ -29,7 +29,6 @@
+ #include <linux/interrupt.h>
  
- static inline unsigned int nr_free_highpages(void) { return 0; }
+ #include <asm/mach-au1x00/au1000.h>
+-#include <asm/mach-pb1x00/pb1500.h>
+ #include <asm/mach-db1x00/bcsr.h>
  
--#define totalhigh_pages 0
-+#define totalhigh_pages 0UL
+ #include <prom.h>
+diff --git a/arch/mips/alchemy/devboards/pb1500/platform.c b/arch/mips/alchemy/devboards/pb1500/platform.c
+index beb21e4..6c00cbe 100644
+--- a/arch/mips/alchemy/devboards/pb1500/platform.c
++++ b/arch/mips/alchemy/devboards/pb1500/platform.c
+@@ -19,6 +19,7 @@
+  */
  
- #ifndef ARCH_HAS_KMAP
- static inline void *kmap(struct page *page)
+ #include <linux/init.h>
++#include <asm/mach-au1x00/au1000.h>
+ 
+ #include "../platform.h"
+ 
 -- 
-1.6.4.3
+1.6.5.rc2

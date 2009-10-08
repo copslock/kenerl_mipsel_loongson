@@ -1,45 +1,42 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Oct 2009 13:32:55 +0200 (CEST)
-Received: from mail-pz0-f197.google.com ([209.85.222.197]:48854 "EHLO
-	mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492655AbZJHLcs (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 8 Oct 2009 13:32:48 +0200
-Received: by pzk35 with SMTP id 35so753893pzk.22
-        for <multiple recipients>; Thu, 08 Oct 2009 04:32:40 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Oct 2009 14:40:18 +0200 (CEST)
+Received: from mail-px0-f187.google.com ([209.85.216.187]:42318 "EHLO
+	mail-px0-f187.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492608AbZJHMkL (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 8 Oct 2009 14:40:11 +0200
+Received: by pxi17 with SMTP id 17so7362087pxi.21
+        for <linux-mips@linux-mips.org>; Thu, 08 Oct 2009 05:40:01 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer;
-        bh=rzpFQ6A6+fdZUhF1ZNPocCfuThNuvy22850AX4f3nFY=;
-        b=UTzOfuhqDFgg3To3F3pUz7GiaRkEcAhQL4DseCzXbEcZoLeVQ0mHkNhOfo3DS6Xh2o
-         Fc/AOy6m0LP76UZQ8TWe/dBiUsZO1JUNjPEsvriiy9Xu8hhqiRNDQGcJqSTYOHWdCLI9
-         WFHjBge9bj5rEFqO8+g1dQYLXysjpZDGOXzu4=
+        bh=KpNFwhQTsPP58mWa/mdiSFYSn3iEuFNMHO4t/FluFkQ=;
+        b=wXF9/dnPDOvhQVLVcLXRAhfCdjIo0mXc0kHA/+Vt1lLSxXIX1xOJPDR1Uk/r5n3Xm9
+         PZTMbGlEimLl+PkPxE5R31HHc7T45Ju4jkDDoLQIK+igRW/iGed3Oc4j2p+224caSZD6
+         o9tFi/0roBCHAgk5k1v5Gz+jQkwdndrPs0cg8=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer;
-        b=f/bM7Zhn+VCpijaKkEu0Fz0bG4q3dUH3eceD5dwWnReE1hC2gxa6LiepG/8f65KtSN
-         rdWcb5pJWwHgPicfNkLuSeQ7zF9933axxDxur19sH81yt9ybA64rhE3LFOa3hYlElO1F
-         AffKzWRQJ/lRA/Tny+b+3PY4PKCVkrRZ81NI8=
-Received: by 10.115.67.24 with SMTP id u24mr2003835wak.59.1255001560078;
-        Thu, 08 Oct 2009 04:32:40 -0700 (PDT)
+        b=GdHkj1J+ZsuUskuqLXiBlYZoCAo5dy0Ccd7SaQtGtW7Higm94NHJXgMZOK4bGeUbyS
+         AJ0ChdxZKE16hKASOjAW2DbrdNNMsOfUaEvGalYZDGvMYZg90d2WGti4v7kSmVS09F5o
+         ZFEsy9uFyrk26u+0ioKo9anU3ccbaBiqrWSA4=
+Received: by 10.114.6.28 with SMTP id 28mr2006639waf.115.1255005601495;
+        Thu, 08 Oct 2009 05:40:01 -0700 (PDT)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id 22sm219646pzk.10.2009.10.08.04.32.36
+        by mx.google.com with ESMTPS id 23sm805450pzk.4.2009.10.08.05.39.58
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 08 Oct 2009 04:32:39 -0700 (PDT)
+        Thu, 08 Oct 2009 05:40:00 -0700 (PDT)
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 To:	linux-mips@linux-mips.org
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	"Rafael J. Wysocki" <rjw@sisk.pl>,
-	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
-	Pavel Machek <pavel@ucw.cz>, Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH -v1] MIPS: fix pfn_valid() for FLATMEM
-Date:	Thu,  8 Oct 2009 19:32:28 +0800
-Message-Id: <1255001548-30567-1-git-send-email-wuzhangjin@gmail.com>
+Cc:	Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH] [loongson] Remove redundant local_irq_disable()
+Date:	Thu,  8 Oct 2009 20:39:50 +0800
+Message-Id: <1255005590-16562-1-git-send-email-wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.6.2.1
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24180
+X-archive-position: 24181
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,129 +44,25 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-When CONFIG_FLATMEM enabled, STD/Hiberation will fail on YeeLoong
-laptop, This patch fixes it:
-
-if pfn is between min_low_pfn and max_mapnr, the old pfn_valid() will
-return TRUE, but in reality, if the memory is not continuous, it should
-be false. for example:
-
-$ cat /proc/iomem | grep "System RAM"
-00000000-0fffffff : System RAM
-90000000-bfffffff : System RAM
-
-as we can see, it is not continuous, so, some of the memory is not valid
-but regarded as valid by pfn_valid(), and at last make STD/Hibernate
-fail when shrinking a too large number of invalid memory.
-
-Here, we fix it via checking pfn is in the "System RAM" or not. and
-Seems pfn_valid() is not called in assembly code, we move it to
-"!__ASSEMBLY__" to ensure we can simply declare it via "extern int
-pfn_valid(unsigned long)" without Compiling Error.
-
-(This -v1 version incorporates feedback from Pavel Machek <pavel@ucw.cz>
- and Sergei Shtylyov <sshtylyov@ru.mvista.com>)
+That code is executed with irq disabled already, so, Remove the redundant
+local_irq_disable() here.
 
 Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
 ---
- arch/mips/include/asm/page.h |   50 ++++++++++++++++++-----------------------
- arch/mips/mm/page.c          |   17 ++++++++++++++
- 2 files changed, 39 insertions(+), 28 deletions(-)
+ arch/mips/loongson/common/irq.c |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
 
-diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
-index 4320239..ef43905 100644
---- a/arch/mips/include/asm/page.h
-+++ b/arch/mips/include/asm/page.h
-@@ -145,36 +145,9 @@ typedef struct { unsigned long pgprot; } pgprot_t;
-  */
- #define ptep_buddy(x)	((pte_t *)((unsigned long)(x) ^ sizeof(pte_t)))
+diff --git a/arch/mips/loongson/common/irq.c b/arch/mips/loongson/common/irq.c
+index 53dff17..20e7328 100644
+--- a/arch/mips/loongson/common/irq.c
++++ b/arch/mips/loongson/common/irq.c
+@@ -55,7 +55,6 @@ void __init arch_init_irq(void)
+ 	 * int-handler is not on bootstrap
+ 	 */
+ 	clear_c0_status(ST0_IM | ST0_BEV);
+-	local_irq_disable();
  
--#endif /* !__ASSEMBLY__ */
--
--/*
-- * __pa()/__va() should be used only during mem init.
-- */
--#ifdef CONFIG_64BIT
--#define __pa(x)								\
--({									\
--    unsigned long __x = (unsigned long)(x);				\
--    __x < CKSEG0 ? XPHYSADDR(__x) : CPHYSADDR(__x);			\
--})
--#else
--#define __pa(x)								\
--    ((unsigned long)(x) - PAGE_OFFSET + PHYS_OFFSET)
--#endif
--#define __va(x)		((void *)((unsigned long)(x) + PAGE_OFFSET - PHYS_OFFSET))
--#define __pa_symbol(x)	__pa(RELOC_HIDE((unsigned long)(x), 0))
--
--#define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
--
- #ifdef CONFIG_FLATMEM
- 
--#define pfn_valid(pfn)							\
--({									\
--	unsigned long __pfn = (pfn);					\
--	/* avoid <linux/bootmem.h> include hell */			\
--	extern unsigned long min_low_pfn;				\
--									\
--	__pfn >= min_low_pfn && __pfn < max_mapnr;			\
--})
-+extern int pfn_valid(unsigned long);
- 
- #elif defined(CONFIG_SPARSEMEM)
- 
-@@ -193,6 +166,27 @@ typedef struct { unsigned long pgprot; } pgprot_t;
- 
- #endif
- 
-+
-+#endif /* !__ASSEMBLY__ */
-+
-+/*
-+ * __pa()/__va() should be used only during mem init.
-+ */
-+#ifdef CONFIG_64BIT
-+#define __pa(x)								\
-+({									\
-+    unsigned long __x = (unsigned long)(x);				\
-+    __x < CKSEG0 ? XPHYSADDR(__x) : CPHYSADDR(__x);			\
-+})
-+#else
-+#define __pa(x)								\
-+    ((unsigned long)(x) - PAGE_OFFSET + PHYS_OFFSET)
-+#endif
-+#define __va(x)		((void *)((unsigned long)(x) + PAGE_OFFSET - PHYS_OFFSET))
-+#define __pa_symbol(x)	__pa(RELOC_HIDE((unsigned long)(x), 0))
-+
-+#define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
-+
- #define virt_to_page(kaddr)	pfn_to_page(PFN_DOWN(virt_to_phys(kaddr)))
- #define virt_addr_valid(kaddr)	pfn_valid(PFN_DOWN(virt_to_phys(kaddr)))
- 
-diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
-index f5c7375..e0a3f72 100644
---- a/arch/mips/mm/page.c
-+++ b/arch/mips/mm/page.c
-@@ -689,3 +689,20 @@ void copy_page(void *to, void *from)
- }
- 
- #endif /* CONFIG_SIBYTE_DMA_PAGEOPS */
-+
-+#ifdef CONFIG_FLATMEM
-+int pfn_valid(unsigned long pfn)
-+{
-+	int i;
-+
-+	for (i = 0; i < boot_mem_map.nr_map; i++) {
-+		if (boot_mem_map.map[i].type == BOOT_MEM_RAM) {
-+			if ((pfn >= PFN_DOWN(boot_mem_map.map[i].addr)) &&
-+				(pfn < PFN_UP(boot_mem_map.map[i].addr +
-+					boot_mem_map.map[i].size)))
-+				return 1;
-+		}
-+	}
-+	return 0;
-+}
-+#endif
+ 	/* setting irq trigger mode */
+ 	set_irq_trigger_mode();
 -- 
 1.6.2.1

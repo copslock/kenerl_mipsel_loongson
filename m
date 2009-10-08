@@ -1,55 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Oct 2009 12:58:04 +0200 (CEST)
-Received: from mail-px0-f187.google.com ([209.85.216.187]:60340 "EHLO
-	mail-px0-f187.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492607AbZJHK56 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 8 Oct 2009 12:57:58 +0200
-Received: by pxi17 with SMTP id 17so7289811pxi.21
-        for <multiple recipients>; Thu, 08 Oct 2009 03:57:50 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 08 Oct 2009 13:32:55 +0200 (CEST)
+Received: from mail-pz0-f197.google.com ([209.85.222.197]:48854 "EHLO
+	mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492655AbZJHLcs (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 8 Oct 2009 13:32:48 +0200
+Received: by pzk35 with SMTP id 35so753893pzk.22
+        for <multiple recipients>; Thu, 08 Oct 2009 04:32:40 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=eHMSSzz9HjcZONNxzvPtn1yUimn+ys6pozSD64FXavQ=;
-        b=QXrXIzvE0kcToTyZpKOk6QKyI/DFCt/FwZ92Q55NR5kmcTvs2fy6vmlVsPNKu7hnH0
-         XJfhZfzEtfJnIi3tIEKoub7El9nLTLzvlgcqa7P2BFVf7oO65LOPanpKA+VzncHa3Tfl
-         +2EZiFJ3Pzrgi9HUQW8jpFNHlJP1nJ9pxkgRE=
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=rzpFQ6A6+fdZUhF1ZNPocCfuThNuvy22850AX4f3nFY=;
+        b=UTzOfuhqDFgg3To3F3pUz7GiaRkEcAhQL4DseCzXbEcZoLeVQ0mHkNhOfo3DS6Xh2o
+         Fc/AOy6m0LP76UZQ8TWe/dBiUsZO1JUNjPEsvriiy9Xu8hhqiRNDQGcJqSTYOHWdCLI9
+         WFHjBge9bj5rEFqO8+g1dQYLXysjpZDGOXzu4=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=aYuULraivpXenZPcLAGbFUQQPe3OP7t3O8rVURAYc2TpLUI7jzfm52ME/y4P7umVCk
-         jU3fwwbovJb2wLzPTQCYyght/641pG45UrAJCCa2NzatQocv+GTIUgaArwxQiDMfvBBY
-         i5A0T/Ub1tkZG5bzeBMvOeUkuzwb5nBSrXm4g=
-Received: by 10.114.51.12 with SMTP id y12mr1978841way.33.1254999470696;
-        Thu, 08 Oct 2009 03:57:50 -0700 (PDT)
-Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 20sm294665pxi.12.2009.10.08.03.57.47
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=f/bM7Zhn+VCpijaKkEu0Fz0bG4q3dUH3eceD5dwWnReE1hC2gxa6LiepG/8f65KtSN
+         rdWcb5pJWwHgPicfNkLuSeQ7zF9933axxDxur19sH81yt9ybA64rhE3LFOa3hYlElO1F
+         AffKzWRQJ/lRA/Tny+b+3PY4PKCVkrRZ81NI8=
+Received: by 10.115.67.24 with SMTP id u24mr2003835wak.59.1255001560078;
+        Thu, 08 Oct 2009 04:32:40 -0700 (PDT)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPS id 22sm219646pzk.10.2009.10.08.04.32.36
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 08 Oct 2009 03:57:50 -0700 (PDT)
-Subject: Re: [PATCH] MIPS: fix pfn_valid() for FLAGMEM
+        Thu, 08 Oct 2009 04:32:39 -0700 (PDT)
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:	Pavel Machek <pavel@ucw.cz>
-Cc:	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-	"Rafael J. Wysocki" <rjw@sisk.pl>
-In-Reply-To: <20091008103614.GA27323@elf.ucw.cz>
-References: <1254992252-15923-1-git-send-email-wuzhangjin@gmail.com>
-	 <20091008092903.GA27054@elf.ucw.cz> <1254998019.14496.21.camel@falcon>
-	 <20091008103614.GA27323@elf.ucw.cz>
-Content-Type: text/plain
-Organization: DSLab, Lanzhou University, China
-Date:	Thu, 08 Oct 2009 18:57:43 +0800
-Message-Id: <1254999463.14496.29.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1 
-Content-Transfer-Encoding: 7bit
+To:	linux-mips@linux-mips.org
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
+	"Rafael J. Wysocki" <rjw@sisk.pl>,
+	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
+	Pavel Machek <pavel@ucw.cz>, Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH -v1] MIPS: fix pfn_valid() for FLATMEM
+Date:	Thu,  8 Oct 2009 19:32:28 +0800
+Message-Id: <1255001548-30567-1-git-send-email-wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.6.2.1
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24179
+X-archive-position: 24180
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,43 +47,129 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello,
+When CONFIG_FLATMEM enabled, STD/Hiberation will fail on YeeLoong
+laptop, This patch fixes it:
 
-> > > 
-> > > Looks mostly ok, small comments below. 
-> > > 
-> > > > @@ -168,13 +168,10 @@ typedef struct { unsigned long pgprot; } pgprot_t;
-> > > >  
-> > > >  #ifdef CONFIG_FLATMEM
-> > > >  
-> > > > -#define pfn_valid(pfn)							\
-> > > > -({									\
-> > > > -	unsigned long __pfn = (pfn);					\
-> > > > -	/* avoid <linux/bootmem.h> include hell */			\
-> > > > -	extern unsigned long min_low_pfn;				\
-> > > > -									\
-> > > > -	__pfn >= min_low_pfn && __pfn < max_mapnr;			\
-> > > > +#define pfn_valid(pfn)				\
-> > > > +({						\
-> > > > +	extern int is_pfn_valid(unsigned long); \
-> > > > +	is_pfn_valid(pfn);			\
-> > > >  })
-> > > 
-> > > "extern int pfn_valid here"
-> > > 
-> > > ...and get away without the ugly macro?
-> > > 
-> > 
-> > Perhaps need to move the whole "#ifdef CONFIG_FLATMEM" to #ifndef
-> > ASSEMBLY, otherwise,
-> > 
-> > "arch/mips/include/asm/page.h:170: Error: unrecognized opcode `extern
-> > int pfn_valid(unsigned long)'". 
-> 
-> I guess so. pfn_valid() will not work from assembly, anywa, so...
+if pfn is between min_low_pfn and max_mapnr, the old pfn_valid() will
+return TRUE, but in reality, if the memory is not continuous, it should
+be false. for example:
 
-Seems pfn_valid() is only called in non-ASSEMBLY source code, so, we are
-safe to move it to "#ifndef ASSEMBLY", just tested it, works.
+$ cat /proc/iomem | grep "System RAM"
+00000000-0fffffff : System RAM
+90000000-bfffffff : System RAM
 
-Regards,
-	Wu Zhangjin
+as we can see, it is not continuous, so, some of the memory is not valid
+but regarded as valid by pfn_valid(), and at last make STD/Hibernate
+fail when shrinking a too large number of invalid memory.
+
+Here, we fix it via checking pfn is in the "System RAM" or not. and
+Seems pfn_valid() is not called in assembly code, we move it to
+"!__ASSEMBLY__" to ensure we can simply declare it via "extern int
+pfn_valid(unsigned long)" without Compiling Error.
+
+(This -v1 version incorporates feedback from Pavel Machek <pavel@ucw.cz>
+ and Sergei Shtylyov <sshtylyov@ru.mvista.com>)
+
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/mips/include/asm/page.h |   50 ++++++++++++++++++-----------------------
+ arch/mips/mm/page.c          |   17 ++++++++++++++
+ 2 files changed, 39 insertions(+), 28 deletions(-)
+
+diff --git a/arch/mips/include/asm/page.h b/arch/mips/include/asm/page.h
+index 4320239..ef43905 100644
+--- a/arch/mips/include/asm/page.h
++++ b/arch/mips/include/asm/page.h
+@@ -145,36 +145,9 @@ typedef struct { unsigned long pgprot; } pgprot_t;
+  */
+ #define ptep_buddy(x)	((pte_t *)((unsigned long)(x) ^ sizeof(pte_t)))
+ 
+-#endif /* !__ASSEMBLY__ */
+-
+-/*
+- * __pa()/__va() should be used only during mem init.
+- */
+-#ifdef CONFIG_64BIT
+-#define __pa(x)								\
+-({									\
+-    unsigned long __x = (unsigned long)(x);				\
+-    __x < CKSEG0 ? XPHYSADDR(__x) : CPHYSADDR(__x);			\
+-})
+-#else
+-#define __pa(x)								\
+-    ((unsigned long)(x) - PAGE_OFFSET + PHYS_OFFSET)
+-#endif
+-#define __va(x)		((void *)((unsigned long)(x) + PAGE_OFFSET - PHYS_OFFSET))
+-#define __pa_symbol(x)	__pa(RELOC_HIDE((unsigned long)(x), 0))
+-
+-#define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
+-
+ #ifdef CONFIG_FLATMEM
+ 
+-#define pfn_valid(pfn)							\
+-({									\
+-	unsigned long __pfn = (pfn);					\
+-	/* avoid <linux/bootmem.h> include hell */			\
+-	extern unsigned long min_low_pfn;				\
+-									\
+-	__pfn >= min_low_pfn && __pfn < max_mapnr;			\
+-})
++extern int pfn_valid(unsigned long);
+ 
+ #elif defined(CONFIG_SPARSEMEM)
+ 
+@@ -193,6 +166,27 @@ typedef struct { unsigned long pgprot; } pgprot_t;
+ 
+ #endif
+ 
++
++#endif /* !__ASSEMBLY__ */
++
++/*
++ * __pa()/__va() should be used only during mem init.
++ */
++#ifdef CONFIG_64BIT
++#define __pa(x)								\
++({									\
++    unsigned long __x = (unsigned long)(x);				\
++    __x < CKSEG0 ? XPHYSADDR(__x) : CPHYSADDR(__x);			\
++})
++#else
++#define __pa(x)								\
++    ((unsigned long)(x) - PAGE_OFFSET + PHYS_OFFSET)
++#endif
++#define __va(x)		((void *)((unsigned long)(x) + PAGE_OFFSET - PHYS_OFFSET))
++#define __pa_symbol(x)	__pa(RELOC_HIDE((unsigned long)(x), 0))
++
++#define pfn_to_kaddr(pfn)	__va((pfn) << PAGE_SHIFT)
++
+ #define virt_to_page(kaddr)	pfn_to_page(PFN_DOWN(virt_to_phys(kaddr)))
+ #define virt_addr_valid(kaddr)	pfn_valid(PFN_DOWN(virt_to_phys(kaddr)))
+ 
+diff --git a/arch/mips/mm/page.c b/arch/mips/mm/page.c
+index f5c7375..e0a3f72 100644
+--- a/arch/mips/mm/page.c
++++ b/arch/mips/mm/page.c
+@@ -689,3 +689,20 @@ void copy_page(void *to, void *from)
+ }
+ 
+ #endif /* CONFIG_SIBYTE_DMA_PAGEOPS */
++
++#ifdef CONFIG_FLATMEM
++int pfn_valid(unsigned long pfn)
++{
++	int i;
++
++	for (i = 0; i < boot_mem_map.nr_map; i++) {
++		if (boot_mem_map.map[i].type == BOOT_MEM_RAM) {
++			if ((pfn >= PFN_DOWN(boot_mem_map.map[i].addr)) &&
++				(pfn < PFN_UP(boot_mem_map.map[i].addr +
++					boot_mem_map.map[i].size)))
++				return 1;
++		}
++	}
++	return 0;
++}
++#endif
+-- 
+1.6.2.1

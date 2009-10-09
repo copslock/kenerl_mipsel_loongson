@@ -1,58 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Oct 2009 17:18:08 +0200 (CEST)
-Received: from mba.ocn.ne.jp ([122.28.14.163]:57586 "HELO smtp.mba.ocn.ne.jp"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with SMTP
-	id S1492907AbZJIPSC (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 9 Oct 2009 17:18:02 +0200
-Received: from localhost (p1021-ipad303funabasi.chiba.ocn.ne.jp [123.217.147.21])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
-	id 5C33A6CE4; Sat, 10 Oct 2009 00:17:54 +0900 (JST)
-Date:	Sat, 10 Oct 2009 00:17:54 +0900 (JST)
-Message-Id: <20091010.001754.229727131.anemo@mba.ocn.ne.jp>
-To:	wuzhangjin@gmail.com
-Cc:	linux-mips@linux-mips.org, linux-pm@lists.linux-foundation.org,
-	linux-kernel@vger.kernel.org, tglx@linutronix.de,
-	ralf@linux-mips.org, rjw@sisk.pl, yuasa@linux-mips.org
-Subject: Re: [PATCH] MIPS: add IRQF_TIMER flag for Timer Interrupts
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <1255007874-19574-1-git-send-email-wuzhangjin@gmail.com>
-References: <1255007874-19574-1-git-send-email-wuzhangjin@gmail.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 22.2 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Oct 2009 17:40:23 +0200 (CEST)
+Received: from h155.mvista.com ([63.81.120.155]:60856 "EHLO imap.sh.mvista.com"
+	rhost-flags-OK-FAIL-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S1492963AbZJIPkP (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 9 Oct 2009 17:40:15 +0200
+Received: from [192.168.11.189] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with ESMTP
+	id 1B2633EC9; Fri,  9 Oct 2009 08:40:09 -0700 (PDT)
+Message-ID: <4ACF5A10.3020406@ru.mvista.com>
+Date:	Fri, 09 Oct 2009 19:43:12 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
+MIME-Version: 1.0
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
+	"Rafael J. Wysocki" <rjw@sisk.pl>, Pavel Machek <pavel@ucw.cz>
+Subject: Re: [PATCH] MIPS: fix pfn_valid() for FLAGMEM
+References: <1254992252-15923-1-git-send-email-wuzhangjin@gmail.com> <20091008144230.GA682@linux-mips.org> <1255016760.14496.57.camel@falcon> <20091008185012.GA10365@linux-mips.org>
+In-Reply-To: <20091008185012.GA10365@linux-mips.org>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24201
+X-archive-position: 24202
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu,  8 Oct 2009 21:17:54 +0800, Wu Zhangjin <wuzhangjin@gmail.com> wrote:
-> This patch add IRQF_TIMER flag for all Timer interrupts in linux-MIPS,
-> which will help to not disable the Timer IRQ when suspending to ensure
-> resuming normally(d6c585a4342a2ff627a29f9aea77c5ed4cd76023) and not
-> thread them when enabled PREEMPT_RT.
-> 
-> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
-> ---
->  arch/mips/jazz/irq.c                |    2 +-
->  arch/mips/kernel/cevt-gt641xx.c     |    2 +-
->  arch/mips/kernel/cevt-r4k.c         |    2 +-
->  arch/mips/kernel/i8253.c            |    2 +-
->  arch/mips/nxp/pnx8550/common/time.c |    2 +-
->  arch/mips/sgi-ip27/ip27-timer.c     |    2 +-
->  arch/mips/sni/time.c                |    2 +-
->  7 files changed, 7 insertions(+), 7 deletions(-)
+Hello.
 
-Maybe cevt-bcm1480.c, cevt-ds1287.c, cevt-sb1250.c, cevt-txx9.c and
-i8253.c need same fix?
+Ralf Baechle wrote:
 
----
-Atsushi Nemoto
+>>>Are the non-memory parts marked as reserved?
+
+>>No, so, is that a need to mark them?
+
+> Initially all pages are marked as reserved.
+
+> Which seems to be good enough for x86:
+
+> $ cat /proc/iomem
+> 00000000-0009efff : System RAM
+> 0009f000-0009ffff : reserved
+> 000c0000-000cffff : pnp 00:0d
+> 000e0000-000fffff : pnp 00:0d
+> 00100000-7fe5b7ff : System RAM
+> [...]
+
+> The 0x9f000 - 0x9ffff range is the good old ISA I/O memory range (classic
+> MDA/CGA/VGA etc.), that is non-memory yet:
+
+    Not really, it's a usual RAM. CGA/VGA video memory occupies 
+000a0000-000bffff and MDA occupies 000b0000-000b7ffff (if not less).  This 
+range is probably reserved by BIOS for something like EBDA...
+
+WBR, Sergei

@@ -1,76 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Oct 2009 06:53:53 +0200 (CEST)
-Received: from [93.93.128.226] ([93.93.128.226]:41180 "EHLO
-	bhuna.collabora.co.uk" rhost-flags-FAIL-FAIL-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492044AbZJIExq (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 9 Oct 2009 06:53:46 +0200
-Received: from mycelium.queued.net (wireless.queued.net [66.92.71.179])
-	(using TLSv1 with cipher DHE-RSA-AES128-SHA (128/128 bits))
-	(No client certificate requested)
-	by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 7D8ED600205;
-	Fri,  9 Oct 2009 05:53:22 +0100 (BST)
-Date:	Fri, 9 Oct 2009 00:53:18 -0400
-From:	Andres Salomon <dilinger@collabora.co.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 09 Oct 2009 17:18:08 +0200 (CEST)
+Received: from mba.ocn.ne.jp ([122.28.14.163]:57586 "HELO smtp.mba.ocn.ne.jp"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with SMTP
+	id S1492907AbZJIPSC (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 9 Oct 2009 17:18:02 +0200
+Received: from localhost (p1021-ipad303funabasi.chiba.ocn.ne.jp [123.217.147.21])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id 5C33A6CE4; Sat, 10 Oct 2009 00:17:54 +0900 (JST)
+Date:	Sat, 10 Oct 2009 00:17:54 +0900 (JST)
+Message-Id: <20091010.001754.229727131.anemo@mba.ocn.ne.jp>
 To:	wuzhangjin@gmail.com
-Cc:	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	linux-mips <linux-mips@linux-mips.org>,
-	Jaya Kumar <jayakumar.lkml@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>, loongson-dev@googlegroups.com
-Subject: Re: [PATCH] CS5535: Remove the X86 platform dependence of
- SND_CS5535AUDIO
-Message-ID: <20091009005318.7174938c@mycelium.queued.net>
-In-Reply-To: <1255060287.16819.1.camel@falcon>
-References: <1255059842-12160-1-git-send-email-wuzhangjin@gmail.com>
-	<1255060287.16819.1.camel@falcon>
-X-Mailer: Claws Mail 3.7.2 (GTK+ 2.18.0; i486-pc-linux-gnu)
+Cc:	linux-mips@linux-mips.org, linux-pm@lists.linux-foundation.org,
+	linux-kernel@vger.kernel.org, tglx@linutronix.de,
+	ralf@linux-mips.org, rjw@sisk.pl, yuasa@linux-mips.org
+Subject: Re: [PATCH] MIPS: add IRQF_TIMER flag for Timer Interrupts
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <1255007874-19574-1-git-send-email-wuzhangjin@gmail.com>
+References: <1255007874-19574-1-git-send-email-wuzhangjin@gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 22.2 / Mule 5.0 (SAKAKI)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Return-Path: <dilinger@collabora.co.uk>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24200
+X-archive-position: 24201
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dilinger@collabora.co.uk
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, 09 Oct 2009 11:51:27 +0800
-Wu Zhangjin <wuzhangjin@gmail.com> wrote:
+On Thu,  8 Oct 2009 21:17:54 +0800, Wu Zhangjin <wuzhangjin@gmail.com> wrote:
+> This patch add IRQF_TIMER flag for all Timer interrupts in linux-MIPS,
+> which will help to not disable the Timer IRQ when suspending to ensure
+> resuming normally(d6c585a4342a2ff627a29f9aea77c5ed4cd76023) and not
+> thread them when enabled PREEMPT_RT.
+> 
+> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+> ---
+>  arch/mips/jazz/irq.c                |    2 +-
+>  arch/mips/kernel/cevt-gt641xx.c     |    2 +-
+>  arch/mips/kernel/cevt-r4k.c         |    2 +-
+>  arch/mips/kernel/i8253.c            |    2 +-
+>  arch/mips/nxp/pnx8550/common/time.c |    2 +-
+>  arch/mips/sgi-ip27/ip27-timer.c     |    2 +-
+>  arch/mips/sni/time.c                |    2 +-
+>  7 files changed, 7 insertions(+), 7 deletions(-)
 
-> On Fri, 2009-10-09 at 11:44 +0800, Wu Zhangjin wrote:
-> > There is no platform dependence of SND_CS5535AUDIO before 2.6.31,
-> > Not sure who have touched this part, but SND_CS5535AUDIO is at least
-> > available on Loongson family machines, so, Remove the platform
-> > dependence directly.
-> > 
-> > Reported-by: rixed@happyleptic.org
-> > Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
-> > ---
-> >  sound/pci/Kconfig |    1 -
-> >  1 files changed, 0 insertions(+), 1 deletions(-)
-> > 
-> > diff --git a/sound/pci/Kconfig b/sound/pci/Kconfig
-> > index fb5ee3c..75c602b 100644
-> > --- a/sound/pci/Kconfig
-> > +++ b/sound/pci/Kconfig
-> > @@ -259,7 +259,6 @@ config SND_CS5530
-> >  
-> >  config SND_CS5535AUDIO
-> >  	tristate "CS5535/CS5536 Audio"
-> > -	depends on X86 && !X86_64
-> 
-> or use this?
-> 
-> 	depends on (X86 && !X86_64) || MIPS
-> 
-> Regards,
-> 	Wu Zhangjin
-> 
+Maybe cevt-bcm1480.c, cevt-ds1287.c, cevt-sb1250.c, cevt-txx9.c and
+i8253.c need same fix?
 
-
-I'd say just remove the arch dependency (and make sure it builds and
-doesn't obviously explode w/ x86-64). There's no need for it, afaict.
-It's been there since at least 2005 (git commit 230b5c1a).
+---
+Atsushi Nemoto

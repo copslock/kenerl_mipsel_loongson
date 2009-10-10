@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Oct 2009 17:54:15 +0200 (CEST)
-Received: from mail-pz0-f197.google.com ([209.85.222.197]:53100 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Oct 2009 17:54:41 +0200 (CEST)
+Received: from mail-pz0-f197.google.com ([209.85.222.197]:48767 "EHLO
 	mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492863AbZJJPyJ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 10 Oct 2009 17:54:09 +0200
-Received: by pzk35 with SMTP id 35so2641072pzk.22
-        for <linux-mips@linux-mips.org>; Sat, 10 Oct 2009 08:54:02 -0700 (PDT)
+	by ftp.linux-mips.org with ESMTP id S1492872AbZJJPyQ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 10 Oct 2009 17:54:16 +0200
+Received: by pzk35 with SMTP id 35so2641104pzk.22
+        for <linux-mips@linux-mips.org>; Sat, 10 Oct 2009 08:54:09 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
+         :message-id:x-mailer:in-reply-to:references;
         bh=MIv1Ol8BM1ylb8W64IMeSxRMgpwreILacay15dZdEgM=;
-        b=c8CGk6LuOj85MmMztEoudjTAYxLHHBxrdfcs5N1NBw07u11nN235Fqls/+yZ0wNlRt
-         1A22KwJ4mP7qNkKiPt/77xxpwK5yXqhtSFk3w8UFCNEd3jd1djxEhKhD2oriwAuHt198
-         NnXpy6Eqnp0WkGOqXsS2M6ekrrNdOC6WUThrQ=
+        b=vG4XwjntG+n1KNxV2iFXTDtQ0FPZ8Y94USgCiP+yC6lNEn2LBPOj0ukPc5xNNqJLwT
+         U8ZJV7qfmallT930aEOp0cvTZmMFQG7wktP+w5DgPE49iQB0oXE06DOxGGFZf9ufR3xO
+         QLxgDiE5G4PRpOlD2/+nyRoSNYUkN1UtIPPjU=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=o3yse2Otv0ihExfBqKKdch+sI1UsruHxgqIL482GcR4YwvrqqtI/wvMv9LxSqwWgxw
-         Zpy9b3e1yDmPMl4JFvOPKdSRLC3Wij2EWdOnhjaN3yzf/g1/0p7nIVtjiORm6vMU1lMA
-         eAuLEVuKDUN/0UFlleZr/asICK7Sroq3ei1i4=
-Received: by 10.115.20.11 with SMTP id x11mr5549272wai.220.1255190042234;
-        Sat, 10 Oct 2009 08:54:02 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        b=cMc/0e0tZbcCSnHPjXEF+74goqBbJFPynKOCP+2zY6qpgiNrM1zhDkeexL29MJLwG/
+         h9xDoP9KrigMDDWFr4JKtzt66wlNwa2+15Y3P/MMlHJHEcJ8VsGGUZ+N84RkBQZhg/9r
+         kDA5kjAD40fHUtlcS/cR0lHrnV4H65jGGeLas=
+Received: by 10.115.66.13 with SMTP id t13mr5595951wak.176.1255190049147;
+        Sat, 10 Oct 2009 08:54:09 -0700 (PDT)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id 23sm1473114pzk.4.2009.10.10.08.53.57
+        by mx.google.com with ESMTPS id 23sm1473114pzk.4.2009.10.10.08.54.02
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sat, 10 Oct 2009 08:54:01 -0700 (PDT)
+        Sat, 10 Oct 2009 08:54:08 -0700 (PDT)
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 To:	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
 	linux-mips <linux-mips@linux-mips.org>,
@@ -34,14 +34,16 @@ Cc:	Jaya Kumar <jayakumar.lkml@gmail.com>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
 	Wu Zhangjin <wuzhangjin@gmail.com>
 Subject: [PATCH] SND_CS5535AUDIO: Remove the X86 platform dependency
-Date:	Sat, 10 Oct 2009 23:53:48 +0800
-Message-Id: <1255190029-17584-1-git-send-email-wuzhangjin@gmail.com>
+Date:	Sat, 10 Oct 2009 23:53:49 +0800
+Message-Id: <1255190029-17584-2-git-send-email-wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.6.2.1
+In-Reply-To: <1255190029-17584-1-git-send-email-wuzhangjin@gmail.com>
+References: <1255190029-17584-1-git-send-email-wuzhangjin@gmail.com>
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24216
+X-archive-position: 24217
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org

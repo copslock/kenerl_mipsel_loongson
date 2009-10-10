@@ -1,44 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Oct 2009 13:20:15 +0200 (CEST)
-Received: from mail-px0-f187.google.com ([209.85.216.187]:44947 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 10 Oct 2009 16:32:38 +0200 (CEST)
+Received: from mail-px0-f187.google.com ([209.85.216.187]:34472 "EHLO
 	mail-px0-f187.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492657AbZJJLUI (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 10 Oct 2009 13:20:08 +0200
-Received: by pxi17 with SMTP id 17so9321149pxi.21
-        for <multiple recipients>; Sat, 10 Oct 2009 04:20:00 -0700 (PDT)
+	by ftp.linux-mips.org with ESMTP id S1492783AbZJJOcc (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 10 Oct 2009 16:32:32 +0200
+Received: by pxi17 with SMTP id 17so9428033pxi.21
+        for <linux-mips@linux-mips.org>; Sat, 10 Oct 2009 07:32:22 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=glVArUxOWiJHO4CF/8VmhnXzrZWHEaXbgjdoacQmKv8=;
-        b=Gwiqx0d6HqLQ1r8j3NiP/xdjY8ifA7iSXD9L8IvdVfLpcc58TktX8WatqObGcfSO6B
-         gaL8oZXdRuJKEjvNaRxSXyniXI7w5ueNSoZNABO5vL/zNJNP3Oee/p0O0H+M+TWfvj5i
-         +Fd/4mGmx76VJ4uG45HH88Ge850Q5sPSUnXDA=
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=93dP0Tuu8zs3P+GId/aNJrlozWcEwpCaWvbtGSztSgc=;
+        b=MOU4tRWtfhftKPVaaWZ/Cm1gCSQsVMLiv/VJrzivBRpCHIskJ+ZIIM9mkc9uaxSWdc
+         FR2XjKcxQzITNOOplgHEYOIMNuAfyvmOig38M4qSBlxetVtsMxYBd+5mLHl8v0vPSLnL
+         ma5jH7ShhphdAWydTbz0+W1a3tRM/jQNKsaTE=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=rPoTlwKexE1wMk6hChgesP0iUnzhPgt8xkLPt63k++DTWwvsQZk2DmZ0pVoCL0kGlM
-         vQwTxis1K7Ub7f/+lcPSak+NOaZ9NVKpW9pzKQC4qq/WarzRGLlenjnh1bovtuVSMq6n
-         baQDNQAVHpL5W2B9+8ft+62d42qX+n0xCsv9s=
-Received: by 10.115.38.40 with SMTP id q40mr1940830waj.95.1255173599925;
-        Sat, 10 Oct 2009 04:19:59 -0700 (PDT)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id 22sm254165pzk.10.2009.10.10.04.19.56
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=U1kwPVA7HqJow1qjgdwXWL1vPithpB1VjmrBGTZQgjgzBhEL8N2GGlyutK4pLRo/C5
+         nM4c+p+e8PKfKZ5qXd+NHggEwcr74qtfZeF+tk2MBFI9QA5JFrVsQFbUVkk7Up9MDNiI
+         7FvlKzEvCsahiGpSkY4YHdk7Ih+slzBTB/Z9w=
+Received: by 10.114.162.20 with SMTP id k20mr5485345wae.135.1255185142312;
+        Sat, 10 Oct 2009 07:32:22 -0700 (PDT)
+Received: from ?172.16.2.101? ([222.92.8.142])
+        by mx.google.com with ESMTPS id 20sm234220pxi.8.2009.10.10.07.32.18
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sat, 10 Oct 2009 04:19:59 -0700 (PDT)
+        Sat, 10 Oct 2009 07:32:21 -0700 (PDT)
+Subject: Re: [PATCH] CS5535: Remove the X86 platform dependence of
+ SND_CS5535AUDIO
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
-To:	linux-mips <linux-mips@linux-mips.org>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Wu Zhangjin <wuzhangjin@gmail.com>,
-	Chen Jie <chenj@lemote.com>, Hu Hongbing <huhb@lemote.com>
-Subject: [PATCH] MIPS: Fix the syscall lookup_dcookie in scall64-o32.S
-Date:	Sat, 10 Oct 2009 19:19:49 +0800
-Message-Id: <1255173589-20394-1-git-send-email-wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.6.2.1
+Reply-To: wuzhangjin@gmail.com
+To:	Andres Salomon <dilinger@collabora.co.uk>
+Cc:	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	linux-mips <linux-mips@linux-mips.org>,
+	Jaya Kumar <jayakumar.lkml@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>, loongson-dev@googlegroups.com
+In-Reply-To: <20091009005318.7174938c@mycelium.queued.net>
+References: <1255059842-12160-1-git-send-email-wuzhangjin@gmail.com>
+	 <1255060287.16819.1.camel@falcon>
+	 <20091009005318.7174938c@mycelium.queued.net>
+Content-Type: text/plain
+Organization: DSLab, Lanzhou University, China
+Date:	Sat, 10 Oct 2009 22:32:14 +0800
+Message-Id: <1255185134.6883.20.camel@falcon>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.26.1 
+Content-Transfer-Encoding: 7bit
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24211
+X-archive-position: 24212
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,44 +60,51 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-When the kernel is 64bit, the application in O32 ABI will pass 4
-arguments to syscall lookup_dcookie, but the implementation can only
-handle 3 arguments. This patch will fixes it.
+Hello,
 
-Signed-off-by: Chen Jie <chenj@lemote.com>
-Signed-off-by: Hu Hongbing <huhb@lemote.com>
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- arch/mips/kernel/linux32.c     |    6 ++++++
- arch/mips/kernel/scall64-o32.S |    2 +-
- 2 files changed, 7 insertions(+), 1 deletions(-)
+On Fri, 2009-10-09 at 00:53 -0400, Andres Salomon wrote:
+> On Fri, 09 Oct 2009 11:51:27 +0800
+> Wu Zhangjin <wuzhangjin@gmail.com> wrote:
+> 
+> > On Fri, 2009-10-09 at 11:44 +0800, Wu Zhangjin wrote:
+> > > There is no platform dependence of SND_CS5535AUDIO before 2.6.31,
+> > > Not sure who have touched this part, but SND_CS5535AUDIO is at least
+> > > available on Loongson family machines, so, Remove the platform
+> > > dependence directly.
+> > > 
+> > > Reported-by: rixed@happyleptic.org
+> > > Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+> > > ---
+> > >  sound/pci/Kconfig |    1 -
+> > >  1 files changed, 0 insertions(+), 1 deletions(-)
+> > > 
+> > > diff --git a/sound/pci/Kconfig b/sound/pci/Kconfig
+> > > index fb5ee3c..75c602b 100644
+> > > --- a/sound/pci/Kconfig
+> > > +++ b/sound/pci/Kconfig
+> > > @@ -259,7 +259,6 @@ config SND_CS5530
+> > >  
+> > >  config SND_CS5535AUDIO
+> > >  	tristate "CS5535/CS5536 Audio"
+> > > -	depends on X86 && !X86_64
+> > 
+> > or use this?
+> > 
+> > 	depends on (X86 && !X86_64) || MIPS
+> > 
+> > Regards,
+> > 	Wu Zhangjin
+> > 
+> 
+> 
+> I'd say just remove the arch dependency (and make sure it builds and
+> doesn't obviously explode w/ x86-64). There's no need for it, afaict.
+> It's been there since at least 2005 (git commit 230b5c1a).
+> 
 
-diff --git a/arch/mips/kernel/linux32.c b/arch/mips/kernel/linux32.c
-index 6242bc6..9dc09be 100644
---- a/arch/mips/kernel/linux32.c
-+++ b/arch/mips/kernel/linux32.c
-@@ -428,3 +428,9 @@ _sys32_clone(nabi_no_regargs struct pt_regs regs)
- 	return do_fork(clone_flags, newsp, &regs, 0,
- 	               parent_tidptr, child_tidptr);
- }
-+
-+asmlinkage long sys32_lookup_dcookie(u32 dcookie_a0, u32 dcookie_a1,
-+		char __user *buf, size_t len)
-+{
-+       return sys_lookup_dcookie(merge_64(dcookie_a0, dcookie_a1), buf, len);
-+}
-diff --git a/arch/mips/kernel/scall64-o32.S b/arch/mips/kernel/scall64-o32.S
-index 9bbf977..ba0dde6 100644
---- a/arch/mips/kernel/scall64-o32.S
-+++ b/arch/mips/kernel/scall64-o32.S
-@@ -450,7 +450,7 @@ sys_call_table:
- 	PTR	sys_io_submit
- 	PTR	sys_io_cancel			/* 4245 */
- 	PTR	sys_exit_group
--	PTR	sys_lookup_dcookie
-+	PTR	sys32_lookup_dcookie
- 	PTR	sys_epoll_create
- 	PTR	sys_epoll_ctl
- 	PTR	sys_epoll_wait			/* 4250 */
--- 
-1.6.2.1
+Just checked the SND_CS5536AUDIO(=y and =m) option with ARCH=x86_64, no
+compiling warnings & errors, but I don't have such a chip in a x86-64
+machine, so, did not test the kernel yet.
+
+Regards,
+	Wu Zhangjin

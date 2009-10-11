@@ -1,58 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 11 Oct 2009 22:27:15 +0200 (CEST)
-Received: from dns1.mips.com ([63.167.95.197]:47528 "EHLO dns1.mips.com"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1492873AbZJKU1I (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 11 Oct 2009 22:27:08 +0200
-Received: from MTVEXCHANGE.mips.com ([192.168.36.60])
-	by dns1.mips.com (8.13.8/8.13.8) with ESMTP id n9BKR1MN001220;
-	Sun, 11 Oct 2009 13:27:01 -0700
-Received: from [192.168.3.60] ([192.168.3.60]) by MTVEXCHANGE.mips.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Sun, 11 Oct 2009 13:27:01 -0700
-Message-ID: <4AD23F92.8030902@mips.com>
-Date:	Sun, 11 Oct 2009 13:26:58 -0700
-From:	Chris Dearman <chris@mips.com>
-User-Agent: Thunderbird 2.0.0.23 (Windows/20090812)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Oct 2009 00:52:13 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:42355 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S1493010AbZJKWwK (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 12 Oct 2009 00:52:10 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n9BMrNnK010290;
+	Mon, 12 Oct 2009 00:53:24 +0200
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n9BMrLQn010288;
+	Mon, 12 Oct 2009 00:53:21 +0200
+Date:	Mon, 12 Oct 2009 00:53:20 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Florian Fainelli <florian@openwrt.org>
+Cc:	mbizon@freebox.fr, linux-mips@linux-mips.org
+Subject: Re: [PATCH 2/2] bcm63xx: only set the proper GPIO overlay settings
+Message-ID: <20091011225320.GA10230@linux-mips.org>
+References: <200908312028.10931.florian@openwrt.org> <1251750389.10420.24.camel@sakura.staff.proxad.net> <200908312337.36634.florian@openwrt.org>
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>
-CC:	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] Avoid potential hazard on Context register
-References: <4AD17619.1000201@mips.com> <20091011133912.GA15684@linux-mips.org> <20091011145330.GA23369@linux-mips.org>
-In-Reply-To: <20091011145330.GA23369@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 11 Oct 2009 20:27:01.0101 (UTC) FILETIME=[302701D0:01CA4AB1]
-Return-Path: <chris@mips.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <200908312337.36634.florian@openwrt.org>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24226
+X-archive-position: 24227
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: chris@mips.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Ralf Baechle wrote:
-> There is no hazard barrier between writes to c0_context and subsequent
-> read accesses.  This is a fairly theoretical hole as c0_context is only
-> written on CPU bootup and other, unrelated code will almost certainly
-It was actually in the bootup code where I saw the problem, and this 
-patch doesn't deal with that case:
+On Mon, Aug 31, 2009 at 11:37:31PM +0200, Florian Fainelli wrote:
 
->         MTC0            zero, CP0_CONTEXT       # clear context register 
->         PTR_LA          $28, init_thread_union 
->         /* Set the SP after an empty pt_regs.  */ 
->         PTR_LI          sp, _THREAD_SIZE - 32 - PT_SIZE 
->         PTR_ADDU        sp, $28 
->         back_to_back_c0_hazard 
->         set_saved_sp    sp, t0, t1 
+> Le lundi 31 août 2009 22:26:29, Maxime Bizon a écrit :
+> > On Mon, 2009-08-31 at 20:28 +0200, Florian Fainelli wrote:
+> > > This patch makes the GPIO pin multiplexing configuration
+> > > read the initial GPIO mode register value instead of
+> > > setting it initially to 0, then setting the correct
+> > > bits, this is safer.
+> >
+> > I disagree, now we get working or not working devices depending on the
+> > CFE version used, for which we don't have any public source code nor
+> > changelog.
+> 
+> I did not think this could break other boards, it is required on BCM6345 
+> though.
+> 
+> >
+> > I cleared the register for that purpose.
+> >
+> > If a particular pin muxing config is needed for some board, we should
+> > add this to the board specific struct instead.
+> 
+> Then I will make it BCM6345 specific.
 
-The problem I observed is that the Context valuse used by set_saved_sp 
-is whatever it inherits from YAMON.
+I thought you were going to send an update to this?
 
-Chris
-
--- 
-Chris Dearman               Desk: +1 408 530 5092  Cell: +1 650 224 8603
-MIPS Technologies Inc            955 East Arques Ave, Sunnyvale CA 94085
+  Ralf

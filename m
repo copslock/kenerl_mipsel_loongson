@@ -1,49 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Oct 2009 21:11:59 +0200 (CEST)
-Received: from cantor2.suse.de ([195.135.220.15]:60902 "EHLO mx2.suse.de"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1493333AbZJLTLw (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 12 Oct 2009 21:11:52 +0200
-Received: from relay2.suse.de (relay-ext.suse.de [195.135.221.8])
-	by mx2.suse.de (Postfix) with ESMTP id 055D379727;
-	Mon, 12 Oct 2009 21:11:52 +0200 (CEST)
-Date:	Mon, 12 Oct 2009 12:04:09 -0700
-From:	Greg KH <gregkh@suse.de>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH] Staging: octeon-ethernet: Assign proper MAC addresses.
-Message-ID: <20091012190407.GA24524@suse.de>
-References: <1255374272-32757-1-git-send-email-ddaney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Oct 2009 22:20:36 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:58987 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S1493404AbZJLUUb (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 12 Oct 2009 22:20:31 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n9CKKD6M028969;
+	Mon, 12 Oct 2009 22:20:33 +0200
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n9CKIkBm028950;
+	Mon, 12 Oct 2009 22:18:46 +0200
+Date:	Mon, 12 Oct 2009 22:18:45 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Manuel Lauss <manuel.lauss@googlemail.com>
+Cc:	Linux-MIPS <linux-mips@linux-mips.org>,
+	Manuel Lauss <manuel.lauss@gmail.com>
+Subject: Re: [PATCH] MIPS: Alchemy: fix DB1550 PCI interrupt typo
+Message-ID: <20091012201845.GA28561@linux-mips.org>
+References: <1254939315-8158-5-git-send-email-manuel.lauss@gmail.com> <1255366626-10307-1-git-send-email-manuel.lauss@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1255374272-32757-1-git-send-email-ddaney@caviumnetworks.com>
-User-Agent: Mutt/1.5.20 (2009-06-14)
-Return-Path: <gregkh@suse.de>
+In-Reply-To: <1255366626-10307-1-git-send-email-manuel.lauss@gmail.com>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24240
+X-archive-position: 24241
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: gregkh@suse.de
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Oct 12, 2009 at 12:04:32PM -0700, David Daney wrote:
-> Allocate MAC addresses using the same method as the bootloader.  This
-> avoids changing the MAC between bootloader and kernel operation as
-> well as avoiding duplicates and use of addresses outside of the
-> assigned range.
+On Mon, Oct 12, 2009 at 06:57:06PM +0200, Manuel Lauss wrote:
+
+> Fix a copy-paste error in patch "Alchemy: Stop IRQ name sharing".
 > 
-> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
+> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
 > ---
-> 
-> This could merge via Ralf's tree as Octeon is MIPS based and all the
-> rest of the Octeon patches seem to be going in this way.
+> Ralf, please fold this into the patch "Alchemy: Stop IRQ name sharing"
+> in lmo-queue!
 
-Fine with me.
+Done.  Thanks!
 
-thanks,
-
-greg k-h
+  Ralf

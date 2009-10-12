@@ -1,91 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Oct 2009 18:16:39 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:45220 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
-	id S1492947AbZJLQQf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 12 Oct 2009 18:16:35 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n9CGHqFS021307;
-	Mon, 12 Oct 2009 18:17:52 +0200
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n9CGHpJm021305;
-	Mon, 12 Oct 2009 18:17:51 +0200
-Date:	Mon, 12 Oct 2009 18:17:51 +0200
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Gandham, Raghu" <raghu@mips.com>
-Cc:	"Kevin D. Kissell" <kevink@paralogos.com>,
-	linux-mips@linux-mips.org, "Dearman, Chris" <chris@mips.com>
-Subject: Re: [PATCH 15/15] Do not rely on the initial state of TC/VPE
-	bindings when doing cross VPE writes
-Message-ID: <20091012161751.GB21183@linux-mips.org>
-References: <20090702023938.23268.65453.stgit@linux-raghu> <20090702024331.23268.98671.stgit@linux-raghu> <4A4C314B.2070907@paralogos.com> <94BD67F8AF3ED34FA362C662BA1F12C503BED88E@MTVEXCHANGE.mips.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <94BD67F8AF3ED34FA362C662BA1F12C503BED88E@MTVEXCHANGE.mips.com>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Oct 2009 18:57:20 +0200 (CEST)
+Received: from mail-bw0-f208.google.com ([209.85.218.208]:39615 "EHLO
+	mail-bw0-f208.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493461AbZJLQ5N (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 12 Oct 2009 18:57:13 +0200
+Received: by bwz4 with SMTP id 4so3237856bwz.0
+        for <multiple recipients>; Mon, 12 Oct 2009 09:57:06 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer:in-reply-to:references;
+        bh=ZYIUeg5y0XKdj6v/zoqFmhURjt+Wp7XFhEmHDcKfA1M=;
+        b=QsOoZ5dlXUPgea6PM+HqAmn57tcYSkH5xrJXdS8BeIGG9+stkAI633arPkoL6eOogW
+         oj+TbWVWVEixYp/GOtNu/+VoWgZoyZNChGfpm9RVK1GbZVxxVzFuleKyBWnvypEIVDoI
+         SYWjVXYnOU+kS2j/+iifat6plliNszX95jhTg=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        b=UjeExj06Dv8lTbggayoW82POZg8shWJDgvNjhraNOaXk+Kh/5B/bG7NWle/iaM5dLr
+         EkA4CRRFv2nXT02CMO7UADCzDA7mzt1Zn+zacHjjPgoqtNwPOUFsAVBpjcIjyCK2VrNc
+         AvlUIfP7IDbYWpGaW7EjylyGrCffXzQDmjc98=
+Received: by 10.103.48.17 with SMTP id a17mr2545773muk.82.1255366626870;
+        Mon, 12 Oct 2009 09:57:06 -0700 (PDT)
+Received: from localhost.localdomain (p5496E0B2.dip.t-dialin.net [84.150.224.178])
+        by mx.google.com with ESMTPS id j9sm47123mue.26.2009.10.12.09.57.05
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Mon, 12 Oct 2009 09:57:05 -0700 (PDT)
+From:	Manuel Lauss <manuel.lauss@googlemail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Linux-MIPS <linux-mips@linux-mips.org>,
+	Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [PATCH] MIPS: Alchemy: fix DB1550 PCI interrupt typo
+Date:	Mon, 12 Oct 2009 18:57:06 +0200
+Message-Id: <1255366626-10307-1-git-send-email-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 1.6.5.rc2
+In-Reply-To: <1254939315-8158-5-git-send-email-manuel.lauss@gmail.com>
+References: <1254939315-8158-5-git-send-email-manuel.lauss@gmail.com>
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24236
+X-archive-position: 24237
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Jul 02, 2009 at 02:46:33PM -0700, Gandham, Raghu wrote:
+Fix a copy-paste error in patch "Alchemy: Stop IRQ name sharing".
 
-> > From: Kevin D. Kissell [mailto:kevink@paralogos.com]
-> > Sent: Wednesday, July 01, 2009 9:02 PM
-> > To: Gandham, Raghu
-> > Cc: linux-mips@linux-mips.org; Dearman, Chris
-> > Subject: Re: [PATCH 15/15] Do not rely on the initial state of TC/VPE
-> > bindings when doing cross VPE writes
-> > 
-> > Note that, regardless of the reset state, smtc_configure_tlb() should
-> > have at least temporarily bound TC 1 to VPE1, which may be why this
-> > never seemed to be a problem on the 34K.  If one wants to support
-> > designs with more than 2 VPEs, then this is probably one of the things
-> > that needs to be fixed.  That having been said, rather than adding a
-> > usually-redundant write_vpe_c0_vpeconf0() in that clause, wouldn't it
-> be
-> > cleaner to just move the MVP setting from the top of the loop to the
-> > point in the loop just after the TCs have been bound to the VPE in
-> > question, i.e.,
-> > 
-> >  454                 if (slop) {
-> >  455                         if (tc != 0) {
-> >  456                                 smtc_tc_setup(vpe,tc, cpu);
-> >  457                                 cpu++;
-> >  458                         }
-> >  459                         printk(" %d", tc);
-> >  460                         tc++;
-> >  461                         slop--;
-> >  462                 }
-> > 
-> >                         write_vpe_c0_vpeconf0(read_vpe_c0_vpeconf0() |
-> > VPECONF0_MVP);
-> > 
-> >  463                 if (vpe != 0) {
-> >  464                         /*
-> >  465                          * Clear any stale software interrupts
-> from
-> > VPE's Cause
-> >  466                          */
-> > 
-> > This should definitely be OK for a 34K, because it's being executed by
-> > TC0 in VPE0 and the reset state of VPE0 has MVP set.  If it weren't,
-> > smtc_configure_tlb() would have failed.
-> > 
-> >           Regards,
-> > 
-> >           Kevin K.
-> 
-> 
-> I will resend this patch with your suggestion.
+Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+---
+Ralf, please fold this into the patch "Alchemy: Stop IRQ name sharing"
+in lmo-queue!
 
-Ping?  Don't think I ever received that, if you sent it.
+Thanks!
 
-  Ralf
+ arch/mips/alchemy/devboards/db1x00/board_setup.c |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/mips/alchemy/devboards/db1x00/board_setup.c b/arch/mips/alchemy/devboards/db1x00/board_setup.c
+index b1f3711..64eb26f 100644
+--- a/arch/mips/alchemy/devboards/db1x00/board_setup.c
++++ b/arch/mips/alchemy/devboards/db1x00/board_setup.c
+@@ -62,9 +62,9 @@ char irq_tab_alchemy[][5] __initdata = {
+ 
+ #ifdef CONFIG_MIPS_DB1550
+ char irq_tab_alchemy[][5] __initdata = {
+-	[11] = { -1, AU1500_PCI_INTC, 0xff, 0xff, 0xff }, /* IDSEL 11 - on-board HPT371 */
+-	[12] = { -1, AU1500_PCI_INTB, AU1500_PCI_INTC, AU1500_PCI_INTD, AU1500_PCI_INTA }, /* IDSEL 12 - PCI slot 2 (left) */
+-	[13] = { -1, AU1500_PCI_INTA, AU1500_PCI_INTB, AU1500_PCI_INTC, AU1500_PCI_INTD }, /* IDSEL 13 - PCI slot 1 (right) */
++	[11] = { -1, AU1550_PCI_INTC, 0xff, 0xff, 0xff }, /* IDSEL 11 - on-board HPT371 */
++	[12] = { -1, AU1550_PCI_INTB, AU1550_PCI_INTC, AU1550_PCI_INTD, AU1550_PCI_INTA }, /* IDSEL 12 - PCI slot 2 (left) */
++	[13] = { -1, AU1550_PCI_INTA, AU1550_PCI_INTB, AU1550_PCI_INTC, AU1550_PCI_INTD }, /* IDSEL 13 - PCI slot 1 (right) */
+ };
+ #endif
+ 
+-- 
+1.6.5.rc2

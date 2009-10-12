@@ -1,80 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Oct 2009 18:57:20 +0200 (CEST)
-Received: from mail-bw0-f208.google.com ([209.85.218.208]:39615 "EHLO
-	mail-bw0-f208.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493461AbZJLQ5N (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 12 Oct 2009 18:57:13 +0200
-Received: by bwz4 with SMTP id 4so3237856bwz.0
-        for <multiple recipients>; Mon, 12 Oct 2009 09:57:06 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer:in-reply-to:references;
-        bh=ZYIUeg5y0XKdj6v/zoqFmhURjt+Wp7XFhEmHDcKfA1M=;
-        b=QsOoZ5dlXUPgea6PM+HqAmn57tcYSkH5xrJXdS8BeIGG9+stkAI633arPkoL6eOogW
-         oj+TbWVWVEixYp/GOtNu/+VoWgZoyZNChGfpm9RVK1GbZVxxVzFuleKyBWnvypEIVDoI
-         SYWjVXYnOU+kS2j/+iifat6plliNszX95jhTg=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=UjeExj06Dv8lTbggayoW82POZg8shWJDgvNjhraNOaXk+Kh/5B/bG7NWle/iaM5dLr
-         EkA4CRRFv2nXT02CMO7UADCzDA7mzt1Zn+zacHjjPgoqtNwPOUFsAVBpjcIjyCK2VrNc
-         AvlUIfP7IDbYWpGaW7EjylyGrCffXzQDmjc98=
-Received: by 10.103.48.17 with SMTP id a17mr2545773muk.82.1255366626870;
-        Mon, 12 Oct 2009 09:57:06 -0700 (PDT)
-Received: from localhost.localdomain (p5496E0B2.dip.t-dialin.net [84.150.224.178])
-        by mx.google.com with ESMTPS id j9sm47123mue.26.2009.10.12.09.57.05
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 12 Oct 2009 09:57:05 -0700 (PDT)
-From:	Manuel Lauss <manuel.lauss@googlemail.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Linux-MIPS <linux-mips@linux-mips.org>,
-	Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH] MIPS: Alchemy: fix DB1550 PCI interrupt typo
-Date:	Mon, 12 Oct 2009 18:57:06 +0200
-Message-Id: <1255366626-10307-1-git-send-email-manuel.lauss@gmail.com>
-X-Mailer: git-send-email 1.6.5.rc2
-In-Reply-To: <1254939315-8158-5-git-send-email-manuel.lauss@gmail.com>
-References: <1254939315-8158-5-git-send-email-manuel.lauss@gmail.com>
-Return-Path: <manuel.lauss@googlemail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 12 Oct 2009 19:08:46 +0200 (CEST)
+Received: from smtp.wp.pl ([212.77.101.1]:8953 "EHLO mx1.wp.pl"
+	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S1493462AbZJLRIi (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 12 Oct 2009 19:08:38 +0200
+Received: (wp-smtpd smtp.wp.pl 19780 invoked from network); 12 Oct 2009 19:08:33 +0200
+Received: from aaty200.neoplus.adsl.tpnet.pl (HELO [192.168.2.5]) (laurentp@[83.6.6.200])
+          (envelope-sender <laurentp@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with RC4-MD5 encrypted SMTP
+          for <linux-mips@linux-mips.org>; 12 Oct 2009 19:08:33 +0200
+Message-ID: <4AD36290.1040709@wp.pl>
+Date:	Mon, 12 Oct 2009 19:08:32 +0200
+From:	"W.P." <laurentp@wp.pl>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; pl-PL; rv:1.8.1.17) Gecko/20080829 SeaMonkey/1.1.12
+MIME-Version: 1.0
+To:	linux-mips@linux-mips.org
+Subject: gcc/binutils versions
+X-Enigmail-Version: 0.95.7
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-WP-AV: skaner antywirusowy poczty Wirtualnej Polski S. A.
+X-WP-SPAM: NO 0000000 [kdNE]                               
+Return-Path: <laurentp@wp.pl>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24237
+X-archive-position: 24238
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: laurentp@wp.pl
 Precedence: bulk
 X-list: linux-mips
 
-Fix a copy-paste error in patch "Alchemy: Stop IRQ name sharing".
+Hi,
 
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
----
-Ralf, please fold this into the patch "Alchemy: Stop IRQ name sharing"
-in lmo-queue!
+I want to make some modules for an existing system. (Manta "Media
+Center" HDD-2000 aka Shenzen Mele HMC-35HD).
+What I have is an official firmware, it looks to be Linux 2.6.12.6-VENUS
+for MIPS, uClibc 0.9.28
 
-Thanks!
+What is missing to me is support to ext2/3 filesystems (believe or not
+only squashfs, jffs2, ntfs and vfat).
 
- arch/mips/alchemy/devboards/db1x00/board_setup.c |    6 +++---
- 1 files changed, 3 insertions(+), 3 deletions(-)
+Now my questions:
 
-diff --git a/arch/mips/alchemy/devboards/db1x00/board_setup.c b/arch/mips/alchemy/devboards/db1x00/board_setup.c
-index b1f3711..64eb26f 100644
---- a/arch/mips/alchemy/devboards/db1x00/board_setup.c
-+++ b/arch/mips/alchemy/devboards/db1x00/board_setup.c
-@@ -62,9 +62,9 @@ char irq_tab_alchemy[][5] __initdata = {
- 
- #ifdef CONFIG_MIPS_DB1550
- char irq_tab_alchemy[][5] __initdata = {
--	[11] = { -1, AU1500_PCI_INTC, 0xff, 0xff, 0xff }, /* IDSEL 11 - on-board HPT371 */
--	[12] = { -1, AU1500_PCI_INTB, AU1500_PCI_INTC, AU1500_PCI_INTD, AU1500_PCI_INTA }, /* IDSEL 12 - PCI slot 2 (left) */
--	[13] = { -1, AU1500_PCI_INTA, AU1500_PCI_INTB, AU1500_PCI_INTC, AU1500_PCI_INTD }, /* IDSEL 13 - PCI slot 1 (right) */
-+	[11] = { -1, AU1550_PCI_INTC, 0xff, 0xff, 0xff }, /* IDSEL 11 - on-board HPT371 */
-+	[12] = { -1, AU1550_PCI_INTB, AU1550_PCI_INTC, AU1550_PCI_INTD, AU1550_PCI_INTA }, /* IDSEL 12 - PCI slot 2 (left) */
-+	[13] = { -1, AU1550_PCI_INTA, AU1550_PCI_INTB, AU1550_PCI_INTC, AU1550_PCI_INTD }, /* IDSEL 13 - PCI slot 1 (right) */
- };
- #endif
- 
--- 
-1.6.5.rc2
+a). how to find what version of binutils/gcc i need? (for setting up
+buildroot)
+b). how to find kernel configuration I need to supply to compile (apart
+setting CONFIG_EXT3_FS=m)?
+
+W.Piotrzkowski

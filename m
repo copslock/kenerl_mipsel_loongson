@@ -1,23 +1,22 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Oct 2009 04:54:56 +0200 (CEST)
-Received: from TYO201.gate.nec.co.jp ([202.32.8.193]:45535 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Oct 2009 04:55:21 +0200 (CEST)
+Received: from TYO201.gate.nec.co.jp ([202.32.8.193]:45685 "EHLO
 	tyo201.gate.nec.co.jp" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1491812AbZJMCx6 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 13 Oct 2009 04:53:58 +0200
+	with ESMTP id S1492076AbZJMCy0 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 13 Oct 2009 04:54:26 +0200
 Received: from relay21.aps.necel.com ([10.29.19.50])
-	by tyo201.gate.nec.co.jp (8.13.8/8.13.4) with ESMTP id n9D2rjrc012208;
-	Tue, 13 Oct 2009 11:53:48 +0900 (JST)
-Received: from realmbox31.aps.necel.com ([10.29.19.36] [10.29.19.36]) by relay21.aps.necel.com with ESMTP; Tue, 13 Oct 2009 11:53:48 +0900
-Received: from [10.114.180.134] ([10.114.180.134] [10.114.180.134]) by mbox02.aps.necel.com with ESMTP; Tue, 13 Oct 2009 11:53:48 +0900
-Message-ID: <4AD3EBC4.6030705@necel.com>
-Date:	Tue, 13 Oct 2009 11:53:56 +0900
+	by tyo201.gate.nec.co.jp (8.13.8/8.13.4) with ESMTP id n9D2sEdq012578;
+	Tue, 13 Oct 2009 11:54:14 +0900 (JST)
+Received: from realmbox31.aps.necel.com ([10.29.19.28] [10.29.19.28]) by relay21.aps.necel.com with ESMTP; Tue, 13 Oct 2009 11:54:14 +0900
+Received: from [10.114.180.134] ([10.114.180.134] [10.114.180.134]) by mbox02.aps.necel.com with ESMTP; Tue, 13 Oct 2009 11:54:13 +0900
+Message-ID: <4AD3EBDD.50105@necel.com>
+Date:	Tue, 13 Oct 2009 11:54:21 +0900
 From:	Shinya Kuribayashi <shinya.kuribayashi@necel.com>
 User-Agent: Thunderbird 2.0.0.23 (Windows/20090812)
 MIME-Version: 1.0
 To:	baruch@tkos.co.il, linux-i2c@vger.kernel.org
 CC:	ben-linux@fluff.org, linux-mips@linux-mips.org,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 15/16] i2c-designware: i2c_dw_xfer_msg: Mark as completed
- on an error
+Subject: [PATCH 16/16] i2c-designware: Add I2C_FUNC_SMBUS_* bits
 References: <4AD3E974.8080200@necel.com>
 In-Reply-To: <4AD3E974.8080200@necel.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
@@ -26,7 +25,7 @@ Return-Path: <shinya.kuribayashi@necel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24262
+X-archive-position: 24263
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,31 +33,34 @@ X-original-sender: shinya.kuribayashi@necel.com
 Precedence: bulk
 X-list: linux-mips
 
-As wait_for_completion_interruptible_timeout() will be invoked after
-the first call to i2c_dw_xfer_msg() is made whether or not an error is
-detected in it, we need to mark ->cmd_complete as completed to avoid a
-needless HZ timeout.
+This will ease our testing a bit with i2c-tools.  Note that DW I2C core
+doesn't support I2C_FUNC_SMBUS_QUICK, as it's not capable of slave-
+addressing-only I2C transactions.
 
 Signed-off-by: Shinya Kuribayashi <shinya.kuribayashi@necel.com>
 ---
-
- Or we could change the i2c_dw_xfer_msg() prototype from "void" to
- "int".  Which is preffered?
-
- drivers/i2c/busses/i2c-designware.c |    1 +
- 1 files changed, 1 insertions(+), 0 deletions(-)
+ drivers/i2c/busses/i2c-designware.c |    9 ++++++++-
+ 1 files changed, 8 insertions(+), 1 deletions(-)
 
 diff --git a/drivers/i2c/busses/i2c-designware.c b/drivers/i2c/busses/i2c-designware.c
-index f7ea032..6f85e28 100644
+index 6f85e28..80c8b8a 100644
 --- a/drivers/i2c/busses/i2c-designware.c
 +++ b/drivers/i2c/busses/i2c-designware.c
-@@ -376,6 +376,7 @@ i2c_dw_xfer_msg(struct dw_i2c_dev *dev)
- 			dev_err(dev->dev,
- 				"%s: invalid message length\n", __func__);
- 			dev->msg_err = -EINVAL;
-+			complete(&dev->cmd_complete);
- 			return;
- 		}
+@@ -529,7 +529,14 @@ done:
  
+ static u32 i2c_dw_func(struct i2c_adapter *adap)
+ {
+-	return I2C_FUNC_I2C | I2C_FUNC_10BIT_ADDR;
++	return	I2C_FUNC_I2C |
++		I2C_FUNC_10BIT_ADDR |
++		I2C_FUNC_SMBUS_BYTE |
++		I2C_FUNC_SMBUS_BYTE_DATA |
++		I2C_FUNC_SMBUS_WORD_DATA |
++		I2C_FUNC_SMBUS_BLOCK_DATA |
++		I2C_FUNC_SMBUS_I2C_BLOCK |
++		I2C_FUNC_SMBUS_I2C_BLOCK_2;
+ }
+ 
+ static u32 i2c_dw_read_clear_intrbits(struct dw_i2c_dev *dev)
 -- 
 1.6.5

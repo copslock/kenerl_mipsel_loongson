@@ -1,288 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Oct 2009 17:53:24 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:17384 "EHLO
-	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493188AbZJMPwx (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 13 Oct 2009 17:52:53 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,5,4,7535)
-	id <B4ad4a23f0000>; Tue, 13 Oct 2009 08:52:34 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 13 Oct 2009 08:52:32 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Tue, 13 Oct 2009 08:52:32 -0700
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n9DFqUe1022084;
-	Tue, 13 Oct 2009 08:52:30 -0700
-Received: (from ddaney@localhost)
-	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n9DFqUIL022083;
-	Tue, 13 Oct 2009 08:52:30 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-To:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Cc:	David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH 2/2] MIPS: Octeon: Use lockless interrupt controller operations when possible.
-Date:	Tue, 13 Oct 2009 08:52:29 -0700
-Message-Id: <1255449149-22054-2-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.6.0.6
-In-Reply-To: <4AD4A1E9.1080309@caviumnetworks.com>
-References: <4AD4A1E9.1080309@caviumnetworks.com>
-X-OriginalArrivalTime: 13 Oct 2009 15:52:32.0472 (UTC) FILETIME=[2CE92580:01CA4C1D]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 13 Oct 2009 18:16:25 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:49572 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S1493215AbZJMQQW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 13 Oct 2009 18:16:22 +0200
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n9DGHXt2028053;
+	Tue, 13 Oct 2009 18:17:36 +0200
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n9DGHMxh028050;
+	Tue, 13 Oct 2009 18:17:22 +0200
+Date:	Tue, 13 Oct 2009 18:17:22 +0200
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	David Daney <ddaney@caviumnetworks.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/2] MIPS: Octeon: Use
+	write_lock_irqsave/write_unlock_irqrestore when setting irq
+	affinity.
+Message-ID: <20091013161722.GA27508@linux-mips.org>
+References: <4AD4A1E9.1080309@caviumnetworks.com> <1255449149-22054-1-git-send-email-ddaney@caviumnetworks.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1255449149-22054-1-git-send-email-ddaney@caviumnetworks.com>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24268
+X-archive-position: 24269
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Some newer Octeon chips have registers that allow lockless operation
-of the interrupt controller.  Take advantage of them.
+On Tue, Oct 13, 2009 at 08:52:28AM -0700, David Daney wrote:
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
----
- arch/mips/cavium-octeon/octeon-irq.c |  177 +++++++++++++++++++++++++++++++++-
- 1 files changed, 172 insertions(+), 5 deletions(-)
+> Since the locks are used from interrupt context we need the
+> irqsave/irqrestore versions of the locking functions.
+> 
+> Signed-off-by: David Daney <ddaney@caviumnetworks.com>
 
-diff --git a/arch/mips/cavium-octeon/octeon-irq.c b/arch/mips/cavium-octeon/octeon-irq.c
-index 0bda5c5..865ff7b 100644
---- a/arch/mips/cavium-octeon/octeon-irq.c
-+++ b/arch/mips/cavium-octeon/octeon-irq.c
-@@ -178,6 +178,50 @@ static void octeon_irq_ciu0_disable(unsigned int irq)
- #endif
- }
- 
-+/*
-+ * Enable the irq on the current core for chips that have the EN*_W1{S,C}
-+ * registers.
-+ */
-+static void octeon_irq_ciu0_enable_v2(unsigned int irq)
-+{
-+	int index = cvmx_get_core_num() * 2;
-+	u64 mask = 1ull << (irq - OCTEON_IRQ_WORKQ0);
-+
-+	cvmx_write_csr(CVMX_CIU_INTX_EN0_W1S(index), mask);
-+}
-+
-+/*
-+ * Disable the irq on the current core for chips that have the EN*_W1{S,C}
-+ * registers.
-+ */
-+static void octeon_irq_ciu0_disable_v2(unsigned int irq)
-+{
-+	int index = cvmx_get_core_num() * 2;
-+	u64 mask = 1ull << (irq - OCTEON_IRQ_WORKQ0);
-+
-+	cvmx_write_csr(CVMX_CIU_INTX_EN0_W1C(index), mask);
-+}
-+
-+/*
-+ * Disable the irq on the all cores for chips that have the EN*_W1{S,C}
-+ * registers.
-+ */
-+static void octeon_irq_ciu0_disable_all_v2(unsigned int irq)
-+{
-+	u64 mask = 1ull << (irq - OCTEON_IRQ_WORKQ0);
-+	int index;
-+#ifdef CONFIG_SMP
-+	int cpu;
-+	for_each_online_cpu(cpu) {
-+		index = cpu_logical_map(cpu) * 2;
-+		cvmx_write_csr(CVMX_CIU_INTX_EN0_W1C(index), mask);
-+	}
-+#else
-+	index = cvmx_get_core_num() * 2;
-+	cvmx_write_csr(CVMX_CIU_INTX_EN0_W1C(index), mask);
-+#endif
-+}
-+
- #ifdef CONFIG_SMP
- static int octeon_irq_ciu0_set_affinity(unsigned int irq, const struct cpumask *dest)
- {
-@@ -205,8 +249,42 @@ static int octeon_irq_ciu0_set_affinity(unsigned int irq, const struct cpumask *
- 
- 	return 0;
- }
-+
-+/*
-+ * Set affinity for the irq for chips that have the EN*_W1{S,C}
-+ * registers.
-+ */
-+static int octeon_irq_ciu0_set_affinity_v2(unsigned int irq,
-+					   const struct cpumask *dest)
-+{
-+	int cpu;
-+	int index;
-+	u64 mask = 1ull << (irq - OCTEON_IRQ_WORKQ0);
-+	for_each_online_cpu(cpu) {
-+		index = cpu_logical_map(cpu) * 2;
-+		if (cpumask_test_cpu(cpu, dest))
-+			cvmx_write_csr(CVMX_CIU_INTX_EN0_W1S(index), mask);
-+		else
-+			cvmx_write_csr(CVMX_CIU_INTX_EN0_W1C(index), mask);
-+	}
-+	return 0;
-+}
- #endif
- 
-+/*
-+ * Newer octeon chips have support for lockless CIU operation.
-+ */
-+static struct irq_chip octeon_irq_chip_ciu0_v2 = {
-+	.name = "CIU0",
-+	.enable = octeon_irq_ciu0_enable_v2,
-+	.disable = octeon_irq_ciu0_disable_all_v2,
-+	.ack = octeon_irq_ciu0_disable_v2,
-+	.eoi = octeon_irq_ciu0_enable_v2,
-+#ifdef CONFIG_SMP
-+	.set_affinity = octeon_irq_ciu0_set_affinity_v2,
-+#endif
-+};
-+
- static struct irq_chip octeon_irq_chip_ciu0 = {
- 	.name = "CIU0",
- 	.enable = octeon_irq_ciu0_enable,
-@@ -296,8 +374,53 @@ static void octeon_irq_ciu1_disable(unsigned int irq)
- #endif
- }
- 
-+/*
-+ * Enable the irq on the current core for chips that have the EN*_W1{S,C}
-+ * registers.
-+ */
-+static void octeon_irq_ciu1_enable_v2(unsigned int irq)
-+{
-+	int index = cvmx_get_core_num() * 2 + 1;
-+	u64 mask = 1ull << (irq - OCTEON_IRQ_WDOG0);
-+
-+	cvmx_write_csr(CVMX_CIU_INTX_EN1_W1S(index), mask);
-+}
-+
-+/*
-+ * Disable the irq on the current core for chips that have the EN*_W1{S,C}
-+ * registers.
-+ */
-+static void octeon_irq_ciu1_disable_v2(unsigned int irq)
-+{
-+	int index = cvmx_get_core_num() * 2 + 1;
-+	u64 mask = 1ull << (irq - OCTEON_IRQ_WDOG0);
-+
-+	cvmx_write_csr(CVMX_CIU_INTX_EN1_W1C(index), mask);
-+}
-+
-+/*
-+ * Disable the irq on the all cores for chips that have the EN*_W1{S,C}
-+ * registers.
-+ */
-+static void octeon_irq_ciu1_disable_all_v2(unsigned int irq)
-+{
-+	u64 mask = 1ull << (irq - OCTEON_IRQ_WDOG0);
-+	int index;
- #ifdef CONFIG_SMP
--static int octeon_irq_ciu1_set_affinity(unsigned int irq, const struct cpumask *dest)
-+	int cpu;
-+	for_each_online_cpu(cpu) {
-+		index = cpu_logical_map(cpu) * 2 + 1;
-+		cvmx_write_csr(CVMX_CIU_INTX_EN1_W1C(index), mask);
-+	}
-+#else
-+	index = cvmx_get_core_num() * 2 + 1;
-+	cvmx_write_csr(CVMX_CIU_INTX_EN1_W1C(index), mask);
-+#endif
-+}
-+
-+#ifdef CONFIG_SMP
-+static int octeon_irq_ciu1_set_affinity(unsigned int irq,
-+					const struct cpumask *dest)
- {
- 	int cpu;
- 	unsigned long flags;
-@@ -324,8 +447,42 @@ static int octeon_irq_ciu1_set_affinity(unsigned int irq, const struct cpumask *
- 
- 	return 0;
- }
-+
-+/*
-+ * Set affinity for the irq for chips that have the EN*_W1{S,C}
-+ * registers.
-+ */
-+static int octeon_irq_ciu1_set_affinity_v2(unsigned int irq,
-+					   const struct cpumask *dest)
-+{
-+	int cpu;
-+	int index;
-+	u64 mask = 1ull << (irq - OCTEON_IRQ_WDOG0);
-+	for_each_online_cpu(cpu) {
-+		index = cpu_logical_map(cpu) * 2 + 1;
-+		if (cpumask_test_cpu(cpu, dest))
-+			cvmx_write_csr(CVMX_CIU_INTX_EN1_W1S(index), mask);
-+		else
-+			cvmx_write_csr(CVMX_CIU_INTX_EN1_W1C(index), mask);
-+	}
-+	return 0;
-+}
- #endif
- 
-+/*
-+ * Newer octeon chips have support for lockless CIU operation.
-+ */
-+static struct irq_chip octeon_irq_chip_ciu1_v2 = {
-+	.name = "CIU0",
-+	.enable = octeon_irq_ciu1_enable_v2,
-+	.disable = octeon_irq_ciu1_disable_all_v2,
-+	.ack = octeon_irq_ciu1_disable_v2,
-+	.eoi = octeon_irq_ciu1_enable_v2,
-+#ifdef CONFIG_SMP
-+	.set_affinity = octeon_irq_ciu1_set_affinity_v2,
-+#endif
-+};
-+
- static struct irq_chip octeon_irq_chip_ciu1 = {
- 	.name = "CIU1",
- 	.enable = octeon_irq_ciu1_enable,
-@@ -422,6 +579,8 @@ static struct irq_chip octeon_irq_chip_msi = {
- void __init arch_init_irq(void)
- {
- 	int irq;
-+	struct irq_chip *chip0;
-+	struct irq_chip *chip1;
- 
- #ifdef CONFIG_SMP
- 	/* Set the default affinity to the boot cpu. */
-@@ -432,6 +591,16 @@ void __init arch_init_irq(void)
- 	if (NR_IRQS < OCTEON_IRQ_LAST)
- 		pr_err("octeon_irq_init: NR_IRQS is set too low\n");
- 
-+	if (OCTEON_IS_MODEL(OCTEON_CN58XX_PASS2_X) ||
-+	    OCTEON_IS_MODEL(OCTEON_CN56XX_PASS2_X) ||
-+	    OCTEON_IS_MODEL(OCTEON_CN52XX_PASS2_X)) {
-+		chip0 = &octeon_irq_chip_ciu0_v2;
-+		chip1 = &octeon_irq_chip_ciu1_v2;
-+	} else {
-+		chip0 = &octeon_irq_chip_ciu0;
-+		chip1 = &octeon_irq_chip_ciu1;
-+	}
-+
- 	/* 0 - 15 reserved for i8259 master and slave controller. */
- 
- 	/* 17 - 23 Mips internal */
-@@ -442,14 +611,12 @@ void __init arch_init_irq(void)
- 
- 	/* 24 - 87 CIU_INT_SUM0 */
- 	for (irq = OCTEON_IRQ_WORKQ0; irq <= OCTEON_IRQ_BOOTDMA; irq++) {
--		set_irq_chip_and_handler(irq, &octeon_irq_chip_ciu0,
--					 handle_percpu_irq);
-+		set_irq_chip_and_handler(irq, chip0, handle_percpu_irq);
- 	}
- 
- 	/* 88 - 151 CIU_INT_SUM1 */
- 	for (irq = OCTEON_IRQ_WDOG0; irq <= OCTEON_IRQ_RESERVED151; irq++) {
--		set_irq_chip_and_handler(irq, &octeon_irq_chip_ciu1,
--					 handle_percpu_irq);
-+		set_irq_chip_and_handler(irq, chip1, handle_percpu_irq);
- 	}
- 
- #ifdef CONFIG_PCI_MSI
--- 
-1.6.0.6
+Looks good, will apply.
+
+  Ralf

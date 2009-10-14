@@ -1,59 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Oct 2009 21:03:51 +0200 (CEST)
-Received: from gw01.mail.saunalahti.fi ([195.197.172.115]:38977 "EHLO
-	gw01.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493639AbZJNTCf (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 14 Oct 2009 21:02:35 +0200
-Received: from localhost.localdomain (a88-114-232-190.elisa-laajakaista.fi [88.114.232.190])
-	by gw01.mail.saunalahti.fi (Postfix) with ESMTP id D1BEB1516EA;
-	Wed, 14 Oct 2009 22:02:31 +0300 (EEST)
-From:	Dmitri Vorobiev <dmitri.vorobiev@movial.com>
-To:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Cc:	Dmitri Vorobiev <dmitri.vorobiev@movial.com>
-Subject: [PATCH 3/3] [MIPS] remove an unused header file
-Date:	Wed, 14 Oct 2009 22:02:19 +0300
-Message-Id: <1255546939-3302-4-git-send-email-dmitri.vorobiev@movial.com>
-X-Mailer: git-send-email 1.6.0.4
-In-Reply-To: <1255546939-3302-1-git-send-email-dmitri.vorobiev@movial.com>
-References: <1255546939-3302-1-git-send-email-dmitri.vorobiev@movial.com>
-Return-Path: <dmitri.vorobiev@movial.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Oct 2009 21:04:31 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:1198 "EHLO
+	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493670AbZJNTDI (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 14 Oct 2009 21:03:08 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,5,4,7535)
+	id <B4ad6205a0000>; Wed, 14 Oct 2009 12:02:50 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 14 Oct 2009 12:02:52 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 14 Oct 2009 12:02:52 -0700
+Message-ID: <4AD6205A.8070200@caviumnetworks.com>
+Date:	Wed, 14 Oct 2009 12:02:50 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+MIME-Version: 1.0
+To:	Ralf Baechle <ralf@linux-mips.org>,
+	linux-mips <linux-mips@linux-mips.org>, netdev@vger.kernel.org
+Subject: [PATCH 0/6] netdev: Octeon MGMT new driver + octeon_ethernet updates
+ (v2).
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 14 Oct 2009 19:02:52.0627 (UTC) FILETIME=[EE444230:01CA4D00]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24308
+X-archive-position: 24309
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@movial.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Nobody includes arch/mips/include/asm/mach-au1x00/prom.h, so remove
-this header file now.
+This is the second version of this patch set.  The only difference
+from the first version is that some unrelated changes have been
+factored out of 6/6.
 
-Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@movial.com>
----
- arch/mips/include/asm/mach-au1x00/prom.h |   13 -------------
- 1 files changed, 0 insertions(+), 13 deletions(-)
- delete mode 100644 arch/mips/include/asm/mach-au1x00/prom.h
+The main thrust of this patch set is to add a driver for the Cavium
+Networks Octeon processor's MII (Management port) Ethernet devices.
+Since it shares an mdio bus with the existing octeon-ethernet driver,
+there is also some rearrangement of that code.
 
-diff --git a/arch/mips/include/asm/mach-au1x00/prom.h b/arch/mips/include/asm/mach-au1x00/prom.h
-deleted file mode 100644
-index e387155..0000000
---- a/arch/mips/include/asm/mach-au1x00/prom.h
-+++ /dev/null
-@@ -1,13 +0,0 @@
--#ifndef __AU1X00_PROM_H
--#define __AU1X00_PROM_H
--
--extern int prom_argc;
--extern char **prom_argv;
--extern char **prom_envp;
--
--extern void prom_init_cmdline(void);
--extern char *prom_getcmdline(void);
--extern char *prom_getenv(char *envname);
--extern int prom_get_ethernet_addr(char *ethernet_addr);
--
--#endif
--- 
-1.6.0.4
+The Octeon SOC has an mdio bus that is shared by the PHYs of all the
+Ethernet ports on the chip.  Patches 1/6 and 2/6 add a stand-alone
+driver for the shared mdio bus
+
+3/6 adds platform devices for the octeon_mgmt devices.
+
+4/6 has the register definitions needed by the driver.
+
+5/6 the octeon_mgmt driver proper
+
+6/6 converts octeon_ethernet to use the PHYs on the shared mdio bus.
+
+
+davem acked the non-mips parts (Thank You davem) and since the Octeon
+is a mips based device, we will be merging these patches via Ralf's
+tree.
+
+I will reply with the 6 patches.
+
+David Daney (6):
+   MIPS: Octeon: Add platform device for MDIO buses.
+   net: Add driver for Octeon MDIO buses.
+   MIPS: Octeon: Add platform devices MGMT Ethernet ports.
+   MIPS: Octeon: Add register definitions for MGMT Ethernet driver.
+   netdev: Add Ethernet driver for Octeon MGMT devices.
+   Staging: octeon-ethernet: Convert to use PHY Abstraction Layer.
+
+  arch/mips/cavium-octeon/octeon-platform.c     |   88 ++
+  arch/mips/include/asm/octeon/cvmx-agl-defs.h  | 1194 
++++++++++++++++++++++++++
+  arch/mips/include/asm/octeon/cvmx-mixx-defs.h |  248 +++++
+  arch/mips/include/asm/octeon/cvmx-smix-defs.h |  178 ++++
+  drivers/net/Kconfig                           |    2 +
+  drivers/net/Makefile                          |    2 +
+  drivers/net/octeon/Kconfig                    |   10 +
+  drivers/net/octeon/Makefile                   |    2 +
+  drivers/net/octeon/octeon_mgmt.c              | 1175 
+++++++++++++++++++++++++
+  drivers/net/phy/Kconfig                       |   11 +
+  drivers/net/phy/Makefile                      |    1 +
+  drivers/net/phy/mdio-octeon.c                 |  180 ++++
+  drivers/staging/octeon/Kconfig                |    3 +-
+  drivers/staging/octeon/ethernet-mdio.c        |  204 ++---
+  drivers/staging/octeon/ethernet-mdio.h        |    2 +-
+  drivers/staging/octeon/ethernet-proc.c        |  112 ---
+  drivers/staging/octeon/ethernet-rgmii.c       |   52 +-
+  drivers/staging/octeon/ethernet-sgmii.c       |    2 +-
+  drivers/staging/octeon/ethernet-xaui.c        |    2 +-
+  drivers/staging/octeon/ethernet.c             |   23 +-
+  drivers/staging/octeon/octeon-ethernet.h      |    6 +-
+  21 files changed, 3216 insertions(+), 281 deletions(-)
+  create mode 100644 arch/mips/include/asm/octeon/cvmx-agl-defs.h
+  create mode 100644 arch/mips/include/asm/octeon/cvmx-mixx-defs.h
+  create mode 100644 arch/mips/include/asm/octeon/cvmx-smix-defs.h
+  create mode 100644 drivers/net/octeon/Kconfig
+  create mode 100644 drivers/net/octeon/Makefile
+  create mode 100644 drivers/net/octeon/octeon_mgmt.c
+  create mode 100644 drivers/net/phy/mdio-octeon.c

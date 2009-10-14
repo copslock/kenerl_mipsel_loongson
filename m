@@ -1,91 +1,113 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Oct 2009 21:12:45 +0200 (CEST)
-Received: from mail-fx0-f221.google.com ([209.85.220.221]:44934 "EHLO
-	mail-fx0-f221.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493679AbZJNTMj (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 14 Oct 2009 21:12:39 +0200
-Received: by fxm21 with SMTP id 21so110002fxm.33
-        for <multiple recipients>; Wed, 14 Oct 2009 12:12:33 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Oct 2009 21:14:52 +0200 (CEST)
+Received: from caramon.arm.linux.org.uk ([78.32.30.218]:38131 "EHLO
+	caramon.arm.linux.org.uk" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493679AbZJNTOq (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 14 Oct 2009 21:14:46 +0200
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type;
-        bh=nfBzU0ZSaPoeGCbHmnPIiu/ElEYslIjwQ8sM3qouupM=;
-        b=szEGjJWIz6NXH7cYRWkS2MGfHSXwnqdxsAmJX/KQOroL0QG/Ex9wYVFFX1eL0gvvNo
-         mUxMAwlYmdF6SlPzgSPAtsCZMZ3u57sp587EmnILxfIeSmFDQwPCG6wEZuOertT9SW7n
-         8s5NwqGl1HGClQq1WEBjwvRvbdpTRMf4Rn/co=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=kaeToyzOAyEBwScZtWcWcUwb2aSi1mLHcc59rf4YNjTL8P9ytEWdqHdEpeZV9vOKA1
-         ZwrhZFjkc+w1k96IcXgh7SCScs31XziFF9a5Hauj2dyVw/yXMX39Kv3KkhVqXUCs5Fgu
-         YH6DOSvFMpaSkRFTDiWVtqvMn4oW/jG7brFXw=
+	d=arm.linux.org.uk; s=caramon; h=Date:From:To:Cc:Subject:
+	Message-ID:References:MIME-Version:Content-Type:In-Reply-To:
+	Sender; bh=0XDUO7zw2x/nDWfk/9gDegddscv/fovoeCR760Bp+kk=; b=EYMep
+	UiEdyznjmQc4a8KfhGDteE3rQFdgREgA9m0WXyn+ibomkDCcDlxMQB3aXkyAfD/e
+	DQR8PY6Q60k18wxbqfahZpsL/jV2oYvasiycUQIDtemtaCZoofsFaSxcuOiU/FNq
+	I19Iv09qai1ZXWvNS53MD0MLdbF39M3f/p9WPM=
+Received: from n2100.arm.linux.org.uk ([2002:4e20:1eda:1:214:fdff:fe10:4f86])
+	by caramon.arm.linux.org.uk with esmtpsa (TLSv1:AES256-SHA:256)
+	(Exim 4.69)
+	(envelope-from <linux@arm.linux.org.uk>)
+	id 1My9Ij-000554-Mk; Wed, 14 Oct 2009 20:14:22 +0100
+Received: from linux by n2100.arm.linux.org.uk with local (Exim 4.69)
+	(envelope-from <linux@n2100.arm.linux.org.uk>)
+	id 1My9Ih-0007ct-Qg; Wed, 14 Oct 2009 20:14:19 +0100
+Date:	Wed, 14 Oct 2009 20:14:19 +0100
+From:	Russell King - ARM Linux <linux@arm.linux.org.uk>
+To:	Shinya Kuribayashi <shinya.kuribayashi@necel.com>
+Cc:	Ben Dooks <ben@fluff.org>, linux-arm-kernel@lists.infradead.org,
+	linux-mips@linux-mips.org, baruch@tkos.co.il,
+	linux-i2c@vger.kernel.org, ben-linux@fluff.org
+Subject: Re: [PATCH 07/16] i2c-designware: Set a clock name to DesignWare
+	I2C clock source
+Message-ID: <20091014191419.GB28948@n2100.arm.linux.org.uk>
+References: <4AD3E974.8080200@necel.com> <4AD3EB09.8050304@necel.com> <20091013224123.GB13398@fluff.org.uk> <4AD5514B.4090504@necel.com>
 MIME-Version: 1.0
-Received: by 10.223.15.73 with SMTP id j9mr2034212faa.85.1255547552882; Wed, 
-	14 Oct 2009 12:12:32 -0700 (PDT)
-In-Reply-To: <1255546939-3302-4-git-send-email-dmitri.vorobiev@movial.com>
-References: <1255546939-3302-1-git-send-email-dmitri.vorobiev@movial.com>
-	 <1255546939-3302-4-git-send-email-dmitri.vorobiev@movial.com>
-Date:	Wed, 14 Oct 2009 21:12:32 +0200
-Message-ID: <f861ec6f0910141212h562eda08le338842f90690419@mail.gmail.com>
-Subject: Re: [PATCH 3/3] [MIPS] remove an unused header file
-From:	Manuel Lauss <manuel.lauss@googlemail.com>
-To:	Dmitri Vorobiev <dmitri.vorobiev@movial.com>
-Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
-Content-Type: multipart/alternative; boundary=00151747be34e35fcd0475e9f123
-Return-Path: <manuel.lauss@googlemail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4AD5514B.4090504@necel.com>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <linux+linux-mips=linux-mips.org@arm.linux.org.uk>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24316
+X-archive-position: 24317
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: linux@arm.linux.org.uk
 Precedence: bulk
 X-list: linux-mips
 
---00151747be34e35fcd0475e9f123
-Content-Type: text/plain; charset=ISO-8859-1
+On Wed, Oct 14, 2009 at 01:19:23PM +0900, Shinya Kuribayashi wrote:
+> # As you can imagine, my local clk implementation is based on
+>  "clk_id" name matching, which looks simple for me.
 
-On Wed, Oct 14, 2009 at 9:02 PM, Dmitri Vorobiev <dmitri.vorobiev@movial.com>
-wrote:
-> Nobody includes arch/mips/include/asm/mach-au1x00/prom.h, so remove
-> this header file now.
+... but totally wrong, and will eventually bite you.  Please use clkdev
+and use the device names for the primary matching.  clkdev is what I see
+as the de-facto implementation that should eventually become totally
+arch independent (it is today, but lives in arch/arm for no real reason
+other than my lazyness.)
 
-My compiler disagrees:
+> * And clk_get() is expected to pick up a clock source with:
+>
+> 1) dev_id + clk_id ... strict matching condition (default)
+> 2) dev_id only ... fuzzy extension1 (clk_id can be regarded as wildcard)
+> 3) clk_id only ... fuzzy extension2 (dev_id can be regarded as wildcard)
+>
+>  2) and 3) might be sort of ARM's clkdev extensions
+>  (I think it's useful), but that's not my point.
+>  I'll leave that alone for now.
+>
+>  My point is that clk framework basically requires case 1).
 
+Incorrect.  There is no requirement for strict matching.  Think about
+the situation where you have multiple different devices, and the SoC
+designer has decided to tie all those clock signals to one clock source,
+and this is the only clock in the system.
 
-  CC      arch/mips/alchemy/devboards/prom.o
-/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/alchemy/devboards/prom.c:34:18:
-error: prom.h: No such file or directory
-/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/alchemy/devboards/prom.c:
-In function 'prom_init':
+You might decide that your clk_get() implementation can just return that
+single clock irrespective of the parameters passed.  That's a totally
+legal clk API implementation.
 
+Also, I refer you to the description of clk_get():
 
-It's pulled in through "#include <prom.h>" directives in the alchemy code.
-The MIPS
-Makefile adds mach directories to the gcc include paths so that this works.
+ * clk_get - lookup and obtain a reference to a clock producer.
+ * @dev: device for clock "consumer"
+ * @id: clock comsumer ID
+ *
+ * Returns a struct clk corresponding to the clock producer, or
+ * valid IS_ERR() condition containing errno.  The implementation
+ * uses @dev and @id to determine the clock consumer, and thereby
+ * the clock producer.  (IOW, @id may be identical strings, but
+ * clk_get may return different clock producers depending on @dev.)
 
-        Manuel
+Note the comment about identical IDs returning different producers.
 
---00151747be34e35fcd0475e9f123
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+> * Then the driver is expected to supply necessary information to
+>  clk_get(), regardless of clk_get() implementation, or should I say,
+>  the driver should always supply both "dev_id" and "clk_id" whether
+>  they are used or not.
 
-On Wed, Oct 14, 2009 at 9:02 PM, Dmitri Vorobiev &lt;<a href=3D"mailto:dmit=
-ri.vorobiev@movial.com">dmitri.vorobiev@movial.com</a>&gt; wrote:<br>&gt; N=
-obody includes arch/mips/include/asm/mach-au1x00/prom.h, so remove<br>&gt; =
-this header file now.<br>
-<br>My compiler disagrees:<br><br><br>=A0 CC=A0=A0=A0=A0=A0 arch/mips/alche=
-my/devboards/prom.o<br>/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arc=
-h/mips/alchemy/devboards/prom.c:34:18: error: prom.h: No such file or direc=
-tory<br>
-/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/alchemy/devboard=
-s/prom.c: In function &#39;prom_init&#39;:<br><br><br>It&#39;s pulled in th=
-rough &quot;#include &lt;prom.h&gt;&quot; directives in the alchemy code.=
-=A0 The MIPS<br>
-Makefile adds mach directories to the gcc include paths so that this works.=
-<br><br>=A0=A0=A0=A0=A0=A0=A0 Manuel<br>
+Nope.  On several devices which only consume one clock signal, we
+explicitly pass a NULL ID to absolutely prevent people going down
+the road of matching only by "clk id" - it's been shown to be the
+wrong approach, and leads people right down the path of passing
+clock strings and pointers into drivers.
 
---00151747be34e35fcd0475e9f123--
+That's precisely what the clk API was designed to prevent - and
+becomes all together unnecessary when the clk API is implemented
+as I designed it - to match primerily by device ID.
+
+> I intended only to fix the driver in the right direction, so would
+> like to avoid discussion on clk framework implementation here.
+
+I would strongly advise you to ensure that your implementation conforms
+to the intentions of the clk API as I outline above to avoid problems
+in the future.

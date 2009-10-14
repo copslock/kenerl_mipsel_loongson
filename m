@@ -1,681 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Oct 2009 21:07:08 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:1233 "EHLO
-	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493679AbZJNTFA (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 14 Oct 2009 21:05:00 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,5,4,7535)
-	id <B4ad620d30003>; Wed, 14 Oct 2009 12:04:51 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 14 Oct 2009 12:04:48 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 14 Oct 2009 12:04:48 -0700
-Received: from dd1.caveonetworks.com (localhost.localdomain [127.0.0.1])
-	by dd1.caveonetworks.com (8.14.2/8.14.2) with ESMTP id n9EJ4kue007434;
-	Wed, 14 Oct 2009 12:04:46 -0700
-Received: (from ddaney@localhost)
-	by dd1.caveonetworks.com (8.14.2/8.14.2/Submit) id n9EJ4jgJ007433;
-	Wed, 14 Oct 2009 12:04:45 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-To:	ralf@linux-mips.org, linux-mips@linux-mips.org,
-	netdev@vger.kernel.org
-Cc:	David Daney <ddaney@caviumnetworks.com>
-Subject: [PATCH 6/6] Staging: octeon-ethernet: Convert to use PHY Abstraction Layer.
-Date:	Wed, 14 Oct 2009 12:04:42 -0700
-Message-Id: <1255547082-7388-6-git-send-email-ddaney@caviumnetworks.com>
-X-Mailer: git-send-email 1.6.0.6
-In-Reply-To: <4AD6205A.8070200@caviumnetworks.com>
-References: <4AD6205A.8070200@caviumnetworks.com>
-X-OriginalArrivalTime: 14 Oct 2009 19:04:48.0456 (UTC) FILETIME=[334E5C80:01CA4D01]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 14 Oct 2009 21:12:45 +0200 (CEST)
+Received: from mail-fx0-f221.google.com ([209.85.220.221]:44934 "EHLO
+	mail-fx0-f221.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493679AbZJNTMj (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 14 Oct 2009 21:12:39 +0200
+Received: by fxm21 with SMTP id 21so110002fxm.33
+        for <multiple recipients>; Wed, 14 Oct 2009 12:12:33 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:cc:content-type;
+        bh=nfBzU0ZSaPoeGCbHmnPIiu/ElEYslIjwQ8sM3qouupM=;
+        b=szEGjJWIz6NXH7cYRWkS2MGfHSXwnqdxsAmJX/KQOroL0QG/Ex9wYVFFX1eL0gvvNo
+         mUxMAwlYmdF6SlPzgSPAtsCZMZ3u57sp587EmnILxfIeSmFDQwPCG6wEZuOertT9SW7n
+         8s5NwqGl1HGClQq1WEBjwvRvbdpTRMf4Rn/co=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=kaeToyzOAyEBwScZtWcWcUwb2aSi1mLHcc59rf4YNjTL8P9ytEWdqHdEpeZV9vOKA1
+         ZwrhZFjkc+w1k96IcXgh7SCScs31XziFF9a5Hauj2dyVw/yXMX39Kv3KkhVqXUCs5Fgu
+         YH6DOSvFMpaSkRFTDiWVtqvMn4oW/jG7brFXw=
+MIME-Version: 1.0
+Received: by 10.223.15.73 with SMTP id j9mr2034212faa.85.1255547552882; Wed, 
+	14 Oct 2009 12:12:32 -0700 (PDT)
+In-Reply-To: <1255546939-3302-4-git-send-email-dmitri.vorobiev@movial.com>
+References: <1255546939-3302-1-git-send-email-dmitri.vorobiev@movial.com>
+	 <1255546939-3302-4-git-send-email-dmitri.vorobiev@movial.com>
+Date:	Wed, 14 Oct 2009 21:12:32 +0200
+Message-ID: <f861ec6f0910141212h562eda08le338842f90690419@mail.gmail.com>
+Subject: Re: [PATCH 3/3] [MIPS] remove an unused header file
+From:	Manuel Lauss <manuel.lauss@googlemail.com>
+To:	Dmitri Vorobiev <dmitri.vorobiev@movial.com>
+Cc:	ralf@linux-mips.org, linux-mips@linux-mips.org
+Content-Type: multipart/alternative; boundary=00151747be34e35fcd0475e9f123
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24315
+X-archive-position: 24316
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-The octeon-ethernet driver shares an mdio bus with the octeon-mgmt
-driver.  Here we convert the octeon-ethernet driver to use the PHY
-Abstraction Layer.
+--00151747be34e35fcd0475e9f123
+Content-Type: text/plain; charset=ISO-8859-1
 
-Signed-off-by: David Daney <ddaney@caviumnetworks.com>
----
- drivers/staging/octeon/Kconfig           |    3 +-
- drivers/staging/octeon/ethernet-mdio.c   |  204 ++++++++++++------------------
- drivers/staging/octeon/ethernet-mdio.h   |    2 +-
- drivers/staging/octeon/ethernet-proc.c   |  112 ----------------
- drivers/staging/octeon/ethernet-rgmii.c  |   52 ++++----
- drivers/staging/octeon/ethernet-sgmii.c  |    2 +-
- drivers/staging/octeon/ethernet-xaui.c   |    2 +-
- drivers/staging/octeon/ethernet.c        |   23 ++--
- drivers/staging/octeon/octeon-ethernet.h |    6 +-
- 9 files changed, 125 insertions(+), 281 deletions(-)
+On Wed, Oct 14, 2009 at 9:02 PM, Dmitri Vorobiev <dmitri.vorobiev@movial.com>
+wrote:
+> Nobody includes arch/mips/include/asm/mach-au1x00/prom.h, so remove
+> this header file now.
 
-diff --git a/drivers/staging/octeon/Kconfig b/drivers/staging/octeon/Kconfig
-index 536e238..638ad6b 100644
---- a/drivers/staging/octeon/Kconfig
-+++ b/drivers/staging/octeon/Kconfig
-@@ -1,7 +1,8 @@
- config OCTEON_ETHERNET
- 	tristate "Cavium Networks Octeon Ethernet support"
- 	depends on CPU_CAVIUM_OCTEON
--	select MII
-+	select PHYLIB
-+	select MDIO_OCTEON
- 	help
- 	  This driver supports the builtin ethernet ports on Cavium
- 	  Networks' products in the Octeon family. This driver supports the
-diff --git a/drivers/staging/octeon/ethernet-mdio.c b/drivers/staging/octeon/ethernet-mdio.c
-index 31a58e5..05a5cc0 100644
---- a/drivers/staging/octeon/ethernet-mdio.c
-+++ b/drivers/staging/octeon/ethernet-mdio.c
-@@ -26,7 +26,8 @@
- **********************************************************************/
- #include <linux/kernel.h>
- #include <linux/ethtool.h>
--#include <linux/mii.h>
-+#include <linux/phy.h>
-+
- #include <net/dst.h>
- 
- #include <asm/octeon/octeon.h>
-@@ -34,86 +35,12 @@
- #include "ethernet-defines.h"
- #include "octeon-ethernet.h"
- #include "ethernet-mdio.h"
-+#include "ethernet-util.h"
- 
- #include "cvmx-helper-board.h"
- 
- #include "cvmx-smix-defs.h"
- 
--DECLARE_MUTEX(mdio_sem);
--
--/**
-- * Perform an MII read. Called by the generic MII routines
-- *
-- * @dev:      Device to perform read for
-- * @phy_id:   The MII phy id
-- * @location: Register location to read
-- * Returns Result from the read or zero on failure
-- */
--static int cvm_oct_mdio_read(struct net_device *dev, int phy_id, int location)
--{
--	union cvmx_smix_cmd smi_cmd;
--	union cvmx_smix_rd_dat smi_rd;
--
--	smi_cmd.u64 = 0;
--	smi_cmd.s.phy_op = 1;
--	smi_cmd.s.phy_adr = phy_id;
--	smi_cmd.s.reg_adr = location;
--	cvmx_write_csr(CVMX_SMIX_CMD(0), smi_cmd.u64);
--
--	do {
--		if (!in_interrupt())
--			yield();
--		smi_rd.u64 = cvmx_read_csr(CVMX_SMIX_RD_DAT(0));
--	} while (smi_rd.s.pending);
--
--	if (smi_rd.s.val)
--		return smi_rd.s.dat;
--	else
--		return 0;
--}
--
--static int cvm_oct_mdio_dummy_read(struct net_device *dev, int phy_id,
--				   int location)
--{
--	return 0xffff;
--}
--
--/**
-- * Perform an MII write. Called by the generic MII routines
-- *
-- * @dev:      Device to perform write for
-- * @phy_id:   The MII phy id
-- * @location: Register location to write
-- * @val:      Value to write
-- */
--static void cvm_oct_mdio_write(struct net_device *dev, int phy_id, int location,
--			       int val)
--{
--	union cvmx_smix_cmd smi_cmd;
--	union cvmx_smix_wr_dat smi_wr;
--
--	smi_wr.u64 = 0;
--	smi_wr.s.dat = val;
--	cvmx_write_csr(CVMX_SMIX_WR_DAT(0), smi_wr.u64);
--
--	smi_cmd.u64 = 0;
--	smi_cmd.s.phy_op = 0;
--	smi_cmd.s.phy_adr = phy_id;
--	smi_cmd.s.reg_adr = location;
--	cvmx_write_csr(CVMX_SMIX_CMD(0), smi_cmd.u64);
--
--	do {
--		if (!in_interrupt())
--			yield();
--		smi_wr.u64 = cvmx_read_csr(CVMX_SMIX_WR_DAT(0));
--	} while (smi_wr.s.pending);
--}
--
--static void cvm_oct_mdio_dummy_write(struct net_device *dev, int phy_id,
--				     int location, int val)
--{
--}
--
- static void cvm_oct_get_drvinfo(struct net_device *dev,
- 				struct ethtool_drvinfo *info)
- {
-@@ -125,49 +52,37 @@ static void cvm_oct_get_drvinfo(struct net_device *dev,
- static int cvm_oct_get_settings(struct net_device *dev, struct ethtool_cmd *cmd)
- {
- 	struct octeon_ethernet *priv = netdev_priv(dev);
--	int ret;
- 
--	down(&mdio_sem);
--	ret = mii_ethtool_gset(&priv->mii_info, cmd);
--	up(&mdio_sem);
-+	if (priv->phydev)
-+		return phy_ethtool_gset(priv->phydev, cmd);
- 
--	return ret;
-+	return -EINVAL;
- }
- 
- static int cvm_oct_set_settings(struct net_device *dev, struct ethtool_cmd *cmd)
- {
- 	struct octeon_ethernet *priv = netdev_priv(dev);
--	int ret;
- 
--	down(&mdio_sem);
--	ret = mii_ethtool_sset(&priv->mii_info, cmd);
--	up(&mdio_sem);
-+	if (!capable(CAP_NET_ADMIN))
-+		return -EPERM;
-+
-+	if (priv->phydev)
-+		return phy_ethtool_sset(priv->phydev, cmd);
- 
--	return ret;
-+	return -EINVAL;
- }
- 
- static int cvm_oct_nway_reset(struct net_device *dev)
- {
- 	struct octeon_ethernet *priv = netdev_priv(dev);
--	int ret;
- 
--	down(&mdio_sem);
--	ret = mii_nway_restart(&priv->mii_info);
--	up(&mdio_sem);
-+	if (!capable(CAP_NET_ADMIN))
-+		return -EPERM;
- 
--	return ret;
--}
-+	if (priv->phydev)
-+		return phy_start_aneg(priv->phydev);
- 
--static u32 cvm_oct_get_link(struct net_device *dev)
--{
--	struct octeon_ethernet *priv = netdev_priv(dev);
--	u32 ret;
--
--	down(&mdio_sem);
--	ret = mii_link_ok(&priv->mii_info);
--	up(&mdio_sem);
--
--	return ret;
-+	return -EINVAL;
- }
- 
- const struct ethtool_ops cvm_oct_ethtool_ops = {
-@@ -175,7 +90,7 @@ const struct ethtool_ops cvm_oct_ethtool_ops = {
- 	.get_settings = cvm_oct_get_settings,
- 	.set_settings = cvm_oct_set_settings,
- 	.nway_reset = cvm_oct_nway_reset,
--	.get_link = cvm_oct_get_link,
-+	.get_link = ethtool_op_get_link,
- 	.get_sg = ethtool_op_get_sg,
- 	.get_tx_csum = ethtool_op_get_tx_csum,
- };
-@@ -191,41 +106,78 @@ const struct ethtool_ops cvm_oct_ethtool_ops = {
- int cvm_oct_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
- {
- 	struct octeon_ethernet *priv = netdev_priv(dev);
--	struct mii_ioctl_data *data = if_mii(rq);
--	unsigned int duplex_chg;
--	int ret;
- 
--	down(&mdio_sem);
--	ret = generic_mii_ioctl(&priv->mii_info, data, cmd, &duplex_chg);
--	up(&mdio_sem);
-+	if (!netif_running(dev))
-+		return -EINVAL;
-+
-+	if (!priv->phydev)
-+		return -EINVAL;
-+
-+	return phy_mii_ioctl(priv->phydev, if_mii(rq), cmd);
-+}
- 
--	return ret;
-+static void cvm_oct_adjust_link(struct net_device *dev)
-+{
-+	struct octeon_ethernet *priv = netdev_priv(dev);
-+	cvmx_helper_link_info_t link_info;
-+
-+	if (priv->last_link != priv->phydev->link) {
-+		priv->last_link = priv->phydev->link;
-+		link_info.u64 = 0;
-+		link_info.s.link_up = priv->last_link ? 1 : 0;
-+		link_info.s.full_duplex = priv->phydev->duplex ? 1 : 0;
-+		link_info.s.speed = priv->phydev->speed;
-+		cvmx_helper_link_set( priv->port, link_info);
-+		if (priv->last_link) {
-+			netif_carrier_on(dev);
-+			if (priv->queue != -1)
-+				DEBUGPRINT("%s: %u Mbps %s duplex, "
-+					   "port %2d, queue %2d\n",
-+					   dev->name, priv->phydev->speed,
-+					   priv->phydev->duplex ?
-+						"Full" : "Half",
-+					   priv->port, priv->queue);
-+			else
-+				DEBUGPRINT("%s: %u Mbps %s duplex, "
-+					   "port %2d, POW\n",
-+					   dev->name, priv->phydev->speed,
-+					   priv->phydev->duplex ?
-+						"Full" : "Half",
-+					   priv->port);
-+		} else {
-+			netif_carrier_off(dev);
-+			DEBUGPRINT("%s: Link down\n", dev->name);
-+		}
-+	}
- }
- 
-+
- /**
-- * Setup the MDIO device structures
-+ * Setup the PHY
-  *
-  * @dev:    Device to setup
-  *
-  * Returns Zero on success, negative on failure
-  */
--int cvm_oct_mdio_setup_device(struct net_device *dev)
-+int cvm_oct_phy_setup_device(struct net_device *dev)
- {
- 	struct octeon_ethernet *priv = netdev_priv(dev);
--	int phy_id = cvmx_helper_board_get_mii_address(priv->port);
--	if (phy_id != -1) {
--		priv->mii_info.dev = dev;
--		priv->mii_info.phy_id = phy_id;
--		priv->mii_info.phy_id_mask = 0xff;
--		priv->mii_info.supports_gmii = 1;
--		priv->mii_info.reg_num_mask = 0x1f;
--		priv->mii_info.mdio_read = cvm_oct_mdio_read;
--		priv->mii_info.mdio_write = cvm_oct_mdio_write;
--	} else {
--		/* Supply dummy MDIO routines so the kernel won't crash
--		   if the user tries to read them */
--		priv->mii_info.mdio_read = cvm_oct_mdio_dummy_read;
--		priv->mii_info.mdio_write = cvm_oct_mdio_dummy_write;
-+
-+	int phy_addr = cvmx_helper_board_get_mii_address(priv->port);
-+	if (phy_addr != -1) {
-+		char phy_id[20];
-+
-+		snprintf(phy_id, sizeof(phy_id), PHY_ID_FMT, "0", phy_addr);
-+
-+		priv->phydev = phy_connect(dev, phy_id, cvm_oct_adjust_link, 0,
-+					PHY_INTERFACE_MODE_GMII);
-+
-+		if (IS_ERR(priv->phydev)) {
-+			priv->phydev = NULL;
-+			return -1;
-+		}
-+		priv->last_link = 0;
-+		phy_start_aneg(priv->phydev);
- 	}
- 	return 0;
- }
-diff --git a/drivers/staging/octeon/ethernet-mdio.h b/drivers/staging/octeon/ethernet-mdio.h
-index b3328ae..55d0614 100644
---- a/drivers/staging/octeon/ethernet-mdio.h
-+++ b/drivers/staging/octeon/ethernet-mdio.h
-@@ -43,4 +43,4 @@
- 
- extern const struct ethtool_ops cvm_oct_ethtool_ops;
- int cvm_oct_ioctl(struct net_device *dev, struct ifreq *rq, int cmd);
--int cvm_oct_mdio_setup_device(struct net_device *dev);
-+int cvm_oct_phy_setup_device(struct net_device *dev);
-diff --git a/drivers/staging/octeon/ethernet-proc.c b/drivers/staging/octeon/ethernet-proc.c
-index 8fa88fc..16308d4 100644
---- a/drivers/staging/octeon/ethernet-proc.c
-+++ b/drivers/staging/octeon/ethernet-proc.c
-@@ -25,7 +25,6 @@
-  * Contact Cavium Networks for more information
- **********************************************************************/
- #include <linux/kernel.h>
--#include <linux/mii.h>
- #include <linux/seq_file.h>
- #include <linux/proc_fs.h>
- #include <net/dst.h>
-@@ -38,112 +37,6 @@
- #include "cvmx-helper.h"
- #include "cvmx-pip.h"
- 
--static unsigned long long cvm_oct_stats_read_switch(struct net_device *dev,
--						    int phy_id, int offset)
--{
--	struct octeon_ethernet *priv = netdev_priv(dev);
--
--	priv->mii_info.mdio_write(dev, phy_id, 0x1d, 0xcc00 | offset);
--	return ((uint64_t) priv->mii_info.
--		mdio_read(dev, phy_id,
--			  0x1e) << 16) | (uint64_t) priv->mii_info.
--	    mdio_read(dev, phy_id, 0x1f);
--}
--
--static int cvm_oct_stats_switch_show(struct seq_file *m, void *v)
--{
--	static const int ports[] = { 0, 1, 2, 3, 9, -1 };
--	struct net_device *dev = cvm_oct_device[0];
--	int index = 0;
--
--	while (ports[index] != -1) {
--
--		/* Latch port */
--		struct octeon_ethernet *priv = netdev_priv(dev);
--
--		priv->mii_info.mdio_write(dev, 0x1b, 0x1d,
--					  0xdc00 | ports[index]);
--		seq_printf(m, "\nSwitch Port %d\n", ports[index]);
--		seq_printf(m, "InGoodOctets:   %12llu\t"
--			   "OutOctets:      %12llu\t"
--			   "64 Octets:      %12llu\n",
--			   cvm_oct_stats_read_switch(dev, 0x1b,
--						     0x00) |
--			   (cvm_oct_stats_read_switch(dev, 0x1b, 0x01) << 32),
--			   cvm_oct_stats_read_switch(dev, 0x1b,
--						     0x0E) |
--			   (cvm_oct_stats_read_switch(dev, 0x1b, 0x0F) << 32),
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x08));
--
--		seq_printf(m, "InBadOctets:    %12llu\t"
--			   "OutUnicast:     %12llu\t"
--			   "65-127 Octets:  %12llu\n",
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x02),
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x10),
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x09));
--
--		seq_printf(m, "InUnicast:      %12llu\t"
--			   "OutBroadcasts:  %12llu\t"
--			   "128-255 Octets: %12llu\n",
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x04),
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x13),
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x0A));
--
--		seq_printf(m, "InBroadcasts:   %12llu\t"
--			   "OutMulticasts:  %12llu\t"
--			   "256-511 Octets: %12llu\n",
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x06),
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x12),
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x0B));
--
--		seq_printf(m, "InMulticasts:   %12llu\t"
--			   "OutPause:       %12llu\t"
--			   "512-1023 Octets:%12llu\n",
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x07),
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x15),
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x0C));
--
--		seq_printf(m, "InPause:        %12llu\t"
--			   "Excessive:      %12llu\t"
--			   "1024-Max Octets:%12llu\n",
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x16),
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x11),
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x0D));
--
--		seq_printf(m, "InUndersize:    %12llu\t"
--			   "Collisions:     %12llu\n",
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x18),
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x1E));
--
--		seq_printf(m, "InFragments:    %12llu\t"
--			   "Deferred:       %12llu\n",
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x19),
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x05));
--
--		seq_printf(m, "InOversize:     %12llu\t"
--			   "Single:         %12llu\n",
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x1A),
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x14));
--
--		seq_printf(m, "InJabber:       %12llu\t"
--			   "Multiple:       %12llu\n",
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x1B),
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x17));
--
--		seq_printf(m, "In RxErr:       %12llu\t"
--			   "OutFCSErr:      %12llu\n",
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x1C),
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x03));
--
--		seq_printf(m, "InFCSErr:       %12llu\t"
--			   "Late:           %12llu\n",
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x1D),
--			   cvm_oct_stats_read_switch(dev, 0x1b, 0x1F));
--		index++;
--	}
--	return 0;
--}
--
- /**
-  * User is reading /proc/octeon_ethernet_stats
-  *
-@@ -215,11 +108,6 @@ static int cvm_oct_stats_show(struct seq_file *m, void *v)
- 		}
- 	}
- 
--	if (cvm_oct_device[0]) {
--		priv = netdev_priv(cvm_oct_device[0]);
--		if (priv->imode == CVMX_HELPER_INTERFACE_MODE_GMII)
--			cvm_oct_stats_switch_show(m, v);
--	}
- 	return 0;
- }
- 
-diff --git a/drivers/staging/octeon/ethernet-rgmii.c b/drivers/staging/octeon/ethernet-rgmii.c
-index 8704133..d238611 100644
---- a/drivers/staging/octeon/ethernet-rgmii.c
-+++ b/drivers/staging/octeon/ethernet-rgmii.c
-@@ -147,32 +147,36 @@ static void cvm_oct_rgmii_poll(struct net_device *dev)
- 		cvmx_write_csr(CVMX_GMXX_RXX_INT_REG(index, interface),
- 			       gmxx_rxx_int_reg.u64);
- 	}
--
--	link_info = cvmx_helper_link_autoconf(priv->port);
--	priv->link_info = link_info.u64;
-+	if (priv->phydev == NULL) {
-+		link_info = cvmx_helper_link_autoconf(priv->port);
-+		priv->link_info = link_info.u64;
-+	}
- 	spin_unlock_irqrestore(&global_register_lock, flags);
- 
--	/* Tell Linux */
--	if (link_info.s.link_up) {
--
--		if (!netif_carrier_ok(dev))
--			netif_carrier_on(dev);
--		if (priv->queue != -1)
--			DEBUGPRINT
--			    ("%s: %u Mbps %s duplex, port %2d, queue %2d\n",
--			     dev->name, link_info.s.speed,
--			     (link_info.s.full_duplex) ? "Full" : "Half",
--			     priv->port, priv->queue);
--		else
--			DEBUGPRINT("%s: %u Mbps %s duplex, port %2d, POW\n",
--				   dev->name, link_info.s.speed,
--				   (link_info.s.full_duplex) ? "Full" : "Half",
--				   priv->port);
--	} else {
--
--		if (netif_carrier_ok(dev))
--			netif_carrier_off(dev);
--		DEBUGPRINT("%s: Link down\n", dev->name);
-+	if (priv->phydev == NULL) {
-+		/* Tell core. */
-+		if (link_info.s.link_up) {
-+			if (!netif_carrier_ok(dev))
-+				netif_carrier_on(dev);
-+			if (priv->queue != -1)
-+				DEBUGPRINT("%s: %u Mbps %s duplex, "
-+					   "port %2d, queue %2d\n",
-+					   dev->name, link_info.s.speed,
-+					   (link_info.s.full_duplex) ?
-+						"Full" : "Half",
-+					   priv->port, priv->queue);
-+			else
-+				DEBUGPRINT("%s: %u Mbps %s duplex, "
-+					   "port %2d, POW\n",
-+					   dev->name, link_info.s.speed,
-+					   (link_info.s.full_duplex) ?
-+						"Full" : "Half",
-+					   priv->port);
-+		} else {
-+			if (netif_carrier_ok(dev))
-+				netif_carrier_off(dev);
-+			DEBUGPRINT("%s: Link down\n", dev->name);
-+		}
- 	}
- }
- 
-diff --git a/drivers/staging/octeon/ethernet-sgmii.c b/drivers/staging/octeon/ethernet-sgmii.c
-index 2b54996..6061d01 100644
---- a/drivers/staging/octeon/ethernet-sgmii.c
-+++ b/drivers/staging/octeon/ethernet-sgmii.c
-@@ -113,7 +113,7 @@ int cvm_oct_sgmii_init(struct net_device *dev)
- 	struct octeon_ethernet *priv = netdev_priv(dev);
- 	cvm_oct_common_init(dev);
- 	dev->netdev_ops->ndo_stop(dev);
--	if (!octeon_is_simulation())
-+	if (!octeon_is_simulation() && priv->phydev == NULL)
- 		priv->poll = cvm_oct_sgmii_poll;
- 
- 	/* FIXME: Need autoneg logic */
-diff --git a/drivers/staging/octeon/ethernet-xaui.c b/drivers/staging/octeon/ethernet-xaui.c
-index 0c2e7cc..ee3dc41 100644
---- a/drivers/staging/octeon/ethernet-xaui.c
-+++ b/drivers/staging/octeon/ethernet-xaui.c
-@@ -112,7 +112,7 @@ int cvm_oct_xaui_init(struct net_device *dev)
- 	struct octeon_ethernet *priv = netdev_priv(dev);
- 	cvm_oct_common_init(dev);
- 	dev->netdev_ops->ndo_stop(dev);
--	if (!octeon_is_simulation())
-+	if (!octeon_is_simulation() && priv->phydev == NULL)
- 		priv->poll = cvm_oct_xaui_poll;
- 
- 	return 0;
-diff --git a/drivers/staging/octeon/ethernet.c b/drivers/staging/octeon/ethernet.c
-index 492c502..4cfd4b1 100644
---- a/drivers/staging/octeon/ethernet.c
-+++ b/drivers/staging/octeon/ethernet.c
-@@ -30,7 +30,7 @@
- #include <linux/netdevice.h>
- #include <linux/etherdevice.h>
- #include <linux/delay.h>
--#include <linux/mii.h>
-+#include <linux/phy.h>
- 
- #include <net/dst.h>
- 
-@@ -132,8 +132,6 @@ static struct timer_list cvm_oct_poll_timer;
-  */
- struct net_device *cvm_oct_device[TOTAL_NUMBER_OF_PORTS];
- 
--extern struct semaphore mdio_sem;
--
- /**
-  * Periodic timer tick for slow management operations
-  *
-@@ -160,13 +158,8 @@ static void cvm_do_timer(unsigned long arg)
- 		goto out;
- 
- 	priv = netdev_priv(cvm_oct_device[port]);
--	if (priv->poll) {
--		/* skip polling if we don't get the lock */
--		if (!down_trylock(&mdio_sem)) {
--			priv->poll(cvm_oct_device[port]);
--			up(&mdio_sem);
--		}
--	}
-+	if (priv->poll)
-+		priv->poll(cvm_oct_device[port]);
- 
- 	queues_per_port = cvmx_pko_get_num_queues(port);
- 	/* Drain any pending packets in the free list */
-@@ -524,7 +517,7 @@ int cvm_oct_common_init(struct net_device *dev)
- 	dev->features |= NETIF_F_LLTX;
- 	SET_ETHTOOL_OPS(dev, &cvm_oct_ethtool_ops);
- 
--	cvm_oct_mdio_setup_device(dev);
-+	cvm_oct_phy_setup_device(dev);
- 	dev->netdev_ops->ndo_set_mac_address(dev, &sa);
- 	dev->netdev_ops->ndo_change_mtu(dev, dev->mtu);
- 
-@@ -540,7 +533,10 @@ int cvm_oct_common_init(struct net_device *dev)
- 
- void cvm_oct_common_uninit(struct net_device *dev)
- {
--	/* Currently nothing to do */
-+	struct octeon_ethernet *priv = netdev_priv(dev);
-+
-+	if (priv->phydev)
-+		phy_disconnect(priv->phydev);
- }
- 
- static const struct net_device_ops cvm_oct_npi_netdev_ops = {
-@@ -627,6 +623,8 @@ static const struct net_device_ops cvm_oct_pow_netdev_ops = {
- #endif
- };
- 
-+extern void octeon_mdiobus_force_mod_depencency(void);
-+
- /**
-  * Module/ driver initialization. Creates the linux network
-  * devices.
-@@ -640,6 +638,7 @@ static int __init cvm_oct_init_module(void)
- 	int fau = FAU_NUM_PACKET_BUFFERS_TO_FREE;
- 	int qos;
- 
-+	octeon_mdiobus_force_mod_depencency();
- 	pr_notice("cavium-ethernet %s\n", OCTEON_ETHERNET_VERSION);
- 
- 	if (OCTEON_IS_MODEL(OCTEON_CN52XX))
-diff --git a/drivers/staging/octeon/octeon-ethernet.h b/drivers/staging/octeon/octeon-ethernet.h
-index 3aef987..402a15b 100644
---- a/drivers/staging/octeon/octeon-ethernet.h
-+++ b/drivers/staging/octeon/octeon-ethernet.h
-@@ -50,9 +50,9 @@ struct octeon_ethernet {
- 	/* List of outstanding tx buffers per queue */
- 	struct sk_buff_head tx_free_list[16];
- 	/* Device statistics */
--	struct net_device_stats stats
--;	/* Generic MII info structure */
--	struct mii_if_info mii_info;
-+	struct net_device_stats stats;
-+	struct phy_device *phydev;
-+	unsigned int last_link;
- 	/* Last negotiated link state */
- 	uint64_t link_info;
- 	/* Called periodically to check link status */
--- 
-1.6.0.6
+My compiler disagrees:
+
+
+  CC      arch/mips/alchemy/devboards/prom.o
+/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/alchemy/devboards/prom.c:34:18:
+error: prom.h: No such file or directory
+/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/alchemy/devboards/prom.c:
+In function 'prom_init':
+
+
+It's pulled in through "#include <prom.h>" directives in the alchemy code.
+The MIPS
+Makefile adds mach directories to the gcc include paths so that this works.
+
+        Manuel
+
+--00151747be34e35fcd0475e9f123
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, Oct 14, 2009 at 9:02 PM, Dmitri Vorobiev &lt;<a href=3D"mailto:dmit=
+ri.vorobiev@movial.com">dmitri.vorobiev@movial.com</a>&gt; wrote:<br>&gt; N=
+obody includes arch/mips/include/asm/mach-au1x00/prom.h, so remove<br>&gt; =
+this header file now.<br>
+<br>My compiler disagrees:<br><br><br>=A0 CC=A0=A0=A0=A0=A0 arch/mips/alche=
+my/devboards/prom.o<br>/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arc=
+h/mips/alchemy/devboards/prom.c:34:18: error: prom.h: No such file or direc=
+tory<br>
+/mnt/data/_home/mano/db1200/kernel/linux-2.6.git/arch/mips/alchemy/devboard=
+s/prom.c: In function &#39;prom_init&#39;:<br><br><br>It&#39;s pulled in th=
+rough &quot;#include &lt;prom.h&gt;&quot; directives in the alchemy code.=
+=A0 The MIPS<br>
+Makefile adds mach directories to the gcc include paths so that this works.=
+<br><br>=A0=A0=A0=A0=A0=A0=A0 Manuel<br>
+
+--00151747be34e35fcd0475e9f123--

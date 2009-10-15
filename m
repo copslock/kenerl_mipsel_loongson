@@ -1,127 +1,120 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Oct 2009 05:58:13 +0200 (CEST)
-Received: from mail-vw0-f192.google.com ([209.85.212.192]:55747 "EHLO
-	mail-vw0-f192.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492008AbZJOD6F (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 15 Oct 2009 05:58:05 +0200
-Received: by vws30 with SMTP id 30so264738vws.21
-        for <multiple recipients>; Wed, 14 Oct 2009 20:57:57 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type;
-        bh=Mn/C5SrL53Yu6jxvns8Og8oGHtiYEo2niQ/fivb8clA=;
-        b=G6QnZLteTNY4SEkN9AD/vpP2sai8nY/M2coFPLhaVNZ3e4X2DGy91nDDut2cYCBsdK
-         ijZITj8EkvfxF94tDh8KuOQmn3yRSaX070gI147nTa79Re2frd/8iNrJYeHdOD6SalVr
-         AVbXtTQK93ZldvHpJJOwqYxt5YjuL2hWlY6uw=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=V5tzvSm/lNjqEW8d0d5MLTOx1+M3uiRdup9Ool2cL7tszySefusySNUud1woPraKuA
-         ae/bbO3iLOY4OwGTIA4Q1BxW5Ixq3jIFCqYYHU2u56DKpJK+6TCQbXrBhGidhyFzJDFN
-         EAzoVAH2J2QD2bbgzg+I3G3DSdhNW60SgY0cA=
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Oct 2009 07:30:27 +0200 (CEST)
+Received: from TYO201.gate.nec.co.jp ([202.32.8.193]:43005 "EHLO
+	tyo201.gate.nec.co.jp" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1492121AbZJOFaT (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 15 Oct 2009 07:30:19 +0200
+Received: from relay31.aps.necel.com ([10.29.19.54])
+	by tyo201.gate.nec.co.jp (8.13.8/8.13.4) with ESMTP id n9F5Thvl022726;
+	Thu, 15 Oct 2009 14:29:43 +0900 (JST)
+Received: from realmbox31.aps.necel.com ([10.29.19.32] [10.29.19.32]) by relay31.aps.necel.com with ESMTP; Thu, 15 Oct 2009 14:29:43 +0900
+Received: from [10.114.180.134] ([10.114.180.134] [10.114.180.134]) by mbox02.aps.necel.com with ESMTP; Thu, 15 Oct 2009 14:29:43 +0900
+Message-ID: <4AD6B347.7010906@necel.com>
+Date:	Thu, 15 Oct 2009 14:29:43 +0900
+From:	Shinya Kuribayashi <shinya.kuribayashi@necel.com>
+User-Agent: Thunderbird 2.0.0.23 (Windows/20090812)
 MIME-Version: 1.0
-Received: by 10.220.89.158 with SMTP id e30mr14030740vcm.93.1255579076992; 
-	Wed, 14 Oct 2009 20:57:56 -0700 (PDT)
-In-Reply-To: <20091014232518.GA621@linux-mips.org>
-References: <1255546939-3302-1-git-send-email-dmitri.vorobiev@movial.com>
-	 <1255546939-3302-3-git-send-email-dmitri.vorobiev@movial.com>
-	 <b2b2f2320910141616p7b53c898gc4bc6a75713d4a8e@mail.gmail.com>
-	 <20091014232518.GA621@linux-mips.org>
-Date:	Wed, 14 Oct 2009 21:57:56 -0600
-Message-ID: <b2b2f2320910142057m1bdbef80wba22014bc26eebf3@mail.gmail.com>
-Subject: Re: [PATCH 2/3] [MIPS] msp71xx: remove unused function
-From:	Shane McDonald <mcdonald.shane@gmail.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Dmitri Vorobiev <dmitri.vorobiev@movial.com>,
-	linux-mips@linux-mips.org
-Content-Type: multipart/alternative; boundary=0016e6480644df20530475f14894
-Return-Path: <mcdonald.shane@gmail.com>
+To:	baruch@tkos.co.il, linux-i2c@vger.kernel.org
+CC:	ben-linux@fluff.org, linux-mips@linux-mips.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 15/16] i2c-designware: i2c_dw_xfer_msg: Mark as completed
+ on an error
+References: <4AD3E974.8080200@necel.com> <4AD3EBC4.6030705@necel.com>
+In-Reply-To: <4AD3EBC4.6030705@necel.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+Return-Path: <shinya.kuribayashi@necel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24334
+X-archive-position: 24335
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mcdonald.shane@gmail.com
+X-original-sender: shinya.kuribayashi@necel.com
 Precedence: bulk
 X-list: linux-mips
 
---0016e6480644df20530475f14894
-Content-Type: text/plain; charset=ISO-8859-1
+Shinya Kuribayashi wrote:
+> As wait_for_completion_interruptible_timeout() will be invoked after
+> the first call to i2c_dw_xfer_msg() is made whether or not an error is
+> detected in it, we need to mark ->cmd_complete as completed to avoid a
+> needless HZ timeout.
 
-On Wed, Oct 14, 2009 at 5:25 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
+> diff --git a/drivers/i2c/busses/i2c-designware.c b/drivers/i2c/busses/i2c-designware.c
+> index f7ea032..6f85e28 100644
+> --- a/drivers/i2c/busses/i2c-designware.c
+> +++ b/drivers/i2c/busses/i2c-designware.c
+> @@ -376,6 +376,7 @@ i2c_dw_xfer_msg(struct dw_i2c_dev *dev)
+>  			dev_err(dev->dev,
+>  				"%s: invalid message length\n", __func__);
+>  			dev->msg_err = -EINVAL;
+> +			complete(&dev->cmd_complete);
+>  			return;
+>  		}
 
-> On Wed, Oct 14, 2009 at 05:16:08PM -0600, Shane McDonald wrote:
->
-> > > Nobody calls the board-specific prom_getcmdline(), so let's remove it.
-> > >
-> > > Build-tested using msp71xx_defconfig.
-> > >
-> > > Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@movial.com>
-> > >
-> > >
-> > NAK.  It is called by the MSP71xx's Ethernet driver, whose code has not
-> yet
-> > made it into the mainline (last submission
-> > http://www.linux-mips.org/archives/linux-mips/2007-05/msg00210.html).
-> > Believe it or not, getting that driver whipped into shape is something
-> I'm
-> > slowly (very slowly) working on.
->
-> At a glance, it's not outrageously bad so I suggest you submit it to be
-> merged into drivers/staging it least it will no longer suffer the bitrot
-> that out of tree drivers suffer from.
->
->  Ralf
->
+It turned out to be incomplete, I confimred with I2C_FUNC_SMBUS_QUICK
+flag for testing.
 
-Good idea!  I'll need to clean it up enough so that it compiles and runs
-with HEAD, then I'll submit it to drivers/staging.
+In [PATCH 10/16] (Do dw_i2c_pump_msg's jobs in the interrutp handler),
+I deleted the following line from the interrupt handler,
+>-	writel(0, dev->base + DW_IC_INTR_MASK);	/* disable interrupts */
 
-Shane
+so some interrupt bits, namely RX_FULL and somtimes TX_EMPTY, are now
+kept _opened_ by default.  In error handling procedures, we need to
+disable them or shutdown DW I2C core properly, otherwise those
+interrupts continue to be asserted.
 
---0016e6480644df20530475f14894
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+In addition, I noticed that we need similar treatments in target addr
+inconsistency checking path.
 
-<div class=3D"gmail_quote">On Wed, Oct 14, 2009 at 5:25 PM, Ralf Baechle <s=
-pan dir=3D"ltr">&lt;<a href=3D"mailto:ralf@linux-mips.org">ralf@linux-mips.=
-org</a>&gt;</span> wrote:<br><blockquote class=3D"gmail_quote" style=3D"mar=
-gin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;">
-<div class=3D"im">On Wed, Oct 14, 2009 at 05:16:08PM -0600, Shane McDonald =
-wrote:<br>
-<br>
-&gt; &gt; Nobody calls the board-specific prom_getcmdline(), so let&#39;s r=
-emove it.<br>
-&gt; &gt;<br>
-&gt; &gt; Build-tested using msp71xx_defconfig.<br>
-&gt; &gt;<br>
-&gt; &gt; Signed-off-by: Dmitri Vorobiev &lt;<a href=3D"mailto:dmitri.vorob=
-iev@movial.com">dmitri.vorobiev@movial.com</a>&gt;<br>
-&gt; &gt;<br>
-&gt; &gt;<br>
-&gt; NAK. =A0It is called by the MSP71xx&#39;s Ethernet driver, whose code =
-has not yet<br>
-&gt; made it into the mainline (last submission<br>
-&gt; <a href=3D"http://www.linux-mips.org/archives/linux-mips/2007-05/msg00=
-210.html" target=3D"_blank">http://www.linux-mips.org/archives/linux-mips/2=
-007-05/msg00210.html</a>).<br>
-&gt; Believe it or not, getting that driver whipped into shape is something=
- I&#39;m<br>
-&gt; slowly (very slowly) working on.<br>
-<br>
-</div>At a glance, it&#39;s not outrageously bad so I suggest you submit it=
- to be<br>
-merged into drivers/staging it least it will no longer suffer the bitrot<br=
->
-that out of tree drivers suffer from.<br>
-<font color=3D"#888888"><br>
- =A0Ralf<br></font></blockquote><div><br></div><div>Good idea! =A0I&#39;ll =
-need to clean it up enough so that it compiles and runs with HEAD, then I&#=
-39;ll submit it to drivers/staging.</div><div><br></div><div>Shane</div></d=
-iv>
-<br>
+Here's problematic parts.  I'll sort out these bits, later.
+---
+ drivers/i2c/busses/i2c-designware.c |   18 ++++++++++++++++--
+ 1 files changed, 16 insertions(+), 2 deletions(-)
 
---0016e6480644df20530475f14894--
+diff --git a/drivers/i2c/busses/i2c-designware.c b/drivers/i2c/busses/i2c-designware.c
+index 060f2dd..70aaaec 100644
+--- a/drivers/i2c/busses/i2c-designware.c
++++ b/drivers/i2c/busses/i2c-designware.c
+@@ -370,13 +370,21 @@ i2c_dw_xfer_msg(struct dw_i2c_dev *dev)
+ 		 * reprogram the target address in the i2c
+ 		 * adapter when we are done with this transfer
+ 		 */
+-		if (msgs[dev->msg_write_idx].addr != addr)
++		if (msgs[dev->msg_write_idx].addr != addr) {
++			dev_err(dev->dev,
++				"%s: invalid message address\n", __func__);
++			dev->msg_err = -EINVAL;
++			writel(0, dev->base + DW_IC_ENABLE);
++			complete(&dev->cmd_complete);
+ 			return;
++		}
+ 
+ 		if (msgs[dev->msg_write_idx].len == 0) {
+ 			dev_err(dev->dev,
+ 				"%s: invalid message length\n", __func__);
+ 			dev->msg_err = -EINVAL;
++			writel(0, dev->base + DW_IC_ENABLE);
++			complete(&dev->cmd_complete);
+ 			return;
+ 		}
+ 
+@@ -430,8 +438,14 @@ i2c_dw_read(struct dw_i2c_dev *dev)
+ 			continue;
+ 
+ 		/* different i2c client, reprogram the i2c adapter */
+-		if (msgs[dev->msg_read_idx].addr != addr)
++		if (msgs[dev->msg_read_idx].addr != addr) {
++			dev_err(dev->dev,
++				"%s: invalid message address\n", __func__);
++			dev->msg_err = -EINVAL;
++			writel(0, dev->base + DW_IC_ENABLE);
++			complete(&dev->cmd_complete);
+ 			return;
++		}
+ 
+ 		if (!(dev->status & STATUS_READ_IN_PROGRESS)) {
+ 			len = msgs[dev->msg_read_idx].len;
+-- 
+Shinya Kuribayashi
+NEC Electronics

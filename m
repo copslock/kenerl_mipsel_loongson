@@ -1,41 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Oct 2009 20:54:00 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:38554 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
-	id S1493810AbZJOSxf (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 15 Oct 2009 20:53:35 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n9FIsom9008287;
-	Thu, 15 Oct 2009 20:54:50 +0200
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n9FIsoek008286;
-	Thu, 15 Oct 2009 20:54:50 +0200
-Date:	Thu, 15 Oct 2009 20:54:50 +0200
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Manuel Lauss <manuel.lauss@googlemail.com>
-Cc:	Linux-MIPS <linux-mips@linux-mips.org>,
-	Manuel Lauss <manuel.lauss@gmail.com>
-Subject: Re: [PATCH] MIPS: Alchemy: remove unused SYS area structure
-Message-ID: <20091015185450.GC4650@linux-mips.org>
-References: <1255627921-15944-1-git-send-email-manuel.lauss@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Oct 2009 22:05:49 +0200 (CEST)
+Received: from localhost.localdomain ([127.0.0.1]:47106 "EHLO
+	localhost.localdomain" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1493110AbZJOUFq (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 15 Oct 2009 22:05:46 +0200
+Date:	Thu, 15 Oct 2009 21:05:46 +0100 (BST)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
+To:	David Daney <ddaney@caviumnetworks.com>
+cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH 2/2] MIPS: Put PGD in C0_CONTEXT for 64-bit R2
+ processors.
+In-Reply-To: <1255547816-7544-2-git-send-email-ddaney@caviumnetworks.com>
+Message-ID: <alpine.LFD.2.00.0910152104020.20490@eddie.linux-mips.org>
+References: <4AD62353.2080603@caviumnetworks.com> <1255547816-7544-2-git-send-email-ddaney@caviumnetworks.com>
+User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1255627921-15944-1-git-send-email-manuel.lauss@gmail.com>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <ralf@linux-mips.org>
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24347
+X-archive-position: 24348
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, Oct 15, 2009 at 07:32:01PM +0200, Manuel Lauss wrote:
+On Wed, 14 Oct 2009, David Daney wrote:
 
-Queued for 2.6.33,
+> @@ -1406,6 +1424,7 @@ void __cpuinit build_tlb_refill_handler(void)
+>  	case CPU_TX3912:
+>  	case CPU_TX3922:
+>  	case CPU_TX3927:
+> +#ifndef CONFIG_MIPS_PGD_C0_CONTEXT
+>  		build_r3000_tlb_refill_handler();
+>  		if (!run_once) {
+>  			build_r3000_tlb_load_handler();
+> @@ -1413,6 +1432,9 @@ void __cpuinit build_tlb_refill_handler(void)
+>  			build_r3000_tlb_modify_handler();
+>  			run_once++;
+>  		}
+> +#else
+> +		panic("No R3000 TLB refill handler");
+> +#endif
+>  		break;
+>  
+>  	case CPU_R6000:
 
-  Ralf
+ Shouldn't this be #error or suchlike instead?
+
+  Maciej

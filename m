@@ -1,56 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Oct 2009 01:35:13 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:44091 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
-	id S1493697AbZJNXfJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 15 Oct 2009 01:35:09 +0200
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n9ENPJPN001147;
-	Thu, 15 Oct 2009 01:30:40 +0200
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n9ENPIKK001145;
-	Thu, 15 Oct 2009 01:25:18 +0200
-Date:	Thu, 15 Oct 2009 01:25:18 +0200
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Shane McDonald <mcdonald.shane@gmail.com>
-Cc:	Dmitri Vorobiev <dmitri.vorobiev@movial.com>,
-	linux-mips@linux-mips.org
-Subject: Re: [PATCH 2/3] [MIPS] msp71xx: remove unused function
-Message-ID: <20091014232518.GA621@linux-mips.org>
-References: <1255546939-3302-1-git-send-email-dmitri.vorobiev@movial.com> <1255546939-3302-3-git-send-email-dmitri.vorobiev@movial.com> <b2b2f2320910141616p7b53c898gc4bc6a75713d4a8e@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b2b2f2320910141616p7b53c898gc4bc6a75713d4a8e@mail.gmail.com>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Oct 2009 04:23:17 +0200 (CEST)
+Received: from mail-qy0-f171.google.com ([209.85.221.171]:34076 "EHLO
+	mail-qy0-f171.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1491874AbZJOCXK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 15 Oct 2009 04:23:10 +0200
+Received: by qyk1 with SMTP id 1so688223qyk.0
+        for <linux-mips@linux-mips.org>; Wed, 14 Oct 2009 19:23:04 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=+YK/lHr8gXnfepa5EaBlW+6fDXeiRHdQc4MRGRg2hqo=;
+        b=MvD33bSxUGcqZMVQOF84aT7uThcKI3OPrtD6Ym6f1wKfnkTvzREZtqyAfhcFUCr+kd
+         K2IToVUqf3AnfpH2r+hIN/L8rVTUz982J8ryVq7VearUvPJLixfFCQQGI0i/CuOMa/Q+
+         xO1bs4U15EJUSeaVkgQvhHmNH5rZl/zOobu+o=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=LL6ee+Rmi7H34F85yPZsUMhQfwNP7HtHiv/EB/0rO4bs8RsYwZMCHOm/t0h9ma8+jF
+         ubPQiLT7WQ8q3//lQ2QrOFOzdkGVfTF32vLHHhkXgkihS7pI2+qiDC6afhwseYS0F8DR
+         hPSiu8i2LwtnrJ/8cl9Gs/hJAKif/2bSrOP8I=
+Received: by 10.224.52.221 with SMTP id j29mr7720796qag.347.1255573384714;
+        Wed, 14 Oct 2009 19:23:04 -0700 (PDT)
+Received: from ?172.16.2.101? ([222.92.8.142])
+        by mx.google.com with ESMTPS id 6sm8102992qwk.13.2009.10.14.19.22.58
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 14 Oct 2009 19:23:03 -0700 (PDT)
+Subject: [PATCH] SND_CS5535AUDIO: Remove the X86 platform dependency
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	linux-mips <linux-mips@linux-mips.org>,
+	loongson-dev@googlegroups.com
+Cc:	Jaya Kumar <jayakumar.lkml@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Wu Zhangjin <wuzhangjin@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>, linux-sound@vger.kernel.org
+In-Reply-To: <1255190029-17584-1-git-send-email-wuzhangjin@gmail.com>
+References: <1255190029-17584-1-git-send-email-wuzhangjin@gmail.com>
+Content-Type: text/plain
+Organization: DSLab, Lanzhou University, China
+Date:	Thu, 15 Oct 2009 10:22:54 +0800
+Message-Id: <1255573374.7638.22.camel@falcon>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.26.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24330
+X-archive-position: 24331
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 14, 2009 at 05:16:08PM -0600, Shane McDonald wrote:
+Add CC to: Takashi Iwai <tiwai@suse.de>, linux-sound@vger.kernel.org
 
-> > Nobody calls the board-specific prom_getcmdline(), so let's remove it.
-> >
-> > Build-tested using msp71xx_defconfig.
-> >
-> > Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@movial.com>
-> >
-> >
-> NAK.  It is called by the MSP71xx's Ethernet driver, whose code has not yet
-> made it into the mainline (last submission
-> http://www.linux-mips.org/archives/linux-mips/2007-05/msg00210.html).
-> Believe it or not, getting that driver whipped into shape is something I'm
-> slowly (very slowly) working on.
+SND_CS5535AUDIO is available on Loongson(MIPS compatible) family
+machines, and checked it with ARCH=x86_64, no relative compiling
+warnings & errors, so, remove the platform dependency directly.
 
-At a glance, it's not outrageously bad so I suggest you submit it to be
-merged into drivers/staging it least it will no longer suffer the bitrot
-that out of tree drivers suffer from.
+Reported-by: rixed@happyleptic.org
+Acked-by: Andres Salomon <dilinger@collabora.co.uk>
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ sound/pci/Kconfig |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
 
-  Ralf
+diff --git a/sound/pci/Kconfig b/sound/pci/Kconfig
+index fb5ee3c..75c602b 100644
+--- a/sound/pci/Kconfig
++++ b/sound/pci/Kconfig
+@@ -259,7 +259,6 @@ config SND_CS5530
+ 
+ config SND_CS5535AUDIO
+ 	tristate "CS5535/CS5536 Audio"
+-	depends on X86 && !X86_64
+ 	select SND_PCM
+ 	select SND_AC97_CODEC
+ 	help
+-- 
+1.6.2.1

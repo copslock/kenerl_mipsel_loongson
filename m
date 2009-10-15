@@ -1,89 +1,91 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Oct 2009 04:23:17 +0200 (CEST)
-Received: from mail-qy0-f171.google.com ([209.85.221.171]:34076 "EHLO
-	mail-qy0-f171.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1491874AbZJOCXK (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 15 Oct 2009 04:23:10 +0200
-Received: by qyk1 with SMTP id 1so688223qyk.0
-        for <linux-mips@linux-mips.org>; Wed, 14 Oct 2009 19:23:04 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=+YK/lHr8gXnfepa5EaBlW+6fDXeiRHdQc4MRGRg2hqo=;
-        b=MvD33bSxUGcqZMVQOF84aT7uThcKI3OPrtD6Ym6f1wKfnkTvzREZtqyAfhcFUCr+kd
-         K2IToVUqf3AnfpH2r+hIN/L8rVTUz982J8ryVq7VearUvPJLixfFCQQGI0i/CuOMa/Q+
-         xO1bs4U15EJUSeaVkgQvhHmNH5rZl/zOobu+o=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=LL6ee+Rmi7H34F85yPZsUMhQfwNP7HtHiv/EB/0rO4bs8RsYwZMCHOm/t0h9ma8+jF
-         ubPQiLT7WQ8q3//lQ2QrOFOzdkGVfTF32vLHHhkXgkihS7pI2+qiDC6afhwseYS0F8DR
-         hPSiu8i2LwtnrJ/8cl9Gs/hJAKif/2bSrOP8I=
-Received: by 10.224.52.221 with SMTP id j29mr7720796qag.347.1255573384714;
-        Wed, 14 Oct 2009 19:23:04 -0700 (PDT)
-Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 6sm8102992qwk.13.2009.10.14.19.22.58
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 14 Oct 2009 19:23:03 -0700 (PDT)
-Subject: [PATCH] SND_CS5535AUDIO: Remove the X86 platform dependency
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	linux-mips <linux-mips@linux-mips.org>,
-	loongson-dev@googlegroups.com
-Cc:	Jaya Kumar <jayakumar.lkml@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Wu Zhangjin <wuzhangjin@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>, linux-sound@vger.kernel.org
-In-Reply-To: <1255190029-17584-1-git-send-email-wuzhangjin@gmail.com>
-References: <1255190029-17584-1-git-send-email-wuzhangjin@gmail.com>
-Content-Type: text/plain
-Organization: DSLab, Lanzhou University, China
-Date:	Thu, 15 Oct 2009 10:22:54 +0800
-Message-Id: <1255573374.7638.22.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1 
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Oct 2009 05:22:53 +0200 (CEST)
+Received: from TYO201.gate.nec.co.jp ([202.32.8.193]:47162 "EHLO
+	tyo201.gate.nec.co.jp" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1491970AbZJODWp (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 15 Oct 2009 05:22:45 +0200
+Received: from relay31.aps.necel.com ([10.29.19.54])
+	by tyo201.gate.nec.co.jp (8.13.8/8.13.4) with ESMTP id n9F3MELA000490;
+	Thu, 15 Oct 2009 12:22:14 +0900 (JST)
+Received: from realmbox31.aps.necel.com ([10.29.19.28] [10.29.19.28]) by relay31.aps.necel.com with ESMTP; Thu, 15 Oct 2009 12:22:13 +0900
+Received: from [10.114.180.134] ([10.114.180.134] [10.114.180.134]) by mbox02.aps.necel.com with ESMTP; Thu, 15 Oct 2009 12:22:13 +0900
+Message-ID: <4AD6956F.4050605@necel.com>
+Date:	Thu, 15 Oct 2009 12:22:23 +0900
+From:	Shinya Kuribayashi <shinya.kuribayashi@necel.com>
+User-Agent: Thunderbird 2.0.0.23 (Windows/20090812)
+MIME-Version: 1.0
+To:	Baruch Siach <baruch@tkos.co.il>
+CC:	linux-i2c@vger.kernel.org, ben-linux@fluff.org,
+	linux-mips@linux-mips.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 16/16] i2c-designware: Add I2C_FUNC_SMBUS_* bits
+References: <4AD3E974.8080200@necel.com> <4AD3EBDD.50105@necel.com> <20091014185327.GD11789@tarshish>
+In-Reply-To: <20091014185327.GD11789@tarshish>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Return-Path: <shinya.kuribayashi@necel.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24331
+X-archive-position: 24332
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: shinya.kuribayashi@necel.com
 Precedence: bulk
 X-list: linux-mips
 
-Add CC to: Takashi Iwai <tiwai@suse.de>, linux-sound@vger.kernel.org
+Hi Baruch,
 
-SND_CS5535AUDIO is available on Loongson(MIPS compatible) family
-machines, and checked it with ARCH=x86_64, no relative compiling
-warnings & errors, so, remove the platform dependency directly.
+Baruch Siach wrote:
+> On Tue, Oct 13, 2009 at 11:54:21AM +0900, Shinya Kuribayashi wrote:
+>> This will ease our testing a bit with i2c-tools.  Note that DW I2C core
+>> doesn't support I2C_FUNC_SMBUS_QUICK, as it's not capable of slave-
+>> addressing-only I2C transactions.
+> 
+> Is this supposed to be applied to mainline?
 
-Reported-by: rixed@happyleptic.org
-Acked-by: Andres Salomon <dilinger@collabora.co.uk>
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- sound/pci/Kconfig |    1 -
- 1 files changed, 0 insertions(+), 1 deletions(-)
+Yes, I hope so.  But I have to admit I blindly added several flags for
+my testing, and should have audited them before submitting patches.
 
-diff --git a/sound/pci/Kconfig b/sound/pci/Kconfig
-index fb5ee3c..75c602b 100644
---- a/sound/pci/Kconfig
-+++ b/sound/pci/Kconfig
-@@ -259,7 +259,6 @@ config SND_CS5530
- 
- config SND_CS5535AUDIO
- 	tristate "CS5535/CS5536 Audio"
--	depends on X86 && !X86_64
- 	select SND_PCM
- 	select SND_AC97_CODEC
- 	help
+>> @@ -529,7 +529,14 @@ done:
+>>
+>> static u32 i2c_dw_func(struct i2c_adapter *adap)
+>> {
+>> -	return I2C_FUNC_I2C | I2C_FUNC_10BIT_ADDR;
+>> +	return	I2C_FUNC_I2C |
+>> +		I2C_FUNC_10BIT_ADDR |
+>> +		I2C_FUNC_SMBUS_BYTE |
+>> +		I2C_FUNC_SMBUS_BYTE_DATA |
+>> +		I2C_FUNC_SMBUS_WORD_DATA |
+>> +		I2C_FUNC_SMBUS_BLOCK_DATA |
+>> +		I2C_FUNC_SMBUS_I2C_BLOCK |
+>> +		I2C_FUNC_SMBUS_I2C_BLOCK_2;
+>> }
+
+As far as I confirmed the requirements for having I2C_FUNC_SMBUS_*
+from drivers/i2c/,
+
+>> +		I2C_FUNC_SMBUS_BLOCK_DATA |
+
+>> +		I2C_FUNC_SMBUS_I2C_BLOCK_2;
+
+should be removed.  About the former, we have not implemented proper
+I2C_M_RECV_LEN handling yet [ I'm not sure what it's for ... ], and
+the latter doesn't seem to be used anywhere in the kernel.
+As for the rest, BYTE/WORD/I2C_BLOCK transaction works for me.
+
+So the resulting func() would be,
+
+static u32 i2c_dw_func(struct i2c_adapter *adap)
+{
+	return	I2C_FUNC_I2C |
+		I2C_FUNC_10BIT_ADDR |
+		I2C_FUNC_SMBUS_BYTE |
+		I2C_FUNC_SMBUS_BYTE_DATA |
+		I2C_FUNC_SMBUS_WORD_DATA |
+		I2C_FUNC_SMBUS_I2C_BLOCK;
+}
+
+and will be fixed up in the next patchset.
 -- 
-1.6.2.1
+Shinya Kuribayashi
+NEC Electronics

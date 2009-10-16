@@ -1,84 +1,93 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Oct 2009 12:43:35 +0200 (CEST)
-Received: from mail-yx0-f204.google.com ([209.85.210.204]:34557 "EHLO
-	mail-yx0-f204.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493567AbZJPKn2 convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 16 Oct 2009 12:43:28 +0200
-Received: by yxe42 with SMTP id 42so1685362yxe.22
-        for <multiple recipients>; Fri, 16 Oct 2009 03:43:20 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Oct 2009 13:38:54 +0200 (CEST)
+Received: from mail-pz0-f194.google.com ([209.85.222.194]:42621 "EHLO
+	mail-pz0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493588AbZJPLir (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 16 Oct 2009 13:38:47 +0200
+Received: by pzk32 with SMTP id 32so2037555pzk.21
+        for <multiple recipients>; Fri, 16 Oct 2009 04:38:39 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=D72b1dgqmtS+vGA2HW/TAWOB7JJV43GsEFTqXjsCJzg=;
-        b=bLUu1L9EEVTZ+1Zj5djjPqZ9xIT60VNiNYYfHNDuhA4foue7hg9JYqeZmrVRY+grVO
-         srJ2w1tal7TMwXXP5ODlcbdcpaifx1A4TLCnvGVn6TwUciUubfEAen3oHnJesmPW+1O3
-         pGDTHHl+5KKeixhSCAmkFwn2Tt3yHxPEaB4b8=
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=IlDKtp0qWL6jn+JcvdkEIHu8PFwWmThMcXB/9t1cWX0=;
+        b=m2BNobI48l7X/vE3HvXZ7SNTcTtfoRvBKEIU7Tk/nmXXRGcWiKICBtBWHEEo9rx61Y
+         fX/xAtcrr5sSIlJsnftM/BbxfC8RJmEx43NF4CNTMUnkqLJiAXejgPfRrp0HliEnFbFH
+         h4vxRzimgNtrIv4+hrTqDBI1L62IEwj3aKHaM=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=EyK5gybDF6cNb8G3j5JFjOtOycww8HZHPA/DQeAj5Z5QUfKJuZ/NycQBf9Nd5QOiS0
-         uSSICkUUao3uFU4VVuiYm3yqErw7Xti0+PJ6ZkAFCS7mJuHsDEcP9rEpk24yCfo0u4iM
-         PwxLdNFZSRjlX6v2yME8aAkQRHojzX9V03c8A=
-MIME-Version: 1.0
-Received: by 10.150.183.11 with SMTP id g11mr2457606ybf.50.1255689800896; Fri, 
-	16 Oct 2009 03:43:20 -0700 (PDT)
-In-Reply-To: <20091016092418.GA3686@linux-mips.org>
-References: <20091016141719.de606482.minchan.kim@barrios-desktop>
-	 <20091016092418.GA3686@linux-mips.org>
-Date:	Fri, 16 Oct 2009 19:43:20 +0900
-Message-ID: <28c262360910160343m1cf8bbf3g527085f29e0ae868@mail.gmail.com>
-Subject: Re: BUG? linux-mips flush_dcache_page
-From:	Minchan Kim <minchan.kim@gmail.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
-	lkml <linux-kernel@vger.kernel.org>,
-	linux-mips <linux-mips@linux-mips.org>,
-	Chungki woo <chungki.woo@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <minchan.kim@gmail.com>
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=BDT8mK4bOnvB+QbLgtuEnq8/qgU/J2zhRdblv7+6nPfefN9hRH4KImeOp/ucA26lFk
+         iC96s/2xNAbatELeUQIN3r/Yjp12+lQb3C+mGRv7BhZK9+DzIlfPpVdmwM+8yn6rsrvZ
+         uBQQ9Yt8NUSYsjgkshcuEYzl8i/DsmTV96s3I=
+Received: by 10.114.2.29 with SMTP id 29mr1494882wab.48.1255693119774;
+        Fri, 16 Oct 2009 04:38:39 -0700 (PDT)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPS id 21sm810497pzk.11.2009.10.16.04.38.33
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Fri, 16 Oct 2009 04:38:39 -0700 (PDT)
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+To:	linux-kernel@vger.kernel.org,
+	linux-mips <linux-mips@linux-mips.org>
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ingo Molnar <mingo@elte.hu>,
+	Manuel Lauss <manuel.lauss@googlemail.com>,
+	Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+	Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH 1/2] tracing: convert trace_clock_local() as weak function
+Date:	Fri, 16 Oct 2009 19:38:24 +0800
+Message-Id: <4205779ae74d7c4144ee6cbf4e3f15f833646356.1255692619.git.wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.6.2.1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24363
+X-archive-position: 24364
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: minchan.kim@gmail.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Oct 16, 2009 at 6:24 PM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Fri, Oct 16, 2009 at 02:17:19PM +0900, Minchan Kim wrote:
->
->> Many code of kernel fs usually allocate high page and flush.
->> But flush_dcache_page of mips checks PageHighMem to avoid flush
->> so that data consistency is broken, I think.
->
-> What processor and cache configuration?
+trace_clock_local() is based on the arch-specific sched_clock(), in X86,
+it is tsc(64bit) based, which can give very high precision(about 1ns
+with 1GHz). but in MIPS, the sched_clock() is jiffies based, which can
+give only 10ms precison with 1000 HZ. which is not enough for tracing,
+especially for Real Time system.
 
-Chungki. Could you anwer this question ?
+so, we need to implement a MIPS specific sched_clock() to get higher
+precision. There is a tsc like clock counter register in MIPS, whose
+frequency is half of the processor, so, if the cpu frequency is 800MHz,
+the time precision reaches 2.5ns, which is very good for tracing, even
+for Real Time system.
 
->> I found it's by you and Atsushi-san on 585fa724.
->> Why do we need the check?
->> Could you elaborte please?
->
-> The if statement exists because __flush_dcache_page would crash if a page
-> is not mapped.  This of course isn't correct but that wasn't a problem
-> since highmem still is only supported on machines that don't have aliases.
+but 'Cause it is only 32bit long, which will rollover quickly, so, such
+a sched_clock() will bring with extra load, which is not good for the
+whole system. so, we only need to implement a arch-specific
+trace_clock_local() for tracing. as a preparation, we convert it as a
+weak function.
 
-Thansk for good explanation.
-Chungki. Please let us know your machine(processor and cache configuration)
+The MIPS specific trace_clock_local() is coming in the next patch.
 
->
->  Ralf
->
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ kernel/trace/trace_clock.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-
-
+diff --git a/kernel/trace/trace_clock.c b/kernel/trace/trace_clock.c
+index 20c5f92..a04dc18 100644
+--- a/kernel/trace/trace_clock.c
++++ b/kernel/trace/trace_clock.c
+@@ -26,7 +26,7 @@
+  * Useful for tracing that does not cross to other CPUs nor
+  * does it go through idle events.
+  */
+-u64 notrace trace_clock_local(void)
++u64 __attribute__((weak)) notrace trace_clock_local(void)
+ {
+ 	unsigned long flags;
+ 	u64 clock;
 -- 
-Kind regards,
-Minchan Kim
+1.6.2.1

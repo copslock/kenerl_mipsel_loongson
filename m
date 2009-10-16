@@ -1,70 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 15 Oct 2009 22:23:14 +0200 (CEST)
-Received: from localhost.localdomain ([127.0.0.1]:35919 "EHLO
-	localhost.localdomain" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1493125AbZJOUXG (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 15 Oct 2009 22:23:06 +0200
-Date:	Thu, 15 Oct 2009 21:23:06 +0100 (BST)
-From:	"Maciej W. Rozycki" <macro@linux-mips.org>
-To:	David Daney <ddaney@caviumnetworks.com>
-cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
-Subject: Re: [PATCH 2/2] MIPS: Put PGD in C0_CONTEXT for 64-bit R2
- processors.
-In-Reply-To: <4AD781D3.60503@caviumnetworks.com>
-Message-ID: <alpine.LFD.2.00.0910152114100.20490@eddie.linux-mips.org>
-References: <4AD62353.2080603@caviumnetworks.com> <1255547816-7544-2-git-send-email-ddaney@caviumnetworks.com> <alpine.LFD.2.00.0910152104020.20490@eddie.linux-mips.org> <4AD781D3.60503@caviumnetworks.com>
-User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Return-Path: <macro@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Oct 2009 06:27:12 +0200 (CEST)
+Received: from mail-px0-f189.google.com ([209.85.216.189]:61244 "EHLO
+	mail-px0-f189.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492229AbZJPE1F (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 16 Oct 2009 06:27:05 +0200
+Received: by pxi27 with SMTP id 27so1456674pxi.22
+        for <multiple recipients>; Thu, 15 Oct 2009 21:26:57 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=Suqc3SvZPuX8Db36dIlr2o++AieeBBCcqqialwHxtTo=;
+        b=i+NhpHmwyPTBw3BNDKCkANLTXfzF6Ty1TJznWvcBesydYugc5Q18VTXNfTxkPGGKAj
+         OESIp2apDcKbnN5JACDaG/mqRs/DKOLpHqfsjoNIRuVxkpuCXR82llS0jBdM8xbeZjQz
+         UeN9ffbMg9fww5tUnEMmvsay0VfoVLOGIBRlQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=jnxFYW8HLsLB0aicXvZNHN2L9Tll2ecUIDvCk/CZM0iguDx5LMZCcuXxKam26aBeSM
+         rN/eeZKk4iiwXW601EiDSyRDNJCb/85z8fK66ILhrYpjweKdF/NTxNwyfhJOc8gMVjcU
+         wyW/NjdKK5IEjUmkOyTCbzD13eup+78r0KNvA=
+Received: by 10.115.66.9 with SMTP id t9mr1055846wak.56.1255667216929;
+        Thu, 15 Oct 2009 21:26:56 -0700 (PDT)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPS id 20sm1180704pzk.13.2009.10.15.21.26.53
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 15 Oct 2009 21:26:56 -0700 (PDT)
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+To:	Linux-MIPS <linux-mips@linux-mips.org>
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
+	Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH] MIPS: Disable Function Tracer for Compressed kernel support part
+Date:	Fri, 16 Oct 2009 12:26:45 +0800
+Message-Id: <1255667205-22998-1-git-send-email-wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.6.2.1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24350
+X-archive-position: 24351
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: macro@linux-mips.org
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 15 Oct 2009, David Daney wrote:
+There is no need to trace the compressed support part, so, dislable it.
+and also, if we not disable it, there will be compiling error about no
+defined _mcount.
 
-> > > @@ -1406,6 +1424,7 @@ void __cpuinit build_tlb_refill_handler(void)
-> > >  	case CPU_TX3912:
-> > >  	case CPU_TX3922:
-> > >  	case CPU_TX3927:
-> > > +#ifndef CONFIG_MIPS_PGD_C0_CONTEXT
-> > >  		build_r3000_tlb_refill_handler();
-> > >  		if (!run_once) {
-> > >  			build_r3000_tlb_load_handler();
-> > > @@ -1413,6 +1432,9 @@ void __cpuinit build_tlb_refill_handler(void)
-> > >  			build_r3000_tlb_modify_handler();
-> > >  			run_once++;
-> > >  		}
-> > > +#else
-> > > +		panic("No R3000 TLB refill handler");
-> > > +#endif
-> > >  		break;
-> > >   	case CPU_R6000:
-> > 
-> >  Shouldn't this be #error or suchlike instead?
-> > 
-> 
-> I don't think so.  It is a runtime check.  The kernel was configured in such a
-> manner that those CPUs cannot be supported.  By the time the problem is
-> detected, the preprocessor (and compiler in general) have already been run.
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/mips/boot/compressed/Makefile |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
 
- Hmm, you are right -- somehow I've assumed this piece of code is built 
-conditionally.
-
- We know beforehand that CPU_R3000 precludes both of 64BIT and CPU_MIPSR2.  
-And we do not support generic builds that would support multiple CPU types 
-(even though there are places where it would work straight away).  So we 
-can know at the build time that it is an invalid configuration; probably a 
-Kconfig breakage.
-
- I guess this is not a problem to be solved with your change though.  And 
-thanks for thinking about putting in some diagnostics at all for this 
-"impossible" case. :)
-
-  Maciej
+diff --git a/arch/mips/boot/compressed/Makefile b/arch/mips/boot/compressed/Makefile
+index 9bc435d..e27f40b 100644
+--- a/arch/mips/boot/compressed/Makefile
++++ b/arch/mips/boot/compressed/Makefile
+@@ -20,6 +20,9 @@ VMLINUZ_LOAD_ADDRESS := 0x$(shell [ -n "$(VMLINUX_SIZE)" ] && printf %x $$(($(VM
+ # set the default size of the mallocing area for decompressing
+ BOOT_HEAP_SIZE := 0x400000
+ 
++# Disable Function Tracer
++KBUILD_CFLAGS := $(shell echo $(KBUILD_CFLAGS) | sed -e "s/-pg//")
++
+ KBUILD_CFLAGS := $(LINUXINCLUDE) $(KBUILD_CFLAGS) -D__KERNEL__ \
+ 	-DBOOT_HEAP_SIZE=$(BOOT_HEAP_SIZE) -D"VMLINUX_LOAD_ADDRESS_ULL=$(VMLINUX_LOAD_ADDRESS)ull" \
+ 
+-- 
+1.6.2.1

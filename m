@@ -1,44 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Oct 2009 08:17:51 +0200 (CEST)
-Received: from mail-px0-f187.google.com ([209.85.216.187]:63187 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 16 Oct 2009 08:18:16 +0200 (CEST)
+Received: from mail-px0-f187.google.com ([209.85.216.187]:60124 "EHLO
 	mail-px0-f187.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492984AbZJPGRo (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 16 Oct 2009 08:17:44 +0200
-Received: by pxi17 with SMTP id 17so681893pxi.21
-        for <multiple recipients>; Thu, 15 Oct 2009 23:17:34 -0700 (PDT)
+	by ftp.linux-mips.org with ESMTP id S1493007AbZJPGRq (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 16 Oct 2009 08:17:46 +0200
+Received: by pxi17 with SMTP id 17so681981pxi.21
+        for <multiple recipients>; Thu, 15 Oct 2009 23:17:39 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=nash+YJjyOdm0O9Fp+Vj/3Du2njW34TTEwBUz4m/OC4=;
-        b=gRTnVfesiEHzzlqtfOTLzkjDTbF/s5MHeObuW1ZvhAClGynV5LFMYptMmcL962kYSe
-         f9VOOx1lxKnGwUOKQCSYO8Trpsa8sAkG2tcFi3TIXHBzVgaV7YDGWz9wuETtPtwtnnrD
-         AdnKf6Pqmd1ljhwU0XE2i3FJXlObrRe+3TWLc=
+         :message-id:x-mailer:in-reply-to:references:in-reply-to:references;
+        bh=Yl7zPmaUUql98okGaqXWulebz+c69PglJ0GJTJggU8w=;
+        b=IUaxTLz07VT5H/sc9+dvLHhLb5wqwdaW7hdolgxAw+rBNu6z8jF7uvr8E1pS75OSro
+         fG5P7XESww98KtWl2I4cBq1TZuGfkPSqgMQJN7jU16UQfj9lOVhXOOPXe0Tf6oe/hC9c
+         p+tP7hP1Cg796+DB2wq0/rH5wmxbu8xOGNnx4=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=wLfipSV+4gsyKIug8DId+Haw4DnA3MwAF3YTDn5Q1EwACUBV9GRVb3ybvpblQiiWwQ
-         GrDnPsbFkkReAtI4gThAP8+pv6S35IrlSvV5Tho+smnhob/wh3FaqFT1AEykB1nNC+90
-         CxKq+8U2xSUzVZSGucr0vVgQTNVbup0QtvcxM=
-Received: by 10.114.69.18 with SMTP id r18mr1206816waa.209.1255673854358;
-        Thu, 15 Oct 2009 23:17:34 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        b=gZj9UL0lwua6Wu+XvHPEkwW6t2TiwF0CQcy5HEjAMqbaoCyK+bmqMp1CPyXw0R+GeL
+         LGnL6ycOFC69Y9Hgm4vHH0twFaACh2kjhk70+dBhIRDTayPoFaGUHiqapTZNzv7cnKkB
+         2Av0hQnUZjn5Bb5EuceLl64kGXARcbMUYIktQ=
+Received: by 10.115.114.9 with SMTP id r9mr1242552wam.19.1255673858781;
+        Thu, 15 Oct 2009 23:17:38 -0700 (PDT)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id 21sm591698pzk.3.2009.10.15.23.17.30
+        by mx.google.com with ESMTPS id 21sm591698pzk.3.2009.10.15.23.17.34
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 15 Oct 2009 23:17:33 -0700 (PDT)
+        Thu, 15 Oct 2009 23:17:37 -0700 (PDT)
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 To:	Linux-MIPS <linux-mips@linux-mips.org>
 Cc:	Ralf Baechle <ralf@linux-mips.org>, yanh@lemote.com,
 	huhb@lemote.com, Zhang Le <r0bertz@gentoo.org>, zhangfx@lemote.com,
 	Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH -queue 0/7] [loongson] A few Cleanups for fuloong2e
-Date:	Fri, 16 Oct 2009 14:17:13 +0800
-Message-Id: <cover.1255672832.git.wuzhangjin@gmail.com>
+Subject: [PATCH -queue 1/7] [loongson] fuloong2e: Cleanup the Kconfig
+Date:	Fri, 16 Oct 2009 14:17:14 +0800
+Message-Id: <83f0ebe8e34e5da49d0cb3487a7ef53f4edd69af.1255673756.git.wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.6.2.1
+In-Reply-To: <cover.1255672832.git.wuzhangjin@gmail.com>
+References: <cover.1255672832.git.wuzhangjin@gmail.com>
+In-Reply-To: <cover.1255673756.git.wuzhangjin@gmail.com>
+References: <cover.1255673756.git.wuzhangjin@gmail.com>
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24353
+X-archive-position: 24354
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,43 +50,75 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-This patchset cleans up the fuloong2e support and do some necessary preparation
-for the coming loongson2f family machines' support.
+This patch replace the indention from whitespace to tab in
+arch/mips/loongson/Kconfig.
 
-Wu Zhangjin (7):
-  [loongson] fuloong2e: Cleanup the Kconfig
-  [loongson] mem.c: Register reserved memory pages
-  [loongson] early_printk: fix the variable type of uart_base
-  [loongosn] add a new serial port debug function
-  [loongson] add serial port support
-  [loongson] remove reference from bonito64
-  [loongson] fuloong2e: update config file
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/mips/loongson/Kconfig |   52 ++++++++++++++++++++++----------------------
+ 1 files changed, 26 insertions(+), 26 deletions(-)
 
- arch/mips/configs/fuloong2e_defconfig          |   93 ++++++++----
- arch/mips/include/asm/mach-loongson/dbg.h      |   17 +++
- arch/mips/include/asm/mach-loongson/loongson.h |  182 ++++++++++++++++++++++--
- arch/mips/include/asm/mach-loongson/machine.h  |    2 +-
- arch/mips/include/asm/mach-loongson/pci.h      |    6 +-
- arch/mips/include/asm/mips-boards/bonito64.h   |    5 -
- arch/mips/loongson/Kconfig                     |   52 ++++----
- arch/mips/loongson/common/Makefile             |    7 +-
- arch/mips/loongson/common/bonito-irq.c         |    8 +-
- arch/mips/loongson/common/dbg.c                |   34 +++++
- arch/mips/loongson/common/early_printk.c       |   10 +-
- arch/mips/loongson/common/init.c               |    2 +-
- arch/mips/loongson/common/irq.c                |   12 +-
- arch/mips/loongson/common/mem.c                |    8 +
- arch/mips/loongson/common/pci.c                |   12 +-
- arch/mips/loongson/common/reset.c              |    2 +-
- arch/mips/loongson/common/serial.c             |   71 +++++++++
- arch/mips/loongson/fuloong-2e/irq.c            |    4 +-
- arch/mips/loongson/fuloong-2e/reset.c          |    4 +-
- arch/mips/pci/Makefile                         |    2 +-
- arch/mips/pci/fixup-fuloong2e.c                |    5 +-
- arch/mips/pci/ops-bonito64.c                   |    7 -
- arch/mips/pci/ops-fuloong2e.c                  |  160 +++++++++++++++++++++
- 23 files changed, 586 insertions(+), 119 deletions(-)
- create mode 100644 arch/mips/include/asm/mach-loongson/dbg.h
- create mode 100644 arch/mips/loongson/common/dbg.c
- create mode 100644 arch/mips/loongson/common/serial.c
- create mode 100644 arch/mips/pci/ops-fuloong2e.c
+diff --git a/arch/mips/loongson/Kconfig b/arch/mips/loongson/Kconfig
+index d450925..818a028 100644
+--- a/arch/mips/loongson/Kconfig
++++ b/arch/mips/loongson/Kconfig
+@@ -1,31 +1,31 @@
+ choice
+-    prompt "Machine Type"
+-    depends on MACH_LOONGSON
++	prompt "Machine Type"
++	depends on MACH_LOONGSON
+ 
+ config LEMOTE_FULOONG2E
+-    bool "Lemote Fuloong(2e) mini-PC"
+-    select ARCH_SPARSEMEM_ENABLE
+-    select CEVT_R4K
+-    select CSRC_R4K
+-    select SYS_HAS_CPU_LOONGSON2E
+-    select DMA_NONCOHERENT
+-    select BOOT_ELF32
+-    select BOARD_SCACHE
+-    select HW_HAS_PCI
+-    select I8259
+-    select ISA
+-    select IRQ_CPU
+-    select SYS_SUPPORTS_32BIT_KERNEL
+-    select SYS_SUPPORTS_64BIT_KERNEL
+-    select SYS_SUPPORTS_LITTLE_ENDIAN
+-    select SYS_SUPPORTS_HIGHMEM
+-    select SYS_HAS_EARLY_PRINTK
+-    select GENERIC_HARDIRQS_NO__DO_IRQ
+-    select GENERIC_ISA_DMA_SUPPORT_BROKEN
+-    select CPU_HAS_WB
+-    help
+-      Lemote Fuloong(2e) mini-PC board based on the Chinese Loongson-2E CPU and
+-      an FPGA northbridge
++	bool "Lemote Fuloong(2e) mini-PC"
++	select ARCH_SPARSEMEM_ENABLE
++	select CEVT_R4K
++	select CSRC_R4K
++	select SYS_HAS_CPU_LOONGSON2E
++	select DMA_NONCOHERENT
++	select BOOT_ELF32
++	select BOARD_SCACHE
++	select HW_HAS_PCI
++	select I8259
++	select ISA
++	select IRQ_CPU
++	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_64BIT_KERNEL
++	select SYS_SUPPORTS_LITTLE_ENDIAN
++	select SYS_SUPPORTS_HIGHMEM
++	select SYS_HAS_EARLY_PRINTK
++	select GENERIC_HARDIRQS_NO__DO_IRQ
++	select GENERIC_ISA_DMA_SUPPORT_BROKEN
++	select CPU_HAS_WB
++	help
++	  Lemote Fuloong(2e) mini-PC board based on the Chinese Loongson-2E CPU and
++	  an FPGA northbridge
+ 
+-      Lemote Fuloong(2e) mini PC have a VIA686B south bridge.
++	  Lemote Fuloong(2e) mini PC have a VIA686B south bridge.
+ endchoice
+-- 
+1.6.2.1

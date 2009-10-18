@@ -1,81 +1,144 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Oct 2009 16:04:53 +0200 (CEST)
-Received: from mail-ew0-f216.google.com ([209.85.219.216]:36011 "EHLO
-	mail-ew0-f216.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492670AbZJROEq (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 18 Oct 2009 16:04:46 +0200
-Received: by ewy12 with SMTP id 12so3399056ewy.0
-        for <multiple recipients>; Sun, 18 Oct 2009 07:04:38 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:sender:from:date:subject
-         :mime-version:x-uid:x-length:to:cc:reply-to:content-type
-         :content-transfer-encoding:message-id;
-        bh=dJsmM3KmfGV2KYw0EhFroLeE6tfi0ybG/wHuAPtRDIk=;
-        b=sQjtq+4uaSce7iIay3k24RkAGquUiw3yMyd7ElBnP0bn3rdd5sNAWQYWCPtPovSbbw
-         yLLbo2+rc3E1fexeJ5odxviEWqVrJuVIlPYzZoOPelGyiNdbgU+zTzreMefdANbkdYW6
-         icvYUVA0pVMJvzzJQDkgQjQXzNxkOr5HjNv+Y=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=sender:from:date:subject:mime-version:x-uid:x-length:to:cc:reply-to
-         :content-type:content-transfer-encoding:message-id;
-        b=BhmgmRO+bjOwzKukfCP/hgTCwuPVqyRlzuyWl3v4+fpH8PSVuQmK0B05m9+kpo8DH5
-         NzppfsVBkx42VRzR78cyY7GaBehgNd1i8QN7YCIgNeLH4faeEmgdvBxhh0wsDgF6suWq
-         yk++v6HYzsRw8UgcoU5tKpa7vNYmXT3FmM8Tw=
-Received: by 10.211.159.13 with SMTP id l13mr4166703ebo.82.1255874678491;
-        Sun, 18 Oct 2009 07:04:38 -0700 (PDT)
-Received: from lenovo.localnet (147.59.76-86.rev.gaoland.net [86.76.59.147])
-        by mx.google.com with ESMTPS id 10sm7003240eyz.11.2009.10.18.07.04.37
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 18 Oct 2009 07:04:37 -0700 (PDT)
-From:	Florian Fainelli <florian@openwrt.org>
-Date:	Sun, 18 Oct 2009 16:04:41 +0200
-Subject: [PATCH 2/2] alchemy: turn on -Werror for devboards and xss1500
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 19 Oct 2009 00:10:58 +0200 (CEST)
+Received: from fanny.its.uu.se ([130.238.4.241]:2256 "EHLO fanny.its.uu.se"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1493141AbZJRWKv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 19 Oct 2009 00:10:51 +0200
+Received: by fanny.its.uu.se (Postfix, from userid 212)
+	id 4E4D06271; Mon, 19 Oct 2009 00:10:51 +0200 (MSZ)
+Received: from pilspetsen.it.uu.se (pilspetsen.it.uu.se [130.238.18.39])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by fanny.its.uu.se (Postfix) with ESMTP id 846B7623B;
+	Mon, 19 Oct 2009 00:10:42 +0200 (MSZ)
+Received: (from mikpe@localhost)
+	by pilspetsen.it.uu.se (8.13.8+Sun/8.13.8) id n9IMAfM8004872;
+	Mon, 19 Oct 2009 00:10:41 +0200 (MEST)
+X-Authentication-Warning: pilspetsen.it.uu.se: mikpe set sender to mikpe@it.uu.se using -f
 MIME-Version: 1.0
-X-UID:	1452
-X-Length: 1739
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org,
-	Manuel Lauss <manuel.lauss@googlemail.com>
-Reply-To: Florian Fainelli <florian@openwrt.org>
-Content-Type: text/plain;
-  charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Message-Id: <200910181604.42580.florian@openwrt.org>
-Return-Path: <f.fainelli@gmail.com>
+Message-ID: <19163.37473.182585.322550@pilspetsen.it.uu.se>
+Date:	Mon, 19 Oct 2009 00:10:41 +0200
+From:	Mikael Pettersson <mikpe@it.uu.se>
+To:	Linus Walleij <linus.walleij@stericsson.com>
+Cc:	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mips@linux-mips.org, Thomas Gleixner <tglx@linutronix.de>,
+	Mikael Pettersson <mikpe@it.uu.se>,
+	Ralf Baechle <ralf@linux-mips.org>
+Subject: Re: [PATCH] Make MIPS dynamic clocksource/clockevent clock code generic
+In-Reply-To: <1255819715-19763-1-git-send-email-linus.walleij@stericsson.com>
+References: <1255819715-19763-1-git-send-email-linus.walleij@stericsson.com>
+X-Mailer: VM 7.17 under Emacs 20.7.1
+Return-Path: <mikpe@it.uu.se>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24376
+X-archive-position: 24377
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: florian@openwrt.org
+X-original-sender: mikpe@it.uu.se
 Precedence: bulk
 X-list: linux-mips
 
-Warnings being suppressed, we can now turn on -Werror
-for boards which did not have it already (devboards and
-xss1500).
+Linus Walleij writes:
+ > This moves the clocksource_set_clock() and clockevent_set_clock()
+ > from the MIPS timer code into clockchips and clocksource where
+ > it belongs. The patch was triggered by code posted by Mikael
+ > Pettersson duplicating this code for the IOP ARM system. The
+ > function signatures where altered slightly to fit into their
+ > destination header files, unsigned int changed to u32 and inlined.
+ > 
+ > Signed-off-by: Linus Walleij <linus.walleij@stericsson.com>
+ > Cc: Thomas Gleixner <tglx@linutronix.de>
+ > Cc: Mikael Pettersson <mikpe@it.uu.se>
+ > Cc: Ralf Baechle <ralf@linux-mips.org>
+ > ---
+ > Ralf has stated in earlier conversation that this should be moved,
+ > now we risk duplicating code so let's move it.
+ > 
+ > I don't have access to a MIPS cross-compiler so please can the
+ > MIPS people test this?
+ > 
+ > Can you test it on the IOP too, Mikael?
 
-Signed-off-by: Florian Fainelli <florian@openwrt.org>
----
-diff --git a/arch/mips/alchemy/devboards/Makefile b/arch/mips/alchemy/devboards/Makefile
-index cfda972..c74ef80 100644
---- a/arch/mips/alchemy/devboards/Makefile
-+++ b/arch/mips/alchemy/devboards/Makefile
-@@ -16,3 +16,5 @@ obj-$(CONFIG_MIPS_DB1500)	+= db1x00/
- obj-$(CONFIG_MIPS_DB1550)	+= db1x00/
- obj-$(CONFIG_MIPS_BOSPORUS)	+= db1x00/
- obj-$(CONFIG_MIPS_MIRAGE)	+= db1x00/
-+
-+EXTRA_CFLAGS += -Werror
-diff --git a/arch/mips/alchemy/xxs1500/Makefile b/arch/mips/alchemy/xxs1500/Makefile
-index 68671c2..4dc81d7 100644
---- a/arch/mips/alchemy/xxs1500/Makefile
-+++ b/arch/mips/alchemy/xxs1500/Makefile
-@@ -6,3 +6,5 @@
- #
- 
- lib-y := init.o board_setup.o platform.o
-+
-+EXTRA_CFLAGS += -Werror
+Changing my ARM IOP clock code to use these now shared functions
+was easy, and I get the same shift/mult values as I got before. So:
+
+Tested-by: Mikael Pettersson <mikpe@it.uu.se>
+
+A few tiny comments about the patch follow below.
+
+ > --- a/include/linux/clockchips.h
+ > +++ b/include/linux/clockchips.h
+ > @@ -115,6 +115,30 @@ static inline unsigned long div_sc(unsigned long ticks, unsigned long nsec,
+ >  	return (unsigned long) tmp;
+ >  }
+ >  
+ > +/**
+ > + * clockevent_set_clock - dynamically calculates an appropriate shift
+ > + *			  and mult value for a clocksource given a
+
+drop "dynamically"
+"calculates appropriate shift and mult values" ?
+
+s/clocksource/clockevent/
+
+ > + *			  known clock frequency
+ > + * @dev:	Clockevent device to initialize
+ > + * @hz:		Clockevent clock frequency in Hz
+ > + */
+ > +static inline void clockevent_set_clock(struct clock_event_device *dev, u32 hz)
+ > +{
+ > +	u64 temp;
+ > +	u32 shift;
+ > +
+ > +	/* Find a shift value */
+
+This comment is inaccurate. It should say "Find shift and mult values",
+or you could remove it and rely on the comment above the function
+definition to document the intended behaviour.
+
+ > +	for (shift = 32; shift > 0; shift--) {
+ > +		temp = (u64) hz << shift;
+ > +		do_div(temp, NSEC_PER_SEC);
+ > +		if ((temp >> 32) == 0)
+ > +			break;
+ > +	}
+ > +	dev->shift = shift;
+ > +	dev->mult = (u32) temp;
+ > +}
+ > +
+ > +
+
+Two empty lines?
+
+ >  /* Clock event layer functions */
+ >  extern unsigned long clockevent_delta2ns(unsigned long latch,
+ >  					 struct clock_event_device *evt);
+ > diff --git a/include/linux/clocksource.h b/include/linux/clocksource.h
+ > index 9ea40ff..807fb37 100644
+ > --- a/include/linux/clocksource.h
+ > +++ b/include/linux/clocksource.h
+ > @@ -257,6 +257,29 @@ static inline u32 clocksource_hz2mult(u32 hz, u32 shift_constant)
+ >  }
+ >  
+ >  /**
+ > + * clocksource_set_clock - dynamically calculates an appropriate shift
+ > + *			   and mult value for a clocksource given a
+
+drop "dynamically"
+"calculates appropriate shift and mult values" ?
+
+ > + *			   known clock frequency
+ > + * @cs:		Clocksource to initialize
+ > + * @hz:		Clocksource frequency in Hz
+ > + */
+ > +static inline void clocksource_set_clock(struct clocksource *cs, u32 hz)
+ > +{
+ > +	u64 temp;
+ > +	u32 shift;
+ > +
+ > +	/* Find a shift value */
+
+Same issue as with the comment in clockevent_set_clock().

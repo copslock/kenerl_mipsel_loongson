@@ -1,38 +1,38 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Oct 2009 16:04:17 +0200 (CEST)
-Received: from ey-out-1920.google.com ([74.125.78.145]:33897 "EHLO
-	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1492670AbZJROEK (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 18 Oct 2009 16:04:10 +0200
-Received: by ey-out-1920.google.com with SMTP id 13so661811eye.52
-        for <multiple recipients>; Sun, 18 Oct 2009 07:04:09 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Oct 2009 16:04:53 +0200 (CEST)
+Received: from mail-ew0-f216.google.com ([209.85.219.216]:36011 "EHLO
+	mail-ew0-f216.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492670AbZJROEq (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 18 Oct 2009 16:04:46 +0200
+Received: by ewy12 with SMTP id 12so3399056ewy.0
+        for <multiple recipients>; Sun, 18 Oct 2009 07:04:38 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:sender:from:date:subject
          :mime-version:x-uid:x-length:to:cc:reply-to:content-type
          :content-transfer-encoding:message-id;
-        bh=wYUScjFvb8r5W/DoJvjAPiIgvZFf45h/j2ECx3VTfNA=;
-        b=klf5PY7/0U6dRVqHm9YZahltrE9sjBCj/gtFmTsnaInWCxrp6J6fWMf0fPag506B08
-         XND2cFn5PO0X+MN6EJiC1q1l/ZSQB20JWsDvIjsCzBsty2HdssO4gokZPIrVtOGYvqgz
-         nB5MMcsEmKNhQN9b94WYYySZhh4aWkEXJqgBo=
+        bh=dJsmM3KmfGV2KYw0EhFroLeE6tfi0ybG/wHuAPtRDIk=;
+        b=sQjtq+4uaSce7iIay3k24RkAGquUiw3yMyd7ElBnP0bn3rdd5sNAWQYWCPtPovSbbw
+         yLLbo2+rc3E1fexeJ5odxviEWqVrJuVIlPYzZoOPelGyiNdbgU+zTzreMefdANbkdYW6
+         icvYUVA0pVMJvzzJQDkgQjQXzNxkOr5HjNv+Y=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=sender:from:date:subject:mime-version:x-uid:x-length:to:cc:reply-to
          :content-type:content-transfer-encoding:message-id;
-        b=HAKSMEdwUOdNQOwH3AbNEbrTMg70OwJnedakrKQ2z0jKA99r4EdcPYA/YtQ5+lok2Z
-         cnDsfBzNJrUhpi34Zmr0Y872JgMWq6a1dW0UEpBg13g4dXR3K6Rx00m/0JZ5e64x6A7y
-         nmzfL+vXoaMNUe7j74m2W6gEEC8VZtRfwb+ks=
-Received: by 10.211.128.15 with SMTP id f15mr4150735ebn.84.1255874649187;
-        Sun, 18 Oct 2009 07:04:09 -0700 (PDT)
+        b=BhmgmRO+bjOwzKukfCP/hgTCwuPVqyRlzuyWl3v4+fpH8PSVuQmK0B05m9+kpo8DH5
+         NzppfsVBkx42VRzR78cyY7GaBehgNd1i8QN7YCIgNeLH4faeEmgdvBxhh0wsDgF6suWq
+         yk++v6HYzsRw8UgcoU5tKpa7vNYmXT3FmM8Tw=
+Received: by 10.211.159.13 with SMTP id l13mr4166703ebo.82.1255874678491;
+        Sun, 18 Oct 2009 07:04:38 -0700 (PDT)
 Received: from lenovo.localnet (147.59.76-86.rev.gaoland.net [86.76.59.147])
-        by mx.google.com with ESMTPS id 10sm7006424eyz.35.2009.10.18.07.04.08
+        by mx.google.com with ESMTPS id 10sm7003240eyz.11.2009.10.18.07.04.37
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 18 Oct 2009 07:04:08 -0700 (PDT)
+        Sun, 18 Oct 2009 07:04:37 -0700 (PDT)
 From:	Florian Fainelli <florian@openwrt.org>
-Date:	Sun, 18 Oct 2009 16:04:09 +0200
-Subject: [PATCH 1/2] alchemy: fix warnings in db1x00/pb1000/pb1550 board setup code
+Date:	Sun, 18 Oct 2009 16:04:41 +0200
+Subject: [PATCH 2/2] alchemy: turn on -Werror for devboards and xss1500
 MIME-Version: 1.0
-X-UID:	1451
-X-Length: 3160
+X-UID:	1452
+X-Length: 1739
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	linux-mips@linux-mips.org,
 	Manuel Lauss <manuel.lauss@googlemail.com>
@@ -40,12 +40,12 @@ Reply-To: Florian Fainelli <florian@openwrt.org>
 Content-Type: text/plain;
   charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <200910181604.11732.florian@openwrt.org>
+Message-Id: <200910181604.42580.florian@openwrt.org>
 Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24375
+X-archive-position: 24376
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,69 +53,29 @@ X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-This patch fixes warnings due to potentially unused
-variables in board setup code or mixed variables
-declaration and code (forbidden by ISO C90).
+Warnings being suppressed, we can now turn on -Werror
+for boards which did not have it already (devboards and
+xss1500).
 
 Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
-diff --git a/arch/mips/alchemy/devboards/db1x00/board_setup.c b/arch/mips/alchemy/devboards/db1x00/board_setup.c
-index 64eb26f..7aee14d 100644
---- a/arch/mips/alchemy/devboards/db1x00/board_setup.c
-+++ b/arch/mips/alchemy/devboards/db1x00/board_setup.c
-@@ -85,12 +85,14 @@ void board_reset(void)
- void __init board_setup(void)
- {
- 	unsigned long bcsr1, bcsr2;
--	u32 pin_func = 0;
-+	u32 pin_func;
- 	char *argptr;
- 
- 	bcsr1 = DB1000_BCSR_PHYS_ADDR;
- 	bcsr2 = DB1000_BCSR_PHYS_ADDR + DB1000_BCSR_HEXLED_OFS;
- 
-+	pin_func = 0;
+diff --git a/arch/mips/alchemy/devboards/Makefile b/arch/mips/alchemy/devboards/Makefile
+index cfda972..c74ef80 100644
+--- a/arch/mips/alchemy/devboards/Makefile
++++ b/arch/mips/alchemy/devboards/Makefile
+@@ -16,3 +16,5 @@ obj-$(CONFIG_MIPS_DB1500)	+= db1x00/
+ obj-$(CONFIG_MIPS_DB1550)	+= db1x00/
+ obj-$(CONFIG_MIPS_BOSPORUS)	+= db1x00/
+ obj-$(CONFIG_MIPS_MIRAGE)	+= db1x00/
 +
- #ifdef CONFIG_MIPS_DB1000
- 	printk(KERN_INFO "AMD Alchemy Au1000/Db1000 Board\n");
- #endif
-diff --git a/arch/mips/alchemy/devboards/pb1000/board_setup.c b/arch/mips/alchemy/devboards/pb1000/board_setup.c
-index 287d661..50fff50 100644
---- a/arch/mips/alchemy/devboards/pb1000/board_setup.c
-+++ b/arch/mips/alchemy/devboards/pb1000/board_setup.c
-@@ -46,9 +46,13 @@ void __init board_setup(void)
- 	u32 pin_func, static_cfg0;
- 	u32 sys_freqctrl, sys_clksrc;
- 	u32 prid = read_c0_prid();
-+	char *argptr;
++EXTRA_CFLAGS += -Werror
+diff --git a/arch/mips/alchemy/xxs1500/Makefile b/arch/mips/alchemy/xxs1500/Makefile
+index 68671c2..4dc81d7 100644
+--- a/arch/mips/alchemy/xxs1500/Makefile
++++ b/arch/mips/alchemy/xxs1500/Makefile
+@@ -6,3 +6,5 @@
+ #
+ 
+ lib-y := init.o board_setup.o platform.o
 +
-+	sys_freqctrl = 0;
-+	sys_clksrc = 0;
-+	argptr = prom_getcmdline();
- 
- #ifdef CONFIG_SERIAL_8250_CONSOLE
--	char *argptr = prom_getcmdline();
- 	argptr = strstr(argptr, "console=");
- 	if (argptr == NULL) {
- 		argptr = prom_getcmdline();
-diff --git a/arch/mips/alchemy/devboards/pb1550/board_setup.c b/arch/mips/alchemy/devboards/pb1550/board_setup.c
-index bb41740..0d060c3 100644
---- a/arch/mips/alchemy/devboards/pb1550/board_setup.c
-+++ b/arch/mips/alchemy/devboards/pb1550/board_setup.c
-@@ -56,14 +56,13 @@ void board_reset(void)
- void __init board_setup(void)
- {
- 	u32 pin_func;
-+	char *argptr;
- 
- 	bcsr_init(PB1550_BCSR_PHYS_ADDR,
- 		  PB1550_BCSR_PHYS_ADDR + PB1550_BCSR_HEXLED_OFS);
- 
--
--#ifdef CONFIG_SERIAL_8250_CONSOLE
--	char *argptr;
- 	argptr = prom_getcmdline();
-+#ifdef CONFIG_SERIAL_8250_CONSOLE
- 	argptr = strstr(argptr, "console=");
- 	if (argptr == NULL) {
- 		argptr = prom_getcmdline();
++EXTRA_CFLAGS += -Werror

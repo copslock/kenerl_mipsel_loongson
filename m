@@ -1,200 +1,121 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Oct 2009 00:48:58 +0200 (CEST)
-Received: from mail.df.lth.se ([194.47.250.12]:51294 "EHLO df.lth.se"
-	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
-	id S1493466AbZJQWsv (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 18 Oct 2009 00:48:51 +0200
-Received: from mer.df.lth.se (mer.df.lth.se [194.47.250.37])
-	by df.lth.se (8.14.2/8.13.7) with ESMTP id n9HMmfIL003658
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-	Sun, 18 Oct 2009 00:48:42 +0200 (CEST)
-Received: from mer.df.lth.se (triad@localhost.localdomain [127.0.0.1])
-	by mer.df.lth.se (8.14.3/8.14.3/Debian-5) with ESMTP id n9HMmfu9020028;
-	Sun, 18 Oct 2009 00:48:41 +0200
-Received: (from triad@localhost)
-	by mer.df.lth.se (8.14.3/8.14.3/Submit) id n9HMmc6a020027;
-	Sun, 18 Oct 2009 00:48:38 +0200
-From:	Linus Walleij <linus.walleij@stericsson.com>
-To:	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mips@linux-mips.org
-Cc:	Linus Walleij <linus.walleij@stericsson.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Mikael Pettersson <mikpe@it.uu.se>,
-	Ralf Baechle <ralf@linux-mips.org>
-Subject: [PATCH] Make MIPS dynamic clocksource/clockevent clock code generic
-Date:	Sun, 18 Oct 2009 00:48:35 +0200
-Message-Id: <1255819715-19763-1-git-send-email-linus.walleij@stericsson.com>
-X-Mailer: git-send-email 1.6.2.rc1
-Return-Path: <triad@df.lth.se>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 18 Oct 2009 16:04:17 +0200 (CEST)
+Received: from ey-out-1920.google.com ([74.125.78.145]:33897 "EHLO
+	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1492670AbZJROEK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 18 Oct 2009 16:04:10 +0200
+Received: by ey-out-1920.google.com with SMTP id 13so661811eye.52
+        for <multiple recipients>; Sun, 18 Oct 2009 07:04:09 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:from:date:subject
+         :mime-version:x-uid:x-length:to:cc:reply-to:content-type
+         :content-transfer-encoding:message-id;
+        bh=wYUScjFvb8r5W/DoJvjAPiIgvZFf45h/j2ECx3VTfNA=;
+        b=klf5PY7/0U6dRVqHm9YZahltrE9sjBCj/gtFmTsnaInWCxrp6J6fWMf0fPag506B08
+         XND2cFn5PO0X+MN6EJiC1q1l/ZSQB20JWsDvIjsCzBsty2HdssO4gokZPIrVtOGYvqgz
+         nB5MMcsEmKNhQN9b94WYYySZhh4aWkEXJqgBo=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:from:date:subject:mime-version:x-uid:x-length:to:cc:reply-to
+         :content-type:content-transfer-encoding:message-id;
+        b=HAKSMEdwUOdNQOwH3AbNEbrTMg70OwJnedakrKQ2z0jKA99r4EdcPYA/YtQ5+lok2Z
+         cnDsfBzNJrUhpi34Zmr0Y872JgMWq6a1dW0UEpBg13g4dXR3K6Rx00m/0JZ5e64x6A7y
+         nmzfL+vXoaMNUe7j74m2W6gEEC8VZtRfwb+ks=
+Received: by 10.211.128.15 with SMTP id f15mr4150735ebn.84.1255874649187;
+        Sun, 18 Oct 2009 07:04:09 -0700 (PDT)
+Received: from lenovo.localnet (147.59.76-86.rev.gaoland.net [86.76.59.147])
+        by mx.google.com with ESMTPS id 10sm7006424eyz.35.2009.10.18.07.04.08
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sun, 18 Oct 2009 07:04:08 -0700 (PDT)
+From:	Florian Fainelli <florian@openwrt.org>
+Date:	Sun, 18 Oct 2009 16:04:09 +0200
+Subject: [PATCH 1/2] alchemy: fix warnings in db1x00/pb1000/pb1550 board setup code
+MIME-Version: 1.0
+X-UID:	1451
+X-Length: 3160
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org,
+	Manuel Lauss <manuel.lauss@googlemail.com>
+Reply-To: Florian Fainelli <florian@openwrt.org>
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <200910181604.11732.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24374
+X-archive-position: 24375
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: linus.walleij@stericsson.com
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-This moves the clocksource_set_clock() and clockevent_set_clock()
-from the MIPS timer code into clockchips and clocksource where
-it belongs. The patch was triggered by code posted by Mikael
-Pettersson duplicating this code for the IOP ARM system. The
-function signatures where altered slightly to fit into their
-destination header files, unsigned int changed to u32 and inlined.
+This patch fixes warnings due to potentially unused
+variables in board setup code or mixed variables
+declaration and code (forbidden by ISO C90).
 
-Signed-off-by: Linus Walleij <linus.walleij@stericsson.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Mikael Pettersson <mikpe@it.uu.se>
-Cc: Ralf Baechle <ralf@linux-mips.org>
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
 ---
-Ralf has stated in earlier conversation that this should be moved,
-now we risk duplicating code so let's move it.
-
-I don't have access to a MIPS cross-compiler so please can the
-MIPS people test this?
-
-Can you test it on the IOP too, Mikael?
----
- arch/mips/include/asm/time.h |    4 ----
- arch/mips/kernel/time.c      |   33 ---------------------------------
- include/linux/clockchips.h   |   24 ++++++++++++++++++++++++
- include/linux/clocksource.h  |   24 +++++++++++++++++++++++-
- 4 files changed, 47 insertions(+), 38 deletions(-)
-
-diff --git a/arch/mips/include/asm/time.h b/arch/mips/include/asm/time.h
-index df6a430..e9b3f92 100644
---- a/arch/mips/include/asm/time.h
-+++ b/arch/mips/include/asm/time.h
-@@ -84,8 +84,4 @@ static inline int init_mips_clocksource(void)
+diff --git a/arch/mips/alchemy/devboards/db1x00/board_setup.c b/arch/mips/alchemy/devboards/db1x00/board_setup.c
+index 64eb26f..7aee14d 100644
+--- a/arch/mips/alchemy/devboards/db1x00/board_setup.c
++++ b/arch/mips/alchemy/devboards/db1x00/board_setup.c
+@@ -85,12 +85,14 @@ void board_reset(void)
+ void __init board_setup(void)
+ {
+ 	unsigned long bcsr1, bcsr2;
+-	u32 pin_func = 0;
++	u32 pin_func;
+ 	char *argptr;
+ 
+ 	bcsr1 = DB1000_BCSR_PHYS_ADDR;
+ 	bcsr2 = DB1000_BCSR_PHYS_ADDR + DB1000_BCSR_HEXLED_OFS;
+ 
++	pin_func = 0;
++
+ #ifdef CONFIG_MIPS_DB1000
+ 	printk(KERN_INFO "AMD Alchemy Au1000/Db1000 Board\n");
  #endif
- }
- 
--extern void clocksource_set_clock(struct clocksource *cs, unsigned int clock);
--extern void clockevent_set_clock(struct clock_event_device *cd,
--		unsigned int clock);
--
- #endif /* _ASM_TIME_H */
-diff --git a/arch/mips/kernel/time.c b/arch/mips/kernel/time.c
-index 1f467d5..fb74974 100644
---- a/arch/mips/kernel/time.c
-+++ b/arch/mips/kernel/time.c
-@@ -71,39 +71,6 @@ EXPORT_SYMBOL(perf_irq);
- 
- unsigned int mips_hpt_frequency;
- 
--void __init clocksource_set_clock(struct clocksource *cs, unsigned int clock)
--{
--	u64 temp;
--	u32 shift;
--
--	/* Find a shift value */
--	for (shift = 32; shift > 0; shift--) {
--		temp = (u64) NSEC_PER_SEC << shift;
--		do_div(temp, clock);
--		if ((temp >> 32) == 0)
--			break;
--	}
--	cs->shift = shift;
--	cs->mult = (u32) temp;
--}
--
--void __cpuinit clockevent_set_clock(struct clock_event_device *cd,
--	unsigned int clock)
--{
--	u64 temp;
--	u32 shift;
--
--	/* Find a shift value */
--	for (shift = 32; shift > 0; shift--) {
--		temp = (u64) clock << shift;
--		do_div(temp, NSEC_PER_SEC);
--		if ((temp >> 32) == 0)
--			break;
--	}
--	cd->shift = shift;
--	cd->mult = (u32) temp;
--}
--
- /*
-  * This function exists in order to cause an error due to a duplicate
-  * definition if platform code should have its own implementation.  The hook
-diff --git a/include/linux/clockchips.h b/include/linux/clockchips.h
-index 3a1dbba..41aa95e 100644
---- a/include/linux/clockchips.h
-+++ b/include/linux/clockchips.h
-@@ -115,6 +115,30 @@ static inline unsigned long div_sc(unsigned long ticks, unsigned long nsec,
- 	return (unsigned long) tmp;
- }
- 
-+/**
-+ * clockevent_set_clock - dynamically calculates an appropriate shift
-+ *			  and mult value for a clocksource given a
-+ *			  known clock frequency
-+ * @dev:	Clockevent device to initialize
-+ * @hz:		Clockevent clock frequency in Hz
-+ */
-+static inline void clockevent_set_clock(struct clock_event_device *dev, u32 hz)
-+{
-+	u64 temp;
-+	u32 shift;
+diff --git a/arch/mips/alchemy/devboards/pb1000/board_setup.c b/arch/mips/alchemy/devboards/pb1000/board_setup.c
+index 287d661..50fff50 100644
+--- a/arch/mips/alchemy/devboards/pb1000/board_setup.c
++++ b/arch/mips/alchemy/devboards/pb1000/board_setup.c
+@@ -46,9 +46,13 @@ void __init board_setup(void)
+ 	u32 pin_func, static_cfg0;
+ 	u32 sys_freqctrl, sys_clksrc;
+ 	u32 prid = read_c0_prid();
++	char *argptr;
 +
-+	/* Find a shift value */
-+	for (shift = 32; shift > 0; shift--) {
-+		temp = (u64) hz << shift;
-+		do_div(temp, NSEC_PER_SEC);
-+		if ((temp >> 32) == 0)
-+			break;
-+	}
-+	dev->shift = shift;
-+	dev->mult = (u32) temp;
-+}
-+
-+
- /* Clock event layer functions */
- extern unsigned long clockevent_delta2ns(unsigned long latch,
- 					 struct clock_event_device *evt);
-diff --git a/include/linux/clocksource.h b/include/linux/clocksource.h
-index 9ea40ff..807fb37 100644
---- a/include/linux/clocksource.h
-+++ b/include/linux/clocksource.h
-@@ -257,6 +257,29 @@ static inline u32 clocksource_hz2mult(u32 hz, u32 shift_constant)
- }
++	sys_freqctrl = 0;
++	sys_clksrc = 0;
++	argptr = prom_getcmdline();
  
- /**
-+ * clocksource_set_clock - dynamically calculates an appropriate shift
-+ *			   and mult value for a clocksource given a
-+ *			   known clock frequency
-+ * @cs:		Clocksource to initialize
-+ * @hz:		Clocksource frequency in Hz
-+ */
-+static inline void clocksource_set_clock(struct clocksource *cs, u32 hz)
-+{
-+	u64 temp;
-+	u32 shift;
-+
-+	/* Find a shift value */
-+	for (shift = 32; shift > 0; shift--) {
-+		temp = (u64) NSEC_PER_SEC << shift;
-+		do_div(temp, hz);
-+		if ((temp >> 32) == 0)
-+			break;
-+	}
-+	cs->shift = shift;
-+	cs->mult = (u32) temp;
-+}
-+
-+/**
-  * clocksource_cyc2ns - converts clocksource cycles to nanoseconds
-  *
-  * Converts cycles to nanoseconds, using the given mult and shift.
-@@ -268,7 +291,6 @@ static inline s64 clocksource_cyc2ns(cycle_t cycles, u32 mult, u32 shift)
- 	return ((u64) cycles * mult) >> shift;
- }
+ #ifdef CONFIG_SERIAL_8250_CONSOLE
+-	char *argptr = prom_getcmdline();
+ 	argptr = strstr(argptr, "console=");
+ 	if (argptr == NULL) {
+ 		argptr = prom_getcmdline();
+diff --git a/arch/mips/alchemy/devboards/pb1550/board_setup.c b/arch/mips/alchemy/devboards/pb1550/board_setup.c
+index bb41740..0d060c3 100644
+--- a/arch/mips/alchemy/devboards/pb1550/board_setup.c
++++ b/arch/mips/alchemy/devboards/pb1550/board_setup.c
+@@ -56,14 +56,13 @@ void board_reset(void)
+ void __init board_setup(void)
+ {
+ 	u32 pin_func;
++	char *argptr;
+ 
+ 	bcsr_init(PB1550_BCSR_PHYS_ADDR,
+ 		  PB1550_BCSR_PHYS_ADDR + PB1550_BCSR_HEXLED_OFS);
  
 -
- /* used to install a new clocksource */
- extern int clocksource_register(struct clocksource*);
- extern void clocksource_unregister(struct clocksource*);
--- 
-1.6.2.5
+-#ifdef CONFIG_SERIAL_8250_CONSOLE
+-	char *argptr;
+ 	argptr = prom_getcmdline();
++#ifdef CONFIG_SERIAL_8250_CONSOLE
+ 	argptr = strstr(argptr, "console=");
+ 	if (argptr == NULL) {
+ 		argptr = prom_getcmdline();

@@ -1,96 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Oct 2009 10:19:47 +0200 (CEST)
-Received: from fanny.its.uu.se ([130.238.4.241]:48722 "EHLO fanny.its.uu.se"
-	rhost-flags-OK-FAIL-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1492464AbZJTITk (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 20 Oct 2009 10:19:40 +0200
-Received: by fanny.its.uu.se (Postfix, from userid 212)
-	id 171EB6482; Tue, 20 Oct 2009 10:19:20 +0200 (MSZ)
-Received: from pilspetsen.it.uu.se (pilspetsen.it.uu.se [130.238.18.39])
-	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Oct 2009 10:27:01 +0200 (CEST)
+Received: from mx1.moondrake.net ([212.85.150.166]:60427 "EHLO
+	mx1.mandriva.com" rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org
+	with ESMTP id S1492370AbZJTI0y (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Oct 2009 10:26:54 +0200
+Received: by mx1.mandriva.com (Postfix, from userid 501)
+	id C15E7274005; Tue, 20 Oct 2009 10:26:53 +0200 (CEST)
+Received: from office-abk.mandriva.com (unknown [195.7.104.248])
+	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by fanny.its.uu.se (Postfix) with ESMTP id D38026459;
-	Tue, 20 Oct 2009 10:19:13 +0200 (MSZ)
-Received: (from mikpe@localhost)
-	by pilspetsen.it.uu.se (8.13.8+Sun/8.13.8) id n9K8JChl014389;
-	Tue, 20 Oct 2009 10:19:12 +0200 (MEST)
-X-Authentication-Warning: pilspetsen.it.uu.se: mikpe set sender to mikpe@it.uu.se using -f
+	by mx1.mandriva.com (Postfix) with ESMTP id CD0FD274004
+	for <linux-mips@linux-mips.org>; Tue, 20 Oct 2009 10:26:52 +0200 (CEST)
+Received: from anduin.mandriva.com (fw2.mandriva.com [192.168.2.3])
+	by office-abk.mandriva.com (Postfix) with ESMTP id 1A45A82855
+	for <linux-mips@linux-mips.org>; Tue, 20 Oct 2009 10:37:37 +0200 (CEST)
+Received: from anduin.mandriva.com (localhost [127.0.0.1])
+	by anduin.mandriva.com (Postfix) with ESMTP id 5D0F4FF855
+	for <linux-mips@linux-mips.org>; Tue, 20 Oct 2009 10:27:47 +0200 (CEST)
+From:	Arnaud Patard <apatard@mandriva.com>
+To:	linux-mips@linux-mips.org
+Subject: [PATCH] Fix ppoll on o32 with 64bit kernel
+Organization: Mandriva
+Date:	Tue, 20 Oct 2009 10:27:47 +0200
+Message-ID: <m363aa8o70.fsf@anduin.mandriva.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Message-ID: <19165.29312.300540.500942@pilspetsen.it.uu.se>
-Date:	Tue, 20 Oct 2009 10:19:12 +0200
-From:	Mikael Pettersson <mikpe@it.uu.se>
-To:	Thomas Gleixner <tglx@linutronix.de>
-Cc:	Linus Walleij <linus.walleij@stericsson.com>,
-	linux-mips@linux-mips.org, Ralf Baechle <ralf@linux-mips.org>,
-	Mikael Pettersson <mikpe@it.uu.se>,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] Make MIPS dynamic clocksource/clockevent clock code
-	generic
-In-Reply-To: <alpine.LFD.2.00.0910200454300.2863@localhost.localdomain>
-References: <1255819715-19763-1-git-send-email-linus.walleij@stericsson.com>
-	<alpine.LFD.2.00.0910200454300.2863@localhost.localdomain>
-X-Mailer: VM 7.17 under Emacs 20.7.1
-Return-Path: <mikpe@it.uu.se>
+Content-Type: multipart/mixed; boundary="=-=-="
+Return-Path: <arnaud.patard@mandriva.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24388
+X-archive-position: 24389
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mikpe@it.uu.se
+X-original-sender: apatard@mandriva.com
 Precedence: bulk
 X-list: linux-mips
 
-Thomas Gleixner writes:
- > > +static inline void clockevent_set_clock(struct clock_event_device *dev, u32 hz)
- > > +{
- > > +	u64 temp;
- > > +	u32 shift;
- > > +
- > > +	/* Find a shift value */
- > > +	for (shift = 32; shift > 0; shift--) {
- > > +		temp = (u64) hz << shift;
- > > +		do_div(temp, NSEC_PER_SEC);
- > > +		if ((temp >> 32) == 0)
- > > +			break;
- > > +	}
- > > +	dev->shift = shift;
- > > +	dev->mult = (u32) temp;
- > > +}
- > > +
- > > +
- > > +static inline void clocksource_set_clock(struct clocksource *cs, u32 hz)
- > > +{
- > > +	u64 temp;
- > > +	u32 shift;
- > > +
- > > +	/* Find a shift value */
- > > +	for (shift = 32; shift > 0; shift--) {
- > > +		temp = (u64) NSEC_PER_SEC << shift;
- > > +		do_div(temp, hz);
- > > +		if ((temp >> 32) == 0)
- > > +			break;
- > > +	}
- > > +	cs->shift = shift;
- > > +	cs->mult = (u32) temp;
- > > +}
- > > +
- > 
- > So that's the same function twice, right ?
+--=-=-=
 
-They are similar but not identical:
 
- > > +		temp = (u64) hz << shift;
- > > +		do_div(temp, NSEC_PER_SEC);
+sys_ppoll syscall needs to use a compat handler on 64bit kernels with
+o32 user-space. This patch wires it.
 
-vs
+Signed-off-by: Arnaud Patard <apatard@mandriva.com>
+---
 
- > > +		temp = (u64) NSEC_PER_SEC << shift;
- > > +		do_div(temp, hz);
+--=-=-=
+Content-Type: text/x-patch
+Content-Disposition: inline; filename=ppoll_fix.patch
 
-I suppose both functions could be implemented by a suitably
-parametric third function, but IMO that would just obscure things.
+---
+ arch/mips/kernel/scall64-o32.S |    2 	1 +	1 -	0 !
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Making them non-inline I fully agree with.
+Index: linux-2.6.24/arch/mips/kernel/scall64-o32.S
+===================================================================
+--- linux-2.6.24.orig/arch/mips/kernel/scall64-o32.S	2008-07-07 17:49:07.000000000 +0200
++++ linux-2.6.24/arch/mips/kernel/scall64-o32.S	2008-07-07 19:27:42.000000000 +0200
+@@ -507,7 +507,7 @@ sys_call_table:
+ 	PTR	sys_fchmodat
+ 	PTR	sys_faccessat			/* 4300 */
+ 	PTR	compat_sys_pselect6
+-	PTR	sys_ppoll
++	PTR	compat_sys_ppoll
+ 	PTR	sys_unshare
+ 	PTR	sys_splice
+ 	PTR	sys32_sync_file_range		/* 4305 */
+
+--=-=-=--

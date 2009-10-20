@@ -1,111 +1,104 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Oct 2009 05:50:46 +0200 (CEST)
-Received: from www.tglx.de ([62.245.132.106]:36956 "EHLO www.tglx.de"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1491941AbZJTDui (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 20 Oct 2009 05:50:38 +0200
-Received: from localhost (www.tglx.de [127.0.0.1])
-	by www.tglx.de (8.13.8/8.13.8/TGLX-2007100201) with ESMTP id n9K3oMwF027228
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-	Tue, 20 Oct 2009 05:50:25 +0200
-Date:	Tue, 20 Oct 2009 05:50:21 +0200 (CEST)
-From:	Thomas Gleixner <tglx@linutronix.de>
-To:	Linus Walleij <linus.walleij@stericsson.com>
-cc:	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mips@linux-mips.org, Mikael Pettersson <mikpe@it.uu.se>,
-	Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] Make MIPS dynamic clocksource/clockevent clock code
- generic
-In-Reply-To: <1255819715-19763-1-git-send-email-linus.walleij@stericsson.com>
-Message-ID: <alpine.LFD.2.00.0910200454300.2863@localhost.localdomain>
-References: <1255819715-19763-1-git-send-email-linus.walleij@stericsson.com>
-User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 20 Oct 2009 08:17:38 +0200 (CEST)
+Received: from mail-ew0-f214.google.com ([209.85.219.214]:65161 "EHLO
+	mail-ew0-f214.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492118AbZJTGRc (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 20 Oct 2009 08:17:32 +0200
+Received: by ewy10 with SMTP id 10so6704490ewy.33
+        for <linux-mips@linux-mips.org>; Mon, 19 Oct 2009 23:17:26 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:from:reply-to:to
+         :subject:date:user-agent:cc:references:in-reply-to:mime-version
+         :content-type:content-transfer-encoding:message-id;
+        bh=lx7LBNatXhgBfAs7kD3U2WegA+uEc8Z2eAZj13WvHF8=;
+        b=H6UEhAq+7ODqBjEA1YMIAOAaEEItEdWwSgRvfKDkTFne9HktsgLSQT5IS4p5nZrsV0
+         HZz+69I28bBIkPpq8dReGtXdnO3nzKYF1nCJsP7kEI9zP6O46aen4QER2Im5mstds1WK
+         UHJUxaCGl4S3BCpuEolGQAT7JNb3pxcWK6CUQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:from:reply-to:to:subject:date:user-agent:cc:references
+         :in-reply-to:mime-version:content-type:content-transfer-encoding
+         :message-id;
+        b=x3ze4qT0UYrSO/d/RDbu5PRwdSrugH0vpdQEn8SaMIziM8pkSxRuoUan3AF+0Lex++
+         X8vKXoscAo4lHyfiLUq2X0xvIVwX9iJZokzKeEUYuXbyiXzlpkkSmCwGU1/KWhoOwNVx
+         NW2nhdusKDmeDCPuMcECzCmbegGyqdYh49YBY=
+Received: by 10.216.88.209 with SMTP id a59mr1341678wef.50.1256019446508;
+        Mon, 19 Oct 2009 23:17:26 -0700 (PDT)
+Received: from lenovo.localnet (147.59.76-86.rev.gaoland.net [86.76.59.147])
+        by mx.google.com with ESMTPS id 7sm3713624eyg.10.2009.10.19.23.17.25
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Mon, 19 Oct 2009 23:17:25 -0700 (PDT)
+From:	Florian Fainelli <florian@openwrt.org>
+Reply-To: Florian Fainelli <florian@openwrt.org>
+To:	myuboot@fastmail.fm
+Subject: Re: serial port 8250 messed up after coverting from little endian to big endian on kernel  2.6.31
+Date:	Tue, 20 Oct 2009 08:17:23 +0200
+User-Agent: KMail/1.12.1 (Linux/2.6.29-2-686; KDE/4.3.1; i686; ; )
+Cc:	linux-kernel@vger.kernel.org,
+	"linux-mips" <linux-mips@linux-mips.org>
+References: <1255735395.30097.1340523469@webmail.messagingengine.com> <4AD906D8.3020404@caviumnetworks.com> <1255996564.10560.1340920621@webmail.messagingengine.com>
+In-Reply-To: <1255996564.10560.1340920621@webmail.messagingengine.com>
 MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: clamav-milter 0.95.1 at www.tglx.de
-X-Virus-Status:	Clean
-Return-Path: <tglx@linutronix.de>
+Content-Type: multipart/signed;
+  boundary="nextPart4081583.Nnz8PKjnI1";
+  protocol="application/pgp-signature";
+  micalg=pgp-sha1
+Content-Transfer-Encoding: 7bit
+Message-Id: <200910200817.24018.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24386
+X-archive-position: 24387
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sun, 18 Oct 2009, Linus Walleij wrote:
-> This moves the clocksource_set_clock() and clockevent_set_clock()
-> from the MIPS timer code into clockchips and clocksource where
-> it belongs. The patch was triggered by code posted by Mikael
-> Pettersson duplicating this code for the IOP ARM system. The
-> function signatures where altered slightly to fit into their
-> destination header files, unsigned int changed to u32 and inlined.
-> 
-> Signed-off-by: Linus Walleij <linus.walleij@stericsson.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Mikael Pettersson <mikpe@it.uu.se>
-> Cc: Ralf Baechle <ralf@linux-mips.org>
-> ---
-> Ralf has stated in earlier conversation that this should be moved,
-> now we risk duplicating code so let's move it.
+--nextPart4081583.Nnz8PKjnI1
+Content-Type: Text/Plain;
+  charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 
-Please do not make that functions inline. They are too large and there
-is no benefit of inlining them.
+Hi,
 
-> +/**
-> + * clockevent_set_clock - dynamically calculates an appropriate shift
-> + *			  and mult value for a clocksource given a
-> + *			  known clock frequency
-> + * @dev:	Clockevent device to initialize
-> + * @hz:		Clockevent clock frequency in Hz
-> + */
-> +static inline void clockevent_set_clock(struct clock_event_device *dev, u32 hz)
-> +{
-> +	u64 temp;
-> +	u32 shift;
-> +
-> +	/* Find a shift value */
-> +	for (shift = 32; shift > 0; shift--) {
-> +		temp = (u64) hz << shift;
-> +		do_div(temp, NSEC_PER_SEC);
-> +		if ((temp >> 32) == 0)
-> +			break;
-> +	}
-> +	dev->shift = shift;
-> +	dev->mult = (u32) temp;
-> +}
-> +
-> +
-> +static inline void clocksource_set_clock(struct clocksource *cs, u32 hz)
-> +{
-> +	u64 temp;
-> +	u32 shift;
-> +
-> +	/* Find a shift value */
-> +	for (shift = 32; shift > 0; shift--) {
-> +		temp = (u64) NSEC_PER_SEC << shift;
-> +		do_div(temp, hz);
-> +		if ((temp >> 32) == 0)
-> +			break;
-> +	}
-> +	cs->shift = shift;
-> +	cs->mult = (u32) temp;
-> +}
-> +
+Le mardi 20 octobre 2009 01:56:04, myuboot@fastmail.fm a =E9crit :
+> I am trying to bringup a MIPS32 board using 2.6.31. It is working in
+> little endian mode. After changing the board's hardware from little
+> endian to bit endian, the serial port print messed up. It prints now
+> something like - "=E0=E0=E0=E0=E0=E0=E0=E0=E0=E0=E0=E0=E0=E0=E0=E0" on th=
+e screen. When I trace the
+> execution, I can see the string the kernel is trying print is correct -
+> "Linux version 2.6.31 ..." and etc.
+>=20
+> I guess it means the initialization of the serial port is not properly
+> done. But I am not sure where I should check for the problem. The serial
+> port device I am using is 8250. Please give me some advise.
 
-So that's the same function twice, right ? The reason for it are the
-different data structures. So could you please do something like:
+If the same initialization routine used to work in little-endian, check how=
+=20
+you actually write and read characters from the UART FIFO and especially if=
+=20
+your hardware requires you to do word or byte access to these registers.
 
-void calc_shift_mult(u32 *shift, u32 *mult, u32 hz)
-{
-	do the magic math
-}
+You can have a look at AR7, which has the same code working for Little and =
+Big=20
+Endian modes in arch/mips/ar7/prom.c lines 272 to the end of the file. It a=
+lso=20
+uses a 8250-compatible UART.
 
-and have wrapper inline functions for clocksource and clockevents
-around it.
+--nextPart4081583.Nnz8PKjnI1
+Content-Type: application/pgp-signature; name=signature.asc 
+Content-Description: This is a digitally signed message part.
 
-Thanks,
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
 
-	tglx
+iEYEABECAAYFAkrdVfMACgkQlyvkmBGtjyYRAwCfR3P8YgiNVpAQw+WPnOke42t/
+aucAoLaDJ/ICmDVQ4RqN7ly1vS/hqwOR
+=ZwRw
+-----END PGP SIGNATURE-----
+
+--nextPart4081583.Nnz8PKjnI1--

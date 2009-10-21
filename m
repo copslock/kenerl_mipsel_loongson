@@ -1,61 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Oct 2009 18:10:08 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:4595 "EHLO
-	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493640AbZJUQKB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 21 Oct 2009 18:10:01 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,5,4,7535)
-	id <B4adf324a0001>; Wed, 21 Oct 2009 09:09:46 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 21 Oct 2009 09:09:37 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 21 Oct 2009 09:09:37 -0700
-Message-ID: <4ADF3240.9040900@caviumnetworks.com>
-Date:	Wed, 21 Oct 2009 09:09:36 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Oct 2009 18:11:53 +0200 (CEST)
+Received: from ru.mvista.com ([213.79.90.228]:4715 "EHLO
+	buildserver.ru.mvista.com" rhost-flags-OK-FAIL-OK-FAIL)
+	by ftp.linux-mips.org with ESMTP id S1491917AbZJUQLq (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 21 Oct 2009 18:11:46 +0200
+Received: from [192.168.11.189] (unknown [10.150.0.9])
+	by buildserver.ru.mvista.com (Postfix) with ESMTP
+	id 27E518817; Wed, 21 Oct 2009 21:11:43 +0500 (SAMST)
+Message-ID: <4ADF32D1.6030801@ru.mvista.com>
+Date:	Wed, 21 Oct 2009 20:12:01 +0400
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
 To:	"wilbur.chan" <wilbur512@gmail.com>
-CC:	linux-mips@linux-mips.org
+Cc:	linux-mips@linux-mips.org
 Subject: Re: Got trap No.23 when booting mips32 ?
 References: <e997b7420910210740l4a8fefai27c81152a6c288ef@mail.gmail.com>
 In-Reply-To: <e997b7420910210740l4a8fefai27c81152a6c288ef@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 21 Oct 2009 16:09:37.0741 (UTC) FILETIME=[E352C7D0:01CA5268]
-Return-Path: <David.Daney@caviumnetworks.com>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24420
+X-archive-position: 24421
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
+Hello.
+
 wilbur.chan wrote:
+
 > Hi all,
-> 
-> 
+
 > I've got some problem when booting mips32.
-> 
-> 
+
 > I got a No.23 trap when calling start_kernel --->  local_irq_enable :
-> 
-> 
+
 > irq 23, desc: 802a98a0, depth: 1, count: 0, unhandled: 0
 > ->handle_irq():  80148c6c, handle_bad_irq+0x0/0x2b4
 > ->chip(): 8029f738, 0x8029f738
 > ->action(): 00000000
 >   IRQ_DISABLED set
 > unexpected IRQ # 23
-> 
-> 
 
-IRQ != c0_cause.ExcCode
+> No.23 trap is a Watch trap, which means that, when
 
-You should look up your kernel's IRQ to  interrupt source mapping to see 
-what is connected to IRQ 23.
+    IRQ # is not a trap #, so the rest of your speculations don't apply.
+"unexpected IRQ" probably means that an IRQ occurs for which no handler has 
+been installed...
 
-David Daney
+WBR, Sergei

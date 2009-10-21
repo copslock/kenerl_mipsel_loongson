@@ -1,30 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Oct 2009 17:25:01 +0200 (CEST)
-Received: from hrndva-omtalb.mail.rr.com ([71.74.56.122]:47985 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Oct 2009 17:27:05 +0200 (CEST)
+Received: from hrndva-omtalb.mail.rr.com ([71.74.56.123]:50502 "EHLO
 	hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493648AbZJUPYz (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 21 Oct 2009 17:24:55 +0200
+	by ftp.linux-mips.org with ESMTP id S1493648AbZJUP07 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 21 Oct 2009 17:26:59 +0200
 Received: from [192.168.23.10] (really [74.67.89.75])
           by hrndva-omta01.mail.rr.com with ESMTP
-          id <20091021152447748.CZIH26298@hrndva-omta01.mail.rr.com>;
-          Wed, 21 Oct 2009 15:24:47 +0000
-Subject: Re: [PATCH -v4 4/9] tracing: add static function tracer support
- for MIPS
+          id <20091021152653016.DCCX26298@hrndva-omta01.mail.rr.com>;
+          Wed, 21 Oct 2009 15:26:53 +0000
+Subject: Re: [PATCH -v4 6/9] tracing: add an endian argument to
+ scripts/recordmcount.pl
 From:	Steven Rostedt <rostedt@goodmis.org>
 Reply-To: rostedt@goodmis.org
 To:	Wu Zhangjin <wuzhangjin@gmail.com>
 Cc:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Ralf Baechle <ralf@linux-mips.org>,
-	Nicholas Mc Guire <der.herr@hofr.at>
-In-Reply-To: <ea8aa927fbd184b54941e4c2ae0be8ea0b4f6b8a.1256135456.git.wuzhangjin@gmail.com>
+	Nicholas Mc Guire <der.herr@hofr.at>,
+	Wu Zhangjin <wuzj@lemote.com>
+In-Reply-To: <5dda13e8e3a9c9dba4bb7179183941bda502604f.1256135456.git.wuzhangjin@gmail.com>
 References: <028867b99ec532b84963a35e7d552becc783cafc.1256135456.git.wuzhangjin@gmail.com>
 	 <2f73eae542c47ac5bbb9f7280e6c0271d193e90d.1256135456.git.wuzhangjin@gmail.com>
 	 <3f0d3515f74a58f4cfd11e61b62a129fdc21e3a7.1256135456.git.wuzhangjin@gmail.com>
 	 <ea8aa927fbd184b54941e4c2ae0be8ea0b4f6b8a.1256135456.git.wuzhangjin@gmail.com>
+	 <96110ea5dd4d3d54eb97d0bb708a5bd81c7a50b5.1256135456.git.wuzhangjin@gmail.com>
+	 <5dda13e8e3a9c9dba4bb7179183941bda502604f.1256135456.git.wuzhangjin@gmail.com>
 Content-Type: text/plain
 Organization: Kihon Technologies Inc.
-Date:	Wed, 21 Oct 2009 11:24:46 -0400
-Message-Id: <1256138686.18347.3039.camel@gandalf.stny.rr.com>
+Date:	Wed, 21 Oct 2009 11:26:52 -0400
+Message-Id: <1256138812.18347.3043.camel@gandalf.stny.rr.com>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.26.3 
 Content-Transfer-Encoding: 7bit
@@ -32,7 +35,7 @@ Return-Path: <rostedt@goodmis.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24418
+X-archive-position: 24419
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,106 +43,57 @@ X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2009-10-21 at 22:34 +0800, Wu Zhangjin wrote:
+On Wed, 2009-10-21 at 22:35 +0800, Wu Zhangjin wrote:
+> MIPS architecture need this argument to handle big/little endian
+> respectively.
+> 
+> Signed-off-by: Wu Zhangjin <wuzj@lemote.com>
+> ---
+>  scripts/Makefile.build  |    1 +
+>  scripts/recordmcount.pl |    6 +++---
+>  2 files changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> index 341b589..0b94d2f 100644
+> --- a/scripts/Makefile.build
+> +++ b/scripts/Makefile.build
+> @@ -207,6 +207,7 @@ endif
+>  
+>  ifdef CONFIG_FTRACE_MCOUNT_RECORD
+>  cmd_record_mcount = set -e ; perl $(srctree)/scripts/recordmcount.pl "$(ARCH)" \
+> +	"$(if $(CONFIG_CPU_BIG_ENDIAN),big,little)" \
 
-> +++ b/arch/mips/kernel/mcount.S
-> @@ -0,0 +1,94 @@
-> +/*
-> + * the mips-specific _mcount implementation
-> + *
-> + * This file is subject to the terms and conditions of the GNU General Public
-> + * License.  See the file "COPYING" in the main directory of this archive for
-> + * more details.
-> + *
-> + * Copyright (C) 2009 DSLab, Lanzhou University, China
-> + * Author: Wu Zhangjin <wuzj@lemote.com>
-> + */
-> +
-> +#include <asm/regdef.h>
-> +#include <asm/stackframe.h>
-> +#include <asm/ftrace.h>
-> +
-> +	.text
-> +	.set noreorder
-> +	.set noat
-> +
-> +	/* since there is a "addiu sp,sp,-8" before "jal _mcount" in 32bit */
-> +	.macro RESTORE_SP_FOR_32BIT
-> +#ifdef CONFIG_32BIT
-> +	PTR_ADDIU	sp, 8
-> +#endif
-> +	.endm
-> +
-> +	.macro MCOUNT_SAVE_REGS
-> +	PTR_SUBU	sp, PT_SIZE
-> +	PTR_S	ra, PT_R31(sp)
-> +	PTR_S	AT, PT_R1(sp)
-> +	PTR_S	a0, PT_R4(sp)
-> +	PTR_S	a1, PT_R5(sp)
-> +	PTR_S	a2, PT_R6(sp)
-> +	PTR_S	a3, PT_R7(sp)
-> +#ifdef CONFIG_64BIT
-> +	PTR_S	a4, PT_R8(sp)
-> +	PTR_S	a5, PT_R9(sp)
-> +	PTR_S	a6, PT_R10(sp)
-> +	PTR_S	a7, PT_R11(sp)
-> +#endif
-> +	.endm
-> +
-> +	.macro MCOUNT_RESTORE_REGS
-> +	PTR_L	ra, PT_R31(sp)
-> +	PTR_L	AT, PT_R1(sp)
-> +	PTR_L	a0, PT_R4(sp)
-> +	PTR_L	a1, PT_R5(sp)
-> +	PTR_L	a2, PT_R6(sp)
-> +	PTR_L	a3, PT_R7(sp)
-> +#ifdef CONFIG_64BIT
-> +	PTR_L	a4, PT_R8(sp)
-> +	PTR_L	a5, PT_R9(sp)
-> +	PTR_L	a6, PT_R10(sp)
-> +	PTR_L	a7, PT_R11(sp)
-> +#endif
-> +	PTR_ADDIU	sp, PT_SIZE
-> +.endm
-> +
-> +	.macro MCOUNT_SET_ARGS
-> +	move	a0, ra		/* arg1: next ip, selfaddr */
-> +	move	a1, AT		/* arg2: the caller's next ip, parent */
-> +	PTR_SUBU a0, MCOUNT_INSN_SIZE
-> +	.endm
-> +
-> +	.macro RETURN_BACK
-> +	jr ra
-> +	move ra, AT 
-> +	.endm
-> +
-> +NESTED(_mcount, PT_SIZE, ra)
-> +	RESTORE_SP_FOR_32BIT
-> +	PTR_LA	t0, ftrace_stub
-> +	PTR_L	t1, ftrace_trace_function /* please don't use t1 later, safe? */
+I thought I added this already??
 
-Is t0 and t1 safe for mcount to use? Remember, mcount does not follow
-the dynamics of C function ABI.
+/me goes and looks
+
+Hmm, not there. Did a patch get lost?
+
+Thanks,
 
 -- Steve
 
-
-> +	bne	t0, t1, static_trace
-> +	nop
-> +
-> +	j	ftrace_stub
-> +	nop
-> +
-> +static_trace:
-> +	MCOUNT_SAVE_REGS
-> +
-> +	MCOUNT_SET_ARGS			/* call *ftrace_trace_function */
-> +	jalr	t1
-> +	nop
-> +
-> +	MCOUNT_RESTORE_REGS
-> +	.globl ftrace_stub
-> +ftrace_stub:
-> +	RETURN_BACK
-> +	END(_mcount)
-> +
+>  	"$(if $(CONFIG_64BIT),64,32)" \
+>  	"$(OBJDUMP)" "$(OBJCOPY)" "$(CC)" "$(LD)" "$(NM)" "$(RM)" "$(MV)" \
+>  	"$(if $(part-of-module),1,0)" "$(@)";
+> diff --git a/scripts/recordmcount.pl b/scripts/recordmcount.pl
+> index 090d300..daee038 100755
+> --- a/scripts/recordmcount.pl
+> +++ b/scripts/recordmcount.pl
+> @@ -99,13 +99,13 @@ $P =~ s@.*/@@g;
+>  
+>  my $V = '0.1';
+>  
+> -if ($#ARGV < 7) {
+> -	print "usage: $P arch bits objdump objcopy cc ld nm rm mv is_module inputfile\n";
+> +if ($#ARGV < 8) {
+> +	print "usage: $P arch endian bits objdump objcopy cc ld nm rm mv is_module inputfile\n";
+>  	print "version: $V\n";
+>  	exit(1);
+>  }
+>  
+> -my ($arch, $bits, $objdump, $objcopy, $cc,
+> +my ($arch, $endian, $bits, $objdump, $objcopy, $cc,
+>      $ld, $nm, $rm, $mv, $is_module, $inputfile) = @ARGV;
+>  
+>  # This file refers to mcount and shouldn't be ftraced, so lets' ignore it

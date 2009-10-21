@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Oct 2009 16:34:42 +0200 (CEST)
-Received: from mail-qy0-f172.google.com ([209.85.221.172]:60942 "EHLO
-	mail-qy0-f172.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492348AbZJUOeg (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 21 Oct 2009 16:34:36 +0200
-Received: by qyk2 with SMTP id 2so5079496qyk.21
-        for <multiple recipients>; Wed, 21 Oct 2009 07:34:28 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Oct 2009 16:35:27 +0200 (CEST)
+Received: from mail-fx0-f225.google.com ([209.85.220.225]:36649 "EHLO
+	mail-fx0-f225.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492348AbZJUOfV (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 21 Oct 2009 16:35:21 +0200
+Received: by fxm25 with SMTP id 25so8067248fxm.0
+        for <multiple recipients>; Wed, 21 Oct 2009 07:35:15 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=NVmobO+6ArA35y9ZjIwoRY3MFW2s7vDEcVZRayzZ5+4=;
-        b=V/Z1q+VEqkyOE2Am0jou3oqEoHHxbi1SoYU7XgZQpecHbITTxQRE7/QOvcidQMqZeD
-         1/JgU0gqOcBCRz6sW52mkQBg/gIydhAzb9QcNtPdLbz/dR8UnecXvZ4EWBh2P4kU5wgX
-         QU+8shd4F28Cceaa80xJfLs/e/U1h97KEuXjU=
+         :message-id:x-mailer:in-reply-to:references;
+        bh=LT3AYB6XkTxNpHG8Gw+zUOC4kOO94rjbGYbttyFN5kg=;
+        b=odK0JLJ8OMlJp08ccFV58biToAkBsVSanctIeV992wdcX3aSG6lm+LWMxnLNNYr6tc
+         w5wf1O+nhTJt6JKG+k9xImkpmc+RUkTOhdLgxC9jGJNvgozRd6d5SwIbCR9F2bIQvzwA
+         qMN5+fbe5d8mOJmzJ7hrTkpW+bfOSJXQgwxDk=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=YOv8k4q0JMBuGYvs0HP5NDEjQvCJMp2k1EBvBR97c1pP/+9+Vfa7les72vYjl+5IKW
-         l/DsVToQTfWqNKwbyG/cgXQSOl16kwv52hJee4orvVfPI+WQ91nJYQEkijfct/dMGCU/
-         GvkHzz5xwiM8x7vQyJc0Uawg0ccqXx/CORIE0=
-Received: by 10.103.84.10 with SMTP id m10mr3367248mul.60.1256135667763;
-        Wed, 21 Oct 2009 07:34:27 -0700 (PDT)
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        b=f+u9j+rG8W/in3qIeV74JaH/8S0pv58xuL3yrWZpcOUDIt8nSKvXhk2F8SGWBAmcq5
+         goJQnCBf6I0Lb+kI+A1CSqpsgKdH8yb61FvVoPH80XwjCn65SRfxHUxdOvrqQs6v5gqS
+         66N0poDkrTCYPFzfyyrUBlm5Ks4Tldbl0wBPM=
+Received: by 10.204.160.143 with SMTP id n15mr8013870bkx.183.1256135715301;
+        Wed, 21 Oct 2009 07:35:15 -0700 (PDT)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id b9sm223451mug.9.2009.10.21.07.34.23
+        by mx.google.com with ESMTPS id 1sm303459fkt.11.2009.10.21.07.35.10
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 21 Oct 2009 07:34:27 -0700 (PDT)
+        Wed, 21 Oct 2009 07:35:14 -0700 (PDT)
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 To:	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
 Cc:	Wu Zhangjin <wuzhangjin@gmail.com>,
@@ -32,15 +32,17 @@ Cc:	Wu Zhangjin <wuzhangjin@gmail.com>,
 	Ralf Baechle <ralf@linux-mips.org>,
 	Nicholas Mc Guire <der.herr@hofr.at>,
 	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH -v4 0/9] ftrace for MIPS
-Date:	Wed, 21 Oct 2009 22:34:17 +0800
-Message-Id: <cover.1256134682.git.wuzhangjin@gmail.com>
+Subject: [PATCH -v4 1/9] tracing: convert trace_clock_local() as weak function
+Date:	Wed, 21 Oct 2009 22:34:55 +0800
+Message-Id: <028867b99ec532b84963a35e7d552becc783cafc.1256135456.git.wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.6.2.1
+In-Reply-To: <cover.1256135456.git.wuzhangjin@gmail.com>
+References: <cover.1256135456.git.wuzhangjin@gmail.com>
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24403
+X-archive-position: 24404
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,62 +50,43 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-This patch add basic ftrace support for MIPS, it is on the -v4 revision. which
-incorporates the feedbacks from Steven, Ralf, Nicholas, Thomas, Américo Wang,
-Zhang Le and Sergei Shtylyov. thanks goes to them!
+trace_clock_local() is based on the arch-specific sched_clock(), in X86,
+it is tsc(64bit) based, which can give very high precision(about 1ns
+with 1GHz). but in MIPS, the sched_clock() is jiffies based, which can
+give only 10ms precison with 1000 HZ. which is not enough for tracing,
+especially for Real Time system.
 
-It includes the following parts:
+so, we need to implement a MIPS specific sched_clock() to get higher
+precision. There is a tsc like clock counter register in MIPS, whose
+frequency is half of the processor, so, if the cpu frequency is 800MHz,
+the time precision reaches 2.5ns, which is very good for tracing, even
+for Real Time system.
 
-1. mips specific high precision of trace_clock_local() support
+but 'Cause it is only 32bit long, which will rollover quickly, so, such
+a sched_clock() will bring with extra load, which is not good for the
+whole system. so, we only need to implement a arch-specific
+trace_clock_local() for tracing. as a preparation, we convert it as a
+weak function.
 
-It is based on the clock counter register, and can provide us precision
-timestamp. the old one is jiffies based, only provide ms precision.
+The MIPS specific trace_clock_local() is coming in the next two patches.
 
-2. mips specific static, dynamic, graph function tracer support
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ kernel/trace/trace_clock.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-all of them support 32bit/64bit kernel, but not support modules yet(Steven will
-help to fix this part! thanks goes to him). but if you want to have a quick try
-on using module with static function tracer, you just need to add -mlong-calls
-to KBUILD_CFLAGS.
-
-All of the latest upgrade will be put into this git repo.
-
-git://dev.lemote.com/rt4ls.git linux-mips/dev/ftrace-upstream
-
-Welcome to play with it and give feedback, thanks!
-
-Regards,
-	Wu Zhangjin
-
-Wu Zhangjin (9):
-  tracing: convert trace_clock_local() as weak function
-  MIPS: add mips_timecounter_read() to get high precision timestamp
-  tracing: add MIPS specific trace_clock_local()
-  tracing: add static function tracer support for MIPS
-  tracing: enable HAVE_FUNCTION_TRACE_MCOUNT_TEST for MIPS
-  tracing: add an endian argument to scripts/recordmcount.pl
-  tracing: add dynamic function tracer support for MIPS
-  tracing: not trace mips_timecounter_init() in MIPS
-  tracing: add function graph tracer support for MIPS
-
- arch/mips/Kconfig              |    5 +
- arch/mips/Makefile             |    2 +
- arch/mips/include/asm/ftrace.h |   35 +++++-
- arch/mips/include/asm/time.h   |   19 +++
- arch/mips/kernel/Makefile      |    9 ++
- arch/mips/kernel/csrc-r4k.c    |   41 ++++++
- arch/mips/kernel/ftrace.c      |  299 ++++++++++++++++++++++++++++++++++++++++
- arch/mips/kernel/mcount.S      |  182 ++++++++++++++++++++++++
- arch/mips/kernel/mips_ksyms.c  |    5 +
- arch/mips/kernel/time.c        |    2 +
- arch/mips/kernel/trace_clock.c |   37 +++++
- arch/mips/kernel/vmlinux.lds.S |    1 +
- include/linux/clocksource.h    |    2 +-
- kernel/time/clocksource.c      |    4 +-
- kernel/trace/trace_clock.c     |    2 +-
- scripts/Makefile.build         |    1 +
- scripts/recordmcount.pl        |   28 ++++-
- 17 files changed, 666 insertions(+), 8 deletions(-)
- create mode 100644 arch/mips/kernel/ftrace.c
- create mode 100644 arch/mips/kernel/mcount.S
- create mode 100644 arch/mips/kernel/trace_clock.c
+diff --git a/kernel/trace/trace_clock.c b/kernel/trace/trace_clock.c
+index 20c5f92..06b8cd2 100644
+--- a/kernel/trace/trace_clock.c
++++ b/kernel/trace/trace_clock.c
+@@ -26,7 +26,7 @@
+  * Useful for tracing that does not cross to other CPUs nor
+  * does it go through idle events.
+  */
+-u64 notrace trace_clock_local(void)
++u64 __weak notrace trace_clock_local(void)
+ {
+ 	unsigned long flags;
+ 	u64 clock;
+-- 
+1.6.2.1

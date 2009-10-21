@@ -1,73 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Oct 2009 19:23:51 +0200 (CEST)
-Received: from hrndva-omtalb.mail.rr.com ([71.74.56.124]:35624 "EHLO
-	hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493558AbZJURXp (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 21 Oct 2009 19:23:45 +0200
-Received: from [192.168.23.10] (really [74.67.89.75])
-          by hrndva-omta03.mail.rr.com with ESMTP
-          id <20091021172335044.QHKD15360@hrndva-omta03.mail.rr.com>;
-          Wed, 21 Oct 2009 17:23:35 +0000
-Subject: Re: [PATCH -v4 9/9] tracing: add function graph tracer support for
- MIPS
-From:	Steven Rostedt <rostedt@goodmis.org>
-Reply-To: rostedt@goodmis.org
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	Wu Zhangjin <wuzhangjin@gmail.com>, linux-kernel@vger.kernel.org,
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Oct 2009 19:51:12 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:8351 "EHLO
+	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493675AbZJURvG (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 21 Oct 2009 19:51:06 +0200
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,5,4,7535)
+	id <B4adf49b50000>; Wed, 21 Oct 2009 10:49:46 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 21 Oct 2009 10:48:50 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 21 Oct 2009 10:48:50 -0700
+Message-ID: <4ADF4982.9010306@caviumnetworks.com>
+Date:	Wed, 21 Oct 2009 10:48:50 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+MIME-Version: 1.0
+To:	rostedt@goodmis.org
+CC:	Wu Zhangjin <wuzhangjin@gmail.com>, linux-kernel@vger.kernel.org,
 	linux-mips@linux-mips.org, Thomas Gleixner <tglx@linutronix.de>,
 	Ralf Baechle <ralf@linux-mips.org>,
 	Nicholas Mc Guire <der.herr@hofr.at>
-In-Reply-To: <4ADF3FE0.5090104@caviumnetworks.com>
-References: <028867b99ec532b84963a35e7d552becc783cafc.1256135456.git.wuzhangjin@gmail.com>
-	 <2f73eae542c47ac5bbb9f7280e6c0271d193e90d.1256135456.git.wuzhangjin@gmail.com>
-	 <3f0d3515f74a58f4cfd11e61b62a129fdc21e3a7.1256135456.git.wuzhangjin@gmail.com>
-	 <ea8aa927fbd184b54941e4c2ae0be8ea0b4f6b8a.1256135456.git.wuzhangjin@gmail.com>
-	 <96110ea5dd4d3d54eb97d0bb708a5bd81c7a50b5.1256135456.git.wuzhangjin@gmail.com>
-	 <5dda13e8e3a9c9dba4bb7179183941bda502604f.1256135456.git.wuzhangjin@gmail.com>
-	 <af3ec1b5cd06b6f6a461c9fa7d09a51fabccb08d.1256135456.git.wuzhangjin@gmail.com>
-	 <a6f2959a69b6a77dd32cc36a5c8202f97d524f1e.1256135456.git.wuzhangjin@gmail.com>
-	 <53bdfdd95ec4fa00d4cc505bb5972cf21243a14d.1256135456.git.wuzhangjin@gmail.com>
-	 <1256141540.18347.3118.camel@gandalf.stny.rr.com>
-	 <4ADF38D5.9060100@caviumnetworks.com>
-	 <1256143568.18347.3169.camel@gandalf.stny.rr.com>
-	 <4ADF3FE0.5090104@caviumnetworks.com>
-Content-Type: text/plain
-Organization: Kihon Technologies Inc.
-Date:	Wed, 21 Oct 2009 13:23:33 -0400
-Message-Id: <1256145813.18347.3210.camel@gandalf.stny.rr.com>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.3 
+Subject: Re: [PATCH -v4 9/9] tracing: add function graph tracer support for
+ MIPS
+References: <028867b99ec532b84963a35e7d552becc783cafc.1256135456.git.wuzhangjin@gmail.com>	 <2f73eae542c47ac5bbb9f7280e6c0271d193e90d.1256135456.git.wuzhangjin@gmail.com>	 <3f0d3515f74a58f4cfd11e61b62a129fdc21e3a7.1256135456.git.wuzhangjin@gmail.com>	 <ea8aa927fbd184b54941e4c2ae0be8ea0b4f6b8a.1256135456.git.wuzhangjin@gmail.com>	 <96110ea5dd4d3d54eb97d0bb708a5bd81c7a50b5.1256135456.git.wuzhangjin@gmail.com>	 <5dda13e8e3a9c9dba4bb7179183941bda502604f.1256135456.git.wuzhangjin@gmail.com>	 <af3ec1b5cd06b6f6a461c9fa7d09a51fabccb08d.1256135456.git.wuzhangjin@gmail.com>	 <a6f2959a69b6a77dd32cc36a5c8202f97d524f1e.1256135456.git.wuzhangjin@gmail.com>	 <53bdfdd95ec4fa00d4cc505bb5972cf21243a14d.1256135456.git.wuzhangjin@gmail.com>	 <1256141540.18347.3118.camel@gandalf.stny.rr.com>	 <4ADF38D5.9060100@caviumnetworks.com>	 <1256143568.18347.3169.camel@gandalf.stny.rr.com>	 <4ADF3FE0.5090104@caviumnetworks.com> <1256145813.18347.3210.camel@gandalf.stny.rr.com>
+In-Reply-To: <1256145813.18347.3210.camel@gandalf.stny.rr.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <rostedt@goodmis.org>
+X-OriginalArrivalTime: 21 Oct 2009 17:48:50.0836 (UTC) FILETIME=[BFA4FD40:01CA5276]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24428
+X-archive-position: 24429
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2009-10-21 at 10:07 -0700, David Daney wrote:
-
-> I have not used -pg, so I don't know for sure, I think all it does is 
-> add the calls to _mcount.  Someone could investigate 
-> -fno-omit-frame-pointer, with that you may be able to use:
-
-Note, -pg assumes -fno-omit-frame-pointer, since -fomit-frame-pointer
-and -pg are incompatible.
-
+Steven Rostedt wrote:
+> On Wed, 2009-10-21 at 10:07 -0700, David Daney wrote:
 > 
->     move    s8,sp
+>> I have not used -pg, so I don't know for sure, I think all it does is 
+>> add the calls to _mcount.  Someone could investigate 
+>> -fno-omit-frame-pointer, with that you may be able to use:
 > 
-> To identify function prologs, but it would still be ad hoc, as modern 
-> versions of GCC will reorder instructions in the prolog for better 
-> scheduling.
+> Note, -pg assumes -fno-omit-frame-pointer, since -fomit-frame-pointer
+> and -pg are incompatible.
+> 
+>>     move    s8,sp
+>>
+>> To identify function prologs, but it would still be ad hoc, as modern 
+>> versions of GCC will reorder instructions in the prolog for better 
+>> scheduling.
+> 
+> I'll have to search the ABI documentation about calling _mcount in MIPS.
+> There are assumptions with _mcount that are made. It may very well be
+> safe to assume that the move s8,sp will always be there before an mcount
+> call.
+> 
 
-I'll have to search the ABI documentation about calling _mcount in MIPS.
-There are assumptions with _mcount that are made. It may very well be
-safe to assume that the move s8,sp will always be there before an mcount
-call.
+Although I am quite interested in ftrace for MIPS, I a haven't spent the 
+effort to try to figure out how many levels of backtrace we need to be 
+generating here.
 
--- Steve
+If you only need the caller's address, that is passed in register 'at'. 
+  If you need more than that, then things get tricky.  I would do one of 
+two things:
+
+1) Use the mechanism used by the OOPS dump.
+
+2) Implement back traces based on DWARF2 unwinding data that is 
+generated by the compiler.
+
+David Daney

@@ -1,83 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Oct 2009 18:03:57 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:16583 "EHLO
-	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493291AbZJVQDv (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 22 Oct 2009 18:03:51 +0200
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,5,4,7535)
-	id <B4ae082630000>; Thu, 22 Oct 2009 09:03:47 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 22 Oct 2009 09:03:06 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 22 Oct 2009 09:03:06 -0700
-Message-ID: <4AE08239.7030302@caviumnetworks.com>
-Date:	Thu, 22 Oct 2009 09:03:05 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
-MIME-Version: 1.0
-To:	"wilbur.chan" <wilbur512@gmail.com>
-CC:	"Kevin D. Kissell" <kevink@paralogos.com>,
-	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
-	linux-mips@linux-mips.org
-Subject: Re: Got trap No.23 when booting mips32 ?
-References: <e997b7420910210740l4a8fefai27c81152a6c288ef@mail.gmail.com>	 <4ADF32D1.6030801@ru.mvista.com>	 <e997b7420910211704w67517b3bud6f4757a35945ba@mail.gmail.com>	 <4ADFAC5E.5020506@paralogos.com> <e997b7420910220755m3e78c397ia5f183c580fb170b@mail.gmail.com>
-In-Reply-To: <e997b7420910220755m3e78c397ia5f183c580fb170b@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Oct 2009 18:12:11 +0200 (CEST)
+Received: from hrndva-omtalb.mail.rr.com ([71.74.56.125]:59173 "EHLO
+	hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493255AbZJVQME (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 22 Oct 2009 18:12:04 +0200
+Received: from [192.168.23.10] (really [74.67.89.75])
+          by hrndva-omta02.mail.rr.com with ESMTP
+          id <20091022161157639.RXED6809@hrndva-omta02.mail.rr.com>;
+          Thu, 22 Oct 2009 16:11:57 +0000
+Subject: Re: [PATCH -v4 9/9] tracing: add function graph tracer support for
+ MIPS
+From:	Steven Rostedt <rostedt@goodmis.org>
+Reply-To: rostedt@goodmis.org
+To:	David Daney <ddaney@caviumnetworks.com>
+Cc:	wuzhangjin@gmail.com, linux-kernel@vger.kernel.org,
+	linux-mips@linux-mips.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Nicholas Mc Guire <der.herr@hofr.at>
+In-Reply-To: <4AE08173.7070500@caviumnetworks.com>
+References: <028867b99ec532b84963a35e7d552becc783cafc.1256135456.git.wuzhangjin@gmail.com>
+	 <2f73eae542c47ac5bbb9f7280e6c0271d193e90d.1256135456.git.wuzhangjin@gmail.com>
+	 <3f0d3515f74a58f4cfd11e61b62a129fdc21e3a7.1256135456.git.wuzhangjin@gmail.com>
+	 <ea8aa927fbd184b54941e4c2ae0be8ea0b4f6b8a.1256135456.git.wuzhangjin@gmail.com>
+	 <96110ea5dd4d3d54eb97d0bb708a5bd81c7a50b5.1256135456.git.wuzhangjin@gmail.com>
+	 <5dda13e8e3a9c9dba4bb7179183941bda502604f.1256135456.git.wuzhangjin@gmail.com>
+	 <af3ec1b5cd06b6f6a461c9fa7d09a51fabccb08d.1256135456.git.wuzhangjin@gmail.com>
+	 <a6f2959a69b6a77dd32cc36a5c8202f97d524f1e.1256135456.git.wuzhangjin@gmail.com>
+	 <53bdfdd95ec4fa00d4cc505bb5972cf21243a14d.1256135456.git.wuzhangjin@gmail.com>
+	 <1256141540.18347.3118.camel@gandalf.stny.rr.com>
+	 <4ADF38D5.9060100@caviumnetworks.com>
+	 <1256143568.18347.3169.camel@gandalf.stny.rr.com>
+	 <4ADF3FE0.5090104@caviumnetworks.com>
+	 <1256145813.18347.3210.camel@gandalf.stny.rr.com>
+	 <1256211516.3852.47.camel@falcon>  <4AE08173.7070500@caviumnetworks.com>
+Content-Type: text/plain
+Organization: Kihon Technologies Inc.
+Date:	Thu, 22 Oct 2009 12:11:56 -0400
+Message-Id: <1256227916.20866.784.camel@gandalf.stny.rr.com>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.26.3 
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 22 Oct 2009 16:03:06.0160 (UTC) FILETIME=[24560300:01CA5331]
-Return-Path: <David.Daney@caviumnetworks.com>
+Return-Path: <rostedt@goodmis.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24443
+X-archive-position: 24444
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 X-list: linux-mips
 
-wilbur.chan wrote:
-> 2009/10/22 Kevin D. Kissell <kevink@paralogos.com>:
->> wilbur.chan wrote:
->>> Kernal didn't resgister IRQ 23 when booting. Hmm....the only '23'
->>> number I can find in kernel is in traps.c.
->>>
->>> Why a 23 IRQ was triggered?
->>>
->>>
->> The usual reason would be a failure to correctly initialize an interrupt
->> controller, or the Status.IM mask field.  The kernel complains precisely
->> *because* IRQ 23 wasn't registered, but an interrupt was nevertheless
->> delivered that was decoded as being that IRQ.
->>
->>         Regards,
->>
->>         Kevin K.
->>
-> 
-> 
-> Thanks for your suggestion.
-> 
-> And I found that , as a matter of  fact , kernel has registered No.23 as a trap.
-> 
-> In trap_init :
-> 
-> /*
-> 1419          * Only some CPUs have the watch exceptions.
-> 1420          */
-> 1421         if (cpu_has_watch)
-> 1422                 set_except_vector(23, handle_watch);
-> 
-> 
-> So, if a No.23 "signal" happened , kernel should  invoke handle_watch instead.
-> 
-> 
-> But why here kernel complained ? and why kernel entered the IRQ branch
-> (do_IRQ) rather than trap branch?
-> 
+On Thu, 2009-10-22 at 08:59 -0700, David Daney wrote:
 
-You still don't understand.  You are not getting the watch exception. 
-The '23' you see is not at all related to the exception code in the 
-C0_cause register.
+> This is what I was talking about up-thread.  Leaf functions may have no 
+> function prolog.  If you do code scanning you will fail.  While scanning 
+> backwards, there is no way to know when you have entered a new function. 
+>   Looking for function return sequences 'jr ra' doesn't work as there 
+> may be functions with multiple return sites, functions that never 
+> return, or arbitrary data before the function.  I think you have to 
+> force a frame pointer to be established if you want this to work.
 
-David Daney
+Functions that run off into another function?? I guess the compiler
+could do that, but with -pg enable, I would think is broken.
+
+-- Steve

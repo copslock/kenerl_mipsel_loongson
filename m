@@ -1,92 +1,89 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Oct 2009 16:56:07 +0200 (CEST)
-Received: from mail-yx0-f204.google.com ([209.85.210.204]:44736 "EHLO
-	mail-yx0-f204.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493259AbZJVO4B convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 22 Oct 2009 16:56:01 +0200
-Received: by yxe42 with SMTP id 42so1417296yxe.22
-        for <linux-mips@linux-mips.org>; Thu, 22 Oct 2009 07:55:54 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=Bg1b5aIXppFKOJqP/24e05lhEJlNlvQBg2pAqpdhygM=;
-        b=EEHAH2YYPtO+CFG7lZpcNJOw+uderRGaghY6ujIjUjZtmHrzpQ1BTNt8vntldi+DzO
-         ZWC4NGat9U3yrlWycgLmXWRgXltwoJ1pARDztRXa8aDicYDH6lHNj3CMwrHjziQKJSpg
-         75Qrk1p90517Rg1dFOOoyuCFjdftHbvzMUvMw=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=vKAiOPXf8euUfD/sWHTfU2kjytrQ1ceO4+Bonact0qgR/8H67GKrOF+07bGJ9YqFlS
-         gVHU91vfqSTjgCqVRh3sskenS0Br7N6JxcaOoT/ImXsY1Ng+jBRgqyo8lNffQxDLVzDi
-         BNhBWy+eXjEHKW4aSqqcyFjrl0wZ8nTAQ+zo0=
-MIME-Version: 1.0
-Received: by 10.90.222.1 with SMTP id u1mr6166880agg.103.1256223351727; Thu, 
-	22 Oct 2009 07:55:51 -0700 (PDT)
-In-Reply-To: <4ADFAC5E.5020506@paralogos.com>
-References: <e997b7420910210740l4a8fefai27c81152a6c288ef@mail.gmail.com>
-	 <4ADF32D1.6030801@ru.mvista.com>
-	 <e997b7420910211704w67517b3bud6f4757a35945ba@mail.gmail.com>
-	 <4ADFAC5E.5020506@paralogos.com>
-Date:	Thu, 22 Oct 2009 22:55:51 +0800
-Message-ID: <e997b7420910220755m3e78c397ia5f183c580fb170b@mail.gmail.com>
-Subject: Re: Got trap No.23 when booting mips32 ?
-From:	"wilbur.chan" <wilbur512@gmail.com>
-To:	"Kevin D. Kissell" <kevink@paralogos.com>
-Cc:	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
-	ddaney@caviumnetworks.com, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <wilbur512@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Oct 2009 17:20:39 +0200 (CEST)
+Received: from hrndva-omtalb.mail.rr.com ([71.74.56.124]:64997 "EHLO
+	hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493267AbZJVPUc (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 22 Oct 2009 17:20:32 +0200
+Received: from [192.168.23.10] (really [74.67.89.75])
+          by hrndva-omta03.mail.rr.com with ESMTP
+          id <20091022152023186.FLAZ15360@hrndva-omta03.mail.rr.com>;
+          Thu, 22 Oct 2009 15:20:23 +0000
+Subject: Re: [PATCH -v4 9/9] tracing: add function graph tracer support for
+ MIPS
+From:	Steven Rostedt <rostedt@goodmis.org>
+Reply-To: rostedt@goodmis.org
+To:	wuzhangjin@gmail.com
+Cc:	David Daney <ddaney@caviumnetworks.com>,
+	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Nicholas Mc Guire <der.herr@hofr.at>
+In-Reply-To: <1256218263.3852.115.camel@falcon>
+References: <028867b99ec532b84963a35e7d552becc783cafc.1256135456.git.wuzhangjin@gmail.com>
+	 <2f73eae542c47ac5bbb9f7280e6c0271d193e90d.1256135456.git.wuzhangjin@gmail.com>
+	 <3f0d3515f74a58f4cfd11e61b62a129fdc21e3a7.1256135456.git.wuzhangjin@gmail.com>
+	 <ea8aa927fbd184b54941e4c2ae0be8ea0b4f6b8a.1256135456.git.wuzhangjin@gmail.com>
+	 <96110ea5dd4d3d54eb97d0bb708a5bd81c7a50b5.1256135456.git.wuzhangjin@gmail.com>
+	 <5dda13e8e3a9c9dba4bb7179183941bda502604f.1256135456.git.wuzhangjin@gmail.com>
+	 <af3ec1b5cd06b6f6a461c9fa7d09a51fabccb08d.1256135456.git.wuzhangjin@gmail.com>
+	 <a6f2959a69b6a77dd32cc36a5c8202f97d524f1e.1256135456.git.wuzhangjin@gmail.com>
+	 <53bdfdd95ec4fa00d4cc505bb5972cf21243a14d.1256135456.git.wuzhangjin@gmail.com>
+	 <1256141540.18347.3118.camel@gandalf.stny.rr.com>
+	 <4ADF38D5.9060100@caviumnetworks.com>
+	 <1256143568.18347.3169.camel@gandalf.stny.rr.com>
+	 <4ADF3FE0.5090104@caviumnetworks.com>
+	 <1256145813.18347.3210.camel@gandalf.stny.rr.com>
+	 <1256211516.3852.47.camel@falcon>
+	 <1256217444.20866.599.camel@gandalf.stny.rr.com>
+	 <1256218263.3852.115.camel@falcon>
+Content-Type: text/plain
+Organization: Kihon Technologies Inc.
+Date:	Thu, 22 Oct 2009 11:20:22 -0400
+Message-Id: <1256224822.20866.728.camel@gandalf.stny.rr.com>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.26.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <rostedt@goodmis.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24440
+X-archive-position: 24441
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wilbur512@gmail.com
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 X-list: linux-mips
 
-2009/10/22 Kevin D. Kissell <kevink@paralogos.com>:
-> wilbur.chan wrote:
->>
->> Kernal didn't resgister IRQ 23 when booting. Hmm....the only '23'
->> number I can find in kernel is in traps.c.
->>
->> Why a 23 IRQ was triggered?
->>
->>
->
-> The usual reason would be a failure to correctly initialize an interrupt
-> controller, or the Status.IM mask field.  The kernel complains precisely
-> *because* IRQ 23 wasn't registered, but an interrupt was nevertheless
-> delivered that was decoded as being that IRQ.
->
->         Regards,
->
->         Kevin K.
->
+On Thu, 2009-10-22 at 21:31 +0800, Wu Zhangjin wrote:
 
+> > If we don't stop at just one save, but look for the saving of ra, it
+> > should not fail.
+> > 
+> 
+> We can not look for the saving of ra continuously(when should we stop?
 
-Thanks for your suggestion.
+When we hit something other than sw .... I'm sure we will get to
+something other than a store. ;-)
 
-And I found that , as a matter of  fact , kernel has registered No.23 as a trap.
+> if with -fno-omit-fram-pointer, we have "move s8,sp" or "addiu sp, sp,
+> -offset", but without it, we have no "guideboard" to know that is the
+> beginning of the function!), 'Cause we may find the saving of ra of
+> another function, which will fail at that time.
 
-In trap_init :
+But that other function should have a jump to mcount before it, or some
+other kind of return. A function that has _mcount attached, can not be
+inlined. So something must have jumped to it. There should be no cases
+where code from above just "falls" into the leaf function.
 
-/*
-1419          * Only some CPUs have the watch exceptions.
-1420          */
-1421         if (cpu_has_watch)
-1422                 set_except_vector(23, handle_watch);
+> 
+> BTW: Just replace probe_kernel_read() and tracing_stop/tracing_start by
+> asm, it works in 32bit, but fails in 64bit, I'm trying to find why!(TLB
+> miss on load or ifetch, will fix it asap! and resend the patchset out!)
 
+Thanks!
 
-So, if a No.23 "signal" happened , kernel should  invoke handle_watch instead.
+-- Steve
 
-
-But why here kernel complained ? and why kernel entered the IRQ branch
-(do_IRQ) rather than trap branch?
+Note, I'm going to try booting a vanilla kernel on the notebook. If it
+works, I'll start applying your patches and playing with it too. But I
+also have some other work to do first.

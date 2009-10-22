@@ -1,78 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 21 Oct 2009 20:35:07 +0200 (CEST)
-Received: from hrndva-omtalb.mail.rr.com ([71.74.56.125]:47322 "EHLO
-	hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492791AbZJUSfB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 21 Oct 2009 20:35:01 +0200
-Received: from [192.168.23.10] (really [74.67.89.75])
-          by hrndva-omta04.mail.rr.com with ESMTP
-          id <20091021183453848.MUUX4590@hrndva-omta04.mail.rr.com>;
-          Wed, 21 Oct 2009 18:34:53 +0000
-Subject: Re: [PATCH -v4 9/9] tracing: add function graph tracer support for
- MIPS
-From:	Steven Rostedt <rostedt@goodmis.org>
-Reply-To: rostedt@goodmis.org
-To:	Nicholas Mc Guire <der.herr@hofr.at>
-Cc:	David Daney <ddaney@caviumnetworks.com>,
-	Wu Zhangjin <wuzhangjin@gmail.com>,
-	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ralf Baechle <ralf@linux-mips.org>
-In-Reply-To: <20091021181705.GA5218@opentech.at>
-References: <af3ec1b5cd06b6f6a461c9fa7d09a51fabccb08d.1256135456.git.wuzhangjin@gmail.com>
-	 <a6f2959a69b6a77dd32cc36a5c8202f97d524f1e.1256135456.git.wuzhangjin@gmail.com>
-	 <53bdfdd95ec4fa00d4cc505bb5972cf21243a14d.1256135456.git.wuzhangjin@gmail.com>
-	 <1256141540.18347.3118.camel@gandalf.stny.rr.com>
-	 <4ADF38D5.9060100@caviumnetworks.com>
-	 <1256143568.18347.3169.camel@gandalf.stny.rr.com>
-	 <4ADF3FE0.5090104@caviumnetworks.com>
-	 <1256145813.18347.3210.camel@gandalf.stny.rr.com>
-	 <4ADF4982.9010306@caviumnetworks.com>
-	 <1256148562.18347.3264.camel@gandalf.stny.rr.com>
-	 <20091021181705.GA5218@opentech.at>
-Content-Type: text/plain
-Organization: Kihon Technologies Inc.
-Date:	Wed, 21 Oct 2009 14:34:52 -0400
-Message-Id: <1256150092.18347.3294.camel@gandalf.stny.rr.com>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.3 
-Content-Transfer-Encoding: 7bit
-Return-Path: <rostedt@goodmis.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Oct 2009 02:02:33 +0200 (CEST)
+Received: from mail-gx0-f210.google.com ([209.85.217.210]:46783 "EHLO
+	mail-gx0-f210.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493019AbZJVAC0 convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 22 Oct 2009 02:02:26 +0200
+Received: by gxk2 with SMTP id 2so2543624gxk.4
+        for <linux-mips@linux-mips.org>; Wed, 21 Oct 2009 17:02:20 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=lJGfaq312dIbD4FHmNKgpMGPy0NVFcakB1mF5JJFF1A=;
+        b=O+01rxmgEy7rbHZwBM5GEwPxSNaMVA+LUhj4Q4o9al9E8MowEZcfv4X3KxGpQPLRwL
+         kCYsX4ATX/uNwhhJeYnlYiP4UBXdxrqmixxXZyqsKoo8692ly2gHYzjcqm9RXnsgMmQd
+         +nXURx4YTMQkOO4ripbb2gHe6rYFuCkJyDpr0=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=fqMWYNEa7mdEL52NQ+59td+AihWbaD+JSLSpGWDwHTRbOwU8IYZa/Mk4kHL6lI7VCJ
+         w6JN+chyUcEVCKh/TWUyWzh0mLYG3Vy6hC4pKyw/jvO3bRhFxxPqpgCDckpucJTKiq2Z
+         Erh3mCIhT2WzD3IPmfxgrjuYg2OO5ROw3QvIU=
+MIME-Version: 1.0
+Received: by 10.90.41.29 with SMTP id o29mr9918141ago.101.1256169740226; Wed, 
+	21 Oct 2009 17:02:20 -0700 (PDT)
+In-Reply-To: <4ADF3240.9040900@caviumnetworks.com>
+References: <e997b7420910210740l4a8fefai27c81152a6c288ef@mail.gmail.com>
+	 <4ADF3240.9040900@caviumnetworks.com>
+Date:	Thu, 22 Oct 2009 08:02:20 +0800
+Message-ID: <e997b7420910211702i14fe8e23v890231e692aba151@mail.gmail.com>
+Subject: Re: Got trap No.23 when booting mips32 ?
+From:	"wilbur.chan" <wilbur512@gmail.com>
+To:	David Daney <ddaney@caviumnetworks.com>
+Cc:	linux-mips@linux-mips.org
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <wilbur512@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24433
+X-archive-position: 24434
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: wilbur512@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2009-10-21 at 20:17 +0200, Nicholas Mc Guire wrote:
-> > 
-> > 
-> > We're not doing back traces. We need to modify the return of the
-> > function being called. Note, the above functions that end with ";" are
-> > leaf functions. Non leaf functions show "{" and end with "}".
-> > 
-> > The trick here is to find a reliable way to modify the return address.
-> >
-> would it not more or less be the same thing if you used -finstrument-functions
-> then and provide a stub __cyg_profile_func_enter/exit initialized to an empty
-> function until you replace it during tracing. This does give you an overhead
-> when you are not tracing - but it would make the tracer implementation quite
-> generic.
+2009/10/22 David Daney <ddaney@caviumnetworks.com>:
 
--finstrument-functions adds a substantial overhead when not tracing, and
-there's no easy way to remove it. The beauty with this approach is that
--pg only adds a couple of instructions (one on x86). When tracing is
-disabled, that one line is converted to a nop.
+> IRQ != c0_cause.ExcCode
+>
+> You should look up your kernel's IRQ to  interrupt source mapping to see
+> what is connected to IRQ 23.
+>
+> David Daney
+>
 
-On x86, hackbench reports no difference between running with dynamic
-ftrace configured but disabled (includes function graph configured) and
-without it configured.
+2009/10/22 Sergei Shtylyov <sshtylyov@ru.mvista.com>:
+>> No.23 trap is a Watch trap, which means that, when
+>
+>   IRQ # is not a trap #, so the rest of your speculations don't apply.
+> "unexpected IRQ" probably means that an IRQ occurs for which no handler has
+> been installed...
+>
+> WBR, Sergei
+>
 
-This allows function tracing to be configured in on production
-environments.
+Kernal didn't resgister IRQ 23 when booting. Hmm....the only '23'
+number I can find in kernel is in traps.c.
 
--- Steve
+Why a 23 IRQ was triggered?

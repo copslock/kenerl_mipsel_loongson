@@ -1,36 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Oct 2009 18:01:08 +0200 (CEST)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:16453 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Oct 2009 18:03:57 +0200 (CEST)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:16583 "EHLO
 	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493255AbZJVQBB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 22 Oct 2009 18:01:01 +0200
+	by ftp.linux-mips.org with ESMTP id S1493291AbZJVQDv (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 22 Oct 2009 18:03:51 +0200
 Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,5,4,7535)
-	id <B4ae081a90000>; Thu, 22 Oct 2009 09:00:46 -0700
+	id <B4ae082630000>; Thu, 22 Oct 2009 09:03:47 -0700
 Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 22 Oct 2009 08:59:49 -0700
+	 Thu, 22 Oct 2009 09:03:06 -0700
 Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Thu, 22 Oct 2009 08:59:49 -0700
-Message-ID: <4AE08173.7070500@caviumnetworks.com>
-Date:	Thu, 22 Oct 2009 08:59:47 -0700
+	 Thu, 22 Oct 2009 09:03:06 -0700
+Message-ID: <4AE08239.7030302@caviumnetworks.com>
+Date:	Thu, 22 Oct 2009 09:03:05 -0700
 From:	David Daney <ddaney@caviumnetworks.com>
 User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
 MIME-Version: 1.0
-To:	wuzhangjin@gmail.com
-CC:	rostedt@goodmis.org, linux-kernel@vger.kernel.org,
-	linux-mips@linux-mips.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Nicholas Mc Guire <der.herr@hofr.at>
-Subject: Re: [PATCH -v4 9/9] tracing: add function graph tracer support for
- MIPS
-References: <028867b99ec532b84963a35e7d552becc783cafc.1256135456.git.wuzhangjin@gmail.com>	 <2f73eae542c47ac5bbb9f7280e6c0271d193e90d.1256135456.git.wuzhangjin@gmail.com>	 <3f0d3515f74a58f4cfd11e61b62a129fdc21e3a7.1256135456.git.wuzhangjin@gmail.com>	 <ea8aa927fbd184b54941e4c2ae0be8ea0b4f6b8a.1256135456.git.wuzhangjin@gmail.com>	 <96110ea5dd4d3d54eb97d0bb708a5bd81c7a50b5.1256135456.git.wuzhangjin@gmail.com>	 <5dda13e8e3a9c9dba4bb7179183941bda502604f.1256135456.git.wuzhangjin@gmail.com>	 <af3ec1b5cd06b6f6a461c9fa7d09a51fabccb08d.1256135456.git.wuzhangjin@gmail.com>	 <a6f2959a69b6a77dd32cc36a5c8202f97d524f1e.1256135456.git.wuzhangjin@gmail.com>	 <53bdfdd95ec4fa00d4cc505bb5972cf21243a14d.1256135456.git.wuzhangjin@gmail.com>	 <1256141540.18347.3118.camel@gandalf.stny.rr.com>	 <4ADF38D5.9060100@caviumnetworks.com>	 <1256143568.18347.3169.camel@gandalf.stny.rr.com>	 <4ADF3FE0.5090104@caviumnetworks.com>	 <1256145813.18347.3210.camel@gandalf.stny.rr.com> <1256211516.3852.47.camel@falcon>
-In-Reply-To: <1256211516.3852.47.camel@falcon>
+To:	"wilbur.chan" <wilbur512@gmail.com>
+CC:	"Kevin D. Kissell" <kevink@paralogos.com>,
+	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
+	linux-mips@linux-mips.org
+Subject: Re: Got trap No.23 when booting mips32 ?
+References: <e997b7420910210740l4a8fefai27c81152a6c288ef@mail.gmail.com>	 <4ADF32D1.6030801@ru.mvista.com>	 <e997b7420910211704w67517b3bud6f4757a35945ba@mail.gmail.com>	 <4ADFAC5E.5020506@paralogos.com> <e997b7420910220755m3e78c397ia5f183c580fb170b@mail.gmail.com>
+In-Reply-To: <e997b7420910220755m3e78c397ia5f183c580fb170b@mail.gmail.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 22 Oct 2009 15:59:49.0705 (UTC) FILETIME=[AF3D5B90:01CA5330]
+X-OriginalArrivalTime: 22 Oct 2009 16:03:06.0160 (UTC) FILETIME=[24560300:01CA5331]
 Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24442
+X-archive-position: 24443
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,79 +36,48 @@ X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Wu Zhangjin wrote:
-> Hi,
-> 
-> On Wed, 2009-10-21 at 13:23 -0400, Steven Rostedt wrote:
->> On Wed, 2009-10-21 at 10:07 -0700, David Daney wrote:
+wilbur.chan wrote:
+> 2009/10/22 Kevin D. Kissell <kevink@paralogos.com>:
+>> wilbur.chan wrote:
+>>> Kernal didn't resgister IRQ 23 when booting. Hmm....the only '23'
+>>> number I can find in kernel is in traps.c.
+>>>
+>>> Why a 23 IRQ was triggered?
+>>>
+>>>
+>> The usual reason would be a failure to correctly initialize an interrupt
+>> controller, or the Status.IM mask field.  The kernel complains precisely
+>> *because* IRQ 23 wasn't registered, but an interrupt was nevertheless
+>> delivered that was decoded as being that IRQ.
 >>
->>> I have not used -pg, so I don't know for sure, I think all it does is 
->>> add the calls to _mcount.  Someone could investigate 
->>> -fno-omit-frame-pointer, with that you may be able to use:
->> Note, -pg assumes -fno-omit-frame-pointer, since -fomit-frame-pointer
->> and -pg are incompatible.
+>>         Regards,
+>>
+>>         Kevin K.
+>>
 > 
-> Ralf have told me -pg really works with -fomit-frame-pointer, although
-> the gcc tool tell us they are not incompatible when we use both of them
-> together, but when I remove -fno-omit-frame-pointer in
-> KBUILD_FLAGS(enabled by CONFIG_FRAME_POINTER), it definitely remove the
-> s8(fp) relative source code(Seems -fomit-frame-pionter is used by
-> default by gcc), the leaf function becomes this:
 > 
-> function:
+> Thanks for your suggestion.
 > 
-> 80101144 <au1k_wait>:
-> 80101144:       03e00821        move    at,ra
-> 80101148:       0c04271c        jal     80109c70 <_mcount>
+> And I found that , as a matter of  fact , kernel has registered No.23 as a trap.
 > 
-> No more instruction,
+> In trap_init :
 > 
-> and the non-leaf function becomes,
+> /*
+> 1419          * Only some CPUs have the watch exceptions.
+> 1420          */
+> 1421         if (cpu_has_watch)
+> 1422                 set_except_vector(23, handle_watch);
 > 
-> 80126590 <copy_process>:
-> 80126590:       27bdffa0        addiu   sp,sp,-96
-> 80126594:       afbf005c        sw      ra,92(sp)
-> 80126598:       afbe0058        sw      s8,88(sp)
-> 8012659c:       afb70054        sw      s7,84(sp)
-> 801265a0:       afb60050        sw      s6,80(sp)
-> 801265a4:       afb5004c        sw      s5,76(sp)
-> 801265a8:       afb40048        sw      s4,72(sp)
-> 801265ac:       afb30044        sw      s3,68(sp)
-> 801265b0:       afb20040        sw      s2,64(sp)
-> 801265b4:       afb1003c        sw      s1,60(sp)
-> 801265b8:       afb00038        sw      s0,56(sp)
-> 801265bc:       03e00821        move    at,ra
-> 801265c0:       0c04271c        jal     80109c70 <_mcount>
 > 
-> It may save about two instructions for us.
-> 	
-> 	sw	s8, offset(sp)
-> 	move	s8, fp
+> So, if a No.23 "signal" happened , kernel should  invoke handle_watch instead.
 > 
-> and also, I have tried to just search "Save" instruction, if I find one,
-> that should be a non-leaf function, otherwise, it's leaf function, but I
-> can not prove no "Save" instruction before the leaf function's "move at,
-> ra", for example:
 > 
-> 8010113c:       03e00008        jr      ra
-> 80101140:       00020021        nop
+> But why here kernel complained ? and why kernel entered the IRQ branch
+> (do_IRQ) rather than trap branch?
 > 
-> 80101144 <au1k_wait>:
-> 80101144:       03e00821        move    at,ra
-> 80101148:       0c04271c        jal     80109c70 <_mcount>
-> 
-> if there is "save" instruction at address 80101140, it will fail.
-> Although, I met not failure with several tries, but no prove on it! any
-> ABI protection for this? if YES, this should be a better solution, for
-> it may works without -fno-omit-frame-pointer and save several
-> instructions for us.
 
-This is what I was talking about up-thread.  Leaf functions may have no 
-function prolog.  If you do code scanning you will fail.  While scanning 
-backwards, there is no way to know when you have entered a new function. 
-  Looking for function return sequences 'jr ra' doesn't work as there 
-may be functions with multiple return sites, functions that never 
-return, or arbitrary data before the function.  I think you have to 
-force a frame pointer to be established if you want this to work.
+You still don't understand.  You are not getting the watch exception. 
+The '23' you see is not at all related to the exception code in the 
+C0_cause register.
 
 David Daney

@@ -1,106 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Oct 2009 22:17:01 +0200 (CEST)
-Received: from sj-iport-3.cisco.com ([171.71.176.72]:48347 "EHLO
-	sj-iport-3.cisco.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1493411AbZJVUQz (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 22 Oct 2009 22:16:55 +0200
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=dvomlehn@cisco.com; l=2184; q=dns/txt;
-  s=sjiport03001; t=1256242615; x=1257452215;
-  h=from:sender:reply-to:subject:date:message-id:to:cc:
-   mime-version:content-transfer-encoding:content-id:
-   content-description:resent-date:resent-from:resent-sender:
-   resent-to:resent-cc:resent-message-id:in-reply-to:
-   references:list-id:list-help:list-unsubscribe:
-   list-subscribe:list-post:list-owner:list-archive;
-  z=From:=20David=20VomLehn=20<dvomlehn@cisco.com>|Subject:
-   =20Re:=20Got=20trap=20No.23=20when=20booting=20mips32=20?
-   |Date:=20Thu,=2022=20Oct=202009=2013:16:45=20-0700
-   |Message-ID:=20<20091022201645.GA15619@cuplxvomd02.corp.s
-   a.net>|To:=20"wilbur.chan"=20<wilbur512@gmail.com>|Cc:=20
-   Linux=20MIPS=20Mailing=20List=20<linux-mips@linux-mips.or
-   g>|MIME-Version:=201.0|Content-Transfer-Encoding:=208bit;
-  bh=Jq5CB0mjza3GMk4oo2hkdB33y/QI6NwHZaHn9zgf9pw=;
-  b=iI60zTmgU5fZQeNYYWvbwTLiMlg4jz8yztxq/Ztm/+sWzWAZUYIOl+rb
-   /SuDmfroe50zSG3AcA9fzM7okvol5vJgkTc7/dvSZJvOwICHM0583lvbh
-   iqNOE+yizNn+jrivPB/RG2ES1gmvmeMNNLP5MgxNEp8q2v5YNMwCxZPNi
-   I=;
-Authentication-Results:	sj-iport-3.cisco.com; dkim=neutral (message not signed) header.i=none
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: ApoEACNa4EqrR7Ht/2dsb2JhbADEEIkgCI8pgkUJCIFpBIFdew
-X-IronPort-AV: E=Sophos;i="4.44,607,1249257600"; 
-   d="scan'208";a="198358832"
-Received: from sj-core-1.cisco.com ([171.71.177.237])
-  by sj-iport-3.cisco.com with ESMTP; 22 Oct 2009 20:16:46 +0000
-Received: from cuplxvomd02.corp.sa.net ([64.101.20.155])
-	by sj-core-1.cisco.com (8.13.8/8.14.3) with ESMTP id n9MKGjEU004576;
-	Thu, 22 Oct 2009 20:16:46 GMT
-Date:	Thu, 22 Oct 2009 13:16:45 -0700
-From:	David VomLehn <dvomlehn@cisco.com>
-To:	"wilbur.chan" <wilbur512@gmail.com>
-Cc:	Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Subject: Re: Got trap No.23 when booting mips32 ?
-Message-ID: <20091022201645.GA15619@cuplxvomd02.corp.sa.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <dvomlehn@cisco.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 22 Oct 2009 22:52:28 +0200 (CEST)
+Received: from hrndva-omtalb.mail.rr.com ([71.74.56.125]:47922 "EHLO
+	hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493818AbZJVUwV (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 22 Oct 2009 22:52:21 +0200
+Received: from [192.168.23.10] (really [74.67.89.75])
+          by hrndva-omta03.mail.rr.com with ESMTP
+          id <20091022205208122.VGCG15360@hrndva-omta03.mail.rr.com>;
+          Thu, 22 Oct 2009 20:52:11 +0000
+Subject: Re: [PATCH -v4 4/9] tracing: add static function tracer support
+ for MIPS
+From:	Steven Rostedt <rostedt@goodmis.org>
+Reply-To: rostedt@goodmis.org
+To:	Adam Nemet <anemet@caviumnetworks.com>
+Cc:	David Daney <ddaney@caviumnetworks.com>, wuzhangjin@gmail.com,
+	Richard Sandiford <rdsandiford@googlemail.com>,
+	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Nicholas Mc Guire <der.herr@hofr.at>
+In-Reply-To: <19168.49354.525249.654494@ropi.home>
+References: <028867b99ec532b84963a35e7d552becc783cafc.1256135456.git.wuzhangjin@gmail.com>
+	 <2f73eae542c47ac5bbb9f7280e6c0271d193e90d.1256135456.git.wuzhangjin@gmail.com>
+	 <3f0d3515f74a58f4cfd11e61b62a129fdc21e3a7.1256135456.git.wuzhangjin@gmail.com>
+	 <ea8aa927fbd184b54941e4c2ae0be8ea0b4f6b8a.1256135456.git.wuzhangjin@gmail.com>
+	 <1256138686.18347.3039.camel@gandalf.stny.rr.com>
+	 <1256233679.23653.7.camel@falcon> <4AE0A5BE.8000601@caviumnetworks.com>
+	 <19168.49354.525249.654494@ropi.home>
+Content-Type: text/plain
+Organization: Kihon Technologies Inc.
+Date:	Thu, 22 Oct 2009 16:52:06 -0400
+Message-Id: <1256244726.20866.802.camel@gandalf.stny.rr.com>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.26.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <rostedt@goodmis.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24454
+X-archive-position: 24455
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvomlehn@cisco.com
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 X-list: linux-mips
 
->And I found that , as a matter of  fact , kernel has registered No.23 as a trap.
->
->In trap_init :
->
->/*
->1419          * Only some CPUs have the watch exceptions.
->1420          */
->1421         if (cpu_has_watch)
->1422                 set_except_vector(23, handle_watch);
->
->
->So, if a No.23 "signal" happened , kernel should  invoke handle_watch instead.
->
->
->But why here kernel complained ? and why kernel entered the IRQ branch
->(do_IRQ) rather than trap branch?
+On Thu, 2009-10-22 at 13:30 -0700, Adam Nemet wrote:
+> Maybe scanning the instructions should stop at the beginning of the function
+> based on the kernel's symbol table.  I am not sure if we can establish any
+> other stopping condition without affecting performance too much.
 
-It looks like you are confusing interrupts and exceptions. Exceptions
-are a generally a change in the flow of execution of a processor due to
-a condition internal to the processor. So, a divide by zero is an a exception.
+How would we check the kernel symbol table? Remember, this happens at
+_every_ function call.
 
-An interrupt is a change in execution flow due to a device external to the
-processor. Keyboards use interrupts to indicate that a key has been
-pressed.
+> 
+> Speaking of performance, -pg also affects the instruction scheduling freedom
+> of the compiler in the prologue.  With profiling, we limit optimizations not
+> to move instructions in and out of the prologue.
+> 
+> Also note that for functions invoked via tail call you won't get an exit
+> event.  E.g. if bar is tail-called from foo:
+> 
+>   foo entered
+>   bar entered
+>   foo/bar exited
+> 
+> However, this is not MIPS-specific and you can always disable tail calls
+> with -fno-optimize-sibling-calls.
 
-Things can be slightly confusing on the MIPS processor because interrupts
-are normally treated as a type of exception. In this case, the exception
-type in the ExcCode field of the Cause register is "Int". If your system
-uses the external vectored interrupt controller, it will not use an
-exception and will instead use an array of interrupt handlers.
+The question is, would bar have a _mcount call? So far, we have not had
+any issues with this on either x86 nor PPC.
 
-In your case, you are getting interrupt request (IRQ) number 23. The message
-you are getting indicates that no device driver has told the kernel that
-it can handle this interrupt. I suggest that you consult the documentation
-for your system to determine which device is using IRQ 23 and ensure that
-you have a device driver installed for that device. It is unusual that
-a device would cause an interrupt without actions from the device driver;
-you might want to investigate the possibility that your system is
-incorrectly configured, causing the incorrect IRQ to be generated.
+/me knocks on wood.
 
-I suggest reading the book, "See MIPS Run Linux" by Dominic Sweetman, to learn
-more about the low level details of interrupts and exceptions on the MIPS
-processor. For exact details, consult "MIPS32® Architecture For Programmers
-Volume III: The MIPS32® Privileged Resource Architecture", available at
-mips.com (you need to sign up for a free account)
-
-David VL
+-- Steve

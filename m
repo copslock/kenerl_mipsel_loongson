@@ -1,101 +1,97 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Oct 2009 09:21:54 +0200 (CEST)
-Received: from mail-pz0-f197.google.com ([209.85.222.197]:34002 "EHLO
-	mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1491984AbZJWHVr (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 23 Oct 2009 09:21:47 +0200
-Received: by pzk35 with SMTP id 35so6455368pzk.22
-        for <multiple recipients>; Fri, 23 Oct 2009 00:21:40 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=6H2mOuexrROT1FfU9y3v3k6f1OfWFgeCFUdSHRtZL2g=;
-        b=CW7BvFmV52dLcKnkmOuZEJaol231O2DSewwjVNI3hl25ZrGHu33LfPpIoYAoCsAunN
-         2rC5vB1UzXYDyYzkydPKEnb4cpX5huAqu4bqxXvILFd/ReY/sVt4RSk/dpOUSOs+olF3
-         jloDaxHrqMBOZjTea0ZMYBxw4HRqoS1GlTUzg=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=T6ZpwPv1jjFip87JSP3vFNZnspdFVpGjEFY9809mAiopbkWz7iJKRWQlQW+ldS9Fni
-         eKgY31X9Vr+PHSgXu83rDhu3RTAl+DgNX13f15WxafSCmDQGdabLROUIH5TxoGw8YJ8/
-         UnVsyIqPI5YhYxqwHznFULjDahbkri11mKIMk=
-Received: by 10.114.55.34 with SMTP id d34mr15841702waa.225.1256282499998;
-        Fri, 23 Oct 2009 00:21:39 -0700 (PDT)
-Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 23sm312801pxi.13.2009.10.23.00.21.32
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 23 Oct 2009 00:21:38 -0700 (PDT)
-Subject: Re: [PATCH -v4 4/9] tracing: add static function tracer support
- for MIPS
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Oct 2009 09:59:19 +0200 (CEST)
+Received: from out01.mta.xmission.com ([166.70.13.231]:56801 "EHLO
+	out01.mta.xmission.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1492789AbZJWH7M (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 23 Oct 2009 09:59:12 +0200
+Received: from in01.mta.xmission.com ([166.70.13.51])
+	by out01.mta.xmission.com with esmtps (TLSv1:AES256-SHA:256)
+	(Exim 4.69)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1N1F7Z-0001QH-2L; Fri, 23 Oct 2009 02:03:37 -0600
+Received: from c-76-21-114-89.hsd1.ca.comcast.net ([76.21.114.89] helo=fess.ebiederm.org)
+	by in01.mta.xmission.com with esmtpsa (TLSv1:AES256-SHA:256)
+	(Exim 4.69)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1N1F2o-0004To-HJ; Fri, 23 Oct 2009 01:58:42 -0600
+Received: from fess.ebiederm.org (localhost [127.0.0.1])
+	by fess.ebiederm.org (8.14.3/8.14.3/Debian-4) with ESMTP id n9N7x5cp017748;
+	Fri, 23 Oct 2009 00:59:05 -0700
+Received: (from eric@localhost)
+	by fess.ebiederm.org (8.14.3/8.14.3/Submit) id n9N7x35A017747;
+	Fri, 23 Oct 2009 00:59:03 -0700
 To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	Richard Sandiford <rdsandiford@googlemail.com>,
-	Adam Nemet <anemet@caviumnetworks.com>, rostedt@goodmis.org,
-	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Nicholas Mc Guire <der.herr@hofr.at>
-In-Reply-To: <4AE0A5BE.8000601@caviumnetworks.com>
-References: <028867b99ec532b84963a35e7d552becc783cafc.1256135456.git.wuzhangjin@gmail.com>
-	 <2f73eae542c47ac5bbb9f7280e6c0271d193e90d.1256135456.git.wuzhangjin@gmail.com>
-	 <3f0d3515f74a58f4cfd11e61b62a129fdc21e3a7.1256135456.git.wuzhangjin@gmail.com>
-	 <ea8aa927fbd184b54941e4c2ae0be8ea0b4f6b8a.1256135456.git.wuzhangjin@gmail.com>
-	 <1256138686.18347.3039.camel@gandalf.stny.rr.com>
-	 <1256233679.23653.7.camel@falcon>  <4AE0A5BE.8000601@caviumnetworks.com>
-Content-Type: text/plain
-Organization: DSLab, Lanzhou University, China
-Date:	Fri, 23 Oct 2009 15:21:27 +0800
-Message-Id: <1256282487.6381.20.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Cc:	Chris Friesen <cfriesen@nortel.com>, netdev@vger.kernel.org,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	linux-mips <linux-mips@linux-mips.org>
+Subject: Re: Irq architecture for multi-core network driver.
+References: <4AE0D14B.1070307@caviumnetworks.com>
+	<4AE0D72A.4090607@nortel.com> <4AE0DB98.1000101@caviumnetworks.com>
+From:	ebiederm@xmission.com (Eric W. Biederman)
+Date:	Fri, 23 Oct 2009 00:59:03 -0700
+In-Reply-To: <4AE0DB98.1000101@caviumnetworks.com> (David Daney's message of "Thu\, 22 Oct 2009 15\:24\:24 -0700")
+Message-ID: <m13a5apmm0.fsf@fess.ebiederm.org>
+User-Agent: Gnus/5.11 (Gnus v5.11) Emacs/22.2 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-XM-SPF: eid=;;;mid=;;;hst=in01.mta.xmission.com;;;ip=76.21.114.89;;;frm=ebiederm@xmission.com;;;spf=neutral
+X-SA-Exim-Connect-IP: 76.21.114.89
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-SA-Exim-Version: 4.2.1 (built Thu, 25 Oct 2007 00:26:12 +0000)
+X-SA-Exim-Scanned: No (on in01.mta.xmission.com); Unknown failure
+Return-Path: <ebiederm@xmission.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24464
+X-archive-position: 24465
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: ebiederm@xmission.com
 Precedence: bulk
 X-list: linux-mips
 
-On Thu, 2009-10-22 at 11:34 -0700, David Daney wrote:
-> Wu Zhangjin wrote:
-> > On Wed, 2009-10-21 at 11:24 -0400, Steven Rostedt wrote:
-> [...]
-> >>> +
-> >>> +NESTED(_mcount, PT_SIZE, ra)
-> >>> +	RESTORE_SP_FOR_32BIT
-> >>> +	PTR_LA	t0, ftrace_stub
-> >>> +	PTR_L	t1, ftrace_trace_function /* please don't use t1 later, safe? */
-> >> Is t0 and t1 safe for mcount to use? Remember, mcount does not follow
-> >> the dynamics of C function ABI.
-> > 
-> > So, perhaps we can use the saved registers(a0,a1...) instead.
-> > 
-> 
-> a0..a7 may not always be saved.
-> 
-> You can use at, v0, v1 and all the temporary registers.  Note that for 
-> the 64-bit ABIs sometimes the names t0-t4 shadow a4-a7.  So for a 64-bit 
-> kernel, you can use: $1, $2, $3, $12, $13, $14, $15, $24, $25, noting 
-> that at == $1 and contains the callers ra.  For a 32-bit kernel you can 
-> add $8, $9, $10, and $11
+David Daney <ddaney@caviumnetworks.com> writes:
 
-before the profiling source code(jal _mcount), there are only necessary
-stack operations, nobody have touched the GPRs, so, I think we are safe
-to use any of them, that's why the t0,t1 I have used not fail. and
-'Cause the a0,a1 is used as the arguments to the real profiling
-function, so, I will keep back to use t0, t1, as David Daney said $12,
-$13 in 64bit and $8, $9 in 32bit.
+> Chris Friesen wrote:
+>> On 10/22/2009 03:40 PM, David Daney wrote:
+>>
+>>> The main problem I have encountered is how to fit the interrupt
+>>> management into the kernel framework.  Currently the interrupt source
+>>> is connected to a single irq number.  I request_irq, and then manage
+>>> the masking and unmasking on a per cpu basis by directly manipulating
+>>> the interrupt controller's affinity/routing registers.  This goes
+>>> behind the back of all the kernel's standard interrupt management
+>>> routines.  I am looking for a better approach.
+>>>
+>>> One thing that comes to mind is that I could assign a different
+>>> interrupt number per cpu to the interrupt signal.  So instead of
+>>> having one irq I would have 32 of them.  The driver would then do
+>>> request_irq for all 32 irqs, and could call enable_irq and disable_irq
+>>> to enable and disable them.  The problem with this is that there isn't
+>>> really a single packets-ready signal, but instead 16 of them.  So If I
+>>> go this route I would have 16(lines) x 32(cpus) = 512 interrupt
+>>> numbers just for the networking hardware, which seems a bit excessive.
+>>
+>> Does your hardware do flow-based queues?  In this model you have
+>> multiple rx queues and the hardware hashes incoming packets to a single
+>> queue based on the addresses, ports, etc. This ensures that all the
+>> packets of a single connection always get processed in the order they
+>> arrived at the net device.
+>>
+>
+> Indeed, this is exactly what we have.
+>
+>
+>> Typically in this model you have as many interrupts as queues
+>> (presumably 16 in your case).  Each queue is assigned an interrupt and
+>> that interrupt is affined to a single core.
+>
+> Certainly this is one mode of operation that should be supported, but I would
+> also like to be able to go for raw throughput and have as many cores as possible
+> reading from a single queue (like I currently have).
 
-Thanks!
+I believe will detect false packet drops and ask for unnecessary
+retransmits if you have multiple cores processing a single queue,
+because you are processing the packets out of order.
 
-Regards,
-	Wu Zhangjin
+Eric

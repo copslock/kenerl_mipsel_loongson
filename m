@@ -1,97 +1,150 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Oct 2009 09:59:19 +0200 (CEST)
-Received: from out01.mta.xmission.com ([166.70.13.231]:56801 "EHLO
-	out01.mta.xmission.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1492789AbZJWH7M (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 23 Oct 2009 09:59:12 +0200
-Received: from in01.mta.xmission.com ([166.70.13.51])
-	by out01.mta.xmission.com with esmtps (TLSv1:AES256-SHA:256)
-	(Exim 4.69)
-	(envelope-from <ebiederm@xmission.com>)
-	id 1N1F7Z-0001QH-2L; Fri, 23 Oct 2009 02:03:37 -0600
-Received: from c-76-21-114-89.hsd1.ca.comcast.net ([76.21.114.89] helo=fess.ebiederm.org)
-	by in01.mta.xmission.com with esmtpsa (TLSv1:AES256-SHA:256)
-	(Exim 4.69)
-	(envelope-from <ebiederm@xmission.com>)
-	id 1N1F2o-0004To-HJ; Fri, 23 Oct 2009 01:58:42 -0600
-Received: from fess.ebiederm.org (localhost [127.0.0.1])
-	by fess.ebiederm.org (8.14.3/8.14.3/Debian-4) with ESMTP id n9N7x5cp017748;
-	Fri, 23 Oct 2009 00:59:05 -0700
-Received: (from eric@localhost)
-	by fess.ebiederm.org (8.14.3/8.14.3/Submit) id n9N7x35A017747;
-	Fri, 23 Oct 2009 00:59:03 -0700
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	Chris Friesen <cfriesen@nortel.com>, netdev@vger.kernel.org,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: Irq architecture for multi-core network driver.
-References: <4AE0D14B.1070307@caviumnetworks.com>
-	<4AE0D72A.4090607@nortel.com> <4AE0DB98.1000101@caviumnetworks.com>
-From:	ebiederm@xmission.com (Eric W. Biederman)
-Date:	Fri, 23 Oct 2009 00:59:03 -0700
-In-Reply-To: <4AE0DB98.1000101@caviumnetworks.com> (David Daney's message of "Thu\, 22 Oct 2009 15\:24\:24 -0700")
-Message-ID: <m13a5apmm0.fsf@fess.ebiederm.org>
-User-Agent: Gnus/5.11 (Gnus v5.11) Emacs/22.2 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-X-XM-SPF: eid=;;;mid=;;;hst=in01.mta.xmission.com;;;ip=76.21.114.89;;;frm=ebiederm@xmission.com;;;spf=neutral
-X-SA-Exim-Connect-IP: 76.21.114.89
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-SA-Exim-Version: 4.2.1 (built Thu, 25 Oct 2007 00:26:12 +0000)
-X-SA-Exim-Scanned: No (on in01.mta.xmission.com); Unknown failure
-Return-Path: <ebiederm@xmission.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 23 Oct 2009 11:33:08 +0200 (CEST)
+Received: from mail-pw0-f45.google.com ([209.85.160.45]:47434 "EHLO
+	mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492357AbZJWJdC (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 23 Oct 2009 11:33:02 +0200
+Received: by pwi11 with SMTP id 11so77666pwi.24
+        for <multiple recipients>; Fri, 23 Oct 2009 02:32:52 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=/A22yKdfKLmN6yjOpMjK6j3yAEMqkqXNCagYdcdkKZo=;
+        b=tCEJUBFLk0ui9EJEnZ6zzbDm0LISxf7eC5PBt2VATk2TQfBwnGxbU8minSb7DreEPn
+         cRjLULiB23v2Vo2m6iiJjy/HMCS2jb8xC3aXJRK0kQ0/nqLZCKgg/vLmoDaSYAS4lN7b
+         14aHAJFTbpL6QK8mQJgvI5QfTrNV1mWW1W7zA=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=U+gr4qXRs3L3h4WhNVmkMMCiAtlmfl7Gy+JNfFcP2jVbX1Z7q963YTiQ6fxzQKXceH
+         hRrzzzZVbKwjsr5Tuc/byWS5kH30mizUYZ7kjaiX3ItD5vpyYY+/a4Afe0qX8/tJ523B
+         k3s4MQihUbelhI8+az9F6qXLvmZOPekIG37Z0=
+Received: by 10.115.66.24 with SMTP id t24mr16029335wak.39.1256290372740;
+        Fri, 23 Oct 2009 02:32:52 -0700 (PDT)
+Received: from ?172.16.2.101? ([222.92.8.142])
+        by mx.google.com with ESMTPS id 21sm1526464pxi.12.2009.10.23.02.32.47
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Fri, 23 Oct 2009 02:32:51 -0700 (PDT)
+Subject: Re: [PATCH -v4 4/9] tracing: add static function tracer support
+ for MIPS
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:	Richard Sandiford <rdsandiford@googlemail.com>
+Cc:	David Daney <ddaney@caviumnetworks.com>,
+	Adam Nemet <anemet@caviumnetworks.com>, rostedt@goodmis.org,
+	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Nicholas Mc Guire <der.herr@hofr.at>
+In-Reply-To: <87y6n36plp.fsf@firetop.home>
+References: <028867b99ec532b84963a35e7d552becc783cafc.1256135456.git.wuzhangjin@gmail.com>
+	 <2f73eae542c47ac5bbb9f7280e6c0271d193e90d.1256135456.git.wuzhangjin@gmail.com>
+	 <3f0d3515f74a58f4cfd11e61b62a129fdc21e3a7.1256135456.git.wuzhangjin@gmail.com>
+	 <ea8aa927fbd184b54941e4c2ae0be8ea0b4f6b8a.1256135456.git.wuzhangjin@gmail.com>
+	 <1256138686.18347.3039.camel@gandalf.stny.rr.com>
+	 <1256233679.23653.7.camel@falcon> <4AE0A5BE.8000601@caviumnetworks.com>
+	 <87y6n36plp.fsf@firetop.home>
+Content-Type: text/plain
+Organization: DSLab, Lanzhou University, China
+Date:	Fri, 23 Oct 2009 17:32:40 +0800
+Message-Id: <1256290360.6381.51.camel@falcon>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.26.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24465
+X-archive-position: 24466
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ebiederm@xmission.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-David Daney <ddaney@caviumnetworks.com> writes:
+Hi,
 
-> Chris Friesen wrote:
->> On 10/22/2009 03:40 PM, David Daney wrote:
->>
->>> The main problem I have encountered is how to fit the interrupt
->>> management into the kernel framework.  Currently the interrupt source
->>> is connected to a single irq number.  I request_irq, and then manage
->>> the masking and unmasking on a per cpu basis by directly manipulating
->>> the interrupt controller's affinity/routing registers.  This goes
->>> behind the back of all the kernel's standard interrupt management
->>> routines.  I am looking for a better approach.
->>>
->>> One thing that comes to mind is that I could assign a different
->>> interrupt number per cpu to the interrupt signal.  So instead of
->>> having one irq I would have 32 of them.  The driver would then do
->>> request_irq for all 32 irqs, and could call enable_irq and disable_irq
->>> to enable and disable them.  The problem with this is that there isn't
->>> really a single packets-ready signal, but instead 16 of them.  So If I
->>> go this route I would have 16(lines) x 32(cpus) = 512 interrupt
->>> numbers just for the networking hardware, which seems a bit excessive.
->>
->> Does your hardware do flow-based queues?  In this model you have
->> multiple rx queues and the hardware hashes incoming packets to a single
->> queue based on the addresses, ports, etc. This ensures that all the
->> packets of a single connection always get processed in the order they
->> arrived at the net device.
->>
->
-> Indeed, this is exactly what we have.
->
->
->> Typically in this model you have as many interrupts as queues
->> (presumably 16 in your case).  Each queue is assigned an interrupt and
->> that interrupt is affined to a single core.
->
-> Certainly this is one mode of operation that should be supported, but I would
-> also like to be able to go for raw throughput and have as many cores as possible
-> reading from a single queue (like I currently have).
+On Thu, 2009-10-22 at 23:17 +0100, Richard Sandiford wrote:
+> David Daney <ddaney@caviumnetworks.com> writes:
+[...]
+> > and here:
+> >
+> > http://www.linux-mips.org/archives/linux-mips/2009-10/msg00290.html
+> 
+> I'm not sure that the "search for a save of RA" thing is really a good idea.
+> The last version of that seemed to be "assume that any register stores
+> will be in a block that immediately precedes the move into RA", but even
+> if that's true now, it might not be in future.  And as Wu Zhangjin says,
+> it doesn't cope with long calls, where the target address is loaded
+> into a temporary register before the call.
+> 
 
-I believe will detect false packet drops and ask for unnecessary
-retransmits if you have multiple cores processing a single queue,
-because you are processing the packets out of order.
+-mlong-calls works with the current implementation of static function
+tracer and function graph tracer for MIPS, just tried them, and module
+support is supported by default with -mlong-calls, let's have a look at
+the dumped code with -mlong-calls, only a few difference.
 
-Eric
+ffffffff80241520 <copy_process>:
+ffffffff80241520:       67bdff40        daddiu  sp,sp,-192
+ffffffff80241524:       ffbe00b0        sd      s8,176(sp)
+ffffffff80241528:       03a0f02d        move    s8,sp
+ffffffff8024152c:       ffbf00b8        sd      ra,184(sp)
+ffffffff80241530:       ffb700a8        sd      s7,168(sp)
+ffffffff80241534:       ffb600a0        sd      s6,160(sp)
+ffffffff80241538:       ffb50098        sd      s5,152(sp)
+ffffffff8024153c:       ffb40090        sd      s4,144(sp)
+ffffffff80241540:       ffb30088        sd      s3,136(sp)
+ffffffff80241544:       ffb20080        sd      s2,128(sp)
+ffffffff80241548:       ffb10078        sd      s1,120(sp)
+ffffffff8024154c:       ffb00070        sd      s0,112(sp)
+ffffffff80241550:       3c038021        lui     v1,0x8021
+ffffffff80241554:       64631750        daddiu  v1,v1,5968
+ffffffff80241558:       03e0082d        move    at,ra
+ffffffff8024155c:       0060f809        jalr    v1
+
+so, the only left job is making dynamic function tracer work with
+-mlong-calls, I think it's not that complex, after using -mlong-calls,
+we need to search "move at,ra; jalr v1" instead of "jal _mcount", and
+also, some relative job need to do. will try to make it work next week.
+
+> FWIW, I'd certainly be happy to make GCC pass an additional parameter
+> to _mcount.  The parameter could give the address of the return slot,
+> or null for leaf functions.  In almost all cases[*], there would be
+> no overhead, since the move would go in the delay slot of the call.
+> 
+> [*] Meaning when the frame is <=32k. ;)  I'm guessing you never
+>     get anywhere near that, and if you did, the scan thing wouldn't
+>     work anyway.
+> 
+> The new behaviour could be controlled by a command-line option,
+> which would also give linux a cheap way of checking whether the
+> feature is available.
+
+I like your suggestion, and I have tried to make gcc do something like
+this before your reply.
+
+orig:
+
+move    at,ra
+jal	_mcount
+
+new:
+
+sd      ra,184(sp)
+...
+move	at, ra
+jal	_mcount
+lui	ra, 184			--> This is new
+
+so, in a non-leaf function, the at register stored the stack offset of
+the return address(range from 0 to PT_SIZE). in a leaf function, it is
+the return address itself(at least bigger than PT_SIZE). we are easier
+to distinguish them. and only a few lines of source code need to be
+added for gcc.
+
+Regards,
+	Wu Zhangjin

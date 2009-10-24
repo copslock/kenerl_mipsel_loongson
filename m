@@ -1,151 +1,109 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Oct 2009 17:54:27 +0200 (CEST)
-Received: from mail-px0-f187.google.com ([209.85.216.187]:43137 "EHLO
-	mail-px0-f187.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492593AbZJXPyU (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 24 Oct 2009 17:54:20 +0200
-Received: by pxi17 with SMTP id 17so219190pxi.21
-        for <multiple recipients>; Sat, 24 Oct 2009 08:54:12 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=+MszvUpZzA2kReXNYdbTajx5kHrJSyj1TglWFr/psfk=;
-        b=dP4oaNRmkmZW2Zc5GaUq1A/RVrdPSyhKCntZN4I5QeMm8eHN0WjYKq7BYUm5wBjohD
-         T46nH/8xtwVMh55z9ydAYAqQiCqkqacMqq8G42kFDdUlhyHfJrqy03jv0yBEXZ/OiW//
-         FtSzo+rYwc/kJG5gV2GXF6vH1zDTYecBYUijY=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=dtAaqaeuOF60FhFDJIarXRlmBQWE/HzYtSyupcHuSAYp19fvteujctTHv82IW23Y6Q
-         AIySyOT5QceQBMVaphOq+jv25oN3C5alkl3Gk7RzfQCFLS3NqL7JbhD98QWL2qlL0j6e
-         Wski5lqYhsnduxi91wxjdRcnU6DiWtvpl/E44=
-Received: by 10.115.101.15 with SMTP id d15mr18169929wam.200.1256399652834;
-        Sat, 24 Oct 2009 08:54:12 -0700 (PDT)
-Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 23sm2133785pxi.9.2009.10.24.08.54.05
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sat, 24 Oct 2009 08:54:11 -0700 (PDT)
-Subject: Re: [PATCH] MIPS: Add option to pass return address location to
- _mcount. Was: [PATCH -v4 4/9] tracing: add static function tracer support
- for MIPS
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:	Richard Sandiford <rdsandiford@googlemail.com>
-Cc:	David Daney <ddaney@caviumnetworks.com>,
-	GCC Patches <gcc-patches@gcc.gnu.org>,
-	Adam Nemet <anemet@caviumnetworks.com>, rostedt@goodmis.org,
-	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Nicholas Mc Guire <der.herr@hofr.at>
-In-Reply-To: <87my3htau1.fsf@firetop.home>
-References: <028867b99ec532b84963a35e7d552becc783cafc.1256135456.git.wuzhangjin@gmail.com>
-	 <2f73eae542c47ac5bbb9f7280e6c0271d193e90d.1256135456.git.wuzhangjin@gmail.com>
-	 <3f0d3515f74a58f4cfd11e61b62a129fdc21e3a7.1256135456.git.wuzhangjin@gmail.com>
-	 <ea8aa927fbd184b54941e4c2ae0be8ea0b4f6b8a.1256135456.git.wuzhangjin@gmail.com>
-	 <1256138686.18347.3039.camel@gandalf.stny.rr.com>
-	 <1256233679.23653.7.camel@falcon> <4AE0A5BE.8000601@caviumnetworks.com>
-	 <87y6n36plp.fsf@firetop.home> <4AE232AD.4050308@caviumnetworks.com>
-	 <87my3htau1.fsf@firetop.home>
-Content-Type: text/plain
-Organization: DSLab, Lanzhou University, China
-Date:	Sat, 24 Oct 2009 23:53:52 +0800
-Message-Id: <1256399632.24957.75.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1 
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Oct 2009 18:27:52 +0200 (CEST)
+Received: from mail.lysator.liu.se ([130.236.254.3]:44018 "EHLO
+	mail.lysator.liu.se" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1492602AbZJXQ1p (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 24 Oct 2009 18:27:45 +0200
+Received: from mail.lysator.liu.se (localhost [127.0.0.1])
+	by mail.lysator.liu.se (Postfix) with ESMTP id 5E61640042;
+	Sat, 24 Oct 2009 18:26:48 +0200 (CEST)
+Received: from [192.168.10.105] (c-83bee555.035-105-73746f38.cust.bredbandsbolaget.se [85.229.190.131])
+	(using TLSv1 with cipher AES128-SHA (128/128 bits))
+	(No client certificate requested)
+	by mail.lysator.liu.se (Postfix) with ESMTP id 4200340040;
+	Sat, 24 Oct 2009 18:26:48 +0200 (CEST)
+Cc:	linux-mips@linux-mips.org
+Message-Id: <0E276185-1DBE-4163-90BD-1F957B9A9785@lysator.liu.se>
+From:	Markus Gothe <nietzsche@lysator.liu.se>
+To:	figo zhang <figo1802@gmail.com>
+In-Reply-To: <c6ed1ac50910232228h4ca7d0b4safed0bc63a02868@mail.gmail.com>
+Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha1; boundary="Apple-Mail-8-1069069411"
 Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Mime-Version: 1.0 (Apple Message framework v936)
+Subject: Re: how to mmap 0x1f000000 to user space?
+Date:	Sat, 24 Oct 2009 18:27:39 +0200
+References: <c6ed1ac50910232228h4ca7d0b4safed0bc63a02868@mail.gmail.com>
+X-Pgp-Agent: GPGMail 1.2.0 (v56)
+X-Mailer: Apple Mail (2.936)
+X-Virus-Scanned: ClamAV using ClamSMTP
+Return-Path: <nietzsche@lysator.liu.se>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24478
+X-archive-position: 24479
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: nietzsche@lysator.liu.se
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+This is an OpenPGP/MIME signed message (RFC 2440 and 3156)
+--Apple-Mail-8-1069069411
+Content-Type: text/plain; charset=US-ASCII; format=flowed; delsp=yes
+Content-Transfer-Encoding: 7bit
 
-On Sat, 2009-10-24 at 10:12 +0100, Richard Sandiford wrote:
-> Thanks for the patch.
-[...]
-> > How about this patch, I think it does what you suggest.
-> >
-> > When we pass -pg -mmcount-raloc, the address of the return address 
-> > relative to sp is passed in $12 to _mcount.  If the return address is 
-> > not saved, $12 will be zero.  I think this will work as registers are 
-> > never saved with an offset of zero.  $12 is a temporary register that is 
-> > not part of the ABI.
-> 
-> Hmm, well, the suggestion was to pass a pointer rather than an offset,
-> but both you and Wu Zhangjin seem to prefer the offset.  Is there a
-> reason for that?  I suggested a pointer because
-> 
->   (a) they're more C-like
->   (b) they're just as quick and easy to compute
->   (c) MIPS doesn't have indexed addresses (well, except for a few
->       special cases) so the callee is going to have to compute the
->       pointer at some stage anyway
-> 
+What does the vendor UM say on the memory base?
 
-Agree with you.
+//Markus
 
-if not with -fno-omit-frame-pointer, we also need to calculate the frame
-pointer, and then plus it with the offset. with pointer, we can get it
-directly, but it may need a more instruction(lui..., addiu...) for
-loading the pointer. of course, at last, the pointer will save more time
-for us :-)
+On 24 Oct 2009, at 07:28, figo zhang wrote:
 
-so, David, could you please use pointer instead? and then I will test it
-asap(cloning the latest gcc currently). thanks!
+> hi,
+> i am newbies for mips. i want to mmap the kernel space address
+> 0x1f00,0000 to user mode space for MIPS32 CPU? how to write the mmap  
+> file mothod?
+> here is my code, is it right? Would you like to give me some advise?
+> Thanks!
+>
+> static int test_reg_mmap(struct file * file, struct vm_area_struct *  
+> vma)
+> {
+>   unsigned long offset = vma->vm_pgoff << PAGE_SHIFT;
+>   unsigned long size =  vma->vm_end-vma->vm_start;
+>   unsigned int *pfn;
+>   unsigned int __iomem *buf;
+>   #if 0
+>    offset += 0xbf000000;
+>    #else
+>        buf = (unsigned int  * )ioremap_nocache(0x1f000000, size);
+>         pfn = vmalloc_to_pfn((void *)buf);
+>   offset += pfn;
+>  #endif
+>       if ((offset>__pa(high_memory)) || (file->f_flags & O_SYNC)) {
+>        vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+>   }
+>        /* Don't try to swap out physical pages.. */
+>      vma->vm_flags |= VM_RESERVED;
+>
+>   /* Don't dump addresses that are not real memory to a core file.*/
+>   if (offset >= __pa(high_memory) || (file->f_flags & O_SYNC))
+>     vma->vm_flags |= VM_IO;
+>
+>   if (remap_pfn_range(vma, vma->vm_start, offset, vma->vm_end-vma- 
+> >vm_start,
+>                vma->vm_page_prot))
+>   return 0;
+> }
+>
+>
+>
+> Best,
+> Figo.zhang
 
-> (It sounds from Wu Zhangjin's reply like he'd alread suggested the
-> offset thing before I sent my message.  If so, sorry for not using
-> that earlier message as context.)
-> 
 
-It doesn't matter, Seems at that time, you were not added in the CC
-list, but added by David Daney later.
+--Apple-Mail-8-1069069411
+content-type: application/pgp-signature; x-mac-type=70674453;
+	name=PGP.sig
+content-description: This is a digitally signed message part
+content-disposition: inline; filename=PGP.sig
+content-transfer-encoding: 7bit
 
-> > +  if (TARGET_RALOC)
-> > +    {
-> > +      /* If TARGET_RALOC load $12 with the offset of the ra save
-> > +	 location.  */
-> > +      if (mips_raloc_in_delay_slot_p())
-> > +	emit_small_ra_offset = 1;
-> > +      else
-> > +	{
-> > +	  if (Pmode == DImode)
-> > +	    fprintf (file, "\tdli\t%s,%d\t\t# offset of ra\n", reg_names[12],
-> > +		     cfun->machine->frame.ra_fp_offset);
-> > +	  else
-> > +	    fprintf (file, "\tli\t%s,%d\t\t# offset of ra\n", reg_names[12],
-> > +		     cfun->machine->frame.ra_fp_offset);
-> > +	}
-> > +    }
-> 
-> We shouldn't need to do the delay slot dance.  With either the pointer
-> ((D)LA) or offset ((D)LI) approach, the macro won't use $at, so we can
-> insert the new code immediately before the jump, leaving the assembler
-> to fill the delay slot.  This is simpler and should mean that the delay
-> slot gets filled more often in the multi-insn-macro cases.
-> 
-> Looks good otherwise, but I'd be interested in other suggestions for
-> the option name.  I kept misreading "raloc" as a typo for "reloc".
-> 
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.8 (Darwin)
 
-The same misreading to me, what about -mmcount-ra-loc? add one "-", or
--mcount-ra-location?
+iEYEARECAAYFAkrjKvsACgkQ6I0XmJx2NrygYgCdGkuPRH/e9WrVff5Pu6DvdaDb
+0boAnjaNoxmz14Vsf4WDuraa5U57CSCI
+=AWoJ
+-----END PGP SIGNATURE-----
 
-BTW: Just made dynamic function tracer for MIPS support module tracing
-with the help of -mlong-calls. after some more tests, I will send it as
--v5 revision later. hope the -v6 revision work with this new feature of
-gcc from David Daney.
-
-Regards,
-	Wu Zhangjin
+--Apple-Mail-8-1069069411--

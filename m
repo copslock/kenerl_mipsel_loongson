@@ -1,123 +1,173 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Oct 2009 07:29:03 +0200 (CEST)
-Received: from mail-px0-f188.google.com ([209.85.216.188]:64199 "EHLO
-	mail-px0-f188.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1491881AbZJXF24 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 24 Oct 2009 07:28:56 +0200
-Received: by pxi26 with SMTP id 26so2510807pxi.22
-        for <linux-mips@linux-mips.org>; Fri, 23 Oct 2009 22:28:48 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 24 Oct 2009 11:12:27 +0200 (CEST)
+Received: from mail-ew0-f216.google.com ([209.85.219.216]:43383 "EHLO
+	mail-ew0-f216.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1491840AbZJXJMV (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 24 Oct 2009 11:12:21 +0200
+Received: by ewy12 with SMTP id 12so10601123ewy.0
+        for <multiple recipients>; Sat, 24 Oct 2009 02:12:15 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:date:message-id:subject
-         :from:to:content-type;
-        bh=gEb29mp6cuBUGFohdqKVRbK9NMRLcyYBaBT7cpSAaUA=;
-        b=jZEoKTKxQAeR1MJgG1GcoLK0AB3pmCEAGD6m5xc4/W/82j5xwk/IF8zWp2GdRh8rkQ
-         t8jFNgDm27E6NIc6utusDDhwcRQlv2bZeLGsmyrHlFY03hgXTFyDg2wy8xlG5KC/WH9A
-         sUm+OjUcsff00rTiFNNCZm1Hdo5NJJhKpFnN8=
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:to:mail-followup-to:cc
+         :subject:references:from:date:in-reply-to:message-id:user-agent
+         :mime-version:content-type;
+        bh=qg7AWH/J9nV7G44YQaZtMmLXxndVBjmr94UyZnVMbXc=;
+        b=VvwF6qtp2lEjRAbchvWvKQlxbrDznzX3vrftjZPy12KIVWZUGonal+bFBiTVKW+U67
+         DwdPKS0R9SaivB6fMPVAiYpekRx9xf0gHpc1l1zdd8WfbtapiuI6T64G8iGsYTRD0m8k
+         ZvyyNZ3kXea+xYPjm2TBPNF8ssh4yAF6F/Pzs=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        b=xpgkK3kK6xMdDVRNPbWq+9N1Vkaq93FAY3g52MtbrhzdyYWlfrKhge08+KzSqZttdk
-         8ghbOyMQb9isfE8Itw6aMTkEN3cJtm/8P5i9NaYoMSL0NB0D7rLttROqZczdn4p9wP6F
-         TsxbzWoZgDpskWzDD51/5s3oJJ7pgMXUCW52M=
+        d=googlemail.com; s=gamma;
+        h=to:mail-followup-to:cc:subject:references:from:date:in-reply-to
+         :message-id:user-agent:mime-version:content-type;
+        b=K0qBcdCdXa3XHP0vyr+T7jgKO/sGPrMMj9/eLvn9N/I7NkADOPzbmzhaM01q/5EZ/r
+         W+9+Vjva3HZWOGACnVaCvIk6RAa2w2FF5qUIkhZbibDC2v72TSLlpTdHx/OyGkuDFuEY
+         VyUOevClwPDag7tvgkEXhXXoZJa9gG2s0pJTE=
+Received: by 10.211.160.11 with SMTP id m11mr2774633ebo.79.1256375535202;
+        Sat, 24 Oct 2009 02:12:15 -0700 (PDT)
+Received: from localhost (rsandifo.gotadsl.co.uk [82.133.89.107])
+        by mx.google.com with ESMTPS id 5sm7419264eyh.34.2009.10.24.02.12.12
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sat, 24 Oct 2009 02:12:13 -0700 (PDT)
+To:	David Daney <ddaney@caviumnetworks.com>
+Mail-Followup-To: David Daney <ddaney@caviumnetworks.com>,GCC Patches <gcc-patches@gcc.gnu.org>,  wuzhangjin@gmail.com, Adam Nemet <anemet@caviumnetworks.com>,  rostedt@goodmis.org, linux-kernel@vger.kernel.org,  linux-mips@linux-mips.org, Thomas Gleixner <tglx@linutronix.de>, Ralf Baechle <ralf@linux-mips.org>, Nicholas Mc Guire <der.herr@hofr.at>, rdsandiford@googlemail.com
+Cc:	GCC Patches <gcc-patches@gcc.gnu.org>, wuzhangjin@gmail.com,
+	Adam Nemet <anemet@caviumnetworks.com>, rostedt@goodmis.org,
+	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Nicholas Mc Guire <der.herr@hofr.at>
+Subject: Re: [PATCH] MIPS: Add option to pass return address location to _mcount. Was: [PATCH -v4 4/9] tracing: add static function tracer support for MIPS
+References: <028867b99ec532b84963a35e7d552becc783cafc.1256135456.git.wuzhangjin@gmail.com>
+	<2f73eae542c47ac5bbb9f7280e6c0271d193e90d.1256135456.git.wuzhangjin@gmail.com>
+	<3f0d3515f74a58f4cfd11e61b62a129fdc21e3a7.1256135456.git.wuzhangjin@gmail.com>
+	<ea8aa927fbd184b54941e4c2ae0be8ea0b4f6b8a.1256135456.git.wuzhangjin@gmail.com>
+	<1256138686.18347.3039.camel@gandalf.stny.rr.com>
+	<1256233679.23653.7.camel@falcon>
+	<4AE0A5BE.8000601@caviumnetworks.com> <87y6n36plp.fsf@firetop.home>
+	<4AE232AD.4050308@caviumnetworks.com>
+From:	Richard Sandiford <rdsandiford@googlemail.com>
+Date:	Sat, 24 Oct 2009 10:12:06 +0100
+In-Reply-To: <4AE232AD.4050308@caviumnetworks.com> (David Daney's message of "Fri\, 23 Oct 2009 15\:48\:13 -0700")
+Message-ID: <87my3htau1.fsf@firetop.home>
+User-Agent: Gnus/5.11 (Gnus v5.11) Emacs/22.2 (gnu/linux)
 MIME-Version: 1.0
-Received: by 10.140.225.17 with SMTP id x17mr1837177rvg.34.1256362128630; Fri, 
-	23 Oct 2009 22:28:48 -0700 (PDT)
-Date:	Sat, 24 Oct 2009 13:28:48 +0800
-Message-ID: <c6ed1ac50910232228h4ca7d0b4safed0bc63a02868@mail.gmail.com>
-Subject: how to mmap 0x1f000000 to user space?
-From:	figo zhang <figo1802@gmail.com>
-To:	linux-mips@linux-mips.org
-Content-Type: multipart/alternative; boundary=000e0cd28de262e5c30476a79a26
-Return-Path: <figo1802@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <rdsandiford@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24474
+X-archive-position: 24475
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: figo1802@gmail.com
+X-original-sender: rdsandiford@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
---000e0cd28de262e5c30476a79a26
-Content-Type: text/plain; charset=ISO-8859-1
+Thanks for the patch.
 
-hi,
-i am newbies for mips. i want to mmap the kernel space address
-0x1f00,0000 to user mode space for MIPS32 CPU? how to write the mmap file
-mothod?
-here is my code, is it right? Would you like to give me some advise?
-Thanks!
+David Daney <ddaney@caviumnetworks.com> writes:
+> Richard Sandiford wrote:
+>> David Daney <ddaney@caviumnetworks.com> writes:
+>>> Wu Zhangjin wrote:
+>>>> On Wed, 2009-10-21 at 11:24 -0400, Steven Rostedt wrote:
+>>> [...]
+>>>>>> +
+>>>>>> +NESTED(_mcount, PT_SIZE, ra)
+>>>>>> +	RESTORE_SP_FOR_32BIT
+>>>>>> +	PTR_LA	t0, ftrace_stub
+>>>>>> +	PTR_L	t1, ftrace_trace_function /* please don't use t1 later, safe? */
+>>>>> Is t0 and t1 safe for mcount to use? Remember, mcount does not follow
+>>>>> the dynamics of C function ABI.
+>>>> So, perhaps we can use the saved registers(a0,a1...) instead.
+>>>>
+>>> a0..a7 may not always be saved.
+>>>
+>>> You can use at, v0, v1 and all the temporary registers.  Note that for 
+>>> the 64-bit ABIs sometimes the names t0-t4 shadow a4-a7.  So for a 64-bit 
+>>> kernel, you can use: $1, $2, $3, $12, $13, $14, $15, $24, $25, noting 
+>>> that at == $1 and contains the callers ra.  For a 32-bit kernel you can 
+>>> add $8, $9, $10, and $11
+>>>
+>>> This whole thing seems a little fragile.
+>>>
+>>> I think it might be a good idea to get input from Richard Sandiford, 
+>>> and/or Adam Nemet about this approach (so I add them to the CC).
+>>>
+>>> This e-mail thread starts here:
+>>>
+>>> http://www.linux-mips.org/archives/linux-mips/2009-10/msg00286.html
+>>>
+>>> and here:
+>>>
+>>> http://www.linux-mips.org/archives/linux-mips/2009-10/msg00290.html
+>> 
+>> I'm not sure that the "search for a save of RA" thing is really a good idea.
+>> The last version of that seemed to be "assume that any register stores
+>> will be in a block that immediately precedes the move into RA", but even
+>> if that's true now, it might not be in future.  And as Wu Zhangjin says,
+>> it doesn't cope with long calls, where the target address is loaded
+>> into a temporary register before the call.
+>> 
+>> FWIW, I'd certainly be happy to make GCC pass an additional parameter
+>> to _mcount.  The parameter could give the address of the return slot,
+>> or null for leaf functions.  In almost all cases[*], there would be
+>> no overhead, since the move would go in the delay slot of the call.
+>> 
+>> [*] Meaning when the frame is <=32k. ;)  I'm guessing you never
+>>     get anywhere near that, and if you did, the scan thing wouldn't
+>>     work anyway.
+>> 
+>> The new behaviour could be controlled by a command-line option,
+>> which would also give linux a cheap way of checking whether the
+>> feature is available.
+>> 
+>
+> How about this patch, I think it does what you suggest.
+>
+> When we pass -pg -mmcount-raloc, the address of the return address 
+> relative to sp is passed in $12 to _mcount.  If the return address is 
+> not saved, $12 will be zero.  I think this will work as registers are 
+> never saved with an offset of zero.  $12 is a temporary register that is 
+> not part of the ABI.
 
-static int test_reg_mmap(struct file * file, struct vm_area_struct * vma)
-{
-  unsigned long offset = vma->vm_pgoff << PAGE_SHIFT;
-  unsigned long size =  vma->vm_end-vma->vm_start;
-  unsigned int *pfn;
-  unsigned int __iomem *buf;
-  #if 0
-   offset += 0xbf000000;
-   #else
-       buf = (unsigned int  * )ioremap_nocache(0x1f000000, size);
-        pfn = vmalloc_to_pfn((void *)buf);
-  offset += pfn;
- #endif
-      if ((offset>__pa(high_memory)) || (file->f_flags & O_SYNC)) {
-       vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
-  }
-       /* Don't try to swap out physical pages.. */
-     vma->vm_flags |= VM_RESERVED;
+Hmm, well, the suggestion was to pass a pointer rather than an offset,
+but both you and Wu Zhangjin seem to prefer the offset.  Is there a
+reason for that?  I suggested a pointer because
 
-  /* Don't dump addresses that are not real memory to a core file.*/
-  if (offset >= __pa(high_memory) || (file->f_flags & O_SYNC))
-    vma->vm_flags |= VM_IO;
+  (a) they're more C-like
+  (b) they're just as quick and easy to compute
+  (c) MIPS doesn't have indexed addresses (well, except for a few
+      special cases) so the callee is going to have to compute the
+      pointer at some stage anyway
 
-  if (remap_pfn_range(vma, vma->vm_start, offset, vma->vm_end-vma->vm_start,
-               vma->vm_page_prot))
-  return 0;
-}
+(It sounds from Wu Zhangjin's reply like he'd alread suggested the
+offset thing before I sent my message.  If so, sorry for not using
+that earlier message as context.)
 
+> +  if (TARGET_RALOC)
+> +    {
+> +      /* If TARGET_RALOC load $12 with the offset of the ra save
+> +	 location.  */
+> +      if (mips_raloc_in_delay_slot_p())
+> +	emit_small_ra_offset = 1;
+> +      else
+> +	{
+> +	  if (Pmode == DImode)
+> +	    fprintf (file, "\tdli\t%s,%d\t\t# offset of ra\n", reg_names[12],
+> +		     cfun->machine->frame.ra_fp_offset);
+> +	  else
+> +	    fprintf (file, "\tli\t%s,%d\t\t# offset of ra\n", reg_names[12],
+> +		     cfun->machine->frame.ra_fp_offset);
+> +	}
+> +    }
 
+We shouldn't need to do the delay slot dance.  With either the pointer
+((D)LA) or offset ((D)LI) approach, the macro won't use $at, so we can
+insert the new code immediately before the jump, leaving the assembler
+to fill the delay slot.  This is simpler and should mean that the delay
+slot gets filled more often in the multi-insn-macro cases.
 
- Best,
-Figo.zhang
+Looks good otherwise, but I'd be interested in other suggestions for
+the option name.  I kept misreading "raloc" as a typo for "reloc".
 
---000e0cd28de262e5c30476a79a26
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<div>hi,</div>
-<div>i am newbies for mips. i want to mmap the kernel space address<br>0x1f=
-00,0000 to user mode space for MIPS32 CPU? how to write the mmap file motho=
-d?</div>
-<div>here is my code, is it right? Would you like to give me some advise?<b=
-r>Thanks!</div>
-<div>=A0</div>
-<div>static int test_reg_mmap(struct file * file, struct vm_area_struct * v=
-ma)<br>{<br>=A0 unsigned long offset =3D vma-&gt;vm_pgoff &lt;&lt; PAGE_SHI=
-FT;<br>=A0 unsigned long size =3D=A0 vma-&gt;vm_end-vma-&gt;vm_start;<br>=
-=A0 unsigned int *pfn;<br>
-=A0 unsigned int __iomem *buf;<br>=A0=A0#if 0<br>=A0 =A0offset +=3D 0xbf000=
-000;<br>=A0=A0 #else<br>=A0=A0=A0=A0=A0=A0 buf =3D (unsigned int=A0 * )iore=
-map_nocache(0x1f000000, size);<br>=A0=A0=A0=A0=A0=A0 =A0pfn =3D vmalloc_to_=
-pfn((void *)buf);<br>=A0=A0offset +=3D pfn;<br>=A0#endif<br>
-=A0=A0=A0=A0=A0 if ((offset&gt;__pa(high_memory)) || (file-&gt;f_flags &amp=
-; O_SYNC)) {<br>=A0=A0=A0=A0=A0 =A0vma-&gt;vm_page_prot =3D pgprot_noncache=
-d(vma-&gt;vm_page_prot);<br>=A0 }</div>
-<div>=A0=A0=A0=A0=A0 =A0/* Don&#39;t try to swap out physical pages.. */<br=
->=A0=A0=A0 =A0vma-&gt;vm_flags |=3D VM_RESERVED;<br>=A0 <br>=A0 /* Don&#39;=
-t dump addresses that are not real memory to a core file.*/<br>=A0 if (offs=
-et &gt;=3D __pa(high_memory) || (file-&gt;f_flags &amp; O_SYNC))<br>
-=A0=A0=A0 vma-&gt;vm_flags |=3D VM_IO;<br>=A0<br>=A0 if (remap_pfn_range(vm=
-a, vma-&gt;vm_start, offset, vma-&gt;vm_end-vma-&gt;vm_start,<br>=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 vma-&gt;vm_page_prot))<br>=A0 return 0;<b=
-r>}</div>
-<div>=A0</div>
-<div>=A0</div>
-<div>=A0</div>
-<div>
-<div>Best,</div>
-<div>Figo.zhang</div></div>
-
---000e0cd28de262e5c30476a79a26--
+Richard

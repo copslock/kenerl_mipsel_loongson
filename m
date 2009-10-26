@@ -1,38 +1,17 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Oct 2009 15:42:31 +0100 (CET)
-Received: from mail-px0-f187.google.com ([209.85.216.187]:46249 "EHLO
-	mail-px0-f187.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493107AbZJZOmY (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 26 Oct 2009 15:42:24 +0100
-Received: by pxi17 with SMTP id 17so1070629pxi.21
-        for <multiple recipients>; Mon, 26 Oct 2009 07:42:15 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=n0awJNQL7baE89XvgBnw+V2N78FObBfRDWVP74/1g6E=;
-        b=CBPUC7ISpzrhUqHlUqzo7y4q8YklNAzwPhVCsDPVX/lddHRc48aHLQLFtdfXE3ikwf
-         KoITnQW0urEeK/ufKrA8iWmnf9w+P8vfVpjvKQ+fcIP5UgUEATb05R+Yg5mdrkmLCdDR
-         UJqMZ6mgbQodn6duOng9K+BwaTEr05nB4XLxc=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=g6Yt40/CCEtdpCoIiDYVUcdialibHNXLxABSS330q+6iInHMOGNc0XEm9latFvOplL
-         fxNrY8BXDOR3xSovzAA8Yy4Xp59vA3Mkw+WLfjGuyfUi3Gr2i34PpIVE7PQo6NYgNHri
-         Clp7seiV7KFlAy/IGCmALBriGZK0sOLkkGmEQ=
-Received: by 10.114.7.39 with SMTP id 39mr598851wag.188.1256568134463;
-        Mon, 26 Oct 2009 07:42:14 -0700 (PDT)
-Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 23sm894049pzk.8.2009.10.26.07.42.08
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 26 Oct 2009 07:42:13 -0700 (PDT)
-Subject: Re: [PATCH -v5 02/11] MIPS: add mips_timecounter_read() to get
- high precision timestamp
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:	rostedt@goodmis.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Oct 2009 16:13:40 +0100 (CET)
+Received: from hrndva-omtalb.mail.rr.com ([71.74.56.124]:53347 "EHLO
+	hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493078AbZJZPNc (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 26 Oct 2009 16:13:32 +0100
+Received: from [192.168.23.10] (really [74.67.89.75])
+          by hrndva-omta04.mail.rr.com with ESMTP
+          id <20091026151322527.RIFL331@hrndva-omta04.mail.rr.com>;
+          Mon, 26 Oct 2009 15:13:22 +0000
+Subject: Re: [PATCH -v5 10/11] tracing: add function graph tracer support
+ for MIPS
+From:	Steven Rostedt <rostedt@goodmis.org>
+Reply-To: rostedt@goodmis.org
+To:	Wu Zhangjin <wuzhangjin@gmail.com>
 Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Ralf Baechle <ralf@linux-mips.org>,
@@ -40,89 +19,149 @@ Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
 	Richard Sandiford <rdsandiford@googlemail.com>,
 	David Daney <ddaney@caviumnetworks.com>,
 	Adam Nemet <anemet@caviumnetworks.com>,
-	Patrik Kluba <kpajko79@gmail.com>,
-	Frederic Weisbecker <fweisbec@gmail.com>
-In-Reply-To: <1256567646.26028.260.camel@gandalf.stny.rr.com>
+	Patrik Kluba <kpajko79@gmail.com>
+In-Reply-To: <ac9c325539cc056d9539c96a68743a425f9612ce.1256483735.git.wuzhangjin@gmail.com>
 References: <cover.1256482555.git.wuzhangjin@gmail.com>
 	 <028867b99ec532b84963a35e7d552becc783cafc.1256483735.git.wuzhangjin@gmail.com>
 	 <2f73eae542c47ac5bbb9f7280e6c0271d193e90d.1256483735.git.wuzhangjin@gmail.com>
-	 <1256565667.26028.257.camel@gandalf.stny.rr.com>
-	 <1256567108.5642.165.camel@falcon>
-	 <1256567646.26028.260.camel@gandalf.stny.rr.com>
+	 <3e0c2d7d8b8f196a8153beb41ea7f3cbf42b3d84.1256483735.git.wuzhangjin@gmail.com>
+	 <54c417629e91f40b2bbb4e08cda2a4e6527824c0.1256483735.git.wuzhangjin@gmail.com>
+	 <29bccff04932e993ecd9f516d8b6dcf84e2ceecf.1256483735.git.wuzhangjin@gmail.com>
+	 <72f2270f7b6e01ca7a4cdf4ac8c21778e5d9652f.1256483735.git.wuzhangjin@gmail.com>
+	 <6140dd8f4e1783e5ac30977cf008bb98e4698322.1256483735.git.wuzhangjin@gmail.com>
+	 <49b3c441a57f4db423732f81432a3450ccb3240e.1256483735.git.wuzhangjin@gmail.com>
+	 <6ad82af0c2ec8ef7b9f536b0a97bf65d385c3945.1256483735.git.wuzhangjin@gmail.com>
+	 <ac9c325539cc056d9539c96a68743a425f9612ce.1256483735.git.wuzhangjin@gmail.com>
 Content-Type: text/plain
-Organization: DSLab, Lanzhou University, China
-Date:	Mon, 26 Oct 2009 22:42:03 +0800
-Message-Id: <1256568123.5642.169.camel@falcon>
+Organization: Kihon Technologies Inc.
+Date:	Mon, 26 Oct 2009 11:13:21 -0400
+Message-Id: <1256570001.26028.298.camel@gandalf.stny.rr.com>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1 
+X-Mailer: Evolution 2.26.3 
 Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Return-Path: <rostedt@goodmis.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24506
+X-archive-position: 24507
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Sun, 2009-10-25 at 23:17 +0800, Wu Zhangjin wrote:
 
-On Mon, 2009-10-26 at 10:34 -0400, Steven Rostedt wrote:
-> On Mon, 2009-10-26 at 22:25 +0800, Wu Zhangjin wrote:
-> > Hi,
-> > 
-> > On Mon, 2009-10-26 at 10:01 -0400, Steven Rostedt wrote:
-> > [...]
-> > > Some patches touch core tracing code, and some are arch specific. Now
-> > > the question is how do we go. I prefer that we go the path of the
-> > > tracing tree (easier for me to test).
-> > 
-> > Just coped with the feedbacks from Frederic Weisbecker.
-> > 
-> > I will rebase the whole patches to your git repo(the following one?) and
-> > send them out as the -v6 revision:
-> > 
-> > git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-2.6-trace.git tip/tracing/core
-> 
-> Actually, I always base off of tip itself. Don't use mine. Use this one:
-> 
-> git://git.kernel.org/pub/scm/linux/kernel/git/tip/linux-2.6-tip.git  tracing/core
-> 
-> Then we will stay in sync.
-> 
+> +
+> +unsigned long ftrace_get_parent_addr(unsigned long self_addr,
+> +				     unsigned long parent,
+> +				     unsigned long parent_addr,
+> +				     unsigned long fp)
+> +{
+> +	unsigned long sp, ip, ra;
+> +	unsigned int code;
+> +
+> +	/* move to the instruction "move ra, at" */
+> +	ip = self_addr - 8;
+> +
+> +	/* search the text until finding the "move s8, sp" instruction or
+> +	 * "s{d,w} ra, offset(sp)" instruction */
+> +	do {
+> +		ip -= 4;
+> +
+> +		/* get the code at "ip" */
+> +		code = *(unsigned int *)ip;
 
-Okay, pulling it...
+Probably want to put the above in an asm with exception handling.
 
-> > 
-> > >  But every patch that touches MIPS
-> > > arch, needs an Acked-by from the MIPS maintainer. Which I see is Ralf
-> > > (on the Cc of this patch set.)
-> > > 
-> > 
-> > Looking forward to the feedback from Ralf, Seems he is a little busy.
-> > and also looking forward to the testing result from the other MIPS
-> > developers, so, we can ensure ftrace for MIPS really function!
-> > 
-> > Welcome to clone this branch and test it:
-> > 
-> > git://dev.lemote.com/rt4ls.git  linux-mips/dev/ftrace-upstream
-> 
-> I already have your repo as a remote ;-)
-> 
+> +
+> +		/* If we hit the "move s8(fp), sp" instruction before finding
+> +		 * where the ra is stored, then this is a leaf function and it
+> +		 * does not store the ra on the stack. */
+> +		if ((code & MOV_FP_SP) == MOV_FP_SP)
+> +			return parent_addr;
+> +	} while (((code & S_RA) != S_RA));
 
-Thanks :-)
+Hmm, that condition also looks worrisome. Should we just always search
+for s{d,w} R,X(sp)?
 
-> > 
-> > And this document will tell you how to play with it:
-> > Documentation/trace/ftrace.txt
-> 
-> Did you add to it?
+Since there should only be stores of registers into the sp above the
+jump to mcount. The break out loop is a check for move. I think it would
+be safer to have the break out loop is a check for non storing of a
+register into SP.
 
-I have never touched the file, just hope some newbies(like me) can
-follow it and help to test it :-)
+> +
+> +	sp = fp + (code & STACK_OFFSET_MASK);
+> +	ra = *(unsigned long *)sp;
 
-Thanks & Regards,
-	Wu Zhangjin
+Also might want to make the above into a asm with exception handling.
+
+> +
+> +	if (ra == parent)
+> +		return sp;
+> +
+> +	ftrace_graph_stop();
+> +	WARN_ON(1);
+> +	return parent_addr;
+
+Hmm, may need to do more than this. See below.
+
+> +}
+> +
+> +/*
+> + * Hook the return address and push it in the stack of return addrs
+> + * in current thread info.
+> + */
+> +void prepare_ftrace_return(unsigned long *parent, unsigned long self_addr,
+> +			   unsigned long fp)
+> +{
+> +	unsigned long old;
+> +	struct ftrace_graph_ent trace;
+> +	unsigned long return_hooker = (unsigned long)
+> +	    &return_to_handler;
+> +
+> +	if (unlikely(atomic_read(&current->tracing_graph_pause)))
+> +		return;
+> +
+> +	/* "parent" is the stack address saved the return address of the caller
+> +	 * of _mcount, for a leaf function not save the return address in the
+> +	 * stack address, so, we "emulate" one in _mcount's stack space, and
+> +	 * hijack it directly, but for a non-leaf function, it will save the
+> +	 * return address to the its stack space, so, we can not hijack the
+> +	 * "parent" directly, but need to find the real stack address,
+> +	 * ftrace_get_parent_addr() does it!
+> +	 */
+> +
+> +	old = *parent;
+> +
+> +	parent = (unsigned long *)ftrace_get_parent_addr(self_addr, old,
+> +							 (unsigned long)parent,
+> +							 fp);
+> +
+> +	*parent = return_hooker;
+
+Although you may have turned off fgraph tracer in
+ftrace_get_parent_addr, nothing stops the below from messing with the
+stack. The return stack may get off sync and break later. If you fail
+the above, you should not be calling the push function below.
+
+
+-- Steve
+
+> +
+> +	if (ftrace_push_return_trace(old, self_addr, &trace.depth, fp) ==
+> +	    -EBUSY) {
+> +		*parent = old;
+> +		return;
+> +	}
+> +
+> +	trace.func = self_addr;
+> +
+> +	/* Only trace if the calling function expects to */
+> +	if (!ftrace_graph_entry(&trace)) {
+> +		current->curr_ret_stack--;
+> +		*parent = old;
+> +	}
+> +}
+> +#endif				/* CONFIG_FUNCTION_GRAPH_TRACER */

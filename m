@@ -1,34 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Oct 2009 08:27:24 +0100 (CET)
-Received: from mail-pz0-f194.google.com ([209.85.222.194]:39624 "EHLO
-	mail-pz0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492207AbZJZH1Q (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 26 Oct 2009 08:27:16 +0100
-Received: by pzk32 with SMTP id 32so9040250pzk.21
-        for <multiple recipients>; Mon, 26 Oct 2009 00:27:05 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 26 Oct 2009 10:43:02 +0100 (CET)
+Received: from mail-pw0-f45.google.com ([209.85.160.45]:50550 "EHLO
+	mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492366AbZJZJm4 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 26 Oct 2009 10:42:56 +0100
+Received: by pwi11 with SMTP id 11so1242944pwi.24
+        for <multiple recipients>; Mon, 26 Oct 2009 02:42:49 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:subject:from:reply-to:to:cc
          :in-reply-to:references:content-type:organization:date:message-id
          :mime-version:x-mailer:content-transfer-encoding;
-        bh=FSRSIU+Srkq747njMUm31nfKmDmTTM/gmS5BnHKm0sE=;
-        b=uem5ciqTfDC8rAfHFl5AnuKXDS/k7baxT5uxa+0yBNsvD6PD0sHVyFzq76N1n7e7Jx
-         S0iHXZVMYSSWKgONtMzNA34ZqSKeiQNh4zaGKSBJwrPdubyF4QpGvFHrR4qRIv/v83SU
-         UjPXrwc0bNvGzUbLxqbFaoU+8uM6Ao71UGBG4=
+        bh=mFxuu6aXIXS5Sa5de7AVJNxgXtM6OgaIiBfToCQ4Cyk=;
+        b=gibySeS53uiF69NUV7SDHGwyu1dvwuXGrkNrArDru9YJRK1j0pndkAGVJUhYKRSy82
+         VwoOWLBnDcHTiBMuOyPdUFYUD3MVJLM8iEkx7qEqB9PtmbyYZ2CkbpMMhstBl2Q/ZDLa
+         0ll1nC3wblxbwhqQi7gAgxuJfCaV7kOCMGY+M=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
          :organization:date:message-id:mime-version:x-mailer
          :content-transfer-encoding;
-        b=KKhKuZtKHjiTZmJ2stNWACM7JBzjgZTXrCNGlvDrYmBUKt2j9JVJT5y88u2kp0Duq6
-         Gc7B20RHcsvp7UeTL7Lgepa4BCcB+8+rmwmedV7/DP8s7MY9qnrutgHVckOQ0Pkr5/ay
-         6g39wZ8b/VQJfulgFiObjtFayfClfn9+7HIKs=
-Received: by 10.115.133.39 with SMTP id k39mr22220759wan.94.1256542025753;
-        Mon, 26 Oct 2009 00:27:05 -0700 (PDT)
+        b=FoPalQ1JP6vUyXF1EElinmTFipiyV75y6DvdIg+WZtQHEdrJAxrDqMFXzyg/0DBLMh
+         pvykxMO+4AWJtZIMbMa6fr8eikTARzUV68Aa/gYHa24VsQKN72pR9obSV5fPI3uYstvy
+         IEp5l33sIWhiifhNUZdVhDJi8C0aDQRSH1C8c=
+Received: by 10.114.236.28 with SMTP id j28mr22426339wah.162.1256550169165;
+        Mon, 26 Oct 2009 02:42:49 -0700 (PDT)
 Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 20sm1001583pxi.7.2009.10.26.00.26.56
+        by mx.google.com with ESMTPS id 21sm2793773pzk.7.2009.10.26.02.42.41
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 26 Oct 2009 00:27:05 -0700 (PDT)
-Subject: Re: [PATCH -v5 09/11] tracing: add IRQENTRY_EXIT for MIPS
+        Mon, 26 Oct 2009 02:42:47 -0700 (PDT)
+Subject: Re: [PATCH -v5 08/11] tracing: not trace mips_timecounter_init()
+ in MIPS
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 Reply-To: wuzhangjin@gmail.com
 To:	Frederic Weisbecker <fweisbec@gmail.com>
@@ -40,22 +41,22 @@ Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
 	David Daney <ddaney@caviumnetworks.com>,
 	Adam Nemet <anemet@caviumnetworks.com>,
 	Patrik Kluba <kpajko79@gmail.com>
-In-Reply-To: <c62985530910251736ye7551c4l1a62a1ba242a191f@mail.gmail.com>
+In-Reply-To: <c62985530910251727o23beafcco539870e4b2f84637@mail.gmail.com>
 References: <cover.1256482555.git.wuzhangjin@gmail.com>
+	 <028867b99ec532b84963a35e7d552becc783cafc.1256483735.git.wuzhangjin@gmail.com>
 	 <2f73eae542c47ac5bbb9f7280e6c0271d193e90d.1256483735.git.wuzhangjin@gmail.com>
 	 <3e0c2d7d8b8f196a8153beb41ea7f3cbf42b3d84.1256483735.git.wuzhangjin@gmail.com>
 	 <54c417629e91f40b2bbb4e08cda2a4e6527824c0.1256483735.git.wuzhangjin@gmail.com>
 	 <29bccff04932e993ecd9f516d8b6dcf84e2ceecf.1256483735.git.wuzhangjin@gmail.com>
 	 <72f2270f7b6e01ca7a4cdf4ac8c21778e5d9652f.1256483735.git.wuzhangjin@gmail.com>
-	 <6140dd8f4e1783e5ac30977cf008bb98e4698322.1256483735.git.wuzhangjin@gmail.com>
 	 <cover.1256483735.git.wuzhangjin@gmail.com>
+	 <6140dd8f4e1783e5ac30977cf008bb98e4698322.1256483735.git.wuzhangjin@gmail.com>
 	 <49b3c441a57f4db423732f81432a3450ccb3240e.1256483735.git.wuzhangjin@gmail.com>
-	 <6ad82af0c2ec8ef7b9f536b0a97bf65d385c3945.1256483735.git.wuzhangjin@gmail.com>
-	 <c62985530910251736ye7551c4l1a62a1ba242a191f@mail.gmail.com>
+	 <c62985530910251727o23beafcco539870e4b2f84637@mail.gmail.com>
 Content-Type: text/plain
 Organization: DSLab, Lanzhou University, China
-Date:	Mon, 26 Oct 2009 15:26:40 +0800
-Message-Id: <1256542000.5642.118.camel@falcon>
+Date:	Mon, 26 Oct 2009 17:42:36 +0800
+Message-Id: <1256550156.5642.148.camel@falcon>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.26.1 
 Content-Transfer-Encoding: 7bit
@@ -63,7 +64,7 @@ Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24501
+X-archive-position: 24502
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -71,91 +72,168 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
-
-On Mon, 2009-10-26 at 01:36 +0100, Frederic Weisbecker wrote:
+On Mon, 2009-10-26 at 01:27 +0100, Frederic Weisbecker wrote:
 > 2009/10/25 Wu Zhangjin <wuzhangjin@gmail.com>:
-> > This patch fix the following error with FUNCTION_GRAPH_TRACER=y:
-> >
-> > kernel/built-in.o: In function `print_graph_irq':
-> > trace_functions_graph.c:(.text+0x6dba0): undefined reference to `__irqentry_text_start'
-> > trace_functions_graph.c:(.text+0x6dba8): undefined reference to `__irqentry_text_start'
-> > trace_functions_graph.c:(.text+0x6dbd0): undefined reference to `__irqentry_text_end'
-> > trace_functions_graph.c:(.text+0x6dbd4): undefined reference to `__irqentry_text_end'
-> >
-> > (This patch is need to support function graph tracer of MIPS)
+> > -static inline u64 mips_timecounter_read(void)
+> > +static inline u64 notrace mips_timecounter_read(void)
 > 
 > 
-> If you want to enjoy this section, you'd need to tag the
-> mips irq entry functions with "__irq_entry"  :)
+> You don't need to set notrace functions, unless their addresses
+> are referenced somewhere, which unfortunately might happen
+> for some functions but this is rare.
 > 
-> I guess there is a do_IRQ() in mips that is waiting for that (and
-> probably some others).
-> The effect is that interrupt areas are cut with a pair of arrows
-> in the trace, so that you more easily spot interrupts in the traces
-> 
-> May be I missed this part in another patch in this series though...
 
-ooh, Sorry, only this patch added(I stopped after fixing the compiling
-errors, no more check! so lazy a guy!).
+Okay, Will remove it.
 
-Just checked the source code of MIPS, the do_IRQ() is defined as a
-macro, so, I must move the macro to a C file, and also, there is a
-irq_enter...irq_exit block in a "big" function, I need to split it out.
+> 
+> >  {
+> >  #ifdef CONFIG_CSRC_R4K
+> >        return r4k_timecounter_read();
+> > diff --git a/arch/mips/kernel/csrc-r4k.c b/arch/mips/kernel/csrc-r4k.c
+> > index 4e7705f..0690bea 100644
+> > --- a/arch/mips/kernel/csrc-r4k.c
+> > +++ b/arch/mips/kernel/csrc-r4k.c
+> > @@ -42,7 +42,7 @@ static struct timecounter r4k_tc = {
+> >        .cc = NULL,
+> >  };
+> >
+> > -static cycle_t r4k_cc_read(const struct cyclecounter *cc)
+> > +static cycle_t notrace r4k_cc_read(const struct cyclecounter *cc)
+> >  {
+> >        return read_c0_count();
+> >  }
+> > @@ -66,7 +66,7 @@ int __init init_r4k_timecounter(void)
+> >        return 0;
+> >  }
+> >
+> > -u64 r4k_timecounter_read(void)
+> > +u64 notrace r4k_timecounter_read(void)
+> >  {
+> >        u64 clock;
+> >
+> > diff --git a/include/linux/clocksource.h b/include/linux/clocksource.h
+> > index 83d2fbd..2a02992 100644
+> > --- a/include/linux/clocksource.h
+> > +++ b/include/linux/clocksource.h
+> > @@ -73,7 +73,7 @@ struct timecounter {
+> >  * XXX - This could use some mult_lxl_ll() asm optimization. Same code
+> >  * as in cyc2ns, but with unsigned result.
+> >  */
+> > -static inline u64 cyclecounter_cyc2ns(const struct cyclecounter *cc,
+> > +static inline u64 notrace cyclecounter_cyc2ns(const struct cyclecounter
+> 
+> ditto here.
+> 
+
+Will remove it too.
+
+> 
+> *cc,
+> >                                      cycle_t cycles)
+> >  {
+> >        u64 ret = (u64)cycles;
+> > diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+> > index 5e18c6a..9ce9d02 100644
+> > --- a/kernel/time/clocksource.c
+> > +++ b/kernel/time/clocksource.c
+> > @@ -52,7 +52,7 @@ EXPORT_SYMBOL(timecounter_init);
+> >  * The first call to this function for a new time counter initializes
+> >  * the time tracking and returns an undefined result.
+> >  */
+> > -static u64 timecounter_read_delta(struct timecounter *tc)
+> > +static u64 notrace timecounter_read_delta(struct timecounter *tc)
+> >  {
+> >        cycle_t cycle_now, cycle_delta;
+> >        u64 ns_offset;
+> > @@ -72,7 +72,7 @@ static u64 timecounter_read_delta(struct timecounter
+> 
+> 
+> Hmm yeah this is not very nice to do that in core functions because
+> of a specific arch problem.
+> At least you have __notrace_funcgraph, this is a notrace
+> that only applies if CONFIG_FUNCTION_GRAPH_TRACER
+> so that it's still traceable by the function tracer in this case.
+> 
+> But I would rather see a __mips_notrace on these two core functions.
+
+What about this: __arch_notrace? If the arch need this, define it,
+otherwise, ignore it! if only graph tracer need it, define it in "#ifdef
+CONFIG_FUNCTION_GRAPH_TRACER ... #endif".
+
+diff --git a/arch/mips/include/asm/ftrace.h
+b/arch/mips/include/asm/ftrace.h
+index d5771e8..eeacd51 100644
+--- a/arch/mips/include/asm/ftrace.h
++++ b/arch/mips/include/asm/ftrace.h
+@@ -31,6 +31,11 @@ static inline unsigned long
+ftrace_call_adjust(unsigned long addr)
+ struct dyn_arch_ftrace {
+ };
+ #endif /*  CONFIG_DYNAMIC_FTRACE */
++
++#ifdef CONFIG_FUNCTION_GRAPH_TRACER  
++#define __arch_notrace
++#endif
++
+ #endif /* __ASSEMBLY__ */
+ #endif /* CONFIG_FUNCTION_TRACER */
+ #endif /* _ASM_MIPS_FTRACE_H */
+
 
 [...]
-/*
- * do_IRQ handles all normal device IRQ's (the special
- * SMP cross-CPU interrupts have their own specific
- * handlers).
- *
- * Ideally there should be away to get this into kernel/irq/handle.c to
- * avoid the overhead of a call for just a tiny function ...
- */
-#define do_IRQ(irq)
-\
-do {
-\
-        irq_enter();
-\
-        __DO_IRQ_SMTC_HOOK(irq);
-\
-        generic_handle_irq(irq);
-\
-        irq_exit();
-\
-} while (0)
+
+diff --git a/include/linux/ftrace.h b/include/linux/ftrace.h
+index 0b4f97d..959c8b3 100644
+--- a/include/linux/ftrace.h
++++ b/include/linux/ftrace.h
+@@ -511,4 +511,12 @@ static inline void trace_hw_branch_oops(void) {}
+ 
+ #endif /* CONFIG_HW_BRANCH_TRACER */
+ 
++/* arch specific notrace */
++#ifndef __arch_notrace
++#define __arch_notrace
++#else
++#undef __arch_notrace
++#define __arch_notrace notrace
++#endif
++
+ #endif /* _LINUX_FTRACE_H */
+
 [...]
 
-But The comment told us: do not make this tiny function be a standalone
-function, so???
-
-the same to do_IRQ_no_affinity.
-
-and, about the following function, I need to split the
-irq_enter()...irq_exit() block out.
-
-void ipi_decode(struct smtc_ipi *pipi)
-{
-	[...]
-        switch (type_copy) {
-        case SMTC_CLOCK_TICK:
-                irq_enter();
-                kstat_incr_irqs_this_cpu(irq, irq_to_desc(irq));
-                cd = &per_cpu(mips_clockevent_device, cpu);
-                cd->event_handler(cd);
-                irq_exit();
-                break;
-
-        case LINUX_SMP_IPI:
-                switch ((int)arg_copy) {
-                case SMP_RESCHEDULE_YOURSELF:
-                        ipi_resched_interrupt();
-                        break;
-                case SMP_CALL_FUNCTION:
-                        ipi_call_interrupt();
-                        break;
-	[...]
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index 9ce9d02..91acdf7 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -30,6 +30,7 @@
+ #include <linux/sched.h> /* for spin_unlock_irq() using preempt_count()
+m68k */
+ #include <linux/tick.h>
+ #include <linux/kthread.h>
++#include <linux/ftrace.h>
+ 
+ void timecounter_init(struct timecounter *tc,
+                      const struct cyclecounter *cc,
+@@ -52,7 +53,7 @@ EXPORT_SYMBOL(timecounter_init);
+  * The first call to this function for a new time counter initializes
+  * the time tracking and returns an undefined result.
+  */
+-static u64 notrace timecounter_read_delta(struct timecounter *tc)
++static u64 __arch_notrace timecounter_read_delta(struct timecounter
+*tc)
+ {
+        cycle_t cycle_now, cycle_delta;
+        u64 ns_offset;
+@@ -72,7 +73,7 @@ static u64 notrace timecounter_read_delta(struct
+timecounter *tc)
+        return ns_offset;
+ }
+ 
+-u64 notrace timecounter_read(struct timecounter *tc)
++u64 __arch_notrace timecounter_read(struct timecounter *tc)
+ {
+        u64 nsec;
 
 Regards,
 	Wu Zhangjin

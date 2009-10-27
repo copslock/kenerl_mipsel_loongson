@@ -1,102 +1,130 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Oct 2009 14:27:58 +0100 (CET)
-Received: from mail-pz0-f194.google.com ([209.85.222.194]:60965 "EHLO
-	mail-pz0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492570AbZJ0N1v (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 27 Oct 2009 14:27:51 +0100
-Received: by pzk32 with SMTP id 32so89132pzk.21
-        for <linux-mips@linux-mips.org>; Tue, 27 Oct 2009 06:27:43 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Oct 2009 14:38:17 +0100 (CET)
+Received: from mail-pw0-f45.google.com ([209.85.160.45]:37266 "EHLO
+	mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492587AbZJ0NiK (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 27 Oct 2009 14:38:10 +0100
+Received: by pwi11 with SMTP id 11so76055pwi.24
+        for <multiple recipients>; Tue, 27 Oct 2009 06:38:03 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:date:message-id:subject
-         :from:to:content-type;
-        bh=LXI+WMfNOdD//mcCWQpC/9cQit4DwGRybYJ0keWPVHE=;
-        b=BBWfmAGTh5P0JElR84TvYjzBLkH5X1DYoFkox9krczvv+4pwr2HccP97p2lFN3VrVB
-         +hKglaYDz7qKUx5JfP9w3oOZsj/hl0vF+MJC90pYCQMOYohUMEwseS6xxd5ll3jXJKc5
-         t2mQDGKwqkVUFNwMTm7NuFLRCdbHca/MEN+Fs=
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :content-type:organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        bh=pAgcs9wIXFHjDjXIFPKYIjOgnaxIVcnRqqmrKi3o4/s=;
+        b=cxYIYCP/wZJt0TDbS7xfanYlP0qCRuMuNf4oz+HfP2zLufeyAlro0xczzgWYIyIBrr
+         irAdUr3HXIDeMa8Pccqx/vjG3npydecJqiv20j+77bhkIq3lvN55S1uj5MrXHCPWTOfE
+         /dGHO3ofdDI6zScvg8d6aydU2uFjTInkl1Pw4=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        b=ahF9X9rdFeaJ16gMXSfDocY7TFKqyLwZ/eq7MMeHvQlUOR/3vnL6UMzVJeBJEJIIwV
-         GD6vFzKRSiHgQPPbBJcwFHFbhDMfweHHUEAiYWYK9XXSX01/ilmnV/QkDmC8U1bppw+/
-         VHKRxaxdXdYwc+fHZwiGtdsw4MDuhI8LamBXI=
-MIME-Version: 1.0
-Received: by 10.143.25.39 with SMTP id c39mr1315087wfj.249.1256650063536; Tue, 
-	27 Oct 2009 06:27:43 -0700 (PDT)
-Date:	Tue, 27 Oct 2009 21:27:43 +0800
-Message-ID: <3a665c760910270627u784d43b8t2978731110c920a4@mail.gmail.com>
-Subject: kernel panic about kernel unaligned access
-From:	loody <miloody@gmail.com>
-To:	linux-mips <linux-mips@linux-mips.org>,
-	Kernel Newbies <kernelnewbies@nl.linux.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <miloody@gmail.com>
+        h=subject:from:reply-to:to:cc:content-type:organization:date
+         :message-id:mime-version:x-mailer:content-transfer-encoding;
+        b=u2E84pW2+WXPlgF/zecPkHEWkqgow5Qbkf1VgakZcRjsS5uJMP/dr+yelm2tvqY0vS
+         jf1vaz+GdS3zz3Ia1in7Fg6uHyXvlEYri2FGu8Jt5MZK+ED6rDxTs/SMCX9NTe0o0gkc
+         Gig9nfDhKr0cIgtntfh+jUp5XbGOyIabFtirE=
+Received: by 10.115.133.38 with SMTP id k38mr3478589wan.120.1256650682794;
+        Tue, 27 Oct 2009 06:38:02 -0700 (PDT)
+Received: from ?172.16.2.101? ([222.92.8.142])
+        by mx.google.com with ESMTPS id 20sm165784pzk.1.2009.10.27.06.37.57
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Tue, 27 Oct 2009 06:38:01 -0700 (PDT)
+Subject: mipsel-linux-gnu-gcc: -pg and -fomit-frame-pointer are incompatible
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:	Steven Rostedt <rostedt@goodmis.org>, rdsandiford@googlemail.com
+Cc:	David Daney <ddaney@caviumnetworks.com>,
+	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:	Tue, 27 Oct 2009 21:32:30 +0800
+Message-Id: <1256650350.5499.117.camel@falcon>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.26.1 
+Content-Transfer-Encoding: 8bit
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24539
+X-archive-position: 24540
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: miloody@gmail.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Dear all:
-I use kernel 2.6.18 and I get the kernel panic as below:
-Unhandled kernel unaligned access[#1]:
-Cpu 0
-$ 0   : 00000000 11000001 0000040a 8721f0d8
-$ 4   : 874a6c00 80001d18 00000000 00000000
-$ 8   : 00000000 ffffa438 00000000 874c2000
-$12   : 00000000 00000000 00005800 00011000
-$16   : 80001d10 874a6c40 874a6c00 87d7bf00
-$20   : 874a6c78 871a0000 87370000 874a6c80
-$24   : 00000000 2aacc770
-$28   : 87d7a000 87d7be88 ffffa438 8709ed20
-Hi    : 00000000
-Lo    : 00000000
-epc   : 8709e72c sync_sb_inodes+0x9c/0x320     Not tainted
-ra    : 8709ed20 writeback_inodes+0xb4/0x160
-Status: 11000003    KERNEL EXL IE
-Cause : 00808010
-BadVA : 00000442
-PrId  : 00019654
-Modules linked in:
-Process pdflush (pid: 38, threadinfo=87d7a000, task=87d695b8)
-Stack : ffffffff ffffffff 871c0000 87cae4d8 874a6c00 874a6c40 87d7bf00 871c4290
-        87d7bf64 871a0000 87370000 00000000 00000000 8709ed20 ffffffff ffffffff
-        8735e380 874bb8a8 00000400 0000034b ffffa62c 87d7bf00 87057f9c 00000000
-        87189270 87188b20 00000000 87189564 ffff9880 87362d58 00000000 00000000
-        87d7bef8 00000400 00000000 00000000 00000000 00000000 00000000 00000000
-        ...
-Call Trace:
- [<8709ed20>] writeback_inodes+0xb4/0x160
- [<87057f9c>] wb_kupdate+0xb8/0x154
- [<87189270>] __schedule+0x998/0xb34
- [<87188b20>] __schedule+0x248/0xb34
- [<87189564>] preempt_schedule+0x68/0xac
- [<87058d74>] pdflush+0x188/0x284
- [<87058cfc>] pdflush+0x110/0x284
- [<8703b9e4>] kthread+0x14c/0x1b8
- [<87057ee4>] wb_kupdate+0x0/0x154
- [<87058bec>] pdflush+0x0/0x284
- [<8703ba00>] kthread+0x168/0x1b8
- [<87003398>] kernel_thread_helper+0x10/0x18
- [<87003388>] kernel_thread_helper+0x0/0x18
+Hi, all
 
+FUNCTION_TRACER have selected FRAME_POINTER by default to avoid the
+following "weird" error when using -pg and -fomit-frame-pointer
+together:
 
-Code: 8e450084  24b0fff8  8e02009c <8c510038> 8e220008  30420002
-1040000f  00000000  8ca20000
-note: pdflush[38] exited with preempt_count 1
+"-pg and -fomit-frame-pointer are incompatible"
 
-my questions are:
-1. what does "Not tainted" mean?
-2. I grep the kernel and I find the above message comes from do_ade in
-unaligned.c, If I guess correctly.
-    but from the call trace I cannot find out who call it.
-    who and how kernel pass the information to do_ade?
-3. as far as i know, inode is the data structure we used to record file.
-From what information in the inode I can find out the file name the
-writeback_inodes try to write?
-appreciate your help,
-miloody
+kernel/trace/Kconfig:
+
+config FUNCTION_TRACER
+        bool "Kernel Function Tracer"
+        depends on HAVE_FUNCTION_TRACER
+        select FRAME_POINTER
+
+and here is what FRAME_POINTER does in (linux)/Makefile:
+
+ifdef CONFIG_FRAME_POINTER
+KBUILD_CFLAGS   += -fno-omit-frame-pointer -fno-optimize-sibling-calls
+else
+KBUILD_CFLAGS   += -fomit-frame-pointer
+endif
+
+but in reality, from the manual of gcc:
+
+"Don’t keep the frame pointer in a register for functions that don’t
+need one.  This avoids the instructions to save, set up and restore
+frame pointers; it also makes an extra register available in many
+functions.  It also makes debugging impossible on some machines.
+
+On some machines, such as the VAX, this flag has no effect, because the
+standard calling sequence automatically handles the frame pointer and
+nothing is saved by pretending it doesn’t exist.  The
+machine-description macro "FRAME_POINTER_REQUIRED" controls whether a
+target machine supports this flag.
+
+Enabled at levels -O, -O2, -O3, -Os."
+
+-fomit-frame-pointer will be enabled by default for -O2, and If I
+disable -fno-omit-frame-pointer, it will really not keep the frame
+pointer in a register:
+
+ffffffff80200400 <do_one_initcall>:
+ffffffff80200400:       67bdffd0        daddiu  sp,sp,-48
+ffffffff80200404:       ffbf0028        sd      ra,40(sp)
+ffffffff80200408:       ffb40020        sd      s4,32(sp)
+ffffffff8020040c:       ffb30018        sd      s3,24(sp)
+ffffffff80200410:       ffb20010        sd      s2,16(sp)
+ffffffff80200414:       ffb10008        sd      s1,8(sp)
+ffffffff80200418:       ffb00000        sd      s0,0(sp)
+ffffffff8020041c:       3c038021        lui     v1,0x8021
+ffffffff80200420:       64630fb0        daddiu  v1,v1,4016  <> with -pg
+ffffffff80200424:       03e0082d        move    at,ra
+ffffffff80200428:       0060f809        jalr    v1
+ffffffff8020042c:       00020021        nop
+[...]
+ffffffff80205b18 <au1k_wait>:
+ffffffff80205b18:       3c038021        lui     v1,0x8021
+ffffffff80205b1c:       64630fb0        daddiu  v1,v1,4016
+ffffffff80205b20:       03e0082d        move    at,ra
+ffffffff80205b24:       0060f809        jalr    v1
+ffffffff80205b28:       00020021        nop
+
+And without -fno-omit-frame-pointer option, ftrace for MIPS also works
+normally and can save some overhead for us!
+
+But perhaps some archs need the frame pointer, so, remove the
+-fno-omit-frame-pointer from (linux)/Makefile, and add it into the arch
+specific Makefile?
+
+Besides, should we clear the "weird" error in gcc when using -pg and
+-fomit-frame-pinter together?
+
+Thanks & Regards,
+	Wu Zhangjin

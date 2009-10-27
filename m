@@ -1,65 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Oct 2009 21:05:44 +0100 (CET)
-Received: from mail-bw0-f221.google.com ([209.85.218.221]:53170 "EHLO
-	mail-bw0-f221.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493118AbZJ0UFi (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 27 Oct 2009 21:05:38 +0100
-Received: by bwz21 with SMTP id 21so113071bwz.24
-        for <linux-mips@linux-mips.org>; Tue, 27 Oct 2009 13:05:32 -0700 (PDT)
-Received: by 10.103.76.37 with SMTP id d37mr6662671mul.99.1256673932019;
-        Tue, 27 Oct 2009 13:05:32 -0700 (PDT)
-Received: from ?192.168.168.171? ([123.121.192.119])
-        by mx.google.com with ESMTPS id i5sm314912mue.38.2009.10.27.13.05.28
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 27 Oct 2009 13:05:31 -0700 (PDT)
-Message-ID: <4AE75283.4040404@qi-hardware.com>
-Date:	Wed, 28 Oct 2009 04:05:23 +0800
-From:	Xiangfu Liu <xiangfu@qi-hardware.com>
-User-Agent: Thunderbird 2.0.0.23 (X11/20090817)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 27 Oct 2009 21:40:25 +0100 (CET)
+Received: from out1.smtp.messagingengine.com ([66.111.4.25]:42664 "EHLO
+	out1.smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493147AbZJ0UkR convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 27 Oct 2009 21:40:17 +0100
+Received: from compute1.internal (compute1.internal [10.202.2.41])
+	by gateway1.messagingengine.com (Postfix) with ESMTP id B4D99BD9C1;
+	Tue, 27 Oct 2009 16:40:13 -0400 (EDT)
+Received: from web8.messagingengine.com ([10.202.2.217])
+  by compute1.internal (MEProxy); Tue, 27 Oct 2009 16:40:14 -0400
+Received: by web8.messagingengine.com (Postfix, from userid 99)
+	id 85F131165D2; Tue, 27 Oct 2009 16:40:13 -0400 (EDT)
+Message-Id: <1256676013.24305.1342273367@webmail.messagingengine.com>
+X-Sasl-Enc: O5GRR4xDMrWRKUIPjIVxN3wYn9czEaaR89TCZMt3OAjj 1256676013
+From:	myuboot@fastmail.fm
+To:	"Florian Fainelli" <florian@openwrt.org>
+Cc:	linux-kernel@vger.kernel.org,
+	"linux-mips" <linux-mips@linux-mips.org>
 MIME-Version: 1.0
-To:	vinit dhatrak <vinit.dhatrak@gmail.com>
-CC:	loody <miloody@gmail.com>, linux-mips <linux-mips@linux-mips.org>,
-	Kernel Newbies <kernelnewbies@nl.linux.org>
-Subject: Re: kernel panic about kernel unaligned access
-References: <3a665c760910270627u784d43b8t2978731110c920a4@mail.gmail.com> <edf0f34e0910271003k66440e9did790c07a0a79919b@mail.gmail.com>
-In-Reply-To: <edf0f34e0910271003k66440e9did790c07a0a79919b@mail.gmail.com>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 8bit
-Return-Path: <xiangfu@qi-hardware.com>
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="ISO-8859-1"
+X-Mailer: MessagingEngine.com Webmail Interface
+In-Reply-To: <200910200817.24018.florian@openwrt.org>
+References: <1255735395.30097.1340523469@webmail.messagingengine.com>
+ <4AD906D8.3020404@caviumnetworks.com>
+ <1255996564.10560.1340920621@webmail.messagingengine.com>
+ <200910200817.24018.florian@openwrt.org>
+Subject: Re: serial port 8250 messed up after coverting from little endian to
+ big endian on kernel  2.6.31
+Date:	Tue, 27 Oct 2009 15:40:13 -0500
+Return-Path: <myuboot@fastmail.fm>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24543
+X-archive-position: 24544
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: xiangfu@qi-hardware.com
+X-original-sender: myuboot@fastmail.fm
 Precedence: bulk
 X-list: linux-mips
 
-vinit dhatrak wrote:
->> my questions are:
->> 1. what does "Not tainted" mean?
->> 2. I grep the kernel and I find the above message comes from do_ade in
->> unaligned.c, If I guess correctly.
->>    but from the call trace I cannot find out who call it.
->>    who and how kernel pass the information to do_ade?
->> 3. as far as i know, inode is the data structure we used to record file.
->> From what information in the inode I can find out the file name the
->> writeback_inodes try to write?
->> appreciate your help,
->> miloody
->>
-> 
-> I can answer your first question. Loading a proprietary or
-> non-GPL-compatible module will 'taint' the running kernel—meaning that
-> any problems or bugs experienced will be less likely to be
-> investigated by the maintainers. See this "Tainted Kernel" document
-> from Novell.
-> http://www.novell.com/support/viewContent.do?externalId=3582750&sliceId=1
-> 
-> In your case, it seems that your kernel is not tainted by any external code.
-> Also, what you see as call trace is actually just stack dump, not
-> exactly a backtrace.
+Thanks, Florian. I found the cause of the problem. My board is 32 bit
+based, so each serial port register is 32bit even only 8 bit is used. So
+when the board is switched endianess, I need to change the address
+offset to access the same registers.
+For example, original RHR register address is 0x8001000 with little
+endian mode. With big endian, I need to access it as 0x8001003.
 
-Hi I also got similar panic in my board (ben nanonote). the process is "Process ksoftirqd/0"
-Q: how to get the backtrace? 
+On Tue, 20 Oct 2009 08:17 +0200, "Florian Fainelli"
+<florian@openwrt.org> wrote:
+> Hi,
+> 
+> Le mardi 20 octobre 2009 01:56:04, myuboot@fastmail.fm a écrit :
+> > I am trying to bringup a MIPS32 board using 2.6.31. It is working in
+> > little endian mode. After changing the board's hardware from little
+> > endian to bit endian, the serial port print messed up. It prints now
+> > something like - "àààààààààààààààà" on the screen. When I trace the
+> > execution, I can see the string the kernel is trying print is correct -
+> > "Linux version 2.6.31 ..." and etc.
+> > 
+> > I guess it means the initialization of the serial port is not properly
+> > done. But I am not sure where I should check for the problem. The serial
+> > port device I am using is 8250. Please give me some advise.
+> 
+> If the same initialization routine used to work in little-endian, check
+> how 
+> you actually write and read characters from the UART FIFO and especially
+> if 
+> your hardware requires you to do word or byte access to these registers.
+> 
+> You can have a look at AR7, which has the same code working for Little
+> and Big 
+> Endian modes in arch/mips/ar7/prom.c lines 272 to the end of the file. It
+> also 
+> uses a 8250-compatible UART.

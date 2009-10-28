@@ -1,100 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2009 20:36:28 +0100 (CET)
-Received: from out4.smtp.messagingengine.com ([66.111.4.28]:48143 "EHLO
-	out4.smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492887AbZJ1TgV (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Oct 2009 20:36:21 +0100
-Received: from compute1.internal (compute1.internal [10.202.2.41])
-	by gateway1.messagingengine.com (Postfix) with ESMTP id 2335AB5733;
-	Wed, 28 Oct 2009 15:36:16 -0400 (EDT)
-Received: from web8.messagingengine.com ([10.202.2.217])
-  by compute1.internal (MEProxy); Wed, 28 Oct 2009 15:36:16 -0400
-DKIM-Signature:	v=1; a=rsa-sha1; c=relaxed/relaxed; d=messagingengine.com; h=message-id:from:to:cc:mime-version:content-transfer-encoding:content-type:references:subject:in-reply-to:date; s=smtpout; bh=cgfXgisv07Jda81G90F3jHFtIfM=; b=MXtvAKtq/pT0bxCpBlTY/Kqa9BLR8fCfUhXfMuSpv8pzFSRdiaNoSwwb5O+9WkTmc/4AhigQTqBK8cUZ6OULJgfmof2bD9lLVtCNdSBG9hUi53lthitpROeyI6S81fS7VgjrNHSW8fKTTiIzR6+xYB4nUk9yiDTx/J0dV191qlA=
-Received: by web8.messagingengine.com (Postfix, from userid 99)
-	id F2581F2309; Wed, 28 Oct 2009 15:36:15 -0400 (EDT)
-Message-Id: <1256758575.4093.1342456105@webmail.messagingengine.com>
-X-Sasl-Enc: 5e2iXvy3LEVb4s9n4agvxqq5gx5dRh0aQxwVriBpou1b 1256758575
-From:	myuboot@fastmail.fm
-To:	"Sergei Shtylyov" <sshtylyov@ru.mvista.com>,
-	"Shmulik Ladkani" <jungoshmulik@gmail.com>
-Cc:	"Florian Fainelli" <florian@openwrt.org>,
-	linux-kernel@vger.kernel.org,
-	"linux-mips" <linux-mips@linux-mips.org>, shmulik@jungo.com
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2009 20:36:54 +0100 (CET)
+Received: from gateway-1237.mvista.com ([206.112.117.35]:45786 "HELO
+	imap.sh.mvista.com" rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org
+	with SMTP id S1493409AbZJ1Tgh (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Oct 2009 20:36:37 +0100
+Received: from [192.168.11.189] (unknown [10.150.0.9])
+	by imap.sh.mvista.com (Postfix) with SMTP
+	id D699B3ECB; Wed, 28 Oct 2009 12:36:21 -0700 (PDT)
+Message-ID: <4AE89D2E.4060704@ru.mvista.com>
+Date:	Wed, 28 Oct 2009 22:36:14 +0300
+From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
+Organization: MontaVista Software Inc.
+User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
+X-Accept-Language: ru, en-us, en-gb
 MIME-Version: 1.0
+To:	Manuel Lauss <manuel.lauss@googlemail.com>
+Cc:	Andrew Morton <akpm@linux-foundation.org>,
+	Ralf Baechle <ralf@linux-mips.org>,
+	Linux-MIPS <linux-mips@linux-mips.org>,
+	linux-serial@vger.kernel.org, Manuel Lauss <manuel.lauss@gmail.com>
+Subject: Re: [PATCH 2/2] MIPS: Alchemy: UARTs are 16550A
+References: <1256756954-29211-1-git-send-email-manuel.lauss@gmail.com> <1256756954-29211-2-git-send-email-manuel.lauss@gmail.com>
+In-Reply-To: <1256756954-29211-2-git-send-email-manuel.lauss@gmail.com>
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Transfer-Encoding: 7bit
-Content-Type: text/plain; charset="us-ascii"
-X-Mailer: MessagingEngine.com Webmail Interface
-References: <1255735395.30097.1340523469@webmail.messagingengine.com>
- <4AD906D8.3020404@caviumnetworks.com>
- <1255996564.10560.1340920621@webmail.messagingengine.com>
- <200910200817.24018.florian@openwrt.org>
- <1256676013.24305.1342273367@webmail.messagingengine.com>
- <20091028103551.0b4052d8@pixies.home.jungo.com>
- <4AE82520.4090607@ru.mvista.com>
-Subject: Re: serial port 8250 messed up after coverting from little endian to
- big endian on kernel  2.6.31
-In-Reply-To: <4AE82520.4090607@ru.mvista.com>
-Date:	Wed, 28 Oct 2009 14:36:15 -0500
-Return-Path: <myuboot@fastmail.fm>
+Return-Path: <sshtylyov@ru.mvista.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24559
+X-archive-position: 24560
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: myuboot@fastmail.fm
+X-original-sender: sshtylyov@ru.mvista.com
 Precedence: bulk
 X-list: linux-mips
 
-Sergei, Shmulik,
+Hello.
 
-Thanks a lot for your suggestions. I was using UPIO_MEM since I was not
-aware of the difference between UPIO_MEM and UPIO_MEM32. 
+Manuel Lauss wrote:
 
-I just tried UPIO_MEM32 without adding a offset of 3. But the result is
-bad - after the kernel initializes the serial console, the console print
-out messes up. The early printk is fine because the u-boot initialises
-the serial port fine. 
+> UART autodetection breaks on the Au1300 but the IP blocks are
+> identical, at least in the datasheets.
 
-How I tried UPIO_MEM32 is in platform.c changing the iotype to
-UPIO_MEM32 in the uart_port structure and passing the structure to
-early_serial_setup. What I did is  the same as in
-arch/mips/ar7/platform.c.
+> Pass uart type on to the 8250 driver via platform data, and move
+> the MSR quirk to another place sind autoconf() is now no longer
 
-In 8250.c I removed the offset I added to mem_serial_out and
-mem_serial_in. 
-Did I miss anything? Thanks again for your help.
+    s/sind autoconf/since autoconfig/
 
-On Wed, 28 Oct 2009 14:04 +0300, "Sergei Shtylyov"
-<sshtylyov@ru.mvista.com> wrote:
-> Hello.
+> called on init.
+
+> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+> ---
+> Tested on DB1200 and DB1300.
+> The mips parts apply on top of Ralf's mips-queue tree.
 > 
-> Shmulik Ladkani wrote:
+>  arch/mips/alchemy/common/platform.c |    4 +++-
+>  drivers/serial/8250.c               |   13 +++++++------
+>  2 files changed, 10 insertions(+), 7 deletions(-)
 > 
-> >> Thanks, Florian. I found the cause of the problem. My board is 32 bit
-> >> based, so each serial port register is 32bit even only 8 bit is used. So
-> >> when the board is switched endianess, I need to change the address
-> >> offset to access the same registers.
-> >> For example, original RHR register address is 0x8001000 with little
-> >> endian mode. With big endian, I need to access it as 0x8001003.
-> >>     
-> >
-> > I assume your uart_port's iotype is defined as UPIO_MEM32.
-> >   
-> 
->    He wouldn't have to add 3 to the register addresses then.
-> 
-> > UPIO_MEM32 makes 8250 access serial registers using readl/writel (which might
-> > be a problem for big-endian), while UPIO_MEM makes 8250 access the registers
-> > using readb/writeb.
-> >   
-> 
->    Both may be a problem for big endian.
-> 
-> > Maybe you should try UPIO_MEM (assuming hardware allows byte access).
-> 
->    Contrarywise, I think he now has UPIO_MEM and needs to try UPIO_MEM32.
-> 
-> WBR, Sergei
-> 
-> 
+> diff --git a/arch/mips/alchemy/common/platform.c b/arch/mips/alchemy/common/platform.c
+> index 195e5b3..3be14b0 100644
+> --- a/arch/mips/alchemy/common/platform.c
+> +++ b/arch/mips/alchemy/common/platform.c
+> @@ -26,7 +26,9 @@
+>  		.irq		= _irq,				\
+>  		.regshift	= 2,				\
+>  		.iotype		= UPIO_AU,			\
+> -		.flags		= UPF_SKIP_TEST | UPF_IOREMAP	\
+> +		.flags		= UPF_SKIP_TEST | UPF_IOREMAP |	\
+> +				  UPF_FIXED_TYPE,		\
+
+    Good to know this has been implemented.
+
+WBR, Sergei

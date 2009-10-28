@@ -1,57 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2009 23:33:09 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:42891 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
-	id S1493432AbZJ1WdG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 28 Oct 2009 23:33:06 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n9SMYIHD009044;
-	Wed, 28 Oct 2009 15:34:19 -0700
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n9SMYHsF009042;
-	Wed, 28 Oct 2009 15:34:17 -0700
-Date:	Wed, 28 Oct 2009 15:34:17 -0700
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Andrew Morton <akpm@linux-foundation.org>
-Cc:	Manuel Lauss <manuel.lauss@googlemail.com>,
-	Linux-MIPS <linux-mips@linux-mips.org>,
-	linux-serial@vger.kernel.org, Manuel Lauss <manuel.lauss@gmail.com>
-Subject: Re: [PATCH 2/2] MIPS: Alchemy: UARTs are 16550A
-Message-ID: <20091028223417.GC2921@linux-mips.org>
-References: <1256756954-29211-1-git-send-email-manuel.lauss@gmail.com> <1256756954-29211-2-git-send-email-manuel.lauss@gmail.com> <20091028122430.f7670ae2.akpm@linux-foundation.org> <f861ec6f0910281227t455a6f5cw9e492a9a1fc1b07e@mail.gmail.com> <20091028125203.c513883e.akpm@linux-foundation.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Oct 2009 00:52:05 +0100 (CET)
+Received: from mail-gx0-f210.google.com ([209.85.217.210]:53947 "EHLO
+	mail-gx0-f210.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493117AbZJ1Xv6 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 29 Oct 2009 00:51:58 +0100
+Received: by gxk2 with SMTP id 2so747683gxk.4
+        for <linux-mips@linux-mips.org>; Wed, 28 Oct 2009 16:51:52 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:date:message-id:subject
+         :from:to:content-type;
+        bh=7hxxltjS8q58RR5p60lUjRXrZUNyy83lAJzc8kMhHvE=;
+        b=c0L//NOp5iHB5Ar8+2rm7olh03EJB2+vDOV+ZyH2llZnxKBzuvQK37EEWO36RqeKFG
+         kY0OWVf8I9YXz+A+B3QxILdtJ9QbKVawJdjv83R42qr1djp9/z+7iI5LhLwm1yBKQo2H
+         03fcB3PxRsxXpx+jTwBU2VHbZjsxbYqsIT5aI=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=QNK34M5q5Yiof6qEYBagsoZunRMvg4ZX9nSMO3g+vonHZeTBdo6feCkw74cU+M8Pg1
+         qMTQdIN4+tzo9M0SrJes6sh7AGXfIzXWOu7d0XVUtzKhfUjyjB54tO62fFFaZ8XWybEB
+         zI0dY0h72Bes8ZZB0LHoNYzviqGOuOYqiV4Rs=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20091028125203.c513883e.akpm@linux-foundation.org>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <ralf@linux-mips.org>
+Received: by 10.90.226.13 with SMTP id y13mr1207026agg.107.1256773912210; Wed, 
+	28 Oct 2009 16:51:52 -0700 (PDT)
+Date:	Thu, 29 Oct 2009 07:51:52 +0800
+Message-ID: <e997b7420910281651p24b8e367m1e2ddbc1b95ac623@mail.gmail.com>
+Subject: Problem in booting when calling calibrate_delay
+From:	"wilbur.chan" <wilbur512@gmail.com>
+To:	Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <wilbur512@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24566
+X-archive-position: 24567
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: wilbur512@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Oct 28, 2009 at 12:52:03PM -0700, Andrew Morton wrote:
+I was going to boot mips64  xlr408, which has 8 cores.
 
-> >  I know, that's why I added "The mips parts apply on top of Ralf's
-> > mips-queue tree" below
-> > the patch description.
-> 
-> If that's the case then Ralf's mips-queue tree isn't in linux-next :(
+Howerver, the code seemd to stop before calling 'start_kernel--->
 
-I just respun my tree for linux-next, just in case.
+calibrate_delay ' .
 
-> > If it makes it easier to apply, I could split this one in a mips and in a
-> > 8250 patch?
-> 
-> That's a hard call without knowing what's going on in mipsworld.  If
+So Iadded some 'printk' in  calibrate_delay,  to check out why it failed.
 
-My tree for linux-next is at
 
-  http://www.linux-mips.org/git?p=upstream-sfr.git;a=summary
+ However,  if I added a 'printk' in any 'if  branches'  in
 
-  Ralf
+'calibrate_delay '  function  , the kernel would halt  before calling
+
+
+'j  start_kernel'  in head.S. (in this situation ,printk seemed
+
+unavailable, so  I  wrote directlly to serial address  to trace the
+
+kernel).
+
+
+Can anyone tell me why this happed?
+
+Thank you

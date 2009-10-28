@@ -1,64 +1,81 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2009 12:04:37 +0100 (CET)
-Received: from gateway-1237.mvista.com ([206.112.117.35]:14618 "HELO
-	imap.sh.mvista.com" rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org
-	with SMTP id S1492786AbZJ1LEa (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Oct 2009 12:04:30 +0100
-Received: from [127.0.0.1] (unknown [10.150.0.9])
-	by imap.sh.mvista.com (Postfix) with SMTP
-	id 2AFB03EE3; Wed, 28 Oct 2009 04:04:11 -0700 (PDT)
-Message-ID: <4AE82520.4090607@ru.mvista.com>
-Date:	Wed, 28 Oct 2009 14:04:00 +0300
-From:	Sergei Shtylyov <sshtylyov@ru.mvista.com>
-User-Agent: Thunderbird 2.0.0.23 (Windows/20090812)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2009 16:50:02 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:4830 "EHLO
+	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492756AbZJ1Pt4 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Oct 2009 16:49:56 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,5,4,7535)
+	id <B4ae868140001>; Wed, 28 Oct 2009 08:49:40 -0700
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 28 Oct 2009 08:40:23 -0700
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Wed, 28 Oct 2009 08:40:23 -0700
+Message-ID: <4AE865E5.2080008@caviumnetworks.com>
+Date:	Wed, 28 Oct 2009 08:40:21 -0700
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
 MIME-Version: 1.0
-To:	Shmulik Ladkani <jungoshmulik@gmail.com>
-Cc:	myuboot@fastmail.fm, Florian Fainelli <florian@openwrt.org>,
-	linux-kernel@vger.kernel.org,
-	linux-mips <linux-mips@linux-mips.org>, shmulik@jungo.com
-Subject: Re: serial port 8250 messed up after coverting from little endian
- to big endian on kernel  2.6.31
-References: <1255735395.30097.1340523469@webmail.messagingengine.com>	<4AD906D8.3020404@caviumnetworks.com>	<1255996564.10560.1340920621@webmail.messagingengine.com>	<200910200817.24018.florian@openwrt.org>	<1256676013.24305.1342273367@webmail.messagingengine.com> <20091028103551.0b4052d8@pixies.home.jungo.com>
-In-Reply-To: <20091028103551.0b4052d8@pixies.home.jungo.com>
+To:	loody <miloody@gmail.com>
+CC:	Mulyadi Santosa <mulyadi.santosa@gmail.com>,
+	linux-mips <linux-mips@linux-mips.org>,
+	Kernel Newbies <kernelnewbies@nl.linux.org>
+Subject: Re: kernel panic about kernel unaligned access
+References: <3a665c760910270627u784d43b8t2978731110c920a4@mail.gmail.com>	 <f284c33d0910272056n4cd082et2ba1a4b5e228bb0e@mail.gmail.com> <3a665c760910272103gd4a6b78idb5e1175ba288b7e@mail.gmail.com>
+In-Reply-To: <3a665c760910272103gd4a6b78idb5e1175ba288b7e@mail.gmail.com>
 Content-Type: text/plain; charset=ISO-8859-1; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+X-OriginalArrivalTime: 28 Oct 2009 15:40:23.0123 (UTC) FILETIME=[F6619230:01CA57E4]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24551
+X-archive-position: 24552
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Hello.
+loody wrote:
+> hi
+> 
+> 2009/10/28 Mulyadi Santosa <mulyadi.santosa@gmail.com>:
+>> Hi...
+>>
+>> On Tue, Oct 27, 2009 at 8:27 PM, loody <miloody@gmail.com> wrote:
+>>> Dear all:
+>>> I use kernel 2.6.18 and I get the kernel panic as below:
+>>> Unhandled kernel unaligned access[#1]:
+>>> Cpu 0
+>>> $ 0   : 00000000 11000001 0000040a 8721f0d8
+>>> $ 4   : 874a6c00 80001d18 00000000 00000000
+>>> $ 8   : 00000000 ffffa438 00000000 874c2000
+>>> $12   : 00000000 00000000 00005800 00011000
+>>> $16   : 80001d10 874a6c40 874a6c00 87d7bf00
+>>> $20   : 874a6c78 871a0000 87370000 874a6c80
+>>> $24   : 00000000 2aacc770
+>>> $28   : 87d7a000 87d7be88 ffffa438 8709ed20
+>>> Hi    : 00000000
+>>> Lo    : 00000000
+>>> epc   : 8709e72c sync_sb_inodes+0x9c/0x320     Not tainted
+>>> ra    : 8709ed20 writeback_inodes+0xb4/0x160
+>> Hmmm, your machine is not x86, is it? So, I guess this panic is caused
+>> by unaligned memory access.
+> Yes, my machine is mips machine.
+> if do_ade in unaligned.c is a trap, where do  we register it?
+> I grep the source code but I only find the definition but cannot get
+> the place where we register the trap.
 
-Shmulik Ladkani wrote:
 
->> Thanks, Florian. I found the cause of the problem. My board is 32 bit
->> based, so each serial port register is 32bit even only 8 bit is used. So
->> when the board is switched endianess, I need to change the address
->> offset to access the same registers.
->> For example, original RHR register address is 0x8001000 with little
->> endian mode. With big endian, I need to access it as 0x8001003.
->>     
->
-> I assume your uart_port's iotype is defined as UPIO_MEM32.
->   
+Look in genex.S for lines like:
 
-   He wouldn't have to add 3 to the register addresses then.
+	BUILD_HANDLER adel ade ade silent		/* #4  */
+	BUILD_HANDLER ades ade ade silent		/* #5  */
 
-> UPIO_MEM32 makes 8250 access serial registers using readl/writel (which might
-> be a problem for big-endian), while UPIO_MEM makes 8250 access the registers
-> using readb/writeb.
->   
+And also in traps.c for lines like:
 
-   Both may be a problem for big endian.
+	set_except_vector(4, handle_adel);
+	set_except_vector(5, handle_ades);
 
-> Maybe you should try UPIO_MEM (assuming hardware allows byte access).
 
-   Contrarywise, I think he now has UPIO_MEM and needs to try UPIO_MEM32.
-
-WBR, Sergei
+David Daney

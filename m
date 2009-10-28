@@ -1,85 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2009 08:31:07 +0100 (CET)
-Received: from mail-bw0-f221.google.com ([209.85.218.221]:63207 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2009 09:36:15 +0100 (CET)
+Received: from mail-bw0-f221.google.com ([209.85.218.221]:33740 "EHLO
 	mail-bw0-f221.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492524AbZJ1HbB (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Oct 2009 08:31:01 +0100
-Received: by bwz21 with SMTP id 21so588776bwz.24
-        for <linux-mips@linux-mips.org>; Wed, 28 Oct 2009 00:30:54 -0700 (PDT)
+	by ftp.linux-mips.org with ESMTP id S1492663AbZJ1IgI (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Oct 2009 09:36:08 +0100
+Received: by bwz21 with SMTP id 21so638215bwz.24
+        for <linux-mips@linux-mips.org>; Wed, 28 Oct 2009 01:35:59 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type;
-        bh=NycWnAWv8yOhy+S/F77EwUH5dr06v8D2azUFDiKoKsY=;
-        b=GkViw6Nv9CrZJIGCVeMLRL3n9yvMFm/nZ73G0ZOa27phZzQuZ0+JR8Wtx5316HrEhM
-         1Xeptw3gt+U0IzyP7KerwJA9WUznraM2i4tTvNDjgPsNHaHLY9MPs37oP05lYftLkY0V
-         I9aXG11qrRuqcOq5a3IWh2uTGJ9gjcsnis3Fs=
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:date:from:to:cc:subject
+         :message-id:in-reply-to:references:x-mailer:mime-version
+         :content-type:content-transfer-encoding;
+        bh=Lklh86wFZNHZnYXxZT5UQb4VrFOb2pavYSIEKm4dtcU=;
+        b=cxV2EtQrhCOKXvSpO38lpwdLIK/+l4yJJALkC62PadGpL6UO/iIVHIPx7gcPH80PWm
+         NUm36eTXK/N0b/yhNAFzfSivcKnaoaKxCdUxp8HLjBQFsPVd856KjGSMBorc2beRuTxX
+         ysmyanFFCU+KAPTBJQSK/2Sws/tcCUfsxpYI0=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=Nnf382yTSaRBnu00b0pu+i9UdcKRZ8Sr61wzHeZ3SDTAw3xE4u/YDBmS4O55q/+eUM
-         IWf7Abh3n6LCqYfDkiontUT+aYCy0NNRo6IXG5lix1Rr9h2iVhf1PilNsKOX+a3nUwLi
-         3BB5dinbYvZyw0nzXQJdP9KSZo9lO9ptUmdB4=
-MIME-Version: 1.0
-Received: by 10.223.15.11 with SMTP id i11mr487922faa.105.1256715054764; Wed, 
-	28 Oct 2009 00:30:54 -0700 (PDT)
-In-Reply-To: <3a665c760910280017o11af6412n5fd3abdeda369bf3@mail.gmail.com>
-References: <3a665c760910280017o11af6412n5fd3abdeda369bf3@mail.gmail.com>
-Date:	Wed, 28 Oct 2009 08:30:54 +0100
-Message-ID: <f861ec6f0910280030g6404a13ai7f1c4d526c7b5efd@mail.gmail.com>
-Subject: Re: where we get handle_ades_int
-From:	Manuel Lauss <manuel.lauss@googlemail.com>
-To:	loody <miloody@gmail.com>
-Cc:	Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: multipart/alternative; boundary=0015174762a46c52d50476f9c6e7
-Return-Path: <manuel.lauss@googlemail.com>
+        d=gmail.com; s=gamma;
+        h=date:from:to:cc:subject:message-id:in-reply-to:references:x-mailer
+         :mime-version:content-type:content-transfer-encoding;
+        b=waA70LkxkcQAnjDKZEexB7fdW0fn64BGDuAm1OALqd7q1ybc9Zz9x034kA1SLnBbFH
+         7Hs5DqrTLxlpFZcXtZ4ytluFcoje13zmU3D2w8pREmRGlcCi2RCY+J13GYwlMCLiQrXC
+         nDaYiShDhSfNqsUjCoLqKP+W60pIa5u/hHiMw=
+Received: by 10.103.37.33 with SMTP id p33mr369902muj.132.1256718959070;
+        Wed, 28 Oct 2009 01:35:59 -0700 (PDT)
+Received: from pixies.home.jungo.com (pptp-il.jungo.com [194.90.113.98])
+        by mx.google.com with ESMTPS id j6sm2090591mue.20.2009.10.28.01.35.57
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 28 Oct 2009 01:35:58 -0700 (PDT)
+Date:	Wed, 28 Oct 2009 10:35:51 +0200
+From:	Shmulik Ladkani <jungoshmulik@gmail.com>
+To:	myuboot@fastmail.fm
+Cc:	"Florian Fainelli" <florian@openwrt.org>,
+	linux-kernel@vger.kernel.org,
+	"linux-mips" <linux-mips@linux-mips.org>, shmulik@jungo.com
+Subject: Re: serial port 8250 messed up after coverting from little endian
+ to big endian on kernel  2.6.31
+Message-ID: <20091028103551.0b4052d8@pixies.home.jungo.com>
+In-Reply-To: <1256676013.24305.1342273367@webmail.messagingengine.com>
+References: <1255735395.30097.1340523469@webmail.messagingengine.com>
+	<4AD906D8.3020404@caviumnetworks.com>
+	<1255996564.10560.1340920621@webmail.messagingengine.com>
+	<200910200817.24018.florian@openwrt.org>
+	<1256676013.24305.1342273367@webmail.messagingengine.com>
+X-Mailer: Claws Mail 3.7.3 (GTK+ 2.18.3; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Return-Path: <jungoshmulik@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24549
+X-archive-position: 24550
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: jungoshmulik@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
---0015174762a46c52d50476f9c6e7
-Content-Type: text/plain; charset=ISO-8859-1
+On Tue, 27 Oct 2009 15:40:13 -0500 myuboot@fastmail.fm wrote:
+> Thanks, Florian. I found the cause of the problem. My board is 32 bit
+> based, so each serial port register is 32bit even only 8 bit is used. So
+> when the board is switched endianess, I need to change the address
+> offset to access the same registers.
+> For example, original RHR register address is 0x8001000 with little
+> endian mode. With big endian, I need to access it as 0x8001003.
 
-On Wed, Oct 28, 2009 at 8:17 AM, loody <miloody@gmail.com> wrote:
+I assume your uart_port's iotype is defined as UPIO_MEM32.
+UPIO_MEM32 makes 8250 access serial registers using readl/writel (which might
+be a problem for big-endian), while UPIO_MEM makes 8250 access the registers
+using readb/writeb.
+Maybe you should try UPIO_MEM (assuming hardware allows byte access).
 
-> Dear all:
-> I try to grep handle_ades_int in kernel source code, and I get nothing.
-> But I can see the function name in System.map.
-> How do we make this function?
-> Is this function generate from compiler marco?
-> appreciate your help,
-> miloody
->
->
-in arch/mips/kernel/genex.S, look for the BUILD_HANDLER macro
-
-Manuel
-
---0015174762a46c52d50476f9c6e7
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<br><br><div class=3D"gmail_quote">On Wed, Oct 28, 2009 at 8:17 AM, loody <=
-span dir=3D"ltr">&lt;<a href=3D"mailto:miloody@gmail.com">miloody@gmail.com=
-</a>&gt;</span> wrote:<br><blockquote class=3D"gmail_quote" style=3D"border=
--left: 1px solid rgb(204, 204, 204); margin: 0pt 0pt 0pt 0.8ex; padding-lef=
-t: 1ex;">
-Dear all:<br>
-I try to grep handle_ades_int in kernel source code, and I get nothing.<br>
-But I can see the function name in System.map.<br>
-How do we make this function?<br>
-Is this function generate from compiler marco?<br>
-appreciate your help,<br>
-miloody<br>
-<br>
-</blockquote></div><br>in arch/mips/kernel/genex.S, look for the BUILD_HAND=
-LER macro<br><br>Manuel<br><br>
-
---0015174762a46c52d50476f9c6e7--
+-- 
+Shmulik Ladkani		Jungo Ltd.

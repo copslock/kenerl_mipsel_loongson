@@ -1,81 +1,117 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2009 16:50:02 +0100 (CET)
-Received: from mail3.caviumnetworks.com ([12.108.191.235]:4830 "EHLO
-	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492756AbZJ1Pt4 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Oct 2009 16:49:56 +0100
-Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,5,4,7535)
-	id <B4ae868140001>; Wed, 28 Oct 2009 08:49:40 -0700
-Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 28 Oct 2009 08:40:23 -0700
-Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
-	 Wed, 28 Oct 2009 08:40:23 -0700
-Message-ID: <4AE865E5.2080008@caviumnetworks.com>
-Date:	Wed, 28 Oct 2009 08:40:21 -0700
-From:	David Daney <ddaney@caviumnetworks.com>
-User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2009 17:30:23 +0100 (CET)
+Received: from mail-yw0-f173.google.com ([209.85.211.173]:44282 "EHLO
+	mail-yw0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493241AbZJ1QaR (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Oct 2009 17:30:17 +0100
+Received: by ywh3 with SMTP id 3so901097ywh.22
+        for <linux-mips@linux-mips.org>; Wed, 28 Oct 2009 09:30:11 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=LHMVE4Mg7ARNA1foykd4F+iaJjPam9Qnpc3nDDtG8LQ=;
+        b=vrmN7fzM/k296OWylU53RDbcZOeufXMojwbSAJd3fHijf98zToIZnEJyzeFqc3nKVC
+         v2/wxQdubDACnMyB+xvKAPv98LQtTKm/fTyVYeA32Gzva4iFdRz0jDcrczl2hTxaAYl0
+         gddKkNyjciME5/GYjD8MMccoJ0JezLuR85d/I=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:cc:content-type;
+        b=Pg9afMfYiPvOvB2+KOBJmtPPXqQPhqlLsDkUwXcFwUPETG6Ke1efLL4b1hVw0oaYGK
+         KA3jNA2UeGzIeSNue0x6n0HPSF4FCz1Om5Rhv67lLYivOvjUWufSX1DbHF7z48P14HTd
+         nfo240C/4H3HGUqyvkh5YGDBBCyqZr/0SsDFc=
 MIME-Version: 1.0
-To:	loody <miloody@gmail.com>
-CC:	Mulyadi Santosa <mulyadi.santosa@gmail.com>,
-	linux-mips <linux-mips@linux-mips.org>,
-	Kernel Newbies <kernelnewbies@nl.linux.org>
-Subject: Re: kernel panic about kernel unaligned access
-References: <3a665c760910270627u784d43b8t2978731110c920a4@mail.gmail.com>	 <f284c33d0910272056n4cd082et2ba1a4b5e228bb0e@mail.gmail.com> <3a665c760910272103gd4a6b78idb5e1175ba288b7e@mail.gmail.com>
-In-Reply-To: <3a665c760910272103gd4a6b78idb5e1175ba288b7e@mail.gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-OriginalArrivalTime: 28 Oct 2009 15:40:23.0123 (UTC) FILETIME=[F6619230:01CA57E4]
-Return-Path: <David.Daney@caviumnetworks.com>
+Received: by 10.90.11.39 with SMTP id 39mr1112498agk.100.1256747411197; Wed, 
+	28 Oct 2009 09:30:11 -0700 (PDT)
+Date:	Thu, 29 Oct 2009 00:30:11 +0800
+Message-ID: <e997b7420910280930p40e3c02cw1ab5a7813a4b5147@mail.gmail.com>
+Subject: mips64 SMP patch of kexec
+From:	"wilbur.chan" <wilbur512@gmail.com>
+To:	msyrchin@ru.mvista.com
+Cc:	nschichan@freebox.fr,
+	Linux MIPS Mailing List <linux-mips@linux-mips.org>,
+	kexec@lists.infradead.org
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <wilbur512@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24552
+X-archive-position: 24553
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ddaney@caviumnetworks.com
+X-original-sender: wilbur512@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-loody wrote:
-> hi
-> 
-> 2009/10/28 Mulyadi Santosa <mulyadi.santosa@gmail.com>:
->> Hi...
->>
->> On Tue, Oct 27, 2009 at 8:27 PM, loody <miloody@gmail.com> wrote:
->>> Dear all:
->>> I use kernel 2.6.18 and I get the kernel panic as below:
->>> Unhandled kernel unaligned access[#1]:
->>> Cpu 0
->>> $ 0   : 00000000 11000001 0000040a 8721f0d8
->>> $ 4   : 874a6c00 80001d18 00000000 00000000
->>> $ 8   : 00000000 ffffa438 00000000 874c2000
->>> $12   : 00000000 00000000 00005800 00011000
->>> $16   : 80001d10 874a6c40 874a6c00 87d7bf00
->>> $20   : 874a6c78 871a0000 87370000 874a6c80
->>> $24   : 00000000 2aacc770
->>> $28   : 87d7a000 87d7be88 ffffa438 8709ed20
->>> Hi    : 00000000
->>> Lo    : 00000000
->>> epc   : 8709e72c sync_sb_inodes+0x9c/0x320     Not tainted
->>> ra    : 8709ed20 writeback_inodes+0xb4/0x160
->> Hmmm, your machine is not x86, is it? So, I guess this panic is caused
->> by unaligned memory access.
-> Yes, my machine is mips machine.
-> if do_ade in unaligned.c is a trap, where do  we register it?
-> I grep the source code but I only find the definition but cannot get
-> the place where we register the trap.
+Hi, Maxim Syrchin
+
+I've just  found your  kernel patch for mips64 SMP kexec:
+
+http://lists.infradead.org/pipermail/kexec/2008-June/001909.html
+
+ I was porting  your kexec part  code(excluding crash_dump )  on
+xlr408 ,which is of  8 cores SMP mips64 .
+
+I found that in machine_kexec.c ,
+flush_icache_range(reboot_code_buffer,  reboot_code_buffer +
+KEXEC_CONTROL_CODE_SIZE);
+
+caused an error, so I delete this line directly,although I don't know
+if it would bring problem after I del it...
 
 
-Look in genex.S for lines like:
+ It is strange that , in relocate_kernel.S, the operator 'REG_L	s5,
+(s2)' caused an  invalid access on kernel space.
 
-	BUILD_HANDLER adel ade ade silent		/* #4  */
-	BUILD_HANDLER ades ade ade silent		/* #5  */
+If I change REG_L to ld , everything went well.   So I change all the
+macro such as  REG_L to  ld ,REG_S to sd , PTR_ADD to dadd
 
-And also in traps.c for lines like:
-
-	set_except_vector(4, handle_adel);
-	set_except_vector(5, handle_ades);
+LONG_SUB to dsub, and SZREG to 8
 
 
-David Daney
+At the same time ,  I changed the kexec_smp_wait function to a simple
+loop, without checking the kexec_flag:
+
+
+.globl kexec_smp_wait
+kexec_smp_wait:
+3: b 3b
+
+at last , the a0,a1,a3,a4 were set to address of fw_arg0,
+fw_arg1,fw_arg2,fw_arg3 respectively.
+
+
+As you see, I just let one of the cpus jumps into new kernel,while the
+others be  in an infinite loop.
+
+After jumped into second kernel , the code seemed to be crazy.
+
+
+Firstly,  the code seemd to stop before calling 'start_kernel--->
+calibrate_delay ' .
+
+
+ However,  if I added a 'printk' in any 'if  branches'  in
+'calibrate_delay '  function  , the code would stop before calling
+
+'j  start_kernel'  in head.S. (This time, because printk seemed
+unavailable, I  wrote directlly to serial address to trace the
+kernel).
+
+
+I thougt it might be the problem of irq , so I added 'disable_irq(17)'
+ in machine_kexec before invoking reboot_code_buffer();
+
+
+
+However, the problem was still there.
+
+I don't know why this happedn can you give me some advice on how to
+solve this , or if there were some mistake in my code ?
+
+
+Thank you
+
+regards,
+
+wilbur

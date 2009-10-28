@@ -1,75 +1,57 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2009 21:49:53 +0100 (CET)
-Received: from mail-ew0-f216.google.com ([209.85.219.216]:57062 "EHLO
-	mail-ew0-f216.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493416AbZJ1Utr (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 28 Oct 2009 21:49:47 +0100
-Received: by ewy12 with SMTP id 12so1228751ewy.0
-        for <multiple recipients>; Wed, 28 Oct 2009 13:49:41 -0700 (PDT)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=rDKbGwNMf5qhMRUcwjfsa0duvvWXJIARIVHLMeJfqO8=;
-        b=EMCUm8TjSM89LbONYC6VRm2HGwbf2bj1VAQQGjzltGl8gKTPDZql5HvCs0Ed6AoosR
-         gvv5OEM+Hf3ZUeJd4kuyfyMokkYFldHtrE0eJccThCfvxBGwDDnvbhgKnEfMHo8kgkwC
-         mrV2uCYV38Qh8LwEyus2xeE0Cyn1xS93iCCWk=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=iPJs/yKtVKyAnAWVjHURPIGKxKfEgP4bCklPEAgaTWTpO1oMz6aATYvnjn7W4Z2YAp
-         XYslQaD8Udq285OYGI6Thr+Me7FJRze6FrdIdm7d6JGWZtSjji54BGHLJpSninvfhIXU
-         0mxaJP/3G58FD5VN3tddtutSPLFEJgqs2Ljag=
-Received: by 10.216.91.69 with SMTP id g47mr1707252wef.167.1256762981529;
-        Wed, 28 Oct 2009 13:49:41 -0700 (PDT)
-Received: from localhost.localdomain (p5496FE70.dip.t-dialin.net [84.150.254.112])
-        by mx.google.com with ESMTPS id j8sm237145gvb.19.2009.10.28.13.49.40
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 28 Oct 2009 13:49:41 -0700 (PDT)
-From:	Manuel Lauss <manuel.lauss@googlemail.com>
-To:	Linux-MIPS <linux-mips@linux-mips.org>,
-	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [PATCH -queue v2] MIPS: Alchemy: UARTs are of type 16550A
-Date:	Wed, 28 Oct 2009 21:49:46 +0100
-Message-Id: <1256762986-4416-1-git-send-email-manuel.lauss@gmail.com>
-X-Mailer: git-send-email 1.6.5
-Return-Path: <manuel.lauss@googlemail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 28 Oct 2009 23:33:09 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:42891 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S1493432AbZJ1WdG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 28 Oct 2009 23:33:06 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id n9SMYIHD009044;
+	Wed, 28 Oct 2009 15:34:19 -0700
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id n9SMYHsF009042;
+	Wed, 28 Oct 2009 15:34:17 -0700
+Date:	Wed, 28 Oct 2009 15:34:17 -0700
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Andrew Morton <akpm@linux-foundation.org>
+Cc:	Manuel Lauss <manuel.lauss@googlemail.com>,
+	Linux-MIPS <linux-mips@linux-mips.org>,
+	linux-serial@vger.kernel.org, Manuel Lauss <manuel.lauss@gmail.com>
+Subject: Re: [PATCH 2/2] MIPS: Alchemy: UARTs are 16550A
+Message-ID: <20091028223417.GC2921@linux-mips.org>
+References: <1256756954-29211-1-git-send-email-manuel.lauss@gmail.com> <1256756954-29211-2-git-send-email-manuel.lauss@gmail.com> <20091028122430.f7670ae2.akpm@linux-foundation.org> <f861ec6f0910281227t455a6f5cw9e492a9a1fc1b07e@mail.gmail.com> <20091028125203.c513883e.akpm@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20091028125203.c513883e.akpm@linux-foundation.org>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24565
+X-archive-position: 24566
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-UART autodetection breaks on the Au1300 but the IP blocks are identical,
-at least according to the datasheets.  Help the 8250 driver by passing
-on uart type information via platform data.
+On Wed, Oct 28, 2009 at 12:52:03PM -0700, Andrew Morton wrote:
 
-Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
----
-On top of the other alchemy patches in mips-queue.
+> >  I know, that's why I added "The mips parts apply on top of Ralf's
+> > mips-queue tree" below
+> > the patch description.
+> 
+> If that's the case then Ralf's mips-queue tree isn't in linux-next :(
 
- arch/mips/alchemy/common/platform.c |    4 +++-
- 1 files changed, 3 insertions(+), 1 deletions(-)
+I just respun my tree for linux-next, just in case.
 
-diff --git a/arch/mips/alchemy/common/platform.c b/arch/mips/alchemy/common/platform.c
-index 195e5b3..3be14b0 100644
---- a/arch/mips/alchemy/common/platform.c
-+++ b/arch/mips/alchemy/common/platform.c
-@@ -26,7 +26,9 @@
- 		.irq		= _irq,				\
- 		.regshift	= 2,				\
- 		.iotype		= UPIO_AU,			\
--		.flags		= UPF_SKIP_TEST | UPF_IOREMAP	\
-+		.flags		= UPF_SKIP_TEST | UPF_IOREMAP |	\
-+				  UPF_FIXED_TYPE,		\
-+		.type		= PORT_16550A,			\
- 	}
- 
- static struct plat_serial8250_port au1x00_uart_data[] = {
--- 
-1.6.5
+> > If it makes it easier to apply, I could split this one in a mips and in a
+> > 8250 patch?
+> 
+> That's a hard call without knowing what's going on in mipsworld.  If
+
+My tree for linux-next is at
+
+  http://www.linux-mips.org/git?p=upstream-sfr.git;a=summary
+
+  Ralf

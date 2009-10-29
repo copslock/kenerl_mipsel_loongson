@@ -1,66 +1,107 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Oct 2009 06:51:15 +0100 (CET)
-Received: from mail-qy0-f202.google.com ([209.85.221.202]:33527 "EHLO
-	mail-qy0-f202.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1491957AbZJ2FvI convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 29 Oct 2009 06:51:08 +0100
-Received: by qyk40 with SMTP id 40so1014213qyk.22
-        for <linux-mips@linux-mips.org>; Wed, 28 Oct 2009 22:51:01 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Oct 2009 07:20:41 +0100 (CET)
+Received: from mail-pw0-f45.google.com ([209.85.160.45]:53474 "EHLO
+	mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492203AbZJ2GUf (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 29 Oct 2009 07:20:35 +0100
+Received: by pwi11 with SMTP id 11so1284846pwi.24
+        for <multiple recipients>; Wed, 28 Oct 2009 23:20:26 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=6wWCM0B20ZTvPjOzVZ2UE9MXnxt1GeAiAxcFGfJSiWc=;
-        b=VKjbIuueaXcRTC40Sq3lQaXVY9CBgRL8zFg0fhyg7UbkZpCBZrWo9qpt7xOgAZjwzH
-         NvHsov4e0+4RSVDohOPfk8LkwyphXkMSButAoXmcDtc41PSFBQOs95jKDQzgpsgPf3tm
-         VgFhTWwTPRX/LxfcehFXzDKA5MAINZHnH7Kgw=
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=i8JtyCVTXa9dY5scwObUCMdzP3ms0cLVSo3bL8o2J+E=;
+        b=TJRHDnkhIk3Yqx1e2PfS185Q3I+2LoNV9ipX3XFuo6z1k4/TmdwrLyNNxSGl2w8dZ5
+         HgmVpSv3mi37wn/APRPpR4KgkxoPA7tBjoVjoCl9Kwk/+Kb5GcEQBuANwxcHF5Fh8cS0
+         jwFaWqO2lQhrd1UtFZOABSoVWs+WjFX9DWhuk=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=dV6Nh4+O16uLwfLSFmuihpI/JFCmbcMbbcpG2elpQqwsvj0husYESiDeNGRpRtWAIX
-         saX6BwTQuiMyAgG3N5KdHdIQIm7QqL6mS6V+IV8el/bgE755LhciMWn986Kxs2rvAPQo
-         9Xod8kCVJ8Jux2k4n6dWGmtb1pfDJBKMhkZRY=
-MIME-Version: 1.0
-Received: by 10.220.122.100 with SMTP id k36mr12495125vcr.38.1256795461094; 
-	Wed, 28 Oct 2009 22:51:01 -0700 (PDT)
-In-Reply-To: <3a665c760910282048t3454e14bx431b035d2d3192b4@mail.gmail.com>
-References: <3a665c760910270627u784d43b8t2978731110c920a4@mail.gmail.com>
-	 <f284c33d0910272056n4cd082et2ba1a4b5e228bb0e@mail.gmail.com>
-	 <3a665c760910272103gd4a6b78idb5e1175ba288b7e@mail.gmail.com>
-	 <4AE865E5.2080008@caviumnetworks.com>
-	 <3a665c760910282048t3454e14bx431b035d2d3192b4@mail.gmail.com>
-Date:	Thu, 29 Oct 2009 11:21:01 +0530
-Message-ID: <e3177630910282251s6feeadb3u6c98b261e4b00e57@mail.gmail.com>
-Subject: Re: kernel panic about kernel unaligned access
-From:	Anupam Kapoor <anupam.kapoor@gmail.com>
-To:	loody <miloody@gmail.com>
-Cc:	David Daney <ddaney@caviumnetworks.com>,
-	Mulyadi Santosa <mulyadi.santosa@gmail.com>,
-	linux-mips <linux-mips@linux-mips.org>,
-	Kernel Newbies <kernelnewbies@nl.linux.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <anupam.kapoor@gmail.com>
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=WJeHgAQ4r9/kUa7wWUTxN2H4mpQ2IG/nddLmaM2F8uJDShF6yBlINMoXxOKZe6BMH/
+         /GNAkYtBScIPN2g5JltjvpSNXQryKHxYWauK6dUWq5VKDAWk/dBQKdNEFpbZkMBIuBcp
+         sm2D7wf7CxZz1DwH4GOorL1opXJl2T22i/SjY=
+Received: by 10.115.116.37 with SMTP id t37mr8969762wam.79.1256797226615;
+        Wed, 28 Oct 2009 23:20:26 -0700 (PDT)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPS id 22sm1052654pxi.6.2009.10.28.23.20.21
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 28 Oct 2009 23:20:25 -0700 (PDT)
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>,
+	Linux-MIPS <linux-mips@linux-mips.org>
+Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
+	Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH -v1] MIPS: a few of fixups and cleanups for the compressed kernel support
+Date:	Thu, 29 Oct 2009 14:20:12 +0800
+Message-Id: <1256797212-7794-1-git-send-email-wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.6.2.1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24573
+X-archive-position: 24574
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anupam.kapoor@gmail.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-> Take  "8709ed20 writeback_inodes+0xb4/0x160" for example, what does
-> 0x160, the last hex mean? The value of parameter?
-first-number       i.e 0xb4   means that EIP was as many bytes into
-the 'writeback_inodes' function when this happened.
-second-number  i.e 0x160 mean that the function is '0x160' bytes long.
+From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-anupam
+This patch indents the instructions in the delay slot of the file which
+has a ".set noreorder" added.
+
+and also, the "addu a0, 4" instruction is replaced by "addiu a0, a0, 4".
+
+(This is against the commit
+c6adcc73663a71f2aa9e66796a9bd57fcb6a349a(MIPS: add support for
+gzip/bzip2/lzma compressed kernel images) in the mips-for-linux-next
+branch of Ralf's
+http://www.linux-mips.org/git?p=upstream-sfr.git;a=summary
+
+This -v1 revision incorporates the feedback from "Maciej W. Rozycki"
+<macro@linux-mips.org>)
+
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/mips/boot/compressed/head.S |    8 +++++---
+ 1 files changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/arch/mips/boot/compressed/head.S b/arch/mips/boot/compressed/head.S
+index e23f25e..6d069cd 100644
+--- a/arch/mips/boot/compressed/head.S
++++ b/arch/mips/boot/compressed/head.S
+@@ -30,7 +30,7 @@ start:
+ 	PTR_LA	a2, _end
+ 1:	sw	zero, 0(a0)
+ 	bne	a2, a0, 1b
+-	addu	a0, 4
++	 addiu	a0, a0, 4
+ 
+ 	PTR_LA	a0, (.heap)          /* heap address */
+ 	PTR_LA  sp, (.stack + 8192)  /* stack address */
+@@ -38,7 +38,7 @@ start:
+ 	PTR_LA	ra, 2f
+ 	PTR_LA	k0, decompress_kernel
+ 	jr	k0
+-	nop
++	 nop
+ 2:
+ 	move	a0, s0
+ 	move	a1, s1
+@@ -46,10 +46,12 @@ start:
+ 	move	a3, s3
+ 	PTR_LI	k0, KERNEL_ENTRY
+ 	jr	k0
+-	nop
++	 nop
+ 3:
+ 	b 3b
++	 nop
+ 	END(start)
+ 
+ 	.comm .heap,BOOT_HEAP_SIZE,4
+ 	.comm .stack,4096*2,4
++	.set reorder
 -- 
-In the beginning was the lambda, and the lambda was with Emacs, and
-Emacs was the lambda.
+1.6.2.1

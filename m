@@ -1,66 +1,79 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Oct 2009 00:52:05 +0100 (CET)
-Received: from mail-gx0-f210.google.com ([209.85.217.210]:53947 "EHLO
-	mail-gx0-f210.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493117AbZJ1Xv6 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 29 Oct 2009 00:51:58 +0100
-Received: by gxk2 with SMTP id 2so747683gxk.4
-        for <linux-mips@linux-mips.org>; Wed, 28 Oct 2009 16:51:52 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Oct 2009 03:09:32 +0100 (CET)
+Received: from mail-px0-f188.google.com ([209.85.216.188]:64383 "EHLO
+	mail-px0-f188.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493205AbZJ2CJZ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 29 Oct 2009 03:09:25 +0100
+Received: by pxi26 with SMTP id 26so977917pxi.22
+        for <multiple recipients>; Wed, 28 Oct 2009 19:09:16 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:date:message-id:subject
-         :from:to:content-type;
-        bh=7hxxltjS8q58RR5p60lUjRXrZUNyy83lAJzc8kMhHvE=;
-        b=c0L//NOp5iHB5Ar8+2rm7olh03EJB2+vDOV+ZyH2llZnxKBzuvQK37EEWO36RqeKFG
-         kY0OWVf8I9YXz+A+B3QxILdtJ9QbKVawJdjv83R42qr1djp9/z+7iI5LhLwm1yBKQo2H
-         03fcB3PxRsxXpx+jTwBU2VHbZjsxbYqsIT5aI=
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=vxctz3pSQMmcoE/BWm42/LySSxEcmzqXybbLHaEA2Sw=;
+        b=TMfsjpX9TXDInh5NNB++emZvF2aNG9DC5pTFKVctQD4S/EN5kltsHfrK9OkbzJqz2i
+         nkBEQ5KVU33BycP0WAie6J7JGo052BDHUN70X7veLlsHQtkYnys+cQoWEpTXq/7KxHaC
+         Z0zt7yqFrmT5ZxMuB+hawsQ4Yums4SRHnGjIQ=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        b=QNK34M5q5Yiof6qEYBagsoZunRMvg4ZX9nSMO3g+vonHZeTBdo6feCkw74cU+M8Pg1
-         qMTQdIN4+tzo9M0SrJes6sh7AGXfIzXWOu7d0XVUtzKhfUjyjB54tO62fFFaZ8XWybEB
-         zI0dY0h72Bes8ZZB0LHoNYzviqGOuOYqiV4Rs=
-MIME-Version: 1.0
-Received: by 10.90.226.13 with SMTP id y13mr1207026agg.107.1256773912210; Wed, 
-	28 Oct 2009 16:51:52 -0700 (PDT)
-Date:	Thu, 29 Oct 2009 07:51:52 +0800
-Message-ID: <e997b7420910281651p24b8e367m1e2ddbc1b95ac623@mail.gmail.com>
-Subject: Problem in booting when calling calibrate_delay
-From:	"wilbur.chan" <wilbur512@gmail.com>
-To:	Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <wilbur512@gmail.com>
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=Ium6XykyrvdONaotHgy861Eeo7d8ittPrN3aLgGyb8rKDB8XfT2EV4A91c4s58dKB3
+         hjbqQ5sQ7CRjMnHIAaL4I5Z6oMCjxRRALwC2CfEKKDaduTxfX7/9P9n2thK1p12KyDHI
+         WJRF8z6Dt7jWl/gpE4STCMGPWZxv147q0Io90=
+Received: by 10.115.101.30 with SMTP id d30mr5201285wam.175.1256782156654;
+        Wed, 28 Oct 2009 19:09:16 -0700 (PDT)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPS id 21sm919475pzk.15.2009.10.28.19.09.11
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Wed, 28 Oct 2009 19:09:15 -0700 (PDT)
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>,
+	Linux-MIPS <linux-mips@linux-mips.org>
+Cc:	Robert Richter <robert.richter@amd.com>, chenj@lemote.com,
+	Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH -sfr.git] oprofile/loongson2: rename cpu_type from godson2 to loongson2
+Date:	Thu, 29 Oct 2009 10:09:05 +0800
+Message-Id: <1256782145-2180-1-git-send-email-wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.6.2.1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24567
+X-archive-position: 24568
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wilbur512@gmail.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-I was going to boot mips64  xlr408, which has 8 cores.
+This patch try to unify the naming method between kernel and the
+user-space oprofile tool. 'Cause loongson is used instead of godson in
+most of the places, and just confer with the developer of the user-space
+tool, we are agreed to use loongson instead, which will help a lot to
+the future maintaining.
 
-Howerver, the code seemd to stop before calling 'start_kernel--->
+(This patch is very important to help the user-space support upstream,
+ so, Ralf, could you please merge it into your mips-for-linux-next
+ branch, thanks!)
 
-calibrate_delay ' .
+Acked-by: Robert Richter <robert.richter@amd.com>
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/mips/oprofile/op_model_loongson2.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
 
-So Iadded some 'printk' in  calibrate_delay,  to check out why it failed.
-
-
- However,  if I added a 'printk' in any 'if  branches'  in
-
-'calibrate_delay '  function  , the kernel would halt  before calling
-
-
-'j  start_kernel'  in head.S. (in this situation ,printk seemed
-
-unavailable, so  I  wrote directlly to serial address  to trace the
-
-kernel).
-
-
-Can anyone tell me why this happed?
-
-Thank you
+diff --git a/arch/mips/oprofile/op_model_loongson2.c b/arch/mips/oprofile/op_model_loongson2.c
+index deed1d5..575cd14 100644
+--- a/arch/mips/oprofile/op_model_loongson2.c
++++ b/arch/mips/oprofile/op_model_loongson2.c
+@@ -22,7 +22,7 @@
+  * otherwise, the oprofile tool will not recognize this and complain about
+  * "cpu_type 'unset' is not valid".
+  */
+-#define LOONGSON2_CPU_TYPE	"mips/godson2"
++#define LOONGSON2_CPU_TYPE	"mips/loongson2"
+ 
+ #define LOONGSON2_COUNTER1_EVENT(event)	((event & 0x0f) << 5)
+ #define LOONGSON2_COUNTER2_EVENT(event)	((event & 0x0f) << 9)
+-- 
+1.6.2.1

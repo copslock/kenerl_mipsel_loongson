@@ -1,126 +1,66 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Oct 2009 06:27:22 +0100 (CET)
-Received: from mail-px0-f188.google.com ([209.85.216.188]:39124 "EHLO
-	mail-px0-f188.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1491846AbZJ2F1P (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 29 Oct 2009 06:27:15 +0100
-Received: by pxi26 with SMTP id 26so1062263pxi.22
-        for <multiple recipients>; Wed, 28 Oct 2009 22:27:08 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 29 Oct 2009 06:51:15 +0100 (CET)
+Received: from mail-qy0-f202.google.com ([209.85.221.202]:33527 "EHLO
+	mail-qy0-f202.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1491957AbZJ2FvI convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 29 Oct 2009 06:51:08 +0100
+Received: by qyk40 with SMTP id 40so1014213qyk.22
+        for <linux-mips@linux-mips.org>; Wed, 28 Oct 2009 22:51:01 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=3EQlFBhYeN0s0qv05srbDXZDFH/jqSRCUTRBOoUGiso=;
-        b=a5vPk310JAXe6TE/MM7DkGjaM67K8xQsoAaBF9u+gKq5i3fcUsht3GpyzmHZqDi6Xq
-         neebEp7gRHSLyhvKu90entwqAlDrLZIAV8+mK51zM+m55t++JBd/4IIQzwOizzW1ckW/
-         No5FfULICDHEhNZcElOFwRc2luZNFfzprrnXk=
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=6wWCM0B20ZTvPjOzVZ2UE9MXnxt1GeAiAxcFGfJSiWc=;
+        b=VKjbIuueaXcRTC40Sq3lQaXVY9CBgRL8zFg0fhyg7UbkZpCBZrWo9qpt7xOgAZjwzH
+         NvHsov4e0+4RSVDohOPfk8LkwyphXkMSButAoXmcDtc41PSFBQOs95jKDQzgpsgPf3tm
+         VgFhTWwTPRX/LxfcehFXzDKA5MAINZHnH7Kgw=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=XnxYqKkQbNGlIr3lf8LSg+lBxuGaM2+dq9yidkZGh4+mXCHE2mbYxqM7T5IoXM4N1I
-         l4YqY1M01sIl8zSYACInoKU6FcBShwg7u/mQ9PC+8yQDSNE3gAFF1v1vLHyutKUKVCGA
-         wNc1ccnZ5+czcVphMeHl06HoI0znvHC8WfnB4=
-Received: by 10.114.253.14 with SMTP id a14mr5119349wai.160.1256794028644;
-        Wed, 28 Oct 2009 22:27:08 -0700 (PDT)
-Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 23sm168316pzk.4.2009.10.28.22.27.02
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 28 Oct 2009 22:27:07 -0700 (PDT)
-Subject: Re: [PATCH -sfr.git] MIPS: zboot: indent the nop instruction in
- delay slot
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
-	Linux-MIPS <linux-mips@linux-mips.org>,
-	Robert Richter <robert.richter@amd.com>, chenj@lemote.com
-In-Reply-To: <alpine.LFD.2.00.0910290306490.9323@eddie.linux-mips.org>
-References: <1256782252-2240-1-git-send-email-wuzhangjin@gmail.com>
-	 <alpine.LFD.2.00.0910290306490.9323@eddie.linux-mips.org>
-Content-Type: text/plain
-Organization: DSLab, Lanzhou University, China
-Date:	Thu, 29 Oct 2009 13:26:57 +0800
-Message-Id: <1256794017.6448.22.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=dV6Nh4+O16uLwfLSFmuihpI/JFCmbcMbbcpG2elpQqwsvj0husYESiDeNGRpRtWAIX
+         saX6BwTQuiMyAgG3N5KdHdIQIm7QqL6mS6V+IV8el/bgE755LhciMWn986Kxs2rvAPQo
+         9Xod8kCVJ8Jux2k4n6dWGmtb1pfDJBKMhkZRY=
+MIME-Version: 1.0
+Received: by 10.220.122.100 with SMTP id k36mr12495125vcr.38.1256795461094; 
+	Wed, 28 Oct 2009 22:51:01 -0700 (PDT)
+In-Reply-To: <3a665c760910282048t3454e14bx431b035d2d3192b4@mail.gmail.com>
+References: <3a665c760910270627u784d43b8t2978731110c920a4@mail.gmail.com>
+	 <f284c33d0910272056n4cd082et2ba1a4b5e228bb0e@mail.gmail.com>
+	 <3a665c760910272103gd4a6b78idb5e1175ba288b7e@mail.gmail.com>
+	 <4AE865E5.2080008@caviumnetworks.com>
+	 <3a665c760910282048t3454e14bx431b035d2d3192b4@mail.gmail.com>
+Date:	Thu, 29 Oct 2009 11:21:01 +0530
+Message-ID: <e3177630910282251s6feeadb3u6c98b261e4b00e57@mail.gmail.com>
+Subject: Re: kernel panic about kernel unaligned access
+From:	Anupam Kapoor <anupam.kapoor@gmail.com>
+To:	loody <miloody@gmail.com>
+Cc:	David Daney <ddaney@caviumnetworks.com>,
+	Mulyadi Santosa <mulyadi.santosa@gmail.com>,
+	linux-mips <linux-mips@linux-mips.org>,
+	Kernel Newbies <kernelnewbies@nl.linux.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <anupam.kapoor@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24572
+X-archive-position: 24573
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: anupam.kapoor@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+> Take  "8709ed20 writeback_inodes+0xb4/0x160" for example, what does
+> 0x160, the last hex mean? The value of parameter?
+first-number       i.e 0xb4   means that EIP was as many bytes into
+the 'writeback_inodes' function when this happened.
+second-number  i.e 0x160 mean that the function is '0x160' bytes long.
 
-On Thu, 2009-10-29 at 03:12 +0000, Maciej W. Rozycki wrote:
-> On Thu, 29 Oct 2009, Wu Zhangjin wrote:
-> 
-> > diff --git a/arch/mips/boot/compressed/head.S b/arch/mips/boot/compressed/head.S
-> > index e23f25e..29080f4 100644
-> > --- a/arch/mips/boot/compressed/head.S
-> > +++ b/arch/mips/boot/compressed/head.S
-> > @@ -38,7 +38,7 @@ start:
-> >  	PTR_LA	ra, 2f
-> >  	PTR_LA	k0, decompress_kernel
-> >  	jr	k0
-> > -	nop
-> > +	 nop
-> >  2:
-> >  	move	a0, s0
-> >  	move	a1, s1
-> > @@ -46,7 +46,7 @@ start:
-> >  	move	a3, s3
-> >  	PTR_LI	k0, KERNEL_ENTRY
-> >  	jr	k0
-> > -	nop
-> > +	 nop
-> >  3:
-> >  	b 3b
-
-need to add one nop here.
-
-> >  	END(start)
-> 
->  This piece of code looks unsafe to me.  I'm not sure which tree this is 
-> against and certainly I don't have a local copy of the file,
-
-This is against the of mips-for-linux-next branh of Ralf's
-http://www.linux-mips.org/git?p=upstream-sfr.git;a=summary
-
->  but based on 
-> the manual delay slot scheduling this is built with .set noreorder in 
-> effect
-
-Yes, there is exactly a ".set noreorder" there:
-
-arch/mips/boot/compressed/head.S:
-[...]
- 17 
- 18         .set noreorder
- 19         .cprestore
- 20         LEAF(start)
- 21 start:
- 22         /* Save boot rom start args */
- 23         move    s0, a0
- 24         move    s1, a1
- 25         move    s2, a2
- 26         move    s3, a3
- 27 
- 28         /* Clear BSS */
-[...]
-
->  and as such the function lacks a delay slot fill for the trailing 
-> branch (which is also ill-formatted).
-
-A new version will be sent out, thanks!
-
-Regards,
-	Wu Zhangjin
+anupam
+-- 
+In the beginning was the lambda, and the lambda was with Emacs, and
+Emacs was the lambda.

@@ -1,43 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Oct 2009 14:51:31 +0100 (CET)
-Received: from rs1.rw-gmbh.net ([213.239.201.58]:59421 "EHLO rs1.rw-gmbh.net"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1493353AbZJ3NvZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 30 Oct 2009 14:51:25 +0100
-Received: from p50992dee.dip0.t-ipconnect.de ([80.153.45.238] helo=ximap.rw-gmbh.biz)
-	by rs1.rw-gmbh.net with esmtp (Exim 4.69)
-	(envelope-from <ralf.roesch@rw-gmbh.de>)
-	id 1N3rsu-0004YX-1Q; Fri, 30 Oct 2009 14:51:20 +0100
-Received: from [192.168.178.44] (rr-2600 [192.168.178.44])
-	by ximap.rw-gmbh.biz (Postfix) with ESMTP
-	id 0407A174B2E; Fri, 30 Oct 2009 14:51:01 +0100 (CET)
-Message-ID: <4AEAEF43.7060200@rw-gmbh.de>
-Date:	Fri, 30 Oct 2009 14:50:59 +0100
-From:	=?UTF-8?B?UmFsZiBSw7ZzY2g=?= <ralf.roesch@rw-gmbh.de>
-User-Agent: Thunderbird 2.0.0.23 (Windows/20090812)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Oct 2009 15:43:46 +0100 (CET)
+Received: from mail-yw0-f173.google.com ([209.85.211.173]:39341 "EHLO
+	mail-yw0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493506AbZJ3Onj convert rfc822-to-8bit
+	(ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 30 Oct 2009 15:43:39 +0100
+Received: by ywh3 with SMTP id 3so3021018ywh.22
+        for <multiple recipients>; Fri, 30 Oct 2009 07:43:31 -0700 (PDT)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:cc:content-type
+         :content-transfer-encoding;
+        bh=Hk1UKvElbcqWIrNDF1/TCHHVAgByOyMuNCSbBsBr0Mo=;
+        b=HXIMaZhpKnA/3LAwr+ud1hUWiXsTMiCGC6TSfH3cScCoRk1+jyYlsI5e2PlVL/7tNS
+         gK1fjvjM0KQ8X0NagMWwHOo0QGY3OV+/qwiEqd2YR0wVMRBZfpedJETIgzniUfBXq5B1
+         EejmYzfkM2q6WyRAq4rLLUO0kzjkxd7rh+ims=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type:content-transfer-encoding;
+        b=MA3zj00MIoEbAb6f+ulQp+KBOzasXd0xPp1mZUWZx+Mprw3NmZMefyp6lLYtMOg5Pu
+         g3VTKvogvkX/dYZn/ESg6KBaS017/wNRxUtbIpVVpiX7uvOzpOHn2IcWZ5OXIHNsSLJl
+         ZcKMnMVffeuT48/ZawinE4DM9rK6CSF/S9t5k=
 MIME-Version: 1.0
-To:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Cc:	sam@ravnborg.org, manuel.lauss@gmail.com
-Subject: mips: fix build of vmlinux.lds
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <ralf.roesch@rw-gmbh.de>
+Received: by 10.101.190.32 with SMTP id s32mr1569692anp.47.1256913811752; Fri, 
+	30 Oct 2009 07:43:31 -0700 (PDT)
+In-Reply-To: <4AEAEF43.7060200@rw-gmbh.de>
+References: <4AEAEF43.7060200@rw-gmbh.de>
+Date:	Fri, 30 Oct 2009 22:43:31 +0800
+Message-ID: <b00321320910300743l6ddc0f64kfd37658050d5705c@mail.gmail.com>
+Subject: Re: mips: fix build of vmlinux.lds
+From:	wu zhangjin <wuzhangjin@gmail.com>
+To:	=?ISO-8859-1?Q?Ralf_R=F6sch?= <ralf.roesch@rw-gmbh.de>
+Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	sam@ravnborg.org, manuel.lauss@gmail.com
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8BIT
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24588
+X-archive-position: 24589
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf.roesch@rw-gmbh.de
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi Ralf,
+On Fri, Oct 30, 2009 at 9:50 PM, Ralf Rösch <ralf.roesch@rw-gmbh.de> wrote:
+> Hi Ralf,
+>
+> could you please cherry-pick commit
+>  fd6b6a85c525824bece9543fae5ed68c00ad65a7
+> (or fd6b6a85c525824bece9543fae5ed68c00ad65a7, seems to be identical)
+> to linux-2.6.31-stable branch and may be others too ?
+>
 
-could you please cherry-pick commit  
-fd6b6a85c525824bece9543fae5ed68c00ad65a7
-(or fd6b6a85c525824bece9543fae5ed68c00ad65a7, seems to be identical)
-to linux-2.6.31-stable branch and may be others too ?
+Seems only 2.6.31 need it, because the modification of vmlinux.lds.S
+was introduced in 2.6.31.5.
 
-Thanks and regards
-Ralf  R.
+Regards,
+Wu Zhangjin

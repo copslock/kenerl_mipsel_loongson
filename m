@@ -1,109 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Oct 2009 02:35:47 +0100 (CET)
-Received: from mail-yw0-f173.google.com ([209.85.211.173]:40483 "EHLO
-	mail-yw0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493621AbZJ3Bfl (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 30 Oct 2009 02:35:41 +0100
-Received: by ywh3 with SMTP id 3so2522571ywh.22
-        for <multiple recipients>; Thu, 29 Oct 2009 18:35:34 -0700 (PDT)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 30 Oct 2009 03:16:31 +0100 (CET)
+Received: from mail-iw0-f195.google.com ([209.85.223.195]:45934 "EHLO
+	mail-iw0-f195.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492913AbZJ3CQY (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 30 Oct 2009 03:16:24 +0100
+Received: by iwn33 with SMTP id 33so1828525iwn.21
+        for <linux-mips@linux-mips.org>; Thu, 29 Oct 2009 19:16:14 -0700 (PDT)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=gnjHt5nvoeU5iEoXA9u7ZnhwBO5mCvQ141LB9lLZo6c=;
-        b=nUpWkhfztMeTjm02ugQ901UAbeSaZMB8EtSWim9WI0BhrgSgVaVGdcVnPKFSXu055c
-         WNxxbKUW/7RjlKn1l0a6ljJFZz+dnlyNPnhDIKhuSvNvyGBx+aWUd5uM62/iU/R7Quuj
-         By5vJQXMlnZcfRVu6tH6lDzwt72b/68WvAw0o=
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:content-type;
+        bh=o4NfNjxtRR8nwS+veC4K11pMwDICyPmyJiKmEXsZDfg=;
+        b=c/XUr7gEqLtuSF3tGyvAHbbEzOc6Xp7aqEIcSo2to3PAtwbhWnX1RKI9FK4xwcoewd
+         pN8hZS81xABGEhbkQtLX/LSsYII1FF22zFhORFcrUhpjtlUlvB1BCz+qWxnOYgCK2dEX
+         63R8j+W8i5PuAOzk8xolv/tDMOXpf3NR9O2Z8=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=XOkJh2RKlGPLLbScZlgJCY2hJvONvufgrJQWC9KADVrRe/wINK8FnVZubQC5IJOuth
-         1X/QNqjjbbkffKXfuGuQJ3Z5ivrf5rHnezvZQacyb2NmJ94cyx8SjC1m3WYIixD04mlt
-         jgoqzsnH/9VZXxt4JCjwaXsrqdZPxBU7BQyXI=
-Received: by 10.150.87.28 with SMTP id k28mr1676235ybb.275.1256866534139;
-        Thu, 29 Oct 2009 18:35:34 -0700 (PDT)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id 4sm934793ywd.29.2009.10.29.18.35.30
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 29 Oct 2009 18:35:33 -0700 (PDT)
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	"Maciej W. Rozycki" <macro@linux-mips.org>,
-	linux-mips@linux-mips.org, David Daney <ddaney@caviumnetworks.com>,
-	Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH v3] MIPS: fixes and cleanups for the compressed kernel support
-Date:	Fri, 30 Oct 2009 09:35:24 +0800
-Message-Id: <1256866524-26863-1-git-send-email-wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.6.2.1
-Return-Path: <wuzhangjin@gmail.com>
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :content-type;
+        b=VFFCltLBsjyySUUmzHhJTyccjad0CZ5Fv4hcu/giqICapXGM8Bk9j6RapQfP9Exrn5
+         V69hKIisBtEq3R0MwcR5ZMTKL2g+jinngl8YPmCxEdrLFbU/MzmW9ig7qV0U8aL1aRaJ
+         1RixbnofkTh/ih2yWduU9VRfj71dUfu39ZE1k=
+MIME-Version: 1.0
+Received: by 10.231.81.148 with SMTP id x20mr2591453ibk.2.1256868974864; Thu, 
+	29 Oct 2009 19:16:14 -0700 (PDT)
+In-Reply-To: <1256797212-7794-1-git-send-email-wuzhangjin@gmail.com>
+References: <1256797212-7794-1-git-send-email-wuzhangjin@gmail.com>
+Date:	Fri, 30 Oct 2009 10:16:14 +0800
+Message-ID: <a2dc26810910291916x1556eb21uecaa8bdeeb98baae@mail.gmail.com>
+Subject: Re: [PATCH -v1] MIPS: a few of fixups and cleanups for the compressed 
+	kernel support
+From:	Chih-hung Lu <winfred.lu@gmail.com>
+To:	Wu Zhangjin <wuzhangjin@gmail.com>,
+	Linux-MIPS <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <winfred.lu@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24584
+X-archive-position: 24585
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: winfred.lu@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Wu Zhangjin <wuzhangjin@gmail.com>
+2009/10/29 Wu Zhangjin <wuzhangjin@gmail.com>:
+> From: Wu Zhangjin <wuzhangjin@gmail.com>
+>
+> This patch indents the instructions in the delay slot of the file which
+> has a ".set noreorder" added.
+>
+> and also, the "addu a0, 4" instruction is replaced by "addiu a0, a0, 4".
+Hi,
 
-This patch indents the instructions in the delay slot of the file which
-has a ".set noreorder" added.
+May I ask a question,
+what is the difference between "addu a0, 4" and "addiu a0, a0, 4"?
+They look same to me.
+Thank you.
 
-and also, the "addu a0, 4" instruction is replaced by "addiu a0, a0, 4".
-
-(This is against the commit
-c6adcc73663a71f2aa9e66796a9bd57fcb6a349a(MIPS: add support for
-gzip/bzip2/lzma compressed kernel images) in the mips-for-linux-next
-branch of Ralf's
-http://www.linux-mips.org/git?p=upstream-sfr.git;a=summary
-
-This -v3 revision incorporates the feedback from "Maciej W. Rozycki"
-<macro@linux-mips.org> and David Daney <ddaney@caviumnetworks.com>
-
-Hi, Ralf, could you please merge it into you mips-for-linux-next
-branch?)
-
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- arch/mips/boot/compressed/head.S |    9 +++++----
- 1 files changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/arch/mips/boot/compressed/head.S b/arch/mips/boot/compressed/head.S
-index e23f25e..4e65a84 100644
---- a/arch/mips/boot/compressed/head.S
-+++ b/arch/mips/boot/compressed/head.S
-@@ -30,7 +30,7 @@ start:
- 	PTR_LA	a2, _end
- 1:	sw	zero, 0(a0)
- 	bne	a2, a0, 1b
--	addu	a0, 4
-+	 addiu	a0, a0, 4
- 
- 	PTR_LA	a0, (.heap)          /* heap address */
- 	PTR_LA  sp, (.stack + 8192)  /* stack address */
-@@ -38,7 +38,7 @@ start:
- 	PTR_LA	ra, 2f
- 	PTR_LA	k0, decompress_kernel
- 	jr	k0
--	nop
-+	 nop
- 2:
- 	move	a0, s0
- 	move	a1, s1
-@@ -46,9 +46,10 @@ start:
- 	move	a3, s3
- 	PTR_LI	k0, KERNEL_ENTRY
- 	jr	k0
--	nop
-+	 nop
- 3:
--	b 3b
-+	b	3b
-+	 nop
- 	END(start)
- 
- 	.comm .heap,BOOT_HEAP_SIZE,4
--- 
-1.6.2.1
+Regards,
+Winfred Lu

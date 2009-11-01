@@ -1,59 +1,61 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Nov 2009 08:41:58 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:38618 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
-	id S1492452AbZKAHlz (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 1 Nov 2009 08:41:55 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nA17hIAr013203;
-	Sun, 1 Nov 2009 08:43:19 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nA17hHiW013201;
-	Sun, 1 Nov 2009 08:43:17 +0100
-Date:	Sun, 1 Nov 2009 08:43:17 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Chih-hung Lu <winfred.lu@gmail.com>
-Cc:	Wu Zhangjin <wuzhangjin@gmail.com>,
-	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: [PATCH -v1] MIPS: a few of fixups and cleanups for the
-	compressed kernel support
-Message-ID: <20091101074317.GD4551@linux-mips.org>
-References: <1256797212-7794-1-git-send-email-wuzhangjin@gmail.com> <a2dc26810910291916x1556eb21uecaa8bdeeb98baae@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Nov 2009 15:18:31 +0100 (CET)
+Received: from mail-pz0-f194.google.com ([209.85.222.194]:49696 "EHLO
+	mail-pz0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492455AbZKAOSY (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 1 Nov 2009 15:18:24 +0100
+Received: by pzk32 with SMTP id 32so2841335pzk.21
+        for <linux-mips@linux-mips.org>; Sun, 01 Nov 2009 06:18:14 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:date:message-id:subject
+         :from:to:content-type;
+        bh=Rt2L/ZB+Z17wJIaWyEFr4okbRv6QaYlauMGBX+WpmUw=;
+        b=xtrT4Bfb//mT/CwkehSmSCMzruCCyuxLMFPSSwzjOr5hHPVkmFrJ14V/VDFxOovf6m
+         P6HFMavxM7x1+OW1dR/GYkNR7p+78Tf3hhhDxHkIdnhpMAk4bErP2EV1qH9hr1OZdNiZ
+         wJWXM7g40HnB3X0TniU63nwd56L/7HMxzJHWI=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=yDpl2u+Hj5iLSTRTekjQEW6SsaqOUG91d/zNnPgDMhAk8eDMqi5BXPU8FZfmEs6ggO
+         t2LiTl6Rc+kyT6KvP5FvbqXsW5rQNl5ukgTNUhKJROc/f2XKOaLZqhdFLpUnYIJc/78K
+         J8/atAyYEYjhEFpuah7Huz2eTcYQ9PEWE+7VE=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a2dc26810910291916x1556eb21uecaa8bdeeb98baae@mail.gmail.com>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <ralf@linux-mips.org>
+Received: by 10.142.152.1 with SMTP id z1mr324756wfd.322.1257085094528; Sun, 
+	01 Nov 2009 06:18:14 -0800 (PST)
+Date:	Sun, 1 Nov 2009 22:18:14 +0800
+Message-ID: <3a665c760911010618u7216cd68wfbd02610d2029862@mail.gmail.com>
+Subject: why we use multu to implement udelay
+From:	loody <miloody@gmail.com>
+To:	Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <miloody@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24598
+X-archive-position: 24599
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: miloody@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Oct 30, 2009 at 10:16:14AM +0800, Chih-hung Lu wrote:
+Dear all:
+If I search the right place in mip kernel, I find the kernel implement
+udelay by multu and bnez looping, in 32-bits mode.
+	if (sizeof(long) == 4)
+		__asm__("multu\t%2, %3"
+		: "=h" (usecs), "=l" (lo)
+		: "r" (usecs), "r" (lpj)
+		: GCC_REG_ACCUM);
+	else if (sizeof(long) == 8)
+		__asm__("dmultu\t%2, %3"
+		: "=h" (usecs), "=l" (lo)
+		: "r" (usecs), "r" (lpj)
+		: GCC_REG_ACCUM);
 
-> May I ask a question,
-> what is the difference between "addu a0, 4" and "addiu a0, a0, 4"?
-
-That's because you are human - you're smart enough to notice the difference
-without even thinking about it :)
-
-The machine instructions addu and addiu differ.  Addiu takes an immediate
-constant as it's last op.  Addu takes a register instead.  Now the assembler
-is trying to make things a little easier to us.  Depending on the type of
-the last argument it will assemble an "addu" assembler instruction either
-into an addiu or addu.
-
-The other difference between the two instructions used in your example is
-that the first has two operands, the other three operands.  If there is
-only two operands, the assembler will implicitly assume, that the 2nd
-register is the same as the first register.
-
-Or in other words, the code generated from both will be entirely identical.
-
-  Ralf
+	__delay(usecs);
+why we doing so instead of using kernel timer function and the
+precision will be incorrect if the cpu runs faster or slower, right?
+appreciate your help,
+miloody

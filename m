@@ -1,78 +1,62 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 01 Nov 2009 16:18:44 +0100 (CET)
-Received: from mail-gx0-f227.google.com ([209.85.217.227]:38323 "EHLO
-	mail-gx0-f227.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493773AbZKAPSh convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 1 Nov 2009 16:18:37 +0100
-Received: by gxk27 with SMTP id 27so431663gxk.7
-        for <multiple recipients>; Sun, 01 Nov 2009 07:18:31 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=R0sNxzuV+TV78/1vjRkwuqdZb8K/8bv0t2rRAYWDA1Q=;
-        b=K5sfSWXi28I0taRy4zKjuHu5l/G/uUKfF/NxySUFB0YzMllnIA/g06WLPOR9cF4D46
-         uB/FUNyw/Sa9ZWruHzHbFBrfxETBaFng3s0B8zck9+k8CFpN26JS8JGQxshdOBcTlwpA
-         l7PGemcPpyOuyVdOS1S5enMEXseeRLvv7zrVg=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=Jpwqu7uIYY2rgchtFoRtVBWQx/QVuLnVtEQlnjkILy6VQK5u5SJPoywVLJnkRBHw9f
-         xi/ejdBo5EGxHV4kinxB/OHGtWuJ3ou+lkSqu2vvTW+ruv+vi01RmFQXHv2yI6yxGqHn
-         YoZ6GCkDnsUIZkabDs95xuMJmVTp/TVX+plO8=
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Nov 2009 06:58:22 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:42327 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S1492160AbZKBF6T (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 2 Nov 2009 06:58:19 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nA25xca6012954;
+	Mon, 2 Nov 2009 06:59:38 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nA25xZ6p012951;
+	Mon, 2 Nov 2009 06:59:35 +0100
+Date:	Mon, 2 Nov 2009 06:59:34 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Robert Richter <robert.richter@amd.com>
+Cc:	Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
+	John Levon <levon@movementarian.org>,
+	oprofile-list@lists.sourceforge.net
+Subject: Re: [PATCH] oprofile/loongson2: rename cpu_type from godson2 to
+	loongson2
+Message-ID: <20091102055934.GA10689@linux-mips.org>
+References: <1256136706-27810-1-git-send-email-wuzhangjin@gmail.com> <20091021165907.GJ11972@erda.amd.com>
 MIME-Version: 1.0
-Received: by 10.90.62.21 with SMTP id k21mr7840940aga.10.1257088711086; Sun, 
-	01 Nov 2009 07:18:31 -0800 (PST)
-In-Reply-To: <20091101071407.GC4551@linux-mips.org>
-References: <e997b7420910281651p24b8e367m1e2ddbc1b95ac623@mail.gmail.com>
-	 <20091101071407.GC4551@linux-mips.org>
-Date:	Sun, 1 Nov 2009 23:18:31 +0800
-Message-ID: <e997b7420911010718x2da0eaebi9a30e448446782a0@mail.gmail.com>
-Subject: Re: Problem in booting when calling calibrate_delay
-From:	"wilbur.chan" <wilbur512@gmail.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <wilbur512@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20091021165907.GJ11972@erda.amd.com>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24600
+X-archive-position: 24601
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wilbur512@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-2009/11/1 Ralf Baechle <ralf@linux-mips.org>:
-> On Thu, Oct 29, 2009 at 07:51:52AM +0800, wilbur.chan wrote:
->
->> Howerver, the code seemd to stop before calling 'start_kernel--->
->>
->> calibrate_delay ' .
->>
-> When something like this happens it is in most cases caused by timer
-> interrupt not working.
->
->  Ralf
->
+On Wed, Oct 21, 2009 at 06:59:07PM +0200, Robert Richter wrote:
 
-Hi, ralf ,  I found that, jiffies remain the same when booting , so
-calibrate_delay loop all the time , at while(ticks==jiffies);
+> On 21.10.09 22:51:46, Wu Zhangjin wrote:
+> > This patch try to unify the naming method between kernel and the
+> > user-space oprofile tool. 'Cause loongson is used instead of godson in
+> > most of the places, and just confer with the developer of the user-space
+> > tool, we are agreed to use loongson instead, which will help a lot to
+> > the future maintaining.
+> > 
+> > (This patch is very important to help the user-space support upstream,
+> >  so, Ralf, could you please merge it into your -queue branch, thanks!)
 
-I guess it was the problem of timer interrupt as you said.
+Applied to master, not queue.  The name is part of an API, so cosmetic
+changes like this are to be avoided.  Fortunately the oprofile code in
+question is still fairly new, hasn't been art of any stable kernel
+release yet so it better go into the kernel now than later.
 
+> > Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+> 
+> Acked-by: Robert Richter <robert.richter@amd.com>
+> 
+> Ralf, please apply to your tree.
 
-Someone told me that , it might be the problem of console_init ,but I
-still don't know where exactly
-
-the problem is .
-
-Can you tell more about how to fix this ?
-
-
-Thx
+  Ralf

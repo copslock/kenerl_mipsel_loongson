@@ -1,31 +1,31 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Nov 2009 07:49:14 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:51913 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Nov 2009 08:16:03 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:34616 "EHLO h5.dl5rb.org.uk"
 	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
-	id S1492638AbZKBGtL (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 2 Nov 2009 07:49:11 +0100
+	id S1492732AbZKBHQA (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 2 Nov 2009 08:16:00 +0100
 Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nA26oZq3014317;
-	Mon, 2 Nov 2009 07:50:35 +0100
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nA27HPkU014921;
+	Mon, 2 Nov 2009 08:17:25 +0100
 Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nA26oYqc014308;
-	Mon, 2 Nov 2009 07:50:34 +0100
-Date:	Mon, 2 Nov 2009 07:50:34 +0100
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nA27HOeZ014919;
+	Mon, 2 Nov 2009 08:17:24 +0100
+Date:	Mon, 2 Nov 2009 08:17:24 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Arnaud Patard <apatard@mandriva.com>
-Cc:	linux-mips@linux-mips.org
-Subject: Re: [PATCH] Fix ppoll on o32 with 64bit kernel
-Message-ID: <20091102065033.GA13360@linux-mips.org>
-References: <m363aa8o70.fsf@anduin.mandriva.com>
+To:	loody <miloody@gmail.com>
+Cc:	Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Subject: Re: why we use multu to implement udelay
+Message-ID: <20091102071724.GB13360@linux-mips.org>
+References: <3a665c760911010618u7216cd68wfbd02610d2029862@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <m363aa8o70.fsf@anduin.mandriva.com>
+In-Reply-To: <3a665c760911010618u7216cd68wfbd02610d2029862@mail.gmail.com>
 User-Agent: Mutt/1.5.19 (2009-01-05)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24602
+X-archive-position: 24603
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,15 +33,32 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Oct 20, 2009 at 10:27:47AM +0200, Arnaud Patard wrote:
+On Sun, Nov 01, 2009 at 10:18:14PM +0800, loody wrote:
 
-> sys_ppoll syscall needs to use a compat handler on 64bit kernels with
-> o32 user-space. This patch wires it.
+> If I search the right place in mip kernel, I find the kernel implement
+> udelay by multu and bnez looping, in 32-bits mode.
+> 	if (sizeof(long) == 4)
+> 		__asm__("multu\t%2, %3"
+> 		: "=h" (usecs), "=l" (lo)
+> 		: "r" (usecs), "r" (lpj)
+> 		: GCC_REG_ACCUM);
+> 	else if (sizeof(long) == 8)
+> 		__asm__("dmultu\t%2, %3"
+> 		: "=h" (usecs), "=l" (lo)
+> 		: "r" (usecs), "r" (lpj)
+> 		: GCC_REG_ACCUM);
 > 
-> Signed-off-by: Arnaud Patard <apatard@mandriva.com>
+> 	__delay(usecs);
+> why we doing so instead of using kernel timer function and the
+> precision will be incorrect if the cpu runs faster or slower, right?
 
-Cute.  This one applies to all kernel from 2.6.16 up.
+This is an old-fashioned implementation which will work even on systems
+where no CPU timer is available or its frequency is unknown or variable.
 
-Applied, thanks!
+A while ago patches were posted to use the cp0 counter instead but do
+to other necessary rewrites those patches went stale, so need to be
+reworked before they can be applied.  Either way, for above restrictions
+the delay by looping implementation will still be needed as the fallback
+implementation.
 
   Ralf

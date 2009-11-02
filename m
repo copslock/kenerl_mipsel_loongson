@@ -1,116 +1,94 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Nov 2009 22:44:09 +0100 (CET)
-Received: from mail-ew0-f214.google.com ([209.85.219.214]:56555 "EHLO
-	mail-ew0-f214.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493403AbZKBVoC (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 2 Nov 2009 22:44:02 +0100
-Received: by ewy10 with SMTP id 10so6183175ewy.33
-        for <multiple recipients>; Mon, 02 Nov 2009 13:43:55 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Nov 2009 00:33:57 +0100 (CET)
+Received: from mail-yx0-f204.google.com ([209.85.210.204]:56514 "EHLO
+	mail-yx0-f204.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493440AbZKBXdv (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 3 Nov 2009 00:33:51 +0100
+Received: by yxe42 with SMTP id 42so5603010yxe.22
+        for <linux-mips@linux-mips.org>; Mon, 02 Nov 2009 15:33:45 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:received:date:from:to:cc
-         :subject:message-id:references:mime-version:content-type
-         :content-disposition:in-reply-to:user-agent;
-        bh=OgCrKQYn9/oybKjIMgyo8odG+anVCej79+JUffsvlBk=;
-        b=WFwEfg4GHRtMUYjC2sL4T4UY3ksu9WYWylAGb17GOoPRvNwxoPVEgIp6fT5PfxeqYQ
-         CBkEoHfvaryaLaig6sYhFR/zzzZ5kiOL9jrZxQjY0knyaR5Yz8PqNBmY0bVw8pwX83VF
-         BO3dgKvSmcr8jMGwOcm9eLRRcXQ2JYnamaZx4=
+        h=domainkey-signature:mime-version:received:date:message-id:subject
+         :from:to:content-type;
+        bh=7F6twuMJaeisfHuSsK6bW6lGzxJK1QbCvHP4/4cALZU=;
+        b=qIpcee11Zw9Gj/S4BCg3aAxnEQ2oMcbf1Yk1uNDAae+l5j8E+KRfhyefziBhlgRh/D
+         2GveKk3uJHoU8Pte+NIZnK2SlmRJpxJLaWJuAMnnHLidZrbqiTSW9S92eIovS2Xq991R
+         Ql3s0B9LtrqCfP4DQKmeU7uQPDuOwOQc90LHM=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-type:content-disposition:in-reply-to:user-agent;
-        b=F6wh4sZinmOFvy2YheS+kAVAzANDnMjvIFqg10SQatyZDqepDolyEHYTCCY8efeG7d
-         GqQfspsrpK+biSmcbcm0Sf5amsIJq08/i+rzoFaah8/ViTMi7dFXnu6VGIEVQh0EGjPp
-         kL3OVI476Xboa19AjxzX2zHkfJ3D1orJOd3ls=
-Received: by 10.216.85.197 with SMTP id u47mr5329765wee.133.1257198235670;
-        Mon, 02 Nov 2009 13:43:55 -0800 (PST)
-Received: from nowhere (ADijon-552-1-8-120.w92-138.abo.wanadoo.fr [92.138.147.120])
-        by mx.google.com with ESMTPS id 23sm9161166eya.44.2009.11.02.13.43.51
-        (version=SSLv3 cipher=RC4-MD5);
-        Mon, 02 Nov 2009 13:43:53 -0800 (PST)
-Received: by nowhere (nbSMTP-1.00) for uid 1000
-	(using TLSv1/SSLv3 with cipher RC4-MD5 (128/128 bits))
-	fweisbec@gmail.com; Mon,  2 Nov 2009 22:43:56 +0100 (CET)
-Date:	Mon, 2 Nov 2009 22:43:55 +0100
-From:	Frederic Weisbecker <fweisbec@gmail.com>
-To:	Wu Zhangjin <wuzhangjin@gmail.com>
-Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-	rostedt@goodmis.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Nicholas Mc Guire <der.herr@hofr.at>,
-	Richard Sandiford <rdsandiford@googlemail.com>,
-	David Daney <ddaney@caviumnetworks.com>,
-	Adam Nemet <anemet@caviumnetworks.com>,
-	Patrik Kluba <kpajko79@gmail.com>
-Subject: Re: [PATCH -v5 08/11] tracing: not trace mips_timecounter_init()
-	in MIPS
-Message-ID: <20091102214351.GI4880@nowhere>
-References: <2f73eae542c47ac5bbb9f7280e6c0271d193e90d.1256483735.git.wuzhangjin@gmail.com> <3e0c2d7d8b8f196a8153beb41ea7f3cbf42b3d84.1256483735.git.wuzhangjin@gmail.com> <54c417629e91f40b2bbb4e08cda2a4e6527824c0.1256483735.git.wuzhangjin@gmail.com> <29bccff04932e993ecd9f516d8b6dcf84e2ceecf.1256483735.git.wuzhangjin@gmail.com> <72f2270f7b6e01ca7a4cdf4ac8c21778e5d9652f.1256483735.git.wuzhangjin@gmail.com> <cover.1256483735.git.wuzhangjin@gmail.com> <6140dd8f4e1783e5ac30977cf008bb98e4698322.1256483735.git.wuzhangjin@gmail.com> <49b3c441a57f4db423732f81432a3450ccb3240e.1256483735.git.wuzhangjin@gmail.com> <c62985530910251727o23beafcco539870e4b2f84637@mail.gmail.com> <1256550156.5642.148.camel@falcon>
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=ZSPG0ZwSs61dmq6SSzJbThO4bj45mdcnI+dQNXTOxtFMPfhMuJHcv+SypNFxalDt6q
+         QMrPDl2ZTY7vtlH7bb9aVKR7s1QReMuZSxh6h9LLERZomxZxsMadhaJWCicgb8hr7zVL
+         4zsLCfYjpADGzNyESxc8nnSeGJFC1PNUHCjjU=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1256550156.5642.148.camel@falcon>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <fweisbec@gmail.com>
+Received: by 10.90.62.4 with SMTP id k4mr1896548aga.56.1257204824420; Mon, 02 
+	Nov 2009 15:33:44 -0800 (PST)
+Date:	Tue, 3 Nov 2009 07:33:44 +0800
+Message-ID: <e997b7420911021533t58dd2b1dr61218a67952dae97@mail.gmail.com>
+Subject: mips64 smp kexec failed booting at timer interrupt
+From:	"wilbur.chan" <wilbur512@gmail.com>
+To:	kexec@lists.infradead.org,
+	Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: text/plain; charset=ISO-8859-1
+Return-Path: <wilbur512@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24622
+X-archive-position: 24623
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: fweisbec@gmail.com
+X-original-sender: wilbur512@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Oct 26, 2009 at 05:42:36PM +0800, Wu Zhangjin wrote:
-> On Mon, 2009-10-26 at 01:27 +0100, Frederic Weisbecker wrote:
-> > 2009/10/25 Wu Zhangjin <wuzhangjin@gmail.com>:
-> > > -static inline u64 mips_timecounter_read(void)
-> > > +static inline u64 notrace mips_timecounter_read(void)
-> > 
-> > 
-> > You don't need to set notrace functions, unless their addresses
-> > are referenced somewhere, which unfortunately might happen
-> > for some functions but this is rare.
-> > 
-> 
-> Okay, Will remove it.
+I '  m using kexec on a mips64 smp board.
+
+http://lists.infradead.org/pipermail/kexec/2008-June/001909.html
+
+By now , the second kernel has halt at start_kernel --> calibrate_delay,
+
+and I found that it was because of jiffies was not changing.
+
+So  it might be the failure of installation for timer interrupt , or
+timer interrupt did not trigger.
 
 
 
-Oops, a word has escaped from my above sentence. I wanted to say:
+Before jumped into second kernel, local_irq_disable was called at each
+CPU , and only one of CPU
 
-"You don't need to set notrace to inline functions" :)
 
-
-> > Hmm yeah this is not very nice to do that in core functions because
-> > of a specific arch problem.
-> > At least you have __notrace_funcgraph, this is a notrace
-> > that only applies if CONFIG_FUNCTION_GRAPH_TRACER
-> > so that it's still traceable by the function tracer in this case.
-> > 
-> > But I would rather see a __mips_notrace on these two core functions.
-> 
-> What about this: __arch_notrace? If the arch need this, define it,
-> otherwise, ignore it! if only graph tracer need it, define it in "#ifdef
-> CONFIG_FUNCTION_GRAPH_TRACER ... #endif".
+was enable to jump into second kernel, while the others loop at
+relocate_kernel all the time.
 
 
 
-The problem is that archs may want to disable tracing on different
-places.
-For example mips wants to disable tracing in timecounter_read_delta,
-but another arch may want to disable tracing somewhere else.
 
-We'll then have several unrelated __arch_notrace. One that is relevant
-for mips, another that is relevant for arch_foo, but all of them will
-apply for all arch that have defined a __arch_notrace.
+After I got dump_stack log of the firts kernel, I found that, do_timer
+was invoked right after
 
-It's true that __mips_notrace is not very elegant as it looks like
-a specific arch annotation intruder.
+console_init -->release_console_sem , it seemed that , timer interrupt
+would be triggered
 
-But at least that gives us a per arch filter granularity.
+by release_console_sem .
 
-If only static ftrace could disappear, we could keep only dynamic
-ftrace and we would then be able to filter dynamically.
-But I'm not sure it's a good idea for archs integration.
+here is the dump_stack info of do_timer of first kernel:
+
+
+0:Call Trace:
+0:[ <834243cc>]0: dump_stack+0x8/0x34
+0:[ <83451ee0>]0: do_timer+0x70/0xa8
+0:[ <8342333c>]0: timer_interrupt+0x64/0x160
+0:[ <834234b4>]0: ll_timer_interrupt+0x7c/0xd8
+0:[ <8341d220>]0: ret_from_irq+0x0/0x4
+0:[ <83443a64>]0: release_console_sem+0x1e0/0x328
+0:[ <8377cf88>]0: serial8250_console_init+0x1c/0x2c
+0:[ <8377ae58>]0: console_init+0x4c/0x6c
+0:[ <83762dd8>]0: start_kernel+0x3e0/0x75c
+
+
+
+Any one know how to fix it?  or how to enable the timer interrupt  in
+second kernel?
+
+Thx

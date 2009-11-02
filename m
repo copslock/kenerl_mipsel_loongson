@@ -1,42 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Nov 2009 21:22:04 +0100 (CET)
-Received: from mail-ew0-f214.google.com ([209.85.219.214]:62106 "EHLO
-	mail-ew0-f214.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493948AbZKBUV6 (ORCPT
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Nov 2009 21:22:29 +0100 (CET)
+Received: from ey-out-1920.google.com ([74.125.78.147]:32116 "EHLO
+	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1493951AbZKBUV6 (ORCPT
 	<rfc822;linux-mips@linux-mips.org>); Mon, 2 Nov 2009 21:21:58 +0100
-Received: by ewy10 with SMTP id 10so6099690ewy.33
-        for <linux-mips@linux-mips.org>; Mon, 02 Nov 2009 12:21:53 -0800 (PST)
+Received: by ey-out-1920.google.com with SMTP id 5so976175eyb.52
+        for <linux-mips@linux-mips.org>; Mon, 02 Nov 2009 12:21:57 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=jqE/i+EX1H2jqDvIc0yyOdSOu5opdoYLTMsPvJM/yQY=;
-        b=D5am/0sB1/5qix9pDbheafuwQz/UbQahgYwgE2FIypqQSAiBl4Hx3ZznDDS1ikcYBZ
-         VmCljGOswt1HOHSvVrK1Ayd3JQ+gAdo+84WYghxmOpaSPpqg3er4rK1Nas2m3EqaoaAR
-         DLmHF2mlbWwU4M7hwJiJ20jsUU+1fIxsBTWNA=
+         :message-id:x-mailer:in-reply-to:references;
+        bh=4YFKSb7r6EUa3aalPBS4kDGPvaZPlru4apl16mZw4pE=;
+        b=sHncxU8IkPWBdIalCkKfEIsN7tx3zTvhgF9tPbbjKnjxxACIU/bDvqVV+weOzTCzpI
+         ZgMKX3h5kIV06ZpBCMDcu7YST3XboAcMOHuT2tMPXXxsCSUTRHQXakAqzn3SQeamHfgj
+         6VLRoSe8Ev3OHZ+dgLowEVas6ub96Hkkxffgs=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=googlemail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=hARQSJIG5dKzy40yyscUEUxLtKy2pVgYiYfY5U5oGQ+ob1vUe3HeZxhpc7Nci5J12y
-         Pmc8ABmYzzz2mgsZzucSaBhJzoHbNipyOLHLTvn/3LXYe0sJMx0jwWrLojT5qjyvxeJC
-         YfEfgx2S6kmcNpUpj83MyNZ6fK/OSE8fN8Vog=
-Received: by 10.216.91.13 with SMTP id g13mr376891wef.36.1257193313154;
-        Mon, 02 Nov 2009 12:21:53 -0800 (PST)
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        b=Mc9g9uXIZi5P4+qsGDKX/oTBL4xqlw840A6KZA107u9LRZNIme7Sn6vPzBQggYF0th
+         iRkoREIGOaZX2+rY9BfSyx2u2MeKeMBNntTulMc+g0+goN4zOW7FFVNNfa9zona3WRHf
+         XmqMHiCPmnUZlnEvdLnSF+E2RJW+snMZEfFYk=
+Received: by 10.216.91.6 with SMTP id g6mr5211778wef.212.1257193317521;
+        Mon, 02 Nov 2009 12:21:57 -0800 (PST)
 Received: from localhost.localdomain (p5496F7DD.dip.t-dialin.net [84.150.247.221])
-        by mx.google.com with ESMTPS id m5sm15375gve.11.2009.11.02.12.21.50
+        by mx.google.com with ESMTPS id m5sm15375gve.11.2009.11.02.12.21.55
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 02 Nov 2009 12:21:52 -0800 (PST)
+        Mon, 02 Nov 2009 12:21:56 -0800 (PST)
 From:	Manuel Lauss <manuel.lauss@googlemail.com>
 To:	Linux-MIPS <linux-mips@linux-mips.org>
 Cc:	Manuel Lauss <manuel.lauss@gmail.com>
-Subject: [RFC PATCH 1/3] MIPS: Alchemy: extended DB1200 board support.
-Date:	Mon,  2 Nov 2009 21:21:43 +0100
-Message-Id: <1257193305-29996-1-git-send-email-manuel.lauss@gmail.com>
+Subject: [PATCH 3/3] MIPS: Alchemy: db1200 defconfig update
+Date:	Mon,  2 Nov 2009 21:21:45 +0100
+Message-Id: <1257193305-29996-3-git-send-email-manuel.lauss@gmail.com>
 X-Mailer: git-send-email 1.6.5.1
+In-Reply-To: <1257193305-29996-2-git-send-email-manuel.lauss@gmail.com>
+References: <1257193305-29996-1-git-send-email-manuel.lauss@gmail.com>
+ <1257193305-29996-2-git-send-email-manuel.lauss@gmail.com>
 Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24619
+X-archive-position: 24620
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -44,917 +47,2073 @@ X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-Create own directory for DB1200 code and update it with new features.
-
-- SPI support:
-  - tmp121 temperature sensor
-  - SPI flash on DB1200
-- I2C support
-  - NE1619 sensor
-  - AT24 eeprom
-- I2C/SPI can be selected at boot time via switch S6.8
-- Carddetect IRQs for SD cards.
-- gen_nand based NAND support.
-- hexleds count sleep/wake transitions.
-
 Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
 ---
-Against mips-queue; also depends on patch "Alchemy: physmap-flash for
-all devboards" to build properly.
+ arch/mips/configs/db1200_defconfig | 1481 +++++++++++++++++++++---------------
+ 1 files changed, 850 insertions(+), 631 deletions(-)
 
- arch/mips/alchemy/common/reset.c                 |    3 -
- arch/mips/alchemy/devboards/Makefile             |    2 +-
- arch/mips/alchemy/devboards/db1200/Makefile      |    1 +
- arch/mips/alchemy/devboards/db1200/platform.c    |  510 ++++++++++++++++++++++
- arch/mips/alchemy/devboards/db1200/setup.c       |  137 ++++++
- arch/mips/alchemy/devboards/pb1200/board_setup.c |    9 -
- arch/mips/alchemy/devboards/pb1200/platform.c    |   34 --
- arch/mips/include/asm/mach-db1x00/db1200.h       |   33 +--
- 8 files changed, 654 insertions(+), 75 deletions(-)
- create mode 100644 arch/mips/alchemy/devboards/db1200/Makefile
- create mode 100644 arch/mips/alchemy/devboards/db1200/platform.c
- create mode 100644 arch/mips/alchemy/devboards/db1200/setup.c
-
-diff --git a/arch/mips/alchemy/common/reset.c b/arch/mips/alchemy/common/reset.c
-index 4791011..266afd4 100644
---- a/arch/mips/alchemy/common/reset.c
-+++ b/arch/mips/alchemy/common/reset.c
-@@ -164,9 +164,6 @@ void au1000_halt(void)
- #ifdef CONFIG_MIPS_MIRAGE
- 	gpio_direction_output(210, 1);
- #endif
--#ifdef CONFIG_MIPS_DB1200
--	au_writew(au_readw(0xB980001C) | (1 << 14), 0xB980001C);
--#endif
- #ifdef CONFIG_PM
- 	au_sleep();
+diff --git a/arch/mips/configs/db1200_defconfig b/arch/mips/configs/db1200_defconfig
+index d73f1de..a7ca995 100644
+--- a/arch/mips/configs/db1200_defconfig
++++ b/arch/mips/configs/db1200_defconfig
+@@ -1,79 +1,101 @@
+ #
+ # Automatically generated make config: don't edit
+-# Linux kernel version: 2.6.20
+-# Tue Feb 20 21:47:25 2007
++# Linux kernel version: 2.6.32-rc5
++# Mon Nov  2 21:09:28 2009
+ #
+ CONFIG_MIPS=y
  
-diff --git a/arch/mips/alchemy/devboards/Makefile b/arch/mips/alchemy/devboards/Makefile
-index c74ef80..ecbd37f 100644
---- a/arch/mips/alchemy/devboards/Makefile
-+++ b/arch/mips/alchemy/devboards/Makefile
-@@ -11,7 +11,7 @@ obj-$(CONFIG_MIPS_PB1500)	+= pb1500/
- obj-$(CONFIG_MIPS_PB1550)	+= pb1550/
- obj-$(CONFIG_MIPS_DB1000)	+= db1x00/
- obj-$(CONFIG_MIPS_DB1100)	+= db1x00/
--obj-$(CONFIG_MIPS_DB1200)	+= pb1200/
-+obj-$(CONFIG_MIPS_DB1200)	+= db1200/
- obj-$(CONFIG_MIPS_DB1500)	+= db1x00/
- obj-$(CONFIG_MIPS_DB1550)	+= db1x00/
- obj-$(CONFIG_MIPS_BOSPORUS)	+= db1x00/
-diff --git a/arch/mips/alchemy/devboards/db1200/Makefile b/arch/mips/alchemy/devboards/db1200/Makefile
-new file mode 100644
-index 0000000..17840a5
---- /dev/null
-+++ b/arch/mips/alchemy/devboards/db1200/Makefile
-@@ -0,0 +1 @@
-+obj-y += setup.o platform.o
-diff --git a/arch/mips/alchemy/devboards/db1200/platform.c b/arch/mips/alchemy/devboards/db1200/platform.c
-new file mode 100644
-index 0000000..5a6ef8d
---- /dev/null
-+++ b/arch/mips/alchemy/devboards/db1200/platform.c
-@@ -0,0 +1,510 @@
-+/*
-+ * DBAu1200 board platform device registration
-+ *
-+ * Copyright (C) 2008-2009 Manuel Lauss
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-+ */
-+
-+#include <linux/dma-mapping.h>
-+#include <linux/gpio.h>
-+#include <linux/i2c.h>
-+#include <linux/init.h>
-+#include <linux/io.h>
-+#include <linux/leds.h>
-+#include <linux/mmc/host.h>
-+#include <linux/mtd/mtd.h>
-+#include <linux/mtd/nand.h>
-+#include <linux/mtd/partitions.h>
-+#include <linux/platform_device.h>
-+#include <linux/serial_8250.h>
-+#include <linux/spi/spi.h>
-+#include <linux/spi/flash.h>
-+#include <linux/smc91x.h>
-+
-+#include <asm/mach-au1x00/au1100_mmc.h>
-+#include <asm/mach-au1x00/au1xxx_dbdma.h>
-+#include <asm/mach-au1x00/au1550_spi.h>
-+#include <asm/mach-db1x00/bcsr.h>
-+#include <asm/mach-db1x00/db1200.h>
-+
-+#include "../platform.h"
-+
-+static struct mtd_partition db1200_spiflash_parts[] = {
-+	{
-+		.name	= "DB1200 SPI flash",
-+		.offset	= 0,
-+		.size	= MTDPART_SIZ_FULL,
-+	},
-+};
-+
-+static struct flash_platform_data db1200_spiflash_data = {
-+	.name		= "s25fl001",
-+	.parts		= db1200_spiflash_parts,
-+	.nr_parts	= ARRAY_SIZE(db1200_spiflash_parts),
-+	.type		= "m25p10",
-+};
-+
-+static struct spi_board_info db1200_spi_devs[] __initdata = {
-+	{
-+		/* TI TMP121AIDBVR temp sensor */
-+		.modalias	= "tmp121",
-+		.max_speed_hz	= 2000000,
-+		.bus_num	= 0,
-+		.chip_select	= 0,
-+		.mode		= 0,
-+	},
-+	{
-+		/* Spansion S25FL001D0FMA SPI flash */
-+		.modalias	= "m25p80",
-+		.max_speed_hz	= 50000000,
-+		.bus_num	= 0,
-+		.chip_select	= 1,
-+		.mode		= 0,
-+		.platform_data	= &db1200_spiflash_data,
-+	},
-+};
-+
-+static struct i2c_board_info db1200_i2c_devs[] __initdata = {
-+	{
-+		/* AT24C04-10 I2C eeprom */
-+		I2C_BOARD_INFO("24c04", 0x52),
-+	},
-+	{
-+		/* Philips NE1619 temp/voltage sensor (adm1025 drv) */
-+		I2C_BOARD_INFO("ne1619", 0x2d),
-+	},
-+	{
-+		/* I2S audio codec WM8731 */
-+		I2C_BOARD_INFO("wm8731", 0x1b),
-+	},
-+};
-+
-+/**********************************************************************/
-+
-+static void au1200_nand_cmd_ctrl(struct mtd_info *mtd, int cmd,
-+				 unsigned int ctrl)
-+{
-+	struct nand_chip *this = mtd->priv;
-+	unsigned long ioaddr = (unsigned long)this->IO_ADDR_W;
-+
-+	ioaddr &= 0xffffff00;
-+
-+	if (ctrl & NAND_CLE) {
-+		ioaddr += MEM_STNAND_CMD;
-+	} else if (ctrl & NAND_ALE) {
-+		ioaddr += MEM_STNAND_ADDR;
-+	} else {
-+		/* assume we want to r/w real data  by default */
-+		ioaddr += MEM_STNAND_DATA;
-+	}
-+	this->IO_ADDR_R = this->IO_ADDR_W = (void __iomem *)ioaddr;
-+	if (cmd != NAND_CMD_NONE) {
-+		__raw_writeb(cmd, this->IO_ADDR_W);
-+		wmb();
-+	}
-+}
-+
-+static int au1200_nand_device_ready(struct mtd_info *mtd)
-+{
-+	return __raw_readl((void __iomem *)MEM_STSTAT) & 1;
-+}
-+
-+static const char *db1200_part_probes[] = { "cmdlinepart", NULL };
-+
-+static struct mtd_partition db1200_nand_parts[] = {
-+	{
-+		.name	= "NAND FS 0",
-+		.offset	= 0,
-+		.size	= 8 * 1024 * 1024,
-+	},
-+	{
-+		.name	= "NAND FS 1",
-+		.offset	= MTDPART_OFS_APPEND,
-+		.size	= MTDPART_SIZ_FULL
-+	},
-+};
-+
-+struct platform_nand_data db1200_nand_platdata = {
-+	.chip = {
-+		.nr_chips	= 1,
-+		.chip_offset	= 0,
-+		.nr_partitions	= ARRAY_SIZE(db1200_nand_parts),
-+		.partitions	= db1200_nand_parts,
-+		.chip_delay	= 20,
-+		.part_probe_types = db1200_part_probes,
-+	},
-+	.ctrl = {
-+		.dev_ready	= au1200_nand_device_ready,
-+		.cmd_ctrl	= au1200_nand_cmd_ctrl,
-+	},
-+};
-+
-+static struct resource db1200_nand_res[] = {
-+	[0] = {
-+		.start	= DB1200_NAND_PHYS_ADDR,
-+		.end	= DB1200_NAND_PHYS_ADDR + 0xff,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+};
-+
-+static struct platform_device db1200_nand_dev = {
-+	.name		= "gen_nand",
-+	.num_resources	= ARRAY_SIZE(db1200_nand_res),
-+	.resource	= db1200_nand_res,
-+	.id		= -1,
-+	.dev		= {
-+		.platform_data = &db1200_nand_platdata,
-+	}
-+};
-+
-+/**********************************************************************/
-+
-+static struct smc91x_platdata db1200_eth_data = {
-+	.flags	= SMC91X_NOWAIT | SMC91X_USE_16BIT,
-+	.leda	= RPC_LED_100_10,
-+	.ledb	= RPC_LED_TX_RX,
-+};
-+
-+static struct resource db1200_eth_res[] = {
-+	[0] = {
-+		.start	= DB1200_ETH_PHYS_ADDR,
-+		.end	= DB1200_ETH_PHYS_ADDR + 0xf,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= DB1200_ETH_INT,
-+		.end	= DB1200_ETH_INT,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+};
-+
-+static struct platform_device db1200_eth_dev = {
-+	.dev	= {
-+		.platform_data	= &db1200_eth_data,
-+	},
-+	.name		= "smc91x",
-+	.id		= -1,
-+	.num_resources	= ARRAY_SIZE(db1200_eth_res),
-+	.resource	= db1200_eth_res,
-+};
-+
-+/**********************************************************************/
-+
-+static struct resource db1200_ide_res[] = {
-+	[0] = {
-+		.start	= DB1200_IDE_PHYS_ADDR,
-+		.end 	= DB1200_IDE_PHYS_ADDR + DB1200_IDE_PHYS_LEN - 1,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= DB1200_IDE_INT,
-+		.end	= DB1200_IDE_INT,
-+		.flags	= IORESOURCE_IRQ,
-+	}
-+};
-+
-+static u64 ide_dmamask = DMA_32BIT_MASK;
-+
-+static struct platform_device db1200_ide_dev = {
-+	.name		= "au1200-ide",
-+	.id		= 0,
-+	.dev = {
-+		.dma_mask 		= &ide_dmamask,
-+		.coherent_dma_mask	= DMA_32BIT_MASK,
-+	},
-+	.num_resources	= ARRAY_SIZE(db1200_ide_res),
-+	.resource	= db1200_ide_res,
-+};
-+
-+/**********************************************************************/
-+
-+static struct platform_device db1200_rtc_dev = {
-+	.name	= "rtc-au1xxx",
-+	.id	= -1,
-+};
-+
-+/**********************************************************************/
-+
-+/* SD carddetects:  they're supposed to be edge-triggered, but ack
-+ * doesn't seem to work (CPLD Rev 2).  Instead, the screaming one
-+ * is disabled and its counterpart enabled.  The 500ms timeout is
-+ * because the carddetect isn't debounced in hardware.
-+ */
-+static irqreturn_t db1200_mmc_cd(int irq, void *ptr)
-+{
-+	void(*mmc_cd)(struct mmc_host *, unsigned long);
-+
-+	if (irq == DB1200_SD0_INSERT_INT) {
-+		disable_irq_nosync(DB1200_SD0_INSERT_INT);
-+		enable_irq(DB1200_SD0_EJECT_INT);
-+	} else {
-+		disable_irq_nosync(DB1200_SD0_EJECT_INT);
-+		enable_irq(DB1200_SD0_INSERT_INT);
-+	}
-+
-+	/* link against CONFIG_MMC=m */
-+	mmc_cd = symbol_get(mmc_detect_change);
-+	if (mmc_cd) {
-+		mmc_cd(ptr, msecs_to_jiffies(500));
-+		symbol_put(mmc_detect_change);
-+	}
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int db1200_mmc_cd_setup(void *mmc_host, int en)
-+{
-+	int ret;
-+
-+	if (en) {
-+		ret = request_irq(DB1200_SD0_INSERT_INT, db1200_mmc_cd,
-+				  IRQF_DISABLED, "sd_insert", mmc_host);
-+		if (ret)
-+			goto out;
-+
-+		ret = request_irq(DB1200_SD0_EJECT_INT, db1200_mmc_cd,
-+				  IRQF_DISABLED, "sd_eject", mmc_host);
-+		if (ret) {
-+			free_irq(DB1200_SD0_INSERT_INT, mmc_host);
-+			goto out;
-+		}
-+
-+		if (bcsr_read(BCSR_SIGSTAT) & BCSR_INT_SD0INSERT)
-+			enable_irq(DB1200_SD0_EJECT_INT);
-+		else
-+			enable_irq(DB1200_SD0_INSERT_INT);
-+
-+	} else {
-+		free_irq(DB1200_SD0_INSERT_INT, mmc_host);
-+		free_irq(DB1200_SD0_EJECT_INT, mmc_host);
-+	}
-+	ret = 0;
-+out:
-+	return ret;
-+}
-+
-+static void db1200_mmc_set_power(void *mmc_host, int state)
-+{
-+	if (state) {
-+		bcsr_mod(BCSR_BOARD, 0, BCSR_BOARD_SD0PWR);
-+		msleep(400);	/* stabilization time */
-+	} else
-+		bcsr_mod(BCSR_BOARD, BCSR_BOARD_SD0PWR, 0);
-+}
-+
-+static int db1200_mmc_card_readonly(void *mmc_host)
-+{
-+	return (bcsr_read(BCSR_STATUS) & BCSR_STATUS_SD0WP) ? 1 : 0;
-+}
-+
-+static int db1200_mmc_card_inserted(void *mmc_host)
-+{
-+	return (bcsr_read(BCSR_SIGSTAT) & BCSR_INT_SD0INSERT) ? 1 : 0;
-+}
-+
-+static void db1200_mmcled_set(struct led_classdev *led,
-+			      enum led_brightness brightness)
-+{
-+	if (brightness != LED_OFF)
-+		bcsr_mod(BCSR_LEDS, BCSR_LEDS_LED0, 0);
-+	else
-+		bcsr_mod(BCSR_LEDS, 0, BCSR_LEDS_LED0);
-+}
-+
-+static struct led_classdev db1200_mmc_led = {
-+	.brightness_set	= db1200_mmcled_set,
-+};
-+
-+/* needed by arch/mips/alchemy/common/platform.c */
-+struct au1xmmc_platform_data au1xmmc_platdata[] = {
-+	[0] = {
-+		.cd_setup	= db1200_mmc_cd_setup,
-+		.set_power	= db1200_mmc_set_power,
-+		.card_inserted	= db1200_mmc_card_inserted,
-+		.card_readonly	= db1200_mmc_card_readonly,
-+		.led		= &db1200_mmc_led,
-+	},
-+};
-+
-+/**********************************************************************/
-+
-+static struct resource au1200_psc0_res[] = {
-+	[0] = {
-+		.start	= PSC0_PHYS_ADDR,
-+		.end	= PSC0_PHYS_ADDR + 0x000fffff,
-+		.flags	= IORESOURCE_MEM,
-+	},
-+	[1] = {
-+		.start	= AU1200_PSC0_INT,
-+		.end	= AU1200_PSC0_INT,
-+		.flags	= IORESOURCE_IRQ,
-+	},
-+	[2] = {
-+		.start	= DSCR_CMD0_PSC0_TX,
-+		.end	= DSCR_CMD0_PSC0_TX,
-+		.flags	= IORESOURCE_DMA,
-+	},
-+	[3] = {
-+		.start	= DSCR_CMD0_PSC0_RX,
-+		.end	= DSCR_CMD0_PSC0_RX,
-+		.flags	= IORESOURCE_DMA,
-+	},
-+};
-+
-+static struct platform_device db1200_i2c_dev = {
-+	.name		= "au1xpsc_smbus",
-+	.id		= 0,	/* bus number */
-+	.num_resources	= ARRAY_SIZE(au1200_psc0_res),
-+	.resource	= au1200_psc0_res,
-+};
-+
-+static void db1200_spi_cs_en(struct au1550_spi_info *spi, int cs, int pol)
-+{
-+	if (cs)
-+		bcsr_mod(BCSR_RESETS, 0, BCSR_RESETS_SPISEL);
-+	else
-+		bcsr_mod(BCSR_RESETS, BCSR_RESETS_SPISEL, 0);
-+}
-+
-+static struct au1550_spi_info db1200_spi_platdata = {
-+	.mainclk_hz	= 50000000,	/* PSC0 clock */
-+	.num_chipselect = 2,
-+	.activate_cs	= db1200_spi_cs_en,
-+};
-+
-+static u64 spi_dmamask = DMA_32BIT_MASK;
-+
-+static struct platform_device db1200_spi_dev = {
-+	.dev	= {
-+		.dma_mask		= &spi_dmamask,
-+		.coherent_dma_mask	= DMA_32BIT_MASK,
-+		.platform_data		= &db1200_spi_platdata,
-+	},
-+	.name		= "au1550-spi",
-+	.id		= 0,	/* bus number */
-+	.num_resources	= ARRAY_SIZE(au1200_psc0_res),
-+	.resource	= au1200_psc0_res,
-+};
-+
-+static struct platform_device *db1200_devs[] __initdata = {
-+	NULL,		/* PSC0, selected by S6.8 */
-+	&db1200_ide_dev,
-+	&db1200_eth_dev,
-+	&db1200_rtc_dev,
-+	&db1200_nand_dev,
-+};
-+
-+static int __init db1200_dev_init(void)
-+{
-+	unsigned long pfc;
-+	unsigned short sw;
-+	int swapped;
-+
-+	i2c_register_board_info(0, db1200_i2c_devs,
-+				ARRAY_SIZE(db1200_i2c_devs));
-+	spi_register_board_info(db1200_spi_devs,
-+				ARRAY_SIZE(db1200_i2c_devs));
-+
-+	/* SWITCHES:	S6.8 I2C/SPI selector  (OFF=I2C  ON=SPI)
-+	 */
-+
-+	/* NOTE: GPIO215 controls OTG VBUS supply.  In SPI mode however
-+	 * this pin is claimed by PSC0 (unused though, but pinmux doesn't
-+	 * allow to free it without crippling the SPI interface).
-+	 * As a result, in SPI mode, OTG simply won't work (PSC0 uses
-+	 * it as an input pin which is pulled high on the boards).
-+	 */
-+	pfc = __raw_readl((void __iomem *)SYS_PINFUNC) & ~SYS_PINFUNC_P0A;
-+
-+	/* switch off OTG VBUS supply */
-+	gpio_request(215, "otg-vbus");
-+	gpio_direction_output(215, 1);
-+
-+	printk(KERN_INFO "DB1200 device configuration:\n");
-+
-+	sw = bcsr_read(BCSR_SWITCHES);
-+	if (sw & BCSR_SWITCHES_DIP_8) {
-+		db1200_devs[0] = &db1200_i2c_dev;
-+		bcsr_mod(BCSR_RESETS, BCSR_RESETS_PSC0MUX, 0);
-+
-+		pfc |= (2 << 17);	/* GPIO2 block owns GPIO215 */
-+
-+		printk(KERN_INFO " S6.8 OFF: PSC0 mode I2C\n");
-+		printk(KERN_INFO "   OTG port VBUS supply available!\n");
-+	} else {
-+		db1200_devs[0] = &db1200_spi_dev;
-+		bcsr_mod(BCSR_RESETS, 0, BCSR_RESETS_PSC0MUX);
-+
-+		pfc |= (1 << 17);	/* PSC0 owns GPIO215 */
-+
-+		printk(KERN_INFO " S6.8 ON : PSC0 mode SPI\n");
-+		printk(KERN_INFO "   OTG port VBUS supply disabled\n");
-+	}
-+	__raw_writel(pfc, (void __iomem *)SYS_PINFUNC);
-+	wmb();
-+
-+	db1x_register_pcmcia_socket(PCMCIA_ATTR_PSEUDO_PHYS,
-+				    PCMCIA_ATTR_PSEUDO_PHYS + 0x00040000 - 1,
-+				    PCMCIA_MEM_PSEUDO_PHYS,
-+				    PCMCIA_MEM_PSEUDO_PHYS  + 0x00040000 - 1,
-+				    PCMCIA_IO_PSEUDO_PHYS,
-+				    PCMCIA_IO_PSEUDO_PHYS   + 0x00001000 - 1,
-+				    DB1200_PC0_INT,
-+				    DB1200_PC0_INSERT_INT,
-+				    /*DB1200_PC0_STSCHG_INT*/0,
-+				    DB1200_PC0_EJECT_INT,
-+				    0);
-+
-+	db1x_register_pcmcia_socket(PCMCIA_ATTR_PSEUDO_PHYS + 0x00400000,
-+				    PCMCIA_ATTR_PSEUDO_PHYS + 0x00440000 - 1,
-+				    PCMCIA_MEM_PSEUDO_PHYS  + 0x00400000,
-+				    PCMCIA_MEM_PSEUDO_PHYS  + 0x00440000 - 1,
-+				    PCMCIA_IO_PSEUDO_PHYS   + 0x00400000,
-+				    PCMCIA_IO_PSEUDO_PHYS   + 0x00401000 - 1,
-+				    DB1200_PC1_INT,
-+				    DB1200_PC1_INSERT_INT,
-+				    /*DB1200_PC1_STSCHG_INT*/0,
-+				    DB1200_PC1_EJECT_INT,
-+				    1);
-+
-+	swapped = bcsr_read(BCSR_STATUS) & BCSR_STATUS_DB1200_SWAPBOOT;
-+	db1x_register_norflash(64 << 20, 2, swapped);
-+
-+	return platform_add_devices(db1200_devs, ARRAY_SIZE(db1200_devs));
-+}
-+device_initcall(db1200_dev_init);
-+
-+/* au1200fb calls these: STERBT EINEN TRAGISCHEN TOD!!! */
-+int board_au1200fb_panel(void)
-+{
-+	return (bcsr_read(BCSR_SWITCHES) >> 8) & 0x0f;
-+}
-+
-+int board_au1200fb_panel_init(void)
-+{
-+	/* Apply power */
-+	bcsr_mod(BCSR_BOARD, 0, BCSR_BOARD_LCDVEE | BCSR_BOARD_LCDVDD |
-+				BCSR_BOARD_LCDBL);
-+	return 0;
-+}
-+
-+int board_au1200fb_panel_shutdown(void)
-+{
-+	/* Remove power */
-+	bcsr_mod(BCSR_BOARD, BCSR_BOARD_LCDVEE | BCSR_BOARD_LCDVDD |
-+			     BCSR_BOARD_LCDBL, 0);
-+	return 0;
-+}
-diff --git a/arch/mips/alchemy/devboards/db1200/setup.c b/arch/mips/alchemy/devboards/db1200/setup.c
-new file mode 100644
-index 0000000..a3458c0
---- /dev/null
-+++ b/arch/mips/alchemy/devboards/db1200/setup.c
-@@ -0,0 +1,137 @@
-+/*
-+ * Alchemy/AMD/RMI DB1200 board setup.
-+ *
-+ * Licensed under the terms outlined in the file COPYING in the root of
-+ * this source archive.
-+ */
-+
-+#include <linux/init.h>
-+#include <linux/interrupt.h>
-+#include <linux/io.h>
-+#include <linux/kernel.h>
-+#include <linux/pm.h>
-+#include <asm/mach-au1x00/au1000.h>
-+#include <asm/mach-db1x00/bcsr.h>
-+#include <asm/mach-db1x00/db1200.h>
-+#include <asm/processor.h>
-+#include <asm/reboot.h>
-+
-+const char *get_system_type(void)
-+{
-+	return "Alchemy Db1200";
-+}
-+
-+static void board_power_off(void)
-+{
-+	bcsr_write(BCSR_RESETS, 0);
-+	bcsr_write(BCSR_SYSTEM, BCSR_SYSTEM_PWROFF | BCSR_SYSTEM_RESET);
-+}
-+
-+void board_reset(void)
-+{
-+	bcsr_write(BCSR_RESETS, 0);
-+	bcsr_write(BCSR_SYSTEM, 0);
-+}
-+
-+void __init board_setup(void)
-+{
-+	unsigned long freq0, clksrc, div, pfc;
-+	unsigned short whoami;
-+
-+	bcsr_init(DB1200_BCSR_PHYS_ADDR,
-+		  DB1200_BCSR_PHYS_ADDR + DB1200_BCSR_HEXLED_OFS);
-+
-+	whoami = bcsr_read(BCSR_WHOAMI);
-+	printk(KERN_INFO "Alchemy/AMD/RMI DB1200 Board, CPLD Rev %d"
-+		"  Board-ID %d  Daughtercard ID %d\n",
-+		(whoami >> 4) & 0xf, (whoami >> 8) & 0xf, whoami & 0xf);
-+
-+	/* SMBus/SPI on PSC0, Audio on PSC1 */
-+	pfc = __raw_readl((void __iomem *)SYS_PINFUNC);
-+	pfc &= ~(SYS_PINFUNC_P0A | SYS_PINFUNC_P0B);
-+	pfc &= ~(SYS_PINFUNC_P1A | SYS_PINFUNC_P1B | SYS_PINFUNC_FS3);
-+	pfc |= SYS_PINFUNC_P1C;	/* SPI is configured later */
-+	__raw_writel(pfc, (void __iomem *)SYS_PINFUNC);
-+	wmb();
-+
-+	/* Clock configurations: PSC0: ~50MHz via Clkgen0, derived from
-+	 * CPU clock; all other clock generators off/unused.
-+	 */
-+	div = (get_au1x00_speed() + 25000000) / 50000000;
-+	if (div & 1)
-+		div++;
-+	div = ((div >> 1) - 1) & 0xff;
-+
-+	freq0 = div << SYS_FC_FRDIV0_BIT;
-+	__raw_writel(freq0, (void __iomem *)SYS_FREQCTRL0);
-+	wmb();
-+	freq0 |= SYS_FC_FE0;	/* enable F0 */
-+	__raw_writel(freq0, (void __iomem *)SYS_FREQCTRL0);
-+	wmb();
-+
-+	/* psc0_intclk comes 1:1 from F0 */
-+	clksrc = SYS_CS_MUX_FQ0 << SYS_CS_ME0_BIT;
-+	__raw_writel(clksrc, (void __iomem *)SYS_CLKSRC);
-+	wmb();
-+
-+	pm_power_off = board_power_off;
-+	_machine_halt = board_power_off;
-+	_machine_restart = (void(*)(char *))board_reset;
-+}
-+
-+/* use the hexleds to count the number of times the cpu has entered
-+ * wait, the dots to indicate whether the CPU is currently idle or
-+ * active (dots off = sleeping, dots on = working) for cases where
-+ * the number doesn't change for a long(er) period of time.
-+ */
-+static void db1200_wait(void)
-+{
-+	__asm__("	.set	push			\n"
-+		"	.set	mips3			\n"
-+		"	.set	noreorder		\n"
-+		"	cache	0x14, 0(%0)		\n"
-+		"	cache	0x14, 32(%0)		\n"
-+		"	cache	0x14, 64(%0)		\n"
-+		/* dots off: we're about to call wait */
-+		"	lui	$26, 0xb980		\n"
-+		"	ori	$27, $0, 3		\n"
-+		"	sb	$27, 0x18($26)		\n"
-+		"	sync				\n"
-+		"	nop				\n"
-+		"	wait				\n"
-+		"	nop				\n"
-+		"	nop				\n"
-+		"	nop				\n"
-+		"	nop				\n"
-+		"	nop				\n"
-+		/* dots on: there's work to do, increment cntr */
-+		"	lui	$26, 0xb980		\n"
-+		"	sb	$0, 0x18($26)		\n"
-+		"	lui	$26, 0xb9c0		\n"
-+		"	lb	$27, 0($26)		\n"
-+		"	addiu	$27, $27, 1		\n"
-+		"	sb	$27, 0($26)		\n"
-+		"	sync				\n"
-+		"	.set	pop			\n"
-+		: : "r" (db1200_wait));
-+}
-+
-+static int __init db1200_arch_init(void)
-+{
-+	/* GPIO7 is low-level triggered CPLD cascade */
-+	set_irq_type(AU1200_GPIO7_INT, IRQF_TRIGGER_LOW);
-+	bcsr_init_irq(DB1200_INT_BEGIN, DB1200_INT_END, AU1200_GPIO7_INT);
-+
-+	/* do not autoenable these: CPLD has broken edge int handling,
-+	 * and the CD handler setup requires manual enabling to work
-+	 * around that.
-+	 */
-+	irq_to_desc(DB1200_SD0_INSERT_INT)->status |= IRQ_NOAUTOEN;
-+	irq_to_desc(DB1200_SD0_EJECT_INT)->status |= IRQ_NOAUTOEN;
-+
-+	if (cpu_wait)
-+		cpu_wait = db1200_wait;
-+
-+	return 0;
-+}
-+arch_initcall(db1200_arch_init);
-diff --git a/arch/mips/alchemy/devboards/pb1200/board_setup.c b/arch/mips/alchemy/devboards/pb1200/board_setup.c
-index e709b9e..906b6cd 100644
---- a/arch/mips/alchemy/devboards/pb1200/board_setup.c
-+++ b/arch/mips/alchemy/devboards/pb1200/board_setup.c
-@@ -60,16 +60,9 @@ void __init board_setup(void)
- {
- 	char *argptr;
+ #
+ # Machine selection
+ #
+-CONFIG_ZONE_DMA=y
+ CONFIG_MACH_ALCHEMY=y
+-# CONFIG_MIPS_MTX1 is not set
+-# CONFIG_MIPS_BOSPORUS is not set
+-# CONFIG_MIPS_PB1000 is not set
+-# CONFIG_MIPS_PB1100 is not set
+-# CONFIG_MIPS_PB1500 is not set
+-# CONFIG_MIPS_PB1550 is not set
+-# CONFIG_MIPS_PB1200 is not set
+-# CONFIG_MIPS_DB1000 is not set
+-# CONFIG_MIPS_DB1100 is not set
+-# CONFIG_MIPS_DB1500 is not set
+-# CONFIG_MIPS_DB1550 is not set
+-CONFIG_MIPS_DB1200=y
+-# CONFIG_MIPS_MIRAGE is not set
++# CONFIG_AR7 is not set
+ # CONFIG_BASLER_EXCITE is not set
++# CONFIG_BCM47XX is not set
++# CONFIG_BCM63XX is not set
+ # CONFIG_MIPS_COBALT is not set
+ # CONFIG_MACH_DECSTATION is not set
+ # CONFIG_MACH_JAZZ is not set
++# CONFIG_LASAT is not set
++# CONFIG_MACH_LOONGSON is not set
+ # CONFIG_MIPS_MALTA is not set
+-# CONFIG_WR_PPMC is not set
+ # CONFIG_MIPS_SIM is not set
+-# CONFIG_MOMENCO_JAGUAR_ATX is not set
+-# CONFIG_MIPS_XXS1500 is not set
++# CONFIG_NEC_MARKEINS is not set
++# CONFIG_MACH_VR41XX is not set
++# CONFIG_NXP_STB220 is not set
++# CONFIG_NXP_STB225 is not set
+ # CONFIG_PNX8550_JBS is not set
+ # CONFIG_PNX8550_STB810 is not set
+-# CONFIG_MACH_VR41XX is not set
++# CONFIG_PMC_MSP is not set
+ # CONFIG_PMC_YOSEMITE is not set
+-# CONFIG_MARKEINS is not set
+ # CONFIG_SGI_IP22 is not set
+ # CONFIG_SGI_IP27 is not set
++# CONFIG_SGI_IP28 is not set
+ # CONFIG_SGI_IP32 is not set
+-# CONFIG_SIBYTE_BIGSUR is not set
+-# CONFIG_SIBYTE_SWARM is not set
+-# CONFIG_SIBYTE_SENTOSA is not set
+-# CONFIG_SIBYTE_RHONE is not set
+-# CONFIG_SIBYTE_CARMEL is not set
+-# CONFIG_SIBYTE_LITTLESUR is not set
+ # CONFIG_SIBYTE_CRHINE is not set
++# CONFIG_SIBYTE_CARMEL is not set
+ # CONFIG_SIBYTE_CRHONE is not set
++# CONFIG_SIBYTE_RHONE is not set
++# CONFIG_SIBYTE_SWARM is not set
++# CONFIG_SIBYTE_LITTLESUR is not set
++# CONFIG_SIBYTE_SENTOSA is not set
++# CONFIG_SIBYTE_BIGSUR is not set
+ # CONFIG_SNI_RM is not set
+-# CONFIG_TOSHIBA_JMR3927 is not set
+-# CONFIG_TOSHIBA_RBTX4927 is not set
+-# CONFIG_TOSHIBA_RBTX4938 is not set
++# CONFIG_MACH_TX39XX is not set
++# CONFIG_MACH_TX49XX is not set
++# CONFIG_MIKROTIK_RB532 is not set
++# CONFIG_WR_PPMC is not set
++# CONFIG_CAVIUM_OCTEON_SIMULATOR is not set
++# CONFIG_CAVIUM_OCTEON_REFERENCE_BOARD is not set
++CONFIG_ALCHEMY_GPIO_AU1000=y
++# CONFIG_ALCHEMY_GPIO_INDIRECT is not set
++# CONFIG_MIPS_MTX1 is not set
++# CONFIG_MIPS_BOSPORUS is not set
++# CONFIG_MIPS_DB1000 is not set
++# CONFIG_MIPS_DB1100 is not set
++CONFIG_MIPS_DB1200=y
++# CONFIG_MIPS_DB1500 is not set
++# CONFIG_MIPS_DB1550 is not set
++# CONFIG_MIPS_MIRAGE is not set
++# CONFIG_MIPS_PB1000 is not set
++# CONFIG_MIPS_PB1100 is not set
++# CONFIG_MIPS_PB1200 is not set
++# CONFIG_MIPS_PB1500 is not set
++# CONFIG_MIPS_PB1550 is not set
++# CONFIG_MIPS_XXS1500 is not set
++CONFIG_SOC_AU1200=y
++CONFIG_SOC_AU1X00=y
+ CONFIG_RWSEM_GENERIC_SPINLOCK=y
+ # CONFIG_ARCH_HAS_ILOG2_U32 is not set
+ # CONFIG_ARCH_HAS_ILOG2_U64 is not set
++CONFIG_ARCH_SUPPORTS_OPROFILE=y
+ CONFIG_GENERIC_FIND_NEXT_BIT=y
+ CONFIG_GENERIC_HWEIGHT=y
+ CONFIG_GENERIC_CALIBRATE_DELAY=y
++CONFIG_GENERIC_CLOCKEVENTS=y
+ CONFIG_GENERIC_TIME=y
+-CONFIG_SCHED_NO_NO_OMIT_FRAME_POINTER=y
+-# CONFIG_GENERIC_HARDIRQS_NO__DO_IRQ is not set
++CONFIG_GENERIC_CMOS_UPDATE=y
++CONFIG_SCHED_OMIT_FRAME_POINTER=y
++CONFIG_GENERIC_HARDIRQS_NO__DO_IRQ=y
++CONFIG_CEVT_R4K_LIB=y
++CONFIG_CSRC_R4K_LIB=y
+ CONFIG_DMA_COHERENT=y
++CONFIG_EARLY_PRINTK=y
++CONFIG_SYS_HAS_EARLY_PRINTK=y
+ CONFIG_MIPS_DISABLE_OBSOLETE_IDE=y
++# CONFIG_NO_IOPORT is not set
++CONFIG_GENERIC_GPIO=y
+ # CONFIG_CPU_BIG_ENDIAN is not set
+ CONFIG_CPU_LITTLE_ENDIAN=y
+ CONFIG_SYS_SUPPORTS_APM_EMULATION=y
+ CONFIG_SYS_SUPPORTS_LITTLE_ENDIAN=y
+-CONFIG_SOC_AU1200=y
+-CONFIG_SOC_AU1X00=y
++CONFIG_IRQ_CPU=y
+ CONFIG_MIPS_L1_CACHE_SHIFT=5
  
--#ifdef CONFIG_MIPS_PB1200
- 	printk(KERN_INFO "AMD Alchemy Pb1200 Board\n");
- 	bcsr_init(PB1200_BCSR_PHYS_ADDR,
- 		  PB1200_BCSR_PHYS_ADDR + PB1200_BCSR_HEXLED_OFS);
--#endif
--#ifdef CONFIG_MIPS_DB1200
--	printk(KERN_INFO "AMD Alchemy Db1200 Board\n");
--	bcsr_init(DB1200_BCSR_PHYS_ADDR,
--		  DB1200_BCSR_PHYS_ADDR + DB1200_BCSR_HEXLED_OFS);
--#endif
+ #
+ # CPU selection
+ #
++# CONFIG_CPU_LOONGSON2E is not set
+ CONFIG_CPU_MIPS32_R1=y
+ # CONFIG_CPU_MIPS32_R2 is not set
+ # CONFIG_CPU_MIPS64_R1 is not set
+@@ -86,6 +108,7 @@ CONFIG_CPU_MIPS32_R1=y
+ # CONFIG_CPU_TX49XX is not set
+ # CONFIG_CPU_R5000 is not set
+ # CONFIG_CPU_R5432 is not set
++# CONFIG_CPU_R5500 is not set
+ # CONFIG_CPU_R6000 is not set
+ # CONFIG_CPU_NEVADA is not set
+ # CONFIG_CPU_R8000 is not set
+@@ -93,11 +116,13 @@ CONFIG_CPU_MIPS32_R1=y
+ # CONFIG_CPU_RM7000 is not set
+ # CONFIG_CPU_RM9000 is not set
+ # CONFIG_CPU_SB1 is not set
++# CONFIG_CPU_CAVIUM_OCTEON is not set
+ CONFIG_SYS_HAS_CPU_MIPS32_R1=y
+ CONFIG_CPU_MIPS32=y
+ CONFIG_CPU_MIPSR1=y
+ CONFIG_SYS_SUPPORTS_32BIT_KERNEL=y
+ CONFIG_CPU_SUPPORTS_32BIT_KERNEL=y
++CONFIG_HARDWARE_WATCHPOINTS=y
  
- 	argptr = prom_getcmdline();
- #ifdef CONFIG_SERIAL_8250_CONSOLE
-@@ -151,7 +144,6 @@ void __init board_setup(void)
+ #
+ # Kernel type
+@@ -107,180 +132,204 @@ CONFIG_32BIT=y
+ CONFIG_PAGE_SIZE_4KB=y
+ # CONFIG_PAGE_SIZE_8KB is not set
+ # CONFIG_PAGE_SIZE_16KB is not set
++# CONFIG_PAGE_SIZE_32KB is not set
+ # CONFIG_PAGE_SIZE_64KB is not set
+ CONFIG_CPU_HAS_PREFETCH=y
+ CONFIG_MIPS_MT_DISABLED=y
+ # CONFIG_MIPS_MT_SMP is not set
+ # CONFIG_MIPS_MT_SMTC is not set
+-# CONFIG_MIPS_VPE_LOADER is not set
+ CONFIG_64BIT_PHYS_ADDR=y
+ CONFIG_CPU_HAS_SYNC=y
+ CONFIG_GENERIC_HARDIRQS=y
+ CONFIG_GENERIC_IRQ_PROBE=y
+ CONFIG_CPU_SUPPORTS_HIGHMEM=y
+ CONFIG_ARCH_FLATMEM_ENABLE=y
++CONFIG_ARCH_POPULATES_NODE_MAP=y
+ CONFIG_SELECT_MEMORY_MODEL=y
+ CONFIG_FLATMEM_MANUAL=y
+ # CONFIG_DISCONTIGMEM_MANUAL is not set
+ # CONFIG_SPARSEMEM_MANUAL is not set
+ CONFIG_FLATMEM=y
+ CONFIG_FLAT_NODE_MEM_MAP=y
+-# CONFIG_SPARSEMEM_STATIC is not set
++CONFIG_PAGEFLAGS_EXTENDED=y
+ CONFIG_SPLIT_PTLOCK_CPUS=4
+-# CONFIG_RESOURCES_64BIT is not set
+-CONFIG_ZONE_DMA_FLAG=1
++# CONFIG_PHYS_ADDR_T_64BIT is not set
++CONFIG_ZONE_DMA_FLAG=0
++CONFIG_VIRT_TO_BUS=y
++CONFIG_HAVE_MLOCK=y
++CONFIG_HAVE_MLOCKED_PAGE_BIT=y
++CONFIG_KSM=y
++CONFIG_DEFAULT_MMAP_MIN_ADDR=4096
++CONFIG_TICK_ONESHOT=y
++CONFIG_NO_HZ=y
++CONFIG_HIGH_RES_TIMERS=y
++CONFIG_GENERIC_CLOCKEVENTS_BUILD=y
+ # CONFIG_HZ_48 is not set
+-# CONFIG_HZ_100 is not set
++CONFIG_HZ_100=y
+ # CONFIG_HZ_128 is not set
+ # CONFIG_HZ_250 is not set
+ # CONFIG_HZ_256 is not set
+-CONFIG_HZ_1000=y
++# CONFIG_HZ_1000 is not set
+ # CONFIG_HZ_1024 is not set
+ CONFIG_SYS_SUPPORTS_ARBIT_HZ=y
+-CONFIG_HZ=1000
++CONFIG_HZ=100
+ CONFIG_PREEMPT_NONE=y
+ # CONFIG_PREEMPT_VOLUNTARY is not set
+ # CONFIG_PREEMPT is not set
+ # CONFIG_KEXEC is not set
++# CONFIG_SECCOMP is not set
+ CONFIG_LOCKDEP_SUPPORT=y
+ CONFIG_STACKTRACE_SUPPORT=y
+ CONFIG_DEFCONFIG_LIST="/lib/modules/$UNAME_RELEASE/.config"
++CONFIG_CONSTRUCTORS=y
  
- static int __init pb1200_init_irq(void)
- {
--#ifdef CONFIG_MIPS_PB1200
- 	/* We have a problem with CPLD rev 3. */
- 	if (BCSR_WHOAMI_CPLD(bcsr_read(BCSR_WHOAMI)) <= 3) {
- 		printk(KERN_ERR "WARNING!!!\n");
-@@ -171,7 +163,6 @@ static int __init pb1200_init_irq(void)
- 		printk(KERN_ERR "WARNING!!!\n");
- 		panic("Game over.  Your score is 0.");
- 	}
--#endif
- 
- 	set_irq_type(AU1200_GPIO7_INT, IRQF_TRIGGER_LOW);
- 	bcsr_init_irq(PB1200_INT_BEGIN, PB1200_INT_END, AU1200_GPIO7_INT);
-diff --git a/arch/mips/alchemy/devboards/pb1200/platform.c b/arch/mips/alchemy/devboards/pb1200/platform.c
-index 736d647..14e889f 100644
---- a/arch/mips/alchemy/devboards/pb1200/platform.c
-+++ b/arch/mips/alchemy/devboards/pb1200/platform.c
-@@ -68,7 +68,6 @@ static struct led_classdev pb1200mmc_led = {
- 	.brightness_set	= pb1200_mmcled_set,
- };
- 
--#ifndef CONFIG_MIPS_DB1200
- static void pb1200mmc1_set_power(void *mmc_host, int state)
- {
- 	if (state)
-@@ -88,7 +87,6 @@ static int pb1200mmc1_card_inserted(void *mmc_host)
- {
- 	return (bcsr_read(BCSR_SIGSTAT) & BCSR_INT_SD1INSERT) ? 1 : 0;
- }
--#endif
- 
- const struct au1xmmc_platform_data au1xmmc_platdata[2] = {
- 	[0] = {
-@@ -98,7 +96,6 @@ const struct au1xmmc_platform_data au1xmmc_platdata[2] = {
- 		.cd_setup	= NULL,		/* use poll-timer in driver */
- 		.led		= &pb1200mmc_led,
- 	},
--#ifndef CONFIG_MIPS_DB1200
- 	[1] = {
- 		.set_power	= pb1200mmc1_set_power,
- 		.card_inserted	= pb1200mmc1_card_inserted,
-@@ -106,7 +103,6 @@ const struct au1xmmc_platform_data au1xmmc_platdata[2] = {
- 		.cd_setup	= NULL,		/* use poll-timer in driver */
- 		.led		= &pb1200mmc_led,
- 	},
--#endif
- };
- 
- static struct resource ide_resources[] = {
-@@ -174,7 +170,6 @@ static int __init board_register_devices(void)
- {
- 	int swapped;
- 
--#ifdef CONFIG_MIPS_PB1200
- 	db1x_register_pcmcia_socket(PCMCIA_ATTR_PSEUDO_PHYS,
- 				    PCMCIA_ATTR_PSEUDO_PHYS + 0x00040000 - 1,
- 				    PCMCIA_MEM_PSEUDO_PHYS,
-@@ -198,38 +193,9 @@ static int __init board_register_devices(void)
- 				    /*PB1200_PC1_STSCHG_INT*/0,
- 				    PB1200_PC1_EJECT_INT,
- 				    1);
--#else
--	db1x_register_pcmcia_socket(PCMCIA_ATTR_PSEUDO_PHYS,
--				    PCMCIA_ATTR_PSEUDO_PHYS + 0x00040000 - 1,
--				    PCMCIA_MEM_PSEUDO_PHYS,
--				    PCMCIA_MEM_PSEUDO_PHYS  + 0x00040000 - 1,
--				    PCMCIA_IO_PSEUDO_PHYS,
--				    PCMCIA_IO_PSEUDO_PHYS   + 0x00001000 - 1,
--				    DB1200_PC0_INT,
--				    DB1200_PC0_INSERT_INT,
--				    /*DB1200_PC0_STSCHG_INT*/0,
--				    DB1200_PC0_EJECT_INT,
--				    0);
+ #
+-# Code maturity level options
++# General setup
+ #
+ CONFIG_EXPERIMENTAL=y
+ CONFIG_BROKEN_ON_SMP=y
+ CONFIG_INIT_ENV_ARG_LIMIT=32
 -
--	db1x_register_pcmcia_socket(PCMCIA_ATTR_PSEUDO_PHYS + 0x00400000,
--				    PCMCIA_ATTR_PSEUDO_PHYS + 0x00440000 - 1,
--				    PCMCIA_MEM_PSEUDO_PHYS  + 0x00400000,
--				    PCMCIA_MEM_PSEUDO_PHYS  + 0x00440000 - 1,
--				    PCMCIA_IO_PSEUDO_PHYS   + 0x00400000,
--				    PCMCIA_IO_PSEUDO_PHYS   + 0x00401000 - 1,
--				    DB1200_PC1_INT,
--				    DB1200_PC1_INSERT_INT,
--				    /*DB1200_PC1_STSCHG_INT*/0,
--				    DB1200_PC1_EJECT_INT,
--				    1);
--#endif
+-#
+-# General setup
+-#
+-CONFIG_LOCALVERSION=""
++CONFIG_LOCALVERSION="-db1200"
+ CONFIG_LOCALVERSION_AUTO=y
+ CONFIG_SWAP=y
+ CONFIG_SYSVIPC=y
+-# CONFIG_IPC_NS is not set
+ CONFIG_SYSVIPC_SYSCTL=y
+-# CONFIG_POSIX_MQUEUE is not set
++CONFIG_POSIX_MQUEUE=y
++CONFIG_POSIX_MQUEUE_SYSCTL=y
+ # CONFIG_BSD_PROCESS_ACCT is not set
+ # CONFIG_TASKSTATS is not set
+-# CONFIG_UTS_NS is not set
+ # CONFIG_AUDIT is not set
+-CONFIG_IKCONFIG=y
+-CONFIG_IKCONFIG_PROC=y
+-CONFIG_SYSFS_DEPRECATED=y
++
++#
++# RCU Subsystem
++#
++CONFIG_TREE_RCU=y
++# CONFIG_TREE_PREEMPT_RCU is not set
++# CONFIG_RCU_TRACE is not set
++CONFIG_RCU_FANOUT=32
++CONFIG_RCU_FANOUT_EXACT=y
++# CONFIG_TREE_RCU_TRACE is not set
++# CONFIG_IKCONFIG is not set
++CONFIG_LOG_BUF_SHIFT=18
++# CONFIG_GROUP_SCHED is not set
++# CONFIG_CGROUPS is not set
++# CONFIG_SYSFS_DEPRECATED_V2 is not set
+ # CONFIG_RELAY is not set
+-# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
++# CONFIG_NAMESPACES is not set
++# CONFIG_BLK_DEV_INITRD is not set
++CONFIG_CC_OPTIMIZE_FOR_SIZE=y
+ CONFIG_SYSCTL=y
++CONFIG_ANON_INODES=y
+ CONFIG_EMBEDDED=y
+-CONFIG_SYSCTL_SYSCALL=y
+-CONFIG_KALLSYMS=y
+-# CONFIG_KALLSYMS_EXTRA_PASS is not set
++# CONFIG_SYSCTL_SYSCALL is not set
++# CONFIG_KALLSYMS is not set
+ CONFIG_HOTPLUG=y
+ CONFIG_PRINTK=y
+ CONFIG_BUG=y
+ CONFIG_ELF_CORE=y
++# CONFIG_PCSPKR_PLATFORM is not set
+ CONFIG_BASE_FULL=y
+ CONFIG_FUTEX=y
+ CONFIG_EPOLL=y
++CONFIG_SIGNALFD=y
++CONFIG_TIMERFD=y
++CONFIG_EVENTFD=y
+ CONFIG_SHMEM=y
+-CONFIG_SLAB=y
+-CONFIG_VM_EVENT_COUNTERS=y
+-CONFIG_RT_MUTEXES=y
+-# CONFIG_TINY_SHMEM is not set
+-CONFIG_BASE_SMALL=0
++CONFIG_AIO=y
++
++#
++# Kernel Performance Events And Counters
++#
++# CONFIG_VM_EVENT_COUNTERS is not set
++# CONFIG_SLUB_DEBUG is not set
++# CONFIG_COMPAT_BRK is not set
++# CONFIG_SLAB is not set
++CONFIG_SLUB=y
+ # CONFIG_SLOB is not set
++# CONFIG_PROFILING is not set
++CONFIG_HAVE_OPROFILE=y
  
- 	swapped = bcsr_read(BCSR_STATUS) &  BCSR_STATUS_DB1200_SWAPBOOT;
--#ifdef CONFIG_MIPS_PB1200
- 	db1x_register_norflash(128 * 1024 * 1024, 2, swapped);
--#else
--	db1x_register_norflash(64 * 1024 * 1024, 2, swapped);
--#endif
- 
- 	return platform_add_devices(board_platform_devices,
- 				    ARRAY_SIZE(board_platform_devices));
-diff --git a/arch/mips/include/asm/mach-db1x00/db1200.h b/arch/mips/include/asm/mach-db1x00/db1200.h
-index 52b1d84..3404248 100644
---- a/arch/mips/include/asm/mach-db1x00/db1200.h
-+++ b/arch/mips/include/asm/mach-db1x00/db1200.h
-@@ -28,24 +28,6 @@
- #include <asm/mach-au1x00/au1000.h>
- #include <asm/mach-au1x00/au1xxx_psc.h>
- 
--#define DBDMA_AC97_TX_CHAN	DSCR_CMD0_PSC1_TX
--#define DBDMA_AC97_RX_CHAN	DSCR_CMD0_PSC1_RX
--#define DBDMA_I2S_TX_CHAN	DSCR_CMD0_PSC1_TX
--#define DBDMA_I2S_RX_CHAN	DSCR_CMD0_PSC1_RX
+ #
+-# Loadable module support
++# GCOV-based kernel profiling
+ #
++# CONFIG_SLOW_WORK is not set
++# CONFIG_HAVE_GENERIC_DMA_COHERENT is not set
++CONFIG_RT_MUTEXES=y
++CONFIG_BASE_SMALL=0
+ CONFIG_MODULES=y
++# CONFIG_MODULE_FORCE_LOAD is not set
+ CONFIG_MODULE_UNLOAD=y
+ # CONFIG_MODULE_FORCE_UNLOAD is not set
+-CONFIG_MODVERSIONS=y
+-CONFIG_MODULE_SRCVERSION_ALL=y
+-CONFIG_KMOD=y
 -
--/*
-- * SPI and SMB are muxed on the DBAu1200 board.
-- * Refer to board documentation.
-- */
--#define SPI_PSC_BASE		PSC0_BASE_ADDR
--#define SMBUS_PSC_BASE		PSC0_BASE_ADDR
--/*
-- * AC'97 and I2S are muxed on the DBAu1200 board.
-- * Refer to board documentation.
-- */
--#define AC97_PSC_BASE		PSC1_BASE_ADDR
--#define I2S_PSC_BASE		PSC1_BASE_ADDR
+-#
+-# Block layer
+-#
++# CONFIG_MODVERSIONS is not set
++# CONFIG_MODULE_SRCVERSION_ALL is not set
+ CONFIG_BLOCK=y
+-# CONFIG_LBD is not set
+-# CONFIG_BLK_DEV_IO_TRACE is not set
+-# CONFIG_LSF is not set
++# CONFIG_LBDAF is not set
++# CONFIG_BLK_DEV_BSG is not set
++# CONFIG_BLK_DEV_INTEGRITY is not set
+ 
+ #
+ # IO Schedulers
+ #
+ CONFIG_IOSCHED_NOOP=y
+-CONFIG_IOSCHED_AS=y
+-CONFIG_IOSCHED_DEADLINE=y
+-CONFIG_IOSCHED_CFQ=y
+-CONFIG_DEFAULT_AS=y
++# CONFIG_IOSCHED_AS is not set
++# CONFIG_IOSCHED_DEADLINE is not set
++# CONFIG_IOSCHED_CFQ is not set
++# CONFIG_DEFAULT_AS is not set
+ # CONFIG_DEFAULT_DEADLINE is not set
+ # CONFIG_DEFAULT_CFQ is not set
+-# CONFIG_DEFAULT_NOOP is not set
+-CONFIG_DEFAULT_IOSCHED="anticipatory"
++CONFIG_DEFAULT_NOOP=y
++CONFIG_DEFAULT_IOSCHED="noop"
++# CONFIG_FREEZER is not set
+ 
+ #
+ # Bus options (PCI, PCMCIA, EISA, ISA, TC)
+ #
++# CONFIG_ARCH_SUPPORTS_MSI is not set
+ CONFIG_MMU=y
 -
- /* Bit positions for the different interrupt sources */
- #define BCSR_INT_IDE		0x0001
- #define BCSR_INT_ETH		0x0002
-@@ -62,17 +44,15 @@
- #define BCSR_INT_SD0INSERT	0x1000
- #define BCSR_INT_SD0EJECT	0x2000
+-#
+-# PCCARD (PCMCIA/CardBus) support
+-#
+-CONFIG_PCCARD=m
++CONFIG_PCCARD=y
+ # CONFIG_PCMCIA_DEBUG is not set
+-CONFIG_PCMCIA=m
++CONFIG_PCMCIA=y
+ CONFIG_PCMCIA_LOAD_CIS=y
+-CONFIG_PCMCIA_IOCTL=y
++# CONFIG_PCMCIA_IOCTL is not set
  
--#define SMC91C111_PHYS_ADDR	0x19000300
--#define SMC91C111_INT		DB1200_ETH_INT
+ #
+ # PC-card bridges
+ #
+-CONFIG_PCMCIA_AU1X00=m
 -
- #define IDE_PHYS_ADDR		0x18800000
- #define IDE_REG_SHIFT		5
--#define IDE_PHYS_LEN		(16 << IDE_REG_SHIFT)
--#define IDE_INT 		DB1200_IDE_INT
- #define IDE_DDMA_REQ		DSCR_CMD0_DMA_REQ1
- #define IDE_RQSIZE		128
+-#
+-# PCI Hotplug Support
+-#
++# CONFIG_PCMCIA_AU1X00 is not set
++CONFIG_PCMCIA_ALCHEMY_DEVBOARD=y
  
--#define NAND_PHYS_ADDR		0x20000000
-+#define DB1200_IDE_PHYS_ADDR	IDE_PHYS_ADDR
-+#define DB1200_IDE_PHYS_LEN	(16 << IDE_REG_SHIFT)
-+#define DB1200_ETH_PHYS_ADDR	0x19000300
-+#define DB1200_NAND_PHYS_ADDR	0x20000000
+ #
+ # Executable file formats
+ #
+ CONFIG_BINFMT_ELF=y
+-# CONFIG_BINFMT_MISC is not set
++CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS=y
++# CONFIG_HAVE_AOUT is not set
++CONFIG_BINFMT_MISC=y
+ CONFIG_TRAD_SIGNALS=y
  
- /*
-  * External Interrupts for DBAu1200 as of 8/6/2004.
-@@ -82,7 +62,7 @@
-  *   Example: IDE bis pos is  = 64 - 64
-  *            ETH bit pos is  = 65 - 64
-  */
--enum external_pb1200_ints {
-+enum external_db1200_ints {
- 	DB1200_INT_BEGIN	= AU1000_MAX_INTR + 1,
- 
- 	DB1200_IDE_INT		= DB1200_INT_BEGIN,
-@@ -103,7 +83,4 @@ enum external_pb1200_ints {
- 	DB1200_INT_END		= DB1200_INT_BEGIN + 15,
- };
- 
--/* NAND chip select */
--#define NAND_CS 1
+ #
+ # Power management options
+ #
++CONFIG_ARCH_HIBERNATION_POSSIBLE=y
++CONFIG_ARCH_SUSPEND_POSSIBLE=y
+ # CONFIG_PM is not set
 -
- #endif /* __ASM_DB1200_H */
+-#
+-# Networking
+-#
+ CONFIG_NET=y
+ 
+ #
+ # Networking options
+ #
+-# CONFIG_NETDEBUG is not set
+ CONFIG_PACKET=y
+-# CONFIG_PACKET_MMAP is not set
++CONFIG_PACKET_MMAP=y
+ CONFIG_UNIX=y
+-CONFIG_XFRM=y
+-CONFIG_XFRM_USER=m
+-# CONFIG_XFRM_SUB_POLICY is not set
+-CONFIG_XFRM_MIGRATE=y
+-CONFIG_NET_KEY=y
+-CONFIG_NET_KEY_MIGRATE=y
++# CONFIG_NET_KEY is not set
+ CONFIG_INET=y
+ CONFIG_IP_MULTICAST=y
+ # CONFIG_IP_ADVANCED_ROUTER is not set
+ CONFIG_IP_FIB_HASH=y
+-# CONFIG_IP_PNP is not set
++CONFIG_IP_PNP=y
++# CONFIG_IP_PNP_DHCP is not set
++# CONFIG_IP_PNP_BOOTP is not set
++# CONFIG_IP_PNP_RARP is not set
+ # CONFIG_NET_IPIP is not set
+ # CONFIG_NET_IPGRE is not set
+ # CONFIG_IP_MROUTE is not set
+@@ -291,107 +340,25 @@ CONFIG_IP_FIB_HASH=y
+ # CONFIG_INET_IPCOMP is not set
+ # CONFIG_INET_XFRM_TUNNEL is not set
+ # CONFIG_INET_TUNNEL is not set
+-CONFIG_INET_XFRM_MODE_TRANSPORT=m
+-CONFIG_INET_XFRM_MODE_TUNNEL=m
+-CONFIG_INET_XFRM_MODE_BEET=m
+-CONFIG_INET_DIAG=y
+-CONFIG_INET_TCP_DIAG=y
++# CONFIG_INET_XFRM_MODE_TRANSPORT is not set
++# CONFIG_INET_XFRM_MODE_TUNNEL is not set
++# CONFIG_INET_XFRM_MODE_BEET is not set
++# CONFIG_INET_LRO is not set
++# CONFIG_INET_DIAG is not set
+ # CONFIG_TCP_CONG_ADVANCED is not set
+ CONFIG_TCP_CONG_CUBIC=y
+ CONFIG_DEFAULT_TCP_CONG="cubic"
+-CONFIG_TCP_MD5SIG=y
+-
+-#
+-# IP: Virtual Server Configuration
+-#
+-# CONFIG_IP_VS is not set
++# CONFIG_TCP_MD5SIG is not set
+ # CONFIG_IPV6 is not set
+-# CONFIG_INET6_XFRM_TUNNEL is not set
+-# CONFIG_INET6_TUNNEL is not set
+-CONFIG_NETWORK_SECMARK=y
+-CONFIG_NETFILTER=y
+-# CONFIG_NETFILTER_DEBUG is not set
+-
+-#
+-# Core Netfilter Configuration
+-#
+-# CONFIG_NETFILTER_NETLINK is not set
+-CONFIG_NF_CONNTRACK_ENABLED=m
+-CONFIG_NF_CONNTRACK_SUPPORT=y
+-# CONFIG_IP_NF_CONNTRACK_SUPPORT is not set
+-CONFIG_NF_CONNTRACK=m
+-CONFIG_NF_CT_ACCT=y
+-CONFIG_NF_CONNTRACK_MARK=y
+-CONFIG_NF_CONNTRACK_SECMARK=y
+-CONFIG_NF_CONNTRACK_EVENTS=y
+-CONFIG_NF_CT_PROTO_GRE=m
+-CONFIG_NF_CT_PROTO_SCTP=m
+-CONFIG_NF_CONNTRACK_AMANDA=m
+-CONFIG_NF_CONNTRACK_FTP=m
+-CONFIG_NF_CONNTRACK_H323=m
+-CONFIG_NF_CONNTRACK_IRC=m
+-# CONFIG_NF_CONNTRACK_NETBIOS_NS is not set
+-CONFIG_NF_CONNTRACK_PPTP=m
+-CONFIG_NF_CONNTRACK_SANE=m
+-CONFIG_NF_CONNTRACK_SIP=m
+-CONFIG_NF_CONNTRACK_TFTP=m
+-CONFIG_NETFILTER_XTABLES=m
+-CONFIG_NETFILTER_XT_TARGET_CLASSIFY=m
+-CONFIG_NETFILTER_XT_TARGET_MARK=m
+-CONFIG_NETFILTER_XT_TARGET_NFQUEUE=m
+-CONFIG_NETFILTER_XT_TARGET_NFLOG=m
+-CONFIG_NETFILTER_XT_TARGET_SECMARK=m
+-CONFIG_NETFILTER_XT_TARGET_CONNSECMARK=m
+-CONFIG_NETFILTER_XT_TARGET_TCPMSS=m
+-CONFIG_NETFILTER_XT_MATCH_COMMENT=m
+-CONFIG_NETFILTER_XT_MATCH_CONNBYTES=m
+-CONFIG_NETFILTER_XT_MATCH_CONNMARK=m
+-CONFIG_NETFILTER_XT_MATCH_CONNTRACK=m
+-CONFIG_NETFILTER_XT_MATCH_DCCP=m
+-CONFIG_NETFILTER_XT_MATCH_DSCP=m
+-CONFIG_NETFILTER_XT_MATCH_ESP=m
+-CONFIG_NETFILTER_XT_MATCH_HELPER=m
+-CONFIG_NETFILTER_XT_MATCH_LENGTH=m
+-CONFIG_NETFILTER_XT_MATCH_LIMIT=m
+-CONFIG_NETFILTER_XT_MATCH_MAC=m
+-CONFIG_NETFILTER_XT_MATCH_MARK=m
+-CONFIG_NETFILTER_XT_MATCH_POLICY=m
+-CONFIG_NETFILTER_XT_MATCH_MULTIPORT=m
+-CONFIG_NETFILTER_XT_MATCH_PKTTYPE=m
+-CONFIG_NETFILTER_XT_MATCH_QUOTA=m
+-CONFIG_NETFILTER_XT_MATCH_REALM=m
+-CONFIG_NETFILTER_XT_MATCH_SCTP=m
+-CONFIG_NETFILTER_XT_MATCH_STATE=m
+-CONFIG_NETFILTER_XT_MATCH_STATISTIC=m
+-CONFIG_NETFILTER_XT_MATCH_STRING=m
+-CONFIG_NETFILTER_XT_MATCH_TCPMSS=m
+-CONFIG_NETFILTER_XT_MATCH_HASHLIMIT=m
+-
+-#
+-# IP: Netfilter Configuration
+-#
+-CONFIG_NF_CONNTRACK_IPV4=m
+-CONFIG_NF_CONNTRACK_PROC_COMPAT=y
+-# CONFIG_IP_NF_QUEUE is not set
+-# CONFIG_IP_NF_IPTABLES is not set
+-# CONFIG_IP_NF_ARPTABLES is not set
+-
+-#
+-# DCCP Configuration (EXPERIMENTAL)
+-#
++# CONFIG_NETWORK_SECMARK is not set
++# CONFIG_NETFILTER is not set
+ # CONFIG_IP_DCCP is not set
+-
+-#
+-# SCTP Configuration (EXPERIMENTAL)
+-#
+ # CONFIG_IP_SCTP is not set
+-
+-#
+-# TIPC Configuration (EXPERIMENTAL)
+-#
++# CONFIG_RDS is not set
+ # CONFIG_TIPC is not set
+ # CONFIG_ATM is not set
+ # CONFIG_BRIDGE is not set
++# CONFIG_NET_DSA is not set
+ # CONFIG_VLAN_8021Q is not set
+ # CONFIG_DECNET is not set
+ # CONFIG_LLC2 is not set
+@@ -401,21 +368,26 @@ CONFIG_NF_CONNTRACK_PROC_COMPAT=y
+ # CONFIG_LAPB is not set
+ # CONFIG_ECONET is not set
+ # CONFIG_WAN_ROUTER is not set
+-
+-#
+-# QoS and/or fair queueing
+-#
++# CONFIG_PHONET is not set
++# CONFIG_IEEE802154 is not set
+ # CONFIG_NET_SCHED is not set
+-CONFIG_NET_CLS_ROUTE=y
++# CONFIG_DCB is not set
+ 
+ #
+ # Network testing
+ #
+ # CONFIG_NET_PKTGEN is not set
+ # CONFIG_HAMRADIO is not set
++# CONFIG_CAN is not set
+ # CONFIG_IRDA is not set
+ # CONFIG_BT is not set
+-# CONFIG_IEEE80211 is not set
++# CONFIG_AF_RXRPC is not set
++# CONFIG_WIRELESS is not set
++# CONFIG_MAC80211_RC_DEFAULT_PID is not set
++# CONFIG_MAC80211_RC_DEFAULT_MINSTREL is not set
++# CONFIG_WIMAX is not set
++# CONFIG_RFKILL is not set
++# CONFIG_NET_9P is not set
+ 
+ #
+ # Device Drivers
+@@ -424,25 +396,23 @@ CONFIG_NET_CLS_ROUTE=y
+ #
+ # Generic Driver Options
+ #
++CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
++# CONFIG_DEVTMPFS is not set
+ CONFIG_STANDALONE=y
+ CONFIG_PREVENT_FIRMWARE_BUILD=y
+ CONFIG_FW_LOADER=y
++CONFIG_FIRMWARE_IN_KERNEL=y
++CONFIG_EXTRA_FIRMWARE=""
+ # CONFIG_SYS_HYPERVISOR is not set
+-
+-#
+-# Connector - unified userspace <-> kernelspace linker
+-#
+ # CONFIG_CONNECTOR is not set
+-
+-#
+-# Memory Technology Devices (MTD)
+-#
+ CONFIG_MTD=y
+ # CONFIG_MTD_DEBUG is not set
++# CONFIG_MTD_TESTS is not set
+ # CONFIG_MTD_CONCAT is not set
+ CONFIG_MTD_PARTITIONS=y
+ # CONFIG_MTD_REDBOOT_PARTS is not set
+-# CONFIG_MTD_CMDLINE_PARTS is not set
++CONFIG_MTD_CMDLINE_PARTS=y
++# CONFIG_MTD_AR7_PARTS is not set
+ 
+ #
+ # User Modules And Translation Layers
+@@ -455,6 +425,7 @@ CONFIG_MTD_BLOCK=y
+ # CONFIG_INFTL is not set
+ # CONFIG_RFD_FTL is not set
+ # CONFIG_SSFDC is not set
++# CONFIG_MTD_OOPS is not set
+ 
+ #
+ # RAM/ROM/Flash chip drivers
+@@ -463,6 +434,9 @@ CONFIG_MTD_CFI=y
+ # CONFIG_MTD_JEDECPROBE is not set
+ CONFIG_MTD_GEN_PROBE=y
+ # CONFIG_MTD_CFI_ADV_OPTIONS is not set
++# CONFIG_MTD_CFI_NOSWAP is not set
++# CONFIG_MTD_CFI_BE_BYTE_SWAP is not set
++# CONFIG_MTD_CFI_LE_BYTE_SWAP is not set
+ CONFIG_MTD_MAP_BANK_WIDTH_1=y
+ CONFIG_MTD_MAP_BANK_WIDTH_2=y
+ CONFIG_MTD_MAP_BANK_WIDTH_4=y
+@@ -480,19 +454,21 @@ CONFIG_MTD_CFI_UTIL=y
+ # CONFIG_MTD_RAM is not set
+ # CONFIG_MTD_ROM is not set
+ # CONFIG_MTD_ABSENT is not set
+-# CONFIG_MTD_OBSOLETE_CHIPS is not set
+ 
+ #
+ # Mapping drivers for chip access
+ #
+ # CONFIG_MTD_COMPLEX_MAPPINGS is not set
+-# CONFIG_MTD_PHYSMAP is not set
+-CONFIG_MTD_ALCHEMY=y
++CONFIG_MTD_PHYSMAP=y
++# CONFIG_MTD_PHYSMAP_COMPAT is not set
+ # CONFIG_MTD_PLATRAM is not set
+ 
+ #
+ # Self-contained MTD device drivers
+ #
++# CONFIG_MTD_DATAFLASH is not set
++# CONFIG_MTD_M25P80 is not set
++# CONFIG_MTD_SST25L is not set
+ # CONFIG_MTD_SLRAM is not set
+ # CONFIG_MTD_PHRAM is not set
+ # CONFIG_MTD_MTDRAM is not set
+@@ -504,224 +480,129 @@ CONFIG_MTD_ALCHEMY=y
+ # CONFIG_MTD_DOC2000 is not set
+ # CONFIG_MTD_DOC2001 is not set
+ # CONFIG_MTD_DOC2001PLUS is not set
+-
+-#
+-# NAND Flash Device Drivers
+-#
+ CONFIG_MTD_NAND=y
+ # CONFIG_MTD_NAND_VERIFY_WRITE is not set
+ # CONFIG_MTD_NAND_ECC_SMC is not set
++# CONFIG_MTD_NAND_MUSEUM_IDS is not set
+ CONFIG_MTD_NAND_IDS=y
+ # CONFIG_MTD_NAND_AU1550 is not set
+ # CONFIG_MTD_NAND_DISKONCHIP is not set
+ # CONFIG_MTD_NAND_NANDSIM is not set
+-
+-#
+-# OneNAND Flash Device Drivers
+-#
++CONFIG_MTD_NAND_PLATFORM=y
++# CONFIG_MTD_ALAUDA is not set
+ # CONFIG_MTD_ONENAND is not set
+ 
+ #
+-# Parallel port support
+-#
+-# CONFIG_PARPORT is not set
+-
+-#
+-# Plug and Play support
++# LPDDR flash memory drivers
+ #
+-# CONFIG_PNPACPI is not set
++# CONFIG_MTD_LPDDR is not set
+ 
+ #
+-# Block devices
++# UBI - Unsorted block images
+ #
++# CONFIG_MTD_UBI is not set
++# CONFIG_PARPORT is not set
++CONFIG_BLK_DEV=y
+ # CONFIG_BLK_DEV_COW_COMMON is not set
+ CONFIG_BLK_DEV_LOOP=y
+ # CONFIG_BLK_DEV_CRYPTOLOOP is not set
+ # CONFIG_BLK_DEV_NBD is not set
+-CONFIG_BLK_DEV_RAM=y
+-CONFIG_BLK_DEV_RAM_COUNT=16
+-CONFIG_BLK_DEV_RAM_SIZE=4096
+-CONFIG_BLK_DEV_RAM_BLOCKSIZE=1024
+-# CONFIG_BLK_DEV_INITRD is not set
++CONFIG_BLK_DEV_UB=y
++# CONFIG_BLK_DEV_RAM is not set
+ # CONFIG_CDROM_PKTCDVD is not set
+ # CONFIG_ATA_OVER_ETH is not set
+-
+-#
+-# Misc devices
+-#
+-
+-#
+-# ATA/ATAPI/MFM/RLL support
+-#
++# CONFIG_BLK_DEV_HD is not set
++# CONFIG_MISC_DEVICES is not set
++CONFIG_HAVE_IDE=y
+ CONFIG_IDE=y
+-CONFIG_IDE_MAX_HWIFS=4
+-CONFIG_BLK_DEV_IDE=y
+ 
+ #
+-# Please see Documentation/ide.txt for help/info on IDE drives
++# Please see Documentation/ide/ide.txt for help/info on IDE drives
+ #
++CONFIG_IDE_XFER_MODE=y
++CONFIG_IDE_ATAPI=y
+ # CONFIG_BLK_DEV_IDE_SATA is not set
+-CONFIG_BLK_DEV_IDEDISK=y
+-CONFIG_IDEDISK_MULTI_MODE=y
+-CONFIG_BLK_DEV_IDECS=m
+-# CONFIG_BLK_DEV_IDECD is not set
++CONFIG_IDE_GD=y
++CONFIG_IDE_GD_ATA=y
++# CONFIG_IDE_GD_ATAPI is not set
++CONFIG_BLK_DEV_IDECS=y
++CONFIG_BLK_DEV_IDECD=y
++CONFIG_BLK_DEV_IDECD_VERBOSE_ERRORS=y
+ # CONFIG_BLK_DEV_IDETAPE is not set
+-# CONFIG_BLK_DEV_IDEFLOPPY is not set
+-# CONFIG_BLK_DEV_IDESCSI is not set
+-# CONFIG_IDE_TASK_IOCTL is not set
++CONFIG_IDE_TASK_IOCTL=y
++# CONFIG_IDE_PROC_FS is not set
+ 
+ #
+ # IDE chipset support/bugfixes
+ #
+-CONFIG_IDE_GENERIC=y
++# CONFIG_IDE_GENERIC is not set
++# CONFIG_BLK_DEV_PLATFORM is not set
+ CONFIG_BLK_DEV_IDE_AU1XXX=y
+ CONFIG_BLK_DEV_IDE_AU1XXX_PIO_DBDMA=y
+ # CONFIG_BLK_DEV_IDE_AU1XXX_MDMA2_DBDMA is not set
+-CONFIG_BLK_DEV_IDE_AU1XXX_SEQTS_PER_RQ=128
+-# CONFIG_IDE_ARM is not set
+ # CONFIG_BLK_DEV_IDEDMA is not set
+-# CONFIG_IDEDMA_AUTO is not set
+-# CONFIG_BLK_DEV_HD is not set
+ 
+ #
+ # SCSI device support
+ #
+ # CONFIG_RAID_ATTRS is not set
+-CONFIG_SCSI=y
+-CONFIG_SCSI_TGT=m
++# CONFIG_SCSI is not set
++# CONFIG_SCSI_DMA is not set
+ # CONFIG_SCSI_NETLINK is not set
+-CONFIG_SCSI_PROC_FS=y
+-
+-#
+-# SCSI support type (disk, tape, CD-ROM)
+-#
+-CONFIG_BLK_DEV_SD=y
+-# CONFIG_CHR_DEV_ST is not set
+-# CONFIG_CHR_DEV_OSST is not set
+-CONFIG_BLK_DEV_SR=y
+-# CONFIG_BLK_DEV_SR_VENDOR is not set
+-CONFIG_CHR_DEV_SG=y
+-# CONFIG_CHR_DEV_SCH is not set
+-
+-#
+-# Some SCSI devices (e.g. CD jukebox) support multiple LUNs
+-#
+-CONFIG_SCSI_MULTI_LUN=y
+-# CONFIG_SCSI_CONSTANTS is not set
+-# CONFIG_SCSI_LOGGING is not set
+-CONFIG_SCSI_SCAN_ASYNC=y
+-
+-#
+-# SCSI Transports
+-#
+-# CONFIG_SCSI_SPI_ATTRS is not set
+-# CONFIG_SCSI_FC_ATTRS is not set
+-# CONFIG_SCSI_ISCSI_ATTRS is not set
+-# CONFIG_SCSI_SAS_ATTRS is not set
+-# CONFIG_SCSI_SAS_LIBSAS is not set
+-
+-#
+-# SCSI low-level drivers
+-#
+-# CONFIG_ISCSI_TCP is not set
+-# CONFIG_SCSI_DEBUG is not set
+-
+-#
+-# PCMCIA SCSI adapter support
+-#
+-# CONFIG_PCMCIA_AHA152X is not set
+-# CONFIG_PCMCIA_FDOMAIN is not set
+-# CONFIG_PCMCIA_NINJA_SCSI is not set
+-# CONFIG_PCMCIA_QLOGIC is not set
+-# CONFIG_PCMCIA_SYM53C500 is not set
+-
+-#
+-# Serial ATA (prod) and Parallel ATA (experimental) drivers
+-#
+ # CONFIG_ATA is not set
+-
+-#
+-# Multi-device support (RAID and LVM)
+-#
+ # CONFIG_MD is not set
+-
+-#
+-# Fusion MPT device support
+-#
+-# CONFIG_FUSION is not set
+-
+-#
+-# IEEE 1394 (FireWire) support
+-#
+-
+-#
+-# I2O device support
+-#
+-
+-#
+-# Network device support
+-#
+ CONFIG_NETDEVICES=y
+ # CONFIG_DUMMY is not set
+ # CONFIG_BONDING is not set
++# CONFIG_MACVLAN is not set
+ # CONFIG_EQUALIZER is not set
+ # CONFIG_TUN is not set
+-
+-#
+-# PHY device support
+-#
++# CONFIG_VETH is not set
+ # CONFIG_PHYLIB is not set
+-
+-#
+-# Ethernet (10 or 100Mbit)
+-#
+ CONFIG_NET_ETHERNET=y
+-CONFIG_MII=m
++CONFIG_MII=y
++# CONFIG_AX88796 is not set
+ # CONFIG_MIPS_AU1X00_ENET is not set
+-# CONFIG_SMC91X is not set
++CONFIG_SMC91X=y
+ # CONFIG_DM9000 is not set
+-
+-#
+-# Ethernet (1000 Mbit)
+-#
+-
+-#
+-# Ethernet (10000 Mbit)
+-#
+-
+-#
+-# Token Ring devices
+-#
+-
+-#
+-# Wireless LAN (non-hamradio)
+-#
+-# CONFIG_NET_RADIO is not set
+-
+-#
+-# PCMCIA network device support
+-#
++# CONFIG_ENC28J60 is not set
++# CONFIG_ETHOC is not set
++# CONFIG_DNET is not set
++# CONFIG_IBM_NEW_EMAC_ZMII is not set
++# CONFIG_IBM_NEW_EMAC_RGMII is not set
++# CONFIG_IBM_NEW_EMAC_TAH is not set
++# CONFIG_IBM_NEW_EMAC_EMAC4 is not set
++# CONFIG_IBM_NEW_EMAC_NO_FLOW_CTRL is not set
++# CONFIG_IBM_NEW_EMAC_MAL_CLR_ICINTSTAT is not set
++# CONFIG_IBM_NEW_EMAC_MAL_COMMON_ERR is not set
++# CONFIG_B44 is not set
++# CONFIG_KS8842 is not set
++# CONFIG_KS8851 is not set
++# CONFIG_KS8851_MLL is not set
++# CONFIG_NETDEV_1000 is not set
++# CONFIG_NETDEV_10000 is not set
++# CONFIG_WLAN is not set
++
++#
++# Enable WiMAX (Networking options) to see the WiMAX drivers
++#
++
++#
++# USB Network Adapters
++#
++# CONFIG_USB_CATC is not set
++# CONFIG_USB_KAWETH is not set
++# CONFIG_USB_PEGASUS is not set
++# CONFIG_USB_RTL8150 is not set
++# CONFIG_USB_USBNET is not set
+ # CONFIG_NET_PCMCIA is not set
+-
+-#
+-# Wan interfaces
+-#
+ # CONFIG_WAN is not set
+ # CONFIG_PPP is not set
+ # CONFIG_SLIP is not set
+-# CONFIG_SHAPER is not set
+ # CONFIG_NETCONSOLE is not set
+ # CONFIG_NETPOLL is not set
+ # CONFIG_NET_POLL_CONTROLLER is not set
+-
+-#
+-# ISDN subsystem
+-#
+ # CONFIG_ISDN is not set
+-
+-#
+-# Telephony Support
+-#
+ # CONFIG_PHONE is not set
+ 
+ #
+@@ -729,16 +610,16 @@ CONFIG_MII=m
+ #
+ CONFIG_INPUT=y
+ # CONFIG_INPUT_FF_MEMLESS is not set
++# CONFIG_INPUT_POLLDEV is not set
+ 
+ #
+ # Userland interfaces
+ #
+ CONFIG_INPUT_MOUSEDEV=y
+-CONFIG_INPUT_MOUSEDEV_PSAUX=y
++# CONFIG_INPUT_MOUSEDEV_PSAUX is not set
+ CONFIG_INPUT_MOUSEDEV_SCREEN_X=1024
+ CONFIG_INPUT_MOUSEDEV_SCREEN_Y=768
+ # CONFIG_INPUT_JOYDEV is not set
+-# CONFIG_INPUT_TSDEV is not set
+ CONFIG_INPUT_EVDEV=y
+ # CONFIG_INPUT_EVBUG is not set
+ 
+@@ -748,28 +629,26 @@ CONFIG_INPUT_EVDEV=y
+ # CONFIG_INPUT_KEYBOARD is not set
+ # CONFIG_INPUT_MOUSE is not set
+ # CONFIG_INPUT_JOYSTICK is not set
++# CONFIG_INPUT_TABLET is not set
+ # CONFIG_INPUT_TOUCHSCREEN is not set
+ # CONFIG_INPUT_MISC is not set
+ 
+ #
+ # Hardware I/O ports
+ #
+-CONFIG_SERIO=y
+-# CONFIG_SERIO_I8042 is not set
+-CONFIG_SERIO_SERPORT=y
+-# CONFIG_SERIO_LIBPS2 is not set
+-CONFIG_SERIO_RAW=y
++# CONFIG_SERIO is not set
+ # CONFIG_GAMEPORT is not set
+ 
+ #
+ # Character devices
+ #
+ CONFIG_VT=y
++CONFIG_CONSOLE_TRANSLATIONS=y
+ CONFIG_VT_CONSOLE=y
+ CONFIG_HW_CONSOLE=y
+ CONFIG_VT_HW_CONSOLE_BINDING=y
++CONFIG_DEVKMEM=y
+ # CONFIG_SERIAL_NONSTANDARD is not set
+-# CONFIG_AU1X00_GPIO is not set
+ 
+ #
+ # Serial drivers
+@@ -777,33 +656,22 @@ CONFIG_VT_HW_CONSOLE_BINDING=y
+ CONFIG_SERIAL_8250=y
+ CONFIG_SERIAL_8250_CONSOLE=y
+ # CONFIG_SERIAL_8250_CS is not set
+-CONFIG_SERIAL_8250_NR_UARTS=4
+-CONFIG_SERIAL_8250_RUNTIME_UARTS=4
++CONFIG_SERIAL_8250_NR_UARTS=2
++CONFIG_SERIAL_8250_RUNTIME_UARTS=2
+ # CONFIG_SERIAL_8250_EXTENDED is not set
+ CONFIG_SERIAL_8250_AU1X00=y
+ 
+ #
+ # Non-8250 serial port support
+ #
++# CONFIG_SERIAL_MAX3100 is not set
+ CONFIG_SERIAL_CORE=y
+ CONFIG_SERIAL_CORE_CONSOLE=y
+ CONFIG_UNIX98_PTYS=y
+-CONFIG_LEGACY_PTYS=y
+-CONFIG_LEGACY_PTY_COUNT=256
+-
+-#
+-# IPMI
+-#
++# CONFIG_DEVPTS_MULTIPLE_INSTANCES is not set
++# CONFIG_LEGACY_PTYS is not set
+ # CONFIG_IPMI_HANDLER is not set
+-
+-#
+-# Watchdog Cards
+-#
+-# CONFIG_WATCHDOG is not set
+ # CONFIG_HW_RANDOM is not set
+-# CONFIG_RTC is not set
+-# CONFIG_GEN_RTC is not set
+-# CONFIG_DTLK is not set
+ # CONFIG_R3964 is not set
+ 
+ #
+@@ -812,225 +680,606 @@ CONFIG_LEGACY_PTY_COUNT=256
+ # CONFIG_SYNCLINK_CS is not set
+ # CONFIG_CARDMAN_4000 is not set
+ # CONFIG_CARDMAN_4040 is not set
++# CONFIG_IPWIRELESS is not set
+ # CONFIG_RAW_DRIVER is not set
++# CONFIG_TCG_TPM is not set
++CONFIG_I2C=y
++CONFIG_I2C_BOARDINFO=y
++# CONFIG_I2C_COMPAT is not set
++CONFIG_I2C_CHARDEV=y
++# CONFIG_I2C_HELPER_AUTO is not set
+ 
+ #
+-# TPM devices
++# I2C Algorithms
+ #
+-# CONFIG_TCG_TPM is not set
++# CONFIG_I2C_ALGOBIT is not set
++# CONFIG_I2C_ALGOPCF is not set
++# CONFIG_I2C_ALGOPCA is not set
+ 
+ #
+-# I2C support
++# I2C Hardware Bus support
+ #
+-# CONFIG_I2C is not set
+ 
+ #
+-# SPI support
++# I2C system bus drivers (mostly embedded / system-on-chip)
+ #
+-# CONFIG_SPI is not set
+-# CONFIG_SPI_MASTER is not set
++CONFIG_I2C_AU1550=y
++# CONFIG_I2C_GPIO is not set
++# CONFIG_I2C_OCORES is not set
++# CONFIG_I2C_SIMTEC is not set
+ 
+ #
+-# Dallas's 1-wire bus
++# External I2C/SMBus adapter drivers
++#
++# CONFIG_I2C_PARPORT_LIGHT is not set
++# CONFIG_I2C_TAOS_EVM is not set
++# CONFIG_I2C_TINY_USB is not set
++
++#
++# Other I2C/SMBus bus drivers
++#
++# CONFIG_I2C_PCA_PLATFORM is not set
++# CONFIG_I2C_STUB is not set
++
++#
++# Miscellaneous I2C Chip support
++#
++# CONFIG_DS1682 is not set
++# CONFIG_SENSORS_TSL2550 is not set
++# CONFIG_I2C_DEBUG_CORE is not set
++# CONFIG_I2C_DEBUG_ALGO is not set
++# CONFIG_I2C_DEBUG_BUS is not set
++# CONFIG_I2C_DEBUG_CHIP is not set
++CONFIG_SPI=y
++CONFIG_SPI_MASTER=y
++
++#
++# SPI Master Controller Drivers
++#
++CONFIG_SPI_AU1550=y
++CONFIG_SPI_BITBANG=y
++# CONFIG_SPI_GPIO is not set
++
++#
++# SPI Protocol Masters
++#
++# CONFIG_SPI_SPIDEV is not set
++# CONFIG_SPI_TLE62X0 is not set
++
++#
++# PPS support
++#
++# CONFIG_PPS is not set
++CONFIG_ARCH_WANT_OPTIONAL_GPIOLIB=y
++CONFIG_GPIOLIB=y
++CONFIG_GPIO_SYSFS=y
++
++#
++# Memory mapped GPIO expanders:
+ #
+-# CONFIG_W1 is not set
+ 
+ #
+-# Hardware Monitoring support
++# I2C GPIO expanders:
+ #
+-# CONFIG_HWMON is not set
+-# CONFIG_HWMON_VID is not set
++# CONFIG_GPIO_MAX732X is not set
++# CONFIG_GPIO_PCA953X is not set
++# CONFIG_GPIO_PCF857X is not set
+ 
+ #
+-# Multimedia devices
++# PCI GPIO expanders:
+ #
+-# CONFIG_VIDEO_DEV is not set
+ 
+ #
+-# Digital Video Broadcasting Devices
++# SPI GPIO expanders:
+ #
+-# CONFIG_DVB is not set
++# CONFIG_GPIO_MAX7301 is not set
++# CONFIG_GPIO_MCP23S08 is not set
++# CONFIG_GPIO_MC33880 is not set
++
++#
++# AC97 GPIO expanders:
++#
++# CONFIG_W1 is not set
++# CONFIG_POWER_SUPPLY is not set
++CONFIG_HWMON=y
++CONFIG_HWMON_VID=y
++# CONFIG_HWMON_DEBUG_CHIP is not set
++
++#
++# Native drivers
++#
++# CONFIG_SENSORS_AD7414 is not set
++# CONFIG_SENSORS_AD7418 is not set
++# CONFIG_SENSORS_ADCXX is not set
++# CONFIG_SENSORS_ADM1021 is not set
++CONFIG_SENSORS_ADM1025=y
++# CONFIG_SENSORS_ADM1026 is not set
++# CONFIG_SENSORS_ADM1029 is not set
++# CONFIG_SENSORS_ADM1031 is not set
++# CONFIG_SENSORS_ADM9240 is not set
++# CONFIG_SENSORS_ADT7462 is not set
++# CONFIG_SENSORS_ADT7470 is not set
++# CONFIG_SENSORS_ADT7473 is not set
++# CONFIG_SENSORS_ADT7475 is not set
++# CONFIG_SENSORS_ATXP1 is not set
++# CONFIG_SENSORS_DS1621 is not set
++# CONFIG_SENSORS_F71805F is not set
++# CONFIG_SENSORS_F71882FG is not set
++# CONFIG_SENSORS_F75375S is not set
++# CONFIG_SENSORS_G760A is not set
++# CONFIG_SENSORS_GL518SM is not set
++# CONFIG_SENSORS_GL520SM is not set
++# CONFIG_SENSORS_IT87 is not set
++# CONFIG_SENSORS_LM63 is not set
++CONFIG_SENSORS_LM70=y
++# CONFIG_SENSORS_LM75 is not set
++# CONFIG_SENSORS_LM77 is not set
++# CONFIG_SENSORS_LM78 is not set
++# CONFIG_SENSORS_LM80 is not set
++# CONFIG_SENSORS_LM83 is not set
++# CONFIG_SENSORS_LM85 is not set
++# CONFIG_SENSORS_LM87 is not set
++# CONFIG_SENSORS_LM90 is not set
++# CONFIG_SENSORS_LM92 is not set
++# CONFIG_SENSORS_LM93 is not set
++# CONFIG_SENSORS_LTC4215 is not set
++# CONFIG_SENSORS_LTC4245 is not set
++# CONFIG_SENSORS_LM95241 is not set
++# CONFIG_SENSORS_MAX1111 is not set
++# CONFIG_SENSORS_MAX1619 is not set
++# CONFIG_SENSORS_MAX6650 is not set
++# CONFIG_SENSORS_PC87360 is not set
++# CONFIG_SENSORS_PC87427 is not set
++# CONFIG_SENSORS_PCF8591 is not set
++# CONFIG_SENSORS_SHT15 is not set
++# CONFIG_SENSORS_DME1737 is not set
++# CONFIG_SENSORS_SMSC47M1 is not set
++# CONFIG_SENSORS_SMSC47M192 is not set
++# CONFIG_SENSORS_SMSC47B397 is not set
++# CONFIG_SENSORS_ADS7828 is not set
++# CONFIG_SENSORS_THMC50 is not set
++# CONFIG_SENSORS_TMP401 is not set
++# CONFIG_SENSORS_TMP421 is not set
++# CONFIG_SENSORS_VT1211 is not set
++# CONFIG_SENSORS_W83781D is not set
++# CONFIG_SENSORS_W83791D is not set
++# CONFIG_SENSORS_W83792D is not set
++# CONFIG_SENSORS_W83793 is not set
++# CONFIG_SENSORS_W83L785TS is not set
++# CONFIG_SENSORS_W83L786NG is not set
++# CONFIG_SENSORS_W83627HF is not set
++# CONFIG_SENSORS_W83627EHF is not set
++# CONFIG_SENSORS_LIS3_SPI is not set
++# CONFIG_THERMAL is not set
++# CONFIG_WATCHDOG is not set
++CONFIG_SSB_POSSIBLE=y
++
++#
++# Sonics Silicon Backplane
++#
++# CONFIG_SSB is not set
++
++#
++# Multifunction device drivers
++#
++# CONFIG_MFD_CORE is not set
++# CONFIG_MFD_SM501 is not set
++# CONFIG_HTC_PASIC3 is not set
++# CONFIG_UCB1400_CORE is not set
++# CONFIG_TPS65010 is not set
++# CONFIG_TWL4030_CORE is not set
++# CONFIG_MFD_TMIO is not set
++# CONFIG_PMIC_DA903X is not set
++# CONFIG_MFD_WM8400 is not set
++# CONFIG_MFD_WM831X is not set
++# CONFIG_MFD_WM8350_I2C is not set
++# CONFIG_MFD_PCF50633 is not set
++# CONFIG_MFD_MC13783 is not set
++# CONFIG_AB3100_CORE is not set
++# CONFIG_EZX_PCAP is not set
++# CONFIG_REGULATOR is not set
++# CONFIG_MEDIA_SUPPORT is not set
+ 
+ #
+ # Graphics support
+ #
+-# CONFIG_FIRMWARE_EDID is not set
++# CONFIG_VGASTATE is not set
++# CONFIG_VIDEO_OUTPUT_CONTROL is not set
+ CONFIG_FB=y
++# CONFIG_FIRMWARE_EDID is not set
++# CONFIG_FB_DDC is not set
++# CONFIG_FB_BOOT_VESA_SUPPORT is not set
+ CONFIG_FB_CFB_FILLRECT=y
+ CONFIG_FB_CFB_COPYAREA=y
+ CONFIG_FB_CFB_IMAGEBLIT=y
++# CONFIG_FB_CFB_REV_PIXELS_IN_BYTE is not set
++# CONFIG_FB_SYS_FILLRECT is not set
++# CONFIG_FB_SYS_COPYAREA is not set
++# CONFIG_FB_SYS_IMAGEBLIT is not set
++# CONFIG_FB_FOREIGN_ENDIAN is not set
++# CONFIG_FB_SYS_FOPS is not set
+ # CONFIG_FB_SVGALIB is not set
+ # CONFIG_FB_MACMODES is not set
+ # CONFIG_FB_BACKLIGHT is not set
+ # CONFIG_FB_MODE_HELPERS is not set
+ # CONFIG_FB_TILEBLITTING is not set
++
++#
++# Frame buffer hardware drivers
++#
+ # CONFIG_FB_S1D13XXX is not set
+ CONFIG_FB_AU1200=y
+ # CONFIG_FB_VIRTUAL is not set
++# CONFIG_FB_METRONOME is not set
++# CONFIG_FB_MB862XX is not set
++# CONFIG_FB_BROADSHEET is not set
++# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
++
++#
++# Display device support
++#
++# CONFIG_DISPLAY_SUPPORT is not set
+ 
+ #
+ # Console display driver support
+ #
+-CONFIG_VGA_CONSOLE=y
+-# CONFIG_VGACON_SOFT_SCROLLBACK is not set
++# CONFIG_VGA_CONSOLE is not set
+ CONFIG_DUMMY_CONSOLE=y
+-# CONFIG_FRAMEBUFFER_CONSOLE is not set
++CONFIG_FRAMEBUFFER_CONSOLE=y
++# CONFIG_FRAMEBUFFER_CONSOLE_DETECT_PRIMARY is not set
++# CONFIG_FRAMEBUFFER_CONSOLE_ROTATION is not set
++CONFIG_FONTS=y
++# CONFIG_FONT_8x8 is not set
++CONFIG_FONT_8x16=y
++# CONFIG_FONT_6x11 is not set
++# CONFIG_FONT_7x14 is not set
++# CONFIG_FONT_PEARL_8x8 is not set
++# CONFIG_FONT_ACORN_8x8 is not set
++# CONFIG_FONT_MINI_4x6 is not set
++# CONFIG_FONT_SUN8x16 is not set
++# CONFIG_FONT_SUN12x22 is not set
++# CONFIG_FONT_10x18 is not set
++# CONFIG_LOGO is not set
++CONFIG_SOUND=y
++# CONFIG_SOUND_OSS_CORE is not set
++CONFIG_SND=y
++CONFIG_SND_TIMER=y
++CONFIG_SND_PCM=y
++CONFIG_SND_JACK=y
++# CONFIG_SND_SEQUENCER is not set
++# CONFIG_SND_MIXER_OSS is not set
++# CONFIG_SND_PCM_OSS is not set
++# CONFIG_SND_HRTIMER is not set
++CONFIG_SND_DYNAMIC_MINORS=y
++# CONFIG_SND_SUPPORT_OLD_API is not set
++# CONFIG_SND_VERBOSE_PROCFS is not set
++# CONFIG_SND_VERBOSE_PRINTK is not set
++# CONFIG_SND_DEBUG is not set
++CONFIG_SND_VMASTER=y
++# CONFIG_SND_RAWMIDI_SEQ is not set
++# CONFIG_SND_OPL3_LIB_SEQ is not set
++# CONFIG_SND_OPL4_LIB_SEQ is not set
++# CONFIG_SND_SBAWE_SEQ is not set
++# CONFIG_SND_EMU10K1_SEQ is not set
++CONFIG_SND_AC97_CODEC=y
++# CONFIG_SND_DRIVERS is not set
++# CONFIG_SND_SPI is not set
++# CONFIG_SND_MIPS is not set
++# CONFIG_SND_USB is not set
++# CONFIG_SND_PCMCIA is not set
++CONFIG_SND_SOC=y
++CONFIG_SND_SOC_AC97_BUS=y
++CONFIG_SND_SOC_AU1XPSC=y
++CONFIG_SND_SOC_AU1XPSC_I2S=y
++CONFIG_SND_SOC_AU1XPSC_AC97=y
++CONFIG_SND_SOC_DB1200=y
++CONFIG_SND_SOC_I2C_AND_SPI=y
++# CONFIG_SND_SOC_ALL_CODECS is not set
++CONFIG_SND_SOC_AC97_CODEC=y
++CONFIG_SND_SOC_WM8731=y
++# CONFIG_SOUND_PRIME is not set
++CONFIG_AC97_BUS=y
++CONFIG_HID_SUPPORT=y
++CONFIG_HID=y
++CONFIG_HIDRAW=y
++
++#
++# USB Input Devices
++#
++CONFIG_USB_HID=y
++# CONFIG_HID_PID is not set
++CONFIG_USB_HIDDEV=y
++
++#
++# Special HID drivers
++#
++# CONFIG_HID_A4TECH is not set
++# CONFIG_HID_APPLE is not set
++# CONFIG_HID_BELKIN is not set
++# CONFIG_HID_CHERRY is not set
++# CONFIG_HID_CHICONY is not set
++# CONFIG_HID_CYPRESS is not set
++# CONFIG_HID_DRAGONRISE is not set
++# CONFIG_HID_EZKEY is not set
++# CONFIG_HID_KYE is not set
++# CONFIG_HID_GYRATION is not set
++# CONFIG_HID_TWINHAN is not set
++# CONFIG_HID_KENSINGTON is not set
++# CONFIG_HID_LOGITECH is not set
++# CONFIG_HID_MICROSOFT is not set
++# CONFIG_HID_MONTEREY is not set
++# CONFIG_HID_NTRIG is not set
++# CONFIG_HID_PANTHERLORD is not set
++# CONFIG_HID_PETALYNX is not set
++# CONFIG_HID_SAMSUNG is not set
++# CONFIG_HID_SONY is not set
++# CONFIG_HID_SUNPLUS is not set
++# CONFIG_HID_GREENASIA is not set
++# CONFIG_HID_SMARTJOYPLUS is not set
++# CONFIG_HID_TOPSEED is not set
++# CONFIG_HID_THRUSTMASTER is not set
++# CONFIG_HID_ZEROPLUS is not set
++CONFIG_USB_SUPPORT=y
++CONFIG_USB_ARCH_HAS_HCD=y
++CONFIG_USB_ARCH_HAS_OHCI=y
++CONFIG_USB_ARCH_HAS_EHCI=y
++CONFIG_USB=y
++CONFIG_USB_DEBUG=y
++CONFIG_USB_ANNOUNCE_NEW_DEVICES=y
+ 
+ #
+-# Logo configuration
++# Miscellaneous USB options
+ #
+-CONFIG_LOGO=y
+-CONFIG_LOGO_LINUX_MONO=y
+-CONFIG_LOGO_LINUX_VGA16=y
+-CONFIG_LOGO_LINUX_CLUT224=y
+-# CONFIG_BACKLIGHT_LCD_SUPPORT is not set
++# CONFIG_USB_DEVICEFS is not set
++# CONFIG_USB_DEVICE_CLASS is not set
++CONFIG_USB_DYNAMIC_MINORS=y
++# CONFIG_USB_OTG is not set
++# CONFIG_USB_OTG_WHITELIST is not set
++# CONFIG_USB_OTG_BLACKLIST_HUB is not set
++# CONFIG_USB_MON is not set
++# CONFIG_USB_WUSB is not set
++# CONFIG_USB_WUSB_CBAF is not set
+ 
+ #
+-# Sound
++# USB Host Controller Drivers
+ #
+-# CONFIG_SOUND is not set
++# CONFIG_USB_C67X00_HCD is not set
++CONFIG_USB_EHCI_HCD=y
++CONFIG_USB_EHCI_ROOT_HUB_TT=y
++CONFIG_USB_EHCI_TT_NEWSCHED=y
++# CONFIG_USB_OXU210HP_HCD is not set
++# CONFIG_USB_ISP116X_HCD is not set
++# CONFIG_USB_ISP1760_HCD is not set
++# CONFIG_USB_ISP1362_HCD is not set
++CONFIG_USB_OHCI_HCD=y
++# CONFIG_USB_OHCI_BIG_ENDIAN_DESC is not set
++# CONFIG_USB_OHCI_BIG_ENDIAN_MMIO is not set
++CONFIG_USB_OHCI_LITTLE_ENDIAN=y
++# CONFIG_USB_SL811_HCD is not set
++# CONFIG_USB_R8A66597_HCD is not set
++# CONFIG_USB_HWA_HCD is not set
+ 
+ #
+-# HID Devices
++# USB Device Class drivers
+ #
+-CONFIG_HID=y
+-# CONFIG_HID_DEBUG is not set
++# CONFIG_USB_ACM is not set
++# CONFIG_USB_PRINTER is not set
++# CONFIG_USB_WDM is not set
++# CONFIG_USB_TMC is not set
+ 
+ #
+-# USB support
++# NOTE: USB_STORAGE depends on SCSI but BLK_DEV_SD may
+ #
+-CONFIG_USB_ARCH_HAS_HCD=y
+-CONFIG_USB_ARCH_HAS_OHCI=y
+-CONFIG_USB_ARCH_HAS_EHCI=y
+-# CONFIG_USB is not set
+ 
+ #
+-# NOTE: USB_STORAGE enables SCSI, and 'SCSI disk support'
++# also be needed; see USB_STORAGE Help for more info
++#
++# CONFIG_USB_LIBUSUAL is not set
++
++#
++# USB Imaging devices
+ #
++# CONFIG_USB_MDC800 is not set
+ 
+ #
+-# USB Gadget Support
++# USB port drivers
+ #
+-CONFIG_USB_GADGET=m
+-# CONFIG_USB_GADGET_DEBUG_FILES is not set
+-# CONFIG_USB_GADGET_NET2280 is not set
+-# CONFIG_USB_GADGET_PXA2XX is not set
+-# CONFIG_USB_GADGET_GOKU is not set
+-# CONFIG_USB_GADGET_LH7A40X is not set
+-# CONFIG_USB_GADGET_OMAP is not set
+-# CONFIG_USB_GADGET_AT91 is not set
+-# CONFIG_USB_GADGET_DUMMY_HCD is not set
+-# CONFIG_USB_GADGET_DUALSPEED is not set
++# CONFIG_USB_SERIAL is not set
+ 
+ #
+-# MMC/SD Card support
++# USB Miscellaneous drivers
+ #
++# CONFIG_USB_EMI62 is not set
++# CONFIG_USB_EMI26 is not set
++# CONFIG_USB_ADUTUX is not set
++# CONFIG_USB_SEVSEG is not set
++# CONFIG_USB_RIO500 is not set
++# CONFIG_USB_LEGOTOWER is not set
++# CONFIG_USB_LCD is not set
++# CONFIG_USB_BERRY_CHARGE is not set
++# CONFIG_USB_LED is not set
++# CONFIG_USB_CYPRESS_CY7C63 is not set
++# CONFIG_USB_CYTHERM is not set
++# CONFIG_USB_IDMOUSE is not set
++# CONFIG_USB_FTDI_ELAN is not set
++# CONFIG_USB_APPLEDISPLAY is not set
++# CONFIG_USB_SISUSBVGA is not set
++# CONFIG_USB_LD is not set
++# CONFIG_USB_TRANCEVIBRATOR is not set
++# CONFIG_USB_IOWARRIOR is not set
++# CONFIG_USB_TEST is not set
++# CONFIG_USB_ISIGHTFW is not set
++# CONFIG_USB_VST is not set
++# CONFIG_USB_GADGET is not set
++
++#
++# OTG and related infrastructure
++#
++# CONFIG_USB_GPIO_VBUS is not set
++# CONFIG_NOP_USB_XCEIV is not set
+ CONFIG_MMC=y
+ # CONFIG_MMC_DEBUG is not set
+-CONFIG_MMC_BLOCK=y
+-CONFIG_MMC_AU1X=y
++# CONFIG_MMC_UNSAFE_RESUME is not set
+ 
+ #
+-# LED devices
++# MMC/SD/SDIO Card Drivers
+ #
+-# CONFIG_NEW_LEDS is not set
++CONFIG_MMC_BLOCK=y
++# CONFIG_MMC_BLOCK_BOUNCE is not set
++# CONFIG_SDIO_UART is not set
++# CONFIG_MMC_TEST is not set
+ 
+ #
+-# LED drivers
++# MMC/SD/SDIO Host Controller Drivers
+ #
++# CONFIG_MMC_SDHCI is not set
++CONFIG_MMC_AU1X=y
++# CONFIG_MMC_AT91 is not set
++# CONFIG_MMC_ATMELMCI is not set
++# CONFIG_MMC_SPI is not set
++# CONFIG_MEMSTICK is not set
++CONFIG_NEW_LEDS=y
++CONFIG_LEDS_CLASS=y
+ 
+ #
+-# LED Triggers
++# LED drivers
+ #
++# CONFIG_LEDS_PCA9532 is not set
++# CONFIG_LEDS_GPIO is not set
++# CONFIG_LEDS_LP3944 is not set
++# CONFIG_LEDS_PCA955X is not set
++# CONFIG_LEDS_DAC124S085 is not set
++# CONFIG_LEDS_BD2802 is not set
+ 
+ #
+-# InfiniBand support
++# LED Triggers
+ #
++CONFIG_LEDS_TRIGGERS=y
++# CONFIG_LEDS_TRIGGER_TIMER is not set
++# CONFIG_LEDS_TRIGGER_IDE_DISK is not set
++# CONFIG_LEDS_TRIGGER_HEARTBEAT is not set
++# CONFIG_LEDS_TRIGGER_BACKLIGHT is not set
++# CONFIG_LEDS_TRIGGER_GPIO is not set
++# CONFIG_LEDS_TRIGGER_DEFAULT_ON is not set
+ 
+ #
+-# EDAC - error detection and reporting (RAS) (EXPERIMENTAL)
++# iptables trigger is under Netfilter config (LED target)
+ #
++# CONFIG_ACCESSIBILITY is not set
++CONFIG_RTC_LIB=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_HCTOSYS=y
++CONFIG_RTC_HCTOSYS_DEVICE="rtc0"
++# CONFIG_RTC_DEBUG is not set
+ 
+ #
+-# Real Time Clock
++# RTC interfaces
+ #
+-# CONFIG_RTC_CLASS is not set
++CONFIG_RTC_INTF_SYSFS=y
++CONFIG_RTC_INTF_PROC=y
++CONFIG_RTC_INTF_DEV=y
++# CONFIG_RTC_INTF_DEV_UIE_EMUL is not set
++# CONFIG_RTC_DRV_TEST is not set
+ 
+ #
+-# DMA Engine support
++# I2C RTC drivers
+ #
+-# CONFIG_DMA_ENGINE is not set
++# CONFIG_RTC_DRV_DS1307 is not set
++# CONFIG_RTC_DRV_DS1374 is not set
++# CONFIG_RTC_DRV_DS1672 is not set
++# CONFIG_RTC_DRV_MAX6900 is not set
++# CONFIG_RTC_DRV_RS5C372 is not set
++# CONFIG_RTC_DRV_ISL1208 is not set
++# CONFIG_RTC_DRV_X1205 is not set
++# CONFIG_RTC_DRV_PCF8563 is not set
++# CONFIG_RTC_DRV_PCF8583 is not set
++# CONFIG_RTC_DRV_M41T80 is not set
++# CONFIG_RTC_DRV_S35390A is not set
++# CONFIG_RTC_DRV_FM3130 is not set
++# CONFIG_RTC_DRV_RX8581 is not set
++# CONFIG_RTC_DRV_RX8025 is not set
+ 
+ #
+-# DMA Clients
++# SPI RTC drivers
+ #
++# CONFIG_RTC_DRV_M41T94 is not set
++# CONFIG_RTC_DRV_DS1305 is not set
++# CONFIG_RTC_DRV_DS1390 is not set
++# CONFIG_RTC_DRV_MAX6902 is not set
++# CONFIG_RTC_DRV_R9701 is not set
++# CONFIG_RTC_DRV_RS5C348 is not set
++# CONFIG_RTC_DRV_DS3234 is not set
++# CONFIG_RTC_DRV_PCF2123 is not set
+ 
+ #
+-# DMA Devices
++# Platform RTC drivers
+ #
++# CONFIG_RTC_DRV_CMOS is not set
++# CONFIG_RTC_DRV_DS1286 is not set
++# CONFIG_RTC_DRV_DS1511 is not set
++# CONFIG_RTC_DRV_DS1553 is not set
++# CONFIG_RTC_DRV_DS1742 is not set
++# CONFIG_RTC_DRV_STK17TA8 is not set
++# CONFIG_RTC_DRV_M48T86 is not set
++# CONFIG_RTC_DRV_M48T35 is not set
++# CONFIG_RTC_DRV_M48T59 is not set
++# CONFIG_RTC_DRV_BQ4802 is not set
++# CONFIG_RTC_DRV_V3020 is not set
+ 
+ #
+-# Auxiliary Display support
++# on-CPU RTC drivers
+ #
++CONFIG_RTC_DRV_AU1XXX=y
++# CONFIG_DMADEVICES is not set
++# CONFIG_AUXDISPLAY is not set
++# CONFIG_UIO is not set
+ 
+ #
+-# Virtualization
++# TI VLYNQ
+ #
++# CONFIG_STAGING is not set
+ 
+ #
+ # File systems
+ #
+ CONFIG_EXT2_FS=y
+-CONFIG_EXT2_FS_XATTR=y
+-CONFIG_EXT2_FS_POSIX_ACL=y
+-# CONFIG_EXT2_FS_SECURITY is not set
++# CONFIG_EXT2_FS_XATTR is not set
+ # CONFIG_EXT2_FS_XIP is not set
+-CONFIG_EXT3_FS=y
+-CONFIG_EXT3_FS_XATTR=y
+-CONFIG_EXT3_FS_POSIX_ACL=y
+-CONFIG_EXT3_FS_SECURITY=y
+-# CONFIG_EXT4DEV_FS is not set
+-CONFIG_JBD=y
+-# CONFIG_JBD_DEBUG is not set
+-CONFIG_FS_MBCACHE=y
++# CONFIG_EXT3_FS is not set
++# CONFIG_EXT4_FS is not set
+ # CONFIG_REISERFS_FS is not set
+-CONFIG_JFS_FS=y
+-# CONFIG_JFS_POSIX_ACL is not set
+-# CONFIG_JFS_SECURITY is not set
+-# CONFIG_JFS_DEBUG is not set
+-# CONFIG_JFS_STATISTICS is not set
+-CONFIG_FS_POSIX_ACL=y
++# CONFIG_JFS_FS is not set
++# CONFIG_FS_POSIX_ACL is not set
+ # CONFIG_XFS_FS is not set
+-# CONFIG_GFS2_FS is not set
+ # CONFIG_OCFS2_FS is not set
+-# CONFIG_MINIX_FS is not set
+-# CONFIG_ROMFS_FS is not set
++# CONFIG_BTRFS_FS is not set
++# CONFIG_NILFS2_FS is not set
++CONFIG_FILE_LOCKING=y
++CONFIG_FSNOTIFY=y
++CONFIG_DNOTIFY=y
+ CONFIG_INOTIFY=y
+ CONFIG_INOTIFY_USER=y
+ # CONFIG_QUOTA is not set
+-CONFIG_DNOTIFY=y
+ # CONFIG_AUTOFS_FS is not set
+ # CONFIG_AUTOFS4_FS is not set
+ # CONFIG_FUSE_FS is not set
+-CONFIG_GENERIC_ACL=y
++
++#
++# Caches
++#
++# CONFIG_FSCACHE is not set
+ 
+ #
+ # CD-ROM/DVD Filesystems
+ #
+-CONFIG_ISO9660_FS=m
+-CONFIG_JOLIET=y
+-CONFIG_ZISOFS=y
+-CONFIG_UDF_FS=m
+-CONFIG_UDF_NLS=y
++# CONFIG_ISO9660_FS is not set
++# CONFIG_UDF_FS is not set
+ 
+ #
+ # DOS/FAT/NT Filesystems
+ #
+-CONFIG_FAT_FS=m
+-CONFIG_MSDOS_FS=m
+-CONFIG_VFAT_FS=m
+-CONFIG_FAT_DEFAULT_CODEPAGE=437
+-CONFIG_FAT_DEFAULT_IOCHARSET="iso8859-1"
++# CONFIG_MSDOS_FS is not set
++# CONFIG_VFAT_FS is not set
+ # CONFIG_NTFS_FS is not set
+ 
+ #
+@@ -1039,19 +1288,15 @@ CONFIG_FAT_DEFAULT_IOCHARSET="iso8859-1"
+ CONFIG_PROC_FS=y
+ CONFIG_PROC_KCORE=y
+ CONFIG_PROC_SYSCTL=y
++# CONFIG_PROC_PAGE_MONITOR is not set
+ CONFIG_SYSFS=y
+ CONFIG_TMPFS=y
+-CONFIG_TMPFS_POSIX_ACL=y
++# CONFIG_TMPFS_POSIX_ACL is not set
+ # CONFIG_HUGETLB_PAGE is not set
+-CONFIG_RAMFS=y
+-CONFIG_CONFIGFS_FS=m
+-
+-#
+-# Miscellaneous filesystems
+-#
++# CONFIG_CONFIGFS_FS is not set
++CONFIG_MISC_FILESYSTEMS=y
+ # CONFIG_ADFS_FS is not set
+ # CONFIG_AFFS_FS is not set
+-# CONFIG_ECRYPT_FS is not set
+ # CONFIG_HFS_FS is not set
+ # CONFIG_HFSPLUS_FS is not set
+ # CONFIG_BEFS_FS is not set
+@@ -1060,27 +1305,36 @@ CONFIG_CONFIGFS_FS=m
+ CONFIG_JFFS2_FS=y
+ CONFIG_JFFS2_FS_DEBUG=0
+ CONFIG_JFFS2_FS_WRITEBUFFER=y
+-# CONFIG_JFFS2_SUMMARY is not set
++# CONFIG_JFFS2_FS_WBUF_VERIFY is not set
++CONFIG_JFFS2_SUMMARY=y
+ # CONFIG_JFFS2_FS_XATTR is not set
+-# CONFIG_JFFS2_COMPRESSION_OPTIONS is not set
++CONFIG_JFFS2_COMPRESSION_OPTIONS=y
+ CONFIG_JFFS2_ZLIB=y
++CONFIG_JFFS2_LZO=y
+ CONFIG_JFFS2_RTIME=y
+-# CONFIG_JFFS2_RUBIN is not set
+-CONFIG_CRAMFS=m
++CONFIG_JFFS2_RUBIN=y
++# CONFIG_JFFS2_CMODE_NONE is not set
++CONFIG_JFFS2_CMODE_PRIORITY=y
++# CONFIG_JFFS2_CMODE_SIZE is not set
++# CONFIG_JFFS2_CMODE_FAVOURLZO is not set
++# CONFIG_CRAMFS is not set
++CONFIG_SQUASHFS=y
++# CONFIG_SQUASHFS_EMBEDDED is not set
++CONFIG_SQUASHFS_FRAGMENT_CACHE_SIZE=3
+ # CONFIG_VXFS_FS is not set
++# CONFIG_MINIX_FS is not set
++# CONFIG_OMFS_FS is not set
+ # CONFIG_HPFS_FS is not set
+ # CONFIG_QNX4FS_FS is not set
++# CONFIG_ROMFS_FS is not set
+ # CONFIG_SYSV_FS is not set
+ # CONFIG_UFS_FS is not set
+-
+-#
+-# Network File Systems
+-#
++CONFIG_NETWORK_FILESYSTEMS=y
+ CONFIG_NFS_FS=y
+ CONFIG_NFS_V3=y
+ # CONFIG_NFS_V3_ACL is not set
+ # CONFIG_NFS_V4 is not set
+-# CONFIG_NFS_DIRECTIO is not set
++CONFIG_ROOT_NFS=y
+ # CONFIG_NFSD is not set
+ CONFIG_LOCKD=y
+ CONFIG_LOCKD_V4=y
+@@ -1088,159 +1342,124 @@ CONFIG_NFS_COMMON=y
+ CONFIG_SUNRPC=y
+ # CONFIG_RPCSEC_GSS_KRB5 is not set
+ # CONFIG_RPCSEC_GSS_SPKM3 is not set
+-CONFIG_SMB_FS=y
+-# CONFIG_SMB_NLS_DEFAULT is not set
++# CONFIG_SMB_FS is not set
+ # CONFIG_CIFS is not set
+ # CONFIG_NCP_FS is not set
+ # CONFIG_CODA_FS is not set
+ # CONFIG_AFS_FS is not set
+-# CONFIG_9P_FS is not set
+ 
+ #
+ # Partition Types
+ #
+-# CONFIG_PARTITION_ADVANCED is not set
++CONFIG_PARTITION_ADVANCED=y
++# CONFIG_ACORN_PARTITION is not set
++# CONFIG_OSF_PARTITION is not set
++# CONFIG_AMIGA_PARTITION is not set
++# CONFIG_ATARI_PARTITION is not set
++# CONFIG_MAC_PARTITION is not set
+ CONFIG_MSDOS_PARTITION=y
+-
+-#
+-# Native Language Support
+-#
++# CONFIG_BSD_DISKLABEL is not set
++# CONFIG_MINIX_SUBPARTITION is not set
++# CONFIG_SOLARIS_X86_PARTITION is not set
++# CONFIG_UNIXWARE_DISKLABEL is not set
++# CONFIG_LDM_PARTITION is not set
++# CONFIG_SGI_PARTITION is not set
++# CONFIG_ULTRIX_PARTITION is not set
++# CONFIG_SUN_PARTITION is not set
++# CONFIG_KARMA_PARTITION is not set
++CONFIG_EFI_PARTITION=y
++# CONFIG_SYSV68_PARTITION is not set
+ CONFIG_NLS=y
+ CONFIG_NLS_DEFAULT="iso8859-1"
+-CONFIG_NLS_CODEPAGE_437=m
+-CONFIG_NLS_CODEPAGE_737=m
+-CONFIG_NLS_CODEPAGE_775=m
+-CONFIG_NLS_CODEPAGE_850=m
+-CONFIG_NLS_CODEPAGE_852=m
+-CONFIG_NLS_CODEPAGE_855=m
+-CONFIG_NLS_CODEPAGE_857=m
+-CONFIG_NLS_CODEPAGE_860=m
+-CONFIG_NLS_CODEPAGE_861=m
+-CONFIG_NLS_CODEPAGE_862=m
+-CONFIG_NLS_CODEPAGE_863=m
+-CONFIG_NLS_CODEPAGE_864=m
+-CONFIG_NLS_CODEPAGE_865=m
+-CONFIG_NLS_CODEPAGE_866=m
+-CONFIG_NLS_CODEPAGE_869=m
+-CONFIG_NLS_CODEPAGE_936=m
+-CONFIG_NLS_CODEPAGE_950=m
+-CONFIG_NLS_CODEPAGE_932=m
+-CONFIG_NLS_CODEPAGE_949=m
+-CONFIG_NLS_CODEPAGE_874=m
+-CONFIG_NLS_ISO8859_8=m
+-CONFIG_NLS_CODEPAGE_1250=m
+-CONFIG_NLS_CODEPAGE_1251=m
+-CONFIG_NLS_ASCII=m
+-CONFIG_NLS_ISO8859_1=m
+-CONFIG_NLS_ISO8859_2=m
+-CONFIG_NLS_ISO8859_3=m
+-CONFIG_NLS_ISO8859_4=m
+-CONFIG_NLS_ISO8859_5=m
+-CONFIG_NLS_ISO8859_6=m
+-CONFIG_NLS_ISO8859_7=m
+-CONFIG_NLS_ISO8859_9=m
+-CONFIG_NLS_ISO8859_13=m
+-CONFIG_NLS_ISO8859_14=m
+-CONFIG_NLS_ISO8859_15=m
+-CONFIG_NLS_KOI8_R=m
+-CONFIG_NLS_KOI8_U=m
+-CONFIG_NLS_UTF8=m
+-
+-#
+-# Distributed Lock Manager
+-#
+-CONFIG_DLM=m
+-CONFIG_DLM_TCP=y
+-# CONFIG_DLM_SCTP is not set
+-# CONFIG_DLM_DEBUG is not set
+-
+-#
+-# Profiling support
+-#
+-# CONFIG_PROFILING is not set
++CONFIG_NLS_CODEPAGE_437=y
++# CONFIG_NLS_CODEPAGE_737 is not set
++# CONFIG_NLS_CODEPAGE_775 is not set
++CONFIG_NLS_CODEPAGE_850=y
++CONFIG_NLS_CODEPAGE_852=y
++# CONFIG_NLS_CODEPAGE_855 is not set
++# CONFIG_NLS_CODEPAGE_857 is not set
++# CONFIG_NLS_CODEPAGE_860 is not set
++# CONFIG_NLS_CODEPAGE_861 is not set
++# CONFIG_NLS_CODEPAGE_862 is not set
++# CONFIG_NLS_CODEPAGE_863 is not set
++# CONFIG_NLS_CODEPAGE_864 is not set
++# CONFIG_NLS_CODEPAGE_865 is not set
++# CONFIG_NLS_CODEPAGE_866 is not set
++# CONFIG_NLS_CODEPAGE_869 is not set
++# CONFIG_NLS_CODEPAGE_936 is not set
++# CONFIG_NLS_CODEPAGE_950 is not set
++# CONFIG_NLS_CODEPAGE_932 is not set
++# CONFIG_NLS_CODEPAGE_949 is not set
++# CONFIG_NLS_CODEPAGE_874 is not set
++# CONFIG_NLS_ISO8859_8 is not set
++CONFIG_NLS_CODEPAGE_1250=y
++# CONFIG_NLS_CODEPAGE_1251 is not set
++CONFIG_NLS_ASCII=y
++CONFIG_NLS_ISO8859_1=y
++CONFIG_NLS_ISO8859_2=y
++# CONFIG_NLS_ISO8859_3 is not set
++# CONFIG_NLS_ISO8859_4 is not set
++# CONFIG_NLS_ISO8859_5 is not set
++# CONFIG_NLS_ISO8859_6 is not set
++# CONFIG_NLS_ISO8859_7 is not set
++# CONFIG_NLS_ISO8859_9 is not set
++# CONFIG_NLS_ISO8859_13 is not set
++# CONFIG_NLS_ISO8859_14 is not set
++CONFIG_NLS_ISO8859_15=y
++# CONFIG_NLS_KOI8_R is not set
++# CONFIG_NLS_KOI8_U is not set
++CONFIG_NLS_UTF8=y
++# CONFIG_DLM is not set
+ 
+ #
+ # Kernel hacking
+ #
+ CONFIG_TRACE_IRQFLAGS_SUPPORT=y
+ # CONFIG_PRINTK_TIME is not set
+-CONFIG_ENABLE_MUST_CHECK=y
+-# CONFIG_MAGIC_SYSRQ is not set
++# CONFIG_ENABLE_WARN_DEPRECATED is not set
++# CONFIG_ENABLE_MUST_CHECK is not set
++CONFIG_FRAME_WARN=1024
++CONFIG_MAGIC_SYSRQ=y
++CONFIG_STRIP_ASM_SYMS=y
+ # CONFIG_UNUSED_SYMBOLS is not set
+ # CONFIG_DEBUG_FS is not set
+ # CONFIG_HEADERS_CHECK is not set
+ # CONFIG_DEBUG_KERNEL is not set
+-CONFIG_LOG_BUF_SHIFT=14
+-CONFIG_CROSSCOMPILE=y
+-CONFIG_CMDLINE="mem=48M"
++# CONFIG_DEBUG_MEMORY_INIT is not set
++# CONFIG_RCU_CPU_STALL_DETECTOR is not set
++CONFIG_TRACING_SUPPORT=y
++# CONFIG_FTRACE is not set
++# CONFIG_SAMPLES is not set
++CONFIG_HAVE_ARCH_KGDB=y
++CONFIG_CMDLINE="console=ttyS0,115200"
+ 
+ #
+ # Security options
+ #
+-CONFIG_KEYS=y
+-CONFIG_KEYS_DEBUG_PROC_KEYS=y
++# CONFIG_KEYS is not set
+ # CONFIG_SECURITY is not set
+-
+-#
+-# Cryptographic options
+-#
+-CONFIG_CRYPTO=y
+-CONFIG_CRYPTO_ALGAPI=y
+-CONFIG_CRYPTO_BLKCIPHER=m
+-CONFIG_CRYPTO_HASH=m
+-CONFIG_CRYPTO_MANAGER=m
+-CONFIG_CRYPTO_HMAC=m
+-CONFIG_CRYPTO_XCBC=m
+-CONFIG_CRYPTO_NULL=m
+-CONFIG_CRYPTO_MD4=m
+-CONFIG_CRYPTO_MD5=y
+-CONFIG_CRYPTO_SHA1=m
+-CONFIG_CRYPTO_SHA256=m
+-CONFIG_CRYPTO_SHA512=m
+-CONFIG_CRYPTO_WP512=m
+-CONFIG_CRYPTO_TGR192=m
+-CONFIG_CRYPTO_GF128MUL=m
+-CONFIG_CRYPTO_ECB=m
+-CONFIG_CRYPTO_CBC=m
+-CONFIG_CRYPTO_PCBC=m
+-CONFIG_CRYPTO_LRW=m
+-CONFIG_CRYPTO_DES=m
+-CONFIG_CRYPTO_FCRYPT=m
+-CONFIG_CRYPTO_BLOWFISH=m
+-CONFIG_CRYPTO_TWOFISH=m
+-CONFIG_CRYPTO_TWOFISH_COMMON=m
+-CONFIG_CRYPTO_SERPENT=m
+-CONFIG_CRYPTO_AES=m
+-CONFIG_CRYPTO_CAST5=m
+-CONFIG_CRYPTO_CAST6=m
+-CONFIG_CRYPTO_TEA=m
+-CONFIG_CRYPTO_ARC4=m
+-CONFIG_CRYPTO_KHAZAD=m
+-CONFIG_CRYPTO_ANUBIS=m
+-CONFIG_CRYPTO_DEFLATE=m
+-CONFIG_CRYPTO_MICHAEL_MIC=m
+-CONFIG_CRYPTO_CRC32C=m
+-CONFIG_CRYPTO_CAMELLIA=m
+-# CONFIG_CRYPTO_TEST is not set
+-
+-#
+-# Hardware crypto devices
+-#
++CONFIG_SECURITYFS=y
++CONFIG_SECURITY_FILE_CAPABILITIES=y
++# CONFIG_CRYPTO is not set
++# CONFIG_BINARY_PRINTF is not set
+ 
+ #
+ # Library routines
+ #
+ CONFIG_BITREVERSE=y
+-CONFIG_CRC_CCITT=y
++CONFIG_GENERIC_FIND_LAST_BIT=y
++# CONFIG_CRC_CCITT is not set
+ # CONFIG_CRC16 is not set
++# CONFIG_CRC_T10DIF is not set
++# CONFIG_CRC_ITU_T is not set
+ CONFIG_CRC32=y
+-CONFIG_LIBCRC32C=y
++# CONFIG_CRC7 is not set
++# CONFIG_LIBCRC32C is not set
+ CONFIG_ZLIB_INFLATE=y
+ CONFIG_ZLIB_DEFLATE=y
+-CONFIG_TEXTSEARCH=y
+-CONFIG_TEXTSEARCH_KMP=m
+-CONFIG_TEXTSEARCH_BM=m
+-CONFIG_TEXTSEARCH_FSM=m
+-CONFIG_PLIST=y
++CONFIG_LZO_COMPRESS=y
++CONFIG_LZO_DECOMPRESS=y
+ CONFIG_HAS_IOMEM=y
+ CONFIG_HAS_IOPORT=y
++CONFIG_HAS_DMA=y
++CONFIG_NLATTR=y
 -- 
 1.6.5.1

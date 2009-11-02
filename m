@@ -1,33 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Nov 2009 15:13:48 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:54254 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 02 Nov 2009 15:44:28 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:52739 "EHLO h5.dl5rb.org.uk"
 	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
-	id S1493911AbZKBONm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 2 Nov 2009 15:13:42 +0100
+	id S1493924AbZKBOoW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 2 Nov 2009 15:44:22 +0100
 Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nA2EF1L9027114;
-	Mon, 2 Nov 2009 15:15:01 +0100
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nA2EjgsF027830;
+	Mon, 2 Nov 2009 15:45:43 +0100
 Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nA2EExnq027112;
-	Mon, 2 Nov 2009 15:14:59 +0100
-Date:	Mon, 2 Nov 2009 15:14:59 +0100
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nA2Ejf9V027828;
+	Mon, 2 Nov 2009 15:45:41 +0100
+Date:	Mon, 2 Nov 2009 15:45:41 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Wu Zhangjin <wuzhangjin@gmail.com>
-Cc:	Linux-MIPS <linux-mips@linux-mips.org>, yanh@lemote.com,
-	huhb@lemote.com, Zhang Le <r0bertz@gentoo.org>, zhangfx@lemote.com
-Subject: Re: [PATCH -queue 2/7] [loongson] mem.c: Register reserved memory
-	pages
-Message-ID: <20091102141459.GG21563@linux-mips.org>
-References: <cover.1255673756.git.wuzhangjin@gmail.com> <c709487f102bcd028fd637f5692ff42d94c55b33.1255673756.git.wuzhangjin@gmail.com>
+To:	Manuel Lauss <manuel.lauss@googlemail.com>
+Cc:	Kevin Hickey <khickey@netlogicmicro.com>,
+	Linux-MIPS <linux-mips@linux-mips.org>,
+	Manuel Lauss <manuel.lauss@gmail.com>
+Subject: Re: [PATCH] MIPS: Alchemy: physmap-flash for all devboards
+Message-ID: <20091102144541.GA27698@linux-mips.org>
+References: <1255949617-22943-1-git-send-email-manuel.lauss@gmail.com> <f861ec6f0910310913q4945d666tbdaafed3ce7b2125@mail.gmail.com> <1257167962.8374.0.camel@kh-d280-64> <f861ec6f0911020557v68eebeb8i1a527229922161fe@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <c709487f102bcd028fd637f5692ff42d94c55b33.1255673756.git.wuzhangjin@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f861ec6f0911020557v68eebeb8i1a527229922161fe@mail.gmail.com>
 User-Agent: Mutt/1.5.19 (2009-01-05)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24615
+X-archive-position: 24616
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -35,11 +36,20 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Oct 16, 2009 at 02:17:15PM +0800, Wu Zhangjin wrote:
+On Mon, Nov 02, 2009 at 02:57:06PM +0100, Manuel Lauss wrote:
 
-> This patch registers the reserved pages for loongson family machines.
+> >>
+> > I will look this over today or tomorrow.  I'm interested in this patch
+> > but haven't had the time to review it.  Now I'll make the time :)
+> 
+> Please do.  To test swapboot, just dump yamon from the default partition,
+> and inject it into the "User FS" partition at the appropriate offset, then boot
+> from the swapped flash, erase the yamon partition and try to boot the
+> normal nor layout.
+> 
+> If you deem it acceptable, I'll send the 2 db1200 patches (core+sound)
+> to be applied on top of it.
 
-Hmm...  After our recent discussion on your hibernation issues I am
-wondering if this patch is actually still required or useful?
+The patch should also have been cc'ed to the linux-mtd list and maintainer.
 
   Ralf

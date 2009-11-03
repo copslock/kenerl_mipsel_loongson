@@ -1,57 +1,45 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Nov 2009 11:19:50 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:42984 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
-	id S1492522AbZKCKTr (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 3 Nov 2009 11:19:47 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nA3ALCRW024671;
-	Tue, 3 Nov 2009 11:21:13 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nA3ALCxw024669;
-	Tue, 3 Nov 2009 11:21:12 +0100
-Date:	Tue, 3 Nov 2009 11:21:12 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc:	David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org
-Subject: Re: [PATCH] MIPS: Make collection of FPU emulator statistics
-	optional.
-Message-ID: <20091103102112.GA24619@linux-mips.org>
-References: <1257207155-14517-1-git-send-email-ddaney@caviumnetworks.com> <20091103093024.GA6425@alpha.franken.de> <20091103093743.GA23235@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Nov 2009 11:43:50 +0100 (CET)
+Received: from opensource.wolfsonmicro.com ([80.75.67.52]:37497 "EHLO
+	opensource2.wolfsonmicro.com" rhost-flags-OK-OK-OK-FAIL)
+	by ftp.linux-mips.org with ESMTP id S1492640AbZKCKnn (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 3 Nov 2009 11:43:43 +0100
+Received: by opensource2.wolfsonmicro.com (Postfix, from userid 1001)
+	id 5DAB4769353; Tue,  3 Nov 2009 10:43:37 +0000 (GMT)
+Date:	Tue, 3 Nov 2009 10:43:37 +0000
+From:	Mark Brown <broonie@opensource.wolfsonmicro.com>
+To:	Manuel Lauss <manuel.lauss@googlemail.com>
+Cc:	Linux-MIPS <linux-mips@linux-mips.org>,
+	Manuel Lauss <manuel.lauss@gmail.com>,
+	alsa-devel@alsa-project.org
+Subject: Re: [RFC PATCH 2/3] MIPS: Alchemy: DB1200 AC97+I2S audio support.
+Message-ID: <20091103104337.GA26068@opensource.wolfsonmicro.com>
+References: <1257193305-29996-1-git-send-email-manuel.lauss@gmail.com> <1257193305-29996-2-git-send-email-manuel.lauss@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20091103093743.GA23235@linux-mips.org>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <ralf@linux-mips.org>
+In-Reply-To: <1257193305-29996-2-git-send-email-manuel.lauss@gmail.com>
+X-Cookie: You are always busy.
+User-Agent: Mutt/1.5.17+20080114 (2008-01-14)
+Return-Path: <broonie@opensource.wolfsonmicro.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24630
+X-archive-position: 24631
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: broonie@opensource.wolfsonmicro.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 03, 2009 at 10:37:43AM +0100, Ralf Baechle wrote:
-
-> > On Mon, Nov 02, 2009 at 04:12:35PM -0800, David Daney wrote:
-> > > On SMP systems, the collection of statistics can cause cache line
-> > > bouncing in the lines associated with the counters.  Make the
-> > > statistics configurable so this can be avoided.  Also we need to make
-> > > the counters atomic_t so that they can be reliably modified on SMP
-> > > systems.
-> > 
-> > how about making it a per_cpu thing and avoid the atomic instructions ?
+On Mon, Nov 02, 2009 at 09:21:44PM +0100, Manuel Lauss wrote:
+> Machine driver for DB1200 AC97 and I2S audio systems, intended as a
+> proper reference asoc machine for Alchemy-based systems.
+> AC97/I2S can be selected at boot time by setting switch S6.7
 > 
-> Working on that.  The tricky part is that statistics may end up somewhat
-> inaccurate when a reader iterates over the per-CPU array of stats to add
-> them all up.  I've not found a solution for that yet but then again it
-> should not be something which actually would cause pain.
+> Cc: alsa-devel@alsa-project.org
+> Cc: Mark Brown <broonie@opensource.wolfsonmicro.com>
+> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
 
-Or more useful than a global statistics would be per process stats.
-
-How should a useful interface look like?
-
-  Ralf
+This looks good for me.  The patch touches both ASoC and MIPS trees -
+I'm happy with it being merged though either.

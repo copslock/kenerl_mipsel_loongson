@@ -1,130 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Nov 2009 02:34:37 +0100 (CET)
-Received: from mail-yw0-f173.google.com ([209.85.211.173]:55698 "EHLO
-	mail-yw0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493988AbZKCBea (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 3 Nov 2009 02:34:30 +0100
-Received: by ywh3 with SMTP id 3so5671634ywh.22
-        for <multiple recipients>; Mon, 02 Nov 2009 17:34:24 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=VTjuaelzKNhTSnmPbqbzgjbKBfDrQkNEYVgHu4u4oKo=;
-        b=X2EQDShms7onFZCf5ecCYk1rfNHWR1jp+eKSqS1J56w29IUB4xJlTAPuExX6cRkO4f
-         REkj1aOT1mUUynKiCQKf+26MLL3Izw4vm4wrlCZgRIAmmCfAuSumaNWBzZckTvuAni6A
-         V9+s57jtP24gQG3Po+7CFoiTL2Dyq+sIJcWb0=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=TSjcCbXGOGyRkeDD3YAsrym5JhnFS1pJ96OWyZRQGj4smkXOS1dJYLioDgXHCZNtoD
-         GSBMYIPsNf8pjYK9cNMkpWMXj6JOYdXV0x8vMGzV2Gss+i/MWJzPo05eBwzd+8JUf9FU
-         sf17ooykN/OLqEF/HYNdy2Xtr+DAcMfjAHb60=
-Received: by 10.150.104.13 with SMTP id b13mr9380356ybc.17.1257212063834;
-        Mon, 02 Nov 2009 17:34:23 -0800 (PST)
-Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 22sm2306120ywh.0.2009.11.02.17.34.18
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 02 Nov 2009 17:34:23 -0800 (PST)
-Subject: Re: [PATCH -v5 08/11] tracing: not trace mips_timecounter_init()
- in MIPS
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:	Frederic Weisbecker <fweisbec@gmail.com>
-Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-	rostedt@goodmis.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ralf Baechle <ralf@linux-mips.org>,
-	Nicholas Mc Guire <der.herr@hofr.at>,
-	Richard Sandiford <rdsandiford@googlemail.com>,
-	David Daney <ddaney@caviumnetworks.com>,
-	Adam Nemet <anemet@caviumnetworks.com>,
-	Patrik Kluba <kpajko79@gmail.com>
-In-Reply-To: <20091102214351.GI4880@nowhere>
-References: <2f73eae542c47ac5bbb9f7280e6c0271d193e90d.1256483735.git.wuzhangjin@gmail.com>
-	 <3e0c2d7d8b8f196a8153beb41ea7f3cbf42b3d84.1256483735.git.wuzhangjin@gmail.com>
-	 <54c417629e91f40b2bbb4e08cda2a4e6527824c0.1256483735.git.wuzhangjin@gmail.com>
-	 <29bccff04932e993ecd9f516d8b6dcf84e2ceecf.1256483735.git.wuzhangjin@gmail.com>
-	 <72f2270f7b6e01ca7a4cdf4ac8c21778e5d9652f.1256483735.git.wuzhangjin@gmail.com>
-	 <cover.1256483735.git.wuzhangjin@gmail.com>
-	 <6140dd8f4e1783e5ac30977cf008bb98e4698322.1256483735.git.wuzhangjin@gmail.com>
-	 <49b3c441a57f4db423732f81432a3450ccb3240e.1256483735.git.wuzhangjin@gmail.com>
-	 <c62985530910251727o23beafcco539870e4b2f84637@mail.gmail.com>
-	 <1256550156.5642.148.camel@falcon>  <20091102214351.GI4880@nowhere>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:	Tue, 03 Nov 2009 09:34:25 +0800
-Message-ID: <1257212065.3528.28.camel@falcon.domain.org>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Nov 2009 05:25:53 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:59173 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S1491894AbZKCEZs (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 3 Nov 2009 05:25:48 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nA34RDqW015257;
+	Tue, 3 Nov 2009 05:27:13 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nA34RCOe015255;
+	Tue, 3 Nov 2009 05:27:12 +0100
+Date:	Tue, 3 Nov 2009 05:27:12 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	David Daney <ddaney@caviumnetworks.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Emulate 64-bit FPU on 64-bit CPUs.
+Message-ID: <20091103042712.GA14423@linux-mips.org>
+References: <1257190426-29346-1-git-send-email-ddaney@caviumnetworks.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1257190426-29346-1-git-send-email-ddaney@caviumnetworks.com>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24627
+X-archive-position: 24628
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Mon, Nov 02, 2009 at 11:33:46AM -0800, David Daney wrote:
 
-On Mon, 2009-11-02 at 22:43 +0100, Frederic Weisbecker wrote:
-[...]
-> > > > -static inline u64 mips_timecounter_read(void)
-> > > > +static inline u64 notrace mips_timecounter_read(void)
-> > > 
-> > > 
-> > > You don't need to set notrace functions, unless their addresses
-> > > are referenced somewhere, which unfortunately might happen
-> > > for some functions but this is rare.
-> > > 
-> > 
-> > Okay, Will remove it.
+> Running a 64-bit kernel on a 64-bit CPU without an FPU would cause the
+> emulator to run in 32-bit mode.  The c0_Status.FR bit is wired to zero
+> on systems without an FPU, so using that bit to decide how the
+> emulator behaves doesn't allow for proper emulation on 64-bit FPU-less
+> processors.
 > 
-> 
-> 
-> Oops, a word has escaped from my above sentence. I wanted to say:
-> 
-> "You don't need to set notrace to inline functions" :)
-> 
-> 
+> Instead, we need to select the emulator mode based on the user-space
+> ABI.  Since the thread flag TIF_32BIT_REGS is used to set
+> c0_Status.FR, we can just use it to decide if the emulator should be
+> in 32-bit or 64-bit mode.
 
-Thanks ;)
+Thanks, applied!
 
-I have got your meaning at that time, and have removed them with inline
-functions.
-
-> > > But I would rather see a __mips_notrace on these two core functions.
-> > 
-> > What about this: __arch_notrace? If the arch need this, define it,
-> > otherwise, ignore it! if only graph tracer need it, define it in "#ifdef
-> > CONFIG_FUNCTION_GRAPH_TRACER ... #endif".
-> 
-> The problem is that archs may want to disable tracing on different
-> places.
-> For example mips wants to disable tracing in timecounter_read_delta,
-> but another arch may want to disable tracing somewhere else.
-> 
-> We'll then have several unrelated __arch_notrace. One that is relevant
-> for mips, another that is relevant for arch_foo, but all of them will
-> apply for all arch that have defined a __arch_notrace.
-> 
-> It's true that __mips_notrace is not very elegant as it looks like
-> a specific arch annotation intruder.
-> 
-> But at least that gives us a per arch filter granularity.
-> 
-> If only static ftrace could disappear, we could keep only dynamic
-> ftrace and we would then be able to filter dynamically.
-> But I'm not sure it's a good idea for archs integration.
-> 
-
-Got it.
-
-Thanks & Regards,
-	Wu Zhangjin
+  Ralf

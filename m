@@ -1,88 +1,52 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Nov 2009 16:47:23 +0100 (CET)
-Received: from mail.netlogicmicro.com ([64.0.7.62]:4857 "EHLO
-	orion5.netlogicmicro.com" rhost-flags-OK-OK-OK-FAIL)
-	by ftp.linux-mips.org with ESMTP id S1493489AbZKCPrQ convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 3 Nov 2009 16:47:16 +0100
-Received: from orion8.netlogicmicro.com ([10.1.1.7]) by 
-	orion5.netlogicmicro.com with InterScan Message Security Suite; Tue, 03 Nov
-	 2009 07:48:06 -0800
-Received: from 12.234.128.66 ([12.234.128.66]) by orion8.netlogicmicro.com 
-	([10.1.1.7]) with Microsoft Exchange Server HTTP-DAV ;Tue,  3 Nov 2009 
-	15:48:05 +0000
-Received: from kh-t3500 by 12.239.216.94; 03 Nov 2009 09:47:03 -0600
-Subject: Re: [RFC PATCH 1/3] MIPS: Alchemy: extended DB1200 board support.
-From:	Kevin Hickey <khickey@netlogicmicro.com>
-To:	Manuel Lauss <manuel.lauss@googlemail.com>
-Cc:	Linux-MIPS <linux-mips@linux-mips.org>,
-	Manuel Lauss <manuel.lauss@gmail.com>
-In-Reply-To: <f861ec6f0911030744j13fa9487p857c49a68d43adfe@mail.gmail.com>
-References: <1257193305-29996-1-git-send-email-manuel.lauss@gmail.com> 
-	<1257262863.29642.8.camel@localhost> 
-	<f861ec6f0911030744j13fa9487p857c49a68d43adfe@mail.gmail.com>
-Content-Type: text/plain;
-	charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Date:	Tue, 03 Nov 2009 09:47:03 -0600
-Message-ID: <1257263223.29642.12.camel@localhost>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.1 
-X-imss-version:	2.054
-X-imss-result: Passed
-X-imss-scanInfo: M:P L:N SM:0
-X-imss-tmaseResult: TT:0 TS:0.0000 TC:00 TRN:0 TV:5.6.1016(16988.000)
-X-imss-scores: Clean:99.90000 C:2 M:3 S:5 R:5
-X-imss-settings: Baseline:2 C:4 M:4 S:4 R:4 (0.1500 0.1500)
-Return-Path: <khickey@netlogicmicro.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 03 Nov 2009 16:47:45 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:47858 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S1493490AbZKCPr1 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 3 Nov 2009 16:47:27 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nA3FmtmR009265;
+	Tue, 3 Nov 2009 16:48:55 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nA3FmsgX009263;
+	Tue, 3 Nov 2009 16:48:54 +0100
+Date:	Tue, 3 Nov 2009 16:48:54 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Kevin Hickey <khickey@netlogicmicro.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: addinitrd deletion
+Message-ID: <20091103154854.GA9161@linux-mips.org>
+References: <20091103121838.GA27403@linux-mips.org> <1257262912.29642.9.camel@localhost>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1257262912.29642.9.camel@localhost>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24646
+X-archive-position: 24647
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: khickey@netlogicmicro.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2009-11-03 at 16:44 +0100, Manuel Lauss wrote:
-> On Tue, Nov 3, 2009 at 4:41 PM, Kevin Hickey <khickey@netlogicmicro.com> wrote:
-> > On Mon, 2009-11-02 at 21:21 +0100, Manuel Lauss wrote:
-> >> Create own directory for DB1200 code and update it with new features.
-> >>
-> >> - SPI support:
-> >>   - tmp121 temperature sensor
-> >>   - SPI flash on DB1200
-> >> - I2C support
-> >>   - NE1619 sensor
-> >>   - AT24 eeprom
-> >> - I2C/SPI can be selected at boot time via switch S6.8
-> >> - Carddetect IRQs for SD cards.
-> >> - gen_nand based NAND support.
-> >> - hexleds count sleep/wake transitions.
-> >>
-> >> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
-> >> ---
-> >
-> > The code in this patch all looks good to me.  I don't understand how
-> > much value is added by using the hex LEDs for counting sleep/wake
-> > transitions.  In our internal builds, we use the hex LEDs for displaying
-> > the last interrupt serviced (useful on hangs/crashes and for getting a
-> > general sense of what the hardware is working on), the dots blink on
-> > timer ticks (often every 100 or 1000 depending on the clock) and the
-> > Idle state is shown on LED0.  I don't really have any strong attachment
-> > to those usages, but they've served us well.
-> 
-> I admit it has limited value.. I initially used it to find out how many wakeups
-> per second are happening with and without high-speed usb devices attached.
-> I left it in because I couldn't come up with any other uses.  Please feel free
-> to change it any time.
+On Tue, Nov 03, 2009 at 09:41:52AM -0600, Kevin Hickey wrote:
 
-Fair enough.  If I get some time down the line I'll look into that.  In
-the meantime this patch has a lot of value so it should probably just
-stay as it is.
+> On Tue, 2009-11-03 at 13:18 +0100, Ralf Baechle wrote:
+> > Does anybody still see any use for addinitrd?  If not I'm going to delete
+> > it.
+> > 
+> FWIW I do not...
 
-Again, if it's not too late:
-Acked-by: Kevin Hickey <khickey@netlogicmicro.com>
+Well, I've already queued a patch to delete addinitrd and everything else
+that belongs to it.  So this question was one of these "speak up or forever
+hold your peace" kind of questions :-)
 
-=Kevin
+I see you have a fancy new email address.
+
+Cheers,
+
+  Ralf

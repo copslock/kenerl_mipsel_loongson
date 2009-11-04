@@ -1,35 +1,34 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Nov 2009 16:17:05 +0100 (CET)
-Received: from mail-ew0-f216.google.com ([209.85.219.216]:37744 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Nov 2009 16:24:04 +0100 (CET)
+Received: from mail-ew0-f216.google.com ([209.85.219.216]:44262 "EHLO
 	mail-ew0-f216.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492399AbZKDPQ6 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 4 Nov 2009 16:16:58 +0100
-Received: by ewy12 with SMTP id 12so1820770ewy.0
-        for <multiple recipients>; Wed, 04 Nov 2009 07:16:53 -0800 (PST)
+	by ftp.linux-mips.org with ESMTP id S1492399AbZKDPX6 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 4 Nov 2009 16:23:58 +0100
+Received: by ewy12 with SMTP id 12so1828128ewy.0
+        for <multiple recipients>; Wed, 04 Nov 2009 07:23:48 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:subject:from:reply-to:to:cc
          :in-reply-to:references:content-type:organization:date:message-id
          :mime-version:x-mailer:content-transfer-encoding;
-        bh=uPMiYkTdkl/bcsbqmGdJ4svWR1DrMHF05znDJbFE0n0=;
-        b=UtPpQb4DM0LuGyH89CV/trUAR/MQ898DJDxexDNObvlrlu5zaU2/cAhLSufgPalCBB
-         K8QwKoYEe/V/OyMG4NbTjOpgeXlfdMUXHs3669q047aCOG86DlbsxgP0i+lh1zWR47Wa
-         3hVRmJjQAWCA/CgyufgMRTbYSbDyqyczUreYE=
+        bh=AnNvKBXmPjvwrqfCK9AAwLHT4O9zTlbdBN+2pifycIk=;
+        b=Orzm4My4bypcuEN7i4emLg1S1rf9cTz9Ll1TaXVOyFfqBaZI6hSoYhlYDFghq2ZMMc
+         Aqjzk0seHdVNxuJ1IgCEdl9ilpVlJLQA8kdcjww9Y/2LAMmbunwLUoyt0+SnmQDnTnHx
+         7qRkEXyWqGB6G+4k+FCNCCeMACBmMBK49UsYI=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
          :organization:date:message-id:mime-version:x-mailer
          :content-transfer-encoding;
-        b=X65MgGcuFV1iA73nwyA2+dtzzpK7nUAiIg5lN9+v+1vB2v2OSZalswDGiZLVS0cRhM
-         /kQRX3F+UL9zgRk76/ABBUabfLull1NjKyTebpIna5RLxCVA2lFGqqacfxd9h1QTnCmZ
-         m6faFwaf8r0w6gfM5Gtg45wskpcjWqoIor7Rs=
-Received: by 10.216.93.12 with SMTP id k12mr484165wef.195.1257347813157;
-        Wed, 04 Nov 2009 07:16:53 -0800 (PST)
+        b=NqOSNuxSMdZbf2gusNnmuDT0GMnoyrNV3EvMWchzzwJdLpicGVP18r5H0/CIbp8eJU
+         scwY6fTaqoiQag+jEsk4IzqkcrR+eku0zOyarcz3viY9GWg0IEIP25pa5DfcHJf8/qGD
+         NmTD3kc4TNdf/XFFgV9+OfEl4UrrFSaJ5aviA=
+Received: by 10.216.90.21 with SMTP id d21mr504493wef.85.1257348228015;
+        Wed, 04 Nov 2009 07:23:48 -0800 (PST)
 Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id u14sm3429709gvf.18.2009.11.04.07.16.47
+        by mx.google.com with ESMTPS id t2sm3468832gve.27.2009.11.04.07.23.42
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 04 Nov 2009 07:16:52 -0800 (PST)
-Subject: Re: [PATCH -queue v0 5/6] [loongson] rtc: enable legacy RTC driver
- on fuloong2f
+        Wed, 04 Nov 2009 07:23:47 -0800 (PST)
+Subject: Re: [PATCH -queue v0 1/6] [loongson] add basic loongson-2f support
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 Reply-To: wuzhangjin@gmail.com
 To:	Ralf Baechle <ralf@linux-mips.org>
@@ -39,16 +38,16 @@ Cc:	Arnaud Patard <apatard@mandriva.com>, linux-mips@linux-mips.org,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Nicholas Mc Guire <der.herr@hofr.at>, zhangfx@lemote.com,
 	liujl@lemote.com
-In-Reply-To: <20091104141545.GA18408@linux-mips.org>
+In-Reply-To: <20091104111957.GA13549@linux-mips.org>
 References: <cover.1257325319.git.wuzhangjin@gmail.com>
-	 <e13ed33a99dbf14f223360d414aa2b2c5caa9b1f.1257325319.git.wuzhangjin@gmail.com>
-	 <m3eioetvx5.fsf@anduin.mandriva.com>
-	 <1257333527.8716.20.camel@falcon.domain.org>
-	 <20091104141545.GA18408@linux-mips.org>
+	 <a1bd2470bc465e505281c761adca8c2287d102b3.1257325319.git.wuzhangjin@gmail.com>
+	 <m3iqdqtwgk.fsf@anduin.mandriva.com>
+	 <1257332652.8716.5.camel@falcon.domain.org>
+	 <20091104111957.GA13549@linux-mips.org>
 Content-Type: text/plain; charset="UTF-8"
 Organization: DSLab, Lanzhou University, China
-Date:	Wed, 04 Nov 2009 23:12:59 +0800
-Message-ID: <1257347585.16033.0.camel@falcon.domain.org>
+Date:	Wed, 04 Nov 2009 23:23:46 +0800
+Message-ID: <1257348226.16033.4.camel@falcon.domain.org>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.28.1 
 Content-Transfer-Encoding: 7bit
@@ -56,7 +55,7 @@ Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24676
+X-archive-position: 24677
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -64,35 +63,39 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, 2009-11-04 at 15:15 +0100, Ralf Baechle wrote:
-> On Wed, Nov 04, 2009 at 07:18:47PM +0800, Wu Zhangjin wrote:
+Hi,
+
+On Wed, 2009-11-04 at 12:19 +0100, Ralf Baechle wrote:
+> On Wed, Nov 04, 2009 at 07:04:12PM +0800, Wu Zhangjin wrote:
 > 
-> > In reality, fuloong2e, fuloong2f and yeeloong2f work fine with RTC_LIB,
-> > but relative patches need to append to drivers/rtc/rtc-cmos.c and also
-> > need a RTC platform device. If what I remembered is right, Gdium also
-> > need corresponding patches to make it work with RTC_LIB.
+> > > Small question : Why don't you restrict to 64bit kernels only ? From
+> > > what I remember from some discussions with ST, trying to use a 32-bit
+> > > kernel on 2f is a nice way to get troubles. It would be better imho to
+> > > forbid such a configuration. As a side effect, this will remove all
+> > > 'defined(CONFIG_64BIT)' parts of your #ifdef tests. 
+> > > 
 > > 
-> > Herein, I just let the basic support for those machines work, and then,
-> > the RTC_LIB support will be sent out later.
-> > 
-> > and a small question: if legacy RTC driver works well on these machines,
-> > why should we forbid people to use it? I think it's better to remove the
-> > "select RTC_LIB" line for MIPS, and then, the people will be free to
-> > choose what they want, and even for the users whose platform not support
-> > RTC_LIB.
+> > It's hard to make such a decision ;) Perhaps some guys want to play with
+> > the 32bit version.
 > 
-> RTC_LIB is the way to go; the non-RTC_LIB drivers are there only for
-> backward compatbility.  A grep through the defcconfig files for all
-> platforms on all architectures finds that by now all have set
-> CONFIG_RTC_LIB and the remaining users of CONFIG_RTC, CONFIG_JS_RTC,
-> CONFIG_GEN_RTC, CONFIG_EFI_RTC, CONFIG_DS1302 (which all depend on !RTC_LIB)
-> are all defconfig files which seem to be slowly bitrotting.
-> 
-> Time to axe !RTC_LIB?  I'm tempted.
+> We have other systems where 32-bit kernel support is just remarkably ugly.
+> We've dropped 32-bit support for the SGI IP32 aka O2 - nobody seems to even
+> have really noticed that.  The Sibyte systems would be good candidates to do
+> the same as accesses to outside the 32-bit address space are needed very
+> frequently.
 > 
 
-Okay, later, I will send the patches for RTC_LIB support asap, I'm
-testing it currently ;)
+So, we really remove the 32bit support?
+
+1312 config CPU_LOONGSON2
+1313         bool
+1314         select CPU_SUPPORTS_32BIT_KERNEL  --> remove it?
+1315         select CPU_SUPPORTS_64BIT_KERNEL
+1316         select CPU_SUPPORTS_HIGHMEM
+
+If you all agree, I will send a new patch to remove the above line and
+resend the corresponding patches without 32bit support, and removed the
+relative CONFIG_64BIT lines in the patches too.
 
 Regards,
 	Wu Zhangjin

@@ -1,95 +1,103 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Nov 2009 17:03:43 +0100 (CET)
-Received: from mx1.moondrake.net ([212.85.150.166]:57011 "EHLO
-	mx1.mandriva.com" rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org
-	with ESMTP id S1493355AbZKDQDg (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 4 Nov 2009 17:03:36 +0100
-Received: by mx1.mandriva.com (Postfix, from userid 501)
-	id 8247127C003; Wed,  4 Nov 2009 17:03:35 +0100 (CET)
-Received: from office-abk.mandriva.com (unknown [195.7.104.248])
-	(using TLSv1 with cipher ADH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by mx1.mandriva.com (Postfix) with ESMTP id B5ED927C002;
-	Wed,  4 Nov 2009 17:03:34 +0100 (CET)
-Received: from anduin.mandriva.com (fw2.mandriva.com [192.168.2.3])
-	by office-abk.mandriva.com (Postfix) with ESMTP id 696B4828ED;
-	Wed,  4 Nov 2009 17:15:02 +0100 (CET)
-Received: from anduin.mandriva.com (localhost [127.0.0.1])
-	by anduin.mandriva.com (Postfix) with ESMTP id 9CC50FF855;
-	Wed,  4 Nov 2009 17:03:35 +0100 (CET)
-From:	Arnaud Patard <apatard@mandriva.com>
-To:	Wu Zhangjin <wuzhangjin@gmail.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
-	rtc-linux@googlegroups.com
-Subject: Re: [PATCH 2/2] [loongson] fuloong: add RTC_LIB Support
-References: <1257349784-21444-1-git-send-email-wuzhangjin@gmail.com>
-Organization: Mandriva
-Date:	Wed, 04 Nov 2009 17:03:35 +0100
-In-Reply-To: <1257349784-21444-1-git-send-email-wuzhangjin@gmail.com> (Wu Zhangjin's message of "Wed,  4 Nov 2009 23:49:44 +0800")
-Message-ID: <m31vketgyw.fsf@anduin.mandriva.com>
-User-Agent: Gnus/5.1008 (Gnus v5.10.8) Emacs/22.1 (gnu/linux)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Nov 2009 17:19:22 +0100 (CET)
+Received: from mail-yw0-f173.google.com ([209.85.211.173]:43309 "EHLO
+	mail-yw0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492496AbZKDQTP (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 4 Nov 2009 17:19:15 +0100
+Received: by ywh3 with SMTP id 3so7477655ywh.22
+        for <linux-mips@linux-mips.org>; Wed, 04 Nov 2009 08:19:08 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:date:message-id:subject
+         :from:to:content-type;
+        bh=52oulsJJ9bYYDhA6K65T1ABxLjaZQ9nx4lmmTHeoDn4=;
+        b=WhEg8y7ndXAZqqfAQwMVmBThiAgaf9cTz4wX2hp091coqN/g1yMpnRKONXFSidui4F
+         gWWEYGaDSJDv7tMM4M/p8VwU3sQYfDTRyPyqeiAmRBN9IfzCSfNwGWSSERBO3fSUBDyc
+         AeV4wJrR9zzCELYJcLfEyrjYhf/tL99dPygyo=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=Y5pdkzRWrkBikQwV8XvTW2UHbKbwDAK3fKqClKZP0aUZjEixMKiC11jtlxikQHkLwe
+         ob+u473S5zo8qtcQ/yjKWo1AX0OzO3Xnr5rqu8DW/f3yL2FGGTqZPfN1p5EG7U5U51kN
+         xj9W6DQegexaPOCiu1rtRjaskNCow20TXN+7U=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Return-Path: <arnaud.patard@mandriva.com>
+Received: by 10.91.19.4 with SMTP id w4mr3813635agi.0.1257351542566; Wed, 04 
+	Nov 2009 08:19:02 -0800 (PST)
+Date:	Thu, 5 Nov 2009 00:19:02 +0800
+Message-ID: <e997b7420911040819k21c6525fo6fa0d0151c7052aa@mail.gmail.com>
+Subject: mips timer could not work
+From:	"wilbur.chan" <wilbur512@gmail.com>
+To:	Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: multipart/alternative; boundary=001485f547900d6e6c04778df829
+Return-Path: <wilbur512@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24680
+X-archive-position: 24681
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: apatard@mandriva.com
+X-original-sender: wilbur512@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Wu Zhangjin <wuzhangjin@gmail.com> writes:
-Hi,
+--001485f547900d6e6c04778df829
+Content-Type: text/plain; charset=ISO-8859-1
 
-> + *  Registration of Cobalt RTC platform device.
+Hi  all,
 
-Of Cobalt platform device ? I thought we were on loongson :)
+This is a linux mips newbie's  problem when he tried to  boot a mips64 board
+.
 
-> + *
-> + *  Copyright (C) 2007  Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
-> + *  Copyright (C) 2009  Wu Zhangjin <wuzj@lemote.com>
-> + *
-> + *  This program is free software; you can redistribute it and/or modify
-> + *  it under the terms of the GNU General Public License as published by
-> + *  the Free Software Foundation; either version 2 of the License, or
-> + *  (at your option) any later version.
-> + */
-> +
-> +#include <linux/init.h>
-> +#include <linux/ioport.h>
-> +#include <linux/mc146818rtc.h>
-> +#include <linux/platform_device.h>
-> +
-> +static struct resource rtc_cmos_resource[] = {
-> +	{
-> +		.start	= RTC_PORT(0),
-> +		.end	= RTC_PORT(1),
-> +		.flags	= IORESOURCE_IO,
-> +	},
-> +	{
-> +		.start	= RTC_IRQ,
-> +		.end	= RTC_IRQ,
-> +		.flags	= IORESOURCE_IRQ,
-> +	},
-> +};
-> +
-> +static struct platform_device rtc_cmos_device = {
-> +	.name		= "rtc_cmos",
-> +	.id		= -1,
-> +	.num_resources	= ARRAY_SIZE(rtc_cmos_resource),
-> +	.resource	= rtc_cmos_resource
-> +};
-> +
-> +static __init int rtc_cmos_init(void)
-> +{
-> +	platform_device_register(&rtc_cmos_device);
-> +
-> +	return 0;
+The timer seemed not working properly when booting.
 
-what about return platform_device_register(&rtc_cmos_device); ?
+He has  checked the count and compare register , found that , count register
+ increased  all the time ,however, compare register remained unchanged , non
+zero.
 
+he also checked the cause register ,the exception code was zero,indicating
+an external interrupt.
 
-Arnaud
+And he found that ,timer  interrupt seemed not triggered , for he has  put
+some illegal code in handle_int function, but not found kernel even
+complained of that,
+
+ so he guess that, no external interrupt(timer intterrupt)  was triggered in
+this situation.
+
+Can someone here tell  how to solve this problem? Thank  in advance
+
+regards,
+
+--001485f547900d6e6c04778df829
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<div>Hi=A0 all,</div>
+<div>=A0</div>
+<div>This is a linux mips newbie&#39;s =A0problem when he tried to=A0 boot =
+a mips64 board .</div>
+<div>=A0</div>
+<div>The timer seemed not working properly when booting.</div>
+<div>=A0</div>
+<div>He has =A0checked the count and compare register , found that , count =
+register =A0increased=A0 all the time ,however, compare register remained u=
+nchanged , non zero.</div>
+<div>=A0</div>
+<div>he=A0also checked the cause register ,the exception code was zero,indi=
+cating an external interrupt.</div>
+<div>=A0</div>
+<div>And=A0he found that ,timer =A0interrupt seemed not triggered , for=A0h=
+e has =A0put some illegal code in handle_int function,=A0but not found=A0ke=
+rnel=A0even complained=A0of that,</div>
+<div>=A0</div>
+<div>=A0so he guess that, no external interrupt(timer intterrupt) =A0was tr=
+iggered in this situation.</div>
+<div>=A0</div>
+<div>Can someone here tell =A0how to solve this problem? Thank=A0 in advanc=
+e</div>
+<div>=A0</div>
+<div>regards,</div>
+<div>=A0</div>
+<div>=A0</div>
+
+--001485f547900d6e6c04778df829--

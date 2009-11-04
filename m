@@ -1,81 +1,47 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Nov 2009 14:11:35 +0100 (CET)
-Received: from smtp6-g21.free.fr ([212.27.42.6]:60448 "EHLO smtp6-g21.free.fr"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1493264AbZKDNL3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 4 Nov 2009 14:11:29 +0100
-Received: from smtp6-g21.free.fr (localhost [127.0.0.1])
-	by smtp6-g21.free.fr (Postfix) with ESMTP id 4F159E081EC;
-	Wed,  4 Nov 2009 14:11:20 +0100 (CET)
-Received: from [213.228.1.107] (sakura.staff.proxad.net [213.228.1.107])
-	by smtp6-g21.free.fr (Postfix) with ESMTP id 387D5E0811D;
-	Wed,  4 Nov 2009 14:11:17 +0100 (CET)
-Subject: [PATCH] MIPS: BCM63xx: Fix serial driver compile breakage.
-From:	Maxime Bizon <mbizon@freebox.fr>
-Reply-To: mbizon@freebox.fr
-To:	Ralf Baechle <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Nov 2009 14:48:54 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:44313 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S1493272AbZKDNsv (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 4 Nov 2009 14:48:51 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nA4DoI0t017455;
+	Wed, 4 Nov 2009 14:50:18 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nA4DoHUd017453;
+	Wed, 4 Nov 2009 14:50:17 +0100
+Date:	Wed, 4 Nov 2009 14:50:17 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Maxime Bizon <mbizon@freebox.fr>
 Cc:	linux-mips@linux-mips.org
-Content-Type: text/plain; charset="ANSI_X3.4-1968"
-Organization: Freebox
-Date:	Wed, 04 Nov 2009 14:11:15 +0100
-Message-ID: <1257340275.2926.7.camel@sakura.staff.proxad.net>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <mbizon@freebox.fr>
+Subject: Re: [PATCH] MIPS: BCM63xx: Fix serial driver compile breakage.
+Message-ID: <20091104135017.GA15430@linux-mips.org>
+References: <1257340275.2926.7.camel@sakura.staff.proxad.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1257340275.2926.7.camel@sakura.staff.proxad.net>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24673
+X-archive-position: 24674
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mbizon@freebox.fr
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
+On Wed, Nov 04, 2009 at 02:11:15PM +0100, Maxime Bizon wrote:
 
-Hi Ralf,
+> To: Ralf Baechle <ralf@linux-mips.org>
+> Cc: linux-mips@linux-mips.org
 
-bcm63xx does not compile on current linus' tree, could you please apply
-the attached patch and send it to linus ? Thanks !
+> bcm63xx does not compile on current linus' tree, could you please apply
+> the attached patch and send it to linus ? Thanks !
 
+Will do - but (rant starts here) please remember to cc the respective
+mailing lists and and maintainers for drivers in the future.
 
-
-The driver missed a small API change while sitting in Ralf's tree, this
-patch makes it compile again.
-
-Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
----
- drivers/serial/bcm63xx_uart.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/serial/bcm63xx_uart.c b/drivers/serial/bcm63xx_uart.c
-index beddaa6..37ad0c4 100644
---- a/drivers/serial/bcm63xx_uart.c
-+++ b/drivers/serial/bcm63xx_uart.c
-@@ -242,7 +242,7 @@ static void bcm_uart_do_rx(struct uart_port *port)
- 	 * higher than fifo size anyway since we're much faster than
- 	 * serial port */
- 	max_count = 32;
--	tty = port->info->port.tty;
-+	tty = port->state->port.tty;
- 	do {
- 		unsigned int iestat, c, cstat;
- 		char flag;
-@@ -318,7 +318,7 @@ static void bcm_uart_do_tx(struct uart_port *port)
- 		return;
- 	}
- 
--	xmit = &port->info->xmit;
-+	xmit = &port->state->xmit;
- 	if (uart_circ_empty(xmit))
- 		goto txq_empty;
- 
--- 
-1.6.3.3
-
-
-
-
--- 
-Maxime
+  Ralf

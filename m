@@ -1,44 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Nov 2009 16:49:41 +0100 (CET)
-Received: from ey-out-1920.google.com ([74.125.78.146]:30678 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 04 Nov 2009 16:50:07 +0100 (CET)
+Received: from ey-out-1920.google.com ([74.125.78.147]:29720 "EHLO
 	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1492428AbZKDPtf (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 4 Nov 2009 16:49:35 +0100
-Received: by ey-out-1920.google.com with SMTP id 3so1034361eyh.0
-        for <multiple recipients>; Wed, 04 Nov 2009 07:49:33 -0800 (PST)
+	with ESMTP id S1493336AbZKDPt5 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 4 Nov 2009 16:49:57 +0100
+Received: by ey-out-1920.google.com with SMTP id 5so1345976eyb.52
+        for <multiple recipients>; Wed, 04 Nov 2009 07:49:56 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer;
-        bh=HOQSeZ/FNM3eCDt4OL6hUbwqaeP9eZ6tUZEzVq+EmhQ=;
-        b=BqIQVdCmsSbWbL9OgA81mmA90hzaZA9mK8FxWhFlE/K469RmCTMY3ZnqQVqqDFUou+
-         xsJm7bRoU9HRkbLLCIZRNccLJNUkYDcxdb29akOVM22aQ1Htyc9Tv9lMyY+hJXZ8WNSL
-         4GKF7jNUL3m+3YB8hbkUGUtFq+AEugzgGCIo0=
+        bh=pXg76eGKgVLobzobc1iTlMyzb4x1a8DF/jeBTMBXkbY=;
+        b=NBkyM2dizG2BDe6dGW3Syh5exJfOSQyhloaThkpKkmxiKexsnYxmbwzEK+qHVzfQU8
+         LNeye/Wpiq+Rp+z7leG5ltK2P2hQZCzewkOtB4TYbj6rhpNVItG9XFyo+5Pzbzj7MGrX
+         /u4V4uSAr21NXFD6Wdq+qP3LvRYjj8llh9OiY=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer;
-        b=eUkVqZ0eIDiNFDeCAYijh/iqAxRAf7mJHuLT3HhDy/FB5MfzFuKHMGzQw91vdiSOG0
-         y6GPbQilcZuQu/6PzCHY7x1iWHEQe3nf9QcTDMnXflDZvhtxpMNNApRTfqRno0tCUBiD
-         xgGiBdzfam04NJcvjPPLnykNW2lPMkw68jWss=
-Received: by 10.216.93.68 with SMTP id k46mr494926wef.161.1257349773065;
-        Wed, 04 Nov 2009 07:49:33 -0800 (PST)
+        b=QfFI5voY8/lL2vZ/6p8QLF/mrbpBLPUrrjmsXRfh3a59FMJnZkn+Z2LP3q5FQWlT2/
+         gJO9ZhMqAVGN0l1GrnQKloG8q5EQLjwICxmamXlDd2Jt2YMK/OecfVReqskqJsxFcWKK
+         /Yeo0sbAwVs1LY5QfcQ6X0++TNaKann3HUxMI=
+Received: by 10.216.86.142 with SMTP id w14mr495451wee.74.1257349796606;
+        Wed, 04 Nov 2009 07:49:56 -0800 (PST)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id q9sm3529060gve.0.2009.11.04.07.49.29
+        by mx.google.com with ESMTPS id x6sm3550035gvf.1.2009.11.04.07.49.50
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 04 Nov 2009 07:49:32 -0800 (PST)
+        Wed, 04 Nov 2009 07:49:55 -0800 (PST)
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	Arnaud Patard <apatard@mandriva.com>,
 	Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org,
 	rtc-linux@googlegroups.com
-Subject: [PATCH 1/2] RTC: enable RTC_LIB for fuloong2e and fuloong2f
-Date:	Wed,  4 Nov 2009 23:49:22 +0800
-Message-Id: <1257349762-21407-1-git-send-email-wuzhangjin@gmail.com>
+Subject: [PATCH 2/2] [loongson] fuloong: add RTC_LIB Support
+Date:	Wed,  4 Nov 2009 23:49:44 +0800
+Message-Id: <1257349784-21444-1-git-send-email-wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.6.2.1
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24678
+X-archive-position: 24679
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -46,46 +46,97 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-This patch fixes the following warning with RTC_LIB on MIPS:
+This patch add the RTC_LIB support for fuloong2e,fuloong2f.
 
-drivers/rtc/rtc-cmos.c:697:2: warning: #warning Assuming 128 bytes of
-RTC+NVRAM address space, not 64 bytes.
+To make hwclock work with it normally, please do:
 
-and also, enables the RTC_DM_BINARY support. without this support,
-RTC_LIB of fuloong2e and fuloong2f does not work.
+kernel configuration:
 
-The platform RTC device driver is coming in the next patch.
+Device Drivers --->
+<*> Real Time Clock --->
+	<*>   PC-style 'CMOS'
+
+user-space configuration:
+
+$ mknod /dev/rtc0 c 254 0
+
+/dev/rtc0 is the default RTC device file.
+
+of course, if udevd is installed, ignore the above user-space
+configuration.
 
 Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
 ---
- drivers/rtc/rtc-cmos.c |    8 ++++----
- 1 files changed, 4 insertions(+), 4 deletions(-)
+ arch/mips/loongson/common/Makefile |    7 +++++
+ arch/mips/loongson/common/rtc.c    |   45 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 52 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/loongson/common/rtc.c
 
-diff --git a/drivers/rtc/rtc-cmos.c b/drivers/rtc/rtc-cmos.c
-index f7a4701..820bdad 100644
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -691,7 +691,8 @@ cmos_do_probe(struct device *dev, struct resource *ports, int rtc_irq)
- 	 */
- #if	defined(CONFIG_ATARI)
- 	address_space = 64;
--#elif defined(__i386__) || defined(__x86_64__) || defined(__arm__) || defined(__sparc__)
-+#elif defined(__i386__) || defined(__x86_64__) || defined(__arm__) \
-+			|| defined(__sparc__) || defined(__mips__)
- 	address_space = 128;
- #else
- #warning Assuming 128 bytes of RTC+NVRAM address space, not 64 bytes.
-@@ -756,9 +757,8 @@ cmos_do_probe(struct device *dev, struct resource *ports, int rtc_irq)
- 	/* FIXME teach the alarm code how to handle binary mode;
- 	 * <asm-generic/rtc.h> doesn't know 12-hour mode either.
- 	 */
--	if (is_valid_irq(rtc_irq) &&
--	    (!(rtc_control & RTC_24H) || (rtc_control & (RTC_DM_BINARY)))) {
--		dev_dbg(dev, "only 24-hr BCD mode supported\n");
-+	if (is_valid_irq(rtc_irq) && !(rtc_control & RTC_24H)) {
-+		dev_dbg(dev, "only 24-hr supported\n");
- 		retval = -ENXIO;
- 		goto cleanup1;
- 	}
+diff --git a/arch/mips/loongson/common/Makefile b/arch/mips/loongson/common/Makefile
+index d3138b8..d2184c8 100644
+--- a/arch/mips/loongson/common/Makefile
++++ b/arch/mips/loongson/common/Makefile
+@@ -16,3 +16,10 @@ obj-$(CONFIG_SERIAL_8250) += serial.o
+ # space
+ #
+ obj-$(CONFIG_CS5536) += cs5536/
++
++#
++# Enable RTC Class support
++#
++# please enable CONFIG_RTC_DRV_CMOS
++#
++obj-$(CONFIG_RTC_DRV_CMOS) += rtc.o
+diff --git a/arch/mips/loongson/common/rtc.c b/arch/mips/loongson/common/rtc.c
+new file mode 100644
+index 0000000..fe9464a
+--- /dev/null
++++ b/arch/mips/loongson/common/rtc.c
+@@ -0,0 +1,45 @@
++/*
++ *  Registration of Cobalt RTC platform device.
++ *
++ *  Copyright (C) 2007  Yoichi Yuasa <yoichi_yuasa@tripeaks.co.jp>
++ *  Copyright (C) 2009  Wu Zhangjin <wuzj@lemote.com>
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ */
++
++#include <linux/init.h>
++#include <linux/ioport.h>
++#include <linux/mc146818rtc.h>
++#include <linux/platform_device.h>
++
++static struct resource rtc_cmos_resource[] = {
++	{
++		.start	= RTC_PORT(0),
++		.end	= RTC_PORT(1),
++		.flags	= IORESOURCE_IO,
++	},
++	{
++		.start	= RTC_IRQ,
++		.end	= RTC_IRQ,
++		.flags	= IORESOURCE_IRQ,
++	},
++};
++
++static struct platform_device rtc_cmos_device = {
++	.name		= "rtc_cmos",
++	.id		= -1,
++	.num_resources	= ARRAY_SIZE(rtc_cmos_resource),
++	.resource	= rtc_cmos_resource
++};
++
++static __init int rtc_cmos_init(void)
++{
++	platform_device_register(&rtc_cmos_device);
++
++	return 0;
++}
++
++device_initcall(rtc_cmos_init);
 -- 
 1.6.2.1

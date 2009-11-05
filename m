@@ -1,101 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Nov 2009 15:44:39 +0100 (CET)
-Received: from mail-pz0-f194.google.com ([209.85.222.194]:40737 "EHLO
-	mail-pz0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S2097292AbZKEOoc (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 5 Nov 2009 15:44:32 +0100
-Received: by pzk32 with SMTP id 32so24115pzk.21
-        for <multiple recipients>; Thu, 05 Nov 2009 06:44:25 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=n5pmspPO/1jQVpMZeHWUJcc9qDGPprVPp4Z1at5utJU=;
-        b=pkZUrzXjtdnyZNEab2iUuO/cYL3BP0IHWzbt/xkFiB72EzjCOtlbZAWm3LP1nMpNCs
-         vq2zZQ7Wh5NxF/ggMCEQIwTvJdMv/fvCJpbho9WRSG4tltyGjPPObqgkFvPhJHzpMLfw
-         pxAA6pPdLPzt/dKGdP5vicHgdGH876vA72PeI=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=wIyyuPKcagzj5XNLCeoMXXDOL7XqR0lDr7tXy4H3hTcH4QGjbUmH2JHN0lGwnP/Lee
-         ZG24x28D1+ny/t4FjX2fjInPucgZagNqkGek9MdyIFPW0LHOQQ1UzWxkx2xJICeRPqE+
-         lkaM2IbrbEzZw+gadHXCZDUUGuceR2QlQODDw=
-Received: by 10.115.39.8 with SMTP id r8mr4998662waj.104.1257432265606;
-        Thu, 05 Nov 2009 06:44:25 -0800 (PST)
-Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 20sm1235497pzk.9.2009.11.05.06.44.18
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 05 Nov 2009 06:44:25 -0800 (PST)
-Subject: Re: [PATCH -queue v0 4/6] [loongson] add basic fuloong2f support
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org, LKML <linux-kernel@vger.kernel.org>,
-	huhb@lemote.com, yanh@lemote.com, Zhang Le <r0bertz@gentoo.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Nicholas Mc Guire <der.herr@hofr.at>, zhangfx@lemote.com,
-	liujl@lemote.com
-In-Reply-To: <20091105131603.GA18232@linux-mips.org>
-References: <cover.1257325319.git.wuzhangjin@gmail.com>
-	 <0f805f7d12c5a7cbcc125ba4a1b70113ec2047a6.1257325319.git.wuzhangjin@gmail.com>
-	 <20091105131603.GA18232@linux-mips.org>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:	Thu, 05 Nov 2009 22:44:22 +0800
-Message-ID: <1257432262.3067.42.camel@falcon.domain.org>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 05 Nov 2009 18:55:45 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:58907 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S1492947AbZKERzm (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 5 Nov 2009 18:55:42 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nA5Hv1uu024925;
+	Thu, 5 Nov 2009 18:57:02 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nA5HuxEt024923;
+	Thu, 5 Nov 2009 18:56:59 +0100
+Message-Id: <20091105152702.606651698@linux-mips.org>
+User-Agent: quilt/0.47-1
+Date:	Thu, 05 Nov 2009 16:26:04 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Linus Torvalds <torvalds@linux-foundation.org>
+Cc:	Maxime Bizon <mbizon@freebox.fr>, linux-mips@linux-mips.org,
+	linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 6/6] SERIAL: BCM63xx: Fix serial driver compile breakage.
+References: <20091105152555.227009519@linux-mips.org>
+Content-Disposition: inline; filename=0009.patch
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24698
+X-archive-position: 24699
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+From: Maxime Bizon <mbizon@freebox.fr>
 
-On Thu, 2009-11-05 at 14:16 +0100, Ralf Baechle wrote:
-> > +
-> > +	if ((LOONGSON_INTISR & LOONGSON_INTEN) & LOONGSON_INT_BIT_INT0) {
-> > +		imr = inb(0x21) | (inb(0xa1) << 8);
-> > +		isr = inb(0x20) | (inb(0xa0) << 8);
-> > +		isr &= ~0x4;	/* irq2 for cascade */
-> > +		isr &= ~imr;
-> > +		irq = ffs(isr) - 1;
-> > +	}
-> 
-> Any reason why you're not using i8259_irq() from <asm/i8259.h> here?
-> That function not only gets the locking right, it also minimizes the number
-> of accesses to the i8259 - which even on modern silicon can be stuningly
-> slow.
-> 
+The driver missed an API change.
 
-Seems there are some differences between here and the i8259_irq(), I
-forget the details, perhaps "Yan Hua" can give a detail explaination.
+Signed-off-by: Maxime Bizon <mbizon@freebox.fr>
+Cc: linux-mips@linux-mips.org
+Cc: linux-serial@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
-> > +#if 1
-> > +	pci_read_config_byte(pdev, PCI_LATENCY_TIMER, &val);
-> > +	printk(KERN_INFO "cs5536 acc latency 0x%x\n", val);
-> > +	pci_write_config_byte(pdev, PCI_LATENCY_TIMER, 0xc0);
-> > +#endif
-> 
-> Seems like left over debug code?
-> 
-> > +	return;
-> > +}
-> 
-> And a useless return statement at the end of a void function.
-> 
+ drivers/serial/bcm63xx_uart.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Okay, will remove them later.
-
-Regards,
-	Wu Zhangjin
+Index: upstream-linus/drivers/serial/bcm63xx_uart.c
+===================================================================
+--- upstream-linus.orig/drivers/serial/bcm63xx_uart.c
++++ upstream-linus/drivers/serial/bcm63xx_uart.c
+@@ -242,7 +242,7 @@ static void bcm_uart_do_rx(struct uart_p
+ 	 * higher than fifo size anyway since we're much faster than
+ 	 * serial port */
+ 	max_count = 32;
+-	tty = port->info->port.tty;
++	tty = port->state->port.tty;
+ 	do {
+ 		unsigned int iestat, c, cstat;
+ 		char flag;
+@@ -318,7 +318,7 @@ static void bcm_uart_do_tx(struct uart_p
+ 		return;
+ 	}
+ 
+-	xmit = &port->info->xmit;
++	xmit = &port->state->xmit;
+ 	if (uart_circ_empty(xmit))
+ 		goto txq_empty;
+ 

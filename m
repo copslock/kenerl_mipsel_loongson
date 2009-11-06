@@ -1,83 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Nov 2009 19:17:22 +0100 (CET)
-Received: from mail-fx0-f211.google.com ([209.85.220.211]:62628 "EHLO
-	mail-fx0-f211.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493034AbZKFSRP convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 6 Nov 2009 19:17:15 +0100
-Received: by fxm3 with SMTP id 3so318243fxm.24
-        for <multiple recipients>; Fri, 06 Nov 2009 10:17:07 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=UrGGPXvfj1VoUReiRUmI0d9UwPg4CtpLhS1nIEf3W1Q=;
-        b=T/bGzqVgPxAOIPjIGdzg+fbi/6uBFmUjHR+zJKMzVF6xbAZwknwfqEyoIA2d+5uMpY
-         XPyRXUbcSbvWxP9maLRZZ6VU2gcJhiz+ZZgUBwWETRDpzSH68S60qHwi9+go6BLrd4R0
-         NelTz1WjjFqwWHQzyIBB/h3p/71dfemCKmBYU=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=k1Ca4EoiZ067mK/swQfdKjjBTxpxRDcJdOhg31MltEgqGFNNEKzYL1KVY4Divl1kEC
-         7x9TnOdfLh4wigJz3C8QznU5bk9HAPJoH2PO263ZBAkFp4blL39gCDT+bxRf/cZ1MZuF
-         EA1ls+5BKpu7qprc9hQR+xUum4YzbOSMdDQcw=
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Nov 2009 00:02:56 +0100 (CET)
+Received: from trinity.fluff.org ([89.16.178.74]:49095 "EHLO trinity.fluff.org"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1493285AbZKFXCt (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Sat, 7 Nov 2009 00:02:49 +0100
+Received: from ben by trinity.fluff.org with local (Exim 4.69)
+	(envelope-from <ben@trinity.fluff.org>)
+	id 1N6XEw-0007wP-UI; Fri, 06 Nov 2009 22:25:06 +0000
+Date:	Fri, 6 Nov 2009 22:25:06 +0000
+From:	Ben Dooks <ben-linux@fluff.org>
+To:	Shinya Kuribayashi <shinya.kuribayashi@necel.com>
+Cc:	baruch@tkos.co.il, ben-linux@fluff.org, linux-i2c@vger.kernel.org,
+	linux-mips@linux-mips.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2] i2c-designware updates
+Message-ID: <20091106222506.GP23772@trinity.fluff.org>
+References: <4AF419B6.1000802@necel.com>
 MIME-Version: 1.0
-Received: by 10.223.21.3 with SMTP id h3mr677594fab.39.1257531427029; Fri, 06 
-	Nov 2009 10:17:07 -0800 (PST)
-In-Reply-To: <alpine.LFD.2.00.0911061726150.9725@eddie.linux-mips.org>
-References: <20091107.010839.246840249.anemo@mba.ocn.ne.jp>
-	 <90edad820911060822g40233a8ft28001d68186b989e@mail.gmail.com>
-	 <90edad820911060834t5c14aa30t847c3b75bf7e36e@mail.gmail.com>
-	 <4AF4526B.3020502@caviumnetworks.com>
-	 <90edad820911060907j4a605167xfe1ebdf0dcf7b635@mail.gmail.com>
-	 <alpine.LFD.2.00.0911061710160.9725@eddie.linux-mips.org>
-	 <90edad820911060923w6cd59c5dh57d123b6bc9d4219@mail.gmail.com>
-	 <alpine.LFD.2.00.0911061726150.9725@eddie.linux-mips.org>
-Date:	Fri, 6 Nov 2009 20:17:06 +0200
-Message-ID: <90edad820911061017y373cf1ale5f10b742d633b7d@mail.gmail.com>
-Subject: Re: COMMAND_LINE_SIZE and CONFIG_FRAME_WARN
-From:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	David Daney <ddaney@caviumnetworks.com>,
-	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <dmitri.vorobiev@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4AF419B6.1000802@necel.com>
+X-Disclaimer: These are my views alone.
+X-URL:	http://www.fluff.org/
+User-Agent: Mutt/1.5.18 (2008-05-17)
+X-SA-Exim-Connect-IP: <locally generated>
+X-SA-Exim-Mail-From: ben@trinity.fluff.org
+X-SA-Exim-Scanned: No (on trinity.fluff.org); SAEximRunCond expanded to false
+Return-Path: <ben@trinity.fluff.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24745
+X-archive-position: 24746
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@gmail.com
+X-original-sender: ben-linux@fluff.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Nov 6, 2009 at 7:30 PM, Maciej W. Rozycki <macro@linux-mips.org> wrote:
-> On Fri, 6 Nov 2009, Dmitri Vorobiev wrote:
+On Fri, Nov 06, 2009 at 09:42:30PM +0900, Shinya Kuribayashi wrote:
+> Hi Baruch and Ben,
 >
->> >  KSEG space is not paged, so who cares about the page size?  You're not
->> > making additional stack page allocations, although you can overflow the
->> > space available at some point (but that's avoided if you know a priori
->> > your backtrace is not going to be deep).  Static allocation has its
->> > drawbacks, for example it takes storage space (if it's initialised data)
->> > or memory space (if it's BSS) indefinitely.
->>
->> Thanks for the explanation. Then a variable-size array, I guess.
+> here's v2 patchset of DesignWare I2C driver (i2c-designware.c).
+> I did all test I can do for now (including arbitration tests), and
+> fixed more issues left in the v1 patchset.  I think now the driver is
+> in reasonable shape for the mainline, and hope gets merged.
 >
->  Note that MIPS is at an advantage here and other architectures may have
-> to page the kernel space, so the observation is valid for our platform
-> code only -- for generic code (anything that goes outside arch/mips) you
-> may have to change the assumptions.
+> The patches which already have Baruch's Acked-by: line are logically
+> same as the previous v1 patches.  For the rest are revised version of
+> v1 patches, or newly added in v2.
 
-I believe that Atsushi-san was talking about the MIPS code only.
-Indeed, he mentioned CL_SIZE, which used to be a MIPS-specific alias
-to COMMAND_LINE_SIZE.
+thanks, the first pass seems ok, will give a thorough review by next
+week and get a branch with them on for -next submission.
 
-Dmitri
+-- 
+Ben
 
->
->  Maciej
->
+Q:      What's a light-year?
+A:      One-third less calories than a regular year.

@@ -1,64 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Nov 2009 17:22:23 +0100 (CET)
-Received: from mail-fx0-f211.google.com ([209.85.220.211]:39101 "EHLO
-	mail-fx0-f211.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492939AbZKFQWQ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 6 Nov 2009 17:22:16 +0100
-Received: by fxm3 with SMTP id 3so278496fxm.24
-        for <linux-mips@linux-mips.org>; Fri, 06 Nov 2009 08:22:10 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type;
-        bh=YeQAqqaOaKnkNMfC0SaJexwgro96aJYQuuHbPxGXw98=;
-        b=V68LcFI2VzyqCaFf49uOMbBGkAm3Ft9wWFBLVWSejEzvuqCNin3fzffGKtoLwkcivd
-         +b7CyHX4yq9oJUusoZyoOWyVl9nDLDg1WpaD3egvoBx9fZ3DRymGTcyInVnPbsORZ3Ib
-         hBgrGkMzBGK04kOIQTsccqTpNJ6QA5XMtxWHs=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=O46i4MdQ3ypgzREBfS7yeKa86OOaMabXJQC8WHWzW5O24vH4X4payrMozTaioq9tGQ
-         +MXQyEbx8wnptqEah02XlFI+mcgVWVVvLRg6XWl1j/PsDcuaBjLcjRTSxhz4WHBuJskX
-         x8mR6kdJq6GEw/0QjArilx6g2tzmHOBCuJUVg=
-MIME-Version: 1.0
-Received: by 10.223.164.75 with SMTP id d11mr696322fay.17.1257524529753; Fri, 
-	06 Nov 2009 08:22:09 -0800 (PST)
-In-Reply-To: <20091107.010839.246840249.anemo@mba.ocn.ne.jp>
-References: <20091107.010839.246840249.anemo@mba.ocn.ne.jp>
-Date:	Fri, 6 Nov 2009 18:22:09 +0200
-Message-ID: <90edad820911060822g40233a8ft28001d68186b989e@mail.gmail.com>
-Subject: Re: COMMAND_LINE_SIZE and CONFIG_FRAME_WARN
-From:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Nov 2009 17:34:16 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:53493 "EHLO
+	localhost.localdomain" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1492939AbZKFQeN (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 6 Nov 2009 17:34:13 +0100
+Date:	Fri, 6 Nov 2009 16:34:13 +0000 (GMT)
+From:	"Maciej W. Rozycki" <macro@linux-mips.org>
 To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <dmitri.vorobiev@gmail.com>
+cc:	linux-mips@linux-mips.org
+Subject: Re: COMMAND_LINE_SIZE and CONFIG_FRAME_WARN
+In-Reply-To: <20091107.010839.246840249.anemo@mba.ocn.ne.jp>
+Message-ID: <alpine.LFD.2.00.0911061622160.9725@eddie.linux-mips.org>
+References: <20091107.010839.246840249.anemo@mba.ocn.ne.jp>
+User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Return-Path: <macro@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24735
+X-archive-position: 24736
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@gmail.com
+X-original-sender: macro@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Nov 6, 2009 at 6:08 PM, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+On Sat, 7 Nov 2009, Atsushi Nemoto wrote:
+
 > Recently COMMAND_LINE_SIZE (CL_SIZE) was extended to 4096 from 512.
 > (commit 22242681 "MIPS: Extend COMMAND_LINE_SIZE")
->
+> 
 > This cause warning if something like buf[CL_SIZE] was declared as a
 > local variable, for example in prom_init_cmdline() on some platforms.
->
+> 
 > And since many Makefiles in arch/mips enables -Werror, this cause
 > build failure.
->
+> 
 > How can we avoid this error?
->
+> 
 > - do not use local array? (but dynamic allocation cannot be used in
->  such an early stage.  static array?)
+>   such an early stage.  static array?)
+> - are there any way to disable -Wframe-larger-than for the file or function?
+> - make COMMAND_LINE_SIZE customizable?
+> - use non default CONFIG_FRAME_WARN?
+> 
+> Any comments or suggestions?
 
-Maybe a static array marked with __initdata?
+ Use static storage and mark it initdata?  You can certainly override 
+-Wframe-larger-than in per-object CFLAGS too.  You might also be able to 
+use __builtin_alloca(), but this sounds like a shaky ground. ;)
 
-Dmitri
+  Maciej

@@ -1,41 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Nov 2009 17:15:36 +0100 (CET)
-Received: from mba.ocn.ne.jp ([122.28.14.163]:61768 "HELO smtp.mba.ocn.ne.jp"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with SMTP
-	id S1492939AbZKFQP3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 6 Nov 2009 17:15:29 +0100
-Received: from localhost (p7248-ipad211funabasi.chiba.ocn.ne.jp [58.91.163.248])
-	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP id 77BC86ED1
-	for <linux-mips@linux-mips.org>; Sat,  7 Nov 2009 01:15:26 +0900 (JST)
-Date:	Sat, 07 Nov 2009 01:10:26 +0900 (JST)
-Message-Id: <20091107.011026.152514775.anemo@mba.ocn.ne.jp>
-To:	linux-mips@linux-mips.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Nov 2009 17:18:56 +0100 (CET)
+Received: from ey-out-1920.google.com ([74.125.78.148]:50098 "EHLO
+	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1492939AbZKFQSt (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 6 Nov 2009 17:18:49 +0100
+Received: by ey-out-1920.google.com with SMTP id 26so252385eyw.52
+        for <linux-mips@linux-mips.org>; Fri, 06 Nov 2009 08:18:47 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=QqzD6zHmfa1/WAXJ/NKaDumw9p2kslWA5L7MKQURKZ0=;
+        b=YNZimz0ang+4LoHhxUKHp3/SaAaodzYwwN95OB/iIEAoV+aQFPPC1aIZQ6vBWLa8CJ
+         i7jjNVfr7K8ikNjIVxmBDYod61Y5h2WbA44ObgEyaGTjODYOMmIor79WOjshbwXo6N+Q
+         lukiKSawso8tx2Q89RJ9xddUBL9gNDViUkRVg=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=tYE1I+ymgC//CMps86AHthFPMw1ZhspHlDKt1u4jmSs55MEM6/0Y+2gbzcZjEJ4Z5w
+         x1zd+szhK0INfmPaSU7tIRDMS2Q+V8Kb2ts8B5AlfONCo0ZKErX74zjFaNtGWMdkkD63
+         I3ySLZ+JnxbxMRSgLnKE/GWDNhPhvYiJh0qh0=
+Received: by 10.216.86.83 with SMTP id v61mr843927wee.80.1257524327540;
+        Fri, 06 Nov 2009 08:18:47 -0800 (PST)
+Received: from ?172.16.2.101? ([222.92.8.142])
+        by mx.google.com with ESMTPS id q9sm386029gve.15.2009.11.06.08.18.44
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Fri, 06 Nov 2009 08:18:46 -0800 (PST)
 Subject: Re: COMMAND_LINE_SIZE and CONFIG_FRAME_WARN
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
 In-Reply-To: <20091107.010839.246840249.anemo@mba.ocn.ne.jp>
 References: <20091107.010839.246840249.anemo@mba.ocn.ne.jp>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 22.2 / Mule 5.0 (SAKAKI)
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:	Sat, 07 Nov 2009 00:18:46 +0800
+Message-ID: <1257524326.8766.8.camel@falcon.domain.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+X-Mailer: Evolution 2.28.1 
 Content-Transfer-Encoding: 7bit
-Return-Path: <anemo@mba.ocn.ne.jp>
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24733
+X-archive-position: 24734
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 07 Nov 2009 01:08:39 +0900 (JST), Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+On Sat, 2009-11-07 at 01:08 +0900, Atsushi Nemoto wrote:
 > Recently COMMAND_LINE_SIZE (CL_SIZE) was extended to 4096 from 512.
 > (commit 22242681 "MIPS: Extend COMMAND_LINE_SIZE")
+> 
+> This cause warning if something like buf[CL_SIZE] was declared as a
+> local variable, for example in prom_init_cmdline() on some platforms.
+> 
+> And since many Makefiles in arch/mips enables -Werror, this cause
+> build failure.
+> 
+> How can we avoid this error?
+> 
+> - do not use local array? (but dynamic allocation cannot be used in
+>   such an early stage.  static array?)
+> - are there any way to disable -Wframe-larger-than for the file or function?
+> - make COMMAND_LINE_SIZE customizable?
+> - use non default CONFIG_FRAME_WARN?
+> 
+> Any comments or suggestions?
 
-Excuse me, old COMMAND_LINE_SIZE value was 256, not 512.
+does "static" helps this problem?
 
----
-Atsushi Nemoto
+Regards,
+	Wu Zhangjin

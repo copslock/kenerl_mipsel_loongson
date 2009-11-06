@@ -1,56 +1,40 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Nov 2009 17:44:28 +0100 (CET)
-Received: from mail-fx0-f211.google.com ([209.85.220.211]:50775 "EHLO
-	mail-fx0-f211.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492995AbZKFQoV convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 6 Nov 2009 17:44:21 +0100
-Received: by fxm3 with SMTP id 3so286089fxm.24
-        for <linux-mips@linux-mips.org>; Fri, 06 Nov 2009 08:44:15 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=ViQvux9M1cFrU4WYSZSmelpZp6Fuv0EVhsspoBrcGuQ=;
-        b=vLPaUlcUmsULmgSiqoaMD4Y1TMjXOPF/xcF6AXRvqSHm1FnHjaSVKWfE2tDDwh7uxZ
-         AdC5Ka0GUr9zYQEi7qTnzz1VCbfYcfw6o/NLimrYzR7m42Uncmj9kiJdIyDnoj/kF9lU
-         mpgHxykxOwcdwZbff2CthxMeBfVwmFfHz2VBY=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=UrQRpQhExG+p7eursXUuEZDxBAHQoPrr6Kk4mV3MJxH933caJZ4qfTmA5ady5Y7x29
-         ChEYWpmqSHO8EKe+wltB32JmUb+Po182bkwGcPfyQkdgoJdGAifOHyD2YTBr+q6Vlw0J
-         niTdQjmuD0h3lqt/B9Ei0h37BRwXkfy6j2UkQ=
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Nov 2009 17:53:22 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:17638 "EHLO
+	mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492995AbZKFQxQ (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 6 Nov 2009 17:53:16 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,5,4,7535)
+	id <B4af454680001>; Fri, 06 Nov 2009 08:53:01 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 6 Nov 2009 08:44:30 -0800
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+	 Fri, 6 Nov 2009 08:44:30 -0800
+Message-ID: <4AF4526B.3020502@caviumnetworks.com>
+Date:	Fri, 06 Nov 2009 08:44:27 -0800
+From:	David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
 MIME-Version: 1.0
-Received: by 10.223.21.3 with SMTP id h3mr662205fab.39.1257525855218; Fri, 06 
-	Nov 2009 08:44:15 -0800 (PST)
-In-Reply-To: <90edad820911060834t5c14aa30t847c3b75bf7e36e@mail.gmail.com>
-References: <20091107.010839.246840249.anemo@mba.ocn.ne.jp>
-	 <90edad820911060822g40233a8ft28001d68186b989e@mail.gmail.com>
-	 <90edad820911060834t5c14aa30t847c3b75bf7e36e@mail.gmail.com>
-Date:	Fri, 6 Nov 2009 18:44:15 +0200
-Message-ID: <90edad820911060844n14f12301jbaa63c2d62d23f92@mail.gmail.com>
+To:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
+CC:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org
 Subject: Re: COMMAND_LINE_SIZE and CONFIG_FRAME_WARN
-From:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
-To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-Cc:	linux-mips@linux-mips.org
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 8BIT
-Return-Path: <dmitri.vorobiev@gmail.com>
+References: <20091107.010839.246840249.anemo@mba.ocn.ne.jp>	 <90edad820911060822g40233a8ft28001d68186b989e@mail.gmail.com> <90edad820911060834t5c14aa30t847c3b75bf7e36e@mail.gmail.com>
+In-Reply-To: <90edad820911060834t5c14aa30t847c3b75bf7e36e@mail.gmail.com>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+X-OriginalArrivalTime: 06 Nov 2009 16:44:30.0023 (UTC) FILETIME=[6907AD70:01CA5F00]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24738
+X-archive-position: 24739
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@gmail.com
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Nov 6, 2009 at 6:34 PM, Dmitri Vorobiev
-<dmitri.vorobiev@gmail.com> wrote:
+Dmitri Vorobiev wrote:
 > On Fri, Nov 6, 2009 at 6:22 PM, Dmitri Vorobiev
 > <dmitri.vorobiev@gmail.com> wrote:
 >> On Fri, Nov 6, 2009 at 6:08 PM, Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
@@ -67,36 +51,25 @@ On Fri, Nov 6, 2009 at 6:34 PM, Dmitri Vorobiev
 >>>
 >>> - do not use local array? (but dynamic allocation cannot be used in
 >>>  such an early stage.  static array?)
->>
 >> Maybe a static array marked with __initdata?
->
+> 
 > Also, I just thought that maybe it's possible to use a c99
 > variable-length array here? Like this:
->
+> 
 > int n = COMMAND_LINE_SIZE;
 > char buf[n];
->
+> 
 > This way, we don't put yet another variable in the .init.data section,
 > unlike with the static array solution.
->
+> 
 > However, this is totally untested, just a thought...
+> 
 
-Just tried the variable-length array option, proves to be working:
+It depends on your concerns.  You are still using 4096 bytes of stack, 
+but you are trying to trick the compiler into not warning.
 
-dmvo@cipher:/tmp$ cat c.c
-f()
-{
-        char buf[4096];
-}
-dmvo@cipher:/tmp$ cc -c -Wframe-larger-than=1024 c.c
-c.c: In function ‘f’:
-c.c:4: warning: the frame size of 4112 bytes is larger than 1024 bytes
-dmvo@cipher:/tmp$ cat d.c
-f()
-{
-        int n = 4096;
-        char buf1[n];
-}
-dmvo@cipher:/tmp$ cc -c -Wframe-larger-than=1024 d.c
+If you think the warning is bogus, you should remove it for all code, 
+not just this file.  If you think the warning is valid, then you should 
+fix the code so that it doesn't use as much stack space.
 
-Dmitri
+David Daney

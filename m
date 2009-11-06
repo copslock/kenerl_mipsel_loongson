@@ -1,53 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Nov 2009 14:14:10 +0100 (CET)
-Received: from mail-pz0-f194.google.com ([209.85.222.194]:47246 "EHLO
-	mail-pz0-f194.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492762AbZKFNM1 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 6 Nov 2009 14:12:27 +0100
-Received: by pzk32 with SMTP id 32so730652pzk.21
-        for <multiple recipients>; Fri, 06 Nov 2009 05:12:20 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 06 Nov 2009 14:14:35 +0100 (CET)
+Received: from mail-px0-f188.google.com ([209.85.216.188]:39281 "EHLO
+	mail-px0-f188.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492770AbZKFNM3 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 6 Nov 2009 14:12:29 +0100
+Received: by mail-px0-f188.google.com with SMTP id 26so367498pxi.21
+        for <multiple recipients>; Fri, 06 Nov 2009 05:12:28 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer:in-reply-to:references:in-reply-to:references;
-        bh=SmthfTTmCccT5cEK7SBFhzTZ4oNKbiW0KELe58SDjgc=;
-        b=dqegG4dY22FeuDPabtSPy44G/XQQ8wIECE60KUd2igU8s0vsWiUzm/DcRilNl8EEAt
-         vSIAq7ZPxxsFdzUgOmTzWB9/nc4T12jFhYtjKTuTvKRnnIYpHKYv/mArlFql2eLfkCF4
-         FfvdX6t65Elm+qRuTAvZ6HdunUSUVcFF4y7rM=
+        bh=JCYDZGjkpspjE36H5CPPrT09PFzL1y1hw/crXGzEy/M=;
+        b=LJxvtaru8A/AdbVqoqb+9+njG3jcuJJ6jdDcWZfLwB9B8ZsjHdedhFR4Itmt1qCpvg
+         P32AEnDf09WfcT2ciJxuGRbyWnCXp4cWRlTX8M29MzhLUINTXO7+of8mwLjh8K8+CMEf
+         i1pdG8bDzobpGjbPepTc+ACmgpq+pbfprrwIA=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=DqzR3MuM6cvBblL86ru+EYx7f4hP+fz9OwBVFpQt+b27Zj7Oe0fAg41JkTG12O48LL
-         j081m2UsIx0EH/ysBSzzHCm5WNp4kB+MokQbbDqxWkMSkdIswHNUvvjCYyfm05mNaGkQ
-         qy/CrdH5j8OBVF8CRyJDAJB5OIlNDE0eYuAfE=
-Received: by 10.115.99.4 with SMTP id b4mr6676051wam.88.1257513140167;
-        Fri, 06 Nov 2009 05:12:20 -0800 (PST)
+        b=Hk3lO21uvR4sTI6+pNliS4OkYS78HbFhVf5opsmTMcf/L/2eWKc14ew0In0vbhvM7D
+         Uk4STWcqa255ddLNo6vMyYxEneICTZQrZ2Pr/quMJIEGUa0FCaigZiSQu7NooV/WUtIo
+         qzxjsXmuchxdRiBrlc2L6geu//zOLG1bQIFaI=
+Received: by 10.114.187.3 with SMTP id k3mr6715999waf.82.1257513148686;
+        Fri, 06 Nov 2009 05:12:28 -0800 (PST)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id 20sm26431pxi.7.2009.11.06.05.12.15
+        by mx.google.com with ESMTPS id 20sm26431pxi.7.2009.11.06.05.12.20
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 06 Nov 2009 05:12:19 -0800 (PST)
+        Fri, 06 Nov 2009 05:12:28 -0800 (PST)
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	Arnaud Patard <apatard@mandriva.com>, zhangfx@lemote.com,
 	yanh@lemote.com, huhb@lemote.com,
 	Nicholas Mc Guire <hofrat@hofr.at>,
 	Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org
-Subject: [PATCH -queue v1 5/7] [loongson] lemote-2f: add irq support
-Date:	Fri,  6 Nov 2009 21:11:30 +0800
-Message-Id: <96301eaeffac1ae45d7529760eb961a04356dfca.1257510612.git.wuzhangjin@gmail.com>
+Subject: [PATCH -queue v1 6/7] [loongson] lemote-2f: add reset and shutdown support
+Date:	Fri,  6 Nov 2009 21:11:31 +0800
+Message-Id: <eda10072015359ae0f3f36ea81ec1281602091a8.1257510612.git.wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.6.2.1
-In-Reply-To: <84e7310659ae445b3b3dc68aadc8f27648c709f6.1257510612.git.wuzhangjin@gmail.com>
+In-Reply-To: <96301eaeffac1ae45d7529760eb961a04356dfca.1257510612.git.wuzhangjin@gmail.com>
 References: <cover.1257510612.git.wuzhangjin@gmail.com>
  <17e5d58a0cd7273b81c7151b7f7f2096c9694b59.1257510612.git.wuzhangjin@gmail.com>
  <588574ed5910292f2728072ca147add2ae342778.1257510612.git.wuzhangjin@gmail.com>
  <7affa8fce1f55b817aff1c64f823824f6809dd85.1257510612.git.wuzhangjin@gmail.com>
  <84e7310659ae445b3b3dc68aadc8f27648c709f6.1257510612.git.wuzhangjin@gmail.com>
+ <96301eaeffac1ae45d7529760eb961a04356dfca.1257510612.git.wuzhangjin@gmail.com>
 In-Reply-To: <cover.1257510612.git.wuzhangjin@gmail.com>
 References: <cover.1257510612.git.wuzhangjin@gmail.com>
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24727
+X-archive-position: 24728
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -57,180 +58,213 @@ X-list: linux-mips
 
 From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-The common i8259_irq() will make kernel hang on booting, herein, we
-write our own instead.
-
-The IP6 is shared by the bonito interrupt and the perfcounter interrupt.
+fuloong2f, yeeloong2f and menglong2f have different reset/shutdown
+logic, this patch add respective support for them.
 
 Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
 ---
- arch/mips/loongson/Makefile           |    6 ++
- arch/mips/loongson/lemote-2f/Makefile |    5 +
- arch/mips/loongson/lemote-2f/irq.c    |  130 +++++++++++++++++++++++++++++++++
- 3 files changed, 141 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/loongson/lemote-2f/Makefile
- create mode 100644 arch/mips/loongson/lemote-2f/irq.c
+ arch/mips/include/asm/mach-loongson/loongson.h |    7 +
+ arch/mips/loongson/lemote-2f/Makefile          |    2 +-
+ arch/mips/loongson/lemote-2f/reset.c           |  163 ++++++++++++++++++++++++
+ 3 files changed, 171 insertions(+), 1 deletions(-)
+ create mode 100644 arch/mips/loongson/lemote-2f/reset.c
 
-diff --git a/arch/mips/loongson/Makefile b/arch/mips/loongson/Makefile
-index 39048c4..2b76cb0 100644
---- a/arch/mips/loongson/Makefile
-+++ b/arch/mips/loongson/Makefile
-@@ -9,3 +9,9 @@ obj-$(CONFIG_MACH_LOONGSON) += common/
+diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
+index e7e7a08..5b83bea 100644
+--- a/arch/mips/include/asm/mach-loongson/loongson.h
++++ b/arch/mips/include/asm/mach-loongson/loongson.h
+@@ -42,6 +42,13 @@ extern void __init set_irq_trigger_mode(void);
+ extern void __init mach_init_irq(void);
+ extern void mach_irq_dispatch(unsigned int pending);
+ 
++/* We need this in some places... */
++#define delay()	({		\
++	int x;				\
++	for (x = 0; x < 100000; x++)	\
++		__asm__ __volatile__(""); \
++})
++
+ #define LOONGSON_REG(x) \
+ 	(*(volatile u32 *)((char *)CKSEG1ADDR(LOONGSON_REG_BASE) + (x)))
+ 
+diff --git a/arch/mips/loongson/lemote-2f/Makefile b/arch/mips/loongson/lemote-2f/Makefile
+index 2e18897..da543b1 100644
+--- a/arch/mips/loongson/lemote-2f/Makefile
++++ b/arch/mips/loongson/lemote-2f/Makefile
+@@ -2,4 +2,4 @@
+ # Makefile for lemote loongson2f family machines
  #
  
- obj-$(CONFIG_LEMOTE_FULOONG2E)  += fuloong-2e/
-+
-+#
-+# Lemote loongson2f family machines
-+#
-+
-+obj-$(CONFIG_LEMOTE_MACH2F)  += lemote-2f/
-diff --git a/arch/mips/loongson/lemote-2f/Makefile b/arch/mips/loongson/lemote-2f/Makefile
+-obj-y += irq.o
++obj-y += irq.o reset.o
+diff --git a/arch/mips/loongson/lemote-2f/reset.c b/arch/mips/loongson/lemote-2f/reset.c
 new file mode 100644
-index 0000000..2e18897
+index 0000000..0459493
 --- /dev/null
-+++ b/arch/mips/loongson/lemote-2f/Makefile
-@@ -0,0 +1,5 @@
-+#
-+# Makefile for lemote loongson2f family machines
-+#
-+
-+obj-y += irq.o
-diff --git a/arch/mips/loongson/lemote-2f/irq.c b/arch/mips/loongson/lemote-2f/irq.c
-new file mode 100644
-index 0000000..98f6984
---- /dev/null
-+++ b/arch/mips/loongson/lemote-2f/irq.c
-@@ -0,0 +1,130 @@
-+/*
-+ * Copyright (C) 2007 Lemote Inc.
-+ * Author: Fuxin Zhang, zhangfx@lemote.com
++++ b/arch/mips/loongson/lemote-2f/reset.c
+@@ -0,0 +1,163 @@
++/* Board-specific reboot/shutdown routines
 + *
-+ *  This program is free software; you can redistribute  it and/or modify it
-+ *  under  the terms of  the GNU General  Public License as published by the
-+ *  Free Software Foundation;  either version 2 of the  License, or (at your
-+ *  option) any later version.
++ * Copyright (c) 2009 Philippe Vachon <philippe@cowpig.ca>
++ *
++ * Copyright (C) 2009 Lemote Inc.
++ * Author: Wu Zhangjin, wuzj@lemote.com
++ *
++ * This program is free software; you can redistribute  it and/or modify it
++ * under  the terms of  the GNU General  Public License as published by the
++ * Free Software Foundation;  either version 2 of the  License, or (at your
++ * option) any later version.
 + */
 +
-+#include <linux/interrupt.h>
++#include <linux/io.h>
++#include <linux/delay.h>
++#include <linux/types.h>
 +
-+#include <asm/irq_cpu.h>
-+#include <asm/i8259.h>
-+#include <asm/mipsregs.h>
++#include <asm/bootinfo.h>
 +
 +#include <loongson.h>
-+#include <machine.h>
 +
-+#define LOONGSON_TIMER_IRQ	(MIPS_CPU_IRQ_BASE + 7)	/* cpu timer */
-+#define LOONGSON_PERFCNT_IRQ	(MIPS_CPU_IRQ_BASE + 6)	/* cpu perf counter */
-+#define LOONGSON_NORTH_BRIDGE_IRQ	(MIPS_CPU_IRQ_BASE + 6)	/* bonito */
-+#define LOONGSON_UART_IRQ	(MIPS_CPU_IRQ_BASE + 3)	/* cpu serial port */
-+#define LOONGSON_SOUTH_BRIDGE_IRQ	(MIPS_CPU_IRQ_BASE + 2)	/* i8259 */
++#include <cs5536/cs5536.h>
 +
-+#define LOONGSON_INT_BIT_INT0		(1 << 11)
-+#define LOONGSON_INT_BIT_INT1		(1 << 12)
-+
-+/* The common i8259_irq() make the kernel hang on booting, Seems we can not get
-+ * the irq via the IRR directly, herein, we access the ISR instead. */
-+static inline int mach_i8259_irq(void)
++static void reset_cpu(void)
 +{
-+	int irq, isr;
-+
-+	irq = -1;
-+
-+	if ((LOONGSON_INTISR & LOONGSON_INTEN) & LOONGSON_INT_BIT_INT0) {
-+		spin_lock(&i8259A_lock);
-+		isr = inb(PIC_MASTER_CMD) &
-+			~inb(PIC_MASTER_IMR) & ~(1 << PIC_CASCADE_IR);
-+		if (!isr)
-+			isr = (inb(PIC_SLAVE_CMD) & ~inb(PIC_SLAVE_IMR)) << 8;
-+		irq = ffs(isr) - 1;
-+		if (unlikely(irq == 7)) {
-+			/*
-+			 * This may be a spurious interrupt.
-+			 *
-+			 * Read the interrupt status register (ISR). If the most
-+			 * significant bit is not set then there is no valid
-+			 * interrupt.
-+			 */
-+			outb(0x0B, PIC_MASTER_ISR);	/* ISR register */
-+			if (~inb(PIC_MASTER_ISR) & 0x80)
-+				irq = -1;
-+		}
-+		spin_unlock(&i8259A_lock);
-+	}
-+
-+	return irq;
-+}
-+
-+static void i8259_irqdispatch(void)
-+{
-+	int irq;
-+
-+	irq = mach_i8259_irq();
-+	if (irq >= 0)
-+		do_IRQ(irq);
-+	else
-+		spurious_interrupt();
-+}
-+
-+void mach_irq_dispatch(unsigned int pending)
-+{
-+	if (pending & CAUSEF_IP7)
-+		do_IRQ(LOONGSON_TIMER_IRQ);
-+	else if (pending & CAUSEF_IP6) {	/* North Bridge, Perf counter */
-+#ifdef CONFIG_OPROFILE
-+		do_IRQ(LOONGSON2_PERFCNT_IRQ);
-+#endif
-+		bonito_irqdispatch();
-+	} else if (pending & CAUSEF_IP3)	/* CPU UART */
-+		do_IRQ(LOONGSON_UART_IRQ);
-+	else if (pending & CAUSEF_IP2)	/* South Bridge */
-+		i8259_irqdispatch();
-+	else
-+		spurious_interrupt();
-+}
-+
-+void __init set_irq_trigger_mode(void)
-+{
-+	/* setup cs5536 as high level trigger */
-+	LOONGSON_INTPOL = LOONGSON_INT_BIT_INT0 | LOONGSON_INT_BIT_INT1;
-+	LOONGSON_INTEDGE &= ~(LOONGSON_INT_BIT_INT0 | LOONGSON_INT_BIT_INT1);
-+}
-+
-+static irqreturn_t ip6_action(int cpl, void *dev_id)
-+{
-+	return IRQ_HANDLED;
-+}
-+
-+struct irqaction ip6_irqaction = {
-+	.handler = ip6_action,
-+	.name = "cascade",
-+	.flags = IRQF_SHARED,
-+};
-+
-+struct irqaction cascade_irqaction = {
-+	.handler = no_action,
-+	.name = "cascade",
-+};
-+
-+void __init mach_init_irq(void)
-+{
-+	/* init all controller
-+	 *   0-15         ------> i8259 interrupt
-+	 *   16-23        ------> mips cpu interrupt
-+	 *   32-63        ------> bonito irq
++	/*
++	 * reset cpu to full speed, this is needed when enabling cpu frequency
++	 * scalling
 +	 */
++	LOONGSON_CHIPCFG0 |= 0x7;
++}
 +
-+	/* Sets the first-level interrupt dispatcher. */
-+	mips_cpu_irq_init();
-+	init_i8259_irqs();
-+	bonito_irq_init();
++/* reset support for fuloong2f */
 +
-+	/* setup north bridge irq (bonito) */
-+	setup_irq(LOONGSON_NORTH_BRIDGE_IRQ, &ip6_irqaction);
-+	/* setup source bridge irq (i8259) */
-+	setup_irq(LOONGSON_SOUTH_BRIDGE_IRQ, &cascade_irqaction);
++static void fl2f_reboot(void)
++{
++	reset_cpu();
++
++	/* send a reset signal to south bridge.
++	 *
++	 * NOTE: if enable "Power Management" in kernel, rtl8169 will not reset
++	 * normally with this reset operation and it will not work in PMON, but
++	 * you can type halt command and then reboot, seems the hardware reset
++	 * logic not work normally.
++	 */
++	{
++		u32 hi, lo;
++		_rdmsr(DIVIL_MSR_REG(DIVIL_SOFT_RESET), &hi, &lo);
++		lo |= 0x00000001;
++		_wrmsr(DIVIL_MSR_REG(DIVIL_SOFT_RESET), hi, lo);
++	}
++}
++
++static void fl2f_shutdown(void)
++{
++	u32 hi, lo, val;
++	int gpio_base;
++
++	/* get gpio base */
++	_rdmsr(DIVIL_MSR_REG(DIVIL_LBAR_GPIO), &hi, &lo);
++	gpio_base = lo & 0xff00;
++
++	/* make cs5536 gpio13 output enable */
++	val = inl(gpio_base + GPIOL_OUT_EN);
++	val &= ~(1 << (16 + 13));
++	val |= (1 << 13);
++	outl(val, gpio_base + GPIOL_OUT_EN);
++	mmiowb();
++	/* make cs5536 gpio13 output low level voltage. */
++	val = inl(gpio_base + GPIOL_OUT_VAL) & ~(1 << (13));
++	val |= (1 << (16 + 13));
++	outl(val, gpio_base + GPIOL_OUT_VAL);
++	mmiowb();
++}
++
++/* reset support for yeeloong2f and mengloong2f notebook */
++
++/*
++ * The following registers are determined by the EC index configuration.
++ * 1. fill the PORT_HIGH as EC register high part.
++ * 2. fill the PORT_LOW as EC register low part.
++ * 3. fill the PORT_DATA as EC register write data or get the data from it.
++ */
++
++#define	EC_IO_PORT_HIGH	0x0381
++#define	EC_IO_PORT_LOW	0x0382
++#define	EC_IO_PORT_DATA	0x0383
++#define	REG_RESET_HIGH	0xF4	/* reset the machine auto-clear : rd/wr */
++#define REG_RESET_LOW	0xEC
++#define	BIT_RESET_ON	(1 << 0)
++
++void ml2f_reboot(void)
++{
++	reset_cpu();
++
++	/* sending an reset signal to EC(embedded controller) */
++	outb(REG_RESET_HIGH, EC_IO_PORT_HIGH);
++	outb(REG_RESET_LOW, EC_IO_PORT_LOW);
++	mmiowb();
++	outb(BIT_RESET_ON, EC_IO_PORT_DATA);
++	mmiowb();
++}
++
++#define yl2f89_reboot ml2f_reboot
++
++/* menglong(7inches) laptop has different shutdown logic from 8.9inches */
++#define EC_SHUTDOWN_IO_PORT_HIGH 0xff2d
++#define EC_SHUTDOWN_IO_PORT_LOW	 0xff2e
++#define EC_SHUTDOWN_IO_PORT_DATA 0xff2f
++#define REG_SHUTDOWN_HIGH        0xFC
++#define REG_SHUTDOWN_LOW         0x29
++#define BIT_SHUTDOWN_ON          (1 << 1)
++
++static void ml2f_shutdown(void)
++{
++	u8 val;
++	u64 i;
++
++	outb(REG_SHUTDOWN_HIGH, EC_SHUTDOWN_IO_PORT_HIGH);
++	outb(REG_SHUTDOWN_LOW, EC_SHUTDOWN_IO_PORT_LOW);
++	mmiowb();
++	val = inb(EC_SHUTDOWN_IO_PORT_DATA);
++	outb(val & (~BIT_SHUTDOWN_ON), EC_SHUTDOWN_IO_PORT_DATA);
++	mmiowb();
++	/* need enough wait here... how many microseconds needs? */
++	for (i = 0; i < 0x10000; i++)
++		delay();
++	outb(val | BIT_SHUTDOWN_ON, EC_SHUTDOWN_IO_PORT_DATA);
++	mmiowb();
++}
++
++static void yl2f89_shutdown(void)
++{
++	/* cpu-gpio0 output low */
++	LOONGSON_GPIODATA &= ~0x00000001;
++	/* cpu-gpio0 as output */
++	LOONGSON_GPIOIE &= ~0x00000001;
++}
++
++
++/* we only cope with the lemote 2f series */
++typedef void (*mach_reset_func)(void);
++static mach_reset_func mach_reset[][2] = {
++	[MACH_LOONGSON_UNKNOWN]	{NULL, NULL},
++	[MACH_LEMOTE_FL2E]	{NULL, NULL},
++	[MACH_LEMOTE_FL2F]	{fl2f_reboot, fl2f_shutdown},
++	[MACH_LEMOTE_ML2F7]	{ml2f_reboot, ml2f_shutdown},
++	[MACH_LEMOTE_YL2F89]	{yl2f89_reboot, yl2f89_shutdown},
++	[MACH_DEXXON_GDIUM2F10]	{NULL, NULL},
++	[MACH_LOONGSON_END] {NULL, NULL},
++};
++
++void mach_prepare_reboot(void)
++{
++	if (mach_reset[mips_machtype][0])
++		mach_reset[mips_machtype][0]();
++}
++
++void mach_prepare_shutdown(void)
++{
++	if (mach_reset[mips_machtype][1])
++		mach_reset[mips_machtype][1]();
 +}
 -- 
 1.6.2.1

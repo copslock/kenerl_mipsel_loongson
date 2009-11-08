@@ -1,67 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 07 Nov 2009 23:09:10 +0100 (CET)
-Received: from mail-fx0-f211.google.com ([209.85.220.211]:54482 "EHLO
-	mail-fx0-f211.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493408AbZKGWJC convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 7 Nov 2009 23:09:02 +0100
-Received: by fxm3 with SMTP id 3so602875fxm.24
-        for <multiple recipients>; Sat, 07 Nov 2009 14:08:56 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=7+lUlPvbQEdrGn1HO0PaLy8XpR4CG3YbMCIKPvb9ICc=;
-        b=va6zMQYd00ciH4/I1QflxRLh9ynFd6exImcCvQykYoqCUBqfaxaDfV/G8fxyMysOmn
-         PC6udvDBqpfbNNfzPB5NGpCGOuqOFOFcZ3+/1spyyvPYqKfraPhWdPVQfQN6FSqPX2Ky
-         R1YJb1SBmtVujd6fqGYr/5ucGWw3V4bytXYfo=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=Ldj3DmrhLBwDY5GX0/XDCDICr7BQYFMn0JNS3mUU2QV9wqyn47DmheKH08jmt5kkqG
-         zBc4u0r6HIZh+d1rRy1ISHXq480gnw31UU6+WmmOtn3DHm1ff0SBaXueNU5LS1OALTN9
-         AEZYEPUX6KxTqMh9GY3vTznLdpxrFaldGJOeo=
-MIME-Version: 1.0
-Received: by 10.223.145.129 with SMTP id d1mr842230fav.99.1257631736528; Sat, 
-	07 Nov 2009 14:08:56 -0800 (PST)
-In-Reply-To: <alpine.LFD.2.00.0911071913370.9725@eddie.linux-mips.org>
-References: <1257614437-8632-1-git-send-email-anemo@mba.ocn.ne.jp>
-	 <90edad820911071016v70e6e68bia8f0c3b6f09ceb3c@mail.gmail.com>
-	 <alpine.LFD.2.00.0911071913370.9725@eddie.linux-mips.org>
-Date:	Sun, 8 Nov 2009 00:08:56 +0200
-Message-ID: <90edad820911071408v16e62cb9na2b2d0030f2e1047@mail.gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 08 Nov 2009 12:50:26 +0100 (CET)
+Received: from mba.ocn.ne.jp ([122.28.14.163]:61378 "HELO smtp.mba.ocn.ne.jp"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with SMTP
+	id S1492229AbZKHLuT convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 8 Nov 2009 12:50:19 +0100
+Received: from localhost (p5082-ipad205funabasi.chiba.ocn.ne.jp [222.146.100.82])
+	by smtp.mba.ocn.ne.jp (Postfix) with ESMTP
+	id AD6DD6968; Sun,  8 Nov 2009 20:50:07 +0900 (JST)
+Date:	Sun, 08 Nov 2009 20:50:07 +0900 (JST)
+Message-Id: <20091108.205007.59470244.anemo@mba.ocn.ne.jp>
+To:	dmitri.vorobiev@gmail.com
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
 Subject: Re: [PATCH] MIPS: Make local arrays with CL_SIZE static __initdata
-From:	Dmitri Vorobiev <dmitri.vorobiev@gmail.com>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>, linux-mips@linux-mips.org,
-	ralf@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <90edad820911071016v70e6e68bia8f0c3b6f09ceb3c@mail.gmail.com>
+References: <1257614437-8632-1-git-send-email-anemo@mba.ocn.ne.jp>
+	<90edad820911071016v70e6e68bia8f0c3b6f09ceb3c@mail.gmail.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 22.2 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=iso-8859-1
 Content-Transfer-Encoding: 8BIT
-Return-Path: <dmitri.vorobiev@gmail.com>
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24753
+X-archive-position: 24754
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dmitri.vorobiev@gmail.com
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Nov 7, 2009 at 9:14 PM, Maciej W. Rozycki <macro@linux-mips.org> wrote:
-> On Sat, 7 Nov 2009, Dmitri Vorobiev wrote:
->
->> Also, I think it's more common to place __initdata before the variable
->> name, not after it, although tastes do differ. :)
->
->  Well, <linux/init.h> disagrees.
+On Sat, 7 Nov 2009 20:16:57 +0200, Dmitri Vorobiev <dmitri.vorobiev@gmail.com> wrote:
+> > --- a/arch/mips/bcm47xx/prom.c
+> > +++ b/arch/mips/bcm47xx/prom.c
+> > @@ -100,7 +100,7 @@ static __init void prom_init_console(void)
+> >
+> >  static __init void prom_init_cmdline(void)
+> >  {
+> > -       char buf[CL_SIZE];
+> > +       static char buf[CL_SIZE] __initdata;
+> 
+> If this is intended for -queue, this patch won't apply, because
+> CL_SIZE was recently removed in favor of using CONFIG_CMDLINE_SIZE
+> directly.
 
-Indeed. Thanks for the correction.
+Oh I missed your CL_SIZE removal patch.  Anyway I want this patch for
+2.6.32 since this is regression.
 
-Dmitri
+If the CL_SIZE removal patch was merged for 2.6.32 first, I will
+update my patch.  Othersize, your patch needs update, but I suppose we
+can do it easily.  Of course Ralf can do it too ;)
 
->
->  Maciej
->
+---
+Atsushi Nemoto

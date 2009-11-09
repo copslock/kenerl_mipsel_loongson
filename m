@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Nov 2009 16:37:27 +0100 (CET)
-Received: from mail-ew0-f216.google.com ([209.85.219.216]:46041 "EHLO
-	mail-ew0-f216.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493113AbZKIPdd (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Nov 2009 16:33:33 +0100
-Received: by mail-ew0-f216.google.com with SMTP id 12so3364851ewy.0
-        for <multiple recipients>; Mon, 09 Nov 2009 07:33:32 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Nov 2009 16:37:52 +0100 (CET)
+Received: from ey-out-1920.google.com ([74.125.78.147]:45532 "EHLO
+	ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1493089AbZKIPdk (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Nov 2009 16:33:40 +0100
+Received: by ey-out-1920.google.com with SMTP id 4so161480eyg.52
+        for <multiple recipients>; Mon, 09 Nov 2009 07:33:39 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer:in-reply-to:references:in-reply-to:references;
-        bh=gJbIT3YJD1oIEsFWj7fg0jtdQtyZo77vwZ5SgOJDET4=;
-        b=IFliml1BTg69xm7BxSfyjUCnKLI1gE/JeN1T10Lhm2oF14PxUBVVnGwvmbxyWc0DzI
-         9/HEfBje0MZCNCcZCm7Hmq012uCHkLN6I6kULIPGNOtkelxDnprt3UyHSYMF+e+kOaVa
-         7Que+YQrDX051orzrBQMhwjTfXLbSBFz9pNxc=
+        bh=5ALfs6jKuLlVJCnrOdjxwOArPiWkBHGQDkL6ZE5uF3g=;
+        b=iSxWDSIO53mz4AVnpzwbOg8XYSf1AyKA0OFp3kuKzgk2KKc1KG6gi9ZI9w8n41w194
+         LfoF1kcwIvVZ2fikJS3HjT8FdUxcGQHALAVX/SY068bx8IooUSm8KKVGPlbiMBOGwYdX
+         xtpqsHeHErWD7/cy7NO57qAcJxgWGJnUMS5ys=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=mgdl9mE8w1cCE3a1x5VxAFFatohEV7XmweHKHPhgXvdCKC2c+FsNVURPgl71MrhN45
-         xb/FMnXvPHFEarG77tJkry5HoVLWlFBTfWwUmrZq1UUZuCKIrMjMm8q1QupqYXVEbsOt
-         v8H29ZAaxtP2kjxUmfoXxs6g4lIkxAxSkhh18=
-Received: by 10.216.87.71 with SMTP id x49mr94198wee.11.1257780811997;
-        Mon, 09 Nov 2009 07:33:31 -0800 (PST)
+        b=SutUslWo4CEKX7eDnGmdGucECSW5mZ4QtppP1Ck8h93VaGX8Ggcmor6jyL4Ad1UUcN
+         vPt3WzbgMqavaR4NZJqAZ490PPX+1Zvb7nXjOUv6nTZZlv9ysDxxuE/cUMhJOY/SQYfW
+         ELf1WPUYjwsDjuovutR9n4V2HWRauvaPQ69e4=
+Received: by 10.216.89.202 with SMTP id c52mr91568wef.215.1257780819781;
+        Mon, 09 Nov 2009 07:33:39 -0800 (PST)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id g9sm9033556gvc.25.2009.11.09.07.33.24
+        by mx.google.com with ESMTPS id g9sm9033556gvc.25.2009.11.09.07.33.32
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 09 Nov 2009 07:33:31 -0800 (PST)
+        Mon, 09 Nov 2009 07:33:38 -0800 (PST)
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 To:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
 Cc:	zhangfx@lemote.com, zhouqg@gmail.com,
@@ -38,11 +38,11 @@ Cc:	zhangfx@lemote.com, zhouqg@gmail.com,
 	Patrik Kluba <kpajko79@gmail.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Michal Simek <monstr@monstr.eu>
-Subject: [PATCH v7 14/17] tracing: make ftrace for MIPS work without -fno-omit-frame-pointer
-Date:	Mon,  9 Nov 2009 23:31:31 +0800
-Message-Id: <695747bff7cddb97d6f43c05c4cf05eb269e402d.1257779502.git.wuzhangjin@gmail.com>
+Subject: [PATCH v7 15/17] tracing: make ftrace for MIPS more robust
+Date:	Mon,  9 Nov 2009 23:31:32 +0800
+Message-Id: <406a8e5e3117737e401bb2bba84ad9b17f99857d.1257779502.git.wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.6.2.1
-In-Reply-To: <0c463e2af521e613fd15751a9f610c74cf887292.1257779502.git.wuzhangjin@gmail.com>
+In-Reply-To: <695747bff7cddb97d6f43c05c4cf05eb269e402d.1257779502.git.wuzhangjin@gmail.com>
 References: <9dc81a7a9e5a292cccdf465c533a2b08d19d6021.1257779502.git.wuzhangjin@gmail.com>
  <b99c08397d9ff92ac5a72bda9131df41b702fc71.1257779502.git.wuzhangjin@gmail.com>
  <8f579e2cece16cd22358a4ec143ef6a8c462639b.1257779502.git.wuzhangjin@gmail.com>
@@ -56,13 +56,14 @@ References: <9dc81a7a9e5a292cccdf465c533a2b08d19d6021.1257779502.git.wuzhangjin@
  <d4aa4cdb9b4c25e7a683c923bdeabed847bd8010.1257779502.git.wuzhangjin@gmail.com>
  <451c55dead5d6afd871de6afd14dbbcf70a0f834.1257779502.git.wuzhangjin@gmail.com>
  <0c463e2af521e613fd15751a9f610c74cf887292.1257779502.git.wuzhangjin@gmail.com>
+ <695747bff7cddb97d6f43c05c4cf05eb269e402d.1257779502.git.wuzhangjin@gmail.com>
 In-Reply-To: <cover.1257779502.git.wuzhangjin@gmail.com>
 References: <cover.1257779502.git.wuzhangjin@gmail.com>
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24786
+X-archive-position: 24787
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -72,33 +73,199 @@ X-list: linux-mips
 
 From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-When remove the -fno-omit-frame-pointer, gcc will not save the frame
-pointer for us, we need to save one ourselves.
+Seems there is no failure meet when working with the C source code to
+load/hijack the text & stack space, but we must ensure our source code
+is robust enough, This patch does it via adding extra exception
+handling.
 
 Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
 ---
- arch/mips/kernel/mcount.S |    8 ++++++++
- 1 files changed, 8 insertions(+), 0 deletions(-)
+ arch/mips/include/asm/ftrace.h |   57 ++++++++++++++++++++++++++++++++++++++++
+ arch/mips/kernel/ftrace.c      |   46 +++++++++++++++++++++++---------
+ 2 files changed, 90 insertions(+), 13 deletions(-)
 
-diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
-index 98d4690..bdfef2c 100644
---- a/arch/mips/kernel/mcount.S
-+++ b/arch/mips/kernel/mcount.S
-@@ -139,7 +139,15 @@ NESTED(ftrace_graph_caller, PT_SIZE, ra)
- #endif
- 	PTR_LA	a0, PT_R1(sp)	/* arg1: &AT -> a0 */
- 	jal	prepare_ftrace_return
-+#ifdef CONFIG_FRAME_POINTER
- 	 move	a2, fp		/* arg3: frame pointer */
-+#else
-+#ifdef CONFIG_64BIT
-+	 PTR_LA	a2, PT_SIZE(sp)
-+#else
-+	 PTR_LA	a2, (PT_SIZE+8)(sp)
-+#endif
-+#endif
+diff --git a/arch/mips/include/asm/ftrace.h b/arch/mips/include/asm/ftrace.h
+index aa7c80b..f78d763 100644
+--- a/arch/mips/include/asm/ftrace.h
++++ b/arch/mips/include/asm/ftrace.h
+@@ -19,6 +19,62 @@
+ extern void _mcount(void);
+ #define mcount _mcount
  
- 	MCOUNT_RESTORE_REGS
- 	RETURN_BACK
++#define safe_load(load, src, dst, error)		\
++do {							\
++	asm volatile (					\
++		"1: " load " %[" STR(dst) "], 0(%[" STR(src) "])\n"\
++		"   li %[" STR(error) "], 0\n"		\
++		"2:\n"					\
++							\
++		".section .fixup, \"ax\"\n"		\
++		"3: li %[" STR(error) "], 1\n"		\
++		"   j 2b\n"				\
++		".previous\n"				\
++							\
++		".section\t__ex_table,\"a\"\n\t"	\
++		STR(PTR) "\t1b, 3b\n\t"			\
++		".previous\n"				\
++							\
++		: [dst] "=&r" (dst), [error] "=r" (error)\
++		: [src] "r" (src)			\
++		: "memory"				\
++	);						\
++} while (0)
++
++#define safe_store(store, src, dst, error)	\
++do {						\
++	asm volatile (				\
++		"1: " store " %[" STR(src) "], 0(%[" STR(dst) "])\n"\
++		"   li %[" STR(error) "], 0\n"	\
++		"2:\n"				\
++						\
++		".section .fixup, \"ax\"\n"	\
++		"3: li %[" STR(error) "], 1\n"	\
++		"   j 2b\n"			\
++		".previous\n"			\
++						\
++		".section\t__ex_table,\"a\"\n\t"\
++		STR(PTR) "\t1b, 3b\n\t"		\
++		".previous\n"			\
++						\
++		: [error] "=r" (error)		\
++		: [dst] "r" (dst), [src] "r" (src)\
++		: "memory"			\
++	);					\
++} while (0)
++
++#define safe_load_code(dst, src, error) \
++	safe_load(STR(lw), src, dst, error)
++#define safe_store_code(src, dst, error) \
++	safe_store(STR(sw), src, dst, error)
++
++#define safe_load_stack(dst, src, error) \
++	safe_load(STR(PTR_L), src, dst, error)
++
++#define safe_store_stack(src, dst, error) \
++	safe_store(STR(PTR_S), src, dst, error)
++
++
+ #ifdef CONFIG_DYNAMIC_FTRACE
+ static inline unsigned long ftrace_call_adjust(unsigned long addr)
+ {
+@@ -27,6 +83,7 @@ static inline unsigned long ftrace_call_adjust(unsigned long addr)
+ 
+ struct dyn_arch_ftrace {
+ };
++
+ #endif /*  CONFIG_DYNAMIC_FTRACE */
+ 
+ /* not trace the timecounter_read* in kernel/time/clocksource.c */
+diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
+index af3ceed..a4e25b8 100644
+--- a/arch/mips/kernel/ftrace.c
++++ b/arch/mips/kernel/ftrace.c
+@@ -31,7 +31,13 @@ static unsigned int ftrace_nop = 0x00000000;
+ 
+ static int ftrace_modify_code(unsigned long ip, unsigned int new_code)
+ {
+-	*(unsigned int *)ip = new_code;
++	int faulted;
++
++	/* *(unsigned int *)ip = new_code; */
++	safe_store_code(new_code, ip, faulted);
++
++	if (unlikely(faulted))
++		return -EFAULT;
+ 
+ 	flush_icache_range(ip, ip + 8);
+ 
+@@ -124,6 +130,7 @@ unsigned long ftrace_get_parent_addr(unsigned long self_addr,
+ {
+ 	unsigned long sp, ip, ra;
+ 	unsigned int code;
++	int faulted;
+ 
+ 	/* move to the instruction "lui v1, HI_16BIT_OF_MCOUNT" */
+ 	ip = self_addr - 20;
+@@ -133,8 +140,11 @@ unsigned long ftrace_get_parent_addr(unsigned long self_addr,
+ 	do {
+ 		ip -= 4;
+ 
+-		/* get the code at "ip" */
+-		code = *(unsigned int *)ip;
++		/* get the code at "ip": code = *(unsigned int *)ip; */
++		safe_load_code(code, ip, faulted);
++
++		if (unlikely(faulted))
++			return 0;
+ 
+ 		/* If we hit the non-store instruction before finding where the
+ 		 * ra is stored, then this is a leaf function and it does not
+@@ -145,11 +155,14 @@ unsigned long ftrace_get_parent_addr(unsigned long self_addr,
+ 	} while (((code & S_RA_SP) != S_RA_SP));
+ 
+ 	sp = fp + (code & OFFSET_MASK);
+-	ra = *(unsigned long *)sp;
++
++	/* ra = *(unsigned long *)sp; */
++	safe_load_stack(ra, sp, faulted);
++	if (unlikely(faulted))
++		return 0;
+ 
+ 	if (ra == parent)
+ 		return sp;
+-
+ 	return 0;
+ }
+ 
+@@ -164,6 +177,7 @@ void prepare_ftrace_return(unsigned long *parent, unsigned long self_addr,
+ 	struct ftrace_graph_ent trace;
+ 	unsigned long return_hooker = (unsigned long)
+ 	    &return_to_handler;
++	int faulted;
+ 
+ 	if (unlikely(atomic_read(&current->tracing_graph_pause)))
+ 		return;
+@@ -177,21 +191,23 @@ void prepare_ftrace_return(unsigned long *parent, unsigned long self_addr,
+ 	 * ftrace_get_parent_addr() does it!
+ 	 */
+ 
+-	old = *parent;
++	/* old = *parent; */
++	safe_load_stack(old, parent, faulted);
++	if (unlikely(faulted))
++		goto out;
+ 
+ 	parent = (unsigned long *)ftrace_get_parent_addr(self_addr, old,
+ 							 (unsigned long)parent,
+ 							 fp);
+-
+ 	/* If fails when getting the stack address of the non-leaf function's
+ 	 * ra, stop function graph tracer and return */
+-	if (parent == 0) {
+-		ftrace_graph_stop();
+-		WARN_ON(1);
+-		return;
+-	}
++	if (parent == 0)
++		goto out;
+ 
+-	*parent = return_hooker;
++	/* *parent = return_hooker; */
++	safe_store_stack(return_hooker, parent, faulted);
++	if (unlikely(faulted))
++		goto out;
+ 
+ 	if (ftrace_push_return_trace(old, self_addr, &trace.depth, fp) ==
+ 	    -EBUSY) {
+@@ -206,5 +222,9 @@ void prepare_ftrace_return(unsigned long *parent, unsigned long self_addr,
+ 		current->curr_ret_stack--;
+ 		*parent = old;
+ 	}
++	return;
++out:
++	ftrace_graph_stop();
++	WARN_ON(1);
+ }
+ #endif				/* CONFIG_FUNCTION_GRAPH_TRACER */
 -- 
 1.6.2.1

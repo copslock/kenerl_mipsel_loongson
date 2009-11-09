@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Nov 2009 17:05:46 +0100 (CET)
-Received: from mail-ew0-f216.google.com ([209.85.219.216]:59067 "EHLO
-	mail-ew0-f216.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492371AbZKIQFk (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Nov 2009 17:05:40 +0100
-Received: by ewy12 with SMTP id 12so3401199ewy.0
-        for <multiple recipients>; Mon, 09 Nov 2009 08:05:35 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Nov 2009 17:06:37 +0100 (CET)
+Received: from fg-out-1718.google.com ([72.14.220.158]:16722 "EHLO
+	fg-out-1718.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1492371AbZKIQGa (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Nov 2009 17:06:30 +0100
+Received: by fg-out-1718.google.com with SMTP id e12so703423fga.6
+        for <multiple recipients>; Mon, 09 Nov 2009 08:06:27 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=Z/+HKZozATHVUyYzrIbkdhWprQDkkQJxlvuRjCNi6Do=;
-        b=iduZwEAJy87cnyEppEtWdm+33kqu21x3T1LVPevM3Se5vQcSbfLo2MzM56TBgIKSVs
-         QgYMa6XHwDmFs30x7hjp+vbd8Q6Y7DHxcB7PP8KCzXGh+cXW2Nwm5o+vLKT3bR5x3yHp
-         w44D72KLJ/YU7TKHT+96zwRwOTD2/17roEsL4=
+         :message-id:x-mailer:in-reply-to:references;
+        bh=71krOEAoR9pvdrgsL5eCJSutFVZb6QsnvE11gJdZnvY=;
+        b=pJWdSN/OuQnwHffwL/eTsSgFqSWu1I9gbvw6f9kx0g2t7DphaewDuwp4kIv3sKECGE
+         mFbcxAi+ZnhVOrFH2NzRfWaabvvtv7saqAzDSOxCZedpYdS9xp7ih13Lf5moWHAhOfAo
+         P+eevM6KYT3I7H6euTnSf8ncaKseCZaChODsM=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=DzpFllJNzu0E8+AX9ZOe/5mJsg6/XddrPExz6NKghAEhhOMfijrolPxaQqBeCT4v1I
-         m3LuMB3K81a7gBkAdFSFCEzlF10tHPp6GVClsFFrqdW/9OHwOjSR9ft/sM9cuzi6XIm2
-         GwrZdxFsjsPa0wAUXIExJNzL4d8OWwWJLShg4=
-Received: by 10.216.87.16 with SMTP id x16mr2628000wee.106.1257782732828;
-        Mon, 09 Nov 2009 08:05:32 -0800 (PST)
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        b=RVsPYsY+w6brJ9LbtNnmXg1xbdeH+DEktPiaXMAJA2crlrEsKqZleuUBtropO4DrsX
+         3WSSbWAANpwVBI2HjSClYVBZZx0adCG2ddNVpAeSc8QvREvyVoitCTIlGqSW8Emhy+gC
+         qIfrm93a0JsVtRAO/2KXzfPCZ2bdX/h0qFT14=
+Received: by 10.216.90.195 with SMTP id e45mr1456181wef.189.1257782787822;
+        Mon, 09 Nov 2009 08:06:27 -0800 (PST)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id t12sm9166424gvd.22.2009.11.09.08.05.27
+        by mx.google.com with ESMTPS id p37sm9150866gvf.24.2009.11.09.08.06.22
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 09 Nov 2009 08:05:31 -0800 (PST)
+        Mon, 09 Nov 2009 08:06:26 -0800 (PST)
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	zhangfx@lemote.com, yanh@lemote.com, huhb@lemote.com,
@@ -32,15 +32,17 @@ Cc:	zhangfx@lemote.com, yanh@lemote.com, huhb@lemote.com,
 	Arnaud Patard <apatard@mandriva.com>,
 	loongson-dev@googlegroups.com, Wu Zhangjin <wuzhangjin@gmail.com>,
 	linux-mips@linux-mips.org
-Subject: [PATCH v2 0/7] add support for lemote loongson2f machines
-Date:	Tue, 10 Nov 2009 00:05:21 +0800
-Message-Id: <cover.1257781987.git.wuzhangjin@gmail.com>
+Subject: [PATCH v2 1/7] [loongson] lemote-2f: add a LEMOTE_MACH2F kernel option
+Date:	Tue, 10 Nov 2009 00:06:10 +0800
+Message-Id: <3154ef478a3a08f808e3a4b9c9cab9f4e263a8a2.1257781987.git.wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.6.2.1
+In-Reply-To: <cover.1257781987.git.wuzhangjin@gmail.com>
+References: <cover.1257781987.git.wuzhangjin@gmail.com>
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24790
+X-archive-position: 24791
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -50,82 +52,87 @@ X-list: linux-mips
 
 From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-This patchset add basic support for lemote loongson2f family machines(fuloong2f
-mini pc, yeeloong netbook).
-
-If you use the default config file: arch/mips/configs/lemote2f_defconfig, and
-pass the suitable command line argument to the kernel when booting, you will be
-possible to run the same kernel image on fuloong2f mini pc and yeeloong
-netbook.
-
-for example, if you pass "machtype=8.9" to kernel when booting, it will run
-well on yeeloong netbook. the default machtype is 2f-box, so, you can run the
-kernel on fuloong2f directly. In the future, we will pass the machtype argument
-by PMON directly, and then the linux distributions will only need to build one
-kernel image, and will make it work on all of lemote loongson2f family
+This patch add a new kernel option for lemote loongson2f family
 machines.
 
-The main change from the v1 version:
-    o [loongson] lemote-2f: add reset support
-      use "switch...case..." statements instead of the array to make the stuff
-      only for lemote2f family machines and also save some memory.
+Lemote loongson2f family machines utilize the 2f revision of loongson
+processor and the AMD CS5536 south bridge.
 
-The whole patchset have been pushed into this branch:
+These family machines include fuloong2f mini PC, yeeloong2f notebook,
+LingLoong allinone PC and so forth.
 
-git://dev.lemote.com/rt4ls.git linux-loongson/dev/for-upstream
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/mips/Makefile                            |    1 +
+ arch/mips/include/asm/mach-loongson/machine.h |    7 ++++++
+ arch/mips/loongson/Kconfig                    |   29 +++++++++++++++++++++++++
+ 3 files changed, 37 insertions(+), 0 deletions(-)
 
-Thanks & Regards,
-       Wu Zhangjin
-
-Wu Zhangjin (7):
-  [loongson] lemote-2f: add a LEMOTE_MACH2F kernel option
-  [loongson] lemote-2f: rtc: enable legacy RTC driver
-  [loongson] lemote-2f: add basic cs5536 vsm support
-  [loongson] lemote-2f: add pci support
-  [loongson] lemote-2f: add irq support
-  [loongson] lemote-2f: add reset support
-  [loongson] lemote-2f: add defconfig file
-
- arch/mips/Kconfig                                  |    2 +-
- arch/mips/Makefile                                 |    1 +
- arch/mips/configs/lemote2f_defconfig               | 1836 ++++++++++++++++++++
- .../mips/include/asm/mach-loongson/cs5536/cs5536.h |  305 ++++
- .../include/asm/mach-loongson/cs5536/cs5536_pci.h  |  153 ++
- .../include/asm/mach-loongson/cs5536/cs5536_vsm.h  |   31 +
- arch/mips/include/asm/mach-loongson/loongson.h     |    7 +
- arch/mips/include/asm/mach-loongson/machine.h      |    7 +
- arch/mips/loongson/Kconfig                         |   32 +
- arch/mips/loongson/Makefile                        |    6 +
- arch/mips/loongson/common/Makefile                 |    6 +
- arch/mips/loongson/common/cs5536/Makefile          |    8 +
- arch/mips/loongson/common/cs5536/cs5536_acc.c      |  148 ++
- arch/mips/loongson/common/cs5536/cs5536_ehci.c     |  158 ++
- arch/mips/loongson/common/cs5536/cs5536_ide.c      |  185 ++
- arch/mips/loongson/common/cs5536/cs5536_isa.c      |  316 ++++
- arch/mips/loongson/common/cs5536/cs5536_ohci.c     |  153 ++
- arch/mips/loongson/common/cs5536/cs5536_pci.c      |   87 +
- arch/mips/loongson/lemote-2f/Makefile              |    5 +
- arch/mips/loongson/lemote-2f/irq.c                 |  130 ++
- arch/mips/loongson/lemote-2f/reset.c               |  172 ++
- arch/mips/pci/Makefile                             |    3 +-
- arch/mips/pci/fixup-lemote2f.c                     |  162 ++
- arch/mips/pci/ops-fuloong2e.c                      |  154 --
- arch/mips/pci/ops-loongson2.c                      |  208 +++
- 25 files changed, 4119 insertions(+), 156 deletions(-)
- create mode 100644 arch/mips/configs/lemote2f_defconfig
- create mode 100644 arch/mips/include/asm/mach-loongson/cs5536/cs5536.h
- create mode 100644 arch/mips/include/asm/mach-loongson/cs5536/cs5536_pci.h
- create mode 100644 arch/mips/include/asm/mach-loongson/cs5536/cs5536_vsm.h
- create mode 100644 arch/mips/loongson/common/cs5536/Makefile
- create mode 100644 arch/mips/loongson/common/cs5536/cs5536_acc.c
- create mode 100644 arch/mips/loongson/common/cs5536/cs5536_ehci.c
- create mode 100644 arch/mips/loongson/common/cs5536/cs5536_ide.c
- create mode 100644 arch/mips/loongson/common/cs5536/cs5536_isa.c
- create mode 100644 arch/mips/loongson/common/cs5536/cs5536_ohci.c
- create mode 100644 arch/mips/loongson/common/cs5536/cs5536_pci.c
- create mode 100644 arch/mips/loongson/lemote-2f/Makefile
- create mode 100644 arch/mips/loongson/lemote-2f/irq.c
- create mode 100644 arch/mips/loongson/lemote-2f/reset.c
- create mode 100644 arch/mips/pci/fixup-lemote2f.c
- delete mode 100644 arch/mips/pci/ops-fuloong2e.c
- create mode 100644 arch/mips/pci/ops-loongson2.c
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 47ecded..184d5be 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -327,6 +327,7 @@ core-$(CONFIG_MACH_LOONGSON) +=arch/mips/loongson/
+ cflags-$(CONFIG_MACH_LOONGSON) += -I$(srctree)/arch/mips/include/asm/mach-loongson \
+                     -mno-branch-likely
+ load-$(CONFIG_LEMOTE_FULOONG2E) +=0xffffffff80100000
++load-$(CONFIG_LEMOTE_MACH2F) +=0xffffffff80200000
+ 
+ #
+ # MIPS Malta board
+diff --git a/arch/mips/include/asm/mach-loongson/machine.h b/arch/mips/include/asm/mach-loongson/machine.h
+index d2f5861..acf8359 100644
+--- a/arch/mips/include/asm/mach-loongson/machine.h
++++ b/arch/mips/include/asm/mach-loongson/machine.h
+@@ -17,4 +17,11 @@
+ 
+ #endif
+ 
++/* use fuloong2f as the default machine of LEMOTE_MACH2F */
++#ifdef CONFIG_LEMOTE_MACH2F
++
++#define LOONGSON_MACHTYPE MACH_LEMOTE_FL2F
++
++#endif
++
+ #endif /* __ASM_MACH_LOONGSON_MACHINE_H */
+diff --git a/arch/mips/loongson/Kconfig b/arch/mips/loongson/Kconfig
+index 818a028..9573406 100644
+--- a/arch/mips/loongson/Kconfig
++++ b/arch/mips/loongson/Kconfig
+@@ -28,4 +28,33 @@ config LEMOTE_FULOONG2E
+ 	  an FPGA northbridge
+ 
+ 	  Lemote Fuloong(2e) mini PC have a VIA686B south bridge.
++
++config LEMOTE_MACH2F
++	bool "Lemote loongson2f family machines"
++	select ARCH_SPARSEMEM_ENABLE
++	select CEVT_R4K
++	select CSRC_R4K
++	select SYS_HAS_CPU_LOONGSON2F
++	select DMA_NONCOHERENT
++	select BOOT_ELF32
++	select BOARD_SCACHE
++	select HW_HAS_PCI
++	select I8259
++	select ISA
++	select IRQ_CPU
++	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_64BIT_KERNEL
++	select SYS_SUPPORTS_LITTLE_ENDIAN
++	select SYS_SUPPORTS_HIGHMEM
++	select SYS_HAS_EARLY_PRINTK
++	select GENERIC_HARDIRQS_NO__DO_IRQ
++	select GENERIC_ISA_DMA_SUPPORT_BROKEN
++	select CPU_HAS_WB
++	select CS5536
++	help
++	  Lemote loongson2f family machines utilize the 2f revision of loongson
++	  processor and the AMD CS5536 south bridge.
++
++	  These family machines include fuloong2f mini PC, yeeloong2f notebook,
++	  LingLoong allinone PC and so forth.
+ endchoice
+-- 
+1.6.2.1

@@ -1,71 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Nov 2009 16:38:43 +0100 (CET)
-Received: from gv-out-0910.google.com ([216.239.58.188]:61723 "EHLO
-	gv-out-0910.google.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1493169AbZKIPd4 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Nov 2009 16:33:56 +0100
-Received: by gv-out-0910.google.com with SMTP id e6so231635gvc.2
-        for <multiple recipients>; Mon, 09 Nov 2009 07:33:55 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Nov 2009 17:05:46 +0100 (CET)
+Received: from mail-ew0-f216.google.com ([209.85.219.216]:59067 "EHLO
+	mail-ew0-f216.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492371AbZKIQFk (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Nov 2009 17:05:40 +0100
+Received: by ewy12 with SMTP id 12so3401199ewy.0
+        for <multiple recipients>; Mon, 09 Nov 2009 08:05:35 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer:in-reply-to:references:in-reply-to:references;
-        bh=rb89J/xsToNE73uMdAYe9vMIgawFVrXL6zn3o2oeQwo=;
-        b=s7tCZhU3z1SlY68Px7IKKmOZ3u5HNZ9DZ+aIZtN9WIrYpfYgyknvVl6DyzPBt8xNIT
-         nzXSz9818/YoLflaeEwIrt/bz8M038JfShUxjro70q4xI6mTAFNbj8sM7wMGKDDRAOtu
-         rRqmaDn8MqZJfNYP/VK6E5LoF02rkK3ERxpRM=
+         :message-id:x-mailer;
+        bh=Z/+HKZozATHVUyYzrIbkdhWprQDkkQJxlvuRjCNi6Do=;
+        b=iduZwEAJy87cnyEppEtWdm+33kqu21x3T1LVPevM3Se5vQcSbfLo2MzM56TBgIKSVs
+         QgYMa6XHwDmFs30x7hjp+vbd8Q6Y7DHxcB7PP8KCzXGh+cXW2Nwm5o+vLKT3bR5x3yHp
+         w44D72KLJ/YU7TKHT+96zwRwOTD2/17roEsL4=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=v3O0xgbtsXMhGTnlC+DwqGPghSu7ORQ2607Kwj49sMFcviVyEsP9YbkKgzv9di8DVO
-         EJEna4qSupsjMOBDh9QnM3x7eFE5JOvqMXFzmiLwuFyzVbuLH73I/z/+g3Z0Fj8G9mcA
-         sbPqHaUWjjNpqJqxbNxhGlDopc6Lnqx31tdy0=
-Received: by 10.216.88.18 with SMTP id z18mr52263wee.78.1257780835346;
-        Mon, 09 Nov 2009 07:33:55 -0800 (PST)
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=DzpFllJNzu0E8+AX9ZOe/5mJsg6/XddrPExz6NKghAEhhOMfijrolPxaQqBeCT4v1I
+         m3LuMB3K81a7gBkAdFSFCEzlF10tHPp6GVClsFFrqdW/9OHwOjSR9ft/sM9cuzi6XIm2
+         GwrZdxFsjsPa0wAUXIExJNzL4d8OWwWJLShg4=
+Received: by 10.216.87.16 with SMTP id x16mr2628000wee.106.1257782732828;
+        Mon, 09 Nov 2009 08:05:32 -0800 (PST)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id g9sm9033556gvc.25.2009.11.09.07.33.47
+        by mx.google.com with ESMTPS id t12sm9166424gvd.22.2009.11.09.08.05.27
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 09 Nov 2009 07:33:54 -0800 (PST)
+        Mon, 09 Nov 2009 08:05:31 -0800 (PST)
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
-To:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
-Cc:	zhangfx@lemote.com, zhouqg@gmail.com,
-	Wu Zhangjin <wuzhangjin@gmail.com>,
-	Ralf Baechle <ralf@linux-mips.org>, rostedt@goodmis.org,
-	Frederic Weisbecker <fweisbec@gmail.com>,
-	Ingo Molnar <mingo@elte.hu>,
-	Nicholas Mc Guire <der.herr@hofr.at>,
-	David Daney <ddaney@caviumnetworks.com>,
-	Richard Sandiford <rdsandiford@googlemail.com>,
-	Patrik Kluba <kpajko79@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Michal Simek <monstr@monstr.eu>
-Subject: [PATCH v7 17/17] tracing: make function graph tracer work with -mmcount-ra-address
-Date:	Mon,  9 Nov 2009 23:31:34 +0800
-Message-Id: <2113f5f0165feac8cf58c156946adff776f9056d.1257779502.git.wuzhangjin@gmail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	zhangfx@lemote.com, yanh@lemote.com, huhb@lemote.com,
+	Nicholas Mc Guire <hofrat@hofr.at>,
+	Arnaud Patard <apatard@mandriva.com>,
+	loongson-dev@googlegroups.com, Wu Zhangjin <wuzhangjin@gmail.com>,
+	linux-mips@linux-mips.org
+Subject: [PATCH v2 0/7] add support for lemote loongson2f machines
+Date:	Tue, 10 Nov 2009 00:05:21 +0800
+Message-Id: <cover.1257781987.git.wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.6.2.1
-In-Reply-To: <ceef672f082971118c472d1c079d49762ae43b38.1257779502.git.wuzhangjin@gmail.com>
-References: <9dc81a7a9e5a292cccdf465c533a2b08d19d6021.1257779502.git.wuzhangjin@gmail.com>
- <b99c08397d9ff92ac5a72bda9131df41b702fc71.1257779502.git.wuzhangjin@gmail.com>
- <8f579e2cece16cd22358a4ec143ef6a8c462639b.1257779502.git.wuzhangjin@gmail.com>
- <cefe074f5eb3cfbc2e0bb41b0c1f61fcd0190d90.1257779502.git.wuzhangjin@gmail.com>
- <6199d7b3956b544fc65896af1062787a2e1283ce.1257779502.git.wuzhangjin@gmail.com>
- <58a7558730fbea6cd0417100c8fcd6f45668d1e3.1257779502.git.wuzhangjin@gmail.com>
- <3a9fc9ca02e8e6e9c3c28797a4c084c1f9d91f69.1257779502.git.wuzhangjin@gmail.com>
- <0cef783a71333ff96a78aaea8961e3b6b5392665.1257779502.git.wuzhangjin@gmail.com>
- <18e1d617ed824bb1c10f15216f2ed9ed3de78abd.1257779502.git.wuzhangjin@gmail.com>
- <3da916c1cb6e05445438826f98a91111f43ff6cd.1257779502.git.wuzhangjin@gmail.com>
- <d4aa4cdb9b4c25e7a683c923bdeabed847bd8010.1257779502.git.wuzhangjin@gmail.com>
- <451c55dead5d6afd871de6afd14dbbcf70a0f834.1257779502.git.wuzhangjin@gmail.com>
- <0c463e2af521e613fd15751a9f610c74cf887292.1257779502.git.wuzhangjin@gmail.com>
- <695747bff7cddb97d6f43c05c4cf05eb269e402d.1257779502.git.wuzhangjin@gmail.com>
- <406a8e5e3117737e401bb2bba84ad9b17f99857d.1257779502.git.wuzhangjin@gmail.com>
- <ceef672f082971118c472d1c079d49762ae43b38.1257779502.git.wuzhangjin@gmail.com>
-In-Reply-To: <cover.1257779502.git.wuzhangjin@gmail.com>
-References: <cover.1257779502.git.wuzhangjin@gmail.com>
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24789
+X-archive-position: 24790
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -75,155 +50,82 @@ X-list: linux-mips
 
 From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-That thread "MIPS: Add option to pass return address location to
-_mcount" from "David Daney <ddaney@caviumnetworks.com>" have added a new
-option -mmcount-ra-address to gcc(4.5) for MIPS to transfer the location
-of the return address to _mcount.
+This patchset add basic support for lemote loongson2f family machines(fuloong2f
+mini pc, yeeloong netbook).
 
-Benefit from this new feature, function graph tracer on MIPS will be
-easier and safer to hijack the return address of the kernel function,
-which will save some overhead and make the whole thing more reliable.
+If you use the default config file: arch/mips/configs/lemote2f_defconfig, and
+pass the suitable command line argument to the kernel when booting, you will be
+possible to run the same kernel image on fuloong2f mini pc and yeeloong
+netbook.
 
-In this patch, at first, try to enable the option -mmcount-ra-address in
-arch/mips/Makefile with cc-option, if gcc support it, it will be
-enabled, otherwise, not side effect.
+for example, if you pass "machtype=8.9" to kernel when booting, it will run
+well on yeeloong netbook. the default machtype is 2f-box, so, you can run the
+kernel on fuloong2f directly. In the future, we will pass the machtype argument
+by PMON directly, and then the linux distributions will only need to build one
+kernel image, and will make it work on all of lemote loongson2f family
+machines.
 
-and then, we need to support this new option of gcc 4.5 and also support
-the old gcc versions.
+The main change from the v1 version:
+    o [loongson] lemote-2f: add reset support
+      use "switch...case..." statements instead of the array to make the stuff
+      only for lemote2f family machines and also save some memory.
 
-with _mcount in the old gcc versions, it's not easy to get the location
-of return address(refer to 1f5db2a6932fcc7d2f6600903724e33b7bd269f3:
-"tracing: add function graph tracer support for MIPS"), so, we do it in
-a C function: ftrace_get_parent_addr(ftrace.c), but with
--mmcount-ra-address, only several instructions need to get what we want,
-so, I put into asm(mcount.S). and also, as the $12(t0) is used by
--mmcount-ra-address for transferring the localtion of return address to
-_mcount, we need to save it into the stack and restore it when enabled
-dynamic function tracer, 'Cause we have called "ftrace_call" before
-"ftrace_graph_caller", which may destroy $12(t0).
+The whole patchset have been pushed into this branch:
 
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- arch/mips/Makefile        |    3 +++
- arch/mips/kernel/ftrace.c |   24 +++++++++++++++++-------
- arch/mips/kernel/mcount.S |   16 ++++++++++++++++
- 3 files changed, 36 insertions(+), 7 deletions(-)
+git://dev.lemote.com/rt4ls.git linux-loongson/dev/for-upstream
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 041deca..c710324 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -52,6 +52,9 @@ ifndef CONFIG_FUNCTION_TRACER
- cflags-y := -ffunction-sections
- else
- cflags-y := -mlong-calls
-+ifdef CONFIG_FUNCTION_GRAPH_TRACER
-+	cflags-y += $(call cc-option, -mmcount-ra-address)
-+endif
- endif
- cflags-y += $(call cc-option, -mno-check-zero-division)
- 
-diff --git a/arch/mips/kernel/ftrace.c b/arch/mips/kernel/ftrace.c
-index a4e25b8..1dcbf0f 100644
---- a/arch/mips/kernel/ftrace.c
-+++ b/arch/mips/kernel/ftrace.c
-@@ -119,6 +119,7 @@ int ftrace_disable_ftrace_graph_caller(void)
- 
- #endif				/* !CONFIG_DYNAMIC_FTRACE */
- 
-+#if (__GNUC__ <= 4 && __GNUC_MINOR__ < 5)
- #define S_RA_SP	(0xafbf << 16)	/* s{d,w} ra, offset(sp) */
- #define S_R_SP	(0xafb0 << 16)  /* s{d,w} R, offset(sp) */
- #define OFFSET_MASK	0xffff	/* stack offset range: 0 ~ PT_SIZE */
-@@ -166,6 +167,8 @@ unsigned long ftrace_get_parent_addr(unsigned long self_addr,
- 	return 0;
- }
- 
-+#endif
-+
- /*
-  * Hook the return address and push it in the stack of return addrs
-  * in current thread info.
-@@ -183,19 +186,26 @@ void prepare_ftrace_return(unsigned long *parent, unsigned long self_addr,
- 		return;
- 
- 	/* "parent" is the stack address saved the return address of the caller
--	 * of _mcount, for a leaf function not save the return address in the
--	 * stack address, so, we "emulate" one in _mcount's stack space, and
--	 * hijack it directly, but for a non-leaf function, it will save the
--	 * return address to the its stack space, so, we can not hijack the
--	 * "parent" directly, but need to find the real stack address,
-+	 * of _mcount.
-+	 *
-+	 * if the gcc < 4.5, a leaf function does not save the return address
-+	 * in the stack address, so, we "emulate" one in _mcount's stack space,
-+	 * and hijack it directly, but for a non-leaf function, it save the
-+	 * return address to the its own stack space, we can not hijack it
-+	 * directly, but need to find the real stack address,
- 	 * ftrace_get_parent_addr() does it!
-+	 *
-+	 * if gcc>= 4.5, with the new -mmcount-ra-address option, for a
-+	 * non-leaf function, the location of the return address will be saved
-+	 * to $12 for us, and for a leaf function, only put a zero into $12. we
-+	 * do it in ftrace_graph_caller of mcount.S.
- 	 */
- 
- 	/* old = *parent; */
- 	safe_load_stack(old, parent, faulted);
- 	if (unlikely(faulted))
- 		goto out;
--
-+#if (__GNUC__ <= 4 && __GNUC_MINOR__ < 5)
- 	parent = (unsigned long *)ftrace_get_parent_addr(self_addr, old,
- 							 (unsigned long)parent,
- 							 fp);
-@@ -203,7 +213,7 @@ void prepare_ftrace_return(unsigned long *parent, unsigned long self_addr,
- 	 * ra, stop function graph tracer and return */
- 	if (parent == 0)
- 		goto out;
--
-+#endif
- 	/* *parent = return_hooker; */
- 	safe_store_stack(return_hooker, parent, faulted);
- 	if (unlikely(faulted))
-diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
-index 522e91c..addd68f 100644
---- a/arch/mips/kernel/mcount.S
-+++ b/arch/mips/kernel/mcount.S
-@@ -70,6 +70,11 @@ _mcount:
- 	 nop
- 
- 	MCOUNT_SAVE_REGS
-+#if (__GNUC__ >= 4 && __GNUC_MINOR__ >= 5)
-+#ifdef CONFIG_FUNCTION_GRAPH_TRACER
-+	PTR_S	t0, PT_R12(sp)	/* t0 saved the location of the return address(at) by -mmcount-ra-address */
-+#endif
-+#endif
- 
- 	move	a0, ra		/* arg1: next ip, selfaddr */
- 	.globl ftrace_call
-@@ -133,11 +138,22 @@ ftrace_stub:
- NESTED(ftrace_graph_caller, PT_SIZE, ra)
- #ifdef CONFIG_DYNAMIC_FTRACE
- 	PTR_L	a1, PT_R31(sp)	/* load the original ra from the stack */
-+#if (__GNUC__ >= 4 && __GNUC_MINOR__ >= 5)
-+	PTR_L	t0, PT_R12(sp)	/* load the original t0 from the stack */
-+#endif
- #else
- 	MCOUNT_SAVE_REGS
- 	move	a1, ra		/* arg2: next ip, selfaddr */
- #endif
-+
-+#if (__GNUC__ >= 4 && __GNUC_MINOR__ >= 5)
-+	bnez	t0, 1f		/* non-leaf func: t0 saved the location of the return address */
-+	 nop
-+	PTR_LA	t0, PT_R1(sp)	/* leaf func: get the location of at(old ra) from our own stack */
-+1:	move	a0, t0		/* arg1: the location of the return address */
-+#else
- 	PTR_LA	a0, PT_R1(sp)	/* arg1: &AT -> a0 */
-+#endif
- 	jal	prepare_ftrace_return
- #ifdef CONFIG_FRAME_POINTER
- 	 move	a2, fp		/* arg3: frame pointer */
--- 
-1.6.2.1
+Thanks & Regards,
+       Wu Zhangjin
+
+Wu Zhangjin (7):
+  [loongson] lemote-2f: add a LEMOTE_MACH2F kernel option
+  [loongson] lemote-2f: rtc: enable legacy RTC driver
+  [loongson] lemote-2f: add basic cs5536 vsm support
+  [loongson] lemote-2f: add pci support
+  [loongson] lemote-2f: add irq support
+  [loongson] lemote-2f: add reset support
+  [loongson] lemote-2f: add defconfig file
+
+ arch/mips/Kconfig                                  |    2 +-
+ arch/mips/Makefile                                 |    1 +
+ arch/mips/configs/lemote2f_defconfig               | 1836 ++++++++++++++++++++
+ .../mips/include/asm/mach-loongson/cs5536/cs5536.h |  305 ++++
+ .../include/asm/mach-loongson/cs5536/cs5536_pci.h  |  153 ++
+ .../include/asm/mach-loongson/cs5536/cs5536_vsm.h  |   31 +
+ arch/mips/include/asm/mach-loongson/loongson.h     |    7 +
+ arch/mips/include/asm/mach-loongson/machine.h      |    7 +
+ arch/mips/loongson/Kconfig                         |   32 +
+ arch/mips/loongson/Makefile                        |    6 +
+ arch/mips/loongson/common/Makefile                 |    6 +
+ arch/mips/loongson/common/cs5536/Makefile          |    8 +
+ arch/mips/loongson/common/cs5536/cs5536_acc.c      |  148 ++
+ arch/mips/loongson/common/cs5536/cs5536_ehci.c     |  158 ++
+ arch/mips/loongson/common/cs5536/cs5536_ide.c      |  185 ++
+ arch/mips/loongson/common/cs5536/cs5536_isa.c      |  316 ++++
+ arch/mips/loongson/common/cs5536/cs5536_ohci.c     |  153 ++
+ arch/mips/loongson/common/cs5536/cs5536_pci.c      |   87 +
+ arch/mips/loongson/lemote-2f/Makefile              |    5 +
+ arch/mips/loongson/lemote-2f/irq.c                 |  130 ++
+ arch/mips/loongson/lemote-2f/reset.c               |  172 ++
+ arch/mips/pci/Makefile                             |    3 +-
+ arch/mips/pci/fixup-lemote2f.c                     |  162 ++
+ arch/mips/pci/ops-fuloong2e.c                      |  154 --
+ arch/mips/pci/ops-loongson2.c                      |  208 +++
+ 25 files changed, 4119 insertions(+), 156 deletions(-)
+ create mode 100644 arch/mips/configs/lemote2f_defconfig
+ create mode 100644 arch/mips/include/asm/mach-loongson/cs5536/cs5536.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/cs5536/cs5536_pci.h
+ create mode 100644 arch/mips/include/asm/mach-loongson/cs5536/cs5536_vsm.h
+ create mode 100644 arch/mips/loongson/common/cs5536/Makefile
+ create mode 100644 arch/mips/loongson/common/cs5536/cs5536_acc.c
+ create mode 100644 arch/mips/loongson/common/cs5536/cs5536_ehci.c
+ create mode 100644 arch/mips/loongson/common/cs5536/cs5536_ide.c
+ create mode 100644 arch/mips/loongson/common/cs5536/cs5536_isa.c
+ create mode 100644 arch/mips/loongson/common/cs5536/cs5536_ohci.c
+ create mode 100644 arch/mips/loongson/common/cs5536/cs5536_pci.c
+ create mode 100644 arch/mips/loongson/lemote-2f/Makefile
+ create mode 100644 arch/mips/loongson/lemote-2f/irq.c
+ create mode 100644 arch/mips/loongson/lemote-2f/reset.c
+ create mode 100644 arch/mips/pci/fixup-lemote2f.c
+ delete mode 100644 arch/mips/pci/ops-fuloong2e.c
+ create mode 100644 arch/mips/pci/ops-loongson2.c

@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Nov 2009 16:33:17 +0100 (CET)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 09 Nov 2009 16:33:42 +0100 (CET)
 Received: from mail-ew0-f216.google.com ([209.85.219.216]:46041 "EHLO
 	mail-ew0-f216.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493089AbZKIPcN (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Nov 2009 16:32:13 +0100
+	by ftp.linux-mips.org with ESMTP id S1493035AbZKIPcV (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 9 Nov 2009 16:32:21 +0100
 Received: by mail-ew0-f216.google.com with SMTP id 12so3364851ewy.0
-        for <multiple recipients>; Mon, 09 Nov 2009 07:32:13 -0800 (PST)
+        for <multiple recipients>; Mon, 09 Nov 2009 07:32:21 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer:in-reply-to:references:in-reply-to:references;
-        bh=9b0byz7lVPwvXeRf5buVnzqfLxuE05CAk5pOLg3Ip2o=;
-        b=scqrjrBxx3ULnm5ILo/OYqdT0ARAfLtAPTu7ms8jvdwS4r2w0beh7F6Gj08AuTppXI
-         nkVjerwcxrKDBD7V4NqaDEF/as5n+67hcmVuvE0hmK0uJxMwhO+NWgVt9ZRr1kTkNzyP
-         a7ZE+5Jm2RpTu5DoVNprzC0p0wygrjNWn7zSI=
+        bh=hlXsEE1Ecv8QHAZg/DflgICMUJmLJ7gKdxz2WOUXnIk=;
+        b=M2crPd7N62/Shaa0C5xCu/0uSN6MQ5A2Kefdz/epq6nU48vJqzXagnZ0UplDfPLlHS
+         eird45otLU6RDCB3N8RXWXavf19LWvSkHhTzBEmKv1Rd/KlMDXihPxmuouh3+9ILJMlg
+         c4C/XSp5UTggDtNPbLYXAnsFgrZXs1Fr04goA=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=qB/tNljBv56FnXXyL8H3bebBhNS2n3mmWn0h0HD5pM3QXkHaUPgRn58CYJGCCrsjsA
-         fadGiiPqidpbaZq4sIP8Ts2Crzt8JGDc/vxG49FQTIM4aQkHHKaU+ByEZVSxhuXYxX1x
-         mjObWd1G78zZl5UdGjtbOnTls2iuoTUHuwMlE=
-Received: by 10.216.90.203 with SMTP id e53mr2666146wef.28.1257780732756;
-        Mon, 09 Nov 2009 07:32:12 -0800 (PST)
+        b=CUJZTLEIyQU5WF7l0TjWC9QkNfVfXE9zurEN2ZLysz9r4iQT+6FLN4ObD8AxoRK9Ec
+         OcW4Y/cTBpUbm40mdsP4GWkmbBAtyOByNId+duh8Tdb+WrIqoiWCokoi0TVy1UDCXua4
+         NoNPhJuBjKJ+28Oag2ic3V83aa9ah6OOISlrs=
+Received: by 10.216.90.79 with SMTP id d57mr1141903wef.117.1257780740790;
+        Mon, 09 Nov 2009 07:32:20 -0800 (PST)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id g9sm9033556gvc.25.2009.11.09.07.32.04
+        by mx.google.com with ESMTPS id g9sm9033556gvc.25.2009.11.09.07.32.13
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 09 Nov 2009 07:32:11 -0800 (PST)
+        Mon, 09 Nov 2009 07:32:19 -0800 (PST)
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 To:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org
 Cc:	zhangfx@lemote.com, zhouqg@gmail.com,
@@ -38,21 +38,22 @@ Cc:	zhangfx@lemote.com, zhouqg@gmail.com,
 	Patrik Kluba <kpajko79@gmail.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Michal Simek <monstr@monstr.eu>
-Subject: [PATCH v7 04/17] tracing: add static function tracer support for MIPS
-Date:	Mon,  9 Nov 2009 23:31:21 +0800
-Message-Id: <cefe074f5eb3cfbc2e0bb41b0c1f61fcd0190d90.1257779502.git.wuzhangjin@gmail.com>
+Subject: [PATCH v7 05/17] tracing: enable HAVE_FUNCTION_TRACE_MCOUNT_TEST for MIPS
+Date:	Mon,  9 Nov 2009 23:31:22 +0800
+Message-Id: <6199d7b3956b544fc65896af1062787a2e1283ce.1257779502.git.wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.6.2.1
-In-Reply-To: <8f579e2cece16cd22358a4ec143ef6a8c462639b.1257779502.git.wuzhangjin@gmail.com>
+In-Reply-To: <cefe074f5eb3cfbc2e0bb41b0c1f61fcd0190d90.1257779502.git.wuzhangjin@gmail.com>
 References: <9dc81a7a9e5a292cccdf465c533a2b08d19d6021.1257779502.git.wuzhangjin@gmail.com>
  <b99c08397d9ff92ac5a72bda9131df41b702fc71.1257779502.git.wuzhangjin@gmail.com>
  <8f579e2cece16cd22358a4ec143ef6a8c462639b.1257779502.git.wuzhangjin@gmail.com>
+ <cefe074f5eb3cfbc2e0bb41b0c1f61fcd0190d90.1257779502.git.wuzhangjin@gmail.com>
 In-Reply-To: <cover.1257779502.git.wuzhangjin@gmail.com>
 References: <cover.1257779502.git.wuzhangjin@gmail.com>
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24776
+X-archive-position: 24777
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -62,221 +63,45 @@ X-list: linux-mips
 
 From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-If -pg of gcc is enabled with CONFIG_FUNCTION_TRACER=y. a calling to
-_mcount will be inserted into each kernel function. so, there is a
-possibility to trace the kernel functions in _mcount.
+There is an exisiting common ftrace_test_stop_func() in
+kernel/trace/ftrace.c, which is used to check the global variable
+ftrace_trace_stop to determine whether stop the function tracing.
 
-This patch add the MIPS specific _mcount support for static function
-tracing. by deafult, ftrace_trace_function is initialized as
-ftrace_stub(an empty function), so, the default _mcount will introduce
-very little overhead. after enabling ftrace in user-space, it will jump
-to a real tracing function and do static function tracing for us.
+This patch implepment the MIPS specific one to speedup the procedure.
 
-And to support module tracing, we need to enable -mlong-calls for the
-long call from modules space to kernel space. -mlong-calls load the
-address of _mcount to a register and then jump to it, so, the address is
-allowed to be 32bit long, but without -mlong-calls, for the instruction
-"jal _mcount" only left 26bit for the address of _mcount, which is not
-enough for jumping from the module space to kernel space.
+Thanks goes to Zhang Le for Cleaning it up.
 
-Reviewed-by: Steven Rostedt <rostedt@goodmis.org>
 Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
 ---
- arch/mips/Kconfig              |    1 +
- arch/mips/Makefile             |    4 ++
- arch/mips/include/asm/ftrace.h |   25 +++++++++++-
- arch/mips/kernel/Makefile      |    2 +
- arch/mips/kernel/mcount.S      |   83 ++++++++++++++++++++++++++++++++++++++++
- arch/mips/kernel/mips_ksyms.c  |    5 ++
- 6 files changed, 119 insertions(+), 1 deletions(-)
- create mode 100644 arch/mips/kernel/mcount.S
+ arch/mips/Kconfig         |    1 +
+ arch/mips/kernel/mcount.S |    3 +++
+ 2 files changed, 4 insertions(+), 0 deletions(-)
 
 diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 03bd56a..6b33e88 100644
+index 6b33e88..a9bd992 100644
 --- a/arch/mips/Kconfig
 +++ b/arch/mips/Kconfig
-@@ -4,6 +4,7 @@ config MIPS
- 	select HAVE_IDE
+@@ -5,6 +5,7 @@ config MIPS
  	select HAVE_OPROFILE
  	select HAVE_ARCH_KGDB
-+	select HAVE_FUNCTION_TRACER
+ 	select HAVE_FUNCTION_TRACER
++	select HAVE_FUNCTION_TRACE_MCOUNT_TEST
  	# Horrible source of confusion.  Die, die, die ...
  	select EMBEDDED
  	select RTC_LIB if !LEMOTE_FULOONG2E
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index 77f5021..041deca 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -48,7 +48,11 @@ ifneq ($(SUBARCH),$(ARCH))
-   endif
- endif
- 
-+ifndef CONFIG_FUNCTION_TRACER
- cflags-y := -ffunction-sections
-+else
-+cflags-y := -mlong-calls
-+endif
- cflags-y += $(call cc-option, -mno-check-zero-division)
- 
- ifdef CONFIG_32BIT
-diff --git a/arch/mips/include/asm/ftrace.h b/arch/mips/include/asm/ftrace.h
-index 40a8c17..5f8ebcf 100644
---- a/arch/mips/include/asm/ftrace.h
-+++ b/arch/mips/include/asm/ftrace.h
-@@ -1 +1,24 @@
--/* empty */
-+/*
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive for
-+ * more details.
-+ *
-+ * Copyright (C) 2009 DSLab, Lanzhou University, China
-+ * Author: Wu Zhangjin <wuzj@lemote.com>
-+ */
-+
-+#ifndef _ASM_MIPS_FTRACE_H
-+#define _ASM_MIPS_FTRACE_H
-+
-+#ifdef CONFIG_FUNCTION_TRACER
-+
-+#define MCOUNT_ADDR ((unsigned long)(_mcount))
-+#define MCOUNT_INSN_SIZE 4		/* sizeof mcount call */
-+
-+#ifndef __ASSEMBLY__
-+extern void _mcount(void);
-+#define mcount _mcount
-+
-+#endif /* __ASSEMBLY__ */
-+#endif /* CONFIG_FUNCTION_TRACER */
-+#endif /* _ASM_MIPS_FTRACE_H */
-diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
-index f228868..38e704a 100644
---- a/arch/mips/kernel/Makefile
-+++ b/arch/mips/kernel/Makefile
-@@ -10,6 +10,7 @@ obj-y		+= cpu-probe.o branch.o entry.o genex.o irq.o process.o \
- 
- ifdef CONFIG_FUNCTION_TRACER
- CFLAGS_REMOVE_trace_clock.o = -pg
-+CFLAGS_REMOVE_early_printk.o = -pg
- endif
- 
- obj-$(CONFIG_CEVT_BCM1480)	+= cevt-bcm1480.o
-@@ -29,6 +30,7 @@ obj-$(CONFIG_STACKTRACE)	+= stacktrace.o
- obj-$(CONFIG_MODULES)		+= mips_ksyms.o module.o
- 
- obj-$(CONFIG_FTRACE)		+= trace_clock.o
-+obj-$(CONFIG_FUNCTION_TRACER)	+= mcount.o
- 
- obj-$(CONFIG_CPU_LOONGSON2)	+= r4k_fpu.o r4k_switch.o
- obj-$(CONFIG_CPU_MIPS32)	+= r4k_fpu.o r4k_switch.o
 diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
-new file mode 100644
-index 0000000..cebcc3c
---- /dev/null
+index cebcc3c..cbb45ed 100644
+--- a/arch/mips/kernel/mcount.S
 +++ b/arch/mips/kernel/mcount.S
-@@ -0,0 +1,83 @@
-+/*
-+ * MIPS specific _mcount support
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive for
-+ * more details.
-+ *
-+ * Copyright (C) 2009 Lemote Inc. & DSLab, Lanzhou University, China
-+ * Author: Wu Zhangjin <wuzj@lemote.com>
-+ */
-+
-+#include <asm/regdef.h>
-+#include <asm/stackframe.h>
-+#include <asm/ftrace.h>
-+
-+	.text
-+	.set noreorder
-+	.set noat
-+
-+	.macro MCOUNT_SAVE_REGS
-+	PTR_SUBU	sp, PT_SIZE
-+	PTR_S	ra, PT_R31(sp)
-+	PTR_S	AT, PT_R1(sp)
-+	PTR_S	a0, PT_R4(sp)
-+	PTR_S	a1, PT_R5(sp)
-+	PTR_S	a2, PT_R6(sp)
-+	PTR_S	a3, PT_R7(sp)
-+#ifdef CONFIG_64BIT
-+	PTR_S	a4, PT_R8(sp)
-+	PTR_S	a5, PT_R9(sp)
-+	PTR_S	a6, PT_R10(sp)
-+	PTR_S	a7, PT_R11(sp)
-+#endif
-+	.endm
-+
-+	.macro MCOUNT_RESTORE_REGS
-+	PTR_L	ra, PT_R31(sp)
-+	PTR_L	AT, PT_R1(sp)
-+	PTR_L	a0, PT_R4(sp)
-+	PTR_L	a1, PT_R5(sp)
-+	PTR_L	a2, PT_R6(sp)
-+	PTR_L	a3, PT_R7(sp)
-+#ifdef CONFIG_64BIT
-+	PTR_L	a4, PT_R8(sp)
-+	PTR_L	a5, PT_R9(sp)
-+	PTR_L	a6, PT_R10(sp)
-+	PTR_L	a7, PT_R11(sp)
-+#endif
-+#ifdef CONFIG_64BIT
-+	PTR_ADDIU	sp, PT_SIZE
-+#else
-+	PTR_ADDIU	sp, (PT_SIZE + 8)
-+#endif
-+.endm
-+
-+	.macro RETURN_BACK
-+	jr ra
-+	 move ra, AT
-+	.endm
-+
-+NESTED(_mcount, PT_SIZE, ra)
-+	PTR_LA	t0, ftrace_stub
-+	PTR_L	t1, ftrace_trace_function /* Prepare t1 for (1) */
-+	bne	t0, t1, static_trace
-+	 nop
-+	b	ftrace_stub
-+	 nop
-+
-+static_trace:
-+	MCOUNT_SAVE_REGS
-+
-+	move	a0, ra		/* arg1: next ip, selfaddr */
-+	jalr	t1	/* (1) call *ftrace_trace_function */
-+	 move	a1, AT		/* arg2: the caller's next ip, parent */
-+
-+	MCOUNT_RESTORE_REGS
-+	.globl ftrace_stub
-+ftrace_stub:
-+	RETURN_BACK
-+	END(_mcount)
-+
-+	.set at
-+	.set reorder
-diff --git a/arch/mips/kernel/mips_ksyms.c b/arch/mips/kernel/mips_ksyms.c
-index 225755d..1d04807 100644
---- a/arch/mips/kernel/mips_ksyms.c
-+++ b/arch/mips/kernel/mips_ksyms.c
-@@ -13,6 +13,7 @@
- #include <asm/checksum.h>
- #include <asm/pgtable.h>
- #include <asm/uaccess.h>
-+#include <asm/ftrace.h>
+@@ -59,6 +59,9 @@
+ 	.endm
  
- extern void *__bzero(void *__s, size_t __count);
- extern long __strncpy_from_user_nocheck_asm(char *__to,
-@@ -51,3 +52,7 @@ EXPORT_SYMBOL(csum_partial_copy_nocheck);
- EXPORT_SYMBOL(__csum_partial_copy_user);
- 
- EXPORT_SYMBOL(invalid_pte_table);
-+#ifdef CONFIG_FUNCTION_TRACER
-+/* _mcount is defined in arch/mips/kernel/mcount.S */
-+EXPORT_SYMBOL(_mcount);
-+#endif
+ NESTED(_mcount, PT_SIZE, ra)
++	lw	t0, function_trace_stop
++	bnez	t0, ftrace_stub
++	 nop
+ 	PTR_LA	t0, ftrace_stub
+ 	PTR_L	t1, ftrace_trace_function /* Prepare t1 for (1) */
+ 	bne	t0, t1, static_trace
 -- 
 1.6.2.1

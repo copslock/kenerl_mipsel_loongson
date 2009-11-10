@@ -1,66 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Nov 2009 03:43:27 +0100 (CET)
-Received: from mail-yx0-f204.google.com ([209.85.210.204]:51583 "EHLO
-	mail-yx0-f204.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493545AbZKJCnU (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 10 Nov 2009 03:43:20 +0100
-Received: by yxe42 with SMTP id 42so5103247yxe.22
-        for <multiple recipients>; Mon, 09 Nov 2009 18:43:07 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Nov 2009 08:24:45 +0100 (CET)
+Received: from mail-pw0-f45.google.com ([209.85.160.45]:55936 "EHLO
+	mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492067AbZKJHYi (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 10 Nov 2009 08:24:38 +0100
+Received: by pwi15 with SMTP id 15so2502818pwi.24
+        for <multiple recipients>; Mon, 09 Nov 2009 23:24:31 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:subject:from:reply-to:to:cc
          :in-reply-to:references:content-type:organization:date:message-id
          :mime-version:x-mailer:content-transfer-encoding;
-        bh=pAiz+jCppXZg2skRSoBo6qiDtldoZUqRDlQmMOg0Stw=;
-        b=llpKhIFzpmtmbMFoyX5oliymNfGMszVLoKBc94Yl7pqxvPT0DqcLUfhZ+59mN+tiFr
-         cxlo2h7Fbcv3+RSb2fKZS65+rkt2xLno4eEf9UNzx9gHYJg03LlmUorHrW1UsmQ/t26r
-         ETx8fa6DLOZCCjeB13PIeJQudiksUNCXteH2Q=
+        bh=RFQGElvsNKNnxLm+zNIK0XfV9ucvWMVumezfVlDS5ws=;
+        b=vPZemaqucE5DxrrkHH/JKVvJMStwIXaeihKWpRZSDMDyCy4EDEN+AXSMbXv0498QIN
+         BTtzjFcT690dcrUK4KKtPraCxrEgS3phQ3OEQTSunX8nqBNm8/BSnTFXsJaXVRPFszsV
+         Fu9NSx9i5iTOZtUbXeQEBgQe60U+CFOv7mrEM=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
          :organization:date:message-id:mime-version:x-mailer
          :content-transfer-encoding;
-        b=mInCEjbTzQPFlV0cy14rJlHwZkyyqouGac7ah7ylq+Sthk7tPTDZLBmLecKW+coA+B
-         f0oJD9PD9V3+oIXvkd/0L1m44L35oBeQGSByZGIh3eL+S/yeALAGm7FqqjQeBzZN//aH
-         39ExOm6QZ2cyHZDk8tEpxvHChoCTlzPnRzN5U=
-Received: by 10.150.21.22 with SMTP id 22mr1734650ybu.36.1257820987375;
-        Mon, 09 Nov 2009 18:43:07 -0800 (PST)
+        b=EN6iJ7xDA8v7RWsryrk672V+egr0wIKY1pf+h5qRVwwSR+AAsMpMlBfNT9NABKYRFA
+         8yq3uvHIwvUXJSA6PWTxsZp2DiSfM2C1ThoZ5M1ubBJfDuSI9ol2kfM9+K3ZyGFtPhq3
+         jUKAbmUX2w2zqvNApDny7vU406Oeg8sX1KO2k=
+Received: by 10.115.103.9 with SMTP id f9mr15981588wam.112.1257837871175;
+        Mon, 09 Nov 2009 23:24:31 -0800 (PST)
 Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 23sm123028ywh.48.2009.11.09.18.42.58
+        by mx.google.com with ESMTPS id 22sm270832pzk.2.2009.11.09.23.24.26
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 09 Nov 2009 18:43:06 -0800 (PST)
-Subject: Re: [PATCH v7 17/17] tracing: make function graph tracer work with
- -mmcount-ra-address
+        Mon, 09 Nov 2009 23:24:30 -0800 (PST)
+Subject: Re: [PATCH v1 1/3] RTC: rtc-cmos.c: fix warning for MIPS
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 Reply-To: wuzhangjin@gmail.com
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-	zhangfx@lemote.com, zhouqg@gmail.com,
-	Ralf Baechle <ralf@linux-mips.org>, rostedt@goodmis.org,
-	Frederic Weisbecker <fweisbec@gmail.com>,
-	Ingo Molnar <mingo@elte.hu>,
-	Nicholas Mc Guire <der.herr@hofr.at>,
-	Richard Sandiford <rdsandiford@googlemail.com>,
-	Patrik Kluba <kpajko79@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Michal Simek <monstr@monstr.eu>
-In-Reply-To: <4AF898E9.3050506@caviumnetworks.com>
-References: <9dc81a7a9e5a292cccdf465c533a2b08d19d6021.1257779502.git.wuzhangjin@gmail.com>
-	 <3a9fc9ca02e8e6e9c3c28797a4c084c1f9d91f69.1257779502.git.wuzhangjin@gmail.com>
-	 <0cef783a71333ff96a78aaea8961e3b6b5392665.1257779502.git.wuzhangjin@gmail.com>
-	 <18e1d617ed824bb1c10f15216f2ed9ed3de78abd.1257779502.git.wuzhangjin@gmail.com>
-	 <3da916c1cb6e05445438826f98a91111f43ff6cd.1257779502.git.wuzhangjin@gmail.com>
-	 <d4aa4cdb9b4c25e7a683c923bdeabed847bd8010.1257779502.git.wuzhangjin@gmail.com>
-	 <451c55dead5d6afd871de6afd14dbbcf70a0f834.1257779502.git.wuzhangjin@gmail.com>
-	 <0c463e2af521e613fd15751a9f610c74cf887292.1257779502.git.wuzhangjin@gmail.com>
-	 <695747bff7cddb97d6f43c05c4cf05eb269e402d.1257779502.git.wuzhangjin@gmail.com>
-	 <406a8e5e3117737e401bb2bba84ad9b17f99857d.1257779502.git.wuzhangjin@gmail.com>
-	 <ceef672f082971118c472d1c079d49762ae43b38.1257779502.git.wuzhangjin@gmail.com>
-	 <2113f5f0165feac8cf58c156946adff776f9056d.1257779502.git.wuzhangjin@gmail.com>
-	 <4AF898E9.3050506@caviumnetworks.com>
+To:	Paul Gortmaker <p_gortmaker@yahoo.com>,
+	Alessandro Zummo <a.zummo@towertech.it>
+Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+	rtc-linux@googlegroups.com
+In-Reply-To: <20091105074107.GA12826@linux-mips.org>
+References: <cover.1257383766.git.wuzhangjin@gmail.com>
+	 <a91e34bf2595157830d599cb66becd52247b1819.1257383766.git.wuzhangjin@gmail.com>
+	 <20091105074107.GA12826@linux-mips.org>
 Content-Type: text/plain; charset="UTF-8"
 Organization: DSLab, Lanzhou University, China
-Date:	Tue, 10 Nov 2009 10:42:57 +0800
-Message-ID: <1257820977.2822.32.camel@falcon.domain.org>
+Date:	Tue, 10 Nov 2009 15:24:26 +0800
+Message-ID: <1257837866.2822.47.camel@falcon.domain.org>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.28.1 
 Content-Transfer-Encoding: 7bit
@@ -68,7 +50,7 @@ Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24807
+X-archive-position: 24808
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -76,31 +58,26 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Thu, 2009-11-05 at 08:41 +0100, Ralf Baechle wrote:
+> On Thu, Nov 05, 2009 at 09:21:54AM +0800, Wu Zhangjin wrote:
+> 
+> > This patch fixes the following warning with RTC_LIB on MIPS:
+> > 
+> > drivers/rtc/rtc-cmos.c:697:2: warning: #warning Assuming 128 bytes of
+> > RTC+NVRAM address space, not 64 bytes.
+> > 
+> > Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+> 
+> Acked-by: Ralf Baechle <ralf@linux-mips.org>
+> 
+>
+>   Ralf
 
-On Mon, 2009-11-09 at 14:34 -0800, David Daney wrote:
-> Wu Zhangjin wrote:
-> [...]
-> > +	cflags-y += $(call cc-option, -mmcount-ra-address)
-> [...]
-> > +#if (__GNUC__ <= 4 && __GNUC_MINOR__ < 5)
-> 
-> 
-> 
-> Sprinkling the code with these #if clauses is ugly and prone to breakage 
-> I think.
-> 
-> The Makefile part is testing for the same feature.
-> 
-> We do a very similar thing with -msym32, and KBUILD_SYM32.  Perhaps you 
-> could rework this patch in a similar manner and test for 
-> KBUILD_MCOUNT_RA_ADDRESS instead of the '(__GNUC__ <= 4 && 
-> __GNUC_MINOR__ < 5)'
-> 
+Hi, Paul or Alessandro
 
-This is really ugly ;)
+Could you please apply this pathset?
 
-KBUILD_MCOUNT_RA_ADDRESS is a wonderful idea, thanks!
+thanks!
 
 Regards,
 	Wu Zhangjin

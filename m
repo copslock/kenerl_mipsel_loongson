@@ -1,35 +1,35 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Nov 2009 02:00:53 +0100 (CET)
-Received: from mail-yx0-f204.google.com ([209.85.210.204]:45922 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Nov 2009 03:43:27 +0100 (CET)
+Received: from mail-yx0-f204.google.com ([209.85.210.204]:51583 "EHLO
 	mail-yx0-f204.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493525AbZKJBAr (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 10 Nov 2009 02:00:47 +0100
-Received: by yxe42 with SMTP id 42so4964412yxe.22
-        for <multiple recipients>; Mon, 09 Nov 2009 17:00:38 -0800 (PST)
+	by ftp.linux-mips.org with ESMTP id S1493545AbZKJCnU (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 10 Nov 2009 03:43:20 +0100
+Received: by yxe42 with SMTP id 42so5103247yxe.22
+        for <multiple recipients>; Mon, 09 Nov 2009 18:43:07 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:subject:from:reply-to:to:cc
          :in-reply-to:references:content-type:organization:date:message-id
          :mime-version:x-mailer:content-transfer-encoding;
-        bh=mDwtSTB3qZzfOtn1AbAEVcPDxEji8AeruxNszCyTTBg=;
-        b=mzztZ9JqbcKjWvYOTHaiqVqWpihaNBbqtnF/+TjwNoY/4Xw//UT8qOqDrArGOR1zZx
-         oEKrxAOwxZo7M0Mm+jpBdETKW/u18fv9akYkZq+RQXoV+z+bl+Ad6WiWn6QuQmmCm18h
-         kuoQt5G4GEL1ZkLehj4Rfu3WJK+NGHHUcIsxY=
+        bh=pAiz+jCppXZg2skRSoBo6qiDtldoZUqRDlQmMOg0Stw=;
+        b=llpKhIFzpmtmbMFoyX5oliymNfGMszVLoKBc94Yl7pqxvPT0DqcLUfhZ+59mN+tiFr
+         cxlo2h7Fbcv3+RSb2fKZS65+rkt2xLno4eEf9UNzx9gHYJg03LlmUorHrW1UsmQ/t26r
+         ETx8fa6DLOZCCjeB13PIeJQudiksUNCXteH2Q=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
          :organization:date:message-id:mime-version:x-mailer
          :content-transfer-encoding;
-        b=hxIq2hk3MRo8VA68it9d8yzfLwzn0RLuPfXbeiMbZt51eNqot+XM8sxkTNm2ZchL0b
-         AZQp6qcLX4R8bMaKOZApqILLOjXq1bfuqwcumtr+ac9yrHkM++04UOC50W5xUN7jslD1
-         JRuoFBE0IiqsefqVaPx2QrqqlwythJUHLn1nA=
-Received: by 10.150.238.18 with SMTP id l18mr4006983ybh.14.1257814837980;
-        Mon, 09 Nov 2009 17:00:37 -0800 (PST)
+        b=mInCEjbTzQPFlV0cy14rJlHwZkyyqouGac7ah7ylq+Sthk7tPTDZLBmLecKW+coA+B
+         f0oJD9PD9V3+oIXvkd/0L1m44L35oBeQGSByZGIh3eL+S/yeALAGm7FqqjQeBzZN//aH
+         39ExOm6QZ2cyHZDk8tEpxvHChoCTlzPnRzN5U=
+Received: by 10.150.21.22 with SMTP id 22mr1734650ybu.36.1257820987375;
+        Mon, 09 Nov 2009 18:43:07 -0800 (PST)
 Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 21sm88322ywh.46.2009.11.09.17.00.30
+        by mx.google.com with ESMTPS id 23sm123028ywh.48.2009.11.09.18.42.58
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 09 Nov 2009 17:00:37 -0800 (PST)
-Subject: Re: [PATCH v7 04/17] tracing: add static function tracer support
- for MIPS
+        Mon, 09 Nov 2009 18:43:06 -0800 (PST)
+Subject: Re: [PATCH v7 17/17] tracing: make function graph tracer work with
+ -mmcount-ra-address
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 Reply-To: wuzhangjin@gmail.com
 To:	David Daney <ddaney@caviumnetworks.com>
@@ -43,16 +43,24 @@ Cc:	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
 	Patrik Kluba <kpajko79@gmail.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Michal Simek <monstr@monstr.eu>
-In-Reply-To: <4AF8B31C.5030802@caviumnetworks.com>
+In-Reply-To: <4AF898E9.3050506@caviumnetworks.com>
 References: <9dc81a7a9e5a292cccdf465c533a2b08d19d6021.1257779502.git.wuzhangjin@gmail.com>
-	 <b99c08397d9ff92ac5a72bda9131df41b702fc71.1257779502.git.wuzhangjin@gmail.com>
-	 <8f579e2cece16cd22358a4ec143ef6a8c462639b.1257779502.git.wuzhangjin@gmail.com>
-	 <cefe074f5eb3cfbc2e0bb41b0c1f61fcd0190d90.1257779502.git.wuzhangjin@gmail.com>
-	 <4AF8B31C.5030802@caviumnetworks.com>
+	 <3a9fc9ca02e8e6e9c3c28797a4c084c1f9d91f69.1257779502.git.wuzhangjin@gmail.com>
+	 <0cef783a71333ff96a78aaea8961e3b6b5392665.1257779502.git.wuzhangjin@gmail.com>
+	 <18e1d617ed824bb1c10f15216f2ed9ed3de78abd.1257779502.git.wuzhangjin@gmail.com>
+	 <3da916c1cb6e05445438826f98a91111f43ff6cd.1257779502.git.wuzhangjin@gmail.com>
+	 <d4aa4cdb9b4c25e7a683c923bdeabed847bd8010.1257779502.git.wuzhangjin@gmail.com>
+	 <451c55dead5d6afd871de6afd14dbbcf70a0f834.1257779502.git.wuzhangjin@gmail.com>
+	 <0c463e2af521e613fd15751a9f610c74cf887292.1257779502.git.wuzhangjin@gmail.com>
+	 <695747bff7cddb97d6f43c05c4cf05eb269e402d.1257779502.git.wuzhangjin@gmail.com>
+	 <406a8e5e3117737e401bb2bba84ad9b17f99857d.1257779502.git.wuzhangjin@gmail.com>
+	 <ceef672f082971118c472d1c079d49762ae43b38.1257779502.git.wuzhangjin@gmail.com>
+	 <2113f5f0165feac8cf58c156946adff776f9056d.1257779502.git.wuzhangjin@gmail.com>
+	 <4AF898E9.3050506@caviumnetworks.com>
 Content-Type: text/plain; charset="UTF-8"
 Organization: DSLab, Lanzhou University, China
-Date:	Tue, 10 Nov 2009 09:00:17 +0800
-Message-ID: <1257814817.2822.3.camel@falcon.domain.org>
+Date:	Tue, 10 Nov 2009 10:42:57 +0800
+Message-ID: <1257820977.2822.32.camel@falcon.domain.org>
 Mime-Version: 1.0
 X-Mailer: Evolution 2.28.1 
 Content-Transfer-Encoding: 7bit
@@ -60,7 +68,7 @@ Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24806
+X-archive-position: 24807
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -70,31 +78,29 @@ X-list: linux-mips
 
 Hi,
 
-On Mon, 2009-11-09 at 16:26 -0800, David Daney wrote: 
+On Mon, 2009-11-09 at 14:34 -0800, David Daney wrote:
 > Wu Zhangjin wrote:
+> [...]
+> > +	cflags-y += $(call cc-option, -mmcount-ra-address)
+> [...]
+> > +#if (__GNUC__ <= 4 && __GNUC_MINOR__ < 5)
 > 
-> >  
-> > +ifndef CONFIG_FUNCTION_TRACER
-> >  cflags-y := -ffunction-sections
-> > +else
-> > +cflags-y := -mlong-calls
-> > +endif
-> >  cflags-y += $(call cc-option, -mno-check-zero-division)
-> >  
 > 
-> That doesn't make sense to me.  Modules are already compiled with 
-> -mlong-calls.  The only time you would need the entire kernel compiled 
-> with -mlong-calls is if the tracer were in a module.  The logic here 
-> doesn't seem to reflect that.
+> 
+> Sprinkling the code with these #if clauses is ugly and prone to breakage 
+> I think.
+> 
+> The Makefile part is testing for the same feature.
+> 
+> We do a very similar thing with -msym32, and KBUILD_SYM32.  Perhaps you 
+> could rework this patch in a similar manner and test for 
+> KBUILD_MCOUNT_RA_ADDRESS instead of the '(__GNUC__ <= 4 && 
+> __GNUC_MINOR__ < 5)'
+> 
 
-Yes, I knew the module have gotten the -mlong-calls, Here we just want
-to use -mlong-calls for the whole kernel, and then we get the same
-_mcount stuff in the whole kernel, at last, we can use the same
-scripts/recordmcount.pl and ftrace_make_nop & ftrace_make_call for the
-dynamic ftracer.
+This is really ugly ;)
 
-And seems we only need to enable it for the dynamic one. So, I will
-split it out into it's own patch later.
+KBUILD_MCOUNT_RA_ADDRESS is a wonderful idea, thanks!
 
-Thanks & Regards,
+Regards,
 	Wu Zhangjin

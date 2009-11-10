@@ -1,117 +1,101 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 10 Nov 2009 20:45:58 +0100 (CET)
-Received: from gateway16.websitewelcome.com ([70.85.130.5]:56944 "HELO
-	gateway16.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with SMTP id S1492183AbZKJTpw (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 10 Nov 2009 20:45:52 +0100
-Received: (qmail 30195 invoked from network); 10 Nov 2009 20:00:02 -0000
-Received: from gator750.hostgator.com (174.132.194.2)
-  by gateway16.websitewelcome.com with SMTP; 10 Nov 2009 20:00:02 -0000
-Received: from 216-239-45-4.google.com ([216.239.45.4]:15776 helo=epiktistes.mtv.corp.google.com)
-	by gator750.hostgator.com with esmtpa (Exim 4.69)
-	(envelope-from <kevink@paralogos.com>)
-	id 1N7weo-0000ph-NG; Tue, 10 Nov 2009 13:45:38 -0600
-Message-ID: <4AF9C2EA.3090205@paralogos.com>
-Date:	Tue, 10 Nov 2009 11:45:46 -0800
-From:	"Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Thunderbird 2.0.0.23 (X11/20090817)
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Nov 2009 00:45:35 +0100 (CET)
+Received: from mail-yw0-f173.google.com ([209.85.211.173]:54765 "EHLO
+	mail-yw0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492578AbZKJXp1 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Nov 2009 00:45:27 +0100
+Received: by ywh3 with SMTP id 3so884792ywh.22
+        for <multiple recipients>; Tue, 10 Nov 2009 15:45:20 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:in-reply-to:references
+         :date:message-id:subject:from:to:cc:content-type;
+        bh=7WyHLjEBes/Cvs1iJnqKj3HVDzJlq+Rj/vTiAS5QJ54=;
+        b=rAzJF49xJRGTlwaJfpj4Tmu/vMNeEZiOinJO05fR5clv1yfsiTGEKYRZYeRwUKZZJH
+         YRd9KG+vnxBsAkSilSl8zNyxozjbRq7TzUn6X9+iVygl5cV8HyPBzsaOiOytOUcR2wdH
+         CbTosBWSRHsDez/g+9G9EmCsaKzkZX9L8Ju1E=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
+         :cc:content-type;
+        b=u/FPQu+laC8Essg8C7ANesjB3j8wjST+FqiHbppw8EXZVB3QstCJu+b0a+X/7IjQWc
+         AQVC+tTbQGf2wH9BVOdzBxqY7xX000tKt3Ou0jmNZ7gYBsofy0uNYXMc4LWwFAOFt+Rj
+         l9YXAJOO80KNCMqTcyXw6B8uRFsc/MkAkV6FY=
 MIME-Version: 1.0
-To:	Mikael Starvik <mikael.starvik@axis.com>
-CC:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-	Jesper Nilsson <Jesper.Nilsson@axis.com>
-Subject: Re: SMTC lookup in smtc_distribute_timer
-References: <4BEA3FF3CAA35E408EA55C7BE2E61D0546A586E7EA@xmail3.se.axis.com>
-In-Reply-To: <4BEA3FF3CAA35E408EA55C7BE2E61D0546A586E7EA@xmail3.se.axis.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator750.hostgator.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - paralogos.com
-Return-Path: <kevink@paralogos.com>
+Received: by 10.91.121.17 with SMTP id y17mr1178951agm.27.1257896719823; Tue, 
+	10 Nov 2009 15:45:19 -0800 (PST)
+In-Reply-To: <20091110160354.GA7367@linux-mips.org>
+References: <e997b7420911100737k3563b9a5l5c6463ba078e9d9@mail.gmail.com>
+	 <20091110160354.GA7367@linux-mips.org>
+Date:	Wed, 11 Nov 2009 07:45:19 +0800
+Message-ID: <e997b7420911101545o29dc79adod17c4166880886ff@mail.gmail.com>
+Subject: Re: Could not use printf after init process
+From:	"wilbur.chan" <wilbur512@gmail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Linux MIPS Mailing List <linux-mips@linux-mips.org>
+Content-Type: multipart/alternative; boundary=0016e640d1f0264bf604780ce70c
+Return-Path: <wilbur512@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24824
+X-archive-position: 24825
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
+X-original-sender: wilbur512@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Your failure scenario looks plausible. Mea culpa.  However, I think that
-a more elegant and slightly smaller (depending on just how good
-the optimizer is) fix would be:
+--0016e640d1f0264bf604780ce70c
+Content-Type: text/plain; charset=ISO-8859-1
 
-diff --git a/arch/mips/kernel/cevt-smtc.c b/arch/mips/kernel/cevt-smtc.c
-index 98bd7de..b102e4f 100644
---- a/arch/mips/kernel/cevt-smtc.c
-+++ b/arch/mips/kernel/cevt-smtc.c
-@@ -173,11 +173,12 @@ void smtc_distribute_timer(int vpe)
-        unsigned int mtflags;
-        int cpu;
-        struct clock_event_device *cd;
--       unsigned long nextstamp = 0L;
-+       unsigned long nextstamp;
-        unsigned long reference;
- 
- 
- repeat:
-+       nextstamp = 0L;
-        for_each_online_cpu(cpu) {
-            /*
-             * Find virtual CPUs within the current VPE who have
+2009/11/11 Ralf Baechle <ralf@linux-mips.org>
 
-
-
-I don't have access to SMTC-capable hardware just now, but
-I guess the way to test this would be to have a test program
-or kernel test stub program two events separated by the smallest
-possible increment, so that the second will have passed by the
-time interrupt services for the first.
-
-          Regards,
-
-          Kevin K.
-
-Mikael Starvik wrote:
-> Ok, my guess is something like this:
->
-> 1. At the end of smtc_distribute_timer, nextstamp is valid and has already 
-> passed so we goto repeat. 
-> 2. Nothing updates nextstamp (only updated if the timeout is in the future 
-> And we just decided it is in the past)
-> 3. At the end nextstamp still has the same value so it is still valid and
-> in the past.
-> 4. This repeats until read_c0_count has a value which causes nextstamp to
-> be in the future.
->
-> One possible patch that seams to solve it for me below. This is probably 
-> not the correct solution so I'll need help from the SMTC experts to review
-> it and come up with the correct solution.
->
-> Best Regards
-> /Mikael
->
-> Index: cevt-smtc.c
-> ===================================================================
-> RCS file: /usr/local/cvs/linux/os/linux-2.6/arch/mips/kernel/cevt-smtc.c,v
-> retrieving revision 1.2
-> diff -u -r1.2 cevt-smtc.c
-> --- cevt-smtc.c	2 Sep 2009 10:07:51 -0000	1.2
-> +++ cevt-smtc.c	10 Nov 2009 11:40:31 -0000
-> @@ -223,8 +223,10 @@
->  		write_c0_compare(nextstamp);
->  		ehb();
->  		if ((nextstamp - (unsigned long)read_c0_count())
-> -			> (unsigned long)LONG_MAX)
-> +			> (unsigned long)LONG_MAX) {
-> +				nextstamp = 0L;  
->  				goto repeat;
-> +			}
->  	}
->  }
+>  On Tue, Nov 10, 2009 at 11:37:20PM +0800, wilbur.chan wrote:
 >
 >
->   
+> I assume you meant printk, not printf.
+>
+> If kernel_execve() is successful the function won't return so code
+> following
+> that statement won't be executed.
+>
+>  Ralf
+>
+
+It was 'printf' in init process which was generated by busybox.
+
+After I replaced 'init' with a simple 'hello wolrd' executable , which was
+like kernel_execve("/hello wolrd"),
+
+it could not print the 'hello wolrd' either.
+
+--0016e640d1f0264bf604780ce70c
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<br><br>
+<div class=3D"gmail_quote">2009/11/11 Ralf Baechle <span dir=3D"ltr">&lt;<a=
+ href=3D"mailto:ralf@linux-mips.org">ralf@linux-mips.org</a>&gt;</span><br>
+<blockquote class=3D"gmail_quote" style=3D"PADDING-LEFT: 1ex; MARGIN: 0px 0=
+px 0px 0.8ex; BORDER-LEFT: #ccc 1px solid">
+<div>
+<div></div>
+<div class=3D"h5">On Tue, Nov 10, 2009 at 11:37:20PM +0800, wilbur.chan wro=
+te:<br><br><br></div></div>I assume you meant printk, not printf.<br><br>If=
+ kernel_execve() is successful the function won&#39;t return so code follow=
+ing<br>
+that statement won&#39;t be executed.<br><font color=3D"#888888"><br>=A0Ral=
+f<br></font></blockquote></div>
+<div><br>It was &#39;printf&#39; in init process which was generated by bus=
+ybox.</div>
+<div>=A0</div>
+<div>After I replaced &#39;init&#39; with a simple &#39;hello wolrd&#39;=A0=
+executable , which was like kernel_execve(&quot;/hello wolrd&quot;),</div>
+<div>=A0</div>
+<div>it could not print the &#39;hello wolrd&#39; either. </div>
+<div>=A0</div>
+<div>=A0</div>
+<div>=A0</div>
+<div>=A0</div>
+
+--0016e640d1f0264bf604780ce70c--

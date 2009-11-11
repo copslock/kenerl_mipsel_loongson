@@ -1,64 +1,131 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Nov 2009 07:00:42 +0100 (CET)
-Received: from mail-yw0-f173.google.com ([209.85.211.173]:47570 "EHLO
-	mail-yw0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492198AbZKKGAL (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Nov 2009 07:00:11 +0100
-Received: by ywh3 with SMTP id 3so1265682ywh.22
-        for <multiple recipients>; Tue, 10 Nov 2009 22:00:04 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=yPYAMyBzAV2S7YS3lA794kacTTW9HpPdnkkL2ni8La8=;
-        b=xMv1AxdNtiTeuBaecLzllw+IZ5VfywY/wCCFXwLRHvyIwYd3v7I40Bf/sx2GvUjd+c
-         lWZmkW/LP/rQtSRcUiEDOdC3yfd3cY8EAW6f6uEGtuvk/SSO2USeaX+m2AIy/stUJZ5o
-         VzyYG7YA7ERrFhZ2OShGBR/aThgS8alZNJ8ho=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=X90b3DzTkDfzo98baIH/G4EFWj20eBSDnxYgzdJvAs08Kls04qrhbdgPe79IUbsYz8
-         8i6zJL1UiS9aRH94uk6h1DzxZ5EUHPiOaQ4t3b9ROcr9MsuOTIBmj0Ud1dGCdwYmz1RG
-         Jp2KmOHeIsmCzQ9Pg8tLNXy1ypzeZMVh8B4rI=
-Received: by 10.90.121.17 with SMTP id t17mr1703396agc.57.1257919174561;
-        Tue, 10 Nov 2009 21:59:34 -0800 (PST)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id 34sm703043yxf.11.2009.11.10.21.59.30
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 10 Nov 2009 21:59:33 -0800 (PST)
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH -queue 0/2] loongson2f: add video acceleration support
-Date:	Wed, 11 Nov 2009 13:59:22 +0800
-Message-Id: <cover.1257918796.git.wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.6.2.1
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Nov 2009 07:45:12 +0100 (CET)
+Received: from miranda.se.axis.com ([193.13.178.8]:55772 "EHLO
+	miranda.se.axis.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
+	with ESMTP id S1491878AbZKKGpF convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Nov 2009 07:45:05 +0100
+Received: from xmail3.se.axis.com (xmail3.se.axis.com [10.0.5.75])
+	by miranda.se.axis.com (8.13.4/8.13.4/Debian-3sarge3) with ESMTP id nAB6iuIx026346;
+	Wed, 11 Nov 2009 07:44:56 +0100
+Received: from xmail3.se.axis.com ([10.0.5.75]) by xmail3.se.axis.com
+ ([10.0.5.75]) with mapi; Wed, 11 Nov 2009 07:44:56 +0100
+From:	Mikael Starvik <mikael.starvik@axis.com>
+To:	"Kevin D. Kissell" <kevink@paralogos.com>
+CC:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+	Jesper Nilsson <Jesper.Nilsson@axis.com>
+Date:	Wed, 11 Nov 2009 07:44:54 +0100
+Subject: RE: SMTC lookup in smtc_distribute_timer
+Thread-Topic: SMTC lookup in smtc_distribute_timer
+Thread-Index: AcpiQjZd25j6RSwjTPGwAcqgdIhspQAWAbIw
+Message-ID: <4BEA3FF3CAA35E408EA55C7BE2E61D0546A586E886@xmail3.se.axis.com>
+References: <4BEA3FF3CAA35E408EA55C7BE2E61D0546A586E7EA@xmail3.se.axis.com>
+ <4AF9C2EA.3090205@paralogos.com>
+In-Reply-To: <4AF9C2EA.3090205@paralogos.com>
+Accept-Language: sv-SE
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+acceptlanguage:	sv-SE
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+Return-Path: <mikael.starvik@axis.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24835
+X-archive-position: 24836
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: mikael.starvik@axis.com
 Precedence: bulk
 X-list: linux-mips
 
-This patchset add video acceleration support for loongson2f family machines via
-uncached accelerated TLB mapping.
+Yes, I thought of that variant after I sent the email yesterday.
+I'll change our local implementation. If you don't hear anything
+it works as expected in our case (it was pretty easy for us to
+repeat).
 
-We add a new option CPU_SUPPORT_VIDEO_ACC for loongson2f and it's successors,
-so all of them can share this souce code via selecting this option.
+/Mikael 
 
-Thanks!
-	Wu Zhangjin
+-----Original Message-----
+From: Kevin D. Kissell [mailto:kevink@paralogos.com] 
+Sent: den 10 november 2009 20:46
+To: Mikael Starvik
+Cc: linux-mips@linux-mips.org; Jesper Nilsson
+Subject: Re: SMTC lookup in smtc_distribute_timer
 
-Wu Zhangjin (2):
-  [loongson] 2f: Add CPU_SUPPORT_VIDEO_ACC
-  [loongson] 2f: Improve video performance via uncached accelerated TLB
-    map
+Your failure scenario looks plausible. Mea culpa.  However, I think that
+a more elegant and slightly smaller (depending on just how good
+the optimizer is) fix would be:
 
- arch/mips/Kconfig               |    4 +++
- arch/mips/include/asm/pgtable.h |   13 +++++++++
- arch/mips/loongson/common/mem.c |   58 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 75 insertions(+), 0 deletions(-)
+diff --git a/arch/mips/kernel/cevt-smtc.c b/arch/mips/kernel/cevt-smtc.c
+index 98bd7de..b102e4f 100644
+--- a/arch/mips/kernel/cevt-smtc.c
++++ b/arch/mips/kernel/cevt-smtc.c
+@@ -173,11 +173,12 @@ void smtc_distribute_timer(int vpe)
+        unsigned int mtflags;
+        int cpu;
+        struct clock_event_device *cd;
+-       unsigned long nextstamp = 0L;
++       unsigned long nextstamp;
+        unsigned long reference;
+ 
+ 
+ repeat:
++       nextstamp = 0L;
+        for_each_online_cpu(cpu) {
+            /*
+             * Find virtual CPUs within the current VPE who have
+
+
+
+I don't have access to SMTC-capable hardware just now, but
+I guess the way to test this would be to have a test program
+or kernel test stub program two events separated by the smallest
+possible increment, so that the second will have passed by the
+time interrupt services for the first.
+
+          Regards,
+
+          Kevin K.
+
+Mikael Starvik wrote:
+> Ok, my guess is something like this:
+>
+> 1. At the end of smtc_distribute_timer, nextstamp is valid and has already 
+> passed so we goto repeat. 
+> 2. Nothing updates nextstamp (only updated if the timeout is in the future 
+> And we just decided it is in the past)
+> 3. At the end nextstamp still has the same value so it is still valid and
+> in the past.
+> 4. This repeats until read_c0_count has a value which causes nextstamp to
+> be in the future.
+>
+> One possible patch that seams to solve it for me below. This is probably 
+> not the correct solution so I'll need help from the SMTC experts to review
+> it and come up with the correct solution.
+>
+> Best Regards
+> /Mikael
+>
+> Index: cevt-smtc.c
+> ===================================================================
+> RCS file: /usr/local/cvs/linux/os/linux-2.6/arch/mips/kernel/cevt-smtc.c,v
+> retrieving revision 1.2
+> diff -u -r1.2 cevt-smtc.c
+> --- cevt-smtc.c	2 Sep 2009 10:07:51 -0000	1.2
+> +++ cevt-smtc.c	10 Nov 2009 11:40:31 -0000
+> @@ -223,8 +223,10 @@
+>  		write_c0_compare(nextstamp);
+>  		ehb();
+>  		if ((nextstamp - (unsigned long)read_c0_count())
+> -			> (unsigned long)LONG_MAX)
+> +			> (unsigned long)LONG_MAX) {
+> +				nextstamp = 0L;  
+>  				goto repeat;
+> +			}
+>  	}
+>  }
+>
+>
+>   

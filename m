@@ -1,131 +1,88 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Nov 2009 07:45:12 +0100 (CET)
-Received: from miranda.se.axis.com ([193.13.178.8]:55772 "EHLO
-	miranda.se.axis.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1491878AbZKKGpF convert rfc822-to-8bit (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Nov 2009 07:45:05 +0100
-Received: from xmail3.se.axis.com (xmail3.se.axis.com [10.0.5.75])
-	by miranda.se.axis.com (8.13.4/8.13.4/Debian-3sarge3) with ESMTP id nAB6iuIx026346;
-	Wed, 11 Nov 2009 07:44:56 +0100
-Received: from xmail3.se.axis.com ([10.0.5.75]) by xmail3.se.axis.com
- ([10.0.5.75]) with mapi; Wed, 11 Nov 2009 07:44:56 +0100
-From:	Mikael Starvik <mikael.starvik@axis.com>
-To:	"Kevin D. Kissell" <kevink@paralogos.com>
-CC:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-	Jesper Nilsson <Jesper.Nilsson@axis.com>
-Date:	Wed, 11 Nov 2009 07:44:54 +0100
-Subject: RE: SMTC lookup in smtc_distribute_timer
-Thread-Topic: SMTC lookup in smtc_distribute_timer
-Thread-Index: AcpiQjZd25j6RSwjTPGwAcqgdIhspQAWAbIw
-Message-ID: <4BEA3FF3CAA35E408EA55C7BE2E61D0546A586E886@xmail3.se.axis.com>
-References: <4BEA3FF3CAA35E408EA55C7BE2E61D0546A586E7EA@xmail3.se.axis.com>
- <4AF9C2EA.3090205@paralogos.com>
-In-Reply-To: <4AF9C2EA.3090205@paralogos.com>
-Accept-Language: sv-SE
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-acceptlanguage:	sv-SE
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
-Return-Path: <mikael.starvik@axis.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Nov 2009 07:53:04 +0100 (CET)
+Received: from mail-pz0-f194.google.com ([209.85.222.194]:36356 "EHLO
+	mail-pz0-f194.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1491885AbZKKGw5 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Nov 2009 07:52:57 +0100
+Received: by pzk32 with SMTP id 32so590323pzk.21
+        for <multiple recipients>; Tue, 10 Nov 2009 22:52:50 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=+hu0BGhiIZPt/HlZcdrD/abtW6FPIlhOSuKIzeFCR3c=;
+        b=L6zLUYWTcOsghweUziSPpvwinmSEzyVV7YhjQZFRm7blrtnb9DP+AhF7dXC3RH0hmg
+         qDWieJbEnm/DOyQlKJvAyfFz3rs6pWkippGezdQkWxWqncFRnugIvadKkw/9iyg261uf
+         Aj3GyA5BAd58pSa1WVAJALjmKI8pbKwOr3ArU=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=tvh8/G/gqabT3stPDy1tewiju1BCzODdclbuDC/cIJzl4p/gHL2j0/nBwcjvRTiFhd
+         Zv7TCfLW43mDYu4uXXFZ2o1EAIyTJ4vpRQIaZbsdVOlYEU9v0hi+fa95IkMQ1MdLcmVP
+         2Cw6XCCgLbySTaF6JIypU+uqXdbQotUwJuDbw=
+Received: by 10.115.113.6 with SMTP id q6mr2450776wam.55.1257922370791;
+        Tue, 10 Nov 2009 22:52:50 -0800 (PST)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPS id 22sm819777pzk.2.2009.11.10.22.52.46
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Tue, 10 Nov 2009 22:52:50 -0800 (PST)
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, yanh@lemote.com, huhb@lemote.com,
+	Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH -queue 0/2] add suspend support for loongson2f
+Date:	Wed, 11 Nov 2009 14:52:35 +0800
+Message-Id: <cover.1257920162.git.wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.6.2.1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24836
+X-archive-position: 24837
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mikael.starvik@axis.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Yes, I thought of that variant after I sent the email yesterday.
-I'll change our local implementation. If you don't hear anything
-it works as expected in our case (it was pretty easy for us to
-repeat).
+Loongson2f's cpu frequency is software configurable, when we set its frequency
+to ZERO, it will go into the suspend mode and can be waked up by the external
+interrupts.
 
-/Mikael 
+With this feature and based on the kernel's suspend framework, this patch add
+the suspend support for loongson2f family machines.
 
------Original Message-----
-From: Kevin D. Kissell [mailto:kevink@paralogos.com] 
-Sent: den 10 november 2009 20:46
-To: Mikael Starvik
-Cc: linux-mips@linux-mips.org; Jesper Nilsson
-Subject: Re: SMTC lookup in smtc_distribute_timer
+To utilize this support, the machines should provide a necessary external
+interrupt to wakeup loongson2f from the suspend mode and make sure the
+interrupt be able to send to the processor directly or indirectly(the interrupt
+path is not blocked). otherwise, it will suspend there all the time.
 
-Your failure scenario looks plausible. Mea culpa.  However, I think that
-a more elegant and slightly smaller (depending on just how good
-the optimizer is) fix would be:
+And If there is an external timer used, please mask it with IRQF_TIMER,
+otherwise, the system will fail on resuming from suspend.
 
-diff --git a/arch/mips/kernel/cevt-smtc.c b/arch/mips/kernel/cevt-smtc.c
-index 98bd7de..b102e4f 100644
---- a/arch/mips/kernel/cevt-smtc.c
-+++ b/arch/mips/kernel/cevt-smtc.c
-@@ -173,11 +173,12 @@ void smtc_distribute_timer(int vpe)
-        unsigned int mtflags;
-        int cpu;
-        struct clock_event_device *cd;
--       unsigned long nextstamp = 0L;
-+       unsigned long nextstamp;
-        unsigned long reference;
- 
- 
- repeat:
-+       nextstamp = 0L;
-        for_each_online_cpu(cpu) {
-            /*
-             * Find virtual CPUs within the current VPE who have
+The old lemote Fuloong2F mini PC did not provide any method to wakeup the
+machine from the suspend mode, so, please not try to suspend the machine.  But
+the latest lemote Fuloong2F add an interrupt line from the Power Button to the
+Processor, If we press the button and release it immediatly, it will work as a
+wakeup button.
 
+For YeeLoong2F netbook, Since it's easy to setup the keyboard interrupt as the
+wakeup interrupt, we just setup it and avoid changing the hardware. So the old
+YeeLoong2F machines can also utilize this support. and in the coming patchset,
+we will also setup the LID interrupt as the wakeup interrupt.
 
+Thanks & Regards,
+	Wu Zhangjin
 
-I don't have access to SMTC-capable hardware just now, but
-I guess the way to test this would be to have a test program
-or kernel test stub program two events separated by the smallest
-possible increment, so that the second will have passed by the
-time interrupt services for the first.
+Wu Zhangjin (2):
+  [loongson] 2f: add suspend support framework
+  [loongson] yeeloong2f: add board specific suspend support
 
-          Regards,
-
-          Kevin K.
-
-Mikael Starvik wrote:
-> Ok, my guess is something like this:
->
-> 1. At the end of smtc_distribute_timer, nextstamp is valid and has already 
-> passed so we goto repeat. 
-> 2. Nothing updates nextstamp (only updated if the timeout is in the future 
-> And we just decided it is in the past)
-> 3. At the end nextstamp still has the same value so it is still valid and
-> in the past.
-> 4. This repeats until read_c0_count has a value which causes nextstamp to
-> be in the future.
->
-> One possible patch that seams to solve it for me below. This is probably 
-> not the correct solution so I'll need help from the SMTC experts to review
-> it and come up with the correct solution.
->
-> Best Regards
-> /Mikael
->
-> Index: cevt-smtc.c
-> ===================================================================
-> RCS file: /usr/local/cvs/linux/os/linux-2.6/arch/mips/kernel/cevt-smtc.c,v
-> retrieving revision 1.2
-> diff -u -r1.2 cevt-smtc.c
-> --- cevt-smtc.c	2 Sep 2009 10:07:51 -0000	1.2
-> +++ cevt-smtc.c	10 Nov 2009 11:40:31 -0000
-> @@ -223,8 +223,10 @@
->  		write_c0_compare(nextstamp);
->  		ehb();
->  		if ((nextstamp - (unsigned long)read_c0_count())
-> -			> (unsigned long)LONG_MAX)
-> +			> (unsigned long)LONG_MAX) {
-> +				nextstamp = 0L;  
->  				goto repeat;
-> +			}
->  	}
->  }
->
->
->   
+ arch/mips/loongson/Kconfig            |    5 +
+ arch/mips/loongson/common/Makefile    |    6 ++
+ arch/mips/loongson/common/pm.c        |  157 +++++++++++++++++++++++++++++++++
+ arch/mips/loongson/lemote-2f/Makefile |    6 ++
+ arch/mips/loongson/lemote-2f/pm.c     |   70 +++++++++++++++
+ 5 files changed, 244 insertions(+), 0 deletions(-)
+ create mode 100644 arch/mips/loongson/common/pm.c
+ create mode 100644 arch/mips/loongson/lemote-2f/pm.c

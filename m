@@ -1,81 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Nov 2009 14:41:36 +0100 (CET)
-Received: from mail-px0-f176.google.com ([209.85.216.176]:45381 "EHLO
-	mail-px0-f176.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492763AbZKKNl3 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Nov 2009 14:41:29 +0100
-Received: by pxi6 with SMTP id 6so1064923pxi.0
-        for <multiple recipients>; Wed, 11 Nov 2009 05:41:23 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=MVKEIWqHlwQbxvuJHuJVuaHBXxoKlAmZf+TXgvatg6Q=;
-        b=tuesl8BD599Pjom4vnRvmf6CvJWsaVS4F4pfZMhpw3w/3EdUnAZ9aIItCIZ9+YRFlA
-         /ItcXtdjI/JB/Ua9woaVB9prKFQ807Kb16sA2q829tufkESkSK5GS0+F3CZK2XzoP+64
-         YQv70joitf2cPRflOdXPVw0qZ+pkevazrZqZk=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=nhGZxUVvsRa3an0FeJMP9WeokUZu/AT2D53v6PniqbelCsueGbJkvZU/LyfWyJnXiT
-         NbTXs75BMAfBzty3HZ8+trcjGVI0f412me61Z0d8nKwL/fIwmfsou4QFgTxJC6PnSgA8
-         wZ1LM189aFKMAPSSvi3Tnhx8Od71cCctgv2YI=
-Received: by 10.114.188.21 with SMTP id l21mr3225001waf.138.1257946882899;
-        Wed, 11 Nov 2009 05:41:22 -0800 (PST)
-Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 21sm1084421pxi.12.2009.11.11.05.41.17
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Wed, 11 Nov 2009 05:41:22 -0800 (PST)
-Subject: Re: [PATCH -queue 1/3] [loongson] lemote-2f: add cs5536 MFGPT
- timer support
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org, cpufreq@vger.kernel.org,
-	Dave Jones <davej@redhat.com>, yanh@lemote.com, huhb@lemote.com
-In-Reply-To: <de82733902e9549883b840f082a67b9edaa32c45.1257923011.git.wuzhangjin@gmail.com>
-References: <cover.1257923011.git.wuzhangjin@gmail.com>
-	 <de82733902e9549883b840f082a67b9edaa32c45.1257923011.git.wuzhangjin@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:	Wed, 11 Nov 2009 21:41:02 +0800
-Message-ID: <1257946862.7308.1.camel@falcon.domain.org>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Nov 2009 14:44:32 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:51733 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S1492756AbZKKNo3 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 11 Nov 2009 14:44:29 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nABDiTMu012462;
+	Wed, 11 Nov 2009 14:44:30 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nABDiPe9012460;
+	Wed, 11 Nov 2009 14:44:25 +0100
+Date:	Wed, 11 Nov 2009 14:44:25 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH] MIPS: Make local arrays with CL_SIZE static __initdata
+Message-ID: <20091111134425.GA12249@linux-mips.org>
+References: <1257614437-8632-1-git-send-email-anemo@mba.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1257614437-8632-1-git-send-email-anemo@mba.ocn.ne.jp>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24859
+X-archive-position: 24860
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi,
+On Sun, Nov 08, 2009 at 02:20:37AM +0900, Atsushi Nemoto wrote:
 
-On Wed, 2009-11-11 at 15:09 +0800, Wu Zhangjin wrote:
-[...]
-> diff --git a/arch/mips/include/asm/mach-loongson/cs5536/cs5536_mfgpt.h b/arch/mips/include/asm/mach-loongson/cs5536/cs5536_mfgpt.h
-[...]
-> +
-> +#ifdef CONFIG_CS5536_MFGPT
-> +extern void setup_mfgpt_timer(void);
-> +extern void disable_mfgpt0_counter(void);
-> +extern void enable_mfgpt0_counter(void);
-> +#else
-> +static inline void __maybe_unused setup_mfgpt0_timer(void)
+> Since commit 22242681 ("MIPS: Extend COMMAND_LINE_SIZE"), CL_SIZE is
+> 4096 and local array variables with this size will cause an build
+> failure with default CONFIG_FRAME_WARN settings.
+> 
+> Although current users of such array variables are all early bootstrap
+> code and might not cause real stack overflow (thread_info corruption),
+> it would be safe to declare these arrays static with __initdata.
+> 
+> Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
 
-Sorry, the above line should be:
+Applied, thanks!
 
-+static inline void __maybe_unused setup_mfgpt_timer(void)
-
-No 0 there.
-
-Regards,
-	Wu Zhangjin
+  Ralf

@@ -1,98 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Nov 2009 04:14:29 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:53695 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
-	id S1491825AbZKKDO0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 11 Nov 2009 04:14:26 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nAB3DhIx024500;
-	Wed, 11 Nov 2009 04:13:45 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nAB3DPdg024488;
-	Wed, 11 Nov 2009 04:13:25 +0100
-Date:	Wed, 11 Nov 2009 04:13:25 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Wu Zhangjin <wuzhangjin@gmail.com>
-Cc:	David Daney <ddaney@caviumnetworks.com>, linux-mips@linux-mips.org,
-	linux-kernel@vger.kernel.org, zhangfx@lemote.com, zhouqg@gmail.com,
-	rostedt@goodmis.org, Frederic Weisbecker <fweisbec@gmail.com>,
-	Ingo Molnar <mingo@elte.hu>,
-	Nicholas Mc Guire <der.herr@hofr.at>,
-	Richard Sandiford <rdsandiford@googlemail.com>,
-	Patrik Kluba <kpajko79@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Michal Simek <monstr@monstr.eu>
-Subject: Re: [PATCH v7 04/17] tracing: add static function tracer support
-	for MIPS
-Message-ID: <20091111031325.GA20716@linux-mips.org>
-References: <9dc81a7a9e5a292cccdf465c533a2b08d19d6021.1257779502.git.wuzhangjin@gmail.com> <b99c08397d9ff92ac5a72bda9131df41b702fc71.1257779502.git.wuzhangjin@gmail.com> <8f579e2cece16cd22358a4ec143ef6a8c462639b.1257779502.git.wuzhangjin@gmail.com> <cefe074f5eb3cfbc2e0bb41b0c1f61fcd0190d90.1257779502.git.wuzhangjin@gmail.com> <4AF8B31C.5030802@caviumnetworks.com> <1257814817.2822.3.camel@falcon.domain.org> <4AF99848.9090000@caviumnetworks.com> <1257907351.2922.37.camel@falcon.domain.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1257907351.2922.37.camel@falcon.domain.org>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Nov 2009 06:39:37 +0100 (CET)
+Received: from mail-pw0-f45.google.com ([209.85.160.45]:51326 "EHLO
+	mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492043AbZKKFja (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Nov 2009 06:39:30 +0100
+Received: by pwi15 with SMTP id 15so504053pwi.24
+        for <multiple recipients>; Tue, 10 Nov 2009 21:39:22 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=kL5DEThVRU+FCz7jApMACAEsgj+LluB+0m67OJdRsdQ=;
+        b=wjI72scOZeVlXMBilkV3Qq0ZvuFYAtg7m0VKHoKa3StRVO6EcJW7QLqrhGMvEvYkqd
+         IrM4AVCSV27b4CszyvJwibkuUd+gJ3tGWwzbc2DRiDmFDW5fNVtXbrpkkcsI5Huf+G/s
+         TNDQVPnlLtdXvdrmbE3apBbAvqRBO5konOisg=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=YuwuaN6b7K1SRvJz+cDrHZZb7T1Io9oSpYiLFqHVFRYpF5Bx0pcDCFeKv1DmZuqeNJ
+         VXIAgC/KFXgPDB/aqV+B57Uc7yzUNzAKvOapRbIpybkdojpdQvzgLAdlr0e5Qj90VrQB
+         F0m/t6Q/vmhvUsQGlXLGDY50ik/Y3UNYjTpT8=
+Received: by 10.114.237.37 with SMTP id k37mr2305695wah.31.1257917961955;
+        Tue, 10 Nov 2009 21:39:21 -0800 (PST)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPS id 22sm850415pxi.6.2009.11.10.21.39.18
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Tue, 10 Nov 2009 21:39:21 -0800 (PST)
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH -queue 0/2] Cleanups of loongson support
+Date:	Wed, 11 Nov 2009 13:39:10 +0800
+Message-Id: <cover.1257917611.git.wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.6.2.1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24829
+X-archive-position: 24830
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 11, 2009 at 10:42:31AM +0800, Wu Zhangjin wrote:
+From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-> > -mlong-calls really degrades performance.  I have seen things like 6% 
-> > drop in network packet forwarding rates with -mlong-calls.
-> > 
-> 
-> so much drop? seems only two instructions added for it: lui, addi. from
-> this view point, I think the -fno-omit-frame-pointer(add, sd, move...)
-> will also bring with much drop.
+This patchset is needed for the coming patchsets.
 
-The calling sequence is quite badly bloated.  Example:
+  o [loongson] mem.c: indent the file with TAB instead of whitespaces
+    The old mem.c use the whitespaces as the indent, fix it.
+  o [loongson] 2f: Cleanups of the #if clauses
+    add two new options for describing the features of loongson2f, and
+    replaces the old ugly #if clauses by them.
 
-Normal 32/64-bit subroutine call:
+Thanks & Regards,
+	Wu Zhangjin
 
-	jal	symbol
+Wu Zhangjin (2):
+  [loongson] mem.c: indent the file with TAB instead of whitespaces
+  [loongson] 2f: Cleanups of the #if clauses
 
-32-bit with -mlong-call:
-
-	lui	$25, %hi(foo)
-	addiu	$25, %lo(foo)
-	jalr	$25
-
-64-bit with -mlong-call:
-
-	lui	$25, %highest(foo)
-	lui	$2, %hi(foo)
-	daddiu	$25, %higher(foo)
-	daddiu	$2, %lo(foo)
-	dsll	$25, 32
-	daddu	$25, $2
-	jalr	$25
-
-So not considering the possible cost of the delay slot that's 1 vs. 3 vs. 7
-instructions.  Last I checked ages ago gcc didn't apropriately consider this
-cost when generating -mlong-calls code and Linux these days also is
-optimized under the assumption that subroutine calls are cheap.
-
-It's time that we get a -G optimization that works for the kernel; it would
-allow to cut down the -mlong-calls calling sequence to just:
-
-	lw/ld	$25, offset($gp)
-	jalr	$25
-
-> It's time to remove them? -mlong-calls, -fno-omit-frame-pointer.
-> 
-> > It would be better to fix all the tools so that they could handle both 
-> > -mlong-calls and -mno-long-calls code.
-> > 
-> 
-> It's totally possible, will try to make it work later. I just wanted the
-> stuff simple, but if it really brings us with much drop, it's time to
-> fix it.
-
-  Ralf
+ arch/mips/Kconfig                              |    8 ++++++
+ arch/mips/include/asm/mach-loongson/loongson.h |    6 ++--
+ arch/mips/include/asm/mach-loongson/pci.h      |    4 +-
+ arch/mips/loongson/common/init.c               |    2 +-
+ arch/mips/loongson/common/mem.c                |   29 ++++++++++++-----------
+ arch/mips/loongson/common/pci.c                |    2 +-
+ 6 files changed, 30 insertions(+), 21 deletions(-)

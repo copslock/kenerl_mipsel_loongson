@@ -1,101 +1,63 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Nov 2009 00:45:35 +0100 (CET)
-Received: from mail-yw0-f173.google.com ([209.85.211.173]:54765 "EHLO
-	mail-yw0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492578AbZKJXp1 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Nov 2009 00:45:27 +0100
-Received: by ywh3 with SMTP id 3so884792ywh.22
-        for <multiple recipients>; Tue, 10 Nov 2009 15:45:20 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type;
-        bh=7WyHLjEBes/Cvs1iJnqKj3HVDzJlq+Rj/vTiAS5QJ54=;
-        b=rAzJF49xJRGTlwaJfpj4Tmu/vMNeEZiOinJO05fR5clv1yfsiTGEKYRZYeRwUKZZJH
-         YRd9KG+vnxBsAkSilSl8zNyxozjbRq7TzUn6X9+iVygl5cV8HyPBzsaOiOytOUcR2wdH
-         CbTosBWSRHsDez/g+9G9EmCsaKzkZX9L8Ju1E=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=u/FPQu+laC8Essg8C7ANesjB3j8wjST+FqiHbppw8EXZVB3QstCJu+b0a+X/7IjQWc
-         AQVC+tTbQGf2wH9BVOdzBxqY7xX000tKt3Ou0jmNZ7gYBsofy0uNYXMc4LWwFAOFt+Rj
-         l9YXAJOO80KNCMqTcyXw6B8uRFsc/MkAkV6FY=
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 11 Nov 2009 01:23:04 +0100 (CET)
+Received: from out4.smtp.messagingengine.com ([66.111.4.28]:49068 "EHLO
+	out4.smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492662AbZKKAW5 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 11 Nov 2009 01:22:57 +0100
+Received: from compute1.internal (compute1.internal [10.202.2.41])
+	by gateway1.messagingengine.com (Postfix) with ESMTP id D4002BE2CF;
+	Tue, 10 Nov 2009 19:22:55 -0500 (EST)
+Received: from web8.messagingengine.com ([10.202.2.217])
+  by compute1.internal (MEProxy); Tue, 10 Nov 2009 19:22:55 -0500
+DKIM-Signature:	v=1; a=rsa-sha1; c=relaxed/relaxed; d=messagingengine.com; h=message-id:from:to:mime-version:content-transfer-encoding:content-type:references:subject:in-reply-to:date; s=smtpout; bh=s2Pzj4N7L9FfVflOdXuBhrcpkKg=; b=E1Se3SRovlsnwMaXgTczYYTF5MeeI6HAr2fYv0Om1D9qPx8ORC5aZDPILMCJsAY/d821wH63Doj5OCr/frNCq9OobPaNZ+CdCQo2342B7twavUm007zbN61oLwCtnlB9erPxYEecy0/OUtEbrb5v4OwfqLT84SudMtJFifbK8s0=
+Received: by web8.messagingengine.com (Postfix, from userid 99)
+	id AC42111A861; Tue, 10 Nov 2009 19:22:55 -0500 (EST)
+Message-Id: <1257898975.30125.1344591929@webmail.messagingengine.com>
+X-Sasl-Enc: s92qWSs4qSf3+xZ+nEzHtfheneeWvOEq7FylA6G8v895 1257898975
+From:	myuboot@fastmail.fm
+To:	linux-kernel@vger.kernel.org,
+	"linux-mips" <linux-mips@linux-mips.org>
 MIME-Version: 1.0
-Received: by 10.91.121.17 with SMTP id y17mr1178951agm.27.1257896719823; Tue, 
-	10 Nov 2009 15:45:19 -0800 (PST)
-In-Reply-To: <20091110160354.GA7367@linux-mips.org>
-References: <e997b7420911100737k3563b9a5l5c6463ba078e9d9@mail.gmail.com>
-	 <20091110160354.GA7367@linux-mips.org>
-Date:	Wed, 11 Nov 2009 07:45:19 +0800
-Message-ID: <e997b7420911101545o29dc79adod17c4166880886ff@mail.gmail.com>
-Subject: Re: Could not use printf after init process
-From:	"wilbur.chan" <wilbur512@gmail.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Linux MIPS Mailing List <linux-mips@linux-mips.org>
-Content-Type: multipart/alternative; boundary=0016e640d1f0264bf604780ce70c
-Return-Path: <wilbur512@gmail.com>
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+X-Mailer: MessagingEngine.com Webmail Interface
+References: <1255735395.30097.1340523469@webmail.messagingengine.com>
+ <4AD906D8.3020404@caviumnetworks.com>
+Subject: Kernel panic - not syncing: Attempted to kill init!
+In-Reply-To: <4AD906D8.3020404@caviumnetworks.com>
+Date:	Tue, 10 Nov 2009 18:22:55 -0600
+Return-Path: <myuboot@fastmail.fm>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24825
+X-archive-position: 24826
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wilbur512@gmail.com
+X-original-sender: myuboot@fastmail.fm
 Precedence: bulk
 X-list: linux-mips
 
---0016e640d1f0264bf604780ce70c
-Content-Type: text/plain; charset=ISO-8859-1
+Hi, 
 
-2009/11/11 Ralf Baechle <ralf@linux-mips.org>
+I got the following error trying to bring up the /sbin/init with Kernel
+2.6.31 using cramfs filesystem on a MIPS 32 board:
 
->  On Tue, Nov 10, 2009 at 11:37:20PM +0800, wilbur.chan wrote:
->
->
-> I assume you meant printk, not printf.
->
-> If kernel_execve() is successful the function won't return so code
-> following
-> that statement won't be executed.
->
->  Ralf
->
+[    1.160000] VFS: Mounted root (cramfs filesystem) readonly on device
+31:2.
+[    1.171000] Freeing unused kernel memory: 116k freed
+[    1.223000] Kernel panic - not syncing: Attempted to kill init!
+[    1.229000] Rebooting in 3 seconds..
 
-It was 'printf' in init process which was generated by busybox.
+Using BDI I know the kernel panic happens as soon as
+run_init_process("/sbin/init") in init_post() is called. The filesystem
+itself seems to be ok, because I can use 'ls' command under u-boot to
+see /sbin/init is a symbolic link to busybox. Also the kernel seems to
+like the filesystem and can mount the filesystem.  I have for checked
+for similar questions for this error, so I tried replacing /sbin/init
+with a hello world program, but the result is exactly the same. It seems
+neither hello-world or /sbin/init got executed. 
 
-After I replaced 'init' with a simple 'hello wolrd' executable , which was
-like kernel_execve("/hello wolrd"),
+At this point, I don't know how to debug this issue. Any suggestion on
+how to debug this issue will be greatly appreciated.
 
-it could not print the 'hello wolrd' either.
-
---0016e640d1f0264bf604780ce70c
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
-
-<br><br>
-<div class=3D"gmail_quote">2009/11/11 Ralf Baechle <span dir=3D"ltr">&lt;<a=
- href=3D"mailto:ralf@linux-mips.org">ralf@linux-mips.org</a>&gt;</span><br>
-<blockquote class=3D"gmail_quote" style=3D"PADDING-LEFT: 1ex; MARGIN: 0px 0=
-px 0px 0.8ex; BORDER-LEFT: #ccc 1px solid">
-<div>
-<div></div>
-<div class=3D"h5">On Tue, Nov 10, 2009 at 11:37:20PM +0800, wilbur.chan wro=
-te:<br><br><br></div></div>I assume you meant printk, not printf.<br><br>If=
- kernel_execve() is successful the function won&#39;t return so code follow=
-ing<br>
-that statement won&#39;t be executed.<br><font color=3D"#888888"><br>=A0Ral=
-f<br></font></blockquote></div>
-<div><br>It was &#39;printf&#39; in init process which was generated by bus=
-ybox.</div>
-<div>=A0</div>
-<div>After I replaced &#39;init&#39; with a simple &#39;hello wolrd&#39;=A0=
-executable , which was like kernel_execve(&quot;/hello wolrd&quot;),</div>
-<div>=A0</div>
-<div>it could not print the &#39;hello wolrd&#39; either. </div>
-<div>=A0</div>
-<div>=A0</div>
-<div>=A0</div>
-<div>=A0</div>
-
---0016e640d1f0264bf604780ce70c--
+Andrew

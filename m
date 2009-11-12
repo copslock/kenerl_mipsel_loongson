@@ -1,32 +1,33 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Nov 2009 17:42:01 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:57562 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Nov 2009 18:02:22 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:43422 "EHLO h5.dl5rb.org.uk"
 	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
-	id S1493047AbZKLQl6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 12 Nov 2009 17:41:58 +0100
+	id S1493171AbZKLRCT (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Thu, 12 Nov 2009 18:02:19 +0100
 Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nACGg21F010419;
-	Thu, 12 Nov 2009 17:42:02 +0100
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nACH2MwN011025;
+	Thu, 12 Nov 2009 18:02:22 +0100
 Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nACGg2q5010418;
-	Thu, 12 Nov 2009 17:42:02 +0100
-Date:	Thu, 12 Nov 2009 17:42:02 +0100
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nACH2KqE011021;
+	Thu, 12 Nov 2009 18:02:20 +0100
+Date:	Thu, 12 Nov 2009 18:02:20 +0100
 From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Florian Fainelli <florian@openwrt.org>
-Cc:	linux-mips <linux-mips@linux-mips.org>, netdev@vger.kernel.org,
-	David Miller <davem@davemloft.net>
-Subject: Re: [PATCH 2/2] au1000-eth: convert to platform_driver model
-Message-ID: <20091112164202.GB10372@linux-mips.org>
-References: <200911100113.38685.florian@openwrt.org>
+To:	"Kevin D. Kissell" <kevink@paralogos.com>
+Cc:	Mikael Starvik <mikael.starvik@axis.com>,
+	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+	Jesper Nilsson <Jesper.Nilsson@axis.com>
+Subject: Re: SMTC lookup in smtc_distribute_timer
+Message-ID: <20091112170220.GC10372@linux-mips.org>
+References: <4BEA3FF3CAA35E408EA55C7BE2E61D0546A586E7EA@xmail3.se.axis.com> <4AF9C2EA.3090205@paralogos.com> <4BEA3FF3CAA35E408EA55C7BE2E61D0546A586E886@xmail3.se.axis.com> <4AFB0F30.7090209@paralogos.com> <4BEA3FF3CAA35E408EA55C7BE2E61D0546A586EA36@xmail3.se.axis.com> <4AFBD7D5.2090304@paralogos.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <200911100113.38685.florian@openwrt.org>
+In-Reply-To: <4AFBD7D5.2090304@paralogos.com>
 User-Agent: Mutt/1.5.19 (2009-01-05)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24879
+X-archive-position: 24880
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -34,18 +35,18 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 10, 2009 at 01:13:38AM +0100, Florian Fainelli wrote:
+On Thu, Nov 12, 2009 at 10:39:33AM +0100, Kevin D. Kissell wrote:
 
-> 
-> This patch converts the au1000-eth driver to become a full
-> platform-driver as it ought to be. We now pass PHY-speficic
-> configurations through platform_data but for compatibility
-> the driver still assumes the default settings (search for PHY1 on
-> MAC0) when no platform_data is passed. Tested on my MTX-1 board.
-> 
-> Acked-by: David S. Miller <davem@davemloft.net>
-> Signed-off-by: Florian Fainelli <florian@openwrt.org>
+> OK, thanks.  Ralf, can we consider this one queued?  It does seem to  
+> have been captured correctly by Patchwork.
 
-Queued for 2.6.33.  Thanks everybody!
+Just applied it to master; this should go into 2.6.32 and the -stable
+branches.
+
+Patchwork only tracks patches so people know the status of their patches and
+I don't drop it by accident.  A patch just showing up in patchwork doesn't
+yet mean it has been accepted.
+
+Thanks everybody!
 
   Ralf

@@ -1,170 +1,95 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Nov 2009 10:42:44 +0100 (CET)
-Received: from gateway15.websitewelcome.com ([69.93.82.23]:42812 "HELO
-	gateway15.websitewelcome.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with SMTP id S1492091AbZKLJmh (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Thu, 12 Nov 2009 10:42:37 +0100
-Received: (qmail 25296 invoked from network); 12 Nov 2009 09:56:21 -0000
-Received: from gator750.hostgator.com (174.132.194.2)
-  by gateway15.websitewelcome.com with SMTP; 12 Nov 2009 09:56:21 -0000
-Received: from c-24-23-195-109.hsd1.ca.comcast.net ([24.23.195.109]:44866 helo=odysseus.paralogos.com)
-	by gator750.hostgator.com with esmtpsa (TLSv1:AES256-SHA:256)
-	(Exim 4.69)
-	(envelope-from <kevink@paralogos.com>)
-	id 1N8WCF-0001ya-QL; Thu, 12 Nov 2009 03:42:31 -0600
-Message-ID: <4AFBD7D5.2090304@paralogos.com>
-Date:	Thu, 12 Nov 2009 10:39:33 +0100
-From:	"Kevin D. Kissell" <kevink@paralogos.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.1.4pre) Gecko/20091014 Fedora/3.0-2.8.b4.fc11 Thunderbird/3.0b4
-MIME-Version: 1.0
-To:	Mikael Starvik <mikael.starvik@axis.com>
-CC:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
-	Jesper Nilsson <Jesper.Nilsson@axis.com>
-Subject: Re: SMTC lookup in smtc_distribute_timer
-References: <4BEA3FF3CAA35E408EA55C7BE2E61D0546A586E7EA@xmail3.se.axis.com> <4AF9C2EA.3090205@paralogos.com> <4BEA3FF3CAA35E408EA55C7BE2E61D0546A586E886@xmail3.se.axis.com> <4AFB0F30.7090209@paralogos.com> <4BEA3FF3CAA35E408EA55C7BE2E61D0546A586EA36@xmail3.se.axis.com>
-In-Reply-To: <4BEA3FF3CAA35E408EA55C7BE2E61D0546A586EA36@xmail3.se.axis.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Nov 2009 12:06:33 +0100 (CET)
+Received: from mail-px0-f176.google.com ([209.85.216.176]:47975 "EHLO
+	mail-px0-f176.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492243AbZKLLG0 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Thu, 12 Nov 2009 12:06:26 +0100
+Received: by pxi6 with SMTP id 6so1974126pxi.0
+        for <multiple recipients>; Thu, 12 Nov 2009 03:06:15 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=sJLZBxUAEEKTRK7KlOedWuGY6rArQHaIocpxsg1DMY4=;
+        b=goSJ31a3s2+OZLfdtkb1N9/vj3fpadPiWPWDWWVviAZHortpNXjNRDm2OWK5g5oFXK
+         YQVHM1kiism9emGBdalg953TTMcyk0ptykkk61h7tFiFvSsY9ehkg9QBxW3iCuq4zMHf
+         WVIPqpD9nWyXhUwNy8egnfB9/AsTNwdksobFU=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=iAcn9J5I7Iyx4FEZtfKu6hJoyzmTuku5ZKoFWZZ1IzvFzusiWJHBCdBHkU55nAuE/N
+         VAtfBhCmAXm9LBqkBCIjqm2U8xx2pQME0LELfrjrRAG/s/beaJDablRMjBnGdTqrTqHU
+         mn3gzo8G8r5b8CZT4d3gCXRlQXdgz2YxIPnS0=
+Received: by 10.114.187.24 with SMTP id k24mr6034680waf.34.1258023974935;
+        Thu, 12 Nov 2009 03:06:14 -0800 (PST)
+Received: from ?172.16.2.101? ([222.92.8.142])
+        by mx.google.com with ESMTPS id 20sm1593001pzk.5.2009.11.12.03.06.07
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 12 Nov 2009 03:06:13 -0800 (PST)
+Subject: Re: [PATCH v7 04/17] tracing: add static function tracer support
+ for MIPS
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:	linux-mips@linux-mips.org
+Cc:	linux-kernel@vger.kernel.org, zhangfx@lemote.com, zhouqg@gmail.com,
+	Ralf Baechle <ralf@linux-mips.org>, rostedt@goodmis.org,
+	Frederic Weisbecker <fweisbec@gmail.com>,
+	Ingo Molnar <mingo@elte.hu>,
+	Nicholas Mc Guire <der.herr@hofr.at>,
+	David Daney <ddaney@caviumnetworks.com>,
+	Richard Sandiford <rdsandiford@googlemail.com>,
+	Patrik Kluba <kpajko79@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Michal Simek <monstr@monstr.eu>
+In-Reply-To: <cefe074f5eb3cfbc2e0bb41b0c1f61fcd0190d90.1257779502.git.wuzhangjin@gmail.com>
+References: <9dc81a7a9e5a292cccdf465c533a2b08d19d6021.1257779502.git.wuzhangjin@gmail.com>
+	 <b99c08397d9ff92ac5a72bda9131df41b702fc71.1257779502.git.wuzhangjin@gmail.com>
+	 <8f579e2cece16cd22358a4ec143ef6a8c462639b.1257779502.git.wuzhangjin@gmail.com>
+	 <cefe074f5eb3cfbc2e0bb41b0c1f61fcd0190d90.1257779502.git.wuzhangjin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:	Thu, 12 Nov 2009 19:06:05 +0800
+Message-ID: <1258023965.3113.79.camel@falcon.domain.org>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.1 
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator750.hostgator.com
-X-AntiAbuse: Original Domain - linux-mips.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - paralogos.com
-Return-Path: <kevink@paralogos.com>
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24876
+X-archive-position: 24877
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: kevink@paralogos.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-OK, thanks.  Ralf, can we consider this one queued?  It does seem to 
-have been captured correctly by Patchwork.
+Hi, All
 
-             Regards,
+On Mon, 2009-11-09 at 23:31 +0800, Wu Zhangjin wrote:
+[...]
+> 
+> And to support module tracing, we need to enable -mlong-calls for the
+> long call from modules space to kernel space. -mlong-calls load the
+> address of _mcount to a register and then jump to it, so, the address is
+> allowed to be 32bit long, but without -mlong-calls, for the instruction
+> "jal _mcount" only left 26bit for the address of _mcount, which is not
+> enough for jumping from the module space to kernel space.
+[...]
+> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+[...]
+> +else
+> +cflags-y := -mlong-calls
+> +endif
 
-             Kevin K.
+Just made dynamic ftracer work without the above patch.
 
-On 11/12/2009 09:26 AM, Mikael Starvik wrote:
-> Ok. Yes, it works in our case. Tests have run overnight without any problems.
->
-> Regards
-> /Mikael
->
-> -----Original Message-----
-> From: Kevin D. Kissell [mailto:kevink@paralogos.com]
-> Sent: den 11 november 2009 20:23
-> To: Mikael Starvik
-> Cc: linux-mips@linux-mips.org; Jesper Nilsson
-> Subject: Re: SMTC lookup in smtc_distribute_timer
->
-> Rather than just assume all is well, I really would appreciate it
-> of you could send a positive acknowledgement that it solves
-> the problem without causing the universe to implode, so that
-> Ralf can queue up the patch for the repository.
->
->         Regards,
->
->         Kevin K.
->
-> Mikael Starvik wrote:
->    
->> Yes, I thought of that variant after I sent the email yesterday.
->> I'll change our local implementation. If you don't hear anything
->> it works as expected in our case (it was pretty easy for us to
->> repeat).
->>
->> /Mikael
->>
->> -----Original Message-----
->> From: Kevin D. Kissell [mailto:kevink@paralogos.com]
->> Sent: den 10 november 2009 20:46
->> To: Mikael Starvik
->> Cc: linux-mips@linux-mips.org; Jesper Nilsson
->> Subject: Re: SMTC lookup in smtc_distribute_timer
->>
->> Your failure scenario looks plausible. Mea culpa.  However, I think that
->> a more elegant and slightly smaller (depending on just how good
->> the optimizer is) fix would be:
->>
->> diff --git a/arch/mips/kernel/cevt-smtc.c b/arch/mips/kernel/cevt-smtc.c
->> index 98bd7de..b102e4f 100644
->> --- a/arch/mips/kernel/cevt-smtc.c
->> +++ b/arch/mips/kernel/cevt-smtc.c
->> @@ -173,11 +173,12 @@ void smtc_distribute_timer(int vpe)
->>          unsigned int mtflags;
->>          int cpu;
->>          struct clock_event_device *cd;
->> -       unsigned long nextstamp = 0L;
->> +       unsigned long nextstamp;
->>          unsigned long reference;
->>
->>
->>   repeat:
->> +       nextstamp = 0L;
->>          for_each_online_cpu(cpu) {
->>              /*
->>               * Find virtual CPUs within the current VPE who have
->>
->>
->>
->> I don't have access to SMTC-capable hardware just now, but
->> I guess the way to test this would be to have a test program
->> or kernel test stub program two events separated by the smallest
->> possible increment, so that the second will have passed by the
->> time interrupt services for the first.
->>
->>            Regards,
->>
->>            Kevin K.
->>
->> Mikael Starvik wrote:
->>
->>      
->>> Ok, my guess is something like this:
->>>
->>> 1. At the end of smtc_distribute_timer, nextstamp is valid and has already
->>> passed so we goto repeat.
->>> 2. Nothing updates nextstamp (only updated if the timeout is in the future
->>> And we just decided it is in the past)
->>> 3. At the end nextstamp still has the same value so it is still valid and
->>> in the past.
->>> 4. This repeats until read_c0_count has a value which causes nextstamp to
->>> be in the future.
->>>
->>> One possible patch that seams to solve it for me below. This is probably
->>> not the correct solution so I'll need help from the SMTC experts to review
->>> it and come up with the correct solution.
->>>
->>> Best Regards
->>> /Mikael
->>>
->>> Index: cevt-smtc.c
->>> ===================================================================
->>> RCS file: /usr/local/cvs/linux/os/linux-2.6/arch/mips/kernel/cevt-smtc.c,v
->>> retrieving revision 1.2
->>> diff -u -r1.2 cevt-smtc.c
->>> --- cevt-smtc.c	2 Sep 2009 10:07:51 -0000	1.2
->>> +++ cevt-smtc.c	10 Nov 2009 11:40:31 -0000
->>> @@ -223,8 +223,10 @@
->>>   		write_c0_compare(nextstamp);
->>>   		ehb();
->>>   		if ((nextstamp - (unsigned long)read_c0_count())
->>> -			>  (unsigned long)LONG_MAX)
->>> +			>  (unsigned long)LONG_MAX) {
->>> +				nextstamp = 0L;
->>>   				goto repeat;
->>> +			}
->>>   	}
->>>   }
->>>
->>>
->>>
->>>
->>>        
->>
->>      
->    
+Will send it out as v8 later.
+
+any more feedbacks to this v7 patchset?
+
+Thanks & Regards,
+	Wu Zhangjin

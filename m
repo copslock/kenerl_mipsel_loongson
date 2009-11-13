@@ -1,66 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 12 Nov 2009 22:16:52 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:54568 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
-	id S1493307AbZKLVQs (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Thu, 12 Nov 2009 22:16:48 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nACLGhLh027976;
-	Thu, 12 Nov 2009 22:16:44 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nACLGbSH027974;
-	Thu, 12 Nov 2009 22:16:37 +0100
-Date:	Thu, 12 Nov 2009 22:16:37 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	"Maciej W. Rozycki" <macro@linux-mips.org>
-Cc:	Wu Zhangjin <wuzhangjin@gmail.com>,
-	David Daney <ddaney@caviumnetworks.com>,
-	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
-	zhangfx@lemote.com, zhouqg@gmail.com, rostedt@goodmis.org,
-	Frederic Weisbecker <fweisbec@gmail.com>,
-	Ingo Molnar <mingo@elte.hu>,
-	Nicholas Mc Guire <der.herr@hofr.at>,
-	Richard Sandiford <rdsandiford@googlemail.com>,
-	Patrik Kluba <kpajko79@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Michal Simek <monstr@monstr.eu>
-Subject: Re: [PATCH v7 04/17] tracing: add static function tracer support
-	for MIPS
-Message-ID: <20091112211637.GA27465@linux-mips.org>
-References: <9dc81a7a9e5a292cccdf465c533a2b08d19d6021.1257779502.git.wuzhangjin@gmail.com> <b99c08397d9ff92ac5a72bda9131df41b702fc71.1257779502.git.wuzhangjin@gmail.com> <8f579e2cece16cd22358a4ec143ef6a8c462639b.1257779502.git.wuzhangjin@gmail.com> <cefe074f5eb3cfbc2e0bb41b0c1f61fcd0190d90.1257779502.git.wuzhangjin@gmail.com> <4AF8B31C.5030802@caviumnetworks.com> <1257814817.2822.3.camel@falcon.domain.org> <4AF99848.9090000@caviumnetworks.com> <1257907351.2922.37.camel@falcon.domain.org> <20091111031325.GA20716@linux-mips.org> <alpine.LFD.2.00.0911111327450.10184@eddie.linux-mips.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.LFD.2.00.0911111327450.10184@eddie.linux-mips.org>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 13 Nov 2009 03:03:53 +0100 (CET)
+Received: from mail-yx0-f204.google.com ([209.85.210.204]:59620 "EHLO
+	mail-yx0-f204.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492111AbZKMCDr (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 13 Nov 2009 03:03:47 +0100
+Received: by yxe42 with SMTP id 42so4293019yxe.22
+        for <multiple recipients>; Thu, 12 Nov 2009 18:03:40 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=uitlUtHY2h4uiz6PUQP8cDguSpGa8xo6YC7EbQNC5pE=;
+        b=SZwEEjNh+j4aomlppjtQaRq+3erFd2M/b2Br6iAlWo1WWzBsbgRoEqlTLAHfxpIjBf
+         fScu3ZvzQipehQvKTTyRzzueQPFRIf7LXVGTOXf79Np/kebu/X4Nfijlt35WqijZKPSU
+         fA4koIFdD/r32JDvmQfTn87mBNtYdz+S+lEXQ=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=ZsVgealpo+lMJZSmM79DrGo0QbtbeZcKO80WAvS/bju7gmpsBesAJ1n0ZWniZjHTVA
+         kR980lxRFiwR5nCyAKjFPR3/rJdtBE2sjoZI71v8vRtmJuOSRc2ia4677VkLxkBJqokY
+         Ylf3gtDCxf2cpxDLJhyERbe33CQp8IEVkLMjQ=
+Received: by 10.101.29.5 with SMTP id g5mr4152984anj.103.1258077819948;
+        Thu, 12 Nov 2009 18:03:39 -0800 (PST)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPS id 22sm1570717yxe.39.2009.11.12.18.03.35
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Thu, 12 Nov 2009 18:03:39 -0800 (PST)
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH] [loongson] Fixups of "MIPS: Loongson 2F: Add suspend support framework"
+Date:	Fri, 13 Nov 2009 10:03:28 +0800
+Message-Id: <1258077808-582-1-git-send-email-wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.6.2.1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24884
+X-archive-position: 24885
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 11, 2009 at 01:30:40PM +0000, Maciej W. Rozycki wrote:
+Hi, Ralf
 
-> 
-> On Wed, 11 Nov 2009, Ralf Baechle wrote:
-> 
-> > 64-bit with -mlong-call:
-> > 
-> > 	lui	$25, %highest(foo)
-> > 	lui	$2, %hi(foo)
-> > 	daddiu	$25, %higher(foo)
-> > 	daddiu	$2, %lo(foo)
-> > 	dsll	$25, 32
-> > 	daddu	$25, $2
-> > 	jalr	$25
-> 
->  Don't we use -msym32 these days for this very reason?
+You have helped changing the CPU_SUPPORT_CPUFREQ to
+CPU_SUPPORTS_CPUFREQ(arch/mips/Kconfig), we need to change it here too.
 
-We do - where we can.  Not all systems can use -msym32.
+Could you please fold this patch into "MIPS: Loongson 2F: Add suspend
+support framework"?
 
-  Ralf
+Thanks & Regards,
+	Wu Zhangjin
+
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/mips/loongson/Kconfig |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/arch/mips/loongson/Kconfig b/arch/mips/loongson/Kconfig
+index 029360f..17e72fd 100644
+--- a/arch/mips/loongson/Kconfig
++++ b/arch/mips/loongson/Kconfig
+@@ -65,4 +65,4 @@ config CS5536
+ config LOONGSON_SUSPEND
+ 	bool
+ 	default y
+-	depends on CPU_SUPPORT_CPUFREQ && SUSPEND
++	depends on CPU_SUPPORTS_CPUFREQ && SUSPEND
+-- 
+1.6.2.1

@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Nov 2009 18:34:46 +0100 (CET)
-Received: from mail-pz0-f197.google.com ([209.85.222.197]:38792 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Nov 2009 18:35:10 +0100 (CET)
+Received: from mail-pz0-f197.google.com ([209.85.222.197]:58070 "EHLO
 	mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493790AbZKPRd5 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 16 Nov 2009 18:33:57 +0100
-Received: by pzk35 with SMTP id 35so4597174pzk.22
-        for <multiple recipients>; Mon, 16 Nov 2009 09:33:50 -0800 (PST)
+	by ftp.linux-mips.org with ESMTP id S1493791AbZKPReC (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 16 Nov 2009 18:34:02 +0100
+Received: by pzk35 with SMTP id 35so4597224pzk.22
+        for <multiple recipients>; Mon, 16 Nov 2009 09:33:55 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer:in-reply-to:references:in-reply-to:references;
-        bh=FU1l/o38myF/LbRRAxIJOYS1Ren4vHjbDp/q8x5blVk=;
-        b=hChabFWBCREKGxUP/ZYwrPV5V7UsNLGvLOUAZ9Fs1+ODIEvME+eEE39JWqLVLL9ob8
-         6dxeOnVWAWeCxlOYKf5DAS6LZOxqAsD4I4Dw0V0PbIgD75pQaDpWZ3jCA95wtRXzPeVm
-         v4hp3Xqg2foPLCH3g8u5aYiN6PhhSYsGXXWHk=
+        bh=3il8zlghRmUziqeXssHZC5QaKgn+dC8OgGGsODjnqtk=;
+        b=RPUsJ0dM3fMmoELcBgYr895JFgDKqi0o4H+KYtRfq2Ep1qpLODrM8at9fPh0E+3tIf
+         KEqk6S31LdCIQVe+lieYp5rfADqA0uNuoYe8fj9zJAjv4Pfj2hI+yOjFAZm/p2MjS6oU
+         L/cKHmgoK1YAfAamQeRcgVQxoWL2EiMzYPo9Q=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=LGElhHh0DMofT8X2eIUAsu0BS8+EGjkQT4+U4aQvVnyGiuXB3WQn+Fp3ZqUJFZ2dR3
-         D0AzAiFuDo8G/PKLNLwyILdIAXlbxsc2q8BO/rcJuzEDl/vzZvpMb6GE3+T6p4zOsf2w
-         2mIx+fQHrxAlAM1CwTGPb7caSSW9rt0P7Sajs=
-Received: by 10.115.80.14 with SMTP id h14mr5499394wal.133.1258392830518;
-        Mon, 16 Nov 2009 09:33:50 -0800 (PST)
+        b=qtRHexys2NrhNTdfxFOAPPUvq2t1tEZqUb81u+UNNlrShjuoTHczvWLLmI5fCE2+Q+
+         R0nRojkqLXK7lqT1iP64BRMqbUyh/s0bQf5O+DwNRqt1J2tCmdRVDhR9KrAHhg+25IXy
+         G6zM5oJ+VGmHPFFw+9UbK450dZxeFWlALnIQY=
+Received: by 10.114.86.2 with SMTP id j2mr9026640wab.159.1258392835377;
+        Mon, 16 Nov 2009 09:33:55 -0800 (PST)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id 23sm1603406pzk.4.2009.11.16.09.33.46
+        by mx.google.com with ESMTPS id 23sm1603406pzk.4.2009.11.16.09.33.50
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 16 Nov 2009 09:33:50 -0800 (PST)
+        Mon, 16 Nov 2009 09:33:54 -0800 (PST)
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	linux-mips@linux-mips.org, cpufreq@vger.kernel.org,
@@ -32,20 +32,21 @@ Cc:	linux-mips@linux-mips.org, cpufreq@vger.kernel.org,
 	Dominik Brodowski <linux@dominikbrodowski.net>,
 	yanh@lemote.com, huhb@lemote.com,
 	Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH v1 2/3] MIPS: add basic options for CPUFreq support
-Date:	Tue, 17 Nov 2009 01:32:58 +0800
-Message-Id: <2baac080ae9d0abb943b44b0505a8759cdaa9a41.1258392631.git.wuzhangjin@gmail.com>
+Subject: [PATCH v1 3/3] [loongson] 2f: add CPUFreq support
+Date:	Tue, 17 Nov 2009 01:32:59 +0800
+Message-Id: <098db5f99a601ad0f5853e7ca0a66200f351a86b.1258392631.git.wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.6.2.1
-In-Reply-To: <824cd0205789fb1332079a4f3ff3bb0fb9f446e2.1258392631.git.wuzhangjin@gmail.com>
+In-Reply-To: <2baac080ae9d0abb943b44b0505a8759cdaa9a41.1258392631.git.wuzhangjin@gmail.com>
 References: <cover.1258392326.git.wuzhangjin@gmail.com>
  <824cd0205789fb1332079a4f3ff3bb0fb9f446e2.1258392631.git.wuzhangjin@gmail.com>
+ <2baac080ae9d0abb943b44b0505a8759cdaa9a41.1258392631.git.wuzhangjin@gmail.com>
 In-Reply-To: <cover.1258392631.git.wuzhangjin@gmail.com>
 References: <cover.1258392631.git.wuzhangjin@gmail.com>
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24932
+X-archive-position: 24933
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -53,73 +54,618 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-This patch adds basic options for MIPS CPUFreq support.
+Loongson2f add a new capability to dynamicly scale cpu frequency. And
+when we put it into wait mode via setting the frequency as ZERO, it will
+wait there until an external interrupt take place, which will help
+saving power for us.
 
-Since MIPS Timer's frequency is relative to the processor's frequency,
-So, MIPS CPUFreq support not only need the processor's CPUFreq support
-but also need an external timer. otherwise, we will make the system time
-"mussy".
+And as the last patch described, to enable this support, an external
+timer is needed to avoid getting wrong system time when using the MIPS
+Timer, 'Cause the MIPS Timer's frequency is half of the cpu frequency,
+when the cpu frequency is changed, the MIPS Timer will be not accuracy.
+
+This version incorporates the feedback from "Dominik Brodowski
+<linux@dominikbrodowski.net>" to register transition notifier before
+register_driver().
 
 Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
 ---
- arch/mips/Kconfig                |    3 +++
- arch/mips/kernel/cpufreq/Kconfig |   27 +++++++++++++++++++++++++++
- 2 files changed, 30 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/kernel/cpufreq/Kconfig
+ arch/mips/include/asm/clock.h                  |   64 ++++++++
+ arch/mips/include/asm/mach-loongson/loongson.h |    6 +-
+ arch/mips/kernel/Makefile                      |    2 +
+ arch/mips/kernel/cpu-probe.c                   |    2 +
+ arch/mips/kernel/cpufreq/Kconfig               |   14 ++
+ arch/mips/kernel/cpufreq/Makefile              |    5 +
+ arch/mips/kernel/cpufreq/loongson2_clock.c     |  166 +++++++++++++++++++
+ arch/mips/kernel/cpufreq/loongson2_cpufreq.c   |  202 ++++++++++++++++++++++++
+ arch/mips/loongson/Kconfig                     |    5 +-
+ arch/mips/loongson/common/env.c                |    3 +
+ 10 files changed, 466 insertions(+), 3 deletions(-)
+ create mode 100644 arch/mips/include/asm/clock.h
+ create mode 100644 arch/mips/kernel/cpufreq/Makefile
+ create mode 100644 arch/mips/kernel/cpufreq/loongson2_clock.c
+ create mode 100644 arch/mips/kernel/cpufreq/loongson2_cpufreq.c
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 0e4b510..bfe8c39 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -2146,6 +2146,7 @@ config MMU
+diff --git a/arch/mips/include/asm/clock.h b/arch/mips/include/asm/clock.h
+new file mode 100644
+index 0000000..83894aa
+--- /dev/null
++++ b/arch/mips/include/asm/clock.h
+@@ -0,0 +1,64 @@
++#ifndef __ASM_MIPS_CLOCK_H
++#define __ASM_MIPS_CLOCK_H
++
++#include <linux/kref.h>
++#include <linux/list.h>
++#include <linux/seq_file.h>
++#include <linux/clk.h>
++
++extern void (*cpu_wait) (void);
++
++struct clk;
++
++struct clk_ops {
++	void (*init) (struct clk *clk);
++	void (*enable) (struct clk *clk);
++	void (*disable) (struct clk *clk);
++	void (*recalc) (struct clk *clk);
++	int (*set_rate) (struct clk *clk, unsigned long rate, int algo_id);
++	long (*round_rate) (struct clk *clk, unsigned long rate);
++};
++
++struct clk {
++	struct list_head node;
++	const char *name;
++	int id;
++	struct module *owner;
++
++	struct clk *parent;
++	struct clk_ops *ops;
++
++	struct kref kref;
++
++	unsigned long rate;
++	unsigned long flags;
++};
++
++#define CLK_ALWAYS_ENABLED	(1 << 0)
++#define CLK_RATE_PROPAGATES	(1 << 1)
++
++/* Should be defined by processor-specific code */
++void arch_init_clk_ops(struct clk_ops **, int type);
++
++int clk_init(void);
++
++int __clk_enable(struct clk *);
++void __clk_disable(struct clk *);
++
++void clk_recalc_rate(struct clk *);
++
++int clk_register(struct clk *);
++void clk_unregister(struct clk *);
++
++/* the exported API, in addition to clk_set_rate */
++/**
++ * clk_set_rate_ex - set the clock rate for a clock source, with additional parameter
++ * @clk: clock source
++ * @rate: desired clock rate in Hz
++ * @algo_id: algorithm id to be passed down to ops->set_rate
++ *
++ * Returns success (0) or negative errno.
++ */
++int clk_set_rate_ex(struct clk *clk, unsigned long rate, int algo_id);
++
++#endif				/* __ASM_MIPS_CLOCK_H */
+diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
+index 9ee40df..daf7041 100644
+--- a/arch/mips/include/asm/mach-loongson/loongson.h
++++ b/arch/mips/include/asm/mach-loongson/loongson.h
+@@ -226,8 +226,12 @@ extern void mach_irq_dispatch(unsigned int pending);
+ #define LOONGSON_PCIMAP_WIN(WIN, ADDR)	\
+ 	((((ADDR)>>26) & LOONGSON_PCIMAP_PCIMAP_LO0) << ((WIN)*6))
  
- config I8253
- 	bool
-+	select MIPS_EXTERNAL_TIMER
+-/* Chip Config */
+ #ifdef CONFIG_CPU_SUPPORTS_CPUFREQ
++#include <linux/cpufreq.h>
++extern void loongson2_cpu_wait(void);
++extern struct cpufreq_frequency_table loongson2_clockmod_table[];
++
++/* Chip Config */
+ #define LOONGSON_CHIPCFG0		LOONGSON_REG(LOONGSON_REGBASE + 0x80)
+ #endif
  
- config ZONE_DMA32
- 	bool
-@@ -2222,6 +2223,8 @@ source "kernel/power/Kconfig"
+diff --git a/arch/mips/kernel/Makefile b/arch/mips/kernel/Makefile
+index e953c6d..6a9adff 100644
+--- a/arch/mips/kernel/Makefile
++++ b/arch/mips/kernel/Makefile
+@@ -91,6 +91,8 @@ CFLAGS_cpu-bugs64.o	= $(shell if $(CC) $(KBUILD_CFLAGS) -Wa,-mdaddi -c -o /dev/n
+ 
+ obj-$(CONFIG_HAVE_STD_PC_SERIAL_PORT)	+= 8250-platform.o
+ 
++obj-$(CONFIG_MIPS_CPUFREQ)	+= cpufreq/
++
+ EXTRA_CFLAGS += -Werror
+ 
+ CPPFLAGS_vmlinux.lds		:= $(KBUILD_CFLAGS)
+diff --git a/arch/mips/kernel/cpu-probe.c b/arch/mips/kernel/cpu-probe.c
+index 7a51866..80e202e 100644
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -16,6 +16,7 @@
+ #include <linux/ptrace.h>
+ #include <linux/smp.h>
+ #include <linux/stddef.h>
++#include <linux/module.h>
+ 
+ #include <asm/bugs.h>
+ #include <asm/cpu.h>
+@@ -32,6 +33,7 @@
+  * the CPU very much.
+  */
+ void (*cpu_wait)(void);
++EXPORT_SYMBOL(cpu_wait);
+ 
+ static void r3081_wait(void)
+ {
+diff --git a/arch/mips/kernel/cpufreq/Kconfig b/arch/mips/kernel/cpufreq/Kconfig
+index 37983a1..58c601e 100644
+--- a/arch/mips/kernel/cpufreq/Kconfig
++++ b/arch/mips/kernel/cpufreq/Kconfig
+@@ -20,6 +20,20 @@ if CPU_FREQ
+ 
+ comment "CPUFreq processor drivers"
+ 
++config LOONGSON2_CPUFREQ
++	tristate "Loongson2 CPUFreq Driver"
++	select CPU_FREQ_TABLE
++	depends on MIPS_CPUFREQ
++	help
++	  This option adds a CPUFreq driver for loongson processors which
++	  support software configurable cpu frequency.
++
++	  Loongson2F and it's successors support this feature.
++
++	  For details, take a look at <file:Documentation/cpu-freq/>.
++
++	  If in doubt, say N.
++
+ endif	# CPU_FREQ
  
  endmenu
- 
-+source "arch/mips/kernel/cpufreq/Kconfig"
-+
- source "net/Kconfig"
- 
- source "drivers/Kconfig"
-diff --git a/arch/mips/kernel/cpufreq/Kconfig b/arch/mips/kernel/cpufreq/Kconfig
+diff --git a/arch/mips/kernel/cpufreq/Makefile b/arch/mips/kernel/cpufreq/Makefile
 new file mode 100644
-index 0000000..37983a1
+index 0000000..c3479a4
 --- /dev/null
-+++ b/arch/mips/kernel/cpufreq/Kconfig
-@@ -0,0 +1,27 @@
++++ b/arch/mips/kernel/cpufreq/Makefile
+@@ -0,0 +1,5 @@
 +#
-+# CPU Frequency scaling
++# Makefile for the Linux/MIPS cpufreq.
 +#
 +
-+config MIPS_EXTERNAL_TIMER
-+	bool
++obj-$(CONFIG_LOONGSON2_CPUFREQ) += loongson2_cpufreq.o loongson2_clock.o
+diff --git a/arch/mips/kernel/cpufreq/loongson2_clock.c b/arch/mips/kernel/cpufreq/loongson2_clock.c
+new file mode 100644
+index 0000000..d7ca256
+--- /dev/null
++++ b/arch/mips/kernel/cpufreq/loongson2_clock.c
+@@ -0,0 +1,166 @@
++/*
++ * Copyright (C) 2006 - 2008 Lemote Inc. & Insititute of Computing Technology
++ * Author: Yanhua, yanh@lemote.com
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ */
 +
-+config MIPS_CPUFREQ
-+	bool
-+	default y
-+	depends on CPU_SUPPORTS_CPUFREQ && MIPS_EXTERNAL_TIMER
++#include <linux/cpufreq.h>
++#include <linux/platform_device.h>
 +
-+if MIPS_CPUFREQ
++#include <asm/clock.h>
 +
-+menu "CPU Frequency scaling"
++#include <loongson.h>
 +
-+source "drivers/cpufreq/Kconfig"
++static LIST_HEAD(clock_list);
++static DEFINE_SPINLOCK(clock_lock);
++static DEFINE_MUTEX(clock_list_sem);
 +
-+if CPU_FREQ
++/* Minimum CLK support */
++enum {
++	DC_ZERO, DC_25PT = 2, DC_37PT, DC_50PT, DC_62PT, DC_75PT,
++	DC_87PT, DC_DISABLE, DC_RESV
++};
 +
-+comment "CPUFreq processor drivers"
++struct cpufreq_frequency_table loongson2_clockmod_table[] = {
++	{DC_RESV, CPUFREQ_ENTRY_INVALID},
++	{DC_ZERO, CPUFREQ_ENTRY_INVALID},
++	{DC_25PT, 0},
++	{DC_37PT, 0},
++	{DC_50PT, 0},
++	{DC_62PT, 0},
++	{DC_75PT, 0},
++	{DC_87PT, 0},
++	{DC_DISABLE, 0},
++	{DC_RESV, CPUFREQ_TABLE_END},
++};
++EXPORT_SYMBOL_GPL(loongson2_clockmod_table);
 +
-+endif	# CPU_FREQ
++static struct clk cpu_clk = {
++	.name = "cpu_clk",
++	.flags = CLK_ALWAYS_ENABLED | CLK_RATE_PROPAGATES,
++	.rate = 800000000,
++};
 +
-+endmenu
++struct clk *clk_get(struct device *dev, const char *id)
++{
++	return &cpu_clk;
++}
++EXPORT_SYMBOL(clk_get);
 +
-+endif	# MIPS_CPUFREQ
++static void propagate_rate(struct clk *clk)
++{
++	struct clk *clkp;
++
++	list_for_each_entry(clkp, &clock_list, node) {
++		if (likely(clkp->parent != clk))
++			continue;
++		if (likely(clkp->ops && clkp->ops->recalc))
++			clkp->ops->recalc(clkp);
++		if (unlikely(clkp->flags & CLK_RATE_PROPAGATES))
++			propagate_rate(clkp);
++	}
++}
++
++int clk_enable(struct clk *clk)
++{
++	return 0;
++}
++EXPORT_SYMBOL(clk_enable);
++
++void clk_disable(struct clk *clk)
++{
++}
++EXPORT_SYMBOL(clk_disable);
++
++unsigned long clk_get_rate(struct clk *clk)
++{
++	return (unsigned long)clk->rate;
++}
++EXPORT_SYMBOL(clk_get_rate);
++
++void clk_put(struct clk *clk)
++{
++}
++EXPORT_SYMBOL(clk_put);
++
++int clk_set_rate(struct clk *clk, unsigned long rate)
++{
++	return clk_set_rate_ex(clk, rate, 0);
++}
++EXPORT_SYMBOL_GPL(clk_set_rate);
++
++int clk_set_rate_ex(struct clk *clk, unsigned long rate, int algo_id)
++{
++	int ret = 0;
++	int regval;
++	int i;
++
++	if (likely(clk->ops && clk->ops->set_rate)) {
++		unsigned long flags;
++
++		spin_lock_irqsave(&clock_lock, flags);
++		ret = clk->ops->set_rate(clk, rate, algo_id);
++		spin_unlock_irqrestore(&clock_lock, flags);
++	}
++
++	if (unlikely(clk->flags & CLK_RATE_PROPAGATES))
++		propagate_rate(clk);
++
++	for (i = 0; loongson2_clockmod_table[i].frequency != CPUFREQ_TABLE_END;
++	     i++) {
++		if (loongson2_clockmod_table[i].frequency ==
++		    CPUFREQ_ENTRY_INVALID)
++			continue;
++		if (rate == loongson2_clockmod_table[i].frequency)
++			break;
++	}
++	if (rate != loongson2_clockmod_table[i].frequency)
++		return -ENOTSUPP;
++
++	clk->rate = rate;
++
++	regval = LOONGSON_CHIPCFG0;
++	regval = (regval & ~0x7) | (loongson2_clockmod_table[i].index - 1);
++	LOONGSON_CHIPCFG0 = regval;
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(clk_set_rate_ex);
++
++long clk_round_rate(struct clk *clk, unsigned long rate)
++{
++	if (likely(clk->ops && clk->ops->round_rate)) {
++		unsigned long flags, rounded;
++
++		spin_lock_irqsave(&clock_lock, flags);
++		rounded = clk->ops->round_rate(clk, rate);
++		spin_unlock_irqrestore(&clock_lock, flags);
++
++		return rounded;
++	}
++
++	return rate;
++}
++EXPORT_SYMBOL_GPL(clk_round_rate);
++
++/*
++ * This is the simple version of Loongson-2 wait, Maybe we need do this in
++ * interrupt disabled content
++ */
++
++DEFINE_SPINLOCK(loongson2_wait_lock);
++void loongson2_cpu_wait(void)
++{
++	u32 cpu_freq;
++	unsigned long flags;
++
++	spin_lock_irqsave(&loongson2_wait_lock, flags);
++	cpu_freq = LOONGSON_CHIPCFG0;
++	LOONGSON_CHIPCFG0 &= ~0x7;	/* Put CPU into wait mode */
++	LOONGSON_CHIPCFG0 = cpu_freq;	/* Restore CPU state */
++	spin_unlock_irqrestore(&loongson2_wait_lock, flags);
++}
++EXPORT_SYMBOL_GPL(loongson2_cpu_wait);
+diff --git a/arch/mips/kernel/cpufreq/loongson2_cpufreq.c b/arch/mips/kernel/cpufreq/loongson2_cpufreq.c
+new file mode 100644
+index 0000000..7232dcb
+--- /dev/null
++++ b/arch/mips/kernel/cpufreq/loongson2_cpufreq.c
+@@ -0,0 +1,202 @@
++/*
++ * Cpufreq driver for the loongson-2 processors
++ *
++ * The 2E revision of loongson processor not support this feature.
++ *
++ * Copyright (C) 2006 - 2008 Lemote Inc. & Insititute of Computing Technology
++ * Author: Yanhua, yanh@lemote.com
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ */
++#include <linux/cpufreq.h>
++#include <linux/module.h>
++#include <linux/err.h>
++#include <linux/sched.h>	/* set_cpus_allowed() */
++#include <linux/delay.h>
++
++#include <asm/clock.h>
++
++#include <loongson.h>
++
++static uint nowait;
++
++static struct clk *cpuclk;
++
++static void (*saved_cpu_wait) (void);
++
++static int loongson2_cpu_freq_notifier(struct notifier_block *nb,
++					unsigned long val, void *data);
++
++static struct notifier_block loongson2_cpufreq_notifier_block = {
++	.notifier_call = loongson2_cpu_freq_notifier
++};
++
++static int loongson2_cpu_freq_notifier(struct notifier_block *nb,
++					unsigned long val, void *data)
++{
++	if (val == CPUFREQ_POSTCHANGE)
++		current_cpu_data.udelay_val = loops_per_jiffy;
++
++	return 0;
++}
++
++static unsigned int loongson2_cpufreq_get(unsigned int cpu)
++{
++	return clk_get_rate(cpuclk);
++}
++
++/*
++ * Here we notify other drivers of the proposed change and the final change.
++ */
++static int loongson2_cpufreq_target(struct cpufreq_policy *policy,
++				     unsigned int target_freq,
++				     unsigned int relation)
++{
++	unsigned int cpu = policy->cpu;
++	unsigned int newstate = 0;
++	cpumask_t cpus_allowed;
++	struct cpufreq_freqs freqs;
++	unsigned int freq;
++
++	if (!cpu_online(cpu))
++		return -ENODEV;
++
++	cpus_allowed = current->cpus_allowed;
++	set_cpus_allowed(current, cpumask_of_cpu(cpu));
++
++	if (cpufreq_frequency_table_target
++	    (policy, &loongson2_clockmod_table[0], target_freq, relation,
++	     &newstate))
++		return -EINVAL;
++
++	freq =
++	    ((cpu_clock_freq / 1000) *
++	     loongson2_clockmod_table[newstate].index) / 8;
++	if (freq < policy->min || freq > policy->max)
++		return -EINVAL;
++
++	pr_debug("cpufreq: requested frequency %u Hz\n", target_freq * 1000);
++
++	freqs.cpu = cpu;
++	freqs.old = loongson2_cpufreq_get(cpu);
++	freqs.new = freq;
++	freqs.flags = 0;
++
++	if (freqs.new == freqs.old)
++		return 0;
++
++	/* notifiers */
++	cpufreq_notify_transition(&freqs, CPUFREQ_PRECHANGE);
++
++	set_cpus_allowed(current, cpus_allowed);
++
++	/* setting the cpu frequency */
++	clk_set_rate(cpuclk, freq);
++
++	/* notifiers */
++	cpufreq_notify_transition(&freqs, CPUFREQ_POSTCHANGE);
++
++	pr_debug("cpufreq: set frequency %u kHz\n", freq);
++
++	return 0;
++}
++
++static int loongson2_cpufreq_cpu_init(struct cpufreq_policy *policy)
++{
++	int i;
++
++	if (!cpu_online(policy->cpu))
++		return -ENODEV;
++
++	cpuclk = clk_get(NULL, "cpu_clk");
++	if (IS_ERR(cpuclk)) {
++		printk(KERN_ERR "cpufreq: couldn't get CPU clk\n");
++		return PTR_ERR(cpuclk);
++	}
++
++	cpuclk->rate = cpu_clock_freq / 1000;
++	if (!cpuclk->rate)
++		return -EINVAL;
++
++	/* clock table init */
++	for (i = 2;
++	     (loongson2_clockmod_table[i].frequency != CPUFREQ_TABLE_END);
++	     i++)
++		loongson2_clockmod_table[i].frequency = (cpuclk->rate * i) / 8;
++
++	policy->cur = loongson2_cpufreq_get(policy->cpu);
++
++	cpufreq_frequency_table_get_attr(&loongson2_clockmod_table[0],
++					 policy->cpu);
++
++	return cpufreq_frequency_table_cpuinfo(policy,
++					    &loongson2_clockmod_table[0]);
++}
++
++static int loongson2_cpufreq_verify(struct cpufreq_policy *policy)
++{
++	return cpufreq_frequency_table_verify(policy,
++					      &loongson2_clockmod_table[0]);
++}
++
++static int loongson2_cpufreq_exit(struct cpufreq_policy *policy)
++{
++	clk_put(cpuclk);
++	return 0;
++}
++
++static struct freq_attr *loongson2_table_attr[] = {
++	&cpufreq_freq_attr_scaling_available_freqs,
++	NULL,
++};
++
++static struct cpufreq_driver loongson2_cpufreq_driver = {
++	.owner = THIS_MODULE,
++	.name = "loongson2",
++	.init = loongson2_cpufreq_cpu_init,
++	.verify = loongson2_cpufreq_verify,
++	.target = loongson2_cpufreq_target,
++	.get = loongson2_cpufreq_get,
++	.exit = loongson2_cpufreq_exit,
++	.attr = loongson2_table_attr,
++};
++
++static int __init cpufreq_init(void)
++{
++	int result;
++
++	printk(KERN_INFO "cpufreq: Loongson-2F CPU frequency driver.\n");
++
++	cpufreq_register_notifier(&loongson2_cpufreq_notifier_block,
++				  CPUFREQ_TRANSITION_NOTIFIER);
++
++	result = cpufreq_register_driver(&loongson2_cpufreq_driver);
++
++	if (!result && !nowait) {
++		saved_cpu_wait = cpu_wait;
++		cpu_wait = loongson2_cpu_wait;
++	}
++
++	return result;
++}
++
++static void __exit cpufreq_exit(void)
++{
++	if (!nowait && saved_cpu_wait)
++		cpu_wait = saved_cpu_wait;
++	cpufreq_unregister_driver(&loongson2_cpufreq_driver);
++	cpufreq_unregister_notifier(&loongson2_cpufreq_notifier_block,
++				    CPUFREQ_TRANSITION_NOTIFIER);
++}
++
++module_init(cpufreq_init);
++module_exit(cpufreq_exit);
++
++module_param(nowait, uint, 0644);
++MODULE_PARM_DESC(nowait, "Disable Loongson-2F specific wait");
++
++MODULE_AUTHOR("Yanhua <yanh@lemote.com>");
++MODULE_DESCRIPTION("cpufreq driver for Loongson2F");
++MODULE_LICENSE("GPL");
+diff --git a/arch/mips/loongson/Kconfig b/arch/mips/loongson/Kconfig
+index 8b5cc13..7a86987 100644
+--- a/arch/mips/loongson/Kconfig
++++ b/arch/mips/loongson/Kconfig
+@@ -34,10 +34,10 @@ config LEMOTE_MACH2F
+ 	select ARCH_SPARSEMEM_ENABLE
+ 	select BOARD_SCACHE
+ 	select BOOT_ELF32
+-	select CEVT_R4K
++	select CEVT_R4K if ! MIPS_EXTERNAL_TIMER
+ 	select CPU_HAS_WB
+ 	select CS5536
+-	select CSRC_R4K
++	select CSRC_R4K if ! MIPS_EXTERNAL_TIMER
+ 	select DMA_NONCOHERENT
+ 	select GENERIC_HARDIRQS_NO__DO_IRQ
+ 	select GENERIC_ISA_DMA_SUPPORT_BROKEN
+@@ -65,6 +65,7 @@ config CS5536
+ config CS5536_MFGPT
+ 	bool "CS5536 MFGPT Timer"
+ 	depends on CS5536
++	select MIPS_EXTERNAL_TIMER
+ 	help
+ 	  This option enables the mfgpt0 timer of AMD CS5536.
+ 
+diff --git a/arch/mips/loongson/common/env.c b/arch/mips/loongson/common/env.c
+index b9ef503..196d947 100644
+--- a/arch/mips/loongson/common/env.c
++++ b/arch/mips/loongson/common/env.c
+@@ -17,11 +17,14 @@
+  * Free Software Foundation;  either version 2 of the  License, or (at your
+  * option) any later version.
+  */
++#include <linux/module.h>
++
+ #include <asm/bootinfo.h>
+ 
+ #include <loongson.h>
+ 
+ unsigned long bus_clock, cpu_clock_freq;
++EXPORT_SYMBOL(cpu_clock_freq);
+ unsigned long memsize, highmemsize;
+ 
+ /* pmon passes arguments in 32bit pointers */
 -- 
 1.6.2.1

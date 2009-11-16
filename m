@@ -1,78 +1,70 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Nov 2009 12:40:42 +0100 (CET)
-Received: from TYO202.gate.nec.co.jp ([202.32.8.206]:45148 "EHLO
-	tyo202.gate.nec.co.jp" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1492803AbZKPLkf (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 16 Nov 2009 12:40:35 +0100
-Received: from relay11.aps.necel.com ([10.29.19.46])
-	by tyo202.gate.nec.co.jp (8.13.8/8.13.4) with ESMTP id nAGBeEMl018401;
-	Mon, 16 Nov 2009 20:40:14 +0900 (JST)
-Received: from realmbox31.aps.necel.com ([10.29.19.28] [10.29.19.28]) by relay11.aps.necel.com with ESMTP; Mon, 16 Nov 2009 20:40:14 +0900
-Received: from [10.114.181.128] ([10.114.181.128] [10.114.181.128]) by mbox02.aps.necel.com with ESMTP; Mon, 16 Nov 2009 20:40:14 +0900
-Message-ID: <4B013A1E.2050206@necel.com>
-Date:	Mon, 16 Nov 2009 20:40:14 +0900
-From:	Shinya Kuribayashi <shinya.kuribayashi@necel.com>
-User-Agent: Thunderbird 2.0.0.23 (Windows/20090812)
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Nov 2009 14:48:44 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:35265 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S1493383AbZKPNsk (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 16 Nov 2009 14:48:40 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nAGDmd3V012289;
+	Mon, 16 Nov 2009 14:48:39 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nAGDmVXR012286;
+	Mon, 16 Nov 2009 14:48:31 +0100
+Date:	Mon, 16 Nov 2009 14:48:31 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Wu Zhangjin <wuzhangjin@gmail.com>
+Cc:	rostedt@goodmis.org, Frederic Weisbecker <fweisbec@gmail.com>,
+	Ingo Molnar <mingo@elte.hu>,
+	Nicholas Mc Guire <der.herr@hofr.at>,
+	David Daney <ddaney@caviumnetworks.com>,
+	Richard Sandiford <rdsandiford@googlemail.com>,
+	Patrik Kluba <kpajko79@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Michal Simek <monstr@monstr.eu>,
+	"Maciej W . Rozycki" <macro@linux-mips.org>,
+	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
+	zhangfx@lemote.com, zhouqg@gmail.com
+Subject: Re: [PATCH v8 00/16] ftrace for MIPS
+Message-ID: <20091116134831.GA10189@linux-mips.org>
+References: <cover.1258177321.git.wuzhangjin@gmail.com>
 MIME-Version: 1.0
-To:	baruch@tkos.co.il, ben-linux@fluff.org, linux-i2c@vger.kernel.org
-CC:	linux-mips@linux-mips.org, linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 23/22] i2c-designware: i2c_dw_handle_tx_abort: Use dev_dbg()
- for NOACK cases
-References: <4AF419B6.1000802@necel.com>
-In-Reply-To: <4AF419B6.1000802@necel.com>
-Content-Type: text/plain; charset=ISO-8859-1; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <shinya.kuribayashi@necel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1258177321.git.wuzhangjin@gmail.com>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24908
+X-archive-position: 24909
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: shinya.kuribayashi@necel.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-In the case of no-ACKs, we don't want to see dev_err() messages in the
-console, because some utilities like i2c-tools are capable of printing
-decorated console output.  This patch will ease such situations.
+On Sat, Nov 14, 2009 at 02:30:31PM +0800, Wu Zhangjin wrote:
 
-Signed-off-by: Shinya Kuribayashi <shinya.kuribayashi@necel.com>
----
+Time to talk about how to get the whole thing merged.
 
-Hi Ben,
+I'm reasonably happy with the arch part of the patchset.  There are two
+remaining issues in the arch part - cache flushing will not work as is on
+a SMP system and the whole code patching is going to fail if the kernel
+text is replicated with CONFIG_REPLICATE_KTEXT which is an IP27-only option.
 
- This patch can be applied on the top of the v2 patchset (as 23/22).
- I've tested the patch with both no-ACK cases and arbitration case.
- As for errors other than NOACKs, it's worth doing dev_err().
+I suggest we should go ahready and just disallow dynamic ftrace on on
+these problematic configurations for now and deal with them later, so
+something like
 
- drivers/i2c/busses/i2c-designware.c |    9 +++++++--
- 1 files changed, 7 insertions(+), 2 deletions(-)
+	select HAVE_DYNAMIC_FTRACE if !SMP && !REPLICATE_KTEXT
 
-diff --git a/drivers/i2c/busses/i2c-designware.c b/drivers/i2c/busses/i2c-designware.c
-index 4534d45..9e18ef9 100644
---- a/drivers/i2c/busses/i2c-designware.c
-+++ b/drivers/i2c/busses/i2c-designware.c
-@@ -496,13 +496,18 @@ static int i2c_dw_handle_tx_abort(struct dw_i2c_dev *dev)
- 	unsigned long abort_source = dev->abort_source;
- 	int i;
- 
-+	if (abort_source & DW_IC_TX_ABRT_NOACK) {
-+		for_each_bit(i, &abort_source, ARRAY_SIZE(abort_sources))
-+			dev_dbg(dev->dev,
-+				"%s: %s\n", __func__, abort_sources[i]);
-+		return -EREMOTEIO;
-+	}
-+
- 	for_each_bit(i, &abort_source, ARRAY_SIZE(abort_sources))
- 		dev_err(dev->dev, "%s: %s\n", __func__, abort_sources[i]);
- 
- 	if (abort_source & DW_IC_TX_ARB_LOST)
- 		return -EAGAIN;
--	else if (abort_source & DW_IC_TX_ABRT_NOACK)
--		return -EREMOTEIO;
- 	else if (abort_source & DW_IC_TX_ABRT_GCALL_READ)
- 		return -EINVAL; /* wrong msgs[] data */
- 	else
--- 
-1.6.5.2
+This leaves the non-arch bits to merge; patches which touch code outside
+of arch/mips are:
+
+    [PATCH v8 01/16] tracing: convert trace_clock_local() as weak function
+    [PATCH v8 06/16] tracing: add an endian argument to
+    [PATCH v8 07/16] tracing: add dynamic function tracer support for MIPS
+    [PATCH v8 09/16] tracing: define a new __time_notrace annotation flag
+    [PATCH v8 10/16] tracing: not trace the timecounter_read* in
+
+  Ralf

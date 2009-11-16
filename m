@@ -1,24 +1,25 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Nov 2009 18:12:32 +0100 (CET)
-Received: from cantor.suse.de ([195.135.220.2]:46429 "EHLO mx1.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Nov 2009 18:14:20 +0100 (CET)
+Received: from cantor.suse.de ([195.135.220.2]:46523 "EHLO mx1.suse.de"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1493416AbZKPRMZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 16 Nov 2009 18:12:25 +0100
-Received: from relay1.suse.de (mail2.suse.de [195.135.221.8])
+	id S1493416AbZKPROO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 16 Nov 2009 18:14:14 +0100
+Received: from relay2.suse.de (relay-ext.suse.de [195.135.221.8])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by mx1.suse.de (Postfix) with ESMTP id B3ED28E8CC;
-	Mon, 16 Nov 2009 18:12:22 +0100 (CET)
-Date:	Mon, 16 Nov 2009 18:12:22 +0100
-Message-ID: <s5hd43iiebt.wl%tiwai@suse.de>
+	by mx1.suse.de (Postfix) with ESMTP id 2F52F8E8CC;
+	Mon, 16 Nov 2009 18:14:14 +0100 (CET)
+Date:	Mon, 16 Nov 2009 18:14:14 +0100
+Message-ID: <s5hbpj2ie8p.wl%tiwai@suse.de>
 From:	Takashi Iwai <tiwai@suse.de>
-To:	Wu Zhangjin <wuzhangjin@gmail.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Wu Zhangjin <wuzhangjin@gmail.com>,
 	Jaroslav Kysela <perex@perex.cz>, alsa-devel@alsa-project.org,
 	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
 	Wu Zhangjin <wuzj@lemote.com>
 Subject: Re: [PATCH] MIPS: Fixups of ALSA memory maps
-In-Reply-To: <9cbcd06037c18288a6493459b8f3a6e1562eca77.1258389992.git.wuzhangjin@gmail.com>
+In-Reply-To: <20091116170641.GD14948@linux-mips.org>
 References: <9cbcd06037c18288a6493459b8f3a6e1562eca77.1258389992.git.wuzhangjin@gmail.com>
+	<20091116170641.GD14948@linux-mips.org>
 User-Agent: Wanderlust/2.15.6 (Almost Unreal) SEMI/1.14.6 (Maruoka)
  FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.7 Emacs/23.1
  (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -28,7 +29,7 @@ Return-Path: <tiwai@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24928
+X-archive-position: 24929
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -36,23 +37,50 @@ X-original-sender: tiwai@suse.de
 Precedence: bulk
 X-list: linux-mips
 
-At Tue, 17 Nov 2009 00:48:14 +0800,
-Wu Zhangjin wrote:
+At Mon, 16 Nov 2009 18:06:41 +0100,
+Ralf Baechle wrote:
 > 
-> Hi, All
+> On Tue, Nov 17, 2009 at 12:48:14AM +0800, Wu Zhangjin wrote:
 > 
-> Seems this is MIPS specific, but it's not that easy to move this patch
-> into the arch/mips part, So, any better solution?
+> > Seems this is MIPS specific, but it's not that easy to move this patch
+> > into the arch/mips part, So, any better solution?
+> > 
+> > Thanks & Regards,
+> >        Wu Zhangjin
+> > 
+> > ------------------------
+> > 
+> > The user application mmap audio dma regions must be dma-coherent. This
+> > patch fix it.
+> > 
+> > Without this patch, artsd will fail on boot, and mplayer will exit with
+> > "Segmentation fault". (this happens on YeeLoong netbook, fuloong2f
+> > mini pc with snd_cs5535 audio card)
+> > 
+> > This is originally from the to-mips branch of
+> > http://dev.lemote.com/code/linux_loongson, and contributed by Yanhua
+> > from Lemote Inc.
+> > 
+> > Reported-by: qiaochong <qiaochong@gmail.com>
+> > Signed-off-by: Wu Zhangjin <wuzj@lemote.com>
+> 
+> This issue is an old ghost still around, see:
+> 
+>    http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=20060124.132832.37533152.nemoto%40toshiba-tops.co.jp
+> 
+> which is a superset of your proposed patch and which itself is refering to
+> an even older posting from 2003:
+> 
+>    http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=20030523215935.71373.qmail%40web11901.mail.yahoo.com
+> 
+> The #ifdef'ed solution doesn't cut it for sure.  Let's see what better we
+> can find ...
 
-Actually, this has been a looong-standing problem.
-I have a series of patches to fix these issues, but it's more
-intensively involved with dma_*() functions.
+Indeed.  My preference option is to deploy dma_mmap_coherent() to
+possible architectures and use it commonly in the ALSA core code.
 
-The patches can be found in test/dma-fix branch of sound GIT tree.
-  git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound-2.6.git test/dma-fix
-
-This basically adds dma_mmap_coherent() function to feasible
-architectures, which is already implemented for ARM, so far.
+But, as a temporary workaround, I'm fine with ifdef until the API is
+defined...
 
 
 thanks,

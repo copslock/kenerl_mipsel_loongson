@@ -1,94 +1,77 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Nov 2009 15:30:37 +0100 (CET)
-Received: from mail-pw0-f45.google.com ([209.85.160.45]:45606 "EHLO
-	mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492477AbZKPOab (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 16 Nov 2009 15:30:31 +0100
-Received: by pwi15 with SMTP id 15so3410547pwi.24
-        for <multiple recipients>; Mon, 16 Nov 2009 06:30:21 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=75g6mf5eKeX4JgOiakcyLB5vrvn6+xncS1V0LwuejVs=;
-        b=Bq6QSurQNcimLwMbKP1kDQUVVsYxgfIKnOhIi94M2et6jOJYCY+2C7YJJQushJ/AFs
-         C4CV3T4++TGvr8DW6ln4W/5sFoU5r83uLat6uNrZhZydKOltqsT1B5DUdIBbwIQ/BhtF
-         1ZCbXRVO7XVcoUWVZg9dK3Oi4b0Gj8jmU6KK0=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=juwn4LTvnpe/5S/viBQroegXW93ZpAruvrYkW4g8zF2SqPyiYuJ8+JYr6R+6xigC7k
-         DPGQxGgqxz50HglpLsEhEh8RTY2vfkaY5ZzTEZvmXx9PpMwHNebif9/WmwqZJPZxHYny
-         sQQk2luktsgjmt4iWcNUHFDpkYpo98iyZYzZQ=
-Received: by 10.114.3.29 with SMTP id 29mr5319247wac.208.1258381821062;
-        Mon, 16 Nov 2009 06:30:21 -0800 (PST)
-Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 21sm1497933pzk.7.2009.11.16.06.30.13
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 16 Nov 2009 06:30:20 -0800 (PST)
-Subject: Re: [PATCH v8 06/16] tracing: add an endian argument to
- scripts/recordmcount.pl
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:	Thomas Gleixner <tglx@linutronix.de>
-Cc:	rostedt@goodmis.org, Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Nov 2009 16:02:09 +0100 (CET)
+Received: from hrndva-omtalb.mail.rr.com ([71.74.56.124]:49566 "EHLO
+	hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493394AbZKPPCC (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 16 Nov 2009 16:02:02 +0100
+Received: from [192.168.23.10] (really [74.67.89.75])
+          by hrndva-omta01.mail.rr.com with ESMTP
+          id <20091116150154011.VNOJ4007@hrndva-omta01.mail.rr.com>;
+          Mon, 16 Nov 2009 15:01:54 +0000
+Subject: Re: [PATCH v8 01/16] tracing: convert trace_clock_local() as weak
+ function
+From:	Steven Rostedt <rostedt@goodmis.org>
+Reply-To: rostedt@goodmis.org
+To:	Wu Zhangjin <wuzhangjin@gmail.com>
+Cc:	Ralf Baechle <ralf@linux-mips.org>,
 	Frederic Weisbecker <fweisbec@gmail.com>,
 	Ingo Molnar <mingo@elte.hu>,
 	Nicholas Mc Guire <der.herr@hofr.at>,
 	David Daney <ddaney@caviumnetworks.com>,
 	Richard Sandiford <rdsandiford@googlemail.com>,
 	Patrik Kluba <kpajko79@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Michal Simek <monstr@monstr.eu>,
 	"Maciej W . Rozycki" <macro@linux-mips.org>,
 	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
 	zhangfx@lemote.com, zhouqg@gmail.com
-In-Reply-To: <alpine.LFD.2.00.0911161520080.24119@localhost.localdomain>
-References: <9dc81a7a9e5a292cccdf465c533a2b08d19d6021.1258177321.git.wuzhangjin@gmail.com>
-	 <b99c08397d9ff92ac5a72bda9131df41b702fc71.1258177321.git.wuzhangjin@gmail.com>
-	 <8f579e2cece16cd22358a4ec143ef6a8c462639b.1258177321.git.wuzhangjin@gmail.com>
-	 <ea337742d3ca7eec2825416041a6d4fa917d5cc4.1258177321.git.wuzhangjin@gmail.com>
-	 <7c7568247ad6cc109ec20387cfc3ca258d1d430f.1258177321.git.wuzhangjin@gmail.com>
-	 <3fcaffcfb3c8c8cd3015151ed5b7480ccaecde0f.1258177321.git.wuzhangjin@gmail.com>
-	 <alpine.LFD.2.00.0911161520080.24119@localhost.localdomain>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:	Mon, 16 Nov 2009 22:29:35 +0800
-Message-ID: <1258381775.15821.1.camel@falcon.domain.org>
+In-Reply-To: <9dc81a7a9e5a292cccdf465c533a2b08d19d6021.1258177321.git.wuzhangjin@gmail.com>
+References: <cover.1258177321.git.wuzhangjin@gmail.com>
+	 <9dc81a7a9e5a292cccdf465c533a2b08d19d6021.1258177321.git.wuzhangjin@gmail.com>
+Content-Type: text/plain
+Organization: Kihon Technologies Inc.
+Date:	Mon, 16 Nov 2009 10:01:52 -0500
+Message-Id: <1258383712.22249.452.camel@gandalf.stny.rr.com>
 Mime-Version: 1.0
-X-Mailer: Evolution 2.28.1 
+X-Mailer: Evolution 2.26.3 
 Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Return-Path: <rostedt@goodmis.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24913
+X-archive-position: 24914
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 2009-11-16 at 15:21 +0100, Thomas Gleixner wrote:
-> On Sat, 14 Nov 2009, Wu Zhangjin wrote:
+On Sat, 2009-11-14 at 14:33 +0800, Wu Zhangjin wrote:
+> From: Wu Zhangjin <wuzhangjin@gmail.com>
 > 
-> > From: Wu Zhangjin <wuzhangjin@gmail.com>
-> > 
-> > MIPS and some other architectures need this argument to handle
-> > big/little endian respectively.
+> trace_clock_local() is based on the arch-specific sched_clock(), in X86,
+> it is tsc(64bit) based, which can give very high precision(about 1ns
+> with 1GHz). but in MIPS, the sched_clock() is jiffies based, which can
+> give only 10ms precison with 1000 HZ. which is not enough for tracing,
+> especially for Real Time system.
 > 
-> Hmm, the patch adds the endian argument to the command line, but does
-> nothing else with it. Is there something missing from the patch or is
-> it just a left over from earlier iterations ?
+> so, we need to implement a MIPS specific sched_clock() to get higher
+> precision. There is a tsc like clock counter register in MIPS, whose
+> frequency is half of the processor, so, if the cpu frequency is 800MHz,
+> the time precision reaches 2.5ns, which is very good for tracing, even
+> for Real Time system.
 > 
+> but 'Cause it is only 32bit long, which will rollover quickly, so, such
+> a sched_clock() will bring with extra load, which is not good for the
+> whole system. so, we only need to implement a arch-specific
+> trace_clock_local() for tracing. as a preparation, we convert it as a
+> weak function.
+> 
+> The MIPS specific trace_clock_local() is coming in the next two patches.
+> 
+> Acked-by: Frederic Weisbecker <fweisbec@gmail.com>
+> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
 
-It is used in: 
+Acked-by: Steven Rostedt <rostedt@goodmis.org>
 
-[PATCH v8 07/16] tracing: add dynamic function tracer support for MIPS
-
-Steven told me to split it out ;)
-
-Thanks & Regards,
-	Wu Zhangjin
+-- Steve

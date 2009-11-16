@@ -1,16 +1,19 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Nov 2009 16:08:12 +0100 (CET)
-Received: from www.tglx.de ([62.245.132.106]:51757 "EHLO www.tglx.de"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1493394AbZKPPIE (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 16 Nov 2009 16:08:04 +0100
-Received: from localhost (www.tglx.de [127.0.0.1])
-	by www.tglx.de (8.13.8/8.13.8/TGLX-2007100201) with ESMTP id nAGF7e8b011796
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
-	Mon, 16 Nov 2009 16:07:40 +0100
-Date:	Mon, 16 Nov 2009 16:07:40 +0100 (CET)
-From:	Thomas Gleixner <tglx@linutronix.de>
-To:	Wu Zhangjin <wuzhangjin@gmail.com>
-cc:	rostedt@goodmis.org, Ralf Baechle <ralf@linux-mips.org>,
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Nov 2009 16:10:56 +0100 (CET)
+Received: from hrndva-omtalb.mail.rr.com ([71.74.56.124]:59683 "EHLO
+	hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493402AbZKPPKs (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 16 Nov 2009 16:10:48 +0100
+Received: from [192.168.23.10] (really [74.67.89.75])
+          by hrndva-omta03.mail.rr.com with ESMTP
+          id <20091116151041853.DVRB12367@hrndva-omta03.mail.rr.com>;
+          Mon, 16 Nov 2009 15:10:41 +0000
+Subject: Re: [PATCH v8 06/16] tracing: add an endian argument to
+ scripts/recordmcount.pl
+From:	Steven Rostedt <rostedt@goodmis.org>
+Reply-To: rostedt@goodmis.org
+To:	wuzhangjin@gmail.com
+Cc:	Thomas Gleixner <tglx@linutronix.de>,
+	Ralf Baechle <ralf@linux-mips.org>,
 	Frederic Weisbecker <fweisbec@gmail.com>,
 	Ingo Molnar <mingo@elte.hu>,
 	Nicholas Mc Guire <der.herr@hofr.at>,
@@ -21,66 +24,55 @@ cc:	rostedt@goodmis.org, Ralf Baechle <ralf@linux-mips.org>,
 	"Maciej W . Rozycki" <macro@linux-mips.org>,
 	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
 	zhangfx@lemote.com, zhouqg@gmail.com
-Subject: Re: [PATCH v8 01/16] tracing: convert trace_clock_local() as weak
- function
-In-Reply-To: <9dc81a7a9e5a292cccdf465c533a2b08d19d6021.1258177321.git.wuzhangjin@gmail.com>
-Message-ID: <alpine.LFD.2.00.0911161559280.24119@localhost.localdomain>
-References: <cover.1258177321.git.wuzhangjin@gmail.com> <9dc81a7a9e5a292cccdf465c533a2b08d19d6021.1258177321.git.wuzhangjin@gmail.com>
-User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-X-Virus-Scanned: clamav-milter 0.95.1 at www.tglx.de
-X-Virus-Status:	Clean
-Return-Path: <tglx@linutronix.de>
+In-Reply-To: <1258381775.15821.1.camel@falcon.domain.org>
+References: <9dc81a7a9e5a292cccdf465c533a2b08d19d6021.1258177321.git.wuzhangjin@gmail.com>
+	 <b99c08397d9ff92ac5a72bda9131df41b702fc71.1258177321.git.wuzhangjin@gmail.com>
+	 <8f579e2cece16cd22358a4ec143ef6a8c462639b.1258177321.git.wuzhangjin@gmail.com>
+	 <ea337742d3ca7eec2825416041a6d4fa917d5cc4.1258177321.git.wuzhangjin@gmail.com>
+	 <7c7568247ad6cc109ec20387cfc3ca258d1d430f.1258177321.git.wuzhangjin@gmail.com>
+	 <3fcaffcfb3c8c8cd3015151ed5b7480ccaecde0f.1258177321.git.wuzhangjin@gmail.com>
+	 <alpine.LFD.2.00.0911161520080.24119@localhost.localdomain>
+	 <1258381775.15821.1.camel@falcon.domain.org>
+Content-Type: text/plain
+Organization: Kihon Technologies Inc.
+Date:	Mon, 16 Nov 2009 10:10:40 -0500
+Message-Id: <1258384240.22249.453.camel@gandalf.stny.rr.com>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.26.3 
+Content-Transfer-Encoding: 7bit
+Return-Path: <rostedt@goodmis.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24915
+X-archive-position: 24916
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: tglx@linutronix.de
+X-original-sender: rostedt@goodmis.org
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 14 Nov 2009, Wu Zhangjin wrote:
-
-> From: Wu Zhangjin <wuzhangjin@gmail.com>
+On Mon, 2009-11-16 at 22:29 +0800, Wu Zhangjin wrote:
+> On Mon, 2009-11-16 at 15:21 +0100, Thomas Gleixner wrote:
+> > On Sat, 14 Nov 2009, Wu Zhangjin wrote:
+> > 
+> > > From: Wu Zhangjin <wuzhangjin@gmail.com>
+> > > 
+> > > MIPS and some other architectures need this argument to handle
+> > > big/little endian respectively.
+> > 
+> > Hmm, the patch adds the endian argument to the command line, but does
+> > nothing else with it. Is there something missing from the patch or is
+> > it just a left over from earlier iterations ?
+> > 
 > 
-> trace_clock_local() is based on the arch-specific sched_clock(), in X86,
-> it is tsc(64bit) based, which can give very high precision(about 1ns
-> with 1GHz). but in MIPS, the sched_clock() is jiffies based, which can
-> give only 10ms precison with 1000 HZ. which is not enough for tracing,
-> especially for Real Time system.
+> It is used in: 
 > 
-> so, we need to implement a MIPS specific sched_clock() to get higher
-> precision. There is a tsc like clock counter register in MIPS, whose
-> frequency is half of the processor, so, if the cpu frequency is 800MHz,
-> the time precision reaches 2.5ns, which is very good for tracing, even
-> for Real Time system.
+> [PATCH v8 07/16] tracing: add dynamic function tracer support for MIPS
 > 
-> but 'Cause it is only 32bit long, which will rollover quickly, so, such
-> a sched_clock() will bring with extra load, which is not good for the
-> whole system. so, we only need to implement a arch-specific
-> trace_clock_local() for tracing. as a preparation, we convert it as a
-> weak function.
+> Steven told me to split it out ;)
 
-Hmm, I'm not convinced that this is really a huge overhead. 
+Heh, IIRC I think I meant to split out the recordmcount.pl code first.
+But this is fine too ;-)
 
-First of all the rollover happens once every 10 seconds on a 800MHz
-machine. 
-
-Secondly we have a lockless implementation of extending 32bit counters
-to 63 bit which is used at least by ARM to provide a high resolution
-sched_clock implementation. See include/linux/cnt32_63.h and the users
-in arch/
-
-But that's a problem which can be discussed seperately and does not
-affect the rest of the tracing infrastructure. I really would
-recommend that you implement a sched_clock for the r4k machines based
-on cnt32_63 and measure the overhead. Having a fine granular
-sched_clock in general is probably not a bad thing.
-
-Thanks,
-
-	tglx
+-- Steve

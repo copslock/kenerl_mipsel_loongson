@@ -1,74 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Nov 2009 18:06:46 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:33619 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
-	id S1493433AbZKPRGm (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 16 Nov 2009 18:06:42 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nAGH6k5I017021;
-	Mon, 16 Nov 2009 18:06:46 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nAGH6fq0017019;
-	Mon, 16 Nov 2009 18:06:41 +0100
-Date:	Mon, 16 Nov 2009 18:06:41 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Wu Zhangjin <wuzhangjin@gmail.com>
-Cc:	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.de>,
-	alsa-devel@alsa-project.org, linux-mips@linux-mips.org,
-	linux-kernel@vger.kernel.org, Wu Zhangjin <wuzj@lemote.com>
-Subject: Re: [PATCH] MIPS: Fixups of ALSA memory maps
-Message-ID: <20091116170641.GD14948@linux-mips.org>
-References: <9cbcd06037c18288a6493459b8f3a6e1562eca77.1258389992.git.wuzhangjin@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9cbcd06037c18288a6493459b8f3a6e1562eca77.1258389992.git.wuzhangjin@gmail.com>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Nov 2009 18:10:09 +0100 (CET)
+Received: from mail-pw0-f45.google.com ([209.85.160.45]:48790 "EHLO
+	mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493416AbZKPRKC (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 16 Nov 2009 18:10:02 +0100
+Received: by pwi15 with SMTP id 15so3505553pwi.24
+        for <multiple recipients>; Mon, 16 Nov 2009 09:09:56 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=SLaws4XoPjSdF5FgPWnM3H8wa4weQKUVVcZKTt4EaQY=;
+        b=FNfpfKoPKUz3So3f0+12qOoTe2rIHJAagtsiFE1bwx3jUtVJvR1afVUtFsTFPhGNtX
+         35+sVvWCcNVbekgRQvIcwZfcGdKJvDeiNMbnFEupOrtIkmg8ziYdL2TwFYYJOXjU7xr7
+         StOygaaaETTIXPFK48CirGqTo02Qp6byFXGQM=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=t5eBWvb7OAQjq1BaxzIKrgCmSG06jWDCMvKSyy90s07ga2DIjH2Mgt2PZIXnd7IbwY
+         i7RhGoF5Q0GRME2EaeRW51IPqwFh/NcmtuHC9mJKaIgPAl+TImknUPQx/UENW1Pm3Cl1
+         yqqbLxSLL6wq1ureKS2stxJ+Rd1l/+g4H9Kew=
+Received: by 10.114.45.2 with SMTP id s2mr7807122was.122.1258391396165;
+        Mon, 16 Nov 2009 09:09:56 -0800 (PST)
+Received: from ?172.16.2.101? ([222.92.8.142])
+        by mx.google.com with ESMTPS id 23sm1683292pzk.12.2009.11.16.09.09.54
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Mon, 16 Nov 2009 09:09:55 -0800 (PST)
+Subject: Re: [PATCH 0/2] Add Lemote NAS and Lynloong support
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <20091116170111.GC14948@linux-mips.org>
+References: <cover.1258390323.git.wuzhangjin@gmail.com>
+	 <20091116170111.GC14948@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:	Tue, 17 Nov 2009 01:09:49 +0800
+Message-ID: <1258391389.15821.18.camel@falcon.domain.org>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24926
+X-archive-position: 24927
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 17, 2009 at 12:48:14AM +0800, Wu Zhangjin wrote:
-
-> Seems this is MIPS specific, but it's not that easy to move this patch
-> into the arch/mips part, So, any better solution?
+On Mon, 2009-11-16 at 18:01 +0100, Ralf Baechle wrote:
+> On Tue, Nov 17, 2009 at 12:58:13AM +0800, Wu Zhangjin wrote:
 > 
-> Thanks & Regards,
->        Wu Zhangjin
+> > The following two patches add support for NAS & Lynloong made by Lemote, These
+> > two machines are basically the same as fuloong2f, only a few part of
+> > differences.
+> > 
+> > Hi, Ralf, Could you please queue them to 2.6.33? I will delay the left drivers
+> > to 2.6.34.
 > 
-> ------------------------
-> 
-> The user application mmap audio dma regions must be dma-coherent. This
-> patch fix it.
-> 
-> Without this patch, artsd will fail on boot, and mplayer will exit with
-> "Segmentation fault". (this happens on YeeLoong netbook, fuloong2f
-> mini pc with snd_cs5535 audio card)
-> 
-> This is originally from the to-mips branch of
-> http://dev.lemote.com/code/linux_loongson, and contributed by Yanhua
-> from Lemote Inc.
-> 
-> Reported-by: qiaochong <qiaochong@gmail.com>
-> Signed-off-by: Wu Zhangjin <wuzj@lemote.com>
+> What driver patches you got pending?
 
-This issue is an old ghost still around, see:
+the CPUFreq driver for loongson2f and the platform drivers for
+yeeloong2f netbook and lynloong pc.
 
-   http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=20060124.132832.37533152.nemoto%40toshiba-tops.co.jp
+is the time enough to upstream them? and again, where should I put the
+platform drivers in(I have incorporated with your feedbacks)? in
+arch/mips or drivers/platform/mips ?
 
-which is a superset of your proposed patch and which itself is refering to
-an even older posting from 2003:
+and I will send the lastest CPUFreq driver asap.
 
-   http://www.linux-mips.org/cgi-bin/mesg.cgi?a=linux-mips&i=20030523215935.71373.qmail%40web11901.mail.yahoo.com
-
-The #ifdef'ed solution doesn't cut it for sure.  Let's see what better we
-can find ...
-
-  Ralf
+Best Regards,
+	Wu Zhangjin

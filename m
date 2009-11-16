@@ -1,52 +1,50 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Nov 2009 16:02:09 +0100 (CET)
-Received: from hrndva-omtalb.mail.rr.com ([71.74.56.124]:49566 "EHLO
-	hrndva-omtalb.mail.rr.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493394AbZKPPCC (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 16 Nov 2009 16:02:02 +0100
-Received: from [192.168.23.10] (really [74.67.89.75])
-          by hrndva-omta01.mail.rr.com with ESMTP
-          id <20091116150154011.VNOJ4007@hrndva-omta01.mail.rr.com>;
-          Mon, 16 Nov 2009 15:01:54 +0000
-Subject: Re: [PATCH v8 01/16] tracing: convert trace_clock_local() as weak
- function
-From:	Steven Rostedt <rostedt@goodmis.org>
-Reply-To: rostedt@goodmis.org
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 16 Nov 2009 16:08:12 +0100 (CET)
+Received: from www.tglx.de ([62.245.132.106]:51757 "EHLO www.tglx.de"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1493394AbZKPPIE (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 16 Nov 2009 16:08:04 +0100
+Received: from localhost (www.tglx.de [127.0.0.1])
+	by www.tglx.de (8.13.8/8.13.8/TGLX-2007100201) with ESMTP id nAGF7e8b011796
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-SHA bits=256 verify=NO);
+	Mon, 16 Nov 2009 16:07:40 +0100
+Date:	Mon, 16 Nov 2009 16:07:40 +0100 (CET)
+From:	Thomas Gleixner <tglx@linutronix.de>
 To:	Wu Zhangjin <wuzhangjin@gmail.com>
-Cc:	Ralf Baechle <ralf@linux-mips.org>,
+cc:	rostedt@goodmis.org, Ralf Baechle <ralf@linux-mips.org>,
 	Frederic Weisbecker <fweisbec@gmail.com>,
 	Ingo Molnar <mingo@elte.hu>,
 	Nicholas Mc Guire <der.herr@hofr.at>,
 	David Daney <ddaney@caviumnetworks.com>,
 	Richard Sandiford <rdsandiford@googlemail.com>,
 	Patrik Kluba <kpajko79@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
 	Michal Simek <monstr@monstr.eu>,
 	"Maciej W . Rozycki" <macro@linux-mips.org>,
 	linux-mips@linux-mips.org, linux-kernel@vger.kernel.org,
 	zhangfx@lemote.com, zhouqg@gmail.com
+Subject: Re: [PATCH v8 01/16] tracing: convert trace_clock_local() as weak
+ function
 In-Reply-To: <9dc81a7a9e5a292cccdf465c533a2b08d19d6021.1258177321.git.wuzhangjin@gmail.com>
-References: <cover.1258177321.git.wuzhangjin@gmail.com>
-	 <9dc81a7a9e5a292cccdf465c533a2b08d19d6021.1258177321.git.wuzhangjin@gmail.com>
-Content-Type: text/plain
-Organization: Kihon Technologies Inc.
-Date:	Mon, 16 Nov 2009 10:01:52 -0500
-Message-Id: <1258383712.22249.452.camel@gandalf.stny.rr.com>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.26.3 
-Content-Transfer-Encoding: 7bit
-Return-Path: <rostedt@goodmis.org>
+Message-ID: <alpine.LFD.2.00.0911161559280.24119@localhost.localdomain>
+References: <cover.1258177321.git.wuzhangjin@gmail.com> <9dc81a7a9e5a292cccdf465c533a2b08d19d6021.1258177321.git.wuzhangjin@gmail.com>
+User-Agent: Alpine 2.00 (LFD 1167 2008-08-23)
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Virus-Scanned: clamav-milter 0.95.1 at www.tglx.de
+X-Virus-Status:	Clean
+Return-Path: <tglx@linutronix.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24914
+X-archive-position: 24915
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: rostedt@goodmis.org
+X-original-sender: tglx@linutronix.de
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, 2009-11-14 at 14:33 +0800, Wu Zhangjin wrote:
+On Sat, 14 Nov 2009, Wu Zhangjin wrote:
+
 > From: Wu Zhangjin <wuzhangjin@gmail.com>
 > 
 > trace_clock_local() is based on the arch-specific sched_clock(), in X86,
@@ -66,12 +64,23 @@ On Sat, 2009-11-14 at 14:33 +0800, Wu Zhangjin wrote:
 > whole system. so, we only need to implement a arch-specific
 > trace_clock_local() for tracing. as a preparation, we convert it as a
 > weak function.
-> 
-> The MIPS specific trace_clock_local() is coming in the next two patches.
-> 
-> Acked-by: Frederic Weisbecker <fweisbec@gmail.com>
-> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
 
-Acked-by: Steven Rostedt <rostedt@goodmis.org>
+Hmm, I'm not convinced that this is really a huge overhead. 
 
--- Steve
+First of all the rollover happens once every 10 seconds on a 800MHz
+machine. 
+
+Secondly we have a lockless implementation of extending 32bit counters
+to 63 bit which is used at least by ARM to provide a high resolution
+sched_clock implementation. See include/linux/cnt32_63.h and the users
+in arch/
+
+But that's a problem which can be discussed seperately and does not
+affect the rest of the tracing infrastructure. I really would
+recommend that you implement a sched_clock for the r4k machines based
+on cnt32_63 and measure the overhead. Having a fine granular
+sched_clock in general is probably not a bad thing.
+
+Thanks,
+
+	tglx

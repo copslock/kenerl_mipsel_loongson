@@ -1,58 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Nov 2009 02:04:05 +0100 (CET)
-Received: from sj-iport-4.cisco.com ([171.68.10.86]:47045 "EHLO
-	sj-iport-4.cisco.com" rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org
-	with ESMTP id S1493929AbZKRBD6 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 18 Nov 2009 02:03:58 +0100
-Authentication-Results:	sj-iport-4.cisco.com; dkim=neutral (message not signed) header.i=none
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: ApoEAM/WAkurRN+J/2dsb2JhbAC9f5hJhDsE
-X-IronPort-AV: E=Sophos;i="4.44,761,1249257600"; 
-   d="scan'208";a="50764018"
-Received: from sj-core-3.cisco.com ([171.68.223.137])
-  by sj-iport-4.cisco.com with ESMTP; 18 Nov 2009 01:03:51 +0000
-Received: from dvomlehn-lnx2.corp.sa.net ([64.101.20.155])
-	by sj-core-3.cisco.com (8.13.8/8.14.3) with ESMTP id nAI13pWx020816;
-	Wed, 18 Nov 2009 01:03:51 GMT
-Date:	Tue, 17 Nov 2009 20:03:51 -0500
-From:	David VomLehn <dvomlehn@cisco.com>
-To:	myuboot@fastmail.fm
-Cc:	Florian Fainelli <florian@openwrt.org>,
-	Chris Dearman <chris@mips.com>,
-	linux-mips <linux-mips@linux-mips.org>
-Subject: Re: problem bring up initramfs and busybox
-Message-ID: <20091118010351.GA21728@dvomlehn-lnx2.corp.sa.net>
-References: <1255735395.30097.1340523469@webmail.messagingengine.com> <4B031B78.5030204@mips.com> <1258504293.3627.1345755107@webmail.messagingengine.com> <200911180139.29283.florian@openwrt.org> <1258505915.7077.1345760963@webmail.messagingengine.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Nov 2009 04:00:00 +0100 (CET)
+Received: from mail-pw0-f45.google.com ([209.85.160.45]:47893 "EHLO
+	mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492134AbZKRC7x (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 18 Nov 2009 03:59:53 +0100
+Received: by pwi15 with SMTP id 15so422409pwi.24
+        for <linux-mips@linux-mips.org>; Tue, 17 Nov 2009 18:59:44 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:mime-version:received:date:message-id:subject
+         :from:to:content-type;
+        bh=bMytSMvCfw07TJ7DbLbr07s9cEkwqrfxAKyE6be6ab4=;
+        b=YqZiHc+FU4rtPuQ1ax+bkqB9+QaOUl5idfKyWCfpeb8sfCYLFuRzArXjuW0ZaczJsl
+         aC3pbK9XzAJF64trsDn9IIaNeAigi2ZLjv7iwwvrFcqYTQwwwjgVMC9Mt5C2AQWcOfIK
+         kP4ortWz35pdLUag2WxZLHI8tCh3n1s5iEjk4=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        b=vq513pEVUJW0wIcOizp4AgcEVBc8x6Vm0y7lGm8Hrd3GBSouLe/K8mIjWLVhLLQ7hX
+         mCbNr+/DU7nMiHDJEAxj3KbJhSwfGeOjWJAX7srOhc/WMgBlJIXf9sbUYYabICn55Q16
+         fnF+/NzDttI/FKkiaEWZKfvNqa+uJZFkpQMxU=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1258505915.7077.1345760963@webmail.messagingengine.com>
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <dvomlehn@cisco.com>
+Received: by 10.114.18.17 with SMTP id 17mr12288963war.131.1258513183644; Tue, 
+	17 Nov 2009 18:59:43 -0800 (PST)
+Date:	Wed, 18 Nov 2009 10:59:43 +0800
+Message-ID: <c6ed1ac50911171859k24685b32m237afd68f63c626f@mail.gmail.com>
+Subject: how i can know the linux-mips implememt cache strategy?
+From:	figo zhang <figo1802@gmail.com>
+To:	linux-mips@linux-mips.org
+Content-Type: multipart/alternative; boundary=00163692089b419d1c04789c6f91
+Return-Path: <figo1802@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24962
+X-archive-position: 24963
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvomlehn@cisco.com
+X-original-sender: figo1802@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 17, 2009 at 06:58:35PM -0600, myuboot@fastmail.fm wrote:
-> 
-> On Wed, 18 Nov 2009 01:39 +0100, "Florian Fainelli"
-> <florian@openwrt.org> wrote:
-> > -------------------------------
-> Actually I already got this patch for the board in little endian mode,
-> and it is still there for the big endian mode. And this is one of the
-> place I have been wondering if that needs to be changed for big endian. 
+--00163692089b419d1c04789c6f91
+Content-Type: text/plain; charset=ISO-8859-1
 
-It sounds like you've done a good job getting the bootloader and kernel
-to work, so this may be a silly suggestion, but are you sure your root
-filesystem and busybox are little-endian? It would be an easy mistake to
-make...
+hi all,
 
-> thanks. Andrew
+I am porting 24KEC soc to linux new, i have see the mips-kernel impement
+cache strategy: invalid and write-back,
+is it right?  is it implement the write-through strategy? see in
+include/asm-mips/r4kcache.h
 
-David VL
+how i can know the kernel using which cache strategy in user space, such
+as how can see the /proc system to know it?
+
+Best,
+Figo.zhang
+
+--00163692089b419d1c04789c6f91
+Content-Type: text/html; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+
+<div>hi all,</div>
+<div>=A0</div>
+<div>I am porting 24KEC soc to linux new, i have see the mips-kernel impeme=
+nt cache strategy: invalid and write-back,</div>
+<div>is it right?=A0 is it implement the write-through strategy? see in inc=
+lude/asm-mips/r4kcache.h</div>
+<div>=A0</div>
+<div>how i can know the kernel using which cache strategy in user space, su=
+ch as=A0how can see the /proc system to know it?</div>
+<div>=A0</div>
+<div>Best,</div>
+<div>Figo.zhang</div>
+
+--00163692089b419d1c04789c6f91--

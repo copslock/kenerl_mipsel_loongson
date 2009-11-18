@@ -1,76 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Nov 2009 04:00:00 +0100 (CET)
-Received: from mail-pw0-f45.google.com ([209.85.160.45]:47893 "EHLO
-	mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492134AbZKRC7x (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Wed, 18 Nov 2009 03:59:53 +0100
-Received: by pwi15 with SMTP id 15so422409pwi.24
-        for <linux-mips@linux-mips.org>; Tue, 17 Nov 2009 18:59:44 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:date:message-id:subject
-         :from:to:content-type;
-        bh=bMytSMvCfw07TJ7DbLbr07s9cEkwqrfxAKyE6be6ab4=;
-        b=YqZiHc+FU4rtPuQ1ax+bkqB9+QaOUl5idfKyWCfpeb8sfCYLFuRzArXjuW0ZaczJsl
-         aC3pbK9XzAJF64trsDn9IIaNeAigi2ZLjv7iwwvrFcqYTQwwwjgVMC9Mt5C2AQWcOfIK
-         kP4ortWz35pdLUag2WxZLHI8tCh3n1s5iEjk4=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:date:message-id:subject:from:to:content-type;
-        b=vq513pEVUJW0wIcOizp4AgcEVBc8x6Vm0y7lGm8Hrd3GBSouLe/K8mIjWLVhLLQ7hX
-         mCbNr+/DU7nMiHDJEAxj3KbJhSwfGeOjWJAX7srOhc/WMgBlJIXf9sbUYYabICn55Q16
-         fnF+/NzDttI/FKkiaEWZKfvNqa+uJZFkpQMxU=
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Nov 2009 12:44:30 +0100 (CET)
+Received: from localhost.localdomain ([127.0.0.1]:56254 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
+	id S1493323AbZKRLo0 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Wed, 18 Nov 2009 12:44:26 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nAIBiX9D005971;
+	Wed, 18 Nov 2009 12:44:33 +0100
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nAIBiWrD005969;
+	Wed, 18 Nov 2009 12:44:32 +0100
+Date:	Wed, 18 Nov 2009 12:44:32 +0100
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	figo zhang <figo1802@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: how i can know the linux-mips implememt cache strategy?
+Message-ID: <20091118114432.GA17418@linux-mips.org>
+References: <c6ed1ac50911171859k24685b32m237afd68f63c626f@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 10.114.18.17 with SMTP id 17mr12288963war.131.1258513183644; Tue, 
-	17 Nov 2009 18:59:43 -0800 (PST)
-Date:	Wed, 18 Nov 2009 10:59:43 +0800
-Message-ID: <c6ed1ac50911171859k24685b32m237afd68f63c626f@mail.gmail.com>
-Subject: how i can know the linux-mips implememt cache strategy?
-From:	figo zhang <figo1802@gmail.com>
-To:	linux-mips@linux-mips.org
-Content-Type: multipart/alternative; boundary=00163692089b419d1c04789c6f91
-Return-Path: <figo1802@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c6ed1ac50911171859k24685b32m237afd68f63c626f@mail.gmail.com>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24963
+X-archive-position: 24964
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: figo1802@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
---00163692089b419d1c04789c6f91
-Content-Type: text/plain; charset=ISO-8859-1
+On Wed, Nov 18, 2009 at 10:59:43AM +0800, figo zhang wrote:
 
-hi all,
+> I am porting 24KEC soc to linux new, i have see the mips-kernel impement
+> cache strategy: invalid and write-back,
+> is it right?  is it implement the write-through strategy? see in
+> include/asm-mips/r4kcache.h
+> 
+> how i can know the kernel using which cache strategy in user space, such
+> as how can see the /proc system to know it?
 
-I am porting 24KEC soc to linux new, i have see the mips-kernel impement
-cache strategy: invalid and write-back,
-is it right?  is it implement the write-through strategy? see in
-include/asm-mips/r4kcache.h
+The kernel will always use cache stategy 3 for non-coherent systems and
+caching strategy 5 for cache coherent systems.  These two select the most
+aggressive caching strategy on all processors and that's what gives the
+best performance.
 
-how i can know the kernel using which cache strategy in user space, such
-as how can see the /proc system to know it?
+I think write through is just not worth thinking about it.  Early 4K
+cores did only implement write through; later models added write-back and
+as the result have significantly improved performance.
 
-Best,
-Figo.zhang
+Minor optimizations of the cacheflush operations for write-through caches
+would be possible but I expect only small gains.  R4kcache.h implements a
+bunch of helper functions that iterate over memory areas; optimizations
+for write-through caches should be done by the callers of these helper
+functions.
 
---00163692089b419d1c04789c6f91
-Content-Type: text/html; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+Again, if you have write-back caches don't even think about write-though.
+It almost certainly less effective.
 
-<div>hi all,</div>
-<div>=A0</div>
-<div>I am porting 24KEC soc to linux new, i have see the mips-kernel impeme=
-nt cache strategy: invalid and write-back,</div>
-<div>is it right?=A0 is it implement the write-through strategy? see in inc=
-lude/asm-mips/r4kcache.h</div>
-<div>=A0</div>
-<div>how i can know the kernel using which cache strategy in user space, su=
-ch as=A0how can see the /proc system to know it?</div>
-<div>=A0</div>
-<div>Best,</div>
-<div>Figo.zhang</div>
-
---00163692089b419d1c04789c6f91--
+  Ralf

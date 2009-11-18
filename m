@@ -1,81 +1,99 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Nov 2009 15:49:56 +0100 (CET)
-Received: from localhost.localdomain ([127.0.0.1]:37879 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-FAIL) by ftp.linux-mips.org with ESMTP
-	id S1493496AbZKROtx (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Wed, 18 Nov 2009 15:49:53 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nAIEnpjW018100;
-	Wed, 18 Nov 2009 15:49:52 +0100
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nAIEnaHS018089;
-	Wed, 18 Nov 2009 15:49:36 +0100
-Date:	Wed, 18 Nov 2009 15:49:36 +0100
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Heiko Carstens <heiko.carstens@de.ibm.com>
-Cc:	Eric Paris <eparis@redhat.com>, Sachin Sant <sachinp@in.ibm.com>,
-	linux-s390@vger.kernel.org,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	linux-next@vger.kernel.org, linux-mips@linux-mips.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Martin Schwidefsky <schwidefsky@de.ibm.com>,
-	linux-arch@vger.kernel.org
-Subject: Re: [-next Nov 17] s390 build
-	break(arch/s390/kernel/compat_wrapper.S)
-Message-ID: <20091118144936.GB17146@linux-mips.org>
-References: <20091117195309.6cc3ead0.sfr@canb.auug.org.au> <4B0291BB.3090005@in.ibm.com> <20091117125201.GB5124@osiris.boeblingen.de.ibm.com> <1258465241.2876.29.camel@dhcp231-106.rdu.redhat.com> <20091117135525.GF5124@osiris.boeblingen.de.ibm.com> <1258471436.2876.34.camel@dhcp231-106.rdu.redhat.com> <20091118070418.GA4392@osiris.boeblingen.de.ibm.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 18 Nov 2009 17:11:28 +0100 (CET)
+Received: from out4.smtp.messagingengine.com ([66.111.4.28]:59620 "EHLO
+	out4.smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493538AbZKRQLW (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Wed, 18 Nov 2009 17:11:22 +0100
+Received: from compute1.internal (compute1.internal [10.202.2.41])
+	by gateway1.messagingengine.com (Postfix) with ESMTP id DEF1BC0CDD;
+	Wed, 18 Nov 2009 11:11:18 -0500 (EST)
+Received: from web8.messagingengine.com ([10.202.2.217])
+  by compute1.internal (MEProxy); Wed, 18 Nov 2009 11:11:18 -0500
+DKIM-Signature:	v=1; a=rsa-sha1; c=relaxed/relaxed; d=messagingengine.com; h=message-id:from:to:cc:mime-version:content-transfer-encoding:content-type:references:subject:in-reply-to:date; s=smtpout; bh=4rCjDeUUq98XIca6rLk8zB0ydBU=; b=d+Bz8o7oSxeMMvqeVRKTzVi8PAUdRL4NnvaazSO5oKe8Kx6ajN99bOiE4qiBJBDJej4jrRSULYA7J4tbcl6WKQ/mFaHqwaBzhyykevs97i0hQNsHxl6KrXGfZM5U/0JLG2RrYeJ8bbo4CgjMbb+NciridvGm2+RncOVgL7odnF4=
+Received: by web8.messagingengine.com (Postfix, from userid 99)
+	id BBB1310565B; Wed, 18 Nov 2009 11:11:18 -0500 (EST)
+Message-Id: <1258560678.3739.1345870183@webmail.messagingengine.com>
+X-Sasl-Enc: DsaM8jiznorPVziJtpV4yRZkj8d88ZVMJsKl5WURCJUp 1258560678
+From:	myuboot@fastmail.fm
+To:	"David VomLehn" <dvomlehn@cisco.com>
+Cc:	"Florian Fainelli" <florian@openwrt.org>,
+	"Chris Dearman" <chris@mips.com>,
+	"linux-mips" <linux-mips@linux-mips.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20091118070418.GA4392@osiris.boeblingen.de.ibm.com>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <ralf@linux-mips.org>
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+X-Mailer: MessagingEngine.com Webmail Interface
+References: <1255735395.30097.1340523469@webmail.messagingengine.com>
+ <4B031B78.5030204@mips.com>
+ <1258504293.3627.1345755107@webmail.messagingengine.com>
+ <200911180139.29283.florian@openwrt.org>
+ <1258505915.7077.1345760963@webmail.messagingengine.com>
+ <20091118010351.GA21728@dvomlehn-lnx2.corp.sa.net>
+Subject: Re: problem bring up initramfs and busybox
+In-Reply-To: <20091118010351.GA21728@dvomlehn-lnx2.corp.sa.net>
+Date:	Wed, 18 Nov 2009 10:11:18 -0600
+Return-Path: <myuboot@fastmail.fm>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24967
+X-archive-position: 24968
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: myuboot@fastmail.fm
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 18, 2009 at 08:04:18AM +0100, Heiko Carstens wrote:
 
-> Please note that other architectures (I think at least arm and powerpc) put
-> 64 bit values into even/odd register pairs and add padding if the first free
-> available register is an odd one. So any of the following interfaces should
-> work for all architectures:
+
+On Tue, 17 Nov 2009 20:03 -0500, "David VomLehn" <dvomlehn@cisco.com>
+wrote:
+> On Tue, Nov 17, 2009 at 06:58:35PM -0600, myuboot@fastmail.fm wrote:
+> > 
+> > On Wed, 18 Nov 2009 01:39 +0100, "Florian Fainelli"
+> > <florian@openwrt.org> wrote:
+> > > -------------------------------
+> > Actually I already got this patch for the board in little endian mode,
+> > and it is still there for the big endian mode. And this is one of the
+> > place I have been wondering if that needs to be changed for big endian. 
 > 
-> long sys_fanotify_mark(int fanotify_fd, unsigned int flags,
->      	 	       int fd, const char  __user *pathname,
->                        u32 mask_high, u32 mask_low);
+> It sounds like you've done a good job getting the bootloader and kernel
+> to work, so this may be a silly suggestion, but are you sure your root
+> filesystem and busybox are little-endian? It would be an easy mistake to
+> make...
 > 
-> long sys_fanotify_mark(int fanotify_fd, unsigned int flags,
->                        u64 mask,
->      	 	       int fd, const char  __user *pathname);
+> > thanks. Andrew
 > 
-> long sys_fanotify_mark(u64 mask,
->      		       int fanotify_fd, unsigned int flags,
->      	 	       int fd, const char  __user *pathname);
+> David VL
 
-Correct - but the splitting is unnecessary pain for some platforms like
-64-bit userland on 64-bit MIPS where the 64-bit argument would be passed
-in a single register so I have preference for the 2nd or 3rd suggestion.
+I am pretty sure the filesystem and busybox are big endian. I can see
+the following print out when the filesystem is built for big endian
+mode. 
+"Swapping filesystem endian-ness"
+Though I don't know if there is a command to check the endianess of a
+filesystem directly.
 
-The 1st prototype has the advantage of avoiding the need for a compat
-wrapper which otherwise would look like:
-
-long compat_sys_fanotify_mark(int fanotify_fd, unsigned int flags,
-                       u32 a2, u32 a3,
-     	 	       int fd, const char  __user *pathname);
-{
-	/* assuming 2nd suggested prototype from above */
-	return sys_fanotify_mark(fd, flags,
-				 merge64(a2, a3),
-				 fd, pathname);
-}
-
-I'd prefer to see the compat code carrying the burden.
-
-  Ralf
+And below is the header info of the busybox showing it is a big endian
+object.
+readelf -h busybox-1.14.3/busybox
+ELF Header:
+  Magic:   7f 45 4c 46 01 02 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF32
+  Data:                              2's complement, big endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (Executable file)
+  Machine:                           MIPS R3000
+  Version:                           0x1
+  Entry point address:               0x4001b0
+  Start of program headers:          52 (bytes into file)
+  Start of section headers:          926564 (bytes into file)
+  Flags:                             0x50001007, noreorder, pic, cpic,
+  o32, mips32
+  Size of this header:               52 (bytes)
+  Size of program headers:           32 (bytes)
+  Number of program headers:         3
+  Size of section headers:           40 (bytes)
+  Number of section headers:         19
+  Section header string table index: 18
+Thanks, Andrew

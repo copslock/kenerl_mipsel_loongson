@@ -1,30 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Nov 2009 13:35:36 +0100 (CET)
-Received: from mail-px0-f173.google.com ([209.85.216.173]:65394 "EHLO
-	mail-px0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493130AbZKTMfJ (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Fri, 20 Nov 2009 13:35:09 +0100
-Received: by pxi3 with SMTP id 3so2384627pxi.22
-        for <multiple recipients>; Fri, 20 Nov 2009 04:35:02 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Nov 2009 13:36:01 +0100 (CET)
+Received: from mail-pz0-f197.google.com ([209.85.222.197]:57283 "EHLO
+	mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493138AbZKTMfN (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Fri, 20 Nov 2009 13:35:13 +0100
+Received: by mail-pz0-f197.google.com with SMTP id 35so2380364pzk.22
+        for <multiple recipients>; Fri, 20 Nov 2009 04:35:12 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer:in-reply-to:references:in-reply-to:references;
-        bh=hlXsEE1Ecv8QHAZg/DflgICMUJmLJ7gKdxz2WOUXnIk=;
-        b=tLsiVRMti+OaUMZ5lbK2LClCh3/T3C9PwpeVX0WEvxZSW+rZRFdyyssI7U2UrXciy2
-         U69S5s/gOhZrvAAddumFcOBWIkpVZ5XWpVvM4Z26kjJhrO7aXOxigwv3SZCYotC5Ivsz
-         FHjexYBkr54VE+l7f4Bn3Cn9l2I8IaryChL3w=
+        bh=Fjklm2657ZmJtus0APuqoR4minsfCMZ6q1iVn5wSxeE=;
+        b=VIkm5BqZbLzHKyYGQXCH4D3uJ/yH6+YOUQF7SdfNgHNE/H3xg6C3Ou9S+345+9HPmS
+         UiPmLt9jvvoXHgFMc5YT0vkp1SAN7aNyh5+WMgFHkG4IaMXJ99i9p5jLftWO/S+AsJAX
+         TsYjoTNYlE9aV9b8/RPEODPeJB5TQh1Q+ad9Q=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=FGlxraMlHQjG/dmw1Wq83X88V30QfUqXVkV4GP6NNVXKLya5D3cJiQdG9ruY81mxXM
-         gnmZECJUrQm/1Xk0UBW3efv6jvlxOzsmuk8lUT/nQQgZAQQyQJ7hCY3lno0hRCbSFvWs
-         HMURAXr9JR0ryZkl7YRFLzt+pi+M8dobcIDoM=
-Received: by 10.114.5.18 with SMTP id 18mr1933825wae.140.1258720502351;
-        Fri, 20 Nov 2009 04:35:02 -0800 (PST)
+        b=K1/SXpLQj6wCgO3468BlmVpXvGt/0l5+OwrqMsvaux5T9hMJoD3n4wjH7i/mgL1x8q
+         8U//nQ3lfhXz6LC5Injn+nakvj9s7RFR6uGBz/CcBzFqBslP+k6bu3OP61iCiXhgYVua
+         kuXBdKqN+Dp67GKh1wqC33E5TxhbObVPxewwk=
+Received: by 10.115.87.7 with SMTP id p7mr1932530wal.161.1258720512735;
+        Fri, 20 Nov 2009 04:35:12 -0800 (PST)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id 22sm931632pzk.2.2009.11.20.04.34.56
+        by mx.google.com with ESMTPS id 22sm931632pzk.2.2009.11.20.04.35.02
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 20 Nov 2009 04:35:01 -0800 (PST)
+        Fri, 20 Nov 2009 04:35:12 -0800 (PST)
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 To:	Ralf Baechle <ralf@linux-mips.org>, rostedt@goodmis.org
 Cc:	Nicholas Mc Guire <der.herr@hofr.at>, zhangfx@lemote.com,
@@ -32,20 +32,22 @@ Cc:	Nicholas Mc Guire <der.herr@hofr.at>, zhangfx@lemote.com,
 	Ingo Molnar <mingo@elte.hu>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Frederic Weisbecker <fweisbec@gmail.com>,
-	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: [PATCH v9 02/10] tracing: enable HAVE_FUNCTION_TRACE_MCOUNT_TEST for MIPS
-Date:	Fri, 20 Nov 2009 20:34:30 +0800
-Message-Id: <51e30436a435480f1f0dec146a82f2b250900690.1258719323.git.wuzhangjin@gmail.com>
+	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+	Wu Zhangjin <wuzj@lemote.com>
+Subject: [PATCH v9 03/10] tracing: add an endian argument to scripts/recordmcount.pl
+Date:	Fri, 20 Nov 2009 20:34:31 +0800
+Message-Id: <267c0824194b659b46fc038ba43492df30369fec.1258719323.git.wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.6.2.1
-In-Reply-To: <adf867c5a6864fa196c667d3f09a6a694f3903c5.1258719323.git.wuzhangjin@gmail.com>
+In-Reply-To: <51e30436a435480f1f0dec146a82f2b250900690.1258719323.git.wuzhangjin@gmail.com>
 References: <adf867c5a6864fa196c667d3f09a6a694f3903c5.1258719323.git.wuzhangjin@gmail.com>
+ <51e30436a435480f1f0dec146a82f2b250900690.1258719323.git.wuzhangjin@gmail.com>
 In-Reply-To: <cover.1258719323.git.wuzhangjin@gmail.com>
 References: <cover.1258719323.git.wuzhangjin@gmail.com>
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 24993
+X-archive-position: 24994
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -55,45 +57,47 @@ X-list: linux-mips
 
 From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-There is an exisiting common ftrace_test_stop_func() in
-kernel/trace/ftrace.c, which is used to check the global variable
-ftrace_trace_stop to determine whether stop the function tracing.
+MIPS and some other architectures need this argument to handle
+big/little endian respectively.
 
-This patch implepment the MIPS specific one to speedup the procedure.
-
-Thanks goes to Zhang Le for Cleaning it up.
-
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+Signed-off-by: Wu Zhangjin <wuzj@lemote.com>
 ---
- arch/mips/Kconfig         |    1 +
- arch/mips/kernel/mcount.S |    3 +++
- 2 files changed, 4 insertions(+), 0 deletions(-)
+ scripts/Makefile.build  |    1 +
+ scripts/recordmcount.pl |    6 +++---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 6b33e88..a9bd992 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -5,6 +5,7 @@ config MIPS
- 	select HAVE_OPROFILE
- 	select HAVE_ARCH_KGDB
- 	select HAVE_FUNCTION_TRACER
-+	select HAVE_FUNCTION_TRACE_MCOUNT_TEST
- 	# Horrible source of confusion.  Die, die, die ...
- 	select EMBEDDED
- 	select RTC_LIB if !LEMOTE_FULOONG2E
-diff --git a/arch/mips/kernel/mcount.S b/arch/mips/kernel/mcount.S
-index cebcc3c..cbb45ed 100644
---- a/arch/mips/kernel/mcount.S
-+++ b/arch/mips/kernel/mcount.S
-@@ -59,6 +59,9 @@
- 	.endm
+diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+index 341b589..0b94d2f 100644
+--- a/scripts/Makefile.build
++++ b/scripts/Makefile.build
+@@ -207,6 +207,7 @@ endif
  
- NESTED(_mcount, PT_SIZE, ra)
-+	lw	t0, function_trace_stop
-+	bnez	t0, ftrace_stub
-+	 nop
- 	PTR_LA	t0, ftrace_stub
- 	PTR_L	t1, ftrace_trace_function /* Prepare t1 for (1) */
- 	bne	t0, t1, static_trace
+ ifdef CONFIG_FTRACE_MCOUNT_RECORD
+ cmd_record_mcount = set -e ; perl $(srctree)/scripts/recordmcount.pl "$(ARCH)" \
++	"$(if $(CONFIG_CPU_BIG_ENDIAN),big,little)" \
+ 	"$(if $(CONFIG_64BIT),64,32)" \
+ 	"$(OBJDUMP)" "$(OBJCOPY)" "$(CC)" "$(LD)" "$(NM)" "$(RM)" "$(MV)" \
+ 	"$(if $(part-of-module),1,0)" "$(@)";
+diff --git a/scripts/recordmcount.pl b/scripts/recordmcount.pl
+index f0d1445..24604d4 100755
+--- a/scripts/recordmcount.pl
++++ b/scripts/recordmcount.pl
+@@ -113,13 +113,13 @@ $P =~ s@.*/@@g;
+ 
+ my $V = '0.1';
+ 
+-if ($#ARGV != 10) {
+-	print "usage: $P arch bits objdump objcopy cc ld nm rm mv is_module inputfile\n";
++if ($#ARGV != 11) {
++	print "usage: $P arch endian bits objdump objcopy cc ld nm rm mv is_module inputfile\n";
+ 	print "version: $V\n";
+ 	exit(1);
+ }
+ 
+-my ($arch, $bits, $objdump, $objcopy, $cc,
++my ($arch, $endian, $bits, $objdump, $objcopy, $cc,
+     $ld, $nm, $rm, $mv, $is_module, $inputfile) = @ARGV;
+ 
+ # This file refers to mcount and shouldn't be ftraced, so lets' ignore it
 -- 
 1.6.2.1

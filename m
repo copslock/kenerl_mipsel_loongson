@@ -1,15 +1,15 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Nov 2009 18:25:05 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:34004 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Nov 2009 18:25:31 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:34024 "EHLO h5.dl5rb.org.uk"
 	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1494156AbZKTRY5 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 20 Nov 2009 18:24:57 +0100
+	id S1494160AbZKTRZJ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Fri, 20 Nov 2009 18:25:09 +0100
 Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nAKHOOcm011078;
-	Fri, 20 Nov 2009 17:24:24 GMT
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nAKHOhcX011084;
+	Fri, 20 Nov 2009 17:24:43 GMT
 Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nAKHOIxD011077;
-	Fri, 20 Nov 2009 17:24:18 GMT
-Date:	Fri, 20 Nov 2009 17:24:18 +0000
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nAKHOcUh011083;
+	Fri, 20 Nov 2009 17:24:38 GMT
+Date:	Fri, 20 Nov 2009 17:24:38 +0000
 From:	Ralf Baechle <ralf@linux-mips.org>
 To:	Wu Zhangjin <wuzhangjin@gmail.com>
 Cc:	rostedt@goodmis.org, Nicholas Mc Guire <der.herr@hofr.at>,
@@ -17,20 +17,20 @@ Cc:	rostedt@goodmis.org, Nicholas Mc Guire <der.herr@hofr.at>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Frederic Weisbecker <fweisbec@gmail.com>,
 	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH v9 06/10] tracing: add function graph tracer support
+Subject: Re: [PATCH v9 07/10] tracing: add dynamic function graph tracer
 	for MIPS
-Message-ID: <20091120172418.GF6869@linux-mips.org>
-References: <cover.1258719323.git.wuzhangjin@gmail.com> <2276758e661b2b2362432851003df1d7c99d6cc0.1258719323.git.wuzhangjin@gmail.com>
+Message-ID: <20091120172438.GG6869@linux-mips.org>
+References: <cover.1258719323.git.wuzhangjin@gmail.com> <c08257b0ef370f6e04ff9719bf7499bae28c70f4.1258719323.git.wuzhangjin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2276758e661b2b2362432851003df1d7c99d6cc0.1258719323.git.wuzhangjin@gmail.com>
+In-Reply-To: <c08257b0ef370f6e04ff9719bf7499bae28c70f4.1258719323.git.wuzhangjin@gmail.com>
 User-Agent: Mutt/1.5.19 (2009-01-05)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25008
+X-archive-position: 25009
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -38,76 +38,17 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Nov 20, 2009 at 08:34:34PM +0800, Wu Zhangjin wrote:
+On Fri, Nov 20, 2009 at 08:34:35PM +0800, Wu Zhangjin wrote:
 
-> The implementation of function graph tracer for MIPS is a little
-> different from X86.
+> From: Wu Zhangjin <wuzhangjin@gmail.com>
 > 
-> in MIPS, gcc(with -pg) only transfer the caller's return address(at) and
-> the _mcount's return address(ra) to us.
+> This patch make function graph tracer work with dynamic function tracer.
 > 
-> For the kernel part without -mlong-calls:
+> To share the source code of dynamic function tracer(MCOUNT_SAVE_REGS),
+> and avoid restoring the whole saved registers, we need to restore the ra
+> register from the stack.
 > 
-> move at, ra
-> jal _mcount
-> 
-> For the module part with -mlong-calls:
-> 
-> lui v1, hi16bit_of_mcount
-> addiu v1, v1, low16bit_of_mcount
-> move at, ra
-> jal _mcount
-> 
-> Without -mlong-calls,
-> 
-> if the function is a leaf, it will not save the return address(ra):
-> 
-> ffffffff80101298 <au1k_wait>:
-> ffffffff80101298:       67bdfff0        daddiu  sp,sp,-16
-> ffffffff8010129c:       ffbe0008        sd      s8,8(sp)
-> ffffffff801012a0:       03a0f02d        move    s8,sp
-> ffffffff801012a4:       03e0082d        move    at,ra
-> ffffffff801012a8:       0c042930        jal     ffffffff8010a4c0 <_mcount>
-> ffffffff801012ac:       00020021        nop
-> 
-> so, we can hijack it directly in _mcount, but if the function is non-leaf, the
-> return address is saved in the stack.
-> 
-> ffffffff80133030 <copy_process>:
-> ffffffff80133030:       67bdff50        daddiu  sp,sp,-176
-> ffffffff80133034:       ffbe00a0        sd      s8,160(sp)
-> ffffffff80133038:       03a0f02d        move    s8,sp
-> ffffffff8013303c:       ffbf00a8        sd      ra,168(sp)
-> ffffffff80133040:       ffb70098        sd      s7,152(sp)
-> ffffffff80133044:       ffb60090        sd      s6,144(sp)
-> ffffffff80133048:       ffb50088        sd      s5,136(sp)
-> ffffffff8013304c:       ffb40080        sd      s4,128(sp)
-> ffffffff80133050:       ffb30078        sd      s3,120(sp)
-> ffffffff80133054:       ffb20070        sd      s2,112(sp)
-> ffffffff80133058:       ffb10068        sd      s1,104(sp)
-> ffffffff8013305c:       ffb00060        sd      s0,96(sp)
-> ffffffff80133060:       03e0082d        move    at,ra
-> ffffffff80133064:       0c042930        jal     ffffffff8010a4c0 <_mcount>
-> ffffffff80133068:       00020021        nop
-> 
-> but we can not get the exact stack address(which saved ra) directly in
-> _mcount, we need to search the content of at register in the stack space
-> or search the "s{d,w} ra, offset(sp)" instruction in the text. 'Cause we
-> can not prove there is only a match in the stack space, so, we search
-> the text instead.
-> 
-> as we can see, if the first instruction above "move at, ra" is not a
-> store instruction, there should be a leaf function, so we hijack the at
-> register directly via putting &return_to_handler into it, otherwise, we
-> search the "s{d,w} ra, offset(sp)" instruction to get the stack offset,
-> and then the stack address. we use the above copy_process() as an
-> example, we at last find "ffbf00a8", 0xa8 is the stack offset, we plus
-> it with s8(fp), that is the stack address, we hijack the content via
-> writing the &return_to_handler in.
-> 
-> If with -mlong-calls, since there are two more instructions above "move
-> at, ra", so, we can move the pointer to the position above "lui v1,
-> hi16bit_of_mcount".
+> (NOTE: This not work with 32bit! need to ensure why!)
 > 
 > Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
 

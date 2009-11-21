@@ -1,81 +1,85 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 20 Nov 2009 18:26:46 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:34069 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1494162AbZKTR0G (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Fri, 20 Nov 2009 18:26:06 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nAKHPmIw011133;
-	Fri, 20 Nov 2009 17:25:48 GMT
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nAKHPgM2011132;
-	Fri, 20 Nov 2009 17:25:42 GMT
-Date:	Fri, 20 Nov 2009 17:25:42 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Wu Zhangjin <wuzhangjin@gmail.com>
-Cc:	rostedt@goodmis.org, Nicholas Mc Guire <der.herr@hofr.at>,
-	zhangfx@lemote.com, Ingo Molnar <mingo@elte.hu>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Frederic Weisbecker <fweisbec@gmail.com>,
-	linux-kernel@vger.kernel.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH v9 10/10] tracing: make function graph tracer work with
-	-mmcount-ra-address
-Message-ID: <20091120172542.GJ6869@linux-mips.org>
-References: <cover.1258719323.git.wuzhangjin@gmail.com> <7f3448d0d795a7f60dc9731e95123ae9e0f4d56a.1258719323.git.wuzhangjin@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7f3448d0d795a7f60dc9731e95123ae9e0f4d56a.1258719323.git.wuzhangjin@gmail.com>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Nov 2009 12:05:48 +0100 (CET)
+Received: from mail-px0-f173.google.com ([209.85.216.173]:43257 "EHLO
+	mail-px0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492249AbZKULFl (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 21 Nov 2009 12:05:41 +0100
+Received: by pxi3 with SMTP id 3so2973133pxi.22
+        for <multiple recipients>; Sat, 21 Nov 2009 03:05:34 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=O8pIAqzOT+WNtqsGc3NqyLD1+8dvyausjdc5pLTP9JE=;
+        b=dj+AeCGzMAcW3sTq1gwRn84TYG6R5Mq1Ac9GPV458Amnf6U8DWl0TWDFQhF0orxpFT
+         jtlN8/IZv9F9vKxacqHyiHYXyJ4u12Ap2PpY2nP6jnQzR0gD8cRm+ixTwM8o+Yix6Ye1
+         +ueBulr2s0HvOYZsQ+kGUP8T7RDbutTCzkc0o=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=btLVH6KLKzeeZC1606wXDQVyxUY0KcMq3OJ6WvMWgUWYiVo5Pi6VK3KpVqfX46dWPq
+         2OZlvbntU5DAclnZG+2t2b3Ct5jxeWC2cYjCQdRQzK9DnyzaEF3xqrSifsyYy7vrsHeP
+         sDNBvTYFRKuXQhlwg4EOMKOYeXeJWkFVisnGk=
+Received: by 10.114.165.18 with SMTP id n18mr1807165wae.154.1258801534102;
+        Sat, 21 Nov 2009 03:05:34 -0800 (PST)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPS id 21sm1508374pxi.4.2009.11.21.03.05.31
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sat, 21 Nov 2009 03:05:33 -0800 (PST)
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH v1 0/4] Fixups and Cleanups of lemote-2f family machines
+Date:	Sat, 21 Nov 2009 19:05:21 +0800
+Message-Id: <cover.1258800842.git.wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.6.2.1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25012
+X-archive-position: 25013
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Nov 20, 2009 at 08:34:38PM +0800, Wu Zhangjin wrote:
+This patchset includes the following changes:
 
-> That thread "MIPS: Add option to pass return address location to
-> _mcount" from "David Daney <ddaney@caviumnetworks.com>" have added a new
-> option -mmcount-ra-address to gcc(4.5) for MIPS to transfer the location
-> of the return address to _mcount.
-> 
-> Benefit from this new feature, function graph tracer on MIPS will be
-> easier and safer to hijack the return address of the kernel function,
-> which will save some overhead and make the whole thing more reliable.
-> 
-> In this patch, at first, try to enable the option -mmcount-ra-address in
-> arch/mips/Makefile with cc-option, if gcc support it, it will be
-> enabled, otherwise, no side effect.
-> 
-> and then, we need to support this new option of gcc 4.5 and also support
-> the old gcc versions.
-> 
-> with _mcount in the old gcc versions, it's not easy to get the location
-> of return address(tracing: add function graph tracer support for MIPS),
->    so, we do it in a C function: ftrace_get_parent_addr(ftrace.c), but
->    with -mmcount-ra-address, only several instructions need to get what
->    we want, so, I put into asm(mcount.S). and also, as the $12(t0) is
->    used by -mmcount-ra-address for transferring the localtion of return
->    address to _mcount, we need to save it into the stack and restore it
->    when enabled dynamic function tracer, 'Cause we have called
->    "ftrace_call" before "ftrace_graph_caller", which may destroy
->    $12(t0).
-> 
-> (Thanks to David for providing that -mcount-ra-address and giving the
->  idea of KBUILD_MCOUNT_RA_ADDRESS, both of them have made the whole
->  thing more beautiful!)
-> 
-> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+  - [loongson] Remove the inline annotation of prom_init_uart_base()
+    Ensure gcc 3.4.6 can compile it.
+  - [loongson] yeeloong2f: add basic ec operations
+    add basic support for the Embedded Controller(ec_kb3310b) of yeeloong2f netbook.
+    This support is needed for the coming yeeloong2f platform drivers.
+  - [loongson] yeeloong2f: add LID open event as the wakeup event
+    Allow users wakeup the netbook from suspend mode via opening the LID.
+  - [loongson] yeeloong2f: cleanup the reset logic with ec_write function
+    Benefit from "[loongson] yeeloong2f: add basic ec operations",
+    we can use the cleanup the old reset implementaion now.
 
-Queued for 2.6.33 but due to patch 3/3 I won't propagate this series
-immediately to linux-next.
+All of the above updates have been tested and put into this branch:
 
-Thanks!
+git://dev.lemote.com/rt4ls.git linux-loongson/dev/for-upstream
 
-  Ralf
+Hi, Ralf, Could you please queue it for linux-2.6.33? Thanks!
+
+Best Wishes,
+     Wu Zhangjin
+
+Wu Zhangjin (4):
+  [loongson] Remove the inline annotation of prom_init_uart_base()
+  [loongson] yeeloong2f: add basic ec operations
+  [loongson] yeeloong2f: add LID open event as the wakeup event
+  [loongson] yeeloong2f: cleanup the reset logic with ec_write function
+
+ arch/mips/include/asm/mach-loongson/loongson.h |    3 +-
+ arch/mips/loongson/common/uart_base.c          |    2 +-
+ arch/mips/loongson/lemote-2f/Makefile          |    2 +-
+ arch/mips/loongson/lemote-2f/ec_kb3310b.c      |  132 ++++++++++++++++++++++++
+ arch/mips/loongson/lemote-2f/ec_kb3310b.h      |   47 +++++++++
+ arch/mips/loongson/lemote-2f/irq.c             |    4 +-
+ arch/mips/loongson/lemote-2f/pm.c              |   71 ++++++++++++-
+ arch/mips/loongson/lemote-2f/reset.c           |   21 +----
+ 8 files changed, 256 insertions(+), 26 deletions(-)
+ create mode 100644 arch/mips/loongson/lemote-2f/ec_kb3310b.c
+ create mode 100644 arch/mips/loongson/lemote-2f/ec_kb3310b.h

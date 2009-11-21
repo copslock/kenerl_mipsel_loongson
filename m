@@ -1,79 +1,152 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Nov 2009 16:18:38 +0100 (CET)
-Received: from mail-vw0-f177.google.com ([209.85.212.177]:39285 "EHLO
-	mail-vw0-f177.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492843AbZKUPSd convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sat, 21 Nov 2009 16:18:33 +0100
-Received: by vws7 with SMTP id 7so1394235vws.22
-        for <multiple recipients>; Sat, 21 Nov 2009 07:18:26 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type
-         :content-transfer-encoding;
-        bh=Bj61smTqktMIiy1XqrDVT2z1QcJeWp2rLR3qlWgzeZM=;
-        b=t+YyuxfnTXmWMDw5tfs2V2wCJixaNpNcC8Jwzh7VIbTH70nI9XScnhCBULWGmCZLEl
-         puluwDCiXubiI7c1pt2ltGv/YVR+3B4WgL+7ccIre/JwtMc4UYxy8nTH+nawx3/EfTcR
-         JARl/8eHJr8pqwrSN3cvYoWKcJ8wBzev8PDvA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type:content-transfer-encoding;
-        b=gAyEh5zZcuHNcP9KFs/cHutV4FWXqO8anSrvp+KXSudw2hBkMSpKRxNfqs6/nw0yvJ
-         JsrnfhYB3/7Ddmhx0fH/Vp57vFhhC+hXXD7nouAKkmepa1EwMAO1oVGUUM74y9XFkUG4
-         jBnkys5vc8j4Vs7Nm/OAFW3GIFKmd0jje033s=
-MIME-Version: 1.0
-Received: by 10.220.122.90 with SMTP id k26mr3454467vcr.69.1258816706098; Sat, 
-	21 Nov 2009 07:18:26 -0800 (PST)
-In-Reply-To: <20091118114432.GA17418@linux-mips.org>
-References: <c6ed1ac50911171859k24685b32m237afd68f63c626f@mail.gmail.com>
-	 <20091118114432.GA17418@linux-mips.org>
-Date:	Sat, 21 Nov 2009 09:18:26 -0600
-Message-ID: <b2b2f2320911210718j5909c151s3286f715d0ab39db@mail.gmail.com>
-Subject: Re: how i can know the linux-mips implememt cache strategy?
-From:	Shane McDonald <mcdonald.shane@gmail.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	figo zhang <figo1802@gmail.com>, linux-mips@linux-mips.org
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <mcdonald.shane@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Nov 2009 21:35:39 +0100 (CET)
+Received: from gw02.mail.saunalahti.fi ([195.197.172.116]:45132 "EHLO
+	gw02.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493261AbZKUUfd (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 21 Nov 2009 21:35:33 +0100
+Received: from localhost.localdomain (a88-114-232-190.elisa-laajakaista.fi [88.114.232.190])
+	by gw02.mail.saunalahti.fi (Postfix) with ESMTP id 1BC8013959C;
+	Sat, 21 Nov 2009 22:35:20 +0200 (EET)
+From:	Dmitri Vorobiev <dmitri.vorobiev@movial.com>
+To:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Cc:	Dmitri Vorobiev <dmitri.vorobiev@movial.com>
+Subject: [PATCH] [MIPS] Fix and enhance built-in kernel command line
+Date:	Sat, 21 Nov 2009 22:34:41 +0200
+Message-Id: <1258835681-32200-1-git-send-email-dmitri.vorobiev@movial.com>
+X-Mailer: git-send-email 1.6.3.3
+Return-Path: <dmitri.vorobiev@movial.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25023
+X-archive-position: 25024
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mcdonald.shane@gmail.com
+X-original-sender: dmitri.vorobiev@movial.com
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 18, 2009 at 5:44 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
->
-> The kernel will always use cache stategy 3 for non-coherent systems and
-> caching strategy 5 for cache coherent systems.  These two select the most
-> aggressive caching strategy on all processors and that's what gives the
-> best performance.
+Currently, MIPS kernels silently overwrite kernel command-line
+parameters hardcoded in CONFIG_CMDLINE by the ones received
+from firmware.  Therefore, using firmware remains the only
+reliable method to transfer the command-line parameters, which
+is not always desirable or convenient, and the CONFIG_CMDLINE
+option is thereby effectively rendered useless.
 
-OK, dumb question -- how is this implemented?  Poking through the code,
-it looks to me that the cache strategy used comes from the K0 field of the
-coprocessor 0 Config register, which I think is whatever gets set up by
-the bootloader, or if that wasn't done, the default value of that
-field for the processor.
-See function coherency_setup() in arch/mips/mm/c-r4k.c:
+This patch fixes the problem described above and introduces
+a more flexible scheme of handling the kernel command line,
+in a manner identical to what is currently used for x86.
+The default behavior, i.e. when CONFIG_CMDLINE_BOOL is not
+defined, retains the existing semantics, and firmware
+command-line arguments override the hardcoded ones.
 
-        if (cca < 0 || cca > 7)
-                cca = read_c0_config() & CONF_CM_CMASK;
-        _page_cachable_default = cca << _CACHE_SHIFT;
+Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@movial.com>
+---
+ arch/mips/Kconfig.debug  |   45 +++++++++++++++++++++++++++++++++++++++++----
+ arch/mips/kernel/setup.c |   24 ++++++++++++++++++++----
+ 2 files changed, 61 insertions(+), 8 deletions(-)
 
-This can be overridden on the kernel command line with the "cca" parameter,
-but as Ralf said in
-http://www.linux-mips.org/archives/linux-mips/2008-06/msg00186.html,
-"passing a CCA value on the command line is nothing a user should
-ever, ever have to do".
-
-I can see how this was implemented in 2.6.25, but commit 3513369
-[MIPS] Allow setting of the cache attribute at run time, seems to have changed
-from the behaviour Ralf described.
-
-Shane
+diff --git a/arch/mips/Kconfig.debug b/arch/mips/Kconfig.debug
+index 364ca89..9835030 100644
+--- a/arch/mips/Kconfig.debug
++++ b/arch/mips/Kconfig.debug
+@@ -6,15 +6,52 @@ config TRACE_IRQFLAGS_SUPPORT
+ 
+ source "lib/Kconfig.debug"
+ 
++config CMDLINE_BOOL
++	bool "Built-in kernel command line"
++	default n
++	help
++	  For most systems, it is firmware or second stage bootloader that
++	  by default specifies the kernel command line options.  However,
++	  it might be necessary or advantageous to either override the
++	  default kernel command line or add a few extra options to it.
++	  For such cases, this option allows you to hardcode your own
++	  command line options directly into the kernel.  For that, you
++	  should choose 'Y' here, and fill in the extra boot arguments
++	  in CONFIG_CMDLINE.
++
++	  The built-in options will be concatenated to the default command
++	  line if CMDLINE_OVERRIDE is set to 'N'. Otherwise, the default
++	  command line will be ignored and replaced by the built-in string.
++
++	  Most MIPS systems will normally expect 'N' here and rely upon
++	  the command line from the firmware or the second-stage bootloader.
++
++config CMDLINE_OVERRIDE
++	bool "Built-in command line overrides firware arguments"
++	default n
++	depends on CMDLINE_BOOL
++	help
++	  By setting this option to 'Y' you will have your kernel ignore
++	  command line arguments from firmware or second stage bootloader.
++	  Instead, the built-in command line will be used exclusively.
++
++	  Normally, you will choose 'N' here.
++
+ config CMDLINE
+ 	string "Default kernel command string"
++	depends on CMDLINE_BOOL
+ 	default ""
+ 	help
+ 	  On some platforms, there is currently no way for the boot loader to
+-	  pass arguments to the kernel. For these platforms, you can supply
+-	  some command-line options at build time by entering them here.  In
+-	  other cases you can specify kernel args so that you don't have
+-	  to set them up in board prom initialization routines.
++	  pass arguments to the kernel.  For these platforms, and for the cases
++	  when you want to add some extra options to the command line or ignore
++	  the default command line, you can supply some command-line options at
++	  build time by entering them here.  In other cases you can specify
++	  kernel args so that you don't have to set them up in board prom
++	  initialization routines.
++
++	  For more information, see the CMDLINE_BOOL and CMDLINE_OVERRIDE
++	  options.
+ 
+ config DEBUG_STACK_USAGE
+ 	bool "Enable stack utilization instrumentation"
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index bd55f71..f9513f9 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -58,8 +58,12 @@ EXPORT_SYMBOL(mips_machtype);
+ 
+ struct boot_mem_map boot_mem_map;
+ 
+-static char command_line[COMMAND_LINE_SIZE];
+-       char arcs_cmdline[COMMAND_LINE_SIZE] = CONFIG_CMDLINE;
++static char __initdata command_line[COMMAND_LINE_SIZE];
++char __initdata arcs_cmdline[COMMAND_LINE_SIZE];
++
++#ifdef CONFIG_CMDLINE_BOOL
++static char __initdata builtin_cmdline[COMMAND_LINE_SIZE] = CONFIG_CMDLINE;
++#endif
+ 
+ /*
+  * mips_io_port_base is the begin of the address space to which x86 style
+@@ -458,8 +462,20 @@ static void __init arch_mem_init(char **cmdline_p)
+ 	pr_info("Determined physical RAM map:\n");
+ 	print_memory_map();
+ 
+-	strlcpy(command_line, arcs_cmdline, sizeof(command_line));
+-	strlcpy(boot_command_line, command_line, COMMAND_LINE_SIZE);
++#ifdef CONFIG_CMDLINE_BOOL
++#ifdef CONFIG_CMDLINE_OVERRIDE
++	strlcpy(boot_command_line, builtin_cmdline, COMMAND_LINE_SIZE);
++#else
++	if (builtin_cmdline[0]) {
++		strlcat(arcs_cmdline, " ", COMMAND_LINE_SIZE);
++		strlcat(arcs_cmdline, builtin_cmdline, COMMAND_LINE_SIZE);
++	}
++	strlcpy(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
++#endif
++#else
++	strlcpy(boot_command_line, arcs_cmdline, COMMAND_LINE_SIZE);
++#endif
++	strlcpy(command_line, boot_command_line, COMMAND_LINE_SIZE);
+ 
+ 	*cmdline_p = command_line;
+ 
+-- 
+1.6.3.3

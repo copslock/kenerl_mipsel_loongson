@@ -1,47 +1,48 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Nov 2009 12:07:06 +0100 (CET)
-Received: from mail-pw0-f45.google.com ([209.85.160.45]:58514 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 21 Nov 2009 12:07:31 +0100 (CET)
+Received: from mail-pw0-f45.google.com ([209.85.160.45]:36862 "EHLO
 	mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492296AbZKULFq (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sat, 21 Nov 2009 12:05:46 +0100
-Received: by pwi15 with SMTP id 15so2655204pwi.24
-        for <multiple recipients>; Sat, 21 Nov 2009 03:05:39 -0800 (PST)
+	by ftp.linux-mips.org with ESMTP id S1492324AbZKULFt (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sat, 21 Nov 2009 12:05:49 +0100
+Received: by pwi15 with SMTP id 15so2655220pwi.24
+        for <multiple recipients>; Sat, 21 Nov 2009 03:05:42 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
          :message-id:x-mailer:in-reply-to:references:in-reply-to:references;
-        bh=S7xxLvAv8Kq2wEN1S4rv/xu9twaNLiIdRYpBmlhHPco=;
-        b=dcfmz2wU/oOjFpCRUa+aX7rzR41qhIqiiYW90eSxPe7junckhkh0v9FnLhO2BxVZID
-         Y31f3r9X56RtkpSD3pSPLheDIIoTIQhYBwc7BygSccCPBmNYpMNhZ+wqCxr66+sBulzB
-         DcFCYQcHLFy2Ik4nYUzUyJ1tg/d+xduiaY8mg=
+        bh=I/NaTMZwCLdnB7rpiR+WJPtVcyGfUHAWmlB8PvoCXGg=;
+        b=DVLVXba/qzfdvgsmvBQLnZJYXSmKmyG40CJlR294EjpZ4b1Yi02j8yr5SuVv12prU0
+         s4i2HCFy9/joanVs1e2ER3VZdanWbe9aXECSvvqpgxNsIPCoLLCy/tKv+RT+box4YClH
+         YECGUzshBIBZQUafCEUI5p0QgzZ86HxRBUS7c=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
         h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
-        b=bPeVDbO2wIxghM1Xa1hwet7WpiqCwTKVCLElH5YS1hra0m2dASfWsyxAtDubOjggaN
-         LHHSvGoFp8941ojLZZ/qQjr8VsbY1REJuqi5k88lpUngqpfoE9ECFJYGm8egMysukiBq
-         ccVzidv4ZaaUloeIBgxisSUnfJSWUVVol8kAA=
-Received: by 10.115.100.20 with SMTP id c20mr3575694wam.160.1258801539766;
-        Sat, 21 Nov 2009 03:05:39 -0800 (PST)
+        b=fmqNyqUkN5VJeCTT+Ih8T7cb51dWR0uLbm9c3nbpginzglx3MinMzVTgT+N8gRdxKP
+         TvsF+5kB5T1GbX3QCcFjbLli7ZItNFabYMx+ZavhtjI/m+9U76aajzn38TTYdZt0XRku
+         IA7ho8O2Y2JsRouJdVdWqUz0zssoHHDRpZpLo=
+Received: by 10.115.103.17 with SMTP id f17mr3545790wam.166.1258801542224;
+        Sat, 21 Nov 2009 03:05:42 -0800 (PST)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id 21sm1508374pxi.4.2009.11.21.03.05.36
+        by mx.google.com with ESMTPS id 21sm1508374pxi.4.2009.11.21.03.05.40
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sat, 21 Nov 2009 03:05:39 -0800 (PST)
+        Sat, 21 Nov 2009 03:05:41 -0800 (PST)
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH v1 2/4] [loongson] yeeloong2f: add basic ec operations
-Date:	Sat, 21 Nov 2009 19:05:23 +0800
-Message-Id: <be09037e3ccaae045f2832f8428d5aa098cc7480.1258800842.git.wuzhangjin@gmail.com>
+Subject: [PATCH v1 3/4] [loongson] yeeloong2f: add LID open event as the wakeup event
+Date:	Sat, 21 Nov 2009 19:05:24 +0800
+Message-Id: <b983b517f93e13dda9d76c3d1719999b0593b9d3.1258800842.git.wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.6.2.1
-In-Reply-To: <cd8541a74bab41734a44dfedcbc63688d165e35e.1258800842.git.wuzhangjin@gmail.com>
+In-Reply-To: <be09037e3ccaae045f2832f8428d5aa098cc7480.1258800842.git.wuzhangjin@gmail.com>
 References: <cover.1258800842.git.wuzhangjin@gmail.com>
  <cd8541a74bab41734a44dfedcbc63688d165e35e.1258800842.git.wuzhangjin@gmail.com>
+ <be09037e3ccaae045f2832f8428d5aa098cc7480.1258800842.git.wuzhangjin@gmail.com>
 In-Reply-To: <cover.1258800842.git.wuzhangjin@gmail.com>
 References: <cover.1258800842.git.wuzhangjin@gmail.com>
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25016
+X-archive-position: 25017
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -49,221 +50,166 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-YeeLoong2F has a kb3310b Embedded Controller. This patch add the basic
-EC operations for future relative drivers or board support.
+Yeeloong2F netbook has an embedded controller(kb3310b) to manage the LID
+action. when the LID is closed/opened, a SCI interrupt is sent out and
+the corresponding event is saved to an EC register for later query.
+
+This patch allow the LID open action to wake up the processor from wait
+mode if it is in the suspend mode.
 
 Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
 ---
- arch/mips/loongson/lemote-2f/Makefile     |    2 +-
- arch/mips/loongson/lemote-2f/ec_kb3310b.c |  132 +++++++++++++++++++++++++++++
- arch/mips/loongson/lemote-2f/ec_kb3310b.h |   47 ++++++++++
- 3 files changed, 180 insertions(+), 1 deletions(-)
- create mode 100644 arch/mips/loongson/lemote-2f/ec_kb3310b.c
- create mode 100644 arch/mips/loongson/lemote-2f/ec_kb3310b.h
+ arch/mips/include/asm/mach-loongson/loongson.h |    1 +
+ arch/mips/loongson/lemote-2f/irq.c             |    4 +-
+ arch/mips/loongson/lemote-2f/pm.c              |   71 +++++++++++++++++++++++-
+ 3 files changed, 72 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/loongson/lemote-2f/Makefile b/arch/mips/loongson/lemote-2f/Makefile
-index 5add7b2..4d84b27 100644
---- a/arch/mips/loongson/lemote-2f/Makefile
-+++ b/arch/mips/loongson/lemote-2f/Makefile
-@@ -2,7 +2,7 @@
- # Makefile for lemote loongson2f family machines
- #
+diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
+index a7fa66e..06c28f3 100644
+--- a/arch/mips/include/asm/mach-loongson/loongson.h
++++ b/arch/mips/include/asm/mach-loongson/loongson.h
+@@ -41,6 +41,7 @@ extern void __init bonito_irq_init(void);
+ extern void __init set_irq_trigger_mode(void);
+ extern void __init mach_init_irq(void);
+ extern void mach_irq_dispatch(unsigned int pending);
++extern int mach_i8259_irq(void);
  
--obj-y += irq.o reset.o
-+obj-y += irq.o reset.o ec_kb3310b.o
+ /* We need this in some places... */
+ #define delay()	({		\
+diff --git a/arch/mips/loongson/lemote-2f/irq.c b/arch/mips/loongson/lemote-2f/irq.c
+index 50e7bb6..77d32f9 100644
+--- a/arch/mips/loongson/lemote-2f/irq.c
++++ b/arch/mips/loongson/lemote-2f/irq.c
+@@ -9,6 +9,7 @@
+  */
  
- #
- # Suspend Support
-diff --git a/arch/mips/loongson/lemote-2f/ec_kb3310b.c b/arch/mips/loongson/lemote-2f/ec_kb3310b.c
-new file mode 100644
-index 0000000..1ca38a8
---- /dev/null
-+++ b/arch/mips/loongson/lemote-2f/ec_kb3310b.c
-@@ -0,0 +1,132 @@
-+/*
-+ * EC(Embedded Controller) KB3310B basic support for YeeLoong2F netbook
-+ *
-+ *  Copyright (C) 2008 Lemote Inc.
-+ *  Author: liujl <liujl@lemote.com>, 2008-04-20
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ */
-+
+ #include <linux/interrupt.h>
 +#include <linux/module.h>
-+#include <linux/delay.h>
-+
+ 
+ #include <asm/irq_cpu.h>
+ #include <asm/i8259.h>
+@@ -30,7 +31,7 @@
+  * The generic i8259_irq() make the kernel hang on booting.  Since we cannot
+  * get the irq via the IRR directly, we access the ISR instead.
+  */
+-static inline int mach_i8259_irq(void)
++int mach_i8259_irq(void)
+ {
+ 	int irq, isr;
+ 
+@@ -60,6 +61,7 @@ static inline int mach_i8259_irq(void)
+ 
+ 	return irq;
+ }
++EXPORT_SYMBOL(mach_i8259_irq);
+ 
+ static void i8259_irqdispatch(void)
+ {
+diff --git a/arch/mips/loongson/lemote-2f/pm.c b/arch/mips/loongson/lemote-2f/pm.c
+index 8090d05..3072583 100644
+--- a/arch/mips/loongson/lemote-2f/pm.c
++++ b/arch/mips/loongson/lemote-2f/pm.c
+@@ -14,6 +14,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/pm.h>
+ #include <linux/i8042.h>
++#include <linux/module.h>
+ 
+ #include <asm/i8259.h>
+ #include <asm/mipsregs.h>
+@@ -21,6 +22,8 @@
+ 
+ #include <loongson.h>
+ 
 +#include "ec_kb3310b.h"
 +
-+/* this spinlock is dedicated for ec_read & ec_write function */
-+DEFINE_SPINLOCK(index_access_lock);
-+/* this spinlock is dedicated for 62&66 ports access */
-+DEFINE_SPINLOCK(port_access_lock);
+ #define I8042_KBD_IRQ		1
+ #define I8042_CTR_KBDINT	0x01
+ #define I8042_CTR_KBDDIS	0x10
+@@ -49,9 +52,6 @@ static int i8042_enable_kbd_port(void)
+ 	return 0;
+ }
+ 
+-/*
+- * The i8042 is connnected to i8259A
+- */
+ void setup_wakeup_events(void)
+ {
+ 	int irq_mask;
+@@ -65,9 +65,74 @@ void setup_wakeup_events(void)
+ 
+ 		/* enable keyboard port */
+ 		i8042_enable_kbd_port();
 +
-+/* read a byte from EC registers throught index-io */
-+unsigned char ec_read(unsigned short addr)
++		/* wakeup cpu via SCI with relative lid openning event */
++		outb(irq_mask & ~(1 << PIC_CASCADE_IR), PIC_MASTER_IMR);
++		inb(PIC_MASTER_IMR);
++		outb(0xff & ~(1 << (SCI_IRQ_NUM - 8)), PIC_SLAVE_IMR);
++		inb(PIC_SLAVE_IMR);
++
+ 		break;
+ 
+ 	default:
+ 		break;
+ 	}
+ }
++
++static struct delayed_work lid_task;
++static int initialized;
++/* yeeloong_report_lid_status will be implemented in yeeloong_laptop.c */
++sci_handler yeeloong_report_lid_status;
++EXPORT_SYMBOL(yeeloong_report_lid_status);
++static void yeeloong_lid_update_task(struct work_struct *work)
 +{
-+	unsigned char value;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&index_access_lock, flags);
-+	outb((addr & 0xff00) >> 8, EC_IO_PORT_HIGH);
-+	outb((addr & 0x00ff), EC_IO_PORT_LOW);
-+	value = inb(EC_IO_PORT_DATA);
-+	spin_unlock_irqrestore(&index_access_lock, flags);
-+
-+	return value;
++	if (yeeloong_report_lid_status)
++		yeeloong_report_lid_status(BIT_LID_DETECT_ON);
 +}
-+EXPORT_SYMBOL_GPL(ec_read);
 +
-+/* write a byte to EC registers throught index-io */
-+void ec_write(unsigned short addr, unsigned char val)
++int wakeup_loongson(void)
 +{
-+	unsigned long flags;
++	int irq;
 +
-+	spin_lock_irqsave(&index_access_lock, flags);
-+	outb((addr & 0xff00) >> 8, EC_IO_PORT_HIGH);
-+	outb((addr & 0x00ff), EC_IO_PORT_LOW);
-+	outb(val, EC_IO_PORT_DATA);
-+	/*  flush the write action */
-+	inb(EC_IO_PORT_DATA);
-+	spin_unlock_irqrestore(&index_access_lock, flags);
++	/* query the interrupt number */
++	irq = mach_i8259_irq();
++	if (irq < 0)
++		return 0;
 +
-+	return;
-+}
-+EXPORT_SYMBOL_GPL(ec_write);
++	printk(KERN_INFO "%s: irq = %d\n", __func__, irq);
 +
-+/*
-+ * this function is used for ec command writing and corresponding status query
-+ */
-+int ec_query_seq(unsigned char cmd)
-+{
-+	int timeout;
-+	unsigned char status;
-+	unsigned long flags;
-+	int ret = 0;
-+
-+	spin_lock_irqsave(&port_access_lock, flags);
-+
-+	/* make chip goto reset mode */
-+	udelay(EC_REG_DELAY);
-+	outb(cmd, EC_CMD_PORT);
-+	udelay(EC_REG_DELAY);
-+
-+	/* check if the command is received by ec */
-+	timeout = EC_CMD_TIMEOUT;
-+	status = inb(EC_STS_PORT);
-+	while (timeout-- && (status & (1 << 1))) {
-+		status = inb(EC_STS_PORT);
-+		udelay(EC_REG_DELAY);
++	if (irq == I8042_KBD_IRQ)
++		return 1;
++	else if (irq == SCI_IRQ_NUM) {
++		int ret, sci_event;
++		/* query the event number */
++		ret = ec_query_seq(CMD_GET_EVENT_NUM);
++		if (ret < 0)
++			return 0;
++		sci_event = ec_get_event_num();
++		if (sci_event < 0)
++			return 0;
++		if (sci_event == EVENT_LID) {
++			int lid_status;
++			/* check the LID status */
++			lid_status = ec_read(REG_LID_DETECT);
++			/* wakeup cpu when people open the LID */
++			if (lid_status == BIT_LID_DETECT_ON) {
++				/* If we call it directly here, the WARNING
++				 * will be sent out by getnstimeofday
++				 * via "WARN_ON(timekeeping_suspended);"
++				 * because we can not schedule in suspend mode.
++				 */
++				if (initialized == 0) {
++					INIT_DELAYED_WORK(&lid_task,
++						yeeloong_lid_update_task);
++					initialized = 1;
++				}
++				schedule_delayed_work(&lid_task, 1);
++				return 1;
++			}
++		}
 +	}
 +
-+	if (timeout <= 0) {
-+		printk(KERN_ERR "%s: deadable error : timeout...\n", __func__);
-+		ret = -EINVAL;
-+	} else
-+		printk(KERN_INFO
-+			   "(%x/%d)ec issued command %d status : 0x%x\n",
-+			   timeout, EC_CMD_TIMEOUT - timeout, cmd, status);
-+
-+	spin_unlock_irqrestore(&port_access_lock, flags);
-+
-+	return ret;
++	return 0;
 +}
-+EXPORT_SYMBOL_GPL(ec_query_seq);
-+
-+/*
-+ * using query command to ec to get the proper event number
-+ */
-+int ec_query_event_num(void)
-+{
-+	return ec_query_seq(CMD_GET_EVENT_NUM);
-+}
-+EXPORT_SYMBOL(ec_query_event_num);
-+
-+/*
-+ * get event number from ec
-+ *
-+ * NOTE : this routine must follow the query_event_num function in the
-+ * interrupt
-+ */
-+int ec_get_event_num(void)
-+{
-+	int timeout = 100;
-+	unsigned char value;
-+	unsigned char status;
-+
-+	udelay(EC_REG_DELAY);
-+	status = inb(EC_STS_PORT);
-+	udelay(EC_REG_DELAY);
-+	while (timeout-- && !(status & (1 << 0))) {
-+		status = inb(EC_STS_PORT);
-+		udelay(EC_REG_DELAY);
-+	}
-+	if (timeout <= 0) {
-+		printk(KERN_INFO "%s: get event number timeout.\n", __func__);
-+		return -EINVAL;
-+	}
-+	value = inb(EC_DAT_PORT);
-+	udelay(EC_REG_DELAY);
-+
-+	return value;
-+}
-+EXPORT_SYMBOL(ec_get_event_num);
-diff --git a/arch/mips/loongson/lemote-2f/ec_kb3310b.h b/arch/mips/loongson/lemote-2f/ec_kb3310b.h
-new file mode 100644
-index 0000000..a7ce275
---- /dev/null
-+++ b/arch/mips/loongson/lemote-2f/ec_kb3310b.h
-@@ -0,0 +1,47 @@
-+/*
-+ * EC(Embedded Controller) KB3310B header file
-+ *
-+ *  Copyright (C) 2008 Lemote Inc.
-+ *  Author: liujl <liujl@lemote.com>, 2008-03-14
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ */
-+
-+#ifndef _EC_KB3310B_H
-+#define _EC_KB3310B_H
-+
-+extern unsigned char ec_read(unsigned short addr);
-+extern void ec_write(unsigned short addr, unsigned char val);
-+extern int ec_query_seq(unsigned char cmd);
-+extern int ec_query_event_num(void);
-+extern int ec_get_event_num(void);
-+
-+/*
-+ * The following registers are determined by the EC index configuration.
-+ * 1, fill the PORT_HIGH as EC register high part.
-+ * 2, fill the PORT_LOW as EC register low part.
-+ * 3, fill the PORT_DATA as EC register write data or get the data from it.
-+ */
-+#define	EC_IO_PORT_HIGH	0x0381
-+#define	EC_IO_PORT_LOW	0x0382
-+#define	EC_IO_PORT_DATA	0x0383
-+
-+/* ec delay time 500us for register and status access */
-+#define	EC_REG_DELAY	500	/* unit : us */
-+#define	EC_CMD_TIMEOUT	0x1000
-+
-+/* EC access port for sci communication */
-+#define	EC_CMD_PORT		0x66
-+#define	EC_STS_PORT		0x66
-+#define	EC_DAT_PORT		0x62
-+#define	CMD_INIT_IDLE_MODE	0xdd
-+#define	CMD_EXIT_IDLE_MODE	0xdf
-+#define	CMD_INIT_RESET_MODE	0xd8
-+#define	CMD_REBOOT_SYSTEM	0x8c
-+#define	CMD_GET_EVENT_NUM	0x84
-+#define	CMD_PROGRAM_PIECE	0xda
-+
-+#endif /* !_EC_KB3310B_H */
 -- 
 1.6.2.1

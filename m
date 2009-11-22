@@ -1,81 +1,118 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Nov 2009 00:31:12 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:37516 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1493374AbZKUXbG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 22 Nov 2009 00:31:06 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nALNVI8L022881;
-	Sat, 21 Nov 2009 23:31:18 GMT
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nALNVHl5022879;
-	Sat, 21 Nov 2009 23:31:17 GMT
-Date:	Sat, 21 Nov 2009 23:31:17 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Shane McDonald <mcdonald.shane@gmail.com>
-Cc:	figo zhang <figo1802@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: how i can know the linux-mips implememt cache strategy?
-Message-ID: <20091121233117.GA12502@linux-mips.org>
-References: <c6ed1ac50911171859k24685b32m237afd68f63c626f@mail.gmail.com> <20091118114432.GA17418@linux-mips.org> <b2b2f2320911210718j5909c151s3286f715d0ab39db@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b2b2f2320911210718j5909c151s3286f715d0ab39db@mail.gmail.com>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Nov 2009 06:30:54 +0100 (CET)
+Received: from mail-pw0-f45.google.com ([209.85.160.45]:57804 "EHLO
+	mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1491888AbZKVFar (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 22 Nov 2009 06:30:47 +0100
+Received: by pwi15 with SMTP id 15so2940256pwi.24
+        for <multiple recipients>; Sat, 21 Nov 2009 21:30:40 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=E2TQxFjJm/tHBQyd1BeY5P7FTo5S1Z2JMuxYpcY4KEA=;
+        b=uGoruA+HyGlNM4zZ604ZkgkvJ+iX8e2Sj0tDwULbj1rGAgS/+oc46GZUBHyVo2dazU
+         vPHmVScBoH850vxKUrZDfF7FRfotYARK/yO9OrkLB5KHQeu6sSRh7cTYiQyECEhj+e2t
+         xSW/KongOAUwliHk24kupj+pgk/tfB8o8neQ0=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=R/VgGHTCJiua7/HzItLmJtWV9tlgDHzBefeAkjp14jkkkZrvrEaz2ZEa6+G07PpwrM
+         mAUMiotBBKgGdtpuPIyznqsP6Fgyt2Kab3P7g3eIMJdM2+HijOVBaZXPJfrtzZJ65hp/
+         824L87BIcUQhrAOCbH+QR3ToYaQo5Or4BDMl4=
+Received: by 10.115.100.30 with SMTP id c30mr5306589wam.211.1258867840714;
+        Sat, 21 Nov 2009 21:30:40 -0800 (PST)
+Received: from ?172.16.2.101? ([222.92.8.142])
+        by mx.google.com with ESMTPS id 21sm2023057pxi.8.2009.11.21.21.30.35
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sat, 21 Nov 2009 21:30:39 -0800 (PST)
+Subject: Re: [PATCH v1] MIPS: Add a high precision sched_clock() via
+ cnt32_to_63().
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Thomas Gleixner <tglx@linutronix.de>, rostedt@goodmis.org,
+	Frederic Weisbecker <fweisbec@gmail.com>,
+	Nicholas Mc Guire <der.herr@hofr.at>,
+	David Daney <ddaney@caviumnetworks.com>,
+	linux-mips@linux-mips.org, Michal Simek <monstr@monstr.eu>,
+	Ingo Molnar <mingo@elte.hu>, linux-kernel@vger.kernel.org
+In-Reply-To: <0d92a3c45f7ffff2b0df815c4345d6e9a01cb00c.1258814214.git.wuzhangjin@gmail.com>
+References: <0d92a3c45f7ffff2b0df815c4345d6e9a01cb00c.1258814214.git.wuzhangjin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:	Sun, 22 Nov 2009 13:30:26 +0800
+Message-ID: <1258867826.1864.2.camel@falcon.domain.org>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25025
+X-archive-position: 25026
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Nov 21, 2009 at 09:18:26AM -0600, Shane McDonald wrote:
-
-> > The kernel will always use cache stategy 3 for non-coherent systems and
-> > caching strategy 5 for cache coherent systems.  These two select the most
-> > aggressive caching strategy on all processors and that's what gives the
-> > best performance.
+On Sat, 2009-11-21 at 22:49 +0800, Wu Zhangjin wrote:
+> From: Wu Zhangjin <wuzhangjin@gmail.com>
 > 
-> OK, dumb question -- how is this implemented?  Poking through the code,
-> it looks to me that the cache strategy used comes from the K0 field of the
-> coprocessor 0 Config register, which I think is whatever gets set up by
-> the bootloader, or if that wasn't done, the default value of that
-> field for the processor.
-
-The K0 field's value after reset is undefined btw.  The kernel assumes that
-the firmware on a particular platforms knows the the right values and
-just uses it.
-
-> See function coherency_setup() in arch/mips/mm/c-r4k.c:
+> This patch adds a cnt32_to_63() and MIPS c0 count based sched_clock(),
+> which can provide high resolution. and also, two new kernel options are
+> added. the HR_SCHED_CLOCK is used to enable/disable this sched_clock(),
+> and the HT_SCHED_CLOCK_UPDATE is used to allow whether update the
+> sched_clock() automatically or not.
 > 
->         if (cca < 0 || cca > 7)
->                 cca = read_c0_config() & CONF_CM_CMASK;
->         _page_cachable_default = cca << _CACHE_SHIFT;
+> Without it, the Ftrace for MIPS will give useless timestamp information.
 > 
-> This can be overridden on the kernel command line with the "cca" parameter,
+> (Because cnt32_to_63() needs to be called at least once per half period
+> to work properly, Differ from the old version, this v1 revision set up a
+> kernel timer to ensure the requirement of some MIPSs which have short c0
+> count period.)
+[...]
+>  
+> diff --git a/arch/mips/kernel/csrc-r4k.c b/arch/mips/kernel/csrc-r4k.c
+> index e95a3cd..5048989 100644
+> --- a/arch/mips/kernel/csrc-r4k.c
+> +++ b/arch/mips/kernel/csrc-r4k.c
+> @@ -6,10 +6,62 @@
+>   * Copyright (C) 2007 by Ralf Baechle
+>   */
+>  #include <linux/clocksource.h>
+> +#include <linux/cnt32_to_63.h>
+> +#include <linux/timer.h>
+>  #include <linux/init.h>
+>  
+>  #include <asm/time.h>
+>  
+> +/*
+> + * MIPS' sched_clock implementation.
+> + *
+> + * because cnt32_to_63() needs to be called at least once per half period to
+> + * work properly, and some of the MIPS' frequency is very low, perhaps a kernel
+> + * timer is needed to be set up to ensure this requirement is always met.
+> + * please refer to  arch/arm/plat-orion/time.c and include/linux/cnt32_to_63.h
+> + */
+> +static unsigned long __maybe_unused tclk2ns_scale;
+> +static unsigned long __maybe_unused tclk2ns_scale_factor;
+> +
 
-This is a special feature for MTI's multi-core product.  Tbh, I can't quite
-recall why it was added but I have faint memories of this being required
-to work around a miss-features in early revisions of PMON for it.  In the
-best spirit of free software the cca= command line argument however is
-available for anybody to shoot themselves into their feet.  It'd probably
-be quite interesting to try a few benchmarks.
+need to be:
 
-> but as Ralf said in
-> http://www.linux-mips.org/archives/linux-mips/2008-06/msg00186.html,
-> "passing a CCA value on the command line is nothing a user should
-> ever, ever have to do".
+#ifdef CONFIG_HR_SCHED_CLOCK
+> +unsigned long long notrace sched_clock(void)
+> +{
+> +	unsigned long long v = cnt32_to_63(read_c0_count());
+> +	return (v * tclk2ns_scale) >> tclk2ns_scale_factor;
+> +}
+> +
+#endif
 
-Because users almost certainly don't understand the implications.  I mean
-having to know ISA interrupts was stupid yet comparably trivial ...
-
-> I can see how this was implemented in 2.6.25, but commit 3513369
-> [MIPS] Allow setting of the cache attribute at run time, seems to have changed
-> from the behaviour Ralf described.
-
-  Ralf
+Regards,
+	Wu Zhangjin

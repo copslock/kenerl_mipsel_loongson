@@ -1,45 +1,58 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Nov 2009 14:04:36 +0100 (CET)
-Received: from mail-pw0-f45.google.com ([209.85.160.45]:51756 "EHLO
-	mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1492468AbZKVNE3 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Sun, 22 Nov 2009 14:04:29 +0100
-Received: by pwi15 with SMTP id 15so3036940pwi.24
-        for <multiple recipients>; Sun, 22 Nov 2009 05:04:22 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Nov 2009 14:19:13 +0100 (CET)
+Received: from mail-px0-f173.google.com ([209.85.216.173]:41796 "EHLO
+	mail-px0-f173.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492489AbZKVNTG (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 22 Nov 2009 14:19:06 +0100
+Received: by pxi3 with SMTP id 3so3406513pxi.22
+        for <multiple recipients>; Sun, 22 Nov 2009 05:18:56 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=d0Xr63IaVSxxMcy4qVqPfni/UMyxNLYnFHoB8mbZgYU=;
-        b=gSE6NO1NPhl7n3YkGrKtJkIFB4CMcFhk2Q9M3VR80YStr+jX+L7hpbsfwATFuD1lqT
-         xPPlF9DJ9YU+nhKi9CmghNylUNDV202iA6CtG662773QJUcC3KMOuhSl4YRDXe5RuS9V
-         56CaDNfX/SDvZN/0UADofYQzvjcn+S1v6REkM=
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=nu1SBWJBKuFHt9Asj1acTylD0x6trEpkj/2cSiDX+EU=;
+        b=smZmcKiAAZS7v/21x8GxihU8YD0hy/ezdKLXlSNjeD3J/BtO5iLzIjKONY66pGM+9J
+         fFyMRB/YCbwsGkwCqfmP46elvIhrRbXadQLLfU+dF2p3jy2CYFNz09aDXzu9kYKwdNrL
+         evPCh3TNyqnPKBUxMup/FlQbOwsRLvzLD53N4=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=FntzrVYxu7EupQegwfilf09zNtKC61ZrGWE0d8tzzXsMkBpfMS7TWq6Cugg0puCnYd
-         rBwe3Eff4zt0Nr2x6CbD1hmnPYOTW5efFdtmkT0NIdwL+SqzGRoZjB8PUqxlLrZ+aGsT
-         CWXhON5Rr0fYvJ8WMbKqXwKtdNhwZKMBy7+Bk=
-Received: by 10.114.237.28 with SMTP id k28mr6058080wah.98.1258895062862;
-        Sun, 22 Nov 2009 05:04:22 -0800 (PST)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id 23sm2365583pzk.4.2009.11.22.05.04.19
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=Neg4wKoHUSvR4JtrI/F0tOIEWJGwjvfkfoh7AXOheryemDut3qV0QemVXxv5E1PZsd
+         wDCCauXeuEqaRTjZqRcvWN5dlL4d2bLsmtZDwC5HkIuaL7qhkel8R8V3X446ax2m/f1T
+         axZ6NlqjDBi+u096rRnZAThfY6HyfXGJeuyYA=
+Received: by 10.114.18.23 with SMTP id 23mr6134959war.171.1258895936631;
+        Sun, 22 Nov 2009 05:18:56 -0800 (PST)
+Received: from ?172.16.2.101? ([222.92.8.142])
+        by mx.google.com with ESMTPS id 22sm2355434pzk.10.2009.11.22.05.18.51
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 22 Nov 2009 05:04:22 -0800 (PST)
+        Sun, 22 Nov 2009 05:18:54 -0800 (PST)
+Subject: Re: [PATCH v2] MIPS: Add a high resolution sched_clock() via
+ cnt32_to_63().
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
 To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Ingo Molnar <mingo@elte.hu>, Thomas Gleixner <tglx@linutronix.de>,
-	linux-mips@linux-mips.org, Michal Simek <monstr@monstr.eu>,
-	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
-	Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH v3] MIPS: Add a high resolution sched_clock() via cnt32_to_63().
-Date:	Sun, 22 Nov 2009 21:04:05 +0800
-Message-Id: <b08d39e76685878bc91d9de906d155f1daa1c985.1258894783.git.wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.6.2.1
+Cc:	Ingo Molnar <mingo@elte.hu>, linux-mips@linux-mips.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Michal Simek <monstr@monstr.eu>, linux-kernel@vger.kernel.org
+In-Reply-To: <20091122123509.GA1941@linux-mips.org>
+References: <dae45f23b5d34f64fc60a445015e7dfe05aa0d07.1258875717.git.wuzhangjin@gmail.com>
+	 <20091122081328.GB24558@elte.hu>
+	 <1258888086.4548.52.camel@falcon.domain.org>
+	 <20091122123509.GA1941@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:	Sun, 22 Nov 2009 21:18:34 +0800
+Message-ID: <1258895914.6913.13.camel@falcon.domain.org>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.1 
+Content-Transfer-Encoding: 7bit
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25036
+X-archive-position: 25037
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -47,128 +60,42 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Wu Zhangjin <wuzhangjin@gmail.com>
+On Sun, 2009-11-22 at 12:35 +0000, Ralf Baechle wrote:
+> On Sun, Nov 22, 2009 at 07:08:05PM +0800, Wu Zhangjin wrote:
+> 
+> > > > +	data = (0xffffffffUL / tclk / 2 - 2) * HZ;
+> > 
+> > Because the MIPS c0 count's frequency is half of the cpu frequency(Hi,
+> > Ralf, does every MIPS c0 count meet this feature?), so, the above line
+> > should be:
+> 
+> There are processors which have no cp0 counter at all; these are mostly
+> very old pre-R4000 era 32-bit MIPS I and MIPS II cores.
+> 
+> Of those which have a cp0 counter most will clock it at "half the maximum
+> instruction issue rate" and a few at the full rate.  Finally for a few
+> such as the RM52xx either half or the full count the rate is selectable by
+> the reset initialization bitstream fed into the processor.  Too make this
+> feature suck nicely there is no way for software to find out which rate
+> was selected so software must know that or calibrate against a timer of
+> known frequency.
+> 
+> Platform-specific code does this by setting mips_hpt_frequency to the
+> count rate before calling init_r4k_clocksource; it's also the value being
+> passed into setup_sched_clock_update() so you don't need to count for the
+> half / full clock rate thing there.
+> 
+> I don't see why you need the -2 in your formula so the whole thing can
+> be simplified to:
+> 
+> 	data = 0x80000000 / tclk * HZ;
+> 
 
-(This v3 revision incorporates with the feedbacks from Ingo, Ralf and Sergei.)
+Sorry, I have mixed the mips_hpt_frequency with the cpu frequency,
+mips_hpt_frequency is exactly the frequency of the timer. so, there is
+no need to consider the relation between it and the cpu frequency here.
+therefore, my old formula should be okay, that -2 is used to ensure data
+is smaller than half of the period of the timer. 
 
-This patch adds a cnt32_to_63() and MIPS c0 count based sched_clock(),
-which provides high resolution. and also, one new kernel option
-(HR_SCHED_CLOCK) is added to enable/disable this sched_clock().
-
-Without it, the Ftrace for MIPS will give useless timestamp information.
-
-Because cnt32_to_63() needs to be called at least once per half period
-to work properly, Differ from the old version, this v2 revision set up a
-kernel timer to ensure the requirement of some MIPSs which have short c0
-count period.
-
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- arch/mips/Kconfig           |   18 ++++++++++++++
- arch/mips/kernel/csrc-r4k.c |   55 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 73 insertions(+), 0 deletions(-)
-
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index b342197..5ea55f5 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1952,6 +1952,24 @@ config NR_CPUS
- source "kernel/time/Kconfig"
- 
- #
-+# High Resolution sched_clock() Configuration
-+#
-+
-+config HR_SCHED_CLOCK
-+	bool "High Resolution sched_clock()"
-+	depends on CSRC_R4K
-+	default n
-+	help
-+	  This option enables the MIPS c0 count based high resolution
-+	  sched_clock().
-+
-+	  If you need a ns precision timestamp, you are recommended to enable
-+	  this option. For example, If you are using the Ftrace subsystem to do
-+	  real time tracing, this option is needed.
-+
-+	  If unsure, disable it.
-+
-+#
- # Timer Interrupt Frequency Configuration
- #
- 
-diff --git a/arch/mips/kernel/csrc-r4k.c b/arch/mips/kernel/csrc-r4k.c
-index e95a3cd..e287f0d 100644
---- a/arch/mips/kernel/csrc-r4k.c
-+++ b/arch/mips/kernel/csrc-r4k.c
-@@ -10,6 +10,57 @@
- 
- #include <asm/time.h>
- 
-+#ifdef CONFIG_HR_SCHED_CLOCK
-+#include <linux/cnt32_to_63.h>
-+#include <linux/timer.h>
-+
-+/*
-+ * MIPS sched_clock implementation.
-+ *
-+ * because cnt32_to_63() needs to be called at least once per half period to
-+ * work properly, and some of the MIPS frequency is high, perhaps a kernel
-+ * timer is needed to be set up to ensure this requirement is always met.
-+ * Please refer to arch/arm/plat-orion/time.c and include/linux/cnt32_to_63.h
-+ */
-+static unsigned long __read_mostly tclk2ns_scale;
-+static unsigned long __read_mostly tclk2ns_scale_factor;
-+
-+unsigned long long notrace sched_clock(void)
-+{
-+	unsigned long long v = cnt32_to_63(read_c0_count());
-+	return (v * tclk2ns_scale) >> tclk2ns_scale_factor;
-+}
-+
-+static struct timer_list cnt32_to_63_keepwarm_timer;
-+
-+static void cnt32_to_63_keepwarm(unsigned long data)
-+{
-+	mod_timer(&cnt32_to_63_keepwarm_timer, round_jiffies(jiffies + data));
-+	(void) sched_clock();
-+}
-+
-+static void __init setup_sched_clock(struct clocksource *cs, unsigned long tclk)
-+{
-+	unsigned long long v;
-+	unsigned long data;
-+
-+	v = cs->mult;
-+	/*
-+	 * We want an even value to automatically clear the top bit
-+	 * returned by cnt32_to_63() without an additional run time
-+	 * instruction. So if the LSB is 1 then round it up.
-+	 */
-+	if (v & 1)
-+		v++;
-+	tclk2ns_scale = v;
-+	tclk2ns_scale_factor = cs->shift;
-+
-+	data = 0x80000000 / tclk * HZ;
-+	setup_timer(&cnt32_to_63_keepwarm_timer, cnt32_to_63_keepwarm, data);
-+	mod_timer(&cnt32_to_63_keepwarm_timer, round_jiffies(jiffies + data));
-+}
-+#endif	/* !CONFIG_HR_SCHED_CLOCK */
-+
- static cycle_t c0_hpt_read(struct clocksource *cs)
- {
- 	return read_c0_count();
-@@ -32,6 +83,10 @@ int __init init_r4k_clocksource(void)
- 
- 	clocksource_set_clock(&clocksource_mips, mips_hpt_frequency);
- 
-+#ifdef CONFIG_HR_SCHED_CLOCK
-+	setup_sched_clock(&clocksource_mips, mips_hpt_frequency);
-+#endif
-+
- 	clocksource_register(&clocksource_mips);
- 
- 	return 0;
--- 
-1.6.2.1
+Best Regards,
+	Wu Zhangjin

@@ -1,201 +1,151 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Nov 2009 09:13:52 +0100 (CET)
-Received: from mx2.mail.elte.hu ([157.181.151.9]:47701 "EHLO mx2.mail.elte.hu"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1492017AbZKVINp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Sun, 22 Nov 2009 09:13:45 +0100
-Received: from elvis.elte.hu ([157.181.1.14])
-	by mx2.mail.elte.hu with esmtp (Exim)
-	id 1NC7Zc-0005be-GS
-	from <mingo@elte.hu>; Sun, 22 Nov 2009 09:13:34 +0100
-Received: by elvis.elte.hu (Postfix, from userid 1004)
-	id D886B3E22E5; Sun, 22 Nov 2009 09:13:28 +0100 (CET)
-Date:	Sun, 22 Nov 2009 09:13:28 +0100
-From:	Ingo Molnar <mingo@elte.hu>
-To:	Wu Zhangjin <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 22 Nov 2009 12:08:39 +0100 (CET)
+Received: from mail-pz0-f197.google.com ([209.85.222.197]:62661 "EHLO
+	mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1492216AbZKVLIc (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Sun, 22 Nov 2009 12:08:32 +0100
+Received: by pzk35 with SMTP id 35so3378575pzk.22
+        for <multiple recipients>; Sun, 22 Nov 2009 03:08:25 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=5qI3LN3XM9djKBG2Apko1bCGUhtVfqqRtFfMj7pfpYQ=;
+        b=hPqMMHLqXOF+SvPuhs2/GcF4iy4ucvMVSsMi61SOjDoINRYrix805PMg4OkVGJeCBA
+         a3nqMnADidAxV05aYx1EjWfZ70ub7RguPzugkdUBoH5iQJchKxvpgWsa9zpC+WeZILMj
+         7ZjqTsDI2rTl3widdiAXqlQUztkyR4jWXpQ3M=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=RX7jogcjyjVQp9AHEaNnzfD8u0TYEbhGDuUb1VkmWDnAv3gWLFX7cCU63xRXY8c1U5
+         ee5kbZHMn8Wp1srPHMM5F9jdpQRqGMQx4d6mrW0jG3Jf/y9vPLCBf4l3SP14hfNvZwI3
+         k4dsc1NJCCtYV1RKAo7eR7MjUXGBix4DMEdMk=
+Received: by 10.114.214.28 with SMTP id m28mr5969015wag.44.1258888105126;
+        Sun, 22 Nov 2009 03:08:25 -0800 (PST)
+Received: from ?172.16.2.101? ([222.92.8.142])
+        by mx.google.com with ESMTPS id 23sm2177604pxi.13.2009.11.22.03.08.21
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sun, 22 Nov 2009 03:08:24 -0800 (PST)
+Subject: Re: [PATCH v2] MIPS: Add a high resolution sched_clock() via
+ cnt32_to_63().
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
+To:	Ingo Molnar <mingo@elte.hu>
 Cc:	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Michal Simek <monstr@monstr.eu>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] MIPS: Add a high resolution sched_clock() via
- cnt32_to_63().
-Message-ID: <20091122081328.GB24558@elte.hu>
+In-Reply-To: <20091122081328.GB24558@elte.hu>
 References: <dae45f23b5d34f64fc60a445015e7dfe05aa0d07.1258875717.git.wuzhangjin@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dae45f23b5d34f64fc60a445015e7dfe05aa0d07.1258875717.git.wuzhangjin@gmail.com>
-User-Agent: Mutt/1.5.20 (2009-08-17)
-Received-SPF: neutral (mx2.mail.elte.hu: 157.181.1.14 is neither permitted nor denied by domain of elte.hu) client-ip=157.181.1.14; envelope-from=mingo@elte.hu; helo=elvis.elte.hu;
-X-ELTE-SpamScore: -2.0
-X-ELTE-SpamLevel: 
-X-ELTE-SpamCheck: no
-X-ELTE-SpamVersion: ELTE 2.0 
-X-ELTE-SpamCheck-Details: score=-2.0 required=5.9 tests=BAYES_00 autolearn=no SpamAssassin version=3.2.5
-	-2.0 BAYES_00               BODY: Bayesian spam probability is 0 to 1%
-	[score: 0.0000]
-Return-Path: <mingo@elte.hu>
+	 <20091122081328.GB24558@elte.hu>
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:	Sun, 22 Nov 2009 19:08:05 +0800
+Message-ID: <1258888086.4548.52.camel@falcon.domain.org>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25031
+X-archive-position: 25032
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: mingo@elte.hu
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
+[...]
+> > +
+> > +	  If unsure, disable it.
+> > +
+> > +config HR_SCHED_CLOCK_UPDATE
+> > +	bool "Update sched_clock() automatically"
+> > +	depends on HR_SCHED_CLOCK
+> > +	default y
+> > +	help
+> > +	  Because Some of the MIPS c0 count period is quite short and because
+> > +	  cnt32_to_63() needs to be called at least once per half period to
+> > +	  work properly, a kernel timer is needed to set up to ensure this
+> > +	  requirement is always met.
+> 
+> s/Some/some
+> 
 
-* Wu Zhangjin <wuzhangjin@gmail.com> wrote:
+Will apply all of the above feedbacks and the later relative ones,
+thanks!
 
-> +config HR_SCHED_CLOCK
-> +	bool "High Resolution sched_clock()"
-> +	depends on CSRC_R4K
-> +	default n
-> +	help
-> +	  This option enables the MIPS c0 count based high resolution
-> +	  sched_clock().
-> +
-> +	  If you need a ns precision timestamp, You are recommended to enable
-> +	  this option. For example, If you are using the Ftrace subsystem to do
-> +	  real time tracing, this option is needed.
+> Why is this a config option? I suspect that hardware that _needs_ this 
+> keep-warm periodic tick we should enable it unconditionally and 
+> automatically - otherwise the user can misconfigure the kernel with a 
+> bad clock.
+> 
 
-s/You/you
+It will be really hard to let the users make decision, so I tell them to
+enable it if not sure. perhaps it's better to remove this option.
 
-> +
-> +	  If unsure, disable it.
-> +
-> +config HR_SCHED_CLOCK_UPDATE
-> +	bool "Update sched_clock() automatically"
-> +	depends on HR_SCHED_CLOCK
-> +	default y
-> +	help
-> +	  Because Some of the MIPS c0 count period is quite short and because
-> +	  cnt32_to_63() needs to be called at least once per half period to
-> +	  work properly, a kernel timer is needed to set up to ensure this
-> +	  requirement is always met.
+but one issue I have found here, if enabled this keep-warm by default, I
+can not always get the result of function graph tracer, not sure what
+the exact reason is. and even if get the result, lots of them are the
+results about timer(that mod_timer() and sched_clock() is called
+frequently?).
 
-s/Some/some
+and as we can see from arch/arm/mach-pxa/time.c, there is also no
+keep_warm there, which means that if the frequency of that MIPS is very
+low, it will need enough seconds to make that 32bit long c0 count
+overrall. so, they will not need this keep-warm. perhaps we can use that
+mips_hpt_frequency variable to determine setup that keep-warm or not.
+but it's hard to design the number of frequency.
 
-Why is this a config option? I suspect that hardware that _needs_ this 
-keep-warm periodic tick we should enable it unconditionally and 
-automatically - otherwise the user can misconfigure the kernel with a 
-bad clock.
+[...]
+> > + */
+> > +static unsigned long __maybe_unused tclk2ns_scale;
+> > +static unsigned long __maybe_unused tclk2ns_scale_factor;
+> 
+> 
+> __read_mostly?
+> 
 
+Yes.
 
-> +
-> +	  If unusre, enable it.
+[...]
+> > +static void __maybe_unused setup_sched_clock_update(unsigned long tclk)
+> > +{
+> > +	unsigned long data;
+> > +
+> > +	data = (0xffffffffUL / tclk / 2 - 2) * HZ;
 
-s/unusre/unsure
+Because the MIPS c0 count's frequency is half of the cpu frequency(Hi,
+Ralf, does every MIPS c0 count meet this feature?), so, the above line
+should be:
 
-> +
-> +#
->  # Timer Interrupt Frequency Configuration
->  #
->  
-> diff --git a/arch/mips/kernel/csrc-r4k.c b/arch/mips/kernel/csrc-r4k.c
-> index e95a3cd..4e52cca 100644
-> --- a/arch/mips/kernel/csrc-r4k.c
-> +++ b/arch/mips/kernel/csrc-r4k.c
-> @@ -6,10 +6,64 @@
->   * Copyright (C) 2007 by Ralf Baechle
->   */
->  #include <linux/clocksource.h>
-> +#include <linux/cnt32_to_63.h>
-> +#include <linux/timer.h>
->  #include <linux/init.h>
->  
->  #include <asm/time.h>
->  
-> +/*
-> + * MIPS' sched_clock implementation.
+data = (0xffffffffUL / tclk - 2) * HZ;
 
-s/MIPS'/MIPS's
+> > +	setup_timer(&cnt32_to_63_keepwarm_timer, cnt32_to_63_keepwarm, data);
+> > +	mod_timer(&cnt32_to_63_keepwarm_timer, round_jiffies(jiffies + data));
+> > +}
+[...]
+> >  
+> > +#ifdef CONFIG_HR_SCHED_CLOCK
+> > +	setup_sched_clock(&clocksource_mips);
+> > +#endif
+> >  	clocksource_register(&clocksource_mips);
+> >  
+> > +#ifdef CONFIG_HR_SCHED_CLOCK_UPDATE
+> > +	setup_sched_clock_update(mips_hpt_frequency);
+> > +#endif
+> >  	return 0;
+> 
+> You could make the functions inline and move the #ifdef into those 
+> functions.
+> 
+> That wold also remove those __maybe_unused tags.
+> 
 
-or
+will apply it, thanks ;)
 
-s/MIPS'/MIPS
-
-> + *
-> + * because cnt32_to_63() needs to be called at least once per half period to
-> + * work properly, and some of the MIPS' frequency is very low, perhaps a kernel
-> + * timer is needed to be set up to ensure this requirement is always met.
-> + * please refer to  arch/arm/plat-orion/time.c and include/linux/cnt32_to_63.h
-
-s/please/Please
-
-> + */
-> +static unsigned long __maybe_unused tclk2ns_scale;
-> +static unsigned long __maybe_unused tclk2ns_scale_factor;
-
-
-__read_mostly?
-
-> +
-> +#ifdef CONFIG_HR_SCHED_CLOCK
-> +unsigned long long notrace sched_clock(void)
-> +{
-> +	unsigned long long v = cnt32_to_63(read_c0_count());
-> +	return (v * tclk2ns_scale) >> tclk2ns_scale_factor;
-> +}
-> +#endif
-> +
-> +static void __init __maybe_unused setup_sched_clock(struct clocksource *cs)
-> +{
-> +	unsigned long long v;
-> +
-> +	v = cs->mult;
-> +	/*
-> +	 * We want an even value to automatically clear the top bit
-> +	 * returned by cnt32_to_63() without an additional run time
-> +	 * instruction. So if the LSB is 1 then round it up.
-> +	 */
-> +	if (v & 1)
-> +		v++;
->
-> +	tclk2ns_scale = v;
-> +	tclk2ns_scale_factor = cs->shift;
-> +}
-> +
-> +static struct timer_list __maybe_unused cnt32_to_63_keepwarm_timer;
-> +
-> +static void __maybe_unused cnt32_to_63_keepwarm(unsigned long data)
-> +{
-> +	mod_timer(&cnt32_to_63_keepwarm_timer, round_jiffies(jiffies + data));
-> +	(void) sched_clock();
->
-> +}
-> +
-> +static void __maybe_unused setup_sched_clock_update(unsigned long tclk)
-> +{
-> +	unsigned long data;
-> +
-> +	data = (0xffffffffUL / tclk / 2 - 2) * HZ;
-> +	setup_timer(&cnt32_to_63_keepwarm_timer, cnt32_to_63_keepwarm, data);
-> +	mod_timer(&cnt32_to_63_keepwarm_timer, round_jiffies(jiffies + data));
-> +}
-> +
->  static cycle_t c0_hpt_read(struct clocksource *cs)
->  {
->  	return read_c0_count();
-> @@ -32,7 +86,13 @@ int __init init_r4k_clocksource(void)
->  
->  	clocksource_set_clock(&clocksource_mips, mips_hpt_frequency);
->  
-> +#ifdef CONFIG_HR_SCHED_CLOCK
-> +	setup_sched_clock(&clocksource_mips);
-> +#endif
->  	clocksource_register(&clocksource_mips);
->  
-> +#ifdef CONFIG_HR_SCHED_CLOCK_UPDATE
-> +	setup_sched_clock_update(mips_hpt_frequency);
-> +#endif
->  	return 0;
-
-You could make the functions inline and move the #ifdef into those 
-functions.
-
-That wold also remove those __maybe_unused tags.
-
-Thanks,
-
-	Ingo
+Regards,
+	Wu Zhangjin

@@ -1,64 +1,44 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Nov 2009 16:19:17 +0100 (CET)
-Received: from mv-drv-hcb003.ocn.ad.jp ([118.23.109.133]:55323 "EHLO
-	mv-drv-hcb003.ocn.ad.jp" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493220AbZKWPTL convert rfc822-to-8bit
-	(ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 23 Nov 2009 16:19:11 +0100
-Received: from vcmba.ocn.ne.jp (localhost.localdomain [127.0.0.1])
-	by mv-drv-hcb003.ocn.ad.jp (Postfix) with ESMTP id C2D6956421D;
-	Tue, 24 Nov 2009 00:19:06 +0900 (JST)
-Received: from localhost (softbank221040169135.bbtec.net [221.40.169.135])
-	by vcmba.ocn.ne.jp (Postfix) with ESMTP;
-	Tue, 24 Nov 2009 00:19:06 +0900 (JST)
-Date:	Tue, 24 Nov 2009 00:19:03 +0900 (JST)
-Message-Id: <20091124.001903.49249196.anemo@mba.ocn.ne.jp>
-To:	dmitri.vorobiev@gmail.com
-Cc:	dmitri.vorobiev@movial.com, linux-mips@linux-mips.org,
-	ralf@linux-mips.org
-Subject: Re: [PATCH] [MIPS] Move several variables from .bss to .init.data
-From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
-In-Reply-To: <90edad820911230637r3f2c94adh737c9f4f5adcd197@mail.gmail.com>
-References: <90edad820911230543i64f1e33fg86770f3ab2b6510b@mail.gmail.com>
-	<20091123.230616.70220116.anemo@mba.ocn.ne.jp>
-	<90edad820911230637r3f2c94adh737c9f4f5adcd197@mail.gmail.com>
-X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
-X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
-X-Mailer: Mew version 5.2 on Emacs 22.2 / Mule 5.0 (SAKAKI)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
-Return-Path: <anemo@mba.ocn.ne.jp>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Nov 2009 16:45:30 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:54100 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
+	id S1493244AbZKWPpW (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Mon, 23 Nov 2009 16:45:22 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nANFjTFe009758;
+	Mon, 23 Nov 2009 15:45:31 GMT
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nANFjHp0009755;
+	Mon, 23 Nov 2009 15:45:17 GMT
+Date:	Mon, 23 Nov 2009 15:45:17 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Wu Zhangjin <wuzhangjin@gmail.com>
+Cc:	linux-mips@linux-mips.org
+Subject: Re: [PATCH v1 1/4] [loongson] Remove the inline annotation of
+	prom_init_uart_base()
+Message-ID: <20091123154517.GA7337@linux-mips.org>
+References: <cover.1258800842.git.wuzhangjin@gmail.com> <cd8541a74bab41734a44dfedcbc63688d165e35e.1258800842.git.wuzhangjin@gmail.com> <1258939796.2411.13.camel@falcon.domain.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1258939796.2411.13.camel@falcon.domain.org>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25070
+X-archive-position: 25071
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: anemo@mba.ocn.ne.jp
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 23 Nov 2009 16:37:27 +0200, Dmitri Vorobiev <dmitri.vorobiev@gmail.com> wrote:
-> >> > NAK, at least for txx9 parts.  The struct mtd_partition arrays will be
-> >> > referenced by mtd map drivers via platform_data.
-> >>
-> >> You are right, thanks. What do you think about moving the variables to
-> >> file scope then?
-> >
-> > Well, why?  Does it make any check-scripts or something happy?
-> 
-> That's just looked somehow confusing to me that a variable defined in
-> the function scope was referenced from far outside this function, and
-> even when the function itself isn't valid anymore. Of course, there
-> are no technical disadvantage in that in itself.
+On Mon, Nov 23, 2009 at 09:29:56AM +0800, Wu Zhangjin wrote:
 
-I see.  But that's not so irregular case I think.  And even if the
-variables are outside the function, it will not be obvious that it
-cannot be marked as __initdata.
+> This one is also urgent, could you please fold it into "MIPS: Loongson:
+> Cleanup the serial port support"? thanks!
 
-I agree that the code looks ugly and confusing, but moving it outside
-does not helps, I think.
+Done.  Thanks!
 
----
-Atsushi Nemoto
+  Ralf

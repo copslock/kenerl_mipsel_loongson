@@ -1,52 +1,64 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Nov 2009 14:19:42 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:46374 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-OK) by ftp.linux-mips.org with ESMTP
-	id S1493133AbZKWNTg (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Mon, 23 Nov 2009 14:19:36 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nANDJZU8029224;
-	Mon, 23 Nov 2009 13:19:35 GMT
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nANDJW4j029222;
-	Mon, 23 Nov 2009 13:19:32 GMT
-Date:	Mon, 23 Nov 2009 13:19:32 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Michal Simek <michal.simek@petalogix.com>
-Cc:	Stephen Rothwell <sfr@canb.auug.org.au>,
-	linux-next@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-	Wu Zhangjin <wuzhangjin@gmail.com>, linux-mips@linux-mips.org
-Subject: Re: linux-next: Tree for November 23
-Message-ID: <20091123131932.GA28687@linux-mips.org>
-References: <20091123185232.1423c56b.sfr@canb.auug.org.au> <4B0A8841.8090905@petalogix.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4B0A8841.8090905@petalogix.com>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Nov 2009 14:26:25 +0100 (CET)
+Received: from mv-drv-hcb003.ocn.ad.jp ([118.23.109.133]:36522 "EHLO
+	mv-drv-hcb003.ocn.ad.jp" rhost-flags-OK-OK-OK-OK)
+	by ftp.linux-mips.org with ESMTP id S1493161AbZKWN0T (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 23 Nov 2009 14:26:19 +0100
+Received: from vcmba.ocn.ne.jp (localhost.localdomain [127.0.0.1])
+	by mv-drv-hcb003.ocn.ad.jp (Postfix) with ESMTP id 8646B56421D;
+	Mon, 23 Nov 2009 22:26:12 +0900 (JST)
+Received: from localhost (softbank221040169135.bbtec.net [221.40.169.135])
+	by vcmba.ocn.ne.jp (Postfix) with ESMTP;
+	Mon, 23 Nov 2009 22:26:12 +0900 (JST)
+Date:	Mon, 23 Nov 2009 22:26:09 +0900 (JST)
+Message-Id: <20091123.222609.74748367.anemo@mba.ocn.ne.jp>
+To:	dmitri.vorobiev@movial.com
+Cc:	linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH] [MIPS] Move several variables from .bss to .init.data
+From:	Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+In-Reply-To: <1258977217-25461-1-git-send-email-dmitri.vorobiev@movial.com>
+References: <1258977217-25461-1-git-send-email-dmitri.vorobiev@movial.com>
+X-Fingerprint: 6ACA 1623 39BD 9A94 9B1A  B746 CA77 FE94 2874 D52F
+X-Pgp-Public-Key: http://wwwkeys.pgp.net/pks/lookup?op=get&search=0x2874D52F
+X-Mailer: Mew version 5.2 on Emacs 22.2 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <anemo@mba.ocn.ne.jp>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25061
+X-archive-position: 25062
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: anemo@mba.ocn.ne.jp
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, Nov 23, 2009 at 02:04:01PM +0100, Michal Simek wrote:
+On Mon, 23 Nov 2009 13:53:37 +0200, Dmitri Vorobiev <dmitri.vorobiev@movial.com> wrote:
+> Several static uninitialized variables are used in the scope of
+> __init functions but are themselves not marked as __initdata.
+> This patch is to put those variables to where they belong and
+> to reduce the memory footprint a little bit.
+> 
+> Also, a couple of lines with spaces instead of tabs were fixed.
+> 
+> Signed-off-by: Dmitri Vorobiev <dmitri.vorobiev@movial.com>
+> ---
+>  arch/mips/ar7/platform.c        |    2 +-
+>  arch/mips/sgi-ip22/ip22-eisa.c  |    4 ++--
+>  arch/mips/sgi-ip22/ip22-setup.c |    2 +-
+>  arch/mips/sgi-ip32/ip32-setup.c |    2 +-
+>  arch/mips/sni/setup.c           |    2 +-
+>  arch/mips/txx9/generic/setup.c  |    2 +-
+>  arch/mips/txx9/rbtx4939/setup.c |    4 ++--
+>  7 files changed, 9 insertions(+), 9 deletions(-)
 
->> The microblaze tree still has a build failure for which I reverted a
->> commit.
->>
->> The mips tree gained a conflict against the microblaze tree.
->
-> It is problem which is caused one my ftrace patch. MIPS ftrace  
-> implementation was first that's why I should solve it. It is easy to fix.
-> I just need to know where mips/mips-for-linux-next branch is.
+NAK, at least for txx9 parts.  The struct mtd_partition arrays will be
+referenced by mtd map drivers via platform_data.
 
-Gitweb:  http://www.linux-mips.org/git?p=upstream-sfr.git;a=summary
-Git:     git://www.linux-mips.org/pub/scm/upstream-sfr.git
+And for console option strings parts, I doubt these can be marked as
+__initdata.  Theoretically, the console driver might be a module,
 
-  Ralf 
+---
+Atsushi Nemoto

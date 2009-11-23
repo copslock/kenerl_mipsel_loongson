@@ -1,46 +1,54 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Nov 2009 02:26:06 +0100 (CET)
-Received: from mail-pw0-f45.google.com ([209.85.160.45]:60467 "EHLO
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 23 Nov 2009 02:30:20 +0100 (CET)
+Received: from mail-pw0-f45.google.com ([209.85.160.45]:40064 "EHLO
 	mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-	by ftp.linux-mips.org with ESMTP id S1493101AbZKWBZ7 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Mon, 23 Nov 2009 02:25:59 +0100
-Received: by pwi15 with SMTP id 15so3259641pwi.24
-        for <multiple recipients>; Sun, 22 Nov 2009 17:25:52 -0800 (PST)
+	by ftp.linux-mips.org with ESMTP id S1493132AbZKWBaO (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Mon, 23 Nov 2009 02:30:14 +0100
+Received: by pwi15 with SMTP id 15so3261461pwi.24
+        for <multiple recipients>; Sun, 22 Nov 2009 17:30:07 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=cwSuZd3cs5JYh5scR8zWNReDYCIzweFTu30+mgU8ueg=;
-        b=k4ywH56Wq1m1F/x/U6J2h/32SSunXMo81p4+i7EZiSmyl+GYLX0WjiiaLIvoHJvtka
-         lYn8ELstGHvYXJFXEiU783sxYFE5QkM9+zmbtjphi/XNu0itrvh9RMGJ7leGZjTga1Ww
-         SzuezPNALwcEhFGlkLlCxM9fEuYUZ3usjqgpQ=
+        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
+         :in-reply-to:references:content-type:organization:date:message-id
+         :mime-version:x-mailer:content-transfer-encoding;
+        bh=MwOjtm5ObRL8Fwf8uTNSEdCygAJol9hfA6XjRgHwvZ4=;
+        b=agAH1La7JyNrX9BpVmIUm26kMwW9u8tLE5dxA0wjG1D5OPwhBz2dy4KaoDM5zAN29f
+         iex/S2j+7bRY1A8kFA3xF2ltDLdJwIsg66wMvGKy35eEJtVPCKsnxRuh7q2MzI3ulFTD
+         2AGGi1ixmgLpZFPPmKiBvJYb0pkgtalQTnQmA=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=luUPIbOy1tq2Ekd44Tt0MhpBKw2AlT2bCpbsyuWEbg76lbIqeedpYe4dDlUMSGlV1K
-         WPFh6WCWlqejNqnxIuNa7/fLhda+GOi8h9qh1/jx2M+fhxxH79Q4TLjZOHfXW2RNykdo
-         EkWfdTUSKxtHk+0+xZfCis1EQ103M6iA+ABN0=
-Received: by 10.114.215.5 with SMTP id n5mr7437259wag.151.1258939552630;
-        Sun, 22 Nov 2009 17:25:52 -0800 (PST)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id 20sm711536pxi.7.2009.11.22.17.25.49
+        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
+         :organization:date:message-id:mime-version:x-mailer
+         :content-transfer-encoding;
+        b=Vet8GLuNk+OUG7Zm4+ffBbZQpy8rr5gZR9q2gSo+lBoYPlhMGxhjeYamHInu3Vdr1w
+         0D7L6z8CgREx8Iz9S3/2yRNxqxhfB0yr+DyUmKE4n+bCGWLVl5rSENSSiqu5I4h2rB9K
+         wn12IUfnwI9y+IqetSVhChxNpDa2OYtA7N0lM=
+Received: by 10.114.30.7 with SMTP id d7mr7474413wad.30.1258939807732;
+        Sun, 22 Nov 2009 17:30:07 -0800 (PST)
+Received: from ?172.16.2.101? ([222.92.8.142])
+        by mx.google.com with ESMTPS id 22sm2741571pzk.2.2009.11.22.17.30.05
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 22 Nov 2009 17:25:52 -0800 (PST)
+        Sun, 22 Nov 2009 17:30:07 -0800 (PST)
+Subject: Re: [PATCH v1 1/4] [loongson] Remove the inline annotation of
+ prom_init_uart_base()
 From:	Wu Zhangjin <wuzhangjin@gmail.com>
+Reply-To: wuzhangjin@gmail.com
 To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Ingo Molnar <mingo@elte.hu>,
-	Sergei Shtylyov <sshtylyov@ru.mvista.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Michal Simek <monstr@monstr.eu>, linux-mips@linux-mips.org,
-	Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH v4] MIPS: Add a high resolution sched_clock() via cnt32_to_63().
-Date:	Mon, 23 Nov 2009 09:22:04 +0800
-Message-Id: <34211a03cdfc6f0bcadd94c939ae0237c99ef6e5.1258939222.git.wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.6.2.1
+Cc:	linux-mips@linux-mips.org
+In-Reply-To: <cd8541a74bab41734a44dfedcbc63688d165e35e.1258800842.git.wuzhangjin@gmail.com>
+References: <cover.1258800842.git.wuzhangjin@gmail.com>
+	 <cd8541a74bab41734a44dfedcbc63688d165e35e.1258800842.git.wuzhangjin@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Organization: DSLab, Lanzhou University, China
+Date:	Mon, 23 Nov 2009 09:29:56 +0800
+Message-ID: <1258939796.2411.13.camel@falcon.domain.org>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.1 
+Content-Transfer-Encoding: 7bit
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25043
+X-archive-position: 25044
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,130 +56,47 @@ X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Wu Zhangjin <wuzhangjin@gmail.com>
+Hi, Ralf
 
-(This v4 revision incorporates with the feedbacks from Sergei.)
+This one is also urgent, could you please fold it into "MIPS: Loongson:
+Cleanup the serial port support"? thanks!
 
-This patch adds a cnt32_to_63() and MIPS c0 count based sched_clock(),
-which provides high resolution. and also, one new kernel option
-(HR_SCHED_CLOCK) is added to enable/disable this sched_clock().
+Best Regards,
+	Wu Zhangjin
 
-Without it, the Ftrace for MIPS will give useless timestamp information.
-
-Because cnt32_to_63() needs to be called at least once per half period
-to work properly, Differ from the old version, this v2 revision set up a
-kernel timer to ensure the requirement of some MIPSs which have short c0
-count period.
-
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- arch/mips/Kconfig           |   18 +++++++++++++
- arch/mips/kernel/csrc-r4k.c |   57 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 75 insertions(+), 0 deletions(-)
-
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index b342197..5ea55f5 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1952,6 +1952,24 @@ config NR_CPUS
- source "kernel/time/Kconfig"
- 
- #
-+# High Resolution sched_clock() Configuration
-+#
-+
-+config HR_SCHED_CLOCK
-+	bool "High Resolution sched_clock()"
-+	depends on CSRC_R4K
-+	default n
-+	help
-+	  This option enables the MIPS c0 count based high resolution
-+	  sched_clock().
-+
-+	  If you need a ns precision timestamp, you are recommended to enable
-+	  this option. For example, If you are using the Ftrace subsystem to do
-+	  real time tracing, this option is needed.
-+
-+	  If unsure, disable it.
-+
-+#
- # Timer Interrupt Frequency Configuration
- #
- 
-diff --git a/arch/mips/kernel/csrc-r4k.c b/arch/mips/kernel/csrc-r4k.c
-index e95a3cd..7762c95 100644
---- a/arch/mips/kernel/csrc-r4k.c
-+++ b/arch/mips/kernel/csrc-r4k.c
-@@ -10,6 +10,61 @@
- 
- #include <asm/time.h>
- 
-+#ifdef CONFIG_HR_SCHED_CLOCK
-+#include <linux/cnt32_to_63.h>
-+#include <linux/timer.h>
-+
-+/*
-+ * MIPS sched_clock implementation.
-+ *
-+ * because cnt32_to_63() needs to be called at least once per half period to
-+ * work properly, and some of the MIPS frequency is high, perhaps a kernel
-+ * timer is needed to be set up to ensure this requirement is always met.
-+ * Please refer to arch/arm/plat-orion/time.c and include/linux/cnt32_to_63.h
-+ */
-+static unsigned long __read_mostly tclk2ns_scale;
-+static unsigned long __read_mostly tclk2ns_scale_factor;
-+
-+unsigned long long notrace sched_clock(void)
-+{
-+	unsigned long long v = cnt32_to_63(read_c0_count());
-+	return (v * tclk2ns_scale) >> tclk2ns_scale_factor;
-+}
-+
-+static struct timer_list cnt32_to_63_keepwarm_timer;
-+
-+static void cnt32_to_63_keepwarm(unsigned long data)
-+{
-+	mod_timer(&cnt32_to_63_keepwarm_timer, round_jiffies(jiffies + data));
-+	(void) sched_clock();
-+}
-+
-+static void __init setup_sched_clock(struct clocksource *cs, unsigned long tclk)
-+{
-+	unsigned long long v;
-+	unsigned long data;
-+
-+	v = cs->mult;
-+	/*
-+	 * We want an even value to automatically clear the top bit
-+	 * returned by cnt32_to_63() without an additional run time
-+	 * instruction. So if the LSB is 1 then round it up.
-+	 */
-+	if (v & 1)
-+		v++;
-+	tclk2ns_scale = v;
-+	tclk2ns_scale_factor = cs->shift;
-+
-+	data = 0x80000000 / tclk * HZ;
-+	setup_timer(&cnt32_to_63_keepwarm_timer, cnt32_to_63_keepwarm, data);
-+	mod_timer(&cnt32_to_63_keepwarm_timer, round_jiffies(jiffies + data));
-+}
-+#else	/* !CONFIG_HR_SCHED_CLOCK */
-+static void __init setup_sched_clock(struct clocksource *cs, unsigned long tclk)
-+{
-+}
-+#endif
-+
- static cycle_t c0_hpt_read(struct clocksource *cs)
- {
- 	return read_c0_count();
-@@ -32,6 +87,8 @@ int __init init_r4k_clocksource(void)
- 
- 	clocksource_set_clock(&clocksource_mips, mips_hpt_frequency);
- 
-+	setup_sched_clock(&clocksource_mips, mips_hpt_frequency);
-+
- 	clocksource_register(&clocksource_mips);
- 
- 	return 0;
--- 
-1.6.2.1
+On Sat, 2009-11-21 at 19:05 +0800, Wu Zhangjin wrote:
+> gcc 3.4.6 complains about un-implemented prom_init_uart_base() if using
+> inline to annotate prom_init_uart_base(), so, remove the inline here.
+> 
+> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+> ---
+>  arch/mips/include/asm/mach-loongson/loongson.h |    2 +-
+>  arch/mips/loongson/common/uart_base.c          |    2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
+> index daf7041..a7fa66e 100644
+> --- a/arch/mips/include/asm/mach-loongson/loongson.h
+> +++ b/arch/mips/include/asm/mach-loongson/loongson.h
+> @@ -33,7 +33,7 @@ extern void __init prom_init_machtype(void);
+>  extern void __init prom_init_env(void);
+>  extern unsigned long _loongson_uart_base;
+>  extern unsigned long uart8250_base[];
+> -extern inline void __maybe_unused prom_init_uart_base(void);
+> +extern void prom_init_uart_base(void);
+>  
+>  /* irq operation functions */
+>  extern void bonito_irqdispatch(void);
+> diff --git a/arch/mips/loongson/common/uart_base.c b/arch/mips/loongson/common/uart_base.c
+> index 275bed6..1d636f4 100644
+> --- a/arch/mips/loongson/common/uart_base.c
+> +++ b/arch/mips/loongson/common/uart_base.c
+> @@ -29,7 +29,7 @@ unsigned long __maybe_unused uart8250_base[] = {
+>  };
+>  EXPORT_SYMBOL(uart8250_base);
+>  
+> -inline void __maybe_unused prom_init_uart_base(void)
+> +void __maybe_unused prom_init_uart_base(void)
+>  {
+>  	_loongson_uart_base =
+>  		(unsigned long)ioremap_nocache(uart8250_base[mips_machtype], 8);

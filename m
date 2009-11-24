@@ -1,75 +1,74 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Nov 2009 22:35:28 +0100 (CET)
-Received: from hall.aurel32.net ([88.191.82.174]:53084 "EHLO hall.aurel32.net"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Nov 2009 22:42:03 +0100 (CET)
+Received: from chilli.pcug.org.au ([203.10.76.44]:36943 "EHLO smtps.tip.net.au"
 	rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-	id S1493585AbZKXVfZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 24 Nov 2009 22:35:25 +0100
-Received: from aurel32 by hall.aurel32.net with local (Exim 4.69)
-	(envelope-from <aurelien@aurel32.net>)
-	id 1ND32g-0003tM-OE; Tue, 24 Nov 2009 22:35:22 +0100
-Date:	Tue, 24 Nov 2009 22:35:22 +0100
-From:	Aurelien Jarno <aurelien@aurel32.net>
-To:	David Daney <ddaney@caviumnetworks.com>
-Cc:	linux-mips@linux-mips.org,
-	Arnaud Patard <arnaud.patard@rtp-net.org>
-Subject: Re: Syncing CPU caches from userland on MIPS
-Message-ID: <20091124213522.GH17477@hall.aurel32.net>
-References: <20091124182841.GE17477@hall.aurel32.net> <4B0C4A77.9020103@caviumnetworks.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-In-Reply-To: <4B0C4A77.9020103@caviumnetworks.com>
-X-Mailer: Mutt 1.5.18 (2008-05-17)
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <aurelien@aurel32.net>
+	id S1493487AbZKXA1y (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 24 Nov 2009 01:27:54 +0100
+Received: from canb.auug.org.au (bh02i525f01.au.ibm.com [202.81.18.30])
+	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtps.tip.net.au (Postfix) with ESMTPSA id 5B75114C06E;
+	Tue, 24 Nov 2009 11:27:50 +1100 (EST)
+Date:	Tue, 24 Nov 2009 11:27:39 +1100
+From:	Stephen Rothwell <sfr@canb.auug.org.au>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-next@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+	linux-mips@linux-mips.org
+Subject: Re: linux-next: failed to fetch the mips tree
+Message-Id: <20091124112739.dd1ba1f7.sfr@canb.auug.org.au>
+In-Reply-To: <20091124000929.GA7223@linux-mips.org>
+References: <20091124105303.512479aa.sfr@canb.auug.org.au>
+	<20091124000929.GA7223@linux-mips.org>
+X-Mailer: Sylpheed 2.7.1 (GTK+ 2.18.3; i486-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: multipart/signed; protocol="application/pgp-signature";
+ micalg="PGP-SHA1";
+ boundary="Signature=_Tue__24_Nov_2009_11_27_39_+1100_nlMtMNEaWOnI5tua"
+Return-Path: <sfr@canb.auug.org.au>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25107
+X-archive-position: 25108
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: aurelien@aurel32.net
+X-original-sender: sfr@canb.auug.org.au
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 24, 2009 at 01:04:55PM -0800, David Daney wrote:
-> Aurelien Jarno wrote:
->> Hi all,
->>
->> This question is not really kernel related, but still MIPS related, I
->> hope you don't mind.
->>
->> Arnaud Patard and myself are trying to get qemu working on MIPS [1],
->> which includes translating TCG code (internal representation) into MIPS
->> instructions, that are then executed. Most of the code works, but we  
->> have some strange behaviors that seems related to CPU caches.
->>
->> The code is written to a buffer, which is then executed. Before the
->> execution, the caches are synced using the cacheflush syscall:
->>
->> | #include <sys/cachectl.h>
->> |  | | static inline void flush_icache_range(unsigned long start, 
->> unsigned long stop)
->> | {
->> |     cacheflush ((void *)start, stop-start, ICACHE);
->> | }
->>
->> It seems this is not enough, as sometimes, some executed code does not
->> correspond to the assembly dump of this memory region. This seems to be 
->> especially the case of memory regions that are written twice, due to
->> relocations:
->> 1) a branch instruction is written with an offset of 0
->> 2) the offset is patched
+--Signature=_Tue__24_Nov_2009_11_27_39_+1100_nlMtMNEaWOnI5tua
+Content-Type: text/plain; charset=US-ASCII
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi Ralf,
+
+On Tue, 24 Nov 2009 00:09:29 +0000 Ralf Baechle <ralf@linux-mips.org> wrote:
 >
-> Try inserting an 'asm volatile ("sync" ::: "memory");' here.  If that  
-> fixes things, then we can assume that your cacheflush system call is  
-> buggy, and would need to add a sync.
->
+> On Tue, Nov 24, 2009 at 10:53:03AM +1100, Stephen Rothwell wrote:
+>=20
+> > git.linux-mips.org[0: 78.24.191.183]: errno=3DConnection refused
+> > fatal: unable to connect a socket (Connection refused)
+>=20
+> Thanks.  I upgraded the machine from Fedora 10 to Fedora 12 and the
+> removal of the git "dash-commands" resulted in this failure.  Fixed.
 
-That doesn't help, it still crashes at the same location.
+All good now, thanks.
 
-Aurelien
+--=20
+Cheers,
+Stephen Rothwell                    sfr@canb.auug.org.au
+http://www.canb.auug.org.au/~sfr/
 
--- 
-Aurelien Jarno	                        GPG: 1024D/F1BCDB73
-aurelien@aurel32.net                 http://www.aurel32.net
+--Signature=_Tue__24_Nov_2009_11_27_39_+1100_nlMtMNEaWOnI5tua
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iEYEARECAAYFAksLKHsACgkQjjKRsyhoI8wmuACdH0/k57CcVyFkTBtU34iHniu5
+eQQAoLe2iX1HG8JeJH6337HCwRF6mo+8
+=HjN+
+-----END PGP SIGNATURE-----
+
+--Signature=_Tue__24_Nov_2009_11_27_39_+1100_nlMtMNEaWOnI5tua--

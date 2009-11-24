@@ -1,88 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Nov 2009 22:08:49 +0100 (CET)
-Received: from metis.ext.pengutronix.de ([92.198.50.35]:37787 "EHLO
-	metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK)
-	by eddie.linux-mips.org with ESMTP id S1493578AbZKXVIo (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Nov 2009 22:08:44 +0100
-Received: from octopus.hi.pengutronix.de ([2001:6f8:1178:2:215:17ff:fe12:23b0])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.63)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1ND2c2-0004hy-Hx; Tue, 24 Nov 2009 22:07:50 +0100
-Received: from ukl by octopus.hi.pengutronix.de with local (Exim 4.69)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1ND2bw-0004vk-89; Tue, 24 Nov 2009 22:07:44 +0100
-From:	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-	<u.kleine-koenig@pengutronix.de>
-To:	linux-kernel@vger.kernel.org
-Cc:	akpm@linux-foundation.org, Ming Lei <tom.leiming@gmail.com>,
-	Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	David Brownell <dbrownell@users.sourceforge.net>,
-	Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org
-Subject: [PATCH 06/38] move iodev_remove to .devexit.text
-Date:	Tue, 24 Nov 2009 22:07:01 +0100
-Message-Id: <1259096853-18909-6-git-send-email-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 1.6.5.2
-In-Reply-To: <1259096853-18909-5-git-send-email-u.kleine-koenig@pengutronix.de>
-References: <1259096853-18909-1-git-send-email-u.kleine-koenig@pengutronix.de>
- <1259096853-18909-2-git-send-email-u.kleine-koenig@pengutronix.de>
- <1259096853-18909-3-git-send-email-u.kleine-koenig@pengutronix.de>
- <1259096853-18909-4-git-send-email-u.kleine-koenig@pengutronix.de>
- <1259096853-18909-5-git-send-email-u.kleine-koenig@pengutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:6f8:1178:2:215:17ff:fe12:23b0
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-mips@linux-mips.org
-Return-Path: <ukl@pengutronix.de>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Nov 2009 22:10:12 +0100 (CET)
+Received: from gate.crashing.org ([63.228.1.57]:48261 "EHLO gate.crashing.org"
+	rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+	id S1493578AbZKXVKH (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 24 Nov 2009 22:10:07 +0100
+Received: from [IPv6:::1] (localhost.localdomain [127.0.0.1])
+	by gate.crashing.org (8.14.1/8.13.8) with ESMTP id nAOL9Dbn023474;
+	Tue, 24 Nov 2009 15:09:13 -0600
+Subject: Re: Time to make PCI_MSI default y ?
+From:	Benjamin Herrenschmidt <benh@kernel.crashing.org>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	Michael Ellerman <michael@ellerman.id.au>,
+	linux-pci <linux-pci@vger.kernel.org>, linux@arm.linux.org.uk,
+	"tony.luck" <tony.luck@intel.com>, fenghua.yu@intel.com,
+	"David S.Miller" <davem@davemloft.net>,
+	Thomas Gleixner <tglx@linutronix.de>, mingo@redhat.com,
+	Peter Anvin <hpa@zytor.com>, linux-mips@linux-mips.org,
+	David Daney <ddaney@caviumnetworks.com>
+In-Reply-To: <20091124125309.GB5749@linux-mips.org>
+References: <1259030388.20596.5.camel@concordia>
+	 <20091124125309.GB5749@linux-mips.org>
+Content-Type: text/plain; charset="UTF-8"
+Date:	Wed, 25 Nov 2009 08:09:12 +1100
+Message-ID: <1259096952.16367.134.camel@pasglop>
+Mime-Version: 1.0
+X-Mailer: Evolution 2.28.1 
+Content-Transfer-Encoding: 7bit
+Return-Path: <benh@kernel.crashing.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25105
+X-archive-position: 25106
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ukl@pengutronix.de
+X-original-sender: benh@kernel.crashing.org
 Precedence: bulk
 X-list: linux-mips
 
-The function iodev_remove is used only wrapped by __devexit_p so define
-it using __devexit.
+On Tue, 2009-11-24 at 12:53 +0000, Ralf Baechle wrote:
+> On Tue, Nov 24, 2009 at 01:39:48PM +1100, Michael Ellerman wrote:
+> 
+> > Having just hit a build-break caused by a distro building with
+> > PCI_MSI=n, I set out to make it default y for powerpc. Unfortunately
+> > that's not possible, because it's in drivers/pci/Kconfig.
+> > 
+> > So is it time to make it default y for everyone? It seems to me having
+> > it off is more likely to cause problems than having it on these days,
+> > though I'm not sure if that is true for all archs.
+> > 
+> > An arch that really didn't want it default y could conditionally select
+> > ARCH_SUPPORTS_MSI, like x86 does already.
+> 
+> On MIPS the age of MSI only recently started; once single platform (Cavium)
+> out of all the many uses it.  Cavium does a "select ARCH_SUPPORTS_MSI" but
+> not "select PCI_MSI" because not all platform variants actually have PCI.
+> 
+> We should  not give a user a chance to select something wrong in kconfig
+> thus automatically as many options for a platform as possible is a good
+> thing - after all the kconfig dialog for any given platfrom has become
+> painfully long.  And we really should have to avoid users having to know
+> that the Frobnic 2000 they're trying to upgrade the kernel for requires
+> MSI to work ...
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Cc: Ming Lei <tom.leiming@gmail.com>
-Cc: Henrique de Moraes Holschuh <hmh@hmh.eng.br>
-Cc: Greg Kroah-Hartman <gregkh@suse.de>
-Cc: David Brownell <dbrownell@users.sourceforge.net>
-Cc: linux-kernel@vger.kernel.org
-Cc: Ralf Baechle <ralf@linux-mips.org>
-Cc: linux-mips@linux-mips.org
----
- arch/mips/basler/excite/excite_iodev.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+Still... select has nasty issues. I think default y is fine here. For
+platforms that don't need it, make sure their defconfigs don't have it
+set...
 
-diff --git a/arch/mips/basler/excite/excite_iodev.c b/arch/mips/basler/excite/excite_iodev.c
-index 938b1d0..733b242 100644
---- a/arch/mips/basler/excite/excite_iodev.c
-+++ b/arch/mips/basler/excite/excite_iodev.c
-@@ -34,7 +34,7 @@
- 
- static const struct resource *iodev_get_resource(struct platform_device *, const char *, unsigned int);
- static int __init iodev_probe(struct platform_device *);
--static int __exit iodev_remove(struct platform_device *);
-+static int __devexit iodev_remove(struct platform_device *);
- static int iodev_open(struct inode *, struct file *);
- static int iodev_release(struct inode *, struct file *);
- static ssize_t iodev_read(struct file *, char __user *, size_t s, loff_t *);
-@@ -103,7 +103,7 @@ static int __init iodev_probe(struct platform_device *dev)
- 
- 
- 
--static int __exit iodev_remove(struct platform_device *dev)
-+static int __devexit iodev_remove(struct platform_device *dev)
- {
- 	return misc_deregister(&miscdev);
- }
--- 
-1.6.5.2
+Or maybe default y if (X86 || PPC)
+
+Cheers,
+Ben.

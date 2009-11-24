@@ -1,1685 +1,349 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Nov 2009 22:43:46 +0100 (CET)
-Received: from mail-px0-f173.google.com ([209.85.216.173]:34408 "EHLO
-	mail-px0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-	by eddie.linux-mips.org with ESMTP id S1491826AbZKXEj5 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Nov 2009 05:39:57 +0100
-Received: by pxi3 with SMTP id 3so4522896pxi.22
-        for <multiple recipients>; Mon, 23 Nov 2009 20:39:47 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=XnXRqk7+4qSmQh/rVdJmZqNqXWiTXRMqU+9h/8sMGKw=;
-        b=STx6asJQI8ijHdjiKJMCgA5x+mynhfrJe1Cg3+lljJB0F08LooT7+8CHOr2z66koJH
-         vTc5Ul+3PeiRvYmrLRbwtqnA3Kbkq1/ivENAZes9Xt3TzlwHiEOYcMB58L5LBbRFfoGp
-         E8VQ2OARC8V1Rrp0ZUmBrVCvijoo/7Q+xf91w=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=gHvBJ5iOlfAgHfpp2Ly1IG3B6UZM9zD3EOllpyZfPsSrSvsCVPRfQuqC54dZW8+XH8
-         vzrR4InwqnoLA59TTbVmD0AIKJ9DnggkOKiR+Q1lBi7VKCWfIRNjL931Vu1vrL/74sYY
-         oSyfVceMgE1lni/OnMikIEGc7M0mOt6ya4mZ0=
-Received: by 10.115.26.13 with SMTP id d13mr5145660waj.210.1259037587363;
-        Mon, 23 Nov 2009 20:39:47 -0800 (PST)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id 23sm3461459pzk.4.2009.11.23.20.39.43
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 23 Nov 2009 20:39:46 -0800 (PST)
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Nov 2009 22:51:10 +0100 (CET)
+Received: from krynn.se.axis.com ([193.13.178.10]:35801 "EHLO
+	krynn.se.axis.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+	with ESMTP id S1493294AbZKXSlm convert rfc822-to-8bit (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Nov 2009 19:41:42 +0100
+Received: from xmail3.se.axis.com (xmail3.se.axis.com [10.0.5.75])
+	by krynn.se.axis.com (8.14.3/8.14.3/Debian-5) with ESMTP id nAOIfYEu021204;
+	Tue, 24 Nov 2009 19:41:34 +0100
+Received: from xmail3.se.axis.com ([10.0.5.75]) by xmail3.se.axis.com
+ ([10.0.5.75]) with mapi; Tue, 24 Nov 2009 19:41:34 +0100
+From:	Mikael Starvik <mikael.starvik@axis.com>
 To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Linux-MIPS <linux-mips@linux-mips.org>,
-	Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH v4] [loongson] yeeloong2f: add platform specific support
-Date:	Tue, 24 Nov 2009 12:39:35 +0800
-Message-Id: <35a70697fe3c290da346d3c0be24f5832e6bb071.1259037490.git.wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.6.2.1
-Return-Path: <wuzhangjin@gmail.com>
+CC:	"linux-mips@linux-mips.org" <linux-mips@linux-mips.org>,
+	David Daney <ddaney@caviumnetworks.com>
+Date:	Tue, 24 Nov 2009 19:40:38 +0100
+Subject: SV: COP2 unaligned -> SIGBUS
+Thread-Topic: COP2 unaligned -> SIGBUS
+Thread-Index: AcptMlOo2zTrTPAKS/amNEPS2Omh9gAA0ppE
+Message-ID: <4BEA3FF3CAA35E408EA55C7BE2E61D0546A5B5E889@xmail3.se.axis.com>
+References: <4BEA3FF3CAA35E408EA55C7BE2E61D0546A5E6F9DC@xmail3.se.axis.com>
+ <20091123113820.GA4217@linux-mips.org>
+ <20091123115619.GB4217@linux-mips.org>,<20091124181704.GA14412@linux-mips.org>
+In-Reply-To: <20091124181704.GA14412@linux-mips.org>
+Accept-Language: sv-SE
+Content-Language: sv-SE
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+acceptlanguage:	sv-SE
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
+Return-Path: <mikael.starvik@axis.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25111
+X-archive-position: 25112
 X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: mikael.starvik@axis.com
 Precedence: bulk
 X-list: linux-mips
 
-From: Wu Zhangjin <wuzhangjin@gmail.com>
+Looks good! An alternative would of course be to add a COP2 kernel config that are selected by some MIPS machines.
 
-(This v4 revision uses a shorter CONFIG_LEMOTE_YEELOONG2F instead of
- CONFIG_LEMOTE_YEELOONG2F_PDEV)
+/Mikael
+________________________________________
+Från: Ralf Baechle [ralf@linux-mips.org]
+Skickat: den 24 november 2009 19:17
+Till: Mikael Starvik
+Kopia: linux-mips@linux-mips.org; David Daney
+Ämne: Re: COP2 unaligned -> SIGBUS
 
-This patch adds the following subdrivers for YeeLoong netbook:
+On Mon, Nov 23, 2009 at 11:56:19AM +0000, Ralf Baechle wrote:
 
-  o Backlight subdriver
+>
+> > > Since there are now at least two users of cop2 I propose the following:
+> >
+> > Yes, the comment is not quite correct.  CP2 has always been available for
+> > application specific extensions and a few imlementations have made use of
+> > that.  I'll update the comment.  Oh and the Praystation has a TLB.
+>
+> On 2nd thought - there is one user of CU2 in the kernel - the Cavium support.
+>
+> Nothing else in the stock Linux/MIPS kernel will ever enable c0_status.cu2,
+> so the attempt to execute a CP2 load or store instruction would result in a
+> Coprocessor Unusable exception which whould result in a SIGILL being
+> delivered to the offending process.  On Cavium the instructions COP2 is
+> documented to not deliver any exceptions so there isn't really anything
+> that would need to be changed.
+>
+> David - I think we should try to get rid of the processor specifics from
+> this core code so probably having notifiers to run on Address Error or
+> Coprocessor Unusable exceptions would be a solution?  I also want to get
+> rid of the Cavium #ifdef from traps.c.
 
-    Based on the backlight subsystem of linux, provides the standard backlight
-    brightness interface: /sys/class/backlight/, this interface can be used by
-    the user-space applications, e.g. kpowersave, gnome-power-manager.
+So how about this patch below?  It uses notifiers as a halfway clean and
+reasonably fast hook mechanism.  Might be over-engineered though :-)
+Compiles but not runtime tested.
 
-  o Hwmon subdriver
+  Ralf
 
-    Based on the hwmon subsystem of linux, This driver provide the standard
-    interface for monitoring the hardwares, such as the temperature of cpu and
-    battery, the pwm of the fan, the voltage and current of battery.
-    the interface is: /sys/class/hwmon
+From: Ralf Baechle <ralf@linux-mips.org>
 
-  o Video output subdriver
+MIPS: COP2 cleanups.
 
-    Based on the videooutput subsystem of linux, this driver provides the
-    standard video output controlling interface: /sys/class/video_output/
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
 
-  o Thermal cooling devices subdriver
-
-    Currently, Only register the backlight device as the cooling device.
-    perhaps we need to regiter the cpu as the cooling device later.
-
-  o hotkey input subdriver
-
-    Based on the input layer of linux, this driver manage the function keys of
-    yeeloong netbook, those keys include Fn+(ESC,F1~F5,left,right,up,down). the
-    interface is: /sys/class/input
-
-  o battery subdriver
-
-    Based on the APM Emulation Char Driver, We implement a yeelong specific
-    apm_get_power_status() function to report the battery status to do battery
-    management.
-
-  o platform subdriver
-
-    This driver register the suspend/resume function for yeeloong platform
-    specific power management(mainling suspend) support.
-
-All of the above drivers have been tested and used in the 2.6.30,2.6.31 kernel
-for YeeLoong.
-
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- arch/mips/kernel/setup.c                       |    1 +
- arch/mips/loongson/Kconfig                     |   18 +
- arch/mips/loongson/lemote-2f/Makefile          |    1 +
- arch/mips/loongson/lemote-2f/ec_kb3310b.h      |  150 +++
- arch/mips/loongson/lemote-2f/yeeloong_laptop.c | 1355 ++++++++++++++++++++++++
- 5 files changed, 1525 insertions(+), 0 deletions(-)
- create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop.c
-
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index bd55f71..b1e1272 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -60,6 +60,7 @@ struct boot_mem_map boot_mem_map;
- 
- static char command_line[COMMAND_LINE_SIZE];
-        char arcs_cmdline[COMMAND_LINE_SIZE] = CONFIG_CMDLINE;
-+EXPORT_SYMBOL(arcs_cmdline);
- 
- /*
-  * mips_io_port_base is the begin of the address space to which x86 style
-diff --git a/arch/mips/loongson/Kconfig b/arch/mips/loongson/Kconfig
-index bb87f8d..2a652f1 100644
---- a/arch/mips/loongson/Kconfig
-+++ b/arch/mips/loongson/Kconfig
-@@ -112,4 +112,22 @@ config LEMOTE_LYNLOONG2F
- 	  This driver adds the lynloong specific backlight driver and platform
- 	  driver(mainly the suspend support).
- 
-+config LEMOTE_YEELOONG2F
-+	tristate "Lemote YeeLoong Platform Specific Driver"
-+	depends on LEMOTE_MACH2F
-+	default m
-+	select INPUT_EVDEV
-+	select HWMON
-+	select VIDEO_OUTPUT_CONTROL
-+	select THERMAL
-+	select BACKLIGHT_CLASS_DEVICE
-+	select SYS_SUPPORTS_APM_EMULATION
-+	help
-+	  YeeLoong netbook is a mini laptop made by Lemote, which is basically
-+	  compatible to FuLoong2F mini PC, but It has an extra Embedded
-+	  Controller(kb3310b) for battery, hotkey, backlight, temperature and
-+	  fan management.
-+
-+	  This driver adds the YeeLoong Platform Specific support.
-+
- endif # LOONGSON_PLATFORM_DEVICES
-diff --git a/arch/mips/loongson/lemote-2f/Makefile b/arch/mips/loongson/lemote-2f/Makefile
-index c058753..863cd46 100644
---- a/arch/mips/loongson/lemote-2f/Makefile
-+++ b/arch/mips/loongson/lemote-2f/Makefile
-@@ -14,3 +14,4 @@ obj-$(CONFIG_LOONGSON_SUSPEND) += pm.o
- # Platform Drivers
+diff --git a/arch/mips/cavium-octeon/Makefile b/arch/mips/cavium-octeon/Makefile
+index 1394362..3e98763 100644
+--- a/arch/mips/cavium-octeon/Makefile
++++ b/arch/mips/cavium-octeon/Makefile
+@@ -9,7 +9,7 @@
+ # Copyright (C) 2005-2009 Cavium Networks
  #
- obj-$(CONFIG_LEMOTE_LYNLOONG2F) += lynloong_pc.o
-+obj-$(CONFIG_LEMOTE_YEELOONG2F) += yeeloong_laptop.o
-diff --git a/arch/mips/loongson/lemote-2f/ec_kb3310b.h b/arch/mips/loongson/lemote-2f/ec_kb3310b.h
-index 3111864..ec8ede9 100644
---- a/arch/mips/loongson/lemote-2f/ec_kb3310b.h
-+++ b/arch/mips/loongson/lemote-2f/ec_kb3310b.h
-@@ -19,6 +19,13 @@ extern int ec_query_seq(unsigned char cmd);
- extern int ec_query_event_num(void);
- extern int ec_get_event_num(void);
- 
-+typedef int (*sci_handler) (int status);
-+extern sci_handler yeeloong_report_lid_status;
-+extern int yeeloong_install_sci_handler(int event, sci_handler handler);
-+extern int yeeloong_uninstall_sci_handler(int event, sci_handler handler);
-+
-+#define SCI_IRQ_NUM 0x0A
-+
- /*
-  * The following registers are determined by the EC index configuration.
-  * 1, fill the PORT_HIGH as EC register high part.
-@@ -48,4 +55,147 @@ extern int ec_get_event_num(void);
- #define	CMD_GET_EVENT_NUM	0x84
- #define	CMD_PROGRAM_PIECE	0xda
- 
-+/* temperature & fan registers */
-+#define	REG_TEMPERATURE_VALUE	0xF458
-+#define	REG_FAN_AUTO_MAN_SWITCH 0xF459
-+#define	BIT_FAN_AUTO		0
-+#define	BIT_FAN_MANUAL		1
-+#define	REG_FAN_CONTROL		0xF4D2
-+#define	BIT_FAN_CONTROL_ON	(1 << 0)
-+#define	BIT_FAN_CONTROL_OFF	(0 << 0)
-+#define	REG_FAN_STATUS		0xF4DA
-+#define	BIT_FAN_STATUS_ON	(1 << 0)
-+#define	BIT_FAN_STATUS_OFF	(0 << 0)
-+#define	REG_FAN_SPEED_HIGH	0xFE22
-+#define	REG_FAN_SPEED_LOW	0xFE23
-+#define	REG_FAN_SPEED_LEVEL	0xF4CC
-+/* fan speed divider */
-+#define	FAN_SPEED_DIVIDER	480000	/* (60*1000*1000/62.5/2)*/
-+
-+/* battery registers */
-+#define	REG_BAT_DESIGN_CAP_HIGH		0xF77D
-+#define	REG_BAT_DESIGN_CAP_LOW		0xF77E
-+#define	REG_BAT_FULLCHG_CAP_HIGH	0xF780
-+#define	REG_BAT_FULLCHG_CAP_LOW		0xF781
-+#define	REG_BAT_DESIGN_VOL_HIGH		0xF782
-+#define	REG_BAT_DESIGN_VOL_LOW		0xF783
-+#define	REG_BAT_CURRENT_HIGH		0xF784
-+#define	REG_BAT_CURRENT_LOW		0xF785
-+#define	REG_BAT_VOLTAGE_HIGH		0xF786
-+#define	REG_BAT_VOLTAGE_LOW		0xF787
-+#define	REG_BAT_TEMPERATURE_HIGH	0xF788
-+#define	REG_BAT_TEMPERATURE_LOW		0xF789
-+#define	REG_BAT_RELATIVE_CAP_HIGH	0xF492
-+#define	REG_BAT_RELATIVE_CAP_LOW	0xF493
-+#define	REG_BAT_VENDOR			0xF4C4
-+#define	FLAG_BAT_VENDOR_SANYO		0x01
-+#define	FLAG_BAT_VENDOR_SIMPLO		0x02
-+#define	REG_BAT_CELL_COUNT		0xF4C6
-+#define	FLAG_BAT_CELL_3S1P		0x03
-+#define	FLAG_BAT_CELL_3S2P		0x06
-+#define	REG_BAT_CHARGE			0xF4A2
-+#define	FLAG_BAT_CHARGE_DISCHARGE	0x01
-+#define	FLAG_BAT_CHARGE_CHARGE		0x02
-+#define	FLAG_BAT_CHARGE_ACPOWER		0x00
-+#define	REG_BAT_STATUS			0xF4B0
-+#define	BIT_BAT_STATUS_LOW		(1 << 5)
-+#define	BIT_BAT_STATUS_DESTROY		(1 << 2)
-+#define	BIT_BAT_STATUS_FULL		(1 << 1)
-+#define	BIT_BAT_STATUS_IN		(1 << 0)
-+#define	REG_BAT_CHARGE_STATUS		0xF4B1
-+#define	BIT_BAT_CHARGE_STATUS_OVERTEMP	(1 << 2)
-+#define	BIT_BAT_CHARGE_STATUS_PRECHG	(1 << 1)
-+#define	REG_BAT_STATE			0xF482
-+#define	BIT_BAT_STATE_CHARGING		(1 << 1)
-+#define	BIT_BAT_STATE_DISCHARGING	(1 << 0)
-+#define	REG_BAT_POWER			0xF440
-+#define	BIT_BAT_POWER_S3		(1 << 2)
-+#define	BIT_BAT_POWER_ON		(1 << 1)
-+#define	BIT_BAT_POWER_ACIN		(1 << 0)
-+
-+/* other registers */
-+/* Audio: rd/wr */
-+#define	REG_AUDIO_VOLUME	0xF46C
-+#define	REG_AUDIO_MUTE		0xF4E7
-+#define	REG_AUDIO_BEEP		0xF4D0
-+/* USB port power or not: rd/wr */
-+#define	REG_USB0_FLAG		0xF461
-+#define	REG_USB1_FLAG		0xF462
-+#define	REG_USB2_FLAG		0xF463
-+#define	BIT_USB_FLAG_ON		1
-+#define	BIT_USB_FLAG_OFF	0
-+/* LID */
-+#define	REG_LID_DETECT		0xF4BD
-+#define	BIT_LID_DETECT_ON	1
-+#define	BIT_LID_DETECT_OFF	0
-+/* CRT */
-+#define	REG_CRT_DETECT		0xF4AD
-+#define	BIT_CRT_DETECT_PLUG	1
-+#define	BIT_CRT_DETECT_UNPLUG	0
-+/* LCD backlight brightness adjust: 9 levels */
-+#define	REG_DISPLAY_BRIGHTNESS	0xF4F5
-+/* Black screen Status */
-+#define	BIT_DISPLAY_LCD_ON	1
-+#define	BIT_DISPLAY_LCD_OFF	0
-+/* LCD backlight control: off/restore */
-+#define	REG_BACKLIGHT_CTRL	0xF7BD
-+#define	BIT_BACKLIGHT_ON	1
-+#define	BIT_BACKLIGHT_OFF	0
-+/* Reset the machine auto-clear: rd/wr */
-+#define	REG_RESET		0xF4EC
-+#define	BIT_RESET_ON		1
-+#define	BIT_RESET_OFF		0
-+/* Light the led: rd/wr */
-+#define	REG_LED			0xF4C8
-+#define	BIT_LED_RED_POWER	(1 << 0)
-+#define	BIT_LED_ORANGE_POWER	(1 << 1)
-+#define	BIT_LED_GREEN_CHARGE	(1 << 2)
-+#define	BIT_LED_RED_CHARGE	(1 << 3)
-+#define	BIT_LED_NUMLOCK		(1 << 4)
-+/* Test led mode, all led on/off */
-+#define	REG_LED_TEST		0xF4C2
-+#define	BIT_LED_TEST_IN		1
-+#define	BIT_LED_TEST_OUT	0
-+/* Camera on/off */
-+#define	REG_CAMERA_STATUS	0xF46A
-+#define	BIT_CAMERA_STATUS_ON	1
-+#define	BIT_CAMERA_STATUS_OFF	0
-+#define	REG_CAMERA_CONTROL	0xF7B7
-+#define	BIT_CAMERA_CONTROL_OFF	0
-+#define	BIT_CAMERA_CONTROL_ON	1
-+/* Wlan Status */
-+#define	REG_WLAN		0xF4FA
-+#define	BIT_WLAN_ON		1
-+#define	BIT_WLAN_OFF		0
-+#define	REG_DISPLAY_LCD		0xF79F
-+
-+/* SCI Event Number from EC */
-+enum {
-+	EVENT_LID = 0x23,	/*  LID open/close */
-+	EVENT_DISPLAY_TOGGLE,	/*  Fn+F3 for display switch */
-+	EVENT_SLEEP,		/*  Fn+F1 for entering sleep mode */
-+	EVENT_OVERTEMP,		/*  Over-temperature happened */
-+	EVENT_CRT_DETECT,	/*  CRT is connected */
-+	EVENT_CAMERA,		/*  Camera on/off */
-+	EVENT_USB_OC2,		/*  USB2 Over Current occurred */
-+	EVENT_USB_OC0,		/*  USB0 Over Current occurred */
-+	EVENT_BLACK_SCREEN,	/*  Black screen on/off */
-+	EVENT_AUDIO_MUTE,	/*  Mute is on or off */
-+	EVENT_DISPLAY_BRIGHTNESS,/* LCD backlight brightness adjust */
-+	EVENT_AC_BAT,		/*  AC & Battery relative issue */
-+	EVENT_AUDIO_VOLUME,	/*  Volume adjust */
-+	EVENT_WLAN,		/*  Wlan on/off */
-+	EVENT_END
-+};
-+
-+enum {
-+	BIT_AC_BAT_BAT_IN = 0,
-+	BIT_AC_BAT_AC_IN,
-+	BIT_AC_BAT_INIT_CAP,
-+	BIT_AC_BAT_CHARGE_MODE,
-+	BIT_AC_BAT_STOP_CHARGE,
-+	BIT_AC_BAT_BAT_LOW,
-+	BIT_AC_BAT_BAT_FULL
-+};
-+
- #endif /* !_EC_KB3310B_H */
-diff --git a/arch/mips/loongson/lemote-2f/yeeloong_laptop.c b/arch/mips/loongson/lemote-2f/yeeloong_laptop.c
+
+-obj-y := setup.o serial.o octeon-platform.o octeon-irq.o csrc-octeon.o
++obj-y := cpu.o setup.o serial.o octeon-platform.o octeon-irq.o csrc-octeon.o
+ obj-y += dma-octeon.o flash_setup.o
+ obj-y += octeon-memcpy.o
+
+diff --git a/arch/mips/cavium-octeon/cpu.c b/arch/mips/cavium-octeon/cpu.c
 new file mode 100644
-index 0000000..98d5fdf
+index 0000000..b6df538
 --- /dev/null
-+++ b/arch/mips/loongson/lemote-2f/yeeloong_laptop.c
-@@ -0,0 +1,1355 @@
++++ b/arch/mips/cavium-octeon/cpu.c
+@@ -0,0 +1,52 @@
 +/*
-+ *  Driver for YeeLoong laptop extras
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
 + *
-+ *  Copyright (C) 2009 Lemote Inc.
-+ *  Author: Wu Zhangjin <wuzj@lemote.com>
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License version 2 as
-+ *  published by the Free Software Foundation.
++ * Copyright (C) 2009 Wind River Systems,
++ *   written by Ralf Baechle <ralf@linux-mips.org>
 + */
++#include <linux/init.h>
++#include <linux/irqflags.h>
++#include <linux/notifier.h>
++#include <linux/prefetch.h>
++#include <linux/sched.h>
 +
-+#include <linux/apm-emulation.h>
-+#include <linux/backlight.h>
-+#include <linux/delay.h>
-+#include <linux/err.h>
-+#include <linux/fb.h>
-+#include <linux/hwmon.h>
-+#include <linux/hwmon-sysfs.h>
-+#include <linux/input.h>
-+#include <linux/interrupt.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+#include <linux/thermal.h>
-+#include <linux/video_output.h>
++#include <asm/cop2.h>
++#include <asm/current.h>
++#include <asm/mipsregs.h>
++#include <asm/page.h>
++#include <asm/octeon/octeon.h>
 +
-+#include <asm/bootinfo.h>	/* for arcs_cmdline */
-+
-+#include <loongson.h>
-+
-+#include <cs5536/cs5536.h>
-+#include "ec_kb3310b.h"
-+
-+#define DRIVER_VERSION "0.1"
-+
-+/* backlight subdriver */
-+#define MAX_BRIGHTNESS 8
-+
-+static int yeeloong_set_brightness(struct backlight_device *bd)
++static int cnmips_cu2_call(struct notifier_block *nfb, unsigned long action,
++       void *data)
 +{
-+	unsigned int level, current_level;
-+	static unsigned int old_level;
++       unsigned long flags;
++       unsigned int status;
 +
-+	level = (bd->props.fb_blank == FB_BLANK_UNBLANK &&
-+		 bd->props.power == FB_BLANK_UNBLANK) ?
-+	    bd->props.brightness : 0;
++       switch (action) {
++       case CU2_EXCEPTION:
++               prefetch(&current->thread.cp2);
++               local_irq_save(flags);
++               KSTK_STATUS(current) |= ST0_CU2;
++               status = read_c0_status();
++               write_c0_status(status | ST0_CU2);
++               octeon_cop2_restore(&(current->thread.cp2));
++               write_c0_status(status & ~ST0_CU2);
++               local_irq_restore(flags);
 +
-+	if (level > MAX_BRIGHTNESS)
-+		level = MAX_BRIGHTNESS;
-+	else if (level < 0)
-+		level = 0;
++               return NOTIFY_BAD;      /* Don't call default notifier */
++       }
 +
-+	/* avoid to modify the brightness when EC is tuning it */
-+	current_level = ec_read(REG_DISPLAY_BRIGHTNESS);
-+	if ((old_level == current_level) && (old_level != level))
-+		ec_write(REG_DISPLAY_BRIGHTNESS, level);
-+	old_level = level;
-+
-+	return 0;
++       return NOTIFY_OK;               /* Let default notifier send signals */
 +}
 +
-+static int yeeloong_get_brightness(struct backlight_device *bd)
-+{
-+	return (int)ec_read(REG_DISPLAY_BRIGHTNESS);
-+}
-+
-+static struct backlight_ops backlight_ops = {
-+	.get_brightness = yeeloong_get_brightness,
-+	.update_status = yeeloong_set_brightness,
++static struct notifier_block cnmips_cu2_notifier = {
++       .notifier_call = cnmips_cu2_call,
 +};
 +
-+static struct backlight_device *yeeloong_backlight_dev;
-+
-+static int yeeloong_backlight_init(struct device *dev)
++static int cnmips_cu2_setup(void)
 +{
-+	int ret;
-+
-+	yeeloong_backlight_dev = backlight_device_register("backlight0", dev,
-+			NULL, &backlight_ops);
-+
-+	if (IS_ERR(yeeloong_backlight_dev)) {
-+		ret = PTR_ERR(yeeloong_backlight_dev);
-+		yeeloong_backlight_dev = NULL;
-+		return ret;
-+	}
-+
-+	yeeloong_backlight_dev->props.max_brightness = MAX_BRIGHTNESS;
-+	yeeloong_backlight_dev->props.brightness =
-+		yeeloong_get_brightness(yeeloong_backlight_dev);
-+	backlight_update_status(yeeloong_backlight_dev);
-+
-+	return 0;
++       return register_cu2_notifier(&cnmips_cu2_notifier);
 +}
-+
-+static void yeeloong_backlight_exit(void)
-+{
-+	if (yeeloong_backlight_dev) {
-+		backlight_device_unregister(yeeloong_backlight_dev);
-+		yeeloong_backlight_dev = NULL;
-+	}
-+}
-+
-+/* hwmon subdriver */
-+
-+/* pwm(auto/manual) enable or not */
-+static int get_fan_pwm_enable(void)
-+{
-+	/* get the fan control method: auto or manual */
-+	return ec_read(REG_FAN_AUTO_MAN_SWITCH);
-+}
-+
-+static void set_fan_pwm_enable(int manual)
-+{
-+	ec_write(REG_FAN_AUTO_MAN_SWITCH, !!manual);
-+}
-+
-+static int get_fan_pwm(void)
-+{
-+	return ec_read(REG_FAN_SPEED_LEVEL);
-+}
-+
-+static void set_fan_pwm(int value)
-+{
-+	int status;
-+
-+	value = SENSORS_LIMIT(value, 0, 3);
-+
-+	/* If value is not ZERO, We should ensure it is on */
-+	if (value != 0) {
-+		status = ec_read(REG_FAN_STATUS);
-+		if (status == 0)
-+			ec_write(REG_FAN_CONTROL, BIT_FAN_CONTROL_ON);
-+	}
-+	ec_write(REG_FAN_SPEED_LEVEL, value);
-+}
-+
-+static int get_fan_rpm(void)
-+{
-+	int value = 0;
-+
-+	value = FAN_SPEED_DIVIDER /
-+	    (((ec_read(REG_FAN_SPEED_HIGH) & 0x0f) << 8) |
-+	     ec_read(REG_FAN_SPEED_LOW));
-+
-+	return value;
-+}
-+
-+static int get_cpu_temp(void)
-+{
-+	int value;
-+
-+	value = ec_read(REG_TEMPERATURE_VALUE);
-+
-+	if (value & (1 << 7))
-+		value = (value & 0x7f) - 128;
-+	else
-+		value = value & 0xff;
-+
-+	return value * 1000;
-+}
-+
-+static int get_battery_temp(void)
-+{
-+	int value;
-+
-+	value = (ec_read(REG_BAT_TEMPERATURE_HIGH) << 8) |
-+		(ec_read(REG_BAT_TEMPERATURE_LOW));
-+
-+	return value * 1000;
-+}
-+
-+static int get_battery_current(void)
-+{
-+	int value;
-+
-+	value = (ec_read(REG_BAT_CURRENT_HIGH) << 8) |
-+		(ec_read(REG_BAT_CURRENT_LOW));
-+
-+	if (value & 0x8000)
-+		value = 0xffff - value;
-+
-+	return value;
-+}
-+
-+static int get_battery_voltage(void)
-+{
-+	int value;
-+
-+	value = (ec_read(REG_BAT_VOLTAGE_HIGH) << 8) |
-+		(ec_read(REG_BAT_VOLTAGE_LOW));
-+
-+	return value;
-+}
-+
-+
-+static int parse_arg(const char *buf, unsigned long count, int *val)
-+{
-+	if (!count)
-+		return 0;
-+	if (sscanf(buf, "%i", val) != 1)
-+		return -EINVAL;
-+	return count;
-+}
-+
-+static ssize_t store_sys_hwmon(void (*set) (int), const char *buf, size_t count)
-+{
-+	int rv, value;
-+
-+	rv = parse_arg(buf, count, &value);
-+	if (rv > 0)
-+		set(value);
-+	return rv;
-+}
-+
-+static ssize_t show_sys_hwmon(int (*get) (void), char *buf)
-+{
-+	return sprintf(buf, "%d\n", get());
-+}
-+
-+#define CREATE_SENSOR_ATTR(_name, _mode, _set, _get)		\
-+	static ssize_t show_##_name(struct device *dev,			\
-+				    struct device_attribute *attr,	\
-+				    char *buf)				\
-+	{								\
-+		return show_sys_hwmon(_set, buf);			\
-+	}								\
-+	static ssize_t store_##_name(struct device *dev,		\
-+				     struct device_attribute *attr,	\
-+				     const char *buf, size_t count)	\
-+	{								\
-+		return store_sys_hwmon(_get, buf, count);		\
-+	}								\
-+	static SENSOR_DEVICE_ATTR(_name, _mode, show_##_name, store_##_name, 0);
-+
-+CREATE_SENSOR_ATTR(fan1_input, S_IRUGO, get_fan_rpm, NULL);
-+CREATE_SENSOR_ATTR(pwm1, S_IRUGO | S_IWUSR, get_fan_pwm, set_fan_pwm);
-+CREATE_SENSOR_ATTR(pwm1_enable, S_IRUGO | S_IWUSR, get_fan_pwm_enable,
-+		set_fan_pwm_enable);
-+CREATE_SENSOR_ATTR(temp1_input, S_IRUGO, get_cpu_temp, NULL);
-+CREATE_SENSOR_ATTR(temp2_input, S_IRUGO, get_battery_temp, NULL);
-+CREATE_SENSOR_ATTR(curr1_input, S_IRUGO, get_battery_current, NULL);
-+CREATE_SENSOR_ATTR(in1_input, S_IRUGO, get_battery_voltage, NULL);
-+
-+static ssize_t
-+show_name(struct device *dev, struct device_attribute *attr, char *buf)
-+{
-+	return sprintf(buf, "yeeloong\n");
-+}
-+
-+static SENSOR_DEVICE_ATTR(name, S_IRUGO, show_name, NULL, 0);
-+
-+static struct attribute *hwmon_attributes[] = {
-+	&sensor_dev_attr_pwm1.dev_attr.attr,
-+	&sensor_dev_attr_pwm1_enable.dev_attr.attr,
-+	&sensor_dev_attr_fan1_input.dev_attr.attr,
-+	&sensor_dev_attr_temp1_input.dev_attr.attr,
-+	&sensor_dev_attr_temp2_input.dev_attr.attr,
-+	&sensor_dev_attr_curr1_input.dev_attr.attr,
-+	&sensor_dev_attr_in1_input.dev_attr.attr,
-+	&sensor_dev_attr_name.dev_attr.attr,
-+	NULL
-+};
-+
-+static struct attribute_group hwmon_attribute_group = {
-+	.attrs = hwmon_attributes
-+};
-+
-+struct device *yeeloong_hwmon_dev;
-+
-+static int yeeloong_hwmon_init(struct device *dev)
-+{
-+	int ret;
-+
-+	yeeloong_hwmon_dev = hwmon_device_register(dev);
-+	if (IS_ERR(yeeloong_hwmon_dev)) {
-+		printk(KERN_INFO "unable to register yeeloong hwmon device\n");
-+		yeeloong_hwmon_dev = NULL;
-+		return PTR_ERR(yeeloong_hwmon_dev);
-+	}
-+	ret = sysfs_create_group(&yeeloong_hwmon_dev->kobj,
-+				 &hwmon_attribute_group);
-+	if (ret) {
-+		sysfs_remove_group(&yeeloong_hwmon_dev->kobj,
-+				   &hwmon_attribute_group);
-+		hwmon_device_unregister(yeeloong_hwmon_dev);
-+		yeeloong_hwmon_dev = NULL;
-+	}
-+	/* ensure fan is set to auto mode */
-+	set_fan_pwm_enable(BIT_FAN_AUTO);
-+
-+	return 0;
-+}
-+
-+static void yeeloong_hwmon_exit(void)
-+{
-+	if (yeeloong_hwmon_dev) {
-+		sysfs_remove_group(&yeeloong_hwmon_dev->kobj,
-+				   &hwmon_attribute_group);
-+		hwmon_device_unregister(yeeloong_hwmon_dev);
-+		yeeloong_hwmon_dev = NULL;
-+	}
-+}
-+
-+/* video output subdriver */
-+
-+static int lcd_video_output_get(struct output_device *od)
-+{
-+	return ec_read(REG_DISPLAY_LCD);
-+}
-+
-+static int lcd_video_output_set(struct output_device *od)
-+{
-+	unsigned long status = od->request_state;
-+	int value;
-+
-+	if (status == BIT_DISPLAY_LCD_ON) {
-+		/* open LCD */
-+		outb(0x31, 0x3c4);
-+		value = inb(0x3c5);
-+		value = (value & 0xf8) | 0x03;
-+		outb(0x31, 0x3c4);
-+		outb(value, 0x3c5);
-+		/* open backlight */
-+		ec_write(REG_BACKLIGHT_CTRL, BIT_BACKLIGHT_ON);
-+	} else {
-+		/* close backlight */
-+		ec_write(REG_BACKLIGHT_CTRL, BIT_BACKLIGHT_OFF);
-+		/* close LCD */
-+		outb(0x31, 0x3c4);
-+		value = inb(0x3c5);
-+		value = (value & 0xf8) | 0x02;
-+		outb(0x31, 0x3c4);
-+		outb(value, 0x3c5);
-+	}
-+
-+	return 0;
-+}
-+
-+static struct output_properties lcd_output_properties = {
-+	.set_state = lcd_video_output_set,
-+	.get_status = lcd_video_output_get,
-+};
-+
-+static int crt_video_output_get(struct output_device *od)
-+{
-+	return ec_read(REG_CRT_DETECT);
-+}
-+
-+static int crt_video_output_set(struct output_device *od)
-+{
-+	unsigned long status = od->request_state;
-+	int value;
-+
-+	if (status == BIT_CRT_DETECT_PLUG) {
-+		if (ec_read(REG_CRT_DETECT) == BIT_CRT_DETECT_PLUG) {
-+			/* open CRT */
-+			outb(0x21, 0x3c4);
-+			value = inb(0x3c5);
-+			value &= ~(1 << 7);
-+			outb(0x21, 0x3c4);
-+			outb(value, 0x3c5);
-+		}
-+	} else {
-+		/* close CRT */
-+		outb(0x21, 0x3c4);
-+		value = inb(0x3c5);
-+		value |= (1 << 7);
-+		outb(0x21, 0x3c4);
-+		outb(value, 0x3c5);
-+	}
-+
-+	return 0;
-+}
-+
-+static struct output_properties crt_output_properties = {
-+	.set_state = crt_video_output_set,
-+	.get_status = crt_video_output_get,
-+};
-+
-+struct output_device *lcd_output_dev, *crt_output_dev;
-+
-+static void lcd_vo_set(int status)
-+{
-+	lcd_output_dev->request_state = status;
-+	lcd_video_output_set(lcd_output_dev);
-+}
-+
-+static void crt_vo_set(int status)
-+{
-+	crt_output_dev->request_state = status;
-+	crt_video_output_set(crt_output_dev);
-+}
-+
-+static int crt_detect_handler(int status)
-+{
-+	if (status == BIT_CRT_DETECT_PLUG) {
-+		crt_vo_set(BIT_CRT_DETECT_PLUG);
-+		lcd_vo_set(BIT_DISPLAY_LCD_OFF);
-+	} else {
-+		lcd_vo_set(BIT_DISPLAY_LCD_ON);
-+		crt_vo_set(BIT_CRT_DETECT_UNPLUG);
-+	}
-+	return status;
-+}
-+
-+#define EC_VER_LEN 64
-+
-+static int black_screen_handler(int status)
-+{
-+	char *p, ec_ver[EC_VER_LEN];
-+
-+	p = strstr(arcs_cmdline, "EC_VER=");
-+	if (!p)
-+		memset(ec_ver, 0, EC_VER_LEN);
-+	else {
-+		strncpy(ec_ver, p, EC_VER_LEN);
-+		p = strstr(ec_ver, " ");
-+		if (p)
-+			*p = '\0';
-+	}
-+
-+	/* Seems EC(>=PQ1D26) does this job for us, we can not do it again,
-+	 * otherwise, the brightness will not resume to the normal level! */
-+	if (strncasecmp(ec_ver, "EC_VER=PQ1D26", 64) < 0)
-+		lcd_vo_set(status);
-+
-+	return status;
-+}
-+
-+static int display_toggle_handler(int status)
-+{
-+	static int video_output_status;
-+
-+	/* only enable switch video output button
-+	 * when CRT is connected */
-+	if (ec_read(REG_CRT_DETECT) == BIT_CRT_DETECT_UNPLUG)
-+		return 0;
-+	/* 0. no CRT connected: LCD on, CRT off
-+	 * 1. BOTH on
-+	 * 2. LCD off, CRT on
-+	 * 3. BOTH off
-+	 * 4. LCD on, CRT off
-+	 */
-+	video_output_status++;
-+	if (video_output_status > 4)
-+		video_output_status = 1;
-+
-+	switch (video_output_status) {
-+	case 1:
-+		lcd_vo_set(BIT_DISPLAY_LCD_ON);
-+		crt_vo_set(BIT_CRT_DETECT_PLUG);
-+		break;
-+	case 2:
-+		lcd_vo_set(BIT_DISPLAY_LCD_OFF);
-+		crt_vo_set(BIT_CRT_DETECT_PLUG);
-+		break;
-+	case 3:
-+		lcd_vo_set(BIT_DISPLAY_LCD_OFF);
-+		crt_vo_set(BIT_CRT_DETECT_UNPLUG);
-+		break;
-+	case 4:
-+		lcd_vo_set(BIT_DISPLAY_LCD_ON);
-+		crt_vo_set(BIT_CRT_DETECT_UNPLUG);
-+		break;
-+	default:
-+		/* ensure LCD is on */
-+		lcd_vo_set(BIT_DISPLAY_LCD_ON);
-+		break;
-+	}
-+	return video_output_status;
-+}
-+
-+static int yeeloong_vo_init(struct device *dev)
-+{
-+	int ret;
-+
-+	/* register video output device: lcd, crt */
-+	lcd_output_dev = video_output_register("LCD", dev, NULL,
-+			&lcd_output_properties);
-+
-+	if (IS_ERR(lcd_output_dev)) {
-+		ret = PTR_ERR(lcd_output_dev);
-+		lcd_output_dev = NULL;
-+		return ret;
-+	}
-+	/* ensure LCD is on by default */
-+	lcd_vo_set(1);
-+
-+	crt_output_dev = video_output_register("CRT", dev, NULL,
-+			&crt_output_properties);
-+
-+	if (IS_ERR(crt_output_dev)) {
-+		ret = PTR_ERR(crt_output_dev);
-+		crt_output_dev = NULL;
-+		return ret;
-+	}
-+	/* close CRT by default, and will be enabled
-+	 * when the CRT connectting event reported by SCI */
-+	crt_vo_set(0);
-+
-+	/* install event handlers */
-+	yeeloong_install_sci_handler(EVENT_CRT_DETECT, crt_detect_handler);
-+	yeeloong_install_sci_handler(EVENT_BLACK_SCREEN, black_screen_handler);
-+	yeeloong_install_sci_handler(EVENT_DISPLAY_TOGGLE,
-+			display_toggle_handler);
-+	return 0;
-+}
-+
-+static void yeeloong_vo_exit(void)
-+{
-+	/* uninstall event handlers */
-+	yeeloong_uninstall_sci_handler(EVENT_CRT_DETECT, crt_detect_handler);
-+	yeeloong_uninstall_sci_handler(EVENT_BLACK_SCREEN,
-+			black_screen_handler);
-+	yeeloong_uninstall_sci_handler(EVENT_DISPLAY_TOGGLE,
-+			display_toggle_handler);
-+
-+	if (lcd_output_dev) {
-+		video_output_unregister(lcd_output_dev);
-+		lcd_output_dev = NULL;
-+	}
-+	if (crt_output_dev) {
-+		video_output_unregister(crt_output_dev);
-+		crt_output_dev = NULL;
-+	}
-+}
-+
-+/* Thermal cooling devices subdriver */
-+
-+static int video_get_max_state(struct thermal_cooling_device *cdev, unsigned
-+			       long *state)
-+{
-+	*state = MAX_BRIGHTNESS;
-+	return 0;
-+}
-+
-+static int video_get_cur_state(struct thermal_cooling_device *cdev, unsigned
-+			       long *state)
-+{
-+	static struct backlight_device *bd;
-+
-+	bd = (struct backlight_device *)cdev->devdata;
-+
-+	*state = yeeloong_get_brightness(bd);
-+
-+	return 0;
-+}
-+
-+static int video_set_cur_state(struct thermal_cooling_device *cdev, unsigned
-+			       long state)
-+{
-+	static struct backlight_device *bd;
-+
-+	bd = (struct backlight_device *)cdev->devdata;
-+
-+	yeeloong_backlight_dev->props.brightness = state;
-+	backlight_update_status(bd);
-+
-+	return 0;
-+}
-+
-+static struct thermal_cooling_device_ops video_cooling_ops = {
-+	.get_max_state = video_get_max_state,
-+	.get_cur_state = video_get_cur_state,
-+	.set_cur_state = video_set_cur_state,
-+};
-+
-+static struct thermal_cooling_device *yeeloong_thermal_cdev;
-+
-+/* TODO: register fan, cpu as the cooling devices */
-+static int yeeloong_thermal_init(struct device *dev)
-+{
-+	int ret;
-+
-+	if (!dev)
-+		return -1;
-+
-+	yeeloong_thermal_cdev = thermal_cooling_device_register("LCD", dev,
-+			&video_cooling_ops);
-+
-+	if (IS_ERR(yeeloong_thermal_cdev)) {
-+		ret = PTR_ERR(yeeloong_thermal_cdev);
-+		return ret;
-+	}
-+
-+	ret = sysfs_create_link(&dev->kobj,
-+				&yeeloong_thermal_cdev->device.kobj,
-+				"thermal_cooling");
-+	if (ret) {
-+		printk(KERN_ERR "Create sysfs link\n");
-+		return ret;
-+	}
-+	ret = sysfs_create_link(&yeeloong_thermal_cdev->device.kobj,
-+				&dev->kobj, "device");
-+	if (ret) {
-+		printk(KERN_ERR "Create sysfs link\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static void yeeloong_thermal_exit(struct device *dev)
-+{
-+	if (yeeloong_thermal_cdev) {
-+		if (dev)
-+			sysfs_remove_link(&dev->kobj, "thermal_cooling");
-+		sysfs_remove_link(&yeeloong_thermal_cdev->device.kobj,
-+				  "device");
-+		thermal_cooling_device_unregister(yeeloong_thermal_cdev);
-+		yeeloong_thermal_cdev = NULL;
-+	}
-+}
-+
-+/* hotkey input subdriver */
-+
-+static struct input_dev *yeeloong_hotkey_dev;
-+static int event, status;
-+
-+struct key_entry {
-+	char type;		/* See KE_* below */
-+	int event;		/* event from SCI */
-+	u16 keycode;		/* KEY_* or SW_* */
-+};
-+
-+enum { KE_KEY, KE_SW, KE_END };
-+
-+static struct key_entry yeeloong_keymap[] = {
-+	{KE_SW, EVENT_LID, SW_LID},
-+	/* SW_VIDEOOUT_INSERT? not included in hald-addon-input! */
-+	{KE_KEY, EVENT_CRT_DETECT, KEY_PROG1},
-+	/* Seems battery subdriver should report it */
-+	{KE_KEY, EVENT_OVERTEMP, KEY_PROG2},
-+	/*{KE_KEY, EVENT_AC_BAT, KEY_BATTERY},*/
-+	{KE_KEY, EVENT_CAMERA, KEY_CAMERA},	/* Fn + ESC */
-+	{KE_KEY, EVENT_SLEEP, KEY_SLEEP},	/* Fn + F1 */
-+	/* Seems not clear? not included in hald-addon-input! */
-+	{KE_KEY, EVENT_BLACK_SCREEN, KEY_PROG3},	/* Fn + F2 */
-+	{KE_KEY, EVENT_DISPLAY_TOGGLE, KEY_SWITCHVIDEOMODE},	/* Fn + F3 */
-+	{KE_KEY, EVENT_AUDIO_MUTE, KEY_MUTE},	/* Fn + F4 */
-+	{KE_KEY, EVENT_WLAN, KEY_WLAN},	/* Fn + F5 */
-+	{KE_KEY, EVENT_DISPLAY_BRIGHTNESS, KEY_BRIGHTNESSUP},	/* Fn + up */
-+	{KE_KEY, EVENT_DISPLAY_BRIGHTNESS, KEY_BRIGHTNESSDOWN},	/* Fn + down */
-+	{KE_KEY, EVENT_AUDIO_VOLUME, KEY_VOLUMEUP},	/* Fn + right */
-+	{KE_KEY, EVENT_AUDIO_VOLUME, KEY_VOLUMEDOWN},	/* Fn + left */
-+	{KE_END, 0}
-+};
-+
-+static int yeeloong_lid_update_status(int status)
-+{
-+	input_report_switch(yeeloong_hotkey_dev, SW_LID, !status);
-+	input_sync(yeeloong_hotkey_dev);
-+
-+	return status;
-+}
-+
-+static void yeeloong_hotkey_update_status(int key)
-+{
-+	input_report_key(yeeloong_hotkey_dev, key, 1);
-+	input_sync(yeeloong_hotkey_dev);
-+	input_report_key(yeeloong_hotkey_dev, key, 0);
-+	input_sync(yeeloong_hotkey_dev);
-+}
-+
-+static int get_event_keycode(void)
-+{
-+	struct key_entry *key;
-+
-+	for (key = yeeloong_keymap; key->type != KE_END; key++) {
-+		if (key->event != event)
-+			continue;
-+		else {
-+			if (EVENT_DISPLAY_BRIGHTNESS == event) {
-+				static int old_brightness_status = -1;
-+				/* current status > old one, means up */
-+				if ((status < old_brightness_status)
-+				    || (0 == status))
-+					key++;
-+				old_brightness_status = status;
-+			} else if (EVENT_AUDIO_VOLUME == event) {
-+				static int old_volume_status = -1;
-+				if ((status < old_volume_status)
-+				    || (0 == status))
-+					key++;
-+				old_volume_status = status;
-+			}
-+			break;
-+		}
-+	}
-+	return key->keycode;
-+}
-+
-+void yeeloong_report_key(void)
-+{
-+	int keycode;
-+
-+	keycode = get_event_keycode();
-+
-+	if (keycode == SW_LID)
-+		yeeloong_lid_update_status(status);
-+	else
-+		yeeloong_hotkey_update_status(keycode);
-+}
-+
-+enum { NO_REG, MUL_REG, REG_END };
-+
-+int event_reg[15] = {
-+	REG_LID_DETECT,		/*  LID open/close */
-+	NO_REG,			/*  Fn+F3 for display switch */
-+	NO_REG,			/*  Fn+F1 for entering sleep mode */
-+	MUL_REG,		/*  Over-temperature happened */
-+	REG_CRT_DETECT,		/*  CRT is connected */
-+	REG_CAMERA_STATUS,	/*  Camera on/off */
-+	REG_USB2_FLAG,		/*  USB2 Over Current occurred */
-+	REG_USB0_FLAG,		/*  USB0 Over Current occurred */
-+	REG_DISPLAY_LCD,	/*  Black screen on/off */
-+	REG_AUDIO_MUTE,		/*  Mute on/off */
-+	REG_DISPLAY_BRIGHTNESS,	/*  LCD backlight brightness adjust */
-+	NO_REG,			/*  AC & Battery relative issue */
-+	REG_AUDIO_VOLUME,	/*  Volume adjust */
-+	REG_WLAN,		/*  Wlan on/off */
-+	REG_END
-+};
-+
-+static int ec_get_event_status(void)
-+{
-+	int reg;
-+
-+	reg = event_reg[event - EVENT_LID];
-+
-+	if (reg == NO_REG)
-+		return 1;
-+	else if (reg == MUL_REG) {
-+		if (event == EVENT_OVERTEMP) {
-+			return (ec_read(REG_BAT_CHARGE_STATUS) &
-+				BIT_BAT_CHARGE_STATUS_OVERTEMP) >> 2;
-+		}
-+	} else if (reg != REG_END)
-+		return ec_read(reg);
-+
-+	return -1;
-+}
-+
-+static sci_handler event_handler[15];
-+
-+int yeeloong_install_sci_handler(int event, sci_handler handler)
-+{
-+	if (event_handler[event - EVENT_LID] != NULL) {
-+		printk(KERN_INFO "There is a handler installed for event: %d\n",
-+		       event);
-+		return -1;
-+	}
-+	event_handler[event - EVENT_LID] = handler;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(yeeloong_install_sci_handler);
-+
-+int yeeloong_uninstall_sci_handler(int event, sci_handler handler)
-+{
-+	if (event_handler[event - EVENT_LID] == NULL) {
-+		printk(KERN_INFO "There is no handler installed for event: %d\n",
-+		       event);
-+		return -1;
-+	}
-+	if (event_handler[event - EVENT_LID] != handler) {
-+		printk(KERN_INFO "You can not uninstall the handler installed by others\n");
-+		return -1;
-+	}
-+	event_handler[event - EVENT_LID] = NULL;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(yeeloong_uninstall_sci_handler);
-+
-+static void yeeloong_event_action(void)
-+{
-+	sci_handler handler;
-+
-+	handler = event_handler[event - EVENT_LID];
-+
-+	if (handler == NULL)
-+		return;
-+
-+	if (event == EVENT_CAMERA)
-+		status = handler(3);
-+	else
-+		status = handler(status);
-+}
-+
++early_initcall(cnmips_cu2_setup);
+diff --git a/arch/mips/include/asm/cop2.h b/arch/mips/include/asm/cop2.h
+new file mode 100644
+index 0000000..6b04c98
+--- /dev/null
++++ b/arch/mips/include/asm/cop2.h
+@@ -0,0 +1,23 @@
 +/*
-+ * SCI(system control interrupt) main interrupt routine
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
 + *
-+ * we will do the query and get event number together so the interrupt routine
-+ * should be longer than 120us now at least 3ms elpase for it.
++ * Copyright (C) 2009 Wind River Systems,
++ *   written by Ralf Baechle <ralf@linux-mips.org>
 + */
-+static irqreturn_t sci_irq_handler(int irq, void *dev_id)
-+{
-+	int ret;
++#ifndef __ASM_COP2_H
++#define __ASM_COP2_H
 +
-+	if (SCI_IRQ_NUM != irq) {
-+		printk(KERN_ERR "%s: spurious irq.\n", __func__);
-+		return IRQ_NONE;
-+	}
++enum cu2_ops {
++       CU2_EXCEPTION,
++       CU2_LWC2_OP,
++       CU2_LDC2_OP,
++       CU2_SWC2_OP,
++       CU2_SDC2_OP,
++};
 +
-+	/* query the event number */
-+	ret = ec_query_event_num();
-+	if (ret < 0) {
-+		printk(KERN_ERR "%s: return: %d\n", __func__, ret);
-+		return IRQ_NONE;
-+	}
++extern int register_cu2_notifier(struct notifier_block *nb);
++extern int cu2_notifier_call_chain(unsigned long val, void *v);
 +
-+	event = ec_get_event_num();
-+	if (event < 0) {
-+		printk(KERN_ERR "%s: return: %d\n", __func__, event);
-+		return IRQ_NONE;
-+	}
-+
-+	if ((event != 0x00) && (event != 0xff)) {
-+		/* get status of current event */
-+		status = ec_get_event_status();
-+		printk(KERN_INFO "%s: event: %d, status: %d\n", __func__,
-+				event, status);
-+		if (status == -1)
-+			return IRQ_NONE;
-+		/* execute corresponding actions */
-+		yeeloong_event_action();
-+		/* report current key */
-+		yeeloong_report_key();
-+	}
-+	return IRQ_HANDLED;
-+}
-+
++#endif /* __ASM_COP2_H */
+diff --git a/arch/mips/include/asm/octeon/octeon.h b/arch/mips/include/asm/octeon/octeon.h
+index cac9b1a..4d0a8c6 100644
+--- a/arch/mips/include/asm/octeon/octeon.h
++++ b/arch/mips/include/asm/octeon/octeon.h
+@@ -47,6 +47,7 @@ struct octeon_cop2_state;
+ extern unsigned long octeon_crypto_enable(struct octeon_cop2_state *state);
+ extern void octeon_crypto_disable(struct octeon_cop2_state *state,
+                                  unsigned long flags);
++extern asmlinkage void octeon_cop2_restore(struct octeon_cop2_state *task);
+
+ extern void octeon_init_cvmcount(void);
+
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 0a18b4c..2c5c3a2 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -25,10 +25,12 @@
+ #include <linux/ptrace.h>
+ #include <linux/kgdb.h>
+ #include <linux/kdebug.h>
++#include <linux/notifier.h>
+
+ #include <asm/bootinfo.h>
+ #include <asm/branch.h>
+ #include <asm/break.h>
++#include <asm/cop2.h>
+ #include <asm/cpu.h>
+ #include <asm/dsp.h>
+ #include <asm/fpu.h>
+@@ -79,10 +81,6 @@ extern asmlinkage void handle_reserved(void);
+ extern int fpu_emulator_cop1Handler(struct pt_regs *xcp,
+        struct mips_fpu_struct *ctx, int has_fpu);
+
+-#ifdef CONFIG_CPU_CAVIUM_OCTEON
+-extern asmlinkage void octeon_cop2_restore(struct octeon_cop2_state *task);
+-#endif
+-
+ void (*board_be_init)(void);
+ int (*board_be_handler)(struct pt_regs *regs, int is_fixup);
+ void (*board_nmi_handler_setup)(void);
+@@ -857,6 +855,44 @@ static void mt_ase_fp_affinity(void)
+ #endif /* CONFIG_MIPS_MT_FPAFF */
+ }
+
 +/*
-+ * config and init some msr and gpio register properly.
++ * No lock; only written during early bootup by CPU 0.
 + */
-+static int sci_irq_init(void)
++static RAW_NOTIFIER_HEAD(cu2_chain);
++
++int __ref register_cu2_notifier(struct notifier_block *nb)
 +{
-+	u32 hi, lo;
-+	u32 gpio_base;
-+	int ret = 0;
-+	unsigned long flags;
-+
-+	/* get gpio base */
-+	_rdmsr(DIVIL_MSR_REG(DIVIL_LBAR_GPIO), &hi, &lo);
-+	gpio_base = lo & 0xff00;
-+
-+	/* filter the former kb3310 interrupt for security */
-+	ret = ec_query_event_num();
-+	if (ret) {
-+		printk(KERN_ERR "%s: failed.\n", __func__);
-+		return ret;
-+	}
-+
-+	/* for filtering next number interrupt */
-+	udelay(10000);
-+
-+	/* set gpio native registers and msrs for GPIO27 SCI EVENT PIN
-+	 * gpio :
-+	 *      input, pull-up, no-invert, event-count and value 0,
-+	 *      no-filter, no edge mode
-+	 *      gpio27 map to Virtual gpio0
-+	 * msr :
-+	 *      no primary and lpc
-+	 *      Unrestricted Z input to IG10 from Virtual gpio 0.
-+	 */
-+	local_irq_save(flags);
-+	_rdmsr(0x80000024, &hi, &lo);
-+	lo &= ~(1 << 10);
-+	_wrmsr(0x80000024, hi, lo);
-+	_rdmsr(0x80000025, &hi, &lo);
-+	lo &= ~(1 << 10);
-+	_wrmsr(0x80000025, hi, lo);
-+	_rdmsr(0x80000023, &hi, &lo);
-+	lo |= (0x0a << 0);
-+	_wrmsr(0x80000023, hi, lo);
-+	local_irq_restore(flags);
-+
-+	/* set gpio27 as sci interrupt
-+	 *
-+	 * input, pull-up, no-fliter, no-negedge, invert
-+	 * the sci event is just about 120us
-+	 */
-+	asm(".set noreorder\n");
-+	/*  input enable */
-+	outl(0x00000800, (gpio_base | 0xA0));
-+	/*  revert the input */
-+	outl(0x00000800, (gpio_base | 0xA4));
-+	/*  event-int enable */
-+	outl(0x00000800, (gpio_base | 0xB8));
-+	asm(".set reorder\n");
-+
-+	return 0;
++       return raw_notifier_chain_register(&cu2_chain, nb);
 +}
 +
-+struct irqaction sci_irqaction = {
-+	.handler = sci_irq_handler,
-+	.name = "sci",
-+	.flags = IRQF_SHARED,
++int cu2_notifier_call_chain(unsigned long val, void *v)
++{
++       return raw_notifier_call_chain(&cu2_chain, val, v);
++}
++
++static int default_cu2_call(struct notifier_block *nfb, unsigned long action,
++        void *data)
++{
++       struct pt_regs *regs = data;
++
++       switch (action) {
++       default:
++               die_if_kernel("Unhandled kernel unaligned access or invalid "
++                             "instruction", regs);
++               /* Fall through  */
++
++       case CU2_EXCEPTION:
++               force_sig(SIGILL, current);
++       }
++
++       return NOTIFY_OK;
++}
++
++static struct notifier_block default_cu2_notifier = {
++       .notifier_call  = default_cu2_call,
++       .priority       = 0x80000000,           /* Run last  */
 +};
 +
-+static int setup_sci(void)
-+{
-+	sci_irq_init();
-+
-+	setup_irq(SCI_IRQ_NUM, &sci_irqaction);
-+
-+	return 0;
-+}
-+
-+static ssize_t
-+ignore_store(struct device *dev,
-+	     struct device_attribute *attr, const char *buf, size_t count)
-+{
-+	return count;
-+}
-+
-+static ssize_t
-+show_hotkeystate(struct device *dev, struct device_attribute *attr, char *buf)
-+{
-+	return sprintf(buf, "%d %d\n", event, status);
-+}
-+
-+static DEVICE_ATTR(state, 0444, show_hotkeystate, ignore_store);
-+
-+static struct attribute *hotkey_attributes[] = {
-+	&dev_attr_state.attr,
-+	NULL
-+};
-+
-+static struct attribute_group hotkey_attribute_group = {
-+	.attrs = hotkey_attributes
-+};
-+
-+static int camera_set(int status)
-+{
-+	int value;
-+	static int camera_status;
-+
-+	if (status == 2)
-+		/* resume the old camera status */
-+		camera_set(camera_status);
-+	else if (status == 3) {
-+		/* revert the camera status */
-+		value = ec_read(REG_CAMERA_CONTROL);
-+		ec_write(REG_CAMERA_CONTROL, value | (1 << 1));
-+	} else {/* status == 0 or status == 1 */
-+		status = !!status;
-+		camera_status = ec_read(REG_CAMERA_STATUS);
-+		if (status != camera_status)
-+			camera_set(3);
-+	}
-+	return ec_read(REG_CAMERA_STATUS);
-+}
-+
-+#define I8042_STATUS_REG	0x64
-+#define I8042_DATA_REG		0x60
-+#define i8042_read_status() inb(I8042_STATUS_REG)
-+#define i8042_read_data() inb(I8042_DATA_REG)
-+#define I8042_STR_OBF		0x01
-+#define I8042_BUFFER_SIZE	16
-+
-+static void i8042_flush(void)
-+{
-+	int i;
-+
-+	while ((i8042_read_status() & I8042_STR_OBF)
-+		&& (i < I8042_BUFFER_SIZE)) {
-+		udelay(50);
-+		i8042_read_data();
-+		i++;
-+	}
-+}
-+
-+static int yeeloong_hotkey_init(struct device *dev)
-+{
-+	int ret;
-+	struct key_entry *key;
-+
-+	/* flush the buffer of keyboard */
-+	i8042_flush();
-+
-+	/* setup the system control interface */
-+	setup_sci();
-+
-+	yeeloong_hotkey_dev = input_allocate_device();
-+
-+	if (!yeeloong_hotkey_dev)
-+		return -ENOMEM;
-+
-+	yeeloong_hotkey_dev->name = "HotKeys";
-+	yeeloong_hotkey_dev->phys = "button/input0";
-+	yeeloong_hotkey_dev->id.bustype = BUS_HOST;
-+	yeeloong_hotkey_dev->dev.parent = dev;
-+
-+	for (key = yeeloong_keymap; key->type != KE_END; key++) {
-+		switch (key->type) {
-+		case KE_KEY:
-+			set_bit(EV_KEY, yeeloong_hotkey_dev->evbit);
-+			set_bit(key->keycode, yeeloong_hotkey_dev->keybit);
-+			break;
-+		case KE_SW:
-+			set_bit(EV_SW, yeeloong_hotkey_dev->evbit);
-+			set_bit(key->keycode, yeeloong_hotkey_dev->swbit);
-+			break;
-+		}
-+	}
-+
-+	ret = input_register_device(yeeloong_hotkey_dev);
-+	if (ret) {
-+		input_free_device(yeeloong_hotkey_dev);
-+		return ret;
-+	}
-+
-+	ret = sysfs_create_group(&yeeloong_hotkey_dev->dev.kobj,
-+				 &hotkey_attribute_group);
-+	if (ret) {
-+		sysfs_remove_group(&yeeloong_hotkey_dev->dev.kobj,
-+				   &hotkey_attribute_group);
-+		input_unregister_device(yeeloong_hotkey_dev);
-+		yeeloong_hotkey_dev = NULL;
-+	}
-+	/* update the current status of lid */
-+	yeeloong_lid_update_status(BIT_LID_DETECT_ON);
-+
-+#ifdef CONFIG_SUSPEND
-+	/* install the real yeeloong_report_lid_status for pm.c */
-+	yeeloong_report_lid_status = yeeloong_lid_update_status;
-+#endif
-+	/* install event handler */
-+	yeeloong_install_sci_handler(EVENT_CAMERA, camera_set);
-+
-+	return 0;
-+}
-+
-+static void yeeloong_hotkey_exit(void)
-+{
-+	/* free irq */
-+	remove_irq(SCI_IRQ_NUM, &sci_irqaction);
-+
-+#ifdef CONFIG_SUSPEND
-+	/* uninstall the real yeeloong_report_lid_status for pm.c */
-+	yeeloong_report_lid_status = NULL;
-+#endif
-+	/* uninstall event handler */
-+	yeeloong_uninstall_sci_handler(EVENT_CAMERA, camera_set);
-+
-+	if (yeeloong_hotkey_dev) {
-+		sysfs_remove_group(&yeeloong_hotkey_dev->dev.kobj,
-+				   &hotkey_attribute_group);
-+		input_unregister_device(yeeloong_hotkey_dev);
-+		yeeloong_hotkey_dev = NULL;
-+	}
-+}
-+
-+/* battery subdriver: APM emulated support */
-+
-+static void get_fixed_battery_info(void)
-+{
-+	int design_cap, full_charged_cap, design_vol, vendor, cell_count;
-+
-+	design_cap = (ec_read(REG_BAT_DESIGN_CAP_HIGH) << 8)
-+	    | ec_read(REG_BAT_DESIGN_CAP_LOW);
-+	full_charged_cap = (ec_read(REG_BAT_FULLCHG_CAP_HIGH) << 8)
-+	    | ec_read(REG_BAT_FULLCHG_CAP_LOW);
-+	design_vol = (ec_read(REG_BAT_DESIGN_VOL_HIGH) << 8)
-+	    | ec_read(REG_BAT_DESIGN_VOL_LOW);
-+	vendor = ec_read(REG_BAT_VENDOR);
-+	cell_count = ec_read(REG_BAT_CELL_COUNT);
-+
-+	if (vendor != 0) {
-+		printk(KERN_INFO
-+		       "battery vendor(%s), cells count(%d), "
-+		       "with designed capacity(%d),designed voltage(%d),"
-+		       " full charged capacity(%d)\n",
-+		       (vendor ==
-+			FLAG_BAT_VENDOR_SANYO) ? "SANYO" : "SIMPLO",
-+		       (cell_count == FLAG_BAT_CELL_3S1P) ? 3 : 6,
-+		       design_cap, design_vol,
-+		       full_charged_cap);
-+	}
-+}
-+
-+#define APM_CRITICAL		5
-+
-+static void __maybe_unused yeeloong_apm_get_power_status(struct apm_power_info
-+		*info)
-+{
-+	unsigned char bat_status;
-+
-+	info->battery_status = APM_BATTERY_STATUS_UNKNOWN;
-+	info->battery_flag = APM_BATTERY_FLAG_UNKNOWN;
-+	info->units = APM_UNITS_MINS;
-+
-+	info->battery_life = (ec_read(REG_BAT_RELATIVE_CAP_HIGH) << 8) |
-+		(ec_read(REG_BAT_RELATIVE_CAP_LOW));
-+
-+	info->ac_line_status = (ec_read(REG_BAT_POWER) & BIT_BAT_POWER_ACIN) ?
-+		APM_AC_ONLINE : APM_AC_OFFLINE;
-+
-+	bat_status = ec_read(REG_BAT_STATUS);
-+
-+	if (!(bat_status & BIT_BAT_STATUS_IN)) {
-+		/* no battery inserted */
-+		info->battery_status = APM_BATTERY_STATUS_NOT_PRESENT;
-+		info->battery_flag = APM_BATTERY_FLAG_NOT_PRESENT;
-+		info->time = 0x00;
-+		return;
-+	}
-+
-+	/* adapter inserted */
-+	if (info->ac_line_status == APM_AC_ONLINE) {
-+		if (!(bat_status & BIT_BAT_STATUS_FULL)) {
-+			/* battery is not fully charged */
-+			info->battery_status = APM_BATTERY_STATUS_CHARGING;
-+			info->battery_flag = APM_BATTERY_FLAG_CHARGING;
-+		} else {
-+			/* battery is fully charged */
-+			info->battery_status = APM_BATTERY_STATUS_HIGH;
-+			info->battery_flag = APM_BATTERY_FLAG_HIGH;
-+			info->battery_life = 100;
-+		}
-+	} else {
-+		/* battery is too low */
-+		if (bat_status & BIT_BAT_STATUS_LOW) {
-+			info->battery_status = APM_BATTERY_STATUS_LOW;
-+			info->battery_flag = APM_BATTERY_FLAG_LOW;
-+			if (info->battery_life <= APM_CRITICAL) {
-+				/* we should power off the system now */
-+				info->battery_status =
-+					APM_BATTERY_STATUS_CRITICAL;
-+				info->battery_flag = APM_BATTERY_FLAG_CRITICAL;
-+			}
-+		} else {
-+			/* assume the battery is high enough. */
-+			info->battery_status = APM_BATTERY_STATUS_HIGH;
-+			info->battery_flag = APM_BATTERY_FLAG_HIGH;
-+		}
-+	}
-+	info->time = ((info->battery_life - 3) * 54 + 142) / 60;
-+}
-+
-+static int yeeloong_apm_init(void)
-+{
-+	/* print fixed information of battery */
-+	get_fixed_battery_info();
-+
-+#ifdef CONFIG_APM_EMULATION
-+	apm_get_power_status = yeeloong_apm_get_power_status;
-+#endif
-+	return 0;
-+}
-+
-+static void yeeloong_apm_exit(void)
-+{
-+}
-+
-+/* platform subdriver */
-+static struct platform_device *yeeloong_pdev;
-+
-+static void __maybe_unused usb_ports_set(int status)
-+{
-+	status = !!status;
-+
-+	ec_write(REG_USB0_FLAG, status);
-+	ec_write(REG_USB1_FLAG, status);
-+	ec_write(REG_USB2_FLAG, status);
-+}
-+
-+static int __maybe_unused yeeloong_suspend(struct platform_device *pdev,
-+		pm_message_t state)
-+{
-+	printk(KERN_INFO "yeeloong specific suspend\n");
-+
-+	/* close LCD */
-+	lcd_vo_set(BIT_DISPLAY_LCD_OFF);
-+	/* close CRT */
-+	crt_vo_set(BIT_CRT_DETECT_UNPLUG);
-+	/* power off camera */
-+	camera_set(BIT_CAMERA_CONTROL_OFF);
-+	/* poweroff three usb ports */
-+	usb_ports_set(BIT_USB_FLAG_OFF);
-+	/* minimize the speed of FAN */
-+	set_fan_pwm_enable(BIT_FAN_MANUAL);
-+	set_fan_pwm(1);
-+
-+	return 0;
-+}
-+
-+static int __maybe_unused yeeloong_resume(struct platform_device *pdev)
-+{
-+	printk(KERN_INFO "yeeloong specific resume\n");
-+
-+	/* resume the status of lcd & crt */
-+	lcd_vo_set(BIT_DISPLAY_LCD_ON);
-+	crt_vo_set(BIT_CRT_DETECT_PLUG);
-+
-+	/* power on three usb ports */
-+	usb_ports_set(BIT_USB_FLAG_ON);
-+
-+	/* resume the camera status */
-+	camera_set(2);
-+
-+	/* resume fan to auto mode */
-+	set_fan_pwm_enable(BIT_FAN_AUTO);
-+
-+	return 0;
-+}
-+
-+static struct platform_driver platform_driver = {
-+	.driver = {
-+		   .name = "yeeloong-laptop",
-+		   .owner = THIS_MODULE,
-+		   },
-+#ifdef CONFIG_PM
-+	.suspend = yeeloong_suspend,
-+	.resume = yeeloong_resume,
-+#endif
-+};
-+
-+static ssize_t yeeloong_pdev_name_show(struct device *dev,
-+				       struct device_attribute *attr, char *buf)
-+{
-+	return sprintf(buf, "yeeloong laptop\n");
-+}
-+
-+static struct device_attribute dev_attr_yeeloong_pdev_name =
-+__ATTR(name, S_IRUGO, yeeloong_pdev_name_show, NULL);
-+
-+static int yeeloong_pdev_init(void)
-+{
-+	int ret;
-+
-+	/* Register platform stuff */
-+	ret = platform_driver_register(&platform_driver);
-+	if (ret)
-+		return ret;
-+
-+	yeeloong_pdev = platform_device_alloc("yeeloong-laptop", -1);
-+	if (!yeeloong_pdev) {
-+		ret = -ENOMEM;
-+		platform_driver_unregister(&platform_driver);
-+		return ret;
-+	}
-+
-+	ret = platform_device_add(yeeloong_pdev);
-+	if (ret) {
-+		platform_device_put(yeeloong_pdev);
-+		return ret;
-+	}
-+
-+	if (IS_ERR(yeeloong_pdev)) {
-+		ret = PTR_ERR(yeeloong_pdev);
-+		yeeloong_pdev = NULL;
-+		printk(KERN_INFO "unable to register platform device\n");
-+		return ret;
-+	}
-+
-+	ret = device_create_file(&yeeloong_pdev->dev,
-+				 &dev_attr_yeeloong_pdev_name);
-+	if (ret) {
-+		printk(KERN_INFO "unable to create sysfs device attributes\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static void yeeloong_pdev_exit(void)
-+{
-+	if (yeeloong_pdev) {
-+		platform_device_unregister(yeeloong_pdev);
-+		yeeloong_pdev = NULL;
-+		platform_driver_unregister(&platform_driver);
-+	}
-+}
-+
-+static int __init yeeloong_init(void)
-+{
-+	int ret;
-+
-+	if (mips_machtype != MACH_LEMOTE_YL2F89) {
-+		printk(KERN_INFO "This Driver is for YeeLoong netbook, You"
-+				" can not use it on the other Machines\n");
-+		return -EFAULT;
-+	}
-+
-+	printk(KERN_INFO "Load YeeLoong Platform Driver %s.\n",
-+			DRIVER_VERSION);
-+
-+	ret = yeeloong_pdev_init();
-+	if (ret) {
-+		yeeloong_pdev_exit();
-+		printk(KERN_INFO "Fail to init yeeloong platform driver.\n");
-+		return ret;
-+	}
-+	ret = yeeloong_hotkey_init(&yeeloong_pdev->dev);
-+	if (ret) {
-+		yeeloong_hotkey_exit();
-+		printk(KERN_INFO "Fail init yeeloong hotkey driver.\n");
-+		return ret;
-+	}
-+	ret = yeeloong_apm_init();
-+	if (ret) {
-+		yeeloong_apm_exit();
-+		printk(KERN_INFO "Fail to init yeeloong apm driver.\n");
-+		return ret;
-+	}
-+	ret = yeeloong_backlight_init(&yeeloong_pdev->dev);
-+	if (ret) {
-+		yeeloong_backlight_exit();
-+		printk(KERN_INFO "Fail to init yeeloong backlight driver.\n");
-+		return ret;
-+	}
-+	ret = yeeloong_thermal_init(&yeeloong_backlight_dev->dev);
-+	if (ret) {
-+		yeeloong_thermal_exit(&yeeloong_backlight_dev->dev);
-+		printk(KERN_INFO
-+		       "Fail to init yeeloong thermal cooling device.\n");
-+		return ret;
-+	}
-+	ret = yeeloong_hwmon_init(&yeeloong_pdev->dev);
-+	if (ret) {
-+		yeeloong_hwmon_exit();
-+		printk(KERN_INFO "Fail to init yeeloong hwmon driver.\n");
-+		return ret;
-+	}
-+	ret = yeeloong_vo_init(&yeeloong_pdev->dev);
-+	if (ret) {
-+		yeeloong_vo_exit();
-+		printk(KERN_INFO "Fail to init yeeloong video output driver.\n");
-+		return ret;
-+	}
-+	return 0;
-+}
-+
-+static void __exit yeeloong_exit(void)
-+{
-+	yeeloong_vo_exit();
-+	yeeloong_hwmon_exit();
-+	yeeloong_thermal_exit(&yeeloong_backlight_dev->dev);
-+	yeeloong_backlight_exit();
-+	yeeloong_apm_exit();
-+	yeeloong_hotkey_exit();
-+	yeeloong_pdev_exit();
-+
-+	printk(KERN_INFO "Unload YeeLoong Platform Driver %s\n",
-+			DRIVER_VERSION);
-+}
-+
-+module_init(yeeloong_init);
-+module_exit(yeeloong_exit);
-+
-+MODULE_AUTHOR("Wu Zhangjin <wuzj@lemote.com>");
-+MODULE_DESCRIPTION("YeeLoong laptop driver");
-+MODULE_LICENSE("GPL");
--- 
-1.6.2.1
+ asmlinkage void do_cpu(struct pt_regs *regs)
+ {
+        unsigned int __user *epc;
+@@ -920,17 +956,9 @@ asmlinkage void do_cpu(struct pt_regs *regs)
+                return;
+
+        case 2:
+-#ifdef CONFIG_CPU_CAVIUM_OCTEON
+-               prefetch(&current->thread.cp2);
+-               local_irq_save(flags);
+-               KSTK_STATUS(current) |= ST0_CU2;
+-               status = read_c0_status();
+-               write_c0_status(status | ST0_CU2);
+-               octeon_cop2_restore(&(current->thread.cp2));
+-               write_c0_status(status & ~ST0_CU2);
+-               local_irq_restore(flags);
+-               return;
+-#endif
++               raw_notifier_call_chain(&cu2_chain, CU2_EXCEPTION, regs);
++               break;
++
+        case 3:
+                break;
+        }
+@@ -1760,4 +1788,6 @@ void __init trap_init(void)
+        flush_tlb_handlers();
+
+        sort_extable(__start___dbe_table, __stop___dbe_table);
++
++       register_cu2_notifier(&default_cu2_notifier);
+ }
+diff --git a/arch/mips/kernel/unaligned.c b/arch/mips/kernel/unaligned.c
+index 67bd626..69b039c 100644
+--- a/arch/mips/kernel/unaligned.c
++++ b/arch/mips/kernel/unaligned.c
+@@ -81,6 +81,7 @@
+ #include <asm/asm.h>
+ #include <asm/branch.h>
+ #include <asm/byteorder.h>
++#include <asm/cop2.h>
+ #include <asm/inst.h>
+ #include <asm/uaccess.h>
+ #include <asm/system.h>
+@@ -451,17 +452,27 @@ static void emulate_load_store_insn(struct pt_regs *regs,
+                 */
+                goto sigbus;
+
++       /*
++        * COP2 is available to implementor for application specific use.
++        * It's up to applications to register a notifier chain and do
++        * whatever they have to do, including possible sending of signals.
++        */
+        case lwc2_op:
++               cu2_notifier_call_chain(CU2_LWC2_OP, regs);
++               break;
++
+        case ldc2_op:
++               cu2_notifier_call_chain(CU2_LDC2_OP, regs);
++               break;
++
+        case swc2_op:
++               cu2_notifier_call_chain(CU2_SWC2_OP, regs);
++               break;
++
+        case sdc2_op:
+-               /*
+-                * These are the coprocessor 2 load/stores.  The current
+-                * implementations don't use cp2 and cp2 should always be
+-                * disabled in c0_status.  So send SIGILL.
+-                 * (No longer true: The Sony Praystation uses cp2 for
+-                 * 3D matrix operations.  Dunno if that thingy has a MMU ...)
+-                */
++               cu2_notifier_call_chain(CU2_SDC2_OP, regs);
++               break;
++
+        default:
+                /*
+                 * Pheeee...  We encountered an yet unknown instruction or

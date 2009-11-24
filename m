@@ -1,72 +1,75 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Nov 2009 22:10:12 +0100 (CET)
-Received: from gate.crashing.org ([63.228.1.57]:48261 "EHLO gate.crashing.org"
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Nov 2009 22:35:28 +0100 (CET)
+Received: from hall.aurel32.net ([88.191.82.174]:53084 "EHLO hall.aurel32.net"
 	rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-	id S1493578AbZKXVKH (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 24 Nov 2009 22:10:07 +0100
-Received: from [IPv6:::1] (localhost.localdomain [127.0.0.1])
-	by gate.crashing.org (8.14.1/8.13.8) with ESMTP id nAOL9Dbn023474;
-	Tue, 24 Nov 2009 15:09:13 -0600
-Subject: Re: Time to make PCI_MSI default y ?
-From:	Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	Michael Ellerman <michael@ellerman.id.au>,
-	linux-pci <linux-pci@vger.kernel.org>, linux@arm.linux.org.uk,
-	"tony.luck" <tony.luck@intel.com>, fenghua.yu@intel.com,
-	"David S.Miller" <davem@davemloft.net>,
-	Thomas Gleixner <tglx@linutronix.de>, mingo@redhat.com,
-	Peter Anvin <hpa@zytor.com>, linux-mips@linux-mips.org,
-	David Daney <ddaney@caviumnetworks.com>
-In-Reply-To: <20091124125309.GB5749@linux-mips.org>
-References: <1259030388.20596.5.camel@concordia>
-	 <20091124125309.GB5749@linux-mips.org>
-Content-Type: text/plain; charset="UTF-8"
-Date:	Wed, 25 Nov 2009 08:09:12 +1100
-Message-ID: <1259096952.16367.134.camel@pasglop>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <benh@kernel.crashing.org>
+	id S1493585AbZKXVfZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 24 Nov 2009 22:35:25 +0100
+Received: from aurel32 by hall.aurel32.net with local (Exim 4.69)
+	(envelope-from <aurelien@aurel32.net>)
+	id 1ND32g-0003tM-OE; Tue, 24 Nov 2009 22:35:22 +0100
+Date:	Tue, 24 Nov 2009 22:35:22 +0100
+From:	Aurelien Jarno <aurelien@aurel32.net>
+To:	David Daney <ddaney@caviumnetworks.com>
+Cc:	linux-mips@linux-mips.org,
+	Arnaud Patard <arnaud.patard@rtp-net.org>
+Subject: Re: Syncing CPU caches from userland on MIPS
+Message-ID: <20091124213522.GH17477@hall.aurel32.net>
+References: <20091124182841.GE17477@hall.aurel32.net> <4B0C4A77.9020103@caviumnetworks.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+In-Reply-To: <4B0C4A77.9020103@caviumnetworks.com>
+X-Mailer: Mutt 1.5.18 (2008-05-17)
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <aurelien@aurel32.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25106
+X-archive-position: 25107
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: benh@kernel.crashing.org
+X-original-sender: aurelien@aurel32.net
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2009-11-24 at 12:53 +0000, Ralf Baechle wrote:
-> On Tue, Nov 24, 2009 at 01:39:48PM +1100, Michael Ellerman wrote:
-> 
-> > Having just hit a build-break caused by a distro building with
-> > PCI_MSI=n, I set out to make it default y for powerpc. Unfortunately
-> > that's not possible, because it's in drivers/pci/Kconfig.
-> > 
-> > So is it time to make it default y for everyone? It seems to me having
-> > it off is more likely to cause problems than having it on these days,
-> > though I'm not sure if that is true for all archs.
-> > 
-> > An arch that really didn't want it default y could conditionally select
-> > ARCH_SUPPORTS_MSI, like x86 does already.
-> 
-> On MIPS the age of MSI only recently started; once single platform (Cavium)
-> out of all the many uses it.  Cavium does a "select ARCH_SUPPORTS_MSI" but
-> not "select PCI_MSI" because not all platform variants actually have PCI.
-> 
-> We should  not give a user a chance to select something wrong in kconfig
-> thus automatically as many options for a platform as possible is a good
-> thing - after all the kconfig dialog for any given platfrom has become
-> painfully long.  And we really should have to avoid users having to know
-> that the Frobnic 2000 they're trying to upgrade the kernel for requires
-> MSI to work ...
+On Tue, Nov 24, 2009 at 01:04:55PM -0800, David Daney wrote:
+> Aurelien Jarno wrote:
+>> Hi all,
+>>
+>> This question is not really kernel related, but still MIPS related, I
+>> hope you don't mind.
+>>
+>> Arnaud Patard and myself are trying to get qemu working on MIPS [1],
+>> which includes translating TCG code (internal representation) into MIPS
+>> instructions, that are then executed. Most of the code works, but we  
+>> have some strange behaviors that seems related to CPU caches.
+>>
+>> The code is written to a buffer, which is then executed. Before the
+>> execution, the caches are synced using the cacheflush syscall:
+>>
+>> | #include <sys/cachectl.h>
+>> |  | | static inline void flush_icache_range(unsigned long start, 
+>> unsigned long stop)
+>> | {
+>> |     cacheflush ((void *)start, stop-start, ICACHE);
+>> | }
+>>
+>> It seems this is not enough, as sometimes, some executed code does not
+>> correspond to the assembly dump of this memory region. This seems to be 
+>> especially the case of memory regions that are written twice, due to
+>> relocations:
+>> 1) a branch instruction is written with an offset of 0
+>> 2) the offset is patched
+>
+> Try inserting an 'asm volatile ("sync" ::: "memory");' here.  If that  
+> fixes things, then we can assume that your cacheflush system call is  
+> buggy, and would need to add a sync.
+>
 
-Still... select has nasty issues. I think default y is fine here. For
-platforms that don't need it, make sure their defconfigs don't have it
-set...
+That doesn't help, it still crashes at the same location.
 
-Or maybe default y if (X86 || PPC)
+Aurelien
 
-Cheers,
-Ben.
+-- 
+Aurelien Jarno	                        GPG: 1024D/F1BCDB73
+aurelien@aurel32.net                 http://www.aurel32.net

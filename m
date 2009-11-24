@@ -1,50 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Nov 2009 17:29:55 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:34722 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-	id S1492785AbZKXQ3x (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 24 Nov 2009 17:29:53 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nAOGU7HL011360;
-	Tue, 24 Nov 2009 16:30:07 GMT
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nAOGU6IA011358;
-	Tue, 24 Nov 2009 16:30:06 GMT
-Date:	Tue, 24 Nov 2009 16:30:06 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Manuel Lauss <manuel.lauss@googlemail.com>
-Cc:	Wu Zhangjin <wuzhangjin@gmail.com>,
-	Linux-MIPS <linux-mips@linux-mips.org>
-Subject: Re: [PATCH] MIPS: EARLY_PRINTK: Fixup of dependency
-Message-ID: <20091124163006.GA11277@linux-mips.org>
-References: <1259055230-15818-1-git-send-email-wuzhangjin@gmail.com> <f861ec6f0911240824u187347d6od5bfebc509a27d8d@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f861ec6f0911240824u187347d6od5bfebc509a27d8d@mail.gmail.com>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Nov 2009 17:31:14 +0100 (CET)
+Received: from mail-fx0-f216.google.com ([209.85.220.216]:57111 "EHLO
+	mail-fx0-f216.google.com" rhost-flags-OK-OK-OK-OK)
+	by eddie.linux-mips.org with ESMTP id S1492785AbZKXQbL (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Nov 2009 17:31:11 +0100
+Received: by fxm8 with SMTP id 8so7043426fxm.27
+        for <linux-mips@linux-mips.org>; Tue, 24 Nov 2009 08:31:05 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=Q5nXpjy1Mf4U4c5Gee/7imrPsdyeK1jK1hCR5lGLHYA=;
+        b=hQO4f0XGt5Dhnd0KEiN2Cy9WK/QR+LQ+c/vnrhdlbdoqTdU6lxG723z2Dp8Kge0lrR
+         u0r4W6MShISPdW0XlSItatRMoe8WodYWN9LS3eNF9p65fGQybnptiHKpfcYLspAeh1Ka
+         lbU+bm9tEOl1TGiBPrWC0omjxgA6k9Dg2h8HA=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=googlemail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=JafC+0q8ugmdcVu9+H5PcsqW8rUVgxcPxKYnZWc3hUb9f+lF3wE9PbVc/hCTzew4wb
+         JovpD+vJ9GEEFdm4/kAETh4oWFM4YqWygfcLffFskPrme7kQ54rDNeMYrYftplHw/dge
+         GmmSQ4gire7V3S9e2xojhNwNSe4RaYnliCJIU=
+Received: by 10.216.88.21 with SMTP id z21mr2101008wee.60.1259080265596;
+        Tue, 24 Nov 2009 08:31:05 -0800 (PST)
+Received: from localhost.localdomain (p5496F4B9.dip.t-dialin.net [84.150.244.185])
+        by mx.google.com with ESMTPS id t2sm12403705gve.9.2009.11.24.08.31.04
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Tue, 24 Nov 2009 08:31:05 -0800 (PST)
+From:	Manuel Lauss <manuel.lauss@googlemail.com>
+To:	Linux-MIPS <linux-mips@linux-mips.org>
+Cc:	Manuel Lauss <manuel.lauss@gmail.com>
+Subject: [PATCH] MIPS: Alchemy: add au1210 to cpu type detector.
+Date:	Tue, 24 Nov 2009 17:31:09 +0100
+Message-Id: <1259080269-3631-1-git-send-email-manuel.lauss@gmail.com>
+X-Mailer: git-send-email 1.6.5.3
+Return-Path: <manuel.lauss@googlemail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25097
+X-archive-position: 25098
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: manuel.lauss@googlemail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 24, 2009 at 05:24:57PM +0100, Manuel Lauss wrote:
+Au1210 is an au1200 with slightly crippled media engine and a
+different PRId.
 
-> On Tue, Nov 24, 2009 at 10:33 AM, Wu Zhangjin <wuzhangjin@gmail.com> wrote:
-> [...]
-> > This patch will only enable that option when the DEBUG_KERNEL is
-> > enabled.
-> 
-> How about making it independent from DEBUG_KERNEL altogether?  If find
-> it useful even without full debug info.
+Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
+---
+Ralf please fold this one into "MIPS: Alchemy: Simple cpu subtype detector"
+if its not too much trouble. Thanks!
 
-DEBUG_INFO controlls the generation of ELF debug information.  DEBUG_KERNEL
-only hides most of the debugging options.
+ arch/mips/include/asm/mach-au1x00/au1000.h |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
 
-  Ralf
+diff --git a/arch/mips/include/asm/mach-au1x00/au1000.h b/arch/mips/include/asm/mach-au1x00/au1000.h
+index e049d15..088c8e0 100644
+--- a/arch/mips/include/asm/mach-au1x00/au1000.h
++++ b/arch/mips/include/asm/mach-au1x00/au1000.h
+@@ -153,6 +153,7 @@ static inline int alchemy_get_cputype(void)
+ 		return ALCHEMY_CPU_AU1550;
+ 		break;
+ 	case 0x04030000:
++	case 0x05030000:
+ 		return ALCHEMY_CPU_AU1200;
+ 		break;
+ 	}
+-- 
+1.6.5.3

@@ -1,66 +1,80 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Nov 2009 07:36:17 +0100 (CET)
-Received: from mail-fx0-f216.google.com ([209.85.220.216]:56093 "EHLO
-	mail-fx0-f216.google.com" rhost-flags-OK-OK-OK-OK)
-	by eddie.linux-mips.org with ESMTP id S1491960AbZKXGgO (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Nov 2009 07:36:14 +0100
-Received: by fxm8 with SMTP id 8so6557906fxm.27
-        for <multiple recipients>; Mon, 23 Nov 2009 22:36:08 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Nov 2009 10:34:16 +0100 (CET)
+Received: from mail-pz0-f203.google.com ([209.85.222.203]:55540 "EHLO
+	mail-pz0-f203.google.com" rhost-flags-OK-OK-OK-OK)
+	by eddie.linux-mips.org with ESMTP id S1492106AbZKXJeM (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Nov 2009 10:34:12 +0100
+Received: by pzk41 with SMTP id 41so4315832pzk.0
+        for <multiple recipients>; Tue, 24 Nov 2009 01:34:01 -0800 (PST)
 DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=gamma;
-        h=domainkey-signature:mime-version:received:in-reply-to:references
-         :date:message-id:subject:from:to:cc:content-type;
-        bh=5dynzYV19RvLdJgeAscN0MhR+YlrK8dajRYZ0Ygu8UI=;
-        b=sMH+DYrh255pyKPEKivZf94bs0Ps5g5jon/+v+VW+3z+nrZ4Y3OkQCCrY+PZkrUbRs
-         VZdNx9kV6NTysQoxpepJSsV+NNFEdfWmCgn7paslDxsWAwL0/XKg5mBGPvDJe6boOYTT
-         2LXax8Bg4YGdRlx+tHCVvY3c0RCkmApBU0HNY=
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=XOI4V7OIW4iqexdNWb56UA4axgsbaAP/yu0d/s1rZNA=;
+        b=TkseM5dsQirgiZu7bFLzsqGumeOXaU7IhceqW8DV8JcavweobxcZzZtrxD3gYIluO5
+         ZUiQA1zvIzCipPd04xW78tZRSmukdwvKYWVPrsdZTDq9x9gPcZxVyEyspLwFcK7bPba8
+         47jXUPdihKAdY3lhkm22jsu6lpMvPfOXBIGyQ=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=googlemail.com; s=gamma;
-        h=mime-version:in-reply-to:references:date:message-id:subject:from:to
-         :cc:content-type;
-        b=Pwilx3OgIVh1sc2S97asEc5nKlLN9IWx68pAveimGi9nZ0mBS2QxafPOTEhGDQZy5e
-         IEhfxDz3oCzz/S/A7tuOMPWz2Zk+vt9A+Pk/xBDyeSj/XYVjlfpabZfeJllkPRS9eK3c
-         79euDZCz7pYBNWHyCgNu6prAd+f3i1JzCPwTY=
-MIME-Version: 1.0
-Received: by 10.103.21.24 with SMTP id y24mr2618655mui.110.1259044568689; Mon, 
-	23 Nov 2009 22:36:08 -0800 (PST)
-In-Reply-To: <20091123231740.GC27817@linux-mips.org>
-References: <1259005202-7771-1-git-send-email-manuel.lauss@gmail.com>
-	 <1259005202-7771-2-git-send-email-manuel.lauss@gmail.com>
-	 <1259005202-7771-3-git-send-email-manuel.lauss@gmail.com>
-	 <20091123231740.GC27817@linux-mips.org>
-Date:	Tue, 24 Nov 2009 07:36:08 +0100
-Message-ID: <f861ec6f0911232236u2e3f49eqae6c1605c5a0f48@mail.gmail.com>
-Subject: Re: [PATCH 3/3] MIPS: Alchemy: irq: use runtime CPU type detection
-From:	Manuel Lauss <manuel.lauss@googlemail.com>
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=XPeloR48ZV6jORXda5lemqFJq1f7Uz+6LSa9kYOD/fkmZEnCF1lTIT29GFRKZWFJ5v
+         +z8Qr5y/u+ZkTG1CSYX7g6Tr4avETs1D68ZIhSP5ZmpGcAJ9iq80Vgxt/e8hwJeVh81x
+         R5lJqDMmq8b++iJiBf/khy9pEXhuFfcrVAroQ=
+Received: by 10.115.133.39 with SMTP id k39mr11742608wan.94.1259055241676;
+        Tue, 24 Nov 2009 01:34:01 -0800 (PST)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPS id 22sm3573135pzk.14.2009.11.24.01.33.59
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Tue, 24 Nov 2009 01:34:01 -0800 (PST)
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
 To:	Ralf Baechle <ralf@linux-mips.org>
 Cc:	Linux-MIPS <linux-mips@linux-mips.org>,
-	Manuel Lauss <manuel.lauss@gmail.com>
-Content-Type: text/plain; charset=ISO-8859-1
-Return-Path: <manuel.lauss@googlemail.com>
+	Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH] MIPS: EARLY_PRINTK: Fixup of dependency
+Date:	Tue, 24 Nov 2009 17:33:50 +0800
+Message-Id: <1259055230-15818-1-git-send-email-wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.6.2.1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25087
+X-archive-position: 25088
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: manuel.lauss@googlemail.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 24, 2009 at 12:17 AM, Ralf Baechle <ralf@linux-mips.org> wrote:
-> On Mon, Nov 23, 2009 at 08:40:02PM +0100, Manuel Lauss wrote:
->
->> Use runtime CPU detection instead of relying on preprocessor symbols.
->>
->> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
->
-> Thanks, queued for 2.6.33.
+From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-Thank you.  Could you also please rename the file from "irq.c" to "irq-au1000.c"
-(and fix the Makefile).  The new name better reflects what type of CPU it is
-supposed to work with. I'd send a patch, but I figure doing a "git mv" on your
-end is faster and preserves the history of the file.
+In the old version, if the platform select SYS_HAS_EARLY_PRINTK and
+users not select DEBUG_KERNEL, there is no interface for user to enable
+or disable the EARLY_PRINTK option, it will be enabled all the time.
+this will waste a little bit of memory and slow down the booting of
+kernel but the users never know it.
 
-Thanks!
-     Manuel Lauss
+This patch will only enable that option when the DEBUG_KERNEL is
+enabled.
+
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/mips/Kconfig |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index b342197..d2446d5 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -824,8 +824,8 @@ config DMA_NEED_PCI_MAP_STATE
+ 	bool
+ 
+ config EARLY_PRINTK
+-	bool "Early printk" if EMBEDDED && DEBUG_KERNEL
+-	depends on SYS_HAS_EARLY_PRINTK
++	bool "Early printk" if EMBEDDED
++	depends on SYS_HAS_EARLY_PRINTK && DEBUG_KERNEL
+ 	default y
+ 	help
+ 	  This option enables special console drivers which allow the kernel
+-- 
+1.6.2.1

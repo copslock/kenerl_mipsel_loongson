@@ -1,225 +1,102 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Nov 2009 13:54:30 +0100 (CET)
-Received: from mail-pz0-f197.google.com ([209.85.222.197]:40326 "EHLO
-	mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
-	by eddie.linux-mips.org with ESMTP id S1492366AbZKXMy0 (ORCPT
-	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Nov 2009 13:54:26 +0100
-Received: by pzk35 with SMTP id 35so4800183pzk.22
-        for <multiple recipients>; Tue, 24 Nov 2009 04:54:18 -0800 (PST)
-DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=0PSkVERaS5ZhSBPuRzDcCID1PSXd//g4T86ZEkmTGAc=;
-        b=W17I1qSFsDXzU84mwXwDOgIKjCT3m8ZX/K2QJfnKsEjx9/u6AEMN6PNpYQalx3JPWP
-         eTcfCf9klJfYXcCKrwJFjbiLmfp9ICr07h6PlCIpfR12fGgmbcb6O39A7ogknKdLO5Vm
-         yZVbJHmvdZLkii79q1Xs2fg8etuwZYZyCJsDA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=sat7HkBvtqYfsJXtfvUKrXnslUNIhlDdDmjjamk97YDy78QpUzzMce/Z+/0aAnR6Ov
-         6iNdEzwbyNkJGfiNTsuyVN25EMUJTlavA/SqdgY1PUe3PL84LMIRRjyOi2I+FTkSV+mk
-         OhTxsWw2L/x1HQG7qS5rIUzStau/8o8SPoJRc=
-Received: by 10.115.101.27 with SMTP id d27mr12192241wam.126.1259067258877;
-        Tue, 24 Nov 2009 04:54:18 -0800 (PST)
-Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id 23sm3417593pxi.13.2009.11.24.04.54.16
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Tue, 24 Nov 2009 04:54:18 -0800 (PST)
-From:	Wu Zhangjin <wuzhangjin@gmail.com>
-To:	Ralf Baechle <ralf@linux-mips.org>
-Cc:	linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH] [loongson] Cleanups of serial port support
-Date:	Tue, 24 Nov 2009 20:54:04 +0800
-Message-Id: <1259067244-7487-1-git-send-email-wuzhangjin@gmail.com>
-X-Mailer: git-send-email 1.6.2.1
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Nov 2009 14:25:52 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:45245 "EHLO h5.dl5rb.org.uk"
+	rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+	id S1492387AbZKXNZp (ORCPT <rfc822;linux-mips@linux-mips.org>);
+	Tue, 24 Nov 2009 14:25:45 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nAODQ2iB028082;
+	Tue, 24 Nov 2009 13:26:02 GMT
+Received: (from ralf@localhost)
+	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nAODQ1Y3028080;
+	Tue, 24 Nov 2009 13:26:01 GMT
+Date:	Tue, 24 Nov 2009 13:26:01 +0000
+From:	Ralf Baechle <ralf@linux-mips.org>
+To:	Imre Kaloz <kaloz@openwrt.org>
+Cc:	nbd@openwrt.org, linux-mips@linux-mips.org
+Subject: Re: [PATCH] use __always_inline for __xchg
+Message-ID: <20091124132601.GA27951@linux-mips.org>
+References: <op.sldiliqr2s3iss@richese>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <op.sldiliqr2s3iss@richese>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25091
+X-archive-position: 25092
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi, Ralf
+On Sat, Jan 29, 2005 at 05:54:44PM +0100, Imre Kaloz wrote:
 
-This can not be folded into the old cleanup ;)
+> The following patch changes inline for __xchg to __always_inline in  
+> include/asm-mips/system.h, following the changes in git. Without this  
+> change linking the kernel fails.
+>
+> Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+> Signed-off-by: Felix Fietkau <nbd@openwrt.org>
 
-Regards,
-	Wu Zhangjin
+Imre just pointed me at this antique patch again saying it was still needed.
+Back then I ditched it because I couldn't see what the problem it was
+trying to fix was - but after a little brainstorming it got obvious.
 
-------------
+Now I don't like __always_inline which forces the optimizer to do things
+which may not really be what we want, for example when building with -Os
+so I found a different fix using BUILD_BUG_ON().  Patch below.
 
-This patchs uses a loongson_uart_base variable instead of the
-uart_base[] array and adds a new kernel option to avoid to compile
-uart_base.c all the time, which will save a little bit of memory for us.
+Cheers,
 
-Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
----
- arch/mips/include/asm/mach-loongson/loongson.h |   14 ++++++--
- arch/mips/loongson/Kconfig                     |    5 +++
- arch/mips/loongson/common/Makefile             |    5 ++-
- arch/mips/loongson/common/init.c               |    2 -
- arch/mips/loongson/common/serial.c             |   10 ++++--
- arch/mips/loongson/common/uart_base.c          |   41 ++++++++++++++---------
- 6 files changed, 51 insertions(+), 26 deletions(-)
+  Ralf
 
-diff --git a/arch/mips/include/asm/mach-loongson/loongson.h b/arch/mips/include/asm/mach-loongson/loongson.h
-index 06c28f3..ee8bc83 100644
---- a/arch/mips/include/asm/mach-loongson/loongson.h
-+++ b/arch/mips/include/asm/mach-loongson/loongson.h
-@@ -31,9 +31,17 @@ extern void __init prom_init_memory(void);
- extern void __init prom_init_cmdline(void);
- extern void __init prom_init_machtype(void);
- extern void __init prom_init_env(void);
--extern unsigned long _loongson_uart_base;
--extern unsigned long uart8250_base[];
--extern void prom_init_uart_base(void);
-+#ifdef CONFIG_LOONGSON_UART_BASE
-+extern unsigned long _loongson_uart_base, loongson_uart_base;
-+extern void prom_init_loongson_uart_base(void);
-+#endif
-+
-+static inline void prom_init_uart_base(void)
-+{
-+#ifdef CONFIG_LOONGSON_UART_BASE
-+	prom_init_loongson_uart_base();
-+#endif
-+}
+From: Ralf Baechle <ralf@linux-mips.org>
+
+MIPS: Fix build error if __xchg() is not getting inlined.
+
+If __xchg() is not getting inlined the outline version of the function
+will have a reference to __xchg_called_with_bad_pointer() which does not
+exist remaining.  Fixed by using BUILD_BUG_ON() xchg() to check for
+allowable operand sizes.
+
+Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
+
+diff --git a/arch/mips/include/asm/system.h b/arch/mips/include/asm/system.h
+index fcf5f98..587a48a 100644
+--- a/arch/mips/include/asm/system.h
++++ b/arch/mips/include/asm/system.h
+@@ -193,10 +193,6 @@ extern __u64 __xchg_u64_unsupported_on_32bit_kernels(volatile __u64 * m, __u64 v
+ #define __xchg_u64 __xchg_u64_unsupported_on_32bit_kernels
+ #endif
  
- /* irq operation functions */
- extern void bonito_irqdispatch(void);
-diff --git a/arch/mips/loongson/Kconfig b/arch/mips/loongson/Kconfig
-index 2a652f1..181cd19 100644
---- a/arch/mips/loongson/Kconfig
-+++ b/arch/mips/loongson/Kconfig
-@@ -79,6 +79,11 @@ config LOONGSON_SUSPEND
- 	default y
- 	depends on CPU_SUPPORTS_CPUFREQ && SUSPEND
- 
-+config LOONGSON_UART_BASE
-+	bool
-+	default y
-+	depends on EARLY_PRINTK || SERIAL_8250
-+
- #
- # Loongson Platform Specific Drivers
- #
-diff --git a/arch/mips/loongson/common/Makefile b/arch/mips/loongson/common/Makefile
-index a21724d..01fc2f3 100644
---- a/arch/mips/loongson/common/Makefile
-+++ b/arch/mips/loongson/common/Makefile
-@@ -3,13 +3,14 @@
- #
- 
- obj-y += setup.o init.o cmdline.o env.o time.o reset.o irq.o \
--    pci.o bonito-irq.o mem.o machtype.o uart_base.o
-+    pci.o bonito-irq.o mem.o machtype.o
- 
- #
--# Early printk support
-+# Serial port support
- #
- obj-$(CONFIG_EARLY_PRINTK) += early_printk.o
- obj-$(CONFIG_SERIAL_8250) += serial.o
-+obj-$(CONFIG_LOONGSON_UART_BASE) += uart_base.o
- 
- #
- # Enable CS5536 Virtual Support Module(VSM) to virtulize the PCI configure
-diff --git a/arch/mips/loongson/common/init.c b/arch/mips/loongson/common/init.c
-index 2b92a23..a2abd93 100644
---- a/arch/mips/loongson/common/init.c
-+++ b/arch/mips/loongson/common/init.c
-@@ -31,9 +31,7 @@ void __init prom_init(void)
- 	prom_init_memory();
- 
- 	/*init the uart base address */
--#if defined(CONFIG_EARLY_PRINTK) || defined(CONFIG_SERIAL_8250)
- 	prom_init_uart_base();
--#endif
- }
- 
- void __init prom_free_prom_memory(void)
-diff --git a/arch/mips/loongson/common/serial.c b/arch/mips/loongson/common/serial.c
-index ea29db0..23b66a5 100644
---- a/arch/mips/loongson/common/serial.c
-+++ b/arch/mips/loongson/common/serial.c
-@@ -57,12 +57,16 @@ static struct platform_device uart8250_device = {
- 
- static int __init serial_init(void)
- {
--	if (uart8250_data[mips_machtype][0].iotype == UPIO_MEM)
-+	unsigned char iotype;
-+
-+	iotype = uart8250_data[mips_machtype][0].iotype;
-+
-+	if (UPIO_MEM == iotype)
- 		uart8250_data[mips_machtype][0].membase =
- 			(void __iomem *)_loongson_uart_base;
--	else if (uart8250_data[mips_machtype][0].iotype == UPIO_PORT)
-+	else if (UPIO_PORT == iotype)
- 		uart8250_data[mips_machtype][0].iobase =
--		    uart8250_base[mips_machtype] - LOONGSON_PCIIO_BASE;
-+		    loongson_uart_base - LOONGSON_PCIIO_BASE;
- 
- 	uart8250_device.dev.platform_data = uart8250_data[mips_machtype];
- 
-diff --git a/arch/mips/loongson/common/uart_base.c b/arch/mips/loongson/common/uart_base.c
-index 1d636f4..78ff66a 100644
---- a/arch/mips/loongson/common/uart_base.c
-+++ b/arch/mips/loongson/common/uart_base.c
-@@ -13,24 +13,33 @@
- 
- #include <loongson.h>
- 
--unsigned long __maybe_unused _loongson_uart_base;
-+/* ioremapped */
-+unsigned long _loongson_uart_base;
- EXPORT_SYMBOL(_loongson_uart_base);
-+/* raw */
-+unsigned long loongson_uart_base;
-+EXPORT_SYMBOL(loongson_uart_base);
- 
--unsigned long __maybe_unused uart8250_base[] = {
--	[MACH_LOONGSON_UNKNOWN]	0,
--	[MACH_LEMOTE_FL2E]	(LOONGSON_PCIIO_BASE + 0x3f8),
--	[MACH_LEMOTE_FL2F]	(LOONGSON_PCIIO_BASE + 0x2f8),
--	[MACH_LEMOTE_ML2F7]	(LOONGSON_LIO1_BASE + 0x3f8),
--	[MACH_LEMOTE_YL2F89]	(LOONGSON_LIO1_BASE + 0x3f8),
--	[MACH_DEXXON_GDIUM2F10]	(LOONGSON_LIO1_BASE + 0x3f8),
--	[MACH_LEMOTE_NAS]	(LOONGSON_LIO1_BASE + 0x3f8),
--	[MACH_LEMOTE_LL2F]	(LOONGSON_PCIIO_BASE + 0x2f8),
--	[MACH_LOONGSON_END]	0,
--};
--EXPORT_SYMBOL(uart8250_base);
+-/* This function doesn't exist, so you'll get a linker error
+-   if something tries to do an invalid xchg().  */
+-extern void __xchg_called_with_bad_pointer(void);
 -
--void __maybe_unused prom_init_uart_base(void)
-+void prom_init_loongson_uart_base(void)
+ static inline unsigned long __xchg(unsigned long x, volatile void * ptr, int size)
  {
-+	switch (mips_machtype) {
-+	case MACH_LEMOTE_FL2E:
-+		loongson_uart_base = LOONGSON_PCIIO_BASE + 0x3f8;
-+		break;
-+	case MACH_LEMOTE_FL2F:
-+	case MACH_LEMOTE_LL2F:
-+		loongson_uart_base = LOONGSON_PCIIO_BASE + 0x2f8;
-+		break;
-+	case MACH_LEMOTE_ML2F7:
-+	case MACH_LEMOTE_YL2F89:
-+	case MACH_DEXXON_GDIUM2F10:
-+	case MACH_LEMOTE_NAS:
-+	default:
-+		/* The CPU provided serial port */
-+		loongson_uart_base = LOONGSON_LIO1_BASE + 0x3f8;
-+		break;
-+	}
+ 	switch (size) {
+@@ -205,11 +201,17 @@ static inline unsigned long __xchg(unsigned long x, volatile void * ptr, int siz
+ 	case 8:
+ 		return __xchg_u64(ptr, x);
+ 	}
+-	__xchg_called_with_bad_pointer();
 +
- 	_loongson_uart_base =
--		(unsigned long)ioremap_nocache(uart8250_base[mips_machtype], 8);
-+		(unsigned long)ioremap_nocache(loongson_uart_base, 8);
+ 	return x;
  }
--- 
-1.6.2.1
+ 
+-#define xchg(ptr, x) ((__typeof__(*(ptr)))__xchg((unsigned long)(x), (ptr), sizeof(*(ptr))))
++#define xchg(ptr, x)							\
++({									\
++	BUILD_BUG_ON(sizeof(*(ptr)) & ~0xc);				\
++									\
++	((__typeof__(*(ptr)))						\
++		__xchg((unsigned long)(x), (ptr), sizeof(*(ptr))));	\
++})
+ 
+ extern void set_handler(unsigned long offset, void *addr, unsigned long len);
+ extern void set_uncached_handler(unsigned long offset, void *addr, unsigned long len);

@@ -1,51 +1,53 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2009 00:24:40 +0100 (CET)
-Received: from vitalin.sorra.shikadi.net ([64.71.152.201]:3077 "EHLO
-        vitalin.sorra.shikadi.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493618AbZKXXYg (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Nov 2009 00:24:36 +0100
-Received: from berkeloid.vlook.shikadi.net ([172.16.255.5])
-        by vitalin.sorra.shikadi.net with esmtp (Exim 4.62)
-        (envelope-from <a.nielsen@shikadi.net>)
-        id 1ND49s-0003tz-EP
-        for linux-mips@linux-mips.org; Wed, 25 Nov 2009 08:46:52 +1000
-Received: from korath.teln.shikadi.net ([192.168.0.14])
-        by berkeloid.teln.shikadi.net with esmtp (Exim 4.68)
-        (envelope-from <a.nielsen@shikadi.net>)
-        id 1ND49r-0007Lu-Jx
-        for linux-mips@linux-mips.org; Wed, 25 Nov 2009 08:46:51 +1000
-Message-ID: <4B0C625B.5070408@shikadi.net>
-Date:   Wed, 25 Nov 2009 08:46:51 +1000
-From:   Adam Nielsen <a.nielsen@shikadi.net>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-GB; rv:1.8.1.22) Gecko/20090809 Thunderbird/2.0.0.22 Mnenhy/0.7.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2009 00:40:17 +0100 (CET)
+Received: from mail3.caviumnetworks.com ([12.108.191.235]:7234 "EHLO
+        mail3.caviumnetworks.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493623AbZKXXkO (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Nov 2009 00:40:14 +0100
+Received: from caexch01.caveonetworks.com (Not Verified[192.168.16.9]) by mail3.caviumnetworks.com with MailMarshal (v6,5,4,7535)
+        id <B4b0c6ed80000>; Tue, 24 Nov 2009 15:40:08 -0800
+Received: from caexch01.caveonetworks.com ([192.168.16.9]) by caexch01.caveonetworks.com with Microsoft SMTPSVC(6.0.3790.3959);
+         Tue, 24 Nov 2009 15:39:27 -0800
+Received: from dd1.caveonetworks.com ([12.108.191.236]) by caexch01.caveonetworks.com over TLS secured channel with Microsoft SMTPSVC(6.0.3790.3959);
+         Tue, 24 Nov 2009 15:39:27 -0800
+Message-ID: <4B0C6EAE.7060809@caviumnetworks.com>
+Date:   Tue, 24 Nov 2009 15:39:26 -0800
+From:   David Daney <ddaney@caviumnetworks.com>
+User-Agent: Thunderbird 2.0.0.21 (X11/20090320)
 MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Can you add a signature to the kernel ELF image?
+To:     Adam Nielsen <a.nielsen@shikadi.net>
+CC:     linux-mips@linux-mips.org
+Subject: Re: Can you add a signature to the kernel ELF image?
+References: <4B0C625B.5070408@shikadi.net>
+In-Reply-To: <4B0C625B.5070408@shikadi.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Return-Path: <a.nielsen@shikadi.net>
+X-OriginalArrivalTime: 24 Nov 2009 23:39:27.0521 (UTC) FILETIME=[5C87E110:01CA6D5F]
+Return-Path: <David.Daney@caviumnetworks.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25114
+X-archive-position: 25115
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: a.nielsen@shikadi.net
+X-original-sender: ddaney@caviumnetworks.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
+Adam Nielsen wrote:
+> Hi all,
+> 
+> I'm trying to port the kernel to an NCD HMX X-Terminal (MIPS R4600), but 
+> the one thing I have to do before I can actually boot the image is 
+> attach a signature to it. I have the signature 'code' in assembly[1], 
+> but I'm not sure how to link it so that it ends up as the first bit of 
+> code in the ELF image (the very first instruction is a 'b' to jump over 
+> the actual signature text.)
+> 
+> Without this the boot monitor will refuse to boot the kernel.  Any 
+> suggestions as to how I might accomplish this?
+> 
 
-I'm trying to port the kernel to an NCD HMX X-Terminal (MIPS R4600), but the 
-one thing I have to do before I can actually boot the image is attach a 
-signature to it. I have the signature 'code' in assembly[1], but I'm not sure 
-how to link it so that it ends up as the first bit of code in the ELF image 
-(the very first instruction is a 'b' to jump over the actual signature text.)
+Edit the linker script (arch/mips/kernel/vmlinux.lds.S)
 
-Without this the boot monitor will refuse to boot the kernel.  Any suggestions 
-as to how I might accomplish this?
-
-Many thanks,
-Adam.
-
-[1] http://www.linux-mips.org/wiki/HMX
+David Daney

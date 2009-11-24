@@ -1,52 +1,71 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Nov 2009 18:04:47 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:40090 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-	id S1492628AbZKXREn (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 24 Nov 2009 18:04:43 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nAOH4wfX019347;
-	Tue, 24 Nov 2009 17:04:59 GMT
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nAOH4wfd019345;
-	Tue, 24 Nov 2009 17:04:58 GMT
-Date:	Tue, 24 Nov 2009 17:04:58 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Manuel Lauss <manuel.lauss@googlemail.com>
-Cc:	Linux-MIPS <linux-mips@linux-mips.org>,
-	Manuel Lauss <manuel.lauss@gmail.com>
-Subject: Re: [PATCH] MIPS: Alchemy: add au1210 to cpu type detector.
-Message-ID: <20091124170457.GA11531@linux-mips.org>
-References: <1259080269-3631-1-git-send-email-manuel.lauss@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1259080269-3631-1-git-send-email-manuel.lauss@gmail.com>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Nov 2009 19:02:36 +0100 (CET)
+Received: from 74-93-104-97-Washington.hfc.comcastbusiness.net ([74.93.104.97]:54253
+	"EHLO sunset.davemloft.net" rhost-flags-OK-OK-OK-OK)
+	by eddie.linux-mips.org with ESMTP id S1493139AbZKXSCa (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Nov 2009 19:02:30 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by sunset.davemloft.net (Postfix) with ESMTP id 64FDBC8C524;
+	Tue, 24 Nov 2009 10:02:36 -0800 (PST)
+Date:	Tue, 24 Nov 2009 10:02:36 -0800 (PST)
+Message-Id: <20091124.100236.135630809.davem@davemloft.net>
+To:	florian@openwrt.org
+Cc:	ralf@linux-mips.org, sfr@canb.auug.org.au,
+	linux-next@vger.kernel.org, linux-kernel@vger.kernel.org,
+	a.beregalov@gmail.com, linux-mips@linux-mips.org,
+	manuel.lauss@googlemail.com
+Subject: Re: linux-next: manual merge of the mips tree with the net-current
+ tree
+From:	David Miller <davem@davemloft.net>
+In-Reply-To: <200911241230.22370.florian@openwrt.org>
+References: <20091124011958.GA8105@linux-mips.org>
+	<20091123.194343.232255103.davem@davemloft.net>
+	<200911241230.22370.florian@openwrt.org>
+X-Mailer: Mew version 6.2.51 on Emacs 22.1 / Mule 5.0 (SAKAKI)
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Return-Path: <davem@davemloft.net>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25099
+X-archive-position: 25100
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: davem@davemloft.net
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, Nov 24, 2009 at 05:31:09PM +0100, Manuel Lauss wrote:
+From: Florian Fainelli <florian@openwrt.org>
+Date: Tue, 24 Nov 2009 12:30:22 +0100
 
-> Au1210 is an au1200 with slightly crippled media engine and a
-> different PRId.
+> On Tuesday 24 November 2009 04:43:43 David Miller wrote:
+>> From: Ralf Baechle <ralf@linux-mips.org>
+>> Date: Tue, 24 Nov 2009 01:19:58 +0000
+>> 
+>> > On Tue, Nov 24, 2009 at 11:37:17AM +1100, Stephen Rothwell wrote:
+>> >> Hi Ralf,
+>> >>
+>> >> Today's linux-next merge of the mips tree got a conflict in
+>> >> drivers/net/au1000_eth.c between commit
+>> >> 63edaf647607795a065e6956a79c47f500dc8447 ("Au1x00: fix crash when trying
+>> >> register_netdev()") from the net-current tree and commit
+>> >> 6cdbc95856e7f4ab4e7b2f2bdab5c3844537ad83 ("NET: au1000-eth: convert to
+>> >> platform_driver model") from the mips tree.
+>> >>
+>> >> It looks to me that the mips tree change supercedes the net-current one
+>> >> (since it moves the register_netdev() call much later), so I just used
+>> >> this file from the mips tree.
+>> >
+>> > I agree.  David, can you just drop the net-current patch then?  This fix
+>> > is still needed for -stable however.
+>> 
+>> Why would I do that?  The bug fix is necessary for 2.6.32 too.
 > 
-> Signed-off-by: Manuel Lauss <manuel.lauss@gmail.com>
-> ---
-> Ralf please fold this one into "MIPS: Alchemy: Simple cpu subtype detector"
-> if its not too much trouble. Thanks!
+> Ok, it is, but the platform_driver conversion patch is heavier, so the bugfix 
+> is way easier to apply on thom of the conversion.
 
-Folding is not much trouble as long as it doesn't cause conflicts with
-patches higher in the patch stack.
-
-Done & thanks,
-
-  Ralf
+But the conversion is not appropriate for 2.6.32, and since I have to push
+the bug fix into 2.6.32 anyways you have to live with resolving the conflict
+somehow since the bug fix by itself is going to go to Linus for 2.6.32 but
+your conversion is not.

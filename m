@@ -1,102 +1,84 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Nov 2009 14:25:52 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:45245 "EHLO h5.dl5rb.org.uk"
-	rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-	id S1492387AbZKXNZp (ORCPT <rfc822;linux-mips@linux-mips.org>);
-	Tue, 24 Nov 2009 14:25:45 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-	by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nAODQ2iB028082;
-	Tue, 24 Nov 2009 13:26:02 GMT
-Received: (from ralf@localhost)
-	by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nAODQ1Y3028080;
-	Tue, 24 Nov 2009 13:26:01 GMT
-Date:	Tue, 24 Nov 2009 13:26:01 +0000
-From:	Ralf Baechle <ralf@linux-mips.org>
-To:	Imre Kaloz <kaloz@openwrt.org>
-Cc:	nbd@openwrt.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] use __always_inline for __xchg
-Message-ID: <20091124132601.GA27951@linux-mips.org>
-References: <op.sldiliqr2s3iss@richese>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <op.sldiliqr2s3iss@richese>
-User-Agent: Mutt/1.5.19 (2009-01-05)
-Return-Path: <ralf@linux-mips.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 24 Nov 2009 14:49:00 +0100 (CET)
+Received: from mail-pz0-f197.google.com ([209.85.222.197]:60333 "EHLO
+	mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
+	by eddie.linux-mips.org with ESMTP id S1492387AbZKXNs4 (ORCPT
+	<rfc822;linux-mips@linux-mips.org>); Tue, 24 Nov 2009 14:48:56 +0100
+Received: by pzk35 with SMTP id 35so4829151pzk.22
+        for <multiple recipients>; Tue, 24 Nov 2009 05:48:48 -0800 (PST)
+DKIM-Signature:	v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=GJDDN/uMPDywD9L6vmT+nwjHQ7tocY96zgQCgzzRUu0=;
+        b=Hez7oCcprFvdv9IR0BPWYkRvrpZjnr5f9a4XmY7gVvlUpTCZgJZ39LqMyxAW4j5+66
+         /sK4q8fROLJb4WmUAmshoXBYFwoNWvUcu7W2Y1vVN+Xl9MWKG+NVYJls0xXJ5DQ7RxTU
+         4pZMnpvkkwUFYh3H4vnnx/srL6pqxr4KsSlmc=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=psJY4puz9Ae3WcWomPz0c2oFVZC8vfB6WLn9IElHmxIKlrb5aeu2i1YpQrcuQqFTeJ
+         epcX0RuGBA/sCJIIttQooboO4DzjGDQhsGvhp+vnFhRFQRHm9HnYLuQaoXX+5Gxf+dJW
+         QoM5nfFJp/TBDn9NJZqaACa7NQxIoSQf2UrUQ=
+Received: by 10.115.24.10 with SMTP id b10mr3923598waj.127.1259070528401;
+        Tue, 24 Nov 2009 05:48:48 -0800 (PST)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPS id 21sm3234466pxi.0.2009.11.24.05.48.43
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Tue, 24 Nov 2009 05:48:48 -0800 (PST)
+From:	Wu Zhangjin <wuzhangjin@gmail.com>
+To:	Ralf Baechle <ralf@linux-mips.org>
+Cc:	linux-mips@linux-mips.org, Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH] [loongson] Lemote-2F: Suspend CS5536 MFGPT Timer
+Date:	Tue, 24 Nov 2009 21:48:36 +0800
+Message-Id: <1259070516-18546-1-git-send-email-wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.6.2.1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25092
+X-archive-position: 25093
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On Sat, Jan 29, 2005 at 05:54:44PM +0100, Imre Kaloz wrote:
+From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-> The following patch changes inline for __xchg to __always_inline in  
-> include/asm-mips/system.h, following the changes in git. Without this  
-> change linking the kernel fails.
->
-> Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-> Signed-off-by: Felix Fietkau <nbd@openwrt.org>
+Before putting loongson2f into wait mode, suspend the MFGPT Timer, and
+after wake-up, resume it. This may save some power.
 
-Imre just pointed me at this antique patch again saying it was still needed.
-Back then I ditched it because I couldn't see what the problem it was
-trying to fix was - but after a little brainstorming it got obvious.
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/mips/loongson/lemote-2f/pm.c |   11 +++++++++++
+ 1 files changed, 11 insertions(+), 0 deletions(-)
 
-Now I don't like __always_inline which forces the optimizer to do things
-which may not really be what we want, for example when building with -Os
-so I found a different fix using BUILD_BUG_ON().  Patch below.
-
-Cheers,
-
-  Ralf
-
-From: Ralf Baechle <ralf@linux-mips.org>
-
-MIPS: Fix build error if __xchg() is not getting inlined.
-
-If __xchg() is not getting inlined the outline version of the function
-will have a reference to __xchg_called_with_bad_pointer() which does not
-exist remaining.  Fixed by using BUILD_BUG_ON() xchg() to check for
-allowable operand sizes.
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
-diff --git a/arch/mips/include/asm/system.h b/arch/mips/include/asm/system.h
-index fcf5f98..587a48a 100644
---- a/arch/mips/include/asm/system.h
-+++ b/arch/mips/include/asm/system.h
-@@ -193,10 +193,6 @@ extern __u64 __xchg_u64_unsupported_on_32bit_kernels(volatile __u64 * m, __u64 v
- #define __xchg_u64 __xchg_u64_unsupported_on_32bit_kernels
- #endif
+diff --git a/arch/mips/loongson/lemote-2f/pm.c b/arch/mips/loongson/lemote-2f/pm.c
+index 81c0641..d7af2e6 100644
+--- a/arch/mips/loongson/lemote-2f/pm.c
++++ b/arch/mips/loongson/lemote-2f/pm.c
+@@ -22,6 +22,7 @@
  
--/* This function doesn't exist, so you'll get a linker error
--   if something tries to do an invalid xchg().  */
--extern void __xchg_called_with_bad_pointer(void);
--
- static inline unsigned long __xchg(unsigned long x, volatile void * ptr, int size)
- {
- 	switch (size) {
-@@ -205,11 +201,17 @@ static inline unsigned long __xchg(unsigned long x, volatile void * ptr, int siz
- 	case 8:
- 		return __xchg_u64(ptr, x);
- 	}
--	__xchg_called_with_bad_pointer();
-+
- 	return x;
+ #include <loongson.h>
+ 
++#include <cs5536/cs5536_mfgpt.h>
+ #include "ec_kb3310b.h"
+ 
+ #define I8042_KBD_IRQ		1
+@@ -136,3 +137,13 @@ int wakeup_loongson(void)
+ 
+ 	return 0;
  }
- 
--#define xchg(ptr, x) ((__typeof__(*(ptr)))__xchg((unsigned long)(x), (ptr), sizeof(*(ptr))))
-+#define xchg(ptr, x)							\
-+({									\
-+	BUILD_BUG_ON(sizeof(*(ptr)) & ~0xc);				\
-+									\
-+	((__typeof__(*(ptr)))						\
-+		__xchg((unsigned long)(x), (ptr), sizeof(*(ptr))));	\
-+})
- 
- extern void set_handler(unsigned long offset, void *addr, unsigned long len);
- extern void set_uncached_handler(unsigned long offset, void *addr, unsigned long len);
++
++void __weak mach_suspend(void)
++{
++	disable_mfgpt0_counter();
++}
++
++void __weak mach_resume(void)
++{
++	enable_mfgpt0_counter();
++}
+-- 
+1.6.2.1

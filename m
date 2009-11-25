@@ -1,63 +1,56 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2009 15:39:11 +0100 (CET)
-Received: from mail.netlogicmicro.com ([64.0.7.62]:3541 "EHLO
-        orion5.netlogicmicro.com" rhost-flags-OK-OK-OK-FAIL)
-        by eddie.linux-mips.org with ESMTP id S1492866AbZKYOhs convert rfc822-to-8bit
-        (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 25 Nov 2009 15:37:48 +0100
-X-TM-IMSS-Message-ID: <0ebfac24000115e4@netlogicmicro.com>
-Received: from orion8.netlogicmicro.com ([10.1.1.7]) by netlogicmicro.com ([10.10.16.19]) with ESMTP (TREND IMSS SMTP Service 7.0) id 0ebfac24000115e4 ; Wed, 25 Nov 2009 06:37:38 -0800
-Received: from 71.145.164.137 ([71.145.164.137]) by orion8.netlogicmicro.com ([10.1.1.7]) with Microsoft Exchange Server HTTP-DAV ;
- Wed, 25 Nov 2009 14:38:47 +0000
-Received: from kh-d280-64 by webmail2.netlogicmicro.com; 25 Nov 2009 08:37:37 -0600
-Subject: Re: how to support more than 512MB RAM for MIPS32 ?
-From:   Kevin Hickey <khickey@netlogicmicro.com>
-To:     figo zhang <figo1802@gmail.com>
-Cc:     ralf@linux-mips.org, linux-mips@linux-mips.org
-In-Reply-To: <c6ed1ac50911242234p12817b55r1a062d59949308bf@mail.gmail.com>
-References: <c6ed1ac50911242234p12817b55r1a062d59949308bf@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-Date:   Wed, 25 Nov 2009 08:37:37 -0600
-Message-ID: <1259159857.4675.11.camel@kh-d280-64>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.1 
-Return-Path: <khickey@netlogicmicro.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2009 15:39:48 +0100 (CET)
+Received: from lechat.rtp-net.org ([88.191.19.38]:56920 "EHLO
+        lechat.rtp-net.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1492872AbZKYOjp (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Nov 2009 15:39:45 +0100
+Received: by lechat.rtp-net.org (Postfix, from userid 5001)
+        id 8F30010081; Wed, 25 Nov 2009 15:48:17 +0100 (CET)
+Received: from lechat.rtp-net.org (ip6-localhost [IPv6:::1])
+        by lechat.rtp-net.org (Postfix) with ESMTP id 104F61007D;
+        Wed, 25 Nov 2009 15:48:17 +0100 (CET)
+From:   Arnaud Patard (Rtp) <arnaud.patard@rtp-net.org>
+To:     Florian Lohoff <flo@rfc822.org>
+Cc:     Aurelien Jarno <aurelien@aurel32.net>, linux-mips@linux-mips.org
+Subject: Re: Syncing CPU caches from userland on MIPS
+References: <20091124182841.GE17477@hall.aurel32.net>
+        <20091125140105.GB13938@paradigm.rfc822.org>
+        <87pr76acu2.fsf@lechat.rtp-net.org>
+        <20091125143232.GH13938@paradigm.rfc822.org>
+Organization: RtpNet
+Date:   Wed, 25 Nov 2009 15:48:16 +0100
+In-Reply-To: <20091125143232.GH13938@paradigm.rfc822.org> (Florian Lohoff's message of "Wed\, 25 Nov 2009 15\:32\:32 +0100")
+Message-ID: <87ljhuacen.fsf@lechat.rtp-net.org>
+User-Agent: Gnus/5.11 (Gnus v5.11) Emacs/22.3 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <arnaud.patard@rtp-net.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25124
-X-Approved-By: ralf@linux-mips.org
+X-archive-position: 25125
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: khickey@netlogicmicro.com
+X-original-sender: arnaud.patard@rtp-net.org
 Precedence: bulk
 X-list: linux-mips
 
-We use HIGHMEM on the Au1300 to access any memory spaces >256 MB.  Our
-I/O area starts at 256 MB.  We just map the extra DRAM to any area
-outside the I/O space, enable highmem, and register it as BOOT_MEM_RAM
-with add_memory_region.  Works great.
+Florian Lohoff <flo@rfc822.org> writes:
 
-=Kevin
---
-Kevin Hickey
-Netlogic Microsystems
+> On Wed, Nov 25, 2009 at 03:39:01PM +0100, Arnaud Patard wrote:
+>> > Would this only evict stuff from the ICACHE? When trying to execute
+>> > a just written buffer and with a writeback DCACHE you would need to 
+>> > explicitly writeback the DCACHE to memory and invalidate the ICACHE.
+>> 
+>> we already though about using BCACHE instead of ICACHE only but it
+>> didn't make any difference. the bug is still there.
+>
+> My understanding is you need both ...
+>
+> FLUSH/WRITEBACK the dcache and INVALIDATE the icache - the icache needs
+> to load the data which is in the dcache via memory.
 
+I undertstood that using BCACHE would be better but still, it doesn't
+solve our issue. Can we please go ahead ? :)
 
-On Wed, 2009-11-25 at 14:34 +0800, figo zhang wrote:
-> hi all,
-> 
-> I am using 24KEC SOC, i want to support larger more than 512MB RAM.
-> The mips32 architure  in Kseg0/Kseg1,
-> such as:
-> 0x8000,0000 ~ 0x92c0,0000  # 300MB for RAM
-> 0x92c0,0000 ~ 0xa000,0000  # 212 for I/O register
-> 
-> so, mips32 only support 300MB memory, i dont how to support more than
-> 512MB in linux-mips kernel , such as 2GB memory? it is using HIGHMEM
-> strategy
-> for kernel(ZONE_HIGHMEM)?
-> 
-> Best,
-> Figo.zhang
+Arnaud

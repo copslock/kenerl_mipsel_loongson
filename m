@@ -1,66 +1,107 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2009 12:34:59 +0100 (CET)
-Received: from vitalin.sorra.shikadi.net ([64.71.152.201]:3673 "EHLO
-        vitalin.sorra.shikadi.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492472AbZKYLez (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Nov 2009 12:34:55 +0100
-Received: from berkeloid.vlook.shikadi.net ([172.16.255.5])
-        by vitalin.sorra.shikadi.net with esmtp (Exim 4.62)
-        (envelope-from <a.nielsen@shikadi.net>)
-        id 1NDG95-00048i-MT; Wed, 25 Nov 2009 21:34:51 +1000
-Received: from korath.teln.shikadi.net ([192.168.0.14])
-        by berkeloid.teln.shikadi.net with esmtp (Exim 4.68)
-        (envelope-from <a.nielsen@shikadi.net>)
-        id 1NDG94-0006MO-Sw; Wed, 25 Nov 2009 21:34:50 +1000
-Message-ID: <4B0D165A.5030500@shikadi.net>
-Date:   Wed, 25 Nov 2009 21:34:50 +1000
-From:   Adam Nielsen <a.nielsen@shikadi.net>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-GB; rv:1.8.1.22) Gecko/20090809 Thunderbird/2.0.0.22 Mnenhy/0.7.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2009 15:03:59 +0100 (CET)
+Received: from hydra.gt.owl.de ([195.71.99.218]:58690 "EHLO hydra.gt.owl.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1492788AbZKYOBG (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Wed, 25 Nov 2009 15:01:06 +0100
+Received: by hydra.gt.owl.de (Postfix, from userid 1000)
+        id 51E2332D59; Wed, 25 Nov 2009 15:01:05 +0100 (CET)
+Date:   Wed, 25 Nov 2009 15:01:05 +0100
+From:   Florian Lohoff <flo@rfc822.org>
+To:     Aurelien Jarno <aurelien@aurel32.net>
+Cc:     linux-mips@linux-mips.org,
+        Arnaud Patard <arnaud.patard@rtp-net.org>
+Subject: Re: Syncing CPU caches from userland on MIPS
+Message-ID: <20091125140105.GB13938@paradigm.rfc822.org>
+References: <20091124182841.GE17477@hall.aurel32.net>
 MIME-Version: 1.0
-To:     Ralf Baechle <ralf@linux-mips.org>
-CC:     linux-mips@linux-mips.org
-Subject: Re: Can you add a signature to the kernel ELF image?
-References: <4B0C625B.5070408@shikadi.net> <20091124234406.GB20316@linux-mips.org>
-In-Reply-To: <20091124234406.GB20316@linux-mips.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <a.nielsen@shikadi.net>
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="SkvwRMAIpAhPCcCJ"
+Content-Disposition: inline
+In-Reply-To: <20091124182841.GE17477@hall.aurel32.net>
+Organization: rfc822 - pure communication
+X-SpiderMe: mh-200911251404@listme.rfc822.org
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <flo@rfc822.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25120
+X-archive-position: 25121
+X-Approved-By: ralf@linux-mips.org
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: a.nielsen@shikadi.net
+X-original-sender: flo@rfc822.org
 Precedence: bulk
 X-list: linux-mips
 
-> Take a look at arch/mips/kernel/head.S.  This file will be the first on
-> the final linker call's command line, that is head.S's .text section will
-> end at the lowest address.
 
-Ah excellent, that combined with the linker script (to twiddle load addresses) 
-is just what I'm after.
+--SkvwRMAIpAhPCcCJ
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> #ifdef CONFIG_NCD_HMX
-> 	b	1f
-> 	nop
-> 	nop
-> 	.word	0x20
-> 	.asciz	"XncdHMX"
-> 	.word	0, 0, 0
-> #endif
+On Tue, Nov 24, 2009 at 07:28:41PM +0100, Aurelien Jarno wrote:
+> Hi all,
+>=20
+> This question is not really kernel related, but still MIPS related, I
+> hope you don't mind.
+>=20
+> Arnaud Patard and myself are trying to get qemu working on MIPS [1],
+> which includes translating TCG code (internal representation) into MIPS
+> instructions, that are then executed. Most of the code works, but we=20
+> have some strange behaviors that seems related to CPU caches.
+>=20
+> The code is written to a buffer, which is then executed. Before the
+> execution, the caches are synced using the cacheflush syscall:
+>=20
+> | #include <sys/cachectl.h>
+> | =20
+> |=20
+> | static inline void flush_icache_range(unsigned long start, unsigned lon=
+g stop)
+> | {
+> |     cacheflush ((void *)start, stop-start, ICACHE);
+> | }
 
-Perfect, thanks for the example, that makes it much easier.
+Would this only evict stuff from the ICACHE? When trying to execute
+a just written buffer and with a writeback DCACHE you would need to=20
+explicitly writeback the DCACHE to memory and invalidate the ICACHE.
 
->> [1] http://www.linux-mips.org/wiki/HMX
->
-> The wiki page says something about a CRC but just poking a 0x20 into a
-> constant address is not exactly a CRC calculation.  Not sure how this
-> really is meant.
+> It seems this is not enough, as sometimes, some executed code does not
+> correspond to the assembly dump of this memory region. This seems to be=
+=20
+> especially the case of memory regions that are written twice, due to
+> relocations:
+> 1) a branch instruction is written with an offset of 0
+> 2) the offset is patched
+> 3) cacheflush is called
+>=20
+> Sometimes the executed code correspond to the code written in 1), which
+> means the branch is skipped.
 
-As far as I'm aware 0x20 means "ignore the CRC", I think the CRC itself is 
-covered by one of the zero words.
+Which proves my theory - as long as you have cache pressure you will happily
+writeback the contents to memory before trying to execute (you invalidate
+the ICACHE above) - In case you DCACHE does not suffer from pressure
+the contents will not been written back and you'll execute stale code.
 
-Cheers,
-Adam.
+Flo
+--=20
+Florian Lohoff                                         flo@rfc822.org
+"Es ist ein grobes Missverst=E4ndnis und eine Fehlwahrnehmung, dem Staat
+im Internet Zensur- und =DCberwachungsabsichten zu unterstellen."
+- - Bundesminister Dr. Wolfgang Sch=E4uble -- 10. Juli in Berlin=20
+
+--SkvwRMAIpAhPCcCJ
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.9 (GNU/Linux)
+
+iD8DBQFLDTihUaz2rXW+gJcRAnO1AJ4/Qof+YrAAglLHkfpM9i2uZANqCgCgp+Fa
+0TXDzyKTdq6HdhaO+0hq8b8=
+=H04T
+-----END PGP SIGNATURE-----
+
+--SkvwRMAIpAhPCcCJ--

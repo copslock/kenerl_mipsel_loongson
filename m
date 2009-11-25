@@ -1,107 +1,68 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2009 15:03:59 +0100 (CET)
-Received: from hydra.gt.owl.de ([195.71.99.218]:58690 "EHLO hydra.gt.owl.de"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492788AbZKYOBG (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Wed, 25 Nov 2009 15:01:06 +0100
-Received: by hydra.gt.owl.de (Postfix, from userid 1000)
-        id 51E2332D59; Wed, 25 Nov 2009 15:01:05 +0100 (CET)
-Date:   Wed, 25 Nov 2009 15:01:05 +0100
-From:   Florian Lohoff <flo@rfc822.org>
-To:     Aurelien Jarno <aurelien@aurel32.net>
-Cc:     linux-mips@linux-mips.org,
-        Arnaud Patard <arnaud.patard@rtp-net.org>
+Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2009 15:30:35 +0100 (CET)
+Received: from lechat.rtp-net.org ([88.191.19.38]:34123 "EHLO
+        lechat.rtp-net.org" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1492872AbZKYOac (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Nov 2009 15:30:32 +0100
+Received: by lechat.rtp-net.org (Postfix, from userid 5001)
+        id D18D610081; Wed, 25 Nov 2009 15:39:01 +0100 (CET)
+Received: from lechat.rtp-net.org (ip6-localhost [IPv6:::1])
+        by lechat.rtp-net.org (Postfix) with ESMTP id 3F0D31007D;
+        Wed, 25 Nov 2009 15:39:01 +0100 (CET)
+From:   Arnaud Patard (Rtp) <arnaud.patard@rtp-net.org>
+To:     Florian Lohoff <flo@rfc822.org>
+Cc:     Aurelien Jarno <aurelien@aurel32.net>, linux-mips@linux-mips.org
 Subject: Re: Syncing CPU caches from userland on MIPS
-Message-ID: <20091125140105.GB13938@paradigm.rfc822.org>
 References: <20091124182841.GE17477@hall.aurel32.net>
+        <20091125140105.GB13938@paradigm.rfc822.org>
+Organization: RtpNet
+Date:   Wed, 25 Nov 2009 15:39:01 +0100
+In-Reply-To: <20091125140105.GB13938@paradigm.rfc822.org> (Florian Lohoff's message of "Wed\, 25 Nov 2009 15\:01\:05 +0100")
+Message-ID: <87pr76acu2.fsf@lechat.rtp-net.org>
+User-Agent: Gnus/5.11 (Gnus v5.11) Emacs/22.3 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="SkvwRMAIpAhPCcCJ"
-Content-Disposition: inline
-In-Reply-To: <20091124182841.GE17477@hall.aurel32.net>
-Organization: rfc822 - pure communication
-X-SpiderMe: mh-200911251404@listme.rfc822.org
-User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <flo@rfc822.org>
+Content-Type: text/plain; charset=us-ascii
+Return-Path: <arnaud.patard@rtp-net.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25121
-X-Approved-By: ralf@linux-mips.org
+X-archive-position: 25122
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: flo@rfc822.org
+X-original-sender: arnaud.patard@rtp-net.org
 Precedence: bulk
 X-list: linux-mips
 
+Florian Lohoff <flo@rfc822.org> writes:
+Hi,
 
---SkvwRMAIpAhPCcCJ
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Tue, Nov 24, 2009 at 07:28:41PM +0100, Aurelien Jarno wrote:
+>> Hi all,
+>> 
+>> This question is not really kernel related, but still MIPS related, I
+>> hope you don't mind.
+>> 
+>> Arnaud Patard and myself are trying to get qemu working on MIPS [1],
+>> which includes translating TCG code (internal representation) into MIPS
+>> instructions, that are then executed. Most of the code works, but we 
+>> have some strange behaviors that seems related to CPU caches.
+>> 
+>> The code is written to a buffer, which is then executed. Before the
+>> execution, the caches are synced using the cacheflush syscall:
+>> 
+>> | #include <sys/cachectl.h>
+>> |  
+>> | 
+>> | static inline void flush_icache_range(unsigned long start, unsigned long stop)
+>> | {
+>> |     cacheflush ((void *)start, stop-start, ICACHE);
+>> | }
+>
+> Would this only evict stuff from the ICACHE? When trying to execute
+> a just written buffer and with a writeback DCACHE you would need to 
+> explicitly writeback the DCACHE to memory and invalidate the ICACHE.
 
-On Tue, Nov 24, 2009 at 07:28:41PM +0100, Aurelien Jarno wrote:
-> Hi all,
->=20
-> This question is not really kernel related, but still MIPS related, I
-> hope you don't mind.
->=20
-> Arnaud Patard and myself are trying to get qemu working on MIPS [1],
-> which includes translating TCG code (internal representation) into MIPS
-> instructions, that are then executed. Most of the code works, but we=20
-> have some strange behaviors that seems related to CPU caches.
->=20
-> The code is written to a buffer, which is then executed. Before the
-> execution, the caches are synced using the cacheflush syscall:
->=20
-> | #include <sys/cachectl.h>
-> | =20
-> |=20
-> | static inline void flush_icache_range(unsigned long start, unsigned lon=
-g stop)
-> | {
-> |     cacheflush ((void *)start, stop-start, ICACHE);
-> | }
+we already though about using BCACHE instead of ICACHE only but it
+didn't make any difference. the bug is still there.
 
-Would this only evict stuff from the ICACHE? When trying to execute
-a just written buffer and with a writeback DCACHE you would need to=20
-explicitly writeback the DCACHE to memory and invalidate the ICACHE.
-
-> It seems this is not enough, as sometimes, some executed code does not
-> correspond to the assembly dump of this memory region. This seems to be=
-=20
-> especially the case of memory regions that are written twice, due to
-> relocations:
-> 1) a branch instruction is written with an offset of 0
-> 2) the offset is patched
-> 3) cacheflush is called
->=20
-> Sometimes the executed code correspond to the code written in 1), which
-> means the branch is skipped.
-
-Which proves my theory - as long as you have cache pressure you will happily
-writeback the contents to memory before trying to execute (you invalidate
-the ICACHE above) - In case you DCACHE does not suffer from pressure
-the contents will not been written back and you'll execute stale code.
-
-Flo
---=20
-Florian Lohoff                                         flo@rfc822.org
-"Es ist ein grobes Missverst=E4ndnis und eine Fehlwahrnehmung, dem Staat
-im Internet Zensur- und =DCberwachungsabsichten zu unterstellen."
-- - Bundesminister Dr. Wolfgang Sch=E4uble -- 10. Juli in Berlin=20
-
---SkvwRMAIpAhPCcCJ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-Content-Disposition: inline
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
-
-iD8DBQFLDTihUaz2rXW+gJcRAnO1AJ4/Qof+YrAAglLHkfpM9i2uZANqCgCgp+Fa
-0TXDzyKTdq6HdhaO+0hq8b8=
-=H04T
------END PGP SIGNATURE-----
-
---SkvwRMAIpAhPCcCJ--
+Arnaud

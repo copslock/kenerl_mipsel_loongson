@@ -1,123 +1,51 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Wed, 25 Nov 2009 21:00:58 +0100 (CET)
-Received: from sj-iport-5.cisco.com ([171.68.10.87]:11617 "EHLO
-        sj-iport-5.cisco.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
-        with ESMTP id S1493432AbZKYUAc (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Wed, 25 Nov 2009 21:00:32 +0100
-Authentication-Results: sj-iport-5.cisco.com; dkim=neutral (message not signed) header.i=none
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: ApoEAAccDUurRN+K/2dsb2JhbAC+GZdrhDIEgXE
-X-IronPort-AV: E=Sophos;i="4.47,288,1257120000"; 
-   d="scan'208";a="109641201"
-Received: from sj-core-4.cisco.com ([171.68.223.138])
-  by sj-iport-5.cisco.com with ESMTP; 25 Nov 2009 20:00:27 +0000
-Received: from dvomlehn-lnx2.corp.sa.net ([64.101.20.155])
-        by sj-core-4.cisco.com (8.13.8/8.14.3) with ESMTP id nAPK0RQQ023593;
-        Wed, 25 Nov 2009 20:00:27 GMT
-Date:   Wed, 25 Nov 2009 15:00:28 -0500
-From:   David VomLehn <dvomlehn@cisco.com>
-To:     linux-mips@linux-mips.org
-Cc:     ralf@linux-mips.org
-Subject: [PATCH 2/2] Set of fixes for DMA when dma_addr_t != physical
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Nov 2009 00:11:59 +0100 (CET)
+Received: from elvis.franken.de ([193.175.24.41]:53091 "EHLO elvis.franken.de"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1493663AbZKYXL4 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 26 Nov 2009 00:11:56 +0100
+Received: from uucp (helo=solo.franken.de)
+        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+        id 1NDR1c-0001Jn-00; Thu, 26 Nov 2009 00:11:52 +0100
+Received: by solo.franken.de (Postfix, from userid 1000)
+        id 619B4C225F; Thu, 26 Nov 2009 00:10:06 +0100 (CET)
+Date:   Thu, 26 Nov 2009 00:10:06 +0100
+From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To:     David VomLehn <dvomlehn@cisco.com>
+Cc:     linux-mips@linux-mips.org, ralf@linux-mips.org
+Subject: Re: [PATCH 2/2] Set of fixes for DMA when dma_addr_t != physical
         address
-Message-ID: <20091125200027.GA13748@dvomlehn-lnx2.corp.sa.net>
+Message-ID: <20091125231006.GA12699@alpha.franken.de>
+References: <20091125200027.GA13748@dvomlehn-lnx2.corp.sa.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20091125200027.GA13748@dvomlehn-lnx2.corp.sa.net>
 User-Agent: Mutt/1.5.18 (2008-05-17)
-Return-Path: <dvomlehn@cisco.com>
+Return-Path: <tsbogend@alpha.franken.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25138
+X-archive-position: 25139
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: dvomlehn@cisco.com
+X-original-sender: tsbogend@alpha.franken.de
 Precedence: bulk
 X-list: linux-mips
 
-Fixes for using DMA on systems where the DMA address and the physical address
-differ.
+On Wed, Nov 25, 2009 at 03:00:28PM -0500, David VomLehn wrote:
+> Fixes for using DMA on systems where the DMA address and the physical address
+> differ.
 
-Signed-off-by: Dezhong Diao <dediao@cisco.com>
-Signed-off-by: David VomLehn <dvomlehn@cisco.com>
----
- arch/mips/mm/dma-default.c |   22 ++++++++++++++--------
- 1 files changed, 14 insertions(+), 8 deletions(-)
+what's the problem ? Even the old Olivetti M700 has an iommu, so dma
+address and physical address are always different... and it works without
+changes. You just need to tweak the plat_dma_XXX() macros/functions.
 
-diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
-index 414d7ff..eaa7fb4 100644
---- a/arch/mips/mm/dma-default.c
-+++ b/arch/mips/mm/dma-default.c
-@@ -24,8 +24,11 @@ static inline unsigned long dma_addr_to_virt(struct device *dev,
- 	dma_addr_t dma_addr)
- {
- 	unsigned long addr = plat_dma_addr_to_phys(dev, dma_addr);
-+	unsigned int offset = (dma_addr & ~PAGE_MASK);
-+	struct page *pg;
- 
--	return (unsigned long)phys_to_virt(addr);
-+	pg = pfn_to_page(addr >> PAGE_SHIFT);
-+	return (unsigned long)(page_address(pg) + offset);
- }
- 
- /*
-@@ -136,7 +139,6 @@ EXPORT_SYMBOL(dma_free_coherent);
- static inline void __dma_sync(unsigned long addr, size_t size,
- 	enum dma_data_direction direction)
- {
--
- 	BUG_ON(addr < KSEG0);
- 
- 	switch (direction) {
-@@ -197,8 +199,8 @@ int dma_map_sg(struct device *dev, struct scatterlist *sg, int nents,
- 		addr = (unsigned long) sg_virt(sg);
- 		if (!plat_device_is_coherent(dev) && (addr >= KSEG0))
- 			__dma_sync(addr, sg->length, direction);
--
--		sg->dma_address = sg_phys(sg);
-+		sg->dma_address = plat_map_dma_mem_page(dev, sg_page(sg)) +
-+			sg->offset;
- 	}
- 
- 	return nents;
-@@ -253,7 +255,8 @@ void dma_sync_single_for_cpu(struct device *dev, dma_addr_t dma_handle,
- 		unsigned long addr;
- 
- 		addr = dma_addr_to_virt(dev, dma_handle);
--		__dma_sync(addr, size, direction);
-+		if (addr >= KSEG0)
-+			__dma_sync(addr, size, direction);
- 	}
- }
- 
-@@ -269,7 +272,8 @@ void dma_sync_single_for_device(struct device *dev, dma_addr_t dma_handle,
- 		unsigned long addr;
- 
- 		addr = dma_addr_to_virt(dev, dma_handle);
--		__dma_sync(addr, size, direction);
-+		if (addr >= KSEG0)
-+			__dma_sync(addr, size, direction);
- 	}
- }
- 
-@@ -284,7 +288,8 @@ void dma_sync_single_range_for_cpu(struct device *dev, dma_addr_t dma_handle,
- 		unsigned long addr;
- 
- 		addr = dma_addr_to_virt(dev, dma_handle);
--		__dma_sync(addr + offset, size, direction);
-+		if (addr >= KSEG0)
-+			__dma_sync(addr + offset, size, direction);
- 	}
- }
- 
-@@ -300,7 +305,8 @@ void dma_sync_single_range_for_device(struct device *dev, dma_addr_t dma_handle,
- 		unsigned long addr;
- 
- 		addr = dma_addr_to_virt(dev, dma_handle);
--		__dma_sync(addr + offset, size, direction);
-+		if (addr >= KSEG0)
-+			__dma_sync(addr + offset, size, direction);
- 	}
- }
- 
+And I don't see a reason for the KSEG0 checks in your other patch,
+but maybe I'm missing something...
+
+Thomas.
+
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessary a
+good idea.                                                [ RFC1925, 2.3 ]

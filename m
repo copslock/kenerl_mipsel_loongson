@@ -1,68 +1,76 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Nov 2009 19:30:03 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:37572 "EHLO h5.dl5rb.org.uk"
-        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1493780AbZKZS37 (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Thu, 26 Nov 2009 19:29:59 +0100
-Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nAQIUAPq020261;
-        Thu, 26 Nov 2009 18:30:11 GMT
-Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nAQIU8Qr020251;
-        Thu, 26 Nov 2009 18:30:08 GMT
-Date:   Thu, 26 Nov 2009 18:30:07 +0000
-From:   Ralf Baechle <ralf@linux-mips.org>
-To:     "Joseph S. Myers" <joseph@codesourcery.com>
-Cc:     linux-mips@linux-mips.org
-Subject: Re: MIPS asm/mman.h and MADV_HWPOISON
-Message-ID: <20091126183007.GA19853@linux-mips.org>
-References: <Pine.LNX.4.64.0911252356300.31853@digraph.polyomino.org.uk>
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Nov 2009 19:42:53 +0100 (CET)
+Received: from ey-out-1920.google.com ([74.125.78.144]:11300 "EHLO
+        ey-out-1920.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493766AbZKZSmt (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Nov 2009 19:42:49 +0100
+Received: by ey-out-1920.google.com with SMTP id 3so2289099eyh.0
+        for <linux-mips@linux-mips.org>; Thu, 26 Nov 2009 10:42:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:sender:from:date:subject
+         :mime-version:x-uid:x-length:organization:to:cc:content-type
+         :content-transfer-encoding:message-id;
+        bh=AWBNh2C8wBlxBuWhPvxEweGOTMO43BCtdW1i51rl7XU=;
+        b=Jy7ofrHTiFFDDb9ve2E6eFzZx7jCJTg1pYnalQb/FcTV9pGWrMHAw+HmnAS//lAAxE
+         AiEf5D6QiZZW1R9o5+1xYfEDtCCMbhffRZQX/tWI3OOjALneQ28mpuk0SWluP6SPy3fR
+         V/wRwDqFyQgCe0BYUBJFG2abgLhtydnp7QTeo=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=sender:from:date:subject:mime-version:x-uid:x-length:organization
+         :to:cc:content-type:content-transfer-encoding:message-id;
+        b=fZuuwZnFfj/2wnVVAQsV3Y39Bd3A6PdLBH9+f52wDevIFhH6p1hPN15qXJbCNCqo7u
+         VZCzLoFt8eBCKnpaea0mTcgu4hmoZIQ7TzTRklmnj4RzNOt2MCfhVBlnllYnM0Jbj39F
+         jNVG/WECKhJ/St6M5jk2pdZbO+p9t52qH8mz0=
+Received: by 10.213.1.205 with SMTP id 13mr2518428ebg.50.1259260967123;
+        Thu, 26 Nov 2009 10:42:47 -0800 (PST)
+Received: from flexo.localnet (bobafett.staff.proxad.net [213.228.1.121])
+        by mx.google.com with ESMTPS id 13sm474388ewy.5.2009.11.26.10.42.46
+        (version=SSLv3 cipher=RC4-MD5);
+        Thu, 26 Nov 2009 10:42:46 -0800 (PST)
+From:   Florian Fainelli <florian@openwrt.org>
+Date:   Thu, 26 Nov 2009 19:41:02 +0100
+Subject: [PATCH] leds: use default-on trigger for Cobalt Qube
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Pine.LNX.4.64.0911252356300.31853@digraph.polyomino.org.uk>
-User-Agent: Mutt/1.5.20 (2009-08-17)
-Return-Path: <ralf@linux-mips.org>
+X-UID:  147
+X-Length: 1508
+Organization: OpenWrt
+To:     Richard Purdie <rpurdie@rpsys.net>
+Cc:     linux-kernel@vger.kernel.org, linux-mips@linux-mips.org,
+        Martin Michlmayr <tbm@cyrius.com>,
+        Sameer Verma <sverma@sfsu.edu>
+Content-Type: text/plain;
+  charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <200911261941.02431.florian@openwrt.org>
+Return-Path: <f.fainelli@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25159
+X-archive-position: 25160
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: ralf@linux-mips.org
+X-original-sender: florian@openwrt.org
 Precedence: bulk
 X-list: linux-mips
 
-On Wed, Nov 25, 2009 at 11:57:07PM +0000, Joseph S. Myers wrote:
+This patch changes the default trigger from "ide-disk"
+to "default-on". Users updating from kernels not having this
+LED driver will prefer having the same LED behavior as they
+used to.
 
-> In the course of updating glibc ports's bits/mman.h files for new MADV_* 
-> definitions, I noticed that arch/mips/include/asm/mman.h does not define 
-> MADV_HWPOISON, although architectures using asm-generic/mman.h get that 
-> definition automatically.  Should I take it that this is an oversight and 
-> that a definition of MADV_HWPOISON will be added with value 100, or is 
-> there some reason for it not to be defined for MIPS or for it to have a 
-> different value?
-
-Just an omission.  Thanks for reporting.  I've just checked in below
-patch.
-
-  Ralf
-
-From: Ralf Baechle <ralf@linux-mips.org>
-
-MIPS: Add missing definition for MADV_HWPOISON.
-
-Signed-off-by: Ralf Baechle <ralf@linux-mips.org>
-
-diff --git a/arch/mips/include/asm/mman.h b/arch/mips/include/asm/mman.h
-index a2250f3..c892bfb 100644
---- a/arch/mips/include/asm/mman.h
-+++ b/arch/mips/include/asm/mman.h
-@@ -75,6 +75,7 @@
+Signed-off-by: Florian Fainelli <florian@openwrt.org>
+---
+diff --git a/drivers/leds/leds-cobalt-qube.c b/drivers/leds/leds-cobalt-qube.c
+index 8816806..81b2014 100644
+--- a/drivers/leds/leds-cobalt-qube.c
++++ b/drivers/leds/leds-cobalt-qube.c
+@@ -31,7 +31,7 @@ static struct led_classdev qube_front_led = {
+ 	.name			= "qube::front",
+ 	.brightness		= LED_FULL,
+ 	.brightness_set		= qube_front_led_set,
+-	.default_trigger	= "ide-disk",
++	.default_trigger	= "default-on",
+ };
  
- #define MADV_MERGEABLE   12		/* KSM may merge identical pages */
- #define MADV_UNMERGEABLE 13		/* KSM may not merge identical pages */
-+#define MADV_HWPOISON    100		/* poison a page for testing */
- 
- /* compatibility flags */
- #define MAP_FILE	0
+ static int __devinit cobalt_qube_led_probe(struct platform_device *pdev)

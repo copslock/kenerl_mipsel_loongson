@@ -1,74 +1,98 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Nov 2009 19:15:02 +0100 (CET)
-Received: from gateway-1237.mvista.com ([206.112.117.35]:51511 "HELO
-        imap.sh.mvista.com" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with SMTP id S1493768AbZKZSO7 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Thu, 26 Nov 2009 19:14:59 +0100
-Received: from [192.168.11.189] (unknown [10.150.0.9])
-        by imap.sh.mvista.com (Postfix) with SMTP
-        id 86C913ED8; Thu, 26 Nov 2009 10:14:47 -0800 (PST)
-Message-ID: <4B0EC5CB.5060701@ru.mvista.com>
-Date:   Thu, 26 Nov 2009 21:15:39 +0300
-From:   Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Organization: MontaVista Software Inc.
-User-Agent: Mozilla/5.0 (X11; U; Linux i686; rv:1.7.2) Gecko/20040803
-X-Accept-Language: ru, en-us, en-gb
+Received: with ECARTIS (v1.0.0; list linux-mips); Thu, 26 Nov 2009 19:23:23 +0100 (CET)
+Received: from out4.smtp.messagingengine.com ([66.111.4.28]:51689 "EHLO
+        out4.smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1493776AbZKZSXU convert rfc822-to-8bit
+        (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Thu, 26 Nov 2009 19:23:20 +0100
+Received: from compute1.internal (compute1.internal [10.202.2.41])
+        by gateway1.messagingengine.com (Postfix) with ESMTP id 73055C1DE9;
+        Thu, 26 Nov 2009 13:23:16 -0500 (EST)
+Received: from web6.messagingengine.com ([10.202.2.215])
+  by compute1.internal (MEProxy); Thu, 26 Nov 2009 13:23:16 -0500
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; d=messagingengine.com; h=message-id:from:to:cc:mime-version:content-transfer-encoding:content-type:in-reply-to:references:subject:date; s=smtpout; bh=gmUQre/KkGzPZoz2nA0D4xVKcPw=; b=XUKhvT+xo1Qv54ibfkX1ZIAVDrUVhWqWzA7JxL+yWBbr/T3WwqJ/cPaosWfW6V9AaklTb4/umLH4zapmLPlq0Y89DyzTGuB6jMycBBJwWAWS4bXsIwsrRhZVkyQEzpbJaqa+psAx0uOEg9+7fHIlSZXnFkyDPk6AGrWgn7wj9RE=
+Received: by web6.messagingengine.com (Postfix, from userid 99)
+        id 4DA0BBF77B; Thu, 26 Nov 2009 13:23:16 -0500 (EST)
+Message-Id: <1259259796.15040.1347211355@webmail.messagingengine.com>
+X-Sasl-Enc: 6PG3jMM6p6kKs28kU+ofkucuvzbz21o2W2uir45pJhi1 1259259796
+From:   myuboot@fastmail.fm
+To:     "Florian Fainelli" <florian@openwrt.org>
+Cc:     "David VomLehn" <dvomlehn@cisco.com>,
+        "Chris Dearman" <chris@mips.com>,
+        "linux-mips" <linux-mips@linux-mips.org>
 MIME-Version: 1.0
-To:     Sergei Shtylyov <sshtylyov@ru.mvista.com>
-Cc:     Wu Zhangjin <wuzhangjin@gmail.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Ingo Molnar <mingo@elte.hu>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-mips@linux-mips.org, Michal Simek <monstr@monstr.eu>
-Subject: Re: [PATCH v5] MIPS: Add a high resolution sched_clock() via cnt32_to_63().
-References: <39b95d02b37cd75d275b231c31abb00aefda9078.1258972025.git.wuzhangjin@gmail.com> <4B0A8A0B.60405@ru.mvista.com>
-In-Reply-To: <4B0A8A0B.60405@ru.mvista.com>
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <sshtylyov@ru.mvista.com>
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="ISO-8859-1"
+X-Mailer: MessagingEngine.com Webmail Interface
+In-Reply-To: <200911260945.59751.florian@openwrt.org>
+References: <1255735395.30097.1340523469@webmail.messagingengine.com>
+ <20091118010351.GA21728@dvomlehn-lnx2.corp.sa.net>
+ <1259195053.31777.1347090923@webmail.messagingengine.com>
+ <200911260945.59751.florian@openwrt.org>
+Subject: Re: problem bring up initramfs and busybox
+Date:   Thu, 26 Nov 2009 12:23:16 -0600
+Return-Path: <myuboot@fastmail.fm>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25157
+X-archive-position: 25158
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: sshtylyov@ru.mvista.com
+X-original-sender: myuboot@fastmail.fm
 Precedence: bulk
 X-list: linux-mips
 
-Hello, I wrote:
 
->> From: Wu Zhangjin <wuzhangjin@gmail.com>
 
->> (This v5 revision incorporates with the feedbacks from Ingo.)
-
->> This patch adds a cnt32_to_63() and MIPS c0 count based sched_clock(),
->> which provides high resolution. and also, one new kernel option
->> (HR_SCHED_CLOCK) is added to enable/disable this sched_clock().
-
->> Without it, the Ftrace for MIPS will give useless timestamp information.
-
->> Because cnt32_to_63() needs to be called at least once per half period
->> to work properly, Differ from the old version, this v2 revision set up a
->> kernel timer to ensure the requirement of some MIPSs which have short c0
->> count period.
-
->> Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
-
->> diff --git a/arch/mips/kernel/csrc-r4k-hres.c 
->> b/arch/mips/kernel/csrc-r4k-hres.c
->> new file mode 100644
->> index 0000000..2fe8be7
->> --- /dev/null
->> +++ b/arch/mips/kernel/csrc-r4k-hres.c
+On Thu, 26 Nov 2009 09:45 +0100, "Florian Fainelli"
+<florian@openwrt.org> wrote:
+> Hi Andrew.
 > 
+> Le jeudi 26 novembre 2009 01:24:13, myuboot@fastmail.fm a écrit :
+> > On Tue, 17 Nov 2009 20:03 -0500, "David VomLehn" <dvomlehn@cisco.com>
+> > 
+> > wrote:
+> > > On Tue, Nov 17, 2009 at 06:58:35PM -0600, myuboot@fastmail.fm wrote:
+> > > > On Wed, 18 Nov 2009 01:39 +0100, "Florian Fainelli"
+> > > >
+> > > > <florian@openwrt.org> wrote:
+> > > > > -------------------------------
+> > > >
+> > > > Actually I already got this patch for the board in little endian mode,
+> > > > and it is still there for the big endian mode. And this is one of the
+> > > > place I have been wondering if that needs to be changed for big endian.
+> > >
+> > > It sounds like you've done a good job getting the bootloader and kernel
+> > > to work, so this may be a silly suggestion, but are you sure your root
+> > > filesystem and busybox are little-endian? It would be an easy mistake to
+> > > make...
+> > >
+> > > > thanks. Andrew
+> > >
+> > > David VL
+> > 
+> > I have some clue on this issue now. It seems there is some problem with
+> > the serial console operating in interrupt mode. If the 8250 is in
+> > polling mode(set the IRQ for the 8250 serial port to 0), the output on
+> > the console is fine. But with 8250 in interrupt mode, 8250 serial driver
+> > does not receive any interrupt in serial8250_interrupt(). The same board
+> > works just fine when operating in little endian mode with interruption.
+> > I probably need to change something in IRQ initialization for big
+> > endian. I will post my solution when I can get it to work. In the
+> > meantime, any suggestion will be welcome.
 > 
->    I don't think this is really good name for this file (one might think 
-> that this is another implementation of clocksource instead of some 
-> sched_clock() code tied to this particular clocksource), and I don't 
-
-    Seriously, if this file have to live a life of its own, name it like 
-sched-r4k.c but not the way you named it -- this is not another clocksource 
-module...
-
-WBR, Sergei
+> Do you need that patch to work in little-endian: 
+> https://dev.openwrt.org/browser/trunk/target/linux/ar7/patches-2.6.30/500-
+> serial_kludge.patch ? If so, you are likely to need it in big-endian too
+> since 
+> it works around a silicon issue.
+> -- 
+> Best regards, Florian Fainelli
+> Email: florian@openwrt.org
+> Web: http://openwrt.org
+> IRC: [florian] on irc.freenode.net
+> -------------------------------
+I did not need the patch for little endian. For the UART type, I used
+PORT_16550 instead of AR7 and it worked just fine. Thanks for the
+suggestion though.
+Best regards, Andrew

@@ -1,89 +1,236 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Nov 2009 05:45:30 +0100 (CET)
-Received: from mail-yx0-f193.google.com ([209.85.210.193]:63627 "EHLO
-        mail-yx0-f193.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492036AbZK0Ep1 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Nov 2009 05:45:27 +0100
-Received: by yxe31 with SMTP id 31so1057299yxe.21
-        for <multiple recipients>; Thu, 26 Nov 2009 20:45:20 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Nov 2009 07:55:15 +0100 (CET)
+Received: from mail-ew0-f223.google.com ([209.85.219.223]:49360 "EHLO
+        mail-ew0-f223.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1491944AbZK0GzM (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Nov 2009 07:55:12 +0100
+Received: by ewy23 with SMTP id 23so1451047ewy.24
+        for <multiple recipients>; Thu, 26 Nov 2009 22:55:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:message-id:date:from
-         :user-agent:mime-version:to:cc:subject:references:in-reply-to
-         :content-type:content-transfer-encoding;
-        bh=UjrkyaCu/519Ro70cXVykuoGOIntb1jGTKYyawFu0Cc=;
-        b=UC5O31fjyBCgsyqsJkb0+gsazN0ngXIJ+cn1ND4kcq0iMAIiihwh+QfSlsqHmCelVW
-         pH8UqSUfvfzC1pReGBLRr2BKNIEiyJJObVu9fTWf2Y+QBsso5cyOYeGbDPoxCERZ9qOM
-         zQQ3f+WgrW4K3YPZNL7O8jA4alsG1p17UXTTc=
+        h=domainkey-signature:received:received:date:from:to:cc:subject
+         :message-id:mime-version:content-type:content-disposition:user-agent;
+        bh=ch7RgbAWX+BlFXw2IGnDKO7wu72PvcxCIJ8kaIJBY5w=;
+        b=Pzg2n1iZi0lbp3mqbODdVwMjAhxeLml8OEAgkgAAOkCS1u7m06StYEzyQCp0YTlgiH
+         w726N3lK6naVP0yTpWlraWCv5dV0UneL3lY2t1f8olSt+0Vfi0zjhTn7ZMcK9T2/gKcw
+         0kNsU4zWdIW52ctcJL5ctsFhBekSL7IgLeo14=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=message-id:date:from:user-agent:mime-version:to:cc:subject
-         :references:in-reply-to:content-type:content-transfer-encoding;
-        b=G9IKn84r3UT2YdDL/t69gCrEnOrA7mhvRuB78E1AdDVdkyt2DC5i2NA80tCioE7QiE
-         QG6ddseWWSK9VjCRgl/4FI4k1264WHttmxxww0pYatT3tm6VdbnUeNW0whU2T0WLgE2L
-         7fOS10gBsJr9z7519cJSzbXkLGeDYaKUFbNN4=
-Received: by 10.91.203.25 with SMTP id f25mr937095agq.13.1259297120438;
-        Thu, 26 Nov 2009 20:45:20 -0800 (PST)
-Received: from dd_xps.caveonetworks.com (adsl-68-122-43-200.dsl.pltn13.pacbell.net [68.122.43.200])
-        by mx.google.com with ESMTPS id 23sm665694yxe.18.2009.11.26.20.45.18
+        h=date:from:to:cc:subject:message-id:mime-version:content-type
+         :content-disposition:user-agent;
+        b=pRxvAVDgvy/aQc3prQcFpH/ol56cfzqDnEcECCp2fBFM58ILjRtKvwI8RLLw/DjeyJ
+         ut3ZAK7hfhhoyoB5lVSEDLaXtW1QPhtqkyjfpGq4YI4qNdzcSkd7YjGKfHTisVLNk5Lm
+         Cw9I94p+tLihm3tzABXuJOLWTsGmftaLwgMV0=
+Received: by 10.213.100.161 with SMTP id y33mr791889ebn.2.1259304905149;
+        Thu, 26 Nov 2009 22:55:05 -0800 (PST)
+Received: from x200.malnet.ru ([213.171.34.231])
+        by mx.google.com with ESMTPS id 28sm778695eye.3.2009.11.26.22.55.04
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Thu, 26 Nov 2009 20:45:19 -0800 (PST)
-Message-ID: <4B0F595C.5000204@gmail.com>
-Date:   Thu, 26 Nov 2009 20:45:16 -0800
-From:   David Daney <david.s.daney@gmail.com>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.4pre) Gecko/20091014 Fedora/3.0-2.8.b4.fc11 Thunderbird/3.0b4
+        Thu, 26 Nov 2009 22:55:04 -0800 (PST)
+Date:   Fri, 27 Nov 2009 09:55:03 +0300
+From:   Alexey Dobriyan <adobriyan@gmail.com>
+To:     ralf@linux-mips.org
+Cc:     akpm@linux-foundation.org, linux-mips@linux-mips.org
+Subject: [PATCH] mips lasat: convert to proc_fops/seq_file
+Message-ID: <20091127065502.GE26327@x200.malnet.ru>
 MIME-Version: 1.0
-To:     wuzhangjin@gmail.com, Ralf Baechle <ralf@linux-mips.org>
-CC:     Sergei Shtylyov <sshtylyov@ru.mvista.com>,
-        Ingo Molnar <mingo@elte.hu>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-mips@linux-mips.org, Michal Simek <monstr@monstr.eu>
-Subject: Re: [PATCH v5] MIPS: Add a high resolution sched_clock() via cnt32_to_63().
-References: <39b95d02b37cd75d275b231c31abb00aefda9078.1258972025.git.wuzhangjin@gmail.com>         <4B0A8A0B.60405@ru.mvista.com>  <4B0EC5CB.5060701@ru.mvista.com> <1259291134.3197.86.camel@falcon.domain.org>
-In-Reply-To: <1259291134.3197.86.camel@falcon.domain.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <david.s.daney@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.20 (2009-06-14)
+Return-Path: <adobriyan@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25166
+X-archive-position: 25167
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: david.s.daney@gmail.com
+X-original-sender: adobriyan@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-On 11/26/2009 07:05 PM, Wu Zhangjin wrote:
-> On Thu, 2009-11-26 at 21:15 +0300, Sergei Shtylyov wrote:
-[...]
->>>
->>>     I don't think this is really good name for this file (one might think
->>> that this is another implementation of clocksource instead of some
->>> sched_clock() code tied to this particular clocksource), and I don't
->>>        
->>      Seriously, if this file have to live a life of its own, name it like
->> sched-r4k.c but not the way you named it -- this is not another clocksource
->> module...
->>
->>      
-> Hello, Sergei Shtylyov, I will use hres_sched_clock.c instead of
-> sched-r4k.c, is it okay?
->
-> Hi, Ralf, which one will you apply? If hres_sched_clock.c is okay, I
-> will resend it asap.
->    
+Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+---
 
-Like Sergei, I think putting this in a seperate file is a bad idea.  
-This sched_clock is just a slightly different view of the csrc-r4k.c  
-put it in there.
+ arch/mips/lasat/picvue_proc.c |  106 ++++++++++++++++++++++++++----------------
+ 1 file changed, 66 insertions(+), 40 deletions(-)
 
-Octeon has its own clock source (cavium-octeon/scrc-octeon.c) and 
-doesn't use csrc-r4k, so if you put it in a seperate file, there will 
-have to be makefile hackery to keep this thing out of an octeon kernel.
-
-When and if you add this to csrc-r4k, I will submit the patch (already 
-written) that adds a high resolution sched_clock() to csrc-octeon.c.
-
-Thanks,
-David Daney
+--- a/arch/mips/lasat/picvue_proc.c
++++ b/arch/mips/lasat/picvue_proc.c
+@@ -10,6 +10,7 @@
+ #include <linux/errno.h>
+ 
+ #include <linux/proc_fs.h>
++#include <linux/seq_file.h>
+ #include <linux/interrupt.h>
+ 
+ #include <linux/timer.h>
+@@ -38,12 +39,9 @@ static void pvc_display(unsigned long data)
+ 
+ static DECLARE_TASKLET(pvc_display_tasklet, &pvc_display, 0);
+ 
+-static int pvc_proc_read_line(char *page, char **start,
+-			     off_t off, int count,
+-			     int *eof, void *data)
++static int pvc_line_proc_show(struct seq_file *m, void *v)
+ {
+-	char *origpage = page;
+-	int lineno = *(int *)data;
++	int lineno = *(int *)m->private;
+ 
+ 	if (lineno < 0 || lineno > PVC_NLINES) {
+ 		printk(KERN_WARNING "proc_read_line: invalid lineno %d\n", lineno);
+@@ -51,17 +49,23 @@ static int pvc_proc_read_line(char *page, char **start,
+ 	}
+ 
+ 	mutex_lock(&pvc_mutex);
+-	page += sprintf(page, "%s\n", pvc_lines[lineno]);
++	seq_printf(m, "%s\n", pvc_lines[lineno]);
+ 	mutex_unlock(&pvc_mutex);
+ 
+-	return page - origpage;
++	return 0;
++}
++
++static int pvc_line_proc_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, pvc_line_proc_show, PDE(inode)->data);
+ }
+ 
+-static int pvc_proc_write_line(struct file *file, const char *buffer,
+-			   unsigned long count, void *data)
++static ssize_t pvc_line_proc_write(struct file *file, const char __user *buf,
++				   size_t count, loff_t *pos)
+ {
+-	int origcount = count;
+-	int lineno = *(int *)data;
++	int lineno = *(int *)PDE(file->f_path.dentry->d_inode)->data;
++	char kbuf[PVC_LINELEN];
++	size_t len;
+ 
+ 	if (lineno < 0 || lineno > PVC_NLINES) {
+ 		printk(KERN_WARNING "proc_write_line: invalid lineno %d\n",
+@@ -69,27 +73,46 @@ static int pvc_proc_write_line(struct file *file, const char *buffer,
+ 		return origcount;
+ 	}
+ 
+-	if (count > PVC_LINELEN)
+-		count = PVC_LINELEN;
++	len = min(count, sizeof(kbuf) - 1);
++	if (copy_from_user(kbuf, buf, len))
++		return -EFAULT;
++	kbuf[len] = '\0';
+ 
+-	if (buffer[count-1] == '\n')
+-		count--;
++	if (len > 0 && kbuf[len - 1] == '\n')
++		len--;
+ 
+ 	mutex_lock(&pvc_mutex);
+-	strncpy(pvc_lines[lineno], buffer, count);
+-	pvc_lines[lineno][count] = '\0';
++	strncpy(pvc_lines[lineno], kbuf, len);
++	pvc_lines[lineno][len] = '\0';
+ 	mutex_unlock(&pvc_mutex);
+ 
+ 	tasklet_schedule(&pvc_display_tasklet);
+ 
+-	return origcount;
++	return count;
+ }
+ 
+-static int pvc_proc_write_scroll(struct file *file, const char *buffer,
+-			   unsigned long count, void *data)
++static const struct file_operations pvc_line_proc_fops = {
++	.owner		= THIS_MODULE,
++	.open		= pvc_line_proc_open,
++	.read		= seq_read,
++	.llseek		= seq_lseek,
++	.release	= single_release,
++	.write		= pvc_line_proc_write,
++};
++
++static ssize_t pvc_scroll_proc_write(struct file *file, const char __user *buf,
++				     size_t count, loff_t *pos)
+ {
+-	int origcount = count;
+-	int cmd = simple_strtol(buffer, NULL, 10);
++	char kbuf[42];
++	size_t len;
++	int cmd;
++
++	len = min(count, sizeof(kbuf) - 1);
++	if (copy_from_user(kbuf, buf, len))
++		return -EFAULT;
++	kbuf[len] = '\0';
++
++	cmd = simple_strtol(kbuf, NULL, 10);
+ 
+ 	mutex_lock(&pvc_mutex);
+ 	if (scroll_interval != 0)
+@@ -110,22 +133,31 @@ static int pvc_proc_write_scroll(struct file *file, const char *buffer,
+ 	}
+ 	mutex_unlock(&pvc_mutex);
+ 
+-	return origcount;
++	return count;
+ }
+ 
+-static int pvc_proc_read_scroll(char *page, char **start,
+-			     off_t off, int count,
+-			     int *eof, void *data)
++static int pvc_scroll_proc_show(struct seq_file *m, void *v)
+ {
+-	char *origpage = page;
+-
+ 	mutex_lock(&pvc_mutex);
+-	page += sprintf(page, "%d\n", scroll_dir * scroll_interval);
++	seq_printf(m, "%d\n", scroll_dir * scroll_interval);
+ 	mutex_unlock(&pvc_mutex);
+ 
+-	return page - origpage;
++	return 0;
++}
++
++static int pvc_scroll_proc_open(struct inode *inode, struct file *file)
++{
++	return single_open(file, pvc_scroll_proc_show, NULL);
+ }
+ 
++static const struct file_operations pvc_scroll_proc_fops = {
++	.owner		= THIS_MODULE,
++	.open		= pvc_scroll_proc_open,
++	.read		= seq_read,
++	.llseek		= seq_lseek,
++	.release	= single_release,
++	.write		= pvc_scroll_proc_write,
++};
+ 
+ void pvc_proc_timerfunc(unsigned long data)
+ {
+@@ -163,22 +195,16 @@ static int __init pvc_proc_init(void)
+ 		pvc_linedata[i] = i;
+ 	}
+ 	for (i = 0; i < PVC_NLINES; i++) {
+-		proc_entry = create_proc_entry(pvc_linename[i], 0644,
+-					       pvc_display_dir);
++		proc_entry = proc_create_data(pvc_linename[i], 0644, pvc_display_dir,
++					&pvc_line_proc_fops, &pvc_linedata[i]);
+ 		if (proc_entry == NULL)
+ 			goto error;
+-
+-		proc_entry->read_proc = pvc_proc_read_line;
+-		proc_entry->write_proc = pvc_proc_write_line;
+-		proc_entry->data = &pvc_linedata[i];
+ 	}
+-	proc_entry = create_proc_entry("scroll", 0644, pvc_display_dir);
++	proc_entry = proc_create("scroll", 0644, pvc_display_dir,
++				 &pvc_scroll_proc_fops);
+ 	if (proc_entry == NULL)
+ 		goto error;
+ 
+-	proc_entry->write_proc = pvc_proc_write_scroll;
+-	proc_entry->read_proc = pvc_proc_read_scroll;
+-
+ 	init_timer(&timer);
+ 	timer.function = pvc_proc_timerfunc;
+ 

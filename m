@@ -1,28 +1,30 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Nov 2009 10:18:30 +0100 (CET)
-Received: from cantor2.suse.de ([195.135.220.15]:35752 "EHLO mx2.suse.de"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Nov 2009 10:20:18 +0100 (CET)
+Received: from cantor.suse.de ([195.135.220.2]:34971 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492047AbZK0JSZ (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 27 Nov 2009 10:18:25 +0100
+        id S1492047AbZK0JUN (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 27 Nov 2009 10:20:13 +0100
 Received: from relay2.suse.de (charybdis-ext.suse.de [195.135.221.2])
-        by mx2.suse.de (Postfix) with ESMTP id C8CD9A40A6;
-        Fri, 27 Nov 2009 10:18:24 +0100 (CET)
-Date:   Fri, 27 Nov 2009 10:18:24 +0100
-Message-ID: <s5h7htc5nrz.wl%tiwai@suse.de>
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.suse.de (Postfix) with ESMTP id BCAB99F700;
+        Fri, 27 Nov 2009 10:20:12 +0100 (CET)
+Date:   Fri, 27 Nov 2009 10:20:12 +0100
+Message-ID: <s5h638w5noz.wl%tiwai@suse.de>
 From:   Takashi Iwai <tiwai@suse.de>
-To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc:     alsa-devel@alsa-project.org, Ralf Baechle <ralf@linux-mips.org>,
-        Wu Zhangjin <wuzhangjin@gmail.com>,
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     alsa-devel@alsa-project.org, Wu Zhangjin <wuzhangjin@gmail.com>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-mips@linux-mips.org, Kumar Gala <galak@gate.crashing.org>,
+        linux-mips@linux-mips.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Kumar Gala <galak@gate.crashing.org>,
         Becky Bruce <beckyb@kernel.crashing.org>
-Subject: Re: [PATCH 4/5] ALSA: pcm - fix page conversion on non-coherent PPC arch
-In-Reply-To: <1259268704.18084.4.camel@pasglop>
+Subject: Re: [PATCH 3/5] ALSA: pcm - fix page conversion on non-coherent MIPS arch
+In-Reply-To: <20091127084635.GA18741@linux-mips.org>
 References: <1259248388-20095-1-git-send-email-tiwai@suse.de>
         <1259248388-20095-2-git-send-email-tiwai@suse.de>
         <1259248388-20095-3-git-send-email-tiwai@suse.de>
         <1259248388-20095-4-git-send-email-tiwai@suse.de>
-        <1259248388-20095-5-git-send-email-tiwai@suse.de>
-        <1259268704.18084.4.camel@pasglop>
+        <20091127084635.GA18741@linux-mips.org>
 User-Agent: Wanderlust/2.15.6 (Almost Unreal) SEMI/1.14.6 (Maruoka)
  FLIM/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL/10.7 Emacs/23.1
  (x86_64-suse-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -32,7 +34,7 @@ Return-Path: <tiwai@suse.de>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25172
+X-archive-position: 25173
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -40,32 +42,38 @@ X-original-sender: tiwai@suse.de
 Precedence: bulk
 X-list: linux-mips
 
-At Fri, 27 Nov 2009 07:51:44 +1100,
-Benjamin Herrenschmidt wrote:
+At Fri, 27 Nov 2009 08:46:35 +0000,
+Ralf Baechle wrote:
 > 
-> On Thu, 2009-11-26 at 16:13 +0100, Takashi Iwai wrote:
-> > The non-cohernet PPC arch doesn't give the correct address by a simple
+> On Thu, Nov 26, 2009 at 04:13:06PM +0100, Takashi Iwai wrote:
+> 
+> > The non-coherent MIPS arch doesn't give the correct address by a simple
 > > virt_to_page() for pages allocated via dma_alloc_coherent().
-> > This patch adds a hack to fix the conversion similarly like MIPS.
 > > 
+> > Original patch by Wu Zhangjin <wuzj@lemote.com>.  A proper check of the
+> > buffer allocation type was added to avoid the wrong conversion.
+> 
+> The origins of this patch go back far further.  The oldest patch I could
+> find which is a superset of this was written by Atsushi Nemoto and
+> various incarnations of it have been sumitted to and reject by me
+> a number of times through the years.
+> 
 > > Note that this doesn't fix perfectly: the pages should be marked with
 > > proper pgprot value.  This will be done in a future implementation like
 > > the conversion to dma_mmap_coherent().
 > > 
 > > Signed-off-by: Takashi Iwai <tiwai@suse.de>
 > 
-> This will not work with swiotlb, but then, I don't think we have -yet-
-> to deal with a platform that does both swiotlb and isn't DMA
-> coherent :-)
+> So while this is ugly I don't think this patch will actually make the
+> the situation worse for any MIPS platform.  So with both eyes closed:
 > 
-> Of course, the conversion to dma_mmap_coherent will makes things better
-> though we really will want to push that function into the dma ops.
-> 
-> So it's hackish but for now its an
-> 
-> Acked-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Acked-by: Ralf Baechle <ralf@linux-mips.org>
 
-Thanks, I added your ack to the GIT commit.
+I added your ack with the comment about the origins to the GIT
+commit now.
+
+Thanks for closing your eyes ;)  Hopefully this hack can be removed
+again shortly...
 
 
 Takashi

@@ -1,108 +1,69 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Nov 2009 09:35:34 +0100 (CET)
-Received: from mail-px0-f173.google.com ([209.85.216.173]:33517 "EHLO
-        mail-px0-f173.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492190AbZK0Ifa (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Fri, 27 Nov 2009 09:35:30 +0100
-Received: by pxi3 with SMTP id 3so1011919pxi.22
-        for <multiple recipients>; Fri, 27 Nov 2009 00:35:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=bLm9EbdKoVv8/atLqy/5Stm6kYNfQwf26RaT+Ux9BKo=;
-        b=o8OIq6dHsTgI6Ptr2LxZpUeOwxyRvoz2QYxwumoA3FEm9dm6iWjTB4geOAwd+S5wmG
-         4ELJtO0VnRmwMGHAV8Y+xqIIWuNbm3VOTqZKSXz7wrFfhGrjHmwgHdwYz3Yqgp49oRkm
-         9S3AI8zO1qoA8atzrG2H3HVjvDFw1GXT8VopA=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=IO1X912BqL5sF719tfAADF6I9OlFz7dEdSRBidTkYLjE+AH+2z2fv8eXKBIlR2xg36
-         CyVCrcBMphE3lIDZ08DuVQcFMdlMt7NgFLHALBY8GyeeV2PanhXqmHf2yFyECvr080kZ
-         4cgRfc2cXlqfUY039GplTr1EqcZVcBr90fAEk=
-Received: by 10.114.18.37 with SMTP id 37mr1514291war.143.1259310923028;
-        Fri, 27 Nov 2009 00:35:23 -0800 (PST)
-Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 21sm1077579pxi.8.2009.11.27.00.35.17
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Fri, 27 Nov 2009 00:35:22 -0800 (PST)
-Subject: Re: [PATCH v5] MIPS: Add a high resolution sched_clock() via
- cnt32_to_63().
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     David Daney <david.s.daney@gmail.com>,
-        Sergei Shtylyov <sshtylyov@ru.mvista.com>,
-        Ingo Molnar <mingo@elte.hu>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-mips@linux-mips.org, Michal Simek <monstr@monstr.eu>
-In-Reply-To: <4B0F595C.5000204@gmail.com>
-References: <39b95d02b37cd75d275b231c31abb00aefda9078.1258972025.git.wuzhangjin@gmail.com>
-         <4B0A8A0B.60405@ru.mvista.com>  <4B0EC5CB.5060701@ru.mvista.com>
-         <1259291134.3197.86.camel@falcon.domain.org>  <4B0F595C.5000204@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:   Fri, 27 Nov 2009 16:35:02 +0800
-Message-ID: <1259310902.3197.97.camel@falcon.domain.org>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Nov 2009 09:46:35 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:34165 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1492237AbZK0Iqc (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 27 Nov 2009 09:46:32 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nAR8kc9o019043;
+        Fri, 27 Nov 2009 08:46:38 GMT
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nAR8kZpS019041;
+        Fri, 27 Nov 2009 08:46:35 GMT
+Date:   Fri, 27 Nov 2009 08:46:35 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Takashi Iwai <tiwai@suse.de>
+Cc:     alsa-devel@alsa-project.org, Wu Zhangjin <wuzhangjin@gmail.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        linux-mips@linux-mips.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Kumar Gala <galak@gate.crashing.org>,
+        Becky Bruce <beckyb@kernel.crashing.org>
+Subject: Re: [PATCH 3/5] ALSA: pcm - fix page conversion on non-coherent MIPS
+ arch
+Message-ID: <20091127084635.GA18741@linux-mips.org>
+References: <1259248388-20095-1-git-send-email-tiwai@suse.de>
+ <1259248388-20095-2-git-send-email-tiwai@suse.de>
+ <1259248388-20095-3-git-send-email-tiwai@suse.de>
+ <1259248388-20095-4-git-send-email-tiwai@suse.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1259248388-20095-4-git-send-email-tiwai@suse.de>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25170
+X-archive-position: 25171
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-Hi, Ralf
+On Thu, Nov 26, 2009 at 04:13:06PM +0100, Takashi Iwai wrote:
 
-This patch is not applicable, please ignore it!
+> The non-coherent MIPS arch doesn't give the correct address by a simple
+> virt_to_page() for pages allocated via dma_alloc_coherent().
+> 
+> Original patch by Wu Zhangjin <wuzj@lemote.com>.  A proper check of the
+> buffer allocation type was added to avoid the wrong conversion.
 
-Thanks!
-	Wu Zhangjin
+The origins of this patch go back far further.  The oldest patch I could
+find which is a superset of this was written by Atsushi Nemoto and
+various incarnations of it have been sumitted to and reject by me
+a number of times through the years.
 
-On Thu, 2009-11-26 at 20:45 -0800, David Daney wrote:
-> On 11/26/2009 07:05 PM, Wu Zhangjin wrote:
-> > On Thu, 2009-11-26 at 21:15 +0300, Sergei Shtylyov wrote:
-> [...]
-> >>>
-> >>>     I don't think this is really good name for this file (one might think
-> >>> that this is another implementation of clocksource instead of some
-> >>> sched_clock() code tied to this particular clocksource), and I don't
-> >>>        
-> >>      Seriously, if this file have to live a life of its own, name it like
-> >> sched-r4k.c but not the way you named it -- this is not another clocksource
-> >> module...
-> >>
-> >>      
-> > Hello, Sergei Shtylyov, I will use hres_sched_clock.c instead of
-> > sched-r4k.c, is it okay?
-> >
-> > Hi, Ralf, which one will you apply? If hres_sched_clock.c is okay, I
-> > will resend it asap.
-> >    
+> Note that this doesn't fix perfectly: the pages should be marked with
+> proper pgprot value.  This will be done in a future implementation like
+> the conversion to dma_mmap_coherent().
 > 
-> Like Sergei, I think putting this in a seperate file is a bad idea.  
-> This sched_clock is just a slightly different view of the csrc-r4k.c  
-> put it in there.
-> 
-> Octeon has its own clock source (cavium-octeon/scrc-octeon.c) and 
-> doesn't use csrc-r4k, so if you put it in a seperate file, there will 
-> have to be makefile hackery to keep this thing out of an octeon kernel.
-> 
-> When and if you add this to csrc-r4k, I will submit the patch (already 
-> written) that adds a high resolution sched_clock() to csrc-octeon.c.
-> 
-> Thanks,
-> David Daney
-> 
-> 
-> 
-> 
+> Signed-off-by: Takashi Iwai <tiwai@suse.de>
+
+So while this is ugly I don't think this patch will actually make the
+the situation worse for any MIPS platform.  So with both eyes closed:
+
+Acked-by: Ralf Baechle <ralf@linux-mips.org>
+
+  Ralf

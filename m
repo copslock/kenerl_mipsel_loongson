@@ -1,31 +1,43 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Nov 2009 08:56:45 +0100 (CET)
-Received: from h5.dl5rb.org.uk ([81.2.74.5]:35860 "EHLO h5.dl5rb.org.uk"
+Received: with ECARTIS (v1.0.0; list linux-mips); Fri, 27 Nov 2009 09:17:19 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:34278 "EHLO h5.dl5rb.org.uk"
         rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
-        id S1492009AbZK0H4m (ORCPT <rfc822;linux-mips@linux-mips.org>);
-        Fri, 27 Nov 2009 08:56:42 +0100
+        id S1492190AbZK0IRQ (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Fri, 27 Nov 2009 09:17:16 +0100
 Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
-        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nAR7urTn006504;
-        Fri, 27 Nov 2009 07:56:53 GMT
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nAR8Gxih014596;
+        Fri, 27 Nov 2009 08:17:00 GMT
 Received: (from ralf@localhost)
-        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nAR7upol006493;
-        Fri, 27 Nov 2009 07:56:51 GMT
-Date:   Fri, 27 Nov 2009 07:56:51 +0000
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nAR8Gusc014594;
+        Fri, 27 Nov 2009 08:16:56 GMT
+Date:   Fri, 27 Nov 2009 08:16:56 +0000
 From:   Ralf Baechle <ralf@linux-mips.org>
-To:     Alexey Dobriyan <adobriyan@gmail.com>
-Cc:     akpm@linux-foundation.org, linux-mips@linux-mips.org
-Subject: Re: [PATCH] mips lasat: convert to proc_fops/seq_file
-Message-ID: <20091127075650.GA29128@linux-mips.org>
-References: <20091127065502.GE26327@x200.malnet.ru>
+To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+        Ming Lei <tom.leiming@gmail.com>,
+        Henrique de Moraes Holschuh <hmh@hmh.eng.br>,
+        Greg Kroah-Hartman <gregkh@suse.de>,
+        David Brownell <dbrownell@users.sourceforge.net>,
+        linux-mips@linux-mips.org
+Subject: Re: [PATCH 06/38] move iodev_remove to .devexit.text
+Message-ID: <20091127081656.GA6948@linux-mips.org>
+References: <1259096853-18909-1-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1259096853-18909-2-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1259096853-18909-3-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1259096853-18909-4-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1259096853-18909-5-git-send-email-u.kleine-koenig@pengutronix.de>
+ <1259096853-18909-6-git-send-email-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20091127065502.GE26327@x200.malnet.ru>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1259096853-18909-6-git-send-email-u.kleine-koenig@pengutronix.de>
 User-Agent: Mutt/1.5.20 (2009-08-17)
 Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25168
+X-archive-position: 25169
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -33,11 +45,11 @@ X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Fri, Nov 27, 2009 at 09:55:03AM +0300, Alexey Dobriyan wrote:
+On Tue, Nov 24, 2009 at 10:07:01PM +0100, Uwe Kleine-König wrote:
 
-Queued for 2.6.33 - but would be great if one of the Lasat users could
-test this.
+> The function iodev_remove is used only wrapped by __devexit_p so define
+> it using __devexit.
 
-Thanks!
+Thanks, queued for 2.6.33.
 
   Ralf

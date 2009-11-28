@@ -1,44 +1,46 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Nov 2009 14:31:54 +0100 (CET)
-Received: from mail-pw0-f45.google.com ([209.85.160.45]:54357 "EHLO
-        mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492813AbZK1Nbv (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 28 Nov 2009 14:31:51 +0100
-Received: by pwi15 with SMTP id 15so1449435pwi.24
-        for <multiple recipients>; Sat, 28 Nov 2009 05:31:45 -0800 (PST)
+Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Nov 2009 14:32:29 +0100 (CET)
+Received: from mail-pz0-f197.google.com ([209.85.222.197]:38259 "EHLO
+        mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492813AbZK1Nc0 (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sat, 28 Nov 2009 14:32:26 +0100
+Received: by pzk35 with SMTP id 35so1642891pzk.22
+        for <multiple recipients>; Sat, 28 Nov 2009 05:32:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=gamma;
         h=domainkey-signature:received:received:from:to:cc:subject:date
-         :message-id:x-mailer;
-        bh=z6CLvXFzsSkEgY0BrZhLj+q7AG8z2HWH168SAJgqGxc=;
-        b=dxqtzDTy16i0OE/sWV2HdG/2+FufICWe860hPRvc9wYjUwq4ip8T3rsQppq0gQDsjr
-         AOqUOkvIqvh1j/I4AnuVkS+bq85KYL+MhJaftjpo5FtnUsI9DLgdkmXbfjyyL0/bk0Xl
-         4JEaEygPI1bG21tWjQJ7bZhmiq/cLPsB7qcCQ=
+         :message-id:x-mailer:in-reply-to:references;
+        bh=HFYSN0IXtJ50L6H3h1pPKd+UhjsWhfx1ZLTJaxlQp1s=;
+        b=resFbM0O63/XJroA5GJP1+f62+p/rw2q1o5Kb94a4sNMW1SM7KbNHmkktnhvLMKd0J
+         AwdDAjPPOtiaOzOnesh/1SSHYzixPi8WfPT2m0bTUs4QlpMw+0aFs6hZEzb2x4S/1XT1
+         rsoRPh8HfeMe5pcqpIUMzulIMkJV7Vbpp63YU=
 DomainKey-Signature: a=rsa-sha1; c=nofws;
         d=gmail.com; s=gamma;
-        h=from:to:cc:subject:date:message-id:x-mailer;
-        b=uNWB6anoW00gA/cmZNvpKJne8gKX1Guj1kH0QteRpyDZQKzfzGPpNXMik/oYmuTo/5
-         3zWdegyRXk8hl7JPHns9zk6liwSNkmZZdYuOt+WVDFxqaKIDu2cviU1bz2dlfBm3N6no
-         /VIluUNI4xEhhoEmaZ7s6EzKUbJ/BtQHZdNYw=
-Received: by 10.114.248.7 with SMTP id v7mr3900001wah.92.1259415104838;
-        Sat, 28 Nov 2009 05:31:44 -0800 (PST)
+        h=from:to:cc:subject:date:message-id:x-mailer:in-reply-to:references;
+        b=TFm/SW6+KSLurLJxsEyI7ilFAqcr8YPHffry8gCGlA9PNUd9WWoDXaxWXp/OVcJYMU
+         QIlTQieE8sS/eFBNnsFJ71HzBNzVnhJo1c15vVWKugu/mAinxLX6uG1SFy9mXD1qJWK5
+         /MYlQs7mu1UlSe1hc6Zi9+Hvrb7AaJDGOf0k4=
+Received: by 10.115.114.9 with SMTP id r9mr3926138wam.19.1259415139637;
+        Sat, 28 Nov 2009 05:32:19 -0800 (PST)
 Received: from localhost.localdomain ([222.92.8.142])
-        by mx.google.com with ESMTPS id 22sm1948246pzk.14.2009.11.28.05.31.38
+        by mx.google.com with ESMTPS id 23sm1962995pzk.12.2009.11.28.05.32.08
         (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sat, 28 Nov 2009 05:31:44 -0800 (PST)
+        Sat, 28 Nov 2009 05:32:19 -0800 (PST)
 From:   Wu Zhangjin <wuzhangjin@gmail.com>
 To:     Ralf Baechle <ralf@linux-mips.org>
 Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         linux-mips@linux-mips.org, zhangfx@lemote.com, yanh@lemote.com,
         huhb@lemote.com, Wu Zhangjin <wuzhangjin@gmail.com>
-Subject: [PATCH v5 0/8] Loongson: YeeLoong: add platform specific drivers
-Date:   Sat, 28 Nov 2009 21:31:29 +0800
-Message-Id: <cover.1259414649.git.wuzhangjin@gmail.com>
+Subject: [PATCH v5 1/8] Loongson: Lemote-2F: add platform specific submenu
+Date:   Sat, 28 Nov 2009 21:31:54 +0800
+Message-Id: <3baeafb2eae57ce9bd2a8130c0f5b4899ff37182.1259414649.git.wuzhangjin@gmail.com>
 X-Mailer: git-send-email 1.6.2.1
+In-Reply-To: <cover.1259414649.git.wuzhangjin@gmail.com>
+References: <cover.1259414649.git.wuzhangjin@gmail.com>
 Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25183
+X-archive-position: 25184
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
@@ -48,52 +50,38 @@ X-list: linux-mips
 
 From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-This patchset adds platform specific drivers for YeeLoong.
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/mips/loongson/Kconfig |   20 ++++++++++++++++++++
+ 1 files changed, 20 insertions(+), 0 deletions(-)
 
-Changes from the v4 revision:
-	
-	- Split the drivers into its own module
-	- Incorporates with the feedback of the Input(hotkey) driver from
-	Dmitry Torokhov.
-	- Cleanups and fixups
-
-Wu Zhangjin (8):
-  Loongson: Lemote-2F: add platform specific submenu
-  Loongson: YeeLoong: add platform specific option
-  Loongson: YeeLoong: add backlight driver
-  Loongson: YeeLoong: add battery driver
-  Loongson: YeeLoong: add hwmon driver
-  Loongson: YeeLoong: add video output driver
-  Loongson: YeeLoong: add suspend driver
-  Loongson: YeeLoong: add hotkey driver
-
- arch/mips/kernel/setup.c                           |    1 +
- arch/mips/loongson/Kconfig                         |   21 +
- arch/mips/loongson/lemote-2f/Makefile              |    7 +-
- arch/mips/loongson/lemote-2f/ec_kb3310b.c          |  130 ------
- arch/mips/loongson/lemote-2f/ec_kb3310b.h          |  188 --------
- arch/mips/loongson/lemote-2f/pm.c                  |    4 +-
- arch/mips/loongson/lemote-2f/reset.c               |    2 +-
- .../loongson/lemote-2f/yeeloong_laptop/Kconfig     |   69 +++
- .../loongson/lemote-2f/yeeloong_laptop/Makefile    |   10 +
- .../loongson/lemote-2f/yeeloong_laptop/backlight.c |   93 ++++
- .../loongson/lemote-2f/yeeloong_laptop/battery.c   |  127 ++++++
- .../lemote-2f/yeeloong_laptop/ec_kb3310b.c         |  126 ++++++
- .../lemote-2f/yeeloong_laptop/ec_kb3310b.h         |  194 ++++++++
- .../loongson/lemote-2f/yeeloong_laptop/hotkey.c    |  468 ++++++++++++++++++++
- .../loongson/lemote-2f/yeeloong_laptop/hwmon.c     |  241 ++++++++++
- .../loongson/lemote-2f/yeeloong_laptop/suspend.c   |  141 ++++++
- .../lemote-2f/yeeloong_laptop/video_output.c       |  164 +++++++
- 17 files changed, 1664 insertions(+), 322 deletions(-)
- delete mode 100644 arch/mips/loongson/lemote-2f/ec_kb3310b.c
- delete mode 100644 arch/mips/loongson/lemote-2f/ec_kb3310b.h
- create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/Kconfig
- create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/Makefile
- create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/backlight.c
- create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/battery.c
- create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/ec_kb3310b.c
- create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/ec_kb3310b.h
- create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/hotkey.c
- create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/hwmon.c
- create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/suspend.c
- create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/video_output.c
+diff --git a/arch/mips/loongson/Kconfig b/arch/mips/loongson/Kconfig
+index 3df1967..a34dfcc 100644
+--- a/arch/mips/loongson/Kconfig
++++ b/arch/mips/loongson/Kconfig
+@@ -83,3 +83,23 @@ config LOONGSON_UART_BASE
+ 	bool
+ 	default y
+ 	depends on EARLY_PRINTK || SERIAL_8250
++
++#
++# Loongson Platform Specific Drivers
++#
++
++menuconfig LOONGSON_PLATFORM_DEVICES
++	bool "Loongson Platform Drivers"
++	default y
++	help
++	  Say Y here to get to see options for device drivers of various
++	  loongson platforms, including vendor-specific laptop/pc extension
++	  drivers.  This option alone does not add any kernel code.
++
++	  If you say N, all options in this submenu will be skipped and disabled.
++
++if LOONGSON_PLATFORM_DEVICES
++# Put platform specific stuff here
++
++
++endif # LOONGSON_PLATFORM_DEVICES
+-- 
+1.6.2.1

@@ -1,69 +1,72 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Sat, 28 Nov 2009 15:39:00 +0100 (CET)
-Received: from vitalin.sorra.shikadi.net ([64.71.152.201]:2535 "EHLO
-        vitalin.sorra.shikadi.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493511AbZK1Oi5 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Sat, 28 Nov 2009 15:38:57 +0100
-Received: from berkeloid.vlook.shikadi.net ([172.16.255.5])
-        by vitalin.sorra.shikadi.net with esmtp (Exim 4.62)
-        (envelope-from <a.nielsen@shikadi.net>)
-        id 1NEORs-0005Te-79
-        for linux-mips@linux-mips.org; Sun, 29 Nov 2009 00:38:56 +1000
-Received: from korath.teln.shikadi.net ([192.168.0.14])
-        by berkeloid.teln.shikadi.net with esmtp (Exim 4.68)
-        (envelope-from <a.nielsen@shikadi.net>)
-        id 1NEORr-0007zL-EB
-        for linux-mips@linux-mips.org; Sun, 29 Nov 2009 00:38:55 +1000
-Message-ID: <4B1135FF.9050908@shikadi.net>
-Date:   Sun, 29 Nov 2009 00:38:55 +1000
-From:   Adam Nielsen <a.nielsen@shikadi.net>
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-GB; rv:1.8.1.22) Gecko/20090809 Thunderbird/2.0.0.22 Mnenhy/0.7.5.0
+Received: with ECARTIS (v1.0.0; list linux-mips); Sun, 29 Nov 2009 06:35:44 +0100 (CET)
+Received: from mail-yx0-f193.google.com ([209.85.210.193]:58576 "EHLO
+        mail-yx0-f193.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492090AbZK2Ffl (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Sun, 29 Nov 2009 06:35:41 +0100
+Received: by yxe31 with SMTP id 31so2183719yxe.21
+        for <multiple recipients>; Sat, 28 Nov 2009 21:35:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:date:from:to:cc:subject
+         :message-id:references:mime-version:content-type:content-disposition
+         :in-reply-to:user-agent;
+        bh=r3OlSfdhsxmft6398W9Bw+wmLnRpdJ8txjQQRz9g3WU=;
+        b=gwdbGuO9u93OptM6O3QfmEdPep09in53Ut2PXTtETghS6gzrXMqjDqPjgGwoK1TvUv
+         54MG/m5s1IV2UD1htdx+dcK4aG24CXzy3vymyPrsCV1zPZxIF0JYLZrbZmpRQqjPeqim
+         Cxz32pv047X2V5mNRL8ryZB7kOevwP7paipQI=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-type:content-disposition:in-reply-to:user-agent;
+        b=g5AR/KWusRRgZHSv0W/lIm2AIqd0RGhBFlT4tLj34w/55qGHnivo/0wjEE54X57XfA
+         dl1FRJ68sAdbybXUBRJ3NchuCCkO8HO4Vv/fcQgJgoZ6sXUQ5AOql+UfC7jtX8bh+Q8T
+         ctinhdrZf7+YfAVPRhruofDhiz0d5o7x+1T14=
+Received: by 10.150.39.1 with SMTP id m1mr4664317ybm.100.1259472931608;
+        Sat, 28 Nov 2009 21:35:31 -0800 (PST)
+Received: from mailhub.coreip.homeip.net (c-24-6-153-137.hsd1.ca.comcast.net [24.6.153.137])
+        by mx.google.com with ESMTPS id 16sm632285gxk.15.2009.11.28.21.35.30
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Sat, 28 Nov 2009 21:35:30 -0800 (PST)
+Date:   Sat, 28 Nov 2009 21:35:27 -0800
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Wu Zhangjin <wuzhangjin@gmail.com>
+Cc:     Ralf Baechle <ralf@linux-mips.org>, linux-mips@linux-mips.org,
+        zhangfx@lemote.com, yanh@lemote.com, huhb@lemote.com,
+        linux-input@vger.kernel.org
+Subject: Re: [PATCH v5 8/8] Loongson: YeeLoong: add hotkey driver
+Message-ID: <20091129053527.GU6936@core.coreip.homeip.net>
+References: <cover.1259414649.git.wuzhangjin@gmail.com> <739db9c7b5bab429d0df5a7c68f301aa12f1402d.1259414649.git.wuzhangjin@gmail.com>
 MIME-Version: 1.0
-To:     linux-mips@linux-mips.org
-Subject: Setting the physical RAM map
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Return-Path: <a.nielsen@shikadi.net>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <739db9c7b5bab429d0df5a7c68f301aa12f1402d.1259414649.git.wuzhangjin@gmail.com>
+User-Agent: Mutt/1.5.19 (2009-01-05)
+Return-Path: <dmitry.torokhov@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25192
+X-archive-position: 25194
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: a.nielsen@shikadi.net
+X-original-sender: dmitry.torokhov@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Hi all,
+On Sat, Nov 28, 2009 at 09:44:41PM +0800, Wu Zhangjin wrote:
+>  
+> +config YEELOONG_HOTKEY
+> +	tristate "Hotkey Driver"
+> +	depends on YEELOONG_VO
+> +	select INPUT
 
-I'm attempting to port the Linux kernel to an NCD HMX, an R4600-based X-Terminal.
+I think this should be depend, not select. 
 
-I've currently got it to the point where it will download the kernel and 
-execute it, and start printing some messages out on the screen.
+> +	select INPUT_EVDEV
+> +	select SUSPEND
 
-It gets as far as printing the physical RAM map and then crashes, but I'm not 
-sure why:
+Does it break without SUSPEND? I am pretty sure that it will work fine
+without EVDEV (however unlikely it is not present).
 
-   Determined physical RAM map:
-    memory: 00800000 @ 40250000 (usable)
-    memory: 00040000 @ 9fc00000 (ROM data)
-   Wasting 8407552 bytes for tracking 262736 unused pages
-
-   TLB refill exception PC = 40024094 address = 7FFFF000
-
-The last message is from the boot monitor (the kernel is loaded at address 
-0x40020000.)  I'm just guessing with the memory map, but I've tried lots of 
-different values with the same result, and I'm fairly sure there is RAM mapped 
-to the address I have used above (it's after the end of the kernel.)  At any 
-rate the error message is from a completely different address, and it still 
-happens if I flag that area as reserved memory in the RAM map.
-
-Some of the MIPS devices don't seem to have code to create a memory map, so 
-I'm wondering whether this is necessary or if there's a generic MIPS way to 
-retrieve the current mapping.
-
-Also, if anyone has any ideas what the kernel is trying to do accessing that 
-invalid address I could use some hints!
-
-Many thanks,
-Adam.
+-- 
+Dmitry

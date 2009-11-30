@@ -1,96 +1,103 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Nov 2009 07:44:01 +0100 (CET)
-Received: from mail-pz0-f197.google.com ([209.85.222.197]:61333 "EHLO
-        mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1491072AbZK3Gn6 (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Nov 2009 07:43:58 +0100
-Received: by pzk35 with SMTP id 35so2347608pzk.22
-        for <multiple recipients>; Sun, 29 Nov 2009 22:43:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=YW7vTOBTD203xef5aGmtMPpPr8uejDZcS/miutpaaxE=;
-        b=qL0sxyntM7QfvHGmq8F679yO7zxxoI0qcfB+9+DMkum638UaL8Vc5JJ987vC1/BGAr
-         gf84i+HdtkIkddzymdn3UDVw026FyG+1XclO6NvRED3DMbKxJ91cnMHCjn/2M8QoUsf1
-         CYzEi6CO03bghSTrQ14W8gMCoeIfkfw708Nlo=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=UtjspL5InJXqOh09/lfNZqW//JfCKsasQywqD3Zz4bIEWrqfCAglDJ+Np6KIVGKskU
-         iTKoDuG7sicONubGdxAGaPA17imTrkqLqGfmC9srtD2ks9ZfLp+lvGeriDtPoLNsp9RA
-         Xn8FTO97MseBaFbqqxb7Bns0OkMg85VpVCfUc=
-Received: by 10.114.249.4 with SMTP id w4mr6604038wah.186.1259563430761;
-        Sun, 29 Nov 2009 22:43:50 -0800 (PST)
-Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 20sm2785129pzk.5.2009.11.29.22.43.45
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Sun, 29 Nov 2009 22:43:50 -0800 (PST)
-Subject: Re: [PATCH v5 6/8] Loongson: YeeLoong: add video output driver
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-mips@linux-mips.org, zhangfx@lemote.com, yanh@lemote.com,
-        huhb@lemote.com, luming.yu@intel.com
-In-Reply-To: <1259558346.5516.6.camel@falcon.domain.org>
-References: <cover.1259414649.git.wuzhangjin@gmail.com>
-         <dc116705b7d610d48b7d77ebd6365c5f05ad8ab7.1259414649.git.wuzhangjin@gmail.com>
-         <1259558346.5516.6.camel@falcon.domain.org>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:   Mon, 30 Nov 2009 14:43:28 +0800
-Message-ID: <1259563408.5516.19.camel@falcon.domain.org>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Nov 2009 20:00:52 +0100 (CET)
+Received: from sj-iport-4.cisco.com ([171.68.10.86]:19394 "EHLO
+        sj-iport-4.cisco.com" rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org
+        with ESMTP id S1492344AbZK3TAr (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Nov 2009 20:00:47 +0100
+Authentication-Results: sj-iport-4.cisco.com; dkim=neutral (message not signed) header.i=none
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: ApoEAP+kE0urRN+K/2dsb2JhbADCQpcEhDEEgXKBLg
+X-IronPort-AV: E=Sophos;i="4.47,315,1257120000"; 
+   d="scan'208";a="55468055"
+Received: from sj-core-4.cisco.com ([171.68.223.138])
+  by sj-iport-4.cisco.com with ESMTP; 30 Nov 2009 19:00:36 +0000
+Received: from dvomlehn-lnx2.corp.sa.net ([64.101.20.155])
+        by sj-core-4.cisco.com (8.13.8/8.14.3) with ESMTP id nAUJ0ajf002963;
+        Mon, 30 Nov 2009 19:00:36 GMT
+Date:   Mon, 30 Nov 2009 14:00:36 -0500
+From:   David VomLehn <dvomlehn@cisco.com>
+To:     Adam Nielsen <a.nielsen@shikadi.net>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: Setting the physical RAM map
+Message-ID: <20091130190036.GA24581@dvomlehn-lnx2.corp.sa.net>
+References: <4B1135FF.9050908@shikadi.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4B1135FF.9050908@shikadi.net>
+User-Agent: Mutt/1.5.18 (2008-05-17)
+Return-Path: <dvomlehn@cisco.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25207
+X-archive-position: 25208
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: dvomlehn@cisco.com
 Precedence: bulk
 X-list: linux-mips
 
-On Mon, 2009-11-30 at 13:19 +0800, Wu Zhangjin wrote:
-> On Sat, 2009-11-28 at 21:41 +0800, Wu Zhangjin wrote:
-> > From: Wu Zhangjin <wuzhangjin@gmail.com>
-> > 
-> > This patch adds Video Output Driver, which provides standard interface
-> > to turn on/off the video output of LCD, CRT.
-> > 
-> > Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
-> > ---
-> >  .../loongson/lemote-2f/yeeloong_laptop/Kconfig     |    8 +
-> >  .../loongson/lemote-2f/yeeloong_laptop/Makefile    |    1 +
-> >  .../lemote-2f/yeeloong_laptop/ec_kb3310b.h         |    3 +
-> >  .../lemote-2f/yeeloong_laptop/video_output.c       |  164 ++++++++++++++++++++
-> >  4 files changed, 176 insertions(+), 0 deletions(-)
-> >  create mode 100644 arch/mips/loongson/lemote-2f/yeeloong_laptop/video_output.c
-> > 
-> > diff --git a/arch/mips/loongson/lemote-2f/yeeloong_laptop/Kconfig b/arch/mips/loongson/lemote-2f/yeeloong_laptop/Kconfig
-> > index 56cb584..c4398ff 100644
-> > --- a/arch/mips/loongson/lemote-2f/yeeloong_laptop/Kconfig
-> > +++ b/arch/mips/loongson/lemote-2f/yeeloong_laptop/Kconfig
-> > @@ -37,4 +37,12 @@ config YEELOONG_HWMON
-> >  	  interface for lm-sensors to monitor the temperatures of CPU and
-> >  	  battery, the PWM of fan, the current, voltage of battery.
-> >  
-> > +config YEELOONG_VO
-> > +	tristate "Video Output Driver"
-> > +	select VIDEO_OUTPUT_CONTROL
-> 
-> Will use "depend" instead in the next version.
-> 
+On Sun, Nov 29, 2009 at 12:38:55AM +1000, Adam Nielsen wrote:
+> Hi all,
+>
+> I'm attempting to port the Linux kernel to an NCD HMX, an R4600-based X-Terminal.
+...
+> It gets as far as printing the physical RAM map and then crashes, but I'm 
+> not sure why:
+>
+>   Determined physical RAM map:
+>    memory: 00800000 @ 40250000 (usable)
+>    memory: 00040000 @ 9fc00000 (ROM data)
+>   Wasting 8407552 bytes for tracking 262736 unused pages
 
-Sorry to disturb you, this also must be "select", and the same to
-BACKLIGHT_CLASS_DEVICE.
+These are kernel messages, so you are getting into the kernel, but this
+looks odd to me.  The MIPS processor needs memory mapped in the first
+512 MiB to execute. This first 512 MiB will be mapped as cached memory
+at virtual address 0x80000000 (known as kseg0) and as uncached memory at
+virtual address 0x0a0000000 (known as kseg1). Perhaps you system is like
+mine, where I have memory above 512 MiB aliased into the first 512 MiB
+of physical space.
 
-> Regards,
-> 	Wu Zhangjin
+The second odd thing is the ROM data physical address. This is a good virtual
+address but as a physical address it is not accessible by the MIPS processor
+without mapping to with a TLB entry.
+
+>   TLB refill exception PC = 40024094 address = 7FFFF000
+
+This is not too surprising since the kernel is executing at an address
+must have a TLB entry to be accessible.
+
+> The last message is from the boot monitor (the kernel is loaded at 
+> address 0x40020000.)  I'm just guessing with the memory map, but I've 
+> tried lots of different values with the same result, and I'm fairly sure 
+> there is RAM mapped to the address I have used above (it's after the end 
+> of the kernel.)  At any rate the error message is from a completely 
+> different address, and it still happens if I flag that area as reserved 
+> memory in the RAM map.
+>
+> Some of the MIPS devices don't seem to have code to create a memory map, 
+> so I'm wondering whether this is necessary or if there's a generic MIPS 
+> way to retrieve the current mapping.
+
+Some MIPS processors do not have an MMU, though you'd need to consult
+the documentation to determine this. In your case, you're getting a
+TLB refill exception, so you do have an MMU.
+
+> Also, if anyone has any ideas what the kernel is trying to do accessing 
+> that invalid address I could use some hints!
+
+My guess, and since I don't have a lot of information this is a pretty
+wild guess, is that you are actually running your kernel at 0x40020000,
+and that the reason you can do this is that the bootloader has left the
+TLBs in such a state that the first few pages are mapped. Then, when it
+leaves the mapped area, it dies with the TLB refill exception.
+
+Another possibility is that you actually start off at reasonable 0x8xxxxxxx
+address, but then use a pointer that takes you off to 0x40024094.
+
+One suggestion is to look at the code at 0x40024094 to see what it's doing.
+Then, use a JTAG debugger or add printk() statements to see exactly what's
+happening.
+
+-- 
+David VL

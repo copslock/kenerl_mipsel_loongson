@@ -1,52 +1,67 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Nov 2009 21:39:13 +0100 (CET)
-Received: from 74-93-104-97-Washington.hfc.comcastbusiness.net ([74.93.104.97]:51148
-        "EHLO sunset.davemloft.net" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1492696AbZK3UjI (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Mon, 30 Nov 2009 21:39:08 +0100
-Received: from localhost (localhost [127.0.0.1])
-        by sunset.davemloft.net (Postfix) with ESMTP id A5FDD24C6E4;
-        Mon, 30 Nov 2009 12:39:01 -0800 (PST)
-Date:   Mon, 30 Nov 2009 12:39:01 -0800 (PST)
-Message-Id: <20091130.123901.09751811.davem@davemloft.net>
-To:     ralf@linux-mips.org
-Cc:     acme@infradead.org, linux-kernel@vger.kernel.org, acme@redhat.com,
-        linux-mips@linux-mips.org
-Subject: Re: [PATCH 1/1] MIPS: Wire up recvmmsg syscall
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20091130200319.GA26639@linux-mips.org>
-References: <1259610615-23996-1-git-send-email-acme@infradead.org>
-        <20091130200319.GA26639@linux-mips.org>
-X-Mailer: Mew version 6.2 on Emacs 23.1 / Mule 6.0 (HANACHIRUSATO)
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Return-Path: <davem@davemloft.net>
+Received: with ECARTIS (v1.0.0; list linux-mips); Mon, 30 Nov 2009 22:41:01 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:36981 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1492802AbZK3Vk6 (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Mon, 30 Nov 2009 22:40:58 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nAULfKsf030891;
+        Mon, 30 Nov 2009 21:41:21 GMT
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nAULfJbo030889;
+        Mon, 30 Nov 2009 21:41:19 GMT
+Date:   Mon, 30 Nov 2009 21:41:19 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     Adam Nielsen <a.nielsen@shikadi.net>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: Setting the physical RAM map
+Message-ID: <20091130214118.GB27721@linux-mips.org>
+References: <4B1135FF.9050908@shikadi.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4B1135FF.9050908@shikadi.net>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25211
+X-archive-position: 25212
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: davem@davemloft.net
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-From: Ralf Baechle <ralf@linux-mips.org>
-Date: Mon, 30 Nov 2009 20:03:19 +0000
+On Sun, Nov 29, 2009 at 12:38:55AM +1000, Adam Nielsen wrote:
 
-> On Mon, Nov 30, 2009 at 05:50:15PM -0200, Arnaldo Carvalho de Melo wrote:
+> I'm attempting to port the Linux kernel to an NCD HMX, an R4600-based X-Terminal.
 > 
->> From: Arnaldo Carvalho de Melo <acme@redhat.com>
->> 
->> Cc: Ralf Baechle <ralf@linux-mips.org>
->> Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
->> ---
->>  arch/mips/include/asm/unistd.h |   15 +++++++++------
->>  1 files changed, 9 insertions(+), 6 deletions(-)
+> I've currently got it to the point where it will download the kernel
+> and execute it, and start printing some messages out on the screen.
 > 
-> Looks good.  Dave, wanna merge this through the netdev tree?
+> It gets as far as printing the physical RAM map and then crashes,
+> but I'm not sure why:
 > 
-> Acked-by: Ralf Baechle <ralf@linux-mips.org>
+>   Determined physical RAM map:
+>    memory: 00800000 @ 40250000 (usable)
+>    memory: 00040000 @ 9fc00000 (ROM data)
+>   Wasting 8407552 bytes for tracking 262736 unused pages
+> 
+>   TLB refill exception PC = 40024094 address = 7FFFF000
+> 
+> The last message is from the boot monitor (the kernel is loaded at
+> address 0x40020000.)  I'm just guessing with the memory map, but
+> I've tried lots of different values with the same result, and I'm
+> fairly sure there is RAM mapped to the address I have used above
+> (it's after the end of the kernel.)  At any rate the error message
+> is from a completely different address, and it still happens if I
+> flag that area as reserved memory in the RAM map.
 
-Sure, I'll take it there.
+Are you sure it's a R4600, not R4640 or R4650?
+
+It's like a decade that I last read up on these but afair they have a
+fixed mapping starting at 0x40000000.  It would make perfect sense to
+use such a CPU in an X terminal.
+
+  Ralf

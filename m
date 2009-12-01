@@ -1,90 +1,116 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Dec 2009 03:06:38 +0100 (CET)
-Received: from mail-pw0-f45.google.com ([209.85.160.45]:49610 "EHLO
-        mail-pw0-f45.google.com" rhost-flags-OK-OK-OK-OK)
-        by eddie.linux-mips.org with ESMTP id S1493255AbZLACGf (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Dec 2009 03:06:35 +0100
-Received: by pwi15 with SMTP id 15so2317008pwi.24
-        for <multiple recipients>; Mon, 30 Nov 2009 18:06:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=gamma;
-        h=domainkey-signature:received:received:subject:from:reply-to:to:cc
-         :in-reply-to:references:content-type:organization:date:message-id
-         :mime-version:x-mailer:content-transfer-encoding;
-        bh=AB5R2EqdxWRT+32k17d2yUY/SQZUz2J+snYCirYyft8=;
-        b=KKWPlMRTWlQU7iBajoOr/kKaWr+/1SL08XFskPpbxaD2AOsChphkX9G3Mnt4+KJjsg
-         eBWFi/Q96V3GhUAAiqVEF9NWWcFQLT5ttK+JyWgMiPMaK7+WFwnFEXkZ3Vohu62dq616
-         N+R1EzIm7V8KcRkNTNIoa/3vuklOIwrNzklbE=
-DomainKey-Signature: a=rsa-sha1; c=nofws;
-        d=gmail.com; s=gamma;
-        h=subject:from:reply-to:to:cc:in-reply-to:references:content-type
-         :organization:date:message-id:mime-version:x-mailer
-         :content-transfer-encoding;
-        b=BzKToS5xjM35u5LZ8bswmbxC49mgCpA8Dy5YGCzadBDYML8xs37RoFko5/mub/dpRw
-         Ii6DO/uOTGEy12WrzU+/lIPLP5eVptdqk+/U0fXPoMuNLxc4vfE1lXrixbax6G2I6vcO
-         3kiz0jv+5HKiFul/Xh5b7HXGIuvj9zSpKuLe4=
-Received: by 10.114.249.4 with SMTP id w4mr9369290wah.186.1259633184448;
-        Mon, 30 Nov 2009 18:06:24 -0800 (PST)
-Received: from ?172.16.2.101? ([222.92.8.142])
-        by mx.google.com with ESMTPS id 20sm3321376pzk.5.2009.11.30.18.06.20
-        (version=TLSv1/SSLv3 cipher=RC4-MD5);
-        Mon, 30 Nov 2009 18:06:23 -0800 (PST)
-Subject: Re: [PATCH v5 5/8] Loongson: YeeLoong: add hwmon driver
-From:   Wu Zhangjin <wuzhangjin@gmail.com>
-Reply-To: wuzhangjin@gmail.com
-To:     Ralf Baechle <ralf@linux-mips.org>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-mips@linux-mips.org, zhangfx@lemote.com, yanh@lemote.com,
-        huhb@lemote.com, lm-sensors@lm-sensors.org
-In-Reply-To: <20091201014819.GA29728@linux-mips.org>
-References: <cover.1259414649.git.wuzhangjin@gmail.com>
-         <ed9926f7d6acbf2abd2eb172ec5147e578dc8fb7.1259414649.git.wuzhangjin@gmail.com>
-         <1259558432.5516.8.camel@falcon.domain.org>
-         <1259562294.5516.16.camel@falcon.domain.org>
-         <20091201014819.GA29728@linux-mips.org>
-Content-Type: text/plain; charset="UTF-8"
-Organization: DSLab, Lanzhou University, China
-Date:   Tue, 01 Dec 2009 10:06:03 +0800
-Message-ID: <1259633163.1894.24.camel@falcon>
-Mime-Version: 1.0
-X-Mailer: Evolution 2.28.1 
-Content-Transfer-Encoding: 7bit
-Return-Path: <wuzhangjin@gmail.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Dec 2009 03:14:18 +0100 (CET)
+Received: from h5.dl5rb.org.uk ([81.2.74.5]:35749 "EHLO h5.dl5rb.org.uk"
+        rhost-flags-OK-OK-OK-OK) by eddie.linux-mips.org with ESMTP
+        id S1493261AbZLACOO (ORCPT <rfc822;linux-mips@linux-mips.org>);
+        Tue, 1 Dec 2009 03:14:14 +0100
+Received: from h5.dl5rb.org.uk (localhost.localdomain [127.0.0.1])
+        by h5.dl5rb.org.uk (8.14.3/8.14.3) with ESMTP id nB12E9mw006971;
+        Tue, 1 Dec 2009 02:14:09 GMT
+Received: (from ralf@localhost)
+        by h5.dl5rb.org.uk (8.14.3/8.14.3/Submit) id nB12E8QU006969;
+        Tue, 1 Dec 2009 02:14:08 GMT
+Date:   Tue, 1 Dec 2009 02:14:08 +0000
+From:   Ralf Baechle <ralf@linux-mips.org>
+To:     David VomLehn <dvomlehn@cisco.com>
+Cc:     linux-mips@linux-mips.org
+Subject: Re: [PATCH 1/2] Set of fixes for DMA when dma_addr_t != physical
+ address
+Message-ID: <20091201021408.GB29728@linux-mips.org>
+References: <20091125200024.GA13307@dvomlehn-lnx2.corp.sa.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20091125200024.GA13307@dvomlehn-lnx2.corp.sa.net>
+User-Agent: Mutt/1.5.20 (2009-08-17)
+Return-Path: <ralf@linux-mips.org>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25217
+X-archive-position: 25218
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: wuzhangjin@gmail.com
+X-original-sender: ralf@linux-mips.org
 Precedence: bulk
 X-list: linux-mips
 
-On Tue, 2009-12-01 at 01:48 +0000, Ralf Baechle wrote:
-> On Mon, Nov 30, 2009 at 02:24:54PM +0800, Wu Zhangjin wrote:
+On Wed, Nov 25, 2009 at 03:00:24PM -0500, David VomLehn wrote:
+
+> From: Jon Fraser <jfraser@broadcom.com>
+> DMA changes from Jon Fraser, slightly tweaked for 2.6.30.
 > 
-> > > > +config YEELOONG_HWMON
-> > > > +	tristate "Hardware Monitor Driver"
-> > > > +	select HWMON
-> > > 
-> > > Will use depend in the next version.
-> > > 
-> > 
-> > Sorry, This must be select, there is no other way to select this stuff.
+> Signed-off-by: Jon Fraser <jfraser@broadcom.com>
+> Signed-off-by: David VomLehn <dvomlehn@cisco.com>
+> ---
+>  arch/mips/mm/dma-default.c |   14 ++++++++++----
+>  1 files changed, 10 insertions(+), 4 deletions(-)
 > 
-> Why that?
+> diff --git a/arch/mips/mm/dma-default.c b/arch/mips/mm/dma-default.c
+> index 4fdb7f5..70cff1f 100644
+> --- a/arch/mips/mm/dma-default.c
+> +++ b/arch/mips/mm/dma-default.c
+> @@ -135,6 +135,9 @@ EXPORT_SYMBOL(dma_free_coherent);
+>  static inline void __dma_sync(unsigned long addr, size_t size,
+>  	enum dma_data_direction direction)
+>  {
+> +
+> +	BUG_ON(addr < KSEG0);
 
-Hmm, sorry, my old explanation is totally Wrong, it's better to select
-it for us, just as the x86 platform drivers did:
+This won't work right on 64-bit.
 
-$ cat drivers/platform/x86/Kconfig | grep " HWMON"
-	select HWMON
-	select HWMON
+> +
+>  	switch (direction) {
+>  	case DMA_TO_DEVICE:
+>  		dma_cache_wback(addr, size);
+> @@ -188,11 +191,13 @@ int dma_map_sg(struct device *dev, struct scatterlist *sg, int nents,
+>  	for (i = 0; i < nents; i++, sg++) {
+>  		unsigned long addr;
+>  
+> +		BUG_ON(!sg_page(sg));
+> +
 
-Because the HWMON stuff is put in the device drivers as a menuconfig,
-but our platform driver is put in its own directory. it will not be
-convenient for the users to select it themselves, and also, this select
-have no side effect.
+No need to test this; the sg_virt() in the next line will blow up if
+a bad sg was passed in.
 
-Best Regards,
-	Wu Zhangjin
+>  		addr = (unsigned long) sg_virt(sg);
+> -		if (!plat_device_is_coherent(dev) && addr)
+> +		if (!plat_device_is_coherent(dev) && (addr >= KSEG0))
+
+Again this KSEG0 test won't work right on 64-bit.
+
+>  			__dma_sync(addr, sg->length, direction);
+> -		sg->dma_address = plat_map_dma_mem(dev,
+> -				                   (void *)addr, sg->length);
+> +
+> +		sg->dma_address = sg_phys(sg);
+
+This breaks anything with a non-trival DMA engine like Jazz.
+
+>  	}
+>  
+>  	return nents;
+> @@ -229,7 +234,7 @@ void dma_unmap_sg(struct device *dev, struct scatterlist *sg, int nhwentries,
+>  		if (!plat_device_is_coherent(dev) &&
+>  		    direction != DMA_TO_DEVICE) {
+>  			addr = (unsigned long) sg_virt(sg);
+> -			if (addr)
+> +			if (addr >= KSEG0)
+>  				__dma_sync(addr, sg->length, direction);
+
+Ditto re. KSEG0.
+
+>  		}
+>  		plat_unmap_dma_mem(dev, sg->dma_address);
+> @@ -359,6 +364,7 @@ void dma_cache_sync(struct device *dev, void *vaddr, size_t size,
+>  	       enum dma_data_direction direction)
+>  {
+>  	BUG_ON(direction == DMA_NONE);
+> +	BUG_ON(vaddr < (void *)KSEG0);
+
+Ditto.
+
+>  
+>  	plat_extra_sync_for_device(dev);
+>  	if (!plat_device_is_coherent(dev))
+
+  Ralf

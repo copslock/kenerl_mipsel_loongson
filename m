@@ -1,94 +1,82 @@
-Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Dec 2009 04:59:53 +0100 (CET)
-Received: from 60-248-150-25.HINET-IP.hinet.net ([60.248.150.25]:43600 "EHLO
-        dns.allplus-cn.com" rhost-flags-OK-OK-OK-FAIL) by eddie.linux-mips.org
-        with ESMTP id S1491756AbZLADwg convert rfc822-to-8bit (ORCPT
-        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Dec 2009 04:52:36 +0100
-Received: from DELLPC (unknown [116.231.39.52])
-        by dns.allplus-cn.com (Postfix) with ESMTP id 912192DBD5D
-        for <linux-mips@linux-mips.org>; Tue,  1 Dec 2009 12:50:43 +0800 (CST)
-From:   "jack_lu" <jacklu@allplus-cn.com>
-To:     <linux-mips@linux-mips.org>
-Subject:  hello! can you help me for compiling the linux kernel?
-Date:   Tue, 1 Dec 2009 11:52:07 +0800
-Message-ID: <74D96A2497124516897C6F4D06D8B5AB@DELLPC>
-MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-X-Mailer: Microsoft Office Outlook 11
-X-MimeOLE: Produced By Microsoft MimeOLE V6.1.7600.16385
-Thread-Index: AcpyNZYhWZbNIwZFQnuHM/f8qsMGWQAA/jsg
-X-Allplus-MailScanner-Information: Please contact the ISP for more information
-X-Allplus-MailScanner: Found to be clean
-X-Allplus-MailScanner-From: jacklu@allplus-cn.com
-Return-Path: <jacklu@allplus-cn.com>
+Received: with ECARTIS (v1.0.0; list linux-mips); Tue, 01 Dec 2009 07:55:50 +0100 (CET)
+Received: from mail-pz0-f197.google.com ([209.85.222.197]:57941 "EHLO
+        mail-pz0-f197.google.com" rhost-flags-OK-OK-OK-OK)
+        by eddie.linux-mips.org with ESMTP id S1492130AbZLAGzq (ORCPT
+        <rfc822;linux-mips@linux-mips.org>); Tue, 1 Dec 2009 07:55:46 +0100
+Received: by pzk35 with SMTP id 35so3446600pzk.22
+        for <multiple recipients>; Mon, 30 Nov 2009 22:55:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=gamma;
+        h=domainkey-signature:received:received:from:to:cc:subject:date
+         :message-id:x-mailer;
+        bh=FaHKPCCGS+EkoEUOTtJEUisoHXUNm02T3M6l+h9WLWo=;
+        b=QrfxaWLm6LxXaq6ZYLKOlIO5GQZZ9+ClH1J/5qGX4gadf3WmMeuhGEHBj9ORBPaRyU
+         zz3RsfQYzFCsEC7y37L43sAjwJOMluUp5lqBa3mb0aA/CQt33QJDKYuODPkTQnoxo/bJ
+         ITrNd7gBCy1oXZgJIWSIQ5cjgJv0VR2IiP2MY=
+DomainKey-Signature: a=rsa-sha1; c=nofws;
+        d=gmail.com; s=gamma;
+        h=from:to:cc:subject:date:message-id:x-mailer;
+        b=FjJWjTf24Wu4kPAylt4bgnRTw1u0xYrrYE7MRKhtrIq4RCHqMV4pqd9Aqf1UNEy/uU
+         doa8S2QWqbiweZW1ScSJhQKyowX9dJGR1FwunhG2Nawhy66KbpKGk0ouWTcwkeCD/e9o
+         F/hnOgEz2STxO+xFM/4z1bmXAVruhjcKCHxm4=
+Received: by 10.115.26.2 with SMTP id d2mr10065670waj.14.1259650535418;
+        Mon, 30 Nov 2009 22:55:35 -0800 (PST)
+Received: from localhost.localdomain ([222.92.8.142])
+        by mx.google.com with ESMTPS id 21sm3474092pzk.15.2009.11.30.22.55.32
+        (version=TLSv1/SSLv3 cipher=RC4-MD5);
+        Mon, 30 Nov 2009 22:55:35 -0800 (PST)
+From:   Wu Zhangjin <wuzhangjin@gmail.com>
+To:     Ralf Baechle <ralf@linux-mips.org>
+Cc:     linux-mips@linux-mips.org, zhangfx@lemote.com,
+        Wu Zhangjin <wuzhangjin@gmail.com>
+Subject: [PATCH 1/2] Loongson: disable PAGE_SIZE_4KB
+Date:   Tue,  1 Dec 2009 14:55:25 +0800
+Message-Id: <1259650525-31884-1-git-send-email-wuzhangjin@gmail.com>
+X-Mailer: git-send-email 1.6.2.1
+Return-Path: <wuzhangjin@gmail.com>
 X-Envelope-To: <"|/home/ecartis/ecartis -s linux-mips"> (uid 0)
 X-Orcpt: rfc822;linux-mips@linux-mips.org
 Original-Recipient: rfc822;linux-mips@linux-mips.org
-X-archive-position: 25220
-X-Approved-By: ralf@linux-mips.org
+X-archive-position: 25221
 X-ecartis-version: Ecartis v1.0.0
 Sender: linux-mips-bounce@linux-mips.org
 Errors-to: linux-mips-bounce@linux-mips.org
-X-original-sender: jacklu@allplus-cn.com
+X-original-sender: wuzhangjin@gmail.com
 Precedence: bulk
 X-list: linux-mips
 
-Dear Sir,
-　　hello! can you help me for compiling the linux kernel?
-　　Linux version is linux-2.6.21.5.
-　　CPU:mips
-　　Cross-compilation tools is eldk and openwrt file packages.
-　　Errors are the followings.
-　　init/built-in.o: In function `init':
-　　init/main.c:833: undefined reference to `opipmux_gel_init'
-　　init/main.c:833: relocation truncated to fit: R_MIPS_26 against `opipmux_gel_init'
-　　init/main.c:835: undefined reference to `ip_auto_config'
-　　init/main.c:835: relocation truncated to fit: R_MIPS_26 against `ip_auto_config'
-　　init/built-in.o: In function `start_kernel':
-　　init/main.c:525: undefined reference to `setup_prom_printf'
-　　init/main.c:525: relocation truncated to fit: R_MIPS_26 against `setup_prom_printf'
-　　init/main.c:527: undefined reference to `prom_printf'
-　　init/main.c:527: relocation truncated to fit: R_MIPS_26 against `prom_printf'
-　　init/main.c:530: undefined reference to `prom_printf'
-　　init/main.c:530: relocation truncated to fit: R_MIPS_26 against `prom_printf'
-　　arch/mips/kernel/built-in.o: In function `test_setdata':
-　　arch/mips/kernel/syscall.c:461: undefined reference to `set_ipmux_el_tx_buf_data'
-　　arch/mips/kernel/syscall.c:461: relocation truncated to fit: R_MIPS_26 against `set_ipmux_el_tx_buf_data'
-　　arch/mips/kernel/built-in.o: In function `test_getdata':
-　　arch/mips/kernel/syscall.c:453: undefined reference to `get_ipmux_el_rx_buf_data'
-　　arch/mips/kernel/syscall.c:453: relocation truncated to fit: R_MIPS_26 against `get_ipmux_el_rx_buf_data'
-　　arch/mips/kernel/built-in.o: In function `test_waitinterrupt':
-　　arch/mips/kernel/syscall.c:446: undefined reference to `wait_for_host_test_interrupt'
-　　arch/mips/kernel/syscall.c:446: relocation truncated to fit: R_MIPS_26 against `wait_for_host_test_interrupt'
-　　kernel/built-in.o: In function `free_module':
-　　kernel/module.c:1231: undefined reference to `kfree1'
-　　kernel/module.c:1231: relocation truncated to fit: R_MIPS_26 against `kfree1'
-　　drivers/built-in.o: In function `snapshot_map':
-　　drivers/md/dm-snap.c:900: undefined reference to `__cmpdi2'
-　　drivers/md/dm-snap.c:900: relocation truncated to fit: R_MIPS_26 against `__cmpdi2'
-　　make: *** [.tmp_vmlinux1] Error 1
-　　make: *** No rule to make target `../vmlinux', needed by `piggy.lzma'.  Stop.
-　　copyed to ../wrt_uImage
-　　cp: cannot stat `uImageLzma': No such file or directory
-　　ls: cannot access ../wrt_uImage: No such file or directory
-　　===============================================================
-　　    output files:                           
-　　         wrt_uImage : the kernel image      
-　　
-　　
-　　Thanks &Best Wishes,
-　　Jack_Lu(鲁红刚)
-   益满颖贸易（上海）有限公司
-   上海市愚园路168号环球大厦A座2101室
-   电话：+86 21 62495328/29/30/31 分机：820
-   传真：+86 21 62490538
-   MSN: luhongang@163.com
+From: Wu Zhangjin <wuzhangjin@gmail.com>
 
-　　
+Currently, with PAGE_SIZE_4KB, the kernel for loongson will hang on:
 
+Kernel panic - not syncing: Attempted to kill init!
 
+The possible reason is the cache aliases problem:
+
+Loongson 2F has 64kb, 4 way L1 Cache, the way size is 16kb, which is
+bigger then 4kb. so, If using 4kb page size, there is cache aliases
+problem(Documentation/cachetlb.txt), to avoid such problem, we may need
+extra cache flushing. but with 16kb page size, there is no cache aliases
+problem and no corresponding operations needed to cope with that
+problem, so, it's better to disable 4kb page size directly before the
+above problem is solved.
+
+Signed-off-by: Wu Zhangjin <wuzhangjin@gmail.com>
+---
+ arch/mips/Kconfig |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index b03af82..8bf36d2 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -1510,6 +1510,7 @@ choice
+ 
+ config PAGE_SIZE_4KB
+ 	bool "4kB"
++	depends on !CPU_LOONGSON2
+ 	help
+ 	 This option select the standard 4kB Linux page size.  On some
+ 	 R3000-family processors this is the only available page size.  Using
 -- 
-This message has been scanned for viruses and
-dangerous content by MailScanner, and is
-believed to be clean.
+1.6.2.1
